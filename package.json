@@ -13,21 +13,13 @@
     "client"
   ],
   "devDependencies": {
-    "@apigear-io/objectapi-cli": "^1.15.0",
-    "@types/jest": "^26.0.14",
-    "@types/node": "^14.11.1",
-    "jest": "^26.4.2",
-    "npm-run-all": "^4.1.5",
-    "rimraf": "^3.0.1",
-    "standard-version": "^9.5.0",
-    "ts-jest": "^26.3.0",
-    "ts-node": "^9.0.0",
-    "typescript": "^4.0.3"
+    "@apigear-io/apigear-cli": "^0.3.3",
+    "standard-version": "^9.5.0"
   },
   "scripts": {
-    "gen:goldenmaster": "rm -rf goldenmaster && node node_modules/@apigear-io/objectapi-cli/bin/apigear-gen --solution apigear/goldenmaster.solution.yaml && mv test/ goldenmaster",
-    "test:goldenmaster": "rm -rf test && node node_modules/@apigear-io/objectapi-cli/bin/apigear-gen --solution apigear/goldenmaster.solution.yaml && diff -r goldenmaster/ test/",
-    "report:license": "license-report --exclude=@apigear-io/objectapi-cli --department.value=apigear --relatedTo.value=$npm_package_name --output=csv --csvHeaders > licenses.csv",
+    "gen:goldenmaster": "rm -rf goldenmaster && node node_modules/@apigear-io/apigear-cli/bin/run gen run apigear/goldenmaster.solution.yaml && mv test/ goldenmaster",
+    "test:goldenmaster": "rm -rf test && node node_modules/@apigear-io/apigear-cli/bin/run gen run apigear/goldenmaster.solution.yaml && diff -r goldenmaster/ test/",
+    "report:license": "license-report --exclude=@apigear-io/apigear-cli --department.value=apigear --relatedTo.value=$npm_package_name --output=csv --csvHeaders > licenses.csv",
     "version": "standard-version -i CHANGELOG.md --same-file"
   },
   "author": {
