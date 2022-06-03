@@ -28,13 +28,13 @@ limitations under the License.
 
 using namespace ApiGear::WAMP;
 OrgObjectapiTestbedInterface2WAMPService::OrgObjectapiTestbedInterface2WAMPService()
-    : AbstractOrgObjectapiTestbedInterface2Publisher()
-    , Prop200(0)
-    , Prop201(0)
-    , Prop202(0)
-    , Prop203(0.0f)
-    , Prop204(0.0f)
-    , Prop205(FString())
+: IOrgObjectapiTestbedInterface2Interface()
+, Prop200(0)
+, Prop201(0)
+, Prop202(0)
+, Prop203(0.0f)
+, Prop204(0.0f)
+, Prop205(FString())
 {
     EventFunc Interface2StateChangedFunc = [this](EventArg arg)
     {
@@ -43,42 +43,42 @@ OrgObjectapiTestbedInterface2WAMPService::OrgObjectapiTestbedInterface2WAMPServi
             if(Prop200 != fields["prop200"].get<int32>())
             {
                 Prop200 = fields["prop200"].get<int32>();
-                PublishProp200Changed(Prop200);
+                Prop200Changed.Broadcast(Prop200);
             }
         }
         if(fields.contains("prop201")) {
             if(Prop201 != fields["prop201"].get<int32>())
             {
                 Prop201 = fields["prop201"].get<int32>();
-                PublishProp201Changed(Prop201);
+                Prop201Changed.Broadcast(Prop201);
             }
         }
         if(fields.contains("prop202")) {
             if(Prop202 != fields["prop202"].get<int32>())
             {
                 Prop202 = fields["prop202"].get<int32>();
-                PublishProp202Changed(Prop202);
+                Prop202Changed.Broadcast(Prop202);
             }
         }
         if(fields.contains("prop203")) {
             if(Prop203 != fields["prop203"].get<float>())
             {
                 Prop203 = fields["prop203"].get<float>();
-                PublishProp203Changed(Prop203);
+                Prop203Changed.Broadcast(Prop203);
             }
         }
         if(fields.contains("prop204")) {
             if(Prop204 != fields["prop204"].get<float>())
             {
                 Prop204 = fields["prop204"].get<float>();
-                PublishProp204Changed(Prop204);
+                Prop204Changed.Broadcast(Prop204);
             }
         }
         if(fields.contains("prop205")) {
             if(Prop205 != fields["prop205"].get<FString>())
             {
                 Prop205 = fields["prop205"].get<FString>();
-                PublishProp205Changed(Prop205);
+                Prop205Changed.Broadcast(Prop205);
             }
         }
     };
@@ -94,42 +94,42 @@ OrgObjectapiTestbedInterface2WAMPService::OrgObjectapiTestbedInterface2WAMPServi
             if(Prop200 != fields["prop200"].get<int32>())
             {
                 Prop200 = fields["prop200"].get<int32>();
-                PublishProp200Changed(Prop200);
+                Prop200Changed.Broadcast(Prop200);
             }
         }
         if(fields.contains("prop201")) {
             if(Prop201 != fields["prop201"].get<int32>())
             {
                 Prop201 = fields["prop201"].get<int32>();
-                PublishProp201Changed(Prop201);
+                Prop201Changed.Broadcast(Prop201);
             }
         }
         if(fields.contains("prop202")) {
             if(Prop202 != fields["prop202"].get<int32>())
             {
                 Prop202 = fields["prop202"].get<int32>();
-                PublishProp202Changed(Prop202);
+                Prop202Changed.Broadcast(Prop202);
             }
         }
         if(fields.contains("prop203")) {
             if(Prop203 != fields["prop203"].get<float>())
             {
                 Prop203 = fields["prop203"].get<float>();
-                PublishProp203Changed(Prop203);
+                Prop203Changed.Broadcast(Prop203);
             }
         }
         if(fields.contains("prop204")) {
             if(Prop204 != fields["prop204"].get<float>())
             {
                 Prop204 = fields["prop204"].get<float>();
-                PublishProp204Changed(Prop204);
+                Prop204Changed.Broadcast(Prop204);
             }
         }
         if(fields.contains("prop205")) {
             if(Prop205 != fields["prop205"].get<FString>())
             {
                 Prop205 = fields["prop205"].get<FString>();
-                PublishProp205Changed(Prop205);
+                Prop205Changed.Broadcast(Prop205);
             }
         }
     };
@@ -153,6 +153,12 @@ void OrgObjectapiTestbedInterface2WAMPService::SetProp200(int32 Value)
     fields_["prop200"] = Value;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface2._set", Arguments(), fields_);
 }
+
+FProp200ChangedDelegate& OrgObjectapiTestbedInterface2WAMPService::GetProp200ChangedDelegate()
+{
+    return Prop200Changed;
+}
+
 int32 OrgObjectapiTestbedInterface2WAMPService::GetProp201() const
 {
     return Prop201;
@@ -164,6 +170,12 @@ void OrgObjectapiTestbedInterface2WAMPService::SetProp201(int32 Value)
     fields_["prop201"] = Value;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface2._set", Arguments(), fields_);
 }
+
+FProp201ChangedDelegate& OrgObjectapiTestbedInterface2WAMPService::GetProp201ChangedDelegate()
+{
+    return Prop201Changed;
+}
+
 int32 OrgObjectapiTestbedInterface2WAMPService::GetProp202() const
 {
     return Prop202;
@@ -175,6 +187,12 @@ void OrgObjectapiTestbedInterface2WAMPService::SetProp202(int32 Value)
     fields_["prop202"] = Value;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface2._set", Arguments(), fields_);
 }
+
+FProp202ChangedDelegate& OrgObjectapiTestbedInterface2WAMPService::GetProp202ChangedDelegate()
+{
+    return Prop202Changed;
+}
+
 float OrgObjectapiTestbedInterface2WAMPService::GetProp203() const
 {
     return Prop203;
@@ -186,6 +204,12 @@ void OrgObjectapiTestbedInterface2WAMPService::SetProp203(float Value)
     fields_["prop203"] = Value;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface2._set", Arguments(), fields_);
 }
+
+FProp203ChangedDelegate& OrgObjectapiTestbedInterface2WAMPService::GetProp203ChangedDelegate()
+{
+    return Prop203Changed;
+}
+
 float OrgObjectapiTestbedInterface2WAMPService::GetProp204() const
 {
     return Prop204;
@@ -197,6 +221,12 @@ void OrgObjectapiTestbedInterface2WAMPService::SetProp204(float Value)
     fields_["prop204"] = Value;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface2._set", Arguments(), fields_);
 }
+
+FProp204ChangedDelegate& OrgObjectapiTestbedInterface2WAMPService::GetProp204ChangedDelegate()
+{
+    return Prop204Changed;
+}
+
 FString OrgObjectapiTestbedInterface2WAMPService::GetProp205() const
 {
     return Prop205;
@@ -208,4 +238,10 @@ void OrgObjectapiTestbedInterface2WAMPService::SetProp205(FString Value)
     fields_["prop205"] = Value;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface2._set", Arguments(), fields_);
 }
+
+FProp205ChangedDelegate& OrgObjectapiTestbedInterface2WAMPService::GetProp205ChangedDelegate()
+{
+    return Prop205Changed;
+}
+
 

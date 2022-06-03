@@ -25,6 +25,39 @@ limitations under the License.
 #include "OrgObjectapiTestbed_apig.generated.h"
 
 /**
+ * Declaration for Interface1
+ */
+// signal delegates
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSig1Delegate);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FSig2Delegate, int32, Step);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSig3Delegate);
+
+// property delegates
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FbProp1ChangedDelegate, bool, bProp1);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProp2ChangedDelegate, int32, Prop2);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProp3ChangedDelegate, float, Prop3);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProp4ChangedDelegate, FString, Prop4);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProp5ChangedDelegate, TArray<int32>, Prop5);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProp6ChangedDelegate, const FStruct1&, Prop6);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProp7ChangedDelegate, int32, Prop7);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProp10ChangedDelegate, TArray<int32>, Prop10);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProp11ChangedDelegate, const TArray<FStruct1>&, Prop11);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProp12ChangedDelegate, const TArray<EEnum1>&, Prop12);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProp14ChangedDelegate, const TArray<FStruct1>&, Prop14);
+
+/**
  * Interface UOrgObjectapiTestbedInterface1Interface only for Unreal Engine's reflection system
  */
 UINTERFACE(MinimalAPI)
@@ -41,6 +74,36 @@ class ORG_OBJECTAPI_TESTBED_API IOrgObjectapiTestbedInterface1Interface
     GENERATED_BODY()
 
 public:
+// signals
+    virtual FSig1Delegate& GetSig1SignalDelegate() = 0;
+
+    virtual FSig2Delegate& GetSig2SignalDelegate() = 0;
+
+    virtual FSig3Delegate& GetSig3SignalDelegate() = 0;
+
+    virtual FbProp1ChangedDelegate& GetbProp1ChangedDelegate() = 0;
+
+    virtual FProp2ChangedDelegate& GetProp2ChangedDelegate() = 0;
+
+    virtual FProp3ChangedDelegate& GetProp3ChangedDelegate() = 0;
+
+    virtual FProp4ChangedDelegate& GetProp4ChangedDelegate() = 0;
+
+    virtual FProp5ChangedDelegate& GetProp5ChangedDelegate() = 0;
+
+    virtual FProp6ChangedDelegate& GetProp6ChangedDelegate() = 0;
+
+    virtual FProp7ChangedDelegate& GetProp7ChangedDelegate() = 0;
+
+    virtual FProp10ChangedDelegate& GetProp10ChangedDelegate() = 0;
+
+    virtual FProp11ChangedDelegate& GetProp11ChangedDelegate() = 0;
+
+    virtual FProp12ChangedDelegate& GetProp12ChangedDelegate() = 0;
+
+    virtual FProp14ChangedDelegate& GetProp14ChangedDelegate() = 0;
+
+
 // methods
     virtual void Op1() = 0;
     virtual void Op2(int32 Step) = 0;
@@ -70,41 +133,21 @@ public:
     virtual void SetProp14(const TArray<FStruct1>& Value) = 0;
 };
 /**
- * Interface IOrgObjectapiTestbedInterface1SubscriberInterface
+ * Declaration for Interface2
  */
-class ORG_OBJECTAPI_TESTBED_API IOrgObjectapiTestbedInterface1SubscriberInterface
-{
-public:
-    virtual void OnSig1() = 0;
-    virtual void OnSig2(int32 Step) = 0;
-    virtual void OnSig3() = 0;
-    virtual void OnbProp1Changed(bool Value) = 0;
-    virtual void OnProp2Changed(int32 Value) = 0;
-    virtual void OnProp3Changed(float Value) = 0;
-    virtual void OnProp4Changed(FString Value) = 0;
-    virtual void OnProp5Changed(TArray<int32> Value) = 0;
-    virtual void OnProp6Changed(const FStruct1& Value) = 0;
-    virtual void OnProp7Changed(int32 Value) = 0;
-    virtual void OnProp10Changed(TArray<int32> Value) = 0;
-    virtual void OnProp11Changed(const TArray<FStruct1>& Value) = 0;
-    virtual void OnProp12Changed(const TArray<EEnum1>& Value) = 0;
-    virtual void OnProp14Changed(const TArray<FStruct1>& Value) = 0;
-};
-/**
- * Interface IOrgObjectapiTestbedInterface1PublisherInterface
- */
-class ORG_OBJECTAPI_TESTBED_API IOrgObjectapiTestbedInterface1PublisherInterface: public IOrgObjectapiTestbedInterface1Interface
-{
-public:
-    virtual void SubscribeToOrgObjectapiTestbedInterface1StateChanged(IOrgObjectapiTestbedInterface1SubscriberInterface& Subscriber) = 0;
-    virtual void UnsubscribeFromOrgObjectapiTestbedInterface1StateChanged(IOrgObjectapiTestbedInterface1SubscriberInterface& Subscriber) = 0;
-    virtual void SubscribeToSig1(IOrgObjectapiTestbedInterface1SubscriberInterface& Subscriber) = 0;
-    virtual void UnsubscribeFromSig1(IOrgObjectapiTestbedInterface1SubscriberInterface& Subscriber) = 0;
-    virtual void SubscribeToSig2(IOrgObjectapiTestbedInterface1SubscriberInterface& Subscriber) = 0;
-    virtual void UnsubscribeFromSig2(IOrgObjectapiTestbedInterface1SubscriberInterface& Subscriber) = 0;
-    virtual void SubscribeToSig3(IOrgObjectapiTestbedInterface1SubscriberInterface& Subscriber) = 0;
-    virtual void UnsubscribeFromSig3(IOrgObjectapiTestbedInterface1SubscriberInterface& Subscriber) = 0;
-};
+// signal delegates
+// property delegates
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProp200ChangedDelegate, int32, Prop200);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProp201ChangedDelegate, int32, Prop201);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProp202ChangedDelegate, int32, Prop202);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProp203ChangedDelegate, float, Prop203);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProp204ChangedDelegate, float, Prop204);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProp205ChangedDelegate, FString, Prop205);
 
 /**
  * Interface UOrgObjectapiTestbedInterface2Interface only for Unreal Engine's reflection system
@@ -123,6 +166,20 @@ class ORG_OBJECTAPI_TESTBED_API IOrgObjectapiTestbedInterface2Interface
     GENERATED_BODY()
 
 public:
+// signals
+    virtual FProp200ChangedDelegate& GetProp200ChangedDelegate() = 0;
+
+    virtual FProp201ChangedDelegate& GetProp201ChangedDelegate() = 0;
+
+    virtual FProp202ChangedDelegate& GetProp202ChangedDelegate() = 0;
+
+    virtual FProp203ChangedDelegate& GetProp203ChangedDelegate() = 0;
+
+    virtual FProp204ChangedDelegate& GetProp204ChangedDelegate() = 0;
+
+    virtual FProp205ChangedDelegate& GetProp205ChangedDelegate() = 0;
+
+
 // methods
 // properties
     virtual int32 GetProp200() const = 0;
@@ -137,26 +194,4 @@ public:
     virtual void SetProp204(float Value) = 0;
     virtual FString GetProp205() const = 0;
     virtual void SetProp205(FString Value) = 0;
-};
-/**
- * Interface IOrgObjectapiTestbedInterface2SubscriberInterface
- */
-class ORG_OBJECTAPI_TESTBED_API IOrgObjectapiTestbedInterface2SubscriberInterface
-{
-public:
-    virtual void OnProp200Changed(int32 Value) = 0;
-    virtual void OnProp201Changed(int32 Value) = 0;
-    virtual void OnProp202Changed(int32 Value) = 0;
-    virtual void OnProp203Changed(float Value) = 0;
-    virtual void OnProp204Changed(float Value) = 0;
-    virtual void OnProp205Changed(FString Value) = 0;
-};
-/**
- * Interface IOrgObjectapiTestbedInterface2PublisherInterface
- */
-class ORG_OBJECTAPI_TESTBED_API IOrgObjectapiTestbedInterface2PublisherInterface: public IOrgObjectapiTestbedInterface2Interface
-{
-public:
-    virtual void SubscribeToOrgObjectapiTestbedInterface2StateChanged(IOrgObjectapiTestbedInterface2SubscriberInterface& Subscriber) = 0;
-    virtual void UnsubscribeFromOrgObjectapiTestbedInterface2StateChanged(IOrgObjectapiTestbedInterface2SubscriberInterface& Subscriber) = 0;
 };

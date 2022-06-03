@@ -18,14 +18,32 @@ limitations under the License.
 
 #include "apig/OrgObjectapiTestbed_apig.h"
 #include "olink/clientnode.h"
-#include "AbstractOrgObjectapiTestbedInterface2Publisher.h"
 
-class OrgObjectapiTestbedInterface2OLinkService : public AbstractOrgObjectapiTestbedInterface2Publisher, public ApiGear::ObjectLink::IObjectSink
+class OrgObjectapiTestbedInterface2OLinkService : public IOrgObjectapiTestbedInterface2Interface, public ApiGear::ObjectLink::IObjectSink
 {
 public:
 
     explicit OrgObjectapiTestbedInterface2OLinkService();
     virtual ~OrgObjectapiTestbedInterface2OLinkService();
+
+    // signals
+    FProp200ChangedDelegate Prop200Changed;
+    FProp200ChangedDelegate& GetProp200ChangedDelegate() override;
+
+    FProp201ChangedDelegate Prop201Changed;
+    FProp201ChangedDelegate& GetProp201ChangedDelegate() override;
+
+    FProp202ChangedDelegate Prop202Changed;
+    FProp202ChangedDelegate& GetProp202ChangedDelegate() override;
+
+    FProp203ChangedDelegate Prop203Changed;
+    FProp203ChangedDelegate& GetProp203ChangedDelegate() override;
+
+    FProp204ChangedDelegate Prop204Changed;
+    FProp204ChangedDelegate& GetProp204ChangedDelegate() override;
+
+    FProp205ChangedDelegate Prop205Changed;
+    FProp205ChangedDelegate& GetProp205ChangedDelegate() override;
 
     // properties
     int32 GetProp200() const override;

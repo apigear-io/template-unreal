@@ -17,14 +17,33 @@ limitations under the License.
 #pragma once
 
 #include "apig/OrgObjectapiTestbed_apig.h"
-#include "AbstractOrgObjectapiTestbedInterface2Publisher.h"
 
-class OrgObjectapiTestbedInterface2SimulationService : public AbstractOrgObjectapiTestbedInterface2Publisher
+class OrgObjectapiTestbedInterface2SimulationService : public IOrgObjectapiTestbedInterface2Interface
 {
 public:
 
     explicit OrgObjectapiTestbedInterface2SimulationService();
     virtual ~OrgObjectapiTestbedInterface2SimulationService();
+
+    // signals
+    FProp200ChangedDelegate Prop200Changed;
+    FProp200ChangedDelegate& GetProp200ChangedDelegate() override;
+
+    FProp201ChangedDelegate Prop201Changed;
+    FProp201ChangedDelegate& GetProp201ChangedDelegate() override;
+
+    FProp202ChangedDelegate Prop202Changed;
+    FProp202ChangedDelegate& GetProp202ChangedDelegate() override;
+
+    FProp203ChangedDelegate Prop203Changed;
+    FProp203ChangedDelegate& GetProp203ChangedDelegate() override;
+
+    FProp204ChangedDelegate Prop204Changed;
+    FProp204ChangedDelegate& GetProp204ChangedDelegate() override;
+
+    FProp205ChangedDelegate Prop205Changed;
+    FProp205ChangedDelegate& GetProp205ChangedDelegate() override;
+
 
     // properties
     int32 GetProp200() const override;

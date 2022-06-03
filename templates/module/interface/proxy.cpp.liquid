@@ -81,17 +81,21 @@ public:
 {% assign service = "I" | append: service_capital | append: "Interface" %}
     service = {{module_name}}::create{{service}}();
 
-    service->SubscribeTo{{class_name_capital}}StateChanged(*this);
+{% for property in interface.properties %}
+    service->Get{{property|unrealVarName}}ChangedDelegate().AddDynamic(this, &{{class}}::On{{property|unrealVarName}}Changed);
+{% endfor %}
 {% for signal in interface.signals %}
-    service->SubscribeTo{{signal|unrealVarName}}(*this);
+    service->Get{{signal|unrealVarName}}SignalDelegate().AddDynamic(this, &{{class}}::On{{signal|unrealVarName}});
 {% endfor %}
 }
 
 {{class}}::~{{class}}()
 {
-    service->UnsubscribeFrom{{class_name_capital}}StateChanged(*this);
+{% for property in interface.properties %}
+    service->Get{{property|unrealVarName}}ChangedDelegate().RemoveDynamic(this, &{{class}}::On{{property|unrealVarName}}Changed);
+{% endfor %}
 {% for signal in interface.signals %}
-    service->UnsubscribeFrom{{signal|unrealVarName}}(*this);
+    service->Get{{signal|unrealVarName}}SignalDelegate().RemoveDynamic(this, &{{class}}::On{{signal|unrealVarName}});
 {% endfor %}
 }
 
@@ -109,6 +113,12 @@ void {{class}}::On{{signal|unrealVarName}}(
     {%- endfor -%}
     );
 }
+{{nl}}
+F{{signal|unrealVarName}}Delegate& {{class}}::Get{{signal|unrealVarName}}SignalDelegate()
+{
+    return {{signal|unrealVarName}}Signal;
+}
+{{nl}}
 {% endfor %}
 
 {% for property in interface.properties %}
@@ -127,6 +137,11 @@ void {{class}}::Set{{property.name | capital}}({{property|unrealTypeName: true}}
 {
     {{module.name | capital}}{{interface.name|capital}}Tracer::trace_callSet{{property.name|capital}}(Value);
     service->Set{{property.name | capital}}(Value);
+}
+{{nl}}
+F{{property|unrealVarName}}ChangedDelegate& {{class}}::Get{{property|unrealVarName}}ChangedDelegate()
+{
+    return {{property|unrealVarName}}Changed;
 }
 {{nl}}
 {% endfor %}

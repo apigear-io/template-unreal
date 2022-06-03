@@ -21,7 +21,7 @@ limitations under the License.
 
 {% for interface in module.interfaces %}
 {% assign class_capital = module.name | capital | append: interface.name | capital -%}
-{% assign class = "I" | append: class_capital | append: "PublisherInterface" %}
+{% assign class = "I" | append: class_capital | append: "Interface" %}
 class {{class}};
 {% endfor %}
 
@@ -35,6 +35,6 @@ public:
 {% for interface in module.interfaces %}
 {% assign class_capital = module.name | capital | append: interface.name | capital -%}
 {% assign class = "I" | append: class_capital | append: "Interface" %}
-	static TSharedPtr<I{{module.name | capital}}{{interface.name | capital}}PublisherInterface, ESPMode::ThreadSafe> create{{class}}();
+	static TSharedPtr<I{{module.name | capital}}{{interface.name | capital}}Interface, ESPMode::ThreadSafe> create{{class}}();
 {% endfor %}
 };

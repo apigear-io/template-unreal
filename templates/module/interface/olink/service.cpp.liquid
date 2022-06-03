@@ -40,7 +40,7 @@ using namespace ApiGear::ObjectLink;
 */
 {% endif %}
 {{class}}::{{class}}()
-    : Abstract{{module.name | capital}}{{interface.name|capital}}Publisher()
+    : I{{module.name | capital}}{{interface.name|capital}}Interface()
     , m_node(nullptr)
     , m_isReady(false)
 {% for property in interface.properties %}
@@ -58,6 +58,14 @@ using namespace ApiGear::ObjectLink;
 }
 {{nl}}
 
+{% for signal in interface.signals %}
+F{{signal|unrealVarName}}Delegate& {{class}}::Get{{signal|unrealVarName}}SignalDelegate()
+{
+    return {{signal|unrealVarName}}Signal;
+}
+{{nl}}
+{% endfor %}
+
 {% for property in interface.properties %}
 {{property|unrealTypeName}} {{class}}::Get{{property.name | capital}}() const
 {
@@ -70,6 +78,11 @@ void {{class}}::Set{{property.name | capital}}({{property|unrealTypeName: true}}
         return;
     }
     m_node->setRemoteProperty("{{module}}.{{interface}}/{{property}}", Value);
+}
+{{nl}}
+F{{property|unrealVarName}}ChangedDelegate& {{class}}::Get{{property|unrealVarName}}ChangedDelegate()
+{
+    return {{property|unrealVarName}}Changed;
 }
 {% endfor %}
 {{nl}}
@@ -125,7 +138,7 @@ void {{class}}::applyState(const nlohmann::json& fields)
         if({{property|unrealVarName}} != fields["{{property.name}}"].get<{{property|unrealTypeName}}>())
         {
             {{property|unrealVarName}} = fields["{{property.name}}"].get<{{property|unrealTypeName}}>();
-            Publish{{property|unrealVarName}}Changed({{property|unrealVarName}});
+            {{property|unrealVarName}}Changed.Broadcast({{property|unrealVarName}});
         }
     }
 {% endfor %}
@@ -141,7 +154,7 @@ void {{class}}::olinkOnSignal(std::string name, nlohmann::json args)
     std::string path = Name::pathFromName(name);
 {% for signal in interface.signals %}
     if(path == "{{signal}}") {
-        Publish{{signal|unrealVarName}}(
+        {{signal|unrealVarName}}Signal.Broadcast(
 {%- for param in signal.params -%}
         args[{{forloop.index0}}].get<{{param|unrealTypeName}}>(){% unless forloop.last %},{% endunless -%}
 {%- endfor -%}

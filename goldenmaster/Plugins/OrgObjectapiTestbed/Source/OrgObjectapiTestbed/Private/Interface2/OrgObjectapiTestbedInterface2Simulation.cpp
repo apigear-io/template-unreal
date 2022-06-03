@@ -26,7 +26,7 @@ limitations under the License.
 
 using namespace ApiGear::JSONRPC;
 OrgObjectapiTestbedInterface2SimulationService::OrgObjectapiTestbedInterface2SimulationService()
-    : AbstractOrgObjectapiTestbedInterface2Publisher()
+    : IOrgObjectapiTestbedInterface2Interface()
     , Prop200(0)
     , Prop201(0)
     , Prop202(0)
@@ -41,42 +41,42 @@ OrgObjectapiTestbedInterface2SimulationService::OrgObjectapiTestbedInterface2Sim
             if(Prop200 != fields["prop200"].get<int32>())
             {
                 Prop200 = fields["prop200"].get<int32>();
-                PublishProp200Changed(Prop200);
+                Prop200Changed.Broadcast(Prop200);
             }
         }
         if(fields.contains("prop201")) {
             if(Prop201 != fields["prop201"].get<int32>())
             {
                 Prop201 = fields["prop201"].get<int32>();
-                PublishProp201Changed(Prop201);
+                Prop201Changed.Broadcast(Prop201);
             }
         }
         if(fields.contains("prop202")) {
             if(Prop202 != fields["prop202"].get<int32>())
             {
                 Prop202 = fields["prop202"].get<int32>();
-                PublishProp202Changed(Prop202);
+                Prop202Changed.Broadcast(Prop202);
             }
         }
         if(fields.contains("prop203")) {
             if(Prop203 != fields["prop203"].get<float>())
             {
                 Prop203 = fields["prop203"].get<float>();
-                PublishProp203Changed(Prop203);
+                Prop203Changed.Broadcast(Prop203);
             }
         }
         if(fields.contains("prop204")) {
             if(Prop204 != fields["prop204"].get<float>())
             {
                 Prop204 = fields["prop204"].get<float>();
-                PublishProp204Changed(Prop204);
+                Prop204Changed.Broadcast(Prop204);
             }
         }
         if(fields.contains("prop205")) {
             if(Prop205 != fields["prop205"].get<FString>())
             {
                 Prop205 = fields["prop205"].get<FString>();
-                PublishProp205Changed(Prop205);
+                Prop205Changed.Broadcast(Prop205);
             }
         }
     };
@@ -92,42 +92,42 @@ OrgObjectapiTestbedInterface2SimulationService::OrgObjectapiTestbedInterface2Sim
             if(Prop200 != fields["prop200"].get<int32>())
             {
                 Prop200 = fields["prop200"].get<int32>();
-                PublishProp200Changed(Prop200);
+                Prop200Changed.Broadcast(Prop200);
             }
         }
         if(fields.contains("prop201")) {
             if(Prop201 != fields["prop201"].get<int32>())
             {
                 Prop201 = fields["prop201"].get<int32>();
-                PublishProp201Changed(Prop201);
+                Prop201Changed.Broadcast(Prop201);
             }
         }
         if(fields.contains("prop202")) {
             if(Prop202 != fields["prop202"].get<int32>())
             {
                 Prop202 = fields["prop202"].get<int32>();
-                PublishProp202Changed(Prop202);
+                Prop202Changed.Broadcast(Prop202);
             }
         }
         if(fields.contains("prop203")) {
             if(Prop203 != fields["prop203"].get<float>())
             {
                 Prop203 = fields["prop203"].get<float>();
-                PublishProp203Changed(Prop203);
+                Prop203Changed.Broadcast(Prop203);
             }
         }
         if(fields.contains("prop204")) {
             if(Prop204 != fields["prop204"].get<float>())
             {
                 Prop204 = fields["prop204"].get<float>();
-                PublishProp204Changed(Prop204);
+                Prop204Changed.Broadcast(Prop204);
             }
         }
         if(fields.contains("prop205")) {
             if(Prop205 != fields["prop205"].get<FString>())
             {
                 Prop205 = fields["prop205"].get<FString>();
-                PublishProp205Changed(Prop205);
+                Prop205Changed.Broadcast(Prop205);
             }
         }
     };
@@ -153,6 +153,12 @@ void OrgObjectapiTestbedInterface2SimulationService::SetProp200(int32 Value)
     params["prop200"] = Value;
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface2", "_set", params);
 }
+
+FProp200ChangedDelegate& OrgObjectapiTestbedInterface2SimulationService::GetProp200ChangedDelegate()
+{
+    return Prop200Changed;
+}
+
 int32 OrgObjectapiTestbedInterface2SimulationService::GetProp201() const
 {
     return Prop201;
@@ -164,6 +170,12 @@ void OrgObjectapiTestbedInterface2SimulationService::SetProp201(int32 Value)
     params["prop201"] = Value;
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface2", "_set", params);
 }
+
+FProp201ChangedDelegate& OrgObjectapiTestbedInterface2SimulationService::GetProp201ChangedDelegate()
+{
+    return Prop201Changed;
+}
+
 int32 OrgObjectapiTestbedInterface2SimulationService::GetProp202() const
 {
     return Prop202;
@@ -175,6 +187,12 @@ void OrgObjectapiTestbedInterface2SimulationService::SetProp202(int32 Value)
     params["prop202"] = Value;
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface2", "_set", params);
 }
+
+FProp202ChangedDelegate& OrgObjectapiTestbedInterface2SimulationService::GetProp202ChangedDelegate()
+{
+    return Prop202Changed;
+}
+
 float OrgObjectapiTestbedInterface2SimulationService::GetProp203() const
 {
     return Prop203;
@@ -186,6 +204,12 @@ void OrgObjectapiTestbedInterface2SimulationService::SetProp203(float Value)
     params["prop203"] = Value;
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface2", "_set", params);
 }
+
+FProp203ChangedDelegate& OrgObjectapiTestbedInterface2SimulationService::GetProp203ChangedDelegate()
+{
+    return Prop203Changed;
+}
+
 float OrgObjectapiTestbedInterface2SimulationService::GetProp204() const
 {
     return Prop204;
@@ -197,6 +221,12 @@ void OrgObjectapiTestbedInterface2SimulationService::SetProp204(float Value)
     params["prop204"] = Value;
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface2", "_set", params);
 }
+
+FProp204ChangedDelegate& OrgObjectapiTestbedInterface2SimulationService::GetProp204ChangedDelegate()
+{
+    return Prop204Changed;
+}
+
 FString OrgObjectapiTestbedInterface2SimulationService::GetProp205() const
 {
     return Prop205;
@@ -208,3 +238,9 @@ void OrgObjectapiTestbedInterface2SimulationService::SetProp205(FString Value)
     params["prop205"] = Value;
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface2", "_set", params);
 }
+
+FProp205ChangedDelegate& OrgObjectapiTestbedInterface2SimulationService::GetProp205ChangedDelegate()
+{
+    return Prop205Changed;
+}
+

@@ -38,9 +38,9 @@ using namespace ApiGear::WAMP;
 */
 {% endif %}
 {{class}}::{{class}}()
-    : Abstract{{module.name | capital}}{{interface.name|capital}}Publisher()
+: I{{module.name | capital}}{{interface.name|capital}}Interface()
 {% for property in interface.properties %}
-    , {{property|unrealVarName}}({{property|unrealDefault}})
+, {{property|unrealVarName}}({{property|unrealDefault}})
 {% endfor %}
 {
     EventFunc {{interface.name | capital}}StateChangedFunc = [this](EventArg arg)
@@ -51,7 +51,7 @@ using namespace ApiGear::WAMP;
             if({{property|unrealVarName}} != fields["{{property.name}}"].get<{{property|unrealTypeName}}>())
             {
                 {{property|unrealVarName}} = fields["{{property.name}}"].get<{{property|unrealTypeName}}>();
-                Publish{{property|unrealVarName}}Changed({{property|unrealVarName}});
+                {{property|unrealVarName}}Changed.Broadcast({{property|unrealVarName}});
             }
         }
 {% endfor %}
@@ -69,7 +69,7 @@ using namespace ApiGear::WAMP;
             if({{property|unrealVarName}} != fields["{{property.name}}"].get<{{property|unrealTypeName}}>())
             {
                 {{property|unrealVarName}} = fields["{{property.name}}"].get<{{property|unrealTypeName}}>();
-                Publish{{property|unrealVarName}}Changed({{property|unrealVarName}});
+                {{property|unrealVarName}}Changed.Broadcast({{property|unrealVarName}});
             }
         }
 {% endfor %}
@@ -82,14 +82,14 @@ using namespace ApiGear::WAMP;
     {% if signal.params.size > 0 %}
         if(arg.args.size() == {{signal.params.size}})
         {
-            Publish{{signal|unrealVarName}}(
+            {{signal|unrealVarName}}Signal.Broadcast(
     {%- for param in signal.params -%}
             arg.args[{{forloop.index0}}].get<{{param|unrealReturn}}>(){% unless forloop.last %},{% endunless -%}
     {%- endfor -%}
         );
         }
     {% else %}
-        Publish{{signal|unrealVarName}}();
+        {{signal|unrealVarName}}Signal.Broadcast();
     {% endif %}
     };
     UnrealWamp::instance()->doSubscribe("{{module.name}}.{{interface.name}}.{{signal.name}}", {{signal.name}}Func);
@@ -105,6 +105,13 @@ using namespace ApiGear::WAMP;
 {% endfor %}
 }
 {{nl}}
+{% for signal in interface.signals %}
+F{{signal|unrealVarName}}Delegate& {{class}}::Get{{signal|unrealVarName}}SignalDelegate()
+{
+    return {{signal|unrealVarName}}Signal;
+}
+{{nl}}
+{% endfor %}
 
 {% for property in interface.properties %}
 {{property|unrealTypeName}} {{class}}::Get{{property.name | capital}}() const
@@ -118,6 +125,12 @@ void {{class}}::Set{{property.name | capital}}({{property|unrealTypeName: true}}
     fields_["{{property.name}}"] = Value;
     UnrealWamp::instance()->doCall("{{module.name}}.{{interface.name}}._set", Arguments(), fields_);
 }
+
+F{{property|unrealVarName}}ChangedDelegate& {{class}}::Get{{property|unrealVarName}}ChangedDelegate()
+{
+    return {{property|unrealVarName}}Changed;
+}
+{{nl}}
 {% endfor %}
 {{nl}}
 {% for operation in interface.operations %}

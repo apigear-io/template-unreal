@@ -17,14 +17,57 @@ limitations under the License.
 #pragma once
 
 #include "apig/OrgObjectapiTestbed_apig.h"
-#include "AbstractOrgObjectapiTestbedInterface1Publisher.h"
 
-class OrgObjectapiTestbedInterface1SimulationService : public AbstractOrgObjectapiTestbedInterface1Publisher
+class OrgObjectapiTestbedInterface1SimulationService : public IOrgObjectapiTestbedInterface1Interface
 {
 public:
 
     explicit OrgObjectapiTestbedInterface1SimulationService();
     virtual ~OrgObjectapiTestbedInterface1SimulationService();
+
+    // signals
+    FSig1Delegate Sig1Signal;
+    FSig1Delegate& GetSig1SignalDelegate() override;
+    
+    FSig2Delegate Sig2Signal;
+    FSig2Delegate& GetSig2SignalDelegate() override;
+    
+    FSig3Delegate Sig3Signal;
+    FSig3Delegate& GetSig3SignalDelegate() override;
+    
+    FbProp1ChangedDelegate bProp1Changed;
+    FbProp1ChangedDelegate& GetbProp1ChangedDelegate() override;
+
+    FProp2ChangedDelegate Prop2Changed;
+    FProp2ChangedDelegate& GetProp2ChangedDelegate() override;
+
+    FProp3ChangedDelegate Prop3Changed;
+    FProp3ChangedDelegate& GetProp3ChangedDelegate() override;
+
+    FProp4ChangedDelegate Prop4Changed;
+    FProp4ChangedDelegate& GetProp4ChangedDelegate() override;
+
+    FProp5ChangedDelegate Prop5Changed;
+    FProp5ChangedDelegate& GetProp5ChangedDelegate() override;
+
+    FProp6ChangedDelegate Prop6Changed;
+    FProp6ChangedDelegate& GetProp6ChangedDelegate() override;
+
+    FProp7ChangedDelegate Prop7Changed;
+    FProp7ChangedDelegate& GetProp7ChangedDelegate() override;
+
+    FProp10ChangedDelegate Prop10Changed;
+    FProp10ChangedDelegate& GetProp10ChangedDelegate() override;
+
+    FProp11ChangedDelegate Prop11Changed;
+    FProp11ChangedDelegate& GetProp11ChangedDelegate() override;
+
+    FProp12ChangedDelegate Prop12Changed;
+    FProp12ChangedDelegate& GetProp12ChangedDelegate() override;
+
+    FProp14ChangedDelegate Prop14Changed;
+    FProp14ChangedDelegate& GetProp14ChangedDelegate() override;
+
 
     // properties
     bool GetProp1() const override;

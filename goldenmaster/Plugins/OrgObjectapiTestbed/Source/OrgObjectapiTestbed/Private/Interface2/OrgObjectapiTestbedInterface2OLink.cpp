@@ -30,7 +30,7 @@ limitations under the License.
 
 using namespace ApiGear::ObjectLink;
 OrgObjectapiTestbedInterface2OLinkService::OrgObjectapiTestbedInterface2OLinkService()
-    : AbstractOrgObjectapiTestbedInterface2Publisher()
+    : IOrgObjectapiTestbedInterface2Interface()
     , m_node(nullptr)
     , m_isReady(false)
     , Prop200(0)
@@ -62,6 +62,11 @@ void OrgObjectapiTestbedInterface2OLinkService::SetProp200(int32 Value)
     }
     m_node->setRemoteProperty("org.objectapi.testbed.Interface2/prop200", Value);
 }
+
+FProp200ChangedDelegate& OrgObjectapiTestbedInterface2OLinkService::GetProp200ChangedDelegate()
+{
+    return Prop200Changed;
+}
 int32 OrgObjectapiTestbedInterface2OLinkService::GetProp201() const
 {
     return Prop201;
@@ -73,6 +78,11 @@ void OrgObjectapiTestbedInterface2OLinkService::SetProp201(int32 Value)
         return;
     }
     m_node->setRemoteProperty("org.objectapi.testbed.Interface2/prop201", Value);
+}
+
+FProp201ChangedDelegate& OrgObjectapiTestbedInterface2OLinkService::GetProp201ChangedDelegate()
+{
+    return Prop201Changed;
 }
 int32 OrgObjectapiTestbedInterface2OLinkService::GetProp202() const
 {
@@ -86,6 +96,11 @@ void OrgObjectapiTestbedInterface2OLinkService::SetProp202(int32 Value)
     }
     m_node->setRemoteProperty("org.objectapi.testbed.Interface2/prop202", Value);
 }
+
+FProp202ChangedDelegate& OrgObjectapiTestbedInterface2OLinkService::GetProp202ChangedDelegate()
+{
+    return Prop202Changed;
+}
 float OrgObjectapiTestbedInterface2OLinkService::GetProp203() const
 {
     return Prop203;
@@ -98,6 +113,11 @@ void OrgObjectapiTestbedInterface2OLinkService::SetProp203(float Value)
     }
     m_node->setRemoteProperty("org.objectapi.testbed.Interface2/prop203", Value);
 }
+
+FProp203ChangedDelegate& OrgObjectapiTestbedInterface2OLinkService::GetProp203ChangedDelegate()
+{
+    return Prop203Changed;
+}
 float OrgObjectapiTestbedInterface2OLinkService::GetProp204() const
 {
     return Prop204;
@@ -109,6 +129,11 @@ void OrgObjectapiTestbedInterface2OLinkService::SetProp204(float Value)
         return;
     }
     m_node->setRemoteProperty("org.objectapi.testbed.Interface2/prop204", Value);
+}
+
+FProp204ChangedDelegate& OrgObjectapiTestbedInterface2OLinkService::GetProp204ChangedDelegate()
+{
+    return Prop204Changed;
 }
 FString OrgObjectapiTestbedInterface2OLinkService::GetProp205() const
 {
@@ -123,6 +148,11 @@ void OrgObjectapiTestbedInterface2OLinkService::SetProp205(FString Value)
     m_node->setRemoteProperty("org.objectapi.testbed.Interface2/prop205", Value);
 }
 
+FProp205ChangedDelegate& OrgObjectapiTestbedInterface2OLinkService::GetProp205ChangedDelegate()
+{
+    return Prop205Changed;
+}
+
 
 void OrgObjectapiTestbedInterface2OLinkService::applyState(const nlohmann::json& fields) 
 {
@@ -130,42 +160,42 @@ void OrgObjectapiTestbedInterface2OLinkService::applyState(const nlohmann::json&
         if(Prop200 != fields["prop200"].get<int32>())
         {
             Prop200 = fields["prop200"].get<int32>();
-            PublishProp200Changed(Prop200);
+            Prop200Changed.Broadcast(Prop200);
         }
     }
     if(fields.contains("prop201")) {
         if(Prop201 != fields["prop201"].get<int32>())
         {
             Prop201 = fields["prop201"].get<int32>();
-            PublishProp201Changed(Prop201);
+            Prop201Changed.Broadcast(Prop201);
         }
     }
     if(fields.contains("prop202")) {
         if(Prop202 != fields["prop202"].get<int32>())
         {
             Prop202 = fields["prop202"].get<int32>();
-            PublishProp202Changed(Prop202);
+            Prop202Changed.Broadcast(Prop202);
         }
     }
     if(fields.contains("prop203")) {
         if(Prop203 != fields["prop203"].get<float>())
         {
             Prop203 = fields["prop203"].get<float>();
-            PublishProp203Changed(Prop203);
+            Prop203Changed.Broadcast(Prop203);
         }
     }
     if(fields.contains("prop204")) {
         if(Prop204 != fields["prop204"].get<float>())
         {
             Prop204 = fields["prop204"].get<float>();
-            PublishProp204Changed(Prop204);
+            Prop204Changed.Broadcast(Prop204);
         }
     }
     if(fields.contains("prop205")) {
         if(Prop205 != fields["prop205"].get<FString>())
         {
             Prop205 = fields["prop205"].get<FString>();
-            PublishProp205Changed(Prop205);
+            Prop205Changed.Broadcast(Prop205);
         }
     }
 }

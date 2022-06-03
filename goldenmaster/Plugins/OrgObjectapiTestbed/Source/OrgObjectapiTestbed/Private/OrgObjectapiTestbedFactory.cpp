@@ -29,7 +29,7 @@ limitations under the License.
 //General Log
 DEFINE_LOG_CATEGORY(LogFOrgObjectapiTestbedModuleFactory);
 
-TSharedPtr<IOrgObjectapiTestbedInterface1PublisherInterface, ESPMode::ThreadSafe> FOrgObjectapiTestbedModuleFactory::createIOrgObjectapiTestbedInterface1Interface()
+TSharedPtr<IOrgObjectapiTestbedInterface1Interface, ESPMode::ThreadSafe> FOrgObjectapiTestbedModuleFactory::createIOrgObjectapiTestbedInterface1Interface()
 {
     UOrgObjectapiTestbedSettings* settings = GetMutableDefault<UOrgObjectapiTestbedSettings>();
 
@@ -51,7 +51,7 @@ TSharedPtr<IOrgObjectapiTestbedInterface1PublisherInterface, ESPMode::ThreadSafe
     }
 }
 
-TSharedPtr<IOrgObjectapiTestbedInterface2PublisherInterface, ESPMode::ThreadSafe> FOrgObjectapiTestbedModuleFactory::createIOrgObjectapiTestbedInterface2Interface()
+TSharedPtr<IOrgObjectapiTestbedInterface2Interface, ESPMode::ThreadSafe> FOrgObjectapiTestbedModuleFactory::createIOrgObjectapiTestbedInterface2Interface()
 {
     UOrgObjectapiTestbedSettings* settings = GetMutableDefault<UOrgObjectapiTestbedSettings>();
 

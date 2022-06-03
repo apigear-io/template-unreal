@@ -22,14 +22,25 @@ limitations under the License.
 #pragma once
 
 #include "apig/{{module.name|capital}}_apig.h"
-#include "Abstract{{module.name|capital}}{{interface.name|capital}}Publisher.h"
 
-class {{class}} : public Abstract{{module.name | capital}}{{interface.name | capital}}Publisher
+class {{class}} : public I{{module.name | capital}}{{interface.name | capital}}Interface
 {
 public:
 
     explicit {{class}}();
     virtual ~{{class}}();
+
+    // signals
+{% for signal in interface.signals %}
+    F{{signal|unrealVarName}}Delegate {{signal|unrealVarName}}Signal;
+    F{{signal|unrealVarName}}Delegate& Get{{signal|unrealVarName}}SignalDelegate() override;
+    {{nl}}
+{% endfor %}
+{% for property in interface.properties %}
+    F{{property|unrealVarName}}ChangedDelegate {{property|unrealVarName}}Changed;
+    F{{property|unrealVarName}}ChangedDelegate& Get{{property|unrealVarName}}ChangedDelegate() override;
+{{nl}}
+{% endfor %}
 
     // properties
 {% for property in interface.properties %}

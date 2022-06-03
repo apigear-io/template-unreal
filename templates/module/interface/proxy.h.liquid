@@ -28,7 +28,7 @@ limitations under the License.
 #include "{{module.name|capital}}{{interface.name|capital}}Proxy.generated.h"
 
 UCLASS(BlueprintType, Blueprintable, DisplayName="{{class_name_capital}}")
-class {{ module.name | constant }}_API {{class}} : public UObject, public I{{module.name | capital}}{{interface.name | capital}}Interface, public I{{module.name | capital}}{{interface.name | capital}}SubscriberInterface
+class {{ module.name | constant }}_API {{class}} : public UObject, public I{{module.name | capital}}{{interface.name | capital}}Interface
 {
 	GENERATED_BODY()
 
@@ -36,24 +36,12 @@ public:
     explicit {{class}}();
     virtual ~{{class}}();
 
-    // signal delegates
-{% for signal in interface.signals %}
-	DECLARE_DYNAMIC_MULTICAST_DELEGATE{{signal.params.length|unrealDelegateNameAppendix}}(F{{signal|unrealVarName}}Delegate
-{%- for param in signal.params -%}
-        , {{param|unrealTypeName: true}}, {{param|unrealVarName}}
-{%- endfor -%}
-    );
-    {{nl}}
-{% endfor %}
-    //property delegates
-{% for property in interface.properties %}
-    DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(F{{property|unrealVarName}}ChangedDelegate, {{property|unrealTypeName: true}}, {{property|unrealVarName}});
-{{nl}}
-{% endfor %}
     // signals
 {% for signal in interface.signals %}
 	UPROPERTY(BlueprintAssignable, Category = "{{category}}")
     F{{signal|unrealVarName}}Delegate {{signal|unrealVarName}}Signal;
+    F{{signal|unrealVarName}}Delegate& Get{{signal|unrealVarName}}SignalDelegate() override;
+	UFUNCTION(Category = "{{category}}")
     void On{{signal|unrealVarName}}(
         {%- for param in signal.params -%}
             {{param|unrealReturn: true}} {{param|unrealVarName}}{% unless forloop.last %},{% endunless -%}
@@ -64,6 +52,8 @@ public:
 {% for property in interface.properties %}
 	UPROPERTY(BlueprintAssignable, Category = "{{category}}")
     F{{property|unrealVarName}}ChangedDelegate {{property|unrealVarName}}Changed;
+    F{{property|unrealVarName}}ChangedDelegate& Get{{property|unrealVarName}}ChangedDelegate() override;
+	UFUNCTION(BlueprintCallable, Category = "{{category}}")
     void On{{property|unrealVarName}}Changed({{property|unrealTypeName: true}} Value);
 {{nl}}
 {% endfor %}
@@ -94,7 +84,7 @@ public:
 {% endfor %}
 private:
 	/** The connection to the service backend. */
-	TSharedPtr<I{{module.name | capital}}{{interface.name|capital}}PublisherInterface, ESPMode::ThreadSafe> service;
+	TSharedPtr<I{{module.name | capital}}{{interface.name|capital}}Interface, ESPMode::ThreadSafe> service;
 
     // properties - local copy
 {% for property in interface.properties %}

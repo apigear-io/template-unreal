@@ -1,4 +1,6 @@
 {% comment %} Copyright Epic Games, Inc. All Rights Reserved {% endcomment -%}
+{% capture nl %}
+{% endcapture -%}
 /**
 Copyright 2021 ApiGear UG
 Copyright 2021 Epic Games, Inc.
@@ -24,16 +26,34 @@ limitations under the License.
 
 #include "{{module.name|capital}}_data.h"
 #include "{{module.name|capital}}_apig.generated.h"
-
+{{nl}}
 {% comment %} 
 *****************************************************************
 *** INTERFACES                                                ***
 *****************************************************************
 {% endcomment %}
-{%- for interface in module.interfaces %}
+{% for interface in module.interfaces %}
+{% capture category %}ApiGear|{{module.name | capital}}|{{interface.name | capital}}{% endcapture -%}
+{{nl}}
+/**
+ * Declaration for {{interface.name}}
+ */
 {% assign class_capital = module.name | capital | append: interface.name | capital -%}
 {% assign class = "U" | append: class_capital | append: "Interface" %}
-
+// signal delegates
+{% for signal in interface.signals %}
+DECLARE_DYNAMIC_MULTICAST_DELEGATE{{signal.params.length|unrealDelegateNameAppendix}}(F{{signal|unrealVarName}}Delegate
+{%- for param in signal.params -%}
+    , {{param|unrealTypeName: true}}, {{param|unrealVarName}}
+{%- endfor -%}
+);
+{{nl}}
+{% endfor %}
+// property delegates
+{% for property in interface.properties %}
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(F{{property|unrealVarName}}ChangedDelegate, {{property|unrealTypeName: true}}, {{property|unrealVarName}});
+{{nl}}
+{% endfor %}
 /**
  * Interface {{class}} only for Unreal Engine's reflection system
  */
@@ -53,6 +73,16 @@ class {{ module.name | constant }}_API {{class}}
     GENERATED_BODY()
 
 public:
+// signals
+{% for signal in interface.signals %}
+    virtual F{{signal|unrealVarName}}Delegate& Get{{signal|unrealVarName}}SignalDelegate() = 0;
+{{nl}}
+{% endfor %}
+{% for property in interface.properties %}
+    virtual F{{property|unrealVarName}}ChangedDelegate& Get{{property|unrealVarName}}ChangedDelegate() = 0;
+{{nl}}
+{% endfor %}
+
 // methods
 {% for operation in interface.operations %}
     virtual {{operation|unrealReturn}} {{operation.name|capital}}({{operation|unrealParams}}) = 0;
@@ -61,40 +91,6 @@ public:
 {% for property in interface.properties %}
     virtual {{property|unrealTypeName}} Get{{property.name | capital}}() const = 0;
     virtual void Set{{property.name | capital}}({{property|unrealTypeName: true}} Value) = 0;
-{% endfor %}
-};
-
-{% assign sub_class = "I" | append: class_capital | append: "SubscriberInterface" %}
-/**
- * Interface {{sub_class}}
- */
-class {{ module.name | constant }}_API {{sub_class}}
-{
-public:
-{% for signal in interface.signals %}
-    virtual void On{{signal|unrealVarName}}(
-        {%- for param in signal.params -%}
-            {{param|unrealReturn: true}} {{param|unrealVarName}}{% unless forloop.last %},{% endunless -%}
-        {%- endfor -%}
-        ) = 0;
-{% endfor %}
-{% for property in interface.properties %}
-    virtual void On{{property|unrealVarName}}Changed({{property|unrealTypeName: true}} Value) = 0;
-{% endfor %}
-};
-
-{% assign pub_class = "I" | append: class_capital | append: "PublisherInterface" %}
-/**
- * Interface {{pub_class}}
- */
-class {{ module.name | constant }}_API {{pub_class}}: public {{class}}
-{
-public:
-    virtual void SubscribeTo{{class_capital}}StateChanged({{sub_class}}& Subscriber) = 0;
-    virtual void UnsubscribeFrom{{class_capital}}StateChanged({{sub_class}}& Subscriber) = 0;
-{% for signal in interface.signals %}
-    virtual void SubscribeTo{{signal|unrealVarName}}({{sub_class}}& Subscriber) = 0;
-    virtual void UnsubscribeFrom{{signal|unrealVarName}}({{sub_class}}& Subscriber) = 0;
 {% endfor %}
 };
 

@@ -23,7 +23,7 @@ limitations under the License.
 #include "OrgObjectapiTestbedInterface2Proxy.generated.h"
 
 UCLASS(BlueprintType, Blueprintable, DisplayName="OrgObjectapiTestbedInterface2")
-class ORG_OBJECTAPI_TESTBED_API UOrgObjectapiTestbedInterface2Proxy : public UObject, public IOrgObjectapiTestbedInterface2Interface, public IOrgObjectapiTestbedInterface2SubscriberInterface
+class ORG_OBJECTAPI_TESTBED_API UOrgObjectapiTestbedInterface2Proxy : public UObject, public IOrgObjectapiTestbedInterface2Interface
 {
 	GENERATED_BODY()
 
@@ -31,43 +31,41 @@ public:
     explicit UOrgObjectapiTestbedInterface2Proxy();
     virtual ~UOrgObjectapiTestbedInterface2Proxy();
 
-    // signal delegates
-    //property delegates
-    DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProp200ChangedDelegate, int32, Prop200);
-
-    DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProp201ChangedDelegate, int32, Prop201);
-
-    DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProp202ChangedDelegate, int32, Prop202);
-
-    DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProp203ChangedDelegate, float, Prop203);
-
-    DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProp204ChangedDelegate, float, Prop204);
-
-    DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProp205ChangedDelegate, FString, Prop205);
-
     // signals
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|OrgObjectapiTestbed|Interface2")
     FProp200ChangedDelegate Prop200Changed;
+    FProp200ChangedDelegate& GetProp200ChangedDelegate() override;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface2")
     void OnProp200Changed(int32 Value);
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|OrgObjectapiTestbed|Interface2")
     FProp201ChangedDelegate Prop201Changed;
+    FProp201ChangedDelegate& GetProp201ChangedDelegate() override;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface2")
     void OnProp201Changed(int32 Value);
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|OrgObjectapiTestbed|Interface2")
     FProp202ChangedDelegate Prop202Changed;
+    FProp202ChangedDelegate& GetProp202ChangedDelegate() override;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface2")
     void OnProp202Changed(int32 Value);
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|OrgObjectapiTestbed|Interface2")
     FProp203ChangedDelegate Prop203Changed;
+    FProp203ChangedDelegate& GetProp203ChangedDelegate() override;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface2")
     void OnProp203Changed(float Value);
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|OrgObjectapiTestbed|Interface2")
     FProp204ChangedDelegate Prop204Changed;
+    FProp204ChangedDelegate& GetProp204ChangedDelegate() override;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface2")
     void OnProp204Changed(float Value);
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|OrgObjectapiTestbed|Interface2")
     FProp205ChangedDelegate Prop205Changed;
+    FProp205ChangedDelegate& GetProp205ChangedDelegate() override;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface2")
     void OnProp205Changed(FString Value);
 
     // properties
@@ -110,7 +108,7 @@ public:
     // operations
 private:
 	/** The connection to the service backend. */
-	TSharedPtr<IOrgObjectapiTestbedInterface2PublisherInterface, ESPMode::ThreadSafe> service;
+	TSharedPtr<IOrgObjectapiTestbedInterface2Interface, ESPMode::ThreadSafe> service;
 
     // properties - local copy
 	UPROPERTY(EditAnywhere, BlueprintGetter=GetProp200, BlueprintSetter=SetProp200, Category = "ApiGear|OrgObjectapiTestbed|Interface2")

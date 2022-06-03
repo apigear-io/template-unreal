@@ -35,7 +35,7 @@ DEFINE_LOG_CATEGORY(Log{{module_name}});
 {% assign class_capital = module.name | capital | append: interface.name | capital -%}
 {% assign class = "I" | append: class_capital | append: "Interface" %}
 
-TSharedPtr<I{{module.name | capital}}{{interface.name | capital}}PublisherInterface, ESPMode::ThreadSafe> {{module_name}}::create{{class}}()
+TSharedPtr<I{{module.name | capital}}{{interface.name | capital}}Interface, ESPMode::ThreadSafe> {{module_name}}::create{{class}}()
 {
     U{{module_name_capital}}Settings* settings = GetMutableDefault<U{{module_name_capital}}Settings>();
 

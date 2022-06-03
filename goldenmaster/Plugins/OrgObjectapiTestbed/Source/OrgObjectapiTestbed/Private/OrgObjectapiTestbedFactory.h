@@ -15,8 +15,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #pragma once
-class IOrgObjectapiTestbedInterface1PublisherInterface;
-class IOrgObjectapiTestbedInterface2PublisherInterface;
+class IOrgObjectapiTestbedInterface1Interface;
+class IOrgObjectapiTestbedInterface2Interface;
 
 //General Log
 DECLARE_LOG_CATEGORY_EXTERN(LogFOrgObjectapiTestbedModuleFactory, Log, All);
@@ -24,6 +24,6 @@ DECLARE_LOG_CATEGORY_EXTERN(LogFOrgObjectapiTestbedModuleFactory, Log, All);
 class FOrgObjectapiTestbedModuleFactory
 {
 public:
-	static TSharedPtr<IOrgObjectapiTestbedInterface1PublisherInterface, ESPMode::ThreadSafe> createIOrgObjectapiTestbedInterface1Interface();
-	static TSharedPtr<IOrgObjectapiTestbedInterface2PublisherInterface, ESPMode::ThreadSafe> createIOrgObjectapiTestbedInterface2Interface();
+	static TSharedPtr<IOrgObjectapiTestbedInterface1Interface, ESPMode::ThreadSafe> createIOrgObjectapiTestbedInterface1Interface();
+	static TSharedPtr<IOrgObjectapiTestbedInterface2Interface, ESPMode::ThreadSafe> createIOrgObjectapiTestbedInterface2Interface();
 };

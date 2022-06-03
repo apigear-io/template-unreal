@@ -28,18 +28,18 @@ limitations under the License.
 
 using namespace ApiGear::WAMP;
 OrgObjectapiTestbedInterface1WAMPService::OrgObjectapiTestbedInterface1WAMPService()
-    : AbstractOrgObjectapiTestbedInterface1Publisher()
-    , bProp1(false)
-    , Prop2(0)
-    , Prop3(0.0f)
-    , Prop4(FString())
-    , Prop5(TArray<int32>())
-    , Prop6(FStruct1())
-    , Prop7(0)
-    , Prop10(TArray<int32>())
-    , Prop11(TArray<FStruct1>())
-    , Prop12(TArray<EEnum1>())
-    , Prop14(TArray<FStruct1>())
+: IOrgObjectapiTestbedInterface1Interface()
+, bProp1(false)
+, Prop2(0)
+, Prop3(0.0f)
+, Prop4(FString())
+, Prop5(TArray<int32>())
+, Prop6(FStruct1())
+, Prop7(0)
+, Prop10(TArray<int32>())
+, Prop11(TArray<FStruct1>())
+, Prop12(TArray<EEnum1>())
+, Prop14(TArray<FStruct1>())
 {
     EventFunc Interface1StateChangedFunc = [this](EventArg arg)
     {
@@ -48,77 +48,77 @@ OrgObjectapiTestbedInterface1WAMPService::OrgObjectapiTestbedInterface1WAMPServi
             if(bProp1 != fields["prop1"].get<bool>())
             {
                 bProp1 = fields["prop1"].get<bool>();
-                PublishbProp1Changed(bProp1);
+                bProp1Changed.Broadcast(bProp1);
             }
         }
         if(fields.contains("prop2")) {
             if(Prop2 != fields["prop2"].get<int32>())
             {
                 Prop2 = fields["prop2"].get<int32>();
-                PublishProp2Changed(Prop2);
+                Prop2Changed.Broadcast(Prop2);
             }
         }
         if(fields.contains("prop3")) {
             if(Prop3 != fields["prop3"].get<float>())
             {
                 Prop3 = fields["prop3"].get<float>();
-                PublishProp3Changed(Prop3);
+                Prop3Changed.Broadcast(Prop3);
             }
         }
         if(fields.contains("prop4")) {
             if(Prop4 != fields["prop4"].get<FString>())
             {
                 Prop4 = fields["prop4"].get<FString>();
-                PublishProp4Changed(Prop4);
+                Prop4Changed.Broadcast(Prop4);
             }
         }
         if(fields.contains("prop5")) {
             if(Prop5 != fields["prop5"].get<TArray<int32>>())
             {
                 Prop5 = fields["prop5"].get<TArray<int32>>();
-                PublishProp5Changed(Prop5);
+                Prop5Changed.Broadcast(Prop5);
             }
         }
         if(fields.contains("prop6")) {
             if(Prop6 != fields["prop6"].get<FStruct1>())
             {
                 Prop6 = fields["prop6"].get<FStruct1>();
-                PublishProp6Changed(Prop6);
+                Prop6Changed.Broadcast(Prop6);
             }
         }
         if(fields.contains("prop7")) {
             if(Prop7 != fields["prop7"].get<int32>())
             {
                 Prop7 = fields["prop7"].get<int32>();
-                PublishProp7Changed(Prop7);
+                Prop7Changed.Broadcast(Prop7);
             }
         }
         if(fields.contains("prop10")) {
             if(Prop10 != fields["prop10"].get<TArray<int32>>())
             {
                 Prop10 = fields["prop10"].get<TArray<int32>>();
-                PublishProp10Changed(Prop10);
+                Prop10Changed.Broadcast(Prop10);
             }
         }
         if(fields.contains("prop11")) {
             if(Prop11 != fields["prop11"].get<TArray<FStruct1>>())
             {
                 Prop11 = fields["prop11"].get<TArray<FStruct1>>();
-                PublishProp11Changed(Prop11);
+                Prop11Changed.Broadcast(Prop11);
             }
         }
         if(fields.contains("prop12")) {
             if(Prop12 != fields["prop12"].get<TArray<EEnum1>>())
             {
                 Prop12 = fields["prop12"].get<TArray<EEnum1>>();
-                PublishProp12Changed(Prop12);
+                Prop12Changed.Broadcast(Prop12);
             }
         }
         if(fields.contains("prop14")) {
             if(Prop14 != fields["prop14"].get<TArray<FStruct1>>())
             {
                 Prop14 = fields["prop14"].get<TArray<FStruct1>>();
-                PublishProp14Changed(Prop14);
+                Prop14Changed.Broadcast(Prop14);
             }
         }
     };
@@ -134,77 +134,77 @@ OrgObjectapiTestbedInterface1WAMPService::OrgObjectapiTestbedInterface1WAMPServi
             if(bProp1 != fields["prop1"].get<bool>())
             {
                 bProp1 = fields["prop1"].get<bool>();
-                PublishbProp1Changed(bProp1);
+                bProp1Changed.Broadcast(bProp1);
             }
         }
         if(fields.contains("prop2")) {
             if(Prop2 != fields["prop2"].get<int32>())
             {
                 Prop2 = fields["prop2"].get<int32>();
-                PublishProp2Changed(Prop2);
+                Prop2Changed.Broadcast(Prop2);
             }
         }
         if(fields.contains("prop3")) {
             if(Prop3 != fields["prop3"].get<float>())
             {
                 Prop3 = fields["prop3"].get<float>();
-                PublishProp3Changed(Prop3);
+                Prop3Changed.Broadcast(Prop3);
             }
         }
         if(fields.contains("prop4")) {
             if(Prop4 != fields["prop4"].get<FString>())
             {
                 Prop4 = fields["prop4"].get<FString>();
-                PublishProp4Changed(Prop4);
+                Prop4Changed.Broadcast(Prop4);
             }
         }
         if(fields.contains("prop5")) {
             if(Prop5 != fields["prop5"].get<TArray<int32>>())
             {
                 Prop5 = fields["prop5"].get<TArray<int32>>();
-                PublishProp5Changed(Prop5);
+                Prop5Changed.Broadcast(Prop5);
             }
         }
         if(fields.contains("prop6")) {
             if(Prop6 != fields["prop6"].get<FStruct1>())
             {
                 Prop6 = fields["prop6"].get<FStruct1>();
-                PublishProp6Changed(Prop6);
+                Prop6Changed.Broadcast(Prop6);
             }
         }
         if(fields.contains("prop7")) {
             if(Prop7 != fields["prop7"].get<int32>())
             {
                 Prop7 = fields["prop7"].get<int32>();
-                PublishProp7Changed(Prop7);
+                Prop7Changed.Broadcast(Prop7);
             }
         }
         if(fields.contains("prop10")) {
             if(Prop10 != fields["prop10"].get<TArray<int32>>())
             {
                 Prop10 = fields["prop10"].get<TArray<int32>>();
-                PublishProp10Changed(Prop10);
+                Prop10Changed.Broadcast(Prop10);
             }
         }
         if(fields.contains("prop11")) {
             if(Prop11 != fields["prop11"].get<TArray<FStruct1>>())
             {
                 Prop11 = fields["prop11"].get<TArray<FStruct1>>();
-                PublishProp11Changed(Prop11);
+                Prop11Changed.Broadcast(Prop11);
             }
         }
         if(fields.contains("prop12")) {
             if(Prop12 != fields["prop12"].get<TArray<EEnum1>>())
             {
                 Prop12 = fields["prop12"].get<TArray<EEnum1>>();
-                PublishProp12Changed(Prop12);
+                Prop12Changed.Broadcast(Prop12);
             }
         }
         if(fields.contains("prop14")) {
             if(Prop14 != fields["prop14"].get<TArray<FStruct1>>())
             {
                 Prop14 = fields["prop14"].get<TArray<FStruct1>>();
-                PublishProp14Changed(Prop14);
+                Prop14Changed.Broadcast(Prop14);
             }
         }
     };
@@ -212,7 +212,7 @@ OrgObjectapiTestbedInterface1WAMPService::OrgObjectapiTestbedInterface1WAMPServi
 
     EventFunc sig1Func = [this](EventArg arg)
     {
-        PublishSig1();
+        Sig1Signal.Broadcast();
     };
     UnrealWamp::instance()->doSubscribe("org.objectapi.testbed.Interface1.sig1", sig1Func);
     
@@ -220,14 +220,14 @@ OrgObjectapiTestbedInterface1WAMPService::OrgObjectapiTestbedInterface1WAMPServi
     {
         if(arg.args.size() == 1)
         {
-            PublishSig2(arg.args[0].get<int32>());
+            Sig2Signal.Broadcast(arg.args[0].get<int32>());
         }
     };
     UnrealWamp::instance()->doSubscribe("org.objectapi.testbed.Interface1.sig2", sig2Func);
     
     EventFunc sig3Func = [this](EventArg arg)
     {
-        PublishSig3();
+        Sig3Signal.Broadcast();
     };
     UnrealWamp::instance()->doSubscribe("org.objectapi.testbed.Interface1.sig3", sig3Func);
     
@@ -241,6 +241,21 @@ OrgObjectapiTestbedInterface1WAMPService::~OrgObjectapiTestbedInterface1WAMPServ
     UnrealWamp::instance()->doUnSubscribe("org.objectapi.testbed.Interface1.sig3");
 }
 
+FSig1Delegate& OrgObjectapiTestbedInterface1WAMPService::GetSig1SignalDelegate()
+{
+    return Sig1Signal;
+}
+
+FSig2Delegate& OrgObjectapiTestbedInterface1WAMPService::GetSig2SignalDelegate()
+{
+    return Sig2Signal;
+}
+
+FSig3Delegate& OrgObjectapiTestbedInterface1WAMPService::GetSig3SignalDelegate()
+{
+    return Sig3Signal;
+}
+
 bool OrgObjectapiTestbedInterface1WAMPService::GetProp1() const
 {
     return bProp1;
@@ -252,6 +267,12 @@ void OrgObjectapiTestbedInterface1WAMPService::SetProp1(bool Value)
     fields_["prop1"] = Value;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface1._set", Arguments(), fields_);
 }
+
+FbProp1ChangedDelegate& OrgObjectapiTestbedInterface1WAMPService::GetbProp1ChangedDelegate()
+{
+    return bProp1Changed;
+}
+
 int32 OrgObjectapiTestbedInterface1WAMPService::GetProp2() const
 {
     return Prop2;
@@ -263,6 +284,12 @@ void OrgObjectapiTestbedInterface1WAMPService::SetProp2(int32 Value)
     fields_["prop2"] = Value;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface1._set", Arguments(), fields_);
 }
+
+FProp2ChangedDelegate& OrgObjectapiTestbedInterface1WAMPService::GetProp2ChangedDelegate()
+{
+    return Prop2Changed;
+}
+
 float OrgObjectapiTestbedInterface1WAMPService::GetProp3() const
 {
     return Prop3;
@@ -274,6 +301,12 @@ void OrgObjectapiTestbedInterface1WAMPService::SetProp3(float Value)
     fields_["prop3"] = Value;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface1._set", Arguments(), fields_);
 }
+
+FProp3ChangedDelegate& OrgObjectapiTestbedInterface1WAMPService::GetProp3ChangedDelegate()
+{
+    return Prop3Changed;
+}
+
 FString OrgObjectapiTestbedInterface1WAMPService::GetProp4() const
 {
     return Prop4;
@@ -285,6 +318,12 @@ void OrgObjectapiTestbedInterface1WAMPService::SetProp4(FString Value)
     fields_["prop4"] = Value;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface1._set", Arguments(), fields_);
 }
+
+FProp4ChangedDelegate& OrgObjectapiTestbedInterface1WAMPService::GetProp4ChangedDelegate()
+{
+    return Prop4Changed;
+}
+
 TArray<int32> OrgObjectapiTestbedInterface1WAMPService::GetProp5() const
 {
     return Prop5;
@@ -296,6 +335,12 @@ void OrgObjectapiTestbedInterface1WAMPService::SetProp5(TArray<int32> Value)
     fields_["prop5"] = Value;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface1._set", Arguments(), fields_);
 }
+
+FProp5ChangedDelegate& OrgObjectapiTestbedInterface1WAMPService::GetProp5ChangedDelegate()
+{
+    return Prop5Changed;
+}
+
 FStruct1 OrgObjectapiTestbedInterface1WAMPService::GetProp6() const
 {
     return Prop6;
@@ -307,6 +352,12 @@ void OrgObjectapiTestbedInterface1WAMPService::SetProp6(const FStruct1& Value)
     fields_["prop6"] = Value;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface1._set", Arguments(), fields_);
 }
+
+FProp6ChangedDelegate& OrgObjectapiTestbedInterface1WAMPService::GetProp6ChangedDelegate()
+{
+    return Prop6Changed;
+}
+
 int32 OrgObjectapiTestbedInterface1WAMPService::GetProp7() const
 {
     return Prop7;
@@ -318,6 +369,12 @@ void OrgObjectapiTestbedInterface1WAMPService::SetProp7(int32 Value)
     fields_["prop7"] = Value;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface1._set", Arguments(), fields_);
 }
+
+FProp7ChangedDelegate& OrgObjectapiTestbedInterface1WAMPService::GetProp7ChangedDelegate()
+{
+    return Prop7Changed;
+}
+
 TArray<int32> OrgObjectapiTestbedInterface1WAMPService::GetProp10() const
 {
     return Prop10;
@@ -329,6 +386,12 @@ void OrgObjectapiTestbedInterface1WAMPService::SetProp10(TArray<int32> Value)
     fields_["prop10"] = Value;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface1._set", Arguments(), fields_);
 }
+
+FProp10ChangedDelegate& OrgObjectapiTestbedInterface1WAMPService::GetProp10ChangedDelegate()
+{
+    return Prop10Changed;
+}
+
 TArray<FStruct1> OrgObjectapiTestbedInterface1WAMPService::GetProp11() const
 {
     return Prop11;
@@ -340,6 +403,12 @@ void OrgObjectapiTestbedInterface1WAMPService::SetProp11(const TArray<FStruct1>&
     fields_["prop11"] = Value;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface1._set", Arguments(), fields_);
 }
+
+FProp11ChangedDelegate& OrgObjectapiTestbedInterface1WAMPService::GetProp11ChangedDelegate()
+{
+    return Prop11Changed;
+}
+
 TArray<EEnum1> OrgObjectapiTestbedInterface1WAMPService::GetProp12() const
 {
     return Prop12;
@@ -351,6 +420,12 @@ void OrgObjectapiTestbedInterface1WAMPService::SetProp12(const TArray<EEnum1>& V
     fields_["prop12"] = Value;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface1._set", Arguments(), fields_);
 }
+
+FProp12ChangedDelegate& OrgObjectapiTestbedInterface1WAMPService::GetProp12ChangedDelegate()
+{
+    return Prop12Changed;
+}
+
 TArray<FStruct1> OrgObjectapiTestbedInterface1WAMPService::GetProp14() const
 {
     return Prop14;
@@ -362,6 +437,12 @@ void OrgObjectapiTestbedInterface1WAMPService::SetProp14(const TArray<FStruct1>&
     fields_["prop14"] = Value;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface1._set", Arguments(), fields_);
 }
+
+FProp14ChangedDelegate& OrgObjectapiTestbedInterface1WAMPService::GetProp14ChangedDelegate()
+{
+    return Prop14Changed;
+}
+
 
 void OrgObjectapiTestbedInterface1WAMPService::Op1()
 {

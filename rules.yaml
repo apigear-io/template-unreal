@@ -157,12 +157,6 @@ features:
         - source: "module/interface/proxy.cpp.liquid"
           target: "Plugins/{{module.name|capital}}/Source/{{module.name|capital}}/Private/{{module.name|capital}}{{interface.name|capital}}Proxy.cpp"
           overwrite: true
-        - source: "module/interface/publisher.h.liquid"
-          target: "Plugins/{{module.name|capital}}/Source/{{module.name|capital}}/Private/{{interface.name|capital}}/Abstract{{module.name|capital}}{{interface.name|capital}}Publisher.h"
-          overwrite: true
-        - source: "module/interface/publisher.cpp.liquid"
-          target: "Plugins/{{module.name|capital}}/Source/{{module.name|capital}}/Private/{{interface.name|capital}}/Abstract{{module.name|capital}}{{interface.name|capital}}Publisher.cpp"
-          overwrite: true
         - source: "module/interface/local/service.h.liquid"
           target: "Plugins/{{module.name|capital}}/Source/{{module.name|capital}}/Private/{{interface.name|capital}}/{{module.name|capital}}{{interface.name|capital}}Local.h"
         - source: "module/interface/local/service.cpp.liquid"
