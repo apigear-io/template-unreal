@@ -58,7 +58,7 @@ bool toUE4Type(EEnum2& value, uint8 v);
  * Struct FStruct1
  */
 USTRUCT(BlueprintType)
-struct ORG_OBJECTAPI_TESTBED_API FStruct1
+struct ORGOBJECTAPITESTBED_API FStruct1
 {
 	GENERATED_BODY()
 

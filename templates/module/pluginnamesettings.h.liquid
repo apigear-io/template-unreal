@@ -17,7 +17,7 @@ limitations under the License.
 */
 {% assign module_name_capital = module.name|capital %}
 {% assign module_name = "F"| append: module_name_capital | append: "EditorModule" %}
-{% assign API_MACRO = module.name | constant | append: "_API" %}
+{% assign API_MACRO = module.name | upcase | remove: '.' | append: "_API" %}
 #pragma once
 
 #include "CoreMinimal.h"

@@ -69,7 +69,7 @@ class UOrgObjectapiTestbedInterface1Interface : public UInterface
 /**
  * Interface IOrgObjectapiTestbedInterface1Interface
  */
-class ORG_OBJECTAPI_TESTBED_API IOrgObjectapiTestbedInterface1Interface
+class ORGOBJECTAPITESTBED_API IOrgObjectapiTestbedInterface1Interface
 {
     GENERATED_BODY()
 
@@ -161,7 +161,7 @@ class UOrgObjectapiTestbedInterface2Interface : public UInterface
 /**
  * Interface IOrgObjectapiTestbedInterface2Interface
  */
-class ORG_OBJECTAPI_TESTBED_API IOrgObjectapiTestbedInterface2Interface
+class ORGOBJECTAPITESTBED_API IOrgObjectapiTestbedInterface2Interface
 {
     GENERATED_BODY()
 

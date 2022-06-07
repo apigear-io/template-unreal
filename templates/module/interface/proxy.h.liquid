@@ -2,6 +2,7 @@
 {% assign class_name_capital = module.name | capital | append: interface.name | capital -%}
 {% assign class = "U" | append: class_name_capital | append: "Proxy" %}
 {% capture category %}ApiGear|{{module.name | capital}}|{{interface.name | capital}}{% endcapture -%}
+{% assign API_MACRO = module.name | upcase | remove: '.' | append: "_API" -%}
 {% capture nl %}
 {% endcapture %}
 /**
@@ -28,7 +29,7 @@ limitations under the License.
 #include "{{module.name|capital}}{{interface.name|capital}}Proxy.generated.h"
 
 UCLASS(BlueprintType, Blueprintable, DisplayName="{{class_name_capital}}")
-class {{ module.name | constant }}_API {{class}} : public UObject, public I{{module.name | capital}}{{interface.name | capital}}Interface
+class {{ API_MACRO }} {{class}} : public UObject, public I{{module.name | capital}}{{interface.name | capital}}Interface
 {
 	GENERATED_BODY()
 

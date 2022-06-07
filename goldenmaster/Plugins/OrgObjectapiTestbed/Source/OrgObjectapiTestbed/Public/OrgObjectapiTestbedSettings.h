@@ -38,7 +38,7 @@ enum class EOrgObjectapiTestbedConnection : uint8
 * Implements the settings for the OrgObjectapiTestbed plugin.
 */
 UCLASS(Config = Engine, DefaultConfig)
-class ORG_OBJECTAPI_TESTBED_API UOrgObjectapiTestbedSettings : public UObject
+class ORGOBJECTAPITESTBED_API UOrgObjectapiTestbedSettings : public UObject
 {
 	GENERATED_UCLASS_BODY()
 

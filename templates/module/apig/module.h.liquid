@@ -1,6 +1,7 @@
 {% comment %} Copyright Epic Games, Inc. All Rights Reserved {% endcomment -%}
 {% capture nl %}
 {% endcapture -%}
+{% assign API_MACRO = module.name | upcase | remove: '.' | append: "_API" -%}
 /**
 Copyright 2021 ApiGear UG
 Copyright 2021 Epic Games, Inc.
@@ -68,7 +69,7 @@ class {{class}} : public UInterface
 /**
  * Interface {{class}}
  */
-class {{ module.name | constant }}_API {{class}}
+class {{ API_MACRO }} {{class}}
 {
     GENERATED_BODY()
 

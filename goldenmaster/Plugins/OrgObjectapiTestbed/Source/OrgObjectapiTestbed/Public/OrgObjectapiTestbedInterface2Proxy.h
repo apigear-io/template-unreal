@@ -23,7 +23,7 @@ limitations under the License.
 #include "OrgObjectapiTestbedInterface2Proxy.generated.h"
 
 UCLASS(BlueprintType, Blueprintable, DisplayName="OrgObjectapiTestbedInterface2")
-class ORG_OBJECTAPI_TESTBED_API UOrgObjectapiTestbedInterface2Proxy : public UObject, public IOrgObjectapiTestbedInterface2Interface
+class ORGOBJECTAPITESTBED_API UOrgObjectapiTestbedInterface2Proxy : public UObject, public IOrgObjectapiTestbedInterface2Interface
 {
 	GENERATED_BODY()
 

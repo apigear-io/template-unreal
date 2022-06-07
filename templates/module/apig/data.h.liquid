@@ -1,5 +1,5 @@
 {% comment %} Copyright Epic Games, Inc. All Rights Reserved {% endcomment -%}
-{% assign API_MACRO = module.name | constant | append: "_API" %}
+{% assign API_MACRO = module.name | upcase | remove: '.' | append: "_API" %}
 {% capture nl %}
 {% endcapture %}
 /**
