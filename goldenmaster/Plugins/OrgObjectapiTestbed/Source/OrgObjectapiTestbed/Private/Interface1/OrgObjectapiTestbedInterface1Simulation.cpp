@@ -330,7 +330,7 @@ TArray<int32> OrgObjectapiTestbedInterface1SimulationService::GetProp5() const
     return Prop5;
 }
 
-void OrgObjectapiTestbedInterface1SimulationService::SetProp5(TArray<int32> Value)
+void OrgObjectapiTestbedInterface1SimulationService::SetProp5(const TArray<int32>& Value)
 {
     Params params;
     params["prop5"] = Value;
@@ -381,7 +381,7 @@ TArray<int32> OrgObjectapiTestbedInterface1SimulationService::GetProp10() const
     return Prop10;
 }
 
-void OrgObjectapiTestbedInterface1SimulationService::SetProp10(TArray<int32> Value)
+void OrgObjectapiTestbedInterface1SimulationService::SetProp10(const TArray<int32>& Value)
 {
     Params params;
     params["prop10"] = Value;

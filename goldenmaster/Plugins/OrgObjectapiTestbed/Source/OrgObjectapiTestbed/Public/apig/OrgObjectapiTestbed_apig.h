@@ -43,13 +43,13 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProp3ChangedDelegate, float, Prop3)
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProp4ChangedDelegate, FString, Prop4);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProp5ChangedDelegate, TArray<int32>, Prop5);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProp5ChangedDelegate, const TArray<int32>&, Prop5);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProp6ChangedDelegate, const FStruct1&, Prop6);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProp7ChangedDelegate, int32, Prop7);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProp10ChangedDelegate, TArray<int32>, Prop10);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProp10ChangedDelegate, const TArray<int32>&, Prop10);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProp11ChangedDelegate, const TArray<FStruct1>&, Prop11);
 
@@ -118,13 +118,13 @@ public:
     virtual FString GetProp4() const = 0;
     virtual void SetProp4(FString Value) = 0;
     virtual TArray<int32> GetProp5() const = 0;
-    virtual void SetProp5(TArray<int32> Value) = 0;
+    virtual void SetProp5(const TArray<int32>& Value) = 0;
     virtual FStruct1 GetProp6() const = 0;
     virtual void SetProp6(const FStruct1& Value) = 0;
     virtual int32 GetProp7() const = 0;
     virtual void SetProp7(int32 Value) = 0;
     virtual TArray<int32> GetProp10() const = 0;
-    virtual void SetProp10(TArray<int32> Value) = 0;
+    virtual void SetProp10(const TArray<int32>& Value) = 0;
     virtual TArray<FStruct1> GetProp11() const = 0;
     virtual void SetProp11(const TArray<FStruct1>& Value) = 0;
     virtual TArray<EEnum1> GetProp12() const = 0;

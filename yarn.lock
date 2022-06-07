@@ -2,12 +2,12 @@
 # yarn lockfile v1
 
 
-"@apigear-io/apigear-cli@^0.3.3":
-  version "0.3.3"
-  resolved "https://npm.pkg.github.com/download/@apigear-io/apigear-cli/0.3.3/93064a812a06b0b5cef91ca0d5aef0e08d3c225aaf2bbdeb95e571c1fc308192#f8162ce62a8ab56181578db677ce7903632d431d"
-  integrity sha512-r8tKFF10Ibs+M5sLT139DxHz3DdsRUrXphB7oaHaCUUFSdxaG1wKxL7BYvWT+HtN4QNw4CMmD8/K3ISy/82Xww==
+"@apigear-io/apigear-cli@^0.3.5":
+  version "0.3.5"
+  resolved "https://npm.pkg.github.com/download/@apigear-io/apigear-cli/0.3.5/468102187bd5f1f5140a0dff008051c72e5db76a1a86c21bdfeb149dae0f688d#eee16f78f5bf29fc0522db17ca5f02488a79989a"
+  integrity sha512-gb6hA8DX2RZiqZgQNUo8WiqzVMQZC1Zxi25dILDAYIZt5GtTCL/PG1StryOlZlolZW1uvrewlXCjfVoMtF5L+Q==
   dependencies:
-    "@faker-js/faker" "^6.0.0-alpha.7"
+    "@faker-js/faker" "^6.3.1"
     "@oclif/core" "^1.3.4"
     "@oclif/plugin-autocomplete" "^1.2.0"
     "@oclif/plugin-help" "^5.1.11"
@@ -24,6 +24,7 @@
     express "^4.17.3"
     fs-extra "^10.0.0"
     get-port "^5.1.1"
+    isbinaryfile "^5.0.0"
     js-yaml "^4.1.0"
     json-schema-faker "^0.5.0-rcv.41"
     liquidjs "^9.34.1"
@@ -72,7 +73,7 @@
     enabled "2.0.x"
     kuler "^2.0.0"
 
-"@faker-js/faker@^6.0.0-alpha.7":
+"@faker-js/faker@^6.3.1":
   version "6.3.1"
   resolved "https://registry.yarnpkg.com/@faker-js/faker/-/faker-6.3.1.tgz#1ae963dd40405450a2945408cba553e1afa3e0fb"
   integrity sha512-8YXBE2ZcU/pImVOHX7MWrSR/X5up7t6rPWZlk34RwZEcdr3ua6X+32pSd6XuOQRN+vbuvYNfA6iey8NbrjuMFQ==
@@ -2270,6 +2271,11 @@ isarray@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/isarray/-/isarray-1.0.0.tgz#bb935d48582cba168c06834957a54a3e07124f11"
   integrity sha512-VLghIWNM6ELQzo7zwmcg0NmTVyWKYjvIeM83yjp0wRDTmUnrM678fQbcKBo6n2CJEF0szoG//ytg+TKla89ALQ==
+
+isbinaryfile@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/isbinaryfile/-/isbinaryfile-5.0.0.tgz#034b7e54989dab8986598cbcea41f66663c65234"
+  integrity sha512-UDdnyGvMajJUWCkib7Cei/dvyJrrvo4FIrsvSFWdPpXSUorzXrDJ0S+X5Q4ZlasfPjca4yqCNNsjbCeiy8FFeg==
 
 isexe@^2.0.0:
   version "2.0.0"

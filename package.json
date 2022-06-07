@@ -13,7 +13,7 @@
     "client"
   ],
   "devDependencies": {
-    "@apigear-io/apigear-cli": "^0.3.3",
+    "@apigear-io/apigear-cli": "^0.3.5",
     "standard-version": "^9.5.0"
   },
   "scripts": {

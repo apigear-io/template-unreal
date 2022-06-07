@@ -127,7 +127,7 @@ TArray<int32> OrgObjectapiTestbedInterface1LocalService::GetProp5() const
     return Prop5;
 }
 
-void OrgObjectapiTestbedInterface1LocalService::SetProp5(TArray<int32> Value)
+void OrgObjectapiTestbedInterface1LocalService::SetProp5(const TArray<int32>& Value)
 {
     if(Prop5 != Value)
     {
@@ -181,7 +181,7 @@ TArray<int32> OrgObjectapiTestbedInterface1LocalService::GetProp10() const
     return Prop10;
 }
 
-void OrgObjectapiTestbedInterface1LocalService::SetProp10(TArray<int32> Value)
+void OrgObjectapiTestbedInterface1LocalService::SetProp10(const TArray<int32>& Value)
 {
     if(Prop10 != Value)
     {

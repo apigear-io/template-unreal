@@ -143,7 +143,7 @@ TArray<int32> OrgObjectapiTestbedInterface1OLinkService::GetProp5() const
     return Prop5;
 }
 
-void OrgObjectapiTestbedInterface1OLinkService::SetProp5(TArray<int32> Value)
+void OrgObjectapiTestbedInterface1OLinkService::SetProp5(const TArray<int32>& Value)
 {
     if(!m_node) {
         return;
@@ -194,7 +194,7 @@ TArray<int32> OrgObjectapiTestbedInterface1OLinkService::GetProp10() const
     return Prop10;
 }
 
-void OrgObjectapiTestbedInterface1OLinkService::SetProp10(TArray<int32> Value)
+void OrgObjectapiTestbedInterface1OLinkService::SetProp10(const TArray<int32>& Value)
 {
     if(!m_node) {
         return;

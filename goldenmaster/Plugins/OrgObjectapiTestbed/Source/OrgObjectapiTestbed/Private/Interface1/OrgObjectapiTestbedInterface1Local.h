@@ -84,7 +84,7 @@ public:
     void SetProp4(FString Value) override;
 
     TArray<int32> GetProp5() const override;
-    void SetProp5(TArray<int32> Value) override;
+    void SetProp5(const TArray<int32>& Value) override;
 
     FStruct1 GetProp6() const override;
     void SetProp6(const FStruct1& Value) override;
@@ -93,7 +93,7 @@ public:
     void SetProp7(int32 Value) override;
 
     TArray<int32> GetProp10() const override;
-    void SetProp10(TArray<int32> Value) override;
+    void SetProp10(const TArray<int32>& Value) override;
 
     TArray<FStruct1> GetProp11() const override;
     void SetProp11(const TArray<FStruct1>& Value) override;

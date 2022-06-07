@@ -78,7 +78,7 @@ public:
     FProp5ChangedDelegate Prop5Changed;
     FProp5ChangedDelegate& GetProp5ChangedDelegate() override;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
-    void OnProp5Changed(TArray<int32> Value);
+    void OnProp5Changed(const TArray<int32>& Value);
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
     FProp6ChangedDelegate Prop6Changed;
@@ -96,7 +96,7 @@ public:
     FProp10ChangedDelegate Prop10Changed;
     FProp10ChangedDelegate& GetProp10ChangedDelegate() override;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
-    void OnProp10Changed(TArray<int32> Value);
+    void OnProp10Changed(const TArray<int32>& Value);
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
     FProp11ChangedDelegate Prop11Changed;
@@ -145,7 +145,7 @@ public:
     TArray<int32> GetProp5() const override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
-    void SetProp5(TArray<int32> Value) override;
+    void SetProp5(const TArray<int32>& Value) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
     FStruct1 GetProp6() const override;
@@ -163,7 +163,7 @@ public:
     TArray<int32> GetProp10() const override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
-    void SetProp10(TArray<int32> Value) override;
+    void SetProp10(const TArray<int32>& Value) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
     TArray<FStruct1> GetProp11() const override;

@@ -11,10 +11,10 @@ public:
   static void trace_callSetProp2(int32 Value);
   static void trace_callSetProp3(float Value);
   static void trace_callSetProp4(FString Value);
-  static void trace_callSetProp5(TArray<int32> Value);
+  static void trace_callSetProp5(const TArray<int32>& Value);
   static void trace_callSetProp6(const FStruct1& Value);
   static void trace_callSetProp7(int32 Value);
-  static void trace_callSetProp10(TArray<int32> Value);
+  static void trace_callSetProp10(const TArray<int32>& Value);
   static void trace_callSetProp11(const TArray<FStruct1>& Value);
   static void trace_callSetProp12(const TArray<EEnum1>& Value);
   static void trace_callSetProp14(const TArray<FStruct1>& Value);

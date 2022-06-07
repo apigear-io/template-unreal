@@ -329,7 +329,7 @@ TArray<int32> OrgObjectapiTestbedInterface1WAMPService::GetProp5() const
     return Prop5;
 }
 
-void OrgObjectapiTestbedInterface1WAMPService::SetProp5(TArray<int32> Value)
+void OrgObjectapiTestbedInterface1WAMPService::SetProp5(const TArray<int32>& Value)
 {
     ArgumentsKw fields_;
     fields_["prop5"] = Value;
@@ -380,7 +380,7 @@ TArray<int32> OrgObjectapiTestbedInterface1WAMPService::GetProp10() const
     return Prop10;
 }
 
-void OrgObjectapiTestbedInterface1WAMPService::SetProp10(TArray<int32> Value)
+void OrgObjectapiTestbedInterface1WAMPService::SetProp10(const TArray<int32>& Value)
 {
     ArgumentsKw fields_;
     fields_["prop10"] = Value;
