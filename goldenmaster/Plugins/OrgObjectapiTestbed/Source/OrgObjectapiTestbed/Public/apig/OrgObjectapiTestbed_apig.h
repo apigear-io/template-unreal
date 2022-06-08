@@ -30,7 +30,7 @@ limitations under the License.
 // signal delegates
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSig1Delegate);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FSig2Delegate, int32, Step);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FSig2Delegate, int32, Step, const FString&, Step2);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSig3Delegate);
 

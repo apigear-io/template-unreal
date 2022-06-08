@@ -392,7 +392,7 @@ void OrgObjectapiTestbedInterface1OLinkService::olinkOnSignal(std::string name, 
         return;
     }
     if(path == "sig2") {
-        Sig2Signal.Broadcast(args[0].get<int32>());
+        Sig2Signal.Broadcast(args[0].get<int32>(),args[1].get<FString>());
         return;
     }
     if(path == "sig3") {

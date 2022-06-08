@@ -95,10 +95,11 @@ void OrgObjectapiTestbedInterface1Tracer::trace_signalSig1()
     Tracer::instance()->signal("org.objectapi.testbed/Interface1#sig1", fields_);
 }
 
-void OrgObjectapiTestbedInterface1Tracer::trace_signalSig2(int32 Step)
+void OrgObjectapiTestbedInterface1Tracer::trace_signalSig2(int32 Step, const FString& Step2)
 {
     nlohmann::json fields_;
     fields_["step"] = Step;
+    fields_["step2"] = Step2;
     Tracer::instance()->signal("org.objectapi.testbed/Interface1#sig2", fields_);
 }
 

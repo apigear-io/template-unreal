@@ -218,9 +218,9 @@ OrgObjectapiTestbedInterface1SimulationService::OrgObjectapiTestbedInterface1Sim
     NotifyRequestFunc sig2Func = [this](NotifyRequestArg arg)
     {
         const json fields = arg.params;
-        if(fields.contains("step"))
+        if(fields.contains("step") &&fields.contains("step2"))
         {
-            Sig2Signal.Broadcast(fields["step"].get<int32>());
+            Sig2Signal.Broadcast(fields["step"].get<int32>(),fields["step2"].get<FString>());
         }
     };
     UnrealSimulation::instance()->onNotify("org.objectapi.testbed/Interface1#sig2", sig2Func);

@@ -19,7 +19,7 @@ public:
   static void trace_callSetProp12(const TArray<EEnum1>& InProp12);
   static void trace_callSetProp14(const TArray<FStruct1>& InProp14);
   static void trace_signalSig1();
-  static void trace_signalSig2(int32 Step);
+  static void trace_signalSig2(int32 Step, const FString& Step2);
   static void trace_signalSig3();
   static void trace_callOp1();
   static void trace_callOp2(int32 Step);

@@ -42,7 +42,7 @@ public:
     FSig2Delegate Sig2Signal;
     FSig2Delegate& GetSig2SignalDelegate() override;
 	UFUNCTION(Category = "ApiGear|OrgObjectapiTestbed|Interface1")
-    void OnSig2(int32 Step);
+    void OnSig2(int32 Step, const FString& Step2);
     
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
     FSig3Delegate Sig3Signal;

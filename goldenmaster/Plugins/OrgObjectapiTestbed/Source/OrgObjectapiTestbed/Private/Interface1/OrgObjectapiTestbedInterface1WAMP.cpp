@@ -218,9 +218,9 @@ OrgObjectapiTestbedInterface1WAMPService::OrgObjectapiTestbedInterface1WAMPServi
     
     EventFunc sig2Func = [this](EventArg arg)
     {
-        if(arg.args.size() == 1)
+        if(arg.args.size() == 2)
         {
-            Sig2Signal.Broadcast(arg.args[0].get<int32>());
+            Sig2Signal.Broadcast(arg.args[0].get<int32>(),arg.args[1].get<FString>());
         }
     };
     UnrealWamp::instance()->doSubscribe("org.objectapi.testbed.Interface1.sig2", sig2Func);
