@@ -1,5 +1,7 @@
 {% comment %} Copyright Epic Games, Inc. All Rights Reserved {% endcomment -%}
 {% assign class = module.name | capital | append: interface.name | capital | append: "LocalService" -%}
+{% assign moduleCapital = module.name | capital %}
+{% assign moduleInterfaceCapital = moduleCapital | append: interface.name | capital -%}
 /**
 Copyright 2021 ApiGear UG
 Copyright 2021 Epic Games, Inc.
@@ -28,7 +30,7 @@ limitations under the License.
 {{class}}::{{class}}()
     : I{{module.name | capital}}{{interface.name|capital}}Interface()
 {% for property in interface.properties %}
-    , {{property|unrealVarName}}({{property|unrealDefault}})
+    , {{property|unrealVarName}}({{property|unrealDefault: moduleCapital}})
 {% endfor %}
 {
 }
@@ -37,30 +39,30 @@ limitations under the License.
 }
 {{nl}}
 {% for signal in interface.signals %}
-F{{signal|unrealVarName}}Delegate& {{class}}::Get{{signal|unrealVarName}}SignalDelegate()
+F{{signal|unrealVarName: moduleInterfaceCapital}}Delegate& {{class}}::Get{{signal|unrealVarName: moduleInterfaceCapital}}SignalDelegate()
 {
-    return {{signal|unrealVarName}}Signal;
+    return {{signal|unrealVarName: moduleInterfaceCapital}}Signal;
 }
 {{nl}}
 {% endfor %}
 {% for property in interface.properties %}
-{{property|unrealTypeName}} {{class}}::Get{{property.name | capital}}() const
+{{property|unrealTypeName: false, moduleCapital}} {{class}}::Get{{property.name | capital}}() const
 {
     return {{property|unrealVarName}};
 }
 {{nl}}
-void {{class}}::Set{{property.name | capital}}({{property|unrealParam: '', 'In'}})
+void {{class}}::Set{{property.name | capital}}({{property|unrealParam: moduleCapital, 'In'}})
 {
     if({{property|unrealVarName}} != {{property|unrealVarName: 'In'}})
     {
         {{property|unrealVarName}} = {{property|unrealVarName: 'In'}};
-        {{property|unrealVarName}}Changed.Broadcast({{property|unrealVarName}});
+        {{property|unrealVarName: moduleInterfaceCapital}}Changed.Broadcast({{property|unrealVarName}});
     }
 }
 {{nl}}
-F{{property|unrealVarName}}ChangedDelegate& {{class}}::Get{{property|unrealVarName}}ChangedDelegate()
+F{{property|unrealVarName: moduleInterfaceCapital}}ChangedDelegate& {{class}}::Get{{property|unrealVarName: moduleInterfaceCapital}}ChangedDelegate()
 {
-    return {{property|unrealVarName}}Changed;
+    return {{property|unrealVarName: moduleInterfaceCapital}}Changed;
 }
 {% endfor %}
 {{nl}}
@@ -71,15 +73,15 @@ F{{property|unrealVarName}}ChangedDelegate& {{class}}::Get{{property|unrealVarNa
    \brief {{operation.description}}
 */
 {% endif %}
-{% assign returnVal = operation|unrealReturn %}
-{{returnVal}} {{class}}::{{operation.name|capital}}({{operation|unrealParams}})
+{% assign returnVal = operation|unrealReturn: moduleCapital %}
+{{returnVal}} {{class}}::{{operation.name|capital}}({{operation|unrealParams: moduleCapital}})
 {
     {% for parameter in operation.params %}
     (void) {{parameter|unrealVarName}};
     {% endfor %}
     // do business logic here
     {% if returnVal != "void" %}
-    return {{operation|unrealDefault}};
+    return {{operation|unrealDefault: moduleCapital}};
     {% endif %}
 }
 {% endfor %}

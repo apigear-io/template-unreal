@@ -33,88 +33,88 @@ public:
 
     // signals
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
-    FSig1Delegate Sig1Signal;
-    FSig1Delegate& GetSig1SignalDelegate() override;
+    FOrgObjectapiTestbedInterface1Sig1Delegate OrgObjectapiTestbedInterface1Sig1Signal;
+    FOrgObjectapiTestbedInterface1Sig1Delegate& GetOrgObjectapiTestbedInterface1Sig1SignalDelegate() override;
 	UFUNCTION(Category = "ApiGear|OrgObjectapiTestbed|Interface1")
-    void OnSig1();
+    void OnOrgObjectapiTestbedInterface1Sig1();
     
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
-    FSig2Delegate Sig2Signal;
-    FSig2Delegate& GetSig2SignalDelegate() override;
+    FOrgObjectapiTestbedInterface1Sig2Delegate OrgObjectapiTestbedInterface1Sig2Signal;
+    FOrgObjectapiTestbedInterface1Sig2Delegate& GetOrgObjectapiTestbedInterface1Sig2SignalDelegate() override;
 	UFUNCTION(Category = "ApiGear|OrgObjectapiTestbed|Interface1")
-    void OnSig2(int32 Step, const FString& Step2);
+    void OnOrgObjectapiTestbedInterface1Sig2(int32 Step, const FString& Step2);
     
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
-    FSig3Delegate Sig3Signal;
-    FSig3Delegate& GetSig3SignalDelegate() override;
+    FOrgObjectapiTestbedInterface1Sig3Delegate OrgObjectapiTestbedInterface1Sig3Signal;
+    FOrgObjectapiTestbedInterface1Sig3Delegate& GetOrgObjectapiTestbedInterface1Sig3SignalDelegate() override;
 	UFUNCTION(Category = "ApiGear|OrgObjectapiTestbed|Interface1")
-    void OnSig3(float Step);
+    void OnOrgObjectapiTestbedInterface1Sig3(float Step);
     
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
-    FbProp1ChangedDelegate bProp1Changed;
-    FbProp1ChangedDelegate& GetbProp1ChangedDelegate() override;
+    FbOrgObjectapiTestbedInterface1Prop1ChangedDelegate bOrgObjectapiTestbedInterface1Prop1Changed;
+    FbOrgObjectapiTestbedInterface1Prop1ChangedDelegate& GetbOrgObjectapiTestbedInterface1Prop1ChangedDelegate() override;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
-    void OnbProp1Changed(bool bInProp1);
+    void OnbOrgObjectapiTestbedInterface1Prop1Changed(bool bInProp1);
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
-    FProp2ChangedDelegate Prop2Changed;
-    FProp2ChangedDelegate& GetProp2ChangedDelegate() override;
+    FOrgObjectapiTestbedInterface1Prop2ChangedDelegate OrgObjectapiTestbedInterface1Prop2Changed;
+    FOrgObjectapiTestbedInterface1Prop2ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop2ChangedDelegate() override;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
-    void OnProp2Changed(int32 InProp2);
+    void OnOrgObjectapiTestbedInterface1Prop2Changed(int32 InProp2);
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
-    FProp3ChangedDelegate Prop3Changed;
-    FProp3ChangedDelegate& GetProp3ChangedDelegate() override;
+    FOrgObjectapiTestbedInterface1Prop3ChangedDelegate OrgObjectapiTestbedInterface1Prop3Changed;
+    FOrgObjectapiTestbedInterface1Prop3ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop3ChangedDelegate() override;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
-    void OnProp3Changed(float InProp3);
+    void OnOrgObjectapiTestbedInterface1Prop3Changed(float InProp3);
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
-    FProp4ChangedDelegate Prop4Changed;
-    FProp4ChangedDelegate& GetProp4ChangedDelegate() override;
+    FOrgObjectapiTestbedInterface1Prop4ChangedDelegate OrgObjectapiTestbedInterface1Prop4Changed;
+    FOrgObjectapiTestbedInterface1Prop4ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop4ChangedDelegate() override;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
-    void OnProp4Changed(const FString& InProp4);
+    void OnOrgObjectapiTestbedInterface1Prop4Changed(const FString& InProp4);
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
-    FProp5ChangedDelegate Prop5Changed;
-    FProp5ChangedDelegate& GetProp5ChangedDelegate() override;
+    FOrgObjectapiTestbedInterface1Prop5ChangedDelegate OrgObjectapiTestbedInterface1Prop5Changed;
+    FOrgObjectapiTestbedInterface1Prop5ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop5ChangedDelegate() override;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
-    void OnProp5Changed(const TArray<int32>& InProp5);
+    void OnOrgObjectapiTestbedInterface1Prop5Changed(const TArray<int32>& InProp5);
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
-    FProp6ChangedDelegate Prop6Changed;
-    FProp6ChangedDelegate& GetProp6ChangedDelegate() override;
+    FOrgObjectapiTestbedInterface1Prop6ChangedDelegate OrgObjectapiTestbedInterface1Prop6Changed;
+    FOrgObjectapiTestbedInterface1Prop6ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop6ChangedDelegate() override;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
-    void OnProp6Changed(const FStruct1& InProp6);
+    void OnOrgObjectapiTestbedInterface1Prop6Changed(const FOrgObjectapiTestbedStruct1& InProp6);
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
-    FProp7ChangedDelegate Prop7Changed;
-    FProp7ChangedDelegate& GetProp7ChangedDelegate() override;
+    FOrgObjectapiTestbedInterface1Prop7ChangedDelegate OrgObjectapiTestbedInterface1Prop7Changed;
+    FOrgObjectapiTestbedInterface1Prop7ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop7ChangedDelegate() override;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
-    void OnProp7Changed(int32 InProp7);
+    void OnOrgObjectapiTestbedInterface1Prop7Changed(int32 InProp7);
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
-    FProp10ChangedDelegate Prop10Changed;
-    FProp10ChangedDelegate& GetProp10ChangedDelegate() override;
+    FOrgObjectapiTestbedInterface1Prop10ChangedDelegate OrgObjectapiTestbedInterface1Prop10Changed;
+    FOrgObjectapiTestbedInterface1Prop10ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop10ChangedDelegate() override;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
-    void OnProp10Changed(const TArray<int32>& InProp10);
+    void OnOrgObjectapiTestbedInterface1Prop10Changed(const TArray<int32>& InProp10);
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
-    FProp11ChangedDelegate Prop11Changed;
-    FProp11ChangedDelegate& GetProp11ChangedDelegate() override;
+    FOrgObjectapiTestbedInterface1Prop11ChangedDelegate OrgObjectapiTestbedInterface1Prop11Changed;
+    FOrgObjectapiTestbedInterface1Prop11ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop11ChangedDelegate() override;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
-    void OnProp11Changed(const TArray<FStruct1>& InProp11);
+    void OnOrgObjectapiTestbedInterface1Prop11Changed(const TArray<FOrgObjectapiTestbedStruct1>& InProp11);
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
-    FProp12ChangedDelegate Prop12Changed;
-    FProp12ChangedDelegate& GetProp12ChangedDelegate() override;
+    FOrgObjectapiTestbedInterface1Prop12ChangedDelegate OrgObjectapiTestbedInterface1Prop12Changed;
+    FOrgObjectapiTestbedInterface1Prop12ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop12ChangedDelegate() override;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
-    void OnProp12Changed(const TArray<EEnum1>& InProp12);
+    void OnOrgObjectapiTestbedInterface1Prop12Changed(const TArray<EOrgObjectapiTestbedEnum1>& InProp12);
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
-    FProp14ChangedDelegate Prop14Changed;
-    FProp14ChangedDelegate& GetProp14ChangedDelegate() override;
+    FOrgObjectapiTestbedInterface1Prop14ChangedDelegate OrgObjectapiTestbedInterface1Prop14Changed;
+    FOrgObjectapiTestbedInterface1Prop14ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop14ChangedDelegate() override;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
-    void OnProp14Changed(const TArray<FStruct1>& InProp14);
+    void OnOrgObjectapiTestbedInterface1Prop14Changed(const TArray<FOrgObjectapiTestbedStruct1>& InProp14);
 
     // properties
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
@@ -148,10 +148,10 @@ public:
     void SetProp5(const TArray<int32>& InProp5) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
-    FStruct1 GetProp6() const override;
+    FOrgObjectapiTestbedStruct1 GetProp6() const override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
-    void SetProp6(const FStruct1& InProp6) override;
+    void SetProp6(const FOrgObjectapiTestbedStruct1& InProp6) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
     int32 GetProp7() const override;
@@ -166,22 +166,22 @@ public:
     void SetProp10(const TArray<int32>& InProp10) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
-    TArray<FStruct1> GetProp11() const override;
+    TArray<FOrgObjectapiTestbedStruct1> GetProp11() const override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
-    void SetProp11(const TArray<FStruct1>& InProp11) override;
+    void SetProp11(const TArray<FOrgObjectapiTestbedStruct1>& InProp11) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
-    TArray<EEnum1> GetProp12() const override;
+    TArray<EOrgObjectapiTestbedEnum1> GetProp12() const override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
-    void SetProp12(const TArray<EEnum1>& InProp12) override;
+    void SetProp12(const TArray<EOrgObjectapiTestbedEnum1>& InProp12) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
-    TArray<FStruct1> GetProp14() const override;
+    TArray<FOrgObjectapiTestbedStruct1> GetProp14() const override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
-    void SetProp14(const TArray<FStruct1>& InProp14) override;
+    void SetProp14(const TArray<FOrgObjectapiTestbedStruct1>& InProp14) override;
 
     // operations
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
@@ -215,7 +215,7 @@ private:
     TArray<int32> Prop5;
 
 	UPROPERTY(EditAnywhere, BlueprintGetter=GetProp6, BlueprintSetter=SetProp6, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
-    FStruct1 Prop6;
+    FOrgObjectapiTestbedStruct1 Prop6;
 
 	UPROPERTY(EditAnywhere, BlueprintGetter=GetProp7, BlueprintSetter=SetProp7, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
     int32 Prop7;
@@ -224,12 +224,12 @@ private:
     TArray<int32> Prop10;
 
 	UPROPERTY(EditAnywhere, BlueprintGetter=GetProp11, BlueprintSetter=SetProp11, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
-    TArray<FStruct1> Prop11;
+    TArray<FOrgObjectapiTestbedStruct1> Prop11;
 
 	UPROPERTY(EditAnywhere, BlueprintGetter=GetProp12, BlueprintSetter=SetProp12, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
-    TArray<EEnum1> Prop12;
+    TArray<EOrgObjectapiTestbedEnum1> Prop12;
 
 	UPROPERTY(EditAnywhere, BlueprintGetter=GetProp14, BlueprintSetter=SetProp14, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
-    TArray<FStruct1> Prop14;
+    TArray<FOrgObjectapiTestbedStruct1> Prop14;
 
 };

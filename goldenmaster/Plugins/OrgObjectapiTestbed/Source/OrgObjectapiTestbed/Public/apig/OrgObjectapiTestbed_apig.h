@@ -28,34 +28,34 @@ limitations under the License.
  * Declaration for Interface1
  */
 // signal delegates
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSig1Delegate);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOrgObjectapiTestbedInterface1Sig1Delegate);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FSig2Delegate, int32, Step, const FString&, Step2);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOrgObjectapiTestbedInterface1Sig2Delegate, int32, Step, const FString&, Step2);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FSig3Delegate, float, Step);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOrgObjectapiTestbedInterface1Sig3Delegate, float, Step);
 
 // property delegates
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FbProp1ChangedDelegate, bool, bProp1);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FbOrgObjectapiTestbedInterface1Prop1ChangedDelegate, bool, bProp1);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProp2ChangedDelegate, int32, Prop2);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOrgObjectapiTestbedInterface1Prop2ChangedDelegate, int32, Prop2);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProp3ChangedDelegate, float, Prop3);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOrgObjectapiTestbedInterface1Prop3ChangedDelegate, float, Prop3);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProp4ChangedDelegate, const FString&, Prop4);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOrgObjectapiTestbedInterface1Prop4ChangedDelegate, const FString&, Prop4);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProp5ChangedDelegate, const TArray<int32>&, Prop5);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOrgObjectapiTestbedInterface1Prop5ChangedDelegate, const TArray<int32>&, Prop5);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProp6ChangedDelegate, const FStruct1&, Prop6);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOrgObjectapiTestbedInterface1Prop6ChangedDelegate, const FOrgObjectapiTestbedStruct1&, Prop6);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProp7ChangedDelegate, int32, Prop7);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOrgObjectapiTestbedInterface1Prop7ChangedDelegate, int32, Prop7);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProp10ChangedDelegate, const TArray<int32>&, Prop10);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOrgObjectapiTestbedInterface1Prop10ChangedDelegate, const TArray<int32>&, Prop10);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProp11ChangedDelegate, const TArray<FStruct1>&, Prop11);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOrgObjectapiTestbedInterface1Prop11ChangedDelegate, const TArray<FOrgObjectapiTestbedStruct1>&, Prop11);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProp12ChangedDelegate, const TArray<EEnum1>&, Prop12);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOrgObjectapiTestbedInterface1Prop12ChangedDelegate, const TArray<EOrgObjectapiTestbedEnum1>&, Prop12);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProp14ChangedDelegate, const TArray<FStruct1>&, Prop14);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOrgObjectapiTestbedInterface1Prop14ChangedDelegate, const TArray<FOrgObjectapiTestbedStruct1>&, Prop14);
 
 /**
  * Interface UOrgObjectapiTestbedInterface1Interface only for Unreal Engine's reflection system
@@ -75,33 +75,33 @@ class ORGOBJECTAPITESTBED_API IOrgObjectapiTestbedInterface1Interface
 
 public:
 // signals
-    virtual FSig1Delegate& GetSig1SignalDelegate() = 0;
+    virtual FOrgObjectapiTestbedInterface1Sig1Delegate& GetOrgObjectapiTestbedInterface1Sig1SignalDelegate() = 0;
 
-    virtual FSig2Delegate& GetSig2SignalDelegate() = 0;
+    virtual FOrgObjectapiTestbedInterface1Sig2Delegate& GetOrgObjectapiTestbedInterface1Sig2SignalDelegate() = 0;
 
-    virtual FSig3Delegate& GetSig3SignalDelegate() = 0;
+    virtual FOrgObjectapiTestbedInterface1Sig3Delegate& GetOrgObjectapiTestbedInterface1Sig3SignalDelegate() = 0;
 
-    virtual FbProp1ChangedDelegate& GetbProp1ChangedDelegate() = 0;
+    virtual FbOrgObjectapiTestbedInterface1Prop1ChangedDelegate& GetbOrgObjectapiTestbedInterface1Prop1ChangedDelegate() = 0;
 
-    virtual FProp2ChangedDelegate& GetProp2ChangedDelegate() = 0;
+    virtual FOrgObjectapiTestbedInterface1Prop2ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop2ChangedDelegate() = 0;
 
-    virtual FProp3ChangedDelegate& GetProp3ChangedDelegate() = 0;
+    virtual FOrgObjectapiTestbedInterface1Prop3ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop3ChangedDelegate() = 0;
 
-    virtual FProp4ChangedDelegate& GetProp4ChangedDelegate() = 0;
+    virtual FOrgObjectapiTestbedInterface1Prop4ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop4ChangedDelegate() = 0;
 
-    virtual FProp5ChangedDelegate& GetProp5ChangedDelegate() = 0;
+    virtual FOrgObjectapiTestbedInterface1Prop5ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop5ChangedDelegate() = 0;
 
-    virtual FProp6ChangedDelegate& GetProp6ChangedDelegate() = 0;
+    virtual FOrgObjectapiTestbedInterface1Prop6ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop6ChangedDelegate() = 0;
 
-    virtual FProp7ChangedDelegate& GetProp7ChangedDelegate() = 0;
+    virtual FOrgObjectapiTestbedInterface1Prop7ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop7ChangedDelegate() = 0;
 
-    virtual FProp10ChangedDelegate& GetProp10ChangedDelegate() = 0;
+    virtual FOrgObjectapiTestbedInterface1Prop10ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop10ChangedDelegate() = 0;
 
-    virtual FProp11ChangedDelegate& GetProp11ChangedDelegate() = 0;
+    virtual FOrgObjectapiTestbedInterface1Prop11ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop11ChangedDelegate() = 0;
 
-    virtual FProp12ChangedDelegate& GetProp12ChangedDelegate() = 0;
+    virtual FOrgObjectapiTestbedInterface1Prop12ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop12ChangedDelegate() = 0;
 
-    virtual FProp14ChangedDelegate& GetProp14ChangedDelegate() = 0;
+    virtual FOrgObjectapiTestbedInterface1Prop14ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop14ChangedDelegate() = 0;
 
 
 // methods
@@ -119,35 +119,35 @@ public:
     virtual void SetProp4(const FString& InProp4) = 0;
     virtual TArray<int32> GetProp5() const = 0;
     virtual void SetProp5(const TArray<int32>& InProp5) = 0;
-    virtual FStruct1 GetProp6() const = 0;
-    virtual void SetProp6(const FStruct1& InProp6) = 0;
+    virtual FOrgObjectapiTestbedStruct1 GetProp6() const = 0;
+    virtual void SetProp6(const FOrgObjectapiTestbedStruct1& InProp6) = 0;
     virtual int32 GetProp7() const = 0;
     virtual void SetProp7(int32 InProp7) = 0;
     virtual TArray<int32> GetProp10() const = 0;
     virtual void SetProp10(const TArray<int32>& InProp10) = 0;
-    virtual TArray<FStruct1> GetProp11() const = 0;
-    virtual void SetProp11(const TArray<FStruct1>& InProp11) = 0;
-    virtual TArray<EEnum1> GetProp12() const = 0;
-    virtual void SetProp12(const TArray<EEnum1>& InProp12) = 0;
-    virtual TArray<FStruct1> GetProp14() const = 0;
-    virtual void SetProp14(const TArray<FStruct1>& InProp14) = 0;
+    virtual TArray<FOrgObjectapiTestbedStruct1> GetProp11() const = 0;
+    virtual void SetProp11(const TArray<FOrgObjectapiTestbedStruct1>& InProp11) = 0;
+    virtual TArray<EOrgObjectapiTestbedEnum1> GetProp12() const = 0;
+    virtual void SetProp12(const TArray<EOrgObjectapiTestbedEnum1>& InProp12) = 0;
+    virtual TArray<FOrgObjectapiTestbedStruct1> GetProp14() const = 0;
+    virtual void SetProp14(const TArray<FOrgObjectapiTestbedStruct1>& InProp14) = 0;
 };
 /**
  * Declaration for Interface2
  */
 // signal delegates
 // property delegates
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProp200ChangedDelegate, int32, Prop200);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOrgObjectapiTestbedInterface2Prop200ChangedDelegate, int32, Prop200);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProp201ChangedDelegate, int32, Prop201);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOrgObjectapiTestbedInterface2Prop201ChangedDelegate, int32, Prop201);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProp202ChangedDelegate, int32, Prop202);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOrgObjectapiTestbedInterface2Prop202ChangedDelegate, int32, Prop202);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProp203ChangedDelegate, float, Prop203);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOrgObjectapiTestbedInterface2Prop203ChangedDelegate, float, Prop203);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProp204ChangedDelegate, float, Prop204);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOrgObjectapiTestbedInterface2Prop204ChangedDelegate, float, Prop204);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProp205ChangedDelegate, const FString&, Prop205);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOrgObjectapiTestbedInterface2Prop205ChangedDelegate, const FString&, Prop205);
 
 /**
  * Interface UOrgObjectapiTestbedInterface2Interface only for Unreal Engine's reflection system
@@ -167,17 +167,17 @@ class ORGOBJECTAPITESTBED_API IOrgObjectapiTestbedInterface2Interface
 
 public:
 // signals
-    virtual FProp200ChangedDelegate& GetProp200ChangedDelegate() = 0;
+    virtual FOrgObjectapiTestbedInterface2Prop200ChangedDelegate& GetOrgObjectapiTestbedInterface2Prop200ChangedDelegate() = 0;
 
-    virtual FProp201ChangedDelegate& GetProp201ChangedDelegate() = 0;
+    virtual FOrgObjectapiTestbedInterface2Prop201ChangedDelegate& GetOrgObjectapiTestbedInterface2Prop201ChangedDelegate() = 0;
 
-    virtual FProp202ChangedDelegate& GetProp202ChangedDelegate() = 0;
+    virtual FOrgObjectapiTestbedInterface2Prop202ChangedDelegate& GetOrgObjectapiTestbedInterface2Prop202ChangedDelegate() = 0;
 
-    virtual FProp203ChangedDelegate& GetProp203ChangedDelegate() = 0;
+    virtual FOrgObjectapiTestbedInterface2Prop203ChangedDelegate& GetOrgObjectapiTestbedInterface2Prop203ChangedDelegate() = 0;
 
-    virtual FProp204ChangedDelegate& GetProp204ChangedDelegate() = 0;
+    virtual FOrgObjectapiTestbedInterface2Prop204ChangedDelegate& GetOrgObjectapiTestbedInterface2Prop204ChangedDelegate() = 0;
 
-    virtual FProp205ChangedDelegate& GetProp205ChangedDelegate() = 0;
+    virtual FOrgObjectapiTestbedInterface2Prop205ChangedDelegate& GetOrgObjectapiTestbedInterface2Prop205ChangedDelegate() = 0;
 
 
 // methods

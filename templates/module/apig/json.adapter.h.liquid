@@ -1,14 +1,15 @@
 {% comment %} Copyright Epic Games, Inc. All Rights Reserved {% endcomment -%}
+{% assign moduleCapital = module.name | capital -%}
 #pragma once
 
 #include "apigear.json.adapter.h"
 
 {% for struct in module.structs %}
-{% assign class = struct|unrealTypeName %}
+{% assign class = struct|unrealTypeName: false, moduleCapital %}
 
 static void from_json(const nlohmann::json& j, {{class}}& p) {
 {% for field in struct.fields %}
-    p.{{field.name}} = j.at("{{field.name}}").get<{{field | unrealReturn}}>();
+    p.{{field.name}} = j.at("{{field.name}}").get<{{field | unrealReturn: moduleCapital}}>();
 {% endfor %}
 }
 

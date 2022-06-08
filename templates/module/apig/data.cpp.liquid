@@ -1,4 +1,5 @@
 {% comment %} Copyright Epic Games, Inc. All Rights Reserved {% endcomment -%}
+{% assign moduleCapital = module.name | capital -%}
 /**
 Copyright 2021 ApiGear UG
 Copyright 2021 Epic Games, Inc.
@@ -21,20 +22,20 @@ limitations under the License.
 {% for enum in module.enums %}
 {% assign class = enum.name %}
 /**
- * Enumeration {{enum|unrealTypeName}}
+ * Enumeration {{enum|unrealTypeName: false, moduleCapital}}
  */
-bool toUE4Type({{enum|unrealTypeName}}& value, uint8 v)
+bool toUE4Type({{enum|unrealTypeName: false, moduleCapital}}& value, uint8 v)
 {
     bool bSuccessful = false;
     switch (v) {
 {% for member in enum.members %}
         case {{member.value}}:
-            value = {{enum|unrealTypeName}}::{{member.name|constant}};
+            value = {{enum|unrealTypeName: false, moduleCapital}}::{{member.name|constant}};
             bSuccessful = true;
             break;
 {% endfor %}
         default:
-            value = {{enum|unrealDefault}};
+            value = {{enum|unrealDefault: moduleCapital}};
     }
     return bSuccessful;
 }
@@ -42,7 +43,7 @@ bool toUE4Type({{enum|unrealTypeName}}& value, uint8 v)
 {% endfor %}
 
 {% for struct in module.structs %}
-bool {{struct|unrealTypeName}}::operator==(const {{struct|unrealTypeName}}& rhs) const
+bool {{struct|unrealTypeName: false, moduleCapital}}::operator==(const {{struct|unrealTypeName: false, moduleCapital}}& rhs) const
 {
 	return
 {% for field in struct.fields %}
@@ -50,7 +51,7 @@ bool {{struct|unrealTypeName}}::operator==(const {{struct|unrealTypeName}}& rhs)
 {% endfor %}
 }
 
-bool {{struct|unrealTypeName}}::operator!=(const {{struct|unrealTypeName}}& rhs) const
+bool {{struct|unrealTypeName: false, moduleCapital}}::operator!=(const {{struct|unrealTypeName: false, moduleCapital}}& rhs) const
 {
 	return !operator==(rhs);
 }

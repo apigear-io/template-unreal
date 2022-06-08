@@ -1,6 +1,8 @@
 {% comment %} Copyright Epic Games, Inc. All Rights Reserved {% endcomment -%}
 {% assign class_name_capital = module.name | capital | append: interface.name | capital -%}
 {% assign class = "U" | append: class_name_capital | append: "Proxy" %}
+{% assign moduleCapital = module.name | capital %}
+{% assign moduleInterfaceCapital = moduleCapital | append: interface.name | capital %}
 /**
 Copyright 2021 ApiGear UG
 Copyright 2021 Epic Games, Inc.
@@ -74,7 +76,7 @@ public:
 {{class}}::{{class}}()
     : I{{module.name | capital}}{{interface.name|capital}}Interface()
 {% for property in interface.properties %}
-    , {{property|unrealVarName}}({{property|unrealDefault}})
+    , {{property|unrealVarName}}({{property|unrealDefault: moduleCapital}})
 {% endfor %}
 {
 {% assign service_capital = module.name | capital | append: interface.name | capital -%}
@@ -82,62 +84,62 @@ public:
     service = {{module_name}}::create{{service}}();
 
 {% for property in interface.properties %}
-    service->Get{{property|unrealVarName}}ChangedDelegate().AddDynamic(this, &{{class}}::On{{property|unrealVarName}}Changed);
+    service->Get{{property|unrealVarName: moduleInterfaceCapital}}ChangedDelegate().AddDynamic(this, &{{class}}::On{{property|unrealVarName: moduleInterfaceCapital}}Changed);
 {% endfor %}
 {% for signal in interface.signals %}
-    service->Get{{signal|unrealVarName}}SignalDelegate().AddDynamic(this, &{{class}}::On{{signal|unrealVarName}});
+    service->Get{{signal|unrealVarName: moduleInterfaceCapital}}SignalDelegate().AddDynamic(this, &{{class}}::On{{signal|unrealVarName: moduleInterfaceCapital}});
 {% endfor %}
 }
 
 {{class}}::~{{class}}()
 {
 {% for property in interface.properties %}
-    service->Get{{property|unrealVarName}}ChangedDelegate().RemoveDynamic(this, &{{class}}::On{{property|unrealVarName}}Changed);
+    service->Get{{property|unrealVarName: moduleInterfaceCapital}}ChangedDelegate().RemoveDynamic(this, &{{class}}::On{{property|unrealVarName: moduleInterfaceCapital}}Changed);
 {% endfor %}
 {% for signal in interface.signals %}
-    service->Get{{signal|unrealVarName}}SignalDelegate().RemoveDynamic(this, &{{class}}::On{{signal|unrealVarName}});
+    service->Get{{signal|unrealVarName: moduleInterfaceCapital}}SignalDelegate().RemoveDynamic(this, &{{class}}::On{{signal|unrealVarName: moduleInterfaceCapital}});
 {% endfor %}
 }
 
 {% for signal in interface.signals %}
-void {{class}}::On{{signal|unrealVarName}}({{signal|unrealParams}})
+void {{class}}::On{{signal|unrealVarName: moduleInterfaceCapital}}({{signal|unrealParams: moduleCapital}})
 {
     {{module.name | capital}}{{interface.name|capital}}Tracer::trace_signal{{signal.name|capital}}({% for param in signal.params %}{{param | unrealVarName}}{% unless forloop.last %},{% endunless %}{% endfor %});
-    {{signal|unrealVarName}}Signal.Broadcast(
+    {{signal|unrealVarName: moduleInterfaceCapital}}Signal.Broadcast(
     {%- for param in signal.params -%}
         {{param|unrealVarName}}{% unless forloop.last %},{% endunless -%}
     {%- endfor -%}
     );
 }
 {{nl}}
-F{{signal|unrealVarName}}Delegate& {{class}}::Get{{signal|unrealVarName}}SignalDelegate()
+F{{signal|unrealVarName: moduleInterfaceCapital}}Delegate& {{class}}::Get{{signal|unrealVarName: moduleInterfaceCapital}}SignalDelegate()
 {
-    return {{signal|unrealVarName}}Signal;
+    return {{signal|unrealVarName: moduleInterfaceCapital}}Signal;
 }
 {{nl}}
 {% endfor %}
 
 {% for property in interface.properties %}
-void {{class}}::On{{property|unrealVarName}}Changed({{property|unrealParam: '', 'In'}})
+void {{class}}::On{{property|unrealVarName: moduleInterfaceCapital}}Changed({{property|unrealParam: moduleCapital, 'In'}})
 {
     {{module.name | capital}}{{interface.name|capital}}Tracer::capture_state(this);
-    {{property|unrealVarName}}Changed.Broadcast({{property|unrealVarName: 'In'}});
+    {{property|unrealVarName: moduleInterfaceCapital}}Changed.Broadcast({{property|unrealVarName: 'In'}});
 }
 
-{{property|unrealTypeName}} {{class}}::Get{{property.name | capital}}() const
+{{property|unrealTypeName: false, moduleCapital}} {{class}}::Get{{property.name | capital}}() const
 {
     return service->Get{{property.name | capital}}();
 }
 
-void {{class}}::Set{{property.name | capital}}({{property|unrealParam: '', 'In'}})
+void {{class}}::Set{{property.name | capital}}({{property|unrealParam: moduleCapital, 'In'}})
 {
     {{module.name | capital}}{{interface.name|capital}}Tracer::trace_callSet{{property.name|capital}}({{property|unrealVarName: 'In'}});
     service->Set{{property.name | capital}}({{property|unrealVarName: 'In'}});
 }
 {{nl}}
-F{{property|unrealVarName}}ChangedDelegate& {{class}}::Get{{property|unrealVarName}}ChangedDelegate()
+F{{property|unrealVarName: moduleInterfaceCapital}}ChangedDelegate& {{class}}::Get{{property|unrealVarName: moduleInterfaceCapital}}ChangedDelegate()
 {
-    return {{property|unrealVarName}}Changed;
+    return {{property|unrealVarName: moduleInterfaceCapital}}Changed;
 }
 {{nl}}
 {% endfor %}
@@ -149,9 +151,9 @@ F{{property|unrealVarName}}ChangedDelegate& {{class}}::Get{{property|unrealVarNa
    \brief {{operation.description}}
 */
 {% endif %}
-{% assign returnVal = operation|unrealReturn %}
+{% assign returnVal = operation|unrealReturn: moduleCapital %}
 {% if returnVal != "void" %}
-void {{class}}::{{operation.name|capital}}(UObject* WorldContextObject, FLatentActionInfo LatentInfo, {{operation|unrealReturn}}& Result{% if operation.params.size > 0 %}, {%endif%}{{operation|unrealParams}})
+void {{class}}::{{operation.name|capital}}(UObject* WorldContextObject, FLatentActionInfo LatentInfo, {{operation|unrealReturn: moduleCapital}}& Result{% if operation.params.size > 0 %}, {%endif%}{{operation|unrealParams: moduleCapital}})
 {
     {{module.name | capital}}{{interface.name|capital}}Tracer::trace_call{{operation.name|capital}}({% for param in operation.params %}{{param | unrealVarName}}{% unless forloop.last %},{% endunless %}{% endfor %});
 
@@ -179,7 +181,7 @@ void {{class}}::{{operation.name|capital}}(UObject* WorldContextObject, FLatentA
 	}
 }
 {% endif %}
-{{returnVal}} {{class}}::{{operation.name|capital}}({{operation|unrealParams}})
+{{returnVal}} {{class}}::{{operation.name|capital}}({{operation|unrealParams: moduleCapital}})
 {
     {{module.name | capital}}{{interface.name|capital}}Tracer::trace_call{{operation.name|capital}}({% for param in operation.params %}{{param | unrealVarName}}{% unless forloop.last %},{% endunless %}{% endfor %});
     {% if returnVal != "void" %}

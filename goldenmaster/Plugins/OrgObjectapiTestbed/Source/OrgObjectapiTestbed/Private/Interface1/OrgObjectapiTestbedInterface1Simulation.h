@@ -26,47 +26,47 @@ public:
     virtual ~OrgObjectapiTestbedInterface1SimulationService();
 
     // signals
-    FSig1Delegate Sig1Signal;
-    FSig1Delegate& GetSig1SignalDelegate() override;
+    FOrgObjectapiTestbedInterface1Sig1Delegate OrgObjectapiTestbedInterface1Sig1Signal;
+    FOrgObjectapiTestbedInterface1Sig1Delegate& GetOrgObjectapiTestbedInterface1Sig1SignalDelegate() override;
     
-    FSig2Delegate Sig2Signal;
-    FSig2Delegate& GetSig2SignalDelegate() override;
+    FOrgObjectapiTestbedInterface1Sig2Delegate OrgObjectapiTestbedInterface1Sig2Signal;
+    FOrgObjectapiTestbedInterface1Sig2Delegate& GetOrgObjectapiTestbedInterface1Sig2SignalDelegate() override;
     
-    FSig3Delegate Sig3Signal;
-    FSig3Delegate& GetSig3SignalDelegate() override;
+    FOrgObjectapiTestbedInterface1Sig3Delegate OrgObjectapiTestbedInterface1Sig3Signal;
+    FOrgObjectapiTestbedInterface1Sig3Delegate& GetOrgObjectapiTestbedInterface1Sig3SignalDelegate() override;
     
-    FbProp1ChangedDelegate bProp1Changed;
-    FbProp1ChangedDelegate& GetbProp1ChangedDelegate() override;
+    FbOrgObjectapiTestbedInterface1Prop1ChangedDelegate bOrgObjectapiTestbedInterface1Prop1Changed;
+    FbOrgObjectapiTestbedInterface1Prop1ChangedDelegate& GetbOrgObjectapiTestbedInterface1Prop1ChangedDelegate() override;
 
-    FProp2ChangedDelegate Prop2Changed;
-    FProp2ChangedDelegate& GetProp2ChangedDelegate() override;
+    FOrgObjectapiTestbedInterface1Prop2ChangedDelegate OrgObjectapiTestbedInterface1Prop2Changed;
+    FOrgObjectapiTestbedInterface1Prop2ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop2ChangedDelegate() override;
 
-    FProp3ChangedDelegate Prop3Changed;
-    FProp3ChangedDelegate& GetProp3ChangedDelegate() override;
+    FOrgObjectapiTestbedInterface1Prop3ChangedDelegate OrgObjectapiTestbedInterface1Prop3Changed;
+    FOrgObjectapiTestbedInterface1Prop3ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop3ChangedDelegate() override;
 
-    FProp4ChangedDelegate Prop4Changed;
-    FProp4ChangedDelegate& GetProp4ChangedDelegate() override;
+    FOrgObjectapiTestbedInterface1Prop4ChangedDelegate OrgObjectapiTestbedInterface1Prop4Changed;
+    FOrgObjectapiTestbedInterface1Prop4ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop4ChangedDelegate() override;
 
-    FProp5ChangedDelegate Prop5Changed;
-    FProp5ChangedDelegate& GetProp5ChangedDelegate() override;
+    FOrgObjectapiTestbedInterface1Prop5ChangedDelegate OrgObjectapiTestbedInterface1Prop5Changed;
+    FOrgObjectapiTestbedInterface1Prop5ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop5ChangedDelegate() override;
 
-    FProp6ChangedDelegate Prop6Changed;
-    FProp6ChangedDelegate& GetProp6ChangedDelegate() override;
+    FOrgObjectapiTestbedInterface1Prop6ChangedDelegate OrgObjectapiTestbedInterface1Prop6Changed;
+    FOrgObjectapiTestbedInterface1Prop6ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop6ChangedDelegate() override;
 
-    FProp7ChangedDelegate Prop7Changed;
-    FProp7ChangedDelegate& GetProp7ChangedDelegate() override;
+    FOrgObjectapiTestbedInterface1Prop7ChangedDelegate OrgObjectapiTestbedInterface1Prop7Changed;
+    FOrgObjectapiTestbedInterface1Prop7ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop7ChangedDelegate() override;
 
-    FProp10ChangedDelegate Prop10Changed;
-    FProp10ChangedDelegate& GetProp10ChangedDelegate() override;
+    FOrgObjectapiTestbedInterface1Prop10ChangedDelegate OrgObjectapiTestbedInterface1Prop10Changed;
+    FOrgObjectapiTestbedInterface1Prop10ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop10ChangedDelegate() override;
 
-    FProp11ChangedDelegate Prop11Changed;
-    FProp11ChangedDelegate& GetProp11ChangedDelegate() override;
+    FOrgObjectapiTestbedInterface1Prop11ChangedDelegate OrgObjectapiTestbedInterface1Prop11Changed;
+    FOrgObjectapiTestbedInterface1Prop11ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop11ChangedDelegate() override;
 
-    FProp12ChangedDelegate Prop12Changed;
-    FProp12ChangedDelegate& GetProp12ChangedDelegate() override;
+    FOrgObjectapiTestbedInterface1Prop12ChangedDelegate OrgObjectapiTestbedInterface1Prop12Changed;
+    FOrgObjectapiTestbedInterface1Prop12ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop12ChangedDelegate() override;
 
-    FProp14ChangedDelegate Prop14Changed;
-    FProp14ChangedDelegate& GetProp14ChangedDelegate() override;
+    FOrgObjectapiTestbedInterface1Prop14ChangedDelegate OrgObjectapiTestbedInterface1Prop14Changed;
+    FOrgObjectapiTestbedInterface1Prop14ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop14ChangedDelegate() override;
 
 
     // properties
@@ -85,8 +85,8 @@ public:
     TArray<int32> GetProp5() const override;
     void SetProp5(const TArray<int32>& InProp5) override;
 
-    FStruct1 GetProp6() const override;
-    void SetProp6(const FStruct1& InProp6) override;
+    FOrgObjectapiTestbedStruct1 GetProp6() const override;
+    void SetProp6(const FOrgObjectapiTestbedStruct1& InProp6) override;
 
     int32 GetProp7() const override;
     void SetProp7(int32 InProp7) override;
@@ -94,14 +94,14 @@ public:
     TArray<int32> GetProp10() const override;
     void SetProp10(const TArray<int32>& InProp10) override;
 
-    TArray<FStruct1> GetProp11() const override;
-    void SetProp11(const TArray<FStruct1>& InProp11) override;
+    TArray<FOrgObjectapiTestbedStruct1> GetProp11() const override;
+    void SetProp11(const TArray<FOrgObjectapiTestbedStruct1>& InProp11) override;
 
-    TArray<EEnum1> GetProp12() const override;
-    void SetProp12(const TArray<EEnum1>& InProp12) override;
+    TArray<EOrgObjectapiTestbedEnum1> GetProp12() const override;
+    void SetProp12(const TArray<EOrgObjectapiTestbedEnum1>& InProp12) override;
 
-    TArray<FStruct1> GetProp14() const override;
-    void SetProp14(const TArray<FStruct1>& InProp14) override;
+    TArray<FOrgObjectapiTestbedStruct1> GetProp14() const override;
+    void SetProp14(const TArray<FOrgObjectapiTestbedStruct1>& InProp14) override;
 
 
     // operations
@@ -119,10 +119,10 @@ private:
     float Prop3;
     FString Prop4;
     TArray<int32> Prop5;
-    FStruct1 Prop6;
+    FOrgObjectapiTestbedStruct1 Prop6;
     int32 Prop7;
     TArray<int32> Prop10;
-    TArray<FStruct1> Prop11;
-    TArray<EEnum1> Prop12;
-    TArray<FStruct1> Prop14;
+    TArray<FOrgObjectapiTestbedStruct1> Prop11;
+    TArray<EOrgObjectapiTestbedEnum1> Prop12;
+    TArray<FOrgObjectapiTestbedStruct1> Prop14;
 };

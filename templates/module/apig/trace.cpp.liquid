@@ -1,4 +1,5 @@
 {% comment %} Copyright Epic Games, Inc. All Rights Reserved {% endcomment -%}
+{% assign moduleCapital = module.name | capital -%}
 #include "{{module.name|capital}}.trace.h"
 #include "{{module.name|capital}}.json.adapter.h"
 #include "tracer.h"
@@ -20,7 +21,7 @@ void {{class}}::capture_state(I{{module.name | capital}}{{interface.name|capital
 }
 
 {% for property in interface.properties %}
-void {{class}}::trace_callSet{{property.name | capital}}({{property|unrealParam: '', 'In'}})
+void {{class}}::trace_callSet{{property.name | capital}}({{property|unrealParam: moduleCapital, 'In'}})
 {
     nlohmann::json fields_;
     fields_["{{property.name}}"] = {{property|unrealVarName: 'In'}};
@@ -30,7 +31,7 @@ void {{class}}::trace_callSet{{property.name | capital}}({{property|unrealParam:
 
 {% for signal in interface.signals %}
 
-void {{class}}::trace_signal{{signal.name|capital}}({{signal|unrealParams}})
+void {{class}}::trace_signal{{signal.name|capital}}({{signal|unrealParams: moduleCapital}})
 {
     nlohmann::json fields_;
     {% for param in signal.params %}
@@ -42,7 +43,7 @@ void {{class}}::trace_signal{{signal.name|capital}}({{signal|unrealParams}})
 
 {% for operation in interface.operations %}
 
-void {{class}}::trace_call{{operation.name|capital}}({{operation|unrealParams}})
+void {{class}}::trace_call{{operation.name|capital}}({{operation|unrealParams: moduleCapital}})
 {
     nlohmann::json fields_;
     {% for param in operation.params %}

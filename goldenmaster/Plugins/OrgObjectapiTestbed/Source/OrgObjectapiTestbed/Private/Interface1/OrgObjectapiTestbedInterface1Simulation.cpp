@@ -32,12 +32,12 @@ OrgObjectapiTestbedInterface1SimulationService::OrgObjectapiTestbedInterface1Sim
     , Prop3(0.0f)
     , Prop4(FString())
     , Prop5(TArray<int32>())
-    , Prop6(FStruct1())
+    , Prop6(FOrgObjectapiTestbedStruct1())
     , Prop7(0)
     , Prop10(TArray<int32>())
-    , Prop11(TArray<FStruct1>())
-    , Prop12(TArray<EEnum1>())
-    , Prop14(TArray<FStruct1>())
+    , Prop11(TArray<FOrgObjectapiTestbedStruct1>())
+    , Prop12(TArray<EOrgObjectapiTestbedEnum1>())
+    , Prop14(TArray<FOrgObjectapiTestbedStruct1>())
 {
     NotifyRequestFunc Interface1StateChangedFunc = [this](NotifyRequestArg arg)
     {
@@ -46,77 +46,77 @@ OrgObjectapiTestbedInterface1SimulationService::OrgObjectapiTestbedInterface1Sim
             if(bProp1 != fields["prop1"].get<bool>())
             {
                 bProp1 = fields["prop1"].get<bool>();
-                bProp1Changed.Broadcast(bProp1);
+                bOrgObjectapiTestbedInterface1Prop1Changed.Broadcast(bProp1);
             }
         }
         if(fields.contains("prop2")) {
             if(Prop2 != fields["prop2"].get<int32>())
             {
                 Prop2 = fields["prop2"].get<int32>();
-                Prop2Changed.Broadcast(Prop2);
+                OrgObjectapiTestbedInterface1Prop2Changed.Broadcast(Prop2);
             }
         }
         if(fields.contains("prop3")) {
             if(Prop3 != fields["prop3"].get<float>())
             {
                 Prop3 = fields["prop3"].get<float>();
-                Prop3Changed.Broadcast(Prop3);
+                OrgObjectapiTestbedInterface1Prop3Changed.Broadcast(Prop3);
             }
         }
         if(fields.contains("prop4")) {
             if(Prop4 != fields["prop4"].get<FString>())
             {
                 Prop4 = fields["prop4"].get<FString>();
-                Prop4Changed.Broadcast(Prop4);
+                OrgObjectapiTestbedInterface1Prop4Changed.Broadcast(Prop4);
             }
         }
         if(fields.contains("prop5")) {
             if(Prop5 != fields["prop5"].get<TArray<int32>>())
             {
                 Prop5 = fields["prop5"].get<TArray<int32>>();
-                Prop5Changed.Broadcast(Prop5);
+                OrgObjectapiTestbedInterface1Prop5Changed.Broadcast(Prop5);
             }
         }
         if(fields.contains("prop6")) {
-            if(Prop6 != fields["prop6"].get<FStruct1>())
+            if(Prop6 != fields["prop6"].get<FOrgObjectapiTestbedStruct1>())
             {
-                Prop6 = fields["prop6"].get<FStruct1>();
-                Prop6Changed.Broadcast(Prop6);
+                Prop6 = fields["prop6"].get<FOrgObjectapiTestbedStruct1>();
+                OrgObjectapiTestbedInterface1Prop6Changed.Broadcast(Prop6);
             }
         }
         if(fields.contains("prop7")) {
             if(Prop7 != fields["prop7"].get<int32>())
             {
                 Prop7 = fields["prop7"].get<int32>();
-                Prop7Changed.Broadcast(Prop7);
+                OrgObjectapiTestbedInterface1Prop7Changed.Broadcast(Prop7);
             }
         }
         if(fields.contains("prop10")) {
             if(Prop10 != fields["prop10"].get<TArray<int32>>())
             {
                 Prop10 = fields["prop10"].get<TArray<int32>>();
-                Prop10Changed.Broadcast(Prop10);
+                OrgObjectapiTestbedInterface1Prop10Changed.Broadcast(Prop10);
             }
         }
         if(fields.contains("prop11")) {
-            if(Prop11 != fields["prop11"].get<TArray<FStruct1>>())
+            if(Prop11 != fields["prop11"].get<TArray<FOrgObjectapiTestbedStruct1>>())
             {
-                Prop11 = fields["prop11"].get<TArray<FStruct1>>();
-                Prop11Changed.Broadcast(Prop11);
+                Prop11 = fields["prop11"].get<TArray<FOrgObjectapiTestbedStruct1>>();
+                OrgObjectapiTestbedInterface1Prop11Changed.Broadcast(Prop11);
             }
         }
         if(fields.contains("prop12")) {
-            if(Prop12 != fields["prop12"].get<TArray<EEnum1>>())
+            if(Prop12 != fields["prop12"].get<TArray<EOrgObjectapiTestbedEnum1>>())
             {
-                Prop12 = fields["prop12"].get<TArray<EEnum1>>();
-                Prop12Changed.Broadcast(Prop12);
+                Prop12 = fields["prop12"].get<TArray<EOrgObjectapiTestbedEnum1>>();
+                OrgObjectapiTestbedInterface1Prop12Changed.Broadcast(Prop12);
             }
         }
         if(fields.contains("prop14")) {
-            if(Prop14 != fields["prop14"].get<TArray<FStruct1>>())
+            if(Prop14 != fields["prop14"].get<TArray<FOrgObjectapiTestbedStruct1>>())
             {
-                Prop14 = fields["prop14"].get<TArray<FStruct1>>();
-                Prop14Changed.Broadcast(Prop14);
+                Prop14 = fields["prop14"].get<TArray<FOrgObjectapiTestbedStruct1>>();
+                OrgObjectapiTestbedInterface1Prop14Changed.Broadcast(Prop14);
             }
         }
     };
@@ -132,77 +132,77 @@ OrgObjectapiTestbedInterface1SimulationService::OrgObjectapiTestbedInterface1Sim
             if(bProp1 != fields["prop1"].get<bool>())
             {
                 bProp1 = fields["prop1"].get<bool>();
-                bProp1Changed.Broadcast(bProp1);
+                bOrgObjectapiTestbedInterface1Prop1Changed.Broadcast(bProp1);
             }
         }
         if(fields.contains("prop2")) {
             if(Prop2 != fields["prop2"].get<int32>())
             {
                 Prop2 = fields["prop2"].get<int32>();
-                Prop2Changed.Broadcast(Prop2);
+                OrgObjectapiTestbedInterface1Prop2Changed.Broadcast(Prop2);
             }
         }
         if(fields.contains("prop3")) {
             if(Prop3 != fields["prop3"].get<float>())
             {
                 Prop3 = fields["prop3"].get<float>();
-                Prop3Changed.Broadcast(Prop3);
+                OrgObjectapiTestbedInterface1Prop3Changed.Broadcast(Prop3);
             }
         }
         if(fields.contains("prop4")) {
             if(Prop4 != fields["prop4"].get<FString>())
             {
                 Prop4 = fields["prop4"].get<FString>();
-                Prop4Changed.Broadcast(Prop4);
+                OrgObjectapiTestbedInterface1Prop4Changed.Broadcast(Prop4);
             }
         }
         if(fields.contains("prop5")) {
             if(Prop5 != fields["prop5"].get<TArray<int32>>())
             {
                 Prop5 = fields["prop5"].get<TArray<int32>>();
-                Prop5Changed.Broadcast(Prop5);
+                OrgObjectapiTestbedInterface1Prop5Changed.Broadcast(Prop5);
             }
         }
         if(fields.contains("prop6")) {
-            if(Prop6 != fields["prop6"].get<FStruct1>())
+            if(Prop6 != fields["prop6"].get<FOrgObjectapiTestbedStruct1>())
             {
-                Prop6 = fields["prop6"].get<FStruct1>();
-                Prop6Changed.Broadcast(Prop6);
+                Prop6 = fields["prop6"].get<FOrgObjectapiTestbedStruct1>();
+                OrgObjectapiTestbedInterface1Prop6Changed.Broadcast(Prop6);
             }
         }
         if(fields.contains("prop7")) {
             if(Prop7 != fields["prop7"].get<int32>())
             {
                 Prop7 = fields["prop7"].get<int32>();
-                Prop7Changed.Broadcast(Prop7);
+                OrgObjectapiTestbedInterface1Prop7Changed.Broadcast(Prop7);
             }
         }
         if(fields.contains("prop10")) {
             if(Prop10 != fields["prop10"].get<TArray<int32>>())
             {
                 Prop10 = fields["prop10"].get<TArray<int32>>();
-                Prop10Changed.Broadcast(Prop10);
+                OrgObjectapiTestbedInterface1Prop10Changed.Broadcast(Prop10);
             }
         }
         if(fields.contains("prop11")) {
-            if(Prop11 != fields["prop11"].get<TArray<FStruct1>>())
+            if(Prop11 != fields["prop11"].get<TArray<FOrgObjectapiTestbedStruct1>>())
             {
-                Prop11 = fields["prop11"].get<TArray<FStruct1>>();
-                Prop11Changed.Broadcast(Prop11);
+                Prop11 = fields["prop11"].get<TArray<FOrgObjectapiTestbedStruct1>>();
+                OrgObjectapiTestbedInterface1Prop11Changed.Broadcast(Prop11);
             }
         }
         if(fields.contains("prop12")) {
-            if(Prop12 != fields["prop12"].get<TArray<EEnum1>>())
+            if(Prop12 != fields["prop12"].get<TArray<EOrgObjectapiTestbedEnum1>>())
             {
-                Prop12 = fields["prop12"].get<TArray<EEnum1>>();
-                Prop12Changed.Broadcast(Prop12);
+                Prop12 = fields["prop12"].get<TArray<EOrgObjectapiTestbedEnum1>>();
+                OrgObjectapiTestbedInterface1Prop12Changed.Broadcast(Prop12);
             }
         }
         if(fields.contains("prop14")) {
-            if(Prop14 != fields["prop14"].get<TArray<FStruct1>>())
+            if(Prop14 != fields["prop14"].get<TArray<FOrgObjectapiTestbedStruct1>>())
             {
-                Prop14 = fields["prop14"].get<TArray<FStruct1>>();
-                Prop14Changed.Broadcast(Prop14);
+                Prop14 = fields["prop14"].get<TArray<FOrgObjectapiTestbedStruct1>>();
+                OrgObjectapiTestbedInterface1Prop14Changed.Broadcast(Prop14);
             }
         }
     };
@@ -211,7 +211,7 @@ OrgObjectapiTestbedInterface1SimulationService::OrgObjectapiTestbedInterface1Sim
     // register notification callback functions, signal/event -> fcn
     NotifyRequestFunc sig1Func = [this](NotifyRequestArg arg)
     {
-        Sig1Signal.Broadcast();
+        OrgObjectapiTestbedInterface1Sig1Signal.Broadcast();
     };
     UnrealSimulation::instance()->onNotify("org.objectapi.testbed/Interface1#sig1", sig1Func);
 
@@ -220,7 +220,7 @@ OrgObjectapiTestbedInterface1SimulationService::OrgObjectapiTestbedInterface1Sim
         const json fields = arg.params;
         if(fields.contains("step") &&fields.contains("step2"))
         {
-            Sig2Signal.Broadcast(fields["step"].get<int32>(),fields["step2"].get<FString>());
+            OrgObjectapiTestbedInterface1Sig2Signal.Broadcast(fields["step"].get<int32>(),fields["step2"].get<FString>());
         }
     };
     UnrealSimulation::instance()->onNotify("org.objectapi.testbed/Interface1#sig2", sig2Func);
@@ -230,7 +230,7 @@ OrgObjectapiTestbedInterface1SimulationService::OrgObjectapiTestbedInterface1Sim
         const json fields = arg.params;
         if(fields.contains("step"))
         {
-            Sig3Signal.Broadcast(fields["step"].get<float>());
+            OrgObjectapiTestbedInterface1Sig3Signal.Broadcast(fields["step"].get<float>());
         }
     };
     UnrealSimulation::instance()->onNotify("org.objectapi.testbed/Interface1#sig3", sig3Func);
@@ -246,19 +246,19 @@ OrgObjectapiTestbedInterface1SimulationService::~OrgObjectapiTestbedInterface1Si
     UnrealSimulation::instance()->RemoveOnNotify("org.objectapi.testbed/Interface1#sig3");
 }
 
-FSig1Delegate& OrgObjectapiTestbedInterface1SimulationService::GetSig1SignalDelegate()
+FOrgObjectapiTestbedInterface1Sig1Delegate& OrgObjectapiTestbedInterface1SimulationService::GetOrgObjectapiTestbedInterface1Sig1SignalDelegate()
 {
-    return Sig1Signal;
+    return OrgObjectapiTestbedInterface1Sig1Signal;
 }
 
-FSig2Delegate& OrgObjectapiTestbedInterface1SimulationService::GetSig2SignalDelegate()
+FOrgObjectapiTestbedInterface1Sig2Delegate& OrgObjectapiTestbedInterface1SimulationService::GetOrgObjectapiTestbedInterface1Sig2SignalDelegate()
 {
-    return Sig2Signal;
+    return OrgObjectapiTestbedInterface1Sig2Signal;
 }
 
-FSig3Delegate& OrgObjectapiTestbedInterface1SimulationService::GetSig3SignalDelegate()
+FOrgObjectapiTestbedInterface1Sig3Delegate& OrgObjectapiTestbedInterface1SimulationService::GetOrgObjectapiTestbedInterface1Sig3SignalDelegate()
 {
-    return Sig3Signal;
+    return OrgObjectapiTestbedInterface1Sig3Signal;
 }
 
 bool OrgObjectapiTestbedInterface1SimulationService::GetProp1() const
@@ -273,9 +273,9 @@ void OrgObjectapiTestbedInterface1SimulationService::SetProp1(bool bInProp1)
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface1", "_set", params);
 }
 
-FbProp1ChangedDelegate& OrgObjectapiTestbedInterface1SimulationService::GetbProp1ChangedDelegate()
+FbOrgObjectapiTestbedInterface1Prop1ChangedDelegate& OrgObjectapiTestbedInterface1SimulationService::GetbOrgObjectapiTestbedInterface1Prop1ChangedDelegate()
 {
-    return bProp1Changed;
+    return bOrgObjectapiTestbedInterface1Prop1Changed;
 }
 
 int32 OrgObjectapiTestbedInterface1SimulationService::GetProp2() const
@@ -290,9 +290,9 @@ void OrgObjectapiTestbedInterface1SimulationService::SetProp2(int32 InProp2)
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface1", "_set", params);
 }
 
-FProp2ChangedDelegate& OrgObjectapiTestbedInterface1SimulationService::GetProp2ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop2ChangedDelegate& OrgObjectapiTestbedInterface1SimulationService::GetOrgObjectapiTestbedInterface1Prop2ChangedDelegate()
 {
-    return Prop2Changed;
+    return OrgObjectapiTestbedInterface1Prop2Changed;
 }
 
 float OrgObjectapiTestbedInterface1SimulationService::GetProp3() const
@@ -307,9 +307,9 @@ void OrgObjectapiTestbedInterface1SimulationService::SetProp3(float InProp3)
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface1", "_set", params);
 }
 
-FProp3ChangedDelegate& OrgObjectapiTestbedInterface1SimulationService::GetProp3ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop3ChangedDelegate& OrgObjectapiTestbedInterface1SimulationService::GetOrgObjectapiTestbedInterface1Prop3ChangedDelegate()
 {
-    return Prop3Changed;
+    return OrgObjectapiTestbedInterface1Prop3Changed;
 }
 
 FString OrgObjectapiTestbedInterface1SimulationService::GetProp4() const
@@ -324,9 +324,9 @@ void OrgObjectapiTestbedInterface1SimulationService::SetProp4(const FString& InP
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface1", "_set", params);
 }
 
-FProp4ChangedDelegate& OrgObjectapiTestbedInterface1SimulationService::GetProp4ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop4ChangedDelegate& OrgObjectapiTestbedInterface1SimulationService::GetOrgObjectapiTestbedInterface1Prop4ChangedDelegate()
 {
-    return Prop4Changed;
+    return OrgObjectapiTestbedInterface1Prop4Changed;
 }
 
 TArray<int32> OrgObjectapiTestbedInterface1SimulationService::GetProp5() const
@@ -341,26 +341,26 @@ void OrgObjectapiTestbedInterface1SimulationService::SetProp5(const TArray<int32
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface1", "_set", params);
 }
 
-FProp5ChangedDelegate& OrgObjectapiTestbedInterface1SimulationService::GetProp5ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop5ChangedDelegate& OrgObjectapiTestbedInterface1SimulationService::GetOrgObjectapiTestbedInterface1Prop5ChangedDelegate()
 {
-    return Prop5Changed;
+    return OrgObjectapiTestbedInterface1Prop5Changed;
 }
 
-FStruct1 OrgObjectapiTestbedInterface1SimulationService::GetProp6() const
+FOrgObjectapiTestbedStruct1 OrgObjectapiTestbedInterface1SimulationService::GetProp6() const
 {
     return Prop6;
 }
 
-void OrgObjectapiTestbedInterface1SimulationService::SetProp6(const FStruct1& InProp6)
+void OrgObjectapiTestbedInterface1SimulationService::SetProp6(const FOrgObjectapiTestbedStruct1& InProp6)
 {
     Params params;
     params["prop6"] = InProp6;
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface1", "_set", params);
 }
 
-FProp6ChangedDelegate& OrgObjectapiTestbedInterface1SimulationService::GetProp6ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop6ChangedDelegate& OrgObjectapiTestbedInterface1SimulationService::GetOrgObjectapiTestbedInterface1Prop6ChangedDelegate()
 {
-    return Prop6Changed;
+    return OrgObjectapiTestbedInterface1Prop6Changed;
 }
 
 int32 OrgObjectapiTestbedInterface1SimulationService::GetProp7() const
@@ -375,9 +375,9 @@ void OrgObjectapiTestbedInterface1SimulationService::SetProp7(int32 InProp7)
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface1", "_set", params);
 }
 
-FProp7ChangedDelegate& OrgObjectapiTestbedInterface1SimulationService::GetProp7ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop7ChangedDelegate& OrgObjectapiTestbedInterface1SimulationService::GetOrgObjectapiTestbedInterface1Prop7ChangedDelegate()
 {
-    return Prop7Changed;
+    return OrgObjectapiTestbedInterface1Prop7Changed;
 }
 
 TArray<int32> OrgObjectapiTestbedInterface1SimulationService::GetProp10() const
@@ -392,60 +392,60 @@ void OrgObjectapiTestbedInterface1SimulationService::SetProp10(const TArray<int3
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface1", "_set", params);
 }
 
-FProp10ChangedDelegate& OrgObjectapiTestbedInterface1SimulationService::GetProp10ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop10ChangedDelegate& OrgObjectapiTestbedInterface1SimulationService::GetOrgObjectapiTestbedInterface1Prop10ChangedDelegate()
 {
-    return Prop10Changed;
+    return OrgObjectapiTestbedInterface1Prop10Changed;
 }
 
-TArray<FStruct1> OrgObjectapiTestbedInterface1SimulationService::GetProp11() const
+TArray<FOrgObjectapiTestbedStruct1> OrgObjectapiTestbedInterface1SimulationService::GetProp11() const
 {
     return Prop11;
 }
 
-void OrgObjectapiTestbedInterface1SimulationService::SetProp11(const TArray<FStruct1>& InProp11)
+void OrgObjectapiTestbedInterface1SimulationService::SetProp11(const TArray<FOrgObjectapiTestbedStruct1>& InProp11)
 {
     Params params;
     params["prop11"] = InProp11;
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface1", "_set", params);
 }
 
-FProp11ChangedDelegate& OrgObjectapiTestbedInterface1SimulationService::GetProp11ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop11ChangedDelegate& OrgObjectapiTestbedInterface1SimulationService::GetOrgObjectapiTestbedInterface1Prop11ChangedDelegate()
 {
-    return Prop11Changed;
+    return OrgObjectapiTestbedInterface1Prop11Changed;
 }
 
-TArray<EEnum1> OrgObjectapiTestbedInterface1SimulationService::GetProp12() const
+TArray<EOrgObjectapiTestbedEnum1> OrgObjectapiTestbedInterface1SimulationService::GetProp12() const
 {
     return Prop12;
 }
 
-void OrgObjectapiTestbedInterface1SimulationService::SetProp12(const TArray<EEnum1>& InProp12)
+void OrgObjectapiTestbedInterface1SimulationService::SetProp12(const TArray<EOrgObjectapiTestbedEnum1>& InProp12)
 {
     Params params;
     params["prop12"] = InProp12;
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface1", "_set", params);
 }
 
-FProp12ChangedDelegate& OrgObjectapiTestbedInterface1SimulationService::GetProp12ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop12ChangedDelegate& OrgObjectapiTestbedInterface1SimulationService::GetOrgObjectapiTestbedInterface1Prop12ChangedDelegate()
 {
-    return Prop12Changed;
+    return OrgObjectapiTestbedInterface1Prop12Changed;
 }
 
-TArray<FStruct1> OrgObjectapiTestbedInterface1SimulationService::GetProp14() const
+TArray<FOrgObjectapiTestbedStruct1> OrgObjectapiTestbedInterface1SimulationService::GetProp14() const
 {
     return Prop14;
 }
 
-void OrgObjectapiTestbedInterface1SimulationService::SetProp14(const TArray<FStruct1>& InProp14)
+void OrgObjectapiTestbedInterface1SimulationService::SetProp14(const TArray<FOrgObjectapiTestbedStruct1>& InProp14)
 {
     Params params;
     params["prop14"] = InProp14;
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface1", "_set", params);
 }
 
-FProp14ChangedDelegate& OrgObjectapiTestbedInterface1SimulationService::GetProp14ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop14ChangedDelegate& OrgObjectapiTestbedInterface1SimulationService::GetOrgObjectapiTestbedInterface1Prop14ChangedDelegate()
 {
-    return Prop14Changed;
+    return OrgObjectapiTestbedInterface1Prop14Changed;
 }
 
 void OrgObjectapiTestbedInterface1SimulationService::Op1()

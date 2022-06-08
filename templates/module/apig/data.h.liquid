@@ -1,5 +1,6 @@
 {% comment %} Copyright Epic Games, Inc. All Rights Reserved {% endcomment -%}
 {% assign API_MACRO = module.name | upcase | remove: '.' | append: "_API" %}
+{% assign moduleCapital = module.name | capital %}
 {% capture nl %}
 {% endcapture %}
 /**
@@ -34,10 +35,10 @@ limitations under the License.
 {% endcomment %}
 
 /**
- * Enumeration {{enum|unrealTypeName}}
+ * Enumeration {{enum|unrealTypeName: false, moduleCapital }}
  */
 UENUM(BlueprintType)
-enum class {{enum|unrealTypeName}} : uint8
+enum class {{enum|unrealTypeName: false, moduleCapital}} : uint8
 {
 {% for member in enum.members %}
     {{member.name | constant }}  UMETA(Displayname = "{{member.name}}"){% unless forloop.last %},{% endunless %}
@@ -45,9 +46,9 @@ enum class {{enum|unrealTypeName}} : uint8
 };
 
 /**
- * Convert from uint8 to {{enum|unrealTypeName}}
+ * Convert from uint8 to {{enum|unrealTypeName: false, moduleCapital}}
  */
-bool toUE4Type({{enum|unrealTypeName}}& value, uint8 v);
+bool toUE4Type({{enum|unrealTypeName: false, moduleCapital}}& value, uint8 v);
 
 {% endfor %}
 
@@ -60,21 +61,21 @@ bool toUE4Type({{enum|unrealTypeName}}& value, uint8 v);
 {% endcomment %}
 
 /**
- * Struct {{struct|unrealTypeName}}
+ * Struct {{struct|unrealTypeName: false, moduleCapital}}
  */
 USTRUCT(BlueprintType)
-struct {{API_MACRO}} {{struct|unrealTypeName}}
+struct {{API_MACRO}} {{struct|unrealTypeName: false, moduleCapital}}
 {
 	GENERATED_BODY()
 
 {% for field in struct.fields %}
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    {{field|unrealReturn}} {{field.name}};
+    {{field|unrealTypeName: false, moduleCapital}} {{field.name}};
 {% endfor %}
 
-	bool operator==(const {{struct|unrealTypeName}}& rhs) const;
-	bool operator!=(const {{struct|unrealTypeName}}& rhs) const;
+	bool operator==(const {{struct|unrealTypeName: false, moduleCapital}}& rhs) const;
+	bool operator!=(const {{struct|unrealTypeName: false, moduleCapital}}& rhs) const;
 };
 
 {% endfor %}

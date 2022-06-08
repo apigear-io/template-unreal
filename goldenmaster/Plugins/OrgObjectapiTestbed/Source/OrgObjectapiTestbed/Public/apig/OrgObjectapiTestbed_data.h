@@ -21,10 +21,10 @@ limitations under the License.
 #include "OrgObjectapiTestbed_data.generated.h"
 
 /**
- * Enumeration EEnum1
+ * Enumeration EOrgObjectapiTestbedEnum1
  */
 UENUM(BlueprintType)
-enum class EEnum1 : uint8
+enum class EOrgObjectapiTestbedEnum1 : uint8
 {
     MEMBER1  UMETA(Displayname = "Member1"),
     MEMBER2  UMETA(Displayname = "Member2"),
@@ -33,15 +33,15 @@ enum class EEnum1 : uint8
 };
 
 /**
- * Convert from uint8 to EEnum1
+ * Convert from uint8 to EOrgObjectapiTestbedEnum1
  */
-bool toUE4Type(EEnum1& value, uint8 v);
+bool toUE4Type(EOrgObjectapiTestbedEnum1& value, uint8 v);
 
 /**
- * Enumeration EEnum2
+ * Enumeration EOrgObjectapiTestbedEnum2
  */
 UENUM(BlueprintType)
-enum class EEnum2 : uint8
+enum class EOrgObjectapiTestbedEnum2 : uint8
 {
     MEMBER1  UMETA(Displayname = "Member1"),
     MEMBER2  UMETA(Displayname = "Member2"),
@@ -50,15 +50,15 @@ enum class EEnum2 : uint8
 };
 
 /**
- * Convert from uint8 to EEnum2
+ * Convert from uint8 to EOrgObjectapiTestbedEnum2
  */
-bool toUE4Type(EEnum2& value, uint8 v);
+bool toUE4Type(EOrgObjectapiTestbedEnum2& value, uint8 v);
 
 /**
- * Struct FStruct1
+ * Struct FOrgObjectapiTestbedStruct1
  */
 USTRUCT(BlueprintType)
-struct ORGOBJECTAPITESTBED_API FStruct1
+struct ORGOBJECTAPITESTBED_API FOrgObjectapiTestbedStruct1
 {
 	GENERATED_BODY()
 
@@ -74,6 +74,6 @@ struct ORGOBJECTAPITESTBED_API FStruct1
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
     FString field4;
 
-	bool operator==(const FStruct1& rhs) const;
-	bool operator!=(const FStruct1& rhs) const;
+	bool operator==(const FOrgObjectapiTestbedStruct1& rhs) const;
+	bool operator!=(const FOrgObjectapiTestbedStruct1& rhs) const;
 };

@@ -1,5 +1,7 @@
 {% comment %} Copyright Epic Games, Inc. All Rights Reserved {% endcomment -%}
 {% assign class = module.name | capital | append: interface.name | capital | append: "WAMPService" -%}
+{% assign moduleCapital = module.name | capital %}
+{% assign moduleInterfaceCapital = moduleCapital | append: interface.name | capital %}
 /**
 Copyright 2021 ApiGear UG
 Copyright 2021 Epic Games, Inc.
@@ -40,7 +42,7 @@ using namespace ApiGear::WAMP;
 {{class}}::{{class}}()
 : I{{module.name | capital}}{{interface.name|capital}}Interface()
 {% for property in interface.properties %}
-, {{property|unrealVarName}}({{property|unrealDefault}})
+, {{property|unrealVarName}}({{property|unrealDefault: moduleCapital}})
 {% endfor %}
 {
     EventFunc {{interface.name | capital}}StateChangedFunc = [this](EventArg arg)
@@ -48,10 +50,10 @@ using namespace ApiGear::WAMP;
         const json fields = arg.kwargs;
 {% for property in interface.properties %}
         if(fields.contains("{{property.name}}")) {
-            if({{property|unrealVarName}} != fields["{{property.name}}"].get<{{property|unrealTypeName}}>())
+            if({{property|unrealVarName}} != fields["{{property.name}}"].get<{{property|unrealTypeName: false, moduleCapital}}>())
             {
-                {{property|unrealVarName}} = fields["{{property.name}}"].get<{{property|unrealTypeName}}>();
-                {{property|unrealVarName}}Changed.Broadcast({{property|unrealVarName}});
+                {{property|unrealVarName}} = fields["{{property.name}}"].get<{{property|unrealTypeName: false, moduleCapital}}>();
+                {{property|unrealVarName: moduleInterfaceCapital}}Changed.Broadcast({{property|unrealVarName}});
             }
         }
 {% endfor %}
@@ -66,10 +68,10 @@ using namespace ApiGear::WAMP;
         const json fields = arg.args[0];
 {% for property in interface.properties %}
         if(fields.contains("{{property.name}}")) {
-            if({{property|unrealVarName}} != fields["{{property.name}}"].get<{{property|unrealTypeName}}>())
+            if({{property|unrealVarName}} != fields["{{property.name}}"].get<{{property|unrealTypeName: false, moduleCapital}}>())
             {
-                {{property|unrealVarName}} = fields["{{property.name}}"].get<{{property|unrealTypeName}}>();
-                {{property|unrealVarName}}Changed.Broadcast({{property|unrealVarName}});
+                {{property|unrealVarName}} = fields["{{property.name}}"].get<{{property|unrealTypeName: false, moduleCapital}}>();
+                {{property|unrealVarName: moduleInterfaceCapital}}Changed.Broadcast({{property|unrealVarName}});
             }
         }
 {% endfor %}
@@ -82,14 +84,14 @@ using namespace ApiGear::WAMP;
     {% if signal.params.size > 0 %}
         if(arg.args.size() == {{signal.params.size}})
         {
-            {{signal|unrealVarName}}Signal.Broadcast(
+            {{signal|unrealVarName: moduleInterfaceCapital}}Signal.Broadcast(
     {%- for param in signal.params -%}
-            arg.args[{{forloop.index0}}].get<{{param|unrealReturn}}>(){% unless forloop.last %},{% endunless -%}
+            arg.args[{{forloop.index0}}].get<{{param|unrealReturn: moduleCapital}}>(){% unless forloop.last %},{% endunless -%}
     {%- endfor -%}
         );
         }
     {% else %}
-        {{signal|unrealVarName}}Signal.Broadcast();
+        {{signal|unrealVarName: moduleInterfaceCapital}}Signal.Broadcast();
     {% endif %}
     };
     UnrealWamp::instance()->doSubscribe("{{module.name}}.{{interface.name}}.{{signal.name}}", {{signal.name}}Func);
@@ -106,29 +108,29 @@ using namespace ApiGear::WAMP;
 }
 {{nl}}
 {% for signal in interface.signals %}
-F{{signal|unrealVarName}}Delegate& {{class}}::Get{{signal|unrealVarName}}SignalDelegate()
+F{{signal|unrealVarName: moduleInterfaceCapital}}Delegate& {{class}}::Get{{signal|unrealVarName: moduleInterfaceCapital}}SignalDelegate()
 {
-    return {{signal|unrealVarName}}Signal;
+    return {{signal|unrealVarName: moduleInterfaceCapital}}Signal;
 }
 {{nl}}
 {% endfor %}
 
 {% for property in interface.properties %}
-{{property|unrealTypeName}} {{class}}::Get{{property.name | capital}}() const
+{{property|unrealTypeName: false, moduleCapital}} {{class}}::Get{{property.name | capital}}() const
 {
     return {{property|unrealVarName}};
 }
 
-void {{class}}::Set{{property.name | capital}}({{property|unrealParam: '', 'In'}})
+void {{class}}::Set{{property.name | capital}}({{property|unrealParam: moduleCapital, 'In'}})
 {
     ArgumentsKw fields_;
     fields_["{{property.name}}"] = {{property|unrealVarName: 'In'}};
     UnrealWamp::instance()->doCall("{{module.name}}.{{interface.name}}._set", Arguments(), fields_);
 }
 
-F{{property|unrealVarName}}ChangedDelegate& {{class}}::Get{{property|unrealVarName}}ChangedDelegate()
+F{{property|unrealVarName: moduleInterfaceCapital}}ChangedDelegate& {{class}}::Get{{property|unrealVarName: moduleInterfaceCapital}}ChangedDelegate()
 {
-    return {{property|unrealVarName}}Changed;
+    return {{property|unrealVarName: moduleInterfaceCapital}}Changed;
 }
 {{nl}}
 {% endfor %}
@@ -139,8 +141,8 @@ F{{property|unrealVarName}}ChangedDelegate& {{class}}::Get{{property|unrealVarNa
    \brief {{operation.description}}
 */
 {% endif %}
-{% assign returnVal = operation|unrealReturn %}
-{{returnVal}} {{class}}::{{operation.name|capital}}({{operation|unrealParams}})
+{% assign returnVal = operation|unrealReturn: moduleCapital %}
+{{returnVal}} {{class}}::{{operation.name|capital}}({{operation|unrealParams: moduleCapital}})
 {
     {% if returnVal == "void" %}
     UnrealWamp::instance()->doCall("{{module.name}}.{{interface.name}}.{{operation.name}}", {

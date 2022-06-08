@@ -1,6 +1,7 @@
 {% comment %} Copyright Epic Games, Inc. All Rights Reserved {% endcomment -%}
 {% capture nl %}
 {% endcapture -%}
+{% assign moduleCapital = module.name | capital %}
 {% assign API_MACRO = module.name | upcase | remove: '.' | append: "_API" -%}
 /**
 Copyright 2021 ApiGear UG
@@ -40,19 +41,20 @@ limitations under the License.
  * Declaration for {{interface.name}}
  */
 {% assign class_capital = module.name | capital | append: interface.name | capital -%}
+{% assign moduleInterfaceCapital = moduleCapital | append: interface.name | capital %}
 {% assign class = "U" | append: class_capital | append: "Interface" %}
 // signal delegates
 {% for signal in interface.signals %}
-DECLARE_DYNAMIC_MULTICAST_DELEGATE{{signal.params.length|unrealDelegateNameAppendix}}(F{{signal|unrealVarName}}Delegate
+DECLARE_DYNAMIC_MULTICAST_DELEGATE{{signal.params.length|unrealDelegateNameAppendix}}(F{{signal|unrealVarName: moduleInterfaceCapital}}Delegate
 {%- for param in signal.params -%}
-    , {{param|unrealTypeName: true}}, {{param|unrealVarName}}
+    , {{param|unrealTypeName: true, moduleCapital}}, {{param|unrealVarName}}
 {%- endfor -%}
 );
 {{nl}}
 {% endfor %}
 // property delegates
 {% for property in interface.properties %}
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(F{{property|unrealVarName}}ChangedDelegate, {{property|unrealTypeName: true}}, {{property|unrealVarName}});
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(F{{property|unrealVarName: moduleInterfaceCapital}}ChangedDelegate, {{property|unrealTypeName: true, moduleCapital}}, {{property|unrealVarName}});
 {{nl}}
 {% endfor %}
 /**
@@ -76,22 +78,22 @@ class {{ API_MACRO }} {{class}}
 public:
 // signals
 {% for signal in interface.signals %}
-    virtual F{{signal|unrealVarName}}Delegate& Get{{signal|unrealVarName}}SignalDelegate() = 0;
+    virtual F{{signal|unrealVarName: moduleInterfaceCapital}}Delegate& Get{{signal|unrealVarName: moduleInterfaceCapital}}SignalDelegate() = 0;
 {{nl}}
 {% endfor %}
 {% for property in interface.properties %}
-    virtual F{{property|unrealVarName}}ChangedDelegate& Get{{property|unrealVarName}}ChangedDelegate() = 0;
+    virtual F{{property|unrealVarName: moduleInterfaceCapital}}ChangedDelegate& Get{{property|unrealVarName: moduleInterfaceCapital}}ChangedDelegate() = 0;
 {{nl}}
 {% endfor %}
 
 // methods
 {% for operation in interface.operations %}
-    virtual {{operation|unrealReturn}} {{operation.name|capital}}({{operation|unrealParams}}) = 0;
+    virtual {{operation|unrealReturn: moduleCapital}} {{operation.name|capital}}({{operation|unrealParams: moduleCapital}}) = 0;
 {% endfor %}
 // properties
 {% for property in interface.properties %}
-    virtual {{property|unrealTypeName}} Get{{property.name | capital}}() const = 0;
-    virtual void Set{{property.name | capital}}({{property|unrealParam: '', 'In'}}) = 0;
+    virtual {{property|unrealReturn: moduleCapital}} Get{{property.name | capital}}() const = 0;
+    virtual void Set{{property.name | capital}}({{property|unrealParam: moduleCapital, 'In'}}) = 0;
 {% endfor %}
 };
 

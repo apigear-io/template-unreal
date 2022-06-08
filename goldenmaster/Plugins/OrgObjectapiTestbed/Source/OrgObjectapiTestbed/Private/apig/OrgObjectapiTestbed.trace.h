@@ -12,12 +12,12 @@ public:
   static void trace_callSetProp3(float InProp3);
   static void trace_callSetProp4(const FString& InProp4);
   static void trace_callSetProp5(const TArray<int32>& InProp5);
-  static void trace_callSetProp6(const FStruct1& InProp6);
+  static void trace_callSetProp6(const FOrgObjectapiTestbedStruct1& InProp6);
   static void trace_callSetProp7(int32 InProp7);
   static void trace_callSetProp10(const TArray<int32>& InProp10);
-  static void trace_callSetProp11(const TArray<FStruct1>& InProp11);
-  static void trace_callSetProp12(const TArray<EEnum1>& InProp12);
-  static void trace_callSetProp14(const TArray<FStruct1>& InProp14);
+  static void trace_callSetProp11(const TArray<FOrgObjectapiTestbedStruct1>& InProp11);
+  static void trace_callSetProp12(const TArray<EOrgObjectapiTestbedEnum1>& InProp12);
+  static void trace_callSetProp14(const TArray<FOrgObjectapiTestbedStruct1>& InProp14);
   static void trace_signalSig1();
   static void trace_signalSig2(int32 Step, const FString& Step2);
   static void trace_signalSig3(float Step);

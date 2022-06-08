@@ -17,67 +17,67 @@ limitations under the License.
 
 #include "OrgObjectapiTestbed_data.h"
 /**
- * Enumeration EEnum1
+ * Enumeration EOrgObjectapiTestbedEnum1
  */
-bool toUE4Type(EEnum1& value, uint8 v)
+bool toUE4Type(EOrgObjectapiTestbedEnum1& value, uint8 v)
 {
     bool bSuccessful = false;
     switch (v) {
         case 0:
-            value = EEnum1::MEMBER1;
+            value = EOrgObjectapiTestbedEnum1::MEMBER1;
             bSuccessful = true;
             break;
         case 1:
-            value = EEnum1::MEMBER2;
+            value = EOrgObjectapiTestbedEnum1::MEMBER2;
             bSuccessful = true;
             break;
         case 2:
-            value = EEnum1::MEMBER3;
+            value = EOrgObjectapiTestbedEnum1::MEMBER3;
             bSuccessful = true;
             break;
         case 3:
-            value = EEnum1::MEMBER4;
+            value = EOrgObjectapiTestbedEnum1::MEMBER4;
             bSuccessful = true;
             break;
         default:
-            value = EEnum1::MEMBER1;
+            value = EOrgObjectapiTestbedEnum1::MEMBER1;
     }
     return bSuccessful;
 }
 /**
- * Enumeration EEnum2
+ * Enumeration EOrgObjectapiTestbedEnum2
  */
-bool toUE4Type(EEnum2& value, uint8 v)
+bool toUE4Type(EOrgObjectapiTestbedEnum2& value, uint8 v)
 {
     bool bSuccessful = false;
     switch (v) {
         case 0:
-            value = EEnum2::MEMBER1;
+            value = EOrgObjectapiTestbedEnum2::MEMBER1;
             bSuccessful = true;
             break;
         case 1:
-            value = EEnum2::MEMBER2;
+            value = EOrgObjectapiTestbedEnum2::MEMBER2;
             bSuccessful = true;
             break;
         case 2:
-            value = EEnum2::MEMBER3;
+            value = EOrgObjectapiTestbedEnum2::MEMBER3;
             bSuccessful = true;
             break;
         case 3:
-            value = EEnum2::MEMBER4;
+            value = EOrgObjectapiTestbedEnum2::MEMBER4;
             bSuccessful = true;
             break;
         default:
-            value = EEnum2::MEMBER1;
+            value = EOrgObjectapiTestbedEnum2::MEMBER1;
     }
     return bSuccessful;
 }
-bool FStruct1::operator==(const FStruct1& rhs) const
+bool FOrgObjectapiTestbedStruct1::operator==(const FOrgObjectapiTestbedStruct1& rhs) const
 {
 	return(field1 == rhs.field1)&&(field2 == rhs.field2)&&(field3 == rhs.field3)&&(field4 == rhs.field4);
 }
 
-bool FStruct1::operator!=(const FStruct1& rhs) const
+bool FOrgObjectapiTestbedStruct1::operator!=(const FOrgObjectapiTestbedStruct1& rhs) const
 {
 	return !operator==(rhs);
 }

@@ -52,7 +52,7 @@ void OrgObjectapiTestbedInterface1Tracer::trace_callSetProp5(const TArray<int32>
     fields_["prop5"] = InProp5;
     Tracer::instance()->call("org.objectapi.testbed/Interface1#_set", fields_);
 }
-void OrgObjectapiTestbedInterface1Tracer::trace_callSetProp6(const FStruct1& InProp6)
+void OrgObjectapiTestbedInterface1Tracer::trace_callSetProp6(const FOrgObjectapiTestbedStruct1& InProp6)
 {
     nlohmann::json fields_;
     fields_["prop6"] = InProp6;
@@ -70,19 +70,19 @@ void OrgObjectapiTestbedInterface1Tracer::trace_callSetProp10(const TArray<int32
     fields_["prop10"] = InProp10;
     Tracer::instance()->call("org.objectapi.testbed/Interface1#_set", fields_);
 }
-void OrgObjectapiTestbedInterface1Tracer::trace_callSetProp11(const TArray<FStruct1>& InProp11)
+void OrgObjectapiTestbedInterface1Tracer::trace_callSetProp11(const TArray<FOrgObjectapiTestbedStruct1>& InProp11)
 {
     nlohmann::json fields_;
     fields_["prop11"] = InProp11;
     Tracer::instance()->call("org.objectapi.testbed/Interface1#_set", fields_);
 }
-void OrgObjectapiTestbedInterface1Tracer::trace_callSetProp12(const TArray<EEnum1>& InProp12)
+void OrgObjectapiTestbedInterface1Tracer::trace_callSetProp12(const TArray<EOrgObjectapiTestbedEnum1>& InProp12)
 {
     nlohmann::json fields_;
     fields_["prop12"] = InProp12;
     Tracer::instance()->call("org.objectapi.testbed/Interface1#_set", fields_);
 }
-void OrgObjectapiTestbedInterface1Tracer::trace_callSetProp14(const TArray<FStruct1>& InProp14)
+void OrgObjectapiTestbedInterface1Tracer::trace_callSetProp14(const TArray<FOrgObjectapiTestbedStruct1>& InProp14)
 {
     nlohmann::json fields_;
     fields_["prop14"] = InProp14;

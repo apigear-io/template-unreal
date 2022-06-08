@@ -2,6 +2,8 @@
 {% assign class_name_capital = module.name | capital | append: interface.name | capital -%}
 {% assign class = "U" | append: class_name_capital | append: "Proxy" %}
 {% capture category %}ApiGear|{{module.name | capital}}|{{interface.name | capital}}{% endcapture -%}
+{% assign moduleCapital = module.name | capital %}
+{% assign moduleInterfaceCapital = moduleCapital | append: interface.name | capital %}
 {% assign API_MACRO = module.name | upcase | remove: '.' | append: "_API" -%}
 {% capture nl %}
 {% endcapture %}
@@ -40,18 +42,18 @@ public:
     // signals
 {% for signal in interface.signals %}
 	UPROPERTY(BlueprintAssignable, Category = "{{category}}")
-    F{{signal|unrealVarName}}Delegate {{signal|unrealVarName}}Signal;
-    F{{signal|unrealVarName}}Delegate& Get{{signal|unrealVarName}}SignalDelegate() override;
+    F{{signal|unrealVarName: moduleInterfaceCapital}}Delegate {{signal|unrealVarName: moduleInterfaceCapital}}Signal;
+    F{{signal|unrealVarName: moduleInterfaceCapital}}Delegate& Get{{signal|unrealVarName: moduleInterfaceCapital}}SignalDelegate() override;
 	UFUNCTION(Category = "{{category}}")
-    void On{{signal|unrealVarName}}({{signal|unrealParams}});
+    void On{{signal|unrealVarName: moduleInterfaceCapital}}({{signal|unrealParams: moduleCapital}});
     {{nl}}
 {% endfor %}
 {% for property in interface.properties %}
 	UPROPERTY(BlueprintAssignable, Category = "{{category}}")
-    F{{property|unrealVarName}}ChangedDelegate {{property|unrealVarName}}Changed;
-    F{{property|unrealVarName}}ChangedDelegate& Get{{property|unrealVarName}}ChangedDelegate() override;
+    F{{property|unrealVarName: moduleInterfaceCapital}}ChangedDelegate {{property|unrealVarName: moduleInterfaceCapital}}Changed;
+    F{{property|unrealVarName: moduleInterfaceCapital}}ChangedDelegate& Get{{property|unrealVarName: moduleInterfaceCapital}}ChangedDelegate() override;
 	UFUNCTION(BlueprintCallable, Category = "{{category}}")
-    void On{{property|unrealVarName}}Changed({{property|unrealParam: '', 'In'}});
+    void On{{property|unrealVarName: moduleInterfaceCapital}}Changed({{property|unrealParam: moduleCapital, 'In'}});
 {{nl}}
 {% endfor %}
     // properties
@@ -60,22 +62,22 @@ public:
     /** {{property.description}} */
 {% endif %}
 	UFUNCTION(BlueprintCallable, Category = "{{category}}")
-    {{property|unrealTypeName}} Get{{property.name | capital}}() const override;
+    {{property|unrealTypeName: false, moduleCapital}} Get{{property.name | capital}}() const override;
 
 	UFUNCTION(BlueprintCallable, Category = "{{category}}")
-    void Set{{property.name | capital}}({{property|unrealParam: '', 'In'}}) override;
+    void Set{{property.name | capital}}({{property|unrealParam: moduleCapital, 'In'}}) override;
 {{nl}}
 {% endfor %}
     // operations
 {% for operation in interface.operations %}
-{% assign returnVal = operation|unrealReturn %}
+{% assign returnVal = operation|unrealReturn: moduleCapital %}
     {% if returnVal == "void" %}
 	UFUNCTION(BlueprintCallable, Category = "{{category}}")
-    {{operation|unrealReturn}} {{operation.name | capital}}({{operation|unrealParams}}) override;
+    {{operation|unrealReturn: moduleCapital}} {{operation.name | capital}}({{operation|unrealParams: moduleCapital}}) override;
     {% else %}
 	UFUNCTION(BlueprintCallable, Category = "{{category}}", meta=(Latent, LatentInfo="LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-    void {{operation.name | capital}}(UObject* WorldContextObject, struct FLatentActionInfo LatentInfo, {{operation|unrealReturn}}& Result{% if operation.params.size > 0 %}, {%endif%}{{operation|unrealParams}});
-    {{operation|unrealReturn}} {{operation.name | capital}}({{operation|unrealParams}}) override;
+    void {{operation.name | capital}}(UObject* WorldContextObject, struct FLatentActionInfo LatentInfo, {{operation|unrealReturn: moduleCapital}}& Result{% if operation.params.size > 0 %}, {%endif%}{{operation|unrealParams: moduleCapital}});
+    {{operation|unrealReturn: moduleCapital}} {{operation.name | capital}}({{operation|unrealParams: moduleCapital}}) override;
     {% endif %}
 {{nl}}
 {% endfor %}
@@ -89,7 +91,7 @@ private:
     /** {{property.description}} */
 {% endif %}
 	UPROPERTY(EditAnywhere, BlueprintGetter=Get{{property.name | capital}}, BlueprintSetter=Set{{property.name | capital}}, Category = "{{category}}")
-    {{property|unrealTypeName}} {{property|unrealVarName}};
+    {{property|unrealTypeName: false, moduleCapital}} {{property|unrealVarName}};
 {{nl}}
 {% endfor %}
 };

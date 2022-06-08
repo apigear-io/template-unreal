@@ -63,9 +63,9 @@ void OrgObjectapiTestbedInterface2OLinkService::SetProp200(int32 InProp200)
     m_node->setRemoteProperty("org.objectapi.testbed.Interface2/prop200", InProp200);
 }
 
-FProp200ChangedDelegate& OrgObjectapiTestbedInterface2OLinkService::GetProp200ChangedDelegate()
+FOrgObjectapiTestbedInterface2Prop200ChangedDelegate& OrgObjectapiTestbedInterface2OLinkService::GetOrgObjectapiTestbedInterface2Prop200ChangedDelegate()
 {
-    return Prop200Changed;
+    return OrgObjectapiTestbedInterface2Prop200Changed;
 }
 int32 OrgObjectapiTestbedInterface2OLinkService::GetProp201() const
 {
@@ -80,9 +80,9 @@ void OrgObjectapiTestbedInterface2OLinkService::SetProp201(int32 InProp201)
     m_node->setRemoteProperty("org.objectapi.testbed.Interface2/prop201", InProp201);
 }
 
-FProp201ChangedDelegate& OrgObjectapiTestbedInterface2OLinkService::GetProp201ChangedDelegate()
+FOrgObjectapiTestbedInterface2Prop201ChangedDelegate& OrgObjectapiTestbedInterface2OLinkService::GetOrgObjectapiTestbedInterface2Prop201ChangedDelegate()
 {
-    return Prop201Changed;
+    return OrgObjectapiTestbedInterface2Prop201Changed;
 }
 int32 OrgObjectapiTestbedInterface2OLinkService::GetProp202() const
 {
@@ -97,9 +97,9 @@ void OrgObjectapiTestbedInterface2OLinkService::SetProp202(int32 InProp202)
     m_node->setRemoteProperty("org.objectapi.testbed.Interface2/prop202", InProp202);
 }
 
-FProp202ChangedDelegate& OrgObjectapiTestbedInterface2OLinkService::GetProp202ChangedDelegate()
+FOrgObjectapiTestbedInterface2Prop202ChangedDelegate& OrgObjectapiTestbedInterface2OLinkService::GetOrgObjectapiTestbedInterface2Prop202ChangedDelegate()
 {
-    return Prop202Changed;
+    return OrgObjectapiTestbedInterface2Prop202Changed;
 }
 float OrgObjectapiTestbedInterface2OLinkService::GetProp203() const
 {
@@ -114,9 +114,9 @@ void OrgObjectapiTestbedInterface2OLinkService::SetProp203(float InProp203)
     m_node->setRemoteProperty("org.objectapi.testbed.Interface2/prop203", InProp203);
 }
 
-FProp203ChangedDelegate& OrgObjectapiTestbedInterface2OLinkService::GetProp203ChangedDelegate()
+FOrgObjectapiTestbedInterface2Prop203ChangedDelegate& OrgObjectapiTestbedInterface2OLinkService::GetOrgObjectapiTestbedInterface2Prop203ChangedDelegate()
 {
-    return Prop203Changed;
+    return OrgObjectapiTestbedInterface2Prop203Changed;
 }
 float OrgObjectapiTestbedInterface2OLinkService::GetProp204() const
 {
@@ -131,9 +131,9 @@ void OrgObjectapiTestbedInterface2OLinkService::SetProp204(float InProp204)
     m_node->setRemoteProperty("org.objectapi.testbed.Interface2/prop204", InProp204);
 }
 
-FProp204ChangedDelegate& OrgObjectapiTestbedInterface2OLinkService::GetProp204ChangedDelegate()
+FOrgObjectapiTestbedInterface2Prop204ChangedDelegate& OrgObjectapiTestbedInterface2OLinkService::GetOrgObjectapiTestbedInterface2Prop204ChangedDelegate()
 {
-    return Prop204Changed;
+    return OrgObjectapiTestbedInterface2Prop204Changed;
 }
 FString OrgObjectapiTestbedInterface2OLinkService::GetProp205() const
 {
@@ -148,9 +148,9 @@ void OrgObjectapiTestbedInterface2OLinkService::SetProp205(const FString& InProp
     m_node->setRemoteProperty("org.objectapi.testbed.Interface2/prop205", InProp205);
 }
 
-FProp205ChangedDelegate& OrgObjectapiTestbedInterface2OLinkService::GetProp205ChangedDelegate()
+FOrgObjectapiTestbedInterface2Prop205ChangedDelegate& OrgObjectapiTestbedInterface2OLinkService::GetOrgObjectapiTestbedInterface2Prop205ChangedDelegate()
 {
-    return Prop205Changed;
+    return OrgObjectapiTestbedInterface2Prop205Changed;
 }
 
 
@@ -160,42 +160,42 @@ void OrgObjectapiTestbedInterface2OLinkService::applyState(const nlohmann::json&
         if(Prop200 != fields["prop200"].get<int32>())
         {
             Prop200 = fields["prop200"].get<int32>();
-            Prop200Changed.Broadcast(Prop200);
+            OrgObjectapiTestbedInterface2Prop200Changed.Broadcast(Prop200);
         }
     }
     if(fields.contains("prop201")) {
         if(Prop201 != fields["prop201"].get<int32>())
         {
             Prop201 = fields["prop201"].get<int32>();
-            Prop201Changed.Broadcast(Prop201);
+            OrgObjectapiTestbedInterface2Prop201Changed.Broadcast(Prop201);
         }
     }
     if(fields.contains("prop202")) {
         if(Prop202 != fields["prop202"].get<int32>())
         {
             Prop202 = fields["prop202"].get<int32>();
-            Prop202Changed.Broadcast(Prop202);
+            OrgObjectapiTestbedInterface2Prop202Changed.Broadcast(Prop202);
         }
     }
     if(fields.contains("prop203")) {
         if(Prop203 != fields["prop203"].get<float>())
         {
             Prop203 = fields["prop203"].get<float>();
-            Prop203Changed.Broadcast(Prop203);
+            OrgObjectapiTestbedInterface2Prop203Changed.Broadcast(Prop203);
         }
     }
     if(fields.contains("prop204")) {
         if(Prop204 != fields["prop204"].get<float>())
         {
             Prop204 = fields["prop204"].get<float>();
-            Prop204Changed.Broadcast(Prop204);
+            OrgObjectapiTestbedInterface2Prop204Changed.Broadcast(Prop204);
         }
     }
     if(fields.contains("prop205")) {
         if(Prop205 != fields["prop205"].get<FString>())
         {
             Prop205 = fields["prop205"].get<FString>();
-            Prop205Changed.Broadcast(Prop205);
+            OrgObjectapiTestbedInterface2Prop205Changed.Broadcast(Prop205);
         }
     }
 }
