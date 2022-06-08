@@ -123,10 +123,10 @@ F{{signal|unrealVarName}}Delegate& {{class}}::Get{{signal|unrealVarName}}SignalD
     return {{property|unrealVarName}};
 }
 
-void {{class}}::Set{{property.name | capital}}({{property|unrealTypeName: true}} Value)
+void {{class}}::Set{{property.name | capital}}({{property|unrealParam: '', 'In'}})
 {
     Params params;
-    params["{{property.name}}"] = Value;
+    params["{{property.name}}"] = {{property|unrealVarName: 'In'}};
     UnrealSimulation::instance()->doCall("{{module.name}}/{{interface.name}}", "_set", params);
 }
 

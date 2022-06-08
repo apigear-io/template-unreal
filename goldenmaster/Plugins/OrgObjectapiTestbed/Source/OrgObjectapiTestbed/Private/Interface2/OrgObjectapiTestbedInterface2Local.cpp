@@ -35,11 +35,11 @@ int32 OrgObjectapiTestbedInterface2LocalService::GetProp200() const
     return Prop200;
 }
 
-void OrgObjectapiTestbedInterface2LocalService::SetProp200(int32 Value)
+void OrgObjectapiTestbedInterface2LocalService::SetProp200(int32 InProp200)
 {
-    if(Prop200 != Value)
+    if(Prop200 != InProp200)
     {
-        Prop200 = Value;
+        Prop200 = InProp200;
         Prop200Changed.Broadcast(Prop200);
     }
 }
@@ -53,11 +53,11 @@ int32 OrgObjectapiTestbedInterface2LocalService::GetProp201() const
     return Prop201;
 }
 
-void OrgObjectapiTestbedInterface2LocalService::SetProp201(int32 Value)
+void OrgObjectapiTestbedInterface2LocalService::SetProp201(int32 InProp201)
 {
-    if(Prop201 != Value)
+    if(Prop201 != InProp201)
     {
-        Prop201 = Value;
+        Prop201 = InProp201;
         Prop201Changed.Broadcast(Prop201);
     }
 }
@@ -71,11 +71,11 @@ int32 OrgObjectapiTestbedInterface2LocalService::GetProp202() const
     return Prop202;
 }
 
-void OrgObjectapiTestbedInterface2LocalService::SetProp202(int32 Value)
+void OrgObjectapiTestbedInterface2LocalService::SetProp202(int32 InProp202)
 {
-    if(Prop202 != Value)
+    if(Prop202 != InProp202)
     {
-        Prop202 = Value;
+        Prop202 = InProp202;
         Prop202Changed.Broadcast(Prop202);
     }
 }
@@ -89,11 +89,11 @@ float OrgObjectapiTestbedInterface2LocalService::GetProp203() const
     return Prop203;
 }
 
-void OrgObjectapiTestbedInterface2LocalService::SetProp203(float Value)
+void OrgObjectapiTestbedInterface2LocalService::SetProp203(float InProp203)
 {
-    if(Prop203 != Value)
+    if(Prop203 != InProp203)
     {
-        Prop203 = Value;
+        Prop203 = InProp203;
         Prop203Changed.Broadcast(Prop203);
     }
 }
@@ -107,11 +107,11 @@ float OrgObjectapiTestbedInterface2LocalService::GetProp204() const
     return Prop204;
 }
 
-void OrgObjectapiTestbedInterface2LocalService::SetProp204(float Value)
+void OrgObjectapiTestbedInterface2LocalService::SetProp204(float InProp204)
 {
-    if(Prop204 != Value)
+    if(Prop204 != InProp204)
     {
-        Prop204 = Value;
+        Prop204 = InProp204;
         Prop204Changed.Broadcast(Prop204);
     }
 }
@@ -125,11 +125,11 @@ FString OrgObjectapiTestbedInterface2LocalService::GetProp205() const
     return Prop205;
 }
 
-void OrgObjectapiTestbedInterface2LocalService::SetProp205(FString Value)
+void OrgObjectapiTestbedInterface2LocalService::SetProp205(const FString& InProp205)
 {
-    if(Prop205 != Value)
+    if(Prop205 != InProp205)
     {
-        Prop205 = Value;
+        Prop205 = InProp205;
         Prop205Changed.Broadcast(Prop205);
     }
 }

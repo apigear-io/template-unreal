@@ -122,10 +122,10 @@ F{{signal|unrealVarName}}Delegate& {{class}}::Get{{signal|unrealVarName}}SignalD
 {% endfor %}
 
 {% for property in interface.properties %}
-void {{class}}::On{{property|unrealVarName}}Changed({{property|unrealTypeName: true}} Value)
+void {{class}}::On{{property|unrealVarName}}Changed({{property|unrealParam: '', 'In'}})
 {
     {{module.name | capital}}{{interface.name|capital}}Tracer::capture_state(this);
-    {{property|unrealVarName}}Changed.Broadcast(Value);
+    {{property|unrealVarName}}Changed.Broadcast({{property|unrealVarName: 'In'}});
 }
 
 {{property|unrealTypeName}} {{class}}::Get{{property.name | capital}}() const
@@ -133,10 +133,10 @@ void {{class}}::On{{property|unrealVarName}}Changed({{property|unrealTypeName: t
     return service->Get{{property.name | capital}}();
 }
 
-void {{class}}::Set{{property.name | capital}}({{property|unrealTypeName: true}} Value)
+void {{class}}::Set{{property.name | capital}}({{property|unrealParam: '', 'In'}})
 {
-    {{module.name | capital}}{{interface.name|capital}}Tracer::trace_callSet{{property.name|capital}}(Value);
-    service->Set{{property.name | capital}}(Value);
+    {{module.name | capital}}{{interface.name|capital}}Tracer::trace_callSet{{property.name|capital}}({{property|unrealVarName: 'In'}});
+    service->Set{{property.name | capital}}({{property|unrealVarName: 'In'}});
 }
 {{nl}}
 F{{property|unrealVarName}}ChangedDelegate& {{class}}::Get{{property|unrealVarName}}ChangedDelegate()

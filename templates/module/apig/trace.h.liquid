@@ -12,7 +12,7 @@ public:
   {{class}}();
   static void capture_state(I{{module.name | capital}}{{interface.name|capital}}Interface* obj);
   {% for property in interface.properties %}
-  static void trace_callSet{{property.name | capital}}({{property|unrealTypeName: true}} Value);
+  static void trace_callSet{{property.name | capital}}({{property|unrealParam: '', 'In'}});
   {% endfor %}
   {% for signal in interface.signals %}
   static void trace_signal{{signal.name|capital}}({{signal | unrealParams}});

@@ -55,12 +55,12 @@ int32 OrgObjectapiTestbedInterface2OLinkService::GetProp200() const
     return Prop200;
 }
 
-void OrgObjectapiTestbedInterface2OLinkService::SetProp200(int32 Value)
+void OrgObjectapiTestbedInterface2OLinkService::SetProp200(int32 InProp200)
 {
     if(!m_node) {
         return;
     }
-    m_node->setRemoteProperty("org.objectapi.testbed.Interface2/prop200", Value);
+    m_node->setRemoteProperty("org.objectapi.testbed.Interface2/prop200", InProp200);
 }
 
 FProp200ChangedDelegate& OrgObjectapiTestbedInterface2OLinkService::GetProp200ChangedDelegate()
@@ -72,12 +72,12 @@ int32 OrgObjectapiTestbedInterface2OLinkService::GetProp201() const
     return Prop201;
 }
 
-void OrgObjectapiTestbedInterface2OLinkService::SetProp201(int32 Value)
+void OrgObjectapiTestbedInterface2OLinkService::SetProp201(int32 InProp201)
 {
     if(!m_node) {
         return;
     }
-    m_node->setRemoteProperty("org.objectapi.testbed.Interface2/prop201", Value);
+    m_node->setRemoteProperty("org.objectapi.testbed.Interface2/prop201", InProp201);
 }
 
 FProp201ChangedDelegate& OrgObjectapiTestbedInterface2OLinkService::GetProp201ChangedDelegate()
@@ -89,12 +89,12 @@ int32 OrgObjectapiTestbedInterface2OLinkService::GetProp202() const
     return Prop202;
 }
 
-void OrgObjectapiTestbedInterface2OLinkService::SetProp202(int32 Value)
+void OrgObjectapiTestbedInterface2OLinkService::SetProp202(int32 InProp202)
 {
     if(!m_node) {
         return;
     }
-    m_node->setRemoteProperty("org.objectapi.testbed.Interface2/prop202", Value);
+    m_node->setRemoteProperty("org.objectapi.testbed.Interface2/prop202", InProp202);
 }
 
 FProp202ChangedDelegate& OrgObjectapiTestbedInterface2OLinkService::GetProp202ChangedDelegate()
@@ -106,12 +106,12 @@ float OrgObjectapiTestbedInterface2OLinkService::GetProp203() const
     return Prop203;
 }
 
-void OrgObjectapiTestbedInterface2OLinkService::SetProp203(float Value)
+void OrgObjectapiTestbedInterface2OLinkService::SetProp203(float InProp203)
 {
     if(!m_node) {
         return;
     }
-    m_node->setRemoteProperty("org.objectapi.testbed.Interface2/prop203", Value);
+    m_node->setRemoteProperty("org.objectapi.testbed.Interface2/prop203", InProp203);
 }
 
 FProp203ChangedDelegate& OrgObjectapiTestbedInterface2OLinkService::GetProp203ChangedDelegate()
@@ -123,12 +123,12 @@ float OrgObjectapiTestbedInterface2OLinkService::GetProp204() const
     return Prop204;
 }
 
-void OrgObjectapiTestbedInterface2OLinkService::SetProp204(float Value)
+void OrgObjectapiTestbedInterface2OLinkService::SetProp204(float InProp204)
 {
     if(!m_node) {
         return;
     }
-    m_node->setRemoteProperty("org.objectapi.testbed.Interface2/prop204", Value);
+    m_node->setRemoteProperty("org.objectapi.testbed.Interface2/prop204", InProp204);
 }
 
 FProp204ChangedDelegate& OrgObjectapiTestbedInterface2OLinkService::GetProp204ChangedDelegate()
@@ -140,12 +140,12 @@ FString OrgObjectapiTestbedInterface2OLinkService::GetProp205() const
     return Prop205;
 }
 
-void OrgObjectapiTestbedInterface2OLinkService::SetProp205(FString Value)
+void OrgObjectapiTestbedInterface2OLinkService::SetProp205(const FString& InProp205)
 {
     if(!m_node) {
         return;
     }
-    m_node->setRemoteProperty("org.objectapi.testbed.Interface2/prop205", Value);
+    m_node->setRemoteProperty("org.objectapi.testbed.Interface2/prop205", InProp205);
 }
 
 FProp205ChangedDelegate& OrgObjectapiTestbedInterface2OLinkService::GetProp205ChangedDelegate()

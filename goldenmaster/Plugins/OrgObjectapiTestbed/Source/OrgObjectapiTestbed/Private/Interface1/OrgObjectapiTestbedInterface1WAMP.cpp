@@ -261,10 +261,10 @@ bool OrgObjectapiTestbedInterface1WAMPService::GetProp1() const
     return bProp1;
 }
 
-void OrgObjectapiTestbedInterface1WAMPService::SetProp1(bool Value)
+void OrgObjectapiTestbedInterface1WAMPService::SetProp1(bool bInProp1)
 {
     ArgumentsKw fields_;
-    fields_["prop1"] = Value;
+    fields_["prop1"] = bInProp1;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface1._set", Arguments(), fields_);
 }
 
@@ -278,10 +278,10 @@ int32 OrgObjectapiTestbedInterface1WAMPService::GetProp2() const
     return Prop2;
 }
 
-void OrgObjectapiTestbedInterface1WAMPService::SetProp2(int32 Value)
+void OrgObjectapiTestbedInterface1WAMPService::SetProp2(int32 InProp2)
 {
     ArgumentsKw fields_;
-    fields_["prop2"] = Value;
+    fields_["prop2"] = InProp2;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface1._set", Arguments(), fields_);
 }
 
@@ -295,10 +295,10 @@ float OrgObjectapiTestbedInterface1WAMPService::GetProp3() const
     return Prop3;
 }
 
-void OrgObjectapiTestbedInterface1WAMPService::SetProp3(float Value)
+void OrgObjectapiTestbedInterface1WAMPService::SetProp3(float InProp3)
 {
     ArgumentsKw fields_;
-    fields_["prop3"] = Value;
+    fields_["prop3"] = InProp3;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface1._set", Arguments(), fields_);
 }
 
@@ -312,10 +312,10 @@ FString OrgObjectapiTestbedInterface1WAMPService::GetProp4() const
     return Prop4;
 }
 
-void OrgObjectapiTestbedInterface1WAMPService::SetProp4(FString Value)
+void OrgObjectapiTestbedInterface1WAMPService::SetProp4(const FString& InProp4)
 {
     ArgumentsKw fields_;
-    fields_["prop4"] = Value;
+    fields_["prop4"] = InProp4;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface1._set", Arguments(), fields_);
 }
 
@@ -329,10 +329,10 @@ TArray<int32> OrgObjectapiTestbedInterface1WAMPService::GetProp5() const
     return Prop5;
 }
 
-void OrgObjectapiTestbedInterface1WAMPService::SetProp5(const TArray<int32>& Value)
+void OrgObjectapiTestbedInterface1WAMPService::SetProp5(const TArray<int32>& InProp5)
 {
     ArgumentsKw fields_;
-    fields_["prop5"] = Value;
+    fields_["prop5"] = InProp5;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface1._set", Arguments(), fields_);
 }
 
@@ -346,10 +346,10 @@ FStruct1 OrgObjectapiTestbedInterface1WAMPService::GetProp6() const
     return Prop6;
 }
 
-void OrgObjectapiTestbedInterface1WAMPService::SetProp6(const FStruct1& Value)
+void OrgObjectapiTestbedInterface1WAMPService::SetProp6(const FStruct1& InProp6)
 {
     ArgumentsKw fields_;
-    fields_["prop6"] = Value;
+    fields_["prop6"] = InProp6;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface1._set", Arguments(), fields_);
 }
 
@@ -363,10 +363,10 @@ int32 OrgObjectapiTestbedInterface1WAMPService::GetProp7() const
     return Prop7;
 }
 
-void OrgObjectapiTestbedInterface1WAMPService::SetProp7(int32 Value)
+void OrgObjectapiTestbedInterface1WAMPService::SetProp7(int32 InProp7)
 {
     ArgumentsKw fields_;
-    fields_["prop7"] = Value;
+    fields_["prop7"] = InProp7;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface1._set", Arguments(), fields_);
 }
 
@@ -380,10 +380,10 @@ TArray<int32> OrgObjectapiTestbedInterface1WAMPService::GetProp10() const
     return Prop10;
 }
 
-void OrgObjectapiTestbedInterface1WAMPService::SetProp10(const TArray<int32>& Value)
+void OrgObjectapiTestbedInterface1WAMPService::SetProp10(const TArray<int32>& InProp10)
 {
     ArgumentsKw fields_;
-    fields_["prop10"] = Value;
+    fields_["prop10"] = InProp10;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface1._set", Arguments(), fields_);
 }
 
@@ -397,10 +397,10 @@ TArray<FStruct1> OrgObjectapiTestbedInterface1WAMPService::GetProp11() const
     return Prop11;
 }
 
-void OrgObjectapiTestbedInterface1WAMPService::SetProp11(const TArray<FStruct1>& Value)
+void OrgObjectapiTestbedInterface1WAMPService::SetProp11(const TArray<FStruct1>& InProp11)
 {
     ArgumentsKw fields_;
-    fields_["prop11"] = Value;
+    fields_["prop11"] = InProp11;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface1._set", Arguments(), fields_);
 }
 
@@ -414,10 +414,10 @@ TArray<EEnum1> OrgObjectapiTestbedInterface1WAMPService::GetProp12() const
     return Prop12;
 }
 
-void OrgObjectapiTestbedInterface1WAMPService::SetProp12(const TArray<EEnum1>& Value)
+void OrgObjectapiTestbedInterface1WAMPService::SetProp12(const TArray<EEnum1>& InProp12)
 {
     ArgumentsKw fields_;
-    fields_["prop12"] = Value;
+    fields_["prop12"] = InProp12;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface1._set", Arguments(), fields_);
 }
 
@@ -431,10 +431,10 @@ TArray<FStruct1> OrgObjectapiTestbedInterface1WAMPService::GetProp14() const
     return Prop14;
 }
 
-void OrgObjectapiTestbedInterface1WAMPService::SetProp14(const TArray<FStruct1>& Value)
+void OrgObjectapiTestbedInterface1WAMPService::SetProp14(const TArray<FStruct1>& InProp14)
 {
     ArgumentsKw fields_;
-    fields_["prop14"] = Value;
+    fields_["prop14"] = InProp14;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface1._set", Arguments(), fields_);
 }
 

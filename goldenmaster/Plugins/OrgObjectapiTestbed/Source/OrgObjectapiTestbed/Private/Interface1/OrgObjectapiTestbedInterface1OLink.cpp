@@ -75,12 +75,12 @@ bool OrgObjectapiTestbedInterface1OLinkService::GetProp1() const
     return bProp1;
 }
 
-void OrgObjectapiTestbedInterface1OLinkService::SetProp1(bool Value)
+void OrgObjectapiTestbedInterface1OLinkService::SetProp1(bool bInProp1)
 {
     if(!m_node) {
         return;
     }
-    m_node->setRemoteProperty("org.objectapi.testbed.Interface1/prop1", Value);
+    m_node->setRemoteProperty("org.objectapi.testbed.Interface1/prop1", bInProp1);
 }
 
 FbProp1ChangedDelegate& OrgObjectapiTestbedInterface1OLinkService::GetbProp1ChangedDelegate()
@@ -92,12 +92,12 @@ int32 OrgObjectapiTestbedInterface1OLinkService::GetProp2() const
     return Prop2;
 }
 
-void OrgObjectapiTestbedInterface1OLinkService::SetProp2(int32 Value)
+void OrgObjectapiTestbedInterface1OLinkService::SetProp2(int32 InProp2)
 {
     if(!m_node) {
         return;
     }
-    m_node->setRemoteProperty("org.objectapi.testbed.Interface1/prop2", Value);
+    m_node->setRemoteProperty("org.objectapi.testbed.Interface1/prop2", InProp2);
 }
 
 FProp2ChangedDelegate& OrgObjectapiTestbedInterface1OLinkService::GetProp2ChangedDelegate()
@@ -109,12 +109,12 @@ float OrgObjectapiTestbedInterface1OLinkService::GetProp3() const
     return Prop3;
 }
 
-void OrgObjectapiTestbedInterface1OLinkService::SetProp3(float Value)
+void OrgObjectapiTestbedInterface1OLinkService::SetProp3(float InProp3)
 {
     if(!m_node) {
         return;
     }
-    m_node->setRemoteProperty("org.objectapi.testbed.Interface1/prop3", Value);
+    m_node->setRemoteProperty("org.objectapi.testbed.Interface1/prop3", InProp3);
 }
 
 FProp3ChangedDelegate& OrgObjectapiTestbedInterface1OLinkService::GetProp3ChangedDelegate()
@@ -126,12 +126,12 @@ FString OrgObjectapiTestbedInterface1OLinkService::GetProp4() const
     return Prop4;
 }
 
-void OrgObjectapiTestbedInterface1OLinkService::SetProp4(FString Value)
+void OrgObjectapiTestbedInterface1OLinkService::SetProp4(const FString& InProp4)
 {
     if(!m_node) {
         return;
     }
-    m_node->setRemoteProperty("org.objectapi.testbed.Interface1/prop4", Value);
+    m_node->setRemoteProperty("org.objectapi.testbed.Interface1/prop4", InProp4);
 }
 
 FProp4ChangedDelegate& OrgObjectapiTestbedInterface1OLinkService::GetProp4ChangedDelegate()
@@ -143,12 +143,12 @@ TArray<int32> OrgObjectapiTestbedInterface1OLinkService::GetProp5() const
     return Prop5;
 }
 
-void OrgObjectapiTestbedInterface1OLinkService::SetProp5(const TArray<int32>& Value)
+void OrgObjectapiTestbedInterface1OLinkService::SetProp5(const TArray<int32>& InProp5)
 {
     if(!m_node) {
         return;
     }
-    m_node->setRemoteProperty("org.objectapi.testbed.Interface1/prop5", Value);
+    m_node->setRemoteProperty("org.objectapi.testbed.Interface1/prop5", InProp5);
 }
 
 FProp5ChangedDelegate& OrgObjectapiTestbedInterface1OLinkService::GetProp5ChangedDelegate()
@@ -160,12 +160,12 @@ FStruct1 OrgObjectapiTestbedInterface1OLinkService::GetProp6() const
     return Prop6;
 }
 
-void OrgObjectapiTestbedInterface1OLinkService::SetProp6(const FStruct1& Value)
+void OrgObjectapiTestbedInterface1OLinkService::SetProp6(const FStruct1& InProp6)
 {
     if(!m_node) {
         return;
     }
-    m_node->setRemoteProperty("org.objectapi.testbed.Interface1/prop6", Value);
+    m_node->setRemoteProperty("org.objectapi.testbed.Interface1/prop6", InProp6);
 }
 
 FProp6ChangedDelegate& OrgObjectapiTestbedInterface1OLinkService::GetProp6ChangedDelegate()
@@ -177,12 +177,12 @@ int32 OrgObjectapiTestbedInterface1OLinkService::GetProp7() const
     return Prop7;
 }
 
-void OrgObjectapiTestbedInterface1OLinkService::SetProp7(int32 Value)
+void OrgObjectapiTestbedInterface1OLinkService::SetProp7(int32 InProp7)
 {
     if(!m_node) {
         return;
     }
-    m_node->setRemoteProperty("org.objectapi.testbed.Interface1/prop7", Value);
+    m_node->setRemoteProperty("org.objectapi.testbed.Interface1/prop7", InProp7);
 }
 
 FProp7ChangedDelegate& OrgObjectapiTestbedInterface1OLinkService::GetProp7ChangedDelegate()
@@ -194,12 +194,12 @@ TArray<int32> OrgObjectapiTestbedInterface1OLinkService::GetProp10() const
     return Prop10;
 }
 
-void OrgObjectapiTestbedInterface1OLinkService::SetProp10(const TArray<int32>& Value)
+void OrgObjectapiTestbedInterface1OLinkService::SetProp10(const TArray<int32>& InProp10)
 {
     if(!m_node) {
         return;
     }
-    m_node->setRemoteProperty("org.objectapi.testbed.Interface1/prop10", Value);
+    m_node->setRemoteProperty("org.objectapi.testbed.Interface1/prop10", InProp10);
 }
 
 FProp10ChangedDelegate& OrgObjectapiTestbedInterface1OLinkService::GetProp10ChangedDelegate()
@@ -211,12 +211,12 @@ TArray<FStruct1> OrgObjectapiTestbedInterface1OLinkService::GetProp11() const
     return Prop11;
 }
 
-void OrgObjectapiTestbedInterface1OLinkService::SetProp11(const TArray<FStruct1>& Value)
+void OrgObjectapiTestbedInterface1OLinkService::SetProp11(const TArray<FStruct1>& InProp11)
 {
     if(!m_node) {
         return;
     }
-    m_node->setRemoteProperty("org.objectapi.testbed.Interface1/prop11", Value);
+    m_node->setRemoteProperty("org.objectapi.testbed.Interface1/prop11", InProp11);
 }
 
 FProp11ChangedDelegate& OrgObjectapiTestbedInterface1OLinkService::GetProp11ChangedDelegate()
@@ -228,12 +228,12 @@ TArray<EEnum1> OrgObjectapiTestbedInterface1OLinkService::GetProp12() const
     return Prop12;
 }
 
-void OrgObjectapiTestbedInterface1OLinkService::SetProp12(const TArray<EEnum1>& Value)
+void OrgObjectapiTestbedInterface1OLinkService::SetProp12(const TArray<EEnum1>& InProp12)
 {
     if(!m_node) {
         return;
     }
-    m_node->setRemoteProperty("org.objectapi.testbed.Interface1/prop12", Value);
+    m_node->setRemoteProperty("org.objectapi.testbed.Interface1/prop12", InProp12);
 }
 
 FProp12ChangedDelegate& OrgObjectapiTestbedInterface1OLinkService::GetProp12ChangedDelegate()
@@ -245,12 +245,12 @@ TArray<FStruct1> OrgObjectapiTestbedInterface1OLinkService::GetProp14() const
     return Prop14;
 }
 
-void OrgObjectapiTestbedInterface1OLinkService::SetProp14(const TArray<FStruct1>& Value)
+void OrgObjectapiTestbedInterface1OLinkService::SetProp14(const TArray<FStruct1>& InProp14)
 {
     if(!m_node) {
         return;
     }
-    m_node->setRemoteProperty("org.objectapi.testbed.Interface1/prop14", Value);
+    m_node->setRemoteProperty("org.objectapi.testbed.Interface1/prop14", InProp14);
 }
 
 FProp14ChangedDelegate& OrgObjectapiTestbedInterface1OLinkService::GetProp14ChangedDelegate()

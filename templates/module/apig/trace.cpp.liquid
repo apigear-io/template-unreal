@@ -20,10 +20,10 @@ void {{class}}::capture_state(I{{module.name | capital}}{{interface.name|capital
 }
 
 {% for property in interface.properties %}
-void {{class}}::trace_callSet{{property.name | capital}}({{property|unrealTypeName: true}} Value)
+void {{class}}::trace_callSet{{property.name | capital}}({{property|unrealParam: '', 'In'}})
 {
     nlohmann::json fields_;
-    fields_["{{property.name}}"] = Value;
+    fields_["{{property.name}}"] = {{property|unrealVarName: 'In'}};
     Tracer::instance()->call("{{module.name}}/{{interface.name}}#_set", fields_);
 }
 {% endfor %}

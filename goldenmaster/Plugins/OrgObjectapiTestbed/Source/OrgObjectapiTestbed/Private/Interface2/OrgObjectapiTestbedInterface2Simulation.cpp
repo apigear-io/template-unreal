@@ -147,10 +147,10 @@ int32 OrgObjectapiTestbedInterface2SimulationService::GetProp200() const
     return Prop200;
 }
 
-void OrgObjectapiTestbedInterface2SimulationService::SetProp200(int32 Value)
+void OrgObjectapiTestbedInterface2SimulationService::SetProp200(int32 InProp200)
 {
     Params params;
-    params["prop200"] = Value;
+    params["prop200"] = InProp200;
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface2", "_set", params);
 }
 
@@ -164,10 +164,10 @@ int32 OrgObjectapiTestbedInterface2SimulationService::GetProp201() const
     return Prop201;
 }
 
-void OrgObjectapiTestbedInterface2SimulationService::SetProp201(int32 Value)
+void OrgObjectapiTestbedInterface2SimulationService::SetProp201(int32 InProp201)
 {
     Params params;
-    params["prop201"] = Value;
+    params["prop201"] = InProp201;
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface2", "_set", params);
 }
 
@@ -181,10 +181,10 @@ int32 OrgObjectapiTestbedInterface2SimulationService::GetProp202() const
     return Prop202;
 }
 
-void OrgObjectapiTestbedInterface2SimulationService::SetProp202(int32 Value)
+void OrgObjectapiTestbedInterface2SimulationService::SetProp202(int32 InProp202)
 {
     Params params;
-    params["prop202"] = Value;
+    params["prop202"] = InProp202;
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface2", "_set", params);
 }
 
@@ -198,10 +198,10 @@ float OrgObjectapiTestbedInterface2SimulationService::GetProp203() const
     return Prop203;
 }
 
-void OrgObjectapiTestbedInterface2SimulationService::SetProp203(float Value)
+void OrgObjectapiTestbedInterface2SimulationService::SetProp203(float InProp203)
 {
     Params params;
-    params["prop203"] = Value;
+    params["prop203"] = InProp203;
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface2", "_set", params);
 }
 
@@ -215,10 +215,10 @@ float OrgObjectapiTestbedInterface2SimulationService::GetProp204() const
     return Prop204;
 }
 
-void OrgObjectapiTestbedInterface2SimulationService::SetProp204(float Value)
+void OrgObjectapiTestbedInterface2SimulationService::SetProp204(float InProp204)
 {
     Params params;
-    params["prop204"] = Value;
+    params["prop204"] = InProp204;
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface2", "_set", params);
 }
 
@@ -232,10 +232,10 @@ FString OrgObjectapiTestbedInterface2SimulationService::GetProp205() const
     return Prop205;
 }
 
-void OrgObjectapiTestbedInterface2SimulationService::SetProp205(FString Value)
+void OrgObjectapiTestbedInterface2SimulationService::SetProp205(const FString& InProp205)
 {
     Params params;
-    params["prop205"] = Value;
+    params["prop205"] = InProp205;
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface2", "_set", params);
 }
 

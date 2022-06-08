@@ -262,10 +262,10 @@ bool OrgObjectapiTestbedInterface1SimulationService::GetProp1() const
     return bProp1;
 }
 
-void OrgObjectapiTestbedInterface1SimulationService::SetProp1(bool Value)
+void OrgObjectapiTestbedInterface1SimulationService::SetProp1(bool bInProp1)
 {
     Params params;
-    params["prop1"] = Value;
+    params["prop1"] = bInProp1;
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface1", "_set", params);
 }
 
@@ -279,10 +279,10 @@ int32 OrgObjectapiTestbedInterface1SimulationService::GetProp2() const
     return Prop2;
 }
 
-void OrgObjectapiTestbedInterface1SimulationService::SetProp2(int32 Value)
+void OrgObjectapiTestbedInterface1SimulationService::SetProp2(int32 InProp2)
 {
     Params params;
-    params["prop2"] = Value;
+    params["prop2"] = InProp2;
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface1", "_set", params);
 }
 
@@ -296,10 +296,10 @@ float OrgObjectapiTestbedInterface1SimulationService::GetProp3() const
     return Prop3;
 }
 
-void OrgObjectapiTestbedInterface1SimulationService::SetProp3(float Value)
+void OrgObjectapiTestbedInterface1SimulationService::SetProp3(float InProp3)
 {
     Params params;
-    params["prop3"] = Value;
+    params["prop3"] = InProp3;
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface1", "_set", params);
 }
 
@@ -313,10 +313,10 @@ FString OrgObjectapiTestbedInterface1SimulationService::GetProp4() const
     return Prop4;
 }
 
-void OrgObjectapiTestbedInterface1SimulationService::SetProp4(FString Value)
+void OrgObjectapiTestbedInterface1SimulationService::SetProp4(const FString& InProp4)
 {
     Params params;
-    params["prop4"] = Value;
+    params["prop4"] = InProp4;
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface1", "_set", params);
 }
 
@@ -330,10 +330,10 @@ TArray<int32> OrgObjectapiTestbedInterface1SimulationService::GetProp5() const
     return Prop5;
 }
 
-void OrgObjectapiTestbedInterface1SimulationService::SetProp5(const TArray<int32>& Value)
+void OrgObjectapiTestbedInterface1SimulationService::SetProp5(const TArray<int32>& InProp5)
 {
     Params params;
-    params["prop5"] = Value;
+    params["prop5"] = InProp5;
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface1", "_set", params);
 }
 
@@ -347,10 +347,10 @@ FStruct1 OrgObjectapiTestbedInterface1SimulationService::GetProp6() const
     return Prop6;
 }
 
-void OrgObjectapiTestbedInterface1SimulationService::SetProp6(const FStruct1& Value)
+void OrgObjectapiTestbedInterface1SimulationService::SetProp6(const FStruct1& InProp6)
 {
     Params params;
-    params["prop6"] = Value;
+    params["prop6"] = InProp6;
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface1", "_set", params);
 }
 
@@ -364,10 +364,10 @@ int32 OrgObjectapiTestbedInterface1SimulationService::GetProp7() const
     return Prop7;
 }
 
-void OrgObjectapiTestbedInterface1SimulationService::SetProp7(int32 Value)
+void OrgObjectapiTestbedInterface1SimulationService::SetProp7(int32 InProp7)
 {
     Params params;
-    params["prop7"] = Value;
+    params["prop7"] = InProp7;
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface1", "_set", params);
 }
 
@@ -381,10 +381,10 @@ TArray<int32> OrgObjectapiTestbedInterface1SimulationService::GetProp10() const
     return Prop10;
 }
 
-void OrgObjectapiTestbedInterface1SimulationService::SetProp10(const TArray<int32>& Value)
+void OrgObjectapiTestbedInterface1SimulationService::SetProp10(const TArray<int32>& InProp10)
 {
     Params params;
-    params["prop10"] = Value;
+    params["prop10"] = InProp10;
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface1", "_set", params);
 }
 
@@ -398,10 +398,10 @@ TArray<FStruct1> OrgObjectapiTestbedInterface1SimulationService::GetProp11() con
     return Prop11;
 }
 
-void OrgObjectapiTestbedInterface1SimulationService::SetProp11(const TArray<FStruct1>& Value)
+void OrgObjectapiTestbedInterface1SimulationService::SetProp11(const TArray<FStruct1>& InProp11)
 {
     Params params;
-    params["prop11"] = Value;
+    params["prop11"] = InProp11;
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface1", "_set", params);
 }
 
@@ -415,10 +415,10 @@ TArray<EEnum1> OrgObjectapiTestbedInterface1SimulationService::GetProp12() const
     return Prop12;
 }
 
-void OrgObjectapiTestbedInterface1SimulationService::SetProp12(const TArray<EEnum1>& Value)
+void OrgObjectapiTestbedInterface1SimulationService::SetProp12(const TArray<EEnum1>& InProp12)
 {
     Params params;
-    params["prop12"] = Value;
+    params["prop12"] = InProp12;
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface1", "_set", params);
 }
 
@@ -432,10 +432,10 @@ TArray<FStruct1> OrgObjectapiTestbedInterface1SimulationService::GetProp14() con
     return Prop14;
 }
 
-void OrgObjectapiTestbedInterface1SimulationService::SetProp14(const TArray<FStruct1>& Value)
+void OrgObjectapiTestbedInterface1SimulationService::SetProp14(const TArray<FStruct1>& InProp14)
 {
     Params params;
-    params["prop14"] = Value;
+    params["prop14"] = InProp14;
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface1", "_set", params);
 }
 

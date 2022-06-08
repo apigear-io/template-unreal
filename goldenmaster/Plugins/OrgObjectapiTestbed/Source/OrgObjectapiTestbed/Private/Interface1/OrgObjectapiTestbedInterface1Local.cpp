@@ -55,11 +55,11 @@ bool OrgObjectapiTestbedInterface1LocalService::GetProp1() const
     return bProp1;
 }
 
-void OrgObjectapiTestbedInterface1LocalService::SetProp1(bool Value)
+void OrgObjectapiTestbedInterface1LocalService::SetProp1(bool bInProp1)
 {
-    if(bProp1 != Value)
+    if(bProp1 != bInProp1)
     {
-        bProp1 = Value;
+        bProp1 = bInProp1;
         bProp1Changed.Broadcast(bProp1);
     }
 }
@@ -73,11 +73,11 @@ int32 OrgObjectapiTestbedInterface1LocalService::GetProp2() const
     return Prop2;
 }
 
-void OrgObjectapiTestbedInterface1LocalService::SetProp2(int32 Value)
+void OrgObjectapiTestbedInterface1LocalService::SetProp2(int32 InProp2)
 {
-    if(Prop2 != Value)
+    if(Prop2 != InProp2)
     {
-        Prop2 = Value;
+        Prop2 = InProp2;
         Prop2Changed.Broadcast(Prop2);
     }
 }
@@ -91,11 +91,11 @@ float OrgObjectapiTestbedInterface1LocalService::GetProp3() const
     return Prop3;
 }
 
-void OrgObjectapiTestbedInterface1LocalService::SetProp3(float Value)
+void OrgObjectapiTestbedInterface1LocalService::SetProp3(float InProp3)
 {
-    if(Prop3 != Value)
+    if(Prop3 != InProp3)
     {
-        Prop3 = Value;
+        Prop3 = InProp3;
         Prop3Changed.Broadcast(Prop3);
     }
 }
@@ -109,11 +109,11 @@ FString OrgObjectapiTestbedInterface1LocalService::GetProp4() const
     return Prop4;
 }
 
-void OrgObjectapiTestbedInterface1LocalService::SetProp4(FString Value)
+void OrgObjectapiTestbedInterface1LocalService::SetProp4(const FString& InProp4)
 {
-    if(Prop4 != Value)
+    if(Prop4 != InProp4)
     {
-        Prop4 = Value;
+        Prop4 = InProp4;
         Prop4Changed.Broadcast(Prop4);
     }
 }
@@ -127,11 +127,11 @@ TArray<int32> OrgObjectapiTestbedInterface1LocalService::GetProp5() const
     return Prop5;
 }
 
-void OrgObjectapiTestbedInterface1LocalService::SetProp5(const TArray<int32>& Value)
+void OrgObjectapiTestbedInterface1LocalService::SetProp5(const TArray<int32>& InProp5)
 {
-    if(Prop5 != Value)
+    if(Prop5 != InProp5)
     {
-        Prop5 = Value;
+        Prop5 = InProp5;
         Prop5Changed.Broadcast(Prop5);
     }
 }
@@ -145,11 +145,11 @@ FStruct1 OrgObjectapiTestbedInterface1LocalService::GetProp6() const
     return Prop6;
 }
 
-void OrgObjectapiTestbedInterface1LocalService::SetProp6(const FStruct1& Value)
+void OrgObjectapiTestbedInterface1LocalService::SetProp6(const FStruct1& InProp6)
 {
-    if(Prop6 != Value)
+    if(Prop6 != InProp6)
     {
-        Prop6 = Value;
+        Prop6 = InProp6;
         Prop6Changed.Broadcast(Prop6);
     }
 }
@@ -163,11 +163,11 @@ int32 OrgObjectapiTestbedInterface1LocalService::GetProp7() const
     return Prop7;
 }
 
-void OrgObjectapiTestbedInterface1LocalService::SetProp7(int32 Value)
+void OrgObjectapiTestbedInterface1LocalService::SetProp7(int32 InProp7)
 {
-    if(Prop7 != Value)
+    if(Prop7 != InProp7)
     {
-        Prop7 = Value;
+        Prop7 = InProp7;
         Prop7Changed.Broadcast(Prop7);
     }
 }
@@ -181,11 +181,11 @@ TArray<int32> OrgObjectapiTestbedInterface1LocalService::GetProp10() const
     return Prop10;
 }
 
-void OrgObjectapiTestbedInterface1LocalService::SetProp10(const TArray<int32>& Value)
+void OrgObjectapiTestbedInterface1LocalService::SetProp10(const TArray<int32>& InProp10)
 {
-    if(Prop10 != Value)
+    if(Prop10 != InProp10)
     {
-        Prop10 = Value;
+        Prop10 = InProp10;
         Prop10Changed.Broadcast(Prop10);
     }
 }
@@ -199,11 +199,11 @@ TArray<FStruct1> OrgObjectapiTestbedInterface1LocalService::GetProp11() const
     return Prop11;
 }
 
-void OrgObjectapiTestbedInterface1LocalService::SetProp11(const TArray<FStruct1>& Value)
+void OrgObjectapiTestbedInterface1LocalService::SetProp11(const TArray<FStruct1>& InProp11)
 {
-    if(Prop11 != Value)
+    if(Prop11 != InProp11)
     {
-        Prop11 = Value;
+        Prop11 = InProp11;
         Prop11Changed.Broadcast(Prop11);
     }
 }
@@ -217,11 +217,11 @@ TArray<EEnum1> OrgObjectapiTestbedInterface1LocalService::GetProp12() const
     return Prop12;
 }
 
-void OrgObjectapiTestbedInterface1LocalService::SetProp12(const TArray<EEnum1>& Value)
+void OrgObjectapiTestbedInterface1LocalService::SetProp12(const TArray<EEnum1>& InProp12)
 {
-    if(Prop12 != Value)
+    if(Prop12 != InProp12)
     {
-        Prop12 = Value;
+        Prop12 = InProp12;
         Prop12Changed.Broadcast(Prop12);
     }
 }
@@ -235,11 +235,11 @@ TArray<FStruct1> OrgObjectapiTestbedInterface1LocalService::GetProp14() const
     return Prop14;
 }
 
-void OrgObjectapiTestbedInterface1LocalService::SetProp14(const TArray<FStruct1>& Value)
+void OrgObjectapiTestbedInterface1LocalService::SetProp14(const TArray<FStruct1>& InProp14)
 {
-    if(Prop14 != Value)
+    if(Prop14 != InProp14)
     {
-        Prop14 = Value;
+        Prop14 = InProp14;
         Prop14Changed.Broadcast(Prop14);
     }
 }

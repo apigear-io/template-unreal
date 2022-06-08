@@ -55,7 +55,7 @@ public:
     F{{property|unrealVarName}}ChangedDelegate {{property|unrealVarName}}Changed;
     F{{property|unrealVarName}}ChangedDelegate& Get{{property|unrealVarName}}ChangedDelegate() override;
 	UFUNCTION(BlueprintCallable, Category = "{{category}}")
-    void On{{property|unrealVarName}}Changed({{property|unrealTypeName: true}} Value);
+    void On{{property|unrealVarName}}Changed({{property|unrealParam: '', 'In'}});
 {{nl}}
 {% endfor %}
     // properties
@@ -67,7 +67,7 @@ public:
     {{property|unrealTypeName}} Get{{property.name | capital}}() const override;
 
 	UFUNCTION(BlueprintCallable, Category = "{{category}}")
-    void Set{{property.name | capital}}({{property|unrealTypeName: true}} Value) override;
+    void Set{{property.name | capital}}({{property|unrealParam: '', 'In'}}) override;
 {{nl}}
 {% endfor %}
     // operations

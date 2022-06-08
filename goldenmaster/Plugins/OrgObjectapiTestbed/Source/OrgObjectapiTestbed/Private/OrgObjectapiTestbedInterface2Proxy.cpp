@@ -88,10 +88,10 @@ UOrgObjectapiTestbedInterface2Proxy::~UOrgObjectapiTestbedInterface2Proxy()
     service->GetProp204ChangedDelegate().RemoveDynamic(this, &UOrgObjectapiTestbedInterface2Proxy::OnProp204Changed);
     service->GetProp205ChangedDelegate().RemoveDynamic(this, &UOrgObjectapiTestbedInterface2Proxy::OnProp205Changed);
 }
-void UOrgObjectapiTestbedInterface2Proxy::OnProp200Changed(int32 Value)
+void UOrgObjectapiTestbedInterface2Proxy::OnProp200Changed(int32 InProp200)
 {
     OrgObjectapiTestbedInterface2Tracer::capture_state(this);
-    Prop200Changed.Broadcast(Value);
+    Prop200Changed.Broadcast(InProp200);
 }
 
 int32 UOrgObjectapiTestbedInterface2Proxy::GetProp200() const
@@ -99,10 +99,10 @@ int32 UOrgObjectapiTestbedInterface2Proxy::GetProp200() const
     return service->GetProp200();
 }
 
-void UOrgObjectapiTestbedInterface2Proxy::SetProp200(int32 Value)
+void UOrgObjectapiTestbedInterface2Proxy::SetProp200(int32 InProp200)
 {
-    OrgObjectapiTestbedInterface2Tracer::trace_callSetProp200(Value);
-    service->SetProp200(Value);
+    OrgObjectapiTestbedInterface2Tracer::trace_callSetProp200(InProp200);
+    service->SetProp200(InProp200);
 }
 
 FProp200ChangedDelegate& UOrgObjectapiTestbedInterface2Proxy::GetProp200ChangedDelegate()
@@ -110,10 +110,10 @@ FProp200ChangedDelegate& UOrgObjectapiTestbedInterface2Proxy::GetProp200ChangedD
     return Prop200Changed;
 }
 
-void UOrgObjectapiTestbedInterface2Proxy::OnProp201Changed(int32 Value)
+void UOrgObjectapiTestbedInterface2Proxy::OnProp201Changed(int32 InProp201)
 {
     OrgObjectapiTestbedInterface2Tracer::capture_state(this);
-    Prop201Changed.Broadcast(Value);
+    Prop201Changed.Broadcast(InProp201);
 }
 
 int32 UOrgObjectapiTestbedInterface2Proxy::GetProp201() const
@@ -121,10 +121,10 @@ int32 UOrgObjectapiTestbedInterface2Proxy::GetProp201() const
     return service->GetProp201();
 }
 
-void UOrgObjectapiTestbedInterface2Proxy::SetProp201(int32 Value)
+void UOrgObjectapiTestbedInterface2Proxy::SetProp201(int32 InProp201)
 {
-    OrgObjectapiTestbedInterface2Tracer::trace_callSetProp201(Value);
-    service->SetProp201(Value);
+    OrgObjectapiTestbedInterface2Tracer::trace_callSetProp201(InProp201);
+    service->SetProp201(InProp201);
 }
 
 FProp201ChangedDelegate& UOrgObjectapiTestbedInterface2Proxy::GetProp201ChangedDelegate()
@@ -132,10 +132,10 @@ FProp201ChangedDelegate& UOrgObjectapiTestbedInterface2Proxy::GetProp201ChangedD
     return Prop201Changed;
 }
 
-void UOrgObjectapiTestbedInterface2Proxy::OnProp202Changed(int32 Value)
+void UOrgObjectapiTestbedInterface2Proxy::OnProp202Changed(int32 InProp202)
 {
     OrgObjectapiTestbedInterface2Tracer::capture_state(this);
-    Prop202Changed.Broadcast(Value);
+    Prop202Changed.Broadcast(InProp202);
 }
 
 int32 UOrgObjectapiTestbedInterface2Proxy::GetProp202() const
@@ -143,10 +143,10 @@ int32 UOrgObjectapiTestbedInterface2Proxy::GetProp202() const
     return service->GetProp202();
 }
 
-void UOrgObjectapiTestbedInterface2Proxy::SetProp202(int32 Value)
+void UOrgObjectapiTestbedInterface2Proxy::SetProp202(int32 InProp202)
 {
-    OrgObjectapiTestbedInterface2Tracer::trace_callSetProp202(Value);
-    service->SetProp202(Value);
+    OrgObjectapiTestbedInterface2Tracer::trace_callSetProp202(InProp202);
+    service->SetProp202(InProp202);
 }
 
 FProp202ChangedDelegate& UOrgObjectapiTestbedInterface2Proxy::GetProp202ChangedDelegate()
@@ -154,10 +154,10 @@ FProp202ChangedDelegate& UOrgObjectapiTestbedInterface2Proxy::GetProp202ChangedD
     return Prop202Changed;
 }
 
-void UOrgObjectapiTestbedInterface2Proxy::OnProp203Changed(float Value)
+void UOrgObjectapiTestbedInterface2Proxy::OnProp203Changed(float InProp203)
 {
     OrgObjectapiTestbedInterface2Tracer::capture_state(this);
-    Prop203Changed.Broadcast(Value);
+    Prop203Changed.Broadcast(InProp203);
 }
 
 float UOrgObjectapiTestbedInterface2Proxy::GetProp203() const
@@ -165,10 +165,10 @@ float UOrgObjectapiTestbedInterface2Proxy::GetProp203() const
     return service->GetProp203();
 }
 
-void UOrgObjectapiTestbedInterface2Proxy::SetProp203(float Value)
+void UOrgObjectapiTestbedInterface2Proxy::SetProp203(float InProp203)
 {
-    OrgObjectapiTestbedInterface2Tracer::trace_callSetProp203(Value);
-    service->SetProp203(Value);
+    OrgObjectapiTestbedInterface2Tracer::trace_callSetProp203(InProp203);
+    service->SetProp203(InProp203);
 }
 
 FProp203ChangedDelegate& UOrgObjectapiTestbedInterface2Proxy::GetProp203ChangedDelegate()
@@ -176,10 +176,10 @@ FProp203ChangedDelegate& UOrgObjectapiTestbedInterface2Proxy::GetProp203ChangedD
     return Prop203Changed;
 }
 
-void UOrgObjectapiTestbedInterface2Proxy::OnProp204Changed(float Value)
+void UOrgObjectapiTestbedInterface2Proxy::OnProp204Changed(float InProp204)
 {
     OrgObjectapiTestbedInterface2Tracer::capture_state(this);
-    Prop204Changed.Broadcast(Value);
+    Prop204Changed.Broadcast(InProp204);
 }
 
 float UOrgObjectapiTestbedInterface2Proxy::GetProp204() const
@@ -187,10 +187,10 @@ float UOrgObjectapiTestbedInterface2Proxy::GetProp204() const
     return service->GetProp204();
 }
 
-void UOrgObjectapiTestbedInterface2Proxy::SetProp204(float Value)
+void UOrgObjectapiTestbedInterface2Proxy::SetProp204(float InProp204)
 {
-    OrgObjectapiTestbedInterface2Tracer::trace_callSetProp204(Value);
-    service->SetProp204(Value);
+    OrgObjectapiTestbedInterface2Tracer::trace_callSetProp204(InProp204);
+    service->SetProp204(InProp204);
 }
 
 FProp204ChangedDelegate& UOrgObjectapiTestbedInterface2Proxy::GetProp204ChangedDelegate()
@@ -198,10 +198,10 @@ FProp204ChangedDelegate& UOrgObjectapiTestbedInterface2Proxy::GetProp204ChangedD
     return Prop204Changed;
 }
 
-void UOrgObjectapiTestbedInterface2Proxy::OnProp205Changed(FString Value)
+void UOrgObjectapiTestbedInterface2Proxy::OnProp205Changed(const FString& InProp205)
 {
     OrgObjectapiTestbedInterface2Tracer::capture_state(this);
-    Prop205Changed.Broadcast(Value);
+    Prop205Changed.Broadcast(InProp205);
 }
 
 FString UOrgObjectapiTestbedInterface2Proxy::GetProp205() const
@@ -209,10 +209,10 @@ FString UOrgObjectapiTestbedInterface2Proxy::GetProp205() const
     return service->GetProp205();
 }
 
-void UOrgObjectapiTestbedInterface2Proxy::SetProp205(FString Value)
+void UOrgObjectapiTestbedInterface2Proxy::SetProp205(const FString& InProp205)
 {
-    OrgObjectapiTestbedInterface2Tracer::trace_callSetProp205(Value);
-    service->SetProp205(Value);
+    OrgObjectapiTestbedInterface2Tracer::trace_callSetProp205(InProp205);
+    service->SetProp205(InProp205);
 }
 
 FProp205ChangedDelegate& UOrgObjectapiTestbedInterface2Proxy::GetProp205ChangedDelegate()

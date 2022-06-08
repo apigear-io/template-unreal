@@ -72,12 +72,12 @@ F{{signal|unrealVarName}}Delegate& {{class}}::Get{{signal|unrealVarName}}SignalD
     return {{property|unrealVarName}};
 }
 
-void {{class}}::Set{{property.name | capital}}({{property|unrealTypeName: true}} Value)
+void {{class}}::Set{{property.name | capital}}({{property|unrealParam: '', 'In'}})
 {
     if(!m_node) {
         return;
     }
-    m_node->setRemoteProperty("{{module}}.{{interface}}/{{property}}", Value);
+    m_node->setRemoteProperty("{{module}}.{{interface}}/{{property}}", {{property|unrealVarName: 'In'}});
 }
 {{nl}}
 F{{property|unrealVarName}}ChangedDelegate& {{class}}::Get{{property|unrealVarName}}ChangedDelegate()

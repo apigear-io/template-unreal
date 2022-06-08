@@ -47,22 +47,22 @@ public:
 
     // properties
     int32 GetProp200() const override;
-    void SetProp200(int32 Value) override;
+    void SetProp200(int32 InProp200) override;
 
     int32 GetProp201() const override;
-    void SetProp201(int32 Value) override;
+    void SetProp201(int32 InProp201) override;
 
     int32 GetProp202() const override;
-    void SetProp202(int32 Value) override;
+    void SetProp202(int32 InProp202) override;
 
     float GetProp203() const override;
-    void SetProp203(float Value) override;
+    void SetProp203(float InProp203) override;
 
     float GetProp204() const override;
-    void SetProp204(float Value) override;
+    void SetProp204(float InProp204) override;
 
     FString GetProp205() const override;
-    void SetProp205(FString Value) override;
+    void SetProp205(const FString& InProp205) override;
 
 
     // operations

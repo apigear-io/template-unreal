@@ -71,37 +71,37 @@ public:
 
     // properties
     bool GetProp1() const override;
-    void SetProp1(bool Value) override;
+    void SetProp1(bool bInProp1) override;
 
     int32 GetProp2() const override;
-    void SetProp2(int32 Value) override;
+    void SetProp2(int32 InProp2) override;
 
     float GetProp3() const override;
-    void SetProp3(float Value) override;
+    void SetProp3(float InProp3) override;
 
     FString GetProp4() const override;
-    void SetProp4(FString Value) override;
+    void SetProp4(const FString& InProp4) override;
 
     TArray<int32> GetProp5() const override;
-    void SetProp5(const TArray<int32>& Value) override;
+    void SetProp5(const TArray<int32>& InProp5) override;
 
     FStruct1 GetProp6() const override;
-    void SetProp6(const FStruct1& Value) override;
+    void SetProp6(const FStruct1& InProp6) override;
 
     int32 GetProp7() const override;
-    void SetProp7(int32 Value) override;
+    void SetProp7(int32 InProp7) override;
 
     TArray<int32> GetProp10() const override;
-    void SetProp10(const TArray<int32>& Value) override;
+    void SetProp10(const TArray<int32>& InProp10) override;
 
     TArray<FStruct1> GetProp11() const override;
-    void SetProp11(const TArray<FStruct1>& Value) override;
+    void SetProp11(const TArray<FStruct1>& InProp11) override;
 
     TArray<EEnum1> GetProp12() const override;
-    void SetProp12(const TArray<EEnum1>& Value) override;
+    void SetProp12(const TArray<EEnum1>& InProp12) override;
 
     TArray<FStruct1> GetProp14() const override;
-    void SetProp14(const TArray<FStruct1>& Value) override;
+    void SetProp14(const TArray<FStruct1>& InProp14) override;
 
 
     // operations

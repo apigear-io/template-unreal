@@ -119,10 +119,10 @@ F{{signal|unrealVarName}}Delegate& {{class}}::Get{{signal|unrealVarName}}SignalD
     return {{property|unrealVarName}};
 }
 
-void {{class}}::Set{{property.name | capital}}({{property|unrealTypeName: true}} Value)
+void {{class}}::Set{{property.name | capital}}({{property|unrealParam: '', 'In'}})
 {
     ArgumentsKw fields_;
-    fields_["{{property.name}}"] = Value;
+    fields_["{{property.name}}"] = {{property|unrealVarName: 'In'}};
     UnrealWamp::instance()->doCall("{{module.name}}.{{interface.name}}._set", Arguments(), fields_);
 }
 

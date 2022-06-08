@@ -147,10 +147,10 @@ int32 OrgObjectapiTestbedInterface2WAMPService::GetProp200() const
     return Prop200;
 }
 
-void OrgObjectapiTestbedInterface2WAMPService::SetProp200(int32 Value)
+void OrgObjectapiTestbedInterface2WAMPService::SetProp200(int32 InProp200)
 {
     ArgumentsKw fields_;
-    fields_["prop200"] = Value;
+    fields_["prop200"] = InProp200;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface2._set", Arguments(), fields_);
 }
 
@@ -164,10 +164,10 @@ int32 OrgObjectapiTestbedInterface2WAMPService::GetProp201() const
     return Prop201;
 }
 
-void OrgObjectapiTestbedInterface2WAMPService::SetProp201(int32 Value)
+void OrgObjectapiTestbedInterface2WAMPService::SetProp201(int32 InProp201)
 {
     ArgumentsKw fields_;
-    fields_["prop201"] = Value;
+    fields_["prop201"] = InProp201;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface2._set", Arguments(), fields_);
 }
 
@@ -181,10 +181,10 @@ int32 OrgObjectapiTestbedInterface2WAMPService::GetProp202() const
     return Prop202;
 }
 
-void OrgObjectapiTestbedInterface2WAMPService::SetProp202(int32 Value)
+void OrgObjectapiTestbedInterface2WAMPService::SetProp202(int32 InProp202)
 {
     ArgumentsKw fields_;
-    fields_["prop202"] = Value;
+    fields_["prop202"] = InProp202;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface2._set", Arguments(), fields_);
 }
 
@@ -198,10 +198,10 @@ float OrgObjectapiTestbedInterface2WAMPService::GetProp203() const
     return Prop203;
 }
 
-void OrgObjectapiTestbedInterface2WAMPService::SetProp203(float Value)
+void OrgObjectapiTestbedInterface2WAMPService::SetProp203(float InProp203)
 {
     ArgumentsKw fields_;
-    fields_["prop203"] = Value;
+    fields_["prop203"] = InProp203;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface2._set", Arguments(), fields_);
 }
 
@@ -215,10 +215,10 @@ float OrgObjectapiTestbedInterface2WAMPService::GetProp204() const
     return Prop204;
 }
 
-void OrgObjectapiTestbedInterface2WAMPService::SetProp204(float Value)
+void OrgObjectapiTestbedInterface2WAMPService::SetProp204(float InProp204)
 {
     ArgumentsKw fields_;
-    fields_["prop204"] = Value;
+    fields_["prop204"] = InProp204;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface2._set", Arguments(), fields_);
 }
 
@@ -232,10 +232,10 @@ FString OrgObjectapiTestbedInterface2WAMPService::GetProp205() const
     return Prop205;
 }
 
-void OrgObjectapiTestbedInterface2WAMPService::SetProp205(FString Value)
+void OrgObjectapiTestbedInterface2WAMPService::SetProp205(const FString& InProp205)
 {
     ArgumentsKw fields_;
-    fields_["prop205"] = Value;
+    fields_["prop205"] = InProp205;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface2._set", Arguments(), fields_);
 }
 
