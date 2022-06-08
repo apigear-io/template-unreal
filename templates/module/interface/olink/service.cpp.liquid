@@ -82,9 +82,9 @@ void {{class}}::Set{{property.name | capital}}({{property|unrealParam: moduleCap
     m_node->setRemoteProperty("{{module}}.{{interface}}/{{property}}", {{property|unrealVarName: 'In'}});
 }
 {{nl}}
-F{{property|unrealVarName: moduleInterfaceCapital}}ChangedDelegate& {{class}}::Get{{property|unrealVarName: moduleInterfaceCapital}}ChangedDelegate()
+F{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate& {{class}}::Get{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate()
 {
-    return {{property|unrealVarName: moduleInterfaceCapital}}Changed;
+    return {{moduleInterfaceCapital}}{{property.name|capital}}Changed;
 }
 {% endfor %}
 {{nl}}
@@ -140,7 +140,7 @@ void {{class}}::applyState(const nlohmann::json& fields)
         if({{property|unrealVarName}} != fields["{{property.name}}"].get<{{property|unrealTypeName: false, moduleCapital}}>())
         {
             {{property|unrealVarName}} = fields["{{property.name}}"].get<{{property|unrealTypeName: false, moduleCapital}}>();
-            {{property|unrealVarName: moduleInterfaceCapital}}Changed.Broadcast({{property|unrealVarName}});
+            {{moduleInterfaceCapital}}{{property.name|capital}}Changed.Broadcast({{property|unrealVarName}});
         }
     }
 {% endfor %}

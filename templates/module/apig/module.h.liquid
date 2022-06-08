@@ -54,7 +54,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE{{signal.params.length|unrealDelegateNameAppen
 {% endfor %}
 // property delegates
 {% for property in interface.properties %}
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(F{{property|unrealVarName: moduleInterfaceCapital}}ChangedDelegate, {{property|unrealTypeName: true, moduleCapital}}, {{property|unrealVarName}});
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(F{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate, {{property|unrealTypeName: true, moduleCapital}}, {{property|unrealVarName}});
 {{nl}}
 {% endfor %}
 /**
@@ -82,7 +82,7 @@ public:
 {{nl}}
 {% endfor %}
 {% for property in interface.properties %}
-    virtual F{{property|unrealVarName: moduleInterfaceCapital}}ChangedDelegate& Get{{property|unrealVarName: moduleInterfaceCapital}}ChangedDelegate() = 0;
+    virtual F{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate& Get{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate() = 0;
 {{nl}}
 {% endfor %}
 

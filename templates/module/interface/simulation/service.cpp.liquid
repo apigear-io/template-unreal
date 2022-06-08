@@ -51,7 +51,7 @@ using namespace ApiGear::JSONRPC;
             if({{property|unrealVarName}} != fields["{{property.name}}"].get<{{property|unrealTypeName: false, moduleCapital}}>())
             {
                 {{property|unrealVarName}} = fields["{{property.name}}"].get<{{property|unrealTypeName: false, moduleCapital}}>();
-                {{property|unrealVarName: moduleInterfaceCapital}}Changed.Broadcast({{property|unrealVarName}});
+                {{moduleInterfaceCapital}}{{property.name|capital}}Changed.Broadcast({{property|unrealVarName}});
             }
         }
 {% endfor %}
@@ -69,7 +69,7 @@ using namespace ApiGear::JSONRPC;
             if({{property|unrealVarName}} != fields["{{property.name}}"].get<{{property|unrealTypeName: false, moduleCapital}}>())
             {
                 {{property|unrealVarName}} = fields["{{property.name}}"].get<{{property|unrealTypeName: false, moduleCapital}}>();
-                {{property|unrealVarName: moduleInterfaceCapital}}Changed.Broadcast({{property|unrealVarName}});
+                {{moduleInterfaceCapital}}{{property.name|capital}}Changed.Broadcast({{property|unrealVarName}});
             }
         }
 {% endfor %}
@@ -132,9 +132,9 @@ void {{class}}::Set{{property.name | capital}}({{property|unrealParam: moduleCap
     UnrealSimulation::instance()->doCall("{{module.name}}/{{interface.name}}", "_set", params);
 }
 
-F{{property|unrealVarName: moduleInterfaceCapital}}ChangedDelegate& {{class}}::Get{{property|unrealVarName: moduleInterfaceCapital}}ChangedDelegate()
+F{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate& {{class}}::Get{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate()
 {
-    return {{property|unrealVarName: moduleInterfaceCapital}}Changed;
+    return {{moduleInterfaceCapital}}{{property.name|capital}}Changed;
 }
 {{nl}}
 {% endfor %}

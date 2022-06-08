@@ -51,10 +51,10 @@ public:
     void OnOrgObjectapiTestbedInterface1Sig3(float Step);
     
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
-    FbOrgObjectapiTestbedInterface1Prop1ChangedDelegate bOrgObjectapiTestbedInterface1Prop1Changed;
-    FbOrgObjectapiTestbedInterface1Prop1ChangedDelegate& GetbOrgObjectapiTestbedInterface1Prop1ChangedDelegate() override;
+    FOrgObjectapiTestbedInterface1Prop1ChangedDelegate OrgObjectapiTestbedInterface1Prop1Changed;
+    FOrgObjectapiTestbedInterface1Prop1ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop1ChangedDelegate() override;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
-    void OnbOrgObjectapiTestbedInterface1Prop1Changed(bool bInProp1);
+    void OnOrgObjectapiTestbedInterface1Prop1Changed(bool bInProp1);
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
     FOrgObjectapiTestbedInterface1Prop2ChangedDelegate OrgObjectapiTestbedInterface1Prop2Changed;

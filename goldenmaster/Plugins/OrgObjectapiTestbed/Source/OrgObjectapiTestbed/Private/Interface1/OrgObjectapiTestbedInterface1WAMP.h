@@ -35,8 +35,8 @@ public:
     FOrgObjectapiTestbedInterface1Sig3Delegate OrgObjectapiTestbedInterface1Sig3Signal;
     FOrgObjectapiTestbedInterface1Sig3Delegate& GetOrgObjectapiTestbedInterface1Sig3SignalDelegate() override;
     
-    FbOrgObjectapiTestbedInterface1Prop1ChangedDelegate bOrgObjectapiTestbedInterface1Prop1Changed;
-    FbOrgObjectapiTestbedInterface1Prop1ChangedDelegate& GetbOrgObjectapiTestbedInterface1Prop1ChangedDelegate() override;
+    FOrgObjectapiTestbedInterface1Prop1ChangedDelegate OrgObjectapiTestbedInterface1Prop1Changed;
+    FOrgObjectapiTestbedInterface1Prop1ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop1ChangedDelegate() override;
 
     FOrgObjectapiTestbedInterface1Prop2ChangedDelegate OrgObjectapiTestbedInterface1Prop2Changed;
     FOrgObjectapiTestbedInterface1Prop2ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop2ChangedDelegate() override;

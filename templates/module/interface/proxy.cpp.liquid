@@ -84,7 +84,7 @@ public:
     service = {{module_name}}::create{{service}}();
 
 {% for property in interface.properties %}
-    service->Get{{property|unrealVarName: moduleInterfaceCapital}}ChangedDelegate().AddDynamic(this, &{{class}}::On{{property|unrealVarName: moduleInterfaceCapital}}Changed);
+    service->Get{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate().AddDynamic(this, &{{class}}::On{{moduleInterfaceCapital}}{{property.name|capital}}Changed);
 {% endfor %}
 {% for signal in interface.signals %}
     service->Get{{signal|unrealVarName: moduleInterfaceCapital}}SignalDelegate().AddDynamic(this, &{{class}}::On{{signal|unrealVarName: moduleInterfaceCapital}});
@@ -94,7 +94,7 @@ public:
 {{class}}::~{{class}}()
 {
 {% for property in interface.properties %}
-    service->Get{{property|unrealVarName: moduleInterfaceCapital}}ChangedDelegate().RemoveDynamic(this, &{{class}}::On{{property|unrealVarName: moduleInterfaceCapital}}Changed);
+    service->Get{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate().RemoveDynamic(this, &{{class}}::On{{moduleInterfaceCapital}}{{property.name|capital}}Changed);
 {% endfor %}
 {% for signal in interface.signals %}
     service->Get{{signal|unrealVarName: moduleInterfaceCapital}}SignalDelegate().RemoveDynamic(this, &{{class}}::On{{signal|unrealVarName: moduleInterfaceCapital}});
@@ -120,10 +120,10 @@ F{{signal|unrealVarName: moduleInterfaceCapital}}Delegate& {{class}}::Get{{signa
 {% endfor %}
 
 {% for property in interface.properties %}
-void {{class}}::On{{property|unrealVarName: moduleInterfaceCapital}}Changed({{property|unrealParam: moduleCapital, 'In'}})
+void {{class}}::On{{moduleInterfaceCapital}}{{property.name|capital}}Changed({{property|unrealParam: moduleCapital, 'In'}})
 {
     {{module.name | capital}}{{interface.name|capital}}Tracer::capture_state(this);
-    {{property|unrealVarName: moduleInterfaceCapital}}Changed.Broadcast({{property|unrealVarName: 'In'}});
+    {{moduleInterfaceCapital}}{{property.name|capital}}Changed.Broadcast({{property|unrealVarName: 'In'}});
 }
 
 {{property|unrealTypeName: false, moduleCapital}} {{class}}::Get{{property.name | capital}}() const
@@ -137,9 +137,9 @@ void {{class}}::Set{{property.name | capital}}({{property|unrealParam: moduleCap
     service->Set{{property.name | capital}}({{property|unrealVarName: 'In'}});
 }
 {{nl}}
-F{{property|unrealVarName: moduleInterfaceCapital}}ChangedDelegate& {{class}}::Get{{property|unrealVarName: moduleInterfaceCapital}}ChangedDelegate()
+F{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate& {{class}}::Get{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate()
 {
-    return {{property|unrealVarName: moduleInterfaceCapital}}Changed;
+    return {{moduleInterfaceCapital}}{{property.name|capital}}Changed;
 }
 {{nl}}
 {% endfor %}

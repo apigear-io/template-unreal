@@ -76,7 +76,7 @@ UOrgObjectapiTestbedInterface1Proxy::UOrgObjectapiTestbedInterface1Proxy()
     , Prop14(TArray<FOrgObjectapiTestbedStruct1>())
 {
     service = FOrgObjectapiTestbedModuleFactory::createIOrgObjectapiTestbedInterface1Interface();
-    service->GetbOrgObjectapiTestbedInterface1Prop1ChangedDelegate().AddDynamic(this, &UOrgObjectapiTestbedInterface1Proxy::OnbOrgObjectapiTestbedInterface1Prop1Changed);
+    service->GetOrgObjectapiTestbedInterface1Prop1ChangedDelegate().AddDynamic(this, &UOrgObjectapiTestbedInterface1Proxy::OnOrgObjectapiTestbedInterface1Prop1Changed);
     service->GetOrgObjectapiTestbedInterface1Prop2ChangedDelegate().AddDynamic(this, &UOrgObjectapiTestbedInterface1Proxy::OnOrgObjectapiTestbedInterface1Prop2Changed);
     service->GetOrgObjectapiTestbedInterface1Prop3ChangedDelegate().AddDynamic(this, &UOrgObjectapiTestbedInterface1Proxy::OnOrgObjectapiTestbedInterface1Prop3Changed);
     service->GetOrgObjectapiTestbedInterface1Prop4ChangedDelegate().AddDynamic(this, &UOrgObjectapiTestbedInterface1Proxy::OnOrgObjectapiTestbedInterface1Prop4Changed);
@@ -94,7 +94,7 @@ UOrgObjectapiTestbedInterface1Proxy::UOrgObjectapiTestbedInterface1Proxy()
 
 UOrgObjectapiTestbedInterface1Proxy::~UOrgObjectapiTestbedInterface1Proxy()
 {
-    service->GetbOrgObjectapiTestbedInterface1Prop1ChangedDelegate().RemoveDynamic(this, &UOrgObjectapiTestbedInterface1Proxy::OnbOrgObjectapiTestbedInterface1Prop1Changed);
+    service->GetOrgObjectapiTestbedInterface1Prop1ChangedDelegate().RemoveDynamic(this, &UOrgObjectapiTestbedInterface1Proxy::OnOrgObjectapiTestbedInterface1Prop1Changed);
     service->GetOrgObjectapiTestbedInterface1Prop2ChangedDelegate().RemoveDynamic(this, &UOrgObjectapiTestbedInterface1Proxy::OnOrgObjectapiTestbedInterface1Prop2Changed);
     service->GetOrgObjectapiTestbedInterface1Prop3ChangedDelegate().RemoveDynamic(this, &UOrgObjectapiTestbedInterface1Proxy::OnOrgObjectapiTestbedInterface1Prop3Changed);
     service->GetOrgObjectapiTestbedInterface1Prop4ChangedDelegate().RemoveDynamic(this, &UOrgObjectapiTestbedInterface1Proxy::OnOrgObjectapiTestbedInterface1Prop4Changed);
@@ -142,10 +142,10 @@ FOrgObjectapiTestbedInterface1Sig3Delegate& UOrgObjectapiTestbedInterface1Proxy:
     return OrgObjectapiTestbedInterface1Sig3Signal;
 }
 
-void UOrgObjectapiTestbedInterface1Proxy::OnbOrgObjectapiTestbedInterface1Prop1Changed(bool bInProp1)
+void UOrgObjectapiTestbedInterface1Proxy::OnOrgObjectapiTestbedInterface1Prop1Changed(bool bInProp1)
 {
     OrgObjectapiTestbedInterface1Tracer::capture_state(this);
-    bOrgObjectapiTestbedInterface1Prop1Changed.Broadcast(bInProp1);
+    OrgObjectapiTestbedInterface1Prop1Changed.Broadcast(bInProp1);
 }
 
 bool UOrgObjectapiTestbedInterface1Proxy::GetProp1() const
@@ -159,9 +159,9 @@ void UOrgObjectapiTestbedInterface1Proxy::SetProp1(bool bInProp1)
     service->SetProp1(bInProp1);
 }
 
-FbOrgObjectapiTestbedInterface1Prop1ChangedDelegate& UOrgObjectapiTestbedInterface1Proxy::GetbOrgObjectapiTestbedInterface1Prop1ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop1ChangedDelegate& UOrgObjectapiTestbedInterface1Proxy::GetOrgObjectapiTestbedInterface1Prop1ChangedDelegate()
 {
-    return bOrgObjectapiTestbedInterface1Prop1Changed;
+    return OrgObjectapiTestbedInterface1Prop1Changed;
 }
 
 void UOrgObjectapiTestbedInterface1Proxy::OnOrgObjectapiTestbedInterface1Prop2Changed(int32 InProp2)

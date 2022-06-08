@@ -83,9 +83,9 @@ void OrgObjectapiTestbedInterface1OLinkService::SetProp1(bool bInProp1)
     m_node->setRemoteProperty("org.objectapi.testbed.Interface1/prop1", bInProp1);
 }
 
-FbOrgObjectapiTestbedInterface1Prop1ChangedDelegate& OrgObjectapiTestbedInterface1OLinkService::GetbOrgObjectapiTestbedInterface1Prop1ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop1ChangedDelegate& OrgObjectapiTestbedInterface1OLinkService::GetOrgObjectapiTestbedInterface1Prop1ChangedDelegate()
 {
-    return bOrgObjectapiTestbedInterface1Prop1Changed;
+    return OrgObjectapiTestbedInterface1Prop1Changed;
 }
 int32 OrgObjectapiTestbedInterface1OLinkService::GetProp2() const
 {
@@ -304,7 +304,7 @@ void OrgObjectapiTestbedInterface1OLinkService::applyState(const nlohmann::json&
         if(bProp1 != fields["prop1"].get<bool>())
         {
             bProp1 = fields["prop1"].get<bool>();
-            bOrgObjectapiTestbedInterface1Prop1Changed.Broadcast(bProp1);
+            OrgObjectapiTestbedInterface1Prop1Changed.Broadcast(bProp1);
         }
     }
     if(fields.contains("prop2")) {

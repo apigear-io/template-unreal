@@ -56,13 +56,13 @@ void {{class}}::Set{{property.name | capital}}({{property|unrealParam: moduleCap
     if({{property|unrealVarName}} != {{property|unrealVarName: 'In'}})
     {
         {{property|unrealVarName}} = {{property|unrealVarName: 'In'}};
-        {{property|unrealVarName: moduleInterfaceCapital}}Changed.Broadcast({{property|unrealVarName}});
+        {{moduleInterfaceCapital}}{{property.name|capital}}Changed.Broadcast({{property|unrealVarName}});
     }
 }
 {{nl}}
-F{{property|unrealVarName: moduleInterfaceCapital}}ChangedDelegate& {{class}}::Get{{property|unrealVarName: moduleInterfaceCapital}}ChangedDelegate()
+F{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate& {{class}}::Get{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate()
 {
-    return {{property|unrealVarName: moduleInterfaceCapital}}Changed;
+    return {{moduleInterfaceCapital}}{{property.name|capital}}Changed;
 }
 {% endfor %}
 {{nl}}

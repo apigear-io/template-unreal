@@ -49,7 +49,7 @@ OrgObjectapiTestbedInterface1WAMPService::OrgObjectapiTestbedInterface1WAMPServi
             if(bProp1 != fields["prop1"].get<bool>())
             {
                 bProp1 = fields["prop1"].get<bool>();
-                bOrgObjectapiTestbedInterface1Prop1Changed.Broadcast(bProp1);
+                OrgObjectapiTestbedInterface1Prop1Changed.Broadcast(bProp1);
             }
         }
         if(fields.contains("prop2")) {
@@ -135,7 +135,7 @@ OrgObjectapiTestbedInterface1WAMPService::OrgObjectapiTestbedInterface1WAMPServi
             if(bProp1 != fields["prop1"].get<bool>())
             {
                 bProp1 = fields["prop1"].get<bool>();
-                bOrgObjectapiTestbedInterface1Prop1Changed.Broadcast(bProp1);
+                OrgObjectapiTestbedInterface1Prop1Changed.Broadcast(bProp1);
             }
         }
         if(fields.contains("prop2")) {
@@ -272,9 +272,9 @@ void OrgObjectapiTestbedInterface1WAMPService::SetProp1(bool bInProp1)
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface1._set", Arguments(), fields_);
 }
 
-FbOrgObjectapiTestbedInterface1Prop1ChangedDelegate& OrgObjectapiTestbedInterface1WAMPService::GetbOrgObjectapiTestbedInterface1Prop1ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop1ChangedDelegate& OrgObjectapiTestbedInterface1WAMPService::GetOrgObjectapiTestbedInterface1Prop1ChangedDelegate()
 {
-    return bOrgObjectapiTestbedInterface1Prop1Changed;
+    return OrgObjectapiTestbedInterface1Prop1Changed;
 }
 
 int32 OrgObjectapiTestbedInterface1WAMPService::GetProp2() const

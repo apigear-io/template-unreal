@@ -46,7 +46,7 @@ OrgObjectapiTestbedInterface1SimulationService::OrgObjectapiTestbedInterface1Sim
             if(bProp1 != fields["prop1"].get<bool>())
             {
                 bProp1 = fields["prop1"].get<bool>();
-                bOrgObjectapiTestbedInterface1Prop1Changed.Broadcast(bProp1);
+                OrgObjectapiTestbedInterface1Prop1Changed.Broadcast(bProp1);
             }
         }
         if(fields.contains("prop2")) {
@@ -132,7 +132,7 @@ OrgObjectapiTestbedInterface1SimulationService::OrgObjectapiTestbedInterface1Sim
             if(bProp1 != fields["prop1"].get<bool>())
             {
                 bProp1 = fields["prop1"].get<bool>();
-                bOrgObjectapiTestbedInterface1Prop1Changed.Broadcast(bProp1);
+                OrgObjectapiTestbedInterface1Prop1Changed.Broadcast(bProp1);
             }
         }
         if(fields.contains("prop2")) {
@@ -273,9 +273,9 @@ void OrgObjectapiTestbedInterface1SimulationService::SetProp1(bool bInProp1)
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface1", "_set", params);
 }
 
-FbOrgObjectapiTestbedInterface1Prop1ChangedDelegate& OrgObjectapiTestbedInterface1SimulationService::GetbOrgObjectapiTestbedInterface1Prop1ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop1ChangedDelegate& OrgObjectapiTestbedInterface1SimulationService::GetOrgObjectapiTestbedInterface1Prop1ChangedDelegate()
 {
-    return bOrgObjectapiTestbedInterface1Prop1Changed;
+    return OrgObjectapiTestbedInterface1Prop1Changed;
 }
 
 int32 OrgObjectapiTestbedInterface1SimulationService::GetProp2() const

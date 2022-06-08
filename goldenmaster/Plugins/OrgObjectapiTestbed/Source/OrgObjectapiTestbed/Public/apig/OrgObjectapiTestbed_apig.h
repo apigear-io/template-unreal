@@ -35,7 +35,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOrgObjectapiTestbedInterface1Sig2D
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOrgObjectapiTestbedInterface1Sig3Delegate, float, Step);
 
 // property delegates
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FbOrgObjectapiTestbedInterface1Prop1ChangedDelegate, bool, bProp1);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOrgObjectapiTestbedInterface1Prop1ChangedDelegate, bool, bProp1);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOrgObjectapiTestbedInterface1Prop2ChangedDelegate, int32, Prop2);
 
@@ -81,7 +81,7 @@ public:
 
     virtual FOrgObjectapiTestbedInterface1Sig3Delegate& GetOrgObjectapiTestbedInterface1Sig3SignalDelegate() = 0;
 
-    virtual FbOrgObjectapiTestbedInterface1Prop1ChangedDelegate& GetbOrgObjectapiTestbedInterface1Prop1ChangedDelegate() = 0;
+    virtual FOrgObjectapiTestbedInterface1Prop1ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop1ChangedDelegate() = 0;
 
     virtual FOrgObjectapiTestbedInterface1Prop2ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop2ChangedDelegate() = 0;
 

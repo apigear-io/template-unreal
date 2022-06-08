@@ -50,10 +50,10 @@ public:
 {% endfor %}
 {% for property in interface.properties %}
 	UPROPERTY(BlueprintAssignable, Category = "{{category}}")
-    F{{property|unrealVarName: moduleInterfaceCapital}}ChangedDelegate {{property|unrealVarName: moduleInterfaceCapital}}Changed;
-    F{{property|unrealVarName: moduleInterfaceCapital}}ChangedDelegate& Get{{property|unrealVarName: moduleInterfaceCapital}}ChangedDelegate() override;
+    F{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate {{moduleInterfaceCapital}}{{property.name|capital}}Changed;
+    F{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate& Get{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate() override;
 	UFUNCTION(BlueprintCallable, Category = "{{category}}")
-    void On{{property|unrealVarName: moduleInterfaceCapital}}Changed({{property|unrealParam: moduleCapital, 'In'}});
+    void On{{moduleInterfaceCapital}}{{property.name|capital}}Changed({{property|unrealParam: moduleCapital, 'In'}});
 {{nl}}
 {% endfor %}
     // properties

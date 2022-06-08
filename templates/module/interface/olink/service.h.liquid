@@ -40,8 +40,8 @@ public:
     {{nl}}
 {% endfor %}
 {% for property in interface.properties %}
-    F{{property|unrealVarName: moduleInterfaceCapital}}ChangedDelegate {{property|unrealVarName: moduleInterfaceCapital}}Changed;
-    F{{property|unrealVarName: moduleInterfaceCapital}}ChangedDelegate& Get{{property|unrealVarName: moduleInterfaceCapital}}ChangedDelegate() override;
+    F{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate {{moduleInterfaceCapital}}{{property.name|capital}}Changed;
+    F{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate& Get{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate() override;
 {{nl}}
 {% endfor %}
     // properties

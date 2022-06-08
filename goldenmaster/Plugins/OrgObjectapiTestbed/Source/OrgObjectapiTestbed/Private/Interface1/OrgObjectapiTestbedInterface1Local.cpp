@@ -60,13 +60,13 @@ void OrgObjectapiTestbedInterface1LocalService::SetProp1(bool bInProp1)
     if(bProp1 != bInProp1)
     {
         bProp1 = bInProp1;
-        bOrgObjectapiTestbedInterface1Prop1Changed.Broadcast(bProp1);
+        OrgObjectapiTestbedInterface1Prop1Changed.Broadcast(bProp1);
     }
 }
 
-FbOrgObjectapiTestbedInterface1Prop1ChangedDelegate& OrgObjectapiTestbedInterface1LocalService::GetbOrgObjectapiTestbedInterface1Prop1ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop1ChangedDelegate& OrgObjectapiTestbedInterface1LocalService::GetOrgObjectapiTestbedInterface1Prop1ChangedDelegate()
 {
-    return bOrgObjectapiTestbedInterface1Prop1Changed;
+    return OrgObjectapiTestbedInterface1Prop1Changed;
 }
 int32 OrgObjectapiTestbedInterface1LocalService::GetProp2() const
 {
