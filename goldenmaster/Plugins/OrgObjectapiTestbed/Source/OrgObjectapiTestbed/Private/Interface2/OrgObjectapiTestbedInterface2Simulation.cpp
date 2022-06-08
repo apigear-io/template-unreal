@@ -41,42 +41,42 @@ OrgObjectapiTestbedInterface2SimulationService::OrgObjectapiTestbedInterface2Sim
             if(Prop200 != fields["prop200"].get<int32>())
             {
                 Prop200 = fields["prop200"].get<int32>();
-                OrgObjectapiTestbedInterface2Prop200Changed.Broadcast(Prop200);
+                Prop200Changed.Broadcast(Prop200);
             }
         }
         if(fields.contains("prop201")) {
             if(Prop201 != fields["prop201"].get<int32>())
             {
                 Prop201 = fields["prop201"].get<int32>();
-                OrgObjectapiTestbedInterface2Prop201Changed.Broadcast(Prop201);
+                Prop201Changed.Broadcast(Prop201);
             }
         }
         if(fields.contains("prop202")) {
             if(Prop202 != fields["prop202"].get<int32>())
             {
                 Prop202 = fields["prop202"].get<int32>();
-                OrgObjectapiTestbedInterface2Prop202Changed.Broadcast(Prop202);
+                Prop202Changed.Broadcast(Prop202);
             }
         }
         if(fields.contains("prop203")) {
             if(Prop203 != fields["prop203"].get<float>())
             {
                 Prop203 = fields["prop203"].get<float>();
-                OrgObjectapiTestbedInterface2Prop203Changed.Broadcast(Prop203);
+                Prop203Changed.Broadcast(Prop203);
             }
         }
         if(fields.contains("prop204")) {
             if(Prop204 != fields["prop204"].get<float>())
             {
                 Prop204 = fields["prop204"].get<float>();
-                OrgObjectapiTestbedInterface2Prop204Changed.Broadcast(Prop204);
+                Prop204Changed.Broadcast(Prop204);
             }
         }
         if(fields.contains("prop205")) {
             if(Prop205 != fields["prop205"].get<FString>())
             {
                 Prop205 = fields["prop205"].get<FString>();
-                OrgObjectapiTestbedInterface2Prop205Changed.Broadcast(Prop205);
+                Prop205Changed.Broadcast(Prop205);
             }
         }
     };
@@ -92,42 +92,42 @@ OrgObjectapiTestbedInterface2SimulationService::OrgObjectapiTestbedInterface2Sim
             if(Prop200 != fields["prop200"].get<int32>())
             {
                 Prop200 = fields["prop200"].get<int32>();
-                OrgObjectapiTestbedInterface2Prop200Changed.Broadcast(Prop200);
+                Prop200Changed.Broadcast(Prop200);
             }
         }
         if(fields.contains("prop201")) {
             if(Prop201 != fields["prop201"].get<int32>())
             {
                 Prop201 = fields["prop201"].get<int32>();
-                OrgObjectapiTestbedInterface2Prop201Changed.Broadcast(Prop201);
+                Prop201Changed.Broadcast(Prop201);
             }
         }
         if(fields.contains("prop202")) {
             if(Prop202 != fields["prop202"].get<int32>())
             {
                 Prop202 = fields["prop202"].get<int32>();
-                OrgObjectapiTestbedInterface2Prop202Changed.Broadcast(Prop202);
+                Prop202Changed.Broadcast(Prop202);
             }
         }
         if(fields.contains("prop203")) {
             if(Prop203 != fields["prop203"].get<float>())
             {
                 Prop203 = fields["prop203"].get<float>();
-                OrgObjectapiTestbedInterface2Prop203Changed.Broadcast(Prop203);
+                Prop203Changed.Broadcast(Prop203);
             }
         }
         if(fields.contains("prop204")) {
             if(Prop204 != fields["prop204"].get<float>())
             {
                 Prop204 = fields["prop204"].get<float>();
-                OrgObjectapiTestbedInterface2Prop204Changed.Broadcast(Prop204);
+                Prop204Changed.Broadcast(Prop204);
             }
         }
         if(fields.contains("prop205")) {
             if(Prop205 != fields["prop205"].get<FString>())
             {
                 Prop205 = fields["prop205"].get<FString>();
-                OrgObjectapiTestbedInterface2Prop205Changed.Broadcast(Prop205);
+                Prop205Changed.Broadcast(Prop205);
             }
         }
     };
@@ -154,9 +154,9 @@ void OrgObjectapiTestbedInterface2SimulationService::SetProp200(int32 InProp200)
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface2", "_set", params);
 }
 
-FOrgObjectapiTestbedInterface2Prop200ChangedDelegate& OrgObjectapiTestbedInterface2SimulationService::GetOrgObjectapiTestbedInterface2Prop200ChangedDelegate()
+FOrgObjectapiTestbedInterface2Prop200ChangedDelegate& OrgObjectapiTestbedInterface2SimulationService::GetProp200ChangedDelegate()
 {
-    return OrgObjectapiTestbedInterface2Prop200Changed;
+    return Prop200Changed;
 }
 
 int32 OrgObjectapiTestbedInterface2SimulationService::GetProp201() const
@@ -171,9 +171,9 @@ void OrgObjectapiTestbedInterface2SimulationService::SetProp201(int32 InProp201)
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface2", "_set", params);
 }
 
-FOrgObjectapiTestbedInterface2Prop201ChangedDelegate& OrgObjectapiTestbedInterface2SimulationService::GetOrgObjectapiTestbedInterface2Prop201ChangedDelegate()
+FOrgObjectapiTestbedInterface2Prop201ChangedDelegate& OrgObjectapiTestbedInterface2SimulationService::GetProp201ChangedDelegate()
 {
-    return OrgObjectapiTestbedInterface2Prop201Changed;
+    return Prop201Changed;
 }
 
 int32 OrgObjectapiTestbedInterface2SimulationService::GetProp202() const
@@ -188,9 +188,9 @@ void OrgObjectapiTestbedInterface2SimulationService::SetProp202(int32 InProp202)
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface2", "_set", params);
 }
 
-FOrgObjectapiTestbedInterface2Prop202ChangedDelegate& OrgObjectapiTestbedInterface2SimulationService::GetOrgObjectapiTestbedInterface2Prop202ChangedDelegate()
+FOrgObjectapiTestbedInterface2Prop202ChangedDelegate& OrgObjectapiTestbedInterface2SimulationService::GetProp202ChangedDelegate()
 {
-    return OrgObjectapiTestbedInterface2Prop202Changed;
+    return Prop202Changed;
 }
 
 float OrgObjectapiTestbedInterface2SimulationService::GetProp203() const
@@ -205,9 +205,9 @@ void OrgObjectapiTestbedInterface2SimulationService::SetProp203(float InProp203)
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface2", "_set", params);
 }
 
-FOrgObjectapiTestbedInterface2Prop203ChangedDelegate& OrgObjectapiTestbedInterface2SimulationService::GetOrgObjectapiTestbedInterface2Prop203ChangedDelegate()
+FOrgObjectapiTestbedInterface2Prop203ChangedDelegate& OrgObjectapiTestbedInterface2SimulationService::GetProp203ChangedDelegate()
 {
-    return OrgObjectapiTestbedInterface2Prop203Changed;
+    return Prop203Changed;
 }
 
 float OrgObjectapiTestbedInterface2SimulationService::GetProp204() const
@@ -222,9 +222,9 @@ void OrgObjectapiTestbedInterface2SimulationService::SetProp204(float InProp204)
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface2", "_set", params);
 }
 
-FOrgObjectapiTestbedInterface2Prop204ChangedDelegate& OrgObjectapiTestbedInterface2SimulationService::GetOrgObjectapiTestbedInterface2Prop204ChangedDelegate()
+FOrgObjectapiTestbedInterface2Prop204ChangedDelegate& OrgObjectapiTestbedInterface2SimulationService::GetProp204ChangedDelegate()
 {
-    return OrgObjectapiTestbedInterface2Prop204Changed;
+    return Prop204Changed;
 }
 
 FString OrgObjectapiTestbedInterface2SimulationService::GetProp205() const
@@ -239,8 +239,8 @@ void OrgObjectapiTestbedInterface2SimulationService::SetProp205(const FString& I
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface2", "_set", params);
 }
 
-FOrgObjectapiTestbedInterface2Prop205ChangedDelegate& OrgObjectapiTestbedInterface2SimulationService::GetOrgObjectapiTestbedInterface2Prop205ChangedDelegate()
+FOrgObjectapiTestbedInterface2Prop205ChangedDelegate& OrgObjectapiTestbedInterface2SimulationService::GetProp205ChangedDelegate()
 {
-    return OrgObjectapiTestbedInterface2Prop205Changed;
+    return Prop205Changed;
 }
 

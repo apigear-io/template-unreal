@@ -34,13 +34,13 @@ public:
 
     // signals
 {% for signal in interface.signals %}
-    F{{signal|unrealVarName: moduleInterfaceCapital}}Delegate {{signal|unrealVarName: moduleInterfaceCapital}}Signal;
-    F{{signal|unrealVarName: moduleInterfaceCapital}}Delegate& Get{{signal|unrealVarName: moduleInterfaceCapital}}SignalDelegate() override;
+    F{{signal|unrealVarName: moduleInterfaceCapital}}Delegate {{signal|unrealVarName}}Signal;
+    F{{signal|unrealVarName: moduleInterfaceCapital}}Delegate& Get{{signal|unrealVarName}}SignalDelegate() override;
     {{nl}}
 {% endfor %}
 {% for property in interface.properties %}
-    F{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate {{moduleInterfaceCapital}}{{property.name|capital}}Changed;
-    F{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate& Get{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate() override;
+    F{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate {{property.name|capital}}Changed;
+    F{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate& Get{{property.name|capital}}ChangedDelegate() override;
 {{nl}}
 {% endfor %}
 

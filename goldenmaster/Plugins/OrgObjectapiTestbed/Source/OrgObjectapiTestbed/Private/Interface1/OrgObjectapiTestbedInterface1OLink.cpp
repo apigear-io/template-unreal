@@ -55,19 +55,19 @@ OrgObjectapiTestbedInterface1OLinkService::~OrgObjectapiTestbedInterface1OLinkSe
     m_node = nullptr;
 }
 
-FOrgObjectapiTestbedInterface1Sig1Delegate& OrgObjectapiTestbedInterface1OLinkService::GetOrgObjectapiTestbedInterface1Sig1SignalDelegate()
+FOrgObjectapiTestbedInterface1Sig1Delegate& OrgObjectapiTestbedInterface1OLinkService::GetSig1SignalDelegate()
 {
-    return OrgObjectapiTestbedInterface1Sig1Signal;
+    return Sig1Signal;
 }
 
-FOrgObjectapiTestbedInterface1Sig2Delegate& OrgObjectapiTestbedInterface1OLinkService::GetOrgObjectapiTestbedInterface1Sig2SignalDelegate()
+FOrgObjectapiTestbedInterface1Sig2Delegate& OrgObjectapiTestbedInterface1OLinkService::GetSig2SignalDelegate()
 {
-    return OrgObjectapiTestbedInterface1Sig2Signal;
+    return Sig2Signal;
 }
 
-FOrgObjectapiTestbedInterface1Sig3Delegate& OrgObjectapiTestbedInterface1OLinkService::GetOrgObjectapiTestbedInterface1Sig3SignalDelegate()
+FOrgObjectapiTestbedInterface1Sig3Delegate& OrgObjectapiTestbedInterface1OLinkService::GetSig3SignalDelegate()
 {
-    return OrgObjectapiTestbedInterface1Sig3Signal;
+    return Sig3Signal;
 }
 
 bool OrgObjectapiTestbedInterface1OLinkService::GetProp1() const
@@ -83,9 +83,9 @@ void OrgObjectapiTestbedInterface1OLinkService::SetProp1(bool bInProp1)
     m_node->setRemoteProperty("org.objectapi.testbed.Interface1/prop1", bInProp1);
 }
 
-FOrgObjectapiTestbedInterface1Prop1ChangedDelegate& OrgObjectapiTestbedInterface1OLinkService::GetOrgObjectapiTestbedInterface1Prop1ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop1ChangedDelegate& OrgObjectapiTestbedInterface1OLinkService::GetProp1ChangedDelegate()
 {
-    return OrgObjectapiTestbedInterface1Prop1Changed;
+    return Prop1Changed;
 }
 int32 OrgObjectapiTestbedInterface1OLinkService::GetProp2() const
 {
@@ -100,9 +100,9 @@ void OrgObjectapiTestbedInterface1OLinkService::SetProp2(int32 InProp2)
     m_node->setRemoteProperty("org.objectapi.testbed.Interface1/prop2", InProp2);
 }
 
-FOrgObjectapiTestbedInterface1Prop2ChangedDelegate& OrgObjectapiTestbedInterface1OLinkService::GetOrgObjectapiTestbedInterface1Prop2ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop2ChangedDelegate& OrgObjectapiTestbedInterface1OLinkService::GetProp2ChangedDelegate()
 {
-    return OrgObjectapiTestbedInterface1Prop2Changed;
+    return Prop2Changed;
 }
 float OrgObjectapiTestbedInterface1OLinkService::GetProp3() const
 {
@@ -117,9 +117,9 @@ void OrgObjectapiTestbedInterface1OLinkService::SetProp3(float InProp3)
     m_node->setRemoteProperty("org.objectapi.testbed.Interface1/prop3", InProp3);
 }
 
-FOrgObjectapiTestbedInterface1Prop3ChangedDelegate& OrgObjectapiTestbedInterface1OLinkService::GetOrgObjectapiTestbedInterface1Prop3ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop3ChangedDelegate& OrgObjectapiTestbedInterface1OLinkService::GetProp3ChangedDelegate()
 {
-    return OrgObjectapiTestbedInterface1Prop3Changed;
+    return Prop3Changed;
 }
 FString OrgObjectapiTestbedInterface1OLinkService::GetProp4() const
 {
@@ -134,9 +134,9 @@ void OrgObjectapiTestbedInterface1OLinkService::SetProp4(const FString& InProp4)
     m_node->setRemoteProperty("org.objectapi.testbed.Interface1/prop4", InProp4);
 }
 
-FOrgObjectapiTestbedInterface1Prop4ChangedDelegate& OrgObjectapiTestbedInterface1OLinkService::GetOrgObjectapiTestbedInterface1Prop4ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop4ChangedDelegate& OrgObjectapiTestbedInterface1OLinkService::GetProp4ChangedDelegate()
 {
-    return OrgObjectapiTestbedInterface1Prop4Changed;
+    return Prop4Changed;
 }
 TArray<int32> OrgObjectapiTestbedInterface1OLinkService::GetProp5() const
 {
@@ -151,9 +151,9 @@ void OrgObjectapiTestbedInterface1OLinkService::SetProp5(const TArray<int32>& In
     m_node->setRemoteProperty("org.objectapi.testbed.Interface1/prop5", InProp5);
 }
 
-FOrgObjectapiTestbedInterface1Prop5ChangedDelegate& OrgObjectapiTestbedInterface1OLinkService::GetOrgObjectapiTestbedInterface1Prop5ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop5ChangedDelegate& OrgObjectapiTestbedInterface1OLinkService::GetProp5ChangedDelegate()
 {
-    return OrgObjectapiTestbedInterface1Prop5Changed;
+    return Prop5Changed;
 }
 FOrgObjectapiTestbedStruct1 OrgObjectapiTestbedInterface1OLinkService::GetProp6() const
 {
@@ -168,9 +168,9 @@ void OrgObjectapiTestbedInterface1OLinkService::SetProp6(const FOrgObjectapiTest
     m_node->setRemoteProperty("org.objectapi.testbed.Interface1/prop6", InProp6);
 }
 
-FOrgObjectapiTestbedInterface1Prop6ChangedDelegate& OrgObjectapiTestbedInterface1OLinkService::GetOrgObjectapiTestbedInterface1Prop6ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop6ChangedDelegate& OrgObjectapiTestbedInterface1OLinkService::GetProp6ChangedDelegate()
 {
-    return OrgObjectapiTestbedInterface1Prop6Changed;
+    return Prop6Changed;
 }
 int32 OrgObjectapiTestbedInterface1OLinkService::GetProp7() const
 {
@@ -185,9 +185,9 @@ void OrgObjectapiTestbedInterface1OLinkService::SetProp7(int32 InProp7)
     m_node->setRemoteProperty("org.objectapi.testbed.Interface1/prop7", InProp7);
 }
 
-FOrgObjectapiTestbedInterface1Prop7ChangedDelegate& OrgObjectapiTestbedInterface1OLinkService::GetOrgObjectapiTestbedInterface1Prop7ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop7ChangedDelegate& OrgObjectapiTestbedInterface1OLinkService::GetProp7ChangedDelegate()
 {
-    return OrgObjectapiTestbedInterface1Prop7Changed;
+    return Prop7Changed;
 }
 TArray<int32> OrgObjectapiTestbedInterface1OLinkService::GetProp10() const
 {
@@ -202,9 +202,9 @@ void OrgObjectapiTestbedInterface1OLinkService::SetProp10(const TArray<int32>& I
     m_node->setRemoteProperty("org.objectapi.testbed.Interface1/prop10", InProp10);
 }
 
-FOrgObjectapiTestbedInterface1Prop10ChangedDelegate& OrgObjectapiTestbedInterface1OLinkService::GetOrgObjectapiTestbedInterface1Prop10ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop10ChangedDelegate& OrgObjectapiTestbedInterface1OLinkService::GetProp10ChangedDelegate()
 {
-    return OrgObjectapiTestbedInterface1Prop10Changed;
+    return Prop10Changed;
 }
 TArray<FOrgObjectapiTestbedStruct1> OrgObjectapiTestbedInterface1OLinkService::GetProp11() const
 {
@@ -219,9 +219,9 @@ void OrgObjectapiTestbedInterface1OLinkService::SetProp11(const TArray<FOrgObjec
     m_node->setRemoteProperty("org.objectapi.testbed.Interface1/prop11", InProp11);
 }
 
-FOrgObjectapiTestbedInterface1Prop11ChangedDelegate& OrgObjectapiTestbedInterface1OLinkService::GetOrgObjectapiTestbedInterface1Prop11ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop11ChangedDelegate& OrgObjectapiTestbedInterface1OLinkService::GetProp11ChangedDelegate()
 {
-    return OrgObjectapiTestbedInterface1Prop11Changed;
+    return Prop11Changed;
 }
 TArray<EOrgObjectapiTestbedEnum1> OrgObjectapiTestbedInterface1OLinkService::GetProp12() const
 {
@@ -236,9 +236,9 @@ void OrgObjectapiTestbedInterface1OLinkService::SetProp12(const TArray<EOrgObjec
     m_node->setRemoteProperty("org.objectapi.testbed.Interface1/prop12", InProp12);
 }
 
-FOrgObjectapiTestbedInterface1Prop12ChangedDelegate& OrgObjectapiTestbedInterface1OLinkService::GetOrgObjectapiTestbedInterface1Prop12ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop12ChangedDelegate& OrgObjectapiTestbedInterface1OLinkService::GetProp12ChangedDelegate()
 {
-    return OrgObjectapiTestbedInterface1Prop12Changed;
+    return Prop12Changed;
 }
 TArray<FOrgObjectapiTestbedStruct1> OrgObjectapiTestbedInterface1OLinkService::GetProp14() const
 {
@@ -253,9 +253,9 @@ void OrgObjectapiTestbedInterface1OLinkService::SetProp14(const TArray<FOrgObjec
     m_node->setRemoteProperty("org.objectapi.testbed.Interface1/prop14", InProp14);
 }
 
-FOrgObjectapiTestbedInterface1Prop14ChangedDelegate& OrgObjectapiTestbedInterface1OLinkService::GetOrgObjectapiTestbedInterface1Prop14ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop14ChangedDelegate& OrgObjectapiTestbedInterface1OLinkService::GetProp14ChangedDelegate()
 {
-    return OrgObjectapiTestbedInterface1Prop14Changed;
+    return Prop14Changed;
 }
 
 void OrgObjectapiTestbedInterface1OLinkService::Op1()
@@ -304,77 +304,77 @@ void OrgObjectapiTestbedInterface1OLinkService::applyState(const nlohmann::json&
         if(bProp1 != fields["prop1"].get<bool>())
         {
             bProp1 = fields["prop1"].get<bool>();
-            OrgObjectapiTestbedInterface1Prop1Changed.Broadcast(bProp1);
+            Prop1Changed.Broadcast(bProp1);
         }
     }
     if(fields.contains("prop2")) {
         if(Prop2 != fields["prop2"].get<int32>())
         {
             Prop2 = fields["prop2"].get<int32>();
-            OrgObjectapiTestbedInterface1Prop2Changed.Broadcast(Prop2);
+            Prop2Changed.Broadcast(Prop2);
         }
     }
     if(fields.contains("prop3")) {
         if(Prop3 != fields["prop3"].get<float>())
         {
             Prop3 = fields["prop3"].get<float>();
-            OrgObjectapiTestbedInterface1Prop3Changed.Broadcast(Prop3);
+            Prop3Changed.Broadcast(Prop3);
         }
     }
     if(fields.contains("prop4")) {
         if(Prop4 != fields["prop4"].get<FString>())
         {
             Prop4 = fields["prop4"].get<FString>();
-            OrgObjectapiTestbedInterface1Prop4Changed.Broadcast(Prop4);
+            Prop4Changed.Broadcast(Prop4);
         }
     }
     if(fields.contains("prop5")) {
         if(Prop5 != fields["prop5"].get<TArray<int32>>())
         {
             Prop5 = fields["prop5"].get<TArray<int32>>();
-            OrgObjectapiTestbedInterface1Prop5Changed.Broadcast(Prop5);
+            Prop5Changed.Broadcast(Prop5);
         }
     }
     if(fields.contains("prop6")) {
         if(Prop6 != fields["prop6"].get<FOrgObjectapiTestbedStruct1>())
         {
             Prop6 = fields["prop6"].get<FOrgObjectapiTestbedStruct1>();
-            OrgObjectapiTestbedInterface1Prop6Changed.Broadcast(Prop6);
+            Prop6Changed.Broadcast(Prop6);
         }
     }
     if(fields.contains("prop7")) {
         if(Prop7 != fields["prop7"].get<int32>())
         {
             Prop7 = fields["prop7"].get<int32>();
-            OrgObjectapiTestbedInterface1Prop7Changed.Broadcast(Prop7);
+            Prop7Changed.Broadcast(Prop7);
         }
     }
     if(fields.contains("prop10")) {
         if(Prop10 != fields["prop10"].get<TArray<int32>>())
         {
             Prop10 = fields["prop10"].get<TArray<int32>>();
-            OrgObjectapiTestbedInterface1Prop10Changed.Broadcast(Prop10);
+            Prop10Changed.Broadcast(Prop10);
         }
     }
     if(fields.contains("prop11")) {
         if(Prop11 != fields["prop11"].get<TArray<FOrgObjectapiTestbedStruct1>>())
         {
             Prop11 = fields["prop11"].get<TArray<FOrgObjectapiTestbedStruct1>>();
-            OrgObjectapiTestbedInterface1Prop11Changed.Broadcast(Prop11);
+            Prop11Changed.Broadcast(Prop11);
         }
     }
     if(fields.contains("prop12")) {
         if(Prop12 != fields["prop12"].get<TArray<EOrgObjectapiTestbedEnum1>>())
         {
             Prop12 = fields["prop12"].get<TArray<EOrgObjectapiTestbedEnum1>>();
-            OrgObjectapiTestbedInterface1Prop12Changed.Broadcast(Prop12);
+            Prop12Changed.Broadcast(Prop12);
         }
     }
     if(fields.contains("prop14")) {
         if(Prop14 != fields["prop14"].get<TArray<FOrgObjectapiTestbedStruct1>>())
         {
             Prop14 = fields["prop14"].get<TArray<FOrgObjectapiTestbedStruct1>>();
-            OrgObjectapiTestbedInterface1Prop14Changed.Broadcast(Prop14);
+            Prop14Changed.Broadcast(Prop14);
         }
     }
 }
@@ -388,15 +388,15 @@ void OrgObjectapiTestbedInterface1OLinkService::olinkOnSignal(std::string name, 
 {
     std::string path = Name::pathFromName(name);
     if(path == "sig1") {
-        OrgObjectapiTestbedInterface1Sig1Signal.Broadcast();
+        Sig1Signal.Broadcast();
         return;
     }
     if(path == "sig2") {
-        OrgObjectapiTestbedInterface1Sig2Signal.Broadcast(args[0].get<int32>(),args[1].get<FString>());
+        Sig2Signal.Broadcast(args[0].get<int32>(),args[1].get<FString>());
         return;
     }
     if(path == "sig3") {
-        OrgObjectapiTestbedInterface1Sig3Signal.Broadcast(args[0].get<float>());
+        Sig3Signal.Broadcast(args[0].get<float>());
         return;
     }
 }

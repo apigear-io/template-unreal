@@ -53,7 +53,7 @@ using namespace ApiGear::WAMP;
             if({{property|unrealVarName}} != fields["{{property.name}}"].get<{{property|unrealTypeName: false, moduleCapital}}>())
             {
                 {{property|unrealVarName}} = fields["{{property.name}}"].get<{{property|unrealTypeName: false, moduleCapital}}>();
-                {{moduleInterfaceCapital}}{{property.name|capital}}Changed.Broadcast({{property|unrealVarName}});
+                {{property.name|capital}}Changed.Broadcast({{property|unrealVarName}});
             }
         }
 {% endfor %}
@@ -71,7 +71,7 @@ using namespace ApiGear::WAMP;
             if({{property|unrealVarName}} != fields["{{property.name}}"].get<{{property|unrealTypeName: false, moduleCapital}}>())
             {
                 {{property|unrealVarName}} = fields["{{property.name}}"].get<{{property|unrealTypeName: false, moduleCapital}}>();
-                {{moduleInterfaceCapital}}{{property.name|capital}}Changed.Broadcast({{property|unrealVarName}});
+                {{property.name|capital}}Changed.Broadcast({{property|unrealVarName}});
             }
         }
 {% endfor %}
@@ -84,14 +84,14 @@ using namespace ApiGear::WAMP;
     {% if signal.params.size > 0 %}
         if(arg.args.size() == {{signal.params.size}})
         {
-            {{signal|unrealVarName: moduleInterfaceCapital}}Signal.Broadcast(
+            {{signal|unrealVarName}}Signal.Broadcast(
     {%- for param in signal.params -%}
             arg.args[{{forloop.index0}}].get<{{param|unrealReturn: moduleCapital}}>(){% unless forloop.last %},{% endunless -%}
     {%- endfor -%}
         );
         }
     {% else %}
-        {{signal|unrealVarName: moduleInterfaceCapital}}Signal.Broadcast();
+        {{signal|unrealVarName}}Signal.Broadcast();
     {% endif %}
     };
     UnrealWamp::instance()->doSubscribe("{{module.name}}.{{interface.name}}.{{signal.name}}", {{signal.name}}Func);
@@ -108,9 +108,9 @@ using namespace ApiGear::WAMP;
 }
 {{nl}}
 {% for signal in interface.signals %}
-F{{signal|unrealVarName: moduleInterfaceCapital}}Delegate& {{class}}::Get{{signal|unrealVarName: moduleInterfaceCapital}}SignalDelegate()
+F{{signal|unrealVarName: moduleInterfaceCapital}}Delegate& {{class}}::Get{{signal|unrealVarName}}SignalDelegate()
 {
-    return {{signal|unrealVarName: moduleInterfaceCapital}}Signal;
+    return {{signal|unrealVarName}}Signal;
 }
 {{nl}}
 {% endfor %}
@@ -128,9 +128,9 @@ void {{class}}::Set{{property.name | capital}}({{property|unrealParam: moduleCap
     UnrealWamp::instance()->doCall("{{module.name}}.{{interface.name}}._set", Arguments(), fields_);
 }
 
-F{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate& {{class}}::Get{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate()
+F{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate& {{class}}::Get{{property.name|capital}}ChangedDelegate()
 {
-    return {{moduleInterfaceCapital}}{{property.name|capital}}Changed;
+    return {{property.name|capital}}Changed;
 }
 {{nl}}
 {% endfor %}

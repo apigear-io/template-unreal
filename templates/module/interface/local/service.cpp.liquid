@@ -39,9 +39,9 @@ limitations under the License.
 }
 {{nl}}
 {% for signal in interface.signals %}
-F{{signal|unrealVarName: moduleInterfaceCapital}}Delegate& {{class}}::Get{{signal|unrealVarName: moduleInterfaceCapital}}SignalDelegate()
+F{{signal|unrealVarName: moduleInterfaceCapital}}Delegate& {{class}}::Get{{signal|unrealVarName}}SignalDelegate()
 {
-    return {{signal|unrealVarName: moduleInterfaceCapital}}Signal;
+    return {{signal|unrealVarName}}Signal;
 }
 {{nl}}
 {% endfor %}
@@ -56,13 +56,13 @@ void {{class}}::Set{{property.name | capital}}({{property|unrealParam: moduleCap
     if({{property|unrealVarName}} != {{property|unrealVarName: 'In'}})
     {
         {{property|unrealVarName}} = {{property|unrealVarName: 'In'}};
-        {{moduleInterfaceCapital}}{{property.name|capital}}Changed.Broadcast({{property|unrealVarName}});
+        {{property.name|capital}}Changed.Broadcast({{property|unrealVarName}});
     }
 }
 {{nl}}
-F{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate& {{class}}::Get{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate()
+F{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate& {{class}}::Get{{property.name|capital}}ChangedDelegate()
 {
-    return {{moduleInterfaceCapital}}{{property.name|capital}}Changed;
+    return {{property.name|capital}}Changed;
 }
 {% endfor %}
 {{nl}}

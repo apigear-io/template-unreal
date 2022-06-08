@@ -71,27 +71,27 @@ UOrgObjectapiTestbedInterface2Proxy::UOrgObjectapiTestbedInterface2Proxy()
     , Prop205(FString())
 {
     service = FOrgObjectapiTestbedModuleFactory::createIOrgObjectapiTestbedInterface2Interface();
-    service->GetOrgObjectapiTestbedInterface2Prop200ChangedDelegate().AddDynamic(this, &UOrgObjectapiTestbedInterface2Proxy::OnOrgObjectapiTestbedInterface2Prop200Changed);
-    service->GetOrgObjectapiTestbedInterface2Prop201ChangedDelegate().AddDynamic(this, &UOrgObjectapiTestbedInterface2Proxy::OnOrgObjectapiTestbedInterface2Prop201Changed);
-    service->GetOrgObjectapiTestbedInterface2Prop202ChangedDelegate().AddDynamic(this, &UOrgObjectapiTestbedInterface2Proxy::OnOrgObjectapiTestbedInterface2Prop202Changed);
-    service->GetOrgObjectapiTestbedInterface2Prop203ChangedDelegate().AddDynamic(this, &UOrgObjectapiTestbedInterface2Proxy::OnOrgObjectapiTestbedInterface2Prop203Changed);
-    service->GetOrgObjectapiTestbedInterface2Prop204ChangedDelegate().AddDynamic(this, &UOrgObjectapiTestbedInterface2Proxy::OnOrgObjectapiTestbedInterface2Prop204Changed);
-    service->GetOrgObjectapiTestbedInterface2Prop205ChangedDelegate().AddDynamic(this, &UOrgObjectapiTestbedInterface2Proxy::OnOrgObjectapiTestbedInterface2Prop205Changed);
+    service->GetProp200ChangedDelegate().AddDynamic(this, &UOrgObjectapiTestbedInterface2Proxy::OnProp200Changed);
+    service->GetProp201ChangedDelegate().AddDynamic(this, &UOrgObjectapiTestbedInterface2Proxy::OnProp201Changed);
+    service->GetProp202ChangedDelegate().AddDynamic(this, &UOrgObjectapiTestbedInterface2Proxy::OnProp202Changed);
+    service->GetProp203ChangedDelegate().AddDynamic(this, &UOrgObjectapiTestbedInterface2Proxy::OnProp203Changed);
+    service->GetProp204ChangedDelegate().AddDynamic(this, &UOrgObjectapiTestbedInterface2Proxy::OnProp204Changed);
+    service->GetProp205ChangedDelegate().AddDynamic(this, &UOrgObjectapiTestbedInterface2Proxy::OnProp205Changed);
 }
 
 UOrgObjectapiTestbedInterface2Proxy::~UOrgObjectapiTestbedInterface2Proxy()
 {
-    service->GetOrgObjectapiTestbedInterface2Prop200ChangedDelegate().RemoveDynamic(this, &UOrgObjectapiTestbedInterface2Proxy::OnOrgObjectapiTestbedInterface2Prop200Changed);
-    service->GetOrgObjectapiTestbedInterface2Prop201ChangedDelegate().RemoveDynamic(this, &UOrgObjectapiTestbedInterface2Proxy::OnOrgObjectapiTestbedInterface2Prop201Changed);
-    service->GetOrgObjectapiTestbedInterface2Prop202ChangedDelegate().RemoveDynamic(this, &UOrgObjectapiTestbedInterface2Proxy::OnOrgObjectapiTestbedInterface2Prop202Changed);
-    service->GetOrgObjectapiTestbedInterface2Prop203ChangedDelegate().RemoveDynamic(this, &UOrgObjectapiTestbedInterface2Proxy::OnOrgObjectapiTestbedInterface2Prop203Changed);
-    service->GetOrgObjectapiTestbedInterface2Prop204ChangedDelegate().RemoveDynamic(this, &UOrgObjectapiTestbedInterface2Proxy::OnOrgObjectapiTestbedInterface2Prop204Changed);
-    service->GetOrgObjectapiTestbedInterface2Prop205ChangedDelegate().RemoveDynamic(this, &UOrgObjectapiTestbedInterface2Proxy::OnOrgObjectapiTestbedInterface2Prop205Changed);
+    service->GetProp200ChangedDelegate().RemoveDynamic(this, &UOrgObjectapiTestbedInterface2Proxy::OnProp200Changed);
+    service->GetProp201ChangedDelegate().RemoveDynamic(this, &UOrgObjectapiTestbedInterface2Proxy::OnProp201Changed);
+    service->GetProp202ChangedDelegate().RemoveDynamic(this, &UOrgObjectapiTestbedInterface2Proxy::OnProp202Changed);
+    service->GetProp203ChangedDelegate().RemoveDynamic(this, &UOrgObjectapiTestbedInterface2Proxy::OnProp203Changed);
+    service->GetProp204ChangedDelegate().RemoveDynamic(this, &UOrgObjectapiTestbedInterface2Proxy::OnProp204Changed);
+    service->GetProp205ChangedDelegate().RemoveDynamic(this, &UOrgObjectapiTestbedInterface2Proxy::OnProp205Changed);
 }
-void UOrgObjectapiTestbedInterface2Proxy::OnOrgObjectapiTestbedInterface2Prop200Changed(int32 InProp200)
+void UOrgObjectapiTestbedInterface2Proxy::OnProp200Changed(int32 InProp200)
 {
     OrgObjectapiTestbedInterface2Tracer::capture_state(this);
-    OrgObjectapiTestbedInterface2Prop200Changed.Broadcast(InProp200);
+    Prop200Changed.Broadcast(InProp200);
 }
 
 int32 UOrgObjectapiTestbedInterface2Proxy::GetProp200() const
@@ -105,15 +105,15 @@ void UOrgObjectapiTestbedInterface2Proxy::SetProp200(int32 InProp200)
     service->SetProp200(InProp200);
 }
 
-FOrgObjectapiTestbedInterface2Prop200ChangedDelegate& UOrgObjectapiTestbedInterface2Proxy::GetOrgObjectapiTestbedInterface2Prop200ChangedDelegate()
+FOrgObjectapiTestbedInterface2Prop200ChangedDelegate& UOrgObjectapiTestbedInterface2Proxy::GetProp200ChangedDelegate()
 {
-    return OrgObjectapiTestbedInterface2Prop200Changed;
+    return Prop200Changed;
 }
 
-void UOrgObjectapiTestbedInterface2Proxy::OnOrgObjectapiTestbedInterface2Prop201Changed(int32 InProp201)
+void UOrgObjectapiTestbedInterface2Proxy::OnProp201Changed(int32 InProp201)
 {
     OrgObjectapiTestbedInterface2Tracer::capture_state(this);
-    OrgObjectapiTestbedInterface2Prop201Changed.Broadcast(InProp201);
+    Prop201Changed.Broadcast(InProp201);
 }
 
 int32 UOrgObjectapiTestbedInterface2Proxy::GetProp201() const
@@ -127,15 +127,15 @@ void UOrgObjectapiTestbedInterface2Proxy::SetProp201(int32 InProp201)
     service->SetProp201(InProp201);
 }
 
-FOrgObjectapiTestbedInterface2Prop201ChangedDelegate& UOrgObjectapiTestbedInterface2Proxy::GetOrgObjectapiTestbedInterface2Prop201ChangedDelegate()
+FOrgObjectapiTestbedInterface2Prop201ChangedDelegate& UOrgObjectapiTestbedInterface2Proxy::GetProp201ChangedDelegate()
 {
-    return OrgObjectapiTestbedInterface2Prop201Changed;
+    return Prop201Changed;
 }
 
-void UOrgObjectapiTestbedInterface2Proxy::OnOrgObjectapiTestbedInterface2Prop202Changed(int32 InProp202)
+void UOrgObjectapiTestbedInterface2Proxy::OnProp202Changed(int32 InProp202)
 {
     OrgObjectapiTestbedInterface2Tracer::capture_state(this);
-    OrgObjectapiTestbedInterface2Prop202Changed.Broadcast(InProp202);
+    Prop202Changed.Broadcast(InProp202);
 }
 
 int32 UOrgObjectapiTestbedInterface2Proxy::GetProp202() const
@@ -149,15 +149,15 @@ void UOrgObjectapiTestbedInterface2Proxy::SetProp202(int32 InProp202)
     service->SetProp202(InProp202);
 }
 
-FOrgObjectapiTestbedInterface2Prop202ChangedDelegate& UOrgObjectapiTestbedInterface2Proxy::GetOrgObjectapiTestbedInterface2Prop202ChangedDelegate()
+FOrgObjectapiTestbedInterface2Prop202ChangedDelegate& UOrgObjectapiTestbedInterface2Proxy::GetProp202ChangedDelegate()
 {
-    return OrgObjectapiTestbedInterface2Prop202Changed;
+    return Prop202Changed;
 }
 
-void UOrgObjectapiTestbedInterface2Proxy::OnOrgObjectapiTestbedInterface2Prop203Changed(float InProp203)
+void UOrgObjectapiTestbedInterface2Proxy::OnProp203Changed(float InProp203)
 {
     OrgObjectapiTestbedInterface2Tracer::capture_state(this);
-    OrgObjectapiTestbedInterface2Prop203Changed.Broadcast(InProp203);
+    Prop203Changed.Broadcast(InProp203);
 }
 
 float UOrgObjectapiTestbedInterface2Proxy::GetProp203() const
@@ -171,15 +171,15 @@ void UOrgObjectapiTestbedInterface2Proxy::SetProp203(float InProp203)
     service->SetProp203(InProp203);
 }
 
-FOrgObjectapiTestbedInterface2Prop203ChangedDelegate& UOrgObjectapiTestbedInterface2Proxy::GetOrgObjectapiTestbedInterface2Prop203ChangedDelegate()
+FOrgObjectapiTestbedInterface2Prop203ChangedDelegate& UOrgObjectapiTestbedInterface2Proxy::GetProp203ChangedDelegate()
 {
-    return OrgObjectapiTestbedInterface2Prop203Changed;
+    return Prop203Changed;
 }
 
-void UOrgObjectapiTestbedInterface2Proxy::OnOrgObjectapiTestbedInterface2Prop204Changed(float InProp204)
+void UOrgObjectapiTestbedInterface2Proxy::OnProp204Changed(float InProp204)
 {
     OrgObjectapiTestbedInterface2Tracer::capture_state(this);
-    OrgObjectapiTestbedInterface2Prop204Changed.Broadcast(InProp204);
+    Prop204Changed.Broadcast(InProp204);
 }
 
 float UOrgObjectapiTestbedInterface2Proxy::GetProp204() const
@@ -193,15 +193,15 @@ void UOrgObjectapiTestbedInterface2Proxy::SetProp204(float InProp204)
     service->SetProp204(InProp204);
 }
 
-FOrgObjectapiTestbedInterface2Prop204ChangedDelegate& UOrgObjectapiTestbedInterface2Proxy::GetOrgObjectapiTestbedInterface2Prop204ChangedDelegate()
+FOrgObjectapiTestbedInterface2Prop204ChangedDelegate& UOrgObjectapiTestbedInterface2Proxy::GetProp204ChangedDelegate()
 {
-    return OrgObjectapiTestbedInterface2Prop204Changed;
+    return Prop204Changed;
 }
 
-void UOrgObjectapiTestbedInterface2Proxy::OnOrgObjectapiTestbedInterface2Prop205Changed(const FString& InProp205)
+void UOrgObjectapiTestbedInterface2Proxy::OnProp205Changed(const FString& InProp205)
 {
     OrgObjectapiTestbedInterface2Tracer::capture_state(this);
-    OrgObjectapiTestbedInterface2Prop205Changed.Broadcast(InProp205);
+    Prop205Changed.Broadcast(InProp205);
 }
 
 FString UOrgObjectapiTestbedInterface2Proxy::GetProp205() const
@@ -215,8 +215,8 @@ void UOrgObjectapiTestbedInterface2Proxy::SetProp205(const FString& InProp205)
     service->SetProp205(InProp205);
 }
 
-FOrgObjectapiTestbedInterface2Prop205ChangedDelegate& UOrgObjectapiTestbedInterface2Proxy::GetOrgObjectapiTestbedInterface2Prop205ChangedDelegate()
+FOrgObjectapiTestbedInterface2Prop205ChangedDelegate& UOrgObjectapiTestbedInterface2Proxy::GetProp205ChangedDelegate()
 {
-    return OrgObjectapiTestbedInterface2Prop205Changed;
+    return Prop205Changed;
 }
 

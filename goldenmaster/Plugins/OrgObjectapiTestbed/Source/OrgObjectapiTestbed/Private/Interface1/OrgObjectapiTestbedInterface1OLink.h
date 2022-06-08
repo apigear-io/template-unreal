@@ -27,47 +27,47 @@ public:
     virtual ~OrgObjectapiTestbedInterface1OLinkService();
 
     // signals
-    FOrgObjectapiTestbedInterface1Sig1Delegate OrgObjectapiTestbedInterface1Sig1Signal;
-    FOrgObjectapiTestbedInterface1Sig1Delegate& GetOrgObjectapiTestbedInterface1Sig1SignalDelegate() override;
+    FOrgObjectapiTestbedInterface1Sig1Delegate Sig1Signal;
+    FOrgObjectapiTestbedInterface1Sig1Delegate& GetSig1SignalDelegate() override;
     
-    FOrgObjectapiTestbedInterface1Sig2Delegate OrgObjectapiTestbedInterface1Sig2Signal;
-    FOrgObjectapiTestbedInterface1Sig2Delegate& GetOrgObjectapiTestbedInterface1Sig2SignalDelegate() override;
+    FOrgObjectapiTestbedInterface1Sig2Delegate Sig2Signal;
+    FOrgObjectapiTestbedInterface1Sig2Delegate& GetSig2SignalDelegate() override;
     
-    FOrgObjectapiTestbedInterface1Sig3Delegate OrgObjectapiTestbedInterface1Sig3Signal;
-    FOrgObjectapiTestbedInterface1Sig3Delegate& GetOrgObjectapiTestbedInterface1Sig3SignalDelegate() override;
+    FOrgObjectapiTestbedInterface1Sig3Delegate Sig3Signal;
+    FOrgObjectapiTestbedInterface1Sig3Delegate& GetSig3SignalDelegate() override;
     
-    FOrgObjectapiTestbedInterface1Prop1ChangedDelegate OrgObjectapiTestbedInterface1Prop1Changed;
-    FOrgObjectapiTestbedInterface1Prop1ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop1ChangedDelegate() override;
+    FOrgObjectapiTestbedInterface1Prop1ChangedDelegate Prop1Changed;
+    FOrgObjectapiTestbedInterface1Prop1ChangedDelegate& GetProp1ChangedDelegate() override;
 
-    FOrgObjectapiTestbedInterface1Prop2ChangedDelegate OrgObjectapiTestbedInterface1Prop2Changed;
-    FOrgObjectapiTestbedInterface1Prop2ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop2ChangedDelegate() override;
+    FOrgObjectapiTestbedInterface1Prop2ChangedDelegate Prop2Changed;
+    FOrgObjectapiTestbedInterface1Prop2ChangedDelegate& GetProp2ChangedDelegate() override;
 
-    FOrgObjectapiTestbedInterface1Prop3ChangedDelegate OrgObjectapiTestbedInterface1Prop3Changed;
-    FOrgObjectapiTestbedInterface1Prop3ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop3ChangedDelegate() override;
+    FOrgObjectapiTestbedInterface1Prop3ChangedDelegate Prop3Changed;
+    FOrgObjectapiTestbedInterface1Prop3ChangedDelegate& GetProp3ChangedDelegate() override;
 
-    FOrgObjectapiTestbedInterface1Prop4ChangedDelegate OrgObjectapiTestbedInterface1Prop4Changed;
-    FOrgObjectapiTestbedInterface1Prop4ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop4ChangedDelegate() override;
+    FOrgObjectapiTestbedInterface1Prop4ChangedDelegate Prop4Changed;
+    FOrgObjectapiTestbedInterface1Prop4ChangedDelegate& GetProp4ChangedDelegate() override;
 
-    FOrgObjectapiTestbedInterface1Prop5ChangedDelegate OrgObjectapiTestbedInterface1Prop5Changed;
-    FOrgObjectapiTestbedInterface1Prop5ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop5ChangedDelegate() override;
+    FOrgObjectapiTestbedInterface1Prop5ChangedDelegate Prop5Changed;
+    FOrgObjectapiTestbedInterface1Prop5ChangedDelegate& GetProp5ChangedDelegate() override;
 
-    FOrgObjectapiTestbedInterface1Prop6ChangedDelegate OrgObjectapiTestbedInterface1Prop6Changed;
-    FOrgObjectapiTestbedInterface1Prop6ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop6ChangedDelegate() override;
+    FOrgObjectapiTestbedInterface1Prop6ChangedDelegate Prop6Changed;
+    FOrgObjectapiTestbedInterface1Prop6ChangedDelegate& GetProp6ChangedDelegate() override;
 
-    FOrgObjectapiTestbedInterface1Prop7ChangedDelegate OrgObjectapiTestbedInterface1Prop7Changed;
-    FOrgObjectapiTestbedInterface1Prop7ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop7ChangedDelegate() override;
+    FOrgObjectapiTestbedInterface1Prop7ChangedDelegate Prop7Changed;
+    FOrgObjectapiTestbedInterface1Prop7ChangedDelegate& GetProp7ChangedDelegate() override;
 
-    FOrgObjectapiTestbedInterface1Prop10ChangedDelegate OrgObjectapiTestbedInterface1Prop10Changed;
-    FOrgObjectapiTestbedInterface1Prop10ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop10ChangedDelegate() override;
+    FOrgObjectapiTestbedInterface1Prop10ChangedDelegate Prop10Changed;
+    FOrgObjectapiTestbedInterface1Prop10ChangedDelegate& GetProp10ChangedDelegate() override;
 
-    FOrgObjectapiTestbedInterface1Prop11ChangedDelegate OrgObjectapiTestbedInterface1Prop11Changed;
-    FOrgObjectapiTestbedInterface1Prop11ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop11ChangedDelegate() override;
+    FOrgObjectapiTestbedInterface1Prop11ChangedDelegate Prop11Changed;
+    FOrgObjectapiTestbedInterface1Prop11ChangedDelegate& GetProp11ChangedDelegate() override;
 
-    FOrgObjectapiTestbedInterface1Prop12ChangedDelegate OrgObjectapiTestbedInterface1Prop12Changed;
-    FOrgObjectapiTestbedInterface1Prop12ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop12ChangedDelegate() override;
+    FOrgObjectapiTestbedInterface1Prop12ChangedDelegate Prop12Changed;
+    FOrgObjectapiTestbedInterface1Prop12ChangedDelegate& GetProp12ChangedDelegate() override;
 
-    FOrgObjectapiTestbedInterface1Prop14ChangedDelegate OrgObjectapiTestbedInterface1Prop14Changed;
-    FOrgObjectapiTestbedInterface1Prop14ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop14ChangedDelegate() override;
+    FOrgObjectapiTestbedInterface1Prop14ChangedDelegate Prop14Changed;
+    FOrgObjectapiTestbedInterface1Prop14ChangedDelegate& GetProp14ChangedDelegate() override;
 
     // properties
     bool GetProp1() const override;

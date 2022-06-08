@@ -78,11 +78,11 @@ class {{ API_MACRO }} {{class}}
 public:
 // signals
 {% for signal in interface.signals %}
-    virtual F{{signal|unrealVarName: moduleInterfaceCapital}}Delegate& Get{{signal|unrealVarName: moduleInterfaceCapital}}SignalDelegate() = 0;
+    virtual F{{signal|unrealVarName: moduleInterfaceCapital}}Delegate& Get{{signal|unrealVarName}}SignalDelegate() = 0;
 {{nl}}
 {% endfor %}
 {% for property in interface.properties %}
-    virtual F{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate& Get{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate() = 0;
+    virtual F{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate& Get{{property.name|capital}}ChangedDelegate() = 0;
 {{nl}}
 {% endfor %}
 

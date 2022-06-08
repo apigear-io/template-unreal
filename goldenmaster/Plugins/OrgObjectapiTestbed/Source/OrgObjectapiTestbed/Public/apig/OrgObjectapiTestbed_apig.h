@@ -75,33 +75,33 @@ class ORGOBJECTAPITESTBED_API IOrgObjectapiTestbedInterface1Interface
 
 public:
 // signals
-    virtual FOrgObjectapiTestbedInterface1Sig1Delegate& GetOrgObjectapiTestbedInterface1Sig1SignalDelegate() = 0;
+    virtual FOrgObjectapiTestbedInterface1Sig1Delegate& GetSig1SignalDelegate() = 0;
 
-    virtual FOrgObjectapiTestbedInterface1Sig2Delegate& GetOrgObjectapiTestbedInterface1Sig2SignalDelegate() = 0;
+    virtual FOrgObjectapiTestbedInterface1Sig2Delegate& GetSig2SignalDelegate() = 0;
 
-    virtual FOrgObjectapiTestbedInterface1Sig3Delegate& GetOrgObjectapiTestbedInterface1Sig3SignalDelegate() = 0;
+    virtual FOrgObjectapiTestbedInterface1Sig3Delegate& GetSig3SignalDelegate() = 0;
 
-    virtual FOrgObjectapiTestbedInterface1Prop1ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop1ChangedDelegate() = 0;
+    virtual FOrgObjectapiTestbedInterface1Prop1ChangedDelegate& GetProp1ChangedDelegate() = 0;
 
-    virtual FOrgObjectapiTestbedInterface1Prop2ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop2ChangedDelegate() = 0;
+    virtual FOrgObjectapiTestbedInterface1Prop2ChangedDelegate& GetProp2ChangedDelegate() = 0;
 
-    virtual FOrgObjectapiTestbedInterface1Prop3ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop3ChangedDelegate() = 0;
+    virtual FOrgObjectapiTestbedInterface1Prop3ChangedDelegate& GetProp3ChangedDelegate() = 0;
 
-    virtual FOrgObjectapiTestbedInterface1Prop4ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop4ChangedDelegate() = 0;
+    virtual FOrgObjectapiTestbedInterface1Prop4ChangedDelegate& GetProp4ChangedDelegate() = 0;
 
-    virtual FOrgObjectapiTestbedInterface1Prop5ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop5ChangedDelegate() = 0;
+    virtual FOrgObjectapiTestbedInterface1Prop5ChangedDelegate& GetProp5ChangedDelegate() = 0;
 
-    virtual FOrgObjectapiTestbedInterface1Prop6ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop6ChangedDelegate() = 0;
+    virtual FOrgObjectapiTestbedInterface1Prop6ChangedDelegate& GetProp6ChangedDelegate() = 0;
 
-    virtual FOrgObjectapiTestbedInterface1Prop7ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop7ChangedDelegate() = 0;
+    virtual FOrgObjectapiTestbedInterface1Prop7ChangedDelegate& GetProp7ChangedDelegate() = 0;
 
-    virtual FOrgObjectapiTestbedInterface1Prop10ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop10ChangedDelegate() = 0;
+    virtual FOrgObjectapiTestbedInterface1Prop10ChangedDelegate& GetProp10ChangedDelegate() = 0;
 
-    virtual FOrgObjectapiTestbedInterface1Prop11ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop11ChangedDelegate() = 0;
+    virtual FOrgObjectapiTestbedInterface1Prop11ChangedDelegate& GetProp11ChangedDelegate() = 0;
 
-    virtual FOrgObjectapiTestbedInterface1Prop12ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop12ChangedDelegate() = 0;
+    virtual FOrgObjectapiTestbedInterface1Prop12ChangedDelegate& GetProp12ChangedDelegate() = 0;
 
-    virtual FOrgObjectapiTestbedInterface1Prop14ChangedDelegate& GetOrgObjectapiTestbedInterface1Prop14ChangedDelegate() = 0;
+    virtual FOrgObjectapiTestbedInterface1Prop14ChangedDelegate& GetProp14ChangedDelegate() = 0;
 
 
 // methods
@@ -167,17 +167,17 @@ class ORGOBJECTAPITESTBED_API IOrgObjectapiTestbedInterface2Interface
 
 public:
 // signals
-    virtual FOrgObjectapiTestbedInterface2Prop200ChangedDelegate& GetOrgObjectapiTestbedInterface2Prop200ChangedDelegate() = 0;
+    virtual FOrgObjectapiTestbedInterface2Prop200ChangedDelegate& GetProp200ChangedDelegate() = 0;
 
-    virtual FOrgObjectapiTestbedInterface2Prop201ChangedDelegate& GetOrgObjectapiTestbedInterface2Prop201ChangedDelegate() = 0;
+    virtual FOrgObjectapiTestbedInterface2Prop201ChangedDelegate& GetProp201ChangedDelegate() = 0;
 
-    virtual FOrgObjectapiTestbedInterface2Prop202ChangedDelegate& GetOrgObjectapiTestbedInterface2Prop202ChangedDelegate() = 0;
+    virtual FOrgObjectapiTestbedInterface2Prop202ChangedDelegate& GetProp202ChangedDelegate() = 0;
 
-    virtual FOrgObjectapiTestbedInterface2Prop203ChangedDelegate& GetOrgObjectapiTestbedInterface2Prop203ChangedDelegate() = 0;
+    virtual FOrgObjectapiTestbedInterface2Prop203ChangedDelegate& GetProp203ChangedDelegate() = 0;
 
-    virtual FOrgObjectapiTestbedInterface2Prop204ChangedDelegate& GetOrgObjectapiTestbedInterface2Prop204ChangedDelegate() = 0;
+    virtual FOrgObjectapiTestbedInterface2Prop204ChangedDelegate& GetProp204ChangedDelegate() = 0;
 
-    virtual FOrgObjectapiTestbedInterface2Prop205ChangedDelegate& GetOrgObjectapiTestbedInterface2Prop205ChangedDelegate() = 0;
+    virtual FOrgObjectapiTestbedInterface2Prop205ChangedDelegate& GetProp205ChangedDelegate() = 0;
 
 
 // methods

@@ -42,18 +42,18 @@ public:
     // signals
 {% for signal in interface.signals %}
 	UPROPERTY(BlueprintAssignable, Category = "{{category}}", DisplayName = "{{signal.name | capital}} Signal")
-    F{{signal|unrealVarName: moduleInterfaceCapital}}Delegate {{signal|unrealVarName: moduleInterfaceCapital}}Signal;
-    F{{signal|unrealVarName: moduleInterfaceCapital}}Delegate& Get{{signal|unrealVarName: moduleInterfaceCapital}}SignalDelegate() override;
-	UFUNCTION(Category = "{{category}}")
-    void On{{signal|unrealVarName: moduleInterfaceCapital}}({{signal|unrealParams: moduleCapital}});
+    F{{signal|unrealVarName: moduleInterfaceCapital}}Delegate {{signal|unrealVarName}}Signal;
+    F{{signal|unrealVarName: moduleInterfaceCapital}}Delegate& Get{{signal|unrealVarName}}SignalDelegate() override;
+	UFUNCTION(Category = "{{category}}", BlueprintInternalUseOnly)
+    void On{{signal|unrealVarName}}({{signal|unrealParams: moduleCapital}});
     {{nl}}
 {% endfor %}
 {% for property in interface.properties %}
 	UPROPERTY(BlueprintAssignable, Category = "{{category}}", DisplayName = "{{property.name | capital}} Changed")
-    F{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate {{moduleInterfaceCapital}}{{property.name|capital}}Changed;
-    F{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate& Get{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate() override;
-	UFUNCTION(BlueprintCallable, Category = "{{category}}")
-    void On{{moduleInterfaceCapital}}{{property.name|capital}}Changed({{property|unrealParam: moduleCapital, 'In'}});
+    F{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate {{property.name|capital}}Changed;
+    F{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate& Get{{property.name|capital}}ChangedDelegate() override;
+	UFUNCTION(BlueprintCallable, Category = "{{category}}", BlueprintInternalUseOnly)
+    void On{{property.name|capital}}Changed({{property|unrealParam: moduleCapital, 'In'}});
 {{nl}}
 {% endfor %}
     // properties

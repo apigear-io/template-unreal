@@ -26,23 +26,23 @@ public:
     virtual ~OrgObjectapiTestbedInterface2WAMPService();
 
     // signals
-    FOrgObjectapiTestbedInterface2Prop200ChangedDelegate OrgObjectapiTestbedInterface2Prop200Changed;
-    FOrgObjectapiTestbedInterface2Prop200ChangedDelegate& GetOrgObjectapiTestbedInterface2Prop200ChangedDelegate() override;
+    FOrgObjectapiTestbedInterface2Prop200ChangedDelegate Prop200Changed;
+    FOrgObjectapiTestbedInterface2Prop200ChangedDelegate& GetProp200ChangedDelegate() override;
 
-    FOrgObjectapiTestbedInterface2Prop201ChangedDelegate OrgObjectapiTestbedInterface2Prop201Changed;
-    FOrgObjectapiTestbedInterface2Prop201ChangedDelegate& GetOrgObjectapiTestbedInterface2Prop201ChangedDelegate() override;
+    FOrgObjectapiTestbedInterface2Prop201ChangedDelegate Prop201Changed;
+    FOrgObjectapiTestbedInterface2Prop201ChangedDelegate& GetProp201ChangedDelegate() override;
 
-    FOrgObjectapiTestbedInterface2Prop202ChangedDelegate OrgObjectapiTestbedInterface2Prop202Changed;
-    FOrgObjectapiTestbedInterface2Prop202ChangedDelegate& GetOrgObjectapiTestbedInterface2Prop202ChangedDelegate() override;
+    FOrgObjectapiTestbedInterface2Prop202ChangedDelegate Prop202Changed;
+    FOrgObjectapiTestbedInterface2Prop202ChangedDelegate& GetProp202ChangedDelegate() override;
 
-    FOrgObjectapiTestbedInterface2Prop203ChangedDelegate OrgObjectapiTestbedInterface2Prop203Changed;
-    FOrgObjectapiTestbedInterface2Prop203ChangedDelegate& GetOrgObjectapiTestbedInterface2Prop203ChangedDelegate() override;
+    FOrgObjectapiTestbedInterface2Prop203ChangedDelegate Prop203Changed;
+    FOrgObjectapiTestbedInterface2Prop203ChangedDelegate& GetProp203ChangedDelegate() override;
 
-    FOrgObjectapiTestbedInterface2Prop204ChangedDelegate OrgObjectapiTestbedInterface2Prop204Changed;
-    FOrgObjectapiTestbedInterface2Prop204ChangedDelegate& GetOrgObjectapiTestbedInterface2Prop204ChangedDelegate() override;
+    FOrgObjectapiTestbedInterface2Prop204ChangedDelegate Prop204Changed;
+    FOrgObjectapiTestbedInterface2Prop204ChangedDelegate& GetProp204ChangedDelegate() override;
 
-    FOrgObjectapiTestbedInterface2Prop205ChangedDelegate OrgObjectapiTestbedInterface2Prop205Changed;
-    FOrgObjectapiTestbedInterface2Prop205ChangedDelegate& GetOrgObjectapiTestbedInterface2Prop205ChangedDelegate() override;
+    FOrgObjectapiTestbedInterface2Prop205ChangedDelegate Prop205Changed;
+    FOrgObjectapiTestbedInterface2Prop205ChangedDelegate& GetProp205ChangedDelegate() override;
 
 
     // properties

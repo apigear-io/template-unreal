@@ -35,19 +35,19 @@ OrgObjectapiTestbedInterface1LocalService::~OrgObjectapiTestbedInterface1LocalSe
 {
 }
 
-FOrgObjectapiTestbedInterface1Sig1Delegate& OrgObjectapiTestbedInterface1LocalService::GetOrgObjectapiTestbedInterface1Sig1SignalDelegate()
+FOrgObjectapiTestbedInterface1Sig1Delegate& OrgObjectapiTestbedInterface1LocalService::GetSig1SignalDelegate()
 {
-    return OrgObjectapiTestbedInterface1Sig1Signal;
+    return Sig1Signal;
 }
 
-FOrgObjectapiTestbedInterface1Sig2Delegate& OrgObjectapiTestbedInterface1LocalService::GetOrgObjectapiTestbedInterface1Sig2SignalDelegate()
+FOrgObjectapiTestbedInterface1Sig2Delegate& OrgObjectapiTestbedInterface1LocalService::GetSig2SignalDelegate()
 {
-    return OrgObjectapiTestbedInterface1Sig2Signal;
+    return Sig2Signal;
 }
 
-FOrgObjectapiTestbedInterface1Sig3Delegate& OrgObjectapiTestbedInterface1LocalService::GetOrgObjectapiTestbedInterface1Sig3SignalDelegate()
+FOrgObjectapiTestbedInterface1Sig3Delegate& OrgObjectapiTestbedInterface1LocalService::GetSig3SignalDelegate()
 {
-    return OrgObjectapiTestbedInterface1Sig3Signal;
+    return Sig3Signal;
 }
 
 bool OrgObjectapiTestbedInterface1LocalService::GetProp1() const
@@ -60,13 +60,13 @@ void OrgObjectapiTestbedInterface1LocalService::SetProp1(bool bInProp1)
     if(bProp1 != bInProp1)
     {
         bProp1 = bInProp1;
-        OrgObjectapiTestbedInterface1Prop1Changed.Broadcast(bProp1);
+        Prop1Changed.Broadcast(bProp1);
     }
 }
 
-FOrgObjectapiTestbedInterface1Prop1ChangedDelegate& OrgObjectapiTestbedInterface1LocalService::GetOrgObjectapiTestbedInterface1Prop1ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop1ChangedDelegate& OrgObjectapiTestbedInterface1LocalService::GetProp1ChangedDelegate()
 {
-    return OrgObjectapiTestbedInterface1Prop1Changed;
+    return Prop1Changed;
 }
 int32 OrgObjectapiTestbedInterface1LocalService::GetProp2() const
 {
@@ -78,13 +78,13 @@ void OrgObjectapiTestbedInterface1LocalService::SetProp2(int32 InProp2)
     if(Prop2 != InProp2)
     {
         Prop2 = InProp2;
-        OrgObjectapiTestbedInterface1Prop2Changed.Broadcast(Prop2);
+        Prop2Changed.Broadcast(Prop2);
     }
 }
 
-FOrgObjectapiTestbedInterface1Prop2ChangedDelegate& OrgObjectapiTestbedInterface1LocalService::GetOrgObjectapiTestbedInterface1Prop2ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop2ChangedDelegate& OrgObjectapiTestbedInterface1LocalService::GetProp2ChangedDelegate()
 {
-    return OrgObjectapiTestbedInterface1Prop2Changed;
+    return Prop2Changed;
 }
 float OrgObjectapiTestbedInterface1LocalService::GetProp3() const
 {
@@ -96,13 +96,13 @@ void OrgObjectapiTestbedInterface1LocalService::SetProp3(float InProp3)
     if(Prop3 != InProp3)
     {
         Prop3 = InProp3;
-        OrgObjectapiTestbedInterface1Prop3Changed.Broadcast(Prop3);
+        Prop3Changed.Broadcast(Prop3);
     }
 }
 
-FOrgObjectapiTestbedInterface1Prop3ChangedDelegate& OrgObjectapiTestbedInterface1LocalService::GetOrgObjectapiTestbedInterface1Prop3ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop3ChangedDelegate& OrgObjectapiTestbedInterface1LocalService::GetProp3ChangedDelegate()
 {
-    return OrgObjectapiTestbedInterface1Prop3Changed;
+    return Prop3Changed;
 }
 FString OrgObjectapiTestbedInterface1LocalService::GetProp4() const
 {
@@ -114,13 +114,13 @@ void OrgObjectapiTestbedInterface1LocalService::SetProp4(const FString& InProp4)
     if(Prop4 != InProp4)
     {
         Prop4 = InProp4;
-        OrgObjectapiTestbedInterface1Prop4Changed.Broadcast(Prop4);
+        Prop4Changed.Broadcast(Prop4);
     }
 }
 
-FOrgObjectapiTestbedInterface1Prop4ChangedDelegate& OrgObjectapiTestbedInterface1LocalService::GetOrgObjectapiTestbedInterface1Prop4ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop4ChangedDelegate& OrgObjectapiTestbedInterface1LocalService::GetProp4ChangedDelegate()
 {
-    return OrgObjectapiTestbedInterface1Prop4Changed;
+    return Prop4Changed;
 }
 TArray<int32> OrgObjectapiTestbedInterface1LocalService::GetProp5() const
 {
@@ -132,13 +132,13 @@ void OrgObjectapiTestbedInterface1LocalService::SetProp5(const TArray<int32>& In
     if(Prop5 != InProp5)
     {
         Prop5 = InProp5;
-        OrgObjectapiTestbedInterface1Prop5Changed.Broadcast(Prop5);
+        Prop5Changed.Broadcast(Prop5);
     }
 }
 
-FOrgObjectapiTestbedInterface1Prop5ChangedDelegate& OrgObjectapiTestbedInterface1LocalService::GetOrgObjectapiTestbedInterface1Prop5ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop5ChangedDelegate& OrgObjectapiTestbedInterface1LocalService::GetProp5ChangedDelegate()
 {
-    return OrgObjectapiTestbedInterface1Prop5Changed;
+    return Prop5Changed;
 }
 FOrgObjectapiTestbedStruct1 OrgObjectapiTestbedInterface1LocalService::GetProp6() const
 {
@@ -150,13 +150,13 @@ void OrgObjectapiTestbedInterface1LocalService::SetProp6(const FOrgObjectapiTest
     if(Prop6 != InProp6)
     {
         Prop6 = InProp6;
-        OrgObjectapiTestbedInterface1Prop6Changed.Broadcast(Prop6);
+        Prop6Changed.Broadcast(Prop6);
     }
 }
 
-FOrgObjectapiTestbedInterface1Prop6ChangedDelegate& OrgObjectapiTestbedInterface1LocalService::GetOrgObjectapiTestbedInterface1Prop6ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop6ChangedDelegate& OrgObjectapiTestbedInterface1LocalService::GetProp6ChangedDelegate()
 {
-    return OrgObjectapiTestbedInterface1Prop6Changed;
+    return Prop6Changed;
 }
 int32 OrgObjectapiTestbedInterface1LocalService::GetProp7() const
 {
@@ -168,13 +168,13 @@ void OrgObjectapiTestbedInterface1LocalService::SetProp7(int32 InProp7)
     if(Prop7 != InProp7)
     {
         Prop7 = InProp7;
-        OrgObjectapiTestbedInterface1Prop7Changed.Broadcast(Prop7);
+        Prop7Changed.Broadcast(Prop7);
     }
 }
 
-FOrgObjectapiTestbedInterface1Prop7ChangedDelegate& OrgObjectapiTestbedInterface1LocalService::GetOrgObjectapiTestbedInterface1Prop7ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop7ChangedDelegate& OrgObjectapiTestbedInterface1LocalService::GetProp7ChangedDelegate()
 {
-    return OrgObjectapiTestbedInterface1Prop7Changed;
+    return Prop7Changed;
 }
 TArray<int32> OrgObjectapiTestbedInterface1LocalService::GetProp10() const
 {
@@ -186,13 +186,13 @@ void OrgObjectapiTestbedInterface1LocalService::SetProp10(const TArray<int32>& I
     if(Prop10 != InProp10)
     {
         Prop10 = InProp10;
-        OrgObjectapiTestbedInterface1Prop10Changed.Broadcast(Prop10);
+        Prop10Changed.Broadcast(Prop10);
     }
 }
 
-FOrgObjectapiTestbedInterface1Prop10ChangedDelegate& OrgObjectapiTestbedInterface1LocalService::GetOrgObjectapiTestbedInterface1Prop10ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop10ChangedDelegate& OrgObjectapiTestbedInterface1LocalService::GetProp10ChangedDelegate()
 {
-    return OrgObjectapiTestbedInterface1Prop10Changed;
+    return Prop10Changed;
 }
 TArray<FOrgObjectapiTestbedStruct1> OrgObjectapiTestbedInterface1LocalService::GetProp11() const
 {
@@ -204,13 +204,13 @@ void OrgObjectapiTestbedInterface1LocalService::SetProp11(const TArray<FOrgObjec
     if(Prop11 != InProp11)
     {
         Prop11 = InProp11;
-        OrgObjectapiTestbedInterface1Prop11Changed.Broadcast(Prop11);
+        Prop11Changed.Broadcast(Prop11);
     }
 }
 
-FOrgObjectapiTestbedInterface1Prop11ChangedDelegate& OrgObjectapiTestbedInterface1LocalService::GetOrgObjectapiTestbedInterface1Prop11ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop11ChangedDelegate& OrgObjectapiTestbedInterface1LocalService::GetProp11ChangedDelegate()
 {
-    return OrgObjectapiTestbedInterface1Prop11Changed;
+    return Prop11Changed;
 }
 TArray<EOrgObjectapiTestbedEnum1> OrgObjectapiTestbedInterface1LocalService::GetProp12() const
 {
@@ -222,13 +222,13 @@ void OrgObjectapiTestbedInterface1LocalService::SetProp12(const TArray<EOrgObjec
     if(Prop12 != InProp12)
     {
         Prop12 = InProp12;
-        OrgObjectapiTestbedInterface1Prop12Changed.Broadcast(Prop12);
+        Prop12Changed.Broadcast(Prop12);
     }
 }
 
-FOrgObjectapiTestbedInterface1Prop12ChangedDelegate& OrgObjectapiTestbedInterface1LocalService::GetOrgObjectapiTestbedInterface1Prop12ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop12ChangedDelegate& OrgObjectapiTestbedInterface1LocalService::GetProp12ChangedDelegate()
 {
-    return OrgObjectapiTestbedInterface1Prop12Changed;
+    return Prop12Changed;
 }
 TArray<FOrgObjectapiTestbedStruct1> OrgObjectapiTestbedInterface1LocalService::GetProp14() const
 {
@@ -240,13 +240,13 @@ void OrgObjectapiTestbedInterface1LocalService::SetProp14(const TArray<FOrgObjec
     if(Prop14 != InProp14)
     {
         Prop14 = InProp14;
-        OrgObjectapiTestbedInterface1Prop14Changed.Broadcast(Prop14);
+        Prop14Changed.Broadcast(Prop14);
     }
 }
 
-FOrgObjectapiTestbedInterface1Prop14ChangedDelegate& OrgObjectapiTestbedInterface1LocalService::GetOrgObjectapiTestbedInterface1Prop14ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop14ChangedDelegate& OrgObjectapiTestbedInterface1LocalService::GetProp14ChangedDelegate()
 {
-    return OrgObjectapiTestbedInterface1Prop14Changed;
+    return Prop14Changed;
 }
 
 void OrgObjectapiTestbedInterface1LocalService::Op1()

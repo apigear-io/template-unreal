@@ -40,13 +40,13 @@ void OrgObjectapiTestbedInterface2LocalService::SetProp200(int32 InProp200)
     if(Prop200 != InProp200)
     {
         Prop200 = InProp200;
-        OrgObjectapiTestbedInterface2Prop200Changed.Broadcast(Prop200);
+        Prop200Changed.Broadcast(Prop200);
     }
 }
 
-FOrgObjectapiTestbedInterface2Prop200ChangedDelegate& OrgObjectapiTestbedInterface2LocalService::GetOrgObjectapiTestbedInterface2Prop200ChangedDelegate()
+FOrgObjectapiTestbedInterface2Prop200ChangedDelegate& OrgObjectapiTestbedInterface2LocalService::GetProp200ChangedDelegate()
 {
-    return OrgObjectapiTestbedInterface2Prop200Changed;
+    return Prop200Changed;
 }
 int32 OrgObjectapiTestbedInterface2LocalService::GetProp201() const
 {
@@ -58,13 +58,13 @@ void OrgObjectapiTestbedInterface2LocalService::SetProp201(int32 InProp201)
     if(Prop201 != InProp201)
     {
         Prop201 = InProp201;
-        OrgObjectapiTestbedInterface2Prop201Changed.Broadcast(Prop201);
+        Prop201Changed.Broadcast(Prop201);
     }
 }
 
-FOrgObjectapiTestbedInterface2Prop201ChangedDelegate& OrgObjectapiTestbedInterface2LocalService::GetOrgObjectapiTestbedInterface2Prop201ChangedDelegate()
+FOrgObjectapiTestbedInterface2Prop201ChangedDelegate& OrgObjectapiTestbedInterface2LocalService::GetProp201ChangedDelegate()
 {
-    return OrgObjectapiTestbedInterface2Prop201Changed;
+    return Prop201Changed;
 }
 int32 OrgObjectapiTestbedInterface2LocalService::GetProp202() const
 {
@@ -76,13 +76,13 @@ void OrgObjectapiTestbedInterface2LocalService::SetProp202(int32 InProp202)
     if(Prop202 != InProp202)
     {
         Prop202 = InProp202;
-        OrgObjectapiTestbedInterface2Prop202Changed.Broadcast(Prop202);
+        Prop202Changed.Broadcast(Prop202);
     }
 }
 
-FOrgObjectapiTestbedInterface2Prop202ChangedDelegate& OrgObjectapiTestbedInterface2LocalService::GetOrgObjectapiTestbedInterface2Prop202ChangedDelegate()
+FOrgObjectapiTestbedInterface2Prop202ChangedDelegate& OrgObjectapiTestbedInterface2LocalService::GetProp202ChangedDelegate()
 {
-    return OrgObjectapiTestbedInterface2Prop202Changed;
+    return Prop202Changed;
 }
 float OrgObjectapiTestbedInterface2LocalService::GetProp203() const
 {
@@ -94,13 +94,13 @@ void OrgObjectapiTestbedInterface2LocalService::SetProp203(float InProp203)
     if(Prop203 != InProp203)
     {
         Prop203 = InProp203;
-        OrgObjectapiTestbedInterface2Prop203Changed.Broadcast(Prop203);
+        Prop203Changed.Broadcast(Prop203);
     }
 }
 
-FOrgObjectapiTestbedInterface2Prop203ChangedDelegate& OrgObjectapiTestbedInterface2LocalService::GetOrgObjectapiTestbedInterface2Prop203ChangedDelegate()
+FOrgObjectapiTestbedInterface2Prop203ChangedDelegate& OrgObjectapiTestbedInterface2LocalService::GetProp203ChangedDelegate()
 {
-    return OrgObjectapiTestbedInterface2Prop203Changed;
+    return Prop203Changed;
 }
 float OrgObjectapiTestbedInterface2LocalService::GetProp204() const
 {
@@ -112,13 +112,13 @@ void OrgObjectapiTestbedInterface2LocalService::SetProp204(float InProp204)
     if(Prop204 != InProp204)
     {
         Prop204 = InProp204;
-        OrgObjectapiTestbedInterface2Prop204Changed.Broadcast(Prop204);
+        Prop204Changed.Broadcast(Prop204);
     }
 }
 
-FOrgObjectapiTestbedInterface2Prop204ChangedDelegate& OrgObjectapiTestbedInterface2LocalService::GetOrgObjectapiTestbedInterface2Prop204ChangedDelegate()
+FOrgObjectapiTestbedInterface2Prop204ChangedDelegate& OrgObjectapiTestbedInterface2LocalService::GetProp204ChangedDelegate()
 {
-    return OrgObjectapiTestbedInterface2Prop204Changed;
+    return Prop204Changed;
 }
 FString OrgObjectapiTestbedInterface2LocalService::GetProp205() const
 {
@@ -130,12 +130,12 @@ void OrgObjectapiTestbedInterface2LocalService::SetProp205(const FString& InProp
     if(Prop205 != InProp205)
     {
         Prop205 = InProp205;
-        OrgObjectapiTestbedInterface2Prop205Changed.Broadcast(Prop205);
+        Prop205Changed.Broadcast(Prop205);
     }
 }
 
-FOrgObjectapiTestbedInterface2Prop205ChangedDelegate& OrgObjectapiTestbedInterface2LocalService::GetOrgObjectapiTestbedInterface2Prop205ChangedDelegate()
+FOrgObjectapiTestbedInterface2Prop205ChangedDelegate& OrgObjectapiTestbedInterface2LocalService::GetProp205ChangedDelegate()
 {
-    return OrgObjectapiTestbedInterface2Prop205Changed;
+    return Prop205Changed;
 }
 

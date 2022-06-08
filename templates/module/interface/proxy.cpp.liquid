@@ -84,46 +84,46 @@ public:
     service = {{module_name}}::create{{service}}();
 
 {% for property in interface.properties %}
-    service->Get{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate().AddDynamic(this, &{{class}}::On{{moduleInterfaceCapital}}{{property.name|capital}}Changed);
+    service->Get{{property.name|capital}}ChangedDelegate().AddDynamic(this, &{{class}}::On{{property.name|capital}}Changed);
 {% endfor %}
 {% for signal in interface.signals %}
-    service->Get{{signal|unrealVarName: moduleInterfaceCapital}}SignalDelegate().AddDynamic(this, &{{class}}::On{{signal|unrealVarName: moduleInterfaceCapital}});
+    service->Get{{signal|unrealVarName}}SignalDelegate().AddDynamic(this, &{{class}}::On{{signal|unrealVarName}});
 {% endfor %}
 }
 
 {{class}}::~{{class}}()
 {
 {% for property in interface.properties %}
-    service->Get{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate().RemoveDynamic(this, &{{class}}::On{{moduleInterfaceCapital}}{{property.name|capital}}Changed);
+    service->Get{{property.name|capital}}ChangedDelegate().RemoveDynamic(this, &{{class}}::On{{property.name|capital}}Changed);
 {% endfor %}
 {% for signal in interface.signals %}
-    service->Get{{signal|unrealVarName: moduleInterfaceCapital}}SignalDelegate().RemoveDynamic(this, &{{class}}::On{{signal|unrealVarName: moduleInterfaceCapital}});
+    service->Get{{signal|unrealVarName}}SignalDelegate().RemoveDynamic(this, &{{class}}::On{{signal|unrealVarName}});
 {% endfor %}
 }
 
 {% for signal in interface.signals %}
-void {{class}}::On{{signal|unrealVarName: moduleInterfaceCapital}}({{signal|unrealParams: moduleCapital}})
+void {{class}}::On{{signal|unrealVarName}}({{signal|unrealParams: moduleCapital}})
 {
     {{module.name | capital}}{{interface.name|capital}}Tracer::trace_signal{{signal.name|capital}}({% for param in signal.params %}{{param | unrealVarName}}{% unless forloop.last %},{% endunless %}{% endfor %});
-    {{signal|unrealVarName: moduleInterfaceCapital}}Signal.Broadcast(
+    {{signal|unrealVarName}}Signal.Broadcast(
     {%- for param in signal.params -%}
         {{param|unrealVarName}}{% unless forloop.last %},{% endunless -%}
     {%- endfor -%}
     );
 }
 {{nl}}
-F{{signal|unrealVarName: moduleInterfaceCapital}}Delegate& {{class}}::Get{{signal|unrealVarName: moduleInterfaceCapital}}SignalDelegate()
+F{{signal|unrealVarName: moduleInterfaceCapital}}Delegate& {{class}}::Get{{signal|unrealVarName}}SignalDelegate()
 {
-    return {{signal|unrealVarName: moduleInterfaceCapital}}Signal;
+    return {{signal|unrealVarName}}Signal;
 }
 {{nl}}
 {% endfor %}
 
 {% for property in interface.properties %}
-void {{class}}::On{{moduleInterfaceCapital}}{{property.name|capital}}Changed({{property|unrealParam: moduleCapital, 'In'}})
+void {{class}}::On{{property.name|capital}}Changed({{property|unrealParam: moduleCapital, 'In'}})
 {
     {{module.name | capital}}{{interface.name|capital}}Tracer::capture_state(this);
-    {{moduleInterfaceCapital}}{{property.name|capital}}Changed.Broadcast({{property|unrealVarName: 'In'}});
+    {{property.name|capital}}Changed.Broadcast({{property|unrealVarName: 'In'}});
 }
 
 {{property|unrealTypeName: false, moduleCapital}} {{class}}::Get{{property.name | capital}}() const
@@ -137,9 +137,9 @@ void {{class}}::Set{{property.name | capital}}({{property|unrealParam: moduleCap
     service->Set{{property.name | capital}}({{property|unrealVarName: 'In'}});
 }
 {{nl}}
-F{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate& {{class}}::Get{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate()
+F{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate& {{class}}::Get{{property.name|capital}}ChangedDelegate()
 {
-    return {{moduleInterfaceCapital}}{{property.name|capital}}Changed;
+    return {{property.name|capital}}Changed;
 }
 {{nl}}
 {% endfor %}
