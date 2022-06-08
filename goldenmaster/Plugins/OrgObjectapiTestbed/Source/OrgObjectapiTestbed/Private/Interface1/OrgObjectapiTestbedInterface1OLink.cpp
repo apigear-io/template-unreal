@@ -396,7 +396,7 @@ void OrgObjectapiTestbedInterface1OLinkService::olinkOnSignal(std::string name, 
         return;
     }
     if(path == "sig3") {
-        Sig3Signal.Broadcast();
+        Sig3Signal.Broadcast(args[0].get<float>());
         return;
     }
 }

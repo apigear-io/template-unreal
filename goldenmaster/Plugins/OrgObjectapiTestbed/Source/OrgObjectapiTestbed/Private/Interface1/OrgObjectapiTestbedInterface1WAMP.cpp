@@ -227,7 +227,10 @@ OrgObjectapiTestbedInterface1WAMPService::OrgObjectapiTestbedInterface1WAMPServi
     
     EventFunc sig3Func = [this](EventArg arg)
     {
-        Sig3Signal.Broadcast();
+        if(arg.args.size() == 1)
+        {
+            Sig3Signal.Broadcast(arg.args[0].get<float>());
+        }
     };
     UnrealWamp::instance()->doSubscribe("org.objectapi.testbed.Interface1.sig3", sig3Func);
     

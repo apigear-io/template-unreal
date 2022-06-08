@@ -48,7 +48,7 @@ public:
     FSig3Delegate Sig3Signal;
     FSig3Delegate& GetSig3SignalDelegate() override;
 	UFUNCTION(Category = "ApiGear|OrgObjectapiTestbed|Interface1")
-    void OnSig3();
+    void OnSig3(float Step);
     
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|OrgObjectapiTestbed|Interface1")
     FbProp1ChangedDelegate bProp1Changed;

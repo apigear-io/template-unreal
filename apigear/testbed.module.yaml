@@ -22,7 +22,7 @@ interfaces:
     signals:
       - { name: sig1 }
       - { name: sig2, params: [{ name: step, type: int }, { name: step2, type: string }] }
-      - { name: sig3, type: int }
+      - { name: sig3, params: [{ name: step, type: float }] }
   - name: Interface2
     properties:
       - { name: prop200, type: int }

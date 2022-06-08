@@ -131,10 +131,10 @@ FSig2Delegate& UOrgObjectapiTestbedInterface1Proxy::GetSig2SignalDelegate()
     return Sig2Signal;
 }
 
-void UOrgObjectapiTestbedInterface1Proxy::OnSig3()
+void UOrgObjectapiTestbedInterface1Proxy::OnSig3(float Step)
 {
-    OrgObjectapiTestbedInterface1Tracer::trace_signalSig3();
-    Sig3Signal.Broadcast();
+    OrgObjectapiTestbedInterface1Tracer::trace_signalSig3(Step);
+    Sig3Signal.Broadcast(Step);
 }
 
 FSig3Delegate& UOrgObjectapiTestbedInterface1Proxy::GetSig3SignalDelegate()

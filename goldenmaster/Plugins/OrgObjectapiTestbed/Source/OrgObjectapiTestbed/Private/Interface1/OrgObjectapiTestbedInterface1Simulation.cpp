@@ -227,7 +227,11 @@ OrgObjectapiTestbedInterface1SimulationService::OrgObjectapiTestbedInterface1Sim
 
     NotifyRequestFunc sig3Func = [this](NotifyRequestArg arg)
     {
-        Sig3Signal.Broadcast();
+        const json fields = arg.params;
+        if(fields.contains("step"))
+        {
+            Sig3Signal.Broadcast(fields["step"].get<float>());
+        }
     };
     UnrealSimulation::instance()->onNotify("org.objectapi.testbed/Interface1#sig3", sig3Func);
 
