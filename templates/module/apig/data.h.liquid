@@ -22,7 +22,9 @@ limitations under the License.
 #pragma once
 
 #include "CoreMinimal.h"
+{% if module.enums.size  > 0 or module.structs.size > 0 %}
 #include "{{module.name|capital}}_data.generated.h"
+{% endif %}
 
 
 {% for enum in module.enums %}
