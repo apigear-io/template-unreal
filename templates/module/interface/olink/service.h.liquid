@@ -47,7 +47,7 @@ public:
     // properties
 {% for property in interface.properties %}
     {{property|unrealTypeName: false, moduleCapital}} Get{{property.name | capital}}() const override;
-    void Set{{property.name | capital}}({{property|unrealParam: moduleCapital, 'In'}}) override;
+    void Set{{property.name | capital}}({{property|unrealParam: moduleCapital}}) override;
 {{nl}}
 {% endfor %}
 

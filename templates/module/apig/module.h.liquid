@@ -93,7 +93,7 @@ public:
 // properties
 {% for property in interface.properties %}
     virtual {{property|unrealReturn: moduleCapital}} Get{{property.name | capital}}() const = 0;
-    virtual void Set{{property.name | capital}}({{property|unrealParam: moduleCapital, 'In'}}) = 0;
+    virtual void Set{{property.name | capital}}({{property|unrealParam: moduleCapital}}) = 0;
 {% endfor %}
 };
 

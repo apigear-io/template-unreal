@@ -110,27 +110,27 @@ public:
     virtual int32 Op3() = 0;
 // properties
     virtual bool GetProp1() const = 0;
-    virtual void SetProp1(bool bInProp1) = 0;
+    virtual void SetProp1(bool bProp1) = 0;
     virtual int32 GetProp2() const = 0;
-    virtual void SetProp2(int32 InProp2) = 0;
+    virtual void SetProp2(int32 Prop2) = 0;
     virtual float GetProp3() const = 0;
-    virtual void SetProp3(float InProp3) = 0;
+    virtual void SetProp3(float Prop3) = 0;
     virtual FString GetProp4() const = 0;
-    virtual void SetProp4(const FString& InProp4) = 0;
+    virtual void SetProp4(const FString& Prop4) = 0;
     virtual TArray<int32> GetProp5() const = 0;
-    virtual void SetProp5(const TArray<int32>& InProp5) = 0;
+    virtual void SetProp5(const TArray<int32>& Prop5) = 0;
     virtual FOrgObjectapiTestbedStruct1 GetProp6() const = 0;
-    virtual void SetProp6(const FOrgObjectapiTestbedStruct1& InProp6) = 0;
+    virtual void SetProp6(const FOrgObjectapiTestbedStruct1& Prop6) = 0;
     virtual int32 GetProp7() const = 0;
-    virtual void SetProp7(int32 InProp7) = 0;
+    virtual void SetProp7(int32 Prop7) = 0;
     virtual TArray<int32> GetProp10() const = 0;
-    virtual void SetProp10(const TArray<int32>& InProp10) = 0;
+    virtual void SetProp10(const TArray<int32>& Prop10) = 0;
     virtual TArray<FOrgObjectapiTestbedStruct1> GetProp11() const = 0;
-    virtual void SetProp11(const TArray<FOrgObjectapiTestbedStruct1>& InProp11) = 0;
+    virtual void SetProp11(const TArray<FOrgObjectapiTestbedStruct1>& Prop11) = 0;
     virtual TArray<EOrgObjectapiTestbedEnum1> GetProp12() const = 0;
-    virtual void SetProp12(const TArray<EOrgObjectapiTestbedEnum1>& InProp12) = 0;
+    virtual void SetProp12(const TArray<EOrgObjectapiTestbedEnum1>& Prop12) = 0;
     virtual TArray<FOrgObjectapiTestbedStruct1> GetProp14() const = 0;
-    virtual void SetProp14(const TArray<FOrgObjectapiTestbedStruct1>& InProp14) = 0;
+    virtual void SetProp14(const TArray<FOrgObjectapiTestbedStruct1>& Prop14) = 0;
 };
 /**
  * Declaration for Interface2
@@ -183,15 +183,15 @@ public:
 // methods
 // properties
     virtual int32 GetProp200() const = 0;
-    virtual void SetProp200(int32 InProp200) = 0;
+    virtual void SetProp200(int32 Prop200) = 0;
     virtual int32 GetProp201() const = 0;
-    virtual void SetProp201(int32 InProp201) = 0;
+    virtual void SetProp201(int32 Prop201) = 0;
     virtual int32 GetProp202() const = 0;
-    virtual void SetProp202(int32 InProp202) = 0;
+    virtual void SetProp202(int32 Prop202) = 0;
     virtual float GetProp203() const = 0;
-    virtual void SetProp203(float InProp203) = 0;
+    virtual void SetProp203(float Prop203) = 0;
     virtual float GetProp204() const = 0;
-    virtual void SetProp204(float InProp204) = 0;
+    virtual void SetProp204(float Prop204) = 0;
     virtual FString GetProp205() const = 0;
-    virtual void SetProp205(const FString& InProp205) = 0;
+    virtual void SetProp205(const FString& Prop205) = 0;
 };

@@ -36,74 +36,74 @@ public:
     FOrgObjectapiTestbedInterface2Prop200ChangedDelegate Prop200Changed;
     FOrgObjectapiTestbedInterface2Prop200ChangedDelegate& GetProp200ChangedDelegate() override;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface2", BlueprintInternalUseOnly)
-    void OnProp200Changed(int32 InProp200);
+    void OnProp200Changed(int32 Prop200);
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|OrgObjectapiTestbed|Interface2", DisplayName = "Prop201 Changed")
     FOrgObjectapiTestbedInterface2Prop201ChangedDelegate Prop201Changed;
     FOrgObjectapiTestbedInterface2Prop201ChangedDelegate& GetProp201ChangedDelegate() override;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface2", BlueprintInternalUseOnly)
-    void OnProp201Changed(int32 InProp201);
+    void OnProp201Changed(int32 Prop201);
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|OrgObjectapiTestbed|Interface2", DisplayName = "Prop202 Changed")
     FOrgObjectapiTestbedInterface2Prop202ChangedDelegate Prop202Changed;
     FOrgObjectapiTestbedInterface2Prop202ChangedDelegate& GetProp202ChangedDelegate() override;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface2", BlueprintInternalUseOnly)
-    void OnProp202Changed(int32 InProp202);
+    void OnProp202Changed(int32 Prop202);
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|OrgObjectapiTestbed|Interface2", DisplayName = "Prop203 Changed")
     FOrgObjectapiTestbedInterface2Prop203ChangedDelegate Prop203Changed;
     FOrgObjectapiTestbedInterface2Prop203ChangedDelegate& GetProp203ChangedDelegate() override;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface2", BlueprintInternalUseOnly)
-    void OnProp203Changed(float InProp203);
+    void OnProp203Changed(float Prop203);
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|OrgObjectapiTestbed|Interface2", DisplayName = "Prop204 Changed")
     FOrgObjectapiTestbedInterface2Prop204ChangedDelegate Prop204Changed;
     FOrgObjectapiTestbedInterface2Prop204ChangedDelegate& GetProp204ChangedDelegate() override;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface2", BlueprintInternalUseOnly)
-    void OnProp204Changed(float InProp204);
+    void OnProp204Changed(float Prop204);
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|OrgObjectapiTestbed|Interface2", DisplayName = "Prop205 Changed")
     FOrgObjectapiTestbedInterface2Prop205ChangedDelegate Prop205Changed;
     FOrgObjectapiTestbedInterface2Prop205ChangedDelegate& GetProp205ChangedDelegate() override;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface2", BlueprintInternalUseOnly)
-    void OnProp205Changed(const FString& InProp205);
+    void OnProp205Changed(const FString& Prop205);
 
     // properties
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface2")
     int32 GetProp200() const override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface2")
-    void SetProp200(int32 InProp200) override;
+    void SetProp200(int32 Prop200) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface2")
     int32 GetProp201() const override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface2")
-    void SetProp201(int32 InProp201) override;
+    void SetProp201(int32 Prop201) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface2")
     int32 GetProp202() const override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface2")
-    void SetProp202(int32 InProp202) override;
+    void SetProp202(int32 Prop202) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface2")
     float GetProp203() const override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface2")
-    void SetProp203(float InProp203) override;
+    void SetProp203(float Prop203) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface2")
     float GetProp204() const override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface2")
-    void SetProp204(float InProp204) override;
+    void SetProp204(float Prop204) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface2")
     FString GetProp205() const override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface2")
-    void SetProp205(const FString& InProp205) override;
+    void SetProp205(const FString& Prop205) override;
 
     // operations
 private:
