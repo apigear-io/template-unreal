@@ -35,38 +35,26 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|OrgObjectapiTestbed|Interface2", DisplayName = "Prop200 Changed")
     FOrgObjectapiTestbedInterface2Prop200ChangedDelegate Prop200Changed;
     FOrgObjectapiTestbedInterface2Prop200ChangedDelegate& GetProp200ChangedDelegate() override;
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface2", BlueprintInternalUseOnly)
-    void OnProp200Changed(int32 Prop200);
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|OrgObjectapiTestbed|Interface2", DisplayName = "Prop201 Changed")
     FOrgObjectapiTestbedInterface2Prop201ChangedDelegate Prop201Changed;
     FOrgObjectapiTestbedInterface2Prop201ChangedDelegate& GetProp201ChangedDelegate() override;
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface2", BlueprintInternalUseOnly)
-    void OnProp201Changed(int32 Prop201);
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|OrgObjectapiTestbed|Interface2", DisplayName = "Prop202 Changed")
     FOrgObjectapiTestbedInterface2Prop202ChangedDelegate Prop202Changed;
     FOrgObjectapiTestbedInterface2Prop202ChangedDelegate& GetProp202ChangedDelegate() override;
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface2", BlueprintInternalUseOnly)
-    void OnProp202Changed(int32 Prop202);
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|OrgObjectapiTestbed|Interface2", DisplayName = "Prop203 Changed")
     FOrgObjectapiTestbedInterface2Prop203ChangedDelegate Prop203Changed;
     FOrgObjectapiTestbedInterface2Prop203ChangedDelegate& GetProp203ChangedDelegate() override;
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface2", BlueprintInternalUseOnly)
-    void OnProp203Changed(float Prop203);
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|OrgObjectapiTestbed|Interface2", DisplayName = "Prop204 Changed")
     FOrgObjectapiTestbedInterface2Prop204ChangedDelegate Prop204Changed;
     FOrgObjectapiTestbedInterface2Prop204ChangedDelegate& GetProp204ChangedDelegate() override;
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface2", BlueprintInternalUseOnly)
-    void OnProp204Changed(float Prop204);
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|OrgObjectapiTestbed|Interface2", DisplayName = "Prop205 Changed")
     FOrgObjectapiTestbedInterface2Prop205ChangedDelegate Prop205Changed;
     FOrgObjectapiTestbedInterface2Prop205ChangedDelegate& GetProp205ChangedDelegate() override;
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface2", BlueprintInternalUseOnly)
-    void OnProp205Changed(const FString& Prop205);
 
     // properties
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface2")
@@ -109,6 +97,25 @@ public:
 private:
 	/** The connection to the service backend. */
 	TSharedPtr<IOrgObjectapiTestbedInterface2Interface, ESPMode::ThreadSafe> service;
+
+    // signals
+    UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface2", BlueprintInternalUseOnly)
+    void OnProp200Changed(int32 Prop200);
+
+    UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface2", BlueprintInternalUseOnly)
+    void OnProp201Changed(int32 Prop201);
+
+    UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface2", BlueprintInternalUseOnly)
+    void OnProp202Changed(int32 Prop202);
+
+    UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface2", BlueprintInternalUseOnly)
+    void OnProp203Changed(float Prop203);
+
+    UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface2", BlueprintInternalUseOnly)
+    void OnProp204Changed(float Prop204);
+
+    UFUNCTION(BlueprintCallable, Category = "ApiGear|OrgObjectapiTestbed|Interface2", BlueprintInternalUseOnly)
+    void OnProp205Changed(const FString& Prop205);
 
     // properties - local copy
 	UPROPERTY(EditAnywhere, BlueprintGetter=GetProp200, BlueprintSetter=SetProp200, Category = "ApiGear|OrgObjectapiTestbed|Interface2")
