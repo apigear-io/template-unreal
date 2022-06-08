@@ -18,12 +18,16 @@ limitations under the License.
 
 #include "apig/OrgObjectapiTestbed_apig.h"
 
-class OrgObjectapiTestbedInterface1SimulationService : public IOrgObjectapiTestbedInterface1Interface
+namespace OrgObjectapiTestbed {
+namespace Interface1 {
+namespace Private {
+    
+class SimulationService : public IOrgObjectapiTestbedInterface1Interface
 {
 public:
 
-    explicit OrgObjectapiTestbedInterface1SimulationService();
-    virtual ~OrgObjectapiTestbedInterface1SimulationService();
+    explicit SimulationService();
+    virtual ~SimulationService();
 
     // signals
     FOrgObjectapiTestbedInterface1Sig1Delegate Sig1Signal;
@@ -126,3 +130,7 @@ private:
     TArray<EOrgObjectapiTestbedEnum1> Prop12;
     TArray<FOrgObjectapiTestbedStruct1> Prop14;
 };
+
+} // namespace Private
+} // namespace Interface1
+} // namespace OrgObjectapiTestbed

@@ -28,7 +28,11 @@ limitations under the License.
 #include "unrealwamp.h"
 
 using namespace ApiGear::WAMP;
-OrgObjectapiTestbedInterface1WAMPService::OrgObjectapiTestbedInterface1WAMPService()
+
+namespace OrgObjectapiTestbed {
+namespace Interface1 {
+namespace Private {
+WAMPService::WAMPService()
 : IOrgObjectapiTestbedInterface1Interface()
 , bProp1(false)
 , Prop2(0)
@@ -237,7 +241,7 @@ OrgObjectapiTestbedInterface1WAMPService::OrgObjectapiTestbedInterface1WAMPServi
     
 }
 
-OrgObjectapiTestbedInterface1WAMPService::~OrgObjectapiTestbedInterface1WAMPService()
+WAMPService::~WAMPService()
 {
     UnrealWamp::instance()->doUnSubscribe("org.objectapi.testbed.Interface1");
     UnrealWamp::instance()->doUnSubscribe("org.objectapi.testbed.Interface1.sig1");
@@ -245,220 +249,220 @@ OrgObjectapiTestbedInterface1WAMPService::~OrgObjectapiTestbedInterface1WAMPServ
     UnrealWamp::instance()->doUnSubscribe("org.objectapi.testbed.Interface1.sig3");
 }
 
-FOrgObjectapiTestbedInterface1Sig1Delegate& OrgObjectapiTestbedInterface1WAMPService::GetSig1SignalDelegate()
+FOrgObjectapiTestbedInterface1Sig1Delegate& WAMPService::GetSig1SignalDelegate()
 {
     return Sig1Signal;
 }
 
-FOrgObjectapiTestbedInterface1Sig2Delegate& OrgObjectapiTestbedInterface1WAMPService::GetSig2SignalDelegate()
+FOrgObjectapiTestbedInterface1Sig2Delegate& WAMPService::GetSig2SignalDelegate()
 {
     return Sig2Signal;
 }
 
-FOrgObjectapiTestbedInterface1Sig3Delegate& OrgObjectapiTestbedInterface1WAMPService::GetSig3SignalDelegate()
+FOrgObjectapiTestbedInterface1Sig3Delegate& WAMPService::GetSig3SignalDelegate()
 {
     return Sig3Signal;
 }
 
-bool OrgObjectapiTestbedInterface1WAMPService::GetProp1() const
+bool WAMPService::GetProp1() const
 {
     return bProp1;
 }
 
-void OrgObjectapiTestbedInterface1WAMPService::SetProp1(bool bInProp1)
+void WAMPService::SetProp1(bool bInProp1)
 {
     ArgumentsKw fields_;
     fields_["prop1"] = bInProp1;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface1._set", Arguments(), fields_);
 }
 
-FOrgObjectapiTestbedInterface1Prop1ChangedDelegate& OrgObjectapiTestbedInterface1WAMPService::GetProp1ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop1ChangedDelegate& WAMPService::GetProp1ChangedDelegate()
 {
     return Prop1Changed;
 }
 
-int32 OrgObjectapiTestbedInterface1WAMPService::GetProp2() const
+int32 WAMPService::GetProp2() const
 {
     return Prop2;
 }
 
-void OrgObjectapiTestbedInterface1WAMPService::SetProp2(int32 InProp2)
+void WAMPService::SetProp2(int32 InProp2)
 {
     ArgumentsKw fields_;
     fields_["prop2"] = InProp2;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface1._set", Arguments(), fields_);
 }
 
-FOrgObjectapiTestbedInterface1Prop2ChangedDelegate& OrgObjectapiTestbedInterface1WAMPService::GetProp2ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop2ChangedDelegate& WAMPService::GetProp2ChangedDelegate()
 {
     return Prop2Changed;
 }
 
-float OrgObjectapiTestbedInterface1WAMPService::GetProp3() const
+float WAMPService::GetProp3() const
 {
     return Prop3;
 }
 
-void OrgObjectapiTestbedInterface1WAMPService::SetProp3(float InProp3)
+void WAMPService::SetProp3(float InProp3)
 {
     ArgumentsKw fields_;
     fields_["prop3"] = InProp3;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface1._set", Arguments(), fields_);
 }
 
-FOrgObjectapiTestbedInterface1Prop3ChangedDelegate& OrgObjectapiTestbedInterface1WAMPService::GetProp3ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop3ChangedDelegate& WAMPService::GetProp3ChangedDelegate()
 {
     return Prop3Changed;
 }
 
-FString OrgObjectapiTestbedInterface1WAMPService::GetProp4() const
+FString WAMPService::GetProp4() const
 {
     return Prop4;
 }
 
-void OrgObjectapiTestbedInterface1WAMPService::SetProp4(const FString& InProp4)
+void WAMPService::SetProp4(const FString& InProp4)
 {
     ArgumentsKw fields_;
     fields_["prop4"] = InProp4;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface1._set", Arguments(), fields_);
 }
 
-FOrgObjectapiTestbedInterface1Prop4ChangedDelegate& OrgObjectapiTestbedInterface1WAMPService::GetProp4ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop4ChangedDelegate& WAMPService::GetProp4ChangedDelegate()
 {
     return Prop4Changed;
 }
 
-TArray<int32> OrgObjectapiTestbedInterface1WAMPService::GetProp5() const
+TArray<int32> WAMPService::GetProp5() const
 {
     return Prop5;
 }
 
-void OrgObjectapiTestbedInterface1WAMPService::SetProp5(const TArray<int32>& InProp5)
+void WAMPService::SetProp5(const TArray<int32>& InProp5)
 {
     ArgumentsKw fields_;
     fields_["prop5"] = InProp5;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface1._set", Arguments(), fields_);
 }
 
-FOrgObjectapiTestbedInterface1Prop5ChangedDelegate& OrgObjectapiTestbedInterface1WAMPService::GetProp5ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop5ChangedDelegate& WAMPService::GetProp5ChangedDelegate()
 {
     return Prop5Changed;
 }
 
-FOrgObjectapiTestbedStruct1 OrgObjectapiTestbedInterface1WAMPService::GetProp6() const
+FOrgObjectapiTestbedStruct1 WAMPService::GetProp6() const
 {
     return Prop6;
 }
 
-void OrgObjectapiTestbedInterface1WAMPService::SetProp6(const FOrgObjectapiTestbedStruct1& InProp6)
+void WAMPService::SetProp6(const FOrgObjectapiTestbedStruct1& InProp6)
 {
     ArgumentsKw fields_;
     fields_["prop6"] = InProp6;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface1._set", Arguments(), fields_);
 }
 
-FOrgObjectapiTestbedInterface1Prop6ChangedDelegate& OrgObjectapiTestbedInterface1WAMPService::GetProp6ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop6ChangedDelegate& WAMPService::GetProp6ChangedDelegate()
 {
     return Prop6Changed;
 }
 
-int32 OrgObjectapiTestbedInterface1WAMPService::GetProp7() const
+int32 WAMPService::GetProp7() const
 {
     return Prop7;
 }
 
-void OrgObjectapiTestbedInterface1WAMPService::SetProp7(int32 InProp7)
+void WAMPService::SetProp7(int32 InProp7)
 {
     ArgumentsKw fields_;
     fields_["prop7"] = InProp7;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface1._set", Arguments(), fields_);
 }
 
-FOrgObjectapiTestbedInterface1Prop7ChangedDelegate& OrgObjectapiTestbedInterface1WAMPService::GetProp7ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop7ChangedDelegate& WAMPService::GetProp7ChangedDelegate()
 {
     return Prop7Changed;
 }
 
-TArray<int32> OrgObjectapiTestbedInterface1WAMPService::GetProp10() const
+TArray<int32> WAMPService::GetProp10() const
 {
     return Prop10;
 }
 
-void OrgObjectapiTestbedInterface1WAMPService::SetProp10(const TArray<int32>& InProp10)
+void WAMPService::SetProp10(const TArray<int32>& InProp10)
 {
     ArgumentsKw fields_;
     fields_["prop10"] = InProp10;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface1._set", Arguments(), fields_);
 }
 
-FOrgObjectapiTestbedInterface1Prop10ChangedDelegate& OrgObjectapiTestbedInterface1WAMPService::GetProp10ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop10ChangedDelegate& WAMPService::GetProp10ChangedDelegate()
 {
     return Prop10Changed;
 }
 
-TArray<FOrgObjectapiTestbedStruct1> OrgObjectapiTestbedInterface1WAMPService::GetProp11() const
+TArray<FOrgObjectapiTestbedStruct1> WAMPService::GetProp11() const
 {
     return Prop11;
 }
 
-void OrgObjectapiTestbedInterface1WAMPService::SetProp11(const TArray<FOrgObjectapiTestbedStruct1>& InProp11)
+void WAMPService::SetProp11(const TArray<FOrgObjectapiTestbedStruct1>& InProp11)
 {
     ArgumentsKw fields_;
     fields_["prop11"] = InProp11;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface1._set", Arguments(), fields_);
 }
 
-FOrgObjectapiTestbedInterface1Prop11ChangedDelegate& OrgObjectapiTestbedInterface1WAMPService::GetProp11ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop11ChangedDelegate& WAMPService::GetProp11ChangedDelegate()
 {
     return Prop11Changed;
 }
 
-TArray<EOrgObjectapiTestbedEnum1> OrgObjectapiTestbedInterface1WAMPService::GetProp12() const
+TArray<EOrgObjectapiTestbedEnum1> WAMPService::GetProp12() const
 {
     return Prop12;
 }
 
-void OrgObjectapiTestbedInterface1WAMPService::SetProp12(const TArray<EOrgObjectapiTestbedEnum1>& InProp12)
+void WAMPService::SetProp12(const TArray<EOrgObjectapiTestbedEnum1>& InProp12)
 {
     ArgumentsKw fields_;
     fields_["prop12"] = InProp12;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface1._set", Arguments(), fields_);
 }
 
-FOrgObjectapiTestbedInterface1Prop12ChangedDelegate& OrgObjectapiTestbedInterface1WAMPService::GetProp12ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop12ChangedDelegate& WAMPService::GetProp12ChangedDelegate()
 {
     return Prop12Changed;
 }
 
-TArray<FOrgObjectapiTestbedStruct1> OrgObjectapiTestbedInterface1WAMPService::GetProp14() const
+TArray<FOrgObjectapiTestbedStruct1> WAMPService::GetProp14() const
 {
     return Prop14;
 }
 
-void OrgObjectapiTestbedInterface1WAMPService::SetProp14(const TArray<FOrgObjectapiTestbedStruct1>& InProp14)
+void WAMPService::SetProp14(const TArray<FOrgObjectapiTestbedStruct1>& InProp14)
 {
     ArgumentsKw fields_;
     fields_["prop14"] = InProp14;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface1._set", Arguments(), fields_);
 }
 
-FOrgObjectapiTestbedInterface1Prop14ChangedDelegate& OrgObjectapiTestbedInterface1WAMPService::GetProp14ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop14ChangedDelegate& WAMPService::GetProp14ChangedDelegate()
 {
     return Prop14Changed;
 }
 
 
-void OrgObjectapiTestbedInterface1WAMPService::Op1()
+void WAMPService::Op1()
 {
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface1.op1", {}, ArgumentsKw());
 }
 
-void OrgObjectapiTestbedInterface1WAMPService::Op2(int32 Step)
+void WAMPService::Op2(int32 Step)
 {
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface1.op2", {Step}, ArgumentsKw());
 }
 
-int32 OrgObjectapiTestbedInterface1WAMPService::Op3()
+int32 WAMPService::Op3()
 {
     TPromise<int32> Promise;
     Async(EAsyncExecution::Thread, [&Promise]()
@@ -476,3 +480,7 @@ int32 OrgObjectapiTestbedInterface1WAMPService::Op3()
     return Promise.GetFuture().Get();
 }
 
+
+} // namespace Private
+} // namespace Interface1
+} // namespace OrgObjectapiTestbed

@@ -1,5 +1,5 @@
 {% comment %} Copyright Epic Games, Inc. All Rights Reserved {% endcomment -%}
-{% assign class = module.name | capital | append: interface.name | capital | append: "LocalService" -%}
+{% assign class = "LocalService" -%}
 {% assign moduleCapital = module.name | capital %}
 {% assign moduleInterfaceCapital = moduleCapital | append: interface.name | capital -%}
 /**
@@ -22,7 +22,12 @@ limitations under the License.
 {% endcapture %}
 
 #include "{{module.name|capital}}{{interface.name|capital}}Local.h"
-{% if interface.description%}
+
+namespace {{module.name | capital}} {
+namespace {{interface.name | capital}} {
+namespace Private {
+
+    {% if interface.description%}
 /**
    \brief {{interface.description}}
 */
@@ -85,3 +90,7 @@ F{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate& {{class}}::
     {% endif %}
 }
 {% endfor %}
+
+} // namespace Private
+} // namespace {{interface.name | capital}}
+} // namespace {{module.name | capital}}

@@ -25,7 +25,11 @@ limitations under the License.
 #include "unrealsimulation.h"
 
 using namespace ApiGear::JSONRPC;
-OrgObjectapiTestbedInterface2SimulationService::OrgObjectapiTestbedInterface2SimulationService()
+
+namespace OrgObjectapiTestbed {
+namespace Interface2 {
+namespace Private {
+SimulationService::SimulationService()
     : IOrgObjectapiTestbedInterface2Interface()
     , Prop200(0)
     , Prop201(0)
@@ -136,111 +140,115 @@ OrgObjectapiTestbedInterface2SimulationService::OrgObjectapiTestbedInterface2Sim
     // register notification callback functions, signal/event -> fcn
 }
 
-OrgObjectapiTestbedInterface2SimulationService::~OrgObjectapiTestbedInterface2SimulationService()
+SimulationService::~SimulationService()
 {
     UnrealSimulation::instance()->RemoveOnNotifyState("org.objectapi.testbed/Interface2");
     // unregister notification callback functions
 }
 
-int32 OrgObjectapiTestbedInterface2SimulationService::GetProp200() const
+int32 SimulationService::GetProp200() const
 {
     return Prop200;
 }
 
-void OrgObjectapiTestbedInterface2SimulationService::SetProp200(int32 InProp200)
+void SimulationService::SetProp200(int32 InProp200)
 {
     Params params;
     params["prop200"] = InProp200;
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface2", "_set", params);
 }
 
-FOrgObjectapiTestbedInterface2Prop200ChangedDelegate& OrgObjectapiTestbedInterface2SimulationService::GetProp200ChangedDelegate()
+FOrgObjectapiTestbedInterface2Prop200ChangedDelegate& SimulationService::GetProp200ChangedDelegate()
 {
     return Prop200Changed;
 }
 
-int32 OrgObjectapiTestbedInterface2SimulationService::GetProp201() const
+int32 SimulationService::GetProp201() const
 {
     return Prop201;
 }
 
-void OrgObjectapiTestbedInterface2SimulationService::SetProp201(int32 InProp201)
+void SimulationService::SetProp201(int32 InProp201)
 {
     Params params;
     params["prop201"] = InProp201;
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface2", "_set", params);
 }
 
-FOrgObjectapiTestbedInterface2Prop201ChangedDelegate& OrgObjectapiTestbedInterface2SimulationService::GetProp201ChangedDelegate()
+FOrgObjectapiTestbedInterface2Prop201ChangedDelegate& SimulationService::GetProp201ChangedDelegate()
 {
     return Prop201Changed;
 }
 
-int32 OrgObjectapiTestbedInterface2SimulationService::GetProp202() const
+int32 SimulationService::GetProp202() const
 {
     return Prop202;
 }
 
-void OrgObjectapiTestbedInterface2SimulationService::SetProp202(int32 InProp202)
+void SimulationService::SetProp202(int32 InProp202)
 {
     Params params;
     params["prop202"] = InProp202;
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface2", "_set", params);
 }
 
-FOrgObjectapiTestbedInterface2Prop202ChangedDelegate& OrgObjectapiTestbedInterface2SimulationService::GetProp202ChangedDelegate()
+FOrgObjectapiTestbedInterface2Prop202ChangedDelegate& SimulationService::GetProp202ChangedDelegate()
 {
     return Prop202Changed;
 }
 
-float OrgObjectapiTestbedInterface2SimulationService::GetProp203() const
+float SimulationService::GetProp203() const
 {
     return Prop203;
 }
 
-void OrgObjectapiTestbedInterface2SimulationService::SetProp203(float InProp203)
+void SimulationService::SetProp203(float InProp203)
 {
     Params params;
     params["prop203"] = InProp203;
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface2", "_set", params);
 }
 
-FOrgObjectapiTestbedInterface2Prop203ChangedDelegate& OrgObjectapiTestbedInterface2SimulationService::GetProp203ChangedDelegate()
+FOrgObjectapiTestbedInterface2Prop203ChangedDelegate& SimulationService::GetProp203ChangedDelegate()
 {
     return Prop203Changed;
 }
 
-float OrgObjectapiTestbedInterface2SimulationService::GetProp204() const
+float SimulationService::GetProp204() const
 {
     return Prop204;
 }
 
-void OrgObjectapiTestbedInterface2SimulationService::SetProp204(float InProp204)
+void SimulationService::SetProp204(float InProp204)
 {
     Params params;
     params["prop204"] = InProp204;
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface2", "_set", params);
 }
 
-FOrgObjectapiTestbedInterface2Prop204ChangedDelegate& OrgObjectapiTestbedInterface2SimulationService::GetProp204ChangedDelegate()
+FOrgObjectapiTestbedInterface2Prop204ChangedDelegate& SimulationService::GetProp204ChangedDelegate()
 {
     return Prop204Changed;
 }
 
-FString OrgObjectapiTestbedInterface2SimulationService::GetProp205() const
+FString SimulationService::GetProp205() const
 {
     return Prop205;
 }
 
-void OrgObjectapiTestbedInterface2SimulationService::SetProp205(const FString& InProp205)
+void SimulationService::SetProp205(const FString& InProp205)
 {
     Params params;
     params["prop205"] = InProp205;
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface2", "_set", params);
 }
 
-FOrgObjectapiTestbedInterface2Prop205ChangedDelegate& OrgObjectapiTestbedInterface2SimulationService::GetProp205ChangedDelegate()
+FOrgObjectapiTestbedInterface2Prop205ChangedDelegate& SimulationService::GetProp205ChangedDelegate()
 {
     return Prop205Changed;
 }
 
+
+} // namespace Private
+} // namespace Interface2
+} // namespace OrgObjectapiTestbed

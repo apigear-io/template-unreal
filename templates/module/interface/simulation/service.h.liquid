@@ -1,5 +1,5 @@
 {% comment %} Copyright Epic Games, Inc. All Rights Reserved {% endcomment -%}
-{% assign class = module.name | capital | append: interface.name | capital | append: "SimulationService" -%}
+{% assign class = "SimulationService" -%}
 {% capture category %}API|{{module.name | capital}}|{{interface.name | capital}}{% endcapture -%}
 {% assign moduleCapital = module.name | capital %}
 {% assign moduleInterfaceCapital = moduleCapital | append: interface.name | capital %}
@@ -25,6 +25,10 @@ limitations under the License.
 
 #include "apig/{{module.name|capital}}_apig.h"
 
+namespace {{module.name | capital}} {
+namespace {{interface.name | capital}} {
+namespace Private {
+    
 class {{class}} : public I{{module.name | capital}}{{interface.name | capital}}Interface
 {
 public:
@@ -66,3 +70,7 @@ private:
     {{property|unrealTypeName: false, moduleCapital}} {{property|unrealVarName}};
 {% endfor %}
 };
+
+} // namespace Private
+} // namespace {{interface.name | capital}}
+} // namespace {{module.name | capital}}

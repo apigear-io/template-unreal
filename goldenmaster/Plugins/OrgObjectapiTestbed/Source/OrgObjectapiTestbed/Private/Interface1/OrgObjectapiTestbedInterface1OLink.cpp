@@ -29,7 +29,11 @@ limitations under the License.
 
 
 using namespace ApiGear::ObjectLink;
-OrgObjectapiTestbedInterface1OLinkService::OrgObjectapiTestbedInterface1OLinkService()
+
+namespace OrgObjectapiTestbed {
+namespace Interface1 {
+namespace Private {
+OLinkService::OLinkService()
     : IOrgObjectapiTestbedInterface1Interface()
     , m_node(nullptr)
     , m_isReady(false)
@@ -49,33 +53,33 @@ OrgObjectapiTestbedInterface1OLinkService::OrgObjectapiTestbedInterface1OLinkSer
     m_node = ClientRegistry::get().addObjectSink(this);
 }
 
-OrgObjectapiTestbedInterface1OLinkService::~OrgObjectapiTestbedInterface1OLinkService()
+OLinkService::~OLinkService()
 {
     m_isReady = false;
     m_node = nullptr;
 }
 
-FOrgObjectapiTestbedInterface1Sig1Delegate& OrgObjectapiTestbedInterface1OLinkService::GetSig1SignalDelegate()
+FOrgObjectapiTestbedInterface1Sig1Delegate& OLinkService::GetSig1SignalDelegate()
 {
     return Sig1Signal;
 }
 
-FOrgObjectapiTestbedInterface1Sig2Delegate& OrgObjectapiTestbedInterface1OLinkService::GetSig2SignalDelegate()
+FOrgObjectapiTestbedInterface1Sig2Delegate& OLinkService::GetSig2SignalDelegate()
 {
     return Sig2Signal;
 }
 
-FOrgObjectapiTestbedInterface1Sig3Delegate& OrgObjectapiTestbedInterface1OLinkService::GetSig3SignalDelegate()
+FOrgObjectapiTestbedInterface1Sig3Delegate& OLinkService::GetSig3SignalDelegate()
 {
     return Sig3Signal;
 }
 
-bool OrgObjectapiTestbedInterface1OLinkService::GetProp1() const
+bool OLinkService::GetProp1() const
 {
     return bProp1;
 }
 
-void OrgObjectapiTestbedInterface1OLinkService::SetProp1(bool bInProp1)
+void OLinkService::SetProp1(bool bInProp1)
 {
     if(!m_node) {
         return;
@@ -83,16 +87,16 @@ void OrgObjectapiTestbedInterface1OLinkService::SetProp1(bool bInProp1)
     m_node->setRemoteProperty("org.objectapi.testbed.Interface1/prop1", bInProp1);
 }
 
-FOrgObjectapiTestbedInterface1Prop1ChangedDelegate& OrgObjectapiTestbedInterface1OLinkService::GetProp1ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop1ChangedDelegate& OLinkService::GetProp1ChangedDelegate()
 {
     return Prop1Changed;
 }
-int32 OrgObjectapiTestbedInterface1OLinkService::GetProp2() const
+int32 OLinkService::GetProp2() const
 {
     return Prop2;
 }
 
-void OrgObjectapiTestbedInterface1OLinkService::SetProp2(int32 InProp2)
+void OLinkService::SetProp2(int32 InProp2)
 {
     if(!m_node) {
         return;
@@ -100,16 +104,16 @@ void OrgObjectapiTestbedInterface1OLinkService::SetProp2(int32 InProp2)
     m_node->setRemoteProperty("org.objectapi.testbed.Interface1/prop2", InProp2);
 }
 
-FOrgObjectapiTestbedInterface1Prop2ChangedDelegate& OrgObjectapiTestbedInterface1OLinkService::GetProp2ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop2ChangedDelegate& OLinkService::GetProp2ChangedDelegate()
 {
     return Prop2Changed;
 }
-float OrgObjectapiTestbedInterface1OLinkService::GetProp3() const
+float OLinkService::GetProp3() const
 {
     return Prop3;
 }
 
-void OrgObjectapiTestbedInterface1OLinkService::SetProp3(float InProp3)
+void OLinkService::SetProp3(float InProp3)
 {
     if(!m_node) {
         return;
@@ -117,16 +121,16 @@ void OrgObjectapiTestbedInterface1OLinkService::SetProp3(float InProp3)
     m_node->setRemoteProperty("org.objectapi.testbed.Interface1/prop3", InProp3);
 }
 
-FOrgObjectapiTestbedInterface1Prop3ChangedDelegate& OrgObjectapiTestbedInterface1OLinkService::GetProp3ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop3ChangedDelegate& OLinkService::GetProp3ChangedDelegate()
 {
     return Prop3Changed;
 }
-FString OrgObjectapiTestbedInterface1OLinkService::GetProp4() const
+FString OLinkService::GetProp4() const
 {
     return Prop4;
 }
 
-void OrgObjectapiTestbedInterface1OLinkService::SetProp4(const FString& InProp4)
+void OLinkService::SetProp4(const FString& InProp4)
 {
     if(!m_node) {
         return;
@@ -134,16 +138,16 @@ void OrgObjectapiTestbedInterface1OLinkService::SetProp4(const FString& InProp4)
     m_node->setRemoteProperty("org.objectapi.testbed.Interface1/prop4", InProp4);
 }
 
-FOrgObjectapiTestbedInterface1Prop4ChangedDelegate& OrgObjectapiTestbedInterface1OLinkService::GetProp4ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop4ChangedDelegate& OLinkService::GetProp4ChangedDelegate()
 {
     return Prop4Changed;
 }
-TArray<int32> OrgObjectapiTestbedInterface1OLinkService::GetProp5() const
+TArray<int32> OLinkService::GetProp5() const
 {
     return Prop5;
 }
 
-void OrgObjectapiTestbedInterface1OLinkService::SetProp5(const TArray<int32>& InProp5)
+void OLinkService::SetProp5(const TArray<int32>& InProp5)
 {
     if(!m_node) {
         return;
@@ -151,16 +155,16 @@ void OrgObjectapiTestbedInterface1OLinkService::SetProp5(const TArray<int32>& In
     m_node->setRemoteProperty("org.objectapi.testbed.Interface1/prop5", InProp5);
 }
 
-FOrgObjectapiTestbedInterface1Prop5ChangedDelegate& OrgObjectapiTestbedInterface1OLinkService::GetProp5ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop5ChangedDelegate& OLinkService::GetProp5ChangedDelegate()
 {
     return Prop5Changed;
 }
-FOrgObjectapiTestbedStruct1 OrgObjectapiTestbedInterface1OLinkService::GetProp6() const
+FOrgObjectapiTestbedStruct1 OLinkService::GetProp6() const
 {
     return Prop6;
 }
 
-void OrgObjectapiTestbedInterface1OLinkService::SetProp6(const FOrgObjectapiTestbedStruct1& InProp6)
+void OLinkService::SetProp6(const FOrgObjectapiTestbedStruct1& InProp6)
 {
     if(!m_node) {
         return;
@@ -168,16 +172,16 @@ void OrgObjectapiTestbedInterface1OLinkService::SetProp6(const FOrgObjectapiTest
     m_node->setRemoteProperty("org.objectapi.testbed.Interface1/prop6", InProp6);
 }
 
-FOrgObjectapiTestbedInterface1Prop6ChangedDelegate& OrgObjectapiTestbedInterface1OLinkService::GetProp6ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop6ChangedDelegate& OLinkService::GetProp6ChangedDelegate()
 {
     return Prop6Changed;
 }
-int32 OrgObjectapiTestbedInterface1OLinkService::GetProp7() const
+int32 OLinkService::GetProp7() const
 {
     return Prop7;
 }
 
-void OrgObjectapiTestbedInterface1OLinkService::SetProp7(int32 InProp7)
+void OLinkService::SetProp7(int32 InProp7)
 {
     if(!m_node) {
         return;
@@ -185,16 +189,16 @@ void OrgObjectapiTestbedInterface1OLinkService::SetProp7(int32 InProp7)
     m_node->setRemoteProperty("org.objectapi.testbed.Interface1/prop7", InProp7);
 }
 
-FOrgObjectapiTestbedInterface1Prop7ChangedDelegate& OrgObjectapiTestbedInterface1OLinkService::GetProp7ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop7ChangedDelegate& OLinkService::GetProp7ChangedDelegate()
 {
     return Prop7Changed;
 }
-TArray<int32> OrgObjectapiTestbedInterface1OLinkService::GetProp10() const
+TArray<int32> OLinkService::GetProp10() const
 {
     return Prop10;
 }
 
-void OrgObjectapiTestbedInterface1OLinkService::SetProp10(const TArray<int32>& InProp10)
+void OLinkService::SetProp10(const TArray<int32>& InProp10)
 {
     if(!m_node) {
         return;
@@ -202,16 +206,16 @@ void OrgObjectapiTestbedInterface1OLinkService::SetProp10(const TArray<int32>& I
     m_node->setRemoteProperty("org.objectapi.testbed.Interface1/prop10", InProp10);
 }
 
-FOrgObjectapiTestbedInterface1Prop10ChangedDelegate& OrgObjectapiTestbedInterface1OLinkService::GetProp10ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop10ChangedDelegate& OLinkService::GetProp10ChangedDelegate()
 {
     return Prop10Changed;
 }
-TArray<FOrgObjectapiTestbedStruct1> OrgObjectapiTestbedInterface1OLinkService::GetProp11() const
+TArray<FOrgObjectapiTestbedStruct1> OLinkService::GetProp11() const
 {
     return Prop11;
 }
 
-void OrgObjectapiTestbedInterface1OLinkService::SetProp11(const TArray<FOrgObjectapiTestbedStruct1>& InProp11)
+void OLinkService::SetProp11(const TArray<FOrgObjectapiTestbedStruct1>& InProp11)
 {
     if(!m_node) {
         return;
@@ -219,16 +223,16 @@ void OrgObjectapiTestbedInterface1OLinkService::SetProp11(const TArray<FOrgObjec
     m_node->setRemoteProperty("org.objectapi.testbed.Interface1/prop11", InProp11);
 }
 
-FOrgObjectapiTestbedInterface1Prop11ChangedDelegate& OrgObjectapiTestbedInterface1OLinkService::GetProp11ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop11ChangedDelegate& OLinkService::GetProp11ChangedDelegate()
 {
     return Prop11Changed;
 }
-TArray<EOrgObjectapiTestbedEnum1> OrgObjectapiTestbedInterface1OLinkService::GetProp12() const
+TArray<EOrgObjectapiTestbedEnum1> OLinkService::GetProp12() const
 {
     return Prop12;
 }
 
-void OrgObjectapiTestbedInterface1OLinkService::SetProp12(const TArray<EOrgObjectapiTestbedEnum1>& InProp12)
+void OLinkService::SetProp12(const TArray<EOrgObjectapiTestbedEnum1>& InProp12)
 {
     if(!m_node) {
         return;
@@ -236,16 +240,16 @@ void OrgObjectapiTestbedInterface1OLinkService::SetProp12(const TArray<EOrgObjec
     m_node->setRemoteProperty("org.objectapi.testbed.Interface1/prop12", InProp12);
 }
 
-FOrgObjectapiTestbedInterface1Prop12ChangedDelegate& OrgObjectapiTestbedInterface1OLinkService::GetProp12ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop12ChangedDelegate& OLinkService::GetProp12ChangedDelegate()
 {
     return Prop12Changed;
 }
-TArray<FOrgObjectapiTestbedStruct1> OrgObjectapiTestbedInterface1OLinkService::GetProp14() const
+TArray<FOrgObjectapiTestbedStruct1> OLinkService::GetProp14() const
 {
     return Prop14;
 }
 
-void OrgObjectapiTestbedInterface1OLinkService::SetProp14(const TArray<FOrgObjectapiTestbedStruct1>& InProp14)
+void OLinkService::SetProp14(const TArray<FOrgObjectapiTestbedStruct1>& InProp14)
 {
     if(!m_node) {
         return;
@@ -253,12 +257,12 @@ void OrgObjectapiTestbedInterface1OLinkService::SetProp14(const TArray<FOrgObjec
     m_node->setRemoteProperty("org.objectapi.testbed.Interface1/prop14", InProp14);
 }
 
-FOrgObjectapiTestbedInterface1Prop14ChangedDelegate& OrgObjectapiTestbedInterface1OLinkService::GetProp14ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop14ChangedDelegate& OLinkService::GetProp14ChangedDelegate()
 {
     return Prop14Changed;
 }
 
-void OrgObjectapiTestbedInterface1OLinkService::Op1()
+void OLinkService::Op1()
 {
     if(!m_node) {
         UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
@@ -268,7 +272,7 @@ void OrgObjectapiTestbedInterface1OLinkService::Op1()
     m_node->invokeRemote("org_objectapi_testbed.Interface1/op1", {}, func);
 }
 
-void OrgObjectapiTestbedInterface1OLinkService::Op2(int32 Step)
+void OLinkService::Op2(int32 Step)
 {
     if(!m_node) {
         UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
@@ -278,7 +282,7 @@ void OrgObjectapiTestbedInterface1OLinkService::Op2(int32 Step)
     m_node->invokeRemote("org_objectapi_testbed.Interface1/op2", {Step}, func);
 }
 
-int32 OrgObjectapiTestbedInterface1OLinkService::Op3()
+int32 OLinkService::Op3()
 {
     if(!m_node) {
         UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
@@ -298,7 +302,7 @@ int32 OrgObjectapiTestbedInterface1OLinkService::Op3()
 }
 
 
-void OrgObjectapiTestbedInterface1OLinkService::applyState(const nlohmann::json& fields) 
+void OLinkService::applyState(const nlohmann::json& fields) 
 {
     if(fields.contains("prop1")) {
         if(bProp1 != fields["prop1"].get<bool>())
@@ -379,12 +383,12 @@ void OrgObjectapiTestbedInterface1OLinkService::applyState(const nlohmann::json&
     }
 }
 
-std::string OrgObjectapiTestbedInterface1OLinkService::olinkObjectName()
+std::string OLinkService::olinkObjectName()
 {
     return "org.objectapi.testbed.Interface1";
 }
 
-void OrgObjectapiTestbedInterface1OLinkService::olinkOnSignal(std::string name, nlohmann::json args)
+void OLinkService::olinkOnSignal(std::string name, nlohmann::json args)
 {
     std::string path = Name::pathFromName(name);
     if(path == "sig1") {
@@ -401,13 +405,13 @@ void OrgObjectapiTestbedInterface1OLinkService::olinkOnSignal(std::string name, 
     }
 }
 
-void OrgObjectapiTestbedInterface1OLinkService::olinkOnPropertyChanged(std::string name, nlohmann::json value)
+void OLinkService::olinkOnPropertyChanged(std::string name, nlohmann::json value)
 {
     std::string path = Name::pathFromName(name);
     applyState({ {path, value} });
 }
 
-void OrgObjectapiTestbedInterface1OLinkService::olinkOnInit(std::string name, nlohmann::json props, IClientNode *node)
+void OLinkService::olinkOnInit(std::string name, nlohmann::json props, IClientNode *node)
 {
     m_isReady = true;
     m_node = node;
@@ -415,8 +419,12 @@ void OrgObjectapiTestbedInterface1OLinkService::olinkOnInit(std::string name, nl
     //call isReady();
 }
 
-void OrgObjectapiTestbedInterface1OLinkService::olinkOnRelease()
+void OLinkService::olinkOnRelease()
 {
     m_isReady = false;
     m_node = nullptr;
 }
+
+} // namespace Private
+} // namespace Interface1
+} // namespace OrgObjectapiTestbed

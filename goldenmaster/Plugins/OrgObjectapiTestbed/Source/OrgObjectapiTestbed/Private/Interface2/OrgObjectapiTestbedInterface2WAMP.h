@@ -18,12 +18,16 @@ limitations under the License.
 
 #include "apig/OrgObjectapiTestbed_apig.h"
 
-class OrgObjectapiTestbedInterface2WAMPService : public IOrgObjectapiTestbedInterface2Interface
+namespace OrgObjectapiTestbed {
+namespace Interface2 {
+namespace Private {
+
+class WAMPService : public IOrgObjectapiTestbedInterface2Interface
 {
 public:
 
-    explicit OrgObjectapiTestbedInterface2WAMPService();
-    virtual ~OrgObjectapiTestbedInterface2WAMPService();
+    explicit WAMPService();
+    virtual ~WAMPService();
 
     // signals
     FOrgObjectapiTestbedInterface2Prop200ChangedDelegate Prop200Changed;
@@ -76,3 +80,7 @@ private:
     float Prop204;
     FString Prop205;
 };
+
+} // namespace Private
+} // namespace Interface2
+} // namespace OrgObjectapiTestbed

@@ -1,5 +1,5 @@
 {% comment %} Copyright Epic Games, Inc. All Rights Reserved {% endcomment -%}
-{% assign class = module.name | capital | append: interface.name | capital | append: "SimulationService" -%}
+{% assign class = "SimulationService" -%}
 {% assign moduleCapital = module.name | capital %}
 {% assign moduleInterfaceCapital = moduleCapital | append: interface.name | capital -%}
 /**
@@ -32,6 +32,10 @@ limitations under the License.
 {{nl}}
 using namespace ApiGear::JSONRPC;
 
+namespace {{module.name | capital}} {
+namespace {{interface.name | capital}} {
+namespace Private {
+    
 {% if interface.description%}
 /**
    \brief {{interface.description}}
@@ -171,3 +175,7 @@ F{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate& {{class}}::
 }
 {{nl}}
 {% endfor %}
+
+} // namespace Private
+} // namespace {{interface.name | capital}}
+} // namespace {{module.name | capital}}

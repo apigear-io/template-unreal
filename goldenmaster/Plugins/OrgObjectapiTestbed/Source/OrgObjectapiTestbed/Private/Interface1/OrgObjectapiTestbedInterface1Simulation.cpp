@@ -25,7 +25,11 @@ limitations under the License.
 #include "unrealsimulation.h"
 
 using namespace ApiGear::JSONRPC;
-OrgObjectapiTestbedInterface1SimulationService::OrgObjectapiTestbedInterface1SimulationService()
+
+namespace OrgObjectapiTestbed {
+namespace Interface1 {
+namespace Private {
+SimulationService::SimulationService()
     : IOrgObjectapiTestbedInterface1Interface()
     , bProp1(false)
     , Prop2(0)
@@ -237,7 +241,7 @@ OrgObjectapiTestbedInterface1SimulationService::OrgObjectapiTestbedInterface1Sim
 
 }
 
-OrgObjectapiTestbedInterface1SimulationService::~OrgObjectapiTestbedInterface1SimulationService()
+SimulationService::~SimulationService()
 {
     UnrealSimulation::instance()->RemoveOnNotifyState("org.objectapi.testbed/Interface1");
     // unregister notification callback functions
@@ -246,222 +250,222 @@ OrgObjectapiTestbedInterface1SimulationService::~OrgObjectapiTestbedInterface1Si
     UnrealSimulation::instance()->RemoveOnNotify("org.objectapi.testbed/Interface1#sig3");
 }
 
-FOrgObjectapiTestbedInterface1Sig1Delegate& OrgObjectapiTestbedInterface1SimulationService::GetSig1SignalDelegate()
+FOrgObjectapiTestbedInterface1Sig1Delegate& SimulationService::GetSig1SignalDelegate()
 {
     return Sig1Signal;
 }
 
-FOrgObjectapiTestbedInterface1Sig2Delegate& OrgObjectapiTestbedInterface1SimulationService::GetSig2SignalDelegate()
+FOrgObjectapiTestbedInterface1Sig2Delegate& SimulationService::GetSig2SignalDelegate()
 {
     return Sig2Signal;
 }
 
-FOrgObjectapiTestbedInterface1Sig3Delegate& OrgObjectapiTestbedInterface1SimulationService::GetSig3SignalDelegate()
+FOrgObjectapiTestbedInterface1Sig3Delegate& SimulationService::GetSig3SignalDelegate()
 {
     return Sig3Signal;
 }
 
-bool OrgObjectapiTestbedInterface1SimulationService::GetProp1() const
+bool SimulationService::GetProp1() const
 {
     return bProp1;
 }
 
-void OrgObjectapiTestbedInterface1SimulationService::SetProp1(bool bInProp1)
+void SimulationService::SetProp1(bool bInProp1)
 {
     Params params;
     params["prop1"] = bInProp1;
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface1", "_set", params);
 }
 
-FOrgObjectapiTestbedInterface1Prop1ChangedDelegate& OrgObjectapiTestbedInterface1SimulationService::GetProp1ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop1ChangedDelegate& SimulationService::GetProp1ChangedDelegate()
 {
     return Prop1Changed;
 }
 
-int32 OrgObjectapiTestbedInterface1SimulationService::GetProp2() const
+int32 SimulationService::GetProp2() const
 {
     return Prop2;
 }
 
-void OrgObjectapiTestbedInterface1SimulationService::SetProp2(int32 InProp2)
+void SimulationService::SetProp2(int32 InProp2)
 {
     Params params;
     params["prop2"] = InProp2;
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface1", "_set", params);
 }
 
-FOrgObjectapiTestbedInterface1Prop2ChangedDelegate& OrgObjectapiTestbedInterface1SimulationService::GetProp2ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop2ChangedDelegate& SimulationService::GetProp2ChangedDelegate()
 {
     return Prop2Changed;
 }
 
-float OrgObjectapiTestbedInterface1SimulationService::GetProp3() const
+float SimulationService::GetProp3() const
 {
     return Prop3;
 }
 
-void OrgObjectapiTestbedInterface1SimulationService::SetProp3(float InProp3)
+void SimulationService::SetProp3(float InProp3)
 {
     Params params;
     params["prop3"] = InProp3;
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface1", "_set", params);
 }
 
-FOrgObjectapiTestbedInterface1Prop3ChangedDelegate& OrgObjectapiTestbedInterface1SimulationService::GetProp3ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop3ChangedDelegate& SimulationService::GetProp3ChangedDelegate()
 {
     return Prop3Changed;
 }
 
-FString OrgObjectapiTestbedInterface1SimulationService::GetProp4() const
+FString SimulationService::GetProp4() const
 {
     return Prop4;
 }
 
-void OrgObjectapiTestbedInterface1SimulationService::SetProp4(const FString& InProp4)
+void SimulationService::SetProp4(const FString& InProp4)
 {
     Params params;
     params["prop4"] = InProp4;
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface1", "_set", params);
 }
 
-FOrgObjectapiTestbedInterface1Prop4ChangedDelegate& OrgObjectapiTestbedInterface1SimulationService::GetProp4ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop4ChangedDelegate& SimulationService::GetProp4ChangedDelegate()
 {
     return Prop4Changed;
 }
 
-TArray<int32> OrgObjectapiTestbedInterface1SimulationService::GetProp5() const
+TArray<int32> SimulationService::GetProp5() const
 {
     return Prop5;
 }
 
-void OrgObjectapiTestbedInterface1SimulationService::SetProp5(const TArray<int32>& InProp5)
+void SimulationService::SetProp5(const TArray<int32>& InProp5)
 {
     Params params;
     params["prop5"] = InProp5;
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface1", "_set", params);
 }
 
-FOrgObjectapiTestbedInterface1Prop5ChangedDelegate& OrgObjectapiTestbedInterface1SimulationService::GetProp5ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop5ChangedDelegate& SimulationService::GetProp5ChangedDelegate()
 {
     return Prop5Changed;
 }
 
-FOrgObjectapiTestbedStruct1 OrgObjectapiTestbedInterface1SimulationService::GetProp6() const
+FOrgObjectapiTestbedStruct1 SimulationService::GetProp6() const
 {
     return Prop6;
 }
 
-void OrgObjectapiTestbedInterface1SimulationService::SetProp6(const FOrgObjectapiTestbedStruct1& InProp6)
+void SimulationService::SetProp6(const FOrgObjectapiTestbedStruct1& InProp6)
 {
     Params params;
     params["prop6"] = InProp6;
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface1", "_set", params);
 }
 
-FOrgObjectapiTestbedInterface1Prop6ChangedDelegate& OrgObjectapiTestbedInterface1SimulationService::GetProp6ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop6ChangedDelegate& SimulationService::GetProp6ChangedDelegate()
 {
     return Prop6Changed;
 }
 
-int32 OrgObjectapiTestbedInterface1SimulationService::GetProp7() const
+int32 SimulationService::GetProp7() const
 {
     return Prop7;
 }
 
-void OrgObjectapiTestbedInterface1SimulationService::SetProp7(int32 InProp7)
+void SimulationService::SetProp7(int32 InProp7)
 {
     Params params;
     params["prop7"] = InProp7;
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface1", "_set", params);
 }
 
-FOrgObjectapiTestbedInterface1Prop7ChangedDelegate& OrgObjectapiTestbedInterface1SimulationService::GetProp7ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop7ChangedDelegate& SimulationService::GetProp7ChangedDelegate()
 {
     return Prop7Changed;
 }
 
-TArray<int32> OrgObjectapiTestbedInterface1SimulationService::GetProp10() const
+TArray<int32> SimulationService::GetProp10() const
 {
     return Prop10;
 }
 
-void OrgObjectapiTestbedInterface1SimulationService::SetProp10(const TArray<int32>& InProp10)
+void SimulationService::SetProp10(const TArray<int32>& InProp10)
 {
     Params params;
     params["prop10"] = InProp10;
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface1", "_set", params);
 }
 
-FOrgObjectapiTestbedInterface1Prop10ChangedDelegate& OrgObjectapiTestbedInterface1SimulationService::GetProp10ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop10ChangedDelegate& SimulationService::GetProp10ChangedDelegate()
 {
     return Prop10Changed;
 }
 
-TArray<FOrgObjectapiTestbedStruct1> OrgObjectapiTestbedInterface1SimulationService::GetProp11() const
+TArray<FOrgObjectapiTestbedStruct1> SimulationService::GetProp11() const
 {
     return Prop11;
 }
 
-void OrgObjectapiTestbedInterface1SimulationService::SetProp11(const TArray<FOrgObjectapiTestbedStruct1>& InProp11)
+void SimulationService::SetProp11(const TArray<FOrgObjectapiTestbedStruct1>& InProp11)
 {
     Params params;
     params["prop11"] = InProp11;
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface1", "_set", params);
 }
 
-FOrgObjectapiTestbedInterface1Prop11ChangedDelegate& OrgObjectapiTestbedInterface1SimulationService::GetProp11ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop11ChangedDelegate& SimulationService::GetProp11ChangedDelegate()
 {
     return Prop11Changed;
 }
 
-TArray<EOrgObjectapiTestbedEnum1> OrgObjectapiTestbedInterface1SimulationService::GetProp12() const
+TArray<EOrgObjectapiTestbedEnum1> SimulationService::GetProp12() const
 {
     return Prop12;
 }
 
-void OrgObjectapiTestbedInterface1SimulationService::SetProp12(const TArray<EOrgObjectapiTestbedEnum1>& InProp12)
+void SimulationService::SetProp12(const TArray<EOrgObjectapiTestbedEnum1>& InProp12)
 {
     Params params;
     params["prop12"] = InProp12;
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface1", "_set", params);
 }
 
-FOrgObjectapiTestbedInterface1Prop12ChangedDelegate& OrgObjectapiTestbedInterface1SimulationService::GetProp12ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop12ChangedDelegate& SimulationService::GetProp12ChangedDelegate()
 {
     return Prop12Changed;
 }
 
-TArray<FOrgObjectapiTestbedStruct1> OrgObjectapiTestbedInterface1SimulationService::GetProp14() const
+TArray<FOrgObjectapiTestbedStruct1> SimulationService::GetProp14() const
 {
     return Prop14;
 }
 
-void OrgObjectapiTestbedInterface1SimulationService::SetProp14(const TArray<FOrgObjectapiTestbedStruct1>& InProp14)
+void SimulationService::SetProp14(const TArray<FOrgObjectapiTestbedStruct1>& InProp14)
 {
     Params params;
     params["prop14"] = InProp14;
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface1", "_set", params);
 }
 
-FOrgObjectapiTestbedInterface1Prop14ChangedDelegate& OrgObjectapiTestbedInterface1SimulationService::GetProp14ChangedDelegate()
+FOrgObjectapiTestbedInterface1Prop14ChangedDelegate& SimulationService::GetProp14ChangedDelegate()
 {
     return Prop14Changed;
 }
 
-void OrgObjectapiTestbedInterface1SimulationService::Op1()
+void SimulationService::Op1()
 {
     Params params;
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface1", "op1", params);
 }
 
-void OrgObjectapiTestbedInterface1SimulationService::Op2(int32 Step)
+void SimulationService::Op2(int32 Step)
 {
     Params params;
     params["step"] = Step;
     UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface1", "op2", params);
 }
 
-int32 OrgObjectapiTestbedInterface1SimulationService::Op3()
+int32 SimulationService::Op3()
 {
     Params params;
     TPromise<int32> Promise;
@@ -477,3 +481,7 @@ int32 OrgObjectapiTestbedInterface1SimulationService::Op3()
     return Promise.GetFuture().Get();
 }
 
+
+} // namespace Private
+} // namespace Interface1
+} // namespace OrgObjectapiTestbed

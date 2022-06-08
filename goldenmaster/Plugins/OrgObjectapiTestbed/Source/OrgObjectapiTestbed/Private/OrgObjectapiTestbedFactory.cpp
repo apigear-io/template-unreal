@@ -36,18 +36,18 @@ TSharedPtr<IOrgObjectapiTestbedInterface1Interface, ESPMode::ThreadSafe> FOrgObj
     switch(settings->ServiceConnection) {
         case EOrgObjectapiTestbedConnection::CONNECTION_WAMP:
             UE_LOG(LogFOrgObjectapiTestbedModuleFactory, Log, TEXT("createIOrgObjectapiTestbedInterface1Interface: Using WAMP service backend"));
-            return MakeShared<OrgObjectapiTestbedInterface1WAMPService, ESPMode::ThreadSafe>();
+            return MakeShared<OrgObjectapiTestbed::Interface1::Private::WAMPService, ESPMode::ThreadSafe>();
         case EOrgObjectapiTestbedConnection::CONNECTION_OLINK:
             UE_LOG(LogFOrgObjectapiTestbedModuleFactory, Log, TEXT("createIOrgObjectapiTestbedInterface1Interface: Using OLink service backend"));
-            return MakeShared<OrgObjectapiTestbedInterface1OLinkService, ESPMode::ThreadSafe>();
+            return MakeShared<OrgObjectapiTestbed::Interface1::Private::OLinkService, ESPMode::ThreadSafe>();
         case EOrgObjectapiTestbedConnection::CONNECTION_SIMU:
             UE_LOG(LogFOrgObjectapiTestbedModuleFactory, Log, TEXT("createIOrgObjectapiTestbedInterface1Interface: Using simulation service backend"));
-            return MakeShared<OrgObjectapiTestbedInterface1SimulationService, ESPMode::ThreadSafe>();
+            return MakeShared<OrgObjectapiTestbed::Interface1::Private::SimulationService, ESPMode::ThreadSafe>();
         case EOrgObjectapiTestbedConnection::CONNECTION_LOCAL:
             UE_LOG(LogFOrgObjectapiTestbedModuleFactory, Log, TEXT("createIOrgObjectapiTestbedInterface1Interface: Using local service backend"));
         default:
             UE_LOG(LogFOrgObjectapiTestbedModuleFactory, Log, TEXT("createIOrgObjectapiTestbedInterface1Interface: Defaulting to local service backend"));
-            return MakeShared<OrgObjectapiTestbedInterface1LocalService, ESPMode::ThreadSafe>();
+            return MakeShared<OrgObjectapiTestbed::Interface1::Private::LocalService, ESPMode::ThreadSafe>();
     }
 }
 
@@ -58,17 +58,17 @@ TSharedPtr<IOrgObjectapiTestbedInterface2Interface, ESPMode::ThreadSafe> FOrgObj
     switch(settings->ServiceConnection) {
         case EOrgObjectapiTestbedConnection::CONNECTION_WAMP:
             UE_LOG(LogFOrgObjectapiTestbedModuleFactory, Log, TEXT("createIOrgObjectapiTestbedInterface2Interface: Using WAMP service backend"));
-            return MakeShared<OrgObjectapiTestbedInterface2WAMPService, ESPMode::ThreadSafe>();
+            return MakeShared<OrgObjectapiTestbed::Interface2::Private::WAMPService, ESPMode::ThreadSafe>();
         case EOrgObjectapiTestbedConnection::CONNECTION_OLINK:
             UE_LOG(LogFOrgObjectapiTestbedModuleFactory, Log, TEXT("createIOrgObjectapiTestbedInterface2Interface: Using OLink service backend"));
-            return MakeShared<OrgObjectapiTestbedInterface2OLinkService, ESPMode::ThreadSafe>();
+            return MakeShared<OrgObjectapiTestbed::Interface2::Private::OLinkService, ESPMode::ThreadSafe>();
         case EOrgObjectapiTestbedConnection::CONNECTION_SIMU:
             UE_LOG(LogFOrgObjectapiTestbedModuleFactory, Log, TEXT("createIOrgObjectapiTestbedInterface2Interface: Using simulation service backend"));
-            return MakeShared<OrgObjectapiTestbedInterface2SimulationService, ESPMode::ThreadSafe>();
+            return MakeShared<OrgObjectapiTestbed::Interface2::Private::SimulationService, ESPMode::ThreadSafe>();
         case EOrgObjectapiTestbedConnection::CONNECTION_LOCAL:
             UE_LOG(LogFOrgObjectapiTestbedModuleFactory, Log, TEXT("createIOrgObjectapiTestbedInterface2Interface: Using local service backend"));
         default:
             UE_LOG(LogFOrgObjectapiTestbedModuleFactory, Log, TEXT("createIOrgObjectapiTestbedInterface2Interface: Defaulting to local service backend"));
-            return MakeShared<OrgObjectapiTestbedInterface2LocalService, ESPMode::ThreadSafe>();
+            return MakeShared<OrgObjectapiTestbed::Interface2::Private::LocalService, ESPMode::ThreadSafe>();
     }
 }

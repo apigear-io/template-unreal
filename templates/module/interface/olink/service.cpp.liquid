@@ -1,5 +1,5 @@
 {% comment %} // Copyright (c) ApiGear UG 2020 {% endcomment -%}
-{% assign class = module.name | capital | append: interface.name | capital | append: "OLinkService" -%}
+{% assign class = "OLinkService" -%}
 {% assign moduleCapital = module.name | capital %}
 {% assign moduleInterfaceCapital = moduleCapital | append: interface.name | capital -%}
 /**
@@ -35,6 +35,10 @@ limitations under the License.
 
 {{nl}}
 using namespace ApiGear::ObjectLink;
+
+namespace {{module.name | capital}} {
+namespace {{interface.name | capital}} {
+namespace Private {
 
 {% if interface.description%}
 /**
@@ -185,3 +189,7 @@ void {{class}}::olinkOnRelease()
     m_isReady = false;
     m_node = nullptr;
 }
+
+} // namespace Private
+} // namespace {{interface.name | capital}}
+} // namespace {{module.name | capital}}

@@ -19,12 +19,16 @@ limitations under the License.
 #include "apig/OrgObjectapiTestbed_apig.h"
 #include "olink/clientnode.h"
 
-class OrgObjectapiTestbedInterface1OLinkService : public IOrgObjectapiTestbedInterface1Interface, public ApiGear::ObjectLink::IObjectSink
+namespace OrgObjectapiTestbed {
+namespace Interface1 {
+namespace Private {
+
+class OLinkService : public IOrgObjectapiTestbedInterface1Interface, public ApiGear::ObjectLink::IObjectSink
 {
 public:
 
-    explicit OrgObjectapiTestbedInterface1OLinkService();
-    virtual ~OrgObjectapiTestbedInterface1OLinkService();
+    explicit OLinkService();
+    virtual ~OLinkService();
 
     // signals
     FOrgObjectapiTestbedInterface1Sig1Delegate Sig1Signal;
@@ -137,3 +141,7 @@ private:
     TArray<EOrgObjectapiTestbedEnum1> Prop12;
     TArray<FOrgObjectapiTestbedStruct1> Prop14;
 };
+
+} // namespace Private
+} // namespace Interface1
+} // namespace OrgObjectapiTestbed

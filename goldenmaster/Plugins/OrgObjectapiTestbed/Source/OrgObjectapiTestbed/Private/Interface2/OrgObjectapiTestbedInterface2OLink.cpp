@@ -29,7 +29,11 @@ limitations under the License.
 
 
 using namespace ApiGear::ObjectLink;
-OrgObjectapiTestbedInterface2OLinkService::OrgObjectapiTestbedInterface2OLinkService()
+
+namespace OrgObjectapiTestbed {
+namespace Interface2 {
+namespace Private {
+OLinkService::OLinkService()
     : IOrgObjectapiTestbedInterface2Interface()
     , m_node(nullptr)
     , m_isReady(false)
@@ -44,18 +48,18 @@ OrgObjectapiTestbedInterface2OLinkService::OrgObjectapiTestbedInterface2OLinkSer
     m_node = ClientRegistry::get().addObjectSink(this);
 }
 
-OrgObjectapiTestbedInterface2OLinkService::~OrgObjectapiTestbedInterface2OLinkService()
+OLinkService::~OLinkService()
 {
     m_isReady = false;
     m_node = nullptr;
 }
 
-int32 OrgObjectapiTestbedInterface2OLinkService::GetProp200() const
+int32 OLinkService::GetProp200() const
 {
     return Prop200;
 }
 
-void OrgObjectapiTestbedInterface2OLinkService::SetProp200(int32 InProp200)
+void OLinkService::SetProp200(int32 InProp200)
 {
     if(!m_node) {
         return;
@@ -63,16 +67,16 @@ void OrgObjectapiTestbedInterface2OLinkService::SetProp200(int32 InProp200)
     m_node->setRemoteProperty("org.objectapi.testbed.Interface2/prop200", InProp200);
 }
 
-FOrgObjectapiTestbedInterface2Prop200ChangedDelegate& OrgObjectapiTestbedInterface2OLinkService::GetProp200ChangedDelegate()
+FOrgObjectapiTestbedInterface2Prop200ChangedDelegate& OLinkService::GetProp200ChangedDelegate()
 {
     return Prop200Changed;
 }
-int32 OrgObjectapiTestbedInterface2OLinkService::GetProp201() const
+int32 OLinkService::GetProp201() const
 {
     return Prop201;
 }
 
-void OrgObjectapiTestbedInterface2OLinkService::SetProp201(int32 InProp201)
+void OLinkService::SetProp201(int32 InProp201)
 {
     if(!m_node) {
         return;
@@ -80,16 +84,16 @@ void OrgObjectapiTestbedInterface2OLinkService::SetProp201(int32 InProp201)
     m_node->setRemoteProperty("org.objectapi.testbed.Interface2/prop201", InProp201);
 }
 
-FOrgObjectapiTestbedInterface2Prop201ChangedDelegate& OrgObjectapiTestbedInterface2OLinkService::GetProp201ChangedDelegate()
+FOrgObjectapiTestbedInterface2Prop201ChangedDelegate& OLinkService::GetProp201ChangedDelegate()
 {
     return Prop201Changed;
 }
-int32 OrgObjectapiTestbedInterface2OLinkService::GetProp202() const
+int32 OLinkService::GetProp202() const
 {
     return Prop202;
 }
 
-void OrgObjectapiTestbedInterface2OLinkService::SetProp202(int32 InProp202)
+void OLinkService::SetProp202(int32 InProp202)
 {
     if(!m_node) {
         return;
@@ -97,16 +101,16 @@ void OrgObjectapiTestbedInterface2OLinkService::SetProp202(int32 InProp202)
     m_node->setRemoteProperty("org.objectapi.testbed.Interface2/prop202", InProp202);
 }
 
-FOrgObjectapiTestbedInterface2Prop202ChangedDelegate& OrgObjectapiTestbedInterface2OLinkService::GetProp202ChangedDelegate()
+FOrgObjectapiTestbedInterface2Prop202ChangedDelegate& OLinkService::GetProp202ChangedDelegate()
 {
     return Prop202Changed;
 }
-float OrgObjectapiTestbedInterface2OLinkService::GetProp203() const
+float OLinkService::GetProp203() const
 {
     return Prop203;
 }
 
-void OrgObjectapiTestbedInterface2OLinkService::SetProp203(float InProp203)
+void OLinkService::SetProp203(float InProp203)
 {
     if(!m_node) {
         return;
@@ -114,16 +118,16 @@ void OrgObjectapiTestbedInterface2OLinkService::SetProp203(float InProp203)
     m_node->setRemoteProperty("org.objectapi.testbed.Interface2/prop203", InProp203);
 }
 
-FOrgObjectapiTestbedInterface2Prop203ChangedDelegate& OrgObjectapiTestbedInterface2OLinkService::GetProp203ChangedDelegate()
+FOrgObjectapiTestbedInterface2Prop203ChangedDelegate& OLinkService::GetProp203ChangedDelegate()
 {
     return Prop203Changed;
 }
-float OrgObjectapiTestbedInterface2OLinkService::GetProp204() const
+float OLinkService::GetProp204() const
 {
     return Prop204;
 }
 
-void OrgObjectapiTestbedInterface2OLinkService::SetProp204(float InProp204)
+void OLinkService::SetProp204(float InProp204)
 {
     if(!m_node) {
         return;
@@ -131,16 +135,16 @@ void OrgObjectapiTestbedInterface2OLinkService::SetProp204(float InProp204)
     m_node->setRemoteProperty("org.objectapi.testbed.Interface2/prop204", InProp204);
 }
 
-FOrgObjectapiTestbedInterface2Prop204ChangedDelegate& OrgObjectapiTestbedInterface2OLinkService::GetProp204ChangedDelegate()
+FOrgObjectapiTestbedInterface2Prop204ChangedDelegate& OLinkService::GetProp204ChangedDelegate()
 {
     return Prop204Changed;
 }
-FString OrgObjectapiTestbedInterface2OLinkService::GetProp205() const
+FString OLinkService::GetProp205() const
 {
     return Prop205;
 }
 
-void OrgObjectapiTestbedInterface2OLinkService::SetProp205(const FString& InProp205)
+void OLinkService::SetProp205(const FString& InProp205)
 {
     if(!m_node) {
         return;
@@ -148,13 +152,13 @@ void OrgObjectapiTestbedInterface2OLinkService::SetProp205(const FString& InProp
     m_node->setRemoteProperty("org.objectapi.testbed.Interface2/prop205", InProp205);
 }
 
-FOrgObjectapiTestbedInterface2Prop205ChangedDelegate& OrgObjectapiTestbedInterface2OLinkService::GetProp205ChangedDelegate()
+FOrgObjectapiTestbedInterface2Prop205ChangedDelegate& OLinkService::GetProp205ChangedDelegate()
 {
     return Prop205Changed;
 }
 
 
-void OrgObjectapiTestbedInterface2OLinkService::applyState(const nlohmann::json& fields) 
+void OLinkService::applyState(const nlohmann::json& fields) 
 {
     if(fields.contains("prop200")) {
         if(Prop200 != fields["prop200"].get<int32>())
@@ -200,23 +204,23 @@ void OrgObjectapiTestbedInterface2OLinkService::applyState(const nlohmann::json&
     }
 }
 
-std::string OrgObjectapiTestbedInterface2OLinkService::olinkObjectName()
+std::string OLinkService::olinkObjectName()
 {
     return "org.objectapi.testbed.Interface2";
 }
 
-void OrgObjectapiTestbedInterface2OLinkService::olinkOnSignal(std::string name, nlohmann::json args)
+void OLinkService::olinkOnSignal(std::string name, nlohmann::json args)
 {
     std::string path = Name::pathFromName(name);
 }
 
-void OrgObjectapiTestbedInterface2OLinkService::olinkOnPropertyChanged(std::string name, nlohmann::json value)
+void OLinkService::olinkOnPropertyChanged(std::string name, nlohmann::json value)
 {
     std::string path = Name::pathFromName(name);
     applyState({ {path, value} });
 }
 
-void OrgObjectapiTestbedInterface2OLinkService::olinkOnInit(std::string name, nlohmann::json props, IClientNode *node)
+void OLinkService::olinkOnInit(std::string name, nlohmann::json props, IClientNode *node)
 {
     m_isReady = true;
     m_node = node;
@@ -224,8 +228,12 @@ void OrgObjectapiTestbedInterface2OLinkService::olinkOnInit(std::string name, nl
     //call isReady();
 }
 
-void OrgObjectapiTestbedInterface2OLinkService::olinkOnRelease()
+void OLinkService::olinkOnRelease()
 {
     m_isReady = false;
     m_node = nullptr;
 }
+
+} // namespace Private
+} // namespace Interface2
+} // namespace OrgObjectapiTestbed

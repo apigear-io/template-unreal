@@ -28,7 +28,11 @@ limitations under the License.
 #include "unrealwamp.h"
 
 using namespace ApiGear::WAMP;
-OrgObjectapiTestbedInterface2WAMPService::OrgObjectapiTestbedInterface2WAMPService()
+
+namespace OrgObjectapiTestbed {
+namespace Interface2 {
+namespace Private {
+WAMPService::WAMPService()
 : IOrgObjectapiTestbedInterface2Interface()
 , Prop200(0)
 , Prop201(0)
@@ -138,111 +142,115 @@ OrgObjectapiTestbedInterface2WAMPService::OrgObjectapiTestbedInterface2WAMPServi
 
 }
 
-OrgObjectapiTestbedInterface2WAMPService::~OrgObjectapiTestbedInterface2WAMPService()
+WAMPService::~WAMPService()
 {
     UnrealWamp::instance()->doUnSubscribe("org.objectapi.testbed.Interface2");
 }
 
-int32 OrgObjectapiTestbedInterface2WAMPService::GetProp200() const
+int32 WAMPService::GetProp200() const
 {
     return Prop200;
 }
 
-void OrgObjectapiTestbedInterface2WAMPService::SetProp200(int32 InProp200)
+void WAMPService::SetProp200(int32 InProp200)
 {
     ArgumentsKw fields_;
     fields_["prop200"] = InProp200;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface2._set", Arguments(), fields_);
 }
 
-FOrgObjectapiTestbedInterface2Prop200ChangedDelegate& OrgObjectapiTestbedInterface2WAMPService::GetProp200ChangedDelegate()
+FOrgObjectapiTestbedInterface2Prop200ChangedDelegate& WAMPService::GetProp200ChangedDelegate()
 {
     return Prop200Changed;
 }
 
-int32 OrgObjectapiTestbedInterface2WAMPService::GetProp201() const
+int32 WAMPService::GetProp201() const
 {
     return Prop201;
 }
 
-void OrgObjectapiTestbedInterface2WAMPService::SetProp201(int32 InProp201)
+void WAMPService::SetProp201(int32 InProp201)
 {
     ArgumentsKw fields_;
     fields_["prop201"] = InProp201;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface2._set", Arguments(), fields_);
 }
 
-FOrgObjectapiTestbedInterface2Prop201ChangedDelegate& OrgObjectapiTestbedInterface2WAMPService::GetProp201ChangedDelegate()
+FOrgObjectapiTestbedInterface2Prop201ChangedDelegate& WAMPService::GetProp201ChangedDelegate()
 {
     return Prop201Changed;
 }
 
-int32 OrgObjectapiTestbedInterface2WAMPService::GetProp202() const
+int32 WAMPService::GetProp202() const
 {
     return Prop202;
 }
 
-void OrgObjectapiTestbedInterface2WAMPService::SetProp202(int32 InProp202)
+void WAMPService::SetProp202(int32 InProp202)
 {
     ArgumentsKw fields_;
     fields_["prop202"] = InProp202;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface2._set", Arguments(), fields_);
 }
 
-FOrgObjectapiTestbedInterface2Prop202ChangedDelegate& OrgObjectapiTestbedInterface2WAMPService::GetProp202ChangedDelegate()
+FOrgObjectapiTestbedInterface2Prop202ChangedDelegate& WAMPService::GetProp202ChangedDelegate()
 {
     return Prop202Changed;
 }
 
-float OrgObjectapiTestbedInterface2WAMPService::GetProp203() const
+float WAMPService::GetProp203() const
 {
     return Prop203;
 }
 
-void OrgObjectapiTestbedInterface2WAMPService::SetProp203(float InProp203)
+void WAMPService::SetProp203(float InProp203)
 {
     ArgumentsKw fields_;
     fields_["prop203"] = InProp203;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface2._set", Arguments(), fields_);
 }
 
-FOrgObjectapiTestbedInterface2Prop203ChangedDelegate& OrgObjectapiTestbedInterface2WAMPService::GetProp203ChangedDelegate()
+FOrgObjectapiTestbedInterface2Prop203ChangedDelegate& WAMPService::GetProp203ChangedDelegate()
 {
     return Prop203Changed;
 }
 
-float OrgObjectapiTestbedInterface2WAMPService::GetProp204() const
+float WAMPService::GetProp204() const
 {
     return Prop204;
 }
 
-void OrgObjectapiTestbedInterface2WAMPService::SetProp204(float InProp204)
+void WAMPService::SetProp204(float InProp204)
 {
     ArgumentsKw fields_;
     fields_["prop204"] = InProp204;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface2._set", Arguments(), fields_);
 }
 
-FOrgObjectapiTestbedInterface2Prop204ChangedDelegate& OrgObjectapiTestbedInterface2WAMPService::GetProp204ChangedDelegate()
+FOrgObjectapiTestbedInterface2Prop204ChangedDelegate& WAMPService::GetProp204ChangedDelegate()
 {
     return Prop204Changed;
 }
 
-FString OrgObjectapiTestbedInterface2WAMPService::GetProp205() const
+FString WAMPService::GetProp205() const
 {
     return Prop205;
 }
 
-void OrgObjectapiTestbedInterface2WAMPService::SetProp205(const FString& InProp205)
+void WAMPService::SetProp205(const FString& InProp205)
 {
     ArgumentsKw fields_;
     fields_["prop205"] = InProp205;
     UnrealWamp::instance()->doCall("org.objectapi.testbed.Interface2._set", Arguments(), fields_);
 }
 
-FOrgObjectapiTestbedInterface2Prop205ChangedDelegate& OrgObjectapiTestbedInterface2WAMPService::GetProp205ChangedDelegate()
+FOrgObjectapiTestbedInterface2Prop205ChangedDelegate& WAMPService::GetProp205ChangedDelegate()
 {
     return Prop205Changed;
 }
 
 
+
+} // namespace Private
+} // namespace Interface2
+} // namespace OrgObjectapiTestbed

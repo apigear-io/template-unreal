@@ -16,7 +16,11 @@ limitations under the License.
 */
 
 #include "OrgObjectapiTestbedInterface2Local.h"
-OrgObjectapiTestbedInterface2LocalService::OrgObjectapiTestbedInterface2LocalService()
+
+namespace OrgObjectapiTestbed {
+namespace Interface2 {
+namespace Private {
+LocalService::LocalService()
     : IOrgObjectapiTestbedInterface2Interface()
     , Prop200(0)
     , Prop201(0)
@@ -26,16 +30,16 @@ OrgObjectapiTestbedInterface2LocalService::OrgObjectapiTestbedInterface2LocalSer
     , Prop205(FString())
 {
 }
-OrgObjectapiTestbedInterface2LocalService::~OrgObjectapiTestbedInterface2LocalService()
+LocalService::~LocalService()
 {
 }
 
-int32 OrgObjectapiTestbedInterface2LocalService::GetProp200() const
+int32 LocalService::GetProp200() const
 {
     return Prop200;
 }
 
-void OrgObjectapiTestbedInterface2LocalService::SetProp200(int32 InProp200)
+void LocalService::SetProp200(int32 InProp200)
 {
     if(Prop200 != InProp200)
     {
@@ -44,16 +48,16 @@ void OrgObjectapiTestbedInterface2LocalService::SetProp200(int32 InProp200)
     }
 }
 
-FOrgObjectapiTestbedInterface2Prop200ChangedDelegate& OrgObjectapiTestbedInterface2LocalService::GetProp200ChangedDelegate()
+FOrgObjectapiTestbedInterface2Prop200ChangedDelegate& LocalService::GetProp200ChangedDelegate()
 {
     return Prop200Changed;
 }
-int32 OrgObjectapiTestbedInterface2LocalService::GetProp201() const
+int32 LocalService::GetProp201() const
 {
     return Prop201;
 }
 
-void OrgObjectapiTestbedInterface2LocalService::SetProp201(int32 InProp201)
+void LocalService::SetProp201(int32 InProp201)
 {
     if(Prop201 != InProp201)
     {
@@ -62,16 +66,16 @@ void OrgObjectapiTestbedInterface2LocalService::SetProp201(int32 InProp201)
     }
 }
 
-FOrgObjectapiTestbedInterface2Prop201ChangedDelegate& OrgObjectapiTestbedInterface2LocalService::GetProp201ChangedDelegate()
+FOrgObjectapiTestbedInterface2Prop201ChangedDelegate& LocalService::GetProp201ChangedDelegate()
 {
     return Prop201Changed;
 }
-int32 OrgObjectapiTestbedInterface2LocalService::GetProp202() const
+int32 LocalService::GetProp202() const
 {
     return Prop202;
 }
 
-void OrgObjectapiTestbedInterface2LocalService::SetProp202(int32 InProp202)
+void LocalService::SetProp202(int32 InProp202)
 {
     if(Prop202 != InProp202)
     {
@@ -80,16 +84,16 @@ void OrgObjectapiTestbedInterface2LocalService::SetProp202(int32 InProp202)
     }
 }
 
-FOrgObjectapiTestbedInterface2Prop202ChangedDelegate& OrgObjectapiTestbedInterface2LocalService::GetProp202ChangedDelegate()
+FOrgObjectapiTestbedInterface2Prop202ChangedDelegate& LocalService::GetProp202ChangedDelegate()
 {
     return Prop202Changed;
 }
-float OrgObjectapiTestbedInterface2LocalService::GetProp203() const
+float LocalService::GetProp203() const
 {
     return Prop203;
 }
 
-void OrgObjectapiTestbedInterface2LocalService::SetProp203(float InProp203)
+void LocalService::SetProp203(float InProp203)
 {
     if(Prop203 != InProp203)
     {
@@ -98,16 +102,16 @@ void OrgObjectapiTestbedInterface2LocalService::SetProp203(float InProp203)
     }
 }
 
-FOrgObjectapiTestbedInterface2Prop203ChangedDelegate& OrgObjectapiTestbedInterface2LocalService::GetProp203ChangedDelegate()
+FOrgObjectapiTestbedInterface2Prop203ChangedDelegate& LocalService::GetProp203ChangedDelegate()
 {
     return Prop203Changed;
 }
-float OrgObjectapiTestbedInterface2LocalService::GetProp204() const
+float LocalService::GetProp204() const
 {
     return Prop204;
 }
 
-void OrgObjectapiTestbedInterface2LocalService::SetProp204(float InProp204)
+void LocalService::SetProp204(float InProp204)
 {
     if(Prop204 != InProp204)
     {
@@ -116,16 +120,16 @@ void OrgObjectapiTestbedInterface2LocalService::SetProp204(float InProp204)
     }
 }
 
-FOrgObjectapiTestbedInterface2Prop204ChangedDelegate& OrgObjectapiTestbedInterface2LocalService::GetProp204ChangedDelegate()
+FOrgObjectapiTestbedInterface2Prop204ChangedDelegate& LocalService::GetProp204ChangedDelegate()
 {
     return Prop204Changed;
 }
-FString OrgObjectapiTestbedInterface2LocalService::GetProp205() const
+FString LocalService::GetProp205() const
 {
     return Prop205;
 }
 
-void OrgObjectapiTestbedInterface2LocalService::SetProp205(const FString& InProp205)
+void LocalService::SetProp205(const FString& InProp205)
 {
     if(Prop205 != InProp205)
     {
@@ -134,8 +138,12 @@ void OrgObjectapiTestbedInterface2LocalService::SetProp205(const FString& InProp
     }
 }
 
-FOrgObjectapiTestbedInterface2Prop205ChangedDelegate& OrgObjectapiTestbedInterface2LocalService::GetProp205ChangedDelegate()
+FOrgObjectapiTestbedInterface2Prop205ChangedDelegate& LocalService::GetProp205ChangedDelegate()
 {
     return Prop205Changed;
 }
 
+
+} // namespace Private
+} // namespace Interface2
+} // namespace OrgObjectapiTestbed

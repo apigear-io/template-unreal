@@ -19,12 +19,16 @@ limitations under the License.
 #include "apig/OrgObjectapiTestbed_apig.h"
 #include "olink/clientnode.h"
 
-class OrgObjectapiTestbedInterface2OLinkService : public IOrgObjectapiTestbedInterface2Interface, public ApiGear::ObjectLink::IObjectSink
+namespace OrgObjectapiTestbed {
+namespace Interface2 {
+namespace Private {
+
+class OLinkService : public IOrgObjectapiTestbedInterface2Interface, public ApiGear::ObjectLink::IObjectSink
 {
 public:
 
-    explicit OrgObjectapiTestbedInterface2OLinkService();
-    virtual ~OrgObjectapiTestbedInterface2OLinkService();
+    explicit OLinkService();
+    virtual ~OLinkService();
 
     // signals
     FOrgObjectapiTestbedInterface2Prop200ChangedDelegate Prop200Changed;
@@ -87,3 +91,7 @@ private:
     float Prop204;
     FString Prop205;
 };
+
+} // namespace Private
+} // namespace Interface2
+} // namespace OrgObjectapiTestbed
