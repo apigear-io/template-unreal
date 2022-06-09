@@ -21,6 +21,7 @@ limitations under the License.
 
 #include "{{module.name|capital}}.h"
 #include "Core.h"
+#include "ApiGear/Public/ApiGearConnectionManager.h"
 #include "Modules/ModuleManager.h"
 
 #define LOCTEXT_NAMESPACE "{{module.name|capital}}"
@@ -28,6 +29,7 @@ limitations under the License.
 void {{module_name}}::StartupModule()
 {
 	//No Libraries to load from non mobile platforms because of the web api
+	UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
 }
 
 void {{module_name}}::ShutdownModule()

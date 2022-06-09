@@ -6,7 +6,6 @@
 #include <future>
 
 DEFINE_LOG_CATEGORY(LogApiGearOLink);
-UnrealOLink* UnrealOLink::s_instance(nullptr);
 
 void writeLog(ApiGear::ObjectLink::LogLevel level, std::string msg)
 {
@@ -37,16 +36,12 @@ UnrealOLink::UnrealOLink()
     : m_socket(nullptr)
     , m_loggingDisabled(false)
 {
-    if(s_instance) {
-        log("OLink service can only be instantiated once");
-    }
+    UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
     m_node.onLog(logFunc());
     ApiGear::ObjectLink::ClientRegistry::get().onLog(logFunc());
     
-    UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
-    m_serverURL = settings->OLINK_URL;
-    log(m_serverURL);
     m_loggingDisabled = !settings->OLINK_EnableDebugLog;
+    log(m_serverURL);
 
     ApiGear::ObjectLink::WriteMessageFunc func = [this](std::string msg) {
         {
@@ -56,25 +51,15 @@ UnrealOLink::UnrealOLink()
         processMessages();
     };
     m_node.onWrite(func);
-    
-    open(m_serverURL);
 
     log("OLink instantiated");
 	// processMessages();
 }
 
-UnrealOLink *UnrealOLink::instance()
+UnrealOLink::~UnrealOLink()
 {
-    if(!s_instance) {
-        s_instance = new UnrealOLink();
-    }
-    return s_instance;
+    // delete m_session;
 }
-
-// UnrealOLink::~UnrealOLink()
-// {
-//     // delete m_session;
-// }
 
 void UnrealOLink::log(const FString &logMessage)
 {
@@ -82,6 +67,26 @@ void UnrealOLink::log(const FString &logMessage)
     {
         UE_LOG(LogApiGearOLink, Display, TEXT("%s"), *logMessage);
     }
+}
+
+void UnrealOLink::connect()
+{
+    UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
+    m_serverURL = settings->OLINK_URL;
+    m_loggingDisabled = !settings->OLINK_EnableDebugLog;
+    log(m_serverURL);
+    
+    open(m_serverURL);
+}
+
+void UnrealOLink::disconnect()
+{
+    m_socket->Close();
+}
+
+bool UnrealOLink::isConnected()
+{
+    return m_socket->IsConnected();
 }
 
 void UnrealOLink::open(const FString& url)
@@ -135,6 +140,7 @@ void UnrealOLink::open(const FString& url)
 void UnrealOLink::onConnected()
 {
     log("socket connected");
+    IsConnectedChanged.Broadcast(true);
     // m_session->init(TCHAR_TO_UTF8(*m_realm));
     processMessages();
 }
@@ -142,6 +148,7 @@ void UnrealOLink::onConnected()
 void UnrealOLink::onDisconnected()
 {
     log("socket disconnected");
+    IsConnectedChanged.Broadcast(false);
 }
 
 void UnrealOLink::handleTextMessage(const FString &message)

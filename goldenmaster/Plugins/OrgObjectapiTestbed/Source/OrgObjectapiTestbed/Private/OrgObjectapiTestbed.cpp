@@ -18,6 +18,7 @@ limitations under the License.
 
 #include "OrgObjectapiTestbed.h"
 #include "Core.h"
+#include "ApiGear/Public/ApiGearConnectionManager.h"
 #include "Modules/ModuleManager.h"
 
 #define LOCTEXT_NAMESPACE "OrgObjectapiTestbed"
@@ -25,6 +26,7 @@ limitations under the License.
 void FOrgObjectapiTestbedModule::StartupModule()
 {
 	//No Libraries to load from non mobile platforms because of the web api
+	UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
 }
 
 void FOrgObjectapiTestbedModule::ShutdownModule()

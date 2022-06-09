@@ -78,6 +78,14 @@ features:
           target: "Plugins/ApiGear/Source/ApiGear/Private/ApiGearSettings.cpp"
           overwrite: true
           raw: true
+        - source: "apigear/ApiGearConnectionManager.h"
+          target: "Plugins/ApiGear/Source/ApiGear/Public/ApiGearConnectionManager.h"
+          overwrite: true
+          raw: true
+        - source: "apigear/ApiGearConnectionManager.cpp"
+          target: "Plugins/ApiGear/Source/ApiGear/Private/ApiGearConnectionManager.cpp"
+          overwrite: true
+          raw: true
         - source: "apigear/editor/apigeareditor.Build.cs"
           target: "Plugins/ApiGear/Source/ApiGearEditor/ApiGearEditor.Build.cs"
           overwrite: true

@@ -9,15 +9,23 @@
 
 DECLARE_LOG_CATEGORY_EXTERN(LogApiGearOLink, Log, All);
 
+
 using namespace ApiGear;
 
 class APIGEAR_API UnrealOLink
 {
+    DECLARE_MULTICAST_DELEGATE_OneParam(FApiGearConnectionIsConnectedDelegate, bool);
+
 public:
-    static UnrealOLink* instance();
+    explicit UnrealOLink();
     UnrealOLink(UnrealOLink const&) = delete;
     void operator=(UnrealOLink const&) = delete;
-    // virtual ~UnrealOLink() override;
+    virtual ~UnrealOLink();
+
+    void connect();
+    void disconnect();
+    bool isConnected();
+    FApiGearConnectionIsConnectedDelegate IsConnectedChanged;
 
     void log(const FString &logMessage);
     void onConnected();
@@ -27,11 +35,9 @@ public:
     void linkObjectSource(std::string name);
 
 private:
-    explicit UnrealOLink();
     void open(const FString& url);
     void processMessages();
 
-    static UnrealOLink* s_instance;
     TSharedPtr<IWebSocket> m_socket;
     bool m_loggingDisabled;
     FString m_serverURL;

@@ -25,6 +25,7 @@ limitations under the License.
 #include "Async/Async.h"
 #include "apig/OrgObjectapiTestbed.json.adapter.h"
 #include "unrealolink.h"
+#include "ApiGear/Public/ApiGearConnectionManager.h"
 #include "Misc/DateTime.h"
 
 
@@ -49,7 +50,8 @@ OLinkService::OLinkService()
     , Prop12(TArray<EOrgObjectapiTestbedEnum1>())
     , Prop14(TArray<FOrgObjectapiTestbedStruct1>())
 {
-    UnrealOLink::instance()->linkObjectSource(olinkObjectName());
+	UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+    AGCM->GetOLinkConnection()->linkObjectSource(olinkObjectName());
     m_node = ClientRegistry::get().addObjectSink(this);
 }
 

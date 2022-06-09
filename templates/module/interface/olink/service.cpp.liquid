@@ -31,6 +31,7 @@ limitations under the License.
 #include "Async/Async.h"
 #include "apig/{{module.name|capital}}.json.adapter.h"
 #include "unrealolink.h"
+#include "ApiGear/Public/ApiGearConnectionManager.h"
 #include "Misc/DateTime.h"
 
 {{nl}}
@@ -53,7 +54,8 @@ namespace Private {
     , {{property|unrealVarName}}({{property|unrealDefault: moduleCapital}})
 {% endfor %}
 {
-    UnrealOLink::instance()->linkObjectSource(olinkObjectName());
+	UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+    AGCM->GetOLinkConnection()->linkObjectSource(olinkObjectName());
     m_node = ClientRegistry::get().addObjectSink(this);
 }
 {{nl}}
