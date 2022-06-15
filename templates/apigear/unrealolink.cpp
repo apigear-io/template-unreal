@@ -182,7 +182,7 @@ void UnrealOLink::processMessages()
 
     if (!m_socket->IsConnected()) {
         log("not connected -> connecting");
-        // open(m_serverURL);
+        open(m_serverURL);
         return;
     }
 

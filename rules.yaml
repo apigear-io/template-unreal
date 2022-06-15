@@ -70,6 +70,30 @@ features:
           target: "Plugins/ApiGear/Source/ApiGearEditor/Private/ApiGearEditor.cpp"
           overwrite: true
           raw: true
+        - source: "apigear/resources/Icon40.png"
+          target: "Plugins/ApiGear/Resources/Icon40.png"
+          overwrite: true
+          raw: true
+        - source: "apigear/resources/Icon128.png"
+          target: "Plugins/ApiGear/Resources/Icon128.png"
+          overwrite: true
+          raw: true
+        - source: "apigear/editor/apigeareditorstyle.h"
+          target: "Plugins/ApiGear/Source/ApiGearEditor/Public/ApiGearEditorStyle.h"
+          overwrite: true
+          raw: true
+        - source: "apigear/editor/apigeareditorstyle.cpp"
+          target: "Plugins/ApiGear/Source/ApiGearEditor/Private/ApiGearEditorStyle.cpp"
+          overwrite: true
+          raw: true
+        - source: "apigear/editor/apigeareditorcommands.h"
+          target: "Plugins/ApiGear/Source/ApiGearEditor/Public/ApiGearEditorCommands.h"
+          overwrite: true
+          raw: true
+        - source: "apigear/editor/apigeareditorcommands.cpp"
+          target: "Plugins/ApiGear/Source/ApiGearEditor/Private/ApiGearEditorCommands.cpp"
+          overwrite: true
+          raw: true
         - source: "apigear/apigearsettings.h"
           target: "Plugins/ApiGear/Source/ApiGear/Public/ApiGearSettings.h"
           overwrite: true

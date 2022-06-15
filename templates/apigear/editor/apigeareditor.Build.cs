@@ -15,6 +15,12 @@ namespace UnrealBuildTool.Rules
 					"Core",
 					"CoreUObject",
 					"UnrealEd",
+					"Projects",
+					"InputCore",
+					"ToolMenus",
+					"Engine",
+					"Slate",
+					"SlateCore",
 				});
 
 			PrivateIncludePaths.AddRange(
