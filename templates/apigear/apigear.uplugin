@@ -19,12 +19,12 @@
 		{
 			"Name": "ApiGear",
 			"Type": "Runtime",
-			"LoadingPhase": "PostEngineInit"
+			"LoadingPhase": "Default"
 		},
 		{
 			"Name" : "ApiGearEditor",
 			"Type" : "Editor",
-			"LoadingPhase" : "PostEngineInit",
+			"LoadingPhase" : "Default",
 			"WhitelistPlatforms" : [ "Win64", "Mac", "Linux" ]
 		}
 	]

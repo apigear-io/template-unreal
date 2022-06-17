@@ -2,39 +2,40 @@
 #include "ApiGearConnectionManager.h"
 
 UApiGearConnectionManager::UApiGearConnectionManager()
-	: OLinkConnection(MakeShared<UnrealOLink, ESPMode::ThreadSafe>())
+	: OLinkConnection(NewObject<UUnrealOLink>(this, TEXT("OLinkConnection")))
 {
-	OLinkConnection->IsConnectedChanged.AddUObject(this, &UApiGearConnectionManager::OnIsOLinkConnectedChanged);
+	OLinkConnection->AddToRoot();
+	OLinkConnection->GetIsConnectedChangedDelegate().AddUObject(this, &UApiGearConnectionManager::OnIsOLinkConnectedChanged);
 }
 
 void UApiGearConnectionManager::Initialize(FSubsystemCollectionBase& Collection)
 {
-	OLinkConnection->connect();
+	OLinkConnection->Connect();
 }
 
 void UApiGearConnectionManager::Deinitialize()
 {
-	OLinkConnection->disconnect();
+	OLinkConnection->Disconnect();
 }
 
-TSharedPtr<UnrealOLink, ESPMode::ThreadSafe> UApiGearConnectionManager::UApiGearConnectionManager::GetOLinkConnection()
+UUnrealOLink* UApiGearConnectionManager::UApiGearConnectionManager::GetOLinkConnection()
 {
 	return OLinkConnection;
 }
 
 bool UApiGearConnectionManager::GetIsOLinkConnected() const
 {
-	return OLinkConnection->isConnected();
+	return OLinkConnection->IsConnected();
 }
 
 void UApiGearConnectionManager::ConnectOLink() const
 {
-	OLinkConnection->connect();
+	OLinkConnection->Connect();
 }
 
 void UApiGearConnectionManager::DisconnectOLink() const
 {
-	OLinkConnection->disconnect();
+	OLinkConnection->Disconnect();
 }
 
 void UApiGearConnectionManager::OnIsOLinkConnectedChanged(bool bIsConnected)

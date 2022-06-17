@@ -1,6 +1,7 @@
 #include "unrealolink.h"
 #include "ApiGearSettings.h"
 #include "olink/core/types.h"
+#include <UObject/Object.h>
 #include <functional>
 #include <chrono>
 #include <future>
@@ -32,8 +33,9 @@ ApiGear::ObjectLink::WriteLogFunc logFunc()
     };
 }
 
-UnrealOLink::UnrealOLink()
-    : m_socket(nullptr)
+UUnrealOLink::UUnrealOLink(const FObjectInitializer& ObjectInitializer)
+    : UAbstractApiGearConnection(ObjectInitializer)
+    , m_socket(nullptr)
     , m_loggingDisabled(false)
 {
     UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
@@ -56,12 +58,12 @@ UnrealOLink::UnrealOLink()
 	// processMessages();
 }
 
-UnrealOLink::~UnrealOLink()
+UUnrealOLink::~UUnrealOLink()
 {
     // delete m_session;
 }
 
-void UnrealOLink::log(const FString &logMessage)
+void UUnrealOLink::log(const FString &logMessage)
 {
     if(!m_loggingDisabled)
     {
@@ -69,7 +71,7 @@ void UnrealOLink::log(const FString &logMessage)
     }
 }
 
-void UnrealOLink::connect()
+void UUnrealOLink::Connect()
 {
     UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
     m_serverURL = settings->OLINK_URL;
@@ -79,17 +81,17 @@ void UnrealOLink::connect()
     open(m_serverURL);
 }
 
-void UnrealOLink::disconnect()
+void UUnrealOLink::Disconnect()
 {
     m_socket->Close();
 }
 
-bool UnrealOLink::isConnected()
+bool UUnrealOLink::IsConnected()
 {
     return m_socket->IsConnected();
 }
 
-void UnrealOLink::open(const FString& url)
+void UUnrealOLink::open(const FString& url)
 {
     if(!m_socket) {
         if(!FModuleManager::Get().IsModuleLoaded("WebSockets"))
@@ -99,7 +101,7 @@ void UnrealOLink::open(const FString& url)
         m_socket = FWebSocketsModule::Get().CreateWebSocket(url);
 
         m_socket->OnConnected().AddLambda([this]() -> void {
-            onConnected();
+            OnConnected();
         });
 
         m_socket->OnConnectionError().AddLambda([this](const FString & Error) -> void {
@@ -113,7 +115,7 @@ void UnrealOLink::open(const FString& url)
             (void) Reason;
             (void) bWasClean;
 
-            onDisconnected();
+            OnDisconnected();
         });
 
         m_socket->OnMessage().AddLambda([this](const FString & Message) -> void {
@@ -137,42 +139,42 @@ void UnrealOLink::open(const FString& url)
     }
 }
 
-void UnrealOLink::onConnected()
+void UUnrealOLink::OnConnected()
 {
     log("socket connected");
-    IsConnectedChanged.Broadcast(true);
+    UAbstractApiGearConnection::OnConnected();
     // m_session->init(TCHAR_TO_UTF8(*m_realm));
     processMessages();
 }
 
-void UnrealOLink::onDisconnected()
+void UUnrealOLink::OnDisconnected()
 {
     log("socket disconnected");
-    IsConnectedChanged.Broadcast(false);
+    UAbstractApiGearConnection::OnDisconnected();
 }
 
-void UnrealOLink::handleTextMessage(const FString &message)
+void UUnrealOLink::handleTextMessage(const FString &message)
 {
     m_node.handleMessage(TCHAR_TO_UTF8(*message));
 }
 
-// void UnrealOLink::onError(std::string error)
+// void UUnrealOLink::onError(std::string error)
 // {
 //     log("onError"); //  << error;
 // }
 
-// void UnrealOLink::onEvent(std::string topic, Arguments args, ArgumentsKw kwargs)
+// void UUnrealOLink::onEvent(std::string topic, Arguments args, ArgumentsKw kwargs)
 // {
 //     log("onEvent"); // << topic; // json(args).dump() << json(kwargs).dump();
 // }
 
-void UnrealOLink::linkObjectSource(std::string name)
+void UUnrealOLink::linkObjectSource(std::string name)
 {
     m_node.registry().linkClientNode(name, &m_node);
     m_node.linkRemote(name);
 }
 
-void UnrealOLink::processMessages()
+void UUnrealOLink::processMessages()
 {
 	if (!m_socket) {
         log("no socket -> creating");

@@ -31,7 +31,7 @@ public:
     virtual void Deinitialize() override;
 
 	// OLink
-	TSharedPtr<UnrealOLink, ESPMode::ThreadSafe> GetOLinkConnection();
+	UUnrealOLink* GetOLinkConnection();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection|OLink")
     bool GetIsOLinkConnected() const;
@@ -48,7 +48,7 @@ public:
 private:
 
 	// OLink
-	TSharedPtr<UnrealOLink, ESPMode::ThreadSafe> OLinkConnection;
+	UUnrealOLink* OLinkConnection;
 	
 	UPROPERTY(EditAnywhere, BlueprintGetter=GetIsOLinkConnected, Category = "ApiGear|Connection|OLink")
     bool IsOLinkConnected;

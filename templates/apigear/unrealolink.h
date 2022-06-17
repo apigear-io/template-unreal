@@ -1,35 +1,34 @@
 #pragma once
 
+#include "ApiGearConnection.h"
 #include "olink/core/types.h"
 #include "olink/clientnode.h"
 #include "WebSocketsModule.h"
 #include "IWebSocket.h"
 #include <queue>
 #include <mutex>
+#include "unrealolink.generated.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(LogApiGearOLink, Log, All);
 
 
 using namespace ApiGear;
 
-class APIGEAR_API UnrealOLink
+UCLASS(NotBlueprintType)
+class APIGEAR_API UUnrealOLink: public UAbstractApiGearConnection
 {
-    DECLARE_MULTICAST_DELEGATE_OneParam(FApiGearConnectionIsConnectedDelegate, bool);
-
+    GENERATED_BODY()
 public:
-    explicit UnrealOLink();
-    UnrealOLink(UnrealOLink const&) = delete;
-    void operator=(UnrealOLink const&) = delete;
-    virtual ~UnrealOLink();
+    explicit UUnrealOLink(const FObjectInitializer& ObjectInitializer);
+    virtual ~UUnrealOLink();
 
-    void connect();
-    void disconnect();
-    bool isConnected();
-    FApiGearConnectionIsConnectedDelegate IsConnectedChanged;
+    void Connect() override;
+    void Disconnect() override;
+    bool IsConnected() override;
 
     void log(const FString &logMessage);
-    void onConnected();
-    void onDisconnected();
+    void OnConnected() override;
+    void OnDisconnected() override;
     void handleTextMessage(const FString& message);
 
     void linkObjectSource(std::string name);

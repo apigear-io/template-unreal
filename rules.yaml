@@ -46,6 +46,14 @@ features:
           target: "Plugins/ApiGear/Source/ApiGear/Public/apigear.h"
           overwrite: true
           raw: true
+        - source: "apigear/ApiGearConnection.h"
+          target: "Plugins/ApiGear/Source/ApiGear/Public/ApiGearConnection.h"
+          overwrite: true
+          raw: true
+        - source: "apigear/ApiGearConnection.cpp"
+          target: "Plugins/ApiGear/Source/ApiGear/Private/ApiGearConnection.cpp"
+          overwrite: true
+          raw: true
         - source: "apigear/apigear.json.adapter.h"
           target: "Plugins/ApiGear/Source/ApiGear/Public/apigear.json.adapter.h"
           raw: true
