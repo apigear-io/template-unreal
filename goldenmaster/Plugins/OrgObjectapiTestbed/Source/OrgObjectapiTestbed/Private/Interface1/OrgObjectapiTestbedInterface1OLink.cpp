@@ -50,13 +50,22 @@ OLinkService::OLinkService()
     , Prop12(TArray<EOrgObjectapiTestbedEnum1>())
     , Prop14(TArray<FOrgObjectapiTestbedStruct1>())
 {
-	UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-    AGCM->GetOLinkConnection()->linkObjectSource(olinkObjectName());
+    if (GEngine != nullptr)
+    {
+        UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+        AGCM->GetOLinkConnection()->linkObjectSource(olinkObjectName());
+    }
     m_node = ClientRegistry::get().addObjectSink(this);
 }
 
 OLinkService::~OLinkService()
 {
+    ClientRegistry::get().removeObjectSink(this);
+    if (GEngine != nullptr)
+    {
+        UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+        AGCM->GetOLinkConnection()->unlinkObjectSource(olinkObjectName());
+    }
     m_isReady = false;
     m_node = nullptr;
 }

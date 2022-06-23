@@ -4,9 +4,9 @@ DEFINE_LOG_CATEGORY(LogApiGearConnection);
 
 UAbstractApiGearConnection::UAbstractApiGearConnection(const FObjectInitializer& ObjectInitializer)
     : Super(ObjectInitializer)
-    , bIsAutoReconnectEnabled(false)
+    , bIsAutoReconnectEnabled(true)
 {
-
+    RetryTickerDelegate.BindUFunction(this, "Connect");
 }
 
 FApiGearConnectionIsConnectedDelegate& UAbstractApiGearConnection::GetIsConnectedChangedDelegate()
@@ -18,17 +18,17 @@ void UAbstractApiGearConnection::OnConnected()
 {
     IsConnectedChanged.Broadcast(true);
 
-    // disable reconnect timer
-    // GEngine->GetWorldFromContextObjectChecked(this)->GetTimerManager().ClearTimer(RetryTimerHandle)
+    // disable reconnect ticker
+    FTicker::GetCoreTicker().RemoveTicker(RetryTickerHandle);
 }
 
-void UAbstractApiGearConnection::OnDisconnected()
+void UAbstractApiGearConnection::OnDisconnected(bool bReconnect)
 {
     IsConnectedChanged.Broadcast(false);
-    if (bIsAutoReconnectEnabled)
+    if (bIsAutoReconnectEnabled && bReconnect)
     {
-        // RetryTimerDelegate.
-        // GEngine->GetWorldFromContextObjectChecked(this)->GetTimerManager().SetTimer(RetryTimerHandle, RetryTimerDelegate, 1.0f, true);
+        UE_LOG(LogApiGearConnection, Display, TEXT("Setting retry ticker"));
+        RetryTickerHandle = FTicker::GetCoreTicker().AddTicker(RetryTickerDelegate, 1.0f);
     }
 }
 
@@ -36,8 +36,8 @@ void UAbstractApiGearConnection::SetAutoReconnectEnabled(bool enabled)
 {
     if (bIsAutoReconnectEnabled == true && enabled == false)
     {
-        // disable reconnect timer
-        // GEngine->GetWorldFromContextObjectChecked(this)->GetTimerManager().ClearTimer(RetryTimerHandle);
+        // disable reconnect ticker
+        FTicker::GetCoreTicker().RemoveTicker(RetryTickerHandle);
     }
     bIsAutoReconnectEnabled = enabled;
 }

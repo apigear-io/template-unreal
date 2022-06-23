@@ -76,13 +76,21 @@ void UUnrealOLink::Connect()
     UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
     m_serverURL = settings->OLINK_URL;
     m_loggingDisabled = !settings->OLINK_EnableDebugLog;
-    log(m_serverURL);
-    
-    open(m_serverURL);
+
+    if (!m_socket || !m_socket->IsConnected()) 
+    {
+        log(m_serverURL);
+        
+        open(m_serverURL);
+    }
 }
 
 void UUnrealOLink::Disconnect()
 {
+    for(std::string objectName: ListLinkedObjects)
+    {
+        m_node.unlinkRemote(objectName);
+    }
     m_socket->Close();
 }
 
@@ -106,16 +114,26 @@ void UUnrealOLink::open(const FString& url)
 
         m_socket->OnConnectionError().AddLambda([this](const FString & Error) -> void {
             // This code will run if the connection failed. Check Error to see what happened.
-            log("connection error:");
-			log(Error);
+            log(FString::Printf(TEXT("connection error: %s"), *Error));
+            UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
+            UAbstractApiGearConnection::OnDisconnected(settings->OLINK_AutoReconnectEnabled);
         });
 
         m_socket->OnClosed().AddLambda([this](int32 StatusCode, const FString& Reason, bool bWasClean) -> void {
             (void) StatusCode;
             (void) Reason;
             (void) bWasClean;
+            UE_LOG(LogApiGearOLink, Display, TEXT("status: %d, reason: %s, clean: %d"), StatusCode, *Reason, bWasClean);
 
-            OnDisconnected();
+            UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
+            bool bReconnect = settings->OLINK_AutoReconnectEnabled;
+
+            // 1000 == we closed the connection -> do not reconnect
+            if (StatusCode == 1000)
+            {
+                bReconnect = false;
+            }
+            OnDisconnected(bReconnect);
         });
 
         m_socket->OnMessage().AddLambda([this](const FString & Message) -> void {
@@ -143,14 +161,24 @@ void UUnrealOLink::OnConnected()
 {
     log("socket connected");
     UAbstractApiGearConnection::OnConnected();
+
+    for(std::string objectName: ListLinkedObjects)
+    {
+        m_node.registry().linkClientNode(objectName, &m_node);
+        m_node.linkRemote(objectName);
+    }
     // m_session->init(TCHAR_TO_UTF8(*m_realm));
     processMessages();
 }
 
-void UUnrealOLink::OnDisconnected()
+void UUnrealOLink::OnDisconnected(bool bReconnect)
 {
     log("socket disconnected");
-    UAbstractApiGearConnection::OnDisconnected();
+    for(std::string objectName: ListLinkedObjects)
+    {
+        m_node.registry().unlinkClientNode(objectName, &m_node);
+    }
+    UAbstractApiGearConnection::OnDisconnected(bReconnect);
 }
 
 void UUnrealOLink::handleTextMessage(const FString &message)
@@ -168,10 +196,25 @@ void UUnrealOLink::handleTextMessage(const FString &message)
 //     log("onEvent"); // << topic; // json(args).dump() << json(kwargs).dump();
 // }
 
-void UUnrealOLink::linkObjectSource(std::string name)
+void UUnrealOLink::linkObjectSource(const std::string& name)
 {
-    m_node.registry().linkClientNode(name, &m_node);
-    m_node.linkRemote(name);
+    ListLinkedObjects.AddUnique(name);
+    
+    if(IsConnected())
+    {
+        m_node.registry().linkClientNode(name, &m_node);
+        m_node.linkRemote(name);
+    }
+}
+
+void UUnrealOLink::unlinkObjectSource(const std::string& name)
+{
+    if(IsConnected())
+    {
+        m_node.unlinkRemote(name);
+        m_node.registry().unlinkClientNode(name, &m_node);
+    }
+    ListLinkedObjects.Remove(name);
 }
 
 void UUnrealOLink::processMessages()
@@ -184,7 +227,7 @@ void UUnrealOLink::processMessages()
 
     if (!m_socket->IsConnected()) {
         log("not connected -> connecting");
-        open(m_serverURL);
+        Connect();
         return;
     }
 

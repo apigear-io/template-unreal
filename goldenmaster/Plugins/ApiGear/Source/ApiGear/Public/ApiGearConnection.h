@@ -29,7 +29,7 @@ public:
 	UFUNCTION()
     virtual void Disconnect() = 0;
 	UFUNCTION()
-    virtual void OnDisconnected() = 0;
+    virtual void OnDisconnected(bool bReconnect) = 0;
 	UFUNCTION()
     virtual bool IsConnected() = 0;
 
@@ -51,7 +51,7 @@ public:
 	UFUNCTION()
     virtual void OnConnected() override;
 	UFUNCTION()
-    virtual void OnDisconnected() override;
+    virtual void OnDisconnected(bool bReconnect) override;
 	UFUNCTION()
     virtual void Connect() PURE_VIRTUAL(UAbstractApiGearConnection::Connect,);
 	UFUNCTION()
@@ -69,6 +69,6 @@ private:
 
     bool bIsAutoReconnectEnabled;
 
-	FTimerHandle RetryTimerHandle;
-	FTimerDelegate RetryTimerDelegate;
+	FDelegateHandle RetryTickerHandle;
+	FTickerDelegate RetryTickerDelegate;
 };

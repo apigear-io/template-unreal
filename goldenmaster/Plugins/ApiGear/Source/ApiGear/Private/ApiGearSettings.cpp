@@ -11,6 +11,7 @@ UApiGearSettings::UApiGearSettings(const FObjectInitializer& ObjectInitializer)
 	, WAMP_EnableDebugLog(false)
         , OLINK_URL(FString(TEXT("ws://127.0.0.1:8000/ws")))
 	, OLINK_EnableDebugLog(false)
+        , OLINK_AutoReconnectEnabled(false)
         , Simulation_URL(FString(TEXT("ws://127.0.0.1:5905/ws")))
 	, Simulation_EnableDebugLog(false)
 {

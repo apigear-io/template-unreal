@@ -28,14 +28,17 @@ public:
 
     void log(const FString &logMessage);
     void OnConnected() override;
-    void OnDisconnected() override;
+    void OnDisconnected(bool bReconnect) override;
     void handleTextMessage(const FString& message);
 
-    void linkObjectSource(std::string name);
+    void linkObjectSource(const std::string& name);
+    void unlinkObjectSource(const std::string& name);
 
 private:
     void open(const FString& url);
     void processMessages();
+
+    TArray<std::string> ListLinkedObjects;
 
     TSharedPtr<IWebSocket> m_socket;
     bool m_loggingDisabled;

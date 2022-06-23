@@ -46,6 +46,10 @@ class APIGEAR_API UApiGearSettings : public UObject
 	UPROPERTY(EditAnywhere, config, Category = OLinkSetup, meta = (ConfigRestartRequired = true))
 	bool OLINK_EnableDebugLog;
 
+	// Choose whether to automatically reconnect
+	UPROPERTY(EditAnywhere, config, Category = OLinkSetup, meta = (ConfigRestartRequired = true))
+	bool OLINK_AutoReconnectEnabled;
+
 	// Choose the server to connect to
 	UPROPERTY(EditAnywhere, config, Category = SimulationSetup, meta = (ConfigRestartRequired = true))
 	FString Simulation_URL;
