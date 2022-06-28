@@ -19,11 +19,12 @@ limitations under the License.
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
+#include "Subsystems/GameInstanceSubsystem.h"
 #include "apig/OrgObjectapiTestbed_apig.h"
 #include "OrgObjectapiTestbedInterface1Proxy.generated.h"
 
 UCLASS(BlueprintType, Blueprintable, DisplayName="OrgObjectapiTestbedInterface1")
-class ORGOBJECTAPITESTBED_API UOrgObjectapiTestbedInterface1Proxy : public UObject, public IOrgObjectapiTestbedInterface1Interface
+class ORGOBJECTAPITESTBED_API UOrgObjectapiTestbedInterface1Proxy : public UGameInstanceSubsystem, public IOrgObjectapiTestbedInterface1Interface
 {
 	GENERATED_BODY()
 

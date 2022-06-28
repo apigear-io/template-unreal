@@ -27,11 +27,12 @@ limitations under the License.
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
+#include "Subsystems/GameInstanceSubsystem.h"
 #include "apig/{{module.name|capital}}_apig.h"
 #include "{{module.name|capital}}{{interface.name|capital}}Proxy.generated.h"
 
 UCLASS(BlueprintType, Blueprintable, DisplayName="{{class_name_capital}}")
-class {{ API_MACRO }} {{class}} : public UObject, public I{{module.name | capital}}{{interface.name | capital}}Interface
+class {{ API_MACRO }} {{class}} : public UGameInstanceSubsystem, public I{{module.name | capital}}{{interface.name | capital}}Interface
 {
 	GENERATED_BODY()
 
