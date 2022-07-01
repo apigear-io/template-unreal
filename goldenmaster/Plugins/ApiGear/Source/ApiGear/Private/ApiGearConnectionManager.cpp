@@ -10,7 +10,6 @@ UApiGearConnectionManager::UApiGearConnectionManager()
 
 void UApiGearConnectionManager::Initialize(FSubsystemCollectionBase& Collection)
 {
-	OLinkConnection->Connect();
 }
 
 void UApiGearConnectionManager::Deinitialize()
@@ -20,6 +19,7 @@ void UApiGearConnectionManager::Deinitialize()
 
 UUnrealOLink* UApiGearConnectionManager::UApiGearConnectionManager::GetOLinkConnection()
 {
+	OLinkConnection->Connect();
 	return OLinkConnection;
 }
 

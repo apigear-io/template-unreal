@@ -77,7 +77,7 @@ void UUnrealOLink::Connect()
     m_serverURL = settings->OLINK_URL;
     m_loggingDisabled = !settings->OLINK_EnableDebugLog;
 
-    if (!m_socket || !m_socket->IsConnected()) 
+    if (!IsConnected()) 
     {
         log(m_serverURL);
         
@@ -87,6 +87,11 @@ void UUnrealOLink::Connect()
 
 void UUnrealOLink::Disconnect()
 {
+    if(!IsConnected())
+    {
+        return;
+    }
+
     for(std::string objectName: ListLinkedObjects)
     {
         m_node.unlinkRemote(objectName);
@@ -96,7 +101,11 @@ void UUnrealOLink::Disconnect()
 
 bool UUnrealOLink::IsConnected()
 {
-    return m_socket->IsConnected();
+    if(m_socket && m_socket->IsConnected())
+    {
+        return true;
+    }
+    return false;
 }
 
 void UUnrealOLink::open(const FString& url)
