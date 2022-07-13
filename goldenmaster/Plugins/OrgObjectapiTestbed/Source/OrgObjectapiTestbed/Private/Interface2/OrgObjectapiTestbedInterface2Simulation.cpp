@@ -38,6 +38,11 @@ SimulationService::SimulationService()
     , Prop204(0.0f)
     , Prop205(FString())
 {
+    UApiGearConnectionManager* AGCM = nullptr;
+    if (GEngine != nullptr)
+    {
+        AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+    }
     NotifyRequestFunc Interface2StateChangedFunc = [this](NotifyRequestArg arg)
     {
         const json fields = arg.params;
@@ -84,7 +89,10 @@ SimulationService::SimulationService()
             }
         }
     };
-    UnrealSimulation::instance()->onNotifyState("org.objectapi.testbed/Interface2", Interface2StateChangedFunc);
+    if(AGCM != nullptr)
+    {
+        AGCM->GetSimulationConnection()->onNotifyState("org.objectapi.testbed/Interface2", Interface2StateChangedFunc);
+    }
 
     CallResponseFunc GetInterface2StateFunc = [this](CallResponseArg arg)
     {
@@ -135,15 +143,22 @@ SimulationService::SimulationService()
             }
         }
     };
-    UnrealSimulation::instance()->doFetchState("org.objectapi.testbed/Interface2", GetInterface2StateFunc);
+    if(AGCM != nullptr)
+    {
+        AGCM->GetSimulationConnection()->doFetchState("org.objectapi.testbed/Interface2", GetInterface2StateFunc);
+    }
 
     // register notification callback functions, signal/event -> fcn
 }
 
 SimulationService::~SimulationService()
 {
-    UnrealSimulation::instance()->RemoveOnNotifyState("org.objectapi.testbed/Interface2");
-    // unregister notification callback functions
+    if (GEngine != nullptr)
+    {
+        UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+        AGCM->GetSimulationConnection()->RemoveOnNotifyState("org.objectapi.testbed/Interface2");
+        // unregister notification callback functions
+    }
 }
 
 int32 SimulationService::GetProp200() const
@@ -155,7 +170,11 @@ void SimulationService::SetProp200(int32 InProp200)
 {
     Params params;
     params["prop200"] = InProp200;
-    UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface2", "_set", params);
+    if (GEngine != nullptr)
+    {
+        UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+        AGCM->GetSimulationConnection()->doCall("org.objectapi.testbed/Interface2", "_set", params);
+    }
 }
 
 FOrgObjectapiTestbedInterface2Prop200ChangedDelegate& SimulationService::GetProp200ChangedDelegate()
@@ -172,7 +191,11 @@ void SimulationService::SetProp201(int32 InProp201)
 {
     Params params;
     params["prop201"] = InProp201;
-    UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface2", "_set", params);
+    if (GEngine != nullptr)
+    {
+        UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+        AGCM->GetSimulationConnection()->doCall("org.objectapi.testbed/Interface2", "_set", params);
+    }
 }
 
 FOrgObjectapiTestbedInterface2Prop201ChangedDelegate& SimulationService::GetProp201ChangedDelegate()
@@ -189,7 +212,11 @@ void SimulationService::SetProp202(int32 InProp202)
 {
     Params params;
     params["prop202"] = InProp202;
-    UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface2", "_set", params);
+    if (GEngine != nullptr)
+    {
+        UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+        AGCM->GetSimulationConnection()->doCall("org.objectapi.testbed/Interface2", "_set", params);
+    }
 }
 
 FOrgObjectapiTestbedInterface2Prop202ChangedDelegate& SimulationService::GetProp202ChangedDelegate()
@@ -206,7 +233,11 @@ void SimulationService::SetProp203(float InProp203)
 {
     Params params;
     params["prop203"] = InProp203;
-    UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface2", "_set", params);
+    if (GEngine != nullptr)
+    {
+        UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+        AGCM->GetSimulationConnection()->doCall("org.objectapi.testbed/Interface2", "_set", params);
+    }
 }
 
 FOrgObjectapiTestbedInterface2Prop203ChangedDelegate& SimulationService::GetProp203ChangedDelegate()
@@ -223,7 +254,11 @@ void SimulationService::SetProp204(float InProp204)
 {
     Params params;
     params["prop204"] = InProp204;
-    UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface2", "_set", params);
+    if (GEngine != nullptr)
+    {
+        UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+        AGCM->GetSimulationConnection()->doCall("org.objectapi.testbed/Interface2", "_set", params);
+    }
 }
 
 FOrgObjectapiTestbedInterface2Prop204ChangedDelegate& SimulationService::GetProp204ChangedDelegate()
@@ -240,7 +275,11 @@ void SimulationService::SetProp205(const FString& InProp205)
 {
     Params params;
     params["prop205"] = InProp205;
-    UnrealSimulation::instance()->doCall("org.objectapi.testbed/Interface2", "_set", params);
+    if (GEngine != nullptr)
+    {
+        UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+        AGCM->GetSimulationConnection()->doCall("org.objectapi.testbed/Interface2", "_set", params);
+    }
 }
 
 FOrgObjectapiTestbedInterface2Prop205ChangedDelegate& SimulationService::GetProp205ChangedDelegate()

@@ -6,40 +6,25 @@ using namespace ApiGear::JSONRPC;
 
 DEFINE_LOG_CATEGORY(LogApiGearSimulation);
 
-UnrealSimulation* UnrealSimulation::s_instance(nullptr);
-
-UnrealSimulation::UnrealSimulation()
-    : m_socket(nullptr)
+UUnrealSimulation::UUnrealSimulation(const FObjectInitializer& ObjectInitializer)
+    : UAbstractApiGearConnection(ObjectInitializer)
+    , m_socket(nullptr)
     , m_session(new RpcProtocol(this, this, this, MessageFormat::JSON))
     , m_loggingDisabled(false)
 {
-    if(s_instance) {
-        log("Simulation service can only be instantiated once");
-    }
-    
     UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
     m_serverURL = settings->Simulation_URL;
     m_loggingDisabled = !settings->Simulation_EnableDebugLog;
 
-    open(m_serverURL);
-
     log("Simulation instantiated");
 }
 
-UnrealSimulation *UnrealSimulation::instance()
-{
-    if(!s_instance) {
-        s_instance = new UnrealSimulation();
-    }
-    return s_instance;
-}
-
-UnrealSimulation::~UnrealSimulation()
+UUnrealSimulation::~UUnrealSimulation()
 {
     delete m_session;
 }
 
-void UnrealSimulation::log(const FString &logMessage)
+void UUnrealSimulation::log(const FString &logMessage)
 {
     if(!m_loggingDisabled)
     {
@@ -47,7 +32,7 @@ void UnrealSimulation::log(const FString &logMessage)
     }
 }
 
-void UnrealSimulation::info(std::string message)
+void UUnrealSimulation::info(std::string message)
 {
     if(!m_loggingDisabled)
     {
@@ -55,7 +40,7 @@ void UnrealSimulation::info(std::string message)
     }
 }
 
-void UnrealSimulation::debug(std::string message)
+void UUnrealSimulation::debug(std::string message)
 {
     if(!m_loggingDisabled)
     {
@@ -63,7 +48,7 @@ void UnrealSimulation::debug(std::string message)
     }
 }
 
-void UnrealSimulation::warning(std::string message)
+void UUnrealSimulation::warning(std::string message)
 {
     if(!m_loggingDisabled)
     {
@@ -71,7 +56,7 @@ void UnrealSimulation::warning(std::string message)
     }
 }
 
-void UnrealSimulation::error(std::string message)
+void UUnrealSimulation::error(std::string message)
 {
     if(!m_loggingDisabled)
     {
@@ -79,7 +64,7 @@ void UnrealSimulation::error(std::string message)
     }
 }
 
-void UnrealSimulation::open(const FString& url)
+void UUnrealSimulation::open(const FString& url)
 {
     const FString ServerProtocol = TEXT(""); 
     if(!m_socket) {
@@ -89,22 +74,32 @@ void UnrealSimulation::open(const FString& url)
         }
         m_socket = FWebSocketsModule::Get().CreateWebSocket(url, ServerProtocol);
 
-    // connect(m_socket, &QWebSocket::textMessageReceived, this, &UnrealSimulation::handleTextMessage);
-
         m_socket->OnConnected().AddLambda([this]() -> void {
-            onConnected();
+            OnConnected();
         });
 
-        // m_socket->OnConnectionError().AddLambda([](const FString & Error) -> void {
-        //     // This code will run if the connection failed. Check Error to see what happened.
-        // });
+        m_socket->OnConnectionError().AddLambda([this](const FString & Error) -> void {
+            // This code will run if the connection failed. Check Error to see what happened.
+            log(FString::Printf(TEXT("connection error: %s"), *Error));
+            UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
+            UAbstractApiGearConnection::OnDisconnected(settings->Simulation_AutoReconnectEnabled);
+        });
 
         m_socket->OnClosed().AddLambda([this](int32 StatusCode, const FString& Reason, bool bWasClean) -> void {
             (void) StatusCode;
             (void) Reason;
             (void) bWasClean;
+            UE_LOG(LogApiGearSimulation, Display, TEXT("status: %d, reason: %s, clean: %d"), StatusCode, *Reason, bWasClean);
 
-            onDisconnected();
+            UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
+            bool bReconnect = settings->Simulation_AutoReconnectEnabled;
+
+            // 1000 == we closed the connection -> do not reconnect
+            if (StatusCode == 1000)
+            {
+                bReconnect = false;
+            }
+            OnDisconnected(bReconnect);
         });
 
         m_socket->OnMessage().AddLambda([this](const FString & Message) -> void {
@@ -128,30 +123,65 @@ void UnrealSimulation::open(const FString& url)
     }
 }
 
-void UnrealSimulation::onConnected()
+void UUnrealSimulation::Connect()
+{
+    UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
+    m_serverURL = settings->Simulation_URL;
+    m_loggingDisabled = !settings->Simulation_EnableDebugLog;
+
+    if (!IsConnected()) 
+    {
+        log(m_serverURL);
+        
+        open(m_serverURL);
+    }
+}
+
+void UUnrealSimulation::Disconnect()
+{
+    if(!IsConnected())
+    {
+        return;
+    }
+
+    m_socket->Close();
+}
+
+bool UUnrealSimulation::IsConnected()
+{
+    if(m_socket && m_socket->IsConnected())
+    {
+        return true;
+    }
+    return false;
+}
+
+void UUnrealSimulation::OnConnected()
 {
     log("socket connected");
     // m_session->init(TCHAR_TO_UTF8(*m_realm));
+    UAbstractApiGearConnection::OnConnected();
 }
 
-void UnrealSimulation::onDisconnected()
+void UUnrealSimulation::OnDisconnected(bool bReconnect)
 {
     log("socket disconnected");
+    UAbstractApiGearConnection::OnDisconnected(bReconnect);
 }
 
-void UnrealSimulation::handleTextMessage(const FString &message)
+void UUnrealSimulation::handleTextMessage(const FString &message)
 {
     m_session->handleMessage(TCHAR_TO_UTF8(*message));
 }
 
-void UnrealSimulation::doFetchState(string service, CallResponseFunc &func)
+void UUnrealSimulation::doFetchState(string service, CallResponseFunc &func)
 {
     Params params;
     params["service"] = service;
     m_session->doCall("simu.state", params, func);
 }
 
-void UnrealSimulation::doCall(std::string service, std::string operation, JSONRPC::Params args, JSONRPC::CallResponseFunc& func)
+void UUnrealSimulation::doCall(std::string service, std::string operation, JSONRPC::Params args, JSONRPC::CallResponseFunc& func)
 {
     Params params;
     params["service"] = service;
@@ -160,7 +190,7 @@ void UnrealSimulation::doCall(std::string service, std::string operation, JSONRP
     m_session->doCall("simu.call", params, func);
 }
 
-void UnrealSimulation::doCall(std::string service, std::string operation, JSONRPC::Params args)
+void UUnrealSimulation::doCall(std::string service, std::string operation, JSONRPC::Params args)
 {
     JSONRPC::CallResponseFunc func = [](JSONRPC::CallResponseArg arg) {};
     Params params;
@@ -170,7 +200,7 @@ void UnrealSimulation::doCall(std::string service, std::string operation, JSONRP
     m_session->doCall("simu.call", params, func);
 }
 
-void UnrealSimulation::RegisterSignalCallback(JSONRPC::NotifyRequestArg args)
+void UUnrealSimulation::RegisterSignalCallback(JSONRPC::NotifyRequestArg args)
 {
     std::string signal = args.params["service"].get<std::string>() + "#" + args.params["signal"].get<std::string>();
     if(m_notifyRegistry.count(signal) == 1)
@@ -186,18 +216,18 @@ void UnrealSimulation::RegisterSignalCallback(JSONRPC::NotifyRequestArg args)
     }
 }
 
-void UnrealSimulation::onNotify(string method, JSONRPC::NotifyRequestFunc &func)
+void UUnrealSimulation::onNotify(string method, JSONRPC::NotifyRequestFunc &func)
 {
     // in case we haven't registered our simulation signal callback, we do it on first onNotify
     if(m_notifyRegistry.empty())
     {
-        NotifyRequestFunc notificationFunction{ std::bind(&UnrealSimulation::RegisterSignalCallback, this, std::placeholders::_1) };
+        NotifyRequestFunc notificationFunction{ std::bind(&UUnrealSimulation::RegisterSignalCallback, this, std::placeholders::_1) };
         m_session->onNotify("simu.signal", notificationFunction);
     }
     m_notifyRegistry[method] = func;
 }
 
-void UnrealSimulation::onNotifyState(std::string service, JSONRPC::NotifyRequestFunc &func)
+void UUnrealSimulation::onNotifyState(std::string service, JSONRPC::NotifyRequestFunc &func)
 {
     // in case we haven't registered our simulation state callback, we do it on first onNotify
     if(m_notifyStateRegistry.empty()) {
@@ -217,21 +247,21 @@ void UnrealSimulation::onNotifyState(std::string service, JSONRPC::NotifyRequest
     m_notifyStateRegistry[service] = func;
 }
 
-void UnrealSimulation::RemoveOnNotify(std::string method)
+void UUnrealSimulation::RemoveOnNotify(std::string method)
 {
     m_notifyRegistry.erase(method);
 }
 
-void UnrealSimulation::RemoveOnNotifyState(std::string service)
+void UUnrealSimulation::RemoveOnNotifyState(std::string service)
 {
     m_notifyStateRegistry.erase(service);
 }
 
-void UnrealSimulation::writeMessage(std::string message)
+void UUnrealSimulation::writeMessage(std::string message)
 {
     // if we are using JSON we need to use txt message
     // otherwise binary messages
-    if(m_socket->IsConnected())
+    if(IsConnected())
     {
         m_socket->Send(UTF8_TO_TCHAR(message.c_str()));
     }
@@ -242,22 +272,22 @@ void UnrealSimulation::writeMessage(std::string message)
     }
 }
 
-// void UnrealSimulation::onError(std::string error)
+// void UUnrealSimulation::onError(std::string error)
 // {
 //     log("onError"); //  << error;
 // }
 
-// void UnrealSimulation::onEvent(std::string topic, Arguments args, ArgumentsKw kwargs)
+// void UUnrealSimulation::onEvent(std::string topic, Arguments args, ArgumentsKw kwargs)
 // {
 //     log("onEvent"); // << topic; // json(args).dump() << json(kwargs).dump();
 // }
 
-// void UnrealSimulation::onJoin()
+// void UUnrealSimulation::onJoin()
 // {
 //     log("on join");
 // }
 
-void UnrealSimulation::onNotify(string method, Params params)
+void UUnrealSimulation::onNotify(string method, Params params)
 {
     // if(m_notifyRegistry.count(method) == 1)
     // {
@@ -272,6 +302,6 @@ void UnrealSimulation::onNotify(string method, Params params)
     // }
 }
 
-void UnrealSimulation::notify(NotifyRequestArg args)
+void UUnrealSimulation::notify(NotifyRequestArg args)
 {
 }

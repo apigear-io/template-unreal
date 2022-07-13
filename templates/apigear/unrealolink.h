@@ -22,17 +22,18 @@ public:
     explicit UUnrealOLink(const FObjectInitializer& ObjectInitializer);
     virtual ~UUnrealOLink();
 
-    void Connect() override;
-    void Disconnect() override;
-    bool IsConnected() override;
-
     void log(const FString &logMessage);
-    void OnConnected() override;
-    void OnDisconnected(bool bReconnect) override;
     void handleTextMessage(const FString& message);
 
     void linkObjectSource(const std::string& name);
     void unlinkObjectSource(const std::string& name);
+
+    // UAbstractApiGearConnection
+    void Connect() override;
+    void Disconnect() override;
+    bool IsConnected() override;
+    void OnConnected() override;
+    void OnDisconnected(bool bReconnect) override;
 
 private:
     void open(const FString& url);

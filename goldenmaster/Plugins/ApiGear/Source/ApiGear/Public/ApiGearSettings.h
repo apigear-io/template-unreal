@@ -57,4 +57,8 @@ class APIGEAR_API UApiGearSettings : public UObject
 	// Choose whether to enable logging
 	UPROPERTY(EditAnywhere, config, Category = SimulationSetup, meta = (ConfigRestartRequired = true))
 	bool Simulation_EnableDebugLog;
+
+	// Choose whether to automatically reconnect
+	UPROPERTY(EditAnywhere, config, Category = SimulationSetup, meta = (ConfigRestartRequired = true))
+	bool Simulation_AutoReconnectEnabled;
 };

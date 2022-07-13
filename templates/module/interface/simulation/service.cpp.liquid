@@ -47,6 +47,11 @@ namespace Private {
     , {{property|unrealVarName}}({{property|unrealDefault: moduleCapital}})
 {% endfor %}
 {
+    UApiGearConnectionManager* AGCM = nullptr;
+    if (GEngine != nullptr)
+    {
+        AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+    }
     NotifyRequestFunc {{interface.name | capital}}StateChangedFunc = [this](NotifyRequestArg arg)
     {
         const json fields = arg.params;
@@ -60,7 +65,10 @@ namespace Private {
         }
 {% endfor %}
     };
-    UnrealSimulation::instance()->onNotifyState("{{module.name}}/{{interface.name}}", {{interface.name | capital}}StateChangedFunc);
+    if(AGCM != nullptr)
+    {
+        AGCM->GetSimulationConnection()->onNotifyState("{{module.name}}/{{interface.name}}", {{interface.name | capital}}StateChangedFunc);
+    }
 {{nl}}
     CallResponseFunc Get{{interface.name | capital}}StateFunc = [this](CallResponseArg arg)
     {
@@ -78,7 +86,10 @@ namespace Private {
         }
 {% endfor %}
     };
-    UnrealSimulation::instance()->doFetchState("{{module.name}}/{{interface.name}}", Get{{interface.name | capital}}StateFunc);
+    if(AGCM != nullptr)
+    {
+        AGCM->GetSimulationConnection()->doFetchState("{{module.name}}/{{interface.name}}", Get{{interface.name | capital}}StateFunc);
+    }
 {{nl}}
     // register notification callback functions, signal/event -> fcn
 {% for signal in interface.signals %}
@@ -101,18 +112,25 @@ namespace Private {
         {{signal|unrealVarName}}Signal.Broadcast();
     {% endif %}
     };
-    UnrealSimulation::instance()->onNotify("{{module.name}}/{{interface.name}}#{{signal.name}}", {{signal.name}}Func);
+    if(AGCM != nullptr)
+    {
+        AGCM->GetSimulationConnection()->onNotify("{{module.name}}/{{interface.name}}#{{signal.name}}", {{signal.name}}Func);
+    }
 {{nl}}
 {% endfor %}
 }
 {{nl}}
 {{class}}::~{{class}}()
 {
-    UnrealSimulation::instance()->RemoveOnNotifyState("{{module.name}}/{{interface.name}}");
-    // unregister notification callback functions
+    if (GEngine != nullptr)
+    {
+        UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+        AGCM->GetSimulationConnection()->RemoveOnNotifyState("{{module.name}}/{{interface.name}}");
+        // unregister notification callback functions
 {% for signal in interface.signals %}
-    UnrealSimulation::instance()->RemoveOnNotify("{{module.name}}/{{interface.name}}#{{signal.name}}");
+        AGCM->GetSimulationConnection()->RemoveOnNotify("{{module.name}}/{{interface.name}}#{{signal.name}}");
 {% endfor %}
+    }
 }
 {{nl}}
 
@@ -133,7 +151,11 @@ void {{class}}::Set{{property.name | capital}}({{property|unrealParam: moduleCap
 {
     Params params;
     params["{{property.name}}"] = {{property|unrealVarName: 'In'}};
-    UnrealSimulation::instance()->doCall("{{module.name}}/{{interface.name}}", "_set", params);
+    if (GEngine != nullptr)
+    {
+        UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+        AGCM->GetSimulationConnection()->doCall("{{module.name}}/{{interface.name}}", "_set", params);
+    }
 }
 
 F{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate& {{class}}::Get{{property.name|capital}}ChangedDelegate()
@@ -158,7 +180,11 @@ F{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate& {{class}}::
     {% endfor %}
 
     {% if returnVal == "void" %}
-    UnrealSimulation::instance()->doCall("{{module.name}}/{{interface.name}}", "{{operation.name}}", params);
+    if (GEngine != nullptr)
+    {
+        UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+        AGCM->GetSimulationConnection()->doCall("{{module.name}}/{{interface.name}}", "{{operation.name}}", params);
+    }
     {% else %}
     TPromise<{{returnVal}}> Promise;
     Async(EAsyncExecution::Thread, [params, &Promise]()
@@ -167,7 +193,11 @@ F{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate& {{class}}::
         {
             Promise.SetValue(arg.result.get<{{returnVal}}>());
         };
-        UnrealSimulation::instance()->doCall("{{module.name}}/{{interface.name}}", "{{operation.name}}", params, Get{{interface.name | capital}}StateFunc);
+        if (GEngine != nullptr)
+        {
+            UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+            AGCM->GetSimulationConnection()->doCall("{{module.name}}/{{interface.name}}", "{{operation.name}}", params, Get{{interface.name | capital}}StateFunc);
+        }
     });
 
     return Promise.GetFuture().Get();
