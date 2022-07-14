@@ -43,6 +43,6 @@ class ORGOBJECTAPITESTBED_API UOrgObjectapiTestbedSettings : public UObject
 	GENERATED_UCLASS_BODY()
 
 	// Choose the backend service to use
-	UPROPERTY(EditAnywhere, config, Category = ServiceSetup, meta = (ConfigRestartRequired = true))
+	UPROPERTY(EditAnywhere, config, Category = ServiceSetup)
 	EOrgObjectapiTestbedConnection ServiceConnection;
 };

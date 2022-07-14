@@ -47,6 +47,6 @@ class {{API_MACRO}} U{{module_name_capital}}Settings : public UObject
 	GENERATED_UCLASS_BODY()
 
 	// Choose the backend service to use
-	UPROPERTY(EditAnywhere, config, Category = ServiceSetup, meta = (ConfigRestartRequired = true))
+	UPROPERTY(EditAnywhere, config, Category = ServiceSetup)
 	E{{module_name_capital}}Connection ServiceConnection;
 };

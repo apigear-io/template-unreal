@@ -39,26 +39,26 @@ class APIGEAR_API UApiGearSettings : public UObject
 	bool WAMP_EnableDebugLog;
 
 	// Choose the server to connect to
-	UPROPERTY(EditAnywhere, config, Category = OLinkSetup, meta = (ConfigRestartRequired = true))
+	UPROPERTY(EditAnywhere, config, Category = OLinkSetup)
 	FString OLINK_URL;
 
 	// Choose whether to enable logging
-	UPROPERTY(EditAnywhere, config, Category = OLinkSetup, meta = (ConfigRestartRequired = true))
+	UPROPERTY(EditAnywhere, config, Category = OLinkSetup)
 	bool OLINK_EnableDebugLog;
 
 	// Choose whether to automatically reconnect
-	UPROPERTY(EditAnywhere, config, Category = OLinkSetup, meta = (ConfigRestartRequired = true))
+	UPROPERTY(EditAnywhere, config, Category = OLinkSetup)
 	bool OLINK_AutoReconnectEnabled;
 
 	// Choose the server to connect to
-	UPROPERTY(EditAnywhere, config, Category = SimulationSetup, meta = (ConfigRestartRequired = true))
+	UPROPERTY(EditAnywhere, config, Category = SimulationSetup)
 	FString Simulation_URL;
 
 	// Choose whether to enable logging
-	UPROPERTY(EditAnywhere, config, Category = SimulationSetup, meta = (ConfigRestartRequired = true))
+	UPROPERTY(EditAnywhere, config, Category = SimulationSetup)
 	bool Simulation_EnableDebugLog;
 
 	// Choose whether to automatically reconnect
-	UPROPERTY(EditAnywhere, config, Category = SimulationSetup, meta = (ConfigRestartRequired = true))
+	UPROPERTY(EditAnywhere, config, Category = SimulationSetup)
 	bool Simulation_AutoReconnectEnabled;
 };
