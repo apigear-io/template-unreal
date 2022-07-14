@@ -89,6 +89,7 @@ void UUnrealOLink::Disconnect()
 {
     if(!IsConnected())
     {
+        UAbstractApiGearConnection::StopReconnecting();
         return;
     }
 

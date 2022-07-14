@@ -32,6 +32,8 @@ public:
     virtual void OnDisconnected(bool bReconnect) = 0;
 	UFUNCTION()
     virtual bool IsConnected() = 0;
+	UFUNCTION()
+    virtual void StopReconnecting() = 0;
 
     UFUNCTION()
     virtual void SetAutoReconnectEnabled(bool enable) = 0;
@@ -58,6 +60,8 @@ public:
     virtual void Disconnect() PURE_VIRTUAL(UAbstractApiGearConnection::Disconnect,);
 	UFUNCTION()
     virtual bool IsConnected() PURE_VIRTUAL(UAbstractApiGearConnection::IsConnected, return false;);
+	UFUNCTION()
+    virtual void StopReconnecting() override;
 
     UFUNCTION()
     virtual void SetAutoReconnectEnabled(bool enable);
@@ -68,6 +72,7 @@ private:
     FApiGearConnectionIsConnectedDelegate IsConnectedChanged;
 
     bool bIsAutoReconnectEnabled;
+    bool bStopReconnectingRequested;
 
 	FDelegateHandle RetryTickerHandle;
 	FTickerDelegate RetryTickerDelegate;

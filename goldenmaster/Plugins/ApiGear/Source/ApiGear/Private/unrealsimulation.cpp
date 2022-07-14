@@ -141,6 +141,7 @@ void UUnrealSimulation::Disconnect()
 {
     if(!IsConnected())
     {
+        UAbstractApiGearConnection::StopReconnecting();
         return;
     }
 
