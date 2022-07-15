@@ -126,7 +126,7 @@ void UUnrealSimulation::open(const FString& url)
 void UUnrealSimulation::Connect()
 {
     UAbstractApiGearConnection::Connect();
-    
+
     UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
     m_serverURL = settings->Simulation_URL;
     m_loggingDisabled = !settings->Simulation_EnableDebugLog;
@@ -141,13 +141,9 @@ void UUnrealSimulation::Connect()
 
 void UUnrealSimulation::Disconnect()
 {
-    if(GetConnectionState() == EApiGearConnectionState::Connecting)
-    {
-        UAbstractApiGearConnection::StopReconnecting();
-    }
-
     if(!IsConnected() || GetConnectionState() == EApiGearConnectionState::Connecting)
     {
+        UAbstractApiGearConnection::StopReconnecting();
         return;
     }
 
