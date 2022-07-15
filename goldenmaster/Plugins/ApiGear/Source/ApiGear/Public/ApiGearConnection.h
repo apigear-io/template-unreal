@@ -7,7 +7,19 @@
 
 DECLARE_LOG_CATEGORY_EXTERN(LogApiGearConnection, Log, All);
 
+/**
+ * Enumeration EApiGearConnectionState
+ */
+UENUM(BlueprintType)
+enum class EApiGearConnectionState : uint8
+{
+    Disconnected UMETA(Displayname = "Disconnected"),
+    Connecting   UMETA(Displayname = "Connecting"),
+    Connected    UMETA(Displayname = "Connected")
+};
+
 DECLARE_MULTICAST_DELEGATE_OneParam(FApiGearConnectionIsConnectedDelegate, bool);
+DECLARE_MULTICAST_DELEGATE_OneParam(FApiGearConnectionStateChangedDelegate, EApiGearConnectionState);
 
 UINTERFACE(MinimalAPI)
 class UApiGearConnection : public UInterface
@@ -21,6 +33,7 @@ class APIGEAR_API IApiGearConnection
 
 public:
     virtual FApiGearConnectionIsConnectedDelegate& GetIsConnectedChangedDelegate() = 0;
+    virtual FApiGearConnectionStateChangedDelegate& GetConnectionStateChangedDelegate() = 0;
 
 	UFUNCTION()
     virtual void Connect() = 0;
@@ -36,6 +49,9 @@ public:
     virtual void StopReconnecting() = 0;
 
     UFUNCTION()
+    virtual EApiGearConnectionState GetConnectionState() = 0;
+
+    UFUNCTION()
     virtual void SetAutoReconnectEnabled(bool enable) = 0;
     UFUNCTION()
     virtual bool IsAutoReconnectEnabled() = 0;
@@ -49,13 +65,14 @@ class APIGEAR_API UAbstractApiGearConnection:  public UObject, public IApiGearCo
 public:
     explicit UAbstractApiGearConnection(const FObjectInitializer& ObjectInitializer);
     FApiGearConnectionIsConnectedDelegate& GetIsConnectedChangedDelegate() override;
+    FApiGearConnectionStateChangedDelegate& GetConnectionStateChangedDelegate() override;
 
 	UFUNCTION()
     virtual void OnConnected() override;
 	UFUNCTION()
     virtual void OnDisconnected(bool bReconnect) override;
 	UFUNCTION()
-    virtual void Connect() PURE_VIRTUAL(UAbstractApiGearConnection::Connect,);
+    virtual void Connect() override;
 	UFUNCTION()
     virtual void Disconnect() PURE_VIRTUAL(UAbstractApiGearConnection::Disconnect,);
 	UFUNCTION()
@@ -64,16 +81,24 @@ public:
     virtual void StopReconnecting() override;
 
     UFUNCTION()
+    virtual EApiGearConnectionState GetConnectionState() override;
+
+    UFUNCTION()
     virtual void SetAutoReconnectEnabled(bool enable);
     UFUNCTION()
     virtual bool IsAutoReconnectEnabled();
 
 private:
+    void SetConnectionState(EApiGearConnectionState State);
+
     FApiGearConnectionIsConnectedDelegate IsConnectedChanged;
+    FApiGearConnectionStateChangedDelegate ConnectionStateChanged;
 
     bool bIsAutoReconnectEnabled;
     bool bStopReconnectingRequested;
 
 	FDelegateHandle RetryTickerHandle;
 	FTickerDelegate RetryTickerDelegate;
+
+    EApiGearConnectionState ConnectionState;
 };

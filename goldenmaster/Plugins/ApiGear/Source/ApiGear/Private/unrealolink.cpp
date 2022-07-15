@@ -73,11 +73,13 @@ void UUnrealOLink::log(const FString &logMessage)
 
 void UUnrealOLink::Connect()
 {
+    UAbstractApiGearConnection::Connect();
+    
     UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
     m_serverURL = settings->OLINK_URL;
     m_loggingDisabled = !settings->OLINK_EnableDebugLog;
 
-    if (!IsConnected()) 
+    if (!IsConnected() || GetConnectionState() == EApiGearConnectionState::Connecting) 
     {
         log(m_serverURL);
         
@@ -87,9 +89,13 @@ void UUnrealOLink::Connect()
 
 void UUnrealOLink::Disconnect()
 {
-    if(!IsConnected())
+    if(GetConnectionState() == EApiGearConnectionState::Connecting)
     {
         UAbstractApiGearConnection::StopReconnecting();
+    }
+
+    if(!IsConnected())
+    {
         return;
     }
 

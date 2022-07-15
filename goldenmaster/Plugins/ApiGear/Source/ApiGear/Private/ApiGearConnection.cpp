@@ -15,9 +15,14 @@ FApiGearConnectionIsConnectedDelegate& UAbstractApiGearConnection::GetIsConnecte
     return IsConnectedChanged;
 }
 
+FApiGearConnectionStateChangedDelegate& UAbstractApiGearConnection::GetConnectionStateChangedDelegate()
+{
+    return ConnectionStateChanged;
+}
+
 void UAbstractApiGearConnection::OnConnected()
 {
-    IsConnectedChanged.Broadcast(true);
+    SetConnectionState(EApiGearConnectionState::Connected);
 
     // disable reconnect ticker
     FTicker::GetCoreTicker().RemoveTicker(RetryTickerHandle);
@@ -25,7 +30,8 @@ void UAbstractApiGearConnection::OnConnected()
 
 void UAbstractApiGearConnection::OnDisconnected(bool bReconnect)
 {
-    IsConnectedChanged.Broadcast(false);
+    SetConnectionState(EApiGearConnectionState::Disconnected);
+
     if (bIsAutoReconnectEnabled && bReconnect && !bStopReconnectingRequested)
     {
         UE_LOG(LogApiGearConnection, Display, TEXT("Setting retry ticker"));
@@ -36,6 +42,11 @@ void UAbstractApiGearConnection::OnDisconnected(bool bReconnect)
     {
         bStopReconnectingRequested = false;
     }
+}
+
+void UAbstractApiGearConnection::Connect()
+{
+    SetConnectionState(EApiGearConnectionState::Connecting);
 }
 
 void UAbstractApiGearConnection::StopReconnecting()
@@ -58,4 +69,16 @@ void UAbstractApiGearConnection::SetAutoReconnectEnabled(bool enabled)
 bool UAbstractApiGearConnection::IsAutoReconnectEnabled()
 {
     return bIsAutoReconnectEnabled;
+}
+
+EApiGearConnectionState UAbstractApiGearConnection::GetConnectionState()
+{
+    return ConnectionState;
+}
+
+void UAbstractApiGearConnection::SetConnectionState(EApiGearConnectionState State)
+{
+    ConnectionState = State;
+    ConnectionStateChanged.Broadcast(ConnectionState);
+    IsConnectedChanged.Broadcast(ConnectionState == EApiGearConnectionState::Connected);
 }
