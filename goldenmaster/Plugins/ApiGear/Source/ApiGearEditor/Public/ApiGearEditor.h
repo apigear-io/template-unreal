@@ -20,9 +20,11 @@ public:
 
 	FReply OLinkConnectButtonClicked();
 	FReply OLinkDisconnectButtonClicked();
+	FText OLinkConnectionStatus() const;
 
 	FReply SimulationConnectButtonClicked();
 	FReply SimulationDisconnectButtonClicked();
+	FText SimulationConnectionStatus() const;
 
 private:
 	void RegisterMenus();

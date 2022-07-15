@@ -96,6 +96,11 @@ TSharedRef<SDockTab> FApiGearEditorModule::OnSpawnPluginTab(const FSpawnTabArgs&
 					SNew(SHorizontalBox)
 					+ SHorizontalBox::Slot()
 					[
+						SNew(STextBlock)
+						.Text_Raw(this, &FApiGearEditorModule::OLinkConnectionStatus)
+					]
+					+ SHorizontalBox::Slot()
+					[
 						SNew(SButton)
 						.Text(ConnectButtonText)
 						.OnClicked_Raw(this, &FApiGearEditorModule::OLinkConnectButtonClicked)
@@ -115,6 +120,11 @@ TSharedRef<SDockTab> FApiGearEditorModule::OnSpawnPluginTab(const FSpawnTabArgs&
 				+ SVerticalBox::Slot()
 				[
 					SNew(SHorizontalBox)
+					+ SHorizontalBox::Slot()
+					[
+						SNew(STextBlock)
+						.Text_Raw(this, &FApiGearEditorModule::SimulationConnectionStatus)
+					]
 					+ SHorizontalBox::Slot()
 					[
 						SNew(SButton)
@@ -155,6 +165,13 @@ FReply FApiGearEditorModule::OLinkDisconnectButtonClicked()
 	return FReply::Handled();
 }
 
+FText FApiGearEditorModule::OLinkConnectionStatus() const
+{
+	UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+	
+	return FText::FromString(UEnum::GetValueAsName(AGCM->GetOLinkConnection()->GetConnectionState()).ToString());
+}
+
 FReply FApiGearEditorModule::SimulationConnectButtonClicked()
 {
 	UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
@@ -169,6 +186,13 @@ FReply FApiGearEditorModule::SimulationDisconnectButtonClicked()
 	AGCM->DisconnectSimulation();
 
 	return FReply::Handled();
+}
+
+FText FApiGearEditorModule::SimulationConnectionStatus() const
+{
+	UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+	
+	return FText::FromString(UEnum::GetValueAsName(AGCM->GetSimulationConnection()->GetConnectionState()).ToString());
 }
 
 void FApiGearEditorModule::RegisterMenus()
