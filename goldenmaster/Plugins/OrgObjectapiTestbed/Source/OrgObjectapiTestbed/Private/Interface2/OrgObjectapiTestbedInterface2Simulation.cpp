@@ -90,7 +90,8 @@ SimulationService::SimulationService()
         }
     };
     if(AGCM != nullptr)
-    {
+    {   
+        AGCM->GetSimulationConnection()->Connect();
         AGCM->GetSimulationConnection()->onNotifyState("org.objectapi.testbed/Interface2", Interface2StateChangedFunc);
     }
 

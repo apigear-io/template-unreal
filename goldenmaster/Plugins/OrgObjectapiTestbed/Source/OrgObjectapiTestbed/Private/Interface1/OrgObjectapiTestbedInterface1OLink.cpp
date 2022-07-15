@@ -53,6 +53,7 @@ OLinkService::OLinkService()
     if (GEngine != nullptr)
     {
         UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+        AGCM->GetOLinkConnection()->Connect();
         AGCM->GetOLinkConnection()->linkObjectSource(olinkObjectName());
     }
     m_node = ClientRegistry::get().addObjectSink(this);

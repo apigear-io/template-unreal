@@ -23,7 +23,6 @@ void UApiGearConnectionManager::Deinitialize()
 
 UUnrealOLink* UApiGearConnectionManager::UApiGearConnectionManager::GetOLinkConnection()
 {
-	OLinkConnection->Connect();
 	return OLinkConnection;
 }
 
@@ -49,7 +48,6 @@ void UApiGearConnectionManager::OnIsOLinkConnectedChanged(bool bIsConnected)
 
 UUnrealSimulation* UApiGearConnectionManager::UApiGearConnectionManager::GetSimulationConnection()
 {
-	SimulationConnection->Connect();
 	return SimulationConnection;
 }
 
