@@ -1,0 +1,90 @@
+schema: apigear.module/1.0
+name: testbed1
+version: "1.0"
+
+interfaces:
+  - name: StructInterface
+    properties:
+      - { name: propBool, type: { ref: StructBool } }
+      - { name: propInt, type: { ref: StructInt } }
+      - { name: propFloat, type: { ref: StructFloat } }
+      - { name: propString, type: { ref: StructString } }
+    operations:
+      - name: funcBool
+        params:
+          - { name: paramBool, type: { ref: StructBool } }
+        type: { ref: StructBool }
+      - name: funcInt
+        params:
+          - { name: paramInt, type: { ref: StructInt } }
+        type: { ref: StructBool }
+      - name: funcFloat
+        params:
+          - { name: paramFloat, type: { ref: StructFloat } }
+        type: { ref: StructFloat }
+      - name: funcString
+        params:
+          - { name: paramString, type: { ref: StructString } }
+        type: { ref: StructString }
+    signals:
+      - name: sigBool
+        params:
+          - { name: paramBool, type: { ref: StructBool } }
+      - name: sigInt
+        params:
+          - { name: paramInt, type: { ref: StructInt } }
+      - name: sigFloat
+        params:
+          - { name: paramFloat, type: { ref: StructFloat } }
+      - name: sigString
+        params:
+          - { name: paramString, type: { ref: StructString } }
+  - name: StructArrayInterface
+    properties:
+      - { name: propBool, type: array, items: { ref: StructBool } }
+      - { name: propInt, type: array, items: { ref: StructInt } }
+      - { name: propFloat, type: array, items: { ref: StructFloat } }
+      - { name: propString, type: array, items: { ref: StructString } }
+    operations:
+      - name: funcBool
+        params:
+          - { name: paramBool, type: array, items: { ref: StructBool } }
+        type: { ref: StructBool }
+      - name: funcInt
+        params:
+          - { name: paramInt, type: array, items: { ref: StructInt } }
+        type: { ref: StructBool }
+      - name: funcFloat
+        params:
+          - { name: paramFloat, type: array, items: { ref: StructFloat } }
+        type: { ref: StructBool }
+      - name: funcString
+        params:
+          - { name: paramString, type: array, items: { ref: StructString } }
+        type: { ref: StructBool }
+    signals:
+      - name: sigBool
+        params:
+          - { name: paramBool, type: array, items: { ref: StructBool } }
+      - name: sigInt
+        params:
+          - { name: paramInt, type: array, items: { ref: StructInt } }
+      - name: sigFloat
+        params:
+          - { name: paramFloat, type: array, items: { ref: StructFloat } }
+      - name: sigString
+        params:
+          - { name: paramString, type: array, items: { ref: StructString } }
+structs:
+  - name: StructBool
+    fields:
+      - { name: fieldBool, type: bool }
+  - name: StructInt
+    fields:
+      - { name: fieldInt, type: int }
+  - name: StructFloat
+    fields:
+      - { name: fieldFloat, type: float }
+  - name: StructString
+    fields:
+      - { name: fieldString, type: string }

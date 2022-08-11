@@ -1,0 +1,73 @@
+schema: apigear.module/1.0
+name: tb.enum
+version: "1.0"
+
+# test enums
+# test properties with enums
+# test properties with enum array
+# test func params with enums
+# test func params with enum array
+# test func return with enums
+# test func return with enum array
+# test signals with enums
+# test signals with enum array
+# test enums with different default values
+
+interfaces:
+  - name: EnumInterface
+    properties:
+      - { name: prop0, type: { ref: Enum0 } }
+      - { name: prop1, type: { ref: Enum1 } }
+      - { name: prop2, type: { ref: Enum2 } }
+      - { name: prop3, type: { ref: Enum3 } }
+    operations:
+      - name: func0
+        params:
+          - { name: param0, type: { ref: Enum0 } }
+        type: { ref: Enum0 }
+      - name: func1
+        params:
+          - { name: param1, type: { ref: Enum1 } }
+        type: { ref: Enum1 }
+      - name: func2
+        params:
+          - { name: param2, type: { ref: Enum2 } }
+        type: { ref: Enum2 }
+      - name: func3
+        params:
+          - { name: param3, type: { ref: Enum3 } }
+        type: { ref: Enum3 }
+    signals:
+      - name: sig0
+        params:
+          - { name: param0, type: { ref: Enum0 } }
+      - name: sig1
+        params:
+          - { name: param1, type: { ref: Enum1 } }
+      - name: sig2
+        params:
+          - { name: param2, type: { ref: Enum2 } }
+      - name: sig3
+        params:
+          - { name: param3, type: { ref: Enum3 } }
+enums:
+  - name: Enum0
+    members:
+      - { name: value0, value: 0 }
+      - { name: value1, value: 1 }
+      - { name: value2, value: 2 }
+  - name: Enum1
+    members:
+      - { name: value1, value: 1 }
+      - { name: value2, value: 2 }      
+      - { name: value3, value: 3 }
+  - name: Enum2
+    members:
+      - { name: value2, value: 2 }
+      - { name: value1, value: 1 }                  
+      - { name: value0, value: 0 }
+  - name: Enum3
+    members:
+      - { name: value3, value: 3 }
+      - { name: value2, value: 2 }
+      - { name: value1, value: 1 }            

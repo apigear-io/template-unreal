@@ -5,7 +5,12 @@ version: "0.1"
 layers:
   - name: goldenmaster
     modules:
-      - testbed.module.yaml
+      - testbed.advanced.module.yaml
+      - testbed.enum.module.yaml
+      - testbed.same1.module.yaml
+      - testbed.same2.module.yaml
+      - testbed.simple.module.yaml
+      - testbed.struct.module.yaml
     output: ../test
     blueprint:
       package: ""

@@ -1,0 +1,99 @@
+schema: apigear.module/1.0
+name: tb.same1
+version: "1.0"
+
+# tests same similar modules with same naming (tb.same1, tb.same2)
+# each operation parameter is associated with a property (param1 -> prop1)
+# each operation has the same signal with same parameter signatures (func1 -> sig1)
+# each operation return the type of the first parameter (func1(param1: int) -> return int)
+
+interfaces:
+  - name: SameStruct1Interface
+    properties:
+      - { name: prop1, type: { ref: Struct1 } }
+    operations:
+      - name: func1
+        params:
+          - { name: param1, type: { ref: Struct1 } }
+        type: { ref: Struct1 }
+    signals:
+      - name: sig1
+        params:
+          - { name: param1, type: { ref: Struct1 } }
+  - name: SameStruct2Interface
+    properties:
+      - { name: prop1, type: { ref: Struct2 } }
+      - { name: prop2, type: { ref: Struct2 } }
+    operations:
+      - name: func1
+        params:
+          - { name: param1, type: { ref: Struct1 } }
+        type: { ref: Struct1 }
+      - name: func2
+        params:
+          - { name: param1, type: { ref: Struct1 } }
+          - { name: param2, type: { ref: Struct2 } }
+        type: { ref: Struct1 }
+    signals:
+      - name: sig1
+        params:
+          - { name: param1, type: { ref: Struct1 } }
+      - name: sig2
+        params:
+          - { name: param1, type: { ref: Struct1 } }
+          - { name: param2, type: { ref: Struct2 } }
+  - name: SameEnum1Interface
+    properties:
+      - { name: prop1, type: { ref: Enum1 } }
+    operations:
+      - name: func1
+        params:
+          - { name: param1, type: { ref: Enum1 } }
+        type: { ref: Enum1 }
+    signals:
+      - name: sig1
+        params:
+          - { name: param1, type: { ref: Enum1 } }
+  - name: SameEnum2Interface
+    properties:
+      - { name: prop1, type: { ref: Enum1 } }
+      - { name: prop2, type: { ref: Enum2 } }
+    operations:
+      - name: func1
+        params:
+          - { name: param1, type: { ref: Enum1 } }
+        type: { ref: Enum1 }
+      - name: func2
+        params:
+          - { name: param1, type: { ref: Enum1 } }
+          - { name: param2, type: { ref: Enum2 } }
+        type: { ref: Enum1 }
+    signals:
+      - name: sig1
+        params:
+          - { name: param1, type: { ref: Enum1 } }
+      - name: sig2
+        params:
+          - { name: param1, type: { ref: Enum1 } }
+          - { name: param2, type: { ref: Enum2 } }
+
+structs:
+  - name: Struct1
+    fields:
+      - { name: field1, type: int }
+      - { name: field2, type: int }
+      - { name: field3, type: int }
+  - name: Struct2
+    fields:
+      - { name: field1, type: int }
+      - { name: field2, type: int }
+      - { name: field3, type: int }
+enums:
+  - name: Enum1
+    members:
+      - { name: value1, value: 1 }
+      - { name: value2, value: 2 }
+  - name: Enum2
+    members:
+      - { name: value1, value: 1 }
+      - { name: value2, value: 2 }

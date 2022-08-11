@@ -1,0 +1,90 @@
+schema: apigear.module/1.0
+name: tb.simple
+version: "1.0"
+
+# test properties with simple types
+# test properties with arrays of simple types
+# test functions with simple types
+# test functions with arrays of simple types
+# test signals with simple types
+# test signals with arrays of simple types
+# test return with simple types
+# test return with arrays of simple types
+
+interfaces:
+  - name: SimpleInterface
+    properties:
+      - { name: propBool, type: bool }
+      - { name: propInt, type: int }
+      - { name: propFloat, type: float }
+      - { name: propString, type: string }
+    operations:
+      - name: funcBool
+        params:
+          - { name: paramBool, type: bool }
+        type: bool
+      - name: funcInt
+        params:
+          - { name: paramInt, type: int }
+        type: int
+      - name: funcFloat
+        params:
+          - { name: paramFloat, type: float }
+        type: float
+      - name: funcString
+        params:
+          - { name: paramString, type: string }
+        type: string
+    signals:
+      - name: sigBool
+        params:
+          - { name: paramBool, type: bool }
+      - name: sigInt
+        params:
+          - { name: paramInt, type: int }
+      - name: sigFloat
+        params:
+          - { name: paramFloat, type: float }
+      - name: sigString
+        params:
+          - { name: paramString, type: string }
+  - name: SimpleArrayInterface
+    properties:
+      - { name: propBool, type: array, items: bool }
+      - { name: propInt, type: array, items: int }
+      - { name: propFloat, type: array, items: float }
+      - { name: propString, type: array, items: string }
+    operations:
+      - name: funcBool
+        params:
+          - { name: paramBool, type: array, items: bool }
+        type: array
+        items: bool
+      - name: funcInt
+        params:
+          - { name: paramInt, type: array, items: int }
+        type: array
+        items: int
+      - name: funcFloat
+        params:
+          - { name: paramFloat, type: array, items: float }
+        type: array
+        items: float
+      - name: funcString
+        params:
+          - { name: paramString, type: array, items: string }
+        type: array
+        items: string
+    signals:
+      - name: sigBool
+        params:
+          - { name: paramBool, type: array, items: bool }
+      - name: sigInt
+        params:
+          - { name: paramInt, type: array, items: int }
+      - name: sigFloat
+        params:
+          - { name: paramFloat, type: array, items: float }
+      - name: sigString
+        params:
+          - { name: paramString, type: array, items: string }
