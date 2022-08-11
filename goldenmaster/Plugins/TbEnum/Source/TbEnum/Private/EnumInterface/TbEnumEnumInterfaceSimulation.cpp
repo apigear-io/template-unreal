@@ -22,6 +22,7 @@ limitations under the License.
 
 #include "TbEnumEnumInterfaceSimulation.h"
 #include "apig/TbEnum.json.adapter.h"
+#include "ApiGear/Public/ApiGearConnectionManager.h"
 #include "unrealsimulation.h"
 
 using namespace ApiGear::JSONRPC;

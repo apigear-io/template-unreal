@@ -22,6 +22,7 @@ limitations under the License.
 
 #include "TbSame2SameEnum2InterfaceSimulation.h"
 #include "apig/TbSame2.json.adapter.h"
+#include "ApiGear/Public/ApiGearConnectionManager.h"
 #include "unrealsimulation.h"
 
 using namespace ApiGear::JSONRPC;

@@ -22,6 +22,7 @@ limitations under the License.
 
 #include "Testbed1StructInterfaceSimulation.h"
 #include "apig/Testbed1.json.adapter.h"
+#include "ApiGear/Public/ApiGearConnectionManager.h"
 #include "unrealsimulation.h"
 
 using namespace ApiGear::JSONRPC;
