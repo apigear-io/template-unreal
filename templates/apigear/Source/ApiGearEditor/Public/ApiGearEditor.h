@@ -9,12 +9,10 @@ class FMenuBuilder;
 
 class FApiGearEditorModule : public IModuleInterface
 {
-public:
-
+  public:
 	/** IModuleInterface implementation */
 	virtual void StartupModule() override;
 	virtual void ShutdownModule() override;
-
 
 	void PluginButtonClicked();
 
@@ -26,7 +24,7 @@ public:
 	FReply SimulationDisconnectButtonClicked();
 	FText SimulationConnectionStatus() const;
 
-private:
+  private:
 	void RegisterMenus();
 	TSharedRef<class SDockTab> OnSpawnPluginTab(const class FSpawnTabArgs& SpawnTabArgs);
 

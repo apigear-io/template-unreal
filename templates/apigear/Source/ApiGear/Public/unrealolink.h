@@ -11,40 +11,39 @@
 
 DECLARE_LOG_CATEGORY_EXTERN(LogApiGearOLink, Log, All);
 
-
 using namespace ApiGear;
 
 UCLASS(NotBlueprintType)
-class APIGEAR_API UUnrealOLink: public UAbstractApiGearConnection
+class APIGEAR_API UUnrealOLink : public UAbstractApiGearConnection
 {
-    GENERATED_BODY()
-public:
-    explicit UUnrealOLink(const FObjectInitializer& ObjectInitializer);
-    virtual ~UUnrealOLink();
+	GENERATED_BODY()
+  public:
+	explicit UUnrealOLink(const FObjectInitializer& ObjectInitializer);
+	virtual ~UUnrealOLink();
 
-    void log(const FString &logMessage);
-    void handleTextMessage(const FString& message);
+	void log(const FString& logMessage);
+	void handleTextMessage(const FString& message);
 
-    void linkObjectSource(const std::string& name);
-    void unlinkObjectSource(const std::string& name);
+	void linkObjectSource(const std::string& name);
+	void unlinkObjectSource(const std::string& name);
 
-    // UAbstractApiGearConnection
-    void Connect() override;
-    void Disconnect() override;
-    bool IsConnected() override;
-    void OnConnected() override;
-    void OnDisconnected(bool bReconnect) override;
+	// UAbstractApiGearConnection
+	void Connect() override;
+	void Disconnect() override;
+	bool IsConnected() override;
+	void OnConnected() override;
+	void OnDisconnected(bool bReconnect) override;
 
-private:
-    void open(const FString& url);
-    void processMessages();
+  private:
+	void open(const FString& url);
+	void processMessages();
 
-    TArray<std::string> ListLinkedObjects;
+	TArray<std::string> ListLinkedObjects;
 
-    TSharedPtr<IWebSocket> m_socket;
-    bool m_loggingDisabled;
-    FString m_serverURL;
-    ObjectLink::ClientNode m_node;
-    std::queue<std::string> m_queue;
-    std::mutex m_queue_mutex;
+	TSharedPtr<IWebSocket> m_socket;
+	bool m_loggingDisabled;
+	FString m_serverURL;
+	ObjectLink::ClientNode m_node;
+	std::queue<std::string> m_queue;
+	std::mutex m_queue_mutex;
 };

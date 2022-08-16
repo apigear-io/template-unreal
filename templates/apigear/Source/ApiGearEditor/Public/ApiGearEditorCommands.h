@@ -8,16 +8,16 @@
 
 class FApiGearEditorCommands : public TCommands<FApiGearEditorCommands>
 {
-public:
-
+  public:
 	FApiGearEditorCommands()
-		: TCommands<FApiGearEditorCommands>(TEXT("ApiGear"), NSLOCTEXT("Contexts", "ApiGear", "ApiGear Plugin"), NAME_None, FApiGearEditorStyle::GetStyleSetName())
+		: TCommands<FApiGearEditorCommands>(TEXT("ApiGear"), NSLOCTEXT("Contexts", "ApiGear", "ApiGear Plugin"), NAME_None,
+			  FApiGearEditorStyle::GetStyleSetName())
 	{
 	}
 
 	// TCommands<> interface
 	virtual void RegisterCommands() override;
 
-public:
-	TSharedPtr< FUICommandInfo > OpenPluginWindow;
+  public:
+	TSharedPtr<FUICommandInfo> OpenPluginWindow;
 };
