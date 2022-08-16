@@ -273,10 +273,10 @@ features:
   olink:
     interface:
       documents:
-        - source: "module/interface/olink/service.h.liquid"
+        - source: "module/Source/module/Private/interface/olink.h.liquid"
           target: "Plugins/{{module.name|capital}}/Source/{{module.name|capital}}/Private/{{interface.name|capital}}/{{module.name|capital}}{{interface.name|capital}}OLink.h"
           overwrite: true
-        - source: "module/interface/olink/service.cpp.liquid"
+        - source: "module/Source/module/Private/interface/olink.cpp.liquid"
           target: "Plugins/{{module.name|capital}}/Source/{{module.name|capital}}/Private/{{interface.name|capital}}/{{module.name|capital}}{{interface.name|capital}}OLink.cpp"
           overwrite: true
     system:
