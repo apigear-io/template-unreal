@@ -26,131 +26,131 @@ features:
   scaffold:
     system:
       documents:
-        - source: "apigear/apigear.Build.cs"
+        - source: "ApiGear/Source/ApiGear/apigear.Build.cs"
           target: "Plugins/ApiGear/Source/ApiGear/apigear.Build.cs"
           overwrite: true
           raw: true
-        - source: "apigear/apigear.uplugin"
+        - source: "ApiGear/apigear.uplugin"
           target: "Plugins/ApiGear/apigear.uplugin"
           overwrite: true
           raw: true
-        - source: "apigear/tracer.h"
+        - source: "ApiGear/Source/ApiGear/Public/tracer.h"
           target: "Plugins/ApiGear/Source/ApiGear/Public/tracer.h"
           overwrite: true
           raw: true
-        - source: "apigear/tracer.cpp"
+        - source: "ApiGear/Source/ApiGear/Private/tracer.cpp"
           target: "Plugins/ApiGear/Source/ApiGear/Private/tracer.cpp"
           overwrite: true
           raw: true
-        - source: "apigear/apigear.h"
+        - source: "ApiGear/Source/ApiGear/Public/apigear.h"
           target: "Plugins/ApiGear/Source/ApiGear/Public/apigear.h"
           overwrite: true
           raw: true
-        - source: "apigear/ApiGearConnection.h"
+        - source: "ApiGear/Source/ApiGear/Public/ApiGearConnection.h"
           target: "Plugins/ApiGear/Source/ApiGear/Public/ApiGearConnection.h"
           overwrite: true
           raw: true
-        - source: "apigear/ApiGearConnection.cpp"
+        - source: "ApiGear/Source/ApiGear/Private/ApiGearConnection.cpp"
           target: "Plugins/ApiGear/Source/ApiGear/Private/ApiGearConnection.cpp"
           overwrite: true
           raw: true
-        - source: "apigear/apigear.json.adapter.h"
+        - source: "ApiGear/Source/ApiGear/Public/apigear.json.adapter.h"
           target: "Plugins/ApiGear/Source/ApiGear/Public/apigear.json.adapter.h"
           raw: true
           overwrite: true
-        - source: "apigear/unrealsimulation.cpp"
+        - source: "ApiGear/Source/ApiGear/Private/unrealsimulation.cpp"
           target: "Plugins/ApiGear/Source/ApiGear/Private/unrealsimulation.cpp"
           overwrite: true
           raw: true
-        - source: "apigear/unrealsimulation.h"
+        - source: "ApiGear/Source/ApiGear/Public/unrealsimulation.h"
           target: "Plugins/ApiGear/Source/ApiGear/Public/unrealsimulation.h"
           overwrite: true
           raw: true
-        - source: "apigear/apigear.cpp"
+        - source: "ApiGear/Source/ApiGear/Private/apigear.cpp"
           target: "Plugins/ApiGear/Source/ApiGear/Private/apigear.cpp"
           overwrite: true
           raw: true
-        - source: "apigear/editor/apigeareditor.h"
+        - source: "ApiGear/Source/ApiGearEditor/Public/ApiGearEditor.h"
           target: "Plugins/ApiGear/Source/ApiGearEditor/Public/ApiGearEditor.h"
           overwrite: true
           raw: true
-        - source: "apigear/editor/apigeareditor.cpp"
+        - source: "ApiGear/Source/ApiGearEditor/Private/ApiGearEditor.cpp"
           target: "Plugins/ApiGear/Source/ApiGearEditor/Private/ApiGearEditor.cpp"
           overwrite: true
           raw: true
-        - source: "apigear/resources/Icon40.png"
+        - source: "ApiGear/Resources/Icon40.png"
           target: "Plugins/ApiGear/Resources/Icon40.png"
           overwrite: true
           raw: true
-        - source: "apigear/resources/Icon128.png"
+        - source: "ApiGear/Resources/Icon128.png"
           target: "Plugins/ApiGear/Resources/Icon128.png"
           overwrite: true
           raw: true
-        - source: "apigear/editor/apigeareditorstyle.h"
+        - source: "ApiGear/Source/ApiGearEditor/Public/ApiGearEditorStyle.h"
           target: "Plugins/ApiGear/Source/ApiGearEditor/Public/ApiGearEditorStyle.h"
           overwrite: true
           raw: true
-        - source: "apigear/editor/apigeareditorstyle.cpp"
+        - source: "ApiGear/Source/ApiGearEditor/Private/ApiGearEditorStyle.cpp"
           target: "Plugins/ApiGear/Source/ApiGearEditor/Private/ApiGearEditorStyle.cpp"
           overwrite: true
           raw: true
-        - source: "apigear/editor/apigeareditorcommands.h"
+        - source: "ApiGear/Source/ApiGearEditor/Public/ApiGearEditorCommands.h"
           target: "Plugins/ApiGear/Source/ApiGearEditor/Public/ApiGearEditorCommands.h"
           overwrite: true
           raw: true
-        - source: "apigear/editor/apigeareditorcommands.cpp"
+        - source: "ApiGear/Source/ApiGearEditor/Private/ApiGearEditorCommands.cpp"
           target: "Plugins/ApiGear/Source/ApiGearEditor/Private/ApiGearEditorCommands.cpp"
           overwrite: true
           raw: true
-        - source: "apigear/apigearsettings.h"
+        - source: "ApiGear/Source/ApiGear/Public/ApiGearSettings.h"
           target: "Plugins/ApiGear/Source/ApiGear/Public/ApiGearSettings.h"
           overwrite: true
           raw: true
-        - source: "apigear/apigearsettings.cpp"
+        - source: "ApiGear/Source/ApiGear/Private/ApiGearSettings.cpp"
           target: "Plugins/ApiGear/Source/ApiGear/Private/ApiGearSettings.cpp"
           overwrite: true
           raw: true
-        - source: "apigear/ApiGearConnectionManager.h"
+        - source: "ApiGear/Source/ApiGear/Public/ApiGearConnectionManager.h"
           target: "Plugins/ApiGear/Source/ApiGear/Public/ApiGearConnectionManager.h"
           overwrite: true
           raw: true
-        - source: "apigear/ApiGearConnectionManager.cpp"
+        - source: "ApiGear/Source/ApiGear/Private/ApiGearConnectionManager.cpp"
           target: "Plugins/ApiGear/Source/ApiGear/Private/ApiGearConnectionManager.cpp"
           overwrite: true
           raw: true
-        - source: "apigear/editor/apigeareditor.Build.cs"
+        - source: "ApiGear/Source/ApiGearEditor/ApiGearEditor.Build.cs"
           target: "Plugins/ApiGear/Source/ApiGearEditor/ApiGearEditor.Build.cs"
           overwrite: true
           raw: true
-        - source: "thirdparty/nlohmann/json.hpp"
+        - source: "ApiGear/Source/ApiGear/ThirdParty/nlohmann/json.hpp"
           target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/nlohmann/json.hpp"
           raw: true
           overwrite: true
-        - source: "thirdparty/jsonrpc/jsonrpc.cpp"
+        - source: "ApiGear/Source/ApiGear/ThirdParty/jsonrpc/jsonrpc.cpp"
           target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/jsonrpc/jsonrpc.cpp"
           raw: true
           overwrite: true
-        - source: "thirdparty/jsonrpc/jsonrpc.h"
+        - source: "ApiGear/Source/ApiGear/ThirdParty/jsonrpc/jsonrpc.h"
           target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/jsonrpc/jsonrpc.h"
           raw: true
           overwrite: true
-        - source: "thirdparty/jsonrpc/rpcprotocol.cpp"
+        - source: "ApiGear/Source/ApiGear/ThirdParty/jsonrpc/rpcprotocol.cpp"
           target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/jsonrpc/rpcprotocol.cpp"
           raw: true
           overwrite: true
-        - source: "thirdparty/jsonrpc/rpcprotocol.h"
+        - source: "ApiGear/Source/ApiGear/ThirdParty/jsonrpc/rpcprotocol.h"
           target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/jsonrpc/rpcprotocol.h"
           raw: true
           overwrite: true
-        - source: "thirdparty/jsonrpc/stdoutlogger.h"
+        - source: "ApiGear/Source/ApiGear/ThirdParty/jsonrpc/stdoutlogger.h"
           target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/jsonrpc/stdoutlogger.h"
           raw: true
           overwrite: true
-        - source: "thirdparty/jsonrpc/types.cpp"
+        - source: "ApiGear/Source/ApiGear/ThirdParty/jsonrpc/types.cpp"
           target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/jsonrpc/types.cpp"
           raw: true
           overwrite: true
-        - source: "thirdparty/jsonrpc/types.h"
+        - source: "ApiGear/Source/ApiGear/ThirdParty/jsonrpc/types.h"
           target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/jsonrpc/types.h"
           raw: true
           overwrite: true
@@ -216,55 +216,55 @@ features:
   wamp:
     system:
       documents:
-        - source: "apigear/unrealwamp.cpp"
+        - source: "ApiGear/Source/ApiGear/Private/unrealwamp.cpp"
           target: "Plugins/ApiGear/Source/ApiGear/Private/unrealwamp.cpp"
           overwrite: true
           raw: true
-        - source: "apigear/unrealwamp.h"
+        - source: "ApiGear/Source/ApiGear/Public/unrealwamp.h"
           target: "Plugins/ApiGear/Source/ApiGear/Public/unrealwamp.h"
           overwrite: true
           raw: true
-        - source: "thirdparty/wamp/listeners.cpp"
+        - source: "ApiGear/Source/ApiGear/ThirdParty/wamp/listeners.cpp"
           target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/wamp/listeners.cpp"
           raw: true
           overwrite: true
-        - source: "thirdparty/wamp/listeners.h"
+        - source: "ApiGear/Source/ApiGear/ThirdParty/wamp/listeners.h"
           target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/wamp/listeners.h"
           raw: true
           overwrite: true
-        - source: "thirdparty/wamp/messages.cpp"
+        - source: "ApiGear/Source/ApiGear/ThirdParty/wamp/messages.cpp"
           target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/wamp/messages.cpp"
           raw: true
           overwrite: true
-        - source: "thirdparty/wamp/messages.h"
+        - source: "ApiGear/Source/ApiGear/ThirdParty/wamp/messages.h"
           target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/wamp/messages.h"
           raw: true
           overwrite: true
-        - source: "thirdparty/wamp/protocol.cpp"
+        - source: "ApiGear/Source/ApiGear/ThirdParty/wamp/protocol.cpp"
           target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/wamp/protocol.cpp"
           raw: true
           overwrite: true
-        - source: "thirdparty/wamp/protocol.h"
+        - source: "ApiGear/Source/ApiGear/ThirdParty/wamp/protocol.h"
           target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/wamp/protocol.h"
           raw: true
           overwrite: true
-        - source: "thirdparty/wamp/session.cpp"
+        - source: "ApiGear/Source/ApiGear/ThirdParty/wamp/session.cpp"
           target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/wamp/session.cpp"
           raw: true
           overwrite: true
-        - source: "thirdparty/wamp/session.h"
+        - source: "ApiGear/Source/ApiGear/ThirdParty/wamp/session.h"
           target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/wamp/session.h"
           raw: true
           overwrite: true
-        - source: "thirdparty/wamp/stdoutlogger.h"
+        - source: "ApiGear/Source/ApiGear/ThirdParty/wamp/stdoutlogger.h"
           target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/wamp/stdoutlogger.h"
           raw: true
           overwrite: true
-        - source: "thirdparty/wamp/types.cpp"
+        - source: "ApiGear/Source/ApiGear/ThirdParty/wamp/types.cpp"
           target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/wamp/types.cpp"
           raw: true
           overwrite: true
-        - source: "thirdparty/wamp/types.h"
+        - source: "ApiGear/Source/ApiGear/ThirdParty/wamp/types.h"
           target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/wamp/types.h"
           raw: true
           overwrite: true
@@ -279,59 +279,59 @@ features:
           overwrite: true
     system:
       documents:
-        - source: "apigear/unrealolink.cpp"
+        - source: "ApiGear/Source/ApiGear/Private/unrealolink.cpp"
           target: "Plugins/ApiGear/Source/ApiGear/Private/unrealolink.cpp"
           overwrite: true
           raw: true
-        - source: "apigear/unrealolink.h"
+        - source: "ApiGear/Source/ApiGear/Public/unrealolink.h"
           target: "Plugins/ApiGear/Source/ApiGear/Public/unrealolink.h"
           overwrite: true
           raw: true
-        - source: "thirdparty/olink/clientnode.h"
+        - source: "ApiGear/Source/ApiGear/ThirdParty/olink/clientnode.h"
           target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/olink/clientnode.h"
           raw: true
           overwrite: true
-        - source: "thirdparty/olink/clientnode.cpp"
+        - source: "ApiGear/Source/ApiGear/ThirdParty/olink/clientnode.cpp"
           target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/olink/clientnode.cpp"
           raw: true
           overwrite: true
-        - source: "thirdparty/olink/remotenode.h"
+        - source: "ApiGear/Source/ApiGear/ThirdParty/olink/remotenode.h"
           target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/olink/remotenode.h"
           raw: true
           overwrite: true
-        - source: "thirdparty/olink/remotenode.cpp"
+        - source: "ApiGear/Source/ApiGear/ThirdParty/olink/remotenode.cpp"
           target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/olink/remotenode.cpp"
           raw: true
           overwrite: true
-        - source: "thirdparty/olink/consolelogger.h"
+        - source: "ApiGear/Source/ApiGear/ThirdParty/olink/consolelogger.h"
           target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/olink/consolelogger.h"
           raw: true
           overwrite: true
-        - source: "thirdparty/olink/consolelogger.cpp"
+        - source: "ApiGear/Source/ApiGear/ThirdParty/olink/consolelogger.cpp"
           target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/olink/consolelogger.cpp"
           raw: true
           overwrite: true
-        - source: "thirdparty/olink/core/node.h"
+        - source: "ApiGear/Source/ApiGear/ThirdParty/olink/core/node.h"
           target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/olink/core/node.h"
           raw: true
           overwrite: true
-        - source: "thirdparty/olink/core/node.cpp"
+        - source: "ApiGear/Source/ApiGear/ThirdParty/olink/core/node.cpp"
           target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/olink/core/node.cpp"
           raw: true
           overwrite: true
-        - source: "thirdparty/olink/core/protocol.h"
+        - source: "ApiGear/Source/ApiGear/ThirdParty/olink/core/protocol.h"
           target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/olink/core/protocol.h"
           raw: true
           overwrite: true
-        - source: "thirdparty/olink/core/protocol.cpp"
+        - source: "ApiGear/Source/ApiGear/ThirdParty/olink/core/protocol.cpp"
           target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/olink/core/protocol.cpp"
           raw: true
           overwrite: true
-        - source: "thirdparty/olink/core/types.h"
+        - source: "ApiGear/Source/ApiGear/ThirdParty/olink/core/types.h"
           target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/olink/core/types.h"
           raw: true
           overwrite: true
-        - source: "thirdparty/olink/core/types.cpp"
+        - source: "ApiGear/Source/ApiGear/ThirdParty/olink/core/types.cpp"
           target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/olink/core/types.cpp"
           raw: true
           overwrite: true
