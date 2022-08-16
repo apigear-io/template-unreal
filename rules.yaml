@@ -156,61 +156,61 @@ features:
           overwrite: true
     module:
       documents:
-        - source: "module/pluginname.Build.cs.liquid"
+        - source: "module/Source/module/pluginname.Build.cs.liquid"
           target: "Plugins/{{module.name|capital}}/Source/{{module.name|capital}}/{{module.name|capital}}.Build.cs"
           overwrite: true
-        - source: "module/pluginname.h.liquid"
+        - source: "module/Source/module/Public/pluginname.h.liquid"
           target: "Plugins/{{module.name|capital}}/Source/{{module.name|capital}}/Public/{{module.name|capital}}.h"
           overwrite: true
-        - source: "module/pluginname.cpp.liquid"
+        - source: "module/Source/module/Private/pluginname.cpp.liquid"
           target: "Plugins/{{module.name|capital}}/Source/{{module.name|capital}}/Private/{{module.name|capital}}.cpp"
           overwrite: true
-        - source: "module/pluginfactory.h.liquid"
+        - source: "module/Source/module/Private/pluginfactory.h.liquid"
           target: "Plugins/{{module.name|capital}}/Source/{{module.name|capital}}/Private/{{module.name|capital}}Factory.h"
           overwrite: true
-        - source: "module/pluginfactory.cpp.liquid"
+        - source: "module/Source/module/Private/pluginfactory.cpp.liquid"
           target: "Plugins/{{module.name|capital}}/Source/{{module.name|capital}}/Private/{{module.name|capital}}Factory.cpp"
           overwrite: true
-        - source: "module/pluginname.uplugin.liquid"
+        - source: "module/Source/module/pluginname.uplugin.liquid"
           target: "Plugins/{{module.name|capital}}/{{module.name|capital}}.uplugin"
           overwrite: true
-        - source: "module/editor/pluginnameeditor.h.liquid"
+        - source: "module/Source/moduleeditor/Public/pluginnameeditor.h.liquid"
           target: "Plugins/{{module.name|capital}}/Source/{{module.name|capital}}Editor/Public/{{module.name|capital}}Editor.h"
           overwrite: true
-        - source: "module/editor/pluginnameeditor.cpp.liquid"
+        - source: "module/Source/moduleeditor/Private/pluginnameeditor.cpp.liquid"
           target: "Plugins/{{module.name|capital}}/Source/{{module.name|capital}}Editor/Private/{{module.name|capital}}Editor.cpp"
           overwrite: true
-        - source: "module/pluginnamesettings.h.liquid"
+        - source: "module/Source/module/Public/pluginnamesettings.h.liquid"
           target: "Plugins/{{module.name|capital}}/Source/{{module.name|capital}}/Public/{{module.name|capital}}Settings.h"
           overwrite: true
-        - source: "module/pluginnamesettings.cpp.liquid"
+        - source: "module/Source/module/Private/pluginnamesettings.cpp.liquid"
           target: "Plugins/{{module.name|capital}}/Source/{{module.name|capital}}/Private/{{module.name|capital}}Settings.cpp"
           overwrite: true
-        - source: "module/editor/pluginnameeditor.Build.cs.liquid"
+        - source: "module/Source/moduleeditor/pluginnameeditor.Build.cs.liquid"
           target: "Plugins/{{module.name|capital}}/Source/{{module.name|capital}}Editor/{{module.name|capital}}Editor.Build.cs"
           overwrite: true
     interface:
       documents:
-        - source: "module/interface/proxy.h.liquid"
+        - source: "module/Source/module/Public/proxy.h.liquid"
           target: "Plugins/{{module.name|capital}}/Source/{{module.name|capital}}/Public/{{module.name|capital}}{{interface.name|capital}}Proxy.h"
           overwrite: true
-        - source: "module/interface/proxy.cpp.liquid"
+        - source: "module/Source/module/Private/proxy.cpp.liquid"
           target: "Plugins/{{module.name|capital}}/Source/{{module.name|capital}}/Private/{{module.name|capital}}{{interface.name|capital}}Proxy.cpp"
           overwrite: true
-        - source: "module/interface/local/service.h.liquid"
+        - source: "module/Source/module/Private/interface/local.h.liquid"
           target: "Plugins/{{module.name|capital}}/Source/{{module.name|capital}}/Private/{{interface.name|capital}}/{{module.name|capital}}{{interface.name|capital}}Local.h"
-        - source: "module/interface/local/service.cpp.liquid"
+        - source: "module/Source/module/Private/interface/local.cpp.liquid"
           target: "Plugins/{{module.name|capital}}/Source/{{module.name|capital}}/Private/{{interface.name|capital}}/{{module.name|capital}}{{interface.name|capital}}Local.cpp"
-        - source: "module/interface/wamp/service.h.liquid"
+        - source: "module/Source/module/Private/interface/wamp.h.liquid"
           target: "Plugins/{{module.name|capital}}/Source/{{module.name|capital}}/Private/{{interface.name|capital}}/{{module.name|capital}}{{interface.name|capital}}WAMP.h"
           overwrite: true
-        - source: "module/interface/wamp/service.cpp.liquid"
+        - source: "module/Source/module/Private/interface/wamp.cpp.liquid"
           target: "Plugins/{{module.name|capital}}/Source/{{module.name|capital}}/Private/{{interface.name|capital}}/{{module.name|capital}}{{interface.name|capital}}WAMP.cpp"
           overwrite: true
-        - source: "module/interface/simulation/service.h.liquid"
+        - source: "module/Source/module/Private/interface/simulation.h.liquid"
           target: "Plugins/{{module.name|capital}}/Source/{{module.name|capital}}/Private/{{interface.name|capital}}/{{module.name|capital}}{{interface.name|capital}}Simulation.h"
           overwrite: true
-        - source: "module/interface/simulation/service.cpp.liquid"
+        - source: "module/Source/module/Private/interface/simulation.cpp.liquid"
           target: "Plugins/{{module.name|capital}}/Source/{{module.name|capital}}/Private/{{interface.name|capital}}/{{module.name|capital}}{{interface.name|capital}}Simulation.cpp"
           overwrite: true
   wamp:
