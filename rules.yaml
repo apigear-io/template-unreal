@@ -201,12 +201,6 @@ features:
           target: "Plugins/{{module.name|capital}}/Source/{{module.name|capital}}/Private/{{interface.name|capital}}/{{module.name|capital}}{{interface.name|capital}}Local.h"
         - source: "module/Source/module/Private/interface/local.cpp.liquid"
           target: "Plugins/{{module.name|capital}}/Source/{{module.name|capital}}/Private/{{interface.name|capital}}/{{module.name|capital}}{{interface.name|capital}}Local.cpp"
-        - source: "module/Source/module/Private/interface/wamp.h.liquid"
-          target: "Plugins/{{module.name|capital}}/Source/{{module.name|capital}}/Private/{{interface.name|capital}}/{{module.name|capital}}{{interface.name|capital}}WAMP.h"
-          overwrite: true
-        - source: "module/Source/module/Private/interface/wamp.cpp.liquid"
-          target: "Plugins/{{module.name|capital}}/Source/{{module.name|capital}}/Private/{{interface.name|capital}}/{{module.name|capital}}{{interface.name|capital}}WAMP.cpp"
-          overwrite: true
         - source: "module/Source/module/Private/interface/simulation.h.liquid"
           target: "Plugins/{{module.name|capital}}/Source/{{module.name|capital}}/Private/{{interface.name|capital}}/{{module.name|capital}}{{interface.name|capital}}Simulation.h"
           overwrite: true
@@ -214,6 +208,14 @@ features:
           target: "Plugins/{{module.name|capital}}/Source/{{module.name|capital}}/Private/{{interface.name|capital}}/{{module.name|capital}}{{interface.name|capital}}Simulation.cpp"
           overwrite: true
   wamp:
+    interface:
+      documents:
+        - source: "module/Source/module/Private/interface/wamp.h.liquid"
+          target: "Plugins/{{module.name|capital}}/Source/{{module.name|capital}}/Private/{{interface.name|capital}}/{{module.name|capital}}{{interface.name|capital}}WAMP.h"
+          overwrite: true
+        - source: "module/Source/module/Private/interface/wamp.cpp.liquid"
+          target: "Plugins/{{module.name|capital}}/Source/{{module.name|capital}}/Private/{{interface.name|capital}}/{{module.name|capital}}{{interface.name|capital}}WAMP.cpp"
+          overwrite: true
     system:
       documents:
         - source: "ApiGear/Source/ApiGear/Private/unrealwamp.cpp"
