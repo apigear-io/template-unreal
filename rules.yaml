@@ -2,25 +2,25 @@ features:
   api:
     module:
       documents:
-        - source: "module/apig/module.h.liquid"
+        - source: "module/Source/module/Public/apig/module.h.liquid"
           target: "Plugins/{{module.name|capital}}/Source/{{module.name|capital}}/Public/apig/{{module.name|capital}}_apig.h"
           overwrite: true
-        - source: "module/apig/module.cpp.liquid"
+        - source: "module/Source/module/Private/apig/module.cpp.liquid"
           target: "Plugins/{{module.name|capital}}/Source/{{module.name|capital}}/Private/apig/{{module.name|capital}}_apig.cpp"
           overwrite: true
-        - source: "module/apig/trace.h.liquid"
+        - source: "module/Source/module/Private/apig/trace.h.liquid"
           target: "Plugins/{{module.name|capital}}/Source/{{module.name|capital}}/Private/apig/{{module.name|capital}}.trace.h"
           overwrite: true
-        - source: "module/apig/trace.cpp.liquid"
+        - source: "module/Source/module/Private/apig/trace.cpp.liquid"
           target: "Plugins/{{module.name|capital}}/Source/{{module.name|capital}}/Private/apig/{{module.name|capital}}.trace.cpp"
           overwrite: true
-        - source: "module/apig/json.adapter.h.liquid"
+        - source: "module/Source/module/Private/apig/json.adapter.h.liquid"
           target: "Plugins/{{module.name|capital}}/Source/{{module.name|capital}}/Private/apig/{{module.name|capital}}.json.adapter.h"
           overwrite: true
-        - source: "module/apig/data.h.liquid"
+        - source: "module/Source/module/Public/apig/data.h.liquid"
           target: "Plugins/{{module.name|capital}}/Source/{{module.name|capital}}/Public/apig/{{module.name|capital}}_data.h"
           overwrite: true
-        - source: "module/apig/data.cpp.liquid"
+        - source: "module/Source/module/Private/apig/data.cpp.liquid"
           target: "Plugins/{{module.name|capital}}/Source/{{module.name|capital}}/Private/apig/{{module.name|capital}}_data.cpp"
           overwrite: true
   scaffold:
