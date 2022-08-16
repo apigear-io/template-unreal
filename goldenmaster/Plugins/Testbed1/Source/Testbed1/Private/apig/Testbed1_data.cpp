@@ -18,7 +18,7 @@ limitations under the License.
 #include "Testbed1_data.h"
 bool FTestbed1StructBool::operator==(const FTestbed1StructBool& rhs) const
 {
-	return(fieldBool == rhs.fieldBool);
+	return (fieldBool == rhs.fieldBool);
 }
 
 bool FTestbed1StructBool::operator!=(const FTestbed1StructBool& rhs) const
@@ -27,7 +27,7 @@ bool FTestbed1StructBool::operator!=(const FTestbed1StructBool& rhs) const
 }
 bool FTestbed1StructInt::operator==(const FTestbed1StructInt& rhs) const
 {
-	return(fieldInt == rhs.fieldInt);
+	return (fieldInt == rhs.fieldInt);
 }
 
 bool FTestbed1StructInt::operator!=(const FTestbed1StructInt& rhs) const
@@ -36,7 +36,7 @@ bool FTestbed1StructInt::operator!=(const FTestbed1StructInt& rhs) const
 }
 bool FTestbed1StructFloat::operator==(const FTestbed1StructFloat& rhs) const
 {
-	return(fieldFloat == rhs.fieldFloat);
+	return (fieldFloat == rhs.fieldFloat);
 }
 
 bool FTestbed1StructFloat::operator!=(const FTestbed1StructFloat& rhs) const
@@ -45,7 +45,7 @@ bool FTestbed1StructFloat::operator!=(const FTestbed1StructFloat& rhs) const
 }
 bool FTestbed1StructString::operator==(const FTestbed1StructString& rhs) const
 {
-	return(fieldString == rhs.fieldString);
+	return (fieldString == rhs.fieldString);
 }
 
 bool FTestbed1StructString::operator!=(const FTestbed1StructString& rhs) const

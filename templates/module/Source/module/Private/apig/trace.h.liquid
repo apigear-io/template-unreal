@@ -10,16 +10,16 @@
 class {{class}}
 {
 public:
-  {{class}}();
-  static void capture_state(I{{module.name | capital}}{{interface.name|capital}}Interface* obj);
-  {% for property in interface.properties %}
-  static void trace_callSet{{property.name | capital}}({{property|unrealParam: moduleCapital, 'In'}});
-  {% endfor %}
-  {% for signal in interface.signals %}
-  static void trace_signal{{signal.name|capital}}({{signal | unrealParams: moduleCapital}});
-  {% endfor %}
-  {% for operation in interface.operations %}
-  static void trace_call{{operation.name|capital}}({{operation | unrealParams: moduleCapital}});
-  {% endfor %}
+	{{class}}();
+	static void capture_state(I{{module.name | capital}}{{interface.name|capital}}Interface* obj);
+	{% for property in interface.properties %}
+	static void trace_callSet{{property.name | capital}}({{property|unrealParam: moduleCapital, 'In'}});
+	{% endfor %}
+	{% for signal in interface.signals %}
+	static void trace_signal{{signal.name|capital}}({{signal | unrealParams: moduleCapital}});
+	{% endfor %}
+	{% for operation in interface.operations %}
+	static void trace_call{{operation.name|capital}}({{operation | unrealParams: moduleCapital}});
+	{% endfor %}
 };
 {% endfor %}

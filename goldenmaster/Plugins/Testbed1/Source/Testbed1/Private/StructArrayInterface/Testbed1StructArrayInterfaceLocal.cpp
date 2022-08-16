@@ -17,15 +17,18 @@ limitations under the License.
 
 #include "Testbed1StructArrayInterfaceLocal.h"
 
-namespace Testbed1 {
-namespace StructArrayInterface {
-namespace Private {
+namespace Testbed1
+{
+namespace StructArrayInterface
+{
+namespace Private
+{
 LocalService::LocalService()
-    : ITestbed1StructArrayInterfaceInterface()
-    , PropBool(TArray<FTestbed1StructBool>())
-    , PropInt(TArray<FTestbed1StructInt>())
-    , PropFloat(TArray<FTestbed1StructFloat>())
-    , PropString(TArray<FTestbed1StructString>())
+	: ITestbed1StructArrayInterfaceInterface()
+	, PropBool(TArray<FTestbed1StructBool>())
+	, PropInt(TArray<FTestbed1StructInt>())
+	, PropFloat(TArray<FTestbed1StructFloat>())
+	, PropString(TArray<FTestbed1StructString>())
 {
 }
 LocalService::~LocalService()
@@ -34,120 +37,120 @@ LocalService::~LocalService()
 
 FTestbed1StructArrayInterfaceSigBoolDelegate& LocalService::GetSigBoolSignalDelegate()
 {
-    return SigBoolSignal;
+	return SigBoolSignal;
 }
 
 FTestbed1StructArrayInterfaceSigIntDelegate& LocalService::GetSigIntSignalDelegate()
 {
-    return SigIntSignal;
+	return SigIntSignal;
 }
 
 FTestbed1StructArrayInterfaceSigFloatDelegate& LocalService::GetSigFloatSignalDelegate()
 {
-    return SigFloatSignal;
+	return SigFloatSignal;
 }
 
 FTestbed1StructArrayInterfaceSigStringDelegate& LocalService::GetSigStringSignalDelegate()
 {
-    return SigStringSignal;
+	return SigStringSignal;
 }
 
 TArray<FTestbed1StructBool> LocalService::GetPropBool() const
 {
-    return PropBool;
+	return PropBool;
 }
 
 void LocalService::SetPropBool(const TArray<FTestbed1StructBool>& InPropBool)
 {
-    if(PropBool != InPropBool)
-    {
-        PropBool = InPropBool;
-        PropBoolChanged.Broadcast(PropBool);
-    }
+	if (PropBool != InPropBool)
+	{
+		PropBool = InPropBool;
+		PropBoolChanged.Broadcast(PropBool);
+	}
 }
 
 FTestbed1StructArrayInterfacePropBoolChangedDelegate& LocalService::GetPropBoolChangedDelegate()
 {
-    return PropBoolChanged;
+	return PropBoolChanged;
 }
 TArray<FTestbed1StructInt> LocalService::GetPropInt() const
 {
-    return PropInt;
+	return PropInt;
 }
 
 void LocalService::SetPropInt(const TArray<FTestbed1StructInt>& InPropInt)
 {
-    if(PropInt != InPropInt)
-    {
-        PropInt = InPropInt;
-        PropIntChanged.Broadcast(PropInt);
-    }
+	if (PropInt != InPropInt)
+	{
+		PropInt = InPropInt;
+		PropIntChanged.Broadcast(PropInt);
+	}
 }
 
 FTestbed1StructArrayInterfacePropIntChangedDelegate& LocalService::GetPropIntChangedDelegate()
 {
-    return PropIntChanged;
+	return PropIntChanged;
 }
 TArray<FTestbed1StructFloat> LocalService::GetPropFloat() const
 {
-    return PropFloat;
+	return PropFloat;
 }
 
 void LocalService::SetPropFloat(const TArray<FTestbed1StructFloat>& InPropFloat)
 {
-    if(PropFloat != InPropFloat)
-    {
-        PropFloat = InPropFloat;
-        PropFloatChanged.Broadcast(PropFloat);
-    }
+	if (PropFloat != InPropFloat)
+	{
+		PropFloat = InPropFloat;
+		PropFloatChanged.Broadcast(PropFloat);
+	}
 }
 
 FTestbed1StructArrayInterfacePropFloatChangedDelegate& LocalService::GetPropFloatChangedDelegate()
 {
-    return PropFloatChanged;
+	return PropFloatChanged;
 }
 TArray<FTestbed1StructString> LocalService::GetPropString() const
 {
-    return PropString;
+	return PropString;
 }
 
 void LocalService::SetPropString(const TArray<FTestbed1StructString>& InPropString)
 {
-    if(PropString != InPropString)
-    {
-        PropString = InPropString;
-        PropStringChanged.Broadcast(PropString);
-    }
+	if (PropString != InPropString)
+	{
+		PropString = InPropString;
+		PropStringChanged.Broadcast(PropString);
+	}
 }
 
 FTestbed1StructArrayInterfacePropStringChangedDelegate& LocalService::GetPropStringChangedDelegate()
 {
-    return PropStringChanged;
+	return PropStringChanged;
 }
 
 FTestbed1StructBool LocalService::FuncBool(const TArray<FTestbed1StructBool>& ParamBool)
 {
-    (void) ParamBool;
-    // do business logic here
-    return FTestbed1StructBool();
+	(void)ParamBool;
+	// do business logic here
+	return FTestbed1StructBool();
 }
 FTestbed1StructBool LocalService::FuncInt(const TArray<FTestbed1StructInt>& ParamInt)
 {
-    (void) ParamInt;
-    // do business logic here
-    return FTestbed1StructBool();
+	(void)ParamInt;
+	// do business logic here
+	return FTestbed1StructBool();
 }
 FTestbed1StructBool LocalService::FuncFloat(const TArray<FTestbed1StructFloat>& ParamFloat)
 {
-    (void) ParamFloat;
-    // do business logic here
-    return FTestbed1StructBool();
+	(void)ParamFloat;
+	// do business logic here
+	return FTestbed1StructBool();
 }
 FTestbed1StructBool LocalService::FuncString(const TArray<FTestbed1StructString>& ParamString)
 {
-    (void) ParamString;
-    // do business logic here
-    return FTestbed1StructBool();
+	(void)ParamString;
+	// do business logic here
+	return FTestbed1StructBool();
 }
 
 } // namespace Private

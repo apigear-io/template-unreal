@@ -10,11 +10,9 @@ class FMenuBuilder;
 class FApiGearEditorModule : public IModuleInterface
 {
 public:
-
 	/** IModuleInterface implementation */
 	virtual void StartupModule() override;
 	virtual void ShutdownModule() override;
-
 
 	void PluginButtonClicked();
 

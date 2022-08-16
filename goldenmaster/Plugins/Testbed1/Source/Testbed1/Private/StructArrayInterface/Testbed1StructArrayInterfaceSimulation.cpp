@@ -27,356 +27,362 @@ limitations under the License.
 
 using namespace ApiGear::JSONRPC;
 
-namespace Testbed1 {
-namespace StructArrayInterface {
-namespace Private {
-SimulationService::SimulationService()
-    : ITestbed1StructArrayInterfaceInterface()
-    , PropBool(TArray<FTestbed1StructBool>())
-    , PropInt(TArray<FTestbed1StructInt>())
-    , PropFloat(TArray<FTestbed1StructFloat>())
-    , PropString(TArray<FTestbed1StructString>())
+namespace Testbed1
 {
-    UApiGearConnectionManager* AGCM = nullptr;
-    if (GEngine != nullptr)
-    {
-        AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-    }
-    NotifyRequestFunc StructArrayInterfaceStateChangedFunc = [this](NotifyRequestArg arg)
-    {
-        const json fields = arg.params;
-        if(fields.contains("propBool")) {
-            if(PropBool != fields["propBool"].get<TArray<FTestbed1StructBool>>())
-            {
-                PropBool = fields["propBool"].get<TArray<FTestbed1StructBool>>();
-                PropBoolChanged.Broadcast(PropBool);
-            }
-        }
-        if(fields.contains("propInt")) {
-            if(PropInt != fields["propInt"].get<TArray<FTestbed1StructInt>>())
-            {
-                PropInt = fields["propInt"].get<TArray<FTestbed1StructInt>>();
-                PropIntChanged.Broadcast(PropInt);
-            }
-        }
-        if(fields.contains("propFloat")) {
-            if(PropFloat != fields["propFloat"].get<TArray<FTestbed1StructFloat>>())
-            {
-                PropFloat = fields["propFloat"].get<TArray<FTestbed1StructFloat>>();
-                PropFloatChanged.Broadcast(PropFloat);
-            }
-        }
-        if(fields.contains("propString")) {
-            if(PropString != fields["propString"].get<TArray<FTestbed1StructString>>())
-            {
-                PropString = fields["propString"].get<TArray<FTestbed1StructString>>();
-                PropStringChanged.Broadcast(PropString);
-            }
-        }
-    };
-    if(AGCM != nullptr)
-    {   
-        AGCM->GetSimulationConnection()->Connect();
-        AGCM->GetSimulationConnection()->onNotifyState("testbed1/StructArrayInterface", StructArrayInterfaceStateChangedFunc);
-    }
+namespace StructArrayInterface
+{
+namespace Private
+{
+SimulationService::SimulationService()
+	: ITestbed1StructArrayInterfaceInterface()
+	, PropBool(TArray<FTestbed1StructBool>())
+	, PropInt(TArray<FTestbed1StructInt>())
+	, PropFloat(TArray<FTestbed1StructFloat>())
+	, PropString(TArray<FTestbed1StructString>())
+{
+	UApiGearConnectionManager* AGCM = nullptr;
+	if (GEngine != nullptr)
+	{
+		AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+	}
+	NotifyRequestFunc StructArrayInterfaceStateChangedFunc = [this](NotifyRequestArg arg)
+	{
+		const json fields = arg.params;
+		if (fields.contains("propBool"))
+		{
+			if (PropBool != fields["propBool"].get<TArray<FTestbed1StructBool>>())
+			{
+				PropBool = fields["propBool"].get<TArray<FTestbed1StructBool>>();
+				PropBoolChanged.Broadcast(PropBool);
+			}
+		}
+		if (fields.contains("propInt"))
+		{
+			if (PropInt != fields["propInt"].get<TArray<FTestbed1StructInt>>())
+			{
+				PropInt = fields["propInt"].get<TArray<FTestbed1StructInt>>();
+				PropIntChanged.Broadcast(PropInt);
+			}
+		}
+		if (fields.contains("propFloat"))
+		{
+			if (PropFloat != fields["propFloat"].get<TArray<FTestbed1StructFloat>>())
+			{
+				PropFloat = fields["propFloat"].get<TArray<FTestbed1StructFloat>>();
+				PropFloatChanged.Broadcast(PropFloat);
+			}
+		}
+		if (fields.contains("propString"))
+		{
+			if (PropString != fields["propString"].get<TArray<FTestbed1StructString>>())
+			{
+				PropString = fields["propString"].get<TArray<FTestbed1StructString>>();
+				PropStringChanged.Broadcast(PropString);
+			}
+		}
+	};
+	if (AGCM != nullptr)
+	{
+		AGCM->GetSimulationConnection()->Connect();
+		AGCM->GetSimulationConnection()->onNotifyState("testbed1/StructArrayInterface", StructArrayInterfaceStateChangedFunc);
+	}
 
-    CallResponseFunc GetStructArrayInterfaceStateFunc = [this](CallResponseArg arg)
-    {
-        if(arg.result.size() != 1) {
-          return;
-        }
-        const json fields = arg.result;
-        if(fields.contains("propBool")) {
-            if(PropBool != fields["propBool"].get<TArray<FTestbed1StructBool>>())
-            {
-                PropBool = fields["propBool"].get<TArray<FTestbed1StructBool>>();
-                PropBoolChanged.Broadcast(PropBool);
-            }
-        }
-        if(fields.contains("propInt")) {
-            if(PropInt != fields["propInt"].get<TArray<FTestbed1StructInt>>())
-            {
-                PropInt = fields["propInt"].get<TArray<FTestbed1StructInt>>();
-                PropIntChanged.Broadcast(PropInt);
-            }
-        }
-        if(fields.contains("propFloat")) {
-            if(PropFloat != fields["propFloat"].get<TArray<FTestbed1StructFloat>>())
-            {
-                PropFloat = fields["propFloat"].get<TArray<FTestbed1StructFloat>>();
-                PropFloatChanged.Broadcast(PropFloat);
-            }
-        }
-        if(fields.contains("propString")) {
-            if(PropString != fields["propString"].get<TArray<FTestbed1StructString>>())
-            {
-                PropString = fields["propString"].get<TArray<FTestbed1StructString>>();
-                PropStringChanged.Broadcast(PropString);
-            }
-        }
-    };
-    if(AGCM != nullptr)
-    {
-        AGCM->GetSimulationConnection()->doFetchState("testbed1/StructArrayInterface", GetStructArrayInterfaceStateFunc);
-    }
+	CallResponseFunc GetStructArrayInterfaceStateFunc = [this](CallResponseArg arg)
+	{
+		if (arg.result.size() != 1)
+		{
+			return;
+		}
+		const json fields = arg.result;
+		if (fields.contains("propBool"))
+		{
+			if (PropBool != fields["propBool"].get<TArray<FTestbed1StructBool>>())
+			{
+				PropBool = fields["propBool"].get<TArray<FTestbed1StructBool>>();
+				PropBoolChanged.Broadcast(PropBool);
+			}
+		}
+		if (fields.contains("propInt"))
+		{
+			if (PropInt != fields["propInt"].get<TArray<FTestbed1StructInt>>())
+			{
+				PropInt = fields["propInt"].get<TArray<FTestbed1StructInt>>();
+				PropIntChanged.Broadcast(PropInt);
+			}
+		}
+		if (fields.contains("propFloat"))
+		{
+			if (PropFloat != fields["propFloat"].get<TArray<FTestbed1StructFloat>>())
+			{
+				PropFloat = fields["propFloat"].get<TArray<FTestbed1StructFloat>>();
+				PropFloatChanged.Broadcast(PropFloat);
+			}
+		}
+		if (fields.contains("propString"))
+		{
+			if (PropString != fields["propString"].get<TArray<FTestbed1StructString>>())
+			{
+				PropString = fields["propString"].get<TArray<FTestbed1StructString>>();
+				PropStringChanged.Broadcast(PropString);
+			}
+		}
+	};
+	if (AGCM != nullptr)
+	{
+		AGCM->GetSimulationConnection()->doFetchState("testbed1/StructArrayInterface", GetStructArrayInterfaceStateFunc);
+	}
 
-    // register notification callback functions, signal/event -> fcn
-    NotifyRequestFunc sigBoolFunc = [this](NotifyRequestArg arg)
-    {
-        const json fields = arg.params;
-        if(fields.contains("paramBool"))
-        {
-            SigBoolSignal.Broadcast(fields["paramBool"].get<TArray<FTestbed1StructBool>>());
-        }
-    };
-    if(AGCM != nullptr)
-    {
-        AGCM->GetSimulationConnection()->onNotify("testbed1/StructArrayInterface#sigBool", sigBoolFunc);
-    }
+	// register notification callback functions, signal/event -> fcn
+	NotifyRequestFunc sigBoolFunc = [this](NotifyRequestArg arg)
+	{
+		const json fields = arg.params;
+		if (fields.contains("paramBool"))
+		{
+			SigBoolSignal.Broadcast(fields["paramBool"].get<TArray<FTestbed1StructBool>>());
+		}
+	};
+	if (AGCM != nullptr)
+	{
+		AGCM->GetSimulationConnection()->onNotify("testbed1/StructArrayInterface#sigBool", sigBoolFunc);
+	}
 
-    NotifyRequestFunc sigIntFunc = [this](NotifyRequestArg arg)
-    {
-        const json fields = arg.params;
-        if(fields.contains("paramInt"))
-        {
-            SigIntSignal.Broadcast(fields["paramInt"].get<TArray<FTestbed1StructInt>>());
-        }
-    };
-    if(AGCM != nullptr)
-    {
-        AGCM->GetSimulationConnection()->onNotify("testbed1/StructArrayInterface#sigInt", sigIntFunc);
-    }
+	NotifyRequestFunc sigIntFunc = [this](NotifyRequestArg arg)
+	{
+		const json fields = arg.params;
+		if (fields.contains("paramInt"))
+		{
+			SigIntSignal.Broadcast(fields["paramInt"].get<TArray<FTestbed1StructInt>>());
+		}
+	};
+	if (AGCM != nullptr)
+	{
+		AGCM->GetSimulationConnection()->onNotify("testbed1/StructArrayInterface#sigInt", sigIntFunc);
+	}
 
-    NotifyRequestFunc sigFloatFunc = [this](NotifyRequestArg arg)
-    {
-        const json fields = arg.params;
-        if(fields.contains("paramFloat"))
-        {
-            SigFloatSignal.Broadcast(fields["paramFloat"].get<TArray<FTestbed1StructFloat>>());
-        }
-    };
-    if(AGCM != nullptr)
-    {
-        AGCM->GetSimulationConnection()->onNotify("testbed1/StructArrayInterface#sigFloat", sigFloatFunc);
-    }
+	NotifyRequestFunc sigFloatFunc = [this](NotifyRequestArg arg)
+	{
+		const json fields = arg.params;
+		if (fields.contains("paramFloat"))
+		{
+			SigFloatSignal.Broadcast(fields["paramFloat"].get<TArray<FTestbed1StructFloat>>());
+		}
+	};
+	if (AGCM != nullptr)
+	{
+		AGCM->GetSimulationConnection()->onNotify("testbed1/StructArrayInterface#sigFloat", sigFloatFunc);
+	}
 
-    NotifyRequestFunc sigStringFunc = [this](NotifyRequestArg arg)
-    {
-        const json fields = arg.params;
-        if(fields.contains("paramString"))
-        {
-            SigStringSignal.Broadcast(fields["paramString"].get<TArray<FTestbed1StructString>>());
-        }
-    };
-    if(AGCM != nullptr)
-    {
-        AGCM->GetSimulationConnection()->onNotify("testbed1/StructArrayInterface#sigString", sigStringFunc);
-    }
-
+	NotifyRequestFunc sigStringFunc = [this](NotifyRequestArg arg)
+	{
+		const json fields = arg.params;
+		if (fields.contains("paramString"))
+		{
+			SigStringSignal.Broadcast(fields["paramString"].get<TArray<FTestbed1StructString>>());
+		}
+	};
+	if (AGCM != nullptr)
+	{
+		AGCM->GetSimulationConnection()->onNotify("testbed1/StructArrayInterface#sigString", sigStringFunc);
+	}
 }
 
 SimulationService::~SimulationService()
 {
-    if (GEngine != nullptr)
-    {
-        UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-        AGCM->GetSimulationConnection()->RemoveOnNotifyState("testbed1/StructArrayInterface");
-        // unregister notification callback functions
-        AGCM->GetSimulationConnection()->RemoveOnNotify("testbed1/StructArrayInterface#sigBool");
-        AGCM->GetSimulationConnection()->RemoveOnNotify("testbed1/StructArrayInterface#sigInt");
-        AGCM->GetSimulationConnection()->RemoveOnNotify("testbed1/StructArrayInterface#sigFloat");
-        AGCM->GetSimulationConnection()->RemoveOnNotify("testbed1/StructArrayInterface#sigString");
-    }
+	if (GEngine != nullptr)
+	{
+		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+		AGCM->GetSimulationConnection()->RemoveOnNotifyState("testbed1/StructArrayInterface");
+		// unregister notification callback functions
+		AGCM->GetSimulationConnection()->RemoveOnNotify("testbed1/StructArrayInterface#sigBool");
+		AGCM->GetSimulationConnection()->RemoveOnNotify("testbed1/StructArrayInterface#sigInt");
+		AGCM->GetSimulationConnection()->RemoveOnNotify("testbed1/StructArrayInterface#sigFloat");
+		AGCM->GetSimulationConnection()->RemoveOnNotify("testbed1/StructArrayInterface#sigString");
+	}
 }
 
 FTestbed1StructArrayInterfaceSigBoolDelegate& SimulationService::GetSigBoolSignalDelegate()
 {
-    return SigBoolSignal;
+	return SigBoolSignal;
 }
 
 FTestbed1StructArrayInterfaceSigIntDelegate& SimulationService::GetSigIntSignalDelegate()
 {
-    return SigIntSignal;
+	return SigIntSignal;
 }
 
 FTestbed1StructArrayInterfaceSigFloatDelegate& SimulationService::GetSigFloatSignalDelegate()
 {
-    return SigFloatSignal;
+	return SigFloatSignal;
 }
 
 FTestbed1StructArrayInterfaceSigStringDelegate& SimulationService::GetSigStringSignalDelegate()
 {
-    return SigStringSignal;
+	return SigStringSignal;
 }
 
 TArray<FTestbed1StructBool> SimulationService::GetPropBool() const
 {
-    return PropBool;
+	return PropBool;
 }
 
 void SimulationService::SetPropBool(const TArray<FTestbed1StructBool>& InPropBool)
 {
-    Params params;
-    params["propBool"] = InPropBool;
-    if (GEngine != nullptr)
-    {
-        UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-        AGCM->GetSimulationConnection()->doCall("testbed1/StructArrayInterface", "_set", params);
-    }
+	Params params;
+	params["propBool"] = InPropBool;
+	if (GEngine != nullptr)
+	{
+		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+		AGCM->GetSimulationConnection()->doCall("testbed1/StructArrayInterface", "_set", params);
+	}
 }
 
 FTestbed1StructArrayInterfacePropBoolChangedDelegate& SimulationService::GetPropBoolChangedDelegate()
 {
-    return PropBoolChanged;
+	return PropBoolChanged;
 }
 
 TArray<FTestbed1StructInt> SimulationService::GetPropInt() const
 {
-    return PropInt;
+	return PropInt;
 }
 
 void SimulationService::SetPropInt(const TArray<FTestbed1StructInt>& InPropInt)
 {
-    Params params;
-    params["propInt"] = InPropInt;
-    if (GEngine != nullptr)
-    {
-        UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-        AGCM->GetSimulationConnection()->doCall("testbed1/StructArrayInterface", "_set", params);
-    }
+	Params params;
+	params["propInt"] = InPropInt;
+	if (GEngine != nullptr)
+	{
+		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+		AGCM->GetSimulationConnection()->doCall("testbed1/StructArrayInterface", "_set", params);
+	}
 }
 
 FTestbed1StructArrayInterfacePropIntChangedDelegate& SimulationService::GetPropIntChangedDelegate()
 {
-    return PropIntChanged;
+	return PropIntChanged;
 }
 
 TArray<FTestbed1StructFloat> SimulationService::GetPropFloat() const
 {
-    return PropFloat;
+	return PropFloat;
 }
 
 void SimulationService::SetPropFloat(const TArray<FTestbed1StructFloat>& InPropFloat)
 {
-    Params params;
-    params["propFloat"] = InPropFloat;
-    if (GEngine != nullptr)
-    {
-        UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-        AGCM->GetSimulationConnection()->doCall("testbed1/StructArrayInterface", "_set", params);
-    }
+	Params params;
+	params["propFloat"] = InPropFloat;
+	if (GEngine != nullptr)
+	{
+		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+		AGCM->GetSimulationConnection()->doCall("testbed1/StructArrayInterface", "_set", params);
+	}
 }
 
 FTestbed1StructArrayInterfacePropFloatChangedDelegate& SimulationService::GetPropFloatChangedDelegate()
 {
-    return PropFloatChanged;
+	return PropFloatChanged;
 }
 
 TArray<FTestbed1StructString> SimulationService::GetPropString() const
 {
-    return PropString;
+	return PropString;
 }
 
 void SimulationService::SetPropString(const TArray<FTestbed1StructString>& InPropString)
 {
-    Params params;
-    params["propString"] = InPropString;
-    if (GEngine != nullptr)
-    {
-        UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-        AGCM->GetSimulationConnection()->doCall("testbed1/StructArrayInterface", "_set", params);
-    }
+	Params params;
+	params["propString"] = InPropString;
+	if (GEngine != nullptr)
+	{
+		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+		AGCM->GetSimulationConnection()->doCall("testbed1/StructArrayInterface", "_set", params);
+	}
 }
 
 FTestbed1StructArrayInterfacePropStringChangedDelegate& SimulationService::GetPropStringChangedDelegate()
 {
-    return PropStringChanged;
+	return PropStringChanged;
 }
 
 FTestbed1StructBool SimulationService::FuncBool(const TArray<FTestbed1StructBool>& ParamBool)
 {
-    Params params;
-    params["paramBool"] = ParamBool;
-    TPromise<FTestbed1StructBool> Promise;
-    Async(EAsyncExecution::Thread, [params, &Promise]()
-    {
-        CallResponseFunc GetStructArrayInterfaceStateFunc = [&Promise](CallResponseArg arg)
-        {
-            Promise.SetValue(arg.result.get<FTestbed1StructBool>());
-        };
-        if (GEngine != nullptr)
-        {
-            UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-            AGCM->GetSimulationConnection()->doCall("testbed1/StructArrayInterface", "funcBool", params, GetStructArrayInterfaceStateFunc);
-        }
-    });
+	Params params;
+	params["paramBool"] = ParamBool;
+	TPromise<FTestbed1StructBool> Promise;
+	Async(EAsyncExecution::Thread,
+		[params, &Promise]()
+		{
+			CallResponseFunc GetStructArrayInterfaceStateFunc = [&Promise](CallResponseArg arg)
+			{ Promise.SetValue(arg.result.get<FTestbed1StructBool>()); };
+			if (GEngine != nullptr)
+			{
+				UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+				AGCM->GetSimulationConnection()->doCall("testbed1/StructArrayInterface", "funcBool", params, GetStructArrayInterfaceStateFunc);
+			}
+		});
 
-    return Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
 
 FTestbed1StructBool SimulationService::FuncInt(const TArray<FTestbed1StructInt>& ParamInt)
 {
-    Params params;
-    params["paramInt"] = ParamInt;
-    TPromise<FTestbed1StructBool> Promise;
-    Async(EAsyncExecution::Thread, [params, &Promise]()
-    {
-        CallResponseFunc GetStructArrayInterfaceStateFunc = [&Promise](CallResponseArg arg)
-        {
-            Promise.SetValue(arg.result.get<FTestbed1StructBool>());
-        };
-        if (GEngine != nullptr)
-        {
-            UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-            AGCM->GetSimulationConnection()->doCall("testbed1/StructArrayInterface", "funcInt", params, GetStructArrayInterfaceStateFunc);
-        }
-    });
+	Params params;
+	params["paramInt"] = ParamInt;
+	TPromise<FTestbed1StructBool> Promise;
+	Async(EAsyncExecution::Thread,
+		[params, &Promise]()
+		{
+			CallResponseFunc GetStructArrayInterfaceStateFunc = [&Promise](CallResponseArg arg)
+			{ Promise.SetValue(arg.result.get<FTestbed1StructBool>()); };
+			if (GEngine != nullptr)
+			{
+				UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+				AGCM->GetSimulationConnection()->doCall("testbed1/StructArrayInterface", "funcInt", params, GetStructArrayInterfaceStateFunc);
+			}
+		});
 
-    return Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
 
 FTestbed1StructBool SimulationService::FuncFloat(const TArray<FTestbed1StructFloat>& ParamFloat)
 {
-    Params params;
-    params["paramFloat"] = ParamFloat;
-    TPromise<FTestbed1StructBool> Promise;
-    Async(EAsyncExecution::Thread, [params, &Promise]()
-    {
-        CallResponseFunc GetStructArrayInterfaceStateFunc = [&Promise](CallResponseArg arg)
-        {
-            Promise.SetValue(arg.result.get<FTestbed1StructBool>());
-        };
-        if (GEngine != nullptr)
-        {
-            UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-            AGCM->GetSimulationConnection()->doCall("testbed1/StructArrayInterface", "funcFloat", params, GetStructArrayInterfaceStateFunc);
-        }
-    });
+	Params params;
+	params["paramFloat"] = ParamFloat;
+	TPromise<FTestbed1StructBool> Promise;
+	Async(EAsyncExecution::Thread,
+		[params, &Promise]()
+		{
+			CallResponseFunc GetStructArrayInterfaceStateFunc = [&Promise](CallResponseArg arg)
+			{ Promise.SetValue(arg.result.get<FTestbed1StructBool>()); };
+			if (GEngine != nullptr)
+			{
+				UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+				AGCM->GetSimulationConnection()->doCall("testbed1/StructArrayInterface", "funcFloat", params, GetStructArrayInterfaceStateFunc);
+			}
+		});
 
-    return Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
 
 FTestbed1StructBool SimulationService::FuncString(const TArray<FTestbed1StructString>& ParamString)
 {
-    Params params;
-    params["paramString"] = ParamString;
-    TPromise<FTestbed1StructBool> Promise;
-    Async(EAsyncExecution::Thread, [params, &Promise]()
-    {
-        CallResponseFunc GetStructArrayInterfaceStateFunc = [&Promise](CallResponseArg arg)
-        {
-            Promise.SetValue(arg.result.get<FTestbed1StructBool>());
-        };
-        if (GEngine != nullptr)
-        {
-            UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-            AGCM->GetSimulationConnection()->doCall("testbed1/StructArrayInterface", "funcString", params, GetStructArrayInterfaceStateFunc);
-        }
-    });
+	Params params;
+	params["paramString"] = ParamString;
+	TPromise<FTestbed1StructBool> Promise;
+	Async(EAsyncExecution::Thread,
+		[params, &Promise]()
+		{
+			CallResponseFunc GetStructArrayInterfaceStateFunc = [&Promise](CallResponseArg arg)
+			{ Promise.SetValue(arg.result.get<FTestbed1StructBool>()); };
+			if (GEngine != nullptr)
+			{
+				UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+				AGCM->GetSimulationConnection()->doCall("testbed1/StructArrayInterface", "funcString", params, GetStructArrayInterfaceStateFunc);
+			}
+		});
 
-    return Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
-
 
 } // namespace Private
 } // namespace StructArrayInterface

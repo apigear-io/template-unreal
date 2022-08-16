@@ -17,13 +17,16 @@ limitations under the License.
 
 #include "TbSame1SameStruct2InterfaceLocal.h"
 
-namespace TbSame1 {
-namespace SameStruct2Interface {
-namespace Private {
+namespace TbSame1
+{
+namespace SameStruct2Interface
+{
+namespace Private
+{
 LocalService::LocalService()
-    : ITbSame1SameStruct2InterfaceInterface()
-    , Prop1(FTbSame1Struct2())
-    , Prop2(FTbSame1Struct2())
+	: ITbSame1SameStruct2InterfaceInterface()
+	, Prop1(FTbSame1Struct2())
+	, Prop2(FTbSame1Struct2())
 {
 }
 LocalService::~LocalService()
@@ -32,63 +35,63 @@ LocalService::~LocalService()
 
 FTbSame1SameStruct2InterfaceSig1Delegate& LocalService::GetSig1SignalDelegate()
 {
-    return Sig1Signal;
+	return Sig1Signal;
 }
 
 FTbSame1SameStruct2InterfaceSig2Delegate& LocalService::GetSig2SignalDelegate()
 {
-    return Sig2Signal;
+	return Sig2Signal;
 }
 
 FTbSame1Struct2 LocalService::GetProp1() const
 {
-    return Prop1;
+	return Prop1;
 }
 
 void LocalService::SetProp1(const FTbSame1Struct2& InProp1)
 {
-    if(Prop1 != InProp1)
-    {
-        Prop1 = InProp1;
-        Prop1Changed.Broadcast(Prop1);
-    }
+	if (Prop1 != InProp1)
+	{
+		Prop1 = InProp1;
+		Prop1Changed.Broadcast(Prop1);
+	}
 }
 
 FTbSame1SameStruct2InterfaceProp1ChangedDelegate& LocalService::GetProp1ChangedDelegate()
 {
-    return Prop1Changed;
+	return Prop1Changed;
 }
 FTbSame1Struct2 LocalService::GetProp2() const
 {
-    return Prop2;
+	return Prop2;
 }
 
 void LocalService::SetProp2(const FTbSame1Struct2& InProp2)
 {
-    if(Prop2 != InProp2)
-    {
-        Prop2 = InProp2;
-        Prop2Changed.Broadcast(Prop2);
-    }
+	if (Prop2 != InProp2)
+	{
+		Prop2 = InProp2;
+		Prop2Changed.Broadcast(Prop2);
+	}
 }
 
 FTbSame1SameStruct2InterfaceProp2ChangedDelegate& LocalService::GetProp2ChangedDelegate()
 {
-    return Prop2Changed;
+	return Prop2Changed;
 }
 
 FTbSame1Struct1 LocalService::Func1(const FTbSame1Struct1& Param1)
 {
-    (void) Param1;
-    // do business logic here
-    return FTbSame1Struct1();
+	(void)Param1;
+	// do business logic here
+	return FTbSame1Struct1();
 }
 FTbSame1Struct1 LocalService::Func2(const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2)
 {
-    (void) Param1;
-    (void) Param2;
-    // do business logic here
-    return FTbSame1Struct1();
+	(void)Param1;
+	(void)Param2;
+	// do business logic here
+	return FTbSame1Struct1();
 }
 
 } // namespace Private

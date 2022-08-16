@@ -26,17 +26,13 @@ limitations under the License.
 #define LOCTEXT_NAMESPACE "{{module_name_capital}}Editor"
 
 void {{module_name}}::StartupModule()
-{	
+{
 	// register settings
 	ISettingsModule* SettingsModule = FModuleManager::GetModulePtr<ISettingsModule>("Settings");
 
-	if (SettingsModule != nullptr)	
+	if (SettingsModule != nullptr)
 	{
-		SettingsModule->RegisterSettings("Project", "Plugins", "{{module_name_capital_label}}",
-			LOCTEXT("{{module_name_capital}}SettingsName", "{{module_name_capital_label}}"),
-			LOCTEXT("{{module_name_capital}}SettingsDescription", "Project settings for {{module_name_capital_label}} plugin"),
-			GetMutableDefault<U{{module_name_capital}}Settings>()
-		);
+		SettingsModule->RegisterSettings("Project", "Plugins", "{{module_name_capital_label}}", LOCTEXT("{{module_name_capital}}SettingsName", "{{module_name_capital_label}}"), LOCTEXT("{{module_name_capital}}SettingsDescription", "Project settings for {{module_name_capital_label}} plugin"), GetMutableDefault<U{{module_name_capital}}Settings>());
 	}
 }
 

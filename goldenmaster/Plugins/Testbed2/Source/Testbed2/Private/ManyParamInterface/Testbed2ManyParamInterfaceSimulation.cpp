@@ -27,362 +27,368 @@ limitations under the License.
 
 using namespace ApiGear::JSONRPC;
 
-namespace Testbed2 {
-namespace ManyParamInterface {
-namespace Private {
-SimulationService::SimulationService()
-    : ITestbed2ManyParamInterfaceInterface()
-    , Prop1(0)
-    , Prop2(0)
-    , Prop3(0)
-    , Prop4(0)
+namespace Testbed2
 {
-    UApiGearConnectionManager* AGCM = nullptr;
-    if (GEngine != nullptr)
-    {
-        AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-    }
-    NotifyRequestFunc ManyParamInterfaceStateChangedFunc = [this](NotifyRequestArg arg)
-    {
-        const json fields = arg.params;
-        if(fields.contains("prop1")) {
-            if(Prop1 != fields["prop1"].get<int32>())
-            {
-                Prop1 = fields["prop1"].get<int32>();
-                Prop1Changed.Broadcast(Prop1);
-            }
-        }
-        if(fields.contains("prop2")) {
-            if(Prop2 != fields["prop2"].get<int32>())
-            {
-                Prop2 = fields["prop2"].get<int32>();
-                Prop2Changed.Broadcast(Prop2);
-            }
-        }
-        if(fields.contains("prop3")) {
-            if(Prop3 != fields["prop3"].get<int32>())
-            {
-                Prop3 = fields["prop3"].get<int32>();
-                Prop3Changed.Broadcast(Prop3);
-            }
-        }
-        if(fields.contains("prop4")) {
-            if(Prop4 != fields["prop4"].get<int32>())
-            {
-                Prop4 = fields["prop4"].get<int32>();
-                Prop4Changed.Broadcast(Prop4);
-            }
-        }
-    };
-    if(AGCM != nullptr)
-    {   
-        AGCM->GetSimulationConnection()->Connect();
-        AGCM->GetSimulationConnection()->onNotifyState("testbed2/ManyParamInterface", ManyParamInterfaceStateChangedFunc);
-    }
+namespace ManyParamInterface
+{
+namespace Private
+{
+SimulationService::SimulationService()
+	: ITestbed2ManyParamInterfaceInterface()
+	, Prop1(0)
+	, Prop2(0)
+	, Prop3(0)
+	, Prop4(0)
+{
+	UApiGearConnectionManager* AGCM = nullptr;
+	if (GEngine != nullptr)
+	{
+		AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+	}
+	NotifyRequestFunc ManyParamInterfaceStateChangedFunc = [this](NotifyRequestArg arg)
+	{
+		const json fields = arg.params;
+		if (fields.contains("prop1"))
+		{
+			if (Prop1 != fields["prop1"].get<int32>())
+			{
+				Prop1 = fields["prop1"].get<int32>();
+				Prop1Changed.Broadcast(Prop1);
+			}
+		}
+		if (fields.contains("prop2"))
+		{
+			if (Prop2 != fields["prop2"].get<int32>())
+			{
+				Prop2 = fields["prop2"].get<int32>();
+				Prop2Changed.Broadcast(Prop2);
+			}
+		}
+		if (fields.contains("prop3"))
+		{
+			if (Prop3 != fields["prop3"].get<int32>())
+			{
+				Prop3 = fields["prop3"].get<int32>();
+				Prop3Changed.Broadcast(Prop3);
+			}
+		}
+		if (fields.contains("prop4"))
+		{
+			if (Prop4 != fields["prop4"].get<int32>())
+			{
+				Prop4 = fields["prop4"].get<int32>();
+				Prop4Changed.Broadcast(Prop4);
+			}
+		}
+	};
+	if (AGCM != nullptr)
+	{
+		AGCM->GetSimulationConnection()->Connect();
+		AGCM->GetSimulationConnection()->onNotifyState("testbed2/ManyParamInterface", ManyParamInterfaceStateChangedFunc);
+	}
 
-    CallResponseFunc GetManyParamInterfaceStateFunc = [this](CallResponseArg arg)
-    {
-        if(arg.result.size() != 1) {
-          return;
-        }
-        const json fields = arg.result;
-        if(fields.contains("prop1")) {
-            if(Prop1 != fields["prop1"].get<int32>())
-            {
-                Prop1 = fields["prop1"].get<int32>();
-                Prop1Changed.Broadcast(Prop1);
-            }
-        }
-        if(fields.contains("prop2")) {
-            if(Prop2 != fields["prop2"].get<int32>())
-            {
-                Prop2 = fields["prop2"].get<int32>();
-                Prop2Changed.Broadcast(Prop2);
-            }
-        }
-        if(fields.contains("prop3")) {
-            if(Prop3 != fields["prop3"].get<int32>())
-            {
-                Prop3 = fields["prop3"].get<int32>();
-                Prop3Changed.Broadcast(Prop3);
-            }
-        }
-        if(fields.contains("prop4")) {
-            if(Prop4 != fields["prop4"].get<int32>())
-            {
-                Prop4 = fields["prop4"].get<int32>();
-                Prop4Changed.Broadcast(Prop4);
-            }
-        }
-    };
-    if(AGCM != nullptr)
-    {
-        AGCM->GetSimulationConnection()->doFetchState("testbed2/ManyParamInterface", GetManyParamInterfaceStateFunc);
-    }
+	CallResponseFunc GetManyParamInterfaceStateFunc = [this](CallResponseArg arg)
+	{
+		if (arg.result.size() != 1)
+		{
+			return;
+		}
+		const json fields = arg.result;
+		if (fields.contains("prop1"))
+		{
+			if (Prop1 != fields["prop1"].get<int32>())
+			{
+				Prop1 = fields["prop1"].get<int32>();
+				Prop1Changed.Broadcast(Prop1);
+			}
+		}
+		if (fields.contains("prop2"))
+		{
+			if (Prop2 != fields["prop2"].get<int32>())
+			{
+				Prop2 = fields["prop2"].get<int32>();
+				Prop2Changed.Broadcast(Prop2);
+			}
+		}
+		if (fields.contains("prop3"))
+		{
+			if (Prop3 != fields["prop3"].get<int32>())
+			{
+				Prop3 = fields["prop3"].get<int32>();
+				Prop3Changed.Broadcast(Prop3);
+			}
+		}
+		if (fields.contains("prop4"))
+		{
+			if (Prop4 != fields["prop4"].get<int32>())
+			{
+				Prop4 = fields["prop4"].get<int32>();
+				Prop4Changed.Broadcast(Prop4);
+			}
+		}
+	};
+	if (AGCM != nullptr)
+	{
+		AGCM->GetSimulationConnection()->doFetchState("testbed2/ManyParamInterface", GetManyParamInterfaceStateFunc);
+	}
 
-    // register notification callback functions, signal/event -> fcn
-    NotifyRequestFunc sig1Func = [this](NotifyRequestArg arg)
-    {
-        const json fields = arg.params;
-        if(fields.contains("param1"))
-        {
-            Sig1Signal.Broadcast(fields["param1"].get<int32>());
-        }
-    };
-    if(AGCM != nullptr)
-    {
-        AGCM->GetSimulationConnection()->onNotify("testbed2/ManyParamInterface#sig1", sig1Func);
-    }
+	// register notification callback functions, signal/event -> fcn
+	NotifyRequestFunc sig1Func = [this](NotifyRequestArg arg)
+	{
+		const json fields = arg.params;
+		if (fields.contains("param1"))
+		{
+			Sig1Signal.Broadcast(fields["param1"].get<int32>());
+		}
+	};
+	if (AGCM != nullptr)
+	{
+		AGCM->GetSimulationConnection()->onNotify("testbed2/ManyParamInterface#sig1", sig1Func);
+	}
 
-    NotifyRequestFunc sig2Func = [this](NotifyRequestArg arg)
-    {
-        const json fields = arg.params;
-        if(fields.contains("param1") &&fields.contains("param2"))
-        {
-            Sig2Signal.Broadcast(fields["param1"].get<int32>(),fields["param2"].get<int32>());
-        }
-    };
-    if(AGCM != nullptr)
-    {
-        AGCM->GetSimulationConnection()->onNotify("testbed2/ManyParamInterface#sig2", sig2Func);
-    }
+	NotifyRequestFunc sig2Func = [this](NotifyRequestArg arg)
+	{
+		const json fields = arg.params;
+		if (fields.contains("param1") && fields.contains("param2"))
+		{
+			Sig2Signal.Broadcast(fields["param1"].get<int32>(), fields["param2"].get<int32>());
+		}
+	};
+	if (AGCM != nullptr)
+	{
+		AGCM->GetSimulationConnection()->onNotify("testbed2/ManyParamInterface#sig2", sig2Func);
+	}
 
-    NotifyRequestFunc sig3Func = [this](NotifyRequestArg arg)
-    {
-        const json fields = arg.params;
-        if(fields.contains("param1") &&fields.contains("param2") &&fields.contains("param3"))
-        {
-            Sig3Signal.Broadcast(fields["param1"].get<int32>(),fields["param2"].get<int32>(),fields["param3"].get<int32>());
-        }
-    };
-    if(AGCM != nullptr)
-    {
-        AGCM->GetSimulationConnection()->onNotify("testbed2/ManyParamInterface#sig3", sig3Func);
-    }
+	NotifyRequestFunc sig3Func = [this](NotifyRequestArg arg)
+	{
+		const json fields = arg.params;
+		if (fields.contains("param1") && fields.contains("param2") && fields.contains("param3"))
+		{
+			Sig3Signal.Broadcast(fields["param1"].get<int32>(), fields["param2"].get<int32>(), fields["param3"].get<int32>());
+		}
+	};
+	if (AGCM != nullptr)
+	{
+		AGCM->GetSimulationConnection()->onNotify("testbed2/ManyParamInterface#sig3", sig3Func);
+	}
 
-    NotifyRequestFunc sig4Func = [this](NotifyRequestArg arg)
-    {
-        const json fields = arg.params;
-        if(fields.contains("param1") &&fields.contains("param2") &&fields.contains("param3") &&fields.contains("param4"))
-        {
-            Sig4Signal.Broadcast(fields["param1"].get<int32>(),fields["param2"].get<int32>(),fields["param3"].get<int32>(),fields["param4"].get<int32>());
-        }
-    };
-    if(AGCM != nullptr)
-    {
-        AGCM->GetSimulationConnection()->onNotify("testbed2/ManyParamInterface#sig4", sig4Func);
-    }
-
+	NotifyRequestFunc sig4Func = [this](NotifyRequestArg arg)
+	{
+		const json fields = arg.params;
+		if (fields.contains("param1") && fields.contains("param2") && fields.contains("param3") && fields.contains("param4"))
+		{
+			Sig4Signal.Broadcast(fields["param1"].get<int32>(), fields["param2"].get<int32>(), fields["param3"].get<int32>(), fields["param4"].get<int32>());
+		}
+	};
+	if (AGCM != nullptr)
+	{
+		AGCM->GetSimulationConnection()->onNotify("testbed2/ManyParamInterface#sig4", sig4Func);
+	}
 }
 
 SimulationService::~SimulationService()
 {
-    if (GEngine != nullptr)
-    {
-        UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-        AGCM->GetSimulationConnection()->RemoveOnNotifyState("testbed2/ManyParamInterface");
-        // unregister notification callback functions
-        AGCM->GetSimulationConnection()->RemoveOnNotify("testbed2/ManyParamInterface#sig1");
-        AGCM->GetSimulationConnection()->RemoveOnNotify("testbed2/ManyParamInterface#sig2");
-        AGCM->GetSimulationConnection()->RemoveOnNotify("testbed2/ManyParamInterface#sig3");
-        AGCM->GetSimulationConnection()->RemoveOnNotify("testbed2/ManyParamInterface#sig4");
-    }
+	if (GEngine != nullptr)
+	{
+		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+		AGCM->GetSimulationConnection()->RemoveOnNotifyState("testbed2/ManyParamInterface");
+		// unregister notification callback functions
+		AGCM->GetSimulationConnection()->RemoveOnNotify("testbed2/ManyParamInterface#sig1");
+		AGCM->GetSimulationConnection()->RemoveOnNotify("testbed2/ManyParamInterface#sig2");
+		AGCM->GetSimulationConnection()->RemoveOnNotify("testbed2/ManyParamInterface#sig3");
+		AGCM->GetSimulationConnection()->RemoveOnNotify("testbed2/ManyParamInterface#sig4");
+	}
 }
 
 FTestbed2ManyParamInterfaceSig1Delegate& SimulationService::GetSig1SignalDelegate()
 {
-    return Sig1Signal;
+	return Sig1Signal;
 }
 
 FTestbed2ManyParamInterfaceSig2Delegate& SimulationService::GetSig2SignalDelegate()
 {
-    return Sig2Signal;
+	return Sig2Signal;
 }
 
 FTestbed2ManyParamInterfaceSig3Delegate& SimulationService::GetSig3SignalDelegate()
 {
-    return Sig3Signal;
+	return Sig3Signal;
 }
 
 FTestbed2ManyParamInterfaceSig4Delegate& SimulationService::GetSig4SignalDelegate()
 {
-    return Sig4Signal;
+	return Sig4Signal;
 }
 
 int32 SimulationService::GetProp1() const
 {
-    return Prop1;
+	return Prop1;
 }
 
 void SimulationService::SetProp1(int32 InProp1)
 {
-    Params params;
-    params["prop1"] = InProp1;
-    if (GEngine != nullptr)
-    {
-        UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-        AGCM->GetSimulationConnection()->doCall("testbed2/ManyParamInterface", "_set", params);
-    }
+	Params params;
+	params["prop1"] = InProp1;
+	if (GEngine != nullptr)
+	{
+		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+		AGCM->GetSimulationConnection()->doCall("testbed2/ManyParamInterface", "_set", params);
+	}
 }
 
 FTestbed2ManyParamInterfaceProp1ChangedDelegate& SimulationService::GetProp1ChangedDelegate()
 {
-    return Prop1Changed;
+	return Prop1Changed;
 }
 
 int32 SimulationService::GetProp2() const
 {
-    return Prop2;
+	return Prop2;
 }
 
 void SimulationService::SetProp2(int32 InProp2)
 {
-    Params params;
-    params["prop2"] = InProp2;
-    if (GEngine != nullptr)
-    {
-        UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-        AGCM->GetSimulationConnection()->doCall("testbed2/ManyParamInterface", "_set", params);
-    }
+	Params params;
+	params["prop2"] = InProp2;
+	if (GEngine != nullptr)
+	{
+		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+		AGCM->GetSimulationConnection()->doCall("testbed2/ManyParamInterface", "_set", params);
+	}
 }
 
 FTestbed2ManyParamInterfaceProp2ChangedDelegate& SimulationService::GetProp2ChangedDelegate()
 {
-    return Prop2Changed;
+	return Prop2Changed;
 }
 
 int32 SimulationService::GetProp3() const
 {
-    return Prop3;
+	return Prop3;
 }
 
 void SimulationService::SetProp3(int32 InProp3)
 {
-    Params params;
-    params["prop3"] = InProp3;
-    if (GEngine != nullptr)
-    {
-        UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-        AGCM->GetSimulationConnection()->doCall("testbed2/ManyParamInterface", "_set", params);
-    }
+	Params params;
+	params["prop3"] = InProp3;
+	if (GEngine != nullptr)
+	{
+		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+		AGCM->GetSimulationConnection()->doCall("testbed2/ManyParamInterface", "_set", params);
+	}
 }
 
 FTestbed2ManyParamInterfaceProp3ChangedDelegate& SimulationService::GetProp3ChangedDelegate()
 {
-    return Prop3Changed;
+	return Prop3Changed;
 }
 
 int32 SimulationService::GetProp4() const
 {
-    return Prop4;
+	return Prop4;
 }
 
 void SimulationService::SetProp4(int32 InProp4)
 {
-    Params params;
-    params["prop4"] = InProp4;
-    if (GEngine != nullptr)
-    {
-        UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-        AGCM->GetSimulationConnection()->doCall("testbed2/ManyParamInterface", "_set", params);
-    }
+	Params params;
+	params["prop4"] = InProp4;
+	if (GEngine != nullptr)
+	{
+		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+		AGCM->GetSimulationConnection()->doCall("testbed2/ManyParamInterface", "_set", params);
+	}
 }
 
 FTestbed2ManyParamInterfaceProp4ChangedDelegate& SimulationService::GetProp4ChangedDelegate()
 {
-    return Prop4Changed;
+	return Prop4Changed;
 }
 
 int32 SimulationService::Func1(int32 Param1)
 {
-    Params params;
-    params["param1"] = Param1;
-    TPromise<int32> Promise;
-    Async(EAsyncExecution::Thread, [params, &Promise]()
-    {
-        CallResponseFunc GetManyParamInterfaceStateFunc = [&Promise](CallResponseArg arg)
-        {
-            Promise.SetValue(arg.result.get<int32>());
-        };
-        if (GEngine != nullptr)
-        {
-            UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-            AGCM->GetSimulationConnection()->doCall("testbed2/ManyParamInterface", "func1", params, GetManyParamInterfaceStateFunc);
-        }
-    });
+	Params params;
+	params["param1"] = Param1;
+	TPromise<int32> Promise;
+	Async(EAsyncExecution::Thread,
+		[params, &Promise]()
+		{
+			CallResponseFunc GetManyParamInterfaceStateFunc = [&Promise](CallResponseArg arg)
+			{ Promise.SetValue(arg.result.get<int32>()); };
+			if (GEngine != nullptr)
+			{
+				UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+				AGCM->GetSimulationConnection()->doCall("testbed2/ManyParamInterface", "func1", params, GetManyParamInterfaceStateFunc);
+			}
+		});
 
-    return Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
 
 int32 SimulationService::Func2(int32 Param1, int32 Param2)
 {
-    Params params;
-    params["param1"] = Param1;
-    params["param2"] = Param2;
-    TPromise<int32> Promise;
-    Async(EAsyncExecution::Thread, [params, &Promise]()
-    {
-        CallResponseFunc GetManyParamInterfaceStateFunc = [&Promise](CallResponseArg arg)
-        {
-            Promise.SetValue(arg.result.get<int32>());
-        };
-        if (GEngine != nullptr)
-        {
-            UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-            AGCM->GetSimulationConnection()->doCall("testbed2/ManyParamInterface", "func2", params, GetManyParamInterfaceStateFunc);
-        }
-    });
+	Params params;
+	params["param1"] = Param1;
+	params["param2"] = Param2;
+	TPromise<int32> Promise;
+	Async(EAsyncExecution::Thread,
+		[params, &Promise]()
+		{
+			CallResponseFunc GetManyParamInterfaceStateFunc = [&Promise](CallResponseArg arg)
+			{ Promise.SetValue(arg.result.get<int32>()); };
+			if (GEngine != nullptr)
+			{
+				UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+				AGCM->GetSimulationConnection()->doCall("testbed2/ManyParamInterface", "func2", params, GetManyParamInterfaceStateFunc);
+			}
+		});
 
-    return Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
 
 int32 SimulationService::Func3(int32 Param1, int32 Param2, int32 Param3)
 {
-    Params params;
-    params["param1"] = Param1;
-    params["param2"] = Param2;
-    params["param3"] = Param3;
-    TPromise<int32> Promise;
-    Async(EAsyncExecution::Thread, [params, &Promise]()
-    {
-        CallResponseFunc GetManyParamInterfaceStateFunc = [&Promise](CallResponseArg arg)
-        {
-            Promise.SetValue(arg.result.get<int32>());
-        };
-        if (GEngine != nullptr)
-        {
-            UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-            AGCM->GetSimulationConnection()->doCall("testbed2/ManyParamInterface", "func3", params, GetManyParamInterfaceStateFunc);
-        }
-    });
+	Params params;
+	params["param1"] = Param1;
+	params["param2"] = Param2;
+	params["param3"] = Param3;
+	TPromise<int32> Promise;
+	Async(EAsyncExecution::Thread,
+		[params, &Promise]()
+		{
+			CallResponseFunc GetManyParamInterfaceStateFunc = [&Promise](CallResponseArg arg)
+			{ Promise.SetValue(arg.result.get<int32>()); };
+			if (GEngine != nullptr)
+			{
+				UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+				AGCM->GetSimulationConnection()->doCall("testbed2/ManyParamInterface", "func3", params, GetManyParamInterfaceStateFunc);
+			}
+		});
 
-    return Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
 
 int32 SimulationService::Func4(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
 {
-    Params params;
-    params["param1"] = Param1;
-    params["param2"] = Param2;
-    params["param3"] = Param3;
-    params["param4"] = Param4;
-    TPromise<int32> Promise;
-    Async(EAsyncExecution::Thread, [params, &Promise]()
-    {
-        CallResponseFunc GetManyParamInterfaceStateFunc = [&Promise](CallResponseArg arg)
-        {
-            Promise.SetValue(arg.result.get<int32>());
-        };
-        if (GEngine != nullptr)
-        {
-            UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-            AGCM->GetSimulationConnection()->doCall("testbed2/ManyParamInterface", "func4", params, GetManyParamInterfaceStateFunc);
-        }
-    });
+	Params params;
+	params["param1"] = Param1;
+	params["param2"] = Param2;
+	params["param3"] = Param3;
+	params["param4"] = Param4;
+	TPromise<int32> Promise;
+	Async(EAsyncExecution::Thread,
+		[params, &Promise]()
+		{
+			CallResponseFunc GetManyParamInterfaceStateFunc = [&Promise](CallResponseArg arg)
+			{ Promise.SetValue(arg.result.get<int32>()); };
+			if (GEngine != nullptr)
+			{
+				UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+				AGCM->GetSimulationConnection()->doCall("testbed2/ManyParamInterface", "func4", params, GetManyParamInterfaceStateFunc);
+			}
+		});
 
-    return Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
-
 
 } // namespace Private
 } // namespace ManyParamInterface

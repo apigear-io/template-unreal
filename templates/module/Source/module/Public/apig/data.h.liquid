@@ -32,7 +32,7 @@ limitations under the License.
 
 {% comment %} 
 *****************************************************************
-*** ENUMERATIONS                                              ***
+*** ENUMERATIONS											  ***
 *****************************************************************
 {% endcomment %}
 
@@ -43,7 +43,7 @@ UENUM(BlueprintType)
 enum class {{enum|unrealTypeName: false, moduleCapital}} : uint8
 {
 {% for member in enum.members %}
-    {{member.name | constant }}  UMETA(Displayname = "{{member.name}}"){% unless forloop.last %},{% endunless %}
+	{{member.name | constant }} UMETA(Displayname = "{{member.name}}"){% unless forloop.last %},{% endunless %}
 {% endfor %}
 };
 
@@ -58,7 +58,7 @@ bool toUE4Type({{enum|unrealTypeName: false, moduleCapital}}& value, uint8 v);
 
 {% comment %} 
 *****************************************************************
-*** STRUCTS                                                   ***
+*** STRUCTS												   ***
 *****************************************************************
 {% endcomment %}
 
@@ -73,7 +73,7 @@ struct {{API_MACRO}} {{struct|unrealTypeName: false, moduleCapital}}
 {% for field in struct.fields %}
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    {{field|unrealTypeName: false, moduleCapital}} {{field.name}};
+	{{field|unrealTypeName: false, moduleCapital}} {{field.name}};
 {% endfor %}
 
 	bool operator==(const {{struct|unrealTypeName: false, moduleCapital}}& rhs) const;

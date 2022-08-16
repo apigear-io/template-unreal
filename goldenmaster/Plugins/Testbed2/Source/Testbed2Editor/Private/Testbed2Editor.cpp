@@ -22,17 +22,13 @@ limitations under the License.
 #define LOCTEXT_NAMESPACE "Testbed2Editor"
 
 void FTestbed2EditorModule::StartupModule()
-{	
+{
 	// register settings
 	ISettingsModule* SettingsModule = FModuleManager::GetModulePtr<ISettingsModule>("Settings");
 
-	if (SettingsModule != nullptr)	
+	if (SettingsModule != nullptr)
 	{
-		SettingsModule->RegisterSettings("Project", "Plugins", "ApiGear Testbed2",
-			LOCTEXT("Testbed2SettingsName", "ApiGear Testbed2"),
-			LOCTEXT("Testbed2SettingsDescription", "Project settings for ApiGear Testbed2 plugin"),
-			GetMutableDefault<UTestbed2Settings>()
-		);
+		SettingsModule->RegisterSettings("Project", "Plugins", "ApiGear Testbed2", LOCTEXT("Testbed2SettingsName", "ApiGear Testbed2"), LOCTEXT("Testbed2SettingsDescription", "Project settings for ApiGear Testbed2 plugin"), GetMutableDefault<UTestbed2Settings>());
 	}
 }
 

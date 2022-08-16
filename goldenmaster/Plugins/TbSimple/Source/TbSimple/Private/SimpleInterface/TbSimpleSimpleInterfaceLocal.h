@@ -19,73 +19,72 @@ limitations under the License.
 
 #include "apig/TbSimple_apig.h"
 
-namespace TbSimple {
-namespace SimpleInterface {
-namespace Private {
+namespace TbSimple
+{
+namespace SimpleInterface
+{
+namespace Private
+{
 
 class LocalService : public ITbSimpleSimpleInterfaceInterface
 {
 public:
+	explicit LocalService();
+	virtual ~LocalService();
 
-    explicit LocalService();
-    virtual ~LocalService();
+	// signals
+	FTbSimpleSimpleInterfaceSigBoolDelegate SigBoolSignal;
+	FTbSimpleSimpleInterfaceSigBoolDelegate& GetSigBoolSignalDelegate() override;
 
-    // signals
-    FTbSimpleSimpleInterfaceSigBoolDelegate SigBoolSignal;
-    FTbSimpleSimpleInterfaceSigBoolDelegate& GetSigBoolSignalDelegate() override;
-    
-    FTbSimpleSimpleInterfaceSigIntDelegate SigIntSignal;
-    FTbSimpleSimpleInterfaceSigIntDelegate& GetSigIntSignalDelegate() override;
-    
-    FTbSimpleSimpleInterfaceSigFloatDelegate SigFloatSignal;
-    FTbSimpleSimpleInterfaceSigFloatDelegate& GetSigFloatSignalDelegate() override;
-    
-    FTbSimpleSimpleInterfaceSigStringDelegate SigStringSignal;
-    FTbSimpleSimpleInterfaceSigStringDelegate& GetSigStringSignalDelegate() override;
-    
-    FTbSimpleSimpleInterfacePropBoolChangedDelegate PropBoolChanged;
-    FTbSimpleSimpleInterfacePropBoolChangedDelegate& GetPropBoolChangedDelegate() override;
+	FTbSimpleSimpleInterfaceSigIntDelegate SigIntSignal;
+	FTbSimpleSimpleInterfaceSigIntDelegate& GetSigIntSignalDelegate() override;
 
-    FTbSimpleSimpleInterfacePropIntChangedDelegate PropIntChanged;
-    FTbSimpleSimpleInterfacePropIntChangedDelegate& GetPropIntChangedDelegate() override;
+	FTbSimpleSimpleInterfaceSigFloatDelegate SigFloatSignal;
+	FTbSimpleSimpleInterfaceSigFloatDelegate& GetSigFloatSignalDelegate() override;
 
-    FTbSimpleSimpleInterfacePropFloatChangedDelegate PropFloatChanged;
-    FTbSimpleSimpleInterfacePropFloatChangedDelegate& GetPropFloatChangedDelegate() override;
+	FTbSimpleSimpleInterfaceSigStringDelegate SigStringSignal;
+	FTbSimpleSimpleInterfaceSigStringDelegate& GetSigStringSignalDelegate() override;
 
-    FTbSimpleSimpleInterfacePropStringChangedDelegate PropStringChanged;
-    FTbSimpleSimpleInterfacePropStringChangedDelegate& GetPropStringChangedDelegate() override;
+	FTbSimpleSimpleInterfacePropBoolChangedDelegate PropBoolChanged;
+	FTbSimpleSimpleInterfacePropBoolChangedDelegate& GetPropBoolChangedDelegate() override;
 
+	FTbSimpleSimpleInterfacePropIntChangedDelegate PropIntChanged;
+	FTbSimpleSimpleInterfacePropIntChangedDelegate& GetPropIntChangedDelegate() override;
 
-    // properties
-    bool GetPropBool() const override;
-    void SetPropBool(bool bPropBool) override;
+	FTbSimpleSimpleInterfacePropFloatChangedDelegate PropFloatChanged;
+	FTbSimpleSimpleInterfacePropFloatChangedDelegate& GetPropFloatChangedDelegate() override;
 
-    int32 GetPropInt() const override;
-    void SetPropInt(int32 PropInt) override;
+	FTbSimpleSimpleInterfacePropStringChangedDelegate PropStringChanged;
+	FTbSimpleSimpleInterfacePropStringChangedDelegate& GetPropStringChangedDelegate() override;
 
-    float GetPropFloat() const override;
-    void SetPropFloat(float PropFloat) override;
+	// properties
+	bool GetPropBool() const override;
+	void SetPropBool(bool bPropBool) override;
 
-    FString GetPropString() const override;
-    void SetPropString(const FString& PropString) override;
+	int32 GetPropInt() const override;
+	void SetPropInt(int32 PropInt) override;
 
+	float GetPropFloat() const override;
+	void SetPropFloat(float PropFloat) override;
 
-    // operations
-    bool FuncBool(bool bParamBool) override;
-    
-    int32 FuncInt(int32 ParamInt) override;
-    
-    float FuncFloat(float ParamFloat) override;
-    
-    FString FuncString(const FString& ParamString) override;
-    
+	FString GetPropString() const override;
+	void SetPropString(const FString& PropString) override;
+
+	// operations
+	bool FuncBool(bool bParamBool) override;
+
+	int32 FuncInt(int32 ParamInt) override;
+
+	float FuncFloat(float ParamFloat) override;
+
+	FString FuncString(const FString& ParamString) override;
 
 private:
-    // properties - local copy - use setter functions to emit changed signals
-    bool bPropBool;
-    int32 PropInt;
-    float PropFloat;
-    FString PropString;
+	// properties - local copy - use setter functions to emit changed signals
+	bool bPropBool;
+	int32 PropInt;
+	float PropFloat;
+	FString PropString;
 };
 
 } // namespace Private

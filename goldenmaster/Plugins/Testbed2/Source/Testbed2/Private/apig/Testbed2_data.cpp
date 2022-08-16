@@ -21,88 +21,91 @@ limitations under the License.
  */
 bool toUE4Type(ETestbed2Enum1& value, uint8 v)
 {
-    bool bSuccessful = false;
-    switch (v) {
-        case 1:
-            value = ETestbed2Enum1::VALUE1;
-            bSuccessful = true;
-            break;
-        case 2:
-            value = ETestbed2Enum1::VALUE2;
-            bSuccessful = true;
-            break;
-        case 3:
-            value = ETestbed2Enum1::VALUE3;
-            bSuccessful = true;
-            break;
-        case 4:
-            value = ETestbed2Enum1::VALUE4;
-            bSuccessful = true;
-            break;
-        default:
-            value = ETestbed2Enum1::VALUE1;
-    }
-    return bSuccessful;
+	bool bSuccessful = false;
+	switch (v)
+	{
+	case 1:
+		value = ETestbed2Enum1::VALUE1;
+		bSuccessful = true;
+		break;
+	case 2:
+		value = ETestbed2Enum1::VALUE2;
+		bSuccessful = true;
+		break;
+	case 3:
+		value = ETestbed2Enum1::VALUE3;
+		bSuccessful = true;
+		break;
+	case 4:
+		value = ETestbed2Enum1::VALUE4;
+		bSuccessful = true;
+		break;
+	default:
+		value = ETestbed2Enum1::VALUE1;
+	}
+	return bSuccessful;
 }
 /**
  * Enumeration ETestbed2Enum2
  */
 bool toUE4Type(ETestbed2Enum2& value, uint8 v)
 {
-    bool bSuccessful = false;
-    switch (v) {
-        case 1:
-            value = ETestbed2Enum2::VALUE1;
-            bSuccessful = true;
-            break;
-        case 2:
-            value = ETestbed2Enum2::VALUE2;
-            bSuccessful = true;
-            break;
-        case 3:
-            value = ETestbed2Enum2::VALUE3;
-            bSuccessful = true;
-            break;
-        case 4:
-            value = ETestbed2Enum2::VALUE4;
-            bSuccessful = true;
-            break;
-        default:
-            value = ETestbed2Enum2::VALUE1;
-    }
-    return bSuccessful;
+	bool bSuccessful = false;
+	switch (v)
+	{
+	case 1:
+		value = ETestbed2Enum2::VALUE1;
+		bSuccessful = true;
+		break;
+	case 2:
+		value = ETestbed2Enum2::VALUE2;
+		bSuccessful = true;
+		break;
+	case 3:
+		value = ETestbed2Enum2::VALUE3;
+		bSuccessful = true;
+		break;
+	case 4:
+		value = ETestbed2Enum2::VALUE4;
+		bSuccessful = true;
+		break;
+	default:
+		value = ETestbed2Enum2::VALUE1;
+	}
+	return bSuccessful;
 }
 /**
  * Enumeration ETestbed2Enum3
  */
 bool toUE4Type(ETestbed2Enum3& value, uint8 v)
 {
-    bool bSuccessful = false;
-    switch (v) {
-        case 1:
-            value = ETestbed2Enum3::VALUE1;
-            bSuccessful = true;
-            break;
-        case 2:
-            value = ETestbed2Enum3::VALUE2;
-            bSuccessful = true;
-            break;
-        case 3:
-            value = ETestbed2Enum3::VALUE3;
-            bSuccessful = true;
-            break;
-        case 4:
-            value = ETestbed2Enum3::VALUE4;
-            bSuccessful = true;
-            break;
-        default:
-            value = ETestbed2Enum3::VALUE1;
-    }
-    return bSuccessful;
+	bool bSuccessful = false;
+	switch (v)
+	{
+	case 1:
+		value = ETestbed2Enum3::VALUE1;
+		bSuccessful = true;
+		break;
+	case 2:
+		value = ETestbed2Enum3::VALUE2;
+		bSuccessful = true;
+		break;
+	case 3:
+		value = ETestbed2Enum3::VALUE3;
+		bSuccessful = true;
+		break;
+	case 4:
+		value = ETestbed2Enum3::VALUE4;
+		bSuccessful = true;
+		break;
+	default:
+		value = ETestbed2Enum3::VALUE1;
+	}
+	return bSuccessful;
 }
 bool FTestbed2Struct1::operator==(const FTestbed2Struct1& rhs) const
 {
-	return(field1 == rhs.field1);
+	return (field1 == rhs.field1);
 }
 
 bool FTestbed2Struct1::operator!=(const FTestbed2Struct1& rhs) const
@@ -111,7 +114,7 @@ bool FTestbed2Struct1::operator!=(const FTestbed2Struct1& rhs) const
 }
 bool FTestbed2Struct2::operator==(const FTestbed2Struct2& rhs) const
 {
-	return(field1 == rhs.field1)&&(field2 == rhs.field2);
+	return (field1 == rhs.field1) && (field2 == rhs.field2);
 }
 
 bool FTestbed2Struct2::operator!=(const FTestbed2Struct2& rhs) const
@@ -120,7 +123,7 @@ bool FTestbed2Struct2::operator!=(const FTestbed2Struct2& rhs) const
 }
 bool FTestbed2Struct3::operator==(const FTestbed2Struct3& rhs) const
 {
-	return(field1 == rhs.field1)&&(field2 == rhs.field2)&&(field3 == rhs.field3);
+	return (field1 == rhs.field1) && (field2 == rhs.field2) && (field3 == rhs.field3);
 }
 
 bool FTestbed2Struct3::operator!=(const FTestbed2Struct3& rhs) const
@@ -129,7 +132,7 @@ bool FTestbed2Struct3::operator!=(const FTestbed2Struct3& rhs) const
 }
 bool FTestbed2Struct4::operator==(const FTestbed2Struct4& rhs) const
 {
-	return(field1 == rhs.field1)&&(field2 == rhs.field2)&&(field3 == rhs.field3)&&(field4 == rhs.field4);
+	return (field1 == rhs.field1) && (field2 == rhs.field2) && (field3 == rhs.field3) && (field4 == rhs.field4);
 }
 
 bool FTestbed2Struct4::operator!=(const FTestbed2Struct4& rhs) const
@@ -138,7 +141,7 @@ bool FTestbed2Struct4::operator!=(const FTestbed2Struct4& rhs) const
 }
 bool FTestbed2NestedStruct1::operator==(const FTestbed2NestedStruct1& rhs) const
 {
-	return(field1 == rhs.field1);
+	return (field1 == rhs.field1);
 }
 
 bool FTestbed2NestedStruct1::operator!=(const FTestbed2NestedStruct1& rhs) const
@@ -147,7 +150,7 @@ bool FTestbed2NestedStruct1::operator!=(const FTestbed2NestedStruct1& rhs) const
 }
 bool FTestbed2NestedStruct2::operator==(const FTestbed2NestedStruct2& rhs) const
 {
-	return(field1 == rhs.field1)&&(field2 == rhs.field2);
+	return (field1 == rhs.field1) && (field2 == rhs.field2);
 }
 
 bool FTestbed2NestedStruct2::operator!=(const FTestbed2NestedStruct2& rhs) const
@@ -156,7 +159,7 @@ bool FTestbed2NestedStruct2::operator!=(const FTestbed2NestedStruct2& rhs) const
 }
 bool FTestbed2NestedStruct3::operator==(const FTestbed2NestedStruct3& rhs) const
 {
-	return(field1 == rhs.field1)&&(field2 == rhs.field2)&&(field3 == rhs.field3);
+	return (field1 == rhs.field1) && (field2 == rhs.field2) && (field3 == rhs.field3);
 }
 
 bool FTestbed2NestedStruct3::operator!=(const FTestbed2NestedStruct3& rhs) const

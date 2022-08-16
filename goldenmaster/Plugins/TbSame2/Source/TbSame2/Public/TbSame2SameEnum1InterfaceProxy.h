@@ -23,49 +23,48 @@ limitations under the License.
 #include "apig/TbSame2_apig.h"
 #include "TbSame2SameEnum1InterfaceProxy.generated.h"
 
-UCLASS(BlueprintType, Blueprintable, DisplayName="TbSame2SameEnum1Interface")
+UCLASS(BlueprintType, Blueprintable, DisplayName = "TbSame2SameEnum1Interface")
 class TBSAME2_API UTbSame2SameEnum1InterfaceProxy : public UGameInstanceSubsystem, public ITbSame2SameEnum1InterfaceInterface
 {
 	GENERATED_BODY()
 
 public:
-    explicit UTbSame2SameEnum1InterfaceProxy();
-    virtual ~UTbSame2SameEnum1InterfaceProxy();
+	explicit UTbSame2SameEnum1InterfaceProxy();
+	virtual ~UTbSame2SameEnum1InterfaceProxy();
 
-    // signals
+	// signals
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame2|SameEnum1Interface", DisplayName = "Sig1 Signal")
-    FTbSame2SameEnum1InterfaceSig1Delegate Sig1Signal;
-    FTbSame2SameEnum1InterfaceSig1Delegate& GetSig1SignalDelegate() override;
-    
+	FTbSame2SameEnum1InterfaceSig1Delegate Sig1Signal;
+	FTbSame2SameEnum1InterfaceSig1Delegate& GetSig1SignalDelegate() override;
+
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame2|SameEnum1Interface", DisplayName = "Prop1 Changed")
-    FTbSame2SameEnum1InterfaceProp1ChangedDelegate Prop1Changed;
-    FTbSame2SameEnum1InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
+	FTbSame2SameEnum1InterfaceProp1ChangedDelegate Prop1Changed;
+	FTbSame2SameEnum1InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
 
-    // properties
+	// properties
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum1Interface")
-    ETbSame2Enum1 GetProp1() const override;
+	ETbSame2Enum1 GetProp1() const override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum1Interface")
-    void SetProp1(const ETbSame2Enum1& Prop1) override;
+	void SetProp1(const ETbSame2Enum1& Prop1) override;
 
-    // operations
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum1Interface", meta=(Latent, LatentInfo="LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-    void Func1(UObject* WorldContextObject, struct FLatentActionInfo LatentInfo, ETbSame2Enum1& Result,const ETbSame2Enum1& Param1);
-    ETbSame2Enum1 Func1(const ETbSame2Enum1& Param1) override;
+	// operations
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum1Interface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	void Func1(UObject* WorldContextObject, struct FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, const ETbSame2Enum1& Param1);
+	ETbSame2Enum1 Func1(const ETbSame2Enum1& Param1) override;
 
 private:
 	/** The connection to the service backend. */
 	TSharedPtr<ITbSame2SameEnum1InterfaceInterface, ESPMode::ThreadSafe> service;
 
-    // signals
-    UFUNCTION(Category = "ApiGear|TbSame2|SameEnum1Interface", BlueprintInternalUseOnly)
-    void OnSig1(const ETbSame2Enum1& Param1);
-    
-    UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum1Interface", BlueprintInternalUseOnly)
-    void OnProp1Changed(const ETbSame2Enum1& Prop1);
+	// signals
+	UFUNCTION(Category = "ApiGear|TbSame2|SameEnum1Interface", BlueprintInternalUseOnly)
+	void OnSig1(const ETbSame2Enum1& Param1);
 
-    // properties - local copy
-	UPROPERTY(EditAnywhere, BlueprintGetter=GetProp1, BlueprintSetter=SetProp1, Category = "ApiGear|TbSame2|SameEnum1Interface")
-    ETbSame2Enum1 Prop1;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum1Interface", BlueprintInternalUseOnly)
+	void OnProp1Changed(const ETbSame2Enum1& Prop1);
 
+	// properties - local copy
+	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1, BlueprintSetter = SetProp1, Category = "ApiGear|TbSame2|SameEnum1Interface")
+	ETbSame2Enum1 Prop1;
 };

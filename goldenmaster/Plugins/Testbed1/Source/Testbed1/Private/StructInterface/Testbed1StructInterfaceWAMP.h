@@ -18,73 +18,72 @@ limitations under the License.
 
 #include "apig/Testbed1_apig.h"
 
-namespace Testbed1 {
-namespace StructInterface {
-namespace Private {
+namespace Testbed1
+{
+namespace StructInterface
+{
+namespace Private
+{
 
 class WAMPService : public ITestbed1StructInterfaceInterface
 {
 public:
+	explicit WAMPService();
+	virtual ~WAMPService();
 
-    explicit WAMPService();
-    virtual ~WAMPService();
+	// signals
+	FTestbed1StructInterfaceSigBoolDelegate SigBoolSignal;
+	FTestbed1StructInterfaceSigBoolDelegate& GetSigBoolSignalDelegate() override;
 
-    // signals
-    FTestbed1StructInterfaceSigBoolDelegate SigBoolSignal;
-    FTestbed1StructInterfaceSigBoolDelegate& GetSigBoolSignalDelegate() override;
-    
-    FTestbed1StructInterfaceSigIntDelegate SigIntSignal;
-    FTestbed1StructInterfaceSigIntDelegate& GetSigIntSignalDelegate() override;
-    
-    FTestbed1StructInterfaceSigFloatDelegate SigFloatSignal;
-    FTestbed1StructInterfaceSigFloatDelegate& GetSigFloatSignalDelegate() override;
-    
-    FTestbed1StructInterfaceSigStringDelegate SigStringSignal;
-    FTestbed1StructInterfaceSigStringDelegate& GetSigStringSignalDelegate() override;
-    
-    FTestbed1StructInterfacePropBoolChangedDelegate PropBoolChanged;
-    FTestbed1StructInterfacePropBoolChangedDelegate& GetPropBoolChangedDelegate() override;
+	FTestbed1StructInterfaceSigIntDelegate SigIntSignal;
+	FTestbed1StructInterfaceSigIntDelegate& GetSigIntSignalDelegate() override;
 
-    FTestbed1StructInterfacePropIntChangedDelegate PropIntChanged;
-    FTestbed1StructInterfacePropIntChangedDelegate& GetPropIntChangedDelegate() override;
+	FTestbed1StructInterfaceSigFloatDelegate SigFloatSignal;
+	FTestbed1StructInterfaceSigFloatDelegate& GetSigFloatSignalDelegate() override;
 
-    FTestbed1StructInterfacePropFloatChangedDelegate PropFloatChanged;
-    FTestbed1StructInterfacePropFloatChangedDelegate& GetPropFloatChangedDelegate() override;
+	FTestbed1StructInterfaceSigStringDelegate SigStringSignal;
+	FTestbed1StructInterfaceSigStringDelegate& GetSigStringSignalDelegate() override;
 
-    FTestbed1StructInterfacePropStringChangedDelegate PropStringChanged;
-    FTestbed1StructInterfacePropStringChangedDelegate& GetPropStringChangedDelegate() override;
+	FTestbed1StructInterfacePropBoolChangedDelegate PropBoolChanged;
+	FTestbed1StructInterfacePropBoolChangedDelegate& GetPropBoolChangedDelegate() override;
 
+	FTestbed1StructInterfacePropIntChangedDelegate PropIntChanged;
+	FTestbed1StructInterfacePropIntChangedDelegate& GetPropIntChangedDelegate() override;
 
-    // properties
-    FTestbed1StructBool GetPropBool() const override;
-    void SetPropBool(const FTestbed1StructBool& PropBool) override;
+	FTestbed1StructInterfacePropFloatChangedDelegate PropFloatChanged;
+	FTestbed1StructInterfacePropFloatChangedDelegate& GetPropFloatChangedDelegate() override;
 
-    FTestbed1StructInt GetPropInt() const override;
-    void SetPropInt(const FTestbed1StructInt& PropInt) override;
+	FTestbed1StructInterfacePropStringChangedDelegate PropStringChanged;
+	FTestbed1StructInterfacePropStringChangedDelegate& GetPropStringChangedDelegate() override;
 
-    FTestbed1StructFloat GetPropFloat() const override;
-    void SetPropFloat(const FTestbed1StructFloat& PropFloat) override;
+	// properties
+	FTestbed1StructBool GetPropBool() const override;
+	void SetPropBool(const FTestbed1StructBool& PropBool) override;
 
-    FTestbed1StructString GetPropString() const override;
-    void SetPropString(const FTestbed1StructString& PropString) override;
+	FTestbed1StructInt GetPropInt() const override;
+	void SetPropInt(const FTestbed1StructInt& PropInt) override;
 
+	FTestbed1StructFloat GetPropFloat() const override;
+	void SetPropFloat(const FTestbed1StructFloat& PropFloat) override;
 
-    // operations
-    FTestbed1StructBool FuncBool(const FTestbed1StructBool& ParamBool) override;
-    
-    FTestbed1StructBool FuncInt(const FTestbed1StructInt& ParamInt) override;
-    
-    FTestbed1StructFloat FuncFloat(const FTestbed1StructFloat& ParamFloat) override;
-    
-    FTestbed1StructString FuncString(const FTestbed1StructString& ParamString) override;
-    
+	FTestbed1StructString GetPropString() const override;
+	void SetPropString(const FTestbed1StructString& PropString) override;
+
+	// operations
+	FTestbed1StructBool FuncBool(const FTestbed1StructBool& ParamBool) override;
+
+	FTestbed1StructBool FuncInt(const FTestbed1StructInt& ParamInt) override;
+
+	FTestbed1StructFloat FuncFloat(const FTestbed1StructFloat& ParamFloat) override;
+
+	FTestbed1StructString FuncString(const FTestbed1StructString& ParamString) override;
 
 private:
-    // properties - local copy
-    FTestbed1StructBool PropBool;
-    FTestbed1StructInt PropInt;
-    FTestbed1StructFloat PropFloat;
-    FTestbed1StructString PropString;
+	// properties - local copy
+	FTestbed1StructBool PropBool;
+	FTestbed1StructInt PropInt;
+	FTestbed1StructFloat PropFloat;
+	FTestbed1StructString PropString;
 };
 
 } // namespace Private

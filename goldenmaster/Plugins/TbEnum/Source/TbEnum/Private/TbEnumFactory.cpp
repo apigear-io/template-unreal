@@ -22,27 +22,28 @@ limitations under the License.
 #include "EnumInterface/TbEnumEnumInterfaceSimulation.h"
 #include "TbEnumSettings.h"
 
-//General Log
+// General Log
 DEFINE_LOG_CATEGORY(LogFTbEnumModuleFactory);
 
 TSharedPtr<ITbEnumEnumInterfaceInterface, ESPMode::ThreadSafe> FTbEnumModuleFactory::createITbEnumEnumInterfaceInterface()
 {
-    UTbEnumSettings* settings = GetMutableDefault<UTbEnumSettings>();
+	UTbEnumSettings* settings = GetMutableDefault<UTbEnumSettings>();
 
-    switch(settings->ServiceConnection) {
-        case ETbEnumConnection::CONNECTION_WAMP:
-            UE_LOG(LogFTbEnumModuleFactory, Log, TEXT("createITbEnumEnumInterfaceInterface: Using WAMP service backend"));
-            return MakeShared<TbEnum::EnumInterface::Private::WAMPService, ESPMode::ThreadSafe>();
-        case ETbEnumConnection::CONNECTION_OLINK:
-            UE_LOG(LogFTbEnumModuleFactory, Log, TEXT("createITbEnumEnumInterfaceInterface: Using OLink service backend"));
-            return MakeShared<TbEnum::EnumInterface::Private::OLinkService, ESPMode::ThreadSafe>();
-        case ETbEnumConnection::CONNECTION_SIMU:
-            UE_LOG(LogFTbEnumModuleFactory, Log, TEXT("createITbEnumEnumInterfaceInterface: Using simulation service backend"));
-            return MakeShared<TbEnum::EnumInterface::Private::SimulationService, ESPMode::ThreadSafe>();
-        case ETbEnumConnection::CONNECTION_LOCAL:
-            UE_LOG(LogFTbEnumModuleFactory, Log, TEXT("createITbEnumEnumInterfaceInterface: Using local service backend"));
-        default:
-            UE_LOG(LogFTbEnumModuleFactory, Log, TEXT("createITbEnumEnumInterfaceInterface: Defaulting to local service backend"));
-            return MakeShared<TbEnum::EnumInterface::Private::LocalService, ESPMode::ThreadSafe>();
-    }
+	switch (settings->ServiceConnection)
+	{
+	case ETbEnumConnection::CONNECTION_WAMP:
+		UE_LOG(LogFTbEnumModuleFactory, Log, TEXT("createITbEnumEnumInterfaceInterface: Using WAMP service backend"));
+		return MakeShared<TbEnum::EnumInterface::Private::WAMPService, ESPMode::ThreadSafe>();
+	case ETbEnumConnection::CONNECTION_OLINK:
+		UE_LOG(LogFTbEnumModuleFactory, Log, TEXT("createITbEnumEnumInterfaceInterface: Using OLink service backend"));
+		return MakeShared<TbEnum::EnumInterface::Private::OLinkService, ESPMode::ThreadSafe>();
+	case ETbEnumConnection::CONNECTION_SIMU:
+		UE_LOG(LogFTbEnumModuleFactory, Log, TEXT("createITbEnumEnumInterfaceInterface: Using simulation service backend"));
+		return MakeShared<TbEnum::EnumInterface::Private::SimulationService, ESPMode::ThreadSafe>();
+	case ETbEnumConnection::CONNECTION_LOCAL:
+		UE_LOG(LogFTbEnumModuleFactory, Log, TEXT("createITbEnumEnumInterfaceInterface: Using local service backend"));
+	default:
+		UE_LOG(LogFTbEnumModuleFactory, Log, TEXT("createITbEnumEnumInterfaceInterface: Defaulting to local service backend"));
+		return MakeShared<TbEnum::EnumInterface::Private::LocalService, ESPMode::ThreadSafe>();
+	}
 }

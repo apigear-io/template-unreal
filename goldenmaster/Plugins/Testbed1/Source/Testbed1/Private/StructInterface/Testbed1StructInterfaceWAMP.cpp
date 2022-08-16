@@ -29,295 +29,312 @@ limitations under the License.
 
 using namespace ApiGear::WAMP;
 
-namespace Testbed1 {
-namespace StructInterface {
-namespace Private {
-WAMPService::WAMPService()
-: ITestbed1StructInterfaceInterface()
-, PropBool(FTestbed1StructBool())
-, PropInt(FTestbed1StructInt())
-, PropFloat(FTestbed1StructFloat())
-, PropString(FTestbed1StructString())
+namespace Testbed1
 {
-    EventFunc StructInterfaceStateChangedFunc = [this](EventArg arg)
-    {
-        const json fields = arg.kwargs;
-        if(fields.contains("propBool")) {
-            if(PropBool != fields["propBool"].get<FTestbed1StructBool>())
-            {
-                PropBool = fields["propBool"].get<FTestbed1StructBool>();
-                PropBoolChanged.Broadcast(PropBool);
-            }
-        }
-        if(fields.contains("propInt")) {
-            if(PropInt != fields["propInt"].get<FTestbed1StructInt>())
-            {
-                PropInt = fields["propInt"].get<FTestbed1StructInt>();
-                PropIntChanged.Broadcast(PropInt);
-            }
-        }
-        if(fields.contains("propFloat")) {
-            if(PropFloat != fields["propFloat"].get<FTestbed1StructFloat>())
-            {
-                PropFloat = fields["propFloat"].get<FTestbed1StructFloat>();
-                PropFloatChanged.Broadcast(PropFloat);
-            }
-        }
-        if(fields.contains("propString")) {
-            if(PropString != fields["propString"].get<FTestbed1StructString>())
-            {
-                PropString = fields["propString"].get<FTestbed1StructString>();
-                PropStringChanged.Broadcast(PropString);
-            }
-        }
-    };
-    UnrealWamp::instance()->doSubscribe("testbed1.StructInterface", StructInterfaceStateChangedFunc);
+namespace StructInterface
+{
+namespace Private
+{
+WAMPService::WAMPService()
+	: ITestbed1StructInterfaceInterface()
+	, PropBool(FTestbed1StructBool())
+	, PropInt(FTestbed1StructInt())
+	, PropFloat(FTestbed1StructFloat())
+	, PropString(FTestbed1StructString())
+{
+	EventFunc StructInterfaceStateChangedFunc = [this](EventArg arg)
+	{
+		const json fields = arg.kwargs;
+		if (fields.contains("propBool"))
+		{
+			if (PropBool != fields["propBool"].get<FTestbed1StructBool>())
+			{
+				PropBool = fields["propBool"].get<FTestbed1StructBool>();
+				PropBoolChanged.Broadcast(PropBool);
+			}
+		}
+		if (fields.contains("propInt"))
+		{
+			if (PropInt != fields["propInt"].get<FTestbed1StructInt>())
+			{
+				PropInt = fields["propInt"].get<FTestbed1StructInt>();
+				PropIntChanged.Broadcast(PropInt);
+			}
+		}
+		if (fields.contains("propFloat"))
+		{
+			if (PropFloat != fields["propFloat"].get<FTestbed1StructFloat>())
+			{
+				PropFloat = fields["propFloat"].get<FTestbed1StructFloat>();
+				PropFloatChanged.Broadcast(PropFloat);
+			}
+		}
+		if (fields.contains("propString"))
+		{
+			if (PropString != fields["propString"].get<FTestbed1StructString>())
+			{
+				PropString = fields["propString"].get<FTestbed1StructString>();
+				PropStringChanged.Broadcast(PropString);
+			}
+		}
+	};
+	UnrealWamp::instance()->doSubscribe("testbed1.StructInterface", StructInterfaceStateChangedFunc);
 
-    ResponseFunc GetStructInterfaceStateFunc = [this](ResponseArg arg)
-    {
-        if(arg.args.size() != 1) {
-          return;
-        }
-        const json fields = arg.args[0];
-        if(fields.contains("propBool")) {
-            if(PropBool != fields["propBool"].get<FTestbed1StructBool>())
-            {
-                PropBool = fields["propBool"].get<FTestbed1StructBool>();
-                PropBoolChanged.Broadcast(PropBool);
-            }
-        }
-        if(fields.contains("propInt")) {
-            if(PropInt != fields["propInt"].get<FTestbed1StructInt>())
-            {
-                PropInt = fields["propInt"].get<FTestbed1StructInt>();
-                PropIntChanged.Broadcast(PropInt);
-            }
-        }
-        if(fields.contains("propFloat")) {
-            if(PropFloat != fields["propFloat"].get<FTestbed1StructFloat>())
-            {
-                PropFloat = fields["propFloat"].get<FTestbed1StructFloat>();
-                PropFloatChanged.Broadcast(PropFloat);
-            }
-        }
-        if(fields.contains("propString")) {
-            if(PropString != fields["propString"].get<FTestbed1StructString>())
-            {
-                PropString = fields["propString"].get<FTestbed1StructString>();
-                PropStringChanged.Broadcast(PropString);
-            }
-        }
-    };
-    UnrealWamp::instance()->doCall("testbed1.StructInterface._get", Arguments(), ArgumentsKw(), GetStructInterfaceStateFunc);
+	ResponseFunc GetStructInterfaceStateFunc = [this](ResponseArg arg)
+	{
+		if (arg.args.size() != 1)
+		{
+			return;
+		}
+		const json fields = arg.args[0];
+		if (fields.contains("propBool"))
+		{
+			if (PropBool != fields["propBool"].get<FTestbed1StructBool>())
+			{
+				PropBool = fields["propBool"].get<FTestbed1StructBool>();
+				PropBoolChanged.Broadcast(PropBool);
+			}
+		}
+		if (fields.contains("propInt"))
+		{
+			if (PropInt != fields["propInt"].get<FTestbed1StructInt>())
+			{
+				PropInt = fields["propInt"].get<FTestbed1StructInt>();
+				PropIntChanged.Broadcast(PropInt);
+			}
+		}
+		if (fields.contains("propFloat"))
+		{
+			if (PropFloat != fields["propFloat"].get<FTestbed1StructFloat>())
+			{
+				PropFloat = fields["propFloat"].get<FTestbed1StructFloat>();
+				PropFloatChanged.Broadcast(PropFloat);
+			}
+		}
+		if (fields.contains("propString"))
+		{
+			if (PropString != fields["propString"].get<FTestbed1StructString>())
+			{
+				PropString = fields["propString"].get<FTestbed1StructString>();
+				PropStringChanged.Broadcast(PropString);
+			}
+		}
+	};
+	UnrealWamp::instance()->doCall("testbed1.StructInterface._get", Arguments(), ArgumentsKw(), GetStructInterfaceStateFunc);
 
-    EventFunc sigBoolFunc = [this](EventArg arg)
-    {
-        if(arg.args.size() == 1)
-        {
-            SigBoolSignal.Broadcast(arg.args[0].get<FTestbed1StructBool>());
-        }
-    };
-    UnrealWamp::instance()->doSubscribe("testbed1.StructInterface.sigBool", sigBoolFunc);
-    
-    EventFunc sigIntFunc = [this](EventArg arg)
-    {
-        if(arg.args.size() == 1)
-        {
-            SigIntSignal.Broadcast(arg.args[0].get<FTestbed1StructInt>());
-        }
-    };
-    UnrealWamp::instance()->doSubscribe("testbed1.StructInterface.sigInt", sigIntFunc);
-    
-    EventFunc sigFloatFunc = [this](EventArg arg)
-    {
-        if(arg.args.size() == 1)
-        {
-            SigFloatSignal.Broadcast(arg.args[0].get<FTestbed1StructFloat>());
-        }
-    };
-    UnrealWamp::instance()->doSubscribe("testbed1.StructInterface.sigFloat", sigFloatFunc);
-    
-    EventFunc sigStringFunc = [this](EventArg arg)
-    {
-        if(arg.args.size() == 1)
-        {
-            SigStringSignal.Broadcast(arg.args[0].get<FTestbed1StructString>());
-        }
-    };
-    UnrealWamp::instance()->doSubscribe("testbed1.StructInterface.sigString", sigStringFunc);
-    
+	EventFunc sigBoolFunc = [this](EventArg arg)
+	{
+		if (arg.args.size() == 1)
+		{
+			SigBoolSignal.Broadcast(arg.args[0].get<FTestbed1StructBool>());
+		}
+	};
+	UnrealWamp::instance()->doSubscribe("testbed1.StructInterface.sigBool", sigBoolFunc);
+
+	EventFunc sigIntFunc = [this](EventArg arg)
+	{
+		if (arg.args.size() == 1)
+		{
+			SigIntSignal.Broadcast(arg.args[0].get<FTestbed1StructInt>());
+		}
+	};
+	UnrealWamp::instance()->doSubscribe("testbed1.StructInterface.sigInt", sigIntFunc);
+
+	EventFunc sigFloatFunc = [this](EventArg arg)
+	{
+		if (arg.args.size() == 1)
+		{
+			SigFloatSignal.Broadcast(arg.args[0].get<FTestbed1StructFloat>());
+		}
+	};
+	UnrealWamp::instance()->doSubscribe("testbed1.StructInterface.sigFloat", sigFloatFunc);
+
+	EventFunc sigStringFunc = [this](EventArg arg)
+	{
+		if (arg.args.size() == 1)
+		{
+			SigStringSignal.Broadcast(arg.args[0].get<FTestbed1StructString>());
+		}
+	};
+	UnrealWamp::instance()->doSubscribe("testbed1.StructInterface.sigString", sigStringFunc);
 }
 
 WAMPService::~WAMPService()
 {
-    UnrealWamp::instance()->doUnSubscribe("testbed1.StructInterface");
-    UnrealWamp::instance()->doUnSubscribe("testbed1.StructInterface.sigBool");
-    UnrealWamp::instance()->doUnSubscribe("testbed1.StructInterface.sigInt");
-    UnrealWamp::instance()->doUnSubscribe("testbed1.StructInterface.sigFloat");
-    UnrealWamp::instance()->doUnSubscribe("testbed1.StructInterface.sigString");
+	UnrealWamp::instance()->doUnSubscribe("testbed1.StructInterface");
+	UnrealWamp::instance()->doUnSubscribe("testbed1.StructInterface.sigBool");
+	UnrealWamp::instance()->doUnSubscribe("testbed1.StructInterface.sigInt");
+	UnrealWamp::instance()->doUnSubscribe("testbed1.StructInterface.sigFloat");
+	UnrealWamp::instance()->doUnSubscribe("testbed1.StructInterface.sigString");
 }
 
 FTestbed1StructInterfaceSigBoolDelegate& WAMPService::GetSigBoolSignalDelegate()
 {
-    return SigBoolSignal;
+	return SigBoolSignal;
 }
 
 FTestbed1StructInterfaceSigIntDelegate& WAMPService::GetSigIntSignalDelegate()
 {
-    return SigIntSignal;
+	return SigIntSignal;
 }
 
 FTestbed1StructInterfaceSigFloatDelegate& WAMPService::GetSigFloatSignalDelegate()
 {
-    return SigFloatSignal;
+	return SigFloatSignal;
 }
 
 FTestbed1StructInterfaceSigStringDelegate& WAMPService::GetSigStringSignalDelegate()
 {
-    return SigStringSignal;
+	return SigStringSignal;
 }
 
 FTestbed1StructBool WAMPService::GetPropBool() const
 {
-    return PropBool;
+	return PropBool;
 }
 
 void WAMPService::SetPropBool(const FTestbed1StructBool& InPropBool)
 {
-    ArgumentsKw fields_;
-    fields_["propBool"] = InPropBool;
-    UnrealWamp::instance()->doCall("testbed1.StructInterface._set", Arguments(), fields_);
+	ArgumentsKw fields_;
+	fields_["propBool"] = InPropBool;
+	UnrealWamp::instance()->doCall("testbed1.StructInterface._set", Arguments(), fields_);
 }
 
 FTestbed1StructInterfacePropBoolChangedDelegate& WAMPService::GetPropBoolChangedDelegate()
 {
-    return PropBoolChanged;
+	return PropBoolChanged;
 }
 
 FTestbed1StructInt WAMPService::GetPropInt() const
 {
-    return PropInt;
+	return PropInt;
 }
 
 void WAMPService::SetPropInt(const FTestbed1StructInt& InPropInt)
 {
-    ArgumentsKw fields_;
-    fields_["propInt"] = InPropInt;
-    UnrealWamp::instance()->doCall("testbed1.StructInterface._set", Arguments(), fields_);
+	ArgumentsKw fields_;
+	fields_["propInt"] = InPropInt;
+	UnrealWamp::instance()->doCall("testbed1.StructInterface._set", Arguments(), fields_);
 }
 
 FTestbed1StructInterfacePropIntChangedDelegate& WAMPService::GetPropIntChangedDelegate()
 {
-    return PropIntChanged;
+	return PropIntChanged;
 }
 
 FTestbed1StructFloat WAMPService::GetPropFloat() const
 {
-    return PropFloat;
+	return PropFloat;
 }
 
 void WAMPService::SetPropFloat(const FTestbed1StructFloat& InPropFloat)
 {
-    ArgumentsKw fields_;
-    fields_["propFloat"] = InPropFloat;
-    UnrealWamp::instance()->doCall("testbed1.StructInterface._set", Arguments(), fields_);
+	ArgumentsKw fields_;
+	fields_["propFloat"] = InPropFloat;
+	UnrealWamp::instance()->doCall("testbed1.StructInterface._set", Arguments(), fields_);
 }
 
 FTestbed1StructInterfacePropFloatChangedDelegate& WAMPService::GetPropFloatChangedDelegate()
 {
-    return PropFloatChanged;
+	return PropFloatChanged;
 }
 
 FTestbed1StructString WAMPService::GetPropString() const
 {
-    return PropString;
+	return PropString;
 }
 
 void WAMPService::SetPropString(const FTestbed1StructString& InPropString)
 {
-    ArgumentsKw fields_;
-    fields_["propString"] = InPropString;
-    UnrealWamp::instance()->doCall("testbed1.StructInterface._set", Arguments(), fields_);
+	ArgumentsKw fields_;
+	fields_["propString"] = InPropString;
+	UnrealWamp::instance()->doCall("testbed1.StructInterface._set", Arguments(), fields_);
 }
 
 FTestbed1StructInterfacePropStringChangedDelegate& WAMPService::GetPropStringChangedDelegate()
 {
-    return PropStringChanged;
+	return PropStringChanged;
 }
-
 
 FTestbed1StructBool WAMPService::FuncBool(const FTestbed1StructBool& ParamBool)
 {
-    TPromise<FTestbed1StructBool> Promise;
-    Async(EAsyncExecution::Thread, [ParamBool,&Promise]()
-    {
-        ResponseFunc GetStructInterfaceStateFunc = [&Promise](ResponseArg arg)
-        {
-            if(arg.args.size() != 1) {
-              return;
-            }
-            Promise.SetValue(arg.args[0].get<FTestbed1StructBool>());
-        };
-        UnrealWamp::instance()->doCall("testbed1.StructInterface.funcBool", {ParamBool}, ArgumentsKw(), GetStructInterfaceStateFunc);
-    });
+	TPromise<FTestbed1StructBool> Promise;
+	Async(EAsyncExecution::Thread,
+		[ParamBool, &Promise]()
+		{
+			ResponseFunc GetStructInterfaceStateFunc = [&Promise](ResponseArg arg)
+			{
+				if (arg.args.size() != 1)
+				{
+					return;
+				}
+				Promise.SetValue(arg.args[0].get<FTestbed1StructBool>());
+			};
+			UnrealWamp::instance()->doCall("testbed1.StructInterface.funcBool", {ParamBool}, ArgumentsKw(), GetStructInterfaceStateFunc);
+		});
 
-    return Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
 
 FTestbed1StructBool WAMPService::FuncInt(const FTestbed1StructInt& ParamInt)
 {
-    TPromise<FTestbed1StructBool> Promise;
-    Async(EAsyncExecution::Thread, [ParamInt,&Promise]()
-    {
-        ResponseFunc GetStructInterfaceStateFunc = [&Promise](ResponseArg arg)
-        {
-            if(arg.args.size() != 1) {
-              return;
-            }
-            Promise.SetValue(arg.args[0].get<FTestbed1StructBool>());
-        };
-        UnrealWamp::instance()->doCall("testbed1.StructInterface.funcInt", {ParamInt}, ArgumentsKw(), GetStructInterfaceStateFunc);
-    });
+	TPromise<FTestbed1StructBool> Promise;
+	Async(EAsyncExecution::Thread,
+		[ParamInt, &Promise]()
+		{
+			ResponseFunc GetStructInterfaceStateFunc = [&Promise](ResponseArg arg)
+			{
+				if (arg.args.size() != 1)
+				{
+					return;
+				}
+				Promise.SetValue(arg.args[0].get<FTestbed1StructBool>());
+			};
+			UnrealWamp::instance()->doCall("testbed1.StructInterface.funcInt", {ParamInt}, ArgumentsKw(), GetStructInterfaceStateFunc);
+		});
 
-    return Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
 
 FTestbed1StructFloat WAMPService::FuncFloat(const FTestbed1StructFloat& ParamFloat)
 {
-    TPromise<FTestbed1StructFloat> Promise;
-    Async(EAsyncExecution::Thread, [ParamFloat,&Promise]()
-    {
-        ResponseFunc GetStructInterfaceStateFunc = [&Promise](ResponseArg arg)
-        {
-            if(arg.args.size() != 1) {
-              return;
-            }
-            Promise.SetValue(arg.args[0].get<FTestbed1StructFloat>());
-        };
-        UnrealWamp::instance()->doCall("testbed1.StructInterface.funcFloat", {ParamFloat}, ArgumentsKw(), GetStructInterfaceStateFunc);
-    });
+	TPromise<FTestbed1StructFloat> Promise;
+	Async(EAsyncExecution::Thread,
+		[ParamFloat, &Promise]()
+		{
+			ResponseFunc GetStructInterfaceStateFunc = [&Promise](ResponseArg arg)
+			{
+				if (arg.args.size() != 1)
+				{
+					return;
+				}
+				Promise.SetValue(arg.args[0].get<FTestbed1StructFloat>());
+			};
+			UnrealWamp::instance()->doCall("testbed1.StructInterface.funcFloat", {ParamFloat}, ArgumentsKw(), GetStructInterfaceStateFunc);
+		});
 
-    return Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
 
 FTestbed1StructString WAMPService::FuncString(const FTestbed1StructString& ParamString)
 {
-    TPromise<FTestbed1StructString> Promise;
-    Async(EAsyncExecution::Thread, [ParamString,&Promise]()
-    {
-        ResponseFunc GetStructInterfaceStateFunc = [&Promise](ResponseArg arg)
-        {
-            if(arg.args.size() != 1) {
-              return;
-            }
-            Promise.SetValue(arg.args[0].get<FTestbed1StructString>());
-        };
-        UnrealWamp::instance()->doCall("testbed1.StructInterface.funcString", {ParamString}, ArgumentsKw(), GetStructInterfaceStateFunc);
-    });
+	TPromise<FTestbed1StructString> Promise;
+	Async(EAsyncExecution::Thread,
+		[ParamString, &Promise]()
+		{
+			ResponseFunc GetStructInterfaceStateFunc = [&Promise](ResponseArg arg)
+			{
+				if (arg.args.size() != 1)
+				{
+					return;
+				}
+				Promise.SetValue(arg.args[0].get<FTestbed1StructString>());
+			};
+			UnrealWamp::instance()->doCall("testbed1.StructInterface.funcString", {ParamString}, ArgumentsKw(), GetStructInterfaceStateFunc);
+		});
 
-    return Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
-
 
 } // namespace Private
 } // namespace StructInterface

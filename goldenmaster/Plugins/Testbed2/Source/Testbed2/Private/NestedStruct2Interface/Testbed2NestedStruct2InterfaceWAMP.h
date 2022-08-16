@@ -18,49 +18,48 @@ limitations under the License.
 
 #include "apig/Testbed2_apig.h"
 
-namespace Testbed2 {
-namespace NestedStruct2Interface {
-namespace Private {
+namespace Testbed2
+{
+namespace NestedStruct2Interface
+{
+namespace Private
+{
 
 class WAMPService : public ITestbed2NestedStruct2InterfaceInterface
 {
 public:
+	explicit WAMPService();
+	virtual ~WAMPService();
 
-    explicit WAMPService();
-    virtual ~WAMPService();
+	// signals
+	FTestbed2NestedStruct2InterfaceSig1Delegate Sig1Signal;
+	FTestbed2NestedStruct2InterfaceSig1Delegate& GetSig1SignalDelegate() override;
 
-    // signals
-    FTestbed2NestedStruct2InterfaceSig1Delegate Sig1Signal;
-    FTestbed2NestedStruct2InterfaceSig1Delegate& GetSig1SignalDelegate() override;
-    
-    FTestbed2NestedStruct2InterfaceSig2Delegate Sig2Signal;
-    FTestbed2NestedStruct2InterfaceSig2Delegate& GetSig2SignalDelegate() override;
-    
-    FTestbed2NestedStruct2InterfaceProp1ChangedDelegate Prop1Changed;
-    FTestbed2NestedStruct2InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
+	FTestbed2NestedStruct2InterfaceSig2Delegate Sig2Signal;
+	FTestbed2NestedStruct2InterfaceSig2Delegate& GetSig2SignalDelegate() override;
 
-    FTestbed2NestedStruct2InterfaceProp2ChangedDelegate Prop2Changed;
-    FTestbed2NestedStruct2InterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() override;
+	FTestbed2NestedStruct2InterfaceProp1ChangedDelegate Prop1Changed;
+	FTestbed2NestedStruct2InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
 
+	FTestbed2NestedStruct2InterfaceProp2ChangedDelegate Prop2Changed;
+	FTestbed2NestedStruct2InterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() override;
 
-    // properties
-    FTestbed2NestedStruct1 GetProp1() const override;
-    void SetProp1(const FTestbed2NestedStruct1& Prop1) override;
+	// properties
+	FTestbed2NestedStruct1 GetProp1() const override;
+	void SetProp1(const FTestbed2NestedStruct1& Prop1) override;
 
-    FTestbed2NestedStruct2 GetProp2() const override;
-    void SetProp2(const FTestbed2NestedStruct2& Prop2) override;
+	FTestbed2NestedStruct2 GetProp2() const override;
+	void SetProp2(const FTestbed2NestedStruct2& Prop2) override;
 
+	// operations
+	FTestbed2NestedStruct1 Func1(const FTestbed2NestedStruct1& Param1) override;
 
-    // operations
-    FTestbed2NestedStruct1 Func1(const FTestbed2NestedStruct1& Param1) override;
-    
-    FTestbed2NestedStruct1 Func2(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2) override;
-    
+	FTestbed2NestedStruct1 Func2(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2) override;
 
 private:
-    // properties - local copy
-    FTestbed2NestedStruct1 Prop1;
-    FTestbed2NestedStruct2 Prop2;
+	// properties - local copy
+	FTestbed2NestedStruct1 Prop1;
+	FTestbed2NestedStruct2 Prop2;
 };
 
 } // namespace Private

@@ -51,7 +51,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed2ManyParamInterfaceProp4Chan
 UINTERFACE(MinimalAPI)
 class UTestbed2ManyParamInterfaceInterface : public UInterface
 {
-    GENERATED_BODY()
+	GENERATED_BODY()
 };
 
 /**
@@ -59,41 +59,40 @@ class UTestbed2ManyParamInterfaceInterface : public UInterface
  */
 class TESTBED2_API ITestbed2ManyParamInterfaceInterface
 {
-    GENERATED_BODY()
+	GENERATED_BODY()
 
 public:
-// signals
-    virtual FTestbed2ManyParamInterfaceSig1Delegate& GetSig1SignalDelegate() = 0;
+	// signals
+	virtual FTestbed2ManyParamInterfaceSig1Delegate& GetSig1SignalDelegate() = 0;
 
-    virtual FTestbed2ManyParamInterfaceSig2Delegate& GetSig2SignalDelegate() = 0;
+	virtual FTestbed2ManyParamInterfaceSig2Delegate& GetSig2SignalDelegate() = 0;
 
-    virtual FTestbed2ManyParamInterfaceSig3Delegate& GetSig3SignalDelegate() = 0;
+	virtual FTestbed2ManyParamInterfaceSig3Delegate& GetSig3SignalDelegate() = 0;
 
-    virtual FTestbed2ManyParamInterfaceSig4Delegate& GetSig4SignalDelegate() = 0;
+	virtual FTestbed2ManyParamInterfaceSig4Delegate& GetSig4SignalDelegate() = 0;
 
-    virtual FTestbed2ManyParamInterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() = 0;
+	virtual FTestbed2ManyParamInterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() = 0;
 
-    virtual FTestbed2ManyParamInterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() = 0;
+	virtual FTestbed2ManyParamInterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() = 0;
 
-    virtual FTestbed2ManyParamInterfaceProp3ChangedDelegate& GetProp3ChangedDelegate() = 0;
+	virtual FTestbed2ManyParamInterfaceProp3ChangedDelegate& GetProp3ChangedDelegate() = 0;
 
-    virtual FTestbed2ManyParamInterfaceProp4ChangedDelegate& GetProp4ChangedDelegate() = 0;
+	virtual FTestbed2ManyParamInterfaceProp4ChangedDelegate& GetProp4ChangedDelegate() = 0;
 
-
-// methods
-    virtual int32 Func1(int32 Param1) = 0;
-    virtual int32 Func2(int32 Param1, int32 Param2) = 0;
-    virtual int32 Func3(int32 Param1, int32 Param2, int32 Param3) = 0;
-    virtual int32 Func4(int32 Param1, int32 Param2, int32 Param3, int32 Param4) = 0;
-// properties
-    virtual int32 GetProp1() const = 0;
-    virtual void SetProp1(int32 Prop1) = 0;
-    virtual int32 GetProp2() const = 0;
-    virtual void SetProp2(int32 Prop2) = 0;
-    virtual int32 GetProp3() const = 0;
-    virtual void SetProp3(int32 Prop3) = 0;
-    virtual int32 GetProp4() const = 0;
-    virtual void SetProp4(int32 Prop4) = 0;
+	// methods
+	virtual int32 Func1(int32 Param1) = 0;
+	virtual int32 Func2(int32 Param1, int32 Param2) = 0;
+	virtual int32 Func3(int32 Param1, int32 Param2, int32 Param3) = 0;
+	virtual int32 Func4(int32 Param1, int32 Param2, int32 Param3, int32 Param4) = 0;
+	// properties
+	virtual int32 GetProp1() const = 0;
+	virtual void SetProp1(int32 Prop1) = 0;
+	virtual int32 GetProp2() const = 0;
+	virtual void SetProp2(int32 Prop2) = 0;
+	virtual int32 GetProp3() const = 0;
+	virtual void SetProp3(int32 Prop3) = 0;
+	virtual int32 GetProp4() const = 0;
+	virtual void SetProp4(int32 Prop4) = 0;
 };
 /**
  * Declaration for NestedStruct1Interface
@@ -110,7 +109,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed2NestedStruct1InterfaceProp1
 UINTERFACE(MinimalAPI)
 class UTestbed2NestedStruct1InterfaceInterface : public UInterface
 {
-    GENERATED_BODY()
+	GENERATED_BODY()
 };
 
 /**
@@ -118,20 +117,19 @@ class UTestbed2NestedStruct1InterfaceInterface : public UInterface
  */
 class TESTBED2_API ITestbed2NestedStruct1InterfaceInterface
 {
-    GENERATED_BODY()
+	GENERATED_BODY()
 
 public:
-// signals
-    virtual FTestbed2NestedStruct1InterfaceSig1Delegate& GetSig1SignalDelegate() = 0;
+	// signals
+	virtual FTestbed2NestedStruct1InterfaceSig1Delegate& GetSig1SignalDelegate() = 0;
 
-    virtual FTestbed2NestedStruct1InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() = 0;
+	virtual FTestbed2NestedStruct1InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() = 0;
 
-
-// methods
-    virtual FTestbed2NestedStruct1 Func1(const FTestbed2NestedStruct1& Param1) = 0;
-// properties
-    virtual FTestbed2NestedStruct1 GetProp1() const = 0;
-    virtual void SetProp1(const FTestbed2NestedStruct1& Prop1) = 0;
+	// methods
+	virtual FTestbed2NestedStruct1 Func1(const FTestbed2NestedStruct1& Param1) = 0;
+	// properties
+	virtual FTestbed2NestedStruct1 GetProp1() const = 0;
+	virtual void SetProp1(const FTestbed2NestedStruct1& Prop1) = 0;
 };
 /**
  * Declaration for NestedStruct2Interface
@@ -152,7 +150,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed2NestedStruct2InterfaceProp2
 UINTERFACE(MinimalAPI)
 class UTestbed2NestedStruct2InterfaceInterface : public UInterface
 {
-    GENERATED_BODY()
+	GENERATED_BODY()
 };
 
 /**
@@ -160,27 +158,26 @@ class UTestbed2NestedStruct2InterfaceInterface : public UInterface
  */
 class TESTBED2_API ITestbed2NestedStruct2InterfaceInterface
 {
-    GENERATED_BODY()
+	GENERATED_BODY()
 
 public:
-// signals
-    virtual FTestbed2NestedStruct2InterfaceSig1Delegate& GetSig1SignalDelegate() = 0;
+	// signals
+	virtual FTestbed2NestedStruct2InterfaceSig1Delegate& GetSig1SignalDelegate() = 0;
 
-    virtual FTestbed2NestedStruct2InterfaceSig2Delegate& GetSig2SignalDelegate() = 0;
+	virtual FTestbed2NestedStruct2InterfaceSig2Delegate& GetSig2SignalDelegate() = 0;
 
-    virtual FTestbed2NestedStruct2InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() = 0;
+	virtual FTestbed2NestedStruct2InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() = 0;
 
-    virtual FTestbed2NestedStruct2InterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() = 0;
+	virtual FTestbed2NestedStruct2InterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() = 0;
 
-
-// methods
-    virtual FTestbed2NestedStruct1 Func1(const FTestbed2NestedStruct1& Param1) = 0;
-    virtual FTestbed2NestedStruct1 Func2(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2) = 0;
-// properties
-    virtual FTestbed2NestedStruct1 GetProp1() const = 0;
-    virtual void SetProp1(const FTestbed2NestedStruct1& Prop1) = 0;
-    virtual FTestbed2NestedStruct2 GetProp2() const = 0;
-    virtual void SetProp2(const FTestbed2NestedStruct2& Prop2) = 0;
+	// methods
+	virtual FTestbed2NestedStruct1 Func1(const FTestbed2NestedStruct1& Param1) = 0;
+	virtual FTestbed2NestedStruct1 Func2(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2) = 0;
+	// properties
+	virtual FTestbed2NestedStruct1 GetProp1() const = 0;
+	virtual void SetProp1(const FTestbed2NestedStruct1& Prop1) = 0;
+	virtual FTestbed2NestedStruct2 GetProp2() const = 0;
+	virtual void SetProp2(const FTestbed2NestedStruct2& Prop2) = 0;
 };
 /**
  * Declaration for NestedStruct3Interface
@@ -205,7 +202,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed2NestedStruct3InterfaceProp3
 UINTERFACE(MinimalAPI)
 class UTestbed2NestedStruct3InterfaceInterface : public UInterface
 {
-    GENERATED_BODY()
+	GENERATED_BODY()
 };
 
 /**
@@ -213,32 +210,31 @@ class UTestbed2NestedStruct3InterfaceInterface : public UInterface
  */
 class TESTBED2_API ITestbed2NestedStruct3InterfaceInterface
 {
-    GENERATED_BODY()
+	GENERATED_BODY()
 
 public:
-// signals
-    virtual FTestbed2NestedStruct3InterfaceSig1Delegate& GetSig1SignalDelegate() = 0;
+	// signals
+	virtual FTestbed2NestedStruct3InterfaceSig1Delegate& GetSig1SignalDelegate() = 0;
 
-    virtual FTestbed2NestedStruct3InterfaceSig2Delegate& GetSig2SignalDelegate() = 0;
+	virtual FTestbed2NestedStruct3InterfaceSig2Delegate& GetSig2SignalDelegate() = 0;
 
-    virtual FTestbed2NestedStruct3InterfaceSig3Delegate& GetSig3SignalDelegate() = 0;
+	virtual FTestbed2NestedStruct3InterfaceSig3Delegate& GetSig3SignalDelegate() = 0;
 
-    virtual FTestbed2NestedStruct3InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() = 0;
+	virtual FTestbed2NestedStruct3InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() = 0;
 
-    virtual FTestbed2NestedStruct3InterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() = 0;
+	virtual FTestbed2NestedStruct3InterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() = 0;
 
-    virtual FTestbed2NestedStruct3InterfaceProp3ChangedDelegate& GetProp3ChangedDelegate() = 0;
+	virtual FTestbed2NestedStruct3InterfaceProp3ChangedDelegate& GetProp3ChangedDelegate() = 0;
 
-
-// methods
-    virtual FTestbed2NestedStruct1 Func1(const FTestbed2NestedStruct1& Param1) = 0;
-    virtual FTestbed2NestedStruct1 Func2(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2) = 0;
-    virtual FTestbed2NestedStruct1 Func3(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3) = 0;
-// properties
-    virtual FTestbed2NestedStruct1 GetProp1() const = 0;
-    virtual void SetProp1(const FTestbed2NestedStruct1& Prop1) = 0;
-    virtual FTestbed2NestedStruct2 GetProp2() const = 0;
-    virtual void SetProp2(const FTestbed2NestedStruct2& Prop2) = 0;
-    virtual FTestbed2NestedStruct3 GetProp3() const = 0;
-    virtual void SetProp3(const FTestbed2NestedStruct3& Prop3) = 0;
+	// methods
+	virtual FTestbed2NestedStruct1 Func1(const FTestbed2NestedStruct1& Param1) = 0;
+	virtual FTestbed2NestedStruct1 Func2(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2) = 0;
+	virtual FTestbed2NestedStruct1 Func3(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3) = 0;
+	// properties
+	virtual FTestbed2NestedStruct1 GetProp1() const = 0;
+	virtual void SetProp1(const FTestbed2NestedStruct1& Prop1) = 0;
+	virtual FTestbed2NestedStruct2 GetProp2() const = 0;
+	virtual void SetProp2(const FTestbed2NestedStruct2& Prop2) = 0;
+	virtual FTestbed2NestedStruct3 GetProp3() const = 0;
+	virtual void SetProp3(const FTestbed2NestedStruct3& Prop3) = 0;
 };

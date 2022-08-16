@@ -23,49 +23,48 @@ limitations under the License.
 #include "apig/TbSame1_apig.h"
 #include "TbSame1SameStruct1InterfaceProxy.generated.h"
 
-UCLASS(BlueprintType, Blueprintable, DisplayName="TbSame1SameStruct1Interface")
+UCLASS(BlueprintType, Blueprintable, DisplayName = "TbSame1SameStruct1Interface")
 class TBSAME1_API UTbSame1SameStruct1InterfaceProxy : public UGameInstanceSubsystem, public ITbSame1SameStruct1InterfaceInterface
 {
 	GENERATED_BODY()
 
 public:
-    explicit UTbSame1SameStruct1InterfaceProxy();
-    virtual ~UTbSame1SameStruct1InterfaceProxy();
+	explicit UTbSame1SameStruct1InterfaceProxy();
+	virtual ~UTbSame1SameStruct1InterfaceProxy();
 
-    // signals
+	// signals
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame1|SameStruct1Interface", DisplayName = "Sig1 Signal")
-    FTbSame1SameStruct1InterfaceSig1Delegate Sig1Signal;
-    FTbSame1SameStruct1InterfaceSig1Delegate& GetSig1SignalDelegate() override;
-    
+	FTbSame1SameStruct1InterfaceSig1Delegate Sig1Signal;
+	FTbSame1SameStruct1InterfaceSig1Delegate& GetSig1SignalDelegate() override;
+
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame1|SameStruct1Interface", DisplayName = "Prop1 Changed")
-    FTbSame1SameStruct1InterfaceProp1ChangedDelegate Prop1Changed;
-    FTbSame1SameStruct1InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
+	FTbSame1SameStruct1InterfaceProp1ChangedDelegate Prop1Changed;
+	FTbSame1SameStruct1InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
 
-    // properties
+	// properties
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1|SameStruct1Interface")
-    FTbSame1Struct1 GetProp1() const override;
+	FTbSame1Struct1 GetProp1() const override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1|SameStruct1Interface")
-    void SetProp1(const FTbSame1Struct1& Prop1) override;
+	void SetProp1(const FTbSame1Struct1& Prop1) override;
 
-    // operations
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1|SameStruct1Interface", meta=(Latent, LatentInfo="LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-    void Func1(UObject* WorldContextObject, struct FLatentActionInfo LatentInfo, FTbSame1Struct1& Result,const FTbSame1Struct1& Param1);
-    FTbSame1Struct1 Func1(const FTbSame1Struct1& Param1) override;
+	// operations
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1|SameStruct1Interface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	void Func1(UObject* WorldContextObject, struct FLatentActionInfo LatentInfo, FTbSame1Struct1& Result, const FTbSame1Struct1& Param1);
+	FTbSame1Struct1 Func1(const FTbSame1Struct1& Param1) override;
 
 private:
 	/** The connection to the service backend. */
 	TSharedPtr<ITbSame1SameStruct1InterfaceInterface, ESPMode::ThreadSafe> service;
 
-    // signals
-    UFUNCTION(Category = "ApiGear|TbSame1|SameStruct1Interface", BlueprintInternalUseOnly)
-    void OnSig1(const FTbSame1Struct1& Param1);
-    
-    UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1|SameStruct1Interface", BlueprintInternalUseOnly)
-    void OnProp1Changed(const FTbSame1Struct1& Prop1);
+	// signals
+	UFUNCTION(Category = "ApiGear|TbSame1|SameStruct1Interface", BlueprintInternalUseOnly)
+	void OnSig1(const FTbSame1Struct1& Param1);
 
-    // properties - local copy
-	UPROPERTY(EditAnywhere, BlueprintGetter=GetProp1, BlueprintSetter=SetProp1, Category = "ApiGear|TbSame1|SameStruct1Interface")
-    FTbSame1Struct1 Prop1;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1|SameStruct1Interface", BlueprintInternalUseOnly)
+	void OnProp1Changed(const FTbSame1Struct1& Prop1);
 
+	// properties - local copy
+	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1, BlueprintSetter = SetProp1, Category = "ApiGear|TbSame1|SameStruct1Interface")
+	FTbSame1Struct1 Prop1;
 };

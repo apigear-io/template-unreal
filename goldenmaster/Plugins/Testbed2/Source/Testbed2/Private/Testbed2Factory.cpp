@@ -34,93 +34,97 @@ limitations under the License.
 #include "NestedStruct3Interface/Testbed2NestedStruct3InterfaceSimulation.h"
 #include "Testbed2Settings.h"
 
-//General Log
+// General Log
 DEFINE_LOG_CATEGORY(LogFTestbed2ModuleFactory);
 
 TSharedPtr<ITestbed2ManyParamInterfaceInterface, ESPMode::ThreadSafe> FTestbed2ModuleFactory::createITestbed2ManyParamInterfaceInterface()
 {
-    UTestbed2Settings* settings = GetMutableDefault<UTestbed2Settings>();
+	UTestbed2Settings* settings = GetMutableDefault<UTestbed2Settings>();
 
-    switch(settings->ServiceConnection) {
-        case ETestbed2Connection::CONNECTION_WAMP:
-            UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2ManyParamInterfaceInterface: Using WAMP service backend"));
-            return MakeShared<Testbed2::ManyParamInterface::Private::WAMPService, ESPMode::ThreadSafe>();
-        case ETestbed2Connection::CONNECTION_OLINK:
-            UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2ManyParamInterfaceInterface: Using OLink service backend"));
-            return MakeShared<Testbed2::ManyParamInterface::Private::OLinkService, ESPMode::ThreadSafe>();
-        case ETestbed2Connection::CONNECTION_SIMU:
-            UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2ManyParamInterfaceInterface: Using simulation service backend"));
-            return MakeShared<Testbed2::ManyParamInterface::Private::SimulationService, ESPMode::ThreadSafe>();
-        case ETestbed2Connection::CONNECTION_LOCAL:
-            UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2ManyParamInterfaceInterface: Using local service backend"));
-        default:
-            UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2ManyParamInterfaceInterface: Defaulting to local service backend"));
-            return MakeShared<Testbed2::ManyParamInterface::Private::LocalService, ESPMode::ThreadSafe>();
-    }
+	switch (settings->ServiceConnection)
+	{
+	case ETestbed2Connection::CONNECTION_WAMP:
+		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2ManyParamInterfaceInterface: Using WAMP service backend"));
+		return MakeShared<Testbed2::ManyParamInterface::Private::WAMPService, ESPMode::ThreadSafe>();
+	case ETestbed2Connection::CONNECTION_OLINK:
+		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2ManyParamInterfaceInterface: Using OLink service backend"));
+		return MakeShared<Testbed2::ManyParamInterface::Private::OLinkService, ESPMode::ThreadSafe>();
+	case ETestbed2Connection::CONNECTION_SIMU:
+		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2ManyParamInterfaceInterface: Using simulation service backend"));
+		return MakeShared<Testbed2::ManyParamInterface::Private::SimulationService, ESPMode::ThreadSafe>();
+	case ETestbed2Connection::CONNECTION_LOCAL:
+		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2ManyParamInterfaceInterface: Using local service backend"));
+	default:
+		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2ManyParamInterfaceInterface: Defaulting to local service backend"));
+		return MakeShared<Testbed2::ManyParamInterface::Private::LocalService, ESPMode::ThreadSafe>();
+	}
 }
 
 TSharedPtr<ITestbed2NestedStruct1InterfaceInterface, ESPMode::ThreadSafe> FTestbed2ModuleFactory::createITestbed2NestedStruct1InterfaceInterface()
 {
-    UTestbed2Settings* settings = GetMutableDefault<UTestbed2Settings>();
+	UTestbed2Settings* settings = GetMutableDefault<UTestbed2Settings>();
 
-    switch(settings->ServiceConnection) {
-        case ETestbed2Connection::CONNECTION_WAMP:
-            UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct1InterfaceInterface: Using WAMP service backend"));
-            return MakeShared<Testbed2::NestedStruct1Interface::Private::WAMPService, ESPMode::ThreadSafe>();
-        case ETestbed2Connection::CONNECTION_OLINK:
-            UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct1InterfaceInterface: Using OLink service backend"));
-            return MakeShared<Testbed2::NestedStruct1Interface::Private::OLinkService, ESPMode::ThreadSafe>();
-        case ETestbed2Connection::CONNECTION_SIMU:
-            UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct1InterfaceInterface: Using simulation service backend"));
-            return MakeShared<Testbed2::NestedStruct1Interface::Private::SimulationService, ESPMode::ThreadSafe>();
-        case ETestbed2Connection::CONNECTION_LOCAL:
-            UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct1InterfaceInterface: Using local service backend"));
-        default:
-            UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct1InterfaceInterface: Defaulting to local service backend"));
-            return MakeShared<Testbed2::NestedStruct1Interface::Private::LocalService, ESPMode::ThreadSafe>();
-    }
+	switch (settings->ServiceConnection)
+	{
+	case ETestbed2Connection::CONNECTION_WAMP:
+		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct1InterfaceInterface: Using WAMP service backend"));
+		return MakeShared<Testbed2::NestedStruct1Interface::Private::WAMPService, ESPMode::ThreadSafe>();
+	case ETestbed2Connection::CONNECTION_OLINK:
+		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct1InterfaceInterface: Using OLink service backend"));
+		return MakeShared<Testbed2::NestedStruct1Interface::Private::OLinkService, ESPMode::ThreadSafe>();
+	case ETestbed2Connection::CONNECTION_SIMU:
+		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct1InterfaceInterface: Using simulation service backend"));
+		return MakeShared<Testbed2::NestedStruct1Interface::Private::SimulationService, ESPMode::ThreadSafe>();
+	case ETestbed2Connection::CONNECTION_LOCAL:
+		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct1InterfaceInterface: Using local service backend"));
+	default:
+		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct1InterfaceInterface: Defaulting to local service backend"));
+		return MakeShared<Testbed2::NestedStruct1Interface::Private::LocalService, ESPMode::ThreadSafe>();
+	}
 }
 
 TSharedPtr<ITestbed2NestedStruct2InterfaceInterface, ESPMode::ThreadSafe> FTestbed2ModuleFactory::createITestbed2NestedStruct2InterfaceInterface()
 {
-    UTestbed2Settings* settings = GetMutableDefault<UTestbed2Settings>();
+	UTestbed2Settings* settings = GetMutableDefault<UTestbed2Settings>();
 
-    switch(settings->ServiceConnection) {
-        case ETestbed2Connection::CONNECTION_WAMP:
-            UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct2InterfaceInterface: Using WAMP service backend"));
-            return MakeShared<Testbed2::NestedStruct2Interface::Private::WAMPService, ESPMode::ThreadSafe>();
-        case ETestbed2Connection::CONNECTION_OLINK:
-            UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct2InterfaceInterface: Using OLink service backend"));
-            return MakeShared<Testbed2::NestedStruct2Interface::Private::OLinkService, ESPMode::ThreadSafe>();
-        case ETestbed2Connection::CONNECTION_SIMU:
-            UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct2InterfaceInterface: Using simulation service backend"));
-            return MakeShared<Testbed2::NestedStruct2Interface::Private::SimulationService, ESPMode::ThreadSafe>();
-        case ETestbed2Connection::CONNECTION_LOCAL:
-            UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct2InterfaceInterface: Using local service backend"));
-        default:
-            UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct2InterfaceInterface: Defaulting to local service backend"));
-            return MakeShared<Testbed2::NestedStruct2Interface::Private::LocalService, ESPMode::ThreadSafe>();
-    }
+	switch (settings->ServiceConnection)
+	{
+	case ETestbed2Connection::CONNECTION_WAMP:
+		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct2InterfaceInterface: Using WAMP service backend"));
+		return MakeShared<Testbed2::NestedStruct2Interface::Private::WAMPService, ESPMode::ThreadSafe>();
+	case ETestbed2Connection::CONNECTION_OLINK:
+		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct2InterfaceInterface: Using OLink service backend"));
+		return MakeShared<Testbed2::NestedStruct2Interface::Private::OLinkService, ESPMode::ThreadSafe>();
+	case ETestbed2Connection::CONNECTION_SIMU:
+		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct2InterfaceInterface: Using simulation service backend"));
+		return MakeShared<Testbed2::NestedStruct2Interface::Private::SimulationService, ESPMode::ThreadSafe>();
+	case ETestbed2Connection::CONNECTION_LOCAL:
+		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct2InterfaceInterface: Using local service backend"));
+	default:
+		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct2InterfaceInterface: Defaulting to local service backend"));
+		return MakeShared<Testbed2::NestedStruct2Interface::Private::LocalService, ESPMode::ThreadSafe>();
+	}
 }
 
 TSharedPtr<ITestbed2NestedStruct3InterfaceInterface, ESPMode::ThreadSafe> FTestbed2ModuleFactory::createITestbed2NestedStruct3InterfaceInterface()
 {
-    UTestbed2Settings* settings = GetMutableDefault<UTestbed2Settings>();
+	UTestbed2Settings* settings = GetMutableDefault<UTestbed2Settings>();
 
-    switch(settings->ServiceConnection) {
-        case ETestbed2Connection::CONNECTION_WAMP:
-            UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct3InterfaceInterface: Using WAMP service backend"));
-            return MakeShared<Testbed2::NestedStruct3Interface::Private::WAMPService, ESPMode::ThreadSafe>();
-        case ETestbed2Connection::CONNECTION_OLINK:
-            UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct3InterfaceInterface: Using OLink service backend"));
-            return MakeShared<Testbed2::NestedStruct3Interface::Private::OLinkService, ESPMode::ThreadSafe>();
-        case ETestbed2Connection::CONNECTION_SIMU:
-            UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct3InterfaceInterface: Using simulation service backend"));
-            return MakeShared<Testbed2::NestedStruct3Interface::Private::SimulationService, ESPMode::ThreadSafe>();
-        case ETestbed2Connection::CONNECTION_LOCAL:
-            UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct3InterfaceInterface: Using local service backend"));
-        default:
-            UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct3InterfaceInterface: Defaulting to local service backend"));
-            return MakeShared<Testbed2::NestedStruct3Interface::Private::LocalService, ESPMode::ThreadSafe>();
-    }
+	switch (settings->ServiceConnection)
+	{
+	case ETestbed2Connection::CONNECTION_WAMP:
+		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct3InterfaceInterface: Using WAMP service backend"));
+		return MakeShared<Testbed2::NestedStruct3Interface::Private::WAMPService, ESPMode::ThreadSafe>();
+	case ETestbed2Connection::CONNECTION_OLINK:
+		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct3InterfaceInterface: Using OLink service backend"));
+		return MakeShared<Testbed2::NestedStruct3Interface::Private::OLinkService, ESPMode::ThreadSafe>();
+	case ETestbed2Connection::CONNECTION_SIMU:
+		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct3InterfaceInterface: Using simulation service backend"));
+		return MakeShared<Testbed2::NestedStruct3Interface::Private::SimulationService, ESPMode::ThreadSafe>();
+	case ETestbed2Connection::CONNECTION_LOCAL:
+		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct3InterfaceInterface: Using local service backend"));
+	default:
+		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct3InterfaceInterface: Defaulting to local service backend"));
+		return MakeShared<Testbed2::NestedStruct3Interface::Private::LocalService, ESPMode::ThreadSafe>();
+	}
 }

@@ -26,18 +26,19 @@ limitations under the License.
  */
 bool toUE4Type({{enum|unrealTypeName: false, moduleCapital}}& value, uint8 v)
 {
-    bool bSuccessful = false;
-    switch (v) {
+	bool bSuccessful = false;
+	switch (v)
+	{
 {% for member in enum.members %}
-        case {{member.value}}:
-            value = {{enum|unrealTypeName: false, moduleCapital}}::{{member.name|constant}};
-            bSuccessful = true;
-            break;
+	case {{member.value}}:
+		value = {{enum|unrealTypeName: false, moduleCapital}}::{{member.name|constant}};
+		bSuccessful = true;
+		break;
 {% endfor %}
-        default:
-            value = {{enum|unrealDefault: moduleCapital}};
-    }
-    return bSuccessful;
+	default:
+		value = {{enum|unrealDefault: moduleCapital}};
+	}
+	return bSuccessful;
 }
 
 {% endfor %}
@@ -45,9 +46,9 @@ bool toUE4Type({{enum|unrealTypeName: false, moduleCapital}}& value, uint8 v)
 {% for struct in module.structs %}
 bool {{struct|unrealTypeName: false, moduleCapital}}::operator==(const {{struct|unrealTypeName: false, moduleCapital}}& rhs) const
 {
-	return
+	return{{' '}}
 {% for field in struct.fields %}
-	{% unless forloop.first %}&& {% endunless %}({{field.name}} == rhs.{{field.name}}){% if forloop.last %};{% endif %}
+	{% unless forloop.first %}{{' && '}}{% endunless %}({{field.name}} == rhs.{{field.name}}){% if forloop.last %};{% endif %}
 {% endfor %}
 }
 

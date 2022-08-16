@@ -19,59 +19,58 @@ limitations under the License.
 #include "apig/TbSame1_apig.h"
 #include "olink/clientnode.h"
 
-namespace TbSame1 {
-namespace SameStruct2Interface {
-namespace Private {
+namespace TbSame1
+{
+namespace SameStruct2Interface
+{
+namespace Private
+{
 
 class OLinkService : public ITbSame1SameStruct2InterfaceInterface, public ApiGear::ObjectLink::IObjectSink
 {
 public:
+	explicit OLinkService();
+	virtual ~OLinkService();
 
-    explicit OLinkService();
-    virtual ~OLinkService();
+	// signals
+	FTbSame1SameStruct2InterfaceSig1Delegate Sig1Signal;
+	FTbSame1SameStruct2InterfaceSig1Delegate& GetSig1SignalDelegate() override;
 
-    // signals
-    FTbSame1SameStruct2InterfaceSig1Delegate Sig1Signal;
-    FTbSame1SameStruct2InterfaceSig1Delegate& GetSig1SignalDelegate() override;
-    
-    FTbSame1SameStruct2InterfaceSig2Delegate Sig2Signal;
-    FTbSame1SameStruct2InterfaceSig2Delegate& GetSig2SignalDelegate() override;
-    
-    FTbSame1SameStruct2InterfaceProp1ChangedDelegate Prop1Changed;
-    FTbSame1SameStruct2InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
+	FTbSame1SameStruct2InterfaceSig2Delegate Sig2Signal;
+	FTbSame1SameStruct2InterfaceSig2Delegate& GetSig2SignalDelegate() override;
 
-    FTbSame1SameStruct2InterfaceProp2ChangedDelegate Prop2Changed;
-    FTbSame1SameStruct2InterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() override;
+	FTbSame1SameStruct2InterfaceProp1ChangedDelegate Prop1Changed;
+	FTbSame1SameStruct2InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
 
-    // properties
-    FTbSame1Struct2 GetProp1() const override;
-    void SetProp1(const FTbSame1Struct2& Prop1) override;
+	FTbSame1SameStruct2InterfaceProp2ChangedDelegate Prop2Changed;
+	FTbSame1SameStruct2InterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() override;
 
-    FTbSame1Struct2 GetProp2() const override;
-    void SetProp2(const FTbSame1Struct2& Prop2) override;
+	// properties
+	FTbSame1Struct2 GetProp1() const override;
+	void SetProp1(const FTbSame1Struct2& Prop1) override;
 
+	FTbSame1Struct2 GetProp2() const override;
+	void SetProp2(const FTbSame1Struct2& Prop2) override;
 
-    // operations
-    FTbSame1Struct1 Func1(const FTbSame1Struct1& Param1) override;
-    
-    FTbSame1Struct1 Func2(const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2) override;
-    
+	// operations
+	FTbSame1Struct1 Func1(const FTbSame1Struct1& Param1) override;
 
-    // olink sink interface
-    std::string olinkObjectName() override;
-    void olinkOnSignal(std::string name, nlohmann::json args) override;
-    void olinkOnPropertyChanged(std::string name, nlohmann::json value) override;
-    void olinkOnInit(std::string name, nlohmann::json props, ApiGear::ObjectLink::IClientNode *node) override;
-    void olinkOnRelease() override;
+	FTbSame1Struct1 Func2(const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2) override;
+
+	// olink sink interface
+	std::string olinkObjectName() override;
+	void olinkOnSignal(std::string name, nlohmann::json args) override;
+	void olinkOnPropertyChanged(std::string name, nlohmann::json value) override;
+	void olinkOnInit(std::string name, nlohmann::json props, ApiGear::ObjectLink::IClientNode* node) override;
+	void olinkOnRelease() override;
 
 private:
-    void applyState(const nlohmann::json& fields);
-    
-    ApiGear::ObjectLink::IClientNode *m_node;
-    bool m_isReady;
-    // properties - local copy
-    FTbSame1Struct2 Prop1;
-    FTbSame1Struct2 Prop2;
+	void applyState(const nlohmann::json& fields);
+	ApiGear::ObjectLink::IClientNode* m_node;
+	bool m_isReady;
+	// properties - local copy
+	FTbSame1Struct2 Prop1;
+	FTbSame1Struct2 Prop2;
 };
 
 } // namespace Private

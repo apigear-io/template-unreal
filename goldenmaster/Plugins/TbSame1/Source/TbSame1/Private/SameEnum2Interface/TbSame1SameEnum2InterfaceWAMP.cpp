@@ -29,165 +29,174 @@ limitations under the License.
 
 using namespace ApiGear::WAMP;
 
-namespace TbSame1 {
-namespace SameEnum2Interface {
-namespace Private {
-WAMPService::WAMPService()
-: ITbSame1SameEnum2InterfaceInterface()
-, Prop1(ETbSame1Enum1::VALUE1)
-, Prop2(ETbSame1Enum2::VALUE1)
+namespace TbSame1
 {
-    EventFunc SameEnum2InterfaceStateChangedFunc = [this](EventArg arg)
-    {
-        const json fields = arg.kwargs;
-        if(fields.contains("prop1")) {
-            if(Prop1 != fields["prop1"].get<ETbSame1Enum1>())
-            {
-                Prop1 = fields["prop1"].get<ETbSame1Enum1>();
-                Prop1Changed.Broadcast(Prop1);
-            }
-        }
-        if(fields.contains("prop2")) {
-            if(Prop2 != fields["prop2"].get<ETbSame1Enum2>())
-            {
-                Prop2 = fields["prop2"].get<ETbSame1Enum2>();
-                Prop2Changed.Broadcast(Prop2);
-            }
-        }
-    };
-    UnrealWamp::instance()->doSubscribe("tb.same1.SameEnum2Interface", SameEnum2InterfaceStateChangedFunc);
+namespace SameEnum2Interface
+{
+namespace Private
+{
+WAMPService::WAMPService()
+	: ITbSame1SameEnum2InterfaceInterface()
+	, Prop1(ETbSame1Enum1::VALUE1)
+	, Prop2(ETbSame1Enum2::VALUE1)
+{
+	EventFunc SameEnum2InterfaceStateChangedFunc = [this](EventArg arg)
+	{
+		const json fields = arg.kwargs;
+		if (fields.contains("prop1"))
+		{
+			if (Prop1 != fields["prop1"].get<ETbSame1Enum1>())
+			{
+				Prop1 = fields["prop1"].get<ETbSame1Enum1>();
+				Prop1Changed.Broadcast(Prop1);
+			}
+		}
+		if (fields.contains("prop2"))
+		{
+			if (Prop2 != fields["prop2"].get<ETbSame1Enum2>())
+			{
+				Prop2 = fields["prop2"].get<ETbSame1Enum2>();
+				Prop2Changed.Broadcast(Prop2);
+			}
+		}
+	};
+	UnrealWamp::instance()->doSubscribe("tb.same1.SameEnum2Interface", SameEnum2InterfaceStateChangedFunc);
 
-    ResponseFunc GetSameEnum2InterfaceStateFunc = [this](ResponseArg arg)
-    {
-        if(arg.args.size() != 1) {
-          return;
-        }
-        const json fields = arg.args[0];
-        if(fields.contains("prop1")) {
-            if(Prop1 != fields["prop1"].get<ETbSame1Enum1>())
-            {
-                Prop1 = fields["prop1"].get<ETbSame1Enum1>();
-                Prop1Changed.Broadcast(Prop1);
-            }
-        }
-        if(fields.contains("prop2")) {
-            if(Prop2 != fields["prop2"].get<ETbSame1Enum2>())
-            {
-                Prop2 = fields["prop2"].get<ETbSame1Enum2>();
-                Prop2Changed.Broadcast(Prop2);
-            }
-        }
-    };
-    UnrealWamp::instance()->doCall("tb.same1.SameEnum2Interface._get", Arguments(), ArgumentsKw(), GetSameEnum2InterfaceStateFunc);
+	ResponseFunc GetSameEnum2InterfaceStateFunc = [this](ResponseArg arg)
+	{
+		if (arg.args.size() != 1)
+		{
+			return;
+		}
+		const json fields = arg.args[0];
+		if (fields.contains("prop1"))
+		{
+			if (Prop1 != fields["prop1"].get<ETbSame1Enum1>())
+			{
+				Prop1 = fields["prop1"].get<ETbSame1Enum1>();
+				Prop1Changed.Broadcast(Prop1);
+			}
+		}
+		if (fields.contains("prop2"))
+		{
+			if (Prop2 != fields["prop2"].get<ETbSame1Enum2>())
+			{
+				Prop2 = fields["prop2"].get<ETbSame1Enum2>();
+				Prop2Changed.Broadcast(Prop2);
+			}
+		}
+	};
+	UnrealWamp::instance()->doCall("tb.same1.SameEnum2Interface._get", Arguments(), ArgumentsKw(), GetSameEnum2InterfaceStateFunc);
 
-    EventFunc sig1Func = [this](EventArg arg)
-    {
-        if(arg.args.size() == 1)
-        {
-            Sig1Signal.Broadcast(arg.args[0].get<ETbSame1Enum1>());
-        }
-    };
-    UnrealWamp::instance()->doSubscribe("tb.same1.SameEnum2Interface.sig1", sig1Func);
-    
-    EventFunc sig2Func = [this](EventArg arg)
-    {
-        if(arg.args.size() == 2)
-        {
-            Sig2Signal.Broadcast(arg.args[0].get<ETbSame1Enum1>(),arg.args[1].get<ETbSame1Enum2>());
-        }
-    };
-    UnrealWamp::instance()->doSubscribe("tb.same1.SameEnum2Interface.sig2", sig2Func);
-    
+	EventFunc sig1Func = [this](EventArg arg)
+	{
+		if (arg.args.size() == 1)
+		{
+			Sig1Signal.Broadcast(arg.args[0].get<ETbSame1Enum1>());
+		}
+	};
+	UnrealWamp::instance()->doSubscribe("tb.same1.SameEnum2Interface.sig1", sig1Func);
+
+	EventFunc sig2Func = [this](EventArg arg)
+	{
+		if (arg.args.size() == 2)
+		{
+			Sig2Signal.Broadcast(arg.args[0].get<ETbSame1Enum1>(), arg.args[1].get<ETbSame1Enum2>());
+		}
+	};
+	UnrealWamp::instance()->doSubscribe("tb.same1.SameEnum2Interface.sig2", sig2Func);
 }
 
 WAMPService::~WAMPService()
 {
-    UnrealWamp::instance()->doUnSubscribe("tb.same1.SameEnum2Interface");
-    UnrealWamp::instance()->doUnSubscribe("tb.same1.SameEnum2Interface.sig1");
-    UnrealWamp::instance()->doUnSubscribe("tb.same1.SameEnum2Interface.sig2");
+	UnrealWamp::instance()->doUnSubscribe("tb.same1.SameEnum2Interface");
+	UnrealWamp::instance()->doUnSubscribe("tb.same1.SameEnum2Interface.sig1");
+	UnrealWamp::instance()->doUnSubscribe("tb.same1.SameEnum2Interface.sig2");
 }
 
 FTbSame1SameEnum2InterfaceSig1Delegate& WAMPService::GetSig1SignalDelegate()
 {
-    return Sig1Signal;
+	return Sig1Signal;
 }
 
 FTbSame1SameEnum2InterfaceSig2Delegate& WAMPService::GetSig2SignalDelegate()
 {
-    return Sig2Signal;
+	return Sig2Signal;
 }
 
 ETbSame1Enum1 WAMPService::GetProp1() const
 {
-    return Prop1;
+	return Prop1;
 }
 
 void WAMPService::SetProp1(const ETbSame1Enum1& InProp1)
 {
-    ArgumentsKw fields_;
-    fields_["prop1"] = InProp1;
-    UnrealWamp::instance()->doCall("tb.same1.SameEnum2Interface._set", Arguments(), fields_);
+	ArgumentsKw fields_;
+	fields_["prop1"] = InProp1;
+	UnrealWamp::instance()->doCall("tb.same1.SameEnum2Interface._set", Arguments(), fields_);
 }
 
 FTbSame1SameEnum2InterfaceProp1ChangedDelegate& WAMPService::GetProp1ChangedDelegate()
 {
-    return Prop1Changed;
+	return Prop1Changed;
 }
 
 ETbSame1Enum2 WAMPService::GetProp2() const
 {
-    return Prop2;
+	return Prop2;
 }
 
 void WAMPService::SetProp2(const ETbSame1Enum2& InProp2)
 {
-    ArgumentsKw fields_;
-    fields_["prop2"] = InProp2;
-    UnrealWamp::instance()->doCall("tb.same1.SameEnum2Interface._set", Arguments(), fields_);
+	ArgumentsKw fields_;
+	fields_["prop2"] = InProp2;
+	UnrealWamp::instance()->doCall("tb.same1.SameEnum2Interface._set", Arguments(), fields_);
 }
 
 FTbSame1SameEnum2InterfaceProp2ChangedDelegate& WAMPService::GetProp2ChangedDelegate()
 {
-    return Prop2Changed;
+	return Prop2Changed;
 }
-
 
 ETbSame1Enum1 WAMPService::Func1(const ETbSame1Enum1& Param1)
 {
-    TPromise<ETbSame1Enum1> Promise;
-    Async(EAsyncExecution::Thread, [Param1,&Promise]()
-    {
-        ResponseFunc GetSameEnum2InterfaceStateFunc = [&Promise](ResponseArg arg)
-        {
-            if(arg.args.size() != 1) {
-              return;
-            }
-            Promise.SetValue(arg.args[0].get<ETbSame1Enum1>());
-        };
-        UnrealWamp::instance()->doCall("tb.same1.SameEnum2Interface.func1", {Param1}, ArgumentsKw(), GetSameEnum2InterfaceStateFunc);
-    });
+	TPromise<ETbSame1Enum1> Promise;
+	Async(EAsyncExecution::Thread,
+		[Param1, &Promise]()
+		{
+			ResponseFunc GetSameEnum2InterfaceStateFunc = [&Promise](ResponseArg arg)
+			{
+				if (arg.args.size() != 1)
+				{
+					return;
+				}
+				Promise.SetValue(arg.args[0].get<ETbSame1Enum1>());
+			};
+			UnrealWamp::instance()->doCall("tb.same1.SameEnum2Interface.func1", {Param1}, ArgumentsKw(), GetSameEnum2InterfaceStateFunc);
+		});
 
-    return Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
 
 ETbSame1Enum1 WAMPService::Func2(const ETbSame1Enum1& Param1, const ETbSame1Enum2& Param2)
 {
-    TPromise<ETbSame1Enum1> Promise;
-    Async(EAsyncExecution::Thread, [Param1,Param2,&Promise]()
-    {
-        ResponseFunc GetSameEnum2InterfaceStateFunc = [&Promise](ResponseArg arg)
-        {
-            if(arg.args.size() != 1) {
-              return;
-            }
-            Promise.SetValue(arg.args[0].get<ETbSame1Enum1>());
-        };
-        UnrealWamp::instance()->doCall("tb.same1.SameEnum2Interface.func2", {Param1,Param2}, ArgumentsKw(), GetSameEnum2InterfaceStateFunc);
-    });
+	TPromise<ETbSame1Enum1> Promise;
+	Async(EAsyncExecution::Thread,
+		[Param1, Param2, &Promise]()
+		{
+			ResponseFunc GetSameEnum2InterfaceStateFunc = [&Promise](ResponseArg arg)
+			{
+				if (arg.args.size() != 1)
+				{
+					return;
+				}
+				Promise.SetValue(arg.args[0].get<ETbSame1Enum1>());
+			};
+			UnrealWamp::instance()->doCall("tb.same1.SameEnum2Interface.func2", {Param1, Param2}, ArgumentsKw(), GetSameEnum2InterfaceStateFunc);
+		});
 
-    return Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
-
 
 } // namespace Private
 } // namespace SameEnum2Interface

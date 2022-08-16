@@ -21,44 +21,46 @@ limitations under the License.
  */
 bool toUE4Type(ETbSame2Enum1& value, uint8 v)
 {
-    bool bSuccessful = false;
-    switch (v) {
-        case 1:
-            value = ETbSame2Enum1::VALUE1;
-            bSuccessful = true;
-            break;
-        case 2:
-            value = ETbSame2Enum1::VALUE2;
-            bSuccessful = true;
-            break;
-        default:
-            value = ETbSame2Enum1::VALUE1;
-    }
-    return bSuccessful;
+	bool bSuccessful = false;
+	switch (v)
+	{
+	case 1:
+		value = ETbSame2Enum1::VALUE1;
+		bSuccessful = true;
+		break;
+	case 2:
+		value = ETbSame2Enum1::VALUE2;
+		bSuccessful = true;
+		break;
+	default:
+		value = ETbSame2Enum1::VALUE1;
+	}
+	return bSuccessful;
 }
 /**
  * Enumeration ETbSame2Enum2
  */
 bool toUE4Type(ETbSame2Enum2& value, uint8 v)
 {
-    bool bSuccessful = false;
-    switch (v) {
-        case 1:
-            value = ETbSame2Enum2::VALUE1;
-            bSuccessful = true;
-            break;
-        case 2:
-            value = ETbSame2Enum2::VALUE2;
-            bSuccessful = true;
-            break;
-        default:
-            value = ETbSame2Enum2::VALUE1;
-    }
-    return bSuccessful;
+	bool bSuccessful = false;
+	switch (v)
+	{
+	case 1:
+		value = ETbSame2Enum2::VALUE1;
+		bSuccessful = true;
+		break;
+	case 2:
+		value = ETbSame2Enum2::VALUE2;
+		bSuccessful = true;
+		break;
+	default:
+		value = ETbSame2Enum2::VALUE1;
+	}
+	return bSuccessful;
 }
 bool FTbSame2Struct1::operator==(const FTbSame2Struct1& rhs) const
 {
-	return(field1 == rhs.field1)&&(field2 == rhs.field2)&&(field3 == rhs.field3);
+	return (field1 == rhs.field1) && (field2 == rhs.field2) && (field3 == rhs.field3);
 }
 
 bool FTbSame2Struct1::operator!=(const FTbSame2Struct1& rhs) const
@@ -67,7 +69,7 @@ bool FTbSame2Struct1::operator!=(const FTbSame2Struct1& rhs) const
 }
 bool FTbSame2Struct2::operator==(const FTbSame2Struct2& rhs) const
 {
-	return(field1 == rhs.field1)&&(field2 == rhs.field2)&&(field3 == rhs.field3);
+	return (field1 == rhs.field1) && (field2 == rhs.field2) && (field3 == rhs.field3);
 }
 
 bool FTbSame2Struct2::operator!=(const FTbSame2Struct2& rhs) const

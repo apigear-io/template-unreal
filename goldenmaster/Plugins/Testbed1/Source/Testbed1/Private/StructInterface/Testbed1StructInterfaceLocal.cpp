@@ -17,15 +17,18 @@ limitations under the License.
 
 #include "Testbed1StructInterfaceLocal.h"
 
-namespace Testbed1 {
-namespace StructInterface {
-namespace Private {
+namespace Testbed1
+{
+namespace StructInterface
+{
+namespace Private
+{
 LocalService::LocalService()
-    : ITestbed1StructInterfaceInterface()
-    , PropBool(FTestbed1StructBool())
-    , PropInt(FTestbed1StructInt())
-    , PropFloat(FTestbed1StructFloat())
-    , PropString(FTestbed1StructString())
+	: ITestbed1StructInterfaceInterface()
+	, PropBool(FTestbed1StructBool())
+	, PropInt(FTestbed1StructInt())
+	, PropFloat(FTestbed1StructFloat())
+	, PropString(FTestbed1StructString())
 {
 }
 LocalService::~LocalService()
@@ -34,120 +37,120 @@ LocalService::~LocalService()
 
 FTestbed1StructInterfaceSigBoolDelegate& LocalService::GetSigBoolSignalDelegate()
 {
-    return SigBoolSignal;
+	return SigBoolSignal;
 }
 
 FTestbed1StructInterfaceSigIntDelegate& LocalService::GetSigIntSignalDelegate()
 {
-    return SigIntSignal;
+	return SigIntSignal;
 }
 
 FTestbed1StructInterfaceSigFloatDelegate& LocalService::GetSigFloatSignalDelegate()
 {
-    return SigFloatSignal;
+	return SigFloatSignal;
 }
 
 FTestbed1StructInterfaceSigStringDelegate& LocalService::GetSigStringSignalDelegate()
 {
-    return SigStringSignal;
+	return SigStringSignal;
 }
 
 FTestbed1StructBool LocalService::GetPropBool() const
 {
-    return PropBool;
+	return PropBool;
 }
 
 void LocalService::SetPropBool(const FTestbed1StructBool& InPropBool)
 {
-    if(PropBool != InPropBool)
-    {
-        PropBool = InPropBool;
-        PropBoolChanged.Broadcast(PropBool);
-    }
+	if (PropBool != InPropBool)
+	{
+		PropBool = InPropBool;
+		PropBoolChanged.Broadcast(PropBool);
+	}
 }
 
 FTestbed1StructInterfacePropBoolChangedDelegate& LocalService::GetPropBoolChangedDelegate()
 {
-    return PropBoolChanged;
+	return PropBoolChanged;
 }
 FTestbed1StructInt LocalService::GetPropInt() const
 {
-    return PropInt;
+	return PropInt;
 }
 
 void LocalService::SetPropInt(const FTestbed1StructInt& InPropInt)
 {
-    if(PropInt != InPropInt)
-    {
-        PropInt = InPropInt;
-        PropIntChanged.Broadcast(PropInt);
-    }
+	if (PropInt != InPropInt)
+	{
+		PropInt = InPropInt;
+		PropIntChanged.Broadcast(PropInt);
+	}
 }
 
 FTestbed1StructInterfacePropIntChangedDelegate& LocalService::GetPropIntChangedDelegate()
 {
-    return PropIntChanged;
+	return PropIntChanged;
 }
 FTestbed1StructFloat LocalService::GetPropFloat() const
 {
-    return PropFloat;
+	return PropFloat;
 }
 
 void LocalService::SetPropFloat(const FTestbed1StructFloat& InPropFloat)
 {
-    if(PropFloat != InPropFloat)
-    {
-        PropFloat = InPropFloat;
-        PropFloatChanged.Broadcast(PropFloat);
-    }
+	if (PropFloat != InPropFloat)
+	{
+		PropFloat = InPropFloat;
+		PropFloatChanged.Broadcast(PropFloat);
+	}
 }
 
 FTestbed1StructInterfacePropFloatChangedDelegate& LocalService::GetPropFloatChangedDelegate()
 {
-    return PropFloatChanged;
+	return PropFloatChanged;
 }
 FTestbed1StructString LocalService::GetPropString() const
 {
-    return PropString;
+	return PropString;
 }
 
 void LocalService::SetPropString(const FTestbed1StructString& InPropString)
 {
-    if(PropString != InPropString)
-    {
-        PropString = InPropString;
-        PropStringChanged.Broadcast(PropString);
-    }
+	if (PropString != InPropString)
+	{
+		PropString = InPropString;
+		PropStringChanged.Broadcast(PropString);
+	}
 }
 
 FTestbed1StructInterfacePropStringChangedDelegate& LocalService::GetPropStringChangedDelegate()
 {
-    return PropStringChanged;
+	return PropStringChanged;
 }
 
 FTestbed1StructBool LocalService::FuncBool(const FTestbed1StructBool& ParamBool)
 {
-    (void) ParamBool;
-    // do business logic here
-    return FTestbed1StructBool();
+	(void)ParamBool;
+	// do business logic here
+	return FTestbed1StructBool();
 }
 FTestbed1StructBool LocalService::FuncInt(const FTestbed1StructInt& ParamInt)
 {
-    (void) ParamInt;
-    // do business logic here
-    return FTestbed1StructBool();
+	(void)ParamInt;
+	// do business logic here
+	return FTestbed1StructBool();
 }
 FTestbed1StructFloat LocalService::FuncFloat(const FTestbed1StructFloat& ParamFloat)
 {
-    (void) ParamFloat;
-    // do business logic here
-    return FTestbed1StructFloat();
+	(void)ParamFloat;
+	// do business logic here
+	return FTestbed1StructFloat();
 }
 FTestbed1StructString LocalService::FuncString(const FTestbed1StructString& ParamString)
 {
-    (void) ParamString;
-    // do business logic here
-    return FTestbed1StructString();
+	(void)ParamString;
+	// do business logic here
+	return FTestbed1StructString();
 }
 
 } // namespace Private

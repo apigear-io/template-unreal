@@ -29,165 +29,174 @@ limitations under the License.
 
 using namespace ApiGear::WAMP;
 
-namespace Testbed2 {
-namespace NestedStruct2Interface {
-namespace Private {
-WAMPService::WAMPService()
-: ITestbed2NestedStruct2InterfaceInterface()
-, Prop1(FTestbed2NestedStruct1())
-, Prop2(FTestbed2NestedStruct2())
+namespace Testbed2
 {
-    EventFunc NestedStruct2InterfaceStateChangedFunc = [this](EventArg arg)
-    {
-        const json fields = arg.kwargs;
-        if(fields.contains("prop1")) {
-            if(Prop1 != fields["prop1"].get<FTestbed2NestedStruct1>())
-            {
-                Prop1 = fields["prop1"].get<FTestbed2NestedStruct1>();
-                Prop1Changed.Broadcast(Prop1);
-            }
-        }
-        if(fields.contains("prop2")) {
-            if(Prop2 != fields["prop2"].get<FTestbed2NestedStruct2>())
-            {
-                Prop2 = fields["prop2"].get<FTestbed2NestedStruct2>();
-                Prop2Changed.Broadcast(Prop2);
-            }
-        }
-    };
-    UnrealWamp::instance()->doSubscribe("testbed2.NestedStruct2Interface", NestedStruct2InterfaceStateChangedFunc);
+namespace NestedStruct2Interface
+{
+namespace Private
+{
+WAMPService::WAMPService()
+	: ITestbed2NestedStruct2InterfaceInterface()
+	, Prop1(FTestbed2NestedStruct1())
+	, Prop2(FTestbed2NestedStruct2())
+{
+	EventFunc NestedStruct2InterfaceStateChangedFunc = [this](EventArg arg)
+	{
+		const json fields = arg.kwargs;
+		if (fields.contains("prop1"))
+		{
+			if (Prop1 != fields["prop1"].get<FTestbed2NestedStruct1>())
+			{
+				Prop1 = fields["prop1"].get<FTestbed2NestedStruct1>();
+				Prop1Changed.Broadcast(Prop1);
+			}
+		}
+		if (fields.contains("prop2"))
+		{
+			if (Prop2 != fields["prop2"].get<FTestbed2NestedStruct2>())
+			{
+				Prop2 = fields["prop2"].get<FTestbed2NestedStruct2>();
+				Prop2Changed.Broadcast(Prop2);
+			}
+		}
+	};
+	UnrealWamp::instance()->doSubscribe("testbed2.NestedStruct2Interface", NestedStruct2InterfaceStateChangedFunc);
 
-    ResponseFunc GetNestedStruct2InterfaceStateFunc = [this](ResponseArg arg)
-    {
-        if(arg.args.size() != 1) {
-          return;
-        }
-        const json fields = arg.args[0];
-        if(fields.contains("prop1")) {
-            if(Prop1 != fields["prop1"].get<FTestbed2NestedStruct1>())
-            {
-                Prop1 = fields["prop1"].get<FTestbed2NestedStruct1>();
-                Prop1Changed.Broadcast(Prop1);
-            }
-        }
-        if(fields.contains("prop2")) {
-            if(Prop2 != fields["prop2"].get<FTestbed2NestedStruct2>())
-            {
-                Prop2 = fields["prop2"].get<FTestbed2NestedStruct2>();
-                Prop2Changed.Broadcast(Prop2);
-            }
-        }
-    };
-    UnrealWamp::instance()->doCall("testbed2.NestedStruct2Interface._get", Arguments(), ArgumentsKw(), GetNestedStruct2InterfaceStateFunc);
+	ResponseFunc GetNestedStruct2InterfaceStateFunc = [this](ResponseArg arg)
+	{
+		if (arg.args.size() != 1)
+		{
+			return;
+		}
+		const json fields = arg.args[0];
+		if (fields.contains("prop1"))
+		{
+			if (Prop1 != fields["prop1"].get<FTestbed2NestedStruct1>())
+			{
+				Prop1 = fields["prop1"].get<FTestbed2NestedStruct1>();
+				Prop1Changed.Broadcast(Prop1);
+			}
+		}
+		if (fields.contains("prop2"))
+		{
+			if (Prop2 != fields["prop2"].get<FTestbed2NestedStruct2>())
+			{
+				Prop2 = fields["prop2"].get<FTestbed2NestedStruct2>();
+				Prop2Changed.Broadcast(Prop2);
+			}
+		}
+	};
+	UnrealWamp::instance()->doCall("testbed2.NestedStruct2Interface._get", Arguments(), ArgumentsKw(), GetNestedStruct2InterfaceStateFunc);
 
-    EventFunc sig1Func = [this](EventArg arg)
-    {
-        if(arg.args.size() == 1)
-        {
-            Sig1Signal.Broadcast(arg.args[0].get<FTestbed2NestedStruct1>());
-        }
-    };
-    UnrealWamp::instance()->doSubscribe("testbed2.NestedStruct2Interface.sig1", sig1Func);
-    
-    EventFunc sig2Func = [this](EventArg arg)
-    {
-        if(arg.args.size() == 2)
-        {
-            Sig2Signal.Broadcast(arg.args[0].get<FTestbed2NestedStruct1>(),arg.args[1].get<FTestbed2NestedStruct2>());
-        }
-    };
-    UnrealWamp::instance()->doSubscribe("testbed2.NestedStruct2Interface.sig2", sig2Func);
-    
+	EventFunc sig1Func = [this](EventArg arg)
+	{
+		if (arg.args.size() == 1)
+		{
+			Sig1Signal.Broadcast(arg.args[0].get<FTestbed2NestedStruct1>());
+		}
+	};
+	UnrealWamp::instance()->doSubscribe("testbed2.NestedStruct2Interface.sig1", sig1Func);
+
+	EventFunc sig2Func = [this](EventArg arg)
+	{
+		if (arg.args.size() == 2)
+		{
+			Sig2Signal.Broadcast(arg.args[0].get<FTestbed2NestedStruct1>(), arg.args[1].get<FTestbed2NestedStruct2>());
+		}
+	};
+	UnrealWamp::instance()->doSubscribe("testbed2.NestedStruct2Interface.sig2", sig2Func);
 }
 
 WAMPService::~WAMPService()
 {
-    UnrealWamp::instance()->doUnSubscribe("testbed2.NestedStruct2Interface");
-    UnrealWamp::instance()->doUnSubscribe("testbed2.NestedStruct2Interface.sig1");
-    UnrealWamp::instance()->doUnSubscribe("testbed2.NestedStruct2Interface.sig2");
+	UnrealWamp::instance()->doUnSubscribe("testbed2.NestedStruct2Interface");
+	UnrealWamp::instance()->doUnSubscribe("testbed2.NestedStruct2Interface.sig1");
+	UnrealWamp::instance()->doUnSubscribe("testbed2.NestedStruct2Interface.sig2");
 }
 
 FTestbed2NestedStruct2InterfaceSig1Delegate& WAMPService::GetSig1SignalDelegate()
 {
-    return Sig1Signal;
+	return Sig1Signal;
 }
 
 FTestbed2NestedStruct2InterfaceSig2Delegate& WAMPService::GetSig2SignalDelegate()
 {
-    return Sig2Signal;
+	return Sig2Signal;
 }
 
 FTestbed2NestedStruct1 WAMPService::GetProp1() const
 {
-    return Prop1;
+	return Prop1;
 }
 
 void WAMPService::SetProp1(const FTestbed2NestedStruct1& InProp1)
 {
-    ArgumentsKw fields_;
-    fields_["prop1"] = InProp1;
-    UnrealWamp::instance()->doCall("testbed2.NestedStruct2Interface._set", Arguments(), fields_);
+	ArgumentsKw fields_;
+	fields_["prop1"] = InProp1;
+	UnrealWamp::instance()->doCall("testbed2.NestedStruct2Interface._set", Arguments(), fields_);
 }
 
 FTestbed2NestedStruct2InterfaceProp1ChangedDelegate& WAMPService::GetProp1ChangedDelegate()
 {
-    return Prop1Changed;
+	return Prop1Changed;
 }
 
 FTestbed2NestedStruct2 WAMPService::GetProp2() const
 {
-    return Prop2;
+	return Prop2;
 }
 
 void WAMPService::SetProp2(const FTestbed2NestedStruct2& InProp2)
 {
-    ArgumentsKw fields_;
-    fields_["prop2"] = InProp2;
-    UnrealWamp::instance()->doCall("testbed2.NestedStruct2Interface._set", Arguments(), fields_);
+	ArgumentsKw fields_;
+	fields_["prop2"] = InProp2;
+	UnrealWamp::instance()->doCall("testbed2.NestedStruct2Interface._set", Arguments(), fields_);
 }
 
 FTestbed2NestedStruct2InterfaceProp2ChangedDelegate& WAMPService::GetProp2ChangedDelegate()
 {
-    return Prop2Changed;
+	return Prop2Changed;
 }
-
 
 FTestbed2NestedStruct1 WAMPService::Func1(const FTestbed2NestedStruct1& Param1)
 {
-    TPromise<FTestbed2NestedStruct1> Promise;
-    Async(EAsyncExecution::Thread, [Param1,&Promise]()
-    {
-        ResponseFunc GetNestedStruct2InterfaceStateFunc = [&Promise](ResponseArg arg)
-        {
-            if(arg.args.size() != 1) {
-              return;
-            }
-            Promise.SetValue(arg.args[0].get<FTestbed2NestedStruct1>());
-        };
-        UnrealWamp::instance()->doCall("testbed2.NestedStruct2Interface.func1", {Param1}, ArgumentsKw(), GetNestedStruct2InterfaceStateFunc);
-    });
+	TPromise<FTestbed2NestedStruct1> Promise;
+	Async(EAsyncExecution::Thread,
+		[Param1, &Promise]()
+		{
+			ResponseFunc GetNestedStruct2InterfaceStateFunc = [&Promise](ResponseArg arg)
+			{
+				if (arg.args.size() != 1)
+				{
+					return;
+				}
+				Promise.SetValue(arg.args[0].get<FTestbed2NestedStruct1>());
+			};
+			UnrealWamp::instance()->doCall("testbed2.NestedStruct2Interface.func1", {Param1}, ArgumentsKw(), GetNestedStruct2InterfaceStateFunc);
+		});
 
-    return Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
 
 FTestbed2NestedStruct1 WAMPService::Func2(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
 {
-    TPromise<FTestbed2NestedStruct1> Promise;
-    Async(EAsyncExecution::Thread, [Param1,Param2,&Promise]()
-    {
-        ResponseFunc GetNestedStruct2InterfaceStateFunc = [&Promise](ResponseArg arg)
-        {
-            if(arg.args.size() != 1) {
-              return;
-            }
-            Promise.SetValue(arg.args[0].get<FTestbed2NestedStruct1>());
-        };
-        UnrealWamp::instance()->doCall("testbed2.NestedStruct2Interface.func2", {Param1,Param2}, ArgumentsKw(), GetNestedStruct2InterfaceStateFunc);
-    });
+	TPromise<FTestbed2NestedStruct1> Promise;
+	Async(EAsyncExecution::Thread,
+		[Param1, Param2, &Promise]()
+		{
+			ResponseFunc GetNestedStruct2InterfaceStateFunc = [&Promise](ResponseArg arg)
+			{
+				if (arg.args.size() != 1)
+				{
+					return;
+				}
+				Promise.SetValue(arg.args[0].get<FTestbed2NestedStruct1>());
+			};
+			UnrealWamp::instance()->doCall("testbed2.NestedStruct2Interface.func2", {Param1, Param2}, ArgumentsKw(), GetNestedStruct2InterfaceStateFunc);
+		});
 
-    return Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
-
 
 } // namespace Private
 } // namespace NestedStruct2Interface

@@ -51,7 +51,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfacePropStringCh
 UINTERFACE(MinimalAPI)
 class UTbSimpleSimpleInterfaceInterface : public UInterface
 {
-    GENERATED_BODY()
+	GENERATED_BODY()
 };
 
 /**
@@ -59,41 +59,40 @@ class UTbSimpleSimpleInterfaceInterface : public UInterface
  */
 class TBSIMPLE_API ITbSimpleSimpleInterfaceInterface
 {
-    GENERATED_BODY()
+	GENERATED_BODY()
 
 public:
-// signals
-    virtual FTbSimpleSimpleInterfaceSigBoolDelegate& GetSigBoolSignalDelegate() = 0;
+	// signals
+	virtual FTbSimpleSimpleInterfaceSigBoolDelegate& GetSigBoolSignalDelegate() = 0;
 
-    virtual FTbSimpleSimpleInterfaceSigIntDelegate& GetSigIntSignalDelegate() = 0;
+	virtual FTbSimpleSimpleInterfaceSigIntDelegate& GetSigIntSignalDelegate() = 0;
 
-    virtual FTbSimpleSimpleInterfaceSigFloatDelegate& GetSigFloatSignalDelegate() = 0;
+	virtual FTbSimpleSimpleInterfaceSigFloatDelegate& GetSigFloatSignalDelegate() = 0;
 
-    virtual FTbSimpleSimpleInterfaceSigStringDelegate& GetSigStringSignalDelegate() = 0;
+	virtual FTbSimpleSimpleInterfaceSigStringDelegate& GetSigStringSignalDelegate() = 0;
 
-    virtual FTbSimpleSimpleInterfacePropBoolChangedDelegate& GetPropBoolChangedDelegate() = 0;
+	virtual FTbSimpleSimpleInterfacePropBoolChangedDelegate& GetPropBoolChangedDelegate() = 0;
 
-    virtual FTbSimpleSimpleInterfacePropIntChangedDelegate& GetPropIntChangedDelegate() = 0;
+	virtual FTbSimpleSimpleInterfacePropIntChangedDelegate& GetPropIntChangedDelegate() = 0;
 
-    virtual FTbSimpleSimpleInterfacePropFloatChangedDelegate& GetPropFloatChangedDelegate() = 0;
+	virtual FTbSimpleSimpleInterfacePropFloatChangedDelegate& GetPropFloatChangedDelegate() = 0;
 
-    virtual FTbSimpleSimpleInterfacePropStringChangedDelegate& GetPropStringChangedDelegate() = 0;
+	virtual FTbSimpleSimpleInterfacePropStringChangedDelegate& GetPropStringChangedDelegate() = 0;
 
-
-// methods
-    virtual bool FuncBool(bool bParamBool) = 0;
-    virtual int32 FuncInt(int32 ParamInt) = 0;
-    virtual float FuncFloat(float ParamFloat) = 0;
-    virtual FString FuncString(const FString& ParamString) = 0;
-// properties
-    virtual bool GetPropBool() const = 0;
-    virtual void SetPropBool(bool bPropBool) = 0;
-    virtual int32 GetPropInt() const = 0;
-    virtual void SetPropInt(int32 PropInt) = 0;
-    virtual float GetPropFloat() const = 0;
-    virtual void SetPropFloat(float PropFloat) = 0;
-    virtual FString GetPropString() const = 0;
-    virtual void SetPropString(const FString& PropString) = 0;
+	// methods
+	virtual bool FuncBool(bool bParamBool) = 0;
+	virtual int32 FuncInt(int32 ParamInt) = 0;
+	virtual float FuncFloat(float ParamFloat) = 0;
+	virtual FString FuncString(const FString& ParamString) = 0;
+	// properties
+	virtual bool GetPropBool() const = 0;
+	virtual void SetPropBool(bool bPropBool) = 0;
+	virtual int32 GetPropInt() const = 0;
+	virtual void SetPropInt(int32 PropInt) = 0;
+	virtual float GetPropFloat() const = 0;
+	virtual void SetPropFloat(float PropFloat) = 0;
+	virtual FString GetPropString() const = 0;
+	virtual void SetPropString(const FString& PropString) = 0;
 };
 /**
  * Declaration for SimpleArrayInterface
@@ -122,7 +121,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleArrayInterfacePropStr
 UINTERFACE(MinimalAPI)
 class UTbSimpleSimpleArrayInterfaceInterface : public UInterface
 {
-    GENERATED_BODY()
+	GENERATED_BODY()
 };
 
 /**
@@ -130,39 +129,38 @@ class UTbSimpleSimpleArrayInterfaceInterface : public UInterface
  */
 class TBSIMPLE_API ITbSimpleSimpleArrayInterfaceInterface
 {
-    GENERATED_BODY()
+	GENERATED_BODY()
 
 public:
-// signals
-    virtual FTbSimpleSimpleArrayInterfaceSigBoolDelegate& GetSigBoolSignalDelegate() = 0;
+	// signals
+	virtual FTbSimpleSimpleArrayInterfaceSigBoolDelegate& GetSigBoolSignalDelegate() = 0;
 
-    virtual FTbSimpleSimpleArrayInterfaceSigIntDelegate& GetSigIntSignalDelegate() = 0;
+	virtual FTbSimpleSimpleArrayInterfaceSigIntDelegate& GetSigIntSignalDelegate() = 0;
 
-    virtual FTbSimpleSimpleArrayInterfaceSigFloatDelegate& GetSigFloatSignalDelegate() = 0;
+	virtual FTbSimpleSimpleArrayInterfaceSigFloatDelegate& GetSigFloatSignalDelegate() = 0;
 
-    virtual FTbSimpleSimpleArrayInterfaceSigStringDelegate& GetSigStringSignalDelegate() = 0;
+	virtual FTbSimpleSimpleArrayInterfaceSigStringDelegate& GetSigStringSignalDelegate() = 0;
 
-    virtual FTbSimpleSimpleArrayInterfacePropBoolChangedDelegate& GetPropBoolChangedDelegate() = 0;
+	virtual FTbSimpleSimpleArrayInterfacePropBoolChangedDelegate& GetPropBoolChangedDelegate() = 0;
 
-    virtual FTbSimpleSimpleArrayInterfacePropIntChangedDelegate& GetPropIntChangedDelegate() = 0;
+	virtual FTbSimpleSimpleArrayInterfacePropIntChangedDelegate& GetPropIntChangedDelegate() = 0;
 
-    virtual FTbSimpleSimpleArrayInterfacePropFloatChangedDelegate& GetPropFloatChangedDelegate() = 0;
+	virtual FTbSimpleSimpleArrayInterfacePropFloatChangedDelegate& GetPropFloatChangedDelegate() = 0;
 
-    virtual FTbSimpleSimpleArrayInterfacePropStringChangedDelegate& GetPropStringChangedDelegate() = 0;
+	virtual FTbSimpleSimpleArrayInterfacePropStringChangedDelegate& GetPropStringChangedDelegate() = 0;
 
-
-// methods
-    virtual TArray<bool> FuncBool(const TArray<bool>& ParamBool) = 0;
-    virtual TArray<int32> FuncInt(const TArray<int32>& ParamInt) = 0;
-    virtual TArray<float> FuncFloat(const TArray<float>& ParamFloat) = 0;
-    virtual TArray<FString> FuncString(const TArray<FString>& ParamString) = 0;
-// properties
-    virtual TArray<bool> GetPropBool() const = 0;
-    virtual void SetPropBool(const TArray<bool>& PropBool) = 0;
-    virtual TArray<int32> GetPropInt() const = 0;
-    virtual void SetPropInt(const TArray<int32>& PropInt) = 0;
-    virtual TArray<float> GetPropFloat() const = 0;
-    virtual void SetPropFloat(const TArray<float>& PropFloat) = 0;
-    virtual TArray<FString> GetPropString() const = 0;
-    virtual void SetPropString(const TArray<FString>& PropString) = 0;
+	// methods
+	virtual TArray<bool> FuncBool(const TArray<bool>& ParamBool) = 0;
+	virtual TArray<int32> FuncInt(const TArray<int32>& ParamInt) = 0;
+	virtual TArray<float> FuncFloat(const TArray<float>& ParamFloat) = 0;
+	virtual TArray<FString> FuncString(const TArray<FString>& ParamString) = 0;
+	// properties
+	virtual TArray<bool> GetPropBool() const = 0;
+	virtual void SetPropBool(const TArray<bool>& PropBool) = 0;
+	virtual TArray<int32> GetPropInt() const = 0;
+	virtual void SetPropInt(const TArray<int32>& PropInt) = 0;
+	virtual TArray<float> GetPropFloat() const = 0;
+	virtual void SetPropFloat(const TArray<float>& PropFloat) = 0;
+	virtual TArray<FString> GetPropString() const = 0;
+	virtual void SetPropString(const TArray<FString>& PropString) = 0;
 };

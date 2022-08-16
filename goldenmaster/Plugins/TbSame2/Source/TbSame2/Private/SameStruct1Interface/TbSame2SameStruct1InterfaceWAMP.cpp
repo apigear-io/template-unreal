@@ -29,100 +29,105 @@ limitations under the License.
 
 using namespace ApiGear::WAMP;
 
-namespace TbSame2 {
-namespace SameStruct1Interface {
-namespace Private {
-WAMPService::WAMPService()
-: ITbSame2SameStruct1InterfaceInterface()
-, Prop1(FTbSame2Struct1())
+namespace TbSame2
 {
-    EventFunc SameStruct1InterfaceStateChangedFunc = [this](EventArg arg)
-    {
-        const json fields = arg.kwargs;
-        if(fields.contains("prop1")) {
-            if(Prop1 != fields["prop1"].get<FTbSame2Struct1>())
-            {
-                Prop1 = fields["prop1"].get<FTbSame2Struct1>();
-                Prop1Changed.Broadcast(Prop1);
-            }
-        }
-    };
-    UnrealWamp::instance()->doSubscribe("tb.same2.SameStruct1Interface", SameStruct1InterfaceStateChangedFunc);
+namespace SameStruct1Interface
+{
+namespace Private
+{
+WAMPService::WAMPService()
+	: ITbSame2SameStruct1InterfaceInterface()
+	, Prop1(FTbSame2Struct1())
+{
+	EventFunc SameStruct1InterfaceStateChangedFunc = [this](EventArg arg)
+	{
+		const json fields = arg.kwargs;
+		if (fields.contains("prop1"))
+		{
+			if (Prop1 != fields["prop1"].get<FTbSame2Struct1>())
+			{
+				Prop1 = fields["prop1"].get<FTbSame2Struct1>();
+				Prop1Changed.Broadcast(Prop1);
+			}
+		}
+	};
+	UnrealWamp::instance()->doSubscribe("tb.same2.SameStruct1Interface", SameStruct1InterfaceStateChangedFunc);
 
-    ResponseFunc GetSameStruct1InterfaceStateFunc = [this](ResponseArg arg)
-    {
-        if(arg.args.size() != 1) {
-          return;
-        }
-        const json fields = arg.args[0];
-        if(fields.contains("prop1")) {
-            if(Prop1 != fields["prop1"].get<FTbSame2Struct1>())
-            {
-                Prop1 = fields["prop1"].get<FTbSame2Struct1>();
-                Prop1Changed.Broadcast(Prop1);
-            }
-        }
-    };
-    UnrealWamp::instance()->doCall("tb.same2.SameStruct1Interface._get", Arguments(), ArgumentsKw(), GetSameStruct1InterfaceStateFunc);
+	ResponseFunc GetSameStruct1InterfaceStateFunc = [this](ResponseArg arg)
+	{
+		if (arg.args.size() != 1)
+		{
+			return;
+		}
+		const json fields = arg.args[0];
+		if (fields.contains("prop1"))
+		{
+			if (Prop1 != fields["prop1"].get<FTbSame2Struct1>())
+			{
+				Prop1 = fields["prop1"].get<FTbSame2Struct1>();
+				Prop1Changed.Broadcast(Prop1);
+			}
+		}
+	};
+	UnrealWamp::instance()->doCall("tb.same2.SameStruct1Interface._get", Arguments(), ArgumentsKw(), GetSameStruct1InterfaceStateFunc);
 
-    EventFunc sig1Func = [this](EventArg arg)
-    {
-        if(arg.args.size() == 1)
-        {
-            Sig1Signal.Broadcast(arg.args[0].get<FTbSame2Struct1>());
-        }
-    };
-    UnrealWamp::instance()->doSubscribe("tb.same2.SameStruct1Interface.sig1", sig1Func);
-    
+	EventFunc sig1Func = [this](EventArg arg)
+	{
+		if (arg.args.size() == 1)
+		{
+			Sig1Signal.Broadcast(arg.args[0].get<FTbSame2Struct1>());
+		}
+	};
+	UnrealWamp::instance()->doSubscribe("tb.same2.SameStruct1Interface.sig1", sig1Func);
 }
 
 WAMPService::~WAMPService()
 {
-    UnrealWamp::instance()->doUnSubscribe("tb.same2.SameStruct1Interface");
-    UnrealWamp::instance()->doUnSubscribe("tb.same2.SameStruct1Interface.sig1");
+	UnrealWamp::instance()->doUnSubscribe("tb.same2.SameStruct1Interface");
+	UnrealWamp::instance()->doUnSubscribe("tb.same2.SameStruct1Interface.sig1");
 }
 
 FTbSame2SameStruct1InterfaceSig1Delegate& WAMPService::GetSig1SignalDelegate()
 {
-    return Sig1Signal;
+	return Sig1Signal;
 }
 
 FTbSame2Struct1 WAMPService::GetProp1() const
 {
-    return Prop1;
+	return Prop1;
 }
 
 void WAMPService::SetProp1(const FTbSame2Struct1& InProp1)
 {
-    ArgumentsKw fields_;
-    fields_["prop1"] = InProp1;
-    UnrealWamp::instance()->doCall("tb.same2.SameStruct1Interface._set", Arguments(), fields_);
+	ArgumentsKw fields_;
+	fields_["prop1"] = InProp1;
+	UnrealWamp::instance()->doCall("tb.same2.SameStruct1Interface._set", Arguments(), fields_);
 }
 
 FTbSame2SameStruct1InterfaceProp1ChangedDelegate& WAMPService::GetProp1ChangedDelegate()
 {
-    return Prop1Changed;
+	return Prop1Changed;
 }
-
 
 FTbSame2Struct1 WAMPService::Func1(const FTbSame2Struct1& Param1)
 {
-    TPromise<FTbSame2Struct1> Promise;
-    Async(EAsyncExecution::Thread, [Param1,&Promise]()
-    {
-        ResponseFunc GetSameStruct1InterfaceStateFunc = [&Promise](ResponseArg arg)
-        {
-            if(arg.args.size() != 1) {
-              return;
-            }
-            Promise.SetValue(arg.args[0].get<FTbSame2Struct1>());
-        };
-        UnrealWamp::instance()->doCall("tb.same2.SameStruct1Interface.func1", {Param1}, ArgumentsKw(), GetSameStruct1InterfaceStateFunc);
-    });
+	TPromise<FTbSame2Struct1> Promise;
+	Async(EAsyncExecution::Thread,
+		[Param1, &Promise]()
+		{
+			ResponseFunc GetSameStruct1InterfaceStateFunc = [&Promise](ResponseArg arg)
+			{
+				if (arg.args.size() != 1)
+				{
+					return;
+				}
+				Promise.SetValue(arg.args[0].get<FTbSame2Struct1>());
+			};
+			UnrealWamp::instance()->doCall("tb.same2.SameStruct1Interface.func1", {Param1}, ArgumentsKw(), GetSameStruct1InterfaceStateFunc);
+		});
 
-    return Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
-
 
 } // namespace Private
 } // namespace SameStruct1Interface

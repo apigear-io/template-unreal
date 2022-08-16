@@ -21,12 +21,11 @@ limitations under the License.
 class FTbSame2Module : public IModuleInterface
 {
 public:
-
 	/** IModuleInterface implementation */
 	virtual void StartupModule() override;
 	virtual void ShutdownModule() override;
 
 private:
 	/** Handle to the test dll we will load */
-	void*	FTbSame2Module;
+	void* FTbSame2Module;
 };

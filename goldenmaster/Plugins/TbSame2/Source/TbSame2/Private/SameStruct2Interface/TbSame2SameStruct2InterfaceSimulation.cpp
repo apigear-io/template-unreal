@@ -27,205 +27,209 @@ limitations under the License.
 
 using namespace ApiGear::JSONRPC;
 
-namespace TbSame2 {
-namespace SameStruct2Interface {
-namespace Private {
-SimulationService::SimulationService()
-    : ITbSame2SameStruct2InterfaceInterface()
-    , Prop1(FTbSame2Struct2())
-    , Prop2(FTbSame2Struct2())
+namespace TbSame2
 {
-    UApiGearConnectionManager* AGCM = nullptr;
-    if (GEngine != nullptr)
-    {
-        AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-    }
-    NotifyRequestFunc SameStruct2InterfaceStateChangedFunc = [this](NotifyRequestArg arg)
-    {
-        const json fields = arg.params;
-        if(fields.contains("prop1")) {
-            if(Prop1 != fields["prop1"].get<FTbSame2Struct2>())
-            {
-                Prop1 = fields["prop1"].get<FTbSame2Struct2>();
-                Prop1Changed.Broadcast(Prop1);
-            }
-        }
-        if(fields.contains("prop2")) {
-            if(Prop2 != fields["prop2"].get<FTbSame2Struct2>())
-            {
-                Prop2 = fields["prop2"].get<FTbSame2Struct2>();
-                Prop2Changed.Broadcast(Prop2);
-            }
-        }
-    };
-    if(AGCM != nullptr)
-    {   
-        AGCM->GetSimulationConnection()->Connect();
-        AGCM->GetSimulationConnection()->onNotifyState("tb.same2/SameStruct2Interface", SameStruct2InterfaceStateChangedFunc);
-    }
+namespace SameStruct2Interface
+{
+namespace Private
+{
+SimulationService::SimulationService()
+	: ITbSame2SameStruct2InterfaceInterface()
+	, Prop1(FTbSame2Struct2())
+	, Prop2(FTbSame2Struct2())
+{
+	UApiGearConnectionManager* AGCM = nullptr;
+	if (GEngine != nullptr)
+	{
+		AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+	}
+	NotifyRequestFunc SameStruct2InterfaceStateChangedFunc = [this](NotifyRequestArg arg)
+	{
+		const json fields = arg.params;
+		if (fields.contains("prop1"))
+		{
+			if (Prop1 != fields["prop1"].get<FTbSame2Struct2>())
+			{
+				Prop1 = fields["prop1"].get<FTbSame2Struct2>();
+				Prop1Changed.Broadcast(Prop1);
+			}
+		}
+		if (fields.contains("prop2"))
+		{
+			if (Prop2 != fields["prop2"].get<FTbSame2Struct2>())
+			{
+				Prop2 = fields["prop2"].get<FTbSame2Struct2>();
+				Prop2Changed.Broadcast(Prop2);
+			}
+		}
+	};
+	if (AGCM != nullptr)
+	{
+		AGCM->GetSimulationConnection()->Connect();
+		AGCM->GetSimulationConnection()->onNotifyState("tb.same2/SameStruct2Interface", SameStruct2InterfaceStateChangedFunc);
+	}
 
-    CallResponseFunc GetSameStruct2InterfaceStateFunc = [this](CallResponseArg arg)
-    {
-        if(arg.result.size() != 1) {
-          return;
-        }
-        const json fields = arg.result;
-        if(fields.contains("prop1")) {
-            if(Prop1 != fields["prop1"].get<FTbSame2Struct2>())
-            {
-                Prop1 = fields["prop1"].get<FTbSame2Struct2>();
-                Prop1Changed.Broadcast(Prop1);
-            }
-        }
-        if(fields.contains("prop2")) {
-            if(Prop2 != fields["prop2"].get<FTbSame2Struct2>())
-            {
-                Prop2 = fields["prop2"].get<FTbSame2Struct2>();
-                Prop2Changed.Broadcast(Prop2);
-            }
-        }
-    };
-    if(AGCM != nullptr)
-    {
-        AGCM->GetSimulationConnection()->doFetchState("tb.same2/SameStruct2Interface", GetSameStruct2InterfaceStateFunc);
-    }
+	CallResponseFunc GetSameStruct2InterfaceStateFunc = [this](CallResponseArg arg)
+	{
+		if (arg.result.size() != 1)
+		{
+			return;
+		}
+		const json fields = arg.result;
+		if (fields.contains("prop1"))
+		{
+			if (Prop1 != fields["prop1"].get<FTbSame2Struct2>())
+			{
+				Prop1 = fields["prop1"].get<FTbSame2Struct2>();
+				Prop1Changed.Broadcast(Prop1);
+			}
+		}
+		if (fields.contains("prop2"))
+		{
+			if (Prop2 != fields["prop2"].get<FTbSame2Struct2>())
+			{
+				Prop2 = fields["prop2"].get<FTbSame2Struct2>();
+				Prop2Changed.Broadcast(Prop2);
+			}
+		}
+	};
+	if (AGCM != nullptr)
+	{
+		AGCM->GetSimulationConnection()->doFetchState("tb.same2/SameStruct2Interface", GetSameStruct2InterfaceStateFunc);
+	}
 
-    // register notification callback functions, signal/event -> fcn
-    NotifyRequestFunc sig1Func = [this](NotifyRequestArg arg)
-    {
-        const json fields = arg.params;
-        if(fields.contains("param1"))
-        {
-            Sig1Signal.Broadcast(fields["param1"].get<FTbSame2Struct1>());
-        }
-    };
-    if(AGCM != nullptr)
-    {
-        AGCM->GetSimulationConnection()->onNotify("tb.same2/SameStruct2Interface#sig1", sig1Func);
-    }
+	// register notification callback functions, signal/event -> fcn
+	NotifyRequestFunc sig1Func = [this](NotifyRequestArg arg)
+	{
+		const json fields = arg.params;
+		if (fields.contains("param1"))
+		{
+			Sig1Signal.Broadcast(fields["param1"].get<FTbSame2Struct1>());
+		}
+	};
+	if (AGCM != nullptr)
+	{
+		AGCM->GetSimulationConnection()->onNotify("tb.same2/SameStruct2Interface#sig1", sig1Func);
+	}
 
-    NotifyRequestFunc sig2Func = [this](NotifyRequestArg arg)
-    {
-        const json fields = arg.params;
-        if(fields.contains("param1") &&fields.contains("param2"))
-        {
-            Sig2Signal.Broadcast(fields["param1"].get<FTbSame2Struct1>(),fields["param2"].get<FTbSame2Struct2>());
-        }
-    };
-    if(AGCM != nullptr)
-    {
-        AGCM->GetSimulationConnection()->onNotify("tb.same2/SameStruct2Interface#sig2", sig2Func);
-    }
-
+	NotifyRequestFunc sig2Func = [this](NotifyRequestArg arg)
+	{
+		const json fields = arg.params;
+		if (fields.contains("param1") && fields.contains("param2"))
+		{
+			Sig2Signal.Broadcast(fields["param1"].get<FTbSame2Struct1>(), fields["param2"].get<FTbSame2Struct2>());
+		}
+	};
+	if (AGCM != nullptr)
+	{
+		AGCM->GetSimulationConnection()->onNotify("tb.same2/SameStruct2Interface#sig2", sig2Func);
+	}
 }
 
 SimulationService::~SimulationService()
 {
-    if (GEngine != nullptr)
-    {
-        UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-        AGCM->GetSimulationConnection()->RemoveOnNotifyState("tb.same2/SameStruct2Interface");
-        // unregister notification callback functions
-        AGCM->GetSimulationConnection()->RemoveOnNotify("tb.same2/SameStruct2Interface#sig1");
-        AGCM->GetSimulationConnection()->RemoveOnNotify("tb.same2/SameStruct2Interface#sig2");
-    }
+	if (GEngine != nullptr)
+	{
+		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+		AGCM->GetSimulationConnection()->RemoveOnNotifyState("tb.same2/SameStruct2Interface");
+		// unregister notification callback functions
+		AGCM->GetSimulationConnection()->RemoveOnNotify("tb.same2/SameStruct2Interface#sig1");
+		AGCM->GetSimulationConnection()->RemoveOnNotify("tb.same2/SameStruct2Interface#sig2");
+	}
 }
 
 FTbSame2SameStruct2InterfaceSig1Delegate& SimulationService::GetSig1SignalDelegate()
 {
-    return Sig1Signal;
+	return Sig1Signal;
 }
 
 FTbSame2SameStruct2InterfaceSig2Delegate& SimulationService::GetSig2SignalDelegate()
 {
-    return Sig2Signal;
+	return Sig2Signal;
 }
 
 FTbSame2Struct2 SimulationService::GetProp1() const
 {
-    return Prop1;
+	return Prop1;
 }
 
 void SimulationService::SetProp1(const FTbSame2Struct2& InProp1)
 {
-    Params params;
-    params["prop1"] = InProp1;
-    if (GEngine != nullptr)
-    {
-        UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-        AGCM->GetSimulationConnection()->doCall("tb.same2/SameStruct2Interface", "_set", params);
-    }
+	Params params;
+	params["prop1"] = InProp1;
+	if (GEngine != nullptr)
+	{
+		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+		AGCM->GetSimulationConnection()->doCall("tb.same2/SameStruct2Interface", "_set", params);
+	}
 }
 
 FTbSame2SameStruct2InterfaceProp1ChangedDelegate& SimulationService::GetProp1ChangedDelegate()
 {
-    return Prop1Changed;
+	return Prop1Changed;
 }
 
 FTbSame2Struct2 SimulationService::GetProp2() const
 {
-    return Prop2;
+	return Prop2;
 }
 
 void SimulationService::SetProp2(const FTbSame2Struct2& InProp2)
 {
-    Params params;
-    params["prop2"] = InProp2;
-    if (GEngine != nullptr)
-    {
-        UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-        AGCM->GetSimulationConnection()->doCall("tb.same2/SameStruct2Interface", "_set", params);
-    }
+	Params params;
+	params["prop2"] = InProp2;
+	if (GEngine != nullptr)
+	{
+		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+		AGCM->GetSimulationConnection()->doCall("tb.same2/SameStruct2Interface", "_set", params);
+	}
 }
 
 FTbSame2SameStruct2InterfaceProp2ChangedDelegate& SimulationService::GetProp2ChangedDelegate()
 {
-    return Prop2Changed;
+	return Prop2Changed;
 }
 
 FTbSame2Struct1 SimulationService::Func1(const FTbSame2Struct1& Param1)
 {
-    Params params;
-    params["param1"] = Param1;
-    TPromise<FTbSame2Struct1> Promise;
-    Async(EAsyncExecution::Thread, [params, &Promise]()
-    {
-        CallResponseFunc GetSameStruct2InterfaceStateFunc = [&Promise](CallResponseArg arg)
-        {
-            Promise.SetValue(arg.result.get<FTbSame2Struct1>());
-        };
-        if (GEngine != nullptr)
-        {
-            UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-            AGCM->GetSimulationConnection()->doCall("tb.same2/SameStruct2Interface", "func1", params, GetSameStruct2InterfaceStateFunc);
-        }
-    });
+	Params params;
+	params["param1"] = Param1;
+	TPromise<FTbSame2Struct1> Promise;
+	Async(EAsyncExecution::Thread,
+		[params, &Promise]()
+		{
+			CallResponseFunc GetSameStruct2InterfaceStateFunc = [&Promise](CallResponseArg arg)
+			{ Promise.SetValue(arg.result.get<FTbSame2Struct1>()); };
+			if (GEngine != nullptr)
+			{
+				UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+				AGCM->GetSimulationConnection()->doCall("tb.same2/SameStruct2Interface", "func1", params, GetSameStruct2InterfaceStateFunc);
+			}
+		});
 
-    return Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
 
 FTbSame2Struct1 SimulationService::Func2(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2)
 {
-    Params params;
-    params["param1"] = Param1;
-    params["param2"] = Param2;
-    TPromise<FTbSame2Struct1> Promise;
-    Async(EAsyncExecution::Thread, [params, &Promise]()
-    {
-        CallResponseFunc GetSameStruct2InterfaceStateFunc = [&Promise](CallResponseArg arg)
-        {
-            Promise.SetValue(arg.result.get<FTbSame2Struct1>());
-        };
-        if (GEngine != nullptr)
-        {
-            UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-            AGCM->GetSimulationConnection()->doCall("tb.same2/SameStruct2Interface", "func2", params, GetSameStruct2InterfaceStateFunc);
-        }
-    });
+	Params params;
+	params["param1"] = Param1;
+	params["param2"] = Param2;
+	TPromise<FTbSame2Struct1> Promise;
+	Async(EAsyncExecution::Thread,
+		[params, &Promise]()
+		{
+			CallResponseFunc GetSameStruct2InterfaceStateFunc = [&Promise](CallResponseArg arg)
+			{ Promise.SetValue(arg.result.get<FTbSame2Struct1>()); };
+			if (GEngine != nullptr)
+			{
+				UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+				AGCM->GetSimulationConnection()->doCall("tb.same2/SameStruct2Interface", "func2", params, GetSameStruct2InterfaceStateFunc);
+			}
+		});
 
-    return Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
-
 
 } // namespace Private
 } // namespace SameStruct2Interface

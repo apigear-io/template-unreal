@@ -33,136 +33,144 @@ limitations under the License.
 {{nl}}
 using namespace ApiGear::JSONRPC;
 
-namespace {{module.name | capital}} {
-namespace {{interface.name | capital}} {
-namespace Private {
-    
+namespace {{module.name | capital}}
+{
+namespace {{interface.name | capital}}
+{
+namespace Private
+{
+	
 {% if interface.description%}
 /**
    \brief {{interface.description}}
 */
 {% endif %}
 {{class}}::{{class}}()
-    : I{{module.name | capital}}{{interface.name|capital}}Interface()
+	: I{{module.name | capital}}{{interface.name|capital}}Interface()
 {% for property in interface.properties %}
-    , {{property|unrealVarName}}({{property|unrealDefault: moduleCapital}})
+	, {{property|unrealVarName}}({{property|unrealDefault: moduleCapital}})
 {% endfor %}
 {
-    UApiGearConnectionManager* AGCM = nullptr;
-    if (GEngine != nullptr)
-    {
-        AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-    }
-    NotifyRequestFunc {{interface.name | capital}}StateChangedFunc = [this](NotifyRequestArg arg)
-    {
-        const json fields = arg.params;
+	UApiGearConnectionManager* AGCM = nullptr;
+	if (GEngine != nullptr)
+	{
+		AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+	}
+	NotifyRequestFunc {{interface.name | capital}}StateChangedFunc = [this](NotifyRequestArg arg)
+	{
+		const json fields = arg.params;
 {% for property in interface.properties %}
-        if(fields.contains("{{property.name}}")) {
-            if({{property|unrealVarName}} != fields["{{property.name}}"].get<{{property|unrealTypeName: false, moduleCapital}}>())
-            {
-                {{property|unrealVarName}} = fields["{{property.name}}"].get<{{property|unrealTypeName: false, moduleCapital}}>();
-                {{property.name|capital}}Changed.Broadcast({{property|unrealVarName}});
-            }
-        }
+		if (fields.contains("{{property.name}}"))
+		{
+			if ({{property|unrealVarName}} != fields["{{property.name}}"].get<{{property|unrealTypeName: false, moduleCapital}}>())
+			{
+				{{property|unrealVarName}} = fields["{{property.name}}"].get<{{property|unrealTypeName: false, moduleCapital}}>();
+				{{property.name|capital}}Changed.Broadcast({{property|unrealVarName}});
+			}
+		}
 {% endfor %}
-    };
-    if(AGCM != nullptr)
-    {   
-        AGCM->GetSimulationConnection()->Connect();
-        AGCM->GetSimulationConnection()->onNotifyState("{{module.name}}/{{interface.name}}", {{interface.name | capital}}StateChangedFunc);
-    }
+	};
+	if (AGCM != nullptr)
+	{
+		AGCM->GetSimulationConnection()->Connect();
+		AGCM->GetSimulationConnection()->onNotifyState("{{module.name}}/{{interface.name}}", {{interface.name | capital}}StateChangedFunc);
+	}
 {{nl}}
-    CallResponseFunc Get{{interface.name | capital}}StateFunc = [this](CallResponseArg arg)
-    {
-        if(arg.result.size() != 1) {
-          return;
-        }
-        const json fields = arg.result;
+	CallResponseFunc Get{{interface.name | capital}}StateFunc = [this](CallResponseArg arg)
+	{
+		if (arg.result.size() != 1)
+		{
+			return;
+		}
+		const json fields = arg.result;
 {% for property in interface.properties %}
-        if(fields.contains("{{property.name}}")) {
-            if({{property|unrealVarName}} != fields["{{property.name}}"].get<{{property|unrealTypeName: false, moduleCapital}}>())
-            {
-                {{property|unrealVarName}} = fields["{{property.name}}"].get<{{property|unrealTypeName: false, moduleCapital}}>();
-                {{property.name|capital}}Changed.Broadcast({{property|unrealVarName}});
-            }
-        }
+		if (fields.contains("{{property.name}}"))
+		{
+			if ({{property|unrealVarName}} != fields["{{property.name}}"].get<{{property|unrealTypeName: false, moduleCapital}}>())
+			{
+				{{property|unrealVarName}} = fields["{{property.name}}"].get<{{property|unrealTypeName: false, moduleCapital}}>();
+				{{property.name|capital}}Changed.Broadcast({{property|unrealVarName}});
+			}
+		}
 {% endfor %}
-    };
-    if(AGCM != nullptr)
-    {
-        AGCM->GetSimulationConnection()->doFetchState("{{module.name}}/{{interface.name}}", Get{{interface.name | capital}}StateFunc);
-    }
+	};
+	if (AGCM != nullptr)
+	{
+		AGCM->GetSimulationConnection()->doFetchState("{{module.name}}/{{interface.name}}", Get{{interface.name | capital}}StateFunc);
+	}
 {{nl}}
-    // register notification callback functions, signal/event -> fcn
+	// register notification callback functions, signal/event -> fcn
 {% for signal in interface.signals %}
-    NotifyRequestFunc {{signal.name}}Func = [this](NotifyRequestArg arg)
-    {
-    {% if signal.params.size > 0 %}
-        const json fields = arg.params;
-        if(
-    {%- for param in signal.params -%}
-        fields.contains("{{param.name}}"){% unless forloop.last %} &&{% endunless -%}
-    {%- endfor %})
-        {
-            {{signal|unrealVarName}}Signal.Broadcast(
-        {%- for param in signal.params -%}
-                fields["{{param.name}}"].get<{{param|unrealReturn: moduleCapital}}>(){% unless forloop.last %},{% endunless -%}
-        {%- endfor -%}
-            );
-        }
-    {% else %}
-        {{signal|unrealVarName}}Signal.Broadcast();
-    {% endif %}
-    };
-    if(AGCM != nullptr)
-    {
-        AGCM->GetSimulationConnection()->onNotify("{{module.name}}/{{interface.name}}#{{signal.name}}", {{signal.name}}Func);
-    }
+	NotifyRequestFunc {{signal.name}}Func = [this](NotifyRequestArg arg)
+	{
+	{% if signal.params.size > 0 %}
+		const json fields = arg.params;
+		if (
+	{%- for param in signal.params -%}
+		fields.contains("{{param.name}}"){% unless forloop.last %} &&{{' '}}{% endunless -%}
+	{%- endfor %})
+		{
+			{{signal|unrealVarName}}Signal.Broadcast(
+		{%- for param in signal.params -%}
+				fields["{{param.name}}"].get<{{param|unrealReturn: moduleCapital}}>(){% unless forloop.last %},{{' '}}{% endunless -%}
+		{%- endfor -%}
+			);
+		}
+	{% else %}
+		{{signal|unrealVarName}}Signal.Broadcast();
+	{% endif %}
+	};
+	if (AGCM != nullptr)
+	{
+		AGCM->GetSimulationConnection()->onNotify("{{module.name}}/{{interface.name}}#{{signal.name}}", {{signal.name}}Func);
+	}
+{% unless forloop.last %}
 {{nl}}
+{% endunless -%}
 {% endfor %}
 }
 {{nl}}
 {{class}}::~{{class}}()
 {
-    if (GEngine != nullptr)
-    {
-        UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-        AGCM->GetSimulationConnection()->RemoveOnNotifyState("{{module.name}}/{{interface.name}}");
-        // unregister notification callback functions
+	if (GEngine != nullptr)
+	{
+		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+		AGCM->GetSimulationConnection()->RemoveOnNotifyState("{{module.name}}/{{interface.name}}");
+		// unregister notification callback functions
 {% for signal in interface.signals %}
-        AGCM->GetSimulationConnection()->RemoveOnNotify("{{module.name}}/{{interface.name}}#{{signal.name}}");
+		AGCM->GetSimulationConnection()->RemoveOnNotify("{{module.name}}/{{interface.name}}#{{signal.name}}");
 {% endfor %}
-    }
+	}
 }
 {{nl}}
 
 {% for signal in interface.signals %}
 F{{signal|unrealVarName: moduleInterfaceCapital}}Delegate& {{class}}::Get{{signal|unrealVarName}}SignalDelegate()
 {
-    return {{signal|unrealVarName}}Signal;
+	return {{signal|unrealVarName}}Signal;
 }
 {{nl}}
 {% endfor %}
 {% for property in interface.properties %}
 {{property|unrealTypeName: false, moduleCapital}} {{class}}::Get{{property.name | capital}}() const
 {
-    return {{property|unrealVarName}};
+	return {{property|unrealVarName}};
 }
 
 void {{class}}::Set{{property.name | capital}}({{property|unrealParam: moduleCapital, 'In'}})
 {
-    Params params;
-    params["{{property.name}}"] = {{property|unrealVarName: 'In'}};
-    if (GEngine != nullptr)
-    {
-        UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-        AGCM->GetSimulationConnection()->doCall("{{module.name}}/{{interface.name}}", "_set", params);
-    }
+	Params params;
+	params["{{property.name}}"] = {{property|unrealVarName: 'In'}};
+	if (GEngine != nullptr)
+	{
+		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+		AGCM->GetSimulationConnection()->doCall("{{module.name}}/{{interface.name}}", "_set", params);
+	}
 }
 
 F{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate& {{class}}::Get{{property.name|capital}}ChangedDelegate()
 {
-    return {{property.name|capital}}Changed;
+	return {{property.name|capital}}Changed;
 }
 {{nl}}
 {% endfor %}
@@ -170,44 +178,42 @@ F{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate& {{class}}::
 {% for operation in interface.operations %}
 {% if operation.description %}
 /**
-   \brief {{operation.description}}
-*/
+ * \brief {{operation.description}}
+ */
 {% endif %}
 {% assign returnVal = operation|unrealReturn: moduleCapital %}
 {{returnVal}} {{class}}::{{operation.name|capital}}({{operation|unrealParams: moduleCapital}})
 {
-    Params params;
-    {% for param in operation.params %}
-    params["{{param.name}}"] = {{param|unrealVarName}};
-    {% endfor %}
+	Params params;
+	{% for param in operation.params %}
+	params["{{param.name}}"] = {{param|unrealVarName}};
+	{% endfor %}
 
-    {% if returnVal == "void" %}
-    if (GEngine != nullptr)
-    {
-        UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-        AGCM->GetSimulationConnection()->doCall("{{module.name}}/{{interface.name}}", "{{operation.name}}", params);
-    }
-    {% else %}
-    TPromise<{{returnVal}}> Promise;
-    Async(EAsyncExecution::Thread, [params, &Promise]()
-    {
-        CallResponseFunc Get{{interface.name | capital}}StateFunc = [&Promise](CallResponseArg arg)
-        {
-            Promise.SetValue(arg.result.get<{{returnVal}}>());
-        };
-        if (GEngine != nullptr)
-        {
-            UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-            AGCM->GetSimulationConnection()->doCall("{{module.name}}/{{interface.name}}", "{{operation.name}}", params, Get{{interface.name | capital}}StateFunc);
-        }
-    });
+	{% if returnVal == "void" %}
+	if (GEngine != nullptr)
+	{
+		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+		AGCM->GetSimulationConnection()->doCall("{{module.name}}/{{interface.name}}", "{{operation.name}}", params);
+	}
+	{% else %}
+	TPromise<{{returnVal}}> Promise;
+	Async(EAsyncExecution::Thread,
+		[params, &Promise]()
+		{
+			CallResponseFunc Get{{interface.name | capital}}StateFunc = [&Promise](CallResponseArg arg)
+			{ Promise.SetValue(arg.result.get<{{returnVal}}>()); };
+			if (GEngine != nullptr)
+			{
+				UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+				AGCM->GetSimulationConnection()->doCall("{{module.name}}/{{interface.name}}", "{{operation.name}}", params, Get{{interface.name | capital}}StateFunc);
+			}
+		});
 
-    return Promise.GetFuture().Get();
-    {% endif %}
+	return Promise.GetFuture().Get();
+	{% endif %}
 }
 {{nl}}
 {% endfor %}
-
 } // namespace Private
 } // namespace {{interface.name | capital}}
 } // namespace {{module.name | capital}}

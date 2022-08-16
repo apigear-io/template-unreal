@@ -18,7 +18,7 @@ limitations under the License.
 class ITbSimpleSimpleInterfaceInterface;
 class ITbSimpleSimpleArrayInterfaceInterface;
 
-//General Log
+// General Log
 DECLARE_LOG_CATEGORY_EXTERN(LogFTbSimpleModuleFactory, Log, All);
 
 class FTbSimpleModuleFactory

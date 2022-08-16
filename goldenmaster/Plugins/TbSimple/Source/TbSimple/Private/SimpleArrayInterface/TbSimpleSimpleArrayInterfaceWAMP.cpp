@@ -29,295 +29,312 @@ limitations under the License.
 
 using namespace ApiGear::WAMP;
 
-namespace TbSimple {
-namespace SimpleArrayInterface {
-namespace Private {
-WAMPService::WAMPService()
-: ITbSimpleSimpleArrayInterfaceInterface()
-, PropBool(TArray<bool>())
-, PropInt(TArray<int32>())
-, PropFloat(TArray<float>())
-, PropString(TArray<FString>())
+namespace TbSimple
 {
-    EventFunc SimpleArrayInterfaceStateChangedFunc = [this](EventArg arg)
-    {
-        const json fields = arg.kwargs;
-        if(fields.contains("propBool")) {
-            if(PropBool != fields["propBool"].get<TArray<bool>>())
-            {
-                PropBool = fields["propBool"].get<TArray<bool>>();
-                PropBoolChanged.Broadcast(PropBool);
-            }
-        }
-        if(fields.contains("propInt")) {
-            if(PropInt != fields["propInt"].get<TArray<int32>>())
-            {
-                PropInt = fields["propInt"].get<TArray<int32>>();
-                PropIntChanged.Broadcast(PropInt);
-            }
-        }
-        if(fields.contains("propFloat")) {
-            if(PropFloat != fields["propFloat"].get<TArray<float>>())
-            {
-                PropFloat = fields["propFloat"].get<TArray<float>>();
-                PropFloatChanged.Broadcast(PropFloat);
-            }
-        }
-        if(fields.contains("propString")) {
-            if(PropString != fields["propString"].get<TArray<FString>>())
-            {
-                PropString = fields["propString"].get<TArray<FString>>();
-                PropStringChanged.Broadcast(PropString);
-            }
-        }
-    };
-    UnrealWamp::instance()->doSubscribe("tb.simple.SimpleArrayInterface", SimpleArrayInterfaceStateChangedFunc);
+namespace SimpleArrayInterface
+{
+namespace Private
+{
+WAMPService::WAMPService()
+	: ITbSimpleSimpleArrayInterfaceInterface()
+	, PropBool(TArray<bool>())
+	, PropInt(TArray<int32>())
+	, PropFloat(TArray<float>())
+	, PropString(TArray<FString>())
+{
+	EventFunc SimpleArrayInterfaceStateChangedFunc = [this](EventArg arg)
+	{
+		const json fields = arg.kwargs;
+		if (fields.contains("propBool"))
+		{
+			if (PropBool != fields["propBool"].get<TArray<bool>>())
+			{
+				PropBool = fields["propBool"].get<TArray<bool>>();
+				PropBoolChanged.Broadcast(PropBool);
+			}
+		}
+		if (fields.contains("propInt"))
+		{
+			if (PropInt != fields["propInt"].get<TArray<int32>>())
+			{
+				PropInt = fields["propInt"].get<TArray<int32>>();
+				PropIntChanged.Broadcast(PropInt);
+			}
+		}
+		if (fields.contains("propFloat"))
+		{
+			if (PropFloat != fields["propFloat"].get<TArray<float>>())
+			{
+				PropFloat = fields["propFloat"].get<TArray<float>>();
+				PropFloatChanged.Broadcast(PropFloat);
+			}
+		}
+		if (fields.contains("propString"))
+		{
+			if (PropString != fields["propString"].get<TArray<FString>>())
+			{
+				PropString = fields["propString"].get<TArray<FString>>();
+				PropStringChanged.Broadcast(PropString);
+			}
+		}
+	};
+	UnrealWamp::instance()->doSubscribe("tb.simple.SimpleArrayInterface", SimpleArrayInterfaceStateChangedFunc);
 
-    ResponseFunc GetSimpleArrayInterfaceStateFunc = [this](ResponseArg arg)
-    {
-        if(arg.args.size() != 1) {
-          return;
-        }
-        const json fields = arg.args[0];
-        if(fields.contains("propBool")) {
-            if(PropBool != fields["propBool"].get<TArray<bool>>())
-            {
-                PropBool = fields["propBool"].get<TArray<bool>>();
-                PropBoolChanged.Broadcast(PropBool);
-            }
-        }
-        if(fields.contains("propInt")) {
-            if(PropInt != fields["propInt"].get<TArray<int32>>())
-            {
-                PropInt = fields["propInt"].get<TArray<int32>>();
-                PropIntChanged.Broadcast(PropInt);
-            }
-        }
-        if(fields.contains("propFloat")) {
-            if(PropFloat != fields["propFloat"].get<TArray<float>>())
-            {
-                PropFloat = fields["propFloat"].get<TArray<float>>();
-                PropFloatChanged.Broadcast(PropFloat);
-            }
-        }
-        if(fields.contains("propString")) {
-            if(PropString != fields["propString"].get<TArray<FString>>())
-            {
-                PropString = fields["propString"].get<TArray<FString>>();
-                PropStringChanged.Broadcast(PropString);
-            }
-        }
-    };
-    UnrealWamp::instance()->doCall("tb.simple.SimpleArrayInterface._get", Arguments(), ArgumentsKw(), GetSimpleArrayInterfaceStateFunc);
+	ResponseFunc GetSimpleArrayInterfaceStateFunc = [this](ResponseArg arg)
+	{
+		if (arg.args.size() != 1)
+		{
+			return;
+		}
+		const json fields = arg.args[0];
+		if (fields.contains("propBool"))
+		{
+			if (PropBool != fields["propBool"].get<TArray<bool>>())
+			{
+				PropBool = fields["propBool"].get<TArray<bool>>();
+				PropBoolChanged.Broadcast(PropBool);
+			}
+		}
+		if (fields.contains("propInt"))
+		{
+			if (PropInt != fields["propInt"].get<TArray<int32>>())
+			{
+				PropInt = fields["propInt"].get<TArray<int32>>();
+				PropIntChanged.Broadcast(PropInt);
+			}
+		}
+		if (fields.contains("propFloat"))
+		{
+			if (PropFloat != fields["propFloat"].get<TArray<float>>())
+			{
+				PropFloat = fields["propFloat"].get<TArray<float>>();
+				PropFloatChanged.Broadcast(PropFloat);
+			}
+		}
+		if (fields.contains("propString"))
+		{
+			if (PropString != fields["propString"].get<TArray<FString>>())
+			{
+				PropString = fields["propString"].get<TArray<FString>>();
+				PropStringChanged.Broadcast(PropString);
+			}
+		}
+	};
+	UnrealWamp::instance()->doCall("tb.simple.SimpleArrayInterface._get", Arguments(), ArgumentsKw(), GetSimpleArrayInterfaceStateFunc);
 
-    EventFunc sigBoolFunc = [this](EventArg arg)
-    {
-        if(arg.args.size() == 1)
-        {
-            SigBoolSignal.Broadcast(arg.args[0].get<TArray<bool>>());
-        }
-    };
-    UnrealWamp::instance()->doSubscribe("tb.simple.SimpleArrayInterface.sigBool", sigBoolFunc);
-    
-    EventFunc sigIntFunc = [this](EventArg arg)
-    {
-        if(arg.args.size() == 1)
-        {
-            SigIntSignal.Broadcast(arg.args[0].get<TArray<int32>>());
-        }
-    };
-    UnrealWamp::instance()->doSubscribe("tb.simple.SimpleArrayInterface.sigInt", sigIntFunc);
-    
-    EventFunc sigFloatFunc = [this](EventArg arg)
-    {
-        if(arg.args.size() == 1)
-        {
-            SigFloatSignal.Broadcast(arg.args[0].get<TArray<float>>());
-        }
-    };
-    UnrealWamp::instance()->doSubscribe("tb.simple.SimpleArrayInterface.sigFloat", sigFloatFunc);
-    
-    EventFunc sigStringFunc = [this](EventArg arg)
-    {
-        if(arg.args.size() == 1)
-        {
-            SigStringSignal.Broadcast(arg.args[0].get<TArray<FString>>());
-        }
-    };
-    UnrealWamp::instance()->doSubscribe("tb.simple.SimpleArrayInterface.sigString", sigStringFunc);
-    
+	EventFunc sigBoolFunc = [this](EventArg arg)
+	{
+		if (arg.args.size() == 1)
+		{
+			SigBoolSignal.Broadcast(arg.args[0].get<TArray<bool>>());
+		}
+	};
+	UnrealWamp::instance()->doSubscribe("tb.simple.SimpleArrayInterface.sigBool", sigBoolFunc);
+
+	EventFunc sigIntFunc = [this](EventArg arg)
+	{
+		if (arg.args.size() == 1)
+		{
+			SigIntSignal.Broadcast(arg.args[0].get<TArray<int32>>());
+		}
+	};
+	UnrealWamp::instance()->doSubscribe("tb.simple.SimpleArrayInterface.sigInt", sigIntFunc);
+
+	EventFunc sigFloatFunc = [this](EventArg arg)
+	{
+		if (arg.args.size() == 1)
+		{
+			SigFloatSignal.Broadcast(arg.args[0].get<TArray<float>>());
+		}
+	};
+	UnrealWamp::instance()->doSubscribe("tb.simple.SimpleArrayInterface.sigFloat", sigFloatFunc);
+
+	EventFunc sigStringFunc = [this](EventArg arg)
+	{
+		if (arg.args.size() == 1)
+		{
+			SigStringSignal.Broadcast(arg.args[0].get<TArray<FString>>());
+		}
+	};
+	UnrealWamp::instance()->doSubscribe("tb.simple.SimpleArrayInterface.sigString", sigStringFunc);
 }
 
 WAMPService::~WAMPService()
 {
-    UnrealWamp::instance()->doUnSubscribe("tb.simple.SimpleArrayInterface");
-    UnrealWamp::instance()->doUnSubscribe("tb.simple.SimpleArrayInterface.sigBool");
-    UnrealWamp::instance()->doUnSubscribe("tb.simple.SimpleArrayInterface.sigInt");
-    UnrealWamp::instance()->doUnSubscribe("tb.simple.SimpleArrayInterface.sigFloat");
-    UnrealWamp::instance()->doUnSubscribe("tb.simple.SimpleArrayInterface.sigString");
+	UnrealWamp::instance()->doUnSubscribe("tb.simple.SimpleArrayInterface");
+	UnrealWamp::instance()->doUnSubscribe("tb.simple.SimpleArrayInterface.sigBool");
+	UnrealWamp::instance()->doUnSubscribe("tb.simple.SimpleArrayInterface.sigInt");
+	UnrealWamp::instance()->doUnSubscribe("tb.simple.SimpleArrayInterface.sigFloat");
+	UnrealWamp::instance()->doUnSubscribe("tb.simple.SimpleArrayInterface.sigString");
 }
 
 FTbSimpleSimpleArrayInterfaceSigBoolDelegate& WAMPService::GetSigBoolSignalDelegate()
 {
-    return SigBoolSignal;
+	return SigBoolSignal;
 }
 
 FTbSimpleSimpleArrayInterfaceSigIntDelegate& WAMPService::GetSigIntSignalDelegate()
 {
-    return SigIntSignal;
+	return SigIntSignal;
 }
 
 FTbSimpleSimpleArrayInterfaceSigFloatDelegate& WAMPService::GetSigFloatSignalDelegate()
 {
-    return SigFloatSignal;
+	return SigFloatSignal;
 }
 
 FTbSimpleSimpleArrayInterfaceSigStringDelegate& WAMPService::GetSigStringSignalDelegate()
 {
-    return SigStringSignal;
+	return SigStringSignal;
 }
 
 TArray<bool> WAMPService::GetPropBool() const
 {
-    return PropBool;
+	return PropBool;
 }
 
 void WAMPService::SetPropBool(const TArray<bool>& InPropBool)
 {
-    ArgumentsKw fields_;
-    fields_["propBool"] = InPropBool;
-    UnrealWamp::instance()->doCall("tb.simple.SimpleArrayInterface._set", Arguments(), fields_);
+	ArgumentsKw fields_;
+	fields_["propBool"] = InPropBool;
+	UnrealWamp::instance()->doCall("tb.simple.SimpleArrayInterface._set", Arguments(), fields_);
 }
 
 FTbSimpleSimpleArrayInterfacePropBoolChangedDelegate& WAMPService::GetPropBoolChangedDelegate()
 {
-    return PropBoolChanged;
+	return PropBoolChanged;
 }
 
 TArray<int32> WAMPService::GetPropInt() const
 {
-    return PropInt;
+	return PropInt;
 }
 
 void WAMPService::SetPropInt(const TArray<int32>& InPropInt)
 {
-    ArgumentsKw fields_;
-    fields_["propInt"] = InPropInt;
-    UnrealWamp::instance()->doCall("tb.simple.SimpleArrayInterface._set", Arguments(), fields_);
+	ArgumentsKw fields_;
+	fields_["propInt"] = InPropInt;
+	UnrealWamp::instance()->doCall("tb.simple.SimpleArrayInterface._set", Arguments(), fields_);
 }
 
 FTbSimpleSimpleArrayInterfacePropIntChangedDelegate& WAMPService::GetPropIntChangedDelegate()
 {
-    return PropIntChanged;
+	return PropIntChanged;
 }
 
 TArray<float> WAMPService::GetPropFloat() const
 {
-    return PropFloat;
+	return PropFloat;
 }
 
 void WAMPService::SetPropFloat(const TArray<float>& InPropFloat)
 {
-    ArgumentsKw fields_;
-    fields_["propFloat"] = InPropFloat;
-    UnrealWamp::instance()->doCall("tb.simple.SimpleArrayInterface._set", Arguments(), fields_);
+	ArgumentsKw fields_;
+	fields_["propFloat"] = InPropFloat;
+	UnrealWamp::instance()->doCall("tb.simple.SimpleArrayInterface._set", Arguments(), fields_);
 }
 
 FTbSimpleSimpleArrayInterfacePropFloatChangedDelegate& WAMPService::GetPropFloatChangedDelegate()
 {
-    return PropFloatChanged;
+	return PropFloatChanged;
 }
 
 TArray<FString> WAMPService::GetPropString() const
 {
-    return PropString;
+	return PropString;
 }
 
 void WAMPService::SetPropString(const TArray<FString>& InPropString)
 {
-    ArgumentsKw fields_;
-    fields_["propString"] = InPropString;
-    UnrealWamp::instance()->doCall("tb.simple.SimpleArrayInterface._set", Arguments(), fields_);
+	ArgumentsKw fields_;
+	fields_["propString"] = InPropString;
+	UnrealWamp::instance()->doCall("tb.simple.SimpleArrayInterface._set", Arguments(), fields_);
 }
 
 FTbSimpleSimpleArrayInterfacePropStringChangedDelegate& WAMPService::GetPropStringChangedDelegate()
 {
-    return PropStringChanged;
+	return PropStringChanged;
 }
-
 
 TArray<bool> WAMPService::FuncBool(const TArray<bool>& ParamBool)
 {
-    TPromise<TArray<bool>> Promise;
-    Async(EAsyncExecution::Thread, [ParamBool,&Promise]()
-    {
-        ResponseFunc GetSimpleArrayInterfaceStateFunc = [&Promise](ResponseArg arg)
-        {
-            if(arg.args.size() != 1) {
-              return;
-            }
-            Promise.SetValue(arg.args[0].get<TArray<bool>>());
-        };
-        UnrealWamp::instance()->doCall("tb.simple.SimpleArrayInterface.funcBool", {ParamBool}, ArgumentsKw(), GetSimpleArrayInterfaceStateFunc);
-    });
+	TPromise<TArray<bool>> Promise;
+	Async(EAsyncExecution::Thread,
+		[ParamBool, &Promise]()
+		{
+			ResponseFunc GetSimpleArrayInterfaceStateFunc = [&Promise](ResponseArg arg)
+			{
+				if (arg.args.size() != 1)
+				{
+					return;
+				}
+				Promise.SetValue(arg.args[0].get<TArray<bool>>());
+			};
+			UnrealWamp::instance()->doCall("tb.simple.SimpleArrayInterface.funcBool", {ParamBool}, ArgumentsKw(), GetSimpleArrayInterfaceStateFunc);
+		});
 
-    return Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
 
 TArray<int32> WAMPService::FuncInt(const TArray<int32>& ParamInt)
 {
-    TPromise<TArray<int32>> Promise;
-    Async(EAsyncExecution::Thread, [ParamInt,&Promise]()
-    {
-        ResponseFunc GetSimpleArrayInterfaceStateFunc = [&Promise](ResponseArg arg)
-        {
-            if(arg.args.size() != 1) {
-              return;
-            }
-            Promise.SetValue(arg.args[0].get<TArray<int32>>());
-        };
-        UnrealWamp::instance()->doCall("tb.simple.SimpleArrayInterface.funcInt", {ParamInt}, ArgumentsKw(), GetSimpleArrayInterfaceStateFunc);
-    });
+	TPromise<TArray<int32>> Promise;
+	Async(EAsyncExecution::Thread,
+		[ParamInt, &Promise]()
+		{
+			ResponseFunc GetSimpleArrayInterfaceStateFunc = [&Promise](ResponseArg arg)
+			{
+				if (arg.args.size() != 1)
+				{
+					return;
+				}
+				Promise.SetValue(arg.args[0].get<TArray<int32>>());
+			};
+			UnrealWamp::instance()->doCall("tb.simple.SimpleArrayInterface.funcInt", {ParamInt}, ArgumentsKw(), GetSimpleArrayInterfaceStateFunc);
+		});
 
-    return Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
 
 TArray<float> WAMPService::FuncFloat(const TArray<float>& ParamFloat)
 {
-    TPromise<TArray<float>> Promise;
-    Async(EAsyncExecution::Thread, [ParamFloat,&Promise]()
-    {
-        ResponseFunc GetSimpleArrayInterfaceStateFunc = [&Promise](ResponseArg arg)
-        {
-            if(arg.args.size() != 1) {
-              return;
-            }
-            Promise.SetValue(arg.args[0].get<TArray<float>>());
-        };
-        UnrealWamp::instance()->doCall("tb.simple.SimpleArrayInterface.funcFloat", {ParamFloat}, ArgumentsKw(), GetSimpleArrayInterfaceStateFunc);
-    });
+	TPromise<TArray<float>> Promise;
+	Async(EAsyncExecution::Thread,
+		[ParamFloat, &Promise]()
+		{
+			ResponseFunc GetSimpleArrayInterfaceStateFunc = [&Promise](ResponseArg arg)
+			{
+				if (arg.args.size() != 1)
+				{
+					return;
+				}
+				Promise.SetValue(arg.args[0].get<TArray<float>>());
+			};
+			UnrealWamp::instance()->doCall("tb.simple.SimpleArrayInterface.funcFloat", {ParamFloat}, ArgumentsKw(), GetSimpleArrayInterfaceStateFunc);
+		});
 
-    return Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
 
 TArray<FString> WAMPService::FuncString(const TArray<FString>& ParamString)
 {
-    TPromise<TArray<FString>> Promise;
-    Async(EAsyncExecution::Thread, [ParamString,&Promise]()
-    {
-        ResponseFunc GetSimpleArrayInterfaceStateFunc = [&Promise](ResponseArg arg)
-        {
-            if(arg.args.size() != 1) {
-              return;
-            }
-            Promise.SetValue(arg.args[0].get<TArray<FString>>());
-        };
-        UnrealWamp::instance()->doCall("tb.simple.SimpleArrayInterface.funcString", {ParamString}, ArgumentsKw(), GetSimpleArrayInterfaceStateFunc);
-    });
+	TPromise<TArray<FString>> Promise;
+	Async(EAsyncExecution::Thread,
+		[ParamString, &Promise]()
+		{
+			ResponseFunc GetSimpleArrayInterfaceStateFunc = [&Promise](ResponseArg arg)
+			{
+				if (arg.args.size() != 1)
+				{
+					return;
+				}
+				Promise.SetValue(arg.args[0].get<TArray<FString>>());
+			};
+			UnrealWamp::instance()->doCall("tb.simple.SimpleArrayInterface.funcString", {ParamString}, ArgumentsKw(), GetSimpleArrayInterfaceStateFunc);
+		});
 
-    return Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
-
 
 } // namespace Private
 } // namespace SimpleArrayInterface

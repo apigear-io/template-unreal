@@ -33,13 +33,15 @@ limitations under the License.
 #include "unrealolink.h"
 #include "ApiGear/Public/ApiGearConnectionManager.h"
 #include "Misc/DateTime.h"
-
 {{nl}}
 using namespace ApiGear::ObjectLink;
 
-namespace {{module.name | capital}} {
-namespace {{interface.name | capital}} {
-namespace Private {
+namespace {{module.name | capital}}
+{
+namespace {{interface.name | capital}}
+{
+namespace Private
+{
 
 {% if interface.description%}
 /**
@@ -47,39 +49,39 @@ namespace Private {
 */
 {% endif %}
 {{class}}::{{class}}()
-    : I{{module.name | capital}}{{interface.name|capital}}Interface()
-    , m_node(nullptr)
-    , m_isReady(false)
+	: I{{module.name | capital}}{{interface.name|capital}}Interface()
+	, m_node(nullptr)
+	, m_isReady(false)
 {% for property in interface.properties %}
-    , {{property|unrealVarName}}({{property|unrealDefault: moduleCapital}})
+	, {{property|unrealVarName}}({{property|unrealDefault: moduleCapital}})
 {% endfor %}
 {
-    if (GEngine != nullptr)
-    {
-        UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-        AGCM->GetOLinkConnection()->Connect();
-        AGCM->GetOLinkConnection()->linkObjectSource(olinkObjectName());
-    }
-    m_node = ClientRegistry::get().addObjectSink(this);
+	if (GEngine != nullptr)
+	{
+		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+		AGCM->GetOLinkConnection()->Connect();
+		AGCM->GetOLinkConnection()->linkObjectSource(olinkObjectName());
+	}
+	m_node = ClientRegistry::get().addObjectSink(this);
 }
 {{nl}}
 {{class}}::~{{class}}()
 {
-    ClientRegistry::get().removeObjectSink(this);
-    if (GEngine != nullptr)
-    {
-        UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-        AGCM->GetOLinkConnection()->unlinkObjectSource(olinkObjectName());
-    }
-    m_isReady = false;
-    m_node = nullptr;
+	ClientRegistry::get().removeObjectSink(this);
+	if (GEngine != nullptr)
+	{
+		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+		AGCM->GetOLinkConnection()->unlinkObjectSource(olinkObjectName());
+	}
+	m_isReady = false;
+	m_node = nullptr;
 }
 {{nl}}
 
 {% for signal in interface.signals %}
 F{{signal|unrealVarName: moduleInterfaceCapital}}Delegate& {{class}}::Get{{signal|unrealVarName}}SignalDelegate()
 {
-    return {{signal|unrealVarName}}Signal;
+	return {{signal|unrealVarName}}Signal;
 }
 {{nl}}
 {% endfor %}
@@ -87,20 +89,21 @@ F{{signal|unrealVarName: moduleInterfaceCapital}}Delegate& {{class}}::Get{{signa
 {% for property in interface.properties %}
 {{property|unrealTypeName: false, moduleCapital}} {{class}}::Get{{property.name | capital}}() const
 {
-    return {{property|unrealVarName}};
+	return {{property|unrealVarName}};
 }
 
 void {{class}}::Set{{property.name | capital}}({{property|unrealParam: moduleCapital, 'In'}})
 {
-    if(!m_node) {
-        return;
-    }
-    m_node->setRemoteProperty("{{module}}.{{interface}}/{{property}}", {{property|unrealVarName: 'In'}});
+	if (!m_node)
+	{
+		return;
+	}
+	m_node->setRemoteProperty("{{module}}.{{interface}}/{{property}}", {{property|unrealVarName: 'In'}});
 }
 {{nl}}
 F{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate& {{class}}::Get{{property.name|capital}}ChangedDelegate()
 {
-    return {{property.name|capital}}Changed;
+	return {{property.name|capital}}Changed;
 }
 {% endfor %}
 {{nl}}
@@ -113,93 +116,95 @@ F{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate& {{class}}::
 {% assign returnVal = operation|unrealReturn: moduleCapital %}
 {{returnVal}} {{class}}::{{operation.name|capital}}({{operation|unrealParams: moduleCapital}})
 {
-    {% if returnVal == "void" %}
-    if(!m_node) {
-        UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
-        return;
-    }
-    InvokeReplyFunc func = [this](InvokeReplyArg arg) {};
-    m_node->invokeRemote("{{module.name|identifier}}.{{interface}}/{{operation}}", {
-        {%- for param in operation.params -%}
-            {{param|unrealVarName}}{% unless forloop.last %},{% endunless -%}
-        {%- endfor -%}}, func);
-    {% else %}
-    if(!m_node) {
-        UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
-        return {{ operation|unrealDefault: moduleCapital}};
-    }
-    TPromise<{{returnVal}}> Promise;
-    Async(EAsyncExecution::Thread, [{%- for param in operation.params -%}
-        {{param|unrealVarName}}, 
-    {%- endfor -%}&Promise, this]()
-    {
-        InvokeReplyFunc Get{{interface.name | capital}}StateFunc = [&Promise](InvokeReplyArg arg)
-        {
-            Promise.SetValue(arg.value.get<{{returnVal}}>());
-        };
-        m_node->invokeRemote("{{module}}.{{interface}}/{{operation}}", {
-        {%- for param in operation.params -%}
-            {{param|unrealVarName}}{% unless forloop.last %},{% endunless -%}
-        {%- endfor -%}}, Get{{interface.name | capital}}StateFunc);
-    });
+	{% if returnVal == "void" %}
+	if (!m_node)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
+		return;
+	}
+	InvokeReplyFunc func = [this](InvokeReplyArg arg) {};
+	m_node->invokeRemote("{{module.name|identifier}}.{{interface}}/{{operation}}", {
+		{%- for param in operation.params -%}
+			{{param|unrealVarName}}{% unless forloop.last %},{% endunless -%}
+		{%- endfor -%}}, func);
+	{% else %}
+	if (!m_node)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
+		return {{ operation|unrealDefault: moduleCapital}};
+	}
+	TPromise<{{returnVal}}> Promise;
+	Async(EAsyncExecution::Thread,
+		[{%- for param in operation.params -%}
+		{{param|unrealVarName}},{{' '}}
+	{%- endfor -%}&Promise, this]()
+		{
+			InvokeReplyFunc Get{{interface.name | capital}}StateFunc = [&Promise](InvokeReplyArg arg)
+			{ Promise.SetValue(arg.value.get<{{returnVal}}>()); };
+			m_node->invokeRemote("{{module}}.{{interface}}/{{operation}}", {
+			{%- for param in operation.params -%}
+				{{param|unrealVarName}}{% unless forloop.last %},{{' '}}{% endunless -%}
+			{%- endfor -%}}, Get{{interface.name | capital}}StateFunc);
+		});
 
-    return Promise.GetFuture().Get();
-    {% endif %}
+	return Promise.GetFuture().Get();
+	{% endif %}
 }
 {{nl}}
 {% endfor %}
-
-void {{class}}::applyState(const nlohmann::json& fields) 
+void {{class}}::applyState(const nlohmann::json& fields)
 {
 {% for property in interface.properties %}
-    if(fields.contains("{{property.name}}")) {
-        if({{property|unrealVarName}} != fields["{{property.name}}"].get<{{property|unrealTypeName: false, moduleCapital}}>())
-        {
-            {{property|unrealVarName}} = fields["{{property.name}}"].get<{{property|unrealTypeName: false, moduleCapital}}>();
-            {{property.name|capital}}Changed.Broadcast({{property|unrealVarName}});
-        }
-    }
+	if (fields.contains("{{property.name}}"))
+	{
+		if ({{property|unrealVarName}} != fields["{{property.name}}"].get<{{property|unrealTypeName: false, moduleCapital}}>())
+		{
+			{{property|unrealVarName}} = fields["{{property.name}}"].get<{{property|unrealTypeName: false, moduleCapital}}>();
+			{{property.name|capital}}Changed.Broadcast({{property|unrealVarName}});
+		}
+	}
 {% endfor %}
 }
 
 std::string {{class}}::olinkObjectName()
 {
-    return "{{module}}.{{interface}}";
+	return "{{module}}.{{interface}}";
 }
 
 void {{class}}::olinkOnSignal(std::string name, nlohmann::json args)
 {
-    std::string path = Name::pathFromName(name);
+	std::string path = Name::pathFromName(name);
 {% for signal in interface.signals %}
-    if(path == "{{signal}}") {
-        {{signal|unrealVarName}}Signal.Broadcast(
+	if (path == "{{signal}}")
+	{
+		{{signal|unrealVarName}}Signal.Broadcast(
 {%- for param in signal.params -%}
-        args[{{forloop.index0}}].get<{{param|unrealTypeName: false, moduleCapital}}>(){% unless forloop.last %},{% endunless -%}
+		args[{{forloop.index0}}].get<{{param|unrealTypeName: false, moduleCapital}}>(){% unless forloop.last %},{{' '}}{% endunless -%}
 {%- endfor -%}
-    );
-        return;
-    }
+	);
+		return;
+	}
 {% endfor %}
 }
 
 void {{class}}::olinkOnPropertyChanged(std::string name, nlohmann::json value)
 {
-    std::string path = Name::pathFromName(name);
-    applyState({ {path, value} });
+	std::string path = Name::pathFromName(name);
+	applyState({{ "{{path, value" }}}});
 }
 
-void {{class}}::olinkOnInit(std::string name, nlohmann::json props, IClientNode *node)
+void {{class}}::olinkOnInit(std::string name, nlohmann::json props, IClientNode* node)
 {
-    m_isReady = true;
-    m_node = node;
-    applyState(props);
-    //call isReady();
+	m_isReady = true;
+	m_node = node;
+	applyState(props);
+	// call isReady();
 }
 
 void {{class}}::olinkOnRelease()
 {
-    m_isReady = false;
-    m_node = nullptr;
+	m_isReady = false;
+	m_node = nullptr;
 }
 
 } // namespace Private

@@ -19,73 +19,72 @@ limitations under the License.
 
 #include "apig/Testbed2_apig.h"
 
-namespace Testbed2 {
-namespace ManyParamInterface {
-namespace Private {
+namespace Testbed2
+{
+namespace ManyParamInterface
+{
+namespace Private
+{
 
 class LocalService : public ITestbed2ManyParamInterfaceInterface
 {
 public:
+	explicit LocalService();
+	virtual ~LocalService();
 
-    explicit LocalService();
-    virtual ~LocalService();
+	// signals
+	FTestbed2ManyParamInterfaceSig1Delegate Sig1Signal;
+	FTestbed2ManyParamInterfaceSig1Delegate& GetSig1SignalDelegate() override;
 
-    // signals
-    FTestbed2ManyParamInterfaceSig1Delegate Sig1Signal;
-    FTestbed2ManyParamInterfaceSig1Delegate& GetSig1SignalDelegate() override;
-    
-    FTestbed2ManyParamInterfaceSig2Delegate Sig2Signal;
-    FTestbed2ManyParamInterfaceSig2Delegate& GetSig2SignalDelegate() override;
-    
-    FTestbed2ManyParamInterfaceSig3Delegate Sig3Signal;
-    FTestbed2ManyParamInterfaceSig3Delegate& GetSig3SignalDelegate() override;
-    
-    FTestbed2ManyParamInterfaceSig4Delegate Sig4Signal;
-    FTestbed2ManyParamInterfaceSig4Delegate& GetSig4SignalDelegate() override;
-    
-    FTestbed2ManyParamInterfaceProp1ChangedDelegate Prop1Changed;
-    FTestbed2ManyParamInterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
+	FTestbed2ManyParamInterfaceSig2Delegate Sig2Signal;
+	FTestbed2ManyParamInterfaceSig2Delegate& GetSig2SignalDelegate() override;
 
-    FTestbed2ManyParamInterfaceProp2ChangedDelegate Prop2Changed;
-    FTestbed2ManyParamInterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() override;
+	FTestbed2ManyParamInterfaceSig3Delegate Sig3Signal;
+	FTestbed2ManyParamInterfaceSig3Delegate& GetSig3SignalDelegate() override;
 
-    FTestbed2ManyParamInterfaceProp3ChangedDelegate Prop3Changed;
-    FTestbed2ManyParamInterfaceProp3ChangedDelegate& GetProp3ChangedDelegate() override;
+	FTestbed2ManyParamInterfaceSig4Delegate Sig4Signal;
+	FTestbed2ManyParamInterfaceSig4Delegate& GetSig4SignalDelegate() override;
 
-    FTestbed2ManyParamInterfaceProp4ChangedDelegate Prop4Changed;
-    FTestbed2ManyParamInterfaceProp4ChangedDelegate& GetProp4ChangedDelegate() override;
+	FTestbed2ManyParamInterfaceProp1ChangedDelegate Prop1Changed;
+	FTestbed2ManyParamInterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
 
+	FTestbed2ManyParamInterfaceProp2ChangedDelegate Prop2Changed;
+	FTestbed2ManyParamInterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() override;
 
-    // properties
-    int32 GetProp1() const override;
-    void SetProp1(int32 Prop1) override;
+	FTestbed2ManyParamInterfaceProp3ChangedDelegate Prop3Changed;
+	FTestbed2ManyParamInterfaceProp3ChangedDelegate& GetProp3ChangedDelegate() override;
 
-    int32 GetProp2() const override;
-    void SetProp2(int32 Prop2) override;
+	FTestbed2ManyParamInterfaceProp4ChangedDelegate Prop4Changed;
+	FTestbed2ManyParamInterfaceProp4ChangedDelegate& GetProp4ChangedDelegate() override;
 
-    int32 GetProp3() const override;
-    void SetProp3(int32 Prop3) override;
+	// properties
+	int32 GetProp1() const override;
+	void SetProp1(int32 Prop1) override;
 
-    int32 GetProp4() const override;
-    void SetProp4(int32 Prop4) override;
+	int32 GetProp2() const override;
+	void SetProp2(int32 Prop2) override;
 
+	int32 GetProp3() const override;
+	void SetProp3(int32 Prop3) override;
 
-    // operations
-    int32 Func1(int32 Param1) override;
-    
-    int32 Func2(int32 Param1, int32 Param2) override;
-    
-    int32 Func3(int32 Param1, int32 Param2, int32 Param3) override;
-    
-    int32 Func4(int32 Param1, int32 Param2, int32 Param3, int32 Param4) override;
-    
+	int32 GetProp4() const override;
+	void SetProp4(int32 Prop4) override;
+
+	// operations
+	int32 Func1(int32 Param1) override;
+
+	int32 Func2(int32 Param1, int32 Param2) override;
+
+	int32 Func3(int32 Param1, int32 Param2, int32 Param3) override;
+
+	int32 Func4(int32 Param1, int32 Param2, int32 Param3, int32 Param4) override;
 
 private:
-    // properties - local copy - use setter functions to emit changed signals
-    int32 Prop1;
-    int32 Prop2;
-    int32 Prop3;
-    int32 Prop4;
+	// properties - local copy - use setter functions to emit changed signals
+	int32 Prop1;
+	int32 Prop2;
+	int32 Prop3;
+	int32 Prop4;
 };
 
 } // namespace Private

@@ -7,17 +7,19 @@
 {% for struct in module.structs %}
 {% assign class = struct|unrealTypeName: false, moduleCapital %}
 
-static void from_json(const nlohmann::json& j, {{class}}& p) {
+static void from_json(const nlohmann::json& j, {{class}}& p)
+{
 {% for field in struct.fields %}
-    p.{{field.name}} = j.at("{{field.name}}").get<{{field | unrealReturn: moduleCapital}}>();
+	p.{{field.name}} = j.at("{{field.name}}").get<{{field | unrealReturn: moduleCapital}}>();
 {% endfor %}
 }
 
-static void to_json(nlohmann::json& j, const {{class}}& p) {
-    j = nlohmann::json{
-{% for field in struct.fields %}
+static void to_json(nlohmann::json& j, const {{class}}& p)
+{
+	j = nlohmann::json{
+        {%- for field in struct.fields -%}
+        {% unless forloop.first %}{{' '}}{% endunless -%}
         {"{{field.name}}", p.{{field.name}}}{% unless forloop.last %},{% endunless %}
-{% endfor %}
-        };
+        {% endfor -%}};
 }
 {% endfor %}

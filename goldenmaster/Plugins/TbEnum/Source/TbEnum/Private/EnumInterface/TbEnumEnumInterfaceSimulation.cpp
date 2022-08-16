@@ -27,356 +27,362 @@ limitations under the License.
 
 using namespace ApiGear::JSONRPC;
 
-namespace TbEnum {
-namespace EnumInterface {
-namespace Private {
-SimulationService::SimulationService()
-    : ITbEnumEnumInterfaceInterface()
-    , Prop0(ETbEnumEnum0::VALUE0)
-    , Prop1(ETbEnumEnum1::VALUE1)
-    , Prop2(ETbEnumEnum2::VALUE2)
-    , Prop3(ETbEnumEnum3::VALUE3)
+namespace TbEnum
 {
-    UApiGearConnectionManager* AGCM = nullptr;
-    if (GEngine != nullptr)
-    {
-        AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-    }
-    NotifyRequestFunc EnumInterfaceStateChangedFunc = [this](NotifyRequestArg arg)
-    {
-        const json fields = arg.params;
-        if(fields.contains("prop0")) {
-            if(Prop0 != fields["prop0"].get<ETbEnumEnum0>())
-            {
-                Prop0 = fields["prop0"].get<ETbEnumEnum0>();
-                Prop0Changed.Broadcast(Prop0);
-            }
-        }
-        if(fields.contains("prop1")) {
-            if(Prop1 != fields["prop1"].get<ETbEnumEnum1>())
-            {
-                Prop1 = fields["prop1"].get<ETbEnumEnum1>();
-                Prop1Changed.Broadcast(Prop1);
-            }
-        }
-        if(fields.contains("prop2")) {
-            if(Prop2 != fields["prop2"].get<ETbEnumEnum2>())
-            {
-                Prop2 = fields["prop2"].get<ETbEnumEnum2>();
-                Prop2Changed.Broadcast(Prop2);
-            }
-        }
-        if(fields.contains("prop3")) {
-            if(Prop3 != fields["prop3"].get<ETbEnumEnum3>())
-            {
-                Prop3 = fields["prop3"].get<ETbEnumEnum3>();
-                Prop3Changed.Broadcast(Prop3);
-            }
-        }
-    };
-    if(AGCM != nullptr)
-    {   
-        AGCM->GetSimulationConnection()->Connect();
-        AGCM->GetSimulationConnection()->onNotifyState("tb.enum/EnumInterface", EnumInterfaceStateChangedFunc);
-    }
+namespace EnumInterface
+{
+namespace Private
+{
+SimulationService::SimulationService()
+	: ITbEnumEnumInterfaceInterface()
+	, Prop0(ETbEnumEnum0::VALUE0)
+	, Prop1(ETbEnumEnum1::VALUE1)
+	, Prop2(ETbEnumEnum2::VALUE2)
+	, Prop3(ETbEnumEnum3::VALUE3)
+{
+	UApiGearConnectionManager* AGCM = nullptr;
+	if (GEngine != nullptr)
+	{
+		AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+	}
+	NotifyRequestFunc EnumInterfaceStateChangedFunc = [this](NotifyRequestArg arg)
+	{
+		const json fields = arg.params;
+		if (fields.contains("prop0"))
+		{
+			if (Prop0 != fields["prop0"].get<ETbEnumEnum0>())
+			{
+				Prop0 = fields["prop0"].get<ETbEnumEnum0>();
+				Prop0Changed.Broadcast(Prop0);
+			}
+		}
+		if (fields.contains("prop1"))
+		{
+			if (Prop1 != fields["prop1"].get<ETbEnumEnum1>())
+			{
+				Prop1 = fields["prop1"].get<ETbEnumEnum1>();
+				Prop1Changed.Broadcast(Prop1);
+			}
+		}
+		if (fields.contains("prop2"))
+		{
+			if (Prop2 != fields["prop2"].get<ETbEnumEnum2>())
+			{
+				Prop2 = fields["prop2"].get<ETbEnumEnum2>();
+				Prop2Changed.Broadcast(Prop2);
+			}
+		}
+		if (fields.contains("prop3"))
+		{
+			if (Prop3 != fields["prop3"].get<ETbEnumEnum3>())
+			{
+				Prop3 = fields["prop3"].get<ETbEnumEnum3>();
+				Prop3Changed.Broadcast(Prop3);
+			}
+		}
+	};
+	if (AGCM != nullptr)
+	{
+		AGCM->GetSimulationConnection()->Connect();
+		AGCM->GetSimulationConnection()->onNotifyState("tb.enum/EnumInterface", EnumInterfaceStateChangedFunc);
+	}
 
-    CallResponseFunc GetEnumInterfaceStateFunc = [this](CallResponseArg arg)
-    {
-        if(arg.result.size() != 1) {
-          return;
-        }
-        const json fields = arg.result;
-        if(fields.contains("prop0")) {
-            if(Prop0 != fields["prop0"].get<ETbEnumEnum0>())
-            {
-                Prop0 = fields["prop0"].get<ETbEnumEnum0>();
-                Prop0Changed.Broadcast(Prop0);
-            }
-        }
-        if(fields.contains("prop1")) {
-            if(Prop1 != fields["prop1"].get<ETbEnumEnum1>())
-            {
-                Prop1 = fields["prop1"].get<ETbEnumEnum1>();
-                Prop1Changed.Broadcast(Prop1);
-            }
-        }
-        if(fields.contains("prop2")) {
-            if(Prop2 != fields["prop2"].get<ETbEnumEnum2>())
-            {
-                Prop2 = fields["prop2"].get<ETbEnumEnum2>();
-                Prop2Changed.Broadcast(Prop2);
-            }
-        }
-        if(fields.contains("prop3")) {
-            if(Prop3 != fields["prop3"].get<ETbEnumEnum3>())
-            {
-                Prop3 = fields["prop3"].get<ETbEnumEnum3>();
-                Prop3Changed.Broadcast(Prop3);
-            }
-        }
-    };
-    if(AGCM != nullptr)
-    {
-        AGCM->GetSimulationConnection()->doFetchState("tb.enum/EnumInterface", GetEnumInterfaceStateFunc);
-    }
+	CallResponseFunc GetEnumInterfaceStateFunc = [this](CallResponseArg arg)
+	{
+		if (arg.result.size() != 1)
+		{
+			return;
+		}
+		const json fields = arg.result;
+		if (fields.contains("prop0"))
+		{
+			if (Prop0 != fields["prop0"].get<ETbEnumEnum0>())
+			{
+				Prop0 = fields["prop0"].get<ETbEnumEnum0>();
+				Prop0Changed.Broadcast(Prop0);
+			}
+		}
+		if (fields.contains("prop1"))
+		{
+			if (Prop1 != fields["prop1"].get<ETbEnumEnum1>())
+			{
+				Prop1 = fields["prop1"].get<ETbEnumEnum1>();
+				Prop1Changed.Broadcast(Prop1);
+			}
+		}
+		if (fields.contains("prop2"))
+		{
+			if (Prop2 != fields["prop2"].get<ETbEnumEnum2>())
+			{
+				Prop2 = fields["prop2"].get<ETbEnumEnum2>();
+				Prop2Changed.Broadcast(Prop2);
+			}
+		}
+		if (fields.contains("prop3"))
+		{
+			if (Prop3 != fields["prop3"].get<ETbEnumEnum3>())
+			{
+				Prop3 = fields["prop3"].get<ETbEnumEnum3>();
+				Prop3Changed.Broadcast(Prop3);
+			}
+		}
+	};
+	if (AGCM != nullptr)
+	{
+		AGCM->GetSimulationConnection()->doFetchState("tb.enum/EnumInterface", GetEnumInterfaceStateFunc);
+	}
 
-    // register notification callback functions, signal/event -> fcn
-    NotifyRequestFunc sig0Func = [this](NotifyRequestArg arg)
-    {
-        const json fields = arg.params;
-        if(fields.contains("param0"))
-        {
-            Sig0Signal.Broadcast(fields["param0"].get<ETbEnumEnum0>());
-        }
-    };
-    if(AGCM != nullptr)
-    {
-        AGCM->GetSimulationConnection()->onNotify("tb.enum/EnumInterface#sig0", sig0Func);
-    }
+	// register notification callback functions, signal/event -> fcn
+	NotifyRequestFunc sig0Func = [this](NotifyRequestArg arg)
+	{
+		const json fields = arg.params;
+		if (fields.contains("param0"))
+		{
+			Sig0Signal.Broadcast(fields["param0"].get<ETbEnumEnum0>());
+		}
+	};
+	if (AGCM != nullptr)
+	{
+		AGCM->GetSimulationConnection()->onNotify("tb.enum/EnumInterface#sig0", sig0Func);
+	}
 
-    NotifyRequestFunc sig1Func = [this](NotifyRequestArg arg)
-    {
-        const json fields = arg.params;
-        if(fields.contains("param1"))
-        {
-            Sig1Signal.Broadcast(fields["param1"].get<ETbEnumEnum1>());
-        }
-    };
-    if(AGCM != nullptr)
-    {
-        AGCM->GetSimulationConnection()->onNotify("tb.enum/EnumInterface#sig1", sig1Func);
-    }
+	NotifyRequestFunc sig1Func = [this](NotifyRequestArg arg)
+	{
+		const json fields = arg.params;
+		if (fields.contains("param1"))
+		{
+			Sig1Signal.Broadcast(fields["param1"].get<ETbEnumEnum1>());
+		}
+	};
+	if (AGCM != nullptr)
+	{
+		AGCM->GetSimulationConnection()->onNotify("tb.enum/EnumInterface#sig1", sig1Func);
+	}
 
-    NotifyRequestFunc sig2Func = [this](NotifyRequestArg arg)
-    {
-        const json fields = arg.params;
-        if(fields.contains("param2"))
-        {
-            Sig2Signal.Broadcast(fields["param2"].get<ETbEnumEnum2>());
-        }
-    };
-    if(AGCM != nullptr)
-    {
-        AGCM->GetSimulationConnection()->onNotify("tb.enum/EnumInterface#sig2", sig2Func);
-    }
+	NotifyRequestFunc sig2Func = [this](NotifyRequestArg arg)
+	{
+		const json fields = arg.params;
+		if (fields.contains("param2"))
+		{
+			Sig2Signal.Broadcast(fields["param2"].get<ETbEnumEnum2>());
+		}
+	};
+	if (AGCM != nullptr)
+	{
+		AGCM->GetSimulationConnection()->onNotify("tb.enum/EnumInterface#sig2", sig2Func);
+	}
 
-    NotifyRequestFunc sig3Func = [this](NotifyRequestArg arg)
-    {
-        const json fields = arg.params;
-        if(fields.contains("param3"))
-        {
-            Sig3Signal.Broadcast(fields["param3"].get<ETbEnumEnum3>());
-        }
-    };
-    if(AGCM != nullptr)
-    {
-        AGCM->GetSimulationConnection()->onNotify("tb.enum/EnumInterface#sig3", sig3Func);
-    }
-
+	NotifyRequestFunc sig3Func = [this](NotifyRequestArg arg)
+	{
+		const json fields = arg.params;
+		if (fields.contains("param3"))
+		{
+			Sig3Signal.Broadcast(fields["param3"].get<ETbEnumEnum3>());
+		}
+	};
+	if (AGCM != nullptr)
+	{
+		AGCM->GetSimulationConnection()->onNotify("tb.enum/EnumInterface#sig3", sig3Func);
+	}
 }
 
 SimulationService::~SimulationService()
 {
-    if (GEngine != nullptr)
-    {
-        UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-        AGCM->GetSimulationConnection()->RemoveOnNotifyState("tb.enum/EnumInterface");
-        // unregister notification callback functions
-        AGCM->GetSimulationConnection()->RemoveOnNotify("tb.enum/EnumInterface#sig0");
-        AGCM->GetSimulationConnection()->RemoveOnNotify("tb.enum/EnumInterface#sig1");
-        AGCM->GetSimulationConnection()->RemoveOnNotify("tb.enum/EnumInterface#sig2");
-        AGCM->GetSimulationConnection()->RemoveOnNotify("tb.enum/EnumInterface#sig3");
-    }
+	if (GEngine != nullptr)
+	{
+		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+		AGCM->GetSimulationConnection()->RemoveOnNotifyState("tb.enum/EnumInterface");
+		// unregister notification callback functions
+		AGCM->GetSimulationConnection()->RemoveOnNotify("tb.enum/EnumInterface#sig0");
+		AGCM->GetSimulationConnection()->RemoveOnNotify("tb.enum/EnumInterface#sig1");
+		AGCM->GetSimulationConnection()->RemoveOnNotify("tb.enum/EnumInterface#sig2");
+		AGCM->GetSimulationConnection()->RemoveOnNotify("tb.enum/EnumInterface#sig3");
+	}
 }
 
 FTbEnumEnumInterfaceSig0Delegate& SimulationService::GetSig0SignalDelegate()
 {
-    return Sig0Signal;
+	return Sig0Signal;
 }
 
 FTbEnumEnumInterfaceSig1Delegate& SimulationService::GetSig1SignalDelegate()
 {
-    return Sig1Signal;
+	return Sig1Signal;
 }
 
 FTbEnumEnumInterfaceSig2Delegate& SimulationService::GetSig2SignalDelegate()
 {
-    return Sig2Signal;
+	return Sig2Signal;
 }
 
 FTbEnumEnumInterfaceSig3Delegate& SimulationService::GetSig3SignalDelegate()
 {
-    return Sig3Signal;
+	return Sig3Signal;
 }
 
 ETbEnumEnum0 SimulationService::GetProp0() const
 {
-    return Prop0;
+	return Prop0;
 }
 
 void SimulationService::SetProp0(const ETbEnumEnum0& InProp0)
 {
-    Params params;
-    params["prop0"] = InProp0;
-    if (GEngine != nullptr)
-    {
-        UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-        AGCM->GetSimulationConnection()->doCall("tb.enum/EnumInterface", "_set", params);
-    }
+	Params params;
+	params["prop0"] = InProp0;
+	if (GEngine != nullptr)
+	{
+		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+		AGCM->GetSimulationConnection()->doCall("tb.enum/EnumInterface", "_set", params);
+	}
 }
 
 FTbEnumEnumInterfaceProp0ChangedDelegate& SimulationService::GetProp0ChangedDelegate()
 {
-    return Prop0Changed;
+	return Prop0Changed;
 }
 
 ETbEnumEnum1 SimulationService::GetProp1() const
 {
-    return Prop1;
+	return Prop1;
 }
 
 void SimulationService::SetProp1(const ETbEnumEnum1& InProp1)
 {
-    Params params;
-    params["prop1"] = InProp1;
-    if (GEngine != nullptr)
-    {
-        UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-        AGCM->GetSimulationConnection()->doCall("tb.enum/EnumInterface", "_set", params);
-    }
+	Params params;
+	params["prop1"] = InProp1;
+	if (GEngine != nullptr)
+	{
+		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+		AGCM->GetSimulationConnection()->doCall("tb.enum/EnumInterface", "_set", params);
+	}
 }
 
 FTbEnumEnumInterfaceProp1ChangedDelegate& SimulationService::GetProp1ChangedDelegate()
 {
-    return Prop1Changed;
+	return Prop1Changed;
 }
 
 ETbEnumEnum2 SimulationService::GetProp2() const
 {
-    return Prop2;
+	return Prop2;
 }
 
 void SimulationService::SetProp2(const ETbEnumEnum2& InProp2)
 {
-    Params params;
-    params["prop2"] = InProp2;
-    if (GEngine != nullptr)
-    {
-        UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-        AGCM->GetSimulationConnection()->doCall("tb.enum/EnumInterface", "_set", params);
-    }
+	Params params;
+	params["prop2"] = InProp2;
+	if (GEngine != nullptr)
+	{
+		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+		AGCM->GetSimulationConnection()->doCall("tb.enum/EnumInterface", "_set", params);
+	}
 }
 
 FTbEnumEnumInterfaceProp2ChangedDelegate& SimulationService::GetProp2ChangedDelegate()
 {
-    return Prop2Changed;
+	return Prop2Changed;
 }
 
 ETbEnumEnum3 SimulationService::GetProp3() const
 {
-    return Prop3;
+	return Prop3;
 }
 
 void SimulationService::SetProp3(const ETbEnumEnum3& InProp3)
 {
-    Params params;
-    params["prop3"] = InProp3;
-    if (GEngine != nullptr)
-    {
-        UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-        AGCM->GetSimulationConnection()->doCall("tb.enum/EnumInterface", "_set", params);
-    }
+	Params params;
+	params["prop3"] = InProp3;
+	if (GEngine != nullptr)
+	{
+		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+		AGCM->GetSimulationConnection()->doCall("tb.enum/EnumInterface", "_set", params);
+	}
 }
 
 FTbEnumEnumInterfaceProp3ChangedDelegate& SimulationService::GetProp3ChangedDelegate()
 {
-    return Prop3Changed;
+	return Prop3Changed;
 }
 
 ETbEnumEnum0 SimulationService::Func0(const ETbEnumEnum0& Param0)
 {
-    Params params;
-    params["param0"] = Param0;
-    TPromise<ETbEnumEnum0> Promise;
-    Async(EAsyncExecution::Thread, [params, &Promise]()
-    {
-        CallResponseFunc GetEnumInterfaceStateFunc = [&Promise](CallResponseArg arg)
-        {
-            Promise.SetValue(arg.result.get<ETbEnumEnum0>());
-        };
-        if (GEngine != nullptr)
-        {
-            UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-            AGCM->GetSimulationConnection()->doCall("tb.enum/EnumInterface", "func0", params, GetEnumInterfaceStateFunc);
-        }
-    });
+	Params params;
+	params["param0"] = Param0;
+	TPromise<ETbEnumEnum0> Promise;
+	Async(EAsyncExecution::Thread,
+		[params, &Promise]()
+		{
+			CallResponseFunc GetEnumInterfaceStateFunc = [&Promise](CallResponseArg arg)
+			{ Promise.SetValue(arg.result.get<ETbEnumEnum0>()); };
+			if (GEngine != nullptr)
+			{
+				UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+				AGCM->GetSimulationConnection()->doCall("tb.enum/EnumInterface", "func0", params, GetEnumInterfaceStateFunc);
+			}
+		});
 
-    return Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
 
 ETbEnumEnum1 SimulationService::Func1(const ETbEnumEnum1& Param1)
 {
-    Params params;
-    params["param1"] = Param1;
-    TPromise<ETbEnumEnum1> Promise;
-    Async(EAsyncExecution::Thread, [params, &Promise]()
-    {
-        CallResponseFunc GetEnumInterfaceStateFunc = [&Promise](CallResponseArg arg)
-        {
-            Promise.SetValue(arg.result.get<ETbEnumEnum1>());
-        };
-        if (GEngine != nullptr)
-        {
-            UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-            AGCM->GetSimulationConnection()->doCall("tb.enum/EnumInterface", "func1", params, GetEnumInterfaceStateFunc);
-        }
-    });
+	Params params;
+	params["param1"] = Param1;
+	TPromise<ETbEnumEnum1> Promise;
+	Async(EAsyncExecution::Thread,
+		[params, &Promise]()
+		{
+			CallResponseFunc GetEnumInterfaceStateFunc = [&Promise](CallResponseArg arg)
+			{ Promise.SetValue(arg.result.get<ETbEnumEnum1>()); };
+			if (GEngine != nullptr)
+			{
+				UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+				AGCM->GetSimulationConnection()->doCall("tb.enum/EnumInterface", "func1", params, GetEnumInterfaceStateFunc);
+			}
+		});
 
-    return Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
 
 ETbEnumEnum2 SimulationService::Func2(const ETbEnumEnum2& Param2)
 {
-    Params params;
-    params["param2"] = Param2;
-    TPromise<ETbEnumEnum2> Promise;
-    Async(EAsyncExecution::Thread, [params, &Promise]()
-    {
-        CallResponseFunc GetEnumInterfaceStateFunc = [&Promise](CallResponseArg arg)
-        {
-            Promise.SetValue(arg.result.get<ETbEnumEnum2>());
-        };
-        if (GEngine != nullptr)
-        {
-            UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-            AGCM->GetSimulationConnection()->doCall("tb.enum/EnumInterface", "func2", params, GetEnumInterfaceStateFunc);
-        }
-    });
+	Params params;
+	params["param2"] = Param2;
+	TPromise<ETbEnumEnum2> Promise;
+	Async(EAsyncExecution::Thread,
+		[params, &Promise]()
+		{
+			CallResponseFunc GetEnumInterfaceStateFunc = [&Promise](CallResponseArg arg)
+			{ Promise.SetValue(arg.result.get<ETbEnumEnum2>()); };
+			if (GEngine != nullptr)
+			{
+				UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+				AGCM->GetSimulationConnection()->doCall("tb.enum/EnumInterface", "func2", params, GetEnumInterfaceStateFunc);
+			}
+		});
 
-    return Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
 
 ETbEnumEnum3 SimulationService::Func3(const ETbEnumEnum3& Param3)
 {
-    Params params;
-    params["param3"] = Param3;
-    TPromise<ETbEnumEnum3> Promise;
-    Async(EAsyncExecution::Thread, [params, &Promise]()
-    {
-        CallResponseFunc GetEnumInterfaceStateFunc = [&Promise](CallResponseArg arg)
-        {
-            Promise.SetValue(arg.result.get<ETbEnumEnum3>());
-        };
-        if (GEngine != nullptr)
-        {
-            UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-            AGCM->GetSimulationConnection()->doCall("tb.enum/EnumInterface", "func3", params, GetEnumInterfaceStateFunc);
-        }
-    });
+	Params params;
+	params["param3"] = Param3;
+	TPromise<ETbEnumEnum3> Promise;
+	Async(EAsyncExecution::Thread,
+		[params, &Promise]()
+		{
+			CallResponseFunc GetEnumInterfaceStateFunc = [&Promise](CallResponseArg arg)
+			{ Promise.SetValue(arg.result.get<ETbEnumEnum3>()); };
+			if (GEngine != nullptr)
+			{
+				UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+				AGCM->GetSimulationConnection()->doCall("tb.enum/EnumInterface", "func3", params, GetEnumInterfaceStateFunc);
+			}
+		});
 
-    return Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
-
 
 } // namespace Private
 } // namespace EnumInterface

@@ -26,49 +26,51 @@ limitations under the License.
 #include "SimpleArrayInterface/TbSimpleSimpleArrayInterfaceSimulation.h"
 #include "TbSimpleSettings.h"
 
-//General Log
+// General Log
 DEFINE_LOG_CATEGORY(LogFTbSimpleModuleFactory);
 
 TSharedPtr<ITbSimpleSimpleInterfaceInterface, ESPMode::ThreadSafe> FTbSimpleModuleFactory::createITbSimpleSimpleInterfaceInterface()
 {
-    UTbSimpleSettings* settings = GetMutableDefault<UTbSimpleSettings>();
+	UTbSimpleSettings* settings = GetMutableDefault<UTbSimpleSettings>();
 
-    switch(settings->ServiceConnection) {
-        case ETbSimpleConnection::CONNECTION_WAMP:
-            UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleInterfaceInterface: Using WAMP service backend"));
-            return MakeShared<TbSimple::SimpleInterface::Private::WAMPService, ESPMode::ThreadSafe>();
-        case ETbSimpleConnection::CONNECTION_OLINK:
-            UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleInterfaceInterface: Using OLink service backend"));
-            return MakeShared<TbSimple::SimpleInterface::Private::OLinkService, ESPMode::ThreadSafe>();
-        case ETbSimpleConnection::CONNECTION_SIMU:
-            UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleInterfaceInterface: Using simulation service backend"));
-            return MakeShared<TbSimple::SimpleInterface::Private::SimulationService, ESPMode::ThreadSafe>();
-        case ETbSimpleConnection::CONNECTION_LOCAL:
-            UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleInterfaceInterface: Using local service backend"));
-        default:
-            UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleInterfaceInterface: Defaulting to local service backend"));
-            return MakeShared<TbSimple::SimpleInterface::Private::LocalService, ESPMode::ThreadSafe>();
-    }
+	switch (settings->ServiceConnection)
+	{
+	case ETbSimpleConnection::CONNECTION_WAMP:
+		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleInterfaceInterface: Using WAMP service backend"));
+		return MakeShared<TbSimple::SimpleInterface::Private::WAMPService, ESPMode::ThreadSafe>();
+	case ETbSimpleConnection::CONNECTION_OLINK:
+		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleInterfaceInterface: Using OLink service backend"));
+		return MakeShared<TbSimple::SimpleInterface::Private::OLinkService, ESPMode::ThreadSafe>();
+	case ETbSimpleConnection::CONNECTION_SIMU:
+		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleInterfaceInterface: Using simulation service backend"));
+		return MakeShared<TbSimple::SimpleInterface::Private::SimulationService, ESPMode::ThreadSafe>();
+	case ETbSimpleConnection::CONNECTION_LOCAL:
+		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleInterfaceInterface: Using local service backend"));
+	default:
+		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleInterfaceInterface: Defaulting to local service backend"));
+		return MakeShared<TbSimple::SimpleInterface::Private::LocalService, ESPMode::ThreadSafe>();
+	}
 }
 
 TSharedPtr<ITbSimpleSimpleArrayInterfaceInterface, ESPMode::ThreadSafe> FTbSimpleModuleFactory::createITbSimpleSimpleArrayInterfaceInterface()
 {
-    UTbSimpleSettings* settings = GetMutableDefault<UTbSimpleSettings>();
+	UTbSimpleSettings* settings = GetMutableDefault<UTbSimpleSettings>();
 
-    switch(settings->ServiceConnection) {
-        case ETbSimpleConnection::CONNECTION_WAMP:
-            UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleArrayInterfaceInterface: Using WAMP service backend"));
-            return MakeShared<TbSimple::SimpleArrayInterface::Private::WAMPService, ESPMode::ThreadSafe>();
-        case ETbSimpleConnection::CONNECTION_OLINK:
-            UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleArrayInterfaceInterface: Using OLink service backend"));
-            return MakeShared<TbSimple::SimpleArrayInterface::Private::OLinkService, ESPMode::ThreadSafe>();
-        case ETbSimpleConnection::CONNECTION_SIMU:
-            UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleArrayInterfaceInterface: Using simulation service backend"));
-            return MakeShared<TbSimple::SimpleArrayInterface::Private::SimulationService, ESPMode::ThreadSafe>();
-        case ETbSimpleConnection::CONNECTION_LOCAL:
-            UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleArrayInterfaceInterface: Using local service backend"));
-        default:
-            UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleArrayInterfaceInterface: Defaulting to local service backend"));
-            return MakeShared<TbSimple::SimpleArrayInterface::Private::LocalService, ESPMode::ThreadSafe>();
-    }
+	switch (settings->ServiceConnection)
+	{
+	case ETbSimpleConnection::CONNECTION_WAMP:
+		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleArrayInterfaceInterface: Using WAMP service backend"));
+		return MakeShared<TbSimple::SimpleArrayInterface::Private::WAMPService, ESPMode::ThreadSafe>();
+	case ETbSimpleConnection::CONNECTION_OLINK:
+		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleArrayInterfaceInterface: Using OLink service backend"));
+		return MakeShared<TbSimple::SimpleArrayInterface::Private::OLinkService, ESPMode::ThreadSafe>();
+	case ETbSimpleConnection::CONNECTION_SIMU:
+		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleArrayInterfaceInterface: Using simulation service backend"));
+		return MakeShared<TbSimple::SimpleArrayInterface::Private::SimulationService, ESPMode::ThreadSafe>();
+	case ETbSimpleConnection::CONNECTION_LOCAL:
+		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleArrayInterfaceInterface: Using local service backend"));
+	default:
+		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleArrayInterfaceInterface: Defaulting to local service backend"));
+		return MakeShared<TbSimple::SimpleArrayInterface::Private::LocalService, ESPMode::ThreadSafe>();
+	}
 }

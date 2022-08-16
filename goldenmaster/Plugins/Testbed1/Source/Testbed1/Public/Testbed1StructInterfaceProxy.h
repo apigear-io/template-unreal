@@ -23,130 +23,129 @@ limitations under the License.
 #include "apig/Testbed1_apig.h"
 #include "Testbed1StructInterfaceProxy.generated.h"
 
-UCLASS(BlueprintType, Blueprintable, DisplayName="Testbed1StructInterface")
+UCLASS(BlueprintType, Blueprintable, DisplayName = "Testbed1StructInterface")
 class TESTBED1_API UTestbed1StructInterfaceProxy : public UGameInstanceSubsystem, public ITestbed1StructInterfaceInterface
 {
 	GENERATED_BODY()
 
 public:
-    explicit UTestbed1StructInterfaceProxy();
-    virtual ~UTestbed1StructInterfaceProxy();
+	explicit UTestbed1StructInterfaceProxy();
+	virtual ~UTestbed1StructInterfaceProxy();
 
-    // signals
+	// signals
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface", DisplayName = "SigBool Signal")
-    FTestbed1StructInterfaceSigBoolDelegate SigBoolSignal;
-    FTestbed1StructInterfaceSigBoolDelegate& GetSigBoolSignalDelegate() override;
-    
+	FTestbed1StructInterfaceSigBoolDelegate SigBoolSignal;
+	FTestbed1StructInterfaceSigBoolDelegate& GetSigBoolSignalDelegate() override;
+
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface", DisplayName = "SigInt Signal")
-    FTestbed1StructInterfaceSigIntDelegate SigIntSignal;
-    FTestbed1StructInterfaceSigIntDelegate& GetSigIntSignalDelegate() override;
-    
+	FTestbed1StructInterfaceSigIntDelegate SigIntSignal;
+	FTestbed1StructInterfaceSigIntDelegate& GetSigIntSignalDelegate() override;
+
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface", DisplayName = "SigFloat Signal")
-    FTestbed1StructInterfaceSigFloatDelegate SigFloatSignal;
-    FTestbed1StructInterfaceSigFloatDelegate& GetSigFloatSignalDelegate() override;
-    
+	FTestbed1StructInterfaceSigFloatDelegate SigFloatSignal;
+	FTestbed1StructInterfaceSigFloatDelegate& GetSigFloatSignalDelegate() override;
+
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface", DisplayName = "SigString Signal")
-    FTestbed1StructInterfaceSigStringDelegate SigStringSignal;
-    FTestbed1StructInterfaceSigStringDelegate& GetSigStringSignalDelegate() override;
-    
+	FTestbed1StructInterfaceSigStringDelegate SigStringSignal;
+	FTestbed1StructInterfaceSigStringDelegate& GetSigStringSignalDelegate() override;
+
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface", DisplayName = "PropBool Changed")
-    FTestbed1StructInterfacePropBoolChangedDelegate PropBoolChanged;
-    FTestbed1StructInterfacePropBoolChangedDelegate& GetPropBoolChangedDelegate() override;
+	FTestbed1StructInterfacePropBoolChangedDelegate PropBoolChanged;
+	FTestbed1StructInterfacePropBoolChangedDelegate& GetPropBoolChangedDelegate() override;
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface", DisplayName = "PropInt Changed")
-    FTestbed1StructInterfacePropIntChangedDelegate PropIntChanged;
-    FTestbed1StructInterfacePropIntChangedDelegate& GetPropIntChangedDelegate() override;
+	FTestbed1StructInterfacePropIntChangedDelegate PropIntChanged;
+	FTestbed1StructInterfacePropIntChangedDelegate& GetPropIntChangedDelegate() override;
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface", DisplayName = "PropFloat Changed")
-    FTestbed1StructInterfacePropFloatChangedDelegate PropFloatChanged;
-    FTestbed1StructInterfacePropFloatChangedDelegate& GetPropFloatChangedDelegate() override;
+	FTestbed1StructInterfacePropFloatChangedDelegate PropFloatChanged;
+	FTestbed1StructInterfacePropFloatChangedDelegate& GetPropFloatChangedDelegate() override;
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface", DisplayName = "PropString Changed")
-    FTestbed1StructInterfacePropStringChangedDelegate PropStringChanged;
-    FTestbed1StructInterfacePropStringChangedDelegate& GetPropStringChangedDelegate() override;
+	FTestbed1StructInterfacePropStringChangedDelegate PropStringChanged;
+	FTestbed1StructInterfacePropStringChangedDelegate& GetPropStringChangedDelegate() override;
 
-    // properties
+	// properties
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface")
-    FTestbed1StructBool GetPropBool() const override;
-
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface")
-    void SetPropBool(const FTestbed1StructBool& PropBool) override;
+	FTestbed1StructBool GetPropBool() const override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface")
-    FTestbed1StructInt GetPropInt() const override;
+	void SetPropBool(const FTestbed1StructBool& PropBool) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface")
-    void SetPropInt(const FTestbed1StructInt& PropInt) override;
+	FTestbed1StructInt GetPropInt() const override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface")
-    FTestbed1StructFloat GetPropFloat() const override;
+	void SetPropInt(const FTestbed1StructInt& PropInt) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface")
-    void SetPropFloat(const FTestbed1StructFloat& PropFloat) override;
+	FTestbed1StructFloat GetPropFloat() const override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface")
-    FTestbed1StructString GetPropString() const override;
+	void SetPropFloat(const FTestbed1StructFloat& PropFloat) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface")
-    void SetPropString(const FTestbed1StructString& PropString) override;
+	FTestbed1StructString GetPropString() const override;
 
-    // operations
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface", meta=(Latent, LatentInfo="LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-    void FuncBool(UObject* WorldContextObject, struct FLatentActionInfo LatentInfo, FTestbed1StructBool& Result,const FTestbed1StructBool& ParamBool);
-    FTestbed1StructBool FuncBool(const FTestbed1StructBool& ParamBool) override;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface")
+	void SetPropString(const FTestbed1StructString& PropString) override;
 
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface", meta=(Latent, LatentInfo="LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-    void FuncInt(UObject* WorldContextObject, struct FLatentActionInfo LatentInfo, FTestbed1StructBool& Result,const FTestbed1StructInt& ParamInt);
-    FTestbed1StructBool FuncInt(const FTestbed1StructInt& ParamInt) override;
+	// operations
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	void FuncBool(UObject* WorldContextObject, struct FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const FTestbed1StructBool& ParamBool);
+	FTestbed1StructBool FuncBool(const FTestbed1StructBool& ParamBool) override;
 
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface", meta=(Latent, LatentInfo="LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-    void FuncFloat(UObject* WorldContextObject, struct FLatentActionInfo LatentInfo, FTestbed1StructFloat& Result,const FTestbed1StructFloat& ParamFloat);
-    FTestbed1StructFloat FuncFloat(const FTestbed1StructFloat& ParamFloat) override;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	void FuncInt(UObject* WorldContextObject, struct FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const FTestbed1StructInt& ParamInt);
+	FTestbed1StructBool FuncInt(const FTestbed1StructInt& ParamInt) override;
 
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface", meta=(Latent, LatentInfo="LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-    void FuncString(UObject* WorldContextObject, struct FLatentActionInfo LatentInfo, FTestbed1StructString& Result,const FTestbed1StructString& ParamString);
-    FTestbed1StructString FuncString(const FTestbed1StructString& ParamString) override;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	void FuncFloat(UObject* WorldContextObject, struct FLatentActionInfo LatentInfo, FTestbed1StructFloat& Result, const FTestbed1StructFloat& ParamFloat);
+	FTestbed1StructFloat FuncFloat(const FTestbed1StructFloat& ParamFloat) override;
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	void FuncString(UObject* WorldContextObject, struct FLatentActionInfo LatentInfo, FTestbed1StructString& Result, const FTestbed1StructString& ParamString);
+	FTestbed1StructString FuncString(const FTestbed1StructString& ParamString) override;
 
 private:
 	/** The connection to the service backend. */
 	TSharedPtr<ITestbed1StructInterfaceInterface, ESPMode::ThreadSafe> service;
 
-    // signals
-    UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
-    void OnSigBool(const FTestbed1StructBool& ParamBool);
-    
-    UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
-    void OnSigInt(const FTestbed1StructInt& ParamInt);
-    
-    UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
-    void OnSigFloat(const FTestbed1StructFloat& ParamFloat);
-    
-    UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
-    void OnSigString(const FTestbed1StructString& ParamString);
-    
-    UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
-    void OnPropBoolChanged(const FTestbed1StructBool& PropBool);
+	// signals
+	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
+	void OnSigBool(const FTestbed1StructBool& ParamBool);
 
-    UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
-    void OnPropIntChanged(const FTestbed1StructInt& PropInt);
+	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
+	void OnSigInt(const FTestbed1StructInt& ParamInt);
 
-    UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
-    void OnPropFloatChanged(const FTestbed1StructFloat& PropFloat);
+	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
+	void OnSigFloat(const FTestbed1StructFloat& ParamFloat);
 
-    UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
-    void OnPropStringChanged(const FTestbed1StructString& PropString);
+	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
+	void OnSigString(const FTestbed1StructString& ParamString);
 
-    // properties - local copy
-	UPROPERTY(EditAnywhere, BlueprintGetter=GetPropBool, BlueprintSetter=SetPropBool, Category = "ApiGear|Testbed1|StructInterface")
-    FTestbed1StructBool PropBool;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
+	void OnPropBoolChanged(const FTestbed1StructBool& PropBool);
 
-	UPROPERTY(EditAnywhere, BlueprintGetter=GetPropInt, BlueprintSetter=SetPropInt, Category = "ApiGear|Testbed1|StructInterface")
-    FTestbed1StructInt PropInt;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
+	void OnPropIntChanged(const FTestbed1StructInt& PropInt);
 
-	UPROPERTY(EditAnywhere, BlueprintGetter=GetPropFloat, BlueprintSetter=SetPropFloat, Category = "ApiGear|Testbed1|StructInterface")
-    FTestbed1StructFloat PropFloat;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
+	void OnPropFloatChanged(const FTestbed1StructFloat& PropFloat);
 
-	UPROPERTY(EditAnywhere, BlueprintGetter=GetPropString, BlueprintSetter=SetPropString, Category = "ApiGear|Testbed1|StructInterface")
-    FTestbed1StructString PropString;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
+	void OnPropStringChanged(const FTestbed1StructString& PropString);
 
+	// properties - local copy
+	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropBool, BlueprintSetter = SetPropBool, Category = "ApiGear|Testbed1|StructInterface")
+	FTestbed1StructBool PropBool;
+
+	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropInt, BlueprintSetter = SetPropInt, Category = "ApiGear|Testbed1|StructInterface")
+	FTestbed1StructInt PropInt;
+
+	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropFloat, BlueprintSetter = SetPropFloat, Category = "ApiGear|Testbed1|StructInterface")
+	FTestbed1StructFloat PropFloat;
+
+	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropString, BlueprintSetter = SetPropString, Category = "ApiGear|Testbed1|StructInterface")
+	FTestbed1StructString PropString;
 };

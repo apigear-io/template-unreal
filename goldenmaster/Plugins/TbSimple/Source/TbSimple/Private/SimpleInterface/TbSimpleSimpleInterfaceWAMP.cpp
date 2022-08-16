@@ -29,295 +29,312 @@ limitations under the License.
 
 using namespace ApiGear::WAMP;
 
-namespace TbSimple {
-namespace SimpleInterface {
-namespace Private {
-WAMPService::WAMPService()
-: ITbSimpleSimpleInterfaceInterface()
-, bPropBool(false)
-, PropInt(0)
-, PropFloat(0.0f)
-, PropString(FString())
+namespace TbSimple
 {
-    EventFunc SimpleInterfaceStateChangedFunc = [this](EventArg arg)
-    {
-        const json fields = arg.kwargs;
-        if(fields.contains("propBool")) {
-            if(bPropBool != fields["propBool"].get<bool>())
-            {
-                bPropBool = fields["propBool"].get<bool>();
-                PropBoolChanged.Broadcast(bPropBool);
-            }
-        }
-        if(fields.contains("propInt")) {
-            if(PropInt != fields["propInt"].get<int32>())
-            {
-                PropInt = fields["propInt"].get<int32>();
-                PropIntChanged.Broadcast(PropInt);
-            }
-        }
-        if(fields.contains("propFloat")) {
-            if(PropFloat != fields["propFloat"].get<float>())
-            {
-                PropFloat = fields["propFloat"].get<float>();
-                PropFloatChanged.Broadcast(PropFloat);
-            }
-        }
-        if(fields.contains("propString")) {
-            if(PropString != fields["propString"].get<FString>())
-            {
-                PropString = fields["propString"].get<FString>();
-                PropStringChanged.Broadcast(PropString);
-            }
-        }
-    };
-    UnrealWamp::instance()->doSubscribe("tb.simple.SimpleInterface", SimpleInterfaceStateChangedFunc);
+namespace SimpleInterface
+{
+namespace Private
+{
+WAMPService::WAMPService()
+	: ITbSimpleSimpleInterfaceInterface()
+	, bPropBool(false)
+	, PropInt(0)
+	, PropFloat(0.0f)
+	, PropString(FString())
+{
+	EventFunc SimpleInterfaceStateChangedFunc = [this](EventArg arg)
+	{
+		const json fields = arg.kwargs;
+		if (fields.contains("propBool"))
+		{
+			if (bPropBool != fields["propBool"].get<bool>())
+			{
+				bPropBool = fields["propBool"].get<bool>();
+				PropBoolChanged.Broadcast(bPropBool);
+			}
+		}
+		if (fields.contains("propInt"))
+		{
+			if (PropInt != fields["propInt"].get<int32>())
+			{
+				PropInt = fields["propInt"].get<int32>();
+				PropIntChanged.Broadcast(PropInt);
+			}
+		}
+		if (fields.contains("propFloat"))
+		{
+			if (PropFloat != fields["propFloat"].get<float>())
+			{
+				PropFloat = fields["propFloat"].get<float>();
+				PropFloatChanged.Broadcast(PropFloat);
+			}
+		}
+		if (fields.contains("propString"))
+		{
+			if (PropString != fields["propString"].get<FString>())
+			{
+				PropString = fields["propString"].get<FString>();
+				PropStringChanged.Broadcast(PropString);
+			}
+		}
+	};
+	UnrealWamp::instance()->doSubscribe("tb.simple.SimpleInterface", SimpleInterfaceStateChangedFunc);
 
-    ResponseFunc GetSimpleInterfaceStateFunc = [this](ResponseArg arg)
-    {
-        if(arg.args.size() != 1) {
-          return;
-        }
-        const json fields = arg.args[0];
-        if(fields.contains("propBool")) {
-            if(bPropBool != fields["propBool"].get<bool>())
-            {
-                bPropBool = fields["propBool"].get<bool>();
-                PropBoolChanged.Broadcast(bPropBool);
-            }
-        }
-        if(fields.contains("propInt")) {
-            if(PropInt != fields["propInt"].get<int32>())
-            {
-                PropInt = fields["propInt"].get<int32>();
-                PropIntChanged.Broadcast(PropInt);
-            }
-        }
-        if(fields.contains("propFloat")) {
-            if(PropFloat != fields["propFloat"].get<float>())
-            {
-                PropFloat = fields["propFloat"].get<float>();
-                PropFloatChanged.Broadcast(PropFloat);
-            }
-        }
-        if(fields.contains("propString")) {
-            if(PropString != fields["propString"].get<FString>())
-            {
-                PropString = fields["propString"].get<FString>();
-                PropStringChanged.Broadcast(PropString);
-            }
-        }
-    };
-    UnrealWamp::instance()->doCall("tb.simple.SimpleInterface._get", Arguments(), ArgumentsKw(), GetSimpleInterfaceStateFunc);
+	ResponseFunc GetSimpleInterfaceStateFunc = [this](ResponseArg arg)
+	{
+		if (arg.args.size() != 1)
+		{
+			return;
+		}
+		const json fields = arg.args[0];
+		if (fields.contains("propBool"))
+		{
+			if (bPropBool != fields["propBool"].get<bool>())
+			{
+				bPropBool = fields["propBool"].get<bool>();
+				PropBoolChanged.Broadcast(bPropBool);
+			}
+		}
+		if (fields.contains("propInt"))
+		{
+			if (PropInt != fields["propInt"].get<int32>())
+			{
+				PropInt = fields["propInt"].get<int32>();
+				PropIntChanged.Broadcast(PropInt);
+			}
+		}
+		if (fields.contains("propFloat"))
+		{
+			if (PropFloat != fields["propFloat"].get<float>())
+			{
+				PropFloat = fields["propFloat"].get<float>();
+				PropFloatChanged.Broadcast(PropFloat);
+			}
+		}
+		if (fields.contains("propString"))
+		{
+			if (PropString != fields["propString"].get<FString>())
+			{
+				PropString = fields["propString"].get<FString>();
+				PropStringChanged.Broadcast(PropString);
+			}
+		}
+	};
+	UnrealWamp::instance()->doCall("tb.simple.SimpleInterface._get", Arguments(), ArgumentsKw(), GetSimpleInterfaceStateFunc);
 
-    EventFunc sigBoolFunc = [this](EventArg arg)
-    {
-        if(arg.args.size() == 1)
-        {
-            SigBoolSignal.Broadcast(arg.args[0].get<bool>());
-        }
-    };
-    UnrealWamp::instance()->doSubscribe("tb.simple.SimpleInterface.sigBool", sigBoolFunc);
-    
-    EventFunc sigIntFunc = [this](EventArg arg)
-    {
-        if(arg.args.size() == 1)
-        {
-            SigIntSignal.Broadcast(arg.args[0].get<int32>());
-        }
-    };
-    UnrealWamp::instance()->doSubscribe("tb.simple.SimpleInterface.sigInt", sigIntFunc);
-    
-    EventFunc sigFloatFunc = [this](EventArg arg)
-    {
-        if(arg.args.size() == 1)
-        {
-            SigFloatSignal.Broadcast(arg.args[0].get<float>());
-        }
-    };
-    UnrealWamp::instance()->doSubscribe("tb.simple.SimpleInterface.sigFloat", sigFloatFunc);
-    
-    EventFunc sigStringFunc = [this](EventArg arg)
-    {
-        if(arg.args.size() == 1)
-        {
-            SigStringSignal.Broadcast(arg.args[0].get<FString>());
-        }
-    };
-    UnrealWamp::instance()->doSubscribe("tb.simple.SimpleInterface.sigString", sigStringFunc);
-    
+	EventFunc sigBoolFunc = [this](EventArg arg)
+	{
+		if (arg.args.size() == 1)
+		{
+			SigBoolSignal.Broadcast(arg.args[0].get<bool>());
+		}
+	};
+	UnrealWamp::instance()->doSubscribe("tb.simple.SimpleInterface.sigBool", sigBoolFunc);
+
+	EventFunc sigIntFunc = [this](EventArg arg)
+	{
+		if (arg.args.size() == 1)
+		{
+			SigIntSignal.Broadcast(arg.args[0].get<int32>());
+		}
+	};
+	UnrealWamp::instance()->doSubscribe("tb.simple.SimpleInterface.sigInt", sigIntFunc);
+
+	EventFunc sigFloatFunc = [this](EventArg arg)
+	{
+		if (arg.args.size() == 1)
+		{
+			SigFloatSignal.Broadcast(arg.args[0].get<float>());
+		}
+	};
+	UnrealWamp::instance()->doSubscribe("tb.simple.SimpleInterface.sigFloat", sigFloatFunc);
+
+	EventFunc sigStringFunc = [this](EventArg arg)
+	{
+		if (arg.args.size() == 1)
+		{
+			SigStringSignal.Broadcast(arg.args[0].get<FString>());
+		}
+	};
+	UnrealWamp::instance()->doSubscribe("tb.simple.SimpleInterface.sigString", sigStringFunc);
 }
 
 WAMPService::~WAMPService()
 {
-    UnrealWamp::instance()->doUnSubscribe("tb.simple.SimpleInterface");
-    UnrealWamp::instance()->doUnSubscribe("tb.simple.SimpleInterface.sigBool");
-    UnrealWamp::instance()->doUnSubscribe("tb.simple.SimpleInterface.sigInt");
-    UnrealWamp::instance()->doUnSubscribe("tb.simple.SimpleInterface.sigFloat");
-    UnrealWamp::instance()->doUnSubscribe("tb.simple.SimpleInterface.sigString");
+	UnrealWamp::instance()->doUnSubscribe("tb.simple.SimpleInterface");
+	UnrealWamp::instance()->doUnSubscribe("tb.simple.SimpleInterface.sigBool");
+	UnrealWamp::instance()->doUnSubscribe("tb.simple.SimpleInterface.sigInt");
+	UnrealWamp::instance()->doUnSubscribe("tb.simple.SimpleInterface.sigFloat");
+	UnrealWamp::instance()->doUnSubscribe("tb.simple.SimpleInterface.sigString");
 }
 
 FTbSimpleSimpleInterfaceSigBoolDelegate& WAMPService::GetSigBoolSignalDelegate()
 {
-    return SigBoolSignal;
+	return SigBoolSignal;
 }
 
 FTbSimpleSimpleInterfaceSigIntDelegate& WAMPService::GetSigIntSignalDelegate()
 {
-    return SigIntSignal;
+	return SigIntSignal;
 }
 
 FTbSimpleSimpleInterfaceSigFloatDelegate& WAMPService::GetSigFloatSignalDelegate()
 {
-    return SigFloatSignal;
+	return SigFloatSignal;
 }
 
 FTbSimpleSimpleInterfaceSigStringDelegate& WAMPService::GetSigStringSignalDelegate()
 {
-    return SigStringSignal;
+	return SigStringSignal;
 }
 
 bool WAMPService::GetPropBool() const
 {
-    return bPropBool;
+	return bPropBool;
 }
 
 void WAMPService::SetPropBool(bool bInPropBool)
 {
-    ArgumentsKw fields_;
-    fields_["propBool"] = bInPropBool;
-    UnrealWamp::instance()->doCall("tb.simple.SimpleInterface._set", Arguments(), fields_);
+	ArgumentsKw fields_;
+	fields_["propBool"] = bInPropBool;
+	UnrealWamp::instance()->doCall("tb.simple.SimpleInterface._set", Arguments(), fields_);
 }
 
 FTbSimpleSimpleInterfacePropBoolChangedDelegate& WAMPService::GetPropBoolChangedDelegate()
 {
-    return PropBoolChanged;
+	return PropBoolChanged;
 }
 
 int32 WAMPService::GetPropInt() const
 {
-    return PropInt;
+	return PropInt;
 }
 
 void WAMPService::SetPropInt(int32 InPropInt)
 {
-    ArgumentsKw fields_;
-    fields_["propInt"] = InPropInt;
-    UnrealWamp::instance()->doCall("tb.simple.SimpleInterface._set", Arguments(), fields_);
+	ArgumentsKw fields_;
+	fields_["propInt"] = InPropInt;
+	UnrealWamp::instance()->doCall("tb.simple.SimpleInterface._set", Arguments(), fields_);
 }
 
 FTbSimpleSimpleInterfacePropIntChangedDelegate& WAMPService::GetPropIntChangedDelegate()
 {
-    return PropIntChanged;
+	return PropIntChanged;
 }
 
 float WAMPService::GetPropFloat() const
 {
-    return PropFloat;
+	return PropFloat;
 }
 
 void WAMPService::SetPropFloat(float InPropFloat)
 {
-    ArgumentsKw fields_;
-    fields_["propFloat"] = InPropFloat;
-    UnrealWamp::instance()->doCall("tb.simple.SimpleInterface._set", Arguments(), fields_);
+	ArgumentsKw fields_;
+	fields_["propFloat"] = InPropFloat;
+	UnrealWamp::instance()->doCall("tb.simple.SimpleInterface._set", Arguments(), fields_);
 }
 
 FTbSimpleSimpleInterfacePropFloatChangedDelegate& WAMPService::GetPropFloatChangedDelegate()
 {
-    return PropFloatChanged;
+	return PropFloatChanged;
 }
 
 FString WAMPService::GetPropString() const
 {
-    return PropString;
+	return PropString;
 }
 
 void WAMPService::SetPropString(const FString& InPropString)
 {
-    ArgumentsKw fields_;
-    fields_["propString"] = InPropString;
-    UnrealWamp::instance()->doCall("tb.simple.SimpleInterface._set", Arguments(), fields_);
+	ArgumentsKw fields_;
+	fields_["propString"] = InPropString;
+	UnrealWamp::instance()->doCall("tb.simple.SimpleInterface._set", Arguments(), fields_);
 }
 
 FTbSimpleSimpleInterfacePropStringChangedDelegate& WAMPService::GetPropStringChangedDelegate()
 {
-    return PropStringChanged;
+	return PropStringChanged;
 }
-
 
 bool WAMPService::FuncBool(bool bParamBool)
 {
-    TPromise<bool> Promise;
-    Async(EAsyncExecution::Thread, [bParamBool,&Promise]()
-    {
-        ResponseFunc GetSimpleInterfaceStateFunc = [&Promise](ResponseArg arg)
-        {
-            if(arg.args.size() != 1) {
-              return;
-            }
-            Promise.SetValue(arg.args[0].get<bool>());
-        };
-        UnrealWamp::instance()->doCall("tb.simple.SimpleInterface.funcBool", {bParamBool}, ArgumentsKw(), GetSimpleInterfaceStateFunc);
-    });
+	TPromise<bool> Promise;
+	Async(EAsyncExecution::Thread,
+		[bParamBool, &Promise]()
+		{
+			ResponseFunc GetSimpleInterfaceStateFunc = [&Promise](ResponseArg arg)
+			{
+				if (arg.args.size() != 1)
+				{
+					return;
+				}
+				Promise.SetValue(arg.args[0].get<bool>());
+			};
+			UnrealWamp::instance()->doCall("tb.simple.SimpleInterface.funcBool", {bParamBool}, ArgumentsKw(), GetSimpleInterfaceStateFunc);
+		});
 
-    return Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
 
 int32 WAMPService::FuncInt(int32 ParamInt)
 {
-    TPromise<int32> Promise;
-    Async(EAsyncExecution::Thread, [ParamInt,&Promise]()
-    {
-        ResponseFunc GetSimpleInterfaceStateFunc = [&Promise](ResponseArg arg)
-        {
-            if(arg.args.size() != 1) {
-              return;
-            }
-            Promise.SetValue(arg.args[0].get<int32>());
-        };
-        UnrealWamp::instance()->doCall("tb.simple.SimpleInterface.funcInt", {ParamInt}, ArgumentsKw(), GetSimpleInterfaceStateFunc);
-    });
+	TPromise<int32> Promise;
+	Async(EAsyncExecution::Thread,
+		[ParamInt, &Promise]()
+		{
+			ResponseFunc GetSimpleInterfaceStateFunc = [&Promise](ResponseArg arg)
+			{
+				if (arg.args.size() != 1)
+				{
+					return;
+				}
+				Promise.SetValue(arg.args[0].get<int32>());
+			};
+			UnrealWamp::instance()->doCall("tb.simple.SimpleInterface.funcInt", {ParamInt}, ArgumentsKw(), GetSimpleInterfaceStateFunc);
+		});
 
-    return Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
 
 float WAMPService::FuncFloat(float ParamFloat)
 {
-    TPromise<float> Promise;
-    Async(EAsyncExecution::Thread, [ParamFloat,&Promise]()
-    {
-        ResponseFunc GetSimpleInterfaceStateFunc = [&Promise](ResponseArg arg)
-        {
-            if(arg.args.size() != 1) {
-              return;
-            }
-            Promise.SetValue(arg.args[0].get<float>());
-        };
-        UnrealWamp::instance()->doCall("tb.simple.SimpleInterface.funcFloat", {ParamFloat}, ArgumentsKw(), GetSimpleInterfaceStateFunc);
-    });
+	TPromise<float> Promise;
+	Async(EAsyncExecution::Thread,
+		[ParamFloat, &Promise]()
+		{
+			ResponseFunc GetSimpleInterfaceStateFunc = [&Promise](ResponseArg arg)
+			{
+				if (arg.args.size() != 1)
+				{
+					return;
+				}
+				Promise.SetValue(arg.args[0].get<float>());
+			};
+			UnrealWamp::instance()->doCall("tb.simple.SimpleInterface.funcFloat", {ParamFloat}, ArgumentsKw(), GetSimpleInterfaceStateFunc);
+		});
 
-    return Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
 
 FString WAMPService::FuncString(const FString& ParamString)
 {
-    TPromise<FString> Promise;
-    Async(EAsyncExecution::Thread, [ParamString,&Promise]()
-    {
-        ResponseFunc GetSimpleInterfaceStateFunc = [&Promise](ResponseArg arg)
-        {
-            if(arg.args.size() != 1) {
-              return;
-            }
-            Promise.SetValue(arg.args[0].get<FString>());
-        };
-        UnrealWamp::instance()->doCall("tb.simple.SimpleInterface.funcString", {ParamString}, ArgumentsKw(), GetSimpleInterfaceStateFunc);
-    });
+	TPromise<FString> Promise;
+	Async(EAsyncExecution::Thread,
+		[ParamString, &Promise]()
+		{
+			ResponseFunc GetSimpleInterfaceStateFunc = [&Promise](ResponseArg arg)
+			{
+				if (arg.args.size() != 1)
+				{
+					return;
+				}
+				Promise.SetValue(arg.args[0].get<FString>());
+			};
+			UnrealWamp::instance()->doCall("tb.simple.SimpleInterface.funcString", {ParamString}, ArgumentsKw(), GetSimpleInterfaceStateFunc);
+		});
 
-    return Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
-
 
 } // namespace Private
 } // namespace SimpleInterface

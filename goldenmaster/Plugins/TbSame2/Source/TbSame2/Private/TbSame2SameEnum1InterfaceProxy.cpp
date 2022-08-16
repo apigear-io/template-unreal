@@ -39,9 +39,10 @@ public:
 	{
 	}
 
-    void Cancel() {
-        bInProgress = false;
-    }
+	void Cancel()
+	{
+		bInProgress = false;
+	}
 
 	virtual void UpdateOperation(FLatentResponse& Response) override
 	{
@@ -62,79 +63,80 @@ public:
 	}
 };
 UTbSame2SameEnum1InterfaceProxy::UTbSame2SameEnum1InterfaceProxy()
-    : ITbSame2SameEnum1InterfaceInterface()
-    , Prop1(ETbSame2Enum1::VALUE1)
+	: ITbSame2SameEnum1InterfaceInterface()
+	, Prop1(ETbSame2Enum1::VALUE1)
 {
-    service = FTbSame2ModuleFactory::createITbSame2SameEnum1InterfaceInterface();
-    service->GetProp1ChangedDelegate().AddDynamic(this, &UTbSame2SameEnum1InterfaceProxy::OnProp1Changed);
-    service->GetSig1SignalDelegate().AddDynamic(this, &UTbSame2SameEnum1InterfaceProxy::OnSig1);
+	service = FTbSame2ModuleFactory::createITbSame2SameEnum1InterfaceInterface();
+	service->GetProp1ChangedDelegate().AddDynamic(this, &UTbSame2SameEnum1InterfaceProxy::OnProp1Changed);
+	service->GetSig1SignalDelegate().AddDynamic(this, &UTbSame2SameEnum1InterfaceProxy::OnSig1);
 }
 
 UTbSame2SameEnum1InterfaceProxy::~UTbSame2SameEnum1InterfaceProxy()
 {
-    service->GetProp1ChangedDelegate().RemoveDynamic(this, &UTbSame2SameEnum1InterfaceProxy::OnProp1Changed);
-    service->GetSig1SignalDelegate().RemoveDynamic(this, &UTbSame2SameEnum1InterfaceProxy::OnSig1);
+	service->GetProp1ChangedDelegate().RemoveDynamic(this, &UTbSame2SameEnum1InterfaceProxy::OnProp1Changed);
+	service->GetSig1SignalDelegate().RemoveDynamic(this, &UTbSame2SameEnum1InterfaceProxy::OnSig1);
 }
 void UTbSame2SameEnum1InterfaceProxy::OnSig1(const ETbSame2Enum1& Param1)
 {
-    TbSame2SameEnum1InterfaceTracer::trace_signalSig1(Param1);
-    Sig1Signal.Broadcast(Param1);
+	TbSame2SameEnum1InterfaceTracer::trace_signalSig1(Param1);
+	Sig1Signal.Broadcast(Param1);
 }
 
 FTbSame2SameEnum1InterfaceSig1Delegate& UTbSame2SameEnum1InterfaceProxy::GetSig1SignalDelegate()
 {
-    return Sig1Signal;
+	return Sig1Signal;
 }
 
 void UTbSame2SameEnum1InterfaceProxy::OnProp1Changed(const ETbSame2Enum1& InProp1)
 {
-    TbSame2SameEnum1InterfaceTracer::capture_state(this);
-    Prop1Changed.Broadcast(InProp1);
+	TbSame2SameEnum1InterfaceTracer::capture_state(this);
+	Prop1Changed.Broadcast(InProp1);
 }
 
 ETbSame2Enum1 UTbSame2SameEnum1InterfaceProxy::GetProp1() const
 {
-    return service->GetProp1();
+	return service->GetProp1();
 }
 
 void UTbSame2SameEnum1InterfaceProxy::SetProp1(const ETbSame2Enum1& InProp1)
 {
-    TbSame2SameEnum1InterfaceTracer::trace_callSetProp1(InProp1);
-    service->SetProp1(InProp1);
+	TbSame2SameEnum1InterfaceTracer::trace_callSetProp1(InProp1);
+	service->SetProp1(InProp1);
 }
 
 FTbSame2SameEnum1InterfaceProp1ChangedDelegate& UTbSame2SameEnum1InterfaceProxy::GetProp1ChangedDelegate()
 {
-    return Prop1Changed;
+	return Prop1Changed;
 }
 
-void UTbSame2SameEnum1InterfaceProxy::Func1(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result,const ETbSame2Enum1& Param1)
+void UTbSame2SameEnum1InterfaceProxy::Func1(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, const ETbSame2Enum1& Param1)
 {
-    TbSame2SameEnum1InterfaceTracer::trace_callFunc1(Param1);
+	TbSame2SameEnum1InterfaceTracer::trace_callFunc1(Param1);
 
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-        FTbSame2SameEnum1InterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSame2SameEnum1InterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
-		
-        if (oldRequest != nullptr)
+		FTbSame2SameEnum1InterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSame2SameEnum1InterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+
+		if (oldRequest != nullptr)
 		{
-            // cancel old request
-            oldRequest->Cancel();
-            LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
-        }
+			// cancel old request
+			oldRequest->Cancel();
+			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
+		}
 
 		FTbSame2SameEnum1InterfaceLatentAction* CompletionAction = new FTbSame2SameEnum1InterfaceLatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-        Async(EAsyncExecution::Thread, [Param1,this, &Result, CompletionAction]()
-        {
-            Result = service->Func1(Param1);
-            CompletionAction->Cancel();
-        });
+		Async(EAsyncExecution::Thread,
+			[Param1, this, &Result, CompletionAction]()
+			{
+				Result = service->Func1(Param1);
+				CompletionAction->Cancel();
+			});
 	}
 }
 ETbSame2Enum1 UTbSame2SameEnum1InterfaceProxy::Func1(const ETbSame2Enum1& Param1)
 {
-    TbSame2SameEnum1InterfaceTracer::trace_callFunc1(Param1);
-    return service->Func1(Param1);
+	TbSame2SameEnum1InterfaceTracer::trace_callFunc1(Param1);
+	return service->Func1(Param1);
 }

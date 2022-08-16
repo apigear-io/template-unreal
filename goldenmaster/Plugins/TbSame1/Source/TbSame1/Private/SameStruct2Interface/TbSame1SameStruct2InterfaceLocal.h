@@ -19,49 +19,48 @@ limitations under the License.
 
 #include "apig/TbSame1_apig.h"
 
-namespace TbSame1 {
-namespace SameStruct2Interface {
-namespace Private {
+namespace TbSame1
+{
+namespace SameStruct2Interface
+{
+namespace Private
+{
 
 class LocalService : public ITbSame1SameStruct2InterfaceInterface
 {
 public:
+	explicit LocalService();
+	virtual ~LocalService();
 
-    explicit LocalService();
-    virtual ~LocalService();
+	// signals
+	FTbSame1SameStruct2InterfaceSig1Delegate Sig1Signal;
+	FTbSame1SameStruct2InterfaceSig1Delegate& GetSig1SignalDelegate() override;
 
-    // signals
-    FTbSame1SameStruct2InterfaceSig1Delegate Sig1Signal;
-    FTbSame1SameStruct2InterfaceSig1Delegate& GetSig1SignalDelegate() override;
-    
-    FTbSame1SameStruct2InterfaceSig2Delegate Sig2Signal;
-    FTbSame1SameStruct2InterfaceSig2Delegate& GetSig2SignalDelegate() override;
-    
-    FTbSame1SameStruct2InterfaceProp1ChangedDelegate Prop1Changed;
-    FTbSame1SameStruct2InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
+	FTbSame1SameStruct2InterfaceSig2Delegate Sig2Signal;
+	FTbSame1SameStruct2InterfaceSig2Delegate& GetSig2SignalDelegate() override;
 
-    FTbSame1SameStruct2InterfaceProp2ChangedDelegate Prop2Changed;
-    FTbSame1SameStruct2InterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() override;
+	FTbSame1SameStruct2InterfaceProp1ChangedDelegate Prop1Changed;
+	FTbSame1SameStruct2InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
 
+	FTbSame1SameStruct2InterfaceProp2ChangedDelegate Prop2Changed;
+	FTbSame1SameStruct2InterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() override;
 
-    // properties
-    FTbSame1Struct2 GetProp1() const override;
-    void SetProp1(const FTbSame1Struct2& Prop1) override;
+	// properties
+	FTbSame1Struct2 GetProp1() const override;
+	void SetProp1(const FTbSame1Struct2& Prop1) override;
 
-    FTbSame1Struct2 GetProp2() const override;
-    void SetProp2(const FTbSame1Struct2& Prop2) override;
+	FTbSame1Struct2 GetProp2() const override;
+	void SetProp2(const FTbSame1Struct2& Prop2) override;
 
+	// operations
+	FTbSame1Struct1 Func1(const FTbSame1Struct1& Param1) override;
 
-    // operations
-    FTbSame1Struct1 Func1(const FTbSame1Struct1& Param1) override;
-    
-    FTbSame1Struct1 Func2(const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2) override;
-    
+	FTbSame1Struct1 Func2(const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2) override;
 
 private:
-    // properties - local copy - use setter functions to emit changed signals
-    FTbSame1Struct2 Prop1;
-    FTbSame1Struct2 Prop2;
+	// properties - local copy - use setter functions to emit changed signals
+	FTbSame1Struct2 Prop1;
+	FTbSame1Struct2 Prop2;
 };
 
 } // namespace Private

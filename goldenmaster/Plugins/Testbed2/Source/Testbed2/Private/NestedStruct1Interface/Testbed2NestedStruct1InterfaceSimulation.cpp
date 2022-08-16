@@ -27,128 +27,131 @@ limitations under the License.
 
 using namespace ApiGear::JSONRPC;
 
-namespace Testbed2 {
-namespace NestedStruct1Interface {
-namespace Private {
-SimulationService::SimulationService()
-    : ITestbed2NestedStruct1InterfaceInterface()
-    , Prop1(FTestbed2NestedStruct1())
+namespace Testbed2
 {
-    UApiGearConnectionManager* AGCM = nullptr;
-    if (GEngine != nullptr)
-    {
-        AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-    }
-    NotifyRequestFunc NestedStruct1InterfaceStateChangedFunc = [this](NotifyRequestArg arg)
-    {
-        const json fields = arg.params;
-        if(fields.contains("prop1")) {
-            if(Prop1 != fields["prop1"].get<FTestbed2NestedStruct1>())
-            {
-                Prop1 = fields["prop1"].get<FTestbed2NestedStruct1>();
-                Prop1Changed.Broadcast(Prop1);
-            }
-        }
-    };
-    if(AGCM != nullptr)
-    {   
-        AGCM->GetSimulationConnection()->Connect();
-        AGCM->GetSimulationConnection()->onNotifyState("testbed2/NestedStruct1Interface", NestedStruct1InterfaceStateChangedFunc);
-    }
+namespace NestedStruct1Interface
+{
+namespace Private
+{
+SimulationService::SimulationService()
+	: ITestbed2NestedStruct1InterfaceInterface()
+	, Prop1(FTestbed2NestedStruct1())
+{
+	UApiGearConnectionManager* AGCM = nullptr;
+	if (GEngine != nullptr)
+	{
+		AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+	}
+	NotifyRequestFunc NestedStruct1InterfaceStateChangedFunc = [this](NotifyRequestArg arg)
+	{
+		const json fields = arg.params;
+		if (fields.contains("prop1"))
+		{
+			if (Prop1 != fields["prop1"].get<FTestbed2NestedStruct1>())
+			{
+				Prop1 = fields["prop1"].get<FTestbed2NestedStruct1>();
+				Prop1Changed.Broadcast(Prop1);
+			}
+		}
+	};
+	if (AGCM != nullptr)
+	{
+		AGCM->GetSimulationConnection()->Connect();
+		AGCM->GetSimulationConnection()->onNotifyState("testbed2/NestedStruct1Interface", NestedStruct1InterfaceStateChangedFunc);
+	}
 
-    CallResponseFunc GetNestedStruct1InterfaceStateFunc = [this](CallResponseArg arg)
-    {
-        if(arg.result.size() != 1) {
-          return;
-        }
-        const json fields = arg.result;
-        if(fields.contains("prop1")) {
-            if(Prop1 != fields["prop1"].get<FTestbed2NestedStruct1>())
-            {
-                Prop1 = fields["prop1"].get<FTestbed2NestedStruct1>();
-                Prop1Changed.Broadcast(Prop1);
-            }
-        }
-    };
-    if(AGCM != nullptr)
-    {
-        AGCM->GetSimulationConnection()->doFetchState("testbed2/NestedStruct1Interface", GetNestedStruct1InterfaceStateFunc);
-    }
+	CallResponseFunc GetNestedStruct1InterfaceStateFunc = [this](CallResponseArg arg)
+	{
+		if (arg.result.size() != 1)
+		{
+			return;
+		}
+		const json fields = arg.result;
+		if (fields.contains("prop1"))
+		{
+			if (Prop1 != fields["prop1"].get<FTestbed2NestedStruct1>())
+			{
+				Prop1 = fields["prop1"].get<FTestbed2NestedStruct1>();
+				Prop1Changed.Broadcast(Prop1);
+			}
+		}
+	};
+	if (AGCM != nullptr)
+	{
+		AGCM->GetSimulationConnection()->doFetchState("testbed2/NestedStruct1Interface", GetNestedStruct1InterfaceStateFunc);
+	}
 
-    // register notification callback functions, signal/event -> fcn
-    NotifyRequestFunc sig1Func = [this](NotifyRequestArg arg)
-    {
-        const json fields = arg.params;
-        if(fields.contains("param1"))
-        {
-            Sig1Signal.Broadcast(fields["param1"].get<FTestbed2NestedStruct1>());
-        }
-    };
-    if(AGCM != nullptr)
-    {
-        AGCM->GetSimulationConnection()->onNotify("testbed2/NestedStruct1Interface#sig1", sig1Func);
-    }
-
+	// register notification callback functions, signal/event -> fcn
+	NotifyRequestFunc sig1Func = [this](NotifyRequestArg arg)
+	{
+		const json fields = arg.params;
+		if (fields.contains("param1"))
+		{
+			Sig1Signal.Broadcast(fields["param1"].get<FTestbed2NestedStruct1>());
+		}
+	};
+	if (AGCM != nullptr)
+	{
+		AGCM->GetSimulationConnection()->onNotify("testbed2/NestedStruct1Interface#sig1", sig1Func);
+	}
 }
 
 SimulationService::~SimulationService()
 {
-    if (GEngine != nullptr)
-    {
-        UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-        AGCM->GetSimulationConnection()->RemoveOnNotifyState("testbed2/NestedStruct1Interface");
-        // unregister notification callback functions
-        AGCM->GetSimulationConnection()->RemoveOnNotify("testbed2/NestedStruct1Interface#sig1");
-    }
+	if (GEngine != nullptr)
+	{
+		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+		AGCM->GetSimulationConnection()->RemoveOnNotifyState("testbed2/NestedStruct1Interface");
+		// unregister notification callback functions
+		AGCM->GetSimulationConnection()->RemoveOnNotify("testbed2/NestedStruct1Interface#sig1");
+	}
 }
 
 FTestbed2NestedStruct1InterfaceSig1Delegate& SimulationService::GetSig1SignalDelegate()
 {
-    return Sig1Signal;
+	return Sig1Signal;
 }
 
 FTestbed2NestedStruct1 SimulationService::GetProp1() const
 {
-    return Prop1;
+	return Prop1;
 }
 
 void SimulationService::SetProp1(const FTestbed2NestedStruct1& InProp1)
 {
-    Params params;
-    params["prop1"] = InProp1;
-    if (GEngine != nullptr)
-    {
-        UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-        AGCM->GetSimulationConnection()->doCall("testbed2/NestedStruct1Interface", "_set", params);
-    }
+	Params params;
+	params["prop1"] = InProp1;
+	if (GEngine != nullptr)
+	{
+		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+		AGCM->GetSimulationConnection()->doCall("testbed2/NestedStruct1Interface", "_set", params);
+	}
 }
 
 FTestbed2NestedStruct1InterfaceProp1ChangedDelegate& SimulationService::GetProp1ChangedDelegate()
 {
-    return Prop1Changed;
+	return Prop1Changed;
 }
 
 FTestbed2NestedStruct1 SimulationService::Func1(const FTestbed2NestedStruct1& Param1)
 {
-    Params params;
-    params["param1"] = Param1;
-    TPromise<FTestbed2NestedStruct1> Promise;
-    Async(EAsyncExecution::Thread, [params, &Promise]()
-    {
-        CallResponseFunc GetNestedStruct1InterfaceStateFunc = [&Promise](CallResponseArg arg)
-        {
-            Promise.SetValue(arg.result.get<FTestbed2NestedStruct1>());
-        };
-        if (GEngine != nullptr)
-        {
-            UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-            AGCM->GetSimulationConnection()->doCall("testbed2/NestedStruct1Interface", "func1", params, GetNestedStruct1InterfaceStateFunc);
-        }
-    });
+	Params params;
+	params["param1"] = Param1;
+	TPromise<FTestbed2NestedStruct1> Promise;
+	Async(EAsyncExecution::Thread,
+		[params, &Promise]()
+		{
+			CallResponseFunc GetNestedStruct1InterfaceStateFunc = [&Promise](CallResponseArg arg)
+			{ Promise.SetValue(arg.result.get<FTestbed2NestedStruct1>()); };
+			if (GEngine != nullptr)
+			{
+				UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+				AGCM->GetSimulationConnection()->doCall("testbed2/NestedStruct1Interface", "func1", params, GetNestedStruct1InterfaceStateFunc);
+			}
+		});
 
-    return Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
-
 
 } // namespace Private
 } // namespace NestedStruct1Interface

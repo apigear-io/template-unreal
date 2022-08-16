@@ -28,15 +28,15 @@ limitations under the License.
 UENUM(BlueprintType)
 enum class ETbSame2Connection : uint8
 {
-    CONNECTION_LOCAL UMETA(Displayname = "Local"),
-    CONNECTION_WAMP  UMETA(Displayname = "Remote WAMP"),
-    CONNECTION_OLINK  UMETA(Displayname = "Remote OLink"),
-    CONNECTION_SIMU  UMETA(Displayname = "Remote Simulation")
+	CONNECTION_LOCAL UMETA(Displayname = "Local"),
+	CONNECTION_WAMP UMETA(Displayname = "Remote WAMP"),
+	CONNECTION_OLINK UMETA(Displayname = "Remote OLink"),
+	CONNECTION_SIMU UMETA(Displayname = "Remote Simulation")
 };
 
 /**
-* Implements the settings for the TbSame2 plugin.
-*/
+ * Implements the settings for the TbSame2 plugin.
+ */
 UCLASS(Config = Engine, DefaultConfig)
 class TBSAME2_API UTbSame2Settings : public UObject
 {

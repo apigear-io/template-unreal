@@ -17,7 +17,7 @@ limitations under the License.
 #pragma once
 class ITbEnumEnumInterfaceInterface;
 
-//General Log
+// General Log
 DECLARE_LOG_CATEGORY_EXTERN(LogFTbEnumModuleFactory, Log, All);
 
 class FTbEnumModuleFactory

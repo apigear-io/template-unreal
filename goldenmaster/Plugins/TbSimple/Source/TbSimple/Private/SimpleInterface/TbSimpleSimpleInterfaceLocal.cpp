@@ -17,15 +17,18 @@ limitations under the License.
 
 #include "TbSimpleSimpleInterfaceLocal.h"
 
-namespace TbSimple {
-namespace SimpleInterface {
-namespace Private {
+namespace TbSimple
+{
+namespace SimpleInterface
+{
+namespace Private
+{
 LocalService::LocalService()
-    : ITbSimpleSimpleInterfaceInterface()
-    , bPropBool(false)
-    , PropInt(0)
-    , PropFloat(0.0f)
-    , PropString(FString())
+	: ITbSimpleSimpleInterfaceInterface()
+	, bPropBool(false)
+	, PropInt(0)
+	, PropFloat(0.0f)
+	, PropString(FString())
 {
 }
 LocalService::~LocalService()
@@ -34,120 +37,120 @@ LocalService::~LocalService()
 
 FTbSimpleSimpleInterfaceSigBoolDelegate& LocalService::GetSigBoolSignalDelegate()
 {
-    return SigBoolSignal;
+	return SigBoolSignal;
 }
 
 FTbSimpleSimpleInterfaceSigIntDelegate& LocalService::GetSigIntSignalDelegate()
 {
-    return SigIntSignal;
+	return SigIntSignal;
 }
 
 FTbSimpleSimpleInterfaceSigFloatDelegate& LocalService::GetSigFloatSignalDelegate()
 {
-    return SigFloatSignal;
+	return SigFloatSignal;
 }
 
 FTbSimpleSimpleInterfaceSigStringDelegate& LocalService::GetSigStringSignalDelegate()
 {
-    return SigStringSignal;
+	return SigStringSignal;
 }
 
 bool LocalService::GetPropBool() const
 {
-    return bPropBool;
+	return bPropBool;
 }
 
 void LocalService::SetPropBool(bool bInPropBool)
 {
-    if(bPropBool != bInPropBool)
-    {
-        bPropBool = bInPropBool;
-        PropBoolChanged.Broadcast(bPropBool);
-    }
+	if (bPropBool != bInPropBool)
+	{
+		bPropBool = bInPropBool;
+		PropBoolChanged.Broadcast(bPropBool);
+	}
 }
 
 FTbSimpleSimpleInterfacePropBoolChangedDelegate& LocalService::GetPropBoolChangedDelegate()
 {
-    return PropBoolChanged;
+	return PropBoolChanged;
 }
 int32 LocalService::GetPropInt() const
 {
-    return PropInt;
+	return PropInt;
 }
 
 void LocalService::SetPropInt(int32 InPropInt)
 {
-    if(PropInt != InPropInt)
-    {
-        PropInt = InPropInt;
-        PropIntChanged.Broadcast(PropInt);
-    }
+	if (PropInt != InPropInt)
+	{
+		PropInt = InPropInt;
+		PropIntChanged.Broadcast(PropInt);
+	}
 }
 
 FTbSimpleSimpleInterfacePropIntChangedDelegate& LocalService::GetPropIntChangedDelegate()
 {
-    return PropIntChanged;
+	return PropIntChanged;
 }
 float LocalService::GetPropFloat() const
 {
-    return PropFloat;
+	return PropFloat;
 }
 
 void LocalService::SetPropFloat(float InPropFloat)
 {
-    if(PropFloat != InPropFloat)
-    {
-        PropFloat = InPropFloat;
-        PropFloatChanged.Broadcast(PropFloat);
-    }
+	if (PropFloat != InPropFloat)
+	{
+		PropFloat = InPropFloat;
+		PropFloatChanged.Broadcast(PropFloat);
+	}
 }
 
 FTbSimpleSimpleInterfacePropFloatChangedDelegate& LocalService::GetPropFloatChangedDelegate()
 {
-    return PropFloatChanged;
+	return PropFloatChanged;
 }
 FString LocalService::GetPropString() const
 {
-    return PropString;
+	return PropString;
 }
 
 void LocalService::SetPropString(const FString& InPropString)
 {
-    if(PropString != InPropString)
-    {
-        PropString = InPropString;
-        PropStringChanged.Broadcast(PropString);
-    }
+	if (PropString != InPropString)
+	{
+		PropString = InPropString;
+		PropStringChanged.Broadcast(PropString);
+	}
 }
 
 FTbSimpleSimpleInterfacePropStringChangedDelegate& LocalService::GetPropStringChangedDelegate()
 {
-    return PropStringChanged;
+	return PropStringChanged;
 }
 
 bool LocalService::FuncBool(bool bParamBool)
 {
-    (void) bParamBool;
-    // do business logic here
-    return false;
+	(void)bParamBool;
+	// do business logic here
+	return false;
 }
 int32 LocalService::FuncInt(int32 ParamInt)
 {
-    (void) ParamInt;
-    // do business logic here
-    return 0;
+	(void)ParamInt;
+	// do business logic here
+	return 0;
 }
 float LocalService::FuncFloat(float ParamFloat)
 {
-    (void) ParamFloat;
-    // do business logic here
-    return 0.0f;
+	(void)ParamFloat;
+	// do business logic here
+	return 0.0f;
 }
 FString LocalService::FuncString(const FString& ParamString)
 {
-    (void) ParamString;
-    // do business logic here
-    return FString();
+	(void)ParamString;
+	// do business logic here
+	return FString();
 }
 
 } // namespace Private

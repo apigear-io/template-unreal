@@ -17,17 +17,13 @@ static const FName ApiGearConnectionTabName("ApiGear Connections");
 #define LOCTEXT_NAMESPACE "ApiGearEditor"
 
 void FApiGearEditorModule::StartupModule()
-{	
+{
 	// register settings
 	ISettingsModule* SettingsModule = FModuleManager::GetModulePtr<ISettingsModule>("Settings");
 
-	if (SettingsModule != nullptr)	
+	if (SettingsModule != nullptr)
 	{
-		SettingsModule->RegisterSettings("Project", "Plugins", "ApiGear",
-			LOCTEXT("ApiGearSettingsName", "ApiGear"),
-			LOCTEXT("ApiGearSettingsDescription", "Project settings for ApiGear plugin"),
-			GetMutableDefault<UApiGearSettings>()
-		);
+		SettingsModule->RegisterSettings("Project", "Plugins", "ApiGear", LOCTEXT("ApiGearSettingsName", "ApiGear"), LOCTEXT("ApiGearSettingsDescription", "Project settings for ApiGear plugin"), GetMutableDefault<UApiGearSettings>());
 	}
 
 	// register Editor widgets
@@ -35,19 +31,14 @@ void FApiGearEditorModule::StartupModule()
 	FApiGearEditorStyle::ReloadTextures();
 
 	FApiGearEditorCommands::Register();
-	
+
 	PluginCommands = MakeShareable(new FUICommandList);
 
-	PluginCommands->MapAction(
-		FApiGearEditorCommands::Get().OpenPluginWindow,
-		FExecuteAction::CreateRaw(this, &FApiGearEditorModule::PluginButtonClicked),
-		FCanExecuteAction());
+	PluginCommands->MapAction(FApiGearEditorCommands::Get().OpenPluginWindow, FExecuteAction::CreateRaw(this, &FApiGearEditorModule::PluginButtonClicked), FCanExecuteAction());
 
 	UToolMenus::RegisterStartupCallback(FSimpleMulticastDelegate::FDelegate::CreateRaw(this, &FApiGearEditorModule::RegisterMenus));
-	
-	FGlobalTabmanager::Get()->RegisterNomadTabSpawner(ApiGearConnectionTabName, FOnSpawnTab::CreateRaw(this, &FApiGearEditorModule::OnSpawnPluginTab))
-		.SetDisplayName(LOCTEXT("FApiGearEditorTabTitle", "ApiGear Connections"))
-		.SetMenuType(ETabSpawnerMenuType::Hidden);
+
+	FGlobalTabmanager::Get()->RegisterNomadTabSpawner(ApiGearConnectionTabName, FOnSpawnTab::CreateRaw(this, &FApiGearEditorModule::OnSpawnPluginTab)).SetDisplayName(LOCTEXT("FApiGearEditorTabTitle", "ApiGear Connections")).SetMenuType(ETabSpawnerMenuType::Hidden);
 }
 
 void FApiGearEditorModule::ShutdownModule()
@@ -57,7 +48,7 @@ void FApiGearEditorModule::ShutdownModule()
 
 	if (SettingsModule != nullptr)
 	{
-       		SettingsModule->UnregisterSettings("Project", "Plugins", "ApiGear");
+		SettingsModule->UnregisterSettings("Project", "Plugins", "ApiGear");
 	}
 
 	// unregister editor widgets
@@ -79,6 +70,7 @@ TSharedRef<SDockTab> FApiGearEditorModule::OnSpawnPluginTab(const FSpawnTabArgs&
 	FText ConnectButtonText = FText::FromString(TEXT("Connect"));
 	FText DisconnectButtonText = FText::FromString(TEXT("Disconnect"));
 
+	// clang-format off
 	TSharedRef<SDockTab> retTab = SNew(SDockTab)
 		.TabRole(ETabRole::NomadTab)
 		[
@@ -140,6 +132,7 @@ TSharedRef<SDockTab> FApiGearEditorModule::OnSpawnPluginTab(const FSpawnTabArgs&
 				]
 			]
 		];
+	// clang-format on
 
 	return retTab;
 }
@@ -168,7 +161,7 @@ FReply FApiGearEditorModule::OLinkDisconnectButtonClicked()
 FText FApiGearEditorModule::OLinkConnectionStatus() const
 {
 	UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-	
+
 	return FText::FromString(UEnum::GetValueAsName(AGCM->GetOLinkConnection()->GetConnectionState()).ToString());
 }
 
@@ -191,7 +184,7 @@ FReply FApiGearEditorModule::SimulationDisconnectButtonClicked()
 FText FApiGearEditorModule::SimulationConnectionStatus() const
 {
 	UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-	
+
 	return FText::FromString(UEnum::GetValueAsName(AGCM->GetSimulationConnection()->GetConnectionState()).ToString());
 }
 

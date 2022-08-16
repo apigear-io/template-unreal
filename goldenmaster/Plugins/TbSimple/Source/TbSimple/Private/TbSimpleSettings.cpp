@@ -17,7 +17,7 @@ limitations under the License.
 #include "TbSimpleSettings.h"
 
 UTbSimpleSettings::UTbSimpleSettings(const FObjectInitializer& ObjectInitializer)
-        : Super(ObjectInitializer)
-        , ServiceConnection(ETbSimpleConnection(ETbSimpleConnection::CONNECTION_LOCAL))
+	: Super(ObjectInitializer)
+	, ServiceConnection(ETbSimpleConnection(ETbSimpleConnection::CONNECTION_LOCAL))
 {
 }

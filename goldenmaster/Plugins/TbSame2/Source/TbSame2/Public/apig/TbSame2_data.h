@@ -26,8 +26,8 @@ limitations under the License.
 UENUM(BlueprintType)
 enum class ETbSame2Enum1 : uint8
 {
-    VALUE1  UMETA(Displayname = "value1"),
-    VALUE2  UMETA(Displayname = "value2")
+	VALUE1 UMETA(Displayname = "value1"),
+	VALUE2 UMETA(Displayname = "value2")
 };
 
 /**
@@ -41,8 +41,8 @@ bool toUE4Type(ETbSame2Enum1& value, uint8 v);
 UENUM(BlueprintType)
 enum class ETbSame2Enum2 : uint8
 {
-    VALUE1  UMETA(Displayname = "value1"),
-    VALUE2  UMETA(Displayname = "value2")
+	VALUE1 UMETA(Displayname = "value1"),
+	VALUE2 UMETA(Displayname = "value2")
 };
 
 /**
@@ -59,13 +59,13 @@ struct TBSAME2_API FTbSame2Struct1
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    int32 field1;
+	int32 field1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    int32 field2;
+	int32 field2;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    int32 field3;
+	int32 field3;
 
 	bool operator==(const FTbSame2Struct1& rhs) const;
 	bool operator!=(const FTbSame2Struct1& rhs) const;
@@ -80,13 +80,13 @@ struct TBSAME2_API FTbSame2Struct2
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    int32 field1;
+	int32 field1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    int32 field2;
+	int32 field2;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    int32 field3;
+	int32 field3;
 
 	bool operator==(const FTbSame2Struct2& rhs) const;
 	bool operator!=(const FTbSame2Struct2& rhs) const;

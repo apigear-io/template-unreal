@@ -22,17 +22,13 @@ limitations under the License.
 #define LOCTEXT_NAMESPACE "TbEnumEditor"
 
 void FTbEnumEditorModule::StartupModule()
-{	
+{
 	// register settings
 	ISettingsModule* SettingsModule = FModuleManager::GetModulePtr<ISettingsModule>("Settings");
 
-	if (SettingsModule != nullptr)	
+	if (SettingsModule != nullptr)
 	{
-		SettingsModule->RegisterSettings("Project", "Plugins", "ApiGear TbEnum",
-			LOCTEXT("TbEnumSettingsName", "ApiGear TbEnum"),
-			LOCTEXT("TbEnumSettingsDescription", "Project settings for ApiGear TbEnum plugin"),
-			GetMutableDefault<UTbEnumSettings>()
-		);
+		SettingsModule->RegisterSettings("Project", "Plugins", "ApiGear TbEnum", LOCTEXT("TbEnumSettingsName", "ApiGear TbEnum"), LOCTEXT("TbEnumSettingsDescription", "Project settings for ApiGear TbEnum plugin"), GetMutableDefault<UTbEnumSettings>());
 	}
 }
 

@@ -45,9 +45,10 @@ public:
 	{
 	}
 
-    void Cancel() {
-        bInProgress = false;
-    }
+	void Cancel()
+	{
+		bInProgress = false;
+	}
 
 	virtual void UpdateOperation(FLatentResponse& Response) override
 	{
@@ -74,47 +75,47 @@ public:
 */
 {% endif %}
 {{class}}::{{class}}()
-    : I{{module.name | capital}}{{interface.name|capital}}Interface()
+	: I{{module.name | capital}}{{interface.name|capital}}Interface()
 {% for property in interface.properties %}
-    , {{property|unrealVarName}}({{property|unrealDefault: moduleCapital}})
+	, {{property|unrealVarName}}({{property|unrealDefault: moduleCapital}})
 {% endfor %}
 {
 {% assign service_capital = module.name | capital | append: interface.name | capital -%}
 {% assign service = "I" | append: service_capital | append: "Interface" %}
-    service = {{module_name}}::create{{service}}();
+	service = {{module_name}}::create{{service}}();
 
 {% for property in interface.properties %}
-    service->Get{{property.name|capital}}ChangedDelegate().AddDynamic(this, &{{class}}::On{{property.name|capital}}Changed);
+	service->Get{{property.name|capital}}ChangedDelegate().AddDynamic(this, &{{class}}::On{{property.name|capital}}Changed);
 {% endfor %}
 {% for signal in interface.signals %}
-    service->Get{{signal|unrealVarName}}SignalDelegate().AddDynamic(this, &{{class}}::On{{signal|unrealVarName}});
+	service->Get{{signal|unrealVarName}}SignalDelegate().AddDynamic(this, &{{class}}::On{{signal|unrealVarName}});
 {% endfor %}
 }
 
 {{class}}::~{{class}}()
 {
 {% for property in interface.properties %}
-    service->Get{{property.name|capital}}ChangedDelegate().RemoveDynamic(this, &{{class}}::On{{property.name|capital}}Changed);
+	service->Get{{property.name|capital}}ChangedDelegate().RemoveDynamic(this, &{{class}}::On{{property.name|capital}}Changed);
 {% endfor %}
 {% for signal in interface.signals %}
-    service->Get{{signal|unrealVarName}}SignalDelegate().RemoveDynamic(this, &{{class}}::On{{signal|unrealVarName}});
+	service->Get{{signal|unrealVarName}}SignalDelegate().RemoveDynamic(this, &{{class}}::On{{signal|unrealVarName}});
 {% endfor %}
 }
 
 {% for signal in interface.signals %}
 void {{class}}::On{{signal|unrealVarName}}({{signal|unrealParams: moduleCapital}})
 {
-    {{module.name | capital}}{{interface.name|capital}}Tracer::trace_signal{{signal.name|capital}}({% for param in signal.params %}{{param | unrealVarName}}{% unless forloop.last %},{% endunless %}{% endfor %});
-    {{signal|unrealVarName}}Signal.Broadcast(
-    {%- for param in signal.params -%}
-        {{param|unrealVarName}}{% unless forloop.last %},{% endunless -%}
-    {%- endfor -%}
-    );
+	{{module.name | capital}}{{interface.name|capital}}Tracer::trace_signal{{signal.name|capital}}({% for param in signal.params %}{{param | unrealVarName}}{% unless forloop.last %},{{' '}}{% endunless %}{% endfor %});
+	{{signal|unrealVarName}}Signal.Broadcast(
+	{%- for param in signal.params -%}
+		{{param|unrealVarName}}{% unless forloop.last %},{{' '}}{% endunless -%}
+	{%- endfor -%}
+	);
 }
 {{nl}}
 F{{signal|unrealVarName: moduleInterfaceCapital}}Delegate& {{class}}::Get{{signal|unrealVarName}}SignalDelegate()
 {
-    return {{signal|unrealVarName}}Signal;
+	return {{signal|unrealVarName}}Signal;
 }
 {{nl}}
 {% endfor %}
@@ -122,24 +123,24 @@ F{{signal|unrealVarName: moduleInterfaceCapital}}Delegate& {{class}}::Get{{signa
 {% for property in interface.properties %}
 void {{class}}::On{{property.name|capital}}Changed({{property|unrealParam: moduleCapital, 'In'}})
 {
-    {{module.name | capital}}{{interface.name|capital}}Tracer::capture_state(this);
-    {{property.name|capital}}Changed.Broadcast({{property|unrealVarName: 'In'}});
+	{{module.name | capital}}{{interface.name|capital}}Tracer::capture_state(this);
+	{{property.name|capital}}Changed.Broadcast({{property|unrealVarName: 'In'}});
 }
 
 {{property|unrealTypeName: false, moduleCapital}} {{class}}::Get{{property.name | capital}}() const
 {
-    return service->Get{{property.name | capital}}();
+	return service->Get{{property.name | capital}}();
 }
 
 void {{class}}::Set{{property.name | capital}}({{property|unrealParam: moduleCapital, 'In'}})
 {
-    {{module.name | capital}}{{interface.name|capital}}Tracer::trace_callSet{{property.name|capital}}({{property|unrealVarName: 'In'}});
-    service->Set{{property.name | capital}}({{property|unrealVarName: 'In'}});
+	{{module.name | capital}}{{interface.name|capital}}Tracer::trace_callSet{{property.name|capital}}({{property|unrealVarName: 'In'}});
+	service->Set{{property.name | capital}}({{property|unrealVarName: 'In'}});
 }
 {{nl}}
 F{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate& {{class}}::Get{{property.name|capital}}ChangedDelegate()
 {
-    return {{property.name|capital}}Changed;
+	return {{property.name|capital}}Changed;
 }
 {{nl}}
 {% endfor %}
@@ -153,45 +154,46 @@ F{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate& {{class}}::
 {% endif %}
 {% assign returnVal = operation|unrealReturn: moduleCapital %}
 {% if returnVal != "void" %}
-void {{class}}::{{operation.name|capital}}(UObject* WorldContextObject, FLatentActionInfo LatentInfo, {{operation|unrealReturn: moduleCapital}}& Result{% if operation.params.size > 0 %}, {%endif%}{{operation|unrealParams: moduleCapital}})
+void {{class}}::{{operation.name|capital}}(UObject* WorldContextObject, FLatentActionInfo LatentInfo, {{operation|unrealReturn: moduleCapital}}& Result{% if operation.params.size > 0 %},{{' '}}{%endif%}{{operation|unrealParams: moduleCapital}})
 {
-    {{module.name | capital}}{{interface.name|capital}}Tracer::trace_call{{operation.name|capital}}({% for param in operation.params %}{{param | unrealVarName}}{% unless forloop.last %},{% endunless %}{% endfor %});
+	{{module.name | capital}}{{interface.name|capital}}Tracer::trace_call{{operation.name|capital}}({% for param in operation.params %}{{param | unrealVarName}}{% unless forloop.last %},{{' '}}{% endunless %}{% endfor %});
 
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-        F{{class_name_capital}}LatentAction* oldRequest = LatentActionManager.FindExistingAction<F{{class_name_capital}}LatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
-		
-        if (oldRequest != nullptr)
+		F{{class_name_capital}}LatentAction* oldRequest = LatentActionManager.FindExistingAction<F{{class_name_capital}}LatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+
+		if (oldRequest != nullptr)
 		{
-            // cancel old request
-            oldRequest->Cancel();
-            LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
-        }
+			// cancel old request
+			oldRequest->Cancel();
+			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
+		}
 
 		F{{class_name_capital}}LatentAction* CompletionAction = new F{{class_name_capital}}LatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-        Async(EAsyncExecution::Thread, [{% for param in operation.params %}{{param|unrealVarName}}, {% endfor %}this, &Result, CompletionAction]()
-        {
-            Result = service->{{operation.name|capital}}(
-    {%- for param in operation.params %}{{param | unrealVarName}}{% unless forloop.last %},{% endunless %}{% endfor -%}
+		Async(EAsyncExecution::Thread,
+			[{% for param in operation.params %}{{param|unrealVarName}},{{' '}}{% endfor %}this, &Result, CompletionAction]()
+			{
+				Result = service->{{operation.name|capital}}(
+	{%- for param in operation.params %}{{param | unrealVarName}}{% unless forloop.last %},{{' '}}{% endunless %}{% endfor -%}
 );
-            CompletionAction->Cancel();
-        });
+				CompletionAction->Cancel();
+			});
 	}
 }
 {% endif %}
 {{returnVal}} {{class}}::{{operation.name|capital}}({{operation|unrealParams: moduleCapital}})
 {
-    {{module.name | capital}}{{interface.name|capital}}Tracer::trace_call{{operation.name|capital}}({% for param in operation.params %}{{param | unrealVarName}}{% unless forloop.last %},{% endunless %}{% endfor %});
-    {% if returnVal != "void" %}
-    return service->{{operation.name|capital}}(
-        {%- for param in operation.params %}{{param | unrealVarName}}{% unless forloop.last %},{% endunless %}{% endfor -%}
-    );
-    {% else %}
-    service->{{operation.name|capital}}(
-        {%- for param in operation.params %}{{param | unrealVarName}}{% unless forloop.last %},{% endunless %}{% endfor -%}
-    );
-    {% endif %}
+	{{module.name | capital}}{{interface.name|capital}}Tracer::trace_call{{operation.name|capital}}({% for param in operation.params %}{{param | unrealVarName}}{% unless forloop.last %},{{' '}}{% endunless %}{% endfor %});
+	{% if returnVal != "void" %}
+	return service->{{operation.name|capital}}(
+		{%- for param in operation.params %}{{param | unrealVarName}}{% unless forloop.last %},{{' '}}{% endunless %}{% endfor -%}
+	);
+	{% else %}
+	service->{{operation.name|capital}}(
+		{%- for param in operation.params %}{{param | unrealVarName}}{% unless forloop.last %},{{' '}}{% endunless %}{% endfor -%}
+	);
+	{% endif %}
 }
 {% endfor %}

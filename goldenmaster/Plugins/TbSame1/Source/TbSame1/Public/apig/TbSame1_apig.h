@@ -39,7 +39,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSame1SameStruct1InterfaceProp1Cha
 UINTERFACE(MinimalAPI)
 class UTbSame1SameStruct1InterfaceInterface : public UInterface
 {
-    GENERATED_BODY()
+	GENERATED_BODY()
 };
 
 /**
@@ -47,20 +47,19 @@ class UTbSame1SameStruct1InterfaceInterface : public UInterface
  */
 class TBSAME1_API ITbSame1SameStruct1InterfaceInterface
 {
-    GENERATED_BODY()
+	GENERATED_BODY()
 
 public:
-// signals
-    virtual FTbSame1SameStruct1InterfaceSig1Delegate& GetSig1SignalDelegate() = 0;
+	// signals
+	virtual FTbSame1SameStruct1InterfaceSig1Delegate& GetSig1SignalDelegate() = 0;
 
-    virtual FTbSame1SameStruct1InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() = 0;
+	virtual FTbSame1SameStruct1InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() = 0;
 
-
-// methods
-    virtual FTbSame1Struct1 Func1(const FTbSame1Struct1& Param1) = 0;
-// properties
-    virtual FTbSame1Struct1 GetProp1() const = 0;
-    virtual void SetProp1(const FTbSame1Struct1& Prop1) = 0;
+	// methods
+	virtual FTbSame1Struct1 Func1(const FTbSame1Struct1& Param1) = 0;
+	// properties
+	virtual FTbSame1Struct1 GetProp1() const = 0;
+	virtual void SetProp1(const FTbSame1Struct1& Prop1) = 0;
 };
 /**
  * Declaration for SameStruct2Interface
@@ -81,7 +80,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSame1SameStruct2InterfaceProp2Cha
 UINTERFACE(MinimalAPI)
 class UTbSame1SameStruct2InterfaceInterface : public UInterface
 {
-    GENERATED_BODY()
+	GENERATED_BODY()
 };
 
 /**
@@ -89,27 +88,26 @@ class UTbSame1SameStruct2InterfaceInterface : public UInterface
  */
 class TBSAME1_API ITbSame1SameStruct2InterfaceInterface
 {
-    GENERATED_BODY()
+	GENERATED_BODY()
 
 public:
-// signals
-    virtual FTbSame1SameStruct2InterfaceSig1Delegate& GetSig1SignalDelegate() = 0;
+	// signals
+	virtual FTbSame1SameStruct2InterfaceSig1Delegate& GetSig1SignalDelegate() = 0;
 
-    virtual FTbSame1SameStruct2InterfaceSig2Delegate& GetSig2SignalDelegate() = 0;
+	virtual FTbSame1SameStruct2InterfaceSig2Delegate& GetSig2SignalDelegate() = 0;
 
-    virtual FTbSame1SameStruct2InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() = 0;
+	virtual FTbSame1SameStruct2InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() = 0;
 
-    virtual FTbSame1SameStruct2InterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() = 0;
+	virtual FTbSame1SameStruct2InterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() = 0;
 
-
-// methods
-    virtual FTbSame1Struct1 Func1(const FTbSame1Struct1& Param1) = 0;
-    virtual FTbSame1Struct1 Func2(const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2) = 0;
-// properties
-    virtual FTbSame1Struct2 GetProp1() const = 0;
-    virtual void SetProp1(const FTbSame1Struct2& Prop1) = 0;
-    virtual FTbSame1Struct2 GetProp2() const = 0;
-    virtual void SetProp2(const FTbSame1Struct2& Prop2) = 0;
+	// methods
+	virtual FTbSame1Struct1 Func1(const FTbSame1Struct1& Param1) = 0;
+	virtual FTbSame1Struct1 Func2(const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2) = 0;
+	// properties
+	virtual FTbSame1Struct2 GetProp1() const = 0;
+	virtual void SetProp1(const FTbSame1Struct2& Prop1) = 0;
+	virtual FTbSame1Struct2 GetProp2() const = 0;
+	virtual void SetProp2(const FTbSame1Struct2& Prop2) = 0;
 };
 /**
  * Declaration for SameEnum1Interface
@@ -126,7 +124,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSame1SameEnum1InterfaceProp1Chang
 UINTERFACE(MinimalAPI)
 class UTbSame1SameEnum1InterfaceInterface : public UInterface
 {
-    GENERATED_BODY()
+	GENERATED_BODY()
 };
 
 /**
@@ -134,20 +132,19 @@ class UTbSame1SameEnum1InterfaceInterface : public UInterface
  */
 class TBSAME1_API ITbSame1SameEnum1InterfaceInterface
 {
-    GENERATED_BODY()
+	GENERATED_BODY()
 
 public:
-// signals
-    virtual FTbSame1SameEnum1InterfaceSig1Delegate& GetSig1SignalDelegate() = 0;
+	// signals
+	virtual FTbSame1SameEnum1InterfaceSig1Delegate& GetSig1SignalDelegate() = 0;
 
-    virtual FTbSame1SameEnum1InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() = 0;
+	virtual FTbSame1SameEnum1InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() = 0;
 
-
-// methods
-    virtual ETbSame1Enum1 Func1(const ETbSame1Enum1& Param1) = 0;
-// properties
-    virtual ETbSame1Enum1 GetProp1() const = 0;
-    virtual void SetProp1(const ETbSame1Enum1& Prop1) = 0;
+	// methods
+	virtual ETbSame1Enum1 Func1(const ETbSame1Enum1& Param1) = 0;
+	// properties
+	virtual ETbSame1Enum1 GetProp1() const = 0;
+	virtual void SetProp1(const ETbSame1Enum1& Prop1) = 0;
 };
 /**
  * Declaration for SameEnum2Interface
@@ -168,7 +165,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSame1SameEnum2InterfaceProp2Chang
 UINTERFACE(MinimalAPI)
 class UTbSame1SameEnum2InterfaceInterface : public UInterface
 {
-    GENERATED_BODY()
+	GENERATED_BODY()
 };
 
 /**
@@ -176,25 +173,24 @@ class UTbSame1SameEnum2InterfaceInterface : public UInterface
  */
 class TBSAME1_API ITbSame1SameEnum2InterfaceInterface
 {
-    GENERATED_BODY()
+	GENERATED_BODY()
 
 public:
-// signals
-    virtual FTbSame1SameEnum2InterfaceSig1Delegate& GetSig1SignalDelegate() = 0;
+	// signals
+	virtual FTbSame1SameEnum2InterfaceSig1Delegate& GetSig1SignalDelegate() = 0;
 
-    virtual FTbSame1SameEnum2InterfaceSig2Delegate& GetSig2SignalDelegate() = 0;
+	virtual FTbSame1SameEnum2InterfaceSig2Delegate& GetSig2SignalDelegate() = 0;
 
-    virtual FTbSame1SameEnum2InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() = 0;
+	virtual FTbSame1SameEnum2InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() = 0;
 
-    virtual FTbSame1SameEnum2InterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() = 0;
+	virtual FTbSame1SameEnum2InterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() = 0;
 
-
-// methods
-    virtual ETbSame1Enum1 Func1(const ETbSame1Enum1& Param1) = 0;
-    virtual ETbSame1Enum1 Func2(const ETbSame1Enum1& Param1, const ETbSame1Enum2& Param2) = 0;
-// properties
-    virtual ETbSame1Enum1 GetProp1() const = 0;
-    virtual void SetProp1(const ETbSame1Enum1& Prop1) = 0;
-    virtual ETbSame1Enum2 GetProp2() const = 0;
-    virtual void SetProp2(const ETbSame1Enum2& Prop2) = 0;
+	// methods
+	virtual ETbSame1Enum1 Func1(const ETbSame1Enum1& Param1) = 0;
+	virtual ETbSame1Enum1 Func2(const ETbSame1Enum1& Param1, const ETbSame1Enum2& Param2) = 0;
+	// properties
+	virtual ETbSame1Enum1 GetProp1() const = 0;
+	virtual void SetProp1(const ETbSame1Enum1& Prop1) = 0;
+	virtual ETbSame1Enum2 GetProp2() const = 0;
+	virtual void SetProp2(const ETbSame1Enum2& Prop2) = 0;
 };

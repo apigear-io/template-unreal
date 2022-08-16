@@ -17,7 +17,7 @@ limitations under the License.
 #include "TbSame1Settings.h"
 
 UTbSame1Settings::UTbSame1Settings(const FObjectInitializer& ObjectInitializer)
-        : Super(ObjectInitializer)
-        , ServiceConnection(ETbSame1Connection(ETbSame1Connection::CONNECTION_LOCAL))
+	: Super(ObjectInitializer)
+	, ServiceConnection(ETbSame1Connection(ETbSame1Connection::CONNECTION_LOCAL))
 {
 }

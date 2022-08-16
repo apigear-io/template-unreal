@@ -25,7 +25,7 @@ limitations under the License.
 
 void FTbSimpleModule::StartupModule()
 {
-	//No Libraries to load from non mobile platforms because of the web api
+	// No Libraries to load from non mobile platforms because of the web api
 	UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
 }
 

@@ -9,7 +9,7 @@
 
 void FApiGearModule::StartupModule()
 {
-	//No Libraries to load from non mobile platforms because of the web api
+	// No Libraries to load from non mobile platforms because of the web api
 	FWebSocketsModule& WebSocketsModule = FModuleManager::LoadModuleChecked<FWebSocketsModule>(TEXT("WebSockets"));
 	FHttpModule& HttpModule = FModuleManager::LoadModuleChecked<FHttpModule>(TEXT("HTTP"));
 }
@@ -21,5 +21,5 @@ void FApiGearModule::ShutdownModule()
 }
 
 #undef LOCTEXT_NAMESPACE
-	
+
 IMPLEMENT_MODULE(FApiGearModule, ApiGear)

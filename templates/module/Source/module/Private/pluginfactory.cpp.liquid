@@ -28,7 +28,7 @@ limitations under the License.
 {% endfor %}
 #include "{{module_name_capital}}Settings.h"
 
-//General Log
+// General Log
 DEFINE_LOG_CATEGORY(Log{{module_name}});
 
 {% for interface in module.interfaces %}
@@ -37,23 +37,24 @@ DEFINE_LOG_CATEGORY(Log{{module_name}});
 
 TSharedPtr<I{{module.name | capital}}{{interface.name | capital}}Interface, ESPMode::ThreadSafe> {{module_name}}::create{{class}}()
 {
-    U{{module_name_capital}}Settings* settings = GetMutableDefault<U{{module_name_capital}}Settings>();
+	U{{module_name_capital}}Settings* settings = GetMutableDefault<U{{module_name_capital}}Settings>();
 
-    switch(settings->ServiceConnection) {
-        case E{{module_name_capital}}Connection::CONNECTION_WAMP:
-            UE_LOG(Log{{module_name}}, Log, TEXT("create{{class}}: Using WAMP service backend"));
-            return MakeShared<{{module.name | capital}}::{{interface.name | capital}}::Private::WAMPService, ESPMode::ThreadSafe>();
-        case E{{module_name_capital}}Connection::CONNECTION_OLINK:
-            UE_LOG(Log{{module_name}}, Log, TEXT("create{{class}}: Using OLink service backend"));
-            return MakeShared<{{module.name | capital}}::{{interface.name | capital}}::Private::OLinkService, ESPMode::ThreadSafe>();
-        case E{{module_name_capital}}Connection::CONNECTION_SIMU:
-            UE_LOG(Log{{module_name}}, Log, TEXT("create{{class}}: Using simulation service backend"));
-            return MakeShared<{{module.name | capital}}::{{interface.name | capital}}::Private::SimulationService, ESPMode::ThreadSafe>();
-        case E{{module_name_capital}}Connection::CONNECTION_LOCAL:
-            UE_LOG(Log{{module_name}}, Log, TEXT("create{{class}}: Using local service backend"));
-        default:
-            UE_LOG(Log{{module_name}}, Log, TEXT("create{{class}}: Defaulting to local service backend"));
-            return MakeShared<{{module.name | capital}}::{{interface.name | capital}}::Private::LocalService, ESPMode::ThreadSafe>();
-    }
+	switch (settings->ServiceConnection)
+	{
+	case E{{module_name_capital}}Connection::CONNECTION_WAMP:
+		UE_LOG(Log{{module_name}}, Log, TEXT("create{{class}}: Using WAMP service backend"));
+		return MakeShared<{{module.name | capital}}::{{interface.name | capital}}::Private::WAMPService, ESPMode::ThreadSafe>();
+	case E{{module_name_capital}}Connection::CONNECTION_OLINK:
+		UE_LOG(Log{{module_name}}, Log, TEXT("create{{class}}: Using OLink service backend"));
+		return MakeShared<{{module.name | capital}}::{{interface.name | capital}}::Private::OLinkService, ESPMode::ThreadSafe>();
+	case E{{module_name_capital}}Connection::CONNECTION_SIMU:
+		UE_LOG(Log{{module_name}}, Log, TEXT("create{{class}}: Using simulation service backend"));
+		return MakeShared<{{module.name | capital}}::{{interface.name | capital}}::Private::SimulationService, ESPMode::ThreadSafe>();
+	case E{{module_name_capital}}Connection::CONNECTION_LOCAL:
+		UE_LOG(Log{{module_name}}, Log, TEXT("create{{class}}: Using local service backend"));
+	default:
+		UE_LOG(Log{{module_name}}, Log, TEXT("create{{class}}: Defaulting to local service backend"));
+		return MakeShared<{{module.name | capital}}::{{interface.name | capital}}::Private::LocalService, ESPMode::ThreadSafe>();
+	}
 }
 {% endfor %}

@@ -19,73 +19,72 @@ limitations under the License.
 
 #include "apig/TbSimple_apig.h"
 
-namespace TbSimple {
-namespace SimpleArrayInterface {
-namespace Private {
+namespace TbSimple
+{
+namespace SimpleArrayInterface
+{
+namespace Private
+{
 
 class LocalService : public ITbSimpleSimpleArrayInterfaceInterface
 {
 public:
+	explicit LocalService();
+	virtual ~LocalService();
 
-    explicit LocalService();
-    virtual ~LocalService();
+	// signals
+	FTbSimpleSimpleArrayInterfaceSigBoolDelegate SigBoolSignal;
+	FTbSimpleSimpleArrayInterfaceSigBoolDelegate& GetSigBoolSignalDelegate() override;
 
-    // signals
-    FTbSimpleSimpleArrayInterfaceSigBoolDelegate SigBoolSignal;
-    FTbSimpleSimpleArrayInterfaceSigBoolDelegate& GetSigBoolSignalDelegate() override;
-    
-    FTbSimpleSimpleArrayInterfaceSigIntDelegate SigIntSignal;
-    FTbSimpleSimpleArrayInterfaceSigIntDelegate& GetSigIntSignalDelegate() override;
-    
-    FTbSimpleSimpleArrayInterfaceSigFloatDelegate SigFloatSignal;
-    FTbSimpleSimpleArrayInterfaceSigFloatDelegate& GetSigFloatSignalDelegate() override;
-    
-    FTbSimpleSimpleArrayInterfaceSigStringDelegate SigStringSignal;
-    FTbSimpleSimpleArrayInterfaceSigStringDelegate& GetSigStringSignalDelegate() override;
-    
-    FTbSimpleSimpleArrayInterfacePropBoolChangedDelegate PropBoolChanged;
-    FTbSimpleSimpleArrayInterfacePropBoolChangedDelegate& GetPropBoolChangedDelegate() override;
+	FTbSimpleSimpleArrayInterfaceSigIntDelegate SigIntSignal;
+	FTbSimpleSimpleArrayInterfaceSigIntDelegate& GetSigIntSignalDelegate() override;
 
-    FTbSimpleSimpleArrayInterfacePropIntChangedDelegate PropIntChanged;
-    FTbSimpleSimpleArrayInterfacePropIntChangedDelegate& GetPropIntChangedDelegate() override;
+	FTbSimpleSimpleArrayInterfaceSigFloatDelegate SigFloatSignal;
+	FTbSimpleSimpleArrayInterfaceSigFloatDelegate& GetSigFloatSignalDelegate() override;
 
-    FTbSimpleSimpleArrayInterfacePropFloatChangedDelegate PropFloatChanged;
-    FTbSimpleSimpleArrayInterfacePropFloatChangedDelegate& GetPropFloatChangedDelegate() override;
+	FTbSimpleSimpleArrayInterfaceSigStringDelegate SigStringSignal;
+	FTbSimpleSimpleArrayInterfaceSigStringDelegate& GetSigStringSignalDelegate() override;
 
-    FTbSimpleSimpleArrayInterfacePropStringChangedDelegate PropStringChanged;
-    FTbSimpleSimpleArrayInterfacePropStringChangedDelegate& GetPropStringChangedDelegate() override;
+	FTbSimpleSimpleArrayInterfacePropBoolChangedDelegate PropBoolChanged;
+	FTbSimpleSimpleArrayInterfacePropBoolChangedDelegate& GetPropBoolChangedDelegate() override;
 
+	FTbSimpleSimpleArrayInterfacePropIntChangedDelegate PropIntChanged;
+	FTbSimpleSimpleArrayInterfacePropIntChangedDelegate& GetPropIntChangedDelegate() override;
 
-    // properties
-    TArray<bool> GetPropBool() const override;
-    void SetPropBool(const TArray<bool>& PropBool) override;
+	FTbSimpleSimpleArrayInterfacePropFloatChangedDelegate PropFloatChanged;
+	FTbSimpleSimpleArrayInterfacePropFloatChangedDelegate& GetPropFloatChangedDelegate() override;
 
-    TArray<int32> GetPropInt() const override;
-    void SetPropInt(const TArray<int32>& PropInt) override;
+	FTbSimpleSimpleArrayInterfacePropStringChangedDelegate PropStringChanged;
+	FTbSimpleSimpleArrayInterfacePropStringChangedDelegate& GetPropStringChangedDelegate() override;
 
-    TArray<float> GetPropFloat() const override;
-    void SetPropFloat(const TArray<float>& PropFloat) override;
+	// properties
+	TArray<bool> GetPropBool() const override;
+	void SetPropBool(const TArray<bool>& PropBool) override;
 
-    TArray<FString> GetPropString() const override;
-    void SetPropString(const TArray<FString>& PropString) override;
+	TArray<int32> GetPropInt() const override;
+	void SetPropInt(const TArray<int32>& PropInt) override;
 
+	TArray<float> GetPropFloat() const override;
+	void SetPropFloat(const TArray<float>& PropFloat) override;
 
-    // operations
-    TArray<bool> FuncBool(const TArray<bool>& ParamBool) override;
-    
-    TArray<int32> FuncInt(const TArray<int32>& ParamInt) override;
-    
-    TArray<float> FuncFloat(const TArray<float>& ParamFloat) override;
-    
-    TArray<FString> FuncString(const TArray<FString>& ParamString) override;
-    
+	TArray<FString> GetPropString() const override;
+	void SetPropString(const TArray<FString>& PropString) override;
+
+	// operations
+	TArray<bool> FuncBool(const TArray<bool>& ParamBool) override;
+
+	TArray<int32> FuncInt(const TArray<int32>& ParamInt) override;
+
+	TArray<float> FuncFloat(const TArray<float>& ParamFloat) override;
+
+	TArray<FString> FuncString(const TArray<FString>& ParamString) override;
 
 private:
-    // properties - local copy - use setter functions to emit changed signals
-    TArray<bool> PropBool;
-    TArray<int32> PropInt;
-    TArray<float> PropFloat;
-    TArray<FString> PropString;
+	// properties - local copy - use setter functions to emit changed signals
+	TArray<bool> PropBool;
+	TArray<int32> PropInt;
+	TArray<float> PropFloat;
+	TArray<FString> PropString;
 };
 
 } // namespace Private

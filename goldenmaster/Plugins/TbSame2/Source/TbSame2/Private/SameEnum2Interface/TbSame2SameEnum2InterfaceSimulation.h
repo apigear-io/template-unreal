@@ -18,49 +18,48 @@ limitations under the License.
 
 #include "apig/TbSame2_apig.h"
 
-namespace TbSame2 {
-namespace SameEnum2Interface {
-namespace Private {
-    
+namespace TbSame2
+{
+namespace SameEnum2Interface
+{
+namespace Private
+{
+
 class SimulationService : public ITbSame2SameEnum2InterfaceInterface
 {
 public:
+	explicit SimulationService();
+	virtual ~SimulationService();
 
-    explicit SimulationService();
-    virtual ~SimulationService();
+	// signals
+	FTbSame2SameEnum2InterfaceSig1Delegate Sig1Signal;
+	FTbSame2SameEnum2InterfaceSig1Delegate& GetSig1SignalDelegate() override;
 
-    // signals
-    FTbSame2SameEnum2InterfaceSig1Delegate Sig1Signal;
-    FTbSame2SameEnum2InterfaceSig1Delegate& GetSig1SignalDelegate() override;
-    
-    FTbSame2SameEnum2InterfaceSig2Delegate Sig2Signal;
-    FTbSame2SameEnum2InterfaceSig2Delegate& GetSig2SignalDelegate() override;
-    
-    FTbSame2SameEnum2InterfaceProp1ChangedDelegate Prop1Changed;
-    FTbSame2SameEnum2InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
+	FTbSame2SameEnum2InterfaceSig2Delegate Sig2Signal;
+	FTbSame2SameEnum2InterfaceSig2Delegate& GetSig2SignalDelegate() override;
 
-    FTbSame2SameEnum2InterfaceProp2ChangedDelegate Prop2Changed;
-    FTbSame2SameEnum2InterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() override;
+	FTbSame2SameEnum2InterfaceProp1ChangedDelegate Prop1Changed;
+	FTbSame2SameEnum2InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
 
+	FTbSame2SameEnum2InterfaceProp2ChangedDelegate Prop2Changed;
+	FTbSame2SameEnum2InterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() override;
 
-    // properties
-    ETbSame2Enum1 GetProp1() const override;
-    void SetProp1(const ETbSame2Enum1& Prop1) override;
+	// properties
+	ETbSame2Enum1 GetProp1() const override;
+	void SetProp1(const ETbSame2Enum1& Prop1) override;
 
-    ETbSame2Enum2 GetProp2() const override;
-    void SetProp2(const ETbSame2Enum2& Prop2) override;
+	ETbSame2Enum2 GetProp2() const override;
+	void SetProp2(const ETbSame2Enum2& Prop2) override;
 
+	// operations
+	ETbSame2Enum1 Func1(const ETbSame2Enum1& Param1) override;
 
-    // operations
-    ETbSame2Enum1 Func1(const ETbSame2Enum1& Param1) override;
-    
-    ETbSame2Enum1 Func2(const ETbSame2Enum1& Param1, const ETbSame2Enum2& Param2) override;
-    
+	ETbSame2Enum1 Func2(const ETbSame2Enum1& Param1, const ETbSame2Enum2& Param2) override;
 
 private:
-    // properties - local copy
-    ETbSame2Enum1 Prop1;
-    ETbSame2Enum2 Prop2;
+	// properties - local copy
+	ETbSame2Enum1 Prop1;
+	ETbSame2Enum2 Prop2;
 };
 
 } // namespace Private

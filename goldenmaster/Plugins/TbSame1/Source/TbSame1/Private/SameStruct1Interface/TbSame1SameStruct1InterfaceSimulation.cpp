@@ -27,128 +27,131 @@ limitations under the License.
 
 using namespace ApiGear::JSONRPC;
 
-namespace TbSame1 {
-namespace SameStruct1Interface {
-namespace Private {
-SimulationService::SimulationService()
-    : ITbSame1SameStruct1InterfaceInterface()
-    , Prop1(FTbSame1Struct1())
+namespace TbSame1
 {
-    UApiGearConnectionManager* AGCM = nullptr;
-    if (GEngine != nullptr)
-    {
-        AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-    }
-    NotifyRequestFunc SameStruct1InterfaceStateChangedFunc = [this](NotifyRequestArg arg)
-    {
-        const json fields = arg.params;
-        if(fields.contains("prop1")) {
-            if(Prop1 != fields["prop1"].get<FTbSame1Struct1>())
-            {
-                Prop1 = fields["prop1"].get<FTbSame1Struct1>();
-                Prop1Changed.Broadcast(Prop1);
-            }
-        }
-    };
-    if(AGCM != nullptr)
-    {   
-        AGCM->GetSimulationConnection()->Connect();
-        AGCM->GetSimulationConnection()->onNotifyState("tb.same1/SameStruct1Interface", SameStruct1InterfaceStateChangedFunc);
-    }
+namespace SameStruct1Interface
+{
+namespace Private
+{
+SimulationService::SimulationService()
+	: ITbSame1SameStruct1InterfaceInterface()
+	, Prop1(FTbSame1Struct1())
+{
+	UApiGearConnectionManager* AGCM = nullptr;
+	if (GEngine != nullptr)
+	{
+		AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+	}
+	NotifyRequestFunc SameStruct1InterfaceStateChangedFunc = [this](NotifyRequestArg arg)
+	{
+		const json fields = arg.params;
+		if (fields.contains("prop1"))
+		{
+			if (Prop1 != fields["prop1"].get<FTbSame1Struct1>())
+			{
+				Prop1 = fields["prop1"].get<FTbSame1Struct1>();
+				Prop1Changed.Broadcast(Prop1);
+			}
+		}
+	};
+	if (AGCM != nullptr)
+	{
+		AGCM->GetSimulationConnection()->Connect();
+		AGCM->GetSimulationConnection()->onNotifyState("tb.same1/SameStruct1Interface", SameStruct1InterfaceStateChangedFunc);
+	}
 
-    CallResponseFunc GetSameStruct1InterfaceStateFunc = [this](CallResponseArg arg)
-    {
-        if(arg.result.size() != 1) {
-          return;
-        }
-        const json fields = arg.result;
-        if(fields.contains("prop1")) {
-            if(Prop1 != fields["prop1"].get<FTbSame1Struct1>())
-            {
-                Prop1 = fields["prop1"].get<FTbSame1Struct1>();
-                Prop1Changed.Broadcast(Prop1);
-            }
-        }
-    };
-    if(AGCM != nullptr)
-    {
-        AGCM->GetSimulationConnection()->doFetchState("tb.same1/SameStruct1Interface", GetSameStruct1InterfaceStateFunc);
-    }
+	CallResponseFunc GetSameStruct1InterfaceStateFunc = [this](CallResponseArg arg)
+	{
+		if (arg.result.size() != 1)
+		{
+			return;
+		}
+		const json fields = arg.result;
+		if (fields.contains("prop1"))
+		{
+			if (Prop1 != fields["prop1"].get<FTbSame1Struct1>())
+			{
+				Prop1 = fields["prop1"].get<FTbSame1Struct1>();
+				Prop1Changed.Broadcast(Prop1);
+			}
+		}
+	};
+	if (AGCM != nullptr)
+	{
+		AGCM->GetSimulationConnection()->doFetchState("tb.same1/SameStruct1Interface", GetSameStruct1InterfaceStateFunc);
+	}
 
-    // register notification callback functions, signal/event -> fcn
-    NotifyRequestFunc sig1Func = [this](NotifyRequestArg arg)
-    {
-        const json fields = arg.params;
-        if(fields.contains("param1"))
-        {
-            Sig1Signal.Broadcast(fields["param1"].get<FTbSame1Struct1>());
-        }
-    };
-    if(AGCM != nullptr)
-    {
-        AGCM->GetSimulationConnection()->onNotify("tb.same1/SameStruct1Interface#sig1", sig1Func);
-    }
-
+	// register notification callback functions, signal/event -> fcn
+	NotifyRequestFunc sig1Func = [this](NotifyRequestArg arg)
+	{
+		const json fields = arg.params;
+		if (fields.contains("param1"))
+		{
+			Sig1Signal.Broadcast(fields["param1"].get<FTbSame1Struct1>());
+		}
+	};
+	if (AGCM != nullptr)
+	{
+		AGCM->GetSimulationConnection()->onNotify("tb.same1/SameStruct1Interface#sig1", sig1Func);
+	}
 }
 
 SimulationService::~SimulationService()
 {
-    if (GEngine != nullptr)
-    {
-        UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-        AGCM->GetSimulationConnection()->RemoveOnNotifyState("tb.same1/SameStruct1Interface");
-        // unregister notification callback functions
-        AGCM->GetSimulationConnection()->RemoveOnNotify("tb.same1/SameStruct1Interface#sig1");
-    }
+	if (GEngine != nullptr)
+	{
+		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+		AGCM->GetSimulationConnection()->RemoveOnNotifyState("tb.same1/SameStruct1Interface");
+		// unregister notification callback functions
+		AGCM->GetSimulationConnection()->RemoveOnNotify("tb.same1/SameStruct1Interface#sig1");
+	}
 }
 
 FTbSame1SameStruct1InterfaceSig1Delegate& SimulationService::GetSig1SignalDelegate()
 {
-    return Sig1Signal;
+	return Sig1Signal;
 }
 
 FTbSame1Struct1 SimulationService::GetProp1() const
 {
-    return Prop1;
+	return Prop1;
 }
 
 void SimulationService::SetProp1(const FTbSame1Struct1& InProp1)
 {
-    Params params;
-    params["prop1"] = InProp1;
-    if (GEngine != nullptr)
-    {
-        UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-        AGCM->GetSimulationConnection()->doCall("tb.same1/SameStruct1Interface", "_set", params);
-    }
+	Params params;
+	params["prop1"] = InProp1;
+	if (GEngine != nullptr)
+	{
+		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+		AGCM->GetSimulationConnection()->doCall("tb.same1/SameStruct1Interface", "_set", params);
+	}
 }
 
 FTbSame1SameStruct1InterfaceProp1ChangedDelegate& SimulationService::GetProp1ChangedDelegate()
 {
-    return Prop1Changed;
+	return Prop1Changed;
 }
 
 FTbSame1Struct1 SimulationService::Func1(const FTbSame1Struct1& Param1)
 {
-    Params params;
-    params["param1"] = Param1;
-    TPromise<FTbSame1Struct1> Promise;
-    Async(EAsyncExecution::Thread, [params, &Promise]()
-    {
-        CallResponseFunc GetSameStruct1InterfaceStateFunc = [&Promise](CallResponseArg arg)
-        {
-            Promise.SetValue(arg.result.get<FTbSame1Struct1>());
-        };
-        if (GEngine != nullptr)
-        {
-            UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-            AGCM->GetSimulationConnection()->doCall("tb.same1/SameStruct1Interface", "func1", params, GetSameStruct1InterfaceStateFunc);
-        }
-    });
+	Params params;
+	params["param1"] = Param1;
+	TPromise<FTbSame1Struct1> Promise;
+	Async(EAsyncExecution::Thread,
+		[params, &Promise]()
+		{
+			CallResponseFunc GetSameStruct1InterfaceStateFunc = [&Promise](CallResponseArg arg)
+			{ Promise.SetValue(arg.result.get<FTbSame1Struct1>()); };
+			if (GEngine != nullptr)
+			{
+				UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+				AGCM->GetSimulationConnection()->doCall("tb.same1/SameStruct1Interface", "func1", params, GetSameStruct1InterfaceStateFunc);
+			}
+		});
 
-    return Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
-
 
 } // namespace Private
 } // namespace SameStruct1Interface

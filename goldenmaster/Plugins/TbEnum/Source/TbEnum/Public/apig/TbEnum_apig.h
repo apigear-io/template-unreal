@@ -51,7 +51,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbEnumEnumInterfaceProp3ChangedDele
 UINTERFACE(MinimalAPI)
 class UTbEnumEnumInterfaceInterface : public UInterface
 {
-    GENERATED_BODY()
+	GENERATED_BODY()
 };
 
 /**
@@ -59,39 +59,38 @@ class UTbEnumEnumInterfaceInterface : public UInterface
  */
 class TBENUM_API ITbEnumEnumInterfaceInterface
 {
-    GENERATED_BODY()
+	GENERATED_BODY()
 
 public:
-// signals
-    virtual FTbEnumEnumInterfaceSig0Delegate& GetSig0SignalDelegate() = 0;
+	// signals
+	virtual FTbEnumEnumInterfaceSig0Delegate& GetSig0SignalDelegate() = 0;
 
-    virtual FTbEnumEnumInterfaceSig1Delegate& GetSig1SignalDelegate() = 0;
+	virtual FTbEnumEnumInterfaceSig1Delegate& GetSig1SignalDelegate() = 0;
 
-    virtual FTbEnumEnumInterfaceSig2Delegate& GetSig2SignalDelegate() = 0;
+	virtual FTbEnumEnumInterfaceSig2Delegate& GetSig2SignalDelegate() = 0;
 
-    virtual FTbEnumEnumInterfaceSig3Delegate& GetSig3SignalDelegate() = 0;
+	virtual FTbEnumEnumInterfaceSig3Delegate& GetSig3SignalDelegate() = 0;
 
-    virtual FTbEnumEnumInterfaceProp0ChangedDelegate& GetProp0ChangedDelegate() = 0;
+	virtual FTbEnumEnumInterfaceProp0ChangedDelegate& GetProp0ChangedDelegate() = 0;
 
-    virtual FTbEnumEnumInterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() = 0;
+	virtual FTbEnumEnumInterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() = 0;
 
-    virtual FTbEnumEnumInterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() = 0;
+	virtual FTbEnumEnumInterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() = 0;
 
-    virtual FTbEnumEnumInterfaceProp3ChangedDelegate& GetProp3ChangedDelegate() = 0;
+	virtual FTbEnumEnumInterfaceProp3ChangedDelegate& GetProp3ChangedDelegate() = 0;
 
-
-// methods
-    virtual ETbEnumEnum0 Func0(const ETbEnumEnum0& Param0) = 0;
-    virtual ETbEnumEnum1 Func1(const ETbEnumEnum1& Param1) = 0;
-    virtual ETbEnumEnum2 Func2(const ETbEnumEnum2& Param2) = 0;
-    virtual ETbEnumEnum3 Func3(const ETbEnumEnum3& Param3) = 0;
-// properties
-    virtual ETbEnumEnum0 GetProp0() const = 0;
-    virtual void SetProp0(const ETbEnumEnum0& Prop0) = 0;
-    virtual ETbEnumEnum1 GetProp1() const = 0;
-    virtual void SetProp1(const ETbEnumEnum1& Prop1) = 0;
-    virtual ETbEnumEnum2 GetProp2() const = 0;
-    virtual void SetProp2(const ETbEnumEnum2& Prop2) = 0;
-    virtual ETbEnumEnum3 GetProp3() const = 0;
-    virtual void SetProp3(const ETbEnumEnum3& Prop3) = 0;
+	// methods
+	virtual ETbEnumEnum0 Func0(const ETbEnumEnum0& Param0) = 0;
+	virtual ETbEnumEnum1 Func1(const ETbEnumEnum1& Param1) = 0;
+	virtual ETbEnumEnum2 Func2(const ETbEnumEnum2& Param2) = 0;
+	virtual ETbEnumEnum3 Func3(const ETbEnumEnum3& Param3) = 0;
+	// properties
+	virtual ETbEnumEnum0 GetProp0() const = 0;
+	virtual void SetProp0(const ETbEnumEnum0& Prop0) = 0;
+	virtual ETbEnumEnum1 GetProp1() const = 0;
+	virtual void SetProp1(const ETbEnumEnum1& Prop1) = 0;
+	virtual ETbEnumEnum2 GetProp2() const = 0;
+	virtual void SetProp2(const ETbEnumEnum2& Prop2) = 0;
+	virtual ETbEnumEnum3 GetProp3() const = 0;
+	virtual void SetProp3(const ETbEnumEnum3& Prop3) = 0;
 };

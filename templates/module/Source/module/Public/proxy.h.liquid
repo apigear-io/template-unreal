@@ -31,75 +31,77 @@ limitations under the License.
 #include "apig/{{module.name|capital}}_apig.h"
 #include "{{module.name|capital}}{{interface.name|capital}}Proxy.generated.h"
 
-UCLASS(BlueprintType, Blueprintable, DisplayName="{{class_name_capital}}")
+UCLASS(BlueprintType, Blueprintable, DisplayName = "{{class_name_capital}}")
 class {{ API_MACRO }} {{class}} : public UGameInstanceSubsystem, public I{{module.name | capital}}{{interface.name | capital}}Interface
 {
 	GENERATED_BODY()
 
 public:
-    explicit {{class}}();
-    virtual ~{{class}}();
+	explicit {{class}}();
+	virtual ~{{class}}();
 
-    // signals
+	// signals
 {% for signal in interface.signals %}
 	UPROPERTY(BlueprintAssignable, Category = "{{category}}", DisplayName = "{{signal.name | capital}} Signal")
-    F{{signal|unrealVarName: moduleInterfaceCapital}}Delegate {{signal|unrealVarName}}Signal;
-    F{{signal|unrealVarName: moduleInterfaceCapital}}Delegate& Get{{signal|unrealVarName}}SignalDelegate() override;
-    {{nl}}
+	F{{signal|unrealVarName: moduleInterfaceCapital}}Delegate {{signal|unrealVarName}}Signal;
+	F{{signal|unrealVarName: moduleInterfaceCapital}}Delegate& Get{{signal|unrealVarName}}SignalDelegate() override;
+{{nl}}
 {% endfor %}
 {% for property in interface.properties %}
 	UPROPERTY(BlueprintAssignable, Category = "{{category}}", DisplayName = "{{property.name | capital}} Changed")
-    F{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate {{property.name|capital}}Changed;
-    F{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate& Get{{property.name|capital}}ChangedDelegate() override;
+	F{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate {{property.name|capital}}Changed;
+	F{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate& Get{{property.name|capital}}ChangedDelegate() override;
 {{nl}}
 {% endfor %}
-    // properties
+	// properties
 {% for property in interface.properties %}
 {% if property.description != nil %}
-    /** {{property.description}} */
+	/** {{property.description}} */
 {% endif %}
 	UFUNCTION(BlueprintCallable, Category = "{{category}}")
-    {{property|unrealTypeName: false, moduleCapital}} Get{{property.name | capital}}() const override;
+	{{property|unrealTypeName: false, moduleCapital}} Get{{property.name | capital}}() const override;
 
 	UFUNCTION(BlueprintCallable, Category = "{{category}}")
-    void Set{{property.name | capital}}({{property|unrealParam: moduleCapital}}) override;
+	void Set{{property.name | capital}}({{property|unrealParam: moduleCapital}}) override;
 {{nl}}
 {% endfor %}
-    // operations
+	// operations
 {% for operation in interface.operations %}
 {% assign returnVal = operation|unrealReturn: moduleCapital %}
-    {% if returnVal == "void" %}
+	{% if returnVal == "void" %}
 	UFUNCTION(BlueprintCallable, Category = "{{category}}")
-    {{operation|unrealReturn: moduleCapital}} {{operation.name | capital}}({{operation|unrealParams: moduleCapital}}) override;
-    {% else %}
-	UFUNCTION(BlueprintCallable, Category = "{{category}}", meta=(Latent, LatentInfo="LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-    void {{operation.name | capital}}(UObject* WorldContextObject, struct FLatentActionInfo LatentInfo, {{operation|unrealReturn: moduleCapital}}& Result{% if operation.params.size > 0 %}, {%endif%}{{operation|unrealParams: moduleCapital}});
-    {{operation|unrealReturn: moduleCapital}} {{operation.name | capital}}({{operation|unrealParams: moduleCapital}}) override;
-    {% endif %}
+	{{operation|unrealReturn: moduleCapital}} {{operation.name | capital}}({{operation|unrealParams: moduleCapital}}) override;
+	{% else %}
+	UFUNCTION(BlueprintCallable, Category = "{{category}}", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	void {{operation.name | capital}}(UObject* WorldContextObject, struct FLatentActionInfo LatentInfo, {{operation|unrealReturn: moduleCapital}}& Result{% if operation.params.size > 0 %},{%endif%} {{operation|unrealParams: moduleCapital}});
+	{{operation|unrealReturn: moduleCapital}} {{operation.name | capital}}({{operation|unrealParams: moduleCapital}}) override;
+	{% endif %}
 {{nl}}
 {% endfor %}
 private:
 	/** The connection to the service backend. */
 	TSharedPtr<I{{module.name | capital}}{{interface.name|capital}}Interface, ESPMode::ThreadSafe> service;
 
-    // signals
+	// signals
 {% for signal in interface.signals %}
-    UFUNCTION(Category = "{{category}}", BlueprintInternalUseOnly)
-    void On{{signal|unrealVarName}}({{signal|unrealParams: moduleCapital}});
-    {{nl}}
-{% endfor %}
-{% for property in interface.properties %}
-    UFUNCTION(BlueprintCallable, Category = "{{category}}", BlueprintInternalUseOnly)
-    void On{{property.name|capital}}Changed({{property|unrealParam: moduleCapital}});
+	UFUNCTION(Category = "{{category}}", BlueprintInternalUseOnly)
+	void On{{signal|unrealVarName}}({{signal|unrealParams: moduleCapital}});
 {{nl}}
 {% endfor %}
-    // properties - local copy
+{% for property in interface.properties %}
+	UFUNCTION(BlueprintCallable, Category = "{{category}}", BlueprintInternalUseOnly)
+	void On{{property.name|capital}}Changed({{property|unrealParam: moduleCapital}});
+{{nl}}
+{% endfor %}
+	// properties - local copy
 {% for property in interface.properties %}
 {% if property.description != nil %}
-    /** {{property.description}} */
+	/** {{property.description}} */
 {% endif %}
-	UPROPERTY(EditAnywhere, BlueprintGetter=Get{{property.name | capital}}, BlueprintSetter=Set{{property.name | capital}}, Category = "{{category}}")
-    {{property|unrealTypeName: false, moduleCapital}} {{property|unrealVarName}};
+	UPROPERTY(EditAnywhere, BlueprintGetter = Get{{property.name | capital}}, BlueprintSetter = Set{{property.name | capital}}, Category = "{{category}}")
+	{{property|unrealTypeName: false, moduleCapital}} {{property|unrealVarName}};
+{% unless forloop.last %}
 {{nl}}
+{% endunless %}
 {% endfor %}
 };

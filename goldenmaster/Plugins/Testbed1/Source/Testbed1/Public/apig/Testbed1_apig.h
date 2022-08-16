@@ -51,7 +51,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed1StructInterfacePropStringCh
 UINTERFACE(MinimalAPI)
 class UTestbed1StructInterfaceInterface : public UInterface
 {
-    GENERATED_BODY()
+	GENERATED_BODY()
 };
 
 /**
@@ -59,41 +59,40 @@ class UTestbed1StructInterfaceInterface : public UInterface
  */
 class TESTBED1_API ITestbed1StructInterfaceInterface
 {
-    GENERATED_BODY()
+	GENERATED_BODY()
 
 public:
-// signals
-    virtual FTestbed1StructInterfaceSigBoolDelegate& GetSigBoolSignalDelegate() = 0;
+	// signals
+	virtual FTestbed1StructInterfaceSigBoolDelegate& GetSigBoolSignalDelegate() = 0;
 
-    virtual FTestbed1StructInterfaceSigIntDelegate& GetSigIntSignalDelegate() = 0;
+	virtual FTestbed1StructInterfaceSigIntDelegate& GetSigIntSignalDelegate() = 0;
 
-    virtual FTestbed1StructInterfaceSigFloatDelegate& GetSigFloatSignalDelegate() = 0;
+	virtual FTestbed1StructInterfaceSigFloatDelegate& GetSigFloatSignalDelegate() = 0;
 
-    virtual FTestbed1StructInterfaceSigStringDelegate& GetSigStringSignalDelegate() = 0;
+	virtual FTestbed1StructInterfaceSigStringDelegate& GetSigStringSignalDelegate() = 0;
 
-    virtual FTestbed1StructInterfacePropBoolChangedDelegate& GetPropBoolChangedDelegate() = 0;
+	virtual FTestbed1StructInterfacePropBoolChangedDelegate& GetPropBoolChangedDelegate() = 0;
 
-    virtual FTestbed1StructInterfacePropIntChangedDelegate& GetPropIntChangedDelegate() = 0;
+	virtual FTestbed1StructInterfacePropIntChangedDelegate& GetPropIntChangedDelegate() = 0;
 
-    virtual FTestbed1StructInterfacePropFloatChangedDelegate& GetPropFloatChangedDelegate() = 0;
+	virtual FTestbed1StructInterfacePropFloatChangedDelegate& GetPropFloatChangedDelegate() = 0;
 
-    virtual FTestbed1StructInterfacePropStringChangedDelegate& GetPropStringChangedDelegate() = 0;
+	virtual FTestbed1StructInterfacePropStringChangedDelegate& GetPropStringChangedDelegate() = 0;
 
-
-// methods
-    virtual FTestbed1StructBool FuncBool(const FTestbed1StructBool& ParamBool) = 0;
-    virtual FTestbed1StructBool FuncInt(const FTestbed1StructInt& ParamInt) = 0;
-    virtual FTestbed1StructFloat FuncFloat(const FTestbed1StructFloat& ParamFloat) = 0;
-    virtual FTestbed1StructString FuncString(const FTestbed1StructString& ParamString) = 0;
-// properties
-    virtual FTestbed1StructBool GetPropBool() const = 0;
-    virtual void SetPropBool(const FTestbed1StructBool& PropBool) = 0;
-    virtual FTestbed1StructInt GetPropInt() const = 0;
-    virtual void SetPropInt(const FTestbed1StructInt& PropInt) = 0;
-    virtual FTestbed1StructFloat GetPropFloat() const = 0;
-    virtual void SetPropFloat(const FTestbed1StructFloat& PropFloat) = 0;
-    virtual FTestbed1StructString GetPropString() const = 0;
-    virtual void SetPropString(const FTestbed1StructString& PropString) = 0;
+	// methods
+	virtual FTestbed1StructBool FuncBool(const FTestbed1StructBool& ParamBool) = 0;
+	virtual FTestbed1StructBool FuncInt(const FTestbed1StructInt& ParamInt) = 0;
+	virtual FTestbed1StructFloat FuncFloat(const FTestbed1StructFloat& ParamFloat) = 0;
+	virtual FTestbed1StructString FuncString(const FTestbed1StructString& ParamString) = 0;
+	// properties
+	virtual FTestbed1StructBool GetPropBool() const = 0;
+	virtual void SetPropBool(const FTestbed1StructBool& PropBool) = 0;
+	virtual FTestbed1StructInt GetPropInt() const = 0;
+	virtual void SetPropInt(const FTestbed1StructInt& PropInt) = 0;
+	virtual FTestbed1StructFloat GetPropFloat() const = 0;
+	virtual void SetPropFloat(const FTestbed1StructFloat& PropFloat) = 0;
+	virtual FTestbed1StructString GetPropString() const = 0;
+	virtual void SetPropString(const FTestbed1StructString& PropString) = 0;
 };
 /**
  * Declaration for StructArrayInterface
@@ -122,7 +121,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed1StructArrayInterfacePropStr
 UINTERFACE(MinimalAPI)
 class UTestbed1StructArrayInterfaceInterface : public UInterface
 {
-    GENERATED_BODY()
+	GENERATED_BODY()
 };
 
 /**
@@ -130,39 +129,38 @@ class UTestbed1StructArrayInterfaceInterface : public UInterface
  */
 class TESTBED1_API ITestbed1StructArrayInterfaceInterface
 {
-    GENERATED_BODY()
+	GENERATED_BODY()
 
 public:
-// signals
-    virtual FTestbed1StructArrayInterfaceSigBoolDelegate& GetSigBoolSignalDelegate() = 0;
+	// signals
+	virtual FTestbed1StructArrayInterfaceSigBoolDelegate& GetSigBoolSignalDelegate() = 0;
 
-    virtual FTestbed1StructArrayInterfaceSigIntDelegate& GetSigIntSignalDelegate() = 0;
+	virtual FTestbed1StructArrayInterfaceSigIntDelegate& GetSigIntSignalDelegate() = 0;
 
-    virtual FTestbed1StructArrayInterfaceSigFloatDelegate& GetSigFloatSignalDelegate() = 0;
+	virtual FTestbed1StructArrayInterfaceSigFloatDelegate& GetSigFloatSignalDelegate() = 0;
 
-    virtual FTestbed1StructArrayInterfaceSigStringDelegate& GetSigStringSignalDelegate() = 0;
+	virtual FTestbed1StructArrayInterfaceSigStringDelegate& GetSigStringSignalDelegate() = 0;
 
-    virtual FTestbed1StructArrayInterfacePropBoolChangedDelegate& GetPropBoolChangedDelegate() = 0;
+	virtual FTestbed1StructArrayInterfacePropBoolChangedDelegate& GetPropBoolChangedDelegate() = 0;
 
-    virtual FTestbed1StructArrayInterfacePropIntChangedDelegate& GetPropIntChangedDelegate() = 0;
+	virtual FTestbed1StructArrayInterfacePropIntChangedDelegate& GetPropIntChangedDelegate() = 0;
 
-    virtual FTestbed1StructArrayInterfacePropFloatChangedDelegate& GetPropFloatChangedDelegate() = 0;
+	virtual FTestbed1StructArrayInterfacePropFloatChangedDelegate& GetPropFloatChangedDelegate() = 0;
 
-    virtual FTestbed1StructArrayInterfacePropStringChangedDelegate& GetPropStringChangedDelegate() = 0;
+	virtual FTestbed1StructArrayInterfacePropStringChangedDelegate& GetPropStringChangedDelegate() = 0;
 
-
-// methods
-    virtual FTestbed1StructBool FuncBool(const TArray<FTestbed1StructBool>& ParamBool) = 0;
-    virtual FTestbed1StructBool FuncInt(const TArray<FTestbed1StructInt>& ParamInt) = 0;
-    virtual FTestbed1StructBool FuncFloat(const TArray<FTestbed1StructFloat>& ParamFloat) = 0;
-    virtual FTestbed1StructBool FuncString(const TArray<FTestbed1StructString>& ParamString) = 0;
-// properties
-    virtual TArray<FTestbed1StructBool> GetPropBool() const = 0;
-    virtual void SetPropBool(const TArray<FTestbed1StructBool>& PropBool) = 0;
-    virtual TArray<FTestbed1StructInt> GetPropInt() const = 0;
-    virtual void SetPropInt(const TArray<FTestbed1StructInt>& PropInt) = 0;
-    virtual TArray<FTestbed1StructFloat> GetPropFloat() const = 0;
-    virtual void SetPropFloat(const TArray<FTestbed1StructFloat>& PropFloat) = 0;
-    virtual TArray<FTestbed1StructString> GetPropString() const = 0;
-    virtual void SetPropString(const TArray<FTestbed1StructString>& PropString) = 0;
+	// methods
+	virtual FTestbed1StructBool FuncBool(const TArray<FTestbed1StructBool>& ParamBool) = 0;
+	virtual FTestbed1StructBool FuncInt(const TArray<FTestbed1StructInt>& ParamInt) = 0;
+	virtual FTestbed1StructBool FuncFloat(const TArray<FTestbed1StructFloat>& ParamFloat) = 0;
+	virtual FTestbed1StructBool FuncString(const TArray<FTestbed1StructString>& ParamString) = 0;
+	// properties
+	virtual TArray<FTestbed1StructBool> GetPropBool() const = 0;
+	virtual void SetPropBool(const TArray<FTestbed1StructBool>& PropBool) = 0;
+	virtual TArray<FTestbed1StructInt> GetPropInt() const = 0;
+	virtual void SetPropInt(const TArray<FTestbed1StructInt>& PropInt) = 0;
+	virtual TArray<FTestbed1StructFloat> GetPropFloat() const = 0;
+	virtual void SetPropFloat(const TArray<FTestbed1StructFloat>& PropFloat) = 0;
+	virtual TArray<FTestbed1StructString> GetPropString() const = 0;
+	virtual void SetPropString(const TArray<FTestbed1StructString>& PropString) = 0;
 };

@@ -8,8 +8,8 @@
 #include "ApiGearSettings.generated.h"
 
 /**
-* Implements the settings for the ApiGear plugin.
-*/
+ * Implements the settings for the ApiGear plugin.
+ */
 UCLASS(Config = Engine, DefaultConfig)
 class APIGEAR_API UApiGearSettings : public UObject
 {

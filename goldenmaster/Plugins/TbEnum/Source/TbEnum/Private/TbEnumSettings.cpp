@@ -17,7 +17,7 @@ limitations under the License.
 #include "TbEnumSettings.h"
 
 UTbEnumSettings::UTbEnumSettings(const FObjectInitializer& ObjectInitializer)
-        : Super(ObjectInitializer)
-        , ServiceConnection(ETbEnumConnection(ETbEnumConnection::CONNECTION_LOCAL))
+	: Super(ObjectInitializer)
+	, ServiceConnection(ETbEnumConnection(ETbEnumConnection::CONNECTION_LOCAL))
 {
 }

@@ -19,83 +19,82 @@ limitations under the License.
 #include "apig/TbSimple_apig.h"
 #include "olink/clientnode.h"
 
-namespace TbSimple {
-namespace SimpleInterface {
-namespace Private {
+namespace TbSimple
+{
+namespace SimpleInterface
+{
+namespace Private
+{
 
 class OLinkService : public ITbSimpleSimpleInterfaceInterface, public ApiGear::ObjectLink::IObjectSink
 {
 public:
+	explicit OLinkService();
+	virtual ~OLinkService();
 
-    explicit OLinkService();
-    virtual ~OLinkService();
+	// signals
+	FTbSimpleSimpleInterfaceSigBoolDelegate SigBoolSignal;
+	FTbSimpleSimpleInterfaceSigBoolDelegate& GetSigBoolSignalDelegate() override;
 
-    // signals
-    FTbSimpleSimpleInterfaceSigBoolDelegate SigBoolSignal;
-    FTbSimpleSimpleInterfaceSigBoolDelegate& GetSigBoolSignalDelegate() override;
-    
-    FTbSimpleSimpleInterfaceSigIntDelegate SigIntSignal;
-    FTbSimpleSimpleInterfaceSigIntDelegate& GetSigIntSignalDelegate() override;
-    
-    FTbSimpleSimpleInterfaceSigFloatDelegate SigFloatSignal;
-    FTbSimpleSimpleInterfaceSigFloatDelegate& GetSigFloatSignalDelegate() override;
-    
-    FTbSimpleSimpleInterfaceSigStringDelegate SigStringSignal;
-    FTbSimpleSimpleInterfaceSigStringDelegate& GetSigStringSignalDelegate() override;
-    
-    FTbSimpleSimpleInterfacePropBoolChangedDelegate PropBoolChanged;
-    FTbSimpleSimpleInterfacePropBoolChangedDelegate& GetPropBoolChangedDelegate() override;
+	FTbSimpleSimpleInterfaceSigIntDelegate SigIntSignal;
+	FTbSimpleSimpleInterfaceSigIntDelegate& GetSigIntSignalDelegate() override;
 
-    FTbSimpleSimpleInterfacePropIntChangedDelegate PropIntChanged;
-    FTbSimpleSimpleInterfacePropIntChangedDelegate& GetPropIntChangedDelegate() override;
+	FTbSimpleSimpleInterfaceSigFloatDelegate SigFloatSignal;
+	FTbSimpleSimpleInterfaceSigFloatDelegate& GetSigFloatSignalDelegate() override;
 
-    FTbSimpleSimpleInterfacePropFloatChangedDelegate PropFloatChanged;
-    FTbSimpleSimpleInterfacePropFloatChangedDelegate& GetPropFloatChangedDelegate() override;
+	FTbSimpleSimpleInterfaceSigStringDelegate SigStringSignal;
+	FTbSimpleSimpleInterfaceSigStringDelegate& GetSigStringSignalDelegate() override;
 
-    FTbSimpleSimpleInterfacePropStringChangedDelegate PropStringChanged;
-    FTbSimpleSimpleInterfacePropStringChangedDelegate& GetPropStringChangedDelegate() override;
+	FTbSimpleSimpleInterfacePropBoolChangedDelegate PropBoolChanged;
+	FTbSimpleSimpleInterfacePropBoolChangedDelegate& GetPropBoolChangedDelegate() override;
 
-    // properties
-    bool GetPropBool() const override;
-    void SetPropBool(bool bPropBool) override;
+	FTbSimpleSimpleInterfacePropIntChangedDelegate PropIntChanged;
+	FTbSimpleSimpleInterfacePropIntChangedDelegate& GetPropIntChangedDelegate() override;
 
-    int32 GetPropInt() const override;
-    void SetPropInt(int32 PropInt) override;
+	FTbSimpleSimpleInterfacePropFloatChangedDelegate PropFloatChanged;
+	FTbSimpleSimpleInterfacePropFloatChangedDelegate& GetPropFloatChangedDelegate() override;
 
-    float GetPropFloat() const override;
-    void SetPropFloat(float PropFloat) override;
+	FTbSimpleSimpleInterfacePropStringChangedDelegate PropStringChanged;
+	FTbSimpleSimpleInterfacePropStringChangedDelegate& GetPropStringChangedDelegate() override;
 
-    FString GetPropString() const override;
-    void SetPropString(const FString& PropString) override;
+	// properties
+	bool GetPropBool() const override;
+	void SetPropBool(bool bPropBool) override;
 
+	int32 GetPropInt() const override;
+	void SetPropInt(int32 PropInt) override;
 
-    // operations
-    bool FuncBool(bool bParamBool) override;
-    
-    int32 FuncInt(int32 ParamInt) override;
-    
-    float FuncFloat(float ParamFloat) override;
-    
-    FString FuncString(const FString& ParamString) override;
-    
+	float GetPropFloat() const override;
+	void SetPropFloat(float PropFloat) override;
 
-    // olink sink interface
-    std::string olinkObjectName() override;
-    void olinkOnSignal(std::string name, nlohmann::json args) override;
-    void olinkOnPropertyChanged(std::string name, nlohmann::json value) override;
-    void olinkOnInit(std::string name, nlohmann::json props, ApiGear::ObjectLink::IClientNode *node) override;
-    void olinkOnRelease() override;
+	FString GetPropString() const override;
+	void SetPropString(const FString& PropString) override;
+
+	// operations
+	bool FuncBool(bool bParamBool) override;
+
+	int32 FuncInt(int32 ParamInt) override;
+
+	float FuncFloat(float ParamFloat) override;
+
+	FString FuncString(const FString& ParamString) override;
+
+	// olink sink interface
+	std::string olinkObjectName() override;
+	void olinkOnSignal(std::string name, nlohmann::json args) override;
+	void olinkOnPropertyChanged(std::string name, nlohmann::json value) override;
+	void olinkOnInit(std::string name, nlohmann::json props, ApiGear::ObjectLink::IClientNode* node) override;
+	void olinkOnRelease() override;
 
 private:
-    void applyState(const nlohmann::json& fields);
-    
-    ApiGear::ObjectLink::IClientNode *m_node;
-    bool m_isReady;
-    // properties - local copy
-    bool bPropBool;
-    int32 PropInt;
-    float PropFloat;
-    FString PropString;
+	void applyState(const nlohmann::json& fields);
+	ApiGear::ObjectLink::IClientNode* m_node;
+	bool m_isReady;
+	// properties - local copy
+	bool bPropBool;
+	int32 PropInt;
+	float PropFloat;
+	FString PropString;
 };
 
 } // namespace Private

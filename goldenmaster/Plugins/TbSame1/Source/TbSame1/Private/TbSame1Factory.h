@@ -20,7 +20,7 @@ class ITbSame1SameStruct2InterfaceInterface;
 class ITbSame1SameEnum1InterfaceInterface;
 class ITbSame1SameEnum2InterfaceInterface;
 
-//General Log
+// General Log
 DECLARE_LOG_CATEGORY_EXTERN(LogFTbSame1ModuleFactory, Log, All);
 
 class FTbSame1ModuleFactory

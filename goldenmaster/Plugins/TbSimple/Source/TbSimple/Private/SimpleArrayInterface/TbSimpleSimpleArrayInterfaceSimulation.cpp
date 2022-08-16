@@ -27,356 +27,362 @@ limitations under the License.
 
 using namespace ApiGear::JSONRPC;
 
-namespace TbSimple {
-namespace SimpleArrayInterface {
-namespace Private {
-SimulationService::SimulationService()
-    : ITbSimpleSimpleArrayInterfaceInterface()
-    , PropBool(TArray<bool>())
-    , PropInt(TArray<int32>())
-    , PropFloat(TArray<float>())
-    , PropString(TArray<FString>())
+namespace TbSimple
 {
-    UApiGearConnectionManager* AGCM = nullptr;
-    if (GEngine != nullptr)
-    {
-        AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-    }
-    NotifyRequestFunc SimpleArrayInterfaceStateChangedFunc = [this](NotifyRequestArg arg)
-    {
-        const json fields = arg.params;
-        if(fields.contains("propBool")) {
-            if(PropBool != fields["propBool"].get<TArray<bool>>())
-            {
-                PropBool = fields["propBool"].get<TArray<bool>>();
-                PropBoolChanged.Broadcast(PropBool);
-            }
-        }
-        if(fields.contains("propInt")) {
-            if(PropInt != fields["propInt"].get<TArray<int32>>())
-            {
-                PropInt = fields["propInt"].get<TArray<int32>>();
-                PropIntChanged.Broadcast(PropInt);
-            }
-        }
-        if(fields.contains("propFloat")) {
-            if(PropFloat != fields["propFloat"].get<TArray<float>>())
-            {
-                PropFloat = fields["propFloat"].get<TArray<float>>();
-                PropFloatChanged.Broadcast(PropFloat);
-            }
-        }
-        if(fields.contains("propString")) {
-            if(PropString != fields["propString"].get<TArray<FString>>())
-            {
-                PropString = fields["propString"].get<TArray<FString>>();
-                PropStringChanged.Broadcast(PropString);
-            }
-        }
-    };
-    if(AGCM != nullptr)
-    {   
-        AGCM->GetSimulationConnection()->Connect();
-        AGCM->GetSimulationConnection()->onNotifyState("tb.simple/SimpleArrayInterface", SimpleArrayInterfaceStateChangedFunc);
-    }
+namespace SimpleArrayInterface
+{
+namespace Private
+{
+SimulationService::SimulationService()
+	: ITbSimpleSimpleArrayInterfaceInterface()
+	, PropBool(TArray<bool>())
+	, PropInt(TArray<int32>())
+	, PropFloat(TArray<float>())
+	, PropString(TArray<FString>())
+{
+	UApiGearConnectionManager* AGCM = nullptr;
+	if (GEngine != nullptr)
+	{
+		AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+	}
+	NotifyRequestFunc SimpleArrayInterfaceStateChangedFunc = [this](NotifyRequestArg arg)
+	{
+		const json fields = arg.params;
+		if (fields.contains("propBool"))
+		{
+			if (PropBool != fields["propBool"].get<TArray<bool>>())
+			{
+				PropBool = fields["propBool"].get<TArray<bool>>();
+				PropBoolChanged.Broadcast(PropBool);
+			}
+		}
+		if (fields.contains("propInt"))
+		{
+			if (PropInt != fields["propInt"].get<TArray<int32>>())
+			{
+				PropInt = fields["propInt"].get<TArray<int32>>();
+				PropIntChanged.Broadcast(PropInt);
+			}
+		}
+		if (fields.contains("propFloat"))
+		{
+			if (PropFloat != fields["propFloat"].get<TArray<float>>())
+			{
+				PropFloat = fields["propFloat"].get<TArray<float>>();
+				PropFloatChanged.Broadcast(PropFloat);
+			}
+		}
+		if (fields.contains("propString"))
+		{
+			if (PropString != fields["propString"].get<TArray<FString>>())
+			{
+				PropString = fields["propString"].get<TArray<FString>>();
+				PropStringChanged.Broadcast(PropString);
+			}
+		}
+	};
+	if (AGCM != nullptr)
+	{
+		AGCM->GetSimulationConnection()->Connect();
+		AGCM->GetSimulationConnection()->onNotifyState("tb.simple/SimpleArrayInterface", SimpleArrayInterfaceStateChangedFunc);
+	}
 
-    CallResponseFunc GetSimpleArrayInterfaceStateFunc = [this](CallResponseArg arg)
-    {
-        if(arg.result.size() != 1) {
-          return;
-        }
-        const json fields = arg.result;
-        if(fields.contains("propBool")) {
-            if(PropBool != fields["propBool"].get<TArray<bool>>())
-            {
-                PropBool = fields["propBool"].get<TArray<bool>>();
-                PropBoolChanged.Broadcast(PropBool);
-            }
-        }
-        if(fields.contains("propInt")) {
-            if(PropInt != fields["propInt"].get<TArray<int32>>())
-            {
-                PropInt = fields["propInt"].get<TArray<int32>>();
-                PropIntChanged.Broadcast(PropInt);
-            }
-        }
-        if(fields.contains("propFloat")) {
-            if(PropFloat != fields["propFloat"].get<TArray<float>>())
-            {
-                PropFloat = fields["propFloat"].get<TArray<float>>();
-                PropFloatChanged.Broadcast(PropFloat);
-            }
-        }
-        if(fields.contains("propString")) {
-            if(PropString != fields["propString"].get<TArray<FString>>())
-            {
-                PropString = fields["propString"].get<TArray<FString>>();
-                PropStringChanged.Broadcast(PropString);
-            }
-        }
-    };
-    if(AGCM != nullptr)
-    {
-        AGCM->GetSimulationConnection()->doFetchState("tb.simple/SimpleArrayInterface", GetSimpleArrayInterfaceStateFunc);
-    }
+	CallResponseFunc GetSimpleArrayInterfaceStateFunc = [this](CallResponseArg arg)
+	{
+		if (arg.result.size() != 1)
+		{
+			return;
+		}
+		const json fields = arg.result;
+		if (fields.contains("propBool"))
+		{
+			if (PropBool != fields["propBool"].get<TArray<bool>>())
+			{
+				PropBool = fields["propBool"].get<TArray<bool>>();
+				PropBoolChanged.Broadcast(PropBool);
+			}
+		}
+		if (fields.contains("propInt"))
+		{
+			if (PropInt != fields["propInt"].get<TArray<int32>>())
+			{
+				PropInt = fields["propInt"].get<TArray<int32>>();
+				PropIntChanged.Broadcast(PropInt);
+			}
+		}
+		if (fields.contains("propFloat"))
+		{
+			if (PropFloat != fields["propFloat"].get<TArray<float>>())
+			{
+				PropFloat = fields["propFloat"].get<TArray<float>>();
+				PropFloatChanged.Broadcast(PropFloat);
+			}
+		}
+		if (fields.contains("propString"))
+		{
+			if (PropString != fields["propString"].get<TArray<FString>>())
+			{
+				PropString = fields["propString"].get<TArray<FString>>();
+				PropStringChanged.Broadcast(PropString);
+			}
+		}
+	};
+	if (AGCM != nullptr)
+	{
+		AGCM->GetSimulationConnection()->doFetchState("tb.simple/SimpleArrayInterface", GetSimpleArrayInterfaceStateFunc);
+	}
 
-    // register notification callback functions, signal/event -> fcn
-    NotifyRequestFunc sigBoolFunc = [this](NotifyRequestArg arg)
-    {
-        const json fields = arg.params;
-        if(fields.contains("paramBool"))
-        {
-            SigBoolSignal.Broadcast(fields["paramBool"].get<TArray<bool>>());
-        }
-    };
-    if(AGCM != nullptr)
-    {
-        AGCM->GetSimulationConnection()->onNotify("tb.simple/SimpleArrayInterface#sigBool", sigBoolFunc);
-    }
+	// register notification callback functions, signal/event -> fcn
+	NotifyRequestFunc sigBoolFunc = [this](NotifyRequestArg arg)
+	{
+		const json fields = arg.params;
+		if (fields.contains("paramBool"))
+		{
+			SigBoolSignal.Broadcast(fields["paramBool"].get<TArray<bool>>());
+		}
+	};
+	if (AGCM != nullptr)
+	{
+		AGCM->GetSimulationConnection()->onNotify("tb.simple/SimpleArrayInterface#sigBool", sigBoolFunc);
+	}
 
-    NotifyRequestFunc sigIntFunc = [this](NotifyRequestArg arg)
-    {
-        const json fields = arg.params;
-        if(fields.contains("paramInt"))
-        {
-            SigIntSignal.Broadcast(fields["paramInt"].get<TArray<int32>>());
-        }
-    };
-    if(AGCM != nullptr)
-    {
-        AGCM->GetSimulationConnection()->onNotify("tb.simple/SimpleArrayInterface#sigInt", sigIntFunc);
-    }
+	NotifyRequestFunc sigIntFunc = [this](NotifyRequestArg arg)
+	{
+		const json fields = arg.params;
+		if (fields.contains("paramInt"))
+		{
+			SigIntSignal.Broadcast(fields["paramInt"].get<TArray<int32>>());
+		}
+	};
+	if (AGCM != nullptr)
+	{
+		AGCM->GetSimulationConnection()->onNotify("tb.simple/SimpleArrayInterface#sigInt", sigIntFunc);
+	}
 
-    NotifyRequestFunc sigFloatFunc = [this](NotifyRequestArg arg)
-    {
-        const json fields = arg.params;
-        if(fields.contains("paramFloat"))
-        {
-            SigFloatSignal.Broadcast(fields["paramFloat"].get<TArray<float>>());
-        }
-    };
-    if(AGCM != nullptr)
-    {
-        AGCM->GetSimulationConnection()->onNotify("tb.simple/SimpleArrayInterface#sigFloat", sigFloatFunc);
-    }
+	NotifyRequestFunc sigFloatFunc = [this](NotifyRequestArg arg)
+	{
+		const json fields = arg.params;
+		if (fields.contains("paramFloat"))
+		{
+			SigFloatSignal.Broadcast(fields["paramFloat"].get<TArray<float>>());
+		}
+	};
+	if (AGCM != nullptr)
+	{
+		AGCM->GetSimulationConnection()->onNotify("tb.simple/SimpleArrayInterface#sigFloat", sigFloatFunc);
+	}
 
-    NotifyRequestFunc sigStringFunc = [this](NotifyRequestArg arg)
-    {
-        const json fields = arg.params;
-        if(fields.contains("paramString"))
-        {
-            SigStringSignal.Broadcast(fields["paramString"].get<TArray<FString>>());
-        }
-    };
-    if(AGCM != nullptr)
-    {
-        AGCM->GetSimulationConnection()->onNotify("tb.simple/SimpleArrayInterface#sigString", sigStringFunc);
-    }
-
+	NotifyRequestFunc sigStringFunc = [this](NotifyRequestArg arg)
+	{
+		const json fields = arg.params;
+		if (fields.contains("paramString"))
+		{
+			SigStringSignal.Broadcast(fields["paramString"].get<TArray<FString>>());
+		}
+	};
+	if (AGCM != nullptr)
+	{
+		AGCM->GetSimulationConnection()->onNotify("tb.simple/SimpleArrayInterface#sigString", sigStringFunc);
+	}
 }
 
 SimulationService::~SimulationService()
 {
-    if (GEngine != nullptr)
-    {
-        UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-        AGCM->GetSimulationConnection()->RemoveOnNotifyState("tb.simple/SimpleArrayInterface");
-        // unregister notification callback functions
-        AGCM->GetSimulationConnection()->RemoveOnNotify("tb.simple/SimpleArrayInterface#sigBool");
-        AGCM->GetSimulationConnection()->RemoveOnNotify("tb.simple/SimpleArrayInterface#sigInt");
-        AGCM->GetSimulationConnection()->RemoveOnNotify("tb.simple/SimpleArrayInterface#sigFloat");
-        AGCM->GetSimulationConnection()->RemoveOnNotify("tb.simple/SimpleArrayInterface#sigString");
-    }
+	if (GEngine != nullptr)
+	{
+		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+		AGCM->GetSimulationConnection()->RemoveOnNotifyState("tb.simple/SimpleArrayInterface");
+		// unregister notification callback functions
+		AGCM->GetSimulationConnection()->RemoveOnNotify("tb.simple/SimpleArrayInterface#sigBool");
+		AGCM->GetSimulationConnection()->RemoveOnNotify("tb.simple/SimpleArrayInterface#sigInt");
+		AGCM->GetSimulationConnection()->RemoveOnNotify("tb.simple/SimpleArrayInterface#sigFloat");
+		AGCM->GetSimulationConnection()->RemoveOnNotify("tb.simple/SimpleArrayInterface#sigString");
+	}
 }
 
 FTbSimpleSimpleArrayInterfaceSigBoolDelegate& SimulationService::GetSigBoolSignalDelegate()
 {
-    return SigBoolSignal;
+	return SigBoolSignal;
 }
 
 FTbSimpleSimpleArrayInterfaceSigIntDelegate& SimulationService::GetSigIntSignalDelegate()
 {
-    return SigIntSignal;
+	return SigIntSignal;
 }
 
 FTbSimpleSimpleArrayInterfaceSigFloatDelegate& SimulationService::GetSigFloatSignalDelegate()
 {
-    return SigFloatSignal;
+	return SigFloatSignal;
 }
 
 FTbSimpleSimpleArrayInterfaceSigStringDelegate& SimulationService::GetSigStringSignalDelegate()
 {
-    return SigStringSignal;
+	return SigStringSignal;
 }
 
 TArray<bool> SimulationService::GetPropBool() const
 {
-    return PropBool;
+	return PropBool;
 }
 
 void SimulationService::SetPropBool(const TArray<bool>& InPropBool)
 {
-    Params params;
-    params["propBool"] = InPropBool;
-    if (GEngine != nullptr)
-    {
-        UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-        AGCM->GetSimulationConnection()->doCall("tb.simple/SimpleArrayInterface", "_set", params);
-    }
+	Params params;
+	params["propBool"] = InPropBool;
+	if (GEngine != nullptr)
+	{
+		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+		AGCM->GetSimulationConnection()->doCall("tb.simple/SimpleArrayInterface", "_set", params);
+	}
 }
 
 FTbSimpleSimpleArrayInterfacePropBoolChangedDelegate& SimulationService::GetPropBoolChangedDelegate()
 {
-    return PropBoolChanged;
+	return PropBoolChanged;
 }
 
 TArray<int32> SimulationService::GetPropInt() const
 {
-    return PropInt;
+	return PropInt;
 }
 
 void SimulationService::SetPropInt(const TArray<int32>& InPropInt)
 {
-    Params params;
-    params["propInt"] = InPropInt;
-    if (GEngine != nullptr)
-    {
-        UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-        AGCM->GetSimulationConnection()->doCall("tb.simple/SimpleArrayInterface", "_set", params);
-    }
+	Params params;
+	params["propInt"] = InPropInt;
+	if (GEngine != nullptr)
+	{
+		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+		AGCM->GetSimulationConnection()->doCall("tb.simple/SimpleArrayInterface", "_set", params);
+	}
 }
 
 FTbSimpleSimpleArrayInterfacePropIntChangedDelegate& SimulationService::GetPropIntChangedDelegate()
 {
-    return PropIntChanged;
+	return PropIntChanged;
 }
 
 TArray<float> SimulationService::GetPropFloat() const
 {
-    return PropFloat;
+	return PropFloat;
 }
 
 void SimulationService::SetPropFloat(const TArray<float>& InPropFloat)
 {
-    Params params;
-    params["propFloat"] = InPropFloat;
-    if (GEngine != nullptr)
-    {
-        UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-        AGCM->GetSimulationConnection()->doCall("tb.simple/SimpleArrayInterface", "_set", params);
-    }
+	Params params;
+	params["propFloat"] = InPropFloat;
+	if (GEngine != nullptr)
+	{
+		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+		AGCM->GetSimulationConnection()->doCall("tb.simple/SimpleArrayInterface", "_set", params);
+	}
 }
 
 FTbSimpleSimpleArrayInterfacePropFloatChangedDelegate& SimulationService::GetPropFloatChangedDelegate()
 {
-    return PropFloatChanged;
+	return PropFloatChanged;
 }
 
 TArray<FString> SimulationService::GetPropString() const
 {
-    return PropString;
+	return PropString;
 }
 
 void SimulationService::SetPropString(const TArray<FString>& InPropString)
 {
-    Params params;
-    params["propString"] = InPropString;
-    if (GEngine != nullptr)
-    {
-        UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-        AGCM->GetSimulationConnection()->doCall("tb.simple/SimpleArrayInterface", "_set", params);
-    }
+	Params params;
+	params["propString"] = InPropString;
+	if (GEngine != nullptr)
+	{
+		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+		AGCM->GetSimulationConnection()->doCall("tb.simple/SimpleArrayInterface", "_set", params);
+	}
 }
 
 FTbSimpleSimpleArrayInterfacePropStringChangedDelegate& SimulationService::GetPropStringChangedDelegate()
 {
-    return PropStringChanged;
+	return PropStringChanged;
 }
 
 TArray<bool> SimulationService::FuncBool(const TArray<bool>& ParamBool)
 {
-    Params params;
-    params["paramBool"] = ParamBool;
-    TPromise<TArray<bool>> Promise;
-    Async(EAsyncExecution::Thread, [params, &Promise]()
-    {
-        CallResponseFunc GetSimpleArrayInterfaceStateFunc = [&Promise](CallResponseArg arg)
-        {
-            Promise.SetValue(arg.result.get<TArray<bool>>());
-        };
-        if (GEngine != nullptr)
-        {
-            UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-            AGCM->GetSimulationConnection()->doCall("tb.simple/SimpleArrayInterface", "funcBool", params, GetSimpleArrayInterfaceStateFunc);
-        }
-    });
+	Params params;
+	params["paramBool"] = ParamBool;
+	TPromise<TArray<bool>> Promise;
+	Async(EAsyncExecution::Thread,
+		[params, &Promise]()
+		{
+			CallResponseFunc GetSimpleArrayInterfaceStateFunc = [&Promise](CallResponseArg arg)
+			{ Promise.SetValue(arg.result.get<TArray<bool>>()); };
+			if (GEngine != nullptr)
+			{
+				UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+				AGCM->GetSimulationConnection()->doCall("tb.simple/SimpleArrayInterface", "funcBool", params, GetSimpleArrayInterfaceStateFunc);
+			}
+		});
 
-    return Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
 
 TArray<int32> SimulationService::FuncInt(const TArray<int32>& ParamInt)
 {
-    Params params;
-    params["paramInt"] = ParamInt;
-    TPromise<TArray<int32>> Promise;
-    Async(EAsyncExecution::Thread, [params, &Promise]()
-    {
-        CallResponseFunc GetSimpleArrayInterfaceStateFunc = [&Promise](CallResponseArg arg)
-        {
-            Promise.SetValue(arg.result.get<TArray<int32>>());
-        };
-        if (GEngine != nullptr)
-        {
-            UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-            AGCM->GetSimulationConnection()->doCall("tb.simple/SimpleArrayInterface", "funcInt", params, GetSimpleArrayInterfaceStateFunc);
-        }
-    });
+	Params params;
+	params["paramInt"] = ParamInt;
+	TPromise<TArray<int32>> Promise;
+	Async(EAsyncExecution::Thread,
+		[params, &Promise]()
+		{
+			CallResponseFunc GetSimpleArrayInterfaceStateFunc = [&Promise](CallResponseArg arg)
+			{ Promise.SetValue(arg.result.get<TArray<int32>>()); };
+			if (GEngine != nullptr)
+			{
+				UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+				AGCM->GetSimulationConnection()->doCall("tb.simple/SimpleArrayInterface", "funcInt", params, GetSimpleArrayInterfaceStateFunc);
+			}
+		});
 
-    return Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
 
 TArray<float> SimulationService::FuncFloat(const TArray<float>& ParamFloat)
 {
-    Params params;
-    params["paramFloat"] = ParamFloat;
-    TPromise<TArray<float>> Promise;
-    Async(EAsyncExecution::Thread, [params, &Promise]()
-    {
-        CallResponseFunc GetSimpleArrayInterfaceStateFunc = [&Promise](CallResponseArg arg)
-        {
-            Promise.SetValue(arg.result.get<TArray<float>>());
-        };
-        if (GEngine != nullptr)
-        {
-            UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-            AGCM->GetSimulationConnection()->doCall("tb.simple/SimpleArrayInterface", "funcFloat", params, GetSimpleArrayInterfaceStateFunc);
-        }
-    });
+	Params params;
+	params["paramFloat"] = ParamFloat;
+	TPromise<TArray<float>> Promise;
+	Async(EAsyncExecution::Thread,
+		[params, &Promise]()
+		{
+			CallResponseFunc GetSimpleArrayInterfaceStateFunc = [&Promise](CallResponseArg arg)
+			{ Promise.SetValue(arg.result.get<TArray<float>>()); };
+			if (GEngine != nullptr)
+			{
+				UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+				AGCM->GetSimulationConnection()->doCall("tb.simple/SimpleArrayInterface", "funcFloat", params, GetSimpleArrayInterfaceStateFunc);
+			}
+		});
 
-    return Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
 
 TArray<FString> SimulationService::FuncString(const TArray<FString>& ParamString)
 {
-    Params params;
-    params["paramString"] = ParamString;
-    TPromise<TArray<FString>> Promise;
-    Async(EAsyncExecution::Thread, [params, &Promise]()
-    {
-        CallResponseFunc GetSimpleArrayInterfaceStateFunc = [&Promise](CallResponseArg arg)
-        {
-            Promise.SetValue(arg.result.get<TArray<FString>>());
-        };
-        if (GEngine != nullptr)
-        {
-            UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-            AGCM->GetSimulationConnection()->doCall("tb.simple/SimpleArrayInterface", "funcString", params, GetSimpleArrayInterfaceStateFunc);
-        }
-    });
+	Params params;
+	params["paramString"] = ParamString;
+	TPromise<TArray<FString>> Promise;
+	Async(EAsyncExecution::Thread,
+		[params, &Promise]()
+		{
+			CallResponseFunc GetSimpleArrayInterfaceStateFunc = [&Promise](CallResponseArg arg)
+			{ Promise.SetValue(arg.result.get<TArray<FString>>()); };
+			if (GEngine != nullptr)
+			{
+				UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+				AGCM->GetSimulationConnection()->doCall("tb.simple/SimpleArrayInterface", "funcString", params, GetSimpleArrayInterfaceStateFunc);
+			}
+		});
 
-    return Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
-
 
 } // namespace Private
 } // namespace SimpleArrayInterface

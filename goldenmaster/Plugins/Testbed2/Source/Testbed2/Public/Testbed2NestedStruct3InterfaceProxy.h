@@ -23,103 +23,102 @@ limitations under the License.
 #include "apig/Testbed2_apig.h"
 #include "Testbed2NestedStruct3InterfaceProxy.generated.h"
 
-UCLASS(BlueprintType, Blueprintable, DisplayName="Testbed2NestedStruct3Interface")
+UCLASS(BlueprintType, Blueprintable, DisplayName = "Testbed2NestedStruct3Interface")
 class TESTBED2_API UTestbed2NestedStruct3InterfaceProxy : public UGameInstanceSubsystem, public ITestbed2NestedStruct3InterfaceInterface
 {
 	GENERATED_BODY()
 
 public:
-    explicit UTestbed2NestedStruct3InterfaceProxy();
-    virtual ~UTestbed2NestedStruct3InterfaceProxy();
+	explicit UTestbed2NestedStruct3InterfaceProxy();
+	virtual ~UTestbed2NestedStruct3InterfaceProxy();
 
-    // signals
+	// signals
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct3Interface", DisplayName = "Sig1 Signal")
-    FTestbed2NestedStruct3InterfaceSig1Delegate Sig1Signal;
-    FTestbed2NestedStruct3InterfaceSig1Delegate& GetSig1SignalDelegate() override;
-    
+	FTestbed2NestedStruct3InterfaceSig1Delegate Sig1Signal;
+	FTestbed2NestedStruct3InterfaceSig1Delegate& GetSig1SignalDelegate() override;
+
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct3Interface", DisplayName = "Sig2 Signal")
-    FTestbed2NestedStruct3InterfaceSig2Delegate Sig2Signal;
-    FTestbed2NestedStruct3InterfaceSig2Delegate& GetSig2SignalDelegate() override;
-    
+	FTestbed2NestedStruct3InterfaceSig2Delegate Sig2Signal;
+	FTestbed2NestedStruct3InterfaceSig2Delegate& GetSig2SignalDelegate() override;
+
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct3Interface", DisplayName = "Sig3 Signal")
-    FTestbed2NestedStruct3InterfaceSig3Delegate Sig3Signal;
-    FTestbed2NestedStruct3InterfaceSig3Delegate& GetSig3SignalDelegate() override;
-    
+	FTestbed2NestedStruct3InterfaceSig3Delegate Sig3Signal;
+	FTestbed2NestedStruct3InterfaceSig3Delegate& GetSig3SignalDelegate() override;
+
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct3Interface", DisplayName = "Prop1 Changed")
-    FTestbed2NestedStruct3InterfaceProp1ChangedDelegate Prop1Changed;
-    FTestbed2NestedStruct3InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
+	FTestbed2NestedStruct3InterfaceProp1ChangedDelegate Prop1Changed;
+	FTestbed2NestedStruct3InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct3Interface", DisplayName = "Prop2 Changed")
-    FTestbed2NestedStruct3InterfaceProp2ChangedDelegate Prop2Changed;
-    FTestbed2NestedStruct3InterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() override;
+	FTestbed2NestedStruct3InterfaceProp2ChangedDelegate Prop2Changed;
+	FTestbed2NestedStruct3InterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() override;
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct3Interface", DisplayName = "Prop3 Changed")
-    FTestbed2NestedStruct3InterfaceProp3ChangedDelegate Prop3Changed;
-    FTestbed2NestedStruct3InterfaceProp3ChangedDelegate& GetProp3ChangedDelegate() override;
+	FTestbed2NestedStruct3InterfaceProp3ChangedDelegate Prop3Changed;
+	FTestbed2NestedStruct3InterfaceProp3ChangedDelegate& GetProp3ChangedDelegate() override;
 
-    // properties
+	// properties
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface")
-    FTestbed2NestedStruct1 GetProp1() const override;
-
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface")
-    void SetProp1(const FTestbed2NestedStruct1& Prop1) override;
+	FTestbed2NestedStruct1 GetProp1() const override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface")
-    FTestbed2NestedStruct2 GetProp2() const override;
+	void SetProp1(const FTestbed2NestedStruct1& Prop1) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface")
-    void SetProp2(const FTestbed2NestedStruct2& Prop2) override;
+	FTestbed2NestedStruct2 GetProp2() const override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface")
-    FTestbed2NestedStruct3 GetProp3() const override;
+	void SetProp2(const FTestbed2NestedStruct2& Prop2) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface")
-    void SetProp3(const FTestbed2NestedStruct3& Prop3) override;
+	FTestbed2NestedStruct3 GetProp3() const override;
 
-    // operations
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface", meta=(Latent, LatentInfo="LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-    void Func1(UObject* WorldContextObject, struct FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result,const FTestbed2NestedStruct1& Param1);
-    FTestbed2NestedStruct1 Func1(const FTestbed2NestedStruct1& Param1) override;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface")
+	void SetProp3(const FTestbed2NestedStruct3& Prop3) override;
 
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface", meta=(Latent, LatentInfo="LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-    void Func2(UObject* WorldContextObject, struct FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result,const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2);
-    FTestbed2NestedStruct1 Func2(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2) override;
+	// operations
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	void Func1(UObject* WorldContextObject, struct FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1);
+	FTestbed2NestedStruct1 Func1(const FTestbed2NestedStruct1& Param1) override;
 
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface", meta=(Latent, LatentInfo="LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-    void Func3(UObject* WorldContextObject, struct FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result,const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3);
-    FTestbed2NestedStruct1 Func3(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3) override;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	void Func2(UObject* WorldContextObject, struct FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2);
+	FTestbed2NestedStruct1 Func2(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2) override;
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	void Func3(UObject* WorldContextObject, struct FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3);
+	FTestbed2NestedStruct1 Func3(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3) override;
 
 private:
 	/** The connection to the service backend. */
 	TSharedPtr<ITestbed2NestedStruct3InterfaceInterface, ESPMode::ThreadSafe> service;
 
-    // signals
-    UFUNCTION(Category = "ApiGear|Testbed2|NestedStruct3Interface", BlueprintInternalUseOnly)
-    void OnSig1(const FTestbed2NestedStruct1& Param1);
-    
-    UFUNCTION(Category = "ApiGear|Testbed2|NestedStruct3Interface", BlueprintInternalUseOnly)
-    void OnSig2(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2);
-    
-    UFUNCTION(Category = "ApiGear|Testbed2|NestedStruct3Interface", BlueprintInternalUseOnly)
-    void OnSig3(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3);
-    
-    UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface", BlueprintInternalUseOnly)
-    void OnProp1Changed(const FTestbed2NestedStruct1& Prop1);
+	// signals
+	UFUNCTION(Category = "ApiGear|Testbed2|NestedStruct3Interface", BlueprintInternalUseOnly)
+	void OnSig1(const FTestbed2NestedStruct1& Param1);
 
-    UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface", BlueprintInternalUseOnly)
-    void OnProp2Changed(const FTestbed2NestedStruct2& Prop2);
+	UFUNCTION(Category = "ApiGear|Testbed2|NestedStruct3Interface", BlueprintInternalUseOnly)
+	void OnSig2(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2);
 
-    UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface", BlueprintInternalUseOnly)
-    void OnProp3Changed(const FTestbed2NestedStruct3& Prop3);
+	UFUNCTION(Category = "ApiGear|Testbed2|NestedStruct3Interface", BlueprintInternalUseOnly)
+	void OnSig3(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3);
 
-    // properties - local copy
-	UPROPERTY(EditAnywhere, BlueprintGetter=GetProp1, BlueprintSetter=SetProp1, Category = "ApiGear|Testbed2|NestedStruct3Interface")
-    FTestbed2NestedStruct1 Prop1;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface", BlueprintInternalUseOnly)
+	void OnProp1Changed(const FTestbed2NestedStruct1& Prop1);
 
-	UPROPERTY(EditAnywhere, BlueprintGetter=GetProp2, BlueprintSetter=SetProp2, Category = "ApiGear|Testbed2|NestedStruct3Interface")
-    FTestbed2NestedStruct2 Prop2;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface", BlueprintInternalUseOnly)
+	void OnProp2Changed(const FTestbed2NestedStruct2& Prop2);
 
-	UPROPERTY(EditAnywhere, BlueprintGetter=GetProp3, BlueprintSetter=SetProp3, Category = "ApiGear|Testbed2|NestedStruct3Interface")
-    FTestbed2NestedStruct3 Prop3;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface", BlueprintInternalUseOnly)
+	void OnProp3Changed(const FTestbed2NestedStruct3& Prop3);
 
+	// properties - local copy
+	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1, BlueprintSetter = SetProp1, Category = "ApiGear|Testbed2|NestedStruct3Interface")
+	FTestbed2NestedStruct1 Prop1;
+
+	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp2, BlueprintSetter = SetProp2, Category = "ApiGear|Testbed2|NestedStruct3Interface")
+	FTestbed2NestedStruct2 Prop2;
+
+	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp3, BlueprintSetter = SetProp3, Category = "ApiGear|Testbed2|NestedStruct3Interface")
+	FTestbed2NestedStruct3 Prop3;
 };

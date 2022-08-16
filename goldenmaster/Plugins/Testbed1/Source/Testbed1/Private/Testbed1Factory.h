@@ -18,7 +18,7 @@ limitations under the License.
 class ITestbed1StructInterfaceInterface;
 class ITestbed1StructArrayInterfaceInterface;
 
-//General Log
+// General Log
 DECLARE_LOG_CATEGORY_EXTERN(LogFTestbed1ModuleFactory, Log, All);
 
 class FTestbed1ModuleFactory

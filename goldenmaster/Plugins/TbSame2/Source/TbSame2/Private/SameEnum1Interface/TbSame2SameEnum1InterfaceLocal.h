@@ -19,37 +19,36 @@ limitations under the License.
 
 #include "apig/TbSame2_apig.h"
 
-namespace TbSame2 {
-namespace SameEnum1Interface {
-namespace Private {
+namespace TbSame2
+{
+namespace SameEnum1Interface
+{
+namespace Private
+{
 
 class LocalService : public ITbSame2SameEnum1InterfaceInterface
 {
 public:
+	explicit LocalService();
+	virtual ~LocalService();
 
-    explicit LocalService();
-    virtual ~LocalService();
+	// signals
+	FTbSame2SameEnum1InterfaceSig1Delegate Sig1Signal;
+	FTbSame2SameEnum1InterfaceSig1Delegate& GetSig1SignalDelegate() override;
 
-    // signals
-    FTbSame2SameEnum1InterfaceSig1Delegate Sig1Signal;
-    FTbSame2SameEnum1InterfaceSig1Delegate& GetSig1SignalDelegate() override;
-    
-    FTbSame2SameEnum1InterfaceProp1ChangedDelegate Prop1Changed;
-    FTbSame2SameEnum1InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
+	FTbSame2SameEnum1InterfaceProp1ChangedDelegate Prop1Changed;
+	FTbSame2SameEnum1InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
 
+	// properties
+	ETbSame2Enum1 GetProp1() const override;
+	void SetProp1(const ETbSame2Enum1& Prop1) override;
 
-    // properties
-    ETbSame2Enum1 GetProp1() const override;
-    void SetProp1(const ETbSame2Enum1& Prop1) override;
-
-
-    // operations
-    ETbSame2Enum1 Func1(const ETbSame2Enum1& Param1) override;
-    
+	// operations
+	ETbSame2Enum1 Func1(const ETbSame2Enum1& Param1) override;
 
 private:
-    // properties - local copy - use setter functions to emit changed signals
-    ETbSame2Enum1 Prop1;
+	// properties - local copy - use setter functions to emit changed signals
+	ETbSame2Enum1 Prop1;
 };
 
 } // namespace Private

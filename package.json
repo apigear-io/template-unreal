@@ -19,7 +19,7 @@
   "scripts": {
     "gen:goldenmaster": "rm -rf goldenmaster && node node_modules/@apigear-io/apigear-cli/bin/run gen run apigear/goldenmaster.solution.yaml && mv test/ goldenmaster",
     "test:goldenmaster": "rm -rf test && node node_modules/@apigear-io/apigear-cli/bin/run gen run apigear/goldenmaster.solution.yaml && diff -r goldenmaster/ test/",
-    "format:style": "find -type f -path goldenmaster/Plugins -name *.cpp -o -name *.h ! -path \"*ThirdParty*\" | xargs clang-format -i",
+    "format:style": "find goldenmaster/Plugins -type f -iname '*.h' -not -path '*ThirdParty*' -o -type f -iname '*.cpp' -not -path '*ThirdParty*' | xargs clang-format -i",
     "report:license": "license-report --exclude=@apigear-io/apigear-cli --department.value=apigear --relatedTo.value=$npm_package_name --output=csv --csvHeaders > licenses.csv",
     "version": "standard-version -i CHANGELOG.md --same-file"
   },

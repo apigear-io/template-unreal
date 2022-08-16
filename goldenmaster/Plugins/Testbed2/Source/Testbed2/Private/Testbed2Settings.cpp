@@ -17,7 +17,7 @@ limitations under the License.
 #include "Testbed2Settings.h"
 
 UTestbed2Settings::UTestbed2Settings(const FObjectInitializer& ObjectInitializer)
-        : Super(ObjectInitializer)
-        , ServiceConnection(ETestbed2Connection(ETestbed2Connection::CONNECTION_LOCAL))
+	: Super(ObjectInitializer)
+	, ServiceConnection(ETestbed2Connection(ETestbed2Connection::CONNECTION_LOCAL))
 {
 }

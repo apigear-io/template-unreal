@@ -18,37 +18,36 @@ limitations under the License.
 
 #include "apig/TbSame1_apig.h"
 
-namespace TbSame1 {
-namespace SameEnum1Interface {
-namespace Private {
+namespace TbSame1
+{
+namespace SameEnum1Interface
+{
+namespace Private
+{
 
 class WAMPService : public ITbSame1SameEnum1InterfaceInterface
 {
 public:
+	explicit WAMPService();
+	virtual ~WAMPService();
 
-    explicit WAMPService();
-    virtual ~WAMPService();
+	// signals
+	FTbSame1SameEnum1InterfaceSig1Delegate Sig1Signal;
+	FTbSame1SameEnum1InterfaceSig1Delegate& GetSig1SignalDelegate() override;
 
-    // signals
-    FTbSame1SameEnum1InterfaceSig1Delegate Sig1Signal;
-    FTbSame1SameEnum1InterfaceSig1Delegate& GetSig1SignalDelegate() override;
-    
-    FTbSame1SameEnum1InterfaceProp1ChangedDelegate Prop1Changed;
-    FTbSame1SameEnum1InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
+	FTbSame1SameEnum1InterfaceProp1ChangedDelegate Prop1Changed;
+	FTbSame1SameEnum1InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
 
+	// properties
+	ETbSame1Enum1 GetProp1() const override;
+	void SetProp1(const ETbSame1Enum1& Prop1) override;
 
-    // properties
-    ETbSame1Enum1 GetProp1() const override;
-    void SetProp1(const ETbSame1Enum1& Prop1) override;
-
-
-    // operations
-    ETbSame1Enum1 Func1(const ETbSame1Enum1& Param1) override;
-    
+	// operations
+	ETbSame1Enum1 Func1(const ETbSame1Enum1& Param1) override;
 
 private:
-    // properties - local copy
-    ETbSame1Enum1 Prop1;
+	// properties - local copy
+	ETbSame1Enum1 Prop1;
 };
 
 } // namespace Private

@@ -20,7 +20,7 @@ class ITestbed2NestedStruct1InterfaceInterface;
 class ITestbed2NestedStruct2InterfaceInterface;
 class ITestbed2NestedStruct3InterfaceInterface;
 
-//General Log
+// General Log
 DECLARE_LOG_CATEGORY_EXTERN(LogFTestbed2ModuleFactory, Log, All);
 
 class FTestbed2ModuleFactory

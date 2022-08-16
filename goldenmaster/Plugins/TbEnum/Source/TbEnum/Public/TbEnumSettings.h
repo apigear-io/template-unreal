@@ -28,15 +28,15 @@ limitations under the License.
 UENUM(BlueprintType)
 enum class ETbEnumConnection : uint8
 {
-    CONNECTION_LOCAL UMETA(Displayname = "Local"),
-    CONNECTION_WAMP  UMETA(Displayname = "Remote WAMP"),
-    CONNECTION_OLINK  UMETA(Displayname = "Remote OLink"),
-    CONNECTION_SIMU  UMETA(Displayname = "Remote Simulation")
+	CONNECTION_LOCAL UMETA(Displayname = "Local"),
+	CONNECTION_WAMP UMETA(Displayname = "Remote WAMP"),
+	CONNECTION_OLINK UMETA(Displayname = "Remote OLink"),
+	CONNECTION_SIMU UMETA(Displayname = "Remote Simulation")
 };
 
 /**
-* Implements the settings for the TbEnum plugin.
-*/
+ * Implements the settings for the TbEnum plugin.
+ */
 UCLASS(Config = Engine, DefaultConfig)
 class TBENUM_API UTbEnumSettings : public UObject
 {

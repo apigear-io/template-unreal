@@ -32,15 +32,15 @@ limitations under the License.
 UENUM(BlueprintType)
 enum class E{{module_name_capital}}Connection : uint8
 {
-    CONNECTION_LOCAL UMETA(Displayname = "Local"),
-    CONNECTION_WAMP  UMETA(Displayname = "Remote WAMP"),
-    CONNECTION_OLINK  UMETA(Displayname = "Remote OLink"),
-    CONNECTION_SIMU  UMETA(Displayname = "Remote Simulation")
+	CONNECTION_LOCAL UMETA(Displayname = "Local"),
+	CONNECTION_WAMP UMETA(Displayname = "Remote WAMP"),
+	CONNECTION_OLINK UMETA(Displayname = "Remote OLink"),
+	CONNECTION_SIMU UMETA(Displayname = "Remote Simulation")
 };
 
 /**
-* Implements the settings for the {{module_name_capital}} plugin.
-*/
+ * Implements the settings for the {{module_name_capital}} plugin.
+ */
 UCLASS(Config = Engine, DefaultConfig)
 class {{API_MACRO}} U{{module_name_capital}}Settings : public UObject
 {

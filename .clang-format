@@ -1,14 +1,17 @@
----
 Language:        Cpp
+BasedOnStyle:    LLVM
+StatementMacros: ['UPROPERTY', 'UFUNCTION', 'UCLASS', 'USTRUCT', 'UENUM', 'UINTERFACE', 'GENERATED_BODY']
 IndentWidth:		 4
 TabWidth:        4
 UseTab:          Always
+AccessModifierOffset: -4
 AlignAfterOpenBracket: DontAlign
 AllowShortFunctionsOnASingleLine: None
 AllowShortIfStatementsOnASingleLine: false
 BreakBeforeBraces: Allman
 BreakConstructorInitializersBeforeComma: false
 BreakConstructorInitializers: BeforeComma
-ColumnLimit:     132
+ColumnLimit:     0
 SortIncludes:    false
 PointerAlignment: Left
+MaxEmptyLinesToKeep: 1

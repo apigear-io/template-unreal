@@ -19,83 +19,82 @@ limitations under the License.
 #include "apig/TbSimple_apig.h"
 #include "olink/clientnode.h"
 
-namespace TbSimple {
-namespace SimpleArrayInterface {
-namespace Private {
+namespace TbSimple
+{
+namespace SimpleArrayInterface
+{
+namespace Private
+{
 
 class OLinkService : public ITbSimpleSimpleArrayInterfaceInterface, public ApiGear::ObjectLink::IObjectSink
 {
 public:
+	explicit OLinkService();
+	virtual ~OLinkService();
 
-    explicit OLinkService();
-    virtual ~OLinkService();
+	// signals
+	FTbSimpleSimpleArrayInterfaceSigBoolDelegate SigBoolSignal;
+	FTbSimpleSimpleArrayInterfaceSigBoolDelegate& GetSigBoolSignalDelegate() override;
 
-    // signals
-    FTbSimpleSimpleArrayInterfaceSigBoolDelegate SigBoolSignal;
-    FTbSimpleSimpleArrayInterfaceSigBoolDelegate& GetSigBoolSignalDelegate() override;
-    
-    FTbSimpleSimpleArrayInterfaceSigIntDelegate SigIntSignal;
-    FTbSimpleSimpleArrayInterfaceSigIntDelegate& GetSigIntSignalDelegate() override;
-    
-    FTbSimpleSimpleArrayInterfaceSigFloatDelegate SigFloatSignal;
-    FTbSimpleSimpleArrayInterfaceSigFloatDelegate& GetSigFloatSignalDelegate() override;
-    
-    FTbSimpleSimpleArrayInterfaceSigStringDelegate SigStringSignal;
-    FTbSimpleSimpleArrayInterfaceSigStringDelegate& GetSigStringSignalDelegate() override;
-    
-    FTbSimpleSimpleArrayInterfacePropBoolChangedDelegate PropBoolChanged;
-    FTbSimpleSimpleArrayInterfacePropBoolChangedDelegate& GetPropBoolChangedDelegate() override;
+	FTbSimpleSimpleArrayInterfaceSigIntDelegate SigIntSignal;
+	FTbSimpleSimpleArrayInterfaceSigIntDelegate& GetSigIntSignalDelegate() override;
 
-    FTbSimpleSimpleArrayInterfacePropIntChangedDelegate PropIntChanged;
-    FTbSimpleSimpleArrayInterfacePropIntChangedDelegate& GetPropIntChangedDelegate() override;
+	FTbSimpleSimpleArrayInterfaceSigFloatDelegate SigFloatSignal;
+	FTbSimpleSimpleArrayInterfaceSigFloatDelegate& GetSigFloatSignalDelegate() override;
 
-    FTbSimpleSimpleArrayInterfacePropFloatChangedDelegate PropFloatChanged;
-    FTbSimpleSimpleArrayInterfacePropFloatChangedDelegate& GetPropFloatChangedDelegate() override;
+	FTbSimpleSimpleArrayInterfaceSigStringDelegate SigStringSignal;
+	FTbSimpleSimpleArrayInterfaceSigStringDelegate& GetSigStringSignalDelegate() override;
 
-    FTbSimpleSimpleArrayInterfacePropStringChangedDelegate PropStringChanged;
-    FTbSimpleSimpleArrayInterfacePropStringChangedDelegate& GetPropStringChangedDelegate() override;
+	FTbSimpleSimpleArrayInterfacePropBoolChangedDelegate PropBoolChanged;
+	FTbSimpleSimpleArrayInterfacePropBoolChangedDelegate& GetPropBoolChangedDelegate() override;
 
-    // properties
-    TArray<bool> GetPropBool() const override;
-    void SetPropBool(const TArray<bool>& PropBool) override;
+	FTbSimpleSimpleArrayInterfacePropIntChangedDelegate PropIntChanged;
+	FTbSimpleSimpleArrayInterfacePropIntChangedDelegate& GetPropIntChangedDelegate() override;
 
-    TArray<int32> GetPropInt() const override;
-    void SetPropInt(const TArray<int32>& PropInt) override;
+	FTbSimpleSimpleArrayInterfacePropFloatChangedDelegate PropFloatChanged;
+	FTbSimpleSimpleArrayInterfacePropFloatChangedDelegate& GetPropFloatChangedDelegate() override;
 
-    TArray<float> GetPropFloat() const override;
-    void SetPropFloat(const TArray<float>& PropFloat) override;
+	FTbSimpleSimpleArrayInterfacePropStringChangedDelegate PropStringChanged;
+	FTbSimpleSimpleArrayInterfacePropStringChangedDelegate& GetPropStringChangedDelegate() override;
 
-    TArray<FString> GetPropString() const override;
-    void SetPropString(const TArray<FString>& PropString) override;
+	// properties
+	TArray<bool> GetPropBool() const override;
+	void SetPropBool(const TArray<bool>& PropBool) override;
 
+	TArray<int32> GetPropInt() const override;
+	void SetPropInt(const TArray<int32>& PropInt) override;
 
-    // operations
-    TArray<bool> FuncBool(const TArray<bool>& ParamBool) override;
-    
-    TArray<int32> FuncInt(const TArray<int32>& ParamInt) override;
-    
-    TArray<float> FuncFloat(const TArray<float>& ParamFloat) override;
-    
-    TArray<FString> FuncString(const TArray<FString>& ParamString) override;
-    
+	TArray<float> GetPropFloat() const override;
+	void SetPropFloat(const TArray<float>& PropFloat) override;
 
-    // olink sink interface
-    std::string olinkObjectName() override;
-    void olinkOnSignal(std::string name, nlohmann::json args) override;
-    void olinkOnPropertyChanged(std::string name, nlohmann::json value) override;
-    void olinkOnInit(std::string name, nlohmann::json props, ApiGear::ObjectLink::IClientNode *node) override;
-    void olinkOnRelease() override;
+	TArray<FString> GetPropString() const override;
+	void SetPropString(const TArray<FString>& PropString) override;
+
+	// operations
+	TArray<bool> FuncBool(const TArray<bool>& ParamBool) override;
+
+	TArray<int32> FuncInt(const TArray<int32>& ParamInt) override;
+
+	TArray<float> FuncFloat(const TArray<float>& ParamFloat) override;
+
+	TArray<FString> FuncString(const TArray<FString>& ParamString) override;
+
+	// olink sink interface
+	std::string olinkObjectName() override;
+	void olinkOnSignal(std::string name, nlohmann::json args) override;
+	void olinkOnPropertyChanged(std::string name, nlohmann::json value) override;
+	void olinkOnInit(std::string name, nlohmann::json props, ApiGear::ObjectLink::IClientNode* node) override;
+	void olinkOnRelease() override;
 
 private:
-    void applyState(const nlohmann::json& fields);
-    
-    ApiGear::ObjectLink::IClientNode *m_node;
-    bool m_isReady;
-    // properties - local copy
-    TArray<bool> PropBool;
-    TArray<int32> PropInt;
-    TArray<float> PropFloat;
-    TArray<FString> PropString;
+	void applyState(const nlohmann::json& fields);
+	ApiGear::ObjectLink::IClientNode* m_node;
+	bool m_isReady;
+	// properties - local copy
+	TArray<bool> PropBool;
+	TArray<int32> PropInt;
+	TArray<float> PropFloat;
+	TArray<FString> PropString;
 };
 
 } // namespace Private

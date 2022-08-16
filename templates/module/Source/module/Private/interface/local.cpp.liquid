@@ -23,19 +23,22 @@ limitations under the License.
 
 #include "{{module.name|capital}}{{interface.name|capital}}Local.h"
 
-namespace {{module.name | capital}} {
-namespace {{interface.name | capital}} {
-namespace Private {
+namespace {{module.name | capital}}
+{
+namespace {{interface.name | capital}}
+{
+namespace Private
+{
 
-    {% if interface.description%}
+	{% if interface.description%}
 /**
    \brief {{interface.description}}
 */
 {% endif %}
 {{class}}::{{class}}()
-    : I{{module.name | capital}}{{interface.name|capital}}Interface()
+	: I{{module.name | capital}}{{interface.name|capital}}Interface()
 {% for property in interface.properties %}
-    , {{property|unrealVarName}}({{property|unrealDefault: moduleCapital}})
+	, {{property|unrealVarName}}({{property|unrealDefault: moduleCapital}})
 {% endfor %}
 {
 }
@@ -46,28 +49,28 @@ namespace Private {
 {% for signal in interface.signals %}
 F{{signal|unrealVarName: moduleInterfaceCapital}}Delegate& {{class}}::Get{{signal|unrealVarName}}SignalDelegate()
 {
-    return {{signal|unrealVarName}}Signal;
+	return {{signal|unrealVarName}}Signal;
 }
 {{nl}}
 {% endfor %}
 {% for property in interface.properties %}
 {{property|unrealTypeName: false, moduleCapital}} {{class}}::Get{{property.name | capital}}() const
 {
-    return {{property|unrealVarName}};
+	return {{property|unrealVarName}};
 }
 {{nl}}
 void {{class}}::Set{{property.name | capital}}({{property|unrealParam: moduleCapital, 'In'}})
 {
-    if({{property|unrealVarName}} != {{property|unrealVarName: 'In'}})
-    {
-        {{property|unrealVarName}} = {{property|unrealVarName: 'In'}};
-        {{property.name|capital}}Changed.Broadcast({{property|unrealVarName}});
-    }
+	if ({{property|unrealVarName}} != {{property|unrealVarName: 'In'}})
+	{
+		{{property|unrealVarName}} = {{property|unrealVarName: 'In'}};
+		{{property.name|capital}}Changed.Broadcast({{property|unrealVarName}});
+	}
 }
 {{nl}}
 F{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate& {{class}}::Get{{property.name|capital}}ChangedDelegate()
 {
-    return {{property.name|capital}}Changed;
+	return {{property.name|capital}}Changed;
 }
 {% endfor %}
 {{nl}}
@@ -81,13 +84,13 @@ F{{moduleInterfaceCapital}}{{property.name|capital}}ChangedDelegate& {{class}}::
 {% assign returnVal = operation|unrealReturn: moduleCapital %}
 {{returnVal}} {{class}}::{{operation.name|capital}}({{operation|unrealParams: moduleCapital}})
 {
-    {% for parameter in operation.params %}
-    (void) {{parameter|unrealVarName}};
-    {% endfor %}
-    // do business logic here
-    {% if returnVal != "void" %}
-    return {{operation|unrealDefault: moduleCapital}};
-    {% endif %}
+	{% for parameter in operation.params %}
+	(void){{parameter|unrealVarName}};
+	{% endfor %}
+	// do business logic here
+	{% if returnVal != "void" %}
+	return {{operation|unrealDefault: moduleCapital}};
+	{% endif %}
 }
 {% endfor %}
 

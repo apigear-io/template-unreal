@@ -9,7 +9,6 @@
 class FApiGearEditorStyle
 {
 public:
-
 	static void Initialize();
 
 	static void Shutdown();
@@ -23,10 +22,8 @@ public:
 	static FName GetStyleSetName();
 
 private:
-
-	static TSharedRef< class FSlateStyleSet > Create();
+	static TSharedRef<class FSlateStyleSet> Create();
 
 private:
-
-	static TSharedPtr< class FSlateStyleSet > StyleInstance;
+	static TSharedPtr<class FSlateStyleSet> StyleInstance;
 };

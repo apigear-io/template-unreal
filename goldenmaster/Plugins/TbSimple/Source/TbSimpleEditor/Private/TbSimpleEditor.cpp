@@ -22,17 +22,13 @@ limitations under the License.
 #define LOCTEXT_NAMESPACE "TbSimpleEditor"
 
 void FTbSimpleEditorModule::StartupModule()
-{	
+{
 	// register settings
 	ISettingsModule* SettingsModule = FModuleManager::GetModulePtr<ISettingsModule>("Settings");
 
-	if (SettingsModule != nullptr)	
+	if (SettingsModule != nullptr)
 	{
-		SettingsModule->RegisterSettings("Project", "Plugins", "ApiGear TbSimple",
-			LOCTEXT("TbSimpleSettingsName", "ApiGear TbSimple"),
-			LOCTEXT("TbSimpleSettingsDescription", "Project settings for ApiGear TbSimple plugin"),
-			GetMutableDefault<UTbSimpleSettings>()
-		);
+		SettingsModule->RegisterSettings("Project", "Plugins", "ApiGear TbSimple", LOCTEXT("TbSimpleSettingsName", "ApiGear TbSimple"), LOCTEXT("TbSimpleSettingsDescription", "Project settings for ApiGear TbSimple plugin"), GetMutableDefault<UTbSimpleSettings>());
 	}
 }
 

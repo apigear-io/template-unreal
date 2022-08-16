@@ -17,12 +17,15 @@ limitations under the License.
 
 #include "TbSame2SameEnum1InterfaceLocal.h"
 
-namespace TbSame2 {
-namespace SameEnum1Interface {
-namespace Private {
+namespace TbSame2
+{
+namespace SameEnum1Interface
+{
+namespace Private
+{
 LocalService::LocalService()
-    : ITbSame2SameEnum1InterfaceInterface()
-    , Prop1(ETbSame2Enum1::VALUE1)
+	: ITbSame2SameEnum1InterfaceInterface()
+	, Prop1(ETbSame2Enum1::VALUE1)
 {
 }
 LocalService::~LocalService()
@@ -31,33 +34,33 @@ LocalService::~LocalService()
 
 FTbSame2SameEnum1InterfaceSig1Delegate& LocalService::GetSig1SignalDelegate()
 {
-    return Sig1Signal;
+	return Sig1Signal;
 }
 
 ETbSame2Enum1 LocalService::GetProp1() const
 {
-    return Prop1;
+	return Prop1;
 }
 
 void LocalService::SetProp1(const ETbSame2Enum1& InProp1)
 {
-    if(Prop1 != InProp1)
-    {
-        Prop1 = InProp1;
-        Prop1Changed.Broadcast(Prop1);
-    }
+	if (Prop1 != InProp1)
+	{
+		Prop1 = InProp1;
+		Prop1Changed.Broadcast(Prop1);
+	}
 }
 
 FTbSame2SameEnum1InterfaceProp1ChangedDelegate& LocalService::GetProp1ChangedDelegate()
 {
-    return Prop1Changed;
+	return Prop1Changed;
 }
 
 ETbSame2Enum1 LocalService::Func1(const ETbSame2Enum1& Param1)
 {
-    (void) Param1;
-    // do business logic here
-    return ETbSame2Enum1::VALUE1;
+	(void)Param1;
+	// do business logic here
+	return ETbSame2Enum1::VALUE1;
 }
 
 } // namespace Private

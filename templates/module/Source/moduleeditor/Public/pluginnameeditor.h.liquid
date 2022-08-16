@@ -24,12 +24,11 @@ limitations under the License.
 class {{module_name}} : public IModuleInterface
 {
 public:
-
 	/** IModuleInterface implementation */
 	virtual void StartupModule() override;
 	virtual void ShutdownModule() override;
 
 private:
 	/** Handle to the test dll we will load */
-	void*	{{module_name}};
+	void* {{module_name}};
 };

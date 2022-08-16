@@ -17,12 +17,15 @@ limitations under the License.
 
 #include "Testbed2NestedStruct1InterfaceLocal.h"
 
-namespace Testbed2 {
-namespace NestedStruct1Interface {
-namespace Private {
+namespace Testbed2
+{
+namespace NestedStruct1Interface
+{
+namespace Private
+{
 LocalService::LocalService()
-    : ITestbed2NestedStruct1InterfaceInterface()
-    , Prop1(FTestbed2NestedStruct1())
+	: ITestbed2NestedStruct1InterfaceInterface()
+	, Prop1(FTestbed2NestedStruct1())
 {
 }
 LocalService::~LocalService()
@@ -31,33 +34,33 @@ LocalService::~LocalService()
 
 FTestbed2NestedStruct1InterfaceSig1Delegate& LocalService::GetSig1SignalDelegate()
 {
-    return Sig1Signal;
+	return Sig1Signal;
 }
 
 FTestbed2NestedStruct1 LocalService::GetProp1() const
 {
-    return Prop1;
+	return Prop1;
 }
 
 void LocalService::SetProp1(const FTestbed2NestedStruct1& InProp1)
 {
-    if(Prop1 != InProp1)
-    {
-        Prop1 = InProp1;
-        Prop1Changed.Broadcast(Prop1);
-    }
+	if (Prop1 != InProp1)
+	{
+		Prop1 = InProp1;
+		Prop1Changed.Broadcast(Prop1);
+	}
 }
 
 FTestbed2NestedStruct1InterfaceProp1ChangedDelegate& LocalService::GetProp1ChangedDelegate()
 {
-    return Prop1Changed;
+	return Prop1Changed;
 }
 
 FTestbed2NestedStruct1 LocalService::Func1(const FTestbed2NestedStruct1& Param1)
 {
-    (void) Param1;
-    // do business logic here
-    return FTestbed2NestedStruct1();
+	(void)Param1;
+	// do business logic here
+	return FTestbed2NestedStruct1();
 }
 
 } // namespace Private

@@ -18,37 +18,36 @@ limitations under the License.
 
 #include "apig/TbSame2_apig.h"
 
-namespace TbSame2 {
-namespace SameStruct1Interface {
-namespace Private {
+namespace TbSame2
+{
+namespace SameStruct1Interface
+{
+namespace Private
+{
 
 class WAMPService : public ITbSame2SameStruct1InterfaceInterface
 {
 public:
+	explicit WAMPService();
+	virtual ~WAMPService();
 
-    explicit WAMPService();
-    virtual ~WAMPService();
+	// signals
+	FTbSame2SameStruct1InterfaceSig1Delegate Sig1Signal;
+	FTbSame2SameStruct1InterfaceSig1Delegate& GetSig1SignalDelegate() override;
 
-    // signals
-    FTbSame2SameStruct1InterfaceSig1Delegate Sig1Signal;
-    FTbSame2SameStruct1InterfaceSig1Delegate& GetSig1SignalDelegate() override;
-    
-    FTbSame2SameStruct1InterfaceProp1ChangedDelegate Prop1Changed;
-    FTbSame2SameStruct1InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
+	FTbSame2SameStruct1InterfaceProp1ChangedDelegate Prop1Changed;
+	FTbSame2SameStruct1InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
 
+	// properties
+	FTbSame2Struct1 GetProp1() const override;
+	void SetProp1(const FTbSame2Struct1& Prop1) override;
 
-    // properties
-    FTbSame2Struct1 GetProp1() const override;
-    void SetProp1(const FTbSame2Struct1& Prop1) override;
-
-
-    // operations
-    FTbSame2Struct1 Func1(const FTbSame2Struct1& Param1) override;
-    
+	// operations
+	FTbSame2Struct1 Func1(const FTbSame2Struct1& Param1) override;
 
 private:
-    // properties - local copy
-    FTbSame2Struct1 Prop1;
+	// properties - local copy
+	FTbSame2Struct1 Prop1;
 };
 
 } // namespace Private

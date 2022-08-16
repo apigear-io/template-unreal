@@ -17,15 +17,18 @@ limitations under the License.
 
 #include "TbSimpleSimpleArrayInterfaceLocal.h"
 
-namespace TbSimple {
-namespace SimpleArrayInterface {
-namespace Private {
+namespace TbSimple
+{
+namespace SimpleArrayInterface
+{
+namespace Private
+{
 LocalService::LocalService()
-    : ITbSimpleSimpleArrayInterfaceInterface()
-    , PropBool(TArray<bool>())
-    , PropInt(TArray<int32>())
-    , PropFloat(TArray<float>())
-    , PropString(TArray<FString>())
+	: ITbSimpleSimpleArrayInterfaceInterface()
+	, PropBool(TArray<bool>())
+	, PropInt(TArray<int32>())
+	, PropFloat(TArray<float>())
+	, PropString(TArray<FString>())
 {
 }
 LocalService::~LocalService()
@@ -34,120 +37,120 @@ LocalService::~LocalService()
 
 FTbSimpleSimpleArrayInterfaceSigBoolDelegate& LocalService::GetSigBoolSignalDelegate()
 {
-    return SigBoolSignal;
+	return SigBoolSignal;
 }
 
 FTbSimpleSimpleArrayInterfaceSigIntDelegate& LocalService::GetSigIntSignalDelegate()
 {
-    return SigIntSignal;
+	return SigIntSignal;
 }
 
 FTbSimpleSimpleArrayInterfaceSigFloatDelegate& LocalService::GetSigFloatSignalDelegate()
 {
-    return SigFloatSignal;
+	return SigFloatSignal;
 }
 
 FTbSimpleSimpleArrayInterfaceSigStringDelegate& LocalService::GetSigStringSignalDelegate()
 {
-    return SigStringSignal;
+	return SigStringSignal;
 }
 
 TArray<bool> LocalService::GetPropBool() const
 {
-    return PropBool;
+	return PropBool;
 }
 
 void LocalService::SetPropBool(const TArray<bool>& InPropBool)
 {
-    if(PropBool != InPropBool)
-    {
-        PropBool = InPropBool;
-        PropBoolChanged.Broadcast(PropBool);
-    }
+	if (PropBool != InPropBool)
+	{
+		PropBool = InPropBool;
+		PropBoolChanged.Broadcast(PropBool);
+	}
 }
 
 FTbSimpleSimpleArrayInterfacePropBoolChangedDelegate& LocalService::GetPropBoolChangedDelegate()
 {
-    return PropBoolChanged;
+	return PropBoolChanged;
 }
 TArray<int32> LocalService::GetPropInt() const
 {
-    return PropInt;
+	return PropInt;
 }
 
 void LocalService::SetPropInt(const TArray<int32>& InPropInt)
 {
-    if(PropInt != InPropInt)
-    {
-        PropInt = InPropInt;
-        PropIntChanged.Broadcast(PropInt);
-    }
+	if (PropInt != InPropInt)
+	{
+		PropInt = InPropInt;
+		PropIntChanged.Broadcast(PropInt);
+	}
 }
 
 FTbSimpleSimpleArrayInterfacePropIntChangedDelegate& LocalService::GetPropIntChangedDelegate()
 {
-    return PropIntChanged;
+	return PropIntChanged;
 }
 TArray<float> LocalService::GetPropFloat() const
 {
-    return PropFloat;
+	return PropFloat;
 }
 
 void LocalService::SetPropFloat(const TArray<float>& InPropFloat)
 {
-    if(PropFloat != InPropFloat)
-    {
-        PropFloat = InPropFloat;
-        PropFloatChanged.Broadcast(PropFloat);
-    }
+	if (PropFloat != InPropFloat)
+	{
+		PropFloat = InPropFloat;
+		PropFloatChanged.Broadcast(PropFloat);
+	}
 }
 
 FTbSimpleSimpleArrayInterfacePropFloatChangedDelegate& LocalService::GetPropFloatChangedDelegate()
 {
-    return PropFloatChanged;
+	return PropFloatChanged;
 }
 TArray<FString> LocalService::GetPropString() const
 {
-    return PropString;
+	return PropString;
 }
 
 void LocalService::SetPropString(const TArray<FString>& InPropString)
 {
-    if(PropString != InPropString)
-    {
-        PropString = InPropString;
-        PropStringChanged.Broadcast(PropString);
-    }
+	if (PropString != InPropString)
+	{
+		PropString = InPropString;
+		PropStringChanged.Broadcast(PropString);
+	}
 }
 
 FTbSimpleSimpleArrayInterfacePropStringChangedDelegate& LocalService::GetPropStringChangedDelegate()
 {
-    return PropStringChanged;
+	return PropStringChanged;
 }
 
 TArray<bool> LocalService::FuncBool(const TArray<bool>& ParamBool)
 {
-    (void) ParamBool;
-    // do business logic here
-    return TArray<bool>();
+	(void)ParamBool;
+	// do business logic here
+	return TArray<bool>();
 }
 TArray<int32> LocalService::FuncInt(const TArray<int32>& ParamInt)
 {
-    (void) ParamInt;
-    // do business logic here
-    return TArray<int32>();
+	(void)ParamInt;
+	// do business logic here
+	return TArray<int32>();
 }
 TArray<float> LocalService::FuncFloat(const TArray<float>& ParamFloat)
 {
-    (void) ParamFloat;
-    // do business logic here
-    return TArray<float>();
+	(void)ParamFloat;
+	// do business logic here
+	return TArray<float>();
 }
 TArray<FString> LocalService::FuncString(const TArray<FString>& ParamString)
 {
-    (void) ParamString;
-    // do business logic here
-    return TArray<FString>();
+	(void)ParamString;
+	// do business logic here
+	return TArray<FString>();
 }
 
 } // namespace Private

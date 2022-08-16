@@ -22,17 +22,13 @@ limitations under the License.
 #define LOCTEXT_NAMESPACE "TbSame1Editor"
 
 void FTbSame1EditorModule::StartupModule()
-{	
+{
 	// register settings
 	ISettingsModule* SettingsModule = FModuleManager::GetModulePtr<ISettingsModule>("Settings");
 
-	if (SettingsModule != nullptr)	
+	if (SettingsModule != nullptr)
 	{
-		SettingsModule->RegisterSettings("Project", "Plugins", "ApiGear TbSame1",
-			LOCTEXT("TbSame1SettingsName", "ApiGear TbSame1"),
-			LOCTEXT("TbSame1SettingsDescription", "Project settings for ApiGear TbSame1 plugin"),
-			GetMutableDefault<UTbSame1Settings>()
-		);
+		SettingsModule->RegisterSettings("Project", "Plugins", "ApiGear TbSame1", LOCTEXT("TbSame1SettingsName", "ApiGear TbSame1"), LOCTEXT("TbSame1SettingsDescription", "Project settings for ApiGear TbSame1 plugin"), GetMutableDefault<UTbSame1Settings>());
 	}
 }
 

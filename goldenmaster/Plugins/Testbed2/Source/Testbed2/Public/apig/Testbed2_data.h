@@ -26,10 +26,10 @@ limitations under the License.
 UENUM(BlueprintType)
 enum class ETestbed2Enum1 : uint8
 {
-    VALUE1  UMETA(Displayname = "value1"),
-    VALUE2  UMETA(Displayname = "value2"),
-    VALUE3  UMETA(Displayname = "value3"),
-    VALUE4  UMETA(Displayname = "value4")
+	VALUE1 UMETA(Displayname = "value1"),
+	VALUE2 UMETA(Displayname = "value2"),
+	VALUE3 UMETA(Displayname = "value3"),
+	VALUE4 UMETA(Displayname = "value4")
 };
 
 /**
@@ -43,10 +43,10 @@ bool toUE4Type(ETestbed2Enum1& value, uint8 v);
 UENUM(BlueprintType)
 enum class ETestbed2Enum2 : uint8
 {
-    VALUE1  UMETA(Displayname = "value1"),
-    VALUE2  UMETA(Displayname = "value2"),
-    VALUE3  UMETA(Displayname = "value3"),
-    VALUE4  UMETA(Displayname = "value4")
+	VALUE1 UMETA(Displayname = "value1"),
+	VALUE2 UMETA(Displayname = "value2"),
+	VALUE3 UMETA(Displayname = "value3"),
+	VALUE4 UMETA(Displayname = "value4")
 };
 
 /**
@@ -60,10 +60,10 @@ bool toUE4Type(ETestbed2Enum2& value, uint8 v);
 UENUM(BlueprintType)
 enum class ETestbed2Enum3 : uint8
 {
-    VALUE1  UMETA(Displayname = "value1"),
-    VALUE2  UMETA(Displayname = "value2"),
-    VALUE3  UMETA(Displayname = "value3"),
-    VALUE4  UMETA(Displayname = "value4")
+	VALUE1 UMETA(Displayname = "value1"),
+	VALUE2 UMETA(Displayname = "value2"),
+	VALUE3 UMETA(Displayname = "value3"),
+	VALUE4 UMETA(Displayname = "value4")
 };
 
 /**
@@ -80,7 +80,7 @@ struct TESTBED2_API FTestbed2Struct1
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    int32 field1;
+	int32 field1;
 
 	bool operator==(const FTestbed2Struct1& rhs) const;
 	bool operator!=(const FTestbed2Struct1& rhs) const;
@@ -95,10 +95,10 @@ struct TESTBED2_API FTestbed2Struct2
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    int32 field1;
+	int32 field1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    int32 field2;
+	int32 field2;
 
 	bool operator==(const FTestbed2Struct2& rhs) const;
 	bool operator!=(const FTestbed2Struct2& rhs) const;
@@ -113,13 +113,13 @@ struct TESTBED2_API FTestbed2Struct3
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    int32 field1;
+	int32 field1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    int32 field2;
+	int32 field2;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    int32 field3;
+	int32 field3;
 
 	bool operator==(const FTestbed2Struct3& rhs) const;
 	bool operator!=(const FTestbed2Struct3& rhs) const;
@@ -134,16 +134,16 @@ struct TESTBED2_API FTestbed2Struct4
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    int32 field1;
+	int32 field1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    int32 field2;
+	int32 field2;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    int32 field3;
+	int32 field3;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    int32 field4;
+	int32 field4;
 
 	bool operator==(const FTestbed2Struct4& rhs) const;
 	bool operator!=(const FTestbed2Struct4& rhs) const;
@@ -158,7 +158,7 @@ struct TESTBED2_API FTestbed2NestedStruct1
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    FTestbed2Struct1 field1;
+	FTestbed2Struct1 field1;
 
 	bool operator==(const FTestbed2NestedStruct1& rhs) const;
 	bool operator!=(const FTestbed2NestedStruct1& rhs) const;
@@ -173,10 +173,10 @@ struct TESTBED2_API FTestbed2NestedStruct2
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    FTestbed2Struct1 field1;
+	FTestbed2Struct1 field1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    FTestbed2Struct2 field2;
+	FTestbed2Struct2 field2;
 
 	bool operator==(const FTestbed2NestedStruct2& rhs) const;
 	bool operator!=(const FTestbed2NestedStruct2& rhs) const;
@@ -191,13 +191,13 @@ struct TESTBED2_API FTestbed2NestedStruct3
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    FTestbed2Struct1 field1;
+	FTestbed2Struct1 field1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    FTestbed2Struct2 field2;
+	FTestbed2Struct2 field2;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    FTestbed2Struct3 field3;
+	FTestbed2Struct3 field3;
 
 	bool operator==(const FTestbed2NestedStruct3& rhs) const;
 	bool operator!=(const FTestbed2NestedStruct3& rhs) const;
