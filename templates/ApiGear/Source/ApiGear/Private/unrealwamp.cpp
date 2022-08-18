@@ -3,7 +3,7 @@
 #include "wamp/session.h"
 
 DEFINE_LOG_CATEGORY(LogApiGearWamp);
-using namespace ApiGear::WAMP;
+using namespace ApiGear;
 UnrealWamp* UnrealWamp::s_instance(nullptr);
 
 UnrealWamp::UnrealWamp()
@@ -149,18 +149,18 @@ void UnrealWamp::handleTextMessage(const FString& message)
 	m_session->handleMessage(TCHAR_TO_UTF8(*message));
 }
 
-void UnrealWamp::doCall(std::string procedure, Arguments arguments, ArgumentsKw argumentsKw, ResponseFunc& func)
+void UnrealWamp::doCall(std::string procedure, WAMP::Arguments arguments, WAMP::ArgumentsKw argumentsKw, WAMP::ResponseFunc& func)
 {
 	m_session->doCall(procedure, arguments, argumentsKw, func);
 }
 
-void UnrealWamp::doCall(std::string procedure, Arguments arguments, ArgumentsKw argumentsKw)
+void UnrealWamp::doCall(std::string procedure, WAMP::Arguments arguments, WAMP::ArgumentsKw argumentsKw)
 {
-	ResponseFunc func = [](ResponseArg arg) {};
+	WAMP::ResponseFunc func = [](WAMP::ResponseArg arg) {};
 	m_session->doCall(procedure, arguments, argumentsKw, func);
 }
 
-void UnrealWamp::doSubscribe(std::string topic, EventFunc& func)
+void UnrealWamp::doSubscribe(std::string topic, WAMP::EventFunc& func)
 {
 	m_session->doSubscribe(topic, func);
 }
@@ -190,7 +190,7 @@ void UnrealWamp::onError(std::string error)
 	log("onError"); //  << error;
 }
 
-void UnrealWamp::onEvent(std::string topic, Arguments args, ArgumentsKw kwargs)
+void UnrealWamp::onEvent(std::string topic, WAMP::Arguments args, WAMP::ArgumentsKw kwargs)
 {
 	log("onEvent"); // << topic; // json(args).dump() << json(kwargs).dump();
 }
