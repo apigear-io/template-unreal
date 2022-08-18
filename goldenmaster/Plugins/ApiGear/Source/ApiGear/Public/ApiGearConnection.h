@@ -2,6 +2,7 @@
 
 #include "UObject/Interface.h"
 #include "CoreMinimal.h"
+#include "Containers/Ticker.h"
 #include "UObject/NoExportTypes.h"
 #include "ApiGearConnection.generated.h"
 
