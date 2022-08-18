@@ -1,6 +1,5 @@
 // Copyright Epic Games, Inc. All Rights Reserved
 #include "apigear.h"
-#include "Core.h"
 #include "Modules/ModuleManager.h"
 #include "WebSocketsModule.h"
 #include "HttpModule.h"

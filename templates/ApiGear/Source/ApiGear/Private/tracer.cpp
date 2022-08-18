@@ -4,7 +4,6 @@
 #include <sstream>
 #include "Engine/GameInstance.h"
 #include "Engine/World.h"
-#include "Engine.h"
 #include "GameFramework/PlayerController.h"
 #include "Interfaces/IHttpResponse.h"
 #include "Interfaces/IHttpRequest.h"
