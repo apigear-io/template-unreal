@@ -163,6 +163,10 @@ features:
           overwrite: true
     module:
       documents:
+        - source: "module/Config/FilterPlugin.ini"
+          target: "Plugins/{{module.name|capital}}/Config/FilterPlugin.ini"
+          overwrite: true
+          raw: true
         - source: "module/Source/module/pluginname.Build.cs.liquid"
           target: "Plugins/{{module.name|capital}}/Source/{{module.name|capital}}/{{module.name|capital}}.Build.cs"
           overwrite: true
