@@ -26,6 +26,9 @@ features:
   scaffold:
     system:
       documents:
+        - source: "build.bat.liquid"
+          target: "build.bat"
+          overwrite: true
         - source: "ApiGear/Source/ApiGear/apigear.Build.cs"
           target: "Plugins/ApiGear/Source/ApiGear/apigear.Build.cs"
           overwrite: true
