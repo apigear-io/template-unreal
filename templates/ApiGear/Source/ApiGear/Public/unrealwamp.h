@@ -1,21 +1,13 @@
 // Copyright Epic Games, Inc. All Rights Reserved
 #pragma once
-
-#include "wamp/types.h"
+#include "wamp/wamptypes.h"
+#include "wamp/session.h"
 #include "WebSocketsModule.h"
 #include "IWebSocket.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(LogApiGearWamp, Log, All);
 
 using namespace ApiGear;
-
-namespace ApiGear
-{
-namespace WAMP
-{
-class Session;
-}
-} // namespace ApiGear
 
 class APIGEAR_API UnrealWamp : public WAMP::IMessageWriter, public WAMP::ISessionListener, public WAMP::ILogger
 {

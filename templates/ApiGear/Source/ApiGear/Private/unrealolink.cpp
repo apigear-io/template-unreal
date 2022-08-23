@@ -1,6 +1,8 @@
 #include "unrealolink.h"
 #include "ApiGearSettings.h"
-#include "olink/core/types.h"
+THIRD_PARTY_INCLUDES_START
+#include "olink/core/olinktypes.h"
+THIRD_PARTY_INCLUDES_END
 #include <UObject/Object.h>
 #include <functional>
 #include <chrono>

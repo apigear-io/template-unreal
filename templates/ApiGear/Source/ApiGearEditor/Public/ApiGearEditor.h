@@ -4,8 +4,9 @@
 #include "CoreMinimal.h"
 #include "Modules/ModuleManager.h"
 
-class FToolBarBuilder;
-class FMenuBuilder;
+class FReply;
+class FText;
+class SDockTab;
 
 class FApiGearEditorModule : public IModuleInterface
 {

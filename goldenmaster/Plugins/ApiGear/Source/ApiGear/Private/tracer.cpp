@@ -3,6 +3,8 @@
 #include <iostream>
 #include <sstream>
 #include "Engine/GameInstance.h"
+
+#include "Modules/ModuleManager.h"
 #include "Engine/World.h"
 #include "GameFramework/PlayerController.h"
 #include "Interfaces/IHttpResponse.h"

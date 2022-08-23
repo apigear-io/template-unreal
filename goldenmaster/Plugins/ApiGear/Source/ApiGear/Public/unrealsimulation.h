@@ -2,7 +2,9 @@
 #pragma once
 
 #include "ApiGearConnection.h"
-#include "jsonrpc/types.h"
+THIRD_PARTY_INCLUDES_START
+#include "jsonrpc/jsonrpctypes.h"
+THIRD_PARTY_INCLUDES_END
 #include "WebSocketsModule.h"
 #include "IWebSocket.h"
 #include "unrealsimulation.generated.h"

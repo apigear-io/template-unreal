@@ -1,8 +1,9 @@
 #pragma once
 
 #include "ApiGearConnection.h"
-#include "olink/core/types.h"
+THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
+THIRD_PARTY_INCLUDES_END
 #include "WebSocketsModule.h"
 #include "IWebSocket.h"
 #include <queue>

@@ -1,9 +1,11 @@
 // Copyright Epic Games, Inc. All Rights Reserved
 #include "unrealwamp.h"
+#include "ApiGearSettings.h"
 #include "wamp/session.h"
 
 DEFINE_LOG_CATEGORY(LogApiGearWamp);
 using namespace ApiGear;
+
 UnrealWamp* UnrealWamp::s_instance(nullptr);
 
 UnrealWamp::UnrealWamp()

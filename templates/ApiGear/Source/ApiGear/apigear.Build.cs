@@ -14,8 +14,12 @@ public class ApiGear : ModuleRules
 		PublicDefinitions.Add("JSON_NOEXCEPTION=1");
 
         PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "Public"));
-        PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "ThirdParty"));
+        PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "ThirdParty","Public"));
         PrivateIncludePaths.Add(Path.Combine(ModuleDirectory, "Private"));
+        PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "ThirdParty","Public","olink"));
+        PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "ThirdParty","Public","olink", "core"));
+        PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "ThirdParty","Public","jsonrpc"));
+        PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "ThirdParty","Public","wamp"));
        
 		PublicDependencyModuleNames.AddRange(
 			new string[]

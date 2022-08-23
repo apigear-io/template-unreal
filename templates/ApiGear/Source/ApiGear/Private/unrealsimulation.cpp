@@ -1,6 +1,9 @@
 // Copyright Epic Games, Inc. All Rights Reserved
 #include "unrealsimulation.h"
+#include "ApiGearSettings.h"
+THIRD_PARTY_INCLUDES_START
 #include "jsonrpc/rpcprotocol.h"
+THIRD_PARTY_INCLUDES_END
 
 using namespace ApiGear::JSONRPC;
 
