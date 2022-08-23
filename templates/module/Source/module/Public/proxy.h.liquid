@@ -28,6 +28,7 @@ limitations under the License.
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
 #include "Subsystems/GameInstanceSubsystem.h"
+#include "Engine/LatentActionManager.h"
 #include "apig/{{module.name|capital}}_apig.h"
 #include "{{module.name|capital}}{{interface.name|capital}}Proxy.generated.h"
 
@@ -73,7 +74,7 @@ public:
 	{{operation|unrealReturn: moduleCapital}} {{operation.name | capital}}({{operation|unrealParams: moduleCapital}}) override;
 	{% else %}
 	UFUNCTION(BlueprintCallable, Category = "{{category}}", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-	void {{operation.name | capital}}(UObject* WorldContextObject, struct FLatentActionInfo LatentInfo, {{operation|unrealReturn: moduleCapital}}& Result{% if operation.params.size > 0 %},{%endif%} {{operation|unrealParams: moduleCapital}});
+	void {{operation.name | capital}}(UObject* WorldContextObject, FLatentActionInfo LatentInfo, {{operation|unrealReturn: moduleCapital}}& Result{% if operation.params.size > 0 %},{%endif%} {{operation|unrealParams: moduleCapital}});
 	{{operation|unrealReturn: moduleCapital}} {{operation.name | capital}}({{operation|unrealParams: moduleCapital}}) override;
 	{% endif %}
 {{nl}}

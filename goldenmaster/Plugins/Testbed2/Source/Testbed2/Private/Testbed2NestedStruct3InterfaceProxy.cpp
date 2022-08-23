@@ -19,8 +19,10 @@ limitations under the License.
 #include "NestedStruct3Interface/Testbed2NestedStruct3InterfaceLocal.h"
 #include "apig/Testbed2.trace.h"
 #include "Testbed2Factory.h"
-#include "Engine/LatentActionManager.h"
+#include "Async/Async.h"
 #include "LatentActions.h"
+#include "Engine/LatentActionManager.h"
+#include "Engine/Engine.h"
 
 class FTestbed2NestedStruct3InterfaceLatentAction : public FPendingLatentAction
 {

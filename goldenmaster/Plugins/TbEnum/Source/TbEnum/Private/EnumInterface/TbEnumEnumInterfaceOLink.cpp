@@ -25,6 +25,8 @@ limitations under the License.
 #include "Async/Async.h"
 #include "apig/TbEnum.json.adapter.h"
 #include "unrealolink.h"
+#include "Async/Async.h"
+#include "Engine/Engine.h"
 #include "ApiGear/Public/ApiGearConnectionManager.h"
 #include "Misc/DateTime.h"
 

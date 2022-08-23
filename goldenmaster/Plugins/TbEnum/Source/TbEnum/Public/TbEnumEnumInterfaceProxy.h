@@ -20,6 +20,7 @@ limitations under the License.
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
 #include "Subsystems/GameInstanceSubsystem.h"
+#include "Engine/LatentActionManager.h"
 #include "apig/TbEnum_apig.h"
 #include "TbEnumEnumInterfaceProxy.generated.h"
 
@@ -92,19 +93,19 @@ public:
 
 	// operations
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-	void Func0(UObject* WorldContextObject, struct FLatentActionInfo LatentInfo, ETbEnumEnum0& Result, const ETbEnumEnum0& Param0);
+	void Func0(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum0& Result, const ETbEnumEnum0& Param0);
 	ETbEnumEnum0 Func0(const ETbEnumEnum0& Param0) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-	void Func1(UObject* WorldContextObject, struct FLatentActionInfo LatentInfo, ETbEnumEnum1& Result, const ETbEnumEnum1& Param1);
+	void Func1(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum1& Result, const ETbEnumEnum1& Param1);
 	ETbEnumEnum1 Func1(const ETbEnumEnum1& Param1) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-	void Func2(UObject* WorldContextObject, struct FLatentActionInfo LatentInfo, ETbEnumEnum2& Result, const ETbEnumEnum2& Param2);
+	void Func2(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum2& Result, const ETbEnumEnum2& Param2);
 	ETbEnumEnum2 Func2(const ETbEnumEnum2& Param2) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-	void Func3(UObject* WorldContextObject, struct FLatentActionInfo LatentInfo, ETbEnumEnum3& Result, const ETbEnumEnum3& Param3);
+	void Func3(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum3& Result, const ETbEnumEnum3& Param3);
 	ETbEnumEnum3 Func3(const ETbEnumEnum3& Param3) override;
 
 private:

@@ -19,8 +19,10 @@ limitations under the License.
 #include "SimpleArrayInterface/TbSimpleSimpleArrayInterfaceLocal.h"
 #include "apig/TbSimple.trace.h"
 #include "TbSimpleFactory.h"
-#include "Engine/LatentActionManager.h"
+#include "Async/Async.h"
 #include "LatentActions.h"
+#include "Engine/LatentActionManager.h"
+#include "Engine/Engine.h"
 
 class FTbSimpleSimpleArrayInterfaceLatentAction : public FPendingLatentAction
 {

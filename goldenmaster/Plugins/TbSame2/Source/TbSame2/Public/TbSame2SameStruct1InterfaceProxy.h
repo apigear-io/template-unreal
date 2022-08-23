@@ -20,6 +20,7 @@ limitations under the License.
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
 #include "Subsystems/GameInstanceSubsystem.h"
+#include "Engine/LatentActionManager.h"
 #include "apig/TbSame2_apig.h"
 #include "TbSame2SameStruct1InterfaceProxy.generated.h"
 
@@ -50,7 +51,7 @@ public:
 
 	// operations
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct1Interface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-	void Func1(UObject* WorldContextObject, struct FLatentActionInfo LatentInfo, FTbSame2Struct1& Result, const FTbSame2Struct1& Param1);
+	void Func1(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame2Struct1& Result, const FTbSame2Struct1& Param1);
 	FTbSame2Struct1 Func1(const FTbSame2Struct1& Param1) override;
 
 private:

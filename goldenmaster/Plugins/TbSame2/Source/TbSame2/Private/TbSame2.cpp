@@ -17,8 +17,8 @@ limitations under the License.
 #pragma once
 
 #include "TbSame2.h"
-#include "Core.h"
 #include "ApiGear/Public/ApiGearConnectionManager.h"
+#include "Engine/Engine.h"
 #include "Modules/ModuleManager.h"
 
 #define LOCTEXT_NAMESPACE "TbSame2"

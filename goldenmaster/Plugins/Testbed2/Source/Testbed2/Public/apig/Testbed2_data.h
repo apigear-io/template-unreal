@@ -79,7 +79,7 @@ struct TESTBED2_API FTestbed2Struct1
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ApiGear|Testbed2")
 	int32 field1;
 
 	bool operator==(const FTestbed2Struct1& rhs) const;
@@ -94,10 +94,10 @@ struct TESTBED2_API FTestbed2Struct2
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ApiGear|Testbed2")
 	int32 field1;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ApiGear|Testbed2")
 	int32 field2;
 
 	bool operator==(const FTestbed2Struct2& rhs) const;
@@ -112,13 +112,13 @@ struct TESTBED2_API FTestbed2Struct3
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ApiGear|Testbed2")
 	int32 field1;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ApiGear|Testbed2")
 	int32 field2;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ApiGear|Testbed2")
 	int32 field3;
 
 	bool operator==(const FTestbed2Struct3& rhs) const;
@@ -133,16 +133,16 @@ struct TESTBED2_API FTestbed2Struct4
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ApiGear|Testbed2")
 	int32 field1;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ApiGear|Testbed2")
 	int32 field2;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ApiGear|Testbed2")
 	int32 field3;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ApiGear|Testbed2")
 	int32 field4;
 
 	bool operator==(const FTestbed2Struct4& rhs) const;
@@ -157,7 +157,7 @@ struct TESTBED2_API FTestbed2NestedStruct1
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ApiGear|Testbed2")
 	FTestbed2Struct1 field1;
 
 	bool operator==(const FTestbed2NestedStruct1& rhs) const;
@@ -172,10 +172,10 @@ struct TESTBED2_API FTestbed2NestedStruct2
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ApiGear|Testbed2")
 	FTestbed2Struct1 field1;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ApiGear|Testbed2")
 	FTestbed2Struct2 field2;
 
 	bool operator==(const FTestbed2NestedStruct2& rhs) const;
@@ -190,13 +190,13 @@ struct TESTBED2_API FTestbed2NestedStruct3
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ApiGear|Testbed2")
 	FTestbed2Struct1 field1;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ApiGear|Testbed2")
 	FTestbed2Struct2 field2;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ApiGear|Testbed2")
 	FTestbed2Struct3 field3;
 
 	bool operator==(const FTestbed2NestedStruct3& rhs) const;

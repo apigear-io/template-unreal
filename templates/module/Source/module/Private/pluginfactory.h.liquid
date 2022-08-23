@@ -19,6 +19,9 @@ limitations under the License.
 {% assign module_name = "F"| append:module_name_capital | append: "ModuleFactory" %}
 #pragma once
 
+#include "Logging/LogMacros.h"
+#include "Templates/SharedPointer.h"
+
 {% for interface in module.interfaces %}
 {% assign class_capital = module.name | capital | append: interface.name | capital -%}
 {% assign class = "I" | append: class_capital | append: "Interface" %}

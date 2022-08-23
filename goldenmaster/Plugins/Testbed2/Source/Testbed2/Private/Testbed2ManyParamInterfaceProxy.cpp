@@ -19,8 +19,10 @@ limitations under the License.
 #include "ManyParamInterface/Testbed2ManyParamInterfaceLocal.h"
 #include "apig/Testbed2.trace.h"
 #include "Testbed2Factory.h"
-#include "Engine/LatentActionManager.h"
+#include "Async/Async.h"
 #include "LatentActions.h"
+#include "Engine/LatentActionManager.h"
+#include "Engine/Engine.h"
 
 class FTestbed2ManyParamInterfaceLatentAction : public FPendingLatentAction
 {

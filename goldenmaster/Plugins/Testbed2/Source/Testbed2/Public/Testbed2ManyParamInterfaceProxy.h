@@ -20,6 +20,7 @@ limitations under the License.
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
 #include "Subsystems/GameInstanceSubsystem.h"
+#include "Engine/LatentActionManager.h"
 #include "apig/Testbed2_apig.h"
 #include "Testbed2ManyParamInterfaceProxy.generated.h"
 
@@ -92,19 +93,19 @@ public:
 
 	// operations
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-	void Func1(UObject* WorldContextObject, struct FLatentActionInfo LatentInfo, int32& Result, int32 Param1);
+	void Func1(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1);
 	int32 Func1(int32 Param1) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-	void Func2(UObject* WorldContextObject, struct FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2);
+	void Func2(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2);
 	int32 Func2(int32 Param1, int32 Param2) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-	void Func3(UObject* WorldContextObject, struct FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2, int32 Param3);
+	void Func3(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2, int32 Param3);
 	int32 Func3(int32 Param1, int32 Param2, int32 Param3) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-	void Func4(UObject* WorldContextObject, struct FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2, int32 Param3, int32 Param4);
+	void Func4(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2, int32 Param3, int32 Param4);
 	int32 Func4(int32 Param1, int32 Param2, int32 Param3, int32 Param4) override;
 
 private:

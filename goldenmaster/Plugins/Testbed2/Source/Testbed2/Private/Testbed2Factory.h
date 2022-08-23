@@ -15,6 +15,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #pragma once
+
+#include "Logging/LogMacros.h"
+#include "Templates/SharedPointer.h"
 class ITestbed2ManyParamInterfaceInterface;
 class ITestbed2NestedStruct1InterfaceInterface;
 class ITestbed2NestedStruct2InterfaceInterface;

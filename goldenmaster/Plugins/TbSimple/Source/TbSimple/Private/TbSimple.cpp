@@ -17,8 +17,8 @@ limitations under the License.
 #pragma once
 
 #include "TbSimple.h"
-#include "Core.h"
 #include "ApiGear/Public/ApiGearConnectionManager.h"
+#include "Engine/Engine.h"
 #include "Modules/ModuleManager.h"
 
 #define LOCTEXT_NAMESPACE "TbSimple"

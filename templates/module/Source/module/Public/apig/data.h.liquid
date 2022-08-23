@@ -1,5 +1,6 @@
 {% comment %} Copyright Epic Games, Inc. All Rights Reserved {% endcomment -%}
 {% assign API_MACRO = module.name | upcase | remove: '.' | append: "_API" %}
+{% capture category %}ApiGear|{{module.name | capital}}{% endcapture -%}
 {% assign moduleCapital = module.name | capital %}
 {% capture nl %}
 {% endcapture %}
@@ -72,7 +73,7 @@ struct {{API_MACRO}} {{struct|unrealTypeName: false, moduleCapital}}
 
 {% for field in struct.fields %}
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "{{category}}")
 	{{field|unrealTypeName: false, moduleCapital}} {{field.name}};
 {% endfor %}
 

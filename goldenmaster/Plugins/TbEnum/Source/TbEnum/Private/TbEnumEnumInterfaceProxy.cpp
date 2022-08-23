@@ -19,8 +19,10 @@ limitations under the License.
 #include "EnumInterface/TbEnumEnumInterfaceLocal.h"
 #include "apig/TbEnum.trace.h"
 #include "TbEnumFactory.h"
-#include "Engine/LatentActionManager.h"
+#include "Async/Async.h"
 #include "LatentActions.h"
+#include "Engine/LatentActionManager.h"
+#include "Engine/Engine.h"
 
 class FTbEnumEnumInterfaceLatentAction : public FPendingLatentAction
 {

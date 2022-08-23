@@ -20,6 +20,7 @@ limitations under the License.
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
 #include "Subsystems/GameInstanceSubsystem.h"
+#include "Engine/LatentActionManager.h"
 #include "apig/TbSimple_apig.h"
 #include "TbSimpleSimpleArrayInterfaceProxy.generated.h"
 
@@ -92,19 +93,19 @@ public:
 
 	// operations
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-	void FuncBool(UObject* WorldContextObject, struct FLatentActionInfo LatentInfo, TArray<bool>& Result, const TArray<bool>& ParamBool);
+	void FuncBool(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<bool>& Result, const TArray<bool>& ParamBool);
 	TArray<bool> FuncBool(const TArray<bool>& ParamBool) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-	void FuncInt(UObject* WorldContextObject, struct FLatentActionInfo LatentInfo, TArray<int32>& Result, const TArray<int32>& ParamInt);
+	void FuncInt(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<int32>& Result, const TArray<int32>& ParamInt);
 	TArray<int32> FuncInt(const TArray<int32>& ParamInt) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-	void FuncFloat(UObject* WorldContextObject, struct FLatentActionInfo LatentInfo, TArray<float>& Result, const TArray<float>& ParamFloat);
+	void FuncFloat(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<float>& Result, const TArray<float>& ParamFloat);
 	TArray<float> FuncFloat(const TArray<float>& ParamFloat) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-	void FuncString(UObject* WorldContextObject, struct FLatentActionInfo LatentInfo, TArray<FString>& Result, const TArray<FString>& ParamString);
+	void FuncString(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FString>& Result, const TArray<FString>& ParamString);
 	TArray<FString> FuncString(const TArray<FString>& ParamString) override;
 
 private:

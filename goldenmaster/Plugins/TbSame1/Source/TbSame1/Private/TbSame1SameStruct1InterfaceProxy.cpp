@@ -19,8 +19,10 @@ limitations under the License.
 #include "SameStruct1Interface/TbSame1SameStruct1InterfaceLocal.h"
 #include "apig/TbSame1.trace.h"
 #include "TbSame1Factory.h"
-#include "Engine/LatentActionManager.h"
+#include "Async/Async.h"
 #include "LatentActions.h"
+#include "Engine/LatentActionManager.h"
+#include "Engine/Engine.h"
 
 class FTbSame1SameStruct1InterfaceLatentAction : public FPendingLatentAction
 {

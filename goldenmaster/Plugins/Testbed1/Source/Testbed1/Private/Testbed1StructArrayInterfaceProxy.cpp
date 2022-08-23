@@ -19,8 +19,10 @@ limitations under the License.
 #include "StructArrayInterface/Testbed1StructArrayInterfaceLocal.h"
 #include "apig/Testbed1.trace.h"
 #include "Testbed1Factory.h"
-#include "Engine/LatentActionManager.h"
+#include "Async/Async.h"
 #include "LatentActions.h"
+#include "Engine/LatentActionManager.h"
+#include "Engine/Engine.h"
 
 class FTestbed1StructArrayInterfaceLatentAction : public FPendingLatentAction
 {

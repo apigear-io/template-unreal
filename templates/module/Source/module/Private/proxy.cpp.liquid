@@ -25,8 +25,10 @@ limitations under the License.
 #include "{{interface.name|capital}}/{{module.name|capital}}{{interface.name|capital}}Local.h"
 #include "apig/{{module.name|capital}}.trace.h"
 #include "{{module.name|capital}}Factory.h"
-#include "Engine/LatentActionManager.h"
+#include "Async/Async.h"
 #include "LatentActions.h"
+#include "Engine/LatentActionManager.h"
+#include "Engine/Engine.h"
 
 class F{{class_name_capital}}LatentAction : public FPendingLatentAction
 {
