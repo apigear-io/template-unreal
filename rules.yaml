@@ -29,6 +29,9 @@ features:
         - source: "build.bat.liquid"
           target: "build.bat"
           overwrite: true
+        - source: "build.sh.liquid"
+          target: "build.sh"
+          overwrite: true
         - source: "ApiGear/Source/ApiGear/apigear.Build.cs"
           target: "Plugins/ApiGear/Source/ApiGear/apigear.Build.cs"
           overwrite: true
