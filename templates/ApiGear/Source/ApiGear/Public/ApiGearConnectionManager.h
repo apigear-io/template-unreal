@@ -9,7 +9,6 @@
 #include "Templates/SharedPointer.h"
 #include "unrealolink.h"
 #include "unrealsimulation.h"
-#include "unrealwamp.h"
 #include "ApiGearConnectionManager.generated.h"
 
 /**

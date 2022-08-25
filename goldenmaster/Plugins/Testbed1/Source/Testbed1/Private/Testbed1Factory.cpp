@@ -17,11 +17,9 @@ limitations under the License.
 
 #include "Testbed1Factory.h"
 #include "StructInterface/Testbed1StructInterfaceLocal.h"
-#include "StructInterface/Testbed1StructInterfaceWAMP.h"
 #include "StructInterface/Testbed1StructInterfaceOLink.h"
 #include "StructInterface/Testbed1StructInterfaceSimulation.h"
 #include "StructArrayInterface/Testbed1StructArrayInterfaceLocal.h"
-#include "StructArrayInterface/Testbed1StructArrayInterfaceWAMP.h"
 #include "StructArrayInterface/Testbed1StructArrayInterfaceOLink.h"
 #include "StructArrayInterface/Testbed1StructArrayInterfaceSimulation.h"
 #include "Testbed1Settings.h"
@@ -35,9 +33,6 @@ TSharedPtr<ITestbed1StructInterfaceInterface, ESPMode::ThreadSafe> FTestbed1Modu
 
 	switch (settings->ServiceConnection)
 	{
-	case ETestbed1Connection::CONNECTION_WAMP:
-		UE_LOG(LogFTestbed1ModuleFactory, Log, TEXT("createITestbed1StructInterfaceInterface: Using WAMP service backend"));
-		return MakeShared<Testbed1::StructInterface::Private::WAMPService, ESPMode::ThreadSafe>();
 	case ETestbed1Connection::CONNECTION_OLINK:
 		UE_LOG(LogFTestbed1ModuleFactory, Log, TEXT("createITestbed1StructInterfaceInterface: Using OLink service backend"));
 		return MakeShared<Testbed1::StructInterface::Private::OLinkService, ESPMode::ThreadSafe>();
@@ -58,9 +53,6 @@ TSharedPtr<ITestbed1StructArrayInterfaceInterface, ESPMode::ThreadSafe> FTestbed
 
 	switch (settings->ServiceConnection)
 	{
-	case ETestbed1Connection::CONNECTION_WAMP:
-		UE_LOG(LogFTestbed1ModuleFactory, Log, TEXT("createITestbed1StructArrayInterfaceInterface: Using WAMP service backend"));
-		return MakeShared<Testbed1::StructArrayInterface::Private::WAMPService, ESPMode::ThreadSafe>();
 	case ETestbed1Connection::CONNECTION_OLINK:
 		UE_LOG(LogFTestbed1ModuleFactory, Log, TEXT("createITestbed1StructArrayInterfaceInterface: Using OLink service backend"));
 		return MakeShared<Testbed1::StructArrayInterface::Private::OLinkService, ESPMode::ThreadSafe>();

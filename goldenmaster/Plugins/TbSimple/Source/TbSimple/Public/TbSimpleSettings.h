@@ -29,7 +29,6 @@ UENUM(BlueprintType)
 enum class ETbSimpleConnection : uint8
 {
 	CONNECTION_LOCAL UMETA(Displayname = "Local"),
-	CONNECTION_WAMP UMETA(Displayname = "Remote WAMP"),
 	CONNECTION_OLINK UMETA(Displayname = "Remote OLink"),
 	CONNECTION_SIMU UMETA(Displayname = "Remote Simulation")
 };

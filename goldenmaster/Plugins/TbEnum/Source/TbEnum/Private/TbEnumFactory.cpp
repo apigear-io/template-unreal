@@ -17,7 +17,6 @@ limitations under the License.
 
 #include "TbEnumFactory.h"
 #include "EnumInterface/TbEnumEnumInterfaceLocal.h"
-#include "EnumInterface/TbEnumEnumInterfaceWAMP.h"
 #include "EnumInterface/TbEnumEnumInterfaceOLink.h"
 #include "EnumInterface/TbEnumEnumInterfaceSimulation.h"
 #include "TbEnumSettings.h"
@@ -31,9 +30,6 @@ TSharedPtr<ITbEnumEnumInterfaceInterface, ESPMode::ThreadSafe> FTbEnumModuleFact
 
 	switch (settings->ServiceConnection)
 	{
-	case ETbEnumConnection::CONNECTION_WAMP:
-		UE_LOG(LogFTbEnumModuleFactory, Log, TEXT("createITbEnumEnumInterfaceInterface: Using WAMP service backend"));
-		return MakeShared<TbEnum::EnumInterface::Private::WAMPService, ESPMode::ThreadSafe>();
 	case ETbEnumConnection::CONNECTION_OLINK:
 		UE_LOG(LogFTbEnumModuleFactory, Log, TEXT("createITbEnumEnumInterfaceInterface: Using OLink service backend"));
 		return MakeShared<TbEnum::EnumInterface::Private::OLinkService, ESPMode::ThreadSafe>();

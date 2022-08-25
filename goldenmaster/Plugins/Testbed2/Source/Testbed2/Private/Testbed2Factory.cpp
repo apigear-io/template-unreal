@@ -17,19 +17,15 @@ limitations under the License.
 
 #include "Testbed2Factory.h"
 #include "ManyParamInterface/Testbed2ManyParamInterfaceLocal.h"
-#include "ManyParamInterface/Testbed2ManyParamInterfaceWAMP.h"
 #include "ManyParamInterface/Testbed2ManyParamInterfaceOLink.h"
 #include "ManyParamInterface/Testbed2ManyParamInterfaceSimulation.h"
 #include "NestedStruct1Interface/Testbed2NestedStruct1InterfaceLocal.h"
-#include "NestedStruct1Interface/Testbed2NestedStruct1InterfaceWAMP.h"
 #include "NestedStruct1Interface/Testbed2NestedStruct1InterfaceOLink.h"
 #include "NestedStruct1Interface/Testbed2NestedStruct1InterfaceSimulation.h"
 #include "NestedStruct2Interface/Testbed2NestedStruct2InterfaceLocal.h"
-#include "NestedStruct2Interface/Testbed2NestedStruct2InterfaceWAMP.h"
 #include "NestedStruct2Interface/Testbed2NestedStruct2InterfaceOLink.h"
 #include "NestedStruct2Interface/Testbed2NestedStruct2InterfaceSimulation.h"
 #include "NestedStruct3Interface/Testbed2NestedStruct3InterfaceLocal.h"
-#include "NestedStruct3Interface/Testbed2NestedStruct3InterfaceWAMP.h"
 #include "NestedStruct3Interface/Testbed2NestedStruct3InterfaceOLink.h"
 #include "NestedStruct3Interface/Testbed2NestedStruct3InterfaceSimulation.h"
 #include "Testbed2Settings.h"
@@ -43,9 +39,6 @@ TSharedPtr<ITestbed2ManyParamInterfaceInterface, ESPMode::ThreadSafe> FTestbed2M
 
 	switch (settings->ServiceConnection)
 	{
-	case ETestbed2Connection::CONNECTION_WAMP:
-		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2ManyParamInterfaceInterface: Using WAMP service backend"));
-		return MakeShared<Testbed2::ManyParamInterface::Private::WAMPService, ESPMode::ThreadSafe>();
 	case ETestbed2Connection::CONNECTION_OLINK:
 		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2ManyParamInterfaceInterface: Using OLink service backend"));
 		return MakeShared<Testbed2::ManyParamInterface::Private::OLinkService, ESPMode::ThreadSafe>();
@@ -66,9 +59,6 @@ TSharedPtr<ITestbed2NestedStruct1InterfaceInterface, ESPMode::ThreadSafe> FTestb
 
 	switch (settings->ServiceConnection)
 	{
-	case ETestbed2Connection::CONNECTION_WAMP:
-		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct1InterfaceInterface: Using WAMP service backend"));
-		return MakeShared<Testbed2::NestedStruct1Interface::Private::WAMPService, ESPMode::ThreadSafe>();
 	case ETestbed2Connection::CONNECTION_OLINK:
 		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct1InterfaceInterface: Using OLink service backend"));
 		return MakeShared<Testbed2::NestedStruct1Interface::Private::OLinkService, ESPMode::ThreadSafe>();
@@ -89,9 +79,6 @@ TSharedPtr<ITestbed2NestedStruct2InterfaceInterface, ESPMode::ThreadSafe> FTestb
 
 	switch (settings->ServiceConnection)
 	{
-	case ETestbed2Connection::CONNECTION_WAMP:
-		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct2InterfaceInterface: Using WAMP service backend"));
-		return MakeShared<Testbed2::NestedStruct2Interface::Private::WAMPService, ESPMode::ThreadSafe>();
 	case ETestbed2Connection::CONNECTION_OLINK:
 		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct2InterfaceInterface: Using OLink service backend"));
 		return MakeShared<Testbed2::NestedStruct2Interface::Private::OLinkService, ESPMode::ThreadSafe>();
@@ -112,9 +99,6 @@ TSharedPtr<ITestbed2NestedStruct3InterfaceInterface, ESPMode::ThreadSafe> FTestb
 
 	switch (settings->ServiceConnection)
 	{
-	case ETestbed2Connection::CONNECTION_WAMP:
-		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct3InterfaceInterface: Using WAMP service backend"));
-		return MakeShared<Testbed2::NestedStruct3Interface::Private::WAMPService, ESPMode::ThreadSafe>();
 	case ETestbed2Connection::CONNECTION_OLINK:
 		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct3InterfaceInterface: Using OLink service backend"));
 		return MakeShared<Testbed2::NestedStruct3Interface::Private::OLinkService, ESPMode::ThreadSafe>();

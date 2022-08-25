@@ -27,18 +27,6 @@ class APIGEAR_API UApiGearSettings : public UObject
 	bool Tracer_EnableDebugLog;
 
 	// Choose the server to connect to
-	UPROPERTY(EditAnywhere, config, Category = WampSetup, meta = (ConfigRestartRequired = true))
-	FString WAMP_URL;
-
-	// Choose the wamp realm
-	UPROPERTY(EditAnywhere, config, Category = WampSetup, meta = (ConfigRestartRequired = true))
-	FString WAMP_realm;
-
-	// Choose whether to enable logging
-	UPROPERTY(EditAnywhere, config, Category = WampSetup, meta = (ConfigRestartRequired = true))
-	bool WAMP_EnableDebugLog;
-
-	// Choose the server to connect to
 	UPROPERTY(EditAnywhere, config, Category = OLinkSetup)
 	FString OLINK_URL;
 

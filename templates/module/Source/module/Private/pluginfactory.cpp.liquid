@@ -22,7 +22,6 @@ limitations under the License.
 {% for interface in module.interfaces %}
 {% assign class_capital = module.name | capital | append: interface.name | capital %}
 #include "{{interface.name | capital}}/{{class_capital}}Local.h"
-#include "{{interface.name | capital}}/{{class_capital}}WAMP.h"
 #include "{{interface.name | capital}}/{{class_capital}}OLink.h"
 #include "{{interface.name | capital}}/{{class_capital}}Simulation.h"
 {% endfor %}
@@ -41,9 +40,6 @@ TSharedPtr<I{{module.name | capital}}{{interface.name | capital}}Interface, ESPM
 
 	switch (settings->ServiceConnection)
 	{
-	case E{{module_name_capital}}Connection::CONNECTION_WAMP:
-		UE_LOG(Log{{module_name}}, Log, TEXT("create{{class}}: Using WAMP service backend"));
-		return MakeShared<{{module.name | capital}}::{{interface.name | capital}}::Private::WAMPService, ESPMode::ThreadSafe>();
 	case E{{module_name_capital}}Connection::CONNECTION_OLINK:
 		UE_LOG(Log{{module_name}}, Log, TEXT("create{{class}}: Using OLink service backend"));
 		return MakeShared<{{module.name | capital}}::{{interface.name | capital}}::Private::OLinkService, ESPMode::ThreadSafe>();

@@ -19,7 +19,6 @@ public class ApiGear : ModuleRules
         PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "ThirdParty","Public","olink"));
         PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "ThirdParty","Public","olink", "core"));
         PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "ThirdParty","Public","jsonrpc"));
-        PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "ThirdParty","Public","wamp"));
        
 		PublicDependencyModuleNames.AddRange(
 			new string[]

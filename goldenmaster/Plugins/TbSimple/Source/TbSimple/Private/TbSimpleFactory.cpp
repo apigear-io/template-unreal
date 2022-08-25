@@ -17,11 +17,9 @@ limitations under the License.
 
 #include "TbSimpleFactory.h"
 #include "SimpleInterface/TbSimpleSimpleInterfaceLocal.h"
-#include "SimpleInterface/TbSimpleSimpleInterfaceWAMP.h"
 #include "SimpleInterface/TbSimpleSimpleInterfaceOLink.h"
 #include "SimpleInterface/TbSimpleSimpleInterfaceSimulation.h"
 #include "SimpleArrayInterface/TbSimpleSimpleArrayInterfaceLocal.h"
-#include "SimpleArrayInterface/TbSimpleSimpleArrayInterfaceWAMP.h"
 #include "SimpleArrayInterface/TbSimpleSimpleArrayInterfaceOLink.h"
 #include "SimpleArrayInterface/TbSimpleSimpleArrayInterfaceSimulation.h"
 #include "TbSimpleSettings.h"
@@ -35,9 +33,6 @@ TSharedPtr<ITbSimpleSimpleInterfaceInterface, ESPMode::ThreadSafe> FTbSimpleModu
 
 	switch (settings->ServiceConnection)
 	{
-	case ETbSimpleConnection::CONNECTION_WAMP:
-		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleInterfaceInterface: Using WAMP service backend"));
-		return MakeShared<TbSimple::SimpleInterface::Private::WAMPService, ESPMode::ThreadSafe>();
 	case ETbSimpleConnection::CONNECTION_OLINK:
 		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleInterfaceInterface: Using OLink service backend"));
 		return MakeShared<TbSimple::SimpleInterface::Private::OLinkService, ESPMode::ThreadSafe>();
@@ -58,9 +53,6 @@ TSharedPtr<ITbSimpleSimpleArrayInterfaceInterface, ESPMode::ThreadSafe> FTbSimpl
 
 	switch (settings->ServiceConnection)
 	{
-	case ETbSimpleConnection::CONNECTION_WAMP:
-		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleArrayInterfaceInterface: Using WAMP service backend"));
-		return MakeShared<TbSimple::SimpleArrayInterface::Private::WAMPService, ESPMode::ThreadSafe>();
 	case ETbSimpleConnection::CONNECTION_OLINK:
 		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleArrayInterfaceInterface: Using OLink service backend"));
 		return MakeShared<TbSimple::SimpleArrayInterface::Private::OLinkService, ESPMode::ThreadSafe>();

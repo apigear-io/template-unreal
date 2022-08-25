@@ -17,19 +17,15 @@ limitations under the License.
 
 #include "TbSame1Factory.h"
 #include "SameStruct1Interface/TbSame1SameStruct1InterfaceLocal.h"
-#include "SameStruct1Interface/TbSame1SameStruct1InterfaceWAMP.h"
 #include "SameStruct1Interface/TbSame1SameStruct1InterfaceOLink.h"
 #include "SameStruct1Interface/TbSame1SameStruct1InterfaceSimulation.h"
 #include "SameStruct2Interface/TbSame1SameStruct2InterfaceLocal.h"
-#include "SameStruct2Interface/TbSame1SameStruct2InterfaceWAMP.h"
 #include "SameStruct2Interface/TbSame1SameStruct2InterfaceOLink.h"
 #include "SameStruct2Interface/TbSame1SameStruct2InterfaceSimulation.h"
 #include "SameEnum1Interface/TbSame1SameEnum1InterfaceLocal.h"
-#include "SameEnum1Interface/TbSame1SameEnum1InterfaceWAMP.h"
 #include "SameEnum1Interface/TbSame1SameEnum1InterfaceOLink.h"
 #include "SameEnum1Interface/TbSame1SameEnum1InterfaceSimulation.h"
 #include "SameEnum2Interface/TbSame1SameEnum2InterfaceLocal.h"
-#include "SameEnum2Interface/TbSame1SameEnum2InterfaceWAMP.h"
 #include "SameEnum2Interface/TbSame1SameEnum2InterfaceOLink.h"
 #include "SameEnum2Interface/TbSame1SameEnum2InterfaceSimulation.h"
 #include "TbSame1Settings.h"
@@ -43,9 +39,6 @@ TSharedPtr<ITbSame1SameStruct1InterfaceInterface, ESPMode::ThreadSafe> FTbSame1M
 
 	switch (settings->ServiceConnection)
 	{
-	case ETbSame1Connection::CONNECTION_WAMP:
-		UE_LOG(LogFTbSame1ModuleFactory, Log, TEXT("createITbSame1SameStruct1InterfaceInterface: Using WAMP service backend"));
-		return MakeShared<TbSame1::SameStruct1Interface::Private::WAMPService, ESPMode::ThreadSafe>();
 	case ETbSame1Connection::CONNECTION_OLINK:
 		UE_LOG(LogFTbSame1ModuleFactory, Log, TEXT("createITbSame1SameStruct1InterfaceInterface: Using OLink service backend"));
 		return MakeShared<TbSame1::SameStruct1Interface::Private::OLinkService, ESPMode::ThreadSafe>();
@@ -66,9 +59,6 @@ TSharedPtr<ITbSame1SameStruct2InterfaceInterface, ESPMode::ThreadSafe> FTbSame1M
 
 	switch (settings->ServiceConnection)
 	{
-	case ETbSame1Connection::CONNECTION_WAMP:
-		UE_LOG(LogFTbSame1ModuleFactory, Log, TEXT("createITbSame1SameStruct2InterfaceInterface: Using WAMP service backend"));
-		return MakeShared<TbSame1::SameStruct2Interface::Private::WAMPService, ESPMode::ThreadSafe>();
 	case ETbSame1Connection::CONNECTION_OLINK:
 		UE_LOG(LogFTbSame1ModuleFactory, Log, TEXT("createITbSame1SameStruct2InterfaceInterface: Using OLink service backend"));
 		return MakeShared<TbSame1::SameStruct2Interface::Private::OLinkService, ESPMode::ThreadSafe>();
@@ -89,9 +79,6 @@ TSharedPtr<ITbSame1SameEnum1InterfaceInterface, ESPMode::ThreadSafe> FTbSame1Mod
 
 	switch (settings->ServiceConnection)
 	{
-	case ETbSame1Connection::CONNECTION_WAMP:
-		UE_LOG(LogFTbSame1ModuleFactory, Log, TEXT("createITbSame1SameEnum1InterfaceInterface: Using WAMP service backend"));
-		return MakeShared<TbSame1::SameEnum1Interface::Private::WAMPService, ESPMode::ThreadSafe>();
 	case ETbSame1Connection::CONNECTION_OLINK:
 		UE_LOG(LogFTbSame1ModuleFactory, Log, TEXT("createITbSame1SameEnum1InterfaceInterface: Using OLink service backend"));
 		return MakeShared<TbSame1::SameEnum1Interface::Private::OLinkService, ESPMode::ThreadSafe>();
@@ -112,9 +99,6 @@ TSharedPtr<ITbSame1SameEnum2InterfaceInterface, ESPMode::ThreadSafe> FTbSame1Mod
 
 	switch (settings->ServiceConnection)
 	{
-	case ETbSame1Connection::CONNECTION_WAMP:
-		UE_LOG(LogFTbSame1ModuleFactory, Log, TEXT("createITbSame1SameEnum2InterfaceInterface: Using WAMP service backend"));
-		return MakeShared<TbSame1::SameEnum2Interface::Private::WAMPService, ESPMode::ThreadSafe>();
 	case ETbSame1Connection::CONNECTION_OLINK:
 		UE_LOG(LogFTbSame1ModuleFactory, Log, TEXT("createITbSame1SameEnum2InterfaceInterface: Using OLink service backend"));
 		return MakeShared<TbSame1::SameEnum2Interface::Private::OLinkService, ESPMode::ThreadSafe>();
