@@ -225,7 +225,7 @@ FTestbed1StructInterfacePropStringChangedDelegate& UTestbed1StructInterfaceProxy
 	return PropStringChanged;
 }
 
-void UTestbed1StructInterfaceProxy::FuncBool(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const FTestbed1StructBool& ParamBool)
+void UTestbed1StructInterfaceProxy::FuncBoolAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const FTestbed1StructBool& ParamBool)
 {
 	Testbed1StructInterfaceTracer::trace_callFuncBool(ParamBool);
 
@@ -256,7 +256,7 @@ FTestbed1StructBool UTestbed1StructInterfaceProxy::FuncBool(const FTestbed1Struc
 	Testbed1StructInterfaceTracer::trace_callFuncBool(ParamBool);
 	return service->FuncBool(ParamBool);
 }
-void UTestbed1StructInterfaceProxy::FuncInt(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const FTestbed1StructInt& ParamInt)
+void UTestbed1StructInterfaceProxy::FuncIntAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const FTestbed1StructInt& ParamInt)
 {
 	Testbed1StructInterfaceTracer::trace_callFuncInt(ParamInt);
 
@@ -287,7 +287,7 @@ FTestbed1StructBool UTestbed1StructInterfaceProxy::FuncInt(const FTestbed1Struct
 	Testbed1StructInterfaceTracer::trace_callFuncInt(ParamInt);
 	return service->FuncInt(ParamInt);
 }
-void UTestbed1StructInterfaceProxy::FuncFloat(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructFloat& Result, const FTestbed1StructFloat& ParamFloat)
+void UTestbed1StructInterfaceProxy::FuncFloatAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructFloat& Result, const FTestbed1StructFloat& ParamFloat)
 {
 	Testbed1StructInterfaceTracer::trace_callFuncFloat(ParamFloat);
 
@@ -318,7 +318,7 @@ FTestbed1StructFloat UTestbed1StructInterfaceProxy::FuncFloat(const FTestbed1Str
 	Testbed1StructInterfaceTracer::trace_callFuncFloat(ParamFloat);
 	return service->FuncFloat(ParamFloat);
 }
-void UTestbed1StructInterfaceProxy::FuncString(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructString& Result, const FTestbed1StructString& ParamString)
+void UTestbed1StructInterfaceProxy::FuncStringAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructString& Result, const FTestbed1StructString& ParamString)
 {
 	Testbed1StructInterfaceTracer::trace_callFuncString(ParamString);
 

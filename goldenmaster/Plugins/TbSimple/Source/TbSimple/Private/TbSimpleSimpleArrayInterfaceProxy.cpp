@@ -225,7 +225,7 @@ FTbSimpleSimpleArrayInterfacePropStringChangedDelegate& UTbSimpleSimpleArrayInte
 	return PropStringChanged;
 }
 
-void UTbSimpleSimpleArrayInterfaceProxy::FuncBool(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<bool>& Result, const TArray<bool>& ParamBool)
+void UTbSimpleSimpleArrayInterfaceProxy::FuncBoolAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<bool>& Result, const TArray<bool>& ParamBool)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_callFuncBool(ParamBool);
 
@@ -256,7 +256,7 @@ TArray<bool> UTbSimpleSimpleArrayInterfaceProxy::FuncBool(const TArray<bool>& Pa
 	TbSimpleSimpleArrayInterfaceTracer::trace_callFuncBool(ParamBool);
 	return service->FuncBool(ParamBool);
 }
-void UTbSimpleSimpleArrayInterfaceProxy::FuncInt(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<int32>& Result, const TArray<int32>& ParamInt)
+void UTbSimpleSimpleArrayInterfaceProxy::FuncIntAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<int32>& Result, const TArray<int32>& ParamInt)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_callFuncInt(ParamInt);
 
@@ -287,7 +287,7 @@ TArray<int32> UTbSimpleSimpleArrayInterfaceProxy::FuncInt(const TArray<int32>& P
 	TbSimpleSimpleArrayInterfaceTracer::trace_callFuncInt(ParamInt);
 	return service->FuncInt(ParamInt);
 }
-void UTbSimpleSimpleArrayInterfaceProxy::FuncFloat(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<float>& Result, const TArray<float>& ParamFloat)
+void UTbSimpleSimpleArrayInterfaceProxy::FuncFloatAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<float>& Result, const TArray<float>& ParamFloat)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_callFuncFloat(ParamFloat);
 
@@ -318,7 +318,7 @@ TArray<float> UTbSimpleSimpleArrayInterfaceProxy::FuncFloat(const TArray<float>&
 	TbSimpleSimpleArrayInterfaceTracer::trace_callFuncFloat(ParamFloat);
 	return service->FuncFloat(ParamFloat);
 }
-void UTbSimpleSimpleArrayInterfaceProxy::FuncString(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FString>& Result, const TArray<FString>& ParamString)
+void UTbSimpleSimpleArrayInterfaceProxy::FuncStringAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FString>& Result, const TArray<FString>& ParamString)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_callFuncString(ParamString);
 

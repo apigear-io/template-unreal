@@ -225,7 +225,7 @@ FTbSimpleSimpleInterfacePropStringChangedDelegate& UTbSimpleSimpleInterfaceProxy
 	return PropStringChanged;
 }
 
-void UTbSimpleSimpleInterfaceProxy::FuncBool(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool)
+void UTbSimpleSimpleInterfaceProxy::FuncBoolAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool)
 {
 	TbSimpleSimpleInterfaceTracer::trace_callFuncBool(bParamBool);
 
@@ -256,7 +256,7 @@ bool UTbSimpleSimpleInterfaceProxy::FuncBool(bool bParamBool)
 	TbSimpleSimpleInterfaceTracer::trace_callFuncBool(bParamBool);
 	return service->FuncBool(bParamBool);
 }
-void UTbSimpleSimpleInterfaceProxy::FuncInt(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 ParamInt)
+void UTbSimpleSimpleInterfaceProxy::FuncIntAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 ParamInt)
 {
 	TbSimpleSimpleInterfaceTracer::trace_callFuncInt(ParamInt);
 
@@ -287,7 +287,7 @@ int32 UTbSimpleSimpleInterfaceProxy::FuncInt(int32 ParamInt)
 	TbSimpleSimpleInterfaceTracer::trace_callFuncInt(ParamInt);
 	return service->FuncInt(ParamInt);
 }
-void UTbSimpleSimpleInterfaceProxy::FuncFloat(UObject* WorldContextObject, FLatentActionInfo LatentInfo, float& Result, float ParamFloat)
+void UTbSimpleSimpleInterfaceProxy::FuncFloatAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, float& Result, float ParamFloat)
 {
 	TbSimpleSimpleInterfaceTracer::trace_callFuncFloat(ParamFloat);
 
@@ -318,7 +318,7 @@ float UTbSimpleSimpleInterfaceProxy::FuncFloat(float ParamFloat)
 	TbSimpleSimpleInterfaceTracer::trace_callFuncFloat(ParamFloat);
 	return service->FuncFloat(ParamFloat);
 }
-void UTbSimpleSimpleInterfaceProxy::FuncString(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FString& Result, const FString& ParamString)
+void UTbSimpleSimpleInterfaceProxy::FuncStringAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FString& Result, const FString& ParamString)
 {
 	TbSimpleSimpleInterfaceTracer::trace_callFuncString(ParamString);
 

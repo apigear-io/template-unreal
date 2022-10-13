@@ -71,12 +71,16 @@ public:
 	void SetProp4(int32 Prop4) override;
 
 	// operations
+	void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1) override{};
 	int32 Func1(int32 Param1) override;
 
+	void Func2Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2) override{};
 	int32 Func2(int32 Param1, int32 Param2) override;
 
+	void Func3Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2, int32 Param3) override{};
 	int32 Func3(int32 Param1, int32 Param2, int32 Param3) override;
 
+	void Func4Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2, int32 Param3, int32 Param4) override{};
 	int32 Func4(int32 Param1, int32 Param2, int32 Param3, int32 Param4) override;
 
 private:

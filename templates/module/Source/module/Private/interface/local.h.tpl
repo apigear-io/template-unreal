@@ -54,7 +54,12 @@ public:
 {{ end }}
 	// operations
 {{- range .Interface.Operations }}
+	{{- if .Return.IsVoid }}
 	{{ueReturn "" .Return}} {{Camel .Name}}({{ueParams "" .Params}}) override;
+	{{ else }}
+	void {{Camel .Name}}Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, {{ueReturn "" .Return}}& Result{{if len .Params}},{{end}} {{ueParams "" .Params}}) override{};
+	{{ueReturn "" .Return}} {{Camel .Name}}({{ueParams "" .Params}}) override;
+	{{- end }}
 {{ end }}
 private:
 	// properties - local copy - use setter functions to emit changed signals

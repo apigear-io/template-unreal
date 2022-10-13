@@ -21,6 +21,7 @@ limitations under the License.
 #include "UObject/NoExportTypes.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Engine/LatentActionManager.h"
+#include "Templates/SharedPointer.h"
 #include "apig/Testbed1_apig.h"
 #include "Testbed1StructInterfaceProxy.generated.h"
 
@@ -93,19 +94,23 @@ public:
 
 	// operations
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-	void FuncBool(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const FTestbed1StructBool& ParamBool);
+	void FuncBoolAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const FTestbed1StructBool& ParamBool);
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface")
 	FTestbed1StructBool FuncBool(const FTestbed1StructBool& ParamBool) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-	void FuncInt(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const FTestbed1StructInt& ParamInt);
+	void FuncIntAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const FTestbed1StructInt& ParamInt);
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface")
 	FTestbed1StructBool FuncInt(const FTestbed1StructInt& ParamInt) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-	void FuncFloat(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructFloat& Result, const FTestbed1StructFloat& ParamFloat);
+	void FuncFloatAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructFloat& Result, const FTestbed1StructFloat& ParamFloat);
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface")
 	FTestbed1StructFloat FuncFloat(const FTestbed1StructFloat& ParamFloat) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-	void FuncString(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructString& Result, const FTestbed1StructString& ParamString);
+	void FuncStringAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructString& Result, const FTestbed1StructString& ParamString);
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface")
 	FTestbed1StructString FuncString(const FTestbed1StructString& ParamString) override;
 
 private:

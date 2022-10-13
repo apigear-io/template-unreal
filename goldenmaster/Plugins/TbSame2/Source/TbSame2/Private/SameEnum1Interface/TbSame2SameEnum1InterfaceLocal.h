@@ -44,6 +44,7 @@ public:
 	void SetProp1(const ETbSame2Enum1& Prop1) override;
 
 	// operations
+	void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, const ETbSame2Enum1& Param1) override{};
 	ETbSame2Enum1 Func1(const ETbSame2Enum1& Param1) override;
 
 private:

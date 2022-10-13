@@ -149,7 +149,7 @@ FTbSame1SameEnum2InterfaceProp2ChangedDelegate& UTbSame1SameEnum2InterfaceProxy:
 	return Prop2Changed;
 }
 
-void UTbSame1SameEnum2InterfaceProxy::Func1(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame1Enum1& Result, const ETbSame1Enum1& Param1)
+void UTbSame1SameEnum2InterfaceProxy::Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame1Enum1& Result, const ETbSame1Enum1& Param1)
 {
 	TbSame1SameEnum2InterfaceTracer::trace_callFunc1(Param1);
 
@@ -180,7 +180,7 @@ ETbSame1Enum1 UTbSame1SameEnum2InterfaceProxy::Func1(const ETbSame1Enum1& Param1
 	TbSame1SameEnum2InterfaceTracer::trace_callFunc1(Param1);
 	return service->Func1(Param1);
 }
-void UTbSame1SameEnum2InterfaceProxy::Func2(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame1Enum1& Result, const ETbSame1Enum1& Param1, const ETbSame1Enum2& Param2)
+void UTbSame1SameEnum2InterfaceProxy::Func2Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame1Enum1& Result, const ETbSame1Enum1& Param1, const ETbSame1Enum2& Param2)
 {
 	TbSame1SameEnum2InterfaceTracer::trace_callFunc2(Param1, Param2);
 

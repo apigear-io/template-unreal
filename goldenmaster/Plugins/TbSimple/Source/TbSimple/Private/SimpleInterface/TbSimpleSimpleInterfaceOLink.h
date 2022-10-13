@@ -71,12 +71,16 @@ public:
 	void SetPropString(const FString& PropString) override;
 
 	// operations
+	void FuncBoolAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool) override{};
 	bool FuncBool(bool bParamBool) override;
 
+	void FuncIntAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 ParamInt) override{};
 	int32 FuncInt(int32 ParamInt) override;
 
+	void FuncFloatAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, float& Result, float ParamFloat) override{};
 	float FuncFloat(float ParamFloat) override;
 
+	void FuncStringAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FString& Result, const FString& ParamString) override{};
 	FString FuncString(const FString& ParamString) override;
 
 	// olink sink interface

@@ -225,7 +225,7 @@ FTbEnumEnumInterfaceProp3ChangedDelegate& UTbEnumEnumInterfaceProxy::GetProp3Cha
 	return Prop3Changed;
 }
 
-void UTbEnumEnumInterfaceProxy::Func0(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum0& Result, const ETbEnumEnum0& Param0)
+void UTbEnumEnumInterfaceProxy::Func0Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum0& Result, const ETbEnumEnum0& Param0)
 {
 	TbEnumEnumInterfaceTracer::trace_callFunc0(Param0);
 
@@ -256,7 +256,7 @@ ETbEnumEnum0 UTbEnumEnumInterfaceProxy::Func0(const ETbEnumEnum0& Param0)
 	TbEnumEnumInterfaceTracer::trace_callFunc0(Param0);
 	return service->Func0(Param0);
 }
-void UTbEnumEnumInterfaceProxy::Func1(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum1& Result, const ETbEnumEnum1& Param1)
+void UTbEnumEnumInterfaceProxy::Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum1& Result, const ETbEnumEnum1& Param1)
 {
 	TbEnumEnumInterfaceTracer::trace_callFunc1(Param1);
 
@@ -287,7 +287,7 @@ ETbEnumEnum1 UTbEnumEnumInterfaceProxy::Func1(const ETbEnumEnum1& Param1)
 	TbEnumEnumInterfaceTracer::trace_callFunc1(Param1);
 	return service->Func1(Param1);
 }
-void UTbEnumEnumInterfaceProxy::Func2(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum2& Result, const ETbEnumEnum2& Param2)
+void UTbEnumEnumInterfaceProxy::Func2Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum2& Result, const ETbEnumEnum2& Param2)
 {
 	TbEnumEnumInterfaceTracer::trace_callFunc2(Param2);
 
@@ -318,7 +318,7 @@ ETbEnumEnum2 UTbEnumEnumInterfaceProxy::Func2(const ETbEnumEnum2& Param2)
 	TbEnumEnumInterfaceTracer::trace_callFunc2(Param2);
 	return service->Func2(Param2);
 }
-void UTbEnumEnumInterfaceProxy::Func3(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum3& Result, const ETbEnumEnum3& Param3)
+void UTbEnumEnumInterfaceProxy::Func3Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum3& Result, const ETbEnumEnum3& Param3)
 {
 	TbEnumEnumInterfaceTracer::trace_callFunc3(Param3);
 

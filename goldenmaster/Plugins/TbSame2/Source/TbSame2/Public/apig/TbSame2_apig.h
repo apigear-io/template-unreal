@@ -36,7 +36,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSame2SameStruct1InterfaceProp1Cha
 /**
  * Interface UTbSame2SameStruct1InterfaceInterface only for Unreal Engine's reflection system
  */
-UINTERFACE(MinimalAPI)
+UINTERFACE(Blueprintable, MinimalAPI, meta = (CannotImplementInterfaceInBlueprint))
 class UTbSame2SameStruct1InterfaceInterface : public UInterface
 {
 	GENERATED_BODY()
@@ -56,9 +56,16 @@ public:
 	virtual FTbSame2SameStruct1InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() = 0;
 
 	// methods
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct1Interface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	virtual void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame2Struct1& Result, const FTbSame2Struct1& Param1) = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct1Interface")
 	virtual FTbSame2Struct1 Func1(const FTbSame2Struct1& Param1) = 0;
+
 	// properties
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct1Interface")
 	virtual FTbSame2Struct1 GetProp1() const = 0;
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct1Interface")
 	virtual void SetProp1(const FTbSame2Struct1& Prop1) = 0;
 };
 /**
@@ -77,7 +84,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSame2SameStruct2InterfaceProp2Cha
 /**
  * Interface UTbSame2SameStruct2InterfaceInterface only for Unreal Engine's reflection system
  */
-UINTERFACE(MinimalAPI)
+UINTERFACE(Blueprintable, MinimalAPI, meta = (CannotImplementInterfaceInBlueprint))
 class UTbSame2SameStruct2InterfaceInterface : public UInterface
 {
 	GENERATED_BODY()
@@ -101,12 +108,27 @@ public:
 	virtual FTbSame2SameStruct2InterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() = 0;
 
 	// methods
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct2Interface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	virtual void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame2Struct1& Result, const FTbSame2Struct1& Param1) = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct2Interface")
 	virtual FTbSame2Struct1 Func1(const FTbSame2Struct1& Param1) = 0;
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct2Interface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	virtual void Func2Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame2Struct1& Result, const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2) = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct2Interface")
 	virtual FTbSame2Struct1 Func2(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2) = 0;
+
 	// properties
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct2Interface")
 	virtual FTbSame2Struct2 GetProp1() const = 0;
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct2Interface")
 	virtual void SetProp1(const FTbSame2Struct2& Prop1) = 0;
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct2Interface")
 	virtual FTbSame2Struct2 GetProp2() const = 0;
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct2Interface")
 	virtual void SetProp2(const FTbSame2Struct2& Prop2) = 0;
 };
 /**
@@ -121,7 +143,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSame2SameEnum1InterfaceProp1Chang
 /**
  * Interface UTbSame2SameEnum1InterfaceInterface only for Unreal Engine's reflection system
  */
-UINTERFACE(MinimalAPI)
+UINTERFACE(Blueprintable, MinimalAPI, meta = (CannotImplementInterfaceInBlueprint))
 class UTbSame2SameEnum1InterfaceInterface : public UInterface
 {
 	GENERATED_BODY()
@@ -141,9 +163,16 @@ public:
 	virtual FTbSame2SameEnum1InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() = 0;
 
 	// methods
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum1Interface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	virtual void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, const ETbSame2Enum1& Param1) = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum1Interface")
 	virtual ETbSame2Enum1 Func1(const ETbSame2Enum1& Param1) = 0;
+
 	// properties
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum1Interface")
 	virtual ETbSame2Enum1 GetProp1() const = 0;
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum1Interface")
 	virtual void SetProp1(const ETbSame2Enum1& Prop1) = 0;
 };
 /**
@@ -162,7 +191,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSame2SameEnum2InterfaceProp2Chang
 /**
  * Interface UTbSame2SameEnum2InterfaceInterface only for Unreal Engine's reflection system
  */
-UINTERFACE(MinimalAPI)
+UINTERFACE(Blueprintable, MinimalAPI, meta = (CannotImplementInterfaceInBlueprint))
 class UTbSame2SameEnum2InterfaceInterface : public UInterface
 {
 	GENERATED_BODY()
@@ -186,11 +215,26 @@ public:
 	virtual FTbSame2SameEnum2InterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() = 0;
 
 	// methods
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum2Interface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	virtual void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, const ETbSame2Enum1& Param1) = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum2Interface")
 	virtual ETbSame2Enum1 Func1(const ETbSame2Enum1& Param1) = 0;
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum2Interface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	virtual void Func2Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, const ETbSame2Enum1& Param1, const ETbSame2Enum2& Param2) = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum2Interface")
 	virtual ETbSame2Enum1 Func2(const ETbSame2Enum1& Param1, const ETbSame2Enum2& Param2) = 0;
+
 	// properties
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum2Interface")
 	virtual ETbSame2Enum1 GetProp1() const = 0;
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum2Interface")
 	virtual void SetProp1(const ETbSame2Enum1& Prop1) = 0;
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum2Interface")
 	virtual ETbSame2Enum2 GetProp2() const = 0;
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum2Interface")
 	virtual void SetProp2(const ETbSame2Enum2& Prop2) = 0;
 };

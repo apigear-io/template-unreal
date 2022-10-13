@@ -71,12 +71,16 @@ public:
 	void SetPropString(const FTestbed1StructString& PropString) override;
 
 	// operations
+	void FuncBoolAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const FTestbed1StructBool& ParamBool) override{};
 	FTestbed1StructBool FuncBool(const FTestbed1StructBool& ParamBool) override;
 
+	void FuncIntAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const FTestbed1StructInt& ParamInt) override{};
 	FTestbed1StructBool FuncInt(const FTestbed1StructInt& ParamInt) override;
 
+	void FuncFloatAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructFloat& Result, const FTestbed1StructFloat& ParamFloat) override{};
 	FTestbed1StructFloat FuncFloat(const FTestbed1StructFloat& ParamFloat) override;
 
+	void FuncStringAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructString& Result, const FTestbed1StructString& ParamString) override{};
 	FTestbed1StructString FuncString(const FTestbed1StructString& ParamString) override;
 
 	// olink sink interface

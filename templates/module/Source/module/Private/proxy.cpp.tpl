@@ -150,7 +150,7 @@ F{{$Iface}}{{Camel .Name}}ChangedDelegate& {{$Class}}::Get{{Camel .Name}}Changed
 */
 {{- end }}
 {{- if not .Return.IsVoid }}
-void {{$Class}}::{{Camel .Name}}(UObject* WorldContextObject, FLatentActionInfo LatentInfo, {{ueReturn "" .Return}}& Result{{ if len .Params }}, {{end}}{{ueParams "" .Params}})
+void {{$Class}}::{{Camel .Name}}Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, {{ueReturn "" .Return}}& Result{{ if len .Params }}, {{end}}{{ueParams "" .Params}})
 {
 	{{$Iface}}Tracer::trace_call{{Camel .Name}}({{ueVars "" .Params}});
 

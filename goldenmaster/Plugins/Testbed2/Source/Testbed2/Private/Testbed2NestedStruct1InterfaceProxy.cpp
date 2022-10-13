@@ -111,7 +111,7 @@ FTestbed2NestedStruct1InterfaceProp1ChangedDelegate& UTestbed2NestedStruct1Inter
 	return Prop1Changed;
 }
 
-void UTestbed2NestedStruct1InterfaceProxy::Func1(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1)
+void UTestbed2NestedStruct1InterfaceProxy::Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1)
 {
 	Testbed2NestedStruct1InterfaceTracer::trace_callFunc1(Param1);
 

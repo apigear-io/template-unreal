@@ -44,6 +44,7 @@ public:
 	void SetProp1(const ETbSame1Enum1& Prop1) override;
 
 	// operations
+	void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame1Enum1& Result, const ETbSame1Enum1& Param1) override{};
 	ETbSame1Enum1 Func1(const ETbSame1Enum1& Param1) override;
 
 	// olink sink interface

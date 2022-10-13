@@ -71,12 +71,16 @@ public:
 	void SetPropString(const TArray<FString>& PropString) override;
 
 	// operations
+	void FuncBoolAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<bool>& Result, const TArray<bool>& ParamBool) override{};
 	TArray<bool> FuncBool(const TArray<bool>& ParamBool) override;
 
+	void FuncIntAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<int32>& Result, const TArray<int32>& ParamInt) override{};
 	TArray<int32> FuncInt(const TArray<int32>& ParamInt) override;
 
+	void FuncFloatAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<float>& Result, const TArray<float>& ParamFloat) override{};
 	TArray<float> FuncFloat(const TArray<float>& ParamFloat) override;
 
+	void FuncStringAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FString>& Result, const TArray<FString>& ParamString) override{};
 	TArray<FString> FuncString(const TArray<FString>& ParamString) override;
 
 private:

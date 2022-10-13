@@ -28,7 +28,7 @@ limitations under the License.
 #include "{{$ModuleName}}_apig.generated.h"
 {{ range .Module.Interfaces }}
 {{- $Class := printf "%s%s" $ModuleName (Camel .Name) }}
-{{- $Category := printf "ApiGear%s" $Class }}
+{{- $Category := printf "ApiGear|%s|%s" $ModuleName (Camel .Name) }}
 {{- $class := printf "U%sInterface" $Class }}
 /**
  * Declaration for {{.Name}}
@@ -44,7 +44,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_{{Int2Word 1 "Param"}}(F{{$Class}}{{Camel .Na
 /**
  * Interface {{$class}} only for Unreal Engine's reflection system
  */
-UINTERFACE(MinimalAPI)
+UINTERFACE(Blueprintable, MinimalAPI, meta = (CannotImplementInterfaceInBlueprint))
 class {{$class}} : public UInterface
 {
 	GENERATED_BODY()
@@ -61,18 +61,33 @@ public:
 	// signals
 {{- range .Signals }}
 	virtual F{{$Class}}{{Camel .Name}}Delegate& Get{{Camel .Name}}SignalDelegate() = 0;
-{{ end }}
+{{ else }}
+{{- end }}
 {{- range .Properties }}
 	virtual F{{$Class}}{{Camel .Name}}ChangedDelegate& Get{{Camel .Name}}ChangedDelegate() = 0;
+{{ else }}
 {{ end }}
 	// methods
 {{- range .Operations }}
+{{- if .Return.IsVoid }}
+	UFUNCTION(BlueprintCallable, Category = "{{$Category}}")
+	virtual {{ueReturn "" .Return}} {{Camel .Name}}({{ueParams "" .Params}}) = 0;
+{{- else }}
+	UFUNCTION(BlueprintCallable, Category = "{{$Category}}", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	virtual void {{Camel .Name}}Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, {{ueReturn "" .Return}}& Result{{if len .Params}},{{end}} {{ueParams "" .Params}}) = 0;
+	UFUNCTION(BlueprintCallable, Category = "{{$Category}}")
 	virtual {{ueReturn "" .Return}} {{Camel .Name}}({{ueParams "" .Params}}) = 0;
 {{- end }}
+{{ else }}
+{{ end }}
 	// properties
 {{- range .Properties }}
+	UFUNCTION(BlueprintCallable, Category = "{{$Category}}")
 	virtual {{ueReturn "" .}} Get{{Camel .Name}}() const = 0;
+
+	UFUNCTION(BlueprintCallable, Category = "{{$Category}}")
 	virtual void Set{{Camel .Name}}({{ueParam "" .}}) = 0;
-{{- end }}
+{{ else }}
+{{ end -}}
 };
 {{- end }}

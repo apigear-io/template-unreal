@@ -225,7 +225,7 @@ FTestbed2ManyParamInterfaceProp4ChangedDelegate& UTestbed2ManyParamInterfaceProx
 	return Prop4Changed;
 }
 
-void UTestbed2ManyParamInterfaceProxy::Func1(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1)
+void UTestbed2ManyParamInterfaceProxy::Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1)
 {
 	Testbed2ManyParamInterfaceTracer::trace_callFunc1(Param1);
 
@@ -256,7 +256,7 @@ int32 UTestbed2ManyParamInterfaceProxy::Func1(int32 Param1)
 	Testbed2ManyParamInterfaceTracer::trace_callFunc1(Param1);
 	return service->Func1(Param1);
 }
-void UTestbed2ManyParamInterfaceProxy::Func2(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2)
+void UTestbed2ManyParamInterfaceProxy::Func2Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2)
 {
 	Testbed2ManyParamInterfaceTracer::trace_callFunc2(Param1, Param2);
 
@@ -287,7 +287,7 @@ int32 UTestbed2ManyParamInterfaceProxy::Func2(int32 Param1, int32 Param2)
 	Testbed2ManyParamInterfaceTracer::trace_callFunc2(Param1, Param2);
 	return service->Func2(Param1, Param2);
 }
-void UTestbed2ManyParamInterfaceProxy::Func3(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2, int32 Param3)
+void UTestbed2ManyParamInterfaceProxy::Func3Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2, int32 Param3)
 {
 	Testbed2ManyParamInterfaceTracer::trace_callFunc3(Param1, Param2, Param3);
 
@@ -318,7 +318,7 @@ int32 UTestbed2ManyParamInterfaceProxy::Func3(int32 Param1, int32 Param2, int32 
 	Testbed2ManyParamInterfaceTracer::trace_callFunc3(Param1, Param2, Param3);
 	return service->Func3(Param1, Param2, Param3);
 }
-void UTestbed2ManyParamInterfaceProxy::Func4(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2, int32 Param3, int32 Param4)
+void UTestbed2ManyParamInterfaceProxy::Func4Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2, int32 Param3, int32 Param4)
 {
 	Testbed2ManyParamInterfaceTracer::trace_callFunc4(Param1, Param2, Param3, Param4);
 

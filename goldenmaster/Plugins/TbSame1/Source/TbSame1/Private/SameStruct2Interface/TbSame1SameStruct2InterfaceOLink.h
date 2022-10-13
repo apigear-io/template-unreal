@@ -53,8 +53,10 @@ public:
 	void SetProp2(const FTbSame1Struct2& Prop2) override;
 
 	// operations
+	void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame1Struct1& Result, const FTbSame1Struct1& Param1) override{};
 	FTbSame1Struct1 Func1(const FTbSame1Struct1& Param1) override;
 
+	void Func2Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame1Struct1& Result, const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2) override{};
 	FTbSame1Struct1 Func2(const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2) override;
 
 	// olink sink interface

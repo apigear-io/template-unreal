@@ -28,6 +28,7 @@ limitations under the License.
 #include "UObject/NoExportTypes.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Engine/LatentActionManager.h"
+#include "Templates/SharedPointer.h"
 #include "apig/{{$ModuleName}}_apig.h"
 #include "{{$Iface}}Proxy.generated.h"
 
@@ -69,7 +70,8 @@ public:
 	{{ueReturn "" .Return}} {{Camel .Name}}({{ueParams "" .Params}}) override;
 	{{ else }}
 	UFUNCTION(BlueprintCallable, Category = "{{$Category}}", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-	void {{Camel .Name}}(UObject* WorldContextObject, FLatentActionInfo LatentInfo, {{ueReturn "" .Return}}& Result{{if len .Params}},{{end}} {{ueParams "" .Params}});
+	void {{Camel .Name}}Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, {{ueReturn "" .Return}}& Result{{if len .Params}},{{end}} {{ueParams "" .Params}});
+	UFUNCTION(BlueprintCallable, Category = "{{$Category}}")
 	{{ueReturn "" .Return}} {{Camel .Name}}({{ueParams "" .Params}}) override;
 	{{- end }}
 {{ end }}

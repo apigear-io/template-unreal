@@ -21,6 +21,7 @@ limitations under the License.
 #include "UObject/NoExportTypes.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Engine/LatentActionManager.h"
+#include "Templates/SharedPointer.h"
 #include "apig/TbSimple_apig.h"
 #include "TbSimpleSimpleInterfaceProxy.generated.h"
 
@@ -93,19 +94,23 @@ public:
 
 	// operations
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-	void FuncBool(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool);
+	void FuncBoolAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool);
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface")
 	bool FuncBool(bool bParamBool) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-	void FuncInt(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 ParamInt);
+	void FuncIntAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 ParamInt);
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface")
 	int32 FuncInt(int32 ParamInt) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-	void FuncFloat(UObject* WorldContextObject, FLatentActionInfo LatentInfo, float& Result, float ParamFloat);
+	void FuncFloatAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, float& Result, float ParamFloat);
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface")
 	float FuncFloat(float ParamFloat) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-	void FuncString(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FString& Result, const FString& ParamString);
+	void FuncStringAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FString& Result, const FString& ParamString);
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface")
 	FString FuncString(const FString& ParamString) override;
 
 private:

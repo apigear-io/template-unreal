@@ -111,7 +111,7 @@ FTbSame1SameEnum1InterfaceProp1ChangedDelegate& UTbSame1SameEnum1InterfaceProxy:
 	return Prop1Changed;
 }
 
-void UTbSame1SameEnum1InterfaceProxy::Func1(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame1Enum1& Result, const ETbSame1Enum1& Param1)
+void UTbSame1SameEnum1InterfaceProxy::Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame1Enum1& Result, const ETbSame1Enum1& Param1)
 {
 	TbSame1SameEnum1InterfaceTracer::trace_callFunc1(Param1);
 

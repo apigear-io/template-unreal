@@ -149,7 +149,7 @@ FTestbed2NestedStruct2InterfaceProp2ChangedDelegate& UTestbed2NestedStruct2Inter
 	return Prop2Changed;
 }
 
-void UTestbed2NestedStruct2InterfaceProxy::Func1(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1)
+void UTestbed2NestedStruct2InterfaceProxy::Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1)
 {
 	Testbed2NestedStruct2InterfaceTracer::trace_callFunc1(Param1);
 
@@ -180,7 +180,7 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct2InterfaceProxy::Func1(const FTestbe
 	Testbed2NestedStruct2InterfaceTracer::trace_callFunc1(Param1);
 	return service->Func1(Param1);
 }
-void UTestbed2NestedStruct2InterfaceProxy::Func2(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
+void UTestbed2NestedStruct2InterfaceProxy::Func2Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
 {
 	Testbed2NestedStruct2InterfaceTracer::trace_callFunc2(Param1, Param2);
 
