@@ -93,24 +93,16 @@ public:
 	void SetProp4(int32 Prop4) override;
 
 	// operations
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1);
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
 	int32 Func1(int32 Param1) override;
 
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void Func2Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2);
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
 	int32 Func2(int32 Param1, int32 Param2) override;
 
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void Func3Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2, int32 Param3);
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
 	int32 Func3(int32 Param1, int32 Param2, int32 Param3) override;
 
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void Func4Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2, int32 Param3, int32 Param4);
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
 	int32 Func4(int32 Param1, int32 Param2, int32 Param3, int32 Param4) override;
 
 private:

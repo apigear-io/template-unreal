@@ -51,9 +51,7 @@ public:
 	void SetProp1(const FTbSame2Struct1& Prop1) override;
 
 	// operations
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct1Interface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame2Struct1& Result, const FTbSame2Struct1& Param1);
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct1Interface")
 	FTbSame2Struct1 Func1(const FTbSame2Struct1& Param1) override;
 
 private:

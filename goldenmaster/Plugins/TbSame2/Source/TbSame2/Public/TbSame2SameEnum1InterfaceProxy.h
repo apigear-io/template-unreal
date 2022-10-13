@@ -51,9 +51,7 @@ public:
 	void SetProp1(const ETbSame2Enum1& Prop1) override;
 
 	// operations
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum1Interface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, const ETbSame2Enum1& Param1);
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum1Interface")
 	ETbSame2Enum1 Func1(const ETbSame2Enum1& Param1) override;
 
 private:

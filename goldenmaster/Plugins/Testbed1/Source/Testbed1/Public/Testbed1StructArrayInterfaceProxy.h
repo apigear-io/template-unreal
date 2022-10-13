@@ -93,24 +93,16 @@ public:
 	void SetPropString(const TArray<FTestbed1StructString>& PropString) override;
 
 	// operations
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void FuncBoolAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructBool>& ParamBool);
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface")
 	FTestbed1StructBool FuncBool(const TArray<FTestbed1StructBool>& ParamBool) override;
 
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void FuncIntAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructInt>& ParamInt);
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface")
 	FTestbed1StructBool FuncInt(const TArray<FTestbed1StructInt>& ParamInt) override;
 
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void FuncFloatAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructFloat>& ParamFloat);
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface")
 	FTestbed1StructBool FuncFloat(const TArray<FTestbed1StructFloat>& ParamFloat) override;
 
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void FuncStringAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructString>& ParamString);
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface")
 	FTestbed1StructBool FuncString(const TArray<FTestbed1StructString>& ParamString) override;
 
 private:

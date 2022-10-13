@@ -93,24 +93,16 @@ public:
 	void SetPropString(const FTestbed1StructString& PropString) override;
 
 	// operations
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void FuncBoolAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const FTestbed1StructBool& ParamBool);
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface")
 	FTestbed1StructBool FuncBool(const FTestbed1StructBool& ParamBool) override;
 
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void FuncIntAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const FTestbed1StructInt& ParamInt);
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface")
 	FTestbed1StructBool FuncInt(const FTestbed1StructInt& ParamInt) override;
 
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void FuncFloatAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructFloat& Result, const FTestbed1StructFloat& ParamFloat);
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface")
 	FTestbed1StructFloat FuncFloat(const FTestbed1StructFloat& ParamFloat) override;
 
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void FuncStringAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructString& Result, const FTestbed1StructString& ParamString);
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface")
 	FTestbed1StructString FuncString(const FTestbed1StructString& ParamString) override;
 
 private:

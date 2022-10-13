@@ -93,24 +93,16 @@ public:
 	void SetPropString(const FString& PropString) override;
 
 	// operations
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void FuncBoolAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool);
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface")
 	bool FuncBool(bool bParamBool) override;
 
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void FuncIntAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 ParamInt);
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface")
 	int32 FuncInt(int32 ParamInt) override;
 
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void FuncFloatAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, float& Result, float ParamFloat);
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface")
 	float FuncFloat(float ParamFloat) override;
 
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void FuncStringAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FString& Result, const FString& ParamString);
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface")
 	FString FuncString(const FString& ParamString) override;
 
 private:

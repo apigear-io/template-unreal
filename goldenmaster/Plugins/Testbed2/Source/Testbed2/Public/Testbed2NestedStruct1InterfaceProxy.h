@@ -51,9 +51,7 @@ public:
 	void SetProp1(const FTestbed2NestedStruct1& Prop1) override;
 
 	// operations
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct1Interface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1);
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct1Interface")
 	FTestbed2NestedStruct1 Func1(const FTestbed2NestedStruct1& Param1) override;
 
 private:
