@@ -37,12 +37,12 @@ FTbSame2SameEnum1InterfaceSig1Delegate& LocalService::GetSig1SignalDelegate()
 	return Sig1Signal;
 }
 
-ETbSame2Enum1 LocalService::GetProp1() const
+ETbSame2Enum1 LocalService::GetProp1_Implementation() const
 {
 	return Prop1;
 }
 
-void LocalService::SetProp1(const ETbSame2Enum1& InProp1)
+void LocalService::SetProp1_Implementation(const ETbSame2Enum1& InProp1)
 {
 	if (Prop1 != InProp1)
 	{
@@ -56,7 +56,7 @@ FTbSame2SameEnum1InterfaceProp1ChangedDelegate& LocalService::GetProp1ChangedDel
 	return Prop1Changed;
 }
 
-ETbSame2Enum1 LocalService::Func1(const ETbSame2Enum1& Param1)
+ETbSame2Enum1 LocalService::Func1_Implementation(const ETbSame2Enum1& Param1)
 {
 	(void)Param1;
 	// do business logic here

@@ -88,12 +88,12 @@ FTestbed1StructArrayInterfaceSigStringDelegate& OLinkService::GetSigStringSignal
 	return SigStringSignal;
 }
 
-TArray<FTestbed1StructBool> OLinkService::GetPropBool() const
+TArray<FTestbed1StructBool> OLinkService::GetPropBool_Implementation() const
 {
 	return PropBool;
 }
 
-void OLinkService::SetPropBool(const TArray<FTestbed1StructBool>& InPropBool)
+void OLinkService::SetPropBool_Implementation(const TArray<FTestbed1StructBool>& InPropBool)
 {
 	if (!m_node)
 	{
@@ -106,12 +106,12 @@ FTestbed1StructArrayInterfacePropBoolChangedDelegate& OLinkService::GetPropBoolC
 {
 	return PropBoolChanged;
 }
-TArray<FTestbed1StructInt> OLinkService::GetPropInt() const
+TArray<FTestbed1StructInt> OLinkService::GetPropInt_Implementation() const
 {
 	return PropInt;
 }
 
-void OLinkService::SetPropInt(const TArray<FTestbed1StructInt>& InPropInt)
+void OLinkService::SetPropInt_Implementation(const TArray<FTestbed1StructInt>& InPropInt)
 {
 	if (!m_node)
 	{
@@ -124,12 +124,12 @@ FTestbed1StructArrayInterfacePropIntChangedDelegate& OLinkService::GetPropIntCha
 {
 	return PropIntChanged;
 }
-TArray<FTestbed1StructFloat> OLinkService::GetPropFloat() const
+TArray<FTestbed1StructFloat> OLinkService::GetPropFloat_Implementation() const
 {
 	return PropFloat;
 }
 
-void OLinkService::SetPropFloat(const TArray<FTestbed1StructFloat>& InPropFloat)
+void OLinkService::SetPropFloat_Implementation(const TArray<FTestbed1StructFloat>& InPropFloat)
 {
 	if (!m_node)
 	{
@@ -142,12 +142,12 @@ FTestbed1StructArrayInterfacePropFloatChangedDelegate& OLinkService::GetPropFloa
 {
 	return PropFloatChanged;
 }
-TArray<FTestbed1StructString> OLinkService::GetPropString() const
+TArray<FTestbed1StructString> OLinkService::GetPropString_Implementation() const
 {
 	return PropString;
 }
 
-void OLinkService::SetPropString(const TArray<FTestbed1StructString>& InPropString)
+void OLinkService::SetPropString_Implementation(const TArray<FTestbed1StructString>& InPropString)
 {
 	if (!m_node)
 	{
@@ -161,7 +161,7 @@ FTestbed1StructArrayInterfacePropStringChangedDelegate& OLinkService::GetPropStr
 	return PropStringChanged;
 }
 
-FTestbed1StructBool OLinkService::FuncBool(const TArray<FTestbed1StructBool>& ParamBool)
+FTestbed1StructBool OLinkService::FuncBool_Implementation(const TArray<FTestbed1StructBool>& ParamBool)
 {
 	if (!m_node)
 	{
@@ -180,7 +180,7 @@ FTestbed1StructBool OLinkService::FuncBool(const TArray<FTestbed1StructBool>& Pa
 	return Promise.GetFuture().Get();
 }
 
-FTestbed1StructBool OLinkService::FuncInt(const TArray<FTestbed1StructInt>& ParamInt)
+FTestbed1StructBool OLinkService::FuncInt_Implementation(const TArray<FTestbed1StructInt>& ParamInt)
 {
 	if (!m_node)
 	{
@@ -199,7 +199,7 @@ FTestbed1StructBool OLinkService::FuncInt(const TArray<FTestbed1StructInt>& Para
 	return Promise.GetFuture().Get();
 }
 
-FTestbed1StructBool OLinkService::FuncFloat(const TArray<FTestbed1StructFloat>& ParamFloat)
+FTestbed1StructBool OLinkService::FuncFloat_Implementation(const TArray<FTestbed1StructFloat>& ParamFloat)
 {
 	if (!m_node)
 	{
@@ -218,7 +218,7 @@ FTestbed1StructBool OLinkService::FuncFloat(const TArray<FTestbed1StructFloat>& 
 	return Promise.GetFuture().Get();
 }
 
-FTestbed1StructBool OLinkService::FuncString(const TArray<FTestbed1StructString>& ParamString)
+FTestbed1StructBool OLinkService::FuncString_Implementation(const TArray<FTestbed1StructString>& ParamString)
 {
 	if (!m_node)
 	{

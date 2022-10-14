@@ -88,12 +88,12 @@ FTbEnumEnumInterfaceSig3Delegate& OLinkService::GetSig3SignalDelegate()
 	return Sig3Signal;
 }
 
-ETbEnumEnum0 OLinkService::GetProp0() const
+ETbEnumEnum0 OLinkService::GetProp0_Implementation() const
 {
 	return Prop0;
 }
 
-void OLinkService::SetProp0(const ETbEnumEnum0& InProp0)
+void OLinkService::SetProp0_Implementation(const ETbEnumEnum0& InProp0)
 {
 	if (!m_node)
 	{
@@ -106,12 +106,12 @@ FTbEnumEnumInterfaceProp0ChangedDelegate& OLinkService::GetProp0ChangedDelegate(
 {
 	return Prop0Changed;
 }
-ETbEnumEnum1 OLinkService::GetProp1() const
+ETbEnumEnum1 OLinkService::GetProp1_Implementation() const
 {
 	return Prop1;
 }
 
-void OLinkService::SetProp1(const ETbEnumEnum1& InProp1)
+void OLinkService::SetProp1_Implementation(const ETbEnumEnum1& InProp1)
 {
 	if (!m_node)
 	{
@@ -124,12 +124,12 @@ FTbEnumEnumInterfaceProp1ChangedDelegate& OLinkService::GetProp1ChangedDelegate(
 {
 	return Prop1Changed;
 }
-ETbEnumEnum2 OLinkService::GetProp2() const
+ETbEnumEnum2 OLinkService::GetProp2_Implementation() const
 {
 	return Prop2;
 }
 
-void OLinkService::SetProp2(const ETbEnumEnum2& InProp2)
+void OLinkService::SetProp2_Implementation(const ETbEnumEnum2& InProp2)
 {
 	if (!m_node)
 	{
@@ -142,12 +142,12 @@ FTbEnumEnumInterfaceProp2ChangedDelegate& OLinkService::GetProp2ChangedDelegate(
 {
 	return Prop2Changed;
 }
-ETbEnumEnum3 OLinkService::GetProp3() const
+ETbEnumEnum3 OLinkService::GetProp3_Implementation() const
 {
 	return Prop3;
 }
 
-void OLinkService::SetProp3(const ETbEnumEnum3& InProp3)
+void OLinkService::SetProp3_Implementation(const ETbEnumEnum3& InProp3)
 {
 	if (!m_node)
 	{
@@ -161,7 +161,7 @@ FTbEnumEnumInterfaceProp3ChangedDelegate& OLinkService::GetProp3ChangedDelegate(
 	return Prop3Changed;
 }
 
-ETbEnumEnum0 OLinkService::Func0(const ETbEnumEnum0& Param0)
+ETbEnumEnum0 OLinkService::Func0_Implementation(const ETbEnumEnum0& Param0)
 {
 	if (!m_node)
 	{
@@ -180,7 +180,7 @@ ETbEnumEnum0 OLinkService::Func0(const ETbEnumEnum0& Param0)
 	return Promise.GetFuture().Get();
 }
 
-ETbEnumEnum1 OLinkService::Func1(const ETbEnumEnum1& Param1)
+ETbEnumEnum1 OLinkService::Func1_Implementation(const ETbEnumEnum1& Param1)
 {
 	if (!m_node)
 	{
@@ -199,7 +199,7 @@ ETbEnumEnum1 OLinkService::Func1(const ETbEnumEnum1& Param1)
 	return Promise.GetFuture().Get();
 }
 
-ETbEnumEnum2 OLinkService::Func2(const ETbEnumEnum2& Param2)
+ETbEnumEnum2 OLinkService::Func2_Implementation(const ETbEnumEnum2& Param2)
 {
 	if (!m_node)
 	{
@@ -218,7 +218,7 @@ ETbEnumEnum2 OLinkService::Func2(const ETbEnumEnum2& Param2)
 	return Promise.GetFuture().Get();
 }
 
-ETbEnumEnum3 OLinkService::Func3(const ETbEnumEnum3& Param3)
+ETbEnumEnum3 OLinkService::Func3_Implementation(const ETbEnumEnum3& Param3)
 {
 	if (!m_node)
 	{

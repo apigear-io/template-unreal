@@ -114,12 +114,12 @@ FTestbed2NestedStruct1InterfaceSig1Delegate& SimulationService::GetSig1SignalDel
 	return Sig1Signal;
 }
 
-FTestbed2NestedStruct1 SimulationService::GetProp1() const
+FTestbed2NestedStruct1 SimulationService::GetProp1_Implementation() const
 {
 	return Prop1;
 }
 
-void SimulationService::SetProp1(const FTestbed2NestedStruct1& InProp1)
+void SimulationService::SetProp1_Implementation(const FTestbed2NestedStruct1& InProp1)
 {
 	Params params;
 	params["prop1"] = InProp1;
@@ -135,7 +135,7 @@ FTestbed2NestedStruct1InterfaceProp1ChangedDelegate& SimulationService::GetProp1
 	return Prop1Changed;
 }
 
-FTestbed2NestedStruct1 SimulationService::Func1(const FTestbed2NestedStruct1& Param1)
+FTestbed2NestedStruct1 SimulationService::Func1_Implementation(const FTestbed2NestedStruct1& Param1)
 {
 	Params params;
 	params["param1"] = Param1;

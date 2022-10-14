@@ -58,30 +58,30 @@ public:
 	FTestbed2ManyParamInterfaceProp4ChangedDelegate& GetProp4ChangedDelegate() override;
 
 	// properties
-	int32 GetProp1() const override;
-	void SetProp1(int32 Prop1) override;
+	int32 GetProp1_Implementation() const override;
+	void SetProp1_Implementation(int32 Prop1) override;
 
-	int32 GetProp2() const override;
-	void SetProp2(int32 Prop2) override;
+	int32 GetProp2_Implementation() const override;
+	void SetProp2_Implementation(int32 Prop2) override;
 
-	int32 GetProp3() const override;
-	void SetProp3(int32 Prop3) override;
+	int32 GetProp3_Implementation() const override;
+	void SetProp3_Implementation(int32 Prop3) override;
 
-	int32 GetProp4() const override;
-	void SetProp4(int32 Prop4) override;
+	int32 GetProp4_Implementation() const override;
+	void SetProp4_Implementation(int32 Prop4) override;
 
 	// operations
-	void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1) override{};
-	int32 Func1(int32 Param1) override;
+	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1) override{};
+	int32 Func1_Implementation(int32 Param1) override;
 
-	void Func2Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2) override{};
-	int32 Func2(int32 Param1, int32 Param2) override;
+	void Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2) override{};
+	int32 Func2_Implementation(int32 Param1, int32 Param2) override;
 
-	void Func3Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2, int32 Param3) override{};
-	int32 Func3(int32 Param1, int32 Param2, int32 Param3) override;
+	void Func3Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2, int32 Param3) override{};
+	int32 Func3_Implementation(int32 Param1, int32 Param2, int32 Param3) override;
 
-	void Func4Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2, int32 Param3, int32 Param4) override{};
-	int32 Func4(int32 Param1, int32 Param2, int32 Param3, int32 Param4) override;
+	void Func4Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2, int32 Param3, int32 Param4) override{};
+	int32 Func4_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4) override;
 
 private:
 	// properties - local copy - use setter functions to emit changed signals

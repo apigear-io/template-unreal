@@ -57,19 +57,17 @@ public:
 {{- if .Description }}
 	/** {{.Description}} */
 {{- end }}
-	UFUNCTION(BlueprintCallable, Category = "{{$Category}}")
-	{{ueReturn "" .}} Get{{Camel .Name}}() const override;
+	{{ueReturn "" .}} Get{{Camel .Name}}_Implementation() const override;
 
-	UFUNCTION(BlueprintCallable, Category = "{{$Category}}")
-	void Set{{Camel .Name}}({{ueParam "" .}}) override;
+	void Set{{Camel .Name}}_Implementation({{ueParam "In" .}}) override;
 {{ end }}
 	// operations
 {{- range .Interface.Operations }}
 	{{- if .Return.IsVoid }}
-	{{ueReturn "" .Return}} {{Camel .Name}}({{ueParams "" .Params}}) override;
+	{{ueReturn "" .Return}} {{Camel .Name}}_Implementation({{ueParams "" .Params}}) override;
 	{{ else }}
-	void {{Camel .Name}}Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, {{ueReturn "" .Return}}& Result{{if len .Params}},{{end}} {{ueParams "" .Params}});
-	{{ueReturn "" .Return}} {{Camel .Name}}({{ueParams "" .Params}}) override;
+	void {{Camel .Name}}Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, {{ueReturn "" .Return}}& Result{{if len .Params}},{{end}} {{ueParams "" .Params}});
+	{{ueReturn "" .Return}} {{Camel .Name}}_Implementation({{ueParams "" .Params}}) override;
 	{{- end }}
 {{ end }}
 private:
@@ -90,8 +88,14 @@ private:
 {{- if .Description }}
 	/** {{.Description}} */
 {{- end }}
-	UPROPERTY(EditAnywhere, BlueprintGetter = Get{{Camel .Name}}, BlueprintSetter = Set{{Camel .Name}}, Category = "{{$Category}}")
+	UPROPERTY(EditAnywhere, BlueprintGetter = Get{{Camel .Name}}_Private, BlueprintSetter = Set{{Camel .Name}}_Private, Category = "{{$Category}}")
 	{{ueReturn "" .}} {{ueVar "" .}};
+
+	UFUNCTION(BlueprintGetter, Category = "{{$Category}}")
+	{{ueReturn "" .}} Get{{Camel .Name}}_Private() const;
+
+	UFUNCTION(BlueprintSetter, Category = "{{$Category}}")
+	void Set{{Camel .Name}}_Private({{ueParam "In" .}});
 {{ else }}
 {{ end -}}
 };

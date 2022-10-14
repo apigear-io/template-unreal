@@ -111,15 +111,25 @@ void UTbSame1SameStruct2InterfaceProxy::OnProp1Changed(const FTbSame1Struct2& In
 	Prop1Changed.Broadcast(InProp1);
 }
 
-FTbSame1Struct2 UTbSame1SameStruct2InterfaceProxy::GetProp1() const
+FTbSame1Struct2 UTbSame1SameStruct2InterfaceProxy::GetProp1_Implementation() const
 {
 	return service->GetProp1();
 }
 
-void UTbSame1SameStruct2InterfaceProxy::SetProp1(const FTbSame1Struct2& InProp1)
+void UTbSame1SameStruct2InterfaceProxy::SetProp1_Implementation(const FTbSame1Struct2& InProp1)
 {
 	TbSame1SameStruct2InterfaceTracer::trace_callSetProp1(InProp1);
 	service->SetProp1(InProp1);
+}
+
+FTbSame1Struct2 UTbSame1SameStruct2InterfaceProxy::GetProp1_Private() const
+{
+	return GetProp1_Implementation();
+}
+
+void UTbSame1SameStruct2InterfaceProxy::SetProp1_Private(const FTbSame1Struct2& InProp1)
+{
+	service->SetProp1_Implementation(InProp1);
 }
 
 FTbSame1SameStruct2InterfaceProp1ChangedDelegate& UTbSame1SameStruct2InterfaceProxy::GetProp1ChangedDelegate()
@@ -133,15 +143,25 @@ void UTbSame1SameStruct2InterfaceProxy::OnProp2Changed(const FTbSame1Struct2& In
 	Prop2Changed.Broadcast(InProp2);
 }
 
-FTbSame1Struct2 UTbSame1SameStruct2InterfaceProxy::GetProp2() const
+FTbSame1Struct2 UTbSame1SameStruct2InterfaceProxy::GetProp2_Implementation() const
 {
 	return service->GetProp2();
 }
 
-void UTbSame1SameStruct2InterfaceProxy::SetProp2(const FTbSame1Struct2& InProp2)
+void UTbSame1SameStruct2InterfaceProxy::SetProp2_Implementation(const FTbSame1Struct2& InProp2)
 {
 	TbSame1SameStruct2InterfaceTracer::trace_callSetProp2(InProp2);
 	service->SetProp2(InProp2);
+}
+
+FTbSame1Struct2 UTbSame1SameStruct2InterfaceProxy::GetProp2_Private() const
+{
+	return GetProp2_Implementation();
+}
+
+void UTbSame1SameStruct2InterfaceProxy::SetProp2_Private(const FTbSame1Struct2& InProp2)
+{
+	service->SetProp2_Implementation(InProp2);
 }
 
 FTbSame1SameStruct2InterfaceProp2ChangedDelegate& UTbSame1SameStruct2InterfaceProxy::GetProp2ChangedDelegate()
@@ -149,7 +169,7 @@ FTbSame1SameStruct2InterfaceProp2ChangedDelegate& UTbSame1SameStruct2InterfacePr
 	return Prop2Changed;
 }
 
-void UTbSame1SameStruct2InterfaceProxy::Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame1Struct1& Result, const FTbSame1Struct1& Param1)
+void UTbSame1SameStruct2InterfaceProxy::Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame1Struct1& Result, const FTbSame1Struct1& Param1)
 {
 	TbSame1SameStruct2InterfaceTracer::trace_callFunc1(Param1);
 
@@ -175,12 +195,12 @@ void UTbSame1SameStruct2InterfaceProxy::Func1Async(UObject* WorldContextObject, 
 			});
 	}
 }
-FTbSame1Struct1 UTbSame1SameStruct2InterfaceProxy::Func1(const FTbSame1Struct1& Param1)
+FTbSame1Struct1 UTbSame1SameStruct2InterfaceProxy::Func1_Implementation(const FTbSame1Struct1& Param1)
 {
 	TbSame1SameStruct2InterfaceTracer::trace_callFunc1(Param1);
 	return service->Func1(Param1);
 }
-void UTbSame1SameStruct2InterfaceProxy::Func2Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame1Struct1& Result, const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2)
+void UTbSame1SameStruct2InterfaceProxy::Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame1Struct1& Result, const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2)
 {
 	TbSame1SameStruct2InterfaceTracer::trace_callFunc2(Param1, Param2);
 
@@ -206,7 +226,7 @@ void UTbSame1SameStruct2InterfaceProxy::Func2Async(UObject* WorldContextObject, 
 			});
 	}
 }
-FTbSame1Struct1 UTbSame1SameStruct2InterfaceProxy::Func2(const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2)
+FTbSame1Struct1 UTbSame1SameStruct2InterfaceProxy::Func2_Implementation(const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2)
 {
 	TbSame1SameStruct2InterfaceTracer::trace_callFunc2(Param1, Param2);
 	return service->Func2(Param1, Param2);

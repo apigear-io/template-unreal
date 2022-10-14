@@ -37,12 +37,12 @@ FTbSame1SameStruct1InterfaceSig1Delegate& LocalService::GetSig1SignalDelegate()
 	return Sig1Signal;
 }
 
-FTbSame1Struct1 LocalService::GetProp1() const
+FTbSame1Struct1 LocalService::GetProp1_Implementation() const
 {
 	return Prop1;
 }
 
-void LocalService::SetProp1(const FTbSame1Struct1& InProp1)
+void LocalService::SetProp1_Implementation(const FTbSame1Struct1& InProp1)
 {
 	if (Prop1 != InProp1)
 	{
@@ -56,7 +56,7 @@ FTbSame1SameStruct1InterfaceProp1ChangedDelegate& LocalService::GetProp1ChangedD
 	return Prop1Changed;
 }
 
-FTbSame1Struct1 LocalService::Func1(const FTbSame1Struct1& Param1)
+FTbSame1Struct1 LocalService::Func1_Implementation(const FTbSame1Struct1& Param1)
 {
 	(void)Param1;
 	// do business logic here

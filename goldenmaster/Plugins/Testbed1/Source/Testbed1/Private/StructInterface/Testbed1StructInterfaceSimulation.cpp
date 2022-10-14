@@ -222,12 +222,12 @@ FTestbed1StructInterfaceSigStringDelegate& SimulationService::GetSigStringSignal
 	return SigStringSignal;
 }
 
-FTestbed1StructBool SimulationService::GetPropBool() const
+FTestbed1StructBool SimulationService::GetPropBool_Implementation() const
 {
 	return PropBool;
 }
 
-void SimulationService::SetPropBool(const FTestbed1StructBool& InPropBool)
+void SimulationService::SetPropBool_Implementation(const FTestbed1StructBool& InPropBool)
 {
 	Params params;
 	params["propBool"] = InPropBool;
@@ -243,12 +243,12 @@ FTestbed1StructInterfacePropBoolChangedDelegate& SimulationService::GetPropBoolC
 	return PropBoolChanged;
 }
 
-FTestbed1StructInt SimulationService::GetPropInt() const
+FTestbed1StructInt SimulationService::GetPropInt_Implementation() const
 {
 	return PropInt;
 }
 
-void SimulationService::SetPropInt(const FTestbed1StructInt& InPropInt)
+void SimulationService::SetPropInt_Implementation(const FTestbed1StructInt& InPropInt)
 {
 	Params params;
 	params["propInt"] = InPropInt;
@@ -264,12 +264,12 @@ FTestbed1StructInterfacePropIntChangedDelegate& SimulationService::GetPropIntCha
 	return PropIntChanged;
 }
 
-FTestbed1StructFloat SimulationService::GetPropFloat() const
+FTestbed1StructFloat SimulationService::GetPropFloat_Implementation() const
 {
 	return PropFloat;
 }
 
-void SimulationService::SetPropFloat(const FTestbed1StructFloat& InPropFloat)
+void SimulationService::SetPropFloat_Implementation(const FTestbed1StructFloat& InPropFloat)
 {
 	Params params;
 	params["propFloat"] = InPropFloat;
@@ -285,12 +285,12 @@ FTestbed1StructInterfacePropFloatChangedDelegate& SimulationService::GetPropFloa
 	return PropFloatChanged;
 }
 
-FTestbed1StructString SimulationService::GetPropString() const
+FTestbed1StructString SimulationService::GetPropString_Implementation() const
 {
 	return PropString;
 }
 
-void SimulationService::SetPropString(const FTestbed1StructString& InPropString)
+void SimulationService::SetPropString_Implementation(const FTestbed1StructString& InPropString)
 {
 	Params params;
 	params["propString"] = InPropString;
@@ -306,7 +306,7 @@ FTestbed1StructInterfacePropStringChangedDelegate& SimulationService::GetPropStr
 	return PropStringChanged;
 }
 
-FTestbed1StructBool SimulationService::FuncBool(const FTestbed1StructBool& ParamBool)
+FTestbed1StructBool SimulationService::FuncBool_Implementation(const FTestbed1StructBool& ParamBool)
 {
 	Params params;
 	params["paramBool"] = ParamBool;
@@ -326,7 +326,7 @@ FTestbed1StructBool SimulationService::FuncBool(const FTestbed1StructBool& Param
 	return Promise.GetFuture().Get();
 }
 
-FTestbed1StructBool SimulationService::FuncInt(const FTestbed1StructInt& ParamInt)
+FTestbed1StructBool SimulationService::FuncInt_Implementation(const FTestbed1StructInt& ParamInt)
 {
 	Params params;
 	params["paramInt"] = ParamInt;
@@ -346,7 +346,7 @@ FTestbed1StructBool SimulationService::FuncInt(const FTestbed1StructInt& ParamIn
 	return Promise.GetFuture().Get();
 }
 
-FTestbed1StructFloat SimulationService::FuncFloat(const FTestbed1StructFloat& ParamFloat)
+FTestbed1StructFloat SimulationService::FuncFloat_Implementation(const FTestbed1StructFloat& ParamFloat)
 {
 	Params params;
 	params["paramFloat"] = ParamFloat;
@@ -366,7 +366,7 @@ FTestbed1StructFloat SimulationService::FuncFloat(const FTestbed1StructFloat& Pa
 	return Promise.GetFuture().Get();
 }
 
-FTestbed1StructString SimulationService::FuncString(const FTestbed1StructString& ParamString)
+FTestbed1StructString SimulationService::FuncString_Implementation(const FTestbed1StructString& ParamString)
 {
 	Params params;
 	params["paramString"] = ParamString;

@@ -114,12 +114,12 @@ FTbSame1SameEnum1InterfaceSig1Delegate& SimulationService::GetSig1SignalDelegate
 	return Sig1Signal;
 }
 
-ETbSame1Enum1 SimulationService::GetProp1() const
+ETbSame1Enum1 SimulationService::GetProp1_Implementation() const
 {
 	return Prop1;
 }
 
-void SimulationService::SetProp1(const ETbSame1Enum1& InProp1)
+void SimulationService::SetProp1_Implementation(const ETbSame1Enum1& InProp1)
 {
 	Params params;
 	params["prop1"] = InProp1;
@@ -135,7 +135,7 @@ FTbSame1SameEnum1InterfaceProp1ChangedDelegate& SimulationService::GetProp1Chang
 	return Prop1Changed;
 }
 
-ETbSame1Enum1 SimulationService::Func1(const ETbSame1Enum1& Param1)
+ETbSame1Enum1 SimulationService::Func1_Implementation(const ETbSame1Enum1& Param1)
 {
 	Params params;
 	params["param1"] = Param1;

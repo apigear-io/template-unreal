@@ -88,12 +88,12 @@ FTbSimpleSimpleArrayInterfaceSigStringDelegate& OLinkService::GetSigStringSignal
 	return SigStringSignal;
 }
 
-TArray<bool> OLinkService::GetPropBool() const
+TArray<bool> OLinkService::GetPropBool_Implementation() const
 {
 	return PropBool;
 }
 
-void OLinkService::SetPropBool(const TArray<bool>& InPropBool)
+void OLinkService::SetPropBool_Implementation(const TArray<bool>& InPropBool)
 {
 	if (!m_node)
 	{
@@ -106,12 +106,12 @@ FTbSimpleSimpleArrayInterfacePropBoolChangedDelegate& OLinkService::GetPropBoolC
 {
 	return PropBoolChanged;
 }
-TArray<int32> OLinkService::GetPropInt() const
+TArray<int32> OLinkService::GetPropInt_Implementation() const
 {
 	return PropInt;
 }
 
-void OLinkService::SetPropInt(const TArray<int32>& InPropInt)
+void OLinkService::SetPropInt_Implementation(const TArray<int32>& InPropInt)
 {
 	if (!m_node)
 	{
@@ -124,12 +124,12 @@ FTbSimpleSimpleArrayInterfacePropIntChangedDelegate& OLinkService::GetPropIntCha
 {
 	return PropIntChanged;
 }
-TArray<float> OLinkService::GetPropFloat() const
+TArray<float> OLinkService::GetPropFloat_Implementation() const
 {
 	return PropFloat;
 }
 
-void OLinkService::SetPropFloat(const TArray<float>& InPropFloat)
+void OLinkService::SetPropFloat_Implementation(const TArray<float>& InPropFloat)
 {
 	if (!m_node)
 	{
@@ -142,12 +142,12 @@ FTbSimpleSimpleArrayInterfacePropFloatChangedDelegate& OLinkService::GetPropFloa
 {
 	return PropFloatChanged;
 }
-TArray<FString> OLinkService::GetPropString() const
+TArray<FString> OLinkService::GetPropString_Implementation() const
 {
 	return PropString;
 }
 
-void OLinkService::SetPropString(const TArray<FString>& InPropString)
+void OLinkService::SetPropString_Implementation(const TArray<FString>& InPropString)
 {
 	if (!m_node)
 	{
@@ -161,7 +161,7 @@ FTbSimpleSimpleArrayInterfacePropStringChangedDelegate& OLinkService::GetPropStr
 	return PropStringChanged;
 }
 
-TArray<bool> OLinkService::FuncBool(const TArray<bool>& ParamBool)
+TArray<bool> OLinkService::FuncBool_Implementation(const TArray<bool>& ParamBool)
 {
 	if (!m_node)
 	{
@@ -180,7 +180,7 @@ TArray<bool> OLinkService::FuncBool(const TArray<bool>& ParamBool)
 	return Promise.GetFuture().Get();
 }
 
-TArray<int32> OLinkService::FuncInt(const TArray<int32>& ParamInt)
+TArray<int32> OLinkService::FuncInt_Implementation(const TArray<int32>& ParamInt)
 {
 	if (!m_node)
 	{
@@ -199,7 +199,7 @@ TArray<int32> OLinkService::FuncInt(const TArray<int32>& ParamInt)
 	return Promise.GetFuture().Get();
 }
 
-TArray<float> OLinkService::FuncFloat(const TArray<float>& ParamFloat)
+TArray<float> OLinkService::FuncFloat_Implementation(const TArray<float>& ParamFloat)
 {
 	if (!m_node)
 	{
@@ -218,7 +218,7 @@ TArray<float> OLinkService::FuncFloat(const TArray<float>& ParamFloat)
 	return Promise.GetFuture().Get();
 }
 
-TArray<FString> OLinkService::FuncString(const TArray<FString>& ParamString)
+TArray<FString> OLinkService::FuncString_Implementation(const TArray<FString>& ParamString)
 {
 	if (!m_node)
 	{

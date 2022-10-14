@@ -51,24 +51,24 @@ public:
 	FTestbed2NestedStruct3InterfaceProp3ChangedDelegate& GetProp3ChangedDelegate() override;
 
 	// properties
-	FTestbed2NestedStruct1 GetProp1() const override;
-	void SetProp1(const FTestbed2NestedStruct1& Prop1) override;
+	FTestbed2NestedStruct1 GetProp1_Implementation() const override;
+	void SetProp1_Implementation(const FTestbed2NestedStruct1& Prop1) override;
 
-	FTestbed2NestedStruct2 GetProp2() const override;
-	void SetProp2(const FTestbed2NestedStruct2& Prop2) override;
+	FTestbed2NestedStruct2 GetProp2_Implementation() const override;
+	void SetProp2_Implementation(const FTestbed2NestedStruct2& Prop2) override;
 
-	FTestbed2NestedStruct3 GetProp3() const override;
-	void SetProp3(const FTestbed2NestedStruct3& Prop3) override;
+	FTestbed2NestedStruct3 GetProp3_Implementation() const override;
+	void SetProp3_Implementation(const FTestbed2NestedStruct3& Prop3) override;
 
 	// operations
-	void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1) override{};
-	FTestbed2NestedStruct1 Func1(const FTestbed2NestedStruct1& Param1) override;
+	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1) override{};
+	FTestbed2NestedStruct1 Func1_Implementation(const FTestbed2NestedStruct1& Param1) override;
 
-	void Func2Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2) override{};
-	FTestbed2NestedStruct1 Func2(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2) override;
+	void Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2) override{};
+	FTestbed2NestedStruct1 Func2_Implementation(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2) override;
 
-	void Func3Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3) override{};
-	FTestbed2NestedStruct1 Func3(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3) override;
+	void Func3Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3) override{};
+	FTestbed2NestedStruct1 Func3_Implementation(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3) override;
 
 private:
 	// properties - local copy

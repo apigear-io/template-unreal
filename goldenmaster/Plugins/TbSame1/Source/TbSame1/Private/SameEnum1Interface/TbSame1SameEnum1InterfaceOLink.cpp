@@ -70,12 +70,12 @@ FTbSame1SameEnum1InterfaceSig1Delegate& OLinkService::GetSig1SignalDelegate()
 	return Sig1Signal;
 }
 
-ETbSame1Enum1 OLinkService::GetProp1() const
+ETbSame1Enum1 OLinkService::GetProp1_Implementation() const
 {
 	return Prop1;
 }
 
-void OLinkService::SetProp1(const ETbSame1Enum1& InProp1)
+void OLinkService::SetProp1_Implementation(const ETbSame1Enum1& InProp1)
 {
 	if (!m_node)
 	{
@@ -89,7 +89,7 @@ FTbSame1SameEnum1InterfaceProp1ChangedDelegate& OLinkService::GetProp1ChangedDel
 	return Prop1Changed;
 }
 
-ETbSame1Enum1 OLinkService::Func1(const ETbSame1Enum1& Param1)
+ETbSame1Enum1 OLinkService::Func1_Implementation(const ETbSame1Enum1& Param1)
 {
 	if (!m_node)
 	{

@@ -222,12 +222,12 @@ FTestbed2ManyParamInterfaceSig4Delegate& SimulationService::GetSig4SignalDelegat
 	return Sig4Signal;
 }
 
-int32 SimulationService::GetProp1() const
+int32 SimulationService::GetProp1_Implementation() const
 {
 	return Prop1;
 }
 
-void SimulationService::SetProp1(int32 InProp1)
+void SimulationService::SetProp1_Implementation(int32 InProp1)
 {
 	Params params;
 	params["prop1"] = InProp1;
@@ -243,12 +243,12 @@ FTestbed2ManyParamInterfaceProp1ChangedDelegate& SimulationService::GetProp1Chan
 	return Prop1Changed;
 }
 
-int32 SimulationService::GetProp2() const
+int32 SimulationService::GetProp2_Implementation() const
 {
 	return Prop2;
 }
 
-void SimulationService::SetProp2(int32 InProp2)
+void SimulationService::SetProp2_Implementation(int32 InProp2)
 {
 	Params params;
 	params["prop2"] = InProp2;
@@ -264,12 +264,12 @@ FTestbed2ManyParamInterfaceProp2ChangedDelegate& SimulationService::GetProp2Chan
 	return Prop2Changed;
 }
 
-int32 SimulationService::GetProp3() const
+int32 SimulationService::GetProp3_Implementation() const
 {
 	return Prop3;
 }
 
-void SimulationService::SetProp3(int32 InProp3)
+void SimulationService::SetProp3_Implementation(int32 InProp3)
 {
 	Params params;
 	params["prop3"] = InProp3;
@@ -285,12 +285,12 @@ FTestbed2ManyParamInterfaceProp3ChangedDelegate& SimulationService::GetProp3Chan
 	return Prop3Changed;
 }
 
-int32 SimulationService::GetProp4() const
+int32 SimulationService::GetProp4_Implementation() const
 {
 	return Prop4;
 }
 
-void SimulationService::SetProp4(int32 InProp4)
+void SimulationService::SetProp4_Implementation(int32 InProp4)
 {
 	Params params;
 	params["prop4"] = InProp4;
@@ -306,7 +306,7 @@ FTestbed2ManyParamInterfaceProp4ChangedDelegate& SimulationService::GetProp4Chan
 	return Prop4Changed;
 }
 
-int32 SimulationService::Func1(int32 Param1)
+int32 SimulationService::Func1_Implementation(int32 Param1)
 {
 	Params params;
 	params["param1"] = Param1;
@@ -326,7 +326,7 @@ int32 SimulationService::Func1(int32 Param1)
 	return Promise.GetFuture().Get();
 }
 
-int32 SimulationService::Func2(int32 Param1, int32 Param2)
+int32 SimulationService::Func2_Implementation(int32 Param1, int32 Param2)
 {
 	Params params;
 	params["param1"] = Param1;
@@ -347,7 +347,7 @@ int32 SimulationService::Func2(int32 Param1, int32 Param2)
 	return Promise.GetFuture().Get();
 }
 
-int32 SimulationService::Func3(int32 Param1, int32 Param2, int32 Param3)
+int32 SimulationService::Func3_Implementation(int32 Param1, int32 Param2, int32 Param3)
 {
 	Params params;
 	params["param1"] = Param1;
@@ -369,7 +369,7 @@ int32 SimulationService::Func3(int32 Param1, int32 Param2, int32 Param3)
 	return Promise.GetFuture().Get();
 }
 
-int32 SimulationService::Func4(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
+int32 SimulationService::Func4_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
 {
 	Params params;
 	params["param1"] = Param1;

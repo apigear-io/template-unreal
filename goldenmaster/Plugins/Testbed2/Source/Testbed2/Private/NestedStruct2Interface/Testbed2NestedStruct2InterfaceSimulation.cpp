@@ -150,12 +150,12 @@ FTestbed2NestedStruct2InterfaceSig2Delegate& SimulationService::GetSig2SignalDel
 	return Sig2Signal;
 }
 
-FTestbed2NestedStruct1 SimulationService::GetProp1() const
+FTestbed2NestedStruct1 SimulationService::GetProp1_Implementation() const
 {
 	return Prop1;
 }
 
-void SimulationService::SetProp1(const FTestbed2NestedStruct1& InProp1)
+void SimulationService::SetProp1_Implementation(const FTestbed2NestedStruct1& InProp1)
 {
 	Params params;
 	params["prop1"] = InProp1;
@@ -171,12 +171,12 @@ FTestbed2NestedStruct2InterfaceProp1ChangedDelegate& SimulationService::GetProp1
 	return Prop1Changed;
 }
 
-FTestbed2NestedStruct2 SimulationService::GetProp2() const
+FTestbed2NestedStruct2 SimulationService::GetProp2_Implementation() const
 {
 	return Prop2;
 }
 
-void SimulationService::SetProp2(const FTestbed2NestedStruct2& InProp2)
+void SimulationService::SetProp2_Implementation(const FTestbed2NestedStruct2& InProp2)
 {
 	Params params;
 	params["prop2"] = InProp2;
@@ -192,7 +192,7 @@ FTestbed2NestedStruct2InterfaceProp2ChangedDelegate& SimulationService::GetProp2
 	return Prop2Changed;
 }
 
-FTestbed2NestedStruct1 SimulationService::Func1(const FTestbed2NestedStruct1& Param1)
+FTestbed2NestedStruct1 SimulationService::Func1_Implementation(const FTestbed2NestedStruct1& Param1)
 {
 	Params params;
 	params["param1"] = Param1;
@@ -212,7 +212,7 @@ FTestbed2NestedStruct1 SimulationService::Func1(const FTestbed2NestedStruct1& Pa
 	return Promise.GetFuture().Get();
 }
 
-FTestbed2NestedStruct1 SimulationService::Func2(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
+FTestbed2NestedStruct1 SimulationService::Func2_Implementation(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
 {
 	Params params;
 	params["param1"] = Param1;

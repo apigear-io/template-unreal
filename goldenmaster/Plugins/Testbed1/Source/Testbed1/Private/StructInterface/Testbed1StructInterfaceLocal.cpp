@@ -55,12 +55,12 @@ FTestbed1StructInterfaceSigStringDelegate& LocalService::GetSigStringSignalDeleg
 	return SigStringSignal;
 }
 
-FTestbed1StructBool LocalService::GetPropBool() const
+FTestbed1StructBool LocalService::GetPropBool_Implementation() const
 {
 	return PropBool;
 }
 
-void LocalService::SetPropBool(const FTestbed1StructBool& InPropBool)
+void LocalService::SetPropBool_Implementation(const FTestbed1StructBool& InPropBool)
 {
 	if (PropBool != InPropBool)
 	{
@@ -73,12 +73,12 @@ FTestbed1StructInterfacePropBoolChangedDelegate& LocalService::GetPropBoolChange
 {
 	return PropBoolChanged;
 }
-FTestbed1StructInt LocalService::GetPropInt() const
+FTestbed1StructInt LocalService::GetPropInt_Implementation() const
 {
 	return PropInt;
 }
 
-void LocalService::SetPropInt(const FTestbed1StructInt& InPropInt)
+void LocalService::SetPropInt_Implementation(const FTestbed1StructInt& InPropInt)
 {
 	if (PropInt != InPropInt)
 	{
@@ -91,12 +91,12 @@ FTestbed1StructInterfacePropIntChangedDelegate& LocalService::GetPropIntChangedD
 {
 	return PropIntChanged;
 }
-FTestbed1StructFloat LocalService::GetPropFloat() const
+FTestbed1StructFloat LocalService::GetPropFloat_Implementation() const
 {
 	return PropFloat;
 }
 
-void LocalService::SetPropFloat(const FTestbed1StructFloat& InPropFloat)
+void LocalService::SetPropFloat_Implementation(const FTestbed1StructFloat& InPropFloat)
 {
 	if (PropFloat != InPropFloat)
 	{
@@ -109,12 +109,12 @@ FTestbed1StructInterfacePropFloatChangedDelegate& LocalService::GetPropFloatChan
 {
 	return PropFloatChanged;
 }
-FTestbed1StructString LocalService::GetPropString() const
+FTestbed1StructString LocalService::GetPropString_Implementation() const
 {
 	return PropString;
 }
 
-void LocalService::SetPropString(const FTestbed1StructString& InPropString)
+void LocalService::SetPropString_Implementation(const FTestbed1StructString& InPropString)
 {
 	if (PropString != InPropString)
 	{
@@ -128,25 +128,25 @@ FTestbed1StructInterfacePropStringChangedDelegate& LocalService::GetPropStringCh
 	return PropStringChanged;
 }
 
-FTestbed1StructBool LocalService::FuncBool(const FTestbed1StructBool& ParamBool)
+FTestbed1StructBool LocalService::FuncBool_Implementation(const FTestbed1StructBool& ParamBool)
 {
 	(void)ParamBool;
 	// do business logic here
 	return FTestbed1StructBool();
 }
-FTestbed1StructBool LocalService::FuncInt(const FTestbed1StructInt& ParamInt)
+FTestbed1StructBool LocalService::FuncInt_Implementation(const FTestbed1StructInt& ParamInt)
 {
 	(void)ParamInt;
 	// do business logic here
 	return FTestbed1StructBool();
 }
-FTestbed1StructFloat LocalService::FuncFloat(const FTestbed1StructFloat& ParamFloat)
+FTestbed1StructFloat LocalService::FuncFloat_Implementation(const FTestbed1StructFloat& ParamFloat)
 {
 	(void)ParamFloat;
 	// do business logic here
 	return FTestbed1StructFloat();
 }
-FTestbed1StructString LocalService::FuncString(const FTestbed1StructString& ParamString)
+FTestbed1StructString LocalService::FuncString_Implementation(const FTestbed1StructString& ParamString)
 {
 	(void)ParamString;
 	// do business logic here

@@ -88,12 +88,12 @@ FTestbed1StructInterfaceSigStringDelegate& OLinkService::GetSigStringSignalDeleg
 	return SigStringSignal;
 }
 
-FTestbed1StructBool OLinkService::GetPropBool() const
+FTestbed1StructBool OLinkService::GetPropBool_Implementation() const
 {
 	return PropBool;
 }
 
-void OLinkService::SetPropBool(const FTestbed1StructBool& InPropBool)
+void OLinkService::SetPropBool_Implementation(const FTestbed1StructBool& InPropBool)
 {
 	if (!m_node)
 	{
@@ -106,12 +106,12 @@ FTestbed1StructInterfacePropBoolChangedDelegate& OLinkService::GetPropBoolChange
 {
 	return PropBoolChanged;
 }
-FTestbed1StructInt OLinkService::GetPropInt() const
+FTestbed1StructInt OLinkService::GetPropInt_Implementation() const
 {
 	return PropInt;
 }
 
-void OLinkService::SetPropInt(const FTestbed1StructInt& InPropInt)
+void OLinkService::SetPropInt_Implementation(const FTestbed1StructInt& InPropInt)
 {
 	if (!m_node)
 	{
@@ -124,12 +124,12 @@ FTestbed1StructInterfacePropIntChangedDelegate& OLinkService::GetPropIntChangedD
 {
 	return PropIntChanged;
 }
-FTestbed1StructFloat OLinkService::GetPropFloat() const
+FTestbed1StructFloat OLinkService::GetPropFloat_Implementation() const
 {
 	return PropFloat;
 }
 
-void OLinkService::SetPropFloat(const FTestbed1StructFloat& InPropFloat)
+void OLinkService::SetPropFloat_Implementation(const FTestbed1StructFloat& InPropFloat)
 {
 	if (!m_node)
 	{
@@ -142,12 +142,12 @@ FTestbed1StructInterfacePropFloatChangedDelegate& OLinkService::GetPropFloatChan
 {
 	return PropFloatChanged;
 }
-FTestbed1StructString OLinkService::GetPropString() const
+FTestbed1StructString OLinkService::GetPropString_Implementation() const
 {
 	return PropString;
 }
 
-void OLinkService::SetPropString(const FTestbed1StructString& InPropString)
+void OLinkService::SetPropString_Implementation(const FTestbed1StructString& InPropString)
 {
 	if (!m_node)
 	{
@@ -161,7 +161,7 @@ FTestbed1StructInterfacePropStringChangedDelegate& OLinkService::GetPropStringCh
 	return PropStringChanged;
 }
 
-FTestbed1StructBool OLinkService::FuncBool(const FTestbed1StructBool& ParamBool)
+FTestbed1StructBool OLinkService::FuncBool_Implementation(const FTestbed1StructBool& ParamBool)
 {
 	if (!m_node)
 	{
@@ -180,7 +180,7 @@ FTestbed1StructBool OLinkService::FuncBool(const FTestbed1StructBool& ParamBool)
 	return Promise.GetFuture().Get();
 }
 
-FTestbed1StructBool OLinkService::FuncInt(const FTestbed1StructInt& ParamInt)
+FTestbed1StructBool OLinkService::FuncInt_Implementation(const FTestbed1StructInt& ParamInt)
 {
 	if (!m_node)
 	{
@@ -199,7 +199,7 @@ FTestbed1StructBool OLinkService::FuncInt(const FTestbed1StructInt& ParamInt)
 	return Promise.GetFuture().Get();
 }
 
-FTestbed1StructFloat OLinkService::FuncFloat(const FTestbed1StructFloat& ParamFloat)
+FTestbed1StructFloat OLinkService::FuncFloat_Implementation(const FTestbed1StructFloat& ParamFloat)
 {
 	if (!m_node)
 	{
@@ -218,7 +218,7 @@ FTestbed1StructFloat OLinkService::FuncFloat(const FTestbed1StructFloat& ParamFl
 	return Promise.GetFuture().Get();
 }
 
-FTestbed1StructString OLinkService::FuncString(const FTestbed1StructString& ParamString)
+FTestbed1StructString OLinkService::FuncString_Implementation(const FTestbed1StructString& ParamString)
 {
 	if (!m_node)
 	{

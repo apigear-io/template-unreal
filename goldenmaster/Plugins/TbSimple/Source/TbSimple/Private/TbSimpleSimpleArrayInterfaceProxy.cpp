@@ -143,15 +143,25 @@ void UTbSimpleSimpleArrayInterfaceProxy::OnPropBoolChanged(const TArray<bool>& I
 	PropBoolChanged.Broadcast(InPropBool);
 }
 
-TArray<bool> UTbSimpleSimpleArrayInterfaceProxy::GetPropBool() const
+TArray<bool> UTbSimpleSimpleArrayInterfaceProxy::GetPropBool_Implementation() const
 {
 	return service->GetPropBool();
 }
 
-void UTbSimpleSimpleArrayInterfaceProxy::SetPropBool(const TArray<bool>& InPropBool)
+void UTbSimpleSimpleArrayInterfaceProxy::SetPropBool_Implementation(const TArray<bool>& InPropBool)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_callSetPropBool(InPropBool);
 	service->SetPropBool(InPropBool);
+}
+
+TArray<bool> UTbSimpleSimpleArrayInterfaceProxy::GetPropBool_Private() const
+{
+	return GetPropBool_Implementation();
+}
+
+void UTbSimpleSimpleArrayInterfaceProxy::SetPropBool_Private(const TArray<bool>& InPropBool)
+{
+	service->SetPropBool_Implementation(InPropBool);
 }
 
 FTbSimpleSimpleArrayInterfacePropBoolChangedDelegate& UTbSimpleSimpleArrayInterfaceProxy::GetPropBoolChangedDelegate()
@@ -165,15 +175,25 @@ void UTbSimpleSimpleArrayInterfaceProxy::OnPropIntChanged(const TArray<int32>& I
 	PropIntChanged.Broadcast(InPropInt);
 }
 
-TArray<int32> UTbSimpleSimpleArrayInterfaceProxy::GetPropInt() const
+TArray<int32> UTbSimpleSimpleArrayInterfaceProxy::GetPropInt_Implementation() const
 {
 	return service->GetPropInt();
 }
 
-void UTbSimpleSimpleArrayInterfaceProxy::SetPropInt(const TArray<int32>& InPropInt)
+void UTbSimpleSimpleArrayInterfaceProxy::SetPropInt_Implementation(const TArray<int32>& InPropInt)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_callSetPropInt(InPropInt);
 	service->SetPropInt(InPropInt);
+}
+
+TArray<int32> UTbSimpleSimpleArrayInterfaceProxy::GetPropInt_Private() const
+{
+	return GetPropInt_Implementation();
+}
+
+void UTbSimpleSimpleArrayInterfaceProxy::SetPropInt_Private(const TArray<int32>& InPropInt)
+{
+	service->SetPropInt_Implementation(InPropInt);
 }
 
 FTbSimpleSimpleArrayInterfacePropIntChangedDelegate& UTbSimpleSimpleArrayInterfaceProxy::GetPropIntChangedDelegate()
@@ -187,15 +207,25 @@ void UTbSimpleSimpleArrayInterfaceProxy::OnPropFloatChanged(const TArray<float>&
 	PropFloatChanged.Broadcast(InPropFloat);
 }
 
-TArray<float> UTbSimpleSimpleArrayInterfaceProxy::GetPropFloat() const
+TArray<float> UTbSimpleSimpleArrayInterfaceProxy::GetPropFloat_Implementation() const
 {
 	return service->GetPropFloat();
 }
 
-void UTbSimpleSimpleArrayInterfaceProxy::SetPropFloat(const TArray<float>& InPropFloat)
+void UTbSimpleSimpleArrayInterfaceProxy::SetPropFloat_Implementation(const TArray<float>& InPropFloat)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_callSetPropFloat(InPropFloat);
 	service->SetPropFloat(InPropFloat);
+}
+
+TArray<float> UTbSimpleSimpleArrayInterfaceProxy::GetPropFloat_Private() const
+{
+	return GetPropFloat_Implementation();
+}
+
+void UTbSimpleSimpleArrayInterfaceProxy::SetPropFloat_Private(const TArray<float>& InPropFloat)
+{
+	service->SetPropFloat_Implementation(InPropFloat);
 }
 
 FTbSimpleSimpleArrayInterfacePropFloatChangedDelegate& UTbSimpleSimpleArrayInterfaceProxy::GetPropFloatChangedDelegate()
@@ -209,15 +239,25 @@ void UTbSimpleSimpleArrayInterfaceProxy::OnPropStringChanged(const TArray<FStrin
 	PropStringChanged.Broadcast(InPropString);
 }
 
-TArray<FString> UTbSimpleSimpleArrayInterfaceProxy::GetPropString() const
+TArray<FString> UTbSimpleSimpleArrayInterfaceProxy::GetPropString_Implementation() const
 {
 	return service->GetPropString();
 }
 
-void UTbSimpleSimpleArrayInterfaceProxy::SetPropString(const TArray<FString>& InPropString)
+void UTbSimpleSimpleArrayInterfaceProxy::SetPropString_Implementation(const TArray<FString>& InPropString)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_callSetPropString(InPropString);
 	service->SetPropString(InPropString);
+}
+
+TArray<FString> UTbSimpleSimpleArrayInterfaceProxy::GetPropString_Private() const
+{
+	return GetPropString_Implementation();
+}
+
+void UTbSimpleSimpleArrayInterfaceProxy::SetPropString_Private(const TArray<FString>& InPropString)
+{
+	service->SetPropString_Implementation(InPropString);
 }
 
 FTbSimpleSimpleArrayInterfacePropStringChangedDelegate& UTbSimpleSimpleArrayInterfaceProxy::GetPropStringChangedDelegate()
@@ -225,7 +265,7 @@ FTbSimpleSimpleArrayInterfacePropStringChangedDelegate& UTbSimpleSimpleArrayInte
 	return PropStringChanged;
 }
 
-void UTbSimpleSimpleArrayInterfaceProxy::FuncBoolAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<bool>& Result, const TArray<bool>& ParamBool)
+void UTbSimpleSimpleArrayInterfaceProxy::FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<bool>& Result, const TArray<bool>& ParamBool)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_callFuncBool(ParamBool);
 
@@ -251,12 +291,12 @@ void UTbSimpleSimpleArrayInterfaceProxy::FuncBoolAsync(UObject* WorldContextObje
 			});
 	}
 }
-TArray<bool> UTbSimpleSimpleArrayInterfaceProxy::FuncBool(const TArray<bool>& ParamBool)
+TArray<bool> UTbSimpleSimpleArrayInterfaceProxy::FuncBool_Implementation(const TArray<bool>& ParamBool)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_callFuncBool(ParamBool);
 	return service->FuncBool(ParamBool);
 }
-void UTbSimpleSimpleArrayInterfaceProxy::FuncIntAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<int32>& Result, const TArray<int32>& ParamInt)
+void UTbSimpleSimpleArrayInterfaceProxy::FuncIntAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<int32>& Result, const TArray<int32>& ParamInt)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_callFuncInt(ParamInt);
 
@@ -282,12 +322,12 @@ void UTbSimpleSimpleArrayInterfaceProxy::FuncIntAsync(UObject* WorldContextObjec
 			});
 	}
 }
-TArray<int32> UTbSimpleSimpleArrayInterfaceProxy::FuncInt(const TArray<int32>& ParamInt)
+TArray<int32> UTbSimpleSimpleArrayInterfaceProxy::FuncInt_Implementation(const TArray<int32>& ParamInt)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_callFuncInt(ParamInt);
 	return service->FuncInt(ParamInt);
 }
-void UTbSimpleSimpleArrayInterfaceProxy::FuncFloatAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<float>& Result, const TArray<float>& ParamFloat)
+void UTbSimpleSimpleArrayInterfaceProxy::FuncFloatAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<float>& Result, const TArray<float>& ParamFloat)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_callFuncFloat(ParamFloat);
 
@@ -313,12 +353,12 @@ void UTbSimpleSimpleArrayInterfaceProxy::FuncFloatAsync(UObject* WorldContextObj
 			});
 	}
 }
-TArray<float> UTbSimpleSimpleArrayInterfaceProxy::FuncFloat(const TArray<float>& ParamFloat)
+TArray<float> UTbSimpleSimpleArrayInterfaceProxy::FuncFloat_Implementation(const TArray<float>& ParamFloat)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_callFuncFloat(ParamFloat);
 	return service->FuncFloat(ParamFloat);
 }
-void UTbSimpleSimpleArrayInterfaceProxy::FuncStringAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FString>& Result, const TArray<FString>& ParamString)
+void UTbSimpleSimpleArrayInterfaceProxy::FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FString>& Result, const TArray<FString>& ParamString)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_callFuncString(ParamString);
 
@@ -344,7 +384,7 @@ void UTbSimpleSimpleArrayInterfaceProxy::FuncStringAsync(UObject* WorldContextOb
 			});
 	}
 }
-TArray<FString> UTbSimpleSimpleArrayInterfaceProxy::FuncString(const TArray<FString>& ParamString)
+TArray<FString> UTbSimpleSimpleArrayInterfaceProxy::FuncString_Implementation(const TArray<FString>& ParamString)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_callFuncString(ParamString);
 	return service->FuncString(ParamString);

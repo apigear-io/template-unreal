@@ -222,12 +222,12 @@ FTbEnumEnumInterfaceSig3Delegate& SimulationService::GetSig3SignalDelegate()
 	return Sig3Signal;
 }
 
-ETbEnumEnum0 SimulationService::GetProp0() const
+ETbEnumEnum0 SimulationService::GetProp0_Implementation() const
 {
 	return Prop0;
 }
 
-void SimulationService::SetProp0(const ETbEnumEnum0& InProp0)
+void SimulationService::SetProp0_Implementation(const ETbEnumEnum0& InProp0)
 {
 	Params params;
 	params["prop0"] = InProp0;
@@ -243,12 +243,12 @@ FTbEnumEnumInterfaceProp0ChangedDelegate& SimulationService::GetProp0ChangedDele
 	return Prop0Changed;
 }
 
-ETbEnumEnum1 SimulationService::GetProp1() const
+ETbEnumEnum1 SimulationService::GetProp1_Implementation() const
 {
 	return Prop1;
 }
 
-void SimulationService::SetProp1(const ETbEnumEnum1& InProp1)
+void SimulationService::SetProp1_Implementation(const ETbEnumEnum1& InProp1)
 {
 	Params params;
 	params["prop1"] = InProp1;
@@ -264,12 +264,12 @@ FTbEnumEnumInterfaceProp1ChangedDelegate& SimulationService::GetProp1ChangedDele
 	return Prop1Changed;
 }
 
-ETbEnumEnum2 SimulationService::GetProp2() const
+ETbEnumEnum2 SimulationService::GetProp2_Implementation() const
 {
 	return Prop2;
 }
 
-void SimulationService::SetProp2(const ETbEnumEnum2& InProp2)
+void SimulationService::SetProp2_Implementation(const ETbEnumEnum2& InProp2)
 {
 	Params params;
 	params["prop2"] = InProp2;
@@ -285,12 +285,12 @@ FTbEnumEnumInterfaceProp2ChangedDelegate& SimulationService::GetProp2ChangedDele
 	return Prop2Changed;
 }
 
-ETbEnumEnum3 SimulationService::GetProp3() const
+ETbEnumEnum3 SimulationService::GetProp3_Implementation() const
 {
 	return Prop3;
 }
 
-void SimulationService::SetProp3(const ETbEnumEnum3& InProp3)
+void SimulationService::SetProp3_Implementation(const ETbEnumEnum3& InProp3)
 {
 	Params params;
 	params["prop3"] = InProp3;
@@ -306,7 +306,7 @@ FTbEnumEnumInterfaceProp3ChangedDelegate& SimulationService::GetProp3ChangedDele
 	return Prop3Changed;
 }
 
-ETbEnumEnum0 SimulationService::Func0(const ETbEnumEnum0& Param0)
+ETbEnumEnum0 SimulationService::Func0_Implementation(const ETbEnumEnum0& Param0)
 {
 	Params params;
 	params["param0"] = Param0;
@@ -326,7 +326,7 @@ ETbEnumEnum0 SimulationService::Func0(const ETbEnumEnum0& Param0)
 	return Promise.GetFuture().Get();
 }
 
-ETbEnumEnum1 SimulationService::Func1(const ETbEnumEnum1& Param1)
+ETbEnumEnum1 SimulationService::Func1_Implementation(const ETbEnumEnum1& Param1)
 {
 	Params params;
 	params["param1"] = Param1;
@@ -346,7 +346,7 @@ ETbEnumEnum1 SimulationService::Func1(const ETbEnumEnum1& Param1)
 	return Promise.GetFuture().Get();
 }
 
-ETbEnumEnum2 SimulationService::Func2(const ETbEnumEnum2& Param2)
+ETbEnumEnum2 SimulationService::Func2_Implementation(const ETbEnumEnum2& Param2)
 {
 	Params params;
 	params["param2"] = Param2;
@@ -366,7 +366,7 @@ ETbEnumEnum2 SimulationService::Func2(const ETbEnumEnum2& Param2)
 	return Promise.GetFuture().Get();
 }
 
-ETbEnumEnum3 SimulationService::Func3(const ETbEnumEnum3& Param3)
+ETbEnumEnum3 SimulationService::Func3_Implementation(const ETbEnumEnum3& Param3)
 {
 	Params params;
 	params["param3"] = Param3;

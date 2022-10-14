@@ -76,12 +76,12 @@ FTbSame2SameEnum2InterfaceSig2Delegate& OLinkService::GetSig2SignalDelegate()
 	return Sig2Signal;
 }
 
-ETbSame2Enum1 OLinkService::GetProp1() const
+ETbSame2Enum1 OLinkService::GetProp1_Implementation() const
 {
 	return Prop1;
 }
 
-void OLinkService::SetProp1(const ETbSame2Enum1& InProp1)
+void OLinkService::SetProp1_Implementation(const ETbSame2Enum1& InProp1)
 {
 	if (!m_node)
 	{
@@ -94,12 +94,12 @@ FTbSame2SameEnum2InterfaceProp1ChangedDelegate& OLinkService::GetProp1ChangedDel
 {
 	return Prop1Changed;
 }
-ETbSame2Enum2 OLinkService::GetProp2() const
+ETbSame2Enum2 OLinkService::GetProp2_Implementation() const
 {
 	return Prop2;
 }
 
-void OLinkService::SetProp2(const ETbSame2Enum2& InProp2)
+void OLinkService::SetProp2_Implementation(const ETbSame2Enum2& InProp2)
 {
 	if (!m_node)
 	{
@@ -113,7 +113,7 @@ FTbSame2SameEnum2InterfaceProp2ChangedDelegate& OLinkService::GetProp2ChangedDel
 	return Prop2Changed;
 }
 
-ETbSame2Enum1 OLinkService::Func1(const ETbSame2Enum1& Param1)
+ETbSame2Enum1 OLinkService::Func1_Implementation(const ETbSame2Enum1& Param1)
 {
 	if (!m_node)
 	{
@@ -132,7 +132,7 @@ ETbSame2Enum1 OLinkService::Func1(const ETbSame2Enum1& Param1)
 	return Promise.GetFuture().Get();
 }
 
-ETbSame2Enum1 OLinkService::Func2(const ETbSame2Enum1& Param1, const ETbSame2Enum2& Param2)
+ETbSame2Enum1 OLinkService::Func2_Implementation(const ETbSame2Enum1& Param1, const ETbSame2Enum2& Param2)
 {
 	if (!m_node)
 	{

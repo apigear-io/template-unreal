@@ -37,12 +37,12 @@ FTestbed2NestedStruct1InterfaceSig1Delegate& LocalService::GetSig1SignalDelegate
 	return Sig1Signal;
 }
 
-FTestbed2NestedStruct1 LocalService::GetProp1() const
+FTestbed2NestedStruct1 LocalService::GetProp1_Implementation() const
 {
 	return Prop1;
 }
 
-void LocalService::SetProp1(const FTestbed2NestedStruct1& InProp1)
+void LocalService::SetProp1_Implementation(const FTestbed2NestedStruct1& InProp1)
 {
 	if (Prop1 != InProp1)
 	{
@@ -56,7 +56,7 @@ FTestbed2NestedStruct1InterfaceProp1ChangedDelegate& LocalService::GetProp1Chang
 	return Prop1Changed;
 }
 
-FTestbed2NestedStruct1 LocalService::Func1(const FTestbed2NestedStruct1& Param1)
+FTestbed2NestedStruct1 LocalService::Func1_Implementation(const FTestbed2NestedStruct1& Param1)
 {
 	(void)Param1;
 	// do business logic here

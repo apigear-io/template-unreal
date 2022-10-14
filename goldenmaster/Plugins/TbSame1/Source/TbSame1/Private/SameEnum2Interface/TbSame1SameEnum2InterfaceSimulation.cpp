@@ -150,12 +150,12 @@ FTbSame1SameEnum2InterfaceSig2Delegate& SimulationService::GetSig2SignalDelegate
 	return Sig2Signal;
 }
 
-ETbSame1Enum1 SimulationService::GetProp1() const
+ETbSame1Enum1 SimulationService::GetProp1_Implementation() const
 {
 	return Prop1;
 }
 
-void SimulationService::SetProp1(const ETbSame1Enum1& InProp1)
+void SimulationService::SetProp1_Implementation(const ETbSame1Enum1& InProp1)
 {
 	Params params;
 	params["prop1"] = InProp1;
@@ -171,12 +171,12 @@ FTbSame1SameEnum2InterfaceProp1ChangedDelegate& SimulationService::GetProp1Chang
 	return Prop1Changed;
 }
 
-ETbSame1Enum2 SimulationService::GetProp2() const
+ETbSame1Enum2 SimulationService::GetProp2_Implementation() const
 {
 	return Prop2;
 }
 
-void SimulationService::SetProp2(const ETbSame1Enum2& InProp2)
+void SimulationService::SetProp2_Implementation(const ETbSame1Enum2& InProp2)
 {
 	Params params;
 	params["prop2"] = InProp2;
@@ -192,7 +192,7 @@ FTbSame1SameEnum2InterfaceProp2ChangedDelegate& SimulationService::GetProp2Chang
 	return Prop2Changed;
 }
 
-ETbSame1Enum1 SimulationService::Func1(const ETbSame1Enum1& Param1)
+ETbSame1Enum1 SimulationService::Func1_Implementation(const ETbSame1Enum1& Param1)
 {
 	Params params;
 	params["param1"] = Param1;
@@ -212,7 +212,7 @@ ETbSame1Enum1 SimulationService::Func1(const ETbSame1Enum1& Param1)
 	return Promise.GetFuture().Get();
 }
 
-ETbSame1Enum1 SimulationService::Func2(const ETbSame1Enum1& Param1, const ETbSame1Enum2& Param2)
+ETbSame1Enum1 SimulationService::Func2_Implementation(const ETbSame1Enum1& Param1, const ETbSame1Enum2& Param2)
 {
 	Params params;
 	params["param1"] = Param1;

@@ -44,15 +44,13 @@ public:
 	FTbSame2SameEnum1InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
 
 	// properties
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum1Interface")
-	ETbSame2Enum1 GetProp1() const override;
+	ETbSame2Enum1 GetProp1_Implementation() const override;
 
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum1Interface")
-	void SetProp1(const ETbSame2Enum1& Prop1) override;
+	void SetProp1_Implementation(const ETbSame2Enum1& InProp1) override;
 
 	// operations
-	void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, const ETbSame2Enum1& Param1);
-	ETbSame2Enum1 Func1(const ETbSame2Enum1& Param1) override;
+	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, const ETbSame2Enum1& Param1);
+	ETbSame2Enum1 Func1_Implementation(const ETbSame2Enum1& Param1) override;
 
 private:
 	/** The connection to the service backend. */
@@ -66,6 +64,12 @@ private:
 	void OnProp1Changed(const ETbSame2Enum1& Prop1);
 
 	// properties - local copy
-	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1, BlueprintSetter = SetProp1, Category = "ApiGear|TbSame2|SameEnum1Interface")
+	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1_Private, BlueprintSetter = SetProp1_Private, Category = "ApiGear|TbSame2|SameEnum1Interface")
 	ETbSame2Enum1 Prop1;
+
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSame2|SameEnum1Interface")
+	ETbSame2Enum1 GetProp1_Private() const;
+
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSame2|SameEnum1Interface")
+	void SetProp1_Private(const ETbSame2Enum1& InProp1);
 };

@@ -55,12 +55,12 @@ FTestbed2ManyParamInterfaceSig4Delegate& LocalService::GetSig4SignalDelegate()
 	return Sig4Signal;
 }
 
-int32 LocalService::GetProp1() const
+int32 LocalService::GetProp1_Implementation() const
 {
 	return Prop1;
 }
 
-void LocalService::SetProp1(int32 InProp1)
+void LocalService::SetProp1_Implementation(int32 InProp1)
 {
 	if (Prop1 != InProp1)
 	{
@@ -73,12 +73,12 @@ FTestbed2ManyParamInterfaceProp1ChangedDelegate& LocalService::GetProp1ChangedDe
 {
 	return Prop1Changed;
 }
-int32 LocalService::GetProp2() const
+int32 LocalService::GetProp2_Implementation() const
 {
 	return Prop2;
 }
 
-void LocalService::SetProp2(int32 InProp2)
+void LocalService::SetProp2_Implementation(int32 InProp2)
 {
 	if (Prop2 != InProp2)
 	{
@@ -91,12 +91,12 @@ FTestbed2ManyParamInterfaceProp2ChangedDelegate& LocalService::GetProp2ChangedDe
 {
 	return Prop2Changed;
 }
-int32 LocalService::GetProp3() const
+int32 LocalService::GetProp3_Implementation() const
 {
 	return Prop3;
 }
 
-void LocalService::SetProp3(int32 InProp3)
+void LocalService::SetProp3_Implementation(int32 InProp3)
 {
 	if (Prop3 != InProp3)
 	{
@@ -109,12 +109,12 @@ FTestbed2ManyParamInterfaceProp3ChangedDelegate& LocalService::GetProp3ChangedDe
 {
 	return Prop3Changed;
 }
-int32 LocalService::GetProp4() const
+int32 LocalService::GetProp4_Implementation() const
 {
 	return Prop4;
 }
 
-void LocalService::SetProp4(int32 InProp4)
+void LocalService::SetProp4_Implementation(int32 InProp4)
 {
 	if (Prop4 != InProp4)
 	{
@@ -128,20 +128,20 @@ FTestbed2ManyParamInterfaceProp4ChangedDelegate& LocalService::GetProp4ChangedDe
 	return Prop4Changed;
 }
 
-int32 LocalService::Func1(int32 Param1)
+int32 LocalService::Func1_Implementation(int32 Param1)
 {
 	(void)Param1;
 	// do business logic here
 	return 0;
 }
-int32 LocalService::Func2(int32 Param1, int32 Param2)
+int32 LocalService::Func2_Implementation(int32 Param1, int32 Param2)
 {
 	(void)Param1;
 	(void)Param2;
 	// do business logic here
 	return 0;
 }
-int32 LocalService::Func3(int32 Param1, int32 Param2, int32 Param3)
+int32 LocalService::Func3_Implementation(int32 Param1, int32 Param2, int32 Param3)
 {
 	(void)Param1;
 	(void)Param2;
@@ -149,7 +149,7 @@ int32 LocalService::Func3(int32 Param1, int32 Param2, int32 Param3)
 	// do business logic here
 	return 0;
 }
-int32 LocalService::Func4(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
+int32 LocalService::Func4_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
 {
 	(void)Param1;
 	(void)Param2;

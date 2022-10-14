@@ -222,12 +222,12 @@ FTbSimpleSimpleInterfaceSigStringDelegate& SimulationService::GetSigStringSignal
 	return SigStringSignal;
 }
 
-bool SimulationService::GetPropBool() const
+bool SimulationService::GetPropBool_Implementation() const
 {
 	return bPropBool;
 }
 
-void SimulationService::SetPropBool(bool bInPropBool)
+void SimulationService::SetPropBool_Implementation(bool bInPropBool)
 {
 	Params params;
 	params["propBool"] = bInPropBool;
@@ -243,12 +243,12 @@ FTbSimpleSimpleInterfacePropBoolChangedDelegate& SimulationService::GetPropBoolC
 	return PropBoolChanged;
 }
 
-int32 SimulationService::GetPropInt() const
+int32 SimulationService::GetPropInt_Implementation() const
 {
 	return PropInt;
 }
 
-void SimulationService::SetPropInt(int32 InPropInt)
+void SimulationService::SetPropInt_Implementation(int32 InPropInt)
 {
 	Params params;
 	params["propInt"] = InPropInt;
@@ -264,12 +264,12 @@ FTbSimpleSimpleInterfacePropIntChangedDelegate& SimulationService::GetPropIntCha
 	return PropIntChanged;
 }
 
-float SimulationService::GetPropFloat() const
+float SimulationService::GetPropFloat_Implementation() const
 {
 	return PropFloat;
 }
 
-void SimulationService::SetPropFloat(float InPropFloat)
+void SimulationService::SetPropFloat_Implementation(float InPropFloat)
 {
 	Params params;
 	params["propFloat"] = InPropFloat;
@@ -285,12 +285,12 @@ FTbSimpleSimpleInterfacePropFloatChangedDelegate& SimulationService::GetPropFloa
 	return PropFloatChanged;
 }
 
-FString SimulationService::GetPropString() const
+FString SimulationService::GetPropString_Implementation() const
 {
 	return PropString;
 }
 
-void SimulationService::SetPropString(const FString& InPropString)
+void SimulationService::SetPropString_Implementation(const FString& InPropString)
 {
 	Params params;
 	params["propString"] = InPropString;
@@ -306,7 +306,7 @@ FTbSimpleSimpleInterfacePropStringChangedDelegate& SimulationService::GetPropStr
 	return PropStringChanged;
 }
 
-bool SimulationService::FuncBool(bool bParamBool)
+bool SimulationService::FuncBool_Implementation(bool bParamBool)
 {
 	Params params;
 	params["paramBool"] = bParamBool;
@@ -326,7 +326,7 @@ bool SimulationService::FuncBool(bool bParamBool)
 	return Promise.GetFuture().Get();
 }
 
-int32 SimulationService::FuncInt(int32 ParamInt)
+int32 SimulationService::FuncInt_Implementation(int32 ParamInt)
 {
 	Params params;
 	params["paramInt"] = ParamInt;
@@ -346,7 +346,7 @@ int32 SimulationService::FuncInt(int32 ParamInt)
 	return Promise.GetFuture().Get();
 }
 
-float SimulationService::FuncFloat(float ParamFloat)
+float SimulationService::FuncFloat_Implementation(float ParamFloat)
 {
 	Params params;
 	params["paramFloat"] = ParamFloat;
@@ -366,7 +366,7 @@ float SimulationService::FuncFloat(float ParamFloat)
 	return Promise.GetFuture().Get();
 }
 
-FString SimulationService::FuncString(const FString& ParamString)
+FString SimulationService::FuncString_Implementation(const FString& ParamString)
 {
 	Params params;
 	params["paramString"] = ParamString;

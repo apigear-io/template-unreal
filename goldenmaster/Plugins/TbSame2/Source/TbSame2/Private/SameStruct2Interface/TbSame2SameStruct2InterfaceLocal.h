@@ -46,18 +46,18 @@ public:
 	FTbSame2SameStruct2InterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() override;
 
 	// properties
-	FTbSame2Struct2 GetProp1() const override;
-	void SetProp1(const FTbSame2Struct2& Prop1) override;
+	FTbSame2Struct2 GetProp1_Implementation() const override;
+	void SetProp1_Implementation(const FTbSame2Struct2& Prop1) override;
 
-	FTbSame2Struct2 GetProp2() const override;
-	void SetProp2(const FTbSame2Struct2& Prop2) override;
+	FTbSame2Struct2 GetProp2_Implementation() const override;
+	void SetProp2_Implementation(const FTbSame2Struct2& Prop2) override;
 
 	// operations
-	void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame2Struct1& Result, const FTbSame2Struct1& Param1) override{};
-	FTbSame2Struct1 Func1(const FTbSame2Struct1& Param1) override;
+	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame2Struct1& Result, const FTbSame2Struct1& Param1) override{};
+	FTbSame2Struct1 Func1_Implementation(const FTbSame2Struct1& Param1) override;
 
-	void Func2Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame2Struct1& Result, const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2) override{};
-	FTbSame2Struct1 Func2(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2) override;
+	void Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame2Struct1& Result, const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2) override{};
+	FTbSame2Struct1 Func2_Implementation(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2) override;
 
 private:
 	// properties - local copy - use setter functions to emit changed signals

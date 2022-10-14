@@ -88,12 +88,12 @@ FTestbed2ManyParamInterfaceSig4Delegate& OLinkService::GetSig4SignalDelegate()
 	return Sig4Signal;
 }
 
-int32 OLinkService::GetProp1() const
+int32 OLinkService::GetProp1_Implementation() const
 {
 	return Prop1;
 }
 
-void OLinkService::SetProp1(int32 InProp1)
+void OLinkService::SetProp1_Implementation(int32 InProp1)
 {
 	if (!m_node)
 	{
@@ -106,12 +106,12 @@ FTestbed2ManyParamInterfaceProp1ChangedDelegate& OLinkService::GetProp1ChangedDe
 {
 	return Prop1Changed;
 }
-int32 OLinkService::GetProp2() const
+int32 OLinkService::GetProp2_Implementation() const
 {
 	return Prop2;
 }
 
-void OLinkService::SetProp2(int32 InProp2)
+void OLinkService::SetProp2_Implementation(int32 InProp2)
 {
 	if (!m_node)
 	{
@@ -124,12 +124,12 @@ FTestbed2ManyParamInterfaceProp2ChangedDelegate& OLinkService::GetProp2ChangedDe
 {
 	return Prop2Changed;
 }
-int32 OLinkService::GetProp3() const
+int32 OLinkService::GetProp3_Implementation() const
 {
 	return Prop3;
 }
 
-void OLinkService::SetProp3(int32 InProp3)
+void OLinkService::SetProp3_Implementation(int32 InProp3)
 {
 	if (!m_node)
 	{
@@ -142,12 +142,12 @@ FTestbed2ManyParamInterfaceProp3ChangedDelegate& OLinkService::GetProp3ChangedDe
 {
 	return Prop3Changed;
 }
-int32 OLinkService::GetProp4() const
+int32 OLinkService::GetProp4_Implementation() const
 {
 	return Prop4;
 }
 
-void OLinkService::SetProp4(int32 InProp4)
+void OLinkService::SetProp4_Implementation(int32 InProp4)
 {
 	if (!m_node)
 	{
@@ -161,7 +161,7 @@ FTestbed2ManyParamInterfaceProp4ChangedDelegate& OLinkService::GetProp4ChangedDe
 	return Prop4Changed;
 }
 
-int32 OLinkService::Func1(int32 Param1)
+int32 OLinkService::Func1_Implementation(int32 Param1)
 {
 	if (!m_node)
 	{
@@ -180,7 +180,7 @@ int32 OLinkService::Func1(int32 Param1)
 	return Promise.GetFuture().Get();
 }
 
-int32 OLinkService::Func2(int32 Param1, int32 Param2)
+int32 OLinkService::Func2_Implementation(int32 Param1, int32 Param2)
 {
 	if (!m_node)
 	{
@@ -199,7 +199,7 @@ int32 OLinkService::Func2(int32 Param1, int32 Param2)
 	return Promise.GetFuture().Get();
 }
 
-int32 OLinkService::Func3(int32 Param1, int32 Param2, int32 Param3)
+int32 OLinkService::Func3_Implementation(int32 Param1, int32 Param2, int32 Param3)
 {
 	if (!m_node)
 	{
@@ -218,7 +218,7 @@ int32 OLinkService::Func3(int32 Param1, int32 Param2, int32 Param3)
 	return Promise.GetFuture().Get();
 }
 
-int32 OLinkService::Func4(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
+int32 OLinkService::Func4_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
 {
 	if (!m_node)
 	{

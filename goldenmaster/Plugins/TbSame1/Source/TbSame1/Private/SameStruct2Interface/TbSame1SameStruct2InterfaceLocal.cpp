@@ -43,12 +43,12 @@ FTbSame1SameStruct2InterfaceSig2Delegate& LocalService::GetSig2SignalDelegate()
 	return Sig2Signal;
 }
 
-FTbSame1Struct2 LocalService::GetProp1() const
+FTbSame1Struct2 LocalService::GetProp1_Implementation() const
 {
 	return Prop1;
 }
 
-void LocalService::SetProp1(const FTbSame1Struct2& InProp1)
+void LocalService::SetProp1_Implementation(const FTbSame1Struct2& InProp1)
 {
 	if (Prop1 != InProp1)
 	{
@@ -61,12 +61,12 @@ FTbSame1SameStruct2InterfaceProp1ChangedDelegate& LocalService::GetProp1ChangedD
 {
 	return Prop1Changed;
 }
-FTbSame1Struct2 LocalService::GetProp2() const
+FTbSame1Struct2 LocalService::GetProp2_Implementation() const
 {
 	return Prop2;
 }
 
-void LocalService::SetProp2(const FTbSame1Struct2& InProp2)
+void LocalService::SetProp2_Implementation(const FTbSame1Struct2& InProp2)
 {
 	if (Prop2 != InProp2)
 	{
@@ -80,13 +80,13 @@ FTbSame1SameStruct2InterfaceProp2ChangedDelegate& LocalService::GetProp2ChangedD
 	return Prop2Changed;
 }
 
-FTbSame1Struct1 LocalService::Func1(const FTbSame1Struct1& Param1)
+FTbSame1Struct1 LocalService::Func1_Implementation(const FTbSame1Struct1& Param1)
 {
 	(void)Param1;
 	// do business logic here
 	return FTbSame1Struct1();
 }
-FTbSame1Struct1 LocalService::Func2(const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2)
+FTbSame1Struct1 LocalService::Func2_Implementation(const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2)
 {
 	(void)Param1;
 	(void)Param2;

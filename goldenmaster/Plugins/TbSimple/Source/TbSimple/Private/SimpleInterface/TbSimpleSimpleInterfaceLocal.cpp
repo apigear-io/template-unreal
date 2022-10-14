@@ -55,12 +55,12 @@ FTbSimpleSimpleInterfaceSigStringDelegate& LocalService::GetSigStringSignalDeleg
 	return SigStringSignal;
 }
 
-bool LocalService::GetPropBool() const
+bool LocalService::GetPropBool_Implementation() const
 {
 	return bPropBool;
 }
 
-void LocalService::SetPropBool(bool bInPropBool)
+void LocalService::SetPropBool_Implementation(bool bInPropBool)
 {
 	if (bPropBool != bInPropBool)
 	{
@@ -73,12 +73,12 @@ FTbSimpleSimpleInterfacePropBoolChangedDelegate& LocalService::GetPropBoolChange
 {
 	return PropBoolChanged;
 }
-int32 LocalService::GetPropInt() const
+int32 LocalService::GetPropInt_Implementation() const
 {
 	return PropInt;
 }
 
-void LocalService::SetPropInt(int32 InPropInt)
+void LocalService::SetPropInt_Implementation(int32 InPropInt)
 {
 	if (PropInt != InPropInt)
 	{
@@ -91,12 +91,12 @@ FTbSimpleSimpleInterfacePropIntChangedDelegate& LocalService::GetPropIntChangedD
 {
 	return PropIntChanged;
 }
-float LocalService::GetPropFloat() const
+float LocalService::GetPropFloat_Implementation() const
 {
 	return PropFloat;
 }
 
-void LocalService::SetPropFloat(float InPropFloat)
+void LocalService::SetPropFloat_Implementation(float InPropFloat)
 {
 	if (PropFloat != InPropFloat)
 	{
@@ -109,12 +109,12 @@ FTbSimpleSimpleInterfacePropFloatChangedDelegate& LocalService::GetPropFloatChan
 {
 	return PropFloatChanged;
 }
-FString LocalService::GetPropString() const
+FString LocalService::GetPropString_Implementation() const
 {
 	return PropString;
 }
 
-void LocalService::SetPropString(const FString& InPropString)
+void LocalService::SetPropString_Implementation(const FString& InPropString)
 {
 	if (PropString != InPropString)
 	{
@@ -128,25 +128,25 @@ FTbSimpleSimpleInterfacePropStringChangedDelegate& LocalService::GetPropStringCh
 	return PropStringChanged;
 }
 
-bool LocalService::FuncBool(bool bParamBool)
+bool LocalService::FuncBool_Implementation(bool bParamBool)
 {
 	(void)bParamBool;
 	// do business logic here
 	return false;
 }
-int32 LocalService::FuncInt(int32 ParamInt)
+int32 LocalService::FuncInt_Implementation(int32 ParamInt)
 {
 	(void)ParamInt;
 	// do business logic here
 	return 0;
 }
-float LocalService::FuncFloat(float ParamFloat)
+float LocalService::FuncFloat_Implementation(float ParamFloat)
 {
 	(void)ParamFloat;
 	// do business logic here
 	return 0.0f;
 }
-FString LocalService::FuncString(const FString& ParamString)
+FString LocalService::FuncString_Implementation(const FString& ParamString)
 {
 	(void)ParamString;
 	// do business logic here

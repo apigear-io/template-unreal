@@ -95,15 +95,25 @@ void UTestbed2NestedStruct1InterfaceProxy::OnProp1Changed(const FTestbed2NestedS
 	Prop1Changed.Broadcast(InProp1);
 }
 
-FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceProxy::GetProp1() const
+FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceProxy::GetProp1_Implementation() const
 {
 	return service->GetProp1();
 }
 
-void UTestbed2NestedStruct1InterfaceProxy::SetProp1(const FTestbed2NestedStruct1& InProp1)
+void UTestbed2NestedStruct1InterfaceProxy::SetProp1_Implementation(const FTestbed2NestedStruct1& InProp1)
 {
 	Testbed2NestedStruct1InterfaceTracer::trace_callSetProp1(InProp1);
 	service->SetProp1(InProp1);
+}
+
+FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceProxy::GetProp1_Private() const
+{
+	return GetProp1_Implementation();
+}
+
+void UTestbed2NestedStruct1InterfaceProxy::SetProp1_Private(const FTestbed2NestedStruct1& InProp1)
+{
+	service->SetProp1_Implementation(InProp1);
 }
 
 FTestbed2NestedStruct1InterfaceProp1ChangedDelegate& UTestbed2NestedStruct1InterfaceProxy::GetProp1ChangedDelegate()
@@ -111,7 +121,7 @@ FTestbed2NestedStruct1InterfaceProp1ChangedDelegate& UTestbed2NestedStruct1Inter
 	return Prop1Changed;
 }
 
-void UTestbed2NestedStruct1InterfaceProxy::Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1)
+void UTestbed2NestedStruct1InterfaceProxy::Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1)
 {
 	Testbed2NestedStruct1InterfaceTracer::trace_callFunc1(Param1);
 
@@ -137,7 +147,7 @@ void UTestbed2NestedStruct1InterfaceProxy::Func1Async(UObject* WorldContextObjec
 			});
 	}
 }
-FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceProxy::Func1(const FTestbed2NestedStruct1& Param1)
+FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceProxy::Func1_Implementation(const FTestbed2NestedStruct1& Param1)
 {
 	Testbed2NestedStruct1InterfaceTracer::trace_callFunc1(Param1);
 	return service->Func1(Param1);

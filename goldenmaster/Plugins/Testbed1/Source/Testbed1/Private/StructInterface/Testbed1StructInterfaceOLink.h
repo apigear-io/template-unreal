@@ -58,30 +58,30 @@ public:
 	FTestbed1StructInterfacePropStringChangedDelegate& GetPropStringChangedDelegate() override;
 
 	// properties
-	FTestbed1StructBool GetPropBool() const override;
-	void SetPropBool(const FTestbed1StructBool& PropBool) override;
+	FTestbed1StructBool GetPropBool_Implementation() const override;
+	void SetPropBool_Implementation(const FTestbed1StructBool& PropBool) override;
 
-	FTestbed1StructInt GetPropInt() const override;
-	void SetPropInt(const FTestbed1StructInt& PropInt) override;
+	FTestbed1StructInt GetPropInt_Implementation() const override;
+	void SetPropInt_Implementation(const FTestbed1StructInt& PropInt) override;
 
-	FTestbed1StructFloat GetPropFloat() const override;
-	void SetPropFloat(const FTestbed1StructFloat& PropFloat) override;
+	FTestbed1StructFloat GetPropFloat_Implementation() const override;
+	void SetPropFloat_Implementation(const FTestbed1StructFloat& PropFloat) override;
 
-	FTestbed1StructString GetPropString() const override;
-	void SetPropString(const FTestbed1StructString& PropString) override;
+	FTestbed1StructString GetPropString_Implementation() const override;
+	void SetPropString_Implementation(const FTestbed1StructString& PropString) override;
 
 	// operations
-	void FuncBoolAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const FTestbed1StructBool& ParamBool) override{};
-	FTestbed1StructBool FuncBool(const FTestbed1StructBool& ParamBool) override;
+	void FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const FTestbed1StructBool& ParamBool) override{};
+	FTestbed1StructBool FuncBool_Implementation(const FTestbed1StructBool& ParamBool) override;
 
-	void FuncIntAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const FTestbed1StructInt& ParamInt) override{};
-	FTestbed1StructBool FuncInt(const FTestbed1StructInt& ParamInt) override;
+	void FuncIntAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const FTestbed1StructInt& ParamInt) override{};
+	FTestbed1StructBool FuncInt_Implementation(const FTestbed1StructInt& ParamInt) override;
 
-	void FuncFloatAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructFloat& Result, const FTestbed1StructFloat& ParamFloat) override{};
-	FTestbed1StructFloat FuncFloat(const FTestbed1StructFloat& ParamFloat) override;
+	void FuncFloatAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructFloat& Result, const FTestbed1StructFloat& ParamFloat) override{};
+	FTestbed1StructFloat FuncFloat_Implementation(const FTestbed1StructFloat& ParamFloat) override;
 
-	void FuncStringAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructString& Result, const FTestbed1StructString& ParamString) override{};
-	FTestbed1StructString FuncString(const FTestbed1StructString& ParamString) override;
+	void FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructString& Result, const FTestbed1StructString& ParamString) override{};
+	FTestbed1StructString FuncString_Implementation(const FTestbed1StructString& ParamString) override;
 
 	// olink sink interface
 	std::string olinkObjectName() override;

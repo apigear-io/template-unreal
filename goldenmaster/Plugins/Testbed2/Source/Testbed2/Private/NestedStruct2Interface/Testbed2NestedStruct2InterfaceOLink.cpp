@@ -76,12 +76,12 @@ FTestbed2NestedStruct2InterfaceSig2Delegate& OLinkService::GetSig2SignalDelegate
 	return Sig2Signal;
 }
 
-FTestbed2NestedStruct1 OLinkService::GetProp1() const
+FTestbed2NestedStruct1 OLinkService::GetProp1_Implementation() const
 {
 	return Prop1;
 }
 
-void OLinkService::SetProp1(const FTestbed2NestedStruct1& InProp1)
+void OLinkService::SetProp1_Implementation(const FTestbed2NestedStruct1& InProp1)
 {
 	if (!m_node)
 	{
@@ -94,12 +94,12 @@ FTestbed2NestedStruct2InterfaceProp1ChangedDelegate& OLinkService::GetProp1Chang
 {
 	return Prop1Changed;
 }
-FTestbed2NestedStruct2 OLinkService::GetProp2() const
+FTestbed2NestedStruct2 OLinkService::GetProp2_Implementation() const
 {
 	return Prop2;
 }
 
-void OLinkService::SetProp2(const FTestbed2NestedStruct2& InProp2)
+void OLinkService::SetProp2_Implementation(const FTestbed2NestedStruct2& InProp2)
 {
 	if (!m_node)
 	{
@@ -113,7 +113,7 @@ FTestbed2NestedStruct2InterfaceProp2ChangedDelegate& OLinkService::GetProp2Chang
 	return Prop2Changed;
 }
 
-FTestbed2NestedStruct1 OLinkService::Func1(const FTestbed2NestedStruct1& Param1)
+FTestbed2NestedStruct1 OLinkService::Func1_Implementation(const FTestbed2NestedStruct1& Param1)
 {
 	if (!m_node)
 	{
@@ -132,7 +132,7 @@ FTestbed2NestedStruct1 OLinkService::Func1(const FTestbed2NestedStruct1& Param1)
 	return Promise.GetFuture().Get();
 }
 
-FTestbed2NestedStruct1 OLinkService::Func2(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
+FTestbed2NestedStruct1 OLinkService::Func2_Implementation(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
 {
 	if (!m_node)
 	{

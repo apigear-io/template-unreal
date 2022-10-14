@@ -36,16 +36,16 @@ public:
 {{ end }}
 	// properties
 {{- range .Interface.Properties }}
-	{{ueReturn "" .}} Get{{Camel .Name}}() const override;
-	void Set{{Camel .Name}}({{ueParam "" .}}) override;
+	{{ueReturn "" .}} Get{{Camel .Name}}_Implementation() const override;
+	void Set{{Camel .Name}}_Implementation({{ueParam "" .}}) override;
 {{ end }}
 	// operations
 {{- range .Interface.Operations }}
 	{{- if .Return.IsVoid }}
-	{{ueReturn "" .Return}} {{Camel .Name}}({{ueParams "" .Params}}) override;
+	{{ueReturn "" .Return}} {{Camel .Name}}_Implementation({{ueParams "" .Params}}) override;
 	{{ else }}
-	void {{Camel .Name}}Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, {{ueReturn "" .Return}}& Result{{if len .Params}},{{end}} {{ueParams "" .Params}}) override{};
-	{{ueReturn "" .Return}} {{Camel .Name}}({{ueParams "" .Params}}) override;
+	void {{Camel .Name}}Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, {{ueReturn "" .Return}}& Result{{if len .Params}},{{end}} {{ueParams "" .Params}}) override{};
+	{{ueReturn "" .Return}} {{Camel .Name}}_Implementation({{ueParams "" .Params}}) override;
 	{{- end }}
 {{ end }}
 	// olink sink interface

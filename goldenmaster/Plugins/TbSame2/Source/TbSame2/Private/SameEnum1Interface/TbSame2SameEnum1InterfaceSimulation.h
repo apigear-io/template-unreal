@@ -39,12 +39,12 @@ public:
 	FTbSame2SameEnum1InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
 
 	// properties
-	ETbSame2Enum1 GetProp1() const override;
-	void SetProp1(const ETbSame2Enum1& Prop1) override;
+	ETbSame2Enum1 GetProp1_Implementation() const override;
+	void SetProp1_Implementation(const ETbSame2Enum1& Prop1) override;
 
 	// operations
-	void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, const ETbSame2Enum1& Param1) override{};
-	ETbSame2Enum1 Func1(const ETbSame2Enum1& Param1) override;
+	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, const ETbSame2Enum1& Param1) override{};
+	ETbSame2Enum1 Func1_Implementation(const ETbSame2Enum1& Param1) override;
 
 private:
 	// properties - local copy

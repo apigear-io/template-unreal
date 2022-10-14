@@ -57,30 +57,30 @@ public:
 	FTestbed1StructArrayInterfacePropStringChangedDelegate& GetPropStringChangedDelegate() override;
 
 	// properties
-	TArray<FTestbed1StructBool> GetPropBool() const override;
-	void SetPropBool(const TArray<FTestbed1StructBool>& PropBool) override;
+	TArray<FTestbed1StructBool> GetPropBool_Implementation() const override;
+	void SetPropBool_Implementation(const TArray<FTestbed1StructBool>& PropBool) override;
 
-	TArray<FTestbed1StructInt> GetPropInt() const override;
-	void SetPropInt(const TArray<FTestbed1StructInt>& PropInt) override;
+	TArray<FTestbed1StructInt> GetPropInt_Implementation() const override;
+	void SetPropInt_Implementation(const TArray<FTestbed1StructInt>& PropInt) override;
 
-	TArray<FTestbed1StructFloat> GetPropFloat() const override;
-	void SetPropFloat(const TArray<FTestbed1StructFloat>& PropFloat) override;
+	TArray<FTestbed1StructFloat> GetPropFloat_Implementation() const override;
+	void SetPropFloat_Implementation(const TArray<FTestbed1StructFloat>& PropFloat) override;
 
-	TArray<FTestbed1StructString> GetPropString() const override;
-	void SetPropString(const TArray<FTestbed1StructString>& PropString) override;
+	TArray<FTestbed1StructString> GetPropString_Implementation() const override;
+	void SetPropString_Implementation(const TArray<FTestbed1StructString>& PropString) override;
 
 	// operations
-	void FuncBoolAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructBool>& ParamBool) override{};
-	FTestbed1StructBool FuncBool(const TArray<FTestbed1StructBool>& ParamBool) override;
+	void FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructBool>& ParamBool) override{};
+	FTestbed1StructBool FuncBool_Implementation(const TArray<FTestbed1StructBool>& ParamBool) override;
 
-	void FuncIntAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructInt>& ParamInt) override{};
-	FTestbed1StructBool FuncInt(const TArray<FTestbed1StructInt>& ParamInt) override;
+	void FuncIntAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructInt>& ParamInt) override{};
+	FTestbed1StructBool FuncInt_Implementation(const TArray<FTestbed1StructInt>& ParamInt) override;
 
-	void FuncFloatAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructFloat>& ParamFloat) override{};
-	FTestbed1StructBool FuncFloat(const TArray<FTestbed1StructFloat>& ParamFloat) override;
+	void FuncFloatAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructFloat>& ParamFloat) override{};
+	FTestbed1StructBool FuncFloat_Implementation(const TArray<FTestbed1StructFloat>& ParamFloat) override;
 
-	void FuncStringAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructString>& ParamString) override{};
-	FTestbed1StructBool FuncString(const TArray<FTestbed1StructString>& ParamString) override;
+	void FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructString>& ParamString) override{};
+	FTestbed1StructBool FuncString_Implementation(const TArray<FTestbed1StructString>& ParamString) override;
 
 private:
 	// properties - local copy

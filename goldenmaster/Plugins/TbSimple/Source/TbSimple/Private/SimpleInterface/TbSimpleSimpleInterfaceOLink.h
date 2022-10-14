@@ -58,30 +58,30 @@ public:
 	FTbSimpleSimpleInterfacePropStringChangedDelegate& GetPropStringChangedDelegate() override;
 
 	// properties
-	bool GetPropBool() const override;
-	void SetPropBool(bool bPropBool) override;
+	bool GetPropBool_Implementation() const override;
+	void SetPropBool_Implementation(bool bPropBool) override;
 
-	int32 GetPropInt() const override;
-	void SetPropInt(int32 PropInt) override;
+	int32 GetPropInt_Implementation() const override;
+	void SetPropInt_Implementation(int32 PropInt) override;
 
-	float GetPropFloat() const override;
-	void SetPropFloat(float PropFloat) override;
+	float GetPropFloat_Implementation() const override;
+	void SetPropFloat_Implementation(float PropFloat) override;
 
-	FString GetPropString() const override;
-	void SetPropString(const FString& PropString) override;
+	FString GetPropString_Implementation() const override;
+	void SetPropString_Implementation(const FString& PropString) override;
 
 	// operations
-	void FuncBoolAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool) override{};
-	bool FuncBool(bool bParamBool) override;
+	void FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool) override{};
+	bool FuncBool_Implementation(bool bParamBool) override;
 
-	void FuncIntAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 ParamInt) override{};
-	int32 FuncInt(int32 ParamInt) override;
+	void FuncIntAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 ParamInt) override{};
+	int32 FuncInt_Implementation(int32 ParamInt) override;
 
-	void FuncFloatAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, float& Result, float ParamFloat) override{};
-	float FuncFloat(float ParamFloat) override;
+	void FuncFloatAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, float& Result, float ParamFloat) override{};
+	float FuncFloat_Implementation(float ParamFloat) override;
 
-	void FuncStringAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FString& Result, const FString& ParamString) override{};
-	FString FuncString(const FString& ParamString) override;
+	void FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FString& Result, const FString& ParamString) override{};
+	FString FuncString_Implementation(const FString& ParamString) override;
 
 	// olink sink interface
 	std::string olinkObjectName() override;

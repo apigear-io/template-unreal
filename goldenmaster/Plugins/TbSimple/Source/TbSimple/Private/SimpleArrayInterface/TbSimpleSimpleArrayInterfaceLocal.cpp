@@ -55,12 +55,12 @@ FTbSimpleSimpleArrayInterfaceSigStringDelegate& LocalService::GetSigStringSignal
 	return SigStringSignal;
 }
 
-TArray<bool> LocalService::GetPropBool() const
+TArray<bool> LocalService::GetPropBool_Implementation() const
 {
 	return PropBool;
 }
 
-void LocalService::SetPropBool(const TArray<bool>& InPropBool)
+void LocalService::SetPropBool_Implementation(const TArray<bool>& InPropBool)
 {
 	if (PropBool != InPropBool)
 	{
@@ -73,12 +73,12 @@ FTbSimpleSimpleArrayInterfacePropBoolChangedDelegate& LocalService::GetPropBoolC
 {
 	return PropBoolChanged;
 }
-TArray<int32> LocalService::GetPropInt() const
+TArray<int32> LocalService::GetPropInt_Implementation() const
 {
 	return PropInt;
 }
 
-void LocalService::SetPropInt(const TArray<int32>& InPropInt)
+void LocalService::SetPropInt_Implementation(const TArray<int32>& InPropInt)
 {
 	if (PropInt != InPropInt)
 	{
@@ -91,12 +91,12 @@ FTbSimpleSimpleArrayInterfacePropIntChangedDelegate& LocalService::GetPropIntCha
 {
 	return PropIntChanged;
 }
-TArray<float> LocalService::GetPropFloat() const
+TArray<float> LocalService::GetPropFloat_Implementation() const
 {
 	return PropFloat;
 }
 
-void LocalService::SetPropFloat(const TArray<float>& InPropFloat)
+void LocalService::SetPropFloat_Implementation(const TArray<float>& InPropFloat)
 {
 	if (PropFloat != InPropFloat)
 	{
@@ -109,12 +109,12 @@ FTbSimpleSimpleArrayInterfacePropFloatChangedDelegate& LocalService::GetPropFloa
 {
 	return PropFloatChanged;
 }
-TArray<FString> LocalService::GetPropString() const
+TArray<FString> LocalService::GetPropString_Implementation() const
 {
 	return PropString;
 }
 
-void LocalService::SetPropString(const TArray<FString>& InPropString)
+void LocalService::SetPropString_Implementation(const TArray<FString>& InPropString)
 {
 	if (PropString != InPropString)
 	{
@@ -128,25 +128,25 @@ FTbSimpleSimpleArrayInterfacePropStringChangedDelegate& LocalService::GetPropStr
 	return PropStringChanged;
 }
 
-TArray<bool> LocalService::FuncBool(const TArray<bool>& ParamBool)
+TArray<bool> LocalService::FuncBool_Implementation(const TArray<bool>& ParamBool)
 {
 	(void)ParamBool;
 	// do business logic here
 	return TArray<bool>();
 }
-TArray<int32> LocalService::FuncInt(const TArray<int32>& ParamInt)
+TArray<int32> LocalService::FuncInt_Implementation(const TArray<int32>& ParamInt)
 {
 	(void)ParamInt;
 	// do business logic here
 	return TArray<int32>();
 }
-TArray<float> LocalService::FuncFloat(const TArray<float>& ParamFloat)
+TArray<float> LocalService::FuncFloat_Implementation(const TArray<float>& ParamFloat)
 {
 	(void)ParamFloat;
 	// do business logic here
 	return TArray<float>();
 }
-TArray<FString> LocalService::FuncString(const TArray<FString>& ParamString)
+TArray<FString> LocalService::FuncString_Implementation(const TArray<FString>& ParamString)
 {
 	(void)ParamString;
 	// do business logic here

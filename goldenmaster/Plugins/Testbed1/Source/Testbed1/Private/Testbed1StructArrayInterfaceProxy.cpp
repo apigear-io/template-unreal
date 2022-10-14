@@ -143,15 +143,25 @@ void UTestbed1StructArrayInterfaceProxy::OnPropBoolChanged(const TArray<FTestbed
 	PropBoolChanged.Broadcast(InPropBool);
 }
 
-TArray<FTestbed1StructBool> UTestbed1StructArrayInterfaceProxy::GetPropBool() const
+TArray<FTestbed1StructBool> UTestbed1StructArrayInterfaceProxy::GetPropBool_Implementation() const
 {
 	return service->GetPropBool();
 }
 
-void UTestbed1StructArrayInterfaceProxy::SetPropBool(const TArray<FTestbed1StructBool>& InPropBool)
+void UTestbed1StructArrayInterfaceProxy::SetPropBool_Implementation(const TArray<FTestbed1StructBool>& InPropBool)
 {
 	Testbed1StructArrayInterfaceTracer::trace_callSetPropBool(InPropBool);
 	service->SetPropBool(InPropBool);
+}
+
+TArray<FTestbed1StructBool> UTestbed1StructArrayInterfaceProxy::GetPropBool_Private() const
+{
+	return GetPropBool_Implementation();
+}
+
+void UTestbed1StructArrayInterfaceProxy::SetPropBool_Private(const TArray<FTestbed1StructBool>& InPropBool)
+{
+	service->SetPropBool_Implementation(InPropBool);
 }
 
 FTestbed1StructArrayInterfacePropBoolChangedDelegate& UTestbed1StructArrayInterfaceProxy::GetPropBoolChangedDelegate()
@@ -165,15 +175,25 @@ void UTestbed1StructArrayInterfaceProxy::OnPropIntChanged(const TArray<FTestbed1
 	PropIntChanged.Broadcast(InPropInt);
 }
 
-TArray<FTestbed1StructInt> UTestbed1StructArrayInterfaceProxy::GetPropInt() const
+TArray<FTestbed1StructInt> UTestbed1StructArrayInterfaceProxy::GetPropInt_Implementation() const
 {
 	return service->GetPropInt();
 }
 
-void UTestbed1StructArrayInterfaceProxy::SetPropInt(const TArray<FTestbed1StructInt>& InPropInt)
+void UTestbed1StructArrayInterfaceProxy::SetPropInt_Implementation(const TArray<FTestbed1StructInt>& InPropInt)
 {
 	Testbed1StructArrayInterfaceTracer::trace_callSetPropInt(InPropInt);
 	service->SetPropInt(InPropInt);
+}
+
+TArray<FTestbed1StructInt> UTestbed1StructArrayInterfaceProxy::GetPropInt_Private() const
+{
+	return GetPropInt_Implementation();
+}
+
+void UTestbed1StructArrayInterfaceProxy::SetPropInt_Private(const TArray<FTestbed1StructInt>& InPropInt)
+{
+	service->SetPropInt_Implementation(InPropInt);
 }
 
 FTestbed1StructArrayInterfacePropIntChangedDelegate& UTestbed1StructArrayInterfaceProxy::GetPropIntChangedDelegate()
@@ -187,15 +207,25 @@ void UTestbed1StructArrayInterfaceProxy::OnPropFloatChanged(const TArray<FTestbe
 	PropFloatChanged.Broadcast(InPropFloat);
 }
 
-TArray<FTestbed1StructFloat> UTestbed1StructArrayInterfaceProxy::GetPropFloat() const
+TArray<FTestbed1StructFloat> UTestbed1StructArrayInterfaceProxy::GetPropFloat_Implementation() const
 {
 	return service->GetPropFloat();
 }
 
-void UTestbed1StructArrayInterfaceProxy::SetPropFloat(const TArray<FTestbed1StructFloat>& InPropFloat)
+void UTestbed1StructArrayInterfaceProxy::SetPropFloat_Implementation(const TArray<FTestbed1StructFloat>& InPropFloat)
 {
 	Testbed1StructArrayInterfaceTracer::trace_callSetPropFloat(InPropFloat);
 	service->SetPropFloat(InPropFloat);
+}
+
+TArray<FTestbed1StructFloat> UTestbed1StructArrayInterfaceProxy::GetPropFloat_Private() const
+{
+	return GetPropFloat_Implementation();
+}
+
+void UTestbed1StructArrayInterfaceProxy::SetPropFloat_Private(const TArray<FTestbed1StructFloat>& InPropFloat)
+{
+	service->SetPropFloat_Implementation(InPropFloat);
 }
 
 FTestbed1StructArrayInterfacePropFloatChangedDelegate& UTestbed1StructArrayInterfaceProxy::GetPropFloatChangedDelegate()
@@ -209,15 +239,25 @@ void UTestbed1StructArrayInterfaceProxy::OnPropStringChanged(const TArray<FTestb
 	PropStringChanged.Broadcast(InPropString);
 }
 
-TArray<FTestbed1StructString> UTestbed1StructArrayInterfaceProxy::GetPropString() const
+TArray<FTestbed1StructString> UTestbed1StructArrayInterfaceProxy::GetPropString_Implementation() const
 {
 	return service->GetPropString();
 }
 
-void UTestbed1StructArrayInterfaceProxy::SetPropString(const TArray<FTestbed1StructString>& InPropString)
+void UTestbed1StructArrayInterfaceProxy::SetPropString_Implementation(const TArray<FTestbed1StructString>& InPropString)
 {
 	Testbed1StructArrayInterfaceTracer::trace_callSetPropString(InPropString);
 	service->SetPropString(InPropString);
+}
+
+TArray<FTestbed1StructString> UTestbed1StructArrayInterfaceProxy::GetPropString_Private() const
+{
+	return GetPropString_Implementation();
+}
+
+void UTestbed1StructArrayInterfaceProxy::SetPropString_Private(const TArray<FTestbed1StructString>& InPropString)
+{
+	service->SetPropString_Implementation(InPropString);
 }
 
 FTestbed1StructArrayInterfacePropStringChangedDelegate& UTestbed1StructArrayInterfaceProxy::GetPropStringChangedDelegate()
@@ -225,7 +265,7 @@ FTestbed1StructArrayInterfacePropStringChangedDelegate& UTestbed1StructArrayInte
 	return PropStringChanged;
 }
 
-void UTestbed1StructArrayInterfaceProxy::FuncBoolAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructBool>& ParamBool)
+void UTestbed1StructArrayInterfaceProxy::FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructBool>& ParamBool)
 {
 	Testbed1StructArrayInterfaceTracer::trace_callFuncBool(ParamBool);
 
@@ -251,12 +291,12 @@ void UTestbed1StructArrayInterfaceProxy::FuncBoolAsync(UObject* WorldContextObje
 			});
 	}
 }
-FTestbed1StructBool UTestbed1StructArrayInterfaceProxy::FuncBool(const TArray<FTestbed1StructBool>& ParamBool)
+FTestbed1StructBool UTestbed1StructArrayInterfaceProxy::FuncBool_Implementation(const TArray<FTestbed1StructBool>& ParamBool)
 {
 	Testbed1StructArrayInterfaceTracer::trace_callFuncBool(ParamBool);
 	return service->FuncBool(ParamBool);
 }
-void UTestbed1StructArrayInterfaceProxy::FuncIntAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructInt>& ParamInt)
+void UTestbed1StructArrayInterfaceProxy::FuncIntAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructInt>& ParamInt)
 {
 	Testbed1StructArrayInterfaceTracer::trace_callFuncInt(ParamInt);
 
@@ -282,12 +322,12 @@ void UTestbed1StructArrayInterfaceProxy::FuncIntAsync(UObject* WorldContextObjec
 			});
 	}
 }
-FTestbed1StructBool UTestbed1StructArrayInterfaceProxy::FuncInt(const TArray<FTestbed1StructInt>& ParamInt)
+FTestbed1StructBool UTestbed1StructArrayInterfaceProxy::FuncInt_Implementation(const TArray<FTestbed1StructInt>& ParamInt)
 {
 	Testbed1StructArrayInterfaceTracer::trace_callFuncInt(ParamInt);
 	return service->FuncInt(ParamInt);
 }
-void UTestbed1StructArrayInterfaceProxy::FuncFloatAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructFloat>& ParamFloat)
+void UTestbed1StructArrayInterfaceProxy::FuncFloatAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructFloat>& ParamFloat)
 {
 	Testbed1StructArrayInterfaceTracer::trace_callFuncFloat(ParamFloat);
 
@@ -313,12 +353,12 @@ void UTestbed1StructArrayInterfaceProxy::FuncFloatAsync(UObject* WorldContextObj
 			});
 	}
 }
-FTestbed1StructBool UTestbed1StructArrayInterfaceProxy::FuncFloat(const TArray<FTestbed1StructFloat>& ParamFloat)
+FTestbed1StructBool UTestbed1StructArrayInterfaceProxy::FuncFloat_Implementation(const TArray<FTestbed1StructFloat>& ParamFloat)
 {
 	Testbed1StructArrayInterfaceTracer::trace_callFuncFloat(ParamFloat);
 	return service->FuncFloat(ParamFloat);
 }
-void UTestbed1StructArrayInterfaceProxy::FuncStringAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructString>& ParamString)
+void UTestbed1StructArrayInterfaceProxy::FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructString>& ParamString)
 {
 	Testbed1StructArrayInterfaceTracer::trace_callFuncString(ParamString);
 
@@ -344,7 +384,7 @@ void UTestbed1StructArrayInterfaceProxy::FuncStringAsync(UObject* WorldContextOb
 			});
 	}
 }
-FTestbed1StructBool UTestbed1StructArrayInterfaceProxy::FuncString(const TArray<FTestbed1StructString>& ParamString)
+FTestbed1StructBool UTestbed1StructArrayInterfaceProxy::FuncString_Implementation(const TArray<FTestbed1StructString>& ParamString)
 {
 	Testbed1StructArrayInterfaceTracer::trace_callFuncString(ParamString);
 	return service->FuncString(ParamString);

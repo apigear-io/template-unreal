@@ -46,18 +46,18 @@ public:
 	FTbSame2SameEnum2InterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() override;
 
 	// properties
-	ETbSame2Enum1 GetProp1() const override;
-	void SetProp1(const ETbSame2Enum1& Prop1) override;
+	ETbSame2Enum1 GetProp1_Implementation() const override;
+	void SetProp1_Implementation(const ETbSame2Enum1& Prop1) override;
 
-	ETbSame2Enum2 GetProp2() const override;
-	void SetProp2(const ETbSame2Enum2& Prop2) override;
+	ETbSame2Enum2 GetProp2_Implementation() const override;
+	void SetProp2_Implementation(const ETbSame2Enum2& Prop2) override;
 
 	// operations
-	void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, const ETbSame2Enum1& Param1) override{};
-	ETbSame2Enum1 Func1(const ETbSame2Enum1& Param1) override;
+	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, const ETbSame2Enum1& Param1) override{};
+	ETbSame2Enum1 Func1_Implementation(const ETbSame2Enum1& Param1) override;
 
-	void Func2Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, const ETbSame2Enum1& Param1, const ETbSame2Enum2& Param2) override{};
-	ETbSame2Enum1 Func2(const ETbSame2Enum1& Param1, const ETbSame2Enum2& Param2) override;
+	void Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, const ETbSame2Enum1& Param1, const ETbSame2Enum2& Param2) override{};
+	ETbSame2Enum1 Func2_Implementation(const ETbSame2Enum1& Param1, const ETbSame2Enum2& Param2) override;
 
 private:
 	// properties - local copy - use setter functions to emit changed signals

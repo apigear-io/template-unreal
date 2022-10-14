@@ -88,12 +88,12 @@ FTbSimpleSimpleInterfaceSigStringDelegate& OLinkService::GetSigStringSignalDeleg
 	return SigStringSignal;
 }
 
-bool OLinkService::GetPropBool() const
+bool OLinkService::GetPropBool_Implementation() const
 {
 	return bPropBool;
 }
 
-void OLinkService::SetPropBool(bool bInPropBool)
+void OLinkService::SetPropBool_Implementation(bool bInPropBool)
 {
 	if (!m_node)
 	{
@@ -106,12 +106,12 @@ FTbSimpleSimpleInterfacePropBoolChangedDelegate& OLinkService::GetPropBoolChange
 {
 	return PropBoolChanged;
 }
-int32 OLinkService::GetPropInt() const
+int32 OLinkService::GetPropInt_Implementation() const
 {
 	return PropInt;
 }
 
-void OLinkService::SetPropInt(int32 InPropInt)
+void OLinkService::SetPropInt_Implementation(int32 InPropInt)
 {
 	if (!m_node)
 	{
@@ -124,12 +124,12 @@ FTbSimpleSimpleInterfacePropIntChangedDelegate& OLinkService::GetPropIntChangedD
 {
 	return PropIntChanged;
 }
-float OLinkService::GetPropFloat() const
+float OLinkService::GetPropFloat_Implementation() const
 {
 	return PropFloat;
 }
 
-void OLinkService::SetPropFloat(float InPropFloat)
+void OLinkService::SetPropFloat_Implementation(float InPropFloat)
 {
 	if (!m_node)
 	{
@@ -142,12 +142,12 @@ FTbSimpleSimpleInterfacePropFloatChangedDelegate& OLinkService::GetPropFloatChan
 {
 	return PropFloatChanged;
 }
-FString OLinkService::GetPropString() const
+FString OLinkService::GetPropString_Implementation() const
 {
 	return PropString;
 }
 
-void OLinkService::SetPropString(const FString& InPropString)
+void OLinkService::SetPropString_Implementation(const FString& InPropString)
 {
 	if (!m_node)
 	{
@@ -161,7 +161,7 @@ FTbSimpleSimpleInterfacePropStringChangedDelegate& OLinkService::GetPropStringCh
 	return PropStringChanged;
 }
 
-bool OLinkService::FuncBool(bool bParamBool)
+bool OLinkService::FuncBool_Implementation(bool bParamBool)
 {
 	if (!m_node)
 	{
@@ -180,7 +180,7 @@ bool OLinkService::FuncBool(bool bParamBool)
 	return Promise.GetFuture().Get();
 }
 
-int32 OLinkService::FuncInt(int32 ParamInt)
+int32 OLinkService::FuncInt_Implementation(int32 ParamInt)
 {
 	if (!m_node)
 	{
@@ -199,7 +199,7 @@ int32 OLinkService::FuncInt(int32 ParamInt)
 	return Promise.GetFuture().Get();
 }
 
-float OLinkService::FuncFloat(float ParamFloat)
+float OLinkService::FuncFloat_Implementation(float ParamFloat)
 {
 	if (!m_node)
 	{
@@ -218,7 +218,7 @@ float OLinkService::FuncFloat(float ParamFloat)
 	return Promise.GetFuture().Get();
 }
 
-FString OLinkService::FuncString(const FString& ParamString)
+FString OLinkService::FuncString_Implementation(const FString& ParamString)
 {
 	if (!m_node)
 	{

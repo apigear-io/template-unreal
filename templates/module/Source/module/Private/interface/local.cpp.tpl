@@ -36,12 +36,12 @@ F{{$Iface}}{{Camel .Name}}Delegate& {{$Class}}::Get{{Camel .Name}}SignalDelegate
 }
 {{ end }}
 {{- range .Interface.Properties }}
-{{ueReturn "" .}} {{$Class}}::Get{{Camel .Name}}() const
+{{ueReturn "" .}} {{$Class}}::Get{{Camel .Name}}_Implementation() const
 {
 	return {{ueVar "" .}};
 }
 
-void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
+void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
 {
 	if ({{ueVar "" .}} != {{ueVar "In" .}})
 	{
@@ -61,7 +61,7 @@ F{{$Iface}}{{Camel .Name}}ChangedDelegate& {{$Class}}::Get{{Camel .Name}}Changed
    \brief {{.Description}}
 */
 {{- end }}
-{{ueReturn "" .Return}} {{$Class}}::{{Camel .Name}}({{ueParams "" .Params}})
+{{ueReturn "" .Return}} {{$Class}}::{{Camel .Name}}_Implementation({{ueParams "" .Params}})
 {
 	{{- range .Params }}
 	(void){{ueVar "" .}};

@@ -143,15 +143,25 @@ void UTbEnumEnumInterfaceProxy::OnProp0Changed(const ETbEnumEnum0& InProp0)
 	Prop0Changed.Broadcast(InProp0);
 }
 
-ETbEnumEnum0 UTbEnumEnumInterfaceProxy::GetProp0() const
+ETbEnumEnum0 UTbEnumEnumInterfaceProxy::GetProp0_Implementation() const
 {
 	return service->GetProp0();
 }
 
-void UTbEnumEnumInterfaceProxy::SetProp0(const ETbEnumEnum0& InProp0)
+void UTbEnumEnumInterfaceProxy::SetProp0_Implementation(const ETbEnumEnum0& InProp0)
 {
 	TbEnumEnumInterfaceTracer::trace_callSetProp0(InProp0);
 	service->SetProp0(InProp0);
+}
+
+ETbEnumEnum0 UTbEnumEnumInterfaceProxy::GetProp0_Private() const
+{
+	return GetProp0_Implementation();
+}
+
+void UTbEnumEnumInterfaceProxy::SetProp0_Private(const ETbEnumEnum0& InProp0)
+{
+	service->SetProp0_Implementation(InProp0);
 }
 
 FTbEnumEnumInterfaceProp0ChangedDelegate& UTbEnumEnumInterfaceProxy::GetProp0ChangedDelegate()
@@ -165,15 +175,25 @@ void UTbEnumEnumInterfaceProxy::OnProp1Changed(const ETbEnumEnum1& InProp1)
 	Prop1Changed.Broadcast(InProp1);
 }
 
-ETbEnumEnum1 UTbEnumEnumInterfaceProxy::GetProp1() const
+ETbEnumEnum1 UTbEnumEnumInterfaceProxy::GetProp1_Implementation() const
 {
 	return service->GetProp1();
 }
 
-void UTbEnumEnumInterfaceProxy::SetProp1(const ETbEnumEnum1& InProp1)
+void UTbEnumEnumInterfaceProxy::SetProp1_Implementation(const ETbEnumEnum1& InProp1)
 {
 	TbEnumEnumInterfaceTracer::trace_callSetProp1(InProp1);
 	service->SetProp1(InProp1);
+}
+
+ETbEnumEnum1 UTbEnumEnumInterfaceProxy::GetProp1_Private() const
+{
+	return GetProp1_Implementation();
+}
+
+void UTbEnumEnumInterfaceProxy::SetProp1_Private(const ETbEnumEnum1& InProp1)
+{
+	service->SetProp1_Implementation(InProp1);
 }
 
 FTbEnumEnumInterfaceProp1ChangedDelegate& UTbEnumEnumInterfaceProxy::GetProp1ChangedDelegate()
@@ -187,15 +207,25 @@ void UTbEnumEnumInterfaceProxy::OnProp2Changed(const ETbEnumEnum2& InProp2)
 	Prop2Changed.Broadcast(InProp2);
 }
 
-ETbEnumEnum2 UTbEnumEnumInterfaceProxy::GetProp2() const
+ETbEnumEnum2 UTbEnumEnumInterfaceProxy::GetProp2_Implementation() const
 {
 	return service->GetProp2();
 }
 
-void UTbEnumEnumInterfaceProxy::SetProp2(const ETbEnumEnum2& InProp2)
+void UTbEnumEnumInterfaceProxy::SetProp2_Implementation(const ETbEnumEnum2& InProp2)
 {
 	TbEnumEnumInterfaceTracer::trace_callSetProp2(InProp2);
 	service->SetProp2(InProp2);
+}
+
+ETbEnumEnum2 UTbEnumEnumInterfaceProxy::GetProp2_Private() const
+{
+	return GetProp2_Implementation();
+}
+
+void UTbEnumEnumInterfaceProxy::SetProp2_Private(const ETbEnumEnum2& InProp2)
+{
+	service->SetProp2_Implementation(InProp2);
 }
 
 FTbEnumEnumInterfaceProp2ChangedDelegate& UTbEnumEnumInterfaceProxy::GetProp2ChangedDelegate()
@@ -209,15 +239,25 @@ void UTbEnumEnumInterfaceProxy::OnProp3Changed(const ETbEnumEnum3& InProp3)
 	Prop3Changed.Broadcast(InProp3);
 }
 
-ETbEnumEnum3 UTbEnumEnumInterfaceProxy::GetProp3() const
+ETbEnumEnum3 UTbEnumEnumInterfaceProxy::GetProp3_Implementation() const
 {
 	return service->GetProp3();
 }
 
-void UTbEnumEnumInterfaceProxy::SetProp3(const ETbEnumEnum3& InProp3)
+void UTbEnumEnumInterfaceProxy::SetProp3_Implementation(const ETbEnumEnum3& InProp3)
 {
 	TbEnumEnumInterfaceTracer::trace_callSetProp3(InProp3);
 	service->SetProp3(InProp3);
+}
+
+ETbEnumEnum3 UTbEnumEnumInterfaceProxy::GetProp3_Private() const
+{
+	return GetProp3_Implementation();
+}
+
+void UTbEnumEnumInterfaceProxy::SetProp3_Private(const ETbEnumEnum3& InProp3)
+{
+	service->SetProp3_Implementation(InProp3);
 }
 
 FTbEnumEnumInterfaceProp3ChangedDelegate& UTbEnumEnumInterfaceProxy::GetProp3ChangedDelegate()
@@ -225,7 +265,7 @@ FTbEnumEnumInterfaceProp3ChangedDelegate& UTbEnumEnumInterfaceProxy::GetProp3Cha
 	return Prop3Changed;
 }
 
-void UTbEnumEnumInterfaceProxy::Func0Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum0& Result, const ETbEnumEnum0& Param0)
+void UTbEnumEnumInterfaceProxy::Func0Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum0& Result, const ETbEnumEnum0& Param0)
 {
 	TbEnumEnumInterfaceTracer::trace_callFunc0(Param0);
 
@@ -251,12 +291,12 @@ void UTbEnumEnumInterfaceProxy::Func0Async(UObject* WorldContextObject, FLatentA
 			});
 	}
 }
-ETbEnumEnum0 UTbEnumEnumInterfaceProxy::Func0(const ETbEnumEnum0& Param0)
+ETbEnumEnum0 UTbEnumEnumInterfaceProxy::Func0_Implementation(const ETbEnumEnum0& Param0)
 {
 	TbEnumEnumInterfaceTracer::trace_callFunc0(Param0);
 	return service->Func0(Param0);
 }
-void UTbEnumEnumInterfaceProxy::Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum1& Result, const ETbEnumEnum1& Param1)
+void UTbEnumEnumInterfaceProxy::Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum1& Result, const ETbEnumEnum1& Param1)
 {
 	TbEnumEnumInterfaceTracer::trace_callFunc1(Param1);
 
@@ -282,12 +322,12 @@ void UTbEnumEnumInterfaceProxy::Func1Async(UObject* WorldContextObject, FLatentA
 			});
 	}
 }
-ETbEnumEnum1 UTbEnumEnumInterfaceProxy::Func1(const ETbEnumEnum1& Param1)
+ETbEnumEnum1 UTbEnumEnumInterfaceProxy::Func1_Implementation(const ETbEnumEnum1& Param1)
 {
 	TbEnumEnumInterfaceTracer::trace_callFunc1(Param1);
 	return service->Func1(Param1);
 }
-void UTbEnumEnumInterfaceProxy::Func2Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum2& Result, const ETbEnumEnum2& Param2)
+void UTbEnumEnumInterfaceProxy::Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum2& Result, const ETbEnumEnum2& Param2)
 {
 	TbEnumEnumInterfaceTracer::trace_callFunc2(Param2);
 
@@ -313,12 +353,12 @@ void UTbEnumEnumInterfaceProxy::Func2Async(UObject* WorldContextObject, FLatentA
 			});
 	}
 }
-ETbEnumEnum2 UTbEnumEnumInterfaceProxy::Func2(const ETbEnumEnum2& Param2)
+ETbEnumEnum2 UTbEnumEnumInterfaceProxy::Func2_Implementation(const ETbEnumEnum2& Param2)
 {
 	TbEnumEnumInterfaceTracer::trace_callFunc2(Param2);
 	return service->Func2(Param2);
 }
-void UTbEnumEnumInterfaceProxy::Func3Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum3& Result, const ETbEnumEnum3& Param3)
+void UTbEnumEnumInterfaceProxy::Func3Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum3& Result, const ETbEnumEnum3& Param3)
 {
 	TbEnumEnumInterfaceTracer::trace_callFunc3(Param3);
 
@@ -344,7 +384,7 @@ void UTbEnumEnumInterfaceProxy::Func3Async(UObject* WorldContextObject, FLatentA
 			});
 	}
 }
-ETbEnumEnum3 UTbEnumEnumInterfaceProxy::Func3(const ETbEnumEnum3& Param3)
+ETbEnumEnum3 UTbEnumEnumInterfaceProxy::Func3_Implementation(const ETbEnumEnum3& Param3)
 {
 	TbEnumEnumInterfaceTracer::trace_callFunc3(Param3);
 	return service->Func3(Param3);

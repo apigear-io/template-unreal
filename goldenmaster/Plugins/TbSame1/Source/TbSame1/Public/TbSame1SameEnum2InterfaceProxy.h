@@ -52,24 +52,20 @@ public:
 	FTbSame1SameEnum2InterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() override;
 
 	// properties
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1|SameEnum2Interface")
-	ETbSame1Enum1 GetProp1() const override;
+	ETbSame1Enum1 GetProp1_Implementation() const override;
 
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1|SameEnum2Interface")
-	void SetProp1(const ETbSame1Enum1& Prop1) override;
+	void SetProp1_Implementation(const ETbSame1Enum1& InProp1) override;
 
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1|SameEnum2Interface")
-	ETbSame1Enum2 GetProp2() const override;
+	ETbSame1Enum2 GetProp2_Implementation() const override;
 
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1|SameEnum2Interface")
-	void SetProp2(const ETbSame1Enum2& Prop2) override;
+	void SetProp2_Implementation(const ETbSame1Enum2& InProp2) override;
 
 	// operations
-	void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame1Enum1& Result, const ETbSame1Enum1& Param1);
-	ETbSame1Enum1 Func1(const ETbSame1Enum1& Param1) override;
+	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame1Enum1& Result, const ETbSame1Enum1& Param1);
+	ETbSame1Enum1 Func1_Implementation(const ETbSame1Enum1& Param1) override;
 
-	void Func2Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame1Enum1& Result, const ETbSame1Enum1& Param1, const ETbSame1Enum2& Param2);
-	ETbSame1Enum1 Func2(const ETbSame1Enum1& Param1, const ETbSame1Enum2& Param2) override;
+	void Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame1Enum1& Result, const ETbSame1Enum1& Param1, const ETbSame1Enum2& Param2);
+	ETbSame1Enum1 Func2_Implementation(const ETbSame1Enum1& Param1, const ETbSame1Enum2& Param2) override;
 
 private:
 	/** The connection to the service backend. */
@@ -89,9 +85,21 @@ private:
 	void OnProp2Changed(const ETbSame1Enum2& Prop2);
 
 	// properties - local copy
-	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1, BlueprintSetter = SetProp1, Category = "ApiGear|TbSame1|SameEnum2Interface")
+	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1_Private, BlueprintSetter = SetProp1_Private, Category = "ApiGear|TbSame1|SameEnum2Interface")
 	ETbSame1Enum1 Prop1;
 
-	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp2, BlueprintSetter = SetProp2, Category = "ApiGear|TbSame1|SameEnum2Interface")
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSame1|SameEnum2Interface")
+	ETbSame1Enum1 GetProp1_Private() const;
+
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSame1|SameEnum2Interface")
+	void SetProp1_Private(const ETbSame1Enum1& InProp1);
+
+	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp2_Private, BlueprintSetter = SetProp2_Private, Category = "ApiGear|TbSame1|SameEnum2Interface")
 	ETbSame1Enum2 Prop2;
+
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSame1|SameEnum2Interface")
+	ETbSame1Enum2 GetProp2_Private() const;
+
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSame1|SameEnum2Interface")
+	void SetProp2_Private(const ETbSame1Enum2& InProp2);
 };

@@ -95,15 +95,25 @@ void UTbSame1SameEnum1InterfaceProxy::OnProp1Changed(const ETbSame1Enum1& InProp
 	Prop1Changed.Broadcast(InProp1);
 }
 
-ETbSame1Enum1 UTbSame1SameEnum1InterfaceProxy::GetProp1() const
+ETbSame1Enum1 UTbSame1SameEnum1InterfaceProxy::GetProp1_Implementation() const
 {
 	return service->GetProp1();
 }
 
-void UTbSame1SameEnum1InterfaceProxy::SetProp1(const ETbSame1Enum1& InProp1)
+void UTbSame1SameEnum1InterfaceProxy::SetProp1_Implementation(const ETbSame1Enum1& InProp1)
 {
 	TbSame1SameEnum1InterfaceTracer::trace_callSetProp1(InProp1);
 	service->SetProp1(InProp1);
+}
+
+ETbSame1Enum1 UTbSame1SameEnum1InterfaceProxy::GetProp1_Private() const
+{
+	return GetProp1_Implementation();
+}
+
+void UTbSame1SameEnum1InterfaceProxy::SetProp1_Private(const ETbSame1Enum1& InProp1)
+{
+	service->SetProp1_Implementation(InProp1);
 }
 
 FTbSame1SameEnum1InterfaceProp1ChangedDelegate& UTbSame1SameEnum1InterfaceProxy::GetProp1ChangedDelegate()
@@ -111,7 +121,7 @@ FTbSame1SameEnum1InterfaceProp1ChangedDelegate& UTbSame1SameEnum1InterfaceProxy:
 	return Prop1Changed;
 }
 
-void UTbSame1SameEnum1InterfaceProxy::Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame1Enum1& Result, const ETbSame1Enum1& Param1)
+void UTbSame1SameEnum1InterfaceProxy::Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame1Enum1& Result, const ETbSame1Enum1& Param1)
 {
 	TbSame1SameEnum1InterfaceTracer::trace_callFunc1(Param1);
 
@@ -137,7 +147,7 @@ void UTbSame1SameEnum1InterfaceProxy::Func1Async(UObject* WorldContextObject, FL
 			});
 	}
 }
-ETbSame1Enum1 UTbSame1SameEnum1InterfaceProxy::Func1(const ETbSame1Enum1& Param1)
+ETbSame1Enum1 UTbSame1SameEnum1InterfaceProxy::Func1_Implementation(const ETbSame1Enum1& Param1)
 {
 	TbSame1SameEnum1InterfaceTracer::trace_callFunc1(Param1);
 	return service->Func1(Param1);

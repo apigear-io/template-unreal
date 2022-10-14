@@ -125,15 +125,25 @@ void {{$Class}}::On{{Camel .Name}}Changed({{ueParam "In" .}})
 	{{Camel .Name}}Changed.Broadcast({{ueVar "In" .}});
 }
 
-{{ueReturn "" .}} {{$Class}}::Get{{Camel .Name}}() const
+{{ueReturn "" .}} {{$Class}}::Get{{Camel .Name}}_Implementation() const
 {
 	return service->Get{{Camel .Name}}();
 }
 
-void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
+void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
 {
 	{{$Iface}}Tracer::trace_callSet{{Camel .Name}}({{ueVar "In" .}});
 	service->Set{{Camel .Name}}({{ueVar "In" .}});
+}
+
+{{ueReturn "" .}} {{$Class}}::Get{{Camel .Name}}_Private() const
+{
+	return Get{{Camel .Name}}_Implementation();
+}
+
+void {{$Class}}::Set{{Camel .Name}}_Private({{ueParam "In" .}})
+{
+	service->Set{{Camel .Name}}_Implementation({{ueVar "In" .}});
 }
 
 F{{$Iface}}{{Camel .Name}}ChangedDelegate& {{$Class}}::Get{{Camel .Name}}ChangedDelegate()
@@ -150,7 +160,7 @@ F{{$Iface}}{{Camel .Name}}ChangedDelegate& {{$Class}}::Get{{Camel .Name}}Changed
 */
 {{- end }}
 {{- if not .Return.IsVoid }}
-void {{$Class}}::{{Camel .Name}}Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, {{ueReturn "" .Return}}& Result{{ if len .Params }}, {{end}}{{ueParams "" .Params}})
+void {{$Class}}::{{Camel .Name}}Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, {{ueReturn "" .Return}}& Result{{ if len .Params }}, {{end}}{{ueParams "" .Params}})
 {
 	{{$Iface}}Tracer::trace_call{{Camel .Name}}({{ueVars "" .Params}});
 
@@ -177,7 +187,7 @@ void {{$Class}}::{{Camel .Name}}Async(UObject* WorldContextObject, FLatentAction
 	}
 }
 {{- end }}
-{{ueReturn "" .Return}} {{$Class}}::{{Camel .Name}}({{ueParams "" .Params}})
+{{ueReturn "" .Return}} {{$Class}}::{{Camel .Name}}_Implementation({{ueParams "" .Params}})
 {
 	{{ $Iface}}Tracer::trace_call{{Camel .Name}}({{ueVars "" .Params }});
 	{{- if not .Return.IsVoid }}

@@ -68,42 +68,34 @@ public:
 	FTbSimpleSimpleArrayInterfacePropStringChangedDelegate& GetPropStringChangedDelegate() override;
 
 	// properties
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
-	TArray<bool> GetPropBool() const override;
+	TArray<bool> GetPropBool_Implementation() const override;
 
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
-	void SetPropBool(const TArray<bool>& PropBool) override;
+	void SetPropBool_Implementation(const TArray<bool>& InPropBool) override;
 
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
-	TArray<int32> GetPropInt() const override;
+	TArray<int32> GetPropInt_Implementation() const override;
 
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
-	void SetPropInt(const TArray<int32>& PropInt) override;
+	void SetPropInt_Implementation(const TArray<int32>& InPropInt) override;
 
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
-	TArray<float> GetPropFloat() const override;
+	TArray<float> GetPropFloat_Implementation() const override;
 
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
-	void SetPropFloat(const TArray<float>& PropFloat) override;
+	void SetPropFloat_Implementation(const TArray<float>& InPropFloat) override;
 
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
-	TArray<FString> GetPropString() const override;
+	TArray<FString> GetPropString_Implementation() const override;
 
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
-	void SetPropString(const TArray<FString>& PropString) override;
+	void SetPropString_Implementation(const TArray<FString>& InPropString) override;
 
 	// operations
-	void FuncBoolAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<bool>& Result, const TArray<bool>& ParamBool);
-	TArray<bool> FuncBool(const TArray<bool>& ParamBool) override;
+	void FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<bool>& Result, const TArray<bool>& ParamBool);
+	TArray<bool> FuncBool_Implementation(const TArray<bool>& ParamBool) override;
 
-	void FuncIntAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<int32>& Result, const TArray<int32>& ParamInt);
-	TArray<int32> FuncInt(const TArray<int32>& ParamInt) override;
+	void FuncIntAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<int32>& Result, const TArray<int32>& ParamInt);
+	TArray<int32> FuncInt_Implementation(const TArray<int32>& ParamInt) override;
 
-	void FuncFloatAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<float>& Result, const TArray<float>& ParamFloat);
-	TArray<float> FuncFloat(const TArray<float>& ParamFloat) override;
+	void FuncFloatAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<float>& Result, const TArray<float>& ParamFloat);
+	TArray<float> FuncFloat_Implementation(const TArray<float>& ParamFloat) override;
 
-	void FuncStringAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FString>& Result, const TArray<FString>& ParamString);
-	TArray<FString> FuncString(const TArray<FString>& ParamString) override;
+	void FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FString>& Result, const TArray<FString>& ParamString);
+	TArray<FString> FuncString_Implementation(const TArray<FString>& ParamString) override;
 
 private:
 	/** The connection to the service backend. */
@@ -135,15 +127,39 @@ private:
 	void OnPropStringChanged(const TArray<FString>& PropString);
 
 	// properties - local copy
-	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropBool, BlueprintSetter = SetPropBool, Category = "ApiGear|TbSimple|SimpleArrayInterface")
+	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropBool_Private, BlueprintSetter = SetPropBool_Private, Category = "ApiGear|TbSimple|SimpleArrayInterface")
 	TArray<bool> PropBool;
 
-	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropInt, BlueprintSetter = SetPropInt, Category = "ApiGear|TbSimple|SimpleArrayInterface")
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSimple|SimpleArrayInterface")
+	TArray<bool> GetPropBool_Private() const;
+
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSimple|SimpleArrayInterface")
+	void SetPropBool_Private(const TArray<bool>& InPropBool);
+
+	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropInt_Private, BlueprintSetter = SetPropInt_Private, Category = "ApiGear|TbSimple|SimpleArrayInterface")
 	TArray<int32> PropInt;
 
-	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropFloat, BlueprintSetter = SetPropFloat, Category = "ApiGear|TbSimple|SimpleArrayInterface")
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSimple|SimpleArrayInterface")
+	TArray<int32> GetPropInt_Private() const;
+
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSimple|SimpleArrayInterface")
+	void SetPropInt_Private(const TArray<int32>& InPropInt);
+
+	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropFloat_Private, BlueprintSetter = SetPropFloat_Private, Category = "ApiGear|TbSimple|SimpleArrayInterface")
 	TArray<float> PropFloat;
 
-	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropString, BlueprintSetter = SetPropString, Category = "ApiGear|TbSimple|SimpleArrayInterface")
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSimple|SimpleArrayInterface")
+	TArray<float> GetPropFloat_Private() const;
+
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSimple|SimpleArrayInterface")
+	void SetPropFloat_Private(const TArray<float>& InPropFloat);
+
+	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropString_Private, BlueprintSetter = SetPropString_Private, Category = "ApiGear|TbSimple|SimpleArrayInterface")
 	TArray<FString> PropString;
+
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSimple|SimpleArrayInterface")
+	TArray<FString> GetPropString_Private() const;
+
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSimple|SimpleArrayInterface")
+	void SetPropString_Private(const TArray<FString>& InPropString);
 };

@@ -40,12 +40,12 @@ public:
 	FTestbed2NestedStruct1InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
 
 	// properties
-	FTestbed2NestedStruct1 GetProp1() const override;
-	void SetProp1(const FTestbed2NestedStruct1& Prop1) override;
+	FTestbed2NestedStruct1 GetProp1_Implementation() const override;
+	void SetProp1_Implementation(const FTestbed2NestedStruct1& Prop1) override;
 
 	// operations
-	void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1) override{};
-	FTestbed2NestedStruct1 Func1(const FTestbed2NestedStruct1& Param1) override;
+	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1) override{};
+	FTestbed2NestedStruct1 Func1_Implementation(const FTestbed2NestedStruct1& Param1) override;
 
 	// olink sink interface
 	std::string olinkObjectName() override;

@@ -76,12 +76,12 @@ FTbSame2SameStruct2InterfaceSig2Delegate& OLinkService::GetSig2SignalDelegate()
 	return Sig2Signal;
 }
 
-FTbSame2Struct2 OLinkService::GetProp1() const
+FTbSame2Struct2 OLinkService::GetProp1_Implementation() const
 {
 	return Prop1;
 }
 
-void OLinkService::SetProp1(const FTbSame2Struct2& InProp1)
+void OLinkService::SetProp1_Implementation(const FTbSame2Struct2& InProp1)
 {
 	if (!m_node)
 	{
@@ -94,12 +94,12 @@ FTbSame2SameStruct2InterfaceProp1ChangedDelegate& OLinkService::GetProp1ChangedD
 {
 	return Prop1Changed;
 }
-FTbSame2Struct2 OLinkService::GetProp2() const
+FTbSame2Struct2 OLinkService::GetProp2_Implementation() const
 {
 	return Prop2;
 }
 
-void OLinkService::SetProp2(const FTbSame2Struct2& InProp2)
+void OLinkService::SetProp2_Implementation(const FTbSame2Struct2& InProp2)
 {
 	if (!m_node)
 	{
@@ -113,7 +113,7 @@ FTbSame2SameStruct2InterfaceProp2ChangedDelegate& OLinkService::GetProp2ChangedD
 	return Prop2Changed;
 }
 
-FTbSame2Struct1 OLinkService::Func1(const FTbSame2Struct1& Param1)
+FTbSame2Struct1 OLinkService::Func1_Implementation(const FTbSame2Struct1& Param1)
 {
 	if (!m_node)
 	{
@@ -132,7 +132,7 @@ FTbSame2Struct1 OLinkService::Func1(const FTbSame2Struct1& Param1)
 	return Promise.GetFuture().Get();
 }
 
-FTbSame2Struct1 OLinkService::Func2(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2)
+FTbSame2Struct1 OLinkService::Func2_Implementation(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2)
 {
 	if (!m_node)
 	{
