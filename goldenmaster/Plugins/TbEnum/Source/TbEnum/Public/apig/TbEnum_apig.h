@@ -63,81 +63,89 @@ class TBENUM_API ITbEnumEnumInterfaceInterface
 
 public:
 	// signals
+	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface")
 	virtual FTbEnumEnumInterfaceSig0Delegate& GetSig0SignalDelegate() = 0;
 
+	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface")
 	virtual FTbEnumEnumInterfaceSig1Delegate& GetSig1SignalDelegate() = 0;
 
+	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface")
 	virtual FTbEnumEnumInterfaceSig2Delegate& GetSig2SignalDelegate() = 0;
 
+	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface")
 	virtual FTbEnumEnumInterfaceSig3Delegate& GetSig3SignalDelegate() = 0;
 
+	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface")
 	virtual FTbEnumEnumInterfaceProp0ChangedDelegate& GetProp0ChangedDelegate() = 0;
 
+	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface")
 	virtual FTbEnumEnumInterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() = 0;
 
+	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface")
 	virtual FTbEnumEnumInterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() = 0;
 
+	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface")
 	virtual FTbEnumEnumInterfaceProp3ChangedDelegate& GetProp3ChangedDelegate() = 0;
 
 	// methods
-	UFUNCTION(BlueprintNativeEvent, Category = "ApiGear|TbEnum|EnumInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void Func0Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum0& Result, const ETbEnumEnum0& Param0);
 	virtual void Func0Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum0& Result, const ETbEnumEnum0& Param0) = 0;
-	UFUNCTION(BlueprintNativeEvent, Category = "ApiGear|TbEnum|EnumInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface")
 	ETbEnumEnum0 Func0(const ETbEnumEnum0& Param0);
 	virtual ETbEnumEnum0 Func0_Implementation(const ETbEnumEnum0& Param0) = 0;
 
-	UFUNCTION(BlueprintNativeEvent, Category = "ApiGear|TbEnum|EnumInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum1& Result, const ETbEnumEnum1& Param1);
 	virtual void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum1& Result, const ETbEnumEnum1& Param1) = 0;
-	UFUNCTION(BlueprintNativeEvent, Category = "ApiGear|TbEnum|EnumInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface")
 	ETbEnumEnum1 Func1(const ETbEnumEnum1& Param1);
 	virtual ETbEnumEnum1 Func1_Implementation(const ETbEnumEnum1& Param1) = 0;
 
-	UFUNCTION(BlueprintNativeEvent, Category = "ApiGear|TbEnum|EnumInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void Func2Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum2& Result, const ETbEnumEnum2& Param2);
 	virtual void Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum2& Result, const ETbEnumEnum2& Param2) = 0;
-	UFUNCTION(BlueprintNativeEvent, Category = "ApiGear|TbEnum|EnumInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface")
 	ETbEnumEnum2 Func2(const ETbEnumEnum2& Param2);
 	virtual ETbEnumEnum2 Func2_Implementation(const ETbEnumEnum2& Param2) = 0;
 
-	UFUNCTION(BlueprintNativeEvent, Category = "ApiGear|TbEnum|EnumInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void Func3Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum3& Result, const ETbEnumEnum3& Param3);
 	virtual void Func3Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum3& Result, const ETbEnumEnum3& Param3) = 0;
-	UFUNCTION(BlueprintNativeEvent, Category = "ApiGear|TbEnum|EnumInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface")
 	ETbEnumEnum3 Func3(const ETbEnumEnum3& Param3);
 	virtual ETbEnumEnum3 Func3_Implementation(const ETbEnumEnum3& Param3) = 0;
 
 	// properties
-	UFUNCTION(BlueprintNativeEvent, Category = "ApiGear|TbEnum|EnumInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface")
 	ETbEnumEnum0 GetProp0() const;
 	virtual ETbEnumEnum0 GetProp0_Implementation() const = 0;
 
-	UFUNCTION(BlueprintNativeEvent, Category = "ApiGear|TbEnum|EnumInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface")
 	void SetProp0(const ETbEnumEnum0& Prop0);
 	virtual void SetProp0_Implementation(const ETbEnumEnum0& Prop0) = 0;
 
-	UFUNCTION(BlueprintNativeEvent, Category = "ApiGear|TbEnum|EnumInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface")
 	ETbEnumEnum1 GetProp1() const;
 	virtual ETbEnumEnum1 GetProp1_Implementation() const = 0;
 
-	UFUNCTION(BlueprintNativeEvent, Category = "ApiGear|TbEnum|EnumInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface")
 	void SetProp1(const ETbEnumEnum1& Prop1);
 	virtual void SetProp1_Implementation(const ETbEnumEnum1& Prop1) = 0;
 
-	UFUNCTION(BlueprintNativeEvent, Category = "ApiGear|TbEnum|EnumInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface")
 	ETbEnumEnum2 GetProp2() const;
 	virtual ETbEnumEnum2 GetProp2_Implementation() const = 0;
 
-	UFUNCTION(BlueprintNativeEvent, Category = "ApiGear|TbEnum|EnumInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface")
 	void SetProp2(const ETbEnumEnum2& Prop2);
 	virtual void SetProp2_Implementation(const ETbEnumEnum2& Prop2) = 0;
 
-	UFUNCTION(BlueprintNativeEvent, Category = "ApiGear|TbEnum|EnumInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface")
 	ETbEnumEnum3 GetProp3() const;
 	virtual ETbEnumEnum3 GetProp3_Implementation() const = 0;
 
-	UFUNCTION(BlueprintNativeEvent, Category = "ApiGear|TbEnum|EnumInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface")
 	void SetProp3(const ETbEnumEnum3& Prop3);
 	virtual void SetProp3_Implementation(const ETbEnumEnum3& Prop3) = 0;
 };
