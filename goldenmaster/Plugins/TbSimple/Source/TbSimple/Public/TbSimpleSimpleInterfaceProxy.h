@@ -85,16 +85,16 @@ public:
 	void SetPropString_Implementation(const FString& InPropString) override;
 
 	// operations
-	void FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool);
+	void FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool) override;
 	bool FuncBool_Implementation(bool bParamBool) override;
 
-	void FuncIntAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 ParamInt);
+	void FuncIntAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 ParamInt) override;
 	int32 FuncInt_Implementation(int32 ParamInt) override;
 
-	void FuncFloatAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, float& Result, float ParamFloat);
+	void FuncFloatAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, float& Result, float ParamFloat) override;
 	float FuncFloat_Implementation(float ParamFloat) override;
 
-	void FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FString& Result, const FString& ParamString);
+	void FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FString& Result, const FString& ParamString) override;
 	FString FuncString_Implementation(const FString& ParamString) override;
 
 private:
@@ -130,36 +130,36 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropBool_Private, BlueprintSetter = SetPropBool_Private, Category = "ApiGear|TbSimple|SimpleInterface")
 	bool bPropBool;
 
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSimple|SimpleInterface")
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
 	bool GetPropBool_Private() const;
 
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSimple|SimpleInterface")
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
 	void SetPropBool_Private(bool bInPropBool);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropInt_Private, BlueprintSetter = SetPropInt_Private, Category = "ApiGear|TbSimple|SimpleInterface")
 	int32 PropInt;
 
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSimple|SimpleInterface")
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
 	int32 GetPropInt_Private() const;
 
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSimple|SimpleInterface")
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
 	void SetPropInt_Private(int32 InPropInt);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropFloat_Private, BlueprintSetter = SetPropFloat_Private, Category = "ApiGear|TbSimple|SimpleInterface")
 	float PropFloat;
 
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSimple|SimpleInterface")
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
 	float GetPropFloat_Private() const;
 
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSimple|SimpleInterface")
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
 	void SetPropFloat_Private(float InPropFloat);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropString_Private, BlueprintSetter = SetPropString_Private, Category = "ApiGear|TbSimple|SimpleInterface")
 	FString PropString;
 
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSimple|SimpleInterface")
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
 	FString GetPropString_Private() const;
 
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSimple|SimpleInterface")
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
 	void SetPropString_Private(const FString& InPropString);
 };

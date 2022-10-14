@@ -85,16 +85,16 @@ public:
 	void SetPropString_Implementation(const TArray<FTestbed1StructString>& InPropString) override;
 
 	// operations
-	void FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructBool>& ParamBool);
+	void FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructBool>& ParamBool) override;
 	FTestbed1StructBool FuncBool_Implementation(const TArray<FTestbed1StructBool>& ParamBool) override;
 
-	void FuncIntAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructInt>& ParamInt);
+	void FuncIntAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructInt>& ParamInt) override;
 	FTestbed1StructBool FuncInt_Implementation(const TArray<FTestbed1StructInt>& ParamInt) override;
 
-	void FuncFloatAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructFloat>& ParamFloat);
+	void FuncFloatAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructFloat>& ParamFloat) override;
 	FTestbed1StructBool FuncFloat_Implementation(const TArray<FTestbed1StructFloat>& ParamFloat) override;
 
-	void FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructString>& ParamString);
+	void FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructString>& ParamString) override;
 	FTestbed1StructBool FuncString_Implementation(const TArray<FTestbed1StructString>& ParamString) override;
 
 private:
@@ -130,36 +130,36 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropBool_Private, BlueprintSetter = SetPropBool_Private, Category = "ApiGear|Testbed1|StructArrayInterface")
 	TArray<FTestbed1StructBool> PropBool;
 
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed1|StructArrayInterface")
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed1|StructArrayInterface", BlueprintInternalUseOnly)
 	TArray<FTestbed1StructBool> GetPropBool_Private() const;
 
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed1|StructArrayInterface")
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed1|StructArrayInterface", BlueprintInternalUseOnly)
 	void SetPropBool_Private(const TArray<FTestbed1StructBool>& InPropBool);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropInt_Private, BlueprintSetter = SetPropInt_Private, Category = "ApiGear|Testbed1|StructArrayInterface")
 	TArray<FTestbed1StructInt> PropInt;
 
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed1|StructArrayInterface")
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed1|StructArrayInterface", BlueprintInternalUseOnly)
 	TArray<FTestbed1StructInt> GetPropInt_Private() const;
 
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed1|StructArrayInterface")
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed1|StructArrayInterface", BlueprintInternalUseOnly)
 	void SetPropInt_Private(const TArray<FTestbed1StructInt>& InPropInt);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropFloat_Private, BlueprintSetter = SetPropFloat_Private, Category = "ApiGear|Testbed1|StructArrayInterface")
 	TArray<FTestbed1StructFloat> PropFloat;
 
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed1|StructArrayInterface")
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed1|StructArrayInterface", BlueprintInternalUseOnly)
 	TArray<FTestbed1StructFloat> GetPropFloat_Private() const;
 
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed1|StructArrayInterface")
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed1|StructArrayInterface", BlueprintInternalUseOnly)
 	void SetPropFloat_Private(const TArray<FTestbed1StructFloat>& InPropFloat);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropString_Private, BlueprintSetter = SetPropString_Private, Category = "ApiGear|Testbed1|StructArrayInterface")
 	TArray<FTestbed1StructString> PropString;
 
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed1|StructArrayInterface")
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed1|StructArrayInterface", BlueprintInternalUseOnly)
 	TArray<FTestbed1StructString> GetPropString_Private() const;
 
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed1|StructArrayInterface")
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed1|StructArrayInterface", BlueprintInternalUseOnly)
 	void SetPropString_Private(const TArray<FTestbed1StructString>& InPropString);
 };

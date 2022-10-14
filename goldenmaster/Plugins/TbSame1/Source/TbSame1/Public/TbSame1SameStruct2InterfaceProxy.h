@@ -61,10 +61,10 @@ public:
 	void SetProp2_Implementation(const FTbSame1Struct2& InProp2) override;
 
 	// operations
-	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame1Struct1& Result, const FTbSame1Struct1& Param1);
+	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame1Struct1& Result, const FTbSame1Struct1& Param1) override;
 	FTbSame1Struct1 Func1_Implementation(const FTbSame1Struct1& Param1) override;
 
-	void Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame1Struct1& Result, const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2);
+	void Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame1Struct1& Result, const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2) override;
 	FTbSame1Struct1 Func2_Implementation(const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2) override;
 
 private:
@@ -88,18 +88,18 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1_Private, BlueprintSetter = SetProp1_Private, Category = "ApiGear|TbSame1|SameStruct2Interface")
 	FTbSame1Struct2 Prop1;
 
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSame1|SameStruct2Interface")
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSame1|SameStruct2Interface", BlueprintInternalUseOnly)
 	FTbSame1Struct2 GetProp1_Private() const;
 
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSame1|SameStruct2Interface")
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSame1|SameStruct2Interface", BlueprintInternalUseOnly)
 	void SetProp1_Private(const FTbSame1Struct2& InProp1);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp2_Private, BlueprintSetter = SetProp2_Private, Category = "ApiGear|TbSame1|SameStruct2Interface")
 	FTbSame1Struct2 Prop2;
 
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSame1|SameStruct2Interface")
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSame1|SameStruct2Interface", BlueprintInternalUseOnly)
 	FTbSame1Struct2 GetProp2_Private() const;
 
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSame1|SameStruct2Interface")
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSame1|SameStruct2Interface", BlueprintInternalUseOnly)
 	void SetProp2_Private(const FTbSame1Struct2& InProp2);
 };

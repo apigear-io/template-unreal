@@ -113,23 +113,23 @@ void UTestbed2NestedStruct2InterfaceProxy::OnProp1Changed(const FTestbed2NestedS
 
 FTestbed2NestedStruct1 UTestbed2NestedStruct2InterfaceProxy::GetProp1_Implementation() const
 {
-	return service->GetProp1();
+	return service->Execute_GetProp1(service);
 }
 
 void UTestbed2NestedStruct2InterfaceProxy::SetProp1_Implementation(const FTestbed2NestedStruct1& InProp1)
 {
 	Testbed2NestedStruct2InterfaceTracer::trace_callSetProp1(InProp1);
-	service->SetProp1(InProp1);
+	service->Execute_SetProp1(service, InProp1);
 }
 
 FTestbed2NestedStruct1 UTestbed2NestedStruct2InterfaceProxy::GetProp1_Private() const
 {
-	return GetProp1_Implementation();
+	return Execute_GetProp1(this);
 }
 
 void UTestbed2NestedStruct2InterfaceProxy::SetProp1_Private(const FTestbed2NestedStruct1& InProp1)
 {
-	service->SetProp1_Implementation(InProp1);
+	Execute_SetProp1(this, InProp1);
 }
 
 FTestbed2NestedStruct2InterfaceProp1ChangedDelegate& UTestbed2NestedStruct2InterfaceProxy::GetProp1ChangedDelegate()
@@ -145,23 +145,23 @@ void UTestbed2NestedStruct2InterfaceProxy::OnProp2Changed(const FTestbed2NestedS
 
 FTestbed2NestedStruct2 UTestbed2NestedStruct2InterfaceProxy::GetProp2_Implementation() const
 {
-	return service->GetProp2();
+	return service->Execute_GetProp2(service);
 }
 
 void UTestbed2NestedStruct2InterfaceProxy::SetProp2_Implementation(const FTestbed2NestedStruct2& InProp2)
 {
 	Testbed2NestedStruct2InterfaceTracer::trace_callSetProp2(InProp2);
-	service->SetProp2(InProp2);
+	service->Execute_SetProp2(service, InProp2);
 }
 
 FTestbed2NestedStruct2 UTestbed2NestedStruct2InterfaceProxy::GetProp2_Private() const
 {
-	return GetProp2_Implementation();
+	return Execute_GetProp2(this);
 }
 
 void UTestbed2NestedStruct2InterfaceProxy::SetProp2_Private(const FTestbed2NestedStruct2& InProp2)
 {
-	service->SetProp2_Implementation(InProp2);
+	Execute_SetProp2(this, InProp2);
 }
 
 FTestbed2NestedStruct2InterfaceProp2ChangedDelegate& UTestbed2NestedStruct2InterfaceProxy::GetProp2ChangedDelegate()
@@ -190,7 +190,7 @@ void UTestbed2NestedStruct2InterfaceProxy::Func1Async_Implementation(UObject* Wo
 		Async(EAsyncExecution::Thread,
 			[Param1, this, &Result, CompletionAction]()
 			{
-				Result = service->Func1(Param1);
+				Result = service->Execute_Func1(service, Param1);
 				CompletionAction->Cancel();
 			});
 	}
@@ -198,7 +198,7 @@ void UTestbed2NestedStruct2InterfaceProxy::Func1Async_Implementation(UObject* Wo
 FTestbed2NestedStruct1 UTestbed2NestedStruct2InterfaceProxy::Func1_Implementation(const FTestbed2NestedStruct1& Param1)
 {
 	Testbed2NestedStruct2InterfaceTracer::trace_callFunc1(Param1);
-	return service->Func1(Param1);
+	return service->Execute_Func1(service, Param1);
 }
 void UTestbed2NestedStruct2InterfaceProxy::Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
 {
@@ -221,7 +221,7 @@ void UTestbed2NestedStruct2InterfaceProxy::Func2Async_Implementation(UObject* Wo
 		Async(EAsyncExecution::Thread,
 			[Param1, Param2, this, &Result, CompletionAction]()
 			{
-				Result = service->Func2(Param1, Param2);
+				Result = service->Execute_Func2(service, Param1, Param2);
 				CompletionAction->Cancel();
 			});
 	}
@@ -229,5 +229,5 @@ void UTestbed2NestedStruct2InterfaceProxy::Func2Async_Implementation(UObject* Wo
 FTestbed2NestedStruct1 UTestbed2NestedStruct2InterfaceProxy::Func2_Implementation(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
 {
 	Testbed2NestedStruct2InterfaceTracer::trace_callFunc2(Param1, Param2);
-	return service->Func2(Param1, Param2);
+	return service->Execute_Func2(service, Param1, Param2);
 }

@@ -85,16 +85,16 @@ public:
 	void SetProp4_Implementation(int32 InProp4) override;
 
 	// operations
-	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1);
+	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1) override;
 	int32 Func1_Implementation(int32 Param1) override;
 
-	void Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2);
+	void Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2) override;
 	int32 Func2_Implementation(int32 Param1, int32 Param2) override;
 
-	void Func3Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2, int32 Param3);
+	void Func3Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2, int32 Param3) override;
 	int32 Func3_Implementation(int32 Param1, int32 Param2, int32 Param3) override;
 
-	void Func4Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2, int32 Param3, int32 Param4);
+	void Func4Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2, int32 Param3, int32 Param4) override;
 	int32 Func4_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4) override;
 
 private:
@@ -130,36 +130,36 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1_Private, BlueprintSetter = SetProp1_Private, Category = "ApiGear|Testbed2|ManyParamInterface")
 	int32 Prop1;
 
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed2|ManyParamInterface")
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
 	int32 GetProp1_Private() const;
 
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed2|ManyParamInterface")
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
 	void SetProp1_Private(int32 InProp1);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp2_Private, BlueprintSetter = SetProp2_Private, Category = "ApiGear|Testbed2|ManyParamInterface")
 	int32 Prop2;
 
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed2|ManyParamInterface")
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
 	int32 GetProp2_Private() const;
 
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed2|ManyParamInterface")
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
 	void SetProp2_Private(int32 InProp2);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp3_Private, BlueprintSetter = SetProp3_Private, Category = "ApiGear|Testbed2|ManyParamInterface")
 	int32 Prop3;
 
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed2|ManyParamInterface")
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
 	int32 GetProp3_Private() const;
 
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed2|ManyParamInterface")
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
 	void SetProp3_Private(int32 InProp3);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp4_Private, BlueprintSetter = SetProp4_Private, Category = "ApiGear|Testbed2|ManyParamInterface")
 	int32 Prop4;
 
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed2|ManyParamInterface")
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
 	int32 GetProp4_Private() const;
 
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed2|ManyParamInterface")
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
 	void SetProp4_Private(int32 InProp4);
 };

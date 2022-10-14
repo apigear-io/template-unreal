@@ -145,23 +145,23 @@ void UTestbed1StructInterfaceProxy::OnPropBoolChanged(const FTestbed1StructBool&
 
 FTestbed1StructBool UTestbed1StructInterfaceProxy::GetPropBool_Implementation() const
 {
-	return service->GetPropBool();
+	return service->Execute_GetPropBool(service);
 }
 
 void UTestbed1StructInterfaceProxy::SetPropBool_Implementation(const FTestbed1StructBool& InPropBool)
 {
 	Testbed1StructInterfaceTracer::trace_callSetPropBool(InPropBool);
-	service->SetPropBool(InPropBool);
+	service->Execute_SetPropBool(service, InPropBool);
 }
 
 FTestbed1StructBool UTestbed1StructInterfaceProxy::GetPropBool_Private() const
 {
-	return GetPropBool_Implementation();
+	return Execute_GetPropBool(this);
 }
 
 void UTestbed1StructInterfaceProxy::SetPropBool_Private(const FTestbed1StructBool& InPropBool)
 {
-	service->SetPropBool_Implementation(InPropBool);
+	Execute_SetPropBool(this, InPropBool);
 }
 
 FTestbed1StructInterfacePropBoolChangedDelegate& UTestbed1StructInterfaceProxy::GetPropBoolChangedDelegate()
@@ -177,23 +177,23 @@ void UTestbed1StructInterfaceProxy::OnPropIntChanged(const FTestbed1StructInt& I
 
 FTestbed1StructInt UTestbed1StructInterfaceProxy::GetPropInt_Implementation() const
 {
-	return service->GetPropInt();
+	return service->Execute_GetPropInt(service);
 }
 
 void UTestbed1StructInterfaceProxy::SetPropInt_Implementation(const FTestbed1StructInt& InPropInt)
 {
 	Testbed1StructInterfaceTracer::trace_callSetPropInt(InPropInt);
-	service->SetPropInt(InPropInt);
+	service->Execute_SetPropInt(service, InPropInt);
 }
 
 FTestbed1StructInt UTestbed1StructInterfaceProxy::GetPropInt_Private() const
 {
-	return GetPropInt_Implementation();
+	return Execute_GetPropInt(this);
 }
 
 void UTestbed1StructInterfaceProxy::SetPropInt_Private(const FTestbed1StructInt& InPropInt)
 {
-	service->SetPropInt_Implementation(InPropInt);
+	Execute_SetPropInt(this, InPropInt);
 }
 
 FTestbed1StructInterfacePropIntChangedDelegate& UTestbed1StructInterfaceProxy::GetPropIntChangedDelegate()
@@ -209,23 +209,23 @@ void UTestbed1StructInterfaceProxy::OnPropFloatChanged(const FTestbed1StructFloa
 
 FTestbed1StructFloat UTestbed1StructInterfaceProxy::GetPropFloat_Implementation() const
 {
-	return service->GetPropFloat();
+	return service->Execute_GetPropFloat(service);
 }
 
 void UTestbed1StructInterfaceProxy::SetPropFloat_Implementation(const FTestbed1StructFloat& InPropFloat)
 {
 	Testbed1StructInterfaceTracer::trace_callSetPropFloat(InPropFloat);
-	service->SetPropFloat(InPropFloat);
+	service->Execute_SetPropFloat(service, InPropFloat);
 }
 
 FTestbed1StructFloat UTestbed1StructInterfaceProxy::GetPropFloat_Private() const
 {
-	return GetPropFloat_Implementation();
+	return Execute_GetPropFloat(this);
 }
 
 void UTestbed1StructInterfaceProxy::SetPropFloat_Private(const FTestbed1StructFloat& InPropFloat)
 {
-	service->SetPropFloat_Implementation(InPropFloat);
+	Execute_SetPropFloat(this, InPropFloat);
 }
 
 FTestbed1StructInterfacePropFloatChangedDelegate& UTestbed1StructInterfaceProxy::GetPropFloatChangedDelegate()
@@ -241,23 +241,23 @@ void UTestbed1StructInterfaceProxy::OnPropStringChanged(const FTestbed1StructStr
 
 FTestbed1StructString UTestbed1StructInterfaceProxy::GetPropString_Implementation() const
 {
-	return service->GetPropString();
+	return service->Execute_GetPropString(service);
 }
 
 void UTestbed1StructInterfaceProxy::SetPropString_Implementation(const FTestbed1StructString& InPropString)
 {
 	Testbed1StructInterfaceTracer::trace_callSetPropString(InPropString);
-	service->SetPropString(InPropString);
+	service->Execute_SetPropString(service, InPropString);
 }
 
 FTestbed1StructString UTestbed1StructInterfaceProxy::GetPropString_Private() const
 {
-	return GetPropString_Implementation();
+	return Execute_GetPropString(this);
 }
 
 void UTestbed1StructInterfaceProxy::SetPropString_Private(const FTestbed1StructString& InPropString)
 {
-	service->SetPropString_Implementation(InPropString);
+	Execute_SetPropString(this, InPropString);
 }
 
 FTestbed1StructInterfacePropStringChangedDelegate& UTestbed1StructInterfaceProxy::GetPropStringChangedDelegate()
@@ -286,7 +286,7 @@ void UTestbed1StructInterfaceProxy::FuncBoolAsync_Implementation(UObject* WorldC
 		Async(EAsyncExecution::Thread,
 			[ParamBool, this, &Result, CompletionAction]()
 			{
-				Result = service->FuncBool(ParamBool);
+				Result = service->Execute_FuncBool(service, ParamBool);
 				CompletionAction->Cancel();
 			});
 	}
@@ -294,7 +294,7 @@ void UTestbed1StructInterfaceProxy::FuncBoolAsync_Implementation(UObject* WorldC
 FTestbed1StructBool UTestbed1StructInterfaceProxy::FuncBool_Implementation(const FTestbed1StructBool& ParamBool)
 {
 	Testbed1StructInterfaceTracer::trace_callFuncBool(ParamBool);
-	return service->FuncBool(ParamBool);
+	return service->Execute_FuncBool(service, ParamBool);
 }
 void UTestbed1StructInterfaceProxy::FuncIntAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const FTestbed1StructInt& ParamInt)
 {
@@ -317,7 +317,7 @@ void UTestbed1StructInterfaceProxy::FuncIntAsync_Implementation(UObject* WorldCo
 		Async(EAsyncExecution::Thread,
 			[ParamInt, this, &Result, CompletionAction]()
 			{
-				Result = service->FuncInt(ParamInt);
+				Result = service->Execute_FuncInt(service, ParamInt);
 				CompletionAction->Cancel();
 			});
 	}
@@ -325,7 +325,7 @@ void UTestbed1StructInterfaceProxy::FuncIntAsync_Implementation(UObject* WorldCo
 FTestbed1StructBool UTestbed1StructInterfaceProxy::FuncInt_Implementation(const FTestbed1StructInt& ParamInt)
 {
 	Testbed1StructInterfaceTracer::trace_callFuncInt(ParamInt);
-	return service->FuncInt(ParamInt);
+	return service->Execute_FuncInt(service, ParamInt);
 }
 void UTestbed1StructInterfaceProxy::FuncFloatAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructFloat& Result, const FTestbed1StructFloat& ParamFloat)
 {
@@ -348,7 +348,7 @@ void UTestbed1StructInterfaceProxy::FuncFloatAsync_Implementation(UObject* World
 		Async(EAsyncExecution::Thread,
 			[ParamFloat, this, &Result, CompletionAction]()
 			{
-				Result = service->FuncFloat(ParamFloat);
+				Result = service->Execute_FuncFloat(service, ParamFloat);
 				CompletionAction->Cancel();
 			});
 	}
@@ -356,7 +356,7 @@ void UTestbed1StructInterfaceProxy::FuncFloatAsync_Implementation(UObject* World
 FTestbed1StructFloat UTestbed1StructInterfaceProxy::FuncFloat_Implementation(const FTestbed1StructFloat& ParamFloat)
 {
 	Testbed1StructInterfaceTracer::trace_callFuncFloat(ParamFloat);
-	return service->FuncFloat(ParamFloat);
+	return service->Execute_FuncFloat(service, ParamFloat);
 }
 void UTestbed1StructInterfaceProxy::FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructString& Result, const FTestbed1StructString& ParamString)
 {
@@ -379,7 +379,7 @@ void UTestbed1StructInterfaceProxy::FuncStringAsync_Implementation(UObject* Worl
 		Async(EAsyncExecution::Thread,
 			[ParamString, this, &Result, CompletionAction]()
 			{
-				Result = service->FuncString(ParamString);
+				Result = service->Execute_FuncString(service, ParamString);
 				CompletionAction->Cancel();
 			});
 	}
@@ -387,5 +387,5 @@ void UTestbed1StructInterfaceProxy::FuncStringAsync_Implementation(UObject* Worl
 FTestbed1StructString UTestbed1StructInterfaceProxy::FuncString_Implementation(const FTestbed1StructString& ParamString)
 {
 	Testbed1StructInterfaceTracer::trace_callFuncString(ParamString);
-	return service->FuncString(ParamString);
+	return service->Execute_FuncString(service, ParamString);
 }

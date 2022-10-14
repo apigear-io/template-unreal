@@ -97,23 +97,23 @@ void UTbSame1SameStruct1InterfaceProxy::OnProp1Changed(const FTbSame1Struct1& In
 
 FTbSame1Struct1 UTbSame1SameStruct1InterfaceProxy::GetProp1_Implementation() const
 {
-	return service->GetProp1();
+	return service->Execute_GetProp1(service);
 }
 
 void UTbSame1SameStruct1InterfaceProxy::SetProp1_Implementation(const FTbSame1Struct1& InProp1)
 {
 	TbSame1SameStruct1InterfaceTracer::trace_callSetProp1(InProp1);
-	service->SetProp1(InProp1);
+	service->Execute_SetProp1(service, InProp1);
 }
 
 FTbSame1Struct1 UTbSame1SameStruct1InterfaceProxy::GetProp1_Private() const
 {
-	return GetProp1_Implementation();
+	return Execute_GetProp1(this);
 }
 
 void UTbSame1SameStruct1InterfaceProxy::SetProp1_Private(const FTbSame1Struct1& InProp1)
 {
-	service->SetProp1_Implementation(InProp1);
+	Execute_SetProp1(this, InProp1);
 }
 
 FTbSame1SameStruct1InterfaceProp1ChangedDelegate& UTbSame1SameStruct1InterfaceProxy::GetProp1ChangedDelegate()
@@ -142,7 +142,7 @@ void UTbSame1SameStruct1InterfaceProxy::Func1Async_Implementation(UObject* World
 		Async(EAsyncExecution::Thread,
 			[Param1, this, &Result, CompletionAction]()
 			{
-				Result = service->Func1(Param1);
+				Result = service->Execute_Func1(service, Param1);
 				CompletionAction->Cancel();
 			});
 	}
@@ -150,5 +150,5 @@ void UTbSame1SameStruct1InterfaceProxy::Func1Async_Implementation(UObject* World
 FTbSame1Struct1 UTbSame1SameStruct1InterfaceProxy::Func1_Implementation(const FTbSame1Struct1& Param1)
 {
 	TbSame1SameStruct1InterfaceTracer::trace_callFunc1(Param1);
-	return service->Func1(Param1);
+	return service->Execute_Func1(service, Param1);
 }

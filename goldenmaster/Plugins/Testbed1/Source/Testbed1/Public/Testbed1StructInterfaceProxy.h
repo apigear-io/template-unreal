@@ -85,16 +85,16 @@ public:
 	void SetPropString_Implementation(const FTestbed1StructString& InPropString) override;
 
 	// operations
-	void FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const FTestbed1StructBool& ParamBool);
+	void FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const FTestbed1StructBool& ParamBool) override;
 	FTestbed1StructBool FuncBool_Implementation(const FTestbed1StructBool& ParamBool) override;
 
-	void FuncIntAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const FTestbed1StructInt& ParamInt);
+	void FuncIntAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const FTestbed1StructInt& ParamInt) override;
 	FTestbed1StructBool FuncInt_Implementation(const FTestbed1StructInt& ParamInt) override;
 
-	void FuncFloatAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructFloat& Result, const FTestbed1StructFloat& ParamFloat);
+	void FuncFloatAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructFloat& Result, const FTestbed1StructFloat& ParamFloat) override;
 	FTestbed1StructFloat FuncFloat_Implementation(const FTestbed1StructFloat& ParamFloat) override;
 
-	void FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructString& Result, const FTestbed1StructString& ParamString);
+	void FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructString& Result, const FTestbed1StructString& ParamString) override;
 	FTestbed1StructString FuncString_Implementation(const FTestbed1StructString& ParamString) override;
 
 private:
@@ -130,36 +130,36 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropBool_Private, BlueprintSetter = SetPropBool_Private, Category = "ApiGear|Testbed1|StructInterface")
 	FTestbed1StructBool PropBool;
 
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed1|StructInterface")
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
 	FTestbed1StructBool GetPropBool_Private() const;
 
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed1|StructInterface")
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
 	void SetPropBool_Private(const FTestbed1StructBool& InPropBool);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropInt_Private, BlueprintSetter = SetPropInt_Private, Category = "ApiGear|Testbed1|StructInterface")
 	FTestbed1StructInt PropInt;
 
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed1|StructInterface")
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
 	FTestbed1StructInt GetPropInt_Private() const;
 
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed1|StructInterface")
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
 	void SetPropInt_Private(const FTestbed1StructInt& InPropInt);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropFloat_Private, BlueprintSetter = SetPropFloat_Private, Category = "ApiGear|Testbed1|StructInterface")
 	FTestbed1StructFloat PropFloat;
 
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed1|StructInterface")
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
 	FTestbed1StructFloat GetPropFloat_Private() const;
 
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed1|StructInterface")
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
 	void SetPropFloat_Private(const FTestbed1StructFloat& InPropFloat);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropString_Private, BlueprintSetter = SetPropString_Private, Category = "ApiGear|Testbed1|StructInterface")
 	FTestbed1StructString PropString;
 
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed1|StructInterface")
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
 	FTestbed1StructString GetPropString_Private() const;
 
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed1|StructInterface")
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
 	void SetPropString_Private(const FTestbed1StructString& InPropString);
 };

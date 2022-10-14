@@ -97,23 +97,23 @@ void UTbSame1SameEnum1InterfaceProxy::OnProp1Changed(const ETbSame1Enum1& InProp
 
 ETbSame1Enum1 UTbSame1SameEnum1InterfaceProxy::GetProp1_Implementation() const
 {
-	return service->GetProp1();
+	return service->Execute_GetProp1(service);
 }
 
 void UTbSame1SameEnum1InterfaceProxy::SetProp1_Implementation(const ETbSame1Enum1& InProp1)
 {
 	TbSame1SameEnum1InterfaceTracer::trace_callSetProp1(InProp1);
-	service->SetProp1(InProp1);
+	service->Execute_SetProp1(service, InProp1);
 }
 
 ETbSame1Enum1 UTbSame1SameEnum1InterfaceProxy::GetProp1_Private() const
 {
-	return GetProp1_Implementation();
+	return Execute_GetProp1(this);
 }
 
 void UTbSame1SameEnum1InterfaceProxy::SetProp1_Private(const ETbSame1Enum1& InProp1)
 {
-	service->SetProp1_Implementation(InProp1);
+	Execute_SetProp1(this, InProp1);
 }
 
 FTbSame1SameEnum1InterfaceProp1ChangedDelegate& UTbSame1SameEnum1InterfaceProxy::GetProp1ChangedDelegate()
@@ -142,7 +142,7 @@ void UTbSame1SameEnum1InterfaceProxy::Func1Async_Implementation(UObject* WorldCo
 		Async(EAsyncExecution::Thread,
 			[Param1, this, &Result, CompletionAction]()
 			{
-				Result = service->Func1(Param1);
+				Result = service->Execute_Func1(service, Param1);
 				CompletionAction->Cancel();
 			});
 	}
@@ -150,5 +150,5 @@ void UTbSame1SameEnum1InterfaceProxy::Func1Async_Implementation(UObject* WorldCo
 ETbSame1Enum1 UTbSame1SameEnum1InterfaceProxy::Func1_Implementation(const ETbSame1Enum1& Param1)
 {
 	TbSame1SameEnum1InterfaceTracer::trace_callFunc1(Param1);
-	return service->Func1(Param1);
+	return service->Execute_Func1(service, Param1);
 }

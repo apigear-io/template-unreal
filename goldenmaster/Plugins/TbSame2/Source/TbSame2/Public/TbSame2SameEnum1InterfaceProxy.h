@@ -49,7 +49,7 @@ public:
 	void SetProp1_Implementation(const ETbSame2Enum1& InProp1) override;
 
 	// operations
-	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, const ETbSame2Enum1& Param1);
+	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, const ETbSame2Enum1& Param1) override;
 	ETbSame2Enum1 Func1_Implementation(const ETbSame2Enum1& Param1) override;
 
 private:
@@ -67,9 +67,9 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1_Private, BlueprintSetter = SetProp1_Private, Category = "ApiGear|TbSame2|SameEnum1Interface")
 	ETbSame2Enum1 Prop1;
 
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSame2|SameEnum1Interface")
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSame2|SameEnum1Interface", BlueprintInternalUseOnly)
 	ETbSame2Enum1 GetProp1_Private() const;
 
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSame2|SameEnum1Interface")
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSame2|SameEnum1Interface", BlueprintInternalUseOnly)
 	void SetProp1_Private(const ETbSame2Enum1& InProp1);
 };

@@ -85,16 +85,16 @@ public:
 	void SetProp3_Implementation(const ETbEnumEnum3& InProp3) override;
 
 	// operations
-	void Func0Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum0& Result, const ETbEnumEnum0& Param0);
+	void Func0Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum0& Result, const ETbEnumEnum0& Param0) override;
 	ETbEnumEnum0 Func0_Implementation(const ETbEnumEnum0& Param0) override;
 
-	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum1& Result, const ETbEnumEnum1& Param1);
+	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum1& Result, const ETbEnumEnum1& Param1) override;
 	ETbEnumEnum1 Func1_Implementation(const ETbEnumEnum1& Param1) override;
 
-	void Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum2& Result, const ETbEnumEnum2& Param2);
+	void Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum2& Result, const ETbEnumEnum2& Param2) override;
 	ETbEnumEnum2 Func2_Implementation(const ETbEnumEnum2& Param2) override;
 
-	void Func3Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum3& Result, const ETbEnumEnum3& Param3);
+	void Func3Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum3& Result, const ETbEnumEnum3& Param3) override;
 	ETbEnumEnum3 Func3_Implementation(const ETbEnumEnum3& Param3) override;
 
 private:
@@ -130,36 +130,36 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp0_Private, BlueprintSetter = SetProp0_Private, Category = "ApiGear|TbEnum|EnumInterface")
 	ETbEnumEnum0 Prop0;
 
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbEnum|EnumInterface")
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
 	ETbEnumEnum0 GetProp0_Private() const;
 
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbEnum|EnumInterface")
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
 	void SetProp0_Private(const ETbEnumEnum0& InProp0);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1_Private, BlueprintSetter = SetProp1_Private, Category = "ApiGear|TbEnum|EnumInterface")
 	ETbEnumEnum1 Prop1;
 
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbEnum|EnumInterface")
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
 	ETbEnumEnum1 GetProp1_Private() const;
 
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbEnum|EnumInterface")
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
 	void SetProp1_Private(const ETbEnumEnum1& InProp1);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp2_Private, BlueprintSetter = SetProp2_Private, Category = "ApiGear|TbEnum|EnumInterface")
 	ETbEnumEnum2 Prop2;
 
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbEnum|EnumInterface")
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
 	ETbEnumEnum2 GetProp2_Private() const;
 
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbEnum|EnumInterface")
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
 	void SetProp2_Private(const ETbEnumEnum2& InProp2);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp3_Private, BlueprintSetter = SetProp3_Private, Category = "ApiGear|TbEnum|EnumInterface")
 	ETbEnumEnum3 Prop3;
 
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbEnum|EnumInterface")
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
 	ETbEnumEnum3 GetProp3_Private() const;
 
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbEnum|EnumInterface")
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
 	void SetProp3_Private(const ETbEnumEnum3& InProp3);
 };

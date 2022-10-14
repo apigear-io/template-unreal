@@ -61,10 +61,10 @@ public:
 	void SetProp2_Implementation(const ETbSame2Enum2& InProp2) override;
 
 	// operations
-	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, const ETbSame2Enum1& Param1);
+	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, const ETbSame2Enum1& Param1) override;
 	ETbSame2Enum1 Func1_Implementation(const ETbSame2Enum1& Param1) override;
 
-	void Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, const ETbSame2Enum1& Param1, const ETbSame2Enum2& Param2);
+	void Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, const ETbSame2Enum1& Param1, const ETbSame2Enum2& Param2) override;
 	ETbSame2Enum1 Func2_Implementation(const ETbSame2Enum1& Param1, const ETbSame2Enum2& Param2) override;
 
 private:
@@ -88,18 +88,18 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1_Private, BlueprintSetter = SetProp1_Private, Category = "ApiGear|TbSame2|SameEnum2Interface")
 	ETbSame2Enum1 Prop1;
 
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSame2|SameEnum2Interface")
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSame2|SameEnum2Interface", BlueprintInternalUseOnly)
 	ETbSame2Enum1 GetProp1_Private() const;
 
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSame2|SameEnum2Interface")
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSame2|SameEnum2Interface", BlueprintInternalUseOnly)
 	void SetProp1_Private(const ETbSame2Enum1& InProp1);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp2_Private, BlueprintSetter = SetProp2_Private, Category = "ApiGear|TbSame2|SameEnum2Interface")
 	ETbSame2Enum2 Prop2;
 
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSame2|SameEnum2Interface")
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSame2|SameEnum2Interface", BlueprintInternalUseOnly)
 	ETbSame2Enum2 GetProp2_Private() const;
 
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSame2|SameEnum2Interface")
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSame2|SameEnum2Interface", BlueprintInternalUseOnly)
 	void SetProp2_Private(const ETbSame2Enum2& InProp2);
 };

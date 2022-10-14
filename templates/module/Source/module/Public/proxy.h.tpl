@@ -66,7 +66,7 @@ public:
 	{{- if .Return.IsVoid }}
 	{{ueReturn "" .Return}} {{Camel .Name}}_Implementation({{ueParams "" .Params}}) override;
 	{{ else }}
-	void {{Camel .Name}}Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, {{ueReturn "" .Return}}& Result{{if len .Params}},{{end}} {{ueParams "" .Params}});
+	void {{Camel .Name}}Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, {{ueReturn "" .Return}}& Result{{if len .Params}},{{end}} {{ueParams "" .Params}}) override;
 	{{ueReturn "" .Return}} {{Camel .Name}}_Implementation({{ueParams "" .Params}}) override;
 	{{- end }}
 {{ end }}
@@ -91,10 +91,10 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintGetter = Get{{Camel .Name}}_Private, BlueprintSetter = Set{{Camel .Name}}_Private, Category = "{{$Category}}")
 	{{ueReturn "" .}} {{ueVar "" .}};
 
-	UFUNCTION(BlueprintGetter, Category = "{{$Category}}")
+	UFUNCTION(BlueprintGetter, Category = "{{$Category}}", BlueprintInternalUseOnly)
 	{{ueReturn "" .}} Get{{Camel .Name}}_Private() const;
 
-	UFUNCTION(BlueprintSetter, Category = "{{$Category}}")
+	UFUNCTION(BlueprintSetter, Category = "{{$Category}}", BlueprintInternalUseOnly)
 	void Set{{Camel .Name}}_Private({{ueParam "In" .}});
 {{ else }}
 {{ end -}}

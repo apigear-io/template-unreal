@@ -145,23 +145,23 @@ void UTbEnumEnumInterfaceProxy::OnProp0Changed(const ETbEnumEnum0& InProp0)
 
 ETbEnumEnum0 UTbEnumEnumInterfaceProxy::GetProp0_Implementation() const
 {
-	return service->GetProp0();
+	return service->Execute_GetProp0(service);
 }
 
 void UTbEnumEnumInterfaceProxy::SetProp0_Implementation(const ETbEnumEnum0& InProp0)
 {
 	TbEnumEnumInterfaceTracer::trace_callSetProp0(InProp0);
-	service->SetProp0(InProp0);
+	service->Execute_SetProp0(service, InProp0);
 }
 
 ETbEnumEnum0 UTbEnumEnumInterfaceProxy::GetProp0_Private() const
 {
-	return GetProp0_Implementation();
+	return Execute_GetProp0(this);
 }
 
 void UTbEnumEnumInterfaceProxy::SetProp0_Private(const ETbEnumEnum0& InProp0)
 {
-	service->SetProp0_Implementation(InProp0);
+	Execute_SetProp0(this, InProp0);
 }
 
 FTbEnumEnumInterfaceProp0ChangedDelegate& UTbEnumEnumInterfaceProxy::GetProp0ChangedDelegate()
@@ -177,23 +177,23 @@ void UTbEnumEnumInterfaceProxy::OnProp1Changed(const ETbEnumEnum1& InProp1)
 
 ETbEnumEnum1 UTbEnumEnumInterfaceProxy::GetProp1_Implementation() const
 {
-	return service->GetProp1();
+	return service->Execute_GetProp1(service);
 }
 
 void UTbEnumEnumInterfaceProxy::SetProp1_Implementation(const ETbEnumEnum1& InProp1)
 {
 	TbEnumEnumInterfaceTracer::trace_callSetProp1(InProp1);
-	service->SetProp1(InProp1);
+	service->Execute_SetProp1(service, InProp1);
 }
 
 ETbEnumEnum1 UTbEnumEnumInterfaceProxy::GetProp1_Private() const
 {
-	return GetProp1_Implementation();
+	return Execute_GetProp1(this);
 }
 
 void UTbEnumEnumInterfaceProxy::SetProp1_Private(const ETbEnumEnum1& InProp1)
 {
-	service->SetProp1_Implementation(InProp1);
+	Execute_SetProp1(this, InProp1);
 }
 
 FTbEnumEnumInterfaceProp1ChangedDelegate& UTbEnumEnumInterfaceProxy::GetProp1ChangedDelegate()
@@ -209,23 +209,23 @@ void UTbEnumEnumInterfaceProxy::OnProp2Changed(const ETbEnumEnum2& InProp2)
 
 ETbEnumEnum2 UTbEnumEnumInterfaceProxy::GetProp2_Implementation() const
 {
-	return service->GetProp2();
+	return service->Execute_GetProp2(service);
 }
 
 void UTbEnumEnumInterfaceProxy::SetProp2_Implementation(const ETbEnumEnum2& InProp2)
 {
 	TbEnumEnumInterfaceTracer::trace_callSetProp2(InProp2);
-	service->SetProp2(InProp2);
+	service->Execute_SetProp2(service, InProp2);
 }
 
 ETbEnumEnum2 UTbEnumEnumInterfaceProxy::GetProp2_Private() const
 {
-	return GetProp2_Implementation();
+	return Execute_GetProp2(this);
 }
 
 void UTbEnumEnumInterfaceProxy::SetProp2_Private(const ETbEnumEnum2& InProp2)
 {
-	service->SetProp2_Implementation(InProp2);
+	Execute_SetProp2(this, InProp2);
 }
 
 FTbEnumEnumInterfaceProp2ChangedDelegate& UTbEnumEnumInterfaceProxy::GetProp2ChangedDelegate()
@@ -241,23 +241,23 @@ void UTbEnumEnumInterfaceProxy::OnProp3Changed(const ETbEnumEnum3& InProp3)
 
 ETbEnumEnum3 UTbEnumEnumInterfaceProxy::GetProp3_Implementation() const
 {
-	return service->GetProp3();
+	return service->Execute_GetProp3(service);
 }
 
 void UTbEnumEnumInterfaceProxy::SetProp3_Implementation(const ETbEnumEnum3& InProp3)
 {
 	TbEnumEnumInterfaceTracer::trace_callSetProp3(InProp3);
-	service->SetProp3(InProp3);
+	service->Execute_SetProp3(service, InProp3);
 }
 
 ETbEnumEnum3 UTbEnumEnumInterfaceProxy::GetProp3_Private() const
 {
-	return GetProp3_Implementation();
+	return Execute_GetProp3(this);
 }
 
 void UTbEnumEnumInterfaceProxy::SetProp3_Private(const ETbEnumEnum3& InProp3)
 {
-	service->SetProp3_Implementation(InProp3);
+	Execute_SetProp3(this, InProp3);
 }
 
 FTbEnumEnumInterfaceProp3ChangedDelegate& UTbEnumEnumInterfaceProxy::GetProp3ChangedDelegate()
@@ -286,7 +286,7 @@ void UTbEnumEnumInterfaceProxy::Func0Async_Implementation(UObject* WorldContextO
 		Async(EAsyncExecution::Thread,
 			[Param0, this, &Result, CompletionAction]()
 			{
-				Result = service->Func0(Param0);
+				Result = service->Execute_Func0(service, Param0);
 				CompletionAction->Cancel();
 			});
 	}
@@ -294,7 +294,7 @@ void UTbEnumEnumInterfaceProxy::Func0Async_Implementation(UObject* WorldContextO
 ETbEnumEnum0 UTbEnumEnumInterfaceProxy::Func0_Implementation(const ETbEnumEnum0& Param0)
 {
 	TbEnumEnumInterfaceTracer::trace_callFunc0(Param0);
-	return service->Func0(Param0);
+	return service->Execute_Func0(service, Param0);
 }
 void UTbEnumEnumInterfaceProxy::Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum1& Result, const ETbEnumEnum1& Param1)
 {
@@ -317,7 +317,7 @@ void UTbEnumEnumInterfaceProxy::Func1Async_Implementation(UObject* WorldContextO
 		Async(EAsyncExecution::Thread,
 			[Param1, this, &Result, CompletionAction]()
 			{
-				Result = service->Func1(Param1);
+				Result = service->Execute_Func1(service, Param1);
 				CompletionAction->Cancel();
 			});
 	}
@@ -325,7 +325,7 @@ void UTbEnumEnumInterfaceProxy::Func1Async_Implementation(UObject* WorldContextO
 ETbEnumEnum1 UTbEnumEnumInterfaceProxy::Func1_Implementation(const ETbEnumEnum1& Param1)
 {
 	TbEnumEnumInterfaceTracer::trace_callFunc1(Param1);
-	return service->Func1(Param1);
+	return service->Execute_Func1(service, Param1);
 }
 void UTbEnumEnumInterfaceProxy::Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum2& Result, const ETbEnumEnum2& Param2)
 {
@@ -348,7 +348,7 @@ void UTbEnumEnumInterfaceProxy::Func2Async_Implementation(UObject* WorldContextO
 		Async(EAsyncExecution::Thread,
 			[Param2, this, &Result, CompletionAction]()
 			{
-				Result = service->Func2(Param2);
+				Result = service->Execute_Func2(service, Param2);
 				CompletionAction->Cancel();
 			});
 	}
@@ -356,7 +356,7 @@ void UTbEnumEnumInterfaceProxy::Func2Async_Implementation(UObject* WorldContextO
 ETbEnumEnum2 UTbEnumEnumInterfaceProxy::Func2_Implementation(const ETbEnumEnum2& Param2)
 {
 	TbEnumEnumInterfaceTracer::trace_callFunc2(Param2);
-	return service->Func2(Param2);
+	return service->Execute_Func2(service, Param2);
 }
 void UTbEnumEnumInterfaceProxy::Func3Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum3& Result, const ETbEnumEnum3& Param3)
 {
@@ -379,7 +379,7 @@ void UTbEnumEnumInterfaceProxy::Func3Async_Implementation(UObject* WorldContextO
 		Async(EAsyncExecution::Thread,
 			[Param3, this, &Result, CompletionAction]()
 			{
-				Result = service->Func3(Param3);
+				Result = service->Execute_Func3(service, Param3);
 				CompletionAction->Cancel();
 			});
 	}
@@ -387,5 +387,5 @@ void UTbEnumEnumInterfaceProxy::Func3Async_Implementation(UObject* WorldContextO
 ETbEnumEnum3 UTbEnumEnumInterfaceProxy::Func3_Implementation(const ETbEnumEnum3& Param3)
 {
 	TbEnumEnumInterfaceTracer::trace_callFunc3(Param3);
-	return service->Func3(Param3);
+	return service->Execute_Func3(service, Param3);
 }

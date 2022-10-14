@@ -127,23 +127,23 @@ void {{$Class}}::On{{Camel .Name}}Changed({{ueParam "In" .}})
 
 {{ueReturn "" .}} {{$Class}}::Get{{Camel .Name}}_Implementation() const
 {
-	return service->Get{{Camel .Name}}();
+	return service->Execute_Get{{Camel .Name}}(service);
 }
 
 void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
 {
 	{{$Iface}}Tracer::trace_callSet{{Camel .Name}}({{ueVar "In" .}});
-	service->Set{{Camel .Name}}({{ueVar "In" .}});
+	service->Execute_Set{{Camel .Name}}(service, {{ueVar "In" .}});
 }
 
 {{ueReturn "" .}} {{$Class}}::Get{{Camel .Name}}_Private() const
 {
-	return Get{{Camel .Name}}_Implementation();
+	return Execute_Get{{Camel .Name}}(this);
 }
 
 void {{$Class}}::Set{{Camel .Name}}_Private({{ueParam "In" .}})
 {
-	service->Set{{Camel .Name}}_Implementation({{ueVar "In" .}});
+	Execute_Set{{Camel .Name}}(this, {{ueVar "In" .}});
 }
 
 F{{$Iface}}{{Camel .Name}}ChangedDelegate& {{$Class}}::Get{{Camel .Name}}ChangedDelegate()
@@ -181,7 +181,7 @@ void {{$Class}}::{{Camel .Name}}Async_Implementation(UObject* WorldContextObject
 		Async(EAsyncExecution::Thread,
 			[{{range .Params}}{{ueVar "" .}}, {{ end }}this, &Result, CompletionAction]()
 			{
-				Result = service->{{Camel .Name}}({{ueVars "" .Params}});
+				Result = service->Execute_{{Camel .Name}}(service, {{ueVars "" .Params}});
 				CompletionAction->Cancel();
 			});
 	}
@@ -191,9 +191,9 @@ void {{$Class}}::{{Camel .Name}}Async_Implementation(UObject* WorldContextObject
 {
 	{{ $Iface}}Tracer::trace_call{{Camel .Name}}({{ueVars "" .Params }});
 	{{- if not .Return.IsVoid }}
-	return service->{{Camel .Name}}({{ ueVars "" .Params }});
+	return service->Execute_{{Camel .Name}}(service, {{ ueVars "" .Params }});
 	{{- else }}
-	service->{{Camel .Name}}({{ ueVars "" .Params}});
+	service->Execute_{{Camel .Name}}(service, {{ ueVars "" .Params}});
 	{{- end }}
 }
 {{- end }}

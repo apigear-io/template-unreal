@@ -49,7 +49,7 @@ public:
 	void SetProp1_Implementation(const FTbSame2Struct1& InProp1) override;
 
 	// operations
-	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame2Struct1& Result, const FTbSame2Struct1& Param1);
+	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame2Struct1& Result, const FTbSame2Struct1& Param1) override;
 	FTbSame2Struct1 Func1_Implementation(const FTbSame2Struct1& Param1) override;
 
 private:
@@ -67,9 +67,9 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1_Private, BlueprintSetter = SetProp1_Private, Category = "ApiGear|TbSame2|SameStruct1Interface")
 	FTbSame2Struct1 Prop1;
 
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSame2|SameStruct1Interface")
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSame2|SameStruct1Interface", BlueprintInternalUseOnly)
 	FTbSame2Struct1 GetProp1_Private() const;
 
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSame2|SameStruct1Interface")
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSame2|SameStruct1Interface", BlueprintInternalUseOnly)
 	void SetProp1_Private(const FTbSame2Struct1& InProp1);
 };

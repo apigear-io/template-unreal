@@ -145,23 +145,23 @@ void UTestbed1StructArrayInterfaceProxy::OnPropBoolChanged(const TArray<FTestbed
 
 TArray<FTestbed1StructBool> UTestbed1StructArrayInterfaceProxy::GetPropBool_Implementation() const
 {
-	return service->GetPropBool();
+	return service->Execute_GetPropBool(service);
 }
 
 void UTestbed1StructArrayInterfaceProxy::SetPropBool_Implementation(const TArray<FTestbed1StructBool>& InPropBool)
 {
 	Testbed1StructArrayInterfaceTracer::trace_callSetPropBool(InPropBool);
-	service->SetPropBool(InPropBool);
+	service->Execute_SetPropBool(service, InPropBool);
 }
 
 TArray<FTestbed1StructBool> UTestbed1StructArrayInterfaceProxy::GetPropBool_Private() const
 {
-	return GetPropBool_Implementation();
+	return Execute_GetPropBool(this);
 }
 
 void UTestbed1StructArrayInterfaceProxy::SetPropBool_Private(const TArray<FTestbed1StructBool>& InPropBool)
 {
-	service->SetPropBool_Implementation(InPropBool);
+	Execute_SetPropBool(this, InPropBool);
 }
 
 FTestbed1StructArrayInterfacePropBoolChangedDelegate& UTestbed1StructArrayInterfaceProxy::GetPropBoolChangedDelegate()
@@ -177,23 +177,23 @@ void UTestbed1StructArrayInterfaceProxy::OnPropIntChanged(const TArray<FTestbed1
 
 TArray<FTestbed1StructInt> UTestbed1StructArrayInterfaceProxy::GetPropInt_Implementation() const
 {
-	return service->GetPropInt();
+	return service->Execute_GetPropInt(service);
 }
 
 void UTestbed1StructArrayInterfaceProxy::SetPropInt_Implementation(const TArray<FTestbed1StructInt>& InPropInt)
 {
 	Testbed1StructArrayInterfaceTracer::trace_callSetPropInt(InPropInt);
-	service->SetPropInt(InPropInt);
+	service->Execute_SetPropInt(service, InPropInt);
 }
 
 TArray<FTestbed1StructInt> UTestbed1StructArrayInterfaceProxy::GetPropInt_Private() const
 {
-	return GetPropInt_Implementation();
+	return Execute_GetPropInt(this);
 }
 
 void UTestbed1StructArrayInterfaceProxy::SetPropInt_Private(const TArray<FTestbed1StructInt>& InPropInt)
 {
-	service->SetPropInt_Implementation(InPropInt);
+	Execute_SetPropInt(this, InPropInt);
 }
 
 FTestbed1StructArrayInterfacePropIntChangedDelegate& UTestbed1StructArrayInterfaceProxy::GetPropIntChangedDelegate()
@@ -209,23 +209,23 @@ void UTestbed1StructArrayInterfaceProxy::OnPropFloatChanged(const TArray<FTestbe
 
 TArray<FTestbed1StructFloat> UTestbed1StructArrayInterfaceProxy::GetPropFloat_Implementation() const
 {
-	return service->GetPropFloat();
+	return service->Execute_GetPropFloat(service);
 }
 
 void UTestbed1StructArrayInterfaceProxy::SetPropFloat_Implementation(const TArray<FTestbed1StructFloat>& InPropFloat)
 {
 	Testbed1StructArrayInterfaceTracer::trace_callSetPropFloat(InPropFloat);
-	service->SetPropFloat(InPropFloat);
+	service->Execute_SetPropFloat(service, InPropFloat);
 }
 
 TArray<FTestbed1StructFloat> UTestbed1StructArrayInterfaceProxy::GetPropFloat_Private() const
 {
-	return GetPropFloat_Implementation();
+	return Execute_GetPropFloat(this);
 }
 
 void UTestbed1StructArrayInterfaceProxy::SetPropFloat_Private(const TArray<FTestbed1StructFloat>& InPropFloat)
 {
-	service->SetPropFloat_Implementation(InPropFloat);
+	Execute_SetPropFloat(this, InPropFloat);
 }
 
 FTestbed1StructArrayInterfacePropFloatChangedDelegate& UTestbed1StructArrayInterfaceProxy::GetPropFloatChangedDelegate()
@@ -241,23 +241,23 @@ void UTestbed1StructArrayInterfaceProxy::OnPropStringChanged(const TArray<FTestb
 
 TArray<FTestbed1StructString> UTestbed1StructArrayInterfaceProxy::GetPropString_Implementation() const
 {
-	return service->GetPropString();
+	return service->Execute_GetPropString(service);
 }
 
 void UTestbed1StructArrayInterfaceProxy::SetPropString_Implementation(const TArray<FTestbed1StructString>& InPropString)
 {
 	Testbed1StructArrayInterfaceTracer::trace_callSetPropString(InPropString);
-	service->SetPropString(InPropString);
+	service->Execute_SetPropString(service, InPropString);
 }
 
 TArray<FTestbed1StructString> UTestbed1StructArrayInterfaceProxy::GetPropString_Private() const
 {
-	return GetPropString_Implementation();
+	return Execute_GetPropString(this);
 }
 
 void UTestbed1StructArrayInterfaceProxy::SetPropString_Private(const TArray<FTestbed1StructString>& InPropString)
 {
-	service->SetPropString_Implementation(InPropString);
+	Execute_SetPropString(this, InPropString);
 }
 
 FTestbed1StructArrayInterfacePropStringChangedDelegate& UTestbed1StructArrayInterfaceProxy::GetPropStringChangedDelegate()
@@ -286,7 +286,7 @@ void UTestbed1StructArrayInterfaceProxy::FuncBoolAsync_Implementation(UObject* W
 		Async(EAsyncExecution::Thread,
 			[ParamBool, this, &Result, CompletionAction]()
 			{
-				Result = service->FuncBool(ParamBool);
+				Result = service->Execute_FuncBool(service, ParamBool);
 				CompletionAction->Cancel();
 			});
 	}
@@ -294,7 +294,7 @@ void UTestbed1StructArrayInterfaceProxy::FuncBoolAsync_Implementation(UObject* W
 FTestbed1StructBool UTestbed1StructArrayInterfaceProxy::FuncBool_Implementation(const TArray<FTestbed1StructBool>& ParamBool)
 {
 	Testbed1StructArrayInterfaceTracer::trace_callFuncBool(ParamBool);
-	return service->FuncBool(ParamBool);
+	return service->Execute_FuncBool(service, ParamBool);
 }
 void UTestbed1StructArrayInterfaceProxy::FuncIntAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructInt>& ParamInt)
 {
@@ -317,7 +317,7 @@ void UTestbed1StructArrayInterfaceProxy::FuncIntAsync_Implementation(UObject* Wo
 		Async(EAsyncExecution::Thread,
 			[ParamInt, this, &Result, CompletionAction]()
 			{
-				Result = service->FuncInt(ParamInt);
+				Result = service->Execute_FuncInt(service, ParamInt);
 				CompletionAction->Cancel();
 			});
 	}
@@ -325,7 +325,7 @@ void UTestbed1StructArrayInterfaceProxy::FuncIntAsync_Implementation(UObject* Wo
 FTestbed1StructBool UTestbed1StructArrayInterfaceProxy::FuncInt_Implementation(const TArray<FTestbed1StructInt>& ParamInt)
 {
 	Testbed1StructArrayInterfaceTracer::trace_callFuncInt(ParamInt);
-	return service->FuncInt(ParamInt);
+	return service->Execute_FuncInt(service, ParamInt);
 }
 void UTestbed1StructArrayInterfaceProxy::FuncFloatAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructFloat>& ParamFloat)
 {
@@ -348,7 +348,7 @@ void UTestbed1StructArrayInterfaceProxy::FuncFloatAsync_Implementation(UObject* 
 		Async(EAsyncExecution::Thread,
 			[ParamFloat, this, &Result, CompletionAction]()
 			{
-				Result = service->FuncFloat(ParamFloat);
+				Result = service->Execute_FuncFloat(service, ParamFloat);
 				CompletionAction->Cancel();
 			});
 	}
@@ -356,7 +356,7 @@ void UTestbed1StructArrayInterfaceProxy::FuncFloatAsync_Implementation(UObject* 
 FTestbed1StructBool UTestbed1StructArrayInterfaceProxy::FuncFloat_Implementation(const TArray<FTestbed1StructFloat>& ParamFloat)
 {
 	Testbed1StructArrayInterfaceTracer::trace_callFuncFloat(ParamFloat);
-	return service->FuncFloat(ParamFloat);
+	return service->Execute_FuncFloat(service, ParamFloat);
 }
 void UTestbed1StructArrayInterfaceProxy::FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructString>& ParamString)
 {
@@ -379,7 +379,7 @@ void UTestbed1StructArrayInterfaceProxy::FuncStringAsync_Implementation(UObject*
 		Async(EAsyncExecution::Thread,
 			[ParamString, this, &Result, CompletionAction]()
 			{
-				Result = service->FuncString(ParamString);
+				Result = service->Execute_FuncString(service, ParamString);
 				CompletionAction->Cancel();
 			});
 	}
@@ -387,5 +387,5 @@ void UTestbed1StructArrayInterfaceProxy::FuncStringAsync_Implementation(UObject*
 FTestbed1StructBool UTestbed1StructArrayInterfaceProxy::FuncString_Implementation(const TArray<FTestbed1StructString>& ParamString)
 {
 	Testbed1StructArrayInterfaceTracer::trace_callFuncString(ParamString);
-	return service->FuncString(ParamString);
+	return service->Execute_FuncString(service, ParamString);
 }
