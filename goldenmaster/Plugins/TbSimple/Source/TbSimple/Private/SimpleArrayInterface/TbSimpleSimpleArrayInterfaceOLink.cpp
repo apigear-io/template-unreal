@@ -81,9 +81,9 @@ FTbSimpleSimpleArrayInterfaceSigStringDelegate& UTbSimpleSimpleArrayInterfaceOLi
 	return SigStringSignal;
 }
 
-TArray<bool> UTbSimpleSimpleArrayInterfaceOLinkService::GetPropBool_Implementation() const
+void UTbSimpleSimpleArrayInterfaceOLinkService::GetPropBool_Implementation(TArray<bool>& ReturnValue) const
 {
-	return PropBool;
+	ReturnValue = PropBool;
 }
 
 void UTbSimpleSimpleArrayInterfaceOLinkService::SetPropBool_Implementation(const TArray<bool>& InPropBool)
@@ -99,9 +99,9 @@ FTbSimpleSimpleArrayInterfacePropBoolChangedDelegate& UTbSimpleSimpleArrayInterf
 {
 	return PropBoolChanged;
 }
-TArray<int32> UTbSimpleSimpleArrayInterfaceOLinkService::GetPropInt_Implementation() const
+void UTbSimpleSimpleArrayInterfaceOLinkService::GetPropInt_Implementation(TArray<int32>& ReturnValue) const
 {
-	return PropInt;
+	ReturnValue = PropInt;
 }
 
 void UTbSimpleSimpleArrayInterfaceOLinkService::SetPropInt_Implementation(const TArray<int32>& InPropInt)
@@ -117,9 +117,9 @@ FTbSimpleSimpleArrayInterfacePropIntChangedDelegate& UTbSimpleSimpleArrayInterfa
 {
 	return PropIntChanged;
 }
-TArray<float> UTbSimpleSimpleArrayInterfaceOLinkService::GetPropFloat_Implementation() const
+void UTbSimpleSimpleArrayInterfaceOLinkService::GetPropFloat_Implementation(TArray<float>& ReturnValue) const
 {
-	return PropFloat;
+	ReturnValue = PropFloat;
 }
 
 void UTbSimpleSimpleArrayInterfaceOLinkService::SetPropFloat_Implementation(const TArray<float>& InPropFloat)
@@ -135,9 +135,9 @@ FTbSimpleSimpleArrayInterfacePropFloatChangedDelegate& UTbSimpleSimpleArrayInter
 {
 	return PropFloatChanged;
 }
-TArray<FString> UTbSimpleSimpleArrayInterfaceOLinkService::GetPropString_Implementation() const
+void UTbSimpleSimpleArrayInterfaceOLinkService::GetPropString_Implementation(TArray<FString>& ReturnValue) const
 {
-	return PropString;
+	ReturnValue = PropString;
 }
 
 void UTbSimpleSimpleArrayInterfaceOLinkService::SetPropString_Implementation(const TArray<FString>& InPropString)
@@ -154,12 +154,12 @@ FTbSimpleSimpleArrayInterfacePropStringChangedDelegate& UTbSimpleSimpleArrayInte
 	return PropStringChanged;
 }
 
-TArray<bool> UTbSimpleSimpleArrayInterfaceOLinkService::FuncBool_Implementation(const TArray<bool>& ParamBool)
+void UTbSimpleSimpleArrayInterfaceOLinkService::FuncBool_Implementation(TArray<bool>& Result, const TArray<bool>& ParamBool)
 {
 	if (!m_node)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
-		return TArray<bool>();
+		Result = TArray<bool>();
 	}
 	TPromise<TArray<bool>> Promise;
 	Async(EAsyncExecution::Thread,
@@ -170,15 +170,15 @@ TArray<bool> UTbSimpleSimpleArrayInterfaceOLinkService::FuncBool_Implementation(
 			m_node->invokeRemote("tb.simple.SimpleArrayInterface/funcBool", {ParamBool}, GetSimpleArrayInterfaceStateFunc);
 		});
 
-	return Promise.GetFuture().Get();
+	Result = Promise.GetFuture().Get();
 }
 
-TArray<int32> UTbSimpleSimpleArrayInterfaceOLinkService::FuncInt_Implementation(const TArray<int32>& ParamInt)
+void UTbSimpleSimpleArrayInterfaceOLinkService::FuncInt_Implementation(TArray<int32>& Result, const TArray<int32>& ParamInt)
 {
 	if (!m_node)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
-		return TArray<int32>();
+		Result = TArray<int32>();
 	}
 	TPromise<TArray<int32>> Promise;
 	Async(EAsyncExecution::Thread,
@@ -189,15 +189,15 @@ TArray<int32> UTbSimpleSimpleArrayInterfaceOLinkService::FuncInt_Implementation(
 			m_node->invokeRemote("tb.simple.SimpleArrayInterface/funcInt", {ParamInt}, GetSimpleArrayInterfaceStateFunc);
 		});
 
-	return Promise.GetFuture().Get();
+	Result = Promise.GetFuture().Get();
 }
 
-TArray<float> UTbSimpleSimpleArrayInterfaceOLinkService::FuncFloat_Implementation(const TArray<float>& ParamFloat)
+void UTbSimpleSimpleArrayInterfaceOLinkService::FuncFloat_Implementation(TArray<float>& Result, const TArray<float>& ParamFloat)
 {
 	if (!m_node)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
-		return TArray<float>();
+		Result = TArray<float>();
 	}
 	TPromise<TArray<float>> Promise;
 	Async(EAsyncExecution::Thread,
@@ -208,15 +208,15 @@ TArray<float> UTbSimpleSimpleArrayInterfaceOLinkService::FuncFloat_Implementatio
 			m_node->invokeRemote("tb.simple.SimpleArrayInterface/funcFloat", {ParamFloat}, GetSimpleArrayInterfaceStateFunc);
 		});
 
-	return Promise.GetFuture().Get();
+	Result = Promise.GetFuture().Get();
 }
 
-TArray<FString> UTbSimpleSimpleArrayInterfaceOLinkService::FuncString_Implementation(const TArray<FString>& ParamString)
+void UTbSimpleSimpleArrayInterfaceOLinkService::FuncString_Implementation(TArray<FString>& Result, const TArray<FString>& ParamString)
 {
 	if (!m_node)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
-		return TArray<FString>();
+		Result = TArray<FString>();
 	}
 	TPromise<TArray<FString>> Promise;
 	Async(EAsyncExecution::Thread,
@@ -227,7 +227,7 @@ TArray<FString> UTbSimpleSimpleArrayInterfaceOLinkService::FuncString_Implementa
 			m_node->invokeRemote("tb.simple.SimpleArrayInterface/funcString", {ParamString}, GetSimpleArrayInterfaceStateFunc);
 		});
 
-	return Promise.GetFuture().Get();
+	Result = Promise.GetFuture().Get();
 }
 
 void UTbSimpleSimpleArrayInterfaceOLinkService::applyState(const nlohmann::json& fields)

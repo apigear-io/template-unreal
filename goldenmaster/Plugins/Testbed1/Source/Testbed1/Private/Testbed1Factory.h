@@ -18,6 +18,7 @@ limitations under the License.
 
 #include "Logging/LogMacros.h"
 #include "Templates/SharedPointer.h"
+#include "UObject/ScriptInterface.h"
 class ITestbed1StructInterfaceInterface;
 class ITestbed1StructArrayInterfaceInterface;
 

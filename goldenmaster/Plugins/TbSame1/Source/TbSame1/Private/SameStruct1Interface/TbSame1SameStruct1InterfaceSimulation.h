@@ -35,12 +35,12 @@ public:
 	FTbSame1SameStruct1InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
 
 	// properties
-	FTbSame1Struct1 GetProp1_Implementation() const override;
+	void GetProp1_Implementation(FTbSame1Struct1& ReturnValue) const override;
 	void SetProp1_Implementation(const FTbSame1Struct1& Prop1) override;
 
 	// operations
 	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame1Struct1& Result, const FTbSame1Struct1& Param1) override{};
-	FTbSame1Struct1 Func1_Implementation(const FTbSame1Struct1& Param1) override;
+	void Func1_Implementation(FTbSame1Struct1& Result, const FTbSame1Struct1& Param1) override;
 
 private:
 	// properties - local copy

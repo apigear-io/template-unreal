@@ -48,9 +48,9 @@ FTbSimpleSimpleInterfaceSigStringDelegate& UTbSimpleSimpleInterfaceLocalService:
 	return SigStringSignal;
 }
 
-bool UTbSimpleSimpleInterfaceLocalService::GetPropBool_Implementation() const
+void UTbSimpleSimpleInterfaceLocalService::GetPropBool_Implementation(bool& ReturnValue) const
 {
-	return bPropBool;
+	ReturnValue = bPropBool;
 }
 
 void UTbSimpleSimpleInterfaceLocalService::SetPropBool_Implementation(bool bInPropBool)
@@ -66,9 +66,9 @@ FTbSimpleSimpleInterfacePropBoolChangedDelegate& UTbSimpleSimpleInterfaceLocalSe
 {
 	return PropBoolChanged;
 }
-int32 UTbSimpleSimpleInterfaceLocalService::GetPropInt_Implementation() const
+void UTbSimpleSimpleInterfaceLocalService::GetPropInt_Implementation(int32& ReturnValue) const
 {
-	return PropInt;
+	ReturnValue = PropInt;
 }
 
 void UTbSimpleSimpleInterfaceLocalService::SetPropInt_Implementation(int32 InPropInt)
@@ -84,9 +84,9 @@ FTbSimpleSimpleInterfacePropIntChangedDelegate& UTbSimpleSimpleInterfaceLocalSer
 {
 	return PropIntChanged;
 }
-float UTbSimpleSimpleInterfaceLocalService::GetPropFloat_Implementation() const
+void UTbSimpleSimpleInterfaceLocalService::GetPropFloat_Implementation(float& ReturnValue) const
 {
-	return PropFloat;
+	ReturnValue = PropFloat;
 }
 
 void UTbSimpleSimpleInterfaceLocalService::SetPropFloat_Implementation(float InPropFloat)
@@ -102,9 +102,9 @@ FTbSimpleSimpleInterfacePropFloatChangedDelegate& UTbSimpleSimpleInterfaceLocalS
 {
 	return PropFloatChanged;
 }
-FString UTbSimpleSimpleInterfaceLocalService::GetPropString_Implementation() const
+void UTbSimpleSimpleInterfaceLocalService::GetPropString_Implementation(FString& ReturnValue) const
 {
-	return PropString;
+	ReturnValue = PropString;
 }
 
 void UTbSimpleSimpleInterfaceLocalService::SetPropString_Implementation(const FString& InPropString)
@@ -121,27 +121,27 @@ FTbSimpleSimpleInterfacePropStringChangedDelegate& UTbSimpleSimpleInterfaceLocal
 	return PropStringChanged;
 }
 
-bool UTbSimpleSimpleInterfaceLocalService::FuncBool_Implementation(bool bParamBool)
+void UTbSimpleSimpleInterfaceLocalService::FuncBool_Implementation(bool& Result, bool bParamBool)
 {
 	(void)bParamBool;
 	// do business logic here
-	return false;
+	Result = false;
 }
-int32 UTbSimpleSimpleInterfaceLocalService::FuncInt_Implementation(int32 ParamInt)
+void UTbSimpleSimpleInterfaceLocalService::FuncInt_Implementation(int32& Result, int32 ParamInt)
 {
 	(void)ParamInt;
 	// do business logic here
-	return 0;
+	Result = 0;
 }
-float UTbSimpleSimpleInterfaceLocalService::FuncFloat_Implementation(float ParamFloat)
+void UTbSimpleSimpleInterfaceLocalService::FuncFloat_Implementation(float& Result, float ParamFloat)
 {
 	(void)ParamFloat;
 	// do business logic here
-	return 0.0f;
+	Result = 0.0f;
 }
-FString UTbSimpleSimpleInterfaceLocalService::FuncString_Implementation(const FString& ParamString)
+void UTbSimpleSimpleInterfaceLocalService::FuncString_Implementation(FString& Result, const FString& ParamString)
 {
 	(void)ParamString;
 	// do business logic here
-	return FString();
+	Result = FString();
 }

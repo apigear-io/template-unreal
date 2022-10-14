@@ -143,9 +143,9 @@ FTbSame2SameEnum2InterfaceSig2Delegate& UTbSame2SameEnum2InterfaceSimulationServ
 	return Sig2Signal;
 }
 
-ETbSame2Enum1 UTbSame2SameEnum2InterfaceSimulationService::GetProp1_Implementation() const
+void UTbSame2SameEnum2InterfaceSimulationService::GetProp1_Implementation(ETbSame2Enum1& ReturnValue) const
 {
-	return Prop1;
+	ReturnValue = Prop1;
 }
 
 void UTbSame2SameEnum2InterfaceSimulationService::SetProp1_Implementation(const ETbSame2Enum1& InProp1)
@@ -164,9 +164,9 @@ FTbSame2SameEnum2InterfaceProp1ChangedDelegate& UTbSame2SameEnum2InterfaceSimula
 	return Prop1Changed;
 }
 
-ETbSame2Enum2 UTbSame2SameEnum2InterfaceSimulationService::GetProp2_Implementation() const
+void UTbSame2SameEnum2InterfaceSimulationService::GetProp2_Implementation(ETbSame2Enum2& ReturnValue) const
 {
-	return Prop2;
+	ReturnValue = Prop2;
 }
 
 void UTbSame2SameEnum2InterfaceSimulationService::SetProp2_Implementation(const ETbSame2Enum2& InProp2)
@@ -185,7 +185,7 @@ FTbSame2SameEnum2InterfaceProp2ChangedDelegate& UTbSame2SameEnum2InterfaceSimula
 	return Prop2Changed;
 }
 
-ETbSame2Enum1 UTbSame2SameEnum2InterfaceSimulationService::Func1_Implementation(const ETbSame2Enum1& Param1)
+void UTbSame2SameEnum2InterfaceSimulationService::Func1_Implementation(ETbSame2Enum1& Result, const ETbSame2Enum1& Param1)
 {
 	Params params;
 	params["param1"] = Param1;
@@ -202,10 +202,10 @@ ETbSame2Enum1 UTbSame2SameEnum2InterfaceSimulationService::Func1_Implementation(
 			}
 		});
 
-	return Promise.GetFuture().Get();
+	Result = Promise.GetFuture().Get();
 }
 
-ETbSame2Enum1 UTbSame2SameEnum2InterfaceSimulationService::Func2_Implementation(const ETbSame2Enum1& Param1, const ETbSame2Enum2& Param2)
+void UTbSame2SameEnum2InterfaceSimulationService::Func2_Implementation(ETbSame2Enum1& Result, const ETbSame2Enum1& Param1, const ETbSame2Enum2& Param2)
 {
 	Params params;
 	params["param1"] = Param1;
@@ -223,5 +223,5 @@ ETbSame2Enum1 UTbSame2SameEnum2InterfaceSimulationService::Func2_Implementation(
 			}
 		});
 
-	return Promise.GetFuture().Get();
+	Result = Promise.GetFuture().Get();
 }

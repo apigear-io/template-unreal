@@ -48,9 +48,9 @@ FTbEnumEnumInterfaceSig3Delegate& UTbEnumEnumInterfaceLocalService::GetSig3Signa
 	return Sig3Signal;
 }
 
-ETbEnumEnum0 UTbEnumEnumInterfaceLocalService::GetProp0_Implementation() const
+void UTbEnumEnumInterfaceLocalService::GetProp0_Implementation(ETbEnumEnum0& ReturnValue) const
 {
-	return Prop0;
+	ReturnValue = Prop0;
 }
 
 void UTbEnumEnumInterfaceLocalService::SetProp0_Implementation(const ETbEnumEnum0& InProp0)
@@ -66,9 +66,9 @@ FTbEnumEnumInterfaceProp0ChangedDelegate& UTbEnumEnumInterfaceLocalService::GetP
 {
 	return Prop0Changed;
 }
-ETbEnumEnum1 UTbEnumEnumInterfaceLocalService::GetProp1_Implementation() const
+void UTbEnumEnumInterfaceLocalService::GetProp1_Implementation(ETbEnumEnum1& ReturnValue) const
 {
-	return Prop1;
+	ReturnValue = Prop1;
 }
 
 void UTbEnumEnumInterfaceLocalService::SetProp1_Implementation(const ETbEnumEnum1& InProp1)
@@ -84,9 +84,9 @@ FTbEnumEnumInterfaceProp1ChangedDelegate& UTbEnumEnumInterfaceLocalService::GetP
 {
 	return Prop1Changed;
 }
-ETbEnumEnum2 UTbEnumEnumInterfaceLocalService::GetProp2_Implementation() const
+void UTbEnumEnumInterfaceLocalService::GetProp2_Implementation(ETbEnumEnum2& ReturnValue) const
 {
-	return Prop2;
+	ReturnValue = Prop2;
 }
 
 void UTbEnumEnumInterfaceLocalService::SetProp2_Implementation(const ETbEnumEnum2& InProp2)
@@ -102,9 +102,9 @@ FTbEnumEnumInterfaceProp2ChangedDelegate& UTbEnumEnumInterfaceLocalService::GetP
 {
 	return Prop2Changed;
 }
-ETbEnumEnum3 UTbEnumEnumInterfaceLocalService::GetProp3_Implementation() const
+void UTbEnumEnumInterfaceLocalService::GetProp3_Implementation(ETbEnumEnum3& ReturnValue) const
 {
-	return Prop3;
+	ReturnValue = Prop3;
 }
 
 void UTbEnumEnumInterfaceLocalService::SetProp3_Implementation(const ETbEnumEnum3& InProp3)
@@ -121,27 +121,27 @@ FTbEnumEnumInterfaceProp3ChangedDelegate& UTbEnumEnumInterfaceLocalService::GetP
 	return Prop3Changed;
 }
 
-ETbEnumEnum0 UTbEnumEnumInterfaceLocalService::Func0_Implementation(const ETbEnumEnum0& Param0)
+void UTbEnumEnumInterfaceLocalService::Func0_Implementation(ETbEnumEnum0& Result, const ETbEnumEnum0& Param0)
 {
 	(void)Param0;
 	// do business logic here
-	return ETbEnumEnum0::VALUE0;
+	Result = ETbEnumEnum0::VALUE0;
 }
-ETbEnumEnum1 UTbEnumEnumInterfaceLocalService::Func1_Implementation(const ETbEnumEnum1& Param1)
+void UTbEnumEnumInterfaceLocalService::Func1_Implementation(ETbEnumEnum1& Result, const ETbEnumEnum1& Param1)
 {
 	(void)Param1;
 	// do business logic here
-	return ETbEnumEnum1::VALUE1;
+	Result = ETbEnumEnum1::VALUE1;
 }
-ETbEnumEnum2 UTbEnumEnumInterfaceLocalService::Func2_Implementation(const ETbEnumEnum2& Param2)
+void UTbEnumEnumInterfaceLocalService::Func2_Implementation(ETbEnumEnum2& Result, const ETbEnumEnum2& Param2)
 {
 	(void)Param2;
 	// do business logic here
-	return ETbEnumEnum2::VALUE2;
+	Result = ETbEnumEnum2::VALUE2;
 }
-ETbEnumEnum3 UTbEnumEnumInterfaceLocalService::Func3_Implementation(const ETbEnumEnum3& Param3)
+void UTbEnumEnumInterfaceLocalService::Func3_Implementation(ETbEnumEnum3& Result, const ETbEnumEnum3& Param3)
 {
 	(void)Param3;
 	// do business logic here
-	return ETbEnumEnum3::VALUE3;
+	Result = ETbEnumEnum3::VALUE3;
 }

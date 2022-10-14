@@ -92,58 +92,58 @@ public:
 	void FuncBoolAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const FTestbed1StructBool& ParamBool);
 	virtual void FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const FTestbed1StructBool& ParamBool) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface")
-	FTestbed1StructBool FuncBool(const FTestbed1StructBool& ParamBool);
-	virtual FTestbed1StructBool FuncBool_Implementation(const FTestbed1StructBool& ParamBool) = 0;
+	void FuncBool(FTestbed1StructBool& Result, const FTestbed1StructBool& ParamBool);
+	virtual void FuncBool_Implementation(FTestbed1StructBool& Result, const FTestbed1StructBool& ParamBool) = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void FuncIntAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const FTestbed1StructInt& ParamInt);
 	virtual void FuncIntAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const FTestbed1StructInt& ParamInt) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface")
-	FTestbed1StructBool FuncInt(const FTestbed1StructInt& ParamInt);
-	virtual FTestbed1StructBool FuncInt_Implementation(const FTestbed1StructInt& ParamInt) = 0;
+	void FuncInt(FTestbed1StructBool& Result, const FTestbed1StructInt& ParamInt);
+	virtual void FuncInt_Implementation(FTestbed1StructBool& Result, const FTestbed1StructInt& ParamInt) = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void FuncFloatAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructFloat& Result, const FTestbed1StructFloat& ParamFloat);
 	virtual void FuncFloatAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructFloat& Result, const FTestbed1StructFloat& ParamFloat) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface")
-	FTestbed1StructFloat FuncFloat(const FTestbed1StructFloat& ParamFloat);
-	virtual FTestbed1StructFloat FuncFloat_Implementation(const FTestbed1StructFloat& ParamFloat) = 0;
+	void FuncFloat(FTestbed1StructFloat& Result, const FTestbed1StructFloat& ParamFloat);
+	virtual void FuncFloat_Implementation(FTestbed1StructFloat& Result, const FTestbed1StructFloat& ParamFloat) = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void FuncStringAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructString& Result, const FTestbed1StructString& ParamString);
 	virtual void FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructString& Result, const FTestbed1StructString& ParamString) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface")
-	FTestbed1StructString FuncString(const FTestbed1StructString& ParamString);
-	virtual FTestbed1StructString FuncString_Implementation(const FTestbed1StructString& ParamString) = 0;
+	void FuncString(FTestbed1StructString& Result, const FTestbed1StructString& ParamString);
+	virtual void FuncString_Implementation(FTestbed1StructString& Result, const FTestbed1StructString& ParamString) = 0;
 
 	// properties
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface")
-	FTestbed1StructBool GetPropBool() const;
-	virtual FTestbed1StructBool GetPropBool_Implementation() const = 0;
+	void GetPropBool(FTestbed1StructBool& ReturnValue) const;
+	virtual void GetPropBool_Implementation(FTestbed1StructBool& ReturnValue) const = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface")
 	void SetPropBool(const FTestbed1StructBool& PropBool);
 	virtual void SetPropBool_Implementation(const FTestbed1StructBool& PropBool) = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface")
-	FTestbed1StructInt GetPropInt() const;
-	virtual FTestbed1StructInt GetPropInt_Implementation() const = 0;
+	void GetPropInt(FTestbed1StructInt& ReturnValue) const;
+	virtual void GetPropInt_Implementation(FTestbed1StructInt& ReturnValue) const = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface")
 	void SetPropInt(const FTestbed1StructInt& PropInt);
 	virtual void SetPropInt_Implementation(const FTestbed1StructInt& PropInt) = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface")
-	FTestbed1StructFloat GetPropFloat() const;
-	virtual FTestbed1StructFloat GetPropFloat_Implementation() const = 0;
+	void GetPropFloat(FTestbed1StructFloat& ReturnValue) const;
+	virtual void GetPropFloat_Implementation(FTestbed1StructFloat& ReturnValue) const = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface")
 	void SetPropFloat(const FTestbed1StructFloat& PropFloat);
 	virtual void SetPropFloat_Implementation(const FTestbed1StructFloat& PropFloat) = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface")
-	FTestbed1StructString GetPropString() const;
-	virtual FTestbed1StructString GetPropString_Implementation() const = 0;
+	void GetPropString(FTestbed1StructString& ReturnValue) const;
+	virtual void GetPropString_Implementation(FTestbed1StructString& ReturnValue) const = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface")
 	void SetPropString(const FTestbed1StructString& PropString);
@@ -217,58 +217,58 @@ public:
 	void FuncBoolAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructBool>& ParamBool);
 	virtual void FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructBool>& ParamBool) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface")
-	FTestbed1StructBool FuncBool(const TArray<FTestbed1StructBool>& ParamBool);
-	virtual FTestbed1StructBool FuncBool_Implementation(const TArray<FTestbed1StructBool>& ParamBool) = 0;
+	void FuncBool(FTestbed1StructBool& Result, const TArray<FTestbed1StructBool>& ParamBool);
+	virtual void FuncBool_Implementation(FTestbed1StructBool& Result, const TArray<FTestbed1StructBool>& ParamBool) = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void FuncIntAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructInt>& ParamInt);
 	virtual void FuncIntAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructInt>& ParamInt) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface")
-	FTestbed1StructBool FuncInt(const TArray<FTestbed1StructInt>& ParamInt);
-	virtual FTestbed1StructBool FuncInt_Implementation(const TArray<FTestbed1StructInt>& ParamInt) = 0;
+	void FuncInt(FTestbed1StructBool& Result, const TArray<FTestbed1StructInt>& ParamInt);
+	virtual void FuncInt_Implementation(FTestbed1StructBool& Result, const TArray<FTestbed1StructInt>& ParamInt) = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void FuncFloatAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructFloat>& ParamFloat);
 	virtual void FuncFloatAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructFloat>& ParamFloat) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface")
-	FTestbed1StructBool FuncFloat(const TArray<FTestbed1StructFloat>& ParamFloat);
-	virtual FTestbed1StructBool FuncFloat_Implementation(const TArray<FTestbed1StructFloat>& ParamFloat) = 0;
+	void FuncFloat(FTestbed1StructBool& Result, const TArray<FTestbed1StructFloat>& ParamFloat);
+	virtual void FuncFloat_Implementation(FTestbed1StructBool& Result, const TArray<FTestbed1StructFloat>& ParamFloat) = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void FuncStringAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructString>& ParamString);
 	virtual void FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructString>& ParamString) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface")
-	FTestbed1StructBool FuncString(const TArray<FTestbed1StructString>& ParamString);
-	virtual FTestbed1StructBool FuncString_Implementation(const TArray<FTestbed1StructString>& ParamString) = 0;
+	void FuncString(FTestbed1StructBool& Result, const TArray<FTestbed1StructString>& ParamString);
+	virtual void FuncString_Implementation(FTestbed1StructBool& Result, const TArray<FTestbed1StructString>& ParamString) = 0;
 
 	// properties
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface")
-	TArray<FTestbed1StructBool> GetPropBool() const;
-	virtual TArray<FTestbed1StructBool> GetPropBool_Implementation() const = 0;
+	void GetPropBool(TArray<FTestbed1StructBool>& ReturnValue) const;
+	virtual void GetPropBool_Implementation(TArray<FTestbed1StructBool>& ReturnValue) const = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface")
 	void SetPropBool(const TArray<FTestbed1StructBool>& PropBool);
 	virtual void SetPropBool_Implementation(const TArray<FTestbed1StructBool>& PropBool) = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface")
-	TArray<FTestbed1StructInt> GetPropInt() const;
-	virtual TArray<FTestbed1StructInt> GetPropInt_Implementation() const = 0;
+	void GetPropInt(TArray<FTestbed1StructInt>& ReturnValue) const;
+	virtual void GetPropInt_Implementation(TArray<FTestbed1StructInt>& ReturnValue) const = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface")
 	void SetPropInt(const TArray<FTestbed1StructInt>& PropInt);
 	virtual void SetPropInt_Implementation(const TArray<FTestbed1StructInt>& PropInt) = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface")
-	TArray<FTestbed1StructFloat> GetPropFloat() const;
-	virtual TArray<FTestbed1StructFloat> GetPropFloat_Implementation() const = 0;
+	void GetPropFloat(TArray<FTestbed1StructFloat>& ReturnValue) const;
+	virtual void GetPropFloat_Implementation(TArray<FTestbed1StructFloat>& ReturnValue) const = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface")
 	void SetPropFloat(const TArray<FTestbed1StructFloat>& PropFloat);
 	virtual void SetPropFloat_Implementation(const TArray<FTestbed1StructFloat>& PropFloat) = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface")
-	TArray<FTestbed1StructString> GetPropString() const;
-	virtual TArray<FTestbed1StructString> GetPropString_Implementation() const = 0;
+	void GetPropString(TArray<FTestbed1StructString>& ReturnValue) const;
+	virtual void GetPropString_Implementation(TArray<FTestbed1StructString>& ReturnValue) const = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface")
 	void SetPropString(const TArray<FTestbed1StructString>& PropString);

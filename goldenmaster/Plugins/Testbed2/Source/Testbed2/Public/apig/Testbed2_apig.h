@@ -92,58 +92,58 @@ public:
 	void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1);
 	virtual void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
-	int32 Func1(int32 Param1);
-	virtual int32 Func1_Implementation(int32 Param1) = 0;
+	void Func1(int32& Result, int32 Param1);
+	virtual void Func1_Implementation(int32& Result, int32 Param1) = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void Func2Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2);
 	virtual void Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
-	int32 Func2(int32 Param1, int32 Param2);
-	virtual int32 Func2_Implementation(int32 Param1, int32 Param2) = 0;
+	void Func2(int32& Result, int32 Param1, int32 Param2);
+	virtual void Func2_Implementation(int32& Result, int32 Param1, int32 Param2) = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void Func3Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2, int32 Param3);
 	virtual void Func3Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2, int32 Param3) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
-	int32 Func3(int32 Param1, int32 Param2, int32 Param3);
-	virtual int32 Func3_Implementation(int32 Param1, int32 Param2, int32 Param3) = 0;
+	void Func3(int32& Result, int32 Param1, int32 Param2, int32 Param3);
+	virtual void Func3_Implementation(int32& Result, int32 Param1, int32 Param2, int32 Param3) = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void Func4Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2, int32 Param3, int32 Param4);
 	virtual void Func4Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2, int32 Param3, int32 Param4) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
-	int32 Func4(int32 Param1, int32 Param2, int32 Param3, int32 Param4);
-	virtual int32 Func4_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4) = 0;
+	void Func4(int32& Result, int32 Param1, int32 Param2, int32 Param3, int32 Param4);
+	virtual void Func4_Implementation(int32& Result, int32 Param1, int32 Param2, int32 Param3, int32 Param4) = 0;
 
 	// properties
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
-	int32 GetProp1() const;
-	virtual int32 GetProp1_Implementation() const = 0;
+	void GetProp1(int32& ReturnValue) const;
+	virtual void GetProp1_Implementation(int32& ReturnValue) const = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
 	void SetProp1(int32 Prop1);
 	virtual void SetProp1_Implementation(int32 Prop1) = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
-	int32 GetProp2() const;
-	virtual int32 GetProp2_Implementation() const = 0;
+	void GetProp2(int32& ReturnValue) const;
+	virtual void GetProp2_Implementation(int32& ReturnValue) const = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
 	void SetProp2(int32 Prop2);
 	virtual void SetProp2_Implementation(int32 Prop2) = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
-	int32 GetProp3() const;
-	virtual int32 GetProp3_Implementation() const = 0;
+	void GetProp3(int32& ReturnValue) const;
+	virtual void GetProp3_Implementation(int32& ReturnValue) const = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
 	void SetProp3(int32 Prop3);
 	virtual void SetProp3_Implementation(int32 Prop3) = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
-	int32 GetProp4() const;
-	virtual int32 GetProp4_Implementation() const = 0;
+	void GetProp4(int32& ReturnValue) const;
+	virtual void GetProp4_Implementation(int32& ReturnValue) const = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
 	void SetProp4(int32 Prop4);
@@ -187,13 +187,13 @@ public:
 	void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1);
 	virtual void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct1Interface")
-	FTestbed2NestedStruct1 Func1(const FTestbed2NestedStruct1& Param1);
-	virtual FTestbed2NestedStruct1 Func1_Implementation(const FTestbed2NestedStruct1& Param1) = 0;
+	void Func1(FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1);
+	virtual void Func1_Implementation(FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1) = 0;
 
 	// properties
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct1Interface")
-	FTestbed2NestedStruct1 GetProp1() const;
-	virtual FTestbed2NestedStruct1 GetProp1_Implementation() const = 0;
+	void GetProp1(FTestbed2NestedStruct1& ReturnValue) const;
+	virtual void GetProp1_Implementation(FTestbed2NestedStruct1& ReturnValue) const = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct1Interface")
 	void SetProp1(const FTestbed2NestedStruct1& Prop1);
@@ -247,28 +247,28 @@ public:
 	void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1);
 	virtual void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface")
-	FTestbed2NestedStruct1 Func1(const FTestbed2NestedStruct1& Param1);
-	virtual FTestbed2NestedStruct1 Func1_Implementation(const FTestbed2NestedStruct1& Param1) = 0;
+	void Func1(FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1);
+	virtual void Func1_Implementation(FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1) = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void Func2Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2);
 	virtual void Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface")
-	FTestbed2NestedStruct1 Func2(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2);
-	virtual FTestbed2NestedStruct1 Func2_Implementation(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2) = 0;
+	void Func2(FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2);
+	virtual void Func2_Implementation(FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2) = 0;
 
 	// properties
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface")
-	FTestbed2NestedStruct1 GetProp1() const;
-	virtual FTestbed2NestedStruct1 GetProp1_Implementation() const = 0;
+	void GetProp1(FTestbed2NestedStruct1& ReturnValue) const;
+	virtual void GetProp1_Implementation(FTestbed2NestedStruct1& ReturnValue) const = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface")
 	void SetProp1(const FTestbed2NestedStruct1& Prop1);
 	virtual void SetProp1_Implementation(const FTestbed2NestedStruct1& Prop1) = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface")
-	FTestbed2NestedStruct2 GetProp2() const;
-	virtual FTestbed2NestedStruct2 GetProp2_Implementation() const = 0;
+	void GetProp2(FTestbed2NestedStruct2& ReturnValue) const;
+	virtual void GetProp2_Implementation(FTestbed2NestedStruct2& ReturnValue) const = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface")
 	void SetProp2(const FTestbed2NestedStruct2& Prop2);
@@ -332,43 +332,43 @@ public:
 	void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1);
 	virtual void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface")
-	FTestbed2NestedStruct1 Func1(const FTestbed2NestedStruct1& Param1);
-	virtual FTestbed2NestedStruct1 Func1_Implementation(const FTestbed2NestedStruct1& Param1) = 0;
+	void Func1(FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1);
+	virtual void Func1_Implementation(FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1) = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void Func2Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2);
 	virtual void Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface")
-	FTestbed2NestedStruct1 Func2(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2);
-	virtual FTestbed2NestedStruct1 Func2_Implementation(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2) = 0;
+	void Func2(FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2);
+	virtual void Func2_Implementation(FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2) = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void Func3Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3);
 	virtual void Func3Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface")
-	FTestbed2NestedStruct1 Func3(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3);
-	virtual FTestbed2NestedStruct1 Func3_Implementation(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3) = 0;
+	void Func3(FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3);
+	virtual void Func3_Implementation(FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3) = 0;
 
 	// properties
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface")
-	FTestbed2NestedStruct1 GetProp1() const;
-	virtual FTestbed2NestedStruct1 GetProp1_Implementation() const = 0;
+	void GetProp1(FTestbed2NestedStruct1& ReturnValue) const;
+	virtual void GetProp1_Implementation(FTestbed2NestedStruct1& ReturnValue) const = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface")
 	void SetProp1(const FTestbed2NestedStruct1& Prop1);
 	virtual void SetProp1_Implementation(const FTestbed2NestedStruct1& Prop1) = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface")
-	FTestbed2NestedStruct2 GetProp2() const;
-	virtual FTestbed2NestedStruct2 GetProp2_Implementation() const = 0;
+	void GetProp2(FTestbed2NestedStruct2& ReturnValue) const;
+	virtual void GetProp2_Implementation(FTestbed2NestedStruct2& ReturnValue) const = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface")
 	void SetProp2(const FTestbed2NestedStruct2& Prop2);
 	virtual void SetProp2_Implementation(const FTestbed2NestedStruct2& Prop2) = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface")
-	FTestbed2NestedStruct3 GetProp3() const;
-	virtual FTestbed2NestedStruct3 GetProp3_Implementation() const = 0;
+	void GetProp3(FTestbed2NestedStruct3& ReturnValue) const;
+	virtual void GetProp3_Implementation(FTestbed2NestedStruct3& ReturnValue) const = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface")
 	void SetProp3(const FTestbed2NestedStruct3& Prop3);

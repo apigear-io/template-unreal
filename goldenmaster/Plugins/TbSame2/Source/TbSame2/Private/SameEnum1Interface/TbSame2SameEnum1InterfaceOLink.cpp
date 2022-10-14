@@ -63,9 +63,9 @@ FTbSame2SameEnum1InterfaceSig1Delegate& UTbSame2SameEnum1InterfaceOLinkService::
 	return Sig1Signal;
 }
 
-ETbSame2Enum1 UTbSame2SameEnum1InterfaceOLinkService::GetProp1_Implementation() const
+void UTbSame2SameEnum1InterfaceOLinkService::GetProp1_Implementation(ETbSame2Enum1& ReturnValue) const
 {
-	return Prop1;
+	ReturnValue = Prop1;
 }
 
 void UTbSame2SameEnum1InterfaceOLinkService::SetProp1_Implementation(const ETbSame2Enum1& InProp1)
@@ -82,12 +82,12 @@ FTbSame2SameEnum1InterfaceProp1ChangedDelegate& UTbSame2SameEnum1InterfaceOLinkS
 	return Prop1Changed;
 }
 
-ETbSame2Enum1 UTbSame2SameEnum1InterfaceOLinkService::Func1_Implementation(const ETbSame2Enum1& Param1)
+void UTbSame2SameEnum1InterfaceOLinkService::Func1_Implementation(ETbSame2Enum1& Result, const ETbSame2Enum1& Param1)
 {
 	if (!m_node)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
-		return ETbSame2Enum1::VALUE1;
+		Result = ETbSame2Enum1::VALUE1;
 	}
 	TPromise<ETbSame2Enum1> Promise;
 	Async(EAsyncExecution::Thread,
@@ -98,7 +98,7 @@ ETbSame2Enum1 UTbSame2SameEnum1InterfaceOLinkService::Func1_Implementation(const
 			m_node->invokeRemote("tb.same2.SameEnum1Interface/func1", {Param1}, GetSameEnum1InterfaceStateFunc);
 		});
 
-	return Promise.GetFuture().Get();
+	Result = Promise.GetFuture().Get();
 }
 
 void UTbSame2SameEnum1InterfaceOLinkService::applyState(const nlohmann::json& fields)

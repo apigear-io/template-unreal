@@ -75,9 +75,9 @@ FTestbed2NestedStruct3InterfaceSig3Delegate& UTestbed2NestedStruct3InterfaceOLin
 	return Sig3Signal;
 }
 
-FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceOLinkService::GetProp1_Implementation() const
+void UTestbed2NestedStruct3InterfaceOLinkService::GetProp1_Implementation(FTestbed2NestedStruct1& ReturnValue) const
 {
-	return Prop1;
+	ReturnValue = Prop1;
 }
 
 void UTestbed2NestedStruct3InterfaceOLinkService::SetProp1_Implementation(const FTestbed2NestedStruct1& InProp1)
@@ -93,9 +93,9 @@ FTestbed2NestedStruct3InterfaceProp1ChangedDelegate& UTestbed2NestedStruct3Inter
 {
 	return Prop1Changed;
 }
-FTestbed2NestedStruct2 UTestbed2NestedStruct3InterfaceOLinkService::GetProp2_Implementation() const
+void UTestbed2NestedStruct3InterfaceOLinkService::GetProp2_Implementation(FTestbed2NestedStruct2& ReturnValue) const
 {
-	return Prop2;
+	ReturnValue = Prop2;
 }
 
 void UTestbed2NestedStruct3InterfaceOLinkService::SetProp2_Implementation(const FTestbed2NestedStruct2& InProp2)
@@ -111,9 +111,9 @@ FTestbed2NestedStruct3InterfaceProp2ChangedDelegate& UTestbed2NestedStruct3Inter
 {
 	return Prop2Changed;
 }
-FTestbed2NestedStruct3 UTestbed2NestedStruct3InterfaceOLinkService::GetProp3_Implementation() const
+void UTestbed2NestedStruct3InterfaceOLinkService::GetProp3_Implementation(FTestbed2NestedStruct3& ReturnValue) const
 {
-	return Prop3;
+	ReturnValue = Prop3;
 }
 
 void UTestbed2NestedStruct3InterfaceOLinkService::SetProp3_Implementation(const FTestbed2NestedStruct3& InProp3)
@@ -130,12 +130,12 @@ FTestbed2NestedStruct3InterfaceProp3ChangedDelegate& UTestbed2NestedStruct3Inter
 	return Prop3Changed;
 }
 
-FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceOLinkService::Func1_Implementation(const FTestbed2NestedStruct1& Param1)
+void UTestbed2NestedStruct3InterfaceOLinkService::Func1_Implementation(FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1)
 {
 	if (!m_node)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
-		return FTestbed2NestedStruct1();
+		Result = FTestbed2NestedStruct1();
 	}
 	TPromise<FTestbed2NestedStruct1> Promise;
 	Async(EAsyncExecution::Thread,
@@ -146,15 +146,15 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceOLinkService::Func1_Implem
 			m_node->invokeRemote("testbed2.NestedStruct3Interface/func1", {Param1}, GetNestedStruct3InterfaceStateFunc);
 		});
 
-	return Promise.GetFuture().Get();
+	Result = Promise.GetFuture().Get();
 }
 
-FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceOLinkService::Func2_Implementation(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
+void UTestbed2NestedStruct3InterfaceOLinkService::Func2_Implementation(FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
 {
 	if (!m_node)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
-		return FTestbed2NestedStruct1();
+		Result = FTestbed2NestedStruct1();
 	}
 	TPromise<FTestbed2NestedStruct1> Promise;
 	Async(EAsyncExecution::Thread,
@@ -165,15 +165,15 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceOLinkService::Func2_Implem
 			m_node->invokeRemote("testbed2.NestedStruct3Interface/func2", {Param1, Param2}, GetNestedStruct3InterfaceStateFunc);
 		});
 
-	return Promise.GetFuture().Get();
+	Result = Promise.GetFuture().Get();
 }
 
-FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceOLinkService::Func3_Implementation(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3)
+void UTestbed2NestedStruct3InterfaceOLinkService::Func3_Implementation(FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3)
 {
 	if (!m_node)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
-		return FTestbed2NestedStruct1();
+		Result = FTestbed2NestedStruct1();
 	}
 	TPromise<FTestbed2NestedStruct1> Promise;
 	Async(EAsyncExecution::Thread,
@@ -184,7 +184,7 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceOLinkService::Func3_Implem
 			m_node->invokeRemote("testbed2.NestedStruct3Interface/func3", {Param1, Param2, Param3}, GetNestedStruct3InterfaceStateFunc);
 		});
 
-	return Promise.GetFuture().Get();
+	Result = Promise.GetFuture().Get();
 }
 
 void UTestbed2NestedStruct3InterfaceOLinkService::applyState(const nlohmann::json& fields)

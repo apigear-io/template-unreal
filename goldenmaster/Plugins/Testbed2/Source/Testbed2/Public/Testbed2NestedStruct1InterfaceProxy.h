@@ -44,13 +44,13 @@ public:
 	FTestbed2NestedStruct1InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
 
 	// properties
-	FTestbed2NestedStruct1 GetProp1_Implementation() const override;
+	void GetProp1_Implementation(FTestbed2NestedStruct1& ReturnValue) const override;
 
 	void SetProp1_Implementation(const FTestbed2NestedStruct1& InProp1) override;
 
 	// operations
 	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1) override;
-	FTestbed2NestedStruct1 Func1_Implementation(const FTestbed2NestedStruct1& Param1) override;
+	void Func1_Implementation(FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1) override;
 
 private:
 	/** The connection to the service backend. */

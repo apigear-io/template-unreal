@@ -215,9 +215,9 @@ FTbSimpleSimpleInterfaceSigStringDelegate& UTbSimpleSimpleInterfaceSimulationSer
 	return SigStringSignal;
 }
 
-bool UTbSimpleSimpleInterfaceSimulationService::GetPropBool_Implementation() const
+void UTbSimpleSimpleInterfaceSimulationService::GetPropBool_Implementation(bool& ReturnValue) const
 {
-	return bPropBool;
+	ReturnValue = bPropBool;
 }
 
 void UTbSimpleSimpleInterfaceSimulationService::SetPropBool_Implementation(bool bInPropBool)
@@ -236,9 +236,9 @@ FTbSimpleSimpleInterfacePropBoolChangedDelegate& UTbSimpleSimpleInterfaceSimulat
 	return PropBoolChanged;
 }
 
-int32 UTbSimpleSimpleInterfaceSimulationService::GetPropInt_Implementation() const
+void UTbSimpleSimpleInterfaceSimulationService::GetPropInt_Implementation(int32& ReturnValue) const
 {
-	return PropInt;
+	ReturnValue = PropInt;
 }
 
 void UTbSimpleSimpleInterfaceSimulationService::SetPropInt_Implementation(int32 InPropInt)
@@ -257,9 +257,9 @@ FTbSimpleSimpleInterfacePropIntChangedDelegate& UTbSimpleSimpleInterfaceSimulati
 	return PropIntChanged;
 }
 
-float UTbSimpleSimpleInterfaceSimulationService::GetPropFloat_Implementation() const
+void UTbSimpleSimpleInterfaceSimulationService::GetPropFloat_Implementation(float& ReturnValue) const
 {
-	return PropFloat;
+	ReturnValue = PropFloat;
 }
 
 void UTbSimpleSimpleInterfaceSimulationService::SetPropFloat_Implementation(float InPropFloat)
@@ -278,9 +278,9 @@ FTbSimpleSimpleInterfacePropFloatChangedDelegate& UTbSimpleSimpleInterfaceSimula
 	return PropFloatChanged;
 }
 
-FString UTbSimpleSimpleInterfaceSimulationService::GetPropString_Implementation() const
+void UTbSimpleSimpleInterfaceSimulationService::GetPropString_Implementation(FString& ReturnValue) const
 {
-	return PropString;
+	ReturnValue = PropString;
 }
 
 void UTbSimpleSimpleInterfaceSimulationService::SetPropString_Implementation(const FString& InPropString)
@@ -299,7 +299,7 @@ FTbSimpleSimpleInterfacePropStringChangedDelegate& UTbSimpleSimpleInterfaceSimul
 	return PropStringChanged;
 }
 
-bool UTbSimpleSimpleInterfaceSimulationService::FuncBool_Implementation(bool bParamBool)
+void UTbSimpleSimpleInterfaceSimulationService::FuncBool_Implementation(bool& Result, bool bParamBool)
 {
 	Params params;
 	params["paramBool"] = bParamBool;
@@ -316,10 +316,10 @@ bool UTbSimpleSimpleInterfaceSimulationService::FuncBool_Implementation(bool bPa
 			}
 		});
 
-	return Promise.GetFuture().Get();
+	Result = Promise.GetFuture().Get();
 }
 
-int32 UTbSimpleSimpleInterfaceSimulationService::FuncInt_Implementation(int32 ParamInt)
+void UTbSimpleSimpleInterfaceSimulationService::FuncInt_Implementation(int32& Result, int32 ParamInt)
 {
 	Params params;
 	params["paramInt"] = ParamInt;
@@ -336,10 +336,10 @@ int32 UTbSimpleSimpleInterfaceSimulationService::FuncInt_Implementation(int32 Pa
 			}
 		});
 
-	return Promise.GetFuture().Get();
+	Result = Promise.GetFuture().Get();
 }
 
-float UTbSimpleSimpleInterfaceSimulationService::FuncFloat_Implementation(float ParamFloat)
+void UTbSimpleSimpleInterfaceSimulationService::FuncFloat_Implementation(float& Result, float ParamFloat)
 {
 	Params params;
 	params["paramFloat"] = ParamFloat;
@@ -356,10 +356,10 @@ float UTbSimpleSimpleInterfaceSimulationService::FuncFloat_Implementation(float 
 			}
 		});
 
-	return Promise.GetFuture().Get();
+	Result = Promise.GetFuture().Get();
 }
 
-FString UTbSimpleSimpleInterfaceSimulationService::FuncString_Implementation(const FString& ParamString)
+void UTbSimpleSimpleInterfaceSimulationService::FuncString_Implementation(FString& Result, const FString& ParamString)
 {
 	Params params;
 	params["paramString"] = ParamString;
@@ -376,5 +376,5 @@ FString UTbSimpleSimpleInterfaceSimulationService::FuncString_Implementation(con
 			}
 		});
 
-	return Promise.GetFuture().Get();
+	Result = Promise.GetFuture().Get();
 }

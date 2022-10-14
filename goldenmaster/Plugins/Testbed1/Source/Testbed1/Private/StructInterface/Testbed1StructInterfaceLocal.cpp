@@ -48,9 +48,9 @@ FTestbed1StructInterfaceSigStringDelegate& UTestbed1StructInterfaceLocalService:
 	return SigStringSignal;
 }
 
-FTestbed1StructBool UTestbed1StructInterfaceLocalService::GetPropBool_Implementation() const
+void UTestbed1StructInterfaceLocalService::GetPropBool_Implementation(FTestbed1StructBool& ReturnValue) const
 {
-	return PropBool;
+	ReturnValue = PropBool;
 }
 
 void UTestbed1StructInterfaceLocalService::SetPropBool_Implementation(const FTestbed1StructBool& InPropBool)
@@ -66,9 +66,9 @@ FTestbed1StructInterfacePropBoolChangedDelegate& UTestbed1StructInterfaceLocalSe
 {
 	return PropBoolChanged;
 }
-FTestbed1StructInt UTestbed1StructInterfaceLocalService::GetPropInt_Implementation() const
+void UTestbed1StructInterfaceLocalService::GetPropInt_Implementation(FTestbed1StructInt& ReturnValue) const
 {
-	return PropInt;
+	ReturnValue = PropInt;
 }
 
 void UTestbed1StructInterfaceLocalService::SetPropInt_Implementation(const FTestbed1StructInt& InPropInt)
@@ -84,9 +84,9 @@ FTestbed1StructInterfacePropIntChangedDelegate& UTestbed1StructInterfaceLocalSer
 {
 	return PropIntChanged;
 }
-FTestbed1StructFloat UTestbed1StructInterfaceLocalService::GetPropFloat_Implementation() const
+void UTestbed1StructInterfaceLocalService::GetPropFloat_Implementation(FTestbed1StructFloat& ReturnValue) const
 {
-	return PropFloat;
+	ReturnValue = PropFloat;
 }
 
 void UTestbed1StructInterfaceLocalService::SetPropFloat_Implementation(const FTestbed1StructFloat& InPropFloat)
@@ -102,9 +102,9 @@ FTestbed1StructInterfacePropFloatChangedDelegate& UTestbed1StructInterfaceLocalS
 {
 	return PropFloatChanged;
 }
-FTestbed1StructString UTestbed1StructInterfaceLocalService::GetPropString_Implementation() const
+void UTestbed1StructInterfaceLocalService::GetPropString_Implementation(FTestbed1StructString& ReturnValue) const
 {
-	return PropString;
+	ReturnValue = PropString;
 }
 
 void UTestbed1StructInterfaceLocalService::SetPropString_Implementation(const FTestbed1StructString& InPropString)
@@ -121,27 +121,27 @@ FTestbed1StructInterfacePropStringChangedDelegate& UTestbed1StructInterfaceLocal
 	return PropStringChanged;
 }
 
-FTestbed1StructBool UTestbed1StructInterfaceLocalService::FuncBool_Implementation(const FTestbed1StructBool& ParamBool)
+void UTestbed1StructInterfaceLocalService::FuncBool_Implementation(FTestbed1StructBool& Result, const FTestbed1StructBool& ParamBool)
 {
 	(void)ParamBool;
 	// do business logic here
-	return FTestbed1StructBool();
+	Result = FTestbed1StructBool();
 }
-FTestbed1StructBool UTestbed1StructInterfaceLocalService::FuncInt_Implementation(const FTestbed1StructInt& ParamInt)
+void UTestbed1StructInterfaceLocalService::FuncInt_Implementation(FTestbed1StructBool& Result, const FTestbed1StructInt& ParamInt)
 {
 	(void)ParamInt;
 	// do business logic here
-	return FTestbed1StructBool();
+	Result = FTestbed1StructBool();
 }
-FTestbed1StructFloat UTestbed1StructInterfaceLocalService::FuncFloat_Implementation(const FTestbed1StructFloat& ParamFloat)
+void UTestbed1StructInterfaceLocalService::FuncFloat_Implementation(FTestbed1StructFloat& Result, const FTestbed1StructFloat& ParamFloat)
 {
 	(void)ParamFloat;
 	// do business logic here
-	return FTestbed1StructFloat();
+	Result = FTestbed1StructFloat();
 }
-FTestbed1StructString UTestbed1StructInterfaceLocalService::FuncString_Implementation(const FTestbed1StructString& ParamString)
+void UTestbed1StructInterfaceLocalService::FuncString_Implementation(FTestbed1StructString& Result, const FTestbed1StructString& ParamString)
 {
 	(void)ParamString;
 	// do business logic here
-	return FTestbed1StructString();
+	Result = FTestbed1StructString();
 }

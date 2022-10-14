@@ -143,9 +143,9 @@ FTestbed2NestedStruct2InterfaceSig2Delegate& UTestbed2NestedStruct2InterfaceSimu
 	return Sig2Signal;
 }
 
-FTestbed2NestedStruct1 UTestbed2NestedStruct2InterfaceSimulationService::GetProp1_Implementation() const
+void UTestbed2NestedStruct2InterfaceSimulationService::GetProp1_Implementation(FTestbed2NestedStruct1& ReturnValue) const
 {
-	return Prop1;
+	ReturnValue = Prop1;
 }
 
 void UTestbed2NestedStruct2InterfaceSimulationService::SetProp1_Implementation(const FTestbed2NestedStruct1& InProp1)
@@ -164,9 +164,9 @@ FTestbed2NestedStruct2InterfaceProp1ChangedDelegate& UTestbed2NestedStruct2Inter
 	return Prop1Changed;
 }
 
-FTestbed2NestedStruct2 UTestbed2NestedStruct2InterfaceSimulationService::GetProp2_Implementation() const
+void UTestbed2NestedStruct2InterfaceSimulationService::GetProp2_Implementation(FTestbed2NestedStruct2& ReturnValue) const
 {
-	return Prop2;
+	ReturnValue = Prop2;
 }
 
 void UTestbed2NestedStruct2InterfaceSimulationService::SetProp2_Implementation(const FTestbed2NestedStruct2& InProp2)
@@ -185,7 +185,7 @@ FTestbed2NestedStruct2InterfaceProp2ChangedDelegate& UTestbed2NestedStruct2Inter
 	return Prop2Changed;
 }
 
-FTestbed2NestedStruct1 UTestbed2NestedStruct2InterfaceSimulationService::Func1_Implementation(const FTestbed2NestedStruct1& Param1)
+void UTestbed2NestedStruct2InterfaceSimulationService::Func1_Implementation(FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1)
 {
 	Params params;
 	params["param1"] = Param1;
@@ -202,10 +202,10 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct2InterfaceSimulationService::Func1_I
 			}
 		});
 
-	return Promise.GetFuture().Get();
+	Result = Promise.GetFuture().Get();
 }
 
-FTestbed2NestedStruct1 UTestbed2NestedStruct2InterfaceSimulationService::Func2_Implementation(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
+void UTestbed2NestedStruct2InterfaceSimulationService::Func2_Implementation(FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
 {
 	Params params;
 	params["param1"] = Param1;
@@ -223,5 +223,5 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct2InterfaceSimulationService::Func2_I
 			}
 		});
 
-	return Promise.GetFuture().Get();
+	Result = Promise.GetFuture().Get();
 }

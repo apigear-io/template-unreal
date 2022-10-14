@@ -99,9 +99,9 @@ void UTestbed2NestedStruct1InterfaceProxy::OnProp1Changed(const FTestbed2NestedS
 	Prop1Changed.Broadcast(InProp1);
 }
 
-FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceProxy::GetProp1_Implementation() const
+void UTestbed2NestedStruct1InterfaceProxy::GetProp1_Implementation(FTestbed2NestedStruct1& ReturnValue) const
 {
-	return BackendService->Execute_GetProp1(BackendService.GetObject());
+	BackendService->Execute_GetProp1(BackendService.GetObject(), ReturnValue);
 }
 
 void UTestbed2NestedStruct1InterfaceProxy::SetProp1_Implementation(const FTestbed2NestedStruct1& InProp1)
@@ -112,7 +112,9 @@ void UTestbed2NestedStruct1InterfaceProxy::SetProp1_Implementation(const FTestbe
 
 FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceProxy::GetProp1_Private() const
 {
-	return Execute_GetProp1(this);
+	FTestbed2NestedStruct1 outProp1;
+	Execute_GetProp1(this, outProp1);
+	return outProp1;
 }
 
 void UTestbed2NestedStruct1InterfaceProxy::SetProp1_Private(const FTestbed2NestedStruct1& InProp1)
@@ -146,13 +148,13 @@ void UTestbed2NestedStruct1InterfaceProxy::Func1Async_Implementation(UObject* Wo
 		Async(EAsyncExecution::Thread,
 			[Param1, this, &Result, CompletionAction]()
 			{
-				Result = BackendService->Execute_Func1(BackendService.GetObject(), Param1);
+				BackendService->Execute_Func1(BackendService.GetObject(), Result, Param1);
 				CompletionAction->Cancel();
 			});
 	}
 }
-FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceProxy::Func1_Implementation(const FTestbed2NestedStruct1& Param1)
+void UTestbed2NestedStruct1InterfaceProxy::Func1_Implementation(FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1)
 {
 	Testbed2NestedStruct1InterfaceTracer::trace_callFunc1(Param1);
-	return BackendService->Execute_Func1(BackendService.GetObject(), Param1);
+	BackendService->Execute_Func1(BackendService.GetObject(), Result, Param1);
 }

@@ -215,9 +215,9 @@ FTestbed2ManyParamInterfaceSig4Delegate& UTestbed2ManyParamInterfaceSimulationSe
 	return Sig4Signal;
 }
 
-int32 UTestbed2ManyParamInterfaceSimulationService::GetProp1_Implementation() const
+void UTestbed2ManyParamInterfaceSimulationService::GetProp1_Implementation(int32& ReturnValue) const
 {
-	return Prop1;
+	ReturnValue = Prop1;
 }
 
 void UTestbed2ManyParamInterfaceSimulationService::SetProp1_Implementation(int32 InProp1)
@@ -236,9 +236,9 @@ FTestbed2ManyParamInterfaceProp1ChangedDelegate& UTestbed2ManyParamInterfaceSimu
 	return Prop1Changed;
 }
 
-int32 UTestbed2ManyParamInterfaceSimulationService::GetProp2_Implementation() const
+void UTestbed2ManyParamInterfaceSimulationService::GetProp2_Implementation(int32& ReturnValue) const
 {
-	return Prop2;
+	ReturnValue = Prop2;
 }
 
 void UTestbed2ManyParamInterfaceSimulationService::SetProp2_Implementation(int32 InProp2)
@@ -257,9 +257,9 @@ FTestbed2ManyParamInterfaceProp2ChangedDelegate& UTestbed2ManyParamInterfaceSimu
 	return Prop2Changed;
 }
 
-int32 UTestbed2ManyParamInterfaceSimulationService::GetProp3_Implementation() const
+void UTestbed2ManyParamInterfaceSimulationService::GetProp3_Implementation(int32& ReturnValue) const
 {
-	return Prop3;
+	ReturnValue = Prop3;
 }
 
 void UTestbed2ManyParamInterfaceSimulationService::SetProp3_Implementation(int32 InProp3)
@@ -278,9 +278,9 @@ FTestbed2ManyParamInterfaceProp3ChangedDelegate& UTestbed2ManyParamInterfaceSimu
 	return Prop3Changed;
 }
 
-int32 UTestbed2ManyParamInterfaceSimulationService::GetProp4_Implementation() const
+void UTestbed2ManyParamInterfaceSimulationService::GetProp4_Implementation(int32& ReturnValue) const
 {
-	return Prop4;
+	ReturnValue = Prop4;
 }
 
 void UTestbed2ManyParamInterfaceSimulationService::SetProp4_Implementation(int32 InProp4)
@@ -299,7 +299,7 @@ FTestbed2ManyParamInterfaceProp4ChangedDelegate& UTestbed2ManyParamInterfaceSimu
 	return Prop4Changed;
 }
 
-int32 UTestbed2ManyParamInterfaceSimulationService::Func1_Implementation(int32 Param1)
+void UTestbed2ManyParamInterfaceSimulationService::Func1_Implementation(int32& Result, int32 Param1)
 {
 	Params params;
 	params["param1"] = Param1;
@@ -316,10 +316,10 @@ int32 UTestbed2ManyParamInterfaceSimulationService::Func1_Implementation(int32 P
 			}
 		});
 
-	return Promise.GetFuture().Get();
+	Result = Promise.GetFuture().Get();
 }
 
-int32 UTestbed2ManyParamInterfaceSimulationService::Func2_Implementation(int32 Param1, int32 Param2)
+void UTestbed2ManyParamInterfaceSimulationService::Func2_Implementation(int32& Result, int32 Param1, int32 Param2)
 {
 	Params params;
 	params["param1"] = Param1;
@@ -337,10 +337,10 @@ int32 UTestbed2ManyParamInterfaceSimulationService::Func2_Implementation(int32 P
 			}
 		});
 
-	return Promise.GetFuture().Get();
+	Result = Promise.GetFuture().Get();
 }
 
-int32 UTestbed2ManyParamInterfaceSimulationService::Func3_Implementation(int32 Param1, int32 Param2, int32 Param3)
+void UTestbed2ManyParamInterfaceSimulationService::Func3_Implementation(int32& Result, int32 Param1, int32 Param2, int32 Param3)
 {
 	Params params;
 	params["param1"] = Param1;
@@ -359,10 +359,10 @@ int32 UTestbed2ManyParamInterfaceSimulationService::Func3_Implementation(int32 P
 			}
 		});
 
-	return Promise.GetFuture().Get();
+	Result = Promise.GetFuture().Get();
 }
 
-int32 UTestbed2ManyParamInterfaceSimulationService::Func4_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
+void UTestbed2ManyParamInterfaceSimulationService::Func4_Implementation(int32& Result, int32 Param1, int32 Param2, int32 Param3, int32 Param4)
 {
 	Params params;
 	params["param1"] = Param1;
@@ -382,5 +382,5 @@ int32 UTestbed2ManyParamInterfaceSimulationService::Func4_Implementation(int32 P
 			}
 		});
 
-	return Promise.GetFuture().Get();
+	Result = Promise.GetFuture().Get();
 }

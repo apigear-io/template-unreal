@@ -9,10 +9,18 @@ TbSimpleSimpleInterfaceTracer::TbSimpleSimpleInterfaceTracer()
 void TbSimpleSimpleInterfaceTracer::capture_state(UObject* Object, ITbSimpleSimpleInterfaceInterface* obj)
 {
 	nlohmann::json fields_;
-	fields_["propBool"] = obj->Execute_GetPropBool(Object);
-	fields_["propInt"] = obj->Execute_GetPropInt(Object);
-	fields_["propFloat"] = obj->Execute_GetPropFloat(Object);
-	fields_["propString"] = obj->Execute_GetPropString(Object);
+	bool outPropBool;
+	obj->Execute_GetPropBool(Object, outPropBool);
+	fields_["propBool"] = outPropBool;
+	int32 outPropInt;
+	obj->Execute_GetPropInt(Object, outPropInt);
+	fields_["propInt"] = outPropInt;
+	float outPropFloat;
+	obj->Execute_GetPropFloat(Object, outPropFloat);
+	fields_["propFloat"] = outPropFloat;
+	FString outPropString;
+	obj->Execute_GetPropString(Object, outPropString);
+	fields_["propString"] = outPropString;
 	Tracer::instance()->state("tb.simple/SimpleInterface", fields_);
 }
 void TbSimpleSimpleInterfaceTracer::trace_callSetPropBool(bool bInPropBool)
@@ -103,10 +111,18 @@ TbSimpleSimpleArrayInterfaceTracer::TbSimpleSimpleArrayInterfaceTracer()
 void TbSimpleSimpleArrayInterfaceTracer::capture_state(UObject* Object, ITbSimpleSimpleArrayInterfaceInterface* obj)
 {
 	nlohmann::json fields_;
-	fields_["propBool"] = obj->Execute_GetPropBool(Object);
-	fields_["propInt"] = obj->Execute_GetPropInt(Object);
-	fields_["propFloat"] = obj->Execute_GetPropFloat(Object);
-	fields_["propString"] = obj->Execute_GetPropString(Object);
+	TArray<bool> outPropBool;
+	obj->Execute_GetPropBool(Object, outPropBool);
+	fields_["propBool"] = outPropBool;
+	TArray<int32> outPropInt;
+	obj->Execute_GetPropInt(Object, outPropInt);
+	fields_["propInt"] = outPropInt;
+	TArray<float> outPropFloat;
+	obj->Execute_GetPropFloat(Object, outPropFloat);
+	fields_["propFloat"] = outPropFloat;
+	TArray<FString> outPropString;
+	obj->Execute_GetPropString(Object, outPropString);
+	fields_["propString"] = outPropString;
 	Tracer::instance()->state("tb.simple/SimpleArrayInterface", fields_);
 }
 void TbSimpleSimpleArrayInterfaceTracer::trace_callSetPropBool(const TArray<bool>& InPropBool)

@@ -75,22 +75,22 @@ public:
 {{- if .Return.IsVoid }}
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "{{$Category}}")
 	{{ueReturn "" .Return}} {{Camel .Name}}({{ueParams "" .Params}});
-	virtual {{ueReturn "" .Return}} {{Camel .Name}}_Implementation({{ueParams "" .Params}}) = 0;
+	virtual void {{Camel .Name}}_Implementation({{ueParams "" .Params}}) = 0;
 {{- else }}
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "{{$Category}}", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void {{Camel .Name}}Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, {{ueReturn "" .Return}}& Result{{if len .Params}},{{end}} {{ueParams "" .Params}});
 	virtual void {{Camel .Name}}Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, {{ueReturn "" .Return}}& Result{{if len .Params}},{{end}} {{ueParams "" .Params}}) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "{{$Category}}")
-	{{ueReturn "" .Return}} {{Camel .Name}}({{ueParams "" .Params}});
-	virtual {{ueReturn "" .Return}} {{Camel .Name}}_Implementation({{ueParams "" .Params}}) = 0;
+	void {{Camel .Name}}({{ueReturn "" .Return}}& Result, {{ueParams "" .Params}});
+	virtual void {{Camel .Name}}_Implementation({{ueReturn "" .Return}}& Result, {{ueParams "" .Params}}) = 0;
 {{- end }}
 {{ else }}
 {{ end }}
 	// properties
 {{- range .Properties }}
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "{{$Category}}")
-	{{ueReturn "" .}} Get{{Camel .Name}}() const;
-	virtual {{ueReturn "" .}} Get{{Camel .Name}}_Implementation() const = 0;
+	void Get{{Camel .Name}}({{ueReturn "" .}}& ReturnValue) const;
+	virtual void Get{{Camel .Name}}_Implementation({{ueReturn "" .}}& ReturnValue) const = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "{{$Category}}")
 	void Set{{Camel .Name}}({{ueParam "" .}});

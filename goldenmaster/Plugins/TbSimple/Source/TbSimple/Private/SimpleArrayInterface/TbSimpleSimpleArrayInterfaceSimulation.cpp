@@ -215,9 +215,9 @@ FTbSimpleSimpleArrayInterfaceSigStringDelegate& UTbSimpleSimpleArrayInterfaceSim
 	return SigStringSignal;
 }
 
-TArray<bool> UTbSimpleSimpleArrayInterfaceSimulationService::GetPropBool_Implementation() const
+void UTbSimpleSimpleArrayInterfaceSimulationService::GetPropBool_Implementation(TArray<bool>& ReturnValue) const
 {
-	return PropBool;
+	ReturnValue = PropBool;
 }
 
 void UTbSimpleSimpleArrayInterfaceSimulationService::SetPropBool_Implementation(const TArray<bool>& InPropBool)
@@ -236,9 +236,9 @@ FTbSimpleSimpleArrayInterfacePropBoolChangedDelegate& UTbSimpleSimpleArrayInterf
 	return PropBoolChanged;
 }
 
-TArray<int32> UTbSimpleSimpleArrayInterfaceSimulationService::GetPropInt_Implementation() const
+void UTbSimpleSimpleArrayInterfaceSimulationService::GetPropInt_Implementation(TArray<int32>& ReturnValue) const
 {
-	return PropInt;
+	ReturnValue = PropInt;
 }
 
 void UTbSimpleSimpleArrayInterfaceSimulationService::SetPropInt_Implementation(const TArray<int32>& InPropInt)
@@ -257,9 +257,9 @@ FTbSimpleSimpleArrayInterfacePropIntChangedDelegate& UTbSimpleSimpleArrayInterfa
 	return PropIntChanged;
 }
 
-TArray<float> UTbSimpleSimpleArrayInterfaceSimulationService::GetPropFloat_Implementation() const
+void UTbSimpleSimpleArrayInterfaceSimulationService::GetPropFloat_Implementation(TArray<float>& ReturnValue) const
 {
-	return PropFloat;
+	ReturnValue = PropFloat;
 }
 
 void UTbSimpleSimpleArrayInterfaceSimulationService::SetPropFloat_Implementation(const TArray<float>& InPropFloat)
@@ -278,9 +278,9 @@ FTbSimpleSimpleArrayInterfacePropFloatChangedDelegate& UTbSimpleSimpleArrayInter
 	return PropFloatChanged;
 }
 
-TArray<FString> UTbSimpleSimpleArrayInterfaceSimulationService::GetPropString_Implementation() const
+void UTbSimpleSimpleArrayInterfaceSimulationService::GetPropString_Implementation(TArray<FString>& ReturnValue) const
 {
-	return PropString;
+	ReturnValue = PropString;
 }
 
 void UTbSimpleSimpleArrayInterfaceSimulationService::SetPropString_Implementation(const TArray<FString>& InPropString)
@@ -299,7 +299,7 @@ FTbSimpleSimpleArrayInterfacePropStringChangedDelegate& UTbSimpleSimpleArrayInte
 	return PropStringChanged;
 }
 
-TArray<bool> UTbSimpleSimpleArrayInterfaceSimulationService::FuncBool_Implementation(const TArray<bool>& ParamBool)
+void UTbSimpleSimpleArrayInterfaceSimulationService::FuncBool_Implementation(TArray<bool>& Result, const TArray<bool>& ParamBool)
 {
 	Params params;
 	params["paramBool"] = ParamBool;
@@ -316,10 +316,10 @@ TArray<bool> UTbSimpleSimpleArrayInterfaceSimulationService::FuncBool_Implementa
 			}
 		});
 
-	return Promise.GetFuture().Get();
+	Result = Promise.GetFuture().Get();
 }
 
-TArray<int32> UTbSimpleSimpleArrayInterfaceSimulationService::FuncInt_Implementation(const TArray<int32>& ParamInt)
+void UTbSimpleSimpleArrayInterfaceSimulationService::FuncInt_Implementation(TArray<int32>& Result, const TArray<int32>& ParamInt)
 {
 	Params params;
 	params["paramInt"] = ParamInt;
@@ -336,10 +336,10 @@ TArray<int32> UTbSimpleSimpleArrayInterfaceSimulationService::FuncInt_Implementa
 			}
 		});
 
-	return Promise.GetFuture().Get();
+	Result = Promise.GetFuture().Get();
 }
 
-TArray<float> UTbSimpleSimpleArrayInterfaceSimulationService::FuncFloat_Implementation(const TArray<float>& ParamFloat)
+void UTbSimpleSimpleArrayInterfaceSimulationService::FuncFloat_Implementation(TArray<float>& Result, const TArray<float>& ParamFloat)
 {
 	Params params;
 	params["paramFloat"] = ParamFloat;
@@ -356,10 +356,10 @@ TArray<float> UTbSimpleSimpleArrayInterfaceSimulationService::FuncFloat_Implemen
 			}
 		});
 
-	return Promise.GetFuture().Get();
+	Result = Promise.GetFuture().Get();
 }
 
-TArray<FString> UTbSimpleSimpleArrayInterfaceSimulationService::FuncString_Implementation(const TArray<FString>& ParamString)
+void UTbSimpleSimpleArrayInterfaceSimulationService::FuncString_Implementation(TArray<FString>& Result, const TArray<FString>& ParamString)
 {
 	Params params;
 	params["paramString"] = ParamString;
@@ -376,5 +376,5 @@ TArray<FString> UTbSimpleSimpleArrayInterfaceSimulationService::FuncString_Imple
 			}
 		});
 
-	return Promise.GetFuture().Get();
+	Result = Promise.GetFuture().Get();
 }

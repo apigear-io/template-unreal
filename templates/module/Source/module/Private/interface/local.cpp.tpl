@@ -30,9 +30,9 @@ F{{$Iface}}{{Camel .Name}}Delegate& {{$Class}}::Get{{Camel .Name}}SignalDelegate
 }
 {{ end }}
 {{- range .Interface.Properties }}
-{{ueReturn "" .}} {{$Class}}::Get{{Camel .Name}}_Implementation() const
+void {{$Class}}::Get{{Camel .Name}}_Implementation({{ueReturn "" .}}& ReturnValue) const
 {
-	return {{ueVar "" .}};
+	ReturnValue = {{ueVar "" .}};
 }
 
 void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
@@ -55,14 +55,18 @@ F{{$Iface}}{{Camel .Name}}ChangedDelegate& {{$Class}}::Get{{Camel .Name}}Changed
    \brief {{.Description}}
 */
 {{- end }}
-{{ueReturn "" .Return}} {{$Class}}::{{Camel .Name}}_Implementation({{ueParams "" .Params}})
+{{- if .Return.IsVoid }}
+void {{$Class}}::{{Camel .Name}}_Implementation({{ueParams "" .Params}})
+{{- else }}
+void {{$Class}}::{{Camel .Name}}_Implementation({{ueReturn "" .Return}}& Result, {{ueParams "" .Params}})
+{{- end }}
 {
 	{{- range .Params }}
 	(void){{ueVar "" .}};
 	{{- end }}
 	// do business logic here
 	{{- if not .Return.IsVoid }}
-	return {{ueDefault "" .Return}};
+	Result = {{ueDefault "" .Return}};
 	{{- end }}
 }
 {{- end }}

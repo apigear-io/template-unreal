@@ -48,9 +48,9 @@ FTestbed2ManyParamInterfaceSig4Delegate& UTestbed2ManyParamInterfaceLocalService
 	return Sig4Signal;
 }
 
-int32 UTestbed2ManyParamInterfaceLocalService::GetProp1_Implementation() const
+void UTestbed2ManyParamInterfaceLocalService::GetProp1_Implementation(int32& ReturnValue) const
 {
-	return Prop1;
+	ReturnValue = Prop1;
 }
 
 void UTestbed2ManyParamInterfaceLocalService::SetProp1_Implementation(int32 InProp1)
@@ -66,9 +66,9 @@ FTestbed2ManyParamInterfaceProp1ChangedDelegate& UTestbed2ManyParamInterfaceLoca
 {
 	return Prop1Changed;
 }
-int32 UTestbed2ManyParamInterfaceLocalService::GetProp2_Implementation() const
+void UTestbed2ManyParamInterfaceLocalService::GetProp2_Implementation(int32& ReturnValue) const
 {
-	return Prop2;
+	ReturnValue = Prop2;
 }
 
 void UTestbed2ManyParamInterfaceLocalService::SetProp2_Implementation(int32 InProp2)
@@ -84,9 +84,9 @@ FTestbed2ManyParamInterfaceProp2ChangedDelegate& UTestbed2ManyParamInterfaceLoca
 {
 	return Prop2Changed;
 }
-int32 UTestbed2ManyParamInterfaceLocalService::GetProp3_Implementation() const
+void UTestbed2ManyParamInterfaceLocalService::GetProp3_Implementation(int32& ReturnValue) const
 {
-	return Prop3;
+	ReturnValue = Prop3;
 }
 
 void UTestbed2ManyParamInterfaceLocalService::SetProp3_Implementation(int32 InProp3)
@@ -102,9 +102,9 @@ FTestbed2ManyParamInterfaceProp3ChangedDelegate& UTestbed2ManyParamInterfaceLoca
 {
 	return Prop3Changed;
 }
-int32 UTestbed2ManyParamInterfaceLocalService::GetProp4_Implementation() const
+void UTestbed2ManyParamInterfaceLocalService::GetProp4_Implementation(int32& ReturnValue) const
 {
-	return Prop4;
+	ReturnValue = Prop4;
 }
 
 void UTestbed2ManyParamInterfaceLocalService::SetProp4_Implementation(int32 InProp4)
@@ -121,33 +121,33 @@ FTestbed2ManyParamInterfaceProp4ChangedDelegate& UTestbed2ManyParamInterfaceLoca
 	return Prop4Changed;
 }
 
-int32 UTestbed2ManyParamInterfaceLocalService::Func1_Implementation(int32 Param1)
+void UTestbed2ManyParamInterfaceLocalService::Func1_Implementation(int32& Result, int32 Param1)
 {
 	(void)Param1;
 	// do business logic here
-	return 0;
+	Result = 0;
 }
-int32 UTestbed2ManyParamInterfaceLocalService::Func2_Implementation(int32 Param1, int32 Param2)
+void UTestbed2ManyParamInterfaceLocalService::Func2_Implementation(int32& Result, int32 Param1, int32 Param2)
 {
 	(void)Param1;
 	(void)Param2;
 	// do business logic here
-	return 0;
+	Result = 0;
 }
-int32 UTestbed2ManyParamInterfaceLocalService::Func3_Implementation(int32 Param1, int32 Param2, int32 Param3)
+void UTestbed2ManyParamInterfaceLocalService::Func3_Implementation(int32& Result, int32 Param1, int32 Param2, int32 Param3)
 {
 	(void)Param1;
 	(void)Param2;
 	(void)Param3;
 	// do business logic here
-	return 0;
+	Result = 0;
 }
-int32 UTestbed2ManyParamInterfaceLocalService::Func4_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
+void UTestbed2ManyParamInterfaceLocalService::Func4_Implementation(int32& Result, int32 Param1, int32 Param2, int32 Param3, int32 Param4)
 {
 	(void)Param1;
 	(void)Param2;
 	(void)Param3;
 	(void)Param4;
 	// do business logic here
-	return 0;
+	Result = 0;
 }

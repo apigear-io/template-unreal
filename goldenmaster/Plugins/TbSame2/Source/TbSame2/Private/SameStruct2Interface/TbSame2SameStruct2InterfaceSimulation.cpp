@@ -143,9 +143,9 @@ FTbSame2SameStruct2InterfaceSig2Delegate& UTbSame2SameStruct2InterfaceSimulation
 	return Sig2Signal;
 }
 
-FTbSame2Struct2 UTbSame2SameStruct2InterfaceSimulationService::GetProp1_Implementation() const
+void UTbSame2SameStruct2InterfaceSimulationService::GetProp1_Implementation(FTbSame2Struct2& ReturnValue) const
 {
-	return Prop1;
+	ReturnValue = Prop1;
 }
 
 void UTbSame2SameStruct2InterfaceSimulationService::SetProp1_Implementation(const FTbSame2Struct2& InProp1)
@@ -164,9 +164,9 @@ FTbSame2SameStruct2InterfaceProp1ChangedDelegate& UTbSame2SameStruct2InterfaceSi
 	return Prop1Changed;
 }
 
-FTbSame2Struct2 UTbSame2SameStruct2InterfaceSimulationService::GetProp2_Implementation() const
+void UTbSame2SameStruct2InterfaceSimulationService::GetProp2_Implementation(FTbSame2Struct2& ReturnValue) const
 {
-	return Prop2;
+	ReturnValue = Prop2;
 }
 
 void UTbSame2SameStruct2InterfaceSimulationService::SetProp2_Implementation(const FTbSame2Struct2& InProp2)
@@ -185,7 +185,7 @@ FTbSame2SameStruct2InterfaceProp2ChangedDelegate& UTbSame2SameStruct2InterfaceSi
 	return Prop2Changed;
 }
 
-FTbSame2Struct1 UTbSame2SameStruct2InterfaceSimulationService::Func1_Implementation(const FTbSame2Struct1& Param1)
+void UTbSame2SameStruct2InterfaceSimulationService::Func1_Implementation(FTbSame2Struct1& Result, const FTbSame2Struct1& Param1)
 {
 	Params params;
 	params["param1"] = Param1;
@@ -202,10 +202,10 @@ FTbSame2Struct1 UTbSame2SameStruct2InterfaceSimulationService::Func1_Implementat
 			}
 		});
 
-	return Promise.GetFuture().Get();
+	Result = Promise.GetFuture().Get();
 }
 
-FTbSame2Struct1 UTbSame2SameStruct2InterfaceSimulationService::Func2_Implementation(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2)
+void UTbSame2SameStruct2InterfaceSimulationService::Func2_Implementation(FTbSame2Struct1& Result, const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2)
 {
 	Params params;
 	params["param1"] = Param1;
@@ -223,5 +223,5 @@ FTbSame2Struct1 UTbSame2SameStruct2InterfaceSimulationService::Func2_Implementat
 			}
 		});
 
-	return Promise.GetFuture().Get();
+	Result = Promise.GetFuture().Get();
 }

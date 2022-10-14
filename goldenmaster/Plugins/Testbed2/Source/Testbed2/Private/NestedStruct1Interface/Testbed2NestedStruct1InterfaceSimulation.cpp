@@ -107,9 +107,9 @@ FTestbed2NestedStruct1InterfaceSig1Delegate& UTestbed2NestedStruct1InterfaceSimu
 	return Sig1Signal;
 }
 
-FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceSimulationService::GetProp1_Implementation() const
+void UTestbed2NestedStruct1InterfaceSimulationService::GetProp1_Implementation(FTestbed2NestedStruct1& ReturnValue) const
 {
-	return Prop1;
+	ReturnValue = Prop1;
 }
 
 void UTestbed2NestedStruct1InterfaceSimulationService::SetProp1_Implementation(const FTestbed2NestedStruct1& InProp1)
@@ -128,7 +128,7 @@ FTestbed2NestedStruct1InterfaceProp1ChangedDelegate& UTestbed2NestedStruct1Inter
 	return Prop1Changed;
 }
 
-FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceSimulationService::Func1_Implementation(const FTestbed2NestedStruct1& Param1)
+void UTestbed2NestedStruct1InterfaceSimulationService::Func1_Implementation(FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1)
 {
 	Params params;
 	params["param1"] = Param1;
@@ -145,5 +145,5 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceSimulationService::Func1_I
 			}
 		});
 
-	return Promise.GetFuture().Get();
+	Result = Promise.GetFuture().Get();
 }

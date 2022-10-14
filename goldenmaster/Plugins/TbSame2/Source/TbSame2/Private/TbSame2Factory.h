@@ -18,6 +18,7 @@ limitations under the License.
 
 #include "Logging/LogMacros.h"
 #include "Templates/SharedPointer.h"
+#include "UObject/ScriptInterface.h"
 class ITbSame2SameStruct1InterfaceInterface;
 class ITbSame2SameStruct2InterfaceInterface;
 class ITbSame2SameEnum1InterfaceInterface;

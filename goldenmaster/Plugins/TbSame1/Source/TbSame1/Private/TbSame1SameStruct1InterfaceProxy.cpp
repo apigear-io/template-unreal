@@ -99,9 +99,9 @@ void UTbSame1SameStruct1InterfaceProxy::OnProp1Changed(const FTbSame1Struct1& In
 	Prop1Changed.Broadcast(InProp1);
 }
 
-FTbSame1Struct1 UTbSame1SameStruct1InterfaceProxy::GetProp1_Implementation() const
+void UTbSame1SameStruct1InterfaceProxy::GetProp1_Implementation(FTbSame1Struct1& ReturnValue) const
 {
-	return BackendService->Execute_GetProp1(BackendService.GetObject());
+	BackendService->Execute_GetProp1(BackendService.GetObject(), ReturnValue);
 }
 
 void UTbSame1SameStruct1InterfaceProxy::SetProp1_Implementation(const FTbSame1Struct1& InProp1)
@@ -112,7 +112,9 @@ void UTbSame1SameStruct1InterfaceProxy::SetProp1_Implementation(const FTbSame1St
 
 FTbSame1Struct1 UTbSame1SameStruct1InterfaceProxy::GetProp1_Private() const
 {
-	return Execute_GetProp1(this);
+	FTbSame1Struct1 outProp1;
+	Execute_GetProp1(this, outProp1);
+	return outProp1;
 }
 
 void UTbSame1SameStruct1InterfaceProxy::SetProp1_Private(const FTbSame1Struct1& InProp1)
@@ -146,13 +148,13 @@ void UTbSame1SameStruct1InterfaceProxy::Func1Async_Implementation(UObject* World
 		Async(EAsyncExecution::Thread,
 			[Param1, this, &Result, CompletionAction]()
 			{
-				Result = BackendService->Execute_Func1(BackendService.GetObject(), Param1);
+				BackendService->Execute_Func1(BackendService.GetObject(), Result, Param1);
 				CompletionAction->Cancel();
 			});
 	}
 }
-FTbSame1Struct1 UTbSame1SameStruct1InterfaceProxy::Func1_Implementation(const FTbSame1Struct1& Param1)
+void UTbSame1SameStruct1InterfaceProxy::Func1_Implementation(FTbSame1Struct1& Result, const FTbSame1Struct1& Param1)
 {
 	TbSame1SameStruct1InterfaceTracer::trace_callFunc1(Param1);
-	return BackendService->Execute_Func1(BackendService.GetObject(), Param1);
+	BackendService->Execute_Func1(BackendService.GetObject(), Result, Param1);
 }

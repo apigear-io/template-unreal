@@ -81,9 +81,9 @@ FTbSimpleSimpleInterfaceSigStringDelegate& UTbSimpleSimpleInterfaceOLinkService:
 	return SigStringSignal;
 }
 
-bool UTbSimpleSimpleInterfaceOLinkService::GetPropBool_Implementation() const
+void UTbSimpleSimpleInterfaceOLinkService::GetPropBool_Implementation(bool& ReturnValue) const
 {
-	return bPropBool;
+	ReturnValue = bPropBool;
 }
 
 void UTbSimpleSimpleInterfaceOLinkService::SetPropBool_Implementation(bool bInPropBool)
@@ -99,9 +99,9 @@ FTbSimpleSimpleInterfacePropBoolChangedDelegate& UTbSimpleSimpleInterfaceOLinkSe
 {
 	return PropBoolChanged;
 }
-int32 UTbSimpleSimpleInterfaceOLinkService::GetPropInt_Implementation() const
+void UTbSimpleSimpleInterfaceOLinkService::GetPropInt_Implementation(int32& ReturnValue) const
 {
-	return PropInt;
+	ReturnValue = PropInt;
 }
 
 void UTbSimpleSimpleInterfaceOLinkService::SetPropInt_Implementation(int32 InPropInt)
@@ -117,9 +117,9 @@ FTbSimpleSimpleInterfacePropIntChangedDelegate& UTbSimpleSimpleInterfaceOLinkSer
 {
 	return PropIntChanged;
 }
-float UTbSimpleSimpleInterfaceOLinkService::GetPropFloat_Implementation() const
+void UTbSimpleSimpleInterfaceOLinkService::GetPropFloat_Implementation(float& ReturnValue) const
 {
-	return PropFloat;
+	ReturnValue = PropFloat;
 }
 
 void UTbSimpleSimpleInterfaceOLinkService::SetPropFloat_Implementation(float InPropFloat)
@@ -135,9 +135,9 @@ FTbSimpleSimpleInterfacePropFloatChangedDelegate& UTbSimpleSimpleInterfaceOLinkS
 {
 	return PropFloatChanged;
 }
-FString UTbSimpleSimpleInterfaceOLinkService::GetPropString_Implementation() const
+void UTbSimpleSimpleInterfaceOLinkService::GetPropString_Implementation(FString& ReturnValue) const
 {
-	return PropString;
+	ReturnValue = PropString;
 }
 
 void UTbSimpleSimpleInterfaceOLinkService::SetPropString_Implementation(const FString& InPropString)
@@ -154,12 +154,12 @@ FTbSimpleSimpleInterfacePropStringChangedDelegate& UTbSimpleSimpleInterfaceOLink
 	return PropStringChanged;
 }
 
-bool UTbSimpleSimpleInterfaceOLinkService::FuncBool_Implementation(bool bParamBool)
+void UTbSimpleSimpleInterfaceOLinkService::FuncBool_Implementation(bool& Result, bool bParamBool)
 {
 	if (!m_node)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
-		return false;
+		Result = false;
 	}
 	TPromise<bool> Promise;
 	Async(EAsyncExecution::Thread,
@@ -170,15 +170,15 @@ bool UTbSimpleSimpleInterfaceOLinkService::FuncBool_Implementation(bool bParamBo
 			m_node->invokeRemote("tb.simple.SimpleInterface/funcBool", {bParamBool}, GetSimpleInterfaceStateFunc);
 		});
 
-	return Promise.GetFuture().Get();
+	Result = Promise.GetFuture().Get();
 }
 
-int32 UTbSimpleSimpleInterfaceOLinkService::FuncInt_Implementation(int32 ParamInt)
+void UTbSimpleSimpleInterfaceOLinkService::FuncInt_Implementation(int32& Result, int32 ParamInt)
 {
 	if (!m_node)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
-		return 0;
+		Result = 0;
 	}
 	TPromise<int32> Promise;
 	Async(EAsyncExecution::Thread,
@@ -189,15 +189,15 @@ int32 UTbSimpleSimpleInterfaceOLinkService::FuncInt_Implementation(int32 ParamIn
 			m_node->invokeRemote("tb.simple.SimpleInterface/funcInt", {ParamInt}, GetSimpleInterfaceStateFunc);
 		});
 
-	return Promise.GetFuture().Get();
+	Result = Promise.GetFuture().Get();
 }
 
-float UTbSimpleSimpleInterfaceOLinkService::FuncFloat_Implementation(float ParamFloat)
+void UTbSimpleSimpleInterfaceOLinkService::FuncFloat_Implementation(float& Result, float ParamFloat)
 {
 	if (!m_node)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
-		return 0.0f;
+		Result = 0.0f;
 	}
 	TPromise<float> Promise;
 	Async(EAsyncExecution::Thread,
@@ -208,15 +208,15 @@ float UTbSimpleSimpleInterfaceOLinkService::FuncFloat_Implementation(float Param
 			m_node->invokeRemote("tb.simple.SimpleInterface/funcFloat", {ParamFloat}, GetSimpleInterfaceStateFunc);
 		});
 
-	return Promise.GetFuture().Get();
+	Result = Promise.GetFuture().Get();
 }
 
-FString UTbSimpleSimpleInterfaceOLinkService::FuncString_Implementation(const FString& ParamString)
+void UTbSimpleSimpleInterfaceOLinkService::FuncString_Implementation(FString& Result, const FString& ParamString)
 {
 	if (!m_node)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
-		return FString();
+		Result = FString();
 	}
 	TPromise<FString> Promise;
 	Async(EAsyncExecution::Thread,
@@ -227,7 +227,7 @@ FString UTbSimpleSimpleInterfaceOLinkService::FuncString_Implementation(const FS
 			m_node->invokeRemote("tb.simple.SimpleInterface/funcString", {ParamString}, GetSimpleInterfaceStateFunc);
 		});
 
-	return Promise.GetFuture().Get();
+	Result = Promise.GetFuture().Get();
 }
 
 void UTbSimpleSimpleInterfaceOLinkService::applyState(const nlohmann::json& fields)

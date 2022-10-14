@@ -30,9 +30,9 @@ FTestbed2NestedStruct1InterfaceSig1Delegate& UTestbed2NestedStruct1InterfaceLoca
 	return Sig1Signal;
 }
 
-FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceLocalService::GetProp1_Implementation() const
+void UTestbed2NestedStruct1InterfaceLocalService::GetProp1_Implementation(FTestbed2NestedStruct1& ReturnValue) const
 {
-	return Prop1;
+	ReturnValue = Prop1;
 }
 
 void UTestbed2NestedStruct1InterfaceLocalService::SetProp1_Implementation(const FTestbed2NestedStruct1& InProp1)
@@ -49,9 +49,9 @@ FTestbed2NestedStruct1InterfaceProp1ChangedDelegate& UTestbed2NestedStruct1Inter
 	return Prop1Changed;
 }
 
-FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceLocalService::Func1_Implementation(const FTestbed2NestedStruct1& Param1)
+void UTestbed2NestedStruct1InterfaceLocalService::Func1_Implementation(FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1)
 {
 	(void)Param1;
 	// do business logic here
-	return FTestbed2NestedStruct1();
+	Result = FTestbed2NestedStruct1();
 }

@@ -115,9 +115,9 @@ void UTbSame2SameEnum2InterfaceProxy::OnProp1Changed(const ETbSame2Enum1& InProp
 	Prop1Changed.Broadcast(InProp1);
 }
 
-ETbSame2Enum1 UTbSame2SameEnum2InterfaceProxy::GetProp1_Implementation() const
+void UTbSame2SameEnum2InterfaceProxy::GetProp1_Implementation(ETbSame2Enum1& ReturnValue) const
 {
-	return BackendService->Execute_GetProp1(BackendService.GetObject());
+	BackendService->Execute_GetProp1(BackendService.GetObject(), ReturnValue);
 }
 
 void UTbSame2SameEnum2InterfaceProxy::SetProp1_Implementation(const ETbSame2Enum1& InProp1)
@@ -128,7 +128,9 @@ void UTbSame2SameEnum2InterfaceProxy::SetProp1_Implementation(const ETbSame2Enum
 
 ETbSame2Enum1 UTbSame2SameEnum2InterfaceProxy::GetProp1_Private() const
 {
-	return Execute_GetProp1(this);
+	ETbSame2Enum1 outProp1;
+	Execute_GetProp1(this, outProp1);
+	return outProp1;
 }
 
 void UTbSame2SameEnum2InterfaceProxy::SetProp1_Private(const ETbSame2Enum1& InProp1)
@@ -148,9 +150,9 @@ void UTbSame2SameEnum2InterfaceProxy::OnProp2Changed(const ETbSame2Enum2& InProp
 	Prop2Changed.Broadcast(InProp2);
 }
 
-ETbSame2Enum2 UTbSame2SameEnum2InterfaceProxy::GetProp2_Implementation() const
+void UTbSame2SameEnum2InterfaceProxy::GetProp2_Implementation(ETbSame2Enum2& ReturnValue) const
 {
-	return BackendService->Execute_GetProp2(BackendService.GetObject());
+	BackendService->Execute_GetProp2(BackendService.GetObject(), ReturnValue);
 }
 
 void UTbSame2SameEnum2InterfaceProxy::SetProp2_Implementation(const ETbSame2Enum2& InProp2)
@@ -161,7 +163,9 @@ void UTbSame2SameEnum2InterfaceProxy::SetProp2_Implementation(const ETbSame2Enum
 
 ETbSame2Enum2 UTbSame2SameEnum2InterfaceProxy::GetProp2_Private() const
 {
-	return Execute_GetProp2(this);
+	ETbSame2Enum2 outProp2;
+	Execute_GetProp2(this, outProp2);
+	return outProp2;
 }
 
 void UTbSame2SameEnum2InterfaceProxy::SetProp2_Private(const ETbSame2Enum2& InProp2)
@@ -195,15 +199,15 @@ void UTbSame2SameEnum2InterfaceProxy::Func1Async_Implementation(UObject* WorldCo
 		Async(EAsyncExecution::Thread,
 			[Param1, this, &Result, CompletionAction]()
 			{
-				Result = BackendService->Execute_Func1(BackendService.GetObject(), Param1);
+				BackendService->Execute_Func1(BackendService.GetObject(), Result, Param1);
 				CompletionAction->Cancel();
 			});
 	}
 }
-ETbSame2Enum1 UTbSame2SameEnum2InterfaceProxy::Func1_Implementation(const ETbSame2Enum1& Param1)
+void UTbSame2SameEnum2InterfaceProxy::Func1_Implementation(ETbSame2Enum1& Result, const ETbSame2Enum1& Param1)
 {
 	TbSame2SameEnum2InterfaceTracer::trace_callFunc1(Param1);
-	return BackendService->Execute_Func1(BackendService.GetObject(), Param1);
+	BackendService->Execute_Func1(BackendService.GetObject(), Result, Param1);
 }
 void UTbSame2SameEnum2InterfaceProxy::Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, const ETbSame2Enum1& Param1, const ETbSame2Enum2& Param2)
 {
@@ -226,13 +230,13 @@ void UTbSame2SameEnum2InterfaceProxy::Func2Async_Implementation(UObject* WorldCo
 		Async(EAsyncExecution::Thread,
 			[Param1, Param2, this, &Result, CompletionAction]()
 			{
-				Result = BackendService->Execute_Func2(BackendService.GetObject(), Param1, Param2);
+				BackendService->Execute_Func2(BackendService.GetObject(), Result, Param1, Param2);
 				CompletionAction->Cancel();
 			});
 	}
 }
-ETbSame2Enum1 UTbSame2SameEnum2InterfaceProxy::Func2_Implementation(const ETbSame2Enum1& Param1, const ETbSame2Enum2& Param2)
+void UTbSame2SameEnum2InterfaceProxy::Func2_Implementation(ETbSame2Enum1& Result, const ETbSame2Enum1& Param1, const ETbSame2Enum2& Param2)
 {
 	TbSame2SameEnum2InterfaceTracer::trace_callFunc2(Param1, Param2);
-	return BackendService->Execute_Func2(BackendService.GetObject(), Param1, Param2);
+	BackendService->Execute_Func2(BackendService.GetObject(), Result, Param1, Param2);
 }

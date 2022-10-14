@@ -215,9 +215,9 @@ FTestbed1StructArrayInterfaceSigStringDelegate& UTestbed1StructArrayInterfaceSim
 	return SigStringSignal;
 }
 
-TArray<FTestbed1StructBool> UTestbed1StructArrayInterfaceSimulationService::GetPropBool_Implementation() const
+void UTestbed1StructArrayInterfaceSimulationService::GetPropBool_Implementation(TArray<FTestbed1StructBool>& ReturnValue) const
 {
-	return PropBool;
+	ReturnValue = PropBool;
 }
 
 void UTestbed1StructArrayInterfaceSimulationService::SetPropBool_Implementation(const TArray<FTestbed1StructBool>& InPropBool)
@@ -236,9 +236,9 @@ FTestbed1StructArrayInterfacePropBoolChangedDelegate& UTestbed1StructArrayInterf
 	return PropBoolChanged;
 }
 
-TArray<FTestbed1StructInt> UTestbed1StructArrayInterfaceSimulationService::GetPropInt_Implementation() const
+void UTestbed1StructArrayInterfaceSimulationService::GetPropInt_Implementation(TArray<FTestbed1StructInt>& ReturnValue) const
 {
-	return PropInt;
+	ReturnValue = PropInt;
 }
 
 void UTestbed1StructArrayInterfaceSimulationService::SetPropInt_Implementation(const TArray<FTestbed1StructInt>& InPropInt)
@@ -257,9 +257,9 @@ FTestbed1StructArrayInterfacePropIntChangedDelegate& UTestbed1StructArrayInterfa
 	return PropIntChanged;
 }
 
-TArray<FTestbed1StructFloat> UTestbed1StructArrayInterfaceSimulationService::GetPropFloat_Implementation() const
+void UTestbed1StructArrayInterfaceSimulationService::GetPropFloat_Implementation(TArray<FTestbed1StructFloat>& ReturnValue) const
 {
-	return PropFloat;
+	ReturnValue = PropFloat;
 }
 
 void UTestbed1StructArrayInterfaceSimulationService::SetPropFloat_Implementation(const TArray<FTestbed1StructFloat>& InPropFloat)
@@ -278,9 +278,9 @@ FTestbed1StructArrayInterfacePropFloatChangedDelegate& UTestbed1StructArrayInter
 	return PropFloatChanged;
 }
 
-TArray<FTestbed1StructString> UTestbed1StructArrayInterfaceSimulationService::GetPropString_Implementation() const
+void UTestbed1StructArrayInterfaceSimulationService::GetPropString_Implementation(TArray<FTestbed1StructString>& ReturnValue) const
 {
-	return PropString;
+	ReturnValue = PropString;
 }
 
 void UTestbed1StructArrayInterfaceSimulationService::SetPropString_Implementation(const TArray<FTestbed1StructString>& InPropString)
@@ -299,7 +299,7 @@ FTestbed1StructArrayInterfacePropStringChangedDelegate& UTestbed1StructArrayInte
 	return PropStringChanged;
 }
 
-FTestbed1StructBool UTestbed1StructArrayInterfaceSimulationService::FuncBool_Implementation(const TArray<FTestbed1StructBool>& ParamBool)
+void UTestbed1StructArrayInterfaceSimulationService::FuncBool_Implementation(FTestbed1StructBool& Result, const TArray<FTestbed1StructBool>& ParamBool)
 {
 	Params params;
 	params["paramBool"] = ParamBool;
@@ -316,10 +316,10 @@ FTestbed1StructBool UTestbed1StructArrayInterfaceSimulationService::FuncBool_Imp
 			}
 		});
 
-	return Promise.GetFuture().Get();
+	Result = Promise.GetFuture().Get();
 }
 
-FTestbed1StructBool UTestbed1StructArrayInterfaceSimulationService::FuncInt_Implementation(const TArray<FTestbed1StructInt>& ParamInt)
+void UTestbed1StructArrayInterfaceSimulationService::FuncInt_Implementation(FTestbed1StructBool& Result, const TArray<FTestbed1StructInt>& ParamInt)
 {
 	Params params;
 	params["paramInt"] = ParamInt;
@@ -336,10 +336,10 @@ FTestbed1StructBool UTestbed1StructArrayInterfaceSimulationService::FuncInt_Impl
 			}
 		});
 
-	return Promise.GetFuture().Get();
+	Result = Promise.GetFuture().Get();
 }
 
-FTestbed1StructBool UTestbed1StructArrayInterfaceSimulationService::FuncFloat_Implementation(const TArray<FTestbed1StructFloat>& ParamFloat)
+void UTestbed1StructArrayInterfaceSimulationService::FuncFloat_Implementation(FTestbed1StructBool& Result, const TArray<FTestbed1StructFloat>& ParamFloat)
 {
 	Params params;
 	params["paramFloat"] = ParamFloat;
@@ -356,10 +356,10 @@ FTestbed1StructBool UTestbed1StructArrayInterfaceSimulationService::FuncFloat_Im
 			}
 		});
 
-	return Promise.GetFuture().Get();
+	Result = Promise.GetFuture().Get();
 }
 
-FTestbed1StructBool UTestbed1StructArrayInterfaceSimulationService::FuncString_Implementation(const TArray<FTestbed1StructString>& ParamString)
+void UTestbed1StructArrayInterfaceSimulationService::FuncString_Implementation(FTestbed1StructBool& Result, const TArray<FTestbed1StructString>& ParamString)
 {
 	Params params;
 	params["paramString"] = ParamString;
@@ -376,5 +376,5 @@ FTestbed1StructBool UTestbed1StructArrayInterfaceSimulationService::FuncString_I
 			}
 		});
 
-	return Promise.GetFuture().Get();
+	Result = Promise.GetFuture().Get();
 }

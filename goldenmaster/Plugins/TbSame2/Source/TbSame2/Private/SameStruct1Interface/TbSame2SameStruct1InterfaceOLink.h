@@ -36,12 +36,12 @@ public:
 	FTbSame2SameStruct1InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
 
 	// properties
-	FTbSame2Struct1 GetProp1_Implementation() const override;
+	void GetProp1_Implementation(FTbSame2Struct1& ReturnValue) const override;
 	void SetProp1_Implementation(const FTbSame2Struct1& Prop1) override;
 
 	// operations
 	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame2Struct1& Result, const FTbSame2Struct1& Param1) override{};
-	FTbSame2Struct1 Func1_Implementation(const FTbSame2Struct1& Param1) override;
+	void Func1_Implementation(FTbSame2Struct1& Result, const FTbSame2Struct1& Param1) override;
 
 	// olink sink interface
 	std::string olinkObjectName() override;

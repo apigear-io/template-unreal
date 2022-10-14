@@ -52,20 +52,20 @@ public:
 	FTbSame2SameStruct2InterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() override;
 
 	// properties
-	FTbSame2Struct2 GetProp1_Implementation() const override;
+	void GetProp1_Implementation(FTbSame2Struct2& ReturnValue) const override;
 
 	void SetProp1_Implementation(const FTbSame2Struct2& InProp1) override;
 
-	FTbSame2Struct2 GetProp2_Implementation() const override;
+	void GetProp2_Implementation(FTbSame2Struct2& ReturnValue) const override;
 
 	void SetProp2_Implementation(const FTbSame2Struct2& InProp2) override;
 
 	// operations
 	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame2Struct1& Result, const FTbSame2Struct1& Param1) override;
-	FTbSame2Struct1 Func1_Implementation(const FTbSame2Struct1& Param1) override;
+	void Func1_Implementation(FTbSame2Struct1& Result, const FTbSame2Struct1& Param1) override;
 
 	void Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame2Struct1& Result, const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2) override;
-	FTbSame2Struct1 Func2_Implementation(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2) override;
+	void Func2_Implementation(FTbSame2Struct1& Result, const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2) override;
 
 private:
 	/** The connection to the service backend. */
