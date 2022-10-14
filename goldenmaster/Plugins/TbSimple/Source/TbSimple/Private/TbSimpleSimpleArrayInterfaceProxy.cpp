@@ -140,6 +140,7 @@ FTbSimpleSimpleArrayInterfaceSigStringDelegate& UTbSimpleSimpleArrayInterfacePro
 void UTbSimpleSimpleArrayInterfaceProxy::OnPropBoolChanged(const TArray<bool>& InPropBool)
 {
 	TbSimpleSimpleArrayInterfaceTracer::capture_state(this);
+	PropBool = InPropBool;
 	PropBoolChanged.Broadcast(InPropBool);
 }
 
@@ -172,6 +173,7 @@ FTbSimpleSimpleArrayInterfacePropBoolChangedDelegate& UTbSimpleSimpleArrayInterf
 void UTbSimpleSimpleArrayInterfaceProxy::OnPropIntChanged(const TArray<int32>& InPropInt)
 {
 	TbSimpleSimpleArrayInterfaceTracer::capture_state(this);
+	PropInt = InPropInt;
 	PropIntChanged.Broadcast(InPropInt);
 }
 
@@ -204,6 +206,7 @@ FTbSimpleSimpleArrayInterfacePropIntChangedDelegate& UTbSimpleSimpleArrayInterfa
 void UTbSimpleSimpleArrayInterfaceProxy::OnPropFloatChanged(const TArray<float>& InPropFloat)
 {
 	TbSimpleSimpleArrayInterfaceTracer::capture_state(this);
+	PropFloat = InPropFloat;
 	PropFloatChanged.Broadcast(InPropFloat);
 }
 
@@ -236,6 +239,7 @@ FTbSimpleSimpleArrayInterfacePropFloatChangedDelegate& UTbSimpleSimpleArrayInter
 void UTbSimpleSimpleArrayInterfaceProxy::OnPropStringChanged(const TArray<FString>& InPropString)
 {
 	TbSimpleSimpleArrayInterfaceTracer::capture_state(this);
+	PropString = InPropString;
 	PropStringChanged.Broadcast(InPropString);
 }
 

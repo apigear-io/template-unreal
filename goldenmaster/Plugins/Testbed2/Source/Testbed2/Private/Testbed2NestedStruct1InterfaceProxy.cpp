@@ -92,6 +92,7 @@ FTestbed2NestedStruct1InterfaceSig1Delegate& UTestbed2NestedStruct1InterfaceProx
 void UTestbed2NestedStruct1InterfaceProxy::OnProp1Changed(const FTestbed2NestedStruct1& InProp1)
 {
 	Testbed2NestedStruct1InterfaceTracer::capture_state(this);
+	Prop1 = InProp1;
 	Prop1Changed.Broadcast(InProp1);
 }
 

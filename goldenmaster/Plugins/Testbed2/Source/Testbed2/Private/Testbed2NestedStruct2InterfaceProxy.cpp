@@ -108,6 +108,7 @@ FTestbed2NestedStruct2InterfaceSig2Delegate& UTestbed2NestedStruct2InterfaceProx
 void UTestbed2NestedStruct2InterfaceProxy::OnProp1Changed(const FTestbed2NestedStruct1& InProp1)
 {
 	Testbed2NestedStruct2InterfaceTracer::capture_state(this);
+	Prop1 = InProp1;
 	Prop1Changed.Broadcast(InProp1);
 }
 
@@ -140,6 +141,7 @@ FTestbed2NestedStruct2InterfaceProp1ChangedDelegate& UTestbed2NestedStruct2Inter
 void UTestbed2NestedStruct2InterfaceProxy::OnProp2Changed(const FTestbed2NestedStruct2& InProp2)
 {
 	Testbed2NestedStruct2InterfaceTracer::capture_state(this);
+	Prop2 = InProp2;
 	Prop2Changed.Broadcast(InProp2);
 }
 

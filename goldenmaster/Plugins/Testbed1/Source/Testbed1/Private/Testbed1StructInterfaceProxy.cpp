@@ -140,6 +140,7 @@ FTestbed1StructInterfaceSigStringDelegate& UTestbed1StructInterfaceProxy::GetSig
 void UTestbed1StructInterfaceProxy::OnPropBoolChanged(const FTestbed1StructBool& InPropBool)
 {
 	Testbed1StructInterfaceTracer::capture_state(this);
+	PropBool = InPropBool;
 	PropBoolChanged.Broadcast(InPropBool);
 }
 
@@ -172,6 +173,7 @@ FTestbed1StructInterfacePropBoolChangedDelegate& UTestbed1StructInterfaceProxy::
 void UTestbed1StructInterfaceProxy::OnPropIntChanged(const FTestbed1StructInt& InPropInt)
 {
 	Testbed1StructInterfaceTracer::capture_state(this);
+	PropInt = InPropInt;
 	PropIntChanged.Broadcast(InPropInt);
 }
 
@@ -204,6 +206,7 @@ FTestbed1StructInterfacePropIntChangedDelegate& UTestbed1StructInterfaceProxy::G
 void UTestbed1StructInterfaceProxy::OnPropFloatChanged(const FTestbed1StructFloat& InPropFloat)
 {
 	Testbed1StructInterfaceTracer::capture_state(this);
+	PropFloat = InPropFloat;
 	PropFloatChanged.Broadcast(InPropFloat);
 }
 
@@ -236,6 +239,7 @@ FTestbed1StructInterfacePropFloatChangedDelegate& UTestbed1StructInterfaceProxy:
 void UTestbed1StructInterfaceProxy::OnPropStringChanged(const FTestbed1StructString& InPropString)
 {
 	Testbed1StructInterfaceTracer::capture_state(this);
+	PropString = InPropString;
 	PropStringChanged.Broadcast(InPropString);
 }
 

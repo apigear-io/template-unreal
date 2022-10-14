@@ -108,6 +108,7 @@ FTbSame1SameEnum2InterfaceSig2Delegate& UTbSame1SameEnum2InterfaceProxy::GetSig2
 void UTbSame1SameEnum2InterfaceProxy::OnProp1Changed(const ETbSame1Enum1& InProp1)
 {
 	TbSame1SameEnum2InterfaceTracer::capture_state(this);
+	Prop1 = InProp1;
 	Prop1Changed.Broadcast(InProp1);
 }
 
@@ -140,6 +141,7 @@ FTbSame1SameEnum2InterfaceProp1ChangedDelegate& UTbSame1SameEnum2InterfaceProxy:
 void UTbSame1SameEnum2InterfaceProxy::OnProp2Changed(const ETbSame1Enum2& InProp2)
 {
 	TbSame1SameEnum2InterfaceTracer::capture_state(this);
+	Prop2 = InProp2;
 	Prop2Changed.Broadcast(InProp2);
 }
 

@@ -140,6 +140,7 @@ FTbSimpleSimpleInterfaceSigStringDelegate& UTbSimpleSimpleInterfaceProxy::GetSig
 void UTbSimpleSimpleInterfaceProxy::OnPropBoolChanged(bool bInPropBool)
 {
 	TbSimpleSimpleInterfaceTracer::capture_state(this);
+	bPropBool = bInPropBool;
 	PropBoolChanged.Broadcast(bInPropBool);
 }
 
@@ -172,6 +173,7 @@ FTbSimpleSimpleInterfacePropBoolChangedDelegate& UTbSimpleSimpleInterfaceProxy::
 void UTbSimpleSimpleInterfaceProxy::OnPropIntChanged(int32 InPropInt)
 {
 	TbSimpleSimpleInterfaceTracer::capture_state(this);
+	PropInt = InPropInt;
 	PropIntChanged.Broadcast(InPropInt);
 }
 
@@ -204,6 +206,7 @@ FTbSimpleSimpleInterfacePropIntChangedDelegate& UTbSimpleSimpleInterfaceProxy::G
 void UTbSimpleSimpleInterfaceProxy::OnPropFloatChanged(float InPropFloat)
 {
 	TbSimpleSimpleInterfaceTracer::capture_state(this);
+	PropFloat = InPropFloat;
 	PropFloatChanged.Broadcast(InPropFloat);
 }
 
@@ -236,6 +239,7 @@ FTbSimpleSimpleInterfacePropFloatChangedDelegate& UTbSimpleSimpleInterfaceProxy:
 void UTbSimpleSimpleInterfaceProxy::OnPropStringChanged(const FString& InPropString)
 {
 	TbSimpleSimpleInterfaceTracer::capture_state(this);
+	PropString = InPropString;
 	PropStringChanged.Broadcast(InPropString);
 }
 

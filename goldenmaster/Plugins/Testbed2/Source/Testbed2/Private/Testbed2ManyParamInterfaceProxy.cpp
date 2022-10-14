@@ -140,6 +140,7 @@ FTestbed2ManyParamInterfaceSig4Delegate& UTestbed2ManyParamInterfaceProxy::GetSi
 void UTestbed2ManyParamInterfaceProxy::OnProp1Changed(int32 InProp1)
 {
 	Testbed2ManyParamInterfaceTracer::capture_state(this);
+	Prop1 = InProp1;
 	Prop1Changed.Broadcast(InProp1);
 }
 
@@ -172,6 +173,7 @@ FTestbed2ManyParamInterfaceProp1ChangedDelegate& UTestbed2ManyParamInterfaceProx
 void UTestbed2ManyParamInterfaceProxy::OnProp2Changed(int32 InProp2)
 {
 	Testbed2ManyParamInterfaceTracer::capture_state(this);
+	Prop2 = InProp2;
 	Prop2Changed.Broadcast(InProp2);
 }
 
@@ -204,6 +206,7 @@ FTestbed2ManyParamInterfaceProp2ChangedDelegate& UTestbed2ManyParamInterfaceProx
 void UTestbed2ManyParamInterfaceProxy::OnProp3Changed(int32 InProp3)
 {
 	Testbed2ManyParamInterfaceTracer::capture_state(this);
+	Prop3 = InProp3;
 	Prop3Changed.Broadcast(InProp3);
 }
 
@@ -236,6 +239,7 @@ FTestbed2ManyParamInterfaceProp3ChangedDelegate& UTestbed2ManyParamInterfaceProx
 void UTestbed2ManyParamInterfaceProxy::OnProp4Changed(int32 InProp4)
 {
 	Testbed2ManyParamInterfaceTracer::capture_state(this);
+	Prop4 = InProp4;
 	Prop4Changed.Broadcast(InProp4);
 }
 

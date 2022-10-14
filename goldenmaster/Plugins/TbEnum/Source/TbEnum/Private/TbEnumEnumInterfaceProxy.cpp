@@ -140,6 +140,7 @@ FTbEnumEnumInterfaceSig3Delegate& UTbEnumEnumInterfaceProxy::GetSig3SignalDelega
 void UTbEnumEnumInterfaceProxy::OnProp0Changed(const ETbEnumEnum0& InProp0)
 {
 	TbEnumEnumInterfaceTracer::capture_state(this);
+	Prop0 = InProp0;
 	Prop0Changed.Broadcast(InProp0);
 }
 
@@ -172,6 +173,7 @@ FTbEnumEnumInterfaceProp0ChangedDelegate& UTbEnumEnumInterfaceProxy::GetProp0Cha
 void UTbEnumEnumInterfaceProxy::OnProp1Changed(const ETbEnumEnum1& InProp1)
 {
 	TbEnumEnumInterfaceTracer::capture_state(this);
+	Prop1 = InProp1;
 	Prop1Changed.Broadcast(InProp1);
 }
 
@@ -204,6 +206,7 @@ FTbEnumEnumInterfaceProp1ChangedDelegate& UTbEnumEnumInterfaceProxy::GetProp1Cha
 void UTbEnumEnumInterfaceProxy::OnProp2Changed(const ETbEnumEnum2& InProp2)
 {
 	TbEnumEnumInterfaceTracer::capture_state(this);
+	Prop2 = InProp2;
 	Prop2Changed.Broadcast(InProp2);
 }
 
@@ -236,6 +239,7 @@ FTbEnumEnumInterfaceProp2ChangedDelegate& UTbEnumEnumInterfaceProxy::GetProp2Cha
 void UTbEnumEnumInterfaceProxy::OnProp3Changed(const ETbEnumEnum3& InProp3)
 {
 	TbEnumEnumInterfaceTracer::capture_state(this);
+	Prop3 = InProp3;
 	Prop3Changed.Broadcast(InProp3);
 }
 

@@ -124,6 +124,7 @@ FTestbed2NestedStruct3InterfaceSig3Delegate& UTestbed2NestedStruct3InterfaceProx
 void UTestbed2NestedStruct3InterfaceProxy::OnProp1Changed(const FTestbed2NestedStruct1& InProp1)
 {
 	Testbed2NestedStruct3InterfaceTracer::capture_state(this);
+	Prop1 = InProp1;
 	Prop1Changed.Broadcast(InProp1);
 }
 
@@ -156,6 +157,7 @@ FTestbed2NestedStruct3InterfaceProp1ChangedDelegate& UTestbed2NestedStruct3Inter
 void UTestbed2NestedStruct3InterfaceProxy::OnProp2Changed(const FTestbed2NestedStruct2& InProp2)
 {
 	Testbed2NestedStruct3InterfaceTracer::capture_state(this);
+	Prop2 = InProp2;
 	Prop2Changed.Broadcast(InProp2);
 }
 
@@ -188,6 +190,7 @@ FTestbed2NestedStruct3InterfaceProp2ChangedDelegate& UTestbed2NestedStruct3Inter
 void UTestbed2NestedStruct3InterfaceProxy::OnProp3Changed(const FTestbed2NestedStruct3& InProp3)
 {
 	Testbed2NestedStruct3InterfaceTracer::capture_state(this);
+	Prop3 = InProp3;
 	Prop3Changed.Broadcast(InProp3);
 }
 

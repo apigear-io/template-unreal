@@ -122,6 +122,7 @@ F{{$Iface}}{{Camel .Name}}Delegate& {{$Class}}::Get{{Camel .Name}}SignalDelegate
 void {{$Class}}::On{{Camel .Name}}Changed({{ueParam "In" .}})
 {
 	{{$Iface}}Tracer::capture_state(this);
+	{{ueVar "" .}} = {{ueVar "In" .}};
 	{{Camel .Name}}Changed.Broadcast({{ueVar "In" .}});
 }
 
