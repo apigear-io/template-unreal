@@ -35,8 +35,9 @@ DEFINE_LOG_CATEGORY(Log{{$mclass}});
 {{- range .Module.Interfaces }}
 {{- $class := printf "%s%s" $ModuleName .Name }}
 {{- $iclass := printf "I%sInterface" $class }}
+{{- $DisplayName := printf "%s%s" $ModuleName (Camel .Name) }}
 
-TSharedPtr<{{$iclass}}, ESPMode::ThreadSafe> {{$mclass}}::create{{$iclass}}()
+TScriptInterface<I{{$class}}Interface> {{$mclass}}::create{{$iclass}}()
 {
 	U{{$ModuleName}}Settings* settings = GetMutableDefault<U{{$ModuleName}}Settings>();
 
@@ -44,15 +45,15 @@ TSharedPtr<{{$iclass}}, ESPMode::ThreadSafe> {{$mclass}}::create{{$iclass}}()
 	{
 	case E{{$ModuleName}}Connection::CONNECTION_OLINK:
 		UE_LOG(Log{{$mclass}}, Log, TEXT("create{{$iclass}}: Using OLink service backend"));
-		return MakeShared<{{$ModuleName}}::{{Camel .Name}}::Private::OLinkService, ESPMode::ThreadSafe>();
+		return NewObject<{{ printf "U%sOLinkService" $DisplayName}}>();
 	case E{{$ModuleName}}Connection::CONNECTION_SIMU:
 		UE_LOG(Log{{$mclass}}, Log, TEXT("create{{$iclass}}: Using simulation service backend"));
-		return MakeShared<{{$ModuleName}}::{{Camel .Name}}::Private::SimulationService, ESPMode::ThreadSafe>();
+		return NewObject<{{ printf "U%sSimulationService" $DisplayName}}>();
 	case E{{$ModuleName}}Connection::CONNECTION_LOCAL:
 		UE_LOG(Log{{$mclass}}, Log, TEXT("create{{$iclass}}: Using local service backend"));
 	default:
 		UE_LOG(Log{{$mclass}}, Log, TEXT("create{{$iclass}}: Defaulting to local service backend"));
-		return MakeShared<{{$ModuleName}}::{{Camel .Name}}::Private::LocalService, ESPMode::ThreadSafe>();
+		return NewObject<{{ printf "U%sLocalService" $DisplayName}}>();
 	}
 }
 {{- end }}

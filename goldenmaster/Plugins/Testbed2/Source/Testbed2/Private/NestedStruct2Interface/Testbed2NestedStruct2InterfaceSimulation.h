@@ -17,19 +17,15 @@ limitations under the License.
 #pragma once
 
 #include "apig/Testbed2_apig.h"
+#include "Testbed2NestedStruct2InterfaceSimulation.generated.h"
 
-namespace Testbed2
+UCLASS(BlueprintType)
+class UTestbed2NestedStruct2InterfaceSimulationService : public UObject, public ITestbed2NestedStruct2InterfaceInterface
 {
-namespace NestedStruct2Interface
-{
-namespace Private
-{
-
-class SimulationService : public ITestbed2NestedStruct2InterfaceInterface
-{
+	GENERATED_BODY()
 public:
-	explicit SimulationService();
-	virtual ~SimulationService();
+	explicit UTestbed2NestedStruct2InterfaceSimulationService();
+	virtual ~UTestbed2NestedStruct2InterfaceSimulationService();
 
 	// signals
 	FTestbed2NestedStruct2InterfaceSig1Delegate Sig1Signal;
@@ -63,7 +59,3 @@ private:
 	FTestbed2NestedStruct1 Prop1;
 	FTestbed2NestedStruct2 Prop2;
 };
-
-} // namespace Private
-} // namespace NestedStruct2Interface
-} // namespace Testbed2

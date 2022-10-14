@@ -17,19 +17,15 @@ limitations under the License.
 #pragma once
 
 #include "apig/Testbed2_apig.h"
+#include "Testbed2ManyParamInterfaceSimulation.generated.h"
 
-namespace Testbed2
+UCLASS(BlueprintType)
+class UTestbed2ManyParamInterfaceSimulationService : public UObject, public ITestbed2ManyParamInterfaceInterface
 {
-namespace ManyParamInterface
-{
-namespace Private
-{
-
-class SimulationService : public ITestbed2ManyParamInterfaceInterface
-{
+	GENERATED_BODY()
 public:
-	explicit SimulationService();
-	virtual ~SimulationService();
+	explicit UTestbed2ManyParamInterfaceSimulationService();
+	virtual ~UTestbed2ManyParamInterfaceSimulationService();
 
 	// signals
 	FTestbed2ManyParamInterfaceSig1Delegate Sig1Signal;
@@ -89,7 +85,3 @@ private:
 	int32 Prop3;
 	int32 Prop4;
 };
-
-} // namespace Private
-} // namespace ManyParamInterface
-} // namespace Testbed2

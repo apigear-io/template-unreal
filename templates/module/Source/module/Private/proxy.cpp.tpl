@@ -86,23 +86,26 @@ public:
 {{- end }}
 {
 {{- $Service := printf "I%sInterface" $Iface }}
-	service = {{$FactoryName}}::create{{$Service}}();
+	BackendService = {{$FactoryName}}::create{{$Service}}();
 {{- range .Interface.Properties }}
-	service->Get{{Camel .Name}}ChangedDelegate().AddDynamic(this, &{{$Class}}::On{{Camel .Name}}Changed);
+	BackendService->Get{{Camel .Name}}ChangedDelegate().AddDynamic(this, &{{$Class}}::On{{Camel .Name}}Changed);
 {{- end }}
 {{- range .Interface.Signals }}
-	service->Get{{Camel .Name}}SignalDelegate().AddDynamic(this, &{{$Class}}::On{{Camel .Name}});
+	BackendService->Get{{Camel .Name}}SignalDelegate().AddDynamic(this, &{{$Class}}::On{{Camel .Name}});
 {{- end }}
 }
 
 {{$Class}}::~{{$Class}}()
 {
+	if (BackendService != nullptr)
+	{
 {{- range .Interface.Properties }}
-	service->Get{{Camel .Name}}ChangedDelegate().RemoveDynamic(this, &{{$Class}}::On{{Camel .Name}}Changed);
+		//BackendService->Get{{Camel .Name}}ChangedDelegate().RemoveDynamic(this, &{{$Class}}::On{{Camel .Name}}Changed);
 {{- end }}
 {{- range .Interface.Signals }}
-	service->Get{{Camel .Name}}SignalDelegate().RemoveDynamic(this, &{{$Class}}::On{{Camel .Name}});
+		//BackendService->Get{{Camel .Name}}SignalDelegate().RemoveDynamic(this, &{{$Class}}::On{{Camel .Name}});
 {{- end }}
+	}
 }
 
 {{- range .Interface.Signals }}
@@ -121,20 +124,20 @@ F{{$Iface}}{{Camel .Name}}Delegate& {{$Class}}::Get{{Camel .Name}}SignalDelegate
 {{- range .Interface.Properties }}
 void {{$Class}}::On{{Camel .Name}}Changed({{ueParam "In" .}})
 {
-	{{$Iface}}Tracer::capture_state(this);
+	{{$Iface}}Tracer::capture_state(BackendService.GetObject(), this);
 	{{ueVar "" .}} = {{ueVar "In" .}};
 	{{Camel .Name}}Changed.Broadcast({{ueVar "In" .}});
 }
 
 {{ueReturn "" .}} {{$Class}}::Get{{Camel .Name}}_Implementation() const
 {
-	return service->Execute_Get{{Camel .Name}}(service);
+	return BackendService->Execute_Get{{Camel .Name}}(BackendService.GetObject());
 }
 
 void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
 {
 	{{$Iface}}Tracer::trace_callSet{{Camel .Name}}({{ueVar "In" .}});
-	service->Execute_Set{{Camel .Name}}(service, {{ueVar "In" .}});
+	BackendService->Execute_Set{{Camel .Name}}(BackendService.GetObject(), {{ueVar "In" .}});
 }
 
 {{ueReturn "" .}} {{$Class}}::Get{{Camel .Name}}_Private() const
@@ -182,7 +185,7 @@ void {{$Class}}::{{Camel .Name}}Async_Implementation(UObject* WorldContextObject
 		Async(EAsyncExecution::Thread,
 			[{{range .Params}}{{ueVar "" .}}, {{ end }}this, &Result, CompletionAction]()
 			{
-				Result = service->Execute_{{Camel .Name}}(service, {{ueVars "" .Params}});
+				Result = BackendService->Execute_{{Camel .Name}}(BackendService.GetObject(), {{ueVars "" .Params}});
 				CompletionAction->Cancel();
 			});
 	}
@@ -192,9 +195,9 @@ void {{$Class}}::{{Camel .Name}}Async_Implementation(UObject* WorldContextObject
 {
 	{{ $Iface}}Tracer::trace_call{{Camel .Name}}({{ueVars "" .Params }});
 	{{- if not .Return.IsVoid }}
-	return service->Execute_{{Camel .Name}}(service, {{ ueVars "" .Params }});
+	return BackendService->Execute_{{Camel .Name}}(BackendService.GetObject(), {{ ueVars "" .Params }});
 	{{- else }}
-	service->Execute_{{Camel .Name}}(service, {{ ueVars "" .Params}});
+	BackendService->Execute_{{Camel .Name}}(BackendService.GetObject(), {{ ueVars "" .Params}});
 	{{- end }}
 }
 {{- end }}

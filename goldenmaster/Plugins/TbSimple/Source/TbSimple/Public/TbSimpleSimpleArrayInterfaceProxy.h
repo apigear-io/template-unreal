@@ -99,7 +99,8 @@ public:
 
 private:
 	/** The connection to the service backend. */
-	TSharedPtr<ITbSimpleSimpleArrayInterfaceInterface, ESPMode::ThreadSafe> service;
+	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSimple|SimpleArrayInterface")
+	TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> BackendService;
 
 	// signals
 	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface", BlueprintInternalUseOnly)

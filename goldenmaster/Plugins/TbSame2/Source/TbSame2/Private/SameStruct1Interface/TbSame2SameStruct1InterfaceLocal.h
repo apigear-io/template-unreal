@@ -17,20 +17,17 @@ limitations under the License.
 */
 #pragma once
 
+#include "CoreMinimal.h"
 #include "apig/TbSame2_apig.h"
+#include "TbSame2SameStruct1InterfaceLocal.generated.h"
 
-namespace TbSame2
+UCLASS(BlueprintType, Blueprintable, DisplayName = "TbSame2SameStruct1Interface")
+class TBSAME2_API UTbSame2SameStruct1InterfaceLocalService : public UObject, public ITbSame2SameStruct1InterfaceInterface
 {
-namespace SameStruct1Interface
-{
-namespace Private
-{
-
-class LocalService : public ITbSame2SameStruct1InterfaceInterface
-{
+	GENERATED_BODY()
 public:
-	explicit LocalService();
-	virtual ~LocalService();
+	explicit UTbSame2SameStruct1InterfaceLocalService();
+	virtual ~UTbSame2SameStruct1InterfaceLocalService();
 
 	// signals
 	FTbSame2SameStruct1InterfaceSig1Delegate Sig1Signal;
@@ -51,7 +48,3 @@ private:
 	// properties - local copy - use setter functions to emit changed signals
 	FTbSame2Struct1 Prop1;
 };
-
-} // namespace Private
-} // namespace SameStruct1Interface
-} // namespace TbSame2

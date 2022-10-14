@@ -17,20 +17,17 @@ limitations under the License.
 */
 #pragma once
 
+#include "CoreMinimal.h"
 #include "apig/TbSimple_apig.h"
+#include "TbSimpleSimpleArrayInterfaceLocal.generated.h"
 
-namespace TbSimple
+UCLASS(BlueprintType, Blueprintable, DisplayName = "TbSimpleSimpleArrayInterface")
+class TBSIMPLE_API UTbSimpleSimpleArrayInterfaceLocalService : public UObject, public ITbSimpleSimpleArrayInterfaceInterface
 {
-namespace SimpleArrayInterface
-{
-namespace Private
-{
-
-class LocalService : public ITbSimpleSimpleArrayInterfaceInterface
-{
+	GENERATED_BODY()
 public:
-	explicit LocalService();
-	virtual ~LocalService();
+	explicit UTbSimpleSimpleArrayInterfaceLocalService();
+	virtual ~UTbSimpleSimpleArrayInterfaceLocalService();
 
 	// signals
 	FTbSimpleSimpleArrayInterfaceSigBoolDelegate SigBoolSignal;
@@ -90,7 +87,3 @@ private:
 	TArray<float> PropFloat;
 	TArray<FString> PropString;
 };
-
-} // namespace Private
-} // namespace SimpleArrayInterface
-} // namespace TbSimple

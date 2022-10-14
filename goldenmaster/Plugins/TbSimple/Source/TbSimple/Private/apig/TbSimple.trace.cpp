@@ -6,13 +6,13 @@ TbSimpleSimpleInterfaceTracer::TbSimpleSimpleInterfaceTracer()
 {
 }
 
-void TbSimpleSimpleInterfaceTracer::capture_state(ITbSimpleSimpleInterfaceInterface* obj)
+void TbSimpleSimpleInterfaceTracer::capture_state(UObject* Object, ITbSimpleSimpleInterfaceInterface* obj)
 {
 	nlohmann::json fields_;
-	fields_["propBool"] = obj->GetPropBool();
-	fields_["propInt"] = obj->GetPropInt();
-	fields_["propFloat"] = obj->GetPropFloat();
-	fields_["propString"] = obj->GetPropString();
+	fields_["propBool"] = obj->Execute_GetPropBool(Object);
+	fields_["propInt"] = obj->Execute_GetPropInt(Object);
+	fields_["propFloat"] = obj->Execute_GetPropFloat(Object);
+	fields_["propString"] = obj->Execute_GetPropString(Object);
 	Tracer::instance()->state("tb.simple/SimpleInterface", fields_);
 }
 void TbSimpleSimpleInterfaceTracer::trace_callSetPropBool(bool bInPropBool)
@@ -100,13 +100,13 @@ TbSimpleSimpleArrayInterfaceTracer::TbSimpleSimpleArrayInterfaceTracer()
 {
 }
 
-void TbSimpleSimpleArrayInterfaceTracer::capture_state(ITbSimpleSimpleArrayInterfaceInterface* obj)
+void TbSimpleSimpleArrayInterfaceTracer::capture_state(UObject* Object, ITbSimpleSimpleArrayInterfaceInterface* obj)
 {
 	nlohmann::json fields_;
-	fields_["propBool"] = obj->GetPropBool();
-	fields_["propInt"] = obj->GetPropInt();
-	fields_["propFloat"] = obj->GetPropFloat();
-	fields_["propString"] = obj->GetPropString();
+	fields_["propBool"] = obj->Execute_GetPropBool(Object);
+	fields_["propInt"] = obj->Execute_GetPropInt(Object);
+	fields_["propFloat"] = obj->Execute_GetPropFloat(Object);
+	fields_["propString"] = obj->Execute_GetPropString(Object);
 	Tracer::instance()->state("tb.simple/SimpleArrayInterface", fields_);
 }
 void TbSimpleSimpleArrayInterfaceTracer::trace_callSetPropBool(const TArray<bool>& InPropBool)

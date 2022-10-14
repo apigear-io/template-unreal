@@ -16,33 +16,26 @@ limitations under the License.
 */
 
 #include "TbSame2SameStruct1InterfaceLocal.h"
-
-namespace TbSame2
-{
-namespace SameStruct1Interface
-{
-namespace Private
-{
-LocalService::LocalService()
+UTbSame2SameStruct1InterfaceLocalService::UTbSame2SameStruct1InterfaceLocalService()
 	: ITbSame2SameStruct1InterfaceInterface()
 	, Prop1(FTbSame2Struct1())
 {
 }
-LocalService::~LocalService()
+UTbSame2SameStruct1InterfaceLocalService::~UTbSame2SameStruct1InterfaceLocalService()
 {
 }
 
-FTbSame2SameStruct1InterfaceSig1Delegate& LocalService::GetSig1SignalDelegate()
+FTbSame2SameStruct1InterfaceSig1Delegate& UTbSame2SameStruct1InterfaceLocalService::GetSig1SignalDelegate()
 {
 	return Sig1Signal;
 }
 
-FTbSame2Struct1 LocalService::GetProp1_Implementation() const
+FTbSame2Struct1 UTbSame2SameStruct1InterfaceLocalService::GetProp1_Implementation() const
 {
 	return Prop1;
 }
 
-void LocalService::SetProp1_Implementation(const FTbSame2Struct1& InProp1)
+void UTbSame2SameStruct1InterfaceLocalService::SetProp1_Implementation(const FTbSame2Struct1& InProp1)
 {
 	if (Prop1 != InProp1)
 	{
@@ -51,18 +44,14 @@ void LocalService::SetProp1_Implementation(const FTbSame2Struct1& InProp1)
 	}
 }
 
-FTbSame2SameStruct1InterfaceProp1ChangedDelegate& LocalService::GetProp1ChangedDelegate()
+FTbSame2SameStruct1InterfaceProp1ChangedDelegate& UTbSame2SameStruct1InterfaceLocalService::GetProp1ChangedDelegate()
 {
 	return Prop1Changed;
 }
 
-FTbSame2Struct1 LocalService::Func1_Implementation(const FTbSame2Struct1& Param1)
+FTbSame2Struct1 UTbSame2SameStruct1InterfaceLocalService::Func1_Implementation(const FTbSame2Struct1& Param1)
 {
 	(void)Param1;
 	// do business logic here
 	return FTbSame2Struct1();
 }
-
-} // namespace Private
-} // namespace SameStruct1Interface
-} // namespace TbSame2

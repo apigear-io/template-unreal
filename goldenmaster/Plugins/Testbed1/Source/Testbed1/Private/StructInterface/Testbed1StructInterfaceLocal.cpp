@@ -16,14 +16,7 @@ limitations under the License.
 */
 
 #include "Testbed1StructInterfaceLocal.h"
-
-namespace Testbed1
-{
-namespace StructInterface
-{
-namespace Private
-{
-LocalService::LocalService()
+UTestbed1StructInterfaceLocalService::UTestbed1StructInterfaceLocalService()
 	: ITestbed1StructInterfaceInterface()
 	, PropBool(FTestbed1StructBool())
 	, PropInt(FTestbed1StructInt())
@@ -31,36 +24,36 @@ LocalService::LocalService()
 	, PropString(FTestbed1StructString())
 {
 }
-LocalService::~LocalService()
+UTestbed1StructInterfaceLocalService::~UTestbed1StructInterfaceLocalService()
 {
 }
 
-FTestbed1StructInterfaceSigBoolDelegate& LocalService::GetSigBoolSignalDelegate()
+FTestbed1StructInterfaceSigBoolDelegate& UTestbed1StructInterfaceLocalService::GetSigBoolSignalDelegate()
 {
 	return SigBoolSignal;
 }
 
-FTestbed1StructInterfaceSigIntDelegate& LocalService::GetSigIntSignalDelegate()
+FTestbed1StructInterfaceSigIntDelegate& UTestbed1StructInterfaceLocalService::GetSigIntSignalDelegate()
 {
 	return SigIntSignal;
 }
 
-FTestbed1StructInterfaceSigFloatDelegate& LocalService::GetSigFloatSignalDelegate()
+FTestbed1StructInterfaceSigFloatDelegate& UTestbed1StructInterfaceLocalService::GetSigFloatSignalDelegate()
 {
 	return SigFloatSignal;
 }
 
-FTestbed1StructInterfaceSigStringDelegate& LocalService::GetSigStringSignalDelegate()
+FTestbed1StructInterfaceSigStringDelegate& UTestbed1StructInterfaceLocalService::GetSigStringSignalDelegate()
 {
 	return SigStringSignal;
 }
 
-FTestbed1StructBool LocalService::GetPropBool_Implementation() const
+FTestbed1StructBool UTestbed1StructInterfaceLocalService::GetPropBool_Implementation() const
 {
 	return PropBool;
 }
 
-void LocalService::SetPropBool_Implementation(const FTestbed1StructBool& InPropBool)
+void UTestbed1StructInterfaceLocalService::SetPropBool_Implementation(const FTestbed1StructBool& InPropBool)
 {
 	if (PropBool != InPropBool)
 	{
@@ -69,16 +62,16 @@ void LocalService::SetPropBool_Implementation(const FTestbed1StructBool& InPropB
 	}
 }
 
-FTestbed1StructInterfacePropBoolChangedDelegate& LocalService::GetPropBoolChangedDelegate()
+FTestbed1StructInterfacePropBoolChangedDelegate& UTestbed1StructInterfaceLocalService::GetPropBoolChangedDelegate()
 {
 	return PropBoolChanged;
 }
-FTestbed1StructInt LocalService::GetPropInt_Implementation() const
+FTestbed1StructInt UTestbed1StructInterfaceLocalService::GetPropInt_Implementation() const
 {
 	return PropInt;
 }
 
-void LocalService::SetPropInt_Implementation(const FTestbed1StructInt& InPropInt)
+void UTestbed1StructInterfaceLocalService::SetPropInt_Implementation(const FTestbed1StructInt& InPropInt)
 {
 	if (PropInt != InPropInt)
 	{
@@ -87,16 +80,16 @@ void LocalService::SetPropInt_Implementation(const FTestbed1StructInt& InPropInt
 	}
 }
 
-FTestbed1StructInterfacePropIntChangedDelegate& LocalService::GetPropIntChangedDelegate()
+FTestbed1StructInterfacePropIntChangedDelegate& UTestbed1StructInterfaceLocalService::GetPropIntChangedDelegate()
 {
 	return PropIntChanged;
 }
-FTestbed1StructFloat LocalService::GetPropFloat_Implementation() const
+FTestbed1StructFloat UTestbed1StructInterfaceLocalService::GetPropFloat_Implementation() const
 {
 	return PropFloat;
 }
 
-void LocalService::SetPropFloat_Implementation(const FTestbed1StructFloat& InPropFloat)
+void UTestbed1StructInterfaceLocalService::SetPropFloat_Implementation(const FTestbed1StructFloat& InPropFloat)
 {
 	if (PropFloat != InPropFloat)
 	{
@@ -105,16 +98,16 @@ void LocalService::SetPropFloat_Implementation(const FTestbed1StructFloat& InPro
 	}
 }
 
-FTestbed1StructInterfacePropFloatChangedDelegate& LocalService::GetPropFloatChangedDelegate()
+FTestbed1StructInterfacePropFloatChangedDelegate& UTestbed1StructInterfaceLocalService::GetPropFloatChangedDelegate()
 {
 	return PropFloatChanged;
 }
-FTestbed1StructString LocalService::GetPropString_Implementation() const
+FTestbed1StructString UTestbed1StructInterfaceLocalService::GetPropString_Implementation() const
 {
 	return PropString;
 }
 
-void LocalService::SetPropString_Implementation(const FTestbed1StructString& InPropString)
+void UTestbed1StructInterfaceLocalService::SetPropString_Implementation(const FTestbed1StructString& InPropString)
 {
 	if (PropString != InPropString)
 	{
@@ -123,36 +116,32 @@ void LocalService::SetPropString_Implementation(const FTestbed1StructString& InP
 	}
 }
 
-FTestbed1StructInterfacePropStringChangedDelegate& LocalService::GetPropStringChangedDelegate()
+FTestbed1StructInterfacePropStringChangedDelegate& UTestbed1StructInterfaceLocalService::GetPropStringChangedDelegate()
 {
 	return PropStringChanged;
 }
 
-FTestbed1StructBool LocalService::FuncBool_Implementation(const FTestbed1StructBool& ParamBool)
+FTestbed1StructBool UTestbed1StructInterfaceLocalService::FuncBool_Implementation(const FTestbed1StructBool& ParamBool)
 {
 	(void)ParamBool;
 	// do business logic here
 	return FTestbed1StructBool();
 }
-FTestbed1StructBool LocalService::FuncInt_Implementation(const FTestbed1StructInt& ParamInt)
+FTestbed1StructBool UTestbed1StructInterfaceLocalService::FuncInt_Implementation(const FTestbed1StructInt& ParamInt)
 {
 	(void)ParamInt;
 	// do business logic here
 	return FTestbed1StructBool();
 }
-FTestbed1StructFloat LocalService::FuncFloat_Implementation(const FTestbed1StructFloat& ParamFloat)
+FTestbed1StructFloat UTestbed1StructInterfaceLocalService::FuncFloat_Implementation(const FTestbed1StructFloat& ParamFloat)
 {
 	(void)ParamFloat;
 	// do business logic here
 	return FTestbed1StructFloat();
 }
-FTestbed1StructString LocalService::FuncString_Implementation(const FTestbed1StructString& ParamString)
+FTestbed1StructString UTestbed1StructInterfaceLocalService::FuncString_Implementation(const FTestbed1StructString& ParamString)
 {
 	(void)ParamString;
 	// do business logic here
 	return FTestbed1StructString();
 }
-
-} // namespace Private
-} // namespace StructInterface
-} // namespace Testbed1

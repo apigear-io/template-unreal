@@ -17,20 +17,17 @@ limitations under the License.
 */
 #pragma once
 
+#include "CoreMinimal.h"
 #include "apig/Testbed2_apig.h"
+#include "Testbed2NestedStruct1InterfaceLocal.generated.h"
 
-namespace Testbed2
+UCLASS(BlueprintType, Blueprintable, DisplayName = "Testbed2NestedStruct1Interface")
+class TESTBED2_API UTestbed2NestedStruct1InterfaceLocalService : public UObject, public ITestbed2NestedStruct1InterfaceInterface
 {
-namespace NestedStruct1Interface
-{
-namespace Private
-{
-
-class LocalService : public ITestbed2NestedStruct1InterfaceInterface
-{
+	GENERATED_BODY()
 public:
-	explicit LocalService();
-	virtual ~LocalService();
+	explicit UTestbed2NestedStruct1InterfaceLocalService();
+	virtual ~UTestbed2NestedStruct1InterfaceLocalService();
 
 	// signals
 	FTestbed2NestedStruct1InterfaceSig1Delegate Sig1Signal;
@@ -51,7 +48,3 @@ private:
 	// properties - local copy - use setter functions to emit changed signals
 	FTestbed2NestedStruct1 Prop1;
 };
-
-} // namespace Private
-} // namespace NestedStruct1Interface
-} // namespace Testbed2

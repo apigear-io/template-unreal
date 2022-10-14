@@ -69,7 +69,8 @@ public:
 
 private:
 	/** The connection to the service backend. */
-	TSharedPtr<ITbSame2SameStruct2InterfaceInterface, ESPMode::ThreadSafe> service;
+	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSame2|SameStruct2Interface")
+	TScriptInterface<ITbSame2SameStruct2InterfaceInterface> BackendService;
 
 	// signals
 	UFUNCTION(Category = "ApiGear|TbSame2|SameStruct2Interface", BlueprintInternalUseOnly)

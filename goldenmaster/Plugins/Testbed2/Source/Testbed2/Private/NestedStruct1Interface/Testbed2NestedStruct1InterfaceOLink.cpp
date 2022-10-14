@@ -31,14 +31,7 @@ limitations under the License.
 #include "Misc/DateTime.h"
 
 using namespace ApiGear::ObjectLink;
-
-namespace Testbed2
-{
-namespace NestedStruct1Interface
-{
-namespace Private
-{
-OLinkService::OLinkService()
+UTestbed2NestedStruct1InterfaceOLinkService::UTestbed2NestedStruct1InterfaceOLinkService()
 	: ITestbed2NestedStruct1InterfaceInterface()
 	, m_node(nullptr)
 	, m_isReady(false)
@@ -53,7 +46,7 @@ OLinkService::OLinkService()
 	m_node = ClientRegistry::get().addObjectSink(this);
 }
 
-OLinkService::~OLinkService()
+UTestbed2NestedStruct1InterfaceOLinkService::~UTestbed2NestedStruct1InterfaceOLinkService()
 {
 	ClientRegistry::get().removeObjectSink(this);
 	if (GEngine != nullptr)
@@ -65,17 +58,17 @@ OLinkService::~OLinkService()
 	m_node = nullptr;
 }
 
-FTestbed2NestedStruct1InterfaceSig1Delegate& OLinkService::GetSig1SignalDelegate()
+FTestbed2NestedStruct1InterfaceSig1Delegate& UTestbed2NestedStruct1InterfaceOLinkService::GetSig1SignalDelegate()
 {
 	return Sig1Signal;
 }
 
-FTestbed2NestedStruct1 OLinkService::GetProp1_Implementation() const
+FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceOLinkService::GetProp1_Implementation() const
 {
 	return Prop1;
 }
 
-void OLinkService::SetProp1_Implementation(const FTestbed2NestedStruct1& InProp1)
+void UTestbed2NestedStruct1InterfaceOLinkService::SetProp1_Implementation(const FTestbed2NestedStruct1& InProp1)
 {
 	if (!m_node)
 	{
@@ -84,12 +77,12 @@ void OLinkService::SetProp1_Implementation(const FTestbed2NestedStruct1& InProp1
 	m_node->setRemoteProperty("testbed2.NestedStruct1Interface/prop1", InProp1);
 }
 
-FTestbed2NestedStruct1InterfaceProp1ChangedDelegate& OLinkService::GetProp1ChangedDelegate()
+FTestbed2NestedStruct1InterfaceProp1ChangedDelegate& UTestbed2NestedStruct1InterfaceOLinkService::GetProp1ChangedDelegate()
 {
 	return Prop1Changed;
 }
 
-FTestbed2NestedStruct1 OLinkService::Func1_Implementation(const FTestbed2NestedStruct1& Param1)
+FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceOLinkService::Func1_Implementation(const FTestbed2NestedStruct1& Param1)
 {
 	if (!m_node)
 	{
@@ -108,7 +101,7 @@ FTestbed2NestedStruct1 OLinkService::Func1_Implementation(const FTestbed2NestedS
 	return Promise.GetFuture().Get();
 }
 
-void OLinkService::applyState(const nlohmann::json& fields)
+void UTestbed2NestedStruct1InterfaceOLinkService::applyState(const nlohmann::json& fields)
 {
 	if (fields.contains("prop1"))
 	{
@@ -120,12 +113,12 @@ void OLinkService::applyState(const nlohmann::json& fields)
 	}
 }
 
-std::string OLinkService::olinkObjectName()
+std::string UTestbed2NestedStruct1InterfaceOLinkService::olinkObjectName()
 {
 	return "testbed2.NestedStruct1Interface";
 }
 
-void OLinkService::olinkOnSignal(std::string name, nlohmann::json args)
+void UTestbed2NestedStruct1InterfaceOLinkService::olinkOnSignal(std::string name, nlohmann::json args)
 {
 	std::string path = Name::pathFromName(name);
 	if (path == "sig1")
@@ -135,13 +128,13 @@ void OLinkService::olinkOnSignal(std::string name, nlohmann::json args)
 	}
 }
 
-void OLinkService::olinkOnPropertyChanged(std::string name, nlohmann::json value)
+void UTestbed2NestedStruct1InterfaceOLinkService::olinkOnPropertyChanged(std::string name, nlohmann::json value)
 {
 	std::string path = Name::pathFromName(name);
 	applyState({{path, value}});
 }
 
-void OLinkService::olinkOnInit(std::string name, nlohmann::json props, IClientNode* node)
+void UTestbed2NestedStruct1InterfaceOLinkService::olinkOnInit(std::string name, nlohmann::json props, IClientNode* node)
 {
 	m_isReady = true;
 	m_node = node;
@@ -149,12 +142,8 @@ void OLinkService::olinkOnInit(std::string name, nlohmann::json props, IClientNo
 	// call isReady();
 }
 
-void OLinkService::olinkOnRelease()
+void UTestbed2NestedStruct1InterfaceOLinkService::olinkOnRelease()
 {
 	m_isReady = false;
 	m_node = nullptr;
 }
-
-} // namespace Private
-} // namespace NestedStruct1Interface
-} // namespace Testbed2

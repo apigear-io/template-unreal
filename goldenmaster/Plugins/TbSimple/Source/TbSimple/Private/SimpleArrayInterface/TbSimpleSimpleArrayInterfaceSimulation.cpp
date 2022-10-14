@@ -28,14 +28,7 @@ limitations under the License.
 #include "Engine/Engine.h"
 
 using namespace ApiGear::JSONRPC;
-
-namespace TbSimple
-{
-namespace SimpleArrayInterface
-{
-namespace Private
-{
-SimulationService::SimulationService()
+UTbSimpleSimpleArrayInterfaceSimulationService::UTbSimpleSimpleArrayInterfaceSimulationService()
 	: ITbSimpleSimpleArrayInterfaceInterface()
 	, PropBool(TArray<bool>())
 	, PropInt(TArray<int32>())
@@ -188,7 +181,7 @@ SimulationService::SimulationService()
 	}
 }
 
-SimulationService::~SimulationService()
+UTbSimpleSimpleArrayInterfaceSimulationService::~UTbSimpleSimpleArrayInterfaceSimulationService()
 {
 	if (GEngine != nullptr)
 	{
@@ -202,32 +195,32 @@ SimulationService::~SimulationService()
 	}
 }
 
-FTbSimpleSimpleArrayInterfaceSigBoolDelegate& SimulationService::GetSigBoolSignalDelegate()
+FTbSimpleSimpleArrayInterfaceSigBoolDelegate& UTbSimpleSimpleArrayInterfaceSimulationService::GetSigBoolSignalDelegate()
 {
 	return SigBoolSignal;
 }
 
-FTbSimpleSimpleArrayInterfaceSigIntDelegate& SimulationService::GetSigIntSignalDelegate()
+FTbSimpleSimpleArrayInterfaceSigIntDelegate& UTbSimpleSimpleArrayInterfaceSimulationService::GetSigIntSignalDelegate()
 {
 	return SigIntSignal;
 }
 
-FTbSimpleSimpleArrayInterfaceSigFloatDelegate& SimulationService::GetSigFloatSignalDelegate()
+FTbSimpleSimpleArrayInterfaceSigFloatDelegate& UTbSimpleSimpleArrayInterfaceSimulationService::GetSigFloatSignalDelegate()
 {
 	return SigFloatSignal;
 }
 
-FTbSimpleSimpleArrayInterfaceSigStringDelegate& SimulationService::GetSigStringSignalDelegate()
+FTbSimpleSimpleArrayInterfaceSigStringDelegate& UTbSimpleSimpleArrayInterfaceSimulationService::GetSigStringSignalDelegate()
 {
 	return SigStringSignal;
 }
 
-TArray<bool> SimulationService::GetPropBool_Implementation() const
+TArray<bool> UTbSimpleSimpleArrayInterfaceSimulationService::GetPropBool_Implementation() const
 {
 	return PropBool;
 }
 
-void SimulationService::SetPropBool_Implementation(const TArray<bool>& InPropBool)
+void UTbSimpleSimpleArrayInterfaceSimulationService::SetPropBool_Implementation(const TArray<bool>& InPropBool)
 {
 	Params params;
 	params["propBool"] = InPropBool;
@@ -238,17 +231,17 @@ void SimulationService::SetPropBool_Implementation(const TArray<bool>& InPropBoo
 	}
 }
 
-FTbSimpleSimpleArrayInterfacePropBoolChangedDelegate& SimulationService::GetPropBoolChangedDelegate()
+FTbSimpleSimpleArrayInterfacePropBoolChangedDelegate& UTbSimpleSimpleArrayInterfaceSimulationService::GetPropBoolChangedDelegate()
 {
 	return PropBoolChanged;
 }
 
-TArray<int32> SimulationService::GetPropInt_Implementation() const
+TArray<int32> UTbSimpleSimpleArrayInterfaceSimulationService::GetPropInt_Implementation() const
 {
 	return PropInt;
 }
 
-void SimulationService::SetPropInt_Implementation(const TArray<int32>& InPropInt)
+void UTbSimpleSimpleArrayInterfaceSimulationService::SetPropInt_Implementation(const TArray<int32>& InPropInt)
 {
 	Params params;
 	params["propInt"] = InPropInt;
@@ -259,17 +252,17 @@ void SimulationService::SetPropInt_Implementation(const TArray<int32>& InPropInt
 	}
 }
 
-FTbSimpleSimpleArrayInterfacePropIntChangedDelegate& SimulationService::GetPropIntChangedDelegate()
+FTbSimpleSimpleArrayInterfacePropIntChangedDelegate& UTbSimpleSimpleArrayInterfaceSimulationService::GetPropIntChangedDelegate()
 {
 	return PropIntChanged;
 }
 
-TArray<float> SimulationService::GetPropFloat_Implementation() const
+TArray<float> UTbSimpleSimpleArrayInterfaceSimulationService::GetPropFloat_Implementation() const
 {
 	return PropFloat;
 }
 
-void SimulationService::SetPropFloat_Implementation(const TArray<float>& InPropFloat)
+void UTbSimpleSimpleArrayInterfaceSimulationService::SetPropFloat_Implementation(const TArray<float>& InPropFloat)
 {
 	Params params;
 	params["propFloat"] = InPropFloat;
@@ -280,17 +273,17 @@ void SimulationService::SetPropFloat_Implementation(const TArray<float>& InPropF
 	}
 }
 
-FTbSimpleSimpleArrayInterfacePropFloatChangedDelegate& SimulationService::GetPropFloatChangedDelegate()
+FTbSimpleSimpleArrayInterfacePropFloatChangedDelegate& UTbSimpleSimpleArrayInterfaceSimulationService::GetPropFloatChangedDelegate()
 {
 	return PropFloatChanged;
 }
 
-TArray<FString> SimulationService::GetPropString_Implementation() const
+TArray<FString> UTbSimpleSimpleArrayInterfaceSimulationService::GetPropString_Implementation() const
 {
 	return PropString;
 }
 
-void SimulationService::SetPropString_Implementation(const TArray<FString>& InPropString)
+void UTbSimpleSimpleArrayInterfaceSimulationService::SetPropString_Implementation(const TArray<FString>& InPropString)
 {
 	Params params;
 	params["propString"] = InPropString;
@@ -301,12 +294,12 @@ void SimulationService::SetPropString_Implementation(const TArray<FString>& InPr
 	}
 }
 
-FTbSimpleSimpleArrayInterfacePropStringChangedDelegate& SimulationService::GetPropStringChangedDelegate()
+FTbSimpleSimpleArrayInterfacePropStringChangedDelegate& UTbSimpleSimpleArrayInterfaceSimulationService::GetPropStringChangedDelegate()
 {
 	return PropStringChanged;
 }
 
-TArray<bool> SimulationService::FuncBool_Implementation(const TArray<bool>& ParamBool)
+TArray<bool> UTbSimpleSimpleArrayInterfaceSimulationService::FuncBool_Implementation(const TArray<bool>& ParamBool)
 {
 	Params params;
 	params["paramBool"] = ParamBool;
@@ -326,7 +319,7 @@ TArray<bool> SimulationService::FuncBool_Implementation(const TArray<bool>& Para
 	return Promise.GetFuture().Get();
 }
 
-TArray<int32> SimulationService::FuncInt_Implementation(const TArray<int32>& ParamInt)
+TArray<int32> UTbSimpleSimpleArrayInterfaceSimulationService::FuncInt_Implementation(const TArray<int32>& ParamInt)
 {
 	Params params;
 	params["paramInt"] = ParamInt;
@@ -346,7 +339,7 @@ TArray<int32> SimulationService::FuncInt_Implementation(const TArray<int32>& Par
 	return Promise.GetFuture().Get();
 }
 
-TArray<float> SimulationService::FuncFloat_Implementation(const TArray<float>& ParamFloat)
+TArray<float> UTbSimpleSimpleArrayInterfaceSimulationService::FuncFloat_Implementation(const TArray<float>& ParamFloat)
 {
 	Params params;
 	params["paramFloat"] = ParamFloat;
@@ -366,7 +359,7 @@ TArray<float> SimulationService::FuncFloat_Implementation(const TArray<float>& P
 	return Promise.GetFuture().Get();
 }
 
-TArray<FString> SimulationService::FuncString_Implementation(const TArray<FString>& ParamString)
+TArray<FString> UTbSimpleSimpleArrayInterfaceSimulationService::FuncString_Implementation(const TArray<FString>& ParamString)
 {
 	Params params;
 	params["paramString"] = ParamString;
@@ -385,7 +378,3 @@ TArray<FString> SimulationService::FuncString_Implementation(const TArray<FStrin
 
 	return Promise.GetFuture().Get();
 }
-
-} // namespace Private
-} // namespace SimpleArrayInterface
-} // namespace TbSimple

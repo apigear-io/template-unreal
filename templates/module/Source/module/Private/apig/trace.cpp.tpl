@@ -16,11 +16,11 @@
 {
 }
 
-void {{$class}}::capture_state(I{{$ModuleName}}{{$Name}}Interface* obj)
+void {{$class}}::capture_state(UObject* Object, I{{$ModuleName}}{{$Name}}Interface* obj)
 {
 	nlohmann::json fields_;
 {{- range .Properties }}
-	fields_["{{.Name}}"] = obj->Get{{Camel .Name}}();
+	fields_["{{.Name}}"] = obj->Execute_Get{{Camel .Name}}(Object);
 {{- end }}
 	Tracer::instance()->state("{{$symbol}}", fields_);
 }

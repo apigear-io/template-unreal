@@ -17,19 +17,15 @@ limitations under the License.
 #pragma once
 
 #include "apig/Testbed1_apig.h"
+#include "Testbed1StructArrayInterfaceSimulation.generated.h"
 
-namespace Testbed1
+UCLASS(BlueprintType)
+class UTestbed1StructArrayInterfaceSimulationService : public UObject, public ITestbed1StructArrayInterfaceInterface
 {
-namespace StructArrayInterface
-{
-namespace Private
-{
-
-class SimulationService : public ITestbed1StructArrayInterfaceInterface
-{
+	GENERATED_BODY()
 public:
-	explicit SimulationService();
-	virtual ~SimulationService();
+	explicit UTestbed1StructArrayInterfaceSimulationService();
+	virtual ~UTestbed1StructArrayInterfaceSimulationService();
 
 	// signals
 	FTestbed1StructArrayInterfaceSigBoolDelegate SigBoolSignal;
@@ -89,7 +85,3 @@ private:
 	TArray<FTestbed1StructFloat> PropFloat;
 	TArray<FTestbed1StructString> PropString;
 };
-
-} // namespace Private
-} // namespace StructArrayInterface
-} // namespace Testbed1

@@ -18,19 +18,15 @@ limitations under the License.
 
 #include "apig/Testbed1_apig.h"
 #include "olink/clientnode.h"
+#include "Testbed1StructArrayInterfaceOLink.generated.h"
 
-namespace Testbed1
+UCLASS(BlueprintType)
+class TESTBED1_API UTestbed1StructArrayInterfaceOLinkService : public UObject, public ITestbed1StructArrayInterfaceInterface, public ApiGear::ObjectLink::IObjectSink
 {
-namespace StructArrayInterface
-{
-namespace Private
-{
-
-class OLinkService : public ITestbed1StructArrayInterfaceInterface, public ApiGear::ObjectLink::IObjectSink
-{
+	GENERATED_BODY()
 public:
-	explicit OLinkService();
-	virtual ~OLinkService();
+	explicit UTestbed1StructArrayInterfaceOLinkService();
+	virtual ~UTestbed1StructArrayInterfaceOLinkService();
 
 	// signals
 	FTestbed1StructArrayInterfaceSigBoolDelegate SigBoolSignal;
@@ -100,7 +96,3 @@ private:
 	TArray<FTestbed1StructFloat> PropFloat;
 	TArray<FTestbed1StructString> PropString;
 };
-
-} // namespace Private
-} // namespace StructArrayInterface
-} // namespace Testbed1

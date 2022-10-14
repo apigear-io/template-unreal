@@ -29,8 +29,8 @@ DECLARE_LOG_CATEGORY_EXTERN(LogFTbSame2ModuleFactory, Log, All);
 class FTbSame2ModuleFactory
 {
 public:
-	static TSharedPtr<ITbSame2SameStruct1InterfaceInterface, ESPMode::ThreadSafe> createITbSame2SameStruct1InterfaceInterface();
-	static TSharedPtr<ITbSame2SameStruct2InterfaceInterface, ESPMode::ThreadSafe> createITbSame2SameStruct2InterfaceInterface();
-	static TSharedPtr<ITbSame2SameEnum1InterfaceInterface, ESPMode::ThreadSafe> createITbSame2SameEnum1InterfaceInterface();
-	static TSharedPtr<ITbSame2SameEnum2InterfaceInterface, ESPMode::ThreadSafe> createITbSame2SameEnum2InterfaceInterface();
+	static TScriptInterface<ITbSame2SameStruct1InterfaceInterface> createITbSame2SameStruct1InterfaceInterface();
+	static TScriptInterface<ITbSame2SameStruct2InterfaceInterface> createITbSame2SameStruct2InterfaceInterface();
+	static TScriptInterface<ITbSame2SameEnum1InterfaceInterface> createITbSame2SameEnum1InterfaceInterface();
+	static TScriptInterface<ITbSame2SameEnum2InterfaceInterface> createITbSame2SameEnum2InterfaceInterface();
 };

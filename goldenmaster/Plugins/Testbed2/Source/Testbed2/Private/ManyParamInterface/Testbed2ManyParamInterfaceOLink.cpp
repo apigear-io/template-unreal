@@ -31,14 +31,7 @@ limitations under the License.
 #include "Misc/DateTime.h"
 
 using namespace ApiGear::ObjectLink;
-
-namespace Testbed2
-{
-namespace ManyParamInterface
-{
-namespace Private
-{
-OLinkService::OLinkService()
+UTestbed2ManyParamInterfaceOLinkService::UTestbed2ManyParamInterfaceOLinkService()
 	: ITestbed2ManyParamInterfaceInterface()
 	, m_node(nullptr)
 	, m_isReady(false)
@@ -56,7 +49,7 @@ OLinkService::OLinkService()
 	m_node = ClientRegistry::get().addObjectSink(this);
 }
 
-OLinkService::~OLinkService()
+UTestbed2ManyParamInterfaceOLinkService::~UTestbed2ManyParamInterfaceOLinkService()
 {
 	ClientRegistry::get().removeObjectSink(this);
 	if (GEngine != nullptr)
@@ -68,32 +61,32 @@ OLinkService::~OLinkService()
 	m_node = nullptr;
 }
 
-FTestbed2ManyParamInterfaceSig1Delegate& OLinkService::GetSig1SignalDelegate()
+FTestbed2ManyParamInterfaceSig1Delegate& UTestbed2ManyParamInterfaceOLinkService::GetSig1SignalDelegate()
 {
 	return Sig1Signal;
 }
 
-FTestbed2ManyParamInterfaceSig2Delegate& OLinkService::GetSig2SignalDelegate()
+FTestbed2ManyParamInterfaceSig2Delegate& UTestbed2ManyParamInterfaceOLinkService::GetSig2SignalDelegate()
 {
 	return Sig2Signal;
 }
 
-FTestbed2ManyParamInterfaceSig3Delegate& OLinkService::GetSig3SignalDelegate()
+FTestbed2ManyParamInterfaceSig3Delegate& UTestbed2ManyParamInterfaceOLinkService::GetSig3SignalDelegate()
 {
 	return Sig3Signal;
 }
 
-FTestbed2ManyParamInterfaceSig4Delegate& OLinkService::GetSig4SignalDelegate()
+FTestbed2ManyParamInterfaceSig4Delegate& UTestbed2ManyParamInterfaceOLinkService::GetSig4SignalDelegate()
 {
 	return Sig4Signal;
 }
 
-int32 OLinkService::GetProp1_Implementation() const
+int32 UTestbed2ManyParamInterfaceOLinkService::GetProp1_Implementation() const
 {
 	return Prop1;
 }
 
-void OLinkService::SetProp1_Implementation(int32 InProp1)
+void UTestbed2ManyParamInterfaceOLinkService::SetProp1_Implementation(int32 InProp1)
 {
 	if (!m_node)
 	{
@@ -102,16 +95,16 @@ void OLinkService::SetProp1_Implementation(int32 InProp1)
 	m_node->setRemoteProperty("testbed2.ManyParamInterface/prop1", InProp1);
 }
 
-FTestbed2ManyParamInterfaceProp1ChangedDelegate& OLinkService::GetProp1ChangedDelegate()
+FTestbed2ManyParamInterfaceProp1ChangedDelegate& UTestbed2ManyParamInterfaceOLinkService::GetProp1ChangedDelegate()
 {
 	return Prop1Changed;
 }
-int32 OLinkService::GetProp2_Implementation() const
+int32 UTestbed2ManyParamInterfaceOLinkService::GetProp2_Implementation() const
 {
 	return Prop2;
 }
 
-void OLinkService::SetProp2_Implementation(int32 InProp2)
+void UTestbed2ManyParamInterfaceOLinkService::SetProp2_Implementation(int32 InProp2)
 {
 	if (!m_node)
 	{
@@ -120,16 +113,16 @@ void OLinkService::SetProp2_Implementation(int32 InProp2)
 	m_node->setRemoteProperty("testbed2.ManyParamInterface/prop2", InProp2);
 }
 
-FTestbed2ManyParamInterfaceProp2ChangedDelegate& OLinkService::GetProp2ChangedDelegate()
+FTestbed2ManyParamInterfaceProp2ChangedDelegate& UTestbed2ManyParamInterfaceOLinkService::GetProp2ChangedDelegate()
 {
 	return Prop2Changed;
 }
-int32 OLinkService::GetProp3_Implementation() const
+int32 UTestbed2ManyParamInterfaceOLinkService::GetProp3_Implementation() const
 {
 	return Prop3;
 }
 
-void OLinkService::SetProp3_Implementation(int32 InProp3)
+void UTestbed2ManyParamInterfaceOLinkService::SetProp3_Implementation(int32 InProp3)
 {
 	if (!m_node)
 	{
@@ -138,16 +131,16 @@ void OLinkService::SetProp3_Implementation(int32 InProp3)
 	m_node->setRemoteProperty("testbed2.ManyParamInterface/prop3", InProp3);
 }
 
-FTestbed2ManyParamInterfaceProp3ChangedDelegate& OLinkService::GetProp3ChangedDelegate()
+FTestbed2ManyParamInterfaceProp3ChangedDelegate& UTestbed2ManyParamInterfaceOLinkService::GetProp3ChangedDelegate()
 {
 	return Prop3Changed;
 }
-int32 OLinkService::GetProp4_Implementation() const
+int32 UTestbed2ManyParamInterfaceOLinkService::GetProp4_Implementation() const
 {
 	return Prop4;
 }
 
-void OLinkService::SetProp4_Implementation(int32 InProp4)
+void UTestbed2ManyParamInterfaceOLinkService::SetProp4_Implementation(int32 InProp4)
 {
 	if (!m_node)
 	{
@@ -156,12 +149,12 @@ void OLinkService::SetProp4_Implementation(int32 InProp4)
 	m_node->setRemoteProperty("testbed2.ManyParamInterface/prop4", InProp4);
 }
 
-FTestbed2ManyParamInterfaceProp4ChangedDelegate& OLinkService::GetProp4ChangedDelegate()
+FTestbed2ManyParamInterfaceProp4ChangedDelegate& UTestbed2ManyParamInterfaceOLinkService::GetProp4ChangedDelegate()
 {
 	return Prop4Changed;
 }
 
-int32 OLinkService::Func1_Implementation(int32 Param1)
+int32 UTestbed2ManyParamInterfaceOLinkService::Func1_Implementation(int32 Param1)
 {
 	if (!m_node)
 	{
@@ -180,7 +173,7 @@ int32 OLinkService::Func1_Implementation(int32 Param1)
 	return Promise.GetFuture().Get();
 }
 
-int32 OLinkService::Func2_Implementation(int32 Param1, int32 Param2)
+int32 UTestbed2ManyParamInterfaceOLinkService::Func2_Implementation(int32 Param1, int32 Param2)
 {
 	if (!m_node)
 	{
@@ -199,7 +192,7 @@ int32 OLinkService::Func2_Implementation(int32 Param1, int32 Param2)
 	return Promise.GetFuture().Get();
 }
 
-int32 OLinkService::Func3_Implementation(int32 Param1, int32 Param2, int32 Param3)
+int32 UTestbed2ManyParamInterfaceOLinkService::Func3_Implementation(int32 Param1, int32 Param2, int32 Param3)
 {
 	if (!m_node)
 	{
@@ -218,7 +211,7 @@ int32 OLinkService::Func3_Implementation(int32 Param1, int32 Param2, int32 Param
 	return Promise.GetFuture().Get();
 }
 
-int32 OLinkService::Func4_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
+int32 UTestbed2ManyParamInterfaceOLinkService::Func4_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
 {
 	if (!m_node)
 	{
@@ -237,7 +230,7 @@ int32 OLinkService::Func4_Implementation(int32 Param1, int32 Param2, int32 Param
 	return Promise.GetFuture().Get();
 }
 
-void OLinkService::applyState(const nlohmann::json& fields)
+void UTestbed2ManyParamInterfaceOLinkService::applyState(const nlohmann::json& fields)
 {
 	if (fields.contains("prop1"))
 	{
@@ -273,12 +266,12 @@ void OLinkService::applyState(const nlohmann::json& fields)
 	}
 }
 
-std::string OLinkService::olinkObjectName()
+std::string UTestbed2ManyParamInterfaceOLinkService::olinkObjectName()
 {
 	return "testbed2.ManyParamInterface";
 }
 
-void OLinkService::olinkOnSignal(std::string name, nlohmann::json args)
+void UTestbed2ManyParamInterfaceOLinkService::olinkOnSignal(std::string name, nlohmann::json args)
 {
 	std::string path = Name::pathFromName(name);
 	if (path == "sig1")
@@ -303,13 +296,13 @@ void OLinkService::olinkOnSignal(std::string name, nlohmann::json args)
 	}
 }
 
-void OLinkService::olinkOnPropertyChanged(std::string name, nlohmann::json value)
+void UTestbed2ManyParamInterfaceOLinkService::olinkOnPropertyChanged(std::string name, nlohmann::json value)
 {
 	std::string path = Name::pathFromName(name);
 	applyState({{path, value}});
 }
 
-void OLinkService::olinkOnInit(std::string name, nlohmann::json props, IClientNode* node)
+void UTestbed2ManyParamInterfaceOLinkService::olinkOnInit(std::string name, nlohmann::json props, IClientNode* node)
 {
 	m_isReady = true;
 	m_node = node;
@@ -317,12 +310,8 @@ void OLinkService::olinkOnInit(std::string name, nlohmann::json props, IClientNo
 	// call isReady();
 }
 
-void OLinkService::olinkOnRelease()
+void UTestbed2ManyParamInterfaceOLinkService::olinkOnRelease()
 {
 	m_isReady = false;
 	m_node = nullptr;
 }
-
-} // namespace Private
-} // namespace ManyParamInterface
-} // namespace Testbed2

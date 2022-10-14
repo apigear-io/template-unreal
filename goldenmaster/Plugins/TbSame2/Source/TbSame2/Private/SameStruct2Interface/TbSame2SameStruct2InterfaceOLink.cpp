@@ -31,14 +31,7 @@ limitations under the License.
 #include "Misc/DateTime.h"
 
 using namespace ApiGear::ObjectLink;
-
-namespace TbSame2
-{
-namespace SameStruct2Interface
-{
-namespace Private
-{
-OLinkService::OLinkService()
+UTbSame2SameStruct2InterfaceOLinkService::UTbSame2SameStruct2InterfaceOLinkService()
 	: ITbSame2SameStruct2InterfaceInterface()
 	, m_node(nullptr)
 	, m_isReady(false)
@@ -54,7 +47,7 @@ OLinkService::OLinkService()
 	m_node = ClientRegistry::get().addObjectSink(this);
 }
 
-OLinkService::~OLinkService()
+UTbSame2SameStruct2InterfaceOLinkService::~UTbSame2SameStruct2InterfaceOLinkService()
 {
 	ClientRegistry::get().removeObjectSink(this);
 	if (GEngine != nullptr)
@@ -66,22 +59,22 @@ OLinkService::~OLinkService()
 	m_node = nullptr;
 }
 
-FTbSame2SameStruct2InterfaceSig1Delegate& OLinkService::GetSig1SignalDelegate()
+FTbSame2SameStruct2InterfaceSig1Delegate& UTbSame2SameStruct2InterfaceOLinkService::GetSig1SignalDelegate()
 {
 	return Sig1Signal;
 }
 
-FTbSame2SameStruct2InterfaceSig2Delegate& OLinkService::GetSig2SignalDelegate()
+FTbSame2SameStruct2InterfaceSig2Delegate& UTbSame2SameStruct2InterfaceOLinkService::GetSig2SignalDelegate()
 {
 	return Sig2Signal;
 }
 
-FTbSame2Struct2 OLinkService::GetProp1_Implementation() const
+FTbSame2Struct2 UTbSame2SameStruct2InterfaceOLinkService::GetProp1_Implementation() const
 {
 	return Prop1;
 }
 
-void OLinkService::SetProp1_Implementation(const FTbSame2Struct2& InProp1)
+void UTbSame2SameStruct2InterfaceOLinkService::SetProp1_Implementation(const FTbSame2Struct2& InProp1)
 {
 	if (!m_node)
 	{
@@ -90,16 +83,16 @@ void OLinkService::SetProp1_Implementation(const FTbSame2Struct2& InProp1)
 	m_node->setRemoteProperty("tb.same2.SameStruct2Interface/prop1", InProp1);
 }
 
-FTbSame2SameStruct2InterfaceProp1ChangedDelegate& OLinkService::GetProp1ChangedDelegate()
+FTbSame2SameStruct2InterfaceProp1ChangedDelegate& UTbSame2SameStruct2InterfaceOLinkService::GetProp1ChangedDelegate()
 {
 	return Prop1Changed;
 }
-FTbSame2Struct2 OLinkService::GetProp2_Implementation() const
+FTbSame2Struct2 UTbSame2SameStruct2InterfaceOLinkService::GetProp2_Implementation() const
 {
 	return Prop2;
 }
 
-void OLinkService::SetProp2_Implementation(const FTbSame2Struct2& InProp2)
+void UTbSame2SameStruct2InterfaceOLinkService::SetProp2_Implementation(const FTbSame2Struct2& InProp2)
 {
 	if (!m_node)
 	{
@@ -108,12 +101,12 @@ void OLinkService::SetProp2_Implementation(const FTbSame2Struct2& InProp2)
 	m_node->setRemoteProperty("tb.same2.SameStruct2Interface/prop2", InProp2);
 }
 
-FTbSame2SameStruct2InterfaceProp2ChangedDelegate& OLinkService::GetProp2ChangedDelegate()
+FTbSame2SameStruct2InterfaceProp2ChangedDelegate& UTbSame2SameStruct2InterfaceOLinkService::GetProp2ChangedDelegate()
 {
 	return Prop2Changed;
 }
 
-FTbSame2Struct1 OLinkService::Func1_Implementation(const FTbSame2Struct1& Param1)
+FTbSame2Struct1 UTbSame2SameStruct2InterfaceOLinkService::Func1_Implementation(const FTbSame2Struct1& Param1)
 {
 	if (!m_node)
 	{
@@ -132,7 +125,7 @@ FTbSame2Struct1 OLinkService::Func1_Implementation(const FTbSame2Struct1& Param1
 	return Promise.GetFuture().Get();
 }
 
-FTbSame2Struct1 OLinkService::Func2_Implementation(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2)
+FTbSame2Struct1 UTbSame2SameStruct2InterfaceOLinkService::Func2_Implementation(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2)
 {
 	if (!m_node)
 	{
@@ -151,7 +144,7 @@ FTbSame2Struct1 OLinkService::Func2_Implementation(const FTbSame2Struct1& Param1
 	return Promise.GetFuture().Get();
 }
 
-void OLinkService::applyState(const nlohmann::json& fields)
+void UTbSame2SameStruct2InterfaceOLinkService::applyState(const nlohmann::json& fields)
 {
 	if (fields.contains("prop1"))
 	{
@@ -171,12 +164,12 @@ void OLinkService::applyState(const nlohmann::json& fields)
 	}
 }
 
-std::string OLinkService::olinkObjectName()
+std::string UTbSame2SameStruct2InterfaceOLinkService::olinkObjectName()
 {
 	return "tb.same2.SameStruct2Interface";
 }
 
-void OLinkService::olinkOnSignal(std::string name, nlohmann::json args)
+void UTbSame2SameStruct2InterfaceOLinkService::olinkOnSignal(std::string name, nlohmann::json args)
 {
 	std::string path = Name::pathFromName(name);
 	if (path == "sig1")
@@ -191,13 +184,13 @@ void OLinkService::olinkOnSignal(std::string name, nlohmann::json args)
 	}
 }
 
-void OLinkService::olinkOnPropertyChanged(std::string name, nlohmann::json value)
+void UTbSame2SameStruct2InterfaceOLinkService::olinkOnPropertyChanged(std::string name, nlohmann::json value)
 {
 	std::string path = Name::pathFromName(name);
 	applyState({{path, value}});
 }
 
-void OLinkService::olinkOnInit(std::string name, nlohmann::json props, IClientNode* node)
+void UTbSame2SameStruct2InterfaceOLinkService::olinkOnInit(std::string name, nlohmann::json props, IClientNode* node)
 {
 	m_isReady = true;
 	m_node = node;
@@ -205,12 +198,8 @@ void OLinkService::olinkOnInit(std::string name, nlohmann::json props, IClientNo
 	// call isReady();
 }
 
-void OLinkService::olinkOnRelease()
+void UTbSame2SameStruct2InterfaceOLinkService::olinkOnRelease()
 {
 	m_isReady = false;
 	m_node = nullptr;
 }
-
-} // namespace Private
-} // namespace SameStruct2Interface
-} // namespace TbSame2

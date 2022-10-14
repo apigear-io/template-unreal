@@ -2,7 +2,8 @@
 /**{{ template "copyright" }}*/
 {{- $ModuleName := Camel .Module.Name}}
 {{- $IfaceName := Camel .Interface.Name }}
-{{- $Class := "SimulationService" }}
+{{- $DisplayName := printf "%s%s" $ModuleName $IfaceName }}
+{{- $Class := printf "U%sSimulationService" $DisplayName}}
 {{- $Iface := printf "%s%s" $ModuleName $IfaceName }}
 {{- $ifaceId := printf "%s/%s" .Module.Name .Interface.Name}}
 
@@ -20,13 +21,6 @@
 
 using namespace ApiGear::JSONRPC;
 
-namespace {{$ModuleName}}
-{
-namespace {{$IfaceName}}
-{
-namespace Private
-{
-	
 {{- if .Interface.Description }}
 /**
    \brief {{ .Interface.Description }}
@@ -196,6 +190,3 @@ F{{$Iface}}{{Camel .Name}}ChangedDelegate& {{$Class}}::Get{{Camel .Name}}Changed
 	{{- end }}
 }
 {{ end }}
-} // namespace Private
-} // namespace {{$IfaceName}}
-} // namespace {{$ModuleName}}

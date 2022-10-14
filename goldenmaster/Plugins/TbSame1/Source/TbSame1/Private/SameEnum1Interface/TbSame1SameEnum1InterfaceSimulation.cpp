@@ -28,14 +28,7 @@ limitations under the License.
 #include "Engine/Engine.h"
 
 using namespace ApiGear::JSONRPC;
-
-namespace TbSame1
-{
-namespace SameEnum1Interface
-{
-namespace Private
-{
-SimulationService::SimulationService()
+UTbSame1SameEnum1InterfaceSimulationService::UTbSame1SameEnum1InterfaceSimulationService()
 	: ITbSame1SameEnum1InterfaceInterface()
 	, Prop1(ETbSame1Enum1::VALUE1)
 {
@@ -98,7 +91,7 @@ SimulationService::SimulationService()
 	}
 }
 
-SimulationService::~SimulationService()
+UTbSame1SameEnum1InterfaceSimulationService::~UTbSame1SameEnum1InterfaceSimulationService()
 {
 	if (GEngine != nullptr)
 	{
@@ -109,17 +102,17 @@ SimulationService::~SimulationService()
 	}
 }
 
-FTbSame1SameEnum1InterfaceSig1Delegate& SimulationService::GetSig1SignalDelegate()
+FTbSame1SameEnum1InterfaceSig1Delegate& UTbSame1SameEnum1InterfaceSimulationService::GetSig1SignalDelegate()
 {
 	return Sig1Signal;
 }
 
-ETbSame1Enum1 SimulationService::GetProp1_Implementation() const
+ETbSame1Enum1 UTbSame1SameEnum1InterfaceSimulationService::GetProp1_Implementation() const
 {
 	return Prop1;
 }
 
-void SimulationService::SetProp1_Implementation(const ETbSame1Enum1& InProp1)
+void UTbSame1SameEnum1InterfaceSimulationService::SetProp1_Implementation(const ETbSame1Enum1& InProp1)
 {
 	Params params;
 	params["prop1"] = InProp1;
@@ -130,12 +123,12 @@ void SimulationService::SetProp1_Implementation(const ETbSame1Enum1& InProp1)
 	}
 }
 
-FTbSame1SameEnum1InterfaceProp1ChangedDelegate& SimulationService::GetProp1ChangedDelegate()
+FTbSame1SameEnum1InterfaceProp1ChangedDelegate& UTbSame1SameEnum1InterfaceSimulationService::GetProp1ChangedDelegate()
 {
 	return Prop1Changed;
 }
 
-ETbSame1Enum1 SimulationService::Func1_Implementation(const ETbSame1Enum1& Param1)
+ETbSame1Enum1 UTbSame1SameEnum1InterfaceSimulationService::Func1_Implementation(const ETbSame1Enum1& Param1)
 {
 	Params params;
 	params["param1"] = Param1;
@@ -154,7 +147,3 @@ ETbSame1Enum1 SimulationService::Func1_Implementation(const ETbSame1Enum1& Param
 
 	return Promise.GetFuture().Get();
 }
-
-} // namespace Private
-} // namespace SameEnum1Interface
-} // namespace TbSame1

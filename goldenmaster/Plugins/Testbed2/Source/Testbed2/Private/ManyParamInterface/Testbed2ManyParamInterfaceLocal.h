@@ -17,20 +17,17 @@ limitations under the License.
 */
 #pragma once
 
+#include "CoreMinimal.h"
 #include "apig/Testbed2_apig.h"
+#include "Testbed2ManyParamInterfaceLocal.generated.h"
 
-namespace Testbed2
+UCLASS(BlueprintType, Blueprintable, DisplayName = "Testbed2ManyParamInterface")
+class TESTBED2_API UTestbed2ManyParamInterfaceLocalService : public UObject, public ITestbed2ManyParamInterfaceInterface
 {
-namespace ManyParamInterface
-{
-namespace Private
-{
-
-class LocalService : public ITestbed2ManyParamInterfaceInterface
-{
+	GENERATED_BODY()
 public:
-	explicit LocalService();
-	virtual ~LocalService();
+	explicit UTestbed2ManyParamInterfaceLocalService();
+	virtual ~UTestbed2ManyParamInterfaceLocalService();
 
 	// signals
 	FTestbed2ManyParamInterfaceSig1Delegate Sig1Signal;
@@ -90,7 +87,3 @@ private:
 	int32 Prop3;
 	int32 Prop4;
 };
-
-} // namespace Private
-} // namespace ManyParamInterface
-} // namespace Testbed2

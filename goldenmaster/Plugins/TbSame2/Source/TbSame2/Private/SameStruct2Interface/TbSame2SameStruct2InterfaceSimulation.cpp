@@ -28,14 +28,7 @@ limitations under the License.
 #include "Engine/Engine.h"
 
 using namespace ApiGear::JSONRPC;
-
-namespace TbSame2
-{
-namespace SameStruct2Interface
-{
-namespace Private
-{
-SimulationService::SimulationService()
+UTbSame2SameStruct2InterfaceSimulationService::UTbSame2SameStruct2InterfaceSimulationService()
 	: ITbSame2SameStruct2InterfaceInterface()
 	, Prop1(FTbSame2Struct2())
 	, Prop2(FTbSame2Struct2())
@@ -128,7 +121,7 @@ SimulationService::SimulationService()
 	}
 }
 
-SimulationService::~SimulationService()
+UTbSame2SameStruct2InterfaceSimulationService::~UTbSame2SameStruct2InterfaceSimulationService()
 {
 	if (GEngine != nullptr)
 	{
@@ -140,22 +133,22 @@ SimulationService::~SimulationService()
 	}
 }
 
-FTbSame2SameStruct2InterfaceSig1Delegate& SimulationService::GetSig1SignalDelegate()
+FTbSame2SameStruct2InterfaceSig1Delegate& UTbSame2SameStruct2InterfaceSimulationService::GetSig1SignalDelegate()
 {
 	return Sig1Signal;
 }
 
-FTbSame2SameStruct2InterfaceSig2Delegate& SimulationService::GetSig2SignalDelegate()
+FTbSame2SameStruct2InterfaceSig2Delegate& UTbSame2SameStruct2InterfaceSimulationService::GetSig2SignalDelegate()
 {
 	return Sig2Signal;
 }
 
-FTbSame2Struct2 SimulationService::GetProp1_Implementation() const
+FTbSame2Struct2 UTbSame2SameStruct2InterfaceSimulationService::GetProp1_Implementation() const
 {
 	return Prop1;
 }
 
-void SimulationService::SetProp1_Implementation(const FTbSame2Struct2& InProp1)
+void UTbSame2SameStruct2InterfaceSimulationService::SetProp1_Implementation(const FTbSame2Struct2& InProp1)
 {
 	Params params;
 	params["prop1"] = InProp1;
@@ -166,17 +159,17 @@ void SimulationService::SetProp1_Implementation(const FTbSame2Struct2& InProp1)
 	}
 }
 
-FTbSame2SameStruct2InterfaceProp1ChangedDelegate& SimulationService::GetProp1ChangedDelegate()
+FTbSame2SameStruct2InterfaceProp1ChangedDelegate& UTbSame2SameStruct2InterfaceSimulationService::GetProp1ChangedDelegate()
 {
 	return Prop1Changed;
 }
 
-FTbSame2Struct2 SimulationService::GetProp2_Implementation() const
+FTbSame2Struct2 UTbSame2SameStruct2InterfaceSimulationService::GetProp2_Implementation() const
 {
 	return Prop2;
 }
 
-void SimulationService::SetProp2_Implementation(const FTbSame2Struct2& InProp2)
+void UTbSame2SameStruct2InterfaceSimulationService::SetProp2_Implementation(const FTbSame2Struct2& InProp2)
 {
 	Params params;
 	params["prop2"] = InProp2;
@@ -187,12 +180,12 @@ void SimulationService::SetProp2_Implementation(const FTbSame2Struct2& InProp2)
 	}
 }
 
-FTbSame2SameStruct2InterfaceProp2ChangedDelegate& SimulationService::GetProp2ChangedDelegate()
+FTbSame2SameStruct2InterfaceProp2ChangedDelegate& UTbSame2SameStruct2InterfaceSimulationService::GetProp2ChangedDelegate()
 {
 	return Prop2Changed;
 }
 
-FTbSame2Struct1 SimulationService::Func1_Implementation(const FTbSame2Struct1& Param1)
+FTbSame2Struct1 UTbSame2SameStruct2InterfaceSimulationService::Func1_Implementation(const FTbSame2Struct1& Param1)
 {
 	Params params;
 	params["param1"] = Param1;
@@ -212,7 +205,7 @@ FTbSame2Struct1 SimulationService::Func1_Implementation(const FTbSame2Struct1& P
 	return Promise.GetFuture().Get();
 }
 
-FTbSame2Struct1 SimulationService::Func2_Implementation(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2)
+FTbSame2Struct1 UTbSame2SameStruct2InterfaceSimulationService::Func2_Implementation(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2)
 {
 	Params params;
 	params["param1"] = Param1;
@@ -232,7 +225,3 @@ FTbSame2Struct1 SimulationService::Func2_Implementation(const FTbSame2Struct1& P
 
 	return Promise.GetFuture().Get();
 }
-
-} // namespace Private
-} // namespace SameStruct2Interface
-} // namespace TbSame2

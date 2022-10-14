@@ -3,24 +3,21 @@
 /**{{ template "copyright" }}*/
 {{- $ModuleName := Camel .Module.Name}}
 {{- $IfaceName := Camel .Interface.Name }}
+{{- $API_MACRO := printf "%s_API" (CAMEL .Module.Name) }}
 {{- $Category := printf "ApiGear|%s|%s" $ModuleName $IfaceName }}
 {{- $DisplayName := printf "%s%s" $ModuleName $IfaceName }}
-{{- $Class := "OLinkService" }}
+{{- $Class := printf "U%sOLinkService" $DisplayName}}
 {{- $Iface := printf "%s%s" $ModuleName $IfaceName }}
 #pragma once
 
 #include "apig/{{$ModuleName}}_apig.h"
 #include "olink/clientnode.h"
+#include "{{$Iface}}OLink.generated.h"
 
-namespace {{$ModuleName}}
+UCLASS(BlueprintType)
+class {{ $API_MACRO }} {{$Class}} : public UObject, public I{{$Iface}}Interface, public ApiGear::ObjectLink::IObjectSink
 {
-namespace {{$IfaceName}}
-{
-namespace Private
-{
-
-class {{$Class}} : public I{{$Iface}}Interface, public ApiGear::ObjectLink::IObjectSink
-{
+	GENERATED_BODY()
 public:
 	explicit {{$Class}}();
 	virtual ~{{$Class}}();
@@ -67,7 +64,3 @@ private:
 	{{ueReturn "" .}} {{ueVar "" .}};
 {{- end }}
 };
-
-} // namespace Private
-} // namespace {{$IfaceName}}
-} // namespace {{$ModuleName}}

@@ -4,7 +4,7 @@
 {{- $IfaceName := Camel .Interface.Name }}
 {{- $Category := printf "ApiGear|%s|%s" $ModuleName $IfaceName }}
 {{- $DisplayName := printf "%s%s" $ModuleName $IfaceName }}
-{{- $Class := "OLinkService" }}
+{{- $Class := printf "U%sOLinkService" $DisplayName}}
 {{- $Iface := printf "%s%s" $ModuleName $IfaceName }}
 {{- $ifaceId := printf "%s.%s" .Module.Name .Interface.Name}}
 
@@ -24,13 +24,6 @@
 #include "Misc/DateTime.h"
 
 using namespace ApiGear::ObjectLink;
-
-namespace {{$ModuleName}}
-{
-namespace {{$IfaceName}}
-{
-namespace Private
-{
 
 {{- if .Interface.Description }}
 /**
@@ -182,7 +175,3 @@ void {{$Class}}::olinkOnRelease()
 	m_isReady = false;
 	m_node = nullptr;
 }
-
-} // namespace Private
-} // namespace {{$IfaceName}}
-} // namespace {{$ModuleName}}

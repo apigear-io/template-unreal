@@ -31,14 +31,7 @@ limitations under the License.
 #include "Misc/DateTime.h"
 
 using namespace ApiGear::ObjectLink;
-
-namespace TbSame1
-{
-namespace SameEnum2Interface
-{
-namespace Private
-{
-OLinkService::OLinkService()
+UTbSame1SameEnum2InterfaceOLinkService::UTbSame1SameEnum2InterfaceOLinkService()
 	: ITbSame1SameEnum2InterfaceInterface()
 	, m_node(nullptr)
 	, m_isReady(false)
@@ -54,7 +47,7 @@ OLinkService::OLinkService()
 	m_node = ClientRegistry::get().addObjectSink(this);
 }
 
-OLinkService::~OLinkService()
+UTbSame1SameEnum2InterfaceOLinkService::~UTbSame1SameEnum2InterfaceOLinkService()
 {
 	ClientRegistry::get().removeObjectSink(this);
 	if (GEngine != nullptr)
@@ -66,22 +59,22 @@ OLinkService::~OLinkService()
 	m_node = nullptr;
 }
 
-FTbSame1SameEnum2InterfaceSig1Delegate& OLinkService::GetSig1SignalDelegate()
+FTbSame1SameEnum2InterfaceSig1Delegate& UTbSame1SameEnum2InterfaceOLinkService::GetSig1SignalDelegate()
 {
 	return Sig1Signal;
 }
 
-FTbSame1SameEnum2InterfaceSig2Delegate& OLinkService::GetSig2SignalDelegate()
+FTbSame1SameEnum2InterfaceSig2Delegate& UTbSame1SameEnum2InterfaceOLinkService::GetSig2SignalDelegate()
 {
 	return Sig2Signal;
 }
 
-ETbSame1Enum1 OLinkService::GetProp1_Implementation() const
+ETbSame1Enum1 UTbSame1SameEnum2InterfaceOLinkService::GetProp1_Implementation() const
 {
 	return Prop1;
 }
 
-void OLinkService::SetProp1_Implementation(const ETbSame1Enum1& InProp1)
+void UTbSame1SameEnum2InterfaceOLinkService::SetProp1_Implementation(const ETbSame1Enum1& InProp1)
 {
 	if (!m_node)
 	{
@@ -90,16 +83,16 @@ void OLinkService::SetProp1_Implementation(const ETbSame1Enum1& InProp1)
 	m_node->setRemoteProperty("tb.same1.SameEnum2Interface/prop1", InProp1);
 }
 
-FTbSame1SameEnum2InterfaceProp1ChangedDelegate& OLinkService::GetProp1ChangedDelegate()
+FTbSame1SameEnum2InterfaceProp1ChangedDelegate& UTbSame1SameEnum2InterfaceOLinkService::GetProp1ChangedDelegate()
 {
 	return Prop1Changed;
 }
-ETbSame1Enum2 OLinkService::GetProp2_Implementation() const
+ETbSame1Enum2 UTbSame1SameEnum2InterfaceOLinkService::GetProp2_Implementation() const
 {
 	return Prop2;
 }
 
-void OLinkService::SetProp2_Implementation(const ETbSame1Enum2& InProp2)
+void UTbSame1SameEnum2InterfaceOLinkService::SetProp2_Implementation(const ETbSame1Enum2& InProp2)
 {
 	if (!m_node)
 	{
@@ -108,12 +101,12 @@ void OLinkService::SetProp2_Implementation(const ETbSame1Enum2& InProp2)
 	m_node->setRemoteProperty("tb.same1.SameEnum2Interface/prop2", InProp2);
 }
 
-FTbSame1SameEnum2InterfaceProp2ChangedDelegate& OLinkService::GetProp2ChangedDelegate()
+FTbSame1SameEnum2InterfaceProp2ChangedDelegate& UTbSame1SameEnum2InterfaceOLinkService::GetProp2ChangedDelegate()
 {
 	return Prop2Changed;
 }
 
-ETbSame1Enum1 OLinkService::Func1_Implementation(const ETbSame1Enum1& Param1)
+ETbSame1Enum1 UTbSame1SameEnum2InterfaceOLinkService::Func1_Implementation(const ETbSame1Enum1& Param1)
 {
 	if (!m_node)
 	{
@@ -132,7 +125,7 @@ ETbSame1Enum1 OLinkService::Func1_Implementation(const ETbSame1Enum1& Param1)
 	return Promise.GetFuture().Get();
 }
 
-ETbSame1Enum1 OLinkService::Func2_Implementation(const ETbSame1Enum1& Param1, const ETbSame1Enum2& Param2)
+ETbSame1Enum1 UTbSame1SameEnum2InterfaceOLinkService::Func2_Implementation(const ETbSame1Enum1& Param1, const ETbSame1Enum2& Param2)
 {
 	if (!m_node)
 	{
@@ -151,7 +144,7 @@ ETbSame1Enum1 OLinkService::Func2_Implementation(const ETbSame1Enum1& Param1, co
 	return Promise.GetFuture().Get();
 }
 
-void OLinkService::applyState(const nlohmann::json& fields)
+void UTbSame1SameEnum2InterfaceOLinkService::applyState(const nlohmann::json& fields)
 {
 	if (fields.contains("prop1"))
 	{
@@ -171,12 +164,12 @@ void OLinkService::applyState(const nlohmann::json& fields)
 	}
 }
 
-std::string OLinkService::olinkObjectName()
+std::string UTbSame1SameEnum2InterfaceOLinkService::olinkObjectName()
 {
 	return "tb.same1.SameEnum2Interface";
 }
 
-void OLinkService::olinkOnSignal(std::string name, nlohmann::json args)
+void UTbSame1SameEnum2InterfaceOLinkService::olinkOnSignal(std::string name, nlohmann::json args)
 {
 	std::string path = Name::pathFromName(name);
 	if (path == "sig1")
@@ -191,13 +184,13 @@ void OLinkService::olinkOnSignal(std::string name, nlohmann::json args)
 	}
 }
 
-void OLinkService::olinkOnPropertyChanged(std::string name, nlohmann::json value)
+void UTbSame1SameEnum2InterfaceOLinkService::olinkOnPropertyChanged(std::string name, nlohmann::json value)
 {
 	std::string path = Name::pathFromName(name);
 	applyState({{path, value}});
 }
 
-void OLinkService::olinkOnInit(std::string name, nlohmann::json props, IClientNode* node)
+void UTbSame1SameEnum2InterfaceOLinkService::olinkOnInit(std::string name, nlohmann::json props, IClientNode* node)
 {
 	m_isReady = true;
 	m_node = node;
@@ -205,12 +198,8 @@ void OLinkService::olinkOnInit(std::string name, nlohmann::json props, IClientNo
 	// call isReady();
 }
 
-void OLinkService::olinkOnRelease()
+void UTbSame1SameEnum2InterfaceOLinkService::olinkOnRelease()
 {
 	m_isReady = false;
 	m_node = nullptr;
 }
-
-} // namespace Private
-} // namespace SameEnum2Interface
-} // namespace TbSame1

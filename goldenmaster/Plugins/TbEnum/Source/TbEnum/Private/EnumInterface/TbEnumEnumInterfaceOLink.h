@@ -18,19 +18,15 @@ limitations under the License.
 
 #include "apig/TbEnum_apig.h"
 #include "olink/clientnode.h"
+#include "TbEnumEnumInterfaceOLink.generated.h"
 
-namespace TbEnum
+UCLASS(BlueprintType)
+class TBENUM_API UTbEnumEnumInterfaceOLinkService : public UObject, public ITbEnumEnumInterfaceInterface, public ApiGear::ObjectLink::IObjectSink
 {
-namespace EnumInterface
-{
-namespace Private
-{
-
-class OLinkService : public ITbEnumEnumInterfaceInterface, public ApiGear::ObjectLink::IObjectSink
-{
+	GENERATED_BODY()
 public:
-	explicit OLinkService();
-	virtual ~OLinkService();
+	explicit UTbEnumEnumInterfaceOLinkService();
+	virtual ~UTbEnumEnumInterfaceOLinkService();
 
 	// signals
 	FTbEnumEnumInterfaceSig0Delegate Sig0Signal;
@@ -100,7 +96,3 @@ private:
 	ETbEnumEnum2 Prop2;
 	ETbEnumEnum3 Prop3;
 };
-
-} // namespace Private
-} // namespace EnumInterface
-} // namespace TbEnum

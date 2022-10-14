@@ -18,19 +18,15 @@ limitations under the License.
 
 #include "apig/TbSame1_apig.h"
 #include "olink/clientnode.h"
+#include "TbSame1SameEnum2InterfaceOLink.generated.h"
 
-namespace TbSame1
+UCLASS(BlueprintType)
+class TBSAME1_API UTbSame1SameEnum2InterfaceOLinkService : public UObject, public ITbSame1SameEnum2InterfaceInterface, public ApiGear::ObjectLink::IObjectSink
 {
-namespace SameEnum2Interface
-{
-namespace Private
-{
-
-class OLinkService : public ITbSame1SameEnum2InterfaceInterface, public ApiGear::ObjectLink::IObjectSink
-{
+	GENERATED_BODY()
 public:
-	explicit OLinkService();
-	virtual ~OLinkService();
+	explicit UTbSame1SameEnum2InterfaceOLinkService();
+	virtual ~UTbSame1SameEnum2InterfaceOLinkService();
 
 	// signals
 	FTbSame1SameEnum2InterfaceSig1Delegate Sig1Signal;
@@ -74,7 +70,3 @@ private:
 	ETbSame1Enum1 Prop1;
 	ETbSame1Enum2 Prop2;
 };
-
-} // namespace Private
-} // namespace SameEnum2Interface
-} // namespace TbSame1

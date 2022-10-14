@@ -18,19 +18,15 @@ limitations under the License.
 
 #include "apig/TbSimple_apig.h"
 #include "olink/clientnode.h"
+#include "TbSimpleSimpleInterfaceOLink.generated.h"
 
-namespace TbSimple
+UCLASS(BlueprintType)
+class TBSIMPLE_API UTbSimpleSimpleInterfaceOLinkService : public UObject, public ITbSimpleSimpleInterfaceInterface, public ApiGear::ObjectLink::IObjectSink
 {
-namespace SimpleInterface
-{
-namespace Private
-{
-
-class OLinkService : public ITbSimpleSimpleInterfaceInterface, public ApiGear::ObjectLink::IObjectSink
-{
+	GENERATED_BODY()
 public:
-	explicit OLinkService();
-	virtual ~OLinkService();
+	explicit UTbSimpleSimpleInterfaceOLinkService();
+	virtual ~UTbSimpleSimpleInterfaceOLinkService();
 
 	// signals
 	FTbSimpleSimpleInterfaceSigBoolDelegate SigBoolSignal;
@@ -100,7 +96,3 @@ private:
 	float PropFloat;
 	FString PropString;
 };
-
-} // namespace Private
-} // namespace SimpleInterface
-} // namespace TbSimple

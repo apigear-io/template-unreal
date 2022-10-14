@@ -16,39 +16,32 @@ limitations under the License.
 */
 
 #include "TbSame2SameStruct2InterfaceLocal.h"
-
-namespace TbSame2
-{
-namespace SameStruct2Interface
-{
-namespace Private
-{
-LocalService::LocalService()
+UTbSame2SameStruct2InterfaceLocalService::UTbSame2SameStruct2InterfaceLocalService()
 	: ITbSame2SameStruct2InterfaceInterface()
 	, Prop1(FTbSame2Struct2())
 	, Prop2(FTbSame2Struct2())
 {
 }
-LocalService::~LocalService()
+UTbSame2SameStruct2InterfaceLocalService::~UTbSame2SameStruct2InterfaceLocalService()
 {
 }
 
-FTbSame2SameStruct2InterfaceSig1Delegate& LocalService::GetSig1SignalDelegate()
+FTbSame2SameStruct2InterfaceSig1Delegate& UTbSame2SameStruct2InterfaceLocalService::GetSig1SignalDelegate()
 {
 	return Sig1Signal;
 }
 
-FTbSame2SameStruct2InterfaceSig2Delegate& LocalService::GetSig2SignalDelegate()
+FTbSame2SameStruct2InterfaceSig2Delegate& UTbSame2SameStruct2InterfaceLocalService::GetSig2SignalDelegate()
 {
 	return Sig2Signal;
 }
 
-FTbSame2Struct2 LocalService::GetProp1_Implementation() const
+FTbSame2Struct2 UTbSame2SameStruct2InterfaceLocalService::GetProp1_Implementation() const
 {
 	return Prop1;
 }
 
-void LocalService::SetProp1_Implementation(const FTbSame2Struct2& InProp1)
+void UTbSame2SameStruct2InterfaceLocalService::SetProp1_Implementation(const FTbSame2Struct2& InProp1)
 {
 	if (Prop1 != InProp1)
 	{
@@ -57,16 +50,16 @@ void LocalService::SetProp1_Implementation(const FTbSame2Struct2& InProp1)
 	}
 }
 
-FTbSame2SameStruct2InterfaceProp1ChangedDelegate& LocalService::GetProp1ChangedDelegate()
+FTbSame2SameStruct2InterfaceProp1ChangedDelegate& UTbSame2SameStruct2InterfaceLocalService::GetProp1ChangedDelegate()
 {
 	return Prop1Changed;
 }
-FTbSame2Struct2 LocalService::GetProp2_Implementation() const
+FTbSame2Struct2 UTbSame2SameStruct2InterfaceLocalService::GetProp2_Implementation() const
 {
 	return Prop2;
 }
 
-void LocalService::SetProp2_Implementation(const FTbSame2Struct2& InProp2)
+void UTbSame2SameStruct2InterfaceLocalService::SetProp2_Implementation(const FTbSame2Struct2& InProp2)
 {
 	if (Prop2 != InProp2)
 	{
@@ -75,25 +68,21 @@ void LocalService::SetProp2_Implementation(const FTbSame2Struct2& InProp2)
 	}
 }
 
-FTbSame2SameStruct2InterfaceProp2ChangedDelegate& LocalService::GetProp2ChangedDelegate()
+FTbSame2SameStruct2InterfaceProp2ChangedDelegate& UTbSame2SameStruct2InterfaceLocalService::GetProp2ChangedDelegate()
 {
 	return Prop2Changed;
 }
 
-FTbSame2Struct1 LocalService::Func1_Implementation(const FTbSame2Struct1& Param1)
+FTbSame2Struct1 UTbSame2SameStruct2InterfaceLocalService::Func1_Implementation(const FTbSame2Struct1& Param1)
 {
 	(void)Param1;
 	// do business logic here
 	return FTbSame2Struct1();
 }
-FTbSame2Struct1 LocalService::Func2_Implementation(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2)
+FTbSame2Struct1 UTbSame2SameStruct2InterfaceLocalService::Func2_Implementation(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2)
 {
 	(void)Param1;
 	(void)Param2;
 	// do business logic here
 	return FTbSame2Struct1();
 }
-
-} // namespace Private
-} // namespace SameStruct2Interface
-} // namespace TbSame2

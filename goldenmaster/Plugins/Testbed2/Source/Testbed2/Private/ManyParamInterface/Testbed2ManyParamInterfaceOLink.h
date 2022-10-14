@@ -18,19 +18,15 @@ limitations under the License.
 
 #include "apig/Testbed2_apig.h"
 #include "olink/clientnode.h"
+#include "Testbed2ManyParamInterfaceOLink.generated.h"
 
-namespace Testbed2
+UCLASS(BlueprintType)
+class TESTBED2_API UTestbed2ManyParamInterfaceOLinkService : public UObject, public ITestbed2ManyParamInterfaceInterface, public ApiGear::ObjectLink::IObjectSink
 {
-namespace ManyParamInterface
-{
-namespace Private
-{
-
-class OLinkService : public ITestbed2ManyParamInterfaceInterface, public ApiGear::ObjectLink::IObjectSink
-{
+	GENERATED_BODY()
 public:
-	explicit OLinkService();
-	virtual ~OLinkService();
+	explicit UTestbed2ManyParamInterfaceOLinkService();
+	virtual ~UTestbed2ManyParamInterfaceOLinkService();
 
 	// signals
 	FTestbed2ManyParamInterfaceSig1Delegate Sig1Signal;
@@ -100,7 +96,3 @@ private:
 	int32 Prop3;
 	int32 Prop4;
 };
-
-} // namespace Private
-} // namespace ManyParamInterface
-} // namespace Testbed2

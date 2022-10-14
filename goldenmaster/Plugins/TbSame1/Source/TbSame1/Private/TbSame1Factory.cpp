@@ -33,7 +33,7 @@ limitations under the License.
 // General Log
 DEFINE_LOG_CATEGORY(LogFTbSame1ModuleFactory);
 
-TSharedPtr<ITbSame1SameStruct1InterfaceInterface, ESPMode::ThreadSafe> FTbSame1ModuleFactory::createITbSame1SameStruct1InterfaceInterface()
+TScriptInterface<ITbSame1SameStruct1InterfaceInterface> FTbSame1ModuleFactory::createITbSame1SameStruct1InterfaceInterface()
 {
 	UTbSame1Settings* settings = GetMutableDefault<UTbSame1Settings>();
 
@@ -41,19 +41,19 @@ TSharedPtr<ITbSame1SameStruct1InterfaceInterface, ESPMode::ThreadSafe> FTbSame1M
 	{
 	case ETbSame1Connection::CONNECTION_OLINK:
 		UE_LOG(LogFTbSame1ModuleFactory, Log, TEXT("createITbSame1SameStruct1InterfaceInterface: Using OLink service backend"));
-		return MakeShared<TbSame1::SameStruct1Interface::Private::OLinkService, ESPMode::ThreadSafe>();
+		return NewObject<UTbSame1SameStruct1InterfaceOLinkService>();
 	case ETbSame1Connection::CONNECTION_SIMU:
 		UE_LOG(LogFTbSame1ModuleFactory, Log, TEXT("createITbSame1SameStruct1InterfaceInterface: Using simulation service backend"));
-		return MakeShared<TbSame1::SameStruct1Interface::Private::SimulationService, ESPMode::ThreadSafe>();
+		return NewObject<UTbSame1SameStruct1InterfaceSimulationService>();
 	case ETbSame1Connection::CONNECTION_LOCAL:
 		UE_LOG(LogFTbSame1ModuleFactory, Log, TEXT("createITbSame1SameStruct1InterfaceInterface: Using local service backend"));
 	default:
 		UE_LOG(LogFTbSame1ModuleFactory, Log, TEXT("createITbSame1SameStruct1InterfaceInterface: Defaulting to local service backend"));
-		return MakeShared<TbSame1::SameStruct1Interface::Private::LocalService, ESPMode::ThreadSafe>();
+		return NewObject<UTbSame1SameStruct1InterfaceLocalService>();
 	}
 }
 
-TSharedPtr<ITbSame1SameStruct2InterfaceInterface, ESPMode::ThreadSafe> FTbSame1ModuleFactory::createITbSame1SameStruct2InterfaceInterface()
+TScriptInterface<ITbSame1SameStruct2InterfaceInterface> FTbSame1ModuleFactory::createITbSame1SameStruct2InterfaceInterface()
 {
 	UTbSame1Settings* settings = GetMutableDefault<UTbSame1Settings>();
 
@@ -61,19 +61,19 @@ TSharedPtr<ITbSame1SameStruct2InterfaceInterface, ESPMode::ThreadSafe> FTbSame1M
 	{
 	case ETbSame1Connection::CONNECTION_OLINK:
 		UE_LOG(LogFTbSame1ModuleFactory, Log, TEXT("createITbSame1SameStruct2InterfaceInterface: Using OLink service backend"));
-		return MakeShared<TbSame1::SameStruct2Interface::Private::OLinkService, ESPMode::ThreadSafe>();
+		return NewObject<UTbSame1SameStruct2InterfaceOLinkService>();
 	case ETbSame1Connection::CONNECTION_SIMU:
 		UE_LOG(LogFTbSame1ModuleFactory, Log, TEXT("createITbSame1SameStruct2InterfaceInterface: Using simulation service backend"));
-		return MakeShared<TbSame1::SameStruct2Interface::Private::SimulationService, ESPMode::ThreadSafe>();
+		return NewObject<UTbSame1SameStruct2InterfaceSimulationService>();
 	case ETbSame1Connection::CONNECTION_LOCAL:
 		UE_LOG(LogFTbSame1ModuleFactory, Log, TEXT("createITbSame1SameStruct2InterfaceInterface: Using local service backend"));
 	default:
 		UE_LOG(LogFTbSame1ModuleFactory, Log, TEXT("createITbSame1SameStruct2InterfaceInterface: Defaulting to local service backend"));
-		return MakeShared<TbSame1::SameStruct2Interface::Private::LocalService, ESPMode::ThreadSafe>();
+		return NewObject<UTbSame1SameStruct2InterfaceLocalService>();
 	}
 }
 
-TSharedPtr<ITbSame1SameEnum1InterfaceInterface, ESPMode::ThreadSafe> FTbSame1ModuleFactory::createITbSame1SameEnum1InterfaceInterface()
+TScriptInterface<ITbSame1SameEnum1InterfaceInterface> FTbSame1ModuleFactory::createITbSame1SameEnum1InterfaceInterface()
 {
 	UTbSame1Settings* settings = GetMutableDefault<UTbSame1Settings>();
 
@@ -81,19 +81,19 @@ TSharedPtr<ITbSame1SameEnum1InterfaceInterface, ESPMode::ThreadSafe> FTbSame1Mod
 	{
 	case ETbSame1Connection::CONNECTION_OLINK:
 		UE_LOG(LogFTbSame1ModuleFactory, Log, TEXT("createITbSame1SameEnum1InterfaceInterface: Using OLink service backend"));
-		return MakeShared<TbSame1::SameEnum1Interface::Private::OLinkService, ESPMode::ThreadSafe>();
+		return NewObject<UTbSame1SameEnum1InterfaceOLinkService>();
 	case ETbSame1Connection::CONNECTION_SIMU:
 		UE_LOG(LogFTbSame1ModuleFactory, Log, TEXT("createITbSame1SameEnum1InterfaceInterface: Using simulation service backend"));
-		return MakeShared<TbSame1::SameEnum1Interface::Private::SimulationService, ESPMode::ThreadSafe>();
+		return NewObject<UTbSame1SameEnum1InterfaceSimulationService>();
 	case ETbSame1Connection::CONNECTION_LOCAL:
 		UE_LOG(LogFTbSame1ModuleFactory, Log, TEXT("createITbSame1SameEnum1InterfaceInterface: Using local service backend"));
 	default:
 		UE_LOG(LogFTbSame1ModuleFactory, Log, TEXT("createITbSame1SameEnum1InterfaceInterface: Defaulting to local service backend"));
-		return MakeShared<TbSame1::SameEnum1Interface::Private::LocalService, ESPMode::ThreadSafe>();
+		return NewObject<UTbSame1SameEnum1InterfaceLocalService>();
 	}
 }
 
-TSharedPtr<ITbSame1SameEnum2InterfaceInterface, ESPMode::ThreadSafe> FTbSame1ModuleFactory::createITbSame1SameEnum2InterfaceInterface()
+TScriptInterface<ITbSame1SameEnum2InterfaceInterface> FTbSame1ModuleFactory::createITbSame1SameEnum2InterfaceInterface()
 {
 	UTbSame1Settings* settings = GetMutableDefault<UTbSame1Settings>();
 
@@ -101,14 +101,14 @@ TSharedPtr<ITbSame1SameEnum2InterfaceInterface, ESPMode::ThreadSafe> FTbSame1Mod
 	{
 	case ETbSame1Connection::CONNECTION_OLINK:
 		UE_LOG(LogFTbSame1ModuleFactory, Log, TEXT("createITbSame1SameEnum2InterfaceInterface: Using OLink service backend"));
-		return MakeShared<TbSame1::SameEnum2Interface::Private::OLinkService, ESPMode::ThreadSafe>();
+		return NewObject<UTbSame1SameEnum2InterfaceOLinkService>();
 	case ETbSame1Connection::CONNECTION_SIMU:
 		UE_LOG(LogFTbSame1ModuleFactory, Log, TEXT("createITbSame1SameEnum2InterfaceInterface: Using simulation service backend"));
-		return MakeShared<TbSame1::SameEnum2Interface::Private::SimulationService, ESPMode::ThreadSafe>();
+		return NewObject<UTbSame1SameEnum2InterfaceSimulationService>();
 	case ETbSame1Connection::CONNECTION_LOCAL:
 		UE_LOG(LogFTbSame1ModuleFactory, Log, TEXT("createITbSame1SameEnum2InterfaceInterface: Using local service backend"));
 	default:
 		UE_LOG(LogFTbSame1ModuleFactory, Log, TEXT("createITbSame1SameEnum2InterfaceInterface: Defaulting to local service backend"));
-		return MakeShared<TbSame1::SameEnum2Interface::Private::LocalService, ESPMode::ThreadSafe>();
+		return NewObject<UTbSame1SameEnum2InterfaceLocalService>();
 	}
 }

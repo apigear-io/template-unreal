@@ -24,7 +24,7 @@ limitations under the License.
 // General Log
 DEFINE_LOG_CATEGORY(LogFTbEnumModuleFactory);
 
-TSharedPtr<ITbEnumEnumInterfaceInterface, ESPMode::ThreadSafe> FTbEnumModuleFactory::createITbEnumEnumInterfaceInterface()
+TScriptInterface<ITbEnumEnumInterfaceInterface> FTbEnumModuleFactory::createITbEnumEnumInterfaceInterface()
 {
 	UTbEnumSettings* settings = GetMutableDefault<UTbEnumSettings>();
 
@@ -32,14 +32,14 @@ TSharedPtr<ITbEnumEnumInterfaceInterface, ESPMode::ThreadSafe> FTbEnumModuleFact
 	{
 	case ETbEnumConnection::CONNECTION_OLINK:
 		UE_LOG(LogFTbEnumModuleFactory, Log, TEXT("createITbEnumEnumInterfaceInterface: Using OLink service backend"));
-		return MakeShared<TbEnum::EnumInterface::Private::OLinkService, ESPMode::ThreadSafe>();
+		return NewObject<UTbEnumEnumInterfaceOLinkService>();
 	case ETbEnumConnection::CONNECTION_SIMU:
 		UE_LOG(LogFTbEnumModuleFactory, Log, TEXT("createITbEnumEnumInterfaceInterface: Using simulation service backend"));
-		return MakeShared<TbEnum::EnumInterface::Private::SimulationService, ESPMode::ThreadSafe>();
+		return NewObject<UTbEnumEnumInterfaceSimulationService>();
 	case ETbEnumConnection::CONNECTION_LOCAL:
 		UE_LOG(LogFTbEnumModuleFactory, Log, TEXT("createITbEnumEnumInterfaceInterface: Using local service backend"));
 	default:
 		UE_LOG(LogFTbEnumModuleFactory, Log, TEXT("createITbEnumEnumInterfaceInterface: Defaulting to local service backend"));
-		return MakeShared<TbEnum::EnumInterface::Private::LocalService, ESPMode::ThreadSafe>();
+		return NewObject<UTbEnumEnumInterfaceLocalService>();
 	}
 }

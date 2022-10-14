@@ -31,14 +31,7 @@ limitations under the License.
 #include "Misc/DateTime.h"
 
 using namespace ApiGear::ObjectLink;
-
-namespace Testbed1
-{
-namespace StructInterface
-{
-namespace Private
-{
-OLinkService::OLinkService()
+UTestbed1StructInterfaceOLinkService::UTestbed1StructInterfaceOLinkService()
 	: ITestbed1StructInterfaceInterface()
 	, m_node(nullptr)
 	, m_isReady(false)
@@ -56,7 +49,7 @@ OLinkService::OLinkService()
 	m_node = ClientRegistry::get().addObjectSink(this);
 }
 
-OLinkService::~OLinkService()
+UTestbed1StructInterfaceOLinkService::~UTestbed1StructInterfaceOLinkService()
 {
 	ClientRegistry::get().removeObjectSink(this);
 	if (GEngine != nullptr)
@@ -68,32 +61,32 @@ OLinkService::~OLinkService()
 	m_node = nullptr;
 }
 
-FTestbed1StructInterfaceSigBoolDelegate& OLinkService::GetSigBoolSignalDelegate()
+FTestbed1StructInterfaceSigBoolDelegate& UTestbed1StructInterfaceOLinkService::GetSigBoolSignalDelegate()
 {
 	return SigBoolSignal;
 }
 
-FTestbed1StructInterfaceSigIntDelegate& OLinkService::GetSigIntSignalDelegate()
+FTestbed1StructInterfaceSigIntDelegate& UTestbed1StructInterfaceOLinkService::GetSigIntSignalDelegate()
 {
 	return SigIntSignal;
 }
 
-FTestbed1StructInterfaceSigFloatDelegate& OLinkService::GetSigFloatSignalDelegate()
+FTestbed1StructInterfaceSigFloatDelegate& UTestbed1StructInterfaceOLinkService::GetSigFloatSignalDelegate()
 {
 	return SigFloatSignal;
 }
 
-FTestbed1StructInterfaceSigStringDelegate& OLinkService::GetSigStringSignalDelegate()
+FTestbed1StructInterfaceSigStringDelegate& UTestbed1StructInterfaceOLinkService::GetSigStringSignalDelegate()
 {
 	return SigStringSignal;
 }
 
-FTestbed1StructBool OLinkService::GetPropBool_Implementation() const
+FTestbed1StructBool UTestbed1StructInterfaceOLinkService::GetPropBool_Implementation() const
 {
 	return PropBool;
 }
 
-void OLinkService::SetPropBool_Implementation(const FTestbed1StructBool& InPropBool)
+void UTestbed1StructInterfaceOLinkService::SetPropBool_Implementation(const FTestbed1StructBool& InPropBool)
 {
 	if (!m_node)
 	{
@@ -102,16 +95,16 @@ void OLinkService::SetPropBool_Implementation(const FTestbed1StructBool& InPropB
 	m_node->setRemoteProperty("testbed1.StructInterface/propBool", InPropBool);
 }
 
-FTestbed1StructInterfacePropBoolChangedDelegate& OLinkService::GetPropBoolChangedDelegate()
+FTestbed1StructInterfacePropBoolChangedDelegate& UTestbed1StructInterfaceOLinkService::GetPropBoolChangedDelegate()
 {
 	return PropBoolChanged;
 }
-FTestbed1StructInt OLinkService::GetPropInt_Implementation() const
+FTestbed1StructInt UTestbed1StructInterfaceOLinkService::GetPropInt_Implementation() const
 {
 	return PropInt;
 }
 
-void OLinkService::SetPropInt_Implementation(const FTestbed1StructInt& InPropInt)
+void UTestbed1StructInterfaceOLinkService::SetPropInt_Implementation(const FTestbed1StructInt& InPropInt)
 {
 	if (!m_node)
 	{
@@ -120,16 +113,16 @@ void OLinkService::SetPropInt_Implementation(const FTestbed1StructInt& InPropInt
 	m_node->setRemoteProperty("testbed1.StructInterface/propInt", InPropInt);
 }
 
-FTestbed1StructInterfacePropIntChangedDelegate& OLinkService::GetPropIntChangedDelegate()
+FTestbed1StructInterfacePropIntChangedDelegate& UTestbed1StructInterfaceOLinkService::GetPropIntChangedDelegate()
 {
 	return PropIntChanged;
 }
-FTestbed1StructFloat OLinkService::GetPropFloat_Implementation() const
+FTestbed1StructFloat UTestbed1StructInterfaceOLinkService::GetPropFloat_Implementation() const
 {
 	return PropFloat;
 }
 
-void OLinkService::SetPropFloat_Implementation(const FTestbed1StructFloat& InPropFloat)
+void UTestbed1StructInterfaceOLinkService::SetPropFloat_Implementation(const FTestbed1StructFloat& InPropFloat)
 {
 	if (!m_node)
 	{
@@ -138,16 +131,16 @@ void OLinkService::SetPropFloat_Implementation(const FTestbed1StructFloat& InPro
 	m_node->setRemoteProperty("testbed1.StructInterface/propFloat", InPropFloat);
 }
 
-FTestbed1StructInterfacePropFloatChangedDelegate& OLinkService::GetPropFloatChangedDelegate()
+FTestbed1StructInterfacePropFloatChangedDelegate& UTestbed1StructInterfaceOLinkService::GetPropFloatChangedDelegate()
 {
 	return PropFloatChanged;
 }
-FTestbed1StructString OLinkService::GetPropString_Implementation() const
+FTestbed1StructString UTestbed1StructInterfaceOLinkService::GetPropString_Implementation() const
 {
 	return PropString;
 }
 
-void OLinkService::SetPropString_Implementation(const FTestbed1StructString& InPropString)
+void UTestbed1StructInterfaceOLinkService::SetPropString_Implementation(const FTestbed1StructString& InPropString)
 {
 	if (!m_node)
 	{
@@ -156,12 +149,12 @@ void OLinkService::SetPropString_Implementation(const FTestbed1StructString& InP
 	m_node->setRemoteProperty("testbed1.StructInterface/propString", InPropString);
 }
 
-FTestbed1StructInterfacePropStringChangedDelegate& OLinkService::GetPropStringChangedDelegate()
+FTestbed1StructInterfacePropStringChangedDelegate& UTestbed1StructInterfaceOLinkService::GetPropStringChangedDelegate()
 {
 	return PropStringChanged;
 }
 
-FTestbed1StructBool OLinkService::FuncBool_Implementation(const FTestbed1StructBool& ParamBool)
+FTestbed1StructBool UTestbed1StructInterfaceOLinkService::FuncBool_Implementation(const FTestbed1StructBool& ParamBool)
 {
 	if (!m_node)
 	{
@@ -180,7 +173,7 @@ FTestbed1StructBool OLinkService::FuncBool_Implementation(const FTestbed1StructB
 	return Promise.GetFuture().Get();
 }
 
-FTestbed1StructBool OLinkService::FuncInt_Implementation(const FTestbed1StructInt& ParamInt)
+FTestbed1StructBool UTestbed1StructInterfaceOLinkService::FuncInt_Implementation(const FTestbed1StructInt& ParamInt)
 {
 	if (!m_node)
 	{
@@ -199,7 +192,7 @@ FTestbed1StructBool OLinkService::FuncInt_Implementation(const FTestbed1StructIn
 	return Promise.GetFuture().Get();
 }
 
-FTestbed1StructFloat OLinkService::FuncFloat_Implementation(const FTestbed1StructFloat& ParamFloat)
+FTestbed1StructFloat UTestbed1StructInterfaceOLinkService::FuncFloat_Implementation(const FTestbed1StructFloat& ParamFloat)
 {
 	if (!m_node)
 	{
@@ -218,7 +211,7 @@ FTestbed1StructFloat OLinkService::FuncFloat_Implementation(const FTestbed1Struc
 	return Promise.GetFuture().Get();
 }
 
-FTestbed1StructString OLinkService::FuncString_Implementation(const FTestbed1StructString& ParamString)
+FTestbed1StructString UTestbed1StructInterfaceOLinkService::FuncString_Implementation(const FTestbed1StructString& ParamString)
 {
 	if (!m_node)
 	{
@@ -237,7 +230,7 @@ FTestbed1StructString OLinkService::FuncString_Implementation(const FTestbed1Str
 	return Promise.GetFuture().Get();
 }
 
-void OLinkService::applyState(const nlohmann::json& fields)
+void UTestbed1StructInterfaceOLinkService::applyState(const nlohmann::json& fields)
 {
 	if (fields.contains("propBool"))
 	{
@@ -273,12 +266,12 @@ void OLinkService::applyState(const nlohmann::json& fields)
 	}
 }
 
-std::string OLinkService::olinkObjectName()
+std::string UTestbed1StructInterfaceOLinkService::olinkObjectName()
 {
 	return "testbed1.StructInterface";
 }
 
-void OLinkService::olinkOnSignal(std::string name, nlohmann::json args)
+void UTestbed1StructInterfaceOLinkService::olinkOnSignal(std::string name, nlohmann::json args)
 {
 	std::string path = Name::pathFromName(name);
 	if (path == "sigBool")
@@ -303,13 +296,13 @@ void OLinkService::olinkOnSignal(std::string name, nlohmann::json args)
 	}
 }
 
-void OLinkService::olinkOnPropertyChanged(std::string name, nlohmann::json value)
+void UTestbed1StructInterfaceOLinkService::olinkOnPropertyChanged(std::string name, nlohmann::json value)
 {
 	std::string path = Name::pathFromName(name);
 	applyState({{path, value}});
 }
 
-void OLinkService::olinkOnInit(std::string name, nlohmann::json props, IClientNode* node)
+void UTestbed1StructInterfaceOLinkService::olinkOnInit(std::string name, nlohmann::json props, IClientNode* node)
 {
 	m_isReady = true;
 	m_node = node;
@@ -317,12 +310,8 @@ void OLinkService::olinkOnInit(std::string name, nlohmann::json props, IClientNo
 	// call isReady();
 }
 
-void OLinkService::olinkOnRelease()
+void UTestbed1StructInterfaceOLinkService::olinkOnRelease()
 {
 	m_isReady = false;
 	m_node = nullptr;
 }
-
-} // namespace Private
-} // namespace StructInterface
-} // namespace Testbed1

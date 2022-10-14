@@ -31,14 +31,7 @@ limitations under the License.
 #include "Misc/DateTime.h"
 
 using namespace ApiGear::ObjectLink;
-
-namespace TbSimple
-{
-namespace SimpleInterface
-{
-namespace Private
-{
-OLinkService::OLinkService()
+UTbSimpleSimpleInterfaceOLinkService::UTbSimpleSimpleInterfaceOLinkService()
 	: ITbSimpleSimpleInterfaceInterface()
 	, m_node(nullptr)
 	, m_isReady(false)
@@ -56,7 +49,7 @@ OLinkService::OLinkService()
 	m_node = ClientRegistry::get().addObjectSink(this);
 }
 
-OLinkService::~OLinkService()
+UTbSimpleSimpleInterfaceOLinkService::~UTbSimpleSimpleInterfaceOLinkService()
 {
 	ClientRegistry::get().removeObjectSink(this);
 	if (GEngine != nullptr)
@@ -68,32 +61,32 @@ OLinkService::~OLinkService()
 	m_node = nullptr;
 }
 
-FTbSimpleSimpleInterfaceSigBoolDelegate& OLinkService::GetSigBoolSignalDelegate()
+FTbSimpleSimpleInterfaceSigBoolDelegate& UTbSimpleSimpleInterfaceOLinkService::GetSigBoolSignalDelegate()
 {
 	return SigBoolSignal;
 }
 
-FTbSimpleSimpleInterfaceSigIntDelegate& OLinkService::GetSigIntSignalDelegate()
+FTbSimpleSimpleInterfaceSigIntDelegate& UTbSimpleSimpleInterfaceOLinkService::GetSigIntSignalDelegate()
 {
 	return SigIntSignal;
 }
 
-FTbSimpleSimpleInterfaceSigFloatDelegate& OLinkService::GetSigFloatSignalDelegate()
+FTbSimpleSimpleInterfaceSigFloatDelegate& UTbSimpleSimpleInterfaceOLinkService::GetSigFloatSignalDelegate()
 {
 	return SigFloatSignal;
 }
 
-FTbSimpleSimpleInterfaceSigStringDelegate& OLinkService::GetSigStringSignalDelegate()
+FTbSimpleSimpleInterfaceSigStringDelegate& UTbSimpleSimpleInterfaceOLinkService::GetSigStringSignalDelegate()
 {
 	return SigStringSignal;
 }
 
-bool OLinkService::GetPropBool_Implementation() const
+bool UTbSimpleSimpleInterfaceOLinkService::GetPropBool_Implementation() const
 {
 	return bPropBool;
 }
 
-void OLinkService::SetPropBool_Implementation(bool bInPropBool)
+void UTbSimpleSimpleInterfaceOLinkService::SetPropBool_Implementation(bool bInPropBool)
 {
 	if (!m_node)
 	{
@@ -102,16 +95,16 @@ void OLinkService::SetPropBool_Implementation(bool bInPropBool)
 	m_node->setRemoteProperty("tb.simple.SimpleInterface/propBool", bInPropBool);
 }
 
-FTbSimpleSimpleInterfacePropBoolChangedDelegate& OLinkService::GetPropBoolChangedDelegate()
+FTbSimpleSimpleInterfacePropBoolChangedDelegate& UTbSimpleSimpleInterfaceOLinkService::GetPropBoolChangedDelegate()
 {
 	return PropBoolChanged;
 }
-int32 OLinkService::GetPropInt_Implementation() const
+int32 UTbSimpleSimpleInterfaceOLinkService::GetPropInt_Implementation() const
 {
 	return PropInt;
 }
 
-void OLinkService::SetPropInt_Implementation(int32 InPropInt)
+void UTbSimpleSimpleInterfaceOLinkService::SetPropInt_Implementation(int32 InPropInt)
 {
 	if (!m_node)
 	{
@@ -120,16 +113,16 @@ void OLinkService::SetPropInt_Implementation(int32 InPropInt)
 	m_node->setRemoteProperty("tb.simple.SimpleInterface/propInt", InPropInt);
 }
 
-FTbSimpleSimpleInterfacePropIntChangedDelegate& OLinkService::GetPropIntChangedDelegate()
+FTbSimpleSimpleInterfacePropIntChangedDelegate& UTbSimpleSimpleInterfaceOLinkService::GetPropIntChangedDelegate()
 {
 	return PropIntChanged;
 }
-float OLinkService::GetPropFloat_Implementation() const
+float UTbSimpleSimpleInterfaceOLinkService::GetPropFloat_Implementation() const
 {
 	return PropFloat;
 }
 
-void OLinkService::SetPropFloat_Implementation(float InPropFloat)
+void UTbSimpleSimpleInterfaceOLinkService::SetPropFloat_Implementation(float InPropFloat)
 {
 	if (!m_node)
 	{
@@ -138,16 +131,16 @@ void OLinkService::SetPropFloat_Implementation(float InPropFloat)
 	m_node->setRemoteProperty("tb.simple.SimpleInterface/propFloat", InPropFloat);
 }
 
-FTbSimpleSimpleInterfacePropFloatChangedDelegate& OLinkService::GetPropFloatChangedDelegate()
+FTbSimpleSimpleInterfacePropFloatChangedDelegate& UTbSimpleSimpleInterfaceOLinkService::GetPropFloatChangedDelegate()
 {
 	return PropFloatChanged;
 }
-FString OLinkService::GetPropString_Implementation() const
+FString UTbSimpleSimpleInterfaceOLinkService::GetPropString_Implementation() const
 {
 	return PropString;
 }
 
-void OLinkService::SetPropString_Implementation(const FString& InPropString)
+void UTbSimpleSimpleInterfaceOLinkService::SetPropString_Implementation(const FString& InPropString)
 {
 	if (!m_node)
 	{
@@ -156,12 +149,12 @@ void OLinkService::SetPropString_Implementation(const FString& InPropString)
 	m_node->setRemoteProperty("tb.simple.SimpleInterface/propString", InPropString);
 }
 
-FTbSimpleSimpleInterfacePropStringChangedDelegate& OLinkService::GetPropStringChangedDelegate()
+FTbSimpleSimpleInterfacePropStringChangedDelegate& UTbSimpleSimpleInterfaceOLinkService::GetPropStringChangedDelegate()
 {
 	return PropStringChanged;
 }
 
-bool OLinkService::FuncBool_Implementation(bool bParamBool)
+bool UTbSimpleSimpleInterfaceOLinkService::FuncBool_Implementation(bool bParamBool)
 {
 	if (!m_node)
 	{
@@ -180,7 +173,7 @@ bool OLinkService::FuncBool_Implementation(bool bParamBool)
 	return Promise.GetFuture().Get();
 }
 
-int32 OLinkService::FuncInt_Implementation(int32 ParamInt)
+int32 UTbSimpleSimpleInterfaceOLinkService::FuncInt_Implementation(int32 ParamInt)
 {
 	if (!m_node)
 	{
@@ -199,7 +192,7 @@ int32 OLinkService::FuncInt_Implementation(int32 ParamInt)
 	return Promise.GetFuture().Get();
 }
 
-float OLinkService::FuncFloat_Implementation(float ParamFloat)
+float UTbSimpleSimpleInterfaceOLinkService::FuncFloat_Implementation(float ParamFloat)
 {
 	if (!m_node)
 	{
@@ -218,7 +211,7 @@ float OLinkService::FuncFloat_Implementation(float ParamFloat)
 	return Promise.GetFuture().Get();
 }
 
-FString OLinkService::FuncString_Implementation(const FString& ParamString)
+FString UTbSimpleSimpleInterfaceOLinkService::FuncString_Implementation(const FString& ParamString)
 {
 	if (!m_node)
 	{
@@ -237,7 +230,7 @@ FString OLinkService::FuncString_Implementation(const FString& ParamString)
 	return Promise.GetFuture().Get();
 }
 
-void OLinkService::applyState(const nlohmann::json& fields)
+void UTbSimpleSimpleInterfaceOLinkService::applyState(const nlohmann::json& fields)
 {
 	if (fields.contains("propBool"))
 	{
@@ -273,12 +266,12 @@ void OLinkService::applyState(const nlohmann::json& fields)
 	}
 }
 
-std::string OLinkService::olinkObjectName()
+std::string UTbSimpleSimpleInterfaceOLinkService::olinkObjectName()
 {
 	return "tb.simple.SimpleInterface";
 }
 
-void OLinkService::olinkOnSignal(std::string name, nlohmann::json args)
+void UTbSimpleSimpleInterfaceOLinkService::olinkOnSignal(std::string name, nlohmann::json args)
 {
 	std::string path = Name::pathFromName(name);
 	if (path == "sigBool")
@@ -303,13 +296,13 @@ void OLinkService::olinkOnSignal(std::string name, nlohmann::json args)
 	}
 }
 
-void OLinkService::olinkOnPropertyChanged(std::string name, nlohmann::json value)
+void UTbSimpleSimpleInterfaceOLinkService::olinkOnPropertyChanged(std::string name, nlohmann::json value)
 {
 	std::string path = Name::pathFromName(name);
 	applyState({{path, value}});
 }
 
-void OLinkService::olinkOnInit(std::string name, nlohmann::json props, IClientNode* node)
+void UTbSimpleSimpleInterfaceOLinkService::olinkOnInit(std::string name, nlohmann::json props, IClientNode* node)
 {
 	m_isReady = true;
 	m_node = node;
@@ -317,12 +310,8 @@ void OLinkService::olinkOnInit(std::string name, nlohmann::json props, IClientNo
 	// call isReady();
 }
 
-void OLinkService::olinkOnRelease()
+void UTbSimpleSimpleInterfaceOLinkService::olinkOnRelease()
 {
 	m_isReady = false;
 	m_node = nullptr;
 }
-
-} // namespace Private
-} // namespace SimpleInterface
-} // namespace TbSimple

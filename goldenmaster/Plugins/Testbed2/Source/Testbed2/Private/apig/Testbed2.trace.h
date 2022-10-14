@@ -6,7 +6,7 @@ class Testbed2ManyParamInterfaceTracer
 {
 public:
 	Testbed2ManyParamInterfaceTracer();
-	static void capture_state(ITestbed2ManyParamInterfaceInterface* obj);
+	static void capture_state(UObject* Object, ITestbed2ManyParamInterfaceInterface* obj);
 	static void trace_callSetProp1(int32 InProp1);
 	static void trace_callSetProp2(int32 InProp2);
 	static void trace_callSetProp3(int32 InProp3);
@@ -25,7 +25,7 @@ class Testbed2NestedStruct1InterfaceTracer
 {
 public:
 	Testbed2NestedStruct1InterfaceTracer();
-	static void capture_state(ITestbed2NestedStruct1InterfaceInterface* obj);
+	static void capture_state(UObject* Object, ITestbed2NestedStruct1InterfaceInterface* obj);
 	static void trace_callSetProp1(const FTestbed2NestedStruct1& InProp1);
 	static void trace_signalSig1(const FTestbed2NestedStruct1& Param1);
 	static void trace_callFunc1(const FTestbed2NestedStruct1& Param1);
@@ -35,7 +35,7 @@ class Testbed2NestedStruct2InterfaceTracer
 {
 public:
 	Testbed2NestedStruct2InterfaceTracer();
-	static void capture_state(ITestbed2NestedStruct2InterfaceInterface* obj);
+	static void capture_state(UObject* Object, ITestbed2NestedStruct2InterfaceInterface* obj);
 	static void trace_callSetProp1(const FTestbed2NestedStruct1& InProp1);
 	static void trace_callSetProp2(const FTestbed2NestedStruct2& InProp2);
 	static void trace_signalSig1(const FTestbed2NestedStruct1& Param1);
@@ -48,7 +48,7 @@ class Testbed2NestedStruct3InterfaceTracer
 {
 public:
 	Testbed2NestedStruct3InterfaceTracer();
-	static void capture_state(ITestbed2NestedStruct3InterfaceInterface* obj);
+	static void capture_state(UObject* Object, ITestbed2NestedStruct3InterfaceInterface* obj);
 	static void trace_callSetProp1(const FTestbed2NestedStruct1& InProp1);
 	static void trace_callSetProp2(const FTestbed2NestedStruct2& InProp2);
 	static void trace_callSetProp3(const FTestbed2NestedStruct3& InProp3);

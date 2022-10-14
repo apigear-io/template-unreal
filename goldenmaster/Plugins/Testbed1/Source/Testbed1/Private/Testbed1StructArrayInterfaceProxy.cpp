@@ -71,27 +71,30 @@ UTestbed1StructArrayInterfaceProxy::UTestbed1StructArrayInterfaceProxy()
 	, PropFloat(TArray<FTestbed1StructFloat>())
 	, PropString(TArray<FTestbed1StructString>())
 {
-	service = FTestbed1ModuleFactory::createITestbed1StructArrayInterfaceInterface();
-	service->GetPropBoolChangedDelegate().AddDynamic(this, &UTestbed1StructArrayInterfaceProxy::OnPropBoolChanged);
-	service->GetPropIntChangedDelegate().AddDynamic(this, &UTestbed1StructArrayInterfaceProxy::OnPropIntChanged);
-	service->GetPropFloatChangedDelegate().AddDynamic(this, &UTestbed1StructArrayInterfaceProxy::OnPropFloatChanged);
-	service->GetPropStringChangedDelegate().AddDynamic(this, &UTestbed1StructArrayInterfaceProxy::OnPropStringChanged);
-	service->GetSigBoolSignalDelegate().AddDynamic(this, &UTestbed1StructArrayInterfaceProxy::OnSigBool);
-	service->GetSigIntSignalDelegate().AddDynamic(this, &UTestbed1StructArrayInterfaceProxy::OnSigInt);
-	service->GetSigFloatSignalDelegate().AddDynamic(this, &UTestbed1StructArrayInterfaceProxy::OnSigFloat);
-	service->GetSigStringSignalDelegate().AddDynamic(this, &UTestbed1StructArrayInterfaceProxy::OnSigString);
+	BackendService = FTestbed1ModuleFactory::createITestbed1StructArrayInterfaceInterface();
+	BackendService->GetPropBoolChangedDelegate().AddDynamic(this, &UTestbed1StructArrayInterfaceProxy::OnPropBoolChanged);
+	BackendService->GetPropIntChangedDelegate().AddDynamic(this, &UTestbed1StructArrayInterfaceProxy::OnPropIntChanged);
+	BackendService->GetPropFloatChangedDelegate().AddDynamic(this, &UTestbed1StructArrayInterfaceProxy::OnPropFloatChanged);
+	BackendService->GetPropStringChangedDelegate().AddDynamic(this, &UTestbed1StructArrayInterfaceProxy::OnPropStringChanged);
+	BackendService->GetSigBoolSignalDelegate().AddDynamic(this, &UTestbed1StructArrayInterfaceProxy::OnSigBool);
+	BackendService->GetSigIntSignalDelegate().AddDynamic(this, &UTestbed1StructArrayInterfaceProxy::OnSigInt);
+	BackendService->GetSigFloatSignalDelegate().AddDynamic(this, &UTestbed1StructArrayInterfaceProxy::OnSigFloat);
+	BackendService->GetSigStringSignalDelegate().AddDynamic(this, &UTestbed1StructArrayInterfaceProxy::OnSigString);
 }
 
 UTestbed1StructArrayInterfaceProxy::~UTestbed1StructArrayInterfaceProxy()
 {
-	service->GetPropBoolChangedDelegate().RemoveDynamic(this, &UTestbed1StructArrayInterfaceProxy::OnPropBoolChanged);
-	service->GetPropIntChangedDelegate().RemoveDynamic(this, &UTestbed1StructArrayInterfaceProxy::OnPropIntChanged);
-	service->GetPropFloatChangedDelegate().RemoveDynamic(this, &UTestbed1StructArrayInterfaceProxy::OnPropFloatChanged);
-	service->GetPropStringChangedDelegate().RemoveDynamic(this, &UTestbed1StructArrayInterfaceProxy::OnPropStringChanged);
-	service->GetSigBoolSignalDelegate().RemoveDynamic(this, &UTestbed1StructArrayInterfaceProxy::OnSigBool);
-	service->GetSigIntSignalDelegate().RemoveDynamic(this, &UTestbed1StructArrayInterfaceProxy::OnSigInt);
-	service->GetSigFloatSignalDelegate().RemoveDynamic(this, &UTestbed1StructArrayInterfaceProxy::OnSigFloat);
-	service->GetSigStringSignalDelegate().RemoveDynamic(this, &UTestbed1StructArrayInterfaceProxy::OnSigString);
+	if (BackendService != nullptr)
+	{
+		//BackendService->GetPropBoolChangedDelegate().RemoveDynamic(this, &UTestbed1StructArrayInterfaceProxy::OnPropBoolChanged);
+		//BackendService->GetPropIntChangedDelegate().RemoveDynamic(this, &UTestbed1StructArrayInterfaceProxy::OnPropIntChanged);
+		//BackendService->GetPropFloatChangedDelegate().RemoveDynamic(this, &UTestbed1StructArrayInterfaceProxy::OnPropFloatChanged);
+		//BackendService->GetPropStringChangedDelegate().RemoveDynamic(this, &UTestbed1StructArrayInterfaceProxy::OnPropStringChanged);
+		//BackendService->GetSigBoolSignalDelegate().RemoveDynamic(this, &UTestbed1StructArrayInterfaceProxy::OnSigBool);
+		//BackendService->GetSigIntSignalDelegate().RemoveDynamic(this, &UTestbed1StructArrayInterfaceProxy::OnSigInt);
+		//BackendService->GetSigFloatSignalDelegate().RemoveDynamic(this, &UTestbed1StructArrayInterfaceProxy::OnSigFloat);
+		//BackendService->GetSigStringSignalDelegate().RemoveDynamic(this, &UTestbed1StructArrayInterfaceProxy::OnSigString);
+	}
 }
 void UTestbed1StructArrayInterfaceProxy::OnSigBool(const TArray<FTestbed1StructBool>& ParamBool)
 {
@@ -139,20 +142,20 @@ FTestbed1StructArrayInterfaceSigStringDelegate& UTestbed1StructArrayInterfacePro
 
 void UTestbed1StructArrayInterfaceProxy::OnPropBoolChanged(const TArray<FTestbed1StructBool>& InPropBool)
 {
-	Testbed1StructArrayInterfaceTracer::capture_state(this);
+	Testbed1StructArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropBool = InPropBool;
 	PropBoolChanged.Broadcast(InPropBool);
 }
 
 TArray<FTestbed1StructBool> UTestbed1StructArrayInterfaceProxy::GetPropBool_Implementation() const
 {
-	return service->Execute_GetPropBool(service);
+	return BackendService->Execute_GetPropBool(BackendService.GetObject());
 }
 
 void UTestbed1StructArrayInterfaceProxy::SetPropBool_Implementation(const TArray<FTestbed1StructBool>& InPropBool)
 {
 	Testbed1StructArrayInterfaceTracer::trace_callSetPropBool(InPropBool);
-	service->Execute_SetPropBool(service, InPropBool);
+	BackendService->Execute_SetPropBool(BackendService.GetObject(), InPropBool);
 }
 
 TArray<FTestbed1StructBool> UTestbed1StructArrayInterfaceProxy::GetPropBool_Private() const
@@ -172,20 +175,20 @@ FTestbed1StructArrayInterfacePropBoolChangedDelegate& UTestbed1StructArrayInterf
 
 void UTestbed1StructArrayInterfaceProxy::OnPropIntChanged(const TArray<FTestbed1StructInt>& InPropInt)
 {
-	Testbed1StructArrayInterfaceTracer::capture_state(this);
+	Testbed1StructArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropInt = InPropInt;
 	PropIntChanged.Broadcast(InPropInt);
 }
 
 TArray<FTestbed1StructInt> UTestbed1StructArrayInterfaceProxy::GetPropInt_Implementation() const
 {
-	return service->Execute_GetPropInt(service);
+	return BackendService->Execute_GetPropInt(BackendService.GetObject());
 }
 
 void UTestbed1StructArrayInterfaceProxy::SetPropInt_Implementation(const TArray<FTestbed1StructInt>& InPropInt)
 {
 	Testbed1StructArrayInterfaceTracer::trace_callSetPropInt(InPropInt);
-	service->Execute_SetPropInt(service, InPropInt);
+	BackendService->Execute_SetPropInt(BackendService.GetObject(), InPropInt);
 }
 
 TArray<FTestbed1StructInt> UTestbed1StructArrayInterfaceProxy::GetPropInt_Private() const
@@ -205,20 +208,20 @@ FTestbed1StructArrayInterfacePropIntChangedDelegate& UTestbed1StructArrayInterfa
 
 void UTestbed1StructArrayInterfaceProxy::OnPropFloatChanged(const TArray<FTestbed1StructFloat>& InPropFloat)
 {
-	Testbed1StructArrayInterfaceTracer::capture_state(this);
+	Testbed1StructArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropFloat = InPropFloat;
 	PropFloatChanged.Broadcast(InPropFloat);
 }
 
 TArray<FTestbed1StructFloat> UTestbed1StructArrayInterfaceProxy::GetPropFloat_Implementation() const
 {
-	return service->Execute_GetPropFloat(service);
+	return BackendService->Execute_GetPropFloat(BackendService.GetObject());
 }
 
 void UTestbed1StructArrayInterfaceProxy::SetPropFloat_Implementation(const TArray<FTestbed1StructFloat>& InPropFloat)
 {
 	Testbed1StructArrayInterfaceTracer::trace_callSetPropFloat(InPropFloat);
-	service->Execute_SetPropFloat(service, InPropFloat);
+	BackendService->Execute_SetPropFloat(BackendService.GetObject(), InPropFloat);
 }
 
 TArray<FTestbed1StructFloat> UTestbed1StructArrayInterfaceProxy::GetPropFloat_Private() const
@@ -238,20 +241,20 @@ FTestbed1StructArrayInterfacePropFloatChangedDelegate& UTestbed1StructArrayInter
 
 void UTestbed1StructArrayInterfaceProxy::OnPropStringChanged(const TArray<FTestbed1StructString>& InPropString)
 {
-	Testbed1StructArrayInterfaceTracer::capture_state(this);
+	Testbed1StructArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropString = InPropString;
 	PropStringChanged.Broadcast(InPropString);
 }
 
 TArray<FTestbed1StructString> UTestbed1StructArrayInterfaceProxy::GetPropString_Implementation() const
 {
-	return service->Execute_GetPropString(service);
+	return BackendService->Execute_GetPropString(BackendService.GetObject());
 }
 
 void UTestbed1StructArrayInterfaceProxy::SetPropString_Implementation(const TArray<FTestbed1StructString>& InPropString)
 {
 	Testbed1StructArrayInterfaceTracer::trace_callSetPropString(InPropString);
-	service->Execute_SetPropString(service, InPropString);
+	BackendService->Execute_SetPropString(BackendService.GetObject(), InPropString);
 }
 
 TArray<FTestbed1StructString> UTestbed1StructArrayInterfaceProxy::GetPropString_Private() const
@@ -290,7 +293,7 @@ void UTestbed1StructArrayInterfaceProxy::FuncBoolAsync_Implementation(UObject* W
 		Async(EAsyncExecution::Thread,
 			[ParamBool, this, &Result, CompletionAction]()
 			{
-				Result = service->Execute_FuncBool(service, ParamBool);
+				Result = BackendService->Execute_FuncBool(BackendService.GetObject(), ParamBool);
 				CompletionAction->Cancel();
 			});
 	}
@@ -298,7 +301,7 @@ void UTestbed1StructArrayInterfaceProxy::FuncBoolAsync_Implementation(UObject* W
 FTestbed1StructBool UTestbed1StructArrayInterfaceProxy::FuncBool_Implementation(const TArray<FTestbed1StructBool>& ParamBool)
 {
 	Testbed1StructArrayInterfaceTracer::trace_callFuncBool(ParamBool);
-	return service->Execute_FuncBool(service, ParamBool);
+	return BackendService->Execute_FuncBool(BackendService.GetObject(), ParamBool);
 }
 void UTestbed1StructArrayInterfaceProxy::FuncIntAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructInt>& ParamInt)
 {
@@ -321,7 +324,7 @@ void UTestbed1StructArrayInterfaceProxy::FuncIntAsync_Implementation(UObject* Wo
 		Async(EAsyncExecution::Thread,
 			[ParamInt, this, &Result, CompletionAction]()
 			{
-				Result = service->Execute_FuncInt(service, ParamInt);
+				Result = BackendService->Execute_FuncInt(BackendService.GetObject(), ParamInt);
 				CompletionAction->Cancel();
 			});
 	}
@@ -329,7 +332,7 @@ void UTestbed1StructArrayInterfaceProxy::FuncIntAsync_Implementation(UObject* Wo
 FTestbed1StructBool UTestbed1StructArrayInterfaceProxy::FuncInt_Implementation(const TArray<FTestbed1StructInt>& ParamInt)
 {
 	Testbed1StructArrayInterfaceTracer::trace_callFuncInt(ParamInt);
-	return service->Execute_FuncInt(service, ParamInt);
+	return BackendService->Execute_FuncInt(BackendService.GetObject(), ParamInt);
 }
 void UTestbed1StructArrayInterfaceProxy::FuncFloatAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructFloat>& ParamFloat)
 {
@@ -352,7 +355,7 @@ void UTestbed1StructArrayInterfaceProxy::FuncFloatAsync_Implementation(UObject* 
 		Async(EAsyncExecution::Thread,
 			[ParamFloat, this, &Result, CompletionAction]()
 			{
-				Result = service->Execute_FuncFloat(service, ParamFloat);
+				Result = BackendService->Execute_FuncFloat(BackendService.GetObject(), ParamFloat);
 				CompletionAction->Cancel();
 			});
 	}
@@ -360,7 +363,7 @@ void UTestbed1StructArrayInterfaceProxy::FuncFloatAsync_Implementation(UObject* 
 FTestbed1StructBool UTestbed1StructArrayInterfaceProxy::FuncFloat_Implementation(const TArray<FTestbed1StructFloat>& ParamFloat)
 {
 	Testbed1StructArrayInterfaceTracer::trace_callFuncFloat(ParamFloat);
-	return service->Execute_FuncFloat(service, ParamFloat);
+	return BackendService->Execute_FuncFloat(BackendService.GetObject(), ParamFloat);
 }
 void UTestbed1StructArrayInterfaceProxy::FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructString>& ParamString)
 {
@@ -383,7 +386,7 @@ void UTestbed1StructArrayInterfaceProxy::FuncStringAsync_Implementation(UObject*
 		Async(EAsyncExecution::Thread,
 			[ParamString, this, &Result, CompletionAction]()
 			{
-				Result = service->Execute_FuncString(service, ParamString);
+				Result = BackendService->Execute_FuncString(BackendService.GetObject(), ParamString);
 				CompletionAction->Cancel();
 			});
 	}
@@ -391,5 +394,5 @@ void UTestbed1StructArrayInterfaceProxy::FuncStringAsync_Implementation(UObject*
 FTestbed1StructBool UTestbed1StructArrayInterfaceProxy::FuncString_Implementation(const TArray<FTestbed1StructString>& ParamString)
 {
 	Testbed1StructArrayInterfaceTracer::trace_callFuncString(ParamString);
-	return service->Execute_FuncString(service, ParamString);
+	return BackendService->Execute_FuncString(BackendService.GetObject(), ParamString);
 }

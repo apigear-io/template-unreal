@@ -29,8 +29,8 @@ DECLARE_LOG_CATEGORY_EXTERN(LogFTestbed2ModuleFactory, Log, All);
 class FTestbed2ModuleFactory
 {
 public:
-	static TSharedPtr<ITestbed2ManyParamInterfaceInterface, ESPMode::ThreadSafe> createITestbed2ManyParamInterfaceInterface();
-	static TSharedPtr<ITestbed2NestedStruct1InterfaceInterface, ESPMode::ThreadSafe> createITestbed2NestedStruct1InterfaceInterface();
-	static TSharedPtr<ITestbed2NestedStruct2InterfaceInterface, ESPMode::ThreadSafe> createITestbed2NestedStruct2InterfaceInterface();
-	static TSharedPtr<ITestbed2NestedStruct3InterfaceInterface, ESPMode::ThreadSafe> createITestbed2NestedStruct3InterfaceInterface();
+	static TScriptInterface<ITestbed2ManyParamInterfaceInterface> createITestbed2ManyParamInterfaceInterface();
+	static TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> createITestbed2NestedStruct1InterfaceInterface();
+	static TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> createITestbed2NestedStruct2InterfaceInterface();
+	static TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> createITestbed2NestedStruct3InterfaceInterface();
 };

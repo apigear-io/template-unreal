@@ -31,14 +31,7 @@ limitations under the License.
 #include "Misc/DateTime.h"
 
 using namespace ApiGear::ObjectLink;
-
-namespace TbSimple
-{
-namespace SimpleArrayInterface
-{
-namespace Private
-{
-OLinkService::OLinkService()
+UTbSimpleSimpleArrayInterfaceOLinkService::UTbSimpleSimpleArrayInterfaceOLinkService()
 	: ITbSimpleSimpleArrayInterfaceInterface()
 	, m_node(nullptr)
 	, m_isReady(false)
@@ -56,7 +49,7 @@ OLinkService::OLinkService()
 	m_node = ClientRegistry::get().addObjectSink(this);
 }
 
-OLinkService::~OLinkService()
+UTbSimpleSimpleArrayInterfaceOLinkService::~UTbSimpleSimpleArrayInterfaceOLinkService()
 {
 	ClientRegistry::get().removeObjectSink(this);
 	if (GEngine != nullptr)
@@ -68,32 +61,32 @@ OLinkService::~OLinkService()
 	m_node = nullptr;
 }
 
-FTbSimpleSimpleArrayInterfaceSigBoolDelegate& OLinkService::GetSigBoolSignalDelegate()
+FTbSimpleSimpleArrayInterfaceSigBoolDelegate& UTbSimpleSimpleArrayInterfaceOLinkService::GetSigBoolSignalDelegate()
 {
 	return SigBoolSignal;
 }
 
-FTbSimpleSimpleArrayInterfaceSigIntDelegate& OLinkService::GetSigIntSignalDelegate()
+FTbSimpleSimpleArrayInterfaceSigIntDelegate& UTbSimpleSimpleArrayInterfaceOLinkService::GetSigIntSignalDelegate()
 {
 	return SigIntSignal;
 }
 
-FTbSimpleSimpleArrayInterfaceSigFloatDelegate& OLinkService::GetSigFloatSignalDelegate()
+FTbSimpleSimpleArrayInterfaceSigFloatDelegate& UTbSimpleSimpleArrayInterfaceOLinkService::GetSigFloatSignalDelegate()
 {
 	return SigFloatSignal;
 }
 
-FTbSimpleSimpleArrayInterfaceSigStringDelegate& OLinkService::GetSigStringSignalDelegate()
+FTbSimpleSimpleArrayInterfaceSigStringDelegate& UTbSimpleSimpleArrayInterfaceOLinkService::GetSigStringSignalDelegate()
 {
 	return SigStringSignal;
 }
 
-TArray<bool> OLinkService::GetPropBool_Implementation() const
+TArray<bool> UTbSimpleSimpleArrayInterfaceOLinkService::GetPropBool_Implementation() const
 {
 	return PropBool;
 }
 
-void OLinkService::SetPropBool_Implementation(const TArray<bool>& InPropBool)
+void UTbSimpleSimpleArrayInterfaceOLinkService::SetPropBool_Implementation(const TArray<bool>& InPropBool)
 {
 	if (!m_node)
 	{
@@ -102,16 +95,16 @@ void OLinkService::SetPropBool_Implementation(const TArray<bool>& InPropBool)
 	m_node->setRemoteProperty("tb.simple.SimpleArrayInterface/propBool", InPropBool);
 }
 
-FTbSimpleSimpleArrayInterfacePropBoolChangedDelegate& OLinkService::GetPropBoolChangedDelegate()
+FTbSimpleSimpleArrayInterfacePropBoolChangedDelegate& UTbSimpleSimpleArrayInterfaceOLinkService::GetPropBoolChangedDelegate()
 {
 	return PropBoolChanged;
 }
-TArray<int32> OLinkService::GetPropInt_Implementation() const
+TArray<int32> UTbSimpleSimpleArrayInterfaceOLinkService::GetPropInt_Implementation() const
 {
 	return PropInt;
 }
 
-void OLinkService::SetPropInt_Implementation(const TArray<int32>& InPropInt)
+void UTbSimpleSimpleArrayInterfaceOLinkService::SetPropInt_Implementation(const TArray<int32>& InPropInt)
 {
 	if (!m_node)
 	{
@@ -120,16 +113,16 @@ void OLinkService::SetPropInt_Implementation(const TArray<int32>& InPropInt)
 	m_node->setRemoteProperty("tb.simple.SimpleArrayInterface/propInt", InPropInt);
 }
 
-FTbSimpleSimpleArrayInterfacePropIntChangedDelegate& OLinkService::GetPropIntChangedDelegate()
+FTbSimpleSimpleArrayInterfacePropIntChangedDelegate& UTbSimpleSimpleArrayInterfaceOLinkService::GetPropIntChangedDelegate()
 {
 	return PropIntChanged;
 }
-TArray<float> OLinkService::GetPropFloat_Implementation() const
+TArray<float> UTbSimpleSimpleArrayInterfaceOLinkService::GetPropFloat_Implementation() const
 {
 	return PropFloat;
 }
 
-void OLinkService::SetPropFloat_Implementation(const TArray<float>& InPropFloat)
+void UTbSimpleSimpleArrayInterfaceOLinkService::SetPropFloat_Implementation(const TArray<float>& InPropFloat)
 {
 	if (!m_node)
 	{
@@ -138,16 +131,16 @@ void OLinkService::SetPropFloat_Implementation(const TArray<float>& InPropFloat)
 	m_node->setRemoteProperty("tb.simple.SimpleArrayInterface/propFloat", InPropFloat);
 }
 
-FTbSimpleSimpleArrayInterfacePropFloatChangedDelegate& OLinkService::GetPropFloatChangedDelegate()
+FTbSimpleSimpleArrayInterfacePropFloatChangedDelegate& UTbSimpleSimpleArrayInterfaceOLinkService::GetPropFloatChangedDelegate()
 {
 	return PropFloatChanged;
 }
-TArray<FString> OLinkService::GetPropString_Implementation() const
+TArray<FString> UTbSimpleSimpleArrayInterfaceOLinkService::GetPropString_Implementation() const
 {
 	return PropString;
 }
 
-void OLinkService::SetPropString_Implementation(const TArray<FString>& InPropString)
+void UTbSimpleSimpleArrayInterfaceOLinkService::SetPropString_Implementation(const TArray<FString>& InPropString)
 {
 	if (!m_node)
 	{
@@ -156,12 +149,12 @@ void OLinkService::SetPropString_Implementation(const TArray<FString>& InPropStr
 	m_node->setRemoteProperty("tb.simple.SimpleArrayInterface/propString", InPropString);
 }
 
-FTbSimpleSimpleArrayInterfacePropStringChangedDelegate& OLinkService::GetPropStringChangedDelegate()
+FTbSimpleSimpleArrayInterfacePropStringChangedDelegate& UTbSimpleSimpleArrayInterfaceOLinkService::GetPropStringChangedDelegate()
 {
 	return PropStringChanged;
 }
 
-TArray<bool> OLinkService::FuncBool_Implementation(const TArray<bool>& ParamBool)
+TArray<bool> UTbSimpleSimpleArrayInterfaceOLinkService::FuncBool_Implementation(const TArray<bool>& ParamBool)
 {
 	if (!m_node)
 	{
@@ -180,7 +173,7 @@ TArray<bool> OLinkService::FuncBool_Implementation(const TArray<bool>& ParamBool
 	return Promise.GetFuture().Get();
 }
 
-TArray<int32> OLinkService::FuncInt_Implementation(const TArray<int32>& ParamInt)
+TArray<int32> UTbSimpleSimpleArrayInterfaceOLinkService::FuncInt_Implementation(const TArray<int32>& ParamInt)
 {
 	if (!m_node)
 	{
@@ -199,7 +192,7 @@ TArray<int32> OLinkService::FuncInt_Implementation(const TArray<int32>& ParamInt
 	return Promise.GetFuture().Get();
 }
 
-TArray<float> OLinkService::FuncFloat_Implementation(const TArray<float>& ParamFloat)
+TArray<float> UTbSimpleSimpleArrayInterfaceOLinkService::FuncFloat_Implementation(const TArray<float>& ParamFloat)
 {
 	if (!m_node)
 	{
@@ -218,7 +211,7 @@ TArray<float> OLinkService::FuncFloat_Implementation(const TArray<float>& ParamF
 	return Promise.GetFuture().Get();
 }
 
-TArray<FString> OLinkService::FuncString_Implementation(const TArray<FString>& ParamString)
+TArray<FString> UTbSimpleSimpleArrayInterfaceOLinkService::FuncString_Implementation(const TArray<FString>& ParamString)
 {
 	if (!m_node)
 	{
@@ -237,7 +230,7 @@ TArray<FString> OLinkService::FuncString_Implementation(const TArray<FString>& P
 	return Promise.GetFuture().Get();
 }
 
-void OLinkService::applyState(const nlohmann::json& fields)
+void UTbSimpleSimpleArrayInterfaceOLinkService::applyState(const nlohmann::json& fields)
 {
 	if (fields.contains("propBool"))
 	{
@@ -273,12 +266,12 @@ void OLinkService::applyState(const nlohmann::json& fields)
 	}
 }
 
-std::string OLinkService::olinkObjectName()
+std::string UTbSimpleSimpleArrayInterfaceOLinkService::olinkObjectName()
 {
 	return "tb.simple.SimpleArrayInterface";
 }
 
-void OLinkService::olinkOnSignal(std::string name, nlohmann::json args)
+void UTbSimpleSimpleArrayInterfaceOLinkService::olinkOnSignal(std::string name, nlohmann::json args)
 {
 	std::string path = Name::pathFromName(name);
 	if (path == "sigBool")
@@ -303,13 +296,13 @@ void OLinkService::olinkOnSignal(std::string name, nlohmann::json args)
 	}
 }
 
-void OLinkService::olinkOnPropertyChanged(std::string name, nlohmann::json value)
+void UTbSimpleSimpleArrayInterfaceOLinkService::olinkOnPropertyChanged(std::string name, nlohmann::json value)
 {
 	std::string path = Name::pathFromName(name);
 	applyState({{path, value}});
 }
 
-void OLinkService::olinkOnInit(std::string name, nlohmann::json props, IClientNode* node)
+void UTbSimpleSimpleArrayInterfaceOLinkService::olinkOnInit(std::string name, nlohmann::json props, IClientNode* node)
 {
 	m_isReady = true;
 	m_node = node;
@@ -317,12 +310,8 @@ void OLinkService::olinkOnInit(std::string name, nlohmann::json props, IClientNo
 	// call isReady();
 }
 
-void OLinkService::olinkOnRelease()
+void UTbSimpleSimpleArrayInterfaceOLinkService::olinkOnRelease()
 {
 	m_isReady = false;
 	m_node = nullptr;
 }
-
-} // namespace Private
-} // namespace SimpleArrayInterface
-} // namespace TbSimple

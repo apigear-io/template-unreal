@@ -99,7 +99,8 @@ public:
 
 private:
 	/** The connection to the service backend. */
-	TSharedPtr<ITestbed2ManyParamInterfaceInterface, ESPMode::ThreadSafe> service;
+	UPROPERTY(VisibleAnywhere, Category = "ApiGear|Testbed2|ManyParamInterface")
+	TScriptInterface<ITestbed2ManyParamInterfaceInterface> BackendService;
 
 	// signals
 	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)

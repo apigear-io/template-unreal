@@ -6,13 +6,13 @@ TbEnumEnumInterfaceTracer::TbEnumEnumInterfaceTracer()
 {
 }
 
-void TbEnumEnumInterfaceTracer::capture_state(ITbEnumEnumInterfaceInterface* obj)
+void TbEnumEnumInterfaceTracer::capture_state(UObject* Object, ITbEnumEnumInterfaceInterface* obj)
 {
 	nlohmann::json fields_;
-	fields_["prop0"] = obj->GetProp0();
-	fields_["prop1"] = obj->GetProp1();
-	fields_["prop2"] = obj->GetProp2();
-	fields_["prop3"] = obj->GetProp3();
+	fields_["prop0"] = obj->Execute_GetProp0(Object);
+	fields_["prop1"] = obj->Execute_GetProp1(Object);
+	fields_["prop2"] = obj->Execute_GetProp2(Object);
+	fields_["prop3"] = obj->Execute_GetProp3(Object);
 	Tracer::instance()->state("tb.enum/EnumInterface", fields_);
 }
 void TbEnumEnumInterfaceTracer::trace_callSetProp0(const ETbEnumEnum0& InProp0)

@@ -54,7 +54,8 @@ public:
 
 private:
 	/** The connection to the service backend. */
-	TSharedPtr<ITestbed2NestedStruct1InterfaceInterface, ESPMode::ThreadSafe> service;
+	UPROPERTY(VisibleAnywhere, Category = "ApiGear|Testbed2|NestedStruct1Interface")
+	TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> BackendService;
 
 	// signals
 	UFUNCTION(Category = "ApiGear|Testbed2|NestedStruct1Interface", BlueprintInternalUseOnly)

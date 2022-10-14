@@ -99,7 +99,8 @@ public:
 
 private:
 	/** The connection to the service backend. */
-	TSharedPtr<ITbEnumEnumInterfaceInterface, ESPMode::ThreadSafe> service;
+	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbEnum|EnumInterface")
+	TScriptInterface<ITbEnumEnumInterfaceInterface> BackendService;
 
 	// signals
 	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)

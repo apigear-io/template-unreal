@@ -16,14 +16,7 @@ limitations under the License.
 */
 
 #include "TbSimpleSimpleInterfaceLocal.h"
-
-namespace TbSimple
-{
-namespace SimpleInterface
-{
-namespace Private
-{
-LocalService::LocalService()
+UTbSimpleSimpleInterfaceLocalService::UTbSimpleSimpleInterfaceLocalService()
 	: ITbSimpleSimpleInterfaceInterface()
 	, bPropBool(false)
 	, PropInt(0)
@@ -31,36 +24,36 @@ LocalService::LocalService()
 	, PropString(FString())
 {
 }
-LocalService::~LocalService()
+UTbSimpleSimpleInterfaceLocalService::~UTbSimpleSimpleInterfaceLocalService()
 {
 }
 
-FTbSimpleSimpleInterfaceSigBoolDelegate& LocalService::GetSigBoolSignalDelegate()
+FTbSimpleSimpleInterfaceSigBoolDelegate& UTbSimpleSimpleInterfaceLocalService::GetSigBoolSignalDelegate()
 {
 	return SigBoolSignal;
 }
 
-FTbSimpleSimpleInterfaceSigIntDelegate& LocalService::GetSigIntSignalDelegate()
+FTbSimpleSimpleInterfaceSigIntDelegate& UTbSimpleSimpleInterfaceLocalService::GetSigIntSignalDelegate()
 {
 	return SigIntSignal;
 }
 
-FTbSimpleSimpleInterfaceSigFloatDelegate& LocalService::GetSigFloatSignalDelegate()
+FTbSimpleSimpleInterfaceSigFloatDelegate& UTbSimpleSimpleInterfaceLocalService::GetSigFloatSignalDelegate()
 {
 	return SigFloatSignal;
 }
 
-FTbSimpleSimpleInterfaceSigStringDelegate& LocalService::GetSigStringSignalDelegate()
+FTbSimpleSimpleInterfaceSigStringDelegate& UTbSimpleSimpleInterfaceLocalService::GetSigStringSignalDelegate()
 {
 	return SigStringSignal;
 }
 
-bool LocalService::GetPropBool_Implementation() const
+bool UTbSimpleSimpleInterfaceLocalService::GetPropBool_Implementation() const
 {
 	return bPropBool;
 }
 
-void LocalService::SetPropBool_Implementation(bool bInPropBool)
+void UTbSimpleSimpleInterfaceLocalService::SetPropBool_Implementation(bool bInPropBool)
 {
 	if (bPropBool != bInPropBool)
 	{
@@ -69,16 +62,16 @@ void LocalService::SetPropBool_Implementation(bool bInPropBool)
 	}
 }
 
-FTbSimpleSimpleInterfacePropBoolChangedDelegate& LocalService::GetPropBoolChangedDelegate()
+FTbSimpleSimpleInterfacePropBoolChangedDelegate& UTbSimpleSimpleInterfaceLocalService::GetPropBoolChangedDelegate()
 {
 	return PropBoolChanged;
 }
-int32 LocalService::GetPropInt_Implementation() const
+int32 UTbSimpleSimpleInterfaceLocalService::GetPropInt_Implementation() const
 {
 	return PropInt;
 }
 
-void LocalService::SetPropInt_Implementation(int32 InPropInt)
+void UTbSimpleSimpleInterfaceLocalService::SetPropInt_Implementation(int32 InPropInt)
 {
 	if (PropInt != InPropInt)
 	{
@@ -87,16 +80,16 @@ void LocalService::SetPropInt_Implementation(int32 InPropInt)
 	}
 }
 
-FTbSimpleSimpleInterfacePropIntChangedDelegate& LocalService::GetPropIntChangedDelegate()
+FTbSimpleSimpleInterfacePropIntChangedDelegate& UTbSimpleSimpleInterfaceLocalService::GetPropIntChangedDelegate()
 {
 	return PropIntChanged;
 }
-float LocalService::GetPropFloat_Implementation() const
+float UTbSimpleSimpleInterfaceLocalService::GetPropFloat_Implementation() const
 {
 	return PropFloat;
 }
 
-void LocalService::SetPropFloat_Implementation(float InPropFloat)
+void UTbSimpleSimpleInterfaceLocalService::SetPropFloat_Implementation(float InPropFloat)
 {
 	if (PropFloat != InPropFloat)
 	{
@@ -105,16 +98,16 @@ void LocalService::SetPropFloat_Implementation(float InPropFloat)
 	}
 }
 
-FTbSimpleSimpleInterfacePropFloatChangedDelegate& LocalService::GetPropFloatChangedDelegate()
+FTbSimpleSimpleInterfacePropFloatChangedDelegate& UTbSimpleSimpleInterfaceLocalService::GetPropFloatChangedDelegate()
 {
 	return PropFloatChanged;
 }
-FString LocalService::GetPropString_Implementation() const
+FString UTbSimpleSimpleInterfaceLocalService::GetPropString_Implementation() const
 {
 	return PropString;
 }
 
-void LocalService::SetPropString_Implementation(const FString& InPropString)
+void UTbSimpleSimpleInterfaceLocalService::SetPropString_Implementation(const FString& InPropString)
 {
 	if (PropString != InPropString)
 	{
@@ -123,36 +116,32 @@ void LocalService::SetPropString_Implementation(const FString& InPropString)
 	}
 }
 
-FTbSimpleSimpleInterfacePropStringChangedDelegate& LocalService::GetPropStringChangedDelegate()
+FTbSimpleSimpleInterfacePropStringChangedDelegate& UTbSimpleSimpleInterfaceLocalService::GetPropStringChangedDelegate()
 {
 	return PropStringChanged;
 }
 
-bool LocalService::FuncBool_Implementation(bool bParamBool)
+bool UTbSimpleSimpleInterfaceLocalService::FuncBool_Implementation(bool bParamBool)
 {
 	(void)bParamBool;
 	// do business logic here
 	return false;
 }
-int32 LocalService::FuncInt_Implementation(int32 ParamInt)
+int32 UTbSimpleSimpleInterfaceLocalService::FuncInt_Implementation(int32 ParamInt)
 {
 	(void)ParamInt;
 	// do business logic here
 	return 0;
 }
-float LocalService::FuncFloat_Implementation(float ParamFloat)
+float UTbSimpleSimpleInterfaceLocalService::FuncFloat_Implementation(float ParamFloat)
 {
 	(void)ParamFloat;
 	// do business logic here
 	return 0.0f;
 }
-FString LocalService::FuncString_Implementation(const FString& ParamString)
+FString UTbSimpleSimpleInterfaceLocalService::FuncString_Implementation(const FString& ParamString)
 {
 	(void)ParamString;
 	// do business logic here
 	return FString();
 }
-
-} // namespace Private
-} // namespace SimpleInterface
-} // namespace TbSimple

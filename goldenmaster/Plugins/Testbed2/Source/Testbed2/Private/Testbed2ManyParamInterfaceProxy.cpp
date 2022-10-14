@@ -71,27 +71,30 @@ UTestbed2ManyParamInterfaceProxy::UTestbed2ManyParamInterfaceProxy()
 	, Prop3(0)
 	, Prop4(0)
 {
-	service = FTestbed2ModuleFactory::createITestbed2ManyParamInterfaceInterface();
-	service->GetProp1ChangedDelegate().AddDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnProp1Changed);
-	service->GetProp2ChangedDelegate().AddDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnProp2Changed);
-	service->GetProp3ChangedDelegate().AddDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnProp3Changed);
-	service->GetProp4ChangedDelegate().AddDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnProp4Changed);
-	service->GetSig1SignalDelegate().AddDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnSig1);
-	service->GetSig2SignalDelegate().AddDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnSig2);
-	service->GetSig3SignalDelegate().AddDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnSig3);
-	service->GetSig4SignalDelegate().AddDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnSig4);
+	BackendService = FTestbed2ModuleFactory::createITestbed2ManyParamInterfaceInterface();
+	BackendService->GetProp1ChangedDelegate().AddDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnProp1Changed);
+	BackendService->GetProp2ChangedDelegate().AddDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnProp2Changed);
+	BackendService->GetProp3ChangedDelegate().AddDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnProp3Changed);
+	BackendService->GetProp4ChangedDelegate().AddDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnProp4Changed);
+	BackendService->GetSig1SignalDelegate().AddDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnSig1);
+	BackendService->GetSig2SignalDelegate().AddDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnSig2);
+	BackendService->GetSig3SignalDelegate().AddDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnSig3);
+	BackendService->GetSig4SignalDelegate().AddDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnSig4);
 }
 
 UTestbed2ManyParamInterfaceProxy::~UTestbed2ManyParamInterfaceProxy()
 {
-	service->GetProp1ChangedDelegate().RemoveDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnProp1Changed);
-	service->GetProp2ChangedDelegate().RemoveDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnProp2Changed);
-	service->GetProp3ChangedDelegate().RemoveDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnProp3Changed);
-	service->GetProp4ChangedDelegate().RemoveDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnProp4Changed);
-	service->GetSig1SignalDelegate().RemoveDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnSig1);
-	service->GetSig2SignalDelegate().RemoveDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnSig2);
-	service->GetSig3SignalDelegate().RemoveDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnSig3);
-	service->GetSig4SignalDelegate().RemoveDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnSig4);
+	if (BackendService != nullptr)
+	{
+		//BackendService->GetProp1ChangedDelegate().RemoveDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnProp1Changed);
+		//BackendService->GetProp2ChangedDelegate().RemoveDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnProp2Changed);
+		//BackendService->GetProp3ChangedDelegate().RemoveDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnProp3Changed);
+		//BackendService->GetProp4ChangedDelegate().RemoveDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnProp4Changed);
+		//BackendService->GetSig1SignalDelegate().RemoveDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnSig1);
+		//BackendService->GetSig2SignalDelegate().RemoveDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnSig2);
+		//BackendService->GetSig3SignalDelegate().RemoveDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnSig3);
+		//BackendService->GetSig4SignalDelegate().RemoveDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnSig4);
+	}
 }
 void UTestbed2ManyParamInterfaceProxy::OnSig1(int32 Param1)
 {
@@ -139,20 +142,20 @@ FTestbed2ManyParamInterfaceSig4Delegate& UTestbed2ManyParamInterfaceProxy::GetSi
 
 void UTestbed2ManyParamInterfaceProxy::OnProp1Changed(int32 InProp1)
 {
-	Testbed2ManyParamInterfaceTracer::capture_state(this);
+	Testbed2ManyParamInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop1 = InProp1;
 	Prop1Changed.Broadcast(InProp1);
 }
 
 int32 UTestbed2ManyParamInterfaceProxy::GetProp1_Implementation() const
 {
-	return service->Execute_GetProp1(service);
+	return BackendService->Execute_GetProp1(BackendService.GetObject());
 }
 
 void UTestbed2ManyParamInterfaceProxy::SetProp1_Implementation(int32 InProp1)
 {
 	Testbed2ManyParamInterfaceTracer::trace_callSetProp1(InProp1);
-	service->Execute_SetProp1(service, InProp1);
+	BackendService->Execute_SetProp1(BackendService.GetObject(), InProp1);
 }
 
 int32 UTestbed2ManyParamInterfaceProxy::GetProp1_Private() const
@@ -172,20 +175,20 @@ FTestbed2ManyParamInterfaceProp1ChangedDelegate& UTestbed2ManyParamInterfaceProx
 
 void UTestbed2ManyParamInterfaceProxy::OnProp2Changed(int32 InProp2)
 {
-	Testbed2ManyParamInterfaceTracer::capture_state(this);
+	Testbed2ManyParamInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop2 = InProp2;
 	Prop2Changed.Broadcast(InProp2);
 }
 
 int32 UTestbed2ManyParamInterfaceProxy::GetProp2_Implementation() const
 {
-	return service->Execute_GetProp2(service);
+	return BackendService->Execute_GetProp2(BackendService.GetObject());
 }
 
 void UTestbed2ManyParamInterfaceProxy::SetProp2_Implementation(int32 InProp2)
 {
 	Testbed2ManyParamInterfaceTracer::trace_callSetProp2(InProp2);
-	service->Execute_SetProp2(service, InProp2);
+	BackendService->Execute_SetProp2(BackendService.GetObject(), InProp2);
 }
 
 int32 UTestbed2ManyParamInterfaceProxy::GetProp2_Private() const
@@ -205,20 +208,20 @@ FTestbed2ManyParamInterfaceProp2ChangedDelegate& UTestbed2ManyParamInterfaceProx
 
 void UTestbed2ManyParamInterfaceProxy::OnProp3Changed(int32 InProp3)
 {
-	Testbed2ManyParamInterfaceTracer::capture_state(this);
+	Testbed2ManyParamInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop3 = InProp3;
 	Prop3Changed.Broadcast(InProp3);
 }
 
 int32 UTestbed2ManyParamInterfaceProxy::GetProp3_Implementation() const
 {
-	return service->Execute_GetProp3(service);
+	return BackendService->Execute_GetProp3(BackendService.GetObject());
 }
 
 void UTestbed2ManyParamInterfaceProxy::SetProp3_Implementation(int32 InProp3)
 {
 	Testbed2ManyParamInterfaceTracer::trace_callSetProp3(InProp3);
-	service->Execute_SetProp3(service, InProp3);
+	BackendService->Execute_SetProp3(BackendService.GetObject(), InProp3);
 }
 
 int32 UTestbed2ManyParamInterfaceProxy::GetProp3_Private() const
@@ -238,20 +241,20 @@ FTestbed2ManyParamInterfaceProp3ChangedDelegate& UTestbed2ManyParamInterfaceProx
 
 void UTestbed2ManyParamInterfaceProxy::OnProp4Changed(int32 InProp4)
 {
-	Testbed2ManyParamInterfaceTracer::capture_state(this);
+	Testbed2ManyParamInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop4 = InProp4;
 	Prop4Changed.Broadcast(InProp4);
 }
 
 int32 UTestbed2ManyParamInterfaceProxy::GetProp4_Implementation() const
 {
-	return service->Execute_GetProp4(service);
+	return BackendService->Execute_GetProp4(BackendService.GetObject());
 }
 
 void UTestbed2ManyParamInterfaceProxy::SetProp4_Implementation(int32 InProp4)
 {
 	Testbed2ManyParamInterfaceTracer::trace_callSetProp4(InProp4);
-	service->Execute_SetProp4(service, InProp4);
+	BackendService->Execute_SetProp4(BackendService.GetObject(), InProp4);
 }
 
 int32 UTestbed2ManyParamInterfaceProxy::GetProp4_Private() const
@@ -290,7 +293,7 @@ void UTestbed2ManyParamInterfaceProxy::Func1Async_Implementation(UObject* WorldC
 		Async(EAsyncExecution::Thread,
 			[Param1, this, &Result, CompletionAction]()
 			{
-				Result = service->Execute_Func1(service, Param1);
+				Result = BackendService->Execute_Func1(BackendService.GetObject(), Param1);
 				CompletionAction->Cancel();
 			});
 	}
@@ -298,7 +301,7 @@ void UTestbed2ManyParamInterfaceProxy::Func1Async_Implementation(UObject* WorldC
 int32 UTestbed2ManyParamInterfaceProxy::Func1_Implementation(int32 Param1)
 {
 	Testbed2ManyParamInterfaceTracer::trace_callFunc1(Param1);
-	return service->Execute_Func1(service, Param1);
+	return BackendService->Execute_Func1(BackendService.GetObject(), Param1);
 }
 void UTestbed2ManyParamInterfaceProxy::Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2)
 {
@@ -321,7 +324,7 @@ void UTestbed2ManyParamInterfaceProxy::Func2Async_Implementation(UObject* WorldC
 		Async(EAsyncExecution::Thread,
 			[Param1, Param2, this, &Result, CompletionAction]()
 			{
-				Result = service->Execute_Func2(service, Param1, Param2);
+				Result = BackendService->Execute_Func2(BackendService.GetObject(), Param1, Param2);
 				CompletionAction->Cancel();
 			});
 	}
@@ -329,7 +332,7 @@ void UTestbed2ManyParamInterfaceProxy::Func2Async_Implementation(UObject* WorldC
 int32 UTestbed2ManyParamInterfaceProxy::Func2_Implementation(int32 Param1, int32 Param2)
 {
 	Testbed2ManyParamInterfaceTracer::trace_callFunc2(Param1, Param2);
-	return service->Execute_Func2(service, Param1, Param2);
+	return BackendService->Execute_Func2(BackendService.GetObject(), Param1, Param2);
 }
 void UTestbed2ManyParamInterfaceProxy::Func3Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2, int32 Param3)
 {
@@ -352,7 +355,7 @@ void UTestbed2ManyParamInterfaceProxy::Func3Async_Implementation(UObject* WorldC
 		Async(EAsyncExecution::Thread,
 			[Param1, Param2, Param3, this, &Result, CompletionAction]()
 			{
-				Result = service->Execute_Func3(service, Param1, Param2, Param3);
+				Result = BackendService->Execute_Func3(BackendService.GetObject(), Param1, Param2, Param3);
 				CompletionAction->Cancel();
 			});
 	}
@@ -360,7 +363,7 @@ void UTestbed2ManyParamInterfaceProxy::Func3Async_Implementation(UObject* WorldC
 int32 UTestbed2ManyParamInterfaceProxy::Func3_Implementation(int32 Param1, int32 Param2, int32 Param3)
 {
 	Testbed2ManyParamInterfaceTracer::trace_callFunc3(Param1, Param2, Param3);
-	return service->Execute_Func3(service, Param1, Param2, Param3);
+	return BackendService->Execute_Func3(BackendService.GetObject(), Param1, Param2, Param3);
 }
 void UTestbed2ManyParamInterfaceProxy::Func4Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2, int32 Param3, int32 Param4)
 {
@@ -383,7 +386,7 @@ void UTestbed2ManyParamInterfaceProxy::Func4Async_Implementation(UObject* WorldC
 		Async(EAsyncExecution::Thread,
 			[Param1, Param2, Param3, Param4, this, &Result, CompletionAction]()
 			{
-				Result = service->Execute_Func4(service, Param1, Param2, Param3, Param4);
+				Result = BackendService->Execute_Func4(BackendService.GetObject(), Param1, Param2, Param3, Param4);
 				CompletionAction->Cancel();
 			});
 	}
@@ -391,5 +394,5 @@ void UTestbed2ManyParamInterfaceProxy::Func4Async_Implementation(UObject* WorldC
 int32 UTestbed2ManyParamInterfaceProxy::Func4_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
 {
 	Testbed2ManyParamInterfaceTracer::trace_callFunc4(Param1, Param2, Param3, Param4);
-	return service->Execute_Func4(service, Param1, Param2, Param3, Param4);
+	return BackendService->Execute_Func4(BackendService.GetObject(), Param1, Param2, Param3, Param4);
 }

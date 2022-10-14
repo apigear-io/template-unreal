@@ -37,6 +37,6 @@ public:
 
 {{- range .Module.Interfaces }}
 {{- $class := printf "%s%s" $ModuleName .Name}}
-	static TSharedPtr<I{{$class}}Interface, ESPMode::ThreadSafe> createI{{$class}}Interface();
+	static TScriptInterface<I{{$class}}Interface> createI{{$class}}Interface();
 {{- end }}
 };

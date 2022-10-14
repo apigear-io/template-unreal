@@ -69,19 +69,22 @@ UTbSame1SameStruct2InterfaceProxy::UTbSame1SameStruct2InterfaceProxy()
 	, Prop1(FTbSame1Struct2())
 	, Prop2(FTbSame1Struct2())
 {
-	service = FTbSame1ModuleFactory::createITbSame1SameStruct2InterfaceInterface();
-	service->GetProp1ChangedDelegate().AddDynamic(this, &UTbSame1SameStruct2InterfaceProxy::OnProp1Changed);
-	service->GetProp2ChangedDelegate().AddDynamic(this, &UTbSame1SameStruct2InterfaceProxy::OnProp2Changed);
-	service->GetSig1SignalDelegate().AddDynamic(this, &UTbSame1SameStruct2InterfaceProxy::OnSig1);
-	service->GetSig2SignalDelegate().AddDynamic(this, &UTbSame1SameStruct2InterfaceProxy::OnSig2);
+	BackendService = FTbSame1ModuleFactory::createITbSame1SameStruct2InterfaceInterface();
+	BackendService->GetProp1ChangedDelegate().AddDynamic(this, &UTbSame1SameStruct2InterfaceProxy::OnProp1Changed);
+	BackendService->GetProp2ChangedDelegate().AddDynamic(this, &UTbSame1SameStruct2InterfaceProxy::OnProp2Changed);
+	BackendService->GetSig1SignalDelegate().AddDynamic(this, &UTbSame1SameStruct2InterfaceProxy::OnSig1);
+	BackendService->GetSig2SignalDelegate().AddDynamic(this, &UTbSame1SameStruct2InterfaceProxy::OnSig2);
 }
 
 UTbSame1SameStruct2InterfaceProxy::~UTbSame1SameStruct2InterfaceProxy()
 {
-	service->GetProp1ChangedDelegate().RemoveDynamic(this, &UTbSame1SameStruct2InterfaceProxy::OnProp1Changed);
-	service->GetProp2ChangedDelegate().RemoveDynamic(this, &UTbSame1SameStruct2InterfaceProxy::OnProp2Changed);
-	service->GetSig1SignalDelegate().RemoveDynamic(this, &UTbSame1SameStruct2InterfaceProxy::OnSig1);
-	service->GetSig2SignalDelegate().RemoveDynamic(this, &UTbSame1SameStruct2InterfaceProxy::OnSig2);
+	if (BackendService != nullptr)
+	{
+		//BackendService->GetProp1ChangedDelegate().RemoveDynamic(this, &UTbSame1SameStruct2InterfaceProxy::OnProp1Changed);
+		//BackendService->GetProp2ChangedDelegate().RemoveDynamic(this, &UTbSame1SameStruct2InterfaceProxy::OnProp2Changed);
+		//BackendService->GetSig1SignalDelegate().RemoveDynamic(this, &UTbSame1SameStruct2InterfaceProxy::OnSig1);
+		//BackendService->GetSig2SignalDelegate().RemoveDynamic(this, &UTbSame1SameStruct2InterfaceProxy::OnSig2);
+	}
 }
 void UTbSame1SameStruct2InterfaceProxy::OnSig1(const FTbSame1Struct1& Param1)
 {
@@ -107,20 +110,20 @@ FTbSame1SameStruct2InterfaceSig2Delegate& UTbSame1SameStruct2InterfaceProxy::Get
 
 void UTbSame1SameStruct2InterfaceProxy::OnProp1Changed(const FTbSame1Struct2& InProp1)
 {
-	TbSame1SameStruct2InterfaceTracer::capture_state(this);
+	TbSame1SameStruct2InterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop1 = InProp1;
 	Prop1Changed.Broadcast(InProp1);
 }
 
 FTbSame1Struct2 UTbSame1SameStruct2InterfaceProxy::GetProp1_Implementation() const
 {
-	return service->Execute_GetProp1(service);
+	return BackendService->Execute_GetProp1(BackendService.GetObject());
 }
 
 void UTbSame1SameStruct2InterfaceProxy::SetProp1_Implementation(const FTbSame1Struct2& InProp1)
 {
 	TbSame1SameStruct2InterfaceTracer::trace_callSetProp1(InProp1);
-	service->Execute_SetProp1(service, InProp1);
+	BackendService->Execute_SetProp1(BackendService.GetObject(), InProp1);
 }
 
 FTbSame1Struct2 UTbSame1SameStruct2InterfaceProxy::GetProp1_Private() const
@@ -140,20 +143,20 @@ FTbSame1SameStruct2InterfaceProp1ChangedDelegate& UTbSame1SameStruct2InterfacePr
 
 void UTbSame1SameStruct2InterfaceProxy::OnProp2Changed(const FTbSame1Struct2& InProp2)
 {
-	TbSame1SameStruct2InterfaceTracer::capture_state(this);
+	TbSame1SameStruct2InterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop2 = InProp2;
 	Prop2Changed.Broadcast(InProp2);
 }
 
 FTbSame1Struct2 UTbSame1SameStruct2InterfaceProxy::GetProp2_Implementation() const
 {
-	return service->Execute_GetProp2(service);
+	return BackendService->Execute_GetProp2(BackendService.GetObject());
 }
 
 void UTbSame1SameStruct2InterfaceProxy::SetProp2_Implementation(const FTbSame1Struct2& InProp2)
 {
 	TbSame1SameStruct2InterfaceTracer::trace_callSetProp2(InProp2);
-	service->Execute_SetProp2(service, InProp2);
+	BackendService->Execute_SetProp2(BackendService.GetObject(), InProp2);
 }
 
 FTbSame1Struct2 UTbSame1SameStruct2InterfaceProxy::GetProp2_Private() const
@@ -192,7 +195,7 @@ void UTbSame1SameStruct2InterfaceProxy::Func1Async_Implementation(UObject* World
 		Async(EAsyncExecution::Thread,
 			[Param1, this, &Result, CompletionAction]()
 			{
-				Result = service->Execute_Func1(service, Param1);
+				Result = BackendService->Execute_Func1(BackendService.GetObject(), Param1);
 				CompletionAction->Cancel();
 			});
 	}
@@ -200,7 +203,7 @@ void UTbSame1SameStruct2InterfaceProxy::Func1Async_Implementation(UObject* World
 FTbSame1Struct1 UTbSame1SameStruct2InterfaceProxy::Func1_Implementation(const FTbSame1Struct1& Param1)
 {
 	TbSame1SameStruct2InterfaceTracer::trace_callFunc1(Param1);
-	return service->Execute_Func1(service, Param1);
+	return BackendService->Execute_Func1(BackendService.GetObject(), Param1);
 }
 void UTbSame1SameStruct2InterfaceProxy::Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame1Struct1& Result, const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2)
 {
@@ -223,7 +226,7 @@ void UTbSame1SameStruct2InterfaceProxy::Func2Async_Implementation(UObject* World
 		Async(EAsyncExecution::Thread,
 			[Param1, Param2, this, &Result, CompletionAction]()
 			{
-				Result = service->Execute_Func2(service, Param1, Param2);
+				Result = BackendService->Execute_Func2(BackendService.GetObject(), Param1, Param2);
 				CompletionAction->Cancel();
 			});
 	}
@@ -231,5 +234,5 @@ void UTbSame1SameStruct2InterfaceProxy::Func2Async_Implementation(UObject* World
 FTbSame1Struct1 UTbSame1SameStruct2InterfaceProxy::Func2_Implementation(const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2)
 {
 	TbSame1SameStruct2InterfaceTracer::trace_callFunc2(Param1, Param2);
-	return service->Execute_Func2(service, Param1, Param2);
+	return BackendService->Execute_Func2(BackendService.GetObject(), Param1, Param2);
 }

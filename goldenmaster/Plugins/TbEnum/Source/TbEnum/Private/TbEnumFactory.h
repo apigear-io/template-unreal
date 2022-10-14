@@ -26,5 +26,5 @@ DECLARE_LOG_CATEGORY_EXTERN(LogFTbEnumModuleFactory, Log, All);
 class FTbEnumModuleFactory
 {
 public:
-	static TSharedPtr<ITbEnumEnumInterfaceInterface, ESPMode::ThreadSafe> createITbEnumEnumInterfaceInterface();
+	static TScriptInterface<ITbEnumEnumInterfaceInterface> createITbEnumEnumInterfaceInterface();
 };

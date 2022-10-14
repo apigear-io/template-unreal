@@ -28,14 +28,7 @@ limitations under the License.
 #include "Engine/Engine.h"
 
 using namespace ApiGear::JSONRPC;
-
-namespace TbSimple
-{
-namespace SimpleInterface
-{
-namespace Private
-{
-SimulationService::SimulationService()
+UTbSimpleSimpleInterfaceSimulationService::UTbSimpleSimpleInterfaceSimulationService()
 	: ITbSimpleSimpleInterfaceInterface()
 	, bPropBool(false)
 	, PropInt(0)
@@ -188,7 +181,7 @@ SimulationService::SimulationService()
 	}
 }
 
-SimulationService::~SimulationService()
+UTbSimpleSimpleInterfaceSimulationService::~UTbSimpleSimpleInterfaceSimulationService()
 {
 	if (GEngine != nullptr)
 	{
@@ -202,32 +195,32 @@ SimulationService::~SimulationService()
 	}
 }
 
-FTbSimpleSimpleInterfaceSigBoolDelegate& SimulationService::GetSigBoolSignalDelegate()
+FTbSimpleSimpleInterfaceSigBoolDelegate& UTbSimpleSimpleInterfaceSimulationService::GetSigBoolSignalDelegate()
 {
 	return SigBoolSignal;
 }
 
-FTbSimpleSimpleInterfaceSigIntDelegate& SimulationService::GetSigIntSignalDelegate()
+FTbSimpleSimpleInterfaceSigIntDelegate& UTbSimpleSimpleInterfaceSimulationService::GetSigIntSignalDelegate()
 {
 	return SigIntSignal;
 }
 
-FTbSimpleSimpleInterfaceSigFloatDelegate& SimulationService::GetSigFloatSignalDelegate()
+FTbSimpleSimpleInterfaceSigFloatDelegate& UTbSimpleSimpleInterfaceSimulationService::GetSigFloatSignalDelegate()
 {
 	return SigFloatSignal;
 }
 
-FTbSimpleSimpleInterfaceSigStringDelegate& SimulationService::GetSigStringSignalDelegate()
+FTbSimpleSimpleInterfaceSigStringDelegate& UTbSimpleSimpleInterfaceSimulationService::GetSigStringSignalDelegate()
 {
 	return SigStringSignal;
 }
 
-bool SimulationService::GetPropBool_Implementation() const
+bool UTbSimpleSimpleInterfaceSimulationService::GetPropBool_Implementation() const
 {
 	return bPropBool;
 }
 
-void SimulationService::SetPropBool_Implementation(bool bInPropBool)
+void UTbSimpleSimpleInterfaceSimulationService::SetPropBool_Implementation(bool bInPropBool)
 {
 	Params params;
 	params["propBool"] = bInPropBool;
@@ -238,17 +231,17 @@ void SimulationService::SetPropBool_Implementation(bool bInPropBool)
 	}
 }
 
-FTbSimpleSimpleInterfacePropBoolChangedDelegate& SimulationService::GetPropBoolChangedDelegate()
+FTbSimpleSimpleInterfacePropBoolChangedDelegate& UTbSimpleSimpleInterfaceSimulationService::GetPropBoolChangedDelegate()
 {
 	return PropBoolChanged;
 }
 
-int32 SimulationService::GetPropInt_Implementation() const
+int32 UTbSimpleSimpleInterfaceSimulationService::GetPropInt_Implementation() const
 {
 	return PropInt;
 }
 
-void SimulationService::SetPropInt_Implementation(int32 InPropInt)
+void UTbSimpleSimpleInterfaceSimulationService::SetPropInt_Implementation(int32 InPropInt)
 {
 	Params params;
 	params["propInt"] = InPropInt;
@@ -259,17 +252,17 @@ void SimulationService::SetPropInt_Implementation(int32 InPropInt)
 	}
 }
 
-FTbSimpleSimpleInterfacePropIntChangedDelegate& SimulationService::GetPropIntChangedDelegate()
+FTbSimpleSimpleInterfacePropIntChangedDelegate& UTbSimpleSimpleInterfaceSimulationService::GetPropIntChangedDelegate()
 {
 	return PropIntChanged;
 }
 
-float SimulationService::GetPropFloat_Implementation() const
+float UTbSimpleSimpleInterfaceSimulationService::GetPropFloat_Implementation() const
 {
 	return PropFloat;
 }
 
-void SimulationService::SetPropFloat_Implementation(float InPropFloat)
+void UTbSimpleSimpleInterfaceSimulationService::SetPropFloat_Implementation(float InPropFloat)
 {
 	Params params;
 	params["propFloat"] = InPropFloat;
@@ -280,17 +273,17 @@ void SimulationService::SetPropFloat_Implementation(float InPropFloat)
 	}
 }
 
-FTbSimpleSimpleInterfacePropFloatChangedDelegate& SimulationService::GetPropFloatChangedDelegate()
+FTbSimpleSimpleInterfacePropFloatChangedDelegate& UTbSimpleSimpleInterfaceSimulationService::GetPropFloatChangedDelegate()
 {
 	return PropFloatChanged;
 }
 
-FString SimulationService::GetPropString_Implementation() const
+FString UTbSimpleSimpleInterfaceSimulationService::GetPropString_Implementation() const
 {
 	return PropString;
 }
 
-void SimulationService::SetPropString_Implementation(const FString& InPropString)
+void UTbSimpleSimpleInterfaceSimulationService::SetPropString_Implementation(const FString& InPropString)
 {
 	Params params;
 	params["propString"] = InPropString;
@@ -301,12 +294,12 @@ void SimulationService::SetPropString_Implementation(const FString& InPropString
 	}
 }
 
-FTbSimpleSimpleInterfacePropStringChangedDelegate& SimulationService::GetPropStringChangedDelegate()
+FTbSimpleSimpleInterfacePropStringChangedDelegate& UTbSimpleSimpleInterfaceSimulationService::GetPropStringChangedDelegate()
 {
 	return PropStringChanged;
 }
 
-bool SimulationService::FuncBool_Implementation(bool bParamBool)
+bool UTbSimpleSimpleInterfaceSimulationService::FuncBool_Implementation(bool bParamBool)
 {
 	Params params;
 	params["paramBool"] = bParamBool;
@@ -326,7 +319,7 @@ bool SimulationService::FuncBool_Implementation(bool bParamBool)
 	return Promise.GetFuture().Get();
 }
 
-int32 SimulationService::FuncInt_Implementation(int32 ParamInt)
+int32 UTbSimpleSimpleInterfaceSimulationService::FuncInt_Implementation(int32 ParamInt)
 {
 	Params params;
 	params["paramInt"] = ParamInt;
@@ -346,7 +339,7 @@ int32 SimulationService::FuncInt_Implementation(int32 ParamInt)
 	return Promise.GetFuture().Get();
 }
 
-float SimulationService::FuncFloat_Implementation(float ParamFloat)
+float UTbSimpleSimpleInterfaceSimulationService::FuncFloat_Implementation(float ParamFloat)
 {
 	Params params;
 	params["paramFloat"] = ParamFloat;
@@ -366,7 +359,7 @@ float SimulationService::FuncFloat_Implementation(float ParamFloat)
 	return Promise.GetFuture().Get();
 }
 
-FString SimulationService::FuncString_Implementation(const FString& ParamString)
+FString UTbSimpleSimpleInterfaceSimulationService::FuncString_Implementation(const FString& ParamString)
 {
 	Params params;
 	params["paramString"] = ParamString;
@@ -385,7 +378,3 @@ FString SimulationService::FuncString_Implementation(const FString& ParamString)
 
 	return Promise.GetFuture().Get();
 }
-
-} // namespace Private
-} // namespace SimpleInterface
-} // namespace TbSimple

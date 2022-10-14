@@ -28,14 +28,7 @@ limitations under the License.
 #include "Engine/Engine.h"
 
 using namespace ApiGear::JSONRPC;
-
-namespace Testbed2
-{
-namespace NestedStruct1Interface
-{
-namespace Private
-{
-SimulationService::SimulationService()
+UTestbed2NestedStruct1InterfaceSimulationService::UTestbed2NestedStruct1InterfaceSimulationService()
 	: ITestbed2NestedStruct1InterfaceInterface()
 	, Prop1(FTestbed2NestedStruct1())
 {
@@ -98,7 +91,7 @@ SimulationService::SimulationService()
 	}
 }
 
-SimulationService::~SimulationService()
+UTestbed2NestedStruct1InterfaceSimulationService::~UTestbed2NestedStruct1InterfaceSimulationService()
 {
 	if (GEngine != nullptr)
 	{
@@ -109,17 +102,17 @@ SimulationService::~SimulationService()
 	}
 }
 
-FTestbed2NestedStruct1InterfaceSig1Delegate& SimulationService::GetSig1SignalDelegate()
+FTestbed2NestedStruct1InterfaceSig1Delegate& UTestbed2NestedStruct1InterfaceSimulationService::GetSig1SignalDelegate()
 {
 	return Sig1Signal;
 }
 
-FTestbed2NestedStruct1 SimulationService::GetProp1_Implementation() const
+FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceSimulationService::GetProp1_Implementation() const
 {
 	return Prop1;
 }
 
-void SimulationService::SetProp1_Implementation(const FTestbed2NestedStruct1& InProp1)
+void UTestbed2NestedStruct1InterfaceSimulationService::SetProp1_Implementation(const FTestbed2NestedStruct1& InProp1)
 {
 	Params params;
 	params["prop1"] = InProp1;
@@ -130,12 +123,12 @@ void SimulationService::SetProp1_Implementation(const FTestbed2NestedStruct1& In
 	}
 }
 
-FTestbed2NestedStruct1InterfaceProp1ChangedDelegate& SimulationService::GetProp1ChangedDelegate()
+FTestbed2NestedStruct1InterfaceProp1ChangedDelegate& UTestbed2NestedStruct1InterfaceSimulationService::GetProp1ChangedDelegate()
 {
 	return Prop1Changed;
 }
 
-FTestbed2NestedStruct1 SimulationService::Func1_Implementation(const FTestbed2NestedStruct1& Param1)
+FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceSimulationService::Func1_Implementation(const FTestbed2NestedStruct1& Param1)
 {
 	Params params;
 	params["param1"] = Param1;
@@ -154,7 +147,3 @@ FTestbed2NestedStruct1 SimulationService::Func1_Implementation(const FTestbed2Ne
 
 	return Promise.GetFuture().Get();
 }
-
-} // namespace Private
-} // namespace NestedStruct1Interface
-} // namespace Testbed2

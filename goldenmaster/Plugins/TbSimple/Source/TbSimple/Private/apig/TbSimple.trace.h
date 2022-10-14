@@ -6,7 +6,7 @@ class TbSimpleSimpleInterfaceTracer
 {
 public:
 	TbSimpleSimpleInterfaceTracer();
-	static void capture_state(ITbSimpleSimpleInterfaceInterface* obj);
+	static void capture_state(UObject* Object, ITbSimpleSimpleInterfaceInterface* obj);
 	static void trace_callSetPropBool(bool bInPropBool);
 	static void trace_callSetPropInt(int32 InPropInt);
 	static void trace_callSetPropFloat(float InPropFloat);
@@ -25,7 +25,7 @@ class TbSimpleSimpleArrayInterfaceTracer
 {
 public:
 	TbSimpleSimpleArrayInterfaceTracer();
-	static void capture_state(ITbSimpleSimpleArrayInterfaceInterface* obj);
+	static void capture_state(UObject* Object, ITbSimpleSimpleArrayInterfaceInterface* obj);
 	static void trace_callSetPropBool(const TArray<bool>& InPropBool);
 	static void trace_callSetPropInt(const TArray<int32>& InPropInt);
 	static void trace_callSetPropFloat(const TArray<float>& InPropFloat);

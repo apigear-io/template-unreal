@@ -17,20 +17,17 @@ limitations under the License.
 */
 #pragma once
 
+#include "CoreMinimal.h"
 #include "apig/Testbed1_apig.h"
+#include "Testbed1StructInterfaceLocal.generated.h"
 
-namespace Testbed1
+UCLASS(BlueprintType, Blueprintable, DisplayName = "Testbed1StructInterface")
+class TESTBED1_API UTestbed1StructInterfaceLocalService : public UObject, public ITestbed1StructInterfaceInterface
 {
-namespace StructInterface
-{
-namespace Private
-{
-
-class LocalService : public ITestbed1StructInterfaceInterface
-{
+	GENERATED_BODY()
 public:
-	explicit LocalService();
-	virtual ~LocalService();
+	explicit UTestbed1StructInterfaceLocalService();
+	virtual ~UTestbed1StructInterfaceLocalService();
 
 	// signals
 	FTestbed1StructInterfaceSigBoolDelegate SigBoolSignal;
@@ -90,7 +87,3 @@ private:
 	FTestbed1StructFloat PropFloat;
 	FTestbed1StructString PropString;
 };
-
-} // namespace Private
-} // namespace StructInterface
-} // namespace Testbed1

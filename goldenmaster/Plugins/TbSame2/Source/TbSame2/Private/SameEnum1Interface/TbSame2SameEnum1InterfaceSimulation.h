@@ -17,19 +17,15 @@ limitations under the License.
 #pragma once
 
 #include "apig/TbSame2_apig.h"
+#include "TbSame2SameEnum1InterfaceSimulation.generated.h"
 
-namespace TbSame2
+UCLASS(BlueprintType)
+class UTbSame2SameEnum1InterfaceSimulationService : public UObject, public ITbSame2SameEnum1InterfaceInterface
 {
-namespace SameEnum1Interface
-{
-namespace Private
-{
-
-class SimulationService : public ITbSame2SameEnum1InterfaceInterface
-{
+	GENERATED_BODY()
 public:
-	explicit SimulationService();
-	virtual ~SimulationService();
+	explicit UTbSame2SameEnum1InterfaceSimulationService();
+	virtual ~UTbSame2SameEnum1InterfaceSimulationService();
 
 	// signals
 	FTbSame2SameEnum1InterfaceSig1Delegate Sig1Signal;
@@ -50,7 +46,3 @@ private:
 	// properties - local copy
 	ETbSame2Enum1 Prop1;
 };
-
-} // namespace Private
-} // namespace SameEnum1Interface
-} // namespace TbSame2

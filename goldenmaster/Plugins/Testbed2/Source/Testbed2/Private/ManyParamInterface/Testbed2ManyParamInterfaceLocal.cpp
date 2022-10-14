@@ -16,14 +16,7 @@ limitations under the License.
 */
 
 #include "Testbed2ManyParamInterfaceLocal.h"
-
-namespace Testbed2
-{
-namespace ManyParamInterface
-{
-namespace Private
-{
-LocalService::LocalService()
+UTestbed2ManyParamInterfaceLocalService::UTestbed2ManyParamInterfaceLocalService()
 	: ITestbed2ManyParamInterfaceInterface()
 	, Prop1(0)
 	, Prop2(0)
@@ -31,36 +24,36 @@ LocalService::LocalService()
 	, Prop4(0)
 {
 }
-LocalService::~LocalService()
+UTestbed2ManyParamInterfaceLocalService::~UTestbed2ManyParamInterfaceLocalService()
 {
 }
 
-FTestbed2ManyParamInterfaceSig1Delegate& LocalService::GetSig1SignalDelegate()
+FTestbed2ManyParamInterfaceSig1Delegate& UTestbed2ManyParamInterfaceLocalService::GetSig1SignalDelegate()
 {
 	return Sig1Signal;
 }
 
-FTestbed2ManyParamInterfaceSig2Delegate& LocalService::GetSig2SignalDelegate()
+FTestbed2ManyParamInterfaceSig2Delegate& UTestbed2ManyParamInterfaceLocalService::GetSig2SignalDelegate()
 {
 	return Sig2Signal;
 }
 
-FTestbed2ManyParamInterfaceSig3Delegate& LocalService::GetSig3SignalDelegate()
+FTestbed2ManyParamInterfaceSig3Delegate& UTestbed2ManyParamInterfaceLocalService::GetSig3SignalDelegate()
 {
 	return Sig3Signal;
 }
 
-FTestbed2ManyParamInterfaceSig4Delegate& LocalService::GetSig4SignalDelegate()
+FTestbed2ManyParamInterfaceSig4Delegate& UTestbed2ManyParamInterfaceLocalService::GetSig4SignalDelegate()
 {
 	return Sig4Signal;
 }
 
-int32 LocalService::GetProp1_Implementation() const
+int32 UTestbed2ManyParamInterfaceLocalService::GetProp1_Implementation() const
 {
 	return Prop1;
 }
 
-void LocalService::SetProp1_Implementation(int32 InProp1)
+void UTestbed2ManyParamInterfaceLocalService::SetProp1_Implementation(int32 InProp1)
 {
 	if (Prop1 != InProp1)
 	{
@@ -69,16 +62,16 @@ void LocalService::SetProp1_Implementation(int32 InProp1)
 	}
 }
 
-FTestbed2ManyParamInterfaceProp1ChangedDelegate& LocalService::GetProp1ChangedDelegate()
+FTestbed2ManyParamInterfaceProp1ChangedDelegate& UTestbed2ManyParamInterfaceLocalService::GetProp1ChangedDelegate()
 {
 	return Prop1Changed;
 }
-int32 LocalService::GetProp2_Implementation() const
+int32 UTestbed2ManyParamInterfaceLocalService::GetProp2_Implementation() const
 {
 	return Prop2;
 }
 
-void LocalService::SetProp2_Implementation(int32 InProp2)
+void UTestbed2ManyParamInterfaceLocalService::SetProp2_Implementation(int32 InProp2)
 {
 	if (Prop2 != InProp2)
 	{
@@ -87,16 +80,16 @@ void LocalService::SetProp2_Implementation(int32 InProp2)
 	}
 }
 
-FTestbed2ManyParamInterfaceProp2ChangedDelegate& LocalService::GetProp2ChangedDelegate()
+FTestbed2ManyParamInterfaceProp2ChangedDelegate& UTestbed2ManyParamInterfaceLocalService::GetProp2ChangedDelegate()
 {
 	return Prop2Changed;
 }
-int32 LocalService::GetProp3_Implementation() const
+int32 UTestbed2ManyParamInterfaceLocalService::GetProp3_Implementation() const
 {
 	return Prop3;
 }
 
-void LocalService::SetProp3_Implementation(int32 InProp3)
+void UTestbed2ManyParamInterfaceLocalService::SetProp3_Implementation(int32 InProp3)
 {
 	if (Prop3 != InProp3)
 	{
@@ -105,16 +98,16 @@ void LocalService::SetProp3_Implementation(int32 InProp3)
 	}
 }
 
-FTestbed2ManyParamInterfaceProp3ChangedDelegate& LocalService::GetProp3ChangedDelegate()
+FTestbed2ManyParamInterfaceProp3ChangedDelegate& UTestbed2ManyParamInterfaceLocalService::GetProp3ChangedDelegate()
 {
 	return Prop3Changed;
 }
-int32 LocalService::GetProp4_Implementation() const
+int32 UTestbed2ManyParamInterfaceLocalService::GetProp4_Implementation() const
 {
 	return Prop4;
 }
 
-void LocalService::SetProp4_Implementation(int32 InProp4)
+void UTestbed2ManyParamInterfaceLocalService::SetProp4_Implementation(int32 InProp4)
 {
 	if (Prop4 != InProp4)
 	{
@@ -123,25 +116,25 @@ void LocalService::SetProp4_Implementation(int32 InProp4)
 	}
 }
 
-FTestbed2ManyParamInterfaceProp4ChangedDelegate& LocalService::GetProp4ChangedDelegate()
+FTestbed2ManyParamInterfaceProp4ChangedDelegate& UTestbed2ManyParamInterfaceLocalService::GetProp4ChangedDelegate()
 {
 	return Prop4Changed;
 }
 
-int32 LocalService::Func1_Implementation(int32 Param1)
+int32 UTestbed2ManyParamInterfaceLocalService::Func1_Implementation(int32 Param1)
 {
 	(void)Param1;
 	// do business logic here
 	return 0;
 }
-int32 LocalService::Func2_Implementation(int32 Param1, int32 Param2)
+int32 UTestbed2ManyParamInterfaceLocalService::Func2_Implementation(int32 Param1, int32 Param2)
 {
 	(void)Param1;
 	(void)Param2;
 	// do business logic here
 	return 0;
 }
-int32 LocalService::Func3_Implementation(int32 Param1, int32 Param2, int32 Param3)
+int32 UTestbed2ManyParamInterfaceLocalService::Func3_Implementation(int32 Param1, int32 Param2, int32 Param3)
 {
 	(void)Param1;
 	(void)Param2;
@@ -149,7 +142,7 @@ int32 LocalService::Func3_Implementation(int32 Param1, int32 Param2, int32 Param
 	// do business logic here
 	return 0;
 }
-int32 LocalService::Func4_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
+int32 UTestbed2ManyParamInterfaceLocalService::Func4_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
 {
 	(void)Param1;
 	(void)Param2;
@@ -158,7 +151,3 @@ int32 LocalService::Func4_Implementation(int32 Param1, int32 Param2, int32 Param
 	// do business logic here
 	return 0;
 }
-
-} // namespace Private
-} // namespace ManyParamInterface
-} // namespace Testbed2

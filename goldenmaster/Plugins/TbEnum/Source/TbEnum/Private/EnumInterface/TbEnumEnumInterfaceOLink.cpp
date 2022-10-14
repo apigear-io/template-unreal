@@ -31,14 +31,7 @@ limitations under the License.
 #include "Misc/DateTime.h"
 
 using namespace ApiGear::ObjectLink;
-
-namespace TbEnum
-{
-namespace EnumInterface
-{
-namespace Private
-{
-OLinkService::OLinkService()
+UTbEnumEnumInterfaceOLinkService::UTbEnumEnumInterfaceOLinkService()
 	: ITbEnumEnumInterfaceInterface()
 	, m_node(nullptr)
 	, m_isReady(false)
@@ -56,7 +49,7 @@ OLinkService::OLinkService()
 	m_node = ClientRegistry::get().addObjectSink(this);
 }
 
-OLinkService::~OLinkService()
+UTbEnumEnumInterfaceOLinkService::~UTbEnumEnumInterfaceOLinkService()
 {
 	ClientRegistry::get().removeObjectSink(this);
 	if (GEngine != nullptr)
@@ -68,32 +61,32 @@ OLinkService::~OLinkService()
 	m_node = nullptr;
 }
 
-FTbEnumEnumInterfaceSig0Delegate& OLinkService::GetSig0SignalDelegate()
+FTbEnumEnumInterfaceSig0Delegate& UTbEnumEnumInterfaceOLinkService::GetSig0SignalDelegate()
 {
 	return Sig0Signal;
 }
 
-FTbEnumEnumInterfaceSig1Delegate& OLinkService::GetSig1SignalDelegate()
+FTbEnumEnumInterfaceSig1Delegate& UTbEnumEnumInterfaceOLinkService::GetSig1SignalDelegate()
 {
 	return Sig1Signal;
 }
 
-FTbEnumEnumInterfaceSig2Delegate& OLinkService::GetSig2SignalDelegate()
+FTbEnumEnumInterfaceSig2Delegate& UTbEnumEnumInterfaceOLinkService::GetSig2SignalDelegate()
 {
 	return Sig2Signal;
 }
 
-FTbEnumEnumInterfaceSig3Delegate& OLinkService::GetSig3SignalDelegate()
+FTbEnumEnumInterfaceSig3Delegate& UTbEnumEnumInterfaceOLinkService::GetSig3SignalDelegate()
 {
 	return Sig3Signal;
 }
 
-ETbEnumEnum0 OLinkService::GetProp0_Implementation() const
+ETbEnumEnum0 UTbEnumEnumInterfaceOLinkService::GetProp0_Implementation() const
 {
 	return Prop0;
 }
 
-void OLinkService::SetProp0_Implementation(const ETbEnumEnum0& InProp0)
+void UTbEnumEnumInterfaceOLinkService::SetProp0_Implementation(const ETbEnumEnum0& InProp0)
 {
 	if (!m_node)
 	{
@@ -102,16 +95,16 @@ void OLinkService::SetProp0_Implementation(const ETbEnumEnum0& InProp0)
 	m_node->setRemoteProperty("tb.enum.EnumInterface/prop0", InProp0);
 }
 
-FTbEnumEnumInterfaceProp0ChangedDelegate& OLinkService::GetProp0ChangedDelegate()
+FTbEnumEnumInterfaceProp0ChangedDelegate& UTbEnumEnumInterfaceOLinkService::GetProp0ChangedDelegate()
 {
 	return Prop0Changed;
 }
-ETbEnumEnum1 OLinkService::GetProp1_Implementation() const
+ETbEnumEnum1 UTbEnumEnumInterfaceOLinkService::GetProp1_Implementation() const
 {
 	return Prop1;
 }
 
-void OLinkService::SetProp1_Implementation(const ETbEnumEnum1& InProp1)
+void UTbEnumEnumInterfaceOLinkService::SetProp1_Implementation(const ETbEnumEnum1& InProp1)
 {
 	if (!m_node)
 	{
@@ -120,16 +113,16 @@ void OLinkService::SetProp1_Implementation(const ETbEnumEnum1& InProp1)
 	m_node->setRemoteProperty("tb.enum.EnumInterface/prop1", InProp1);
 }
 
-FTbEnumEnumInterfaceProp1ChangedDelegate& OLinkService::GetProp1ChangedDelegate()
+FTbEnumEnumInterfaceProp1ChangedDelegate& UTbEnumEnumInterfaceOLinkService::GetProp1ChangedDelegate()
 {
 	return Prop1Changed;
 }
-ETbEnumEnum2 OLinkService::GetProp2_Implementation() const
+ETbEnumEnum2 UTbEnumEnumInterfaceOLinkService::GetProp2_Implementation() const
 {
 	return Prop2;
 }
 
-void OLinkService::SetProp2_Implementation(const ETbEnumEnum2& InProp2)
+void UTbEnumEnumInterfaceOLinkService::SetProp2_Implementation(const ETbEnumEnum2& InProp2)
 {
 	if (!m_node)
 	{
@@ -138,16 +131,16 @@ void OLinkService::SetProp2_Implementation(const ETbEnumEnum2& InProp2)
 	m_node->setRemoteProperty("tb.enum.EnumInterface/prop2", InProp2);
 }
 
-FTbEnumEnumInterfaceProp2ChangedDelegate& OLinkService::GetProp2ChangedDelegate()
+FTbEnumEnumInterfaceProp2ChangedDelegate& UTbEnumEnumInterfaceOLinkService::GetProp2ChangedDelegate()
 {
 	return Prop2Changed;
 }
-ETbEnumEnum3 OLinkService::GetProp3_Implementation() const
+ETbEnumEnum3 UTbEnumEnumInterfaceOLinkService::GetProp3_Implementation() const
 {
 	return Prop3;
 }
 
-void OLinkService::SetProp3_Implementation(const ETbEnumEnum3& InProp3)
+void UTbEnumEnumInterfaceOLinkService::SetProp3_Implementation(const ETbEnumEnum3& InProp3)
 {
 	if (!m_node)
 	{
@@ -156,12 +149,12 @@ void OLinkService::SetProp3_Implementation(const ETbEnumEnum3& InProp3)
 	m_node->setRemoteProperty("tb.enum.EnumInterface/prop3", InProp3);
 }
 
-FTbEnumEnumInterfaceProp3ChangedDelegate& OLinkService::GetProp3ChangedDelegate()
+FTbEnumEnumInterfaceProp3ChangedDelegate& UTbEnumEnumInterfaceOLinkService::GetProp3ChangedDelegate()
 {
 	return Prop3Changed;
 }
 
-ETbEnumEnum0 OLinkService::Func0_Implementation(const ETbEnumEnum0& Param0)
+ETbEnumEnum0 UTbEnumEnumInterfaceOLinkService::Func0_Implementation(const ETbEnumEnum0& Param0)
 {
 	if (!m_node)
 	{
@@ -180,7 +173,7 @@ ETbEnumEnum0 OLinkService::Func0_Implementation(const ETbEnumEnum0& Param0)
 	return Promise.GetFuture().Get();
 }
 
-ETbEnumEnum1 OLinkService::Func1_Implementation(const ETbEnumEnum1& Param1)
+ETbEnumEnum1 UTbEnumEnumInterfaceOLinkService::Func1_Implementation(const ETbEnumEnum1& Param1)
 {
 	if (!m_node)
 	{
@@ -199,7 +192,7 @@ ETbEnumEnum1 OLinkService::Func1_Implementation(const ETbEnumEnum1& Param1)
 	return Promise.GetFuture().Get();
 }
 
-ETbEnumEnum2 OLinkService::Func2_Implementation(const ETbEnumEnum2& Param2)
+ETbEnumEnum2 UTbEnumEnumInterfaceOLinkService::Func2_Implementation(const ETbEnumEnum2& Param2)
 {
 	if (!m_node)
 	{
@@ -218,7 +211,7 @@ ETbEnumEnum2 OLinkService::Func2_Implementation(const ETbEnumEnum2& Param2)
 	return Promise.GetFuture().Get();
 }
 
-ETbEnumEnum3 OLinkService::Func3_Implementation(const ETbEnumEnum3& Param3)
+ETbEnumEnum3 UTbEnumEnumInterfaceOLinkService::Func3_Implementation(const ETbEnumEnum3& Param3)
 {
 	if (!m_node)
 	{
@@ -237,7 +230,7 @@ ETbEnumEnum3 OLinkService::Func3_Implementation(const ETbEnumEnum3& Param3)
 	return Promise.GetFuture().Get();
 }
 
-void OLinkService::applyState(const nlohmann::json& fields)
+void UTbEnumEnumInterfaceOLinkService::applyState(const nlohmann::json& fields)
 {
 	if (fields.contains("prop0"))
 	{
@@ -273,12 +266,12 @@ void OLinkService::applyState(const nlohmann::json& fields)
 	}
 }
 
-std::string OLinkService::olinkObjectName()
+std::string UTbEnumEnumInterfaceOLinkService::olinkObjectName()
 {
 	return "tb.enum.EnumInterface";
 }
 
-void OLinkService::olinkOnSignal(std::string name, nlohmann::json args)
+void UTbEnumEnumInterfaceOLinkService::olinkOnSignal(std::string name, nlohmann::json args)
 {
 	std::string path = Name::pathFromName(name);
 	if (path == "sig0")
@@ -303,13 +296,13 @@ void OLinkService::olinkOnSignal(std::string name, nlohmann::json args)
 	}
 }
 
-void OLinkService::olinkOnPropertyChanged(std::string name, nlohmann::json value)
+void UTbEnumEnumInterfaceOLinkService::olinkOnPropertyChanged(std::string name, nlohmann::json value)
 {
 	std::string path = Name::pathFromName(name);
 	applyState({{path, value}});
 }
 
-void OLinkService::olinkOnInit(std::string name, nlohmann::json props, IClientNode* node)
+void UTbEnumEnumInterfaceOLinkService::olinkOnInit(std::string name, nlohmann::json props, IClientNode* node)
 {
 	m_isReady = true;
 	m_node = node;
@@ -317,12 +310,8 @@ void OLinkService::olinkOnInit(std::string name, nlohmann::json props, IClientNo
 	// call isReady();
 }
 
-void OLinkService::olinkOnRelease()
+void UTbEnumEnumInterfaceOLinkService::olinkOnRelease()
 {
 	m_isReady = false;
 	m_node = nullptr;
 }
-
-} // namespace Private
-} // namespace EnumInterface
-} // namespace TbEnum

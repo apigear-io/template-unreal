@@ -17,20 +17,17 @@ limitations under the License.
 */
 #pragma once
 
+#include "CoreMinimal.h"
 #include "apig/Testbed1_apig.h"
+#include "Testbed1StructArrayInterfaceLocal.generated.h"
 
-namespace Testbed1
+UCLASS(BlueprintType, Blueprintable, DisplayName = "Testbed1StructArrayInterface")
+class TESTBED1_API UTestbed1StructArrayInterfaceLocalService : public UObject, public ITestbed1StructArrayInterfaceInterface
 {
-namespace StructArrayInterface
-{
-namespace Private
-{
-
-class LocalService : public ITestbed1StructArrayInterfaceInterface
-{
+	GENERATED_BODY()
 public:
-	explicit LocalService();
-	virtual ~LocalService();
+	explicit UTestbed1StructArrayInterfaceLocalService();
+	virtual ~UTestbed1StructArrayInterfaceLocalService();
 
 	// signals
 	FTestbed1StructArrayInterfaceSigBoolDelegate SigBoolSignal;
@@ -90,7 +87,3 @@ private:
 	TArray<FTestbed1StructFloat> PropFloat;
 	TArray<FTestbed1StructString> PropString;
 };
-
-} // namespace Private
-} // namespace StructArrayInterface
-} // namespace Testbed1

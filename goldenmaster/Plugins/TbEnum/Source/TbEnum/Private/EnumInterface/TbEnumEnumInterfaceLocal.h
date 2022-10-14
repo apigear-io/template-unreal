@@ -17,20 +17,17 @@ limitations under the License.
 */
 #pragma once
 
+#include "CoreMinimal.h"
 #include "apig/TbEnum_apig.h"
+#include "TbEnumEnumInterfaceLocal.generated.h"
 
-namespace TbEnum
+UCLASS(BlueprintType, Blueprintable, DisplayName = "TbEnumEnumInterface")
+class TBENUM_API UTbEnumEnumInterfaceLocalService : public UObject, public ITbEnumEnumInterfaceInterface
 {
-namespace EnumInterface
-{
-namespace Private
-{
-
-class LocalService : public ITbEnumEnumInterfaceInterface
-{
+	GENERATED_BODY()
 public:
-	explicit LocalService();
-	virtual ~LocalService();
+	explicit UTbEnumEnumInterfaceLocalService();
+	virtual ~UTbEnumEnumInterfaceLocalService();
 
 	// signals
 	FTbEnumEnumInterfaceSig0Delegate Sig0Signal;
@@ -90,7 +87,3 @@ private:
 	ETbEnumEnum2 Prop2;
 	ETbEnumEnum3 Prop3;
 };
-
-} // namespace Private
-} // namespace EnumInterface
-} // namespace TbEnum

@@ -31,14 +31,7 @@ limitations under the License.
 #include "Misc/DateTime.h"
 
 using namespace ApiGear::ObjectLink;
-
-namespace Testbed2
-{
-namespace NestedStruct3Interface
-{
-namespace Private
-{
-OLinkService::OLinkService()
+UTestbed2NestedStruct3InterfaceOLinkService::UTestbed2NestedStruct3InterfaceOLinkService()
 	: ITestbed2NestedStruct3InterfaceInterface()
 	, m_node(nullptr)
 	, m_isReady(false)
@@ -55,7 +48,7 @@ OLinkService::OLinkService()
 	m_node = ClientRegistry::get().addObjectSink(this);
 }
 
-OLinkService::~OLinkService()
+UTestbed2NestedStruct3InterfaceOLinkService::~UTestbed2NestedStruct3InterfaceOLinkService()
 {
 	ClientRegistry::get().removeObjectSink(this);
 	if (GEngine != nullptr)
@@ -67,27 +60,27 @@ OLinkService::~OLinkService()
 	m_node = nullptr;
 }
 
-FTestbed2NestedStruct3InterfaceSig1Delegate& OLinkService::GetSig1SignalDelegate()
+FTestbed2NestedStruct3InterfaceSig1Delegate& UTestbed2NestedStruct3InterfaceOLinkService::GetSig1SignalDelegate()
 {
 	return Sig1Signal;
 }
 
-FTestbed2NestedStruct3InterfaceSig2Delegate& OLinkService::GetSig2SignalDelegate()
+FTestbed2NestedStruct3InterfaceSig2Delegate& UTestbed2NestedStruct3InterfaceOLinkService::GetSig2SignalDelegate()
 {
 	return Sig2Signal;
 }
 
-FTestbed2NestedStruct3InterfaceSig3Delegate& OLinkService::GetSig3SignalDelegate()
+FTestbed2NestedStruct3InterfaceSig3Delegate& UTestbed2NestedStruct3InterfaceOLinkService::GetSig3SignalDelegate()
 {
 	return Sig3Signal;
 }
 
-FTestbed2NestedStruct1 OLinkService::GetProp1_Implementation() const
+FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceOLinkService::GetProp1_Implementation() const
 {
 	return Prop1;
 }
 
-void OLinkService::SetProp1_Implementation(const FTestbed2NestedStruct1& InProp1)
+void UTestbed2NestedStruct3InterfaceOLinkService::SetProp1_Implementation(const FTestbed2NestedStruct1& InProp1)
 {
 	if (!m_node)
 	{
@@ -96,16 +89,16 @@ void OLinkService::SetProp1_Implementation(const FTestbed2NestedStruct1& InProp1
 	m_node->setRemoteProperty("testbed2.NestedStruct3Interface/prop1", InProp1);
 }
 
-FTestbed2NestedStruct3InterfaceProp1ChangedDelegate& OLinkService::GetProp1ChangedDelegate()
+FTestbed2NestedStruct3InterfaceProp1ChangedDelegate& UTestbed2NestedStruct3InterfaceOLinkService::GetProp1ChangedDelegate()
 {
 	return Prop1Changed;
 }
-FTestbed2NestedStruct2 OLinkService::GetProp2_Implementation() const
+FTestbed2NestedStruct2 UTestbed2NestedStruct3InterfaceOLinkService::GetProp2_Implementation() const
 {
 	return Prop2;
 }
 
-void OLinkService::SetProp2_Implementation(const FTestbed2NestedStruct2& InProp2)
+void UTestbed2NestedStruct3InterfaceOLinkService::SetProp2_Implementation(const FTestbed2NestedStruct2& InProp2)
 {
 	if (!m_node)
 	{
@@ -114,16 +107,16 @@ void OLinkService::SetProp2_Implementation(const FTestbed2NestedStruct2& InProp2
 	m_node->setRemoteProperty("testbed2.NestedStruct3Interface/prop2", InProp2);
 }
 
-FTestbed2NestedStruct3InterfaceProp2ChangedDelegate& OLinkService::GetProp2ChangedDelegate()
+FTestbed2NestedStruct3InterfaceProp2ChangedDelegate& UTestbed2NestedStruct3InterfaceOLinkService::GetProp2ChangedDelegate()
 {
 	return Prop2Changed;
 }
-FTestbed2NestedStruct3 OLinkService::GetProp3_Implementation() const
+FTestbed2NestedStruct3 UTestbed2NestedStruct3InterfaceOLinkService::GetProp3_Implementation() const
 {
 	return Prop3;
 }
 
-void OLinkService::SetProp3_Implementation(const FTestbed2NestedStruct3& InProp3)
+void UTestbed2NestedStruct3InterfaceOLinkService::SetProp3_Implementation(const FTestbed2NestedStruct3& InProp3)
 {
 	if (!m_node)
 	{
@@ -132,12 +125,12 @@ void OLinkService::SetProp3_Implementation(const FTestbed2NestedStruct3& InProp3
 	m_node->setRemoteProperty("testbed2.NestedStruct3Interface/prop3", InProp3);
 }
 
-FTestbed2NestedStruct3InterfaceProp3ChangedDelegate& OLinkService::GetProp3ChangedDelegate()
+FTestbed2NestedStruct3InterfaceProp3ChangedDelegate& UTestbed2NestedStruct3InterfaceOLinkService::GetProp3ChangedDelegate()
 {
 	return Prop3Changed;
 }
 
-FTestbed2NestedStruct1 OLinkService::Func1_Implementation(const FTestbed2NestedStruct1& Param1)
+FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceOLinkService::Func1_Implementation(const FTestbed2NestedStruct1& Param1)
 {
 	if (!m_node)
 	{
@@ -156,7 +149,7 @@ FTestbed2NestedStruct1 OLinkService::Func1_Implementation(const FTestbed2NestedS
 	return Promise.GetFuture().Get();
 }
 
-FTestbed2NestedStruct1 OLinkService::Func2_Implementation(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
+FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceOLinkService::Func2_Implementation(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
 {
 	if (!m_node)
 	{
@@ -175,7 +168,7 @@ FTestbed2NestedStruct1 OLinkService::Func2_Implementation(const FTestbed2NestedS
 	return Promise.GetFuture().Get();
 }
 
-FTestbed2NestedStruct1 OLinkService::Func3_Implementation(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3)
+FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceOLinkService::Func3_Implementation(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3)
 {
 	if (!m_node)
 	{
@@ -194,7 +187,7 @@ FTestbed2NestedStruct1 OLinkService::Func3_Implementation(const FTestbed2NestedS
 	return Promise.GetFuture().Get();
 }
 
-void OLinkService::applyState(const nlohmann::json& fields)
+void UTestbed2NestedStruct3InterfaceOLinkService::applyState(const nlohmann::json& fields)
 {
 	if (fields.contains("prop1"))
 	{
@@ -222,12 +215,12 @@ void OLinkService::applyState(const nlohmann::json& fields)
 	}
 }
 
-std::string OLinkService::olinkObjectName()
+std::string UTestbed2NestedStruct3InterfaceOLinkService::olinkObjectName()
 {
 	return "testbed2.NestedStruct3Interface";
 }
 
-void OLinkService::olinkOnSignal(std::string name, nlohmann::json args)
+void UTestbed2NestedStruct3InterfaceOLinkService::olinkOnSignal(std::string name, nlohmann::json args)
 {
 	std::string path = Name::pathFromName(name);
 	if (path == "sig1")
@@ -247,13 +240,13 @@ void OLinkService::olinkOnSignal(std::string name, nlohmann::json args)
 	}
 }
 
-void OLinkService::olinkOnPropertyChanged(std::string name, nlohmann::json value)
+void UTestbed2NestedStruct3InterfaceOLinkService::olinkOnPropertyChanged(std::string name, nlohmann::json value)
 {
 	std::string path = Name::pathFromName(name);
 	applyState({{path, value}});
 }
 
-void OLinkService::olinkOnInit(std::string name, nlohmann::json props, IClientNode* node)
+void UTestbed2NestedStruct3InterfaceOLinkService::olinkOnInit(std::string name, nlohmann::json props, IClientNode* node)
 {
 	m_isReady = true;
 	m_node = node;
@@ -261,12 +254,8 @@ void OLinkService::olinkOnInit(std::string name, nlohmann::json props, IClientNo
 	// call isReady();
 }
 
-void OLinkService::olinkOnRelease()
+void UTestbed2NestedStruct3InterfaceOLinkService::olinkOnRelease()
 {
 	m_isReady = false;
 	m_node = nullptr;
 }
-
-} // namespace Private
-} // namespace NestedStruct3Interface
-} // namespace Testbed2

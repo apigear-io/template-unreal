@@ -1,18 +1,12 @@
 {{- /* Copyright Epic Games, Inc. All Rights Reserved */ -}}
 /**{{ template "copyright" }}*/
 {{- $ModuleName := Camel .Module.Name}}
+{{- $DisplayName := printf "%s%s" $ModuleName (Camel .Interface.Name) }}
 {{- $IfaceName := Camel .Interface.Name }}
-{{- $Class := "LocalService" }}
+{{- $Class := printf "U%sLocalService" $DisplayName}}
 {{- $Iface := printf "%s%s" $ModuleName $IfaceName }}
 
 #include "{{$Iface}}Local.h"
-
-namespace {{$ModuleName}}
-{
-namespace {{$IfaceName}}
-{
-namespace Private
-{
 
 {{- if .Interface.Description }}
 /**
@@ -72,7 +66,3 @@ F{{$Iface}}{{Camel .Name}}ChangedDelegate& {{$Class}}::Get{{Camel .Name}}Changed
 	{{- end }}
 }
 {{- end }}
-
-} // namespace Private
-} // namespace {{$IfaceName}}
-} // namespace {{$ModuleName}}

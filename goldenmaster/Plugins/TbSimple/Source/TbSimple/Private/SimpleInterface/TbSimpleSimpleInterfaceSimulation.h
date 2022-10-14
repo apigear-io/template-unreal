@@ -17,19 +17,15 @@ limitations under the License.
 #pragma once
 
 #include "apig/TbSimple_apig.h"
+#include "TbSimpleSimpleInterfaceSimulation.generated.h"
 
-namespace TbSimple
+UCLASS(BlueprintType)
+class UTbSimpleSimpleInterfaceSimulationService : public UObject, public ITbSimpleSimpleInterfaceInterface
 {
-namespace SimpleInterface
-{
-namespace Private
-{
-
-class SimulationService : public ITbSimpleSimpleInterfaceInterface
-{
+	GENERATED_BODY()
 public:
-	explicit SimulationService();
-	virtual ~SimulationService();
+	explicit UTbSimpleSimpleInterfaceSimulationService();
+	virtual ~UTbSimpleSimpleInterfaceSimulationService();
 
 	// signals
 	FTbSimpleSimpleInterfaceSigBoolDelegate SigBoolSignal;
@@ -89,7 +85,3 @@ private:
 	float PropFloat;
 	FString PropString;
 };
-
-} // namespace Private
-} // namespace SimpleInterface
-} // namespace TbSimple

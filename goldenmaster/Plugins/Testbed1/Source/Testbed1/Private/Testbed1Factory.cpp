@@ -27,7 +27,7 @@ limitations under the License.
 // General Log
 DEFINE_LOG_CATEGORY(LogFTestbed1ModuleFactory);
 
-TSharedPtr<ITestbed1StructInterfaceInterface, ESPMode::ThreadSafe> FTestbed1ModuleFactory::createITestbed1StructInterfaceInterface()
+TScriptInterface<ITestbed1StructInterfaceInterface> FTestbed1ModuleFactory::createITestbed1StructInterfaceInterface()
 {
 	UTestbed1Settings* settings = GetMutableDefault<UTestbed1Settings>();
 
@@ -35,19 +35,19 @@ TSharedPtr<ITestbed1StructInterfaceInterface, ESPMode::ThreadSafe> FTestbed1Modu
 	{
 	case ETestbed1Connection::CONNECTION_OLINK:
 		UE_LOG(LogFTestbed1ModuleFactory, Log, TEXT("createITestbed1StructInterfaceInterface: Using OLink service backend"));
-		return MakeShared<Testbed1::StructInterface::Private::OLinkService, ESPMode::ThreadSafe>();
+		return NewObject<UTestbed1StructInterfaceOLinkService>();
 	case ETestbed1Connection::CONNECTION_SIMU:
 		UE_LOG(LogFTestbed1ModuleFactory, Log, TEXT("createITestbed1StructInterfaceInterface: Using simulation service backend"));
-		return MakeShared<Testbed1::StructInterface::Private::SimulationService, ESPMode::ThreadSafe>();
+		return NewObject<UTestbed1StructInterfaceSimulationService>();
 	case ETestbed1Connection::CONNECTION_LOCAL:
 		UE_LOG(LogFTestbed1ModuleFactory, Log, TEXT("createITestbed1StructInterfaceInterface: Using local service backend"));
 	default:
 		UE_LOG(LogFTestbed1ModuleFactory, Log, TEXT("createITestbed1StructInterfaceInterface: Defaulting to local service backend"));
-		return MakeShared<Testbed1::StructInterface::Private::LocalService, ESPMode::ThreadSafe>();
+		return NewObject<UTestbed1StructInterfaceLocalService>();
 	}
 }
 
-TSharedPtr<ITestbed1StructArrayInterfaceInterface, ESPMode::ThreadSafe> FTestbed1ModuleFactory::createITestbed1StructArrayInterfaceInterface()
+TScriptInterface<ITestbed1StructArrayInterfaceInterface> FTestbed1ModuleFactory::createITestbed1StructArrayInterfaceInterface()
 {
 	UTestbed1Settings* settings = GetMutableDefault<UTestbed1Settings>();
 
@@ -55,14 +55,14 @@ TSharedPtr<ITestbed1StructArrayInterfaceInterface, ESPMode::ThreadSafe> FTestbed
 	{
 	case ETestbed1Connection::CONNECTION_OLINK:
 		UE_LOG(LogFTestbed1ModuleFactory, Log, TEXT("createITestbed1StructArrayInterfaceInterface: Using OLink service backend"));
-		return MakeShared<Testbed1::StructArrayInterface::Private::OLinkService, ESPMode::ThreadSafe>();
+		return NewObject<UTestbed1StructArrayInterfaceOLinkService>();
 	case ETestbed1Connection::CONNECTION_SIMU:
 		UE_LOG(LogFTestbed1ModuleFactory, Log, TEXT("createITestbed1StructArrayInterfaceInterface: Using simulation service backend"));
-		return MakeShared<Testbed1::StructArrayInterface::Private::SimulationService, ESPMode::ThreadSafe>();
+		return NewObject<UTestbed1StructArrayInterfaceSimulationService>();
 	case ETestbed1Connection::CONNECTION_LOCAL:
 		UE_LOG(LogFTestbed1ModuleFactory, Log, TEXT("createITestbed1StructArrayInterfaceInterface: Using local service backend"));
 	default:
 		UE_LOG(LogFTestbed1ModuleFactory, Log, TEXT("createITestbed1StructArrayInterfaceInterface: Defaulting to local service backend"));
-		return MakeShared<Testbed1::StructArrayInterface::Private::LocalService, ESPMode::ThreadSafe>();
+		return NewObject<UTestbed1StructArrayInterfaceLocalService>();
 	}
 }

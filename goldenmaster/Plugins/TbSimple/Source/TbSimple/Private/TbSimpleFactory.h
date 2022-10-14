@@ -27,6 +27,6 @@ DECLARE_LOG_CATEGORY_EXTERN(LogFTbSimpleModuleFactory, Log, All);
 class FTbSimpleModuleFactory
 {
 public:
-	static TSharedPtr<ITbSimpleSimpleInterfaceInterface, ESPMode::ThreadSafe> createITbSimpleSimpleInterfaceInterface();
-	static TSharedPtr<ITbSimpleSimpleArrayInterfaceInterface, ESPMode::ThreadSafe> createITbSimpleSimpleArrayInterfaceInterface();
+	static TScriptInterface<ITbSimpleSimpleInterfaceInterface> createITbSimpleSimpleInterfaceInterface();
+	static TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> createITbSimpleSimpleArrayInterfaceInterface();
 };

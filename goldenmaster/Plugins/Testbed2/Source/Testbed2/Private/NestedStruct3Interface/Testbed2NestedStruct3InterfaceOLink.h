@@ -18,19 +18,15 @@ limitations under the License.
 
 #include "apig/Testbed2_apig.h"
 #include "olink/clientnode.h"
+#include "Testbed2NestedStruct3InterfaceOLink.generated.h"
 
-namespace Testbed2
+UCLASS(BlueprintType)
+class TESTBED2_API UTestbed2NestedStruct3InterfaceOLinkService : public UObject, public ITestbed2NestedStruct3InterfaceInterface, public ApiGear::ObjectLink::IObjectSink
 {
-namespace NestedStruct3Interface
-{
-namespace Private
-{
-
-class OLinkService : public ITestbed2NestedStruct3InterfaceInterface, public ApiGear::ObjectLink::IObjectSink
-{
+	GENERATED_BODY()
 public:
-	explicit OLinkService();
-	virtual ~OLinkService();
+	explicit UTestbed2NestedStruct3InterfaceOLinkService();
+	virtual ~UTestbed2NestedStruct3InterfaceOLinkService();
 
 	// signals
 	FTestbed2NestedStruct3InterfaceSig1Delegate Sig1Signal;
@@ -87,7 +83,3 @@ private:
 	FTestbed2NestedStruct2 Prop2;
 	FTestbed2NestedStruct3 Prop3;
 };
-
-} // namespace Private
-} // namespace NestedStruct3Interface
-} // namespace Testbed2

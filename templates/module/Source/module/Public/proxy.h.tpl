@@ -72,7 +72,8 @@ public:
 {{ end }}
 private:
 	/** The connection to the service backend. */
-	TSharedPtr<I{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface, ESPMode::ThreadSafe> service;
+	UPROPERTY(VisibleAnywhere, Category = "{{$Category}}")
+	TScriptInterface<I{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface> BackendService;
 
 	// signals
 {{- range .Interface.Signals }}

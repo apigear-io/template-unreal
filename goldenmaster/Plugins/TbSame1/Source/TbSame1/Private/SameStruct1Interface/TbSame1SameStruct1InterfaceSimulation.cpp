@@ -28,14 +28,7 @@ limitations under the License.
 #include "Engine/Engine.h"
 
 using namespace ApiGear::JSONRPC;
-
-namespace TbSame1
-{
-namespace SameStruct1Interface
-{
-namespace Private
-{
-SimulationService::SimulationService()
+UTbSame1SameStruct1InterfaceSimulationService::UTbSame1SameStruct1InterfaceSimulationService()
 	: ITbSame1SameStruct1InterfaceInterface()
 	, Prop1(FTbSame1Struct1())
 {
@@ -98,7 +91,7 @@ SimulationService::SimulationService()
 	}
 }
 
-SimulationService::~SimulationService()
+UTbSame1SameStruct1InterfaceSimulationService::~UTbSame1SameStruct1InterfaceSimulationService()
 {
 	if (GEngine != nullptr)
 	{
@@ -109,17 +102,17 @@ SimulationService::~SimulationService()
 	}
 }
 
-FTbSame1SameStruct1InterfaceSig1Delegate& SimulationService::GetSig1SignalDelegate()
+FTbSame1SameStruct1InterfaceSig1Delegate& UTbSame1SameStruct1InterfaceSimulationService::GetSig1SignalDelegate()
 {
 	return Sig1Signal;
 }
 
-FTbSame1Struct1 SimulationService::GetProp1_Implementation() const
+FTbSame1Struct1 UTbSame1SameStruct1InterfaceSimulationService::GetProp1_Implementation() const
 {
 	return Prop1;
 }
 
-void SimulationService::SetProp1_Implementation(const FTbSame1Struct1& InProp1)
+void UTbSame1SameStruct1InterfaceSimulationService::SetProp1_Implementation(const FTbSame1Struct1& InProp1)
 {
 	Params params;
 	params["prop1"] = InProp1;
@@ -130,12 +123,12 @@ void SimulationService::SetProp1_Implementation(const FTbSame1Struct1& InProp1)
 	}
 }
 
-FTbSame1SameStruct1InterfaceProp1ChangedDelegate& SimulationService::GetProp1ChangedDelegate()
+FTbSame1SameStruct1InterfaceProp1ChangedDelegate& UTbSame1SameStruct1InterfaceSimulationService::GetProp1ChangedDelegate()
 {
 	return Prop1Changed;
 }
 
-FTbSame1Struct1 SimulationService::Func1_Implementation(const FTbSame1Struct1& Param1)
+FTbSame1Struct1 UTbSame1SameStruct1InterfaceSimulationService::Func1_Implementation(const FTbSame1Struct1& Param1)
 {
 	Params params;
 	params["param1"] = Param1;
@@ -154,7 +147,3 @@ FTbSame1Struct1 SimulationService::Func1_Implementation(const FTbSame1Struct1& P
 
 	return Promise.GetFuture().Get();
 }
-
-} // namespace Private
-} // namespace SameStruct1Interface
-} // namespace TbSame1

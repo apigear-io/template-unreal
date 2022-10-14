@@ -1,9 +1,10 @@
 {{- /* Copyright Epic Games, Inc. All Rights Reserved */ -}}
 {{- $ModuleName := Camel .Module.Name}}
 {{- $IfaceName := Camel .Interface.Name }}
+{{- $API_MACRO := printf "%s_API" (CAMEL .Module.Name) }}
 {{- $Category := printf "ApiGear|%s|%s" $ModuleName $IfaceName }}
 {{- $DisplayName := printf "%s%s" $ModuleName $IfaceName }}
-{{- $Class := "LocalService" }}
+{{- $Class := printf "U%sLocalService" $DisplayName}}
 {{- $Iface := printf "%s%s" $ModuleName $IfaceName }}
 /**
 Copyright 2021 ApiGear UG
@@ -23,17 +24,14 @@ limitations under the License.
 */
 #pragma once
 
+#include "CoreMinimal.h"
 #include "apig/{{$ModuleName}}_apig.h"
+#include "{{$Iface}}Local.generated.h"
 
-namespace {{$ModuleName}}
+UCLASS(BlueprintType, Blueprintable, DisplayName = "{{$DisplayName}}")
+class {{ $API_MACRO }} {{$Class}} : public UObject, public I{{$Iface}}Interface
 {
-namespace {{$IfaceName}}
-{
-namespace Private
-{
-
-class {{$Class}} : public I{{$Iface}}Interface
-{
+	GENERATED_BODY()
 public:
 	explicit {{$Class}}();
 	virtual ~{{$Class}}();
@@ -70,7 +68,3 @@ private:
 	{{ueReturn "" .}} {{ueVar "" .}};
 {{- end }}
 };
-
-} // namespace Private
-} // namespace {{$IfaceName}}
-} // namespace {{$ModuleName}}

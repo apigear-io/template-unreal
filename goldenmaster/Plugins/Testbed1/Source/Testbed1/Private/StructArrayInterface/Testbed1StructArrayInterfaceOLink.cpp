@@ -31,14 +31,7 @@ limitations under the License.
 #include "Misc/DateTime.h"
 
 using namespace ApiGear::ObjectLink;
-
-namespace Testbed1
-{
-namespace StructArrayInterface
-{
-namespace Private
-{
-OLinkService::OLinkService()
+UTestbed1StructArrayInterfaceOLinkService::UTestbed1StructArrayInterfaceOLinkService()
 	: ITestbed1StructArrayInterfaceInterface()
 	, m_node(nullptr)
 	, m_isReady(false)
@@ -56,7 +49,7 @@ OLinkService::OLinkService()
 	m_node = ClientRegistry::get().addObjectSink(this);
 }
 
-OLinkService::~OLinkService()
+UTestbed1StructArrayInterfaceOLinkService::~UTestbed1StructArrayInterfaceOLinkService()
 {
 	ClientRegistry::get().removeObjectSink(this);
 	if (GEngine != nullptr)
@@ -68,32 +61,32 @@ OLinkService::~OLinkService()
 	m_node = nullptr;
 }
 
-FTestbed1StructArrayInterfaceSigBoolDelegate& OLinkService::GetSigBoolSignalDelegate()
+FTestbed1StructArrayInterfaceSigBoolDelegate& UTestbed1StructArrayInterfaceOLinkService::GetSigBoolSignalDelegate()
 {
 	return SigBoolSignal;
 }
 
-FTestbed1StructArrayInterfaceSigIntDelegate& OLinkService::GetSigIntSignalDelegate()
+FTestbed1StructArrayInterfaceSigIntDelegate& UTestbed1StructArrayInterfaceOLinkService::GetSigIntSignalDelegate()
 {
 	return SigIntSignal;
 }
 
-FTestbed1StructArrayInterfaceSigFloatDelegate& OLinkService::GetSigFloatSignalDelegate()
+FTestbed1StructArrayInterfaceSigFloatDelegate& UTestbed1StructArrayInterfaceOLinkService::GetSigFloatSignalDelegate()
 {
 	return SigFloatSignal;
 }
 
-FTestbed1StructArrayInterfaceSigStringDelegate& OLinkService::GetSigStringSignalDelegate()
+FTestbed1StructArrayInterfaceSigStringDelegate& UTestbed1StructArrayInterfaceOLinkService::GetSigStringSignalDelegate()
 {
 	return SigStringSignal;
 }
 
-TArray<FTestbed1StructBool> OLinkService::GetPropBool_Implementation() const
+TArray<FTestbed1StructBool> UTestbed1StructArrayInterfaceOLinkService::GetPropBool_Implementation() const
 {
 	return PropBool;
 }
 
-void OLinkService::SetPropBool_Implementation(const TArray<FTestbed1StructBool>& InPropBool)
+void UTestbed1StructArrayInterfaceOLinkService::SetPropBool_Implementation(const TArray<FTestbed1StructBool>& InPropBool)
 {
 	if (!m_node)
 	{
@@ -102,16 +95,16 @@ void OLinkService::SetPropBool_Implementation(const TArray<FTestbed1StructBool>&
 	m_node->setRemoteProperty("testbed1.StructArrayInterface/propBool", InPropBool);
 }
 
-FTestbed1StructArrayInterfacePropBoolChangedDelegate& OLinkService::GetPropBoolChangedDelegate()
+FTestbed1StructArrayInterfacePropBoolChangedDelegate& UTestbed1StructArrayInterfaceOLinkService::GetPropBoolChangedDelegate()
 {
 	return PropBoolChanged;
 }
-TArray<FTestbed1StructInt> OLinkService::GetPropInt_Implementation() const
+TArray<FTestbed1StructInt> UTestbed1StructArrayInterfaceOLinkService::GetPropInt_Implementation() const
 {
 	return PropInt;
 }
 
-void OLinkService::SetPropInt_Implementation(const TArray<FTestbed1StructInt>& InPropInt)
+void UTestbed1StructArrayInterfaceOLinkService::SetPropInt_Implementation(const TArray<FTestbed1StructInt>& InPropInt)
 {
 	if (!m_node)
 	{
@@ -120,16 +113,16 @@ void OLinkService::SetPropInt_Implementation(const TArray<FTestbed1StructInt>& I
 	m_node->setRemoteProperty("testbed1.StructArrayInterface/propInt", InPropInt);
 }
 
-FTestbed1StructArrayInterfacePropIntChangedDelegate& OLinkService::GetPropIntChangedDelegate()
+FTestbed1StructArrayInterfacePropIntChangedDelegate& UTestbed1StructArrayInterfaceOLinkService::GetPropIntChangedDelegate()
 {
 	return PropIntChanged;
 }
-TArray<FTestbed1StructFloat> OLinkService::GetPropFloat_Implementation() const
+TArray<FTestbed1StructFloat> UTestbed1StructArrayInterfaceOLinkService::GetPropFloat_Implementation() const
 {
 	return PropFloat;
 }
 
-void OLinkService::SetPropFloat_Implementation(const TArray<FTestbed1StructFloat>& InPropFloat)
+void UTestbed1StructArrayInterfaceOLinkService::SetPropFloat_Implementation(const TArray<FTestbed1StructFloat>& InPropFloat)
 {
 	if (!m_node)
 	{
@@ -138,16 +131,16 @@ void OLinkService::SetPropFloat_Implementation(const TArray<FTestbed1StructFloat
 	m_node->setRemoteProperty("testbed1.StructArrayInterface/propFloat", InPropFloat);
 }
 
-FTestbed1StructArrayInterfacePropFloatChangedDelegate& OLinkService::GetPropFloatChangedDelegate()
+FTestbed1StructArrayInterfacePropFloatChangedDelegate& UTestbed1StructArrayInterfaceOLinkService::GetPropFloatChangedDelegate()
 {
 	return PropFloatChanged;
 }
-TArray<FTestbed1StructString> OLinkService::GetPropString_Implementation() const
+TArray<FTestbed1StructString> UTestbed1StructArrayInterfaceOLinkService::GetPropString_Implementation() const
 {
 	return PropString;
 }
 
-void OLinkService::SetPropString_Implementation(const TArray<FTestbed1StructString>& InPropString)
+void UTestbed1StructArrayInterfaceOLinkService::SetPropString_Implementation(const TArray<FTestbed1StructString>& InPropString)
 {
 	if (!m_node)
 	{
@@ -156,12 +149,12 @@ void OLinkService::SetPropString_Implementation(const TArray<FTestbed1StructStri
 	m_node->setRemoteProperty("testbed1.StructArrayInterface/propString", InPropString);
 }
 
-FTestbed1StructArrayInterfacePropStringChangedDelegate& OLinkService::GetPropStringChangedDelegate()
+FTestbed1StructArrayInterfacePropStringChangedDelegate& UTestbed1StructArrayInterfaceOLinkService::GetPropStringChangedDelegate()
 {
 	return PropStringChanged;
 }
 
-FTestbed1StructBool OLinkService::FuncBool_Implementation(const TArray<FTestbed1StructBool>& ParamBool)
+FTestbed1StructBool UTestbed1StructArrayInterfaceOLinkService::FuncBool_Implementation(const TArray<FTestbed1StructBool>& ParamBool)
 {
 	if (!m_node)
 	{
@@ -180,7 +173,7 @@ FTestbed1StructBool OLinkService::FuncBool_Implementation(const TArray<FTestbed1
 	return Promise.GetFuture().Get();
 }
 
-FTestbed1StructBool OLinkService::FuncInt_Implementation(const TArray<FTestbed1StructInt>& ParamInt)
+FTestbed1StructBool UTestbed1StructArrayInterfaceOLinkService::FuncInt_Implementation(const TArray<FTestbed1StructInt>& ParamInt)
 {
 	if (!m_node)
 	{
@@ -199,7 +192,7 @@ FTestbed1StructBool OLinkService::FuncInt_Implementation(const TArray<FTestbed1S
 	return Promise.GetFuture().Get();
 }
 
-FTestbed1StructBool OLinkService::FuncFloat_Implementation(const TArray<FTestbed1StructFloat>& ParamFloat)
+FTestbed1StructBool UTestbed1StructArrayInterfaceOLinkService::FuncFloat_Implementation(const TArray<FTestbed1StructFloat>& ParamFloat)
 {
 	if (!m_node)
 	{
@@ -218,7 +211,7 @@ FTestbed1StructBool OLinkService::FuncFloat_Implementation(const TArray<FTestbed
 	return Promise.GetFuture().Get();
 }
 
-FTestbed1StructBool OLinkService::FuncString_Implementation(const TArray<FTestbed1StructString>& ParamString)
+FTestbed1StructBool UTestbed1StructArrayInterfaceOLinkService::FuncString_Implementation(const TArray<FTestbed1StructString>& ParamString)
 {
 	if (!m_node)
 	{
@@ -237,7 +230,7 @@ FTestbed1StructBool OLinkService::FuncString_Implementation(const TArray<FTestbe
 	return Promise.GetFuture().Get();
 }
 
-void OLinkService::applyState(const nlohmann::json& fields)
+void UTestbed1StructArrayInterfaceOLinkService::applyState(const nlohmann::json& fields)
 {
 	if (fields.contains("propBool"))
 	{
@@ -273,12 +266,12 @@ void OLinkService::applyState(const nlohmann::json& fields)
 	}
 }
 
-std::string OLinkService::olinkObjectName()
+std::string UTestbed1StructArrayInterfaceOLinkService::olinkObjectName()
 {
 	return "testbed1.StructArrayInterface";
 }
 
-void OLinkService::olinkOnSignal(std::string name, nlohmann::json args)
+void UTestbed1StructArrayInterfaceOLinkService::olinkOnSignal(std::string name, nlohmann::json args)
 {
 	std::string path = Name::pathFromName(name);
 	if (path == "sigBool")
@@ -303,13 +296,13 @@ void OLinkService::olinkOnSignal(std::string name, nlohmann::json args)
 	}
 }
 
-void OLinkService::olinkOnPropertyChanged(std::string name, nlohmann::json value)
+void UTestbed1StructArrayInterfaceOLinkService::olinkOnPropertyChanged(std::string name, nlohmann::json value)
 {
 	std::string path = Name::pathFromName(name);
 	applyState({{path, value}});
 }
 
-void OLinkService::olinkOnInit(std::string name, nlohmann::json props, IClientNode* node)
+void UTestbed1StructArrayInterfaceOLinkService::olinkOnInit(std::string name, nlohmann::json props, IClientNode* node)
 {
 	m_isReady = true;
 	m_node = node;
@@ -317,12 +310,8 @@ void OLinkService::olinkOnInit(std::string name, nlohmann::json props, IClientNo
 	// call isReady();
 }
 
-void OLinkService::olinkOnRelease()
+void UTestbed1StructArrayInterfaceOLinkService::olinkOnRelease()
 {
 	m_isReady = false;
 	m_node = nullptr;
 }
-
-} // namespace Private
-} // namespace StructArrayInterface
-} // namespace Testbed1

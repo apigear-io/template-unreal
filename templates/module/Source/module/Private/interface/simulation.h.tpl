@@ -2,21 +2,18 @@
 /**{{ template "copyright" }}*/
 {{- $ModuleName := Camel .Module.Name}}
 {{- $IfaceName := Camel .Interface.Name }}
-{{- $Class := "SimulationService" }}
+{{- $DisplayName := printf "%s%s" $ModuleName $IfaceName }}
+{{- $Class := printf "U%sSimulationService" $DisplayName}}
 {{- $Iface := printf "%s%s" $ModuleName $IfaceName }}
 #pragma once
 
 #include "apig/{{$ModuleName}}_apig.h"
+#include "{{$Iface}}Simulation.generated.h"
 
-namespace {{$ModuleName}}
+UCLASS(BlueprintType)
+class {{$Class}} : public UObject, public I{{$Iface}}Interface
 {
-namespace {{Camel .Interface.Name}}
-{
-namespace Private
-{
-
-class {{$Class}} : public I{{$Iface}}Interface
-{
+	GENERATED_BODY()
 public:
 	explicit {{$Class}}();
 	virtual ~{{$Class}}();
@@ -53,7 +50,3 @@ private:
 	{{ueReturn "" .}} {{ueVar "" .}};
 {{- end }}
 };
-
-} // namespace Private
-} // namespace {{Camel .Interface.Name}}
-} // namespace {{$ModuleName}}

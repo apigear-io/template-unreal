@@ -16,39 +16,32 @@ limitations under the License.
 */
 
 #include "Testbed2NestedStruct2InterfaceLocal.h"
-
-namespace Testbed2
-{
-namespace NestedStruct2Interface
-{
-namespace Private
-{
-LocalService::LocalService()
+UTestbed2NestedStruct2InterfaceLocalService::UTestbed2NestedStruct2InterfaceLocalService()
 	: ITestbed2NestedStruct2InterfaceInterface()
 	, Prop1(FTestbed2NestedStruct1())
 	, Prop2(FTestbed2NestedStruct2())
 {
 }
-LocalService::~LocalService()
+UTestbed2NestedStruct2InterfaceLocalService::~UTestbed2NestedStruct2InterfaceLocalService()
 {
 }
 
-FTestbed2NestedStruct2InterfaceSig1Delegate& LocalService::GetSig1SignalDelegate()
+FTestbed2NestedStruct2InterfaceSig1Delegate& UTestbed2NestedStruct2InterfaceLocalService::GetSig1SignalDelegate()
 {
 	return Sig1Signal;
 }
 
-FTestbed2NestedStruct2InterfaceSig2Delegate& LocalService::GetSig2SignalDelegate()
+FTestbed2NestedStruct2InterfaceSig2Delegate& UTestbed2NestedStruct2InterfaceLocalService::GetSig2SignalDelegate()
 {
 	return Sig2Signal;
 }
 
-FTestbed2NestedStruct1 LocalService::GetProp1_Implementation() const
+FTestbed2NestedStruct1 UTestbed2NestedStruct2InterfaceLocalService::GetProp1_Implementation() const
 {
 	return Prop1;
 }
 
-void LocalService::SetProp1_Implementation(const FTestbed2NestedStruct1& InProp1)
+void UTestbed2NestedStruct2InterfaceLocalService::SetProp1_Implementation(const FTestbed2NestedStruct1& InProp1)
 {
 	if (Prop1 != InProp1)
 	{
@@ -57,16 +50,16 @@ void LocalService::SetProp1_Implementation(const FTestbed2NestedStruct1& InProp1
 	}
 }
 
-FTestbed2NestedStruct2InterfaceProp1ChangedDelegate& LocalService::GetProp1ChangedDelegate()
+FTestbed2NestedStruct2InterfaceProp1ChangedDelegate& UTestbed2NestedStruct2InterfaceLocalService::GetProp1ChangedDelegate()
 {
 	return Prop1Changed;
 }
-FTestbed2NestedStruct2 LocalService::GetProp2_Implementation() const
+FTestbed2NestedStruct2 UTestbed2NestedStruct2InterfaceLocalService::GetProp2_Implementation() const
 {
 	return Prop2;
 }
 
-void LocalService::SetProp2_Implementation(const FTestbed2NestedStruct2& InProp2)
+void UTestbed2NestedStruct2InterfaceLocalService::SetProp2_Implementation(const FTestbed2NestedStruct2& InProp2)
 {
 	if (Prop2 != InProp2)
 	{
@@ -75,25 +68,21 @@ void LocalService::SetProp2_Implementation(const FTestbed2NestedStruct2& InProp2
 	}
 }
 
-FTestbed2NestedStruct2InterfaceProp2ChangedDelegate& LocalService::GetProp2ChangedDelegate()
+FTestbed2NestedStruct2InterfaceProp2ChangedDelegate& UTestbed2NestedStruct2InterfaceLocalService::GetProp2ChangedDelegate()
 {
 	return Prop2Changed;
 }
 
-FTestbed2NestedStruct1 LocalService::Func1_Implementation(const FTestbed2NestedStruct1& Param1)
+FTestbed2NestedStruct1 UTestbed2NestedStruct2InterfaceLocalService::Func1_Implementation(const FTestbed2NestedStruct1& Param1)
 {
 	(void)Param1;
 	// do business logic here
 	return FTestbed2NestedStruct1();
 }
-FTestbed2NestedStruct1 LocalService::Func2_Implementation(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
+FTestbed2NestedStruct1 UTestbed2NestedStruct2InterfaceLocalService::Func2_Implementation(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
 {
 	(void)Param1;
 	(void)Param2;
 	// do business logic here
 	return FTestbed2NestedStruct1();
 }
-
-} // namespace Private
-} // namespace NestedStruct2Interface
-} // namespace Testbed2

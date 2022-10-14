@@ -16,33 +16,26 @@ limitations under the License.
 */
 
 #include "Testbed2NestedStruct1InterfaceLocal.h"
-
-namespace Testbed2
-{
-namespace NestedStruct1Interface
-{
-namespace Private
-{
-LocalService::LocalService()
+UTestbed2NestedStruct1InterfaceLocalService::UTestbed2NestedStruct1InterfaceLocalService()
 	: ITestbed2NestedStruct1InterfaceInterface()
 	, Prop1(FTestbed2NestedStruct1())
 {
 }
-LocalService::~LocalService()
+UTestbed2NestedStruct1InterfaceLocalService::~UTestbed2NestedStruct1InterfaceLocalService()
 {
 }
 
-FTestbed2NestedStruct1InterfaceSig1Delegate& LocalService::GetSig1SignalDelegate()
+FTestbed2NestedStruct1InterfaceSig1Delegate& UTestbed2NestedStruct1InterfaceLocalService::GetSig1SignalDelegate()
 {
 	return Sig1Signal;
 }
 
-FTestbed2NestedStruct1 LocalService::GetProp1_Implementation() const
+FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceLocalService::GetProp1_Implementation() const
 {
 	return Prop1;
 }
 
-void LocalService::SetProp1_Implementation(const FTestbed2NestedStruct1& InProp1)
+void UTestbed2NestedStruct1InterfaceLocalService::SetProp1_Implementation(const FTestbed2NestedStruct1& InProp1)
 {
 	if (Prop1 != InProp1)
 	{
@@ -51,18 +44,14 @@ void LocalService::SetProp1_Implementation(const FTestbed2NestedStruct1& InProp1
 	}
 }
 
-FTestbed2NestedStruct1InterfaceProp1ChangedDelegate& LocalService::GetProp1ChangedDelegate()
+FTestbed2NestedStruct1InterfaceProp1ChangedDelegate& UTestbed2NestedStruct1InterfaceLocalService::GetProp1ChangedDelegate()
 {
 	return Prop1Changed;
 }
 
-FTestbed2NestedStruct1 LocalService::Func1_Implementation(const FTestbed2NestedStruct1& Param1)
+FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceLocalService::Func1_Implementation(const FTestbed2NestedStruct1& Param1)
 {
 	(void)Param1;
 	// do business logic here
 	return FTestbed2NestedStruct1();
 }
-
-} // namespace Private
-} // namespace NestedStruct1Interface
-} // namespace Testbed2

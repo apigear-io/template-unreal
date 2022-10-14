@@ -16,39 +16,32 @@ limitations under the License.
 */
 
 #include "TbSame1SameEnum2InterfaceLocal.h"
-
-namespace TbSame1
-{
-namespace SameEnum2Interface
-{
-namespace Private
-{
-LocalService::LocalService()
+UTbSame1SameEnum2InterfaceLocalService::UTbSame1SameEnum2InterfaceLocalService()
 	: ITbSame1SameEnum2InterfaceInterface()
 	, Prop1(ETbSame1Enum1::VALUE1)
 	, Prop2(ETbSame1Enum2::VALUE1)
 {
 }
-LocalService::~LocalService()
+UTbSame1SameEnum2InterfaceLocalService::~UTbSame1SameEnum2InterfaceLocalService()
 {
 }
 
-FTbSame1SameEnum2InterfaceSig1Delegate& LocalService::GetSig1SignalDelegate()
+FTbSame1SameEnum2InterfaceSig1Delegate& UTbSame1SameEnum2InterfaceLocalService::GetSig1SignalDelegate()
 {
 	return Sig1Signal;
 }
 
-FTbSame1SameEnum2InterfaceSig2Delegate& LocalService::GetSig2SignalDelegate()
+FTbSame1SameEnum2InterfaceSig2Delegate& UTbSame1SameEnum2InterfaceLocalService::GetSig2SignalDelegate()
 {
 	return Sig2Signal;
 }
 
-ETbSame1Enum1 LocalService::GetProp1_Implementation() const
+ETbSame1Enum1 UTbSame1SameEnum2InterfaceLocalService::GetProp1_Implementation() const
 {
 	return Prop1;
 }
 
-void LocalService::SetProp1_Implementation(const ETbSame1Enum1& InProp1)
+void UTbSame1SameEnum2InterfaceLocalService::SetProp1_Implementation(const ETbSame1Enum1& InProp1)
 {
 	if (Prop1 != InProp1)
 	{
@@ -57,16 +50,16 @@ void LocalService::SetProp1_Implementation(const ETbSame1Enum1& InProp1)
 	}
 }
 
-FTbSame1SameEnum2InterfaceProp1ChangedDelegate& LocalService::GetProp1ChangedDelegate()
+FTbSame1SameEnum2InterfaceProp1ChangedDelegate& UTbSame1SameEnum2InterfaceLocalService::GetProp1ChangedDelegate()
 {
 	return Prop1Changed;
 }
-ETbSame1Enum2 LocalService::GetProp2_Implementation() const
+ETbSame1Enum2 UTbSame1SameEnum2InterfaceLocalService::GetProp2_Implementation() const
 {
 	return Prop2;
 }
 
-void LocalService::SetProp2_Implementation(const ETbSame1Enum2& InProp2)
+void UTbSame1SameEnum2InterfaceLocalService::SetProp2_Implementation(const ETbSame1Enum2& InProp2)
 {
 	if (Prop2 != InProp2)
 	{
@@ -75,25 +68,21 @@ void LocalService::SetProp2_Implementation(const ETbSame1Enum2& InProp2)
 	}
 }
 
-FTbSame1SameEnum2InterfaceProp2ChangedDelegate& LocalService::GetProp2ChangedDelegate()
+FTbSame1SameEnum2InterfaceProp2ChangedDelegate& UTbSame1SameEnum2InterfaceLocalService::GetProp2ChangedDelegate()
 {
 	return Prop2Changed;
 }
 
-ETbSame1Enum1 LocalService::Func1_Implementation(const ETbSame1Enum1& Param1)
+ETbSame1Enum1 UTbSame1SameEnum2InterfaceLocalService::Func1_Implementation(const ETbSame1Enum1& Param1)
 {
 	(void)Param1;
 	// do business logic here
 	return ETbSame1Enum1::VALUE1;
 }
-ETbSame1Enum1 LocalService::Func2_Implementation(const ETbSame1Enum1& Param1, const ETbSame1Enum2& Param2)
+ETbSame1Enum1 UTbSame1SameEnum2InterfaceLocalService::Func2_Implementation(const ETbSame1Enum1& Param1, const ETbSame1Enum2& Param2)
 {
 	(void)Param1;
 	(void)Param2;
 	// do business logic here
 	return ETbSame1Enum1::VALUE1;
 }
-
-} // namespace Private
-} // namespace SameEnum2Interface
-} // namespace TbSame1
