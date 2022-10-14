@@ -27,7 +27,6 @@ limitations under the License.
 {{- $ModuleName := Camel .Module.Name}}
 #include "{{$ModuleName}}_data.h"
 #include "{{$ModuleName}}_apig.generated.h"
-
 {{ range .Module.Interfaces }}
 {{- $Class := printf "%s%s" $ModuleName (Camel .Name) }}
 {{- $Category := printf "ApiGear|%s|%s" $ModuleName (Camel .Name) }}
@@ -72,14 +71,14 @@ public:
 	// methods
 {{- range .Operations }}
 {{- if .Return.IsVoid }}
-	UFUNCTION(BlueprintImplementableEvent, Category = "{{$Category}}")
+	UFUNCTION(BlueprintNativeEvent, Category = "{{$Category}}")
 	{{ueReturn "" .Return}} {{Camel .Name}}({{ueParams "" .Params}});
 	virtual {{ueReturn "" .Return}} {{Camel .Name}}_Implementation({{ueParams "" .Params}}) = 0;
 {{- else }}
-	UFUNCTION(BlueprintImplementableEvent, Category = "{{$Category}}", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	UFUNCTION(BlueprintNativeEvent, Category = "{{$Category}}", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void {{Camel .Name}}Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, {{ueReturn "" .Return}}& Result{{if len .Params}},{{end}} {{ueParams "" .Params}});
 	virtual void {{Camel .Name}}Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, {{ueReturn "" .Return}}& Result{{if len .Params}},{{end}} {{ueParams "" .Params}}) = 0;
-	UFUNCTION(BlueprintImplementableEvent, Category = "{{$Category}}")
+	UFUNCTION(BlueprintNativeEvent, Category = "{{$Category}}")
 	{{ueReturn "" .Return}} {{Camel .Name}}({{ueParams "" .Params}});
 	virtual {{ueReturn "" .Return}} {{Camel .Name}}_Implementation({{ueParams "" .Params}}) = 0;
 {{- end }}
@@ -87,11 +86,11 @@ public:
 {{ end }}
 	// properties
 {{- range .Properties }}
-	UFUNCTION(BlueprintImplementableEvent, Category = "{{$Category}}")
+	UFUNCTION(BlueprintNativeEvent, Category = "{{$Category}}")
 	{{ueReturn "" .}} Get{{Camel .Name}}() const;
 	virtual {{ueReturn "" .}} Get{{Camel .Name}}_Implementation() const = 0;
 
-	UFUNCTION(BlueprintImplementableEvent, Category = "{{$Category}}")
+	UFUNCTION(BlueprintNativeEvent, Category = "{{$Category}}")
 	void Set{{Camel .Name}}({{ueParam "" .}});
 	virtual void Set{{Camel .Name}}_Implementation({{ueParam "" .}}) = 0;
 {{ else }}
