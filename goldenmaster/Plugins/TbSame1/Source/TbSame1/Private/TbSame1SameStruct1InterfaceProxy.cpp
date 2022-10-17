@@ -81,6 +81,24 @@ UTbSame1SameStruct1InterfaceProxy::~UTbSame1SameStruct1InterfaceProxy()
 		//BackendService->GetSig1SignalDelegate().RemoveDynamic(this, &UTbSame1SameStruct1InterfaceProxy::OnSig1);
 	}
 }
+
+void UTbSame1SameStruct1InterfaceProxy::setBackendService(TScriptInterface<ITbSame1SameStruct1InterfaceInterface> InService)
+{
+	// unsubscribe from old backend
+	if (BackendService != nullptr)
+	{
+		BackendService->GetProp1ChangedDelegate().RemoveDynamic(this, &UTbSame1SameStruct1InterfaceProxy::OnProp1Changed);
+		BackendService->GetSig1SignalDelegate().RemoveDynamic(this, &UTbSame1SameStruct1InterfaceProxy::OnSig1);
+	}
+
+	// subscribe to new backend
+	BackendService = InService;
+	// connect property changed signals or simple events
+	BackendService->GetProp1ChangedDelegate().AddDynamic(this, &UTbSame1SameStruct1InterfaceProxy::OnProp1Changed);
+	BackendService->GetSig1SignalDelegate().AddDynamic(this, &UTbSame1SameStruct1InterfaceProxy::OnSig1);
+	// populate service state to proxy
+	BackendService->Execute_GetProp1(BackendService.GetObject(), Prop1);
+}
 void UTbSame1SameStruct1InterfaceProxy::OnSig1(const FTbSame1Struct1& Param1)
 {
 	TbSame1SameStruct1InterfaceTracer::trace_signalSig1(Param1);

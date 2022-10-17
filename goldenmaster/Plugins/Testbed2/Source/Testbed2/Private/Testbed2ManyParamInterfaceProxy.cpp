@@ -96,6 +96,39 @@ UTestbed2ManyParamInterfaceProxy::~UTestbed2ManyParamInterfaceProxy()
 		//BackendService->GetSig4SignalDelegate().RemoveDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnSig4);
 	}
 }
+
+void UTestbed2ManyParamInterfaceProxy::setBackendService(TScriptInterface<ITestbed2ManyParamInterfaceInterface> InService)
+{
+	// unsubscribe from old backend
+	if (BackendService != nullptr)
+	{
+		BackendService->GetProp1ChangedDelegate().RemoveDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnProp1Changed);
+		BackendService->GetProp2ChangedDelegate().RemoveDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnProp2Changed);
+		BackendService->GetProp3ChangedDelegate().RemoveDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnProp3Changed);
+		BackendService->GetProp4ChangedDelegate().RemoveDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnProp4Changed);
+		BackendService->GetSig1SignalDelegate().RemoveDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnSig1);
+		BackendService->GetSig2SignalDelegate().RemoveDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnSig2);
+		BackendService->GetSig3SignalDelegate().RemoveDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnSig3);
+		BackendService->GetSig4SignalDelegate().RemoveDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnSig4);
+	}
+
+	// subscribe to new backend
+	BackendService = InService;
+	// connect property changed signals or simple events
+	BackendService->GetProp1ChangedDelegate().AddDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnProp1Changed);
+	BackendService->GetProp2ChangedDelegate().AddDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnProp2Changed);
+	BackendService->GetProp3ChangedDelegate().AddDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnProp3Changed);
+	BackendService->GetProp4ChangedDelegate().AddDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnProp4Changed);
+	BackendService->GetSig1SignalDelegate().AddDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnSig1);
+	BackendService->GetSig2SignalDelegate().AddDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnSig2);
+	BackendService->GetSig3SignalDelegate().AddDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnSig3);
+	BackendService->GetSig4SignalDelegate().AddDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnSig4);
+	// populate service state to proxy
+	BackendService->Execute_GetProp1(BackendService.GetObject(), Prop1);
+	BackendService->Execute_GetProp2(BackendService.GetObject(), Prop2);
+	BackendService->Execute_GetProp3(BackendService.GetObject(), Prop3);
+	BackendService->Execute_GetProp4(BackendService.GetObject(), Prop4);
+}
 void UTestbed2ManyParamInterfaceProxy::OnSig1(int32 Param1)
 {
 	Testbed2ManyParamInterfaceTracer::trace_signalSig1(Param1);

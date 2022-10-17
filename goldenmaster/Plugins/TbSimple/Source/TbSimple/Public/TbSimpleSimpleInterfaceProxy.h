@@ -34,6 +34,9 @@ public:
 	explicit UTbSimpleSimpleInterfaceProxy();
 	virtual ~UTbSimpleSimpleInterfaceProxy();
 
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface")
+	void setBackendService(TScriptInterface<ITbSimpleSimpleInterfaceInterface> InService);
+
 	// signals
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface", DisplayName = "SigBool Signal")
 	FTbSimpleSimpleInterfaceSigBoolDelegate SigBoolSignal;

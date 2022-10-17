@@ -108,6 +108,35 @@ public:
 	}
 }
 
+void {{$Class}}::setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface> InService)
+{
+	// unsubscribe from old backend
+	if (BackendService != nullptr)
+	{
+{{- range .Interface.Properties }}
+		BackendService->Get{{Camel .Name}}ChangedDelegate().RemoveDynamic(this, &{{$Class}}::On{{Camel .Name}}Changed);
+{{- end }}
+{{- range .Interface.Signals }}
+		BackendService->Get{{Camel .Name}}SignalDelegate().RemoveDynamic(this, &{{$Class}}::On{{Camel .Name}});
+{{- end }}
+	}
+
+	// subscribe to new backend
+{{- $Service := printf "I%sInterface" $Iface }}
+	BackendService = InService;
+	// connect property changed signals or simple events
+{{- range .Interface.Properties }}
+	BackendService->Get{{Camel .Name}}ChangedDelegate().AddDynamic(this, &{{$Class}}::On{{Camel .Name}}Changed);
+{{- end }}
+{{- range .Interface.Signals }}
+	BackendService->Get{{Camel .Name}}SignalDelegate().AddDynamic(this, &{{$Class}}::On{{Camel .Name}});
+{{- end }}
+	// populate service state to proxy
+{{- range .Interface.Properties }}
+	BackendService->Execute_Get{{Camel .Name}}(BackendService.GetObject(), {{ueVar "" .}});
+{{- end }}
+}
+
 {{- range .Interface.Signals }}
 void {{$Class}}::On{{Camel .Name}}({{ueParams "" .Params}})
 {

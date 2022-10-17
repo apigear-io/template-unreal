@@ -34,6 +34,9 @@ public:
 	explicit UTbSame1SameEnum1InterfaceProxy();
 	virtual ~UTbSame1SameEnum1InterfaceProxy();
 
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1|SameEnum1Interface")
+	void setBackendService(TScriptInterface<ITbSame1SameEnum1InterfaceInterface> InService);
+
 	// signals
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame1|SameEnum1Interface", DisplayName = "Sig1 Signal")
 	FTbSame1SameEnum1InterfaceSig1Delegate Sig1Signal;

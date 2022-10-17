@@ -34,6 +34,9 @@ public:
 	explicit UTbSame1SameStruct1InterfaceProxy();
 	virtual ~UTbSame1SameStruct1InterfaceProxy();
 
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1|SameStruct1Interface")
+	void setBackendService(TScriptInterface<ITbSame1SameStruct1InterfaceInterface> InService);
+
 	// signals
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame1|SameStruct1Interface", DisplayName = "Sig1 Signal")
 	FTbSame1SameStruct1InterfaceSig1Delegate Sig1Signal;

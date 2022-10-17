@@ -81,6 +81,24 @@ UTestbed2NestedStruct1InterfaceProxy::~UTestbed2NestedStruct1InterfaceProxy()
 		//BackendService->GetSig1SignalDelegate().RemoveDynamic(this, &UTestbed2NestedStruct1InterfaceProxy::OnSig1);
 	}
 }
+
+void UTestbed2NestedStruct1InterfaceProxy::setBackendService(TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> InService)
+{
+	// unsubscribe from old backend
+	if (BackendService != nullptr)
+	{
+		BackendService->GetProp1ChangedDelegate().RemoveDynamic(this, &UTestbed2NestedStruct1InterfaceProxy::OnProp1Changed);
+		BackendService->GetSig1SignalDelegate().RemoveDynamic(this, &UTestbed2NestedStruct1InterfaceProxy::OnSig1);
+	}
+
+	// subscribe to new backend
+	BackendService = InService;
+	// connect property changed signals or simple events
+	BackendService->GetProp1ChangedDelegate().AddDynamic(this, &UTestbed2NestedStruct1InterfaceProxy::OnProp1Changed);
+	BackendService->GetSig1SignalDelegate().AddDynamic(this, &UTestbed2NestedStruct1InterfaceProxy::OnSig1);
+	// populate service state to proxy
+	BackendService->Execute_GetProp1(BackendService.GetObject(), Prop1);
+}
 void UTestbed2NestedStruct1InterfaceProxy::OnSig1(const FTestbed2NestedStruct1& Param1)
 {
 	Testbed2NestedStruct1InterfaceTracer::trace_signalSig1(Param1);

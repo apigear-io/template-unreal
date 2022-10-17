@@ -41,6 +41,9 @@ public:
 	explicit {{$Class}}();
 	virtual ~{{$Class}}();
 
+	UFUNCTION(BlueprintCallable, Category = "{{$Category}}")
+	void setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface> InService);
+
 	// signals
 {{- range .Interface.Signals }}
 	UPROPERTY(BlueprintAssignable, Category = "{{$Category}}", DisplayName = "{{Camel .Name}} Signal")

@@ -96,6 +96,39 @@ UTestbed1StructInterfaceProxy::~UTestbed1StructInterfaceProxy()
 		//BackendService->GetSigStringSignalDelegate().RemoveDynamic(this, &UTestbed1StructInterfaceProxy::OnSigString);
 	}
 }
+
+void UTestbed1StructInterfaceProxy::setBackendService(TScriptInterface<ITestbed1StructInterfaceInterface> InService)
+{
+	// unsubscribe from old backend
+	if (BackendService != nullptr)
+	{
+		BackendService->GetPropBoolChangedDelegate().RemoveDynamic(this, &UTestbed1StructInterfaceProxy::OnPropBoolChanged);
+		BackendService->GetPropIntChangedDelegate().RemoveDynamic(this, &UTestbed1StructInterfaceProxy::OnPropIntChanged);
+		BackendService->GetPropFloatChangedDelegate().RemoveDynamic(this, &UTestbed1StructInterfaceProxy::OnPropFloatChanged);
+		BackendService->GetPropStringChangedDelegate().RemoveDynamic(this, &UTestbed1StructInterfaceProxy::OnPropStringChanged);
+		BackendService->GetSigBoolSignalDelegate().RemoveDynamic(this, &UTestbed1StructInterfaceProxy::OnSigBool);
+		BackendService->GetSigIntSignalDelegate().RemoveDynamic(this, &UTestbed1StructInterfaceProxy::OnSigInt);
+		BackendService->GetSigFloatSignalDelegate().RemoveDynamic(this, &UTestbed1StructInterfaceProxy::OnSigFloat);
+		BackendService->GetSigStringSignalDelegate().RemoveDynamic(this, &UTestbed1StructInterfaceProxy::OnSigString);
+	}
+
+	// subscribe to new backend
+	BackendService = InService;
+	// connect property changed signals or simple events
+	BackendService->GetPropBoolChangedDelegate().AddDynamic(this, &UTestbed1StructInterfaceProxy::OnPropBoolChanged);
+	BackendService->GetPropIntChangedDelegate().AddDynamic(this, &UTestbed1StructInterfaceProxy::OnPropIntChanged);
+	BackendService->GetPropFloatChangedDelegate().AddDynamic(this, &UTestbed1StructInterfaceProxy::OnPropFloatChanged);
+	BackendService->GetPropStringChangedDelegate().AddDynamic(this, &UTestbed1StructInterfaceProxy::OnPropStringChanged);
+	BackendService->GetSigBoolSignalDelegate().AddDynamic(this, &UTestbed1StructInterfaceProxy::OnSigBool);
+	BackendService->GetSigIntSignalDelegate().AddDynamic(this, &UTestbed1StructInterfaceProxy::OnSigInt);
+	BackendService->GetSigFloatSignalDelegate().AddDynamic(this, &UTestbed1StructInterfaceProxy::OnSigFloat);
+	BackendService->GetSigStringSignalDelegate().AddDynamic(this, &UTestbed1StructInterfaceProxy::OnSigString);
+	// populate service state to proxy
+	BackendService->Execute_GetPropBool(BackendService.GetObject(), PropBool);
+	BackendService->Execute_GetPropInt(BackendService.GetObject(), PropInt);
+	BackendService->Execute_GetPropFloat(BackendService.GetObject(), PropFloat);
+	BackendService->Execute_GetPropString(BackendService.GetObject(), PropString);
+}
 void UTestbed1StructInterfaceProxy::OnSigBool(const FTestbed1StructBool& ParamBool)
 {
 	Testbed1StructInterfaceTracer::trace_signalSigBool(ParamBool);

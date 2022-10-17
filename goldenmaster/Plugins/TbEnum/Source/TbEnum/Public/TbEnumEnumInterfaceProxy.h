@@ -34,6 +34,9 @@ public:
 	explicit UTbEnumEnumInterfaceProxy();
 	virtual ~UTbEnumEnumInterfaceProxy();
 
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface")
+	void setBackendService(TScriptInterface<ITbEnumEnumInterfaceInterface> InService);
+
 	// signals
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface", DisplayName = "Sig0 Signal")
 	FTbEnumEnumInterfaceSig0Delegate Sig0Signal;

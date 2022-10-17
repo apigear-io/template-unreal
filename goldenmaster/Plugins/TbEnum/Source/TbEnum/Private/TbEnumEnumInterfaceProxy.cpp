@@ -96,6 +96,39 @@ UTbEnumEnumInterfaceProxy::~UTbEnumEnumInterfaceProxy()
 		//BackendService->GetSig3SignalDelegate().RemoveDynamic(this, &UTbEnumEnumInterfaceProxy::OnSig3);
 	}
 }
+
+void UTbEnumEnumInterfaceProxy::setBackendService(TScriptInterface<ITbEnumEnumInterfaceInterface> InService)
+{
+	// unsubscribe from old backend
+	if (BackendService != nullptr)
+	{
+		BackendService->GetProp0ChangedDelegate().RemoveDynamic(this, &UTbEnumEnumInterfaceProxy::OnProp0Changed);
+		BackendService->GetProp1ChangedDelegate().RemoveDynamic(this, &UTbEnumEnumInterfaceProxy::OnProp1Changed);
+		BackendService->GetProp2ChangedDelegate().RemoveDynamic(this, &UTbEnumEnumInterfaceProxy::OnProp2Changed);
+		BackendService->GetProp3ChangedDelegate().RemoveDynamic(this, &UTbEnumEnumInterfaceProxy::OnProp3Changed);
+		BackendService->GetSig0SignalDelegate().RemoveDynamic(this, &UTbEnumEnumInterfaceProxy::OnSig0);
+		BackendService->GetSig1SignalDelegate().RemoveDynamic(this, &UTbEnumEnumInterfaceProxy::OnSig1);
+		BackendService->GetSig2SignalDelegate().RemoveDynamic(this, &UTbEnumEnumInterfaceProxy::OnSig2);
+		BackendService->GetSig3SignalDelegate().RemoveDynamic(this, &UTbEnumEnumInterfaceProxy::OnSig3);
+	}
+
+	// subscribe to new backend
+	BackendService = InService;
+	// connect property changed signals or simple events
+	BackendService->GetProp0ChangedDelegate().AddDynamic(this, &UTbEnumEnumInterfaceProxy::OnProp0Changed);
+	BackendService->GetProp1ChangedDelegate().AddDynamic(this, &UTbEnumEnumInterfaceProxy::OnProp1Changed);
+	BackendService->GetProp2ChangedDelegate().AddDynamic(this, &UTbEnumEnumInterfaceProxy::OnProp2Changed);
+	BackendService->GetProp3ChangedDelegate().AddDynamic(this, &UTbEnumEnumInterfaceProxy::OnProp3Changed);
+	BackendService->GetSig0SignalDelegate().AddDynamic(this, &UTbEnumEnumInterfaceProxy::OnSig0);
+	BackendService->GetSig1SignalDelegate().AddDynamic(this, &UTbEnumEnumInterfaceProxy::OnSig1);
+	BackendService->GetSig2SignalDelegate().AddDynamic(this, &UTbEnumEnumInterfaceProxy::OnSig2);
+	BackendService->GetSig3SignalDelegate().AddDynamic(this, &UTbEnumEnumInterfaceProxy::OnSig3);
+	// populate service state to proxy
+	BackendService->Execute_GetProp0(BackendService.GetObject(), Prop0);
+	BackendService->Execute_GetProp1(BackendService.GetObject(), Prop1);
+	BackendService->Execute_GetProp2(BackendService.GetObject(), Prop2);
+	BackendService->Execute_GetProp3(BackendService.GetObject(), Prop3);
+}
 void UTbEnumEnumInterfaceProxy::OnSig0(const ETbEnumEnum0& Param0)
 {
 	TbEnumEnumInterfaceTracer::trace_signalSig0(Param0);

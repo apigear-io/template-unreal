@@ -34,6 +34,9 @@ public:
 	explicit UTestbed1StructArrayInterfaceProxy();
 	virtual ~UTestbed1StructArrayInterfaceProxy();
 
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface")
+	void setBackendService(TScriptInterface<ITestbed1StructArrayInterfaceInterface> InService);
+
 	// signals
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface", DisplayName = "SigBool Signal")
 	FTestbed1StructArrayInterfaceSigBoolDelegate SigBoolSignal;

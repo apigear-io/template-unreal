@@ -34,6 +34,9 @@ public:
 	explicit UTestbed2NestedStruct2InterfaceProxy();
 	virtual ~UTestbed2NestedStruct2InterfaceProxy();
 
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface")
+	void setBackendService(TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> InService);
+
 	// signals
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct2Interface", DisplayName = "Sig1 Signal")
 	FTestbed2NestedStruct2InterfaceSig1Delegate Sig1Signal;

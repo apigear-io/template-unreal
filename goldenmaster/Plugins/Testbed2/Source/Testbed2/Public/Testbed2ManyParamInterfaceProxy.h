@@ -34,6 +34,9 @@ public:
 	explicit UTestbed2ManyParamInterfaceProxy();
 	virtual ~UTestbed2ManyParamInterfaceProxy();
 
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
+	void setBackendService(TScriptInterface<ITestbed2ManyParamInterfaceInterface> InService);
+
 	// signals
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface", DisplayName = "Sig1 Signal")
 	FTestbed2ManyParamInterfaceSig1Delegate Sig1Signal;
