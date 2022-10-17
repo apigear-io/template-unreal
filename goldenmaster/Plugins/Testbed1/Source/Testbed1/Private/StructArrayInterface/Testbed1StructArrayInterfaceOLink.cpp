@@ -160,6 +160,7 @@ void UTestbed1StructArrayInterfaceOLinkService::FuncBool_Implementation(FTestbed
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
 		Result = FTestbed1StructBool();
+		return;
 	}
 	TPromise<FTestbed1StructBool> Promise;
 	Async(EAsyncExecution::Thread,
@@ -179,6 +180,7 @@ void UTestbed1StructArrayInterfaceOLinkService::FuncInt_Implementation(FTestbed1
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
 		Result = FTestbed1StructBool();
+		return;
 	}
 	TPromise<FTestbed1StructBool> Promise;
 	Async(EAsyncExecution::Thread,
@@ -198,6 +200,7 @@ void UTestbed1StructArrayInterfaceOLinkService::FuncFloat_Implementation(FTestbe
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
 		Result = FTestbed1StructBool();
+		return;
 	}
 	TPromise<FTestbed1StructBool> Promise;
 	Async(EAsyncExecution::Thread,
@@ -217,6 +220,7 @@ void UTestbed1StructArrayInterfaceOLinkService::FuncString_Implementation(FTestb
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
 		Result = FTestbed1StructBool();
+		return;
 	}
 	TPromise<FTestbed1StructBool> Promise;
 	Async(EAsyncExecution::Thread,

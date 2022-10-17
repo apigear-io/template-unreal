@@ -160,6 +160,7 @@ void UTbSimpleSimpleInterfaceOLinkService::FuncBool_Implementation(bool& Result,
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
 		Result = false;
+		return;
 	}
 	TPromise<bool> Promise;
 	Async(EAsyncExecution::Thread,
@@ -179,6 +180,7 @@ void UTbSimpleSimpleInterfaceOLinkService::FuncInt_Implementation(int32& Result,
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
 		Result = 0;
+		return;
 	}
 	TPromise<int32> Promise;
 	Async(EAsyncExecution::Thread,
@@ -198,6 +200,7 @@ void UTbSimpleSimpleInterfaceOLinkService::FuncFloat_Implementation(float& Resul
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
 		Result = 0.0f;
+		return;
 	}
 	TPromise<float> Promise;
 	Async(EAsyncExecution::Thread,
@@ -217,6 +220,7 @@ void UTbSimpleSimpleInterfaceOLinkService::FuncString_Implementation(FString& Re
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
 		Result = FString();
+		return;
 	}
 	TPromise<FString> Promise;
 	Async(EAsyncExecution::Thread,

@@ -160,6 +160,7 @@ void UTbEnumEnumInterfaceOLinkService::Func0_Implementation(ETbEnumEnum0& Result
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
 		Result = ETbEnumEnum0::VALUE0;
+		return;
 	}
 	TPromise<ETbEnumEnum0> Promise;
 	Async(EAsyncExecution::Thread,
@@ -179,6 +180,7 @@ void UTbEnumEnumInterfaceOLinkService::Func1_Implementation(ETbEnumEnum1& Result
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
 		Result = ETbEnumEnum1::VALUE1;
+		return;
 	}
 	TPromise<ETbEnumEnum1> Promise;
 	Async(EAsyncExecution::Thread,
@@ -198,6 +200,7 @@ void UTbEnumEnumInterfaceOLinkService::Func2_Implementation(ETbEnumEnum2& Result
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
 		Result = ETbEnumEnum2::VALUE2;
+		return;
 	}
 	TPromise<ETbEnumEnum2> Promise;
 	Async(EAsyncExecution::Thread,
@@ -217,6 +220,7 @@ void UTbEnumEnumInterfaceOLinkService::Func3_Implementation(ETbEnumEnum3& Result
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
 		Result = ETbEnumEnum3::VALUE3;
+		return;
 	}
 	TPromise<ETbEnumEnum3> Promise;
 	Async(EAsyncExecution::Thread,

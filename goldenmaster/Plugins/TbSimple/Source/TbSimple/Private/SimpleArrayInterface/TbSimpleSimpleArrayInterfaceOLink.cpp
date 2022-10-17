@@ -160,6 +160,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkService::FuncBool_Implementation(TArray<b
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
 		Result = TArray<bool>();
+		return;
 	}
 	TPromise<TArray<bool>> Promise;
 	Async(EAsyncExecution::Thread,
@@ -179,6 +180,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkService::FuncInt_Implementation(TArray<in
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
 		Result = TArray<int32>();
+		return;
 	}
 	TPromise<TArray<int32>> Promise;
 	Async(EAsyncExecution::Thread,
@@ -198,6 +200,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkService::FuncFloat_Implementation(TArray<
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
 		Result = TArray<float>();
+		return;
 	}
 	TPromise<TArray<float>> Promise;
 	Async(EAsyncExecution::Thread,
@@ -217,6 +220,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkService::FuncString_Implementation(TArray
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
 		Result = TArray<FString>();
+		return;
 	}
 	TPromise<TArray<FString>> Promise;
 	Async(EAsyncExecution::Thread,

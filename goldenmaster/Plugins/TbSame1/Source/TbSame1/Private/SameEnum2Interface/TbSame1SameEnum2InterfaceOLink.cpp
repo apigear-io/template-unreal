@@ -112,6 +112,7 @@ void UTbSame1SameEnum2InterfaceOLinkService::Func1_Implementation(ETbSame1Enum1&
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
 		Result = ETbSame1Enum1::VALUE1;
+		return;
 	}
 	TPromise<ETbSame1Enum1> Promise;
 	Async(EAsyncExecution::Thread,
@@ -131,6 +132,7 @@ void UTbSame1SameEnum2InterfaceOLinkService::Func2_Implementation(ETbSame1Enum1&
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
 		Result = ETbSame1Enum1::VALUE1;
+		return;
 	}
 	TPromise<ETbSame1Enum1> Promise;
 	Async(EAsyncExecution::Thread,

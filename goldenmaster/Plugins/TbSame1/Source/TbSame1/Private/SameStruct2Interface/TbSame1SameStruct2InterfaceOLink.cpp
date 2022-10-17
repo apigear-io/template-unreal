@@ -112,6 +112,7 @@ void UTbSame1SameStruct2InterfaceOLinkService::Func1_Implementation(FTbSame1Stru
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
 		Result = FTbSame1Struct1();
+		return;
 	}
 	TPromise<FTbSame1Struct1> Promise;
 	Async(EAsyncExecution::Thread,
@@ -131,6 +132,7 @@ void UTbSame1SameStruct2InterfaceOLinkService::Func2_Implementation(FTbSame1Stru
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
 		Result = FTbSame1Struct1();
+		return;
 	}
 	TPromise<FTbSame1Struct1> Promise;
 	Async(EAsyncExecution::Thread,

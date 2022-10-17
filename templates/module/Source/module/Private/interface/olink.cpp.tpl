@@ -111,6 +111,7 @@ void {{$Class}}::{{Camel .Name}}_Implementation({{ueReturn "" .Return}}& Result,
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
 		Result = {{ ueDefault "" .Return }};
+		return;
 	}
 	TPromise<{{$returnVal}}> Promise;
 	Async(EAsyncExecution::Thread,

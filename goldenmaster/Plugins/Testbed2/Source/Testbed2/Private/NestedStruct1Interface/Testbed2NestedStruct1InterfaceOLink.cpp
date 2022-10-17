@@ -88,6 +88,7 @@ void UTestbed2NestedStruct1InterfaceOLinkService::Func1_Implementation(FTestbed2
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
 		Result = FTestbed2NestedStruct1();
+		return;
 	}
 	TPromise<FTestbed2NestedStruct1> Promise;
 	Async(EAsyncExecution::Thread,

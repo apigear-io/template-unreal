@@ -136,6 +136,7 @@ void UTestbed2NestedStruct3InterfaceOLinkService::Func1_Implementation(FTestbed2
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
 		Result = FTestbed2NestedStruct1();
+		return;
 	}
 	TPromise<FTestbed2NestedStruct1> Promise;
 	Async(EAsyncExecution::Thread,
@@ -155,6 +156,7 @@ void UTestbed2NestedStruct3InterfaceOLinkService::Func2_Implementation(FTestbed2
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
 		Result = FTestbed2NestedStruct1();
+		return;
 	}
 	TPromise<FTestbed2NestedStruct1> Promise;
 	Async(EAsyncExecution::Thread,
@@ -174,6 +176,7 @@ void UTestbed2NestedStruct3InterfaceOLinkService::Func3_Implementation(FTestbed2
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
 		Result = FTestbed2NestedStruct1();
+		return;
 	}
 	TPromise<FTestbed2NestedStruct1> Promise;
 	Async(EAsyncExecution::Thread,

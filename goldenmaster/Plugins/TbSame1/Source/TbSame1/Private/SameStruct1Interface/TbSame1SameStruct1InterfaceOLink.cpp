@@ -88,6 +88,7 @@ void UTbSame1SameStruct1InterfaceOLinkService::Func1_Implementation(FTbSame1Stru
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
 		Result = FTbSame1Struct1();
+		return;
 	}
 	TPromise<FTbSame1Struct1> Promise;
 	Async(EAsyncExecution::Thread,

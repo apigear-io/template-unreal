@@ -160,6 +160,7 @@ void UTestbed2ManyParamInterfaceOLinkService::Func1_Implementation(int32& Result
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
 		Result = 0;
+		return;
 	}
 	TPromise<int32> Promise;
 	Async(EAsyncExecution::Thread,
@@ -179,6 +180,7 @@ void UTestbed2ManyParamInterfaceOLinkService::Func2_Implementation(int32& Result
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
 		Result = 0;
+		return;
 	}
 	TPromise<int32> Promise;
 	Async(EAsyncExecution::Thread,
@@ -198,6 +200,7 @@ void UTestbed2ManyParamInterfaceOLinkService::Func3_Implementation(int32& Result
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
 		Result = 0;
+		return;
 	}
 	TPromise<int32> Promise;
 	Async(EAsyncExecution::Thread,
@@ -217,6 +220,7 @@ void UTestbed2ManyParamInterfaceOLinkService::Func4_Implementation(int32& Result
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
 		Result = 0;
+		return;
 	}
 	TPromise<int32> Promise;
 	Async(EAsyncExecution::Thread,
