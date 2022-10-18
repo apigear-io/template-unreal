@@ -25,9 +25,20 @@ UTestbed2NestedStruct1InterfaceLocalService::~UTestbed2NestedStruct1InterfaceLoc
 {
 }
 
+void UTestbed2NestedStruct1InterfaceLocalService::BroadcastSig1_Implementation(const FTestbed2NestedStruct1& Param1)
+{
+	Sig1Signal.Broadcast(Param1);
+}
+
 FTestbed2NestedStruct1InterfaceSig1Delegate& UTestbed2NestedStruct1InterfaceLocalService::GetSig1SignalDelegate()
 {
 	return Sig1Signal;
+}
+
+void UTestbed2NestedStruct1InterfaceLocalService::BroadcastProp1Changed_Implementation(const FTestbed2NestedStruct1& InProp1)
+{
+	Prop1 = InProp1;
+	Prop1Changed.Broadcast(InProp1);
 }
 
 FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceLocalService::GetProp1_Implementation() const

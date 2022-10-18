@@ -55,17 +55,16 @@ public:
 	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1) override;
 	FTestbed2NestedStruct1 Func1_Implementation(const FTestbed2NestedStruct1& Param1) override;
 
+protected:
+	// signals
+	void BroadcastSig1_Implementation(const FTestbed2NestedStruct1& Param1) override;
+
+	void BroadcastProp1Changed_Implementation(const FTestbed2NestedStruct1& Prop1) override;
+
 private:
 	/** The connection to the service backend. */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|Testbed2|NestedStruct1Interface")
 	TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> BackendService;
-
-	// signals
-	UFUNCTION(Category = "ApiGear|Testbed2|NestedStruct1Interface", BlueprintInternalUseOnly)
-	void OnSig1(const FTestbed2NestedStruct1& Param1);
-
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct1Interface", BlueprintInternalUseOnly)
-	void OnProp1Changed(const FTestbed2NestedStruct1& Prop1);
 
 	// properties - local copy
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1_Private, BlueprintSetter = SetProp1_Private, Category = "ApiGear|Testbed2|NestedStruct1Interface")

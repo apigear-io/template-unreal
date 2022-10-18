@@ -71,24 +71,24 @@ UTestbed2NestedStruct3InterfaceProxy::UTestbed2NestedStruct3InterfaceProxy()
 	, Prop3(FTestbed2NestedStruct3())
 {
 	BackendService = FTestbed2ModuleFactory::createITestbed2NestedStruct3InterfaceInterface();
-	BackendService->GetProp1ChangedDelegate().AddDynamic(this, &UTestbed2NestedStruct3InterfaceProxy::OnProp1Changed);
-	BackendService->GetProp2ChangedDelegate().AddDynamic(this, &UTestbed2NestedStruct3InterfaceProxy::OnProp2Changed);
-	BackendService->GetProp3ChangedDelegate().AddDynamic(this, &UTestbed2NestedStruct3InterfaceProxy::OnProp3Changed);
-	BackendService->GetSig1SignalDelegate().AddDynamic(this, &UTestbed2NestedStruct3InterfaceProxy::OnSig1);
-	BackendService->GetSig2SignalDelegate().AddDynamic(this, &UTestbed2NestedStruct3InterfaceProxy::OnSig2);
-	BackendService->GetSig3SignalDelegate().AddDynamic(this, &UTestbed2NestedStruct3InterfaceProxy::OnSig3);
+	BackendService->GetProp1ChangedDelegate().AddDynamic(this, &UTestbed2NestedStruct3InterfaceProxy::BroadcastProp1Changed);
+	BackendService->GetProp2ChangedDelegate().AddDynamic(this, &UTestbed2NestedStruct3InterfaceProxy::BroadcastProp2Changed);
+	BackendService->GetProp3ChangedDelegate().AddDynamic(this, &UTestbed2NestedStruct3InterfaceProxy::BroadcastProp3Changed);
+	BackendService->GetSig1SignalDelegate().AddDynamic(this, &UTestbed2NestedStruct3InterfaceProxy::BroadcastSig1);
+	BackendService->GetSig2SignalDelegate().AddDynamic(this, &UTestbed2NestedStruct3InterfaceProxy::BroadcastSig2);
+	BackendService->GetSig3SignalDelegate().AddDynamic(this, &UTestbed2NestedStruct3InterfaceProxy::BroadcastSig3);
 }
 
 UTestbed2NestedStruct3InterfaceProxy::~UTestbed2NestedStruct3InterfaceProxy()
 {
 	if (BackendService != nullptr)
 	{
-		//BackendService->GetProp1ChangedDelegate().RemoveDynamic(this, &UTestbed2NestedStruct3InterfaceProxy::OnProp1Changed);
-		//BackendService->GetProp2ChangedDelegate().RemoveDynamic(this, &UTestbed2NestedStruct3InterfaceProxy::OnProp2Changed);
-		//BackendService->GetProp3ChangedDelegate().RemoveDynamic(this, &UTestbed2NestedStruct3InterfaceProxy::OnProp3Changed);
-		//BackendService->GetSig1SignalDelegate().RemoveDynamic(this, &UTestbed2NestedStruct3InterfaceProxy::OnSig1);
-		//BackendService->GetSig2SignalDelegate().RemoveDynamic(this, &UTestbed2NestedStruct3InterfaceProxy::OnSig2);
-		//BackendService->GetSig3SignalDelegate().RemoveDynamic(this, &UTestbed2NestedStruct3InterfaceProxy::OnSig3);
+		//BackendService->GetProp1ChangedDelegate().RemoveDynamic(this, &UTestbed2NestedStruct3InterfaceProxy::BroadcastProp1Changed);
+		//BackendService->GetProp2ChangedDelegate().RemoveDynamic(this, &UTestbed2NestedStruct3InterfaceProxy::BroadcastProp2Changed);
+		//BackendService->GetProp3ChangedDelegate().RemoveDynamic(this, &UTestbed2NestedStruct3InterfaceProxy::BroadcastProp3Changed);
+		//BackendService->GetSig1SignalDelegate().RemoveDynamic(this, &UTestbed2NestedStruct3InterfaceProxy::BroadcastSig1);
+		//BackendService->GetSig2SignalDelegate().RemoveDynamic(this, &UTestbed2NestedStruct3InterfaceProxy::BroadcastSig2);
+		//BackendService->GetSig3SignalDelegate().RemoveDynamic(this, &UTestbed2NestedStruct3InterfaceProxy::BroadcastSig3);
 	}
 }
 
@@ -97,29 +97,29 @@ void UTestbed2NestedStruct3InterfaceProxy::setBackendService(TScriptInterface<IT
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		BackendService->GetProp1ChangedDelegate().RemoveDynamic(this, &UTestbed2NestedStruct3InterfaceProxy::OnProp1Changed);
-		BackendService->GetProp2ChangedDelegate().RemoveDynamic(this, &UTestbed2NestedStruct3InterfaceProxy::OnProp2Changed);
-		BackendService->GetProp3ChangedDelegate().RemoveDynamic(this, &UTestbed2NestedStruct3InterfaceProxy::OnProp3Changed);
-		BackendService->GetSig1SignalDelegate().RemoveDynamic(this, &UTestbed2NestedStruct3InterfaceProxy::OnSig1);
-		BackendService->GetSig2SignalDelegate().RemoveDynamic(this, &UTestbed2NestedStruct3InterfaceProxy::OnSig2);
-		BackendService->GetSig3SignalDelegate().RemoveDynamic(this, &UTestbed2NestedStruct3InterfaceProxy::OnSig3);
+		BackendService->GetProp1ChangedDelegate().RemoveDynamic(this, &UTestbed2NestedStruct3InterfaceProxy::BroadcastProp1Changed);
+		BackendService->GetProp2ChangedDelegate().RemoveDynamic(this, &UTestbed2NestedStruct3InterfaceProxy::BroadcastProp2Changed);
+		BackendService->GetProp3ChangedDelegate().RemoveDynamic(this, &UTestbed2NestedStruct3InterfaceProxy::BroadcastProp3Changed);
+		BackendService->GetSig1SignalDelegate().RemoveDynamic(this, &UTestbed2NestedStruct3InterfaceProxy::BroadcastSig1);
+		BackendService->GetSig2SignalDelegate().RemoveDynamic(this, &UTestbed2NestedStruct3InterfaceProxy::BroadcastSig2);
+		BackendService->GetSig3SignalDelegate().RemoveDynamic(this, &UTestbed2NestedStruct3InterfaceProxy::BroadcastSig3);
 	}
 
 	// subscribe to new backend
 	BackendService = InService;
 	// connect property changed signals or simple events
-	BackendService->GetProp1ChangedDelegate().AddDynamic(this, &UTestbed2NestedStruct3InterfaceProxy::OnProp1Changed);
-	BackendService->GetProp2ChangedDelegate().AddDynamic(this, &UTestbed2NestedStruct3InterfaceProxy::OnProp2Changed);
-	BackendService->GetProp3ChangedDelegate().AddDynamic(this, &UTestbed2NestedStruct3InterfaceProxy::OnProp3Changed);
-	BackendService->GetSig1SignalDelegate().AddDynamic(this, &UTestbed2NestedStruct3InterfaceProxy::OnSig1);
-	BackendService->GetSig2SignalDelegate().AddDynamic(this, &UTestbed2NestedStruct3InterfaceProxy::OnSig2);
-	BackendService->GetSig3SignalDelegate().AddDynamic(this, &UTestbed2NestedStruct3InterfaceProxy::OnSig3);
+	BackendService->GetProp1ChangedDelegate().AddDynamic(this, &UTestbed2NestedStruct3InterfaceProxy::BroadcastProp1Changed);
+	BackendService->GetProp2ChangedDelegate().AddDynamic(this, &UTestbed2NestedStruct3InterfaceProxy::BroadcastProp2Changed);
+	BackendService->GetProp3ChangedDelegate().AddDynamic(this, &UTestbed2NestedStruct3InterfaceProxy::BroadcastProp3Changed);
+	BackendService->GetSig1SignalDelegate().AddDynamic(this, &UTestbed2NestedStruct3InterfaceProxy::BroadcastSig1);
+	BackendService->GetSig2SignalDelegate().AddDynamic(this, &UTestbed2NestedStruct3InterfaceProxy::BroadcastSig2);
+	BackendService->GetSig3SignalDelegate().AddDynamic(this, &UTestbed2NestedStruct3InterfaceProxy::BroadcastSig3);
 	// populate service state to proxy
 	Prop1 = BackendService->Execute_GetProp1(BackendService.GetObject());
 	Prop2 = BackendService->Execute_GetProp2(BackendService.GetObject());
 	Prop3 = BackendService->Execute_GetProp3(BackendService.GetObject());
 }
-void UTestbed2NestedStruct3InterfaceProxy::OnSig1(const FTestbed2NestedStruct1& Param1)
+void UTestbed2NestedStruct3InterfaceProxy::BroadcastSig1_Implementation(const FTestbed2NestedStruct1& Param1)
 {
 	Testbed2NestedStruct3InterfaceTracer::trace_signalSig1(Param1);
 	Sig1Signal.Broadcast(Param1);
@@ -130,7 +130,7 @@ FTestbed2NestedStruct3InterfaceSig1Delegate& UTestbed2NestedStruct3InterfaceProx
 	return Sig1Signal;
 }
 
-void UTestbed2NestedStruct3InterfaceProxy::OnSig2(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
+void UTestbed2NestedStruct3InterfaceProxy::BroadcastSig2_Implementation(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
 {
 	Testbed2NestedStruct3InterfaceTracer::trace_signalSig2(Param1, Param2);
 	Sig2Signal.Broadcast(Param1, Param2);
@@ -141,7 +141,7 @@ FTestbed2NestedStruct3InterfaceSig2Delegate& UTestbed2NestedStruct3InterfaceProx
 	return Sig2Signal;
 }
 
-void UTestbed2NestedStruct3InterfaceProxy::OnSig3(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3)
+void UTestbed2NestedStruct3InterfaceProxy::BroadcastSig3_Implementation(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3)
 {
 	Testbed2NestedStruct3InterfaceTracer::trace_signalSig3(Param1, Param2, Param3);
 	Sig3Signal.Broadcast(Param1, Param2, Param3);
@@ -152,7 +152,7 @@ FTestbed2NestedStruct3InterfaceSig3Delegate& UTestbed2NestedStruct3InterfaceProx
 	return Sig3Signal;
 }
 
-void UTestbed2NestedStruct3InterfaceProxy::OnProp1Changed(const FTestbed2NestedStruct1& InProp1)
+void UTestbed2NestedStruct3InterfaceProxy::BroadcastProp1Changed_Implementation(const FTestbed2NestedStruct1& InProp1)
 {
 	Testbed2NestedStruct3InterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop1 = InProp1;
@@ -185,7 +185,7 @@ FTestbed2NestedStruct3InterfaceProp1ChangedDelegate& UTestbed2NestedStruct3Inter
 	return Prop1Changed;
 }
 
-void UTestbed2NestedStruct3InterfaceProxy::OnProp2Changed(const FTestbed2NestedStruct2& InProp2)
+void UTestbed2NestedStruct3InterfaceProxy::BroadcastProp2Changed_Implementation(const FTestbed2NestedStruct2& InProp2)
 {
 	Testbed2NestedStruct3InterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop2 = InProp2;
@@ -218,7 +218,7 @@ FTestbed2NestedStruct3InterfaceProp2ChangedDelegate& UTestbed2NestedStruct3Inter
 	return Prop2Changed;
 }
 
-void UTestbed2NestedStruct3InterfaceProxy::OnProp3Changed(const FTestbed2NestedStruct3& InProp3)
+void UTestbed2NestedStruct3InterfaceProxy::BroadcastProp3Changed_Implementation(const FTestbed2NestedStruct3& InProp3)
 {
 	Testbed2NestedStruct3InterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop3 = InProp3;

@@ -59,14 +59,30 @@ UTbSame2SameEnum2InterfaceOLinkService::~UTbSame2SameEnum2InterfaceOLinkService(
 	m_node = nullptr;
 }
 
+void UTbSame2SameEnum2InterfaceOLinkService::BroadcastSig1_Implementation(const ETbSame2Enum1& Param1)
+{
+	Sig1Signal.Broadcast(Param1);
+}
+
 FTbSame2SameEnum2InterfaceSig1Delegate& UTbSame2SameEnum2InterfaceOLinkService::GetSig1SignalDelegate()
 {
 	return Sig1Signal;
 }
 
+void UTbSame2SameEnum2InterfaceOLinkService::BroadcastSig2_Implementation(const ETbSame2Enum1& Param1, const ETbSame2Enum2& Param2)
+{
+	Sig2Signal.Broadcast(Param1, Param2);
+}
+
 FTbSame2SameEnum2InterfaceSig2Delegate& UTbSame2SameEnum2InterfaceOLinkService::GetSig2SignalDelegate()
 {
 	return Sig2Signal;
+}
+
+void UTbSame2SameEnum2InterfaceOLinkService::BroadcastProp1Changed_Implementation(const ETbSame2Enum1& InProp1)
+{
+	Prop1 = InProp1;
+	Prop1Changed.Broadcast(InProp1);
 }
 
 ETbSame2Enum1 UTbSame2SameEnum2InterfaceOLinkService::GetProp1_Implementation() const
@@ -87,6 +103,12 @@ FTbSame2SameEnum2InterfaceProp1ChangedDelegate& UTbSame2SameEnum2InterfaceOLinkS
 {
 	return Prop1Changed;
 }
+void UTbSame2SameEnum2InterfaceOLinkService::BroadcastProp2Changed_Implementation(const ETbSame2Enum2& InProp2)
+{
+	Prop2 = InProp2;
+	Prop2Changed.Broadcast(InProp2);
+}
+
 ETbSame2Enum2 UTbSame2SameEnum2InterfaceOLinkService::GetProp2_Implementation() const
 {
 	return Prop2;

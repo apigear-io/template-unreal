@@ -195,9 +195,19 @@ UTbEnumEnumInterfaceSimulationService::~UTbEnumEnumInterfaceSimulationService()
 	}
 }
 
+void UTbEnumEnumInterfaceSimulationService::BroadcastSig0_Implementation(const ETbEnumEnum0& Param0)
+{
+	Sig0Signal.Broadcast(Param0);
+}
+
 FTbEnumEnumInterfaceSig0Delegate& UTbEnumEnumInterfaceSimulationService::GetSig0SignalDelegate()
 {
 	return Sig0Signal;
+}
+
+void UTbEnumEnumInterfaceSimulationService::BroadcastSig1_Implementation(const ETbEnumEnum1& Param1)
+{
+	Sig1Signal.Broadcast(Param1);
 }
 
 FTbEnumEnumInterfaceSig1Delegate& UTbEnumEnumInterfaceSimulationService::GetSig1SignalDelegate()
@@ -205,14 +215,30 @@ FTbEnumEnumInterfaceSig1Delegate& UTbEnumEnumInterfaceSimulationService::GetSig1
 	return Sig1Signal;
 }
 
+void UTbEnumEnumInterfaceSimulationService::BroadcastSig2_Implementation(const ETbEnumEnum2& Param2)
+{
+	Sig2Signal.Broadcast(Param2);
+}
+
 FTbEnumEnumInterfaceSig2Delegate& UTbEnumEnumInterfaceSimulationService::GetSig2SignalDelegate()
 {
 	return Sig2Signal;
 }
 
+void UTbEnumEnumInterfaceSimulationService::BroadcastSig3_Implementation(const ETbEnumEnum3& Param3)
+{
+	Sig3Signal.Broadcast(Param3);
+}
+
 FTbEnumEnumInterfaceSig3Delegate& UTbEnumEnumInterfaceSimulationService::GetSig3SignalDelegate()
 {
 	return Sig3Signal;
+}
+
+void UTbEnumEnumInterfaceSimulationService::BroadcastProp0Changed_Implementation(const ETbEnumEnum0& InProp0)
+{
+	Prop0 = InProp0;
+	Prop0Changed.Broadcast(InProp0);
 }
 
 ETbEnumEnum0 UTbEnumEnumInterfaceSimulationService::GetProp0_Implementation() const
@@ -236,6 +262,12 @@ FTbEnumEnumInterfaceProp0ChangedDelegate& UTbEnumEnumInterfaceSimulationService:
 	return Prop0Changed;
 }
 
+void UTbEnumEnumInterfaceSimulationService::BroadcastProp1Changed_Implementation(const ETbEnumEnum1& InProp1)
+{
+	Prop1 = InProp1;
+	Prop1Changed.Broadcast(InProp1);
+}
+
 ETbEnumEnum1 UTbEnumEnumInterfaceSimulationService::GetProp1_Implementation() const
 {
 	return Prop1;
@@ -257,6 +289,12 @@ FTbEnumEnumInterfaceProp1ChangedDelegate& UTbEnumEnumInterfaceSimulationService:
 	return Prop1Changed;
 }
 
+void UTbEnumEnumInterfaceSimulationService::BroadcastProp2Changed_Implementation(const ETbEnumEnum2& InProp2)
+{
+	Prop2 = InProp2;
+	Prop2Changed.Broadcast(InProp2);
+}
+
 ETbEnumEnum2 UTbEnumEnumInterfaceSimulationService::GetProp2_Implementation() const
 {
 	return Prop2;
@@ -276,6 +314,12 @@ void UTbEnumEnumInterfaceSimulationService::SetProp2_Implementation(const ETbEnu
 FTbEnumEnumInterfaceProp2ChangedDelegate& UTbEnumEnumInterfaceSimulationService::GetProp2ChangedDelegate()
 {
 	return Prop2Changed;
+}
+
+void UTbEnumEnumInterfaceSimulationService::BroadcastProp3Changed_Implementation(const ETbEnumEnum3& InProp3)
+{
+	Prop3 = InProp3;
+	Prop3Changed.Broadcast(InProp3);
 }
 
 ETbEnumEnum3 UTbEnumEnumInterfaceSimulationService::GetProp3_Implementation() const

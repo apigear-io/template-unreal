@@ -28,9 +28,19 @@ UTestbed1StructInterfaceLocalService::~UTestbed1StructInterfaceLocalService()
 {
 }
 
+void UTestbed1StructInterfaceLocalService::BroadcastSigBool_Implementation(const FTestbed1StructBool& ParamBool)
+{
+	SigBoolSignal.Broadcast(ParamBool);
+}
+
 FTestbed1StructInterfaceSigBoolDelegate& UTestbed1StructInterfaceLocalService::GetSigBoolSignalDelegate()
 {
 	return SigBoolSignal;
+}
+
+void UTestbed1StructInterfaceLocalService::BroadcastSigInt_Implementation(const FTestbed1StructInt& ParamInt)
+{
+	SigIntSignal.Broadcast(ParamInt);
 }
 
 FTestbed1StructInterfaceSigIntDelegate& UTestbed1StructInterfaceLocalService::GetSigIntSignalDelegate()
@@ -38,14 +48,30 @@ FTestbed1StructInterfaceSigIntDelegate& UTestbed1StructInterfaceLocalService::Ge
 	return SigIntSignal;
 }
 
+void UTestbed1StructInterfaceLocalService::BroadcastSigFloat_Implementation(const FTestbed1StructFloat& ParamFloat)
+{
+	SigFloatSignal.Broadcast(ParamFloat);
+}
+
 FTestbed1StructInterfaceSigFloatDelegate& UTestbed1StructInterfaceLocalService::GetSigFloatSignalDelegate()
 {
 	return SigFloatSignal;
 }
 
+void UTestbed1StructInterfaceLocalService::BroadcastSigString_Implementation(const FTestbed1StructString& ParamString)
+{
+	SigStringSignal.Broadcast(ParamString);
+}
+
 FTestbed1StructInterfaceSigStringDelegate& UTestbed1StructInterfaceLocalService::GetSigStringSignalDelegate()
 {
 	return SigStringSignal;
+}
+
+void UTestbed1StructInterfaceLocalService::BroadcastPropBoolChanged_Implementation(const FTestbed1StructBool& InPropBool)
+{
+	PropBool = InPropBool;
+	PropBoolChanged.Broadcast(InPropBool);
 }
 
 FTestbed1StructBool UTestbed1StructInterfaceLocalService::GetPropBool_Implementation() const
@@ -66,6 +92,12 @@ FTestbed1StructInterfacePropBoolChangedDelegate& UTestbed1StructInterfaceLocalSe
 {
 	return PropBoolChanged;
 }
+void UTestbed1StructInterfaceLocalService::BroadcastPropIntChanged_Implementation(const FTestbed1StructInt& InPropInt)
+{
+	PropInt = InPropInt;
+	PropIntChanged.Broadcast(InPropInt);
+}
+
 FTestbed1StructInt UTestbed1StructInterfaceLocalService::GetPropInt_Implementation() const
 {
 	return PropInt;
@@ -84,6 +116,12 @@ FTestbed1StructInterfacePropIntChangedDelegate& UTestbed1StructInterfaceLocalSer
 {
 	return PropIntChanged;
 }
+void UTestbed1StructInterfaceLocalService::BroadcastPropFloatChanged_Implementation(const FTestbed1StructFloat& InPropFloat)
+{
+	PropFloat = InPropFloat;
+	PropFloatChanged.Broadcast(InPropFloat);
+}
+
 FTestbed1StructFloat UTestbed1StructInterfaceLocalService::GetPropFloat_Implementation() const
 {
 	return PropFloat;
@@ -102,6 +140,12 @@ FTestbed1StructInterfacePropFloatChangedDelegate& UTestbed1StructInterfaceLocalS
 {
 	return PropFloatChanged;
 }
+void UTestbed1StructInterfaceLocalService::BroadcastPropStringChanged_Implementation(const FTestbed1StructString& InPropString)
+{
+	PropString = InPropString;
+	PropStringChanged.Broadcast(InPropString);
+}
+
 FTestbed1StructString UTestbed1StructInterfaceLocalService::GetPropString_Implementation() const
 {
 	return PropString;

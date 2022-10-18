@@ -78,6 +78,24 @@ public:
 	void Func3Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum3& Result, const ETbEnumEnum3& Param3) override{};
 	ETbEnumEnum3 Func3_Implementation(const ETbEnumEnum3& Param3) override;
 
+protected:
+	// signals
+	void BroadcastSig0_Implementation(const ETbEnumEnum0& Param0) override;
+
+	void BroadcastSig1_Implementation(const ETbEnumEnum1& Param1) override;
+
+	void BroadcastSig2_Implementation(const ETbEnumEnum2& Param2) override;
+
+	void BroadcastSig3_Implementation(const ETbEnumEnum3& Param3) override;
+
+	void BroadcastProp0Changed_Implementation(const ETbEnumEnum0& Prop0) override;
+
+	void BroadcastProp1Changed_Implementation(const ETbEnumEnum1& Prop1) override;
+
+	void BroadcastProp2Changed_Implementation(const ETbEnumEnum2& Prop2) override;
+
+	void BroadcastProp3Changed_Implementation(const ETbEnumEnum3& Prop3) override;
+
 private:
 	// properties - local copy
 	ETbEnumEnum0 Prop0;

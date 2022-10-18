@@ -28,9 +28,19 @@ UTestbed1StructArrayInterfaceLocalService::~UTestbed1StructArrayInterfaceLocalSe
 {
 }
 
+void UTestbed1StructArrayInterfaceLocalService::BroadcastSigBool_Implementation(const TArray<FTestbed1StructBool>& ParamBool)
+{
+	SigBoolSignal.Broadcast(ParamBool);
+}
+
 FTestbed1StructArrayInterfaceSigBoolDelegate& UTestbed1StructArrayInterfaceLocalService::GetSigBoolSignalDelegate()
 {
 	return SigBoolSignal;
+}
+
+void UTestbed1StructArrayInterfaceLocalService::BroadcastSigInt_Implementation(const TArray<FTestbed1StructInt>& ParamInt)
+{
+	SigIntSignal.Broadcast(ParamInt);
 }
 
 FTestbed1StructArrayInterfaceSigIntDelegate& UTestbed1StructArrayInterfaceLocalService::GetSigIntSignalDelegate()
@@ -38,14 +48,30 @@ FTestbed1StructArrayInterfaceSigIntDelegate& UTestbed1StructArrayInterfaceLocalS
 	return SigIntSignal;
 }
 
+void UTestbed1StructArrayInterfaceLocalService::BroadcastSigFloat_Implementation(const TArray<FTestbed1StructFloat>& ParamFloat)
+{
+	SigFloatSignal.Broadcast(ParamFloat);
+}
+
 FTestbed1StructArrayInterfaceSigFloatDelegate& UTestbed1StructArrayInterfaceLocalService::GetSigFloatSignalDelegate()
 {
 	return SigFloatSignal;
 }
 
+void UTestbed1StructArrayInterfaceLocalService::BroadcastSigString_Implementation(const TArray<FTestbed1StructString>& ParamString)
+{
+	SigStringSignal.Broadcast(ParamString);
+}
+
 FTestbed1StructArrayInterfaceSigStringDelegate& UTestbed1StructArrayInterfaceLocalService::GetSigStringSignalDelegate()
 {
 	return SigStringSignal;
+}
+
+void UTestbed1StructArrayInterfaceLocalService::BroadcastPropBoolChanged_Implementation(const TArray<FTestbed1StructBool>& InPropBool)
+{
+	PropBool = InPropBool;
+	PropBoolChanged.Broadcast(InPropBool);
 }
 
 TArray<FTestbed1StructBool> UTestbed1StructArrayInterfaceLocalService::GetPropBool_Implementation() const
@@ -66,6 +92,12 @@ FTestbed1StructArrayInterfacePropBoolChangedDelegate& UTestbed1StructArrayInterf
 {
 	return PropBoolChanged;
 }
+void UTestbed1StructArrayInterfaceLocalService::BroadcastPropIntChanged_Implementation(const TArray<FTestbed1StructInt>& InPropInt)
+{
+	PropInt = InPropInt;
+	PropIntChanged.Broadcast(InPropInt);
+}
+
 TArray<FTestbed1StructInt> UTestbed1StructArrayInterfaceLocalService::GetPropInt_Implementation() const
 {
 	return PropInt;
@@ -84,6 +116,12 @@ FTestbed1StructArrayInterfacePropIntChangedDelegate& UTestbed1StructArrayInterfa
 {
 	return PropIntChanged;
 }
+void UTestbed1StructArrayInterfaceLocalService::BroadcastPropFloatChanged_Implementation(const TArray<FTestbed1StructFloat>& InPropFloat)
+{
+	PropFloat = InPropFloat;
+	PropFloatChanged.Broadcast(InPropFloat);
+}
+
 TArray<FTestbed1StructFloat> UTestbed1StructArrayInterfaceLocalService::GetPropFloat_Implementation() const
 {
 	return PropFloat;
@@ -102,6 +140,12 @@ FTestbed1StructArrayInterfacePropFloatChangedDelegate& UTestbed1StructArrayInter
 {
 	return PropFloatChanged;
 }
+void UTestbed1StructArrayInterfaceLocalService::BroadcastPropStringChanged_Implementation(const TArray<FTestbed1StructString>& InPropString)
+{
+	PropString = InPropString;
+	PropStringChanged.Broadcast(InPropString);
+}
+
 TArray<FTestbed1StructString> UTestbed1StructArrayInterfaceLocalService::GetPropString_Implementation() const
 {
 	return PropString;

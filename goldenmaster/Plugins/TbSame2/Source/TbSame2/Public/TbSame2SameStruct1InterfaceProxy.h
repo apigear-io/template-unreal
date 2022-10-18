@@ -55,17 +55,16 @@ public:
 	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame2Struct1& Result, const FTbSame2Struct1& Param1) override;
 	FTbSame2Struct1 Func1_Implementation(const FTbSame2Struct1& Param1) override;
 
+protected:
+	// signals
+	void BroadcastSig1_Implementation(const FTbSame2Struct1& Param1) override;
+
+	void BroadcastProp1Changed_Implementation(const FTbSame2Struct1& Prop1) override;
+
 private:
 	/** The connection to the service backend. */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSame2|SameStruct1Interface")
 	TScriptInterface<ITbSame2SameStruct1InterfaceInterface> BackendService;
-
-	// signals
-	UFUNCTION(Category = "ApiGear|TbSame2|SameStruct1Interface", BlueprintInternalUseOnly)
-	void OnSig1(const FTbSame2Struct1& Param1);
-
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct1Interface", BlueprintInternalUseOnly)
-	void OnProp1Changed(const FTbSame2Struct1& Prop1);
 
 	// properties - local copy
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1_Private, BlueprintSetter = SetProp1_Private, Category = "ApiGear|TbSame2|SameStruct1Interface")

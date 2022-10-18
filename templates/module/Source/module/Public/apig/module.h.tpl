@@ -95,6 +95,21 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "{{$Category}}")
 	void Set{{Camel .Name}}({{ueParam "" .}});
 	virtual void Set{{Camel .Name}}_Implementation({{ueParam "" .}}) = 0;
+{{- else }}
+{{- end }}
+
+protected:
+	// signals
+{{- range .Signals }}
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "{{$Category}}")
+	void Broadcast{{Camel .Name}}({{ueParams "" .Params}});
+	virtual void Broadcast{{Camel .Name}}_Implementation({{ueParams "" .Params}}) = 0;
+{{ else }}
+{{- end }}
+{{- range .Properties }}
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "{{$Category}}")
+	void Broadcast{{Camel .Name}}Changed({{ueParam "" .}});
+	virtual void Broadcast{{Camel .Name}}Changed_Implementation({{ueParam "" .}}) = 0;
 {{ else }}
 {{ end -}}
 };

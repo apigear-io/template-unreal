@@ -61,9 +61,19 @@ UTbEnumEnumInterfaceOLinkService::~UTbEnumEnumInterfaceOLinkService()
 	m_node = nullptr;
 }
 
+void UTbEnumEnumInterfaceOLinkService::BroadcastSig0_Implementation(const ETbEnumEnum0& Param0)
+{
+	Sig0Signal.Broadcast(Param0);
+}
+
 FTbEnumEnumInterfaceSig0Delegate& UTbEnumEnumInterfaceOLinkService::GetSig0SignalDelegate()
 {
 	return Sig0Signal;
+}
+
+void UTbEnumEnumInterfaceOLinkService::BroadcastSig1_Implementation(const ETbEnumEnum1& Param1)
+{
+	Sig1Signal.Broadcast(Param1);
 }
 
 FTbEnumEnumInterfaceSig1Delegate& UTbEnumEnumInterfaceOLinkService::GetSig1SignalDelegate()
@@ -71,14 +81,30 @@ FTbEnumEnumInterfaceSig1Delegate& UTbEnumEnumInterfaceOLinkService::GetSig1Signa
 	return Sig1Signal;
 }
 
+void UTbEnumEnumInterfaceOLinkService::BroadcastSig2_Implementation(const ETbEnumEnum2& Param2)
+{
+	Sig2Signal.Broadcast(Param2);
+}
+
 FTbEnumEnumInterfaceSig2Delegate& UTbEnumEnumInterfaceOLinkService::GetSig2SignalDelegate()
 {
 	return Sig2Signal;
 }
 
+void UTbEnumEnumInterfaceOLinkService::BroadcastSig3_Implementation(const ETbEnumEnum3& Param3)
+{
+	Sig3Signal.Broadcast(Param3);
+}
+
 FTbEnumEnumInterfaceSig3Delegate& UTbEnumEnumInterfaceOLinkService::GetSig3SignalDelegate()
 {
 	return Sig3Signal;
+}
+
+void UTbEnumEnumInterfaceOLinkService::BroadcastProp0Changed_Implementation(const ETbEnumEnum0& InProp0)
+{
+	Prop0 = InProp0;
+	Prop0Changed.Broadcast(InProp0);
 }
 
 ETbEnumEnum0 UTbEnumEnumInterfaceOLinkService::GetProp0_Implementation() const
@@ -99,6 +125,12 @@ FTbEnumEnumInterfaceProp0ChangedDelegate& UTbEnumEnumInterfaceOLinkService::GetP
 {
 	return Prop0Changed;
 }
+void UTbEnumEnumInterfaceOLinkService::BroadcastProp1Changed_Implementation(const ETbEnumEnum1& InProp1)
+{
+	Prop1 = InProp1;
+	Prop1Changed.Broadcast(InProp1);
+}
+
 ETbEnumEnum1 UTbEnumEnumInterfaceOLinkService::GetProp1_Implementation() const
 {
 	return Prop1;
@@ -117,6 +149,12 @@ FTbEnumEnumInterfaceProp1ChangedDelegate& UTbEnumEnumInterfaceOLinkService::GetP
 {
 	return Prop1Changed;
 }
+void UTbEnumEnumInterfaceOLinkService::BroadcastProp2Changed_Implementation(const ETbEnumEnum2& InProp2)
+{
+	Prop2 = InProp2;
+	Prop2Changed.Broadcast(InProp2);
+}
+
 ETbEnumEnum2 UTbEnumEnumInterfaceOLinkService::GetProp2_Implementation() const
 {
 	return Prop2;
@@ -135,6 +173,12 @@ FTbEnumEnumInterfaceProp2ChangedDelegate& UTbEnumEnumInterfaceOLinkService::GetP
 {
 	return Prop2Changed;
 }
+void UTbEnumEnumInterfaceOLinkService::BroadcastProp3Changed_Implementation(const ETbEnumEnum3& InProp3)
+{
+	Prop3 = InProp3;
+	Prop3Changed.Broadcast(InProp3);
+}
+
 ETbEnumEnum3 UTbEnumEnumInterfaceOLinkService::GetProp3_Implementation() const
 {
 	return Prop3;

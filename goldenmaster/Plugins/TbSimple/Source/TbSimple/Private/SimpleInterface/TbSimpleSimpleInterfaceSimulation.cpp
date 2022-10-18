@@ -195,9 +195,19 @@ UTbSimpleSimpleInterfaceSimulationService::~UTbSimpleSimpleInterfaceSimulationSe
 	}
 }
 
+void UTbSimpleSimpleInterfaceSimulationService::BroadcastSigBool_Implementation(bool bParamBool)
+{
+	SigBoolSignal.Broadcast(bParamBool);
+}
+
 FTbSimpleSimpleInterfaceSigBoolDelegate& UTbSimpleSimpleInterfaceSimulationService::GetSigBoolSignalDelegate()
 {
 	return SigBoolSignal;
+}
+
+void UTbSimpleSimpleInterfaceSimulationService::BroadcastSigInt_Implementation(int32 ParamInt)
+{
+	SigIntSignal.Broadcast(ParamInt);
 }
 
 FTbSimpleSimpleInterfaceSigIntDelegate& UTbSimpleSimpleInterfaceSimulationService::GetSigIntSignalDelegate()
@@ -205,14 +215,30 @@ FTbSimpleSimpleInterfaceSigIntDelegate& UTbSimpleSimpleInterfaceSimulationServic
 	return SigIntSignal;
 }
 
+void UTbSimpleSimpleInterfaceSimulationService::BroadcastSigFloat_Implementation(float ParamFloat)
+{
+	SigFloatSignal.Broadcast(ParamFloat);
+}
+
 FTbSimpleSimpleInterfaceSigFloatDelegate& UTbSimpleSimpleInterfaceSimulationService::GetSigFloatSignalDelegate()
 {
 	return SigFloatSignal;
 }
 
+void UTbSimpleSimpleInterfaceSimulationService::BroadcastSigString_Implementation(const FString& ParamString)
+{
+	SigStringSignal.Broadcast(ParamString);
+}
+
 FTbSimpleSimpleInterfaceSigStringDelegate& UTbSimpleSimpleInterfaceSimulationService::GetSigStringSignalDelegate()
 {
 	return SigStringSignal;
+}
+
+void UTbSimpleSimpleInterfaceSimulationService::BroadcastPropBoolChanged_Implementation(bool bInPropBool)
+{
+	bPropBool = bInPropBool;
+	PropBoolChanged.Broadcast(bInPropBool);
 }
 
 bool UTbSimpleSimpleInterfaceSimulationService::GetPropBool_Implementation() const
@@ -236,6 +262,12 @@ FTbSimpleSimpleInterfacePropBoolChangedDelegate& UTbSimpleSimpleInterfaceSimulat
 	return PropBoolChanged;
 }
 
+void UTbSimpleSimpleInterfaceSimulationService::BroadcastPropIntChanged_Implementation(int32 InPropInt)
+{
+	PropInt = InPropInt;
+	PropIntChanged.Broadcast(InPropInt);
+}
+
 int32 UTbSimpleSimpleInterfaceSimulationService::GetPropInt_Implementation() const
 {
 	return PropInt;
@@ -257,6 +289,12 @@ FTbSimpleSimpleInterfacePropIntChangedDelegate& UTbSimpleSimpleInterfaceSimulati
 	return PropIntChanged;
 }
 
+void UTbSimpleSimpleInterfaceSimulationService::BroadcastPropFloatChanged_Implementation(float InPropFloat)
+{
+	PropFloat = InPropFloat;
+	PropFloatChanged.Broadcast(InPropFloat);
+}
+
 float UTbSimpleSimpleInterfaceSimulationService::GetPropFloat_Implementation() const
 {
 	return PropFloat;
@@ -276,6 +314,12 @@ void UTbSimpleSimpleInterfaceSimulationService::SetPropFloat_Implementation(floa
 FTbSimpleSimpleInterfacePropFloatChangedDelegate& UTbSimpleSimpleInterfaceSimulationService::GetPropFloatChangedDelegate()
 {
 	return PropFloatChanged;
+}
+
+void UTbSimpleSimpleInterfaceSimulationService::BroadcastPropStringChanged_Implementation(const FString& InPropString)
+{
+	PropString = InPropString;
+	PropStringChanged.Broadcast(InPropString);
 }
 
 FString UTbSimpleSimpleInterfaceSimulationService::GetPropString_Implementation() const

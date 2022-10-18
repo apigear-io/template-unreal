@@ -58,9 +58,20 @@ UTestbed2NestedStruct1InterfaceOLinkService::~UTestbed2NestedStruct1InterfaceOLi
 	m_node = nullptr;
 }
 
+void UTestbed2NestedStruct1InterfaceOLinkService::BroadcastSig1_Implementation(const FTestbed2NestedStruct1& Param1)
+{
+	Sig1Signal.Broadcast(Param1);
+}
+
 FTestbed2NestedStruct1InterfaceSig1Delegate& UTestbed2NestedStruct1InterfaceOLinkService::GetSig1SignalDelegate()
 {
 	return Sig1Signal;
+}
+
+void UTestbed2NestedStruct1InterfaceOLinkService::BroadcastProp1Changed_Implementation(const FTestbed2NestedStruct1& InProp1)
+{
+	Prop1 = InProp1;
+	Prop1Changed.Broadcast(InProp1);
 }
 
 FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceOLinkService::GetProp1_Implementation() const

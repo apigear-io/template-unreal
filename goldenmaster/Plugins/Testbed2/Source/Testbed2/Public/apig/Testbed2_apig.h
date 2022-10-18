@@ -124,7 +124,6 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
 	void SetProp1(int32 Prop1);
 	virtual void SetProp1_Implementation(int32 Prop1) = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
 	int32 GetProp2() const;
 	virtual int32 GetProp2_Implementation() const = 0;
@@ -132,7 +131,6 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
 	void SetProp2(int32 Prop2);
 	virtual void SetProp2_Implementation(int32 Prop2) = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
 	int32 GetProp3() const;
 	virtual int32 GetProp3_Implementation() const = 0;
@@ -140,7 +138,6 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
 	void SetProp3(int32 Prop3);
 	virtual void SetProp3_Implementation(int32 Prop3) = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
 	int32 GetProp4() const;
 	virtual int32 GetProp4_Implementation() const = 0;
@@ -148,6 +145,40 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
 	void SetProp4(int32 Prop4);
 	virtual void SetProp4_Implementation(int32 Prop4) = 0;
+
+protected:
+	// signals
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
+	void BroadcastSig1(int32 Param1);
+	virtual void BroadcastSig1_Implementation(int32 Param1) = 0;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
+	void BroadcastSig2(int32 Param1, int32 Param2);
+	virtual void BroadcastSig2_Implementation(int32 Param1, int32 Param2) = 0;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
+	void BroadcastSig3(int32 Param1, int32 Param2, int32 Param3);
+	virtual void BroadcastSig3_Implementation(int32 Param1, int32 Param2, int32 Param3) = 0;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
+	void BroadcastSig4(int32 Param1, int32 Param2, int32 Param3, int32 Param4);
+	virtual void BroadcastSig4_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4) = 0;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
+	void BroadcastProp1Changed(int32 Prop1);
+	virtual void BroadcastProp1Changed_Implementation(int32 Prop1) = 0;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
+	void BroadcastProp2Changed(int32 Prop2);
+	virtual void BroadcastProp2Changed_Implementation(int32 Prop2) = 0;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
+	void BroadcastProp3Changed(int32 Prop3);
+	virtual void BroadcastProp3Changed_Implementation(int32 Prop3) = 0;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
+	void BroadcastProp4Changed(int32 Prop4);
+	virtual void BroadcastProp4Changed_Implementation(int32 Prop4) = 0;
 };
 /**
  * Declaration for NestedStruct1Interface
@@ -198,6 +229,16 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct1Interface")
 	void SetProp1(const FTestbed2NestedStruct1& Prop1);
 	virtual void SetProp1_Implementation(const FTestbed2NestedStruct1& Prop1) = 0;
+
+protected:
+	// signals
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct1Interface")
+	void BroadcastSig1(const FTestbed2NestedStruct1& Param1);
+	virtual void BroadcastSig1_Implementation(const FTestbed2NestedStruct1& Param1) = 0;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct1Interface")
+	void BroadcastProp1Changed(const FTestbed2NestedStruct1& Prop1);
+	virtual void BroadcastProp1Changed_Implementation(const FTestbed2NestedStruct1& Prop1) = 0;
 };
 /**
  * Declaration for NestedStruct2Interface
@@ -265,7 +306,6 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface")
 	void SetProp1(const FTestbed2NestedStruct1& Prop1);
 	virtual void SetProp1_Implementation(const FTestbed2NestedStruct1& Prop1) = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface")
 	FTestbed2NestedStruct2 GetProp2() const;
 	virtual FTestbed2NestedStruct2 GetProp2_Implementation() const = 0;
@@ -273,6 +313,24 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface")
 	void SetProp2(const FTestbed2NestedStruct2& Prop2);
 	virtual void SetProp2_Implementation(const FTestbed2NestedStruct2& Prop2) = 0;
+
+protected:
+	// signals
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface")
+	void BroadcastSig1(const FTestbed2NestedStruct1& Param1);
+	virtual void BroadcastSig1_Implementation(const FTestbed2NestedStruct1& Param1) = 0;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface")
+	void BroadcastSig2(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2);
+	virtual void BroadcastSig2_Implementation(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2) = 0;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface")
+	void BroadcastProp1Changed(const FTestbed2NestedStruct1& Prop1);
+	virtual void BroadcastProp1Changed_Implementation(const FTestbed2NestedStruct1& Prop1) = 0;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface")
+	void BroadcastProp2Changed(const FTestbed2NestedStruct2& Prop2);
+	virtual void BroadcastProp2Changed_Implementation(const FTestbed2NestedStruct2& Prop2) = 0;
 };
 /**
  * Declaration for NestedStruct3Interface
@@ -357,7 +415,6 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface")
 	void SetProp1(const FTestbed2NestedStruct1& Prop1);
 	virtual void SetProp1_Implementation(const FTestbed2NestedStruct1& Prop1) = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface")
 	FTestbed2NestedStruct2 GetProp2() const;
 	virtual FTestbed2NestedStruct2 GetProp2_Implementation() const = 0;
@@ -365,7 +422,6 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface")
 	void SetProp2(const FTestbed2NestedStruct2& Prop2);
 	virtual void SetProp2_Implementation(const FTestbed2NestedStruct2& Prop2) = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface")
 	FTestbed2NestedStruct3 GetProp3() const;
 	virtual FTestbed2NestedStruct3 GetProp3_Implementation() const = 0;
@@ -373,4 +429,30 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface")
 	void SetProp3(const FTestbed2NestedStruct3& Prop3);
 	virtual void SetProp3_Implementation(const FTestbed2NestedStruct3& Prop3) = 0;
+
+protected:
+	// signals
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface")
+	void BroadcastSig1(const FTestbed2NestedStruct1& Param1);
+	virtual void BroadcastSig1_Implementation(const FTestbed2NestedStruct1& Param1) = 0;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface")
+	void BroadcastSig2(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2);
+	virtual void BroadcastSig2_Implementation(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2) = 0;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface")
+	void BroadcastSig3(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3);
+	virtual void BroadcastSig3_Implementation(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3) = 0;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface")
+	void BroadcastProp1Changed(const FTestbed2NestedStruct1& Prop1);
+	virtual void BroadcastProp1Changed_Implementation(const FTestbed2NestedStruct1& Prop1) = 0;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface")
+	void BroadcastProp2Changed(const FTestbed2NestedStruct2& Prop2);
+	virtual void BroadcastProp2Changed_Implementation(const FTestbed2NestedStruct2& Prop2) = 0;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface")
+	void BroadcastProp3Changed(const FTestbed2NestedStruct3& Prop3);
+	virtual void BroadcastProp3Changed_Implementation(const FTestbed2NestedStruct3& Prop3) = 0;
 };

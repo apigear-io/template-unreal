@@ -61,9 +61,19 @@ UTbSimpleSimpleInterfaceOLinkService::~UTbSimpleSimpleInterfaceOLinkService()
 	m_node = nullptr;
 }
 
+void UTbSimpleSimpleInterfaceOLinkService::BroadcastSigBool_Implementation(bool bParamBool)
+{
+	SigBoolSignal.Broadcast(bParamBool);
+}
+
 FTbSimpleSimpleInterfaceSigBoolDelegate& UTbSimpleSimpleInterfaceOLinkService::GetSigBoolSignalDelegate()
 {
 	return SigBoolSignal;
+}
+
+void UTbSimpleSimpleInterfaceOLinkService::BroadcastSigInt_Implementation(int32 ParamInt)
+{
+	SigIntSignal.Broadcast(ParamInt);
 }
 
 FTbSimpleSimpleInterfaceSigIntDelegate& UTbSimpleSimpleInterfaceOLinkService::GetSigIntSignalDelegate()
@@ -71,14 +81,30 @@ FTbSimpleSimpleInterfaceSigIntDelegate& UTbSimpleSimpleInterfaceOLinkService::Ge
 	return SigIntSignal;
 }
 
+void UTbSimpleSimpleInterfaceOLinkService::BroadcastSigFloat_Implementation(float ParamFloat)
+{
+	SigFloatSignal.Broadcast(ParamFloat);
+}
+
 FTbSimpleSimpleInterfaceSigFloatDelegate& UTbSimpleSimpleInterfaceOLinkService::GetSigFloatSignalDelegate()
 {
 	return SigFloatSignal;
 }
 
+void UTbSimpleSimpleInterfaceOLinkService::BroadcastSigString_Implementation(const FString& ParamString)
+{
+	SigStringSignal.Broadcast(ParamString);
+}
+
 FTbSimpleSimpleInterfaceSigStringDelegate& UTbSimpleSimpleInterfaceOLinkService::GetSigStringSignalDelegate()
 {
 	return SigStringSignal;
+}
+
+void UTbSimpleSimpleInterfaceOLinkService::BroadcastPropBoolChanged_Implementation(bool bInPropBool)
+{
+	bPropBool = bInPropBool;
+	PropBoolChanged.Broadcast(bInPropBool);
 }
 
 bool UTbSimpleSimpleInterfaceOLinkService::GetPropBool_Implementation() const
@@ -99,6 +125,12 @@ FTbSimpleSimpleInterfacePropBoolChangedDelegate& UTbSimpleSimpleInterfaceOLinkSe
 {
 	return PropBoolChanged;
 }
+void UTbSimpleSimpleInterfaceOLinkService::BroadcastPropIntChanged_Implementation(int32 InPropInt)
+{
+	PropInt = InPropInt;
+	PropIntChanged.Broadcast(InPropInt);
+}
+
 int32 UTbSimpleSimpleInterfaceOLinkService::GetPropInt_Implementation() const
 {
 	return PropInt;
@@ -117,6 +149,12 @@ FTbSimpleSimpleInterfacePropIntChangedDelegate& UTbSimpleSimpleInterfaceOLinkSer
 {
 	return PropIntChanged;
 }
+void UTbSimpleSimpleInterfaceOLinkService::BroadcastPropFloatChanged_Implementation(float InPropFloat)
+{
+	PropFloat = InPropFloat;
+	PropFloatChanged.Broadcast(InPropFloat);
+}
+
 float UTbSimpleSimpleInterfaceOLinkService::GetPropFloat_Implementation() const
 {
 	return PropFloat;
@@ -135,6 +173,12 @@ FTbSimpleSimpleInterfacePropFloatChangedDelegate& UTbSimpleSimpleInterfaceOLinkS
 {
 	return PropFloatChanged;
 }
+void UTbSimpleSimpleInterfaceOLinkService::BroadcastPropStringChanged_Implementation(const FString& InPropString)
+{
+	PropString = InPropString;
+	PropStringChanged.Broadcast(InPropString);
+}
+
 FString UTbSimpleSimpleInterfaceOLinkService::GetPropString_Implementation() const
 {
 	return PropString;

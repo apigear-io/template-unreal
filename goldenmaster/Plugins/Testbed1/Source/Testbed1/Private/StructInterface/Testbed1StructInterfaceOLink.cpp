@@ -61,9 +61,19 @@ UTestbed1StructInterfaceOLinkService::~UTestbed1StructInterfaceOLinkService()
 	m_node = nullptr;
 }
 
+void UTestbed1StructInterfaceOLinkService::BroadcastSigBool_Implementation(const FTestbed1StructBool& ParamBool)
+{
+	SigBoolSignal.Broadcast(ParamBool);
+}
+
 FTestbed1StructInterfaceSigBoolDelegate& UTestbed1StructInterfaceOLinkService::GetSigBoolSignalDelegate()
 {
 	return SigBoolSignal;
+}
+
+void UTestbed1StructInterfaceOLinkService::BroadcastSigInt_Implementation(const FTestbed1StructInt& ParamInt)
+{
+	SigIntSignal.Broadcast(ParamInt);
 }
 
 FTestbed1StructInterfaceSigIntDelegate& UTestbed1StructInterfaceOLinkService::GetSigIntSignalDelegate()
@@ -71,14 +81,30 @@ FTestbed1StructInterfaceSigIntDelegate& UTestbed1StructInterfaceOLinkService::Ge
 	return SigIntSignal;
 }
 
+void UTestbed1StructInterfaceOLinkService::BroadcastSigFloat_Implementation(const FTestbed1StructFloat& ParamFloat)
+{
+	SigFloatSignal.Broadcast(ParamFloat);
+}
+
 FTestbed1StructInterfaceSigFloatDelegate& UTestbed1StructInterfaceOLinkService::GetSigFloatSignalDelegate()
 {
 	return SigFloatSignal;
 }
 
+void UTestbed1StructInterfaceOLinkService::BroadcastSigString_Implementation(const FTestbed1StructString& ParamString)
+{
+	SigStringSignal.Broadcast(ParamString);
+}
+
 FTestbed1StructInterfaceSigStringDelegate& UTestbed1StructInterfaceOLinkService::GetSigStringSignalDelegate()
 {
 	return SigStringSignal;
+}
+
+void UTestbed1StructInterfaceOLinkService::BroadcastPropBoolChanged_Implementation(const FTestbed1StructBool& InPropBool)
+{
+	PropBool = InPropBool;
+	PropBoolChanged.Broadcast(InPropBool);
 }
 
 FTestbed1StructBool UTestbed1StructInterfaceOLinkService::GetPropBool_Implementation() const
@@ -99,6 +125,12 @@ FTestbed1StructInterfacePropBoolChangedDelegate& UTestbed1StructInterfaceOLinkSe
 {
 	return PropBoolChanged;
 }
+void UTestbed1StructInterfaceOLinkService::BroadcastPropIntChanged_Implementation(const FTestbed1StructInt& InPropInt)
+{
+	PropInt = InPropInt;
+	PropIntChanged.Broadcast(InPropInt);
+}
+
 FTestbed1StructInt UTestbed1StructInterfaceOLinkService::GetPropInt_Implementation() const
 {
 	return PropInt;
@@ -117,6 +149,12 @@ FTestbed1StructInterfacePropIntChangedDelegate& UTestbed1StructInterfaceOLinkSer
 {
 	return PropIntChanged;
 }
+void UTestbed1StructInterfaceOLinkService::BroadcastPropFloatChanged_Implementation(const FTestbed1StructFloat& InPropFloat)
+{
+	PropFloat = InPropFloat;
+	PropFloatChanged.Broadcast(InPropFloat);
+}
+
 FTestbed1StructFloat UTestbed1StructInterfaceOLinkService::GetPropFloat_Implementation() const
 {
 	return PropFloat;
@@ -135,6 +173,12 @@ FTestbed1StructInterfacePropFloatChangedDelegate& UTestbed1StructInterfaceOLinkS
 {
 	return PropFloatChanged;
 }
+void UTestbed1StructInterfaceOLinkService::BroadcastPropStringChanged_Implementation(const FTestbed1StructString& InPropString)
+{
+	PropString = InPropString;
+	PropStringChanged.Broadcast(InPropString);
+}
+
 FTestbed1StructString UTestbed1StructInterfaceOLinkService::GetPropString_Implementation() const
 {
 	return PropString;

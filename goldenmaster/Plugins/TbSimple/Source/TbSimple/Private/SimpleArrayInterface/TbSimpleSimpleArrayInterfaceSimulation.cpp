@@ -195,9 +195,19 @@ UTbSimpleSimpleArrayInterfaceSimulationService::~UTbSimpleSimpleArrayInterfaceSi
 	}
 }
 
+void UTbSimpleSimpleArrayInterfaceSimulationService::BroadcastSigBool_Implementation(const TArray<bool>& ParamBool)
+{
+	SigBoolSignal.Broadcast(ParamBool);
+}
+
 FTbSimpleSimpleArrayInterfaceSigBoolDelegate& UTbSimpleSimpleArrayInterfaceSimulationService::GetSigBoolSignalDelegate()
 {
 	return SigBoolSignal;
+}
+
+void UTbSimpleSimpleArrayInterfaceSimulationService::BroadcastSigInt_Implementation(const TArray<int32>& ParamInt)
+{
+	SigIntSignal.Broadcast(ParamInt);
 }
 
 FTbSimpleSimpleArrayInterfaceSigIntDelegate& UTbSimpleSimpleArrayInterfaceSimulationService::GetSigIntSignalDelegate()
@@ -205,14 +215,30 @@ FTbSimpleSimpleArrayInterfaceSigIntDelegate& UTbSimpleSimpleArrayInterfaceSimula
 	return SigIntSignal;
 }
 
+void UTbSimpleSimpleArrayInterfaceSimulationService::BroadcastSigFloat_Implementation(const TArray<float>& ParamFloat)
+{
+	SigFloatSignal.Broadcast(ParamFloat);
+}
+
 FTbSimpleSimpleArrayInterfaceSigFloatDelegate& UTbSimpleSimpleArrayInterfaceSimulationService::GetSigFloatSignalDelegate()
 {
 	return SigFloatSignal;
 }
 
+void UTbSimpleSimpleArrayInterfaceSimulationService::BroadcastSigString_Implementation(const TArray<FString>& ParamString)
+{
+	SigStringSignal.Broadcast(ParamString);
+}
+
 FTbSimpleSimpleArrayInterfaceSigStringDelegate& UTbSimpleSimpleArrayInterfaceSimulationService::GetSigStringSignalDelegate()
 {
 	return SigStringSignal;
+}
+
+void UTbSimpleSimpleArrayInterfaceSimulationService::BroadcastPropBoolChanged_Implementation(const TArray<bool>& InPropBool)
+{
+	PropBool = InPropBool;
+	PropBoolChanged.Broadcast(InPropBool);
 }
 
 TArray<bool> UTbSimpleSimpleArrayInterfaceSimulationService::GetPropBool_Implementation() const
@@ -236,6 +262,12 @@ FTbSimpleSimpleArrayInterfacePropBoolChangedDelegate& UTbSimpleSimpleArrayInterf
 	return PropBoolChanged;
 }
 
+void UTbSimpleSimpleArrayInterfaceSimulationService::BroadcastPropIntChanged_Implementation(const TArray<int32>& InPropInt)
+{
+	PropInt = InPropInt;
+	PropIntChanged.Broadcast(InPropInt);
+}
+
 TArray<int32> UTbSimpleSimpleArrayInterfaceSimulationService::GetPropInt_Implementation() const
 {
 	return PropInt;
@@ -257,6 +289,12 @@ FTbSimpleSimpleArrayInterfacePropIntChangedDelegate& UTbSimpleSimpleArrayInterfa
 	return PropIntChanged;
 }
 
+void UTbSimpleSimpleArrayInterfaceSimulationService::BroadcastPropFloatChanged_Implementation(const TArray<float>& InPropFloat)
+{
+	PropFloat = InPropFloat;
+	PropFloatChanged.Broadcast(InPropFloat);
+}
+
 TArray<float> UTbSimpleSimpleArrayInterfaceSimulationService::GetPropFloat_Implementation() const
 {
 	return PropFloat;
@@ -276,6 +314,12 @@ void UTbSimpleSimpleArrayInterfaceSimulationService::SetPropFloat_Implementation
 FTbSimpleSimpleArrayInterfacePropFloatChangedDelegate& UTbSimpleSimpleArrayInterfaceSimulationService::GetPropFloatChangedDelegate()
 {
 	return PropFloatChanged;
+}
+
+void UTbSimpleSimpleArrayInterfaceSimulationService::BroadcastPropStringChanged_Implementation(const TArray<FString>& InPropString)
+{
+	PropString = InPropString;
+	PropStringChanged.Broadcast(InPropString);
 }
 
 TArray<FString> UTbSimpleSimpleArrayInterfaceSimulationService::GetPropString_Implementation() const

@@ -52,6 +52,16 @@ public:
 	void olinkOnInit(std::string name, nlohmann::json props, ApiGear::ObjectLink::IClientNode* node) override;
 	void olinkOnRelease() override;
 
+protected:
+	// signals
+{{- range .Interface.Signals }}
+	void Broadcast{{Camel .Name}}_Implementation({{ueParams "" .Params}}) override;
+{{ else }}
+{{- end }}
+{{- range .Interface.Properties }}
+	void Broadcast{{Camel .Name}}Changed_Implementation({{ueParam "" .}}) override;
+{{ else }}
+{{ end }}
 private:
 	void applyState(const nlohmann::json& fields);
 	ApiGear::ObjectLink::IClientNode* m_node;

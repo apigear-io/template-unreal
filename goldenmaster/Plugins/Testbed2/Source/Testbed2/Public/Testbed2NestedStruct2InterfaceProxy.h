@@ -70,23 +70,20 @@ public:
 	void Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2) override;
 	FTestbed2NestedStruct1 Func2_Implementation(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2) override;
 
+protected:
+	// signals
+	void BroadcastSig1_Implementation(const FTestbed2NestedStruct1& Param1) override;
+
+	void BroadcastSig2_Implementation(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2) override;
+
+	void BroadcastProp1Changed_Implementation(const FTestbed2NestedStruct1& Prop1) override;
+
+	void BroadcastProp2Changed_Implementation(const FTestbed2NestedStruct2& Prop2) override;
+
 private:
 	/** The connection to the service backend. */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|Testbed2|NestedStruct2Interface")
 	TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> BackendService;
-
-	// signals
-	UFUNCTION(Category = "ApiGear|Testbed2|NestedStruct2Interface", BlueprintInternalUseOnly)
-	void OnSig1(const FTestbed2NestedStruct1& Param1);
-
-	UFUNCTION(Category = "ApiGear|Testbed2|NestedStruct2Interface", BlueprintInternalUseOnly)
-	void OnSig2(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2);
-
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface", BlueprintInternalUseOnly)
-	void OnProp1Changed(const FTestbed2NestedStruct1& Prop1);
-
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface", BlueprintInternalUseOnly)
-	void OnProp2Changed(const FTestbed2NestedStruct2& Prop2);
 
 	// properties - local copy
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1_Private, BlueprintSetter = SetProp1_Private, Category = "ApiGear|Testbed2|NestedStruct2Interface")

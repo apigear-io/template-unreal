@@ -133,14 +133,30 @@ UTbSame1SameStruct2InterfaceSimulationService::~UTbSame1SameStruct2InterfaceSimu
 	}
 }
 
+void UTbSame1SameStruct2InterfaceSimulationService::BroadcastSig1_Implementation(const FTbSame1Struct1& Param1)
+{
+	Sig1Signal.Broadcast(Param1);
+}
+
 FTbSame1SameStruct2InterfaceSig1Delegate& UTbSame1SameStruct2InterfaceSimulationService::GetSig1SignalDelegate()
 {
 	return Sig1Signal;
 }
 
+void UTbSame1SameStruct2InterfaceSimulationService::BroadcastSig2_Implementation(const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2)
+{
+	Sig2Signal.Broadcast(Param1, Param2);
+}
+
 FTbSame1SameStruct2InterfaceSig2Delegate& UTbSame1SameStruct2InterfaceSimulationService::GetSig2SignalDelegate()
 {
 	return Sig2Signal;
+}
+
+void UTbSame1SameStruct2InterfaceSimulationService::BroadcastProp1Changed_Implementation(const FTbSame1Struct2& InProp1)
+{
+	Prop1 = InProp1;
+	Prop1Changed.Broadcast(InProp1);
 }
 
 FTbSame1Struct2 UTbSame1SameStruct2InterfaceSimulationService::GetProp1_Implementation() const
@@ -162,6 +178,12 @@ void UTbSame1SameStruct2InterfaceSimulationService::SetProp1_Implementation(cons
 FTbSame1SameStruct2InterfaceProp1ChangedDelegate& UTbSame1SameStruct2InterfaceSimulationService::GetProp1ChangedDelegate()
 {
 	return Prop1Changed;
+}
+
+void UTbSame1SameStruct2InterfaceSimulationService::BroadcastProp2Changed_Implementation(const FTbSame1Struct2& InProp2)
+{
+	Prop2 = InProp2;
+	Prop2Changed.Broadcast(InProp2);
 }
 
 FTbSame1Struct2 UTbSame1SameStruct2InterfaceSimulationService::GetProp2_Implementation() const

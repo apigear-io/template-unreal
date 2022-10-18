@@ -195,9 +195,19 @@ UTestbed2ManyParamInterfaceSimulationService::~UTestbed2ManyParamInterfaceSimula
 	}
 }
 
+void UTestbed2ManyParamInterfaceSimulationService::BroadcastSig1_Implementation(int32 Param1)
+{
+	Sig1Signal.Broadcast(Param1);
+}
+
 FTestbed2ManyParamInterfaceSig1Delegate& UTestbed2ManyParamInterfaceSimulationService::GetSig1SignalDelegate()
 {
 	return Sig1Signal;
+}
+
+void UTestbed2ManyParamInterfaceSimulationService::BroadcastSig2_Implementation(int32 Param1, int32 Param2)
+{
+	Sig2Signal.Broadcast(Param1, Param2);
 }
 
 FTestbed2ManyParamInterfaceSig2Delegate& UTestbed2ManyParamInterfaceSimulationService::GetSig2SignalDelegate()
@@ -205,14 +215,30 @@ FTestbed2ManyParamInterfaceSig2Delegate& UTestbed2ManyParamInterfaceSimulationSe
 	return Sig2Signal;
 }
 
+void UTestbed2ManyParamInterfaceSimulationService::BroadcastSig3_Implementation(int32 Param1, int32 Param2, int32 Param3)
+{
+	Sig3Signal.Broadcast(Param1, Param2, Param3);
+}
+
 FTestbed2ManyParamInterfaceSig3Delegate& UTestbed2ManyParamInterfaceSimulationService::GetSig3SignalDelegate()
 {
 	return Sig3Signal;
 }
 
+void UTestbed2ManyParamInterfaceSimulationService::BroadcastSig4_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
+{
+	Sig4Signal.Broadcast(Param1, Param2, Param3, Param4);
+}
+
 FTestbed2ManyParamInterfaceSig4Delegate& UTestbed2ManyParamInterfaceSimulationService::GetSig4SignalDelegate()
 {
 	return Sig4Signal;
+}
+
+void UTestbed2ManyParamInterfaceSimulationService::BroadcastProp1Changed_Implementation(int32 InProp1)
+{
+	Prop1 = InProp1;
+	Prop1Changed.Broadcast(InProp1);
 }
 
 int32 UTestbed2ManyParamInterfaceSimulationService::GetProp1_Implementation() const
@@ -236,6 +262,12 @@ FTestbed2ManyParamInterfaceProp1ChangedDelegate& UTestbed2ManyParamInterfaceSimu
 	return Prop1Changed;
 }
 
+void UTestbed2ManyParamInterfaceSimulationService::BroadcastProp2Changed_Implementation(int32 InProp2)
+{
+	Prop2 = InProp2;
+	Prop2Changed.Broadcast(InProp2);
+}
+
 int32 UTestbed2ManyParamInterfaceSimulationService::GetProp2_Implementation() const
 {
 	return Prop2;
@@ -257,6 +289,12 @@ FTestbed2ManyParamInterfaceProp2ChangedDelegate& UTestbed2ManyParamInterfaceSimu
 	return Prop2Changed;
 }
 
+void UTestbed2ManyParamInterfaceSimulationService::BroadcastProp3Changed_Implementation(int32 InProp3)
+{
+	Prop3 = InProp3;
+	Prop3Changed.Broadcast(InProp3);
+}
+
 int32 UTestbed2ManyParamInterfaceSimulationService::GetProp3_Implementation() const
 {
 	return Prop3;
@@ -276,6 +314,12 @@ void UTestbed2ManyParamInterfaceSimulationService::SetProp3_Implementation(int32
 FTestbed2ManyParamInterfaceProp3ChangedDelegate& UTestbed2ManyParamInterfaceSimulationService::GetProp3ChangedDelegate()
 {
 	return Prop3Changed;
+}
+
+void UTestbed2ManyParamInterfaceSimulationService::BroadcastProp4Changed_Implementation(int32 InProp4)
+{
+	Prop4 = InProp4;
+	Prop4Changed.Broadcast(InProp4);
 }
 
 int32 UTestbed2ManyParamInterfaceSimulationService::GetProp4_Implementation() const

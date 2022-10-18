@@ -124,7 +124,6 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface")
 	void SetProp0(const ETbEnumEnum0& Prop0);
 	virtual void SetProp0_Implementation(const ETbEnumEnum0& Prop0) = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface")
 	ETbEnumEnum1 GetProp1() const;
 	virtual ETbEnumEnum1 GetProp1_Implementation() const = 0;
@@ -132,7 +131,6 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface")
 	void SetProp1(const ETbEnumEnum1& Prop1);
 	virtual void SetProp1_Implementation(const ETbEnumEnum1& Prop1) = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface")
 	ETbEnumEnum2 GetProp2() const;
 	virtual ETbEnumEnum2 GetProp2_Implementation() const = 0;
@@ -140,7 +138,6 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface")
 	void SetProp2(const ETbEnumEnum2& Prop2);
 	virtual void SetProp2_Implementation(const ETbEnumEnum2& Prop2) = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface")
 	ETbEnumEnum3 GetProp3() const;
 	virtual ETbEnumEnum3 GetProp3_Implementation() const = 0;
@@ -148,4 +145,38 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface")
 	void SetProp3(const ETbEnumEnum3& Prop3);
 	virtual void SetProp3_Implementation(const ETbEnumEnum3& Prop3) = 0;
+
+protected:
+	// signals
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface")
+	void BroadcastSig0(const ETbEnumEnum0& Param0);
+	virtual void BroadcastSig0_Implementation(const ETbEnumEnum0& Param0) = 0;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface")
+	void BroadcastSig1(const ETbEnumEnum1& Param1);
+	virtual void BroadcastSig1_Implementation(const ETbEnumEnum1& Param1) = 0;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface")
+	void BroadcastSig2(const ETbEnumEnum2& Param2);
+	virtual void BroadcastSig2_Implementation(const ETbEnumEnum2& Param2) = 0;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface")
+	void BroadcastSig3(const ETbEnumEnum3& Param3);
+	virtual void BroadcastSig3_Implementation(const ETbEnumEnum3& Param3) = 0;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface")
+	void BroadcastProp0Changed(const ETbEnumEnum0& Prop0);
+	virtual void BroadcastProp0Changed_Implementation(const ETbEnumEnum0& Prop0) = 0;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface")
+	void BroadcastProp1Changed(const ETbEnumEnum1& Prop1);
+	virtual void BroadcastProp1Changed_Implementation(const ETbEnumEnum1& Prop1) = 0;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface")
+	void BroadcastProp2Changed(const ETbEnumEnum2& Prop2);
+	virtual void BroadcastProp2Changed_Implementation(const ETbEnumEnum2& Prop2) = 0;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface")
+	void BroadcastProp3Changed(const ETbEnumEnum3& Prop3);
+	virtual void BroadcastProp3Changed_Implementation(const ETbEnumEnum3& Prop3) = 0;
 };

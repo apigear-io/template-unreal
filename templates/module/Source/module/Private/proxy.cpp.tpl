@@ -88,10 +88,10 @@ public:
 {{- $Service := printf "I%sInterface" $Iface }}
 	BackendService = {{$FactoryName}}::create{{$Service}}();
 {{- range .Interface.Properties }}
-	BackendService->Get{{Camel .Name}}ChangedDelegate().AddDynamic(this, &{{$Class}}::On{{Camel .Name}}Changed);
+	BackendService->Get{{Camel .Name}}ChangedDelegate().AddDynamic(this, &{{$Class}}::Broadcast{{Camel .Name}}Changed);
 {{- end }}
 {{- range .Interface.Signals }}
-	BackendService->Get{{Camel .Name}}SignalDelegate().AddDynamic(this, &{{$Class}}::On{{Camel .Name}});
+	BackendService->Get{{Camel .Name}}SignalDelegate().AddDynamic(this, &{{$Class}}::Broadcast{{Camel .Name}});
 {{- end }}
 }
 
@@ -100,10 +100,10 @@ public:
 	if (BackendService != nullptr)
 	{
 {{- range .Interface.Properties }}
-		//BackendService->Get{{Camel .Name}}ChangedDelegate().RemoveDynamic(this, &{{$Class}}::On{{Camel .Name}}Changed);
+		//BackendService->Get{{Camel .Name}}ChangedDelegate().RemoveDynamic(this, &{{$Class}}::Broadcast{{Camel .Name}}Changed);
 {{- end }}
 {{- range .Interface.Signals }}
-		//BackendService->Get{{Camel .Name}}SignalDelegate().RemoveDynamic(this, &{{$Class}}::On{{Camel .Name}});
+		//BackendService->Get{{Camel .Name}}SignalDelegate().RemoveDynamic(this, &{{$Class}}::Broadcast{{Camel .Name}});
 {{- end }}
 	}
 }
@@ -114,10 +114,10 @@ void {{$Class}}::setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{Cam
 	if (BackendService != nullptr)
 	{
 {{- range .Interface.Properties }}
-		BackendService->Get{{Camel .Name}}ChangedDelegate().RemoveDynamic(this, &{{$Class}}::On{{Camel .Name}}Changed);
+		BackendService->Get{{Camel .Name}}ChangedDelegate().RemoveDynamic(this, &{{$Class}}::Broadcast{{Camel .Name}}Changed);
 {{- end }}
 {{- range .Interface.Signals }}
-		BackendService->Get{{Camel .Name}}SignalDelegate().RemoveDynamic(this, &{{$Class}}::On{{Camel .Name}});
+		BackendService->Get{{Camel .Name}}SignalDelegate().RemoveDynamic(this, &{{$Class}}::Broadcast{{Camel .Name}});
 {{- end }}
 	}
 
@@ -126,10 +126,10 @@ void {{$Class}}::setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{Cam
 	BackendService = InService;
 	// connect property changed signals or simple events
 {{- range .Interface.Properties }}
-	BackendService->Get{{Camel .Name}}ChangedDelegate().AddDynamic(this, &{{$Class}}::On{{Camel .Name}}Changed);
+	BackendService->Get{{Camel .Name}}ChangedDelegate().AddDynamic(this, &{{$Class}}::Broadcast{{Camel .Name}}Changed);
 {{- end }}
 {{- range .Interface.Signals }}
-	BackendService->Get{{Camel .Name}}SignalDelegate().AddDynamic(this, &{{$Class}}::On{{Camel .Name}});
+	BackendService->Get{{Camel .Name}}SignalDelegate().AddDynamic(this, &{{$Class}}::Broadcast{{Camel .Name}});
 {{- end }}
 	// populate service state to proxy
 {{- range .Interface.Properties }}
@@ -138,7 +138,7 @@ void {{$Class}}::setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{Cam
 }
 
 {{- range .Interface.Signals }}
-void {{$Class}}::On{{Camel .Name}}({{ueParams "" .Params}})
+void {{$Class}}::Broadcast{{Camel .Name}}_Implementation({{ueParams "" .Params}})
 {
 	{{$Iface}}Tracer::trace_signal{{Camel .Name}}({{ueVars "" .Params}});
 	{{Camel .Name}}Signal.Broadcast({{ueVars "" .Params }});
@@ -151,7 +151,7 @@ F{{$Iface}}{{Camel .Name}}Delegate& {{$Class}}::Get{{Camel .Name}}SignalDelegate
 {{ end }}
 
 {{- range .Interface.Properties }}
-void {{$Class}}::On{{Camel .Name}}Changed({{ueParam "In" .}})
+void {{$Class}}::Broadcast{{Camel .Name}}Changed_Implementation({{ueParam "In" .}})
 {
 	{{$Iface}}Tracer::capture_state(BackendService.GetObject(), this);
 	{{ueVar "" .}} = {{ueVar "In" .}};

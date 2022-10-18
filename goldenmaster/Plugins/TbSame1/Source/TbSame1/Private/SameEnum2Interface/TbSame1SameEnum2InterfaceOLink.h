@@ -62,6 +62,16 @@ public:
 	void olinkOnInit(std::string name, nlohmann::json props, ApiGear::ObjectLink::IClientNode* node) override;
 	void olinkOnRelease() override;
 
+protected:
+	// signals
+	void BroadcastSig1_Implementation(const ETbSame1Enum1& Param1) override;
+
+	void BroadcastSig2_Implementation(const ETbSame1Enum1& Param1, const ETbSame1Enum2& Param2) override;
+
+	void BroadcastProp1Changed_Implementation(const ETbSame1Enum1& Prop1) override;
+
+	void BroadcastProp2Changed_Implementation(const ETbSame1Enum2& Prop2) override;
+
 private:
 	void applyState(const nlohmann::json& fields);
 	ApiGear::ObjectLink::IClientNode* m_node;

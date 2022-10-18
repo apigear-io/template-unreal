@@ -24,12 +24,23 @@
 {
 }
 {{ range .Interface.Signals }}
+void {{$Class}}::Broadcast{{Camel .Name}}_Implementation({{ueParams "" .Params}})
+{
+	{{Camel .Name}}Signal.Broadcast({{ueVars "" .Params }});
+}
+
 F{{$Iface}}{{Camel .Name}}Delegate& {{$Class}}::Get{{Camel .Name}}SignalDelegate()
 {
 	return {{Camel .Name}}Signal;
 }
 {{ end }}
 {{- range .Interface.Properties }}
+void {{$Class}}::Broadcast{{Camel .Name}}Changed_Implementation({{ueParam "In" .}})
+{
+	{{ueVar "" .}} = {{ueVar "In" .}};
+	{{Camel .Name}}Changed.Broadcast({{ueVar "In" .}});
+}
+
 {{ueReturn "" .}} {{$Class}}::Get{{Camel .Name}}_Implementation() const
 {
 	return {{ueVar "" .}};

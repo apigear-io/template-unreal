@@ -85,29 +85,24 @@ public:
 	void Func3Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3) override;
 	FTestbed2NestedStruct1 Func3_Implementation(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3) override;
 
+protected:
+	// signals
+	void BroadcastSig1_Implementation(const FTestbed2NestedStruct1& Param1) override;
+
+	void BroadcastSig2_Implementation(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2) override;
+
+	void BroadcastSig3_Implementation(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3) override;
+
+	void BroadcastProp1Changed_Implementation(const FTestbed2NestedStruct1& Prop1) override;
+
+	void BroadcastProp2Changed_Implementation(const FTestbed2NestedStruct2& Prop2) override;
+
+	void BroadcastProp3Changed_Implementation(const FTestbed2NestedStruct3& Prop3) override;
+
 private:
 	/** The connection to the service backend. */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|Testbed2|NestedStruct3Interface")
 	TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> BackendService;
-
-	// signals
-	UFUNCTION(Category = "ApiGear|Testbed2|NestedStruct3Interface", BlueprintInternalUseOnly)
-	void OnSig1(const FTestbed2NestedStruct1& Param1);
-
-	UFUNCTION(Category = "ApiGear|Testbed2|NestedStruct3Interface", BlueprintInternalUseOnly)
-	void OnSig2(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2);
-
-	UFUNCTION(Category = "ApiGear|Testbed2|NestedStruct3Interface", BlueprintInternalUseOnly)
-	void OnSig3(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3);
-
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface", BlueprintInternalUseOnly)
-	void OnProp1Changed(const FTestbed2NestedStruct1& Prop1);
-
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface", BlueprintInternalUseOnly)
-	void OnProp2Changed(const FTestbed2NestedStruct2& Prop2);
-
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface", BlueprintInternalUseOnly)
-	void OnProp3Changed(const FTestbed2NestedStruct3& Prop3);
 
 	// properties - local copy
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1_Private, BlueprintSetter = SetProp1_Private, Category = "ApiGear|Testbed2|NestedStruct3Interface")

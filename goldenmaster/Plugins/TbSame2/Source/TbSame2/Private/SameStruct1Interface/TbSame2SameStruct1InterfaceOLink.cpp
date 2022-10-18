@@ -58,9 +58,20 @@ UTbSame2SameStruct1InterfaceOLinkService::~UTbSame2SameStruct1InterfaceOLinkServ
 	m_node = nullptr;
 }
 
+void UTbSame2SameStruct1InterfaceOLinkService::BroadcastSig1_Implementation(const FTbSame2Struct1& Param1)
+{
+	Sig1Signal.Broadcast(Param1);
+}
+
 FTbSame2SameStruct1InterfaceSig1Delegate& UTbSame2SameStruct1InterfaceOLinkService::GetSig1SignalDelegate()
 {
 	return Sig1Signal;
+}
+
+void UTbSame2SameStruct1InterfaceOLinkService::BroadcastProp1Changed_Implementation(const FTbSame2Struct1& InProp1)
+{
+	Prop1 = InProp1;
+	Prop1Changed.Broadcast(InProp1);
 }
 
 FTbSame2Struct1 UTbSame2SameStruct1InterfaceOLinkService::GetProp1_Implementation() const

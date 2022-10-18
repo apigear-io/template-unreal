@@ -44,6 +44,12 @@ public:
 	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame2Struct1& Result, const FTbSame2Struct1& Param1) override{};
 	FTbSame2Struct1 Func1_Implementation(const FTbSame2Struct1& Param1) override;
 
+protected:
+	// signals
+	void BroadcastSig1_Implementation(const FTbSame2Struct1& Param1) override;
+
+	void BroadcastProp1Changed_Implementation(const FTbSame2Struct1& Prop1) override;
+
 private:
 	// properties - local copy - use setter functions to emit changed signals
 	FTbSame2Struct1 Prop1;

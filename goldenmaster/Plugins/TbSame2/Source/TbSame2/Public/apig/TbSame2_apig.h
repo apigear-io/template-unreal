@@ -73,6 +73,16 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct1Interface")
 	void SetProp1(const FTbSame2Struct1& Prop1);
 	virtual void SetProp1_Implementation(const FTbSame2Struct1& Prop1) = 0;
+
+protected:
+	// signals
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct1Interface")
+	void BroadcastSig1(const FTbSame2Struct1& Param1);
+	virtual void BroadcastSig1_Implementation(const FTbSame2Struct1& Param1) = 0;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct1Interface")
+	void BroadcastProp1Changed(const FTbSame2Struct1& Prop1);
+	virtual void BroadcastProp1Changed_Implementation(const FTbSame2Struct1& Prop1) = 0;
 };
 /**
  * Declaration for SameStruct2Interface
@@ -140,7 +150,6 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct2Interface")
 	void SetProp1(const FTbSame2Struct2& Prop1);
 	virtual void SetProp1_Implementation(const FTbSame2Struct2& Prop1) = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct2Interface")
 	FTbSame2Struct2 GetProp2() const;
 	virtual FTbSame2Struct2 GetProp2_Implementation() const = 0;
@@ -148,6 +157,24 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct2Interface")
 	void SetProp2(const FTbSame2Struct2& Prop2);
 	virtual void SetProp2_Implementation(const FTbSame2Struct2& Prop2) = 0;
+
+protected:
+	// signals
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct2Interface")
+	void BroadcastSig1(const FTbSame2Struct1& Param1);
+	virtual void BroadcastSig1_Implementation(const FTbSame2Struct1& Param1) = 0;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct2Interface")
+	void BroadcastSig2(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2);
+	virtual void BroadcastSig2_Implementation(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2) = 0;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct2Interface")
+	void BroadcastProp1Changed(const FTbSame2Struct2& Prop1);
+	virtual void BroadcastProp1Changed_Implementation(const FTbSame2Struct2& Prop1) = 0;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct2Interface")
+	void BroadcastProp2Changed(const FTbSame2Struct2& Prop2);
+	virtual void BroadcastProp2Changed_Implementation(const FTbSame2Struct2& Prop2) = 0;
 };
 /**
  * Declaration for SameEnum1Interface
@@ -198,6 +225,16 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum1Interface")
 	void SetProp1(const ETbSame2Enum1& Prop1);
 	virtual void SetProp1_Implementation(const ETbSame2Enum1& Prop1) = 0;
+
+protected:
+	// signals
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum1Interface")
+	void BroadcastSig1(const ETbSame2Enum1& Param1);
+	virtual void BroadcastSig1_Implementation(const ETbSame2Enum1& Param1) = 0;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum1Interface")
+	void BroadcastProp1Changed(const ETbSame2Enum1& Prop1);
+	virtual void BroadcastProp1Changed_Implementation(const ETbSame2Enum1& Prop1) = 0;
 };
 /**
  * Declaration for SameEnum2Interface
@@ -265,7 +302,6 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum2Interface")
 	void SetProp1(const ETbSame2Enum1& Prop1);
 	virtual void SetProp1_Implementation(const ETbSame2Enum1& Prop1) = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum2Interface")
 	ETbSame2Enum2 GetProp2() const;
 	virtual ETbSame2Enum2 GetProp2_Implementation() const = 0;
@@ -273,4 +309,22 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum2Interface")
 	void SetProp2(const ETbSame2Enum2& Prop2);
 	virtual void SetProp2_Implementation(const ETbSame2Enum2& Prop2) = 0;
+
+protected:
+	// signals
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum2Interface")
+	void BroadcastSig1(const ETbSame2Enum1& Param1);
+	virtual void BroadcastSig1_Implementation(const ETbSame2Enum1& Param1) = 0;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum2Interface")
+	void BroadcastSig2(const ETbSame2Enum1& Param1, const ETbSame2Enum2& Param2);
+	virtual void BroadcastSig2_Implementation(const ETbSame2Enum1& Param1, const ETbSame2Enum2& Param2) = 0;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum2Interface")
+	void BroadcastProp1Changed(const ETbSame2Enum1& Prop1);
+	virtual void BroadcastProp1Changed_Implementation(const ETbSame2Enum1& Prop1) = 0;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum2Interface")
+	void BroadcastProp2Changed(const ETbSame2Enum2& Prop2);
+	virtual void BroadcastProp2Changed_Implementation(const ETbSame2Enum2& Prop2) = 0;
 };

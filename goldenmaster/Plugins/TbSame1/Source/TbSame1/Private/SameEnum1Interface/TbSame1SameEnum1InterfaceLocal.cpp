@@ -25,9 +25,20 @@ UTbSame1SameEnum1InterfaceLocalService::~UTbSame1SameEnum1InterfaceLocalService(
 {
 }
 
+void UTbSame1SameEnum1InterfaceLocalService::BroadcastSig1_Implementation(const ETbSame1Enum1& Param1)
+{
+	Sig1Signal.Broadcast(Param1);
+}
+
 FTbSame1SameEnum1InterfaceSig1Delegate& UTbSame1SameEnum1InterfaceLocalService::GetSig1SignalDelegate()
 {
 	return Sig1Signal;
+}
+
+void UTbSame1SameEnum1InterfaceLocalService::BroadcastProp1Changed_Implementation(const ETbSame1Enum1& InProp1)
+{
+	Prop1 = InProp1;
+	Prop1Changed.Broadcast(InProp1);
 }
 
 ETbSame1Enum1 UTbSame1SameEnum1InterfaceLocalService::GetProp1_Implementation() const

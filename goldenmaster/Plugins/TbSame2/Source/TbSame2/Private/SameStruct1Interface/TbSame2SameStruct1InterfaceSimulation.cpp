@@ -102,9 +102,20 @@ UTbSame2SameStruct1InterfaceSimulationService::~UTbSame2SameStruct1InterfaceSimu
 	}
 }
 
+void UTbSame2SameStruct1InterfaceSimulationService::BroadcastSig1_Implementation(const FTbSame2Struct1& Param1)
+{
+	Sig1Signal.Broadcast(Param1);
+}
+
 FTbSame2SameStruct1InterfaceSig1Delegate& UTbSame2SameStruct1InterfaceSimulationService::GetSig1SignalDelegate()
 {
 	return Sig1Signal;
+}
+
+void UTbSame2SameStruct1InterfaceSimulationService::BroadcastProp1Changed_Implementation(const FTbSame2Struct1& InProp1)
+{
+	Prop1 = InProp1;
+	Prop1Changed.Broadcast(InProp1);
 }
 
 FTbSame2Struct1 UTbSame2SameStruct1InterfaceSimulationService::GetProp1_Implementation() const

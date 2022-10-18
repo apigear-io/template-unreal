@@ -78,6 +78,24 @@ public:
 	void FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FString>& Result, const TArray<FString>& ParamString) override{};
 	TArray<FString> FuncString_Implementation(const TArray<FString>& ParamString) override;
 
+protected:
+	// signals
+	void BroadcastSigBool_Implementation(const TArray<bool>& ParamBool) override;
+
+	void BroadcastSigInt_Implementation(const TArray<int32>& ParamInt) override;
+
+	void BroadcastSigFloat_Implementation(const TArray<float>& ParamFloat) override;
+
+	void BroadcastSigString_Implementation(const TArray<FString>& ParamString) override;
+
+	void BroadcastPropBoolChanged_Implementation(const TArray<bool>& PropBool) override;
+
+	void BroadcastPropIntChanged_Implementation(const TArray<int32>& PropInt) override;
+
+	void BroadcastPropFloatChanged_Implementation(const TArray<float>& PropFloat) override;
+
+	void BroadcastPropStringChanged_Implementation(const TArray<FString>& PropString) override;
+
 private:
 	// properties - local copy
 	TArray<bool> PropBool;

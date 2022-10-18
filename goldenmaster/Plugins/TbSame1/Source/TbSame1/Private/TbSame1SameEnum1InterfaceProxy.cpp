@@ -69,16 +69,16 @@ UTbSame1SameEnum1InterfaceProxy::UTbSame1SameEnum1InterfaceProxy()
 	, Prop1(ETbSame1Enum1::VALUE1)
 {
 	BackendService = FTbSame1ModuleFactory::createITbSame1SameEnum1InterfaceInterface();
-	BackendService->GetProp1ChangedDelegate().AddDynamic(this, &UTbSame1SameEnum1InterfaceProxy::OnProp1Changed);
-	BackendService->GetSig1SignalDelegate().AddDynamic(this, &UTbSame1SameEnum1InterfaceProxy::OnSig1);
+	BackendService->GetProp1ChangedDelegate().AddDynamic(this, &UTbSame1SameEnum1InterfaceProxy::BroadcastProp1Changed);
+	BackendService->GetSig1SignalDelegate().AddDynamic(this, &UTbSame1SameEnum1InterfaceProxy::BroadcastSig1);
 }
 
 UTbSame1SameEnum1InterfaceProxy::~UTbSame1SameEnum1InterfaceProxy()
 {
 	if (BackendService != nullptr)
 	{
-		//BackendService->GetProp1ChangedDelegate().RemoveDynamic(this, &UTbSame1SameEnum1InterfaceProxy::OnProp1Changed);
-		//BackendService->GetSig1SignalDelegate().RemoveDynamic(this, &UTbSame1SameEnum1InterfaceProxy::OnSig1);
+		//BackendService->GetProp1ChangedDelegate().RemoveDynamic(this, &UTbSame1SameEnum1InterfaceProxy::BroadcastProp1Changed);
+		//BackendService->GetSig1SignalDelegate().RemoveDynamic(this, &UTbSame1SameEnum1InterfaceProxy::BroadcastSig1);
 	}
 }
 
@@ -87,19 +87,19 @@ void UTbSame1SameEnum1InterfaceProxy::setBackendService(TScriptInterface<ITbSame
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		BackendService->GetProp1ChangedDelegate().RemoveDynamic(this, &UTbSame1SameEnum1InterfaceProxy::OnProp1Changed);
-		BackendService->GetSig1SignalDelegate().RemoveDynamic(this, &UTbSame1SameEnum1InterfaceProxy::OnSig1);
+		BackendService->GetProp1ChangedDelegate().RemoveDynamic(this, &UTbSame1SameEnum1InterfaceProxy::BroadcastProp1Changed);
+		BackendService->GetSig1SignalDelegate().RemoveDynamic(this, &UTbSame1SameEnum1InterfaceProxy::BroadcastSig1);
 	}
 
 	// subscribe to new backend
 	BackendService = InService;
 	// connect property changed signals or simple events
-	BackendService->GetProp1ChangedDelegate().AddDynamic(this, &UTbSame1SameEnum1InterfaceProxy::OnProp1Changed);
-	BackendService->GetSig1SignalDelegate().AddDynamic(this, &UTbSame1SameEnum1InterfaceProxy::OnSig1);
+	BackendService->GetProp1ChangedDelegate().AddDynamic(this, &UTbSame1SameEnum1InterfaceProxy::BroadcastProp1Changed);
+	BackendService->GetSig1SignalDelegate().AddDynamic(this, &UTbSame1SameEnum1InterfaceProxy::BroadcastSig1);
 	// populate service state to proxy
 	Prop1 = BackendService->Execute_GetProp1(BackendService.GetObject());
 }
-void UTbSame1SameEnum1InterfaceProxy::OnSig1(const ETbSame1Enum1& Param1)
+void UTbSame1SameEnum1InterfaceProxy::BroadcastSig1_Implementation(const ETbSame1Enum1& Param1)
 {
 	TbSame1SameEnum1InterfaceTracer::trace_signalSig1(Param1);
 	Sig1Signal.Broadcast(Param1);
@@ -110,7 +110,7 @@ FTbSame1SameEnum1InterfaceSig1Delegate& UTbSame1SameEnum1InterfaceProxy::GetSig1
 	return Sig1Signal;
 }
 
-void UTbSame1SameEnum1InterfaceProxy::OnProp1Changed(const ETbSame1Enum1& InProp1)
+void UTbSame1SameEnum1InterfaceProxy::BroadcastProp1Changed_Implementation(const ETbSame1Enum1& InProp1)
 {
 	TbSame1SameEnum1InterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop1 = InProp1;

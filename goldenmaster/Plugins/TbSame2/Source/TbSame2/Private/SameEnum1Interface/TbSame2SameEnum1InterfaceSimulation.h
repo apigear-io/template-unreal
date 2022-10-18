@@ -42,6 +42,12 @@ public:
 	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, const ETbSame2Enum1& Param1) override{};
 	ETbSame2Enum1 Func1_Implementation(const ETbSame2Enum1& Param1) override;
 
+protected:
+	// signals
+	void BroadcastSig1_Implementation(const ETbSame2Enum1& Param1) override;
+
+	void BroadcastProp1Changed_Implementation(const ETbSame2Enum1& Prop1) override;
+
 private:
 	// properties - local copy
 	ETbSame2Enum1 Prop1;

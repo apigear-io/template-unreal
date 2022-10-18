@@ -26,14 +26,30 @@ UTbSame2SameStruct2InterfaceLocalService::~UTbSame2SameStruct2InterfaceLocalServ
 {
 }
 
+void UTbSame2SameStruct2InterfaceLocalService::BroadcastSig1_Implementation(const FTbSame2Struct1& Param1)
+{
+	Sig1Signal.Broadcast(Param1);
+}
+
 FTbSame2SameStruct2InterfaceSig1Delegate& UTbSame2SameStruct2InterfaceLocalService::GetSig1SignalDelegate()
 {
 	return Sig1Signal;
 }
 
+void UTbSame2SameStruct2InterfaceLocalService::BroadcastSig2_Implementation(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2)
+{
+	Sig2Signal.Broadcast(Param1, Param2);
+}
+
 FTbSame2SameStruct2InterfaceSig2Delegate& UTbSame2SameStruct2InterfaceLocalService::GetSig2SignalDelegate()
 {
 	return Sig2Signal;
+}
+
+void UTbSame2SameStruct2InterfaceLocalService::BroadcastProp1Changed_Implementation(const FTbSame2Struct2& InProp1)
+{
+	Prop1 = InProp1;
+	Prop1Changed.Broadcast(InProp1);
 }
 
 FTbSame2Struct2 UTbSame2SameStruct2InterfaceLocalService::GetProp1_Implementation() const
@@ -54,6 +70,12 @@ FTbSame2SameStruct2InterfaceProp1ChangedDelegate& UTbSame2SameStruct2InterfaceLo
 {
 	return Prop1Changed;
 }
+void UTbSame2SameStruct2InterfaceLocalService::BroadcastProp2Changed_Implementation(const FTbSame2Struct2& InProp2)
+{
+	Prop2 = InProp2;
+	Prop2Changed.Broadcast(InProp2);
+}
+
 FTbSame2Struct2 UTbSame2SameStruct2InterfaceLocalService::GetProp2_Implementation() const
 {
 	return Prop2;

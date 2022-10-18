@@ -50,6 +50,12 @@ public:
 	void olinkOnInit(std::string name, nlohmann::json props, ApiGear::ObjectLink::IClientNode* node) override;
 	void olinkOnRelease() override;
 
+protected:
+	// signals
+	void BroadcastSig1_Implementation(const FTbSame2Struct1& Param1) override;
+
+	void BroadcastProp1Changed_Implementation(const FTbSame2Struct1& Prop1) override;
+
 private:
 	void applyState(const nlohmann::json& fields);
 	ApiGear::ObjectLink::IClientNode* m_node;

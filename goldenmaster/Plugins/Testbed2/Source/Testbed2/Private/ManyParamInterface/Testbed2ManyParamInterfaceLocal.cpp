@@ -28,9 +28,19 @@ UTestbed2ManyParamInterfaceLocalService::~UTestbed2ManyParamInterfaceLocalServic
 {
 }
 
+void UTestbed2ManyParamInterfaceLocalService::BroadcastSig1_Implementation(int32 Param1)
+{
+	Sig1Signal.Broadcast(Param1);
+}
+
 FTestbed2ManyParamInterfaceSig1Delegate& UTestbed2ManyParamInterfaceLocalService::GetSig1SignalDelegate()
 {
 	return Sig1Signal;
+}
+
+void UTestbed2ManyParamInterfaceLocalService::BroadcastSig2_Implementation(int32 Param1, int32 Param2)
+{
+	Sig2Signal.Broadcast(Param1, Param2);
 }
 
 FTestbed2ManyParamInterfaceSig2Delegate& UTestbed2ManyParamInterfaceLocalService::GetSig2SignalDelegate()
@@ -38,14 +48,30 @@ FTestbed2ManyParamInterfaceSig2Delegate& UTestbed2ManyParamInterfaceLocalService
 	return Sig2Signal;
 }
 
+void UTestbed2ManyParamInterfaceLocalService::BroadcastSig3_Implementation(int32 Param1, int32 Param2, int32 Param3)
+{
+	Sig3Signal.Broadcast(Param1, Param2, Param3);
+}
+
 FTestbed2ManyParamInterfaceSig3Delegate& UTestbed2ManyParamInterfaceLocalService::GetSig3SignalDelegate()
 {
 	return Sig3Signal;
 }
 
+void UTestbed2ManyParamInterfaceLocalService::BroadcastSig4_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
+{
+	Sig4Signal.Broadcast(Param1, Param2, Param3, Param4);
+}
+
 FTestbed2ManyParamInterfaceSig4Delegate& UTestbed2ManyParamInterfaceLocalService::GetSig4SignalDelegate()
 {
 	return Sig4Signal;
+}
+
+void UTestbed2ManyParamInterfaceLocalService::BroadcastProp1Changed_Implementation(int32 InProp1)
+{
+	Prop1 = InProp1;
+	Prop1Changed.Broadcast(InProp1);
 }
 
 int32 UTestbed2ManyParamInterfaceLocalService::GetProp1_Implementation() const
@@ -66,6 +92,12 @@ FTestbed2ManyParamInterfaceProp1ChangedDelegate& UTestbed2ManyParamInterfaceLoca
 {
 	return Prop1Changed;
 }
+void UTestbed2ManyParamInterfaceLocalService::BroadcastProp2Changed_Implementation(int32 InProp2)
+{
+	Prop2 = InProp2;
+	Prop2Changed.Broadcast(InProp2);
+}
+
 int32 UTestbed2ManyParamInterfaceLocalService::GetProp2_Implementation() const
 {
 	return Prop2;
@@ -84,6 +116,12 @@ FTestbed2ManyParamInterfaceProp2ChangedDelegate& UTestbed2ManyParamInterfaceLoca
 {
 	return Prop2Changed;
 }
+void UTestbed2ManyParamInterfaceLocalService::BroadcastProp3Changed_Implementation(int32 InProp3)
+{
+	Prop3 = InProp3;
+	Prop3Changed.Broadcast(InProp3);
+}
+
 int32 UTestbed2ManyParamInterfaceLocalService::GetProp3_Implementation() const
 {
 	return Prop3;
@@ -102,6 +140,12 @@ FTestbed2ManyParamInterfaceProp3ChangedDelegate& UTestbed2ManyParamInterfaceLoca
 {
 	return Prop3Changed;
 }
+void UTestbed2ManyParamInterfaceLocalService::BroadcastProp4Changed_Implementation(int32 InProp4)
+{
+	Prop4 = InProp4;
+	Prop4Changed.Broadcast(InProp4);
+}
+
 int32 UTestbed2ManyParamInterfaceLocalService::GetProp4_Implementation() const
 {
 	return Prop4;

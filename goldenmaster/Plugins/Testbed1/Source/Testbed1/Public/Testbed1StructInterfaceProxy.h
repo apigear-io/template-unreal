@@ -100,35 +100,28 @@ public:
 	void FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructString& Result, const FTestbed1StructString& ParamString) override;
 	FTestbed1StructString FuncString_Implementation(const FTestbed1StructString& ParamString) override;
 
+protected:
+	// signals
+	void BroadcastSigBool_Implementation(const FTestbed1StructBool& ParamBool) override;
+
+	void BroadcastSigInt_Implementation(const FTestbed1StructInt& ParamInt) override;
+
+	void BroadcastSigFloat_Implementation(const FTestbed1StructFloat& ParamFloat) override;
+
+	void BroadcastSigString_Implementation(const FTestbed1StructString& ParamString) override;
+
+	void BroadcastPropBoolChanged_Implementation(const FTestbed1StructBool& PropBool) override;
+
+	void BroadcastPropIntChanged_Implementation(const FTestbed1StructInt& PropInt) override;
+
+	void BroadcastPropFloatChanged_Implementation(const FTestbed1StructFloat& PropFloat) override;
+
+	void BroadcastPropStringChanged_Implementation(const FTestbed1StructString& PropString) override;
+
 private:
 	/** The connection to the service backend. */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|Testbed1|StructInterface")
 	TScriptInterface<ITestbed1StructInterfaceInterface> BackendService;
-
-	// signals
-	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
-	void OnSigBool(const FTestbed1StructBool& ParamBool);
-
-	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
-	void OnSigInt(const FTestbed1StructInt& ParamInt);
-
-	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
-	void OnSigFloat(const FTestbed1StructFloat& ParamFloat);
-
-	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
-	void OnSigString(const FTestbed1StructString& ParamString);
-
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
-	void OnPropBoolChanged(const FTestbed1StructBool& PropBool);
-
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
-	void OnPropIntChanged(const FTestbed1StructInt& PropInt);
-
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
-	void OnPropFloatChanged(const FTestbed1StructFloat& PropFloat);
-
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
-	void OnPropStringChanged(const FTestbed1StructString& PropString);
 
 	// properties - local copy
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropBool_Private, BlueprintSetter = SetPropBool_Private, Category = "ApiGear|Testbed1|StructInterface")

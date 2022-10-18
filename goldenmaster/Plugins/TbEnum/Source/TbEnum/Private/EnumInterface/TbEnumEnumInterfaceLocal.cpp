@@ -28,9 +28,19 @@ UTbEnumEnumInterfaceLocalService::~UTbEnumEnumInterfaceLocalService()
 {
 }
 
+void UTbEnumEnumInterfaceLocalService::BroadcastSig0_Implementation(const ETbEnumEnum0& Param0)
+{
+	Sig0Signal.Broadcast(Param0);
+}
+
 FTbEnumEnumInterfaceSig0Delegate& UTbEnumEnumInterfaceLocalService::GetSig0SignalDelegate()
 {
 	return Sig0Signal;
+}
+
+void UTbEnumEnumInterfaceLocalService::BroadcastSig1_Implementation(const ETbEnumEnum1& Param1)
+{
+	Sig1Signal.Broadcast(Param1);
 }
 
 FTbEnumEnumInterfaceSig1Delegate& UTbEnumEnumInterfaceLocalService::GetSig1SignalDelegate()
@@ -38,14 +48,30 @@ FTbEnumEnumInterfaceSig1Delegate& UTbEnumEnumInterfaceLocalService::GetSig1Signa
 	return Sig1Signal;
 }
 
+void UTbEnumEnumInterfaceLocalService::BroadcastSig2_Implementation(const ETbEnumEnum2& Param2)
+{
+	Sig2Signal.Broadcast(Param2);
+}
+
 FTbEnumEnumInterfaceSig2Delegate& UTbEnumEnumInterfaceLocalService::GetSig2SignalDelegate()
 {
 	return Sig2Signal;
 }
 
+void UTbEnumEnumInterfaceLocalService::BroadcastSig3_Implementation(const ETbEnumEnum3& Param3)
+{
+	Sig3Signal.Broadcast(Param3);
+}
+
 FTbEnumEnumInterfaceSig3Delegate& UTbEnumEnumInterfaceLocalService::GetSig3SignalDelegate()
 {
 	return Sig3Signal;
+}
+
+void UTbEnumEnumInterfaceLocalService::BroadcastProp0Changed_Implementation(const ETbEnumEnum0& InProp0)
+{
+	Prop0 = InProp0;
+	Prop0Changed.Broadcast(InProp0);
 }
 
 ETbEnumEnum0 UTbEnumEnumInterfaceLocalService::GetProp0_Implementation() const
@@ -66,6 +92,12 @@ FTbEnumEnumInterfaceProp0ChangedDelegate& UTbEnumEnumInterfaceLocalService::GetP
 {
 	return Prop0Changed;
 }
+void UTbEnumEnumInterfaceLocalService::BroadcastProp1Changed_Implementation(const ETbEnumEnum1& InProp1)
+{
+	Prop1 = InProp1;
+	Prop1Changed.Broadcast(InProp1);
+}
+
 ETbEnumEnum1 UTbEnumEnumInterfaceLocalService::GetProp1_Implementation() const
 {
 	return Prop1;
@@ -84,6 +116,12 @@ FTbEnumEnumInterfaceProp1ChangedDelegate& UTbEnumEnumInterfaceLocalService::GetP
 {
 	return Prop1Changed;
 }
+void UTbEnumEnumInterfaceLocalService::BroadcastProp2Changed_Implementation(const ETbEnumEnum2& InProp2)
+{
+	Prop2 = InProp2;
+	Prop2Changed.Broadcast(InProp2);
+}
+
 ETbEnumEnum2 UTbEnumEnumInterfaceLocalService::GetProp2_Implementation() const
 {
 	return Prop2;
@@ -102,6 +140,12 @@ FTbEnumEnumInterfaceProp2ChangedDelegate& UTbEnumEnumInterfaceLocalService::GetP
 {
 	return Prop2Changed;
 }
+void UTbEnumEnumInterfaceLocalService::BroadcastProp3Changed_Implementation(const ETbEnumEnum3& InProp3)
+{
+	Prop3 = InProp3;
+	Prop3Changed.Broadcast(InProp3);
+}
+
 ETbEnumEnum3 UTbEnumEnumInterfaceLocalService::GetProp3_Implementation() const
 {
 	return Prop3;

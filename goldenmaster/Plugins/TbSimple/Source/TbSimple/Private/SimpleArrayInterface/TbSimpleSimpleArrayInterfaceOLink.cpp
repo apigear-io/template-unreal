@@ -61,9 +61,19 @@ UTbSimpleSimpleArrayInterfaceOLinkService::~UTbSimpleSimpleArrayInterfaceOLinkSe
 	m_node = nullptr;
 }
 
+void UTbSimpleSimpleArrayInterfaceOLinkService::BroadcastSigBool_Implementation(const TArray<bool>& ParamBool)
+{
+	SigBoolSignal.Broadcast(ParamBool);
+}
+
 FTbSimpleSimpleArrayInterfaceSigBoolDelegate& UTbSimpleSimpleArrayInterfaceOLinkService::GetSigBoolSignalDelegate()
 {
 	return SigBoolSignal;
+}
+
+void UTbSimpleSimpleArrayInterfaceOLinkService::BroadcastSigInt_Implementation(const TArray<int32>& ParamInt)
+{
+	SigIntSignal.Broadcast(ParamInt);
 }
 
 FTbSimpleSimpleArrayInterfaceSigIntDelegate& UTbSimpleSimpleArrayInterfaceOLinkService::GetSigIntSignalDelegate()
@@ -71,14 +81,30 @@ FTbSimpleSimpleArrayInterfaceSigIntDelegate& UTbSimpleSimpleArrayInterfaceOLinkS
 	return SigIntSignal;
 }
 
+void UTbSimpleSimpleArrayInterfaceOLinkService::BroadcastSigFloat_Implementation(const TArray<float>& ParamFloat)
+{
+	SigFloatSignal.Broadcast(ParamFloat);
+}
+
 FTbSimpleSimpleArrayInterfaceSigFloatDelegate& UTbSimpleSimpleArrayInterfaceOLinkService::GetSigFloatSignalDelegate()
 {
 	return SigFloatSignal;
 }
 
+void UTbSimpleSimpleArrayInterfaceOLinkService::BroadcastSigString_Implementation(const TArray<FString>& ParamString)
+{
+	SigStringSignal.Broadcast(ParamString);
+}
+
 FTbSimpleSimpleArrayInterfaceSigStringDelegate& UTbSimpleSimpleArrayInterfaceOLinkService::GetSigStringSignalDelegate()
 {
 	return SigStringSignal;
+}
+
+void UTbSimpleSimpleArrayInterfaceOLinkService::BroadcastPropBoolChanged_Implementation(const TArray<bool>& InPropBool)
+{
+	PropBool = InPropBool;
+	PropBoolChanged.Broadcast(InPropBool);
 }
 
 TArray<bool> UTbSimpleSimpleArrayInterfaceOLinkService::GetPropBool_Implementation() const
@@ -99,6 +125,12 @@ FTbSimpleSimpleArrayInterfacePropBoolChangedDelegate& UTbSimpleSimpleArrayInterf
 {
 	return PropBoolChanged;
 }
+void UTbSimpleSimpleArrayInterfaceOLinkService::BroadcastPropIntChanged_Implementation(const TArray<int32>& InPropInt)
+{
+	PropInt = InPropInt;
+	PropIntChanged.Broadcast(InPropInt);
+}
+
 TArray<int32> UTbSimpleSimpleArrayInterfaceOLinkService::GetPropInt_Implementation() const
 {
 	return PropInt;
@@ -117,6 +149,12 @@ FTbSimpleSimpleArrayInterfacePropIntChangedDelegate& UTbSimpleSimpleArrayInterfa
 {
 	return PropIntChanged;
 }
+void UTbSimpleSimpleArrayInterfaceOLinkService::BroadcastPropFloatChanged_Implementation(const TArray<float>& InPropFloat)
+{
+	PropFloat = InPropFloat;
+	PropFloatChanged.Broadcast(InPropFloat);
+}
+
 TArray<float> UTbSimpleSimpleArrayInterfaceOLinkService::GetPropFloat_Implementation() const
 {
 	return PropFloat;
@@ -135,6 +173,12 @@ FTbSimpleSimpleArrayInterfacePropFloatChangedDelegate& UTbSimpleSimpleArrayInter
 {
 	return PropFloatChanged;
 }
+void UTbSimpleSimpleArrayInterfaceOLinkService::BroadcastPropStringChanged_Implementation(const TArray<FString>& InPropString)
+{
+	PropString = InPropString;
+	PropStringChanged.Broadcast(InPropString);
+}
+
 TArray<FString> UTbSimpleSimpleArrayInterfaceOLinkService::GetPropString_Implementation() const
 {
 	return PropString;

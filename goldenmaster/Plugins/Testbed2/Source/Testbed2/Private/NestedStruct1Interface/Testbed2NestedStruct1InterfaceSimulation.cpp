@@ -102,9 +102,20 @@ UTestbed2NestedStruct1InterfaceSimulationService::~UTestbed2NestedStruct1Interfa
 	}
 }
 
+void UTestbed2NestedStruct1InterfaceSimulationService::BroadcastSig1_Implementation(const FTestbed2NestedStruct1& Param1)
+{
+	Sig1Signal.Broadcast(Param1);
+}
+
 FTestbed2NestedStruct1InterfaceSig1Delegate& UTestbed2NestedStruct1InterfaceSimulationService::GetSig1SignalDelegate()
 {
 	return Sig1Signal;
+}
+
+void UTestbed2NestedStruct1InterfaceSimulationService::BroadcastProp1Changed_Implementation(const FTestbed2NestedStruct1& InProp1)
+{
+	Prop1 = InProp1;
+	Prop1Changed.Broadcast(InProp1);
 }
 
 FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceSimulationService::GetProp1_Implementation() const

@@ -28,9 +28,19 @@ UTbSimpleSimpleInterfaceLocalService::~UTbSimpleSimpleInterfaceLocalService()
 {
 }
 
+void UTbSimpleSimpleInterfaceLocalService::BroadcastSigBool_Implementation(bool bParamBool)
+{
+	SigBoolSignal.Broadcast(bParamBool);
+}
+
 FTbSimpleSimpleInterfaceSigBoolDelegate& UTbSimpleSimpleInterfaceLocalService::GetSigBoolSignalDelegate()
 {
 	return SigBoolSignal;
+}
+
+void UTbSimpleSimpleInterfaceLocalService::BroadcastSigInt_Implementation(int32 ParamInt)
+{
+	SigIntSignal.Broadcast(ParamInt);
 }
 
 FTbSimpleSimpleInterfaceSigIntDelegate& UTbSimpleSimpleInterfaceLocalService::GetSigIntSignalDelegate()
@@ -38,14 +48,30 @@ FTbSimpleSimpleInterfaceSigIntDelegate& UTbSimpleSimpleInterfaceLocalService::Ge
 	return SigIntSignal;
 }
 
+void UTbSimpleSimpleInterfaceLocalService::BroadcastSigFloat_Implementation(float ParamFloat)
+{
+	SigFloatSignal.Broadcast(ParamFloat);
+}
+
 FTbSimpleSimpleInterfaceSigFloatDelegate& UTbSimpleSimpleInterfaceLocalService::GetSigFloatSignalDelegate()
 {
 	return SigFloatSignal;
 }
 
+void UTbSimpleSimpleInterfaceLocalService::BroadcastSigString_Implementation(const FString& ParamString)
+{
+	SigStringSignal.Broadcast(ParamString);
+}
+
 FTbSimpleSimpleInterfaceSigStringDelegate& UTbSimpleSimpleInterfaceLocalService::GetSigStringSignalDelegate()
 {
 	return SigStringSignal;
+}
+
+void UTbSimpleSimpleInterfaceLocalService::BroadcastPropBoolChanged_Implementation(bool bInPropBool)
+{
+	bPropBool = bInPropBool;
+	PropBoolChanged.Broadcast(bInPropBool);
 }
 
 bool UTbSimpleSimpleInterfaceLocalService::GetPropBool_Implementation() const
@@ -66,6 +92,12 @@ FTbSimpleSimpleInterfacePropBoolChangedDelegate& UTbSimpleSimpleInterfaceLocalSe
 {
 	return PropBoolChanged;
 }
+void UTbSimpleSimpleInterfaceLocalService::BroadcastPropIntChanged_Implementation(int32 InPropInt)
+{
+	PropInt = InPropInt;
+	PropIntChanged.Broadcast(InPropInt);
+}
+
 int32 UTbSimpleSimpleInterfaceLocalService::GetPropInt_Implementation() const
 {
 	return PropInt;
@@ -84,6 +116,12 @@ FTbSimpleSimpleInterfacePropIntChangedDelegate& UTbSimpleSimpleInterfaceLocalSer
 {
 	return PropIntChanged;
 }
+void UTbSimpleSimpleInterfaceLocalService::BroadcastPropFloatChanged_Implementation(float InPropFloat)
+{
+	PropFloat = InPropFloat;
+	PropFloatChanged.Broadcast(InPropFloat);
+}
+
 float UTbSimpleSimpleInterfaceLocalService::GetPropFloat_Implementation() const
 {
 	return PropFloat;
@@ -102,6 +140,12 @@ FTbSimpleSimpleInterfacePropFloatChangedDelegate& UTbSimpleSimpleInterfaceLocalS
 {
 	return PropFloatChanged;
 }
+void UTbSimpleSimpleInterfaceLocalService::BroadcastPropStringChanged_Implementation(const FString& InPropString)
+{
+	PropString = InPropString;
+	PropStringChanged.Broadcast(InPropString);
+}
+
 FString UTbSimpleSimpleInterfaceLocalService::GetPropString_Implementation() const
 {
 	return PropString;

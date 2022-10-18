@@ -102,9 +102,20 @@ UTbSame2SameEnum1InterfaceSimulationService::~UTbSame2SameEnum1InterfaceSimulati
 	}
 }
 
+void UTbSame2SameEnum1InterfaceSimulationService::BroadcastSig1_Implementation(const ETbSame2Enum1& Param1)
+{
+	Sig1Signal.Broadcast(Param1);
+}
+
 FTbSame2SameEnum1InterfaceSig1Delegate& UTbSame2SameEnum1InterfaceSimulationService::GetSig1SignalDelegate()
 {
 	return Sig1Signal;
+}
+
+void UTbSame2SameEnum1InterfaceSimulationService::BroadcastProp1Changed_Implementation(const ETbSame2Enum1& InProp1)
+{
+	Prop1 = InProp1;
+	Prop1Changed.Broadcast(InProp1);
 }
 
 ETbSame2Enum1 UTbSame2SameEnum1InterfaceSimulationService::GetProp1_Implementation() const

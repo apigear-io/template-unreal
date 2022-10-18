@@ -73,20 +73,21 @@ public:
 	{{ueReturn "" .Return}} {{Camel .Name}}_Implementation({{ueParams "" .Params}}) override;
 	{{- end }}
 {{ end }}
+protected:
+	// signals
+{{- range .Interface.Signals }}
+	void Broadcast{{Camel .Name}}_Implementation({{ueParams "" .Params}}) override;
+{{ else }}
+{{- end }}
+{{- range .Interface.Properties }}
+	void Broadcast{{Camel .Name}}Changed_Implementation({{ueParam "" .}}) override;
+{{ else }}
+{{ end }}
 private:
 	/** The connection to the service backend. */
 	UPROPERTY(VisibleAnywhere, Category = "{{$Category}}")
 	TScriptInterface<I{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface> BackendService;
 
-	// signals
-{{- range .Interface.Signals }}
-	UFUNCTION(Category = "{{$Category}}", BlueprintInternalUseOnly)
-	void On{{Camel .Name}}({{ueParams "" .Params}});
-{{ end }}
-{{- range .Interface.Properties }}
-	UFUNCTION(BlueprintCallable, Category = "{{$Category}}", BlueprintInternalUseOnly)
-	void On{{Camel .Name}}Changed({{ueParam "" .}});
-{{ end }}
 	// properties - local copy
 {{- range .Interface.Properties }}
 {{- if .Description }}

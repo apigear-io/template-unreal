@@ -72,28 +72,28 @@ UTbSimpleSimpleInterfaceProxy::UTbSimpleSimpleInterfaceProxy()
 	, PropString(FString())
 {
 	BackendService = FTbSimpleModuleFactory::createITbSimpleSimpleInterfaceInterface();
-	BackendService->GetPropBoolChangedDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceProxy::OnPropBoolChanged);
-	BackendService->GetPropIntChangedDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceProxy::OnPropIntChanged);
-	BackendService->GetPropFloatChangedDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceProxy::OnPropFloatChanged);
-	BackendService->GetPropStringChangedDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceProxy::OnPropStringChanged);
-	BackendService->GetSigBoolSignalDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceProxy::OnSigBool);
-	BackendService->GetSigIntSignalDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceProxy::OnSigInt);
-	BackendService->GetSigFloatSignalDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceProxy::OnSigFloat);
-	BackendService->GetSigStringSignalDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceProxy::OnSigString);
+	BackendService->GetPropBoolChangedDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceProxy::BroadcastPropBoolChanged);
+	BackendService->GetPropIntChangedDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceProxy::BroadcastPropIntChanged);
+	BackendService->GetPropFloatChangedDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceProxy::BroadcastPropFloatChanged);
+	BackendService->GetPropStringChangedDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceProxy::BroadcastPropStringChanged);
+	BackendService->GetSigBoolSignalDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceProxy::BroadcastSigBool);
+	BackendService->GetSigIntSignalDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceProxy::BroadcastSigInt);
+	BackendService->GetSigFloatSignalDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceProxy::BroadcastSigFloat);
+	BackendService->GetSigStringSignalDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceProxy::BroadcastSigString);
 }
 
 UTbSimpleSimpleInterfaceProxy::~UTbSimpleSimpleInterfaceProxy()
 {
 	if (BackendService != nullptr)
 	{
-		//BackendService->GetPropBoolChangedDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceProxy::OnPropBoolChanged);
-		//BackendService->GetPropIntChangedDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceProxy::OnPropIntChanged);
-		//BackendService->GetPropFloatChangedDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceProxy::OnPropFloatChanged);
-		//BackendService->GetPropStringChangedDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceProxy::OnPropStringChanged);
-		//BackendService->GetSigBoolSignalDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceProxy::OnSigBool);
-		//BackendService->GetSigIntSignalDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceProxy::OnSigInt);
-		//BackendService->GetSigFloatSignalDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceProxy::OnSigFloat);
-		//BackendService->GetSigStringSignalDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceProxy::OnSigString);
+		//BackendService->GetPropBoolChangedDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceProxy::BroadcastPropBoolChanged);
+		//BackendService->GetPropIntChangedDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceProxy::BroadcastPropIntChanged);
+		//BackendService->GetPropFloatChangedDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceProxy::BroadcastPropFloatChanged);
+		//BackendService->GetPropStringChangedDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceProxy::BroadcastPropStringChanged);
+		//BackendService->GetSigBoolSignalDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceProxy::BroadcastSigBool);
+		//BackendService->GetSigIntSignalDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceProxy::BroadcastSigInt);
+		//BackendService->GetSigFloatSignalDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceProxy::BroadcastSigFloat);
+		//BackendService->GetSigStringSignalDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceProxy::BroadcastSigString);
 	}
 }
 
@@ -102,34 +102,34 @@ void UTbSimpleSimpleInterfaceProxy::setBackendService(TScriptInterface<ITbSimple
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		BackendService->GetPropBoolChangedDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceProxy::OnPropBoolChanged);
-		BackendService->GetPropIntChangedDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceProxy::OnPropIntChanged);
-		BackendService->GetPropFloatChangedDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceProxy::OnPropFloatChanged);
-		BackendService->GetPropStringChangedDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceProxy::OnPropStringChanged);
-		BackendService->GetSigBoolSignalDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceProxy::OnSigBool);
-		BackendService->GetSigIntSignalDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceProxy::OnSigInt);
-		BackendService->GetSigFloatSignalDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceProxy::OnSigFloat);
-		BackendService->GetSigStringSignalDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceProxy::OnSigString);
+		BackendService->GetPropBoolChangedDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceProxy::BroadcastPropBoolChanged);
+		BackendService->GetPropIntChangedDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceProxy::BroadcastPropIntChanged);
+		BackendService->GetPropFloatChangedDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceProxy::BroadcastPropFloatChanged);
+		BackendService->GetPropStringChangedDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceProxy::BroadcastPropStringChanged);
+		BackendService->GetSigBoolSignalDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceProxy::BroadcastSigBool);
+		BackendService->GetSigIntSignalDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceProxy::BroadcastSigInt);
+		BackendService->GetSigFloatSignalDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceProxy::BroadcastSigFloat);
+		BackendService->GetSigStringSignalDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceProxy::BroadcastSigString);
 	}
 
 	// subscribe to new backend
 	BackendService = InService;
 	// connect property changed signals or simple events
-	BackendService->GetPropBoolChangedDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceProxy::OnPropBoolChanged);
-	BackendService->GetPropIntChangedDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceProxy::OnPropIntChanged);
-	BackendService->GetPropFloatChangedDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceProxy::OnPropFloatChanged);
-	BackendService->GetPropStringChangedDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceProxy::OnPropStringChanged);
-	BackendService->GetSigBoolSignalDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceProxy::OnSigBool);
-	BackendService->GetSigIntSignalDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceProxy::OnSigInt);
-	BackendService->GetSigFloatSignalDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceProxy::OnSigFloat);
-	BackendService->GetSigStringSignalDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceProxy::OnSigString);
+	BackendService->GetPropBoolChangedDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceProxy::BroadcastPropBoolChanged);
+	BackendService->GetPropIntChangedDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceProxy::BroadcastPropIntChanged);
+	BackendService->GetPropFloatChangedDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceProxy::BroadcastPropFloatChanged);
+	BackendService->GetPropStringChangedDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceProxy::BroadcastPropStringChanged);
+	BackendService->GetSigBoolSignalDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceProxy::BroadcastSigBool);
+	BackendService->GetSigIntSignalDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceProxy::BroadcastSigInt);
+	BackendService->GetSigFloatSignalDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceProxy::BroadcastSigFloat);
+	BackendService->GetSigStringSignalDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceProxy::BroadcastSigString);
 	// populate service state to proxy
 	bPropBool = BackendService->Execute_GetPropBool(BackendService.GetObject());
 	PropInt = BackendService->Execute_GetPropInt(BackendService.GetObject());
 	PropFloat = BackendService->Execute_GetPropFloat(BackendService.GetObject());
 	PropString = BackendService->Execute_GetPropString(BackendService.GetObject());
 }
-void UTbSimpleSimpleInterfaceProxy::OnSigBool(bool bParamBool)
+void UTbSimpleSimpleInterfaceProxy::BroadcastSigBool_Implementation(bool bParamBool)
 {
 	TbSimpleSimpleInterfaceTracer::trace_signalSigBool(bParamBool);
 	SigBoolSignal.Broadcast(bParamBool);
@@ -140,7 +140,7 @@ FTbSimpleSimpleInterfaceSigBoolDelegate& UTbSimpleSimpleInterfaceProxy::GetSigBo
 	return SigBoolSignal;
 }
 
-void UTbSimpleSimpleInterfaceProxy::OnSigInt(int32 ParamInt)
+void UTbSimpleSimpleInterfaceProxy::BroadcastSigInt_Implementation(int32 ParamInt)
 {
 	TbSimpleSimpleInterfaceTracer::trace_signalSigInt(ParamInt);
 	SigIntSignal.Broadcast(ParamInt);
@@ -151,7 +151,7 @@ FTbSimpleSimpleInterfaceSigIntDelegate& UTbSimpleSimpleInterfaceProxy::GetSigInt
 	return SigIntSignal;
 }
 
-void UTbSimpleSimpleInterfaceProxy::OnSigFloat(float ParamFloat)
+void UTbSimpleSimpleInterfaceProxy::BroadcastSigFloat_Implementation(float ParamFloat)
 {
 	TbSimpleSimpleInterfaceTracer::trace_signalSigFloat(ParamFloat);
 	SigFloatSignal.Broadcast(ParamFloat);
@@ -162,7 +162,7 @@ FTbSimpleSimpleInterfaceSigFloatDelegate& UTbSimpleSimpleInterfaceProxy::GetSigF
 	return SigFloatSignal;
 }
 
-void UTbSimpleSimpleInterfaceProxy::OnSigString(const FString& ParamString)
+void UTbSimpleSimpleInterfaceProxy::BroadcastSigString_Implementation(const FString& ParamString)
 {
 	TbSimpleSimpleInterfaceTracer::trace_signalSigString(ParamString);
 	SigStringSignal.Broadcast(ParamString);
@@ -173,7 +173,7 @@ FTbSimpleSimpleInterfaceSigStringDelegate& UTbSimpleSimpleInterfaceProxy::GetSig
 	return SigStringSignal;
 }
 
-void UTbSimpleSimpleInterfaceProxy::OnPropBoolChanged(bool bInPropBool)
+void UTbSimpleSimpleInterfaceProxy::BroadcastPropBoolChanged_Implementation(bool bInPropBool)
 {
 	TbSimpleSimpleInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	bPropBool = bInPropBool;
@@ -206,7 +206,7 @@ FTbSimpleSimpleInterfacePropBoolChangedDelegate& UTbSimpleSimpleInterfaceProxy::
 	return PropBoolChanged;
 }
 
-void UTbSimpleSimpleInterfaceProxy::OnPropIntChanged(int32 InPropInt)
+void UTbSimpleSimpleInterfaceProxy::BroadcastPropIntChanged_Implementation(int32 InPropInt)
 {
 	TbSimpleSimpleInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropInt = InPropInt;
@@ -239,7 +239,7 @@ FTbSimpleSimpleInterfacePropIntChangedDelegate& UTbSimpleSimpleInterfaceProxy::G
 	return PropIntChanged;
 }
 
-void UTbSimpleSimpleInterfaceProxy::OnPropFloatChanged(float InPropFloat)
+void UTbSimpleSimpleInterfaceProxy::BroadcastPropFloatChanged_Implementation(float InPropFloat)
 {
 	TbSimpleSimpleInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropFloat = InPropFloat;
@@ -272,7 +272,7 @@ FTbSimpleSimpleInterfacePropFloatChangedDelegate& UTbSimpleSimpleInterfaceProxy:
 	return PropFloatChanged;
 }
 
-void UTbSimpleSimpleInterfaceProxy::OnPropStringChanged(const FString& InPropString)
+void UTbSimpleSimpleInterfaceProxy::BroadcastPropStringChanged_Implementation(const FString& InPropString)
 {
 	TbSimpleSimpleInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropString = InPropString;

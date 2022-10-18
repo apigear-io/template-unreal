@@ -70,23 +70,20 @@ public:
 	void Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, const ETbSame2Enum1& Param1, const ETbSame2Enum2& Param2) override;
 	ETbSame2Enum1 Func2_Implementation(const ETbSame2Enum1& Param1, const ETbSame2Enum2& Param2) override;
 
+protected:
+	// signals
+	void BroadcastSig1_Implementation(const ETbSame2Enum1& Param1) override;
+
+	void BroadcastSig2_Implementation(const ETbSame2Enum1& Param1, const ETbSame2Enum2& Param2) override;
+
+	void BroadcastProp1Changed_Implementation(const ETbSame2Enum1& Prop1) override;
+
+	void BroadcastProp2Changed_Implementation(const ETbSame2Enum2& Prop2) override;
+
 private:
 	/** The connection to the service backend. */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSame2|SameEnum2Interface")
 	TScriptInterface<ITbSame2SameEnum2InterfaceInterface> BackendService;
-
-	// signals
-	UFUNCTION(Category = "ApiGear|TbSame2|SameEnum2Interface", BlueprintInternalUseOnly)
-	void OnSig1(const ETbSame2Enum1& Param1);
-
-	UFUNCTION(Category = "ApiGear|TbSame2|SameEnum2Interface", BlueprintInternalUseOnly)
-	void OnSig2(const ETbSame2Enum1& Param1, const ETbSame2Enum2& Param2);
-
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum2Interface", BlueprintInternalUseOnly)
-	void OnProp1Changed(const ETbSame2Enum1& Prop1);
-
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum2Interface", BlueprintInternalUseOnly)
-	void OnProp2Changed(const ETbSame2Enum2& Prop2);
 
 	// properties - local copy
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1_Private, BlueprintSetter = SetProp1_Private, Category = "ApiGear|TbSame2|SameEnum2Interface")

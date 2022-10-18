@@ -100,35 +100,28 @@ public:
 	void FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FString>& Result, const TArray<FString>& ParamString) override;
 	TArray<FString> FuncString_Implementation(const TArray<FString>& ParamString) override;
 
+protected:
+	// signals
+	void BroadcastSigBool_Implementation(const TArray<bool>& ParamBool) override;
+
+	void BroadcastSigInt_Implementation(const TArray<int32>& ParamInt) override;
+
+	void BroadcastSigFloat_Implementation(const TArray<float>& ParamFloat) override;
+
+	void BroadcastSigString_Implementation(const TArray<FString>& ParamString) override;
+
+	void BroadcastPropBoolChanged_Implementation(const TArray<bool>& PropBool) override;
+
+	void BroadcastPropIntChanged_Implementation(const TArray<int32>& PropInt) override;
+
+	void BroadcastPropFloatChanged_Implementation(const TArray<float>& PropFloat) override;
+
+	void BroadcastPropStringChanged_Implementation(const TArray<FString>& PropString) override;
+
 private:
 	/** The connection to the service backend. */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSimple|SimpleArrayInterface")
 	TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> BackendService;
-
-	// signals
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface", BlueprintInternalUseOnly)
-	void OnSigBool(const TArray<bool>& ParamBool);
-
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface", BlueprintInternalUseOnly)
-	void OnSigInt(const TArray<int32>& ParamInt);
-
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface", BlueprintInternalUseOnly)
-	void OnSigFloat(const TArray<float>& ParamFloat);
-
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface", BlueprintInternalUseOnly)
-	void OnSigString(const TArray<FString>& ParamString);
-
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface", BlueprintInternalUseOnly)
-	void OnPropBoolChanged(const TArray<bool>& PropBool);
-
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface", BlueprintInternalUseOnly)
-	void OnPropIntChanged(const TArray<int32>& PropInt);
-
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface", BlueprintInternalUseOnly)
-	void OnPropFloatChanged(const TArray<float>& PropFloat);
-
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface", BlueprintInternalUseOnly)
-	void OnPropStringChanged(const TArray<FString>& PropString);
 
 	// properties - local copy
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropBool_Private, BlueprintSetter = SetPropBool_Private, Category = "ApiGear|TbSimple|SimpleArrayInterface")

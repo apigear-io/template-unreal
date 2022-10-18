@@ -100,35 +100,28 @@ public:
 	void Func4Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2, int32 Param3, int32 Param4) override;
 	int32 Func4_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4) override;
 
+protected:
+	// signals
+	void BroadcastSig1_Implementation(int32 Param1) override;
+
+	void BroadcastSig2_Implementation(int32 Param1, int32 Param2) override;
+
+	void BroadcastSig3_Implementation(int32 Param1, int32 Param2, int32 Param3) override;
+
+	void BroadcastSig4_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4) override;
+
+	void BroadcastProp1Changed_Implementation(int32 Prop1) override;
+
+	void BroadcastProp2Changed_Implementation(int32 Prop2) override;
+
+	void BroadcastProp3Changed_Implementation(int32 Prop3) override;
+
+	void BroadcastProp4Changed_Implementation(int32 Prop4) override;
+
 private:
 	/** The connection to the service backend. */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|Testbed2|ManyParamInterface")
 	TScriptInterface<ITestbed2ManyParamInterfaceInterface> BackendService;
-
-	// signals
-	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
-	void OnSig1(int32 Param1);
-
-	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
-	void OnSig2(int32 Param1, int32 Param2);
-
-	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
-	void OnSig3(int32 Param1, int32 Param2, int32 Param3);
-
-	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
-	void OnSig4(int32 Param1, int32 Param2, int32 Param3, int32 Param4);
-
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
-	void OnProp1Changed(int32 Prop1);
-
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
-	void OnProp2Changed(int32 Prop2);
-
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
-	void OnProp3Changed(int32 Prop3);
-
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
-	void OnProp4Changed(int32 Prop4);
 
 	// properties - local copy
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1_Private, BlueprintSetter = SetProp1_Private, Category = "ApiGear|Testbed2|ManyParamInterface")

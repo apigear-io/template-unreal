@@ -59,6 +59,16 @@ public:
 	{{ueReturn "" .Return}} {{Camel .Name}}_Implementation({{ueParams "" .Params}}) override;
 	{{- end }}
 {{ end }}
+protected:
+	// signals
+{{- range .Interface.Signals }}
+	void Broadcast{{Camel .Name}}_Implementation({{ueParams "" .Params}}) override;
+{{ else }}
+{{- end }}
+{{- range .Interface.Properties }}
+	void Broadcast{{Camel .Name}}Changed_Implementation({{ueParam "" .}}) override;
+{{ else }}
+{{ end }}
 private:
 	// properties - local copy - use setter functions to emit changed signals
 {{- range .Interface.Properties }}

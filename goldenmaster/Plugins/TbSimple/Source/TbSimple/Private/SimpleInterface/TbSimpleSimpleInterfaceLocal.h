@@ -80,6 +80,24 @@ public:
 	void FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FString& Result, const FString& ParamString) override{};
 	FString FuncString_Implementation(const FString& ParamString) override;
 
+protected:
+	// signals
+	void BroadcastSigBool_Implementation(bool bParamBool) override;
+
+	void BroadcastSigInt_Implementation(int32 ParamInt) override;
+
+	void BroadcastSigFloat_Implementation(float ParamFloat) override;
+
+	void BroadcastSigString_Implementation(const FString& ParamString) override;
+
+	void BroadcastPropBoolChanged_Implementation(bool bPropBool) override;
+
+	void BroadcastPropIntChanged_Implementation(int32 PropInt) override;
+
+	void BroadcastPropFloatChanged_Implementation(float PropFloat) override;
+
+	void BroadcastPropStringChanged_Implementation(const FString& PropString) override;
+
 private:
 	// properties - local copy - use setter functions to emit changed signals
 	bool bPropBool;
