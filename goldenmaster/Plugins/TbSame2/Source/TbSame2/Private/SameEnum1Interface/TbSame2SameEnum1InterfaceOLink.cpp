@@ -119,7 +119,7 @@ void UTbSame2SameEnum1InterfaceOLinkService::applyState(const nlohmann::json& fi
 		if (Prop1 != fields["prop1"].get<ETbSame2Enum1>())
 		{
 			Prop1 = fields["prop1"].get<ETbSame2Enum1>();
-			Prop1Changed.Broadcast(Prop1);
+			Execute_BroadcastProp1Changed(this, Prop1);
 		}
 	}
 }
@@ -134,7 +134,7 @@ void UTbSame2SameEnum1InterfaceOLinkService::olinkOnSignal(std::string name, nlo
 	std::string path = Name::pathFromName(name);
 	if (path == "sig1")
 	{
-		Sig1Signal.Broadcast(args[0].get<ETbSame2Enum1>());
+		Execute_BroadcastSig1(this, args[0].get<ETbSame2Enum1>());
 		return;
 	}
 }

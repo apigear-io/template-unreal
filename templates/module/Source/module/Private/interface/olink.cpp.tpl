@@ -140,7 +140,7 @@ void {{$Class}}::applyState(const nlohmann::json& fields)
 		if ({{ueVar "" .}} != fields["{{.Name}}"].get<{{ueReturn "" .}}>())
 		{
 			{{ueVar "" .}} = fields["{{.Name}}"].get<{{ueReturn "" .}}>();
-			{{Camel .Name}}Changed.Broadcast({{ueVar "" .}});
+			Execute_Broadcast{{Camel .Name}}Changed(this, {{ueVar "" .}});
 		}
 	}
 {{- end }}
@@ -157,10 +157,9 @@ void {{$Class}}::olinkOnSignal(std::string name, nlohmann::json args)
 {{- range .Interface.Signals }}
 	if (path == "{{.Name}}")
 	{
-		{{Camel .Name}}Signal.Broadcast(
+		Execute_Broadcast{{Camel .Name}}(this,
 		{{- range $idx, $elem := .Params -}}
-			{{- if $idx }}, {{ end -}}
-			args[{{$idx}}].get<{{ueReturn "" .}}>()
+			{{- if $idx }},{{ end }} args[{{$idx}}].get<{{ueReturn "" .}}>()
 		{{- end }});
 		return;
 	}

@@ -123,6 +123,31 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|Testbed1|StructInterface")
 	TScriptInterface<ITestbed1StructInterfaceInterface> BackendService;
 
+	// signals
+	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
+	void OnSigBool(const FTestbed1StructBool& ParamBool);
+
+	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
+	void OnSigInt(const FTestbed1StructInt& ParamInt);
+
+	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
+	void OnSigFloat(const FTestbed1StructFloat& ParamFloat);
+
+	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
+	void OnSigString(const FTestbed1StructString& ParamString);
+
+	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
+	void OnPropBoolChanged(const FTestbed1StructBool& PropBool);
+
+	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
+	void OnPropIntChanged(const FTestbed1StructInt& PropInt);
+
+	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
+	void OnPropFloatChanged(const FTestbed1StructFloat& PropFloat);
+
+	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
+	void OnPropStringChanged(const FTestbed1StructString& PropString);
+
 	// properties - local copy
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropBool_Private, BlueprintSetter = SetPropBool_Private, Category = "ApiGear|Testbed1|StructInterface")
 	FTestbed1StructBool PropBool;

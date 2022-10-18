@@ -48,7 +48,7 @@ UTestbed2ManyParamInterfaceSimulationService::UTestbed2ManyParamInterfaceSimulat
 			if (Prop1 != fields["prop1"].get<int32>())
 			{
 				Prop1 = fields["prop1"].get<int32>();
-				Prop1Changed.Broadcast(Prop1);
+				Execute_BroadcastProp1Changed(this, Prop1);
 			}
 		}
 		if (fields.contains("prop2"))
@@ -56,7 +56,7 @@ UTestbed2ManyParamInterfaceSimulationService::UTestbed2ManyParamInterfaceSimulat
 			if (Prop2 != fields["prop2"].get<int32>())
 			{
 				Prop2 = fields["prop2"].get<int32>();
-				Prop2Changed.Broadcast(Prop2);
+				Execute_BroadcastProp2Changed(this, Prop2);
 			}
 		}
 		if (fields.contains("prop3"))
@@ -64,7 +64,7 @@ UTestbed2ManyParamInterfaceSimulationService::UTestbed2ManyParamInterfaceSimulat
 			if (Prop3 != fields["prop3"].get<int32>())
 			{
 				Prop3 = fields["prop3"].get<int32>();
-				Prop3Changed.Broadcast(Prop3);
+				Execute_BroadcastProp3Changed(this, Prop3);
 			}
 		}
 		if (fields.contains("prop4"))
@@ -72,7 +72,7 @@ UTestbed2ManyParamInterfaceSimulationService::UTestbed2ManyParamInterfaceSimulat
 			if (Prop4 != fields["prop4"].get<int32>())
 			{
 				Prop4 = fields["prop4"].get<int32>();
-				Prop4Changed.Broadcast(Prop4);
+				Execute_BroadcastProp4Changed(this, Prop4);
 			}
 		}
 	};
@@ -94,7 +94,7 @@ UTestbed2ManyParamInterfaceSimulationService::UTestbed2ManyParamInterfaceSimulat
 			if (Prop1 != fields["prop1"].get<int32>())
 			{
 				Prop1 = fields["prop1"].get<int32>();
-				Prop1Changed.Broadcast(Prop1);
+				Execute_BroadcastProp1Changed(this, Prop1);
 			}
 		}
 		if (fields.contains("prop2"))
@@ -102,7 +102,7 @@ UTestbed2ManyParamInterfaceSimulationService::UTestbed2ManyParamInterfaceSimulat
 			if (Prop2 != fields["prop2"].get<int32>())
 			{
 				Prop2 = fields["prop2"].get<int32>();
-				Prop2Changed.Broadcast(Prop2);
+				Execute_BroadcastProp2Changed(this, Prop2);
 			}
 		}
 		if (fields.contains("prop3"))
@@ -110,7 +110,7 @@ UTestbed2ManyParamInterfaceSimulationService::UTestbed2ManyParamInterfaceSimulat
 			if (Prop3 != fields["prop3"].get<int32>())
 			{
 				Prop3 = fields["prop3"].get<int32>();
-				Prop3Changed.Broadcast(Prop3);
+				Execute_BroadcastProp3Changed(this, Prop3);
 			}
 		}
 		if (fields.contains("prop4"))
@@ -118,7 +118,7 @@ UTestbed2ManyParamInterfaceSimulationService::UTestbed2ManyParamInterfaceSimulat
 			if (Prop4 != fields["prop4"].get<int32>())
 			{
 				Prop4 = fields["prop4"].get<int32>();
-				Prop4Changed.Broadcast(Prop4);
+				Execute_BroadcastProp4Changed(this, Prop4);
 			}
 		}
 	};
@@ -133,7 +133,7 @@ UTestbed2ManyParamInterfaceSimulationService::UTestbed2ManyParamInterfaceSimulat
 		const json fields = arg.params;
 		if (fields.contains("param1"))
 		{
-			Sig1Signal.Broadcast(fields["param1"].get<int32>());
+			Execute_BroadcastSig1(this, fields["param1"].get<int32>());
 		}
 	};
 	if (AGCM != nullptr)
@@ -146,7 +146,7 @@ UTestbed2ManyParamInterfaceSimulationService::UTestbed2ManyParamInterfaceSimulat
 		const json fields = arg.params;
 		if (fields.contains("param1") && fields.contains("param2"))
 		{
-			Sig2Signal.Broadcast(fields["param1"].get<int32>(), fields["param2"].get<int32>());
+			Execute_BroadcastSig2(this, fields["param1"].get<int32>(), fields["param2"].get<int32>());
 		}
 	};
 	if (AGCM != nullptr)
@@ -159,7 +159,7 @@ UTestbed2ManyParamInterfaceSimulationService::UTestbed2ManyParamInterfaceSimulat
 		const json fields = arg.params;
 		if (fields.contains("param1") && fields.contains("param2") && fields.contains("param3"))
 		{
-			Sig3Signal.Broadcast(fields["param1"].get<int32>(), fields["param2"].get<int32>(), fields["param3"].get<int32>());
+			Execute_BroadcastSig3(this, fields["param1"].get<int32>(), fields["param2"].get<int32>(), fields["param3"].get<int32>());
 		}
 	};
 	if (AGCM != nullptr)
@@ -172,7 +172,7 @@ UTestbed2ManyParamInterfaceSimulationService::UTestbed2ManyParamInterfaceSimulat
 		const json fields = arg.params;
 		if (fields.contains("param1") && fields.contains("param2") && fields.contains("param3") && fields.contains("param4"))
 		{
-			Sig4Signal.Broadcast(fields["param1"].get<int32>(), fields["param2"].get<int32>(), fields["param3"].get<int32>(), fields["param4"].get<int32>());
+			Execute_BroadcastSig4(this, fields["param1"].get<int32>(), fields["param2"].get<int32>(), fields["param3"].get<int32>(), fields["param4"].get<int32>());
 		}
 	};
 	if (AGCM != nullptr)

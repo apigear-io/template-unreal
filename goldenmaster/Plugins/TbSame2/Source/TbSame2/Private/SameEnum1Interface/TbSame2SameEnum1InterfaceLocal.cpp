@@ -37,7 +37,6 @@ FTbSame2SameEnum1InterfaceSig1Delegate& UTbSame2SameEnum1InterfaceLocalService::
 
 void UTbSame2SameEnum1InterfaceLocalService::BroadcastProp1Changed_Implementation(const ETbSame2Enum1& InProp1)
 {
-	Prop1 = InProp1;
 	Prop1Changed.Broadcast(InProp1);
 }
 
@@ -51,7 +50,7 @@ void UTbSame2SameEnum1InterfaceLocalService::SetProp1_Implementation(const ETbSa
 	if (Prop1 != InProp1)
 	{
 		Prop1 = InProp1;
-		Prop1Changed.Broadcast(Prop1);
+		Execute_BroadcastProp1Changed(this, Prop1);
 	}
 }
 

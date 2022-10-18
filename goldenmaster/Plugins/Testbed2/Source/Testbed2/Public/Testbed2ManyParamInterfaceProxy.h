@@ -123,6 +123,31 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|Testbed2|ManyParamInterface")
 	TScriptInterface<ITestbed2ManyParamInterfaceInterface> BackendService;
 
+	// signals
+	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
+	void OnSig1(int32 Param1);
+
+	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
+	void OnSig2(int32 Param1, int32 Param2);
+
+	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
+	void OnSig3(int32 Param1, int32 Param2, int32 Param3);
+
+	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
+	void OnSig4(int32 Param1, int32 Param2, int32 Param3, int32 Param4);
+
+	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
+	void OnProp1Changed(int32 Prop1);
+
+	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
+	void OnProp2Changed(int32 Prop2);
+
+	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
+	void OnProp3Changed(int32 Prop3);
+
+	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
+	void OnProp4Changed(int32 Prop4);
+
 	// properties - local copy
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1_Private, BlueprintSetter = SetProp1_Private, Category = "ApiGear|Testbed2|ManyParamInterface")
 	int32 Prop1;

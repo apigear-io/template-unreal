@@ -48,7 +48,7 @@ UTestbed1StructArrayInterfaceSimulationService::UTestbed1StructArrayInterfaceSim
 			if (PropBool != fields["propBool"].get<TArray<FTestbed1StructBool>>())
 			{
 				PropBool = fields["propBool"].get<TArray<FTestbed1StructBool>>();
-				PropBoolChanged.Broadcast(PropBool);
+				Execute_BroadcastPropBoolChanged(this, PropBool);
 			}
 		}
 		if (fields.contains("propInt"))
@@ -56,7 +56,7 @@ UTestbed1StructArrayInterfaceSimulationService::UTestbed1StructArrayInterfaceSim
 			if (PropInt != fields["propInt"].get<TArray<FTestbed1StructInt>>())
 			{
 				PropInt = fields["propInt"].get<TArray<FTestbed1StructInt>>();
-				PropIntChanged.Broadcast(PropInt);
+				Execute_BroadcastPropIntChanged(this, PropInt);
 			}
 		}
 		if (fields.contains("propFloat"))
@@ -64,7 +64,7 @@ UTestbed1StructArrayInterfaceSimulationService::UTestbed1StructArrayInterfaceSim
 			if (PropFloat != fields["propFloat"].get<TArray<FTestbed1StructFloat>>())
 			{
 				PropFloat = fields["propFloat"].get<TArray<FTestbed1StructFloat>>();
-				PropFloatChanged.Broadcast(PropFloat);
+				Execute_BroadcastPropFloatChanged(this, PropFloat);
 			}
 		}
 		if (fields.contains("propString"))
@@ -72,7 +72,7 @@ UTestbed1StructArrayInterfaceSimulationService::UTestbed1StructArrayInterfaceSim
 			if (PropString != fields["propString"].get<TArray<FTestbed1StructString>>())
 			{
 				PropString = fields["propString"].get<TArray<FTestbed1StructString>>();
-				PropStringChanged.Broadcast(PropString);
+				Execute_BroadcastPropStringChanged(this, PropString);
 			}
 		}
 	};
@@ -94,7 +94,7 @@ UTestbed1StructArrayInterfaceSimulationService::UTestbed1StructArrayInterfaceSim
 			if (PropBool != fields["propBool"].get<TArray<FTestbed1StructBool>>())
 			{
 				PropBool = fields["propBool"].get<TArray<FTestbed1StructBool>>();
-				PropBoolChanged.Broadcast(PropBool);
+				Execute_BroadcastPropBoolChanged(this, PropBool);
 			}
 		}
 		if (fields.contains("propInt"))
@@ -102,7 +102,7 @@ UTestbed1StructArrayInterfaceSimulationService::UTestbed1StructArrayInterfaceSim
 			if (PropInt != fields["propInt"].get<TArray<FTestbed1StructInt>>())
 			{
 				PropInt = fields["propInt"].get<TArray<FTestbed1StructInt>>();
-				PropIntChanged.Broadcast(PropInt);
+				Execute_BroadcastPropIntChanged(this, PropInt);
 			}
 		}
 		if (fields.contains("propFloat"))
@@ -110,7 +110,7 @@ UTestbed1StructArrayInterfaceSimulationService::UTestbed1StructArrayInterfaceSim
 			if (PropFloat != fields["propFloat"].get<TArray<FTestbed1StructFloat>>())
 			{
 				PropFloat = fields["propFloat"].get<TArray<FTestbed1StructFloat>>();
-				PropFloatChanged.Broadcast(PropFloat);
+				Execute_BroadcastPropFloatChanged(this, PropFloat);
 			}
 		}
 		if (fields.contains("propString"))
@@ -118,7 +118,7 @@ UTestbed1StructArrayInterfaceSimulationService::UTestbed1StructArrayInterfaceSim
 			if (PropString != fields["propString"].get<TArray<FTestbed1StructString>>())
 			{
 				PropString = fields["propString"].get<TArray<FTestbed1StructString>>();
-				PropStringChanged.Broadcast(PropString);
+				Execute_BroadcastPropStringChanged(this, PropString);
 			}
 		}
 	};
@@ -133,7 +133,7 @@ UTestbed1StructArrayInterfaceSimulationService::UTestbed1StructArrayInterfaceSim
 		const json fields = arg.params;
 		if (fields.contains("paramBool"))
 		{
-			SigBoolSignal.Broadcast(fields["paramBool"].get<TArray<FTestbed1StructBool>>());
+			Execute_BroadcastSigBool(this, fields["paramBool"].get<TArray<FTestbed1StructBool>>());
 		}
 	};
 	if (AGCM != nullptr)
@@ -146,7 +146,7 @@ UTestbed1StructArrayInterfaceSimulationService::UTestbed1StructArrayInterfaceSim
 		const json fields = arg.params;
 		if (fields.contains("paramInt"))
 		{
-			SigIntSignal.Broadcast(fields["paramInt"].get<TArray<FTestbed1StructInt>>());
+			Execute_BroadcastSigInt(this, fields["paramInt"].get<TArray<FTestbed1StructInt>>());
 		}
 	};
 	if (AGCM != nullptr)
@@ -159,7 +159,7 @@ UTestbed1StructArrayInterfaceSimulationService::UTestbed1StructArrayInterfaceSim
 		const json fields = arg.params;
 		if (fields.contains("paramFloat"))
 		{
-			SigFloatSignal.Broadcast(fields["paramFloat"].get<TArray<FTestbed1StructFloat>>());
+			Execute_BroadcastSigFloat(this, fields["paramFloat"].get<TArray<FTestbed1StructFloat>>());
 		}
 	};
 	if (AGCM != nullptr)
@@ -172,7 +172,7 @@ UTestbed1StructArrayInterfaceSimulationService::UTestbed1StructArrayInterfaceSim
 		const json fields = arg.params;
 		if (fields.contains("paramString"))
 		{
-			SigStringSignal.Broadcast(fields["paramString"].get<TArray<FTestbed1StructString>>());
+			Execute_BroadcastSigString(this, fields["paramString"].get<TArray<FTestbed1StructString>>());
 		}
 	};
 	if (AGCM != nullptr)

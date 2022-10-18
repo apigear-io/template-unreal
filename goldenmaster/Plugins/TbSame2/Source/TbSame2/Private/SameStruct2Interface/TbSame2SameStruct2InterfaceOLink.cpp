@@ -173,7 +173,7 @@ void UTbSame2SameStruct2InterfaceOLinkService::applyState(const nlohmann::json& 
 		if (Prop1 != fields["prop1"].get<FTbSame2Struct2>())
 		{
 			Prop1 = fields["prop1"].get<FTbSame2Struct2>();
-			Prop1Changed.Broadcast(Prop1);
+			Execute_BroadcastProp1Changed(this, Prop1);
 		}
 	}
 	if (fields.contains("prop2"))
@@ -181,7 +181,7 @@ void UTbSame2SameStruct2InterfaceOLinkService::applyState(const nlohmann::json& 
 		if (Prop2 != fields["prop2"].get<FTbSame2Struct2>())
 		{
 			Prop2 = fields["prop2"].get<FTbSame2Struct2>();
-			Prop2Changed.Broadcast(Prop2);
+			Execute_BroadcastProp2Changed(this, Prop2);
 		}
 	}
 }
@@ -196,12 +196,12 @@ void UTbSame2SameStruct2InterfaceOLinkService::olinkOnSignal(std::string name, n
 	std::string path = Name::pathFromName(name);
 	if (path == "sig1")
 	{
-		Sig1Signal.Broadcast(args[0].get<FTbSame2Struct1>());
+		Execute_BroadcastSig1(this, args[0].get<FTbSame2Struct1>());
 		return;
 	}
 	if (path == "sig2")
 	{
-		Sig2Signal.Broadcast(args[0].get<FTbSame2Struct1>(), args[1].get<FTbSame2Struct2>());
+		Execute_BroadcastSig2(this, args[0].get<FTbSame2Struct1>(), args[1].get<FTbSame2Struct2>());
 		return;
 	}
 }

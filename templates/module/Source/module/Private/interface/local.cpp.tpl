@@ -37,7 +37,6 @@ F{{$Iface}}{{Camel .Name}}Delegate& {{$Class}}::Get{{Camel .Name}}SignalDelegate
 {{- range .Interface.Properties }}
 void {{$Class}}::Broadcast{{Camel .Name}}Changed_Implementation({{ueParam "In" .}})
 {
-	{{ueVar "" .}} = {{ueVar "In" .}};
 	{{Camel .Name}}Changed.Broadcast({{ueVar "In" .}});
 }
 
@@ -51,7 +50,7 @@ void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
 	if ({{ueVar "" .}} != {{ueVar "In" .}})
 	{
 		{{ueVar "" .}} = {{ueVar "In" .}};
-		{{Camel .Name}}Changed.Broadcast({{ueVar "" .}});
+		Execute_Broadcast{{Camel .Name}}Changed(this, {{ueVar "" .}});
 	}
 }
 

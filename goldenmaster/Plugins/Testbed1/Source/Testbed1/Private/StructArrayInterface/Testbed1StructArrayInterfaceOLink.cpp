@@ -281,7 +281,7 @@ void UTestbed1StructArrayInterfaceOLinkService::applyState(const nlohmann::json&
 		if (PropBool != fields["propBool"].get<TArray<FTestbed1StructBool>>())
 		{
 			PropBool = fields["propBool"].get<TArray<FTestbed1StructBool>>();
-			PropBoolChanged.Broadcast(PropBool);
+			Execute_BroadcastPropBoolChanged(this, PropBool);
 		}
 	}
 	if (fields.contains("propInt"))
@@ -289,7 +289,7 @@ void UTestbed1StructArrayInterfaceOLinkService::applyState(const nlohmann::json&
 		if (PropInt != fields["propInt"].get<TArray<FTestbed1StructInt>>())
 		{
 			PropInt = fields["propInt"].get<TArray<FTestbed1StructInt>>();
-			PropIntChanged.Broadcast(PropInt);
+			Execute_BroadcastPropIntChanged(this, PropInt);
 		}
 	}
 	if (fields.contains("propFloat"))
@@ -297,7 +297,7 @@ void UTestbed1StructArrayInterfaceOLinkService::applyState(const nlohmann::json&
 		if (PropFloat != fields["propFloat"].get<TArray<FTestbed1StructFloat>>())
 		{
 			PropFloat = fields["propFloat"].get<TArray<FTestbed1StructFloat>>();
-			PropFloatChanged.Broadcast(PropFloat);
+			Execute_BroadcastPropFloatChanged(this, PropFloat);
 		}
 	}
 	if (fields.contains("propString"))
@@ -305,7 +305,7 @@ void UTestbed1StructArrayInterfaceOLinkService::applyState(const nlohmann::json&
 		if (PropString != fields["propString"].get<TArray<FTestbed1StructString>>())
 		{
 			PropString = fields["propString"].get<TArray<FTestbed1StructString>>();
-			PropStringChanged.Broadcast(PropString);
+			Execute_BroadcastPropStringChanged(this, PropString);
 		}
 	}
 }
@@ -320,22 +320,22 @@ void UTestbed1StructArrayInterfaceOLinkService::olinkOnSignal(std::string name, 
 	std::string path = Name::pathFromName(name);
 	if (path == "sigBool")
 	{
-		SigBoolSignal.Broadcast(args[0].get<TArray<FTestbed1StructBool>>());
+		Execute_BroadcastSigBool(this, args[0].get<TArray<FTestbed1StructBool>>());
 		return;
 	}
 	if (path == "sigInt")
 	{
-		SigIntSignal.Broadcast(args[0].get<TArray<FTestbed1StructInt>>());
+		Execute_BroadcastSigInt(this, args[0].get<TArray<FTestbed1StructInt>>());
 		return;
 	}
 	if (path == "sigFloat")
 	{
-		SigFloatSignal.Broadcast(args[0].get<TArray<FTestbed1StructFloat>>());
+		Execute_BroadcastSigFloat(this, args[0].get<TArray<FTestbed1StructFloat>>());
 		return;
 	}
 	if (path == "sigString")
 	{
-		SigStringSignal.Broadcast(args[0].get<TArray<FTestbed1StructString>>());
+		Execute_BroadcastSigString(this, args[0].get<TArray<FTestbed1StructString>>());
 		return;
 	}
 }

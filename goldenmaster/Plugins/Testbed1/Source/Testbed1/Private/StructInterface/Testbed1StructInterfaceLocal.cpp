@@ -70,7 +70,6 @@ FTestbed1StructInterfaceSigStringDelegate& UTestbed1StructInterfaceLocalService:
 
 void UTestbed1StructInterfaceLocalService::BroadcastPropBoolChanged_Implementation(const FTestbed1StructBool& InPropBool)
 {
-	PropBool = InPropBool;
 	PropBoolChanged.Broadcast(InPropBool);
 }
 
@@ -84,7 +83,7 @@ void UTestbed1StructInterfaceLocalService::SetPropBool_Implementation(const FTes
 	if (PropBool != InPropBool)
 	{
 		PropBool = InPropBool;
-		PropBoolChanged.Broadcast(PropBool);
+		Execute_BroadcastPropBoolChanged(this, PropBool);
 	}
 }
 
@@ -94,7 +93,6 @@ FTestbed1StructInterfacePropBoolChangedDelegate& UTestbed1StructInterfaceLocalSe
 }
 void UTestbed1StructInterfaceLocalService::BroadcastPropIntChanged_Implementation(const FTestbed1StructInt& InPropInt)
 {
-	PropInt = InPropInt;
 	PropIntChanged.Broadcast(InPropInt);
 }
 
@@ -108,7 +106,7 @@ void UTestbed1StructInterfaceLocalService::SetPropInt_Implementation(const FTest
 	if (PropInt != InPropInt)
 	{
 		PropInt = InPropInt;
-		PropIntChanged.Broadcast(PropInt);
+		Execute_BroadcastPropIntChanged(this, PropInt);
 	}
 }
 
@@ -118,7 +116,6 @@ FTestbed1StructInterfacePropIntChangedDelegate& UTestbed1StructInterfaceLocalSer
 }
 void UTestbed1StructInterfaceLocalService::BroadcastPropFloatChanged_Implementation(const FTestbed1StructFloat& InPropFloat)
 {
-	PropFloat = InPropFloat;
 	PropFloatChanged.Broadcast(InPropFloat);
 }
 
@@ -132,7 +129,7 @@ void UTestbed1StructInterfaceLocalService::SetPropFloat_Implementation(const FTe
 	if (PropFloat != InPropFloat)
 	{
 		PropFloat = InPropFloat;
-		PropFloatChanged.Broadcast(PropFloat);
+		Execute_BroadcastPropFloatChanged(this, PropFloat);
 	}
 }
 
@@ -142,7 +139,6 @@ FTestbed1StructInterfacePropFloatChangedDelegate& UTestbed1StructInterfaceLocalS
 }
 void UTestbed1StructInterfaceLocalService::BroadcastPropStringChanged_Implementation(const FTestbed1StructString& InPropString)
 {
-	PropString = InPropString;
 	PropStringChanged.Broadcast(InPropString);
 }
 
@@ -156,7 +152,7 @@ void UTestbed1StructInterfaceLocalService::SetPropString_Implementation(const FT
 	if (PropString != InPropString)
 	{
 		PropString = InPropString;
-		PropStringChanged.Broadcast(PropString);
+		Execute_BroadcastPropStringChanged(this, PropString);
 	}
 }
 

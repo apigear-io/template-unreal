@@ -48,7 +48,6 @@ FTbSame2SameStruct2InterfaceSig2Delegate& UTbSame2SameStruct2InterfaceLocalServi
 
 void UTbSame2SameStruct2InterfaceLocalService::BroadcastProp1Changed_Implementation(const FTbSame2Struct2& InProp1)
 {
-	Prop1 = InProp1;
 	Prop1Changed.Broadcast(InProp1);
 }
 
@@ -62,7 +61,7 @@ void UTbSame2SameStruct2InterfaceLocalService::SetProp1_Implementation(const FTb
 	if (Prop1 != InProp1)
 	{
 		Prop1 = InProp1;
-		Prop1Changed.Broadcast(Prop1);
+		Execute_BroadcastProp1Changed(this, Prop1);
 	}
 }
 
@@ -72,7 +71,6 @@ FTbSame2SameStruct2InterfaceProp1ChangedDelegate& UTbSame2SameStruct2InterfaceLo
 }
 void UTbSame2SameStruct2InterfaceLocalService::BroadcastProp2Changed_Implementation(const FTbSame2Struct2& InProp2)
 {
-	Prop2 = InProp2;
 	Prop2Changed.Broadcast(InProp2);
 }
 
@@ -86,7 +84,7 @@ void UTbSame2SameStruct2InterfaceLocalService::SetProp2_Implementation(const FTb
 	if (Prop2 != InProp2)
 	{
 		Prop2 = InProp2;
-		Prop2Changed.Broadcast(Prop2);
+		Execute_BroadcastProp2Changed(this, Prop2);
 	}
 }
 

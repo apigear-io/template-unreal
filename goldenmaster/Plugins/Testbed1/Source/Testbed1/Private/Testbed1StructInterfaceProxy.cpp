@@ -72,28 +72,28 @@ UTestbed1StructInterfaceProxy::UTestbed1StructInterfaceProxy()
 	, PropString(FTestbed1StructString())
 {
 	BackendService = FTestbed1ModuleFactory::createITestbed1StructInterfaceInterface();
-	BackendService->GetPropBoolChangedDelegate().AddDynamic(this, &UTestbed1StructInterfaceProxy::BroadcastPropBoolChanged);
-	BackendService->GetPropIntChangedDelegate().AddDynamic(this, &UTestbed1StructInterfaceProxy::BroadcastPropIntChanged);
-	BackendService->GetPropFloatChangedDelegate().AddDynamic(this, &UTestbed1StructInterfaceProxy::BroadcastPropFloatChanged);
-	BackendService->GetPropStringChangedDelegate().AddDynamic(this, &UTestbed1StructInterfaceProxy::BroadcastPropStringChanged);
-	BackendService->GetSigBoolSignalDelegate().AddDynamic(this, &UTestbed1StructInterfaceProxy::BroadcastSigBool);
-	BackendService->GetSigIntSignalDelegate().AddDynamic(this, &UTestbed1StructInterfaceProxy::BroadcastSigInt);
-	BackendService->GetSigFloatSignalDelegate().AddDynamic(this, &UTestbed1StructInterfaceProxy::BroadcastSigFloat);
-	BackendService->GetSigStringSignalDelegate().AddDynamic(this, &UTestbed1StructInterfaceProxy::BroadcastSigString);
+	BackendService->GetPropBoolChangedDelegate().AddDynamic(this, &UTestbed1StructInterfaceProxy::OnPropBoolChanged);
+	BackendService->GetPropIntChangedDelegate().AddDynamic(this, &UTestbed1StructInterfaceProxy::OnPropIntChanged);
+	BackendService->GetPropFloatChangedDelegate().AddDynamic(this, &UTestbed1StructInterfaceProxy::OnPropFloatChanged);
+	BackendService->GetPropStringChangedDelegate().AddDynamic(this, &UTestbed1StructInterfaceProxy::OnPropStringChanged);
+	BackendService->GetSigBoolSignalDelegate().AddDynamic(this, &UTestbed1StructInterfaceProxy::OnSigBool);
+	BackendService->GetSigIntSignalDelegate().AddDynamic(this, &UTestbed1StructInterfaceProxy::OnSigInt);
+	BackendService->GetSigFloatSignalDelegate().AddDynamic(this, &UTestbed1StructInterfaceProxy::OnSigFloat);
+	BackendService->GetSigStringSignalDelegate().AddDynamic(this, &UTestbed1StructInterfaceProxy::OnSigString);
 }
 
 UTestbed1StructInterfaceProxy::~UTestbed1StructInterfaceProxy()
 {
 	if (BackendService != nullptr)
 	{
-		//BackendService->GetPropBoolChangedDelegate().RemoveDynamic(this, &UTestbed1StructInterfaceProxy::BroadcastPropBoolChanged);
-		//BackendService->GetPropIntChangedDelegate().RemoveDynamic(this, &UTestbed1StructInterfaceProxy::BroadcastPropIntChanged);
-		//BackendService->GetPropFloatChangedDelegate().RemoveDynamic(this, &UTestbed1StructInterfaceProxy::BroadcastPropFloatChanged);
-		//BackendService->GetPropStringChangedDelegate().RemoveDynamic(this, &UTestbed1StructInterfaceProxy::BroadcastPropStringChanged);
-		//BackendService->GetSigBoolSignalDelegate().RemoveDynamic(this, &UTestbed1StructInterfaceProxy::BroadcastSigBool);
-		//BackendService->GetSigIntSignalDelegate().RemoveDynamic(this, &UTestbed1StructInterfaceProxy::BroadcastSigInt);
-		//BackendService->GetSigFloatSignalDelegate().RemoveDynamic(this, &UTestbed1StructInterfaceProxy::BroadcastSigFloat);
-		//BackendService->GetSigStringSignalDelegate().RemoveDynamic(this, &UTestbed1StructInterfaceProxy::BroadcastSigString);
+		//BackendService->GetPropBoolChangedDelegate().RemoveDynamic(this, &UTestbed1StructInterfaceProxy::OnPropBoolChanged);
+		//BackendService->GetPropIntChangedDelegate().RemoveDynamic(this, &UTestbed1StructInterfaceProxy::OnPropIntChanged);
+		//BackendService->GetPropFloatChangedDelegate().RemoveDynamic(this, &UTestbed1StructInterfaceProxy::OnPropFloatChanged);
+		//BackendService->GetPropStringChangedDelegate().RemoveDynamic(this, &UTestbed1StructInterfaceProxy::OnPropStringChanged);
+		//BackendService->GetSigBoolSignalDelegate().RemoveDynamic(this, &UTestbed1StructInterfaceProxy::OnSigBool);
+		//BackendService->GetSigIntSignalDelegate().RemoveDynamic(this, &UTestbed1StructInterfaceProxy::OnSigInt);
+		//BackendService->GetSigFloatSignalDelegate().RemoveDynamic(this, &UTestbed1StructInterfaceProxy::OnSigFloat);
+		//BackendService->GetSigStringSignalDelegate().RemoveDynamic(this, &UTestbed1StructInterfaceProxy::OnSigString);
 	}
 }
 
@@ -102,27 +102,27 @@ void UTestbed1StructInterfaceProxy::setBackendService(TScriptInterface<ITestbed1
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		BackendService->GetPropBoolChangedDelegate().RemoveDynamic(this, &UTestbed1StructInterfaceProxy::BroadcastPropBoolChanged);
-		BackendService->GetPropIntChangedDelegate().RemoveDynamic(this, &UTestbed1StructInterfaceProxy::BroadcastPropIntChanged);
-		BackendService->GetPropFloatChangedDelegate().RemoveDynamic(this, &UTestbed1StructInterfaceProxy::BroadcastPropFloatChanged);
-		BackendService->GetPropStringChangedDelegate().RemoveDynamic(this, &UTestbed1StructInterfaceProxy::BroadcastPropStringChanged);
-		BackendService->GetSigBoolSignalDelegate().RemoveDynamic(this, &UTestbed1StructInterfaceProxy::BroadcastSigBool);
-		BackendService->GetSigIntSignalDelegate().RemoveDynamic(this, &UTestbed1StructInterfaceProxy::BroadcastSigInt);
-		BackendService->GetSigFloatSignalDelegate().RemoveDynamic(this, &UTestbed1StructInterfaceProxy::BroadcastSigFloat);
-		BackendService->GetSigStringSignalDelegate().RemoveDynamic(this, &UTestbed1StructInterfaceProxy::BroadcastSigString);
+		BackendService->GetPropBoolChangedDelegate().RemoveDynamic(this, &UTestbed1StructInterfaceProxy::OnPropBoolChanged);
+		BackendService->GetPropIntChangedDelegate().RemoveDynamic(this, &UTestbed1StructInterfaceProxy::OnPropIntChanged);
+		BackendService->GetPropFloatChangedDelegate().RemoveDynamic(this, &UTestbed1StructInterfaceProxy::OnPropFloatChanged);
+		BackendService->GetPropStringChangedDelegate().RemoveDynamic(this, &UTestbed1StructInterfaceProxy::OnPropStringChanged);
+		BackendService->GetSigBoolSignalDelegate().RemoveDynamic(this, &UTestbed1StructInterfaceProxy::OnSigBool);
+		BackendService->GetSigIntSignalDelegate().RemoveDynamic(this, &UTestbed1StructInterfaceProxy::OnSigInt);
+		BackendService->GetSigFloatSignalDelegate().RemoveDynamic(this, &UTestbed1StructInterfaceProxy::OnSigFloat);
+		BackendService->GetSigStringSignalDelegate().RemoveDynamic(this, &UTestbed1StructInterfaceProxy::OnSigString);
 	}
 
 	// subscribe to new backend
 	BackendService = InService;
 	// connect property changed signals or simple events
-	BackendService->GetPropBoolChangedDelegate().AddDynamic(this, &UTestbed1StructInterfaceProxy::BroadcastPropBoolChanged);
-	BackendService->GetPropIntChangedDelegate().AddDynamic(this, &UTestbed1StructInterfaceProxy::BroadcastPropIntChanged);
-	BackendService->GetPropFloatChangedDelegate().AddDynamic(this, &UTestbed1StructInterfaceProxy::BroadcastPropFloatChanged);
-	BackendService->GetPropStringChangedDelegate().AddDynamic(this, &UTestbed1StructInterfaceProxy::BroadcastPropStringChanged);
-	BackendService->GetSigBoolSignalDelegate().AddDynamic(this, &UTestbed1StructInterfaceProxy::BroadcastSigBool);
-	BackendService->GetSigIntSignalDelegate().AddDynamic(this, &UTestbed1StructInterfaceProxy::BroadcastSigInt);
-	BackendService->GetSigFloatSignalDelegate().AddDynamic(this, &UTestbed1StructInterfaceProxy::BroadcastSigFloat);
-	BackendService->GetSigStringSignalDelegate().AddDynamic(this, &UTestbed1StructInterfaceProxy::BroadcastSigString);
+	BackendService->GetPropBoolChangedDelegate().AddDynamic(this, &UTestbed1StructInterfaceProxy::OnPropBoolChanged);
+	BackendService->GetPropIntChangedDelegate().AddDynamic(this, &UTestbed1StructInterfaceProxy::OnPropIntChanged);
+	BackendService->GetPropFloatChangedDelegate().AddDynamic(this, &UTestbed1StructInterfaceProxy::OnPropFloatChanged);
+	BackendService->GetPropStringChangedDelegate().AddDynamic(this, &UTestbed1StructInterfaceProxy::OnPropStringChanged);
+	BackendService->GetSigBoolSignalDelegate().AddDynamic(this, &UTestbed1StructInterfaceProxy::OnSigBool);
+	BackendService->GetSigIntSignalDelegate().AddDynamic(this, &UTestbed1StructInterfaceProxy::OnSigInt);
+	BackendService->GetSigFloatSignalDelegate().AddDynamic(this, &UTestbed1StructInterfaceProxy::OnSigFloat);
+	BackendService->GetSigStringSignalDelegate().AddDynamic(this, &UTestbed1StructInterfaceProxy::OnSigString);
 	// populate service state to proxy
 	PropBool = BackendService->Execute_GetPropBool(BackendService.GetObject());
 	PropInt = BackendService->Execute_GetPropInt(BackendService.GetObject());
@@ -131,8 +131,13 @@ void UTestbed1StructInterfaceProxy::setBackendService(TScriptInterface<ITestbed1
 }
 void UTestbed1StructInterfaceProxy::BroadcastSigBool_Implementation(const FTestbed1StructBool& ParamBool)
 {
-	Testbed1StructInterfaceTracer::trace_signalSigBool(ParamBool);
 	SigBoolSignal.Broadcast(ParamBool);
+}
+
+void UTestbed1StructInterfaceProxy::OnSigBool(const FTestbed1StructBool& ParamBool)
+{
+	Testbed1StructInterfaceTracer::trace_signalSigBool(ParamBool);
+	Execute_BroadcastSigBool(this, ParamBool);
 }
 
 FTestbed1StructInterfaceSigBoolDelegate& UTestbed1StructInterfaceProxy::GetSigBoolSignalDelegate()
@@ -142,8 +147,13 @@ FTestbed1StructInterfaceSigBoolDelegate& UTestbed1StructInterfaceProxy::GetSigBo
 
 void UTestbed1StructInterfaceProxy::BroadcastSigInt_Implementation(const FTestbed1StructInt& ParamInt)
 {
-	Testbed1StructInterfaceTracer::trace_signalSigInt(ParamInt);
 	SigIntSignal.Broadcast(ParamInt);
+}
+
+void UTestbed1StructInterfaceProxy::OnSigInt(const FTestbed1StructInt& ParamInt)
+{
+	Testbed1StructInterfaceTracer::trace_signalSigInt(ParamInt);
+	Execute_BroadcastSigInt(this, ParamInt);
 }
 
 FTestbed1StructInterfaceSigIntDelegate& UTestbed1StructInterfaceProxy::GetSigIntSignalDelegate()
@@ -153,8 +163,13 @@ FTestbed1StructInterfaceSigIntDelegate& UTestbed1StructInterfaceProxy::GetSigInt
 
 void UTestbed1StructInterfaceProxy::BroadcastSigFloat_Implementation(const FTestbed1StructFloat& ParamFloat)
 {
-	Testbed1StructInterfaceTracer::trace_signalSigFloat(ParamFloat);
 	SigFloatSignal.Broadcast(ParamFloat);
+}
+
+void UTestbed1StructInterfaceProxy::OnSigFloat(const FTestbed1StructFloat& ParamFloat)
+{
+	Testbed1StructInterfaceTracer::trace_signalSigFloat(ParamFloat);
+	Execute_BroadcastSigFloat(this, ParamFloat);
 }
 
 FTestbed1StructInterfaceSigFloatDelegate& UTestbed1StructInterfaceProxy::GetSigFloatSignalDelegate()
@@ -164,8 +179,13 @@ FTestbed1StructInterfaceSigFloatDelegate& UTestbed1StructInterfaceProxy::GetSigF
 
 void UTestbed1StructInterfaceProxy::BroadcastSigString_Implementation(const FTestbed1StructString& ParamString)
 {
-	Testbed1StructInterfaceTracer::trace_signalSigString(ParamString);
 	SigStringSignal.Broadcast(ParamString);
+}
+
+void UTestbed1StructInterfaceProxy::OnSigString(const FTestbed1StructString& ParamString)
+{
+	Testbed1StructInterfaceTracer::trace_signalSigString(ParamString);
+	Execute_BroadcastSigString(this, ParamString);
 }
 
 FTestbed1StructInterfaceSigStringDelegate& UTestbed1StructInterfaceProxy::GetSigStringSignalDelegate()
@@ -175,9 +195,14 @@ FTestbed1StructInterfaceSigStringDelegate& UTestbed1StructInterfaceProxy::GetSig
 
 void UTestbed1StructInterfaceProxy::BroadcastPropBoolChanged_Implementation(const FTestbed1StructBool& InPropBool)
 {
+	PropBoolChanged.Broadcast(InPropBool);
+}
+
+void UTestbed1StructInterfaceProxy::OnPropBoolChanged(const FTestbed1StructBool& InPropBool)
+{
 	Testbed1StructInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropBool = InPropBool;
-	PropBoolChanged.Broadcast(InPropBool);
+	Execute_BroadcastPropBoolChanged(this, InPropBool);
 }
 
 FTestbed1StructBool UTestbed1StructInterfaceProxy::GetPropBool_Implementation() const
@@ -208,9 +233,14 @@ FTestbed1StructInterfacePropBoolChangedDelegate& UTestbed1StructInterfaceProxy::
 
 void UTestbed1StructInterfaceProxy::BroadcastPropIntChanged_Implementation(const FTestbed1StructInt& InPropInt)
 {
+	PropIntChanged.Broadcast(InPropInt);
+}
+
+void UTestbed1StructInterfaceProxy::OnPropIntChanged(const FTestbed1StructInt& InPropInt)
+{
 	Testbed1StructInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropInt = InPropInt;
-	PropIntChanged.Broadcast(InPropInt);
+	Execute_BroadcastPropIntChanged(this, InPropInt);
 }
 
 FTestbed1StructInt UTestbed1StructInterfaceProxy::GetPropInt_Implementation() const
@@ -241,9 +271,14 @@ FTestbed1StructInterfacePropIntChangedDelegate& UTestbed1StructInterfaceProxy::G
 
 void UTestbed1StructInterfaceProxy::BroadcastPropFloatChanged_Implementation(const FTestbed1StructFloat& InPropFloat)
 {
+	PropFloatChanged.Broadcast(InPropFloat);
+}
+
+void UTestbed1StructInterfaceProxy::OnPropFloatChanged(const FTestbed1StructFloat& InPropFloat)
+{
 	Testbed1StructInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropFloat = InPropFloat;
-	PropFloatChanged.Broadcast(InPropFloat);
+	Execute_BroadcastPropFloatChanged(this, InPropFloat);
 }
 
 FTestbed1StructFloat UTestbed1StructInterfaceProxy::GetPropFloat_Implementation() const
@@ -274,9 +309,14 @@ FTestbed1StructInterfacePropFloatChangedDelegate& UTestbed1StructInterfaceProxy:
 
 void UTestbed1StructInterfaceProxy::BroadcastPropStringChanged_Implementation(const FTestbed1StructString& InPropString)
 {
+	PropStringChanged.Broadcast(InPropString);
+}
+
+void UTestbed1StructInterfaceProxy::OnPropStringChanged(const FTestbed1StructString& InPropString)
+{
 	Testbed1StructInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropString = InPropString;
-	PropStringChanged.Broadcast(InPropString);
+	Execute_BroadcastPropStringChanged(this, InPropString);
 }
 
 FTestbed1StructString UTestbed1StructInterfaceProxy::GetPropString_Implementation() const

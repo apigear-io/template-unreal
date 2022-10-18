@@ -46,7 +46,7 @@ using namespace ApiGear::JSONRPC;
 			if ({{ueVar "" .}} != fields["{{.Name}}"].get<{{ueReturn "" .}}>())
 			{
 				{{ueVar "" .}} = fields["{{.Name}}"].get<{{ueReturn "" .}}>();
-				{{Camel .Name}}Changed.Broadcast({{ueVar "" .}});
+				Execute_Broadcast{{Camel .Name}}Changed(this, {{ueVar "" .}});
 			}
 		}
 {{- end }}
@@ -70,7 +70,7 @@ using namespace ApiGear::JSONRPC;
 			if ({{ueVar "" .}} != fields["{{.Name}}"].get<{{ueReturn "" .}}>())
 			{
 				{{ueVar "" .}} = fields["{{.Name}}"].get<{{ueReturn "" .}}>();
-				{{Camel .Name}}Changed.Broadcast({{ueVar "" .}});
+				Execute_Broadcast{{Camel .Name}}Changed(this, {{ueVar "" .}});
 			}
 		}
 {{- end }}
@@ -92,15 +92,14 @@ using namespace ApiGear::JSONRPC;
 		fields.contains("{{.Name}}")
 	{{- end }})
 		{
-			{{Camel .Name}}Signal.Broadcast(
+			Execute_Broadcast{{Camel .Name}}(this,
 		{{- range $idx, $elem := .Params }}
-			    {{- if $idx }}, {{ end -}}
-				fields["{{.Name}}"].get<{{ueReturn "" .}}>()
+			    {{- if $idx }},{{ end }} fields["{{.Name}}"].get<{{ueReturn "" .}}>()
 		{{- end -}}
 			);
 		}
 	{{- else }}
-		{{Camel .Name}}Signal.Broadcast();
+		Execute_Broadcast{{Camel .Name}}(this);
 	{{- end }}
 	};
 	if (AGCM != nullptr)

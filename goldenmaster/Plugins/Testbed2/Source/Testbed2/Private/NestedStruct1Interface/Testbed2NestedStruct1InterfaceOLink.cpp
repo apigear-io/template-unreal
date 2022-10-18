@@ -119,7 +119,7 @@ void UTestbed2NestedStruct1InterfaceOLinkService::applyState(const nlohmann::jso
 		if (Prop1 != fields["prop1"].get<FTestbed2NestedStruct1>())
 		{
 			Prop1 = fields["prop1"].get<FTestbed2NestedStruct1>();
-			Prop1Changed.Broadcast(Prop1);
+			Execute_BroadcastProp1Changed(this, Prop1);
 		}
 	}
 }
@@ -134,7 +134,7 @@ void UTestbed2NestedStruct1InterfaceOLinkService::olinkOnSignal(std::string name
 	std::string path = Name::pathFromName(name);
 	if (path == "sig1")
 	{
-		Sig1Signal.Broadcast(args[0].get<FTestbed2NestedStruct1>());
+		Execute_BroadcastSig1(this, args[0].get<FTestbed2NestedStruct1>());
 		return;
 	}
 }

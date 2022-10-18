@@ -281,7 +281,7 @@ void UTestbed2ManyParamInterfaceOLinkService::applyState(const nlohmann::json& f
 		if (Prop1 != fields["prop1"].get<int32>())
 		{
 			Prop1 = fields["prop1"].get<int32>();
-			Prop1Changed.Broadcast(Prop1);
+			Execute_BroadcastProp1Changed(this, Prop1);
 		}
 	}
 	if (fields.contains("prop2"))
@@ -289,7 +289,7 @@ void UTestbed2ManyParamInterfaceOLinkService::applyState(const nlohmann::json& f
 		if (Prop2 != fields["prop2"].get<int32>())
 		{
 			Prop2 = fields["prop2"].get<int32>();
-			Prop2Changed.Broadcast(Prop2);
+			Execute_BroadcastProp2Changed(this, Prop2);
 		}
 	}
 	if (fields.contains("prop3"))
@@ -297,7 +297,7 @@ void UTestbed2ManyParamInterfaceOLinkService::applyState(const nlohmann::json& f
 		if (Prop3 != fields["prop3"].get<int32>())
 		{
 			Prop3 = fields["prop3"].get<int32>();
-			Prop3Changed.Broadcast(Prop3);
+			Execute_BroadcastProp3Changed(this, Prop3);
 		}
 	}
 	if (fields.contains("prop4"))
@@ -305,7 +305,7 @@ void UTestbed2ManyParamInterfaceOLinkService::applyState(const nlohmann::json& f
 		if (Prop4 != fields["prop4"].get<int32>())
 		{
 			Prop4 = fields["prop4"].get<int32>();
-			Prop4Changed.Broadcast(Prop4);
+			Execute_BroadcastProp4Changed(this, Prop4);
 		}
 	}
 }
@@ -320,22 +320,22 @@ void UTestbed2ManyParamInterfaceOLinkService::olinkOnSignal(std::string name, nl
 	std::string path = Name::pathFromName(name);
 	if (path == "sig1")
 	{
-		Sig1Signal.Broadcast(args[0].get<int32>());
+		Execute_BroadcastSig1(this, args[0].get<int32>());
 		return;
 	}
 	if (path == "sig2")
 	{
-		Sig2Signal.Broadcast(args[0].get<int32>(), args[1].get<int32>());
+		Execute_BroadcastSig2(this, args[0].get<int32>(), args[1].get<int32>());
 		return;
 	}
 	if (path == "sig3")
 	{
-		Sig3Signal.Broadcast(args[0].get<int32>(), args[1].get<int32>(), args[2].get<int32>());
+		Execute_BroadcastSig3(this, args[0].get<int32>(), args[1].get<int32>(), args[2].get<int32>());
 		return;
 	}
 	if (path == "sig4")
 	{
-		Sig4Signal.Broadcast(args[0].get<int32>(), args[1].get<int32>(), args[2].get<int32>(), args[3].get<int32>());
+		Execute_BroadcastSig4(this, args[0].get<int32>(), args[1].get<int32>(), args[2].get<int32>(), args[3].get<int32>());
 		return;
 	}
 }

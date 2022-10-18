@@ -48,7 +48,7 @@ UTbSimpleSimpleArrayInterfaceSimulationService::UTbSimpleSimpleArrayInterfaceSim
 			if (PropBool != fields["propBool"].get<TArray<bool>>())
 			{
 				PropBool = fields["propBool"].get<TArray<bool>>();
-				PropBoolChanged.Broadcast(PropBool);
+				Execute_BroadcastPropBoolChanged(this, PropBool);
 			}
 		}
 		if (fields.contains("propInt"))
@@ -56,7 +56,7 @@ UTbSimpleSimpleArrayInterfaceSimulationService::UTbSimpleSimpleArrayInterfaceSim
 			if (PropInt != fields["propInt"].get<TArray<int32>>())
 			{
 				PropInt = fields["propInt"].get<TArray<int32>>();
-				PropIntChanged.Broadcast(PropInt);
+				Execute_BroadcastPropIntChanged(this, PropInt);
 			}
 		}
 		if (fields.contains("propFloat"))
@@ -64,7 +64,7 @@ UTbSimpleSimpleArrayInterfaceSimulationService::UTbSimpleSimpleArrayInterfaceSim
 			if (PropFloat != fields["propFloat"].get<TArray<float>>())
 			{
 				PropFloat = fields["propFloat"].get<TArray<float>>();
-				PropFloatChanged.Broadcast(PropFloat);
+				Execute_BroadcastPropFloatChanged(this, PropFloat);
 			}
 		}
 		if (fields.contains("propString"))
@@ -72,7 +72,7 @@ UTbSimpleSimpleArrayInterfaceSimulationService::UTbSimpleSimpleArrayInterfaceSim
 			if (PropString != fields["propString"].get<TArray<FString>>())
 			{
 				PropString = fields["propString"].get<TArray<FString>>();
-				PropStringChanged.Broadcast(PropString);
+				Execute_BroadcastPropStringChanged(this, PropString);
 			}
 		}
 	};
@@ -94,7 +94,7 @@ UTbSimpleSimpleArrayInterfaceSimulationService::UTbSimpleSimpleArrayInterfaceSim
 			if (PropBool != fields["propBool"].get<TArray<bool>>())
 			{
 				PropBool = fields["propBool"].get<TArray<bool>>();
-				PropBoolChanged.Broadcast(PropBool);
+				Execute_BroadcastPropBoolChanged(this, PropBool);
 			}
 		}
 		if (fields.contains("propInt"))
@@ -102,7 +102,7 @@ UTbSimpleSimpleArrayInterfaceSimulationService::UTbSimpleSimpleArrayInterfaceSim
 			if (PropInt != fields["propInt"].get<TArray<int32>>())
 			{
 				PropInt = fields["propInt"].get<TArray<int32>>();
-				PropIntChanged.Broadcast(PropInt);
+				Execute_BroadcastPropIntChanged(this, PropInt);
 			}
 		}
 		if (fields.contains("propFloat"))
@@ -110,7 +110,7 @@ UTbSimpleSimpleArrayInterfaceSimulationService::UTbSimpleSimpleArrayInterfaceSim
 			if (PropFloat != fields["propFloat"].get<TArray<float>>())
 			{
 				PropFloat = fields["propFloat"].get<TArray<float>>();
-				PropFloatChanged.Broadcast(PropFloat);
+				Execute_BroadcastPropFloatChanged(this, PropFloat);
 			}
 		}
 		if (fields.contains("propString"))
@@ -118,7 +118,7 @@ UTbSimpleSimpleArrayInterfaceSimulationService::UTbSimpleSimpleArrayInterfaceSim
 			if (PropString != fields["propString"].get<TArray<FString>>())
 			{
 				PropString = fields["propString"].get<TArray<FString>>();
-				PropStringChanged.Broadcast(PropString);
+				Execute_BroadcastPropStringChanged(this, PropString);
 			}
 		}
 	};
@@ -133,7 +133,7 @@ UTbSimpleSimpleArrayInterfaceSimulationService::UTbSimpleSimpleArrayInterfaceSim
 		const json fields = arg.params;
 		if (fields.contains("paramBool"))
 		{
-			SigBoolSignal.Broadcast(fields["paramBool"].get<TArray<bool>>());
+			Execute_BroadcastSigBool(this, fields["paramBool"].get<TArray<bool>>());
 		}
 	};
 	if (AGCM != nullptr)
@@ -146,7 +146,7 @@ UTbSimpleSimpleArrayInterfaceSimulationService::UTbSimpleSimpleArrayInterfaceSim
 		const json fields = arg.params;
 		if (fields.contains("paramInt"))
 		{
-			SigIntSignal.Broadcast(fields["paramInt"].get<TArray<int32>>());
+			Execute_BroadcastSigInt(this, fields["paramInt"].get<TArray<int32>>());
 		}
 	};
 	if (AGCM != nullptr)
@@ -159,7 +159,7 @@ UTbSimpleSimpleArrayInterfaceSimulationService::UTbSimpleSimpleArrayInterfaceSim
 		const json fields = arg.params;
 		if (fields.contains("paramFloat"))
 		{
-			SigFloatSignal.Broadcast(fields["paramFloat"].get<TArray<float>>());
+			Execute_BroadcastSigFloat(this, fields["paramFloat"].get<TArray<float>>());
 		}
 	};
 	if (AGCM != nullptr)
@@ -172,7 +172,7 @@ UTbSimpleSimpleArrayInterfaceSimulationService::UTbSimpleSimpleArrayInterfaceSim
 		const json fields = arg.params;
 		if (fields.contains("paramString"))
 		{
-			SigStringSignal.Broadcast(fields["paramString"].get<TArray<FString>>());
+			Execute_BroadcastSigString(this, fields["paramString"].get<TArray<FString>>());
 		}
 	};
 	if (AGCM != nullptr)

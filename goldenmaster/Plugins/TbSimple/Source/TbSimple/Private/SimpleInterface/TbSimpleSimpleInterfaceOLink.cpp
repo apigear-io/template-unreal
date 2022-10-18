@@ -281,7 +281,7 @@ void UTbSimpleSimpleInterfaceOLinkService::applyState(const nlohmann::json& fiel
 		if (bPropBool != fields["propBool"].get<bool>())
 		{
 			bPropBool = fields["propBool"].get<bool>();
-			PropBoolChanged.Broadcast(bPropBool);
+			Execute_BroadcastPropBoolChanged(this, bPropBool);
 		}
 	}
 	if (fields.contains("propInt"))
@@ -289,7 +289,7 @@ void UTbSimpleSimpleInterfaceOLinkService::applyState(const nlohmann::json& fiel
 		if (PropInt != fields["propInt"].get<int32>())
 		{
 			PropInt = fields["propInt"].get<int32>();
-			PropIntChanged.Broadcast(PropInt);
+			Execute_BroadcastPropIntChanged(this, PropInt);
 		}
 	}
 	if (fields.contains("propFloat"))
@@ -297,7 +297,7 @@ void UTbSimpleSimpleInterfaceOLinkService::applyState(const nlohmann::json& fiel
 		if (PropFloat != fields["propFloat"].get<float>())
 		{
 			PropFloat = fields["propFloat"].get<float>();
-			PropFloatChanged.Broadcast(PropFloat);
+			Execute_BroadcastPropFloatChanged(this, PropFloat);
 		}
 	}
 	if (fields.contains("propString"))
@@ -305,7 +305,7 @@ void UTbSimpleSimpleInterfaceOLinkService::applyState(const nlohmann::json& fiel
 		if (PropString != fields["propString"].get<FString>())
 		{
 			PropString = fields["propString"].get<FString>();
-			PropStringChanged.Broadcast(PropString);
+			Execute_BroadcastPropStringChanged(this, PropString);
 		}
 	}
 }
@@ -320,22 +320,22 @@ void UTbSimpleSimpleInterfaceOLinkService::olinkOnSignal(std::string name, nlohm
 	std::string path = Name::pathFromName(name);
 	if (path == "sigBool")
 	{
-		SigBoolSignal.Broadcast(args[0].get<bool>());
+		Execute_BroadcastSigBool(this, args[0].get<bool>());
 		return;
 	}
 	if (path == "sigInt")
 	{
-		SigIntSignal.Broadcast(args[0].get<int32>());
+		Execute_BroadcastSigInt(this, args[0].get<int32>());
 		return;
 	}
 	if (path == "sigFloat")
 	{
-		SigFloatSignal.Broadcast(args[0].get<float>());
+		Execute_BroadcastSigFloat(this, args[0].get<float>());
 		return;
 	}
 	if (path == "sigString")
 	{
-		SigStringSignal.Broadcast(args[0].get<FString>());
+		Execute_BroadcastSigString(this, args[0].get<FString>());
 		return;
 	}
 }

@@ -45,7 +45,7 @@ UTestbed2NestedStruct1InterfaceSimulationService::UTestbed2NestedStruct1Interfac
 			if (Prop1 != fields["prop1"].get<FTestbed2NestedStruct1>())
 			{
 				Prop1 = fields["prop1"].get<FTestbed2NestedStruct1>();
-				Prop1Changed.Broadcast(Prop1);
+				Execute_BroadcastProp1Changed(this, Prop1);
 			}
 		}
 	};
@@ -67,7 +67,7 @@ UTestbed2NestedStruct1InterfaceSimulationService::UTestbed2NestedStruct1Interfac
 			if (Prop1 != fields["prop1"].get<FTestbed2NestedStruct1>())
 			{
 				Prop1 = fields["prop1"].get<FTestbed2NestedStruct1>();
-				Prop1Changed.Broadcast(Prop1);
+				Execute_BroadcastProp1Changed(this, Prop1);
 			}
 		}
 	};
@@ -82,7 +82,7 @@ UTestbed2NestedStruct1InterfaceSimulationService::UTestbed2NestedStruct1Interfac
 		const json fields = arg.params;
 		if (fields.contains("param1"))
 		{
-			Sig1Signal.Broadcast(fields["param1"].get<FTestbed2NestedStruct1>());
+			Execute_BroadcastSig1(this, fields["param1"].get<FTestbed2NestedStruct1>());
 		}
 	};
 	if (AGCM != nullptr)

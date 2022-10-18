@@ -48,7 +48,7 @@ UTbEnumEnumInterfaceSimulationService::UTbEnumEnumInterfaceSimulationService()
 			if (Prop0 != fields["prop0"].get<ETbEnumEnum0>())
 			{
 				Prop0 = fields["prop0"].get<ETbEnumEnum0>();
-				Prop0Changed.Broadcast(Prop0);
+				Execute_BroadcastProp0Changed(this, Prop0);
 			}
 		}
 		if (fields.contains("prop1"))
@@ -56,7 +56,7 @@ UTbEnumEnumInterfaceSimulationService::UTbEnumEnumInterfaceSimulationService()
 			if (Prop1 != fields["prop1"].get<ETbEnumEnum1>())
 			{
 				Prop1 = fields["prop1"].get<ETbEnumEnum1>();
-				Prop1Changed.Broadcast(Prop1);
+				Execute_BroadcastProp1Changed(this, Prop1);
 			}
 		}
 		if (fields.contains("prop2"))
@@ -64,7 +64,7 @@ UTbEnumEnumInterfaceSimulationService::UTbEnumEnumInterfaceSimulationService()
 			if (Prop2 != fields["prop2"].get<ETbEnumEnum2>())
 			{
 				Prop2 = fields["prop2"].get<ETbEnumEnum2>();
-				Prop2Changed.Broadcast(Prop2);
+				Execute_BroadcastProp2Changed(this, Prop2);
 			}
 		}
 		if (fields.contains("prop3"))
@@ -72,7 +72,7 @@ UTbEnumEnumInterfaceSimulationService::UTbEnumEnumInterfaceSimulationService()
 			if (Prop3 != fields["prop3"].get<ETbEnumEnum3>())
 			{
 				Prop3 = fields["prop3"].get<ETbEnumEnum3>();
-				Prop3Changed.Broadcast(Prop3);
+				Execute_BroadcastProp3Changed(this, Prop3);
 			}
 		}
 	};
@@ -94,7 +94,7 @@ UTbEnumEnumInterfaceSimulationService::UTbEnumEnumInterfaceSimulationService()
 			if (Prop0 != fields["prop0"].get<ETbEnumEnum0>())
 			{
 				Prop0 = fields["prop0"].get<ETbEnumEnum0>();
-				Prop0Changed.Broadcast(Prop0);
+				Execute_BroadcastProp0Changed(this, Prop0);
 			}
 		}
 		if (fields.contains("prop1"))
@@ -102,7 +102,7 @@ UTbEnumEnumInterfaceSimulationService::UTbEnumEnumInterfaceSimulationService()
 			if (Prop1 != fields["prop1"].get<ETbEnumEnum1>())
 			{
 				Prop1 = fields["prop1"].get<ETbEnumEnum1>();
-				Prop1Changed.Broadcast(Prop1);
+				Execute_BroadcastProp1Changed(this, Prop1);
 			}
 		}
 		if (fields.contains("prop2"))
@@ -110,7 +110,7 @@ UTbEnumEnumInterfaceSimulationService::UTbEnumEnumInterfaceSimulationService()
 			if (Prop2 != fields["prop2"].get<ETbEnumEnum2>())
 			{
 				Prop2 = fields["prop2"].get<ETbEnumEnum2>();
-				Prop2Changed.Broadcast(Prop2);
+				Execute_BroadcastProp2Changed(this, Prop2);
 			}
 		}
 		if (fields.contains("prop3"))
@@ -118,7 +118,7 @@ UTbEnumEnumInterfaceSimulationService::UTbEnumEnumInterfaceSimulationService()
 			if (Prop3 != fields["prop3"].get<ETbEnumEnum3>())
 			{
 				Prop3 = fields["prop3"].get<ETbEnumEnum3>();
-				Prop3Changed.Broadcast(Prop3);
+				Execute_BroadcastProp3Changed(this, Prop3);
 			}
 		}
 	};
@@ -133,7 +133,7 @@ UTbEnumEnumInterfaceSimulationService::UTbEnumEnumInterfaceSimulationService()
 		const json fields = arg.params;
 		if (fields.contains("param0"))
 		{
-			Sig0Signal.Broadcast(fields["param0"].get<ETbEnumEnum0>());
+			Execute_BroadcastSig0(this, fields["param0"].get<ETbEnumEnum0>());
 		}
 	};
 	if (AGCM != nullptr)
@@ -146,7 +146,7 @@ UTbEnumEnumInterfaceSimulationService::UTbEnumEnumInterfaceSimulationService()
 		const json fields = arg.params;
 		if (fields.contains("param1"))
 		{
-			Sig1Signal.Broadcast(fields["param1"].get<ETbEnumEnum1>());
+			Execute_BroadcastSig1(this, fields["param1"].get<ETbEnumEnum1>());
 		}
 	};
 	if (AGCM != nullptr)
@@ -159,7 +159,7 @@ UTbEnumEnumInterfaceSimulationService::UTbEnumEnumInterfaceSimulationService()
 		const json fields = arg.params;
 		if (fields.contains("param2"))
 		{
-			Sig2Signal.Broadcast(fields["param2"].get<ETbEnumEnum2>());
+			Execute_BroadcastSig2(this, fields["param2"].get<ETbEnumEnum2>());
 		}
 	};
 	if (AGCM != nullptr)
@@ -172,7 +172,7 @@ UTbEnumEnumInterfaceSimulationService::UTbEnumEnumInterfaceSimulationService()
 		const json fields = arg.params;
 		if (fields.contains("param3"))
 		{
-			Sig3Signal.Broadcast(fields["param3"].get<ETbEnumEnum3>());
+			Execute_BroadcastSig3(this, fields["param3"].get<ETbEnumEnum3>());
 		}
 	};
 	if (AGCM != nullptr)

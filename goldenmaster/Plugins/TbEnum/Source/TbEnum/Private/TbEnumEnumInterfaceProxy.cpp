@@ -72,28 +72,28 @@ UTbEnumEnumInterfaceProxy::UTbEnumEnumInterfaceProxy()
 	, Prop3(ETbEnumEnum3::VALUE3)
 {
 	BackendService = FTbEnumModuleFactory::createITbEnumEnumInterfaceInterface();
-	BackendService->GetProp0ChangedDelegate().AddDynamic(this, &UTbEnumEnumInterfaceProxy::BroadcastProp0Changed);
-	BackendService->GetProp1ChangedDelegate().AddDynamic(this, &UTbEnumEnumInterfaceProxy::BroadcastProp1Changed);
-	BackendService->GetProp2ChangedDelegate().AddDynamic(this, &UTbEnumEnumInterfaceProxy::BroadcastProp2Changed);
-	BackendService->GetProp3ChangedDelegate().AddDynamic(this, &UTbEnumEnumInterfaceProxy::BroadcastProp3Changed);
-	BackendService->GetSig0SignalDelegate().AddDynamic(this, &UTbEnumEnumInterfaceProxy::BroadcastSig0);
-	BackendService->GetSig1SignalDelegate().AddDynamic(this, &UTbEnumEnumInterfaceProxy::BroadcastSig1);
-	BackendService->GetSig2SignalDelegate().AddDynamic(this, &UTbEnumEnumInterfaceProxy::BroadcastSig2);
-	BackendService->GetSig3SignalDelegate().AddDynamic(this, &UTbEnumEnumInterfaceProxy::BroadcastSig3);
+	BackendService->GetProp0ChangedDelegate().AddDynamic(this, &UTbEnumEnumInterfaceProxy::OnProp0Changed);
+	BackendService->GetProp1ChangedDelegate().AddDynamic(this, &UTbEnumEnumInterfaceProxy::OnProp1Changed);
+	BackendService->GetProp2ChangedDelegate().AddDynamic(this, &UTbEnumEnumInterfaceProxy::OnProp2Changed);
+	BackendService->GetProp3ChangedDelegate().AddDynamic(this, &UTbEnumEnumInterfaceProxy::OnProp3Changed);
+	BackendService->GetSig0SignalDelegate().AddDynamic(this, &UTbEnumEnumInterfaceProxy::OnSig0);
+	BackendService->GetSig1SignalDelegate().AddDynamic(this, &UTbEnumEnumInterfaceProxy::OnSig1);
+	BackendService->GetSig2SignalDelegate().AddDynamic(this, &UTbEnumEnumInterfaceProxy::OnSig2);
+	BackendService->GetSig3SignalDelegate().AddDynamic(this, &UTbEnumEnumInterfaceProxy::OnSig3);
 }
 
 UTbEnumEnumInterfaceProxy::~UTbEnumEnumInterfaceProxy()
 {
 	if (BackendService != nullptr)
 	{
-		//BackendService->GetProp0ChangedDelegate().RemoveDynamic(this, &UTbEnumEnumInterfaceProxy::BroadcastProp0Changed);
-		//BackendService->GetProp1ChangedDelegate().RemoveDynamic(this, &UTbEnumEnumInterfaceProxy::BroadcastProp1Changed);
-		//BackendService->GetProp2ChangedDelegate().RemoveDynamic(this, &UTbEnumEnumInterfaceProxy::BroadcastProp2Changed);
-		//BackendService->GetProp3ChangedDelegate().RemoveDynamic(this, &UTbEnumEnumInterfaceProxy::BroadcastProp3Changed);
-		//BackendService->GetSig0SignalDelegate().RemoveDynamic(this, &UTbEnumEnumInterfaceProxy::BroadcastSig0);
-		//BackendService->GetSig1SignalDelegate().RemoveDynamic(this, &UTbEnumEnumInterfaceProxy::BroadcastSig1);
-		//BackendService->GetSig2SignalDelegate().RemoveDynamic(this, &UTbEnumEnumInterfaceProxy::BroadcastSig2);
-		//BackendService->GetSig3SignalDelegate().RemoveDynamic(this, &UTbEnumEnumInterfaceProxy::BroadcastSig3);
+		//BackendService->GetProp0ChangedDelegate().RemoveDynamic(this, &UTbEnumEnumInterfaceProxy::OnProp0Changed);
+		//BackendService->GetProp1ChangedDelegate().RemoveDynamic(this, &UTbEnumEnumInterfaceProxy::OnProp1Changed);
+		//BackendService->GetProp2ChangedDelegate().RemoveDynamic(this, &UTbEnumEnumInterfaceProxy::OnProp2Changed);
+		//BackendService->GetProp3ChangedDelegate().RemoveDynamic(this, &UTbEnumEnumInterfaceProxy::OnProp3Changed);
+		//BackendService->GetSig0SignalDelegate().RemoveDynamic(this, &UTbEnumEnumInterfaceProxy::OnSig0);
+		//BackendService->GetSig1SignalDelegate().RemoveDynamic(this, &UTbEnumEnumInterfaceProxy::OnSig1);
+		//BackendService->GetSig2SignalDelegate().RemoveDynamic(this, &UTbEnumEnumInterfaceProxy::OnSig2);
+		//BackendService->GetSig3SignalDelegate().RemoveDynamic(this, &UTbEnumEnumInterfaceProxy::OnSig3);
 	}
 }
 
@@ -102,27 +102,27 @@ void UTbEnumEnumInterfaceProxy::setBackendService(TScriptInterface<ITbEnumEnumIn
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		BackendService->GetProp0ChangedDelegate().RemoveDynamic(this, &UTbEnumEnumInterfaceProxy::BroadcastProp0Changed);
-		BackendService->GetProp1ChangedDelegate().RemoveDynamic(this, &UTbEnumEnumInterfaceProxy::BroadcastProp1Changed);
-		BackendService->GetProp2ChangedDelegate().RemoveDynamic(this, &UTbEnumEnumInterfaceProxy::BroadcastProp2Changed);
-		BackendService->GetProp3ChangedDelegate().RemoveDynamic(this, &UTbEnumEnumInterfaceProxy::BroadcastProp3Changed);
-		BackendService->GetSig0SignalDelegate().RemoveDynamic(this, &UTbEnumEnumInterfaceProxy::BroadcastSig0);
-		BackendService->GetSig1SignalDelegate().RemoveDynamic(this, &UTbEnumEnumInterfaceProxy::BroadcastSig1);
-		BackendService->GetSig2SignalDelegate().RemoveDynamic(this, &UTbEnumEnumInterfaceProxy::BroadcastSig2);
-		BackendService->GetSig3SignalDelegate().RemoveDynamic(this, &UTbEnumEnumInterfaceProxy::BroadcastSig3);
+		BackendService->GetProp0ChangedDelegate().RemoveDynamic(this, &UTbEnumEnumInterfaceProxy::OnProp0Changed);
+		BackendService->GetProp1ChangedDelegate().RemoveDynamic(this, &UTbEnumEnumInterfaceProxy::OnProp1Changed);
+		BackendService->GetProp2ChangedDelegate().RemoveDynamic(this, &UTbEnumEnumInterfaceProxy::OnProp2Changed);
+		BackendService->GetProp3ChangedDelegate().RemoveDynamic(this, &UTbEnumEnumInterfaceProxy::OnProp3Changed);
+		BackendService->GetSig0SignalDelegate().RemoveDynamic(this, &UTbEnumEnumInterfaceProxy::OnSig0);
+		BackendService->GetSig1SignalDelegate().RemoveDynamic(this, &UTbEnumEnumInterfaceProxy::OnSig1);
+		BackendService->GetSig2SignalDelegate().RemoveDynamic(this, &UTbEnumEnumInterfaceProxy::OnSig2);
+		BackendService->GetSig3SignalDelegate().RemoveDynamic(this, &UTbEnumEnumInterfaceProxy::OnSig3);
 	}
 
 	// subscribe to new backend
 	BackendService = InService;
 	// connect property changed signals or simple events
-	BackendService->GetProp0ChangedDelegate().AddDynamic(this, &UTbEnumEnumInterfaceProxy::BroadcastProp0Changed);
-	BackendService->GetProp1ChangedDelegate().AddDynamic(this, &UTbEnumEnumInterfaceProxy::BroadcastProp1Changed);
-	BackendService->GetProp2ChangedDelegate().AddDynamic(this, &UTbEnumEnumInterfaceProxy::BroadcastProp2Changed);
-	BackendService->GetProp3ChangedDelegate().AddDynamic(this, &UTbEnumEnumInterfaceProxy::BroadcastProp3Changed);
-	BackendService->GetSig0SignalDelegate().AddDynamic(this, &UTbEnumEnumInterfaceProxy::BroadcastSig0);
-	BackendService->GetSig1SignalDelegate().AddDynamic(this, &UTbEnumEnumInterfaceProxy::BroadcastSig1);
-	BackendService->GetSig2SignalDelegate().AddDynamic(this, &UTbEnumEnumInterfaceProxy::BroadcastSig2);
-	BackendService->GetSig3SignalDelegate().AddDynamic(this, &UTbEnumEnumInterfaceProxy::BroadcastSig3);
+	BackendService->GetProp0ChangedDelegate().AddDynamic(this, &UTbEnumEnumInterfaceProxy::OnProp0Changed);
+	BackendService->GetProp1ChangedDelegate().AddDynamic(this, &UTbEnumEnumInterfaceProxy::OnProp1Changed);
+	BackendService->GetProp2ChangedDelegate().AddDynamic(this, &UTbEnumEnumInterfaceProxy::OnProp2Changed);
+	BackendService->GetProp3ChangedDelegate().AddDynamic(this, &UTbEnumEnumInterfaceProxy::OnProp3Changed);
+	BackendService->GetSig0SignalDelegate().AddDynamic(this, &UTbEnumEnumInterfaceProxy::OnSig0);
+	BackendService->GetSig1SignalDelegate().AddDynamic(this, &UTbEnumEnumInterfaceProxy::OnSig1);
+	BackendService->GetSig2SignalDelegate().AddDynamic(this, &UTbEnumEnumInterfaceProxy::OnSig2);
+	BackendService->GetSig3SignalDelegate().AddDynamic(this, &UTbEnumEnumInterfaceProxy::OnSig3);
 	// populate service state to proxy
 	Prop0 = BackendService->Execute_GetProp0(BackendService.GetObject());
 	Prop1 = BackendService->Execute_GetProp1(BackendService.GetObject());
@@ -131,8 +131,13 @@ void UTbEnumEnumInterfaceProxy::setBackendService(TScriptInterface<ITbEnumEnumIn
 }
 void UTbEnumEnumInterfaceProxy::BroadcastSig0_Implementation(const ETbEnumEnum0& Param0)
 {
-	TbEnumEnumInterfaceTracer::trace_signalSig0(Param0);
 	Sig0Signal.Broadcast(Param0);
+}
+
+void UTbEnumEnumInterfaceProxy::OnSig0(const ETbEnumEnum0& Param0)
+{
+	TbEnumEnumInterfaceTracer::trace_signalSig0(Param0);
+	Execute_BroadcastSig0(this, Param0);
 }
 
 FTbEnumEnumInterfaceSig0Delegate& UTbEnumEnumInterfaceProxy::GetSig0SignalDelegate()
@@ -142,8 +147,13 @@ FTbEnumEnumInterfaceSig0Delegate& UTbEnumEnumInterfaceProxy::GetSig0SignalDelega
 
 void UTbEnumEnumInterfaceProxy::BroadcastSig1_Implementation(const ETbEnumEnum1& Param1)
 {
-	TbEnumEnumInterfaceTracer::trace_signalSig1(Param1);
 	Sig1Signal.Broadcast(Param1);
+}
+
+void UTbEnumEnumInterfaceProxy::OnSig1(const ETbEnumEnum1& Param1)
+{
+	TbEnumEnumInterfaceTracer::trace_signalSig1(Param1);
+	Execute_BroadcastSig1(this, Param1);
 }
 
 FTbEnumEnumInterfaceSig1Delegate& UTbEnumEnumInterfaceProxy::GetSig1SignalDelegate()
@@ -153,8 +163,13 @@ FTbEnumEnumInterfaceSig1Delegate& UTbEnumEnumInterfaceProxy::GetSig1SignalDelega
 
 void UTbEnumEnumInterfaceProxy::BroadcastSig2_Implementation(const ETbEnumEnum2& Param2)
 {
-	TbEnumEnumInterfaceTracer::trace_signalSig2(Param2);
 	Sig2Signal.Broadcast(Param2);
+}
+
+void UTbEnumEnumInterfaceProxy::OnSig2(const ETbEnumEnum2& Param2)
+{
+	TbEnumEnumInterfaceTracer::trace_signalSig2(Param2);
+	Execute_BroadcastSig2(this, Param2);
 }
 
 FTbEnumEnumInterfaceSig2Delegate& UTbEnumEnumInterfaceProxy::GetSig2SignalDelegate()
@@ -164,8 +179,13 @@ FTbEnumEnumInterfaceSig2Delegate& UTbEnumEnumInterfaceProxy::GetSig2SignalDelega
 
 void UTbEnumEnumInterfaceProxy::BroadcastSig3_Implementation(const ETbEnumEnum3& Param3)
 {
-	TbEnumEnumInterfaceTracer::trace_signalSig3(Param3);
 	Sig3Signal.Broadcast(Param3);
+}
+
+void UTbEnumEnumInterfaceProxy::OnSig3(const ETbEnumEnum3& Param3)
+{
+	TbEnumEnumInterfaceTracer::trace_signalSig3(Param3);
+	Execute_BroadcastSig3(this, Param3);
 }
 
 FTbEnumEnumInterfaceSig3Delegate& UTbEnumEnumInterfaceProxy::GetSig3SignalDelegate()
@@ -175,9 +195,14 @@ FTbEnumEnumInterfaceSig3Delegate& UTbEnumEnumInterfaceProxy::GetSig3SignalDelega
 
 void UTbEnumEnumInterfaceProxy::BroadcastProp0Changed_Implementation(const ETbEnumEnum0& InProp0)
 {
+	Prop0Changed.Broadcast(InProp0);
+}
+
+void UTbEnumEnumInterfaceProxy::OnProp0Changed(const ETbEnumEnum0& InProp0)
+{
 	TbEnumEnumInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop0 = InProp0;
-	Prop0Changed.Broadcast(InProp0);
+	Execute_BroadcastProp0Changed(this, InProp0);
 }
 
 ETbEnumEnum0 UTbEnumEnumInterfaceProxy::GetProp0_Implementation() const
@@ -208,9 +233,14 @@ FTbEnumEnumInterfaceProp0ChangedDelegate& UTbEnumEnumInterfaceProxy::GetProp0Cha
 
 void UTbEnumEnumInterfaceProxy::BroadcastProp1Changed_Implementation(const ETbEnumEnum1& InProp1)
 {
+	Prop1Changed.Broadcast(InProp1);
+}
+
+void UTbEnumEnumInterfaceProxy::OnProp1Changed(const ETbEnumEnum1& InProp1)
+{
 	TbEnumEnumInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop1 = InProp1;
-	Prop1Changed.Broadcast(InProp1);
+	Execute_BroadcastProp1Changed(this, InProp1);
 }
 
 ETbEnumEnum1 UTbEnumEnumInterfaceProxy::GetProp1_Implementation() const
@@ -241,9 +271,14 @@ FTbEnumEnumInterfaceProp1ChangedDelegate& UTbEnumEnumInterfaceProxy::GetProp1Cha
 
 void UTbEnumEnumInterfaceProxy::BroadcastProp2Changed_Implementation(const ETbEnumEnum2& InProp2)
 {
+	Prop2Changed.Broadcast(InProp2);
+}
+
+void UTbEnumEnumInterfaceProxy::OnProp2Changed(const ETbEnumEnum2& InProp2)
+{
 	TbEnumEnumInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop2 = InProp2;
-	Prop2Changed.Broadcast(InProp2);
+	Execute_BroadcastProp2Changed(this, InProp2);
 }
 
 ETbEnumEnum2 UTbEnumEnumInterfaceProxy::GetProp2_Implementation() const
@@ -274,9 +309,14 @@ FTbEnumEnumInterfaceProp2ChangedDelegate& UTbEnumEnumInterfaceProxy::GetProp2Cha
 
 void UTbEnumEnumInterfaceProxy::BroadcastProp3Changed_Implementation(const ETbEnumEnum3& InProp3)
 {
+	Prop3Changed.Broadcast(InProp3);
+}
+
+void UTbEnumEnumInterfaceProxy::OnProp3Changed(const ETbEnumEnum3& InProp3)
+{
 	TbEnumEnumInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop3 = InProp3;
-	Prop3Changed.Broadcast(InProp3);
+	Execute_BroadcastProp3Changed(this, InProp3);
 }
 
 ETbEnumEnum3 UTbEnumEnumInterfaceProxy::GetProp3_Implementation() const

@@ -85,6 +85,19 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSame1|SameEnum2Interface")
 	TScriptInterface<ITbSame1SameEnum2InterfaceInterface> BackendService;
 
+	// signals
+	UFUNCTION(Category = "ApiGear|TbSame1|SameEnum2Interface", BlueprintInternalUseOnly)
+	void OnSig1(const ETbSame1Enum1& Param1);
+
+	UFUNCTION(Category = "ApiGear|TbSame1|SameEnum2Interface", BlueprintInternalUseOnly)
+	void OnSig2(const ETbSame1Enum1& Param1, const ETbSame1Enum2& Param2);
+
+	UFUNCTION(Category = "ApiGear|TbSame1|SameEnum2Interface", BlueprintInternalUseOnly)
+	void OnProp1Changed(const ETbSame1Enum1& Prop1);
+
+	UFUNCTION(Category = "ApiGear|TbSame1|SameEnum2Interface", BlueprintInternalUseOnly)
+	void OnProp2Changed(const ETbSame1Enum2& Prop2);
+
 	// properties - local copy
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1_Private, BlueprintSetter = SetProp1_Private, Category = "ApiGear|TbSame1|SameEnum2Interface")
 	ETbSame1Enum1 Prop1;

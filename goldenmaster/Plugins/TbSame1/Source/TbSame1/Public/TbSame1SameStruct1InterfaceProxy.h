@@ -66,6 +66,13 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSame1|SameStruct1Interface")
 	TScriptInterface<ITbSame1SameStruct1InterfaceInterface> BackendService;
 
+	// signals
+	UFUNCTION(Category = "ApiGear|TbSame1|SameStruct1Interface", BlueprintInternalUseOnly)
+	void OnSig1(const FTbSame1Struct1& Param1);
+
+	UFUNCTION(Category = "ApiGear|TbSame1|SameStruct1Interface", BlueprintInternalUseOnly)
+	void OnProp1Changed(const FTbSame1Struct1& Prop1);
+
 	// properties - local copy
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1_Private, BlueprintSetter = SetProp1_Private, Category = "ApiGear|TbSame1|SameStruct1Interface")
 	FTbSame1Struct1 Prop1;

@@ -70,7 +70,6 @@ FTestbed1StructArrayInterfaceSigStringDelegate& UTestbed1StructArrayInterfaceLoc
 
 void UTestbed1StructArrayInterfaceLocalService::BroadcastPropBoolChanged_Implementation(const TArray<FTestbed1StructBool>& InPropBool)
 {
-	PropBool = InPropBool;
 	PropBoolChanged.Broadcast(InPropBool);
 }
 
@@ -84,7 +83,7 @@ void UTestbed1StructArrayInterfaceLocalService::SetPropBool_Implementation(const
 	if (PropBool != InPropBool)
 	{
 		PropBool = InPropBool;
-		PropBoolChanged.Broadcast(PropBool);
+		Execute_BroadcastPropBoolChanged(this, PropBool);
 	}
 }
 
@@ -94,7 +93,6 @@ FTestbed1StructArrayInterfacePropBoolChangedDelegate& UTestbed1StructArrayInterf
 }
 void UTestbed1StructArrayInterfaceLocalService::BroadcastPropIntChanged_Implementation(const TArray<FTestbed1StructInt>& InPropInt)
 {
-	PropInt = InPropInt;
 	PropIntChanged.Broadcast(InPropInt);
 }
 
@@ -108,7 +106,7 @@ void UTestbed1StructArrayInterfaceLocalService::SetPropInt_Implementation(const 
 	if (PropInt != InPropInt)
 	{
 		PropInt = InPropInt;
-		PropIntChanged.Broadcast(PropInt);
+		Execute_BroadcastPropIntChanged(this, PropInt);
 	}
 }
 
@@ -118,7 +116,6 @@ FTestbed1StructArrayInterfacePropIntChangedDelegate& UTestbed1StructArrayInterfa
 }
 void UTestbed1StructArrayInterfaceLocalService::BroadcastPropFloatChanged_Implementation(const TArray<FTestbed1StructFloat>& InPropFloat)
 {
-	PropFloat = InPropFloat;
 	PropFloatChanged.Broadcast(InPropFloat);
 }
 
@@ -132,7 +129,7 @@ void UTestbed1StructArrayInterfaceLocalService::SetPropFloat_Implementation(cons
 	if (PropFloat != InPropFloat)
 	{
 		PropFloat = InPropFloat;
-		PropFloatChanged.Broadcast(PropFloat);
+		Execute_BroadcastPropFloatChanged(this, PropFloat);
 	}
 }
 
@@ -142,7 +139,6 @@ FTestbed1StructArrayInterfacePropFloatChangedDelegate& UTestbed1StructArrayInter
 }
 void UTestbed1StructArrayInterfaceLocalService::BroadcastPropStringChanged_Implementation(const TArray<FTestbed1StructString>& InPropString)
 {
-	PropString = InPropString;
 	PropStringChanged.Broadcast(InPropString);
 }
 
@@ -156,7 +152,7 @@ void UTestbed1StructArrayInterfaceLocalService::SetPropString_Implementation(con
 	if (PropString != InPropString)
 	{
 		PropString = InPropString;
-		PropStringChanged.Broadcast(PropString);
+		Execute_BroadcastPropStringChanged(this, PropString);
 	}
 }
 

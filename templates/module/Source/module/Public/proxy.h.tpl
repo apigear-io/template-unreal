@@ -88,6 +88,17 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "{{$Category}}")
 	TScriptInterface<I{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface> BackendService;
 
+	// signals
+{{- range .Interface.Signals }}
+	UFUNCTION(Category = "{{$Category}}", BlueprintInternalUseOnly)
+	void On{{Camel .Name}}({{ueParams "" .Params}});
+{{ else }}
+{{- end }}
+{{- range .Interface.Properties }}
+	UFUNCTION(Category = "{{$Category}}", BlueprintInternalUseOnly)
+	void On{{Camel .Name}}Changed({{ueParam "" .}});
+{{ else }}
+{{ end }}
 	// properties - local copy
 {{- range .Interface.Properties }}
 {{- if .Description }}

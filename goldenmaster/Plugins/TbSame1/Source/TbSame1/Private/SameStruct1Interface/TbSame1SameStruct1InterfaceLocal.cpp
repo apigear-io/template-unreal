@@ -37,7 +37,6 @@ FTbSame1SameStruct1InterfaceSig1Delegate& UTbSame1SameStruct1InterfaceLocalServi
 
 void UTbSame1SameStruct1InterfaceLocalService::BroadcastProp1Changed_Implementation(const FTbSame1Struct1& InProp1)
 {
-	Prop1 = InProp1;
 	Prop1Changed.Broadcast(InProp1);
 }
 
@@ -51,7 +50,7 @@ void UTbSame1SameStruct1InterfaceLocalService::SetProp1_Implementation(const FTb
 	if (Prop1 != InProp1)
 	{
 		Prop1 = InProp1;
-		Prop1Changed.Broadcast(Prop1);
+		Execute_BroadcastProp1Changed(this, Prop1);
 	}
 }
 

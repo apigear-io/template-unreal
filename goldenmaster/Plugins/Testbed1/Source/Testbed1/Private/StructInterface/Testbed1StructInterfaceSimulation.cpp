@@ -48,7 +48,7 @@ UTestbed1StructInterfaceSimulationService::UTestbed1StructInterfaceSimulationSer
 			if (PropBool != fields["propBool"].get<FTestbed1StructBool>())
 			{
 				PropBool = fields["propBool"].get<FTestbed1StructBool>();
-				PropBoolChanged.Broadcast(PropBool);
+				Execute_BroadcastPropBoolChanged(this, PropBool);
 			}
 		}
 		if (fields.contains("propInt"))
@@ -56,7 +56,7 @@ UTestbed1StructInterfaceSimulationService::UTestbed1StructInterfaceSimulationSer
 			if (PropInt != fields["propInt"].get<FTestbed1StructInt>())
 			{
 				PropInt = fields["propInt"].get<FTestbed1StructInt>();
-				PropIntChanged.Broadcast(PropInt);
+				Execute_BroadcastPropIntChanged(this, PropInt);
 			}
 		}
 		if (fields.contains("propFloat"))
@@ -64,7 +64,7 @@ UTestbed1StructInterfaceSimulationService::UTestbed1StructInterfaceSimulationSer
 			if (PropFloat != fields["propFloat"].get<FTestbed1StructFloat>())
 			{
 				PropFloat = fields["propFloat"].get<FTestbed1StructFloat>();
-				PropFloatChanged.Broadcast(PropFloat);
+				Execute_BroadcastPropFloatChanged(this, PropFloat);
 			}
 		}
 		if (fields.contains("propString"))
@@ -72,7 +72,7 @@ UTestbed1StructInterfaceSimulationService::UTestbed1StructInterfaceSimulationSer
 			if (PropString != fields["propString"].get<FTestbed1StructString>())
 			{
 				PropString = fields["propString"].get<FTestbed1StructString>();
-				PropStringChanged.Broadcast(PropString);
+				Execute_BroadcastPropStringChanged(this, PropString);
 			}
 		}
 	};
@@ -94,7 +94,7 @@ UTestbed1StructInterfaceSimulationService::UTestbed1StructInterfaceSimulationSer
 			if (PropBool != fields["propBool"].get<FTestbed1StructBool>())
 			{
 				PropBool = fields["propBool"].get<FTestbed1StructBool>();
-				PropBoolChanged.Broadcast(PropBool);
+				Execute_BroadcastPropBoolChanged(this, PropBool);
 			}
 		}
 		if (fields.contains("propInt"))
@@ -102,7 +102,7 @@ UTestbed1StructInterfaceSimulationService::UTestbed1StructInterfaceSimulationSer
 			if (PropInt != fields["propInt"].get<FTestbed1StructInt>())
 			{
 				PropInt = fields["propInt"].get<FTestbed1StructInt>();
-				PropIntChanged.Broadcast(PropInt);
+				Execute_BroadcastPropIntChanged(this, PropInt);
 			}
 		}
 		if (fields.contains("propFloat"))
@@ -110,7 +110,7 @@ UTestbed1StructInterfaceSimulationService::UTestbed1StructInterfaceSimulationSer
 			if (PropFloat != fields["propFloat"].get<FTestbed1StructFloat>())
 			{
 				PropFloat = fields["propFloat"].get<FTestbed1StructFloat>();
-				PropFloatChanged.Broadcast(PropFloat);
+				Execute_BroadcastPropFloatChanged(this, PropFloat);
 			}
 		}
 		if (fields.contains("propString"))
@@ -118,7 +118,7 @@ UTestbed1StructInterfaceSimulationService::UTestbed1StructInterfaceSimulationSer
 			if (PropString != fields["propString"].get<FTestbed1StructString>())
 			{
 				PropString = fields["propString"].get<FTestbed1StructString>();
-				PropStringChanged.Broadcast(PropString);
+				Execute_BroadcastPropStringChanged(this, PropString);
 			}
 		}
 	};
@@ -133,7 +133,7 @@ UTestbed1StructInterfaceSimulationService::UTestbed1StructInterfaceSimulationSer
 		const json fields = arg.params;
 		if (fields.contains("paramBool"))
 		{
-			SigBoolSignal.Broadcast(fields["paramBool"].get<FTestbed1StructBool>());
+			Execute_BroadcastSigBool(this, fields["paramBool"].get<FTestbed1StructBool>());
 		}
 	};
 	if (AGCM != nullptr)
@@ -146,7 +146,7 @@ UTestbed1StructInterfaceSimulationService::UTestbed1StructInterfaceSimulationSer
 		const json fields = arg.params;
 		if (fields.contains("paramInt"))
 		{
-			SigIntSignal.Broadcast(fields["paramInt"].get<FTestbed1StructInt>());
+			Execute_BroadcastSigInt(this, fields["paramInt"].get<FTestbed1StructInt>());
 		}
 	};
 	if (AGCM != nullptr)
@@ -159,7 +159,7 @@ UTestbed1StructInterfaceSimulationService::UTestbed1StructInterfaceSimulationSer
 		const json fields = arg.params;
 		if (fields.contains("paramFloat"))
 		{
-			SigFloatSignal.Broadcast(fields["paramFloat"].get<FTestbed1StructFloat>());
+			Execute_BroadcastSigFloat(this, fields["paramFloat"].get<FTestbed1StructFloat>());
 		}
 	};
 	if (AGCM != nullptr)
@@ -172,7 +172,7 @@ UTestbed1StructInterfaceSimulationService::UTestbed1StructInterfaceSimulationSer
 		const json fields = arg.params;
 		if (fields.contains("paramString"))
 		{
-			SigStringSignal.Broadcast(fields["paramString"].get<FTestbed1StructString>());
+			Execute_BroadcastSigString(this, fields["paramString"].get<FTestbed1StructString>());
 		}
 	};
 	if (AGCM != nullptr)

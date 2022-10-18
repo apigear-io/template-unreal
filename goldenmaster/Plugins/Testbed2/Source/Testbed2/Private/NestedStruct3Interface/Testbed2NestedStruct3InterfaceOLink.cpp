@@ -227,7 +227,7 @@ void UTestbed2NestedStruct3InterfaceOLinkService::applyState(const nlohmann::jso
 		if (Prop1 != fields["prop1"].get<FTestbed2NestedStruct1>())
 		{
 			Prop1 = fields["prop1"].get<FTestbed2NestedStruct1>();
-			Prop1Changed.Broadcast(Prop1);
+			Execute_BroadcastProp1Changed(this, Prop1);
 		}
 	}
 	if (fields.contains("prop2"))
@@ -235,7 +235,7 @@ void UTestbed2NestedStruct3InterfaceOLinkService::applyState(const nlohmann::jso
 		if (Prop2 != fields["prop2"].get<FTestbed2NestedStruct2>())
 		{
 			Prop2 = fields["prop2"].get<FTestbed2NestedStruct2>();
-			Prop2Changed.Broadcast(Prop2);
+			Execute_BroadcastProp2Changed(this, Prop2);
 		}
 	}
 	if (fields.contains("prop3"))
@@ -243,7 +243,7 @@ void UTestbed2NestedStruct3InterfaceOLinkService::applyState(const nlohmann::jso
 		if (Prop3 != fields["prop3"].get<FTestbed2NestedStruct3>())
 		{
 			Prop3 = fields["prop3"].get<FTestbed2NestedStruct3>();
-			Prop3Changed.Broadcast(Prop3);
+			Execute_BroadcastProp3Changed(this, Prop3);
 		}
 	}
 }
@@ -258,17 +258,17 @@ void UTestbed2NestedStruct3InterfaceOLinkService::olinkOnSignal(std::string name
 	std::string path = Name::pathFromName(name);
 	if (path == "sig1")
 	{
-		Sig1Signal.Broadcast(args[0].get<FTestbed2NestedStruct1>());
+		Execute_BroadcastSig1(this, args[0].get<FTestbed2NestedStruct1>());
 		return;
 	}
 	if (path == "sig2")
 	{
-		Sig2Signal.Broadcast(args[0].get<FTestbed2NestedStruct1>(), args[1].get<FTestbed2NestedStruct2>());
+		Execute_BroadcastSig2(this, args[0].get<FTestbed2NestedStruct1>(), args[1].get<FTestbed2NestedStruct2>());
 		return;
 	}
 	if (path == "sig3")
 	{
-		Sig3Signal.Broadcast(args[0].get<FTestbed2NestedStruct1>(), args[1].get<FTestbed2NestedStruct2>(), args[2].get<FTestbed2NestedStruct3>());
+		Execute_BroadcastSig3(this, args[0].get<FTestbed2NestedStruct1>(), args[1].get<FTestbed2NestedStruct2>(), args[2].get<FTestbed2NestedStruct3>());
 		return;
 	}
 }

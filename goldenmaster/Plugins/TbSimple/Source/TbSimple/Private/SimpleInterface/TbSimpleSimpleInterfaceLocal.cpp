@@ -70,7 +70,6 @@ FTbSimpleSimpleInterfaceSigStringDelegate& UTbSimpleSimpleInterfaceLocalService:
 
 void UTbSimpleSimpleInterfaceLocalService::BroadcastPropBoolChanged_Implementation(bool bInPropBool)
 {
-	bPropBool = bInPropBool;
 	PropBoolChanged.Broadcast(bInPropBool);
 }
 
@@ -84,7 +83,7 @@ void UTbSimpleSimpleInterfaceLocalService::SetPropBool_Implementation(bool bInPr
 	if (bPropBool != bInPropBool)
 	{
 		bPropBool = bInPropBool;
-		PropBoolChanged.Broadcast(bPropBool);
+		Execute_BroadcastPropBoolChanged(this, bPropBool);
 	}
 }
 
@@ -94,7 +93,6 @@ FTbSimpleSimpleInterfacePropBoolChangedDelegate& UTbSimpleSimpleInterfaceLocalSe
 }
 void UTbSimpleSimpleInterfaceLocalService::BroadcastPropIntChanged_Implementation(int32 InPropInt)
 {
-	PropInt = InPropInt;
 	PropIntChanged.Broadcast(InPropInt);
 }
 
@@ -108,7 +106,7 @@ void UTbSimpleSimpleInterfaceLocalService::SetPropInt_Implementation(int32 InPro
 	if (PropInt != InPropInt)
 	{
 		PropInt = InPropInt;
-		PropIntChanged.Broadcast(PropInt);
+		Execute_BroadcastPropIntChanged(this, PropInt);
 	}
 }
 
@@ -118,7 +116,6 @@ FTbSimpleSimpleInterfacePropIntChangedDelegate& UTbSimpleSimpleInterfaceLocalSer
 }
 void UTbSimpleSimpleInterfaceLocalService::BroadcastPropFloatChanged_Implementation(float InPropFloat)
 {
-	PropFloat = InPropFloat;
 	PropFloatChanged.Broadcast(InPropFloat);
 }
 
@@ -132,7 +129,7 @@ void UTbSimpleSimpleInterfaceLocalService::SetPropFloat_Implementation(float InP
 	if (PropFloat != InPropFloat)
 	{
 		PropFloat = InPropFloat;
-		PropFloatChanged.Broadcast(PropFloat);
+		Execute_BroadcastPropFloatChanged(this, PropFloat);
 	}
 }
 
@@ -142,7 +139,6 @@ FTbSimpleSimpleInterfacePropFloatChangedDelegate& UTbSimpleSimpleInterfaceLocalS
 }
 void UTbSimpleSimpleInterfaceLocalService::BroadcastPropStringChanged_Implementation(const FString& InPropString)
 {
-	PropString = InPropString;
 	PropStringChanged.Broadcast(InPropString);
 }
 
@@ -156,7 +152,7 @@ void UTbSimpleSimpleInterfaceLocalService::SetPropString_Implementation(const FS
 	if (PropString != InPropString)
 	{
 		PropString = InPropString;
-		PropStringChanged.Broadcast(PropString);
+		Execute_BroadcastPropStringChanged(this, PropString);
 	}
 }
 

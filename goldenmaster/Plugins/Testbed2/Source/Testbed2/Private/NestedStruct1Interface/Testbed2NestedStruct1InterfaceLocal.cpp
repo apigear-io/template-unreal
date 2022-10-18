@@ -37,7 +37,6 @@ FTestbed2NestedStruct1InterfaceSig1Delegate& UTestbed2NestedStruct1InterfaceLoca
 
 void UTestbed2NestedStruct1InterfaceLocalService::BroadcastProp1Changed_Implementation(const FTestbed2NestedStruct1& InProp1)
 {
-	Prop1 = InProp1;
 	Prop1Changed.Broadcast(InProp1);
 }
 
@@ -51,7 +50,7 @@ void UTestbed2NestedStruct1InterfaceLocalService::SetProp1_Implementation(const 
 	if (Prop1 != InProp1)
 	{
 		Prop1 = InProp1;
-		Prop1Changed.Broadcast(Prop1);
+		Execute_BroadcastProp1Changed(this, Prop1);
 	}
 }
 

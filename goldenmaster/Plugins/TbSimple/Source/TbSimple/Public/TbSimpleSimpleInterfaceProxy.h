@@ -123,6 +123,31 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSimple|SimpleInterface")
 	TScriptInterface<ITbSimpleSimpleInterfaceInterface> BackendService;
 
+	// signals
+	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
+	void OnSigBool(bool bParamBool);
+
+	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
+	void OnSigInt(int32 ParamInt);
+
+	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
+	void OnSigFloat(float ParamFloat);
+
+	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
+	void OnSigString(const FString& ParamString);
+
+	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
+	void OnPropBoolChanged(bool bPropBool);
+
+	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
+	void OnPropIntChanged(int32 PropInt);
+
+	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
+	void OnPropFloatChanged(float PropFloat);
+
+	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
+	void OnPropStringChanged(const FString& PropString);
+
 	// properties - local copy
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropBool_Private, BlueprintSetter = SetPropBool_Private, Category = "ApiGear|TbSimple|SimpleInterface")
 	bool bPropBool;

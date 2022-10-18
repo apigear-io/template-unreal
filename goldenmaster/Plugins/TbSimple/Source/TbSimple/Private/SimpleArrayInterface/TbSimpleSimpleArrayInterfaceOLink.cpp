@@ -281,7 +281,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkService::applyState(const nlohmann::json&
 		if (PropBool != fields["propBool"].get<TArray<bool>>())
 		{
 			PropBool = fields["propBool"].get<TArray<bool>>();
-			PropBoolChanged.Broadcast(PropBool);
+			Execute_BroadcastPropBoolChanged(this, PropBool);
 		}
 	}
 	if (fields.contains("propInt"))
@@ -289,7 +289,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkService::applyState(const nlohmann::json&
 		if (PropInt != fields["propInt"].get<TArray<int32>>())
 		{
 			PropInt = fields["propInt"].get<TArray<int32>>();
-			PropIntChanged.Broadcast(PropInt);
+			Execute_BroadcastPropIntChanged(this, PropInt);
 		}
 	}
 	if (fields.contains("propFloat"))
@@ -297,7 +297,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkService::applyState(const nlohmann::json&
 		if (PropFloat != fields["propFloat"].get<TArray<float>>())
 		{
 			PropFloat = fields["propFloat"].get<TArray<float>>();
-			PropFloatChanged.Broadcast(PropFloat);
+			Execute_BroadcastPropFloatChanged(this, PropFloat);
 		}
 	}
 	if (fields.contains("propString"))
@@ -305,7 +305,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkService::applyState(const nlohmann::json&
 		if (PropString != fields["propString"].get<TArray<FString>>())
 		{
 			PropString = fields["propString"].get<TArray<FString>>();
-			PropStringChanged.Broadcast(PropString);
+			Execute_BroadcastPropStringChanged(this, PropString);
 		}
 	}
 }
@@ -320,22 +320,22 @@ void UTbSimpleSimpleArrayInterfaceOLinkService::olinkOnSignal(std::string name, 
 	std::string path = Name::pathFromName(name);
 	if (path == "sigBool")
 	{
-		SigBoolSignal.Broadcast(args[0].get<TArray<bool>>());
+		Execute_BroadcastSigBool(this, args[0].get<TArray<bool>>());
 		return;
 	}
 	if (path == "sigInt")
 	{
-		SigIntSignal.Broadcast(args[0].get<TArray<int32>>());
+		Execute_BroadcastSigInt(this, args[0].get<TArray<int32>>());
 		return;
 	}
 	if (path == "sigFloat")
 	{
-		SigFloatSignal.Broadcast(args[0].get<TArray<float>>());
+		Execute_BroadcastSigFloat(this, args[0].get<TArray<float>>());
 		return;
 	}
 	if (path == "sigString")
 	{
-		SigStringSignal.Broadcast(args[0].get<TArray<FString>>());
+		Execute_BroadcastSigString(this, args[0].get<TArray<FString>>());
 		return;
 	}
 }

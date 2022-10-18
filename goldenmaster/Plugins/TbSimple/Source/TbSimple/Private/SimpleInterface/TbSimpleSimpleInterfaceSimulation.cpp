@@ -48,7 +48,7 @@ UTbSimpleSimpleInterfaceSimulationService::UTbSimpleSimpleInterfaceSimulationSer
 			if (bPropBool != fields["propBool"].get<bool>())
 			{
 				bPropBool = fields["propBool"].get<bool>();
-				PropBoolChanged.Broadcast(bPropBool);
+				Execute_BroadcastPropBoolChanged(this, bPropBool);
 			}
 		}
 		if (fields.contains("propInt"))
@@ -56,7 +56,7 @@ UTbSimpleSimpleInterfaceSimulationService::UTbSimpleSimpleInterfaceSimulationSer
 			if (PropInt != fields["propInt"].get<int32>())
 			{
 				PropInt = fields["propInt"].get<int32>();
-				PropIntChanged.Broadcast(PropInt);
+				Execute_BroadcastPropIntChanged(this, PropInt);
 			}
 		}
 		if (fields.contains("propFloat"))
@@ -64,7 +64,7 @@ UTbSimpleSimpleInterfaceSimulationService::UTbSimpleSimpleInterfaceSimulationSer
 			if (PropFloat != fields["propFloat"].get<float>())
 			{
 				PropFloat = fields["propFloat"].get<float>();
-				PropFloatChanged.Broadcast(PropFloat);
+				Execute_BroadcastPropFloatChanged(this, PropFloat);
 			}
 		}
 		if (fields.contains("propString"))
@@ -72,7 +72,7 @@ UTbSimpleSimpleInterfaceSimulationService::UTbSimpleSimpleInterfaceSimulationSer
 			if (PropString != fields["propString"].get<FString>())
 			{
 				PropString = fields["propString"].get<FString>();
-				PropStringChanged.Broadcast(PropString);
+				Execute_BroadcastPropStringChanged(this, PropString);
 			}
 		}
 	};
@@ -94,7 +94,7 @@ UTbSimpleSimpleInterfaceSimulationService::UTbSimpleSimpleInterfaceSimulationSer
 			if (bPropBool != fields["propBool"].get<bool>())
 			{
 				bPropBool = fields["propBool"].get<bool>();
-				PropBoolChanged.Broadcast(bPropBool);
+				Execute_BroadcastPropBoolChanged(this, bPropBool);
 			}
 		}
 		if (fields.contains("propInt"))
@@ -102,7 +102,7 @@ UTbSimpleSimpleInterfaceSimulationService::UTbSimpleSimpleInterfaceSimulationSer
 			if (PropInt != fields["propInt"].get<int32>())
 			{
 				PropInt = fields["propInt"].get<int32>();
-				PropIntChanged.Broadcast(PropInt);
+				Execute_BroadcastPropIntChanged(this, PropInt);
 			}
 		}
 		if (fields.contains("propFloat"))
@@ -110,7 +110,7 @@ UTbSimpleSimpleInterfaceSimulationService::UTbSimpleSimpleInterfaceSimulationSer
 			if (PropFloat != fields["propFloat"].get<float>())
 			{
 				PropFloat = fields["propFloat"].get<float>();
-				PropFloatChanged.Broadcast(PropFloat);
+				Execute_BroadcastPropFloatChanged(this, PropFloat);
 			}
 		}
 		if (fields.contains("propString"))
@@ -118,7 +118,7 @@ UTbSimpleSimpleInterfaceSimulationService::UTbSimpleSimpleInterfaceSimulationSer
 			if (PropString != fields["propString"].get<FString>())
 			{
 				PropString = fields["propString"].get<FString>();
-				PropStringChanged.Broadcast(PropString);
+				Execute_BroadcastPropStringChanged(this, PropString);
 			}
 		}
 	};
@@ -133,7 +133,7 @@ UTbSimpleSimpleInterfaceSimulationService::UTbSimpleSimpleInterfaceSimulationSer
 		const json fields = arg.params;
 		if (fields.contains("paramBool"))
 		{
-			SigBoolSignal.Broadcast(fields["paramBool"].get<bool>());
+			Execute_BroadcastSigBool(this, fields["paramBool"].get<bool>());
 		}
 	};
 	if (AGCM != nullptr)
@@ -146,7 +146,7 @@ UTbSimpleSimpleInterfaceSimulationService::UTbSimpleSimpleInterfaceSimulationSer
 		const json fields = arg.params;
 		if (fields.contains("paramInt"))
 		{
-			SigIntSignal.Broadcast(fields["paramInt"].get<int32>());
+			Execute_BroadcastSigInt(this, fields["paramInt"].get<int32>());
 		}
 	};
 	if (AGCM != nullptr)
@@ -159,7 +159,7 @@ UTbSimpleSimpleInterfaceSimulationService::UTbSimpleSimpleInterfaceSimulationSer
 		const json fields = arg.params;
 		if (fields.contains("paramFloat"))
 		{
-			SigFloatSignal.Broadcast(fields["paramFloat"].get<float>());
+			Execute_BroadcastSigFloat(this, fields["paramFloat"].get<float>());
 		}
 	};
 	if (AGCM != nullptr)
@@ -172,7 +172,7 @@ UTbSimpleSimpleInterfaceSimulationService::UTbSimpleSimpleInterfaceSimulationSer
 		const json fields = arg.params;
 		if (fields.contains("paramString"))
 		{
-			SigStringSignal.Broadcast(fields["paramString"].get<FString>());
+			Execute_BroadcastSigString(this, fields["paramString"].get<FString>());
 		}
 	};
 	if (AGCM != nullptr)

@@ -123,6 +123,31 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbEnum|EnumInterface")
 	TScriptInterface<ITbEnumEnumInterfaceInterface> BackendService;
 
+	// signals
+	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
+	void OnSig0(const ETbEnumEnum0& Param0);
+
+	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
+	void OnSig1(const ETbEnumEnum1& Param1);
+
+	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
+	void OnSig2(const ETbEnumEnum2& Param2);
+
+	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
+	void OnSig3(const ETbEnumEnum3& Param3);
+
+	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
+	void OnProp0Changed(const ETbEnumEnum0& Prop0);
+
+	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
+	void OnProp1Changed(const ETbEnumEnum1& Prop1);
+
+	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
+	void OnProp2Changed(const ETbEnumEnum2& Prop2);
+
+	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
+	void OnProp3Changed(const ETbEnumEnum3& Prop3);
+
 	// properties - local copy
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp0_Private, BlueprintSetter = SetProp0_Private, Category = "ApiGear|TbEnum|EnumInterface")
 	ETbEnumEnum0 Prop0;

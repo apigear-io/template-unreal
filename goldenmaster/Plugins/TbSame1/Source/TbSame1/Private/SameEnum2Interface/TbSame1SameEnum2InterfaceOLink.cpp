@@ -173,7 +173,7 @@ void UTbSame1SameEnum2InterfaceOLinkService::applyState(const nlohmann::json& fi
 		if (Prop1 != fields["prop1"].get<ETbSame1Enum1>())
 		{
 			Prop1 = fields["prop1"].get<ETbSame1Enum1>();
-			Prop1Changed.Broadcast(Prop1);
+			Execute_BroadcastProp1Changed(this, Prop1);
 		}
 	}
 	if (fields.contains("prop2"))
@@ -181,7 +181,7 @@ void UTbSame1SameEnum2InterfaceOLinkService::applyState(const nlohmann::json& fi
 		if (Prop2 != fields["prop2"].get<ETbSame1Enum2>())
 		{
 			Prop2 = fields["prop2"].get<ETbSame1Enum2>();
-			Prop2Changed.Broadcast(Prop2);
+			Execute_BroadcastProp2Changed(this, Prop2);
 		}
 	}
 }
@@ -196,12 +196,12 @@ void UTbSame1SameEnum2InterfaceOLinkService::olinkOnSignal(std::string name, nlo
 	std::string path = Name::pathFromName(name);
 	if (path == "sig1")
 	{
-		Sig1Signal.Broadcast(args[0].get<ETbSame1Enum1>());
+		Execute_BroadcastSig1(this, args[0].get<ETbSame1Enum1>());
 		return;
 	}
 	if (path == "sig2")
 	{
-		Sig2Signal.Broadcast(args[0].get<ETbSame1Enum1>(), args[1].get<ETbSame1Enum2>());
+		Execute_BroadcastSig2(this, args[0].get<ETbSame1Enum1>(), args[1].get<ETbSame1Enum2>());
 		return;
 	}
 }

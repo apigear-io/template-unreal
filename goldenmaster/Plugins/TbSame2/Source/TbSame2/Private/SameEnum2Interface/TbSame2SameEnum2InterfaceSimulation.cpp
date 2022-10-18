@@ -46,7 +46,7 @@ UTbSame2SameEnum2InterfaceSimulationService::UTbSame2SameEnum2InterfaceSimulatio
 			if (Prop1 != fields["prop1"].get<ETbSame2Enum1>())
 			{
 				Prop1 = fields["prop1"].get<ETbSame2Enum1>();
-				Prop1Changed.Broadcast(Prop1);
+				Execute_BroadcastProp1Changed(this, Prop1);
 			}
 		}
 		if (fields.contains("prop2"))
@@ -54,7 +54,7 @@ UTbSame2SameEnum2InterfaceSimulationService::UTbSame2SameEnum2InterfaceSimulatio
 			if (Prop2 != fields["prop2"].get<ETbSame2Enum2>())
 			{
 				Prop2 = fields["prop2"].get<ETbSame2Enum2>();
-				Prop2Changed.Broadcast(Prop2);
+				Execute_BroadcastProp2Changed(this, Prop2);
 			}
 		}
 	};
@@ -76,7 +76,7 @@ UTbSame2SameEnum2InterfaceSimulationService::UTbSame2SameEnum2InterfaceSimulatio
 			if (Prop1 != fields["prop1"].get<ETbSame2Enum1>())
 			{
 				Prop1 = fields["prop1"].get<ETbSame2Enum1>();
-				Prop1Changed.Broadcast(Prop1);
+				Execute_BroadcastProp1Changed(this, Prop1);
 			}
 		}
 		if (fields.contains("prop2"))
@@ -84,7 +84,7 @@ UTbSame2SameEnum2InterfaceSimulationService::UTbSame2SameEnum2InterfaceSimulatio
 			if (Prop2 != fields["prop2"].get<ETbSame2Enum2>())
 			{
 				Prop2 = fields["prop2"].get<ETbSame2Enum2>();
-				Prop2Changed.Broadcast(Prop2);
+				Execute_BroadcastProp2Changed(this, Prop2);
 			}
 		}
 	};
@@ -99,7 +99,7 @@ UTbSame2SameEnum2InterfaceSimulationService::UTbSame2SameEnum2InterfaceSimulatio
 		const json fields = arg.params;
 		if (fields.contains("param1"))
 		{
-			Sig1Signal.Broadcast(fields["param1"].get<ETbSame2Enum1>());
+			Execute_BroadcastSig1(this, fields["param1"].get<ETbSame2Enum1>());
 		}
 	};
 	if (AGCM != nullptr)
@@ -112,7 +112,7 @@ UTbSame2SameEnum2InterfaceSimulationService::UTbSame2SameEnum2InterfaceSimulatio
 		const json fields = arg.params;
 		if (fields.contains("param1") && fields.contains("param2"))
 		{
-			Sig2Signal.Broadcast(fields["param1"].get<ETbSame2Enum1>(), fields["param2"].get<ETbSame2Enum2>());
+			Execute_BroadcastSig2(this, fields["param1"].get<ETbSame2Enum1>(), fields["param2"].get<ETbSame2Enum2>());
 		}
 	};
 	if (AGCM != nullptr)
