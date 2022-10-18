@@ -55,7 +55,7 @@ struct {{$API_MACRO}} {{$class }}
 {{- range .Fields }}
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "{{$Category}}")
-	{{ueType "" .}} {{.Name}};
+	{{ueType "" .}} {{.Name}}{ {{- ueDefault "" . -}} };
 {{- end }}
 
 	bool operator==(const {{$class}}& rhs) const;

@@ -59,13 +59,13 @@ struct TBSAME1_API FTbSame1Struct1
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ApiGear|TbSame1")
-	int32 field1;
+	int32 field1{0};
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ApiGear|TbSame1")
-	int32 field2;
+	int32 field2{0};
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ApiGear|TbSame1")
-	int32 field3;
+	int32 field3{0};
 
 	bool operator==(const FTbSame1Struct1& rhs) const;
 	bool operator!=(const FTbSame1Struct1& rhs) const;
@@ -80,13 +80,13 @@ struct TBSAME1_API FTbSame1Struct2
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ApiGear|TbSame1")
-	int32 field1;
+	int32 field1{0};
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ApiGear|TbSame1")
-	int32 field2;
+	int32 field2{0};
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ApiGear|TbSame1")
-	int32 field3;
+	int32 field3{0};
 
 	bool operator==(const FTbSame1Struct2& rhs) const;
 	bool operator!=(const FTbSame1Struct2& rhs) const;

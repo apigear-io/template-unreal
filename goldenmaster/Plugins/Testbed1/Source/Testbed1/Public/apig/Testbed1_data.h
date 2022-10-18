@@ -29,7 +29,7 @@ struct TESTBED1_API FTestbed1StructBool
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ApiGear|Testbed1")
-	bool fieldBool;
+	bool fieldBool{false};
 
 	bool operator==(const FTestbed1StructBool& rhs) const;
 	bool operator!=(const FTestbed1StructBool& rhs) const;
@@ -44,7 +44,7 @@ struct TESTBED1_API FTestbed1StructInt
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ApiGear|Testbed1")
-	int32 fieldInt;
+	int32 fieldInt{0};
 
 	bool operator==(const FTestbed1StructInt& rhs) const;
 	bool operator!=(const FTestbed1StructInt& rhs) const;
@@ -59,7 +59,7 @@ struct TESTBED1_API FTestbed1StructFloat
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ApiGear|Testbed1")
-	float fieldFloat;
+	float fieldFloat{0.0f};
 
 	bool operator==(const FTestbed1StructFloat& rhs) const;
 	bool operator!=(const FTestbed1StructFloat& rhs) const;
@@ -74,7 +74,7 @@ struct TESTBED1_API FTestbed1StructString
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ApiGear|Testbed1")
-	FString fieldString;
+	FString fieldString{FString()};
 
 	bool operator==(const FTestbed1StructString& rhs) const;
 	bool operator!=(const FTestbed1StructString& rhs) const;
