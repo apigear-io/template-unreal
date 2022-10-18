@@ -21,7 +21,6 @@ limitations under the License.
 #include "UObject/NoExportTypes.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Engine/LatentActionManager.h"
-#include "Templates/SharedPointer.h"
 #include "apig/TbSame2_apig.h"
 #include "TbSame2SameStruct2InterfaceProxy.generated.h"
 

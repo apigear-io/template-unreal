@@ -21,7 +21,6 @@ limitations under the License.
 #include "UObject/NoExportTypes.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Engine/LatentActionManager.h"
-#include "Templates/SharedPointer.h"
 #include "apig/TbEnum_apig.h"
 #include "TbEnumEnumInterfaceProxy.generated.h"
 

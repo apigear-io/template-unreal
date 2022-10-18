@@ -17,7 +17,7 @@ limitations under the License.
 #pragma once
 
 #include "Logging/LogMacros.h"
-#include "Templates/SharedPointer.h"
+#include "UObject/ScriptInterface.h"
 class ITbEnumEnumInterfaceInterface;
 
 // General Log

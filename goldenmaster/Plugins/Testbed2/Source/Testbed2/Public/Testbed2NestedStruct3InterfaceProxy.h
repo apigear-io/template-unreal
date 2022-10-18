@@ -21,7 +21,6 @@ limitations under the License.
 #include "UObject/NoExportTypes.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Engine/LatentActionManager.h"
-#include "Templates/SharedPointer.h"
 #include "apig/Testbed2_apig.h"
 #include "Testbed2NestedStruct3InterfaceProxy.generated.h"
 
