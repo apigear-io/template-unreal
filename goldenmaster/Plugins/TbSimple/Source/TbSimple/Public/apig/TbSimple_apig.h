@@ -92,58 +92,58 @@ public:
 	void FuncBoolAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool);
 	virtual void FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface")
-	void FuncBool(bool& Result, bool bParamBool);
-	virtual void FuncBool_Implementation(bool& Result, bool bParamBool) = 0;
+	bool FuncBool(bool bParamBool);
+	virtual bool FuncBool_Implementation(bool bParamBool) = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void FuncIntAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 ParamInt);
 	virtual void FuncIntAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 ParamInt) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface")
-	void FuncInt(int32& Result, int32 ParamInt);
-	virtual void FuncInt_Implementation(int32& Result, int32 ParamInt) = 0;
+	int32 FuncInt(int32 ParamInt);
+	virtual int32 FuncInt_Implementation(int32 ParamInt) = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void FuncFloatAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, float& Result, float ParamFloat);
 	virtual void FuncFloatAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, float& Result, float ParamFloat) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface")
-	void FuncFloat(float& Result, float ParamFloat);
-	virtual void FuncFloat_Implementation(float& Result, float ParamFloat) = 0;
+	float FuncFloat(float ParamFloat);
+	virtual float FuncFloat_Implementation(float ParamFloat) = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void FuncStringAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FString& Result, const FString& ParamString);
 	virtual void FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FString& Result, const FString& ParamString) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface")
-	void FuncString(FString& Result, const FString& ParamString);
-	virtual void FuncString_Implementation(FString& Result, const FString& ParamString) = 0;
+	FString FuncString(const FString& ParamString);
+	virtual FString FuncString_Implementation(const FString& ParamString) = 0;
 
 	// properties
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface")
-	void GetPropBool(bool& ReturnValue) const;
-	virtual void GetPropBool_Implementation(bool& ReturnValue) const = 0;
+	bool GetPropBool() const;
+	virtual bool GetPropBool_Implementation() const = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface")
 	void SetPropBool(bool bPropBool);
 	virtual void SetPropBool_Implementation(bool bPropBool) = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface")
-	void GetPropInt(int32& ReturnValue) const;
-	virtual void GetPropInt_Implementation(int32& ReturnValue) const = 0;
+	int32 GetPropInt() const;
+	virtual int32 GetPropInt_Implementation() const = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface")
 	void SetPropInt(int32 PropInt);
 	virtual void SetPropInt_Implementation(int32 PropInt) = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface")
-	void GetPropFloat(float& ReturnValue) const;
-	virtual void GetPropFloat_Implementation(float& ReturnValue) const = 0;
+	float GetPropFloat() const;
+	virtual float GetPropFloat_Implementation() const = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface")
 	void SetPropFloat(float PropFloat);
 	virtual void SetPropFloat_Implementation(float PropFloat) = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface")
-	void GetPropString(FString& ReturnValue) const;
-	virtual void GetPropString_Implementation(FString& ReturnValue) const = 0;
+	FString GetPropString() const;
+	virtual FString GetPropString_Implementation() const = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface")
 	void SetPropString(const FString& PropString);
@@ -217,58 +217,58 @@ public:
 	void FuncBoolAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<bool>& Result, const TArray<bool>& ParamBool);
 	virtual void FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<bool>& Result, const TArray<bool>& ParamBool) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
-	void FuncBool(TArray<bool>& Result, const TArray<bool>& ParamBool);
-	virtual void FuncBool_Implementation(TArray<bool>& Result, const TArray<bool>& ParamBool) = 0;
+	TArray<bool> FuncBool(const TArray<bool>& ParamBool);
+	virtual TArray<bool> FuncBool_Implementation(const TArray<bool>& ParamBool) = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void FuncIntAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<int32>& Result, const TArray<int32>& ParamInt);
 	virtual void FuncIntAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<int32>& Result, const TArray<int32>& ParamInt) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
-	void FuncInt(TArray<int32>& Result, const TArray<int32>& ParamInt);
-	virtual void FuncInt_Implementation(TArray<int32>& Result, const TArray<int32>& ParamInt) = 0;
+	TArray<int32> FuncInt(const TArray<int32>& ParamInt);
+	virtual TArray<int32> FuncInt_Implementation(const TArray<int32>& ParamInt) = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void FuncFloatAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<float>& Result, const TArray<float>& ParamFloat);
 	virtual void FuncFloatAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<float>& Result, const TArray<float>& ParamFloat) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
-	void FuncFloat(TArray<float>& Result, const TArray<float>& ParamFloat);
-	virtual void FuncFloat_Implementation(TArray<float>& Result, const TArray<float>& ParamFloat) = 0;
+	TArray<float> FuncFloat(const TArray<float>& ParamFloat);
+	virtual TArray<float> FuncFloat_Implementation(const TArray<float>& ParamFloat) = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void FuncStringAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FString>& Result, const TArray<FString>& ParamString);
 	virtual void FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FString>& Result, const TArray<FString>& ParamString) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
-	void FuncString(TArray<FString>& Result, const TArray<FString>& ParamString);
-	virtual void FuncString_Implementation(TArray<FString>& Result, const TArray<FString>& ParamString) = 0;
+	TArray<FString> FuncString(const TArray<FString>& ParamString);
+	virtual TArray<FString> FuncString_Implementation(const TArray<FString>& ParamString) = 0;
 
 	// properties
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
-	void GetPropBool(TArray<bool>& ReturnValue) const;
-	virtual void GetPropBool_Implementation(TArray<bool>& ReturnValue) const = 0;
+	TArray<bool> GetPropBool() const;
+	virtual TArray<bool> GetPropBool_Implementation() const = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
 	void SetPropBool(const TArray<bool>& PropBool);
 	virtual void SetPropBool_Implementation(const TArray<bool>& PropBool) = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
-	void GetPropInt(TArray<int32>& ReturnValue) const;
-	virtual void GetPropInt_Implementation(TArray<int32>& ReturnValue) const = 0;
+	TArray<int32> GetPropInt() const;
+	virtual TArray<int32> GetPropInt_Implementation() const = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
 	void SetPropInt(const TArray<int32>& PropInt);
 	virtual void SetPropInt_Implementation(const TArray<int32>& PropInt) = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
-	void GetPropFloat(TArray<float>& ReturnValue) const;
-	virtual void GetPropFloat_Implementation(TArray<float>& ReturnValue) const = 0;
+	TArray<float> GetPropFloat() const;
+	virtual TArray<float> GetPropFloat_Implementation() const = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
 	void SetPropFloat(const TArray<float>& PropFloat);
 	virtual void SetPropFloat_Implementation(const TArray<float>& PropFloat) = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
-	void GetPropString(TArray<FString>& ReturnValue) const;
-	virtual void GetPropString_Implementation(TArray<FString>& ReturnValue) const = 0;
+	TArray<FString> GetPropString() const;
+	virtual TArray<FString> GetPropString_Implementation() const = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
 	void SetPropString(const TArray<FString>& PropString);

@@ -47,13 +47,13 @@ public:
 	FTbSame2SameEnum1InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
 
 	// properties
-	void GetProp1_Implementation(ETbSame2Enum1& ReturnValue) const override;
+	ETbSame2Enum1 GetProp1_Implementation() const override;
 
 	void SetProp1_Implementation(const ETbSame2Enum1& InProp1) override;
 
 	// operations
 	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, const ETbSame2Enum1& Param1) override;
-	void Func1_Implementation(ETbSame2Enum1& Result, const ETbSame2Enum1& Param1) override;
+	ETbSame2Enum1 Func1_Implementation(const ETbSame2Enum1& Param1) override;
 
 private:
 	/** The connection to the service backend. */

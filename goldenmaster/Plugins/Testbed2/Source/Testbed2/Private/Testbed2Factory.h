@@ -18,7 +18,6 @@ limitations under the License.
 
 #include "Logging/LogMacros.h"
 #include "Templates/SharedPointer.h"
-#include "UObject/ScriptInterface.h"
 class ITestbed2ManyParamInterfaceInterface;
 class ITestbed2NestedStruct1InterfaceInterface;
 class ITestbed2NestedStruct2InterfaceInterface;

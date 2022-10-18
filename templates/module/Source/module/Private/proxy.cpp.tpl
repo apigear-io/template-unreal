@@ -133,7 +133,7 @@ void {{$Class}}::setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{Cam
 {{- end }}
 	// populate service state to proxy
 {{- range .Interface.Properties }}
-	BackendService->Execute_Get{{Camel .Name}}(BackendService.GetObject(), {{ueVar "" .}});
+	{{ueVar "" .}} = BackendService->Execute_Get{{Camel .Name}}(BackendService.GetObject());
 {{- end }}
 }
 
@@ -158,9 +158,9 @@ void {{$Class}}::On{{Camel .Name}}Changed({{ueParam "In" .}})
 	{{Camel .Name}}Changed.Broadcast({{ueVar "In" .}});
 }
 
-void {{$Class}}::Get{{Camel .Name}}_Implementation({{ueReturn "" .}}& ReturnValue) const
+{{ueReturn "" .}} {{$Class}}::Get{{Camel .Name}}_Implementation() const
 {
-	BackendService->Execute_Get{{Camel .Name}}(BackendService.GetObject(), ReturnValue);
+	return BackendService->Execute_Get{{Camel .Name}}(BackendService.GetObject());
 }
 
 void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
@@ -171,9 +171,7 @@ void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
 
 {{ueReturn "" .}} {{$Class}}::Get{{Camel .Name}}_Private() const
 {
-	{{ueReturn "" .}} out{{Camel .Name}};
-	Execute_Get{{Camel .Name}}(this, out{{Camel .Name}});
-	return out{{Camel .Name}};
+	return Execute_Get{{Camel .Name}}(this);
 }
 
 void {{$Class}}::Set{{Camel .Name}}_Private({{ueParam "In" .}})
@@ -216,21 +214,17 @@ void {{$Class}}::{{Camel .Name}}Async_Implementation(UObject* WorldContextObject
 		Async(EAsyncExecution::Thread,
 			[{{range .Params}}{{ueVar "" .}}, {{ end }}this, &Result, CompletionAction]()
 			{
-				BackendService->Execute_{{Camel .Name}}(BackendService.GetObject(), Result, {{ueVars "" .Params}});
+				Result = BackendService->Execute_{{Camel .Name}}(BackendService.GetObject(), {{ueVars "" .Params}});
 				CompletionAction->Cancel();
 			});
 	}
 }
 {{- end }}
-{{- if .Return.IsVoid }}
-void {{$Class}}::{{Camel .Name}}_Implementation({{ueParams "" .Params}})
-{{- else }}
-void {{$Class}}::{{Camel .Name}}_Implementation({{ueReturn "" .Return}}& Result, {{ueParams "" .Params}})
-{{- end }}
+{{ueReturn "" .Return}} {{$Class}}::{{Camel .Name}}_Implementation({{ueParams "" .Params}})
 {
 	{{ $Iface}}Tracer::trace_call{{Camel .Name}}({{ueVars "" .Params }});
 	{{- if not .Return.IsVoid }}
-	BackendService->Execute_{{Camel .Name}}(BackendService.GetObject(), Result, {{ ueVars "" .Params }});
+	return BackendService->Execute_{{Camel .Name}}(BackendService.GetObject(), {{ ueVars "" .Params }});
 	{{- else }}
 	BackendService->Execute_{{Camel .Name}}(BackendService.GetObject(), {{ ueVars "" .Params}});
 	{{- end }}

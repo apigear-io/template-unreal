@@ -143,9 +143,9 @@ FTbSame1SameStruct2InterfaceSig2Delegate& UTbSame1SameStruct2InterfaceSimulation
 	return Sig2Signal;
 }
 
-void UTbSame1SameStruct2InterfaceSimulationService::GetProp1_Implementation(FTbSame1Struct2& ReturnValue) const
+FTbSame1Struct2 UTbSame1SameStruct2InterfaceSimulationService::GetProp1_Implementation() const
 {
-	ReturnValue = Prop1;
+	return Prop1;
 }
 
 void UTbSame1SameStruct2InterfaceSimulationService::SetProp1_Implementation(const FTbSame1Struct2& InProp1)
@@ -164,9 +164,9 @@ FTbSame1SameStruct2InterfaceProp1ChangedDelegate& UTbSame1SameStruct2InterfaceSi
 	return Prop1Changed;
 }
 
-void UTbSame1SameStruct2InterfaceSimulationService::GetProp2_Implementation(FTbSame1Struct2& ReturnValue) const
+FTbSame1Struct2 UTbSame1SameStruct2InterfaceSimulationService::GetProp2_Implementation() const
 {
-	ReturnValue = Prop2;
+	return Prop2;
 }
 
 void UTbSame1SameStruct2InterfaceSimulationService::SetProp2_Implementation(const FTbSame1Struct2& InProp2)
@@ -185,7 +185,7 @@ FTbSame1SameStruct2InterfaceProp2ChangedDelegate& UTbSame1SameStruct2InterfaceSi
 	return Prop2Changed;
 }
 
-void UTbSame1SameStruct2InterfaceSimulationService::Func1_Implementation(FTbSame1Struct1& Result, const FTbSame1Struct1& Param1)
+FTbSame1Struct1 UTbSame1SameStruct2InterfaceSimulationService::Func1_Implementation(const FTbSame1Struct1& Param1)
 {
 	Params params;
 	params["param1"] = Param1;
@@ -202,10 +202,10 @@ void UTbSame1SameStruct2InterfaceSimulationService::Func1_Implementation(FTbSame
 			}
 		});
 
-	Result = Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
 
-void UTbSame1SameStruct2InterfaceSimulationService::Func2_Implementation(FTbSame1Struct1& Result, const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2)
+FTbSame1Struct1 UTbSame1SameStruct2InterfaceSimulationService::Func2_Implementation(const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2)
 {
 	Params params;
 	params["param1"] = Param1;
@@ -223,5 +223,5 @@ void UTbSame1SameStruct2InterfaceSimulationService::Func2_Implementation(FTbSame
 			}
 		});
 
-	Result = Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }

@@ -62,13 +62,13 @@ public:
 	void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame2Struct1& Result, const FTbSame2Struct1& Param1);
 	virtual void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame2Struct1& Result, const FTbSame2Struct1& Param1) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct1Interface")
-	void Func1(FTbSame2Struct1& Result, const FTbSame2Struct1& Param1);
-	virtual void Func1_Implementation(FTbSame2Struct1& Result, const FTbSame2Struct1& Param1) = 0;
+	FTbSame2Struct1 Func1(const FTbSame2Struct1& Param1);
+	virtual FTbSame2Struct1 Func1_Implementation(const FTbSame2Struct1& Param1) = 0;
 
 	// properties
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct1Interface")
-	void GetProp1(FTbSame2Struct1& ReturnValue) const;
-	virtual void GetProp1_Implementation(FTbSame2Struct1& ReturnValue) const = 0;
+	FTbSame2Struct1 GetProp1() const;
+	virtual FTbSame2Struct1 GetProp1_Implementation() const = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct1Interface")
 	void SetProp1(const FTbSame2Struct1& Prop1);
@@ -122,28 +122,28 @@ public:
 	void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame2Struct1& Result, const FTbSame2Struct1& Param1);
 	virtual void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame2Struct1& Result, const FTbSame2Struct1& Param1) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct2Interface")
-	void Func1(FTbSame2Struct1& Result, const FTbSame2Struct1& Param1);
-	virtual void Func1_Implementation(FTbSame2Struct1& Result, const FTbSame2Struct1& Param1) = 0;
+	FTbSame2Struct1 Func1(const FTbSame2Struct1& Param1);
+	virtual FTbSame2Struct1 Func1_Implementation(const FTbSame2Struct1& Param1) = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct2Interface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void Func2Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame2Struct1& Result, const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2);
 	virtual void Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame2Struct1& Result, const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct2Interface")
-	void Func2(FTbSame2Struct1& Result, const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2);
-	virtual void Func2_Implementation(FTbSame2Struct1& Result, const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2) = 0;
+	FTbSame2Struct1 Func2(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2);
+	virtual FTbSame2Struct1 Func2_Implementation(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2) = 0;
 
 	// properties
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct2Interface")
-	void GetProp1(FTbSame2Struct2& ReturnValue) const;
-	virtual void GetProp1_Implementation(FTbSame2Struct2& ReturnValue) const = 0;
+	FTbSame2Struct2 GetProp1() const;
+	virtual FTbSame2Struct2 GetProp1_Implementation() const = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct2Interface")
 	void SetProp1(const FTbSame2Struct2& Prop1);
 	virtual void SetProp1_Implementation(const FTbSame2Struct2& Prop1) = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct2Interface")
-	void GetProp2(FTbSame2Struct2& ReturnValue) const;
-	virtual void GetProp2_Implementation(FTbSame2Struct2& ReturnValue) const = 0;
+	FTbSame2Struct2 GetProp2() const;
+	virtual FTbSame2Struct2 GetProp2_Implementation() const = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct2Interface")
 	void SetProp2(const FTbSame2Struct2& Prop2);
@@ -187,13 +187,13 @@ public:
 	void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, const ETbSame2Enum1& Param1);
 	virtual void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, const ETbSame2Enum1& Param1) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum1Interface")
-	void Func1(ETbSame2Enum1& Result, const ETbSame2Enum1& Param1);
-	virtual void Func1_Implementation(ETbSame2Enum1& Result, const ETbSame2Enum1& Param1) = 0;
+	ETbSame2Enum1 Func1(const ETbSame2Enum1& Param1);
+	virtual ETbSame2Enum1 Func1_Implementation(const ETbSame2Enum1& Param1) = 0;
 
 	// properties
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum1Interface")
-	void GetProp1(ETbSame2Enum1& ReturnValue) const;
-	virtual void GetProp1_Implementation(ETbSame2Enum1& ReturnValue) const = 0;
+	ETbSame2Enum1 GetProp1() const;
+	virtual ETbSame2Enum1 GetProp1_Implementation() const = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum1Interface")
 	void SetProp1(const ETbSame2Enum1& Prop1);
@@ -247,28 +247,28 @@ public:
 	void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, const ETbSame2Enum1& Param1);
 	virtual void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, const ETbSame2Enum1& Param1) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum2Interface")
-	void Func1(ETbSame2Enum1& Result, const ETbSame2Enum1& Param1);
-	virtual void Func1_Implementation(ETbSame2Enum1& Result, const ETbSame2Enum1& Param1) = 0;
+	ETbSame2Enum1 Func1(const ETbSame2Enum1& Param1);
+	virtual ETbSame2Enum1 Func1_Implementation(const ETbSame2Enum1& Param1) = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum2Interface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void Func2Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, const ETbSame2Enum1& Param1, const ETbSame2Enum2& Param2);
 	virtual void Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, const ETbSame2Enum1& Param1, const ETbSame2Enum2& Param2) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum2Interface")
-	void Func2(ETbSame2Enum1& Result, const ETbSame2Enum1& Param1, const ETbSame2Enum2& Param2);
-	virtual void Func2_Implementation(ETbSame2Enum1& Result, const ETbSame2Enum1& Param1, const ETbSame2Enum2& Param2) = 0;
+	ETbSame2Enum1 Func2(const ETbSame2Enum1& Param1, const ETbSame2Enum2& Param2);
+	virtual ETbSame2Enum1 Func2_Implementation(const ETbSame2Enum1& Param1, const ETbSame2Enum2& Param2) = 0;
 
 	// properties
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum2Interface")
-	void GetProp1(ETbSame2Enum1& ReturnValue) const;
-	virtual void GetProp1_Implementation(ETbSame2Enum1& ReturnValue) const = 0;
+	ETbSame2Enum1 GetProp1() const;
+	virtual ETbSame2Enum1 GetProp1_Implementation() const = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum2Interface")
 	void SetProp1(const ETbSame2Enum1& Prop1);
 	virtual void SetProp1_Implementation(const ETbSame2Enum1& Prop1) = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum2Interface")
-	void GetProp2(ETbSame2Enum2& ReturnValue) const;
-	virtual void GetProp2_Implementation(ETbSame2Enum2& ReturnValue) const = 0;
+	ETbSame2Enum2 GetProp2() const;
+	virtual ETbSame2Enum2 GetProp2_Implementation() const = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum2Interface")
 	void SetProp2(const ETbSame2Enum2& Prop2);

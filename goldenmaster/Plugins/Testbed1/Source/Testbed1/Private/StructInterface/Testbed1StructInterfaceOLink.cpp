@@ -81,9 +81,9 @@ FTestbed1StructInterfaceSigStringDelegate& UTestbed1StructInterfaceOLinkService:
 	return SigStringSignal;
 }
 
-void UTestbed1StructInterfaceOLinkService::GetPropBool_Implementation(FTestbed1StructBool& ReturnValue) const
+FTestbed1StructBool UTestbed1StructInterfaceOLinkService::GetPropBool_Implementation() const
 {
-	ReturnValue = PropBool;
+	return PropBool;
 }
 
 void UTestbed1StructInterfaceOLinkService::SetPropBool_Implementation(const FTestbed1StructBool& InPropBool)
@@ -99,9 +99,9 @@ FTestbed1StructInterfacePropBoolChangedDelegate& UTestbed1StructInterfaceOLinkSe
 {
 	return PropBoolChanged;
 }
-void UTestbed1StructInterfaceOLinkService::GetPropInt_Implementation(FTestbed1StructInt& ReturnValue) const
+FTestbed1StructInt UTestbed1StructInterfaceOLinkService::GetPropInt_Implementation() const
 {
-	ReturnValue = PropInt;
+	return PropInt;
 }
 
 void UTestbed1StructInterfaceOLinkService::SetPropInt_Implementation(const FTestbed1StructInt& InPropInt)
@@ -117,9 +117,9 @@ FTestbed1StructInterfacePropIntChangedDelegate& UTestbed1StructInterfaceOLinkSer
 {
 	return PropIntChanged;
 }
-void UTestbed1StructInterfaceOLinkService::GetPropFloat_Implementation(FTestbed1StructFloat& ReturnValue) const
+FTestbed1StructFloat UTestbed1StructInterfaceOLinkService::GetPropFloat_Implementation() const
 {
-	ReturnValue = PropFloat;
+	return PropFloat;
 }
 
 void UTestbed1StructInterfaceOLinkService::SetPropFloat_Implementation(const FTestbed1StructFloat& InPropFloat)
@@ -135,9 +135,9 @@ FTestbed1StructInterfacePropFloatChangedDelegate& UTestbed1StructInterfaceOLinkS
 {
 	return PropFloatChanged;
 }
-void UTestbed1StructInterfaceOLinkService::GetPropString_Implementation(FTestbed1StructString& ReturnValue) const
+FTestbed1StructString UTestbed1StructInterfaceOLinkService::GetPropString_Implementation() const
 {
-	ReturnValue = PropString;
+	return PropString;
 }
 
 void UTestbed1StructInterfaceOLinkService::SetPropString_Implementation(const FTestbed1StructString& InPropString)
@@ -154,13 +154,12 @@ FTestbed1StructInterfacePropStringChangedDelegate& UTestbed1StructInterfaceOLink
 	return PropStringChanged;
 }
 
-void UTestbed1StructInterfaceOLinkService::FuncBool_Implementation(FTestbed1StructBool& Result, const FTestbed1StructBool& ParamBool)
+FTestbed1StructBool UTestbed1StructInterfaceOLinkService::FuncBool_Implementation(const FTestbed1StructBool& ParamBool)
 {
 	if (!m_node)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
-		Result = FTestbed1StructBool();
-		return;
+		return FTestbed1StructBool();
 	}
 	TPromise<FTestbed1StructBool> Promise;
 	Async(EAsyncExecution::Thread,
@@ -171,16 +170,15 @@ void UTestbed1StructInterfaceOLinkService::FuncBool_Implementation(FTestbed1Stru
 			m_node->invokeRemote("testbed1.StructInterface/funcBool", {ParamBool}, GetStructInterfaceStateFunc);
 		});
 
-	Result = Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
 
-void UTestbed1StructInterfaceOLinkService::FuncInt_Implementation(FTestbed1StructBool& Result, const FTestbed1StructInt& ParamInt)
+FTestbed1StructBool UTestbed1StructInterfaceOLinkService::FuncInt_Implementation(const FTestbed1StructInt& ParamInt)
 {
 	if (!m_node)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
-		Result = FTestbed1StructBool();
-		return;
+		return FTestbed1StructBool();
 	}
 	TPromise<FTestbed1StructBool> Promise;
 	Async(EAsyncExecution::Thread,
@@ -191,16 +189,15 @@ void UTestbed1StructInterfaceOLinkService::FuncInt_Implementation(FTestbed1Struc
 			m_node->invokeRemote("testbed1.StructInterface/funcInt", {ParamInt}, GetStructInterfaceStateFunc);
 		});
 
-	Result = Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
 
-void UTestbed1StructInterfaceOLinkService::FuncFloat_Implementation(FTestbed1StructFloat& Result, const FTestbed1StructFloat& ParamFloat)
+FTestbed1StructFloat UTestbed1StructInterfaceOLinkService::FuncFloat_Implementation(const FTestbed1StructFloat& ParamFloat)
 {
 	if (!m_node)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
-		Result = FTestbed1StructFloat();
-		return;
+		return FTestbed1StructFloat();
 	}
 	TPromise<FTestbed1StructFloat> Promise;
 	Async(EAsyncExecution::Thread,
@@ -211,16 +208,15 @@ void UTestbed1StructInterfaceOLinkService::FuncFloat_Implementation(FTestbed1Str
 			m_node->invokeRemote("testbed1.StructInterface/funcFloat", {ParamFloat}, GetStructInterfaceStateFunc);
 		});
 
-	Result = Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
 
-void UTestbed1StructInterfaceOLinkService::FuncString_Implementation(FTestbed1StructString& Result, const FTestbed1StructString& ParamString)
+FTestbed1StructString UTestbed1StructInterfaceOLinkService::FuncString_Implementation(const FTestbed1StructString& ParamString)
 {
 	if (!m_node)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
-		Result = FTestbed1StructString();
-		return;
+		return FTestbed1StructString();
 	}
 	TPromise<FTestbed1StructString> Promise;
 	Async(EAsyncExecution::Thread,
@@ -231,7 +227,7 @@ void UTestbed1StructInterfaceOLinkService::FuncString_Implementation(FTestbed1St
 			m_node->invokeRemote("testbed1.StructInterface/funcString", {ParamString}, GetStructInterfaceStateFunc);
 		});
 
-	Result = Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
 
 void UTestbed1StructInterfaceOLinkService::applyState(const nlohmann::json& fields)

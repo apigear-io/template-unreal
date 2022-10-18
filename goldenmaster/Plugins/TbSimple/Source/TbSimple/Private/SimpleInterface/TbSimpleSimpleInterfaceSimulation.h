@@ -53,30 +53,30 @@ public:
 	FTbSimpleSimpleInterfacePropStringChangedDelegate& GetPropStringChangedDelegate() override;
 
 	// properties
-	void GetPropBool_Implementation(bool& ReturnValue) const override;
+	bool GetPropBool_Implementation() const override;
 	void SetPropBool_Implementation(bool bPropBool) override;
 
-	void GetPropInt_Implementation(int32& ReturnValue) const override;
+	int32 GetPropInt_Implementation() const override;
 	void SetPropInt_Implementation(int32 PropInt) override;
 
-	void GetPropFloat_Implementation(float& ReturnValue) const override;
+	float GetPropFloat_Implementation() const override;
 	void SetPropFloat_Implementation(float PropFloat) override;
 
-	void GetPropString_Implementation(FString& ReturnValue) const override;
+	FString GetPropString_Implementation() const override;
 	void SetPropString_Implementation(const FString& PropString) override;
 
 	// operations
 	void FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool) override{};
-	void FuncBool_Implementation(bool& Result, bool bParamBool) override;
+	bool FuncBool_Implementation(bool bParamBool) override;
 
 	void FuncIntAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 ParamInt) override{};
-	void FuncInt_Implementation(int32& Result, int32 ParamInt) override;
+	int32 FuncInt_Implementation(int32 ParamInt) override;
 
 	void FuncFloatAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, float& Result, float ParamFloat) override{};
-	void FuncFloat_Implementation(float& Result, float ParamFloat) override;
+	float FuncFloat_Implementation(float ParamFloat) override;
 
 	void FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FString& Result, const FString& ParamString) override{};
-	void FuncString_Implementation(FString& Result, const FString& ParamString) override;
+	FString FuncString_Implementation(const FString& ParamString) override;
 
 private:
 	// properties - local copy

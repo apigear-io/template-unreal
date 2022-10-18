@@ -81,9 +81,9 @@ FTestbed2ManyParamInterfaceSig4Delegate& UTestbed2ManyParamInterfaceOLinkService
 	return Sig4Signal;
 }
 
-void UTestbed2ManyParamInterfaceOLinkService::GetProp1_Implementation(int32& ReturnValue) const
+int32 UTestbed2ManyParamInterfaceOLinkService::GetProp1_Implementation() const
 {
-	ReturnValue = Prop1;
+	return Prop1;
 }
 
 void UTestbed2ManyParamInterfaceOLinkService::SetProp1_Implementation(int32 InProp1)
@@ -99,9 +99,9 @@ FTestbed2ManyParamInterfaceProp1ChangedDelegate& UTestbed2ManyParamInterfaceOLin
 {
 	return Prop1Changed;
 }
-void UTestbed2ManyParamInterfaceOLinkService::GetProp2_Implementation(int32& ReturnValue) const
+int32 UTestbed2ManyParamInterfaceOLinkService::GetProp2_Implementation() const
 {
-	ReturnValue = Prop2;
+	return Prop2;
 }
 
 void UTestbed2ManyParamInterfaceOLinkService::SetProp2_Implementation(int32 InProp2)
@@ -117,9 +117,9 @@ FTestbed2ManyParamInterfaceProp2ChangedDelegate& UTestbed2ManyParamInterfaceOLin
 {
 	return Prop2Changed;
 }
-void UTestbed2ManyParamInterfaceOLinkService::GetProp3_Implementation(int32& ReturnValue) const
+int32 UTestbed2ManyParamInterfaceOLinkService::GetProp3_Implementation() const
 {
-	ReturnValue = Prop3;
+	return Prop3;
 }
 
 void UTestbed2ManyParamInterfaceOLinkService::SetProp3_Implementation(int32 InProp3)
@@ -135,9 +135,9 @@ FTestbed2ManyParamInterfaceProp3ChangedDelegate& UTestbed2ManyParamInterfaceOLin
 {
 	return Prop3Changed;
 }
-void UTestbed2ManyParamInterfaceOLinkService::GetProp4_Implementation(int32& ReturnValue) const
+int32 UTestbed2ManyParamInterfaceOLinkService::GetProp4_Implementation() const
 {
-	ReturnValue = Prop4;
+	return Prop4;
 }
 
 void UTestbed2ManyParamInterfaceOLinkService::SetProp4_Implementation(int32 InProp4)
@@ -154,13 +154,12 @@ FTestbed2ManyParamInterfaceProp4ChangedDelegate& UTestbed2ManyParamInterfaceOLin
 	return Prop4Changed;
 }
 
-void UTestbed2ManyParamInterfaceOLinkService::Func1_Implementation(int32& Result, int32 Param1)
+int32 UTestbed2ManyParamInterfaceOLinkService::Func1_Implementation(int32 Param1)
 {
 	if (!m_node)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
-		Result = 0;
-		return;
+		return 0;
 	}
 	TPromise<int32> Promise;
 	Async(EAsyncExecution::Thread,
@@ -171,16 +170,15 @@ void UTestbed2ManyParamInterfaceOLinkService::Func1_Implementation(int32& Result
 			m_node->invokeRemote("testbed2.ManyParamInterface/func1", {Param1}, GetManyParamInterfaceStateFunc);
 		});
 
-	Result = Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
 
-void UTestbed2ManyParamInterfaceOLinkService::Func2_Implementation(int32& Result, int32 Param1, int32 Param2)
+int32 UTestbed2ManyParamInterfaceOLinkService::Func2_Implementation(int32 Param1, int32 Param2)
 {
 	if (!m_node)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
-		Result = 0;
-		return;
+		return 0;
 	}
 	TPromise<int32> Promise;
 	Async(EAsyncExecution::Thread,
@@ -191,16 +189,15 @@ void UTestbed2ManyParamInterfaceOLinkService::Func2_Implementation(int32& Result
 			m_node->invokeRemote("testbed2.ManyParamInterface/func2", {Param1, Param2}, GetManyParamInterfaceStateFunc);
 		});
 
-	Result = Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
 
-void UTestbed2ManyParamInterfaceOLinkService::Func3_Implementation(int32& Result, int32 Param1, int32 Param2, int32 Param3)
+int32 UTestbed2ManyParamInterfaceOLinkService::Func3_Implementation(int32 Param1, int32 Param2, int32 Param3)
 {
 	if (!m_node)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
-		Result = 0;
-		return;
+		return 0;
 	}
 	TPromise<int32> Promise;
 	Async(EAsyncExecution::Thread,
@@ -211,16 +208,15 @@ void UTestbed2ManyParamInterfaceOLinkService::Func3_Implementation(int32& Result
 			m_node->invokeRemote("testbed2.ManyParamInterface/func3", {Param1, Param2, Param3}, GetManyParamInterfaceStateFunc);
 		});
 
-	Result = Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
 
-void UTestbed2ManyParamInterfaceOLinkService::Func4_Implementation(int32& Result, int32 Param1, int32 Param2, int32 Param3, int32 Param4)
+int32 UTestbed2ManyParamInterfaceOLinkService::Func4_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
 {
 	if (!m_node)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
-		Result = 0;
-		return;
+		return 0;
 	}
 	TPromise<int32> Promise;
 	Async(EAsyncExecution::Thread,
@@ -231,7 +227,7 @@ void UTestbed2ManyParamInterfaceOLinkService::Func4_Implementation(int32& Result
 			m_node->invokeRemote("testbed2.ManyParamInterface/func4", {Param1, Param2, Param3, Param4}, GetManyParamInterfaceStateFunc);
 		});
 
-	Result = Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
 
 void UTestbed2ManyParamInterfaceOLinkService::applyState(const nlohmann::json& fields)

@@ -124,10 +124,10 @@ void UTbEnumEnumInterfaceProxy::setBackendService(TScriptInterface<ITbEnumEnumIn
 	BackendService->GetSig2SignalDelegate().AddDynamic(this, &UTbEnumEnumInterfaceProxy::OnSig2);
 	BackendService->GetSig3SignalDelegate().AddDynamic(this, &UTbEnumEnumInterfaceProxy::OnSig3);
 	// populate service state to proxy
-	BackendService->Execute_GetProp0(BackendService.GetObject(), Prop0);
-	BackendService->Execute_GetProp1(BackendService.GetObject(), Prop1);
-	BackendService->Execute_GetProp2(BackendService.GetObject(), Prop2);
-	BackendService->Execute_GetProp3(BackendService.GetObject(), Prop3);
+	Prop0 = BackendService->Execute_GetProp0(BackendService.GetObject());
+	Prop1 = BackendService->Execute_GetProp1(BackendService.GetObject());
+	Prop2 = BackendService->Execute_GetProp2(BackendService.GetObject());
+	Prop3 = BackendService->Execute_GetProp3(BackendService.GetObject());
 }
 void UTbEnumEnumInterfaceProxy::OnSig0(const ETbEnumEnum0& Param0)
 {
@@ -180,9 +180,9 @@ void UTbEnumEnumInterfaceProxy::OnProp0Changed(const ETbEnumEnum0& InProp0)
 	Prop0Changed.Broadcast(InProp0);
 }
 
-void UTbEnumEnumInterfaceProxy::GetProp0_Implementation(ETbEnumEnum0& ReturnValue) const
+ETbEnumEnum0 UTbEnumEnumInterfaceProxy::GetProp0_Implementation() const
 {
-	BackendService->Execute_GetProp0(BackendService.GetObject(), ReturnValue);
+	return BackendService->Execute_GetProp0(BackendService.GetObject());
 }
 
 void UTbEnumEnumInterfaceProxy::SetProp0_Implementation(const ETbEnumEnum0& InProp0)
@@ -193,9 +193,7 @@ void UTbEnumEnumInterfaceProxy::SetProp0_Implementation(const ETbEnumEnum0& InPr
 
 ETbEnumEnum0 UTbEnumEnumInterfaceProxy::GetProp0_Private() const
 {
-	ETbEnumEnum0 outProp0;
-	Execute_GetProp0(this, outProp0);
-	return outProp0;
+	return Execute_GetProp0(this);
 }
 
 void UTbEnumEnumInterfaceProxy::SetProp0_Private(const ETbEnumEnum0& InProp0)
@@ -215,9 +213,9 @@ void UTbEnumEnumInterfaceProxy::OnProp1Changed(const ETbEnumEnum1& InProp1)
 	Prop1Changed.Broadcast(InProp1);
 }
 
-void UTbEnumEnumInterfaceProxy::GetProp1_Implementation(ETbEnumEnum1& ReturnValue) const
+ETbEnumEnum1 UTbEnumEnumInterfaceProxy::GetProp1_Implementation() const
 {
-	BackendService->Execute_GetProp1(BackendService.GetObject(), ReturnValue);
+	return BackendService->Execute_GetProp1(BackendService.GetObject());
 }
 
 void UTbEnumEnumInterfaceProxy::SetProp1_Implementation(const ETbEnumEnum1& InProp1)
@@ -228,9 +226,7 @@ void UTbEnumEnumInterfaceProxy::SetProp1_Implementation(const ETbEnumEnum1& InPr
 
 ETbEnumEnum1 UTbEnumEnumInterfaceProxy::GetProp1_Private() const
 {
-	ETbEnumEnum1 outProp1;
-	Execute_GetProp1(this, outProp1);
-	return outProp1;
+	return Execute_GetProp1(this);
 }
 
 void UTbEnumEnumInterfaceProxy::SetProp1_Private(const ETbEnumEnum1& InProp1)
@@ -250,9 +246,9 @@ void UTbEnumEnumInterfaceProxy::OnProp2Changed(const ETbEnumEnum2& InProp2)
 	Prop2Changed.Broadcast(InProp2);
 }
 
-void UTbEnumEnumInterfaceProxy::GetProp2_Implementation(ETbEnumEnum2& ReturnValue) const
+ETbEnumEnum2 UTbEnumEnumInterfaceProxy::GetProp2_Implementation() const
 {
-	BackendService->Execute_GetProp2(BackendService.GetObject(), ReturnValue);
+	return BackendService->Execute_GetProp2(BackendService.GetObject());
 }
 
 void UTbEnumEnumInterfaceProxy::SetProp2_Implementation(const ETbEnumEnum2& InProp2)
@@ -263,9 +259,7 @@ void UTbEnumEnumInterfaceProxy::SetProp2_Implementation(const ETbEnumEnum2& InPr
 
 ETbEnumEnum2 UTbEnumEnumInterfaceProxy::GetProp2_Private() const
 {
-	ETbEnumEnum2 outProp2;
-	Execute_GetProp2(this, outProp2);
-	return outProp2;
+	return Execute_GetProp2(this);
 }
 
 void UTbEnumEnumInterfaceProxy::SetProp2_Private(const ETbEnumEnum2& InProp2)
@@ -285,9 +279,9 @@ void UTbEnumEnumInterfaceProxy::OnProp3Changed(const ETbEnumEnum3& InProp3)
 	Prop3Changed.Broadcast(InProp3);
 }
 
-void UTbEnumEnumInterfaceProxy::GetProp3_Implementation(ETbEnumEnum3& ReturnValue) const
+ETbEnumEnum3 UTbEnumEnumInterfaceProxy::GetProp3_Implementation() const
 {
-	BackendService->Execute_GetProp3(BackendService.GetObject(), ReturnValue);
+	return BackendService->Execute_GetProp3(BackendService.GetObject());
 }
 
 void UTbEnumEnumInterfaceProxy::SetProp3_Implementation(const ETbEnumEnum3& InProp3)
@@ -298,9 +292,7 @@ void UTbEnumEnumInterfaceProxy::SetProp3_Implementation(const ETbEnumEnum3& InPr
 
 ETbEnumEnum3 UTbEnumEnumInterfaceProxy::GetProp3_Private() const
 {
-	ETbEnumEnum3 outProp3;
-	Execute_GetProp3(this, outProp3);
-	return outProp3;
+	return Execute_GetProp3(this);
 }
 
 void UTbEnumEnumInterfaceProxy::SetProp3_Private(const ETbEnumEnum3& InProp3)
@@ -334,15 +326,15 @@ void UTbEnumEnumInterfaceProxy::Func0Async_Implementation(UObject* WorldContextO
 		Async(EAsyncExecution::Thread,
 			[Param0, this, &Result, CompletionAction]()
 			{
-				BackendService->Execute_Func0(BackendService.GetObject(), Result, Param0);
+				Result = BackendService->Execute_Func0(BackendService.GetObject(), Param0);
 				CompletionAction->Cancel();
 			});
 	}
 }
-void UTbEnumEnumInterfaceProxy::Func0_Implementation(ETbEnumEnum0& Result, const ETbEnumEnum0& Param0)
+ETbEnumEnum0 UTbEnumEnumInterfaceProxy::Func0_Implementation(const ETbEnumEnum0& Param0)
 {
 	TbEnumEnumInterfaceTracer::trace_callFunc0(Param0);
-	BackendService->Execute_Func0(BackendService.GetObject(), Result, Param0);
+	return BackendService->Execute_Func0(BackendService.GetObject(), Param0);
 }
 void UTbEnumEnumInterfaceProxy::Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum1& Result, const ETbEnumEnum1& Param1)
 {
@@ -365,15 +357,15 @@ void UTbEnumEnumInterfaceProxy::Func1Async_Implementation(UObject* WorldContextO
 		Async(EAsyncExecution::Thread,
 			[Param1, this, &Result, CompletionAction]()
 			{
-				BackendService->Execute_Func1(BackendService.GetObject(), Result, Param1);
+				Result = BackendService->Execute_Func1(BackendService.GetObject(), Param1);
 				CompletionAction->Cancel();
 			});
 	}
 }
-void UTbEnumEnumInterfaceProxy::Func1_Implementation(ETbEnumEnum1& Result, const ETbEnumEnum1& Param1)
+ETbEnumEnum1 UTbEnumEnumInterfaceProxy::Func1_Implementation(const ETbEnumEnum1& Param1)
 {
 	TbEnumEnumInterfaceTracer::trace_callFunc1(Param1);
-	BackendService->Execute_Func1(BackendService.GetObject(), Result, Param1);
+	return BackendService->Execute_Func1(BackendService.GetObject(), Param1);
 }
 void UTbEnumEnumInterfaceProxy::Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum2& Result, const ETbEnumEnum2& Param2)
 {
@@ -396,15 +388,15 @@ void UTbEnumEnumInterfaceProxy::Func2Async_Implementation(UObject* WorldContextO
 		Async(EAsyncExecution::Thread,
 			[Param2, this, &Result, CompletionAction]()
 			{
-				BackendService->Execute_Func2(BackendService.GetObject(), Result, Param2);
+				Result = BackendService->Execute_Func2(BackendService.GetObject(), Param2);
 				CompletionAction->Cancel();
 			});
 	}
 }
-void UTbEnumEnumInterfaceProxy::Func2_Implementation(ETbEnumEnum2& Result, const ETbEnumEnum2& Param2)
+ETbEnumEnum2 UTbEnumEnumInterfaceProxy::Func2_Implementation(const ETbEnumEnum2& Param2)
 {
 	TbEnumEnumInterfaceTracer::trace_callFunc2(Param2);
-	BackendService->Execute_Func2(BackendService.GetObject(), Result, Param2);
+	return BackendService->Execute_Func2(BackendService.GetObject(), Param2);
 }
 void UTbEnumEnumInterfaceProxy::Func3Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum3& Result, const ETbEnumEnum3& Param3)
 {
@@ -427,13 +419,13 @@ void UTbEnumEnumInterfaceProxy::Func3Async_Implementation(UObject* WorldContextO
 		Async(EAsyncExecution::Thread,
 			[Param3, this, &Result, CompletionAction]()
 			{
-				BackendService->Execute_Func3(BackendService.GetObject(), Result, Param3);
+				Result = BackendService->Execute_Func3(BackendService.GetObject(), Param3);
 				CompletionAction->Cancel();
 			});
 	}
 }
-void UTbEnumEnumInterfaceProxy::Func3_Implementation(ETbEnumEnum3& Result, const ETbEnumEnum3& Param3)
+ETbEnumEnum3 UTbEnumEnumInterfaceProxy::Func3_Implementation(const ETbEnumEnum3& Param3)
 {
 	TbEnumEnumInterfaceTracer::trace_callFunc3(Param3);
-	BackendService->Execute_Func3(BackendService.GetObject(), Result, Param3);
+	return BackendService->Execute_Func3(BackendService.GetObject(), Param3);
 }

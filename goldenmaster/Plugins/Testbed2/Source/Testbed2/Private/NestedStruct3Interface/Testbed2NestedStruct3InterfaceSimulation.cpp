@@ -179,9 +179,9 @@ FTestbed2NestedStruct3InterfaceSig3Delegate& UTestbed2NestedStruct3InterfaceSimu
 	return Sig3Signal;
 }
 
-void UTestbed2NestedStruct3InterfaceSimulationService::GetProp1_Implementation(FTestbed2NestedStruct1& ReturnValue) const
+FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceSimulationService::GetProp1_Implementation() const
 {
-	ReturnValue = Prop1;
+	return Prop1;
 }
 
 void UTestbed2NestedStruct3InterfaceSimulationService::SetProp1_Implementation(const FTestbed2NestedStruct1& InProp1)
@@ -200,9 +200,9 @@ FTestbed2NestedStruct3InterfaceProp1ChangedDelegate& UTestbed2NestedStruct3Inter
 	return Prop1Changed;
 }
 
-void UTestbed2NestedStruct3InterfaceSimulationService::GetProp2_Implementation(FTestbed2NestedStruct2& ReturnValue) const
+FTestbed2NestedStruct2 UTestbed2NestedStruct3InterfaceSimulationService::GetProp2_Implementation() const
 {
-	ReturnValue = Prop2;
+	return Prop2;
 }
 
 void UTestbed2NestedStruct3InterfaceSimulationService::SetProp2_Implementation(const FTestbed2NestedStruct2& InProp2)
@@ -221,9 +221,9 @@ FTestbed2NestedStruct3InterfaceProp2ChangedDelegate& UTestbed2NestedStruct3Inter
 	return Prop2Changed;
 }
 
-void UTestbed2NestedStruct3InterfaceSimulationService::GetProp3_Implementation(FTestbed2NestedStruct3& ReturnValue) const
+FTestbed2NestedStruct3 UTestbed2NestedStruct3InterfaceSimulationService::GetProp3_Implementation() const
 {
-	ReturnValue = Prop3;
+	return Prop3;
 }
 
 void UTestbed2NestedStruct3InterfaceSimulationService::SetProp3_Implementation(const FTestbed2NestedStruct3& InProp3)
@@ -242,7 +242,7 @@ FTestbed2NestedStruct3InterfaceProp3ChangedDelegate& UTestbed2NestedStruct3Inter
 	return Prop3Changed;
 }
 
-void UTestbed2NestedStruct3InterfaceSimulationService::Func1_Implementation(FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1)
+FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceSimulationService::Func1_Implementation(const FTestbed2NestedStruct1& Param1)
 {
 	Params params;
 	params["param1"] = Param1;
@@ -259,10 +259,10 @@ void UTestbed2NestedStruct3InterfaceSimulationService::Func1_Implementation(FTes
 			}
 		});
 
-	Result = Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
 
-void UTestbed2NestedStruct3InterfaceSimulationService::Func2_Implementation(FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
+FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceSimulationService::Func2_Implementation(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
 {
 	Params params;
 	params["param1"] = Param1;
@@ -280,10 +280,10 @@ void UTestbed2NestedStruct3InterfaceSimulationService::Func2_Implementation(FTes
 			}
 		});
 
-	Result = Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
 
-void UTestbed2NestedStruct3InterfaceSimulationService::Func3_Implementation(FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3)
+FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceSimulationService::Func3_Implementation(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3)
 {
 	Params params;
 	params["param1"] = Param1;
@@ -302,5 +302,5 @@ void UTestbed2NestedStruct3InterfaceSimulationService::Func3_Implementation(FTes
 			}
 		});
 
-	Result = Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }

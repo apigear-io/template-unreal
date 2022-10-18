@@ -97,7 +97,7 @@ void UTbSame2SameStruct1InterfaceProxy::setBackendService(TScriptInterface<ITbSa
 	BackendService->GetProp1ChangedDelegate().AddDynamic(this, &UTbSame2SameStruct1InterfaceProxy::OnProp1Changed);
 	BackendService->GetSig1SignalDelegate().AddDynamic(this, &UTbSame2SameStruct1InterfaceProxy::OnSig1);
 	// populate service state to proxy
-	BackendService->Execute_GetProp1(BackendService.GetObject(), Prop1);
+	Prop1 = BackendService->Execute_GetProp1(BackendService.GetObject());
 }
 void UTbSame2SameStruct1InterfaceProxy::OnSig1(const FTbSame2Struct1& Param1)
 {
@@ -117,9 +117,9 @@ void UTbSame2SameStruct1InterfaceProxy::OnProp1Changed(const FTbSame2Struct1& In
 	Prop1Changed.Broadcast(InProp1);
 }
 
-void UTbSame2SameStruct1InterfaceProxy::GetProp1_Implementation(FTbSame2Struct1& ReturnValue) const
+FTbSame2Struct1 UTbSame2SameStruct1InterfaceProxy::GetProp1_Implementation() const
 {
-	BackendService->Execute_GetProp1(BackendService.GetObject(), ReturnValue);
+	return BackendService->Execute_GetProp1(BackendService.GetObject());
 }
 
 void UTbSame2SameStruct1InterfaceProxy::SetProp1_Implementation(const FTbSame2Struct1& InProp1)
@@ -130,9 +130,7 @@ void UTbSame2SameStruct1InterfaceProxy::SetProp1_Implementation(const FTbSame2St
 
 FTbSame2Struct1 UTbSame2SameStruct1InterfaceProxy::GetProp1_Private() const
 {
-	FTbSame2Struct1 outProp1;
-	Execute_GetProp1(this, outProp1);
-	return outProp1;
+	return Execute_GetProp1(this);
 }
 
 void UTbSame2SameStruct1InterfaceProxy::SetProp1_Private(const FTbSame2Struct1& InProp1)
@@ -166,13 +164,13 @@ void UTbSame2SameStruct1InterfaceProxy::Func1Async_Implementation(UObject* World
 		Async(EAsyncExecution::Thread,
 			[Param1, this, &Result, CompletionAction]()
 			{
-				BackendService->Execute_Func1(BackendService.GetObject(), Result, Param1);
+				Result = BackendService->Execute_Func1(BackendService.GetObject(), Param1);
 				CompletionAction->Cancel();
 			});
 	}
 }
-void UTbSame2SameStruct1InterfaceProxy::Func1_Implementation(FTbSame2Struct1& Result, const FTbSame2Struct1& Param1)
+FTbSame2Struct1 UTbSame2SameStruct1InterfaceProxy::Func1_Implementation(const FTbSame2Struct1& Param1)
 {
 	TbSame2SameStruct1InterfaceTracer::trace_callFunc1(Param1);
-	BackendService->Execute_Func1(BackendService.GetObject(), Result, Param1);
+	return BackendService->Execute_Func1(BackendService.GetObject(), Param1);
 }

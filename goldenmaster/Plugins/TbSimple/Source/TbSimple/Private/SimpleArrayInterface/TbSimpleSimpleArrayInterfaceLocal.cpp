@@ -48,9 +48,9 @@ FTbSimpleSimpleArrayInterfaceSigStringDelegate& UTbSimpleSimpleArrayInterfaceLoc
 	return SigStringSignal;
 }
 
-void UTbSimpleSimpleArrayInterfaceLocalService::GetPropBool_Implementation(TArray<bool>& ReturnValue) const
+TArray<bool> UTbSimpleSimpleArrayInterfaceLocalService::GetPropBool_Implementation() const
 {
-	ReturnValue = PropBool;
+	return PropBool;
 }
 
 void UTbSimpleSimpleArrayInterfaceLocalService::SetPropBool_Implementation(const TArray<bool>& InPropBool)
@@ -66,9 +66,9 @@ FTbSimpleSimpleArrayInterfacePropBoolChangedDelegate& UTbSimpleSimpleArrayInterf
 {
 	return PropBoolChanged;
 }
-void UTbSimpleSimpleArrayInterfaceLocalService::GetPropInt_Implementation(TArray<int32>& ReturnValue) const
+TArray<int32> UTbSimpleSimpleArrayInterfaceLocalService::GetPropInt_Implementation() const
 {
-	ReturnValue = PropInt;
+	return PropInt;
 }
 
 void UTbSimpleSimpleArrayInterfaceLocalService::SetPropInt_Implementation(const TArray<int32>& InPropInt)
@@ -84,9 +84,9 @@ FTbSimpleSimpleArrayInterfacePropIntChangedDelegate& UTbSimpleSimpleArrayInterfa
 {
 	return PropIntChanged;
 }
-void UTbSimpleSimpleArrayInterfaceLocalService::GetPropFloat_Implementation(TArray<float>& ReturnValue) const
+TArray<float> UTbSimpleSimpleArrayInterfaceLocalService::GetPropFloat_Implementation() const
 {
-	ReturnValue = PropFloat;
+	return PropFloat;
 }
 
 void UTbSimpleSimpleArrayInterfaceLocalService::SetPropFloat_Implementation(const TArray<float>& InPropFloat)
@@ -102,9 +102,9 @@ FTbSimpleSimpleArrayInterfacePropFloatChangedDelegate& UTbSimpleSimpleArrayInter
 {
 	return PropFloatChanged;
 }
-void UTbSimpleSimpleArrayInterfaceLocalService::GetPropString_Implementation(TArray<FString>& ReturnValue) const
+TArray<FString> UTbSimpleSimpleArrayInterfaceLocalService::GetPropString_Implementation() const
 {
-	ReturnValue = PropString;
+	return PropString;
 }
 
 void UTbSimpleSimpleArrayInterfaceLocalService::SetPropString_Implementation(const TArray<FString>& InPropString)
@@ -121,27 +121,27 @@ FTbSimpleSimpleArrayInterfacePropStringChangedDelegate& UTbSimpleSimpleArrayInte
 	return PropStringChanged;
 }
 
-void UTbSimpleSimpleArrayInterfaceLocalService::FuncBool_Implementation(TArray<bool>& Result, const TArray<bool>& ParamBool)
+TArray<bool> UTbSimpleSimpleArrayInterfaceLocalService::FuncBool_Implementation(const TArray<bool>& ParamBool)
 {
 	(void)ParamBool;
 	// do business logic here
-	Result = TArray<bool>();
+	return TArray<bool>();
 }
-void UTbSimpleSimpleArrayInterfaceLocalService::FuncInt_Implementation(TArray<int32>& Result, const TArray<int32>& ParamInt)
+TArray<int32> UTbSimpleSimpleArrayInterfaceLocalService::FuncInt_Implementation(const TArray<int32>& ParamInt)
 {
 	(void)ParamInt;
 	// do business logic here
-	Result = TArray<int32>();
+	return TArray<int32>();
 }
-void UTbSimpleSimpleArrayInterfaceLocalService::FuncFloat_Implementation(TArray<float>& Result, const TArray<float>& ParamFloat)
+TArray<float> UTbSimpleSimpleArrayInterfaceLocalService::FuncFloat_Implementation(const TArray<float>& ParamFloat)
 {
 	(void)ParamFloat;
 	// do business logic here
-	Result = TArray<float>();
+	return TArray<float>();
 }
-void UTbSimpleSimpleArrayInterfaceLocalService::FuncString_Implementation(TArray<FString>& Result, const TArray<FString>& ParamString)
+TArray<FString> UTbSimpleSimpleArrayInterfaceLocalService::FuncString_Implementation(const TArray<FString>& ParamString)
 {
 	(void)ParamString;
 	// do business logic here
-	Result = TArray<FString>();
+	return TArray<FString>();
 }

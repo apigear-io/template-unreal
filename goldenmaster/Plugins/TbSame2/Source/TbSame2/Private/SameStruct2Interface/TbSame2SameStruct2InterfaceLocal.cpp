@@ -36,9 +36,9 @@ FTbSame2SameStruct2InterfaceSig2Delegate& UTbSame2SameStruct2InterfaceLocalServi
 	return Sig2Signal;
 }
 
-void UTbSame2SameStruct2InterfaceLocalService::GetProp1_Implementation(FTbSame2Struct2& ReturnValue) const
+FTbSame2Struct2 UTbSame2SameStruct2InterfaceLocalService::GetProp1_Implementation() const
 {
-	ReturnValue = Prop1;
+	return Prop1;
 }
 
 void UTbSame2SameStruct2InterfaceLocalService::SetProp1_Implementation(const FTbSame2Struct2& InProp1)
@@ -54,9 +54,9 @@ FTbSame2SameStruct2InterfaceProp1ChangedDelegate& UTbSame2SameStruct2InterfaceLo
 {
 	return Prop1Changed;
 }
-void UTbSame2SameStruct2InterfaceLocalService::GetProp2_Implementation(FTbSame2Struct2& ReturnValue) const
+FTbSame2Struct2 UTbSame2SameStruct2InterfaceLocalService::GetProp2_Implementation() const
 {
-	ReturnValue = Prop2;
+	return Prop2;
 }
 
 void UTbSame2SameStruct2InterfaceLocalService::SetProp2_Implementation(const FTbSame2Struct2& InProp2)
@@ -73,16 +73,16 @@ FTbSame2SameStruct2InterfaceProp2ChangedDelegate& UTbSame2SameStruct2InterfaceLo
 	return Prop2Changed;
 }
 
-void UTbSame2SameStruct2InterfaceLocalService::Func1_Implementation(FTbSame2Struct1& Result, const FTbSame2Struct1& Param1)
+FTbSame2Struct1 UTbSame2SameStruct2InterfaceLocalService::Func1_Implementation(const FTbSame2Struct1& Param1)
 {
 	(void)Param1;
 	// do business logic here
-	Result = FTbSame2Struct1();
+	return FTbSame2Struct1();
 }
-void UTbSame2SameStruct2InterfaceLocalService::Func2_Implementation(FTbSame2Struct1& Result, const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2)
+FTbSame2Struct1 UTbSame2SameStruct2InterfaceLocalService::Func2_Implementation(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2)
 {
 	(void)Param1;
 	(void)Param2;
 	// do business logic here
-	Result = FTbSame2Struct1();
+	return FTbSame2Struct1();
 }

@@ -107,9 +107,9 @@ FTbSame2SameStruct1InterfaceSig1Delegate& UTbSame2SameStruct1InterfaceSimulation
 	return Sig1Signal;
 }
 
-void UTbSame2SameStruct1InterfaceSimulationService::GetProp1_Implementation(FTbSame2Struct1& ReturnValue) const
+FTbSame2Struct1 UTbSame2SameStruct1InterfaceSimulationService::GetProp1_Implementation() const
 {
-	ReturnValue = Prop1;
+	return Prop1;
 }
 
 void UTbSame2SameStruct1InterfaceSimulationService::SetProp1_Implementation(const FTbSame2Struct1& InProp1)
@@ -128,7 +128,7 @@ FTbSame2SameStruct1InterfaceProp1ChangedDelegate& UTbSame2SameStruct1InterfaceSi
 	return Prop1Changed;
 }
 
-void UTbSame2SameStruct1InterfaceSimulationService::Func1_Implementation(FTbSame2Struct1& Result, const FTbSame2Struct1& Param1)
+FTbSame2Struct1 UTbSame2SameStruct1InterfaceSimulationService::Func1_Implementation(const FTbSame2Struct1& Param1)
 {
 	Params params;
 	params["param1"] = Param1;
@@ -145,5 +145,5 @@ void UTbSame2SameStruct1InterfaceSimulationService::Func1_Implementation(FTbSame
 			}
 		});
 
-	Result = Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }

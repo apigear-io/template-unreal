@@ -130,9 +130,9 @@ F{{$Iface}}{{Camel .Name}}Delegate& {{$Class}}::Get{{Camel .Name}}SignalDelegate
 }
 {{ end }}
 {{- range .Interface.Properties }}
-void {{$Class}}::Get{{Camel .Name}}_Implementation({{ueReturn "" .}}& ReturnValue) const
+{{ueReturn "" .}} {{$Class}}::Get{{Camel .Name}}_Implementation() const
 {
-	ReturnValue = {{ueVar "" .}};
+	return {{ueVar "" .}};
 }
 
 void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
@@ -159,11 +159,7 @@ F{{$Iface}}{{Camel .Name}}ChangedDelegate& {{$Class}}::Get{{Camel .Name}}Changed
  */
 {{- end }}
 {{- $returnVal := (ueReturn "" .Return)}}
-{{- if .Return.IsVoid }}
 {{$returnVal}} {{$Class}}::{{Camel .Name}}_Implementation({{ueParams "" .Params}})
-{{- else }}
-void {{$Class}}::{{Camel .Name}}_Implementation({{ueReturn "" .Return}}& Result, {{ueParams "" .Params}})
-{{- end }}
 {
 	Params params;
 	{{- range .Params }}
@@ -190,7 +186,7 @@ void {{$Class}}::{{Camel .Name}}_Implementation({{ueReturn "" .Return}}& Result,
 			}
 		});
 
-	Result = Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 	{{- end }}
 }
 {{ end }}

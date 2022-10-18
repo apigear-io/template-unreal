@@ -60,7 +60,7 @@ public:
 {{- if .Description }}
 	/** {{.Description}} */
 {{- end }}
-	void Get{{Camel .Name}}_Implementation({{ueReturn "" .}}& ReturnValue) const override;
+	{{ueReturn "" .}} Get{{Camel .Name}}_Implementation() const override;
 
 	void Set{{Camel .Name}}_Implementation({{ueParam "In" .}}) override;
 {{ end }}
@@ -70,7 +70,7 @@ public:
 	{{ueReturn "" .Return}} {{Camel .Name}}_Implementation({{ueParams "" .Params}}) override;
 	{{ else }}
 	void {{Camel .Name}}Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, {{ueReturn "" .Return}}& Result{{if len .Params}},{{end}} {{ueParams "" .Params}}) override;
-	void {{Camel .Name}}_Implementation({{ueReturn "" .Return}}& Result, {{ueParams "" .Params}}) override;
+	{{ueReturn "" .Return}} {{Camel .Name}}_Implementation({{ueParams "" .Params}}) override;
 	{{- end }}
 {{ end }}
 private:

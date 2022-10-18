@@ -36,9 +36,9 @@ FTbSame1SameEnum2InterfaceSig2Delegate& UTbSame1SameEnum2InterfaceLocalService::
 	return Sig2Signal;
 }
 
-void UTbSame1SameEnum2InterfaceLocalService::GetProp1_Implementation(ETbSame1Enum1& ReturnValue) const
+ETbSame1Enum1 UTbSame1SameEnum2InterfaceLocalService::GetProp1_Implementation() const
 {
-	ReturnValue = Prop1;
+	return Prop1;
 }
 
 void UTbSame1SameEnum2InterfaceLocalService::SetProp1_Implementation(const ETbSame1Enum1& InProp1)
@@ -54,9 +54,9 @@ FTbSame1SameEnum2InterfaceProp1ChangedDelegate& UTbSame1SameEnum2InterfaceLocalS
 {
 	return Prop1Changed;
 }
-void UTbSame1SameEnum2InterfaceLocalService::GetProp2_Implementation(ETbSame1Enum2& ReturnValue) const
+ETbSame1Enum2 UTbSame1SameEnum2InterfaceLocalService::GetProp2_Implementation() const
 {
-	ReturnValue = Prop2;
+	return Prop2;
 }
 
 void UTbSame1SameEnum2InterfaceLocalService::SetProp2_Implementation(const ETbSame1Enum2& InProp2)
@@ -73,16 +73,16 @@ FTbSame1SameEnum2InterfaceProp2ChangedDelegate& UTbSame1SameEnum2InterfaceLocalS
 	return Prop2Changed;
 }
 
-void UTbSame1SameEnum2InterfaceLocalService::Func1_Implementation(ETbSame1Enum1& Result, const ETbSame1Enum1& Param1)
+ETbSame1Enum1 UTbSame1SameEnum2InterfaceLocalService::Func1_Implementation(const ETbSame1Enum1& Param1)
 {
 	(void)Param1;
 	// do business logic here
-	Result = ETbSame1Enum1::VALUE1;
+	return ETbSame1Enum1::VALUE1;
 }
-void UTbSame1SameEnum2InterfaceLocalService::Func2_Implementation(ETbSame1Enum1& Result, const ETbSame1Enum1& Param1, const ETbSame1Enum2& Param2)
+ETbSame1Enum1 UTbSame1SameEnum2InterfaceLocalService::Func2_Implementation(const ETbSame1Enum1& Param1, const ETbSame1Enum2& Param2)
 {
 	(void)Param1;
 	(void)Param2;
 	// do business logic here
-	Result = ETbSame1Enum1::VALUE1;
+	return ETbSame1Enum1::VALUE1;
 }

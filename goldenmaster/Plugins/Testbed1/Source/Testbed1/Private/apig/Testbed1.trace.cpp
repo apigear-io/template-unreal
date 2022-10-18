@@ -9,18 +9,10 @@ Testbed1StructInterfaceTracer::Testbed1StructInterfaceTracer()
 void Testbed1StructInterfaceTracer::capture_state(UObject* Object, ITestbed1StructInterfaceInterface* obj)
 {
 	nlohmann::json fields_;
-	FTestbed1StructBool outPropBool;
-	obj->Execute_GetPropBool(Object, outPropBool);
-	fields_["propBool"] = outPropBool;
-	FTestbed1StructInt outPropInt;
-	obj->Execute_GetPropInt(Object, outPropInt);
-	fields_["propInt"] = outPropInt;
-	FTestbed1StructFloat outPropFloat;
-	obj->Execute_GetPropFloat(Object, outPropFloat);
-	fields_["propFloat"] = outPropFloat;
-	FTestbed1StructString outPropString;
-	obj->Execute_GetPropString(Object, outPropString);
-	fields_["propString"] = outPropString;
+	fields_["propBool"] = obj->Execute_GetPropBool(Object);
+	fields_["propInt"] = obj->Execute_GetPropInt(Object);
+	fields_["propFloat"] = obj->Execute_GetPropFloat(Object);
+	fields_["propString"] = obj->Execute_GetPropString(Object);
 	Tracer::instance()->state("testbed1/StructInterface", fields_);
 }
 void Testbed1StructInterfaceTracer::trace_callSetPropBool(const FTestbed1StructBool& InPropBool)
@@ -111,18 +103,10 @@ Testbed1StructArrayInterfaceTracer::Testbed1StructArrayInterfaceTracer()
 void Testbed1StructArrayInterfaceTracer::capture_state(UObject* Object, ITestbed1StructArrayInterfaceInterface* obj)
 {
 	nlohmann::json fields_;
-	TArray<FTestbed1StructBool> outPropBool;
-	obj->Execute_GetPropBool(Object, outPropBool);
-	fields_["propBool"] = outPropBool;
-	TArray<FTestbed1StructInt> outPropInt;
-	obj->Execute_GetPropInt(Object, outPropInt);
-	fields_["propInt"] = outPropInt;
-	TArray<FTestbed1StructFloat> outPropFloat;
-	obj->Execute_GetPropFloat(Object, outPropFloat);
-	fields_["propFloat"] = outPropFloat;
-	TArray<FTestbed1StructString> outPropString;
-	obj->Execute_GetPropString(Object, outPropString);
-	fields_["propString"] = outPropString;
+	fields_["propBool"] = obj->Execute_GetPropBool(Object);
+	fields_["propInt"] = obj->Execute_GetPropInt(Object);
+	fields_["propFloat"] = obj->Execute_GetPropFloat(Object);
+	fields_["propString"] = obj->Execute_GetPropString(Object);
 	Tracer::instance()->state("testbed1/StructArrayInterface", fields_);
 }
 void Testbed1StructArrayInterfaceTracer::trace_callSetPropBool(const TArray<FTestbed1StructBool>& InPropBool)

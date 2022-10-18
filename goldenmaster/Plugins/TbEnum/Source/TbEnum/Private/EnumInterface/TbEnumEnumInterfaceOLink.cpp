@@ -81,9 +81,9 @@ FTbEnumEnumInterfaceSig3Delegate& UTbEnumEnumInterfaceOLinkService::GetSig3Signa
 	return Sig3Signal;
 }
 
-void UTbEnumEnumInterfaceOLinkService::GetProp0_Implementation(ETbEnumEnum0& ReturnValue) const
+ETbEnumEnum0 UTbEnumEnumInterfaceOLinkService::GetProp0_Implementation() const
 {
-	ReturnValue = Prop0;
+	return Prop0;
 }
 
 void UTbEnumEnumInterfaceOLinkService::SetProp0_Implementation(const ETbEnumEnum0& InProp0)
@@ -99,9 +99,9 @@ FTbEnumEnumInterfaceProp0ChangedDelegate& UTbEnumEnumInterfaceOLinkService::GetP
 {
 	return Prop0Changed;
 }
-void UTbEnumEnumInterfaceOLinkService::GetProp1_Implementation(ETbEnumEnum1& ReturnValue) const
+ETbEnumEnum1 UTbEnumEnumInterfaceOLinkService::GetProp1_Implementation() const
 {
-	ReturnValue = Prop1;
+	return Prop1;
 }
 
 void UTbEnumEnumInterfaceOLinkService::SetProp1_Implementation(const ETbEnumEnum1& InProp1)
@@ -117,9 +117,9 @@ FTbEnumEnumInterfaceProp1ChangedDelegate& UTbEnumEnumInterfaceOLinkService::GetP
 {
 	return Prop1Changed;
 }
-void UTbEnumEnumInterfaceOLinkService::GetProp2_Implementation(ETbEnumEnum2& ReturnValue) const
+ETbEnumEnum2 UTbEnumEnumInterfaceOLinkService::GetProp2_Implementation() const
 {
-	ReturnValue = Prop2;
+	return Prop2;
 }
 
 void UTbEnumEnumInterfaceOLinkService::SetProp2_Implementation(const ETbEnumEnum2& InProp2)
@@ -135,9 +135,9 @@ FTbEnumEnumInterfaceProp2ChangedDelegate& UTbEnumEnumInterfaceOLinkService::GetP
 {
 	return Prop2Changed;
 }
-void UTbEnumEnumInterfaceOLinkService::GetProp3_Implementation(ETbEnumEnum3& ReturnValue) const
+ETbEnumEnum3 UTbEnumEnumInterfaceOLinkService::GetProp3_Implementation() const
 {
-	ReturnValue = Prop3;
+	return Prop3;
 }
 
 void UTbEnumEnumInterfaceOLinkService::SetProp3_Implementation(const ETbEnumEnum3& InProp3)
@@ -154,13 +154,12 @@ FTbEnumEnumInterfaceProp3ChangedDelegate& UTbEnumEnumInterfaceOLinkService::GetP
 	return Prop3Changed;
 }
 
-void UTbEnumEnumInterfaceOLinkService::Func0_Implementation(ETbEnumEnum0& Result, const ETbEnumEnum0& Param0)
+ETbEnumEnum0 UTbEnumEnumInterfaceOLinkService::Func0_Implementation(const ETbEnumEnum0& Param0)
 {
 	if (!m_node)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
-		Result = ETbEnumEnum0::VALUE0;
-		return;
+		return ETbEnumEnum0::VALUE0;
 	}
 	TPromise<ETbEnumEnum0> Promise;
 	Async(EAsyncExecution::Thread,
@@ -171,16 +170,15 @@ void UTbEnumEnumInterfaceOLinkService::Func0_Implementation(ETbEnumEnum0& Result
 			m_node->invokeRemote("tb.enum.EnumInterface/func0", {Param0}, GetEnumInterfaceStateFunc);
 		});
 
-	Result = Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
 
-void UTbEnumEnumInterfaceOLinkService::Func1_Implementation(ETbEnumEnum1& Result, const ETbEnumEnum1& Param1)
+ETbEnumEnum1 UTbEnumEnumInterfaceOLinkService::Func1_Implementation(const ETbEnumEnum1& Param1)
 {
 	if (!m_node)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
-		Result = ETbEnumEnum1::VALUE1;
-		return;
+		return ETbEnumEnum1::VALUE1;
 	}
 	TPromise<ETbEnumEnum1> Promise;
 	Async(EAsyncExecution::Thread,
@@ -191,16 +189,15 @@ void UTbEnumEnumInterfaceOLinkService::Func1_Implementation(ETbEnumEnum1& Result
 			m_node->invokeRemote("tb.enum.EnumInterface/func1", {Param1}, GetEnumInterfaceStateFunc);
 		});
 
-	Result = Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
 
-void UTbEnumEnumInterfaceOLinkService::Func2_Implementation(ETbEnumEnum2& Result, const ETbEnumEnum2& Param2)
+ETbEnumEnum2 UTbEnumEnumInterfaceOLinkService::Func2_Implementation(const ETbEnumEnum2& Param2)
 {
 	if (!m_node)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
-		Result = ETbEnumEnum2::VALUE2;
-		return;
+		return ETbEnumEnum2::VALUE2;
 	}
 	TPromise<ETbEnumEnum2> Promise;
 	Async(EAsyncExecution::Thread,
@@ -211,16 +208,15 @@ void UTbEnumEnumInterfaceOLinkService::Func2_Implementation(ETbEnumEnum2& Result
 			m_node->invokeRemote("tb.enum.EnumInterface/func2", {Param2}, GetEnumInterfaceStateFunc);
 		});
 
-	Result = Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
 
-void UTbEnumEnumInterfaceOLinkService::Func3_Implementation(ETbEnumEnum3& Result, const ETbEnumEnum3& Param3)
+ETbEnumEnum3 UTbEnumEnumInterfaceOLinkService::Func3_Implementation(const ETbEnumEnum3& Param3)
 {
 	if (!m_node)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
-		Result = ETbEnumEnum3::VALUE3;
-		return;
+		return ETbEnumEnum3::VALUE3;
 	}
 	TPromise<ETbEnumEnum3> Promise;
 	Async(EAsyncExecution::Thread,
@@ -231,7 +227,7 @@ void UTbEnumEnumInterfaceOLinkService::Func3_Implementation(ETbEnumEnum3& Result
 			m_node->invokeRemote("tb.enum.EnumInterface/func3", {Param3}, GetEnumInterfaceStateFunc);
 		});
 
-	Result = Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
 
 void UTbEnumEnumInterfaceOLinkService::applyState(const nlohmann::json& fields)

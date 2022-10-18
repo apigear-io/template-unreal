@@ -97,7 +97,7 @@ void UTbSame1SameEnum1InterfaceProxy::setBackendService(TScriptInterface<ITbSame
 	BackendService->GetProp1ChangedDelegate().AddDynamic(this, &UTbSame1SameEnum1InterfaceProxy::OnProp1Changed);
 	BackendService->GetSig1SignalDelegate().AddDynamic(this, &UTbSame1SameEnum1InterfaceProxy::OnSig1);
 	// populate service state to proxy
-	BackendService->Execute_GetProp1(BackendService.GetObject(), Prop1);
+	Prop1 = BackendService->Execute_GetProp1(BackendService.GetObject());
 }
 void UTbSame1SameEnum1InterfaceProxy::OnSig1(const ETbSame1Enum1& Param1)
 {
@@ -117,9 +117,9 @@ void UTbSame1SameEnum1InterfaceProxy::OnProp1Changed(const ETbSame1Enum1& InProp
 	Prop1Changed.Broadcast(InProp1);
 }
 
-void UTbSame1SameEnum1InterfaceProxy::GetProp1_Implementation(ETbSame1Enum1& ReturnValue) const
+ETbSame1Enum1 UTbSame1SameEnum1InterfaceProxy::GetProp1_Implementation() const
 {
-	BackendService->Execute_GetProp1(BackendService.GetObject(), ReturnValue);
+	return BackendService->Execute_GetProp1(BackendService.GetObject());
 }
 
 void UTbSame1SameEnum1InterfaceProxy::SetProp1_Implementation(const ETbSame1Enum1& InProp1)
@@ -130,9 +130,7 @@ void UTbSame1SameEnum1InterfaceProxy::SetProp1_Implementation(const ETbSame1Enum
 
 ETbSame1Enum1 UTbSame1SameEnum1InterfaceProxy::GetProp1_Private() const
 {
-	ETbSame1Enum1 outProp1;
-	Execute_GetProp1(this, outProp1);
-	return outProp1;
+	return Execute_GetProp1(this);
 }
 
 void UTbSame1SameEnum1InterfaceProxy::SetProp1_Private(const ETbSame1Enum1& InProp1)
@@ -166,13 +164,13 @@ void UTbSame1SameEnum1InterfaceProxy::Func1Async_Implementation(UObject* WorldCo
 		Async(EAsyncExecution::Thread,
 			[Param1, this, &Result, CompletionAction]()
 			{
-				BackendService->Execute_Func1(BackendService.GetObject(), Result, Param1);
+				Result = BackendService->Execute_Func1(BackendService.GetObject(), Param1);
 				CompletionAction->Cancel();
 			});
 	}
 }
-void UTbSame1SameEnum1InterfaceProxy::Func1_Implementation(ETbSame1Enum1& Result, const ETbSame1Enum1& Param1)
+ETbSame1Enum1 UTbSame1SameEnum1InterfaceProxy::Func1_Implementation(const ETbSame1Enum1& Param1)
 {
 	TbSame1SameEnum1InterfaceTracer::trace_callFunc1(Param1);
-	BackendService->Execute_Func1(BackendService.GetObject(), Result, Param1);
+	return BackendService->Execute_Func1(BackendService.GetObject(), Param1);
 }

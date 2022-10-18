@@ -53,30 +53,30 @@ public:
 	FTbSimpleSimpleArrayInterfacePropStringChangedDelegate& GetPropStringChangedDelegate() override;
 
 	// properties
-	void GetPropBool_Implementation(TArray<bool>& ReturnValue) const override;
+	TArray<bool> GetPropBool_Implementation() const override;
 	void SetPropBool_Implementation(const TArray<bool>& PropBool) override;
 
-	void GetPropInt_Implementation(TArray<int32>& ReturnValue) const override;
+	TArray<int32> GetPropInt_Implementation() const override;
 	void SetPropInt_Implementation(const TArray<int32>& PropInt) override;
 
-	void GetPropFloat_Implementation(TArray<float>& ReturnValue) const override;
+	TArray<float> GetPropFloat_Implementation() const override;
 	void SetPropFloat_Implementation(const TArray<float>& PropFloat) override;
 
-	void GetPropString_Implementation(TArray<FString>& ReturnValue) const override;
+	TArray<FString> GetPropString_Implementation() const override;
 	void SetPropString_Implementation(const TArray<FString>& PropString) override;
 
 	// operations
 	void FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<bool>& Result, const TArray<bool>& ParamBool) override{};
-	void FuncBool_Implementation(TArray<bool>& Result, const TArray<bool>& ParamBool) override;
+	TArray<bool> FuncBool_Implementation(const TArray<bool>& ParamBool) override;
 
 	void FuncIntAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<int32>& Result, const TArray<int32>& ParamInt) override{};
-	void FuncInt_Implementation(TArray<int32>& Result, const TArray<int32>& ParamInt) override;
+	TArray<int32> FuncInt_Implementation(const TArray<int32>& ParamInt) override;
 
 	void FuncFloatAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<float>& Result, const TArray<float>& ParamFloat) override{};
-	void FuncFloat_Implementation(TArray<float>& Result, const TArray<float>& ParamFloat) override;
+	TArray<float> FuncFloat_Implementation(const TArray<float>& ParamFloat) override;
 
 	void FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FString>& Result, const TArray<FString>& ParamString) override{};
-	void FuncString_Implementation(TArray<FString>& Result, const TArray<FString>& ParamString) override;
+	TArray<FString> FuncString_Implementation(const TArray<FString>& ParamString) override;
 
 private:
 	// properties - local copy

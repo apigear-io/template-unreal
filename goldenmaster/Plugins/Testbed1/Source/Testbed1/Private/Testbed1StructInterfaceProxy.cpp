@@ -124,10 +124,10 @@ void UTestbed1StructInterfaceProxy::setBackendService(TScriptInterface<ITestbed1
 	BackendService->GetSigFloatSignalDelegate().AddDynamic(this, &UTestbed1StructInterfaceProxy::OnSigFloat);
 	BackendService->GetSigStringSignalDelegate().AddDynamic(this, &UTestbed1StructInterfaceProxy::OnSigString);
 	// populate service state to proxy
-	BackendService->Execute_GetPropBool(BackendService.GetObject(), PropBool);
-	BackendService->Execute_GetPropInt(BackendService.GetObject(), PropInt);
-	BackendService->Execute_GetPropFloat(BackendService.GetObject(), PropFloat);
-	BackendService->Execute_GetPropString(BackendService.GetObject(), PropString);
+	PropBool = BackendService->Execute_GetPropBool(BackendService.GetObject());
+	PropInt = BackendService->Execute_GetPropInt(BackendService.GetObject());
+	PropFloat = BackendService->Execute_GetPropFloat(BackendService.GetObject());
+	PropString = BackendService->Execute_GetPropString(BackendService.GetObject());
 }
 void UTestbed1StructInterfaceProxy::OnSigBool(const FTestbed1StructBool& ParamBool)
 {
@@ -180,9 +180,9 @@ void UTestbed1StructInterfaceProxy::OnPropBoolChanged(const FTestbed1StructBool&
 	PropBoolChanged.Broadcast(InPropBool);
 }
 
-void UTestbed1StructInterfaceProxy::GetPropBool_Implementation(FTestbed1StructBool& ReturnValue) const
+FTestbed1StructBool UTestbed1StructInterfaceProxy::GetPropBool_Implementation() const
 {
-	BackendService->Execute_GetPropBool(BackendService.GetObject(), ReturnValue);
+	return BackendService->Execute_GetPropBool(BackendService.GetObject());
 }
 
 void UTestbed1StructInterfaceProxy::SetPropBool_Implementation(const FTestbed1StructBool& InPropBool)
@@ -193,9 +193,7 @@ void UTestbed1StructInterfaceProxy::SetPropBool_Implementation(const FTestbed1St
 
 FTestbed1StructBool UTestbed1StructInterfaceProxy::GetPropBool_Private() const
 {
-	FTestbed1StructBool outPropBool;
-	Execute_GetPropBool(this, outPropBool);
-	return outPropBool;
+	return Execute_GetPropBool(this);
 }
 
 void UTestbed1StructInterfaceProxy::SetPropBool_Private(const FTestbed1StructBool& InPropBool)
@@ -215,9 +213,9 @@ void UTestbed1StructInterfaceProxy::OnPropIntChanged(const FTestbed1StructInt& I
 	PropIntChanged.Broadcast(InPropInt);
 }
 
-void UTestbed1StructInterfaceProxy::GetPropInt_Implementation(FTestbed1StructInt& ReturnValue) const
+FTestbed1StructInt UTestbed1StructInterfaceProxy::GetPropInt_Implementation() const
 {
-	BackendService->Execute_GetPropInt(BackendService.GetObject(), ReturnValue);
+	return BackendService->Execute_GetPropInt(BackendService.GetObject());
 }
 
 void UTestbed1StructInterfaceProxy::SetPropInt_Implementation(const FTestbed1StructInt& InPropInt)
@@ -228,9 +226,7 @@ void UTestbed1StructInterfaceProxy::SetPropInt_Implementation(const FTestbed1Str
 
 FTestbed1StructInt UTestbed1StructInterfaceProxy::GetPropInt_Private() const
 {
-	FTestbed1StructInt outPropInt;
-	Execute_GetPropInt(this, outPropInt);
-	return outPropInt;
+	return Execute_GetPropInt(this);
 }
 
 void UTestbed1StructInterfaceProxy::SetPropInt_Private(const FTestbed1StructInt& InPropInt)
@@ -250,9 +246,9 @@ void UTestbed1StructInterfaceProxy::OnPropFloatChanged(const FTestbed1StructFloa
 	PropFloatChanged.Broadcast(InPropFloat);
 }
 
-void UTestbed1StructInterfaceProxy::GetPropFloat_Implementation(FTestbed1StructFloat& ReturnValue) const
+FTestbed1StructFloat UTestbed1StructInterfaceProxy::GetPropFloat_Implementation() const
 {
-	BackendService->Execute_GetPropFloat(BackendService.GetObject(), ReturnValue);
+	return BackendService->Execute_GetPropFloat(BackendService.GetObject());
 }
 
 void UTestbed1StructInterfaceProxy::SetPropFloat_Implementation(const FTestbed1StructFloat& InPropFloat)
@@ -263,9 +259,7 @@ void UTestbed1StructInterfaceProxy::SetPropFloat_Implementation(const FTestbed1S
 
 FTestbed1StructFloat UTestbed1StructInterfaceProxy::GetPropFloat_Private() const
 {
-	FTestbed1StructFloat outPropFloat;
-	Execute_GetPropFloat(this, outPropFloat);
-	return outPropFloat;
+	return Execute_GetPropFloat(this);
 }
 
 void UTestbed1StructInterfaceProxy::SetPropFloat_Private(const FTestbed1StructFloat& InPropFloat)
@@ -285,9 +279,9 @@ void UTestbed1StructInterfaceProxy::OnPropStringChanged(const FTestbed1StructStr
 	PropStringChanged.Broadcast(InPropString);
 }
 
-void UTestbed1StructInterfaceProxy::GetPropString_Implementation(FTestbed1StructString& ReturnValue) const
+FTestbed1StructString UTestbed1StructInterfaceProxy::GetPropString_Implementation() const
 {
-	BackendService->Execute_GetPropString(BackendService.GetObject(), ReturnValue);
+	return BackendService->Execute_GetPropString(BackendService.GetObject());
 }
 
 void UTestbed1StructInterfaceProxy::SetPropString_Implementation(const FTestbed1StructString& InPropString)
@@ -298,9 +292,7 @@ void UTestbed1StructInterfaceProxy::SetPropString_Implementation(const FTestbed1
 
 FTestbed1StructString UTestbed1StructInterfaceProxy::GetPropString_Private() const
 {
-	FTestbed1StructString outPropString;
-	Execute_GetPropString(this, outPropString);
-	return outPropString;
+	return Execute_GetPropString(this);
 }
 
 void UTestbed1StructInterfaceProxy::SetPropString_Private(const FTestbed1StructString& InPropString)
@@ -334,15 +326,15 @@ void UTestbed1StructInterfaceProxy::FuncBoolAsync_Implementation(UObject* WorldC
 		Async(EAsyncExecution::Thread,
 			[ParamBool, this, &Result, CompletionAction]()
 			{
-				BackendService->Execute_FuncBool(BackendService.GetObject(), Result, ParamBool);
+				Result = BackendService->Execute_FuncBool(BackendService.GetObject(), ParamBool);
 				CompletionAction->Cancel();
 			});
 	}
 }
-void UTestbed1StructInterfaceProxy::FuncBool_Implementation(FTestbed1StructBool& Result, const FTestbed1StructBool& ParamBool)
+FTestbed1StructBool UTestbed1StructInterfaceProxy::FuncBool_Implementation(const FTestbed1StructBool& ParamBool)
 {
 	Testbed1StructInterfaceTracer::trace_callFuncBool(ParamBool);
-	BackendService->Execute_FuncBool(BackendService.GetObject(), Result, ParamBool);
+	return BackendService->Execute_FuncBool(BackendService.GetObject(), ParamBool);
 }
 void UTestbed1StructInterfaceProxy::FuncIntAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const FTestbed1StructInt& ParamInt)
 {
@@ -365,15 +357,15 @@ void UTestbed1StructInterfaceProxy::FuncIntAsync_Implementation(UObject* WorldCo
 		Async(EAsyncExecution::Thread,
 			[ParamInt, this, &Result, CompletionAction]()
 			{
-				BackendService->Execute_FuncInt(BackendService.GetObject(), Result, ParamInt);
+				Result = BackendService->Execute_FuncInt(BackendService.GetObject(), ParamInt);
 				CompletionAction->Cancel();
 			});
 	}
 }
-void UTestbed1StructInterfaceProxy::FuncInt_Implementation(FTestbed1StructBool& Result, const FTestbed1StructInt& ParamInt)
+FTestbed1StructBool UTestbed1StructInterfaceProxy::FuncInt_Implementation(const FTestbed1StructInt& ParamInt)
 {
 	Testbed1StructInterfaceTracer::trace_callFuncInt(ParamInt);
-	BackendService->Execute_FuncInt(BackendService.GetObject(), Result, ParamInt);
+	return BackendService->Execute_FuncInt(BackendService.GetObject(), ParamInt);
 }
 void UTestbed1StructInterfaceProxy::FuncFloatAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructFloat& Result, const FTestbed1StructFloat& ParamFloat)
 {
@@ -396,15 +388,15 @@ void UTestbed1StructInterfaceProxy::FuncFloatAsync_Implementation(UObject* World
 		Async(EAsyncExecution::Thread,
 			[ParamFloat, this, &Result, CompletionAction]()
 			{
-				BackendService->Execute_FuncFloat(BackendService.GetObject(), Result, ParamFloat);
+				Result = BackendService->Execute_FuncFloat(BackendService.GetObject(), ParamFloat);
 				CompletionAction->Cancel();
 			});
 	}
 }
-void UTestbed1StructInterfaceProxy::FuncFloat_Implementation(FTestbed1StructFloat& Result, const FTestbed1StructFloat& ParamFloat)
+FTestbed1StructFloat UTestbed1StructInterfaceProxy::FuncFloat_Implementation(const FTestbed1StructFloat& ParamFloat)
 {
 	Testbed1StructInterfaceTracer::trace_callFuncFloat(ParamFloat);
-	BackendService->Execute_FuncFloat(BackendService.GetObject(), Result, ParamFloat);
+	return BackendService->Execute_FuncFloat(BackendService.GetObject(), ParamFloat);
 }
 void UTestbed1StructInterfaceProxy::FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructString& Result, const FTestbed1StructString& ParamString)
 {
@@ -427,13 +419,13 @@ void UTestbed1StructInterfaceProxy::FuncStringAsync_Implementation(UObject* Worl
 		Async(EAsyncExecution::Thread,
 			[ParamString, this, &Result, CompletionAction]()
 			{
-				BackendService->Execute_FuncString(BackendService.GetObject(), Result, ParamString);
+				Result = BackendService->Execute_FuncString(BackendService.GetObject(), ParamString);
 				CompletionAction->Cancel();
 			});
 	}
 }
-void UTestbed1StructInterfaceProxy::FuncString_Implementation(FTestbed1StructString& Result, const FTestbed1StructString& ParamString)
+FTestbed1StructString UTestbed1StructInterfaceProxy::FuncString_Implementation(const FTestbed1StructString& ParamString)
 {
 	Testbed1StructInterfaceTracer::trace_callFuncString(ParamString);
-	BackendService->Execute_FuncString(BackendService.GetObject(), Result, ParamString);
+	return BackendService->Execute_FuncString(BackendService.GetObject(), ParamString);
 }

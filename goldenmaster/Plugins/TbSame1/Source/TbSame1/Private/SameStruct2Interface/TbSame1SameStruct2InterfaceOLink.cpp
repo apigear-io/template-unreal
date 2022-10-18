@@ -69,9 +69,9 @@ FTbSame1SameStruct2InterfaceSig2Delegate& UTbSame1SameStruct2InterfaceOLinkServi
 	return Sig2Signal;
 }
 
-void UTbSame1SameStruct2InterfaceOLinkService::GetProp1_Implementation(FTbSame1Struct2& ReturnValue) const
+FTbSame1Struct2 UTbSame1SameStruct2InterfaceOLinkService::GetProp1_Implementation() const
 {
-	ReturnValue = Prop1;
+	return Prop1;
 }
 
 void UTbSame1SameStruct2InterfaceOLinkService::SetProp1_Implementation(const FTbSame1Struct2& InProp1)
@@ -87,9 +87,9 @@ FTbSame1SameStruct2InterfaceProp1ChangedDelegate& UTbSame1SameStruct2InterfaceOL
 {
 	return Prop1Changed;
 }
-void UTbSame1SameStruct2InterfaceOLinkService::GetProp2_Implementation(FTbSame1Struct2& ReturnValue) const
+FTbSame1Struct2 UTbSame1SameStruct2InterfaceOLinkService::GetProp2_Implementation() const
 {
-	ReturnValue = Prop2;
+	return Prop2;
 }
 
 void UTbSame1SameStruct2InterfaceOLinkService::SetProp2_Implementation(const FTbSame1Struct2& InProp2)
@@ -106,13 +106,12 @@ FTbSame1SameStruct2InterfaceProp2ChangedDelegate& UTbSame1SameStruct2InterfaceOL
 	return Prop2Changed;
 }
 
-void UTbSame1SameStruct2InterfaceOLinkService::Func1_Implementation(FTbSame1Struct1& Result, const FTbSame1Struct1& Param1)
+FTbSame1Struct1 UTbSame1SameStruct2InterfaceOLinkService::Func1_Implementation(const FTbSame1Struct1& Param1)
 {
 	if (!m_node)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
-		Result = FTbSame1Struct1();
-		return;
+		return FTbSame1Struct1();
 	}
 	TPromise<FTbSame1Struct1> Promise;
 	Async(EAsyncExecution::Thread,
@@ -123,16 +122,15 @@ void UTbSame1SameStruct2InterfaceOLinkService::Func1_Implementation(FTbSame1Stru
 			m_node->invokeRemote("tb.same1.SameStruct2Interface/func1", {Param1}, GetSameStruct2InterfaceStateFunc);
 		});
 
-	Result = Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
 
-void UTbSame1SameStruct2InterfaceOLinkService::Func2_Implementation(FTbSame1Struct1& Result, const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2)
+FTbSame1Struct1 UTbSame1SameStruct2InterfaceOLinkService::Func2_Implementation(const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2)
 {
 	if (!m_node)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
-		Result = FTbSame1Struct1();
-		return;
+		return FTbSame1Struct1();
 	}
 	TPromise<FTbSame1Struct1> Promise;
 	Async(EAsyncExecution::Thread,
@@ -143,7 +141,7 @@ void UTbSame1SameStruct2InterfaceOLinkService::Func2_Implementation(FTbSame1Stru
 			m_node->invokeRemote("tb.same1.SameStruct2Interface/func2", {Param1, Param2}, GetSameStruct2InterfaceStateFunc);
 		});
 
-	Result = Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
 
 void UTbSame1SameStruct2InterfaceOLinkService::applyState(const nlohmann::json& fields)

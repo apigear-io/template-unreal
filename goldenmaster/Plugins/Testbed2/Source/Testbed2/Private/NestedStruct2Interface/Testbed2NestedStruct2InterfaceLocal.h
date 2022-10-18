@@ -43,18 +43,18 @@ public:
 	FTestbed2NestedStruct2InterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() override;
 
 	// properties
-	void GetProp1_Implementation(FTestbed2NestedStruct1& ReturnValue) const override;
+	FTestbed2NestedStruct1 GetProp1_Implementation() const override;
 	void SetProp1_Implementation(const FTestbed2NestedStruct1& Prop1) override;
 
-	void GetProp2_Implementation(FTestbed2NestedStruct2& ReturnValue) const override;
+	FTestbed2NestedStruct2 GetProp2_Implementation() const override;
 	void SetProp2_Implementation(const FTestbed2NestedStruct2& Prop2) override;
 
 	// operations
 	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1) override{};
-	void Func1_Implementation(FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1) override;
+	FTestbed2NestedStruct1 Func1_Implementation(const FTestbed2NestedStruct1& Param1) override;
 
 	void Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2) override{};
-	void Func2_Implementation(FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2) override;
+	FTestbed2NestedStruct1 Func2_Implementation(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2) override;
 
 private:
 	// properties - local copy - use setter functions to emit changed signals

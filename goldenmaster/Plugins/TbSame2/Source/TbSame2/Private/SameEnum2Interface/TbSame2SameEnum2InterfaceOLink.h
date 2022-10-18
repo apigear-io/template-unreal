@@ -42,18 +42,18 @@ public:
 	FTbSame2SameEnum2InterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() override;
 
 	// properties
-	void GetProp1_Implementation(ETbSame2Enum1& ReturnValue) const override;
+	ETbSame2Enum1 GetProp1_Implementation() const override;
 	void SetProp1_Implementation(const ETbSame2Enum1& Prop1) override;
 
-	void GetProp2_Implementation(ETbSame2Enum2& ReturnValue) const override;
+	ETbSame2Enum2 GetProp2_Implementation() const override;
 	void SetProp2_Implementation(const ETbSame2Enum2& Prop2) override;
 
 	// operations
 	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, const ETbSame2Enum1& Param1) override{};
-	void Func1_Implementation(ETbSame2Enum1& Result, const ETbSame2Enum1& Param1) override;
+	ETbSame2Enum1 Func1_Implementation(const ETbSame2Enum1& Param1) override;
 
 	void Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, const ETbSame2Enum1& Param1, const ETbSame2Enum2& Param2) override{};
-	void Func2_Implementation(ETbSame2Enum1& Result, const ETbSame2Enum1& Param1, const ETbSame2Enum2& Param2) override;
+	ETbSame2Enum1 Func2_Implementation(const ETbSame2Enum1& Param1, const ETbSame2Enum2& Param2) override;
 
 	// olink sink interface
 	std::string olinkObjectName() override;

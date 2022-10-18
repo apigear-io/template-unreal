@@ -66,9 +66,9 @@ F{{$Iface}}{{Camel .Name}}Delegate& {{$Class}}::Get{{Camel .Name}}SignalDelegate
 {{ end }}
 
 {{- range .Interface.Properties }}
-void {{$Class}}::Get{{Camel .Name}}_Implementation({{ueReturn "" .}}& ReturnValue) const
+{{ueReturn "" .}} {{$Class}}::Get{{Camel .Name}}_Implementation() const
 {
-	ReturnValue = {{ueVar "" .}};
+	return {{ueVar "" .}};
 }
 
 void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
@@ -92,11 +92,7 @@ F{{$Iface}}{{Camel .Name}}ChangedDelegate& {{$Class}}::Get{{Camel .Name}}Changed
 */
 {{- end }}
 {{- $returnVal := (ueReturn "" .Return)}}
-{{- if .Return.IsVoid }}
-void {{$Class}}::{{Camel .Name}}_Implementation({{ueParams "" .Params}})
-{{- else }}
-void {{$Class}}::{{Camel .Name}}_Implementation({{ueReturn "" .Return}}& Result, {{ueParams "" .Params}})
-{{- end }}
+{{$returnVal}} {{$Class}}::{{Camel .Name}}_Implementation({{ueParams "" .Params}})
 {
 	{{- if .Return.IsVoid }}
 	if (!m_node)
@@ -110,8 +106,7 @@ void {{$Class}}::{{Camel .Name}}_Implementation({{ueReturn "" .Return}}& Result,
 	if (!m_node)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
-		Result = {{ ueDefault "" .Return }};
-		return;
+		return {{ ueDefault "" .Return }};
 	}
 	TPromise<{{$returnVal}}> Promise;
 	Async(EAsyncExecution::Thread,
@@ -122,7 +117,7 @@ void {{$Class}}::{{Camel .Name}}_Implementation({{ueReturn "" .Return}}& Result,
 			m_node->invokeRemote("{{$ifaceId}}/{{.Name}}", { {{- ueVars "" .Params -}} }, Get{{$IfaceName}}StateFunc);
 		});
 
-	Result = Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 	{{- end }}
 }
 {{ end }}

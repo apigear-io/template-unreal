@@ -30,9 +30,9 @@ FTbSame1SameStruct1InterfaceSig1Delegate& UTbSame1SameStruct1InterfaceLocalServi
 	return Sig1Signal;
 }
 
-void UTbSame1SameStruct1InterfaceLocalService::GetProp1_Implementation(FTbSame1Struct1& ReturnValue) const
+FTbSame1Struct1 UTbSame1SameStruct1InterfaceLocalService::GetProp1_Implementation() const
 {
-	ReturnValue = Prop1;
+	return Prop1;
 }
 
 void UTbSame1SameStruct1InterfaceLocalService::SetProp1_Implementation(const FTbSame1Struct1& InProp1)
@@ -49,9 +49,9 @@ FTbSame1SameStruct1InterfaceProp1ChangedDelegate& UTbSame1SameStruct1InterfaceLo
 	return Prop1Changed;
 }
 
-void UTbSame1SameStruct1InterfaceLocalService::Func1_Implementation(FTbSame1Struct1& Result, const FTbSame1Struct1& Param1)
+FTbSame1Struct1 UTbSame1SameStruct1InterfaceLocalService::Func1_Implementation(const FTbSame1Struct1& Param1)
 {
 	(void)Param1;
 	// do business logic here
-	Result = FTbSame1Struct1();
+	return FTbSame1Struct1();
 }

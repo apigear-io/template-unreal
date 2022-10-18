@@ -107,9 +107,9 @@ FTbSame1SameEnum1InterfaceSig1Delegate& UTbSame1SameEnum1InterfaceSimulationServ
 	return Sig1Signal;
 }
 
-void UTbSame1SameEnum1InterfaceSimulationService::GetProp1_Implementation(ETbSame1Enum1& ReturnValue) const
+ETbSame1Enum1 UTbSame1SameEnum1InterfaceSimulationService::GetProp1_Implementation() const
 {
-	ReturnValue = Prop1;
+	return Prop1;
 }
 
 void UTbSame1SameEnum1InterfaceSimulationService::SetProp1_Implementation(const ETbSame1Enum1& InProp1)
@@ -128,7 +128,7 @@ FTbSame1SameEnum1InterfaceProp1ChangedDelegate& UTbSame1SameEnum1InterfaceSimula
 	return Prop1Changed;
 }
 
-void UTbSame1SameEnum1InterfaceSimulationService::Func1_Implementation(ETbSame1Enum1& Result, const ETbSame1Enum1& Param1)
+ETbSame1Enum1 UTbSame1SameEnum1InterfaceSimulationService::Func1_Implementation(const ETbSame1Enum1& Param1)
 {
 	Params params;
 	params["param1"] = Param1;
@@ -145,5 +145,5 @@ void UTbSame1SameEnum1InterfaceSimulationService::Func1_Implementation(ETbSame1E
 			}
 		});
 
-	Result = Promise.GetFuture().Get();
+	return Promise.GetFuture().Get();
 }
