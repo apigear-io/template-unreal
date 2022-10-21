@@ -70,3 +70,13 @@ func GenTest() {
 	rmDir(tmpDir)
 	genSol("./apigear/test.solution.yaml")
 }
+
+// automatically format all goldenmaster files according to the clang-format
+func FormatStyle() {
+	must(sh.RunV("bash", "-c", "find goldenmaster/Plugins -type f -iname '*.h' -not -path '*ThirdParty*' -o -type f -iname '*.cpp' -not -path '*ThirdParty*' | xargs clang-format -i"))
+}
+
+// test whether the goldenmaster files are formatted according to the clang-format
+func TestStyle() {
+	must(sh.RunV("bash", "-c", "clang-format --version && find goldenmaster/Plugins -type f -iname '*.h' -not -path '*ThirdParty*' -o -type f -iname '*.cpp' -not -path '*ThirdParty*' | xargs clang-format --dry-run --Werror"))
+}

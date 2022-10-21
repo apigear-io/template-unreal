@@ -38,4 +38,4 @@ jobs:
       - run: go run main.go diff
       - name: Install clang-format-12
         run: sudo apt-get install --no-install-recommends -y clang-format-12 && sudo mv /usr/bin/clang-format-12 /usr/bin/clang-format
-      # - run: yarn run test:style
+      - run: go run main.go testStyle
