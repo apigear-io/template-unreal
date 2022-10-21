@@ -6,42 +6,36 @@ on:
   pull_request:
     branches: [main]
 
+env:
+  GITHUB_AUTH_TOKEN: ${{ secrets.WOLFGANG_REPO_PACKAGE_READ }}
+  GOPRIVATE: "github.com/apigear-io/*"
+  GH_ACCESS_TOKEN: ${{ secrets.APIGEAR_REPOS }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  go_version: "1.19.x"
+  
 jobs:
   generate:
     runs-on: ubuntu-latest
-    env:
-      GITHUB_AUTH_TOKEN: ${{ secrets.WOLFGANG_REPO_PACKAGE_READ }}
-      GCP_AUTH_TOKEN: ${{ secrets.GCP_GITHUB_CICD_TECH_TEMPLATE_ACCOUNT_TOKEN }}
-
-    strategy:
-      matrix:
-        node-version: [16.x]
 
     steps:
       - uses: actions/checkout@v3
         with:
           submodules: recursive
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+      - uses: actions/setup-go@v3
         with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
+          go-version: ${{env.go_version}}
 
       - uses: actions/cache@v3
-        # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
-        id: yarn-cache
         with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
+          path: |
+            ~/go/pkg/mod
+            ~/.cache/go-build
+          key: ${{ runner.os }}-go-${{ matrix.go-version }}-${{ hashFiles('**/go.sum') }}
+          restore-keys: ${{ runner.os }}-go-${{ matrix.go-version }}-
 
-      # see https://classic.yarnpkg.com/en/docs/cli/install
-      - run: yarn install --frozen-lockfile --link-duplicates
-      - run: yarn run test:goldenmaster
+      - run: git config --global url."https://jryannel:${{secrets.APIGEAR_REPOS}}@github.com".insteadOf "https://github.com"
+      - run: go run main.go install
+      - run: go run main.go diff
       - name: Install clang-format-12
         run: sudo apt-get install --no-install-recommends -y clang-format-12 && sudo mv /usr/bin/clang-format-12 /usr/bin/clang-format
-      - run: yarn run test:style
+      # - run: yarn run test:style
