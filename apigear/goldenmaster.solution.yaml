@@ -4,7 +4,7 @@ version: "0.1"
 
 layers:
   - name: goldenmaster
-    modules:
+    inputs:
       - testbed.advanced.module.yaml
       - testbed.enum.module.yaml
       - testbed.same1.module.yaml
