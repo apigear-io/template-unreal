@@ -69,6 +69,7 @@ FTestbed2NestedStruct2InterfaceProp1ChangedDelegate& UTestbed2NestedStruct2Inter
 {
 	return Prop1Changed;
 }
+
 void UTestbed2NestedStruct2InterfaceLocalService::BroadcastProp2Changed_Implementation(const FTestbed2NestedStruct2& InProp2)
 {
 	Prop2Changed.Broadcast(InProp2);
@@ -99,6 +100,7 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct2InterfaceLocalService::Func1_Implem
 	// do business logic here
 	return FTestbed2NestedStruct1();
 }
+
 FTestbed2NestedStruct1 UTestbed2NestedStruct2InterfaceLocalService::Func2_Implementation(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
 {
 	(void)Param1;

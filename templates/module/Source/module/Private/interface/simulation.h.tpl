@@ -33,24 +33,28 @@ public:
 	void Set{{Camel .Name}}_Implementation({{ueParam "" .}}) override;
 {{ end }}
 	// operations
-{{- range .Interface.Operations }}
+{{- range $i, $e := .Interface.Operations }}
+{{- if $i }}{{nl}}{{ end }}
 	{{- if .Return.IsVoid }}
 	{{ueReturn "" .Return}} {{Camel .Name}}_Implementation({{ueParams "" .Params}}) override;
-	{{ else }}
-	void {{Camel .Name}}Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, {{ueReturn "" .Return}}& Result{{if len .Params}},{{end}} {{ueParams "" .Params}}) override{};
+	{{- else }}
+	void {{Camel .Name}}Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, {{ueReturn "" .Return}}& Result{{if len .Params}}, {{end}}{{ueParams "" .Params}}) override{};
 	{{ueReturn "" .Return}} {{Camel .Name}}_Implementation({{ueParams "" .Params}}) override;
 	{{- end }}
-{{ end }}
+{{- end }}
+
 protected:
 	// signals
-{{- range .Interface.Signals }}
+{{- range $i, $e := .Interface.Signals }}
+{{- if $i }}{{nl}}{{ end }}
 	void Broadcast{{Camel .Name}}_Implementation({{ueParams "" .Params}}) override;
-{{ else }}
 {{- end }}
-{{- range .Interface.Properties }}
+{{- if len .Interface.Properties }}{{ nl }}{{ end }}
+{{- range $i, $e := .Interface.Properties }}
+{{- if $i }}{{nl}}{{ end }}
 	void Broadcast{{Camel .Name}}Changed_Implementation({{ueParam "" .}}) override;
-{{ else }}
-{{ end }}
+{{- end }}
+
 private:
 	// properties - local copy
 {{- range .Interface.Properties }}

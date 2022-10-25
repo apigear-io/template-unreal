@@ -91,6 +91,7 @@ FTestbed1StructArrayInterfacePropBoolChangedDelegate& UTestbed1StructArrayInterf
 {
 	return PropBoolChanged;
 }
+
 void UTestbed1StructArrayInterfaceLocalService::BroadcastPropIntChanged_Implementation(const TArray<FTestbed1StructInt>& InPropInt)
 {
 	PropIntChanged.Broadcast(InPropInt);
@@ -114,6 +115,7 @@ FTestbed1StructArrayInterfacePropIntChangedDelegate& UTestbed1StructArrayInterfa
 {
 	return PropIntChanged;
 }
+
 void UTestbed1StructArrayInterfaceLocalService::BroadcastPropFloatChanged_Implementation(const TArray<FTestbed1StructFloat>& InPropFloat)
 {
 	PropFloatChanged.Broadcast(InPropFloat);
@@ -137,6 +139,7 @@ FTestbed1StructArrayInterfacePropFloatChangedDelegate& UTestbed1StructArrayInter
 {
 	return PropFloatChanged;
 }
+
 void UTestbed1StructArrayInterfaceLocalService::BroadcastPropStringChanged_Implementation(const TArray<FTestbed1StructString>& InPropString)
 {
 	PropStringChanged.Broadcast(InPropString);
@@ -167,18 +170,21 @@ FTestbed1StructBool UTestbed1StructArrayInterfaceLocalService::FuncBool_Implemen
 	// do business logic here
 	return FTestbed1StructBool();
 }
+
 FTestbed1StructBool UTestbed1StructArrayInterfaceLocalService::FuncInt_Implementation(const TArray<FTestbed1StructInt>& ParamInt)
 {
 	(void)ParamInt;
 	// do business logic here
 	return FTestbed1StructBool();
 }
+
 FTestbed1StructBool UTestbed1StructArrayInterfaceLocalService::FuncFloat_Implementation(const TArray<FTestbed1StructFloat>& ParamFloat)
 {
 	(void)ParamFloat;
 	// do business logic here
 	return FTestbed1StructBool();
 }
+
 FTestbed1StructBool UTestbed1StructArrayInterfaceLocalService::FuncString_Implementation(const TArray<FTestbed1StructString>& ParamString)
 {
 	(void)ParamString;

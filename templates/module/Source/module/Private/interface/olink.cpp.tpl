@@ -58,7 +58,8 @@ using namespace ApiGear::ObjectLink;
 	m_isReady = false;
 	m_node = nullptr;
 }
-{{ range .Interface.Signals }}
+{{ range $i, $e := .Interface.Signals }}
+{{- if $i }}{{nl}}{{ end }}
 void {{$Class}}::Broadcast{{Camel .Name}}_Implementation({{ueParams "" .Params}})
 {
 	{{Camel .Name}}Signal.Broadcast({{ueVars "" .Params }});
@@ -68,9 +69,10 @@ F{{$Iface}}{{Camel .Name}}Delegate& {{$Class}}::Get{{Camel .Name}}SignalDelegate
 {
 	return {{Camel .Name}}Signal;
 }
-{{ end }}
-
-{{- range .Interface.Properties }}
+{{- end }}
+{{- if len .Interface.Properties }}{{ nl }}{{ end }}
+{{- range $i, $e := .Interface.Properties }}
+{{- if $i }}{{nl}}{{ end }}
 void {{$Class}}::Broadcast{{Camel .Name}}Changed_Implementation({{ueParam "In" .}})
 {
 	{{ueVar "" .}} = {{ueVar "In" .}};
@@ -96,7 +98,8 @@ F{{$Iface}}{{Camel .Name}}ChangedDelegate& {{$Class}}::Get{{Camel .Name}}Changed
 	return {{Camel .Name}}Changed;
 }
 {{- end }}
-{{ range .Interface.Operations }}
+{{- if len .Interface.Operations }}{{ nl }}{{ end }}
+{{- range .Interface.Operations }}
 {{- if .Description }}
 /**
    \brief {{.Description}}
@@ -111,9 +114,9 @@ F{{$Iface}}{{Camel .Name}}ChangedDelegate& {{$Class}}::Get{{Camel .Name}}Changed
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
 		return;
 	}
-	InvokeReplyFunc func = [this](InvokeReplyArg arg) {};
-	m_node->invokeRemote("{{$ifaceId}}/{{.Name}}", {{ueVars "" .Params }}, func);
-	{{ else }}
+	InvokeReplyFunc Get{{$IfaceName}}StateFunc = [this](InvokeReplyArg arg) {};
+	m_node->invokeRemote("{{$ifaceId}}/{{.Name}}", { {{- ueVars "" .Params -}} }, Get{{$IfaceName}}StateFunc);
+	{{- else }}
 	if (!m_node)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
@@ -121,7 +124,7 @@ F{{$Iface}}{{Camel .Name}}ChangedDelegate& {{$Class}}::Get{{Camel .Name}}Changed
 	}
 	TPromise<{{$returnVal}}> Promise;
 	Async(EAsyncExecution::Thread,
-		[{{ueVars "" .Params }}, &Promise, this]()
+		[{{ueVars "" .Params }}{{if len .Params}}, {{ end }}&Promise, this]()
 		{
 			InvokeReplyFunc Get{{$IfaceName}}StateFunc = [&Promise](InvokeReplyArg arg)
 			{ Promise.SetValue(arg.value.get<{{$returnVal}}>()); };
@@ -157,9 +160,9 @@ void {{$Class}}::olinkOnSignal(std::string name, nlohmann::json args)
 {{- range .Interface.Signals }}
 	if (path == "{{.Name}}")
 	{
-		Execute_Broadcast{{Camel .Name}}(this,
+		Execute_Broadcast{{Camel .Name}}(this
 		{{- range $idx, $elem := .Params -}}
-			{{- if $idx }},{{ end }} args[{{$idx}}].get<{{ueReturn "" .}}>()
+			, args[{{$idx}}].get<{{ueReturn "" .}}>()
 		{{- end }});
 		return;
 	}

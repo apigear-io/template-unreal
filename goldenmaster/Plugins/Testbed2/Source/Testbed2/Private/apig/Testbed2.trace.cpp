@@ -40,6 +40,12 @@ void Testbed2ManyParamInterfaceTracer::trace_callSetProp4(int32 InProp4)
 	Tracer::instance()->call("testbed2/ManyParamInterface#_set", fields_);
 }
 
+void Testbed2ManyParamInterfaceTracer::trace_signalSig0()
+{
+	nlohmann::json fields_;
+	Tracer::instance()->signal("testbed2/ManyParamInterface#sig0", fields_);
+}
+
 void Testbed2ManyParamInterfaceTracer::trace_signalSig1(int32 Param1)
 {
 	nlohmann::json fields_;
@@ -74,6 +80,12 @@ void Testbed2ManyParamInterfaceTracer::trace_signalSig4(int32 Param1, int32 Para
 	Tracer::instance()->signal("testbed2/ManyParamInterface#sig4", fields_);
 }
 
+void Testbed2ManyParamInterfaceTracer::trace_callFunc0()
+{
+	nlohmann::json fields_;
+	Tracer::instance()->call("testbed2/ManyParamInterface#func0", fields_);
+}
+
 void Testbed2ManyParamInterfaceTracer::trace_callFunc1(int32 Param1)
 {
 	nlohmann::json fields_;
@@ -106,6 +118,17 @@ void Testbed2ManyParamInterfaceTracer::trace_callFunc4(int32 Param1, int32 Param
 	fields_["param3"] = Param3;
 	fields_["param4"] = Param4;
 	Tracer::instance()->call("testbed2/ManyParamInterface#func4", fields_);
+}
+
+void Testbed2ManyParamInterfaceTracer::trace_callFunc5(int32 Param1, int32 Param2, int32 Param3, int32 Param4, int32 Param5)
+{
+	nlohmann::json fields_;
+	fields_["param1"] = Param1;
+	fields_["param2"] = Param2;
+	fields_["param3"] = Param3;
+	fields_["param4"] = Param4;
+	fields_["param5"] = Param5;
+	Tracer::instance()->call("testbed2/ManyParamInterface#func5", fields_);
 }
 
 Testbed2NestedStruct1InterfaceTracer::Testbed2NestedStruct1InterfaceTracer()
@@ -270,4 +293,38 @@ void Testbed2NestedStruct3InterfaceTracer::trace_callFunc3(const FTestbed2Nested
 	fields_["param2"] = Param2;
 	fields_["param3"] = Param3;
 	Tracer::instance()->call("testbed2/NestedStruct3Interface#func3", fields_);
+}
+
+Testbed2NoPropertyInterfaceTracer::Testbed2NoPropertyInterfaceTracer()
+{
+}
+
+void Testbed2NoPropertyInterfaceTracer::capture_state(UObject* Object, ITestbed2NoPropertyInterfaceInterface* obj)
+{
+	nlohmann::json fields_;
+	Tracer::instance()->state("testbed2/NoPropertyInterface", fields_);
+}
+
+void Testbed2NoPropertyInterfaceTracer::trace_signalSig1(const FTestbed2NestedStruct1& Param1)
+{
+	nlohmann::json fields_;
+	fields_["param1"] = Param1;
+	Tracer::instance()->signal("testbed2/NoPropertyInterface#sig1", fields_);
+}
+
+void Testbed2NoPropertyInterfaceTracer::trace_callFunc1(const FTestbed2NestedStruct1& Param1)
+{
+	nlohmann::json fields_;
+	fields_["param1"] = Param1;
+	Tracer::instance()->call("testbed2/NoPropertyInterface#func1", fields_);
+}
+
+Testbed2EmptyInterfaceTracer::Testbed2EmptyInterfaceTracer()
+{
+}
+
+void Testbed2EmptyInterfaceTracer::capture_state(UObject* Object, ITestbed2EmptyInterfaceInterface* obj)
+{
+	nlohmann::json fields_;
+	Tracer::instance()->state("testbed2/EmptyInterface", fields_);
 }

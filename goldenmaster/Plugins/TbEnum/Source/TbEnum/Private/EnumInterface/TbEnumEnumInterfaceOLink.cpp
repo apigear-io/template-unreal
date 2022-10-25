@@ -125,6 +125,7 @@ FTbEnumEnumInterfaceProp0ChangedDelegate& UTbEnumEnumInterfaceOLinkService::GetP
 {
 	return Prop0Changed;
 }
+
 void UTbEnumEnumInterfaceOLinkService::BroadcastProp1Changed_Implementation(const ETbEnumEnum1& InProp1)
 {
 	Prop1 = InProp1;
@@ -149,6 +150,7 @@ FTbEnumEnumInterfaceProp1ChangedDelegate& UTbEnumEnumInterfaceOLinkService::GetP
 {
 	return Prop1Changed;
 }
+
 void UTbEnumEnumInterfaceOLinkService::BroadcastProp2Changed_Implementation(const ETbEnumEnum2& InProp2)
 {
 	Prop2 = InProp2;
@@ -173,6 +175,7 @@ FTbEnumEnumInterfaceProp2ChangedDelegate& UTbEnumEnumInterfaceOLinkService::GetP
 {
 	return Prop2Changed;
 }
+
 void UTbEnumEnumInterfaceOLinkService::BroadcastProp3Changed_Implementation(const ETbEnumEnum3& InProp3)
 {
 	Prop3 = InProp3;

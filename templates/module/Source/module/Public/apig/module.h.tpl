@@ -36,11 +36,11 @@ limitations under the License.
  */
 // signal delegates
 {{- range .Signals }}
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_{{Int2Word (len .Params) "Param"}}(F{{$Class}}{{Camel .Name}}Delegate, {{range $idx, $elem := .Params}}{{if $idx}}, {{end}}{{ueConstType "" .}}, {{ueVar "" .}}{{end}});
+DECLARE_DYNAMIC_MULTICAST_DELEGATE{{Int2Word (len .Params) "_" "Param"}}(F{{$Class}}{{Camel .Name}}Delegate{{range $idx, $elem := .Params}}, {{ueConstType "" .}}, {{ueVar "" .}}{{end}});
 {{ end }}
 // property delegates
 {{- range .Properties }}
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_{{Int2Word 1 "Param"}}(F{{$Class}}{{Camel .Name}}ChangedDelegate, {{ueConstType "" .}}, {{ueVar "" .}});
+DECLARE_DYNAMIC_MULTICAST_DELEGATE{{Int2Word 1 "_" "Param"}}(F{{$Class}}{{Camel .Name}}ChangedDelegate, {{ueConstType "" .}}, {{ueVar "" .}});
 {{ end }}
 /**
  * Interface {{$class}} only for Unreal Engine's reflection system
@@ -60,18 +60,20 @@ class {{ $API_MACRO }} {{ $class}}
 
 public:
 	// signals
-{{- range .Signals }}
+{{- range $i, $e := .Signals }}
+	{{- if $i }}{{nl}}{{ end }}
 	UFUNCTION(Category = "{{$Category}}")
 	virtual F{{$Class}}{{Camel .Name}}Delegate& Get{{Camel .Name}}SignalDelegate() = 0;
-{{ else }}
 {{- end }}
-{{- range .Properties }}
+{{- if len .Properties }}{{ nl }}{{ end }}
+{{- range $i, $e := .Properties }}
+	{{- if $i }}{{nl}}{{ end }}
 	UFUNCTION(Category = "{{$Category}}")
 	virtual F{{$Class}}{{Camel .Name}}ChangedDelegate& Get{{Camel .Name}}ChangedDelegate() = 0;
-{{ else }}
-{{ end }}
+{{- end }}
+
 	// methods
-{{- range .Operations }}
+{{- range $i, $e := .Operations }}
 {{- if .Return.IsVoid }}
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "{{$Category}}")
 	{{ueReturn "" .Return}} {{Camel .Name}}({{ueParams "" .Params}});
@@ -100,17 +102,18 @@ public:
 
 protected:
 	// signals
-{{- range .Signals }}
+{{- range $i, $e := .Signals }}
+	{{- if $i }}{{nl}}{{ end }}
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "{{$Category}}")
 	void Broadcast{{Camel .Name}}({{ueParams "" .Params}});
 	virtual void Broadcast{{Camel .Name}}_Implementation({{ueParams "" .Params}}) = 0;
-{{ else }}
 {{- end }}
-{{- range .Properties }}
+{{- if len .Properties }}{{ nl }}{{ end }}
+{{- range $i, $e := .Properties }}
+	{{- if $i }}{{nl}}{{ end }}
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "{{$Category}}")
 	void Broadcast{{Camel .Name}}Changed({{ueParam "" .}});
 	virtual void Broadcast{{Camel .Name}}Changed_Implementation({{ueParam "" .}}) = 0;
-{{ else }}
-{{ end -}}
+{{- end }}
 };
 {{- end }}

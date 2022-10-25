@@ -125,6 +125,7 @@ FTestbed1StructArrayInterfacePropBoolChangedDelegate& UTestbed1StructArrayInterf
 {
 	return PropBoolChanged;
 }
+
 void UTestbed1StructArrayInterfaceOLinkService::BroadcastPropIntChanged_Implementation(const TArray<FTestbed1StructInt>& InPropInt)
 {
 	PropInt = InPropInt;
@@ -149,6 +150,7 @@ FTestbed1StructArrayInterfacePropIntChangedDelegate& UTestbed1StructArrayInterfa
 {
 	return PropIntChanged;
 }
+
 void UTestbed1StructArrayInterfaceOLinkService::BroadcastPropFloatChanged_Implementation(const TArray<FTestbed1StructFloat>& InPropFloat)
 {
 	PropFloat = InPropFloat;
@@ -173,6 +175,7 @@ FTestbed1StructArrayInterfacePropFloatChangedDelegate& UTestbed1StructArrayInter
 {
 	return PropFloatChanged;
 }
+
 void UTestbed1StructArrayInterfaceOLinkService::BroadcastPropStringChanged_Implementation(const TArray<FTestbed1StructString>& InPropString)
 {
 	PropString = InPropString;

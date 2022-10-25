@@ -22,6 +22,8 @@ class ITestbed2ManyParamInterfaceInterface;
 class ITestbed2NestedStruct1InterfaceInterface;
 class ITestbed2NestedStruct2InterfaceInterface;
 class ITestbed2NestedStruct3InterfaceInterface;
+class ITestbed2NoPropertyInterfaceInterface;
+class ITestbed2EmptyInterfaceInterface;
 
 // General Log
 DECLARE_LOG_CATEGORY_EXTERN(LogFTestbed2ModuleFactory, Log, All);
@@ -33,4 +35,6 @@ public:
 	static TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> createITestbed2NestedStruct1InterfaceInterface();
 	static TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> createITestbed2NestedStruct2InterfaceInterface();
 	static TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> createITestbed2NestedStruct3InterfaceInterface();
+	static TScriptInterface<ITestbed2NoPropertyInterfaceInterface> createITestbed2NoPropertyInterfaceInterface();
+	static TScriptInterface<ITestbed2EmptyInterfaceInterface> createITestbed2EmptyInterfaceInterface();
 };

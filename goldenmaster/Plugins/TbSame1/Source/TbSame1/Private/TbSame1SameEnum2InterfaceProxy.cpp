@@ -80,10 +80,10 @@ UTbSame1SameEnum2InterfaceProxy::~UTbSame1SameEnum2InterfaceProxy()
 {
 	if (BackendService != nullptr)
 	{
-		//BackendService->GetProp1ChangedDelegate().RemoveDynamic(this, &UTbSame1SameEnum2InterfaceProxy::OnProp1Changed);
-		//BackendService->GetProp2ChangedDelegate().RemoveDynamic(this, &UTbSame1SameEnum2InterfaceProxy::OnProp2Changed);
-		//BackendService->GetSig1SignalDelegate().RemoveDynamic(this, &UTbSame1SameEnum2InterfaceProxy::OnSig1);
-		//BackendService->GetSig2SignalDelegate().RemoveDynamic(this, &UTbSame1SameEnum2InterfaceProxy::OnSig2);
+		// BackendService->GetProp1ChangedDelegate().RemoveDynamic(this, &UTbSame1SameEnum2InterfaceProxy::OnProp1Changed);
+		// BackendService->GetProp2ChangedDelegate().RemoveDynamic(this, &UTbSame1SameEnum2InterfaceProxy::OnProp2Changed);
+		// BackendService->GetSig1SignalDelegate().RemoveDynamic(this, &UTbSame1SameEnum2InterfaceProxy::OnSig1);
+		// BackendService->GetSig2SignalDelegate().RemoveDynamic(this, &UTbSame1SameEnum2InterfaceProxy::OnSig2);
 	}
 }
 

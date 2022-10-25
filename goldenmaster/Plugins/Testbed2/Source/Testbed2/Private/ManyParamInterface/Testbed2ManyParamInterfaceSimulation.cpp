@@ -128,6 +128,15 @@ UTestbed2ManyParamInterfaceSimulationService::UTestbed2ManyParamInterfaceSimulat
 	}
 
 	// register notification callback functions, signal/event -> fcn
+	NotifyRequestFunc sig0Func = [this](NotifyRequestArg arg)
+	{
+		Execute_BroadcastSig0(this);
+	};
+	if (AGCM != nullptr)
+	{
+		AGCM->GetSimulationConnection()->onNotify("testbed2/ManyParamInterface#sig0", sig0Func);
+	}
+
 	NotifyRequestFunc sig1Func = [this](NotifyRequestArg arg)
 	{
 		const json fields = arg.params;
@@ -188,11 +197,22 @@ UTestbed2ManyParamInterfaceSimulationService::~UTestbed2ManyParamInterfaceSimula
 		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
 		AGCM->GetSimulationConnection()->RemoveOnNotifyState("testbed2/ManyParamInterface");
 		// unregister notification callback functions
+		AGCM->GetSimulationConnection()->RemoveOnNotify("testbed2/ManyParamInterface#sig0");
 		AGCM->GetSimulationConnection()->RemoveOnNotify("testbed2/ManyParamInterface#sig1");
 		AGCM->GetSimulationConnection()->RemoveOnNotify("testbed2/ManyParamInterface#sig2");
 		AGCM->GetSimulationConnection()->RemoveOnNotify("testbed2/ManyParamInterface#sig3");
 		AGCM->GetSimulationConnection()->RemoveOnNotify("testbed2/ManyParamInterface#sig4");
 	}
+}
+
+void UTestbed2ManyParamInterfaceSimulationService::BroadcastSig0_Implementation()
+{
+	Sig0Signal.Broadcast();
+}
+
+FTestbed2ManyParamInterfaceSig0Delegate& UTestbed2ManyParamInterfaceSimulationService::GetSig0SignalDelegate()
+{
+	return Sig0Signal;
 }
 
 void UTestbed2ManyParamInterfaceSimulationService::BroadcastSig1_Implementation(int32 Param1)
@@ -343,6 +363,16 @@ FTestbed2ManyParamInterfaceProp4ChangedDelegate& UTestbed2ManyParamInterfaceSimu
 	return Prop4Changed;
 }
 
+void UTestbed2ManyParamInterfaceSimulationService::Func0_Implementation()
+{
+	Params params;
+	if (GEngine != nullptr)
+	{
+		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+		AGCM->GetSimulationConnection()->doCall("testbed2/ManyParamInterface", "func0", params);
+	}
+}
+
 int32 UTestbed2ManyParamInterfaceSimulationService::Func1_Implementation(int32 Param1)
 {
 	Params params;
@@ -427,4 +457,19 @@ int32 UTestbed2ManyParamInterfaceSimulationService::Func4_Implementation(int32 P
 		});
 
 	return Promise.GetFuture().Get();
+}
+
+void UTestbed2ManyParamInterfaceSimulationService::Func5_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4, int32 Param5)
+{
+	Params params;
+	params["param1"] = Param1;
+	params["param2"] = Param2;
+	params["param3"] = Param3;
+	params["param4"] = Param4;
+	params["param5"] = Param5;
+	if (GEngine != nullptr)
+	{
+		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+		AGCM->GetSimulationConnection()->doCall("testbed2/ManyParamInterface", "func5", params);
+	}
 }

@@ -125,6 +125,7 @@ FTbSimpleSimpleInterfacePropBoolChangedDelegate& UTbSimpleSimpleInterfaceOLinkSe
 {
 	return PropBoolChanged;
 }
+
 void UTbSimpleSimpleInterfaceOLinkService::BroadcastPropIntChanged_Implementation(int32 InPropInt)
 {
 	PropInt = InPropInt;
@@ -149,6 +150,7 @@ FTbSimpleSimpleInterfacePropIntChangedDelegate& UTbSimpleSimpleInterfaceOLinkSer
 {
 	return PropIntChanged;
 }
+
 void UTbSimpleSimpleInterfaceOLinkService::BroadcastPropFloatChanged_Implementation(float InPropFloat)
 {
 	PropFloat = InPropFloat;
@@ -173,6 +175,7 @@ FTbSimpleSimpleInterfacePropFloatChangedDelegate& UTbSimpleSimpleInterfaceOLinkS
 {
 	return PropFloatChanged;
 }
+
 void UTbSimpleSimpleInterfaceOLinkService::BroadcastPropStringChanged_Implementation(const FString& InPropString)
 {
 	PropString = InPropString;

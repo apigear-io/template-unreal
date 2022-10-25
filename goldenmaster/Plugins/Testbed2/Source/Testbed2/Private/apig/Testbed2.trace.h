@@ -11,14 +11,17 @@ public:
 	static void trace_callSetProp2(int32 InProp2);
 	static void trace_callSetProp3(int32 InProp3);
 	static void trace_callSetProp4(int32 InProp4);
+	static void trace_signalSig0();
 	static void trace_signalSig1(int32 Param1);
 	static void trace_signalSig2(int32 Param1, int32 Param2);
 	static void trace_signalSig3(int32 Param1, int32 Param2, int32 Param3);
 	static void trace_signalSig4(int32 Param1, int32 Param2, int32 Param3, int32 Param4);
+	static void trace_callFunc0();
 	static void trace_callFunc1(int32 Param1);
 	static void trace_callFunc2(int32 Param1, int32 Param2);
 	static void trace_callFunc3(int32 Param1, int32 Param2, int32 Param3);
 	static void trace_callFunc4(int32 Param1, int32 Param2, int32 Param3, int32 Param4);
+	static void trace_callFunc5(int32 Param1, int32 Param2, int32 Param3, int32 Param4, int32 Param5);
 };
 
 class Testbed2NestedStruct1InterfaceTracer
@@ -58,4 +61,20 @@ public:
 	static void trace_callFunc1(const FTestbed2NestedStruct1& Param1);
 	static void trace_callFunc2(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2);
 	static void trace_callFunc3(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3);
+};
+
+class Testbed2NoPropertyInterfaceTracer
+{
+public:
+	Testbed2NoPropertyInterfaceTracer();
+	static void capture_state(UObject* Object, ITestbed2NoPropertyInterfaceInterface* obj);
+	static void trace_signalSig1(const FTestbed2NestedStruct1& Param1);
+	static void trace_callFunc1(const FTestbed2NestedStruct1& Param1);
+};
+
+class Testbed2EmptyInterfaceTracer
+{
+public:
+	Testbed2EmptyInterfaceTracer();
+	static void capture_state(UObject* Object, ITestbed2EmptyInterfaceInterface* obj);
 };

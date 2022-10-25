@@ -29,6 +29,9 @@ public:
 	virtual ~UTestbed2ManyParamInterfaceOLinkService();
 
 	// signals
+	FTestbed2ManyParamInterfaceSig0Delegate Sig0Signal;
+	FTestbed2ManyParamInterfaceSig0Delegate& GetSig0SignalDelegate() override;
+
 	FTestbed2ManyParamInterfaceSig1Delegate Sig1Signal;
 	FTestbed2ManyParamInterfaceSig1Delegate& GetSig1SignalDelegate() override;
 
@@ -67,6 +70,8 @@ public:
 	void SetProp4_Implementation(int32 Prop4) override;
 
 	// operations
+	void Func0_Implementation() override;
+
 	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1) override{};
 	int32 Func1_Implementation(int32 Param1) override;
 
@@ -79,6 +84,8 @@ public:
 	void Func4Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2, int32 Param3, int32 Param4) override{};
 	int32 Func4_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4) override;
 
+	void Func5_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4, int32 Param5) override;
+
 	// olink sink interface
 	std::string olinkObjectName() override;
 	void olinkOnSignal(std::string name, nlohmann::json args) override;
@@ -88,6 +95,8 @@ public:
 
 protected:
 	// signals
+	void BroadcastSig0_Implementation() override;
+
 	void BroadcastSig1_Implementation(int32 Param1) override;
 
 	void BroadcastSig2_Implementation(int32 Param1, int32 Param2) override;

@@ -69,6 +69,7 @@ FTbSame1SameStruct2InterfaceProp1ChangedDelegate& UTbSame1SameStruct2InterfaceLo
 {
 	return Prop1Changed;
 }
+
 void UTbSame1SameStruct2InterfaceLocalService::BroadcastProp2Changed_Implementation(const FTbSame1Struct2& InProp2)
 {
 	Prop2Changed.Broadcast(InProp2);
@@ -99,6 +100,7 @@ FTbSame1Struct1 UTbSame1SameStruct2InterfaceLocalService::Func1_Implementation(c
 	// do business logic here
 	return FTbSame1Struct1();
 }
+
 FTbSame1Struct1 UTbSame1SameStruct2InterfaceLocalService::Func2_Implementation(const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2)
 {
 	(void)Param1;

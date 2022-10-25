@@ -103,6 +103,7 @@ FTbSame1SameEnum2InterfaceProp1ChangedDelegate& UTbSame1SameEnum2InterfaceOLinkS
 {
 	return Prop1Changed;
 }
+
 void UTbSame1SameEnum2InterfaceOLinkService::BroadcastProp2Changed_Implementation(const ETbSame1Enum2& InProp2)
 {
 	Prop2 = InProp2;

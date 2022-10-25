@@ -125,6 +125,7 @@ FTbSimpleSimpleArrayInterfacePropBoolChangedDelegate& UTbSimpleSimpleArrayInterf
 {
 	return PropBoolChanged;
 }
+
 void UTbSimpleSimpleArrayInterfaceOLinkService::BroadcastPropIntChanged_Implementation(const TArray<int32>& InPropInt)
 {
 	PropInt = InPropInt;
@@ -149,6 +150,7 @@ FTbSimpleSimpleArrayInterfacePropIntChangedDelegate& UTbSimpleSimpleArrayInterfa
 {
 	return PropIntChanged;
 }
+
 void UTbSimpleSimpleArrayInterfaceOLinkService::BroadcastPropFloatChanged_Implementation(const TArray<float>& InPropFloat)
 {
 	PropFloat = InPropFloat;
@@ -173,6 +175,7 @@ FTbSimpleSimpleArrayInterfacePropFloatChangedDelegate& UTbSimpleSimpleArrayInter
 {
 	return PropFloatChanged;
 }
+
 void UTbSimpleSimpleArrayInterfaceOLinkService::BroadcastPropStringChanged_Implementation(const TArray<FString>& InPropString)
 {
 	PropString = InPropString;

@@ -77,8 +77,8 @@ UTbSame1SameEnum1InterfaceProxy::~UTbSame1SameEnum1InterfaceProxy()
 {
 	if (BackendService != nullptr)
 	{
-		//BackendService->GetProp1ChangedDelegate().RemoveDynamic(this, &UTbSame1SameEnum1InterfaceProxy::OnProp1Changed);
-		//BackendService->GetSig1SignalDelegate().RemoveDynamic(this, &UTbSame1SameEnum1InterfaceProxy::OnSig1);
+		// BackendService->GetProp1ChangedDelegate().RemoveDynamic(this, &UTbSame1SameEnum1InterfaceProxy::OnProp1Changed);
+		// BackendService->GetSig1SignalDelegate().RemoveDynamic(this, &UTbSame1SameEnum1InterfaceProxy::OnSig1);
 	}
 }
 

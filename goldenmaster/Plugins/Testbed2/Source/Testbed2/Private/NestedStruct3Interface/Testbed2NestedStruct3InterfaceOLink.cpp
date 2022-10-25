@@ -114,6 +114,7 @@ FTestbed2NestedStruct3InterfaceProp1ChangedDelegate& UTestbed2NestedStruct3Inter
 {
 	return Prop1Changed;
 }
+
 void UTestbed2NestedStruct3InterfaceOLinkService::BroadcastProp2Changed_Implementation(const FTestbed2NestedStruct2& InProp2)
 {
 	Prop2 = InProp2;
@@ -138,6 +139,7 @@ FTestbed2NestedStruct3InterfaceProp2ChangedDelegate& UTestbed2NestedStruct3Inter
 {
 	return Prop2Changed;
 }
+
 void UTestbed2NestedStruct3InterfaceOLinkService::BroadcastProp3Changed_Implementation(const FTestbed2NestedStruct3& InProp3)
 {
 	Prop3 = InProp3;

@@ -91,6 +91,7 @@ FTbSimpleSimpleInterfacePropBoolChangedDelegate& UTbSimpleSimpleInterfaceLocalSe
 {
 	return PropBoolChanged;
 }
+
 void UTbSimpleSimpleInterfaceLocalService::BroadcastPropIntChanged_Implementation(int32 InPropInt)
 {
 	PropIntChanged.Broadcast(InPropInt);
@@ -114,6 +115,7 @@ FTbSimpleSimpleInterfacePropIntChangedDelegate& UTbSimpleSimpleInterfaceLocalSer
 {
 	return PropIntChanged;
 }
+
 void UTbSimpleSimpleInterfaceLocalService::BroadcastPropFloatChanged_Implementation(float InPropFloat)
 {
 	PropFloatChanged.Broadcast(InPropFloat);
@@ -137,6 +139,7 @@ FTbSimpleSimpleInterfacePropFloatChangedDelegate& UTbSimpleSimpleInterfaceLocalS
 {
 	return PropFloatChanged;
 }
+
 void UTbSimpleSimpleInterfaceLocalService::BroadcastPropStringChanged_Implementation(const FString& InPropString)
 {
 	PropStringChanged.Broadcast(InPropString);
@@ -167,18 +170,21 @@ bool UTbSimpleSimpleInterfaceLocalService::FuncBool_Implementation(bool bParamBo
 	// do business logic here
 	return false;
 }
+
 int32 UTbSimpleSimpleInterfaceLocalService::FuncInt_Implementation(int32 ParamInt)
 {
 	(void)ParamInt;
 	// do business logic here
 	return 0;
 }
+
 float UTbSimpleSimpleInterfaceLocalService::FuncFloat_Implementation(float ParamFloat)
 {
 	(void)ParamFloat;
 	// do business logic here
 	return 0.0f;
 }
+
 FString UTbSimpleSimpleInterfaceLocalService::FuncString_Implementation(const FString& ParamString)
 {
 	(void)ParamString;

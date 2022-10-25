@@ -61,6 +61,16 @@ UTestbed2ManyParamInterfaceOLinkService::~UTestbed2ManyParamInterfaceOLinkServic
 	m_node = nullptr;
 }
 
+void UTestbed2ManyParamInterfaceOLinkService::BroadcastSig0_Implementation()
+{
+	Sig0Signal.Broadcast();
+}
+
+FTestbed2ManyParamInterfaceSig0Delegate& UTestbed2ManyParamInterfaceOLinkService::GetSig0SignalDelegate()
+{
+	return Sig0Signal;
+}
+
 void UTestbed2ManyParamInterfaceOLinkService::BroadcastSig1_Implementation(int32 Param1)
 {
 	Sig1Signal.Broadcast(Param1);
@@ -125,6 +135,7 @@ FTestbed2ManyParamInterfaceProp1ChangedDelegate& UTestbed2ManyParamInterfaceOLin
 {
 	return Prop1Changed;
 }
+
 void UTestbed2ManyParamInterfaceOLinkService::BroadcastProp2Changed_Implementation(int32 InProp2)
 {
 	Prop2 = InProp2;
@@ -149,6 +160,7 @@ FTestbed2ManyParamInterfaceProp2ChangedDelegate& UTestbed2ManyParamInterfaceOLin
 {
 	return Prop2Changed;
 }
+
 void UTestbed2ManyParamInterfaceOLinkService::BroadcastProp3Changed_Implementation(int32 InProp3)
 {
 	Prop3 = InProp3;
@@ -173,6 +185,7 @@ FTestbed2ManyParamInterfaceProp3ChangedDelegate& UTestbed2ManyParamInterfaceOLin
 {
 	return Prop3Changed;
 }
+
 void UTestbed2ManyParamInterfaceOLinkService::BroadcastProp4Changed_Implementation(int32 InProp4)
 {
 	Prop4 = InProp4;
@@ -196,6 +209,17 @@ void UTestbed2ManyParamInterfaceOLinkService::SetProp4_Implementation(int32 InPr
 FTestbed2ManyParamInterfaceProp4ChangedDelegate& UTestbed2ManyParamInterfaceOLinkService::GetProp4ChangedDelegate()
 {
 	return Prop4Changed;
+}
+
+void UTestbed2ManyParamInterfaceOLinkService::Func0_Implementation()
+{
+	if (!m_node)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
+		return;
+	}
+	InvokeReplyFunc GetManyParamInterfaceStateFunc = [this](InvokeReplyArg arg) {};
+	m_node->invokeRemote("testbed2.ManyParamInterface/func0", {}, GetManyParamInterfaceStateFunc);
 }
 
 int32 UTestbed2ManyParamInterfaceOLinkService::Func1_Implementation(int32 Param1)
@@ -274,6 +298,17 @@ int32 UTestbed2ManyParamInterfaceOLinkService::Func4_Implementation(int32 Param1
 	return Promise.GetFuture().Get();
 }
 
+void UTestbed2ManyParamInterfaceOLinkService::Func5_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4, int32 Param5)
+{
+	if (!m_node)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
+		return;
+	}
+	InvokeReplyFunc GetManyParamInterfaceStateFunc = [this](InvokeReplyArg arg) {};
+	m_node->invokeRemote("testbed2.ManyParamInterface/func5", {Param1, Param2, Param3, Param4, Param5}, GetManyParamInterfaceStateFunc);
+}
+
 void UTestbed2ManyParamInterfaceOLinkService::applyState(const nlohmann::json& fields)
 {
 	if (fields.contains("prop1"))
@@ -318,6 +353,11 @@ std::string UTestbed2ManyParamInterfaceOLinkService::olinkObjectName()
 void UTestbed2ManyParamInterfaceOLinkService::olinkOnSignal(std::string name, nlohmann::json args)
 {
 	std::string path = Name::pathFromName(name);
+	if (path == "sig0")
+	{
+		Execute_BroadcastSig0(this);
+		return;
+	}
 	if (path == "sig1")
 	{
 		Execute_BroadcastSig1(this, args[0].get<int32>());

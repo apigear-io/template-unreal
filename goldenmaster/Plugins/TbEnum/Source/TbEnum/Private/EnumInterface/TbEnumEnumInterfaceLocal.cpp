@@ -91,6 +91,7 @@ FTbEnumEnumInterfaceProp0ChangedDelegate& UTbEnumEnumInterfaceLocalService::GetP
 {
 	return Prop0Changed;
 }
+
 void UTbEnumEnumInterfaceLocalService::BroadcastProp1Changed_Implementation(const ETbEnumEnum1& InProp1)
 {
 	Prop1Changed.Broadcast(InProp1);
@@ -114,6 +115,7 @@ FTbEnumEnumInterfaceProp1ChangedDelegate& UTbEnumEnumInterfaceLocalService::GetP
 {
 	return Prop1Changed;
 }
+
 void UTbEnumEnumInterfaceLocalService::BroadcastProp2Changed_Implementation(const ETbEnumEnum2& InProp2)
 {
 	Prop2Changed.Broadcast(InProp2);
@@ -137,6 +139,7 @@ FTbEnumEnumInterfaceProp2ChangedDelegate& UTbEnumEnumInterfaceLocalService::GetP
 {
 	return Prop2Changed;
 }
+
 void UTbEnumEnumInterfaceLocalService::BroadcastProp3Changed_Implementation(const ETbEnumEnum3& InProp3)
 {
 	Prop3Changed.Broadcast(InProp3);
@@ -167,18 +170,21 @@ ETbEnumEnum0 UTbEnumEnumInterfaceLocalService::Func0_Implementation(const ETbEnu
 	// do business logic here
 	return ETbEnumEnum0::VALUE0;
 }
+
 ETbEnumEnum1 UTbEnumEnumInterfaceLocalService::Func1_Implementation(const ETbEnumEnum1& Param1)
 {
 	(void)Param1;
 	// do business logic here
 	return ETbEnumEnum1::VALUE1;
 }
+
 ETbEnumEnum2 UTbEnumEnumInterfaceLocalService::Func2_Implementation(const ETbEnumEnum2& Param2)
 {
 	(void)Param2;
 	// do business logic here
 	return ETbEnumEnum2::VALUE2;
 }
+
 ETbEnumEnum3 UTbEnumEnumInterfaceLocalService::Func3_Implementation(const ETbEnumEnum3& Param3)
 {
 	(void)Param3;

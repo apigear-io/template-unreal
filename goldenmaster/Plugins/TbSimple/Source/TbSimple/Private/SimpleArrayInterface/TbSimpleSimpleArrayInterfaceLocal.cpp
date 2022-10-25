@@ -91,6 +91,7 @@ FTbSimpleSimpleArrayInterfacePropBoolChangedDelegate& UTbSimpleSimpleArrayInterf
 {
 	return PropBoolChanged;
 }
+
 void UTbSimpleSimpleArrayInterfaceLocalService::BroadcastPropIntChanged_Implementation(const TArray<int32>& InPropInt)
 {
 	PropIntChanged.Broadcast(InPropInt);
@@ -114,6 +115,7 @@ FTbSimpleSimpleArrayInterfacePropIntChangedDelegate& UTbSimpleSimpleArrayInterfa
 {
 	return PropIntChanged;
 }
+
 void UTbSimpleSimpleArrayInterfaceLocalService::BroadcastPropFloatChanged_Implementation(const TArray<float>& InPropFloat)
 {
 	PropFloatChanged.Broadcast(InPropFloat);
@@ -137,6 +139,7 @@ FTbSimpleSimpleArrayInterfacePropFloatChangedDelegate& UTbSimpleSimpleArrayInter
 {
 	return PropFloatChanged;
 }
+
 void UTbSimpleSimpleArrayInterfaceLocalService::BroadcastPropStringChanged_Implementation(const TArray<FString>& InPropString)
 {
 	PropStringChanged.Broadcast(InPropString);
@@ -167,18 +170,21 @@ TArray<bool> UTbSimpleSimpleArrayInterfaceLocalService::FuncBool_Implementation(
 	// do business logic here
 	return TArray<bool>();
 }
+
 TArray<int32> UTbSimpleSimpleArrayInterfaceLocalService::FuncInt_Implementation(const TArray<int32>& ParamInt)
 {
 	(void)ParamInt;
 	// do business logic here
 	return TArray<int32>();
 }
+
 TArray<float> UTbSimpleSimpleArrayInterfaceLocalService::FuncFloat_Implementation(const TArray<float>& ParamFloat)
 {
 	(void)ParamFloat;
 	// do business logic here
 	return TArray<float>();
 }
+
 TArray<FString> UTbSimpleSimpleArrayInterfaceLocalService::FuncString_Implementation(const TArray<FString>& ParamString)
 {
 	(void)ParamString;

@@ -100,10 +100,10 @@ public:
 	if (BackendService != nullptr)
 	{
 {{- range .Interface.Properties }}
-		//BackendService->Get{{Camel .Name}}ChangedDelegate().RemoveDynamic(this, &{{$Class}}::On{{Camel .Name}}Changed);
+		// BackendService->Get{{Camel .Name}}ChangedDelegate().RemoveDynamic(this, &{{$Class}}::On{{Camel .Name}}Changed);
 {{- end }}
 {{- range .Interface.Signals }}
-		//BackendService->Get{{Camel .Name}}SignalDelegate().RemoveDynamic(this, &{{$Class}}::On{{Camel .Name}});
+		// BackendService->Get{{Camel .Name}}SignalDelegate().RemoveDynamic(this, &{{$Class}}::On{{Camel .Name}});
 {{- end }}
 	}
 }
@@ -146,7 +146,7 @@ void {{$Class}}::Broadcast{{Camel .Name}}_Implementation({{ueParams "" .Params}}
 void {{$Class}}::On{{Camel .Name}}({{ueParams "" .Params}})
 {
 	{{$Iface}}Tracer::trace_signal{{Camel .Name}}({{ueVars "" .Params}});
-	Execute_Broadcast{{Camel .Name}}(this, {{ueVars "" .Params }});
+	Execute_Broadcast{{Camel .Name}}(this{{if len .Params}}, {{ end }}{{ueVars "" .Params }});
 }
 
 F{{$Iface}}{{Camel .Name}}Delegate& {{$Class}}::Get{{Camel .Name}}SignalDelegate()
@@ -224,7 +224,7 @@ void {{$Class}}::{{Camel .Name}}Async_Implementation(UObject* WorldContextObject
 		Async(EAsyncExecution::Thread,
 			[{{range .Params}}{{ueVar "" .}}, {{ end }}this, &Result, CompletionAction]()
 			{
-				Result = BackendService->Execute_{{Camel .Name}}(BackendService.GetObject(), {{ueVars "" .Params}});
+				Result = BackendService->Execute_{{Camel .Name}}(BackendService.GetObject(){{if len .Params}}, {{ end }}{{ueVars "" .Params}});
 				CompletionAction->Cancel();
 			});
 	}
@@ -234,9 +234,9 @@ void {{$Class}}::{{Camel .Name}}Async_Implementation(UObject* WorldContextObject
 {
 	{{ $Iface}}Tracer::trace_call{{Camel .Name}}({{ueVars "" .Params }});
 	{{- if not .Return.IsVoid }}
-	return BackendService->Execute_{{Camel .Name}}(BackendService.GetObject(), {{ ueVars "" .Params }});
+	return BackendService->Execute_{{Camel .Name}}(BackendService.GetObject(){{if len .Params}}, {{ end }}{{ ueVars "" .Params }});
 	{{- else }}
-	BackendService->Execute_{{Camel .Name}}(BackendService.GetObject(), {{ ueVars "" .Params}});
+	BackendService->Execute_{{Camel .Name}}(BackendService.GetObject(){{if len .Params}}, {{ end }}{{ ueVars "" .Params}});
 	{{- end }}
 }
 {{- end }}

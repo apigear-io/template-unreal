@@ -125,6 +125,7 @@ FTestbed1StructInterfacePropBoolChangedDelegate& UTestbed1StructInterfaceOLinkSe
 {
 	return PropBoolChanged;
 }
+
 void UTestbed1StructInterfaceOLinkService::BroadcastPropIntChanged_Implementation(const FTestbed1StructInt& InPropInt)
 {
 	PropInt = InPropInt;
@@ -149,6 +150,7 @@ FTestbed1StructInterfacePropIntChangedDelegate& UTestbed1StructInterfaceOLinkSer
 {
 	return PropIntChanged;
 }
+
 void UTestbed1StructInterfaceOLinkService::BroadcastPropFloatChanged_Implementation(const FTestbed1StructFloat& InPropFloat)
 {
 	PropFloat = InPropFloat;
@@ -173,6 +175,7 @@ FTestbed1StructInterfacePropFloatChangedDelegate& UTestbed1StructInterfaceOLinkS
 {
 	return PropFloatChanged;
 }
+
 void UTestbed1StructInterfaceOLinkService::BroadcastPropStringChanged_Implementation(const FTestbed1StructString& InPropString)
 {
 	PropString = InPropString;

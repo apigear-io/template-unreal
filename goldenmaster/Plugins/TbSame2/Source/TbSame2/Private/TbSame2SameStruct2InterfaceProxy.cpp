@@ -80,10 +80,10 @@ UTbSame2SameStruct2InterfaceProxy::~UTbSame2SameStruct2InterfaceProxy()
 {
 	if (BackendService != nullptr)
 	{
-		//BackendService->GetProp1ChangedDelegate().RemoveDynamic(this, &UTbSame2SameStruct2InterfaceProxy::OnProp1Changed);
-		//BackendService->GetProp2ChangedDelegate().RemoveDynamic(this, &UTbSame2SameStruct2InterfaceProxy::OnProp2Changed);
-		//BackendService->GetSig1SignalDelegate().RemoveDynamic(this, &UTbSame2SameStruct2InterfaceProxy::OnSig1);
-		//BackendService->GetSig2SignalDelegate().RemoveDynamic(this, &UTbSame2SameStruct2InterfaceProxy::OnSig2);
+		// BackendService->GetProp1ChangedDelegate().RemoveDynamic(this, &UTbSame2SameStruct2InterfaceProxy::OnProp1Changed);
+		// BackendService->GetProp2ChangedDelegate().RemoveDynamic(this, &UTbSame2SameStruct2InterfaceProxy::OnProp2Changed);
+		// BackendService->GetSig1SignalDelegate().RemoveDynamic(this, &UTbSame2SameStruct2InterfaceProxy::OnSig1);
+		// BackendService->GetSig2SignalDelegate().RemoveDynamic(this, &UTbSame2SameStruct2InterfaceProxy::OnSig2);
 	}
 }
 

@@ -28,6 +28,8 @@ limitations under the License.
  * Declaration for ManyParamInterface
  */
 // signal delegates
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTestbed2ManyParamInterfaceSig0Delegate);
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed2ManyParamInterfaceSig1Delegate, int32, Param1);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FTestbed2ManyParamInterfaceSig2Delegate, int32, Param1, int32, Param2);
@@ -64,6 +66,9 @@ class TESTBED2_API ITestbed2ManyParamInterfaceInterface
 public:
 	// signals
 	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface")
+	virtual FTestbed2ManyParamInterfaceSig0Delegate& GetSig0SignalDelegate() = 0;
+
+	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface")
 	virtual FTestbed2ManyParamInterfaceSig1Delegate& GetSig1SignalDelegate() = 0;
 
 	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface")
@@ -88,6 +93,10 @@ public:
 	virtual FTestbed2ManyParamInterfaceProp4ChangedDelegate& GetProp4ChangedDelegate() = 0;
 
 	// methods
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
+	void Func0();
+	virtual void Func0_Implementation() = 0;
+
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1);
 	virtual void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1) = 0;
@@ -115,6 +124,10 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
 	int32 Func4(int32 Param1, int32 Param2, int32 Param3, int32 Param4);
 	virtual int32 Func4_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4) = 0;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
+	void Func5(int32 Param1, int32 Param2, int32 Param3, int32 Param4, int32 Param5);
+	virtual void Func5_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4, int32 Param5) = 0;
 
 	// properties
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
@@ -148,6 +161,10 @@ public:
 
 protected:
 	// signals
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
+	void BroadcastSig0();
+	virtual void BroadcastSig0_Implementation() = 0;
+
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
 	void BroadcastSig1(int32 Param1);
 	virtual void BroadcastSig1_Implementation(int32 Param1) = 0;
@@ -455,4 +472,79 @@ protected:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface")
 	void BroadcastProp3Changed(const FTestbed2NestedStruct3& Prop3);
 	virtual void BroadcastProp3Changed_Implementation(const FTestbed2NestedStruct3& Prop3) = 0;
+};
+/**
+ * Declaration for NoPropertyInterface
+ */
+// signal delegates
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed2NoPropertyInterfaceSig1Delegate, const FTestbed2NestedStruct1&, Param1);
+
+// property delegates
+/**
+ * Interface UTestbed2NoPropertyInterfaceInterface only for Unreal Engine's reflection system
+ */
+UINTERFACE(Blueprintable, MinimalAPI)
+class UTestbed2NoPropertyInterfaceInterface : public UInterface
+{
+	GENERATED_BODY()
+};
+
+/**
+ * Interface ITestbed2NoPropertyInterfaceInterface
+ */
+class TESTBED2_API ITestbed2NoPropertyInterfaceInterface
+{
+	GENERATED_BODY()
+
+public:
+	// signals
+	UFUNCTION(Category = "ApiGear|Testbed2|NoPropertyInterface")
+	virtual FTestbed2NoPropertyInterfaceSig1Delegate& GetSig1SignalDelegate() = 0;
+
+	// methods
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NoPropertyInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1);
+	virtual void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1) = 0;
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NoPropertyInterface")
+	FTestbed2NestedStruct1 Func1(const FTestbed2NestedStruct1& Param1);
+	virtual FTestbed2NestedStruct1 Func1_Implementation(const FTestbed2NestedStruct1& Param1) = 0;
+
+	// properties
+
+protected:
+	// signals
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NoPropertyInterface")
+	void BroadcastSig1(const FTestbed2NestedStruct1& Param1);
+	virtual void BroadcastSig1_Implementation(const FTestbed2NestedStruct1& Param1) = 0;
+};
+/**
+ * Declaration for EmptyInterface
+ */
+// signal delegates
+// property delegates
+/**
+ * Interface UTestbed2EmptyInterfaceInterface only for Unreal Engine's reflection system
+ */
+UINTERFACE(Blueprintable, MinimalAPI)
+class UTestbed2EmptyInterfaceInterface : public UInterface
+{
+	GENERATED_BODY()
+};
+
+/**
+ * Interface ITestbed2EmptyInterfaceInterface
+ */
+class TESTBED2_API ITestbed2EmptyInterfaceInterface
+{
+	GENERATED_BODY()
+
+public:
+	// signals
+
+	// methods
+
+	// properties
+
+protected:
+	// signals
 };

@@ -69,6 +69,7 @@ FTbSame2SameEnum2InterfaceProp1ChangedDelegate& UTbSame2SameEnum2InterfaceLocalS
 {
 	return Prop1Changed;
 }
+
 void UTbSame2SameEnum2InterfaceLocalService::BroadcastProp2Changed_Implementation(const ETbSame2Enum2& InProp2)
 {
 	Prop2Changed.Broadcast(InProp2);
@@ -99,6 +100,7 @@ ETbSame2Enum1 UTbSame2SameEnum2InterfaceLocalService::Func1_Implementation(const
 	// do business logic here
 	return ETbSame2Enum1::VALUE1;
 }
+
 ETbSame2Enum1 UTbSame2SameEnum2InterfaceLocalService::Func2_Implementation(const ETbSame2Enum1& Param1, const ETbSame2Enum2& Param2)
 {
 	(void)Param1;

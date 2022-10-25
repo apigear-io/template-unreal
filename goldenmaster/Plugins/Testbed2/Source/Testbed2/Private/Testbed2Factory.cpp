@@ -28,6 +28,12 @@ limitations under the License.
 #include "NestedStruct3Interface/Testbed2NestedStruct3InterfaceLocal.h"
 #include "NestedStruct3Interface/Testbed2NestedStruct3InterfaceOLink.h"
 #include "NestedStruct3Interface/Testbed2NestedStruct3InterfaceSimulation.h"
+#include "NoPropertyInterface/Testbed2NoPropertyInterfaceLocal.h"
+#include "NoPropertyInterface/Testbed2NoPropertyInterfaceOLink.h"
+#include "NoPropertyInterface/Testbed2NoPropertyInterfaceSimulation.h"
+#include "EmptyInterface/Testbed2EmptyInterfaceLocal.h"
+#include "EmptyInterface/Testbed2EmptyInterfaceOLink.h"
+#include "EmptyInterface/Testbed2EmptyInterfaceSimulation.h"
 #include "Testbed2Settings.h"
 
 // General Log
@@ -110,5 +116,45 @@ TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> FTestbed2ModuleFactor
 	default:
 		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct3InterfaceInterface: Defaulting to local service backend"));
 		return NewObject<UTestbed2NestedStruct3InterfaceLocalService>();
+	}
+}
+
+TScriptInterface<ITestbed2NoPropertyInterfaceInterface> FTestbed2ModuleFactory::createITestbed2NoPropertyInterfaceInterface()
+{
+	UTestbed2Settings* settings = GetMutableDefault<UTestbed2Settings>();
+
+	switch (settings->ServiceConnection)
+	{
+	case ETestbed2Connection::CONNECTION_OLINK:
+		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NoPropertyInterfaceInterface: Using OLink service backend"));
+		return NewObject<UTestbed2NoPropertyInterfaceOLinkService>();
+	case ETestbed2Connection::CONNECTION_SIMU:
+		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NoPropertyInterfaceInterface: Using simulation service backend"));
+		return NewObject<UTestbed2NoPropertyInterfaceSimulationService>();
+	case ETestbed2Connection::CONNECTION_LOCAL:
+		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NoPropertyInterfaceInterface: Using local service backend"));
+	default:
+		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NoPropertyInterfaceInterface: Defaulting to local service backend"));
+		return NewObject<UTestbed2NoPropertyInterfaceLocalService>();
+	}
+}
+
+TScriptInterface<ITestbed2EmptyInterfaceInterface> FTestbed2ModuleFactory::createITestbed2EmptyInterfaceInterface()
+{
+	UTestbed2Settings* settings = GetMutableDefault<UTestbed2Settings>();
+
+	switch (settings->ServiceConnection)
+	{
+	case ETestbed2Connection::CONNECTION_OLINK:
+		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2EmptyInterfaceInterface: Using OLink service backend"));
+		return NewObject<UTestbed2EmptyInterfaceOLinkService>();
+	case ETestbed2Connection::CONNECTION_SIMU:
+		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2EmptyInterfaceInterface: Using simulation service backend"));
+		return NewObject<UTestbed2EmptyInterfaceSimulationService>();
+	case ETestbed2Connection::CONNECTION_LOCAL:
+		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2EmptyInterfaceInterface: Using local service backend"));
+	default:
+		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2EmptyInterfaceInterface: Defaulting to local service backend"));
+		return NewObject<UTestbed2EmptyInterfaceLocalService>();
 	}
 }
