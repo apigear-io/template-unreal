@@ -16,13 +16,7 @@ limitations under the License.
 */
 
 #include "Testbed2NestedStruct3InterfaceLocal.h"
-UTestbed2NestedStruct3InterfaceLocalService::UTestbed2NestedStruct3InterfaceLocalService()
-	: ITestbed2NestedStruct3InterfaceInterface()
-	, Prop1(FTestbed2NestedStruct1())
-	, Prop2(FTestbed2NestedStruct2())
-	, Prop3(FTestbed2NestedStruct3())
-{
-}
+
 UTestbed2NestedStruct3InterfaceLocalService::~UTestbed2NestedStruct3InterfaceLocalService() = default;
 
 void UTestbed2NestedStruct3InterfaceLocalService::BroadcastSig1_Implementation(const FTestbed2NestedStruct1& Param1)

@@ -99,7 +99,7 @@ private:
 
 	// properties - local copy
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1_Private, BlueprintSetter = SetProp1_Private, Category = "ApiGear|TbSame1|SameStruct2Interface")
-	FTbSame1Struct2 Prop1;
+	FTbSame1Struct2 Prop1{FTbSame1Struct2()};
 
 	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSame1|SameStruct2Interface", BlueprintInternalUseOnly)
 	FTbSame1Struct2 GetProp1_Private() const;
@@ -108,7 +108,7 @@ private:
 	void SetProp1_Private(const FTbSame1Struct2& InProp1);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp2_Private, BlueprintSetter = SetProp2_Private, Category = "ApiGear|TbSame1|SameStruct2Interface")
-	FTbSame1Struct2 Prop2;
+	FTbSame1Struct2 Prop2{FTbSame1Struct2()};
 
 	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSame1|SameStruct2Interface", BlueprintInternalUseOnly)
 	FTbSame1Struct2 GetProp2_Private() const;

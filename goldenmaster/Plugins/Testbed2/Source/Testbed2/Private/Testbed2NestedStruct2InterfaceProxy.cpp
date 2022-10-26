@@ -66,8 +66,6 @@ public:
 };
 UTestbed2NestedStruct2InterfaceProxy::UTestbed2NestedStruct2InterfaceProxy()
 	: ITestbed2NestedStruct2InterfaceInterface()
-	, Prop1(FTestbed2NestedStruct1())
-	, Prop2(FTestbed2NestedStruct2())
 {
 	BackendService = FTestbed2ModuleFactory::createITestbed2NestedStruct2InterfaceInterface();
 	BackendService->GetProp1ChangedDelegate().AddDynamic(this, &UTestbed2NestedStruct2InterfaceProxy::OnProp1Changed);

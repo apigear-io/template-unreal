@@ -26,7 +26,6 @@ class TBSAME1_API UTbSame1SameStruct2InterfaceLocalService : public UObject, pub
 {
 	GENERATED_BODY()
 public:
-	explicit UTbSame1SameStruct2InterfaceLocalService();
 	virtual ~UTbSame1SameStruct2InterfaceLocalService();
 
 	// signals
@@ -68,6 +67,6 @@ protected:
 
 private:
 	// properties - local copy - use setter functions to emit changed signals
-	FTbSame1Struct2 Prop1;
-	FTbSame1Struct2 Prop2;
+	FTbSame1Struct2 Prop1{FTbSame1Struct2()};
+	FTbSame1Struct2 Prop2{FTbSame1Struct2()};
 };

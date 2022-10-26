@@ -66,8 +66,6 @@ public:
 };
 UTbSame1SameStruct2InterfaceProxy::UTbSame1SameStruct2InterfaceProxy()
 	: ITbSame1SameStruct2InterfaceInterface()
-	, Prop1(FTbSame1Struct2())
-	, Prop2(FTbSame1Struct2())
 {
 	BackendService = FTbSame1ModuleFactory::createITbSame1SameStruct2InterfaceInterface();
 	BackendService->GetProp1ChangedDelegate().AddDynamic(this, &UTbSame1SameStruct2InterfaceProxy::OnProp1Changed);

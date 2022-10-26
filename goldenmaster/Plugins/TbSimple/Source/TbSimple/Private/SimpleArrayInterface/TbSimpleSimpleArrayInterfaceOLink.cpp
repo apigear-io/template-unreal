@@ -35,10 +35,6 @@ UTbSimpleSimpleArrayInterfaceOLinkService::UTbSimpleSimpleArrayInterfaceOLinkSer
 	: ITbSimpleSimpleArrayInterfaceInterface()
 	, m_node(nullptr)
 	, m_isReady(false)
-	, PropBool(TArray<bool>())
-	, PropInt(TArray<int32>())
-	, PropFloat(TArray<float>())
-	, PropString(TArray<FString>())
 {
 	if (GEngine != nullptr)
 	{

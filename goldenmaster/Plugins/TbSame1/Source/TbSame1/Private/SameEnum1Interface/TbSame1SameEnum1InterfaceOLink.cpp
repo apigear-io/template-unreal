@@ -35,7 +35,6 @@ UTbSame1SameEnum1InterfaceOLinkService::UTbSame1SameEnum1InterfaceOLinkService()
 	: ITbSame1SameEnum1InterfaceInterface()
 	, m_node(nullptr)
 	, m_isReady(false)
-	, Prop1(ETbSame1Enum1::VALUE1)
 {
 	if (GEngine != nullptr)
 	{

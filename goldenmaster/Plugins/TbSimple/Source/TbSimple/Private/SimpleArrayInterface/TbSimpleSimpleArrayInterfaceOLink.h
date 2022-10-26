@@ -109,8 +109,8 @@ private:
 	ApiGear::ObjectLink::IClientNode* m_node;
 	bool m_isReady;
 	// properties - local copy
-	TArray<bool> PropBool;
-	TArray<int32> PropInt;
-	TArray<float> PropFloat;
-	TArray<FString> PropString;
+	TArray<bool> PropBool{TArray<bool>()};
+	TArray<int32> PropInt{TArray<int32>()};
+	TArray<float> PropFloat{TArray<float>()};
+	TArray<FString> PropString{TArray<FString>()};
 };

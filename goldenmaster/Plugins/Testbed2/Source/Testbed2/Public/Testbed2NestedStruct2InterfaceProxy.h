@@ -99,7 +99,7 @@ private:
 
 	// properties - local copy
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1_Private, BlueprintSetter = SetProp1_Private, Category = "ApiGear|Testbed2|NestedStruct2Interface")
-	FTestbed2NestedStruct1 Prop1;
+	FTestbed2NestedStruct1 Prop1{FTestbed2NestedStruct1()};
 
 	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed2|NestedStruct2Interface", BlueprintInternalUseOnly)
 	FTestbed2NestedStruct1 GetProp1_Private() const;
@@ -108,7 +108,7 @@ private:
 	void SetProp1_Private(const FTestbed2NestedStruct1& InProp1);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp2_Private, BlueprintSetter = SetProp2_Private, Category = "ApiGear|Testbed2|NestedStruct2Interface")
-	FTestbed2NestedStruct2 Prop2;
+	FTestbed2NestedStruct2 Prop2{FTestbed2NestedStruct2()};
 
 	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed2|NestedStruct2Interface", BlueprintInternalUseOnly)
 	FTestbed2NestedStruct2 GetProp2_Private() const;

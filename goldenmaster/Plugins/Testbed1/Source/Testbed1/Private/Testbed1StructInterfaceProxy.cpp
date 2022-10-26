@@ -66,10 +66,6 @@ public:
 };
 UTestbed1StructInterfaceProxy::UTestbed1StructInterfaceProxy()
 	: ITestbed1StructInterfaceInterface()
-	, PropBool(FTestbed1StructBool())
-	, PropInt(FTestbed1StructInt())
-	, PropFloat(FTestbed1StructFloat())
-	, PropString(FTestbed1StructString())
 {
 	BackendService = FTestbed1ModuleFactory::createITestbed1StructInterfaceInterface();
 	BackendService->GetPropBoolChangedDelegate().AddDynamic(this, &UTestbed1StructInterfaceProxy::OnPropBoolChanged);

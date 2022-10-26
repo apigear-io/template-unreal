@@ -26,7 +26,6 @@ class TBSIMPLE_API UTbSimpleSimpleArrayInterfaceLocalService : public UObject, p
 {
 	GENERATED_BODY()
 public:
-	explicit UTbSimpleSimpleArrayInterfaceLocalService();
 	virtual ~UTbSimpleSimpleArrayInterfaceLocalService();
 
 	// signals
@@ -100,8 +99,8 @@ protected:
 
 private:
 	// properties - local copy - use setter functions to emit changed signals
-	TArray<bool> PropBool;
-	TArray<int32> PropInt;
-	TArray<float> PropFloat;
-	TArray<FString> PropString;
+	TArray<bool> PropBool{TArray<bool>()};
+	TArray<int32> PropInt{TArray<int32>()};
+	TArray<float> PropFloat{TArray<float>()};
+	TArray<FString> PropString{TArray<FString>()};
 };

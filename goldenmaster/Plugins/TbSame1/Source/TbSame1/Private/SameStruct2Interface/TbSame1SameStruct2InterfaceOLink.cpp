@@ -35,8 +35,6 @@ UTbSame1SameStruct2InterfaceOLinkService::UTbSame1SameStruct2InterfaceOLinkServi
 	: ITbSame1SameStruct2InterfaceInterface()
 	, m_node(nullptr)
 	, m_isReady(false)
-	, Prop1(FTbSame1Struct2())
-	, Prop2(FTbSame1Struct2())
 {
 	if (GEngine != nullptr)
 	{

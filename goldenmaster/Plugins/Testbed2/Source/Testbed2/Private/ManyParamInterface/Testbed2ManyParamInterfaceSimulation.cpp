@@ -30,10 +30,6 @@ limitations under the License.
 using namespace ApiGear::JSONRPC;
 UTestbed2ManyParamInterfaceSimulationService::UTestbed2ManyParamInterfaceSimulationService()
 	: ITestbed2ManyParamInterfaceInterface()
-	, Prop1(0)
-	, Prop2(0)
-	, Prop3(0)
-	, Prop4(0)
 {
 	UApiGearConnectionManager* AGCM = nullptr;
 	if (GEngine != nullptr)

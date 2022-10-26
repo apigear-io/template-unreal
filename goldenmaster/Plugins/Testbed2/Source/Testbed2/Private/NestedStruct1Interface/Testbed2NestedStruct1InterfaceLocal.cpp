@@ -16,11 +16,7 @@ limitations under the License.
 */
 
 #include "Testbed2NestedStruct1InterfaceLocal.h"
-UTestbed2NestedStruct1InterfaceLocalService::UTestbed2NestedStruct1InterfaceLocalService()
-	: ITestbed2NestedStruct1InterfaceInterface()
-	, Prop1(FTestbed2NestedStruct1())
-{
-}
+
 UTestbed2NestedStruct1InterfaceLocalService::~UTestbed2NestedStruct1InterfaceLocalService() = default;
 
 void UTestbed2NestedStruct1InterfaceLocalService::BroadcastSig1_Implementation(const FTestbed2NestedStruct1& Param1)

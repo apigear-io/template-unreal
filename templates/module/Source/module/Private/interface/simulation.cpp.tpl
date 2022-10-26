@@ -28,9 +28,6 @@ using namespace ApiGear::JSONRPC;
 {{- end }}
 {{$Class}}::{{$Class}}()
 	: I{{$ModuleName}}{{Camel .Interface.Name}}Interface()
-{{- range .Interface.Properties }}
-	, {{ueVar "" .}}({{ueDefault "" .}})
-{{- end }}
 {
 	UApiGearConnectionManager* AGCM = nullptr;
 	if (GEngine != nullptr)

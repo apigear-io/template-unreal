@@ -109,8 +109,8 @@ private:
 	ApiGear::ObjectLink::IClientNode* m_node;
 	bool m_isReady;
 	// properties - local copy
-	ETbEnumEnum0 Prop0;
-	ETbEnumEnum1 Prop1;
-	ETbEnumEnum2 Prop2;
-	ETbEnumEnum3 Prop3;
+	ETbEnumEnum0 Prop0{ETbEnumEnum0::VALUE0};
+	ETbEnumEnum1 Prop1{ETbEnumEnum1::VALUE1};
+	ETbEnumEnum2 Prop2{ETbEnumEnum2::VALUE2};
+	ETbEnumEnum3 Prop3{ETbEnumEnum3::VALUE3};
 };

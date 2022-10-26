@@ -35,9 +35,6 @@ UTestbed2NestedStruct3InterfaceOLinkService::UTestbed2NestedStruct3InterfaceOLin
 	: ITestbed2NestedStruct3InterfaceInterface()
 	, m_node(nullptr)
 	, m_isReady(false)
-	, Prop1(FTestbed2NestedStruct1())
-	, Prop2(FTestbed2NestedStruct2())
-	, Prop3(FTestbed2NestedStruct3())
 {
 	if (GEngine != nullptr)
 	{

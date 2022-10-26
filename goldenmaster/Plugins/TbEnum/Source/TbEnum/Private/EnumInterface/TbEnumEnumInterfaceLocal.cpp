@@ -16,14 +16,7 @@ limitations under the License.
 */
 
 #include "TbEnumEnumInterfaceLocal.h"
-UTbEnumEnumInterfaceLocalService::UTbEnumEnumInterfaceLocalService()
-	: ITbEnumEnumInterfaceInterface()
-	, Prop0(ETbEnumEnum0::VALUE0)
-	, Prop1(ETbEnumEnum1::VALUE1)
-	, Prop2(ETbEnumEnum2::VALUE2)
-	, Prop3(ETbEnumEnum3::VALUE3)
-{
-}
+
 UTbEnumEnumInterfaceLocalService::~UTbEnumEnumInterfaceLocalService() = default;
 
 void UTbEnumEnumInterfaceLocalService::BroadcastSig0_Implementation(const ETbEnumEnum0& Param0)

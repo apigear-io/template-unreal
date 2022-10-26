@@ -30,10 +30,6 @@ limitations under the License.
 using namespace ApiGear::JSONRPC;
 UTestbed1StructInterfaceSimulationService::UTestbed1StructInterfaceSimulationService()
 	: ITestbed1StructInterfaceInterface()
-	, PropBool(FTestbed1StructBool())
-	, PropInt(FTestbed1StructInt())
-	, PropFloat(FTestbed1StructFloat())
-	, PropString(FTestbed1StructString())
 {
 	UApiGearConnectionManager* AGCM = nullptr;
 	if (GEngine != nullptr)

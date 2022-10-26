@@ -149,7 +149,7 @@ private:
 
 	// properties - local copy
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropBool_Private, BlueprintSetter = SetPropBool_Private, Category = "ApiGear|TbSimple|SimpleInterface")
-	bool bPropBool;
+	bool bPropBool{false};
 
 	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
 	bool GetPropBool_Private() const;
@@ -158,7 +158,7 @@ private:
 	void SetPropBool_Private(bool bInPropBool);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropInt_Private, BlueprintSetter = SetPropInt_Private, Category = "ApiGear|TbSimple|SimpleInterface")
-	int32 PropInt;
+	int32 PropInt{0};
 
 	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
 	int32 GetPropInt_Private() const;
@@ -167,7 +167,7 @@ private:
 	void SetPropInt_Private(int32 InPropInt);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropFloat_Private, BlueprintSetter = SetPropFloat_Private, Category = "ApiGear|TbSimple|SimpleInterface")
-	float PropFloat;
+	float PropFloat{0.0f};
 
 	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
 	float GetPropFloat_Private() const;
@@ -176,7 +176,7 @@ private:
 	void SetPropFloat_Private(float InPropFloat);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropString_Private, BlueprintSetter = SetPropString_Private, Category = "ApiGear|TbSimple|SimpleInterface")
-	FString PropString;
+	FString PropString{FString()};
 
 	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
 	FString GetPropString_Private() const;

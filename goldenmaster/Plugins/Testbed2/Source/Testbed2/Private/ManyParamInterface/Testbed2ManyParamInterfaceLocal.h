@@ -26,7 +26,6 @@ class TESTBED2_API UTestbed2ManyParamInterfaceLocalService : public UObject, pub
 {
 	GENERATED_BODY()
 public:
-	explicit UTestbed2ManyParamInterfaceLocalService();
 	virtual ~UTestbed2ManyParamInterfaceLocalService();
 
 	// signals
@@ -109,8 +108,8 @@ protected:
 
 private:
 	// properties - local copy - use setter functions to emit changed signals
-	int32 Prop1;
-	int32 Prop2;
-	int32 Prop3;
-	int32 Prop4;
+	int32 Prop1{0};
+	int32 Prop2{0};
+	int32 Prop3{0};
+	int32 Prop4{0};
 };

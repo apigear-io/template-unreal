@@ -16,12 +16,7 @@ limitations under the License.
 */
 
 #include "TbSame2SameEnum2InterfaceLocal.h"
-UTbSame2SameEnum2InterfaceLocalService::UTbSame2SameEnum2InterfaceLocalService()
-	: ITbSame2SameEnum2InterfaceInterface()
-	, Prop1(ETbSame2Enum1::VALUE1)
-	, Prop2(ETbSame2Enum2::VALUE1)
-{
-}
+
 UTbSame2SameEnum2InterfaceLocalService::~UTbSame2SameEnum2InterfaceLocalService() = default;
 
 void UTbSame2SameEnum2InterfaceLocalService::BroadcastSig1_Implementation(const ETbSame2Enum1& Param1)

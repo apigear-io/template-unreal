@@ -149,7 +149,7 @@ private:
 
 	// properties - local copy
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropBool_Private, BlueprintSetter = SetPropBool_Private, Category = "ApiGear|Testbed1|StructArrayInterface")
-	TArray<FTestbed1StructBool> PropBool;
+	TArray<FTestbed1StructBool> PropBool{TArray<FTestbed1StructBool>()};
 
 	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed1|StructArrayInterface", BlueprintInternalUseOnly)
 	TArray<FTestbed1StructBool> GetPropBool_Private() const;
@@ -158,7 +158,7 @@ private:
 	void SetPropBool_Private(const TArray<FTestbed1StructBool>& InPropBool);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropInt_Private, BlueprintSetter = SetPropInt_Private, Category = "ApiGear|Testbed1|StructArrayInterface")
-	TArray<FTestbed1StructInt> PropInt;
+	TArray<FTestbed1StructInt> PropInt{TArray<FTestbed1StructInt>()};
 
 	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed1|StructArrayInterface", BlueprintInternalUseOnly)
 	TArray<FTestbed1StructInt> GetPropInt_Private() const;
@@ -167,7 +167,7 @@ private:
 	void SetPropInt_Private(const TArray<FTestbed1StructInt>& InPropInt);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropFloat_Private, BlueprintSetter = SetPropFloat_Private, Category = "ApiGear|Testbed1|StructArrayInterface")
-	TArray<FTestbed1StructFloat> PropFloat;
+	TArray<FTestbed1StructFloat> PropFloat{TArray<FTestbed1StructFloat>()};
 
 	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed1|StructArrayInterface", BlueprintInternalUseOnly)
 	TArray<FTestbed1StructFloat> GetPropFloat_Private() const;
@@ -176,7 +176,7 @@ private:
 	void SetPropFloat_Private(const TArray<FTestbed1StructFloat>& InPropFloat);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropString_Private, BlueprintSetter = SetPropString_Private, Category = "ApiGear|Testbed1|StructArrayInterface")
-	TArray<FTestbed1StructString> PropString;
+	TArray<FTestbed1StructString> PropString{TArray<FTestbed1StructString>()};
 
 	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed1|StructArrayInterface", BlueprintInternalUseOnly)
 	TArray<FTestbed1StructString> GetPropString_Private() const;

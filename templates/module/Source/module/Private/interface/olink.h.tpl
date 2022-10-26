@@ -73,6 +73,6 @@ private:
 {{- if .Description }}
 	/** {{ .Description }} */
 {{- end }}
-	{{ueReturn "" .}} {{ueVar "" .}};
+	{{ueReturn "" .}} {{ueVar "" .}}{ {{- ueDefault "" . -}} };
 {{- end }}
 };

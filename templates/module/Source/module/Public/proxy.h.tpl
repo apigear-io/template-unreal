@@ -109,7 +109,7 @@ private:
 	/** {{.Description}} */
 {{- end }}
 	UPROPERTY(EditAnywhere, BlueprintGetter = Get{{Camel .Name}}_Private, BlueprintSetter = Set{{Camel .Name}}_Private, Category = "{{$Category}}")
-	{{ueReturn "" .}} {{ueVar "" .}};
+	{{ueReturn "" .}} {{ueVar "" .}}{ {{- ueDefault "" . -}} };
 
 	UFUNCTION(BlueprintGetter, Category = "{{$Category}}", BlueprintInternalUseOnly)
 	{{ueReturn "" .}} Get{{Camel .Name}}_Private() const;

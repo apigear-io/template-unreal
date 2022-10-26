@@ -16,14 +16,7 @@ limitations under the License.
 */
 
 #include "Testbed1StructInterfaceLocal.h"
-UTestbed1StructInterfaceLocalService::UTestbed1StructInterfaceLocalService()
-	: ITestbed1StructInterfaceInterface()
-	, PropBool(FTestbed1StructBool())
-	, PropInt(FTestbed1StructInt())
-	, PropFloat(FTestbed1StructFloat())
-	, PropString(FTestbed1StructString())
-{
-}
+
 UTestbed1StructInterfaceLocalService::~UTestbed1StructInterfaceLocalService() = default;
 
 void UTestbed1StructInterfaceLocalService::BroadcastSigBool_Implementation(const FTestbed1StructBool& ParamBool)

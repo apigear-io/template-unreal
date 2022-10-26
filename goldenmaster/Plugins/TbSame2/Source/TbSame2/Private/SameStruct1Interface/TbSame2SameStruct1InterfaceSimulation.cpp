@@ -30,7 +30,6 @@ limitations under the License.
 using namespace ApiGear::JSONRPC;
 UTbSame2SameStruct1InterfaceSimulationService::UTbSame2SameStruct1InterfaceSimulationService()
 	: ITbSame2SameStruct1InterfaceInterface()
-	, Prop1(FTbSame2Struct1())
 {
 	UApiGearConnectionManager* AGCM = nullptr;
 	if (GEngine != nullptr)

@@ -66,10 +66,6 @@ public:
 };
 UTbSimpleSimpleArrayInterfaceProxy::UTbSimpleSimpleArrayInterfaceProxy()
 	: ITbSimpleSimpleArrayInterfaceInterface()
-	, PropBool(TArray<bool>())
-	, PropInt(TArray<int32>())
-	, PropFloat(TArray<float>())
-	, PropString(TArray<FString>())
 {
 	BackendService = FTbSimpleModuleFactory::createITbSimpleSimpleArrayInterfaceInterface();
 	BackendService->GetPropBoolChangedDelegate().AddDynamic(this, &UTbSimpleSimpleArrayInterfaceProxy::OnPropBoolChanged);

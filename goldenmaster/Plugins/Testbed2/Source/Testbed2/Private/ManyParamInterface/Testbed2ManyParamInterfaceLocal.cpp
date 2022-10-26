@@ -16,14 +16,7 @@ limitations under the License.
 */
 
 #include "Testbed2ManyParamInterfaceLocal.h"
-UTestbed2ManyParamInterfaceLocalService::UTestbed2ManyParamInterfaceLocalService()
-	: ITestbed2ManyParamInterfaceInterface()
-	, Prop1(0)
-	, Prop2(0)
-	, Prop3(0)
-	, Prop4(0)
-{
-}
+
 UTestbed2ManyParamInterfaceLocalService::~UTestbed2ManyParamInterfaceLocalService() = default;
 
 void UTestbed2ManyParamInterfaceLocalService::BroadcastSig0_Implementation()

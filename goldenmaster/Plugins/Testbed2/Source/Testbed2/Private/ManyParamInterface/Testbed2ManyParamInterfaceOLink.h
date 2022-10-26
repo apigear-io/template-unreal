@@ -118,8 +118,8 @@ private:
 	ApiGear::ObjectLink::IClientNode* m_node;
 	bool m_isReady;
 	// properties - local copy
-	int32 Prop1;
-	int32 Prop2;
-	int32 Prop3;
-	int32 Prop4;
+	int32 Prop1{0};
+	int32 Prop2{0};
+	int32 Prop3{0};
+	int32 Prop4{0};
 };

@@ -26,7 +26,6 @@ class TBSAME1_API UTbSame1SameEnum2InterfaceLocalService : public UObject, publi
 {
 	GENERATED_BODY()
 public:
-	explicit UTbSame1SameEnum2InterfaceLocalService();
 	virtual ~UTbSame1SameEnum2InterfaceLocalService();
 
 	// signals
@@ -68,6 +67,6 @@ protected:
 
 private:
 	// properties - local copy - use setter functions to emit changed signals
-	ETbSame1Enum1 Prop1;
-	ETbSame1Enum2 Prop2;
+	ETbSame1Enum1 Prop1{ETbSame1Enum1::VALUE1};
+	ETbSame1Enum2 Prop2{ETbSame1Enum2::VALUE1};
 };

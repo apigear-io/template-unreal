@@ -16,14 +16,7 @@ limitations under the License.
 */
 
 #include "TbSimpleSimpleArrayInterfaceLocal.h"
-UTbSimpleSimpleArrayInterfaceLocalService::UTbSimpleSimpleArrayInterfaceLocalService()
-	: ITbSimpleSimpleArrayInterfaceInterface()
-	, PropBool(TArray<bool>())
-	, PropInt(TArray<int32>())
-	, PropFloat(TArray<float>())
-	, PropString(TArray<FString>())
-{
-}
+
 UTbSimpleSimpleArrayInterfaceLocalService::~UTbSimpleSimpleArrayInterfaceLocalService() = default;
 
 void UTbSimpleSimpleArrayInterfaceLocalService::BroadcastSigBool_Implementation(const TArray<bool>& ParamBool)

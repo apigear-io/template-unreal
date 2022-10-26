@@ -149,7 +149,7 @@ private:
 
 	// properties - local copy
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp0_Private, BlueprintSetter = SetProp0_Private, Category = "ApiGear|TbEnum|EnumInterface")
-	ETbEnumEnum0 Prop0;
+	ETbEnumEnum0 Prop0{ETbEnumEnum0::VALUE0};
 
 	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
 	ETbEnumEnum0 GetProp0_Private() const;
@@ -158,7 +158,7 @@ private:
 	void SetProp0_Private(const ETbEnumEnum0& InProp0);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1_Private, BlueprintSetter = SetProp1_Private, Category = "ApiGear|TbEnum|EnumInterface")
-	ETbEnumEnum1 Prop1;
+	ETbEnumEnum1 Prop1{ETbEnumEnum1::VALUE1};
 
 	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
 	ETbEnumEnum1 GetProp1_Private() const;
@@ -167,7 +167,7 @@ private:
 	void SetProp1_Private(const ETbEnumEnum1& InProp1);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp2_Private, BlueprintSetter = SetProp2_Private, Category = "ApiGear|TbEnum|EnumInterface")
-	ETbEnumEnum2 Prop2;
+	ETbEnumEnum2 Prop2{ETbEnumEnum2::VALUE2};
 
 	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
 	ETbEnumEnum2 GetProp2_Private() const;
@@ -176,7 +176,7 @@ private:
 	void SetProp2_Private(const ETbEnumEnum2& InProp2);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp3_Private, BlueprintSetter = SetProp3_Private, Category = "ApiGear|TbEnum|EnumInterface")
-	ETbEnumEnum3 Prop3;
+	ETbEnumEnum3 Prop3{ETbEnumEnum3::VALUE3};
 
 	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
 	ETbEnumEnum3 GetProp3_Private() const;

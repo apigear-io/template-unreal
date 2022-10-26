@@ -66,7 +66,6 @@ public:
 };
 UTbSame1SameEnum1InterfaceProxy::UTbSame1SameEnum1InterfaceProxy()
 	: ITbSame1SameEnum1InterfaceInterface()
-	, Prop1(ETbSame1Enum1::VALUE1)
 {
 	BackendService = FTbSame1ModuleFactory::createITbSame1SameEnum1InterfaceInterface();
 	BackendService->GetProp1ChangedDelegate().AddDynamic(this, &UTbSame1SameEnum1InterfaceProxy::OnProp1Changed);

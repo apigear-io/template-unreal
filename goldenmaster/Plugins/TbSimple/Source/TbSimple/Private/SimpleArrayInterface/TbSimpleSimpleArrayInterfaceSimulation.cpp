@@ -30,10 +30,6 @@ limitations under the License.
 using namespace ApiGear::JSONRPC;
 UTbSimpleSimpleArrayInterfaceSimulationService::UTbSimpleSimpleArrayInterfaceSimulationService()
 	: ITbSimpleSimpleArrayInterfaceInterface()
-	, PropBool(TArray<bool>())
-	, PropInt(TArray<int32>())
-	, PropFloat(TArray<float>())
-	, PropString(TArray<FString>())
 {
 	UApiGearConnectionManager* AGCM = nullptr;
 	if (GEngine != nullptr)

@@ -16,12 +16,7 @@ limitations under the License.
 */
 
 #include "TbSame2SameStruct2InterfaceLocal.h"
-UTbSame2SameStruct2InterfaceLocalService::UTbSame2SameStruct2InterfaceLocalService()
-	: ITbSame2SameStruct2InterfaceInterface()
-	, Prop1(FTbSame2Struct2())
-	, Prop2(FTbSame2Struct2())
-{
-}
+
 UTbSame2SameStruct2InterfaceLocalService::~UTbSame2SameStruct2InterfaceLocalService() = default;
 
 void UTbSame2SameStruct2InterfaceLocalService::BroadcastSig1_Implementation(const FTbSame2Struct1& Param1)

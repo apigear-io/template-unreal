@@ -35,10 +35,6 @@ UTbSimpleSimpleInterfaceOLinkService::UTbSimpleSimpleInterfaceOLinkService()
 	: ITbSimpleSimpleInterfaceInterface()
 	, m_node(nullptr)
 	, m_isReady(false)
-	, bPropBool(false)
-	, PropInt(0)
-	, PropFloat(0.0f)
-	, PropString(FString())
 {
 	if (GEngine != nullptr)
 	{

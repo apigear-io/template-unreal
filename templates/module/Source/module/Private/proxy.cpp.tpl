@@ -81,9 +81,6 @@ public:
 {{- end }}
 {{$Class}}::{{$Class}}()
 	: I{{$Iface}}Interface()
-{{- range .Interface.Properties }}
-	, {{ueVar "" .}}({{ueDefault "" .}})
-{{- end }}
 {
 {{- $Service := printf "I%sInterface" $Iface }}
 	BackendService = {{$FactoryName}}::create{{$Service}}();

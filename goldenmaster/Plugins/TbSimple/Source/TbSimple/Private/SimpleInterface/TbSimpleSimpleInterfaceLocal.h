@@ -26,7 +26,6 @@ class TBSIMPLE_API UTbSimpleSimpleInterfaceLocalService : public UObject, public
 {
 	GENERATED_BODY()
 public:
-	explicit UTbSimpleSimpleInterfaceLocalService();
 	virtual ~UTbSimpleSimpleInterfaceLocalService();
 
 	// signals
@@ -100,8 +99,8 @@ protected:
 
 private:
 	// properties - local copy - use setter functions to emit changed signals
-	bool bPropBool;
-	int32 PropInt;
-	float PropFloat;
-	FString PropString;
+	bool bPropBool{false};
+	int32 PropInt{0};
+	float PropFloat{0.0f};
+	FString PropString{FString()};
 };

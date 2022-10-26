@@ -61,5 +61,5 @@ private:
 	ApiGear::ObjectLink::IClientNode* m_node;
 	bool m_isReady;
 	// properties - local copy
-	FTestbed2NestedStruct1 Prop1;
+	FTestbed2NestedStruct1 Prop1{FTestbed2NestedStruct1()};
 };

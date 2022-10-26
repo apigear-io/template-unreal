@@ -16,14 +16,7 @@ limitations under the License.
 */
 
 #include "Testbed1StructArrayInterfaceLocal.h"
-UTestbed1StructArrayInterfaceLocalService::UTestbed1StructArrayInterfaceLocalService()
-	: ITestbed1StructArrayInterfaceInterface()
-	, PropBool(TArray<FTestbed1StructBool>())
-	, PropInt(TArray<FTestbed1StructInt>())
-	, PropFloat(TArray<FTestbed1StructFloat>())
-	, PropString(TArray<FTestbed1StructString>())
-{
-}
+
 UTestbed1StructArrayInterfaceLocalService::~UTestbed1StructArrayInterfaceLocalService() = default;
 
 void UTestbed1StructArrayInterfaceLocalService::BroadcastSigBool_Implementation(const TArray<FTestbed1StructBool>& ParamBool)

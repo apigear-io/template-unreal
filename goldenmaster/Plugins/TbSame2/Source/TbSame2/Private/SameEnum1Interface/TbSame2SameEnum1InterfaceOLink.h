@@ -61,5 +61,5 @@ private:
 	ApiGear::ObjectLink::IClientNode* m_node;
 	bool m_isReady;
 	// properties - local copy
-	ETbSame2Enum1 Prop1;
+	ETbSame2Enum1 Prop1{ETbSame2Enum1::VALUE1};
 };

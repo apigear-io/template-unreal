@@ -109,8 +109,8 @@ private:
 	ApiGear::ObjectLink::IClientNode* m_node;
 	bool m_isReady;
 	// properties - local copy
-	bool bPropBool;
-	int32 PropInt;
-	float PropFloat;
-	FString PropString;
+	bool bPropBool{false};
+	int32 PropInt{0};
+	float PropFloat{0.0f};
+	FString PropString{FString()};
 };

@@ -66,10 +66,6 @@ public:
 };
 UTbEnumEnumInterfaceProxy::UTbEnumEnumInterfaceProxy()
 	: ITbEnumEnumInterfaceInterface()
-	, Prop0(ETbEnumEnum0::VALUE0)
-	, Prop1(ETbEnumEnum1::VALUE1)
-	, Prop2(ETbEnumEnum2::VALUE2)
-	, Prop3(ETbEnumEnum3::VALUE3)
 {
 	BackendService = FTbEnumModuleFactory::createITbEnumEnumInterfaceInterface();
 	BackendService->GetProp0ChangedDelegate().AddDynamic(this, &UTbEnumEnumInterfaceProxy::OnProp0Changed);

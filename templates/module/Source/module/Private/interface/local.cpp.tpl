@@ -8,18 +8,6 @@
 
 #include "{{$Iface}}Local.h"
 
-{{- if .Interface.Description }}
-/**
-   \brief {{.Interface.Description}}
-*/
-{{- end }}
-{{$Class}}::{{$Class}}()
-	: I{{$Iface}}Interface()
-{{- range .Interface.Properties }}
-	, {{ueVar "" .}}({{ueDefault "" .}})
-{{- end }}
-{
-}
 {{$Class}}::~{{$Class}}() = default;
 
 {{- range .Interface.Signals }}

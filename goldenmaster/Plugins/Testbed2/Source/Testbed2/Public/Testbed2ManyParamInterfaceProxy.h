@@ -162,7 +162,7 @@ private:
 
 	// properties - local copy
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1_Private, BlueprintSetter = SetProp1_Private, Category = "ApiGear|Testbed2|ManyParamInterface")
-	int32 Prop1;
+	int32 Prop1{0};
 
 	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
 	int32 GetProp1_Private() const;
@@ -171,7 +171,7 @@ private:
 	void SetProp1_Private(int32 InProp1);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp2_Private, BlueprintSetter = SetProp2_Private, Category = "ApiGear|Testbed2|ManyParamInterface")
-	int32 Prop2;
+	int32 Prop2{0};
 
 	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
 	int32 GetProp2_Private() const;
@@ -180,7 +180,7 @@ private:
 	void SetProp2_Private(int32 InProp2);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp3_Private, BlueprintSetter = SetProp3_Private, Category = "ApiGear|Testbed2|ManyParamInterface")
-	int32 Prop3;
+	int32 Prop3{0};
 
 	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
 	int32 GetProp3_Private() const;
@@ -189,7 +189,7 @@ private:
 	void SetProp3_Private(int32 InProp3);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp4_Private, BlueprintSetter = SetProp4_Private, Category = "ApiGear|Testbed2|ManyParamInterface")
-	int32 Prop4;
+	int32 Prop4{0};
 
 	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
 	int32 GetProp4_Private() const;

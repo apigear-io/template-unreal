@@ -26,7 +26,6 @@ class TESTBED2_API UTestbed2NestedStruct3InterfaceLocalService : public UObject,
 {
 	GENERATED_BODY()
 public:
-	explicit UTestbed2NestedStruct3InterfaceLocalService();
 	virtual ~UTestbed2NestedStruct3InterfaceLocalService();
 
 	// signals
@@ -84,7 +83,7 @@ protected:
 
 private:
 	// properties - local copy - use setter functions to emit changed signals
-	FTestbed2NestedStruct1 Prop1;
-	FTestbed2NestedStruct2 Prop2;
-	FTestbed2NestedStruct3 Prop3;
+	FTestbed2NestedStruct1 Prop1{FTestbed2NestedStruct1()};
+	FTestbed2NestedStruct2 Prop2{FTestbed2NestedStruct2()};
+	FTestbed2NestedStruct3 Prop3{FTestbed2NestedStruct3()};
 };

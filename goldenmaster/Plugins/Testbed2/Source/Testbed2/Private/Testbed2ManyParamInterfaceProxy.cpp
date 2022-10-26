@@ -66,10 +66,6 @@ public:
 };
 UTestbed2ManyParamInterfaceProxy::UTestbed2ManyParamInterfaceProxy()
 	: ITestbed2ManyParamInterfaceInterface()
-	, Prop1(0)
-	, Prop2(0)
-	, Prop3(0)
-	, Prop4(0)
 {
 	BackendService = FTestbed2ModuleFactory::createITestbed2ManyParamInterfaceInterface();
 	BackendService->GetProp1ChangedDelegate().AddDynamic(this, &UTestbed2ManyParamInterfaceProxy::OnProp1Changed);

@@ -61,5 +61,5 @@ private:
 	ApiGear::ObjectLink::IClientNode* m_node;
 	bool m_isReady;
 	// properties - local copy
-	FTbSame1Struct1 Prop1;
+	FTbSame1Struct1 Prop1{FTbSame1Struct1()};
 };

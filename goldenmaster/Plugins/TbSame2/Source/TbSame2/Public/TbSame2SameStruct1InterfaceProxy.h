@@ -74,7 +74,7 @@ private:
 
 	// properties - local copy
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1_Private, BlueprintSetter = SetProp1_Private, Category = "ApiGear|TbSame2|SameStruct1Interface")
-	FTbSame2Struct1 Prop1;
+	FTbSame2Struct1 Prop1{FTbSame2Struct1()};
 
 	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSame2|SameStruct1Interface", BlueprintInternalUseOnly)
 	FTbSame2Struct1 GetProp1_Private() const;

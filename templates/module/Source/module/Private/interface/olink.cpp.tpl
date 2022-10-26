@@ -34,9 +34,6 @@ using namespace ApiGear::ObjectLink;
 	: I{{$ModuleName}}{{$IfaceName}}Interface()
 	, m_node(nullptr)
 	, m_isReady(false)
-{{- range .Interface.Properties }}
-	, {{ueVar "" .}}({{ueDefault "" .}})
-{{- end }}
 {
 	if (GEngine != nullptr)
 	{

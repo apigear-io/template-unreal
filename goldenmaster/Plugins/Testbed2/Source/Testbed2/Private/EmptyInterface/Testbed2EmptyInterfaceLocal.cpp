@@ -16,8 +16,5 @@ limitations under the License.
 */
 
 #include "Testbed2EmptyInterfaceLocal.h"
-UTestbed2EmptyInterfaceLocalService::UTestbed2EmptyInterfaceLocalService()
-	: ITestbed2EmptyInterfaceInterface()
-{
-}
+
 UTestbed2EmptyInterfaceLocalService::~UTestbed2EmptyInterfaceLocalService() = default;

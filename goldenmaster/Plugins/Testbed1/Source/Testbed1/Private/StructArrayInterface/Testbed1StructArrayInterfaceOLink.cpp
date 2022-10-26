@@ -35,10 +35,6 @@ UTestbed1StructArrayInterfaceOLinkService::UTestbed1StructArrayInterfaceOLinkSer
 	: ITestbed1StructArrayInterfaceInterface()
 	, m_node(nullptr)
 	, m_isReady(false)
-	, PropBool(TArray<FTestbed1StructBool>())
-	, PropInt(TArray<FTestbed1StructInt>())
-	, PropFloat(TArray<FTestbed1StructFloat>())
-	, PropString(TArray<FTestbed1StructString>())
 {
 	if (GEngine != nullptr)
 	{

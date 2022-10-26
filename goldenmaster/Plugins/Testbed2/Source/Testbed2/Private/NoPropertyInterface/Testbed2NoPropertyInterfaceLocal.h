@@ -26,7 +26,6 @@ class TESTBED2_API UTestbed2NoPropertyInterfaceLocalService : public UObject, pu
 {
 	GENERATED_BODY()
 public:
-	explicit UTestbed2NoPropertyInterfaceLocalService();
 	virtual ~UTestbed2NoPropertyInterfaceLocalService();
 
 	// signals

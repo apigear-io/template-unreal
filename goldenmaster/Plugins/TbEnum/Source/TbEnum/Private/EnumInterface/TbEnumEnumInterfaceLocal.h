@@ -26,7 +26,6 @@ class TBENUM_API UTbEnumEnumInterfaceLocalService : public UObject, public ITbEn
 {
 	GENERATED_BODY()
 public:
-	explicit UTbEnumEnumInterfaceLocalService();
 	virtual ~UTbEnumEnumInterfaceLocalService();
 
 	// signals
@@ -100,8 +99,8 @@ protected:
 
 private:
 	// properties - local copy - use setter functions to emit changed signals
-	ETbEnumEnum0 Prop0;
-	ETbEnumEnum1 Prop1;
-	ETbEnumEnum2 Prop2;
-	ETbEnumEnum3 Prop3;
+	ETbEnumEnum0 Prop0{ETbEnumEnum0::VALUE0};
+	ETbEnumEnum1 Prop1{ETbEnumEnum1::VALUE1};
+	ETbEnumEnum2 Prop2{ETbEnumEnum2::VALUE2};
+	ETbEnumEnum3 Prop3{ETbEnumEnum3::VALUE3};
 };

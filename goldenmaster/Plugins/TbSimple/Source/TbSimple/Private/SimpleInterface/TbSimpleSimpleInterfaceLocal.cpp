@@ -16,14 +16,7 @@ limitations under the License.
 */
 
 #include "TbSimpleSimpleInterfaceLocal.h"
-UTbSimpleSimpleInterfaceLocalService::UTbSimpleSimpleInterfaceLocalService()
-	: ITbSimpleSimpleInterfaceInterface()
-	, bPropBool(false)
-	, PropInt(0)
-	, PropFloat(0.0f)
-	, PropString(FString())
-{
-}
+
 UTbSimpleSimpleInterfaceLocalService::~UTbSimpleSimpleInterfaceLocalService() = default;
 
 void UTbSimpleSimpleInterfaceLocalService::BroadcastSigBool_Implementation(bool bParamBool)

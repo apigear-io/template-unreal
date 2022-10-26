@@ -30,10 +30,6 @@ limitations under the License.
 using namespace ApiGear::JSONRPC;
 UTbSimpleSimpleInterfaceSimulationService::UTbSimpleSimpleInterfaceSimulationService()
 	: ITbSimpleSimpleInterfaceInterface()
-	, bPropBool(false)
-	, PropInt(0)
-	, PropFloat(0.0f)
-	, PropString(FString())
 {
 	UApiGearConnectionManager* AGCM = nullptr;
 	if (GEngine != nullptr)

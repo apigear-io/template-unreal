@@ -26,7 +26,6 @@ class TESTBED2_API UTestbed2EmptyInterfaceLocalService : public UObject, public 
 {
 	GENERATED_BODY()
 public:
-	explicit UTestbed2EmptyInterfaceLocalService();
 	virtual ~UTestbed2EmptyInterfaceLocalService();
 
 	// signals

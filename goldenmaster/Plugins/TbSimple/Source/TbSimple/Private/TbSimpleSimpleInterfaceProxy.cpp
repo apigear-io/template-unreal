@@ -66,10 +66,6 @@ public:
 };
 UTbSimpleSimpleInterfaceProxy::UTbSimpleSimpleInterfaceProxy()
 	: ITbSimpleSimpleInterfaceInterface()
-	, bPropBool(false)
-	, PropInt(0)
-	, PropFloat(0.0f)
-	, PropString(FString())
 {
 	BackendService = FTbSimpleModuleFactory::createITbSimpleSimpleInterfaceInterface();
 	BackendService->GetPropBoolChangedDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceProxy::OnPropBoolChanged);

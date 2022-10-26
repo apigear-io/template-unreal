@@ -35,10 +35,6 @@ UTestbed2ManyParamInterfaceOLinkService::UTestbed2ManyParamInterfaceOLinkService
 	: ITestbed2ManyParamInterfaceInterface()
 	, m_node(nullptr)
 	, m_isReady(false)
-	, Prop1(0)
-	, Prop2(0)
-	, Prop3(0)
-	, Prop4(0)
 {
 	if (GEngine != nullptr)
 	{

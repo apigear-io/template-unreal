@@ -33,7 +33,6 @@ class {{ $API_MACRO }} {{$Class}} : public UObject, public I{{$Iface}}Interface
 {
 	GENERATED_BODY()
 public:
-	explicit {{$Class}}();
 	virtual ~{{$Class}}();
 
 	// signals
@@ -73,6 +72,6 @@ private:
 {{- if .Description }}
 	/** {{.Description}} */
 {{- end }}
-	{{ueReturn "" .}} {{ueVar "" .}};
+	{{ueReturn "" .}} {{ueVar "" .}}{ {{- ueDefault "" . -}} };
 {{- end }}
 };

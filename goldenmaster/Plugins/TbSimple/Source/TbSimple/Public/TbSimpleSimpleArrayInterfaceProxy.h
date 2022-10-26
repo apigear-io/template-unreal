@@ -149,7 +149,7 @@ private:
 
 	// properties - local copy
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropBool_Private, BlueprintSetter = SetPropBool_Private, Category = "ApiGear|TbSimple|SimpleArrayInterface")
-	TArray<bool> PropBool;
+	TArray<bool> PropBool{TArray<bool>()};
 
 	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSimple|SimpleArrayInterface", BlueprintInternalUseOnly)
 	TArray<bool> GetPropBool_Private() const;
@@ -158,7 +158,7 @@ private:
 	void SetPropBool_Private(const TArray<bool>& InPropBool);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropInt_Private, BlueprintSetter = SetPropInt_Private, Category = "ApiGear|TbSimple|SimpleArrayInterface")
-	TArray<int32> PropInt;
+	TArray<int32> PropInt{TArray<int32>()};
 
 	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSimple|SimpleArrayInterface", BlueprintInternalUseOnly)
 	TArray<int32> GetPropInt_Private() const;
@@ -167,7 +167,7 @@ private:
 	void SetPropInt_Private(const TArray<int32>& InPropInt);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropFloat_Private, BlueprintSetter = SetPropFloat_Private, Category = "ApiGear|TbSimple|SimpleArrayInterface")
-	TArray<float> PropFloat;
+	TArray<float> PropFloat{TArray<float>()};
 
 	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSimple|SimpleArrayInterface", BlueprintInternalUseOnly)
 	TArray<float> GetPropFloat_Private() const;
@@ -176,7 +176,7 @@ private:
 	void SetPropFloat_Private(const TArray<float>& InPropFloat);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropString_Private, BlueprintSetter = SetPropString_Private, Category = "ApiGear|TbSimple|SimpleArrayInterface")
-	TArray<FString> PropString;
+	TArray<FString> PropString{TArray<FString>()};
 
 	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSimple|SimpleArrayInterface", BlueprintInternalUseOnly)
 	TArray<FString> GetPropString_Private() const;

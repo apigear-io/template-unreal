@@ -26,7 +26,6 @@ class TESTBED1_API UTestbed1StructArrayInterfaceLocalService : public UObject, p
 {
 	GENERATED_BODY()
 public:
-	explicit UTestbed1StructArrayInterfaceLocalService();
 	virtual ~UTestbed1StructArrayInterfaceLocalService();
 
 	// signals
@@ -100,8 +99,8 @@ protected:
 
 private:
 	// properties - local copy - use setter functions to emit changed signals
-	TArray<FTestbed1StructBool> PropBool;
-	TArray<FTestbed1StructInt> PropInt;
-	TArray<FTestbed1StructFloat> PropFloat;
-	TArray<FTestbed1StructString> PropString;
+	TArray<FTestbed1StructBool> PropBool{TArray<FTestbed1StructBool>()};
+	TArray<FTestbed1StructInt> PropInt{TArray<FTestbed1StructInt>()};
+	TArray<FTestbed1StructFloat> PropFloat{TArray<FTestbed1StructFloat>()};
+	TArray<FTestbed1StructString> PropString{TArray<FTestbed1StructString>()};
 };

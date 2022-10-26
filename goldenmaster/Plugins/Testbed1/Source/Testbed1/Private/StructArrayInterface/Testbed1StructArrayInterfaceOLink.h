@@ -109,8 +109,8 @@ private:
 	ApiGear::ObjectLink::IClientNode* m_node;
 	bool m_isReady;
 	// properties - local copy
-	TArray<FTestbed1StructBool> PropBool;
-	TArray<FTestbed1StructInt> PropInt;
-	TArray<FTestbed1StructFloat> PropFloat;
-	TArray<FTestbed1StructString> PropString;
+	TArray<FTestbed1StructBool> PropBool{TArray<FTestbed1StructBool>()};
+	TArray<FTestbed1StructInt> PropInt{TArray<FTestbed1StructInt>()};
+	TArray<FTestbed1StructFloat> PropFloat{TArray<FTestbed1StructFloat>()};
+	TArray<FTestbed1StructString> PropString{TArray<FTestbed1StructString>()};
 };
