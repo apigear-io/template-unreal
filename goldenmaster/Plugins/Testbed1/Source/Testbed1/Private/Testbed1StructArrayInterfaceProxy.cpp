@@ -82,20 +82,7 @@ UTestbed1StructArrayInterfaceProxy::UTestbed1StructArrayInterfaceProxy()
 	BackendService->GetSigStringSignalDelegate().AddDynamic(this, &UTestbed1StructArrayInterfaceProxy::OnSigString);
 }
 
-UTestbed1StructArrayInterfaceProxy::~UTestbed1StructArrayInterfaceProxy()
-{
-	if (BackendService != nullptr)
-	{
-		// BackendService->GetPropBoolChangedDelegate().RemoveDynamic(this, &UTestbed1StructArrayInterfaceProxy::OnPropBoolChanged);
-		// BackendService->GetPropIntChangedDelegate().RemoveDynamic(this, &UTestbed1StructArrayInterfaceProxy::OnPropIntChanged);
-		// BackendService->GetPropFloatChangedDelegate().RemoveDynamic(this, &UTestbed1StructArrayInterfaceProxy::OnPropFloatChanged);
-		// BackendService->GetPropStringChangedDelegate().RemoveDynamic(this, &UTestbed1StructArrayInterfaceProxy::OnPropStringChanged);
-		// BackendService->GetSigBoolSignalDelegate().RemoveDynamic(this, &UTestbed1StructArrayInterfaceProxy::OnSigBool);
-		// BackendService->GetSigIntSignalDelegate().RemoveDynamic(this, &UTestbed1StructArrayInterfaceProxy::OnSigInt);
-		// BackendService->GetSigFloatSignalDelegate().RemoveDynamic(this, &UTestbed1StructArrayInterfaceProxy::OnSigFloat);
-		// BackendService->GetSigStringSignalDelegate().RemoveDynamic(this, &UTestbed1StructArrayInterfaceProxy::OnSigString);
-	}
-}
+UTestbed1StructArrayInterfaceProxy::~UTestbed1StructArrayInterfaceProxy() = default;
 
 void UTestbed1StructArrayInterfaceProxy::setBackendService(TScriptInterface<ITestbed1StructArrayInterfaceInterface> InService)
 {

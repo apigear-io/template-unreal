@@ -70,12 +70,7 @@ UTestbed2EmptyInterfaceProxy::UTestbed2EmptyInterfaceProxy()
 	BackendService = FTestbed2ModuleFactory::createITestbed2EmptyInterfaceInterface();
 }
 
-UTestbed2EmptyInterfaceProxy::~UTestbed2EmptyInterfaceProxy()
-{
-	if (BackendService != nullptr)
-	{
-	}
-}
+UTestbed2EmptyInterfaceProxy::~UTestbed2EmptyInterfaceProxy() = default;
 
 void UTestbed2EmptyInterfaceProxy::setBackendService(TScriptInterface<ITestbed2EmptyInterfaceInterface> InService)
 {

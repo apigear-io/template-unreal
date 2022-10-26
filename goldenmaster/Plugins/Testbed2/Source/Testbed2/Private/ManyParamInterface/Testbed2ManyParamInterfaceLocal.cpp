@@ -24,9 +24,7 @@ UTestbed2ManyParamInterfaceLocalService::UTestbed2ManyParamInterfaceLocalService
 	, Prop4(0)
 {
 }
-UTestbed2ManyParamInterfaceLocalService::~UTestbed2ManyParamInterfaceLocalService()
-{
-}
+UTestbed2ManyParamInterfaceLocalService::~UTestbed2ManyParamInterfaceLocalService() = default;
 
 void UTestbed2ManyParamInterfaceLocalService::BroadcastSig0_Implementation()
 {

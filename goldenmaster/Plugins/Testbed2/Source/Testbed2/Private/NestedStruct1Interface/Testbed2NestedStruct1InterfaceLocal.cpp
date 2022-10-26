@@ -21,9 +21,7 @@ UTestbed2NestedStruct1InterfaceLocalService::UTestbed2NestedStruct1InterfaceLoca
 	, Prop1(FTestbed2NestedStruct1())
 {
 }
-UTestbed2NestedStruct1InterfaceLocalService::~UTestbed2NestedStruct1InterfaceLocalService()
-{
-}
+UTestbed2NestedStruct1InterfaceLocalService::~UTestbed2NestedStruct1InterfaceLocalService() = default;
 
 void UTestbed2NestedStruct1InterfaceLocalService::BroadcastSig1_Implementation(const FTestbed2NestedStruct1& Param1)
 {

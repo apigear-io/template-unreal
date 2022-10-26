@@ -24,9 +24,7 @@ UTbSimpleSimpleInterfaceLocalService::UTbSimpleSimpleInterfaceLocalService()
 	, PropString(FString())
 {
 }
-UTbSimpleSimpleInterfaceLocalService::~UTbSimpleSimpleInterfaceLocalService()
-{
-}
+UTbSimpleSimpleInterfaceLocalService::~UTbSimpleSimpleInterfaceLocalService() = default;
 
 void UTbSimpleSimpleInterfaceLocalService::BroadcastSigBool_Implementation(bool bParamBool)
 {

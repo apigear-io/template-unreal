@@ -76,16 +76,7 @@ UTbSame2SameStruct2InterfaceProxy::UTbSame2SameStruct2InterfaceProxy()
 	BackendService->GetSig2SignalDelegate().AddDynamic(this, &UTbSame2SameStruct2InterfaceProxy::OnSig2);
 }
 
-UTbSame2SameStruct2InterfaceProxy::~UTbSame2SameStruct2InterfaceProxy()
-{
-	if (BackendService != nullptr)
-	{
-		// BackendService->GetProp1ChangedDelegate().RemoveDynamic(this, &UTbSame2SameStruct2InterfaceProxy::OnProp1Changed);
-		// BackendService->GetProp2ChangedDelegate().RemoveDynamic(this, &UTbSame2SameStruct2InterfaceProxy::OnProp2Changed);
-		// BackendService->GetSig1SignalDelegate().RemoveDynamic(this, &UTbSame2SameStruct2InterfaceProxy::OnSig1);
-		// BackendService->GetSig2SignalDelegate().RemoveDynamic(this, &UTbSame2SameStruct2InterfaceProxy::OnSig2);
-	}
-}
+UTbSame2SameStruct2InterfaceProxy::~UTbSame2SameStruct2InterfaceProxy() = default;
 
 void UTbSame2SameStruct2InterfaceProxy::setBackendService(TScriptInterface<ITbSame2SameStruct2InterfaceInterface> InService)
 {

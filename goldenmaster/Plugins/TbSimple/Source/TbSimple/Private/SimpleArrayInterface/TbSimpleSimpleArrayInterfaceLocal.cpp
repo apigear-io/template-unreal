@@ -24,9 +24,7 @@ UTbSimpleSimpleArrayInterfaceLocalService::UTbSimpleSimpleArrayInterfaceLocalSer
 	, PropString(TArray<FString>())
 {
 }
-UTbSimpleSimpleArrayInterfaceLocalService::~UTbSimpleSimpleArrayInterfaceLocalService()
-{
-}
+UTbSimpleSimpleArrayInterfaceLocalService::~UTbSimpleSimpleArrayInterfaceLocalService() = default;
 
 void UTbSimpleSimpleArrayInterfaceLocalService::BroadcastSigBool_Implementation(const TArray<bool>& ParamBool)
 {

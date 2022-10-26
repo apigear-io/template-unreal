@@ -73,14 +73,7 @@ UTbSame1SameStruct1InterfaceProxy::UTbSame1SameStruct1InterfaceProxy()
 	BackendService->GetSig1SignalDelegate().AddDynamic(this, &UTbSame1SameStruct1InterfaceProxy::OnSig1);
 }
 
-UTbSame1SameStruct1InterfaceProxy::~UTbSame1SameStruct1InterfaceProxy()
-{
-	if (BackendService != nullptr)
-	{
-		// BackendService->GetProp1ChangedDelegate().RemoveDynamic(this, &UTbSame1SameStruct1InterfaceProxy::OnProp1Changed);
-		// BackendService->GetSig1SignalDelegate().RemoveDynamic(this, &UTbSame1SameStruct1InterfaceProxy::OnSig1);
-	}
-}
+UTbSame1SameStruct1InterfaceProxy::~UTbSame1SameStruct1InterfaceProxy() = default;
 
 void UTbSame1SameStruct1InterfaceProxy::setBackendService(TScriptInterface<ITbSame1SameStruct1InterfaceInterface> InService)
 {

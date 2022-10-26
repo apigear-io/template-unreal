@@ -24,9 +24,7 @@ UTbEnumEnumInterfaceLocalService::UTbEnumEnumInterfaceLocalService()
 	, Prop3(ETbEnumEnum3::VALUE3)
 {
 }
-UTbEnumEnumInterfaceLocalService::~UTbEnumEnumInterfaceLocalService()
-{
-}
+UTbEnumEnumInterfaceLocalService::~UTbEnumEnumInterfaceLocalService() = default;
 
 void UTbEnumEnumInterfaceLocalService::BroadcastSig0_Implementation(const ETbEnumEnum0& Param0)
 {

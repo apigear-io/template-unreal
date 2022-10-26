@@ -95,18 +95,7 @@ public:
 {{- end }}
 }
 
-{{$Class}}::~{{$Class}}()
-{
-	if (BackendService != nullptr)
-	{
-{{- range .Interface.Properties }}
-		// BackendService->Get{{Camel .Name}}ChangedDelegate().RemoveDynamic(this, &{{$Class}}::On{{Camel .Name}}Changed);
-{{- end }}
-{{- range .Interface.Signals }}
-		// BackendService->Get{{Camel .Name}}SignalDelegate().RemoveDynamic(this, &{{$Class}}::On{{Camel .Name}});
-{{- end }}
-	}
-}
+{{$Class}}::~{{$Class}}() = default;
 
 void {{$Class}}::setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface> InService)
 {

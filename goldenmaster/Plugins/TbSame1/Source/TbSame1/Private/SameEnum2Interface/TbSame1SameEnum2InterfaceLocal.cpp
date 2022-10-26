@@ -22,9 +22,7 @@ UTbSame1SameEnum2InterfaceLocalService::UTbSame1SameEnum2InterfaceLocalService()
 	, Prop2(ETbSame1Enum2::VALUE1)
 {
 }
-UTbSame1SameEnum2InterfaceLocalService::~UTbSame1SameEnum2InterfaceLocalService()
-{
-}
+UTbSame1SameEnum2InterfaceLocalService::~UTbSame1SameEnum2InterfaceLocalService() = default;
 
 void UTbSame1SameEnum2InterfaceLocalService::BroadcastSig1_Implementation(const ETbSame1Enum1& Param1)
 {

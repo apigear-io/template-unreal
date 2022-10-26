@@ -20,9 +20,8 @@
 {{- end }}
 {
 }
-{{$Class}}::~{{$Class}}()
-{
-}
+{{$Class}}::~{{$Class}}() = default;
+
 {{- range .Interface.Signals }}
 
 void {{$Class}}::Broadcast{{Camel .Name}}_Implementation({{ueParams "" .Params}})

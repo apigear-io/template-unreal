@@ -24,9 +24,7 @@ UTestbed1StructArrayInterfaceLocalService::UTestbed1StructArrayInterfaceLocalSer
 	, PropString(TArray<FTestbed1StructString>())
 {
 }
-UTestbed1StructArrayInterfaceLocalService::~UTestbed1StructArrayInterfaceLocalService()
-{
-}
+UTestbed1StructArrayInterfaceLocalService::~UTestbed1StructArrayInterfaceLocalService() = default;
 
 void UTestbed1StructArrayInterfaceLocalService::BroadcastSigBool_Implementation(const TArray<FTestbed1StructBool>& ParamBool)
 {

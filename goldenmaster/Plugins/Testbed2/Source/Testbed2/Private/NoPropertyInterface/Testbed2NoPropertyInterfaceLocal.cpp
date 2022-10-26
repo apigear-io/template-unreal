@@ -20,9 +20,7 @@ UTestbed2NoPropertyInterfaceLocalService::UTestbed2NoPropertyInterfaceLocalServi
 	: ITestbed2NoPropertyInterfaceInterface()
 {
 }
-UTestbed2NoPropertyInterfaceLocalService::~UTestbed2NoPropertyInterfaceLocalService()
-{
-}
+UTestbed2NoPropertyInterfaceLocalService::~UTestbed2NoPropertyInterfaceLocalService() = default;
 
 void UTestbed2NoPropertyInterfaceLocalService::BroadcastSig1_Implementation(const FTestbed2NestedStruct1& Param1)
 {

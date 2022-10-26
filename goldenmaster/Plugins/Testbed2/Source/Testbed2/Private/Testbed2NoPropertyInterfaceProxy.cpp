@@ -71,13 +71,7 @@ UTestbed2NoPropertyInterfaceProxy::UTestbed2NoPropertyInterfaceProxy()
 	BackendService->GetSig1SignalDelegate().AddDynamic(this, &UTestbed2NoPropertyInterfaceProxy::OnSig1);
 }
 
-UTestbed2NoPropertyInterfaceProxy::~UTestbed2NoPropertyInterfaceProxy()
-{
-	if (BackendService != nullptr)
-	{
-		// BackendService->GetSig1SignalDelegate().RemoveDynamic(this, &UTestbed2NoPropertyInterfaceProxy::OnSig1);
-	}
-}
+UTestbed2NoPropertyInterfaceProxy::~UTestbed2NoPropertyInterfaceProxy() = default;
 
 void UTestbed2NoPropertyInterfaceProxy::setBackendService(TScriptInterface<ITestbed2NoPropertyInterfaceInterface> InService)
 {

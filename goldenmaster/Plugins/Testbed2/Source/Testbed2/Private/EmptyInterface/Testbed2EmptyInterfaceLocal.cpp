@@ -20,6 +20,4 @@ UTestbed2EmptyInterfaceLocalService::UTestbed2EmptyInterfaceLocalService()
 	: ITestbed2EmptyInterfaceInterface()
 {
 }
-UTestbed2EmptyInterfaceLocalService::~UTestbed2EmptyInterfaceLocalService()
-{
-}
+UTestbed2EmptyInterfaceLocalService::~UTestbed2EmptyInterfaceLocalService() = default;

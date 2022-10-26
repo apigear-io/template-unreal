@@ -21,9 +21,7 @@ UTbSame1SameStruct1InterfaceLocalService::UTbSame1SameStruct1InterfaceLocalServi
 	, Prop1(FTbSame1Struct1())
 {
 }
-UTbSame1SameStruct1InterfaceLocalService::~UTbSame1SameStruct1InterfaceLocalService()
-{
-}
+UTbSame1SameStruct1InterfaceLocalService::~UTbSame1SameStruct1InterfaceLocalService() = default;
 
 void UTbSame1SameStruct1InterfaceLocalService::BroadcastSig1_Implementation(const FTbSame1Struct1& Param1)
 {

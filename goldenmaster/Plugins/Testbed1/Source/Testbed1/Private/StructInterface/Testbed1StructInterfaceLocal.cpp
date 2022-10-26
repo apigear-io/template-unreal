@@ -24,9 +24,7 @@ UTestbed1StructInterfaceLocalService::UTestbed1StructInterfaceLocalService()
 	, PropString(FTestbed1StructString())
 {
 }
-UTestbed1StructInterfaceLocalService::~UTestbed1StructInterfaceLocalService()
-{
-}
+UTestbed1StructInterfaceLocalService::~UTestbed1StructInterfaceLocalService() = default;
 
 void UTestbed1StructInterfaceLocalService::BroadcastSigBool_Implementation(const FTestbed1StructBool& ParamBool)
 {

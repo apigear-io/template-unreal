@@ -73,14 +73,7 @@ UTestbed2NestedStruct1InterfaceProxy::UTestbed2NestedStruct1InterfaceProxy()
 	BackendService->GetSig1SignalDelegate().AddDynamic(this, &UTestbed2NestedStruct1InterfaceProxy::OnSig1);
 }
 
-UTestbed2NestedStruct1InterfaceProxy::~UTestbed2NestedStruct1InterfaceProxy()
-{
-	if (BackendService != nullptr)
-	{
-		// BackendService->GetProp1ChangedDelegate().RemoveDynamic(this, &UTestbed2NestedStruct1InterfaceProxy::OnProp1Changed);
-		// BackendService->GetSig1SignalDelegate().RemoveDynamic(this, &UTestbed2NestedStruct1InterfaceProxy::OnSig1);
-	}
-}
+UTestbed2NestedStruct1InterfaceProxy::~UTestbed2NestedStruct1InterfaceProxy() = default;
 
 void UTestbed2NestedStruct1InterfaceProxy::setBackendService(TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> InService)
 {
