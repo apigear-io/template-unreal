@@ -17,10 +17,10 @@ limitations under the License.
 
 #include "Testbed1Factory.h"
 #include "Implementation/Testbed1StructInterface.h"
-#include "Generated/OLink/Testbed1StructInterfaceOLink.h"
+#include "Generated/OLink/Testbed1StructInterfaceOLinkClient.h"
 #include "Generated/Simulation/Testbed1StructInterfaceSimulationClient.h"
 #include "Implementation/Testbed1StructArrayInterface.h"
-#include "Generated/OLink/Testbed1StructArrayInterfaceOLink.h"
+#include "Generated/OLink/Testbed1StructArrayInterfaceOLinkClient.h"
 #include "Generated/Simulation/Testbed1StructArrayInterfaceSimulationClient.h"
 #include "Testbed1Settings.h"
 
@@ -35,7 +35,7 @@ TScriptInterface<ITestbed1StructInterfaceInterface> FTestbed1ModuleFactory::crea
 	{
 	case ETestbed1Connection::CONNECTION_OLINK:
 		UE_LOG(LogFTestbed1ModuleFactory, Log, TEXT("createITestbed1StructInterfaceInterface: Using OLink service backend"));
-		return NewObject<UTestbed1StructInterfaceOLinkService>();
+		return NewObject<UTestbed1StructInterfaceOLinkClient>();
 	case ETestbed1Connection::CONNECTION_SIMU:
 		UE_LOG(LogFTestbed1ModuleFactory, Log, TEXT("createITestbed1StructInterfaceInterface: Using simulation service backend"));
 		return NewObject<UTestbed1StructInterfaceSimulationClient>();
@@ -55,7 +55,7 @@ TScriptInterface<ITestbed1StructArrayInterfaceInterface> FTestbed1ModuleFactory:
 	{
 	case ETestbed1Connection::CONNECTION_OLINK:
 		UE_LOG(LogFTestbed1ModuleFactory, Log, TEXT("createITestbed1StructArrayInterfaceInterface: Using OLink service backend"));
-		return NewObject<UTestbed1StructArrayInterfaceOLinkService>();
+		return NewObject<UTestbed1StructArrayInterfaceOLinkClient>();
 	case ETestbed1Connection::CONNECTION_SIMU:
 		UE_LOG(LogFTestbed1ModuleFactory, Log, TEXT("createITestbed1StructArrayInterfaceInterface: Using simulation service backend"));
 		return NewObject<UTestbed1StructArrayInterfaceSimulationClient>();

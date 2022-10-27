@@ -231,11 +231,11 @@ features:
       - match: interface
         prefix: "Plugins/{{Camel .Module.Name}}/"
         documents:
-          - source: "module/Source/module/Private/Generated/OLink/olink.h.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Generated/OLink/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLink.h"
+          - source: "module/Source/module/Private/Generated/OLink/olinkclient.h.tpl"
+            target: "Source/{{Camel .Module.Name}}/Private/Generated/OLink/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLinkClient.h"
             force: true
-          - source: "module/Source/module/Private/Generated/OLink/olink.cpp.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Generated/OLink/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLink.cpp"
+          - source: "module/Source/module/Private/Generated/OLink/olinkclient.cpp.tpl"
+            target: "Source/{{Camel .Module.Name}}/Private/Generated/OLink/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLinkClient.cpp"
             force: true
       - match: system
         documents:

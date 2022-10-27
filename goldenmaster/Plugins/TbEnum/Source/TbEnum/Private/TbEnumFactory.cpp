@@ -17,7 +17,7 @@ limitations under the License.
 
 #include "TbEnumFactory.h"
 #include "Implementation/TbEnumEnumInterface.h"
-#include "Generated/OLink/TbEnumEnumInterfaceOLink.h"
+#include "Generated/OLink/TbEnumEnumInterfaceOLinkClient.h"
 #include "Generated/Simulation/TbEnumEnumInterfaceSimulationClient.h"
 #include "TbEnumSettings.h"
 
@@ -32,7 +32,7 @@ TScriptInterface<ITbEnumEnumInterfaceInterface> FTbEnumModuleFactory::createITbE
 	{
 	case ETbEnumConnection::CONNECTION_OLINK:
 		UE_LOG(LogFTbEnumModuleFactory, Log, TEXT("createITbEnumEnumInterfaceInterface: Using OLink service backend"));
-		return NewObject<UTbEnumEnumInterfaceOLinkService>();
+		return NewObject<UTbEnumEnumInterfaceOLinkClient>();
 	case ETbEnumConnection::CONNECTION_SIMU:
 		UE_LOG(LogFTbEnumModuleFactory, Log, TEXT("createITbEnumEnumInterfaceInterface: Using simulation service backend"));
 		return NewObject<UTbEnumEnumInterfaceSimulationClient>();

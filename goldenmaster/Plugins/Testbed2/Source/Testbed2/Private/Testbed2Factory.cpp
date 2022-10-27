@@ -17,22 +17,22 @@ limitations under the License.
 
 #include "Testbed2Factory.h"
 #include "Implementation/Testbed2ManyParamInterface.h"
-#include "Generated/OLink/Testbed2ManyParamInterfaceOLink.h"
+#include "Generated/OLink/Testbed2ManyParamInterfaceOLinkClient.h"
 #include "Generated/Simulation/Testbed2ManyParamInterfaceSimulationClient.h"
 #include "Implementation/Testbed2NestedStruct1Interface.h"
-#include "Generated/OLink/Testbed2NestedStruct1InterfaceOLink.h"
+#include "Generated/OLink/Testbed2NestedStruct1InterfaceOLinkClient.h"
 #include "Generated/Simulation/Testbed2NestedStruct1InterfaceSimulationClient.h"
 #include "Implementation/Testbed2NestedStruct2Interface.h"
-#include "Generated/OLink/Testbed2NestedStruct2InterfaceOLink.h"
+#include "Generated/OLink/Testbed2NestedStruct2InterfaceOLinkClient.h"
 #include "Generated/Simulation/Testbed2NestedStruct2InterfaceSimulationClient.h"
 #include "Implementation/Testbed2NestedStruct3Interface.h"
-#include "Generated/OLink/Testbed2NestedStruct3InterfaceOLink.h"
+#include "Generated/OLink/Testbed2NestedStruct3InterfaceOLinkClient.h"
 #include "Generated/Simulation/Testbed2NestedStruct3InterfaceSimulationClient.h"
 #include "Implementation/Testbed2NoPropertyInterface.h"
-#include "Generated/OLink/Testbed2NoPropertyInterfaceOLink.h"
+#include "Generated/OLink/Testbed2NoPropertyInterfaceOLinkClient.h"
 #include "Generated/Simulation/Testbed2NoPropertyInterfaceSimulationClient.h"
 #include "Implementation/Testbed2EmptyInterface.h"
-#include "Generated/OLink/Testbed2EmptyInterfaceOLink.h"
+#include "Generated/OLink/Testbed2EmptyInterfaceOLinkClient.h"
 #include "Generated/Simulation/Testbed2EmptyInterfaceSimulationClient.h"
 #include "Testbed2Settings.h"
 
@@ -47,7 +47,7 @@ TScriptInterface<ITestbed2ManyParamInterfaceInterface> FTestbed2ModuleFactory::c
 	{
 	case ETestbed2Connection::CONNECTION_OLINK:
 		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2ManyParamInterfaceInterface: Using OLink service backend"));
-		return NewObject<UTestbed2ManyParamInterfaceOLinkService>();
+		return NewObject<UTestbed2ManyParamInterfaceOLinkClient>();
 	case ETestbed2Connection::CONNECTION_SIMU:
 		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2ManyParamInterfaceInterface: Using simulation service backend"));
 		return NewObject<UTestbed2ManyParamInterfaceSimulationClient>();
@@ -67,7 +67,7 @@ TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> FTestbed2ModuleFactor
 	{
 	case ETestbed2Connection::CONNECTION_OLINK:
 		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct1InterfaceInterface: Using OLink service backend"));
-		return NewObject<UTestbed2NestedStruct1InterfaceOLinkService>();
+		return NewObject<UTestbed2NestedStruct1InterfaceOLinkClient>();
 	case ETestbed2Connection::CONNECTION_SIMU:
 		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct1InterfaceInterface: Using simulation service backend"));
 		return NewObject<UTestbed2NestedStruct1InterfaceSimulationClient>();
@@ -87,7 +87,7 @@ TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> FTestbed2ModuleFactor
 	{
 	case ETestbed2Connection::CONNECTION_OLINK:
 		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct2InterfaceInterface: Using OLink service backend"));
-		return NewObject<UTestbed2NestedStruct2InterfaceOLinkService>();
+		return NewObject<UTestbed2NestedStruct2InterfaceOLinkClient>();
 	case ETestbed2Connection::CONNECTION_SIMU:
 		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct2InterfaceInterface: Using simulation service backend"));
 		return NewObject<UTestbed2NestedStruct2InterfaceSimulationClient>();
@@ -107,7 +107,7 @@ TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> FTestbed2ModuleFactor
 	{
 	case ETestbed2Connection::CONNECTION_OLINK:
 		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct3InterfaceInterface: Using OLink service backend"));
-		return NewObject<UTestbed2NestedStruct3InterfaceOLinkService>();
+		return NewObject<UTestbed2NestedStruct3InterfaceOLinkClient>();
 	case ETestbed2Connection::CONNECTION_SIMU:
 		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct3InterfaceInterface: Using simulation service backend"));
 		return NewObject<UTestbed2NestedStruct3InterfaceSimulationClient>();
@@ -127,7 +127,7 @@ TScriptInterface<ITestbed2NoPropertyInterfaceInterface> FTestbed2ModuleFactory::
 	{
 	case ETestbed2Connection::CONNECTION_OLINK:
 		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NoPropertyInterfaceInterface: Using OLink service backend"));
-		return NewObject<UTestbed2NoPropertyInterfaceOLinkService>();
+		return NewObject<UTestbed2NoPropertyInterfaceOLinkClient>();
 	case ETestbed2Connection::CONNECTION_SIMU:
 		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NoPropertyInterfaceInterface: Using simulation service backend"));
 		return NewObject<UTestbed2NoPropertyInterfaceSimulationClient>();
@@ -147,7 +147,7 @@ TScriptInterface<ITestbed2EmptyInterfaceInterface> FTestbed2ModuleFactory::creat
 	{
 	case ETestbed2Connection::CONNECTION_OLINK:
 		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2EmptyInterfaceInterface: Using OLink service backend"));
-		return NewObject<UTestbed2EmptyInterfaceOLinkService>();
+		return NewObject<UTestbed2EmptyInterfaceOLinkClient>();
 	case ETestbed2Connection::CONNECTION_SIMU:
 		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2EmptyInterfaceInterface: Using simulation service backend"));
 		return NewObject<UTestbed2EmptyInterfaceSimulationClient>();
