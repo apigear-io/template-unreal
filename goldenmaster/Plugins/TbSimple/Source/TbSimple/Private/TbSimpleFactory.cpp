@@ -18,10 +18,10 @@ limitations under the License.
 #include "TbSimpleFactory.h"
 #include "Implementation/TbSimpleSimpleInterface.h"
 #include "Generated/OLink/TbSimpleSimpleInterfaceOLink.h"
-#include "Generated/Simulation/TbSimpleSimpleInterfaceSimulation.h"
+#include "Generated/Simulation/TbSimpleSimpleInterfaceSimulationClient.h"
 #include "Implementation/TbSimpleSimpleArrayInterface.h"
 #include "Generated/OLink/TbSimpleSimpleArrayInterfaceOLink.h"
-#include "Generated/Simulation/TbSimpleSimpleArrayInterfaceSimulation.h"
+#include "Generated/Simulation/TbSimpleSimpleArrayInterfaceSimulationClient.h"
 #include "TbSimpleSettings.h"
 
 // General Log
@@ -38,7 +38,7 @@ TScriptInterface<ITbSimpleSimpleInterfaceInterface> FTbSimpleModuleFactory::crea
 		return NewObject<UTbSimpleSimpleInterfaceOLinkService>();
 	case ETbSimpleConnection::CONNECTION_SIMU:
 		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleInterfaceInterface: Using simulation service backend"));
-		return NewObject<UTbSimpleSimpleInterfaceSimulationService>();
+		return NewObject<UTbSimpleSimpleInterfaceSimulationClient>();
 	case ETbSimpleConnection::CONNECTION_LOCAL:
 		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleInterfaceInterface: Using local service backend"));
 	default:
@@ -58,7 +58,7 @@ TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> FTbSimpleModuleFactory:
 		return NewObject<UTbSimpleSimpleArrayInterfaceOLinkService>();
 	case ETbSimpleConnection::CONNECTION_SIMU:
 		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleArrayInterfaceInterface: Using simulation service backend"));
-		return NewObject<UTbSimpleSimpleArrayInterfaceSimulationService>();
+		return NewObject<UTbSimpleSimpleArrayInterfaceSimulationClient>();
 	case ETbSimpleConnection::CONNECTION_LOCAL:
 		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleArrayInterfaceInterface: Using local service backend"));
 	default:

@@ -18,16 +18,16 @@ limitations under the License.
 #include "TbSame2Factory.h"
 #include "Implementation/TbSame2SameStruct1Interface.h"
 #include "Generated/OLink/TbSame2SameStruct1InterfaceOLink.h"
-#include "Generated/Simulation/TbSame2SameStruct1InterfaceSimulation.h"
+#include "Generated/Simulation/TbSame2SameStruct1InterfaceSimulationClient.h"
 #include "Implementation/TbSame2SameStruct2Interface.h"
 #include "Generated/OLink/TbSame2SameStruct2InterfaceOLink.h"
-#include "Generated/Simulation/TbSame2SameStruct2InterfaceSimulation.h"
+#include "Generated/Simulation/TbSame2SameStruct2InterfaceSimulationClient.h"
 #include "Implementation/TbSame2SameEnum1Interface.h"
 #include "Generated/OLink/TbSame2SameEnum1InterfaceOLink.h"
-#include "Generated/Simulation/TbSame2SameEnum1InterfaceSimulation.h"
+#include "Generated/Simulation/TbSame2SameEnum1InterfaceSimulationClient.h"
 #include "Implementation/TbSame2SameEnum2Interface.h"
 #include "Generated/OLink/TbSame2SameEnum2InterfaceOLink.h"
-#include "Generated/Simulation/TbSame2SameEnum2InterfaceSimulation.h"
+#include "Generated/Simulation/TbSame2SameEnum2InterfaceSimulationClient.h"
 #include "TbSame2Settings.h"
 
 // General Log
@@ -44,7 +44,7 @@ TScriptInterface<ITbSame2SameStruct1InterfaceInterface> FTbSame2ModuleFactory::c
 		return NewObject<UTbSame2SameStruct1InterfaceOLinkService>();
 	case ETbSame2Connection::CONNECTION_SIMU:
 		UE_LOG(LogFTbSame2ModuleFactory, Log, TEXT("createITbSame2SameStruct1InterfaceInterface: Using simulation service backend"));
-		return NewObject<UTbSame2SameStruct1InterfaceSimulationService>();
+		return NewObject<UTbSame2SameStruct1InterfaceSimulationClient>();
 	case ETbSame2Connection::CONNECTION_LOCAL:
 		UE_LOG(LogFTbSame2ModuleFactory, Log, TEXT("createITbSame2SameStruct1InterfaceInterface: Using local service backend"));
 	default:
@@ -64,7 +64,7 @@ TScriptInterface<ITbSame2SameStruct2InterfaceInterface> FTbSame2ModuleFactory::c
 		return NewObject<UTbSame2SameStruct2InterfaceOLinkService>();
 	case ETbSame2Connection::CONNECTION_SIMU:
 		UE_LOG(LogFTbSame2ModuleFactory, Log, TEXT("createITbSame2SameStruct2InterfaceInterface: Using simulation service backend"));
-		return NewObject<UTbSame2SameStruct2InterfaceSimulationService>();
+		return NewObject<UTbSame2SameStruct2InterfaceSimulationClient>();
 	case ETbSame2Connection::CONNECTION_LOCAL:
 		UE_LOG(LogFTbSame2ModuleFactory, Log, TEXT("createITbSame2SameStruct2InterfaceInterface: Using local service backend"));
 	default:
@@ -84,7 +84,7 @@ TScriptInterface<ITbSame2SameEnum1InterfaceInterface> FTbSame2ModuleFactory::cre
 		return NewObject<UTbSame2SameEnum1InterfaceOLinkService>();
 	case ETbSame2Connection::CONNECTION_SIMU:
 		UE_LOG(LogFTbSame2ModuleFactory, Log, TEXT("createITbSame2SameEnum1InterfaceInterface: Using simulation service backend"));
-		return NewObject<UTbSame2SameEnum1InterfaceSimulationService>();
+		return NewObject<UTbSame2SameEnum1InterfaceSimulationClient>();
 	case ETbSame2Connection::CONNECTION_LOCAL:
 		UE_LOG(LogFTbSame2ModuleFactory, Log, TEXT("createITbSame2SameEnum1InterfaceInterface: Using local service backend"));
 	default:
@@ -104,7 +104,7 @@ TScriptInterface<ITbSame2SameEnum2InterfaceInterface> FTbSame2ModuleFactory::cre
 		return NewObject<UTbSame2SameEnum2InterfaceOLinkService>();
 	case ETbSame2Connection::CONNECTION_SIMU:
 		UE_LOG(LogFTbSame2ModuleFactory, Log, TEXT("createITbSame2SameEnum2InterfaceInterface: Using simulation service backend"));
-		return NewObject<UTbSame2SameEnum2InterfaceSimulationService>();
+		return NewObject<UTbSame2SameEnum2InterfaceSimulationClient>();
 	case ETbSame2Connection::CONNECTION_LOCAL:
 		UE_LOG(LogFTbSame2ModuleFactory, Log, TEXT("createITbSame2SameEnum2InterfaceInterface: Using local service backend"));
 	default:

@@ -25,7 +25,7 @@ limitations under the License.
 {{- $iclass := printf "%s%s" $ModuleName .Name}}
 #include "Implementation/{{$iclass}}.h"
 #include "Generated/OLink/{{$iclass}}OLink.h"
-#include "Generated/Simulation/{{$iclass}}Simulation.h"
+#include "Generated/Simulation/{{$iclass}}SimulationClient.h"
 {{- end }}
 #include "{{$ModuleName}}Settings.h"
 
@@ -48,7 +48,7 @@ TScriptInterface<I{{$class}}Interface> {{$mclass}}::create{{$iclass}}()
 		return NewObject<{{ printf "U%sOLinkService" $DisplayName}}>();
 	case E{{$ModuleName}}Connection::CONNECTION_SIMU:
 		UE_LOG(Log{{$mclass}}, Log, TEXT("create{{$iclass}}: Using simulation service backend"));
-		return NewObject<{{ printf "U%sSimulationService" $DisplayName}}>();
+		return NewObject<{{ printf "U%sSimulationClient" $DisplayName}}>();
 	case E{{$ModuleName}}Connection::CONNECTION_LOCAL:
 		UE_LOG(Log{{$mclass}}, Log, TEXT("create{{$iclass}}: Using local service backend"));
 	default:

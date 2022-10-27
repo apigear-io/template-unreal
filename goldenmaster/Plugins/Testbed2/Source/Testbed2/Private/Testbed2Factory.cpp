@@ -18,22 +18,22 @@ limitations under the License.
 #include "Testbed2Factory.h"
 #include "Implementation/Testbed2ManyParamInterface.h"
 #include "Generated/OLink/Testbed2ManyParamInterfaceOLink.h"
-#include "Generated/Simulation/Testbed2ManyParamInterfaceSimulation.h"
+#include "Generated/Simulation/Testbed2ManyParamInterfaceSimulationClient.h"
 #include "Implementation/Testbed2NestedStruct1Interface.h"
 #include "Generated/OLink/Testbed2NestedStruct1InterfaceOLink.h"
-#include "Generated/Simulation/Testbed2NestedStruct1InterfaceSimulation.h"
+#include "Generated/Simulation/Testbed2NestedStruct1InterfaceSimulationClient.h"
 #include "Implementation/Testbed2NestedStruct2Interface.h"
 #include "Generated/OLink/Testbed2NestedStruct2InterfaceOLink.h"
-#include "Generated/Simulation/Testbed2NestedStruct2InterfaceSimulation.h"
+#include "Generated/Simulation/Testbed2NestedStruct2InterfaceSimulationClient.h"
 #include "Implementation/Testbed2NestedStruct3Interface.h"
 #include "Generated/OLink/Testbed2NestedStruct3InterfaceOLink.h"
-#include "Generated/Simulation/Testbed2NestedStruct3InterfaceSimulation.h"
+#include "Generated/Simulation/Testbed2NestedStruct3InterfaceSimulationClient.h"
 #include "Implementation/Testbed2NoPropertyInterface.h"
 #include "Generated/OLink/Testbed2NoPropertyInterfaceOLink.h"
-#include "Generated/Simulation/Testbed2NoPropertyInterfaceSimulation.h"
+#include "Generated/Simulation/Testbed2NoPropertyInterfaceSimulationClient.h"
 #include "Implementation/Testbed2EmptyInterface.h"
 #include "Generated/OLink/Testbed2EmptyInterfaceOLink.h"
-#include "Generated/Simulation/Testbed2EmptyInterfaceSimulation.h"
+#include "Generated/Simulation/Testbed2EmptyInterfaceSimulationClient.h"
 #include "Testbed2Settings.h"
 
 // General Log
@@ -50,7 +50,7 @@ TScriptInterface<ITestbed2ManyParamInterfaceInterface> FTestbed2ModuleFactory::c
 		return NewObject<UTestbed2ManyParamInterfaceOLinkService>();
 	case ETestbed2Connection::CONNECTION_SIMU:
 		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2ManyParamInterfaceInterface: Using simulation service backend"));
-		return NewObject<UTestbed2ManyParamInterfaceSimulationService>();
+		return NewObject<UTestbed2ManyParamInterfaceSimulationClient>();
 	case ETestbed2Connection::CONNECTION_LOCAL:
 		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2ManyParamInterfaceInterface: Using local service backend"));
 	default:
@@ -70,7 +70,7 @@ TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> FTestbed2ModuleFactor
 		return NewObject<UTestbed2NestedStruct1InterfaceOLinkService>();
 	case ETestbed2Connection::CONNECTION_SIMU:
 		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct1InterfaceInterface: Using simulation service backend"));
-		return NewObject<UTestbed2NestedStruct1InterfaceSimulationService>();
+		return NewObject<UTestbed2NestedStruct1InterfaceSimulationClient>();
 	case ETestbed2Connection::CONNECTION_LOCAL:
 		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct1InterfaceInterface: Using local service backend"));
 	default:
@@ -90,7 +90,7 @@ TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> FTestbed2ModuleFactor
 		return NewObject<UTestbed2NestedStruct2InterfaceOLinkService>();
 	case ETestbed2Connection::CONNECTION_SIMU:
 		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct2InterfaceInterface: Using simulation service backend"));
-		return NewObject<UTestbed2NestedStruct2InterfaceSimulationService>();
+		return NewObject<UTestbed2NestedStruct2InterfaceSimulationClient>();
 	case ETestbed2Connection::CONNECTION_LOCAL:
 		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct2InterfaceInterface: Using local service backend"));
 	default:
@@ -110,7 +110,7 @@ TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> FTestbed2ModuleFactor
 		return NewObject<UTestbed2NestedStruct3InterfaceOLinkService>();
 	case ETestbed2Connection::CONNECTION_SIMU:
 		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct3InterfaceInterface: Using simulation service backend"));
-		return NewObject<UTestbed2NestedStruct3InterfaceSimulationService>();
+		return NewObject<UTestbed2NestedStruct3InterfaceSimulationClient>();
 	case ETestbed2Connection::CONNECTION_LOCAL:
 		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct3InterfaceInterface: Using local service backend"));
 	default:
@@ -130,7 +130,7 @@ TScriptInterface<ITestbed2NoPropertyInterfaceInterface> FTestbed2ModuleFactory::
 		return NewObject<UTestbed2NoPropertyInterfaceOLinkService>();
 	case ETestbed2Connection::CONNECTION_SIMU:
 		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NoPropertyInterfaceInterface: Using simulation service backend"));
-		return NewObject<UTestbed2NoPropertyInterfaceSimulationService>();
+		return NewObject<UTestbed2NoPropertyInterfaceSimulationClient>();
 	case ETestbed2Connection::CONNECTION_LOCAL:
 		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NoPropertyInterfaceInterface: Using local service backend"));
 	default:
@@ -150,7 +150,7 @@ TScriptInterface<ITestbed2EmptyInterfaceInterface> FTestbed2ModuleFactory::creat
 		return NewObject<UTestbed2EmptyInterfaceOLinkService>();
 	case ETestbed2Connection::CONNECTION_SIMU:
 		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2EmptyInterfaceInterface: Using simulation service backend"));
-		return NewObject<UTestbed2EmptyInterfaceSimulationService>();
+		return NewObject<UTestbed2EmptyInterfaceSimulationClient>();
 	case ETestbed2Connection::CONNECTION_LOCAL:
 		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2EmptyInterfaceInterface: Using local service backend"));
 	default:
