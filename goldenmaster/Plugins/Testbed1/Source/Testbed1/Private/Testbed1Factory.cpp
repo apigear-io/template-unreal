@@ -16,10 +16,10 @@ limitations under the License.
 */
 
 #include "Testbed1Factory.h"
-#include "Implementation/Testbed1StructInterfaceLocal.h"
+#include "Implementation/Testbed1StructInterface.h"
 #include "Generated/OLink/Testbed1StructInterfaceOLink.h"
 #include "Generated/Simulation/Testbed1StructInterfaceSimulation.h"
-#include "Implementation/Testbed1StructArrayInterfaceLocal.h"
+#include "Implementation/Testbed1StructArrayInterface.h"
 #include "Generated/OLink/Testbed1StructArrayInterfaceOLink.h"
 #include "Generated/Simulation/Testbed1StructArrayInterfaceSimulation.h"
 #include "Testbed1Settings.h"
@@ -43,7 +43,7 @@ TScriptInterface<ITestbed1StructInterfaceInterface> FTestbed1ModuleFactory::crea
 		UE_LOG(LogFTestbed1ModuleFactory, Log, TEXT("createITestbed1StructInterfaceInterface: Using local service backend"));
 	default:
 		UE_LOG(LogFTestbed1ModuleFactory, Log, TEXT("createITestbed1StructInterfaceInterface: Defaulting to local service backend"));
-		return NewObject<UTestbed1StructInterfaceLocalService>();
+		return NewObject<UTestbed1StructInterface>();
 	}
 }
 
@@ -63,6 +63,6 @@ TScriptInterface<ITestbed1StructArrayInterfaceInterface> FTestbed1ModuleFactory:
 		UE_LOG(LogFTestbed1ModuleFactory, Log, TEXT("createITestbed1StructArrayInterfaceInterface: Using local service backend"));
 	default:
 		UE_LOG(LogFTestbed1ModuleFactory, Log, TEXT("createITestbed1StructArrayInterfaceInterface: Defaulting to local service backend"));
-		return NewObject<UTestbed1StructArrayInterfaceLocalService>();
+		return NewObject<UTestbed1StructArrayInterface>();
 	}
 }

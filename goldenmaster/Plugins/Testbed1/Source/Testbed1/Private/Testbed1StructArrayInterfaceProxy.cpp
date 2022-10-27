@@ -16,7 +16,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "Testbed1StructArrayInterfaceProxy.h"
-#include "Implementation/Testbed1StructArrayInterfaceLocal.h"
+#include "Implementation/Testbed1StructArrayInterface.h"
 #include "Generated/api/Testbed1.trace.h"
 #include "Testbed1Factory.h"
 #include "Async/Async.h"

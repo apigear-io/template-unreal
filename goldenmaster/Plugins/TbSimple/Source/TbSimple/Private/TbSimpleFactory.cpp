@@ -16,10 +16,10 @@ limitations under the License.
 */
 
 #include "TbSimpleFactory.h"
-#include "Implementation/TbSimpleSimpleInterfaceLocal.h"
+#include "Implementation/TbSimpleSimpleInterface.h"
 #include "Generated/OLink/TbSimpleSimpleInterfaceOLink.h"
 #include "Generated/Simulation/TbSimpleSimpleInterfaceSimulation.h"
-#include "Implementation/TbSimpleSimpleArrayInterfaceLocal.h"
+#include "Implementation/TbSimpleSimpleArrayInterface.h"
 #include "Generated/OLink/TbSimpleSimpleArrayInterfaceOLink.h"
 #include "Generated/Simulation/TbSimpleSimpleArrayInterfaceSimulation.h"
 #include "TbSimpleSettings.h"
@@ -43,7 +43,7 @@ TScriptInterface<ITbSimpleSimpleInterfaceInterface> FTbSimpleModuleFactory::crea
 		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleInterfaceInterface: Using local service backend"));
 	default:
 		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleInterfaceInterface: Defaulting to local service backend"));
-		return NewObject<UTbSimpleSimpleInterfaceLocalService>();
+		return NewObject<UTbSimpleSimpleInterface>();
 	}
 }
 
@@ -63,6 +63,6 @@ TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> FTbSimpleModuleFactory:
 		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleArrayInterfaceInterface: Using local service backend"));
 	default:
 		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleArrayInterfaceInterface: Defaulting to local service backend"));
-		return NewObject<UTbSimpleSimpleArrayInterfaceLocalService>();
+		return NewObject<UTbSimpleSimpleArrayInterface>();
 	}
 }

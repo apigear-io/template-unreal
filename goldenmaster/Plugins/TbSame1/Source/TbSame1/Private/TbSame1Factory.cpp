@@ -16,16 +16,16 @@ limitations under the License.
 */
 
 #include "TbSame1Factory.h"
-#include "Implementation/TbSame1SameStruct1InterfaceLocal.h"
+#include "Implementation/TbSame1SameStruct1Interface.h"
 #include "Generated/OLink/TbSame1SameStruct1InterfaceOLink.h"
 #include "Generated/Simulation/TbSame1SameStruct1InterfaceSimulation.h"
-#include "Implementation/TbSame1SameStruct2InterfaceLocal.h"
+#include "Implementation/TbSame1SameStruct2Interface.h"
 #include "Generated/OLink/TbSame1SameStruct2InterfaceOLink.h"
 #include "Generated/Simulation/TbSame1SameStruct2InterfaceSimulation.h"
-#include "Implementation/TbSame1SameEnum1InterfaceLocal.h"
+#include "Implementation/TbSame1SameEnum1Interface.h"
 #include "Generated/OLink/TbSame1SameEnum1InterfaceOLink.h"
 #include "Generated/Simulation/TbSame1SameEnum1InterfaceSimulation.h"
-#include "Implementation/TbSame1SameEnum2InterfaceLocal.h"
+#include "Implementation/TbSame1SameEnum2Interface.h"
 #include "Generated/OLink/TbSame1SameEnum2InterfaceOLink.h"
 #include "Generated/Simulation/TbSame1SameEnum2InterfaceSimulation.h"
 #include "TbSame1Settings.h"
@@ -49,7 +49,7 @@ TScriptInterface<ITbSame1SameStruct1InterfaceInterface> FTbSame1ModuleFactory::c
 		UE_LOG(LogFTbSame1ModuleFactory, Log, TEXT("createITbSame1SameStruct1InterfaceInterface: Using local service backend"));
 	default:
 		UE_LOG(LogFTbSame1ModuleFactory, Log, TEXT("createITbSame1SameStruct1InterfaceInterface: Defaulting to local service backend"));
-		return NewObject<UTbSame1SameStruct1InterfaceLocalService>();
+		return NewObject<UTbSame1SameStruct1Interface>();
 	}
 }
 
@@ -69,7 +69,7 @@ TScriptInterface<ITbSame1SameStruct2InterfaceInterface> FTbSame1ModuleFactory::c
 		UE_LOG(LogFTbSame1ModuleFactory, Log, TEXT("createITbSame1SameStruct2InterfaceInterface: Using local service backend"));
 	default:
 		UE_LOG(LogFTbSame1ModuleFactory, Log, TEXT("createITbSame1SameStruct2InterfaceInterface: Defaulting to local service backend"));
-		return NewObject<UTbSame1SameStruct2InterfaceLocalService>();
+		return NewObject<UTbSame1SameStruct2Interface>();
 	}
 }
 
@@ -89,7 +89,7 @@ TScriptInterface<ITbSame1SameEnum1InterfaceInterface> FTbSame1ModuleFactory::cre
 		UE_LOG(LogFTbSame1ModuleFactory, Log, TEXT("createITbSame1SameEnum1InterfaceInterface: Using local service backend"));
 	default:
 		UE_LOG(LogFTbSame1ModuleFactory, Log, TEXT("createITbSame1SameEnum1InterfaceInterface: Defaulting to local service backend"));
-		return NewObject<UTbSame1SameEnum1InterfaceLocalService>();
+		return NewObject<UTbSame1SameEnum1Interface>();
 	}
 }
 
@@ -109,6 +109,6 @@ TScriptInterface<ITbSame1SameEnum2InterfaceInterface> FTbSame1ModuleFactory::cre
 		UE_LOG(LogFTbSame1ModuleFactory, Log, TEXT("createITbSame1SameEnum2InterfaceInterface: Using local service backend"));
 	default:
 		UE_LOG(LogFTbSame1ModuleFactory, Log, TEXT("createITbSame1SameEnum2InterfaceInterface: Defaulting to local service backend"));
-		return NewObject<UTbSame1SameEnum2InterfaceLocalService>();
+		return NewObject<UTbSame1SameEnum2Interface>();
 	}
 }

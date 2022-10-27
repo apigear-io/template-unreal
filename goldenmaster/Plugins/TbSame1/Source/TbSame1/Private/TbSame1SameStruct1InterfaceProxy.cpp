@@ -16,7 +16,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbSame1SameStruct1InterfaceProxy.h"
-#include "Implementation/TbSame1SameStruct1InterfaceLocal.h"
+#include "Implementation/TbSame1SameStruct1Interface.h"
 #include "Generated/api/TbSame1.trace.h"
 #include "TbSame1Factory.h"
 #include "Async/Async.h"

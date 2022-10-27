@@ -16,22 +16,22 @@ limitations under the License.
 */
 
 #include "Testbed2Factory.h"
-#include "Implementation/Testbed2ManyParamInterfaceLocal.h"
+#include "Implementation/Testbed2ManyParamInterface.h"
 #include "Generated/OLink/Testbed2ManyParamInterfaceOLink.h"
 #include "Generated/Simulation/Testbed2ManyParamInterfaceSimulation.h"
-#include "Implementation/Testbed2NestedStruct1InterfaceLocal.h"
+#include "Implementation/Testbed2NestedStruct1Interface.h"
 #include "Generated/OLink/Testbed2NestedStruct1InterfaceOLink.h"
 #include "Generated/Simulation/Testbed2NestedStruct1InterfaceSimulation.h"
-#include "Implementation/Testbed2NestedStruct2InterfaceLocal.h"
+#include "Implementation/Testbed2NestedStruct2Interface.h"
 #include "Generated/OLink/Testbed2NestedStruct2InterfaceOLink.h"
 #include "Generated/Simulation/Testbed2NestedStruct2InterfaceSimulation.h"
-#include "Implementation/Testbed2NestedStruct3InterfaceLocal.h"
+#include "Implementation/Testbed2NestedStruct3Interface.h"
 #include "Generated/OLink/Testbed2NestedStruct3InterfaceOLink.h"
 #include "Generated/Simulation/Testbed2NestedStruct3InterfaceSimulation.h"
-#include "Implementation/Testbed2NoPropertyInterfaceLocal.h"
+#include "Implementation/Testbed2NoPropertyInterface.h"
 #include "Generated/OLink/Testbed2NoPropertyInterfaceOLink.h"
 #include "Generated/Simulation/Testbed2NoPropertyInterfaceSimulation.h"
-#include "Implementation/Testbed2EmptyInterfaceLocal.h"
+#include "Implementation/Testbed2EmptyInterface.h"
 #include "Generated/OLink/Testbed2EmptyInterfaceOLink.h"
 #include "Generated/Simulation/Testbed2EmptyInterfaceSimulation.h"
 #include "Testbed2Settings.h"
@@ -55,7 +55,7 @@ TScriptInterface<ITestbed2ManyParamInterfaceInterface> FTestbed2ModuleFactory::c
 		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2ManyParamInterfaceInterface: Using local service backend"));
 	default:
 		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2ManyParamInterfaceInterface: Defaulting to local service backend"));
-		return NewObject<UTestbed2ManyParamInterfaceLocalService>();
+		return NewObject<UTestbed2ManyParamInterface>();
 	}
 }
 
@@ -75,7 +75,7 @@ TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> FTestbed2ModuleFactor
 		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct1InterfaceInterface: Using local service backend"));
 	default:
 		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct1InterfaceInterface: Defaulting to local service backend"));
-		return NewObject<UTestbed2NestedStruct1InterfaceLocalService>();
+		return NewObject<UTestbed2NestedStruct1Interface>();
 	}
 }
 
@@ -95,7 +95,7 @@ TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> FTestbed2ModuleFactor
 		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct2InterfaceInterface: Using local service backend"));
 	default:
 		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct2InterfaceInterface: Defaulting to local service backend"));
-		return NewObject<UTestbed2NestedStruct2InterfaceLocalService>();
+		return NewObject<UTestbed2NestedStruct2Interface>();
 	}
 }
 
@@ -115,7 +115,7 @@ TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> FTestbed2ModuleFactor
 		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct3InterfaceInterface: Using local service backend"));
 	default:
 		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct3InterfaceInterface: Defaulting to local service backend"));
-		return NewObject<UTestbed2NestedStruct3InterfaceLocalService>();
+		return NewObject<UTestbed2NestedStruct3Interface>();
 	}
 }
 
@@ -135,7 +135,7 @@ TScriptInterface<ITestbed2NoPropertyInterfaceInterface> FTestbed2ModuleFactory::
 		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NoPropertyInterfaceInterface: Using local service backend"));
 	default:
 		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NoPropertyInterfaceInterface: Defaulting to local service backend"));
-		return NewObject<UTestbed2NoPropertyInterfaceLocalService>();
+		return NewObject<UTestbed2NoPropertyInterface>();
 	}
 }
 
@@ -155,6 +155,6 @@ TScriptInterface<ITestbed2EmptyInterfaceInterface> FTestbed2ModuleFactory::creat
 		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2EmptyInterfaceInterface: Using local service backend"));
 	default:
 		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2EmptyInterfaceInterface: Defaulting to local service backend"));
-		return NewObject<UTestbed2EmptyInterfaceLocalService>();
+		return NewObject<UTestbed2EmptyInterface>();
 	}
 }

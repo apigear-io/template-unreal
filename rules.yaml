@@ -216,10 +216,10 @@ features:
           - source: "module/Source/module/Private/proxy.cpp.tpl"
             target: "Source/{{Camel .Module.Name}}/Private/{{Camel .Module.Name}}{{Camel .Interface.Name}}Proxy.cpp"
             force: true
-          - source: "module/Source/module/Private/Implementation/local.h.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Implementation/{{Camel .Module.Name}}{{Camel .Interface.Name}}Local.h"
-          - source: "module/Source/module/Private/Implementation/local.cpp.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Implementation/{{Camel .Module.Name}}{{Camel .Interface.Name}}Local.cpp"
+          - source: "module/Source/module/Private/Implementation/implementation.h.tpl"
+            target: "Source/{{Camel .Module.Name}}/Private/Implementation/{{Camel .Module.Name}}{{Camel .Interface.Name}}.h"
+          - source: "module/Source/module/Private/Implementation/implementation.cpp.tpl"
+            target: "Source/{{Camel .Module.Name}}/Private/Implementation/{{Camel .Module.Name}}{{Camel .Interface.Name}}.cpp"
           - source: "module/Source/module/Private/Generated/Simulation/simulation.h.tpl"
             target: "Source/{{Camel .Module.Name}}/Private/Generated/Simulation/{{Camel .Module.Name}}{{Camel .Interface.Name}}Simulation.h"
             force: true

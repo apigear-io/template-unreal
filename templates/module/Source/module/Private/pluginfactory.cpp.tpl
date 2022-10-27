@@ -23,7 +23,7 @@ limitations under the License.
 #include "{{$ModuleName}}Factory.h"
 {{- range .Module.Interfaces }}
 {{- $iclass := printf "%s%s" $ModuleName .Name}}
-#include "Implementation/{{$iclass}}Local.h"
+#include "Implementation/{{$iclass}}.h"
 #include "Generated/OLink/{{$iclass}}OLink.h"
 #include "Generated/Simulation/{{$iclass}}Simulation.h"
 {{- end }}
@@ -53,7 +53,7 @@ TScriptInterface<I{{$class}}Interface> {{$mclass}}::create{{$iclass}}()
 		UE_LOG(Log{{$mclass}}, Log, TEXT("create{{$iclass}}: Using local service backend"));
 	default:
 		UE_LOG(Log{{$mclass}}, Log, TEXT("create{{$iclass}}: Defaulting to local service backend"));
-		return NewObject<{{ printf "U%sLocalService" $DisplayName}}>();
+		return NewObject<{{ printf "U%s" $DisplayName}}>();
 	}
 }
 {{- end }}

@@ -16,7 +16,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "Testbed2EmptyInterfaceProxy.h"
-#include "Implementation/Testbed2EmptyInterfaceLocal.h"
+#include "Implementation/Testbed2EmptyInterface.h"
 #include "Generated/api/Testbed2.trace.h"
 #include "Testbed2Factory.h"
 #include "Async/Async.h"
