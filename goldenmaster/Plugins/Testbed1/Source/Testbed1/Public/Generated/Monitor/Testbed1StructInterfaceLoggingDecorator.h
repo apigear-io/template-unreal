@@ -24,6 +24,9 @@ limitations under the License.
 #include "Testbed1_apig.h"
 #include "Testbed1StructInterfaceLoggingDecorator.generated.h"
 
+// General Log
+DECLARE_LOG_CATEGORY_EXTERN(LogTestbed1StructInterfaceLoggingDecorator, Log, All);
+
 UCLASS(BlueprintType, Blueprintable)
 class TESTBED1_API UTestbed1StructInterfaceLoggingDecorator : public UGameInstanceSubsystem, public ITestbed1StructInterfaceInterface
 {

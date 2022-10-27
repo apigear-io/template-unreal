@@ -24,6 +24,9 @@ limitations under the License.
 #include "TbSimple_apig.h"
 #include "TbSimpleSimpleInterfaceLoggingDecorator.generated.h"
 
+// General Log
+DECLARE_LOG_CATEGORY_EXTERN(LogTbSimpleSimpleInterfaceLoggingDecorator, Log, All);
+
 UCLASS(BlueprintType, Blueprintable)
 class TBSIMPLE_API UTbSimpleSimpleInterfaceLoggingDecorator : public UGameInstanceSubsystem, public ITbSimpleSimpleInterfaceInterface
 {

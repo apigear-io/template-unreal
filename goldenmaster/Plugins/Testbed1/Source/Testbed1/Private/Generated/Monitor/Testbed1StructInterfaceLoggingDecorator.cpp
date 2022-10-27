@@ -24,6 +24,8 @@ limitations under the License.
 #include "Engine/LatentActionManager.h"
 #include "Engine/Engine.h"
 
+DEFINE_LOG_CATEGORY(LogTestbed1StructInterfaceLoggingDecorator);
+
 class FTestbed1StructInterfaceLatentAction : public FPendingLatentAction
 {
 private:
@@ -93,6 +95,13 @@ void UTestbed1StructInterfaceLoggingDecorator::setBackendService(TScriptInterfac
 		BackendService->GetSigIntSignalDelegate().RemoveDynamic(this, &UTestbed1StructInterfaceLoggingDecorator::OnSigInt);
 		BackendService->GetSigFloatSignalDelegate().RemoveDynamic(this, &UTestbed1StructInterfaceLoggingDecorator::OnSigFloat);
 		BackendService->GetSigStringSignalDelegate().RemoveDynamic(this, &UTestbed1StructInterfaceLoggingDecorator::OnSigString);
+	}
+
+	// only set if interface is implemented
+	if (InService.GetInterface() == nullptr)
+	{
+		UE_LOG(LogTestbed1StructInterfaceLoggingDecorator, Error, TEXT("Cannot set backend service to %s - interface Testbed1StructInterface is not fully implemented"), *InService.GetObject()->GetName());
+		return;
 	}
 
 	// subscribe to new backend

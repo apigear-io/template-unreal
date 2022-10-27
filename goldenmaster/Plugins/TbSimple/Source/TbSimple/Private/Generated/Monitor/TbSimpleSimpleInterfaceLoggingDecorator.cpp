@@ -24,6 +24,8 @@ limitations under the License.
 #include "Engine/LatentActionManager.h"
 #include "Engine/Engine.h"
 
+DEFINE_LOG_CATEGORY(LogTbSimpleSimpleInterfaceLoggingDecorator);
+
 class FTbSimpleSimpleInterfaceLatentAction : public FPendingLatentAction
 {
 private:
@@ -93,6 +95,13 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::setBackendService(TScriptInterfac
 		BackendService->GetSigIntSignalDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt);
 		BackendService->GetSigFloatSignalDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat);
 		BackendService->GetSigStringSignalDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigString);
+	}
+
+	// only set if interface is implemented
+	if (InService.GetInterface() == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceLoggingDecorator, Error, TEXT("Cannot set backend service to %s - interface TbSimpleSimpleInterface is not fully implemented"), *InService.GetObject()->GetName());
+		return;
 	}
 
 	// subscribe to new backend

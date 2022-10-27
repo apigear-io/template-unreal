@@ -4,8 +4,8 @@
 {{- $IfaceName := Camel .Interface.Name }}
 {{- $API_MACRO := printf "%s_API" $ModuleName }}
 {{- $Category := printf "ApiGear|%s|%s" $ModuleName $IfaceName }}
-{{- $DisplayName := printf "%s%s" $ModuleName $IfaceName }}
-{{- $Class := printf "U%sLoggingDecorator" $DisplayName}}
+{{- $DisplayName := printf "%s%sLoggingDecorator" $ModuleName (Camel .Interface.Name) }}
+{{- $Class := printf "U%s" $DisplayName}}
 {{- $Iface := printf "%s%s" $ModuleName $IfaceName }}
 {{- $FactoryName := printf "F%sModuleFactory" $ModuleName -}}
 /**
@@ -32,6 +32,8 @@ limitations under the License.
 #include "LatentActions.h"
 #include "Engine/LatentActionManager.h"
 #include "Engine/Engine.h"
+
+DEFINE_LOG_CATEGORY(Log{{$DisplayName}});
 
 class F{{$Iface}}LatentAction : public FPendingLatentAction
 {
@@ -105,6 +107,13 @@ void {{$Class}}::setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{Cam
 {{- range .Interface.Signals }}
 		BackendService->Get{{Camel .Name}}SignalDelegate().RemoveDynamic(this, &{{$Class}}::On{{Camel .Name}});
 {{- end }}
+	}
+
+	// only set if interface is implemented
+	if (InService.GetInterface() == nullptr)
+	{
+		UE_LOG(Log{{$DisplayName}}, Error, TEXT("Cannot set backend service to %s - interface {{$Iface}} is not fully implemented"), *InService.GetObject()->GetName());
+		return;
 	}
 
 	// subscribe to new backend

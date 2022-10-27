@@ -31,6 +31,9 @@ limitations under the License.
 #include "{{$ModuleName}}_apig.h"
 #include "{{$Iface}}LoggingDecorator.generated.h"
 
+// General Log
+DECLARE_LOG_CATEGORY_EXTERN(Log{{$DisplayName}}, Log, All);
+
 UCLASS(BlueprintType, Blueprintable)
 class {{ $API_MACRO }} {{$Class}} : public UGameInstanceSubsystem, public I{{$Iface}}Interface
 {

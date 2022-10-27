@@ -24,6 +24,9 @@ limitations under the License.
 #include "Testbed2_apig.h"
 #include "Testbed2ManyParamInterfaceLoggingDecorator.generated.h"
 
+// General Log
+DECLARE_LOG_CATEGORY_EXTERN(LogTestbed2ManyParamInterfaceLoggingDecorator, Log, All);
+
 UCLASS(BlueprintType, Blueprintable)
 class TESTBED2_API UTestbed2ManyParamInterfaceLoggingDecorator : public UGameInstanceSubsystem, public ITestbed2ManyParamInterfaceInterface
 {

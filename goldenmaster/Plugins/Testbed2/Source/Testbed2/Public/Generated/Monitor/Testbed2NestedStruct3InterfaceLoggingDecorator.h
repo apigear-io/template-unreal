@@ -24,6 +24,9 @@ limitations under the License.
 #include "Testbed2_apig.h"
 #include "Testbed2NestedStruct3InterfaceLoggingDecorator.generated.h"
 
+// General Log
+DECLARE_LOG_CATEGORY_EXTERN(LogTestbed2NestedStruct3InterfaceLoggingDecorator, Log, All);
+
 UCLASS(BlueprintType, Blueprintable)
 class TESTBED2_API UTestbed2NestedStruct3InterfaceLoggingDecorator : public UGameInstanceSubsystem, public ITestbed2NestedStruct3InterfaceInterface
 {

@@ -24,6 +24,9 @@ limitations under the License.
 #include "TbSame2_apig.h"
 #include "TbSame2SameStruct2InterfaceLoggingDecorator.generated.h"
 
+// General Log
+DECLARE_LOG_CATEGORY_EXTERN(LogTbSame2SameStruct2InterfaceLoggingDecorator, Log, All);
+
 UCLASS(BlueprintType, Blueprintable)
 class TBSAME2_API UTbSame2SameStruct2InterfaceLoggingDecorator : public UGameInstanceSubsystem, public ITbSame2SameStruct2InterfaceInterface
 {

@@ -24,6 +24,8 @@ limitations under the License.
 #include "Engine/LatentActionManager.h"
 #include "Engine/Engine.h"
 
+DEFINE_LOG_CATEGORY(LogTestbed2NestedStruct2InterfaceLoggingDecorator);
+
 class FTestbed2NestedStruct2InterfaceLatentAction : public FPendingLatentAction
 {
 private:
@@ -85,6 +87,13 @@ void UTestbed2NestedStruct2InterfaceLoggingDecorator::setBackendService(TScriptI
 		BackendService->GetProp2ChangedDelegate().RemoveDynamic(this, &UTestbed2NestedStruct2InterfaceLoggingDecorator::OnProp2Changed);
 		BackendService->GetSig1SignalDelegate().RemoveDynamic(this, &UTestbed2NestedStruct2InterfaceLoggingDecorator::OnSig1);
 		BackendService->GetSig2SignalDelegate().RemoveDynamic(this, &UTestbed2NestedStruct2InterfaceLoggingDecorator::OnSig2);
+	}
+
+	// only set if interface is implemented
+	if (InService.GetInterface() == nullptr)
+	{
+		UE_LOG(LogTestbed2NestedStruct2InterfaceLoggingDecorator, Error, TEXT("Cannot set backend service to %s - interface Testbed2NestedStruct2Interface is not fully implemented"), *InService.GetObject()->GetName());
+		return;
 	}
 
 	// subscribe to new backend

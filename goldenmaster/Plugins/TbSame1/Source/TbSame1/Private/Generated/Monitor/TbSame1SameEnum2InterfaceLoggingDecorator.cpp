@@ -24,6 +24,8 @@ limitations under the License.
 #include "Engine/LatentActionManager.h"
 #include "Engine/Engine.h"
 
+DEFINE_LOG_CATEGORY(LogTbSame1SameEnum2InterfaceLoggingDecorator);
+
 class FTbSame1SameEnum2InterfaceLatentAction : public FPendingLatentAction
 {
 private:
@@ -85,6 +87,13 @@ void UTbSame1SameEnum2InterfaceLoggingDecorator::setBackendService(TScriptInterf
 		BackendService->GetProp2ChangedDelegate().RemoveDynamic(this, &UTbSame1SameEnum2InterfaceLoggingDecorator::OnProp2Changed);
 		BackendService->GetSig1SignalDelegate().RemoveDynamic(this, &UTbSame1SameEnum2InterfaceLoggingDecorator::OnSig1);
 		BackendService->GetSig2SignalDelegate().RemoveDynamic(this, &UTbSame1SameEnum2InterfaceLoggingDecorator::OnSig2);
+	}
+
+	// only set if interface is implemented
+	if (InService.GetInterface() == nullptr)
+	{
+		UE_LOG(LogTbSame1SameEnum2InterfaceLoggingDecorator, Error, TEXT("Cannot set backend service to %s - interface TbSame1SameEnum2Interface is not fully implemented"), *InService.GetObject()->GetName());
+		return;
 	}
 
 	// subscribe to new backend

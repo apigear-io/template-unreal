@@ -24,6 +24,9 @@ limitations under the License.
 #include "TbEnum_apig.h"
 #include "TbEnumEnumInterfaceLoggingDecorator.generated.h"
 
+// General Log
+DECLARE_LOG_CATEGORY_EXTERN(LogTbEnumEnumInterfaceLoggingDecorator, Log, All);
+
 UCLASS(BlueprintType, Blueprintable)
 class TBENUM_API UTbEnumEnumInterfaceLoggingDecorator : public UGameInstanceSubsystem, public ITbEnumEnumInterfaceInterface
 {

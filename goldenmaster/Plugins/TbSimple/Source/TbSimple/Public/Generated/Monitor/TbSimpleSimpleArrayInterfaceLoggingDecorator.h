@@ -24,6 +24,9 @@ limitations under the License.
 #include "TbSimple_apig.h"
 #include "TbSimpleSimpleArrayInterfaceLoggingDecorator.generated.h"
 
+// General Log
+DECLARE_LOG_CATEGORY_EXTERN(LogTbSimpleSimpleArrayInterfaceLoggingDecorator, Log, All);
+
 UCLASS(BlueprintType, Blueprintable)
 class TBSIMPLE_API UTbSimpleSimpleArrayInterfaceLoggingDecorator : public UGameInstanceSubsystem, public ITbSimpleSimpleArrayInterfaceInterface
 {

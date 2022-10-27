@@ -24,6 +24,8 @@ limitations under the License.
 #include "Engine/LatentActionManager.h"
 #include "Engine/Engine.h"
 
+DEFINE_LOG_CATEGORY(LogTestbed2ManyParamInterfaceLoggingDecorator);
+
 class FTestbed2ManyParamInterfaceLatentAction : public FPendingLatentAction
 {
 private:
@@ -95,6 +97,13 @@ void UTestbed2ManyParamInterfaceLoggingDecorator::setBackendService(TScriptInter
 		BackendService->GetSig2SignalDelegate().RemoveDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnSig2);
 		BackendService->GetSig3SignalDelegate().RemoveDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnSig3);
 		BackendService->GetSig4SignalDelegate().RemoveDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnSig4);
+	}
+
+	// only set if interface is implemented
+	if (InService.GetInterface() == nullptr)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceLoggingDecorator, Error, TEXT("Cannot set backend service to %s - interface Testbed2ManyParamInterface is not fully implemented"), *InService.GetObject()->GetName());
+		return;
 	}
 
 	// subscribe to new backend
