@@ -4,26 +4,26 @@ features:
       - match: module
         prefix: "Plugins/{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}/"
         documents:
-          - source: "module/Source/module/Public/apig/module.h.tpl"
-            target: "Public/apig/{{Camel .Module.Name}}_apig.h"
+          - source: "module/Source/module/Public/Generated/api/module.h.tpl"
+            target: "Public/Generated/api/{{Camel .Module.Name}}_apig.h"
             force: true
-          - source: "module/Source/module/Public/apig/data.h.tpl"
-            target: "Public/apig/{{Camel .Module.Name}}_data.h"
+          - source: "module/Source/module/Public/Generated/api/data.h.tpl"
+            target: "Public/Generated/api/{{Camel .Module.Name}}_data.h"
             force: true
-          - source: "module/Source/module/Private/apig/module.cpp.tpl"
-            target: "Private/apig/{{Camel .Module.Name}}_apig.cpp"
+          - source: "module/Source/module/Private/Generated/api/module.cpp.tpl"
+            target: "Private/Generated/api/{{Camel .Module.Name}}_apig.cpp"
             force: true
-          - source: "module/Source/module/Private/apig/trace.h.tpl"
-            target: "Private/apig/{{Camel .Module.Name}}.trace.h"
+          - source: "module/Source/module/Private/Generated/api/trace.h.tpl"
+            target: "Private/Generated/api/{{Camel .Module.Name}}.trace.h"
             force: true
-          - source: "module/Source/module/Private/apig/trace.cpp.tpl"
-            target: "Private/apig/{{Camel .Module.Name}}.trace.cpp"
+          - source: "module/Source/module/Private/Generated/api/trace.cpp.tpl"
+            target: "Private/Generated/api/{{Camel .Module.Name}}.trace.cpp"
             force: true
-          - source: "module/Source/module/Private/apig/json.adapter.h.tpl"
-            target: "Private/apig/{{Camel .Module.Name}}.json.adapter.h"
+          - source: "module/Source/module/Private/Generated/api/json.adapter.h.tpl"
+            target: "Private/Generated/api/{{Camel .Module.Name}}.json.adapter.h"
             force: true
-          - source: "module/Source/module/Private/apig/data.cpp.tpl"
-            target: "Private/apig/{{Camel .Module.Name}}_data.cpp"
+          - source: "module/Source/module/Private/Generated/api/data.cpp.tpl"
+            target: "Private/Generated/api/{{Camel .Module.Name}}_data.cpp"
             force: true
   - name: scaffold
     scopes:
@@ -216,26 +216,26 @@ features:
           - source: "module/Source/module/Private/proxy.cpp.tpl"
             target: "Source/{{Camel .Module.Name}}/Private/{{Camel .Module.Name}}{{Camel .Interface.Name}}Proxy.cpp"
             force: true
-          - source: "module/Source/module/Private/interface/local.h.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/{{Camel .Interface.Name}}/{{Camel .Module.Name}}{{Camel .Interface.Name}}Local.h"
-          - source: "module/Source/module/Private/interface/local.cpp.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/{{Camel .Interface.Name}}/{{Camel .Module.Name}}{{Camel .Interface.Name}}Local.cpp"
-          - source: "module/Source/module/Private/interface/simulation.h.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/{{Camel .Interface.Name}}/{{Camel .Module.Name}}{{Camel .Interface.Name}}Simulation.h"
+          - source: "module/Source/module/Private/Implementation/local.h.tpl"
+            target: "Source/{{Camel .Module.Name}}/Private/Implementation/{{Camel .Module.Name}}{{Camel .Interface.Name}}Local.h"
+          - source: "module/Source/module/Private/Implementation/local.cpp.tpl"
+            target: "Source/{{Camel .Module.Name}}/Private/Implementation/{{Camel .Module.Name}}{{Camel .Interface.Name}}Local.cpp"
+          - source: "module/Source/module/Private/Generated/Simulation/simulation.h.tpl"
+            target: "Source/{{Camel .Module.Name}}/Private/Generated/Simulation/{{Camel .Module.Name}}{{Camel .Interface.Name}}Simulation.h"
             force: true
-          - source: "module/Source/module/Private/interface/simulation.cpp.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/{{Camel .Interface.Name}}/{{Camel .Module.Name}}{{Camel .Interface.Name}}Simulation.cpp"
+          - source: "module/Source/module/Private/Generated/Simulation/simulation.cpp.tpl"
+            target: "Source/{{Camel .Module.Name}}/Private/Generated/Simulation/{{Camel .Module.Name}}{{Camel .Interface.Name}}Simulation.cpp"
             force: true
   - name: olink
     scopes:
       - match: interface
         prefix: "Plugins/{{Camel .Module.Name}}/"
         documents:
-          - source: "module/Source/module/Private/interface/olink.h.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/{{Camel .Interface.Name}}/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLink.h"
+          - source: "module/Source/module/Private/Generated/OLink/olink.h.tpl"
+            target: "Source/{{Camel .Module.Name}}/Private/Generated/OLink/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLink.h"
             force: true
-          - source: "module/Source/module/Private/interface/olink.cpp.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/{{Camel .Interface.Name}}/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLink.cpp"
+          - source: "module/Source/module/Private/Generated/OLink/olink.cpp.tpl"
+            target: "Source/{{Camel .Module.Name}}/Private/Generated/OLink/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLink.cpp"
             force: true
       - match: system
         documents:

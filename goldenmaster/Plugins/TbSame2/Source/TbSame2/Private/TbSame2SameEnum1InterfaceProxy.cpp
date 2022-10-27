@@ -16,8 +16,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbSame2SameEnum1InterfaceProxy.h"
-#include "SameEnum1Interface/TbSame2SameEnum1InterfaceLocal.h"
-#include "apig/TbSame2.trace.h"
+#include "Implementation/TbSame2SameEnum1InterfaceLocal.h"
+#include "Generated/api/TbSame2.trace.h"
 #include "TbSame2Factory.h"
 #include "Async/Async.h"
 #include "LatentActions.h"

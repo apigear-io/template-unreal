@@ -23,9 +23,9 @@ limitations under the License.
 #include "{{$ModuleName}}Factory.h"
 {{- range .Module.Interfaces }}
 {{- $iclass := printf "%s%s" $ModuleName .Name}}
-#include "{{Camel .Name}}/{{$iclass}}Local.h"
-#include "{{Camel .Name}}/{{$iclass}}OLink.h"
-#include "{{Camel .Name}}/{{$iclass}}Simulation.h"
+#include "Implementation/{{$iclass}}Local.h"
+#include "Generated/OLink/{{$iclass}}OLink.h"
+#include "Generated/Simulation/{{$iclass}}Simulation.h"
 {{- end }}
 #include "{{$ModuleName}}Settings.h"
 

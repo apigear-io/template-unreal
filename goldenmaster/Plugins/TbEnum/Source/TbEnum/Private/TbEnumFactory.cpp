@@ -16,9 +16,9 @@ limitations under the License.
 */
 
 #include "TbEnumFactory.h"
-#include "EnumInterface/TbEnumEnumInterfaceLocal.h"
-#include "EnumInterface/TbEnumEnumInterfaceOLink.h"
-#include "EnumInterface/TbEnumEnumInterfaceSimulation.h"
+#include "Implementation/TbEnumEnumInterfaceLocal.h"
+#include "Generated/OLink/TbEnumEnumInterfaceOLink.h"
+#include "Generated/Simulation/TbEnumEnumInterfaceSimulation.h"
 #include "TbEnumSettings.h"
 
 // General Log

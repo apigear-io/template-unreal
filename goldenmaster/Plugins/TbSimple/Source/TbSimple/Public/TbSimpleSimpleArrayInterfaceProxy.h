@@ -21,7 +21,7 @@ limitations under the License.
 #include "UObject/NoExportTypes.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Engine/LatentActionManager.h"
-#include "apig/TbSimple_apig.h"
+#include "TbSimple_apig.h"
 #include "TbSimpleSimpleArrayInterfaceProxy.generated.h"
 
 UCLASS(BlueprintType, Blueprintable, DisplayName = "TbSimpleSimpleArrayInterface")

@@ -21,7 +21,7 @@ limitations under the License.
 #include "UObject/NoExportTypes.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Engine/LatentActionManager.h"
-#include "apig/TbSame2_apig.h"
+#include "TbSame2_apig.h"
 #include "TbSame2SameStruct2InterfaceProxy.generated.h"
 
 UCLASS(BlueprintType, Blueprintable, DisplayName = "TbSame2SameStruct2Interface")

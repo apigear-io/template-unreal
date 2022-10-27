@@ -21,7 +21,7 @@ limitations under the License.
 #include "UObject/NoExportTypes.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Engine/LatentActionManager.h"
-#include "apig/TbEnum_apig.h"
+#include "TbEnum_apig.h"
 #include "TbEnumEnumInterfaceProxy.generated.h"
 
 UCLASS(BlueprintType, Blueprintable, DisplayName = "TbEnumEnumInterface")

@@ -16,8 +16,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbEnumEnumInterfaceProxy.h"
-#include "EnumInterface/TbEnumEnumInterfaceLocal.h"
-#include "apig/TbEnum.trace.h"
+#include "Implementation/TbEnumEnumInterfaceLocal.h"
+#include "Generated/api/TbEnum.trace.h"
 #include "TbEnumFactory.h"
 #include "Async/Async.h"
 #include "LatentActions.h"

@@ -16,12 +16,12 @@ limitations under the License.
 */
 
 #include "TbSimpleFactory.h"
-#include "SimpleInterface/TbSimpleSimpleInterfaceLocal.h"
-#include "SimpleInterface/TbSimpleSimpleInterfaceOLink.h"
-#include "SimpleInterface/TbSimpleSimpleInterfaceSimulation.h"
-#include "SimpleArrayInterface/TbSimpleSimpleArrayInterfaceLocal.h"
-#include "SimpleArrayInterface/TbSimpleSimpleArrayInterfaceOLink.h"
-#include "SimpleArrayInterface/TbSimpleSimpleArrayInterfaceSimulation.h"
+#include "Implementation/TbSimpleSimpleInterfaceLocal.h"
+#include "Generated/OLink/TbSimpleSimpleInterfaceOLink.h"
+#include "Generated/Simulation/TbSimpleSimpleInterfaceSimulation.h"
+#include "Implementation/TbSimpleSimpleArrayInterfaceLocal.h"
+#include "Generated/OLink/TbSimpleSimpleArrayInterfaceOLink.h"
+#include "Generated/Simulation/TbSimpleSimpleArrayInterfaceSimulation.h"
 #include "TbSimpleSettings.h"
 
 // General Log

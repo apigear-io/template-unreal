@@ -16,8 +16,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbSimpleSimpleInterfaceProxy.h"
-#include "SimpleInterface/TbSimpleSimpleInterfaceLocal.h"
-#include "apig/TbSimple.trace.h"
+#include "Implementation/TbSimpleSimpleInterfaceLocal.h"
+#include "Generated/api/TbSimple.trace.h"
 #include "TbSimpleFactory.h"
 #include "Async/Async.h"
 #include "LatentActions.h"

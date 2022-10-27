@@ -25,8 +25,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "{{$Iface}}Proxy.h"
-#include "{{$IfaceName}}/{{$Iface}}Local.h"
-#include "apig/{{$ModuleName}}.trace.h"
+#include "Implementation/{{$Iface}}Local.h"
+#include "Generated/api/{{$ModuleName}}.trace.h"
 #include "{{$ModuleName}}Factory.h"
 #include "Async/Async.h"
 #include "LatentActions.h"

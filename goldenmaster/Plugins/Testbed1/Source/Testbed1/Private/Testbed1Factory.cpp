@@ -16,12 +16,12 @@ limitations under the License.
 */
 
 #include "Testbed1Factory.h"
-#include "StructInterface/Testbed1StructInterfaceLocal.h"
-#include "StructInterface/Testbed1StructInterfaceOLink.h"
-#include "StructInterface/Testbed1StructInterfaceSimulation.h"
-#include "StructArrayInterface/Testbed1StructArrayInterfaceLocal.h"
-#include "StructArrayInterface/Testbed1StructArrayInterfaceOLink.h"
-#include "StructArrayInterface/Testbed1StructArrayInterfaceSimulation.h"
+#include "Implementation/Testbed1StructInterfaceLocal.h"
+#include "Generated/OLink/Testbed1StructInterfaceOLink.h"
+#include "Generated/Simulation/Testbed1StructInterfaceSimulation.h"
+#include "Implementation/Testbed1StructArrayInterfaceLocal.h"
+#include "Generated/OLink/Testbed1StructArrayInterfaceOLink.h"
+#include "Generated/Simulation/Testbed1StructArrayInterfaceSimulation.h"
 #include "Testbed1Settings.h"
 
 // General Log

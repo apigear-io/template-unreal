@@ -16,8 +16,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "Testbed2NestedStruct2InterfaceProxy.h"
-#include "NestedStruct2Interface/Testbed2NestedStruct2InterfaceLocal.h"
-#include "apig/Testbed2.trace.h"
+#include "Implementation/Testbed2NestedStruct2InterfaceLocal.h"
+#include "Generated/api/Testbed2.trace.h"
 #include "Testbed2Factory.h"
 #include "Async/Async.h"
 #include "LatentActions.h"
