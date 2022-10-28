@@ -16,7 +16,7 @@ limitations under the License.
 */
 #pragma once
 
-#include "TbSame2_apig.h"
+#include "TbSame2SameStruct2InterfaceInterface.h"
 #include "TbSame2SameStruct2InterfaceSimulationClient.generated.h"
 
 UCLASS(BlueprintType)

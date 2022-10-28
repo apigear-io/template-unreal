@@ -21,7 +21,7 @@ limitations under the License.
 #include "UObject/NoExportTypes.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Engine/LatentActionManager.h"
-#include "Testbed2_apig.h"
+#include "Testbed2NestedStruct2InterfaceInterface.h"
 #include "Testbed2NestedStruct2InterfaceLoggingDecorator.generated.h"
 
 // General Log

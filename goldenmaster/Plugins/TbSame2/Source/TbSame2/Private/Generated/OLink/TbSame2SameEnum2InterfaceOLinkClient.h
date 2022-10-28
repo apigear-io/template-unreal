@@ -16,7 +16,7 @@ limitations under the License.
 */
 #pragma once
 
-#include "TbSame2_apig.h"
+#include "TbSame2SameEnum2InterfaceInterface.h"
 #include "olink/clientnode.h"
 #include "TbSame2SameEnum2InterfaceOLinkClient.generated.h"
 

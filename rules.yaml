@@ -25,6 +25,12 @@ features:
           - source: "module/Source/module/Private/Generated/api/data.cpp.tpl"
             target: "Private/Generated/api/{{Camel .Module.Name}}_data.cpp"
             force: true
+      - match: interface
+        prefix: "Plugins/{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}/"
+        documents:
+          - source: "module/Source/module/Public/Generated/api/interface.h.tpl"
+            target: "Public/Generated/api/{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface.h"
+            force: true
   - name: scaffold
     scopes:
       - match: system

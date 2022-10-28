@@ -18,7 +18,7 @@ limitations under the License.
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Testbed2_apig.h"
+#include "Testbed2ManyParamInterfaceInterface.h"
 #include "Testbed2ManyParamInterface.generated.h"
 
 UCLASS(BlueprintType, Blueprintable)

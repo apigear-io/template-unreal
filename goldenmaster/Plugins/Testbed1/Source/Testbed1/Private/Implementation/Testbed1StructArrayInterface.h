@@ -18,7 +18,7 @@ limitations under the License.
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Testbed1_apig.h"
+#include "Testbed1StructArrayInterfaceInterface.h"
 #include "Testbed1StructArrayInterface.generated.h"
 
 UCLASS(BlueprintType, Blueprintable)

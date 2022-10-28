@@ -28,7 +28,7 @@ limitations under the License.
 #include "UObject/NoExportTypes.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Engine/LatentActionManager.h"
-#include "{{$ModuleName}}_apig.h"
+#include "{{$Iface}}Interface.h"
 #include "{{$Iface}}LoggingDecorator.generated.h"
 
 // General Log

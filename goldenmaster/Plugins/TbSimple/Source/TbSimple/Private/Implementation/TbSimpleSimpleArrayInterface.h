@@ -18,7 +18,7 @@ limitations under the License.
 #pragma once
 
 #include "CoreMinimal.h"
-#include "TbSimple_apig.h"
+#include "TbSimpleSimpleArrayInterfaceInterface.h"
 #include "TbSimpleSimpleArrayInterface.generated.h"
 
 UCLASS(BlueprintType, Blueprintable)

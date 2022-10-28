@@ -16,7 +16,7 @@ limitations under the License.
 */
 #pragma once
 
-#include "Testbed2_apig.h"
+#include "Testbed2NestedStruct1InterfaceInterface.h"
 #include "Testbed2NestedStruct1InterfaceSimulationClient.generated.h"
 
 UCLASS(BlueprintType)

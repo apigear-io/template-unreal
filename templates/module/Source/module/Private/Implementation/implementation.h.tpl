@@ -25,7 +25,7 @@ limitations under the License.
 #pragma once
 
 #include "CoreMinimal.h"
-#include "{{$ModuleName}}_apig.h"
+#include "{{$Iface}}Interface.h"
 #include "{{$Iface}}.generated.h"
 
 UCLASS(BlueprintType, Blueprintable)

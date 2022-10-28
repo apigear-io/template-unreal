@@ -16,7 +16,7 @@ limitations under the License.
 */
 #pragma once
 
-#include "Testbed2_apig.h"
+#include "Testbed2NoPropertyInterfaceInterface.h"
 #include "olink/clientnode.h"
 #include "Testbed2NoPropertyInterfaceOLinkClient.generated.h"
 

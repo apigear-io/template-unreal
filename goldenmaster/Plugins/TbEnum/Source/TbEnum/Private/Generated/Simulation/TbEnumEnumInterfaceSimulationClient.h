@@ -16,7 +16,7 @@ limitations under the License.
 */
 #pragma once
 
-#include "TbEnum_apig.h"
+#include "TbEnumEnumInterfaceInterface.h"
 #include "TbEnumEnumInterfaceSimulationClient.generated.h"
 
 UCLASS(BlueprintType)

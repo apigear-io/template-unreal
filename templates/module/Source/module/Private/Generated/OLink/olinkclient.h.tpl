@@ -10,7 +10,7 @@
 {{- $Iface := printf "%s%s" $ModuleName $IfaceName }}
 #pragma once
 
-#include "{{$ModuleName}}_apig.h"
+#include "{{$Iface}}Interface.h"
 #include "olink/clientnode.h"
 #include "{{$Iface}}OLinkClient.generated.h"
 

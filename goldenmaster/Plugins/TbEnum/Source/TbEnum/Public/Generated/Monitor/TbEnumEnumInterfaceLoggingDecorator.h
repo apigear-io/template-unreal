@@ -21,7 +21,7 @@ limitations under the License.
 #include "UObject/NoExportTypes.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Engine/LatentActionManager.h"
-#include "TbEnum_apig.h"
+#include "TbEnumEnumInterfaceInterface.h"
 #include "TbEnumEnumInterfaceLoggingDecorator.generated.h"
 
 // General Log

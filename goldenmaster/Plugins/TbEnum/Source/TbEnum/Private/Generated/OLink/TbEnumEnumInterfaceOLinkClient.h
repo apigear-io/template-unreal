@@ -16,7 +16,7 @@ limitations under the License.
 */
 #pragma once
 
-#include "TbEnum_apig.h"
+#include "TbEnumEnumInterfaceInterface.h"
 #include "olink/clientnode.h"
 #include "TbEnumEnumInterfaceOLinkClient.generated.h"
 

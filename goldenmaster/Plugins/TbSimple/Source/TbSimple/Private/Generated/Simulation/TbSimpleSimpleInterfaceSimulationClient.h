@@ -16,7 +16,7 @@ limitations under the License.
 */
 #pragma once
 
-#include "TbSimple_apig.h"
+#include "TbSimpleSimpleInterfaceInterface.h"
 #include "TbSimpleSimpleInterfaceSimulationClient.generated.h"
 
 UCLASS(BlueprintType)

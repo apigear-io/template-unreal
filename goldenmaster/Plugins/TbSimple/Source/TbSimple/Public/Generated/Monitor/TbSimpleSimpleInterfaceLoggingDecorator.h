@@ -21,7 +21,7 @@ limitations under the License.
 #include "UObject/NoExportTypes.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Engine/LatentActionManager.h"
-#include "TbSimple_apig.h"
+#include "TbSimpleSimpleInterfaceInterface.h"
 #include "TbSimpleSimpleInterfaceLoggingDecorator.generated.h"
 
 // General Log

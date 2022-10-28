@@ -16,7 +16,7 @@ limitations under the License.
 */
 #pragma once
 
-#include "TbSimple_apig.h"
+#include "TbSimpleSimpleInterfaceInterface.h"
 #include "olink/clientnode.h"
 #include "TbSimpleSimpleInterfaceOLinkClient.generated.h"
 
