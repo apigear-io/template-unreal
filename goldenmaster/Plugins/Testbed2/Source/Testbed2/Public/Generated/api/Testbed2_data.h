@@ -18,6 +18,7 @@ limitations under the License.
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Engine/DataTable.h"
 #include "Testbed2_data.generated.h"
 
 /**
@@ -75,7 +76,7 @@ bool toUE4Type(ETestbed2Enum3& value, uint8 v);
  * Struct FTestbed2Struct1
  */
 USTRUCT(BlueprintType)
-struct TESTBED2_API FTestbed2Struct1
+struct TESTBED2_API FTestbed2Struct1 : public FTableRowBase
 {
 	GENERATED_BODY()
 
@@ -90,7 +91,7 @@ struct TESTBED2_API FTestbed2Struct1
  * Struct FTestbed2Struct2
  */
 USTRUCT(BlueprintType)
-struct TESTBED2_API FTestbed2Struct2
+struct TESTBED2_API FTestbed2Struct2 : public FTableRowBase
 {
 	GENERATED_BODY()
 
@@ -108,7 +109,7 @@ struct TESTBED2_API FTestbed2Struct2
  * Struct FTestbed2Struct3
  */
 USTRUCT(BlueprintType)
-struct TESTBED2_API FTestbed2Struct3
+struct TESTBED2_API FTestbed2Struct3 : public FTableRowBase
 {
 	GENERATED_BODY()
 
@@ -129,7 +130,7 @@ struct TESTBED2_API FTestbed2Struct3
  * Struct FTestbed2Struct4
  */
 USTRUCT(BlueprintType)
-struct TESTBED2_API FTestbed2Struct4
+struct TESTBED2_API FTestbed2Struct4 : public FTableRowBase
 {
 	GENERATED_BODY()
 
@@ -153,7 +154,7 @@ struct TESTBED2_API FTestbed2Struct4
  * Struct FTestbed2NestedStruct1
  */
 USTRUCT(BlueprintType)
-struct TESTBED2_API FTestbed2NestedStruct1
+struct TESTBED2_API FTestbed2NestedStruct1 : public FTableRowBase
 {
 	GENERATED_BODY()
 
@@ -168,7 +169,7 @@ struct TESTBED2_API FTestbed2NestedStruct1
  * Struct FTestbed2NestedStruct2
  */
 USTRUCT(BlueprintType)
-struct TESTBED2_API FTestbed2NestedStruct2
+struct TESTBED2_API FTestbed2NestedStruct2 : public FTableRowBase
 {
 	GENERATED_BODY()
 
@@ -186,7 +187,7 @@ struct TESTBED2_API FTestbed2NestedStruct2
  * Struct FTestbed2NestedStruct3
  */
 USTRUCT(BlueprintType)
-struct TESTBED2_API FTestbed2NestedStruct3
+struct TESTBED2_API FTestbed2NestedStruct3 : public FTableRowBase
 {
 	GENERATED_BODY()
 

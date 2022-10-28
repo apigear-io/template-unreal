@@ -18,13 +18,14 @@ limitations under the License.
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Engine/DataTable.h"
 #include "Testbed1_data.generated.h"
 
 /**
  * Struct FTestbed1StructBool
  */
 USTRUCT(BlueprintType)
-struct TESTBED1_API FTestbed1StructBool
+struct TESTBED1_API FTestbed1StructBool : public FTableRowBase
 {
 	GENERATED_BODY()
 
@@ -39,7 +40,7 @@ struct TESTBED1_API FTestbed1StructBool
  * Struct FTestbed1StructInt
  */
 USTRUCT(BlueprintType)
-struct TESTBED1_API FTestbed1StructInt
+struct TESTBED1_API FTestbed1StructInt : public FTableRowBase
 {
 	GENERATED_BODY()
 
@@ -54,7 +55,7 @@ struct TESTBED1_API FTestbed1StructInt
  * Struct FTestbed1StructFloat
  */
 USTRUCT(BlueprintType)
-struct TESTBED1_API FTestbed1StructFloat
+struct TESTBED1_API FTestbed1StructFloat : public FTableRowBase
 {
 	GENERATED_BODY()
 
@@ -69,7 +70,7 @@ struct TESTBED1_API FTestbed1StructFloat
  * Struct FTestbed1StructString
  */
 USTRUCT(BlueprintType)
-struct TESTBED1_API FTestbed1StructString
+struct TESTBED1_API FTestbed1StructString : public FTableRowBase
 {
 	GENERATED_BODY()
 

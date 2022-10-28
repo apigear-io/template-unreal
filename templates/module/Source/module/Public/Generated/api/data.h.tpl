@@ -21,6 +21,7 @@ limitations under the License.
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Engine/DataTable.h"
 {{ if or (len .Module.Enums) (len .Module.Structs) -}}
 #include "{{ $ModuleName }}_data.generated.h"
 {{ end }}
@@ -49,7 +50,7 @@ bool toUE4Type({{$class}}& value, uint8 v);
  * Struct {{$class}}
  */
 USTRUCT(BlueprintType)
-struct {{$API_MACRO}} {{$class }}
+struct {{$API_MACRO}} {{$class }} : public FTableRowBase
 {
 	GENERATED_BODY()
 {{- range .Fields }}

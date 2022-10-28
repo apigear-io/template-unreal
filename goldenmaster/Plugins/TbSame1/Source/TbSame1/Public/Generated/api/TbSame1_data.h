@@ -18,6 +18,7 @@ limitations under the License.
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Engine/DataTable.h"
 #include "TbSame1_data.generated.h"
 
 /**
@@ -54,7 +55,7 @@ bool toUE4Type(ETbSame1Enum2& value, uint8 v);
  * Struct FTbSame1Struct1
  */
 USTRUCT(BlueprintType)
-struct TBSAME1_API FTbSame1Struct1
+struct TBSAME1_API FTbSame1Struct1 : public FTableRowBase
 {
 	GENERATED_BODY()
 
@@ -75,7 +76,7 @@ struct TBSAME1_API FTbSame1Struct1
  * Struct FTbSame1Struct2
  */
 USTRUCT(BlueprintType)
-struct TBSAME1_API FTbSame1Struct2
+struct TBSAME1_API FTbSame1Struct2 : public FTableRowBase
 {
 	GENERATED_BODY()
 
