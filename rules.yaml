@@ -223,6 +223,8 @@ features:
             target: "Source/{{Camel .Module.Name}}/Private/Implementation/{{Camel .Module.Name}}{{Camel .Interface.Name}}.h"
           - source: "module/Source/module/Private/Implementation/implementation.cpp.tpl"
             target: "Source/{{Camel .Module.Name}}/Private/Implementation/{{Camel .Module.Name}}{{Camel .Interface.Name}}.cpp"
+          - source: "module/Source/module/Private/Tests/implementationtest.cpp.tpl"
+            target: "Source/{{Camel .Module.Name}}/Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}Tests.cpp"
           - source: "module/Source/module/Private/Generated/Simulation/simulationclient.h.tpl"
             target: "Source/{{Camel .Module.Name}}/Private/Generated/Simulation/{{Camel .Module.Name}}{{Camel .Interface.Name}}SimulationClient.h"
             force: true
