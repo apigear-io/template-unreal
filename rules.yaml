@@ -10,9 +10,6 @@ features:
           - source: "module/Source/module/Public/Generated/api/data.h.tpl"
             target: "Public/Generated/api/{{Camel .Module.Name}}_data.h"
             force: true
-          - source: "module/Source/module/Private/Generated/api/module.cpp.tpl"
-            target: "Private/Generated/api/{{Camel .Module.Name}}_apig.cpp"
-            force: true
           - source: "module/Source/module/Private/Generated/api/trace.h.tpl"
             target: "Private/Generated/api/{{Camel .Module.Name}}.trace.h"
             force: true
