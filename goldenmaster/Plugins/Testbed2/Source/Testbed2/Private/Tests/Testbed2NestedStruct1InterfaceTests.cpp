@@ -30,4 +30,13 @@ bool UTestbed2NestedStruct1InterfaceImplementationPropertyProp1Test::RunTest(con
 	return true;
 }
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed2NestedStruct1InterfaceImplementationOperationFunc1Test, "Testbed2.NestedStruct1Interface.Implementation.Operation.Func1", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+bool UTestbed2NestedStruct1InterfaceImplementationOperationFunc1Test::RunTest(const FString& Parameters)
+{
+	// Do implement test here
+	TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> test = NewObject<UTestbed2NestedStruct1Interface>();
+	test->Execute_Func1(test.GetObject(), FTestbed2NestedStruct1());
+	return true;
+}
+
 #endif // WITH_DEV_AUTOMATION_TESTS

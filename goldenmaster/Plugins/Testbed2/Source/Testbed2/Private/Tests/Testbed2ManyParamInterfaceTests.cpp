@@ -60,4 +60,58 @@ bool UTestbed2ManyParamInterfaceImplementationPropertyProp4Test::RunTest(const F
 	return true;
 }
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed2ManyParamInterfaceImplementationOperationFunc0Test, "Testbed2.ManyParamInterface.Implementation.Operation.Func0", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+bool UTestbed2ManyParamInterfaceImplementationOperationFunc0Test::RunTest(const FString& Parameters)
+{
+	// Do implement test here
+	TScriptInterface<ITestbed2ManyParamInterfaceInterface> test = NewObject<UTestbed2ManyParamInterface>();
+	test->Execute_Func0(test.GetObject());
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed2ManyParamInterfaceImplementationOperationFunc1Test, "Testbed2.ManyParamInterface.Implementation.Operation.Func1", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+bool UTestbed2ManyParamInterfaceImplementationOperationFunc1Test::RunTest(const FString& Parameters)
+{
+	// Do implement test here
+	TScriptInterface<ITestbed2ManyParamInterfaceInterface> test = NewObject<UTestbed2ManyParamInterface>();
+	test->Execute_Func1(test.GetObject(), 0);
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed2ManyParamInterfaceImplementationOperationFunc2Test, "Testbed2.ManyParamInterface.Implementation.Operation.Func2", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+bool UTestbed2ManyParamInterfaceImplementationOperationFunc2Test::RunTest(const FString& Parameters)
+{
+	// Do implement test here
+	TScriptInterface<ITestbed2ManyParamInterfaceInterface> test = NewObject<UTestbed2ManyParamInterface>();
+	test->Execute_Func2(test.GetObject(), 0, 0);
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed2ManyParamInterfaceImplementationOperationFunc3Test, "Testbed2.ManyParamInterface.Implementation.Operation.Func3", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+bool UTestbed2ManyParamInterfaceImplementationOperationFunc3Test::RunTest(const FString& Parameters)
+{
+	// Do implement test here
+	TScriptInterface<ITestbed2ManyParamInterfaceInterface> test = NewObject<UTestbed2ManyParamInterface>();
+	test->Execute_Func3(test.GetObject(), 0, 0, 0);
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed2ManyParamInterfaceImplementationOperationFunc4Test, "Testbed2.ManyParamInterface.Implementation.Operation.Func4", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+bool UTestbed2ManyParamInterfaceImplementationOperationFunc4Test::RunTest(const FString& Parameters)
+{
+	// Do implement test here
+	TScriptInterface<ITestbed2ManyParamInterfaceInterface> test = NewObject<UTestbed2ManyParamInterface>();
+	test->Execute_Func4(test.GetObject(), 0, 0, 0, 0);
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed2ManyParamInterfaceImplementationOperationFunc5Test, "Testbed2.ManyParamInterface.Implementation.Operation.Func5", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+bool UTestbed2ManyParamInterfaceImplementationOperationFunc5Test::RunTest(const FString& Parameters)
+{
+	// Do implement test here
+	TScriptInterface<ITestbed2ManyParamInterfaceInterface> test = NewObject<UTestbed2ManyParamInterface>();
+	test->Execute_Func5(test.GetObject(), 0, 0, 0, 0, 0);
+	return true;
+}
+
 #endif // WITH_DEV_AUTOMATION_TESTS

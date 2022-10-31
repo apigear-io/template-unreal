@@ -60,4 +60,40 @@ bool UTbSimpleSimpleInterfaceImplementationPropertyPropStringTest::RunTest(const
 	return true;
 }
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbSimpleSimpleInterfaceImplementationOperationFuncBoolTest, "TbSimple.SimpleInterface.Implementation.Operation.FuncBool", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+bool UTbSimpleSimpleInterfaceImplementationOperationFuncBoolTest::RunTest(const FString& Parameters)
+{
+	// Do implement test here
+	TScriptInterface<ITbSimpleSimpleInterfaceInterface> test = NewObject<UTbSimpleSimpleInterface>();
+	test->Execute_FuncBool(test.GetObject(), false);
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbSimpleSimpleInterfaceImplementationOperationFuncIntTest, "TbSimple.SimpleInterface.Implementation.Operation.FuncInt", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+bool UTbSimpleSimpleInterfaceImplementationOperationFuncIntTest::RunTest(const FString& Parameters)
+{
+	// Do implement test here
+	TScriptInterface<ITbSimpleSimpleInterfaceInterface> test = NewObject<UTbSimpleSimpleInterface>();
+	test->Execute_FuncInt(test.GetObject(), 0);
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbSimpleSimpleInterfaceImplementationOperationFuncFloatTest, "TbSimple.SimpleInterface.Implementation.Operation.FuncFloat", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+bool UTbSimpleSimpleInterfaceImplementationOperationFuncFloatTest::RunTest(const FString& Parameters)
+{
+	// Do implement test here
+	TScriptInterface<ITbSimpleSimpleInterfaceInterface> test = NewObject<UTbSimpleSimpleInterface>();
+	test->Execute_FuncFloat(test.GetObject(), 0.0f);
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbSimpleSimpleInterfaceImplementationOperationFuncStringTest, "TbSimple.SimpleInterface.Implementation.Operation.FuncString", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+bool UTbSimpleSimpleInterfaceImplementationOperationFuncStringTest::RunTest(const FString& Parameters)
+{
+	// Do implement test here
+	TScriptInterface<ITbSimpleSimpleInterfaceInterface> test = NewObject<UTbSimpleSimpleInterface>();
+	test->Execute_FuncString(test.GetObject(), FString());
+	return true;
+}
+
 #endif // WITH_DEV_AUTOMATION_TESTS

@@ -40,4 +40,22 @@ bool UTbSame2SameStruct2InterfaceImplementationPropertyProp2Test::RunTest(const 
 	return true;
 }
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbSame2SameStruct2InterfaceImplementationOperationFunc1Test, "TbSame2.SameStruct2Interface.Implementation.Operation.Func1", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+bool UTbSame2SameStruct2InterfaceImplementationOperationFunc1Test::RunTest(const FString& Parameters)
+{
+	// Do implement test here
+	TScriptInterface<ITbSame2SameStruct2InterfaceInterface> test = NewObject<UTbSame2SameStruct2Interface>();
+	test->Execute_Func1(test.GetObject(), FTbSame2Struct1());
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbSame2SameStruct2InterfaceImplementationOperationFunc2Test, "TbSame2.SameStruct2Interface.Implementation.Operation.Func2", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+bool UTbSame2SameStruct2InterfaceImplementationOperationFunc2Test::RunTest(const FString& Parameters)
+{
+	// Do implement test here
+	TScriptInterface<ITbSame2SameStruct2InterfaceInterface> test = NewObject<UTbSame2SameStruct2Interface>();
+	test->Execute_Func2(test.GetObject(), FTbSame2Struct1(), FTbSame2Struct2());
+	return true;
+}
+
 #endif // WITH_DEV_AUTOMATION_TESTS

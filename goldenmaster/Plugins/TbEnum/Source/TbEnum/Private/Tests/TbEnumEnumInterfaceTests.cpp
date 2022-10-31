@@ -60,4 +60,40 @@ bool UTbEnumEnumInterfaceImplementationPropertyProp3Test::RunTest(const FString&
 	return true;
 }
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbEnumEnumInterfaceImplementationOperationFunc0Test, "TbEnum.EnumInterface.Implementation.Operation.Func0", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+bool UTbEnumEnumInterfaceImplementationOperationFunc0Test::RunTest(const FString& Parameters)
+{
+	// Do implement test here
+	TScriptInterface<ITbEnumEnumInterfaceInterface> test = NewObject<UTbEnumEnumInterface>();
+	test->Execute_Func0(test.GetObject(), ETbEnumEnum0::VALUE0);
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbEnumEnumInterfaceImplementationOperationFunc1Test, "TbEnum.EnumInterface.Implementation.Operation.Func1", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+bool UTbEnumEnumInterfaceImplementationOperationFunc1Test::RunTest(const FString& Parameters)
+{
+	// Do implement test here
+	TScriptInterface<ITbEnumEnumInterfaceInterface> test = NewObject<UTbEnumEnumInterface>();
+	test->Execute_Func1(test.GetObject(), ETbEnumEnum1::VALUE1);
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbEnumEnumInterfaceImplementationOperationFunc2Test, "TbEnum.EnumInterface.Implementation.Operation.Func2", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+bool UTbEnumEnumInterfaceImplementationOperationFunc2Test::RunTest(const FString& Parameters)
+{
+	// Do implement test here
+	TScriptInterface<ITbEnumEnumInterfaceInterface> test = NewObject<UTbEnumEnumInterface>();
+	test->Execute_Func2(test.GetObject(), ETbEnumEnum2::VALUE2);
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbEnumEnumInterfaceImplementationOperationFunc3Test, "TbEnum.EnumInterface.Implementation.Operation.Func3", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+bool UTbEnumEnumInterfaceImplementationOperationFunc3Test::RunTest(const FString& Parameters)
+{
+	// Do implement test here
+	TScriptInterface<ITbEnumEnumInterfaceInterface> test = NewObject<UTbEnumEnumInterface>();
+	test->Execute_Func3(test.GetObject(), ETbEnumEnum3::VALUE3);
+	return true;
+}
+
 #endif // WITH_DEV_AUTOMATION_TESTS

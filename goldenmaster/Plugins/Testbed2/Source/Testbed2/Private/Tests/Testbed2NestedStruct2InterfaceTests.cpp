@@ -40,4 +40,22 @@ bool UTestbed2NestedStruct2InterfaceImplementationPropertyProp2Test::RunTest(con
 	return true;
 }
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed2NestedStruct2InterfaceImplementationOperationFunc1Test, "Testbed2.NestedStruct2Interface.Implementation.Operation.Func1", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+bool UTestbed2NestedStruct2InterfaceImplementationOperationFunc1Test::RunTest(const FString& Parameters)
+{
+	// Do implement test here
+	TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> test = NewObject<UTestbed2NestedStruct2Interface>();
+	test->Execute_Func1(test.GetObject(), FTestbed2NestedStruct1());
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed2NestedStruct2InterfaceImplementationOperationFunc2Test, "Testbed2.NestedStruct2Interface.Implementation.Operation.Func2", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+bool UTestbed2NestedStruct2InterfaceImplementationOperationFunc2Test::RunTest(const FString& Parameters)
+{
+	// Do implement test here
+	TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> test = NewObject<UTestbed2NestedStruct2Interface>();
+	test->Execute_Func2(test.GetObject(), FTestbed2NestedStruct1(), FTestbed2NestedStruct2());
+	return true;
+}
+
 #endif // WITH_DEV_AUTOMATION_TESTS

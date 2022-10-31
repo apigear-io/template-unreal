@@ -23,5 +23,20 @@ bool {{$Class}}ImplementationProperty{{ Camel .Name }}Test::RunTest(const FStrin
 	return true;
 }
 {{- end }}
+{{- range .Interface.Operations }}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST({{$Class}}ImplementationOperation{{ Camel .Name }}Test, "{{$ModuleName}}.{{$IfaceName}}.Implementation.Operation.{{ Camel .Name }}", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+bool {{$Class}}ImplementationOperation{{ Camel .Name }}Test::RunTest(const FString& Parameters)
+{
+	// Do implement test here
+	TScriptInterface<I{{$Iface}}Interface> test = NewObject<{{ $Class }}>();
+	test->Execute_{{Camel .Name}}(test.GetObject()
+		{{- range $i, $e := .Params -}}
+		, {{ueDefault "" .}}
+		{{- end -}}
+	);
+	return true;
+}
+{{- end }}
 
 #endif // WITH_DEV_AUTOMATION_TESTS

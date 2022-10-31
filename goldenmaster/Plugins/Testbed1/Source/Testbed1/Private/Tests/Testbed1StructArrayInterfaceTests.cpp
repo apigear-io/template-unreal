@@ -60,4 +60,40 @@ bool UTestbed1StructArrayInterfaceImplementationPropertyPropStringTest::RunTest(
 	return true;
 }
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed1StructArrayInterfaceImplementationOperationFuncBoolTest, "Testbed1.StructArrayInterface.Implementation.Operation.FuncBool", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+bool UTestbed1StructArrayInterfaceImplementationOperationFuncBoolTest::RunTest(const FString& Parameters)
+{
+	// Do implement test here
+	TScriptInterface<ITestbed1StructArrayInterfaceInterface> test = NewObject<UTestbed1StructArrayInterface>();
+	test->Execute_FuncBool(test.GetObject(), TArray<FTestbed1StructBool>());
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed1StructArrayInterfaceImplementationOperationFuncIntTest, "Testbed1.StructArrayInterface.Implementation.Operation.FuncInt", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+bool UTestbed1StructArrayInterfaceImplementationOperationFuncIntTest::RunTest(const FString& Parameters)
+{
+	// Do implement test here
+	TScriptInterface<ITestbed1StructArrayInterfaceInterface> test = NewObject<UTestbed1StructArrayInterface>();
+	test->Execute_FuncInt(test.GetObject(), TArray<FTestbed1StructInt>());
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed1StructArrayInterfaceImplementationOperationFuncFloatTest, "Testbed1.StructArrayInterface.Implementation.Operation.FuncFloat", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+bool UTestbed1StructArrayInterfaceImplementationOperationFuncFloatTest::RunTest(const FString& Parameters)
+{
+	// Do implement test here
+	TScriptInterface<ITestbed1StructArrayInterfaceInterface> test = NewObject<UTestbed1StructArrayInterface>();
+	test->Execute_FuncFloat(test.GetObject(), TArray<FTestbed1StructFloat>());
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed1StructArrayInterfaceImplementationOperationFuncStringTest, "Testbed1.StructArrayInterface.Implementation.Operation.FuncString", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+bool UTestbed1StructArrayInterfaceImplementationOperationFuncStringTest::RunTest(const FString& Parameters)
+{
+	// Do implement test here
+	TScriptInterface<ITestbed1StructArrayInterfaceInterface> test = NewObject<UTestbed1StructArrayInterface>();
+	test->Execute_FuncString(test.GetObject(), TArray<FTestbed1StructString>());
+	return true;
+}
+
 #endif // WITH_DEV_AUTOMATION_TESTS

@@ -20,4 +20,13 @@ limitations under the License.
 
 #if WITH_DEV_AUTOMATION_TESTS
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed2NoPropertyInterfaceImplementationOperationFunc1Test, "Testbed2.NoPropertyInterface.Implementation.Operation.Func1", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+bool UTestbed2NoPropertyInterfaceImplementationOperationFunc1Test::RunTest(const FString& Parameters)
+{
+	// Do implement test here
+	TScriptInterface<ITestbed2NoPropertyInterfaceInterface> test = NewObject<UTestbed2NoPropertyInterface>();
+	test->Execute_Func1(test.GetObject(), FTestbed2NestedStruct1());
+	return true;
+}
+
 #endif // WITH_DEV_AUTOMATION_TESTS

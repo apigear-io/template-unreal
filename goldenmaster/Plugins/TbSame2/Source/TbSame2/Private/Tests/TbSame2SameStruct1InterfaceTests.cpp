@@ -30,4 +30,13 @@ bool UTbSame2SameStruct1InterfaceImplementationPropertyProp1Test::RunTest(const 
 	return true;
 }
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbSame2SameStruct1InterfaceImplementationOperationFunc1Test, "TbSame2.SameStruct1Interface.Implementation.Operation.Func1", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+bool UTbSame2SameStruct1InterfaceImplementationOperationFunc1Test::RunTest(const FString& Parameters)
+{
+	// Do implement test here
+	TScriptInterface<ITbSame2SameStruct1InterfaceInterface> test = NewObject<UTbSame2SameStruct1Interface>();
+	test->Execute_Func1(test.GetObject(), FTbSame2Struct1());
+	return true;
+}
+
 #endif // WITH_DEV_AUTOMATION_TESTS

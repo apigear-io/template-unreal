@@ -50,4 +50,31 @@ bool UTestbed2NestedStruct3InterfaceImplementationPropertyProp3Test::RunTest(con
 	return true;
 }
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed2NestedStruct3InterfaceImplementationOperationFunc1Test, "Testbed2.NestedStruct3Interface.Implementation.Operation.Func1", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+bool UTestbed2NestedStruct3InterfaceImplementationOperationFunc1Test::RunTest(const FString& Parameters)
+{
+	// Do implement test here
+	TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> test = NewObject<UTestbed2NestedStruct3Interface>();
+	test->Execute_Func1(test.GetObject(), FTestbed2NestedStruct1());
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed2NestedStruct3InterfaceImplementationOperationFunc2Test, "Testbed2.NestedStruct3Interface.Implementation.Operation.Func2", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+bool UTestbed2NestedStruct3InterfaceImplementationOperationFunc2Test::RunTest(const FString& Parameters)
+{
+	// Do implement test here
+	TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> test = NewObject<UTestbed2NestedStruct3Interface>();
+	test->Execute_Func2(test.GetObject(), FTestbed2NestedStruct1(), FTestbed2NestedStruct2());
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed2NestedStruct3InterfaceImplementationOperationFunc3Test, "Testbed2.NestedStruct3Interface.Implementation.Operation.Func3", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+bool UTestbed2NestedStruct3InterfaceImplementationOperationFunc3Test::RunTest(const FString& Parameters)
+{
+	// Do implement test here
+	TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> test = NewObject<UTestbed2NestedStruct3Interface>();
+	test->Execute_Func3(test.GetObject(), FTestbed2NestedStruct1(), FTestbed2NestedStruct2(), FTestbed2NestedStruct3());
+	return true;
+}
+
 #endif // WITH_DEV_AUTOMATION_TESTS

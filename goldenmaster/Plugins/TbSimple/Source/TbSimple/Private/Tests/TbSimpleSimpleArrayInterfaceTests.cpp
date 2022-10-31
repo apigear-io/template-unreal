@@ -60,4 +60,40 @@ bool UTbSimpleSimpleArrayInterfaceImplementationPropertyPropStringTest::RunTest(
 	return true;
 }
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbSimpleSimpleArrayInterfaceImplementationOperationFuncBoolTest, "TbSimple.SimpleArrayInterface.Implementation.Operation.FuncBool", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+bool UTbSimpleSimpleArrayInterfaceImplementationOperationFuncBoolTest::RunTest(const FString& Parameters)
+{
+	// Do implement test here
+	TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> test = NewObject<UTbSimpleSimpleArrayInterface>();
+	test->Execute_FuncBool(test.GetObject(), TArray<bool>());
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbSimpleSimpleArrayInterfaceImplementationOperationFuncIntTest, "TbSimple.SimpleArrayInterface.Implementation.Operation.FuncInt", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+bool UTbSimpleSimpleArrayInterfaceImplementationOperationFuncIntTest::RunTest(const FString& Parameters)
+{
+	// Do implement test here
+	TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> test = NewObject<UTbSimpleSimpleArrayInterface>();
+	test->Execute_FuncInt(test.GetObject(), TArray<int32>());
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbSimpleSimpleArrayInterfaceImplementationOperationFuncFloatTest, "TbSimple.SimpleArrayInterface.Implementation.Operation.FuncFloat", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+bool UTbSimpleSimpleArrayInterfaceImplementationOperationFuncFloatTest::RunTest(const FString& Parameters)
+{
+	// Do implement test here
+	TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> test = NewObject<UTbSimpleSimpleArrayInterface>();
+	test->Execute_FuncFloat(test.GetObject(), TArray<float>());
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbSimpleSimpleArrayInterfaceImplementationOperationFuncStringTest, "TbSimple.SimpleArrayInterface.Implementation.Operation.FuncString", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+bool UTbSimpleSimpleArrayInterfaceImplementationOperationFuncStringTest::RunTest(const FString& Parameters)
+{
+	// Do implement test here
+	TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> test = NewObject<UTbSimpleSimpleArrayInterface>();
+	test->Execute_FuncString(test.GetObject(), TArray<FString>());
+	return true;
+}
+
 #endif // WITH_DEV_AUTOMATION_TESTS
