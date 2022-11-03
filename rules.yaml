@@ -32,11 +32,11 @@ features:
     scopes:
       - match: system
         documents:
-          - source: "build.bat.tpl"
-            target: "build.bat"
+          - source: "buildPlugins.bat.tpl"
+            target: "buildPlugins.bat"
             force: true
-          - source: "build.sh.tpl"
-            target: "build.sh"
+          - source: "buildPlugins.sh.tpl"
+            target: "buildPlugins.sh"
             force: true
           - source: "ApiGear/Source/ApiGear/apigear.Build.cs"
             target: "Plugins/ApiGear/Source/ApiGear/apigear.Build.cs"
