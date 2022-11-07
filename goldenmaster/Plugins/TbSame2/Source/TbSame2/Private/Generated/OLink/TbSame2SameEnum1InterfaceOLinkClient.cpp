@@ -25,42 +25,61 @@ limitations under the License.
 #include "Async/Async.h"
 #include "Generated/api/TbSame2.json.adapter.h"
 #include "unrealolink.h"
+#include "unrealolinksink.h"
 #include "Async/Async.h"
 #include "Engine/Engine.h"
 #include "ApiGear/Public/ApiGearConnectionManager.h"
 #include "Misc/DateTime.h"
+THIRD_PARTY_INCLUDES_START
+#include "olink/clientnode.h"
+#include "olink/iobjectsink.h"
+THIRD_PARTY_INCLUDES_END
 
-using namespace ApiGear::ObjectLink;
 UTbSame2SameEnum1InterfaceOLinkClient::UTbSame2SameEnum1InterfaceOLinkClient()
 	: ITbSame2SameEnum1InterfaceInterface()
-	, m_node(nullptr)
-	, m_isReady(false)
 {
+	m_sink = std::make_shared<FUnrealOLinkSink>("tb.same2.SameEnum1Interface");
 }
 
 void UTbSame2SameEnum1InterfaceOLinkClient::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
+
 	if (GEngine != nullptr)
 	{
 		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
 		AGCM->GetOLinkConnection()->Connect();
-		AGCM->GetOLinkConnection()->linkObjectSource(olinkObjectName());
+		AGCM->GetOLinkConnection()->node()->registry().addSink(m_sink);
+		AGCM->GetOLinkConnection()->linkObjectSource(m_sink->olinkObjectName());
 	}
-	m_node = ClientRegistry::get().addObjectSink(this);
+
+	FUnrealOLinkSink::FPropertyChangedFunc PropertyChangedFunc = [this](const nlohmann::json& props)
+	{
+		this->applyState(props);
+	};
+	m_sink->setOnPropertyChangedCallback(PropertyChangedFunc);
+
+	FUnrealOLinkSink::FSignalEmittedFunc SignalEmittedFunc = [this](const std::string& signalName, const nlohmann::json& args)
+	{
+		this->emitSignal(signalName, args);
+	};
+	m_sink->setOnSignalEmittedCallback(SignalEmittedFunc);
 }
 
 void UTbSame2SameEnum1InterfaceOLinkClient::Deinitialize()
 {
-	Super::Deinitialize();
-	ClientRegistry::get().removeObjectSink(this);
+	// tell the sink that we are gone and should not try to be invoked
+	m_sink->resetOnPropertyChangedCallback();
+	m_sink->resetOnSignalEmittedCallback();
+
 	if (GEngine != nullptr)
 	{
 		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-		AGCM->GetOLinkConnection()->unlinkObjectSource(olinkObjectName());
+		AGCM->GetOLinkConnection()->unlinkObjectSource(m_sink->olinkObjectName());
+		AGCM->GetOLinkConnection()->node()->registry().removeSink(m_sink->olinkObjectName());
 	}
-	m_isReady = false;
-	m_node = nullptr;
+
+	Super::Deinitialize();
 }
 
 void UTbSame2SameEnum1InterfaceOLinkClient::BroadcastSig1_Implementation(const ETbSame2Enum1& Param1)
@@ -86,11 +105,11 @@ ETbSame2Enum1 UTbSame2SameEnum1InterfaceOLinkClient::GetProp1_Implementation() c
 
 void UTbSame2SameEnum1InterfaceOLinkClient::SetProp1_Implementation(const ETbSame2Enum1& InProp1)
 {
-	if (!m_node)
+	if (!m_sink->IsReady())
 	{
 		return;
 	}
-	m_node->setRemoteProperty("tb.same2.SameEnum1Interface/prop1", InProp1);
+	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop1"), InProp1);
 }
 
 FTbSame2SameEnum1InterfaceProp1ChangedDelegate& UTbSame2SameEnum1InterfaceOLinkClient::GetProp1ChangedDelegate()
@@ -100,18 +119,18 @@ FTbSame2SameEnum1InterfaceProp1ChangedDelegate& UTbSame2SameEnum1InterfaceOLinkC
 
 ETbSame2Enum1 UTbSame2SameEnum1InterfaceOLinkClient::Func1_Implementation(const ETbSame2Enum1& Param1)
 {
-	if (!m_node)
+	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
+		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return ETbSame2Enum1::VALUE1;
 	}
 	TPromise<ETbSame2Enum1> Promise;
 	Async(EAsyncExecution::Thread,
 		[Param1, &Promise, this]()
 		{
-			InvokeReplyFunc GetSameEnum1InterfaceStateFunc = [&Promise](InvokeReplyArg arg)
+			ApiGear::ObjectLink::InvokeReplyFunc GetSameEnum1InterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 			{ Promise.SetValue(arg.value.get<ETbSame2Enum1>()); };
-			m_node->invokeRemote("tb.same2.SameEnum1Interface/func1", {Param1}, GetSameEnum1InterfaceStateFunc);
+			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func1"), {Param1}, GetSameEnum1InterfaceStateFunc);
 		});
 
 	return Promise.GetFuture().Get();
@@ -129,37 +148,12 @@ void UTbSame2SameEnum1InterfaceOLinkClient::applyState(const nlohmann::json& fie
 	}
 }
 
-std::string UTbSame2SameEnum1InterfaceOLinkClient::olinkObjectName()
+void UTbSame2SameEnum1InterfaceOLinkClient::emitSignal(const std::string& signalId, const nlohmann::json& args)
 {
-	return "tb.same2.SameEnum1Interface";
-}
-
-void UTbSame2SameEnum1InterfaceOLinkClient::olinkOnSignal(std::string name, nlohmann::json args)
-{
-	std::string path = Name::pathFromName(name);
-	if (path == "sig1")
+	std::string MemberName = ApiGear::ObjectLink::Name::getMemberName(signalId);
+	if (MemberName == "sig1")
 	{
 		Execute_BroadcastSig1(this, args[0].get<ETbSame2Enum1>());
 		return;
 	}
-}
-
-void UTbSame2SameEnum1InterfaceOLinkClient::olinkOnPropertyChanged(std::string name, nlohmann::json value)
-{
-	std::string path = Name::pathFromName(name);
-	applyState({{path, value}});
-}
-
-void UTbSame2SameEnum1InterfaceOLinkClient::olinkOnInit(std::string name, nlohmann::json props, IClientNode* node)
-{
-	m_isReady = true;
-	m_node = node;
-	applyState(props);
-	// call isReady();
-}
-
-void UTbSame2SameEnum1InterfaceOLinkClient::olinkOnRelease()
-{
-	m_isReady = false;
-	m_node = nullptr;
 }

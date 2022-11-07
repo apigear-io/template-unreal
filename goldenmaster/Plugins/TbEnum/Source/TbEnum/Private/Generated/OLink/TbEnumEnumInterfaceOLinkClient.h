@@ -17,12 +17,15 @@ limitations under the License.
 #pragma once
 
 #include "TbEnumEnumInterfaceInterface.h"
+THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
+THIRD_PARTY_INCLUDES_END
+#include "unrealolinksink.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "TbEnumEnumInterfaceOLinkClient.generated.h"
 
 UCLASS(BlueprintType)
-class TBENUM_API UTbEnumEnumInterfaceOLinkClient : public UGameInstanceSubsystem, public ITbEnumEnumInterfaceInterface, public ApiGear::ObjectLink::IObjectSink
+class TBENUM_API UTbEnumEnumInterfaceOLinkClient : public UGameInstanceSubsystem, public ITbEnumEnumInterfaceInterface
 {
 	GENERATED_BODY()
 public:
@@ -84,13 +87,6 @@ public:
 	void Func3Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum3& Result, const ETbEnumEnum3& Param3) override{};
 	ETbEnumEnum3 Func3_Implementation(const ETbEnumEnum3& Param3) override;
 
-	// olink sink interface
-	std::string olinkObjectName() override;
-	void olinkOnSignal(std::string name, nlohmann::json args) override;
-	void olinkOnPropertyChanged(std::string name, nlohmann::json value) override;
-	void olinkOnInit(std::string name, nlohmann::json props, ApiGear::ObjectLink::IClientNode* node) override;
-	void olinkOnRelease() override;
-
 protected:
 	// signals
 	void BroadcastSig0_Implementation(const ETbEnumEnum0& Param0) override;
@@ -111,8 +107,9 @@ protected:
 
 private:
 	void applyState(const nlohmann::json& fields);
-	ApiGear::ObjectLink::IClientNode* m_node;
-	bool m_isReady;
+	void emitSignal(const std::string& signalId, const nlohmann::json& args);
+	std::shared_ptr<FUnrealOLinkSink> m_sink;
+
 	// properties - local copy
 	ETbEnumEnum0 Prop0{ETbEnumEnum0::VALUE0};
 	ETbEnumEnum1 Prop1{ETbEnumEnum1::VALUE1};

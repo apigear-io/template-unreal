@@ -11,12 +11,15 @@
 #pragma once
 
 #include "{{$Iface}}Interface.h"
+THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
+THIRD_PARTY_INCLUDES_END
+#include "unrealolinksink.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "{{$Iface}}OLinkClient.generated.h"
 
 UCLASS(BlueprintType)
-class {{ $API_MACRO }} {{$Class}} : public UGameInstanceSubsystem, public I{{$Iface}}Interface, public ApiGear::ObjectLink::IObjectSink
+class {{ $API_MACRO }} {{$Class}} : public UGameInstanceSubsystem, public I{{$Iface}}Interface
 {
 	GENERATED_BODY()
 public:
@@ -42,20 +45,15 @@ public:
 	void Set{{Camel .Name}}_Implementation({{ueParam "" .}}) override;
 {{ end }}
 	// operations
-{{- range .Interface.Operations }}
+{{- range $i, $e := .Interface.Operations }}
+{{- if $i }}{{nl}}{{ end }}
 	{{- if .Return.IsVoid }}
 	{{ueReturn "" .Return}} {{Camel .Name}}_Implementation({{ueParams "" .Params}}) override;
 	{{- else }}
 	void {{Camel .Name}}Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, {{ueReturn "" .Return}}& Result{{if len .Params}}, {{end}}{{ueParams "" .Params}}) override{};
 	{{ueReturn "" .Return}} {{Camel .Name}}_Implementation({{ueParams "" .Params}}) override;
 	{{- end }}
-{{ end }}
-	// olink sink interface
-	std::string olinkObjectName() override;
-	void olinkOnSignal(std::string name, nlohmann::json args) override;
-	void olinkOnPropertyChanged(std::string name, nlohmann::json value) override;
-	void olinkOnInit(std::string name, nlohmann::json props, ApiGear::ObjectLink::IClientNode* node) override;
-	void olinkOnRelease() override;
+{{- end }}
 
 protected:
 	// signals
@@ -71,8 +69,9 @@ protected:
 
 private:
 	void applyState(const nlohmann::json& fields);
-	ApiGear::ObjectLink::IClientNode* m_node;
-	bool m_isReady;
+	void emitSignal(const std::string& signalId, const nlohmann::json& args);
+	std::shared_ptr<FUnrealOLinkSink> m_sink;
+
 	// properties - local copy
 {{- range .Interface.Properties }}
 {{- if .Description }}

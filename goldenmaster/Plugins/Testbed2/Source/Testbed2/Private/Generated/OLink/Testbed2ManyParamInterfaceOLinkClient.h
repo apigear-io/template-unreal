@@ -17,12 +17,15 @@ limitations under the License.
 #pragma once
 
 #include "Testbed2ManyParamInterfaceInterface.h"
+THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
+THIRD_PARTY_INCLUDES_END
+#include "unrealolinksink.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Testbed2ManyParamInterfaceOLinkClient.generated.h"
 
 UCLASS(BlueprintType)
-class TESTBED2_API UTestbed2ManyParamInterfaceOLinkClient : public UGameInstanceSubsystem, public ITestbed2ManyParamInterfaceInterface, public ApiGear::ObjectLink::IObjectSink
+class TESTBED2_API UTestbed2ManyParamInterfaceOLinkClient : public UGameInstanceSubsystem, public ITestbed2ManyParamInterfaceInterface
 {
 	GENERATED_BODY()
 public:
@@ -91,13 +94,6 @@ public:
 
 	void Func5_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4, int32 Param5) override;
 
-	// olink sink interface
-	std::string olinkObjectName() override;
-	void olinkOnSignal(std::string name, nlohmann::json args) override;
-	void olinkOnPropertyChanged(std::string name, nlohmann::json value) override;
-	void olinkOnInit(std::string name, nlohmann::json props, ApiGear::ObjectLink::IClientNode* node) override;
-	void olinkOnRelease() override;
-
 protected:
 	// signals
 	void BroadcastSig0_Implementation() override;
@@ -120,8 +116,9 @@ protected:
 
 private:
 	void applyState(const nlohmann::json& fields);
-	ApiGear::ObjectLink::IClientNode* m_node;
-	bool m_isReady;
+	void emitSignal(const std::string& signalId, const nlohmann::json& args);
+	std::shared_ptr<FUnrealOLinkSink> m_sink;
+
 	// properties - local copy
 	int32 Prop1{0};
 	int32 Prop2{0};

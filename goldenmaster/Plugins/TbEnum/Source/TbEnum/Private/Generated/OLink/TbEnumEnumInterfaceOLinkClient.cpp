@@ -25,42 +25,61 @@ limitations under the License.
 #include "Async/Async.h"
 #include "Generated/api/TbEnum.json.adapter.h"
 #include "unrealolink.h"
+#include "unrealolinksink.h"
 #include "Async/Async.h"
 #include "Engine/Engine.h"
 #include "ApiGear/Public/ApiGearConnectionManager.h"
 #include "Misc/DateTime.h"
+THIRD_PARTY_INCLUDES_START
+#include "olink/clientnode.h"
+#include "olink/iobjectsink.h"
+THIRD_PARTY_INCLUDES_END
 
-using namespace ApiGear::ObjectLink;
 UTbEnumEnumInterfaceOLinkClient::UTbEnumEnumInterfaceOLinkClient()
 	: ITbEnumEnumInterfaceInterface()
-	, m_node(nullptr)
-	, m_isReady(false)
 {
+	m_sink = std::make_shared<FUnrealOLinkSink>("tb.enum.EnumInterface");
 }
 
 void UTbEnumEnumInterfaceOLinkClient::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
+
 	if (GEngine != nullptr)
 	{
 		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
 		AGCM->GetOLinkConnection()->Connect();
-		AGCM->GetOLinkConnection()->linkObjectSource(olinkObjectName());
+		AGCM->GetOLinkConnection()->node()->registry().addSink(m_sink);
+		AGCM->GetOLinkConnection()->linkObjectSource(m_sink->olinkObjectName());
 	}
-	m_node = ClientRegistry::get().addObjectSink(this);
+
+	FUnrealOLinkSink::FPropertyChangedFunc PropertyChangedFunc = [this](const nlohmann::json& props)
+	{
+		this->applyState(props);
+	};
+	m_sink->setOnPropertyChangedCallback(PropertyChangedFunc);
+
+	FUnrealOLinkSink::FSignalEmittedFunc SignalEmittedFunc = [this](const std::string& signalName, const nlohmann::json& args)
+	{
+		this->emitSignal(signalName, args);
+	};
+	m_sink->setOnSignalEmittedCallback(SignalEmittedFunc);
 }
 
 void UTbEnumEnumInterfaceOLinkClient::Deinitialize()
 {
-	Super::Deinitialize();
-	ClientRegistry::get().removeObjectSink(this);
+	// tell the sink that we are gone and should not try to be invoked
+	m_sink->resetOnPropertyChangedCallback();
+	m_sink->resetOnSignalEmittedCallback();
+
 	if (GEngine != nullptr)
 	{
 		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-		AGCM->GetOLinkConnection()->unlinkObjectSource(olinkObjectName());
+		AGCM->GetOLinkConnection()->unlinkObjectSource(m_sink->olinkObjectName());
+		AGCM->GetOLinkConnection()->node()->registry().removeSink(m_sink->olinkObjectName());
 	}
-	m_isReady = false;
-	m_node = nullptr;
+
+	Super::Deinitialize();
 }
 
 void UTbEnumEnumInterfaceOLinkClient::BroadcastSig0_Implementation(const ETbEnumEnum0& Param0)
@@ -116,11 +135,11 @@ ETbEnumEnum0 UTbEnumEnumInterfaceOLinkClient::GetProp0_Implementation() const
 
 void UTbEnumEnumInterfaceOLinkClient::SetProp0_Implementation(const ETbEnumEnum0& InProp0)
 {
-	if (!m_node)
+	if (!m_sink->IsReady())
 	{
 		return;
 	}
-	m_node->setRemoteProperty("tb.enum.EnumInterface/prop0", InProp0);
+	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop0"), InProp0);
 }
 
 FTbEnumEnumInterfaceProp0ChangedDelegate& UTbEnumEnumInterfaceOLinkClient::GetProp0ChangedDelegate()
@@ -141,11 +160,11 @@ ETbEnumEnum1 UTbEnumEnumInterfaceOLinkClient::GetProp1_Implementation() const
 
 void UTbEnumEnumInterfaceOLinkClient::SetProp1_Implementation(const ETbEnumEnum1& InProp1)
 {
-	if (!m_node)
+	if (!m_sink->IsReady())
 	{
 		return;
 	}
-	m_node->setRemoteProperty("tb.enum.EnumInterface/prop1", InProp1);
+	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop1"), InProp1);
 }
 
 FTbEnumEnumInterfaceProp1ChangedDelegate& UTbEnumEnumInterfaceOLinkClient::GetProp1ChangedDelegate()
@@ -166,11 +185,11 @@ ETbEnumEnum2 UTbEnumEnumInterfaceOLinkClient::GetProp2_Implementation() const
 
 void UTbEnumEnumInterfaceOLinkClient::SetProp2_Implementation(const ETbEnumEnum2& InProp2)
 {
-	if (!m_node)
+	if (!m_sink->IsReady())
 	{
 		return;
 	}
-	m_node->setRemoteProperty("tb.enum.EnumInterface/prop2", InProp2);
+	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop2"), InProp2);
 }
 
 FTbEnumEnumInterfaceProp2ChangedDelegate& UTbEnumEnumInterfaceOLinkClient::GetProp2ChangedDelegate()
@@ -191,11 +210,11 @@ ETbEnumEnum3 UTbEnumEnumInterfaceOLinkClient::GetProp3_Implementation() const
 
 void UTbEnumEnumInterfaceOLinkClient::SetProp3_Implementation(const ETbEnumEnum3& InProp3)
 {
-	if (!m_node)
+	if (!m_sink->IsReady())
 	{
 		return;
 	}
-	m_node->setRemoteProperty("tb.enum.EnumInterface/prop3", InProp3);
+	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop3"), InProp3);
 }
 
 FTbEnumEnumInterfaceProp3ChangedDelegate& UTbEnumEnumInterfaceOLinkClient::GetProp3ChangedDelegate()
@@ -205,18 +224,18 @@ FTbEnumEnumInterfaceProp3ChangedDelegate& UTbEnumEnumInterfaceOLinkClient::GetPr
 
 ETbEnumEnum0 UTbEnumEnumInterfaceOLinkClient::Func0_Implementation(const ETbEnumEnum0& Param0)
 {
-	if (!m_node)
+	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
+		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return ETbEnumEnum0::VALUE0;
 	}
 	TPromise<ETbEnumEnum0> Promise;
 	Async(EAsyncExecution::Thread,
 		[Param0, &Promise, this]()
 		{
-			InvokeReplyFunc GetEnumInterfaceStateFunc = [&Promise](InvokeReplyArg arg)
+			ApiGear::ObjectLink::InvokeReplyFunc GetEnumInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 			{ Promise.SetValue(arg.value.get<ETbEnumEnum0>()); };
-			m_node->invokeRemote("tb.enum.EnumInterface/func0", {Param0}, GetEnumInterfaceStateFunc);
+			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func0"), {Param0}, GetEnumInterfaceStateFunc);
 		});
 
 	return Promise.GetFuture().Get();
@@ -224,18 +243,18 @@ ETbEnumEnum0 UTbEnumEnumInterfaceOLinkClient::Func0_Implementation(const ETbEnum
 
 ETbEnumEnum1 UTbEnumEnumInterfaceOLinkClient::Func1_Implementation(const ETbEnumEnum1& Param1)
 {
-	if (!m_node)
+	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
+		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return ETbEnumEnum1::VALUE1;
 	}
 	TPromise<ETbEnumEnum1> Promise;
 	Async(EAsyncExecution::Thread,
 		[Param1, &Promise, this]()
 		{
-			InvokeReplyFunc GetEnumInterfaceStateFunc = [&Promise](InvokeReplyArg arg)
+			ApiGear::ObjectLink::InvokeReplyFunc GetEnumInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 			{ Promise.SetValue(arg.value.get<ETbEnumEnum1>()); };
-			m_node->invokeRemote("tb.enum.EnumInterface/func1", {Param1}, GetEnumInterfaceStateFunc);
+			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func1"), {Param1}, GetEnumInterfaceStateFunc);
 		});
 
 	return Promise.GetFuture().Get();
@@ -243,18 +262,18 @@ ETbEnumEnum1 UTbEnumEnumInterfaceOLinkClient::Func1_Implementation(const ETbEnum
 
 ETbEnumEnum2 UTbEnumEnumInterfaceOLinkClient::Func2_Implementation(const ETbEnumEnum2& Param2)
 {
-	if (!m_node)
+	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
+		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return ETbEnumEnum2::VALUE2;
 	}
 	TPromise<ETbEnumEnum2> Promise;
 	Async(EAsyncExecution::Thread,
 		[Param2, &Promise, this]()
 		{
-			InvokeReplyFunc GetEnumInterfaceStateFunc = [&Promise](InvokeReplyArg arg)
+			ApiGear::ObjectLink::InvokeReplyFunc GetEnumInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 			{ Promise.SetValue(arg.value.get<ETbEnumEnum2>()); };
-			m_node->invokeRemote("tb.enum.EnumInterface/func2", {Param2}, GetEnumInterfaceStateFunc);
+			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func2"), {Param2}, GetEnumInterfaceStateFunc);
 		});
 
 	return Promise.GetFuture().Get();
@@ -262,18 +281,18 @@ ETbEnumEnum2 UTbEnumEnumInterfaceOLinkClient::Func2_Implementation(const ETbEnum
 
 ETbEnumEnum3 UTbEnumEnumInterfaceOLinkClient::Func3_Implementation(const ETbEnumEnum3& Param3)
 {
-	if (!m_node)
+	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
+		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return ETbEnumEnum3::VALUE3;
 	}
 	TPromise<ETbEnumEnum3> Promise;
 	Async(EAsyncExecution::Thread,
 		[Param3, &Promise, this]()
 		{
-			InvokeReplyFunc GetEnumInterfaceStateFunc = [&Promise](InvokeReplyArg arg)
+			ApiGear::ObjectLink::InvokeReplyFunc GetEnumInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 			{ Promise.SetValue(arg.value.get<ETbEnumEnum3>()); };
-			m_node->invokeRemote("tb.enum.EnumInterface/func3", {Param3}, GetEnumInterfaceStateFunc);
+			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func3"), {Param3}, GetEnumInterfaceStateFunc);
 		});
 
 	return Promise.GetFuture().Get();
@@ -315,52 +334,27 @@ void UTbEnumEnumInterfaceOLinkClient::applyState(const nlohmann::json& fields)
 	}
 }
 
-std::string UTbEnumEnumInterfaceOLinkClient::olinkObjectName()
+void UTbEnumEnumInterfaceOLinkClient::emitSignal(const std::string& signalId, const nlohmann::json& args)
 {
-	return "tb.enum.EnumInterface";
-}
-
-void UTbEnumEnumInterfaceOLinkClient::olinkOnSignal(std::string name, nlohmann::json args)
-{
-	std::string path = Name::pathFromName(name);
-	if (path == "sig0")
+	std::string MemberName = ApiGear::ObjectLink::Name::getMemberName(signalId);
+	if (MemberName == "sig0")
 	{
 		Execute_BroadcastSig0(this, args[0].get<ETbEnumEnum0>());
 		return;
 	}
-	if (path == "sig1")
+	if (MemberName == "sig1")
 	{
 		Execute_BroadcastSig1(this, args[0].get<ETbEnumEnum1>());
 		return;
 	}
-	if (path == "sig2")
+	if (MemberName == "sig2")
 	{
 		Execute_BroadcastSig2(this, args[0].get<ETbEnumEnum2>());
 		return;
 	}
-	if (path == "sig3")
+	if (MemberName == "sig3")
 	{
 		Execute_BroadcastSig3(this, args[0].get<ETbEnumEnum3>());
 		return;
 	}
-}
-
-void UTbEnumEnumInterfaceOLinkClient::olinkOnPropertyChanged(std::string name, nlohmann::json value)
-{
-	std::string path = Name::pathFromName(name);
-	applyState({{path, value}});
-}
-
-void UTbEnumEnumInterfaceOLinkClient::olinkOnInit(std::string name, nlohmann::json props, IClientNode* node)
-{
-	m_isReady = true;
-	m_node = node;
-	applyState(props);
-	// call isReady();
-}
-
-void UTbEnumEnumInterfaceOLinkClient::olinkOnRelease()
-{
-	m_isReady = false;
-	m_node = nullptr;
 }

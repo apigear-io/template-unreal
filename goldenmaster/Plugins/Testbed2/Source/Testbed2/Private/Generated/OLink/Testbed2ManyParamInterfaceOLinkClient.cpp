@@ -25,42 +25,61 @@ limitations under the License.
 #include "Async/Async.h"
 #include "Generated/api/Testbed2.json.adapter.h"
 #include "unrealolink.h"
+#include "unrealolinksink.h"
 #include "Async/Async.h"
 #include "Engine/Engine.h"
 #include "ApiGear/Public/ApiGearConnectionManager.h"
 #include "Misc/DateTime.h"
+THIRD_PARTY_INCLUDES_START
+#include "olink/clientnode.h"
+#include "olink/iobjectsink.h"
+THIRD_PARTY_INCLUDES_END
 
-using namespace ApiGear::ObjectLink;
 UTestbed2ManyParamInterfaceOLinkClient::UTestbed2ManyParamInterfaceOLinkClient()
 	: ITestbed2ManyParamInterfaceInterface()
-	, m_node(nullptr)
-	, m_isReady(false)
 {
+	m_sink = std::make_shared<FUnrealOLinkSink>("testbed2.ManyParamInterface");
 }
 
 void UTestbed2ManyParamInterfaceOLinkClient::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
+
 	if (GEngine != nullptr)
 	{
 		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
 		AGCM->GetOLinkConnection()->Connect();
-		AGCM->GetOLinkConnection()->linkObjectSource(olinkObjectName());
+		AGCM->GetOLinkConnection()->node()->registry().addSink(m_sink);
+		AGCM->GetOLinkConnection()->linkObjectSource(m_sink->olinkObjectName());
 	}
-	m_node = ClientRegistry::get().addObjectSink(this);
+
+	FUnrealOLinkSink::FPropertyChangedFunc PropertyChangedFunc = [this](const nlohmann::json& props)
+	{
+		this->applyState(props);
+	};
+	m_sink->setOnPropertyChangedCallback(PropertyChangedFunc);
+
+	FUnrealOLinkSink::FSignalEmittedFunc SignalEmittedFunc = [this](const std::string& signalName, const nlohmann::json& args)
+	{
+		this->emitSignal(signalName, args);
+	};
+	m_sink->setOnSignalEmittedCallback(SignalEmittedFunc);
 }
 
 void UTestbed2ManyParamInterfaceOLinkClient::Deinitialize()
 {
-	Super::Deinitialize();
-	ClientRegistry::get().removeObjectSink(this);
+	// tell the sink that we are gone and should not try to be invoked
+	m_sink->resetOnPropertyChangedCallback();
+	m_sink->resetOnSignalEmittedCallback();
+
 	if (GEngine != nullptr)
 	{
 		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-		AGCM->GetOLinkConnection()->unlinkObjectSource(olinkObjectName());
+		AGCM->GetOLinkConnection()->unlinkObjectSource(m_sink->olinkObjectName());
+		AGCM->GetOLinkConnection()->node()->registry().removeSink(m_sink->olinkObjectName());
 	}
-	m_isReady = false;
-	m_node = nullptr;
+
+	Super::Deinitialize();
 }
 
 void UTestbed2ManyParamInterfaceOLinkClient::BroadcastSig0_Implementation()
@@ -126,11 +145,11 @@ int32 UTestbed2ManyParamInterfaceOLinkClient::GetProp1_Implementation() const
 
 void UTestbed2ManyParamInterfaceOLinkClient::SetProp1_Implementation(int32 InProp1)
 {
-	if (!m_node)
+	if (!m_sink->IsReady())
 	{
 		return;
 	}
-	m_node->setRemoteProperty("testbed2.ManyParamInterface/prop1", InProp1);
+	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop1"), InProp1);
 }
 
 FTestbed2ManyParamInterfaceProp1ChangedDelegate& UTestbed2ManyParamInterfaceOLinkClient::GetProp1ChangedDelegate()
@@ -151,11 +170,11 @@ int32 UTestbed2ManyParamInterfaceOLinkClient::GetProp2_Implementation() const
 
 void UTestbed2ManyParamInterfaceOLinkClient::SetProp2_Implementation(int32 InProp2)
 {
-	if (!m_node)
+	if (!m_sink->IsReady())
 	{
 		return;
 	}
-	m_node->setRemoteProperty("testbed2.ManyParamInterface/prop2", InProp2);
+	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop2"), InProp2);
 }
 
 FTestbed2ManyParamInterfaceProp2ChangedDelegate& UTestbed2ManyParamInterfaceOLinkClient::GetProp2ChangedDelegate()
@@ -176,11 +195,11 @@ int32 UTestbed2ManyParamInterfaceOLinkClient::GetProp3_Implementation() const
 
 void UTestbed2ManyParamInterfaceOLinkClient::SetProp3_Implementation(int32 InProp3)
 {
-	if (!m_node)
+	if (!m_sink->IsReady())
 	{
 		return;
 	}
-	m_node->setRemoteProperty("testbed2.ManyParamInterface/prop3", InProp3);
+	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop3"), InProp3);
 }
 
 FTestbed2ManyParamInterfaceProp3ChangedDelegate& UTestbed2ManyParamInterfaceOLinkClient::GetProp3ChangedDelegate()
@@ -201,11 +220,11 @@ int32 UTestbed2ManyParamInterfaceOLinkClient::GetProp4_Implementation() const
 
 void UTestbed2ManyParamInterfaceOLinkClient::SetProp4_Implementation(int32 InProp4)
 {
-	if (!m_node)
+	if (!m_sink->IsReady())
 	{
 		return;
 	}
-	m_node->setRemoteProperty("testbed2.ManyParamInterface/prop4", InProp4);
+	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop4"), InProp4);
 }
 
 FTestbed2ManyParamInterfaceProp4ChangedDelegate& UTestbed2ManyParamInterfaceOLinkClient::GetProp4ChangedDelegate()
@@ -215,29 +234,29 @@ FTestbed2ManyParamInterfaceProp4ChangedDelegate& UTestbed2ManyParamInterfaceOLin
 
 void UTestbed2ManyParamInterfaceOLinkClient::Func0_Implementation()
 {
-	if (!m_node)
+	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
+		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return;
 	}
-	InvokeReplyFunc GetManyParamInterfaceStateFunc = [this](InvokeReplyArg arg) {};
-	m_node->invokeRemote("testbed2.ManyParamInterface/func0", {}, GetManyParamInterfaceStateFunc);
+	ApiGear::ObjectLink::InvokeReplyFunc GetManyParamInterfaceStateFunc = [this](ApiGear::ObjectLink::InvokeReplyArg arg) {};
+	m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func0"), {}, GetManyParamInterfaceStateFunc);
 }
 
 int32 UTestbed2ManyParamInterfaceOLinkClient::Func1_Implementation(int32 Param1)
 {
-	if (!m_node)
+	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
+		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return 0;
 	}
 	TPromise<int32> Promise;
 	Async(EAsyncExecution::Thread,
 		[Param1, &Promise, this]()
 		{
-			InvokeReplyFunc GetManyParamInterfaceStateFunc = [&Promise](InvokeReplyArg arg)
+			ApiGear::ObjectLink::InvokeReplyFunc GetManyParamInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 			{ Promise.SetValue(arg.value.get<int32>()); };
-			m_node->invokeRemote("testbed2.ManyParamInterface/func1", {Param1}, GetManyParamInterfaceStateFunc);
+			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func1"), {Param1}, GetManyParamInterfaceStateFunc);
 		});
 
 	return Promise.GetFuture().Get();
@@ -245,18 +264,18 @@ int32 UTestbed2ManyParamInterfaceOLinkClient::Func1_Implementation(int32 Param1)
 
 int32 UTestbed2ManyParamInterfaceOLinkClient::Func2_Implementation(int32 Param1, int32 Param2)
 {
-	if (!m_node)
+	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
+		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return 0;
 	}
 	TPromise<int32> Promise;
 	Async(EAsyncExecution::Thread,
 		[Param1, Param2, &Promise, this]()
 		{
-			InvokeReplyFunc GetManyParamInterfaceStateFunc = [&Promise](InvokeReplyArg arg)
+			ApiGear::ObjectLink::InvokeReplyFunc GetManyParamInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 			{ Promise.SetValue(arg.value.get<int32>()); };
-			m_node->invokeRemote("testbed2.ManyParamInterface/func2", {Param1, Param2}, GetManyParamInterfaceStateFunc);
+			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func2"), {Param1, Param2}, GetManyParamInterfaceStateFunc);
 		});
 
 	return Promise.GetFuture().Get();
@@ -264,18 +283,18 @@ int32 UTestbed2ManyParamInterfaceOLinkClient::Func2_Implementation(int32 Param1,
 
 int32 UTestbed2ManyParamInterfaceOLinkClient::Func3_Implementation(int32 Param1, int32 Param2, int32 Param3)
 {
-	if (!m_node)
+	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
+		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return 0;
 	}
 	TPromise<int32> Promise;
 	Async(EAsyncExecution::Thread,
 		[Param1, Param2, Param3, &Promise, this]()
 		{
-			InvokeReplyFunc GetManyParamInterfaceStateFunc = [&Promise](InvokeReplyArg arg)
+			ApiGear::ObjectLink::InvokeReplyFunc GetManyParamInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 			{ Promise.SetValue(arg.value.get<int32>()); };
-			m_node->invokeRemote("testbed2.ManyParamInterface/func3", {Param1, Param2, Param3}, GetManyParamInterfaceStateFunc);
+			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func3"), {Param1, Param2, Param3}, GetManyParamInterfaceStateFunc);
 		});
 
 	return Promise.GetFuture().Get();
@@ -283,18 +302,18 @@ int32 UTestbed2ManyParamInterfaceOLinkClient::Func3_Implementation(int32 Param1,
 
 int32 UTestbed2ManyParamInterfaceOLinkClient::Func4_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
 {
-	if (!m_node)
+	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
+		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return 0;
 	}
 	TPromise<int32> Promise;
 	Async(EAsyncExecution::Thread,
 		[Param1, Param2, Param3, Param4, &Promise, this]()
 		{
-			InvokeReplyFunc GetManyParamInterfaceStateFunc = [&Promise](InvokeReplyArg arg)
+			ApiGear::ObjectLink::InvokeReplyFunc GetManyParamInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 			{ Promise.SetValue(arg.value.get<int32>()); };
-			m_node->invokeRemote("testbed2.ManyParamInterface/func4", {Param1, Param2, Param3, Param4}, GetManyParamInterfaceStateFunc);
+			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func4"), {Param1, Param2, Param3, Param4}, GetManyParamInterfaceStateFunc);
 		});
 
 	return Promise.GetFuture().Get();
@@ -302,13 +321,13 @@ int32 UTestbed2ManyParamInterfaceOLinkClient::Func4_Implementation(int32 Param1,
 
 void UTestbed2ManyParamInterfaceOLinkClient::Func5_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4, int32 Param5)
 {
-	if (!m_node)
+	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
+		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return;
 	}
-	InvokeReplyFunc GetManyParamInterfaceStateFunc = [this](InvokeReplyArg arg) {};
-	m_node->invokeRemote("testbed2.ManyParamInterface/func5", {Param1, Param2, Param3, Param4, Param5}, GetManyParamInterfaceStateFunc);
+	ApiGear::ObjectLink::InvokeReplyFunc GetManyParamInterfaceStateFunc = [this](ApiGear::ObjectLink::InvokeReplyArg arg) {};
+	m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func5"), {Param1, Param2, Param3, Param4, Param5}, GetManyParamInterfaceStateFunc);
 }
 
 void UTestbed2ManyParamInterfaceOLinkClient::applyState(const nlohmann::json& fields)
@@ -347,57 +366,32 @@ void UTestbed2ManyParamInterfaceOLinkClient::applyState(const nlohmann::json& fi
 	}
 }
 
-std::string UTestbed2ManyParamInterfaceOLinkClient::olinkObjectName()
+void UTestbed2ManyParamInterfaceOLinkClient::emitSignal(const std::string& signalId, const nlohmann::json& args)
 {
-	return "testbed2.ManyParamInterface";
-}
-
-void UTestbed2ManyParamInterfaceOLinkClient::olinkOnSignal(std::string name, nlohmann::json args)
-{
-	std::string path = Name::pathFromName(name);
-	if (path == "sig0")
+	std::string MemberName = ApiGear::ObjectLink::Name::getMemberName(signalId);
+	if (MemberName == "sig0")
 	{
 		Execute_BroadcastSig0(this);
 		return;
 	}
-	if (path == "sig1")
+	if (MemberName == "sig1")
 	{
 		Execute_BroadcastSig1(this, args[0].get<int32>());
 		return;
 	}
-	if (path == "sig2")
+	if (MemberName == "sig2")
 	{
 		Execute_BroadcastSig2(this, args[0].get<int32>(), args[1].get<int32>());
 		return;
 	}
-	if (path == "sig3")
+	if (MemberName == "sig3")
 	{
 		Execute_BroadcastSig3(this, args[0].get<int32>(), args[1].get<int32>(), args[2].get<int32>());
 		return;
 	}
-	if (path == "sig4")
+	if (MemberName == "sig4")
 	{
 		Execute_BroadcastSig4(this, args[0].get<int32>(), args[1].get<int32>(), args[2].get<int32>(), args[3].get<int32>());
 		return;
 	}
-}
-
-void UTestbed2ManyParamInterfaceOLinkClient::olinkOnPropertyChanged(std::string name, nlohmann::json value)
-{
-	std::string path = Name::pathFromName(name);
-	applyState({{path, value}});
-}
-
-void UTestbed2ManyParamInterfaceOLinkClient::olinkOnInit(std::string name, nlohmann::json props, IClientNode* node)
-{
-	m_isReady = true;
-	m_node = node;
-	applyState(props);
-	// call isReady();
-}
-
-void UTestbed2ManyParamInterfaceOLinkClient::olinkOnRelease()
-{
-	m_isReady = false;
-	m_node = nullptr;
 }

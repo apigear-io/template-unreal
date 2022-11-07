@@ -23,13 +23,13 @@
 */
 #pragma once
 
-#include "core/olinktypes.h"
+#include "core/types.h"
 
 #include <string>
 
 namespace ApiGear { namespace ObjectLink {
 
-class ConsoleLogger {
+class OLINK_EXPORT ConsoleLogger {
 public:
     static void writeLog(LogLevel level, std::string msg);
     static WriteLogFunc logFunc();

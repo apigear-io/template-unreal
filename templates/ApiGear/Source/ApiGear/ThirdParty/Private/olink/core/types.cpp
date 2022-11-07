@@ -21,12 +21,10 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 * SOFTWARE.
 */
-#include "olinktypes.h"
+#include "types.h"
 
 #include <string>
 #include <map>
-#include <list>
-#include "iostream"
 
 
 namespace ApiGear { namespace ObjectLink {
@@ -35,24 +33,28 @@ namespace ApiGear { namespace ObjectLink {
 // Name
 // ********************************************************************
 
-std::string Name::resourceFromName(std::string name)
+std::string Name::getObjectId(const std::string& memberId)
 {
-    return name.substr(0, name.find("/"));
+    return memberId.substr(0, memberId.find("/"));
 }
 
-std::string Name::pathFromName(std::string name)
+std::string Name::getMemberName(const std::string& memberId)
 {
-    return name.substr(name.find("/")+1);
+    std::string memberName = "";
+    if (isMemberId(memberId)){
+        memberName = memberId.substr(memberId.find_last_of("/")+1);
+    }
+    return memberName;
 }
 
-bool Name::hasPath(std::string name)
+bool Name::isMemberId(const std::string& id)
 {
-    return name.find("/") != std::string::npos;
+    return id.find("/") != std::string::npos && id.find_first_of("/") == id.find_last_of("/");
 }
 
-std::string Name::createName(std::string resource, std::string path)
+std::string Name::createMemberId(const std::string& objectId, const std::string& memberName)
 {
-    return resource + "/" + path;
+    return objectId + "/" + memberName;
 }
 
 // ********************************************************************
@@ -69,7 +71,7 @@ void MessageConverter::setMessageFormat(MessageFormat format)
     m_format = format;
 }
 
-nlohmann::json MessageConverter::fromString(std::string message)
+nlohmann::json MessageConverter::fromString(const std::string& message)
 {
     switch(m_format) {
     case MessageFormat::JSON:
@@ -85,7 +87,7 @@ nlohmann::json MessageConverter::fromString(std::string message)
     return nlohmann::json();
 }
 
-std::string MessageConverter::toString(nlohmann::json j)
+std::string MessageConverter::toString(const nlohmann::json& j)
 {
     std::vector<uint8_t> v;
     switch(m_format) {
@@ -126,64 +128,14 @@ std::string toString(MsgType type) {
 }
 
 // ********************************************************************
-// IMessageHandler
+// LoggerBase
 // ********************************************************************
 
-
-IMessageHandler::~IMessageHandler() {}
-
-// ********************************************************************
-// ILogger
-// ********************************************************************
-
-ILogger::~ILogger() {}
-
-
-
-
-LoopbackWriter::LoopbackWriter(IMessageHandler *handler)
-    : m_handler(handler)
-    , m_converter(MessageFormat::JSON)
-{
-    m_writeFunc = [this](nlohmann::json j) {
-        std::string data = m_converter.toString(j);
-        if(m_handler) {
-            m_handler->handleMessage(data);
-        }
-    };
-}
-
-void LoopbackWriter::writeMessage(nlohmann::json j) {
-    m_writeFunc(j.dump());
-}
-
-WriteMessageFunc& LoopbackWriter::writeFunc() {
-    return m_writeFunc;
-}
-
-
-
-// ********************************************************************
-// Base
-// ********************************************************************
-
-Base::Base()
-    : m_logFunc(nullptr)
-{
-
-}
-
-Base::~Base()
-{
-}
-
-void Base::onLog(WriteLogFunc func)
-{
+void LoggerBase::onLog(WriteLogFunc func){
     m_logFunc = func;
 }
 
-void Base::emitLog(LogLevel level, std::string msg)
-{
+void LoggerBase::emitLog(LogLevel level, const std::string& msg){
     if(m_logFunc) {
         m_logFunc(level, msg);
     }

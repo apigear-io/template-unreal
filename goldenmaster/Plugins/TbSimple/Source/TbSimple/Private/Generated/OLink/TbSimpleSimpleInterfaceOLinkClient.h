@@ -17,12 +17,15 @@ limitations under the License.
 #pragma once
 
 #include "TbSimpleSimpleInterfaceInterface.h"
+THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
+THIRD_PARTY_INCLUDES_END
+#include "unrealolinksink.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "TbSimpleSimpleInterfaceOLinkClient.generated.h"
 
 UCLASS(BlueprintType)
-class TBSIMPLE_API UTbSimpleSimpleInterfaceOLinkClient : public UGameInstanceSubsystem, public ITbSimpleSimpleInterfaceInterface, public ApiGear::ObjectLink::IObjectSink
+class TBSIMPLE_API UTbSimpleSimpleInterfaceOLinkClient : public UGameInstanceSubsystem, public ITbSimpleSimpleInterfaceInterface
 {
 	GENERATED_BODY()
 public:
@@ -84,13 +87,6 @@ public:
 	void FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FString& Result, const FString& ParamString) override{};
 	FString FuncString_Implementation(const FString& ParamString) override;
 
-	// olink sink interface
-	std::string olinkObjectName() override;
-	void olinkOnSignal(std::string name, nlohmann::json args) override;
-	void olinkOnPropertyChanged(std::string name, nlohmann::json value) override;
-	void olinkOnInit(std::string name, nlohmann::json props, ApiGear::ObjectLink::IClientNode* node) override;
-	void olinkOnRelease() override;
-
 protected:
 	// signals
 	void BroadcastSigBool_Implementation(bool bParamBool) override;
@@ -111,8 +107,9 @@ protected:
 
 private:
 	void applyState(const nlohmann::json& fields);
-	ApiGear::ObjectLink::IClientNode* m_node;
-	bool m_isReady;
+	void emitSignal(const std::string& signalId, const nlohmann::json& args);
+	std::shared_ptr<FUnrealOLinkSink> m_sink;
+
 	// properties - local copy
 	bool bPropBool{false};
 	int32 PropInt{0};

@@ -17,12 +17,15 @@ limitations under the License.
 #pragma once
 
 #include "Testbed2EmptyInterfaceInterface.h"
+THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
+THIRD_PARTY_INCLUDES_END
+#include "unrealolinksink.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Testbed2EmptyInterfaceOLinkClient.generated.h"
 
 UCLASS(BlueprintType)
-class TESTBED2_API UTestbed2EmptyInterfaceOLinkClient : public UGameInstanceSubsystem, public ITestbed2EmptyInterfaceInterface, public ApiGear::ObjectLink::IObjectSink
+class TESTBED2_API UTestbed2EmptyInterfaceOLinkClient : public UGameInstanceSubsystem, public ITestbed2EmptyInterfaceInterface
 {
 	GENERATED_BODY()
 public:
@@ -36,19 +39,14 @@ public:
 	// signals
 	// properties
 	// operations
-	// olink sink interface
-	std::string olinkObjectName() override;
-	void olinkOnSignal(std::string name, nlohmann::json args) override;
-	void olinkOnPropertyChanged(std::string name, nlohmann::json value) override;
-	void olinkOnInit(std::string name, nlohmann::json props, ApiGear::ObjectLink::IClientNode* node) override;
-	void olinkOnRelease() override;
 
 protected:
 	// signals
 
 private:
 	void applyState(const nlohmann::json& fields);
-	ApiGear::ObjectLink::IClientNode* m_node;
-	bool m_isReady;
+	void emitSignal(const std::string& signalId, const nlohmann::json& args);
+	std::shared_ptr<FUnrealOLinkSink> m_sink;
+
 	// properties - local copy
 };

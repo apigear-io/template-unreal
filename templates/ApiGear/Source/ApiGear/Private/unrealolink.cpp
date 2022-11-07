@@ -1,7 +1,7 @@
 #include "unrealolink.h"
 #include "ApiGearSettings.h"
 THIRD_PARTY_INCLUDES_START
-#include "olink/core/olinktypes.h"
+#include "olink/clientregistry.h"
 THIRD_PARTY_INCLUDES_END
 #include <UObject/Object.h>
 #include <functional>
@@ -41,8 +41,9 @@ UUnrealOLink::UUnrealOLink(const FObjectInitializer& ObjectInitializer)
 	, m_loggingDisabled(false)
 {
 	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
-	m_node.onLog(logFunc());
-	ApiGear::ObjectLink::ClientRegistry::get().onLog(logFunc());
+	m_node = ApiGear::ObjectLink::ClientNode::create(m_registry);
+	m_node->onLog(logFunc());
+	m_registry.onLog(logFunc());
 
 	m_loggingDisabled = !settings->OLINK_EnableDebugLog;
 	log(m_serverURL);
@@ -55,7 +56,7 @@ UUnrealOLink::UUnrealOLink(const FObjectInitializer& ObjectInitializer)
 		}
 		processMessages();
 	};
-	m_node.onWrite(func);
+	m_node->onWrite(func);
 
 	log("OLink instantiated");
 	// processMessages();
@@ -100,7 +101,7 @@ void UUnrealOLink::Disconnect()
 
 	for (std::string objectName : ListLinkedObjects)
 	{
-		m_node.unlinkRemote(objectName);
+		m_node->unlinkRemote(objectName);
 	}
 	m_socket->Close();
 }
@@ -185,8 +186,7 @@ void UUnrealOLink::OnConnected()
 
 	for (std::string objectName : ListLinkedObjects)
 	{
-		m_node.registry().linkClientNode(objectName, &m_node);
-		m_node.linkRemote(objectName);
+		m_node->linkRemote(objectName);
 	}
 	// m_session->init(TCHAR_TO_UTF8(*m_realm));
 	processMessages();
@@ -197,14 +197,14 @@ void UUnrealOLink::OnDisconnected(bool bReconnect)
 	log("socket disconnected");
 	for (std::string objectName : ListLinkedObjects)
 	{
-		m_node.registry().unlinkClientNode(objectName, &m_node);
+		m_node->unlinkRemote(objectName);
 	}
 	UAbstractApiGearConnection::OnDisconnected(bReconnect);
 }
 
 void UUnrealOLink::handleTextMessage(const FString& message)
 {
-	m_node.handleMessage(TCHAR_TO_UTF8(*message));
+	m_node->handleMessage(TCHAR_TO_UTF8(*message));
 }
 
 // void UUnrealOLink::onError(std::string error)
@@ -223,8 +223,7 @@ void UUnrealOLink::linkObjectSource(const std::string& name)
 
 	if (IsConnected())
 	{
-		m_node.registry().linkClientNode(name, &m_node);
-		m_node.linkRemote(name);
+		m_node->linkRemote(name);
 	}
 }
 
@@ -232,8 +231,7 @@ void UUnrealOLink::unlinkObjectSource(const std::string& name)
 {
 	if (IsConnected())
 	{
-		m_node.unlinkRemote(name);
-		m_node.registry().unlinkClientNode(name, &m_node);
+		m_node->unlinkRemote(name);
 	}
 	ListLinkedObjects.Remove(name);
 }

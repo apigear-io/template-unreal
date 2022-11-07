@@ -25,42 +25,61 @@ limitations under the License.
 #include "Async/Async.h"
 #include "Generated/api/Testbed1.json.adapter.h"
 #include "unrealolink.h"
+#include "unrealolinksink.h"
 #include "Async/Async.h"
 #include "Engine/Engine.h"
 #include "ApiGear/Public/ApiGearConnectionManager.h"
 #include "Misc/DateTime.h"
+THIRD_PARTY_INCLUDES_START
+#include "olink/clientnode.h"
+#include "olink/iobjectsink.h"
+THIRD_PARTY_INCLUDES_END
 
-using namespace ApiGear::ObjectLink;
 UTestbed1StructInterfaceOLinkClient::UTestbed1StructInterfaceOLinkClient()
 	: ITestbed1StructInterfaceInterface()
-	, m_node(nullptr)
-	, m_isReady(false)
 {
+	m_sink = std::make_shared<FUnrealOLinkSink>("testbed1.StructInterface");
 }
 
 void UTestbed1StructInterfaceOLinkClient::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
+
 	if (GEngine != nullptr)
 	{
 		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
 		AGCM->GetOLinkConnection()->Connect();
-		AGCM->GetOLinkConnection()->linkObjectSource(olinkObjectName());
+		AGCM->GetOLinkConnection()->node()->registry().addSink(m_sink);
+		AGCM->GetOLinkConnection()->linkObjectSource(m_sink->olinkObjectName());
 	}
-	m_node = ClientRegistry::get().addObjectSink(this);
+
+	FUnrealOLinkSink::FPropertyChangedFunc PropertyChangedFunc = [this](const nlohmann::json& props)
+	{
+		this->applyState(props);
+	};
+	m_sink->setOnPropertyChangedCallback(PropertyChangedFunc);
+
+	FUnrealOLinkSink::FSignalEmittedFunc SignalEmittedFunc = [this](const std::string& signalName, const nlohmann::json& args)
+	{
+		this->emitSignal(signalName, args);
+	};
+	m_sink->setOnSignalEmittedCallback(SignalEmittedFunc);
 }
 
 void UTestbed1StructInterfaceOLinkClient::Deinitialize()
 {
-	Super::Deinitialize();
-	ClientRegistry::get().removeObjectSink(this);
+	// tell the sink that we are gone and should not try to be invoked
+	m_sink->resetOnPropertyChangedCallback();
+	m_sink->resetOnSignalEmittedCallback();
+
 	if (GEngine != nullptr)
 	{
 		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-		AGCM->GetOLinkConnection()->unlinkObjectSource(olinkObjectName());
+		AGCM->GetOLinkConnection()->unlinkObjectSource(m_sink->olinkObjectName());
+		AGCM->GetOLinkConnection()->node()->registry().removeSink(m_sink->olinkObjectName());
 	}
-	m_isReady = false;
-	m_node = nullptr;
+
+	Super::Deinitialize();
 }
 
 void UTestbed1StructInterfaceOLinkClient::BroadcastSigBool_Implementation(const FTestbed1StructBool& ParamBool)
@@ -116,11 +135,11 @@ FTestbed1StructBool UTestbed1StructInterfaceOLinkClient::GetPropBool_Implementat
 
 void UTestbed1StructInterfaceOLinkClient::SetPropBool_Implementation(const FTestbed1StructBool& InPropBool)
 {
-	if (!m_node)
+	if (!m_sink->IsReady())
 	{
 		return;
 	}
-	m_node->setRemoteProperty("testbed1.StructInterface/propBool", InPropBool);
+	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propBool"), InPropBool);
 }
 
 FTestbed1StructInterfacePropBoolChangedDelegate& UTestbed1StructInterfaceOLinkClient::GetPropBoolChangedDelegate()
@@ -141,11 +160,11 @@ FTestbed1StructInt UTestbed1StructInterfaceOLinkClient::GetPropInt_Implementatio
 
 void UTestbed1StructInterfaceOLinkClient::SetPropInt_Implementation(const FTestbed1StructInt& InPropInt)
 {
-	if (!m_node)
+	if (!m_sink->IsReady())
 	{
 		return;
 	}
-	m_node->setRemoteProperty("testbed1.StructInterface/propInt", InPropInt);
+	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propInt"), InPropInt);
 }
 
 FTestbed1StructInterfacePropIntChangedDelegate& UTestbed1StructInterfaceOLinkClient::GetPropIntChangedDelegate()
@@ -166,11 +185,11 @@ FTestbed1StructFloat UTestbed1StructInterfaceOLinkClient::GetPropFloat_Implement
 
 void UTestbed1StructInterfaceOLinkClient::SetPropFloat_Implementation(const FTestbed1StructFloat& InPropFloat)
 {
-	if (!m_node)
+	if (!m_sink->IsReady())
 	{
 		return;
 	}
-	m_node->setRemoteProperty("testbed1.StructInterface/propFloat", InPropFloat);
+	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propFloat"), InPropFloat);
 }
 
 FTestbed1StructInterfacePropFloatChangedDelegate& UTestbed1StructInterfaceOLinkClient::GetPropFloatChangedDelegate()
@@ -191,11 +210,11 @@ FTestbed1StructString UTestbed1StructInterfaceOLinkClient::GetPropString_Impleme
 
 void UTestbed1StructInterfaceOLinkClient::SetPropString_Implementation(const FTestbed1StructString& InPropString)
 {
-	if (!m_node)
+	if (!m_sink->IsReady())
 	{
 		return;
 	}
-	m_node->setRemoteProperty("testbed1.StructInterface/propString", InPropString);
+	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propString"), InPropString);
 }
 
 FTestbed1StructInterfacePropStringChangedDelegate& UTestbed1StructInterfaceOLinkClient::GetPropStringChangedDelegate()
@@ -205,18 +224,18 @@ FTestbed1StructInterfacePropStringChangedDelegate& UTestbed1StructInterfaceOLink
 
 FTestbed1StructBool UTestbed1StructInterfaceOLinkClient::FuncBool_Implementation(const FTestbed1StructBool& ParamBool)
 {
-	if (!m_node)
+	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
+		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return FTestbed1StructBool();
 	}
 	TPromise<FTestbed1StructBool> Promise;
 	Async(EAsyncExecution::Thread,
 		[ParamBool, &Promise, this]()
 		{
-			InvokeReplyFunc GetStructInterfaceStateFunc = [&Promise](InvokeReplyArg arg)
+			ApiGear::ObjectLink::InvokeReplyFunc GetStructInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 			{ Promise.SetValue(arg.value.get<FTestbed1StructBool>()); };
-			m_node->invokeRemote("testbed1.StructInterface/funcBool", {ParamBool}, GetStructInterfaceStateFunc);
+			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcBool"), {ParamBool}, GetStructInterfaceStateFunc);
 		});
 
 	return Promise.GetFuture().Get();
@@ -224,18 +243,18 @@ FTestbed1StructBool UTestbed1StructInterfaceOLinkClient::FuncBool_Implementation
 
 FTestbed1StructBool UTestbed1StructInterfaceOLinkClient::FuncInt_Implementation(const FTestbed1StructInt& ParamInt)
 {
-	if (!m_node)
+	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
+		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return FTestbed1StructBool();
 	}
 	TPromise<FTestbed1StructBool> Promise;
 	Async(EAsyncExecution::Thread,
 		[ParamInt, &Promise, this]()
 		{
-			InvokeReplyFunc GetStructInterfaceStateFunc = [&Promise](InvokeReplyArg arg)
+			ApiGear::ObjectLink::InvokeReplyFunc GetStructInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 			{ Promise.SetValue(arg.value.get<FTestbed1StructBool>()); };
-			m_node->invokeRemote("testbed1.StructInterface/funcInt", {ParamInt}, GetStructInterfaceStateFunc);
+			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcInt"), {ParamInt}, GetStructInterfaceStateFunc);
 		});
 
 	return Promise.GetFuture().Get();
@@ -243,18 +262,18 @@ FTestbed1StructBool UTestbed1StructInterfaceOLinkClient::FuncInt_Implementation(
 
 FTestbed1StructFloat UTestbed1StructInterfaceOLinkClient::FuncFloat_Implementation(const FTestbed1StructFloat& ParamFloat)
 {
-	if (!m_node)
+	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
+		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return FTestbed1StructFloat();
 	}
 	TPromise<FTestbed1StructFloat> Promise;
 	Async(EAsyncExecution::Thread,
 		[ParamFloat, &Promise, this]()
 		{
-			InvokeReplyFunc GetStructInterfaceStateFunc = [&Promise](InvokeReplyArg arg)
+			ApiGear::ObjectLink::InvokeReplyFunc GetStructInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 			{ Promise.SetValue(arg.value.get<FTestbed1StructFloat>()); };
-			m_node->invokeRemote("testbed1.StructInterface/funcFloat", {ParamFloat}, GetStructInterfaceStateFunc);
+			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat"), {ParamFloat}, GetStructInterfaceStateFunc);
 		});
 
 	return Promise.GetFuture().Get();
@@ -262,18 +281,18 @@ FTestbed1StructFloat UTestbed1StructInterfaceOLinkClient::FuncFloat_Implementati
 
 FTestbed1StructString UTestbed1StructInterfaceOLinkClient::FuncString_Implementation(const FTestbed1StructString& ParamString)
 {
-	if (!m_node)
+	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
+		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return FTestbed1StructString();
 	}
 	TPromise<FTestbed1StructString> Promise;
 	Async(EAsyncExecution::Thread,
 		[ParamString, &Promise, this]()
 		{
-			InvokeReplyFunc GetStructInterfaceStateFunc = [&Promise](InvokeReplyArg arg)
+			ApiGear::ObjectLink::InvokeReplyFunc GetStructInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 			{ Promise.SetValue(arg.value.get<FTestbed1StructString>()); };
-			m_node->invokeRemote("testbed1.StructInterface/funcString", {ParamString}, GetStructInterfaceStateFunc);
+			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcString"), {ParamString}, GetStructInterfaceStateFunc);
 		});
 
 	return Promise.GetFuture().Get();
@@ -315,52 +334,27 @@ void UTestbed1StructInterfaceOLinkClient::applyState(const nlohmann::json& field
 	}
 }
 
-std::string UTestbed1StructInterfaceOLinkClient::olinkObjectName()
+void UTestbed1StructInterfaceOLinkClient::emitSignal(const std::string& signalId, const nlohmann::json& args)
 {
-	return "testbed1.StructInterface";
-}
-
-void UTestbed1StructInterfaceOLinkClient::olinkOnSignal(std::string name, nlohmann::json args)
-{
-	std::string path = Name::pathFromName(name);
-	if (path == "sigBool")
+	std::string MemberName = ApiGear::ObjectLink::Name::getMemberName(signalId);
+	if (MemberName == "sigBool")
 	{
 		Execute_BroadcastSigBool(this, args[0].get<FTestbed1StructBool>());
 		return;
 	}
-	if (path == "sigInt")
+	if (MemberName == "sigInt")
 	{
 		Execute_BroadcastSigInt(this, args[0].get<FTestbed1StructInt>());
 		return;
 	}
-	if (path == "sigFloat")
+	if (MemberName == "sigFloat")
 	{
 		Execute_BroadcastSigFloat(this, args[0].get<FTestbed1StructFloat>());
 		return;
 	}
-	if (path == "sigString")
+	if (MemberName == "sigString")
 	{
 		Execute_BroadcastSigString(this, args[0].get<FTestbed1StructString>());
 		return;
 	}
-}
-
-void UTestbed1StructInterfaceOLinkClient::olinkOnPropertyChanged(std::string name, nlohmann::json value)
-{
-	std::string path = Name::pathFromName(name);
-	applyState({{path, value}});
-}
-
-void UTestbed1StructInterfaceOLinkClient::olinkOnInit(std::string name, nlohmann::json props, IClientNode* node)
-{
-	m_isReady = true;
-	m_node = node;
-	applyState(props);
-	// call isReady();
-}
-
-void UTestbed1StructInterfaceOLinkClient::olinkOnRelease()
-{
-	m_isReady = false;
-	m_node = nullptr;
 }

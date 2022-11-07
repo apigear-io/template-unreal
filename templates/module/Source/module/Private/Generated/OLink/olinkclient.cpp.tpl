@@ -18,48 +18,65 @@
 #include "Async/Async.h"
 #include "Generated/api/{{$ModuleName}}.json.adapter.h"
 #include "unrealolink.h"
+#include "unrealolinksink.h"
 #include "Async/Async.h"
 #include "Engine/Engine.h"
 #include "ApiGear/Public/ApiGearConnectionManager.h"
 #include "Misc/DateTime.h"
-
-using namespace ApiGear::ObjectLink;
-
-{{- if .Interface.Description }}
+THIRD_PARTY_INCLUDES_START
+#include "olink/clientnode.h"
+#include "olink/iobjectsink.h"
+THIRD_PARTY_INCLUDES_END
+{{ if .Interface.Description }}
 /**
    \brief {{.Interface.Description}}
 */
 {{- end }}
 {{$Class}}::{{$Class}}()
 	: I{{$ModuleName}}{{$IfaceName}}Interface()
-	, m_node(nullptr)
-	, m_isReady(false)
 {
+	m_sink = std::make_shared<FUnrealOLinkSink>("{{$ifaceId}}");
 }
 
 void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
+
 	if (GEngine != nullptr)
 	{
 		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
 		AGCM->GetOLinkConnection()->Connect();
-		AGCM->GetOLinkConnection()->linkObjectSource(olinkObjectName());
+		AGCM->GetOLinkConnection()->node()->registry().addSink(m_sink);
+		AGCM->GetOLinkConnection()->linkObjectSource(m_sink->olinkObjectName());
 	}
-	m_node = ClientRegistry::get().addObjectSink(this);
+
+	FUnrealOLinkSink::FPropertyChangedFunc PropertyChangedFunc = [this](const nlohmann::json& props)
+	{
+		this->applyState(props);
+	};
+	m_sink->setOnPropertyChangedCallback(PropertyChangedFunc);
+
+	FUnrealOLinkSink::FSignalEmittedFunc SignalEmittedFunc = [this](const std::string& signalName, const nlohmann::json& args)
+	{
+		this->emitSignal(signalName, args);
+	};
+	m_sink->setOnSignalEmittedCallback(SignalEmittedFunc);
 }
 
 void {{$Class}}::Deinitialize()
 {
-	Super::Deinitialize();
-	ClientRegistry::get().removeObjectSink(this);
+	// tell the sink that we are gone and should not try to be invoked
+	m_sink->resetOnPropertyChangedCallback();
+	m_sink->resetOnSignalEmittedCallback();
+
 	if (GEngine != nullptr)
 	{
 		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-		AGCM->GetOLinkConnection()->unlinkObjectSource(olinkObjectName());
+		AGCM->GetOLinkConnection()->unlinkObjectSource(m_sink->olinkObjectName());
+		AGCM->GetOLinkConnection()->node()->registry().removeSink(m_sink->olinkObjectName());
 	}
-	m_isReady = false;
-	m_node = nullptr;
+
+	Super::Deinitialize();
 }
 {{ range $i, $e := .Interface.Signals }}
 {{- if $i }}{{nl}}{{ end }}
@@ -89,11 +106,11 @@ void {{$Class}}::Broadcast{{Camel .Name}}Changed_Implementation({{ueParam "In" .
 
 void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
 {
-	if (!m_node)
+	if (!m_sink->IsReady())
 	{
 		return;
 	}
-	m_node->setRemoteProperty("{{$ifaceId}}/{{.Name}}", {{ueVar "In" .}});
+	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "{{.Name}}"), {{ueVar "In" .}});
 }
 
 F{{$Iface}}{{Camel .Name}}ChangedDelegate& {{$Class}}::Get{{Camel .Name}}ChangedDelegate()
@@ -112,26 +129,26 @@ F{{$Iface}}{{Camel .Name}}ChangedDelegate& {{$Class}}::Get{{Camel .Name}}Changed
 {{$returnVal}} {{$Class}}::{{Camel .Name}}_Implementation({{ueParams "" .Params}})
 {
 	{{- if .Return.IsVoid }}
-	if (!m_node)
+	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
+		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return;
 	}
-	InvokeReplyFunc Get{{$IfaceName}}StateFunc = [this](InvokeReplyArg arg) {};
-	m_node->invokeRemote("{{$ifaceId}}/{{.Name}}", { {{- ueVars "" .Params -}} }, Get{{$IfaceName}}StateFunc);
+	ApiGear::ObjectLink::InvokeReplyFunc Get{{$IfaceName}}StateFunc = [this](ApiGear::ObjectLink::InvokeReplyArg arg) {};
+	m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "{{.Name}}"), { {{- ueVars "" .Params -}} }, Get{{$IfaceName}}StateFunc);
 	{{- else }}
-	if (!m_node)
+	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
+		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return {{ ueDefault "" .Return }};
 	}
 	TPromise<{{$returnVal}}> Promise;
 	Async(EAsyncExecution::Thread,
 		[{{ueVars "" .Params }}{{if len .Params}}, {{ end }}&Promise, this]()
 		{
-			InvokeReplyFunc Get{{$IfaceName}}StateFunc = [&Promise](InvokeReplyArg arg)
+			ApiGear::ObjectLink::InvokeReplyFunc Get{{$IfaceName}}StateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 			{ Promise.SetValue(arg.value.get<{{$returnVal}}>()); };
-			m_node->invokeRemote("{{$ifaceId}}/{{.Name}}", { {{- ueVars "" .Params -}} }, Get{{$IfaceName}}StateFunc);
+			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "{{.Name}}"), { {{- ueVars "" .Params -}} }, Get{{$IfaceName}}StateFunc);
 		});
 
 	return Promise.GetFuture().Get();
@@ -152,16 +169,11 @@ void {{$Class}}::applyState(const nlohmann::json& fields)
 {{- end }}
 }
 
-std::string {{$Class}}::olinkObjectName()
+void {{$Class}}::emitSignal(const std::string& signalId, const nlohmann::json& args)
 {
-	return "{{$ifaceId}}";
-}
-
-void {{$Class}}::olinkOnSignal(std::string name, nlohmann::json args)
-{
-	std::string path = Name::pathFromName(name);
+	std::string MemberName = ApiGear::ObjectLink::Name::getMemberName(signalId);
 {{- range .Interface.Signals }}
-	if (path == "{{.Name}}")
+	if (MemberName == "{{.Name}}")
 	{
 		Execute_Broadcast{{Camel .Name}}(this
 		{{- range $idx, $elem := .Params -}}
@@ -170,24 +182,4 @@ void {{$Class}}::olinkOnSignal(std::string name, nlohmann::json args)
 		return;
 	}
 {{- end }}
-}
-
-void {{$Class}}::olinkOnPropertyChanged(std::string name, nlohmann::json value)
-{
-	std::string path = Name::pathFromName(name);
-	applyState({{ "{{path, value" }}}});
-}
-
-void {{$Class}}::olinkOnInit(std::string name, nlohmann::json props, IClientNode* node)
-{
-	m_isReady = true;
-	m_node = node;
-	applyState(props);
-	// call isReady();
-}
-
-void {{$Class}}::olinkOnRelease()
-{
-	m_isReady = false;
-	m_node = nullptr;
 }

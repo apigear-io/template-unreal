@@ -252,6 +252,14 @@ features:
             target: "Plugins/ApiGear/Source/ApiGear/Public/unrealolink.h"
             force: true
             raw: true
+          - source: "ApiGear/Source/ApiGear/Private/unrealolinksink.cpp"
+            target: "Plugins/ApiGear/Source/ApiGear/Private/unrealolinksink.cpp"
+            force: true
+            raw: true
+          - source: "ApiGear/Source/ApiGear/Public/unrealolinksink.h"
+            target: "Plugins/ApiGear/Source/ApiGear/Public/unrealolinksink.h"
+            force: true
+            raw: true
           - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/clientnode.h"
             target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Public/olink/clientnode.h"
             raw: true
@@ -260,8 +268,36 @@ features:
             target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Private/olink/clientnode.cpp"
             raw: true
             force: true
+          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/clientregistry.h"
+            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Public/olink/clientregistry.h"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ApiGear/ThirdParty/Private/olink/clientregistry.cpp"
+            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Private/olink/clientregistry.cpp"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/core/basenode.h"
+            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Public/olink/core/basenode.h"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ApiGear/ThirdParty/Private/olink/core/basenode.cpp"
+            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Private/olink/core/basenode.cpp"
+            raw: true
+            force: true
           - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/remotenode.h"
             target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Public/olink/remotenode.h"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/iremotenode.h"
+            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Public/olink/iremotenode.h"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/remoteregistry.h"
+            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Public/olink/remoteregistry.h"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ApiGear/ThirdParty/Private/olink/remoteregistry.cpp"
+            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Private/olink/remoteregistry.cpp"
             raw: true
             force: true
           - source: "ApiGear/Source/ApiGear/ThirdParty/Private/olink/remotenode.cpp"
@@ -276,27 +312,35 @@ features:
             target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Private/olink/consolelogger.cpp"
             raw: true
             force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/core/node.h"
-            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Public/olink/core/node.h"
+          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/iclientnode.h"
+            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Public/olink/iclientnode.h"
             raw: true
             force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Private/olink/core/node.cpp"
-            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Private/olink/core/node.cpp"
+          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/core/protocol.h"
+            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Public/olink/core/protocol.h"
             raw: true
             force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/core/olinkprotocol.h"
-            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Public/olink/core/olinkprotocol.h"
+          - source: "ApiGear/Source/ApiGear/ThirdParty/Private/olink/core/protocol.cpp"
+            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Private/olink/core/protocol.cpp"
             raw: true
             force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Private/olink/core/olinkprotocol.cpp"
-            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Private/olink/core/olinkprotocol.cpp"
+          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/core/olink_common.h"
+            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Public/olink/core/olink_common.h"
             raw: true
             force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/core/olinktypes.h"
-            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Public/olink/core/olinktypes.h"
+          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/iobjectsink.h"
+            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Public/olink/iobjectsink.h"
             raw: true
             force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Private/olink/core/olinktypes.cpp"
-            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Private/olink/core/olinktypes.cpp"
+          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/iobjectsource.h"
+            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Public/olink/iobjectsource.h"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/core/types.h"
+            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Public/olink/core/types.h"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ApiGear/ThirdParty/Private/olink/core/types.cpp"
+            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Private/olink/core/types.cpp"
             raw: true
             force: true

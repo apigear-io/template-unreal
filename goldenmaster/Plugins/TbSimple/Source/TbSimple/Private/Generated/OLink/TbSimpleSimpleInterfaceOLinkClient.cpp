@@ -25,42 +25,61 @@ limitations under the License.
 #include "Async/Async.h"
 #include "Generated/api/TbSimple.json.adapter.h"
 #include "unrealolink.h"
+#include "unrealolinksink.h"
 #include "Async/Async.h"
 #include "Engine/Engine.h"
 #include "ApiGear/Public/ApiGearConnectionManager.h"
 #include "Misc/DateTime.h"
+THIRD_PARTY_INCLUDES_START
+#include "olink/clientnode.h"
+#include "olink/iobjectsink.h"
+THIRD_PARTY_INCLUDES_END
 
-using namespace ApiGear::ObjectLink;
 UTbSimpleSimpleInterfaceOLinkClient::UTbSimpleSimpleInterfaceOLinkClient()
 	: ITbSimpleSimpleInterfaceInterface()
-	, m_node(nullptr)
-	, m_isReady(false)
 {
+	m_sink = std::make_shared<FUnrealOLinkSink>("tb.simple.SimpleInterface");
 }
 
 void UTbSimpleSimpleInterfaceOLinkClient::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
+
 	if (GEngine != nullptr)
 	{
 		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
 		AGCM->GetOLinkConnection()->Connect();
-		AGCM->GetOLinkConnection()->linkObjectSource(olinkObjectName());
+		AGCM->GetOLinkConnection()->node()->registry().addSink(m_sink);
+		AGCM->GetOLinkConnection()->linkObjectSource(m_sink->olinkObjectName());
 	}
-	m_node = ClientRegistry::get().addObjectSink(this);
+
+	FUnrealOLinkSink::FPropertyChangedFunc PropertyChangedFunc = [this](const nlohmann::json& props)
+	{
+		this->applyState(props);
+	};
+	m_sink->setOnPropertyChangedCallback(PropertyChangedFunc);
+
+	FUnrealOLinkSink::FSignalEmittedFunc SignalEmittedFunc = [this](const std::string& signalName, const nlohmann::json& args)
+	{
+		this->emitSignal(signalName, args);
+	};
+	m_sink->setOnSignalEmittedCallback(SignalEmittedFunc);
 }
 
 void UTbSimpleSimpleInterfaceOLinkClient::Deinitialize()
 {
-	Super::Deinitialize();
-	ClientRegistry::get().removeObjectSink(this);
+	// tell the sink that we are gone and should not try to be invoked
+	m_sink->resetOnPropertyChangedCallback();
+	m_sink->resetOnSignalEmittedCallback();
+
 	if (GEngine != nullptr)
 	{
 		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-		AGCM->GetOLinkConnection()->unlinkObjectSource(olinkObjectName());
+		AGCM->GetOLinkConnection()->unlinkObjectSource(m_sink->olinkObjectName());
+		AGCM->GetOLinkConnection()->node()->registry().removeSink(m_sink->olinkObjectName());
 	}
-	m_isReady = false;
-	m_node = nullptr;
+
+	Super::Deinitialize();
 }
 
 void UTbSimpleSimpleInterfaceOLinkClient::BroadcastSigBool_Implementation(bool bParamBool)
@@ -116,11 +135,11 @@ bool UTbSimpleSimpleInterfaceOLinkClient::GetPropBool_Implementation() const
 
 void UTbSimpleSimpleInterfaceOLinkClient::SetPropBool_Implementation(bool bInPropBool)
 {
-	if (!m_node)
+	if (!m_sink->IsReady())
 	{
 		return;
 	}
-	m_node->setRemoteProperty("tb.simple.SimpleInterface/propBool", bInPropBool);
+	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propBool"), bInPropBool);
 }
 
 FTbSimpleSimpleInterfacePropBoolChangedDelegate& UTbSimpleSimpleInterfaceOLinkClient::GetPropBoolChangedDelegate()
@@ -141,11 +160,11 @@ int32 UTbSimpleSimpleInterfaceOLinkClient::GetPropInt_Implementation() const
 
 void UTbSimpleSimpleInterfaceOLinkClient::SetPropInt_Implementation(int32 InPropInt)
 {
-	if (!m_node)
+	if (!m_sink->IsReady())
 	{
 		return;
 	}
-	m_node->setRemoteProperty("tb.simple.SimpleInterface/propInt", InPropInt);
+	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propInt"), InPropInt);
 }
 
 FTbSimpleSimpleInterfacePropIntChangedDelegate& UTbSimpleSimpleInterfaceOLinkClient::GetPropIntChangedDelegate()
@@ -166,11 +185,11 @@ float UTbSimpleSimpleInterfaceOLinkClient::GetPropFloat_Implementation() const
 
 void UTbSimpleSimpleInterfaceOLinkClient::SetPropFloat_Implementation(float InPropFloat)
 {
-	if (!m_node)
+	if (!m_sink->IsReady())
 	{
 		return;
 	}
-	m_node->setRemoteProperty("tb.simple.SimpleInterface/propFloat", InPropFloat);
+	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propFloat"), InPropFloat);
 }
 
 FTbSimpleSimpleInterfacePropFloatChangedDelegate& UTbSimpleSimpleInterfaceOLinkClient::GetPropFloatChangedDelegate()
@@ -191,11 +210,11 @@ FString UTbSimpleSimpleInterfaceOLinkClient::GetPropString_Implementation() cons
 
 void UTbSimpleSimpleInterfaceOLinkClient::SetPropString_Implementation(const FString& InPropString)
 {
-	if (!m_node)
+	if (!m_sink->IsReady())
 	{
 		return;
 	}
-	m_node->setRemoteProperty("tb.simple.SimpleInterface/propString", InPropString);
+	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propString"), InPropString);
 }
 
 FTbSimpleSimpleInterfacePropStringChangedDelegate& UTbSimpleSimpleInterfaceOLinkClient::GetPropStringChangedDelegate()
@@ -205,18 +224,18 @@ FTbSimpleSimpleInterfacePropStringChangedDelegate& UTbSimpleSimpleInterfaceOLink
 
 bool UTbSimpleSimpleInterfaceOLinkClient::FuncBool_Implementation(bool bParamBool)
 {
-	if (!m_node)
+	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
+		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return false;
 	}
 	TPromise<bool> Promise;
 	Async(EAsyncExecution::Thread,
 		[bParamBool, &Promise, this]()
 		{
-			InvokeReplyFunc GetSimpleInterfaceStateFunc = [&Promise](InvokeReplyArg arg)
+			ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 			{ Promise.SetValue(arg.value.get<bool>()); };
-			m_node->invokeRemote("tb.simple.SimpleInterface/funcBool", {bParamBool}, GetSimpleInterfaceStateFunc);
+			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcBool"), {bParamBool}, GetSimpleInterfaceStateFunc);
 		});
 
 	return Promise.GetFuture().Get();
@@ -224,18 +243,18 @@ bool UTbSimpleSimpleInterfaceOLinkClient::FuncBool_Implementation(bool bParamBoo
 
 int32 UTbSimpleSimpleInterfaceOLinkClient::FuncInt_Implementation(int32 ParamInt)
 {
-	if (!m_node)
+	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
+		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return 0;
 	}
 	TPromise<int32> Promise;
 	Async(EAsyncExecution::Thread,
 		[ParamInt, &Promise, this]()
 		{
-			InvokeReplyFunc GetSimpleInterfaceStateFunc = [&Promise](InvokeReplyArg arg)
+			ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 			{ Promise.SetValue(arg.value.get<int32>()); };
-			m_node->invokeRemote("tb.simple.SimpleInterface/funcInt", {ParamInt}, GetSimpleInterfaceStateFunc);
+			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcInt"), {ParamInt}, GetSimpleInterfaceStateFunc);
 		});
 
 	return Promise.GetFuture().Get();
@@ -243,18 +262,18 @@ int32 UTbSimpleSimpleInterfaceOLinkClient::FuncInt_Implementation(int32 ParamInt
 
 float UTbSimpleSimpleInterfaceOLinkClient::FuncFloat_Implementation(float ParamFloat)
 {
-	if (!m_node)
+	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
+		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return 0.0f;
 	}
 	TPromise<float> Promise;
 	Async(EAsyncExecution::Thread,
 		[ParamFloat, &Promise, this]()
 		{
-			InvokeReplyFunc GetSimpleInterfaceStateFunc = [&Promise](InvokeReplyArg arg)
+			ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 			{ Promise.SetValue(arg.value.get<float>()); };
-			m_node->invokeRemote("tb.simple.SimpleInterface/funcFloat", {ParamFloat}, GetSimpleInterfaceStateFunc);
+			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat"), {ParamFloat}, GetSimpleInterfaceStateFunc);
 		});
 
 	return Promise.GetFuture().Get();
@@ -262,18 +281,18 @@ float UTbSimpleSimpleInterfaceOLinkClient::FuncFloat_Implementation(float ParamF
 
 FString UTbSimpleSimpleInterfaceOLinkClient::FuncString_Implementation(const FString& ParamString)
 {
-	if (!m_node)
+	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(olinkObjectName().c_str()));
+		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return FString();
 	}
 	TPromise<FString> Promise;
 	Async(EAsyncExecution::Thread,
 		[ParamString, &Promise, this]()
 		{
-			InvokeReplyFunc GetSimpleInterfaceStateFunc = [&Promise](InvokeReplyArg arg)
+			ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 			{ Promise.SetValue(arg.value.get<FString>()); };
-			m_node->invokeRemote("tb.simple.SimpleInterface/funcString", {ParamString}, GetSimpleInterfaceStateFunc);
+			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcString"), {ParamString}, GetSimpleInterfaceStateFunc);
 		});
 
 	return Promise.GetFuture().Get();
@@ -315,52 +334,27 @@ void UTbSimpleSimpleInterfaceOLinkClient::applyState(const nlohmann::json& field
 	}
 }
 
-std::string UTbSimpleSimpleInterfaceOLinkClient::olinkObjectName()
+void UTbSimpleSimpleInterfaceOLinkClient::emitSignal(const std::string& signalId, const nlohmann::json& args)
 {
-	return "tb.simple.SimpleInterface";
-}
-
-void UTbSimpleSimpleInterfaceOLinkClient::olinkOnSignal(std::string name, nlohmann::json args)
-{
-	std::string path = Name::pathFromName(name);
-	if (path == "sigBool")
+	std::string MemberName = ApiGear::ObjectLink::Name::getMemberName(signalId);
+	if (MemberName == "sigBool")
 	{
 		Execute_BroadcastSigBool(this, args[0].get<bool>());
 		return;
 	}
-	if (path == "sigInt")
+	if (MemberName == "sigInt")
 	{
 		Execute_BroadcastSigInt(this, args[0].get<int32>());
 		return;
 	}
-	if (path == "sigFloat")
+	if (MemberName == "sigFloat")
 	{
 		Execute_BroadcastSigFloat(this, args[0].get<float>());
 		return;
 	}
-	if (path == "sigString")
+	if (MemberName == "sigString")
 	{
 		Execute_BroadcastSigString(this, args[0].get<FString>());
 		return;
 	}
-}
-
-void UTbSimpleSimpleInterfaceOLinkClient::olinkOnPropertyChanged(std::string name, nlohmann::json value)
-{
-	std::string path = Name::pathFromName(name);
-	applyState({{path, value}});
-}
-
-void UTbSimpleSimpleInterfaceOLinkClient::olinkOnInit(std::string name, nlohmann::json props, IClientNode* node)
-{
-	m_isReady = true;
-	m_node = node;
-	applyState(props);
-	// call isReady();
-}
-
-void UTbSimpleSimpleInterfaceOLinkClient::olinkOnRelease()
-{
-	m_isReady = false;
-	m_node = nullptr;
 }

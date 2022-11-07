@@ -17,12 +17,15 @@ limitations under the License.
 #pragma once
 
 #include "Testbed1StructInterfaceInterface.h"
+THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
+THIRD_PARTY_INCLUDES_END
+#include "unrealolinksink.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Testbed1StructInterfaceOLinkClient.generated.h"
 
 UCLASS(BlueprintType)
-class TESTBED1_API UTestbed1StructInterfaceOLinkClient : public UGameInstanceSubsystem, public ITestbed1StructInterfaceInterface, public ApiGear::ObjectLink::IObjectSink
+class TESTBED1_API UTestbed1StructInterfaceOLinkClient : public UGameInstanceSubsystem, public ITestbed1StructInterfaceInterface
 {
 	GENERATED_BODY()
 public:
@@ -84,13 +87,6 @@ public:
 	void FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructString& Result, const FTestbed1StructString& ParamString) override{};
 	FTestbed1StructString FuncString_Implementation(const FTestbed1StructString& ParamString) override;
 
-	// olink sink interface
-	std::string olinkObjectName() override;
-	void olinkOnSignal(std::string name, nlohmann::json args) override;
-	void olinkOnPropertyChanged(std::string name, nlohmann::json value) override;
-	void olinkOnInit(std::string name, nlohmann::json props, ApiGear::ObjectLink::IClientNode* node) override;
-	void olinkOnRelease() override;
-
 protected:
 	// signals
 	void BroadcastSigBool_Implementation(const FTestbed1StructBool& ParamBool) override;
@@ -111,8 +107,9 @@ protected:
 
 private:
 	void applyState(const nlohmann::json& fields);
-	ApiGear::ObjectLink::IClientNode* m_node;
-	bool m_isReady;
+	void emitSignal(const std::string& signalId, const nlohmann::json& args);
+	std::shared_ptr<FUnrealOLinkSink> m_sink;
+
 	// properties - local copy
 	FTestbed1StructBool PropBool{FTestbed1StructBool()};
 	FTestbed1StructInt PropInt{FTestbed1StructInt()};

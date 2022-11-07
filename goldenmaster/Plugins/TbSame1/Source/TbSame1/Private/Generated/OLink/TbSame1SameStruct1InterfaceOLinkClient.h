@@ -17,12 +17,15 @@ limitations under the License.
 #pragma once
 
 #include "TbSame1SameStruct1InterfaceInterface.h"
+THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
+THIRD_PARTY_INCLUDES_END
+#include "unrealolinksink.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "TbSame1SameStruct1InterfaceOLinkClient.generated.h"
 
 UCLASS(BlueprintType)
-class TBSAME1_API UTbSame1SameStruct1InterfaceOLinkClient : public UGameInstanceSubsystem, public ITbSame1SameStruct1InterfaceInterface, public ApiGear::ObjectLink::IObjectSink
+class TBSAME1_API UTbSame1SameStruct1InterfaceOLinkClient : public UGameInstanceSubsystem, public ITbSame1SameStruct1InterfaceInterface
 {
 	GENERATED_BODY()
 public:
@@ -48,13 +51,6 @@ public:
 	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame1Struct1& Result, const FTbSame1Struct1& Param1) override{};
 	FTbSame1Struct1 Func1_Implementation(const FTbSame1Struct1& Param1) override;
 
-	// olink sink interface
-	std::string olinkObjectName() override;
-	void olinkOnSignal(std::string name, nlohmann::json args) override;
-	void olinkOnPropertyChanged(std::string name, nlohmann::json value) override;
-	void olinkOnInit(std::string name, nlohmann::json props, ApiGear::ObjectLink::IClientNode* node) override;
-	void olinkOnRelease() override;
-
 protected:
 	// signals
 	void BroadcastSig1_Implementation(const FTbSame1Struct1& Param1) override;
@@ -63,8 +59,9 @@ protected:
 
 private:
 	void applyState(const nlohmann::json& fields);
-	ApiGear::ObjectLink::IClientNode* m_node;
-	bool m_isReady;
+	void emitSignal(const std::string& signalId, const nlohmann::json& args);
+	std::shared_ptr<FUnrealOLinkSink> m_sink;
+
 	// properties - local copy
 	FTbSame1Struct1 Prop1{FTbSame1Struct1()};
 };

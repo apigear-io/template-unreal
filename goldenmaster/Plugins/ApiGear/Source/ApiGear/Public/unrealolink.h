@@ -3,6 +3,7 @@
 #include "ApiGearConnection.h"
 THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
+#include "olink/clientregistry.h"
 THIRD_PARTY_INCLUDES_END
 #include "WebSocketsModule.h"
 #include "IWebSocket.h"
@@ -35,6 +36,11 @@ public:
 	void OnConnected() override;
 	void OnDisconnected(bool bReconnect) override;
 
+	std::shared_ptr<ApiGear::ObjectLink::ClientNode> node()
+	{
+		return m_node;
+	};
+
 private:
 	void open(const FString& url);
 	void processMessages();
@@ -44,7 +50,8 @@ private:
 	TSharedPtr<IWebSocket> m_socket;
 	bool m_loggingDisabled;
 	FString m_serverURL;
-	ObjectLink::ClientNode m_node;
+	ApiGear::ObjectLink::ClientRegistry m_registry;
+	std::shared_ptr<ApiGear::ObjectLink::ClientNode> m_node;
 	std::queue<std::string> m_queue;
 	std::mutex m_queue_mutex;
 };

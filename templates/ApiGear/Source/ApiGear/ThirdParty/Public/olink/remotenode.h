@@ -23,148 +23,66 @@
 */
 #pragma once
 
-#include "core/node.h"
-#include <set>
+#include "core/basenode.h"
+#include "iremotenode.h"
+#include <string>
+#include "nlohmann/json.hpp"
 
 namespace ApiGear { namespace ObjectLink {
 
-class RemoteNode;
 class RemoteRegistry;
 
 
 /**
- * @brief exposed to object source to call remote node functions
+ * Remote node separates the object source from a network related implementation, it provides functionality
+ * for sending and receiving messages. Remote node is meant for one connection.
+ * Handles incoming messages and decodes them, allows to write messages provided by services, that are using this remote node
+ * Codes the messages to and from used network format.
+ * The network implementation should deliver a write function for the node  to allow sending messages
+ * see BaseNode::emitWrite and BaseNode::onWrite.
+ * A source that receives a handler call is chosen based on registry entries and objectId retrieved from incoming message.
+ * To use object source with this remote node, remote node needs to be registered in same remote registry as the  object source.
  */
-class IRemoteNode {
+class OLINK_EXPORT RemoteNode: public BaseNode, public IRemoteNode, public std::enable_shared_from_this<RemoteNode>
+{
+protected:
+    /**
+    * protected constructor. Use createRemoteNode to make an instance of RemoteNode.
+    * @param registry. A global registry for remote nodes and object sources
+    */
+    RemoteNode(RemoteRegistry& registry);
+
 public:
-    virtual ~IRemoteNode();
-    virtual void notifyPropertyChange(std::string name, nlohmann::json value) = 0;
-    virtual void notifySignal(std::string name, nlohmann::json args) = 0;
-};
+    /**
+    * Factory method to create a remote node.
+    * @return new RemoteNode.
+    */
+    static std::shared_ptr<RemoteNode> createRemoteNode(RemoteRegistry& registry);
 
-// impemented by source object
-// called from object link
-/**
- * @brief Implemented by the object source
- * Interface is called by the remote node
- */
-class OLINK_EXPORT IObjectSource {
-public:
-    virtual ~IObjectSource();
-    virtual std::string olinkObjectName() = 0;
-    virtual nlohmann::json olinkInvoke(std::string name, nlohmann::json args) = 0;
-    virtual void olinkSetProperty(std::string name, nlohmann::json value) = 0;
-    virtual void olinkLinked(std::string name, IRemoteNode* node) = 0;
-    virtual void olinkUnlinked(std::string name) = 0;
-    virtual nlohmann::json olinkCollectProperties() = 0;
-};
+    virtual ~RemoteNode() = default;
 
+    /**
+     * Access the remote registry.
+     * @return the remote registry to which the node has subscribed.
+     */
+    RemoteRegistry& registry();
 
-/**
- * @brief manages associations of object source and nodes
- * One source can be linked to many nodes
- */
-struct SourceToNodesEntry {
-    SourceToNodesEntry()
-        : source(nullptr)
-    {}
-    IObjectSource *source;
-    std::set<RemoteNode*> nodes;
-};
+    /** IProtocolListener::handleLink implementation.*/
+    void handleLink(const std::string& objectId) override;
+    /** IProtocolListener::handleUnlink implementation.*/
+    void handleUnlink(const std::string& objectId) override;
+    /** IProtocolListener::handleSetProperty implementation. */
+    void handleSetProperty(const std::string& propertyId, const nlohmann::json& value) override;
+    /** IProtocolListener::handleInvoke implementation. */
+    void handleInvoke(int requestId, const std::string& methodId, const nlohmann::json& args) override;
 
-/**
- * @brief remote side registry for object sources.
- * Only one registry exists
- * Remote side all object sources must be unique for the whole process.
- */
-class RemoteRegistry: public Base {
+    /** IRemoteNode::notifyPropertyChange implementation. */
+    void notifyPropertyChange(const std::string& propertyId, const nlohmann::json& value) override;
+    /** IRemoteNode::notifySignal implementation. */
+    void notifySignal(const std::string& signalId, const nlohmann::json& args) override;
 private:
-    RemoteRegistry();
-public:
-    static RemoteRegistry& get();
-    void addObjectSource(IObjectSource *source);
-    void removeObjectSource(IObjectSource *source);
-    IObjectSource* getObjectSource(std::string name);
-    std::set<RemoteNode*> getRemoteNodes(std::string name);
-    void attachRemoteNode(RemoteNode *node);
-    void detachRemoteNode(RemoteNode* node);
-    void linkRemoteNode(std::string name, RemoteNode *node);
-    void unlinkRemoteNode(std::string name, RemoteNode *node);
-    SourceToNodesEntry &entry(std::string name);
-    void removeEntry(std::string name);
-private:
-    std::map<std::string, SourceToNodesEntry> m_entries;
+    /** A global remote registry to which the node has subscribed.*/
+    RemoteRegistry& m_registry;
 };
-
-/**
- * @brief remote side node to handle sources and olink messages
- * A remote node is associated with one socket to handle messages and to write messages.
- * The remote node calls the object sources based on remote registry entries.
- */
-class RemoteNode: public BaseNode, public IRemoteNode {
-public:
-    RemoteNode();
-    virtual ~RemoteNode() override;
-    /**
-     * get object source from registry by name
-     */
-    IObjectSource* getObjectSource(std::string name);
-    /**
-     * Access the global remote registry
-     * all object source names must be unique.
-     * Registry stores a source to many nodes associations
-     */
-    RemoteRegistry &registry();
-    /**
-     * Link remote node to object source in global registry
-     */
-    void linkNode(std::string name);
-    /**
-     * Unlink remote node from object source in global registry
-     */
-    void unlinkNode(std::string name);
-public: // source registry
-    /**
-     * Add object source to global registry
-     */
-    static void addObjectSource(IObjectSource *source);
-    /**
-     * Remove object source from global registry
-     */
-    static void removeObjectSource(IObjectSource *source);
-public: // IMessagesListener interface
-    /**
-     * handle Link message from client
-     */
-    void handleLink(std::string name) override;
-    /**
-     * handle Unlink message from client
-     */
-    void handleUnlink(std::string name) override;
-    /**
-     * handle SetProperty message from client
-     */
-    void handleSetProperty(std::string name, nlohmann::json value) override;
-    /**
-     * handle Invoke message form client.
-     * Calls the object source and returns the value using InvokeReply message
-     */
-    void handleInvoke(int requestId, std::string name, nlohmann::json args) override;
-
-public: // IObjectSourceNode interface
-    /**
-     * Broadcasts property change message to all remote nodes registered to the source
-     */
-    void notifyPropertyChange(std::string name, nlohmann::json value) override;
-    /**
-     * Broadcasts signal message to all remote nodes registered to the source
-     */
-    void notifySignal(std::string name, nlohmann::json args) override;
-};
-
-
 
 } } // Apigear::ObjectLink
-
-
-
