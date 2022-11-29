@@ -18,15 +18,20 @@ limitations under the License.
 
 #include "Testbed2ManyParamInterfaceInterface.h"
 #include "olink/clientnode.h"
+#include "Subsystems/GameInstanceSubsystem.h"
 #include "Testbed2ManyParamInterfaceOLinkClient.generated.h"
 
 UCLASS(BlueprintType)
-class TESTBED2_API UTestbed2ManyParamInterfaceOLinkClient : public UObject, public ITestbed2ManyParamInterfaceInterface, public ApiGear::ObjectLink::IObjectSink
+class TESTBED2_API UTestbed2ManyParamInterfaceOLinkClient : public UGameInstanceSubsystem, public ITestbed2ManyParamInterfaceInterface, public ApiGear::ObjectLink::IObjectSink
 {
 	GENERATED_BODY()
 public:
 	explicit UTestbed2ManyParamInterfaceOLinkClient();
-	virtual ~UTestbed2ManyParamInterfaceOLinkClient();
+	virtual ~UTestbed2ManyParamInterfaceOLinkClient() = default;
+
+	// subsystem
+	void Initialize(FSubsystemCollectionBase& Collection) override;
+	void Deinitialize() override;
 
 	// signals
 	FTestbed2ManyParamInterfaceSig0Delegate Sig0Signal;

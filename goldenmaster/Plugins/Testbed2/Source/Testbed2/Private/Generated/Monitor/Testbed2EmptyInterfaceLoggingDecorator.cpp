@@ -73,13 +73,15 @@ UTestbed2EmptyInterfaceLoggingDecorator::UTestbed2EmptyInterfaceLoggingDecorator
 
 UTestbed2EmptyInterfaceLoggingDecorator::~UTestbed2EmptyInterfaceLoggingDecorator() = default;
 
-void UTestbed2EmptyInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase&)
+void UTestbed2EmptyInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase& Collection)
 {
-	BackendService = FTestbed2ModuleFactory::createITestbed2EmptyInterfaceInterface();
+	Super::Initialize(Collection);
+	BackendService = FTestbed2ModuleFactory::createITestbed2EmptyInterfaceInterface(GetGameInstance(), Collection);
 }
 
 void UTestbed2EmptyInterfaceLoggingDecorator::Deinitialize()
 {
+	Super::Deinitialize();
 	BackendService = nullptr;
 }
 

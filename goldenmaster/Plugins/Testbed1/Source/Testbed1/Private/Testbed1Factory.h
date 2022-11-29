@@ -18,6 +18,9 @@ limitations under the License.
 
 #include "Logging/LogMacros.h"
 #include "UObject/ScriptInterface.h"
+
+class UGameInstance;
+class FSubsystemCollectionBase;
 class ITestbed1StructInterfaceInterface;
 class ITestbed1StructArrayInterfaceInterface;
 
@@ -27,6 +30,6 @@ DECLARE_LOG_CATEGORY_EXTERN(LogFTestbed1ModuleFactory, Log, All);
 class FTestbed1ModuleFactory
 {
 public:
-	static TScriptInterface<ITestbed1StructInterfaceInterface> createITestbed1StructInterfaceInterface();
-	static TScriptInterface<ITestbed1StructArrayInterfaceInterface> createITestbed1StructArrayInterfaceInterface();
+	static TScriptInterface<ITestbed1StructInterfaceInterface> createITestbed1StructInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
+	static TScriptInterface<ITestbed1StructArrayInterfaceInterface> createITestbed1StructArrayInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
 };

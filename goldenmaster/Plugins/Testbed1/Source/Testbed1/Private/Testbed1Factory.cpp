@@ -23,19 +23,32 @@ limitations under the License.
 #include "Generated/OLink/Testbed1StructArrayInterfaceOLinkClient.h"
 #include "Generated/Simulation/Testbed1StructArrayInterfaceSimulationClient.h"
 #include "Testbed1Settings.h"
+#include "Subsystems/GameInstanceSubsystem.h"
+#include "Engine/GameInstance.h"
 
 // General Log
 DEFINE_LOG_CATEGORY(LogFTestbed1ModuleFactory);
 
-TScriptInterface<ITestbed1StructInterfaceInterface> FTestbed1ModuleFactory::createITestbed1StructInterfaceInterface()
+TScriptInterface<ITestbed1StructInterfaceInterface> createTestbed1StructInterfaceOLink(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+{
+	UE_LOG(LogFTestbed1ModuleFactory, Log, TEXT("createITestbed1StructInterfaceInterface: Using OLink service backend"));
+	UTestbed1StructInterfaceOLinkClient* Instance = GameInstance->GetSubsystem<UTestbed1StructInterfaceOLinkClient>(GameInstance);
+	if (!Instance)
+	{
+		Collection.InitializeDependency(UTestbed1StructInterfaceOLinkClient::StaticClass());
+		Instance = GameInstance->GetSubsystem<UTestbed1StructInterfaceOLinkClient>(GameInstance);
+	}
+	return Instance;
+}
+
+TScriptInterface<ITestbed1StructInterfaceInterface> FTestbed1ModuleFactory::createITestbed1StructInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
 	UTestbed1Settings* settings = GetMutableDefault<UTestbed1Settings>();
 
 	switch (settings->ServiceConnection)
 	{
 	case ETestbed1Connection::CONNECTION_OLINK:
-		UE_LOG(LogFTestbed1ModuleFactory, Log, TEXT("createITestbed1StructInterfaceInterface: Using OLink service backend"));
-		return NewObject<UTestbed1StructInterfaceOLinkClient>();
+		return createTestbed1StructInterfaceOLink(GameInstance, Collection);
 	case ETestbed1Connection::CONNECTION_SIMU:
 		UE_LOG(LogFTestbed1ModuleFactory, Log, TEXT("createITestbed1StructInterfaceInterface: Using simulation service backend"));
 		return NewObject<UTestbed1StructInterfaceSimulationClient>();
@@ -47,15 +60,26 @@ TScriptInterface<ITestbed1StructInterfaceInterface> FTestbed1ModuleFactory::crea
 	}
 }
 
-TScriptInterface<ITestbed1StructArrayInterfaceInterface> FTestbed1ModuleFactory::createITestbed1StructArrayInterfaceInterface()
+TScriptInterface<ITestbed1StructArrayInterfaceInterface> createTestbed1StructArrayInterfaceOLink(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+{
+	UE_LOG(LogFTestbed1ModuleFactory, Log, TEXT("createITestbed1StructArrayInterfaceInterface: Using OLink service backend"));
+	UTestbed1StructArrayInterfaceOLinkClient* Instance = GameInstance->GetSubsystem<UTestbed1StructArrayInterfaceOLinkClient>(GameInstance);
+	if (!Instance)
+	{
+		Collection.InitializeDependency(UTestbed1StructArrayInterfaceOLinkClient::StaticClass());
+		Instance = GameInstance->GetSubsystem<UTestbed1StructArrayInterfaceOLinkClient>(GameInstance);
+	}
+	return Instance;
+}
+
+TScriptInterface<ITestbed1StructArrayInterfaceInterface> FTestbed1ModuleFactory::createITestbed1StructArrayInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
 	UTestbed1Settings* settings = GetMutableDefault<UTestbed1Settings>();
 
 	switch (settings->ServiceConnection)
 	{
 	case ETestbed1Connection::CONNECTION_OLINK:
-		UE_LOG(LogFTestbed1ModuleFactory, Log, TEXT("createITestbed1StructArrayInterfaceInterface: Using OLink service backend"));
-		return NewObject<UTestbed1StructArrayInterfaceOLinkClient>();
+		return createTestbed1StructArrayInterfaceOLink(GameInstance, Collection);
 	case ETestbed1Connection::CONNECTION_SIMU:
 		UE_LOG(LogFTestbed1ModuleFactory, Log, TEXT("createITestbed1StructArrayInterfaceInterface: Using simulation service backend"));
 		return NewObject<UTestbed1StructArrayInterfaceSimulationClient>();

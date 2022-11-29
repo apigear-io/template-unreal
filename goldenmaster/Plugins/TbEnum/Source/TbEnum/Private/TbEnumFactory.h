@@ -18,6 +18,9 @@ limitations under the License.
 
 #include "Logging/LogMacros.h"
 #include "UObject/ScriptInterface.h"
+
+class UGameInstance;
+class FSubsystemCollectionBase;
 class ITbEnumEnumInterfaceInterface;
 
 // General Log
@@ -26,5 +29,5 @@ DECLARE_LOG_CATEGORY_EXTERN(LogFTbEnumModuleFactory, Log, All);
 class FTbEnumModuleFactory
 {
 public:
-	static TScriptInterface<ITbEnumEnumInterfaceInterface> createITbEnumEnumInterfaceInterface();
+	static TScriptInterface<ITbEnumEnumInterfaceInterface> createITbEnumEnumInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
 };

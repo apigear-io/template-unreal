@@ -18,6 +18,9 @@ limitations under the License.
 
 #include "Logging/LogMacros.h"
 #include "UObject/ScriptInterface.h"
+
+class UGameInstance;
+class FSubsystemCollectionBase;
 class ITbSimpleSimpleInterfaceInterface;
 class ITbSimpleSimpleArrayInterfaceInterface;
 
@@ -27,6 +30,6 @@ DECLARE_LOG_CATEGORY_EXTERN(LogFTbSimpleModuleFactory, Log, All);
 class FTbSimpleModuleFactory
 {
 public:
-	static TScriptInterface<ITbSimpleSimpleInterfaceInterface> createITbSimpleSimpleInterfaceInterface();
-	static TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> createITbSimpleSimpleArrayInterfaceInterface();
+	static TScriptInterface<ITbSimpleSimpleInterfaceInterface> createITbSimpleSimpleInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
+	static TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> createITbSimpleSimpleArrayInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
 };

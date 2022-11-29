@@ -36,6 +36,11 @@ UTbEnumEnumInterfaceOLinkClient::UTbEnumEnumInterfaceOLinkClient()
 	, m_node(nullptr)
 	, m_isReady(false)
 {
+}
+
+void UTbEnumEnumInterfaceOLinkClient::Initialize(FSubsystemCollectionBase& Collection)
+{
+	Super::Initialize(Collection);
 	if (GEngine != nullptr)
 	{
 		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
@@ -45,8 +50,9 @@ UTbEnumEnumInterfaceOLinkClient::UTbEnumEnumInterfaceOLinkClient()
 	m_node = ClientRegistry::get().addObjectSink(this);
 }
 
-UTbEnumEnumInterfaceOLinkClient::~UTbEnumEnumInterfaceOLinkClient()
+void UTbEnumEnumInterfaceOLinkClient::Deinitialize()
 {
+	Super::Deinitialize();
 	ClientRegistry::get().removeObjectSink(this);
 	if (GEngine != nullptr)
 	{

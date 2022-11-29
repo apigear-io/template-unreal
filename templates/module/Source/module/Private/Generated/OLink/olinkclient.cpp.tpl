@@ -35,6 +35,11 @@ using namespace ApiGear::ObjectLink;
 	, m_node(nullptr)
 	, m_isReady(false)
 {
+}
+
+void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
+{
+	Super::Initialize(Collection);
 	if (GEngine != nullptr)
 	{
 		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
@@ -44,8 +49,9 @@ using namespace ApiGear::ObjectLink;
 	m_node = ClientRegistry::get().addObjectSink(this);
 }
 
-{{$Class}}::~{{$Class}}()
+void {{$Class}}::Deinitialize()
 {
+	Super::Deinitialize();
 	ClientRegistry::get().removeObjectSink(this);
 	if (GEngine != nullptr)
 	{

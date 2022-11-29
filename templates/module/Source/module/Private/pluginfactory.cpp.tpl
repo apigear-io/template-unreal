@@ -28,6 +28,8 @@ limitations under the License.
 #include "Generated/Simulation/{{$iclass}}SimulationClient.h"
 {{- end }}
 #include "{{$ModuleName}}Settings.h"
+#include "Subsystems/GameInstanceSubsystem.h"
+#include "Engine/GameInstance.h"
 
 // General Log
 DEFINE_LOG_CATEGORY(Log{{$mclass}});
@@ -37,15 +39,26 @@ DEFINE_LOG_CATEGORY(Log{{$mclass}});
 {{- $iclass := printf "I%sInterface" $class }}
 {{- $DisplayName := printf "%s%s" $ModuleName (Camel .Name) }}
 
-TScriptInterface<I{{$class}}Interface> {{$mclass}}::create{{$iclass}}()
+TScriptInterface<I{{$class}}Interface> create{{$class}}OLink(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+{
+	UE_LOG(Log{{$mclass}}, Log, TEXT("create{{$iclass}}: Using OLink service backend"));
+	{{ printf "U%sOLinkClient" $DisplayName}}* Instance = GameInstance->GetSubsystem<{{ printf "U%sOLinkClient" $DisplayName}}>(GameInstance);
+	if (!Instance)
+	{
+		Collection.InitializeDependency({{ printf "U%sOLinkClient" $DisplayName}}::StaticClass());
+		Instance = GameInstance->GetSubsystem<{{ printf "U%sOLinkClient" $DisplayName}}>(GameInstance);
+	}
+	return Instance;
+}
+
+TScriptInterface<I{{$class}}Interface> {{$mclass}}::create{{$iclass}}(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
 	U{{$ModuleName}}Settings* settings = GetMutableDefault<U{{$ModuleName}}Settings>();
 
 	switch (settings->ServiceConnection)
 	{
 	case E{{$ModuleName}}Connection::CONNECTION_OLINK:
-		UE_LOG(Log{{$mclass}}, Log, TEXT("create{{$iclass}}: Using OLink service backend"));
-		return NewObject<{{ printf "U%sOLinkClient" $DisplayName}}>();
+		return create{{$class}}OLink(GameInstance, Collection);
 	case E{{$ModuleName}}Connection::CONNECTION_SIMU:
 		UE_LOG(Log{{$mclass}}, Log, TEXT("create{{$iclass}}: Using simulation service backend"));
 		return NewObject<{{ printf "U%sSimulationClient" $DisplayName}}>();

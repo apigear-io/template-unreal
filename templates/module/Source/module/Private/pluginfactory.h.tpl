@@ -23,6 +23,9 @@ limitations under the License.
 
 #include "Logging/LogMacros.h"
 #include "UObject/ScriptInterface.h"
+
+class UGameInstance;
+class FSubsystemCollectionBase;
 {{- range .Module.Interfaces }}
 {{- $class := printf "%s%s" $ModuleName .Name}}
 class I{{$class}}Interface;
@@ -37,6 +40,6 @@ public:
 
 {{- range .Module.Interfaces }}
 {{- $class := printf "%s%s" $ModuleName .Name}}
-	static TScriptInterface<I{{$class}}Interface> createI{{$class}}Interface();
+	static TScriptInterface<I{{$class}}Interface> createI{{$class}}Interface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
 {{- end }}
 };

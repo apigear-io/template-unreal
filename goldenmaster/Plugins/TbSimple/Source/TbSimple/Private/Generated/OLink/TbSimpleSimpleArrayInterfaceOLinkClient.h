@@ -18,15 +18,20 @@ limitations under the License.
 
 #include "TbSimpleSimpleArrayInterfaceInterface.h"
 #include "olink/clientnode.h"
+#include "Subsystems/GameInstanceSubsystem.h"
 #include "TbSimpleSimpleArrayInterfaceOLinkClient.generated.h"
 
 UCLASS(BlueprintType)
-class TBSIMPLE_API UTbSimpleSimpleArrayInterfaceOLinkClient : public UObject, public ITbSimpleSimpleArrayInterfaceInterface, public ApiGear::ObjectLink::IObjectSink
+class TBSIMPLE_API UTbSimpleSimpleArrayInterfaceOLinkClient : public UGameInstanceSubsystem, public ITbSimpleSimpleArrayInterfaceInterface, public ApiGear::ObjectLink::IObjectSink
 {
 	GENERATED_BODY()
 public:
 	explicit UTbSimpleSimpleArrayInterfaceOLinkClient();
-	virtual ~UTbSimpleSimpleArrayInterfaceOLinkClient();
+	virtual ~UTbSimpleSimpleArrayInterfaceOLinkClient() = default;
+
+	// subsystem
+	void Initialize(FSubsystemCollectionBase& Collection) override;
+	void Deinitialize() override;
 
 	// signals
 	FTbSimpleSimpleArrayInterfaceSigBoolDelegate SigBoolSignal;

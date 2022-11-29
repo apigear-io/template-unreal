@@ -73,9 +73,10 @@ UTestbed1StructInterfaceLoggingDecorator::UTestbed1StructInterfaceLoggingDecorat
 
 UTestbed1StructInterfaceLoggingDecorator::~UTestbed1StructInterfaceLoggingDecorator() = default;
 
-void UTestbed1StructInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase&)
+void UTestbed1StructInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase& Collection)
 {
-	BackendService = FTestbed1ModuleFactory::createITestbed1StructInterfaceInterface();
+	Super::Initialize(Collection);
+	BackendService = FTestbed1ModuleFactory::createITestbed1StructInterfaceInterface(GetGameInstance(), Collection);
 	BackendService->GetPropBoolChangedDelegate().AddDynamic(this, &UTestbed1StructInterfaceLoggingDecorator::OnPropBoolChanged);
 	BackendService->GetPropIntChangedDelegate().AddDynamic(this, &UTestbed1StructInterfaceLoggingDecorator::OnPropIntChanged);
 	BackendService->GetPropFloatChangedDelegate().AddDynamic(this, &UTestbed1StructInterfaceLoggingDecorator::OnPropFloatChanged);
@@ -88,6 +89,7 @@ void UTestbed1StructInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBa
 
 void UTestbed1StructInterfaceLoggingDecorator::Deinitialize()
 {
+	Super::Deinitialize();
 	BackendService = nullptr;
 }
 

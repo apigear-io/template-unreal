@@ -36,6 +36,11 @@ UTbSame2SameStruct2InterfaceOLinkClient::UTbSame2SameStruct2InterfaceOLinkClient
 	, m_node(nullptr)
 	, m_isReady(false)
 {
+}
+
+void UTbSame2SameStruct2InterfaceOLinkClient::Initialize(FSubsystemCollectionBase& Collection)
+{
+	Super::Initialize(Collection);
 	if (GEngine != nullptr)
 	{
 		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
@@ -45,8 +50,9 @@ UTbSame2SameStruct2InterfaceOLinkClient::UTbSame2SameStruct2InterfaceOLinkClient
 	m_node = ClientRegistry::get().addObjectSink(this);
 }
 
-UTbSame2SameStruct2InterfaceOLinkClient::~UTbSame2SameStruct2InterfaceOLinkClient()
+void UTbSame2SameStruct2InterfaceOLinkClient::Deinitialize()
 {
+	Super::Deinitialize();
 	ClientRegistry::get().removeObjectSink(this);
 	if (GEngine != nullptr)
 	{

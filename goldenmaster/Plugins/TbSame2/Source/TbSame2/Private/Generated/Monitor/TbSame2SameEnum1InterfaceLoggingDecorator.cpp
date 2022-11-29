@@ -73,15 +73,17 @@ UTbSame2SameEnum1InterfaceLoggingDecorator::UTbSame2SameEnum1InterfaceLoggingDec
 
 UTbSame2SameEnum1InterfaceLoggingDecorator::~UTbSame2SameEnum1InterfaceLoggingDecorator() = default;
 
-void UTbSame2SameEnum1InterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase&)
+void UTbSame2SameEnum1InterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase& Collection)
 {
-	BackendService = FTbSame2ModuleFactory::createITbSame2SameEnum1InterfaceInterface();
+	Super::Initialize(Collection);
+	BackendService = FTbSame2ModuleFactory::createITbSame2SameEnum1InterfaceInterface(GetGameInstance(), Collection);
 	BackendService->GetProp1ChangedDelegate().AddDynamic(this, &UTbSame2SameEnum1InterfaceLoggingDecorator::OnProp1Changed);
 	BackendService->GetSig1SignalDelegate().AddDynamic(this, &UTbSame2SameEnum1InterfaceLoggingDecorator::OnSig1);
 }
 
 void UTbSame2SameEnum1InterfaceLoggingDecorator::Deinitialize()
 {
+	Super::Deinitialize();
 	BackendService = nullptr;
 }
 

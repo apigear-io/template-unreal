@@ -73,9 +73,10 @@ UTestbed2ManyParamInterfaceLoggingDecorator::UTestbed2ManyParamInterfaceLoggingD
 
 UTestbed2ManyParamInterfaceLoggingDecorator::~UTestbed2ManyParamInterfaceLoggingDecorator() = default;
 
-void UTestbed2ManyParamInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase&)
+void UTestbed2ManyParamInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase& Collection)
 {
-	BackendService = FTestbed2ModuleFactory::createITestbed2ManyParamInterfaceInterface();
+	Super::Initialize(Collection);
+	BackendService = FTestbed2ModuleFactory::createITestbed2ManyParamInterfaceInterface(GetGameInstance(), Collection);
 	BackendService->GetProp1ChangedDelegate().AddDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnProp1Changed);
 	BackendService->GetProp2ChangedDelegate().AddDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnProp2Changed);
 	BackendService->GetProp3ChangedDelegate().AddDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnProp3Changed);
@@ -89,6 +90,7 @@ void UTestbed2ManyParamInterfaceLoggingDecorator::Initialize(FSubsystemCollectio
 
 void UTestbed2ManyParamInterfaceLoggingDecorator::Deinitialize()
 {
+	Super::Deinitialize();
 	BackendService = nullptr;
 }
 

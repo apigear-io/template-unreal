@@ -73,9 +73,10 @@ UTbSimpleSimpleArrayInterfaceLoggingDecorator::UTbSimpleSimpleArrayInterfaceLogg
 
 UTbSimpleSimpleArrayInterfaceLoggingDecorator::~UTbSimpleSimpleArrayInterfaceLoggingDecorator() = default;
 
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase&)
+void UTbSimpleSimpleArrayInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase& Collection)
 {
-	BackendService = FTbSimpleModuleFactory::createITbSimpleSimpleArrayInterfaceInterface();
+	Super::Initialize(Collection);
+	BackendService = FTbSimpleModuleFactory::createITbSimpleSimpleArrayInterfaceInterface(GetGameInstance(), Collection);
 	BackendService->GetPropBoolChangedDelegate().AddDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropBoolChanged);
 	BackendService->GetPropIntChangedDelegate().AddDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropIntChanged);
 	BackendService->GetPropFloatChangedDelegate().AddDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropFloatChanged);
@@ -88,6 +89,7 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::Initialize(FSubsystemCollect
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::Deinitialize()
 {
+	Super::Deinitialize();
 	BackendService = nullptr;
 }
 

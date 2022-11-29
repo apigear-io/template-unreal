@@ -73,9 +73,10 @@ UTbEnumEnumInterfaceLoggingDecorator::UTbEnumEnumInterfaceLoggingDecorator()
 
 UTbEnumEnumInterfaceLoggingDecorator::~UTbEnumEnumInterfaceLoggingDecorator() = default;
 
-void UTbEnumEnumInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase&)
+void UTbEnumEnumInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase& Collection)
 {
-	BackendService = FTbEnumModuleFactory::createITbEnumEnumInterfaceInterface();
+	Super::Initialize(Collection);
+	BackendService = FTbEnumModuleFactory::createITbEnumEnumInterfaceInterface(GetGameInstance(), Collection);
 	BackendService->GetProp0ChangedDelegate().AddDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnProp0Changed);
 	BackendService->GetProp1ChangedDelegate().AddDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnProp1Changed);
 	BackendService->GetProp2ChangedDelegate().AddDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnProp2Changed);
@@ -88,6 +89,7 @@ void UTbEnumEnumInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase&)
 
 void UTbEnumEnumInterfaceLoggingDecorator::Deinitialize()
 {
+	Super::Deinitialize();
 	BackendService = nullptr;
 }
 

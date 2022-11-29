@@ -73,9 +73,10 @@ UTbSimpleSimpleInterfaceLoggingDecorator::UTbSimpleSimpleInterfaceLoggingDecorat
 
 UTbSimpleSimpleInterfaceLoggingDecorator::~UTbSimpleSimpleInterfaceLoggingDecorator() = default;
 
-void UTbSimpleSimpleInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase&)
+void UTbSimpleSimpleInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase& Collection)
 {
-	BackendService = FTbSimpleModuleFactory::createITbSimpleSimpleInterfaceInterface();
+	Super::Initialize(Collection);
+	BackendService = FTbSimpleModuleFactory::createITbSimpleSimpleInterfaceInterface(GetGameInstance(), Collection);
 	BackendService->GetPropBoolChangedDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropBoolChanged);
 	BackendService->GetPropIntChangedDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropIntChanged);
 	BackendService->GetPropFloatChangedDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloatChanged);
@@ -88,6 +89,7 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBa
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::Deinitialize()
 {
+	Super::Deinitialize();
 	BackendService = nullptr;
 }
 

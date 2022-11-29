@@ -20,19 +20,32 @@ limitations under the License.
 #include "Generated/OLink/TbEnumEnumInterfaceOLinkClient.h"
 #include "Generated/Simulation/TbEnumEnumInterfaceSimulationClient.h"
 #include "TbEnumSettings.h"
+#include "Subsystems/GameInstanceSubsystem.h"
+#include "Engine/GameInstance.h"
 
 // General Log
 DEFINE_LOG_CATEGORY(LogFTbEnumModuleFactory);
 
-TScriptInterface<ITbEnumEnumInterfaceInterface> FTbEnumModuleFactory::createITbEnumEnumInterfaceInterface()
+TScriptInterface<ITbEnumEnumInterfaceInterface> createTbEnumEnumInterfaceOLink(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+{
+	UE_LOG(LogFTbEnumModuleFactory, Log, TEXT("createITbEnumEnumInterfaceInterface: Using OLink service backend"));
+	UTbEnumEnumInterfaceOLinkClient* Instance = GameInstance->GetSubsystem<UTbEnumEnumInterfaceOLinkClient>(GameInstance);
+	if (!Instance)
+	{
+		Collection.InitializeDependency(UTbEnumEnumInterfaceOLinkClient::StaticClass());
+		Instance = GameInstance->GetSubsystem<UTbEnumEnumInterfaceOLinkClient>(GameInstance);
+	}
+	return Instance;
+}
+
+TScriptInterface<ITbEnumEnumInterfaceInterface> FTbEnumModuleFactory::createITbEnumEnumInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
 	UTbEnumSettings* settings = GetMutableDefault<UTbEnumSettings>();
 
 	switch (settings->ServiceConnection)
 	{
 	case ETbEnumConnection::CONNECTION_OLINK:
-		UE_LOG(LogFTbEnumModuleFactory, Log, TEXT("createITbEnumEnumInterfaceInterface: Using OLink service backend"));
-		return NewObject<UTbEnumEnumInterfaceOLinkClient>();
+		return createTbEnumEnumInterfaceOLink(GameInstance, Collection);
 	case ETbEnumConnection::CONNECTION_SIMU:
 		UE_LOG(LogFTbEnumModuleFactory, Log, TEXT("createITbEnumEnumInterfaceInterface: Using simulation service backend"));
 		return NewObject<UTbEnumEnumInterfaceSimulationClient>();

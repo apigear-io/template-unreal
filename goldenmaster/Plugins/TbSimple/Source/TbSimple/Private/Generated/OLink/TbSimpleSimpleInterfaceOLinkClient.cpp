@@ -36,6 +36,11 @@ UTbSimpleSimpleInterfaceOLinkClient::UTbSimpleSimpleInterfaceOLinkClient()
 	, m_node(nullptr)
 	, m_isReady(false)
 {
+}
+
+void UTbSimpleSimpleInterfaceOLinkClient::Initialize(FSubsystemCollectionBase& Collection)
+{
+	Super::Initialize(Collection);
 	if (GEngine != nullptr)
 	{
 		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
@@ -45,8 +50,9 @@ UTbSimpleSimpleInterfaceOLinkClient::UTbSimpleSimpleInterfaceOLinkClient()
 	m_node = ClientRegistry::get().addObjectSink(this);
 }
 
-UTbSimpleSimpleInterfaceOLinkClient::~UTbSimpleSimpleInterfaceOLinkClient()
+void UTbSimpleSimpleInterfaceOLinkClient::Deinitialize()
 {
+	Super::Deinitialize();
 	ClientRegistry::get().removeObjectSink(this);
 	if (GEngine != nullptr)
 	{

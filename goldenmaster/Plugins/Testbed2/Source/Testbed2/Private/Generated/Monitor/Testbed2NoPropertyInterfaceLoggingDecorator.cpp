@@ -73,14 +73,16 @@ UTestbed2NoPropertyInterfaceLoggingDecorator::UTestbed2NoPropertyInterfaceLoggin
 
 UTestbed2NoPropertyInterfaceLoggingDecorator::~UTestbed2NoPropertyInterfaceLoggingDecorator() = default;
 
-void UTestbed2NoPropertyInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase&)
+void UTestbed2NoPropertyInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase& Collection)
 {
-	BackendService = FTestbed2ModuleFactory::createITestbed2NoPropertyInterfaceInterface();
+	Super::Initialize(Collection);
+	BackendService = FTestbed2ModuleFactory::createITestbed2NoPropertyInterfaceInterface(GetGameInstance(), Collection);
 	BackendService->GetSig1SignalDelegate().AddDynamic(this, &UTestbed2NoPropertyInterfaceLoggingDecorator::OnSig1);
 }
 
 void UTestbed2NoPropertyInterfaceLoggingDecorator::Deinitialize()
 {
+	Super::Deinitialize();
 	BackendService = nullptr;
 }
 

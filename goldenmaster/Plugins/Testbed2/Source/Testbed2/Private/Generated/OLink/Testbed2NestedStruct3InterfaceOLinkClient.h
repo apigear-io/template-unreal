@@ -18,15 +18,20 @@ limitations under the License.
 
 #include "Testbed2NestedStruct3InterfaceInterface.h"
 #include "olink/clientnode.h"
+#include "Subsystems/GameInstanceSubsystem.h"
 #include "Testbed2NestedStruct3InterfaceOLinkClient.generated.h"
 
 UCLASS(BlueprintType)
-class TESTBED2_API UTestbed2NestedStruct3InterfaceOLinkClient : public UObject, public ITestbed2NestedStruct3InterfaceInterface, public ApiGear::ObjectLink::IObjectSink
+class TESTBED2_API UTestbed2NestedStruct3InterfaceOLinkClient : public UGameInstanceSubsystem, public ITestbed2NestedStruct3InterfaceInterface, public ApiGear::ObjectLink::IObjectSink
 {
 	GENERATED_BODY()
 public:
 	explicit UTestbed2NestedStruct3InterfaceOLinkClient();
-	virtual ~UTestbed2NestedStruct3InterfaceOLinkClient();
+	virtual ~UTestbed2NestedStruct3InterfaceOLinkClient() = default;
+
+	// subsystem
+	void Initialize(FSubsystemCollectionBase& Collection) override;
+	void Deinitialize() override;
 
 	// signals
 	FTestbed2NestedStruct3InterfaceSig1Delegate Sig1Signal;

@@ -88,10 +88,11 @@ public:
 
 {{$Class}}::~{{$Class}}() = default;
 
-void {{$Class}}::Initialize(FSubsystemCollectionBase&)
+void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
 {
+	Super::Initialize(Collection);
 {{- $Service := printf "I%sInterface" $Iface }}
-	BackendService = {{$FactoryName}}::create{{$Service}}();
+	BackendService = {{$FactoryName}}::create{{$Service}}(GetGameInstance(), Collection);
 {{- range .Interface.Properties }}
 	BackendService->Get{{Camel .Name}}ChangedDelegate().AddDynamic(this, &{{$Class}}::On{{Camel .Name}}Changed);
 {{- end }}
@@ -102,6 +103,7 @@ void {{$Class}}::Initialize(FSubsystemCollectionBase&)
 
 void {{$Class}}::Deinitialize()
 {
+	Super::Deinitialize();
 	BackendService = nullptr;
 }
 

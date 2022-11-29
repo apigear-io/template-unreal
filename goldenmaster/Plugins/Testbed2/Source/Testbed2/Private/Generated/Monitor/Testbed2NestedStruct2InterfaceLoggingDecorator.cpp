@@ -73,9 +73,10 @@ UTestbed2NestedStruct2InterfaceLoggingDecorator::UTestbed2NestedStruct2Interface
 
 UTestbed2NestedStruct2InterfaceLoggingDecorator::~UTestbed2NestedStruct2InterfaceLoggingDecorator() = default;
 
-void UTestbed2NestedStruct2InterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase&)
+void UTestbed2NestedStruct2InterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase& Collection)
 {
-	BackendService = FTestbed2ModuleFactory::createITestbed2NestedStruct2InterfaceInterface();
+	Super::Initialize(Collection);
+	BackendService = FTestbed2ModuleFactory::createITestbed2NestedStruct2InterfaceInterface(GetGameInstance(), Collection);
 	BackendService->GetProp1ChangedDelegate().AddDynamic(this, &UTestbed2NestedStruct2InterfaceLoggingDecorator::OnProp1Changed);
 	BackendService->GetProp2ChangedDelegate().AddDynamic(this, &UTestbed2NestedStruct2InterfaceLoggingDecorator::OnProp2Changed);
 	BackendService->GetSig1SignalDelegate().AddDynamic(this, &UTestbed2NestedStruct2InterfaceLoggingDecorator::OnSig1);
@@ -84,6 +85,7 @@ void UTestbed2NestedStruct2InterfaceLoggingDecorator::Initialize(FSubsystemColle
 
 void UTestbed2NestedStruct2InterfaceLoggingDecorator::Deinitialize()
 {
+	Super::Deinitialize();
 	BackendService = nullptr;
 }
 

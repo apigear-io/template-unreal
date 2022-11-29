@@ -18,15 +18,20 @@ limitations under the License.
 
 #include "TbEnumEnumInterfaceInterface.h"
 #include "olink/clientnode.h"
+#include "Subsystems/GameInstanceSubsystem.h"
 #include "TbEnumEnumInterfaceOLinkClient.generated.h"
 
 UCLASS(BlueprintType)
-class TBENUM_API UTbEnumEnumInterfaceOLinkClient : public UObject, public ITbEnumEnumInterfaceInterface, public ApiGear::ObjectLink::IObjectSink
+class TBENUM_API UTbEnumEnumInterfaceOLinkClient : public UGameInstanceSubsystem, public ITbEnumEnumInterfaceInterface, public ApiGear::ObjectLink::IObjectSink
 {
 	GENERATED_BODY()
 public:
 	explicit UTbEnumEnumInterfaceOLinkClient();
-	virtual ~UTbEnumEnumInterfaceOLinkClient();
+	virtual ~UTbEnumEnumInterfaceOLinkClient() = default;
+
+	// subsystem
+	void Initialize(FSubsystemCollectionBase& Collection) override;
+	void Deinitialize() override;
 
 	// signals
 	FTbEnumEnumInterfaceSig0Delegate Sig0Signal;

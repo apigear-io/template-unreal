@@ -18,15 +18,20 @@ limitations under the License.
 
 #include "TbSame2SameEnum2InterfaceInterface.h"
 #include "olink/clientnode.h"
+#include "Subsystems/GameInstanceSubsystem.h"
 #include "TbSame2SameEnum2InterfaceOLinkClient.generated.h"
 
 UCLASS(BlueprintType)
-class TBSAME2_API UTbSame2SameEnum2InterfaceOLinkClient : public UObject, public ITbSame2SameEnum2InterfaceInterface, public ApiGear::ObjectLink::IObjectSink
+class TBSAME2_API UTbSame2SameEnum2InterfaceOLinkClient : public UGameInstanceSubsystem, public ITbSame2SameEnum2InterfaceInterface, public ApiGear::ObjectLink::IObjectSink
 {
 	GENERATED_BODY()
 public:
 	explicit UTbSame2SameEnum2InterfaceOLinkClient();
-	virtual ~UTbSame2SameEnum2InterfaceOLinkClient();
+	virtual ~UTbSame2SameEnum2InterfaceOLinkClient() = default;
+
+	// subsystem
+	void Initialize(FSubsystemCollectionBase& Collection) override;
+	void Deinitialize() override;
 
 	// signals
 	FTbSame2SameEnum2InterfaceSig1Delegate Sig1Signal;

@@ -18,6 +18,9 @@ limitations under the License.
 
 #include "Logging/LogMacros.h"
 #include "UObject/ScriptInterface.h"
+
+class UGameInstance;
+class FSubsystemCollectionBase;
 class ITestbed2ManyParamInterfaceInterface;
 class ITestbed2NestedStruct1InterfaceInterface;
 class ITestbed2NestedStruct2InterfaceInterface;
@@ -31,10 +34,10 @@ DECLARE_LOG_CATEGORY_EXTERN(LogFTestbed2ModuleFactory, Log, All);
 class FTestbed2ModuleFactory
 {
 public:
-	static TScriptInterface<ITestbed2ManyParamInterfaceInterface> createITestbed2ManyParamInterfaceInterface();
-	static TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> createITestbed2NestedStruct1InterfaceInterface();
-	static TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> createITestbed2NestedStruct2InterfaceInterface();
-	static TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> createITestbed2NestedStruct3InterfaceInterface();
-	static TScriptInterface<ITestbed2NoPropertyInterfaceInterface> createITestbed2NoPropertyInterfaceInterface();
-	static TScriptInterface<ITestbed2EmptyInterfaceInterface> createITestbed2EmptyInterfaceInterface();
+	static TScriptInterface<ITestbed2ManyParamInterfaceInterface> createITestbed2ManyParamInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
+	static TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> createITestbed2NestedStruct1InterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
+	static TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> createITestbed2NestedStruct2InterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
+	static TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> createITestbed2NestedStruct3InterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
+	static TScriptInterface<ITestbed2NoPropertyInterfaceInterface> createITestbed2NoPropertyInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
+	static TScriptInterface<ITestbed2EmptyInterfaceInterface> createITestbed2EmptyInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
 };

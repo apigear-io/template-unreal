@@ -36,6 +36,11 @@ UTestbed2NoPropertyInterfaceOLinkClient::UTestbed2NoPropertyInterfaceOLinkClient
 	, m_node(nullptr)
 	, m_isReady(false)
 {
+}
+
+void UTestbed2NoPropertyInterfaceOLinkClient::Initialize(FSubsystemCollectionBase& Collection)
+{
+	Super::Initialize(Collection);
 	if (GEngine != nullptr)
 	{
 		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
@@ -45,8 +50,9 @@ UTestbed2NoPropertyInterfaceOLinkClient::UTestbed2NoPropertyInterfaceOLinkClient
 	m_node = ClientRegistry::get().addObjectSink(this);
 }
 
-UTestbed2NoPropertyInterfaceOLinkClient::~UTestbed2NoPropertyInterfaceOLinkClient()
+void UTestbed2NoPropertyInterfaceOLinkClient::Deinitialize()
 {
+	Super::Deinitialize();
 	ClientRegistry::get().removeObjectSink(this);
 	if (GEngine != nullptr)
 	{

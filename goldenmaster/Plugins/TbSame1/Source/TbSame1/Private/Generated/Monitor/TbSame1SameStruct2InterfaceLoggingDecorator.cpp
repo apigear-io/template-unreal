@@ -73,9 +73,10 @@ UTbSame1SameStruct2InterfaceLoggingDecorator::UTbSame1SameStruct2InterfaceLoggin
 
 UTbSame1SameStruct2InterfaceLoggingDecorator::~UTbSame1SameStruct2InterfaceLoggingDecorator() = default;
 
-void UTbSame1SameStruct2InterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase&)
+void UTbSame1SameStruct2InterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase& Collection)
 {
-	BackendService = FTbSame1ModuleFactory::createITbSame1SameStruct2InterfaceInterface();
+	Super::Initialize(Collection);
+	BackendService = FTbSame1ModuleFactory::createITbSame1SameStruct2InterfaceInterface(GetGameInstance(), Collection);
 	BackendService->GetProp1ChangedDelegate().AddDynamic(this, &UTbSame1SameStruct2InterfaceLoggingDecorator::OnProp1Changed);
 	BackendService->GetProp2ChangedDelegate().AddDynamic(this, &UTbSame1SameStruct2InterfaceLoggingDecorator::OnProp2Changed);
 	BackendService->GetSig1SignalDelegate().AddDynamic(this, &UTbSame1SameStruct2InterfaceLoggingDecorator::OnSig1);
@@ -84,6 +85,7 @@ void UTbSame1SameStruct2InterfaceLoggingDecorator::Initialize(FSubsystemCollecti
 
 void UTbSame1SameStruct2InterfaceLoggingDecorator::Deinitialize()
 {
+	Super::Deinitialize();
 	BackendService = nullptr;
 }
 

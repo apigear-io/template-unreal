@@ -12,15 +12,20 @@
 
 #include "{{$Iface}}Interface.h"
 #include "olink/clientnode.h"
+#include "Subsystems/GameInstanceSubsystem.h"
 #include "{{$Iface}}OLinkClient.generated.h"
 
 UCLASS(BlueprintType)
-class {{ $API_MACRO }} {{$Class}} : public UObject, public I{{$Iface}}Interface, public ApiGear::ObjectLink::IObjectSink
+class {{ $API_MACRO }} {{$Class}} : public UGameInstanceSubsystem, public I{{$Iface}}Interface, public ApiGear::ObjectLink::IObjectSink
 {
 	GENERATED_BODY()
 public:
 	explicit {{$Class}}();
-	virtual ~{{$Class}}();
+	virtual ~{{$Class}}() = default;
+
+	// subsystem
+	void Initialize(FSubsystemCollectionBase& Collection) override;
+	void Deinitialize() override;
 
 	// signals
 {{- range .Interface.Signals }}

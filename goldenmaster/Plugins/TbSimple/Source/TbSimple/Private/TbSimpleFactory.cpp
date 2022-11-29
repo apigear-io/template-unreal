@@ -23,19 +23,32 @@ limitations under the License.
 #include "Generated/OLink/TbSimpleSimpleArrayInterfaceOLinkClient.h"
 #include "Generated/Simulation/TbSimpleSimpleArrayInterfaceSimulationClient.h"
 #include "TbSimpleSettings.h"
+#include "Subsystems/GameInstanceSubsystem.h"
+#include "Engine/GameInstance.h"
 
 // General Log
 DEFINE_LOG_CATEGORY(LogFTbSimpleModuleFactory);
 
-TScriptInterface<ITbSimpleSimpleInterfaceInterface> FTbSimpleModuleFactory::createITbSimpleSimpleInterfaceInterface()
+TScriptInterface<ITbSimpleSimpleInterfaceInterface> createTbSimpleSimpleInterfaceOLink(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+{
+	UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleInterfaceInterface: Using OLink service backend"));
+	UTbSimpleSimpleInterfaceOLinkClient* Instance = GameInstance->GetSubsystem<UTbSimpleSimpleInterfaceOLinkClient>(GameInstance);
+	if (!Instance)
+	{
+		Collection.InitializeDependency(UTbSimpleSimpleInterfaceOLinkClient::StaticClass());
+		Instance = GameInstance->GetSubsystem<UTbSimpleSimpleInterfaceOLinkClient>(GameInstance);
+	}
+	return Instance;
+}
+
+TScriptInterface<ITbSimpleSimpleInterfaceInterface> FTbSimpleModuleFactory::createITbSimpleSimpleInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
 	UTbSimpleSettings* settings = GetMutableDefault<UTbSimpleSettings>();
 
 	switch (settings->ServiceConnection)
 	{
 	case ETbSimpleConnection::CONNECTION_OLINK:
-		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleInterfaceInterface: Using OLink service backend"));
-		return NewObject<UTbSimpleSimpleInterfaceOLinkClient>();
+		return createTbSimpleSimpleInterfaceOLink(GameInstance, Collection);
 	case ETbSimpleConnection::CONNECTION_SIMU:
 		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleInterfaceInterface: Using simulation service backend"));
 		return NewObject<UTbSimpleSimpleInterfaceSimulationClient>();
@@ -47,15 +60,26 @@ TScriptInterface<ITbSimpleSimpleInterfaceInterface> FTbSimpleModuleFactory::crea
 	}
 }
 
-TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> FTbSimpleModuleFactory::createITbSimpleSimpleArrayInterfaceInterface()
+TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> createTbSimpleSimpleArrayInterfaceOLink(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+{
+	UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleArrayInterfaceInterface: Using OLink service backend"));
+	UTbSimpleSimpleArrayInterfaceOLinkClient* Instance = GameInstance->GetSubsystem<UTbSimpleSimpleArrayInterfaceOLinkClient>(GameInstance);
+	if (!Instance)
+	{
+		Collection.InitializeDependency(UTbSimpleSimpleArrayInterfaceOLinkClient::StaticClass());
+		Instance = GameInstance->GetSubsystem<UTbSimpleSimpleArrayInterfaceOLinkClient>(GameInstance);
+	}
+	return Instance;
+}
+
+TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> FTbSimpleModuleFactory::createITbSimpleSimpleArrayInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
 	UTbSimpleSettings* settings = GetMutableDefault<UTbSimpleSettings>();
 
 	switch (settings->ServiceConnection)
 	{
 	case ETbSimpleConnection::CONNECTION_OLINK:
-		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleArrayInterfaceInterface: Using OLink service backend"));
-		return NewObject<UTbSimpleSimpleArrayInterfaceOLinkClient>();
+		return createTbSimpleSimpleArrayInterfaceOLink(GameInstance, Collection);
 	case ETbSimpleConnection::CONNECTION_SIMU:
 		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleArrayInterfaceInterface: Using simulation service backend"));
 		return NewObject<UTbSimpleSimpleArrayInterfaceSimulationClient>();

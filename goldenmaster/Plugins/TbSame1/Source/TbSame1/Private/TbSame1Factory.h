@@ -18,6 +18,9 @@ limitations under the License.
 
 #include "Logging/LogMacros.h"
 #include "UObject/ScriptInterface.h"
+
+class UGameInstance;
+class FSubsystemCollectionBase;
 class ITbSame1SameStruct1InterfaceInterface;
 class ITbSame1SameStruct2InterfaceInterface;
 class ITbSame1SameEnum1InterfaceInterface;
@@ -29,8 +32,8 @@ DECLARE_LOG_CATEGORY_EXTERN(LogFTbSame1ModuleFactory, Log, All);
 class FTbSame1ModuleFactory
 {
 public:
-	static TScriptInterface<ITbSame1SameStruct1InterfaceInterface> createITbSame1SameStruct1InterfaceInterface();
-	static TScriptInterface<ITbSame1SameStruct2InterfaceInterface> createITbSame1SameStruct2InterfaceInterface();
-	static TScriptInterface<ITbSame1SameEnum1InterfaceInterface> createITbSame1SameEnum1InterfaceInterface();
-	static TScriptInterface<ITbSame1SameEnum2InterfaceInterface> createITbSame1SameEnum2InterfaceInterface();
+	static TScriptInterface<ITbSame1SameStruct1InterfaceInterface> createITbSame1SameStruct1InterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
+	static TScriptInterface<ITbSame1SameStruct2InterfaceInterface> createITbSame1SameStruct2InterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
+	static TScriptInterface<ITbSame1SameEnum1InterfaceInterface> createITbSame1SameEnum1InterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
+	static TScriptInterface<ITbSame1SameEnum2InterfaceInterface> createITbSame1SameEnum2InterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
 };
