@@ -17,15 +17,20 @@ limitations under the License.
 #pragma once
 
 #include "TbSame1SameEnum1InterfaceInterface.h"
+#include "Subsystems/GameInstanceSubsystem.h"
 #include "TbSame1SameEnum1InterfaceSimulationClient.generated.h"
 
 UCLASS(BlueprintType)
-class UTbSame1SameEnum1InterfaceSimulationClient : public UObject, public ITbSame1SameEnum1InterfaceInterface
+class UTbSame1SameEnum1InterfaceSimulationClient : public UGameInstanceSubsystem, public ITbSame1SameEnum1InterfaceInterface
 {
 	GENERATED_BODY()
 public:
 	explicit UTbSame1SameEnum1InterfaceSimulationClient();
-	virtual ~UTbSame1SameEnum1InterfaceSimulationClient();
+	virtual ~UTbSame1SameEnum1InterfaceSimulationClient() = default;
+
+	// subsystem
+	void Initialize(FSubsystemCollectionBase& Collection) override;
+	void Deinitialize() override;
 
 	// signals
 	FTbSame1SameEnum1InterfaceSig1Delegate Sig1Signal;

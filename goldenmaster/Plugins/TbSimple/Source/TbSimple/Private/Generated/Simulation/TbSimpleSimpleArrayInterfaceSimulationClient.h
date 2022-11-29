@@ -17,15 +17,20 @@ limitations under the License.
 #pragma once
 
 #include "TbSimpleSimpleArrayInterfaceInterface.h"
+#include "Subsystems/GameInstanceSubsystem.h"
 #include "TbSimpleSimpleArrayInterfaceSimulationClient.generated.h"
 
 UCLASS(BlueprintType)
-class UTbSimpleSimpleArrayInterfaceSimulationClient : public UObject, public ITbSimpleSimpleArrayInterfaceInterface
+class UTbSimpleSimpleArrayInterfaceSimulationClient : public UGameInstanceSubsystem, public ITbSimpleSimpleArrayInterfaceInterface
 {
 	GENERATED_BODY()
 public:
 	explicit UTbSimpleSimpleArrayInterfaceSimulationClient();
-	virtual ~UTbSimpleSimpleArrayInterfaceSimulationClient();
+	virtual ~UTbSimpleSimpleArrayInterfaceSimulationClient() = default;
+
+	// subsystem
+	void Initialize(FSubsystemCollectionBase& Collection) override;
+	void Deinitialize() override;
 
 	// signals
 	FTbSimpleSimpleArrayInterfaceSigBoolDelegate SigBoolSignal;

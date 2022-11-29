@@ -31,6 +31,12 @@ using namespace ApiGear::JSONRPC;
 UTbSimpleSimpleArrayInterfaceSimulationClient::UTbSimpleSimpleArrayInterfaceSimulationClient()
 	: ITbSimpleSimpleArrayInterfaceInterface()
 {
+}
+
+void UTbSimpleSimpleArrayInterfaceSimulationClient::Initialize(FSubsystemCollectionBase& Collection)
+{
+	Super::Initialize(Collection);
+
 	UApiGearConnectionManager* AGCM = nullptr;
 	if (GEngine != nullptr)
 	{
@@ -177,8 +183,10 @@ UTbSimpleSimpleArrayInterfaceSimulationClient::UTbSimpleSimpleArrayInterfaceSimu
 	}
 }
 
-UTbSimpleSimpleArrayInterfaceSimulationClient::~UTbSimpleSimpleArrayInterfaceSimulationClient()
+void UTbSimpleSimpleArrayInterfaceSimulationClient::Deinitialize()
 {
+	Super::Deinitialize();
+
 	if (GEngine != nullptr)
 	{
 		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();

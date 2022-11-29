@@ -8,15 +8,20 @@
 #pragma once
 
 #include "{{$Iface}}Interface.h"
+#include "Subsystems/GameInstanceSubsystem.h"
 #include "{{$Iface}}SimulationClient.generated.h"
 
 UCLASS(BlueprintType)
-class {{$Class}} : public UObject, public I{{$Iface}}Interface
+class {{$Class}} : public UGameInstanceSubsystem, public I{{$Iface}}Interface
 {
 	GENERATED_BODY()
 public:
 	explicit {{$Class}}();
-	virtual ~{{$Class}}();
+	virtual ~{{$Class}}() = default;
+
+	// subsystem
+	void Initialize(FSubsystemCollectionBase& Collection) override;
+	void Deinitialize() override;
 
 	// signals
 {{- range .Interface.Signals }}

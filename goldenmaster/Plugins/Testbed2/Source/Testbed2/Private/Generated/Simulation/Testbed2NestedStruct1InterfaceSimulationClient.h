@@ -17,15 +17,20 @@ limitations under the License.
 #pragma once
 
 #include "Testbed2NestedStruct1InterfaceInterface.h"
+#include "Subsystems/GameInstanceSubsystem.h"
 #include "Testbed2NestedStruct1InterfaceSimulationClient.generated.h"
 
 UCLASS(BlueprintType)
-class UTestbed2NestedStruct1InterfaceSimulationClient : public UObject, public ITestbed2NestedStruct1InterfaceInterface
+class UTestbed2NestedStruct1InterfaceSimulationClient : public UGameInstanceSubsystem, public ITestbed2NestedStruct1InterfaceInterface
 {
 	GENERATED_BODY()
 public:
 	explicit UTestbed2NestedStruct1InterfaceSimulationClient();
-	virtual ~UTestbed2NestedStruct1InterfaceSimulationClient();
+	virtual ~UTestbed2NestedStruct1InterfaceSimulationClient() = default;
+
+	// subsystem
+	void Initialize(FSubsystemCollectionBase& Collection) override;
+	void Deinitialize() override;
 
 	// signals
 	FTestbed2NestedStruct1InterfaceSig1Delegate Sig1Signal;

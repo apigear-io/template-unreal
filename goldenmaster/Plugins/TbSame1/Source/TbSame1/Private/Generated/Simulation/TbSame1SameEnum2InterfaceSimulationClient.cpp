@@ -31,6 +31,12 @@ using namespace ApiGear::JSONRPC;
 UTbSame1SameEnum2InterfaceSimulationClient::UTbSame1SameEnum2InterfaceSimulationClient()
 	: ITbSame1SameEnum2InterfaceInterface()
 {
+}
+
+void UTbSame1SameEnum2InterfaceSimulationClient::Initialize(FSubsystemCollectionBase& Collection)
+{
+	Super::Initialize(Collection);
+
 	UApiGearConnectionManager* AGCM = nullptr;
 	if (GEngine != nullptr)
 	{
@@ -119,8 +125,10 @@ UTbSame1SameEnum2InterfaceSimulationClient::UTbSame1SameEnum2InterfaceSimulation
 	}
 }
 
-UTbSame1SameEnum2InterfaceSimulationClient::~UTbSame1SameEnum2InterfaceSimulationClient()
+void UTbSame1SameEnum2InterfaceSimulationClient::Deinitialize()
 {
+	Super::Deinitialize();
+
 	if (GEngine != nullptr)
 	{
 		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();

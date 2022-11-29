@@ -51,6 +51,18 @@ TScriptInterface<I{{$class}}Interface> create{{$class}}OLink(UGameInstance* Game
 	return Instance;
 }
 
+TScriptInterface<I{{$class}}Interface> create{{$class}}Simulation(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+{
+	UE_LOG(Log{{$mclass}}, Log, TEXT("create{{$iclass}}: Using simulation service backend"));
+	{{ printf "U%sSimulationClient" $DisplayName}}* Instance = GameInstance->GetSubsystem<{{ printf "U%sSimulationClient" $DisplayName}}>(GameInstance);
+	if (!Instance)
+	{
+		Collection.InitializeDependency({{ printf "U%sSimulationClient" $DisplayName}}::StaticClass());
+		Instance = GameInstance->GetSubsystem<{{ printf "U%sSimulationClient" $DisplayName}}>(GameInstance);
+	}
+	return Instance;
+}
+
 TScriptInterface<I{{$class}}Interface> {{$mclass}}::create{{$iclass}}(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
 	U{{$ModuleName}}Settings* settings = GetMutableDefault<U{{$ModuleName}}Settings>();
@@ -60,8 +72,7 @@ TScriptInterface<I{{$class}}Interface> {{$mclass}}::create{{$iclass}}(UGameInsta
 	case E{{$ModuleName}}Connection::CONNECTION_OLINK:
 		return create{{$class}}OLink(GameInstance, Collection);
 	case E{{$ModuleName}}Connection::CONNECTION_SIMU:
-		UE_LOG(Log{{$mclass}}, Log, TEXT("create{{$iclass}}: Using simulation service backend"));
-		return NewObject<{{ printf "U%sSimulationClient" $DisplayName}}>();
+		return create{{$class}}Simulation(GameInstance, Collection);
 	case E{{$ModuleName}}Connection::CONNECTION_LOCAL:
 		UE_LOG(Log{{$mclass}}, Log, TEXT("create{{$iclass}}: Using local service backend"));
 	default:

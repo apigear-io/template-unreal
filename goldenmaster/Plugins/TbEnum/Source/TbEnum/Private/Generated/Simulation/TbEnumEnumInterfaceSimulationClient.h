@@ -17,15 +17,20 @@ limitations under the License.
 #pragma once
 
 #include "TbEnumEnumInterfaceInterface.h"
+#include "Subsystems/GameInstanceSubsystem.h"
 #include "TbEnumEnumInterfaceSimulationClient.generated.h"
 
 UCLASS(BlueprintType)
-class UTbEnumEnumInterfaceSimulationClient : public UObject, public ITbEnumEnumInterfaceInterface
+class UTbEnumEnumInterfaceSimulationClient : public UGameInstanceSubsystem, public ITbEnumEnumInterfaceInterface
 {
 	GENERATED_BODY()
 public:
 	explicit UTbEnumEnumInterfaceSimulationClient();
-	virtual ~UTbEnumEnumInterfaceSimulationClient();
+	virtual ~UTbEnumEnumInterfaceSimulationClient() = default;
+
+	// subsystem
+	void Initialize(FSubsystemCollectionBase& Collection) override;
+	void Deinitialize() override;
 
 	// signals
 	FTbEnumEnumInterfaceSig0Delegate Sig0Signal;

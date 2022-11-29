@@ -31,6 +31,12 @@ using namespace ApiGear::JSONRPC;
 UTestbed2ManyParamInterfaceSimulationClient::UTestbed2ManyParamInterfaceSimulationClient()
 	: ITestbed2ManyParamInterfaceInterface()
 {
+}
+
+void UTestbed2ManyParamInterfaceSimulationClient::Initialize(FSubsystemCollectionBase& Collection)
+{
+	Super::Initialize(Collection);
+
 	UApiGearConnectionManager* AGCM = nullptr;
 	if (GEngine != nullptr)
 	{
@@ -186,8 +192,10 @@ UTestbed2ManyParamInterfaceSimulationClient::UTestbed2ManyParamInterfaceSimulati
 	}
 }
 
-UTestbed2ManyParamInterfaceSimulationClient::~UTestbed2ManyParamInterfaceSimulationClient()
+void UTestbed2ManyParamInterfaceSimulationClient::Deinitialize()
 {
+	Super::Deinitialize();
+
 	if (GEngine != nullptr)
 	{
 		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();

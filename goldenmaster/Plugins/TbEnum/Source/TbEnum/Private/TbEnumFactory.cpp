@@ -38,6 +38,18 @@ TScriptInterface<ITbEnumEnumInterfaceInterface> createTbEnumEnumInterfaceOLink(U
 	return Instance;
 }
 
+TScriptInterface<ITbEnumEnumInterfaceInterface> createTbEnumEnumInterfaceSimulation(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+{
+	UE_LOG(LogFTbEnumModuleFactory, Log, TEXT("createITbEnumEnumInterfaceInterface: Using simulation service backend"));
+	UTbEnumEnumInterfaceSimulationClient* Instance = GameInstance->GetSubsystem<UTbEnumEnumInterfaceSimulationClient>(GameInstance);
+	if (!Instance)
+	{
+		Collection.InitializeDependency(UTbEnumEnumInterfaceSimulationClient::StaticClass());
+		Instance = GameInstance->GetSubsystem<UTbEnumEnumInterfaceSimulationClient>(GameInstance);
+	}
+	return Instance;
+}
+
 TScriptInterface<ITbEnumEnumInterfaceInterface> FTbEnumModuleFactory::createITbEnumEnumInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
 	UTbEnumSettings* settings = GetMutableDefault<UTbEnumSettings>();
@@ -47,8 +59,7 @@ TScriptInterface<ITbEnumEnumInterfaceInterface> FTbEnumModuleFactory::createITbE
 	case ETbEnumConnection::CONNECTION_OLINK:
 		return createTbEnumEnumInterfaceOLink(GameInstance, Collection);
 	case ETbEnumConnection::CONNECTION_SIMU:
-		UE_LOG(LogFTbEnumModuleFactory, Log, TEXT("createITbEnumEnumInterfaceInterface: Using simulation service backend"));
-		return NewObject<UTbEnumEnumInterfaceSimulationClient>();
+		return createTbEnumEnumInterfaceSimulation(GameInstance, Collection);
 	case ETbEnumConnection::CONNECTION_LOCAL:
 		UE_LOG(LogFTbEnumModuleFactory, Log, TEXT("createITbEnumEnumInterfaceInterface: Using local service backend"));
 	default:

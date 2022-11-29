@@ -31,6 +31,12 @@ using namespace ApiGear::JSONRPC;
 UTestbed2EmptyInterfaceSimulationClient::UTestbed2EmptyInterfaceSimulationClient()
 	: ITestbed2EmptyInterfaceInterface()
 {
+}
+
+void UTestbed2EmptyInterfaceSimulationClient::Initialize(FSubsystemCollectionBase& Collection)
+{
+	Super::Initialize(Collection);
+
 	UApiGearConnectionManager* AGCM = nullptr;
 	if (GEngine != nullptr)
 	{
@@ -62,8 +68,10 @@ UTestbed2EmptyInterfaceSimulationClient::UTestbed2EmptyInterfaceSimulationClient
 	// register notification callback functions, signal/event -> fcn
 }
 
-UTestbed2EmptyInterfaceSimulationClient::~UTestbed2EmptyInterfaceSimulationClient()
+void UTestbed2EmptyInterfaceSimulationClient::Deinitialize()
 {
+	Super::Deinitialize();
+
 	if (GEngine != nullptr)
 	{
 		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
