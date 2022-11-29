@@ -2,23 +2,27 @@
 #include "ApiGearConnectionManager.h"
 
 UApiGearConnectionManager::UApiGearConnectionManager()
-	: OLinkConnection(NewObject<UUnrealOLink>(this, TEXT("OLinkConnection")))
-	, SimulationConnection(NewObject<UUnrealSimulation>(this, TEXT("SimulationConnection")))
 {
+}
+
+void UApiGearConnectionManager::Initialize(FSubsystemCollectionBase& Collection)
+{
+	OLinkConnection = NewObject<UUnrealOLink>(this, TEXT("OLinkConnection"));
+	SimulationConnection = NewObject<UUnrealSimulation>(this, TEXT("SimulationConnection"));
+
 	OLinkConnection->AddToRoot();
 	OLinkConnection->GetIsConnectedChangedDelegate().AddUObject(this, &UApiGearConnectionManager::OnIsOLinkConnectedChanged);
 	SimulationConnection->AddToRoot();
 	SimulationConnection->GetIsConnectedChangedDelegate().AddUObject(this, &UApiGearConnectionManager::OnIsSimulationConnectedChanged);
 }
 
-void UApiGearConnectionManager::Initialize(FSubsystemCollectionBase& Collection)
-{
-}
-
 void UApiGearConnectionManager::Deinitialize()
 {
 	OLinkConnection->Disconnect();
 	SimulationConnection->Disconnect();
+
+	OLinkConnection = nullptr;
+	SimulationConnection = nullptr;
 }
 
 UUnrealOLink* UApiGearConnectionManager::UApiGearConnectionManager::GetOLinkConnection()
