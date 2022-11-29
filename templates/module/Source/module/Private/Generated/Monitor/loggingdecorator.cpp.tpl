@@ -84,6 +84,12 @@ public:
 {{$Class}}::{{$Class}}()
 	: I{{$Iface}}Interface()
 {
+}
+
+{{$Class}}::~{{$Class}}() = default;
+
+void {{$Class}}::Initialize(FSubsystemCollectionBase&)
+{
 {{- $Service := printf "I%sInterface" $Iface }}
 	BackendService = {{$FactoryName}}::create{{$Service}}();
 {{- range .Interface.Properties }}
@@ -94,7 +100,10 @@ public:
 {{- end }}
 }
 
-{{$Class}}::~{{$Class}}() = default;
+void {{$Class}}::Deinitialize()
+{
+	BackendService = nullptr;
+}
 
 void {{$Class}}::setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface> InService)
 {

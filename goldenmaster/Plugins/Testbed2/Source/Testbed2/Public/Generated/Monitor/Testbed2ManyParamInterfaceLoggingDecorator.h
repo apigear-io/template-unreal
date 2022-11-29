@@ -37,6 +37,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
 	void setBackendService(TScriptInterface<ITestbed2ManyParamInterfaceInterface> InService);
 
+	// subsystem
+	void Initialize(FSubsystemCollectionBase& Collection) override;
+	void Deinitialize() override;
+
 	// signals
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface", DisplayName = "Sig0 Signal")
 	FTestbed2ManyParamInterfaceSig0Delegate Sig0Signal;

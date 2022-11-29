@@ -69,12 +69,21 @@ public:
 UTestbed2NestedStruct1InterfaceLoggingDecorator::UTestbed2NestedStruct1InterfaceLoggingDecorator()
 	: ITestbed2NestedStruct1InterfaceInterface()
 {
+}
+
+UTestbed2NestedStruct1InterfaceLoggingDecorator::~UTestbed2NestedStruct1InterfaceLoggingDecorator() = default;
+
+void UTestbed2NestedStruct1InterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase&)
+{
 	BackendService = FTestbed2ModuleFactory::createITestbed2NestedStruct1InterfaceInterface();
 	BackendService->GetProp1ChangedDelegate().AddDynamic(this, &UTestbed2NestedStruct1InterfaceLoggingDecorator::OnProp1Changed);
 	BackendService->GetSig1SignalDelegate().AddDynamic(this, &UTestbed2NestedStruct1InterfaceLoggingDecorator::OnSig1);
 }
 
-UTestbed2NestedStruct1InterfaceLoggingDecorator::~UTestbed2NestedStruct1InterfaceLoggingDecorator() = default;
+void UTestbed2NestedStruct1InterfaceLoggingDecorator::Deinitialize()
+{
+	BackendService = nullptr;
+}
 
 void UTestbed2NestedStruct1InterfaceLoggingDecorator::setBackendService(TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> InService)
 {

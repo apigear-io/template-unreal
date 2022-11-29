@@ -37,6 +37,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface")
 	void setBackendService(TScriptInterface<ITbEnumEnumInterfaceInterface> InService);
 
+	// subsystem
+	void Initialize(FSubsystemCollectionBase& Collection) override;
+	void Deinitialize() override;
+
 	// signals
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface", DisplayName = "Sig0 Signal")
 	FTbEnumEnumInterfaceSig0Delegate Sig0Signal;

@@ -69,6 +69,12 @@ public:
 UTestbed1StructInterfaceLoggingDecorator::UTestbed1StructInterfaceLoggingDecorator()
 	: ITestbed1StructInterfaceInterface()
 {
+}
+
+UTestbed1StructInterfaceLoggingDecorator::~UTestbed1StructInterfaceLoggingDecorator() = default;
+
+void UTestbed1StructInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase&)
+{
 	BackendService = FTestbed1ModuleFactory::createITestbed1StructInterfaceInterface();
 	BackendService->GetPropBoolChangedDelegate().AddDynamic(this, &UTestbed1StructInterfaceLoggingDecorator::OnPropBoolChanged);
 	BackendService->GetPropIntChangedDelegate().AddDynamic(this, &UTestbed1StructInterfaceLoggingDecorator::OnPropIntChanged);
@@ -80,7 +86,10 @@ UTestbed1StructInterfaceLoggingDecorator::UTestbed1StructInterfaceLoggingDecorat
 	BackendService->GetSigStringSignalDelegate().AddDynamic(this, &UTestbed1StructInterfaceLoggingDecorator::OnSigString);
 }
 
-UTestbed1StructInterfaceLoggingDecorator::~UTestbed1StructInterfaceLoggingDecorator() = default;
+void UTestbed1StructInterfaceLoggingDecorator::Deinitialize()
+{
+	BackendService = nullptr;
+}
 
 void UTestbed1StructInterfaceLoggingDecorator::setBackendService(TScriptInterface<ITestbed1StructInterfaceInterface> InService)
 {

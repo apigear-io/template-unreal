@@ -69,6 +69,12 @@ public:
 UTbSimpleSimpleArrayInterfaceLoggingDecorator::UTbSimpleSimpleArrayInterfaceLoggingDecorator()
 	: ITbSimpleSimpleArrayInterfaceInterface()
 {
+}
+
+UTbSimpleSimpleArrayInterfaceLoggingDecorator::~UTbSimpleSimpleArrayInterfaceLoggingDecorator() = default;
+
+void UTbSimpleSimpleArrayInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase&)
+{
 	BackendService = FTbSimpleModuleFactory::createITbSimpleSimpleArrayInterfaceInterface();
 	BackendService->GetPropBoolChangedDelegate().AddDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropBoolChanged);
 	BackendService->GetPropIntChangedDelegate().AddDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropIntChanged);
@@ -80,7 +86,10 @@ UTbSimpleSimpleArrayInterfaceLoggingDecorator::UTbSimpleSimpleArrayInterfaceLogg
 	BackendService->GetSigStringSignalDelegate().AddDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigString);
 }
 
-UTbSimpleSimpleArrayInterfaceLoggingDecorator::~UTbSimpleSimpleArrayInterfaceLoggingDecorator() = default;
+void UTbSimpleSimpleArrayInterfaceLoggingDecorator::Deinitialize()
+{
+	BackendService = nullptr;
+}
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::setBackendService(TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> InService)
 {

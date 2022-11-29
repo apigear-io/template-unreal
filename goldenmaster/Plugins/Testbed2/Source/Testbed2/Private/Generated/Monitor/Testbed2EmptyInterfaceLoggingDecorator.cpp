@@ -69,10 +69,19 @@ public:
 UTestbed2EmptyInterfaceLoggingDecorator::UTestbed2EmptyInterfaceLoggingDecorator()
 	: ITestbed2EmptyInterfaceInterface()
 {
-	BackendService = FTestbed2ModuleFactory::createITestbed2EmptyInterfaceInterface();
 }
 
 UTestbed2EmptyInterfaceLoggingDecorator::~UTestbed2EmptyInterfaceLoggingDecorator() = default;
+
+void UTestbed2EmptyInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase&)
+{
+	BackendService = FTestbed2ModuleFactory::createITestbed2EmptyInterfaceInterface();
+}
+
+void UTestbed2EmptyInterfaceLoggingDecorator::Deinitialize()
+{
+	BackendService = nullptr;
+}
 
 void UTestbed2EmptyInterfaceLoggingDecorator::setBackendService(TScriptInterface<ITestbed2EmptyInterfaceInterface> InService)
 {

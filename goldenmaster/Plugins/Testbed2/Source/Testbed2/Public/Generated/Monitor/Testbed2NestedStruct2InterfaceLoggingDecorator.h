@@ -37,6 +37,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface")
 	void setBackendService(TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> InService);
 
+	// subsystem
+	void Initialize(FSubsystemCollectionBase& Collection) override;
+	void Deinitialize() override;
+
 	// signals
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct2Interface", DisplayName = "Sig1 Signal")
 	FTestbed2NestedStruct2InterfaceSig1Delegate Sig1Signal;

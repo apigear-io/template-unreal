@@ -69,11 +69,20 @@ public:
 UTestbed2NoPropertyInterfaceLoggingDecorator::UTestbed2NoPropertyInterfaceLoggingDecorator()
 	: ITestbed2NoPropertyInterfaceInterface()
 {
+}
+
+UTestbed2NoPropertyInterfaceLoggingDecorator::~UTestbed2NoPropertyInterfaceLoggingDecorator() = default;
+
+void UTestbed2NoPropertyInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase&)
+{
 	BackendService = FTestbed2ModuleFactory::createITestbed2NoPropertyInterfaceInterface();
 	BackendService->GetSig1SignalDelegate().AddDynamic(this, &UTestbed2NoPropertyInterfaceLoggingDecorator::OnSig1);
 }
 
-UTestbed2NoPropertyInterfaceLoggingDecorator::~UTestbed2NoPropertyInterfaceLoggingDecorator() = default;
+void UTestbed2NoPropertyInterfaceLoggingDecorator::Deinitialize()
+{
+	BackendService = nullptr;
+}
 
 void UTestbed2NoPropertyInterfaceLoggingDecorator::setBackendService(TScriptInterface<ITestbed2NoPropertyInterfaceInterface> InService)
 {

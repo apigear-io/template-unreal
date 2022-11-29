@@ -37,6 +37,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1|SameEnum2Interface")
 	void setBackendService(TScriptInterface<ITbSame1SameEnum2InterfaceInterface> InService);
 
+	// subsystem
+	void Initialize(FSubsystemCollectionBase& Collection) override;
+	void Deinitialize() override;
+
 	// signals
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame1|SameEnum2Interface", DisplayName = "Sig1 Signal")
 	FTbSame1SameEnum2InterfaceSig1Delegate Sig1Signal;

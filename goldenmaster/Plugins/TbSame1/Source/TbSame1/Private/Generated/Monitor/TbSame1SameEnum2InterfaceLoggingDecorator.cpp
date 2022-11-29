@@ -69,6 +69,12 @@ public:
 UTbSame1SameEnum2InterfaceLoggingDecorator::UTbSame1SameEnum2InterfaceLoggingDecorator()
 	: ITbSame1SameEnum2InterfaceInterface()
 {
+}
+
+UTbSame1SameEnum2InterfaceLoggingDecorator::~UTbSame1SameEnum2InterfaceLoggingDecorator() = default;
+
+void UTbSame1SameEnum2InterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase&)
+{
 	BackendService = FTbSame1ModuleFactory::createITbSame1SameEnum2InterfaceInterface();
 	BackendService->GetProp1ChangedDelegate().AddDynamic(this, &UTbSame1SameEnum2InterfaceLoggingDecorator::OnProp1Changed);
 	BackendService->GetProp2ChangedDelegate().AddDynamic(this, &UTbSame1SameEnum2InterfaceLoggingDecorator::OnProp2Changed);
@@ -76,7 +82,10 @@ UTbSame1SameEnum2InterfaceLoggingDecorator::UTbSame1SameEnum2InterfaceLoggingDec
 	BackendService->GetSig2SignalDelegate().AddDynamic(this, &UTbSame1SameEnum2InterfaceLoggingDecorator::OnSig2);
 }
 
-UTbSame1SameEnum2InterfaceLoggingDecorator::~UTbSame1SameEnum2InterfaceLoggingDecorator() = default;
+void UTbSame1SameEnum2InterfaceLoggingDecorator::Deinitialize()
+{
+	BackendService = nullptr;
+}
 
 void UTbSame1SameEnum2InterfaceLoggingDecorator::setBackendService(TScriptInterface<ITbSame1SameEnum2InterfaceInterface> InService)
 {

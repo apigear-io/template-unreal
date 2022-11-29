@@ -37,6 +37,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface")
 	void setBackendService(TScriptInterface<ITbSimpleSimpleInterfaceInterface> InService);
 
+	// subsystem
+	void Initialize(FSubsystemCollectionBase& Collection) override;
+	void Deinitialize() override;
+
 	// signals
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface", DisplayName = "SigBool Signal")
 	FTbSimpleSimpleInterfaceSigBoolDelegate SigBoolSignal;

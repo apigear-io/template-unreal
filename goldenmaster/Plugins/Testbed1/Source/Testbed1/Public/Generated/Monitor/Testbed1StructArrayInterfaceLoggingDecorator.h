@@ -37,6 +37,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface")
 	void setBackendService(TScriptInterface<ITestbed1StructArrayInterfaceInterface> InService);
 
+	// subsystem
+	void Initialize(FSubsystemCollectionBase& Collection) override;
+	void Deinitialize() override;
+
 	// signals
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface", DisplayName = "SigBool Signal")
 	FTestbed1StructArrayInterfaceSigBoolDelegate SigBoolSignal;

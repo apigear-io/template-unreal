@@ -69,6 +69,12 @@ public:
 UTestbed2NestedStruct3InterfaceLoggingDecorator::UTestbed2NestedStruct3InterfaceLoggingDecorator()
 	: ITestbed2NestedStruct3InterfaceInterface()
 {
+}
+
+UTestbed2NestedStruct3InterfaceLoggingDecorator::~UTestbed2NestedStruct3InterfaceLoggingDecorator() = default;
+
+void UTestbed2NestedStruct3InterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase&)
+{
 	BackendService = FTestbed2ModuleFactory::createITestbed2NestedStruct3InterfaceInterface();
 	BackendService->GetProp1ChangedDelegate().AddDynamic(this, &UTestbed2NestedStruct3InterfaceLoggingDecorator::OnProp1Changed);
 	BackendService->GetProp2ChangedDelegate().AddDynamic(this, &UTestbed2NestedStruct3InterfaceLoggingDecorator::OnProp2Changed);
@@ -78,7 +84,10 @@ UTestbed2NestedStruct3InterfaceLoggingDecorator::UTestbed2NestedStruct3Interface
 	BackendService->GetSig3SignalDelegate().AddDynamic(this, &UTestbed2NestedStruct3InterfaceLoggingDecorator::OnSig3);
 }
 
-UTestbed2NestedStruct3InterfaceLoggingDecorator::~UTestbed2NestedStruct3InterfaceLoggingDecorator() = default;
+void UTestbed2NestedStruct3InterfaceLoggingDecorator::Deinitialize()
+{
+	BackendService = nullptr;
+}
 
 void UTestbed2NestedStruct3InterfaceLoggingDecorator::setBackendService(TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> InService)
 {

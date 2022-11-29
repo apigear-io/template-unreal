@@ -69,6 +69,12 @@ public:
 UTbEnumEnumInterfaceLoggingDecorator::UTbEnumEnumInterfaceLoggingDecorator()
 	: ITbEnumEnumInterfaceInterface()
 {
+}
+
+UTbEnumEnumInterfaceLoggingDecorator::~UTbEnumEnumInterfaceLoggingDecorator() = default;
+
+void UTbEnumEnumInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase&)
+{
 	BackendService = FTbEnumModuleFactory::createITbEnumEnumInterfaceInterface();
 	BackendService->GetProp0ChangedDelegate().AddDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnProp0Changed);
 	BackendService->GetProp1ChangedDelegate().AddDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnProp1Changed);
@@ -80,7 +86,10 @@ UTbEnumEnumInterfaceLoggingDecorator::UTbEnumEnumInterfaceLoggingDecorator()
 	BackendService->GetSig3SignalDelegate().AddDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnSig3);
 }
 
-UTbEnumEnumInterfaceLoggingDecorator::~UTbEnumEnumInterfaceLoggingDecorator() = default;
+void UTbEnumEnumInterfaceLoggingDecorator::Deinitialize()
+{
+	BackendService = nullptr;
+}
 
 void UTbEnumEnumInterfaceLoggingDecorator::setBackendService(TScriptInterface<ITbEnumEnumInterfaceInterface> InService)
 {

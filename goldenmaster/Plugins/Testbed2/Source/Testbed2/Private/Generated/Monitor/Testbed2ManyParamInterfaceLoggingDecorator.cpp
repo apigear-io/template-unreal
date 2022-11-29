@@ -69,6 +69,12 @@ public:
 UTestbed2ManyParamInterfaceLoggingDecorator::UTestbed2ManyParamInterfaceLoggingDecorator()
 	: ITestbed2ManyParamInterfaceInterface()
 {
+}
+
+UTestbed2ManyParamInterfaceLoggingDecorator::~UTestbed2ManyParamInterfaceLoggingDecorator() = default;
+
+void UTestbed2ManyParamInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase&)
+{
 	BackendService = FTestbed2ModuleFactory::createITestbed2ManyParamInterfaceInterface();
 	BackendService->GetProp1ChangedDelegate().AddDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnProp1Changed);
 	BackendService->GetProp2ChangedDelegate().AddDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnProp2Changed);
@@ -81,7 +87,10 @@ UTestbed2ManyParamInterfaceLoggingDecorator::UTestbed2ManyParamInterfaceLoggingD
 	BackendService->GetSig4SignalDelegate().AddDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnSig4);
 }
 
-UTestbed2ManyParamInterfaceLoggingDecorator::~UTestbed2ManyParamInterfaceLoggingDecorator() = default;
+void UTestbed2ManyParamInterfaceLoggingDecorator::Deinitialize()
+{
+	BackendService = nullptr;
+}
 
 void UTestbed2ManyParamInterfaceLoggingDecorator::setBackendService(TScriptInterface<ITestbed2ManyParamInterfaceInterface> InService)
 {
