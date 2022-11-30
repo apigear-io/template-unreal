@@ -11,7 +11,7 @@ layers:
       - testbed.same2.module.yaml
       - testbed.simple.module.yaml
       - testbed.struct.module.yaml
-    output: ../goldenmaster
+    output: ../test
     template: ..
     force: true
     features: [ "all" ]
