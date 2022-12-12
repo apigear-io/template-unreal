@@ -19,6 +19,7 @@ limitations under the License.
 
 #include "CoreMinimal.h"
 #include "Engine/DataTable.h"
+#include "Kismet/BlueprintFunctionLibrary.h"
 #include "Testbed2_data.generated.h"
 
 /**
@@ -202,4 +203,68 @@ struct TESTBED2_API FTestbed2NestedStruct3 : public FTableRowBase
 
 	bool operator==(const FTestbed2NestedStruct3& rhs) const;
 	bool operator!=(const FTestbed2NestedStruct3& rhs) const;
+};
+
+/**
+ * @brief BP Function library for data types
+ */
+UCLASS(meta = (BlueprintThreadSafe))
+class TESTBED2_API UTestbed2Library : public UBlueprintFunctionLibrary
+{
+	GENERATED_BODY()
+	/* Returns true if Testbed2Struct1 A is equal to Testbed2Struct1 B (A == B) */
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "Equal (Testbed2Struct1)", CompactNodeTitle = "==", Keywords = "== equal"), Category = "ApiGear|Testbed2")
+	static bool EqualEqual_Testbed2Struct1Testbed2Struct1(FTestbed2Struct1 A, FTestbed2Struct1 B);
+
+	/* Returns true if Testbed2Struct1 A is not equal to Testbed2Struct1 B (A != B) */
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "Not Equal (Testbed2Struct1)", CompactNodeTitle = "!=", Keywords = "!= not equal"), Category = "ApiGear|Testbed2")
+	static bool NotEqual_Testbed2Struct1Testbed2Struct1(FTestbed2Struct1 A, FTestbed2Struct1 B);
+
+	/* Returns true if Testbed2Struct2 A is equal to Testbed2Struct2 B (A == B) */
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "Equal (Testbed2Struct2)", CompactNodeTitle = "==", Keywords = "== equal"), Category = "ApiGear|Testbed2")
+	static bool EqualEqual_Testbed2Struct2Testbed2Struct2(FTestbed2Struct2 A, FTestbed2Struct2 B);
+
+	/* Returns true if Testbed2Struct2 A is not equal to Testbed2Struct2 B (A != B) */
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "Not Equal (Testbed2Struct2)", CompactNodeTitle = "!=", Keywords = "!= not equal"), Category = "ApiGear|Testbed2")
+	static bool NotEqual_Testbed2Struct2Testbed2Struct2(FTestbed2Struct2 A, FTestbed2Struct2 B);
+
+	/* Returns true if Testbed2Struct3 A is equal to Testbed2Struct3 B (A == B) */
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "Equal (Testbed2Struct3)", CompactNodeTitle = "==", Keywords = "== equal"), Category = "ApiGear|Testbed2")
+	static bool EqualEqual_Testbed2Struct3Testbed2Struct3(FTestbed2Struct3 A, FTestbed2Struct3 B);
+
+	/* Returns true if Testbed2Struct3 A is not equal to Testbed2Struct3 B (A != B) */
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "Not Equal (Testbed2Struct3)", CompactNodeTitle = "!=", Keywords = "!= not equal"), Category = "ApiGear|Testbed2")
+	static bool NotEqual_Testbed2Struct3Testbed2Struct3(FTestbed2Struct3 A, FTestbed2Struct3 B);
+
+	/* Returns true if Testbed2Struct4 A is equal to Testbed2Struct4 B (A == B) */
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "Equal (Testbed2Struct4)", CompactNodeTitle = "==", Keywords = "== equal"), Category = "ApiGear|Testbed2")
+	static bool EqualEqual_Testbed2Struct4Testbed2Struct4(FTestbed2Struct4 A, FTestbed2Struct4 B);
+
+	/* Returns true if Testbed2Struct4 A is not equal to Testbed2Struct4 B (A != B) */
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "Not Equal (Testbed2Struct4)", CompactNodeTitle = "!=", Keywords = "!= not equal"), Category = "ApiGear|Testbed2")
+	static bool NotEqual_Testbed2Struct4Testbed2Struct4(FTestbed2Struct4 A, FTestbed2Struct4 B);
+
+	/* Returns true if Testbed2NestedStruct1 A is equal to Testbed2NestedStruct1 B (A == B) */
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "Equal (Testbed2NestedStruct1)", CompactNodeTitle = "==", Keywords = "== equal"), Category = "ApiGear|Testbed2")
+	static bool EqualEqual_Testbed2NestedStruct1Testbed2NestedStruct1(FTestbed2NestedStruct1 A, FTestbed2NestedStruct1 B);
+
+	/* Returns true if Testbed2NestedStruct1 A is not equal to Testbed2NestedStruct1 B (A != B) */
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "Not Equal (Testbed2NestedStruct1)", CompactNodeTitle = "!=", Keywords = "!= not equal"), Category = "ApiGear|Testbed2")
+	static bool NotEqual_Testbed2NestedStruct1Testbed2NestedStruct1(FTestbed2NestedStruct1 A, FTestbed2NestedStruct1 B);
+
+	/* Returns true if Testbed2NestedStruct2 A is equal to Testbed2NestedStruct2 B (A == B) */
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "Equal (Testbed2NestedStruct2)", CompactNodeTitle = "==", Keywords = "== equal"), Category = "ApiGear|Testbed2")
+	static bool EqualEqual_Testbed2NestedStruct2Testbed2NestedStruct2(FTestbed2NestedStruct2 A, FTestbed2NestedStruct2 B);
+
+	/* Returns true if Testbed2NestedStruct2 A is not equal to Testbed2NestedStruct2 B (A != B) */
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "Not Equal (Testbed2NestedStruct2)", CompactNodeTitle = "!=", Keywords = "!= not equal"), Category = "ApiGear|Testbed2")
+	static bool NotEqual_Testbed2NestedStruct2Testbed2NestedStruct2(FTestbed2NestedStruct2 A, FTestbed2NestedStruct2 B);
+
+	/* Returns true if Testbed2NestedStruct3 A is equal to Testbed2NestedStruct3 B (A == B) */
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "Equal (Testbed2NestedStruct3)", CompactNodeTitle = "==", Keywords = "== equal"), Category = "ApiGear|Testbed2")
+	static bool EqualEqual_Testbed2NestedStruct3Testbed2NestedStruct3(FTestbed2NestedStruct3 A, FTestbed2NestedStruct3 B);
+
+	/* Returns true if Testbed2NestedStruct3 A is not equal to Testbed2NestedStruct3 B (A != B) */
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "Not Equal (Testbed2NestedStruct3)", CompactNodeTitle = "!=", Keywords = "!= not equal"), Category = "ApiGear|Testbed2")
+	static bool NotEqual_Testbed2NestedStruct3Testbed2NestedStruct3(FTestbed2NestedStruct3 A, FTestbed2NestedStruct3 B);
 };

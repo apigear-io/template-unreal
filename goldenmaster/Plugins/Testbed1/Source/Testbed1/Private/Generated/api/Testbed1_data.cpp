@@ -52,3 +52,51 @@ bool FTestbed1StructString::operator!=(const FTestbed1StructString& rhs) const
 {
 	return !operator==(rhs);
 }
+
+/* Returns true if Testbed1StructBool A is equal to Testbed1StructBool B (A == B) */
+bool UTestbed1Library::EqualEqual_Testbed1StructBoolTestbed1StructBool(FTestbed1StructBool A, FTestbed1StructBool B)
+{
+	return A == B;
+}
+
+/* Returns true if Testbed1StructBool A is not equal to Testbed1StructBool B (A != B) */
+bool UTestbed1Library::NotEqual_Testbed1StructBoolTestbed1StructBool(FTestbed1StructBool A, FTestbed1StructBool B)
+{
+	return A != B;
+}
+
+/* Returns true if Testbed1StructInt A is equal to Testbed1StructInt B (A == B) */
+bool UTestbed1Library::EqualEqual_Testbed1StructIntTestbed1StructInt(FTestbed1StructInt A, FTestbed1StructInt B)
+{
+	return A == B;
+}
+
+/* Returns true if Testbed1StructInt A is not equal to Testbed1StructInt B (A != B) */
+bool UTestbed1Library::NotEqual_Testbed1StructIntTestbed1StructInt(FTestbed1StructInt A, FTestbed1StructInt B)
+{
+	return A != B;
+}
+
+/* Returns true if Testbed1StructFloat A is equal to Testbed1StructFloat B (A == B) */
+bool UTestbed1Library::EqualEqual_Testbed1StructFloatTestbed1StructFloat(FTestbed1StructFloat A, FTestbed1StructFloat B)
+{
+	return A == B;
+}
+
+/* Returns true if Testbed1StructFloat A is not equal to Testbed1StructFloat B (A != B) */
+bool UTestbed1Library::NotEqual_Testbed1StructFloatTestbed1StructFloat(FTestbed1StructFloat A, FTestbed1StructFloat B)
+{
+	return A != B;
+}
+
+/* Returns true if Testbed1StructString A is equal to Testbed1StructString B (A == B) */
+bool UTestbed1Library::EqualEqual_Testbed1StructStringTestbed1StructString(FTestbed1StructString A, FTestbed1StructString B)
+{
+	return A == B;
+}
+
+/* Returns true if Testbed1StructString A is not equal to Testbed1StructString B (A != B) */
+bool UTestbed1Library::NotEqual_Testbed1StructStringTestbed1StructString(FTestbed1StructString A, FTestbed1StructString B)
+{
+	return A != B;
+}

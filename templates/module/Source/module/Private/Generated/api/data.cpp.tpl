@@ -57,3 +57,20 @@ bool {{$class}}::operator!=(const {{$class}}& rhs) const
 	return !operator==(rhs);
 }
 {{- end }}
+{{ range $idx, $elem := .Module.Structs }}
+	{{- if $idx}}{{nl}}{{end}}
+{{- $class := printf "F%s%s" $ModuleName .Name }}
+{{- $shortname := printf "%s%s" $ModuleName .Name }}
+/* Returns true if {{ $shortname }} A is equal to {{ $shortname }} B (A == B) */
+bool U{{ $ModuleName }}Library::EqualEqual_{{ $shortname }}{{ $shortname }}({{ $class }} A, {{ $class }} B)
+{
+	return A == B;
+}
+
+/* Returns true if {{ $shortname }} A is not equal to {{ $shortname }} B (A != B) */
+bool U{{ $ModuleName }}Library::NotEqual_{{ $shortname }}{{ $shortname }}({{ $class }} A, {{ $class }} B)
+{
+	return A != B;
+}
+{{- end }}
+{{- if .Module.Structs }}{{nl}}{{ end -}}

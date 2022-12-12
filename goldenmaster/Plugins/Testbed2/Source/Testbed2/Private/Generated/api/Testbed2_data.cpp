@@ -166,3 +166,87 @@ bool FTestbed2NestedStruct3::operator!=(const FTestbed2NestedStruct3& rhs) const
 {
 	return !operator==(rhs);
 }
+
+/* Returns true if Testbed2Struct1 A is equal to Testbed2Struct1 B (A == B) */
+bool UTestbed2Library::EqualEqual_Testbed2Struct1Testbed2Struct1(FTestbed2Struct1 A, FTestbed2Struct1 B)
+{
+	return A == B;
+}
+
+/* Returns true if Testbed2Struct1 A is not equal to Testbed2Struct1 B (A != B) */
+bool UTestbed2Library::NotEqual_Testbed2Struct1Testbed2Struct1(FTestbed2Struct1 A, FTestbed2Struct1 B)
+{
+	return A != B;
+}
+
+/* Returns true if Testbed2Struct2 A is equal to Testbed2Struct2 B (A == B) */
+bool UTestbed2Library::EqualEqual_Testbed2Struct2Testbed2Struct2(FTestbed2Struct2 A, FTestbed2Struct2 B)
+{
+	return A == B;
+}
+
+/* Returns true if Testbed2Struct2 A is not equal to Testbed2Struct2 B (A != B) */
+bool UTestbed2Library::NotEqual_Testbed2Struct2Testbed2Struct2(FTestbed2Struct2 A, FTestbed2Struct2 B)
+{
+	return A != B;
+}
+
+/* Returns true if Testbed2Struct3 A is equal to Testbed2Struct3 B (A == B) */
+bool UTestbed2Library::EqualEqual_Testbed2Struct3Testbed2Struct3(FTestbed2Struct3 A, FTestbed2Struct3 B)
+{
+	return A == B;
+}
+
+/* Returns true if Testbed2Struct3 A is not equal to Testbed2Struct3 B (A != B) */
+bool UTestbed2Library::NotEqual_Testbed2Struct3Testbed2Struct3(FTestbed2Struct3 A, FTestbed2Struct3 B)
+{
+	return A != B;
+}
+
+/* Returns true if Testbed2Struct4 A is equal to Testbed2Struct4 B (A == B) */
+bool UTestbed2Library::EqualEqual_Testbed2Struct4Testbed2Struct4(FTestbed2Struct4 A, FTestbed2Struct4 B)
+{
+	return A == B;
+}
+
+/* Returns true if Testbed2Struct4 A is not equal to Testbed2Struct4 B (A != B) */
+bool UTestbed2Library::NotEqual_Testbed2Struct4Testbed2Struct4(FTestbed2Struct4 A, FTestbed2Struct4 B)
+{
+	return A != B;
+}
+
+/* Returns true if Testbed2NestedStruct1 A is equal to Testbed2NestedStruct1 B (A == B) */
+bool UTestbed2Library::EqualEqual_Testbed2NestedStruct1Testbed2NestedStruct1(FTestbed2NestedStruct1 A, FTestbed2NestedStruct1 B)
+{
+	return A == B;
+}
+
+/* Returns true if Testbed2NestedStruct1 A is not equal to Testbed2NestedStruct1 B (A != B) */
+bool UTestbed2Library::NotEqual_Testbed2NestedStruct1Testbed2NestedStruct1(FTestbed2NestedStruct1 A, FTestbed2NestedStruct1 B)
+{
+	return A != B;
+}
+
+/* Returns true if Testbed2NestedStruct2 A is equal to Testbed2NestedStruct2 B (A == B) */
+bool UTestbed2Library::EqualEqual_Testbed2NestedStruct2Testbed2NestedStruct2(FTestbed2NestedStruct2 A, FTestbed2NestedStruct2 B)
+{
+	return A == B;
+}
+
+/* Returns true if Testbed2NestedStruct2 A is not equal to Testbed2NestedStruct2 B (A != B) */
+bool UTestbed2Library::NotEqual_Testbed2NestedStruct2Testbed2NestedStruct2(FTestbed2NestedStruct2 A, FTestbed2NestedStruct2 B)
+{
+	return A != B;
+}
+
+/* Returns true if Testbed2NestedStruct3 A is equal to Testbed2NestedStruct3 B (A == B) */
+bool UTestbed2Library::EqualEqual_Testbed2NestedStruct3Testbed2NestedStruct3(FTestbed2NestedStruct3 A, FTestbed2NestedStruct3 B)
+{
+	return A == B;
+}
+
+/* Returns true if Testbed2NestedStruct3 A is not equal to Testbed2NestedStruct3 B (A != B) */
+bool UTestbed2Library::NotEqual_Testbed2NestedStruct3Testbed2NestedStruct3(FTestbed2NestedStruct3 A, FTestbed2NestedStruct3 B)
+{
+	return A != B;
+}

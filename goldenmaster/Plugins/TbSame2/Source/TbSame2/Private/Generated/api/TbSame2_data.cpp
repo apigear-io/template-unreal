@@ -76,3 +76,27 @@ bool FTbSame2Struct2::operator!=(const FTbSame2Struct2& rhs) const
 {
 	return !operator==(rhs);
 }
+
+/* Returns true if TbSame2Struct1 A is equal to TbSame2Struct1 B (A == B) */
+bool UTbSame2Library::EqualEqual_TbSame2Struct1TbSame2Struct1(FTbSame2Struct1 A, FTbSame2Struct1 B)
+{
+	return A == B;
+}
+
+/* Returns true if TbSame2Struct1 A is not equal to TbSame2Struct1 B (A != B) */
+bool UTbSame2Library::NotEqual_TbSame2Struct1TbSame2Struct1(FTbSame2Struct1 A, FTbSame2Struct1 B)
+{
+	return A != B;
+}
+
+/* Returns true if TbSame2Struct2 A is equal to TbSame2Struct2 B (A == B) */
+bool UTbSame2Library::EqualEqual_TbSame2Struct2TbSame2Struct2(FTbSame2Struct2 A, FTbSame2Struct2 B)
+{
+	return A == B;
+}
+
+/* Returns true if TbSame2Struct2 A is not equal to TbSame2Struct2 B (A != B) */
+bool UTbSame2Library::NotEqual_TbSame2Struct2TbSame2Struct2(FTbSame2Struct2 A, FTbSame2Struct2 B)
+{
+	return A != B;
+}

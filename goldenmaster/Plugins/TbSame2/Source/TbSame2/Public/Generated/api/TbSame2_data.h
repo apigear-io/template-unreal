@@ -19,6 +19,7 @@ limitations under the License.
 
 #include "CoreMinimal.h"
 #include "Engine/DataTable.h"
+#include "Kismet/BlueprintFunctionLibrary.h"
 #include "TbSame2_data.generated.h"
 
 /**
@@ -91,4 +92,28 @@ struct TBSAME2_API FTbSame2Struct2 : public FTableRowBase
 
 	bool operator==(const FTbSame2Struct2& rhs) const;
 	bool operator!=(const FTbSame2Struct2& rhs) const;
+};
+
+/**
+ * @brief BP Function library for data types
+ */
+UCLASS(meta = (BlueprintThreadSafe))
+class TBSAME2_API UTbSame2Library : public UBlueprintFunctionLibrary
+{
+	GENERATED_BODY()
+	/* Returns true if TbSame2Struct1 A is equal to TbSame2Struct1 B (A == B) */
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "Equal (TbSame2Struct1)", CompactNodeTitle = "==", Keywords = "== equal"), Category = "ApiGear|TbSame2")
+	static bool EqualEqual_TbSame2Struct1TbSame2Struct1(FTbSame2Struct1 A, FTbSame2Struct1 B);
+
+	/* Returns true if TbSame2Struct1 A is not equal to TbSame2Struct1 B (A != B) */
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "Not Equal (TbSame2Struct1)", CompactNodeTitle = "!=", Keywords = "!= not equal"), Category = "ApiGear|TbSame2")
+	static bool NotEqual_TbSame2Struct1TbSame2Struct1(FTbSame2Struct1 A, FTbSame2Struct1 B);
+
+	/* Returns true if TbSame2Struct2 A is equal to TbSame2Struct2 B (A == B) */
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "Equal (TbSame2Struct2)", CompactNodeTitle = "==", Keywords = "== equal"), Category = "ApiGear|TbSame2")
+	static bool EqualEqual_TbSame2Struct2TbSame2Struct2(FTbSame2Struct2 A, FTbSame2Struct2 B);
+
+	/* Returns true if TbSame2Struct2 A is not equal to TbSame2Struct2 B (A != B) */
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "Not Equal (TbSame2Struct2)", CompactNodeTitle = "!=", Keywords = "!= not equal"), Category = "ApiGear|TbSame2")
+	static bool NotEqual_TbSame2Struct2TbSame2Struct2(FTbSame2Struct2 A, FTbSame2Struct2 B);
 };

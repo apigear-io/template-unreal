@@ -22,6 +22,7 @@ limitations under the License.
 
 #include "CoreMinimal.h"
 #include "Engine/DataTable.h"
+#include "Kismet/BlueprintFunctionLibrary.h"
 {{ if or (len .Module.Enums) (len .Module.Structs) -}}
 #include "{{ $ModuleName }}_data.generated.h"
 {{ end }}
@@ -63,3 +64,26 @@ struct {{$API_MACRO}} {{$class }} : public FTableRowBase
 	bool operator!=(const {{$class }}& rhs) const;
 };
 {{ end }}
+{{- if .Module.Structs }}
+/**
+ * @brief BP Function library for data types
+ */
+UCLASS(meta = (BlueprintThreadSafe))
+class {{$API_MACRO}} U{{ $ModuleName }}Library : public UBlueprintFunctionLibrary
+{
+	GENERATED_BODY()
+{{- range $idx, $elem := .Module.Structs }}
+	{{- if $idx}}{{nl}}{{end}}
+{{- $class := printf "F%s%s" $ModuleName .Name }}
+{{- $shortname := printf "%s%s" $ModuleName .Name }}
+	/* Returns true if {{ $shortname }} A is equal to {{ $shortname }} B (A == B) */
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "Equal ({{ $shortname }})", CompactNodeTitle = "==", Keywords = "== equal"), Category = "{{$Category}}")
+	static bool EqualEqual_{{ $shortname }}{{ $shortname }}({{ $class }} A, {{ $class }} B);
+
+	/* Returns true if {{ $shortname }} A is not equal to {{ $shortname }} B (A != B) */
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "Not Equal ({{ $shortname }})", CompactNodeTitle = "!=", Keywords = "!= not equal"), Category = "{{$Category}}")
+	static bool NotEqual_{{ $shortname }}{{ $shortname }}({{ $class }} A, {{ $class }} B);
+{{- end }}
+};
+{{- end }}
+{{- if .Module.Structs }}{{nl}}{{ end -}}
