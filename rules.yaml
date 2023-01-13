@@ -10,15 +10,6 @@ features:
           - source: "module/Source/module/Public/Generated/api/data.h.tpl"
             target: "Public/Generated/api/{{Camel .Module.Name}}_data.h"
             force: true
-          - source: "module/Source/module/Private/Generated/api/trace.h.tpl"
-            target: "Private/Generated/api/{{Camel .Module.Name}}.trace.h"
-            force: true
-          - source: "module/Source/module/Private/Generated/api/trace.cpp.tpl"
-            target: "Private/Generated/api/{{Camel .Module.Name}}.trace.cpp"
-            force: true
-          - source: "module/Source/module/Private/Generated/api/json.adapter.h.tpl"
-            target: "Private/Generated/api/{{Camel .Module.Name}}.json.adapter.h"
-            force: true
           - source: "module/Source/module/Private/Generated/api/data.cpp.tpl"
             target: "Private/Generated/api/{{Camel .Module.Name}}_data.cpp"
             force: true
@@ -209,6 +200,15 @@ features:
             force: true
           - source: "module/Source/module/Private/pluginnamesettings.cpp.tpl"
             target: "Source/{{Camel .Module.Name}}/Private/{{Camel .Module.Name}}Settings.cpp"
+            force: true
+          - source: "module/Source/module/Private/Generated/api/json.adapter.h.tpl"
+            target: "Source/{{Camel .Module.Name}}/Private/Generated/api/{{Camel .Module.Name}}.json.adapter.h"
+            force: true
+          - source: "module/Source/module/Private/Generated/api/trace.h.tpl"
+            target: "Source/{{Camel .Module.Name}}/Private/Generated/api/{{Camel .Module.Name}}.trace.h"
+            force: true
+          - source: "module/Source/module/Private/Generated/api/trace.cpp.tpl"
+            target: "Source/{{Camel .Module.Name}}/Private/Generated/api/{{Camel .Module.Name}}.trace.cpp"
             force: true
       - match: interface
         prefix: "Plugins/{{Camel .Module.Name}}/"
