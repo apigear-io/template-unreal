@@ -19,7 +19,247 @@ features:
           - source: "module/Source/module/Public/Generated/api/interface.h.tpl"
             target: "Public/Generated/api/{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface.h"
             force: true
+  - name: apigear
+    scopes:
+      - match: system
+        prefix: "Plugins/ApiGear/"
+        documents:
+          - source: "ApiGear/Source/ApiGear/apigear.Build.cs"
+            target: "Source/ApiGear/apigear.Build.cs"
+            force: true
+            raw: true
+          - source: "ApiGear/apigear.uplugin"
+            target: "apigear.uplugin"
+            force: true
+            raw: true
+          - source: "ApiGear/Config/FilterPlugin.ini"
+            target: "Config/FilterPlugin.ini"
+            force: true
+            raw: true
+          - source: "ApiGear/Source/ApiGear/Public/tracer.h"
+            target: "Source/ApiGear/Public/tracer.h"
+            force: true
+            raw: true
+          - source: "ApiGear/Source/ApiGear/Private/tracer.cpp"
+            target: "Source/ApiGear/Private/tracer.cpp"
+            force: true
+            raw: true
+          - source: "ApiGear/Source/ApiGear/Public/apigear.h"
+            target: "Source/ApiGear/Public/apigear.h"
+            force: true
+            raw: true
+          - source: "ApiGear/Source/ApiGear/Public/ApiGearConnection.h"
+            target: "Source/ApiGear/Public/ApiGearConnection.h"
+            force: true
+            raw: true
+          - source: "ApiGear/Source/ApiGear/Private/ApiGearConnection.cpp"
+            target: "Source/ApiGear/Private/ApiGearConnection.cpp"
+            force: true
+            raw: true
+          - source: "ApiGear/Source/ApiGear/Public/apigear.json.adapter.h"
+            target: "Source/ApiGear/Public/apigear.json.adapter.h"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ApiGear/Private/unrealsimulation.cpp"
+            target: "Source/ApiGear/Private/unrealsimulation.cpp"
+            force: true
+            raw: true
+          - source: "ApiGear/Source/ApiGear/Public/unrealsimulation.h"
+            target: "Source/ApiGear/Public/unrealsimulation.h"
+            force: true
+            raw: true
+          - source: "ApiGear/Source/ApiGear/Private/apigear.cpp"
+            target: "Source/ApiGear/Private/apigear.cpp"
+            force: true
+            raw: true
+          - source: "ApiGear/Source/ApiGearEditor/Public/ApiGearEditor.h"
+            target: "Source/ApiGearEditor/Public/ApiGearEditor.h"
+            force: true
+            raw: true
+          - source: "ApiGear/Source/ApiGearEditor/Private/ApiGearEditor.cpp"
+            target: "Source/ApiGearEditor/Private/ApiGearEditor.cpp"
+            force: true
+            raw: true
+          - source: "ApiGear/Resources/Icon40.png"
+            target: "Resources/Icon40.png"
+            force: true
+            raw: true
+          - source: "ApiGear/Resources/Icon128.png"
+            target: "Resources/Icon128.png"
+            force: true
+            raw: true
+          - source: "ApiGear/Source/ApiGearEditor/Public/ApiGearEditorStyle.h"
+            target: "Source/ApiGearEditor/Public/ApiGearEditorStyle.h"
+            force: true
+            raw: true
+          - source: "ApiGear/Source/ApiGearEditor/Private/ApiGearEditorStyle.cpp"
+            target: "Source/ApiGearEditor/Private/ApiGearEditorStyle.cpp"
+            force: true
+            raw: true
+          - source: "ApiGear/Source/ApiGearEditor/Public/ApiGearEditorCommands.h"
+            target: "Source/ApiGearEditor/Public/ApiGearEditorCommands.h"
+            force: true
+            raw: true
+          - source: "ApiGear/Source/ApiGearEditor/Private/ApiGearEditorCommands.cpp"
+            target: "Source/ApiGearEditor/Private/ApiGearEditorCommands.cpp"
+            force: true
+            raw: true
+          - source: "ApiGear/Source/ApiGear/Public/ApiGearSettings.h"
+            target: "Source/ApiGear/Public/ApiGearSettings.h"
+            force: true
+            raw: true
+          - source: "ApiGear/Source/ApiGear/Private/ApiGearSettings.cpp"
+            target: "Source/ApiGear/Private/ApiGearSettings.cpp"
+            force: true
+            raw: true
+          - source: "ApiGear/Source/ApiGear/Public/ApiGearConnectionManager.h"
+            target: "Source/ApiGear/Public/ApiGearConnectionManager.h"
+            force: true
+            raw: true
+          - source: "ApiGear/Source/ApiGear/Private/ApiGearConnectionManager.cpp"
+            target: "Source/ApiGear/Private/ApiGearConnectionManager.cpp"
+            force: true
+            raw: true
+          - source: "ApiGear/Source/ApiGearEditor/ApiGearEditor.Build.cs"
+            target: "Source/ApiGearEditor/ApiGearEditor.Build.cs"
+            force: true
+            raw: true
+          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/nlohmann/json.hpp"
+            target: "Source/ApiGear/ThirdParty/Public/nlohmann/json.hpp"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ApiGear/ThirdParty/Private/jsonrpc/jsonrpc.cpp"
+            target: "Source/ApiGear/ThirdParty/Private/jsonrpc/jsonrpc.cpp"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/jsonrpc/jsonrpc.h"
+            target: "Source/ApiGear/ThirdParty/Public/jsonrpc/jsonrpc.h"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ApiGear/ThirdParty/Private/jsonrpc/rpcprotocol.cpp"
+            target: "Source/ApiGear/ThirdParty/Private/jsonrpc/rpcprotocol.cpp"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/jsonrpc/rpcprotocol.h"
+            target: "Source/ApiGear/ThirdParty/Public/jsonrpc/rpcprotocol.h"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/jsonrpc/stdoutlogger.h"
+            target: "Source/ApiGear/ThirdParty/Public/jsonrpc/stdoutlogger.h"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ApiGear/ThirdParty/Private/jsonrpc/jsonrpctypes.cpp"
+            target: "Source/ApiGear/ThirdParty/Private/jsonrpc/jsonrpctypes.cpp"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/jsonrpc/jsonrpctypes.h"
+            target: "Source/ApiGear/ThirdParty/Public/jsonrpc/jsonrpctypes.h"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ApiGear/Private/unrealolink.cpp"
+            target: "Source/ApiGear/Private/unrealolink.cpp"
+            force: true
+            raw: true
+          - source: "ApiGear/Source/ApiGear/Public/unrealolink.h"
+            target: "Source/ApiGear/Public/unrealolink.h"
+            force: true
+            raw: true
+          - source: "ApiGear/Source/ApiGear/Private/unrealolinksink.cpp"
+            target: "Source/ApiGear/Private/unrealolinksink.cpp"
+            force: true
+            raw: true
+          - source: "ApiGear/Source/ApiGear/Public/unrealolinksink.h"
+            target: "Source/ApiGear/Public/unrealolinksink.h"
+            force: true
+            raw: true
+          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/clientnode.h"
+            target: "Source/ApiGear/ThirdParty/Public/olink/clientnode.h"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ApiGear/ThirdParty/Private/olink/clientnode.cpp"
+            target: "Source/ApiGear/ThirdParty/Private/olink/clientnode.cpp"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/clientregistry.h"
+            target: "Source/ApiGear/ThirdParty/Public/olink/clientregistry.h"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ApiGear/ThirdParty/Private/olink/clientregistry.cpp"
+            target: "Source/ApiGear/ThirdParty/Private/olink/clientregistry.cpp"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/core/basenode.h"
+            target: "Source/ApiGear/ThirdParty/Public/olink/core/basenode.h"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ApiGear/ThirdParty/Private/olink/core/basenode.cpp"
+            target: "Source/ApiGear/ThirdParty/Private/olink/core/basenode.cpp"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/remotenode.h"
+            target: "Source/ApiGear/ThirdParty/Public/olink/remotenode.h"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/iremotenode.h"
+            target: "Source/ApiGear/ThirdParty/Public/olink/iremotenode.h"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/remoteregistry.h"
+            target: "Source/ApiGear/ThirdParty/Public/olink/remoteregistry.h"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ApiGear/ThirdParty/Private/olink/remoteregistry.cpp"
+            target: "Source/ApiGear/ThirdParty/Private/olink/remoteregistry.cpp"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ApiGear/ThirdParty/Private/olink/remotenode.cpp"
+            target: "Source/ApiGear/ThirdParty/Private/olink/remotenode.cpp"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/consolelogger.h"
+            target: "Source/ApiGear/ThirdParty/Public/olink/consolelogger.h"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ApiGear/ThirdParty/Private/olink/consolelogger.cpp"
+            target: "Source/ApiGear/ThirdParty/Private/olink/consolelogger.cpp"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/iclientnode.h"
+            target: "Source/ApiGear/ThirdParty/Public/olink/iclientnode.h"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/core/protocol.h"
+            target: "Source/ApiGear/ThirdParty/Public/olink/core/protocol.h"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ApiGear/ThirdParty/Private/olink/core/protocol.cpp"
+            target: "Source/ApiGear/ThirdParty/Private/olink/core/protocol.cpp"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/core/olink_common.h"
+            target: "Source/ApiGear/ThirdParty/Public/olink/core/olink_common.h"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/iobjectsink.h"
+            target: "Source/ApiGear/ThirdParty/Public/olink/iobjectsink.h"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/iobjectsource.h"
+            target: "Source/ApiGear/ThirdParty/Public/olink/iobjectsource.h"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/core/types.h"
+            target: "Source/ApiGear/ThirdParty/Public/olink/core/types.h"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ApiGear/ThirdParty/Private/olink/core/types.cpp"
+            target: "Source/ApiGear/ThirdParty/Private/olink/core/types.cpp"
+            raw: true
+            force: true
   - name: scaffold
+    requires:
+      - api
+      - apigear
     scopes:
       - match: system
         documents:
@@ -28,138 +268,6 @@ features:
             force: true
           - source: "buildPlugins.sh.tpl"
             target: "buildPlugins.sh"
-            force: true
-          - source: "ApiGear/Source/ApiGear/apigear.Build.cs"
-            target: "Plugins/ApiGear/Source/ApiGear/apigear.Build.cs"
-            force: true
-            raw: true
-          - source: "ApiGear/apigear.uplugin"
-            target: "Plugins/ApiGear/apigear.uplugin"
-            force: true
-            raw: true
-          - source: "ApiGear/Config/FilterPlugin.ini"
-            target: "Plugins/ApiGear/Config/FilterPlugin.ini"
-            force: true
-            raw: true
-          - source: "ApiGear/Source/ApiGear/Public/tracer.h"
-            target: "Plugins/ApiGear/Source/ApiGear/Public/tracer.h"
-            force: true
-            raw: true
-          - source: "ApiGear/Source/ApiGear/Private/tracer.cpp"
-            target: "Plugins/ApiGear/Source/ApiGear/Private/tracer.cpp"
-            force: true
-            raw: true
-          - source: "ApiGear/Source/ApiGear/Public/apigear.h"
-            target: "Plugins/ApiGear/Source/ApiGear/Public/apigear.h"
-            force: true
-            raw: true
-          - source: "ApiGear/Source/ApiGear/Public/ApiGearConnection.h"
-            target: "Plugins/ApiGear/Source/ApiGear/Public/ApiGearConnection.h"
-            force: true
-            raw: true
-          - source: "ApiGear/Source/ApiGear/Private/ApiGearConnection.cpp"
-            target: "Plugins/ApiGear/Source/ApiGear/Private/ApiGearConnection.cpp"
-            force: true
-            raw: true
-          - source: "ApiGear/Source/ApiGear/Public/apigear.json.adapter.h"
-            target: "Plugins/ApiGear/Source/ApiGear/Public/apigear.json.adapter.h"
-            raw: true
-            force: true
-          - source: "ApiGear/Source/ApiGear/Private/unrealsimulation.cpp"
-            target: "Plugins/ApiGear/Source/ApiGear/Private/unrealsimulation.cpp"
-            force: true
-            raw: true
-          - source: "ApiGear/Source/ApiGear/Public/unrealsimulation.h"
-            target: "Plugins/ApiGear/Source/ApiGear/Public/unrealsimulation.h"
-            force: true
-            raw: true
-          - source: "ApiGear/Source/ApiGear/Private/apigear.cpp"
-            target: "Plugins/ApiGear/Source/ApiGear/Private/apigear.cpp"
-            force: true
-            raw: true
-          - source: "ApiGear/Source/ApiGearEditor/Public/ApiGearEditor.h"
-            target: "Plugins/ApiGear/Source/ApiGearEditor/Public/ApiGearEditor.h"
-            force: true
-            raw: true
-          - source: "ApiGear/Source/ApiGearEditor/Private/ApiGearEditor.cpp"
-            target: "Plugins/ApiGear/Source/ApiGearEditor/Private/ApiGearEditor.cpp"
-            force: true
-            raw: true
-          - source: "ApiGear/Resources/Icon40.png"
-            target: "Plugins/ApiGear/Resources/Icon40.png"
-            force: true
-            raw: true
-          - source: "ApiGear/Resources/Icon128.png"
-            target: "Plugins/ApiGear/Resources/Icon128.png"
-            force: true
-            raw: true
-          - source: "ApiGear/Source/ApiGearEditor/Public/ApiGearEditorStyle.h"
-            target: "Plugins/ApiGear/Source/ApiGearEditor/Public/ApiGearEditorStyle.h"
-            force: true
-            raw: true
-          - source: "ApiGear/Source/ApiGearEditor/Private/ApiGearEditorStyle.cpp"
-            target: "Plugins/ApiGear/Source/ApiGearEditor/Private/ApiGearEditorStyle.cpp"
-            force: true
-            raw: true
-          - source: "ApiGear/Source/ApiGearEditor/Public/ApiGearEditorCommands.h"
-            target: "Plugins/ApiGear/Source/ApiGearEditor/Public/ApiGearEditorCommands.h"
-            force: true
-            raw: true
-          - source: "ApiGear/Source/ApiGearEditor/Private/ApiGearEditorCommands.cpp"
-            target: "Plugins/ApiGear/Source/ApiGearEditor/Private/ApiGearEditorCommands.cpp"
-            force: true
-            raw: true
-          - source: "ApiGear/Source/ApiGear/Public/ApiGearSettings.h"
-            target: "Plugins/ApiGear/Source/ApiGear/Public/ApiGearSettings.h"
-            force: true
-            raw: true
-          - source: "ApiGear/Source/ApiGear/Private/ApiGearSettings.cpp"
-            target: "Plugins/ApiGear/Source/ApiGear/Private/ApiGearSettings.cpp"
-            force: true
-            raw: true
-          - source: "ApiGear/Source/ApiGear/Public/ApiGearConnectionManager.h"
-            target: "Plugins/ApiGear/Source/ApiGear/Public/ApiGearConnectionManager.h"
-            force: true
-            raw: true
-          - source: "ApiGear/Source/ApiGear/Private/ApiGearConnectionManager.cpp"
-            target: "Plugins/ApiGear/Source/ApiGear/Private/ApiGearConnectionManager.cpp"
-            force: true
-            raw: true
-          - source: "ApiGear/Source/ApiGearEditor/ApiGearEditor.Build.cs"
-            target: "Plugins/ApiGear/Source/ApiGearEditor/ApiGearEditor.Build.cs"
-            force: true
-            raw: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/nlohmann/json.hpp"
-            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Public/nlohmann/json.hpp"
-            raw: true
-            force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Private/jsonrpc/jsonrpc.cpp"
-            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Private/jsonrpc/jsonrpc.cpp"
-            raw: true
-            force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/jsonrpc/jsonrpc.h"
-            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Public/jsonrpc/jsonrpc.h"
-            raw: true
-            force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Private/jsonrpc/rpcprotocol.cpp"
-            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Private/jsonrpc/rpcprotocol.cpp"
-            raw: true
-            force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/jsonrpc/rpcprotocol.h"
-            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Public/jsonrpc/rpcprotocol.h"
-            raw: true
-            force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/jsonrpc/stdoutlogger.h"
-            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Public/jsonrpc/stdoutlogger.h"
-            raw: true
-            force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Private/jsonrpc/jsonrpctypes.cpp"
-            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Private/jsonrpc/jsonrpctypes.cpp"
-            raw: true
-            force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/jsonrpc/jsonrpctypes.h"
-            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Public/jsonrpc/jsonrpctypes.h"
-            raw: true
             force: true
       - match: module
         prefix: "Plugins/{{Camel .Module.Name}}/"
@@ -232,6 +340,8 @@ features:
             target: "Source/{{Camel .Module.Name}}/Private/Generated/Simulation/{{Camel .Module.Name}}{{Camel .Interface.Name}}SimulationClient.cpp"
             force: true
   - name: olink
+    requires:
+      - apigear
     scopes:
       - match: interface
         prefix: "Plugins/{{Camel .Module.Name}}/"
@@ -241,106 +351,4 @@ features:
             force: true
           - source: "module/Source/module/Private/Generated/OLink/olinkclient.cpp.tpl"
             target: "Source/{{Camel .Module.Name}}/Private/Generated/OLink/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLinkClient.cpp"
-            force: true
-      - match: system
-        documents:
-          - source: "ApiGear/Source/ApiGear/Private/unrealolink.cpp"
-            target: "Plugins/ApiGear/Source/ApiGear/Private/unrealolink.cpp"
-            force: true
-            raw: true
-          - source: "ApiGear/Source/ApiGear/Public/unrealolink.h"
-            target: "Plugins/ApiGear/Source/ApiGear/Public/unrealolink.h"
-            force: true
-            raw: true
-          - source: "ApiGear/Source/ApiGear/Private/unrealolinksink.cpp"
-            target: "Plugins/ApiGear/Source/ApiGear/Private/unrealolinksink.cpp"
-            force: true
-            raw: true
-          - source: "ApiGear/Source/ApiGear/Public/unrealolinksink.h"
-            target: "Plugins/ApiGear/Source/ApiGear/Public/unrealolinksink.h"
-            force: true
-            raw: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/clientnode.h"
-            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Public/olink/clientnode.h"
-            raw: true
-            force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Private/olink/clientnode.cpp"
-            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Private/olink/clientnode.cpp"
-            raw: true
-            force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/clientregistry.h"
-            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Public/olink/clientregistry.h"
-            raw: true
-            force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Private/olink/clientregistry.cpp"
-            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Private/olink/clientregistry.cpp"
-            raw: true
-            force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/core/basenode.h"
-            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Public/olink/core/basenode.h"
-            raw: true
-            force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Private/olink/core/basenode.cpp"
-            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Private/olink/core/basenode.cpp"
-            raw: true
-            force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/remotenode.h"
-            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Public/olink/remotenode.h"
-            raw: true
-            force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/iremotenode.h"
-            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Public/olink/iremotenode.h"
-            raw: true
-            force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/remoteregistry.h"
-            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Public/olink/remoteregistry.h"
-            raw: true
-            force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Private/olink/remoteregistry.cpp"
-            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Private/olink/remoteregistry.cpp"
-            raw: true
-            force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Private/olink/remotenode.cpp"
-            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Private/olink/remotenode.cpp"
-            raw: true
-            force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/consolelogger.h"
-            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Public/olink/consolelogger.h"
-            raw: true
-            force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Private/olink/consolelogger.cpp"
-            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Private/olink/consolelogger.cpp"
-            raw: true
-            force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/iclientnode.h"
-            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Public/olink/iclientnode.h"
-            raw: true
-            force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/core/protocol.h"
-            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Public/olink/core/protocol.h"
-            raw: true
-            force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Private/olink/core/protocol.cpp"
-            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Private/olink/core/protocol.cpp"
-            raw: true
-            force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/core/olink_common.h"
-            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Public/olink/core/olink_common.h"
-            raw: true
-            force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/iobjectsink.h"
-            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Public/olink/iobjectsink.h"
-            raw: true
-            force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/iobjectsource.h"
-            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Public/olink/iobjectsource.h"
-            raw: true
-            force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/core/types.h"
-            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Public/olink/core/types.h"
-            raw: true
-            force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Private/olink/core/types.cpp"
-            target: "Plugins/ApiGear/Source/ApiGear/ThirdParty/Private/olink/core/types.cpp"
-            raw: true
             force: true
