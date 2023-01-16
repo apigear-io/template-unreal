@@ -297,17 +297,43 @@ features:
           - source: "module/Source/module/Private/pluginname.cpp.tpl"
             target: "Source/{{Camel .Module.Name}}/Private/{{Camel .Module.Name}}.cpp"
             force: true
-          - source: "module/Source/module/Private/pluginfactory.h.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/{{Camel .Module.Name}}Factory.h"
+          - source: "module/Source/module/Private/Generated/api/json.adapter.h.tpl"
+            target: "Source/{{Camel .Module.Name}}/Private/Generated/api/{{Camel .Module.Name}}.json.adapter.h"
             force: true
-          - source: "module/Source/module/Private/pluginfactory.cpp.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/{{Camel .Module.Name}}Factory.cpp"
+      - match: interface
+        prefix: "Plugins/{{Camel .Module.Name}}/"
+        documents:
+          - source: "module/Source/module/Private/Implementation/implementation.h.tpl"
+            target: "Source/{{Camel .Module.Name}}/Private/Implementation/{{Camel .Module.Name}}{{Camel .Interface.Name}}.h"
+          - source: "module/Source/module/Private/Implementation/implementation.cpp.tpl"
+            target: "Source/{{Camel .Module.Name}}/Private/Implementation/{{Camel .Module.Name}}{{Camel .Interface.Name}}.cpp"
+          - source: "module/Source/module/Private/Tests/implementationtest.cpp.tpl"
+            target: "Source/{{Camel .Module.Name}}/Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}Tests.cpp"
+          - source: "module/Source/module/Private/Generated/Simulation/simulationclient.h.tpl"
+            target: "Source/{{Camel .Module.Name}}/Private/Generated/Simulation/{{Camel .Module.Name}}{{Camel .Interface.Name}}SimulationClient.h"
             force: true
+          - source: "module/Source/module/Private/Generated/Simulation/simulationclient.cpp.tpl"
+            target: "Source/{{Camel .Module.Name}}/Private/Generated/Simulation/{{Camel .Module.Name}}{{Camel .Interface.Name}}SimulationClient.cpp"
+            force: true
+  - name: monitor
+    requires:
+      - api
+      - apigear
+    scopes:
+      - match: module
+        prefix: "Plugins/{{Camel .Module.Name}}/"
+        documents:
           - source: "module/Source/module/Public/pluginnamesettings.h.tpl"
             target: "Source/{{Camel .Module.Name}}/Public/{{Camel .Module.Name}}Settings.h"
             force: true
           - source: "module/Source/module/Private/pluginnamesettings.cpp.tpl"
             target: "Source/{{Camel .Module.Name}}/Private/{{Camel .Module.Name}}Settings.cpp"
+            force: true
+          - source: "module/Source/module/Private/pluginfactory.h.tpl"
+            target: "Source/{{Camel .Module.Name}}/Private/{{Camel .Module.Name}}Factory.h"
+            force: true
+          - source: "module/Source/module/Private/pluginfactory.cpp.tpl"
+            target: "Source/{{Camel .Module.Name}}/Private/{{Camel .Module.Name}}Factory.cpp"
             force: true
           - source: "module/Source/module/Private/Generated/api/json.adapter.h.tpl"
             target: "Source/{{Camel .Module.Name}}/Private/Generated/api/{{Camel .Module.Name}}.json.adapter.h"
@@ -326,18 +352,6 @@ features:
             force: true
           - source: "module/Source/module/Private/Generated/Monitor/loggingdecorator.cpp.tpl"
             target: "Source/{{Camel .Module.Name}}/Private/Generated/Monitor/{{Camel .Module.Name}}{{Camel .Interface.Name}}LoggingDecorator.cpp"
-            force: true
-          - source: "module/Source/module/Private/Implementation/implementation.h.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Implementation/{{Camel .Module.Name}}{{Camel .Interface.Name}}.h"
-          - source: "module/Source/module/Private/Implementation/implementation.cpp.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Implementation/{{Camel .Module.Name}}{{Camel .Interface.Name}}.cpp"
-          - source: "module/Source/module/Private/Tests/implementationtest.cpp.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}Tests.cpp"
-          - source: "module/Source/module/Private/Generated/Simulation/simulationclient.h.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Generated/Simulation/{{Camel .Module.Name}}{{Camel .Interface.Name}}SimulationClient.h"
-            force: true
-          - source: "module/Source/module/Private/Generated/Simulation/simulationclient.cpp.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Generated/Simulation/{{Camel .Module.Name}}{{Camel .Interface.Name}}SimulationClient.cpp"
             force: true
   - name: olink
     requires:
