@@ -16,7 +16,6 @@ limitations under the License.
 */
 
 #include "Testbed1.h"
-#include "ApiGear/Public/ApiGearConnectionManager.h"
 #include "Engine/Engine.h"
 #include "Modules/ModuleManager.h"
 
@@ -25,7 +24,6 @@ limitations under the License.
 void FTestbed1Module::StartupModule()
 {
 	// No Libraries to load from non mobile platforms because of the web api
-	UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
 }
 
 void FTestbed1Module::ShutdownModule()

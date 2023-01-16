@@ -16,7 +16,6 @@ limitations under the License.
 */
 
 #include "TbSame1.h"
-#include "ApiGear/Public/ApiGearConnectionManager.h"
 #include "Engine/Engine.h"
 #include "Modules/ModuleManager.h"
 
@@ -25,7 +24,6 @@ limitations under the License.
 void FTbSame1Module::StartupModule()
 {
 	// No Libraries to load from non mobile platforms because of the web api
-	UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
 }
 
 void FTbSame1Module::ShutdownModule()

@@ -22,7 +22,6 @@ limitations under the License.
 {{- $class := printf "F%sModule" $ModuleName}}
 
 #include "{{$ModuleName}}.h"
-#include "ApiGear/Public/ApiGearConnectionManager.h"
 #include "Engine/Engine.h"
 #include "Modules/ModuleManager.h"
 
@@ -31,7 +30,6 @@ limitations under the License.
 void {{$class}}::StartupModule()
 {
 	// No Libraries to load from non mobile platforms because of the web api
-	UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
 }
 
 void {{$class}}::ShutdownModule()
