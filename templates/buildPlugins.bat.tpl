@@ -30,6 +30,7 @@ if exist "%UEplugins_path%\" (
 	exit /b 1
 )
 
+{{ if .Features.apigear -}}
 @REM Check for existing ApiGear plugin
 set ApiGearPluginTarget_path=%UEplugins_path%\ApiGear
 set RestoreApiGearPlugin=0
@@ -49,6 +50,7 @@ if !buildresult! GEQ 1 exit /b !buildresult!
 xcopy /E /Y "%script_path%build\Plugins\ApiGear" "%ApiGearPluginTarget_path%\"  >nul
 if %ERRORLEVEL% GEQ 1 call :cleanup %ERRORLEVEL%
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
+{{- end }}
 {{ range .System.Modules}}
 @REM Building and testing {{Camel .Name}} module
 call :buildUEplugin "%script_path%\Plugins\{{Camel .Name}}\{{Camel .Name}}.uplugin" , "%script_path%build\Plugins\{{Camel .Name}}"
@@ -71,6 +73,7 @@ exit /b %ERRORLEVEL%
 
 @REM Clean up ApiGear plugin installation
 :cleanup
+{{ if .Features.apigear -}}
 if %RestoreApiGearPlugin% equ 1 (
 	echo Restoring old ApiGear plugin in UE installation
 	@RD /S /Q "%ApiGearPluginTarget_path%"
@@ -81,4 +84,5 @@ if %RestoreApiGearPlugin% equ 1 (
 	@RD /S /Q "%ApiGearPluginTarget_path%"
 	if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
 )
+{{- end }}
 exit /b %~1

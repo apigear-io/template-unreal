@@ -33,6 +33,7 @@ else
 	exit 1
 fi
 
+{{ if .Features.apigear -}}
 # Check for existing ApiGear plugin
 ApiGearPluginTarget_path=$UEplugins_path/ApiGear
 RestoreApiGearPlugin=0
@@ -43,6 +44,7 @@ then
 	if [ $? -ne 0 ]; then exit 1; fi;
 	RestoreApiGearPlugin=1
 fi
+{{- end }}
 
 #
 # function implementations
@@ -58,6 +60,7 @@ buildUEplugin()
 # Clean up ApiGear plugin installation
 cleanup()
 {
+{{- if .Features.apigear }}
 	if [ "$RestoreApiGearPlugin" == 1 ]
 	then
 		echo "Restoring old ApiGear plugin in UE installation"
@@ -67,6 +70,7 @@ cleanup()
 		echo "Deleting temporary ApiGear plugin installation from UE"
 		rm -rf "$ApiGearPluginTarget_path"
 	fi
+{{- end }}
 }
 
 
@@ -74,6 +78,7 @@ cleanup()
 # main
 #
 
+{{ if .Features.apigear -}}
 # Build ApiGear plugin
 buildUEplugin "$script_path/Plugins/ApiGear/apigear.uplugin" "$script_path/build/Plugins/ApiGear"
 if [ $buildresult -ne 0 ]; then cleanup && exit 1; fi;
@@ -81,6 +86,7 @@ if [ $buildresult -ne 0 ]; then cleanup && exit 1; fi;
 # copy ApiGear plugin to UE installation for use by other plugins
 cp -rf "$script_path/build/Plugins/ApiGear" "$ApiGearPluginTarget_path" 1>&-
 if [ $? -ne 0 ]; then cleanup && exit 1; fi;
+{{- end }}
 {{ range .System.Modules }}
 # Building and testing {{Camel .Name}} module
 buildUEplugin "$script_path/Plugins/{{Camel .Name}}/{{Camel .Name}}.uplugin" "$script_path/build/Plugins/{{Camel .Name}}"
