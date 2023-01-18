@@ -38,7 +38,9 @@ public class {{$ModuleName}} : ModuleRules
 			new string[]
 			{
 				"Core",
+{{- if .Features.apigear }}
 				"ApiGear",
+{{- end }}
 				"Projects",
 				"Engine"
 				// ... add other public dependencies that you statically link with here ...

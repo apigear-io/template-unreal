@@ -31,11 +31,13 @@
 			"LoadingPhase" : "PostEngineInit",
 			"WhitelistPlatforms" : [ "Win64", "Mac", "Linux" ]
 		}
-	],
+	]
+{{- if .Features.apigear }},
 	"Plugins": [
 		{
 			"Name": "ApiGear",
 			"Enabled": true
 		}
-	]	
+	]
+{{- end }}
 }
