@@ -291,6 +291,12 @@ features:
           - source: "module/Source/module/pluginname.uplugin.tpl"
             target: "{{Camel .Module.Name}}.uplugin"
             force: true
+          - source: "module/Source/module/Public/pluginnamesettings.h.tpl"
+            target: "Source/{{Camel .Module.Name}}/Public/{{Camel .Module.Name}}Settings.h"
+            force: true
+          - source: "module/Source/module/Private/pluginnamesettings.cpp.tpl"
+            target: "Source/{{Camel .Module.Name}}/Private/{{Camel .Module.Name}}Settings.cpp"
+            force: true
           - source: "module/Source/moduleeditor/Public/pluginnameeditor.h.tpl"
             target: "Source/{{Camel .Module.Name}}Editor/Public/{{Camel .Module.Name}}Editor.h"
             force: true
