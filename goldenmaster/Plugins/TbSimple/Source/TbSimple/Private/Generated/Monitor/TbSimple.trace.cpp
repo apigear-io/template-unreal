@@ -1,5 +1,5 @@
 #include "TbSimple.trace.h"
-#include "TbSimple.json.adapter.h"
+#include "Generated/api/TbSimple.json.adapter.h"
 #include "tracer.h"
 
 TbSimpleSimpleInterfaceTracer::TbSimpleSimpleInterfaceTracer()

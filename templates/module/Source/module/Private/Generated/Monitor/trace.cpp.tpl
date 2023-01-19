@@ -4,7 +4,7 @@
 {{- $API_MACRO := printf "%s_API" $ModuleName }}
 {{- $Category := printf "ApiGear%s" $ModuleName -}}
 #include "{{$ModuleName}}.trace.h"
-#include "{{$ModuleName}}.json.adapter.h"
+#include "Generated/api/{{$ModuleName}}.json.adapter.h"
 #include "tracer.h"
 
 {{- range .Module.Interfaces }}

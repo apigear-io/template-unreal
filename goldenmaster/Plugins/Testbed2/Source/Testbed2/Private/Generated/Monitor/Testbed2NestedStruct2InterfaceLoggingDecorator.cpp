@@ -17,7 +17,7 @@ limitations under the License.
 */
 #include "Generated/Monitor/Testbed2NestedStruct2InterfaceLoggingDecorator.h"
 #include "Implementation/Testbed2NestedStruct2Interface.h"
-#include "Generated/api/Testbed2.trace.h"
+#include "Testbed2.trace.h"
 #include "Testbed2Factory.h"
 #include "Async/Async.h"
 #include "LatentActions.h"

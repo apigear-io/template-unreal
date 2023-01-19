@@ -17,7 +17,7 @@ limitations under the License.
 */
 #include "Generated/Monitor/TbSimpleSimpleArrayInterfaceLoggingDecorator.h"
 #include "Implementation/TbSimpleSimpleArrayInterface.h"
-#include "Generated/api/TbSimple.trace.h"
+#include "TbSimple.trace.h"
 #include "TbSimpleFactory.h"
 #include "Async/Async.h"
 #include "LatentActions.h"

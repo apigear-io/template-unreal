@@ -1,5 +1,5 @@
 #include "TbSame2.trace.h"
-#include "TbSame2.json.adapter.h"
+#include "Generated/api/TbSame2.json.adapter.h"
 #include "tracer.h"
 
 TbSame2SameStruct1InterfaceTracer::TbSame2SameStruct1InterfaceTracer()

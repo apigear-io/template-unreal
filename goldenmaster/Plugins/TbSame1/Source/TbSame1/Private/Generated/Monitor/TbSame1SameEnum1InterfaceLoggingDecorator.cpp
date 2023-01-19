@@ -17,7 +17,7 @@ limitations under the License.
 */
 #include "Generated/Monitor/TbSame1SameEnum1InterfaceLoggingDecorator.h"
 #include "Implementation/TbSame1SameEnum1Interface.h"
-#include "Generated/api/TbSame1.trace.h"
+#include "TbSame1.trace.h"
 #include "TbSame1Factory.h"
 #include "Async/Async.h"
 #include "LatentActions.h"

@@ -26,7 +26,7 @@ limitations under the License.
 */
 #include "Generated/Monitor/{{$Iface}}LoggingDecorator.h"
 #include "Implementation/{{$Iface}}.h"
-#include "Generated/api/{{$ModuleName}}.trace.h"
+#include "{{$ModuleName}}.trace.h"
 #include "{{$ModuleName}}Factory.h"
 #include "Async/Async.h"
 #include "LatentActions.h"

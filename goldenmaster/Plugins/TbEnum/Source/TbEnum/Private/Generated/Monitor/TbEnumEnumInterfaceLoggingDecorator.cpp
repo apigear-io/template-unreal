@@ -17,7 +17,7 @@ limitations under the License.
 */
 #include "Generated/Monitor/TbEnumEnumInterfaceLoggingDecorator.h"
 #include "Implementation/TbEnumEnumInterface.h"
-#include "Generated/api/TbEnum.trace.h"
+#include "TbEnum.trace.h"
 #include "TbEnumFactory.h"
 #include "Async/Async.h"
 #include "LatentActions.h"

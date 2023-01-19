@@ -1,5 +1,5 @@
 #include "Testbed1.trace.h"
-#include "Testbed1.json.adapter.h"
+#include "Generated/api/Testbed1.json.adapter.h"
 #include "tracer.h"
 
 Testbed1StructInterfaceTracer::Testbed1StructInterfaceTracer()

@@ -17,7 +17,7 @@ limitations under the License.
 */
 #include "Generated/Monitor/Testbed1StructInterfaceLoggingDecorator.h"
 #include "Implementation/Testbed1StructInterface.h"
-#include "Generated/api/Testbed1.trace.h"
+#include "Testbed1.trace.h"
 #include "Testbed1Factory.h"
 #include "Async/Async.h"
 #include "LatentActions.h"
