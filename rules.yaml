@@ -256,9 +256,22 @@ features:
             target: "Source/ApiGear/ThirdParty/Private/olink/core/types.cpp"
             raw: true
             force: true
-  - name: scaffold
+  - name: stubs
     requires:
       - api
+    scopes:
+      - match: interface
+        prefix: "Plugins/{{Camel .Module.Name}}/"
+        documents:
+          - source: "module/Source/module/Private/Implementation/implementation.h.tpl"
+            target: "Source/{{Camel .Module.Name}}/Private/Implementation/{{Camel .Module.Name}}{{Camel .Interface.Name}}.h"
+          - source: "module/Source/module/Private/Implementation/implementation.cpp.tpl"
+            target: "Source/{{Camel .Module.Name}}/Private/Implementation/{{Camel .Module.Name}}{{Camel .Interface.Name}}.cpp"
+          - source: "module/Source/module/Private/Tests/implementationtest.cpp.tpl"
+            target: "Source/{{Camel .Module.Name}}/Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}Tests.cpp"
+  - name: scaffold
+    requires:
+      - stubs
     scopes:
       - match: system
         documents:
@@ -296,15 +309,6 @@ features:
           - source: "module/Source/module/Private/pluginname.cpp.tpl"
             target: "Source/{{Camel .Module.Name}}/Private/{{Camel .Module.Name}}.cpp"
             force: true
-      - match: interface
-        prefix: "Plugins/{{Camel .Module.Name}}/"
-        documents:
-          - source: "module/Source/module/Private/Implementation/implementation.h.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Implementation/{{Camel .Module.Name}}{{Camel .Interface.Name}}.h"
-          - source: "module/Source/module/Private/Implementation/implementation.cpp.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Implementation/{{Camel .Module.Name}}{{Camel .Interface.Name}}.cpp"
-          - source: "module/Source/module/Private/Tests/implementationtest.cpp.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}Tests.cpp"
   - name: monitor
     requires:
       - api
