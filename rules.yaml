@@ -329,11 +329,11 @@ features:
           - source: "module/Source/module/Private/pluginnamesettings.cpp.tpl"
             target: "Source/{{Camel .Module.Name}}/Private/{{Camel .Module.Name}}Settings.cpp"
             force: true
-          - source: "module/Source/module/Private/pluginfactory.h.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/{{Camel .Module.Name}}Factory.h"
+          - source: "module/Source/module/Private/Generated/Monitor/pluginfactory.h.tpl"
+            target: "Source/{{Camel .Module.Name}}/Private/Generated/Monitor/{{Camel .Module.Name}}Factory.h"
             force: true
-          - source: "module/Source/module/Private/pluginfactory.cpp.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/{{Camel .Module.Name}}Factory.cpp"
+          - source: "module/Source/module/Private/Generated/Monitor/pluginfactory.cpp.tpl"
+            target: "Source/{{Camel .Module.Name}}/Private/Generated/Monitor/{{Camel .Module.Name}}Factory.cpp"
             force: true
           - source: "module/Source/module/Private/Generated/api/json.adapter.h.tpl"
             target: "Source/{{Camel .Module.Name}}/Private/Generated/api/{{Camel .Module.Name}}.json.adapter.h"

@@ -23,9 +23,15 @@ limitations under the License.
 #include "{{$ModuleName}}Factory.h"
 {{- range .Module.Interfaces }}
 {{- $iclass := printf "%s%s" $ModuleName .Name}}
+{{- if $.Features.stubs }}
 #include "Implementation/{{$iclass}}.h"
+{{- end }}
+{{- if $.Features.olink }}
 #include "Generated/OLink/{{$iclass}}OLinkClient.h"
+{{- end }}
+{{- if $.Features.simulation }}
 #include "Generated/Simulation/{{$iclass}}SimulationClient.h"
+{{- end }}
 {{- end }}
 #include "{{$ModuleName}}Settings.h"
 #include "Subsystems/GameInstanceSubsystem.h"
@@ -38,6 +44,7 @@ DEFINE_LOG_CATEGORY(Log{{$mclass}});
 {{- $class := printf "%s%s" $ModuleName .Name }}
 {{- $iclass := printf "I%sInterface" $class }}
 {{- $DisplayName := printf "%s%s" $ModuleName (Camel .Name) }}
+{{- if $.Features.olink }}
 
 TScriptInterface<I{{$class}}Interface> create{{$class}}OLink(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
@@ -50,6 +57,8 @@ TScriptInterface<I{{$class}}Interface> create{{$class}}OLink(UGameInstance* Game
 	}
 	return Instance;
 }
+{{- end }}
+{{- if $.Features.simulation }}
 
 TScriptInterface<I{{$class}}Interface> create{{$class}}Simulation(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
@@ -62,6 +71,7 @@ TScriptInterface<I{{$class}}Interface> create{{$class}}Simulation(UGameInstance*
 	}
 	return Instance;
 }
+{{- end }}
 
 TScriptInterface<I{{$class}}Interface> {{$mclass}}::create{{$iclass}}(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
@@ -69,15 +79,18 @@ TScriptInterface<I{{$class}}Interface> {{$mclass}}::create{{$iclass}}(UGameInsta
 
 	switch (settings->ServiceConnection)
 	{
-	case E{{$ModuleName}}Connection::CONNECTION_OLINK:
-		return create{{$class}}OLink(GameInstance, Collection);
-	case E{{$ModuleName}}Connection::CONNECTION_SIMU:
-		return create{{$class}}Simulation(GameInstance, Collection);
-	case E{{$ModuleName}}Connection::CONNECTION_LOCAL:
-		UE_LOG(Log{{$mclass}}, Log, TEXT("create{{$iclass}}: Using local service backend"));
+{{- if $.Features.olink }}{{ nl }}	case E{{$ModuleName}}Connection::CONNECTION_OLINK:
+		return create{{$class}}OLink(GameInstance, Collection);{{ end }}
+{{- if $.Features.simulation }}{{ nl }}	case E{{$ModuleName}}Connection::CONNECTION_SIMU:
+		return create{{$class}}Simulation(GameInstance, Collection);{{ end }}
+{{- if $.Features.stubs }}{{ nl }}	case E{{$ModuleName}}Connection::CONNECTION_LOCAL:
+		UE_LOG(Log{{$mclass}}, Log, TEXT("create{{$iclass}}: Using local service backend"));{{ end }}
 	default:
-		UE_LOG(Log{{$mclass}}, Log, TEXT("create{{$iclass}}: Defaulting to local service backend"));
+{{- if $.Features.stubs }}{{ nl }}		UE_LOG(Log{{$mclass}}, Log, TEXT("create{{$iclass}}: Defaulting to local service backend"));
 		return NewObject<{{ printf "U%s" $DisplayName}}>();
+{{- else if $.Features.olink }}{{ nl }}		return create{{$class}}OLink(GameInstance, Collection);
+{{- else if $.Features.simulation }}{{ nl }}		return create{{$class}}Simulation(GameInstance, Collection);
+{{- end }}
 	}
 }
 {{- end }}
