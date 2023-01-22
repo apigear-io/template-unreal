@@ -5,6 +5,8 @@ name: Technology Template Goldenmaster Test
 on:
   pull_request:
     branches: [main]
+    paths:
+      - '!docs/**'
 
 env:
   GITHUB_AUTH_TOKEN: ${{ secrets.WOLFGANG_REPO_PACKAGE_READ }}
