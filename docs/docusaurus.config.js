@@ -99,6 +99,10 @@ const config = {
               {
                 label: 'Quick-Start',
                 to: 'quickstart',
+              },
+              {
+                label: 'Features',
+                to: 'features/intro',
               }
             ],
           },

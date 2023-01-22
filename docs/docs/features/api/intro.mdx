@@ -1,0 +1,52 @@
+---
+sidebar_position: 1
+---
+import CodeBlock from '@theme/CodeBlock';
+import helloWorldModuleComponent from '!!raw-loader!./../helloworld.module.yaml';
+
+# Introduction
+
+The *feature* `api` is the bare minimum for the code generation. For interfaces it only generates the header files. For data types like *enums* or *structs* it will also generate a basic implementation.
+
+## Module
+
+Before we look into the generated files, it is important to understand the file and class naming.
+Each API module generates an independent *plugin*. The name of the plugin is based on the name of the module, here for instance "**world**".
+
+```yaml showLineNumbers
+schema: apigear.module/1.0
+// highlight-next-line
+name: io.world
+version: "1.0"
+```
+
+:::caution
+*Unreal Engine* requires unique file and type names. Therefore, **all** names are prefixed with the module name.<br />
+This also makes it easier for users to identify own types and functions within the engine.
+
+**It is important to choose the module name wisely.**
+:::
+## File overview
+
+When selecting the *api* feature the following structure will be generated.
+
+```bash {8,12-14}
+📦Plugins
+ ┗ 📂IoWorld
+ ┃ ┗ 📂Source
+ ┃ ┃ ┗ 📂IoWorld
+ ┃ ┃ ┃ ┣ 📂Private
+ ┃ ┃ ┃ ┃ ┗ 📂Generated
+ ┃ ┃ ┃ ┃ ┃ ┗ 📂api
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜IoWorld_data.cpp
+ ┃ ┃ ┃ ┗ 📂Public
+ ┃ ┃ ┃ ┃ ┗ 📂Generated
+ ┃ ┃ ┃ ┃ ┃ ┗ 📂api
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜IoWorldHelloInterface.h
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜IoWorld_apig.h
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜IoWorld_data.h
+```
+
+* `📜IoWorldHelloInterface.h` contains the declaration for the only [interface](interface) in this example
+* `📜IoWorld_apig.h` is a convenience header which includes all separate interface headers
+* `📜IoWorld_data.h` and `📜IoWorld_data.cpp` contain declarations and definitions for [enums](enums) and [structs](structs) for the complete module

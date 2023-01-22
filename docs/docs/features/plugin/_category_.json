@@ -1,0 +1,8 @@
+{
+  "label": "plugin",
+  "position": 4,
+  "link": {
+    "type": "generated-index",
+    "description": "Learn more about the plugin feature"
+  }
+}
