@@ -32,7 +32,7 @@ if exist "%UEplugins_path%\" (
 
 {{ if .Features.apigear -}}
 @REM Check for existing ApiGear plugin
-set ApiGearPluginTarget_path=%UEplugins_path%\ApiGear
+set ApiGearPluginTarget_path=%UEplugins_path%\Marketplace\ApiGear
 set RestoreApiGearPlugin=0
 if exist "%ApiGearPluginTarget_path%\" (
 	echo Existing ApiGear plugin found at %ApiGearPluginTarget_path%

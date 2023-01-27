@@ -34,7 +34,7 @@ else
 fi
 
 # Check for existing ApiGear plugin
-ApiGearPluginTarget_path=$UEplugins_path/ApiGear
+ApiGearPluginTarget_path=$UEplugins_path/Marketplace/ApiGear
 RestoreApiGearPlugin=0
 if [ -d "$ApiGearPluginTarget_path" ]
 then
