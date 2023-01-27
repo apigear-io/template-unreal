@@ -21,8 +21,13 @@ class RpcProtocol;
 }
 } // namespace ApiGear
 
+// UE 4.25 cannot handle namespaces in base classes
+typedef JSONRPC::IMessageWriter JSONRPCIMessageWriter;
+typedef JSONRPC::IRpcProtocolListener JSONRPCIRpcProtocolListener;
+typedef JSONRPC::ILogger JSONRPCILogger;
+
 UCLASS(NotBlueprintType)
-class APIGEAR_API UUnrealSimulation : public UAbstractApiGearConnection, public JSONRPC::IMessageWriter, public JSONRPC::IRpcProtocolListener, public JSONRPC::ILogger
+class APIGEAR_API UUnrealSimulation : public UAbstractApiGearConnection, public JSONRPCIMessageWriter, public JSONRPCIRpcProtocolListener, public JSONRPCILogger
 {
 	GENERATED_BODY()
 public:
