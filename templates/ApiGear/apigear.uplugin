@@ -22,6 +22,11 @@
 			"LoadingPhase": "Default"
 		},
 		{
+			"Name": "OLinkProtocolLibrary",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
 			"Name" : "ApiGearEditor",
 			"Type" : "Editor",
 			"LoadingPhase" : "Default",

@@ -1,0 +1,45 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+using System.IO;
+using UnrealBuildTool;
+
+public class OLinkProtocolLibrary : ModuleRules
+{
+	public OLinkProtocolLibrary(ReadOnlyTargetRules Target) : base(Target)
+	{
+		bAddDefaultIncludePaths = false;
+		bRequiresImplementModule = false;
+
+		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
+		bEnforceIWYU = true;
+
+		// Disable nlohmann::json exception handling
+		PublicDefinitions.Add("JSON_NOEXCEPTION=1");
+
+		PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "Public"));
+		PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "Public", "olink", "core"));
+		PrivateIncludePaths.Add(Path.Combine(ModuleDirectory, "Private"));
+		PrivateIncludePaths.Add(Path.Combine(ModuleDirectory, "Public", "olink"));
+
+		PublicDependencyModuleNames.AddRange(
+			new string[]
+			{
+				"nlohmannJsonLibrary"
+			}
+			);
+			
+		PrivateDependencyModuleNames.AddRange(
+			new string[]
+			{
+			}
+			);
+		
+		DynamicallyLoadedModuleNames.AddRange(
+			new string[]
+			{
+				// ... add any modules that your module loads dynamically here ...
+			}
+			);
+	}
+}
+

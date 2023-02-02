@@ -45,7 +45,8 @@ public class TbSame1 : ModuleRules
 			new string[]
 			{
 				"CoreUObject",
-                "Engine"
+				"Engine",
+				"OLinkProtocolLibrary"
 			}
 			);
 		

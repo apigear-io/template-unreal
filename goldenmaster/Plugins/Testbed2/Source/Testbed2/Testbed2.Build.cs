@@ -45,7 +45,8 @@ public class Testbed2 : ModuleRules
 			new string[]
 			{
 				"CoreUObject",
-                "Engine"
+				"Engine",
+				"OLinkProtocolLibrary"
 			}
 			);
 		

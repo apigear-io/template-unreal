@@ -45,7 +45,8 @@ public class TbEnum : ModuleRules
 			new string[]
 			{
 				"CoreUObject",
-                "Engine"
+				"Engine",
+				"OLinkProtocolLibrary"
 			}
 			);
 		

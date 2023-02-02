@@ -52,7 +52,10 @@ public class {{$ModuleName}} : ModuleRules
 			new string[]
 			{
 				"CoreUObject",
-                "Engine"
+				"Engine",
+{{- if .Features.apigear }}
+				"OLinkProtocolLibrary"
+{{- end }}
 			}
 			);
 		

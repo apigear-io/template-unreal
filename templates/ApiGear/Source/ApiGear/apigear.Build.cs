@@ -16,8 +16,6 @@ public class ApiGear : ModuleRules
         PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "Public"));
         PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "ThirdParty","Public"));
         PrivateIncludePaths.Add(Path.Combine(ModuleDirectory, "Private"));
-        PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "ThirdParty","Public","olink"));
-        PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "ThirdParty","Public","olink", "core"));
         PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "ThirdParty","Public","jsonrpc"));
        
 		PublicDependencyModuleNames.AddRange(
@@ -25,7 +23,9 @@ public class ApiGear : ModuleRules
 			{
 				"Core",
 				"WebSockets",
-				"HTTP"
+				"HTTP",
+				"OLinkProtocolLibrary",
+				"nlohmannJsonLibrary"
 			}
 			);
 			
@@ -33,7 +33,7 @@ public class ApiGear : ModuleRules
 			new string[]
 			{
 				"CoreUObject",
-                "Engine"
+				"Engine"
 			}
 			);
 		

@@ -45,7 +45,8 @@ public class TbSimple : ModuleRules
 			new string[]
 			{
 				"CoreUObject",
-                "Engine"
+				"Engine",
+				"OLinkProtocolLibrary"
 			}
 			);
 		

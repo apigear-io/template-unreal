@@ -19,7 +19,106 @@ features:
           - source: "module/Source/module/Public/Generated/api/interface.h.tpl"
             target: "Public/Generated/api/{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface.h"
             force: true
+  - name: apigear-olinkproto
+    scopes:
+      - match: system
+        prefix: "Plugins/ApiGear/Source/ThirdParty/OLinkProtocolLibrary/"
+        documents:
+          - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/OLinkProtocolLibrary.Build.cs"
+            target: "OLinkProtocolLibrary.Build.cs"
+            force: true
+            raw: true
+          - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Private/OLinkProtocolLibraryModule.cpp"
+            target: "Private/OLinkProtocolLibraryModule.cpp"
+            force: true
+            raw: true
+          - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Public/olink/clientnode.h"
+            target: "Public/olink/clientnode.h"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Private/clientnode.cpp"
+            target: "Private/clientnode.cpp"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Public/olink/clientregistry.h"
+            target: "Public/olink/clientregistry.h"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Private/clientregistry.cpp"
+            target: "Private/clientregistry.cpp"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Public/olink/core/basenode.h"
+            target: "Public/olink/core/basenode.h"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Private/core/basenode.cpp"
+            target: "Private/core/basenode.cpp"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Public/olink/remotenode.h"
+            target: "Public/olink/remotenode.h"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Public/olink/iremotenode.h"
+            target: "Public/olink/iremotenode.h"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Public/olink/remoteregistry.h"
+            target: "Public/olink/remoteregistry.h"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Private/remoteregistry.cpp"
+            target: "Private/remoteregistry.cpp"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Private/remotenode.cpp"
+            target: "Private/remotenode.cpp"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Public/olink/consolelogger.h"
+            target: "Public/olink/consolelogger.h"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Private/consolelogger.cpp"
+            target: "Private/consolelogger.cpp"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Public/olink/iclientnode.h"
+            target: "Public/olink/iclientnode.h"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Public/olink/core/protocol.h"
+            target: "Public/olink/core/protocol.h"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Private/core/protocol.cpp"
+            target: "Private/core/protocol.cpp"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Public/olink/core/olink_common.h"
+            target: "Public/olink/core/olink_common.h"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Public/olink/iobjectsink.h"
+            target: "Public/olink/iobjectsink.h"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Public/olink/iobjectsource.h"
+            target: "Public/olink/iobjectsource.h"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Public/olink/core/types.h"
+            target: "Public/olink/core/types.h"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Private/core/types.cpp"
+            target: "Private/core/types.cpp"
+            raw: true
+            force: true
   - name: apigear
+    requires:
+      - apigear-olinkproto
     scopes:
       - match: system
         prefix: "Plugins/ApiGear/"
@@ -124,8 +223,12 @@ features:
             target: "Source/ApiGearEditor/ApiGearEditor.Build.cs"
             force: true
             raw: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/nlohmann/json.hpp"
-            target: "Source/ApiGear/ThirdParty/Public/nlohmann/json.hpp"
+          - source: "ApiGear/Source/ThirdParty/nlohmannJsonLibrary/nlohmannJsonLibrary.Build.cs"
+            target: "Source/ThirdParty/nlohmannJsonLibrary/nlohmannJsonLibrary.Build.cs"
+            raw: true
+            force: true
+          - source: "ApiGear/Source/ThirdParty/nlohmannJsonLibrary/Public/nlohmann/json.hpp"
+            target: "Source/ThirdParty/nlohmannJsonLibrary/Public/nlohmann/json.hpp"
             raw: true
             force: true
           - source: "ApiGear/Source/ApiGear/ThirdParty/Private/jsonrpc/jsonrpc.cpp"
@@ -172,90 +275,6 @@ features:
             target: "Source/ApiGear/Public/unrealolinksink.h"
             force: true
             raw: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/clientnode.h"
-            target: "Source/ApiGear/ThirdParty/Public/olink/clientnode.h"
-            raw: true
-            force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Private/olink/clientnode.cpp"
-            target: "Source/ApiGear/ThirdParty/Private/olink/clientnode.cpp"
-            raw: true
-            force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/clientregistry.h"
-            target: "Source/ApiGear/ThirdParty/Public/olink/clientregistry.h"
-            raw: true
-            force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Private/olink/clientregistry.cpp"
-            target: "Source/ApiGear/ThirdParty/Private/olink/clientregistry.cpp"
-            raw: true
-            force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/core/basenode.h"
-            target: "Source/ApiGear/ThirdParty/Public/olink/core/basenode.h"
-            raw: true
-            force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Private/olink/core/basenode.cpp"
-            target: "Source/ApiGear/ThirdParty/Private/olink/core/basenode.cpp"
-            raw: true
-            force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/remotenode.h"
-            target: "Source/ApiGear/ThirdParty/Public/olink/remotenode.h"
-            raw: true
-            force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/iremotenode.h"
-            target: "Source/ApiGear/ThirdParty/Public/olink/iremotenode.h"
-            raw: true
-            force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/remoteregistry.h"
-            target: "Source/ApiGear/ThirdParty/Public/olink/remoteregistry.h"
-            raw: true
-            force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Private/olink/remoteregistry.cpp"
-            target: "Source/ApiGear/ThirdParty/Private/olink/remoteregistry.cpp"
-            raw: true
-            force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Private/olink/remotenode.cpp"
-            target: "Source/ApiGear/ThirdParty/Private/olink/remotenode.cpp"
-            raw: true
-            force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/consolelogger.h"
-            target: "Source/ApiGear/ThirdParty/Public/olink/consolelogger.h"
-            raw: true
-            force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Private/olink/consolelogger.cpp"
-            target: "Source/ApiGear/ThirdParty/Private/olink/consolelogger.cpp"
-            raw: true
-            force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/iclientnode.h"
-            target: "Source/ApiGear/ThirdParty/Public/olink/iclientnode.h"
-            raw: true
-            force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/core/protocol.h"
-            target: "Source/ApiGear/ThirdParty/Public/olink/core/protocol.h"
-            raw: true
-            force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Private/olink/core/protocol.cpp"
-            target: "Source/ApiGear/ThirdParty/Private/olink/core/protocol.cpp"
-            raw: true
-            force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/core/olink_common.h"
-            target: "Source/ApiGear/ThirdParty/Public/olink/core/olink_common.h"
-            raw: true
-            force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/iobjectsink.h"
-            target: "Source/ApiGear/ThirdParty/Public/olink/iobjectsink.h"
-            raw: true
-            force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/iobjectsource.h"
-            target: "Source/ApiGear/ThirdParty/Public/olink/iobjectsource.h"
-            raw: true
-            force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Public/olink/core/types.h"
-            target: "Source/ApiGear/ThirdParty/Public/olink/core/types.h"
-            raw: true
-            force: true
-          - source: "ApiGear/Source/ApiGear/ThirdParty/Private/olink/core/types.cpp"
-            target: "Source/ApiGear/ThirdParty/Private/olink/core/types.cpp"
-            raw: true
-            force: true
   - name: stubs
     requires:
       - api
