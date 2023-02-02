@@ -23,6 +23,8 @@
 */
 #pragma once
 
+#pragma warning(push)
+#pragma warning(disable: 4251)
 #include "core/types.h"
 
 #include <string>
@@ -36,4 +38,4 @@ public:
 };
 
 } } // ApiGear::ObjectLink
-
+#pragma warning(pop)

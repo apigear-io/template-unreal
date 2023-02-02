@@ -1,5 +1,6 @@
 #pragma once
-
+#pragma warning(push)
+#pragma warning(disable: 4251)
 #include "protocol.h"
 #include "types.h"
 #include "olink_common.h"
@@ -65,3 +66,4 @@ private:
 };
 
 } } // ApiGear::ObjectLink
+#pragma warning(pop)

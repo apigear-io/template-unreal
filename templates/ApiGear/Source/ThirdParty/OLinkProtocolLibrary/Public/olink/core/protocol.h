@@ -22,7 +22,8 @@
 * SOFTWARE.
 */
 #pragma once
-
+#pragma warning(push)
+#pragma warning(disable: 4251)
 #include "olink_common.h"
 #include "types.h"
 #include "nlohmann/json.hpp"
@@ -210,3 +211,4 @@ private:
 };
 
 } } // Apigear::ObjectLink
+#pragma warning(pop)

@@ -23,6 +23,8 @@
 */
 #pragma once
 
+#pragma warning(push)
+#pragma warning(disable: 4251)
 #include "core/basenode.h"
 #include "iremotenode.h"
 #include <string>
@@ -102,3 +104,4 @@ private:
 };
 
 } } // Apigear::ObjectLink
+#pragma warning(pop)

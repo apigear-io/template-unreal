@@ -23,6 +23,8 @@
 */
 #pragma once
 
+#pragma warning(push)
+#pragma warning(disable: 4251)
 #include "olink_common.h"
 #include "nlohmann/json.hpp"
 #include <string>
@@ -187,3 +189,4 @@ private:
 };
 
 } } // ApiGear::ObjectLink
+#pragma warning(pop)

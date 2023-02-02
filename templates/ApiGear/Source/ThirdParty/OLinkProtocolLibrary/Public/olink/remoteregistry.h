@@ -1,5 +1,7 @@
 #pragma once
 
+#pragma warning(push)
+#pragma warning(disable: 4251)
 #include "core/basenode.h"
 #include "core/types.h"
 #include "core/uniqueidobjectstorage.h"
@@ -122,3 +124,4 @@ private:
 };
 
 }} //ApiGear::ObjectLink
+#pragma warning(pop)

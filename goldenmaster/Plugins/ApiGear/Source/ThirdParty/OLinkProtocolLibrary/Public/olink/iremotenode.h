@@ -1,5 +1,7 @@
 #pragma once
 
+#pragma warning(push)
+#pragma warning(disable: 4251)
 #include <string>
 #include <nlohmann/json.hpp>
 #include "core/olink_common.h"
@@ -35,3 +37,4 @@ public:
 };
 
 }} //ApiGear::ObjectLink
+#pragma warning(pop)

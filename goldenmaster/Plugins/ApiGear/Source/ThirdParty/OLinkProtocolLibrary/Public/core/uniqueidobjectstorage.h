@@ -1,5 +1,7 @@
 #pragma once
 
+#pragma warning(push)
+#pragma warning(disable: 4251)
 #include <memory>
 #include <algorithm>
 #include <unordered_map>
@@ -129,3 +131,4 @@ private:
     /* A mutex to guard operations on counter.*/
     std::mutex m_counterMutex;
 };
+#pragma warning(pop)
