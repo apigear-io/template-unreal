@@ -44,7 +44,7 @@ enum class MsgType : int
     Invoke = 30,
     InvokeReply = 31,
     Signal = 40,
-    Error = 99,
+    Error = 99
 };
 
 /**
@@ -60,7 +60,7 @@ enum MessageFormat
     JSON = 1,
     BSON = 2,
     MSGPACK = 3,
-    CBOR = 4,
+    CBOR = 4
 };
 
 /**
@@ -103,12 +103,12 @@ public:
 class OLINK_EXPORT MessageConverter {
 public:
     /**ctor
-    * @param network message format used for packing messages
+    * @param format network message format used for packing messages
     */
     MessageConverter(MessageFormat format);
     /**
     * Change network format used for message packing.
-    * @param format. Requested message format.
+    * @param format Requested message format.
     */
     void setMessageFormat(MessageFormat format);
     /**
@@ -119,7 +119,7 @@ public:
     nlohmann::json fromString(const std::string& message);
     /**
     * Formats message to selected network message format.
-    * @param message Message to send, not formated.
+    * @param j message Message to send, not formated.
     * @return message in network message format.
     */
     std::string toString(const nlohmann::json& j);
@@ -161,7 +161,7 @@ using InvokeReplyFunc = std::function<void(InvokeReplyArg)>;
 using WriteLogFunc = std::function<void(LogLevel level, const std::string& msg)>;
 
 /** A type of function to write messages to network, should be provided by network endpoint implementation
-@param message formated to network format.
+@param msg message formated to network format.
 */
 using WriteMessageFunc = std::function<void(const std::string& msg)>;
 

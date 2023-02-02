@@ -10,11 +10,17 @@ ClientNode::ClientNode(ClientRegistry& registry)
     : BaseNode()
     , m_registry(registry)
     , m_nextRequestId(0)
-{}
+{
+}
+
+void ClientNode::setNodeId(unsigned long id) {
+    m_nodeId = id;
+}
 
 std::shared_ptr<ClientNode> ClientNode::create(ClientRegistry& registry)
 {
     auto node = std::shared_ptr<ClientNode>(new ClientNode(registry));
+    node->setNodeId(registry.registerNode(node));
     return node;
 }
 
@@ -23,7 +29,7 @@ void ClientNode::linkRemote(const std::string& objectId)
     emitLog(LogLevel::Info, "ClientNode.linkRemote: " + objectId);
     emitWrite(Protocol::linkMessage(objectId));
     m_registry.unsetNode(objectId);
-    m_registry.setNode(shared_from_this(), objectId);
+    m_registry.setNode(m_nodeId, objectId);
 }
 
 void ClientNode::unlinkRemote(const std::string& objectId)
@@ -58,6 +64,21 @@ void ClientNode::setRemoteProperty(const std::string& propertyId, const nlohmann
 ClientRegistry& ClientNode::registry()
 {
     return m_registry;
+}
+
+ClientNode::~ClientNode()
+{
+    auto ids = m_registry.getObjectIds(m_nodeId);
+    for (const auto& id : ids)
+    {
+        unlinkRemote(id);
+    }
+    m_registry.unregisterNode(m_nodeId);
+}
+
+unsigned long ClientNode::getNodeId() const
+{
+    return m_nodeId;
 }
 
 void ClientNode::handleInit(const std::string& objectId, const nlohmann::json& props)

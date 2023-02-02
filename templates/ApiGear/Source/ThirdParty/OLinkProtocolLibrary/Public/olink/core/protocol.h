@@ -142,7 +142,7 @@ public:
     * Properties message.
     * Composes request a change of property described with propretyId.
     * Send this message from client side to request property change.
-    * @param propretyId Id describing a property in an object. Consists of property name and objectID.
+    * @param propertyId Id describing a property in an object. Consists of property name and objectID.
     * @param value Requested value of the property.
     * @return Composed setPropertyMessage in json format.
     */
@@ -151,7 +151,7 @@ public:
     * Properties message.
     * Composes a notification message for change of property described with propretyId.
     * Send this message from server side to inform clients about property change.
-    * @param propretyId Id describing a property in an object. Consists of property name and objectId.
+    * @param propertyId Id describing a property in an object. Consists of property name and objectId.
     * @param value Current value of the property.
     * @return Composed propertyChangeMessage in json format.
     */

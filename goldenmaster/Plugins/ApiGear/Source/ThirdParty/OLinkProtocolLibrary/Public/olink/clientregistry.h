@@ -1,6 +1,8 @@
 #pragma once
 
 #include "core/olink_common.h"
+#include "core/uniqueidobjectstorage.h"
+
 #include "core/basenode.h"
 #include <map>
 #include <vector>
@@ -21,22 +23,23 @@ class IClientNode;
  * This id has to be unique in the registry, only first object with same id will be registered.
  * A client node may be used for many objects.
  * Register your object and a client node separately: an object with addSink function. 
- * The client node will be added for node when linking sink with source objectId.
- * The order of registration is not relevant.
- * Sink object should always be removed from registry before deleting it.
+ * It is suggested that client node is added for sink when linking sink with source objectId
+ * and removed from sink on unlink.
+ * To use client node it needs to be registered in registry.
+ * Sink object should be removed from registry before deleting it.
  */
 class OLINK_EXPORT ClientRegistry: public LoggerBase {
 public:
-    /**dtor*/
+    /** dtor */
     virtual ~ClientRegistry() = default;
 
     /**
     * Set ClientNode for a sink object registered with objectId
     * @param objectId An id of object, for which the node should be added.
-    * @param node A ClientNode that should be added for a source with given objectId.
-    *   If node exist for given objectId node is not added.
+    * @param nodeId An id of a ClientNode that should be added for a source with given objectId.
+    *  If other node is set for given objectId, node is not changed.
     */
-    void setNode(std::weak_ptr<IClientNode> node, const std::string& objectId);
+    void setNode(unsigned long nodeId, const std::string& objectId);
     /**
     * Unset the ClientNode from registry for objectId.
     * @param objectId An id of object, for which the node should be removed.
@@ -67,10 +70,10 @@ public:
 
     /**
     * Returns List of ids of all ids of objects for which a node was set.
-    * @param node A node for which objects using it should be found.
+    * @param nodeId An id of a node, for which objects using it are to be found.
     * @return a collection of Ids of all the objects that use given node.
     */
-    std::vector<std::string> getObjectIds(std::weak_ptr<IClientNode> node);
+    std::vector<std::string> getObjectIds(unsigned long nodeId);
 
     /**
     * Returns ClientNode for given objectId.
@@ -79,23 +82,36 @@ public:
     * is currently not using any nodes.
     */
     std::weak_ptr<IClientNode> getNode(const std::string& objectId);
+
+    /**
+    * Use this function to register node and obtain a unique id, with which you can connect it with sink objects.
+    * @return A unique id given to added node.It should be used to get or remove the node.
+    */
+
+    unsigned long registerNode(std::weak_ptr<IClientNode> node);
+    /**
+    * Remove the node from registry, it will be no longer valid to use with any sink object.
+    */
+    void unregisterNode(unsigned long id);
 private:
     /**
      * Internal structure to manage sink/node associations
      */
     struct OLINK_EXPORT SinkToClientEntry{
         std::weak_ptr<IObjectSink> sink;
-        std::weak_ptr<IClientNode> node;
+        unsigned long nodeId;
     };
 
     /**
     * Collection of registered ObjectSinks for given objectId with ClientNodes they use.
     * They objectId must be unique for whole registry, only one Object sink and one ClientNode
-    * can be registered for one objectId
+    * can be registered for one objectId.
     */
     std::map <std::string, SinkToClientEntry> m_entries;
     /* A mutex to guard operations on stored entries.*/
     std::mutex m_entriesMutex;
+    /* Storage for client nodes, keeps them by Id*/
+    UniqueIdObjectStorage<ApiGear::ObjectLink::IClientNode> m_clientNodesById;
 };
 
 } } // ApiGear::ObjectLink

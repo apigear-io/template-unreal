@@ -20,13 +20,13 @@ public:
      * Sends a message to request linking this client with a service side.
      * Use this function to link remote sinks and associate them with source through this node.
      * After linking the sink will be able to receive messages from source through this node.
-     * @param objectId. An identifier of an object, used to find source object on service side with a matching objectId.
+     * @param objectId An identifier of an object, used to find source object on service side with a matching objectId.
      *   Typically contains the module name and the object name.
      */
     virtual void linkRemote(const std::string& objectId) = 0;
     /**
     * Sends a message to inform that client no longer uses the connection to service side.
-    * @param objectId. An identifier of an object, used to find source object on service side with a matching objectId.
+    * @param objectId An identifier of an object, used to find source object on service side with a matching objectId.
     *   Typically contains the module name and the object name.
     */
     virtual void unlinkRemote(const std::string& objectId) = 0;

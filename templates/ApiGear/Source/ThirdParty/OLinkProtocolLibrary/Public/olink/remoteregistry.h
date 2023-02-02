@@ -2,6 +2,7 @@
 
 #include "core/basenode.h"
 #include "core/types.h"
+#include "core/uniqueidobjectstorage.h"
 
 #include <chrono>
 #include <memory>
@@ -21,7 +22,7 @@ class IObjectSource;
  * Each object is registered with its id, available with olinkObjectName() call.
  * This id has to be unique in the registry, only first object with same id will be registered.
  * Also the RemoteNode which is an abstraction for connection endpoint may be used for many objects.
- * The registration is made separately for ObjectSource and RemoteNodes. The order of registration is not relevant, but
+ * The registration and adding the node is made separately for ObjectSource and RemoteNodes. The order of registration is not relevant, but
  * they have to provide same objectId to be associated in following manner:
  * for one unique object source, there can be many remote nodes (each node may be also used for other object source).
  * Source object implementation should always be removed from registry before destroying it.
@@ -50,15 +51,15 @@ public:
     * @param objectId Identifier of a source Object.
     * @return Source Object with given objectId, or nullptr if no source found for an objectId.
     */
-    
     std::weak_ptr<IObjectSource> getSource(const std::string& objectId);
+    
     /**
     * Returns Collection of ids of all objects that are using given node.
-    * @param node A node for which objects using it should be found.
+    * @param nodeId An id of a node, for which objects using it are to be found.
     * @return a collection of Ids of all the objects that use given node.
     */
-    
-    std::vector<std::string> getObjectIds(std::weak_ptr<IRemoteNode> node);
+    std::vector<std::string> getObjectIds(unsigned long nodeId);
+
     /**
     * Returns Remote Nodes for given objectId.
     * @param objectId An id of object, for which the nodes should be searched.
@@ -70,18 +71,27 @@ public:
     /**
     * Add a RemoteNode for a Source Object registered with objectId
     * If no source yet added, the node is still going to be added, for the id.
+    * @param nodeId An id of a RemoteNode to be added for an object Id.
     * @param objectId An id of object, for which the node should be added.
-    * @param node A RemoteNode to be added for an object Id.
     */
-    void addNodeForSource(std::weak_ptr<IRemoteNode> node, const std::string& objectId);
+    void addNodeForSource(unsigned long nodeId, const std::string& objectId);
     /**
     * Remove the RemoteNode from registry for objectId.
+    * @param nodeId An id of a RemoteNode that is going to be removed from source with given objectId.
     * @param objectId An id of object, for which the node should be removed.
-    * @param node A RemoteNode that is going to be removed from source with given objectId.
     *   If there is no object with given objectId or given node is not among nodes registered for this objectId no action is taken.
     */
-    void removeNodeFromSource(std::weak_ptr<IRemoteNode> node, const std::string& objectId);
+    void removeNodeFromSource(unsigned long nodeId, const std::string& objectId);
 
+    /**
+    * Use this function to register node and obtain a unique id, with which you can connect it with sink objects.
+    * @return A unique id given to added node.It should be used to get or remove the node.
+    */
+    unsigned long registerNode(std::weak_ptr<IRemoteNode> node);
+    /**
+    * Remove the node from registry, it will be no longer valid to use with any sink object.
+    */
+    void unregisterNode(unsigned long id);
 private:
 
     /**
@@ -89,12 +99,12 @@ private:
      */
     struct OLINK_EXPORT SourceToNodesEntry {
         std::weak_ptr<IObjectSource> source;
-        std::vector< std::weak_ptr<IRemoteNode>> nodes;
+        std::vector<unsigned long> nodes;
     };
     
     /**
     * Removes entry for given objectId.
-    * @param objectId. Identifier for which an entry would be removed.
+    * @param objectId Identifier for which an entry would be removed.
     * If entry not found no action is made.
     */
     void removeEntry(const std::string& objectId);
@@ -105,9 +115,10 @@ private:
     * but many RemoteNodes can be used with this objectId as source can be linked with many clients.
     */
     std::map<std::string, SourceToNodesEntry> m_entries;
-
+    /* A mutex to guard operations on stored entries.*/
     std::mutex m_entriesMutex;
-    
+    /* Storage for client nodes, keeps them by Id*/
+    UniqueIdObjectStorage<ApiGear::ObjectLink::IRemoteNode> m_remoteNodesById;
 };
 
 }} //ApiGear::ObjectLink

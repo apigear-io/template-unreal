@@ -41,17 +41,23 @@ class RemoteRegistry;
  * The network implementation should deliver a write function for the node  to allow sending messages
  * see BaseNode::emitWrite and BaseNode::onWrite.
  * A source that receives a handler call is chosen based on registry entries and objectId retrieved from incoming message.
- * To use object source with this remote node, remote node needs to be registered in same remote registry as the  object source.
+ * To use object source with this remote node, object source needs to be registered in same remote registry as this node.
+ * This node registers itself in registry on creation and removes on destruction, node should not be registered/unregistered manually.
  */
 class OLINK_EXPORT RemoteNode: public BaseNode, public IRemoteNode, public std::enable_shared_from_this<RemoteNode>
 {
 protected:
     /**
-    * protected constructor. Use createRemoteNode to make an instance of RemoteNode.
-    * @param registry. A global registry for remote nodes and object sources
+    * Protected constructor. Use createRemoteNode to make an instance of RemoteNode.
+    * @param registry A global registry for remote nodes and object sources
     */
     RemoteNode(RemoteRegistry& registry);
 
+    /*
+    * Protected method to allow assigning the node id from a factory method.
+    * @param id. An id obtained on registration in registry.
+    */
+    void setNodeId(unsigned long id);
 public:
     /**
     * Factory method to create a remote node.
@@ -59,7 +65,8 @@ public:
     */
     static std::shared_ptr<RemoteNode> createRemoteNode(RemoteRegistry& registry);
 
-    virtual ~RemoteNode() = default;
+    /** dtor */
+    ~RemoteNode() override;
 
     /**
      * Access the remote registry.
@@ -80,7 +87,16 @@ public:
     void notifyPropertyChange(const std::string& propertyId, const nlohmann::json& value) override;
     /** IRemoteNode::notifySignal implementation. */
     void notifySignal(const std::string& signalId, const nlohmann::json& args) override;
+
+    /* 
+    * The id that registry assigned to a node. 
+    * This id is used to connect the node with source object in registry.
+    */
+    unsigned long getNodeId() const;
 private:
+    /* Id of this node in registry.*/
+    unsigned long m_nodeId;
+
     /** A global remote registry to which the node has subscribed.*/
     RemoteRegistry& m_registry;
 };

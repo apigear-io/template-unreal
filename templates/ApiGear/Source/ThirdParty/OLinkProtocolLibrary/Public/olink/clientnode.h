@@ -22,24 +22,33 @@ class IObjectSink;
  * The network implementation should deliver a write function for the node  to allow sending messages
  * see BaseNode::emitWrite and BaseNode::onWrite.
  * A sink that receives a handler call is chosen based on registry entries and objectId retrieved from incoming message.
- * To use objectSink with this client, client needs to be registered in client registry for an object
- * see ClientRegistry::setNode function.
+ * Client node registers itself in registry on creation and removes on destruction, node should not be registered/unregistered manually.
+ * Use linkRemote function to link your sink object with a source and use this node for communication. It already takes care of handling 
+ * setting and unsetting(for unlink) the node for the object in registry. Set and unset in registry should not be done manually.
  */
 class OLINK_EXPORT ClientNode : public BaseNode, public IClientNode, public std::enable_shared_from_this<ClientNode>
 {
 protected:
-    ClientNode(ClientRegistry& registry);
     /**
-    * protected constructor. Use createClientNode to make an instance of ClientNode.
-    * @param registry. A global registry for client nodes and object sinks
+    * Protected constructor. Use create function to make an instance of ClientNode.
+    * @param registry A global registry for client nodes and object sinks
     */
+    ClientNode(ClientRegistry& registry);
 
+    /*
+    * Protected method to allow assigning the node id from a factory method.
+    * @param id. An id obtained on registration in registry.
+    */
+    void setNodeId(unsigned long id);
 public:
     /**
     * Factory method to create a remote node.
     * @return new ClientNode.
     */
     static std::shared_ptr<ClientNode> create(ClientRegistry& registry);
+
+    /* dtor */
+    ~ClientNode() override;
 
     /** IClientNode::linkRemote implementation. */
     void linkRemote(const std::string& objectId) override;
@@ -52,6 +61,12 @@ public:
 
      /* The registry in which client is registered*/
     ClientRegistry& registry();
+
+    /* 
+    * The id that registry assigned to a node. 
+    * This id is used to connect the node with sink object in registry.
+    */
+    unsigned long getNodeId() const;
 
 protected:
     /** IProtocolListener::handleInit implementation */
@@ -73,6 +88,8 @@ protected:
 private:
     /* The registry in which client is registered and which provides sinks connected with this node*/
     ClientRegistry& m_registry;
+    /* Id of this node in registry.*/
+    unsigned long m_nodeId;
 
     /* Value of last request id.*/
     std::atomic<int> m_nextRequestId;
@@ -80,7 +97,5 @@ private:
     std::map<int,InvokeReplyFunc> m_invokesPending;
     std::mutex m_pendingInvokesMutex;
 };
-
-
 
 } } // ApiGear::ObjectLink

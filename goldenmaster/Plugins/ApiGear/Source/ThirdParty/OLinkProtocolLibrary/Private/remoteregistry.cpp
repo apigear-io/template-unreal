@@ -53,21 +53,30 @@ std::vector< std::weak_ptr<IRemoteNode>> RemoteRegistry::getNodes(const std::str
     auto found = m_entries.find(objectId);
     if (found != m_entries.end())
     {
-        auto nodes = found->second.nodes;
+        auto nodesIds = found->second.nodes;
+        std::vector< std::weak_ptr<IRemoteNode>> nodes;
+        for (const auto& id : nodesIds)
+        {
+            auto node = m_remoteNodesById.get(id);
+            if (!node.expired())
+            {
+                nodes.push_back(node);
+            }
+        }
         return nodes;
     } 
     return {};
 }
 
-std::vector<std::string> RemoteRegistry::getObjectIds(std::weak_ptr<IRemoteNode> node)
+std::vector<std::string> RemoteRegistry::getObjectIds(unsigned long nodeId)
 {
     std::vector<std::string> ids;
     std::unique_lock<std::mutex> lock(m_entriesMutex);
 
-    for (auto& entry : m_entries) {
+    for (const auto& entry : m_entries) {
         auto nodeIsAdded = std::find_if(entry.second.nodes.begin(),
                                         entry.second.nodes.end(),
-                                        [node](auto element){ return !node.expired() && node.lock() == element.lock(); })
+                                        [nodeId](auto element){ return nodeId == element; })
                             != entry.second.nodes.end();
 
         if (nodeIsAdded) {
@@ -78,10 +87,10 @@ std::vector<std::string> RemoteRegistry::getObjectIds(std::weak_ptr<IRemoteNode>
     return ids;
 }
 
-void RemoteRegistry::addNodeForSource(std::weak_ptr<IRemoteNode> node, const std::string& objectId)
+void RemoteRegistry::addNodeForSource(unsigned long nodeId, const std::string& objectId)
 {
 
-    auto lockedNode = node.lock();
+    auto lockedNode = m_remoteNodesById.get(nodeId).lock();
     if (!lockedNode){
         emitLog(LogLevel::Warning, "Trying to add node, but it is already gone. Node NOT added.");
         return;
@@ -94,16 +103,16 @@ void RemoteRegistry::addNodeForSource(std::weak_ptr<IRemoteNode> node, const std
     if (foundEntry != m_entries.end()){
         auto alreadyAdded = std::find_if(foundEntry->second.nodes.begin(),
             foundEntry->second.nodes.end(),
-            [node](auto element){ return !node.expired() && node.lock() == element.lock(); })
+            [nodeId](auto element){ return nodeId == element; })
             != foundEntry->second.nodes.end();
         if (!alreadyAdded)
         {
-            foundEntry->second.nodes.push_back(node);
+            foundEntry->second.nodes.push_back(nodeId);
         }
     }
 }
 
-void RemoteRegistry::removeNodeFromSource(std::weak_ptr<IRemoteNode> node, const std::string& objectId)
+void RemoteRegistry::removeNodeFromSource(unsigned long nodeId, const std::string& objectId)
 {
     emitLog(LogLevel::Info, "RemoteRegistry.removeNodeFromSource: " + objectId);
     std::unique_lock<std::mutex> lock(m_entriesMutex);
@@ -112,7 +121,7 @@ void RemoteRegistry::removeNodeFromSource(std::weak_ptr<IRemoteNode> node, const
     {
         auto nodeInCollection = std::find_if(found->second.nodes.begin(),
                                 found->second.nodes.end(),
-                                [node](auto element){ return !node.expired() && node.lock() == element.lock(); });
+                                [nodeId](auto element){ return nodeId == element; });
         if (nodeInCollection != found->second.nodes.end()){
             found->second.nodes.erase(nodeInCollection);
         }
@@ -124,7 +133,36 @@ void RemoteRegistry::removeEntry(const std::string& objectId)
     std::unique_lock<std::mutex> lock(m_entriesMutex);
     auto found = m_entries.find(objectId);
     if (found != m_entries.end()) {
+        auto nodeIds = found->second.nodes;
         m_entries.erase(found);
+        lock.unlock();
+    }
+}
+
+unsigned long RemoteRegistry::registerNode(std::weak_ptr<IRemoteNode> node)
+{
+    auto lockedNode = node.lock();
+    if (!lockedNode){
+        emitLog(LogLevel::Warning, "Trying to add node, but it is already gone. Node NOT added.");
+    }
+    return m_remoteNodesById.add(lockedNode);
+}
+
+void RemoteRegistry::unregisterNode(unsigned long id)
+{
+    if (id != m_remoteNodesById.getInvalidId())
+    {
+        std::unique_lock<std::mutex> lock(m_entriesMutex);
+        for (auto& entry : m_entries) {
+            auto nodeInCollection = std::find_if(entry.second.nodes.begin(),
+                entry.second.nodes.end(),
+                [id](auto element){ return id == element; });
+            if (nodeInCollection != entry.second.nodes.end()){
+                entry.second.nodes.erase(nodeInCollection);
+            }
+        }
+        lock.unlock();
+        m_remoteNodesById.remove(id);
     }
 }
 

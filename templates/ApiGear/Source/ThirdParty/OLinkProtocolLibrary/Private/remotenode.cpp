@@ -34,10 +34,20 @@ RemoteNode::RemoteNode(RemoteRegistry& registry)
 {
 }
 
+void RemoteNode::setNodeId(unsigned long id){
+    m_nodeId = id;
+}
+
 std::shared_ptr<RemoteNode> RemoteNode::createRemoteNode(RemoteRegistry& registry)
 {
     auto node = std::shared_ptr<RemoteNode>(new RemoteNode(registry));
+    node->setNodeId(registry.registerNode(node));
     return node;
+}
+
+RemoteNode::~RemoteNode()
+{
+    m_registry.unregisterNode(m_nodeId);
 }
 
 void RemoteNode::handleLink(const std::string& objectId)
@@ -45,7 +55,7 @@ void RemoteNode::handleLink(const std::string& objectId)
     emitLog(LogLevel::Info, "handleLink name: " + objectId);
     auto source = m_registry.getSource(objectId).lock();
     if(source) {
-        m_registry.addNodeForSource(shared_from_this(), objectId);
+        m_registry.addNodeForSource(m_nodeId, objectId);
         source->olinkLinked(objectId, this);
         nlohmann::json props = source->olinkCollectProperties();
         emitWrite(Protocol::initMessage(objectId, props));
@@ -60,7 +70,7 @@ void RemoteNode::handleUnlink(const std::string& objectId)
     auto source = m_registry.getSource(objectId).lock();
     if(source) {
         source->olinkUnlinked(objectId);
-        m_registry.removeNodeFromSource(shared_from_this(), objectId);
+        m_registry.removeNodeFromSource(m_nodeId, objectId);
     }
 }
 
@@ -96,6 +106,10 @@ void RemoteNode::notifySignal(const std::string& signalId, const nlohmann::json&
 RemoteRegistry& RemoteNode::registry()
 {
     return m_registry;
+}
+
+unsigned long RemoteNode::getNodeId() const {
+    return m_nodeId;
 }
 
 } } // Apigear::ObjectLink

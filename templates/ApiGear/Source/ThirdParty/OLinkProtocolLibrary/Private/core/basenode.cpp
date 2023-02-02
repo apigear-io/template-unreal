@@ -37,7 +37,7 @@ void BaseNode::handleUnlink(const std::string& objectId)
     emitLog(LogLevel::Warning, "not implemented " + std::string(__func__) + objectId);
 }
 
-void BaseNode::handleInvoke(int requestId, const std::string& methodId, const nlohmann::json& args)
+void BaseNode::handleInvoke(int, const std::string& methodId, const nlohmann::json& args)
 {
     emitLog(LogLevel::Warning, "not implemented " + std::string(__func__) + methodId + " args " + args.dump());
 }
@@ -67,7 +67,7 @@ void BaseNode::handlePropertyChange(const std::string& propertyId, const nlohman
     emitLog(LogLevel::Warning, "not implemented " + std::string(__func__) + propertyId + " value " + value.dump());
 }
 
-void BaseNode::handleError(int msgType, int requestId, const std::string& error)
+void BaseNode::handleError(int, int requestId, const std::string& error)
 {
     emitLog(LogLevel::Warning, "not implemented " + std::string(__func__) + " requestId " + std::to_string(requestId) + " error " + error);
 }

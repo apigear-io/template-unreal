@@ -6,13 +6,12 @@
 namespace ApiGear {
 namespace ObjectLink {
 
-void ClientRegistry::setNode(std::weak_ptr<IClientNode> node, const std::string& objectId)
+void ClientRegistry::setNode(unsigned long id, const std::string& objectId)
 {
 
-    auto lockedNode = node.lock();
+    auto lockedNode = m_clientNodesById.get(id).lock();
     if (!lockedNode){
         emitLog(LogLevel::Warning, "Trying to add node, but it is already gone. Node NOT added.");
-        return;
     }
 
     emitLog(LogLevel::Info, "ClientRegistry.setNode: " + objectId);
@@ -21,11 +20,11 @@ void ClientRegistry::setNode(std::weak_ptr<IClientNode> node, const std::string&
     auto entryForObject = m_entries.find(objectId);
     if (entryForObject == m_entries.end()){
         auto newEntry = SinkToClientEntry();
-        newEntry.node = lockedNode;
         m_entries[objectId] = newEntry;
-    } else if (entryForObject->second.node.lock() == nullptr){
-        entryForObject->second.node = node;
-    } else if (entryForObject->second.node.lock() != lockedNode){
+        newEntry.nodeId = id;
+    } else if (entryForObject->second.nodeId == m_clientNodesById.getInvalidId()){
+        entryForObject->second.nodeId = id;
+    } else if (entryForObject->second.nodeId != id){
         lock.unlock();
         emitLog(LogLevel::Warning, "Trying to set a client node for " + objectId + " but other node is already set. Node was NOT changed.");
     } 
@@ -37,7 +36,7 @@ void ClientRegistry::unsetNode(const std::string& objectId)
     std::unique_lock<std::mutex> lock(m_entriesMutex);
     auto foundEntry = m_entries.find(objectId);
     if (foundEntry != m_entries.end()){
-        foundEntry->second.node.reset();
+        foundEntry->second.nodeId = m_clientNodesById.getInvalidId();
     }
 }
 
@@ -53,6 +52,7 @@ void ClientRegistry::addSink(std::weak_ptr<IObjectSink> sink)
     emitLog(LogLevel::Info, "ClientRegistry.addSink: " + objectId);
     auto newEntry = SinkToClientEntry();
     newEntry.sink = lockedSink;
+    newEntry.nodeId = m_clientNodesById.getInvalidId();
 
     std::unique_lock<std::mutex> lock(m_entriesMutex);
     auto entryForObject = m_entries.find(objectId);
@@ -71,8 +71,10 @@ void ClientRegistry::removeSink(const std::string& objectId)
     emitLog(LogLevel::Info, "ClientRegistry.removeSink: " + objectId);
     std::unique_lock<std::mutex> lock(m_entriesMutex);
     auto entry = m_entries.find(objectId);
-    if (entry != m_entries.end()) {
+    if (entry != m_entries.end()) 
+    {
         m_entries.erase(entry);
+        lock.unlock();
     }
 }
 
@@ -84,13 +86,13 @@ std::weak_ptr<IObjectSink> ClientRegistry::getSink(const std::string& objectId)
     return entryForObject != m_entries.end() ? entryForObject->second.sink  : std::weak_ptr<IObjectSink>();
 }
 
-std::vector<std::string> ClientRegistry::getObjectIds(std::weak_ptr<IClientNode> node)
+std::vector<std::string> ClientRegistry::getObjectIds(unsigned long nodeId)
 {
     std::vector<std::string> sinks;
     sinks.reserve(m_entries.size());
     std::unique_lock<std::mutex> lock(m_entriesMutex);
     for (auto& entry : m_entries) {
-        if (entry.second.node.lock() == node.lock()) {
+        if (entry.second.nodeId == nodeId) {
             sinks.push_back(entry.first);
         }
     }
@@ -102,7 +104,31 @@ std::weak_ptr<IClientNode> ClientRegistry::getNode(const std::string& objectId)
     emitLog(LogLevel::Info, "ClientRegistry.getNode: " + objectId);
     std::unique_lock<std::mutex> lock(m_entriesMutex);
     auto entry = m_entries.find(objectId);
-    return entry != m_entries.end() ? entry->second.node : std::weak_ptr<IClientNode>();
+    return entry != m_entries.end() ? m_clientNodesById.get(entry->second.nodeId) : std::weak_ptr<IClientNode>();
+}
+
+unsigned long ClientRegistry::registerNode(std::weak_ptr<IClientNode> node)
+{
+    auto lockedNode = node.lock();
+    if (!lockedNode){
+        emitLog(LogLevel::Warning, "Trying to add node, but it is already gone. Node NOT added.");
+    }
+    return m_clientNodesById.add(lockedNode);
+}
+
+void ClientRegistry::unregisterNode(unsigned long id)
+{
+    if (id != m_clientNodesById.getInvalidId())
+    {
+        std::unique_lock<std::mutex> lock(m_entriesMutex);
+        for (auto& entry : m_entries) {
+            if (entry.second.nodeId == id) {
+                entry.second.nodeId = m_clientNodesById.getInvalidId();
+            }
+        }
+        lock.unlock();
+        m_clientNodesById.remove(id);
+    }
 }
 
 }} //namespace ApiGear::ObjectLink

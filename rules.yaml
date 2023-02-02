@@ -116,6 +116,10 @@ features:
             target: "Private/core/types.cpp"
             raw: true
             force: true
+          - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Public/core/uniqueidobjectstorage.h"
+            target: "Public/core/uniqueidobjectstorage.h"
+            raw: true
+            force: true
   - name: apigear
     requires:
       - apigear-olinkproto
