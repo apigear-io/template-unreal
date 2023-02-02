@@ -1,1 +1,4 @@
 *.png filter=lfs diff=lfs merge=lfs -text
+# do not add files which are needed by the template to lfs
+# currently the code-generator cannot clone files tracked with lfs
+templates/ApiGear/Resources/* !filter !diff !merge
