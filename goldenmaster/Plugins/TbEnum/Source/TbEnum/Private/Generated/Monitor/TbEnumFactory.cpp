@@ -72,17 +72,26 @@ TScriptInterface<ITbEnumEnumInterfaceInterface> createTbEnumEnumInterface(UGameI
 
 TScriptInterface<ITbEnumEnumInterfaceInterface> FTbEnumModuleFactory::createITbEnumEnumInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	UTbEnumSettings* settings = GetMutableDefault<UTbEnumSettings>();
+	UTbEnumSettings* TbEnumSettings = GetMutableDefault<UTbEnumSettings>();
 
-	switch (settings->ServiceConnection)
+	if (TbEnumSettings->ConnectionIdentifier == "Local")
 	{
-	case ETbEnumConnection::CONNECTION_OLINK:
-		return createTbEnumEnumInterfaceOLink(GameInstance, Collection);
-	case ETbEnumConnection::CONNECTION_LOCAL:
-		return createTbEnumEnumInterface(GameInstance, Collection);
-	default:
 		return createTbEnumEnumInterface(GameInstance, Collection);
 	}
+
+	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbEnumSettings->ConnectionIdentifier);
+
+	// Other protocols not supported. To support it edit templates:
+	// add protocol handler class for this interface like createTbEnumEnumInterfaceOLink and other necessary infrastructure
+	// extend this function in templates to handle protocol of your choice
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	{
+		return createTbEnumEnumInterfaceOLink(GameInstance, Collection);
+	}
+
+	// fallback to local implementation
+	return createTbEnumEnumInterface(GameInstance, Collection);
 }
 
 #else
@@ -111,16 +120,25 @@ TScriptInterface<ITbEnumEnumInterfaceInterface> createTbEnumEnumInterface(FSubsy
 
 TScriptInterface<ITbEnumEnumInterfaceInterface> FTbEnumModuleFactory::createITbEnumEnumInterfaceInterface(FSubsystemCollectionBase& Collection)
 {
-	UTbEnumSettings* settings = GetMutableDefault<UTbEnumSettings>();
+	UTbEnumSettings* TbEnumSettings = GetMutableDefault<UTbEnumSettings>();
 
-	switch (settings->ServiceConnection)
+	if (TbEnumSettings->ConnectionIdentifier == "Local")
 	{
-	case ETbEnumConnection::CONNECTION_OLINK:
-		return createTbEnumEnumInterfaceOLink(Collection);
-	case ETbEnumConnection::CONNECTION_LOCAL:
-		return createTbEnumEnumInterface(Collection);
-	default:
 		return createTbEnumEnumInterface(Collection);
 	}
+
+	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbEnumSettings->ConnectionIdentifier);
+
+	// Other protocols not supported. To support it edit templates:
+	// add protocol handler class for this interface like createTbEnumEnumInterfaceOLink and other necessary infrastructure
+	// extend this function in templates to handle protocol of your choice
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	{
+		return createTbEnumEnumInterfaceOLink(Collection);
+	}
+
+	// fallback to local implementation
+	return createTbEnumEnumInterface(Collection);
 }
 #endif

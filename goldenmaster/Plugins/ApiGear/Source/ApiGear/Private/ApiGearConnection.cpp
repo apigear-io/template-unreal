@@ -77,7 +77,7 @@ void UAbstractApiGearConnection::SetAutoReconnectEnabled(bool enabled)
 	bIsAutoReconnectEnabled = enabled;
 }
 
-bool UAbstractApiGearConnection::IsAutoReconnectEnabled()
+bool UAbstractApiGearConnection::IsAutoReconnectEnabled() const
 {
 	return bIsAutoReconnectEnabled;
 }

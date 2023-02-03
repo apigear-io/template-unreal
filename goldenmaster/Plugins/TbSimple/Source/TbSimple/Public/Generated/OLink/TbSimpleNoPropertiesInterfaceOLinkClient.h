@@ -29,6 +29,7 @@ THIRD_PARTY_INCLUDES_END
 #include "Templates/PimplPtr.h"
 #endif
 #include "TbSimpleNoPropertiesInterfaceOLinkClient.generated.h"
+DECLARE_LOG_CATEGORY_EXTERN(LogTbSimpleNoPropertiesInterfaceOLinkClient, Log, All);
 
 UCLASS(NotBlueprintable, BlueprintType)
 class TBSIMPLE_API UTbSimpleNoPropertiesInterfaceOLinkClient : public UAbstractTbSimpleNoPropertiesInterface
@@ -51,8 +52,12 @@ public:
 
 	bool FuncBool_Implementation(bool bParamBool) override;
 
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoPropertiesInterface")
+	void UseConnection(TScriptInterface<class IApiGearConnection> InConnection);
+
 private:
 	void applyState(const nlohmann::json& fields);
 	void emitSignal(const std::string& signalName, const nlohmann::json& args);
 	std::shared_ptr<FUnrealOLinkSink> m_sink;
+	TScriptInterface<class IApiGearConnection> Connection;
 };

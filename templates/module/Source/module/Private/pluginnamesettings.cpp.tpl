@@ -20,11 +20,30 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "{{$ModuleName}}Settings.h"
+#include "ApiGearConnectionsStore.h"
+#include "Engine/Engine.h"
 
 U{{$ModuleName}}Settings::U{{$ModuleName}}Settings(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
-{{- if $ConnecitonEnabled}}
-	, ServiceConnection(E{{$ModuleName}}Connection(E{{$ModuleName}}Connection::CONNECTION_{{- if .Features.stubs }}LOCAL{{ else if .Features.olink }}OLINK{{ end }}))
-{{- end}}
 {
+}
+
+void U{{$ModuleName}}Settings::PostInitProperties()
+{
+	Super::PostInitProperties();
+
+	// the local backend does not require configuration
+	if (ConnectionIdentifier == "Local")
+	{
+		return;
+	}
+
+	check(GEngine);
+	UApiGearConnectionsStore* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionsStore>();
+
+	if (!AGCM->DoesConnectionExist(ConnectionIdentifier))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("U{{$ModuleName}}Settings could not find connection %s, falling back to local backend."), *ConnectionIdentifier);
+		ConnectionIdentifier = "Local";
+	}
 }

@@ -15,9 +15,30 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbEnumSettings.h"
+#include "ApiGearConnectionsStore.h"
+#include "Engine/Engine.h"
 
 UTbEnumSettings::UTbEnumSettings(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
-	, ServiceConnection(ETbEnumConnection(ETbEnumConnection::CONNECTION_LOCAL))
 {
+}
+
+void UTbEnumSettings::PostInitProperties()
+{
+	Super::PostInitProperties();
+
+	// the local backend does not require configuration
+	if (ConnectionIdentifier == "Local")
+	{
+		return;
+	}
+
+	check(GEngine);
+	UApiGearConnectionsStore* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionsStore>();
+
+	if (!AGCM->DoesConnectionExist(ConnectionIdentifier))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("UTbEnumSettings could not find connection %s, falling back to local backend."), *ConnectionIdentifier);
+		ConnectionIdentifier = "Local";
+	}
 }

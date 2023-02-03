@@ -312,6 +312,11 @@ features:
           - source: "module/Source/module/Private/pluginnamesettings.cpp.tpl"
             target: "Source/{{Camel .Module.Name}}/Private/{{Camel .Module.Name}}Settings.cpp"
             force: true
+          - source: "module/Source/moduleeditor/Public/pluginnameconnectionsettings.h.tpl"
+            target: "Source/{{Camel .Module.Name}}Editor/Public/{{Camel .Module.Name}}ConnectionSettings.h"
+          - source: "module/Source/moduleeditor/Private/pluginnameconnectionsettings.cpp.tpl"
+            target: "Source/{{Camel .Module.Name}}Editor/Private/{{Camel .Module.Name}}ConnectionSettings.cpp"
+            force: true
           - source: "module/Source/module/Private/Generated/Monitor/pluginfactory.h.tpl"
             target: "Source/{{Camel .Module.Name}}/Private/Generated/Monitor/{{Camel .Module.Name}}Factory.h"
             force: true

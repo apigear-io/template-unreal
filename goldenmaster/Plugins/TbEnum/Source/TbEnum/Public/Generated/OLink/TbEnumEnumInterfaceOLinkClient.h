@@ -31,6 +31,7 @@ THIRD_PARTY_INCLUDES_END
 #include "TbEnumEnumInterfaceOLinkClient.generated.h"
 
 struct TbEnumEnumInterfacePropertiesData;
+DECLARE_LOG_CATEGORY_EXTERN(LogTbEnumEnumInterfaceOLinkClient, Log, All);
 
 UCLASS(NotBlueprintable, BlueprintType)
 class TBENUM_API UTbEnumEnumInterfaceOLinkClient : public UAbstractTbEnumEnumInterface
@@ -69,6 +70,9 @@ public:
 
 	ETbEnumEnum3 Func3_Implementation(ETbEnumEnum3 Param3) override;
 
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface")
+	void UseConnection(TScriptInterface<class IApiGearConnection> InConnection);
+
 private:
 	void applyState(const nlohmann::json& fields);
 	void emitSignal(const std::string& signalName, const nlohmann::json& args);
@@ -80,4 +84,5 @@ private:
 #else
 	TPimplPtr<TbEnumEnumInterfacePropertiesData> _SentData;
 #endif
+	TScriptInterface<class IApiGearConnection> Connection;
 };

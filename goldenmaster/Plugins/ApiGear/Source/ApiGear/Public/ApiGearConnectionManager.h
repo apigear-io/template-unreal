@@ -7,7 +7,7 @@
 #include "Subsystems/EngineSubsystem.h"
 #include "Engine/EngineTypes.h"
 #include "Templates/SharedPointer.h"
-#include "unrealolink.h"
+#include "ApiGearConnection.h"
 #include "ApiGearConnectionManager.generated.h"
 
 /**
@@ -18,37 +18,49 @@ class APIGEAR_API UApiGearConnectionManager : public UEngineSubsystem
 {
 	GENERATED_BODY()
 
-	// OLink
-	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FApiGearConnectionOLinkIsConnectedDelegate, bool, bIsConnected);
-
 public:
 	UApiGearConnectionManager();
 
+	/** A type of function for creating connections*/
+	using FConnectionFactoryFunction = TFunction<TScriptInterface<IApiGearConnection>(UObject*, FString)>;
+
+	/** register factories for different types of connections */
+	bool RegisterConnectionFactory(FString ConnectionTypeIdentifier, FConnectionFactoryFunction FactoryFunction);
+
 	// USubssystem functions
-	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
-	virtual void Deinitialize() override;
+	void Initialize(FSubsystemCollectionBase& Collection) override;
+	void Deinitialize() override;
 
-	// OLink
-	UUnrealOLink* GetOLinkConnection();
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection")
+	TScriptInterface<IApiGearConnection> GetConnection(FString UniqueEndpointIdentifier) const;
 
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection|OLink")
-	bool GetIsOLinkConnected() const;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection")
+	TMap<FString, TScriptInterface<IApiGearConnection>> GetConnections() const;
 
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection|OLink")
-	void ConnectOLink() const;
+	bool AddConnection(TScriptInterface<IApiGearConnection> Connection);
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection")
+	bool AddConnection(FString UniqueEndpointIdentifier, TScriptInterface<IApiGearConnection> Connection);
 
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection|OLink")
-	void DisconnectOLink() const;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection")
+	bool RemoveConnection(FString UniqueEndpointIdentifier);
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Connection|OLink", DisplayName = "OLink Connection Status Changed")
-	FApiGearConnectionOLinkIsConnectedDelegate IsOLinkConnectedChanged;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection")
+	bool DoesConnectionExist(FString UniqueEndpointIdentifier) const;
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection")
+	void ConnectAll() const;
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection")
+	void DisconnectAll() const;
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection")
+	TArray<FString> GetAvailableProtocols() const;
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection")
+	void OverwriteAndSaveConnectionsToSettings() const;
 
 private:
-	// OLink
-	UUnrealOLink* OLinkConnection;
-
-	UPROPERTY(EditAnywhere, BlueprintGetter = GetIsOLinkConnected, Category = "ApiGear|Connection|OLink")
-	bool IsOLinkConnected;
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection|OLink", BlueprintInternalUseOnly)
-	void OnIsOLinkConnectedChanged(bool bIsConnected);
+	UPROPERTY()
+	TMap<FString, TScriptInterface<IApiGearConnection>> Connections;
+	TMap<FString, FConnectionFactoryFunction> Factories;
 };

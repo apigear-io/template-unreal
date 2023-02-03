@@ -23,19 +23,11 @@
 #include "Engine/Engine.h"
 #include "ApiGear/Public/ApiGearConnectionManager.h"
 #include "Misc/DateTime.h"
+#include "{{$ModuleName}}Settings.h"
 THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
 #include "olink/iobjectsink.h"
 THIRD_PARTY_INCLUDES_END
-
-namespace
-{
-bool Is{{$DisplayName}}LogEnabled()
-{
-	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
-	return settings->OLINK_EnableDebugLog;
-}
-} // namespace
 
 {{- if len .Interface.Properties }}
 
@@ -49,6 +41,7 @@ struct {{$Iface}}PropertiesData
 {{- end }}
 };
 {{- end }}
+DEFINE_LOG_CATEGORY(Log{{$Iface}}OLinkClient);
 {{ if .Interface.Description }}
 /**
    \brief {{.Interface.Description}}
@@ -77,14 +70,6 @@ void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
 
-	if (GEngine != nullptr)
-	{
-		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-		AGCM->GetOLinkConnection()->Connect();
-		AGCM->GetOLinkConnection()->node()->registry().addSink(m_sink);
-		AGCM->GetOLinkConnection()->linkObjectSource(m_sink->olinkObjectName());
-	}
-
 	FUnrealOLinkSink::FPropertyChangedFunc PropertyChangedFunc = [this](const nlohmann::json& props)
 	{
 		this->applyState(props);
@@ -96,6 +81,16 @@ void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
 		this->emitSignal(signalName, args);
 	};
 	m_sink->setOnSignalEmittedCallback(SignalEmittedFunc);
+
+	check(GEngine);
+	U{{$ModuleName}}Settings* settings = GetMutableDefault<U{{$ModuleName}}Settings>();
+
+	UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+
+	TScriptInterface<IApiGearConnection> OLinkConnection = AGCM->GetConnection(settings->ConnectionIdentifier);
+
+	UseConnection(OLinkConnection);
+	OLinkConnection->Connect();
 }
 
 void {{$Class}}::Deinitialize()
@@ -104,15 +99,41 @@ void {{$Class}}::Deinitialize()
 	m_sink->resetOnPropertyChangedCallback();
 	m_sink->resetOnSignalEmittedCallback();
 
-	if (GEngine != nullptr)
+	if (Connection.GetObject())
 	{
-		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-		AGCM->GetOLinkConnection()->unlinkObjectSource(m_sink->olinkObjectName());
-		AGCM->GetOLinkConnection()->node()->registry().removeSink(m_sink->olinkObjectName());
+		UUnrealOLink* UnrealOLinkConnection = Cast<UUnrealOLink>(Connection.GetObject());
+		UnrealOLinkConnection->unlinkObjectSource(m_sink->olinkObjectName());
+		UnrealOLinkConnection->node()->registry().removeSink(m_sink->olinkObjectName());
 	}
 
 	Super::Deinitialize();
 }
+
+void {{$Class}}::UseConnection(TScriptInterface<IApiGearConnection> InConnection)
+{
+	checkf(InConnection.GetInterface() != nullptr, TEXT("Cannot use connection - interface IApiGearConnection is not fully implemented"));
+
+	// only accept connections of type olink
+	checkf(InConnection->GetConnectionProtocolIdentifier() == "olink", TEXT("Cannot use connection - must be of type olink"));
+
+	UUnrealOLink* UnrealOLinkConnection = nullptr;
+	// remove old connection
+	if (Connection.GetObject())
+	{
+		UnrealOLinkConnection = Cast<UUnrealOLink>(Connection.GetObject());
+		UnrealOLinkConnection->unlinkObjectSource(m_sink->olinkObjectName());
+		UnrealOLinkConnection->node()->registry().removeSink(m_sink->olinkObjectName());
+		UnrealOLinkConnection = nullptr;
+	}
+
+	// set up new connection
+	UnrealOLinkConnection = Cast<UUnrealOLink>(InConnection.GetObject());
+	UnrealOLinkConnection->node()->registry().addSink(m_sink);
+	UnrealOLinkConnection->linkObjectSource(m_sink->olinkObjectName());
+
+	Connection = InConnection;
+}
+
 {{- if len .Interface.Properties }}{{ nl }}{{ end }}
 {{- range $i, $e := .Interface.Properties }}
 {{- if $i }}{{nl}}{{ end }}
@@ -125,6 +146,7 @@ void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
 {
 	if (!m_sink->IsReady())
 	{
+		UE_LOG(Log{{$Iface}}OLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return;
 	}
 
@@ -158,10 +180,7 @@ void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
 	{{- if .Return.IsVoid }}
 	if (!m_sink->IsReady())
 	{
-		if (Is{{$DisplayName}}LogEnabled())
-		{
-			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-		}
+		UE_LOG(Log{{$Iface}}OLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
 		return;
 	}
@@ -171,10 +190,7 @@ void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
 	{{- else }}
 	if (!m_sink->IsReady())
 	{
-		if (Is{{$DisplayName}}LogEnabled())
-		{
-			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-		}
+		UE_LOG(Log{{$Iface}}OLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
 		return {{ ueDefault "" .Return }};
 	}

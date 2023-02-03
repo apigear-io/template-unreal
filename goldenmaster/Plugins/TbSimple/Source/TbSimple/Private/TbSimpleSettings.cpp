@@ -15,9 +15,30 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbSimpleSettings.h"
+#include "ApiGearConnectionsStore.h"
+#include "Engine/Engine.h"
 
 UTbSimpleSettings::UTbSimpleSettings(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
-	, ServiceConnection(ETbSimpleConnection(ETbSimpleConnection::CONNECTION_LOCAL))
 {
+}
+
+void UTbSimpleSettings::PostInitProperties()
+{
+	Super::PostInitProperties();
+
+	// the local backend does not require configuration
+	if (ConnectionIdentifier == "Local")
+	{
+		return;
+	}
+
+	check(GEngine);
+	UApiGearConnectionsStore* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionsStore>();
+
+	if (!AGCM->DoesConnectionExist(ConnectionIdentifier))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("UTbSimpleSettings could not find connection %s, falling back to local backend."), *ConnectionIdentifier);
+		ConnectionIdentifier = "Local";
+	}
 }

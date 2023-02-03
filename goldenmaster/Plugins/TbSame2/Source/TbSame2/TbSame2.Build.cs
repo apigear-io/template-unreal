@@ -36,7 +36,6 @@ public class TbSame2 : ModuleRules
 				"ApiGear",
 				"Projects",
 				"Engine"
-				// ... add other public dependencies that you statically link with here ...
 			}
 			);
 			

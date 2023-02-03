@@ -29,19 +29,11 @@ limitations under the License.
 #include "Engine/Engine.h"
 #include "ApiGear/Public/ApiGearConnectionManager.h"
 #include "Misc/DateTime.h"
+#include "Testbed1Settings.h"
 THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
 #include "olink/iobjectsink.h"
 THIRD_PARTY_INCLUDES_END
-
-namespace
-{
-bool IsTestbed1StructInterfaceLogEnabled()
-{
-	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
-	return settings->OLINK_EnableDebugLog;
-}
-} // namespace
 
 /**
    \brief data structure to hold the last sent property values
@@ -53,6 +45,7 @@ struct Testbed1StructInterfacePropertiesData
 	FTestbed1StructFloat PropFloat{FTestbed1StructFloat()};
 	FTestbed1StructString PropString{FTestbed1StructString()};
 };
+DEFINE_LOG_CATEGORY(LogTestbed1StructInterfaceOLinkClient);
 
 UTestbed1StructInterfaceOLinkClient::UTestbed1StructInterfaceOLinkClient()
 	: UAbstractTestbed1StructInterface()
@@ -75,14 +68,6 @@ void UTestbed1StructInterfaceOLinkClient::Initialize(FSubsystemCollectionBase& C
 {
 	Super::Initialize(Collection);
 
-	if (GEngine != nullptr)
-	{
-		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-		AGCM->GetOLinkConnection()->Connect();
-		AGCM->GetOLinkConnection()->node()->registry().addSink(m_sink);
-		AGCM->GetOLinkConnection()->linkObjectSource(m_sink->olinkObjectName());
-	}
-
 	FUnrealOLinkSink::FPropertyChangedFunc PropertyChangedFunc = [this](const nlohmann::json& props)
 	{
 		this->applyState(props);
@@ -94,6 +79,16 @@ void UTestbed1StructInterfaceOLinkClient::Initialize(FSubsystemCollectionBase& C
 		this->emitSignal(signalName, args);
 	};
 	m_sink->setOnSignalEmittedCallback(SignalEmittedFunc);
+
+	check(GEngine);
+	UTestbed1Settings* settings = GetMutableDefault<UTestbed1Settings>();
+
+	UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+
+	TScriptInterface<IApiGearConnection> OLinkConnection = AGCM->GetConnection(settings->ConnectionIdentifier);
+
+	UseConnection(OLinkConnection);
+	OLinkConnection->Connect();
 }
 
 void UTestbed1StructInterfaceOLinkClient::Deinitialize()
@@ -102,14 +97,39 @@ void UTestbed1StructInterfaceOLinkClient::Deinitialize()
 	m_sink->resetOnPropertyChangedCallback();
 	m_sink->resetOnSignalEmittedCallback();
 
-	if (GEngine != nullptr)
+	if (Connection.GetObject())
 	{
-		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-		AGCM->GetOLinkConnection()->unlinkObjectSource(m_sink->olinkObjectName());
-		AGCM->GetOLinkConnection()->node()->registry().removeSink(m_sink->olinkObjectName());
+		UUnrealOLink* UnrealOLinkConnection = Cast<UUnrealOLink>(Connection.GetObject());
+		UnrealOLinkConnection->unlinkObjectSource(m_sink->olinkObjectName());
+		UnrealOLinkConnection->node()->registry().removeSink(m_sink->olinkObjectName());
 	}
 
 	Super::Deinitialize();
+}
+
+void UTestbed1StructInterfaceOLinkClient::UseConnection(TScriptInterface<IApiGearConnection> InConnection)
+{
+	checkf(InConnection.GetInterface() != nullptr, TEXT("Cannot use connection - interface IApiGearConnection is not fully implemented"));
+
+	// only accept connections of type olink
+	checkf(InConnection->GetConnectionProtocolIdentifier() == "olink", TEXT("Cannot use connection - must be of type olink"));
+
+	UUnrealOLink* UnrealOLinkConnection = nullptr;
+	// remove old connection
+	if (Connection.GetObject())
+	{
+		UnrealOLinkConnection = Cast<UUnrealOLink>(Connection.GetObject());
+		UnrealOLinkConnection->unlinkObjectSource(m_sink->olinkObjectName());
+		UnrealOLinkConnection->node()->registry().removeSink(m_sink->olinkObjectName());
+		UnrealOLinkConnection = nullptr;
+	}
+
+	// set up new connection
+	UnrealOLinkConnection = Cast<UUnrealOLink>(InConnection.GetObject());
+	UnrealOLinkConnection->node()->registry().addSink(m_sink);
+	UnrealOLinkConnection->linkObjectSource(m_sink->olinkObjectName());
+
+	Connection = InConnection;
 }
 
 FTestbed1StructBool UTestbed1StructInterfaceOLinkClient::GetPropBool_Implementation() const
@@ -121,6 +141,7 @@ void UTestbed1StructInterfaceOLinkClient::SetPropBool_Implementation(const FTest
 {
 	if (!m_sink->IsReady())
 	{
+		UE_LOG(LogTestbed1StructInterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return;
 	}
 
@@ -149,6 +170,7 @@ void UTestbed1StructInterfaceOLinkClient::SetPropInt_Implementation(const FTestb
 {
 	if (!m_sink->IsReady())
 	{
+		UE_LOG(LogTestbed1StructInterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return;
 	}
 
@@ -177,6 +199,7 @@ void UTestbed1StructInterfaceOLinkClient::SetPropFloat_Implementation(const FTes
 {
 	if (!m_sink->IsReady())
 	{
+		UE_LOG(LogTestbed1StructInterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return;
 	}
 
@@ -205,6 +228,7 @@ void UTestbed1StructInterfaceOLinkClient::SetPropString_Implementation(const FTe
 {
 	if (!m_sink->IsReady())
 	{
+		UE_LOG(LogTestbed1StructInterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return;
 	}
 
@@ -228,10 +252,7 @@ FTestbed1StructBool UTestbed1StructInterfaceOLinkClient::FuncBool_Implementation
 {
 	if (!m_sink->IsReady())
 	{
-		if (IsTestbed1StructInterfaceLogEnabled())
-		{
-			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-		}
+		UE_LOG(LogTestbed1StructInterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
 		return FTestbed1StructBool();
 	}
@@ -252,10 +273,7 @@ FTestbed1StructBool UTestbed1StructInterfaceOLinkClient::FuncInt_Implementation(
 {
 	if (!m_sink->IsReady())
 	{
-		if (IsTestbed1StructInterfaceLogEnabled())
-		{
-			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-		}
+		UE_LOG(LogTestbed1StructInterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
 		return FTestbed1StructBool();
 	}
@@ -276,10 +294,7 @@ FTestbed1StructFloat UTestbed1StructInterfaceOLinkClient::FuncFloat_Implementati
 {
 	if (!m_sink->IsReady())
 	{
-		if (IsTestbed1StructInterfaceLogEnabled())
-		{
-			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-		}
+		UE_LOG(LogTestbed1StructInterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
 		return FTestbed1StructFloat();
 	}
@@ -300,10 +315,7 @@ FTestbed1StructString UTestbed1StructInterfaceOLinkClient::FuncString_Implementa
 {
 	if (!m_sink->IsReady())
 	{
-		if (IsTestbed1StructInterfaceLogEnabled())
-		{
-			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-		}
+		UE_LOG(LogTestbed1StructInterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
 		return FTestbed1StructString();
 	}

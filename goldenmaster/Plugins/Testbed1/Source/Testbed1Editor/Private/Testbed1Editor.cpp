@@ -17,7 +17,9 @@ limitations under the License.
 
 #include "Testbed1Editor.h"
 #include "ISettingsModule.h"
+#include "PropertyEditorModule.h"
 #include "Testbed1Settings.h"
+#include "Testbed1ConnectionSettings.h"
 
 #define LOCTEXT_NAMESPACE "Testbed1Editor"
 
@@ -30,6 +32,10 @@ void FTestbed1EditorModule::StartupModule()
 	{
 		SettingsModule->RegisterSettings("Project", "Plugins", "ApiGear Testbed1", LOCTEXT("Testbed1SettingsName", "ApiGear Testbed1"), LOCTEXT("Testbed1SettingsDescription", "Project settings for ApiGear Testbed1 plugin"), GetMutableDefault<UTestbed1Settings>());
 	}
+
+	// register details customization
+	FPropertyEditorModule& PropertyModule = FModuleManager::LoadModuleChecked<FPropertyEditorModule>(TEXT("PropertyEditor"));
+	PropertyModule.RegisterCustomClassLayout("Testbed1Settings", FOnGetDetailCustomizationInstance::CreateStatic(&FTestbed1ConnectionSettingsDetails::MakeInstance));
 }
 
 void FTestbed1EditorModule::ShutdownModule()

@@ -29,7 +29,6 @@ limitations under the License.
 
 void {{$class}}::StartupModule()
 {
-	// No Libraries to load from non mobile platforms because of the web api
 }
 
 void {{$class}}::ShutdownModule()

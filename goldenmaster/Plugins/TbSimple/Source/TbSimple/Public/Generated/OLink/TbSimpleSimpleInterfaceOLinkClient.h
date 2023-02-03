@@ -31,6 +31,7 @@ THIRD_PARTY_INCLUDES_END
 #include "TbSimpleSimpleInterfaceOLinkClient.generated.h"
 
 struct TbSimpleSimpleInterfacePropertiesData;
+DECLARE_LOG_CATEGORY_EXTERN(LogTbSimpleSimpleInterfaceOLinkClient, Log, All);
 
 UCLASS(NotBlueprintable, BlueprintType)
 class TBSIMPLE_API UTbSimpleSimpleInterfaceOLinkClient : public UAbstractTbSimpleSimpleInterface
@@ -91,6 +92,9 @@ public:
 
 	FString FuncString_Implementation(const FString& ParamString) override;
 
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface")
+	void UseConnection(TScriptInterface<class IApiGearConnection> InConnection);
+
 private:
 	void applyState(const nlohmann::json& fields);
 	void emitSignal(const std::string& signalName, const nlohmann::json& args);
@@ -102,4 +106,5 @@ private:
 #else
 	TPimplPtr<TbSimpleSimpleInterfacePropertiesData> _SentData;
 #endif
+	TScriptInterface<class IApiGearConnection> Connection;
 };

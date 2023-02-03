@@ -31,6 +31,7 @@ THIRD_PARTY_INCLUDES_END
 #include "Testbed2NestedStruct1InterfaceOLinkClient.generated.h"
 
 struct Testbed2NestedStruct1InterfacePropertiesData;
+DECLARE_LOG_CATEGORY_EXTERN(LogTestbed2NestedStruct1InterfaceOLinkClient, Log, All);
 
 UCLASS(NotBlueprintable, BlueprintType)
 class TESTBED2_API UTestbed2NestedStruct1InterfaceOLinkClient : public UAbstractTestbed2NestedStruct1Interface
@@ -54,6 +55,9 @@ public:
 	// operations
 	FTestbed2NestedStruct1 Func1_Implementation(const FTestbed2NestedStruct1& Param1) override;
 
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct1Interface")
+	void UseConnection(TScriptInterface<class IApiGearConnection> InConnection);
+
 private:
 	void applyState(const nlohmann::json& fields);
 	void emitSignal(const std::string& signalName, const nlohmann::json& args);
@@ -65,4 +69,5 @@ private:
 #else
 	TPimplPtr<Testbed2NestedStruct1InterfacePropertiesData> _SentData;
 #endif
+	TScriptInterface<class IApiGearConnection> Connection;
 };

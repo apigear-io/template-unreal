@@ -31,6 +31,7 @@ THIRD_PARTY_INCLUDES_END
 #include "Testbed2ManyParamInterfaceOLinkClient.generated.h"
 
 struct Testbed2ManyParamInterfacePropertiesData;
+DECLARE_LOG_CATEGORY_EXTERN(LogTestbed2ManyParamInterfaceOLinkClient, Log, All);
 
 UCLASS(NotBlueprintable, BlueprintType)
 class TESTBED2_API UTestbed2ManyParamInterfaceOLinkClient : public UAbstractTestbed2ManyParamInterface
@@ -69,6 +70,9 @@ public:
 
 	int32 Func4_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4) override;
 
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
+	void UseConnection(TScriptInterface<class IApiGearConnection> InConnection);
+
 private:
 	void applyState(const nlohmann::json& fields);
 	void emitSignal(const std::string& signalName, const nlohmann::json& args);
@@ -80,4 +84,5 @@ private:
 #else
 	TPimplPtr<Testbed2ManyParamInterfacePropertiesData> _SentData;
 #endif
+	TScriptInterface<class IApiGearConnection> Connection;
 };

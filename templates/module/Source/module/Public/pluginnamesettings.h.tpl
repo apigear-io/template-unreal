@@ -1,7 +1,6 @@
 {{/* Copyright Epic Games, Inc. All Rights Reserved */}}
 {{- $ModuleName := Camel .Module.Name}}
 {{- $API_MACRO := printf "%s_API" (CAMEL .Module.Name) }}
-{{- $ConnecitonEnabled := or .Features.stubs .Features.olink -}}
 {{- $Category := printf "ApiGear%s" $ModuleName -}}
 /**
 Copyright 2021 ApiGear UG
@@ -26,18 +25,6 @@ limitations under the License.
 #include "UObject/Object.h"
 #include "Engine/EngineTypes.h"
 #include "{{$ModuleName}}Settings.generated.h"
-{{- if $ConnecitonEnabled}}
-
-/**
- * Enumeration E{{$ModuleName}}Connection
- */
-UENUM(BlueprintType)
-enum class E{{$ModuleName}}Connection : uint8
-{
-{{ if .Features.stubs }}	CONNECTION_LOCAL UMETA(Displayname = "Local"){{ if .Features.olink }},{{nl}}{{- end }}{{- end -}}
-{{ if .Features.olink }}	CONNECTION_OLINK UMETA(Displayname = "Remote OLink"){{- end }}
-};
-{{- end}}
 
 /**
  * Implements the settings for the {{$ModuleName}} plugin.
@@ -46,10 +33,10 @@ UCLASS(Config = Engine, DefaultConfig)
 class {{$API_MACRO}} U{{$ModuleName}}Settings : public UObject
 {
 	GENERATED_UCLASS_BODY()
-{{- if $ConnecitonEnabled}}
 
-	// Choose the backend service to use
+	virtual void PostInitProperties() override;
+
+	// Choose the backend service for the logging decorator to use
 	UPROPERTY(EditAnywhere, config, Category = ServiceSetup)
-	E{{$ModuleName}}Connection ServiceConnection;
-{{- end}}
+	FString ConnectionIdentifier;
 };

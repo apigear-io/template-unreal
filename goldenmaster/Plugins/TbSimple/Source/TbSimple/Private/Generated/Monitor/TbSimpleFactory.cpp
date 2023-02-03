@@ -82,17 +82,26 @@ TScriptInterface<ITbSimpleSimpleInterfaceInterface> createTbSimpleSimpleInterfac
 
 TScriptInterface<ITbSimpleSimpleInterfaceInterface> FTbSimpleModuleFactory::createITbSimpleSimpleInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	UTbSimpleSettings* settings = GetMutableDefault<UTbSimpleSettings>();
+	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
 
-	switch (settings->ServiceConnection)
+	if (TbSimpleSettings->ConnectionIdentifier == "Local")
 	{
-	case ETbSimpleConnection::CONNECTION_OLINK:
-		return createTbSimpleSimpleInterfaceOLink(GameInstance, Collection);
-	case ETbSimpleConnection::CONNECTION_LOCAL:
-		return createTbSimpleSimpleInterface(GameInstance, Collection);
-	default:
 		return createTbSimpleSimpleInterface(GameInstance, Collection);
 	}
+
+	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSimpleSettings->ConnectionIdentifier);
+
+	// Other protocols not supported. To support it edit templates:
+	// add protocol handler class for this interface like createTbSimpleSimpleInterfaceOLink and other necessary infrastructure
+	// extend this function in templates to handle protocol of your choice
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	{
+		return createTbSimpleSimpleInterfaceOLink(GameInstance, Collection);
+	}
+
+	// fallback to local implementation
+	return createTbSimpleSimpleInterface(GameInstance, Collection);
 }
 
 #else
@@ -121,17 +130,26 @@ TScriptInterface<ITbSimpleSimpleInterfaceInterface> createTbSimpleSimpleInterfac
 
 TScriptInterface<ITbSimpleSimpleInterfaceInterface> FTbSimpleModuleFactory::createITbSimpleSimpleInterfaceInterface(FSubsystemCollectionBase& Collection)
 {
-	UTbSimpleSettings* settings = GetMutableDefault<UTbSimpleSettings>();
+	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
 
-	switch (settings->ServiceConnection)
+	if (TbSimpleSettings->ConnectionIdentifier == "Local")
 	{
-	case ETbSimpleConnection::CONNECTION_OLINK:
-		return createTbSimpleSimpleInterfaceOLink(Collection);
-	case ETbSimpleConnection::CONNECTION_LOCAL:
-		return createTbSimpleSimpleInterface(Collection);
-	default:
 		return createTbSimpleSimpleInterface(Collection);
 	}
+
+	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSimpleSettings->ConnectionIdentifier);
+
+	// Other protocols not supported. To support it edit templates:
+	// add protocol handler class for this interface like createTbSimpleSimpleInterfaceOLink and other necessary infrastructure
+	// extend this function in templates to handle protocol of your choice
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	{
+		return createTbSimpleSimpleInterfaceOLink(Collection);
+	}
+
+	// fallback to local implementation
+	return createTbSimpleSimpleInterface(Collection);
 }
 #endif
 
@@ -172,17 +190,26 @@ TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> createTbSimpleSimpleArr
 
 TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> FTbSimpleModuleFactory::createITbSimpleSimpleArrayInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	UTbSimpleSettings* settings = GetMutableDefault<UTbSimpleSettings>();
+	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
 
-	switch (settings->ServiceConnection)
+	if (TbSimpleSettings->ConnectionIdentifier == "Local")
 	{
-	case ETbSimpleConnection::CONNECTION_OLINK:
-		return createTbSimpleSimpleArrayInterfaceOLink(GameInstance, Collection);
-	case ETbSimpleConnection::CONNECTION_LOCAL:
-		return createTbSimpleSimpleArrayInterface(GameInstance, Collection);
-	default:
 		return createTbSimpleSimpleArrayInterface(GameInstance, Collection);
 	}
+
+	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSimpleSettings->ConnectionIdentifier);
+
+	// Other protocols not supported. To support it edit templates:
+	// add protocol handler class for this interface like createTbSimpleSimpleArrayInterfaceOLink and other necessary infrastructure
+	// extend this function in templates to handle protocol of your choice
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	{
+		return createTbSimpleSimpleArrayInterfaceOLink(GameInstance, Collection);
+	}
+
+	// fallback to local implementation
+	return createTbSimpleSimpleArrayInterface(GameInstance, Collection);
 }
 
 #else
@@ -211,17 +238,26 @@ TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> createTbSimpleSimpleArr
 
 TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> FTbSimpleModuleFactory::createITbSimpleSimpleArrayInterfaceInterface(FSubsystemCollectionBase& Collection)
 {
-	UTbSimpleSettings* settings = GetMutableDefault<UTbSimpleSettings>();
+	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
 
-	switch (settings->ServiceConnection)
+	if (TbSimpleSettings->ConnectionIdentifier == "Local")
 	{
-	case ETbSimpleConnection::CONNECTION_OLINK:
-		return createTbSimpleSimpleArrayInterfaceOLink(Collection);
-	case ETbSimpleConnection::CONNECTION_LOCAL:
-		return createTbSimpleSimpleArrayInterface(Collection);
-	default:
 		return createTbSimpleSimpleArrayInterface(Collection);
 	}
+
+	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSimpleSettings->ConnectionIdentifier);
+
+	// Other protocols not supported. To support it edit templates:
+	// add protocol handler class for this interface like createTbSimpleSimpleArrayInterfaceOLink and other necessary infrastructure
+	// extend this function in templates to handle protocol of your choice
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	{
+		return createTbSimpleSimpleArrayInterfaceOLink(Collection);
+	}
+
+	// fallback to local implementation
+	return createTbSimpleSimpleArrayInterface(Collection);
 }
 #endif
 
@@ -262,17 +298,26 @@ TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> createTbSimpleNoProper
 
 TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> FTbSimpleModuleFactory::createITbSimpleNoPropertiesInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	UTbSimpleSettings* settings = GetMutableDefault<UTbSimpleSettings>();
+	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
 
-	switch (settings->ServiceConnection)
+	if (TbSimpleSettings->ConnectionIdentifier == "Local")
 	{
-	case ETbSimpleConnection::CONNECTION_OLINK:
-		return createTbSimpleNoPropertiesInterfaceOLink(GameInstance, Collection);
-	case ETbSimpleConnection::CONNECTION_LOCAL:
-		return createTbSimpleNoPropertiesInterface(GameInstance, Collection);
-	default:
 		return createTbSimpleNoPropertiesInterface(GameInstance, Collection);
 	}
+
+	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSimpleSettings->ConnectionIdentifier);
+
+	// Other protocols not supported. To support it edit templates:
+	// add protocol handler class for this interface like createTbSimpleNoPropertiesInterfaceOLink and other necessary infrastructure
+	// extend this function in templates to handle protocol of your choice
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	{
+		return createTbSimpleNoPropertiesInterfaceOLink(GameInstance, Collection);
+	}
+
+	// fallback to local implementation
+	return createTbSimpleNoPropertiesInterface(GameInstance, Collection);
 }
 
 #else
@@ -301,17 +346,26 @@ TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> createTbSimpleNoProper
 
 TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> FTbSimpleModuleFactory::createITbSimpleNoPropertiesInterfaceInterface(FSubsystemCollectionBase& Collection)
 {
-	UTbSimpleSettings* settings = GetMutableDefault<UTbSimpleSettings>();
+	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
 
-	switch (settings->ServiceConnection)
+	if (TbSimpleSettings->ConnectionIdentifier == "Local")
 	{
-	case ETbSimpleConnection::CONNECTION_OLINK:
-		return createTbSimpleNoPropertiesInterfaceOLink(Collection);
-	case ETbSimpleConnection::CONNECTION_LOCAL:
-		return createTbSimpleNoPropertiesInterface(Collection);
-	default:
 		return createTbSimpleNoPropertiesInterface(Collection);
 	}
+
+	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSimpleSettings->ConnectionIdentifier);
+
+	// Other protocols not supported. To support it edit templates:
+	// add protocol handler class for this interface like createTbSimpleNoPropertiesInterfaceOLink and other necessary infrastructure
+	// extend this function in templates to handle protocol of your choice
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	{
+		return createTbSimpleNoPropertiesInterfaceOLink(Collection);
+	}
+
+	// fallback to local implementation
+	return createTbSimpleNoPropertiesInterface(Collection);
 }
 #endif
 
@@ -352,17 +406,26 @@ TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> createTbSimpleNoOperat
 
 TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> FTbSimpleModuleFactory::createITbSimpleNoOperationsInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	UTbSimpleSettings* settings = GetMutableDefault<UTbSimpleSettings>();
+	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
 
-	switch (settings->ServiceConnection)
+	if (TbSimpleSettings->ConnectionIdentifier == "Local")
 	{
-	case ETbSimpleConnection::CONNECTION_OLINK:
-		return createTbSimpleNoOperationsInterfaceOLink(GameInstance, Collection);
-	case ETbSimpleConnection::CONNECTION_LOCAL:
-		return createTbSimpleNoOperationsInterface(GameInstance, Collection);
-	default:
 		return createTbSimpleNoOperationsInterface(GameInstance, Collection);
 	}
+
+	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSimpleSettings->ConnectionIdentifier);
+
+	// Other protocols not supported. To support it edit templates:
+	// add protocol handler class for this interface like createTbSimpleNoOperationsInterfaceOLink and other necessary infrastructure
+	// extend this function in templates to handle protocol of your choice
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	{
+		return createTbSimpleNoOperationsInterfaceOLink(GameInstance, Collection);
+	}
+
+	// fallback to local implementation
+	return createTbSimpleNoOperationsInterface(GameInstance, Collection);
 }
 
 #else
@@ -391,17 +454,26 @@ TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> createTbSimpleNoOperat
 
 TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> FTbSimpleModuleFactory::createITbSimpleNoOperationsInterfaceInterface(FSubsystemCollectionBase& Collection)
 {
-	UTbSimpleSettings* settings = GetMutableDefault<UTbSimpleSettings>();
+	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
 
-	switch (settings->ServiceConnection)
+	if (TbSimpleSettings->ConnectionIdentifier == "Local")
 	{
-	case ETbSimpleConnection::CONNECTION_OLINK:
-		return createTbSimpleNoOperationsInterfaceOLink(Collection);
-	case ETbSimpleConnection::CONNECTION_LOCAL:
-		return createTbSimpleNoOperationsInterface(Collection);
-	default:
 		return createTbSimpleNoOperationsInterface(Collection);
 	}
+
+	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSimpleSettings->ConnectionIdentifier);
+
+	// Other protocols not supported. To support it edit templates:
+	// add protocol handler class for this interface like createTbSimpleNoOperationsInterfaceOLink and other necessary infrastructure
+	// extend this function in templates to handle protocol of your choice
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	{
+		return createTbSimpleNoOperationsInterfaceOLink(Collection);
+	}
+
+	// fallback to local implementation
+	return createTbSimpleNoOperationsInterface(Collection);
 }
 #endif
 
@@ -442,17 +514,26 @@ TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> createTbSimpleNoSignalsIn
 
 TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> FTbSimpleModuleFactory::createITbSimpleNoSignalsInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	UTbSimpleSettings* settings = GetMutableDefault<UTbSimpleSettings>();
+	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
 
-	switch (settings->ServiceConnection)
+	if (TbSimpleSettings->ConnectionIdentifier == "Local")
 	{
-	case ETbSimpleConnection::CONNECTION_OLINK:
-		return createTbSimpleNoSignalsInterfaceOLink(GameInstance, Collection);
-	case ETbSimpleConnection::CONNECTION_LOCAL:
-		return createTbSimpleNoSignalsInterface(GameInstance, Collection);
-	default:
 		return createTbSimpleNoSignalsInterface(GameInstance, Collection);
 	}
+
+	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSimpleSettings->ConnectionIdentifier);
+
+	// Other protocols not supported. To support it edit templates:
+	// add protocol handler class for this interface like createTbSimpleNoSignalsInterfaceOLink and other necessary infrastructure
+	// extend this function in templates to handle protocol of your choice
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	{
+		return createTbSimpleNoSignalsInterfaceOLink(GameInstance, Collection);
+	}
+
+	// fallback to local implementation
+	return createTbSimpleNoSignalsInterface(GameInstance, Collection);
 }
 
 #else
@@ -481,17 +562,26 @@ TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> createTbSimpleNoSignalsIn
 
 TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> FTbSimpleModuleFactory::createITbSimpleNoSignalsInterfaceInterface(FSubsystemCollectionBase& Collection)
 {
-	UTbSimpleSettings* settings = GetMutableDefault<UTbSimpleSettings>();
+	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
 
-	switch (settings->ServiceConnection)
+	if (TbSimpleSettings->ConnectionIdentifier == "Local")
 	{
-	case ETbSimpleConnection::CONNECTION_OLINK:
-		return createTbSimpleNoSignalsInterfaceOLink(Collection);
-	case ETbSimpleConnection::CONNECTION_LOCAL:
-		return createTbSimpleNoSignalsInterface(Collection);
-	default:
 		return createTbSimpleNoSignalsInterface(Collection);
 	}
+
+	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSimpleSettings->ConnectionIdentifier);
+
+	// Other protocols not supported. To support it edit templates:
+	// add protocol handler class for this interface like createTbSimpleNoSignalsInterfaceOLink and other necessary infrastructure
+	// extend this function in templates to handle protocol of your choice
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	{
+		return createTbSimpleNoSignalsInterfaceOLink(Collection);
+	}
+
+	// fallback to local implementation
+	return createTbSimpleNoSignalsInterface(Collection);
 }
 #endif
 
@@ -532,17 +622,26 @@ TScriptInterface<ITbSimpleEmptyInterfaceInterface> createTbSimpleEmptyInterface(
 
 TScriptInterface<ITbSimpleEmptyInterfaceInterface> FTbSimpleModuleFactory::createITbSimpleEmptyInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	UTbSimpleSettings* settings = GetMutableDefault<UTbSimpleSettings>();
+	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
 
-	switch (settings->ServiceConnection)
+	if (TbSimpleSettings->ConnectionIdentifier == "Local")
 	{
-	case ETbSimpleConnection::CONNECTION_OLINK:
-		return createTbSimpleEmptyInterfaceOLink(GameInstance, Collection);
-	case ETbSimpleConnection::CONNECTION_LOCAL:
-		return createTbSimpleEmptyInterface(GameInstance, Collection);
-	default:
 		return createTbSimpleEmptyInterface(GameInstance, Collection);
 	}
+
+	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSimpleSettings->ConnectionIdentifier);
+
+	// Other protocols not supported. To support it edit templates:
+	// add protocol handler class for this interface like createTbSimpleEmptyInterfaceOLink and other necessary infrastructure
+	// extend this function in templates to handle protocol of your choice
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	{
+		return createTbSimpleEmptyInterfaceOLink(GameInstance, Collection);
+	}
+
+	// fallback to local implementation
+	return createTbSimpleEmptyInterface(GameInstance, Collection);
 }
 
 #else
@@ -571,16 +670,25 @@ TScriptInterface<ITbSimpleEmptyInterfaceInterface> createTbSimpleEmptyInterface(
 
 TScriptInterface<ITbSimpleEmptyInterfaceInterface> FTbSimpleModuleFactory::createITbSimpleEmptyInterfaceInterface(FSubsystemCollectionBase& Collection)
 {
-	UTbSimpleSettings* settings = GetMutableDefault<UTbSimpleSettings>();
+	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
 
-	switch (settings->ServiceConnection)
+	if (TbSimpleSettings->ConnectionIdentifier == "Local")
 	{
-	case ETbSimpleConnection::CONNECTION_OLINK:
-		return createTbSimpleEmptyInterfaceOLink(Collection);
-	case ETbSimpleConnection::CONNECTION_LOCAL:
-		return createTbSimpleEmptyInterface(Collection);
-	default:
 		return createTbSimpleEmptyInterface(Collection);
 	}
+
+	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSimpleSettings->ConnectionIdentifier);
+
+	// Other protocols not supported. To support it edit templates:
+	// add protocol handler class for this interface like createTbSimpleEmptyInterfaceOLink and other necessary infrastructure
+	// extend this function in templates to handle protocol of your choice
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	{
+		return createTbSimpleEmptyInterfaceOLink(Collection);
+	}
+
+	// fallback to local implementation
+	return createTbSimpleEmptyInterface(Collection);
 }
 #endif

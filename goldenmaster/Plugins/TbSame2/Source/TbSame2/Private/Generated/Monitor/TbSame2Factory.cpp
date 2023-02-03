@@ -78,17 +78,26 @@ TScriptInterface<ITbSame2SameStruct1InterfaceInterface> createTbSame2SameStruct1
 
 TScriptInterface<ITbSame2SameStruct1InterfaceInterface> FTbSame2ModuleFactory::createITbSame2SameStruct1InterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	UTbSame2Settings* settings = GetMutableDefault<UTbSame2Settings>();
+	UTbSame2Settings* TbSame2Settings = GetMutableDefault<UTbSame2Settings>();
 
-	switch (settings->ServiceConnection)
+	if (TbSame2Settings->ConnectionIdentifier == "Local")
 	{
-	case ETbSame2Connection::CONNECTION_OLINK:
-		return createTbSame2SameStruct1InterfaceOLink(GameInstance, Collection);
-	case ETbSame2Connection::CONNECTION_LOCAL:
-		return createTbSame2SameStruct1Interface(GameInstance, Collection);
-	default:
 		return createTbSame2SameStruct1Interface(GameInstance, Collection);
 	}
+
+	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSame2Settings->ConnectionIdentifier);
+
+	// Other protocols not supported. To support it edit templates:
+	// add protocol handler class for this interface like createTbSame2SameStruct1InterfaceOLink and other necessary infrastructure
+	// extend this function in templates to handle protocol of your choice
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	{
+		return createTbSame2SameStruct1InterfaceOLink(GameInstance, Collection);
+	}
+
+	// fallback to local implementation
+	return createTbSame2SameStruct1Interface(GameInstance, Collection);
 }
 
 #else
@@ -117,17 +126,26 @@ TScriptInterface<ITbSame2SameStruct1InterfaceInterface> createTbSame2SameStruct1
 
 TScriptInterface<ITbSame2SameStruct1InterfaceInterface> FTbSame2ModuleFactory::createITbSame2SameStruct1InterfaceInterface(FSubsystemCollectionBase& Collection)
 {
-	UTbSame2Settings* settings = GetMutableDefault<UTbSame2Settings>();
+	UTbSame2Settings* TbSame2Settings = GetMutableDefault<UTbSame2Settings>();
 
-	switch (settings->ServiceConnection)
+	if (TbSame2Settings->ConnectionIdentifier == "Local")
 	{
-	case ETbSame2Connection::CONNECTION_OLINK:
-		return createTbSame2SameStruct1InterfaceOLink(Collection);
-	case ETbSame2Connection::CONNECTION_LOCAL:
-		return createTbSame2SameStruct1Interface(Collection);
-	default:
 		return createTbSame2SameStruct1Interface(Collection);
 	}
+
+	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSame2Settings->ConnectionIdentifier);
+
+	// Other protocols not supported. To support it edit templates:
+	// add protocol handler class for this interface like createTbSame2SameStruct1InterfaceOLink and other necessary infrastructure
+	// extend this function in templates to handle protocol of your choice
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	{
+		return createTbSame2SameStruct1InterfaceOLink(Collection);
+	}
+
+	// fallback to local implementation
+	return createTbSame2SameStruct1Interface(Collection);
 }
 #endif
 
@@ -168,17 +186,26 @@ TScriptInterface<ITbSame2SameStruct2InterfaceInterface> createTbSame2SameStruct2
 
 TScriptInterface<ITbSame2SameStruct2InterfaceInterface> FTbSame2ModuleFactory::createITbSame2SameStruct2InterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	UTbSame2Settings* settings = GetMutableDefault<UTbSame2Settings>();
+	UTbSame2Settings* TbSame2Settings = GetMutableDefault<UTbSame2Settings>();
 
-	switch (settings->ServiceConnection)
+	if (TbSame2Settings->ConnectionIdentifier == "Local")
 	{
-	case ETbSame2Connection::CONNECTION_OLINK:
-		return createTbSame2SameStruct2InterfaceOLink(GameInstance, Collection);
-	case ETbSame2Connection::CONNECTION_LOCAL:
-		return createTbSame2SameStruct2Interface(GameInstance, Collection);
-	default:
 		return createTbSame2SameStruct2Interface(GameInstance, Collection);
 	}
+
+	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSame2Settings->ConnectionIdentifier);
+
+	// Other protocols not supported. To support it edit templates:
+	// add protocol handler class for this interface like createTbSame2SameStruct2InterfaceOLink and other necessary infrastructure
+	// extend this function in templates to handle protocol of your choice
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	{
+		return createTbSame2SameStruct2InterfaceOLink(GameInstance, Collection);
+	}
+
+	// fallback to local implementation
+	return createTbSame2SameStruct2Interface(GameInstance, Collection);
 }
 
 #else
@@ -207,17 +234,26 @@ TScriptInterface<ITbSame2SameStruct2InterfaceInterface> createTbSame2SameStruct2
 
 TScriptInterface<ITbSame2SameStruct2InterfaceInterface> FTbSame2ModuleFactory::createITbSame2SameStruct2InterfaceInterface(FSubsystemCollectionBase& Collection)
 {
-	UTbSame2Settings* settings = GetMutableDefault<UTbSame2Settings>();
+	UTbSame2Settings* TbSame2Settings = GetMutableDefault<UTbSame2Settings>();
 
-	switch (settings->ServiceConnection)
+	if (TbSame2Settings->ConnectionIdentifier == "Local")
 	{
-	case ETbSame2Connection::CONNECTION_OLINK:
-		return createTbSame2SameStruct2InterfaceOLink(Collection);
-	case ETbSame2Connection::CONNECTION_LOCAL:
-		return createTbSame2SameStruct2Interface(Collection);
-	default:
 		return createTbSame2SameStruct2Interface(Collection);
 	}
+
+	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSame2Settings->ConnectionIdentifier);
+
+	// Other protocols not supported. To support it edit templates:
+	// add protocol handler class for this interface like createTbSame2SameStruct2InterfaceOLink and other necessary infrastructure
+	// extend this function in templates to handle protocol of your choice
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	{
+		return createTbSame2SameStruct2InterfaceOLink(Collection);
+	}
+
+	// fallback to local implementation
+	return createTbSame2SameStruct2Interface(Collection);
 }
 #endif
 
@@ -258,17 +294,26 @@ TScriptInterface<ITbSame2SameEnum1InterfaceInterface> createTbSame2SameEnum1Inte
 
 TScriptInterface<ITbSame2SameEnum1InterfaceInterface> FTbSame2ModuleFactory::createITbSame2SameEnum1InterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	UTbSame2Settings* settings = GetMutableDefault<UTbSame2Settings>();
+	UTbSame2Settings* TbSame2Settings = GetMutableDefault<UTbSame2Settings>();
 
-	switch (settings->ServiceConnection)
+	if (TbSame2Settings->ConnectionIdentifier == "Local")
 	{
-	case ETbSame2Connection::CONNECTION_OLINK:
-		return createTbSame2SameEnum1InterfaceOLink(GameInstance, Collection);
-	case ETbSame2Connection::CONNECTION_LOCAL:
-		return createTbSame2SameEnum1Interface(GameInstance, Collection);
-	default:
 		return createTbSame2SameEnum1Interface(GameInstance, Collection);
 	}
+
+	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSame2Settings->ConnectionIdentifier);
+
+	// Other protocols not supported. To support it edit templates:
+	// add protocol handler class for this interface like createTbSame2SameEnum1InterfaceOLink and other necessary infrastructure
+	// extend this function in templates to handle protocol of your choice
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	{
+		return createTbSame2SameEnum1InterfaceOLink(GameInstance, Collection);
+	}
+
+	// fallback to local implementation
+	return createTbSame2SameEnum1Interface(GameInstance, Collection);
 }
 
 #else
@@ -297,17 +342,26 @@ TScriptInterface<ITbSame2SameEnum1InterfaceInterface> createTbSame2SameEnum1Inte
 
 TScriptInterface<ITbSame2SameEnum1InterfaceInterface> FTbSame2ModuleFactory::createITbSame2SameEnum1InterfaceInterface(FSubsystemCollectionBase& Collection)
 {
-	UTbSame2Settings* settings = GetMutableDefault<UTbSame2Settings>();
+	UTbSame2Settings* TbSame2Settings = GetMutableDefault<UTbSame2Settings>();
 
-	switch (settings->ServiceConnection)
+	if (TbSame2Settings->ConnectionIdentifier == "Local")
 	{
-	case ETbSame2Connection::CONNECTION_OLINK:
-		return createTbSame2SameEnum1InterfaceOLink(Collection);
-	case ETbSame2Connection::CONNECTION_LOCAL:
-		return createTbSame2SameEnum1Interface(Collection);
-	default:
 		return createTbSame2SameEnum1Interface(Collection);
 	}
+
+	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSame2Settings->ConnectionIdentifier);
+
+	// Other protocols not supported. To support it edit templates:
+	// add protocol handler class for this interface like createTbSame2SameEnum1InterfaceOLink and other necessary infrastructure
+	// extend this function in templates to handle protocol of your choice
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	{
+		return createTbSame2SameEnum1InterfaceOLink(Collection);
+	}
+
+	// fallback to local implementation
+	return createTbSame2SameEnum1Interface(Collection);
 }
 #endif
 
@@ -348,17 +402,26 @@ TScriptInterface<ITbSame2SameEnum2InterfaceInterface> createTbSame2SameEnum2Inte
 
 TScriptInterface<ITbSame2SameEnum2InterfaceInterface> FTbSame2ModuleFactory::createITbSame2SameEnum2InterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	UTbSame2Settings* settings = GetMutableDefault<UTbSame2Settings>();
+	UTbSame2Settings* TbSame2Settings = GetMutableDefault<UTbSame2Settings>();
 
-	switch (settings->ServiceConnection)
+	if (TbSame2Settings->ConnectionIdentifier == "Local")
 	{
-	case ETbSame2Connection::CONNECTION_OLINK:
-		return createTbSame2SameEnum2InterfaceOLink(GameInstance, Collection);
-	case ETbSame2Connection::CONNECTION_LOCAL:
-		return createTbSame2SameEnum2Interface(GameInstance, Collection);
-	default:
 		return createTbSame2SameEnum2Interface(GameInstance, Collection);
 	}
+
+	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSame2Settings->ConnectionIdentifier);
+
+	// Other protocols not supported. To support it edit templates:
+	// add protocol handler class for this interface like createTbSame2SameEnum2InterfaceOLink and other necessary infrastructure
+	// extend this function in templates to handle protocol of your choice
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	{
+		return createTbSame2SameEnum2InterfaceOLink(GameInstance, Collection);
+	}
+
+	// fallback to local implementation
+	return createTbSame2SameEnum2Interface(GameInstance, Collection);
 }
 
 #else
@@ -387,16 +450,25 @@ TScriptInterface<ITbSame2SameEnum2InterfaceInterface> createTbSame2SameEnum2Inte
 
 TScriptInterface<ITbSame2SameEnum2InterfaceInterface> FTbSame2ModuleFactory::createITbSame2SameEnum2InterfaceInterface(FSubsystemCollectionBase& Collection)
 {
-	UTbSame2Settings* settings = GetMutableDefault<UTbSame2Settings>();
+	UTbSame2Settings* TbSame2Settings = GetMutableDefault<UTbSame2Settings>();
 
-	switch (settings->ServiceConnection)
+	if (TbSame2Settings->ConnectionIdentifier == "Local")
 	{
-	case ETbSame2Connection::CONNECTION_OLINK:
-		return createTbSame2SameEnum2InterfaceOLink(Collection);
-	case ETbSame2Connection::CONNECTION_LOCAL:
-		return createTbSame2SameEnum2Interface(Collection);
-	default:
 		return createTbSame2SameEnum2Interface(Collection);
 	}
+
+	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSame2Settings->ConnectionIdentifier);
+
+	// Other protocols not supported. To support it edit templates:
+	// add protocol handler class for this interface like createTbSame2SameEnum2InterfaceOLink and other necessary infrastructure
+	// extend this function in templates to handle protocol of your choice
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	{
+		return createTbSame2SameEnum2InterfaceOLink(Collection);
+	}
+
+	// fallback to local implementation
+	return createTbSame2SameEnum2Interface(Collection);
 }
 #endif

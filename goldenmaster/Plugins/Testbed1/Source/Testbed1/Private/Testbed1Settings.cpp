@@ -15,9 +15,30 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "Testbed1Settings.h"
+#include "ApiGearConnectionsStore.h"
+#include "Engine/Engine.h"
 
 UTestbed1Settings::UTestbed1Settings(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
-	, ServiceConnection(ETestbed1Connection(ETestbed1Connection::CONNECTION_LOCAL))
 {
+}
+
+void UTestbed1Settings::PostInitProperties()
+{
+	Super::PostInitProperties();
+
+	// the local backend does not require configuration
+	if (ConnectionIdentifier == "Local")
+	{
+		return;
+	}
+
+	check(GEngine);
+	UApiGearConnectionsStore* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionsStore>();
+
+	if (!AGCM->DoesConnectionExist(ConnectionIdentifier))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("UTestbed1Settings could not find connection %s, falling back to local backend."), *ConnectionIdentifier);
+		ConnectionIdentifier = "Local";
+	}
 }

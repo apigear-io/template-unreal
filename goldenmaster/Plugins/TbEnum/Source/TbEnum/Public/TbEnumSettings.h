@@ -23,16 +23,6 @@ limitations under the License.
 #include "TbEnumSettings.generated.h"
 
 /**
- * Enumeration ETbEnumConnection
- */
-UENUM(BlueprintType)
-enum class ETbEnumConnection : uint8
-{
-	CONNECTION_LOCAL UMETA(Displayname = "Local"),
-	CONNECTION_OLINK UMETA(Displayname = "Remote OLink")
-};
-
-/**
  * Implements the settings for the TbEnum plugin.
  */
 UCLASS(Config = Engine, DefaultConfig)
@@ -40,7 +30,9 @@ class TBENUM_API UTbEnumSettings : public UObject
 {
 	GENERATED_UCLASS_BODY()
 
-	// Choose the backend service to use
+	virtual void PostInitProperties() override;
+
+	// Choose the backend service for the logging decorator to use
 	UPROPERTY(EditAnywhere, config, Category = ServiceSetup)
-	ETbEnumConnection ServiceConnection;
+	FString ConnectionIdentifier;
 };

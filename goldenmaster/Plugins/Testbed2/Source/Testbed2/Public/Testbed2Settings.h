@@ -23,16 +23,6 @@ limitations under the License.
 #include "Testbed2Settings.generated.h"
 
 /**
- * Enumeration ETestbed2Connection
- */
-UENUM(BlueprintType)
-enum class ETestbed2Connection : uint8
-{
-	CONNECTION_LOCAL UMETA(Displayname = "Local"),
-	CONNECTION_OLINK UMETA(Displayname = "Remote OLink")
-};
-
-/**
  * Implements the settings for the Testbed2 plugin.
  */
 UCLASS(Config = Engine, DefaultConfig)
@@ -40,7 +30,9 @@ class TESTBED2_API UTestbed2Settings : public UObject
 {
 	GENERATED_UCLASS_BODY()
 
-	// Choose the backend service to use
+	virtual void PostInitProperties() override;
+
+	// Choose the backend service for the logging decorator to use
 	UPROPERTY(EditAnywhere, config, Category = ServiceSetup)
-	ETestbed2Connection ServiceConnection;
+	FString ConnectionIdentifier;
 };

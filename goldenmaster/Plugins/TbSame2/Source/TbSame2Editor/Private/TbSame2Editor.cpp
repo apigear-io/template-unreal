@@ -17,7 +17,9 @@ limitations under the License.
 
 #include "TbSame2Editor.h"
 #include "ISettingsModule.h"
+#include "PropertyEditorModule.h"
 #include "TbSame2Settings.h"
+#include "TbSame2ConnectionSettings.h"
 
 #define LOCTEXT_NAMESPACE "TbSame2Editor"
 
@@ -30,6 +32,10 @@ void FTbSame2EditorModule::StartupModule()
 	{
 		SettingsModule->RegisterSettings("Project", "Plugins", "ApiGear TbSame2", LOCTEXT("TbSame2SettingsName", "ApiGear TbSame2"), LOCTEXT("TbSame2SettingsDescription", "Project settings for ApiGear TbSame2 plugin"), GetMutableDefault<UTbSame2Settings>());
 	}
+
+	// register details customization
+	FPropertyEditorModule& PropertyModule = FModuleManager::LoadModuleChecked<FPropertyEditorModule>(TEXT("PropertyEditor"));
+	PropertyModule.RegisterCustomClassLayout("TbSame2Settings", FOnGetDetailCustomizationInstance::CreateStatic(&FTbSame2ConnectionSettingsDetails::MakeInstance));
 }
 
 void FTbSame2EditorModule::ShutdownModule()

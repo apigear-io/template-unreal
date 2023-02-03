@@ -93,21 +93,29 @@ TScriptInterface<I{{$class}}Interface> create{{$class}}(UGameInstance* GameInsta
 
 TScriptInterface<I{{$class}}Interface> {{$mclass}}::create{{$iclass}}(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	U{{$ModuleName}}Settings* settings = GetMutableDefault<U{{$ModuleName}}Settings>();
+	U{{$ModuleName}}Settings* {{$ModuleName}}Settings = GetMutableDefault<U{{$ModuleName}}Settings>();
 
-	switch (settings->ServiceConnection)
+	if ({{$ModuleName}}Settings->ConnectionIdentifier == "Local")
 	{
-{{- if $.Features.olink }}{{ nl }}	case E{{$ModuleName}}Connection::CONNECTION_OLINK:
-		return create{{$class}}OLink(GameInstance, Collection);{{ end }}
-{{- if $.Features.stubs }}{{ nl }}	case E{{$ModuleName}}Connection::CONNECTION_LOCAL:
-		return create{{$class}}(GameInstance, Collection);{{ end }}
-	default:
-{{- if $.Features.stubs }}
 		return create{{$class}}(GameInstance, Collection);
-{{- else if $.Features.olink }}
-		return create{{$class}}OLink(GameInstance, Collection);
-{{- end }}
 	}
+
+	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find({{$ModuleName}}Settings->ConnectionIdentifier);
+
+{{- if $.Features.olink }}
+
+	// Other protocols not supported. To support it edit templates:
+	// add protocol handler class for this interface like create{{$class}}OLink and other necessary infrastructure
+	// extend this function in templates to handle protocol of your choice
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	{
+		return create{{$class}}OLink(GameInstance, Collection);
+	}
+{{- end }}
+
+	// fallback to local implementation
+	return create{{$class}}(GameInstance, Collection);
 }
 
 #else
@@ -140,21 +148,29 @@ TScriptInterface<I{{$class}}Interface> create{{$class}}(FSubsystemCollectionBase
 
 TScriptInterface<I{{$class}}Interface> {{$mclass}}::create{{$iclass}}(FSubsystemCollectionBase& Collection)
 {
-	U{{$ModuleName}}Settings* settings = GetMutableDefault<U{{$ModuleName}}Settings>();
+	U{{$ModuleName}}Settings* {{$ModuleName}}Settings = GetMutableDefault<U{{$ModuleName}}Settings>();
 
-	switch (settings->ServiceConnection)
+	if ({{$ModuleName}}Settings->ConnectionIdentifier == "Local")
 	{
-{{- if $.Features.olink }}{{ nl }}	case E{{$ModuleName}}Connection::CONNECTION_OLINK:
-		return create{{$class}}OLink(Collection);{{ end }}
-{{- if $.Features.stubs }}{{ nl }}	case E{{$ModuleName}}Connection::CONNECTION_LOCAL:
-		return create{{$class}}(Collection);{{ end }}
-	default:
-{{- if $.Features.stubs }}
 		return create{{$class}}(Collection);
-{{- else if $.Features.olink }}
-		return create{{$class}}OLink(Collection);
-{{- end }}
 	}
+
+	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find({{$ModuleName}}Settings->ConnectionIdentifier);
+
+{{- if $.Features.olink }}
+
+	// Other protocols not supported. To support it edit templates:
+	// add protocol handler class for this interface like create{{$class}}OLink and other necessary infrastructure
+	// extend this function in templates to handle protocol of your choice
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	{
+		return create{{$class}}OLink(Collection);
+	}
+{{- end }}
+
+	// fallback to local implementation
+	return create{{$class}}(Collection);
 }
 #endif
 {{- end }}

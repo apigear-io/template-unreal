@@ -29,19 +29,11 @@ limitations under the License.
 #include "Engine/Engine.h"
 #include "ApiGear/Public/ApiGearConnectionManager.h"
 #include "Misc/DateTime.h"
+#include "TbEnumSettings.h"
 THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
 #include "olink/iobjectsink.h"
 THIRD_PARTY_INCLUDES_END
-
-namespace
-{
-bool IsTbEnumEnumInterfaceLogEnabled()
-{
-	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
-	return settings->OLINK_EnableDebugLog;
-}
-} // namespace
 
 /**
    \brief data structure to hold the last sent property values
@@ -53,6 +45,7 @@ struct TbEnumEnumInterfacePropertiesData
 	ETbEnumEnum2 Prop2{ETbEnumEnum2::TEE_VALUE2};
 	ETbEnumEnum3 Prop3{ETbEnumEnum3::TEE_VALUE3};
 };
+DEFINE_LOG_CATEGORY(LogTbEnumEnumInterfaceOLinkClient);
 
 UTbEnumEnumInterfaceOLinkClient::UTbEnumEnumInterfaceOLinkClient()
 	: UAbstractTbEnumEnumInterface()
@@ -75,14 +68,6 @@ void UTbEnumEnumInterfaceOLinkClient::Initialize(FSubsystemCollectionBase& Colle
 {
 	Super::Initialize(Collection);
 
-	if (GEngine != nullptr)
-	{
-		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-		AGCM->GetOLinkConnection()->Connect();
-		AGCM->GetOLinkConnection()->node()->registry().addSink(m_sink);
-		AGCM->GetOLinkConnection()->linkObjectSource(m_sink->olinkObjectName());
-	}
-
 	FUnrealOLinkSink::FPropertyChangedFunc PropertyChangedFunc = [this](const nlohmann::json& props)
 	{
 		this->applyState(props);
@@ -94,6 +79,16 @@ void UTbEnumEnumInterfaceOLinkClient::Initialize(FSubsystemCollectionBase& Colle
 		this->emitSignal(signalName, args);
 	};
 	m_sink->setOnSignalEmittedCallback(SignalEmittedFunc);
+
+	check(GEngine);
+	UTbEnumSettings* settings = GetMutableDefault<UTbEnumSettings>();
+
+	UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+
+	TScriptInterface<IApiGearConnection> OLinkConnection = AGCM->GetConnection(settings->ConnectionIdentifier);
+
+	UseConnection(OLinkConnection);
+	OLinkConnection->Connect();
 }
 
 void UTbEnumEnumInterfaceOLinkClient::Deinitialize()
@@ -102,14 +97,39 @@ void UTbEnumEnumInterfaceOLinkClient::Deinitialize()
 	m_sink->resetOnPropertyChangedCallback();
 	m_sink->resetOnSignalEmittedCallback();
 
-	if (GEngine != nullptr)
+	if (Connection.GetObject())
 	{
-		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-		AGCM->GetOLinkConnection()->unlinkObjectSource(m_sink->olinkObjectName());
-		AGCM->GetOLinkConnection()->node()->registry().removeSink(m_sink->olinkObjectName());
+		UUnrealOLink* UnrealOLinkConnection = Cast<UUnrealOLink>(Connection.GetObject());
+		UnrealOLinkConnection->unlinkObjectSource(m_sink->olinkObjectName());
+		UnrealOLinkConnection->node()->registry().removeSink(m_sink->olinkObjectName());
 	}
 
 	Super::Deinitialize();
+}
+
+void UTbEnumEnumInterfaceOLinkClient::UseConnection(TScriptInterface<IApiGearConnection> InConnection)
+{
+	checkf(InConnection.GetInterface() != nullptr, TEXT("Cannot use connection - interface IApiGearConnection is not fully implemented"));
+
+	// only accept connections of type olink
+	checkf(InConnection->GetConnectionProtocolIdentifier() == "olink", TEXT("Cannot use connection - must be of type olink"));
+
+	UUnrealOLink* UnrealOLinkConnection = nullptr;
+	// remove old connection
+	if (Connection.GetObject())
+	{
+		UnrealOLinkConnection = Cast<UUnrealOLink>(Connection.GetObject());
+		UnrealOLinkConnection->unlinkObjectSource(m_sink->olinkObjectName());
+		UnrealOLinkConnection->node()->registry().removeSink(m_sink->olinkObjectName());
+		UnrealOLinkConnection = nullptr;
+	}
+
+	// set up new connection
+	UnrealOLinkConnection = Cast<UUnrealOLink>(InConnection.GetObject());
+	UnrealOLinkConnection->node()->registry().addSink(m_sink);
+	UnrealOLinkConnection->linkObjectSource(m_sink->olinkObjectName());
+
+	Connection = InConnection;
 }
 
 ETbEnumEnum0 UTbEnumEnumInterfaceOLinkClient::GetProp0_Implementation() const
@@ -121,6 +141,7 @@ void UTbEnumEnumInterfaceOLinkClient::SetProp0_Implementation(ETbEnumEnum0 InPro
 {
 	if (!m_sink->IsReady())
 	{
+		UE_LOG(LogTbEnumEnumInterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return;
 	}
 
@@ -149,6 +170,7 @@ void UTbEnumEnumInterfaceOLinkClient::SetProp1_Implementation(ETbEnumEnum1 InPro
 {
 	if (!m_sink->IsReady())
 	{
+		UE_LOG(LogTbEnumEnumInterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return;
 	}
 
@@ -177,6 +199,7 @@ void UTbEnumEnumInterfaceOLinkClient::SetProp2_Implementation(ETbEnumEnum2 InPro
 {
 	if (!m_sink->IsReady())
 	{
+		UE_LOG(LogTbEnumEnumInterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return;
 	}
 
@@ -205,6 +228,7 @@ void UTbEnumEnumInterfaceOLinkClient::SetProp3_Implementation(ETbEnumEnum3 InPro
 {
 	if (!m_sink->IsReady())
 	{
+		UE_LOG(LogTbEnumEnumInterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return;
 	}
 
@@ -228,10 +252,7 @@ ETbEnumEnum0 UTbEnumEnumInterfaceOLinkClient::Func0_Implementation(ETbEnumEnum0 
 {
 	if (!m_sink->IsReady())
 	{
-		if (IsTbEnumEnumInterfaceLogEnabled())
-		{
-			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-		}
+		UE_LOG(LogTbEnumEnumInterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
 		return ETbEnumEnum0::TEE_VALUE0;
 	}
@@ -252,10 +273,7 @@ ETbEnumEnum1 UTbEnumEnumInterfaceOLinkClient::Func1_Implementation(ETbEnumEnum1 
 {
 	if (!m_sink->IsReady())
 	{
-		if (IsTbEnumEnumInterfaceLogEnabled())
-		{
-			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-		}
+		UE_LOG(LogTbEnumEnumInterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
 		return ETbEnumEnum1::TEE_VALUE1;
 	}
@@ -276,10 +294,7 @@ ETbEnumEnum2 UTbEnumEnumInterfaceOLinkClient::Func2_Implementation(ETbEnumEnum2 
 {
 	if (!m_sink->IsReady())
 	{
-		if (IsTbEnumEnumInterfaceLogEnabled())
-		{
-			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-		}
+		UE_LOG(LogTbEnumEnumInterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
 		return ETbEnumEnum2::TEE_VALUE2;
 	}
@@ -300,10 +315,7 @@ ETbEnumEnum3 UTbEnumEnumInterfaceOLinkClient::Func3_Implementation(ETbEnumEnum3 
 {
 	if (!m_sink->IsReady())
 	{
-		if (IsTbEnumEnumInterfaceLogEnabled())
-		{
-			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-		}
+		UE_LOG(LogTbEnumEnumInterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
 		return ETbEnumEnum3::TEE_VALUE3;
 	}

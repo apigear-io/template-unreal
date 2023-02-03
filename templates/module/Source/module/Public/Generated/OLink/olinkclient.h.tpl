@@ -29,6 +29,7 @@ THIRD_PARTY_INCLUDES_END
 
 struct {{$Iface}}PropertiesData;
 {{- end}}
+DECLARE_LOG_CATEGORY_EXTERN(Log{{$Iface}}OLinkClient, Log, All);
 
 UCLASS(NotBlueprintable, BlueprintType)
 class {{ $API_MACRO }} {{$Class}} : public {{$abstractclass}}
@@ -56,6 +57,9 @@ public:
 	{{ueReturn "" .Return}} {{Camel .Name}}_Implementation({{ueParams "" .Params}}) override;
 {{- end }}
 
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|{{$ModuleName}}|{{$IfaceName}}")
+	void UseConnection(TScriptInterface<class IApiGearConnection> InConnection);
+
 private:
 	void applyState(const nlohmann::json& fields);
 	void emitSignal(const std::string& signalName, const nlohmann::json& args);
@@ -70,4 +74,5 @@ private:
 	TPimplPtr<{{$Iface}}PropertiesData> _SentData;
 #endif
 {{- end}}
+	TScriptInterface<class IApiGearConnection> Connection;
 };

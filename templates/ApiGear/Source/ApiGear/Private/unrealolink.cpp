@@ -1,5 +1,4 @@
 #include "unrealolink.h"
-#include "ApiGearSettings.h"
 THIRD_PARTY_INCLUDES_START
 #include "olink/clientregistry.h"
 #include "olink/iobjectsink.h"
@@ -14,12 +13,6 @@ DEFINE_LOG_CATEGORY(LogApiGearOLink);
 
 void writeLog(ApiGear::ObjectLink::LogLevel level, std::string msg)
 {
-	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
-	if (!settings->OLINK_EnableDebugLog)
-	{
-		return;
-	}
-
 	switch (level)
 	{
 	case ApiGear::ObjectLink::LogLevel::Info:
@@ -37,6 +30,12 @@ void writeLog(ApiGear::ObjectLink::LogLevel level, std::string msg)
 	}
 }
 
+TScriptInterface<IApiGearConnection> OLinkFactory::Create(UObject* Outer, FString UniqueConnectionIdentifier)
+{
+	TScriptInterface<IApiGearConnection> OLinkConnection = NewObject<UUnrealOLink>(Outer, *UniqueConnectionIdentifier);
+	return OLinkConnection;
+}
+
 ApiGear::ObjectLink::WriteLogFunc logFunc()
 {
 	return [](ApiGear::ObjectLink::LogLevel level, std::string msg)
@@ -46,18 +45,8 @@ ApiGear::ObjectLink::WriteLogFunc logFunc()
 UUnrealOLink::UUnrealOLink(const FObjectInitializer& ObjectInitializer)
 	: UAbstractApiGearConnection(ObjectInitializer)
 	, m_socket(nullptr)
-	, m_loggingDisabled(false)
 {
-	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
 	m_node = ApiGear::ObjectLink::ClientNode::create(m_registry);
-	if (settings->OLINK_EnableDebugLog)
-	{
-		m_node->onLog(logFunc());
-		m_registry.onLog(logFunc());
-	}
-
-	m_loggingDisabled = !settings->OLINK_EnableDebugLog;
-	log(m_serverURL);
 
 	ApiGear::ObjectLink::WriteMessageFunc func = [this](std::string msg)
 	{
@@ -65,6 +54,20 @@ UUnrealOLink::UUnrealOLink(const FObjectInitializer& ObjectInitializer)
 		processMessages();
 	};
 	m_node->onWrite(func);
+}
+
+void UUnrealOLink::Configure(FString InServerURL, bool bInAutoReconnectEnabled)
+{
+	check(!bInitialized);
+	bInitialized = true;
+
+	m_serverURL = InServerURL;
+	SetAutoReconnectEnabled(bInAutoReconnectEnabled);
+
+	m_node->onLog(logFunc());
+	m_registry.onLog(logFunc());
+
+	log(m_serverURL);
 
 	log("OLink instantiated");
 }
@@ -75,27 +78,12 @@ UUnrealOLink::~UUnrealOLink()
 
 void UUnrealOLink::log(const FString& logMessage)
 {
-	if (!m_loggingDisabled)
-	{
-		UE_LOG(LogApiGearOLink, Display, TEXT("%s"), *logMessage);
-	}
+	UE_LOG(LogApiGearOLink, Display, TEXT("%s"), *logMessage);
 }
 
 void UUnrealOLink::Connect()
 {
 	UAbstractApiGearConnection::Connect();
-
-	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
-
-	// we need to initiate a new socket to change the server address
-	if (m_socket && m_serverURL != settings->OLINK_URL)
-	{
-		m_socket.Reset();
-		m_socket = nullptr;
-	}
-
-	m_serverURL = settings->OLINK_URL;
-	m_loggingDisabled = !settings->OLINK_EnableDebugLog;
 
 	if (!IsConnected() || GetConnectionState() == EApiGearConnectionState::Connecting)
 	{
@@ -147,8 +135,7 @@ void UUnrealOLink::open(const FString& url)
 			{
 				// This code will run if the connection failed. Check Error to see what happened.
 				log(FString::Printf(TEXT("connection error: %s"), *Error));
-				UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
-				UAbstractApiGearConnection::OnDisconnected(settings->OLINK_AutoReconnectEnabled);
+				UAbstractApiGearConnection::OnDisconnected(IsAutoReconnectEnabled());
 			});
 
 		m_socket->OnClosed().AddLambda(
@@ -159,8 +146,7 @@ void UUnrealOLink::open(const FString& url)
 				(void)bWasClean;
 				UE_LOG(LogApiGearOLink, Display, TEXT("status: %d, reason: %s, clean: %d"), StatusCode, *Reason, bWasClean);
 
-				UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
-				bool bReconnect = settings->OLINK_AutoReconnectEnabled;
+				bool bReconnect = IsAutoReconnectEnabled();
 
 				// 1000 == we closed the connection -> do not reconnect
 				if (StatusCode == 1000)
@@ -226,6 +212,11 @@ void UUnrealOLink::OnDisconnected(bool bReconnect)
 		m_registry.unsetNode(objectName);
 	}
 	UAbstractApiGearConnection::OnDisconnected(bReconnect);
+}
+
+FString UUnrealOLink::GetUniqueEndpointIdentifier() const
+{
+	return GetName();
 }
 
 void UUnrealOLink::handleTextMessage(const FString& message)

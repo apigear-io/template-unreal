@@ -18,6 +18,12 @@ namespace UnrealBuildTool.Rules
 					"Core",
 					"CoreUObject",
 					"UnrealEd",
+					// modules below are needed for connection settings
+					"ApiGear",
+					"InputCore",
+					"PropertyEditor",
+					"Slate",
+					"SlateCore"
 				});
 
 			PrivateIncludePaths.AddRange(

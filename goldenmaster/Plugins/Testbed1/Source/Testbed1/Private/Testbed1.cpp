@@ -23,7 +23,6 @@ limitations under the License.
 
 void FTestbed1Module::StartupModule()
 {
-	// No Libraries to load from non mobile platforms because of the web api
 }
 
 void FTestbed1Module::ShutdownModule()

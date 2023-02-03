@@ -31,6 +31,7 @@ THIRD_PARTY_INCLUDES_END
 #include "Testbed1StructArrayInterfaceOLinkClient.generated.h"
 
 struct Testbed1StructArrayInterfacePropertiesData;
+DECLARE_LOG_CATEGORY_EXTERN(LogTestbed1StructArrayInterfaceOLinkClient, Log, All);
 
 UCLASS(NotBlueprintable, BlueprintType)
 class TESTBED1_API UTestbed1StructArrayInterfaceOLinkClient : public UAbstractTestbed1StructArrayInterface
@@ -69,6 +70,9 @@ public:
 
 	FTestbed1StructBool FuncString_Implementation(const TArray<FTestbed1StructString>& ParamString) override;
 
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface")
+	void UseConnection(TScriptInterface<class IApiGearConnection> InConnection);
+
 private:
 	void applyState(const nlohmann::json& fields);
 	void emitSignal(const std::string& signalName, const nlohmann::json& args);
@@ -80,4 +84,5 @@ private:
 #else
 	TPimplPtr<Testbed1StructArrayInterfacePropertiesData> _SentData;
 #endif
+	TScriptInterface<class IApiGearConnection> Connection;
 };

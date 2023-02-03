@@ -29,19 +29,11 @@ limitations under the License.
 #include "Engine/Engine.h"
 #include "ApiGear/Public/ApiGearConnectionManager.h"
 #include "Misc/DateTime.h"
+#include "TbSimpleSettings.h"
 THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
 #include "olink/iobjectsink.h"
 THIRD_PARTY_INCLUDES_END
-
-namespace
-{
-bool IsTbSimpleSimpleInterfaceLogEnabled()
-{
-	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
-	return settings->OLINK_EnableDebugLog;
-}
-} // namespace
 
 /**
    \brief data structure to hold the last sent property values
@@ -57,6 +49,7 @@ struct TbSimpleSimpleInterfacePropertiesData
 	double PropFloat64{0.0};
 	FString PropString{FString()};
 };
+DEFINE_LOG_CATEGORY(LogTbSimpleSimpleInterfaceOLinkClient);
 
 UTbSimpleSimpleInterfaceOLinkClient::UTbSimpleSimpleInterfaceOLinkClient()
 	: UAbstractTbSimpleSimpleInterface()
@@ -79,14 +72,6 @@ void UTbSimpleSimpleInterfaceOLinkClient::Initialize(FSubsystemCollectionBase& C
 {
 	Super::Initialize(Collection);
 
-	if (GEngine != nullptr)
-	{
-		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-		AGCM->GetOLinkConnection()->Connect();
-		AGCM->GetOLinkConnection()->node()->registry().addSink(m_sink);
-		AGCM->GetOLinkConnection()->linkObjectSource(m_sink->olinkObjectName());
-	}
-
 	FUnrealOLinkSink::FPropertyChangedFunc PropertyChangedFunc = [this](const nlohmann::json& props)
 	{
 		this->applyState(props);
@@ -98,6 +83,16 @@ void UTbSimpleSimpleInterfaceOLinkClient::Initialize(FSubsystemCollectionBase& C
 		this->emitSignal(signalName, args);
 	};
 	m_sink->setOnSignalEmittedCallback(SignalEmittedFunc);
+
+	check(GEngine);
+	UTbSimpleSettings* settings = GetMutableDefault<UTbSimpleSettings>();
+
+	UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+
+	TScriptInterface<IApiGearConnection> OLinkConnection = AGCM->GetConnection(settings->ConnectionIdentifier);
+
+	UseConnection(OLinkConnection);
+	OLinkConnection->Connect();
 }
 
 void UTbSimpleSimpleInterfaceOLinkClient::Deinitialize()
@@ -106,14 +101,39 @@ void UTbSimpleSimpleInterfaceOLinkClient::Deinitialize()
 	m_sink->resetOnPropertyChangedCallback();
 	m_sink->resetOnSignalEmittedCallback();
 
-	if (GEngine != nullptr)
+	if (Connection.GetObject())
 	{
-		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-		AGCM->GetOLinkConnection()->unlinkObjectSource(m_sink->olinkObjectName());
-		AGCM->GetOLinkConnection()->node()->registry().removeSink(m_sink->olinkObjectName());
+		UUnrealOLink* UnrealOLinkConnection = Cast<UUnrealOLink>(Connection.GetObject());
+		UnrealOLinkConnection->unlinkObjectSource(m_sink->olinkObjectName());
+		UnrealOLinkConnection->node()->registry().removeSink(m_sink->olinkObjectName());
 	}
 
 	Super::Deinitialize();
+}
+
+void UTbSimpleSimpleInterfaceOLinkClient::UseConnection(TScriptInterface<IApiGearConnection> InConnection)
+{
+	checkf(InConnection.GetInterface() != nullptr, TEXT("Cannot use connection - interface IApiGearConnection is not fully implemented"));
+
+	// only accept connections of type olink
+	checkf(InConnection->GetConnectionProtocolIdentifier() == "olink", TEXT("Cannot use connection - must be of type olink"));
+
+	UUnrealOLink* UnrealOLinkConnection = nullptr;
+	// remove old connection
+	if (Connection.GetObject())
+	{
+		UnrealOLinkConnection = Cast<UUnrealOLink>(Connection.GetObject());
+		UnrealOLinkConnection->unlinkObjectSource(m_sink->olinkObjectName());
+		UnrealOLinkConnection->node()->registry().removeSink(m_sink->olinkObjectName());
+		UnrealOLinkConnection = nullptr;
+	}
+
+	// set up new connection
+	UnrealOLinkConnection = Cast<UUnrealOLink>(InConnection.GetObject());
+	UnrealOLinkConnection->node()->registry().addSink(m_sink);
+	UnrealOLinkConnection->linkObjectSource(m_sink->olinkObjectName());
+
+	Connection = InConnection;
 }
 
 bool UTbSimpleSimpleInterfaceOLinkClient::GetPropBool_Implementation() const
@@ -125,6 +145,7 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropBool_Implementation(bool bInPro
 {
 	if (!m_sink->IsReady())
 	{
+		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return;
 	}
 
@@ -153,6 +174,7 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropInt_Implementation(int32 InProp
 {
 	if (!m_sink->IsReady())
 	{
+		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return;
 	}
 
@@ -181,6 +203,7 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropInt32_Implementation(int32 InPr
 {
 	if (!m_sink->IsReady())
 	{
+		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return;
 	}
 
@@ -209,6 +232,7 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropInt64_Implementation(int64 InPr
 {
 	if (!m_sink->IsReady())
 	{
+		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return;
 	}
 
@@ -237,6 +261,7 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropFloat_Implementation(float InPr
 {
 	if (!m_sink->IsReady())
 	{
+		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return;
 	}
 
@@ -265,6 +290,7 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropFloat32_Implementation(float In
 {
 	if (!m_sink->IsReady())
 	{
+		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return;
 	}
 
@@ -293,6 +319,7 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropFloat64_Implementation(double I
 {
 	if (!m_sink->IsReady())
 	{
+		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return;
 	}
 
@@ -321,6 +348,7 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropString_Implementation(const FSt
 {
 	if (!m_sink->IsReady())
 	{
+		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return;
 	}
 
@@ -344,10 +372,7 @@ void UTbSimpleSimpleInterfaceOLinkClient::FuncVoid_Implementation()
 {
 	if (!m_sink->IsReady())
 	{
-		if (IsTbSimpleSimpleInterfaceLogEnabled())
-		{
-			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-		}
+		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
 		return;
 	}
@@ -360,10 +385,7 @@ bool UTbSimpleSimpleInterfaceOLinkClient::FuncBool_Implementation(bool bParamBoo
 {
 	if (!m_sink->IsReady())
 	{
-		if (IsTbSimpleSimpleInterfaceLogEnabled())
-		{
-			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-		}
+		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
 		return false;
 	}
@@ -384,10 +406,7 @@ int32 UTbSimpleSimpleInterfaceOLinkClient::FuncInt_Implementation(int32 ParamInt
 {
 	if (!m_sink->IsReady())
 	{
-		if (IsTbSimpleSimpleInterfaceLogEnabled())
-		{
-			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-		}
+		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
 		return 0;
 	}
@@ -408,10 +427,7 @@ int32 UTbSimpleSimpleInterfaceOLinkClient::FuncInt32_Implementation(int32 ParamI
 {
 	if (!m_sink->IsReady())
 	{
-		if (IsTbSimpleSimpleInterfaceLogEnabled())
-		{
-			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-		}
+		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
 		return 0;
 	}
@@ -432,10 +448,7 @@ int64 UTbSimpleSimpleInterfaceOLinkClient::FuncInt64_Implementation(int64 ParamI
 {
 	if (!m_sink->IsReady())
 	{
-		if (IsTbSimpleSimpleInterfaceLogEnabled())
-		{
-			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-		}
+		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
 		return 0LL;
 	}
@@ -456,10 +469,7 @@ float UTbSimpleSimpleInterfaceOLinkClient::FuncFloat_Implementation(float ParamF
 {
 	if (!m_sink->IsReady())
 	{
-		if (IsTbSimpleSimpleInterfaceLogEnabled())
-		{
-			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-		}
+		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
 		return 0.0f;
 	}
@@ -480,10 +490,7 @@ float UTbSimpleSimpleInterfaceOLinkClient::FuncFloat32_Implementation(float Para
 {
 	if (!m_sink->IsReady())
 	{
-		if (IsTbSimpleSimpleInterfaceLogEnabled())
-		{
-			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-		}
+		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
 		return 0.0f;
 	}
@@ -504,10 +511,7 @@ double UTbSimpleSimpleInterfaceOLinkClient::FuncFloat64_Implementation(double Pa
 {
 	if (!m_sink->IsReady())
 	{
-		if (IsTbSimpleSimpleInterfaceLogEnabled())
-		{
-			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-		}
+		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
 		return 0.0;
 	}
@@ -528,10 +532,7 @@ FString UTbSimpleSimpleInterfaceOLinkClient::FuncString_Implementation(const FSt
 {
 	if (!m_sink->IsReady())
 	{
-		if (IsTbSimpleSimpleInterfaceLogEnabled())
-		{
-			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-		}
+		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
 		return FString();
 	}

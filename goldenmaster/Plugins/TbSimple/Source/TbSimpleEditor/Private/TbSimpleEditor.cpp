@@ -17,7 +17,9 @@ limitations under the License.
 
 #include "TbSimpleEditor.h"
 #include "ISettingsModule.h"
+#include "PropertyEditorModule.h"
 #include "TbSimpleSettings.h"
+#include "TbSimpleConnectionSettings.h"
 
 #define LOCTEXT_NAMESPACE "TbSimpleEditor"
 
@@ -30,6 +32,10 @@ void FTbSimpleEditorModule::StartupModule()
 	{
 		SettingsModule->RegisterSettings("Project", "Plugins", "ApiGear TbSimple", LOCTEXT("TbSimpleSettingsName", "ApiGear TbSimple"), LOCTEXT("TbSimpleSettingsDescription", "Project settings for ApiGear TbSimple plugin"), GetMutableDefault<UTbSimpleSettings>());
 	}
+
+	// register details customization
+	FPropertyEditorModule& PropertyModule = FModuleManager::LoadModuleChecked<FPropertyEditorModule>(TEXT("PropertyEditor"));
+	PropertyModule.RegisterCustomClassLayout("TbSimpleSettings", FOnGetDetailCustomizationInstance::CreateStatic(&FTbSimpleConnectionSettingsDetails::MakeInstance));
 }
 
 void FTbSimpleEditorModule::ShutdownModule()

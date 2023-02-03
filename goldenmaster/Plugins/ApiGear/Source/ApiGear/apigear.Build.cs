@@ -31,7 +31,11 @@ public class ApiGear : ModuleRules
 			new string[]
 			{
 				"CoreUObject",
-				"Engine"
+				"Engine",
+				// modules below are needed for connection settings
+				"InputCore",
+				"Slate",
+				"SlateCore"
 			}
 			);
 		

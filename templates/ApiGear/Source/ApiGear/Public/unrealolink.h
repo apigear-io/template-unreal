@@ -14,13 +14,21 @@ DECLARE_LOG_CATEGORY_EXTERN(LogApiGearOLink, Log, All);
 
 using namespace ApiGear;
 
-UCLASS(NotBlueprintType)
+class APIGEAR_API OLinkFactory
+{
+public:
+	static TScriptInterface<IApiGearConnection> Create(UObject* Outer, FString UniqueConnectionIdentifier);
+};
+
+UCLASS(BlueprintType, Displayname = "ApiGear ObjectLink Connection", Category = "ApiGear|Connection")
 class APIGEAR_API UUnrealOLink : public UAbstractApiGearConnection
 {
 	GENERATED_BODY()
 public:
 	explicit UUnrealOLink(const FObjectInitializer& ObjectInitializer);
 	virtual ~UUnrealOLink();
+
+	void Configure(FString InServerURL, bool bInAutoReconnectEnabled) override;
 
 	void log(const FString& logMessage);
 	void handleTextMessage(const FString& message);
@@ -35,20 +43,33 @@ public:
 	void OnConnected() override;
 	void OnDisconnected(bool bReconnect) override;
 
+	/** Returns the endpoint identifier for this connection, e.g. ip:port or #connID */
+	FString GetUniqueEndpointIdentifier() const override;
+	FString GetConnectionProtocolIdentifier() const override
+	{
+		return "olink";
+	};
+
 	std::shared_ptr<ApiGear::ObjectLink::ClientNode> node()
 	{
 		return m_node;
 	};
 
+	FString GetServerURL() const override
+	{
+		return m_serverURL;
+	};
+
 private:
+	bool bInitialized = false;
 	void open(const FString& url);
 	void processMessages();
 
 	TArray<std::string> ListLinkedObjects;
 
 	TSharedPtr<IWebSocket> m_socket;
-	bool m_loggingDisabled;
 	FString m_serverURL;
+	FString ConnectionIdentifier;
 	ApiGear::ObjectLink::ClientRegistry m_registry;
 	std::shared_ptr<ApiGear::ObjectLink::ClientNode> m_node;
 	TQueue<std::string, EQueueMode::Mpsc> m_queue;

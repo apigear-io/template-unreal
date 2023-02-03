@@ -17,7 +17,9 @@ limitations under the License.
 
 #include "TbEnumEditor.h"
 #include "ISettingsModule.h"
+#include "PropertyEditorModule.h"
 #include "TbEnumSettings.h"
+#include "TbEnumConnectionSettings.h"
 
 #define LOCTEXT_NAMESPACE "TbEnumEditor"
 
@@ -30,6 +32,10 @@ void FTbEnumEditorModule::StartupModule()
 	{
 		SettingsModule->RegisterSettings("Project", "Plugins", "ApiGear TbEnum", LOCTEXT("TbEnumSettingsName", "ApiGear TbEnum"), LOCTEXT("TbEnumSettingsDescription", "Project settings for ApiGear TbEnum plugin"), GetMutableDefault<UTbEnumSettings>());
 	}
+
+	// register details customization
+	FPropertyEditorModule& PropertyModule = FModuleManager::LoadModuleChecked<FPropertyEditorModule>(TEXT("PropertyEditor"));
+	PropertyModule.RegisterCustomClassLayout("TbEnumSettings", FOnGetDetailCustomizationInstance::CreateStatic(&FTbEnumConnectionSettingsDetails::MakeInstance));
 }
 
 void FTbEnumEditorModule::ShutdownModule()

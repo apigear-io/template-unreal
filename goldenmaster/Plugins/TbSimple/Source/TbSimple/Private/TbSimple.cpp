@@ -23,7 +23,6 @@ limitations under the License.
 
 void FTbSimpleModule::StartupModule()
 {
-	// No Libraries to load from non mobile platforms because of the web api
 }
 
 void FTbSimpleModule::ShutdownModule()

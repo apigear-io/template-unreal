@@ -31,6 +31,7 @@ THIRD_PARTY_INCLUDES_END
 #include "TbSame1SameEnum1InterfaceOLinkClient.generated.h"
 
 struct TbSame1SameEnum1InterfacePropertiesData;
+DECLARE_LOG_CATEGORY_EXTERN(LogTbSame1SameEnum1InterfaceOLinkClient, Log, All);
 
 UCLASS(NotBlueprintable, BlueprintType)
 class TBSAME1_API UTbSame1SameEnum1InterfaceOLinkClient : public UAbstractTbSame1SameEnum1Interface
@@ -54,6 +55,9 @@ public:
 	// operations
 	ETbSame1Enum1 Func1_Implementation(ETbSame1Enum1 Param1) override;
 
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1|SameEnum1Interface")
+	void UseConnection(TScriptInterface<class IApiGearConnection> InConnection);
+
 private:
 	void applyState(const nlohmann::json& fields);
 	void emitSignal(const std::string& signalName, const nlohmann::json& args);
@@ -65,4 +69,5 @@ private:
 #else
 	TPimplPtr<TbSame1SameEnum1InterfacePropertiesData> _SentData;
 #endif
+	TScriptInterface<class IApiGearConnection> Connection;
 };

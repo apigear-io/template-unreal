@@ -43,7 +43,6 @@ public class {{$ModuleName}} : ModuleRules
 {{- end }}
 				"Projects",
 				"Engine"
-				// ... add other public dependencies that you statically link with here ...
 			}
 			);
 			

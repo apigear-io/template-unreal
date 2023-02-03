@@ -29,19 +29,11 @@ limitations under the License.
 #include "Engine/Engine.h"
 #include "ApiGear/Public/ApiGearConnectionManager.h"
 #include "Misc/DateTime.h"
+#include "Testbed2Settings.h"
 THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
 #include "olink/iobjectsink.h"
 THIRD_PARTY_INCLUDES_END
-
-namespace
-{
-bool IsTestbed2NestedStruct2InterfaceLogEnabled()
-{
-	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
-	return settings->OLINK_EnableDebugLog;
-}
-} // namespace
 
 /**
    \brief data structure to hold the last sent property values
@@ -51,6 +43,7 @@ struct Testbed2NestedStruct2InterfacePropertiesData
 	FTestbed2NestedStruct1 Prop1{FTestbed2NestedStruct1()};
 	FTestbed2NestedStruct2 Prop2{FTestbed2NestedStruct2()};
 };
+DEFINE_LOG_CATEGORY(LogTestbed2NestedStruct2InterfaceOLinkClient);
 
 UTestbed2NestedStruct2InterfaceOLinkClient::UTestbed2NestedStruct2InterfaceOLinkClient()
 	: UAbstractTestbed2NestedStruct2Interface()
@@ -73,14 +66,6 @@ void UTestbed2NestedStruct2InterfaceOLinkClient::Initialize(FSubsystemCollection
 {
 	Super::Initialize(Collection);
 
-	if (GEngine != nullptr)
-	{
-		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-		AGCM->GetOLinkConnection()->Connect();
-		AGCM->GetOLinkConnection()->node()->registry().addSink(m_sink);
-		AGCM->GetOLinkConnection()->linkObjectSource(m_sink->olinkObjectName());
-	}
-
 	FUnrealOLinkSink::FPropertyChangedFunc PropertyChangedFunc = [this](const nlohmann::json& props)
 	{
 		this->applyState(props);
@@ -92,6 +77,16 @@ void UTestbed2NestedStruct2InterfaceOLinkClient::Initialize(FSubsystemCollection
 		this->emitSignal(signalName, args);
 	};
 	m_sink->setOnSignalEmittedCallback(SignalEmittedFunc);
+
+	check(GEngine);
+	UTestbed2Settings* settings = GetMutableDefault<UTestbed2Settings>();
+
+	UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+
+	TScriptInterface<IApiGearConnection> OLinkConnection = AGCM->GetConnection(settings->ConnectionIdentifier);
+
+	UseConnection(OLinkConnection);
+	OLinkConnection->Connect();
 }
 
 void UTestbed2NestedStruct2InterfaceOLinkClient::Deinitialize()
@@ -100,14 +95,39 @@ void UTestbed2NestedStruct2InterfaceOLinkClient::Deinitialize()
 	m_sink->resetOnPropertyChangedCallback();
 	m_sink->resetOnSignalEmittedCallback();
 
-	if (GEngine != nullptr)
+	if (Connection.GetObject())
 	{
-		UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-		AGCM->GetOLinkConnection()->unlinkObjectSource(m_sink->olinkObjectName());
-		AGCM->GetOLinkConnection()->node()->registry().removeSink(m_sink->olinkObjectName());
+		UUnrealOLink* UnrealOLinkConnection = Cast<UUnrealOLink>(Connection.GetObject());
+		UnrealOLinkConnection->unlinkObjectSource(m_sink->olinkObjectName());
+		UnrealOLinkConnection->node()->registry().removeSink(m_sink->olinkObjectName());
 	}
 
 	Super::Deinitialize();
+}
+
+void UTestbed2NestedStruct2InterfaceOLinkClient::UseConnection(TScriptInterface<IApiGearConnection> InConnection)
+{
+	checkf(InConnection.GetInterface() != nullptr, TEXT("Cannot use connection - interface IApiGearConnection is not fully implemented"));
+
+	// only accept connections of type olink
+	checkf(InConnection->GetConnectionProtocolIdentifier() == "olink", TEXT("Cannot use connection - must be of type olink"));
+
+	UUnrealOLink* UnrealOLinkConnection = nullptr;
+	// remove old connection
+	if (Connection.GetObject())
+	{
+		UnrealOLinkConnection = Cast<UUnrealOLink>(Connection.GetObject());
+		UnrealOLinkConnection->unlinkObjectSource(m_sink->olinkObjectName());
+		UnrealOLinkConnection->node()->registry().removeSink(m_sink->olinkObjectName());
+		UnrealOLinkConnection = nullptr;
+	}
+
+	// set up new connection
+	UnrealOLinkConnection = Cast<UUnrealOLink>(InConnection.GetObject());
+	UnrealOLinkConnection->node()->registry().addSink(m_sink);
+	UnrealOLinkConnection->linkObjectSource(m_sink->olinkObjectName());
+
+	Connection = InConnection;
 }
 
 FTestbed2NestedStruct1 UTestbed2NestedStruct2InterfaceOLinkClient::GetProp1_Implementation() const
@@ -119,6 +139,7 @@ void UTestbed2NestedStruct2InterfaceOLinkClient::SetProp1_Implementation(const F
 {
 	if (!m_sink->IsReady())
 	{
+		UE_LOG(LogTestbed2NestedStruct2InterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return;
 	}
 
@@ -147,6 +168,7 @@ void UTestbed2NestedStruct2InterfaceOLinkClient::SetProp2_Implementation(const F
 {
 	if (!m_sink->IsReady())
 	{
+		UE_LOG(LogTestbed2NestedStruct2InterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return;
 	}
 
@@ -170,10 +192,7 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct2InterfaceOLinkClient::Func1_Impleme
 {
 	if (!m_sink->IsReady())
 	{
-		if (IsTestbed2NestedStruct2InterfaceLogEnabled())
-		{
-			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-		}
+		UE_LOG(LogTestbed2NestedStruct2InterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
 		return FTestbed2NestedStruct1();
 	}
@@ -194,10 +213,7 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct2InterfaceOLinkClient::Func2_Impleme
 {
 	if (!m_sink->IsReady())
 	{
-		if (IsTestbed2NestedStruct2InterfaceLogEnabled())
-		{
-			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-		}
+		UE_LOG(LogTestbed2NestedStruct2InterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
 		return FTestbed2NestedStruct1();
 	}

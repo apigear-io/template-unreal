@@ -31,6 +31,7 @@ THIRD_PARTY_INCLUDES_END
 #include "TbSimpleSimpleArrayInterfaceOLinkClient.generated.h"
 
 struct TbSimpleSimpleArrayInterfacePropertiesData;
+DECLARE_LOG_CATEGORY_EXTERN(LogTbSimpleSimpleArrayInterfaceOLinkClient, Log, All);
 
 UCLASS(NotBlueprintable, BlueprintType)
 class TBSIMPLE_API UTbSimpleSimpleArrayInterfaceOLinkClient : public UAbstractTbSimpleSimpleArrayInterface
@@ -89,6 +90,9 @@ public:
 
 	TArray<FString> FuncString_Implementation(const TArray<FString>& ParamString) override;
 
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
+	void UseConnection(TScriptInterface<class IApiGearConnection> InConnection);
+
 private:
 	void applyState(const nlohmann::json& fields);
 	void emitSignal(const std::string& signalName, const nlohmann::json& args);
@@ -100,4 +104,5 @@ private:
 #else
 	TPimplPtr<TbSimpleSimpleArrayInterfacePropertiesData> _SentData;
 #endif
+	TScriptInterface<class IApiGearConnection> Connection;
 };

@@ -23,16 +23,6 @@ limitations under the License.
 #include "TbSame1Settings.generated.h"
 
 /**
- * Enumeration ETbSame1Connection
- */
-UENUM(BlueprintType)
-enum class ETbSame1Connection : uint8
-{
-	CONNECTION_LOCAL UMETA(Displayname = "Local"),
-	CONNECTION_OLINK UMETA(Displayname = "Remote OLink")
-};
-
-/**
  * Implements the settings for the TbSame1 plugin.
  */
 UCLASS(Config = Engine, DefaultConfig)
@@ -40,7 +30,9 @@ class TBSAME1_API UTbSame1Settings : public UObject
 {
 	GENERATED_UCLASS_BODY()
 
-	// Choose the backend service to use
+	virtual void PostInitProperties() override;
+
+	// Choose the backend service for the logging decorator to use
 	UPROPERTY(EditAnywhere, config, Category = ServiceSetup)
-	ETbSame1Connection ServiceConnection;
+	FString ConnectionIdentifier;
 };

@@ -74,17 +74,26 @@ TScriptInterface<ITestbed1StructInterfaceInterface> createTestbed1StructInterfac
 
 TScriptInterface<ITestbed1StructInterfaceInterface> FTestbed1ModuleFactory::createITestbed1StructInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	UTestbed1Settings* settings = GetMutableDefault<UTestbed1Settings>();
+	UTestbed1Settings* Testbed1Settings = GetMutableDefault<UTestbed1Settings>();
 
-	switch (settings->ServiceConnection)
+	if (Testbed1Settings->ConnectionIdentifier == "Local")
 	{
-	case ETestbed1Connection::CONNECTION_OLINK:
-		return createTestbed1StructInterfaceOLink(GameInstance, Collection);
-	case ETestbed1Connection::CONNECTION_LOCAL:
-		return createTestbed1StructInterface(GameInstance, Collection);
-	default:
 		return createTestbed1StructInterface(GameInstance, Collection);
 	}
+
+	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(Testbed1Settings->ConnectionIdentifier);
+
+	// Other protocols not supported. To support it edit templates:
+	// add protocol handler class for this interface like createTestbed1StructInterfaceOLink and other necessary infrastructure
+	// extend this function in templates to handle protocol of your choice
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	{
+		return createTestbed1StructInterfaceOLink(GameInstance, Collection);
+	}
+
+	// fallback to local implementation
+	return createTestbed1StructInterface(GameInstance, Collection);
 }
 
 #else
@@ -113,17 +122,26 @@ TScriptInterface<ITestbed1StructInterfaceInterface> createTestbed1StructInterfac
 
 TScriptInterface<ITestbed1StructInterfaceInterface> FTestbed1ModuleFactory::createITestbed1StructInterfaceInterface(FSubsystemCollectionBase& Collection)
 {
-	UTestbed1Settings* settings = GetMutableDefault<UTestbed1Settings>();
+	UTestbed1Settings* Testbed1Settings = GetMutableDefault<UTestbed1Settings>();
 
-	switch (settings->ServiceConnection)
+	if (Testbed1Settings->ConnectionIdentifier == "Local")
 	{
-	case ETestbed1Connection::CONNECTION_OLINK:
-		return createTestbed1StructInterfaceOLink(Collection);
-	case ETestbed1Connection::CONNECTION_LOCAL:
-		return createTestbed1StructInterface(Collection);
-	default:
 		return createTestbed1StructInterface(Collection);
 	}
+
+	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(Testbed1Settings->ConnectionIdentifier);
+
+	// Other protocols not supported. To support it edit templates:
+	// add protocol handler class for this interface like createTestbed1StructInterfaceOLink and other necessary infrastructure
+	// extend this function in templates to handle protocol of your choice
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	{
+		return createTestbed1StructInterfaceOLink(Collection);
+	}
+
+	// fallback to local implementation
+	return createTestbed1StructInterface(Collection);
 }
 #endif
 
@@ -164,17 +182,26 @@ TScriptInterface<ITestbed1StructArrayInterfaceInterface> createTestbed1StructArr
 
 TScriptInterface<ITestbed1StructArrayInterfaceInterface> FTestbed1ModuleFactory::createITestbed1StructArrayInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	UTestbed1Settings* settings = GetMutableDefault<UTestbed1Settings>();
+	UTestbed1Settings* Testbed1Settings = GetMutableDefault<UTestbed1Settings>();
 
-	switch (settings->ServiceConnection)
+	if (Testbed1Settings->ConnectionIdentifier == "Local")
 	{
-	case ETestbed1Connection::CONNECTION_OLINK:
-		return createTestbed1StructArrayInterfaceOLink(GameInstance, Collection);
-	case ETestbed1Connection::CONNECTION_LOCAL:
-		return createTestbed1StructArrayInterface(GameInstance, Collection);
-	default:
 		return createTestbed1StructArrayInterface(GameInstance, Collection);
 	}
+
+	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(Testbed1Settings->ConnectionIdentifier);
+
+	// Other protocols not supported. To support it edit templates:
+	// add protocol handler class for this interface like createTestbed1StructArrayInterfaceOLink and other necessary infrastructure
+	// extend this function in templates to handle protocol of your choice
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	{
+		return createTestbed1StructArrayInterfaceOLink(GameInstance, Collection);
+	}
+
+	// fallback to local implementation
+	return createTestbed1StructArrayInterface(GameInstance, Collection);
 }
 
 #else
@@ -203,16 +230,25 @@ TScriptInterface<ITestbed1StructArrayInterfaceInterface> createTestbed1StructArr
 
 TScriptInterface<ITestbed1StructArrayInterfaceInterface> FTestbed1ModuleFactory::createITestbed1StructArrayInterfaceInterface(FSubsystemCollectionBase& Collection)
 {
-	UTestbed1Settings* settings = GetMutableDefault<UTestbed1Settings>();
+	UTestbed1Settings* Testbed1Settings = GetMutableDefault<UTestbed1Settings>();
 
-	switch (settings->ServiceConnection)
+	if (Testbed1Settings->ConnectionIdentifier == "Local")
 	{
-	case ETestbed1Connection::CONNECTION_OLINK:
-		return createTestbed1StructArrayInterfaceOLink(Collection);
-	case ETestbed1Connection::CONNECTION_LOCAL:
-		return createTestbed1StructArrayInterface(Collection);
-	default:
 		return createTestbed1StructArrayInterface(Collection);
 	}
+
+	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(Testbed1Settings->ConnectionIdentifier);
+
+	// Other protocols not supported. To support it edit templates:
+	// add protocol handler class for this interface like createTestbed1StructArrayInterfaceOLink and other necessary infrastructure
+	// extend this function in templates to handle protocol of your choice
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	{
+		return createTestbed1StructArrayInterfaceOLink(Collection);
+	}
+
+	// fallback to local implementation
+	return createTestbed1StructArrayInterface(Collection);
 }
 #endif

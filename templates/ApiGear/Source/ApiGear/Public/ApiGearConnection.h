@@ -23,7 +23,14 @@ enum class EApiGearConnectionState : uint8
 DECLARE_MULTICAST_DELEGATE_OneParam(FApiGearConnectionIsConnectedDelegate, bool);
 DECLARE_MULTICAST_DELEGATE_OneParam(FApiGearConnectionStateChangedDelegate, EApiGearConnectionState);
 
-UINTERFACE(MinimalAPI)
+/** 
+ * @brief An interface for all connections meant to be used by ApiGear
+ * ensures all connections have:
+ * - settings for reconnection
+ * - current state
+ * - general state and settings accessors
+ */
+UINTERFACE(MinimalAPI, meta = (CannotImplementInterfaceInBlueprint))
 class UApiGearConnection : public UInterface
 {
 	GENERATED_BODY()
@@ -37,29 +44,49 @@ public:
 	virtual FApiGearConnectionIsConnectedDelegate& GetIsConnectedChangedDelegate() = 0;
 	virtual FApiGearConnectionStateChangedDelegate& GetConnectionStateChangedDelegate() = 0;
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection")
+	virtual void Configure(FString InServerURL, bool bInAutoReconnectEnabled) = 0;
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection")
 	virtual void Connect() = 0;
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection")
 	virtual void OnConnected() = 0;
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection")
 	virtual void Disconnect() = 0;
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection")
 	virtual void OnDisconnected(bool bReconnect) = 0;
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection")
 	virtual bool IsConnected() = 0;
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection")
 	virtual void StopReconnecting() = 0;
 
-	UFUNCTION()
+	/** Returns the endpoint identifier for this connection, e.g. simulation or phone_service */
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection")
+	virtual FString GetUniqueEndpointIdentifier() const = 0;
+
+	/** Returns the server URL */
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection")
+	virtual FString GetServerURL() const = 0;
+
+	/** Returns the type identifier for this connection, e.g. olink */
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection")
+	virtual FString GetConnectionProtocolIdentifier() const = 0;
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection")
 	virtual EApiGearConnectionState GetConnectionState() = 0;
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection")
 	virtual void SetAutoReconnectEnabled(bool enable) = 0;
-	UFUNCTION()
-	virtual bool IsAutoReconnectEnabled() = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection")
+	virtual bool IsAutoReconnectEnabled() const = 0;
 };
 
-UCLASS(Abstract, NotBlueprintType)
+/**
+ * @brief Abstract base for IApiGearConnection implementation
+ * Implements state management and handles common reconnection functionality. Exposes delegates.
+ * Does not add the actual connection handling - it needs to be implemented by the final connection.
+ */
+UCLASS(Abstract, NotBlueprintable)
 class APIGEAR_API UAbstractApiGearConnection : public UObject, public IApiGearConnection
 {
 	GENERATED_BODY()
@@ -69,26 +96,23 @@ public:
 	FApiGearConnectionIsConnectedDelegate& GetIsConnectedChangedDelegate() override;
 	FApiGearConnectionStateChangedDelegate& GetConnectionStateChangedDelegate() override;
 
-	UFUNCTION()
-	virtual void OnConnected() override;
-	UFUNCTION()
-	virtual void OnDisconnected(bool bReconnect) override;
-	UFUNCTION()
-	virtual void Connect() override;
-	UFUNCTION()
-	virtual void Disconnect() PURE_VIRTUAL(UAbstractApiGearConnection::Disconnect, );
-	UFUNCTION()
-	virtual bool IsConnected() PURE_VIRTUAL(UAbstractApiGearConnection::IsConnected, return false;);
-	UFUNCTION()
-	virtual void StopReconnecting() override;
+	void Configure(FString InServerURL, bool bInAutoReconnectEnabled) PURE_VIRTUAL(UAbstractApiGearConnection::Configure, );
+	FString GetServerURL() const PURE_VIRTUAL(UAbstractApiGearConnection::GetServerURL, return "";);
 
-	UFUNCTION()
-	virtual EApiGearConnectionState GetConnectionState() override;
+	void OnConnected() override;
+	void OnDisconnected(bool bReconnect) override;
+	void Connect() override;
+	void Disconnect() PURE_VIRTUAL(UAbstractApiGearConnection::Disconnect, );
+	bool IsConnected() PURE_VIRTUAL(UAbstractApiGearConnection::IsConnected, return false;);
+	void StopReconnecting() override;
 
-	UFUNCTION()
-	virtual void SetAutoReconnectEnabled(bool enable);
-	UFUNCTION()
-	virtual bool IsAutoReconnectEnabled();
+	FString GetUniqueEndpointIdentifier() const PURE_VIRTUAL(UAbstractApiGearConnection::GetUniqueEndpointIdentifier, return "";);
+	FString GetConnectionProtocolIdentifier() const PURE_VIRTUAL(UAbstractApiGearConnection::GetConnectionProtocolIdentifier, return "";);
+
+	EApiGearConnectionState GetConnectionState() override;
+
+	void SetAutoReconnectEnabled(bool enable) override;
+	bool IsAutoReconnectEnabled() const override;
 
 private:
 	void SetConnectionState(EApiGearConnectionState State);

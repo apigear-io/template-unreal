@@ -78,17 +78,26 @@ TScriptInterface<ITestbed2ManyParamInterfaceInterface> createTestbed2ManyParamIn
 
 TScriptInterface<ITestbed2ManyParamInterfaceInterface> FTestbed2ModuleFactory::createITestbed2ManyParamInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	UTestbed2Settings* settings = GetMutableDefault<UTestbed2Settings>();
+	UTestbed2Settings* Testbed2Settings = GetMutableDefault<UTestbed2Settings>();
 
-	switch (settings->ServiceConnection)
+	if (Testbed2Settings->ConnectionIdentifier == "Local")
 	{
-	case ETestbed2Connection::CONNECTION_OLINK:
-		return createTestbed2ManyParamInterfaceOLink(GameInstance, Collection);
-	case ETestbed2Connection::CONNECTION_LOCAL:
-		return createTestbed2ManyParamInterface(GameInstance, Collection);
-	default:
 		return createTestbed2ManyParamInterface(GameInstance, Collection);
 	}
+
+	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(Testbed2Settings->ConnectionIdentifier);
+
+	// Other protocols not supported. To support it edit templates:
+	// add protocol handler class for this interface like createTestbed2ManyParamInterfaceOLink and other necessary infrastructure
+	// extend this function in templates to handle protocol of your choice
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	{
+		return createTestbed2ManyParamInterfaceOLink(GameInstance, Collection);
+	}
+
+	// fallback to local implementation
+	return createTestbed2ManyParamInterface(GameInstance, Collection);
 }
 
 #else
@@ -117,17 +126,26 @@ TScriptInterface<ITestbed2ManyParamInterfaceInterface> createTestbed2ManyParamIn
 
 TScriptInterface<ITestbed2ManyParamInterfaceInterface> FTestbed2ModuleFactory::createITestbed2ManyParamInterfaceInterface(FSubsystemCollectionBase& Collection)
 {
-	UTestbed2Settings* settings = GetMutableDefault<UTestbed2Settings>();
+	UTestbed2Settings* Testbed2Settings = GetMutableDefault<UTestbed2Settings>();
 
-	switch (settings->ServiceConnection)
+	if (Testbed2Settings->ConnectionIdentifier == "Local")
 	{
-	case ETestbed2Connection::CONNECTION_OLINK:
-		return createTestbed2ManyParamInterfaceOLink(Collection);
-	case ETestbed2Connection::CONNECTION_LOCAL:
-		return createTestbed2ManyParamInterface(Collection);
-	default:
 		return createTestbed2ManyParamInterface(Collection);
 	}
+
+	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(Testbed2Settings->ConnectionIdentifier);
+
+	// Other protocols not supported. To support it edit templates:
+	// add protocol handler class for this interface like createTestbed2ManyParamInterfaceOLink and other necessary infrastructure
+	// extend this function in templates to handle protocol of your choice
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	{
+		return createTestbed2ManyParamInterfaceOLink(Collection);
+	}
+
+	// fallback to local implementation
+	return createTestbed2ManyParamInterface(Collection);
 }
 #endif
 
@@ -168,17 +186,26 @@ TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> createTestbed2NestedS
 
 TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> FTestbed2ModuleFactory::createITestbed2NestedStruct1InterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	UTestbed2Settings* settings = GetMutableDefault<UTestbed2Settings>();
+	UTestbed2Settings* Testbed2Settings = GetMutableDefault<UTestbed2Settings>();
 
-	switch (settings->ServiceConnection)
+	if (Testbed2Settings->ConnectionIdentifier == "Local")
 	{
-	case ETestbed2Connection::CONNECTION_OLINK:
-		return createTestbed2NestedStruct1InterfaceOLink(GameInstance, Collection);
-	case ETestbed2Connection::CONNECTION_LOCAL:
-		return createTestbed2NestedStruct1Interface(GameInstance, Collection);
-	default:
 		return createTestbed2NestedStruct1Interface(GameInstance, Collection);
 	}
+
+	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(Testbed2Settings->ConnectionIdentifier);
+
+	// Other protocols not supported. To support it edit templates:
+	// add protocol handler class for this interface like createTestbed2NestedStruct1InterfaceOLink and other necessary infrastructure
+	// extend this function in templates to handle protocol of your choice
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	{
+		return createTestbed2NestedStruct1InterfaceOLink(GameInstance, Collection);
+	}
+
+	// fallback to local implementation
+	return createTestbed2NestedStruct1Interface(GameInstance, Collection);
 }
 
 #else
@@ -207,17 +234,26 @@ TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> createTestbed2NestedS
 
 TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> FTestbed2ModuleFactory::createITestbed2NestedStruct1InterfaceInterface(FSubsystemCollectionBase& Collection)
 {
-	UTestbed2Settings* settings = GetMutableDefault<UTestbed2Settings>();
+	UTestbed2Settings* Testbed2Settings = GetMutableDefault<UTestbed2Settings>();
 
-	switch (settings->ServiceConnection)
+	if (Testbed2Settings->ConnectionIdentifier == "Local")
 	{
-	case ETestbed2Connection::CONNECTION_OLINK:
-		return createTestbed2NestedStruct1InterfaceOLink(Collection);
-	case ETestbed2Connection::CONNECTION_LOCAL:
-		return createTestbed2NestedStruct1Interface(Collection);
-	default:
 		return createTestbed2NestedStruct1Interface(Collection);
 	}
+
+	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(Testbed2Settings->ConnectionIdentifier);
+
+	// Other protocols not supported. To support it edit templates:
+	// add protocol handler class for this interface like createTestbed2NestedStruct1InterfaceOLink and other necessary infrastructure
+	// extend this function in templates to handle protocol of your choice
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	{
+		return createTestbed2NestedStruct1InterfaceOLink(Collection);
+	}
+
+	// fallback to local implementation
+	return createTestbed2NestedStruct1Interface(Collection);
 }
 #endif
 
@@ -258,17 +294,26 @@ TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> createTestbed2NestedS
 
 TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> FTestbed2ModuleFactory::createITestbed2NestedStruct2InterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	UTestbed2Settings* settings = GetMutableDefault<UTestbed2Settings>();
+	UTestbed2Settings* Testbed2Settings = GetMutableDefault<UTestbed2Settings>();
 
-	switch (settings->ServiceConnection)
+	if (Testbed2Settings->ConnectionIdentifier == "Local")
 	{
-	case ETestbed2Connection::CONNECTION_OLINK:
-		return createTestbed2NestedStruct2InterfaceOLink(GameInstance, Collection);
-	case ETestbed2Connection::CONNECTION_LOCAL:
-		return createTestbed2NestedStruct2Interface(GameInstance, Collection);
-	default:
 		return createTestbed2NestedStruct2Interface(GameInstance, Collection);
 	}
+
+	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(Testbed2Settings->ConnectionIdentifier);
+
+	// Other protocols not supported. To support it edit templates:
+	// add protocol handler class for this interface like createTestbed2NestedStruct2InterfaceOLink and other necessary infrastructure
+	// extend this function in templates to handle protocol of your choice
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	{
+		return createTestbed2NestedStruct2InterfaceOLink(GameInstance, Collection);
+	}
+
+	// fallback to local implementation
+	return createTestbed2NestedStruct2Interface(GameInstance, Collection);
 }
 
 #else
@@ -297,17 +342,26 @@ TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> createTestbed2NestedS
 
 TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> FTestbed2ModuleFactory::createITestbed2NestedStruct2InterfaceInterface(FSubsystemCollectionBase& Collection)
 {
-	UTestbed2Settings* settings = GetMutableDefault<UTestbed2Settings>();
+	UTestbed2Settings* Testbed2Settings = GetMutableDefault<UTestbed2Settings>();
 
-	switch (settings->ServiceConnection)
+	if (Testbed2Settings->ConnectionIdentifier == "Local")
 	{
-	case ETestbed2Connection::CONNECTION_OLINK:
-		return createTestbed2NestedStruct2InterfaceOLink(Collection);
-	case ETestbed2Connection::CONNECTION_LOCAL:
-		return createTestbed2NestedStruct2Interface(Collection);
-	default:
 		return createTestbed2NestedStruct2Interface(Collection);
 	}
+
+	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(Testbed2Settings->ConnectionIdentifier);
+
+	// Other protocols not supported. To support it edit templates:
+	// add protocol handler class for this interface like createTestbed2NestedStruct2InterfaceOLink and other necessary infrastructure
+	// extend this function in templates to handle protocol of your choice
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	{
+		return createTestbed2NestedStruct2InterfaceOLink(Collection);
+	}
+
+	// fallback to local implementation
+	return createTestbed2NestedStruct2Interface(Collection);
 }
 #endif
 
@@ -348,17 +402,26 @@ TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> createTestbed2NestedS
 
 TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> FTestbed2ModuleFactory::createITestbed2NestedStruct3InterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	UTestbed2Settings* settings = GetMutableDefault<UTestbed2Settings>();
+	UTestbed2Settings* Testbed2Settings = GetMutableDefault<UTestbed2Settings>();
 
-	switch (settings->ServiceConnection)
+	if (Testbed2Settings->ConnectionIdentifier == "Local")
 	{
-	case ETestbed2Connection::CONNECTION_OLINK:
-		return createTestbed2NestedStruct3InterfaceOLink(GameInstance, Collection);
-	case ETestbed2Connection::CONNECTION_LOCAL:
-		return createTestbed2NestedStruct3Interface(GameInstance, Collection);
-	default:
 		return createTestbed2NestedStruct3Interface(GameInstance, Collection);
 	}
+
+	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(Testbed2Settings->ConnectionIdentifier);
+
+	// Other protocols not supported. To support it edit templates:
+	// add protocol handler class for this interface like createTestbed2NestedStruct3InterfaceOLink and other necessary infrastructure
+	// extend this function in templates to handle protocol of your choice
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	{
+		return createTestbed2NestedStruct3InterfaceOLink(GameInstance, Collection);
+	}
+
+	// fallback to local implementation
+	return createTestbed2NestedStruct3Interface(GameInstance, Collection);
 }
 
 #else
@@ -387,16 +450,25 @@ TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> createTestbed2NestedS
 
 TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> FTestbed2ModuleFactory::createITestbed2NestedStruct3InterfaceInterface(FSubsystemCollectionBase& Collection)
 {
-	UTestbed2Settings* settings = GetMutableDefault<UTestbed2Settings>();
+	UTestbed2Settings* Testbed2Settings = GetMutableDefault<UTestbed2Settings>();
 
-	switch (settings->ServiceConnection)
+	if (Testbed2Settings->ConnectionIdentifier == "Local")
 	{
-	case ETestbed2Connection::CONNECTION_OLINK:
-		return createTestbed2NestedStruct3InterfaceOLink(Collection);
-	case ETestbed2Connection::CONNECTION_LOCAL:
-		return createTestbed2NestedStruct3Interface(Collection);
-	default:
 		return createTestbed2NestedStruct3Interface(Collection);
 	}
+
+	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(Testbed2Settings->ConnectionIdentifier);
+
+	// Other protocols not supported. To support it edit templates:
+	// add protocol handler class for this interface like createTestbed2NestedStruct3InterfaceOLink and other necessary infrastructure
+	// extend this function in templates to handle protocol of your choice
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	{
+		return createTestbed2NestedStruct3InterfaceOLink(Collection);
+	}
+
+	// fallback to local implementation
+	return createTestbed2NestedStruct3Interface(Collection);
 }
 #endif

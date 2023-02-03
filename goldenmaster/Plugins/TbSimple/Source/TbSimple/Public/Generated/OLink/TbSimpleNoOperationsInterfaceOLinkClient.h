@@ -31,6 +31,7 @@ THIRD_PARTY_INCLUDES_END
 #include "TbSimpleNoOperationsInterfaceOLinkClient.generated.h"
 
 struct TbSimpleNoOperationsInterfacePropertiesData;
+DECLARE_LOG_CATEGORY_EXTERN(LogTbSimpleNoOperationsInterfaceOLinkClient, Log, All);
 
 UCLASS(NotBlueprintable, BlueprintType)
 class TBSIMPLE_API UTbSimpleNoOperationsInterfaceOLinkClient : public UAbstractTbSimpleNoOperationsInterface
@@ -56,6 +57,9 @@ public:
 
 	// operations
 
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoOperationsInterface")
+	void UseConnection(TScriptInterface<class IApiGearConnection> InConnection);
+
 private:
 	void applyState(const nlohmann::json& fields);
 	void emitSignal(const std::string& signalName, const nlohmann::json& args);
@@ -67,4 +71,5 @@ private:
 #else
 	TPimplPtr<TbSimpleNoOperationsInterfacePropertiesData> _SentData;
 #endif
+	TScriptInterface<class IApiGearConnection> Connection;
 };

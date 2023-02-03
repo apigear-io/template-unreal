@@ -23,16 +23,6 @@ limitations under the License.
 #include "TbSimpleSettings.generated.h"
 
 /**
- * Enumeration ETbSimpleConnection
- */
-UENUM(BlueprintType)
-enum class ETbSimpleConnection : uint8
-{
-	CONNECTION_LOCAL UMETA(Displayname = "Local"),
-	CONNECTION_OLINK UMETA(Displayname = "Remote OLink")
-};
-
-/**
  * Implements the settings for the TbSimple plugin.
  */
 UCLASS(Config = Engine, DefaultConfig)
@@ -40,7 +30,9 @@ class TBSIMPLE_API UTbSimpleSettings : public UObject
 {
 	GENERATED_UCLASS_BODY()
 
-	// Choose the backend service to use
+	virtual void PostInitProperties() override;
+
+	// Choose the backend service for the logging decorator to use
 	UPROPERTY(EditAnywhere, config, Category = ServiceSetup)
-	ETbSimpleConnection ServiceConnection;
+	FString ConnectionIdentifier;
 };

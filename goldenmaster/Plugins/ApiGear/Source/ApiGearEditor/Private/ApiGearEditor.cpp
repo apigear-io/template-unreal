@@ -6,12 +6,14 @@
 #include "ISettingsModule.h"
 #include "ApiGearSettings.h"
 #include "ApiGearConnectionManager.h"
+#include "ApiGearConnection.h"
 #include "LevelEditor.h"
 #include "Runtime/Launch/Resources/Version.h"
 #include "Widgets/Docking/SDockTab.h"
 #include "Widgets/Input/SButton.h"
 #include "Widgets/Layout/SBox.h"
 #include "Widgets/Text/STextBlock.h"
+#include "Widgets/Views/SListView.h"
 #include "ToolMenus.h"
 
 static const FName ApiGearConnectionTabName("ApiGear Connections");
@@ -67,9 +69,8 @@ void FApiGearEditorModule::ShutdownModule()
 
 TSharedRef<SDockTab> FApiGearEditorModule::OnSpawnPluginTab(const FSpawnTabArgs& SpawnTabArgs)
 {
-	FText OLinkSectionText = FText::FromString(TEXT("OLink"));
-	FText ConnectButtonText = FText::FromString(TEXT("Connect"));
-	FText DisconnectButtonText = FText::FromString(TEXT("Disconnect"));
+	check(GEngine);
+	AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
 
 	// clang-format off
 	TSharedRef<SDockTab> retTab = SNew(SDockTab)
@@ -78,33 +79,7 @@ TSharedRef<SDockTab> FApiGearEditorModule::OnSpawnPluginTab(const FSpawnTabArgs&
 			SNew(SVerticalBox)
 			+ SVerticalBox::Slot()
 			[
-				SNew(SVerticalBox)
-				+ SVerticalBox::Slot()
-				[
-					SNew(STextBlock)
-					.Text(OLinkSectionText)
-				]
-				+ SVerticalBox::Slot()
-				[
-					SNew(SHorizontalBox)
-					+ SHorizontalBox::Slot()
-					[
-						SNew(STextBlock)
-						.Text_Raw(this, &FApiGearEditorModule::OLinkConnectionStatus)
-					]
-					+ SHorizontalBox::Slot()
-					[
-						SNew(SButton)
-						.Text(ConnectButtonText)
-						.OnClicked_Raw(this, &FApiGearEditorModule::OLinkConnectButtonClicked)
-					]
-					+ SHorizontalBox::Slot()
-					[
-						SNew(SButton)
-						.Text(DisconnectButtonText)
-						.OnClicked_Raw(this, &FApiGearEditorModule::OLinkDisconnectButtonClicked)
-					]
-				]
+				MakeConnectionsOverviewWidget()
 			]
 		];
 	// clang-format on
@@ -121,27 +96,41 @@ void FApiGearEditorModule::PluginButtonClicked()
 #endif
 }
 
-FReply FApiGearEditorModule::OLinkConnectButtonClicked()
+FReply FApiGearEditorModule::ConnectButtonClicked(FString InConnectionName)
 {
-	UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-	AGCM->ConnectOLink();
+	AGCM->GetConnection(InConnectionName)->Connect();
 
 	return FReply::Handled();
 }
 
-FReply FApiGearEditorModule::OLinkDisconnectButtonClicked()
+FReply FApiGearEditorModule::DisconnectButtonClicked(FString InConnectionName)
 {
-	UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-	AGCM->DisconnectOLink();
+	AGCM->GetConnection(InConnectionName)->Disconnect();
 
 	return FReply::Handled();
 }
 
-FText FApiGearEditorModule::OLinkConnectionStatus() const
+FText FApiGearEditorModule::ConnectionEndpoint(FString InConnectionName) const
 {
-	UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+	FString ServerUrl = AGCM->GetConnection(InConnectionName)->GetServerURL();
+	FString Protocol = AGCM->GetConnection(InConnectionName)->GetConnectionProtocolIdentifier();
 
-	return FText::FromString(UEnum::GetValueAsName(AGCM->GetOLinkConnection()->GetConnectionState()).ToString());
+	return FText::Format(LOCTEXT("ConnectionEndpoint", "{0} ({1})"), FText::FromString(ServerUrl), FText::FromString(Protocol));
+}
+
+FText FApiGearEditorModule::ConnectionStatus(FString InConnectionName) const
+{
+	switch (AGCM->GetConnection(InConnectionName)->GetConnectionState())
+	{
+	case EApiGearConnectionState::Connected:
+		return FText::FromString("Connected");
+	case EApiGearConnectionState::Disconnected:
+		return FText::FromString("Disconnected");
+	case EApiGearConnectionState::Connecting:
+		return FText::FromString("Connecting");
+	default:
+		return FText::FromString("None");
+	}
 }
 
 void FApiGearEditorModule::RegisterMenus()
@@ -167,6 +156,74 @@ void FApiGearEditorModule::RegisterMenus()
 			}
 		}
 	}
+}
+
+TSharedRef<SWidget> FApiGearEditorModule::MakeSingleConnectionOverviewWidget(TSharedPtr<FText> InConnectionName)
+{
+	FText ConnectButtonText = FText::FromString(TEXT("Connect"));
+	FText DisconnectButtonText = FText::FromString(TEXT("Disconnect"));
+
+	// clang-format off
+	TSharedRef<SWidget> singleConnectionWidget = 
+		SNew(SHorizontalBox)
+			+ SHorizontalBox::Slot()
+			.HAlign(HAlign_Left)
+			[
+				SNew(STextBlock)
+				.Text(*InConnectionName)
+			]
+			+ SHorizontalBox::Slot()
+			.HAlign(HAlign_Center)
+			[
+				SNew(STextBlock)
+				.Text_Raw(this, &FApiGearEditorModule::ConnectionStatus, InConnectionName->ToString())
+			]
+			+ SHorizontalBox::Slot()
+			.HAlign(HAlign_Center)
+			.AutoWidth()
+			[
+				SNew(SButton)
+				.Text(ConnectButtonText)
+				.OnClicked_Raw(this, &FApiGearEditorModule::ConnectButtonClicked, InConnectionName->ToString())
+			]
+			+ SHorizontalBox::Slot()
+			.HAlign(HAlign_Center)
+			.AutoWidth()
+			[
+				SNew(SButton)
+				.Text(DisconnectButtonText)
+				.OnClicked_Raw(this, &FApiGearEditorModule::DisconnectButtonClicked, InConnectionName->ToString())
+			];
+	// clang-format on
+
+	return singleConnectionWidget;
+}
+
+TSharedRef<SWidget> FApiGearEditorModule::MakeConnectionsOverviewWidget()
+{
+	TArray<FString> ConnectionNames;
+	TArray<TSharedPtr<FText>>* ConnectionNamesShareable = &CurrentConnections;
+	AGCM->GetConnections().GenerateKeyArray(ConnectionNames);
+	for (auto& ConnectionName : ConnectionNames)
+	{
+		ConnectionNamesShareable->Add(MakeShared<FText>(FText::FromString(ConnectionName)));
+	}
+
+	// clang-format off
+	TSharedRef<SWidget> ConnectionsOverviewList = SNew(SListView<TSharedPtr<FText>>)
+		.ListItemsSource(ConnectionNamesShareable)
+		.OnGenerateRow_Lambda([this](TSharedPtr<FText> InConnectionName, const TSharedRef< class STableViewBase >& Owner)
+		{
+			return SNew(STableRow<TSharedPtr<FText>>, Owner)
+					.Padding(FMargin(16, 4, 16, 4))
+					.ToolTipText_Raw(this, &FApiGearEditorModule::ConnectionEndpoint, InConnectionName->ToString())
+					[
+						MakeSingleConnectionOverviewWidget(InConnectionName)
+					];
+		});
+	// clang-format on
+
+	return ConnectionsOverviewList;
 }
 
 IMPLEMENT_MODULE(FApiGearEditorModule, ApiGearEditor)
