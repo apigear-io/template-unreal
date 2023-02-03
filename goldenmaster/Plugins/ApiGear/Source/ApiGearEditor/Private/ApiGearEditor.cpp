@@ -68,7 +68,6 @@ void FApiGearEditorModule::ShutdownModule()
 TSharedRef<SDockTab> FApiGearEditorModule::OnSpawnPluginTab(const FSpawnTabArgs& SpawnTabArgs)
 {
 	FText OLinkSectionText = FText::FromString(TEXT("OLink"));
-	FText SimulationSectionText = FText::FromString(TEXT("Simulation"));
 	FText ConnectButtonText = FText::FromString(TEXT("Connect"));
 	FText DisconnectButtonText = FText::FromString(TEXT("Disconnect"));
 
@@ -104,32 +103,6 @@ TSharedRef<SDockTab> FApiGearEditorModule::OnSpawnPluginTab(const FSpawnTabArgs&
 						SNew(SButton)
 						.Text(DisconnectButtonText)
 						.OnClicked_Raw(this, &FApiGearEditorModule::OLinkDisconnectButtonClicked)
-					]
-				]
-				+ SVerticalBox::Slot()
-				[
-					SNew(STextBlock)
-					.Text(SimulationSectionText)
-				]
-				+ SVerticalBox::Slot()
-				[
-					SNew(SHorizontalBox)
-					+ SHorizontalBox::Slot()
-					[
-						SNew(STextBlock)
-						.Text_Raw(this, &FApiGearEditorModule::SimulationConnectionStatus)
-					]
-					+ SHorizontalBox::Slot()
-					[
-						SNew(SButton)
-						.Text(ConnectButtonText)
-						.OnClicked_Raw(this, &FApiGearEditorModule::SimulationConnectButtonClicked)
-					]
-					+ SHorizontalBox::Slot()
-					[
-						SNew(SButton)
-						.Text(DisconnectButtonText)
-						.OnClicked_Raw(this, &FApiGearEditorModule::SimulationDisconnectButtonClicked)
 					]
 				]
 			]
@@ -169,29 +142,6 @@ FText FApiGearEditorModule::OLinkConnectionStatus() const
 	UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
 
 	return FText::FromString(UEnum::GetValueAsName(AGCM->GetOLinkConnection()->GetConnectionState()).ToString());
-}
-
-FReply FApiGearEditorModule::SimulationConnectButtonClicked()
-{
-	UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-	AGCM->ConnectSimulation();
-
-	return FReply::Handled();
-}
-
-FReply FApiGearEditorModule::SimulationDisconnectButtonClicked()
-{
-	UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-	AGCM->DisconnectSimulation();
-
-	return FReply::Handled();
-}
-
-FText FApiGearEditorModule::SimulationConnectionStatus() const
-{
-	UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
-
-	return FText::FromString(UEnum::GetValueAsName(AGCM->GetSimulationConnection()->GetConnectionState()).ToString());
 }
 
 void FApiGearEditorModule::RegisterMenus()

@@ -18,7 +18,6 @@ limitations under the License.
 #include "TbEnumFactory.h"
 #include "Implementation/TbEnumEnumInterface.h"
 #include "Generated/OLink/TbEnumEnumInterfaceOLinkClient.h"
-#include "Generated/Simulation/TbEnumEnumInterfaceSimulationClient.h"
 #include "TbEnumSettings.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Engine/GameInstance.h"
@@ -38,18 +37,6 @@ TScriptInterface<ITbEnumEnumInterfaceInterface> createTbEnumEnumInterfaceOLink(U
 	return Instance;
 }
 
-TScriptInterface<ITbEnumEnumInterfaceInterface> createTbEnumEnumInterfaceSimulation(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
-{
-	UE_LOG(LogFTbEnumModuleFactory, Log, TEXT("createITbEnumEnumInterfaceInterface: Using simulation service backend"));
-	UTbEnumEnumInterfaceSimulationClient* Instance = GameInstance->GetSubsystem<UTbEnumEnumInterfaceSimulationClient>(GameInstance);
-	if (!Instance)
-	{
-		Collection.InitializeDependency(UTbEnumEnumInterfaceSimulationClient::StaticClass());
-		Instance = GameInstance->GetSubsystem<UTbEnumEnumInterfaceSimulationClient>(GameInstance);
-	}
-	return Instance;
-}
-
 TScriptInterface<ITbEnumEnumInterfaceInterface> FTbEnumModuleFactory::createITbEnumEnumInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
 	UTbEnumSettings* settings = GetMutableDefault<UTbEnumSettings>();
@@ -58,8 +45,6 @@ TScriptInterface<ITbEnumEnumInterfaceInterface> FTbEnumModuleFactory::createITbE
 	{
 	case ETbEnumConnection::CONNECTION_OLINK:
 		return createTbEnumEnumInterfaceOLink(GameInstance, Collection);
-	case ETbEnumConnection::CONNECTION_SIMU:
-		return createTbEnumEnumInterfaceSimulation(GameInstance, Collection);
 	case ETbEnumConnection::CONNECTION_LOCAL:
 		UE_LOG(LogFTbEnumModuleFactory, Log, TEXT("createITbEnumEnumInterfaceInterface: Using local service backend"));
 	default:

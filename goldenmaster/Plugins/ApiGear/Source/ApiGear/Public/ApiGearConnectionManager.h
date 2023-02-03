@@ -8,7 +8,6 @@
 #include "Engine/EngineTypes.h"
 #include "Templates/SharedPointer.h"
 #include "unrealolink.h"
-#include "unrealsimulation.h"
 #include "ApiGearConnectionManager.generated.h"
 
 /**
@@ -21,8 +20,6 @@ class APIGEAR_API UApiGearConnectionManager : public UEngineSubsystem
 
 	// OLink
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FApiGearConnectionOLinkIsConnectedDelegate, bool, bIsConnected);
-	// Simulation
-	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FApiGearConnectionSimulationIsConnectedDelegate, bool, bIsConnected);
 
 public:
 	UApiGearConnectionManager();
@@ -46,21 +43,6 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Connection|OLink", DisplayName = "OLink Connection Status Changed")
 	FApiGearConnectionOLinkIsConnectedDelegate IsOLinkConnectedChanged;
 
-	// Simulation
-	UUnrealSimulation* GetSimulationConnection();
-
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection|Simulation")
-	bool GetIsSimulationConnected() const;
-
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection|Simulation")
-	void ConnectSimulation() const;
-
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection|Simulation")
-	void DisconnectSimulation() const;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Connection|Simulation", DisplayName = "Simulation Connection Status Changed")
-	FApiGearConnectionSimulationIsConnectedDelegate IsSimulationConnectedChanged;
-
 private:
 	// OLink
 	UUnrealOLink* OLinkConnection;
@@ -69,12 +51,4 @@ private:
 	bool IsOLinkConnected;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection|OLink", BlueprintInternalUseOnly)
 	void OnIsOLinkConnectedChanged(bool bIsConnected);
-
-	// Simulation
-	UUnrealSimulation* SimulationConnection;
-
-	UPROPERTY(EditAnywhere, BlueprintGetter = GetIsSimulationConnected, Category = "ApiGear|Connection|Simulation")
-	bool IsSimulationConnected;
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection|Simulation", BlueprintInternalUseOnly)
-	void OnIsSimulationConnectedChanged(bool bIsConnected);
 };

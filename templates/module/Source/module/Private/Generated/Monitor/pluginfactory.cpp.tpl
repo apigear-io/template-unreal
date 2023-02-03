@@ -29,9 +29,6 @@ limitations under the License.
 {{- if $.Features.olink }}
 #include "Generated/OLink/{{$iclass}}OLinkClient.h"
 {{- end }}
-{{- if $.Features.simulation }}
-#include "Generated/Simulation/{{$iclass}}SimulationClient.h"
-{{- end }}
 {{- end }}
 #include "{{$ModuleName}}Settings.h"
 #include "Subsystems/GameInstanceSubsystem.h"
@@ -58,20 +55,6 @@ TScriptInterface<I{{$class}}Interface> create{{$class}}OLink(UGameInstance* Game
 	return Instance;
 }
 {{- end }}
-{{- if $.Features.simulation }}
-
-TScriptInterface<I{{$class}}Interface> create{{$class}}Simulation(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
-{
-	UE_LOG(Log{{$mclass}}, Log, TEXT("create{{$iclass}}: Using simulation service backend"));
-	{{ printf "U%sSimulationClient" $DisplayName}}* Instance = GameInstance->GetSubsystem<{{ printf "U%sSimulationClient" $DisplayName}}>(GameInstance);
-	if (!Instance)
-	{
-		Collection.InitializeDependency({{ printf "U%sSimulationClient" $DisplayName}}::StaticClass());
-		Instance = GameInstance->GetSubsystem<{{ printf "U%sSimulationClient" $DisplayName}}>(GameInstance);
-	}
-	return Instance;
-}
-{{- end }}
 
 TScriptInterface<I{{$class}}Interface> {{$mclass}}::create{{$iclass}}(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
@@ -81,15 +64,12 @@ TScriptInterface<I{{$class}}Interface> {{$mclass}}::create{{$iclass}}(UGameInsta
 	{
 {{- if $.Features.olink }}{{ nl }}	case E{{$ModuleName}}Connection::CONNECTION_OLINK:
 		return create{{$class}}OLink(GameInstance, Collection);{{ end }}
-{{- if $.Features.simulation }}{{ nl }}	case E{{$ModuleName}}Connection::CONNECTION_SIMU:
-		return create{{$class}}Simulation(GameInstance, Collection);{{ end }}
 {{- if $.Features.stubs }}{{ nl }}	case E{{$ModuleName}}Connection::CONNECTION_LOCAL:
 		UE_LOG(Log{{$mclass}}, Log, TEXT("create{{$iclass}}: Using local service backend"));{{ end }}
 	default:
 {{- if $.Features.stubs }}{{ nl }}		UE_LOG(Log{{$mclass}}, Log, TEXT("create{{$iclass}}: Defaulting to local service backend"));
 		return NewObject<{{ printf "U%s" $DisplayName}}>();
 {{- else if $.Features.olink }}{{ nl }}		return create{{$class}}OLink(GameInstance, Collection);
-{{- else if $.Features.simulation }}{{ nl }}		return create{{$class}}Simulation(GameInstance, Collection);
 {{- end }}
 	}
 }

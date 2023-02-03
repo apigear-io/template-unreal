@@ -1,7 +1,7 @@
 {{/* Copyright Epic Games, Inc. All Rights Reserved */}}
 {{- $ModuleName := Camel .Module.Name}}
 {{- $API_MACRO := printf "%s_API" $ModuleName }}
-{{- $ConnecitonEnabled := or .Features.stubs .Features.olink .Features.simulation -}}
+{{- $ConnecitonEnabled := or .Features.stubs .Features.olink -}}
 {{- $Category := printf "ApiGear%s" $ModuleName -}}
 /**
 Copyright 2021 ApiGear UG
@@ -24,7 +24,7 @@ limitations under the License.
 U{{$ModuleName}}Settings::U{{$ModuleName}}Settings(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {{- if $ConnecitonEnabled}}
-	, ServiceConnection(E{{$ModuleName}}Connection(E{{$ModuleName}}Connection::CONNECTION_{{- if .Features.stubs }}LOCAL{{ else if .Features.olink }}OLINK{{ else if .Features.simulation }}SIMU{{ end }}))
+	, ServiceConnection(E{{$ModuleName}}Connection(E{{$ModuleName}}Connection::CONNECTION_{{- if .Features.stubs }}LOCAL{{ else if .Features.olink }}OLINK{{ end }}))
 {{- end}}
 {
 }

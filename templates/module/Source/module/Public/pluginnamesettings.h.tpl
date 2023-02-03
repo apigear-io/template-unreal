@@ -1,7 +1,7 @@
 {{/* Copyright Epic Games, Inc. All Rights Reserved */}}
 {{- $ModuleName := Camel .Module.Name}}
 {{- $API_MACRO := printf "%s_API" (CAMEL .Module.Name) }}
-{{- $ConnecitonEnabled := or .Features.stubs .Features.olink .Features.simulation -}}
+{{- $ConnecitonEnabled := or .Features.stubs .Features.olink -}}
 {{- $Category := printf "ApiGear%s" $ModuleName -}}
 /**
 Copyright 2021 ApiGear UG
@@ -34,9 +34,8 @@ limitations under the License.
 UENUM(BlueprintType)
 enum class E{{$ModuleName}}Connection : uint8
 {
-{{ if .Features.stubs }}	CONNECTION_LOCAL UMETA(Displayname = "Local"){{ if or .Features.olink .Features.simulation }},{{nl}}{{- end }}{{- end -}}
-{{ if .Features.olink }}	CONNECTION_OLINK UMETA(Displayname = "Remote OLink"){{ if .Features.simulation }},{{nl}}{{- end }}{{- end -}}
-{{ if .Features.simulation }}	CONNECTION_SIMU UMETA(Displayname = "Remote Simulation"){{- end }}
+{{ if .Features.stubs }}	CONNECTION_LOCAL UMETA(Displayname = "Local"){{ if .Features.olink }},{{nl}}{{- end }}{{- end -}}
+{{ if .Features.olink }}	CONNECTION_OLINK UMETA(Displayname = "Remote OLink"){{- end }}
 };
 {{- end}}
 

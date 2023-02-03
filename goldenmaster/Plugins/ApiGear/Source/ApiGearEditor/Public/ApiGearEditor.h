@@ -21,10 +21,6 @@ public:
 	FReply OLinkDisconnectButtonClicked();
 	FText OLinkConnectionStatus() const;
 
-	FReply SimulationConnectButtonClicked();
-	FReply SimulationDisconnectButtonClicked();
-	FText SimulationConnectionStatus() const;
-
 private:
 	void RegisterMenus();
 	TSharedRef<class SDockTab> OnSpawnPluginTab(const class FSpawnTabArgs& SpawnTabArgs);

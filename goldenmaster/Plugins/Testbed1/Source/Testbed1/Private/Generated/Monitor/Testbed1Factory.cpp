@@ -18,10 +18,8 @@ limitations under the License.
 #include "Testbed1Factory.h"
 #include "Implementation/Testbed1StructInterface.h"
 #include "Generated/OLink/Testbed1StructInterfaceOLinkClient.h"
-#include "Generated/Simulation/Testbed1StructInterfaceSimulationClient.h"
 #include "Implementation/Testbed1StructArrayInterface.h"
 #include "Generated/OLink/Testbed1StructArrayInterfaceOLinkClient.h"
-#include "Generated/Simulation/Testbed1StructArrayInterfaceSimulationClient.h"
 #include "Testbed1Settings.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Engine/GameInstance.h"
@@ -41,18 +39,6 @@ TScriptInterface<ITestbed1StructInterfaceInterface> createTestbed1StructInterfac
 	return Instance;
 }
 
-TScriptInterface<ITestbed1StructInterfaceInterface> createTestbed1StructInterfaceSimulation(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
-{
-	UE_LOG(LogFTestbed1ModuleFactory, Log, TEXT("createITestbed1StructInterfaceInterface: Using simulation service backend"));
-	UTestbed1StructInterfaceSimulationClient* Instance = GameInstance->GetSubsystem<UTestbed1StructInterfaceSimulationClient>(GameInstance);
-	if (!Instance)
-	{
-		Collection.InitializeDependency(UTestbed1StructInterfaceSimulationClient::StaticClass());
-		Instance = GameInstance->GetSubsystem<UTestbed1StructInterfaceSimulationClient>(GameInstance);
-	}
-	return Instance;
-}
-
 TScriptInterface<ITestbed1StructInterfaceInterface> FTestbed1ModuleFactory::createITestbed1StructInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
 	UTestbed1Settings* settings = GetMutableDefault<UTestbed1Settings>();
@@ -61,8 +47,6 @@ TScriptInterface<ITestbed1StructInterfaceInterface> FTestbed1ModuleFactory::crea
 	{
 	case ETestbed1Connection::CONNECTION_OLINK:
 		return createTestbed1StructInterfaceOLink(GameInstance, Collection);
-	case ETestbed1Connection::CONNECTION_SIMU:
-		return createTestbed1StructInterfaceSimulation(GameInstance, Collection);
 	case ETestbed1Connection::CONNECTION_LOCAL:
 		UE_LOG(LogFTestbed1ModuleFactory, Log, TEXT("createITestbed1StructInterfaceInterface: Using local service backend"));
 	default:
@@ -83,18 +67,6 @@ TScriptInterface<ITestbed1StructArrayInterfaceInterface> createTestbed1StructArr
 	return Instance;
 }
 
-TScriptInterface<ITestbed1StructArrayInterfaceInterface> createTestbed1StructArrayInterfaceSimulation(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
-{
-	UE_LOG(LogFTestbed1ModuleFactory, Log, TEXT("createITestbed1StructArrayInterfaceInterface: Using simulation service backend"));
-	UTestbed1StructArrayInterfaceSimulationClient* Instance = GameInstance->GetSubsystem<UTestbed1StructArrayInterfaceSimulationClient>(GameInstance);
-	if (!Instance)
-	{
-		Collection.InitializeDependency(UTestbed1StructArrayInterfaceSimulationClient::StaticClass());
-		Instance = GameInstance->GetSubsystem<UTestbed1StructArrayInterfaceSimulationClient>(GameInstance);
-	}
-	return Instance;
-}
-
 TScriptInterface<ITestbed1StructArrayInterfaceInterface> FTestbed1ModuleFactory::createITestbed1StructArrayInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
 	UTestbed1Settings* settings = GetMutableDefault<UTestbed1Settings>();
@@ -103,8 +75,6 @@ TScriptInterface<ITestbed1StructArrayInterfaceInterface> FTestbed1ModuleFactory:
 	{
 	case ETestbed1Connection::CONNECTION_OLINK:
 		return createTestbed1StructArrayInterfaceOLink(GameInstance, Collection);
-	case ETestbed1Connection::CONNECTION_SIMU:
-		return createTestbed1StructArrayInterfaceSimulation(GameInstance, Collection);
 	case ETestbed1Connection::CONNECTION_LOCAL:
 		UE_LOG(LogFTestbed1ModuleFactory, Log, TEXT("createITestbed1StructArrayInterfaceInterface: Using local service backend"));
 	default:

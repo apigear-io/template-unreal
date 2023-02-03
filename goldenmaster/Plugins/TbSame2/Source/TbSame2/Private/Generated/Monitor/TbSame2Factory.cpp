@@ -18,16 +18,12 @@ limitations under the License.
 #include "TbSame2Factory.h"
 #include "Implementation/TbSame2SameStruct1Interface.h"
 #include "Generated/OLink/TbSame2SameStruct1InterfaceOLinkClient.h"
-#include "Generated/Simulation/TbSame2SameStruct1InterfaceSimulationClient.h"
 #include "Implementation/TbSame2SameStruct2Interface.h"
 #include "Generated/OLink/TbSame2SameStruct2InterfaceOLinkClient.h"
-#include "Generated/Simulation/TbSame2SameStruct2InterfaceSimulationClient.h"
 #include "Implementation/TbSame2SameEnum1Interface.h"
 #include "Generated/OLink/TbSame2SameEnum1InterfaceOLinkClient.h"
-#include "Generated/Simulation/TbSame2SameEnum1InterfaceSimulationClient.h"
 #include "Implementation/TbSame2SameEnum2Interface.h"
 #include "Generated/OLink/TbSame2SameEnum2InterfaceOLinkClient.h"
-#include "Generated/Simulation/TbSame2SameEnum2InterfaceSimulationClient.h"
 #include "TbSame2Settings.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Engine/GameInstance.h"
@@ -47,18 +43,6 @@ TScriptInterface<ITbSame2SameStruct1InterfaceInterface> createTbSame2SameStruct1
 	return Instance;
 }
 
-TScriptInterface<ITbSame2SameStruct1InterfaceInterface> createTbSame2SameStruct1InterfaceSimulation(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
-{
-	UE_LOG(LogFTbSame2ModuleFactory, Log, TEXT("createITbSame2SameStruct1InterfaceInterface: Using simulation service backend"));
-	UTbSame2SameStruct1InterfaceSimulationClient* Instance = GameInstance->GetSubsystem<UTbSame2SameStruct1InterfaceSimulationClient>(GameInstance);
-	if (!Instance)
-	{
-		Collection.InitializeDependency(UTbSame2SameStruct1InterfaceSimulationClient::StaticClass());
-		Instance = GameInstance->GetSubsystem<UTbSame2SameStruct1InterfaceSimulationClient>(GameInstance);
-	}
-	return Instance;
-}
-
 TScriptInterface<ITbSame2SameStruct1InterfaceInterface> FTbSame2ModuleFactory::createITbSame2SameStruct1InterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
 	UTbSame2Settings* settings = GetMutableDefault<UTbSame2Settings>();
@@ -67,8 +51,6 @@ TScriptInterface<ITbSame2SameStruct1InterfaceInterface> FTbSame2ModuleFactory::c
 	{
 	case ETbSame2Connection::CONNECTION_OLINK:
 		return createTbSame2SameStruct1InterfaceOLink(GameInstance, Collection);
-	case ETbSame2Connection::CONNECTION_SIMU:
-		return createTbSame2SameStruct1InterfaceSimulation(GameInstance, Collection);
 	case ETbSame2Connection::CONNECTION_LOCAL:
 		UE_LOG(LogFTbSame2ModuleFactory, Log, TEXT("createITbSame2SameStruct1InterfaceInterface: Using local service backend"));
 	default:
@@ -89,18 +71,6 @@ TScriptInterface<ITbSame2SameStruct2InterfaceInterface> createTbSame2SameStruct2
 	return Instance;
 }
 
-TScriptInterface<ITbSame2SameStruct2InterfaceInterface> createTbSame2SameStruct2InterfaceSimulation(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
-{
-	UE_LOG(LogFTbSame2ModuleFactory, Log, TEXT("createITbSame2SameStruct2InterfaceInterface: Using simulation service backend"));
-	UTbSame2SameStruct2InterfaceSimulationClient* Instance = GameInstance->GetSubsystem<UTbSame2SameStruct2InterfaceSimulationClient>(GameInstance);
-	if (!Instance)
-	{
-		Collection.InitializeDependency(UTbSame2SameStruct2InterfaceSimulationClient::StaticClass());
-		Instance = GameInstance->GetSubsystem<UTbSame2SameStruct2InterfaceSimulationClient>(GameInstance);
-	}
-	return Instance;
-}
-
 TScriptInterface<ITbSame2SameStruct2InterfaceInterface> FTbSame2ModuleFactory::createITbSame2SameStruct2InterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
 	UTbSame2Settings* settings = GetMutableDefault<UTbSame2Settings>();
@@ -109,8 +79,6 @@ TScriptInterface<ITbSame2SameStruct2InterfaceInterface> FTbSame2ModuleFactory::c
 	{
 	case ETbSame2Connection::CONNECTION_OLINK:
 		return createTbSame2SameStruct2InterfaceOLink(GameInstance, Collection);
-	case ETbSame2Connection::CONNECTION_SIMU:
-		return createTbSame2SameStruct2InterfaceSimulation(GameInstance, Collection);
 	case ETbSame2Connection::CONNECTION_LOCAL:
 		UE_LOG(LogFTbSame2ModuleFactory, Log, TEXT("createITbSame2SameStruct2InterfaceInterface: Using local service backend"));
 	default:
@@ -131,18 +99,6 @@ TScriptInterface<ITbSame2SameEnum1InterfaceInterface> createTbSame2SameEnum1Inte
 	return Instance;
 }
 
-TScriptInterface<ITbSame2SameEnum1InterfaceInterface> createTbSame2SameEnum1InterfaceSimulation(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
-{
-	UE_LOG(LogFTbSame2ModuleFactory, Log, TEXT("createITbSame2SameEnum1InterfaceInterface: Using simulation service backend"));
-	UTbSame2SameEnum1InterfaceSimulationClient* Instance = GameInstance->GetSubsystem<UTbSame2SameEnum1InterfaceSimulationClient>(GameInstance);
-	if (!Instance)
-	{
-		Collection.InitializeDependency(UTbSame2SameEnum1InterfaceSimulationClient::StaticClass());
-		Instance = GameInstance->GetSubsystem<UTbSame2SameEnum1InterfaceSimulationClient>(GameInstance);
-	}
-	return Instance;
-}
-
 TScriptInterface<ITbSame2SameEnum1InterfaceInterface> FTbSame2ModuleFactory::createITbSame2SameEnum1InterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
 	UTbSame2Settings* settings = GetMutableDefault<UTbSame2Settings>();
@@ -151,8 +107,6 @@ TScriptInterface<ITbSame2SameEnum1InterfaceInterface> FTbSame2ModuleFactory::cre
 	{
 	case ETbSame2Connection::CONNECTION_OLINK:
 		return createTbSame2SameEnum1InterfaceOLink(GameInstance, Collection);
-	case ETbSame2Connection::CONNECTION_SIMU:
-		return createTbSame2SameEnum1InterfaceSimulation(GameInstance, Collection);
 	case ETbSame2Connection::CONNECTION_LOCAL:
 		UE_LOG(LogFTbSame2ModuleFactory, Log, TEXT("createITbSame2SameEnum1InterfaceInterface: Using local service backend"));
 	default:
@@ -173,18 +127,6 @@ TScriptInterface<ITbSame2SameEnum2InterfaceInterface> createTbSame2SameEnum2Inte
 	return Instance;
 }
 
-TScriptInterface<ITbSame2SameEnum2InterfaceInterface> createTbSame2SameEnum2InterfaceSimulation(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
-{
-	UE_LOG(LogFTbSame2ModuleFactory, Log, TEXT("createITbSame2SameEnum2InterfaceInterface: Using simulation service backend"));
-	UTbSame2SameEnum2InterfaceSimulationClient* Instance = GameInstance->GetSubsystem<UTbSame2SameEnum2InterfaceSimulationClient>(GameInstance);
-	if (!Instance)
-	{
-		Collection.InitializeDependency(UTbSame2SameEnum2InterfaceSimulationClient::StaticClass());
-		Instance = GameInstance->GetSubsystem<UTbSame2SameEnum2InterfaceSimulationClient>(GameInstance);
-	}
-	return Instance;
-}
-
 TScriptInterface<ITbSame2SameEnum2InterfaceInterface> FTbSame2ModuleFactory::createITbSame2SameEnum2InterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
 	UTbSame2Settings* settings = GetMutableDefault<UTbSame2Settings>();
@@ -193,8 +135,6 @@ TScriptInterface<ITbSame2SameEnum2InterfaceInterface> FTbSame2ModuleFactory::cre
 	{
 	case ETbSame2Connection::CONNECTION_OLINK:
 		return createTbSame2SameEnum2InterfaceOLink(GameInstance, Collection);
-	case ETbSame2Connection::CONNECTION_SIMU:
-		return createTbSame2SameEnum2InterfaceSimulation(GameInstance, Collection);
 	case ETbSame2Connection::CONNECTION_LOCAL:
 		UE_LOG(LogFTbSame2ModuleFactory, Log, TEXT("createITbSame2SameEnum2InterfaceInterface: Using local service backend"));
 	default:
