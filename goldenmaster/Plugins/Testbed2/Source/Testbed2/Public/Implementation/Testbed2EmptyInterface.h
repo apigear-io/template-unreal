@@ -18,7 +18,7 @@ limitations under the License.
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Testbed2EmptyInterfaceInterface.h"
+#include "Generated/api/Testbed2EmptyInterfaceInterface.h"
 #include "Testbed2EmptyInterface.generated.h"
 
 UCLASS(BlueprintType, Blueprintable)

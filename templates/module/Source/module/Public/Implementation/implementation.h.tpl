@@ -25,7 +25,7 @@ limitations under the License.
 #pragma once
 
 #include "CoreMinimal.h"
-#include "{{$Iface}}Interface.h"
+#include "Generated/api/{{$Iface}}Interface.h"
 #include "{{$Iface}}.generated.h"
 
 UCLASS(BlueprintType, Blueprintable)

@@ -18,7 +18,7 @@ limitations under the License.
 #pragma once
 
 #include "CoreMinimal.h"
-#include "TbSimpleSimpleInterfaceInterface.h"
+#include "Generated/api/TbSimpleSimpleInterfaceInterface.h"
 #include "TbSimpleSimpleInterface.generated.h"
 
 UCLASS(BlueprintType, Blueprintable)
