@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include "TbSame1SameStruct1Interface.h"
+#include "Implementation/TbSame1SameStruct1Interface.h"
 
 UTbSame1SameStruct1Interface::~UTbSame1SameStruct1Interface() = default;
 

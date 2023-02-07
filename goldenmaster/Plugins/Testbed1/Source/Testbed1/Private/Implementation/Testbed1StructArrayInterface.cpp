@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include "Testbed1StructArrayInterface.h"
+#include "Implementation/Testbed1StructArrayInterface.h"
 
 UTestbed1StructArrayInterface::~UTestbed1StructArrayInterface() = default;
 

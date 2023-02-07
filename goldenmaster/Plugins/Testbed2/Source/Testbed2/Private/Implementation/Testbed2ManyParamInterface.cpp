@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include "Testbed2ManyParamInterface.h"
+#include "Implementation/Testbed2ManyParamInterface.h"
 
 UTestbed2ManyParamInterface::~UTestbed2ManyParamInterface() = default;
 

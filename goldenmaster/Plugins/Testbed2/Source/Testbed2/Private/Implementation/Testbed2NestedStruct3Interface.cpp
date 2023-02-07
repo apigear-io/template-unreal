@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include "Testbed2NestedStruct3Interface.h"
+#include "Implementation/Testbed2NestedStruct3Interface.h"
 
 UTestbed2NestedStruct3Interface::~UTestbed2NestedStruct3Interface() = default;
 

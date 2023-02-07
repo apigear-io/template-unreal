@@ -6,7 +6,7 @@
 {{- $Class := printf "U%s" $DisplayName}}
 {{- $Iface := printf "%s%s" $ModuleName $IfaceName }}
 
-#include "../Implementation/{{$Iface}}.h"
+#include "Implementation/{{$Iface}}.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS 

@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include "Testbed2NoPropertyInterface.h"
+#include "Implementation/Testbed2NoPropertyInterface.h"
 
 UTestbed2NoPropertyInterface::~UTestbed2NoPropertyInterface() = default;
 

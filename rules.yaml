@@ -250,8 +250,8 @@ features:
       - match: interface
         prefix: "Plugins/{{Camel .Module.Name}}/"
         documents:
-          - source: "module/Source/module/Private/Implementation/implementation.h.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Implementation/{{Camel .Module.Name}}{{Camel .Interface.Name}}.h"
+          - source: "module/Source/module/Public/Implementation/implementation.h.tpl"
+            target: "Source/{{Camel .Module.Name}}/Public/Implementation/{{Camel .Module.Name}}{{Camel .Interface.Name}}.h"
           - source: "module/Source/module/Private/Implementation/implementation.cpp.tpl"
             target: "Source/{{Camel .Module.Name}}/Private/Implementation/{{Camel .Module.Name}}{{Camel .Interface.Name}}.cpp"
           - source: "module/Source/module/Private/Tests/implementationtest.cpp.tpl"

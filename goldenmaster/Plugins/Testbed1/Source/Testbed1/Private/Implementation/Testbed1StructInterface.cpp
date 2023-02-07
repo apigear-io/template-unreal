@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include "Testbed1StructInterface.h"
+#include "Implementation/Testbed1StructInterface.h"
 
 UTestbed1StructInterface::~UTestbed1StructInterface() = default;
 

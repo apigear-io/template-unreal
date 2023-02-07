@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include "../Implementation/TbSame1SameStruct2Interface.h"
+#include "Implementation/TbSame1SameStruct2Interface.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS

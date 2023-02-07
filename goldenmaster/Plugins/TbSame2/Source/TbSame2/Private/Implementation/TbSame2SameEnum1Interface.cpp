@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include "TbSame2SameEnum1Interface.h"
+#include "Implementation/TbSame2SameEnum1Interface.h"
 
 UTbSame2SameEnum1Interface::~UTbSame2SameEnum1Interface() = default;
 
