@@ -20,7 +20,7 @@ limitations under the License.
 // DO NOT MODIFY
 ///////////////////////////////
 
-#include "TbEnumEnumInterfaceOLinkClient.h"
+#include "Generated/olink/TbEnumEnumInterfaceOLinkClient.h"
 #include "Async/Future.h"
 #include "Async/Async.h"
 #include "Generated/api/TbEnum.json.adapter.h"
