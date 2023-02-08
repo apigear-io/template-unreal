@@ -23,6 +23,10 @@ class UGameInstance;
 class FSubsystemCollectionBase;
 class ITbSimpleSimpleInterfaceInterface;
 class ITbSimpleSimpleArrayInterfaceInterface;
+class ITbSimpleNoPropertiesInterfaceInterface;
+class ITbSimpleNoOperationsInterfaceInterface;
+class ITbSimpleNoSignalsInterfaceInterface;
+class ITbSimpleEmptyInterfaceInterface;
 
 // General Log
 DECLARE_LOG_CATEGORY_EXTERN(LogFTbSimpleModuleFactory, Log, All);
@@ -32,4 +36,8 @@ class FTbSimpleModuleFactory
 public:
 	static TScriptInterface<ITbSimpleSimpleInterfaceInterface> createITbSimpleSimpleInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
 	static TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> createITbSimpleSimpleArrayInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
+	static TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> createITbSimpleNoPropertiesInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
+	static TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> createITbSimpleNoOperationsInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
+	static TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> createITbSimpleNoSignalsInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
+	static TScriptInterface<ITbSimpleEmptyInterfaceInterface> createITbSimpleEmptyInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
 };

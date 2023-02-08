@@ -19,16 +19,6 @@ limitations under the License.
 
 UTestbed2ManyParamInterface::~UTestbed2ManyParamInterface() = default;
 
-void UTestbed2ManyParamInterface::BroadcastSig0_Implementation()
-{
-	Sig0Signal.Broadcast();
-}
-
-FTestbed2ManyParamInterfaceSig0Delegate& UTestbed2ManyParamInterface::GetSig0SignalDelegate()
-{
-	return Sig0Signal;
-}
-
 void UTestbed2ManyParamInterface::BroadcastSig1_Implementation(int32 Param1)
 {
 	Sig1Signal.Broadcast(Param1);
@@ -165,11 +155,6 @@ FTestbed2ManyParamInterfaceProp4ChangedDelegate& UTestbed2ManyParamInterface::Ge
 	return Prop4Changed;
 }
 
-void UTestbed2ManyParamInterface::Func0_Implementation()
-{
-	// do business logic here
-}
-
 int32 UTestbed2ManyParamInterface::Func1_Implementation(int32 Param1)
 {
 	(void)Param1;
@@ -202,14 +187,4 @@ int32 UTestbed2ManyParamInterface::Func4_Implementation(int32 Param1, int32 Para
 	(void)Param4;
 	// do business logic here
 	return 0;
-}
-
-void UTestbed2ManyParamInterface::Func5_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4, int32 Param5)
-{
-	(void)Param1;
-	(void)Param2;
-	(void)Param3;
-	(void)Param4;
-	(void)Param5;
-	// do business logic here
 }

@@ -40,6 +40,12 @@ void TbSimpleSimpleInterfaceTracer::trace_callSetPropString(const FString& InPro
 	Tracer::instance()->call("tb.simple/SimpleInterface#_set", fields_);
 }
 
+void TbSimpleSimpleInterfaceTracer::trace_signalSigVoid()
+{
+	nlohmann::json fields_;
+	Tracer::instance()->signal("tb.simple/SimpleInterface#sigVoid", fields_);
+}
+
 void TbSimpleSimpleInterfaceTracer::trace_signalSigBool(bool bParamBool)
 {
 	nlohmann::json fields_;
@@ -66,6 +72,12 @@ void TbSimpleSimpleInterfaceTracer::trace_signalSigString(const FString& ParamSt
 	nlohmann::json fields_;
 	fields_["paramString"] = ParamString;
 	Tracer::instance()->signal("tb.simple/SimpleInterface#sigString", fields_);
+}
+
+void TbSimpleSimpleInterfaceTracer::trace_callFuncVoid()
+{
+	nlohmann::json fields_;
+	Tracer::instance()->call("tb.simple/SimpleInterface#funcVoid", fields_);
 }
 
 void TbSimpleSimpleInterfaceTracer::trace_callFuncBool(bool bParamBool)
@@ -188,4 +200,124 @@ void TbSimpleSimpleArrayInterfaceTracer::trace_callFuncString(const TArray<FStri
 	nlohmann::json fields_;
 	fields_["paramString"] = ParamString;
 	Tracer::instance()->call("tb.simple/SimpleArrayInterface#funcString", fields_);
+}
+
+TbSimpleNoPropertiesInterfaceTracer::TbSimpleNoPropertiesInterfaceTracer()
+{
+}
+
+void TbSimpleNoPropertiesInterfaceTracer::capture_state(UObject* Object, ITbSimpleNoPropertiesInterfaceInterface* obj)
+{
+	nlohmann::json fields_;
+	Tracer::instance()->state("tb.simple/NoPropertiesInterface", fields_);
+}
+
+void TbSimpleNoPropertiesInterfaceTracer::trace_signalSigVoid()
+{
+	nlohmann::json fields_;
+	Tracer::instance()->signal("tb.simple/NoPropertiesInterface#sigVoid", fields_);
+}
+
+void TbSimpleNoPropertiesInterfaceTracer::trace_signalSigBool(bool bParamBool)
+{
+	nlohmann::json fields_;
+	fields_["paramBool"] = bParamBool;
+	Tracer::instance()->signal("tb.simple/NoPropertiesInterface#sigBool", fields_);
+}
+
+void TbSimpleNoPropertiesInterfaceTracer::trace_callFuncVoid()
+{
+	nlohmann::json fields_;
+	Tracer::instance()->call("tb.simple/NoPropertiesInterface#funcVoid", fields_);
+}
+
+void TbSimpleNoPropertiesInterfaceTracer::trace_callFuncBool(bool bParamBool)
+{
+	nlohmann::json fields_;
+	fields_["paramBool"] = bParamBool;
+	Tracer::instance()->call("tb.simple/NoPropertiesInterface#funcBool", fields_);
+}
+
+TbSimpleNoOperationsInterfaceTracer::TbSimpleNoOperationsInterfaceTracer()
+{
+}
+
+void TbSimpleNoOperationsInterfaceTracer::capture_state(UObject* Object, ITbSimpleNoOperationsInterfaceInterface* obj)
+{
+	nlohmann::json fields_;
+	fields_["propBool"] = obj->Execute_GetPropBool(Object);
+	fields_["propInt"] = obj->Execute_GetPropInt(Object);
+	Tracer::instance()->state("tb.simple/NoOperationsInterface", fields_);
+}
+void TbSimpleNoOperationsInterfaceTracer::trace_callSetPropBool(bool bInPropBool)
+{
+	nlohmann::json fields_;
+	fields_["propBool"] = bInPropBool;
+	Tracer::instance()->call("tb.simple/NoOperationsInterface#_set", fields_);
+}
+void TbSimpleNoOperationsInterfaceTracer::trace_callSetPropInt(int32 InPropInt)
+{
+	nlohmann::json fields_;
+	fields_["propInt"] = InPropInt;
+	Tracer::instance()->call("tb.simple/NoOperationsInterface#_set", fields_);
+}
+
+void TbSimpleNoOperationsInterfaceTracer::trace_signalSigVoid()
+{
+	nlohmann::json fields_;
+	Tracer::instance()->signal("tb.simple/NoOperationsInterface#sigVoid", fields_);
+}
+
+void TbSimpleNoOperationsInterfaceTracer::trace_signalSigBool(bool bParamBool)
+{
+	nlohmann::json fields_;
+	fields_["paramBool"] = bParamBool;
+	Tracer::instance()->signal("tb.simple/NoOperationsInterface#sigBool", fields_);
+}
+
+TbSimpleNoSignalsInterfaceTracer::TbSimpleNoSignalsInterfaceTracer()
+{
+}
+
+void TbSimpleNoSignalsInterfaceTracer::capture_state(UObject* Object, ITbSimpleNoSignalsInterfaceInterface* obj)
+{
+	nlohmann::json fields_;
+	fields_["propBool"] = obj->Execute_GetPropBool(Object);
+	fields_["propInt"] = obj->Execute_GetPropInt(Object);
+	Tracer::instance()->state("tb.simple/NoSignalsInterface", fields_);
+}
+void TbSimpleNoSignalsInterfaceTracer::trace_callSetPropBool(bool bInPropBool)
+{
+	nlohmann::json fields_;
+	fields_["propBool"] = bInPropBool;
+	Tracer::instance()->call("tb.simple/NoSignalsInterface#_set", fields_);
+}
+void TbSimpleNoSignalsInterfaceTracer::trace_callSetPropInt(int32 InPropInt)
+{
+	nlohmann::json fields_;
+	fields_["propInt"] = InPropInt;
+	Tracer::instance()->call("tb.simple/NoSignalsInterface#_set", fields_);
+}
+
+void TbSimpleNoSignalsInterfaceTracer::trace_callFuncVoid()
+{
+	nlohmann::json fields_;
+	Tracer::instance()->call("tb.simple/NoSignalsInterface#funcVoid", fields_);
+}
+
+void TbSimpleNoSignalsInterfaceTracer::trace_callFuncBool(bool bParamBool)
+{
+	nlohmann::json fields_;
+	fields_["paramBool"] = bParamBool;
+	Tracer::instance()->call("tb.simple/NoSignalsInterface#funcBool", fields_);
+}
+
+TbSimpleEmptyInterfaceTracer::TbSimpleEmptyInterfaceTracer()
+{
+}
+
+void TbSimpleEmptyInterfaceTracer::capture_state(UObject* Object, ITbSimpleEmptyInterfaceInterface* obj)
+{
+	nlohmann::json fields_;
+	Tracer::instance()->state("tb.simple/EmptyInterface", fields_);
 }

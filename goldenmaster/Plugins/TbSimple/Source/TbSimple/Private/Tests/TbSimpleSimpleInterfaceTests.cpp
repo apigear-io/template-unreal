@@ -60,6 +60,15 @@ bool UTbSimpleSimpleInterfaceImplementationPropertyPropStringTest::RunTest(const
 	return true;
 }
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbSimpleSimpleInterfaceImplementationOperationFuncVoidTest, "TbSimple.SimpleInterface.Implementation.Operation.FuncVoid", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+bool UTbSimpleSimpleInterfaceImplementationOperationFuncVoidTest::RunTest(const FString& Parameters)
+{
+	// Do implement test here
+	TScriptInterface<ITbSimpleSimpleInterfaceInterface> test = NewObject<UTbSimpleSimpleInterface>();
+	test->Execute_FuncVoid(test.GetObject());
+	return true;
+}
+
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbSimpleSimpleInterfaceImplementationOperationFuncBoolTest, "TbSimple.SimpleInterface.Implementation.Operation.FuncBool", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
 bool UTbSimpleSimpleInterfaceImplementationOperationFuncBoolTest::RunTest(const FString& Parameters)
 {

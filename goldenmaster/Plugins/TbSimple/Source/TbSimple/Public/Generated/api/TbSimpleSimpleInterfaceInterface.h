@@ -25,6 +25,8 @@ limitations under the License.
  * Declaration for SimpleInterface
  */
 // signal delegates
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTbSimpleSimpleInterfaceSigVoidDelegate);
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfaceSigBoolDelegate, bool, bParamBool);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfaceSigIntDelegate, int32, ParamInt);
@@ -61,6 +63,9 @@ class TBSIMPLE_API ITbSimpleSimpleInterfaceInterface
 public:
 	// signals
 	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface")
+	virtual FTbSimpleSimpleInterfaceSigVoidDelegate& GetSigVoidSignalDelegate() = 0;
+
+	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface")
 	virtual FTbSimpleSimpleInterfaceSigBoolDelegate& GetSigBoolSignalDelegate() = 0;
 
 	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface")
@@ -85,6 +90,10 @@ public:
 	virtual FTbSimpleSimpleInterfacePropStringChangedDelegate& GetPropStringChangedDelegate() = 0;
 
 	// methods
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface")
+	void FuncVoid();
+	virtual void FuncVoid_Implementation() = 0;
+
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void FuncBoolAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool);
 	virtual void FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool) = 0;
@@ -145,6 +154,10 @@ public:
 
 protected:
 	// signals
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface", meta = (BlueprintProtected = "true"))
+	void BroadcastSigVoid();
+	virtual void BroadcastSigVoid_Implementation() = 0;
+
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface", meta = (BlueprintProtected = "true"))
 	void BroadcastSigBool(bool bParamBool);
 	virtual void BroadcastSigBool_Implementation(bool bParamBool) = 0;

@@ -19,6 +19,16 @@ limitations under the License.
 
 UTbSimpleSimpleInterface::~UTbSimpleSimpleInterface() = default;
 
+void UTbSimpleSimpleInterface::BroadcastSigVoid_Implementation()
+{
+	SigVoidSignal.Broadcast();
+}
+
+FTbSimpleSimpleInterfaceSigVoidDelegate& UTbSimpleSimpleInterface::GetSigVoidSignalDelegate()
+{
+	return SigVoidSignal;
+}
+
 void UTbSimpleSimpleInterface::BroadcastSigBool_Implementation(bool bParamBool)
 {
 	SigBoolSignal.Broadcast(bParamBool);
@@ -153,6 +163,11 @@ void UTbSimpleSimpleInterface::SetPropString_Implementation(const FString& InPro
 FTbSimpleSimpleInterfacePropStringChangedDelegate& UTbSimpleSimpleInterface::GetPropStringChangedDelegate()
 {
 	return PropStringChanged;
+}
+
+void UTbSimpleSimpleInterface::FuncVoid_Implementation()
+{
+	// do business logic here
 }
 
 bool UTbSimpleSimpleInterface::FuncBool_Implementation(bool bParamBool)

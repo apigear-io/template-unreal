@@ -15,23 +15,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include "Implementation/Testbed2NoPropertyInterface.h"
+#include "Implementation/TbSimpleEmptyInterface.h"
 
-UTestbed2NoPropertyInterface::~UTestbed2NoPropertyInterface() = default;
-
-void UTestbed2NoPropertyInterface::BroadcastSig1_Implementation(const FTestbed2NestedStruct1& Param1)
-{
-	Sig1Signal.Broadcast(Param1);
-}
-
-FTestbed2NoPropertyInterfaceSig1Delegate& UTestbed2NoPropertyInterface::GetSig1SignalDelegate()
-{
-	return Sig1Signal;
-}
-
-FTestbed2NestedStruct1 UTestbed2NoPropertyInterface::Func1_Implementation(const FTestbed2NestedStruct1& Param1)
-{
-	(void)Param1;
-	// do business logic here
-	return FTestbed2NestedStruct1();
-}
+UTbSimpleEmptyInterface::~UTbSimpleEmptyInterface() = default;

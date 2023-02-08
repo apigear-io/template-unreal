@@ -18,8 +18,8 @@ limitations under the License.
 
 #include "UObject/Interface.h"
 #include "Engine/LatentActionManager.h"
-#include "Testbed2_data.h"
-#include "Testbed2EmptyInterfaceInterface.generated.h"
+#include "TbSimple_data.h"
+#include "TbSimpleEmptyInterfaceInterface.generated.h"
 
 /**
  * Declaration for EmptyInterface
@@ -27,18 +27,18 @@ limitations under the License.
 // signal delegates
 // property delegates
 /**
- * Interface UTestbed2EmptyInterfaceInterface only for Unreal Engine's reflection system
+ * Interface UTbSimpleEmptyInterfaceInterface only for Unreal Engine's reflection system
  */
 UINTERFACE(Blueprintable, MinimalAPI)
-class UTestbed2EmptyInterfaceInterface : public UInterface
+class UTbSimpleEmptyInterfaceInterface : public UInterface
 {
 	GENERATED_BODY()
 };
 
 /**
- * Interface ITestbed2EmptyInterfaceInterface
+ * Interface ITbSimpleEmptyInterfaceInterface
  */
-class TESTBED2_API ITestbed2EmptyInterfaceInterface
+class TBSIMPLE_API ITbSimpleEmptyInterfaceInterface
 {
 	GENERATED_BODY()
 

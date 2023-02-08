@@ -16,38 +16,45 @@ limitations under the License.
 */
 #pragma once
 
-#include "Testbed2NoPropertyInterfaceInterface.h"
+#include "TbSimpleNoPropertiesInterfaceInterface.h"
 THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
 THIRD_PARTY_INCLUDES_END
 #include "unrealolinksink.h"
 #include "Subsystems/GameInstanceSubsystem.h"
-#include "Testbed2NoPropertyInterfaceOLinkClient.generated.h"
+#include "TbSimpleNoPropertiesInterfaceOLinkClient.generated.h"
 
 UCLASS(BlueprintType)
-class TESTBED2_API UTestbed2NoPropertyInterfaceOLinkClient : public UGameInstanceSubsystem, public ITestbed2NoPropertyInterfaceInterface
+class TBSIMPLE_API UTbSimpleNoPropertiesInterfaceOLinkClient : public UGameInstanceSubsystem, public ITbSimpleNoPropertiesInterfaceInterface
 {
 	GENERATED_BODY()
 public:
-	explicit UTestbed2NoPropertyInterfaceOLinkClient();
-	virtual ~UTestbed2NoPropertyInterfaceOLinkClient() = default;
+	explicit UTbSimpleNoPropertiesInterfaceOLinkClient();
+	virtual ~UTbSimpleNoPropertiesInterfaceOLinkClient() = default;
 
 	// subsystem
 	void Initialize(FSubsystemCollectionBase& Collection) override;
 	void Deinitialize() override;
 
 	// signals
-	FTestbed2NoPropertyInterfaceSig1Delegate Sig1Signal;
-	FTestbed2NoPropertyInterfaceSig1Delegate& GetSig1SignalDelegate() override;
+	FTbSimpleNoPropertiesInterfaceSigVoidDelegate SigVoidSignal;
+	FTbSimpleNoPropertiesInterfaceSigVoidDelegate& GetSigVoidSignalDelegate() override;
+
+	FTbSimpleNoPropertiesInterfaceSigBoolDelegate SigBoolSignal;
+	FTbSimpleNoPropertiesInterfaceSigBoolDelegate& GetSigBoolSignalDelegate() override;
 
 	// properties
 	// operations
-	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1) override{};
-	FTestbed2NestedStruct1 Func1_Implementation(const FTestbed2NestedStruct1& Param1) override;
+	void FuncVoid_Implementation() override;
+
+	void FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool) override{};
+	bool FuncBool_Implementation(bool bParamBool) override;
 
 protected:
 	// signals
-	void BroadcastSig1_Implementation(const FTestbed2NestedStruct1& Param1) override;
+	void BroadcastSigVoid_Implementation() override;
+
+	void BroadcastSigBool_Implementation(bool bParamBool) override;
 
 private:
 	void applyState(const nlohmann::json& fields);

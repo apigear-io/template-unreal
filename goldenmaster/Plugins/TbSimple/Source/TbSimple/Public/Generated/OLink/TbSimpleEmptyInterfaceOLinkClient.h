@@ -1,4 +1,3 @@
-
 /**
 Copyright 2021 ApiGear UG
 Copyright 2021 Epic Games, Inc.
@@ -17,25 +16,21 @@ limitations under the License.
 */
 #pragma once
 
-#include "CoreMinimal.h"
+#include "TbSimpleEmptyInterfaceInterface.h"
+THIRD_PARTY_INCLUDES_START
+#include "olink/clientnode.h"
+THIRD_PARTY_INCLUDES_END
+#include "unrealolinksink.h"
 #include "Subsystems/GameInstanceSubsystem.h"
-#include "Testbed2EmptyInterfaceInterface.h"
-#include "Testbed2EmptyInterfaceLoggingDecorator.generated.h"
+#include "TbSimpleEmptyInterfaceOLinkClient.generated.h"
 
-// General Log
-DECLARE_LOG_CATEGORY_EXTERN(LogTestbed2EmptyInterfaceLoggingDecorator, Log, All);
-
-UCLASS(BlueprintType, Blueprintable)
-class TESTBED2_API UTestbed2EmptyInterfaceLoggingDecorator : public UGameInstanceSubsystem, public ITestbed2EmptyInterfaceInterface
+UCLASS(BlueprintType)
+class TBSIMPLE_API UTbSimpleEmptyInterfaceOLinkClient : public UGameInstanceSubsystem, public ITbSimpleEmptyInterfaceInterface
 {
 	GENERATED_BODY()
-
 public:
-	explicit UTestbed2EmptyInterfaceLoggingDecorator();
-	virtual ~UTestbed2EmptyInterfaceLoggingDecorator();
-
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|EmptyInterface")
-	void setBackendService(TScriptInterface<ITestbed2EmptyInterfaceInterface> InService);
+	explicit UTbSimpleEmptyInterfaceOLinkClient();
+	virtual ~UTbSimpleEmptyInterfaceOLinkClient() = default;
 
 	// subsystem
 	void Initialize(FSubsystemCollectionBase& Collection) override;
@@ -44,15 +39,14 @@ public:
 	// signals
 	// properties
 	// operations
+
 protected:
 	// signals
 
 private:
-	/** The connection to the service backend. */
-	UPROPERTY(VisibleAnywhere, Category = "ApiGear|Testbed2|EmptyInterface")
-	TScriptInterface<ITestbed2EmptyInterfaceInterface> BackendService;
-
-	// signals
+	void applyState(const nlohmann::json& fields);
+	void emitSignal(const std::string& signalId, const nlohmann::json& args);
+	std::shared_ptr<FUnrealOLinkSink> m_sink;
 
 	// properties - local copy
 };

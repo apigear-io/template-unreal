@@ -81,6 +81,7 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBa
 	BackendService->GetPropIntChangedDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropIntChanged);
 	BackendService->GetPropFloatChangedDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloatChanged);
 	BackendService->GetPropStringChangedDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropStringChanged);
+	BackendService->GetSigVoidSignalDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigVoid);
 	BackendService->GetSigBoolSignalDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigBool);
 	BackendService->GetSigIntSignalDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt);
 	BackendService->GetSigFloatSignalDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat);
@@ -102,6 +103,7 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::setBackendService(TScriptInterfac
 		BackendService->GetPropIntChangedDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropIntChanged);
 		BackendService->GetPropFloatChangedDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloatChanged);
 		BackendService->GetPropStringChangedDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropStringChanged);
+		BackendService->GetSigVoidSignalDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigVoid);
 		BackendService->GetSigBoolSignalDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigBool);
 		BackendService->GetSigIntSignalDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt);
 		BackendService->GetSigFloatSignalDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat);
@@ -122,6 +124,7 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::setBackendService(TScriptInterfac
 	BackendService->GetPropIntChangedDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropIntChanged);
 	BackendService->GetPropFloatChangedDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloatChanged);
 	BackendService->GetPropStringChangedDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropStringChanged);
+	BackendService->GetSigVoidSignalDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigVoid);
 	BackendService->GetSigBoolSignalDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigBool);
 	BackendService->GetSigIntSignalDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt);
 	BackendService->GetSigFloatSignalDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat);
@@ -132,6 +135,22 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::setBackendService(TScriptInterfac
 	PropFloat = BackendService->Execute_GetPropFloat(BackendService.GetObject());
 	PropString = BackendService->Execute_GetPropString(BackendService.GetObject());
 }
+void UTbSimpleSimpleInterfaceLoggingDecorator::BroadcastSigVoid_Implementation()
+{
+	SigVoidSignal.Broadcast();
+}
+
+void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigVoid()
+{
+	TbSimpleSimpleInterfaceTracer::trace_signalSigVoid();
+	Execute_BroadcastSigVoid(this);
+}
+
+FTbSimpleSimpleInterfaceSigVoidDelegate& UTbSimpleSimpleInterfaceLoggingDecorator::GetSigVoidSignalDelegate()
+{
+	return SigVoidSignal;
+}
+
 void UTbSimpleSimpleInterfaceLoggingDecorator::BroadcastSigBool_Implementation(bool bParamBool)
 {
 	SigBoolSignal.Broadcast(bParamBool);
@@ -348,6 +367,11 @@ FTbSimpleSimpleInterfacePropStringChangedDelegate& UTbSimpleSimpleInterfaceLoggi
 	return PropStringChanged;
 }
 
+void UTbSimpleSimpleInterfaceLoggingDecorator::FuncVoid_Implementation()
+{
+	TbSimpleSimpleInterfaceTracer::trace_callFuncVoid();
+	BackendService->Execute_FuncVoid(BackendService.GetObject());
+}
 void UTbSimpleSimpleInterfaceLoggingDecorator::FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool)
 {
 	TbSimpleSimpleInterfaceTracer::trace_callFuncBool(bParamBool);

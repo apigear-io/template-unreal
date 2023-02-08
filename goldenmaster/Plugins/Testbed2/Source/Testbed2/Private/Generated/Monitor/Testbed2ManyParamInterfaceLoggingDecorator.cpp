@@ -81,7 +81,6 @@ void UTestbed2ManyParamInterfaceLoggingDecorator::Initialize(FSubsystemCollectio
 	BackendService->GetProp2ChangedDelegate().AddDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnProp2Changed);
 	BackendService->GetProp3ChangedDelegate().AddDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnProp3Changed);
 	BackendService->GetProp4ChangedDelegate().AddDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnProp4Changed);
-	BackendService->GetSig0SignalDelegate().AddDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnSig0);
 	BackendService->GetSig1SignalDelegate().AddDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnSig1);
 	BackendService->GetSig2SignalDelegate().AddDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnSig2);
 	BackendService->GetSig3SignalDelegate().AddDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnSig3);
@@ -103,7 +102,6 @@ void UTestbed2ManyParamInterfaceLoggingDecorator::setBackendService(TScriptInter
 		BackendService->GetProp2ChangedDelegate().RemoveDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnProp2Changed);
 		BackendService->GetProp3ChangedDelegate().RemoveDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnProp3Changed);
 		BackendService->GetProp4ChangedDelegate().RemoveDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnProp4Changed);
-		BackendService->GetSig0SignalDelegate().RemoveDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnSig0);
 		BackendService->GetSig1SignalDelegate().RemoveDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnSig1);
 		BackendService->GetSig2SignalDelegate().RemoveDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnSig2);
 		BackendService->GetSig3SignalDelegate().RemoveDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnSig3);
@@ -124,7 +122,6 @@ void UTestbed2ManyParamInterfaceLoggingDecorator::setBackendService(TScriptInter
 	BackendService->GetProp2ChangedDelegate().AddDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnProp2Changed);
 	BackendService->GetProp3ChangedDelegate().AddDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnProp3Changed);
 	BackendService->GetProp4ChangedDelegate().AddDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnProp4Changed);
-	BackendService->GetSig0SignalDelegate().AddDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnSig0);
 	BackendService->GetSig1SignalDelegate().AddDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnSig1);
 	BackendService->GetSig2SignalDelegate().AddDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnSig2);
 	BackendService->GetSig3SignalDelegate().AddDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnSig3);
@@ -135,22 +132,6 @@ void UTestbed2ManyParamInterfaceLoggingDecorator::setBackendService(TScriptInter
 	Prop3 = BackendService->Execute_GetProp3(BackendService.GetObject());
 	Prop4 = BackendService->Execute_GetProp4(BackendService.GetObject());
 }
-void UTestbed2ManyParamInterfaceLoggingDecorator::BroadcastSig0_Implementation()
-{
-	Sig0Signal.Broadcast();
-}
-
-void UTestbed2ManyParamInterfaceLoggingDecorator::OnSig0()
-{
-	Testbed2ManyParamInterfaceTracer::trace_signalSig0();
-	Execute_BroadcastSig0(this);
-}
-
-FTestbed2ManyParamInterfaceSig0Delegate& UTestbed2ManyParamInterfaceLoggingDecorator::GetSig0SignalDelegate()
-{
-	return Sig0Signal;
-}
-
 void UTestbed2ManyParamInterfaceLoggingDecorator::BroadcastSig1_Implementation(int32 Param1)
 {
 	Sig1Signal.Broadcast(Param1);
@@ -367,11 +348,6 @@ FTestbed2ManyParamInterfaceProp4ChangedDelegate& UTestbed2ManyParamInterfaceLogg
 	return Prop4Changed;
 }
 
-void UTestbed2ManyParamInterfaceLoggingDecorator::Func0_Implementation()
-{
-	Testbed2ManyParamInterfaceTracer::trace_callFunc0();
-	BackendService->Execute_Func0(BackendService.GetObject());
-}
 void UTestbed2ManyParamInterfaceLoggingDecorator::Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1)
 {
 	Testbed2ManyParamInterfaceTracer::trace_callFunc1(Param1);
@@ -495,9 +471,4 @@ int32 UTestbed2ManyParamInterfaceLoggingDecorator::Func4_Implementation(int32 Pa
 {
 	Testbed2ManyParamInterfaceTracer::trace_callFunc4(Param1, Param2, Param3, Param4);
 	return BackendService->Execute_Func4(BackendService.GetObject(), Param1, Param2, Param3, Param4);
-}
-void UTestbed2ManyParamInterfaceLoggingDecorator::Func5_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4, int32 Param5)
-{
-	Testbed2ManyParamInterfaceTracer::trace_callFunc5(Param1, Param2, Param3, Param4, Param5);
-	BackendService->Execute_Func5(BackendService.GetObject(), Param1, Param2, Param3, Param4, Param5);
 }

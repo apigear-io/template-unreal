@@ -20,5 +20,3 @@ limitations under the License.
 #include "Testbed2NestedStruct1InterfaceInterface.h"
 #include "Testbed2NestedStruct2InterfaceInterface.h"
 #include "Testbed2NestedStruct3InterfaceInterface.h"
-#include "Testbed2NoPropertyInterfaceInterface.h"
-#include "Testbed2EmptyInterfaceInterface.h"

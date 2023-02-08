@@ -42,6 +42,10 @@ public:
 	void Deinitialize() override;
 
 	// signals
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface", DisplayName = "SigVoid Signal")
+	FTbSimpleSimpleInterfaceSigVoidDelegate SigVoidSignal;
+	FTbSimpleSimpleInterfaceSigVoidDelegate& GetSigVoidSignalDelegate() override;
+
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface", DisplayName = "SigBool Signal")
 	FTbSimpleSimpleInterfaceSigBoolDelegate SigBoolSignal;
 	FTbSimpleSimpleInterfaceSigBoolDelegate& GetSigBoolSignalDelegate() override;
@@ -92,6 +96,8 @@ public:
 	void SetPropString_Implementation(const FString& InPropString) override;
 
 	// operations
+	void FuncVoid_Implementation() override;
+
 	void FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool) override;
 	bool FuncBool_Implementation(bool bParamBool) override;
 
@@ -106,6 +112,8 @@ public:
 
 protected:
 	// signals
+	void BroadcastSigVoid_Implementation() override;
+
 	void BroadcastSigBool_Implementation(bool bParamBool) override;
 
 	void BroadcastSigInt_Implementation(int32 ParamInt) override;
@@ -128,6 +136,9 @@ private:
 	TScriptInterface<ITbSimpleSimpleInterfaceInterface> BackendService;
 
 	// signals
+	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
+	void OnSigVoid();
+
 	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
 	void OnSigBool(bool bParamBool);
 

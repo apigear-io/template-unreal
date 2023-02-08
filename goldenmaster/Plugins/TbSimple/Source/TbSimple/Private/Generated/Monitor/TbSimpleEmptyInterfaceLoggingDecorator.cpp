@@ -15,18 +15,18 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-#include "Generated/Monitor/Testbed2EmptyInterfaceLoggingDecorator.h"
-#include "Implementation/Testbed2EmptyInterface.h"
-#include "Testbed2.trace.h"
-#include "Testbed2Factory.h"
+#include "Generated/Monitor/TbSimpleEmptyInterfaceLoggingDecorator.h"
+#include "Implementation/TbSimpleEmptyInterface.h"
+#include "TbSimple.trace.h"
+#include "TbSimpleFactory.h"
 #include "Async/Async.h"
 #include "LatentActions.h"
 #include "Engine/LatentActionManager.h"
 #include "Engine/Engine.h"
 
-DEFINE_LOG_CATEGORY(LogTestbed2EmptyInterfaceLoggingDecorator);
+DEFINE_LOG_CATEGORY(LogTbSimpleEmptyInterfaceLoggingDecorator);
 
-class FTestbed2EmptyInterfaceLatentAction : public FPendingLatentAction
+class FTbSimpleEmptyInterfaceLatentAction : public FPendingLatentAction
 {
 private:
 	FName ExecutionFunction;
@@ -35,7 +35,7 @@ private:
 	bool bInProgress;
 
 public:
-	FTestbed2EmptyInterfaceLatentAction(const FLatentActionInfo& LatentInfo)
+	FTbSimpleEmptyInterfaceLatentAction(const FLatentActionInfo& LatentInfo)
 		: ExecutionFunction(LatentInfo.ExecutionFunction)
 		, OutputLink(LatentInfo.Linkage)
 		, CallbackTarget(LatentInfo.CallbackTarget)
@@ -66,26 +66,26 @@ public:
 		Cancel();
 	}
 };
-UTestbed2EmptyInterfaceLoggingDecorator::UTestbed2EmptyInterfaceLoggingDecorator()
-	: ITestbed2EmptyInterfaceInterface()
+UTbSimpleEmptyInterfaceLoggingDecorator::UTbSimpleEmptyInterfaceLoggingDecorator()
+	: ITbSimpleEmptyInterfaceInterface()
 {
 }
 
-UTestbed2EmptyInterfaceLoggingDecorator::~UTestbed2EmptyInterfaceLoggingDecorator() = default;
+UTbSimpleEmptyInterfaceLoggingDecorator::~UTbSimpleEmptyInterfaceLoggingDecorator() = default;
 
-void UTestbed2EmptyInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase& Collection)
+void UTbSimpleEmptyInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-	BackendService = FTestbed2ModuleFactory::createITestbed2EmptyInterfaceInterface(GetGameInstance(), Collection);
+	BackendService = FTbSimpleModuleFactory::createITbSimpleEmptyInterfaceInterface(GetGameInstance(), Collection);
 }
 
-void UTestbed2EmptyInterfaceLoggingDecorator::Deinitialize()
+void UTbSimpleEmptyInterfaceLoggingDecorator::Deinitialize()
 {
 	Super::Deinitialize();
 	BackendService = nullptr;
 }
 
-void UTestbed2EmptyInterfaceLoggingDecorator::setBackendService(TScriptInterface<ITestbed2EmptyInterfaceInterface> InService)
+void UTbSimpleEmptyInterfaceLoggingDecorator::setBackendService(TScriptInterface<ITbSimpleEmptyInterfaceInterface> InService)
 {
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
@@ -95,7 +95,7 @@ void UTestbed2EmptyInterfaceLoggingDecorator::setBackendService(TScriptInterface
 	// only set if interface is implemented
 	if (InService.GetInterface() == nullptr)
 	{
-		UE_LOG(LogTestbed2EmptyInterfaceLoggingDecorator, Error, TEXT("Cannot set backend service to %s - interface Testbed2EmptyInterface is not fully implemented"), *InService.GetObject()->GetName());
+		UE_LOG(LogTbSimpleEmptyInterfaceLoggingDecorator, Error, TEXT("Cannot set backend service to %s - interface TbSimpleEmptyInterface is not fully implemented"), *InService.GetObject()->GetName());
 		return;
 	}
 

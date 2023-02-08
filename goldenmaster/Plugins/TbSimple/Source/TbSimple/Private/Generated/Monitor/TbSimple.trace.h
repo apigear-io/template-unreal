@@ -11,10 +11,12 @@ public:
 	static void trace_callSetPropInt(int32 InPropInt);
 	static void trace_callSetPropFloat(float InPropFloat);
 	static void trace_callSetPropString(const FString& InPropString);
+	static void trace_signalSigVoid();
 	static void trace_signalSigBool(bool bParamBool);
 	static void trace_signalSigInt(int32 ParamInt);
 	static void trace_signalSigFloat(float ParamFloat);
 	static void trace_signalSigString(const FString& ParamString);
+	static void trace_callFuncVoid();
 	static void trace_callFuncBool(bool bParamBool);
 	static void trace_callFuncInt(int32 ParamInt);
 	static void trace_callFuncFloat(float ParamFloat);
@@ -38,4 +40,44 @@ public:
 	static void trace_callFuncInt(const TArray<int32>& ParamInt);
 	static void trace_callFuncFloat(const TArray<float>& ParamFloat);
 	static void trace_callFuncString(const TArray<FString>& ParamString);
+};
+
+class TbSimpleNoPropertiesInterfaceTracer
+{
+public:
+	TbSimpleNoPropertiesInterfaceTracer();
+	static void capture_state(UObject* Object, ITbSimpleNoPropertiesInterfaceInterface* obj);
+	static void trace_signalSigVoid();
+	static void trace_signalSigBool(bool bParamBool);
+	static void trace_callFuncVoid();
+	static void trace_callFuncBool(bool bParamBool);
+};
+
+class TbSimpleNoOperationsInterfaceTracer
+{
+public:
+	TbSimpleNoOperationsInterfaceTracer();
+	static void capture_state(UObject* Object, ITbSimpleNoOperationsInterfaceInterface* obj);
+	static void trace_callSetPropBool(bool bInPropBool);
+	static void trace_callSetPropInt(int32 InPropInt);
+	static void trace_signalSigVoid();
+	static void trace_signalSigBool(bool bParamBool);
+};
+
+class TbSimpleNoSignalsInterfaceTracer
+{
+public:
+	TbSimpleNoSignalsInterfaceTracer();
+	static void capture_state(UObject* Object, ITbSimpleNoSignalsInterfaceInterface* obj);
+	static void trace_callSetPropBool(bool bInPropBool);
+	static void trace_callSetPropInt(int32 InPropInt);
+	static void trace_callFuncVoid();
+	static void trace_callFuncBool(bool bParamBool);
+};
+
+class TbSimpleEmptyInterfaceTracer
+{
+public:
+	TbSimpleEmptyInterfaceTracer();
+	static void capture_state(UObject* Object, ITbSimpleEmptyInterfaceInterface* obj);
 };

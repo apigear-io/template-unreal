@@ -14,7 +14,6 @@ interfaces:
       - { name: prop3, type: int }
       - { name: prop4, type: int }
     operations:
-      - name: func0
       - name: func1
         params:
           - { name: param1, type: int }
@@ -37,15 +36,7 @@ interfaces:
           - { name: param3, type: int }
           - { name: param4, type: int }
         return: { type: int }
-      - name: func5
-        params:
-          - { name: param1, type: int }
-          - { name: param2, type: int }
-          - { name: param3, type: int }
-          - { name: param4, type: int }
-          - { name: param5, type: int }
     signals:
-      - name: sig0
       - name: sig1
         params:
           - { name: param1, type: int }
@@ -134,17 +125,6 @@ interfaces:
           - { name: param1, type: NestedStruct1 }
           - { name: param2, type: NestedStruct2 }
           - { name: param3, type: NestedStruct3 }
-  - name: NoPropertyInterface
-    operations:
-      - name: func1
-        params:
-          - { name: param1, type: NestedStruct1 }
-        return: { type: NestedStruct1 }
-    signals:
-      - name: sig1
-        params:
-          - { name: param1, type: NestedStruct1 }
-  - name: EmptyInterface
 structs:
   - name: Struct1
     fields:

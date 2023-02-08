@@ -24,10 +24,6 @@ limitations under the License.
 #include "Generated/OLink/Testbed2NestedStruct2InterfaceOLinkClient.h"
 #include "Implementation/Testbed2NestedStruct3Interface.h"
 #include "Generated/OLink/Testbed2NestedStruct3InterfaceOLinkClient.h"
-#include "Implementation/Testbed2NoPropertyInterface.h"
-#include "Generated/OLink/Testbed2NoPropertyInterfaceOLinkClient.h"
-#include "Implementation/Testbed2EmptyInterface.h"
-#include "Generated/OLink/Testbed2EmptyInterfaceOLinkClient.h"
 #include "Testbed2Settings.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Engine/GameInstance.h"
@@ -144,61 +140,5 @@ TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> FTestbed2ModuleFactor
 	default:
 		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct3InterfaceInterface: Defaulting to local service backend"));
 		return NewObject<UTestbed2NestedStruct3Interface>();
-	}
-}
-
-TScriptInterface<ITestbed2NoPropertyInterfaceInterface> createTestbed2NoPropertyInterfaceOLink(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
-{
-	UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NoPropertyInterfaceInterface: Using OLink service backend"));
-	UTestbed2NoPropertyInterfaceOLinkClient* Instance = GameInstance->GetSubsystem<UTestbed2NoPropertyInterfaceOLinkClient>(GameInstance);
-	if (!Instance)
-	{
-		Collection.InitializeDependency(UTestbed2NoPropertyInterfaceOLinkClient::StaticClass());
-		Instance = GameInstance->GetSubsystem<UTestbed2NoPropertyInterfaceOLinkClient>(GameInstance);
-	}
-	return Instance;
-}
-
-TScriptInterface<ITestbed2NoPropertyInterfaceInterface> FTestbed2ModuleFactory::createITestbed2NoPropertyInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
-{
-	UTestbed2Settings* settings = GetMutableDefault<UTestbed2Settings>();
-
-	switch (settings->ServiceConnection)
-	{
-	case ETestbed2Connection::CONNECTION_OLINK:
-		return createTestbed2NoPropertyInterfaceOLink(GameInstance, Collection);
-	case ETestbed2Connection::CONNECTION_LOCAL:
-		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NoPropertyInterfaceInterface: Using local service backend"));
-	default:
-		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NoPropertyInterfaceInterface: Defaulting to local service backend"));
-		return NewObject<UTestbed2NoPropertyInterface>();
-	}
-}
-
-TScriptInterface<ITestbed2EmptyInterfaceInterface> createTestbed2EmptyInterfaceOLink(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
-{
-	UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2EmptyInterfaceInterface: Using OLink service backend"));
-	UTestbed2EmptyInterfaceOLinkClient* Instance = GameInstance->GetSubsystem<UTestbed2EmptyInterfaceOLinkClient>(GameInstance);
-	if (!Instance)
-	{
-		Collection.InitializeDependency(UTestbed2EmptyInterfaceOLinkClient::StaticClass());
-		Instance = GameInstance->GetSubsystem<UTestbed2EmptyInterfaceOLinkClient>(GameInstance);
-	}
-	return Instance;
-}
-
-TScriptInterface<ITestbed2EmptyInterfaceInterface> FTestbed2ModuleFactory::createITestbed2EmptyInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
-{
-	UTestbed2Settings* settings = GetMutableDefault<UTestbed2Settings>();
-
-	switch (settings->ServiceConnection)
-	{
-	case ETestbed2Connection::CONNECTION_OLINK:
-		return createTestbed2EmptyInterfaceOLink(GameInstance, Collection);
-	case ETestbed2Connection::CONNECTION_LOCAL:
-		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2EmptyInterfaceInterface: Using local service backend"));
-	default:
-		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2EmptyInterfaceInterface: Defaulting to local service backend"));
-		return NewObject<UTestbed2EmptyInterface>();
 	}
 }

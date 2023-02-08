@@ -19,6 +19,7 @@ interfaces:
       - { name: propFloat, type: float }
       - { name: propString, type: string }
     operations:
+      - name: funcVoid
       - name: funcBool
         params:
           - { name: paramBool, type: bool }
@@ -40,6 +41,7 @@ interfaces:
         return:
           type: string
     signals:
+      - name: sigVoid
       - name: sigBool
         params:
           - { name: paramBool, type: bool }
@@ -96,3 +98,37 @@ interfaces:
       - name: sigString
         params:
           - { name: paramString, type: string, array: true }
+  - name: NoPropertiesInterface
+    operations:
+      - name: funcVoid
+      - name: funcBool
+        params:
+          - { name: paramBool, type: bool }
+        return:
+          type: bool
+    signals:
+      - name: sigVoid
+      - name: sigBool
+        params:
+          - { name: paramBool, type: bool }
+  - name: NoOperationsInterface
+    properties:
+      - { name: propBool, type: bool }
+      - { name: propInt, type: int }
+    signals:
+      - name: sigVoid
+      - name: sigBool
+        params:
+          - { name: paramBool, type: bool }
+  - name: NoSignalsInterface
+    properties:
+      - { name: propBool, type: bool }
+      - { name: propInt, type: int }
+    operations:
+      - name: funcVoid
+      - name: funcBool
+        params:
+          - { name: paramBool, type: bool }
+        return:
+          type: bool
+  - name: EmptyInterface

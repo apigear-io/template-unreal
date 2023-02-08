@@ -1,3 +1,4 @@
+
 /**
 Copyright 2021 ApiGear UG
 Copyright 2021 Epic Games, Inc.
@@ -14,7 +15,24 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+#pragma once
 
-#include "Implementation/Testbed2EmptyInterface.h"
+#include "CoreMinimal.h"
+#include "Generated/api/TbSimpleEmptyInterfaceInterface.h"
+#include "TbSimpleEmptyInterface.generated.h"
 
-UTestbed2EmptyInterface::~UTestbed2EmptyInterface() = default;
+UCLASS(BlueprintType, Blueprintable)
+class TBSIMPLE_API UTbSimpleEmptyInterface : public UObject, public ITbSimpleEmptyInterfaceInterface
+{
+	GENERATED_BODY()
+public:
+	virtual ~UTbSimpleEmptyInterface();
+
+	// signals
+	// properties
+	// operations
+protected:
+	// signals
+private:
+	// properties - local copy - use setter functions to emit changed signals
+};

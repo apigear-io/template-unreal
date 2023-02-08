@@ -18,3 +18,7 @@ limitations under the License.
 
 #include "TbSimpleSimpleInterfaceInterface.h"
 #include "TbSimpleSimpleArrayInterfaceInterface.h"
+#include "TbSimpleNoPropertiesInterfaceInterface.h"
+#include "TbSimpleNoOperationsInterfaceInterface.h"
+#include "TbSimpleNoSignalsInterfaceInterface.h"
+#include "TbSimpleEmptyInterfaceInterface.h"

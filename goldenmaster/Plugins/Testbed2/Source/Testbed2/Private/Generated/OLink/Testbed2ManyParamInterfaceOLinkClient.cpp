@@ -82,16 +82,6 @@ void UTestbed2ManyParamInterfaceOLinkClient::Deinitialize()
 	Super::Deinitialize();
 }
 
-void UTestbed2ManyParamInterfaceOLinkClient::BroadcastSig0_Implementation()
-{
-	Sig0Signal.Broadcast();
-}
-
-FTestbed2ManyParamInterfaceSig0Delegate& UTestbed2ManyParamInterfaceOLinkClient::GetSig0SignalDelegate()
-{
-	return Sig0Signal;
-}
-
 void UTestbed2ManyParamInterfaceOLinkClient::BroadcastSig1_Implementation(int32 Param1)
 {
 	Sig1Signal.Broadcast(Param1);
@@ -232,17 +222,6 @@ FTestbed2ManyParamInterfaceProp4ChangedDelegate& UTestbed2ManyParamInterfaceOLin
 	return Prop4Changed;
 }
 
-void UTestbed2ManyParamInterfaceOLinkClient::Func0_Implementation()
-{
-	if (!m_sink->IsReady())
-	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-		return;
-	}
-	ApiGear::ObjectLink::InvokeReplyFunc GetManyParamInterfaceStateFunc = [this](ApiGear::ObjectLink::InvokeReplyArg arg) {};
-	m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func0"), {}, GetManyParamInterfaceStateFunc);
-}
-
 int32 UTestbed2ManyParamInterfaceOLinkClient::Func1_Implementation(int32 Param1)
 {
 	if (!m_sink->IsReady())
@@ -319,17 +298,6 @@ int32 UTestbed2ManyParamInterfaceOLinkClient::Func4_Implementation(int32 Param1,
 	return Promise.GetFuture().Get();
 }
 
-void UTestbed2ManyParamInterfaceOLinkClient::Func5_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4, int32 Param5)
-{
-	if (!m_sink->IsReady())
-	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-		return;
-	}
-	ApiGear::ObjectLink::InvokeReplyFunc GetManyParamInterfaceStateFunc = [this](ApiGear::ObjectLink::InvokeReplyArg arg) {};
-	m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func5"), {Param1, Param2, Param3, Param4, Param5}, GetManyParamInterfaceStateFunc);
-}
-
 void UTestbed2ManyParamInterfaceOLinkClient::applyState(const nlohmann::json& fields)
 {
 	if (fields.contains("prop1"))
@@ -369,11 +337,6 @@ void UTestbed2ManyParamInterfaceOLinkClient::applyState(const nlohmann::json& fi
 void UTestbed2ManyParamInterfaceOLinkClient::emitSignal(const std::string& signalId, const nlohmann::json& args)
 {
 	std::string MemberName = ApiGear::ObjectLink::Name::getMemberName(signalId);
-	if (MemberName == "sig0")
-	{
-		Execute_BroadcastSig0(this);
-		return;
-	}
 	if (MemberName == "sig1")
 	{
 		Execute_BroadcastSig1(this, args[0].get<int32>());

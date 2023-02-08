@@ -82,6 +82,16 @@ void UTbSimpleSimpleInterfaceOLinkClient::Deinitialize()
 	Super::Deinitialize();
 }
 
+void UTbSimpleSimpleInterfaceOLinkClient::BroadcastSigVoid_Implementation()
+{
+	SigVoidSignal.Broadcast();
+}
+
+FTbSimpleSimpleInterfaceSigVoidDelegate& UTbSimpleSimpleInterfaceOLinkClient::GetSigVoidSignalDelegate()
+{
+	return SigVoidSignal;
+}
+
 void UTbSimpleSimpleInterfaceOLinkClient::BroadcastSigBool_Implementation(bool bParamBool)
 {
 	SigBoolSignal.Broadcast(bParamBool);
@@ -222,6 +232,17 @@ FTbSimpleSimpleInterfacePropStringChangedDelegate& UTbSimpleSimpleInterfaceOLink
 	return PropStringChanged;
 }
 
+void UTbSimpleSimpleInterfaceOLinkClient::FuncVoid_Implementation()
+{
+	if (!m_sink->IsReady())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		return;
+	}
+	ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [this](ApiGear::ObjectLink::InvokeReplyArg arg) {};
+	m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcVoid"), {}, GetSimpleInterfaceStateFunc);
+}
+
 bool UTbSimpleSimpleInterfaceOLinkClient::FuncBool_Implementation(bool bParamBool)
 {
 	if (!m_sink->IsReady())
@@ -337,6 +358,11 @@ void UTbSimpleSimpleInterfaceOLinkClient::applyState(const nlohmann::json& field
 void UTbSimpleSimpleInterfaceOLinkClient::emitSignal(const std::string& signalId, const nlohmann::json& args)
 {
 	std::string MemberName = ApiGear::ObjectLink::Name::getMemberName(signalId);
+	if (MemberName == "sigVoid")
+	{
+		Execute_BroadcastSigVoid(this);
+		return;
+	}
 	if (MemberName == "sigBool")
 	{
 		Execute_BroadcastSigBool(this, args[0].get<bool>());

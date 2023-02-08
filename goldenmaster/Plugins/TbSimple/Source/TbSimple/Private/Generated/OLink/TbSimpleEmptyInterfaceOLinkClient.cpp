@@ -20,10 +20,10 @@ limitations under the License.
 // DO NOT MODIFY
 ///////////////////////////////
 
-#include "Generated/olink/Testbed2NoPropertyInterfaceOLinkClient.h"
+#include "Generated/olink/TbSimpleEmptyInterfaceOLinkClient.h"
 #include "Async/Future.h"
 #include "Async/Async.h"
-#include "Generated/api/Testbed2.json.adapter.h"
+#include "Generated/api/TbSimple.json.adapter.h"
 #include "unrealolink.h"
 #include "unrealolinksink.h"
 #include "Async/Async.h"
@@ -35,13 +35,13 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/iobjectsink.h"
 THIRD_PARTY_INCLUDES_END
 
-UTestbed2NoPropertyInterfaceOLinkClient::UTestbed2NoPropertyInterfaceOLinkClient()
-	: ITestbed2NoPropertyInterfaceInterface()
+UTbSimpleEmptyInterfaceOLinkClient::UTbSimpleEmptyInterfaceOLinkClient()
+	: ITbSimpleEmptyInterfaceInterface()
 {
-	m_sink = std::make_shared<FUnrealOLinkSink>("testbed2.NoPropertyInterface");
+	m_sink = std::make_shared<FUnrealOLinkSink>("tb.simple.EmptyInterface");
 }
 
-void UTestbed2NoPropertyInterfaceOLinkClient::Initialize(FSubsystemCollectionBase& Collection)
+void UTbSimpleEmptyInterfaceOLinkClient::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
 
@@ -66,7 +66,7 @@ void UTestbed2NoPropertyInterfaceOLinkClient::Initialize(FSubsystemCollectionBas
 	m_sink->setOnSignalEmittedCallback(SignalEmittedFunc);
 }
 
-void UTestbed2NoPropertyInterfaceOLinkClient::Deinitialize()
+void UTbSimpleEmptyInterfaceOLinkClient::Deinitialize()
 {
 	// tell the sink that we are gone and should not try to be invoked
 	m_sink->resetOnPropertyChangedCallback();
@@ -82,45 +82,11 @@ void UTestbed2NoPropertyInterfaceOLinkClient::Deinitialize()
 	Super::Deinitialize();
 }
 
-void UTestbed2NoPropertyInterfaceOLinkClient::BroadcastSig1_Implementation(const FTestbed2NestedStruct1& Param1)
-{
-	Sig1Signal.Broadcast(Param1);
-}
-
-FTestbed2NoPropertyInterfaceSig1Delegate& UTestbed2NoPropertyInterfaceOLinkClient::GetSig1SignalDelegate()
-{
-	return Sig1Signal;
-}
-
-FTestbed2NestedStruct1 UTestbed2NoPropertyInterfaceOLinkClient::Func1_Implementation(const FTestbed2NestedStruct1& Param1)
-{
-	if (!m_sink->IsReady())
-	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-		return FTestbed2NestedStruct1();
-	}
-	TPromise<FTestbed2NestedStruct1> Promise;
-	Async(EAsyncExecution::Thread,
-		[Param1, &Promise, this]()
-		{
-			ApiGear::ObjectLink::InvokeReplyFunc GetNoPropertyInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-			{ Promise.SetValue(arg.value.get<FTestbed2NestedStruct1>()); };
-			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func1"), {Param1}, GetNoPropertyInterfaceStateFunc);
-		});
-
-	return Promise.GetFuture().Get();
-}
-
-void UTestbed2NoPropertyInterfaceOLinkClient::applyState(const nlohmann::json& fields)
+void UTbSimpleEmptyInterfaceOLinkClient::applyState(const nlohmann::json& fields)
 {
 }
 
-void UTestbed2NoPropertyInterfaceOLinkClient::emitSignal(const std::string& signalId, const nlohmann::json& args)
+void UTbSimpleEmptyInterfaceOLinkClient::emitSignal(const std::string& signalId, const nlohmann::json& args)
 {
 	std::string MemberName = ApiGear::ObjectLink::Name::getMemberName(signalId);
-	if (MemberName == "sig1")
-	{
-		Execute_BroadcastSig1(this, args[0].get<FTestbed2NestedStruct1>());
-		return;
-	}
 }

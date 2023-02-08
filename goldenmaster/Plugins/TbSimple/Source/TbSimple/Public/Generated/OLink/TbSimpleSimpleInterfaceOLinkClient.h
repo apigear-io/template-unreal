@@ -37,6 +37,9 @@ public:
 	void Deinitialize() override;
 
 	// signals
+	FTbSimpleSimpleInterfaceSigVoidDelegate SigVoidSignal;
+	FTbSimpleSimpleInterfaceSigVoidDelegate& GetSigVoidSignalDelegate() override;
+
 	FTbSimpleSimpleInterfaceSigBoolDelegate SigBoolSignal;
 	FTbSimpleSimpleInterfaceSigBoolDelegate& GetSigBoolSignalDelegate() override;
 
@@ -75,6 +78,8 @@ public:
 	void SetPropString_Implementation(const FString& PropString) override;
 
 	// operations
+	void FuncVoid_Implementation() override;
+
 	void FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool) override{};
 	bool FuncBool_Implementation(bool bParamBool) override;
 
@@ -89,6 +94,8 @@ public:
 
 protected:
 	// signals
+	void BroadcastSigVoid_Implementation() override;
+
 	void BroadcastSigBool_Implementation(bool bParamBool) override;
 
 	void BroadcastSigInt_Implementation(int32 ParamInt) override;
