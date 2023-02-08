@@ -110,6 +110,7 @@ void UTbSimpleNoPropertiesInterfaceLoggingDecorator::setBackendService(TScriptIn
 	BackendService->GetSigBoolSignalDelegate().AddDynamic(this, &UTbSimpleNoPropertiesInterfaceLoggingDecorator::OnSigBool);
 	// populate service state to proxy
 }
+
 void UTbSimpleNoPropertiesInterfaceLoggingDecorator::BroadcastSigVoid_Implementation()
 {
 	SigVoidSignal.Broadcast();
@@ -147,6 +148,7 @@ void UTbSimpleNoPropertiesInterfaceLoggingDecorator::FuncVoid_Implementation()
 	TbSimpleNoPropertiesInterfaceTracer::trace_callFuncVoid();
 	BackendService->Execute_FuncVoid(BackendService.GetObject());
 }
+
 void UTbSimpleNoPropertiesInterfaceLoggingDecorator::FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool)
 {
 	TbSimpleNoPropertiesInterfaceTracer::trace_callFuncBool(bParamBool);
@@ -173,6 +175,7 @@ void UTbSimpleNoPropertiesInterfaceLoggingDecorator::FuncBoolAsync_Implementatio
 			});
 	}
 }
+
 bool UTbSimpleNoPropertiesInterfaceLoggingDecorator::FuncBool_Implementation(bool bParamBool)
 {
 	TbSimpleNoPropertiesInterfaceTracer::trace_callFuncBool(bParamBool);

@@ -112,6 +112,7 @@ void UTbSimpleNoSignalsInterfaceLoggingDecorator::setBackendService(TScriptInter
 	bPropBool = BackendService->Execute_GetPropBool(BackendService.GetObject());
 	PropInt = BackendService->Execute_GetPropInt(BackendService.GetObject());
 }
+
 void UTbSimpleNoSignalsInterfaceLoggingDecorator::BroadcastPropBoolChanged_Implementation(bool bInPropBool)
 {
 	PropBoolChanged.Broadcast(bInPropBool);
@@ -193,6 +194,7 @@ void UTbSimpleNoSignalsInterfaceLoggingDecorator::FuncVoid_Implementation()
 	TbSimpleNoSignalsInterfaceTracer::trace_callFuncVoid();
 	BackendService->Execute_FuncVoid(BackendService.GetObject());
 }
+
 void UTbSimpleNoSignalsInterfaceLoggingDecorator::FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool)
 {
 	TbSimpleNoSignalsInterfaceTracer::trace_callFuncBool(bParamBool);
@@ -219,6 +221,7 @@ void UTbSimpleNoSignalsInterfaceLoggingDecorator::FuncBoolAsync_Implementation(U
 			});
 	}
 }
+
 bool UTbSimpleNoSignalsInterfaceLoggingDecorator::FuncBool_Implementation(bool bParamBool)
 {
 	TbSimpleNoSignalsInterfaceTracer::trace_callFuncBool(bParamBool);

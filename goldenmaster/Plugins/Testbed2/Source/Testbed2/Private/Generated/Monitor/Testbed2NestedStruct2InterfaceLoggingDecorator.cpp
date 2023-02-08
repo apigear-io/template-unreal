@@ -118,6 +118,7 @@ void UTestbed2NestedStruct2InterfaceLoggingDecorator::setBackendService(TScriptI
 	Prop1 = BackendService->Execute_GetProp1(BackendService.GetObject());
 	Prop2 = BackendService->Execute_GetProp2(BackendService.GetObject());
 }
+
 void UTestbed2NestedStruct2InterfaceLoggingDecorator::BroadcastSig1_Implementation(const FTestbed2NestedStruct1& Param1)
 {
 	Sig1Signal.Broadcast(Param1);
@@ -252,11 +253,13 @@ void UTestbed2NestedStruct2InterfaceLoggingDecorator::Func1Async_Implementation(
 			});
 	}
 }
+
 FTestbed2NestedStruct1 UTestbed2NestedStruct2InterfaceLoggingDecorator::Func1_Implementation(const FTestbed2NestedStruct1& Param1)
 {
 	Testbed2NestedStruct2InterfaceTracer::trace_callFunc1(Param1);
 	return BackendService->Execute_Func1(BackendService.GetObject(), Param1);
 }
+
 void UTestbed2NestedStruct2InterfaceLoggingDecorator::Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
 {
 	Testbed2NestedStruct2InterfaceTracer::trace_callFunc2(Param1, Param2);
@@ -283,6 +286,7 @@ void UTestbed2NestedStruct2InterfaceLoggingDecorator::Func2Async_Implementation(
 			});
 	}
 }
+
 FTestbed2NestedStruct1 UTestbed2NestedStruct2InterfaceLoggingDecorator::Func2_Implementation(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
 {
 	Testbed2NestedStruct2InterfaceTracer::trace_callFunc2(Param1, Param2);

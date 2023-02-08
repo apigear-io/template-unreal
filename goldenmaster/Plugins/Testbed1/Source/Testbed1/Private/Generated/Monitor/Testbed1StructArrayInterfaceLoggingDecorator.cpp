@@ -132,6 +132,7 @@ void UTestbed1StructArrayInterfaceLoggingDecorator::setBackendService(TScriptInt
 	PropFloat = BackendService->Execute_GetPropFloat(BackendService.GetObject());
 	PropString = BackendService->Execute_GetPropString(BackendService.GetObject());
 }
+
 void UTestbed1StructArrayInterfaceLoggingDecorator::BroadcastSigBool_Implementation(const TArray<FTestbed1StructBool>& ParamBool)
 {
 	SigBoolSignal.Broadcast(ParamBool);
@@ -374,11 +375,13 @@ void UTestbed1StructArrayInterfaceLoggingDecorator::FuncBoolAsync_Implementation
 			});
 	}
 }
+
 FTestbed1StructBool UTestbed1StructArrayInterfaceLoggingDecorator::FuncBool_Implementation(const TArray<FTestbed1StructBool>& ParamBool)
 {
 	Testbed1StructArrayInterfaceTracer::trace_callFuncBool(ParamBool);
 	return BackendService->Execute_FuncBool(BackendService.GetObject(), ParamBool);
 }
+
 void UTestbed1StructArrayInterfaceLoggingDecorator::FuncIntAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructInt>& ParamInt)
 {
 	Testbed1StructArrayInterfaceTracer::trace_callFuncInt(ParamInt);
@@ -405,11 +408,13 @@ void UTestbed1StructArrayInterfaceLoggingDecorator::FuncIntAsync_Implementation(
 			});
 	}
 }
+
 FTestbed1StructBool UTestbed1StructArrayInterfaceLoggingDecorator::FuncInt_Implementation(const TArray<FTestbed1StructInt>& ParamInt)
 {
 	Testbed1StructArrayInterfaceTracer::trace_callFuncInt(ParamInt);
 	return BackendService->Execute_FuncInt(BackendService.GetObject(), ParamInt);
 }
+
 void UTestbed1StructArrayInterfaceLoggingDecorator::FuncFloatAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructFloat>& ParamFloat)
 {
 	Testbed1StructArrayInterfaceTracer::trace_callFuncFloat(ParamFloat);
@@ -436,11 +441,13 @@ void UTestbed1StructArrayInterfaceLoggingDecorator::FuncFloatAsync_Implementatio
 			});
 	}
 }
+
 FTestbed1StructBool UTestbed1StructArrayInterfaceLoggingDecorator::FuncFloat_Implementation(const TArray<FTestbed1StructFloat>& ParamFloat)
 {
 	Testbed1StructArrayInterfaceTracer::trace_callFuncFloat(ParamFloat);
 	return BackendService->Execute_FuncFloat(BackendService.GetObject(), ParamFloat);
 }
+
 void UTestbed1StructArrayInterfaceLoggingDecorator::FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructString>& ParamString)
 {
 	Testbed1StructArrayInterfaceTracer::trace_callFuncString(ParamString);
@@ -467,6 +474,7 @@ void UTestbed1StructArrayInterfaceLoggingDecorator::FuncStringAsync_Implementati
 			});
 	}
 }
+
 FTestbed1StructBool UTestbed1StructArrayInterfaceLoggingDecorator::FuncString_Implementation(const TArray<FTestbed1StructString>& ParamString)
 {
 	Testbed1StructArrayInterfaceTracer::trace_callFuncString(ParamString);

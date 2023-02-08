@@ -135,6 +135,7 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::setBackendService(TScriptInterfac
 	PropFloat = BackendService->Execute_GetPropFloat(BackendService.GetObject());
 	PropString = BackendService->Execute_GetPropString(BackendService.GetObject());
 }
+
 void UTbSimpleSimpleInterfaceLoggingDecorator::BroadcastSigVoid_Implementation()
 {
 	SigVoidSignal.Broadcast();
@@ -372,6 +373,7 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::FuncVoid_Implementation()
 	TbSimpleSimpleInterfaceTracer::trace_callFuncVoid();
 	BackendService->Execute_FuncVoid(BackendService.GetObject());
 }
+
 void UTbSimpleSimpleInterfaceLoggingDecorator::FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool)
 {
 	TbSimpleSimpleInterfaceTracer::trace_callFuncBool(bParamBool);
@@ -398,11 +400,13 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::FuncBoolAsync_Implementation(UObj
 			});
 	}
 }
+
 bool UTbSimpleSimpleInterfaceLoggingDecorator::FuncBool_Implementation(bool bParamBool)
 {
 	TbSimpleSimpleInterfaceTracer::trace_callFuncBool(bParamBool);
 	return BackendService->Execute_FuncBool(BackendService.GetObject(), bParamBool);
 }
+
 void UTbSimpleSimpleInterfaceLoggingDecorator::FuncIntAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 ParamInt)
 {
 	TbSimpleSimpleInterfaceTracer::trace_callFuncInt(ParamInt);
@@ -429,11 +433,13 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::FuncIntAsync_Implementation(UObje
 			});
 	}
 }
+
 int32 UTbSimpleSimpleInterfaceLoggingDecorator::FuncInt_Implementation(int32 ParamInt)
 {
 	TbSimpleSimpleInterfaceTracer::trace_callFuncInt(ParamInt);
 	return BackendService->Execute_FuncInt(BackendService.GetObject(), ParamInt);
 }
+
 void UTbSimpleSimpleInterfaceLoggingDecorator::FuncFloatAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, float& Result, float ParamFloat)
 {
 	TbSimpleSimpleInterfaceTracer::trace_callFuncFloat(ParamFloat);
@@ -460,11 +466,13 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::FuncFloatAsync_Implementation(UOb
 			});
 	}
 }
+
 float UTbSimpleSimpleInterfaceLoggingDecorator::FuncFloat_Implementation(float ParamFloat)
 {
 	TbSimpleSimpleInterfaceTracer::trace_callFuncFloat(ParamFloat);
 	return BackendService->Execute_FuncFloat(BackendService.GetObject(), ParamFloat);
 }
+
 void UTbSimpleSimpleInterfaceLoggingDecorator::FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FString& Result, const FString& ParamString)
 {
 	TbSimpleSimpleInterfaceTracer::trace_callFuncString(ParamString);
@@ -491,6 +499,7 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::FuncStringAsync_Implementation(UO
 			});
 	}
 }
+
 FString UTbSimpleSimpleInterfaceLoggingDecorator::FuncString_Implementation(const FString& ParamString)
 {
 	TbSimpleSimpleInterfaceTracer::trace_callFuncString(ParamString);

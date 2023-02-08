@@ -132,6 +132,7 @@ void UTestbed2ManyParamInterfaceLoggingDecorator::setBackendService(TScriptInter
 	Prop3 = BackendService->Execute_GetProp3(BackendService.GetObject());
 	Prop4 = BackendService->Execute_GetProp4(BackendService.GetObject());
 }
+
 void UTestbed2ManyParamInterfaceLoggingDecorator::BroadcastSig1_Implementation(int32 Param1)
 {
 	Sig1Signal.Broadcast(Param1);
@@ -374,11 +375,13 @@ void UTestbed2ManyParamInterfaceLoggingDecorator::Func1Async_Implementation(UObj
 			});
 	}
 }
+
 int32 UTestbed2ManyParamInterfaceLoggingDecorator::Func1_Implementation(int32 Param1)
 {
 	Testbed2ManyParamInterfaceTracer::trace_callFunc1(Param1);
 	return BackendService->Execute_Func1(BackendService.GetObject(), Param1);
 }
+
 void UTestbed2ManyParamInterfaceLoggingDecorator::Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2)
 {
 	Testbed2ManyParamInterfaceTracer::trace_callFunc2(Param1, Param2);
@@ -405,11 +408,13 @@ void UTestbed2ManyParamInterfaceLoggingDecorator::Func2Async_Implementation(UObj
 			});
 	}
 }
+
 int32 UTestbed2ManyParamInterfaceLoggingDecorator::Func2_Implementation(int32 Param1, int32 Param2)
 {
 	Testbed2ManyParamInterfaceTracer::trace_callFunc2(Param1, Param2);
 	return BackendService->Execute_Func2(BackendService.GetObject(), Param1, Param2);
 }
+
 void UTestbed2ManyParamInterfaceLoggingDecorator::Func3Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2, int32 Param3)
 {
 	Testbed2ManyParamInterfaceTracer::trace_callFunc3(Param1, Param2, Param3);
@@ -436,11 +441,13 @@ void UTestbed2ManyParamInterfaceLoggingDecorator::Func3Async_Implementation(UObj
 			});
 	}
 }
+
 int32 UTestbed2ManyParamInterfaceLoggingDecorator::Func3_Implementation(int32 Param1, int32 Param2, int32 Param3)
 {
 	Testbed2ManyParamInterfaceTracer::trace_callFunc3(Param1, Param2, Param3);
 	return BackendService->Execute_Func3(BackendService.GetObject(), Param1, Param2, Param3);
 }
+
 void UTestbed2ManyParamInterfaceLoggingDecorator::Func4Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2, int32 Param3, int32 Param4)
 {
 	Testbed2ManyParamInterfaceTracer::trace_callFunc4(Param1, Param2, Param3, Param4);
@@ -467,6 +474,7 @@ void UTestbed2ManyParamInterfaceLoggingDecorator::Func4Async_Implementation(UObj
 			});
 	}
 }
+
 int32 UTestbed2ManyParamInterfaceLoggingDecorator::Func4_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
 {
 	Testbed2ManyParamInterfaceTracer::trace_callFunc4(Param1, Param2, Param3, Param4);

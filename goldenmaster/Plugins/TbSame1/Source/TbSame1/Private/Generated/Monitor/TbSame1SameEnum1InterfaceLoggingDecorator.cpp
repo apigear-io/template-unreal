@@ -111,6 +111,7 @@ void UTbSame1SameEnum1InterfaceLoggingDecorator::setBackendService(TScriptInterf
 	// populate service state to proxy
 	Prop1 = BackendService->Execute_GetProp1(BackendService.GetObject());
 }
+
 void UTbSame1SameEnum1InterfaceLoggingDecorator::BroadcastSig1_Implementation(const ETbSame1Enum1& Param1)
 {
 	Sig1Signal.Broadcast(Param1);
@@ -191,6 +192,7 @@ void UTbSame1SameEnum1InterfaceLoggingDecorator::Func1Async_Implementation(UObje
 			});
 	}
 }
+
 ETbSame1Enum1 UTbSame1SameEnum1InterfaceLoggingDecorator::Func1_Implementation(const ETbSame1Enum1& Param1)
 {
 	TbSame1SameEnum1InterfaceTracer::trace_callFunc1(Param1);

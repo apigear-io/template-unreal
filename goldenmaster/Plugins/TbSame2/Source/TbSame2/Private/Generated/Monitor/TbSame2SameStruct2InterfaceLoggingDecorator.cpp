@@ -118,6 +118,7 @@ void UTbSame2SameStruct2InterfaceLoggingDecorator::setBackendService(TScriptInte
 	Prop1 = BackendService->Execute_GetProp1(BackendService.GetObject());
 	Prop2 = BackendService->Execute_GetProp2(BackendService.GetObject());
 }
+
 void UTbSame2SameStruct2InterfaceLoggingDecorator::BroadcastSig1_Implementation(const FTbSame2Struct1& Param1)
 {
 	Sig1Signal.Broadcast(Param1);
@@ -252,11 +253,13 @@ void UTbSame2SameStruct2InterfaceLoggingDecorator::Func1Async_Implementation(UOb
 			});
 	}
 }
+
 FTbSame2Struct1 UTbSame2SameStruct2InterfaceLoggingDecorator::Func1_Implementation(const FTbSame2Struct1& Param1)
 {
 	TbSame2SameStruct2InterfaceTracer::trace_callFunc1(Param1);
 	return BackendService->Execute_Func1(BackendService.GetObject(), Param1);
 }
+
 void UTbSame2SameStruct2InterfaceLoggingDecorator::Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame2Struct1& Result, const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2)
 {
 	TbSame2SameStruct2InterfaceTracer::trace_callFunc2(Param1, Param2);
@@ -283,6 +286,7 @@ void UTbSame2SameStruct2InterfaceLoggingDecorator::Func2Async_Implementation(UOb
 			});
 	}
 }
+
 FTbSame2Struct1 UTbSame2SameStruct2InterfaceLoggingDecorator::Func2_Implementation(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2)
 {
 	TbSame2SameStruct2InterfaceTracer::trace_callFunc2(Param1, Param2);

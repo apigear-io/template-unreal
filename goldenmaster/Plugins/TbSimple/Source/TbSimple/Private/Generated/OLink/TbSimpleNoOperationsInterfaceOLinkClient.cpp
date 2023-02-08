@@ -151,6 +151,7 @@ FTbSimpleNoOperationsInterfacePropIntChangedDelegate& UTbSimpleNoOperationsInter
 {
 	return PropIntChanged;
 }
+
 void UTbSimpleNoOperationsInterfaceOLinkClient::applyState(const nlohmann::json& fields)
 {
 	if (fields.contains("propBool"))

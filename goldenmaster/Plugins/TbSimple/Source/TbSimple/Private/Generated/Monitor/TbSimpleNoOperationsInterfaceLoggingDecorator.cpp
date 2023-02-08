@@ -118,6 +118,7 @@ void UTbSimpleNoOperationsInterfaceLoggingDecorator::setBackendService(TScriptIn
 	bPropBool = BackendService->Execute_GetPropBool(BackendService.GetObject());
 	PropInt = BackendService->Execute_GetPropInt(BackendService.GetObject());
 }
+
 void UTbSimpleNoOperationsInterfaceLoggingDecorator::BroadcastSigVoid_Implementation()
 {
 	SigVoidSignal.Broadcast();
@@ -225,4 +226,3 @@ FTbSimpleNoOperationsInterfacePropIntChangedDelegate& UTbSimpleNoOperationsInter
 {
 	return PropIntChanged;
 }
-

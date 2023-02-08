@@ -111,6 +111,7 @@ void UTbSame2SameStruct1InterfaceLoggingDecorator::setBackendService(TScriptInte
 	// populate service state to proxy
 	Prop1 = BackendService->Execute_GetProp1(BackendService.GetObject());
 }
+
 void UTbSame2SameStruct1InterfaceLoggingDecorator::BroadcastSig1_Implementation(const FTbSame2Struct1& Param1)
 {
 	Sig1Signal.Broadcast(Param1);
@@ -191,6 +192,7 @@ void UTbSame2SameStruct1InterfaceLoggingDecorator::Func1Async_Implementation(UOb
 			});
 	}
 }
+
 FTbSame2Struct1 UTbSame2SameStruct1InterfaceLoggingDecorator::Func1_Implementation(const FTbSame2Struct1& Param1)
 {
 	TbSame2SameStruct1InterfaceTracer::trace_callFunc1(Param1);

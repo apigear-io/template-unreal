@@ -142,8 +142,9 @@ void {{$Class}}::setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{Cam
 	{{ueVar "" .}} = BackendService->Execute_Get{{Camel .Name}}(BackendService.GetObject());
 {{- end }}
 }
-
-{{- range .Interface.Signals }}
+{{- if .Interface.Signals }}{{nl}}{{ end }}
+{{- range $i, $e := .Interface.Signals }}
+{{- if $i }}{{nl}}{{ end }}
 void {{$Class}}::Broadcast{{Camel .Name}}_Implementation({{ueParams "" .Params}})
 {
 	{{Camel .Name}}Signal.Broadcast({{ueVars "" .Params }});
@@ -159,9 +160,10 @@ F{{$Iface}}{{Camel .Name}}Delegate& {{$Class}}::Get{{Camel .Name}}SignalDelegate
 {
 	return {{Camel .Name}}Signal;
 }
-{{ end }}
-
-{{- range .Interface.Properties }}
+{{- end }}
+{{- if .Interface.Properties }}{{nl}}{{ end }}
+{{- range $i, $e := .Interface.Properties }}
+{{- if $i }}{{nl}}{{ end }}
 void {{$Class}}::Broadcast{{Camel .Name}}Changed_Implementation({{ueParam "In" .}})
 {
 	{{Camel .Name}}Changed.Broadcast({{ueVar "In" .}});
@@ -199,10 +201,10 @@ F{{$Iface}}{{Camel .Name}}ChangedDelegate& {{$Class}}::Get{{Camel .Name}}Changed
 {
 	return {{Camel .Name}}Changed;
 }
-{{ end }}
-
-{{- range .Interface.Operations }}
-
+{{- end }}
+{{- if .Interface.Operations }}{{nl}}{{ end }}
+{{- range $i, $e := .Interface.Operations }}
+{{- if $i }}{{nl}}{{ end }}
 {{- if .Description }}
 /**
    \brief {{.Description}}
@@ -234,7 +236,7 @@ void {{$Class}}::{{Camel .Name}}Async_Implementation(UObject* WorldContextObject
 				CompletionAction->Cancel();
 			});
 	}
-}
+}{{ nl }}
 {{- end }}
 {{ueReturn "" .Return}} {{$Class}}::{{Camel .Name}}_Implementation({{ueParams "" .Params}})
 {

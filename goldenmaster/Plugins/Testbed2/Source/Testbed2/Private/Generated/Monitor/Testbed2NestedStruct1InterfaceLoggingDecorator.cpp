@@ -111,6 +111,7 @@ void UTestbed2NestedStruct1InterfaceLoggingDecorator::setBackendService(TScriptI
 	// populate service state to proxy
 	Prop1 = BackendService->Execute_GetProp1(BackendService.GetObject());
 }
+
 void UTestbed2NestedStruct1InterfaceLoggingDecorator::BroadcastSig1_Implementation(const FTestbed2NestedStruct1& Param1)
 {
 	Sig1Signal.Broadcast(Param1);
@@ -191,6 +192,7 @@ void UTestbed2NestedStruct1InterfaceLoggingDecorator::Func1Async_Implementation(
 			});
 	}
 }
+
 FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceLoggingDecorator::Func1_Implementation(const FTestbed2NestedStruct1& Param1)
 {
 	Testbed2NestedStruct1InterfaceTracer::trace_callFunc1(Param1);

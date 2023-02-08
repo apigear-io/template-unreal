@@ -78,7 +78,8 @@ void {{$Class}}::Deinitialize()
 
 	Super::Deinitialize();
 }
-{{ range $i, $e := .Interface.Signals }}
+{{- if len .Interface.Signals }}{{ nl }}{{ end }}
+{{- range $i, $e := .Interface.Signals }}
 {{- if $i }}{{nl}}{{ end }}
 void {{$Class}}::Broadcast{{Camel .Name}}_Implementation({{ueParams "" .Params}})
 {
@@ -119,7 +120,8 @@ F{{$Iface}}{{Camel .Name}}ChangedDelegate& {{$Class}}::Get{{Camel .Name}}Changed
 }
 {{- end }}
 {{- if len .Interface.Operations }}{{ nl }}{{ end }}
-{{- range .Interface.Operations }}
+{{- range $i, $e := .Interface.Operations }}
+{{- if $i }}{{nl}}{{ end }}
 {{- if .Description }}
 /**
    \brief {{.Description}}
@@ -154,7 +156,8 @@ F{{$Iface}}{{Camel .Name}}ChangedDelegate& {{$Class}}::Get{{Camel .Name}}Changed
 	return Promise.GetFuture().Get();
 	{{- end }}
 }
-{{ end }}
+{{- end }}
+
 void {{$Class}}::applyState(const nlohmann::json& fields)
 {
 {{- range .Interface.Properties }}

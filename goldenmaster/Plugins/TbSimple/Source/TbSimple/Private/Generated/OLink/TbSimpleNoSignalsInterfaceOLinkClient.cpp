@@ -82,7 +82,6 @@ void UTbSimpleNoSignalsInterfaceOLinkClient::Deinitialize()
 	Super::Deinitialize();
 }
 
-
 void UTbSimpleNoSignalsInterfaceOLinkClient::BroadcastPropBoolChanged_Implementation(bool bInPropBool)
 {
 	bPropBool = bInPropBool;

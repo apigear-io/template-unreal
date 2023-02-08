@@ -132,6 +132,7 @@ void UTbEnumEnumInterfaceLoggingDecorator::setBackendService(TScriptInterface<IT
 	Prop2 = BackendService->Execute_GetProp2(BackendService.GetObject());
 	Prop3 = BackendService->Execute_GetProp3(BackendService.GetObject());
 }
+
 void UTbEnumEnumInterfaceLoggingDecorator::BroadcastSig0_Implementation(const ETbEnumEnum0& Param0)
 {
 	Sig0Signal.Broadcast(Param0);
@@ -374,11 +375,13 @@ void UTbEnumEnumInterfaceLoggingDecorator::Func0Async_Implementation(UObject* Wo
 			});
 	}
 }
+
 ETbEnumEnum0 UTbEnumEnumInterfaceLoggingDecorator::Func0_Implementation(const ETbEnumEnum0& Param0)
 {
 	TbEnumEnumInterfaceTracer::trace_callFunc0(Param0);
 	return BackendService->Execute_Func0(BackendService.GetObject(), Param0);
 }
+
 void UTbEnumEnumInterfaceLoggingDecorator::Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum1& Result, const ETbEnumEnum1& Param1)
 {
 	TbEnumEnumInterfaceTracer::trace_callFunc1(Param1);
@@ -405,11 +408,13 @@ void UTbEnumEnumInterfaceLoggingDecorator::Func1Async_Implementation(UObject* Wo
 			});
 	}
 }
+
 ETbEnumEnum1 UTbEnumEnumInterfaceLoggingDecorator::Func1_Implementation(const ETbEnumEnum1& Param1)
 {
 	TbEnumEnumInterfaceTracer::trace_callFunc1(Param1);
 	return BackendService->Execute_Func1(BackendService.GetObject(), Param1);
 }
+
 void UTbEnumEnumInterfaceLoggingDecorator::Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum2& Result, const ETbEnumEnum2& Param2)
 {
 	TbEnumEnumInterfaceTracer::trace_callFunc2(Param2);
@@ -436,11 +441,13 @@ void UTbEnumEnumInterfaceLoggingDecorator::Func2Async_Implementation(UObject* Wo
 			});
 	}
 }
+
 ETbEnumEnum2 UTbEnumEnumInterfaceLoggingDecorator::Func2_Implementation(const ETbEnumEnum2& Param2)
 {
 	TbEnumEnumInterfaceTracer::trace_callFunc2(Param2);
 	return BackendService->Execute_Func2(BackendService.GetObject(), Param2);
 }
+
 void UTbEnumEnumInterfaceLoggingDecorator::Func3Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum3& Result, const ETbEnumEnum3& Param3)
 {
 	TbEnumEnumInterfaceTracer::trace_callFunc3(Param3);
@@ -467,6 +474,7 @@ void UTbEnumEnumInterfaceLoggingDecorator::Func3Async_Implementation(UObject* Wo
 			});
 	}
 }
+
 ETbEnumEnum3 UTbEnumEnumInterfaceLoggingDecorator::Func3_Implementation(const ETbEnumEnum3& Param3)
 {
 	TbEnumEnumInterfaceTracer::trace_callFunc3(Param3);
