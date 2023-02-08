@@ -145,35 +145,35 @@ public:
 
 protected:
 	// signals
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface", meta = (BlueprintProtected = "true"))
 	void BroadcastSigBool(const TArray<FTestbed1StructBool>& ParamBool);
 	virtual void BroadcastSigBool_Implementation(const TArray<FTestbed1StructBool>& ParamBool) = 0;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface", meta = (BlueprintProtected = "true"))
 	void BroadcastSigInt(const TArray<FTestbed1StructInt>& ParamInt);
 	virtual void BroadcastSigInt_Implementation(const TArray<FTestbed1StructInt>& ParamInt) = 0;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface", meta = (BlueprintProtected = "true"))
 	void BroadcastSigFloat(const TArray<FTestbed1StructFloat>& ParamFloat);
 	virtual void BroadcastSigFloat_Implementation(const TArray<FTestbed1StructFloat>& ParamFloat) = 0;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface", meta = (BlueprintProtected = "true"))
 	void BroadcastSigString(const TArray<FTestbed1StructString>& ParamString);
 	virtual void BroadcastSigString_Implementation(const TArray<FTestbed1StructString>& ParamString) = 0;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface", meta = (BlueprintProtected = "true"))
 	void BroadcastPropBoolChanged(const TArray<FTestbed1StructBool>& PropBool);
 	virtual void BroadcastPropBoolChanged_Implementation(const TArray<FTestbed1StructBool>& PropBool) = 0;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface", meta = (BlueprintProtected = "true"))
 	void BroadcastPropIntChanged(const TArray<FTestbed1StructInt>& PropInt);
 	virtual void BroadcastPropIntChanged_Implementation(const TArray<FTestbed1StructInt>& PropInt) = 0;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface", meta = (BlueprintProtected = "true"))
 	void BroadcastPropFloatChanged(const TArray<FTestbed1StructFloat>& PropFloat);
 	virtual void BroadcastPropFloatChanged_Implementation(const TArray<FTestbed1StructFloat>& PropFloat) = 0;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface", meta = (BlueprintProtected = "true"))
 	void BroadcastPropStringChanged(const TArray<FTestbed1StructString>& PropString);
 	virtual void BroadcastPropStringChanged_Implementation(const TArray<FTestbed1StructString>& PropString) = 0;
 };

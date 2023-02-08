@@ -73,11 +73,11 @@ public:
 
 protected:
 	// signals
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum1Interface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum1Interface", meta = (BlueprintProtected = "true"))
 	void BroadcastSig1(const ETbSame2Enum1& Param1);
 	virtual void BroadcastSig1_Implementation(const ETbSame2Enum1& Param1) = 0;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum1Interface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum1Interface", meta = (BlueprintProtected = "true"))
 	void BroadcastProp1Changed(const ETbSame2Enum1& Prop1);
 	virtual void BroadcastProp1Changed_Implementation(const ETbSame2Enum1& Prop1) = 0;
 };

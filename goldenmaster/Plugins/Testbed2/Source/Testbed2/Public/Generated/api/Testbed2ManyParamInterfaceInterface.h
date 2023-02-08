@@ -158,39 +158,39 @@ public:
 
 protected:
 	// signals
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface", meta = (BlueprintProtected = "true"))
 	void BroadcastSig0();
 	virtual void BroadcastSig0_Implementation() = 0;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface", meta = (BlueprintProtected = "true"))
 	void BroadcastSig1(int32 Param1);
 	virtual void BroadcastSig1_Implementation(int32 Param1) = 0;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface", meta = (BlueprintProtected = "true"))
 	void BroadcastSig2(int32 Param1, int32 Param2);
 	virtual void BroadcastSig2_Implementation(int32 Param1, int32 Param2) = 0;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface", meta = (BlueprintProtected = "true"))
 	void BroadcastSig3(int32 Param1, int32 Param2, int32 Param3);
 	virtual void BroadcastSig3_Implementation(int32 Param1, int32 Param2, int32 Param3) = 0;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface", meta = (BlueprintProtected = "true"))
 	void BroadcastSig4(int32 Param1, int32 Param2, int32 Param3, int32 Param4);
 	virtual void BroadcastSig4_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4) = 0;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface", meta = (BlueprintProtected = "true"))
 	void BroadcastProp1Changed(int32 Prop1);
 	virtual void BroadcastProp1Changed_Implementation(int32 Prop1) = 0;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface", meta = (BlueprintProtected = "true"))
 	void BroadcastProp2Changed(int32 Prop2);
 	virtual void BroadcastProp2Changed_Implementation(int32 Prop2) = 0;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface", meta = (BlueprintProtected = "true"))
 	void BroadcastProp3Changed(int32 Prop3);
 	virtual void BroadcastProp3Changed_Implementation(int32 Prop3) = 0;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface", meta = (BlueprintProtected = "true"))
 	void BroadcastProp4Changed(int32 Prop4);
 	virtual void BroadcastProp4Changed_Implementation(int32 Prop4) = 0;
 };

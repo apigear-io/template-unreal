@@ -145,35 +145,35 @@ public:
 
 protected:
 	// signals
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface", meta = (BlueprintProtected = "true"))
 	void BroadcastSigBool(bool bParamBool);
 	virtual void BroadcastSigBool_Implementation(bool bParamBool) = 0;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface", meta = (BlueprintProtected = "true"))
 	void BroadcastSigInt(int32 ParamInt);
 	virtual void BroadcastSigInt_Implementation(int32 ParamInt) = 0;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface", meta = (BlueprintProtected = "true"))
 	void BroadcastSigFloat(float ParamFloat);
 	virtual void BroadcastSigFloat_Implementation(float ParamFloat) = 0;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface", meta = (BlueprintProtected = "true"))
 	void BroadcastSigString(const FString& ParamString);
 	virtual void BroadcastSigString_Implementation(const FString& ParamString) = 0;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface", meta = (BlueprintProtected = "true"))
 	void BroadcastPropBoolChanged(bool bPropBool);
 	virtual void BroadcastPropBoolChanged_Implementation(bool bPropBool) = 0;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface", meta = (BlueprintProtected = "true"))
 	void BroadcastPropIntChanged(int32 PropInt);
 	virtual void BroadcastPropIntChanged_Implementation(int32 PropInt) = 0;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface", meta = (BlueprintProtected = "true"))
 	void BroadcastPropFloatChanged(float PropFloat);
 	virtual void BroadcastPropFloatChanged_Implementation(float PropFloat) = 0;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface", meta = (BlueprintProtected = "true"))
 	void BroadcastPropStringChanged(const FString& PropString);
 	virtual void BroadcastPropStringChanged_Implementation(const FString& PropString) = 0;
 };

@@ -97,19 +97,19 @@ public:
 
 protected:
 	// signals
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame1|SameStruct2Interface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame1|SameStruct2Interface", meta = (BlueprintProtected = "true"))
 	void BroadcastSig1(const FTbSame1Struct1& Param1);
 	virtual void BroadcastSig1_Implementation(const FTbSame1Struct1& Param1) = 0;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame1|SameStruct2Interface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame1|SameStruct2Interface", meta = (BlueprintProtected = "true"))
 	void BroadcastSig2(const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2);
 	virtual void BroadcastSig2_Implementation(const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2) = 0;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame1|SameStruct2Interface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame1|SameStruct2Interface", meta = (BlueprintProtected = "true"))
 	void BroadcastProp1Changed(const FTbSame1Struct2& Prop1);
 	virtual void BroadcastProp1Changed_Implementation(const FTbSame1Struct2& Prop1) = 0;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame1|SameStruct2Interface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame1|SameStruct2Interface", meta = (BlueprintProtected = "true"))
 	void BroadcastProp2Changed(const FTbSame1Struct2& Prop2);
 	virtual void BroadcastProp2Changed_Implementation(const FTbSame1Struct2& Prop2) = 0;
 };

@@ -145,35 +145,35 @@ public:
 
 protected:
 	// signals
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface", meta = (BlueprintProtected = "true"))
 	void BroadcastSigBool(const TArray<bool>& ParamBool);
 	virtual void BroadcastSigBool_Implementation(const TArray<bool>& ParamBool) = 0;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface", meta = (BlueprintProtected = "true"))
 	void BroadcastSigInt(const TArray<int32>& ParamInt);
 	virtual void BroadcastSigInt_Implementation(const TArray<int32>& ParamInt) = 0;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface", meta = (BlueprintProtected = "true"))
 	void BroadcastSigFloat(const TArray<float>& ParamFloat);
 	virtual void BroadcastSigFloat_Implementation(const TArray<float>& ParamFloat) = 0;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface", meta = (BlueprintProtected = "true"))
 	void BroadcastSigString(const TArray<FString>& ParamString);
 	virtual void BroadcastSigString_Implementation(const TArray<FString>& ParamString) = 0;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface", meta = (BlueprintProtected = "true"))
 	void BroadcastPropBoolChanged(const TArray<bool>& PropBool);
 	virtual void BroadcastPropBoolChanged_Implementation(const TArray<bool>& PropBool) = 0;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface", meta = (BlueprintProtected = "true"))
 	void BroadcastPropIntChanged(const TArray<int32>& PropInt);
 	virtual void BroadcastPropIntChanged_Implementation(const TArray<int32>& PropInt) = 0;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface", meta = (BlueprintProtected = "true"))
 	void BroadcastPropFloatChanged(const TArray<float>& PropFloat);
 	virtual void BroadcastPropFloatChanged_Implementation(const TArray<float>& PropFloat) = 0;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface", meta = (BlueprintProtected = "true"))
 	void BroadcastPropStringChanged(const TArray<FString>& PropString);
 	virtual void BroadcastPropStringChanged_Implementation(const TArray<FString>& PropString) = 0;
 };

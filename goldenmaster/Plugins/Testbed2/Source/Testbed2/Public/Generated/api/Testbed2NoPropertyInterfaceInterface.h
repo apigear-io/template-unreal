@@ -61,7 +61,7 @@ public:
 
 protected:
 	// signals
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NoPropertyInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NoPropertyInterface", meta = (BlueprintProtected = "true"))
 	void BroadcastSig1(const FTestbed2NestedStruct1& Param1);
 	virtual void BroadcastSig1_Implementation(const FTestbed2NestedStruct1& Param1) = 0;
 };

@@ -102,14 +102,14 @@ protected:
 	// signals
 {{- range $i, $e := .Signals }}
 	{{- if $i }}{{nl}}{{ end }}
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "{{$Category}}")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "{{$Category}}", meta = (BlueprintProtected = "true"))
 	void Broadcast{{Camel .Name}}({{ueParams "" .Params}});
 	virtual void Broadcast{{Camel .Name}}_Implementation({{ueParams "" .Params}}) = 0;
 {{- end }}
 {{- if len .Properties }}{{ nl }}{{ end }}
 {{- range $i, $e := .Properties }}
 	{{- if $i }}{{nl}}{{ end }}
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "{{$Category}}")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "{{$Category}}", meta = (BlueprintProtected = "true"))
 	void Broadcast{{Camel .Name}}Changed({{ueParam "" .}});
 	virtual void Broadcast{{Camel .Name}}Changed_Implementation({{ueParam "" .}}) = 0;
 {{- end }}
