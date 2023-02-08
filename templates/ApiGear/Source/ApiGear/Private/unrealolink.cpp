@@ -81,6 +81,14 @@ void UUnrealOLink::Connect()
 	UAbstractApiGearConnection::Connect();
 
 	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
+
+	// we need to initiate a new socket to change the server address
+	if (m_socket && m_serverURL != settings->OLINK_URL)
+	{
+		m_socket.Reset();
+		m_socket = nullptr;
+	}
+
 	m_serverURL = settings->OLINK_URL;
 	m_loggingDisabled = !settings->OLINK_EnableDebugLog;
 
