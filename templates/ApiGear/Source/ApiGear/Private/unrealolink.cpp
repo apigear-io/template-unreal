@@ -2,6 +2,7 @@
 #include "ApiGearSettings.h"
 THIRD_PARTY_INCLUDES_START
 #include "olink/clientregistry.h"
+#include "olink/iobjectsink.h"
 THIRD_PARTY_INCLUDES_END
 #include <UObject/Object.h>
 #include <functional>
@@ -197,7 +198,12 @@ void UUnrealOLink::OnDisconnected(bool bReconnect)
 	log("socket disconnected");
 	for (std::string objectName : ListLinkedObjects)
 	{
-		m_node->unlinkRemote(objectName);
+		auto sink = m_registry.getSink(objectName).lock();
+		if (sink)
+		{
+			sink->olinkOnRelease();
+		}
+		m_registry.unsetNode(objectName);
 	}
 	UAbstractApiGearConnection::OnDisconnected(bReconnect);
 }
