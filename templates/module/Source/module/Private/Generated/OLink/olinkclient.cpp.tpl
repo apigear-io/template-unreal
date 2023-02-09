@@ -172,11 +172,10 @@ void {{$Class}}::applyState(const nlohmann::json& fields)
 {{- end }}
 }
 
-void {{$Class}}::emitSignal(const std::string& signalId, const nlohmann::json& args)
+void {{$Class}}::emitSignal(const std::string& signalName, const nlohmann::json& args)
 {
-	std::string MemberName = ApiGear::ObjectLink::Name::getMemberName(signalId);
 {{- range .Interface.Signals }}
-	if (MemberName == "{{.Name}}")
+	if (signalName == "{{.Name}}")
 	{
 		Execute_Broadcast{{Camel .Name}}(this
 		{{- range $idx, $elem := .Params -}}

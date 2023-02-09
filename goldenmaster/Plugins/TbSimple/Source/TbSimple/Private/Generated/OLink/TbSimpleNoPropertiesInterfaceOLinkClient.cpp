@@ -136,15 +136,14 @@ void UTbSimpleNoPropertiesInterfaceOLinkClient::applyState(const nlohmann::json&
 {
 }
 
-void UTbSimpleNoPropertiesInterfaceOLinkClient::emitSignal(const std::string& signalId, const nlohmann::json& args)
+void UTbSimpleNoPropertiesInterfaceOLinkClient::emitSignal(const std::string& signalName, const nlohmann::json& args)
 {
-	std::string MemberName = ApiGear::ObjectLink::Name::getMemberName(signalId);
-	if (MemberName == "sigVoid")
+	if (signalName == "sigVoid")
 	{
 		Execute_BroadcastSigVoid(this);
 		return;
 	}
-	if (MemberName == "sigBool")
+	if (signalName == "sigBool")
 	{
 		Execute_BroadcastSigBool(this, args[0].get<bool>());
 		return;

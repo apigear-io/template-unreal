@@ -334,25 +334,24 @@ void UTbEnumEnumInterfaceOLinkClient::applyState(const nlohmann::json& fields)
 	}
 }
 
-void UTbEnumEnumInterfaceOLinkClient::emitSignal(const std::string& signalId, const nlohmann::json& args)
+void UTbEnumEnumInterfaceOLinkClient::emitSignal(const std::string& signalName, const nlohmann::json& args)
 {
-	std::string MemberName = ApiGear::ObjectLink::Name::getMemberName(signalId);
-	if (MemberName == "sig0")
+	if (signalName == "sig0")
 	{
 		Execute_BroadcastSig0(this, args[0].get<ETbEnumEnum0>());
 		return;
 	}
-	if (MemberName == "sig1")
+	if (signalName == "sig1")
 	{
 		Execute_BroadcastSig1(this, args[0].get<ETbEnumEnum1>());
 		return;
 	}
-	if (MemberName == "sig2")
+	if (signalName == "sig2")
 	{
 		Execute_BroadcastSig2(this, args[0].get<ETbEnumEnum2>());
 		return;
 	}
-	if (MemberName == "sig3")
+	if (signalName == "sig3")
 	{
 		Execute_BroadcastSig3(this, args[0].get<ETbEnumEnum3>());
 		return;

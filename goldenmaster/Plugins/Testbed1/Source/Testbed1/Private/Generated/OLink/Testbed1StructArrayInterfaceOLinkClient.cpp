@@ -334,25 +334,24 @@ void UTestbed1StructArrayInterfaceOLinkClient::applyState(const nlohmann::json& 
 	}
 }
 
-void UTestbed1StructArrayInterfaceOLinkClient::emitSignal(const std::string& signalId, const nlohmann::json& args)
+void UTestbed1StructArrayInterfaceOLinkClient::emitSignal(const std::string& signalName, const nlohmann::json& args)
 {
-	std::string MemberName = ApiGear::ObjectLink::Name::getMemberName(signalId);
-	if (MemberName == "sigBool")
+	if (signalName == "sigBool")
 	{
 		Execute_BroadcastSigBool(this, args[0].get<TArray<FTestbed1StructBool>>());
 		return;
 	}
-	if (MemberName == "sigInt")
+	if (signalName == "sigInt")
 	{
 		Execute_BroadcastSigInt(this, args[0].get<TArray<FTestbed1StructInt>>());
 		return;
 	}
-	if (MemberName == "sigFloat")
+	if (signalName == "sigFloat")
 	{
 		Execute_BroadcastSigFloat(this, args[0].get<TArray<FTestbed1StructFloat>>());
 		return;
 	}
-	if (MemberName == "sigString")
+	if (signalName == "sigString")
 	{
 		Execute_BroadcastSigString(this, args[0].get<TArray<FTestbed1StructString>>());
 		return;

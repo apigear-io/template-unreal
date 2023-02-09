@@ -70,7 +70,7 @@ protected:
 
 private:
 	void applyState(const nlohmann::json& fields);
-	void emitSignal(const std::string& signalId, const nlohmann::json& args);
+	void emitSignal(const std::string& signalName, const nlohmann::json& args);
 	std::shared_ptr<FUnrealOLinkSink> m_sink;
 
 	// properties - local copy

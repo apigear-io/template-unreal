@@ -210,15 +210,14 @@ void UTbSame1SameStruct2InterfaceOLinkClient::applyState(const nlohmann::json& f
 	}
 }
 
-void UTbSame1SameStruct2InterfaceOLinkClient::emitSignal(const std::string& signalId, const nlohmann::json& args)
+void UTbSame1SameStruct2InterfaceOLinkClient::emitSignal(const std::string& signalName, const nlohmann::json& args)
 {
-	std::string MemberName = ApiGear::ObjectLink::Name::getMemberName(signalId);
-	if (MemberName == "sig1")
+	if (signalName == "sig1")
 	{
 		Execute_BroadcastSig1(this, args[0].get<FTbSame1Struct1>());
 		return;
 	}
-	if (MemberName == "sig2")
+	if (signalName == "sig2")
 	{
 		Execute_BroadcastSig2(this, args[0].get<FTbSame1Struct1>(), args[1].get<FTbSame1Struct2>());
 		return;

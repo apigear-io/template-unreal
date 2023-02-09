@@ -210,15 +210,14 @@ void UTbSame1SameEnum2InterfaceOLinkClient::applyState(const nlohmann::json& fie
 	}
 }
 
-void UTbSame1SameEnum2InterfaceOLinkClient::emitSignal(const std::string& signalId, const nlohmann::json& args)
+void UTbSame1SameEnum2InterfaceOLinkClient::emitSignal(const std::string& signalName, const nlohmann::json& args)
 {
-	std::string MemberName = ApiGear::ObjectLink::Name::getMemberName(signalId);
-	if (MemberName == "sig1")
+	if (signalName == "sig1")
 	{
 		Execute_BroadcastSig1(this, args[0].get<ETbSame1Enum1>());
 		return;
 	}
-	if (MemberName == "sig2")
+	if (signalName == "sig2")
 	{
 		Execute_BroadcastSig2(this, args[0].get<ETbSame1Enum1>(), args[1].get<ETbSame1Enum2>());
 		return;

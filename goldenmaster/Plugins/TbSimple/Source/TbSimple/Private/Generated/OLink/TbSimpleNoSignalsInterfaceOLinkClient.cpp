@@ -182,7 +182,6 @@ void UTbSimpleNoSignalsInterfaceOLinkClient::applyState(const nlohmann::json& fi
 	}
 }
 
-void UTbSimpleNoSignalsInterfaceOLinkClient::emitSignal(const std::string& signalId, const nlohmann::json& args)
+void UTbSimpleNoSignalsInterfaceOLinkClient::emitSignal(const std::string& signalName, const nlohmann::json& args)
 {
-	std::string MemberName = ApiGear::ObjectLink::Name::getMemberName(signalId);
 }

@@ -272,20 +272,19 @@ void UTestbed2NestedStruct3InterfaceOLinkClient::applyState(const nlohmann::json
 	}
 }
 
-void UTestbed2NestedStruct3InterfaceOLinkClient::emitSignal(const std::string& signalId, const nlohmann::json& args)
+void UTestbed2NestedStruct3InterfaceOLinkClient::emitSignal(const std::string& signalName, const nlohmann::json& args)
 {
-	std::string MemberName = ApiGear::ObjectLink::Name::getMemberName(signalId);
-	if (MemberName == "sig1")
+	if (signalName == "sig1")
 	{
 		Execute_BroadcastSig1(this, args[0].get<FTestbed2NestedStruct1>());
 		return;
 	}
-	if (MemberName == "sig2")
+	if (signalName == "sig2")
 	{
 		Execute_BroadcastSig2(this, args[0].get<FTestbed2NestedStruct1>(), args[1].get<FTestbed2NestedStruct2>());
 		return;
 	}
-	if (MemberName == "sig3")
+	if (signalName == "sig3")
 	{
 		Execute_BroadcastSig3(this, args[0].get<FTestbed2NestedStruct1>(), args[1].get<FTestbed2NestedStruct2>(), args[2].get<FTestbed2NestedStruct3>());
 		return;

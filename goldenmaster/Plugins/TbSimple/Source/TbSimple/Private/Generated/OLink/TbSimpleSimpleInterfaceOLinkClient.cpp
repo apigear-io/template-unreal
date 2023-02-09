@@ -355,30 +355,29 @@ void UTbSimpleSimpleInterfaceOLinkClient::applyState(const nlohmann::json& field
 	}
 }
 
-void UTbSimpleSimpleInterfaceOLinkClient::emitSignal(const std::string& signalId, const nlohmann::json& args)
+void UTbSimpleSimpleInterfaceOLinkClient::emitSignal(const std::string& signalName, const nlohmann::json& args)
 {
-	std::string MemberName = ApiGear::ObjectLink::Name::getMemberName(signalId);
-	if (MemberName == "sigVoid")
+	if (signalName == "sigVoid")
 	{
 		Execute_BroadcastSigVoid(this);
 		return;
 	}
-	if (MemberName == "sigBool")
+	if (signalName == "sigBool")
 	{
 		Execute_BroadcastSigBool(this, args[0].get<bool>());
 		return;
 	}
-	if (MemberName == "sigInt")
+	if (signalName == "sigInt")
 	{
 		Execute_BroadcastSigInt(this, args[0].get<int32>());
 		return;
 	}
-	if (MemberName == "sigFloat")
+	if (signalName == "sigFloat")
 	{
 		Execute_BroadcastSigFloat(this, args[0].get<float>());
 		return;
 	}
-	if (MemberName == "sigString")
+	if (signalName == "sigString")
 	{
 		Execute_BroadcastSigString(this, args[0].get<FString>());
 		return;
