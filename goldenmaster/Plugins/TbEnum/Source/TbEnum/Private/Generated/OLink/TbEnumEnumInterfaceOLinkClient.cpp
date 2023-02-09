@@ -82,7 +82,7 @@ void UTbEnumEnumInterfaceOLinkClient::Deinitialize()
 	Super::Deinitialize();
 }
 
-void UTbEnumEnumInterfaceOLinkClient::BroadcastSig0_Implementation(const ETbEnumEnum0& Param0)
+void UTbEnumEnumInterfaceOLinkClient::BroadcastSig0_Implementation(ETbEnumEnum0 Param0)
 {
 	Sig0Signal.Broadcast(Param0);
 }
@@ -92,7 +92,7 @@ FTbEnumEnumInterfaceSig0Delegate& UTbEnumEnumInterfaceOLinkClient::GetSig0Signal
 	return Sig0Signal;
 }
 
-void UTbEnumEnumInterfaceOLinkClient::BroadcastSig1_Implementation(const ETbEnumEnum1& Param1)
+void UTbEnumEnumInterfaceOLinkClient::BroadcastSig1_Implementation(ETbEnumEnum1 Param1)
 {
 	Sig1Signal.Broadcast(Param1);
 }
@@ -102,7 +102,7 @@ FTbEnumEnumInterfaceSig1Delegate& UTbEnumEnumInterfaceOLinkClient::GetSig1Signal
 	return Sig1Signal;
 }
 
-void UTbEnumEnumInterfaceOLinkClient::BroadcastSig2_Implementation(const ETbEnumEnum2& Param2)
+void UTbEnumEnumInterfaceOLinkClient::BroadcastSig2_Implementation(ETbEnumEnum2 Param2)
 {
 	Sig2Signal.Broadcast(Param2);
 }
@@ -112,7 +112,7 @@ FTbEnumEnumInterfaceSig2Delegate& UTbEnumEnumInterfaceOLinkClient::GetSig2Signal
 	return Sig2Signal;
 }
 
-void UTbEnumEnumInterfaceOLinkClient::BroadcastSig3_Implementation(const ETbEnumEnum3& Param3)
+void UTbEnumEnumInterfaceOLinkClient::BroadcastSig3_Implementation(ETbEnumEnum3 Param3)
 {
 	Sig3Signal.Broadcast(Param3);
 }
@@ -122,7 +122,7 @@ FTbEnumEnumInterfaceSig3Delegate& UTbEnumEnumInterfaceOLinkClient::GetSig3Signal
 	return Sig3Signal;
 }
 
-void UTbEnumEnumInterfaceOLinkClient::BroadcastProp0Changed_Implementation(const ETbEnumEnum0& InProp0)
+void UTbEnumEnumInterfaceOLinkClient::BroadcastProp0Changed_Implementation(ETbEnumEnum0 InProp0)
 {
 	Prop0 = InProp0;
 	Prop0Changed.Broadcast(InProp0);
@@ -133,7 +133,7 @@ ETbEnumEnum0 UTbEnumEnumInterfaceOLinkClient::GetProp0_Implementation() const
 	return Prop0;
 }
 
-void UTbEnumEnumInterfaceOLinkClient::SetProp0_Implementation(const ETbEnumEnum0& InProp0)
+void UTbEnumEnumInterfaceOLinkClient::SetProp0_Implementation(ETbEnumEnum0 InProp0)
 {
 	if (!m_sink->IsReady())
 	{
@@ -147,7 +147,7 @@ FTbEnumEnumInterfaceProp0ChangedDelegate& UTbEnumEnumInterfaceOLinkClient::GetPr
 	return Prop0Changed;
 }
 
-void UTbEnumEnumInterfaceOLinkClient::BroadcastProp1Changed_Implementation(const ETbEnumEnum1& InProp1)
+void UTbEnumEnumInterfaceOLinkClient::BroadcastProp1Changed_Implementation(ETbEnumEnum1 InProp1)
 {
 	Prop1 = InProp1;
 	Prop1Changed.Broadcast(InProp1);
@@ -158,7 +158,7 @@ ETbEnumEnum1 UTbEnumEnumInterfaceOLinkClient::GetProp1_Implementation() const
 	return Prop1;
 }
 
-void UTbEnumEnumInterfaceOLinkClient::SetProp1_Implementation(const ETbEnumEnum1& InProp1)
+void UTbEnumEnumInterfaceOLinkClient::SetProp1_Implementation(ETbEnumEnum1 InProp1)
 {
 	if (!m_sink->IsReady())
 	{
@@ -172,7 +172,7 @@ FTbEnumEnumInterfaceProp1ChangedDelegate& UTbEnumEnumInterfaceOLinkClient::GetPr
 	return Prop1Changed;
 }
 
-void UTbEnumEnumInterfaceOLinkClient::BroadcastProp2Changed_Implementation(const ETbEnumEnum2& InProp2)
+void UTbEnumEnumInterfaceOLinkClient::BroadcastProp2Changed_Implementation(ETbEnumEnum2 InProp2)
 {
 	Prop2 = InProp2;
 	Prop2Changed.Broadcast(InProp2);
@@ -183,7 +183,7 @@ ETbEnumEnum2 UTbEnumEnumInterfaceOLinkClient::GetProp2_Implementation() const
 	return Prop2;
 }
 
-void UTbEnumEnumInterfaceOLinkClient::SetProp2_Implementation(const ETbEnumEnum2& InProp2)
+void UTbEnumEnumInterfaceOLinkClient::SetProp2_Implementation(ETbEnumEnum2 InProp2)
 {
 	if (!m_sink->IsReady())
 	{
@@ -197,7 +197,7 @@ FTbEnumEnumInterfaceProp2ChangedDelegate& UTbEnumEnumInterfaceOLinkClient::GetPr
 	return Prop2Changed;
 }
 
-void UTbEnumEnumInterfaceOLinkClient::BroadcastProp3Changed_Implementation(const ETbEnumEnum3& InProp3)
+void UTbEnumEnumInterfaceOLinkClient::BroadcastProp3Changed_Implementation(ETbEnumEnum3 InProp3)
 {
 	Prop3 = InProp3;
 	Prop3Changed.Broadcast(InProp3);
@@ -208,7 +208,7 @@ ETbEnumEnum3 UTbEnumEnumInterfaceOLinkClient::GetProp3_Implementation() const
 	return Prop3;
 }
 
-void UTbEnumEnumInterfaceOLinkClient::SetProp3_Implementation(const ETbEnumEnum3& InProp3)
+void UTbEnumEnumInterfaceOLinkClient::SetProp3_Implementation(ETbEnumEnum3 InProp3)
 {
 	if (!m_sink->IsReady())
 	{
@@ -222,7 +222,7 @@ FTbEnumEnumInterfaceProp3ChangedDelegate& UTbEnumEnumInterfaceOLinkClient::GetPr
 	return Prop3Changed;
 }
 
-ETbEnumEnum0 UTbEnumEnumInterfaceOLinkClient::Func0_Implementation(const ETbEnumEnum0& Param0)
+ETbEnumEnum0 UTbEnumEnumInterfaceOLinkClient::Func0_Implementation(ETbEnumEnum0 Param0)
 {
 	if (!m_sink->IsReady())
 	{
@@ -241,7 +241,7 @@ ETbEnumEnum0 UTbEnumEnumInterfaceOLinkClient::Func0_Implementation(const ETbEnum
 	return Promise.GetFuture().Get();
 }
 
-ETbEnumEnum1 UTbEnumEnumInterfaceOLinkClient::Func1_Implementation(const ETbEnumEnum1& Param1)
+ETbEnumEnum1 UTbEnumEnumInterfaceOLinkClient::Func1_Implementation(ETbEnumEnum1 Param1)
 {
 	if (!m_sink->IsReady())
 	{
@@ -260,7 +260,7 @@ ETbEnumEnum1 UTbEnumEnumInterfaceOLinkClient::Func1_Implementation(const ETbEnum
 	return Promise.GetFuture().Get();
 }
 
-ETbEnumEnum2 UTbEnumEnumInterfaceOLinkClient::Func2_Implementation(const ETbEnumEnum2& Param2)
+ETbEnumEnum2 UTbEnumEnumInterfaceOLinkClient::Func2_Implementation(ETbEnumEnum2 Param2)
 {
 	if (!m_sink->IsReady())
 	{
@@ -279,7 +279,7 @@ ETbEnumEnum2 UTbEnumEnumInterfaceOLinkClient::Func2_Implementation(const ETbEnum
 	return Promise.GetFuture().Get();
 }
 
-ETbEnumEnum3 UTbEnumEnumInterfaceOLinkClient::Func3_Implementation(const ETbEnumEnum3& Param3)
+ETbEnumEnum3 UTbEnumEnumInterfaceOLinkClient::Func3_Implementation(ETbEnumEnum3 Param3)
 {
 	if (!m_sink->IsReady())
 	{

@@ -61,28 +61,28 @@ public:
 	// properties
 	ETbSame1Enum1 GetProp1_Implementation() const override;
 
-	void SetProp1_Implementation(const ETbSame1Enum1& InProp1) override;
+	void SetProp1_Implementation(ETbSame1Enum1 InProp1) override;
 
 	ETbSame1Enum2 GetProp2_Implementation() const override;
 
-	void SetProp2_Implementation(const ETbSame1Enum2& InProp2) override;
+	void SetProp2_Implementation(ETbSame1Enum2 InProp2) override;
 
 	// operations
-	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame1Enum1& Result, const ETbSame1Enum1& Param1) override;
-	ETbSame1Enum1 Func1_Implementation(const ETbSame1Enum1& Param1) override;
+	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame1Enum1& Result, ETbSame1Enum1 Param1) override;
+	ETbSame1Enum1 Func1_Implementation(ETbSame1Enum1 Param1) override;
 
-	void Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame1Enum1& Result, const ETbSame1Enum1& Param1, const ETbSame1Enum2& Param2) override;
-	ETbSame1Enum1 Func2_Implementation(const ETbSame1Enum1& Param1, const ETbSame1Enum2& Param2) override;
+	void Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame1Enum1& Result, ETbSame1Enum1 Param1, ETbSame1Enum2 Param2) override;
+	ETbSame1Enum1 Func2_Implementation(ETbSame1Enum1 Param1, ETbSame1Enum2 Param2) override;
 
 protected:
 	// signals
-	void BroadcastSig1_Implementation(const ETbSame1Enum1& Param1) override;
+	void BroadcastSig1_Implementation(ETbSame1Enum1 Param1) override;
 
-	void BroadcastSig2_Implementation(const ETbSame1Enum1& Param1, const ETbSame1Enum2& Param2) override;
+	void BroadcastSig2_Implementation(ETbSame1Enum1 Param1, ETbSame1Enum2 Param2) override;
 
-	void BroadcastProp1Changed_Implementation(const ETbSame1Enum1& Prop1) override;
+	void BroadcastProp1Changed_Implementation(ETbSame1Enum1 Prop1) override;
 
-	void BroadcastProp2Changed_Implementation(const ETbSame1Enum2& Prop2) override;
+	void BroadcastProp2Changed_Implementation(ETbSame1Enum2 Prop2) override;
 
 private:
 	/** The connection to the service backend. */
@@ -91,16 +91,16 @@ private:
 
 	// signals
 	UFUNCTION(Category = "ApiGear|TbSame1|SameEnum2Interface", BlueprintInternalUseOnly)
-	void OnSig1(const ETbSame1Enum1& Param1);
+	void OnSig1(ETbSame1Enum1 Param1);
 
 	UFUNCTION(Category = "ApiGear|TbSame1|SameEnum2Interface", BlueprintInternalUseOnly)
-	void OnSig2(const ETbSame1Enum1& Param1, const ETbSame1Enum2& Param2);
+	void OnSig2(ETbSame1Enum1 Param1, ETbSame1Enum2 Param2);
 
 	UFUNCTION(Category = "ApiGear|TbSame1|SameEnum2Interface", BlueprintInternalUseOnly)
-	void OnProp1Changed(const ETbSame1Enum1& Prop1);
+	void OnProp1Changed(ETbSame1Enum1 Prop1);
 
 	UFUNCTION(Category = "ApiGear|TbSame1|SameEnum2Interface", BlueprintInternalUseOnly)
-	void OnProp2Changed(const ETbSame1Enum2& Prop2);
+	void OnProp2Changed(ETbSame1Enum2 Prop2);
 
 	// properties - local copy
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1_Private, BlueprintSetter = SetProp1_Private, Category = "ApiGear|TbSame1|SameEnum2Interface")
@@ -110,7 +110,7 @@ private:
 	ETbSame1Enum1 GetProp1_Private() const;
 
 	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSame1|SameEnum2Interface", BlueprintInternalUseOnly)
-	void SetProp1_Private(const ETbSame1Enum1& InProp1);
+	void SetProp1_Private(ETbSame1Enum1 InProp1);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp2_Private, BlueprintSetter = SetProp2_Private, Category = "ApiGear|TbSame1|SameEnum2Interface")
 	ETbSame1Enum2 Prop2{ETbSame1Enum2::VALUE1};
@@ -119,5 +119,5 @@ private:
 	ETbSame1Enum2 GetProp2_Private() const;
 
 	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSame1|SameEnum2Interface", BlueprintInternalUseOnly)
-	void SetProp2_Private(const ETbSame1Enum2& InProp2);
+	void SetProp2_Private(ETbSame1Enum2 InProp2);
 };

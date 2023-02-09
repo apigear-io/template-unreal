@@ -133,12 +133,12 @@ void UTbEnumEnumInterfaceLoggingDecorator::setBackendService(TScriptInterface<IT
 	Prop3 = BackendService->Execute_GetProp3(BackendService.GetObject());
 }
 
-void UTbEnumEnumInterfaceLoggingDecorator::BroadcastSig0_Implementation(const ETbEnumEnum0& Param0)
+void UTbEnumEnumInterfaceLoggingDecorator::BroadcastSig0_Implementation(ETbEnumEnum0 Param0)
 {
 	Sig0Signal.Broadcast(Param0);
 }
 
-void UTbEnumEnumInterfaceLoggingDecorator::OnSig0(const ETbEnumEnum0& Param0)
+void UTbEnumEnumInterfaceLoggingDecorator::OnSig0(ETbEnumEnum0 Param0)
 {
 	TbEnumEnumInterfaceTracer::trace_signalSig0(Param0);
 	Execute_BroadcastSig0(this, Param0);
@@ -149,12 +149,12 @@ FTbEnumEnumInterfaceSig0Delegate& UTbEnumEnumInterfaceLoggingDecorator::GetSig0S
 	return Sig0Signal;
 }
 
-void UTbEnumEnumInterfaceLoggingDecorator::BroadcastSig1_Implementation(const ETbEnumEnum1& Param1)
+void UTbEnumEnumInterfaceLoggingDecorator::BroadcastSig1_Implementation(ETbEnumEnum1 Param1)
 {
 	Sig1Signal.Broadcast(Param1);
 }
 
-void UTbEnumEnumInterfaceLoggingDecorator::OnSig1(const ETbEnumEnum1& Param1)
+void UTbEnumEnumInterfaceLoggingDecorator::OnSig1(ETbEnumEnum1 Param1)
 {
 	TbEnumEnumInterfaceTracer::trace_signalSig1(Param1);
 	Execute_BroadcastSig1(this, Param1);
@@ -165,12 +165,12 @@ FTbEnumEnumInterfaceSig1Delegate& UTbEnumEnumInterfaceLoggingDecorator::GetSig1S
 	return Sig1Signal;
 }
 
-void UTbEnumEnumInterfaceLoggingDecorator::BroadcastSig2_Implementation(const ETbEnumEnum2& Param2)
+void UTbEnumEnumInterfaceLoggingDecorator::BroadcastSig2_Implementation(ETbEnumEnum2 Param2)
 {
 	Sig2Signal.Broadcast(Param2);
 }
 
-void UTbEnumEnumInterfaceLoggingDecorator::OnSig2(const ETbEnumEnum2& Param2)
+void UTbEnumEnumInterfaceLoggingDecorator::OnSig2(ETbEnumEnum2 Param2)
 {
 	TbEnumEnumInterfaceTracer::trace_signalSig2(Param2);
 	Execute_BroadcastSig2(this, Param2);
@@ -181,12 +181,12 @@ FTbEnumEnumInterfaceSig2Delegate& UTbEnumEnumInterfaceLoggingDecorator::GetSig2S
 	return Sig2Signal;
 }
 
-void UTbEnumEnumInterfaceLoggingDecorator::BroadcastSig3_Implementation(const ETbEnumEnum3& Param3)
+void UTbEnumEnumInterfaceLoggingDecorator::BroadcastSig3_Implementation(ETbEnumEnum3 Param3)
 {
 	Sig3Signal.Broadcast(Param3);
 }
 
-void UTbEnumEnumInterfaceLoggingDecorator::OnSig3(const ETbEnumEnum3& Param3)
+void UTbEnumEnumInterfaceLoggingDecorator::OnSig3(ETbEnumEnum3 Param3)
 {
 	TbEnumEnumInterfaceTracer::trace_signalSig3(Param3);
 	Execute_BroadcastSig3(this, Param3);
@@ -197,12 +197,12 @@ FTbEnumEnumInterfaceSig3Delegate& UTbEnumEnumInterfaceLoggingDecorator::GetSig3S
 	return Sig3Signal;
 }
 
-void UTbEnumEnumInterfaceLoggingDecorator::BroadcastProp0Changed_Implementation(const ETbEnumEnum0& InProp0)
+void UTbEnumEnumInterfaceLoggingDecorator::BroadcastProp0Changed_Implementation(ETbEnumEnum0 InProp0)
 {
 	Prop0Changed.Broadcast(InProp0);
 }
 
-void UTbEnumEnumInterfaceLoggingDecorator::OnProp0Changed(const ETbEnumEnum0& InProp0)
+void UTbEnumEnumInterfaceLoggingDecorator::OnProp0Changed(ETbEnumEnum0 InProp0)
 {
 	TbEnumEnumInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop0 = InProp0;
@@ -214,7 +214,7 @@ ETbEnumEnum0 UTbEnumEnumInterfaceLoggingDecorator::GetProp0_Implementation() con
 	return BackendService->Execute_GetProp0(BackendService.GetObject());
 }
 
-void UTbEnumEnumInterfaceLoggingDecorator::SetProp0_Implementation(const ETbEnumEnum0& InProp0)
+void UTbEnumEnumInterfaceLoggingDecorator::SetProp0_Implementation(ETbEnumEnum0 InProp0)
 {
 	TbEnumEnumInterfaceTracer::trace_callSetProp0(InProp0);
 	BackendService->Execute_SetProp0(BackendService.GetObject(), InProp0);
@@ -225,7 +225,7 @@ ETbEnumEnum0 UTbEnumEnumInterfaceLoggingDecorator::GetProp0_Private() const
 	return Execute_GetProp0(this);
 }
 
-void UTbEnumEnumInterfaceLoggingDecorator::SetProp0_Private(const ETbEnumEnum0& InProp0)
+void UTbEnumEnumInterfaceLoggingDecorator::SetProp0_Private(ETbEnumEnum0 InProp0)
 {
 	Execute_SetProp0(this, InProp0);
 }
@@ -235,12 +235,12 @@ FTbEnumEnumInterfaceProp0ChangedDelegate& UTbEnumEnumInterfaceLoggingDecorator::
 	return Prop0Changed;
 }
 
-void UTbEnumEnumInterfaceLoggingDecorator::BroadcastProp1Changed_Implementation(const ETbEnumEnum1& InProp1)
+void UTbEnumEnumInterfaceLoggingDecorator::BroadcastProp1Changed_Implementation(ETbEnumEnum1 InProp1)
 {
 	Prop1Changed.Broadcast(InProp1);
 }
 
-void UTbEnumEnumInterfaceLoggingDecorator::OnProp1Changed(const ETbEnumEnum1& InProp1)
+void UTbEnumEnumInterfaceLoggingDecorator::OnProp1Changed(ETbEnumEnum1 InProp1)
 {
 	TbEnumEnumInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop1 = InProp1;
@@ -252,7 +252,7 @@ ETbEnumEnum1 UTbEnumEnumInterfaceLoggingDecorator::GetProp1_Implementation() con
 	return BackendService->Execute_GetProp1(BackendService.GetObject());
 }
 
-void UTbEnumEnumInterfaceLoggingDecorator::SetProp1_Implementation(const ETbEnumEnum1& InProp1)
+void UTbEnumEnumInterfaceLoggingDecorator::SetProp1_Implementation(ETbEnumEnum1 InProp1)
 {
 	TbEnumEnumInterfaceTracer::trace_callSetProp1(InProp1);
 	BackendService->Execute_SetProp1(BackendService.GetObject(), InProp1);
@@ -263,7 +263,7 @@ ETbEnumEnum1 UTbEnumEnumInterfaceLoggingDecorator::GetProp1_Private() const
 	return Execute_GetProp1(this);
 }
 
-void UTbEnumEnumInterfaceLoggingDecorator::SetProp1_Private(const ETbEnumEnum1& InProp1)
+void UTbEnumEnumInterfaceLoggingDecorator::SetProp1_Private(ETbEnumEnum1 InProp1)
 {
 	Execute_SetProp1(this, InProp1);
 }
@@ -273,12 +273,12 @@ FTbEnumEnumInterfaceProp1ChangedDelegate& UTbEnumEnumInterfaceLoggingDecorator::
 	return Prop1Changed;
 }
 
-void UTbEnumEnumInterfaceLoggingDecorator::BroadcastProp2Changed_Implementation(const ETbEnumEnum2& InProp2)
+void UTbEnumEnumInterfaceLoggingDecorator::BroadcastProp2Changed_Implementation(ETbEnumEnum2 InProp2)
 {
 	Prop2Changed.Broadcast(InProp2);
 }
 
-void UTbEnumEnumInterfaceLoggingDecorator::OnProp2Changed(const ETbEnumEnum2& InProp2)
+void UTbEnumEnumInterfaceLoggingDecorator::OnProp2Changed(ETbEnumEnum2 InProp2)
 {
 	TbEnumEnumInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop2 = InProp2;
@@ -290,7 +290,7 @@ ETbEnumEnum2 UTbEnumEnumInterfaceLoggingDecorator::GetProp2_Implementation() con
 	return BackendService->Execute_GetProp2(BackendService.GetObject());
 }
 
-void UTbEnumEnumInterfaceLoggingDecorator::SetProp2_Implementation(const ETbEnumEnum2& InProp2)
+void UTbEnumEnumInterfaceLoggingDecorator::SetProp2_Implementation(ETbEnumEnum2 InProp2)
 {
 	TbEnumEnumInterfaceTracer::trace_callSetProp2(InProp2);
 	BackendService->Execute_SetProp2(BackendService.GetObject(), InProp2);
@@ -301,7 +301,7 @@ ETbEnumEnum2 UTbEnumEnumInterfaceLoggingDecorator::GetProp2_Private() const
 	return Execute_GetProp2(this);
 }
 
-void UTbEnumEnumInterfaceLoggingDecorator::SetProp2_Private(const ETbEnumEnum2& InProp2)
+void UTbEnumEnumInterfaceLoggingDecorator::SetProp2_Private(ETbEnumEnum2 InProp2)
 {
 	Execute_SetProp2(this, InProp2);
 }
@@ -311,12 +311,12 @@ FTbEnumEnumInterfaceProp2ChangedDelegate& UTbEnumEnumInterfaceLoggingDecorator::
 	return Prop2Changed;
 }
 
-void UTbEnumEnumInterfaceLoggingDecorator::BroadcastProp3Changed_Implementation(const ETbEnumEnum3& InProp3)
+void UTbEnumEnumInterfaceLoggingDecorator::BroadcastProp3Changed_Implementation(ETbEnumEnum3 InProp3)
 {
 	Prop3Changed.Broadcast(InProp3);
 }
 
-void UTbEnumEnumInterfaceLoggingDecorator::OnProp3Changed(const ETbEnumEnum3& InProp3)
+void UTbEnumEnumInterfaceLoggingDecorator::OnProp3Changed(ETbEnumEnum3 InProp3)
 {
 	TbEnumEnumInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop3 = InProp3;
@@ -328,7 +328,7 @@ ETbEnumEnum3 UTbEnumEnumInterfaceLoggingDecorator::GetProp3_Implementation() con
 	return BackendService->Execute_GetProp3(BackendService.GetObject());
 }
 
-void UTbEnumEnumInterfaceLoggingDecorator::SetProp3_Implementation(const ETbEnumEnum3& InProp3)
+void UTbEnumEnumInterfaceLoggingDecorator::SetProp3_Implementation(ETbEnumEnum3 InProp3)
 {
 	TbEnumEnumInterfaceTracer::trace_callSetProp3(InProp3);
 	BackendService->Execute_SetProp3(BackendService.GetObject(), InProp3);
@@ -339,7 +339,7 @@ ETbEnumEnum3 UTbEnumEnumInterfaceLoggingDecorator::GetProp3_Private() const
 	return Execute_GetProp3(this);
 }
 
-void UTbEnumEnumInterfaceLoggingDecorator::SetProp3_Private(const ETbEnumEnum3& InProp3)
+void UTbEnumEnumInterfaceLoggingDecorator::SetProp3_Private(ETbEnumEnum3 InProp3)
 {
 	Execute_SetProp3(this, InProp3);
 }
@@ -349,7 +349,7 @@ FTbEnumEnumInterfaceProp3ChangedDelegate& UTbEnumEnumInterfaceLoggingDecorator::
 	return Prop3Changed;
 }
 
-void UTbEnumEnumInterfaceLoggingDecorator::Func0Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum0& Result, const ETbEnumEnum0& Param0)
+void UTbEnumEnumInterfaceLoggingDecorator::Func0Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum0& Result, ETbEnumEnum0 Param0)
 {
 	TbEnumEnumInterfaceTracer::trace_callFunc0(Param0);
 
@@ -376,13 +376,13 @@ void UTbEnumEnumInterfaceLoggingDecorator::Func0Async_Implementation(UObject* Wo
 	}
 }
 
-ETbEnumEnum0 UTbEnumEnumInterfaceLoggingDecorator::Func0_Implementation(const ETbEnumEnum0& Param0)
+ETbEnumEnum0 UTbEnumEnumInterfaceLoggingDecorator::Func0_Implementation(ETbEnumEnum0 Param0)
 {
 	TbEnumEnumInterfaceTracer::trace_callFunc0(Param0);
 	return BackendService->Execute_Func0(BackendService.GetObject(), Param0);
 }
 
-void UTbEnumEnumInterfaceLoggingDecorator::Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum1& Result, const ETbEnumEnum1& Param1)
+void UTbEnumEnumInterfaceLoggingDecorator::Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum1& Result, ETbEnumEnum1 Param1)
 {
 	TbEnumEnumInterfaceTracer::trace_callFunc1(Param1);
 
@@ -409,13 +409,13 @@ void UTbEnumEnumInterfaceLoggingDecorator::Func1Async_Implementation(UObject* Wo
 	}
 }
 
-ETbEnumEnum1 UTbEnumEnumInterfaceLoggingDecorator::Func1_Implementation(const ETbEnumEnum1& Param1)
+ETbEnumEnum1 UTbEnumEnumInterfaceLoggingDecorator::Func1_Implementation(ETbEnumEnum1 Param1)
 {
 	TbEnumEnumInterfaceTracer::trace_callFunc1(Param1);
 	return BackendService->Execute_Func1(BackendService.GetObject(), Param1);
 }
 
-void UTbEnumEnumInterfaceLoggingDecorator::Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum2& Result, const ETbEnumEnum2& Param2)
+void UTbEnumEnumInterfaceLoggingDecorator::Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum2& Result, ETbEnumEnum2 Param2)
 {
 	TbEnumEnumInterfaceTracer::trace_callFunc2(Param2);
 
@@ -442,13 +442,13 @@ void UTbEnumEnumInterfaceLoggingDecorator::Func2Async_Implementation(UObject* Wo
 	}
 }
 
-ETbEnumEnum2 UTbEnumEnumInterfaceLoggingDecorator::Func2_Implementation(const ETbEnumEnum2& Param2)
+ETbEnumEnum2 UTbEnumEnumInterfaceLoggingDecorator::Func2_Implementation(ETbEnumEnum2 Param2)
 {
 	TbEnumEnumInterfaceTracer::trace_callFunc2(Param2);
 	return BackendService->Execute_Func2(BackendService.GetObject(), Param2);
 }
 
-void UTbEnumEnumInterfaceLoggingDecorator::Func3Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum3& Result, const ETbEnumEnum3& Param3)
+void UTbEnumEnumInterfaceLoggingDecorator::Func3Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum3& Result, ETbEnumEnum3 Param3)
 {
 	TbEnumEnumInterfaceTracer::trace_callFunc3(Param3);
 
@@ -475,7 +475,7 @@ void UTbEnumEnumInterfaceLoggingDecorator::Func3Async_Implementation(UObject* Wo
 	}
 }
 
-ETbEnumEnum3 UTbEnumEnumInterfaceLoggingDecorator::Func3_Implementation(const ETbEnumEnum3& Param3)
+ETbEnumEnum3 UTbEnumEnumInterfaceLoggingDecorator::Func3_Implementation(ETbEnumEnum3 Param3)
 {
 	TbEnumEnumInterfaceTracer::trace_callFunc3(Param3);
 	return BackendService->Execute_Func3(BackendService.GetObject(), Param3);

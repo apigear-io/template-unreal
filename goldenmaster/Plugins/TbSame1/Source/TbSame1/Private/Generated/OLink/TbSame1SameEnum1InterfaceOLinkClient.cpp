@@ -82,7 +82,7 @@ void UTbSame1SameEnum1InterfaceOLinkClient::Deinitialize()
 	Super::Deinitialize();
 }
 
-void UTbSame1SameEnum1InterfaceOLinkClient::BroadcastSig1_Implementation(const ETbSame1Enum1& Param1)
+void UTbSame1SameEnum1InterfaceOLinkClient::BroadcastSig1_Implementation(ETbSame1Enum1 Param1)
 {
 	Sig1Signal.Broadcast(Param1);
 }
@@ -92,7 +92,7 @@ FTbSame1SameEnum1InterfaceSig1Delegate& UTbSame1SameEnum1InterfaceOLinkClient::G
 	return Sig1Signal;
 }
 
-void UTbSame1SameEnum1InterfaceOLinkClient::BroadcastProp1Changed_Implementation(const ETbSame1Enum1& InProp1)
+void UTbSame1SameEnum1InterfaceOLinkClient::BroadcastProp1Changed_Implementation(ETbSame1Enum1 InProp1)
 {
 	Prop1 = InProp1;
 	Prop1Changed.Broadcast(InProp1);
@@ -103,7 +103,7 @@ ETbSame1Enum1 UTbSame1SameEnum1InterfaceOLinkClient::GetProp1_Implementation() c
 	return Prop1;
 }
 
-void UTbSame1SameEnum1InterfaceOLinkClient::SetProp1_Implementation(const ETbSame1Enum1& InProp1)
+void UTbSame1SameEnum1InterfaceOLinkClient::SetProp1_Implementation(ETbSame1Enum1 InProp1)
 {
 	if (!m_sink->IsReady())
 	{
@@ -117,7 +117,7 @@ FTbSame1SameEnum1InterfaceProp1ChangedDelegate& UTbSame1SameEnum1InterfaceOLinkC
 	return Prop1Changed;
 }
 
-ETbSame1Enum1 UTbSame1SameEnum1InterfaceOLinkClient::Func1_Implementation(const ETbSame1Enum1& Param1)
+ETbSame1Enum1 UTbSame1SameEnum1InterfaceOLinkClient::Func1_Implementation(ETbSame1Enum1 Param1)
 {
 	if (!m_sink->IsReady())
 	{

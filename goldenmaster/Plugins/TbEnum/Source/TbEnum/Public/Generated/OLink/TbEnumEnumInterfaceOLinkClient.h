@@ -63,47 +63,47 @@ public:
 
 	// properties
 	ETbEnumEnum0 GetProp0_Implementation() const override;
-	void SetProp0_Implementation(const ETbEnumEnum0& Prop0) override;
+	void SetProp0_Implementation(ETbEnumEnum0 Prop0) override;
 
 	ETbEnumEnum1 GetProp1_Implementation() const override;
-	void SetProp1_Implementation(const ETbEnumEnum1& Prop1) override;
+	void SetProp1_Implementation(ETbEnumEnum1 Prop1) override;
 
 	ETbEnumEnum2 GetProp2_Implementation() const override;
-	void SetProp2_Implementation(const ETbEnumEnum2& Prop2) override;
+	void SetProp2_Implementation(ETbEnumEnum2 Prop2) override;
 
 	ETbEnumEnum3 GetProp3_Implementation() const override;
-	void SetProp3_Implementation(const ETbEnumEnum3& Prop3) override;
+	void SetProp3_Implementation(ETbEnumEnum3 Prop3) override;
 
 	// operations
-	void Func0Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum0& Result, const ETbEnumEnum0& Param0) override{};
-	ETbEnumEnum0 Func0_Implementation(const ETbEnumEnum0& Param0) override;
+	void Func0Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum0& Result, ETbEnumEnum0 Param0) override{};
+	ETbEnumEnum0 Func0_Implementation(ETbEnumEnum0 Param0) override;
 
-	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum1& Result, const ETbEnumEnum1& Param1) override{};
-	ETbEnumEnum1 Func1_Implementation(const ETbEnumEnum1& Param1) override;
+	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum1& Result, ETbEnumEnum1 Param1) override{};
+	ETbEnumEnum1 Func1_Implementation(ETbEnumEnum1 Param1) override;
 
-	void Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum2& Result, const ETbEnumEnum2& Param2) override{};
-	ETbEnumEnum2 Func2_Implementation(const ETbEnumEnum2& Param2) override;
+	void Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum2& Result, ETbEnumEnum2 Param2) override{};
+	ETbEnumEnum2 Func2_Implementation(ETbEnumEnum2 Param2) override;
 
-	void Func3Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum3& Result, const ETbEnumEnum3& Param3) override{};
-	ETbEnumEnum3 Func3_Implementation(const ETbEnumEnum3& Param3) override;
+	void Func3Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum3& Result, ETbEnumEnum3 Param3) override{};
+	ETbEnumEnum3 Func3_Implementation(ETbEnumEnum3 Param3) override;
 
 protected:
 	// signals
-	void BroadcastSig0_Implementation(const ETbEnumEnum0& Param0) override;
+	void BroadcastSig0_Implementation(ETbEnumEnum0 Param0) override;
 
-	void BroadcastSig1_Implementation(const ETbEnumEnum1& Param1) override;
+	void BroadcastSig1_Implementation(ETbEnumEnum1 Param1) override;
 
-	void BroadcastSig2_Implementation(const ETbEnumEnum2& Param2) override;
+	void BroadcastSig2_Implementation(ETbEnumEnum2 Param2) override;
 
-	void BroadcastSig3_Implementation(const ETbEnumEnum3& Param3) override;
+	void BroadcastSig3_Implementation(ETbEnumEnum3 Param3) override;
 
-	void BroadcastProp0Changed_Implementation(const ETbEnumEnum0& Prop0) override;
+	void BroadcastProp0Changed_Implementation(ETbEnumEnum0 Prop0) override;
 
-	void BroadcastProp1Changed_Implementation(const ETbEnumEnum1& Prop1) override;
+	void BroadcastProp1Changed_Implementation(ETbEnumEnum1 Prop1) override;
 
-	void BroadcastProp2Changed_Implementation(const ETbEnumEnum2& Prop2) override;
+	void BroadcastProp2Changed_Implementation(ETbEnumEnum2 Prop2) override;
 
-	void BroadcastProp3Changed_Implementation(const ETbEnumEnum3& Prop3) override;
+	void BroadcastProp3Changed_Implementation(ETbEnumEnum3 Prop3) override;
 
 private:
 	void applyState(const nlohmann::json& fields);

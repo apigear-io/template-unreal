@@ -37,17 +37,17 @@ public:
 
 	// properties
 	ETbSame2Enum1 GetProp1_Implementation() const override;
-	void SetProp1_Implementation(const ETbSame2Enum1& Prop1) override;
+	void SetProp1_Implementation(ETbSame2Enum1 Prop1) override;
 
 	// operations
-	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, const ETbSame2Enum1& Param1) override{};
-	ETbSame2Enum1 Func1_Implementation(const ETbSame2Enum1& Param1) override;
+	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, ETbSame2Enum1 Param1) override{};
+	ETbSame2Enum1 Func1_Implementation(ETbSame2Enum1 Param1) override;
 
 protected:
 	// signals
-	void BroadcastSig1_Implementation(const ETbSame2Enum1& Param1) override;
+	void BroadcastSig1_Implementation(ETbSame2Enum1 Param1) override;
 
-	void BroadcastProp1Changed_Implementation(const ETbSame2Enum1& Prop1) override;
+	void BroadcastProp1Changed_Implementation(ETbSame2Enum1 Prop1) override;
 
 private:
 	// properties - local copy - use setter functions to emit changed signals

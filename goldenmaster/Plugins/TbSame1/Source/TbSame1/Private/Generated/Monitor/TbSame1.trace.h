@@ -30,9 +30,9 @@ class TbSame1SameEnum1InterfaceTracer
 public:
 	TbSame1SameEnum1InterfaceTracer();
 	static void capture_state(UObject* Object, ITbSame1SameEnum1InterfaceInterface* obj);
-	static void trace_callSetProp1(const ETbSame1Enum1& InProp1);
-	static void trace_signalSig1(const ETbSame1Enum1& Param1);
-	static void trace_callFunc1(const ETbSame1Enum1& Param1);
+	static void trace_callSetProp1(ETbSame1Enum1 InProp1);
+	static void trace_signalSig1(ETbSame1Enum1 Param1);
+	static void trace_callFunc1(ETbSame1Enum1 Param1);
 };
 
 class TbSame1SameEnum2InterfaceTracer
@@ -40,10 +40,10 @@ class TbSame1SameEnum2InterfaceTracer
 public:
 	TbSame1SameEnum2InterfaceTracer();
 	static void capture_state(UObject* Object, ITbSame1SameEnum2InterfaceInterface* obj);
-	static void trace_callSetProp1(const ETbSame1Enum1& InProp1);
-	static void trace_callSetProp2(const ETbSame1Enum2& InProp2);
-	static void trace_signalSig1(const ETbSame1Enum1& Param1);
-	static void trace_signalSig2(const ETbSame1Enum1& Param1, const ETbSame1Enum2& Param2);
-	static void trace_callFunc1(const ETbSame1Enum1& Param1);
-	static void trace_callFunc2(const ETbSame1Enum1& Param1, const ETbSame1Enum2& Param2);
+	static void trace_callSetProp1(ETbSame1Enum1 InProp1);
+	static void trace_callSetProp2(ETbSame1Enum2 InProp2);
+	static void trace_signalSig1(ETbSame1Enum1 Param1);
+	static void trace_signalSig2(ETbSame1Enum1 Param1, ETbSame1Enum2 Param2);
+	static void trace_callFunc1(ETbSame1Enum1 Param1);
+	static void trace_callFunc2(ETbSame1Enum1 Param1, ETbSame1Enum2 Param2);
 };
