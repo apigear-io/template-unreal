@@ -30,7 +30,7 @@ struct TESTBED1_API FTestbed1StructBool : public FTableRowBase
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ApiGear|Testbed1")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool fieldBool{false};
 
 	bool operator==(const FTestbed1StructBool& rhs) const;
@@ -45,7 +45,7 @@ struct TESTBED1_API FTestbed1StructInt : public FTableRowBase
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ApiGear|Testbed1")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int32 fieldInt{0};
 
 	bool operator==(const FTestbed1StructInt& rhs) const;
@@ -60,7 +60,7 @@ struct TESTBED1_API FTestbed1StructFloat : public FTableRowBase
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ApiGear|Testbed1")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float fieldFloat{0.0f};
 
 	bool operator==(const FTestbed1StructFloat& rhs) const;
@@ -75,7 +75,7 @@ struct TESTBED1_API FTestbed1StructString : public FTableRowBase
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ApiGear|Testbed1")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString fieldString{FString()};
 
 	bool operator==(const FTestbed1StructString& rhs) const;

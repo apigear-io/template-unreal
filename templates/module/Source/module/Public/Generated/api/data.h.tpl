@@ -59,7 +59,7 @@ struct {{$API_MACRO}} {{$class }} : public FTableRowBase
 	GENERATED_BODY()
 {{- range .Fields }}
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "{{$Category}}")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	{{ueType "" .}} {{.Name}}{ {{- ueDefault "" . -}} };
 {{- end }}
 
