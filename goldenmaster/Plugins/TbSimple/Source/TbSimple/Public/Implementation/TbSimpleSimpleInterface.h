@@ -29,54 +29,71 @@ public:
 	virtual ~UTbSimpleSimpleInterface();
 
 	// signals
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface", DisplayName = "SigVoid Signal")
 	FTbSimpleSimpleInterfaceSigVoidDelegate SigVoidSignal;
 	FTbSimpleSimpleInterfaceSigVoidDelegate& GetSigVoidSignalDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface", DisplayName = "SigBool Signal")
 	FTbSimpleSimpleInterfaceSigBoolDelegate SigBoolSignal;
 	FTbSimpleSimpleInterfaceSigBoolDelegate& GetSigBoolSignalDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface", DisplayName = "SigInt Signal")
 	FTbSimpleSimpleInterfaceSigIntDelegate SigIntSignal;
 	FTbSimpleSimpleInterfaceSigIntDelegate& GetSigIntSignalDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface", DisplayName = "SigInt32 Signal")
 	FTbSimpleSimpleInterfaceSigInt32Delegate SigInt32Signal;
 	FTbSimpleSimpleInterfaceSigInt32Delegate& GetSigInt32SignalDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface", DisplayName = "SigInt64 Signal")
 	FTbSimpleSimpleInterfaceSigInt64Delegate SigInt64Signal;
 	FTbSimpleSimpleInterfaceSigInt64Delegate& GetSigInt64SignalDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface", DisplayName = "SigFloat Signal")
 	FTbSimpleSimpleInterfaceSigFloatDelegate SigFloatSignal;
 	FTbSimpleSimpleInterfaceSigFloatDelegate& GetSigFloatSignalDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface", DisplayName = "SigFloat32 Signal")
 	FTbSimpleSimpleInterfaceSigFloat32Delegate SigFloat32Signal;
 	FTbSimpleSimpleInterfaceSigFloat32Delegate& GetSigFloat32SignalDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface", DisplayName = "SigFloat64 Signal")
 	FTbSimpleSimpleInterfaceSigFloat64Delegate SigFloat64Signal;
 	FTbSimpleSimpleInterfaceSigFloat64Delegate& GetSigFloat64SignalDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface", DisplayName = "SigString Signal")
 	FTbSimpleSimpleInterfaceSigStringDelegate SigStringSignal;
 	FTbSimpleSimpleInterfaceSigStringDelegate& GetSigStringSignalDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface", DisplayName = "PropBool Changed")
 	FTbSimpleSimpleInterfacePropBoolChangedDelegate PropBoolChanged;
 	FTbSimpleSimpleInterfacePropBoolChangedDelegate& GetPropBoolChangedDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface", DisplayName = "PropInt Changed")
 	FTbSimpleSimpleInterfacePropIntChangedDelegate PropIntChanged;
 	FTbSimpleSimpleInterfacePropIntChangedDelegate& GetPropIntChangedDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface", DisplayName = "PropInt32 Changed")
 	FTbSimpleSimpleInterfacePropInt32ChangedDelegate PropInt32Changed;
 	FTbSimpleSimpleInterfacePropInt32ChangedDelegate& GetPropInt32ChangedDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface", DisplayName = "PropInt64 Changed")
 	FTbSimpleSimpleInterfacePropInt64ChangedDelegate PropInt64Changed;
 	FTbSimpleSimpleInterfacePropInt64ChangedDelegate& GetPropInt64ChangedDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface", DisplayName = "PropFloat Changed")
 	FTbSimpleSimpleInterfacePropFloatChangedDelegate PropFloatChanged;
 	FTbSimpleSimpleInterfacePropFloatChangedDelegate& GetPropFloatChangedDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface", DisplayName = "PropFloat32 Changed")
 	FTbSimpleSimpleInterfacePropFloat32ChangedDelegate PropFloat32Changed;
 	FTbSimpleSimpleInterfacePropFloat32ChangedDelegate& GetPropFloat32ChangedDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface", DisplayName = "PropFloat64 Changed")
 	FTbSimpleSimpleInterfacePropFloat64ChangedDelegate PropFloat64Changed;
 	FTbSimpleSimpleInterfacePropFloat64ChangedDelegate& GetPropFloat64ChangedDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface", DisplayName = "PropString Changed")
 	FTbSimpleSimpleInterfacePropStringChangedDelegate PropStringChanged;
 	FTbSimpleSimpleInterfacePropStringChangedDelegate& GetPropStringChangedDelegate() override;
 

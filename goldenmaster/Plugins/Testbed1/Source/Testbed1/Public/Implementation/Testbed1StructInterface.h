@@ -29,27 +29,35 @@ public:
 	virtual ~UTestbed1StructInterface();
 
 	// signals
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface", DisplayName = "SigBool Signal")
 	FTestbed1StructInterfaceSigBoolDelegate SigBoolSignal;
 	FTestbed1StructInterfaceSigBoolDelegate& GetSigBoolSignalDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface", DisplayName = "SigInt Signal")
 	FTestbed1StructInterfaceSigIntDelegate SigIntSignal;
 	FTestbed1StructInterfaceSigIntDelegate& GetSigIntSignalDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface", DisplayName = "SigFloat Signal")
 	FTestbed1StructInterfaceSigFloatDelegate SigFloatSignal;
 	FTestbed1StructInterfaceSigFloatDelegate& GetSigFloatSignalDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface", DisplayName = "SigString Signal")
 	FTestbed1StructInterfaceSigStringDelegate SigStringSignal;
 	FTestbed1StructInterfaceSigStringDelegate& GetSigStringSignalDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface", DisplayName = "PropBool Changed")
 	FTestbed1StructInterfacePropBoolChangedDelegate PropBoolChanged;
 	FTestbed1StructInterfacePropBoolChangedDelegate& GetPropBoolChangedDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface", DisplayName = "PropInt Changed")
 	FTestbed1StructInterfacePropIntChangedDelegate PropIntChanged;
 	FTestbed1StructInterfacePropIntChangedDelegate& GetPropIntChangedDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface", DisplayName = "PropFloat Changed")
 	FTestbed1StructInterfacePropFloatChangedDelegate PropFloatChanged;
 	FTestbed1StructInterfacePropFloatChangedDelegate& GetPropFloatChangedDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface", DisplayName = "PropString Changed")
 	FTestbed1StructInterfacePropStringChangedDelegate PropStringChanged;
 	FTestbed1StructInterfacePropStringChangedDelegate& GetPropStringChangedDelegate() override;
 

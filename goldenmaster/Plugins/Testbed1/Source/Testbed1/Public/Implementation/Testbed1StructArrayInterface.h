@@ -29,27 +29,35 @@ public:
 	virtual ~UTestbed1StructArrayInterface();
 
 	// signals
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface", DisplayName = "SigBool Signal")
 	FTestbed1StructArrayInterfaceSigBoolDelegate SigBoolSignal;
 	FTestbed1StructArrayInterfaceSigBoolDelegate& GetSigBoolSignalDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface", DisplayName = "SigInt Signal")
 	FTestbed1StructArrayInterfaceSigIntDelegate SigIntSignal;
 	FTestbed1StructArrayInterfaceSigIntDelegate& GetSigIntSignalDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface", DisplayName = "SigFloat Signal")
 	FTestbed1StructArrayInterfaceSigFloatDelegate SigFloatSignal;
 	FTestbed1StructArrayInterfaceSigFloatDelegate& GetSigFloatSignalDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface", DisplayName = "SigString Signal")
 	FTestbed1StructArrayInterfaceSigStringDelegate SigStringSignal;
 	FTestbed1StructArrayInterfaceSigStringDelegate& GetSigStringSignalDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface", DisplayName = "PropBool Changed")
 	FTestbed1StructArrayInterfacePropBoolChangedDelegate PropBoolChanged;
 	FTestbed1StructArrayInterfacePropBoolChangedDelegate& GetPropBoolChangedDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface", DisplayName = "PropInt Changed")
 	FTestbed1StructArrayInterfacePropIntChangedDelegate PropIntChanged;
 	FTestbed1StructArrayInterfacePropIntChangedDelegate& GetPropIntChangedDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface", DisplayName = "PropFloat Changed")
 	FTestbed1StructArrayInterfacePropFloatChangedDelegate PropFloatChanged;
 	FTestbed1StructArrayInterfacePropFloatChangedDelegate& GetPropFloatChangedDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface", DisplayName = "PropString Changed")
 	FTestbed1StructArrayInterfacePropStringChangedDelegate PropStringChanged;
 	FTestbed1StructArrayInterfacePropStringChangedDelegate& GetPropStringChangedDelegate() override;
 

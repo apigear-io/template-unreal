@@ -29,21 +29,27 @@ public:
 	virtual ~UTestbed2NestedStruct3Interface();
 
 	// signals
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct3Interface", DisplayName = "Sig1 Signal")
 	FTestbed2NestedStruct3InterfaceSig1Delegate Sig1Signal;
 	FTestbed2NestedStruct3InterfaceSig1Delegate& GetSig1SignalDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct3Interface", DisplayName = "Sig2 Signal")
 	FTestbed2NestedStruct3InterfaceSig2Delegate Sig2Signal;
 	FTestbed2NestedStruct3InterfaceSig2Delegate& GetSig2SignalDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct3Interface", DisplayName = "Sig3 Signal")
 	FTestbed2NestedStruct3InterfaceSig3Delegate Sig3Signal;
 	FTestbed2NestedStruct3InterfaceSig3Delegate& GetSig3SignalDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct3Interface", DisplayName = "Prop1 Changed")
 	FTestbed2NestedStruct3InterfaceProp1ChangedDelegate Prop1Changed;
 	FTestbed2NestedStruct3InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct3Interface", DisplayName = "Prop2 Changed")
 	FTestbed2NestedStruct3InterfaceProp2ChangedDelegate Prop2Changed;
 	FTestbed2NestedStruct3InterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct3Interface", DisplayName = "Prop3 Changed")
 	FTestbed2NestedStruct3InterfaceProp3ChangedDelegate Prop3Changed;
 	FTestbed2NestedStruct3InterfaceProp3ChangedDelegate& GetProp3ChangedDelegate() override;
 

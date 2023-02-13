@@ -29,27 +29,35 @@ public:
 	virtual ~UTbEnumEnumInterface();
 
 	// signals
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface", DisplayName = "Sig0 Signal")
 	FTbEnumEnumInterfaceSig0Delegate Sig0Signal;
 	FTbEnumEnumInterfaceSig0Delegate& GetSig0SignalDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface", DisplayName = "Sig1 Signal")
 	FTbEnumEnumInterfaceSig1Delegate Sig1Signal;
 	FTbEnumEnumInterfaceSig1Delegate& GetSig1SignalDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface", DisplayName = "Sig2 Signal")
 	FTbEnumEnumInterfaceSig2Delegate Sig2Signal;
 	FTbEnumEnumInterfaceSig2Delegate& GetSig2SignalDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface", DisplayName = "Sig3 Signal")
 	FTbEnumEnumInterfaceSig3Delegate Sig3Signal;
 	FTbEnumEnumInterfaceSig3Delegate& GetSig3SignalDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface", DisplayName = "Prop0 Changed")
 	FTbEnumEnumInterfaceProp0ChangedDelegate Prop0Changed;
 	FTbEnumEnumInterfaceProp0ChangedDelegate& GetProp0ChangedDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface", DisplayName = "Prop1 Changed")
 	FTbEnumEnumInterfaceProp1ChangedDelegate Prop1Changed;
 	FTbEnumEnumInterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface", DisplayName = "Prop2 Changed")
 	FTbEnumEnumInterfaceProp2ChangedDelegate Prop2Changed;
 	FTbEnumEnumInterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface", DisplayName = "Prop3 Changed")
 	FTbEnumEnumInterfaceProp3ChangedDelegate Prop3Changed;
 	FTbEnumEnumInterfaceProp3ChangedDelegate& GetProp3ChangedDelegate() override;
 

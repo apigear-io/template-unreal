@@ -29,9 +29,11 @@ public:
 	virtual ~UTbSimpleNoPropertiesInterface();
 
 	// signals
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoPropertiesInterface", DisplayName = "SigVoid Signal")
 	FTbSimpleNoPropertiesInterfaceSigVoidDelegate SigVoidSignal;
 	FTbSimpleNoPropertiesInterfaceSigVoidDelegate& GetSigVoidSignalDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoPropertiesInterface", DisplayName = "SigBool Signal")
 	FTbSimpleNoPropertiesInterfaceSigBoolDelegate SigBoolSignal;
 	FTbSimpleNoPropertiesInterfaceSigBoolDelegate& GetSigBoolSignalDelegate() override;
 

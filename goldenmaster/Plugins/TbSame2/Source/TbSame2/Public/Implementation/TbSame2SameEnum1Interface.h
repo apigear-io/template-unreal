@@ -29,9 +29,11 @@ public:
 	virtual ~UTbSame2SameEnum1Interface();
 
 	// signals
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame2|SameEnum1Interface", DisplayName = "Sig1 Signal")
 	FTbSame2SameEnum1InterfaceSig1Delegate Sig1Signal;
 	FTbSame2SameEnum1InterfaceSig1Delegate& GetSig1SignalDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame2|SameEnum1Interface", DisplayName = "Prop1 Changed")
 	FTbSame2SameEnum1InterfaceProp1ChangedDelegate Prop1Changed;
 	FTbSame2SameEnum1InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
 
