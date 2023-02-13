@@ -67,7 +67,7 @@ public:
 	}
 };
 UTbSimpleNoSignalsInterfaceLoggingDecorator::UTbSimpleNoSignalsInterfaceLoggingDecorator()
-	: ITbSimpleNoSignalsInterfaceInterface()
+	: UAbstractTbSimpleNoSignalsInterface()
 {
 }
 
@@ -113,11 +113,6 @@ void UTbSimpleNoSignalsInterfaceLoggingDecorator::setBackendService(TScriptInter
 	PropInt = BackendService->Execute_GetPropInt(BackendService.GetObject());
 }
 
-void UTbSimpleNoSignalsInterfaceLoggingDecorator::BroadcastPropBoolChanged_Implementation(bool bInPropBool)
-{
-	PropBoolChanged.Broadcast(bInPropBool);
-}
-
 void UTbSimpleNoSignalsInterfaceLoggingDecorator::OnPropBoolChanged(bool bInPropBool)
 {
 	TbSimpleNoSignalsInterfaceTracer::capture_state(BackendService.GetObject(), this);
@@ -136,26 +131,6 @@ void UTbSimpleNoSignalsInterfaceLoggingDecorator::SetPropBool_Implementation(boo
 	BackendService->Execute_SetPropBool(BackendService.GetObject(), bInPropBool);
 }
 
-bool UTbSimpleNoSignalsInterfaceLoggingDecorator::GetPropBool_Private() const
-{
-	return Execute_GetPropBool(this);
-}
-
-void UTbSimpleNoSignalsInterfaceLoggingDecorator::SetPropBool_Private(bool bInPropBool)
-{
-	Execute_SetPropBool(this, bInPropBool);
-}
-
-FTbSimpleNoSignalsInterfacePropBoolChangedDelegate& UTbSimpleNoSignalsInterfaceLoggingDecorator::GetPropBoolChangedDelegate()
-{
-	return PropBoolChanged;
-}
-
-void UTbSimpleNoSignalsInterfaceLoggingDecorator::BroadcastPropIntChanged_Implementation(int32 InPropInt)
-{
-	PropIntChanged.Broadcast(InPropInt);
-}
-
 void UTbSimpleNoSignalsInterfaceLoggingDecorator::OnPropIntChanged(int32 InPropInt)
 {
 	TbSimpleNoSignalsInterfaceTracer::capture_state(BackendService.GetObject(), this);
@@ -172,21 +147,6 @@ void UTbSimpleNoSignalsInterfaceLoggingDecorator::SetPropInt_Implementation(int3
 {
 	TbSimpleNoSignalsInterfaceTracer::trace_callSetPropInt(InPropInt);
 	BackendService->Execute_SetPropInt(BackendService.GetObject(), InPropInt);
-}
-
-int32 UTbSimpleNoSignalsInterfaceLoggingDecorator::GetPropInt_Private() const
-{
-	return Execute_GetPropInt(this);
-}
-
-void UTbSimpleNoSignalsInterfaceLoggingDecorator::SetPropInt_Private(int32 InPropInt)
-{
-	Execute_SetPropInt(this, InPropInt);
-}
-
-FTbSimpleNoSignalsInterfacePropIntChangedDelegate& UTbSimpleNoSignalsInterfaceLoggingDecorator::GetPropIntChangedDelegate()
-{
-	return PropIntChanged;
 }
 
 void UTbSimpleNoSignalsInterfaceLoggingDecorator::FuncVoid_Implementation()

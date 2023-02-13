@@ -67,7 +67,7 @@ public:
 	}
 };
 UTestbed1StructArrayInterfaceLoggingDecorator::UTestbed1StructArrayInterfaceLoggingDecorator()
-	: ITestbed1StructArrayInterfaceInterface()
+	: UAbstractTestbed1StructArrayInterface()
 {
 }
 
@@ -133,25 +133,10 @@ void UTestbed1StructArrayInterfaceLoggingDecorator::setBackendService(TScriptInt
 	PropString = BackendService->Execute_GetPropString(BackendService.GetObject());
 }
 
-void UTestbed1StructArrayInterfaceLoggingDecorator::BroadcastSigBool_Implementation(const TArray<FTestbed1StructBool>& ParamBool)
-{
-	SigBoolSignal.Broadcast(ParamBool);
-}
-
 void UTestbed1StructArrayInterfaceLoggingDecorator::OnSigBool(const TArray<FTestbed1StructBool>& ParamBool)
 {
 	Testbed1StructArrayInterfaceTracer::trace_signalSigBool(ParamBool);
 	Execute_BroadcastSigBool(this, ParamBool);
-}
-
-FTestbed1StructArrayInterfaceSigBoolDelegate& UTestbed1StructArrayInterfaceLoggingDecorator::GetSigBoolSignalDelegate()
-{
-	return SigBoolSignal;
-}
-
-void UTestbed1StructArrayInterfaceLoggingDecorator::BroadcastSigInt_Implementation(const TArray<FTestbed1StructInt>& ParamInt)
-{
-	SigIntSignal.Broadcast(ParamInt);
 }
 
 void UTestbed1StructArrayInterfaceLoggingDecorator::OnSigInt(const TArray<FTestbed1StructInt>& ParamInt)
@@ -160,46 +145,16 @@ void UTestbed1StructArrayInterfaceLoggingDecorator::OnSigInt(const TArray<FTestb
 	Execute_BroadcastSigInt(this, ParamInt);
 }
 
-FTestbed1StructArrayInterfaceSigIntDelegate& UTestbed1StructArrayInterfaceLoggingDecorator::GetSigIntSignalDelegate()
-{
-	return SigIntSignal;
-}
-
-void UTestbed1StructArrayInterfaceLoggingDecorator::BroadcastSigFloat_Implementation(const TArray<FTestbed1StructFloat>& ParamFloat)
-{
-	SigFloatSignal.Broadcast(ParamFloat);
-}
-
 void UTestbed1StructArrayInterfaceLoggingDecorator::OnSigFloat(const TArray<FTestbed1StructFloat>& ParamFloat)
 {
 	Testbed1StructArrayInterfaceTracer::trace_signalSigFloat(ParamFloat);
 	Execute_BroadcastSigFloat(this, ParamFloat);
 }
 
-FTestbed1StructArrayInterfaceSigFloatDelegate& UTestbed1StructArrayInterfaceLoggingDecorator::GetSigFloatSignalDelegate()
-{
-	return SigFloatSignal;
-}
-
-void UTestbed1StructArrayInterfaceLoggingDecorator::BroadcastSigString_Implementation(const TArray<FTestbed1StructString>& ParamString)
-{
-	SigStringSignal.Broadcast(ParamString);
-}
-
 void UTestbed1StructArrayInterfaceLoggingDecorator::OnSigString(const TArray<FTestbed1StructString>& ParamString)
 {
 	Testbed1StructArrayInterfaceTracer::trace_signalSigString(ParamString);
 	Execute_BroadcastSigString(this, ParamString);
-}
-
-FTestbed1StructArrayInterfaceSigStringDelegate& UTestbed1StructArrayInterfaceLoggingDecorator::GetSigStringSignalDelegate()
-{
-	return SigStringSignal;
-}
-
-void UTestbed1StructArrayInterfaceLoggingDecorator::BroadcastPropBoolChanged_Implementation(const TArray<FTestbed1StructBool>& InPropBool)
-{
-	PropBoolChanged.Broadcast(InPropBool);
 }
 
 void UTestbed1StructArrayInterfaceLoggingDecorator::OnPropBoolChanged(const TArray<FTestbed1StructBool>& InPropBool)
@@ -220,26 +175,6 @@ void UTestbed1StructArrayInterfaceLoggingDecorator::SetPropBool_Implementation(c
 	BackendService->Execute_SetPropBool(BackendService.GetObject(), InPropBool);
 }
 
-TArray<FTestbed1StructBool> UTestbed1StructArrayInterfaceLoggingDecorator::GetPropBool_Private() const
-{
-	return Execute_GetPropBool(this);
-}
-
-void UTestbed1StructArrayInterfaceLoggingDecorator::SetPropBool_Private(const TArray<FTestbed1StructBool>& InPropBool)
-{
-	Execute_SetPropBool(this, InPropBool);
-}
-
-FTestbed1StructArrayInterfacePropBoolChangedDelegate& UTestbed1StructArrayInterfaceLoggingDecorator::GetPropBoolChangedDelegate()
-{
-	return PropBoolChanged;
-}
-
-void UTestbed1StructArrayInterfaceLoggingDecorator::BroadcastPropIntChanged_Implementation(const TArray<FTestbed1StructInt>& InPropInt)
-{
-	PropIntChanged.Broadcast(InPropInt);
-}
-
 void UTestbed1StructArrayInterfaceLoggingDecorator::OnPropIntChanged(const TArray<FTestbed1StructInt>& InPropInt)
 {
 	Testbed1StructArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
@@ -256,26 +191,6 @@ void UTestbed1StructArrayInterfaceLoggingDecorator::SetPropInt_Implementation(co
 {
 	Testbed1StructArrayInterfaceTracer::trace_callSetPropInt(InPropInt);
 	BackendService->Execute_SetPropInt(BackendService.GetObject(), InPropInt);
-}
-
-TArray<FTestbed1StructInt> UTestbed1StructArrayInterfaceLoggingDecorator::GetPropInt_Private() const
-{
-	return Execute_GetPropInt(this);
-}
-
-void UTestbed1StructArrayInterfaceLoggingDecorator::SetPropInt_Private(const TArray<FTestbed1StructInt>& InPropInt)
-{
-	Execute_SetPropInt(this, InPropInt);
-}
-
-FTestbed1StructArrayInterfacePropIntChangedDelegate& UTestbed1StructArrayInterfaceLoggingDecorator::GetPropIntChangedDelegate()
-{
-	return PropIntChanged;
-}
-
-void UTestbed1StructArrayInterfaceLoggingDecorator::BroadcastPropFloatChanged_Implementation(const TArray<FTestbed1StructFloat>& InPropFloat)
-{
-	PropFloatChanged.Broadcast(InPropFloat);
 }
 
 void UTestbed1StructArrayInterfaceLoggingDecorator::OnPropFloatChanged(const TArray<FTestbed1StructFloat>& InPropFloat)
@@ -296,26 +211,6 @@ void UTestbed1StructArrayInterfaceLoggingDecorator::SetPropFloat_Implementation(
 	BackendService->Execute_SetPropFloat(BackendService.GetObject(), InPropFloat);
 }
 
-TArray<FTestbed1StructFloat> UTestbed1StructArrayInterfaceLoggingDecorator::GetPropFloat_Private() const
-{
-	return Execute_GetPropFloat(this);
-}
-
-void UTestbed1StructArrayInterfaceLoggingDecorator::SetPropFloat_Private(const TArray<FTestbed1StructFloat>& InPropFloat)
-{
-	Execute_SetPropFloat(this, InPropFloat);
-}
-
-FTestbed1StructArrayInterfacePropFloatChangedDelegate& UTestbed1StructArrayInterfaceLoggingDecorator::GetPropFloatChangedDelegate()
-{
-	return PropFloatChanged;
-}
-
-void UTestbed1StructArrayInterfaceLoggingDecorator::BroadcastPropStringChanged_Implementation(const TArray<FTestbed1StructString>& InPropString)
-{
-	PropStringChanged.Broadcast(InPropString);
-}
-
 void UTestbed1StructArrayInterfaceLoggingDecorator::OnPropStringChanged(const TArray<FTestbed1StructString>& InPropString)
 {
 	Testbed1StructArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
@@ -332,21 +227,6 @@ void UTestbed1StructArrayInterfaceLoggingDecorator::SetPropString_Implementation
 {
 	Testbed1StructArrayInterfaceTracer::trace_callSetPropString(InPropString);
 	BackendService->Execute_SetPropString(BackendService.GetObject(), InPropString);
-}
-
-TArray<FTestbed1StructString> UTestbed1StructArrayInterfaceLoggingDecorator::GetPropString_Private() const
-{
-	return Execute_GetPropString(this);
-}
-
-void UTestbed1StructArrayInterfaceLoggingDecorator::SetPropString_Private(const TArray<FTestbed1StructString>& InPropString)
-{
-	Execute_SetPropString(this, InPropString);
-}
-
-FTestbed1StructArrayInterfacePropStringChangedDelegate& UTestbed1StructArrayInterfaceLoggingDecorator::GetPropStringChangedDelegate()
-{
-	return PropStringChanged;
 }
 
 void UTestbed1StructArrayInterfaceLoggingDecorator::FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructBool>& ParamBool)

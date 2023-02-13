@@ -26,7 +26,7 @@ limitations under the License.
 DECLARE_LOG_CATEGORY_EXTERN(LogTbSimpleNoOperationsInterfaceLoggingDecorator, Log, All);
 
 UCLASS(BlueprintType, Blueprintable)
-class TBSIMPLE_API UTbSimpleNoOperationsInterfaceLoggingDecorator : public UGameInstanceSubsystem, public ITbSimpleNoOperationsInterfaceInterface
+class TBSIMPLE_API UTbSimpleNoOperationsInterfaceLoggingDecorator : public UAbstractTbSimpleNoOperationsInterface
 {
 	GENERATED_BODY()
 
@@ -41,23 +41,6 @@ public:
 	void Initialize(FSubsystemCollectionBase& Collection) override;
 	void Deinitialize() override;
 
-	// signals
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoOperationsInterface", DisplayName = "SigVoid Signal")
-	FTbSimpleNoOperationsInterfaceSigVoidDelegate SigVoidSignal;
-	FTbSimpleNoOperationsInterfaceSigVoidDelegate& GetSigVoidSignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoOperationsInterface", DisplayName = "SigBool Signal")
-	FTbSimpleNoOperationsInterfaceSigBoolDelegate SigBoolSignal;
-	FTbSimpleNoOperationsInterfaceSigBoolDelegate& GetSigBoolSignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoOperationsInterface", DisplayName = "PropBool Changed")
-	FTbSimpleNoOperationsInterfacePropBoolChangedDelegate PropBoolChanged;
-	FTbSimpleNoOperationsInterfacePropBoolChangedDelegate& GetPropBoolChangedDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoOperationsInterface", DisplayName = "PropInt Changed")
-	FTbSimpleNoOperationsInterfacePropIntChangedDelegate PropIntChanged;
-	FTbSimpleNoOperationsInterfacePropIntChangedDelegate& GetPropIntChangedDelegate() override;
-
 	// properties
 	bool GetPropBool_Implementation() const override;
 
@@ -68,16 +51,6 @@ public:
 	void SetPropInt_Implementation(int32 InPropInt) override;
 
 	// operations
-protected:
-	// signals
-	void BroadcastSigVoid_Implementation() override;
-
-	void BroadcastSigBool_Implementation(bool bParamBool) override;
-
-	void BroadcastPropBoolChanged_Implementation(bool bPropBool) override;
-
-	void BroadcastPropIntChanged_Implementation(int32 PropInt) override;
-
 private:
 	/** The connection to the service backend. */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSimple|NoOperationsInterface")
@@ -95,23 +68,4 @@ private:
 
 	UFUNCTION(Category = "ApiGear|TbSimple|NoOperationsInterface", BlueprintInternalUseOnly)
 	void OnPropIntChanged(int32 PropInt);
-
-	// properties - local copy
-	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropBool_Private, BlueprintSetter = SetPropBool_Private, Category = "ApiGear|TbSimple|NoOperationsInterface")
-	bool bPropBool{false};
-
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSimple|NoOperationsInterface", BlueprintInternalUseOnly)
-	bool GetPropBool_Private() const;
-
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSimple|NoOperationsInterface", BlueprintInternalUseOnly)
-	void SetPropBool_Private(bool bInPropBool);
-
-	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropInt_Private, BlueprintSetter = SetPropInt_Private, Category = "ApiGear|TbSimple|NoOperationsInterface")
-	int32 PropInt{0};
-
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSimple|NoOperationsInterface", BlueprintInternalUseOnly)
-	int32 GetPropInt_Private() const;
-
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSimple|NoOperationsInterface", BlueprintInternalUseOnly)
-	void SetPropInt_Private(int32 InPropInt);
 };

@@ -4,6 +4,7 @@
 {{- $API_MACRO := printf "%s_API" (CAMEL .Module.Name) }}
 {{- $Category := printf "ApiGear|%s|%s" $ModuleName (Camel .Interface.Name) }}
 {{- $DisplayName := printf "%s%sLoggingDecorator" $ModuleName (Camel .Interface.Name) }}
+{{- $abstractclass := printf "UAbstract%s%s" (Camel .Module.Name) (Camel .Interface.Name) }}
 {{- $Class := printf "U%s" $DisplayName}}
 {{- $Iface := printf "%s%s" $ModuleName (Camel .Interface.Name) -}}
 /**
@@ -33,7 +34,7 @@ limitations under the License.
 DECLARE_LOG_CATEGORY_EXTERN(Log{{$DisplayName}}, Log, All);
 
 UCLASS(BlueprintType, Blueprintable)
-class {{ $API_MACRO }} {{$Class}} : public UGameInstanceSubsystem, public I{{$Iface}}Interface
+class {{ $API_MACRO }} {{$Class}} : public {{$abstractclass}}
 {
 	GENERATED_BODY()
 
@@ -48,17 +49,6 @@ public:
 	void Initialize(FSubsystemCollectionBase& Collection) override;
 	void Deinitialize() override;
 
-	// signals
-{{- range .Interface.Signals }}
-	UPROPERTY(BlueprintAssignable, Category = "{{$Category}}", DisplayName = "{{Camel .Name}} Signal")
-	F{{$Iface}}{{Camel .Name}}Delegate {{Camel .Name}}Signal;
-	F{{$Iface}}{{Camel .Name}}Delegate& Get{{Camel .Name}}SignalDelegate() override;
-{{ end }}
-{{- range .Interface.Properties }}
-	UPROPERTY(BlueprintAssignable, Category = "{{$Category}}", DisplayName = "{{Camel .Name}} Changed")
-	F{{$Iface}}{{Camel .Name}}ChangedDelegate {{Camel .Name}}Changed;
-	F{{$Iface}}{{Camel .Name}}ChangedDelegate& Get{{Camel .Name}}ChangedDelegate() override;
-{{ end }}
 	// properties
 {{- range .Interface.Properties }}
 {{- if .Description }}
@@ -77,18 +67,6 @@ public:
 	{{ueReturn "" .Return}} {{Camel .Name}}_Implementation({{ueParams "" .Params}}) override;
 	{{- end }}
 {{ end }}
-protected:
-	// signals
-{{- range $i, $e := .Interface.Signals }}
-{{- if $i }}{{nl}}{{ end }}
-	void Broadcast{{Camel .Name}}_Implementation({{ueParams "" .Params}}) override;
-{{- end }}
-{{- if len .Interface.Properties }}{{ nl }}{{ end }}
-{{- range $i, $e := .Interface.Properties }}
-{{- if $i }}{{nl}}{{ end }}
-	void Broadcast{{Camel .Name}}Changed_Implementation({{ueParam "" .}}) override;
-{{- end }}
-
 private:
 	/** The connection to the service backend. */
 	UPROPERTY(VisibleAnywhere, Category = "{{$Category}}")
@@ -105,21 +83,5 @@ private:
 {{- if $i }}{{nl}}{{ end }}
 	UFUNCTION(Category = "{{$Category}}", BlueprintInternalUseOnly)
 	void On{{Camel .Name}}Changed({{ueParam "" .}});
-{{- end }}
-
-	// properties - local copy
-{{- range $i, $e := .Interface.Properties }}
-{{- if $i }}{{nl}}{{ end }}
-{{- if .Description }}
-	/** {{.Description}} */
-{{- end }}
-	UPROPERTY(EditAnywhere, BlueprintGetter = Get{{Camel .Name}}_Private, BlueprintSetter = Set{{Camel .Name}}_Private, Category = "{{$Category}}")
-	{{ueReturn "" .}} {{ueVar "" .}}{ {{- ueDefault "" . -}} };
-
-	UFUNCTION(BlueprintGetter, Category = "{{$Category}}", BlueprintInternalUseOnly)
-	{{ueReturn "" .}} Get{{Camel .Name}}_Private() const;
-
-	UFUNCTION(BlueprintSetter, Category = "{{$Category}}", BlueprintInternalUseOnly)
-	void Set{{Camel .Name}}_Private({{ueParam "In" .}});
 {{- end }}
 };

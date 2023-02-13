@@ -26,7 +26,7 @@ limitations under the License.
 DECLARE_LOG_CATEGORY_EXTERN(LogTbSimpleSimpleInterfaceLoggingDecorator, Log, All);
 
 UCLASS(BlueprintType, Blueprintable)
-class TBSIMPLE_API UTbSimpleSimpleInterfaceLoggingDecorator : public UGameInstanceSubsystem, public ITbSimpleSimpleInterfaceInterface
+class TBSIMPLE_API UTbSimpleSimpleInterfaceLoggingDecorator : public UAbstractTbSimpleSimpleInterface
 {
 	GENERATED_BODY()
 
@@ -40,75 +40,6 @@ public:
 	// subsystem
 	void Initialize(FSubsystemCollectionBase& Collection) override;
 	void Deinitialize() override;
-
-	// signals
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface", DisplayName = "SigVoid Signal")
-	FTbSimpleSimpleInterfaceSigVoidDelegate SigVoidSignal;
-	FTbSimpleSimpleInterfaceSigVoidDelegate& GetSigVoidSignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface", DisplayName = "SigBool Signal")
-	FTbSimpleSimpleInterfaceSigBoolDelegate SigBoolSignal;
-	FTbSimpleSimpleInterfaceSigBoolDelegate& GetSigBoolSignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface", DisplayName = "SigInt Signal")
-	FTbSimpleSimpleInterfaceSigIntDelegate SigIntSignal;
-	FTbSimpleSimpleInterfaceSigIntDelegate& GetSigIntSignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface", DisplayName = "SigInt32 Signal")
-	FTbSimpleSimpleInterfaceSigInt32Delegate SigInt32Signal;
-	FTbSimpleSimpleInterfaceSigInt32Delegate& GetSigInt32SignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface", DisplayName = "SigInt64 Signal")
-	FTbSimpleSimpleInterfaceSigInt64Delegate SigInt64Signal;
-	FTbSimpleSimpleInterfaceSigInt64Delegate& GetSigInt64SignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface", DisplayName = "SigFloat Signal")
-	FTbSimpleSimpleInterfaceSigFloatDelegate SigFloatSignal;
-	FTbSimpleSimpleInterfaceSigFloatDelegate& GetSigFloatSignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface", DisplayName = "SigFloat32 Signal")
-	FTbSimpleSimpleInterfaceSigFloat32Delegate SigFloat32Signal;
-	FTbSimpleSimpleInterfaceSigFloat32Delegate& GetSigFloat32SignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface", DisplayName = "SigFloat64 Signal")
-	FTbSimpleSimpleInterfaceSigFloat64Delegate SigFloat64Signal;
-	FTbSimpleSimpleInterfaceSigFloat64Delegate& GetSigFloat64SignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface", DisplayName = "SigString Signal")
-	FTbSimpleSimpleInterfaceSigStringDelegate SigStringSignal;
-	FTbSimpleSimpleInterfaceSigStringDelegate& GetSigStringSignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface", DisplayName = "PropBool Changed")
-	FTbSimpleSimpleInterfacePropBoolChangedDelegate PropBoolChanged;
-	FTbSimpleSimpleInterfacePropBoolChangedDelegate& GetPropBoolChangedDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface", DisplayName = "PropInt Changed")
-	FTbSimpleSimpleInterfacePropIntChangedDelegate PropIntChanged;
-	FTbSimpleSimpleInterfacePropIntChangedDelegate& GetPropIntChangedDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface", DisplayName = "PropInt32 Changed")
-	FTbSimpleSimpleInterfacePropInt32ChangedDelegate PropInt32Changed;
-	FTbSimpleSimpleInterfacePropInt32ChangedDelegate& GetPropInt32ChangedDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface", DisplayName = "PropInt64 Changed")
-	FTbSimpleSimpleInterfacePropInt64ChangedDelegate PropInt64Changed;
-	FTbSimpleSimpleInterfacePropInt64ChangedDelegate& GetPropInt64ChangedDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface", DisplayName = "PropFloat Changed")
-	FTbSimpleSimpleInterfacePropFloatChangedDelegate PropFloatChanged;
-	FTbSimpleSimpleInterfacePropFloatChangedDelegate& GetPropFloatChangedDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface", DisplayName = "PropFloat32 Changed")
-	FTbSimpleSimpleInterfacePropFloat32ChangedDelegate PropFloat32Changed;
-	FTbSimpleSimpleInterfacePropFloat32ChangedDelegate& GetPropFloat32ChangedDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface", DisplayName = "PropFloat64 Changed")
-	FTbSimpleSimpleInterfacePropFloat64ChangedDelegate PropFloat64Changed;
-	FTbSimpleSimpleInterfacePropFloat64ChangedDelegate& GetPropFloat64ChangedDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface", DisplayName = "PropString Changed")
-	FTbSimpleSimpleInterfacePropStringChangedDelegate PropStringChanged;
-	FTbSimpleSimpleInterfacePropStringChangedDelegate& GetPropStringChangedDelegate() override;
 
 	// properties
 	bool GetPropBool_Implementation() const override;
@@ -170,42 +101,6 @@ public:
 	void FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FString& Result, const FString& ParamString) override;
 	FString FuncString_Implementation(const FString& ParamString) override;
 
-protected:
-	// signals
-	void BroadcastSigVoid_Implementation() override;
-
-	void BroadcastSigBool_Implementation(bool bParamBool) override;
-
-	void BroadcastSigInt_Implementation(int32 ParamInt) override;
-
-	void BroadcastSigInt32_Implementation(int32 ParamInt32) override;
-
-	void BroadcastSigInt64_Implementation(int64 ParamInt64) override;
-
-	void BroadcastSigFloat_Implementation(float ParamFloat) override;
-
-	void BroadcastSigFloat32_Implementation(float ParamFloa32) override;
-
-	void BroadcastSigFloat64_Implementation(double ParamFloat64) override;
-
-	void BroadcastSigString_Implementation(const FString& ParamString) override;
-
-	void BroadcastPropBoolChanged_Implementation(bool bPropBool) override;
-
-	void BroadcastPropIntChanged_Implementation(int32 PropInt) override;
-
-	void BroadcastPropInt32Changed_Implementation(int32 PropInt32) override;
-
-	void BroadcastPropInt64Changed_Implementation(int64 PropInt64) override;
-
-	void BroadcastPropFloatChanged_Implementation(float PropFloat) override;
-
-	void BroadcastPropFloat32Changed_Implementation(float PropFloat32) override;
-
-	void BroadcastPropFloat64Changed_Implementation(double PropFloat64) override;
-
-	void BroadcastPropStringChanged_Implementation(const FString& PropString) override;
-
 private:
 	/** The connection to the service backend. */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSimple|SimpleInterface")
@@ -262,77 +157,4 @@ private:
 
 	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
 	void OnPropStringChanged(const FString& PropString);
-
-	// properties - local copy
-	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropBool_Private, BlueprintSetter = SetPropBool_Private, Category = "ApiGear|TbSimple|SimpleInterface")
-	bool bPropBool{false};
-
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	bool GetPropBool_Private() const;
-
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	void SetPropBool_Private(bool bInPropBool);
-
-	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropInt_Private, BlueprintSetter = SetPropInt_Private, Category = "ApiGear|TbSimple|SimpleInterface")
-	int32 PropInt{0};
-
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	int32 GetPropInt_Private() const;
-
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	void SetPropInt_Private(int32 InPropInt);
-
-	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropInt32_Private, BlueprintSetter = SetPropInt32_Private, Category = "ApiGear|TbSimple|SimpleInterface")
-	int32 PropInt32{0};
-
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	int32 GetPropInt32_Private() const;
-
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	void SetPropInt32_Private(int32 InPropInt32);
-
-	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropInt64_Private, BlueprintSetter = SetPropInt64_Private, Category = "ApiGear|TbSimple|SimpleInterface")
-	int64 PropInt64{0LL};
-
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	int64 GetPropInt64_Private() const;
-
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	void SetPropInt64_Private(int64 InPropInt64);
-
-	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropFloat_Private, BlueprintSetter = SetPropFloat_Private, Category = "ApiGear|TbSimple|SimpleInterface")
-	float PropFloat{0.0f};
-
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	float GetPropFloat_Private() const;
-
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	void SetPropFloat_Private(float InPropFloat);
-
-	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropFloat32_Private, BlueprintSetter = SetPropFloat32_Private, Category = "ApiGear|TbSimple|SimpleInterface")
-	float PropFloat32{0.0f};
-
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	float GetPropFloat32_Private() const;
-
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	void SetPropFloat32_Private(float InPropFloat32);
-
-	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropFloat64_Private, BlueprintSetter = SetPropFloat64_Private, Category = "ApiGear|TbSimple|SimpleInterface")
-	double PropFloat64{0.0};
-
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	double GetPropFloat64_Private() const;
-
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	void SetPropFloat64_Private(double InPropFloat64);
-
-	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropString_Private, BlueprintSetter = SetPropString_Private, Category = "ApiGear|TbSimple|SimpleInterface")
-	FString PropString{FString()};
-
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	FString GetPropString_Private() const;
-
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	void SetPropString_Private(const FString& InPropString);
 };

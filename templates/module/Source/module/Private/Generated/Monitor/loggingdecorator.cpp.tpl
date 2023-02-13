@@ -7,6 +7,7 @@
 {{- $DisplayName := printf "%s%sLoggingDecorator" $ModuleName (Camel .Interface.Name) }}
 {{- $Class := printf "U%s" $DisplayName}}
 {{- $Iface := printf "%s%s" $ModuleName $IfaceName }}
+{{- $abstractclass := printf "UAbstract%s%s" (Camel .Module.Name) (Camel .Interface.Name) }}
 {{- $FactoryName := printf "F%sModuleFactory" $ModuleName -}}
 /**
 Copyright 2021 ApiGear UG
@@ -82,7 +83,7 @@ public:
 */
 {{- end }}
 {{$Class}}::{{$Class}}()
-	: I{{$Iface}}Interface()
+	: {{$abstractclass}}()
 {
 }
 
@@ -145,30 +146,15 @@ void {{$Class}}::setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{Cam
 {{- if .Interface.Signals }}{{nl}}{{ end }}
 {{- range $i, $e := .Interface.Signals }}
 {{- if $i }}{{nl}}{{ end }}
-void {{$Class}}::Broadcast{{Camel .Name}}_Implementation({{ueParams "" .Params}})
-{
-	{{Camel .Name}}Signal.Broadcast({{ueVars "" .Params }});
-}
-
 void {{$Class}}::On{{Camel .Name}}({{ueParams "" .Params}})
 {
 	{{$Iface}}Tracer::trace_signal{{Camel .Name}}({{ueVars "" .Params}});
 	Execute_Broadcast{{Camel .Name}}(this{{if len .Params}}, {{ end }}{{ueVars "" .Params }});
 }
-
-F{{$Iface}}{{Camel .Name}}Delegate& {{$Class}}::Get{{Camel .Name}}SignalDelegate()
-{
-	return {{Camel .Name}}Signal;
-}
 {{- end }}
 {{- if .Interface.Properties }}{{nl}}{{ end }}
 {{- range $i, $e := .Interface.Properties }}
 {{- if $i }}{{nl}}{{ end }}
-void {{$Class}}::Broadcast{{Camel .Name}}Changed_Implementation({{ueParam "In" .}})
-{
-	{{Camel .Name}}Changed.Broadcast({{ueVar "In" .}});
-}
-
 void {{$Class}}::On{{Camel .Name}}Changed({{ueParam "In" .}})
 {
 	{{$Iface}}Tracer::capture_state(BackendService.GetObject(), this);
@@ -185,21 +171,6 @@ void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
 {
 	{{$Iface}}Tracer::trace_callSet{{Camel .Name}}({{ueVar "In" .}});
 	BackendService->Execute_Set{{Camel .Name}}(BackendService.GetObject(), {{ueVar "In" .}});
-}
-
-{{ueReturn "" .}} {{$Class}}::Get{{Camel .Name}}_Private() const
-{
-	return Execute_Get{{Camel .Name}}(this);
-}
-
-void {{$Class}}::Set{{Camel .Name}}_Private({{ueParam "In" .}})
-{
-	Execute_Set{{Camel .Name}}(this, {{ueVar "In" .}});
-}
-
-F{{$Iface}}{{Camel .Name}}ChangedDelegate& {{$Class}}::Get{{Camel .Name}}ChangedDelegate()
-{
-	return {{Camel .Name}}Changed;
 }
 {{- end }}
 {{- if .Interface.Operations }}{{nl}}{{ end }}

@@ -26,7 +26,7 @@ limitations under the License.
 DECLARE_LOG_CATEGORY_EXTERN(LogTbEnumEnumInterfaceLoggingDecorator, Log, All);
 
 UCLASS(BlueprintType, Blueprintable)
-class TBENUM_API UTbEnumEnumInterfaceLoggingDecorator : public UGameInstanceSubsystem, public ITbEnumEnumInterfaceInterface
+class TBENUM_API UTbEnumEnumInterfaceLoggingDecorator : public UAbstractTbEnumEnumInterface
 {
 	GENERATED_BODY()
 
@@ -40,39 +40,6 @@ public:
 	// subsystem
 	void Initialize(FSubsystemCollectionBase& Collection) override;
 	void Deinitialize() override;
-
-	// signals
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface", DisplayName = "Sig0 Signal")
-	FTbEnumEnumInterfaceSig0Delegate Sig0Signal;
-	FTbEnumEnumInterfaceSig0Delegate& GetSig0SignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface", DisplayName = "Sig1 Signal")
-	FTbEnumEnumInterfaceSig1Delegate Sig1Signal;
-	FTbEnumEnumInterfaceSig1Delegate& GetSig1SignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface", DisplayName = "Sig2 Signal")
-	FTbEnumEnumInterfaceSig2Delegate Sig2Signal;
-	FTbEnumEnumInterfaceSig2Delegate& GetSig2SignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface", DisplayName = "Sig3 Signal")
-	FTbEnumEnumInterfaceSig3Delegate Sig3Signal;
-	FTbEnumEnumInterfaceSig3Delegate& GetSig3SignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface", DisplayName = "Prop0 Changed")
-	FTbEnumEnumInterfaceProp0ChangedDelegate Prop0Changed;
-	FTbEnumEnumInterfaceProp0ChangedDelegate& GetProp0ChangedDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface", DisplayName = "Prop1 Changed")
-	FTbEnumEnumInterfaceProp1ChangedDelegate Prop1Changed;
-	FTbEnumEnumInterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface", DisplayName = "Prop2 Changed")
-	FTbEnumEnumInterfaceProp2ChangedDelegate Prop2Changed;
-	FTbEnumEnumInterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface", DisplayName = "Prop3 Changed")
-	FTbEnumEnumInterfaceProp3ChangedDelegate Prop3Changed;
-	FTbEnumEnumInterfaceProp3ChangedDelegate& GetProp3ChangedDelegate() override;
 
 	// properties
 	ETbEnumEnum0 GetProp0_Implementation() const override;
@@ -104,24 +71,6 @@ public:
 	void Func3Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum3& Result, ETbEnumEnum3 Param3) override;
 	ETbEnumEnum3 Func3_Implementation(ETbEnumEnum3 Param3) override;
 
-protected:
-	// signals
-	void BroadcastSig0_Implementation(ETbEnumEnum0 Param0) override;
-
-	void BroadcastSig1_Implementation(ETbEnumEnum1 Param1) override;
-
-	void BroadcastSig2_Implementation(ETbEnumEnum2 Param2) override;
-
-	void BroadcastSig3_Implementation(ETbEnumEnum3 Param3) override;
-
-	void BroadcastProp0Changed_Implementation(ETbEnumEnum0 Prop0) override;
-
-	void BroadcastProp1Changed_Implementation(ETbEnumEnum1 Prop1) override;
-
-	void BroadcastProp2Changed_Implementation(ETbEnumEnum2 Prop2) override;
-
-	void BroadcastProp3Changed_Implementation(ETbEnumEnum3 Prop3) override;
-
 private:
 	/** The connection to the service backend. */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbEnum|EnumInterface")
@@ -151,41 +100,4 @@ private:
 
 	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
 	void OnProp3Changed(ETbEnumEnum3 Prop3);
-
-	// properties - local copy
-	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp0_Private, BlueprintSetter = SetProp0_Private, Category = "ApiGear|TbEnum|EnumInterface")
-	ETbEnumEnum0 Prop0{ETbEnumEnum0::TEE_VALUE0};
-
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
-	ETbEnumEnum0 GetProp0_Private() const;
-
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
-	void SetProp0_Private(ETbEnumEnum0 InProp0);
-
-	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1_Private, BlueprintSetter = SetProp1_Private, Category = "ApiGear|TbEnum|EnumInterface")
-	ETbEnumEnum1 Prop1{ETbEnumEnum1::TEE_VALUE1};
-
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
-	ETbEnumEnum1 GetProp1_Private() const;
-
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
-	void SetProp1_Private(ETbEnumEnum1 InProp1);
-
-	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp2_Private, BlueprintSetter = SetProp2_Private, Category = "ApiGear|TbEnum|EnumInterface")
-	ETbEnumEnum2 Prop2{ETbEnumEnum2::TEE_VALUE2};
-
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
-	ETbEnumEnum2 GetProp2_Private() const;
-
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
-	void SetProp2_Private(ETbEnumEnum2 InProp2);
-
-	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp3_Private, BlueprintSetter = SetProp3_Private, Category = "ApiGear|TbEnum|EnumInterface")
-	ETbEnumEnum3 Prop3{ETbEnumEnum3::TEE_VALUE3};
-
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
-	ETbEnumEnum3 GetProp3_Private() const;
-
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
-	void SetProp3_Private(ETbEnumEnum3 InProp3);
 };

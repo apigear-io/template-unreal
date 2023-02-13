@@ -67,7 +67,7 @@ public:
 	}
 };
 UTestbed2ManyParamInterfaceLoggingDecorator::UTestbed2ManyParamInterfaceLoggingDecorator()
-	: ITestbed2ManyParamInterfaceInterface()
+	: UAbstractTestbed2ManyParamInterface()
 {
 }
 
@@ -133,25 +133,10 @@ void UTestbed2ManyParamInterfaceLoggingDecorator::setBackendService(TScriptInter
 	Prop4 = BackendService->Execute_GetProp4(BackendService.GetObject());
 }
 
-void UTestbed2ManyParamInterfaceLoggingDecorator::BroadcastSig1_Implementation(int32 Param1)
-{
-	Sig1Signal.Broadcast(Param1);
-}
-
 void UTestbed2ManyParamInterfaceLoggingDecorator::OnSig1(int32 Param1)
 {
 	Testbed2ManyParamInterfaceTracer::trace_signalSig1(Param1);
 	Execute_BroadcastSig1(this, Param1);
-}
-
-FTestbed2ManyParamInterfaceSig1Delegate& UTestbed2ManyParamInterfaceLoggingDecorator::GetSig1SignalDelegate()
-{
-	return Sig1Signal;
-}
-
-void UTestbed2ManyParamInterfaceLoggingDecorator::BroadcastSig2_Implementation(int32 Param1, int32 Param2)
-{
-	Sig2Signal.Broadcast(Param1, Param2);
 }
 
 void UTestbed2ManyParamInterfaceLoggingDecorator::OnSig2(int32 Param1, int32 Param2)
@@ -160,46 +145,16 @@ void UTestbed2ManyParamInterfaceLoggingDecorator::OnSig2(int32 Param1, int32 Par
 	Execute_BroadcastSig2(this, Param1, Param2);
 }
 
-FTestbed2ManyParamInterfaceSig2Delegate& UTestbed2ManyParamInterfaceLoggingDecorator::GetSig2SignalDelegate()
-{
-	return Sig2Signal;
-}
-
-void UTestbed2ManyParamInterfaceLoggingDecorator::BroadcastSig3_Implementation(int32 Param1, int32 Param2, int32 Param3)
-{
-	Sig3Signal.Broadcast(Param1, Param2, Param3);
-}
-
 void UTestbed2ManyParamInterfaceLoggingDecorator::OnSig3(int32 Param1, int32 Param2, int32 Param3)
 {
 	Testbed2ManyParamInterfaceTracer::trace_signalSig3(Param1, Param2, Param3);
 	Execute_BroadcastSig3(this, Param1, Param2, Param3);
 }
 
-FTestbed2ManyParamInterfaceSig3Delegate& UTestbed2ManyParamInterfaceLoggingDecorator::GetSig3SignalDelegate()
-{
-	return Sig3Signal;
-}
-
-void UTestbed2ManyParamInterfaceLoggingDecorator::BroadcastSig4_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
-{
-	Sig4Signal.Broadcast(Param1, Param2, Param3, Param4);
-}
-
 void UTestbed2ManyParamInterfaceLoggingDecorator::OnSig4(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
 {
 	Testbed2ManyParamInterfaceTracer::trace_signalSig4(Param1, Param2, Param3, Param4);
 	Execute_BroadcastSig4(this, Param1, Param2, Param3, Param4);
-}
-
-FTestbed2ManyParamInterfaceSig4Delegate& UTestbed2ManyParamInterfaceLoggingDecorator::GetSig4SignalDelegate()
-{
-	return Sig4Signal;
-}
-
-void UTestbed2ManyParamInterfaceLoggingDecorator::BroadcastProp1Changed_Implementation(int32 InProp1)
-{
-	Prop1Changed.Broadcast(InProp1);
 }
 
 void UTestbed2ManyParamInterfaceLoggingDecorator::OnProp1Changed(int32 InProp1)
@@ -220,26 +175,6 @@ void UTestbed2ManyParamInterfaceLoggingDecorator::SetProp1_Implementation(int32 
 	BackendService->Execute_SetProp1(BackendService.GetObject(), InProp1);
 }
 
-int32 UTestbed2ManyParamInterfaceLoggingDecorator::GetProp1_Private() const
-{
-	return Execute_GetProp1(this);
-}
-
-void UTestbed2ManyParamInterfaceLoggingDecorator::SetProp1_Private(int32 InProp1)
-{
-	Execute_SetProp1(this, InProp1);
-}
-
-FTestbed2ManyParamInterfaceProp1ChangedDelegate& UTestbed2ManyParamInterfaceLoggingDecorator::GetProp1ChangedDelegate()
-{
-	return Prop1Changed;
-}
-
-void UTestbed2ManyParamInterfaceLoggingDecorator::BroadcastProp2Changed_Implementation(int32 InProp2)
-{
-	Prop2Changed.Broadcast(InProp2);
-}
-
 void UTestbed2ManyParamInterfaceLoggingDecorator::OnProp2Changed(int32 InProp2)
 {
 	Testbed2ManyParamInterfaceTracer::capture_state(BackendService.GetObject(), this);
@@ -256,26 +191,6 @@ void UTestbed2ManyParamInterfaceLoggingDecorator::SetProp2_Implementation(int32 
 {
 	Testbed2ManyParamInterfaceTracer::trace_callSetProp2(InProp2);
 	BackendService->Execute_SetProp2(BackendService.GetObject(), InProp2);
-}
-
-int32 UTestbed2ManyParamInterfaceLoggingDecorator::GetProp2_Private() const
-{
-	return Execute_GetProp2(this);
-}
-
-void UTestbed2ManyParamInterfaceLoggingDecorator::SetProp2_Private(int32 InProp2)
-{
-	Execute_SetProp2(this, InProp2);
-}
-
-FTestbed2ManyParamInterfaceProp2ChangedDelegate& UTestbed2ManyParamInterfaceLoggingDecorator::GetProp2ChangedDelegate()
-{
-	return Prop2Changed;
-}
-
-void UTestbed2ManyParamInterfaceLoggingDecorator::BroadcastProp3Changed_Implementation(int32 InProp3)
-{
-	Prop3Changed.Broadcast(InProp3);
 }
 
 void UTestbed2ManyParamInterfaceLoggingDecorator::OnProp3Changed(int32 InProp3)
@@ -296,26 +211,6 @@ void UTestbed2ManyParamInterfaceLoggingDecorator::SetProp3_Implementation(int32 
 	BackendService->Execute_SetProp3(BackendService.GetObject(), InProp3);
 }
 
-int32 UTestbed2ManyParamInterfaceLoggingDecorator::GetProp3_Private() const
-{
-	return Execute_GetProp3(this);
-}
-
-void UTestbed2ManyParamInterfaceLoggingDecorator::SetProp3_Private(int32 InProp3)
-{
-	Execute_SetProp3(this, InProp3);
-}
-
-FTestbed2ManyParamInterfaceProp3ChangedDelegate& UTestbed2ManyParamInterfaceLoggingDecorator::GetProp3ChangedDelegate()
-{
-	return Prop3Changed;
-}
-
-void UTestbed2ManyParamInterfaceLoggingDecorator::BroadcastProp4Changed_Implementation(int32 InProp4)
-{
-	Prop4Changed.Broadcast(InProp4);
-}
-
 void UTestbed2ManyParamInterfaceLoggingDecorator::OnProp4Changed(int32 InProp4)
 {
 	Testbed2ManyParamInterfaceTracer::capture_state(BackendService.GetObject(), this);
@@ -332,21 +227,6 @@ void UTestbed2ManyParamInterfaceLoggingDecorator::SetProp4_Implementation(int32 
 {
 	Testbed2ManyParamInterfaceTracer::trace_callSetProp4(InProp4);
 	BackendService->Execute_SetProp4(BackendService.GetObject(), InProp4);
-}
-
-int32 UTestbed2ManyParamInterfaceLoggingDecorator::GetProp4_Private() const
-{
-	return Execute_GetProp4(this);
-}
-
-void UTestbed2ManyParamInterfaceLoggingDecorator::SetProp4_Private(int32 InProp4)
-{
-	Execute_SetProp4(this, InProp4);
-}
-
-FTestbed2ManyParamInterfaceProp4ChangedDelegate& UTestbed2ManyParamInterfaceLoggingDecorator::GetProp4ChangedDelegate()
-{
-	return Prop4Changed;
 }
 
 void UTestbed2ManyParamInterfaceLoggingDecorator::Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1)

@@ -26,7 +26,7 @@ limitations under the License.
 DECLARE_LOG_CATEGORY_EXTERN(LogTbSimpleNoSignalsInterfaceLoggingDecorator, Log, All);
 
 UCLASS(BlueprintType, Blueprintable)
-class TBSIMPLE_API UTbSimpleNoSignalsInterfaceLoggingDecorator : public UGameInstanceSubsystem, public ITbSimpleNoSignalsInterfaceInterface
+class TBSIMPLE_API UTbSimpleNoSignalsInterfaceLoggingDecorator : public UAbstractTbSimpleNoSignalsInterface
 {
 	GENERATED_BODY()
 
@@ -40,15 +40,6 @@ public:
 	// subsystem
 	void Initialize(FSubsystemCollectionBase& Collection) override;
 	void Deinitialize() override;
-
-	// signals
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoSignalsInterface", DisplayName = "PropBool Changed")
-	FTbSimpleNoSignalsInterfacePropBoolChangedDelegate PropBoolChanged;
-	FTbSimpleNoSignalsInterfacePropBoolChangedDelegate& GetPropBoolChangedDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoSignalsInterface", DisplayName = "PropInt Changed")
-	FTbSimpleNoSignalsInterfacePropIntChangedDelegate PropIntChanged;
-	FTbSimpleNoSignalsInterfacePropIntChangedDelegate& GetPropIntChangedDelegate() override;
 
 	// properties
 	bool GetPropBool_Implementation() const override;
@@ -65,13 +56,6 @@ public:
 	void FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool) override;
 	bool FuncBool_Implementation(bool bParamBool) override;
 
-protected:
-	// signals
-
-	void BroadcastPropBoolChanged_Implementation(bool bPropBool) override;
-
-	void BroadcastPropIntChanged_Implementation(int32 PropInt) override;
-
 private:
 	/** The connection to the service backend. */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSimple|NoSignalsInterface")
@@ -84,23 +68,4 @@ private:
 
 	UFUNCTION(Category = "ApiGear|TbSimple|NoSignalsInterface", BlueprintInternalUseOnly)
 	void OnPropIntChanged(int32 PropInt);
-
-	// properties - local copy
-	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropBool_Private, BlueprintSetter = SetPropBool_Private, Category = "ApiGear|TbSimple|NoSignalsInterface")
-	bool bPropBool{false};
-
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSimple|NoSignalsInterface", BlueprintInternalUseOnly)
-	bool GetPropBool_Private() const;
-
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSimple|NoSignalsInterface", BlueprintInternalUseOnly)
-	void SetPropBool_Private(bool bInPropBool);
-
-	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropInt_Private, BlueprintSetter = SetPropInt_Private, Category = "ApiGear|TbSimple|NoSignalsInterface")
-	int32 PropInt{0};
-
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSimple|NoSignalsInterface", BlueprintInternalUseOnly)
-	int32 GetPropInt_Private() const;
-
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSimple|NoSignalsInterface", BlueprintInternalUseOnly)
-	void SetPropInt_Private(int32 InPropInt);
 };

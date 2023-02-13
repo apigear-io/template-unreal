@@ -67,7 +67,7 @@ public:
 	}
 };
 UTestbed1StructInterfaceLoggingDecorator::UTestbed1StructInterfaceLoggingDecorator()
-	: ITestbed1StructInterfaceInterface()
+	: UAbstractTestbed1StructInterface()
 {
 }
 
@@ -133,25 +133,10 @@ void UTestbed1StructInterfaceLoggingDecorator::setBackendService(TScriptInterfac
 	PropString = BackendService->Execute_GetPropString(BackendService.GetObject());
 }
 
-void UTestbed1StructInterfaceLoggingDecorator::BroadcastSigBool_Implementation(const FTestbed1StructBool& ParamBool)
-{
-	SigBoolSignal.Broadcast(ParamBool);
-}
-
 void UTestbed1StructInterfaceLoggingDecorator::OnSigBool(const FTestbed1StructBool& ParamBool)
 {
 	Testbed1StructInterfaceTracer::trace_signalSigBool(ParamBool);
 	Execute_BroadcastSigBool(this, ParamBool);
-}
-
-FTestbed1StructInterfaceSigBoolDelegate& UTestbed1StructInterfaceLoggingDecorator::GetSigBoolSignalDelegate()
-{
-	return SigBoolSignal;
-}
-
-void UTestbed1StructInterfaceLoggingDecorator::BroadcastSigInt_Implementation(const FTestbed1StructInt& ParamInt)
-{
-	SigIntSignal.Broadcast(ParamInt);
 }
 
 void UTestbed1StructInterfaceLoggingDecorator::OnSigInt(const FTestbed1StructInt& ParamInt)
@@ -160,46 +145,16 @@ void UTestbed1StructInterfaceLoggingDecorator::OnSigInt(const FTestbed1StructInt
 	Execute_BroadcastSigInt(this, ParamInt);
 }
 
-FTestbed1StructInterfaceSigIntDelegate& UTestbed1StructInterfaceLoggingDecorator::GetSigIntSignalDelegate()
-{
-	return SigIntSignal;
-}
-
-void UTestbed1StructInterfaceLoggingDecorator::BroadcastSigFloat_Implementation(const FTestbed1StructFloat& ParamFloat)
-{
-	SigFloatSignal.Broadcast(ParamFloat);
-}
-
 void UTestbed1StructInterfaceLoggingDecorator::OnSigFloat(const FTestbed1StructFloat& ParamFloat)
 {
 	Testbed1StructInterfaceTracer::trace_signalSigFloat(ParamFloat);
 	Execute_BroadcastSigFloat(this, ParamFloat);
 }
 
-FTestbed1StructInterfaceSigFloatDelegate& UTestbed1StructInterfaceLoggingDecorator::GetSigFloatSignalDelegate()
-{
-	return SigFloatSignal;
-}
-
-void UTestbed1StructInterfaceLoggingDecorator::BroadcastSigString_Implementation(const FTestbed1StructString& ParamString)
-{
-	SigStringSignal.Broadcast(ParamString);
-}
-
 void UTestbed1StructInterfaceLoggingDecorator::OnSigString(const FTestbed1StructString& ParamString)
 {
 	Testbed1StructInterfaceTracer::trace_signalSigString(ParamString);
 	Execute_BroadcastSigString(this, ParamString);
-}
-
-FTestbed1StructInterfaceSigStringDelegate& UTestbed1StructInterfaceLoggingDecorator::GetSigStringSignalDelegate()
-{
-	return SigStringSignal;
-}
-
-void UTestbed1StructInterfaceLoggingDecorator::BroadcastPropBoolChanged_Implementation(const FTestbed1StructBool& InPropBool)
-{
-	PropBoolChanged.Broadcast(InPropBool);
 }
 
 void UTestbed1StructInterfaceLoggingDecorator::OnPropBoolChanged(const FTestbed1StructBool& InPropBool)
@@ -220,26 +175,6 @@ void UTestbed1StructInterfaceLoggingDecorator::SetPropBool_Implementation(const 
 	BackendService->Execute_SetPropBool(BackendService.GetObject(), InPropBool);
 }
 
-FTestbed1StructBool UTestbed1StructInterfaceLoggingDecorator::GetPropBool_Private() const
-{
-	return Execute_GetPropBool(this);
-}
-
-void UTestbed1StructInterfaceLoggingDecorator::SetPropBool_Private(const FTestbed1StructBool& InPropBool)
-{
-	Execute_SetPropBool(this, InPropBool);
-}
-
-FTestbed1StructInterfacePropBoolChangedDelegate& UTestbed1StructInterfaceLoggingDecorator::GetPropBoolChangedDelegate()
-{
-	return PropBoolChanged;
-}
-
-void UTestbed1StructInterfaceLoggingDecorator::BroadcastPropIntChanged_Implementation(const FTestbed1StructInt& InPropInt)
-{
-	PropIntChanged.Broadcast(InPropInt);
-}
-
 void UTestbed1StructInterfaceLoggingDecorator::OnPropIntChanged(const FTestbed1StructInt& InPropInt)
 {
 	Testbed1StructInterfaceTracer::capture_state(BackendService.GetObject(), this);
@@ -256,26 +191,6 @@ void UTestbed1StructInterfaceLoggingDecorator::SetPropInt_Implementation(const F
 {
 	Testbed1StructInterfaceTracer::trace_callSetPropInt(InPropInt);
 	BackendService->Execute_SetPropInt(BackendService.GetObject(), InPropInt);
-}
-
-FTestbed1StructInt UTestbed1StructInterfaceLoggingDecorator::GetPropInt_Private() const
-{
-	return Execute_GetPropInt(this);
-}
-
-void UTestbed1StructInterfaceLoggingDecorator::SetPropInt_Private(const FTestbed1StructInt& InPropInt)
-{
-	Execute_SetPropInt(this, InPropInt);
-}
-
-FTestbed1StructInterfacePropIntChangedDelegate& UTestbed1StructInterfaceLoggingDecorator::GetPropIntChangedDelegate()
-{
-	return PropIntChanged;
-}
-
-void UTestbed1StructInterfaceLoggingDecorator::BroadcastPropFloatChanged_Implementation(const FTestbed1StructFloat& InPropFloat)
-{
-	PropFloatChanged.Broadcast(InPropFloat);
 }
 
 void UTestbed1StructInterfaceLoggingDecorator::OnPropFloatChanged(const FTestbed1StructFloat& InPropFloat)
@@ -296,26 +211,6 @@ void UTestbed1StructInterfaceLoggingDecorator::SetPropFloat_Implementation(const
 	BackendService->Execute_SetPropFloat(BackendService.GetObject(), InPropFloat);
 }
 
-FTestbed1StructFloat UTestbed1StructInterfaceLoggingDecorator::GetPropFloat_Private() const
-{
-	return Execute_GetPropFloat(this);
-}
-
-void UTestbed1StructInterfaceLoggingDecorator::SetPropFloat_Private(const FTestbed1StructFloat& InPropFloat)
-{
-	Execute_SetPropFloat(this, InPropFloat);
-}
-
-FTestbed1StructInterfacePropFloatChangedDelegate& UTestbed1StructInterfaceLoggingDecorator::GetPropFloatChangedDelegate()
-{
-	return PropFloatChanged;
-}
-
-void UTestbed1StructInterfaceLoggingDecorator::BroadcastPropStringChanged_Implementation(const FTestbed1StructString& InPropString)
-{
-	PropStringChanged.Broadcast(InPropString);
-}
-
 void UTestbed1StructInterfaceLoggingDecorator::OnPropStringChanged(const FTestbed1StructString& InPropString)
 {
 	Testbed1StructInterfaceTracer::capture_state(BackendService.GetObject(), this);
@@ -332,21 +227,6 @@ void UTestbed1StructInterfaceLoggingDecorator::SetPropString_Implementation(cons
 {
 	Testbed1StructInterfaceTracer::trace_callSetPropString(InPropString);
 	BackendService->Execute_SetPropString(BackendService.GetObject(), InPropString);
-}
-
-FTestbed1StructString UTestbed1StructInterfaceLoggingDecorator::GetPropString_Private() const
-{
-	return Execute_GetPropString(this);
-}
-
-void UTestbed1StructInterfaceLoggingDecorator::SetPropString_Private(const FTestbed1StructString& InPropString)
-{
-	Execute_SetPropString(this, InPropString);
-}
-
-FTestbed1StructInterfacePropStringChangedDelegate& UTestbed1StructInterfaceLoggingDecorator::GetPropStringChangedDelegate()
-{
-	return PropStringChanged;
 }
 
 void UTestbed1StructInterfaceLoggingDecorator::FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const FTestbed1StructBool& ParamBool)

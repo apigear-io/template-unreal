@@ -26,7 +26,7 @@ limitations under the License.
 DECLARE_LOG_CATEGORY_EXTERN(LogTestbed2ManyParamInterfaceLoggingDecorator, Log, All);
 
 UCLASS(BlueprintType, Blueprintable)
-class TESTBED2_API UTestbed2ManyParamInterfaceLoggingDecorator : public UGameInstanceSubsystem, public ITestbed2ManyParamInterfaceInterface
+class TESTBED2_API UTestbed2ManyParamInterfaceLoggingDecorator : public UAbstractTestbed2ManyParamInterface
 {
 	GENERATED_BODY()
 
@@ -40,39 +40,6 @@ public:
 	// subsystem
 	void Initialize(FSubsystemCollectionBase& Collection) override;
 	void Deinitialize() override;
-
-	// signals
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface", DisplayName = "Sig1 Signal")
-	FTestbed2ManyParamInterfaceSig1Delegate Sig1Signal;
-	FTestbed2ManyParamInterfaceSig1Delegate& GetSig1SignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface", DisplayName = "Sig2 Signal")
-	FTestbed2ManyParamInterfaceSig2Delegate Sig2Signal;
-	FTestbed2ManyParamInterfaceSig2Delegate& GetSig2SignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface", DisplayName = "Sig3 Signal")
-	FTestbed2ManyParamInterfaceSig3Delegate Sig3Signal;
-	FTestbed2ManyParamInterfaceSig3Delegate& GetSig3SignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface", DisplayName = "Sig4 Signal")
-	FTestbed2ManyParamInterfaceSig4Delegate Sig4Signal;
-	FTestbed2ManyParamInterfaceSig4Delegate& GetSig4SignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface", DisplayName = "Prop1 Changed")
-	FTestbed2ManyParamInterfaceProp1ChangedDelegate Prop1Changed;
-	FTestbed2ManyParamInterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface", DisplayName = "Prop2 Changed")
-	FTestbed2ManyParamInterfaceProp2ChangedDelegate Prop2Changed;
-	FTestbed2ManyParamInterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface", DisplayName = "Prop3 Changed")
-	FTestbed2ManyParamInterfaceProp3ChangedDelegate Prop3Changed;
-	FTestbed2ManyParamInterfaceProp3ChangedDelegate& GetProp3ChangedDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface", DisplayName = "Prop4 Changed")
-	FTestbed2ManyParamInterfaceProp4ChangedDelegate Prop4Changed;
-	FTestbed2ManyParamInterfaceProp4ChangedDelegate& GetProp4ChangedDelegate() override;
 
 	// properties
 	int32 GetProp1_Implementation() const override;
@@ -104,24 +71,6 @@ public:
 	void Func4Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2, int32 Param3, int32 Param4) override;
 	int32 Func4_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4) override;
 
-protected:
-	// signals
-	void BroadcastSig1_Implementation(int32 Param1) override;
-
-	void BroadcastSig2_Implementation(int32 Param1, int32 Param2) override;
-
-	void BroadcastSig3_Implementation(int32 Param1, int32 Param2, int32 Param3) override;
-
-	void BroadcastSig4_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4) override;
-
-	void BroadcastProp1Changed_Implementation(int32 Prop1) override;
-
-	void BroadcastProp2Changed_Implementation(int32 Prop2) override;
-
-	void BroadcastProp3Changed_Implementation(int32 Prop3) override;
-
-	void BroadcastProp4Changed_Implementation(int32 Prop4) override;
-
 private:
 	/** The connection to the service backend. */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|Testbed2|ManyParamInterface")
@@ -151,41 +100,4 @@ private:
 
 	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
 	void OnProp4Changed(int32 Prop4);
-
-	// properties - local copy
-	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1_Private, BlueprintSetter = SetProp1_Private, Category = "ApiGear|Testbed2|ManyParamInterface")
-	int32 Prop1{0};
-
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
-	int32 GetProp1_Private() const;
-
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
-	void SetProp1_Private(int32 InProp1);
-
-	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp2_Private, BlueprintSetter = SetProp2_Private, Category = "ApiGear|Testbed2|ManyParamInterface")
-	int32 Prop2{0};
-
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
-	int32 GetProp2_Private() const;
-
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
-	void SetProp2_Private(int32 InProp2);
-
-	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp3_Private, BlueprintSetter = SetProp3_Private, Category = "ApiGear|Testbed2|ManyParamInterface")
-	int32 Prop3{0};
-
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
-	int32 GetProp3_Private() const;
-
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
-	void SetProp3_Private(int32 InProp3);
-
-	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp4_Private, BlueprintSetter = SetProp4_Private, Category = "ApiGear|Testbed2|ManyParamInterface")
-	int32 Prop4{0};
-
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
-	int32 GetProp4_Private() const;
-
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
-	void SetProp4_Private(int32 InProp4);
 };

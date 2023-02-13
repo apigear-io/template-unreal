@@ -67,7 +67,7 @@ public:
 	}
 };
 UTbSame2SameStruct2InterfaceLoggingDecorator::UTbSame2SameStruct2InterfaceLoggingDecorator()
-	: ITbSame2SameStruct2InterfaceInterface()
+	: UAbstractTbSame2SameStruct2Interface()
 {
 }
 
@@ -119,41 +119,16 @@ void UTbSame2SameStruct2InterfaceLoggingDecorator::setBackendService(TScriptInte
 	Prop2 = BackendService->Execute_GetProp2(BackendService.GetObject());
 }
 
-void UTbSame2SameStruct2InterfaceLoggingDecorator::BroadcastSig1_Implementation(const FTbSame2Struct1& Param1)
-{
-	Sig1Signal.Broadcast(Param1);
-}
-
 void UTbSame2SameStruct2InterfaceLoggingDecorator::OnSig1(const FTbSame2Struct1& Param1)
 {
 	TbSame2SameStruct2InterfaceTracer::trace_signalSig1(Param1);
 	Execute_BroadcastSig1(this, Param1);
 }
 
-FTbSame2SameStruct2InterfaceSig1Delegate& UTbSame2SameStruct2InterfaceLoggingDecorator::GetSig1SignalDelegate()
-{
-	return Sig1Signal;
-}
-
-void UTbSame2SameStruct2InterfaceLoggingDecorator::BroadcastSig2_Implementation(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2)
-{
-	Sig2Signal.Broadcast(Param1, Param2);
-}
-
 void UTbSame2SameStruct2InterfaceLoggingDecorator::OnSig2(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2)
 {
 	TbSame2SameStruct2InterfaceTracer::trace_signalSig2(Param1, Param2);
 	Execute_BroadcastSig2(this, Param1, Param2);
-}
-
-FTbSame2SameStruct2InterfaceSig2Delegate& UTbSame2SameStruct2InterfaceLoggingDecorator::GetSig2SignalDelegate()
-{
-	return Sig2Signal;
-}
-
-void UTbSame2SameStruct2InterfaceLoggingDecorator::BroadcastProp1Changed_Implementation(const FTbSame2Struct2& InProp1)
-{
-	Prop1Changed.Broadcast(InProp1);
 }
 
 void UTbSame2SameStruct2InterfaceLoggingDecorator::OnProp1Changed(const FTbSame2Struct2& InProp1)
@@ -174,26 +149,6 @@ void UTbSame2SameStruct2InterfaceLoggingDecorator::SetProp1_Implementation(const
 	BackendService->Execute_SetProp1(BackendService.GetObject(), InProp1);
 }
 
-FTbSame2Struct2 UTbSame2SameStruct2InterfaceLoggingDecorator::GetProp1_Private() const
-{
-	return Execute_GetProp1(this);
-}
-
-void UTbSame2SameStruct2InterfaceLoggingDecorator::SetProp1_Private(const FTbSame2Struct2& InProp1)
-{
-	Execute_SetProp1(this, InProp1);
-}
-
-FTbSame2SameStruct2InterfaceProp1ChangedDelegate& UTbSame2SameStruct2InterfaceLoggingDecorator::GetProp1ChangedDelegate()
-{
-	return Prop1Changed;
-}
-
-void UTbSame2SameStruct2InterfaceLoggingDecorator::BroadcastProp2Changed_Implementation(const FTbSame2Struct2& InProp2)
-{
-	Prop2Changed.Broadcast(InProp2);
-}
-
 void UTbSame2SameStruct2InterfaceLoggingDecorator::OnProp2Changed(const FTbSame2Struct2& InProp2)
 {
 	TbSame2SameStruct2InterfaceTracer::capture_state(BackendService.GetObject(), this);
@@ -210,21 +165,6 @@ void UTbSame2SameStruct2InterfaceLoggingDecorator::SetProp2_Implementation(const
 {
 	TbSame2SameStruct2InterfaceTracer::trace_callSetProp2(InProp2);
 	BackendService->Execute_SetProp2(BackendService.GetObject(), InProp2);
-}
-
-FTbSame2Struct2 UTbSame2SameStruct2InterfaceLoggingDecorator::GetProp2_Private() const
-{
-	return Execute_GetProp2(this);
-}
-
-void UTbSame2SameStruct2InterfaceLoggingDecorator::SetProp2_Private(const FTbSame2Struct2& InProp2)
-{
-	Execute_SetProp2(this, InProp2);
-}
-
-FTbSame2SameStruct2InterfaceProp2ChangedDelegate& UTbSame2SameStruct2InterfaceLoggingDecorator::GetProp2ChangedDelegate()
-{
-	return Prop2Changed;
 }
 
 void UTbSame2SameStruct2InterfaceLoggingDecorator::Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame2Struct1& Result, const FTbSame2Struct1& Param1)

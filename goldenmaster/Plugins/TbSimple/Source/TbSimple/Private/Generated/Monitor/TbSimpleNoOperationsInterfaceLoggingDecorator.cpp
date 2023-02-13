@@ -67,7 +67,7 @@ public:
 	}
 };
 UTbSimpleNoOperationsInterfaceLoggingDecorator::UTbSimpleNoOperationsInterfaceLoggingDecorator()
-	: ITbSimpleNoOperationsInterfaceInterface()
+	: UAbstractTbSimpleNoOperationsInterface()
 {
 }
 
@@ -119,41 +119,16 @@ void UTbSimpleNoOperationsInterfaceLoggingDecorator::setBackendService(TScriptIn
 	PropInt = BackendService->Execute_GetPropInt(BackendService.GetObject());
 }
 
-void UTbSimpleNoOperationsInterfaceLoggingDecorator::BroadcastSigVoid_Implementation()
-{
-	SigVoidSignal.Broadcast();
-}
-
 void UTbSimpleNoOperationsInterfaceLoggingDecorator::OnSigVoid()
 {
 	TbSimpleNoOperationsInterfaceTracer::trace_signalSigVoid();
 	Execute_BroadcastSigVoid(this);
 }
 
-FTbSimpleNoOperationsInterfaceSigVoidDelegate& UTbSimpleNoOperationsInterfaceLoggingDecorator::GetSigVoidSignalDelegate()
-{
-	return SigVoidSignal;
-}
-
-void UTbSimpleNoOperationsInterfaceLoggingDecorator::BroadcastSigBool_Implementation(bool bParamBool)
-{
-	SigBoolSignal.Broadcast(bParamBool);
-}
-
 void UTbSimpleNoOperationsInterfaceLoggingDecorator::OnSigBool(bool bParamBool)
 {
 	TbSimpleNoOperationsInterfaceTracer::trace_signalSigBool(bParamBool);
 	Execute_BroadcastSigBool(this, bParamBool);
-}
-
-FTbSimpleNoOperationsInterfaceSigBoolDelegate& UTbSimpleNoOperationsInterfaceLoggingDecorator::GetSigBoolSignalDelegate()
-{
-	return SigBoolSignal;
-}
-
-void UTbSimpleNoOperationsInterfaceLoggingDecorator::BroadcastPropBoolChanged_Implementation(bool bInPropBool)
-{
-	PropBoolChanged.Broadcast(bInPropBool);
 }
 
 void UTbSimpleNoOperationsInterfaceLoggingDecorator::OnPropBoolChanged(bool bInPropBool)
@@ -174,26 +149,6 @@ void UTbSimpleNoOperationsInterfaceLoggingDecorator::SetPropBool_Implementation(
 	BackendService->Execute_SetPropBool(BackendService.GetObject(), bInPropBool);
 }
 
-bool UTbSimpleNoOperationsInterfaceLoggingDecorator::GetPropBool_Private() const
-{
-	return Execute_GetPropBool(this);
-}
-
-void UTbSimpleNoOperationsInterfaceLoggingDecorator::SetPropBool_Private(bool bInPropBool)
-{
-	Execute_SetPropBool(this, bInPropBool);
-}
-
-FTbSimpleNoOperationsInterfacePropBoolChangedDelegate& UTbSimpleNoOperationsInterfaceLoggingDecorator::GetPropBoolChangedDelegate()
-{
-	return PropBoolChanged;
-}
-
-void UTbSimpleNoOperationsInterfaceLoggingDecorator::BroadcastPropIntChanged_Implementation(int32 InPropInt)
-{
-	PropIntChanged.Broadcast(InPropInt);
-}
-
 void UTbSimpleNoOperationsInterfaceLoggingDecorator::OnPropIntChanged(int32 InPropInt)
 {
 	TbSimpleNoOperationsInterfaceTracer::capture_state(BackendService.GetObject(), this);
@@ -210,19 +165,4 @@ void UTbSimpleNoOperationsInterfaceLoggingDecorator::SetPropInt_Implementation(i
 {
 	TbSimpleNoOperationsInterfaceTracer::trace_callSetPropInt(InPropInt);
 	BackendService->Execute_SetPropInt(BackendService.GetObject(), InPropInt);
-}
-
-int32 UTbSimpleNoOperationsInterfaceLoggingDecorator::GetPropInt_Private() const
-{
-	return Execute_GetPropInt(this);
-}
-
-void UTbSimpleNoOperationsInterfaceLoggingDecorator::SetPropInt_Private(int32 InPropInt)
-{
-	Execute_SetPropInt(this, InPropInt);
-}
-
-FTbSimpleNoOperationsInterfacePropIntChangedDelegate& UTbSimpleNoOperationsInterfaceLoggingDecorator::GetPropIntChangedDelegate()
-{
-	return PropIntChanged;
 }

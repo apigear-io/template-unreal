@@ -67,7 +67,7 @@ public:
 	}
 };
 UTbSimpleNoPropertiesInterfaceLoggingDecorator::UTbSimpleNoPropertiesInterfaceLoggingDecorator()
-	: ITbSimpleNoPropertiesInterfaceInterface()
+	: UAbstractTbSimpleNoPropertiesInterface()
 {
 }
 
@@ -111,36 +111,16 @@ void UTbSimpleNoPropertiesInterfaceLoggingDecorator::setBackendService(TScriptIn
 	// populate service state to proxy
 }
 
-void UTbSimpleNoPropertiesInterfaceLoggingDecorator::BroadcastSigVoid_Implementation()
-{
-	SigVoidSignal.Broadcast();
-}
-
 void UTbSimpleNoPropertiesInterfaceLoggingDecorator::OnSigVoid()
 {
 	TbSimpleNoPropertiesInterfaceTracer::trace_signalSigVoid();
 	Execute_BroadcastSigVoid(this);
 }
 
-FTbSimpleNoPropertiesInterfaceSigVoidDelegate& UTbSimpleNoPropertiesInterfaceLoggingDecorator::GetSigVoidSignalDelegate()
-{
-	return SigVoidSignal;
-}
-
-void UTbSimpleNoPropertiesInterfaceLoggingDecorator::BroadcastSigBool_Implementation(bool bParamBool)
-{
-	SigBoolSignal.Broadcast(bParamBool);
-}
-
 void UTbSimpleNoPropertiesInterfaceLoggingDecorator::OnSigBool(bool bParamBool)
 {
 	TbSimpleNoPropertiesInterfaceTracer::trace_signalSigBool(bParamBool);
 	Execute_BroadcastSigBool(this, bParamBool);
-}
-
-FTbSimpleNoPropertiesInterfaceSigBoolDelegate& UTbSimpleNoPropertiesInterfaceLoggingDecorator::GetSigBoolSignalDelegate()
-{
-	return SigBoolSignal;
 }
 
 void UTbSimpleNoPropertiesInterfaceLoggingDecorator::FuncVoid_Implementation()

@@ -26,7 +26,7 @@ limitations under the License.
 DECLARE_LOG_CATEGORY_EXTERN(LogTbSame2SameStruct1InterfaceLoggingDecorator, Log, All);
 
 UCLASS(BlueprintType, Blueprintable)
-class TBSAME2_API UTbSame2SameStruct1InterfaceLoggingDecorator : public UGameInstanceSubsystem, public ITbSame2SameStruct1InterfaceInterface
+class TBSAME2_API UTbSame2SameStruct1InterfaceLoggingDecorator : public UAbstractTbSame2SameStruct1Interface
 {
 	GENERATED_BODY()
 
@@ -41,15 +41,6 @@ public:
 	void Initialize(FSubsystemCollectionBase& Collection) override;
 	void Deinitialize() override;
 
-	// signals
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame2|SameStruct1Interface", DisplayName = "Sig1 Signal")
-	FTbSame2SameStruct1InterfaceSig1Delegate Sig1Signal;
-	FTbSame2SameStruct1InterfaceSig1Delegate& GetSig1SignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame2|SameStruct1Interface", DisplayName = "Prop1 Changed")
-	FTbSame2SameStruct1InterfaceProp1ChangedDelegate Prop1Changed;
-	FTbSame2SameStruct1InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
-
 	// properties
 	FTbSame2Struct1 GetProp1_Implementation() const override;
 
@@ -58,12 +49,6 @@ public:
 	// operations
 	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame2Struct1& Result, const FTbSame2Struct1& Param1) override;
 	FTbSame2Struct1 Func1_Implementation(const FTbSame2Struct1& Param1) override;
-
-protected:
-	// signals
-	void BroadcastSig1_Implementation(const FTbSame2Struct1& Param1) override;
-
-	void BroadcastProp1Changed_Implementation(const FTbSame2Struct1& Prop1) override;
 
 private:
 	/** The connection to the service backend. */
@@ -76,14 +61,4 @@ private:
 
 	UFUNCTION(Category = "ApiGear|TbSame2|SameStruct1Interface", BlueprintInternalUseOnly)
 	void OnProp1Changed(const FTbSame2Struct1& Prop1);
-
-	// properties - local copy
-	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1_Private, BlueprintSetter = SetProp1_Private, Category = "ApiGear|TbSame2|SameStruct1Interface")
-	FTbSame2Struct1 Prop1{FTbSame2Struct1()};
-
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSame2|SameStruct1Interface", BlueprintInternalUseOnly)
-	FTbSame2Struct1 GetProp1_Private() const;
-
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSame2|SameStruct1Interface", BlueprintInternalUseOnly)
-	void SetProp1_Private(const FTbSame2Struct1& InProp1);
 };

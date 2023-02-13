@@ -67,7 +67,7 @@ public:
 	}
 };
 UTbSimpleSimpleArrayInterfaceLoggingDecorator::UTbSimpleSimpleArrayInterfaceLoggingDecorator()
-	: ITbSimpleSimpleArrayInterfaceInterface()
+	: UAbstractTbSimpleSimpleArrayInterface()
 {
 }
 
@@ -161,25 +161,10 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::setBackendService(TScriptInt
 	PropString = BackendService->Execute_GetPropString(BackendService.GetObject());
 }
 
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::BroadcastSigBool_Implementation(const TArray<bool>& ParamBool)
-{
-	SigBoolSignal.Broadcast(ParamBool);
-}
-
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigBool(const TArray<bool>& ParamBool)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigBool(ParamBool);
 	Execute_BroadcastSigBool(this, ParamBool);
-}
-
-FTbSimpleSimpleArrayInterfaceSigBoolDelegate& UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetSigBoolSignalDelegate()
-{
-	return SigBoolSignal;
-}
-
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::BroadcastSigInt_Implementation(const TArray<int32>& ParamInt)
-{
-	SigIntSignal.Broadcast(ParamInt);
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigInt(const TArray<int32>& ParamInt)
@@ -188,30 +173,10 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigInt(const TArray<int32>
 	Execute_BroadcastSigInt(this, ParamInt);
 }
 
-FTbSimpleSimpleArrayInterfaceSigIntDelegate& UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetSigIntSignalDelegate()
-{
-	return SigIntSignal;
-}
-
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::BroadcastSigInt32_Implementation(const TArray<int32>& ParamInt32)
-{
-	SigInt32Signal.Broadcast(ParamInt32);
-}
-
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigInt32(const TArray<int32>& ParamInt32)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigInt32(ParamInt32);
 	Execute_BroadcastSigInt32(this, ParamInt32);
-}
-
-FTbSimpleSimpleArrayInterfaceSigInt32Delegate& UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetSigInt32SignalDelegate()
-{
-	return SigInt32Signal;
-}
-
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::BroadcastSigInt64_Implementation(const TArray<int64>& ParamInt64)
-{
-	SigInt64Signal.Broadcast(ParamInt64);
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigInt64(const TArray<int64>& ParamInt64)
@@ -220,30 +185,10 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigInt64(const TArray<int6
 	Execute_BroadcastSigInt64(this, ParamInt64);
 }
 
-FTbSimpleSimpleArrayInterfaceSigInt64Delegate& UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetSigInt64SignalDelegate()
-{
-	return SigInt64Signal;
-}
-
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::BroadcastSigFloat_Implementation(const TArray<float>& ParamFloat)
-{
-	SigFloatSignal.Broadcast(ParamFloat);
-}
-
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigFloat(const TArray<float>& ParamFloat)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigFloat(ParamFloat);
 	Execute_BroadcastSigFloat(this, ParamFloat);
-}
-
-FTbSimpleSimpleArrayInterfaceSigFloatDelegate& UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetSigFloatSignalDelegate()
-{
-	return SigFloatSignal;
-}
-
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::BroadcastSigFloat32_Implementation(const TArray<float>& ParamFloa32)
-{
-	SigFloat32Signal.Broadcast(ParamFloa32);
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigFloat32(const TArray<float>& ParamFloa32)
@@ -252,46 +197,16 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigFloat32(const TArray<fl
 	Execute_BroadcastSigFloat32(this, ParamFloa32);
 }
 
-FTbSimpleSimpleArrayInterfaceSigFloat32Delegate& UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetSigFloat32SignalDelegate()
-{
-	return SigFloat32Signal;
-}
-
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::BroadcastSigFloat64_Implementation(const TArray<double>& ParamFloat64)
-{
-	SigFloat64Signal.Broadcast(ParamFloat64);
-}
-
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigFloat64(const TArray<double>& ParamFloat64)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigFloat64(ParamFloat64);
 	Execute_BroadcastSigFloat64(this, ParamFloat64);
 }
 
-FTbSimpleSimpleArrayInterfaceSigFloat64Delegate& UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetSigFloat64SignalDelegate()
-{
-	return SigFloat64Signal;
-}
-
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::BroadcastSigString_Implementation(const TArray<FString>& ParamString)
-{
-	SigStringSignal.Broadcast(ParamString);
-}
-
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigString(const TArray<FString>& ParamString)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigString(ParamString);
 	Execute_BroadcastSigString(this, ParamString);
-}
-
-FTbSimpleSimpleArrayInterfaceSigStringDelegate& UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetSigStringSignalDelegate()
-{
-	return SigStringSignal;
-}
-
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::BroadcastPropBoolChanged_Implementation(const TArray<bool>& InPropBool)
-{
-	PropBoolChanged.Broadcast(InPropBool);
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropBoolChanged(const TArray<bool>& InPropBool)
@@ -312,26 +227,6 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::SetPropBool_Implementation(c
 	BackendService->Execute_SetPropBool(BackendService.GetObject(), InPropBool);
 }
 
-TArray<bool> UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropBool_Private() const
-{
-	return Execute_GetPropBool(this);
-}
-
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::SetPropBool_Private(const TArray<bool>& InPropBool)
-{
-	Execute_SetPropBool(this, InPropBool);
-}
-
-FTbSimpleSimpleArrayInterfacePropBoolChangedDelegate& UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropBoolChangedDelegate()
-{
-	return PropBoolChanged;
-}
-
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::BroadcastPropIntChanged_Implementation(const TArray<int32>& InPropInt)
-{
-	PropIntChanged.Broadcast(InPropInt);
-}
-
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropIntChanged(const TArray<int32>& InPropInt)
 {
 	TbSimpleSimpleArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
@@ -348,26 +243,6 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::SetPropInt_Implementation(co
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_callSetPropInt(InPropInt);
 	BackendService->Execute_SetPropInt(BackendService.GetObject(), InPropInt);
-}
-
-TArray<int32> UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropInt_Private() const
-{
-	return Execute_GetPropInt(this);
-}
-
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::SetPropInt_Private(const TArray<int32>& InPropInt)
-{
-	Execute_SetPropInt(this, InPropInt);
-}
-
-FTbSimpleSimpleArrayInterfacePropIntChangedDelegate& UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropIntChangedDelegate()
-{
-	return PropIntChanged;
-}
-
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::BroadcastPropInt32Changed_Implementation(const TArray<int32>& InPropInt32)
-{
-	PropInt32Changed.Broadcast(InPropInt32);
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropInt32Changed(const TArray<int32>& InPropInt32)
@@ -388,26 +263,6 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::SetPropInt32_Implementation(
 	BackendService->Execute_SetPropInt32(BackendService.GetObject(), InPropInt32);
 }
 
-TArray<int32> UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropInt32_Private() const
-{
-	return Execute_GetPropInt32(this);
-}
-
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::SetPropInt32_Private(const TArray<int32>& InPropInt32)
-{
-	Execute_SetPropInt32(this, InPropInt32);
-}
-
-FTbSimpleSimpleArrayInterfacePropInt32ChangedDelegate& UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropInt32ChangedDelegate()
-{
-	return PropInt32Changed;
-}
-
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::BroadcastPropInt64Changed_Implementation(const TArray<int64>& InPropInt64)
-{
-	PropInt64Changed.Broadcast(InPropInt64);
-}
-
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropInt64Changed(const TArray<int64>& InPropInt64)
 {
 	TbSimpleSimpleArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
@@ -424,26 +279,6 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::SetPropInt64_Implementation(
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_callSetPropInt64(InPropInt64);
 	BackendService->Execute_SetPropInt64(BackendService.GetObject(), InPropInt64);
-}
-
-TArray<int64> UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropInt64_Private() const
-{
-	return Execute_GetPropInt64(this);
-}
-
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::SetPropInt64_Private(const TArray<int64>& InPropInt64)
-{
-	Execute_SetPropInt64(this, InPropInt64);
-}
-
-FTbSimpleSimpleArrayInterfacePropInt64ChangedDelegate& UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropInt64ChangedDelegate()
-{
-	return PropInt64Changed;
-}
-
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::BroadcastPropFloatChanged_Implementation(const TArray<float>& InPropFloat)
-{
-	PropFloatChanged.Broadcast(InPropFloat);
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropFloatChanged(const TArray<float>& InPropFloat)
@@ -464,26 +299,6 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::SetPropFloat_Implementation(
 	BackendService->Execute_SetPropFloat(BackendService.GetObject(), InPropFloat);
 }
 
-TArray<float> UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropFloat_Private() const
-{
-	return Execute_GetPropFloat(this);
-}
-
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::SetPropFloat_Private(const TArray<float>& InPropFloat)
-{
-	Execute_SetPropFloat(this, InPropFloat);
-}
-
-FTbSimpleSimpleArrayInterfacePropFloatChangedDelegate& UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropFloatChangedDelegate()
-{
-	return PropFloatChanged;
-}
-
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::BroadcastPropFloat32Changed_Implementation(const TArray<float>& InPropFloat32)
-{
-	PropFloat32Changed.Broadcast(InPropFloat32);
-}
-
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropFloat32Changed(const TArray<float>& InPropFloat32)
 {
 	TbSimpleSimpleArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
@@ -500,26 +315,6 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::SetPropFloat32_Implementatio
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_callSetPropFloat32(InPropFloat32);
 	BackendService->Execute_SetPropFloat32(BackendService.GetObject(), InPropFloat32);
-}
-
-TArray<float> UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropFloat32_Private() const
-{
-	return Execute_GetPropFloat32(this);
-}
-
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::SetPropFloat32_Private(const TArray<float>& InPropFloat32)
-{
-	Execute_SetPropFloat32(this, InPropFloat32);
-}
-
-FTbSimpleSimpleArrayInterfacePropFloat32ChangedDelegate& UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropFloat32ChangedDelegate()
-{
-	return PropFloat32Changed;
-}
-
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::BroadcastPropFloat64Changed_Implementation(const TArray<double>& InPropFloat64)
-{
-	PropFloat64Changed.Broadcast(InPropFloat64);
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropFloat64Changed(const TArray<double>& InPropFloat64)
@@ -540,26 +335,6 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::SetPropFloat64_Implementatio
 	BackendService->Execute_SetPropFloat64(BackendService.GetObject(), InPropFloat64);
 }
 
-TArray<double> UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropFloat64_Private() const
-{
-	return Execute_GetPropFloat64(this);
-}
-
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::SetPropFloat64_Private(const TArray<double>& InPropFloat64)
-{
-	Execute_SetPropFloat64(this, InPropFloat64);
-}
-
-FTbSimpleSimpleArrayInterfacePropFloat64ChangedDelegate& UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropFloat64ChangedDelegate()
-{
-	return PropFloat64Changed;
-}
-
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::BroadcastPropStringChanged_Implementation(const TArray<FString>& InPropString)
-{
-	PropStringChanged.Broadcast(InPropString);
-}
-
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropStringChanged(const TArray<FString>& InPropString)
 {
 	TbSimpleSimpleArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
@@ -576,21 +351,6 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::SetPropString_Implementation
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_callSetPropString(InPropString);
 	BackendService->Execute_SetPropString(BackendService.GetObject(), InPropString);
-}
-
-TArray<FString> UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropString_Private() const
-{
-	return Execute_GetPropString(this);
-}
-
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::SetPropString_Private(const TArray<FString>& InPropString)
-{
-	Execute_SetPropString(this, InPropString);
-}
-
-FTbSimpleSimpleArrayInterfacePropStringChangedDelegate& UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropStringChangedDelegate()
-{
-	return PropStringChanged;
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<bool>& Result, const TArray<bool>& ParamBool)

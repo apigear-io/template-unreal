@@ -67,7 +67,7 @@ public:
 	}
 };
 UTbEnumEnumInterfaceLoggingDecorator::UTbEnumEnumInterfaceLoggingDecorator()
-	: ITbEnumEnumInterfaceInterface()
+	: UAbstractTbEnumEnumInterface()
 {
 }
 
@@ -133,25 +133,10 @@ void UTbEnumEnumInterfaceLoggingDecorator::setBackendService(TScriptInterface<IT
 	Prop3 = BackendService->Execute_GetProp3(BackendService.GetObject());
 }
 
-void UTbEnumEnumInterfaceLoggingDecorator::BroadcastSig0_Implementation(ETbEnumEnum0 Param0)
-{
-	Sig0Signal.Broadcast(Param0);
-}
-
 void UTbEnumEnumInterfaceLoggingDecorator::OnSig0(ETbEnumEnum0 Param0)
 {
 	TbEnumEnumInterfaceTracer::trace_signalSig0(Param0);
 	Execute_BroadcastSig0(this, Param0);
-}
-
-FTbEnumEnumInterfaceSig0Delegate& UTbEnumEnumInterfaceLoggingDecorator::GetSig0SignalDelegate()
-{
-	return Sig0Signal;
-}
-
-void UTbEnumEnumInterfaceLoggingDecorator::BroadcastSig1_Implementation(ETbEnumEnum1 Param1)
-{
-	Sig1Signal.Broadcast(Param1);
 }
 
 void UTbEnumEnumInterfaceLoggingDecorator::OnSig1(ETbEnumEnum1 Param1)
@@ -160,46 +145,16 @@ void UTbEnumEnumInterfaceLoggingDecorator::OnSig1(ETbEnumEnum1 Param1)
 	Execute_BroadcastSig1(this, Param1);
 }
 
-FTbEnumEnumInterfaceSig1Delegate& UTbEnumEnumInterfaceLoggingDecorator::GetSig1SignalDelegate()
-{
-	return Sig1Signal;
-}
-
-void UTbEnumEnumInterfaceLoggingDecorator::BroadcastSig2_Implementation(ETbEnumEnum2 Param2)
-{
-	Sig2Signal.Broadcast(Param2);
-}
-
 void UTbEnumEnumInterfaceLoggingDecorator::OnSig2(ETbEnumEnum2 Param2)
 {
 	TbEnumEnumInterfaceTracer::trace_signalSig2(Param2);
 	Execute_BroadcastSig2(this, Param2);
 }
 
-FTbEnumEnumInterfaceSig2Delegate& UTbEnumEnumInterfaceLoggingDecorator::GetSig2SignalDelegate()
-{
-	return Sig2Signal;
-}
-
-void UTbEnumEnumInterfaceLoggingDecorator::BroadcastSig3_Implementation(ETbEnumEnum3 Param3)
-{
-	Sig3Signal.Broadcast(Param3);
-}
-
 void UTbEnumEnumInterfaceLoggingDecorator::OnSig3(ETbEnumEnum3 Param3)
 {
 	TbEnumEnumInterfaceTracer::trace_signalSig3(Param3);
 	Execute_BroadcastSig3(this, Param3);
-}
-
-FTbEnumEnumInterfaceSig3Delegate& UTbEnumEnumInterfaceLoggingDecorator::GetSig3SignalDelegate()
-{
-	return Sig3Signal;
-}
-
-void UTbEnumEnumInterfaceLoggingDecorator::BroadcastProp0Changed_Implementation(ETbEnumEnum0 InProp0)
-{
-	Prop0Changed.Broadcast(InProp0);
 }
 
 void UTbEnumEnumInterfaceLoggingDecorator::OnProp0Changed(ETbEnumEnum0 InProp0)
@@ -220,26 +175,6 @@ void UTbEnumEnumInterfaceLoggingDecorator::SetProp0_Implementation(ETbEnumEnum0 
 	BackendService->Execute_SetProp0(BackendService.GetObject(), InProp0);
 }
 
-ETbEnumEnum0 UTbEnumEnumInterfaceLoggingDecorator::GetProp0_Private() const
-{
-	return Execute_GetProp0(this);
-}
-
-void UTbEnumEnumInterfaceLoggingDecorator::SetProp0_Private(ETbEnumEnum0 InProp0)
-{
-	Execute_SetProp0(this, InProp0);
-}
-
-FTbEnumEnumInterfaceProp0ChangedDelegate& UTbEnumEnumInterfaceLoggingDecorator::GetProp0ChangedDelegate()
-{
-	return Prop0Changed;
-}
-
-void UTbEnumEnumInterfaceLoggingDecorator::BroadcastProp1Changed_Implementation(ETbEnumEnum1 InProp1)
-{
-	Prop1Changed.Broadcast(InProp1);
-}
-
 void UTbEnumEnumInterfaceLoggingDecorator::OnProp1Changed(ETbEnumEnum1 InProp1)
 {
 	TbEnumEnumInterfaceTracer::capture_state(BackendService.GetObject(), this);
@@ -256,26 +191,6 @@ void UTbEnumEnumInterfaceLoggingDecorator::SetProp1_Implementation(ETbEnumEnum1 
 {
 	TbEnumEnumInterfaceTracer::trace_callSetProp1(InProp1);
 	BackendService->Execute_SetProp1(BackendService.GetObject(), InProp1);
-}
-
-ETbEnumEnum1 UTbEnumEnumInterfaceLoggingDecorator::GetProp1_Private() const
-{
-	return Execute_GetProp1(this);
-}
-
-void UTbEnumEnumInterfaceLoggingDecorator::SetProp1_Private(ETbEnumEnum1 InProp1)
-{
-	Execute_SetProp1(this, InProp1);
-}
-
-FTbEnumEnumInterfaceProp1ChangedDelegate& UTbEnumEnumInterfaceLoggingDecorator::GetProp1ChangedDelegate()
-{
-	return Prop1Changed;
-}
-
-void UTbEnumEnumInterfaceLoggingDecorator::BroadcastProp2Changed_Implementation(ETbEnumEnum2 InProp2)
-{
-	Prop2Changed.Broadcast(InProp2);
 }
 
 void UTbEnumEnumInterfaceLoggingDecorator::OnProp2Changed(ETbEnumEnum2 InProp2)
@@ -296,26 +211,6 @@ void UTbEnumEnumInterfaceLoggingDecorator::SetProp2_Implementation(ETbEnumEnum2 
 	BackendService->Execute_SetProp2(BackendService.GetObject(), InProp2);
 }
 
-ETbEnumEnum2 UTbEnumEnumInterfaceLoggingDecorator::GetProp2_Private() const
-{
-	return Execute_GetProp2(this);
-}
-
-void UTbEnumEnumInterfaceLoggingDecorator::SetProp2_Private(ETbEnumEnum2 InProp2)
-{
-	Execute_SetProp2(this, InProp2);
-}
-
-FTbEnumEnumInterfaceProp2ChangedDelegate& UTbEnumEnumInterfaceLoggingDecorator::GetProp2ChangedDelegate()
-{
-	return Prop2Changed;
-}
-
-void UTbEnumEnumInterfaceLoggingDecorator::BroadcastProp3Changed_Implementation(ETbEnumEnum3 InProp3)
-{
-	Prop3Changed.Broadcast(InProp3);
-}
-
 void UTbEnumEnumInterfaceLoggingDecorator::OnProp3Changed(ETbEnumEnum3 InProp3)
 {
 	TbEnumEnumInterfaceTracer::capture_state(BackendService.GetObject(), this);
@@ -332,21 +227,6 @@ void UTbEnumEnumInterfaceLoggingDecorator::SetProp3_Implementation(ETbEnumEnum3 
 {
 	TbEnumEnumInterfaceTracer::trace_callSetProp3(InProp3);
 	BackendService->Execute_SetProp3(BackendService.GetObject(), InProp3);
-}
-
-ETbEnumEnum3 UTbEnumEnumInterfaceLoggingDecorator::GetProp3_Private() const
-{
-	return Execute_GetProp3(this);
-}
-
-void UTbEnumEnumInterfaceLoggingDecorator::SetProp3_Private(ETbEnumEnum3 InProp3)
-{
-	Execute_SetProp3(this, InProp3);
-}
-
-FTbEnumEnumInterfaceProp3ChangedDelegate& UTbEnumEnumInterfaceLoggingDecorator::GetProp3ChangedDelegate()
-{
-	return Prop3Changed;
 }
 
 void UTbEnumEnumInterfaceLoggingDecorator::Func0Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum0& Result, ETbEnumEnum0 Param0)

@@ -26,7 +26,7 @@ limitations under the License.
 DECLARE_LOG_CATEGORY_EXTERN(LogTestbed2NestedStruct1InterfaceLoggingDecorator, Log, All);
 
 UCLASS(BlueprintType, Blueprintable)
-class TESTBED2_API UTestbed2NestedStruct1InterfaceLoggingDecorator : public UGameInstanceSubsystem, public ITestbed2NestedStruct1InterfaceInterface
+class TESTBED2_API UTestbed2NestedStruct1InterfaceLoggingDecorator : public UAbstractTestbed2NestedStruct1Interface
 {
 	GENERATED_BODY()
 
@@ -41,15 +41,6 @@ public:
 	void Initialize(FSubsystemCollectionBase& Collection) override;
 	void Deinitialize() override;
 
-	// signals
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct1Interface", DisplayName = "Sig1 Signal")
-	FTestbed2NestedStruct1InterfaceSig1Delegate Sig1Signal;
-	FTestbed2NestedStruct1InterfaceSig1Delegate& GetSig1SignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct1Interface", DisplayName = "Prop1 Changed")
-	FTestbed2NestedStruct1InterfaceProp1ChangedDelegate Prop1Changed;
-	FTestbed2NestedStruct1InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
-
 	// properties
 	FTestbed2NestedStruct1 GetProp1_Implementation() const override;
 
@@ -58,12 +49,6 @@ public:
 	// operations
 	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1) override;
 	FTestbed2NestedStruct1 Func1_Implementation(const FTestbed2NestedStruct1& Param1) override;
-
-protected:
-	// signals
-	void BroadcastSig1_Implementation(const FTestbed2NestedStruct1& Param1) override;
-
-	void BroadcastProp1Changed_Implementation(const FTestbed2NestedStruct1& Prop1) override;
 
 private:
 	/** The connection to the service backend. */
@@ -76,14 +61,4 @@ private:
 
 	UFUNCTION(Category = "ApiGear|Testbed2|NestedStruct1Interface", BlueprintInternalUseOnly)
 	void OnProp1Changed(const FTestbed2NestedStruct1& Prop1);
-
-	// properties - local copy
-	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1_Private, BlueprintSetter = SetProp1_Private, Category = "ApiGear|Testbed2|NestedStruct1Interface")
-	FTestbed2NestedStruct1 Prop1{FTestbed2NestedStruct1()};
-
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed2|NestedStruct1Interface", BlueprintInternalUseOnly)
-	FTestbed2NestedStruct1 GetProp1_Private() const;
-
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed2|NestedStruct1Interface", BlueprintInternalUseOnly)
-	void SetProp1_Private(const FTestbed2NestedStruct1& InProp1);
 };

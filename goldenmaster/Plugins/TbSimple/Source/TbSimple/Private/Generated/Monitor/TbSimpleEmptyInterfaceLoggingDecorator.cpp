@@ -67,7 +67,7 @@ public:
 	}
 };
 UTbSimpleEmptyInterfaceLoggingDecorator::UTbSimpleEmptyInterfaceLoggingDecorator()
-	: ITbSimpleEmptyInterfaceInterface()
+	: UAbstractTbSimpleEmptyInterface()
 {
 }
 

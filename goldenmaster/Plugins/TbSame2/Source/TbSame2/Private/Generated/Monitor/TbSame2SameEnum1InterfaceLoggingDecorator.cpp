@@ -67,7 +67,7 @@ public:
 	}
 };
 UTbSame2SameEnum1InterfaceLoggingDecorator::UTbSame2SameEnum1InterfaceLoggingDecorator()
-	: ITbSame2SameEnum1InterfaceInterface()
+	: UAbstractTbSame2SameEnum1Interface()
 {
 }
 
@@ -112,25 +112,10 @@ void UTbSame2SameEnum1InterfaceLoggingDecorator::setBackendService(TScriptInterf
 	Prop1 = BackendService->Execute_GetProp1(BackendService.GetObject());
 }
 
-void UTbSame2SameEnum1InterfaceLoggingDecorator::BroadcastSig1_Implementation(ETbSame2Enum1 Param1)
-{
-	Sig1Signal.Broadcast(Param1);
-}
-
 void UTbSame2SameEnum1InterfaceLoggingDecorator::OnSig1(ETbSame2Enum1 Param1)
 {
 	TbSame2SameEnum1InterfaceTracer::trace_signalSig1(Param1);
 	Execute_BroadcastSig1(this, Param1);
-}
-
-FTbSame2SameEnum1InterfaceSig1Delegate& UTbSame2SameEnum1InterfaceLoggingDecorator::GetSig1SignalDelegate()
-{
-	return Sig1Signal;
-}
-
-void UTbSame2SameEnum1InterfaceLoggingDecorator::BroadcastProp1Changed_Implementation(ETbSame2Enum1 InProp1)
-{
-	Prop1Changed.Broadcast(InProp1);
 }
 
 void UTbSame2SameEnum1InterfaceLoggingDecorator::OnProp1Changed(ETbSame2Enum1 InProp1)
@@ -149,21 +134,6 @@ void UTbSame2SameEnum1InterfaceLoggingDecorator::SetProp1_Implementation(ETbSame
 {
 	TbSame2SameEnum1InterfaceTracer::trace_callSetProp1(InProp1);
 	BackendService->Execute_SetProp1(BackendService.GetObject(), InProp1);
-}
-
-ETbSame2Enum1 UTbSame2SameEnum1InterfaceLoggingDecorator::GetProp1_Private() const
-{
-	return Execute_GetProp1(this);
-}
-
-void UTbSame2SameEnum1InterfaceLoggingDecorator::SetProp1_Private(ETbSame2Enum1 InProp1)
-{
-	Execute_SetProp1(this, InProp1);
-}
-
-FTbSame2SameEnum1InterfaceProp1ChangedDelegate& UTbSame2SameEnum1InterfaceLoggingDecorator::GetProp1ChangedDelegate()
-{
-	return Prop1Changed;
 }
 
 void UTbSame2SameEnum1InterfaceLoggingDecorator::Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, ETbSame2Enum1 Param1)

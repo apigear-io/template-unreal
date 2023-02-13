@@ -26,7 +26,7 @@ limitations under the License.
 DECLARE_LOG_CATEGORY_EXTERN(LogTbSimpleEmptyInterfaceLoggingDecorator, Log, All);
 
 UCLASS(BlueprintType, Blueprintable)
-class TBSIMPLE_API UTbSimpleEmptyInterfaceLoggingDecorator : public UGameInstanceSubsystem, public ITbSimpleEmptyInterfaceInterface
+class TBSIMPLE_API UTbSimpleEmptyInterfaceLoggingDecorator : public UAbstractTbSimpleEmptyInterface
 {
 	GENERATED_BODY()
 
@@ -41,18 +41,12 @@ public:
 	void Initialize(FSubsystemCollectionBase& Collection) override;
 	void Deinitialize() override;
 
-	// signals
 	// properties
 	// operations
-protected:
-	// signals
-
 private:
 	/** The connection to the service backend. */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSimple|EmptyInterface")
 	TScriptInterface<ITbSimpleEmptyInterfaceInterface> BackendService;
 
 	// signals
-
-	// properties - local copy
 };

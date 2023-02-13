@@ -67,7 +67,7 @@ public:
 	}
 };
 UTbSimpleSimpleInterfaceLoggingDecorator::UTbSimpleSimpleInterfaceLoggingDecorator()
-	: ITbSimpleSimpleInterfaceInterface()
+	: UAbstractTbSimpleSimpleInterface()
 {
 }
 
@@ -164,25 +164,10 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::setBackendService(TScriptInterfac
 	PropString = BackendService->Execute_GetPropString(BackendService.GetObject());
 }
 
-void UTbSimpleSimpleInterfaceLoggingDecorator::BroadcastSigVoid_Implementation()
-{
-	SigVoidSignal.Broadcast();
-}
-
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigVoid()
 {
 	TbSimpleSimpleInterfaceTracer::trace_signalSigVoid();
 	Execute_BroadcastSigVoid(this);
-}
-
-FTbSimpleSimpleInterfaceSigVoidDelegate& UTbSimpleSimpleInterfaceLoggingDecorator::GetSigVoidSignalDelegate()
-{
-	return SigVoidSignal;
-}
-
-void UTbSimpleSimpleInterfaceLoggingDecorator::BroadcastSigBool_Implementation(bool bParamBool)
-{
-	SigBoolSignal.Broadcast(bParamBool);
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigBool(bool bParamBool)
@@ -191,30 +176,10 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigBool(bool bParamBool)
 	Execute_BroadcastSigBool(this, bParamBool);
 }
 
-FTbSimpleSimpleInterfaceSigBoolDelegate& UTbSimpleSimpleInterfaceLoggingDecorator::GetSigBoolSignalDelegate()
-{
-	return SigBoolSignal;
-}
-
-void UTbSimpleSimpleInterfaceLoggingDecorator::BroadcastSigInt_Implementation(int32 ParamInt)
-{
-	SigIntSignal.Broadcast(ParamInt);
-}
-
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt(int32 ParamInt)
 {
 	TbSimpleSimpleInterfaceTracer::trace_signalSigInt(ParamInt);
 	Execute_BroadcastSigInt(this, ParamInt);
-}
-
-FTbSimpleSimpleInterfaceSigIntDelegate& UTbSimpleSimpleInterfaceLoggingDecorator::GetSigIntSignalDelegate()
-{
-	return SigIntSignal;
-}
-
-void UTbSimpleSimpleInterfaceLoggingDecorator::BroadcastSigInt32_Implementation(int32 ParamInt32)
-{
-	SigInt32Signal.Broadcast(ParamInt32);
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt32(int32 ParamInt32)
@@ -223,30 +188,10 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt32(int32 ParamInt32)
 	Execute_BroadcastSigInt32(this, ParamInt32);
 }
 
-FTbSimpleSimpleInterfaceSigInt32Delegate& UTbSimpleSimpleInterfaceLoggingDecorator::GetSigInt32SignalDelegate()
-{
-	return SigInt32Signal;
-}
-
-void UTbSimpleSimpleInterfaceLoggingDecorator::BroadcastSigInt64_Implementation(int64 ParamInt64)
-{
-	SigInt64Signal.Broadcast(ParamInt64);
-}
-
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt64(int64 ParamInt64)
 {
 	TbSimpleSimpleInterfaceTracer::trace_signalSigInt64(ParamInt64);
 	Execute_BroadcastSigInt64(this, ParamInt64);
-}
-
-FTbSimpleSimpleInterfaceSigInt64Delegate& UTbSimpleSimpleInterfaceLoggingDecorator::GetSigInt64SignalDelegate()
-{
-	return SigInt64Signal;
-}
-
-void UTbSimpleSimpleInterfaceLoggingDecorator::BroadcastSigFloat_Implementation(float ParamFloat)
-{
-	SigFloatSignal.Broadcast(ParamFloat);
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat(float ParamFloat)
@@ -255,30 +200,10 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat(float ParamFloat)
 	Execute_BroadcastSigFloat(this, ParamFloat);
 }
 
-FTbSimpleSimpleInterfaceSigFloatDelegate& UTbSimpleSimpleInterfaceLoggingDecorator::GetSigFloatSignalDelegate()
-{
-	return SigFloatSignal;
-}
-
-void UTbSimpleSimpleInterfaceLoggingDecorator::BroadcastSigFloat32_Implementation(float ParamFloa32)
-{
-	SigFloat32Signal.Broadcast(ParamFloa32);
-}
-
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat32(float ParamFloa32)
 {
 	TbSimpleSimpleInterfaceTracer::trace_signalSigFloat32(ParamFloa32);
 	Execute_BroadcastSigFloat32(this, ParamFloa32);
-}
-
-FTbSimpleSimpleInterfaceSigFloat32Delegate& UTbSimpleSimpleInterfaceLoggingDecorator::GetSigFloat32SignalDelegate()
-{
-	return SigFloat32Signal;
-}
-
-void UTbSimpleSimpleInterfaceLoggingDecorator::BroadcastSigFloat64_Implementation(double ParamFloat64)
-{
-	SigFloat64Signal.Broadcast(ParamFloat64);
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat64(double ParamFloat64)
@@ -287,30 +212,10 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat64(double ParamFloat64)
 	Execute_BroadcastSigFloat64(this, ParamFloat64);
 }
 
-FTbSimpleSimpleInterfaceSigFloat64Delegate& UTbSimpleSimpleInterfaceLoggingDecorator::GetSigFloat64SignalDelegate()
-{
-	return SigFloat64Signal;
-}
-
-void UTbSimpleSimpleInterfaceLoggingDecorator::BroadcastSigString_Implementation(const FString& ParamString)
-{
-	SigStringSignal.Broadcast(ParamString);
-}
-
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigString(const FString& ParamString)
 {
 	TbSimpleSimpleInterfaceTracer::trace_signalSigString(ParamString);
 	Execute_BroadcastSigString(this, ParamString);
-}
-
-FTbSimpleSimpleInterfaceSigStringDelegate& UTbSimpleSimpleInterfaceLoggingDecorator::GetSigStringSignalDelegate()
-{
-	return SigStringSignal;
-}
-
-void UTbSimpleSimpleInterfaceLoggingDecorator::BroadcastPropBoolChanged_Implementation(bool bInPropBool)
-{
-	PropBoolChanged.Broadcast(bInPropBool);
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnPropBoolChanged(bool bInPropBool)
@@ -331,26 +236,6 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::SetPropBool_Implementation(bool b
 	BackendService->Execute_SetPropBool(BackendService.GetObject(), bInPropBool);
 }
 
-bool UTbSimpleSimpleInterfaceLoggingDecorator::GetPropBool_Private() const
-{
-	return Execute_GetPropBool(this);
-}
-
-void UTbSimpleSimpleInterfaceLoggingDecorator::SetPropBool_Private(bool bInPropBool)
-{
-	Execute_SetPropBool(this, bInPropBool);
-}
-
-FTbSimpleSimpleInterfacePropBoolChangedDelegate& UTbSimpleSimpleInterfaceLoggingDecorator::GetPropBoolChangedDelegate()
-{
-	return PropBoolChanged;
-}
-
-void UTbSimpleSimpleInterfaceLoggingDecorator::BroadcastPropIntChanged_Implementation(int32 InPropInt)
-{
-	PropIntChanged.Broadcast(InPropInt);
-}
-
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnPropIntChanged(int32 InPropInt)
 {
 	TbSimpleSimpleInterfaceTracer::capture_state(BackendService.GetObject(), this);
@@ -367,26 +252,6 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::SetPropInt_Implementation(int32 I
 {
 	TbSimpleSimpleInterfaceTracer::trace_callSetPropInt(InPropInt);
 	BackendService->Execute_SetPropInt(BackendService.GetObject(), InPropInt);
-}
-
-int32 UTbSimpleSimpleInterfaceLoggingDecorator::GetPropInt_Private() const
-{
-	return Execute_GetPropInt(this);
-}
-
-void UTbSimpleSimpleInterfaceLoggingDecorator::SetPropInt_Private(int32 InPropInt)
-{
-	Execute_SetPropInt(this, InPropInt);
-}
-
-FTbSimpleSimpleInterfacePropIntChangedDelegate& UTbSimpleSimpleInterfaceLoggingDecorator::GetPropIntChangedDelegate()
-{
-	return PropIntChanged;
-}
-
-void UTbSimpleSimpleInterfaceLoggingDecorator::BroadcastPropInt32Changed_Implementation(int32 InPropInt32)
-{
-	PropInt32Changed.Broadcast(InPropInt32);
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnPropInt32Changed(int32 InPropInt32)
@@ -407,26 +272,6 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::SetPropInt32_Implementation(int32
 	BackendService->Execute_SetPropInt32(BackendService.GetObject(), InPropInt32);
 }
 
-int32 UTbSimpleSimpleInterfaceLoggingDecorator::GetPropInt32_Private() const
-{
-	return Execute_GetPropInt32(this);
-}
-
-void UTbSimpleSimpleInterfaceLoggingDecorator::SetPropInt32_Private(int32 InPropInt32)
-{
-	Execute_SetPropInt32(this, InPropInt32);
-}
-
-FTbSimpleSimpleInterfacePropInt32ChangedDelegate& UTbSimpleSimpleInterfaceLoggingDecorator::GetPropInt32ChangedDelegate()
-{
-	return PropInt32Changed;
-}
-
-void UTbSimpleSimpleInterfaceLoggingDecorator::BroadcastPropInt64Changed_Implementation(int64 InPropInt64)
-{
-	PropInt64Changed.Broadcast(InPropInt64);
-}
-
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnPropInt64Changed(int64 InPropInt64)
 {
 	TbSimpleSimpleInterfaceTracer::capture_state(BackendService.GetObject(), this);
@@ -443,26 +288,6 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::SetPropInt64_Implementation(int64
 {
 	TbSimpleSimpleInterfaceTracer::trace_callSetPropInt64(InPropInt64);
 	BackendService->Execute_SetPropInt64(BackendService.GetObject(), InPropInt64);
-}
-
-int64 UTbSimpleSimpleInterfaceLoggingDecorator::GetPropInt64_Private() const
-{
-	return Execute_GetPropInt64(this);
-}
-
-void UTbSimpleSimpleInterfaceLoggingDecorator::SetPropInt64_Private(int64 InPropInt64)
-{
-	Execute_SetPropInt64(this, InPropInt64);
-}
-
-FTbSimpleSimpleInterfacePropInt64ChangedDelegate& UTbSimpleSimpleInterfaceLoggingDecorator::GetPropInt64ChangedDelegate()
-{
-	return PropInt64Changed;
-}
-
-void UTbSimpleSimpleInterfaceLoggingDecorator::BroadcastPropFloatChanged_Implementation(float InPropFloat)
-{
-	PropFloatChanged.Broadcast(InPropFloat);
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloatChanged(float InPropFloat)
@@ -483,26 +308,6 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::SetPropFloat_Implementation(float
 	BackendService->Execute_SetPropFloat(BackendService.GetObject(), InPropFloat);
 }
 
-float UTbSimpleSimpleInterfaceLoggingDecorator::GetPropFloat_Private() const
-{
-	return Execute_GetPropFloat(this);
-}
-
-void UTbSimpleSimpleInterfaceLoggingDecorator::SetPropFloat_Private(float InPropFloat)
-{
-	Execute_SetPropFloat(this, InPropFloat);
-}
-
-FTbSimpleSimpleInterfacePropFloatChangedDelegate& UTbSimpleSimpleInterfaceLoggingDecorator::GetPropFloatChangedDelegate()
-{
-	return PropFloatChanged;
-}
-
-void UTbSimpleSimpleInterfaceLoggingDecorator::BroadcastPropFloat32Changed_Implementation(float InPropFloat32)
-{
-	PropFloat32Changed.Broadcast(InPropFloat32);
-}
-
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloat32Changed(float InPropFloat32)
 {
 	TbSimpleSimpleInterfaceTracer::capture_state(BackendService.GetObject(), this);
@@ -519,26 +324,6 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::SetPropFloat32_Implementation(flo
 {
 	TbSimpleSimpleInterfaceTracer::trace_callSetPropFloat32(InPropFloat32);
 	BackendService->Execute_SetPropFloat32(BackendService.GetObject(), InPropFloat32);
-}
-
-float UTbSimpleSimpleInterfaceLoggingDecorator::GetPropFloat32_Private() const
-{
-	return Execute_GetPropFloat32(this);
-}
-
-void UTbSimpleSimpleInterfaceLoggingDecorator::SetPropFloat32_Private(float InPropFloat32)
-{
-	Execute_SetPropFloat32(this, InPropFloat32);
-}
-
-FTbSimpleSimpleInterfacePropFloat32ChangedDelegate& UTbSimpleSimpleInterfaceLoggingDecorator::GetPropFloat32ChangedDelegate()
-{
-	return PropFloat32Changed;
-}
-
-void UTbSimpleSimpleInterfaceLoggingDecorator::BroadcastPropFloat64Changed_Implementation(double InPropFloat64)
-{
-	PropFloat64Changed.Broadcast(InPropFloat64);
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloat64Changed(double InPropFloat64)
@@ -559,26 +344,6 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::SetPropFloat64_Implementation(dou
 	BackendService->Execute_SetPropFloat64(BackendService.GetObject(), InPropFloat64);
 }
 
-double UTbSimpleSimpleInterfaceLoggingDecorator::GetPropFloat64_Private() const
-{
-	return Execute_GetPropFloat64(this);
-}
-
-void UTbSimpleSimpleInterfaceLoggingDecorator::SetPropFloat64_Private(double InPropFloat64)
-{
-	Execute_SetPropFloat64(this, InPropFloat64);
-}
-
-FTbSimpleSimpleInterfacePropFloat64ChangedDelegate& UTbSimpleSimpleInterfaceLoggingDecorator::GetPropFloat64ChangedDelegate()
-{
-	return PropFloat64Changed;
-}
-
-void UTbSimpleSimpleInterfaceLoggingDecorator::BroadcastPropStringChanged_Implementation(const FString& InPropString)
-{
-	PropStringChanged.Broadcast(InPropString);
-}
-
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnPropStringChanged(const FString& InPropString)
 {
 	TbSimpleSimpleInterfaceTracer::capture_state(BackendService.GetObject(), this);
@@ -595,21 +360,6 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::SetPropString_Implementation(cons
 {
 	TbSimpleSimpleInterfaceTracer::trace_callSetPropString(InPropString);
 	BackendService->Execute_SetPropString(BackendService.GetObject(), InPropString);
-}
-
-FString UTbSimpleSimpleInterfaceLoggingDecorator::GetPropString_Private() const
-{
-	return Execute_GetPropString(this);
-}
-
-void UTbSimpleSimpleInterfaceLoggingDecorator::SetPropString_Private(const FString& InPropString)
-{
-	Execute_SetPropString(this, InPropString);
-}
-
-FTbSimpleSimpleInterfacePropStringChangedDelegate& UTbSimpleSimpleInterfaceLoggingDecorator::GetPropStringChangedDelegate()
-{
-	return PropStringChanged;
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::FuncVoid_Implementation()
