@@ -37,15 +37,19 @@ public:
 	void Deinitialize() override;
 
 	// signals
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame2|SameEnum2Interface", DisplayName = "Sig1 Signal")
 	FTbSame2SameEnum2InterfaceSig1Delegate Sig1Signal;
 	FTbSame2SameEnum2InterfaceSig1Delegate& GetSig1SignalDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame2|SameEnum2Interface", DisplayName = "Sig2 Signal")
 	FTbSame2SameEnum2InterfaceSig2Delegate Sig2Signal;
 	FTbSame2SameEnum2InterfaceSig2Delegate& GetSig2SignalDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame2|SameEnum2Interface", DisplayName = "Prop1 Changed")
 	FTbSame2SameEnum2InterfaceProp1ChangedDelegate Prop1Changed;
 	FTbSame2SameEnum2InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame2|SameEnum2Interface", DisplayName = "Prop2 Changed")
 	FTbSame2SameEnum2InterfaceProp2ChangedDelegate Prop2Changed;
 	FTbSame2SameEnum2InterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() override;
 

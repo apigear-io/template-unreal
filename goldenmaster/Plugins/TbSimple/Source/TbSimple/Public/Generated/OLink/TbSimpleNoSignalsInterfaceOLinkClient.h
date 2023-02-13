@@ -37,9 +37,11 @@ public:
 	void Deinitialize() override;
 
 	// signals
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoSignalsInterface", DisplayName = "PropBool Changed")
 	FTbSimpleNoSignalsInterfacePropBoolChangedDelegate PropBoolChanged;
 	FTbSimpleNoSignalsInterfacePropBoolChangedDelegate& GetPropBoolChangedDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoSignalsInterface", DisplayName = "PropInt Changed")
 	FTbSimpleNoSignalsInterfacePropIntChangedDelegate PropIntChanged;
 	FTbSimpleNoSignalsInterfacePropIntChangedDelegate& GetPropIntChangedDelegate() override;
 

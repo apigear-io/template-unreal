@@ -32,10 +32,12 @@ public:
 
 	// signals
 {{- range .Interface.Signals }}
+	UPROPERTY(BlueprintAssignable, Category = "{{$Category}}", DisplayName = "{{Camel .Name}} Signal")
 	F{{$Iface}}{{Camel .Name}}Delegate {{Camel .Name}}Signal;
 	F{{$Iface}}{{Camel .Name}}Delegate& Get{{Camel .Name}}SignalDelegate() override;
 {{ end }}
 {{- range .Interface.Properties }}
+	UPROPERTY(BlueprintAssignable, Category = "{{$Category}}", DisplayName = "{{Camel .Name}} Changed")
 	F{{$Iface}}{{Camel .Name}}ChangedDelegate {{Camel .Name}}Changed;
 	F{{$Iface}}{{Camel .Name}}ChangedDelegate& Get{{Camel .Name}}ChangedDelegate() override;
 {{ end }}

@@ -37,27 +37,35 @@ public:
 	void Deinitialize() override;
 
 	// signals
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface", DisplayName = "Sig1 Signal")
 	FTestbed2ManyParamInterfaceSig1Delegate Sig1Signal;
 	FTestbed2ManyParamInterfaceSig1Delegate& GetSig1SignalDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface", DisplayName = "Sig2 Signal")
 	FTestbed2ManyParamInterfaceSig2Delegate Sig2Signal;
 	FTestbed2ManyParamInterfaceSig2Delegate& GetSig2SignalDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface", DisplayName = "Sig3 Signal")
 	FTestbed2ManyParamInterfaceSig3Delegate Sig3Signal;
 	FTestbed2ManyParamInterfaceSig3Delegate& GetSig3SignalDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface", DisplayName = "Sig4 Signal")
 	FTestbed2ManyParamInterfaceSig4Delegate Sig4Signal;
 	FTestbed2ManyParamInterfaceSig4Delegate& GetSig4SignalDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface", DisplayName = "Prop1 Changed")
 	FTestbed2ManyParamInterfaceProp1ChangedDelegate Prop1Changed;
 	FTestbed2ManyParamInterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface", DisplayName = "Prop2 Changed")
 	FTestbed2ManyParamInterfaceProp2ChangedDelegate Prop2Changed;
 	FTestbed2ManyParamInterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface", DisplayName = "Prop3 Changed")
 	FTestbed2ManyParamInterfaceProp3ChangedDelegate Prop3Changed;
 	FTestbed2ManyParamInterfaceProp3ChangedDelegate& GetProp3ChangedDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface", DisplayName = "Prop4 Changed")
 	FTestbed2ManyParamInterfaceProp4ChangedDelegate Prop4Changed;
 	FTestbed2ManyParamInterfaceProp4ChangedDelegate& GetProp4ChangedDelegate() override;
 

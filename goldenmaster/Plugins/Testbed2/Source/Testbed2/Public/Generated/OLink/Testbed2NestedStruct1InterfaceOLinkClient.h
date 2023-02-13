@@ -37,9 +37,11 @@ public:
 	void Deinitialize() override;
 
 	// signals
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct1Interface", DisplayName = "Sig1 Signal")
 	FTestbed2NestedStruct1InterfaceSig1Delegate Sig1Signal;
 	FTestbed2NestedStruct1InterfaceSig1Delegate& GetSig1SignalDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct1Interface", DisplayName = "Prop1 Changed")
 	FTestbed2NestedStruct1InterfaceProp1ChangedDelegate Prop1Changed;
 	FTestbed2NestedStruct1InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
 
