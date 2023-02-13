@@ -18,6 +18,7 @@ limitations under the License.
 
 #include "UObject/Interface.h"
 #include "Engine/LatentActionManager.h"
+#include "Subsystems/GameInstanceSubsystem.h"
 #include "Testbed2_data.h"
 #include "Testbed2NestedStruct1InterfaceInterface.generated.h"
 
@@ -68,8 +69,8 @@ public:
 	virtual FTestbed2NestedStruct1 GetProp1_Implementation() const = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct1Interface")
-	void SetProp1(const FTestbed2NestedStruct1& Prop1);
-	virtual void SetProp1_Implementation(const FTestbed2NestedStruct1& Prop1) = 0;
+	void SetProp1(const FTestbed2NestedStruct1& InProp1);
+	virtual void SetProp1_Implementation(const FTestbed2NestedStruct1& InProp1) = 0;
 
 protected:
 	// signals
@@ -80,4 +81,68 @@ protected:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct1Interface", meta = (BlueprintProtected = "true"))
 	void BroadcastProp1Changed(const FTestbed2NestedStruct1& Prop1);
 	virtual void BroadcastProp1Changed_Implementation(const FTestbed2NestedStruct1& Prop1) = 0;
+};
+
+/**
+ * Abstract UAbstractTestbed2NestedStruct1Interface
+ */
+UCLASS(Abstract, Blueprintable)
+class TESTBED2_API UAbstractTestbed2NestedStruct1Interface : public UGameInstanceSubsystem, public ITestbed2NestedStruct1InterfaceInterface
+{
+	GENERATED_BODY()
+
+public:
+	// signals
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct1Interface", DisplayName = "Sig1 Signal")
+	FTestbed2NestedStruct1InterfaceSig1Delegate Sig1Signal;
+	UFUNCTION(Category = "ApiGear|Testbed2|NestedStruct1Interface")
+	virtual FTestbed2NestedStruct1InterfaceSig1Delegate& GetSig1SignalDelegate() override
+	{
+		return Sig1Signal;
+	};
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct1Interface", DisplayName = "Prop1 Changed")
+	FTestbed2NestedStruct1InterfaceProp1ChangedDelegate Prop1Changed;
+	UFUNCTION(Category = "ApiGear|Testbed2|NestedStruct1Interface")
+	virtual FTestbed2NestedStruct1InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override
+	{
+		return Prop1Changed;
+	};
+
+	// methods
+	virtual void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1) override PURE_VIRTUAL(UAbstractTestbed2NestedStruct1Interface::Func1Async_Implementation, return;);
+	virtual FTestbed2NestedStruct1 Func1_Implementation(const FTestbed2NestedStruct1& Param1) override PURE_VIRTUAL(UAbstractTestbed2NestedStruct1Interface::Func1_Implementation, return FTestbed2NestedStruct1(););
+
+	// properties
+	virtual FTestbed2NestedStruct1 GetProp1_Implementation() const override PURE_VIRTUAL(UAbstractTestbed2NestedStruct1Interface::GetProp1_Implementation, return FTestbed2NestedStruct1(););
+
+	virtual void SetProp1_Implementation(const FTestbed2NestedStruct1& InProp1) override PURE_VIRTUAL(UAbstractTestbed2NestedStruct1Interface::SetProp1_Implementation, return;);
+
+protected:
+	// signals
+	virtual void BroadcastSig1_Implementation(const FTestbed2NestedStruct1& Param1) override
+	{
+		Sig1Signal.Broadcast(Param1);
+	};
+
+	virtual void BroadcastProp1Changed_Implementation(const FTestbed2NestedStruct1& InProp1) override
+	{
+		Prop1Changed.Broadcast(InProp1);
+	}
+
+	// properties - local copy
+	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1_Private, BlueprintSetter = SetProp1_Private, Category = "ApiGear|Testbed2|NestedStruct1Interface")
+	FTestbed2NestedStruct1 Prop1{FTestbed2NestedStruct1()};
+
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed2|NestedStruct1Interface", BlueprintInternalUseOnly)
+	FTestbed2NestedStruct1 GetProp1_Private() const
+	{
+		return Execute_GetProp1(this);
+	};
+
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed2|NestedStruct1Interface", BlueprintInternalUseOnly)
+	void SetProp1_Private(const FTestbed2NestedStruct1& InProp1)
+	{
+		Execute_SetProp1(this, InProp1);
+	};
 };

@@ -18,6 +18,7 @@ limitations under the License.
 
 #include "UObject/Interface.h"
 #include "Engine/LatentActionManager.h"
+#include "Subsystems/GameInstanceSubsystem.h"
 #include "TbSimple_data.h"
 #include "TbSimpleEmptyInterfaceInterface.generated.h"
 
@@ -51,4 +52,25 @@ public:
 
 protected:
 	// signals
+};
+
+/**
+ * Abstract UAbstractTbSimpleEmptyInterface
+ */
+UCLASS(Abstract, Blueprintable)
+class TBSIMPLE_API UAbstractTbSimpleEmptyInterface : public UGameInstanceSubsystem, public ITbSimpleEmptyInterfaceInterface
+{
+	GENERATED_BODY()
+
+public:
+	// signals
+
+	// methods
+
+	// properties
+
+protected:
+	// signals
+
+	// properties - local copy
 };

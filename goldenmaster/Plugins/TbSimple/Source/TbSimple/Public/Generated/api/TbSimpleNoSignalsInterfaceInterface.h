@@ -18,6 +18,7 @@ limitations under the License.
 
 #include "UObject/Interface.h"
 #include "Engine/LatentActionManager.h"
+#include "Subsystems/GameInstanceSubsystem.h"
 #include "TbSimple_data.h"
 #include "TbSimpleNoSignalsInterfaceInterface.generated.h"
 
@@ -73,15 +74,15 @@ public:
 	virtual bool GetPropBool_Implementation() const = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoSignalsInterface")
-	void SetPropBool(bool bPropBool);
-	virtual void SetPropBool_Implementation(bool bPropBool) = 0;
+	void SetPropBool(bool bInPropBool);
+	virtual void SetPropBool_Implementation(bool bInPropBool) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoSignalsInterface")
 	int32 GetPropInt() const;
 	virtual int32 GetPropInt_Implementation() const = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoSignalsInterface")
-	void SetPropInt(int32 PropInt);
-	virtual void SetPropInt_Implementation(int32 PropInt) = 0;
+	void SetPropInt(int32 InPropInt);
+	virtual void SetPropInt_Implementation(int32 InPropInt) = 0;
 
 protected:
 	// signals
@@ -93,4 +94,90 @@ protected:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoSignalsInterface", meta = (BlueprintProtected = "true"))
 	void BroadcastPropIntChanged(int32 PropInt);
 	virtual void BroadcastPropIntChanged_Implementation(int32 PropInt) = 0;
+};
+
+/**
+ * Abstract UAbstractTbSimpleNoSignalsInterface
+ */
+UCLASS(Abstract, Blueprintable)
+class TBSIMPLE_API UAbstractTbSimpleNoSignalsInterface : public UGameInstanceSubsystem, public ITbSimpleNoSignalsInterfaceInterface
+{
+	GENERATED_BODY()
+
+public:
+	// signals
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoSignalsInterface", DisplayName = "PropBool Changed")
+	FTbSimpleNoSignalsInterfacePropBoolChangedDelegate PropBoolChanged;
+	UFUNCTION(Category = "ApiGear|TbSimple|NoSignalsInterface")
+	virtual FTbSimpleNoSignalsInterfacePropBoolChangedDelegate& GetPropBoolChangedDelegate() override
+	{
+		return PropBoolChanged;
+	};
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoSignalsInterface", DisplayName = "PropInt Changed")
+	FTbSimpleNoSignalsInterfacePropIntChangedDelegate PropIntChanged;
+	UFUNCTION(Category = "ApiGear|TbSimple|NoSignalsInterface")
+	virtual FTbSimpleNoSignalsInterfacePropIntChangedDelegate& GetPropIntChangedDelegate() override
+	{
+		return PropIntChanged;
+	};
+
+	// methods
+	virtual void FuncVoid_Implementation() override PURE_VIRTUAL(UAbstractTbSimpleNoSignalsInterface::FuncVoid_Implementation, return;);
+
+	virtual void FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool) override PURE_VIRTUAL(UAbstractTbSimpleNoSignalsInterface::FuncBoolAsync_Implementation, return;);
+	virtual bool FuncBool_Implementation(bool bParamBool) override PURE_VIRTUAL(UAbstractTbSimpleNoSignalsInterface::FuncBool_Implementation, return false;);
+
+	// properties
+	virtual bool GetPropBool_Implementation() const override PURE_VIRTUAL(UAbstractTbSimpleNoSignalsInterface::GetPropBool_Implementation, return false;);
+
+	virtual void SetPropBool_Implementation(bool bInPropBool) override PURE_VIRTUAL(UAbstractTbSimpleNoSignalsInterface::SetPropBool_Implementation, return;);
+	virtual int32 GetPropInt_Implementation() const override PURE_VIRTUAL(UAbstractTbSimpleNoSignalsInterface::GetPropInt_Implementation, return 0;);
+
+	virtual void SetPropInt_Implementation(int32 InPropInt) override PURE_VIRTUAL(UAbstractTbSimpleNoSignalsInterface::SetPropInt_Implementation, return;);
+
+protected:
+	// signals
+
+	virtual void BroadcastPropBoolChanged_Implementation(bool bInPropBool) override
+	{
+		PropBoolChanged.Broadcast(bInPropBool);
+	}
+
+	virtual void BroadcastPropIntChanged_Implementation(int32 InPropInt) override
+	{
+		PropIntChanged.Broadcast(InPropInt);
+	}
+
+	// properties - local copy
+	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropBool_Private, BlueprintSetter = SetPropBool_Private, Category = "ApiGear|TbSimple|NoSignalsInterface")
+	bool bPropBool{false};
+
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSimple|NoSignalsInterface", BlueprintInternalUseOnly)
+	bool GetPropBool_Private() const
+	{
+		return Execute_GetPropBool(this);
+	};
+
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSimple|NoSignalsInterface", BlueprintInternalUseOnly)
+	void SetPropBool_Private(bool bInPropBool)
+	{
+		Execute_SetPropBool(this, bInPropBool);
+	};
+
+	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropInt_Private, BlueprintSetter = SetPropInt_Private, Category = "ApiGear|TbSimple|NoSignalsInterface")
+	int32 PropInt{0};
+
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSimple|NoSignalsInterface", BlueprintInternalUseOnly)
+	int32 GetPropInt_Private() const
+	{
+		return Execute_GetPropInt(this);
+	};
+
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSimple|NoSignalsInterface", BlueprintInternalUseOnly)
+	void SetPropInt_Private(int32 InPropInt)
+	{
+		Execute_SetPropInt(this, InPropInt);
+	};
 };

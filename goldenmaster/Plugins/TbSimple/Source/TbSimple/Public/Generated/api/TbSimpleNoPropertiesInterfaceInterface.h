@@ -18,6 +18,7 @@ limitations under the License.
 
 #include "UObject/Interface.h"
 #include "Engine/LatentActionManager.h"
+#include "Subsystems/GameInstanceSubsystem.h"
 #include "TbSimple_data.h"
 #include "TbSimpleNoPropertiesInterfaceInterface.generated.h"
 
@@ -77,4 +78,53 @@ protected:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoPropertiesInterface", meta = (BlueprintProtected = "true"))
 	void BroadcastSigBool(bool bParamBool);
 	virtual void BroadcastSigBool_Implementation(bool bParamBool) = 0;
+};
+
+/**
+ * Abstract UAbstractTbSimpleNoPropertiesInterface
+ */
+UCLASS(Abstract, Blueprintable)
+class TBSIMPLE_API UAbstractTbSimpleNoPropertiesInterface : public UGameInstanceSubsystem, public ITbSimpleNoPropertiesInterfaceInterface
+{
+	GENERATED_BODY()
+
+public:
+	// signals
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoPropertiesInterface", DisplayName = "SigVoid Signal")
+	FTbSimpleNoPropertiesInterfaceSigVoidDelegate SigVoidSignal;
+	UFUNCTION(Category = "ApiGear|TbSimple|NoPropertiesInterface")
+	virtual FTbSimpleNoPropertiesInterfaceSigVoidDelegate& GetSigVoidSignalDelegate() override
+	{
+		return SigVoidSignal;
+	};
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoPropertiesInterface", DisplayName = "SigBool Signal")
+	FTbSimpleNoPropertiesInterfaceSigBoolDelegate SigBoolSignal;
+	UFUNCTION(Category = "ApiGear|TbSimple|NoPropertiesInterface")
+	virtual FTbSimpleNoPropertiesInterfaceSigBoolDelegate& GetSigBoolSignalDelegate() override
+	{
+		return SigBoolSignal;
+	};
+
+	// methods
+	virtual void FuncVoid_Implementation() override PURE_VIRTUAL(UAbstractTbSimpleNoPropertiesInterface::FuncVoid_Implementation, return;);
+
+	virtual void FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool) override PURE_VIRTUAL(UAbstractTbSimpleNoPropertiesInterface::FuncBoolAsync_Implementation, return;);
+	virtual bool FuncBool_Implementation(bool bParamBool) override PURE_VIRTUAL(UAbstractTbSimpleNoPropertiesInterface::FuncBool_Implementation, return false;);
+
+	// properties
+
+protected:
+	// signals
+	virtual void BroadcastSigVoid_Implementation() override
+	{
+		SigVoidSignal.Broadcast();
+	};
+
+	virtual void BroadcastSigBool_Implementation(bool bParamBool) override
+	{
+		SigBoolSignal.Broadcast(bParamBool);
+	};
+
+	// properties - local copy
 };

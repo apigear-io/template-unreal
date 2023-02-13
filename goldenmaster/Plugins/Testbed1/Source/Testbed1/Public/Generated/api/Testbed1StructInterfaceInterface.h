@@ -18,6 +18,7 @@ limitations under the License.
 
 #include "UObject/Interface.h"
 #include "Engine/LatentActionManager.h"
+#include "Subsystems/GameInstanceSubsystem.h"
 #include "Testbed1_data.h"
 #include "Testbed1StructInterfaceInterface.generated.h"
 
@@ -119,29 +120,29 @@ public:
 	virtual FTestbed1StructBool GetPropBool_Implementation() const = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface")
-	void SetPropBool(const FTestbed1StructBool& PropBool);
-	virtual void SetPropBool_Implementation(const FTestbed1StructBool& PropBool) = 0;
+	void SetPropBool(const FTestbed1StructBool& InPropBool);
+	virtual void SetPropBool_Implementation(const FTestbed1StructBool& InPropBool) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface")
 	FTestbed1StructInt GetPropInt() const;
 	virtual FTestbed1StructInt GetPropInt_Implementation() const = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface")
-	void SetPropInt(const FTestbed1StructInt& PropInt);
-	virtual void SetPropInt_Implementation(const FTestbed1StructInt& PropInt) = 0;
+	void SetPropInt(const FTestbed1StructInt& InPropInt);
+	virtual void SetPropInt_Implementation(const FTestbed1StructInt& InPropInt) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface")
 	FTestbed1StructFloat GetPropFloat() const;
 	virtual FTestbed1StructFloat GetPropFloat_Implementation() const = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface")
-	void SetPropFloat(const FTestbed1StructFloat& PropFloat);
-	virtual void SetPropFloat_Implementation(const FTestbed1StructFloat& PropFloat) = 0;
+	void SetPropFloat(const FTestbed1StructFloat& InPropFloat);
+	virtual void SetPropFloat_Implementation(const FTestbed1StructFloat& InPropFloat) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface")
 	FTestbed1StructString GetPropString() const;
 	virtual FTestbed1StructString GetPropString_Implementation() const = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface")
-	void SetPropString(const FTestbed1StructString& PropString);
-	virtual void SetPropString_Implementation(const FTestbed1StructString& PropString) = 0;
+	void SetPropString(const FTestbed1StructString& InPropString);
+	virtual void SetPropString_Implementation(const FTestbed1StructString& InPropString) = 0;
 
 protected:
 	// signals
@@ -176,4 +177,209 @@ protected:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface", meta = (BlueprintProtected = "true"))
 	void BroadcastPropStringChanged(const FTestbed1StructString& PropString);
 	virtual void BroadcastPropStringChanged_Implementation(const FTestbed1StructString& PropString) = 0;
+};
+
+/**
+ * Abstract UAbstractTestbed1StructInterface
+ */
+UCLASS(Abstract, Blueprintable)
+class TESTBED1_API UAbstractTestbed1StructInterface : public UGameInstanceSubsystem, public ITestbed1StructInterfaceInterface
+{
+	GENERATED_BODY()
+
+public:
+	// signals
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface", DisplayName = "SigBool Signal")
+	FTestbed1StructInterfaceSigBoolDelegate SigBoolSignal;
+	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface")
+	virtual FTestbed1StructInterfaceSigBoolDelegate& GetSigBoolSignalDelegate() override
+	{
+		return SigBoolSignal;
+	};
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface", DisplayName = "SigInt Signal")
+	FTestbed1StructInterfaceSigIntDelegate SigIntSignal;
+	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface")
+	virtual FTestbed1StructInterfaceSigIntDelegate& GetSigIntSignalDelegate() override
+	{
+		return SigIntSignal;
+	};
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface", DisplayName = "SigFloat Signal")
+	FTestbed1StructInterfaceSigFloatDelegate SigFloatSignal;
+	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface")
+	virtual FTestbed1StructInterfaceSigFloatDelegate& GetSigFloatSignalDelegate() override
+	{
+		return SigFloatSignal;
+	};
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface", DisplayName = "SigString Signal")
+	FTestbed1StructInterfaceSigStringDelegate SigStringSignal;
+	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface")
+	virtual FTestbed1StructInterfaceSigStringDelegate& GetSigStringSignalDelegate() override
+	{
+		return SigStringSignal;
+	};
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface", DisplayName = "PropBool Changed")
+	FTestbed1StructInterfacePropBoolChangedDelegate PropBoolChanged;
+	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface")
+	virtual FTestbed1StructInterfacePropBoolChangedDelegate& GetPropBoolChangedDelegate() override
+	{
+		return PropBoolChanged;
+	};
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface", DisplayName = "PropInt Changed")
+	FTestbed1StructInterfacePropIntChangedDelegate PropIntChanged;
+	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface")
+	virtual FTestbed1StructInterfacePropIntChangedDelegate& GetPropIntChangedDelegate() override
+	{
+		return PropIntChanged;
+	};
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface", DisplayName = "PropFloat Changed")
+	FTestbed1StructInterfacePropFloatChangedDelegate PropFloatChanged;
+	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface")
+	virtual FTestbed1StructInterfacePropFloatChangedDelegate& GetPropFloatChangedDelegate() override
+	{
+		return PropFloatChanged;
+	};
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface", DisplayName = "PropString Changed")
+	FTestbed1StructInterfacePropStringChangedDelegate PropStringChanged;
+	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface")
+	virtual FTestbed1StructInterfacePropStringChangedDelegate& GetPropStringChangedDelegate() override
+	{
+		return PropStringChanged;
+	};
+
+	// methods
+	virtual void FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const FTestbed1StructBool& ParamBool) override PURE_VIRTUAL(UAbstractTestbed1StructInterface::FuncBoolAsync_Implementation, return;);
+	virtual FTestbed1StructBool FuncBool_Implementation(const FTestbed1StructBool& ParamBool) override PURE_VIRTUAL(UAbstractTestbed1StructInterface::FuncBool_Implementation, return FTestbed1StructBool(););
+
+	virtual void FuncIntAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const FTestbed1StructInt& ParamInt) override PURE_VIRTUAL(UAbstractTestbed1StructInterface::FuncIntAsync_Implementation, return;);
+	virtual FTestbed1StructBool FuncInt_Implementation(const FTestbed1StructInt& ParamInt) override PURE_VIRTUAL(UAbstractTestbed1StructInterface::FuncInt_Implementation, return FTestbed1StructBool(););
+
+	virtual void FuncFloatAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructFloat& Result, const FTestbed1StructFloat& ParamFloat) override PURE_VIRTUAL(UAbstractTestbed1StructInterface::FuncFloatAsync_Implementation, return;);
+	virtual FTestbed1StructFloat FuncFloat_Implementation(const FTestbed1StructFloat& ParamFloat) override PURE_VIRTUAL(UAbstractTestbed1StructInterface::FuncFloat_Implementation, return FTestbed1StructFloat(););
+
+	virtual void FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructString& Result, const FTestbed1StructString& ParamString) override PURE_VIRTUAL(UAbstractTestbed1StructInterface::FuncStringAsync_Implementation, return;);
+	virtual FTestbed1StructString FuncString_Implementation(const FTestbed1StructString& ParamString) override PURE_VIRTUAL(UAbstractTestbed1StructInterface::FuncString_Implementation, return FTestbed1StructString(););
+
+	// properties
+	virtual FTestbed1StructBool GetPropBool_Implementation() const override PURE_VIRTUAL(UAbstractTestbed1StructInterface::GetPropBool_Implementation, return FTestbed1StructBool(););
+
+	virtual void SetPropBool_Implementation(const FTestbed1StructBool& InPropBool) override PURE_VIRTUAL(UAbstractTestbed1StructInterface::SetPropBool_Implementation, return;);
+	virtual FTestbed1StructInt GetPropInt_Implementation() const override PURE_VIRTUAL(UAbstractTestbed1StructInterface::GetPropInt_Implementation, return FTestbed1StructInt(););
+
+	virtual void SetPropInt_Implementation(const FTestbed1StructInt& InPropInt) override PURE_VIRTUAL(UAbstractTestbed1StructInterface::SetPropInt_Implementation, return;);
+	virtual FTestbed1StructFloat GetPropFloat_Implementation() const override PURE_VIRTUAL(UAbstractTestbed1StructInterface::GetPropFloat_Implementation, return FTestbed1StructFloat(););
+
+	virtual void SetPropFloat_Implementation(const FTestbed1StructFloat& InPropFloat) override PURE_VIRTUAL(UAbstractTestbed1StructInterface::SetPropFloat_Implementation, return;);
+	virtual FTestbed1StructString GetPropString_Implementation() const override PURE_VIRTUAL(UAbstractTestbed1StructInterface::GetPropString_Implementation, return FTestbed1StructString(););
+
+	virtual void SetPropString_Implementation(const FTestbed1StructString& InPropString) override PURE_VIRTUAL(UAbstractTestbed1StructInterface::SetPropString_Implementation, return;);
+
+protected:
+	// signals
+	virtual void BroadcastSigBool_Implementation(const FTestbed1StructBool& ParamBool) override
+	{
+		SigBoolSignal.Broadcast(ParamBool);
+	};
+
+	virtual void BroadcastSigInt_Implementation(const FTestbed1StructInt& ParamInt) override
+	{
+		SigIntSignal.Broadcast(ParamInt);
+	};
+
+	virtual void BroadcastSigFloat_Implementation(const FTestbed1StructFloat& ParamFloat) override
+	{
+		SigFloatSignal.Broadcast(ParamFloat);
+	};
+
+	virtual void BroadcastSigString_Implementation(const FTestbed1StructString& ParamString) override
+	{
+		SigStringSignal.Broadcast(ParamString);
+	};
+
+	virtual void BroadcastPropBoolChanged_Implementation(const FTestbed1StructBool& InPropBool) override
+	{
+		PropBoolChanged.Broadcast(InPropBool);
+	}
+
+	virtual void BroadcastPropIntChanged_Implementation(const FTestbed1StructInt& InPropInt) override
+	{
+		PropIntChanged.Broadcast(InPropInt);
+	}
+
+	virtual void BroadcastPropFloatChanged_Implementation(const FTestbed1StructFloat& InPropFloat) override
+	{
+		PropFloatChanged.Broadcast(InPropFloat);
+	}
+
+	virtual void BroadcastPropStringChanged_Implementation(const FTestbed1StructString& InPropString) override
+	{
+		PropStringChanged.Broadcast(InPropString);
+	}
+
+	// properties - local copy
+	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropBool_Private, BlueprintSetter = SetPropBool_Private, Category = "ApiGear|Testbed1|StructInterface")
+	FTestbed1StructBool PropBool{FTestbed1StructBool()};
+
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
+	FTestbed1StructBool GetPropBool_Private() const
+	{
+		return Execute_GetPropBool(this);
+	};
+
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
+	void SetPropBool_Private(const FTestbed1StructBool& InPropBool)
+	{
+		Execute_SetPropBool(this, InPropBool);
+	};
+
+	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropInt_Private, BlueprintSetter = SetPropInt_Private, Category = "ApiGear|Testbed1|StructInterface")
+	FTestbed1StructInt PropInt{FTestbed1StructInt()};
+
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
+	FTestbed1StructInt GetPropInt_Private() const
+	{
+		return Execute_GetPropInt(this);
+	};
+
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
+	void SetPropInt_Private(const FTestbed1StructInt& InPropInt)
+	{
+		Execute_SetPropInt(this, InPropInt);
+	};
+
+	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropFloat_Private, BlueprintSetter = SetPropFloat_Private, Category = "ApiGear|Testbed1|StructInterface")
+	FTestbed1StructFloat PropFloat{FTestbed1StructFloat()};
+
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
+	FTestbed1StructFloat GetPropFloat_Private() const
+	{
+		return Execute_GetPropFloat(this);
+	};
+
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
+	void SetPropFloat_Private(const FTestbed1StructFloat& InPropFloat)
+	{
+		Execute_SetPropFloat(this, InPropFloat);
+	};
+
+	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropString_Private, BlueprintSetter = SetPropString_Private, Category = "ApiGear|Testbed1|StructInterface")
+	FTestbed1StructString PropString{FTestbed1StructString()};
+
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
+	FTestbed1StructString GetPropString_Private() const
+	{
+		return Execute_GetPropString(this);
+	};
+
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
+	void SetPropString_Private(const FTestbed1StructString& InPropString)
+	{
+		Execute_SetPropString(this, InPropString);
+	};
 };

@@ -18,6 +18,7 @@ limitations under the License.
 
 #include "UObject/Interface.h"
 #include "Engine/LatentActionManager.h"
+#include "Subsystems/GameInstanceSubsystem.h"
 #include "TbEnum_data.h"
 #include "TbEnumEnumInterfaceInterface.generated.h"
 
@@ -119,29 +120,29 @@ public:
 	virtual ETbEnumEnum0 GetProp0_Implementation() const = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface")
-	void SetProp0(ETbEnumEnum0 Prop0);
-	virtual void SetProp0_Implementation(ETbEnumEnum0 Prop0) = 0;
+	void SetProp0(ETbEnumEnum0 InProp0);
+	virtual void SetProp0_Implementation(ETbEnumEnum0 InProp0) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface")
 	ETbEnumEnum1 GetProp1() const;
 	virtual ETbEnumEnum1 GetProp1_Implementation() const = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface")
-	void SetProp1(ETbEnumEnum1 Prop1);
-	virtual void SetProp1_Implementation(ETbEnumEnum1 Prop1) = 0;
+	void SetProp1(ETbEnumEnum1 InProp1);
+	virtual void SetProp1_Implementation(ETbEnumEnum1 InProp1) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface")
 	ETbEnumEnum2 GetProp2() const;
 	virtual ETbEnumEnum2 GetProp2_Implementation() const = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface")
-	void SetProp2(ETbEnumEnum2 Prop2);
-	virtual void SetProp2_Implementation(ETbEnumEnum2 Prop2) = 0;
+	void SetProp2(ETbEnumEnum2 InProp2);
+	virtual void SetProp2_Implementation(ETbEnumEnum2 InProp2) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface")
 	ETbEnumEnum3 GetProp3() const;
 	virtual ETbEnumEnum3 GetProp3_Implementation() const = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface")
-	void SetProp3(ETbEnumEnum3 Prop3);
-	virtual void SetProp3_Implementation(ETbEnumEnum3 Prop3) = 0;
+	void SetProp3(ETbEnumEnum3 InProp3);
+	virtual void SetProp3_Implementation(ETbEnumEnum3 InProp3) = 0;
 
 protected:
 	// signals
@@ -176,4 +177,209 @@ protected:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface", meta = (BlueprintProtected = "true"))
 	void BroadcastProp3Changed(ETbEnumEnum3 Prop3);
 	virtual void BroadcastProp3Changed_Implementation(ETbEnumEnum3 Prop3) = 0;
+};
+
+/**
+ * Abstract UAbstractTbEnumEnumInterface
+ */
+UCLASS(Abstract, Blueprintable)
+class TBENUM_API UAbstractTbEnumEnumInterface : public UGameInstanceSubsystem, public ITbEnumEnumInterfaceInterface
+{
+	GENERATED_BODY()
+
+public:
+	// signals
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface", DisplayName = "Sig0 Signal")
+	FTbEnumEnumInterfaceSig0Delegate Sig0Signal;
+	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface")
+	virtual FTbEnumEnumInterfaceSig0Delegate& GetSig0SignalDelegate() override
+	{
+		return Sig0Signal;
+	};
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface", DisplayName = "Sig1 Signal")
+	FTbEnumEnumInterfaceSig1Delegate Sig1Signal;
+	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface")
+	virtual FTbEnumEnumInterfaceSig1Delegate& GetSig1SignalDelegate() override
+	{
+		return Sig1Signal;
+	};
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface", DisplayName = "Sig2 Signal")
+	FTbEnumEnumInterfaceSig2Delegate Sig2Signal;
+	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface")
+	virtual FTbEnumEnumInterfaceSig2Delegate& GetSig2SignalDelegate() override
+	{
+		return Sig2Signal;
+	};
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface", DisplayName = "Sig3 Signal")
+	FTbEnumEnumInterfaceSig3Delegate Sig3Signal;
+	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface")
+	virtual FTbEnumEnumInterfaceSig3Delegate& GetSig3SignalDelegate() override
+	{
+		return Sig3Signal;
+	};
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface", DisplayName = "Prop0 Changed")
+	FTbEnumEnumInterfaceProp0ChangedDelegate Prop0Changed;
+	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface")
+	virtual FTbEnumEnumInterfaceProp0ChangedDelegate& GetProp0ChangedDelegate() override
+	{
+		return Prop0Changed;
+	};
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface", DisplayName = "Prop1 Changed")
+	FTbEnumEnumInterfaceProp1ChangedDelegate Prop1Changed;
+	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface")
+	virtual FTbEnumEnumInterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override
+	{
+		return Prop1Changed;
+	};
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface", DisplayName = "Prop2 Changed")
+	FTbEnumEnumInterfaceProp2ChangedDelegate Prop2Changed;
+	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface")
+	virtual FTbEnumEnumInterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() override
+	{
+		return Prop2Changed;
+	};
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface", DisplayName = "Prop3 Changed")
+	FTbEnumEnumInterfaceProp3ChangedDelegate Prop3Changed;
+	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface")
+	virtual FTbEnumEnumInterfaceProp3ChangedDelegate& GetProp3ChangedDelegate() override
+	{
+		return Prop3Changed;
+	};
+
+	// methods
+	virtual void Func0Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum0& Result, ETbEnumEnum0 Param0) override PURE_VIRTUAL(UAbstractTbEnumEnumInterface::Func0Async_Implementation, return;);
+	virtual ETbEnumEnum0 Func0_Implementation(ETbEnumEnum0 Param0) override PURE_VIRTUAL(UAbstractTbEnumEnumInterface::Func0_Implementation, return ETbEnumEnum0::TEE_VALUE0;);
+
+	virtual void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum1& Result, ETbEnumEnum1 Param1) override PURE_VIRTUAL(UAbstractTbEnumEnumInterface::Func1Async_Implementation, return;);
+	virtual ETbEnumEnum1 Func1_Implementation(ETbEnumEnum1 Param1) override PURE_VIRTUAL(UAbstractTbEnumEnumInterface::Func1_Implementation, return ETbEnumEnum1::TEE_VALUE1;);
+
+	virtual void Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum2& Result, ETbEnumEnum2 Param2) override PURE_VIRTUAL(UAbstractTbEnumEnumInterface::Func2Async_Implementation, return;);
+	virtual ETbEnumEnum2 Func2_Implementation(ETbEnumEnum2 Param2) override PURE_VIRTUAL(UAbstractTbEnumEnumInterface::Func2_Implementation, return ETbEnumEnum2::TEE_VALUE2;);
+
+	virtual void Func3Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum3& Result, ETbEnumEnum3 Param3) override PURE_VIRTUAL(UAbstractTbEnumEnumInterface::Func3Async_Implementation, return;);
+	virtual ETbEnumEnum3 Func3_Implementation(ETbEnumEnum3 Param3) override PURE_VIRTUAL(UAbstractTbEnumEnumInterface::Func3_Implementation, return ETbEnumEnum3::TEE_VALUE3;);
+
+	// properties
+	virtual ETbEnumEnum0 GetProp0_Implementation() const override PURE_VIRTUAL(UAbstractTbEnumEnumInterface::GetProp0_Implementation, return ETbEnumEnum0::TEE_VALUE0;);
+
+	virtual void SetProp0_Implementation(ETbEnumEnum0 InProp0) override PURE_VIRTUAL(UAbstractTbEnumEnumInterface::SetProp0_Implementation, return;);
+	virtual ETbEnumEnum1 GetProp1_Implementation() const override PURE_VIRTUAL(UAbstractTbEnumEnumInterface::GetProp1_Implementation, return ETbEnumEnum1::TEE_VALUE1;);
+
+	virtual void SetProp1_Implementation(ETbEnumEnum1 InProp1) override PURE_VIRTUAL(UAbstractTbEnumEnumInterface::SetProp1_Implementation, return;);
+	virtual ETbEnumEnum2 GetProp2_Implementation() const override PURE_VIRTUAL(UAbstractTbEnumEnumInterface::GetProp2_Implementation, return ETbEnumEnum2::TEE_VALUE2;);
+
+	virtual void SetProp2_Implementation(ETbEnumEnum2 InProp2) override PURE_VIRTUAL(UAbstractTbEnumEnumInterface::SetProp2_Implementation, return;);
+	virtual ETbEnumEnum3 GetProp3_Implementation() const override PURE_VIRTUAL(UAbstractTbEnumEnumInterface::GetProp3_Implementation, return ETbEnumEnum3::TEE_VALUE3;);
+
+	virtual void SetProp3_Implementation(ETbEnumEnum3 InProp3) override PURE_VIRTUAL(UAbstractTbEnumEnumInterface::SetProp3_Implementation, return;);
+
+protected:
+	// signals
+	virtual void BroadcastSig0_Implementation(ETbEnumEnum0 Param0) override
+	{
+		Sig0Signal.Broadcast(Param0);
+	};
+
+	virtual void BroadcastSig1_Implementation(ETbEnumEnum1 Param1) override
+	{
+		Sig1Signal.Broadcast(Param1);
+	};
+
+	virtual void BroadcastSig2_Implementation(ETbEnumEnum2 Param2) override
+	{
+		Sig2Signal.Broadcast(Param2);
+	};
+
+	virtual void BroadcastSig3_Implementation(ETbEnumEnum3 Param3) override
+	{
+		Sig3Signal.Broadcast(Param3);
+	};
+
+	virtual void BroadcastProp0Changed_Implementation(ETbEnumEnum0 InProp0) override
+	{
+		Prop0Changed.Broadcast(InProp0);
+	}
+
+	virtual void BroadcastProp1Changed_Implementation(ETbEnumEnum1 InProp1) override
+	{
+		Prop1Changed.Broadcast(InProp1);
+	}
+
+	virtual void BroadcastProp2Changed_Implementation(ETbEnumEnum2 InProp2) override
+	{
+		Prop2Changed.Broadcast(InProp2);
+	}
+
+	virtual void BroadcastProp3Changed_Implementation(ETbEnumEnum3 InProp3) override
+	{
+		Prop3Changed.Broadcast(InProp3);
+	}
+
+	// properties - local copy
+	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp0_Private, BlueprintSetter = SetProp0_Private, Category = "ApiGear|TbEnum|EnumInterface")
+	ETbEnumEnum0 Prop0{ETbEnumEnum0::TEE_VALUE0};
+
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
+	ETbEnumEnum0 GetProp0_Private() const
+	{
+		return Execute_GetProp0(this);
+	};
+
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
+	void SetProp0_Private(ETbEnumEnum0 InProp0)
+	{
+		Execute_SetProp0(this, InProp0);
+	};
+
+	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1_Private, BlueprintSetter = SetProp1_Private, Category = "ApiGear|TbEnum|EnumInterface")
+	ETbEnumEnum1 Prop1{ETbEnumEnum1::TEE_VALUE1};
+
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
+	ETbEnumEnum1 GetProp1_Private() const
+	{
+		return Execute_GetProp1(this);
+	};
+
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
+	void SetProp1_Private(ETbEnumEnum1 InProp1)
+	{
+		Execute_SetProp1(this, InProp1);
+	};
+
+	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp2_Private, BlueprintSetter = SetProp2_Private, Category = "ApiGear|TbEnum|EnumInterface")
+	ETbEnumEnum2 Prop2{ETbEnumEnum2::TEE_VALUE2};
+
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
+	ETbEnumEnum2 GetProp2_Private() const
+	{
+		return Execute_GetProp2(this);
+	};
+
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
+	void SetProp2_Private(ETbEnumEnum2 InProp2)
+	{
+		Execute_SetProp2(this, InProp2);
+	};
+
+	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp3_Private, BlueprintSetter = SetProp3_Private, Category = "ApiGear|TbEnum|EnumInterface")
+	ETbEnumEnum3 Prop3{ETbEnumEnum3::TEE_VALUE3};
+
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
+	ETbEnumEnum3 GetProp3_Private() const
+	{
+		return Execute_GetProp3(this);
+	};
+
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
+	void SetProp3_Private(ETbEnumEnum3 InProp3)
+	{
+		Execute_SetProp3(this, InProp3);
+	};
 };
