@@ -5,6 +5,7 @@
 {{- $Category := printf "ApiGear|%s|%s" $ModuleName $IfaceName }}
 {{- $DisplayName := printf "%s%s" $ModuleName $IfaceName }}
 {{- $Class := printf "U%sOLinkClient" $DisplayName}}
+{{- $abstractclass := printf "UAbstract%s%s" (Camel .Module.Name) (Camel .Interface.Name) }}
 {{- $Iface := printf "%s%s" $ModuleName $IfaceName }}
 {{- $ifaceId := printf "%s.%s" .Module.Name .Interface.Name}}
 
@@ -33,7 +34,7 @@ THIRD_PARTY_INCLUDES_END
 */
 {{- end }}
 {{$Class}}::{{$Class}}()
-	: I{{$ModuleName}}{{$IfaceName}}Interface()
+	: {{$abstractclass}}()
 {
 	m_sink = std::make_shared<FUnrealOLinkSink>("{{$ifaceId}}");
 }
@@ -78,28 +79,9 @@ void {{$Class}}::Deinitialize()
 
 	Super::Deinitialize();
 }
-{{- if len .Interface.Signals }}{{ nl }}{{ end }}
-{{- range $i, $e := .Interface.Signals }}
-{{- if $i }}{{nl}}{{ end }}
-void {{$Class}}::Broadcast{{Camel .Name}}_Implementation({{ueParams "" .Params}})
-{
-	{{Camel .Name}}Signal.Broadcast({{ueVars "" .Params }});
-}
-
-F{{$Iface}}{{Camel .Name}}Delegate& {{$Class}}::Get{{Camel .Name}}SignalDelegate()
-{
-	return {{Camel .Name}}Signal;
-}
-{{- end }}
 {{- if len .Interface.Properties }}{{ nl }}{{ end }}
 {{- range $i, $e := .Interface.Properties }}
 {{- if $i }}{{nl}}{{ end }}
-void {{$Class}}::Broadcast{{Camel .Name}}Changed_Implementation({{ueParam "In" .}})
-{
-	{{ueVar "" .}} = {{ueVar "In" .}};
-	{{Camel .Name}}Changed.Broadcast({{ueVar "In" .}});
-}
-
 {{ueReturn "" .}} {{$Class}}::Get{{Camel .Name}}_Implementation() const
 {
 	return {{ueVar "" .}};
@@ -112,11 +94,6 @@ void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
 		return;
 	}
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "{{.Name}}"), {{ueVar "In" .}});
-}
-
-F{{$Iface}}{{Camel .Name}}ChangedDelegate& {{$Class}}::Get{{Camel .Name}}ChangedDelegate()
-{
-	return {{Camel .Name}}Changed;
 }
 {{- end }}
 {{- if len .Interface.Operations }}{{ nl }}{{ end }}

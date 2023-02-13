@@ -36,7 +36,7 @@ THIRD_PARTY_INCLUDES_START
 THIRD_PARTY_INCLUDES_END
 
 UTbEnumEnumInterfaceOLinkClient::UTbEnumEnumInterfaceOLinkClient()
-	: ITbEnumEnumInterfaceInterface()
+	: UAbstractTbEnumEnumInterface()
 {
 	m_sink = std::make_shared<FUnrealOLinkSink>("tb.enum.EnumInterface");
 }
@@ -82,52 +82,6 @@ void UTbEnumEnumInterfaceOLinkClient::Deinitialize()
 	Super::Deinitialize();
 }
 
-void UTbEnumEnumInterfaceOLinkClient::BroadcastSig0_Implementation(ETbEnumEnum0 Param0)
-{
-	Sig0Signal.Broadcast(Param0);
-}
-
-FTbEnumEnumInterfaceSig0Delegate& UTbEnumEnumInterfaceOLinkClient::GetSig0SignalDelegate()
-{
-	return Sig0Signal;
-}
-
-void UTbEnumEnumInterfaceOLinkClient::BroadcastSig1_Implementation(ETbEnumEnum1 Param1)
-{
-	Sig1Signal.Broadcast(Param1);
-}
-
-FTbEnumEnumInterfaceSig1Delegate& UTbEnumEnumInterfaceOLinkClient::GetSig1SignalDelegate()
-{
-	return Sig1Signal;
-}
-
-void UTbEnumEnumInterfaceOLinkClient::BroadcastSig2_Implementation(ETbEnumEnum2 Param2)
-{
-	Sig2Signal.Broadcast(Param2);
-}
-
-FTbEnumEnumInterfaceSig2Delegate& UTbEnumEnumInterfaceOLinkClient::GetSig2SignalDelegate()
-{
-	return Sig2Signal;
-}
-
-void UTbEnumEnumInterfaceOLinkClient::BroadcastSig3_Implementation(ETbEnumEnum3 Param3)
-{
-	Sig3Signal.Broadcast(Param3);
-}
-
-FTbEnumEnumInterfaceSig3Delegate& UTbEnumEnumInterfaceOLinkClient::GetSig3SignalDelegate()
-{
-	return Sig3Signal;
-}
-
-void UTbEnumEnumInterfaceOLinkClient::BroadcastProp0Changed_Implementation(ETbEnumEnum0 InProp0)
-{
-	Prop0 = InProp0;
-	Prop0Changed.Broadcast(InProp0);
-}
-
 ETbEnumEnum0 UTbEnumEnumInterfaceOLinkClient::GetProp0_Implementation() const
 {
 	return Prop0;
@@ -140,17 +94,6 @@ void UTbEnumEnumInterfaceOLinkClient::SetProp0_Implementation(ETbEnumEnum0 InPro
 		return;
 	}
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop0"), InProp0);
-}
-
-FTbEnumEnumInterfaceProp0ChangedDelegate& UTbEnumEnumInterfaceOLinkClient::GetProp0ChangedDelegate()
-{
-	return Prop0Changed;
-}
-
-void UTbEnumEnumInterfaceOLinkClient::BroadcastProp1Changed_Implementation(ETbEnumEnum1 InProp1)
-{
-	Prop1 = InProp1;
-	Prop1Changed.Broadcast(InProp1);
 }
 
 ETbEnumEnum1 UTbEnumEnumInterfaceOLinkClient::GetProp1_Implementation() const
@@ -167,17 +110,6 @@ void UTbEnumEnumInterfaceOLinkClient::SetProp1_Implementation(ETbEnumEnum1 InPro
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop1"), InProp1);
 }
 
-FTbEnumEnumInterfaceProp1ChangedDelegate& UTbEnumEnumInterfaceOLinkClient::GetProp1ChangedDelegate()
-{
-	return Prop1Changed;
-}
-
-void UTbEnumEnumInterfaceOLinkClient::BroadcastProp2Changed_Implementation(ETbEnumEnum2 InProp2)
-{
-	Prop2 = InProp2;
-	Prop2Changed.Broadcast(InProp2);
-}
-
 ETbEnumEnum2 UTbEnumEnumInterfaceOLinkClient::GetProp2_Implementation() const
 {
 	return Prop2;
@@ -192,17 +124,6 @@ void UTbEnumEnumInterfaceOLinkClient::SetProp2_Implementation(ETbEnumEnum2 InPro
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop2"), InProp2);
 }
 
-FTbEnumEnumInterfaceProp2ChangedDelegate& UTbEnumEnumInterfaceOLinkClient::GetProp2ChangedDelegate()
-{
-	return Prop2Changed;
-}
-
-void UTbEnumEnumInterfaceOLinkClient::BroadcastProp3Changed_Implementation(ETbEnumEnum3 InProp3)
-{
-	Prop3 = InProp3;
-	Prop3Changed.Broadcast(InProp3);
-}
-
 ETbEnumEnum3 UTbEnumEnumInterfaceOLinkClient::GetProp3_Implementation() const
 {
 	return Prop3;
@@ -215,11 +136,6 @@ void UTbEnumEnumInterfaceOLinkClient::SetProp3_Implementation(ETbEnumEnum3 InPro
 		return;
 	}
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop3"), InProp3);
-}
-
-FTbEnumEnumInterfaceProp3ChangedDelegate& UTbEnumEnumInterfaceOLinkClient::GetProp3ChangedDelegate()
-{
-	return Prop3Changed;
 }
 
 ETbEnumEnum0 UTbEnumEnumInterfaceOLinkClient::Func0_Implementation(ETbEnumEnum0 Param0)

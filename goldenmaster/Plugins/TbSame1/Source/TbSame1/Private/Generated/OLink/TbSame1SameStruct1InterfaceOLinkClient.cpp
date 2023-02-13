@@ -36,7 +36,7 @@ THIRD_PARTY_INCLUDES_START
 THIRD_PARTY_INCLUDES_END
 
 UTbSame1SameStruct1InterfaceOLinkClient::UTbSame1SameStruct1InterfaceOLinkClient()
-	: ITbSame1SameStruct1InterfaceInterface()
+	: UAbstractTbSame1SameStruct1Interface()
 {
 	m_sink = std::make_shared<FUnrealOLinkSink>("tb.same1.SameStruct1Interface");
 }
@@ -82,22 +82,6 @@ void UTbSame1SameStruct1InterfaceOLinkClient::Deinitialize()
 	Super::Deinitialize();
 }
 
-void UTbSame1SameStruct1InterfaceOLinkClient::BroadcastSig1_Implementation(const FTbSame1Struct1& Param1)
-{
-	Sig1Signal.Broadcast(Param1);
-}
-
-FTbSame1SameStruct1InterfaceSig1Delegate& UTbSame1SameStruct1InterfaceOLinkClient::GetSig1SignalDelegate()
-{
-	return Sig1Signal;
-}
-
-void UTbSame1SameStruct1InterfaceOLinkClient::BroadcastProp1Changed_Implementation(const FTbSame1Struct1& InProp1)
-{
-	Prop1 = InProp1;
-	Prop1Changed.Broadcast(InProp1);
-}
-
 FTbSame1Struct1 UTbSame1SameStruct1InterfaceOLinkClient::GetProp1_Implementation() const
 {
 	return Prop1;
@@ -110,11 +94,6 @@ void UTbSame1SameStruct1InterfaceOLinkClient::SetProp1_Implementation(const FTbS
 		return;
 	}
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop1"), InProp1);
-}
-
-FTbSame1SameStruct1InterfaceProp1ChangedDelegate& UTbSame1SameStruct1InterfaceOLinkClient::GetProp1ChangedDelegate()
-{
-	return Prop1Changed;
 }
 
 FTbSame1Struct1 UTbSame1SameStruct1InterfaceOLinkClient::Func1_Implementation(const FTbSame1Struct1& Param1)

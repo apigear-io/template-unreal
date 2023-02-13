@@ -36,7 +36,7 @@ THIRD_PARTY_INCLUDES_START
 THIRD_PARTY_INCLUDES_END
 
 UTbSimpleEmptyInterfaceOLinkClient::UTbSimpleEmptyInterfaceOLinkClient()
-	: ITbSimpleEmptyInterfaceInterface()
+	: UAbstractTbSimpleEmptyInterface()
 {
 	m_sink = std::make_shared<FUnrealOLinkSink>("tb.simple.EmptyInterface");
 }

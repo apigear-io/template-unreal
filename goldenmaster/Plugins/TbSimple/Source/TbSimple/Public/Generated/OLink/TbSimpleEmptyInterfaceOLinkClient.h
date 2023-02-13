@@ -25,7 +25,7 @@ THIRD_PARTY_INCLUDES_END
 #include "TbSimpleEmptyInterfaceOLinkClient.generated.h"
 
 UCLASS(BlueprintType)
-class TBSIMPLE_API UTbSimpleEmptyInterfaceOLinkClient : public UGameInstanceSubsystem, public ITbSimpleEmptyInterfaceInterface
+class TBSIMPLE_API UTbSimpleEmptyInterfaceOLinkClient : public UAbstractTbSimpleEmptyInterface
 {
 	GENERATED_BODY()
 public:
@@ -36,17 +36,11 @@ public:
 	void Initialize(FSubsystemCollectionBase& Collection) override;
 	void Deinitialize() override;
 
-	// signals
 	// properties
 	// operations
-
-protected:
-	// signals
 
 private:
 	void applyState(const nlohmann::json& fields);
 	void emitSignal(const std::string& signalName, const nlohmann::json& args);
 	std::shared_ptr<FUnrealOLinkSink> m_sink;
-
-	// properties - local copy
 };

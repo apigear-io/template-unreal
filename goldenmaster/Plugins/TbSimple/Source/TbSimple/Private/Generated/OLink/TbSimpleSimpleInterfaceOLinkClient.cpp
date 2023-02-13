@@ -36,7 +36,7 @@ THIRD_PARTY_INCLUDES_START
 THIRD_PARTY_INCLUDES_END
 
 UTbSimpleSimpleInterfaceOLinkClient::UTbSimpleSimpleInterfaceOLinkClient()
-	: ITbSimpleSimpleInterfaceInterface()
+	: UAbstractTbSimpleSimpleInterface()
 {
 	m_sink = std::make_shared<FUnrealOLinkSink>("tb.simple.SimpleInterface");
 }
@@ -82,102 +82,6 @@ void UTbSimpleSimpleInterfaceOLinkClient::Deinitialize()
 	Super::Deinitialize();
 }
 
-void UTbSimpleSimpleInterfaceOLinkClient::BroadcastSigVoid_Implementation()
-{
-	SigVoidSignal.Broadcast();
-}
-
-FTbSimpleSimpleInterfaceSigVoidDelegate& UTbSimpleSimpleInterfaceOLinkClient::GetSigVoidSignalDelegate()
-{
-	return SigVoidSignal;
-}
-
-void UTbSimpleSimpleInterfaceOLinkClient::BroadcastSigBool_Implementation(bool bParamBool)
-{
-	SigBoolSignal.Broadcast(bParamBool);
-}
-
-FTbSimpleSimpleInterfaceSigBoolDelegate& UTbSimpleSimpleInterfaceOLinkClient::GetSigBoolSignalDelegate()
-{
-	return SigBoolSignal;
-}
-
-void UTbSimpleSimpleInterfaceOLinkClient::BroadcastSigInt_Implementation(int32 ParamInt)
-{
-	SigIntSignal.Broadcast(ParamInt);
-}
-
-FTbSimpleSimpleInterfaceSigIntDelegate& UTbSimpleSimpleInterfaceOLinkClient::GetSigIntSignalDelegate()
-{
-	return SigIntSignal;
-}
-
-void UTbSimpleSimpleInterfaceOLinkClient::BroadcastSigInt32_Implementation(int32 ParamInt32)
-{
-	SigInt32Signal.Broadcast(ParamInt32);
-}
-
-FTbSimpleSimpleInterfaceSigInt32Delegate& UTbSimpleSimpleInterfaceOLinkClient::GetSigInt32SignalDelegate()
-{
-	return SigInt32Signal;
-}
-
-void UTbSimpleSimpleInterfaceOLinkClient::BroadcastSigInt64_Implementation(int64 ParamInt64)
-{
-	SigInt64Signal.Broadcast(ParamInt64);
-}
-
-FTbSimpleSimpleInterfaceSigInt64Delegate& UTbSimpleSimpleInterfaceOLinkClient::GetSigInt64SignalDelegate()
-{
-	return SigInt64Signal;
-}
-
-void UTbSimpleSimpleInterfaceOLinkClient::BroadcastSigFloat_Implementation(float ParamFloat)
-{
-	SigFloatSignal.Broadcast(ParamFloat);
-}
-
-FTbSimpleSimpleInterfaceSigFloatDelegate& UTbSimpleSimpleInterfaceOLinkClient::GetSigFloatSignalDelegate()
-{
-	return SigFloatSignal;
-}
-
-void UTbSimpleSimpleInterfaceOLinkClient::BroadcastSigFloat32_Implementation(float ParamFloa32)
-{
-	SigFloat32Signal.Broadcast(ParamFloa32);
-}
-
-FTbSimpleSimpleInterfaceSigFloat32Delegate& UTbSimpleSimpleInterfaceOLinkClient::GetSigFloat32SignalDelegate()
-{
-	return SigFloat32Signal;
-}
-
-void UTbSimpleSimpleInterfaceOLinkClient::BroadcastSigFloat64_Implementation(double ParamFloat64)
-{
-	SigFloat64Signal.Broadcast(ParamFloat64);
-}
-
-FTbSimpleSimpleInterfaceSigFloat64Delegate& UTbSimpleSimpleInterfaceOLinkClient::GetSigFloat64SignalDelegate()
-{
-	return SigFloat64Signal;
-}
-
-void UTbSimpleSimpleInterfaceOLinkClient::BroadcastSigString_Implementation(const FString& ParamString)
-{
-	SigStringSignal.Broadcast(ParamString);
-}
-
-FTbSimpleSimpleInterfaceSigStringDelegate& UTbSimpleSimpleInterfaceOLinkClient::GetSigStringSignalDelegate()
-{
-	return SigStringSignal;
-}
-
-void UTbSimpleSimpleInterfaceOLinkClient::BroadcastPropBoolChanged_Implementation(bool bInPropBool)
-{
-	bPropBool = bInPropBool;
-	PropBoolChanged.Broadcast(bInPropBool);
-}
-
 bool UTbSimpleSimpleInterfaceOLinkClient::GetPropBool_Implementation() const
 {
 	return bPropBool;
@@ -190,17 +94,6 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropBool_Implementation(bool bInPro
 		return;
 	}
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propBool"), bInPropBool);
-}
-
-FTbSimpleSimpleInterfacePropBoolChangedDelegate& UTbSimpleSimpleInterfaceOLinkClient::GetPropBoolChangedDelegate()
-{
-	return PropBoolChanged;
-}
-
-void UTbSimpleSimpleInterfaceOLinkClient::BroadcastPropIntChanged_Implementation(int32 InPropInt)
-{
-	PropInt = InPropInt;
-	PropIntChanged.Broadcast(InPropInt);
 }
 
 int32 UTbSimpleSimpleInterfaceOLinkClient::GetPropInt_Implementation() const
@@ -217,17 +110,6 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropInt_Implementation(int32 InProp
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propInt"), InPropInt);
 }
 
-FTbSimpleSimpleInterfacePropIntChangedDelegate& UTbSimpleSimpleInterfaceOLinkClient::GetPropIntChangedDelegate()
-{
-	return PropIntChanged;
-}
-
-void UTbSimpleSimpleInterfaceOLinkClient::BroadcastPropInt32Changed_Implementation(int32 InPropInt32)
-{
-	PropInt32 = InPropInt32;
-	PropInt32Changed.Broadcast(InPropInt32);
-}
-
 int32 UTbSimpleSimpleInterfaceOLinkClient::GetPropInt32_Implementation() const
 {
 	return PropInt32;
@@ -240,17 +122,6 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropInt32_Implementation(int32 InPr
 		return;
 	}
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propInt32"), InPropInt32);
-}
-
-FTbSimpleSimpleInterfacePropInt32ChangedDelegate& UTbSimpleSimpleInterfaceOLinkClient::GetPropInt32ChangedDelegate()
-{
-	return PropInt32Changed;
-}
-
-void UTbSimpleSimpleInterfaceOLinkClient::BroadcastPropInt64Changed_Implementation(int64 InPropInt64)
-{
-	PropInt64 = InPropInt64;
-	PropInt64Changed.Broadcast(InPropInt64);
 }
 
 int64 UTbSimpleSimpleInterfaceOLinkClient::GetPropInt64_Implementation() const
@@ -267,17 +138,6 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropInt64_Implementation(int64 InPr
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propInt64"), InPropInt64);
 }
 
-FTbSimpleSimpleInterfacePropInt64ChangedDelegate& UTbSimpleSimpleInterfaceOLinkClient::GetPropInt64ChangedDelegate()
-{
-	return PropInt64Changed;
-}
-
-void UTbSimpleSimpleInterfaceOLinkClient::BroadcastPropFloatChanged_Implementation(float InPropFloat)
-{
-	PropFloat = InPropFloat;
-	PropFloatChanged.Broadcast(InPropFloat);
-}
-
 float UTbSimpleSimpleInterfaceOLinkClient::GetPropFloat_Implementation() const
 {
 	return PropFloat;
@@ -290,17 +150,6 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropFloat_Implementation(float InPr
 		return;
 	}
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propFloat"), InPropFloat);
-}
-
-FTbSimpleSimpleInterfacePropFloatChangedDelegate& UTbSimpleSimpleInterfaceOLinkClient::GetPropFloatChangedDelegate()
-{
-	return PropFloatChanged;
-}
-
-void UTbSimpleSimpleInterfaceOLinkClient::BroadcastPropFloat32Changed_Implementation(float InPropFloat32)
-{
-	PropFloat32 = InPropFloat32;
-	PropFloat32Changed.Broadcast(InPropFloat32);
 }
 
 float UTbSimpleSimpleInterfaceOLinkClient::GetPropFloat32_Implementation() const
@@ -317,17 +166,6 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropFloat32_Implementation(float In
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propFloat32"), InPropFloat32);
 }
 
-FTbSimpleSimpleInterfacePropFloat32ChangedDelegate& UTbSimpleSimpleInterfaceOLinkClient::GetPropFloat32ChangedDelegate()
-{
-	return PropFloat32Changed;
-}
-
-void UTbSimpleSimpleInterfaceOLinkClient::BroadcastPropFloat64Changed_Implementation(double InPropFloat64)
-{
-	PropFloat64 = InPropFloat64;
-	PropFloat64Changed.Broadcast(InPropFloat64);
-}
-
 double UTbSimpleSimpleInterfaceOLinkClient::GetPropFloat64_Implementation() const
 {
 	return PropFloat64;
@@ -342,17 +180,6 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropFloat64_Implementation(double I
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propFloat64"), InPropFloat64);
 }
 
-FTbSimpleSimpleInterfacePropFloat64ChangedDelegate& UTbSimpleSimpleInterfaceOLinkClient::GetPropFloat64ChangedDelegate()
-{
-	return PropFloat64Changed;
-}
-
-void UTbSimpleSimpleInterfaceOLinkClient::BroadcastPropStringChanged_Implementation(const FString& InPropString)
-{
-	PropString = InPropString;
-	PropStringChanged.Broadcast(InPropString);
-}
-
 FString UTbSimpleSimpleInterfaceOLinkClient::GetPropString_Implementation() const
 {
 	return PropString;
@@ -365,11 +192,6 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropString_Implementation(const FSt
 		return;
 	}
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propString"), InPropString);
-}
-
-FTbSimpleSimpleInterfacePropStringChangedDelegate& UTbSimpleSimpleInterfaceOLinkClient::GetPropStringChangedDelegate()
-{
-	return PropStringChanged;
 }
 
 void UTbSimpleSimpleInterfaceOLinkClient::FuncVoid_Implementation()

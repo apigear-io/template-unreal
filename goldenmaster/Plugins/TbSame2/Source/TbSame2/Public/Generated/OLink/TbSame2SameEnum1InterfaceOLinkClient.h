@@ -25,7 +25,7 @@ THIRD_PARTY_INCLUDES_END
 #include "TbSame2SameEnum1InterfaceOLinkClient.generated.h"
 
 UCLASS(BlueprintType)
-class TBSAME2_API UTbSame2SameEnum1InterfaceOLinkClient : public UGameInstanceSubsystem, public ITbSame2SameEnum1InterfaceInterface
+class TBSAME2_API UTbSame2SameEnum1InterfaceOLinkClient : public UAbstractTbSame2SameEnum1Interface
 {
 	GENERATED_BODY()
 public:
@@ -36,15 +36,6 @@ public:
 	void Initialize(FSubsystemCollectionBase& Collection) override;
 	void Deinitialize() override;
 
-	// signals
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame2|SameEnum1Interface", DisplayName = "Sig1 Signal")
-	FTbSame2SameEnum1InterfaceSig1Delegate Sig1Signal;
-	FTbSame2SameEnum1InterfaceSig1Delegate& GetSig1SignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame2|SameEnum1Interface", DisplayName = "Prop1 Changed")
-	FTbSame2SameEnum1InterfaceProp1ChangedDelegate Prop1Changed;
-	FTbSame2SameEnum1InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
-
 	// properties
 	ETbSame2Enum1 GetProp1_Implementation() const override;
 	void SetProp1_Implementation(ETbSame2Enum1 Prop1) override;
@@ -53,17 +44,8 @@ public:
 	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, ETbSame2Enum1 Param1) override{};
 	ETbSame2Enum1 Func1_Implementation(ETbSame2Enum1 Param1) override;
 
-protected:
-	// signals
-	void BroadcastSig1_Implementation(ETbSame2Enum1 Param1) override;
-
-	void BroadcastProp1Changed_Implementation(ETbSame2Enum1 Prop1) override;
-
 private:
 	void applyState(const nlohmann::json& fields);
 	void emitSignal(const std::string& signalName, const nlohmann::json& args);
 	std::shared_ptr<FUnrealOLinkSink> m_sink;
-
-	// properties - local copy
-	ETbSame2Enum1 Prop1{ETbSame2Enum1::TSE_VALUE1};
 };

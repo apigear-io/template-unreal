@@ -36,7 +36,7 @@ THIRD_PARTY_INCLUDES_START
 THIRD_PARTY_INCLUDES_END
 
 UTbSimpleNoOperationsInterfaceOLinkClient::UTbSimpleNoOperationsInterfaceOLinkClient()
-	: ITbSimpleNoOperationsInterfaceInterface()
+	: UAbstractTbSimpleNoOperationsInterface()
 {
 	m_sink = std::make_shared<FUnrealOLinkSink>("tb.simple.NoOperationsInterface");
 }
@@ -82,32 +82,6 @@ void UTbSimpleNoOperationsInterfaceOLinkClient::Deinitialize()
 	Super::Deinitialize();
 }
 
-void UTbSimpleNoOperationsInterfaceOLinkClient::BroadcastSigVoid_Implementation()
-{
-	SigVoidSignal.Broadcast();
-}
-
-FTbSimpleNoOperationsInterfaceSigVoidDelegate& UTbSimpleNoOperationsInterfaceOLinkClient::GetSigVoidSignalDelegate()
-{
-	return SigVoidSignal;
-}
-
-void UTbSimpleNoOperationsInterfaceOLinkClient::BroadcastSigBool_Implementation(bool bParamBool)
-{
-	SigBoolSignal.Broadcast(bParamBool);
-}
-
-FTbSimpleNoOperationsInterfaceSigBoolDelegate& UTbSimpleNoOperationsInterfaceOLinkClient::GetSigBoolSignalDelegate()
-{
-	return SigBoolSignal;
-}
-
-void UTbSimpleNoOperationsInterfaceOLinkClient::BroadcastPropBoolChanged_Implementation(bool bInPropBool)
-{
-	bPropBool = bInPropBool;
-	PropBoolChanged.Broadcast(bInPropBool);
-}
-
 bool UTbSimpleNoOperationsInterfaceOLinkClient::GetPropBool_Implementation() const
 {
 	return bPropBool;
@@ -122,17 +96,6 @@ void UTbSimpleNoOperationsInterfaceOLinkClient::SetPropBool_Implementation(bool 
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propBool"), bInPropBool);
 }
 
-FTbSimpleNoOperationsInterfacePropBoolChangedDelegate& UTbSimpleNoOperationsInterfaceOLinkClient::GetPropBoolChangedDelegate()
-{
-	return PropBoolChanged;
-}
-
-void UTbSimpleNoOperationsInterfaceOLinkClient::BroadcastPropIntChanged_Implementation(int32 InPropInt)
-{
-	PropInt = InPropInt;
-	PropIntChanged.Broadcast(InPropInt);
-}
-
 int32 UTbSimpleNoOperationsInterfaceOLinkClient::GetPropInt_Implementation() const
 {
 	return PropInt;
@@ -145,11 +108,6 @@ void UTbSimpleNoOperationsInterfaceOLinkClient::SetPropInt_Implementation(int32 
 		return;
 	}
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propInt"), InPropInt);
-}
-
-FTbSimpleNoOperationsInterfacePropIntChangedDelegate& UTbSimpleNoOperationsInterfaceOLinkClient::GetPropIntChangedDelegate()
-{
-	return PropIntChanged;
 }
 
 void UTbSimpleNoOperationsInterfaceOLinkClient::applyState(const nlohmann::json& fields)

@@ -25,7 +25,7 @@ THIRD_PARTY_INCLUDES_END
 #include "TbSame2SameStruct1InterfaceOLinkClient.generated.h"
 
 UCLASS(BlueprintType)
-class TBSAME2_API UTbSame2SameStruct1InterfaceOLinkClient : public UGameInstanceSubsystem, public ITbSame2SameStruct1InterfaceInterface
+class TBSAME2_API UTbSame2SameStruct1InterfaceOLinkClient : public UAbstractTbSame2SameStruct1Interface
 {
 	GENERATED_BODY()
 public:
@@ -36,15 +36,6 @@ public:
 	void Initialize(FSubsystemCollectionBase& Collection) override;
 	void Deinitialize() override;
 
-	// signals
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame2|SameStruct1Interface", DisplayName = "Sig1 Signal")
-	FTbSame2SameStruct1InterfaceSig1Delegate Sig1Signal;
-	FTbSame2SameStruct1InterfaceSig1Delegate& GetSig1SignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame2|SameStruct1Interface", DisplayName = "Prop1 Changed")
-	FTbSame2SameStruct1InterfaceProp1ChangedDelegate Prop1Changed;
-	FTbSame2SameStruct1InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
-
 	// properties
 	FTbSame2Struct1 GetProp1_Implementation() const override;
 	void SetProp1_Implementation(const FTbSame2Struct1& Prop1) override;
@@ -53,17 +44,8 @@ public:
 	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame2Struct1& Result, const FTbSame2Struct1& Param1) override{};
 	FTbSame2Struct1 Func1_Implementation(const FTbSame2Struct1& Param1) override;
 
-protected:
-	// signals
-	void BroadcastSig1_Implementation(const FTbSame2Struct1& Param1) override;
-
-	void BroadcastProp1Changed_Implementation(const FTbSame2Struct1& Prop1) override;
-
 private:
 	void applyState(const nlohmann::json& fields);
 	void emitSignal(const std::string& signalName, const nlohmann::json& args);
 	std::shared_ptr<FUnrealOLinkSink> m_sink;
-
-	// properties - local copy
-	FTbSame2Struct1 Prop1{FTbSame2Struct1()};
 };

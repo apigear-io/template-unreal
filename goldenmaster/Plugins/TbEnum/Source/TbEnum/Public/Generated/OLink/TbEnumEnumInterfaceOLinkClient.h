@@ -25,7 +25,7 @@ THIRD_PARTY_INCLUDES_END
 #include "TbEnumEnumInterfaceOLinkClient.generated.h"
 
 UCLASS(BlueprintType)
-class TBENUM_API UTbEnumEnumInterfaceOLinkClient : public UGameInstanceSubsystem, public ITbEnumEnumInterfaceInterface
+class TBENUM_API UTbEnumEnumInterfaceOLinkClient : public UAbstractTbEnumEnumInterface
 {
 	GENERATED_BODY()
 public:
@@ -35,39 +35,6 @@ public:
 	// subsystem
 	void Initialize(FSubsystemCollectionBase& Collection) override;
 	void Deinitialize() override;
-
-	// signals
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface", DisplayName = "Sig0 Signal")
-	FTbEnumEnumInterfaceSig0Delegate Sig0Signal;
-	FTbEnumEnumInterfaceSig0Delegate& GetSig0SignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface", DisplayName = "Sig1 Signal")
-	FTbEnumEnumInterfaceSig1Delegate Sig1Signal;
-	FTbEnumEnumInterfaceSig1Delegate& GetSig1SignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface", DisplayName = "Sig2 Signal")
-	FTbEnumEnumInterfaceSig2Delegate Sig2Signal;
-	FTbEnumEnumInterfaceSig2Delegate& GetSig2SignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface", DisplayName = "Sig3 Signal")
-	FTbEnumEnumInterfaceSig3Delegate Sig3Signal;
-	FTbEnumEnumInterfaceSig3Delegate& GetSig3SignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface", DisplayName = "Prop0 Changed")
-	FTbEnumEnumInterfaceProp0ChangedDelegate Prop0Changed;
-	FTbEnumEnumInterfaceProp0ChangedDelegate& GetProp0ChangedDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface", DisplayName = "Prop1 Changed")
-	FTbEnumEnumInterfaceProp1ChangedDelegate Prop1Changed;
-	FTbEnumEnumInterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface", DisplayName = "Prop2 Changed")
-	FTbEnumEnumInterfaceProp2ChangedDelegate Prop2Changed;
-	FTbEnumEnumInterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface", DisplayName = "Prop3 Changed")
-	FTbEnumEnumInterfaceProp3ChangedDelegate Prop3Changed;
-	FTbEnumEnumInterfaceProp3ChangedDelegate& GetProp3ChangedDelegate() override;
 
 	// properties
 	ETbEnumEnum0 GetProp0_Implementation() const override;
@@ -95,32 +62,8 @@ public:
 	void Func3Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum3& Result, ETbEnumEnum3 Param3) override{};
 	ETbEnumEnum3 Func3_Implementation(ETbEnumEnum3 Param3) override;
 
-protected:
-	// signals
-	void BroadcastSig0_Implementation(ETbEnumEnum0 Param0) override;
-
-	void BroadcastSig1_Implementation(ETbEnumEnum1 Param1) override;
-
-	void BroadcastSig2_Implementation(ETbEnumEnum2 Param2) override;
-
-	void BroadcastSig3_Implementation(ETbEnumEnum3 Param3) override;
-
-	void BroadcastProp0Changed_Implementation(ETbEnumEnum0 Prop0) override;
-
-	void BroadcastProp1Changed_Implementation(ETbEnumEnum1 Prop1) override;
-
-	void BroadcastProp2Changed_Implementation(ETbEnumEnum2 Prop2) override;
-
-	void BroadcastProp3Changed_Implementation(ETbEnumEnum3 Prop3) override;
-
 private:
 	void applyState(const nlohmann::json& fields);
 	void emitSignal(const std::string& signalName, const nlohmann::json& args);
 	std::shared_ptr<FUnrealOLinkSink> m_sink;
-
-	// properties - local copy
-	ETbEnumEnum0 Prop0{ETbEnumEnum0::TEE_VALUE0};
-	ETbEnumEnum1 Prop1{ETbEnumEnum1::TEE_VALUE1};
-	ETbEnumEnum2 Prop2{ETbEnumEnum2::TEE_VALUE2};
-	ETbEnumEnum3 Prop3{ETbEnumEnum3::TEE_VALUE3};
 };

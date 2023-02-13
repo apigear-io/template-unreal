@@ -25,7 +25,7 @@ THIRD_PARTY_INCLUDES_END
 #include "Testbed1StructArrayInterfaceOLinkClient.generated.h"
 
 UCLASS(BlueprintType)
-class TESTBED1_API UTestbed1StructArrayInterfaceOLinkClient : public UGameInstanceSubsystem, public ITestbed1StructArrayInterfaceInterface
+class TESTBED1_API UTestbed1StructArrayInterfaceOLinkClient : public UAbstractTestbed1StructArrayInterface
 {
 	GENERATED_BODY()
 public:
@@ -35,39 +35,6 @@ public:
 	// subsystem
 	void Initialize(FSubsystemCollectionBase& Collection) override;
 	void Deinitialize() override;
-
-	// signals
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface", DisplayName = "SigBool Signal")
-	FTestbed1StructArrayInterfaceSigBoolDelegate SigBoolSignal;
-	FTestbed1StructArrayInterfaceSigBoolDelegate& GetSigBoolSignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface", DisplayName = "SigInt Signal")
-	FTestbed1StructArrayInterfaceSigIntDelegate SigIntSignal;
-	FTestbed1StructArrayInterfaceSigIntDelegate& GetSigIntSignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface", DisplayName = "SigFloat Signal")
-	FTestbed1StructArrayInterfaceSigFloatDelegate SigFloatSignal;
-	FTestbed1StructArrayInterfaceSigFloatDelegate& GetSigFloatSignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface", DisplayName = "SigString Signal")
-	FTestbed1StructArrayInterfaceSigStringDelegate SigStringSignal;
-	FTestbed1StructArrayInterfaceSigStringDelegate& GetSigStringSignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface", DisplayName = "PropBool Changed")
-	FTestbed1StructArrayInterfacePropBoolChangedDelegate PropBoolChanged;
-	FTestbed1StructArrayInterfacePropBoolChangedDelegate& GetPropBoolChangedDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface", DisplayName = "PropInt Changed")
-	FTestbed1StructArrayInterfacePropIntChangedDelegate PropIntChanged;
-	FTestbed1StructArrayInterfacePropIntChangedDelegate& GetPropIntChangedDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface", DisplayName = "PropFloat Changed")
-	FTestbed1StructArrayInterfacePropFloatChangedDelegate PropFloatChanged;
-	FTestbed1StructArrayInterfacePropFloatChangedDelegate& GetPropFloatChangedDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface", DisplayName = "PropString Changed")
-	FTestbed1StructArrayInterfacePropStringChangedDelegate PropStringChanged;
-	FTestbed1StructArrayInterfacePropStringChangedDelegate& GetPropStringChangedDelegate() override;
 
 	// properties
 	TArray<FTestbed1StructBool> GetPropBool_Implementation() const override;
@@ -95,32 +62,8 @@ public:
 	void FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructString>& ParamString) override{};
 	FTestbed1StructBool FuncString_Implementation(const TArray<FTestbed1StructString>& ParamString) override;
 
-protected:
-	// signals
-	void BroadcastSigBool_Implementation(const TArray<FTestbed1StructBool>& ParamBool) override;
-
-	void BroadcastSigInt_Implementation(const TArray<FTestbed1StructInt>& ParamInt) override;
-
-	void BroadcastSigFloat_Implementation(const TArray<FTestbed1StructFloat>& ParamFloat) override;
-
-	void BroadcastSigString_Implementation(const TArray<FTestbed1StructString>& ParamString) override;
-
-	void BroadcastPropBoolChanged_Implementation(const TArray<FTestbed1StructBool>& PropBool) override;
-
-	void BroadcastPropIntChanged_Implementation(const TArray<FTestbed1StructInt>& PropInt) override;
-
-	void BroadcastPropFloatChanged_Implementation(const TArray<FTestbed1StructFloat>& PropFloat) override;
-
-	void BroadcastPropStringChanged_Implementation(const TArray<FTestbed1StructString>& PropString) override;
-
 private:
 	void applyState(const nlohmann::json& fields);
 	void emitSignal(const std::string& signalName, const nlohmann::json& args);
 	std::shared_ptr<FUnrealOLinkSink> m_sink;
-
-	// properties - local copy
-	TArray<FTestbed1StructBool> PropBool{TArray<FTestbed1StructBool>()};
-	TArray<FTestbed1StructInt> PropInt{TArray<FTestbed1StructInt>()};
-	TArray<FTestbed1StructFloat> PropFloat{TArray<FTestbed1StructFloat>()};
-	TArray<FTestbed1StructString> PropString{TArray<FTestbed1StructString>()};
 };

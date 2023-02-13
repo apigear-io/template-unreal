@@ -36,7 +36,7 @@ THIRD_PARTY_INCLUDES_START
 THIRD_PARTY_INCLUDES_END
 
 UTbSimpleNoSignalsInterfaceOLinkClient::UTbSimpleNoSignalsInterfaceOLinkClient()
-	: ITbSimpleNoSignalsInterfaceInterface()
+	: UAbstractTbSimpleNoSignalsInterface()
 {
 	m_sink = std::make_shared<FUnrealOLinkSink>("tb.simple.NoSignalsInterface");
 }
@@ -82,12 +82,6 @@ void UTbSimpleNoSignalsInterfaceOLinkClient::Deinitialize()
 	Super::Deinitialize();
 }
 
-void UTbSimpleNoSignalsInterfaceOLinkClient::BroadcastPropBoolChanged_Implementation(bool bInPropBool)
-{
-	bPropBool = bInPropBool;
-	PropBoolChanged.Broadcast(bInPropBool);
-}
-
 bool UTbSimpleNoSignalsInterfaceOLinkClient::GetPropBool_Implementation() const
 {
 	return bPropBool;
@@ -102,17 +96,6 @@ void UTbSimpleNoSignalsInterfaceOLinkClient::SetPropBool_Implementation(bool bIn
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propBool"), bInPropBool);
 }
 
-FTbSimpleNoSignalsInterfacePropBoolChangedDelegate& UTbSimpleNoSignalsInterfaceOLinkClient::GetPropBoolChangedDelegate()
-{
-	return PropBoolChanged;
-}
-
-void UTbSimpleNoSignalsInterfaceOLinkClient::BroadcastPropIntChanged_Implementation(int32 InPropInt)
-{
-	PropInt = InPropInt;
-	PropIntChanged.Broadcast(InPropInt);
-}
-
 int32 UTbSimpleNoSignalsInterfaceOLinkClient::GetPropInt_Implementation() const
 {
 	return PropInt;
@@ -125,11 +108,6 @@ void UTbSimpleNoSignalsInterfaceOLinkClient::SetPropInt_Implementation(int32 InP
 		return;
 	}
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propInt"), InPropInt);
-}
-
-FTbSimpleNoSignalsInterfacePropIntChangedDelegate& UTbSimpleNoSignalsInterfaceOLinkClient::GetPropIntChangedDelegate()
-{
-	return PropIntChanged;
 }
 
 void UTbSimpleNoSignalsInterfaceOLinkClient::FuncVoid_Implementation()

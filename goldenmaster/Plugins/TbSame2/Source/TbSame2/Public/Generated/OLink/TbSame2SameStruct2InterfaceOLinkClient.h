@@ -25,7 +25,7 @@ THIRD_PARTY_INCLUDES_END
 #include "TbSame2SameStruct2InterfaceOLinkClient.generated.h"
 
 UCLASS(BlueprintType)
-class TBSAME2_API UTbSame2SameStruct2InterfaceOLinkClient : public UGameInstanceSubsystem, public ITbSame2SameStruct2InterfaceInterface
+class TBSAME2_API UTbSame2SameStruct2InterfaceOLinkClient : public UAbstractTbSame2SameStruct2Interface
 {
 	GENERATED_BODY()
 public:
@@ -35,23 +35,6 @@ public:
 	// subsystem
 	void Initialize(FSubsystemCollectionBase& Collection) override;
 	void Deinitialize() override;
-
-	// signals
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame2|SameStruct2Interface", DisplayName = "Sig1 Signal")
-	FTbSame2SameStruct2InterfaceSig1Delegate Sig1Signal;
-	FTbSame2SameStruct2InterfaceSig1Delegate& GetSig1SignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame2|SameStruct2Interface", DisplayName = "Sig2 Signal")
-	FTbSame2SameStruct2InterfaceSig2Delegate Sig2Signal;
-	FTbSame2SameStruct2InterfaceSig2Delegate& GetSig2SignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame2|SameStruct2Interface", DisplayName = "Prop1 Changed")
-	FTbSame2SameStruct2InterfaceProp1ChangedDelegate Prop1Changed;
-	FTbSame2SameStruct2InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame2|SameStruct2Interface", DisplayName = "Prop2 Changed")
-	FTbSame2SameStruct2InterfaceProp2ChangedDelegate Prop2Changed;
-	FTbSame2SameStruct2InterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() override;
 
 	// properties
 	FTbSame2Struct2 GetProp1_Implementation() const override;
@@ -67,22 +50,8 @@ public:
 	void Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame2Struct1& Result, const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2) override{};
 	FTbSame2Struct1 Func2_Implementation(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2) override;
 
-protected:
-	// signals
-	void BroadcastSig1_Implementation(const FTbSame2Struct1& Param1) override;
-
-	void BroadcastSig2_Implementation(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2) override;
-
-	void BroadcastProp1Changed_Implementation(const FTbSame2Struct2& Prop1) override;
-
-	void BroadcastProp2Changed_Implementation(const FTbSame2Struct2& Prop2) override;
-
 private:
 	void applyState(const nlohmann::json& fields);
 	void emitSignal(const std::string& signalName, const nlohmann::json& args);
 	std::shared_ptr<FUnrealOLinkSink> m_sink;
-
-	// properties - local copy
-	FTbSame2Struct2 Prop1{FTbSame2Struct2()};
-	FTbSame2Struct2 Prop2{FTbSame2Struct2()};
 };

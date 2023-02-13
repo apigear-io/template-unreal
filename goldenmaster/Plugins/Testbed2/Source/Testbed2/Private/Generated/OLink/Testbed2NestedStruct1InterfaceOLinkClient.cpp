@@ -36,7 +36,7 @@ THIRD_PARTY_INCLUDES_START
 THIRD_PARTY_INCLUDES_END
 
 UTestbed2NestedStruct1InterfaceOLinkClient::UTestbed2NestedStruct1InterfaceOLinkClient()
-	: ITestbed2NestedStruct1InterfaceInterface()
+	: UAbstractTestbed2NestedStruct1Interface()
 {
 	m_sink = std::make_shared<FUnrealOLinkSink>("testbed2.NestedStruct1Interface");
 }
@@ -82,22 +82,6 @@ void UTestbed2NestedStruct1InterfaceOLinkClient::Deinitialize()
 	Super::Deinitialize();
 }
 
-void UTestbed2NestedStruct1InterfaceOLinkClient::BroadcastSig1_Implementation(const FTestbed2NestedStruct1& Param1)
-{
-	Sig1Signal.Broadcast(Param1);
-}
-
-FTestbed2NestedStruct1InterfaceSig1Delegate& UTestbed2NestedStruct1InterfaceOLinkClient::GetSig1SignalDelegate()
-{
-	return Sig1Signal;
-}
-
-void UTestbed2NestedStruct1InterfaceOLinkClient::BroadcastProp1Changed_Implementation(const FTestbed2NestedStruct1& InProp1)
-{
-	Prop1 = InProp1;
-	Prop1Changed.Broadcast(InProp1);
-}
-
 FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceOLinkClient::GetProp1_Implementation() const
 {
 	return Prop1;
@@ -110,11 +94,6 @@ void UTestbed2NestedStruct1InterfaceOLinkClient::SetProp1_Implementation(const F
 		return;
 	}
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop1"), InProp1);
-}
-
-FTestbed2NestedStruct1InterfaceProp1ChangedDelegate& UTestbed2NestedStruct1InterfaceOLinkClient::GetProp1ChangedDelegate()
-{
-	return Prop1Changed;
 }
 
 FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceOLinkClient::Func1_Implementation(const FTestbed2NestedStruct1& Param1)

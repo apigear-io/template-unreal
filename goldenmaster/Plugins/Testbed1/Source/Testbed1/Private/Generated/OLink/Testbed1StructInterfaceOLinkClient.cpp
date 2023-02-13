@@ -36,7 +36,7 @@ THIRD_PARTY_INCLUDES_START
 THIRD_PARTY_INCLUDES_END
 
 UTestbed1StructInterfaceOLinkClient::UTestbed1StructInterfaceOLinkClient()
-	: ITestbed1StructInterfaceInterface()
+	: UAbstractTestbed1StructInterface()
 {
 	m_sink = std::make_shared<FUnrealOLinkSink>("testbed1.StructInterface");
 }
@@ -82,52 +82,6 @@ void UTestbed1StructInterfaceOLinkClient::Deinitialize()
 	Super::Deinitialize();
 }
 
-void UTestbed1StructInterfaceOLinkClient::BroadcastSigBool_Implementation(const FTestbed1StructBool& ParamBool)
-{
-	SigBoolSignal.Broadcast(ParamBool);
-}
-
-FTestbed1StructInterfaceSigBoolDelegate& UTestbed1StructInterfaceOLinkClient::GetSigBoolSignalDelegate()
-{
-	return SigBoolSignal;
-}
-
-void UTestbed1StructInterfaceOLinkClient::BroadcastSigInt_Implementation(const FTestbed1StructInt& ParamInt)
-{
-	SigIntSignal.Broadcast(ParamInt);
-}
-
-FTestbed1StructInterfaceSigIntDelegate& UTestbed1StructInterfaceOLinkClient::GetSigIntSignalDelegate()
-{
-	return SigIntSignal;
-}
-
-void UTestbed1StructInterfaceOLinkClient::BroadcastSigFloat_Implementation(const FTestbed1StructFloat& ParamFloat)
-{
-	SigFloatSignal.Broadcast(ParamFloat);
-}
-
-FTestbed1StructInterfaceSigFloatDelegate& UTestbed1StructInterfaceOLinkClient::GetSigFloatSignalDelegate()
-{
-	return SigFloatSignal;
-}
-
-void UTestbed1StructInterfaceOLinkClient::BroadcastSigString_Implementation(const FTestbed1StructString& ParamString)
-{
-	SigStringSignal.Broadcast(ParamString);
-}
-
-FTestbed1StructInterfaceSigStringDelegate& UTestbed1StructInterfaceOLinkClient::GetSigStringSignalDelegate()
-{
-	return SigStringSignal;
-}
-
-void UTestbed1StructInterfaceOLinkClient::BroadcastPropBoolChanged_Implementation(const FTestbed1StructBool& InPropBool)
-{
-	PropBool = InPropBool;
-	PropBoolChanged.Broadcast(InPropBool);
-}
-
 FTestbed1StructBool UTestbed1StructInterfaceOLinkClient::GetPropBool_Implementation() const
 {
 	return PropBool;
@@ -140,17 +94,6 @@ void UTestbed1StructInterfaceOLinkClient::SetPropBool_Implementation(const FTest
 		return;
 	}
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propBool"), InPropBool);
-}
-
-FTestbed1StructInterfacePropBoolChangedDelegate& UTestbed1StructInterfaceOLinkClient::GetPropBoolChangedDelegate()
-{
-	return PropBoolChanged;
-}
-
-void UTestbed1StructInterfaceOLinkClient::BroadcastPropIntChanged_Implementation(const FTestbed1StructInt& InPropInt)
-{
-	PropInt = InPropInt;
-	PropIntChanged.Broadcast(InPropInt);
 }
 
 FTestbed1StructInt UTestbed1StructInterfaceOLinkClient::GetPropInt_Implementation() const
@@ -167,17 +110,6 @@ void UTestbed1StructInterfaceOLinkClient::SetPropInt_Implementation(const FTestb
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propInt"), InPropInt);
 }
 
-FTestbed1StructInterfacePropIntChangedDelegate& UTestbed1StructInterfaceOLinkClient::GetPropIntChangedDelegate()
-{
-	return PropIntChanged;
-}
-
-void UTestbed1StructInterfaceOLinkClient::BroadcastPropFloatChanged_Implementation(const FTestbed1StructFloat& InPropFloat)
-{
-	PropFloat = InPropFloat;
-	PropFloatChanged.Broadcast(InPropFloat);
-}
-
 FTestbed1StructFloat UTestbed1StructInterfaceOLinkClient::GetPropFloat_Implementation() const
 {
 	return PropFloat;
@@ -192,17 +124,6 @@ void UTestbed1StructInterfaceOLinkClient::SetPropFloat_Implementation(const FTes
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propFloat"), InPropFloat);
 }
 
-FTestbed1StructInterfacePropFloatChangedDelegate& UTestbed1StructInterfaceOLinkClient::GetPropFloatChangedDelegate()
-{
-	return PropFloatChanged;
-}
-
-void UTestbed1StructInterfaceOLinkClient::BroadcastPropStringChanged_Implementation(const FTestbed1StructString& InPropString)
-{
-	PropString = InPropString;
-	PropStringChanged.Broadcast(InPropString);
-}
-
 FTestbed1StructString UTestbed1StructInterfaceOLinkClient::GetPropString_Implementation() const
 {
 	return PropString;
@@ -215,11 +136,6 @@ void UTestbed1StructInterfaceOLinkClient::SetPropString_Implementation(const FTe
 		return;
 	}
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propString"), InPropString);
-}
-
-FTestbed1StructInterfacePropStringChangedDelegate& UTestbed1StructInterfaceOLinkClient::GetPropStringChangedDelegate()
-{
-	return PropStringChanged;
 }
 
 FTestbed1StructBool UTestbed1StructInterfaceOLinkClient::FuncBool_Implementation(const FTestbed1StructBool& ParamBool)

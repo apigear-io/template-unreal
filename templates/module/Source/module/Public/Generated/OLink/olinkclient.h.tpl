@@ -7,6 +7,7 @@
 {{- $Category := printf "ApiGear|%s|%s" $ModuleName $IfaceName }}
 {{- $DisplayName := printf "%s%s" $ModuleName $IfaceName }}
 {{- $Class := printf "U%sOLinkClient" $DisplayName}}
+{{- $abstractclass := printf "UAbstract%s%s" (Camel .Module.Name) (Camel .Interface.Name) }}
 {{- $Iface := printf "%s%s" $ModuleName $IfaceName }}
 #pragma once
 
@@ -19,7 +20,7 @@ THIRD_PARTY_INCLUDES_END
 #include "{{$Iface}}OLinkClient.generated.h"
 
 UCLASS(BlueprintType)
-class {{ $API_MACRO }} {{$Class}} : public UGameInstanceSubsystem, public I{{$Iface}}Interface
+class {{ $API_MACRO }} {{$Class}} : public {{$abstractclass}}
 {
 	GENERATED_BODY()
 public:
@@ -30,17 +31,6 @@ public:
 	void Initialize(FSubsystemCollectionBase& Collection) override;
 	void Deinitialize() override;
 
-	// signals
-{{- range .Interface.Signals }}
-	UPROPERTY(BlueprintAssignable, Category = "{{$Category}}", DisplayName = "{{Camel .Name}} Signal")
-	F{{$Iface}}{{Camel .Name}}Delegate {{Camel .Name}}Signal;
-	F{{$Iface}}{{Camel .Name}}Delegate& Get{{Camel .Name}}SignalDelegate() override;
-{{ end }}
-{{- range .Interface.Properties }}
-	UPROPERTY(BlueprintAssignable, Category = "{{$Category}}", DisplayName = "{{Camel .Name}} Changed")
-	F{{$Iface}}{{Camel .Name}}ChangedDelegate {{Camel .Name}}Changed;
-	F{{$Iface}}{{Camel .Name}}ChangedDelegate& Get{{Camel .Name}}ChangedDelegate() override;
-{{ end }}
 	// properties
 {{- range .Interface.Properties }}
 	{{ueReturn "" .}} Get{{Camel .Name}}_Implementation() const override;
@@ -57,28 +47,8 @@ public:
 	{{- end }}
 {{- end }}
 
-protected:
-	// signals
-{{- range $i, $e := .Interface.Signals }}
-{{- if $i }}{{nl}}{{ end }}
-	void Broadcast{{Camel .Name}}_Implementation({{ueParams "" .Params}}) override;
-{{- end }}
-{{- if len .Interface.Properties }}{{ nl }}{{ end }}
-{{- range $i, $e := .Interface.Properties }}
-{{- if $i }}{{nl}}{{ end }}
-	void Broadcast{{Camel .Name}}Changed_Implementation({{ueParam "" .}}) override;
-{{- end }}
-
 private:
 	void applyState(const nlohmann::json& fields);
 	void emitSignal(const std::string& signalName, const nlohmann::json& args);
 	std::shared_ptr<FUnrealOLinkSink> m_sink;
-
-	// properties - local copy
-{{- range .Interface.Properties }}
-{{- if .Description }}
-	/** {{ .Description }} */
-{{- end }}
-	{{ueReturn "" .}} {{ueVar "" .}}{ {{- ueDefault "" . -}} };
-{{- end }}
 };

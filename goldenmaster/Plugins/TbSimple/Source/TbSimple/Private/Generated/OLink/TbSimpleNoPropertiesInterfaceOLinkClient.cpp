@@ -36,7 +36,7 @@ THIRD_PARTY_INCLUDES_START
 THIRD_PARTY_INCLUDES_END
 
 UTbSimpleNoPropertiesInterfaceOLinkClient::UTbSimpleNoPropertiesInterfaceOLinkClient()
-	: ITbSimpleNoPropertiesInterfaceInterface()
+	: UAbstractTbSimpleNoPropertiesInterface()
 {
 	m_sink = std::make_shared<FUnrealOLinkSink>("tb.simple.NoPropertiesInterface");
 }
@@ -80,26 +80,6 @@ void UTbSimpleNoPropertiesInterfaceOLinkClient::Deinitialize()
 	}
 
 	Super::Deinitialize();
-}
-
-void UTbSimpleNoPropertiesInterfaceOLinkClient::BroadcastSigVoid_Implementation()
-{
-	SigVoidSignal.Broadcast();
-}
-
-FTbSimpleNoPropertiesInterfaceSigVoidDelegate& UTbSimpleNoPropertiesInterfaceOLinkClient::GetSigVoidSignalDelegate()
-{
-	return SigVoidSignal;
-}
-
-void UTbSimpleNoPropertiesInterfaceOLinkClient::BroadcastSigBool_Implementation(bool bParamBool)
-{
-	SigBoolSignal.Broadcast(bParamBool);
-}
-
-FTbSimpleNoPropertiesInterfaceSigBoolDelegate& UTbSimpleNoPropertiesInterfaceOLinkClient::GetSigBoolSignalDelegate()
-{
-	return SigBoolSignal;
 }
 
 void UTbSimpleNoPropertiesInterfaceOLinkClient::FuncVoid_Implementation()

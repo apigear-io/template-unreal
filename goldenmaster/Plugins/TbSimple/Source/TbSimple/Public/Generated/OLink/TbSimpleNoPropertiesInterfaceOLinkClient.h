@@ -25,7 +25,7 @@ THIRD_PARTY_INCLUDES_END
 #include "TbSimpleNoPropertiesInterfaceOLinkClient.generated.h"
 
 UCLASS(BlueprintType)
-class TBSIMPLE_API UTbSimpleNoPropertiesInterfaceOLinkClient : public UGameInstanceSubsystem, public ITbSimpleNoPropertiesInterfaceInterface
+class TBSIMPLE_API UTbSimpleNoPropertiesInterfaceOLinkClient : public UAbstractTbSimpleNoPropertiesInterface
 {
 	GENERATED_BODY()
 public:
@@ -36,15 +36,6 @@ public:
 	void Initialize(FSubsystemCollectionBase& Collection) override;
 	void Deinitialize() override;
 
-	// signals
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoPropertiesInterface", DisplayName = "SigVoid Signal")
-	FTbSimpleNoPropertiesInterfaceSigVoidDelegate SigVoidSignal;
-	FTbSimpleNoPropertiesInterfaceSigVoidDelegate& GetSigVoidSignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoPropertiesInterface", DisplayName = "SigBool Signal")
-	FTbSimpleNoPropertiesInterfaceSigBoolDelegate SigBoolSignal;
-	FTbSimpleNoPropertiesInterfaceSigBoolDelegate& GetSigBoolSignalDelegate() override;
-
 	// properties
 	// operations
 	void FuncVoid_Implementation() override;
@@ -52,16 +43,8 @@ public:
 	void FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool) override{};
 	bool FuncBool_Implementation(bool bParamBool) override;
 
-protected:
-	// signals
-	void BroadcastSigVoid_Implementation() override;
-
-	void BroadcastSigBool_Implementation(bool bParamBool) override;
-
 private:
 	void applyState(const nlohmann::json& fields);
 	void emitSignal(const std::string& signalName, const nlohmann::json& args);
 	std::shared_ptr<FUnrealOLinkSink> m_sink;
-
-	// properties - local copy
 };

@@ -25,7 +25,7 @@ THIRD_PARTY_INCLUDES_END
 #include "Testbed2NestedStruct1InterfaceOLinkClient.generated.h"
 
 UCLASS(BlueprintType)
-class TESTBED2_API UTestbed2NestedStruct1InterfaceOLinkClient : public UGameInstanceSubsystem, public ITestbed2NestedStruct1InterfaceInterface
+class TESTBED2_API UTestbed2NestedStruct1InterfaceOLinkClient : public UAbstractTestbed2NestedStruct1Interface
 {
 	GENERATED_BODY()
 public:
@@ -36,15 +36,6 @@ public:
 	void Initialize(FSubsystemCollectionBase& Collection) override;
 	void Deinitialize() override;
 
-	// signals
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct1Interface", DisplayName = "Sig1 Signal")
-	FTestbed2NestedStruct1InterfaceSig1Delegate Sig1Signal;
-	FTestbed2NestedStruct1InterfaceSig1Delegate& GetSig1SignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct1Interface", DisplayName = "Prop1 Changed")
-	FTestbed2NestedStruct1InterfaceProp1ChangedDelegate Prop1Changed;
-	FTestbed2NestedStruct1InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
-
 	// properties
 	FTestbed2NestedStruct1 GetProp1_Implementation() const override;
 	void SetProp1_Implementation(const FTestbed2NestedStruct1& Prop1) override;
@@ -53,17 +44,8 @@ public:
 	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1) override{};
 	FTestbed2NestedStruct1 Func1_Implementation(const FTestbed2NestedStruct1& Param1) override;
 
-protected:
-	// signals
-	void BroadcastSig1_Implementation(const FTestbed2NestedStruct1& Param1) override;
-
-	void BroadcastProp1Changed_Implementation(const FTestbed2NestedStruct1& Prop1) override;
-
 private:
 	void applyState(const nlohmann::json& fields);
 	void emitSignal(const std::string& signalName, const nlohmann::json& args);
 	std::shared_ptr<FUnrealOLinkSink> m_sink;
-
-	// properties - local copy
-	FTestbed2NestedStruct1 Prop1{FTestbed2NestedStruct1()};
 };
