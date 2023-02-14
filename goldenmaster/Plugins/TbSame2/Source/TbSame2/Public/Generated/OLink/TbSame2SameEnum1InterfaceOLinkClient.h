@@ -63,5 +63,5 @@ private:
 	std::shared_ptr<FUnrealOLinkSink> m_sink;
 
 	// properties - local copy
-	ETbSame2Enum1 Prop1{ETbSame2Enum1::VALUE1};
+	ETbSame2Enum1 Prop1{ETbSame2Enum1::TSE_VALUE1};
 };

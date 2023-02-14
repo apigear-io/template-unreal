@@ -28,8 +28,9 @@ limitations under the License.
 UENUM(BlueprintType)
 enum class ETbSame2Enum1 : uint8
 {
-	VALUE1 UMETA(Displayname = "value1"),
-	VALUE2 UMETA(Displayname = "value2")
+	TSE_VALUE1 = 1 UMETA(Displayname = "value1"),
+	TSE_VALUE2 = 2 UMETA(Displayname = "value2"),
+	UNSPECIFIED = 0 UMETA(Hidden)
 };
 
 /**
@@ -43,8 +44,9 @@ bool toUE4Type(ETbSame2Enum1& value, uint8 v);
 UENUM(BlueprintType)
 enum class ETbSame2Enum2 : uint8
 {
-	VALUE1 UMETA(Displayname = "value1"),
-	VALUE2 UMETA(Displayname = "value2")
+	TSE_VALUE1 = 1 UMETA(Displayname = "value1"),
+	TSE_VALUE2 = 2 UMETA(Displayname = "value2"),
+	UNSPECIFIED = 0 UMETA(Hidden)
 };
 
 /**

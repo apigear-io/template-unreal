@@ -25,8 +25,8 @@ bool UTbEnumEnumInterfaceImplementationPropertyProp0Test::RunTest(const FString&
 {
 	// Do implement test here
 	TScriptInterface<ITbEnumEnumInterfaceInterface> test = NewObject<UTbEnumEnumInterface>();
-	test->Execute_SetProp0(test.GetObject(), ETbEnumEnum0::VALUE0);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), test->Execute_GetProp0(test.GetObject()), ETbEnumEnum0::VALUE0);
+	test->Execute_SetProp0(test.GetObject(), ETbEnumEnum0::TEE_VALUE0);
+	TestEqual(TEXT("Getter should return the same value as set by the setter"), test->Execute_GetProp0(test.GetObject()), ETbEnumEnum0::TEE_VALUE0);
 	return true;
 }
 
@@ -35,8 +35,8 @@ bool UTbEnumEnumInterfaceImplementationPropertyProp1Test::RunTest(const FString&
 {
 	// Do implement test here
 	TScriptInterface<ITbEnumEnumInterfaceInterface> test = NewObject<UTbEnumEnumInterface>();
-	test->Execute_SetProp1(test.GetObject(), ETbEnumEnum1::VALUE1);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), test->Execute_GetProp1(test.GetObject()), ETbEnumEnum1::VALUE1);
+	test->Execute_SetProp1(test.GetObject(), ETbEnumEnum1::TEE_VALUE1);
+	TestEqual(TEXT("Getter should return the same value as set by the setter"), test->Execute_GetProp1(test.GetObject()), ETbEnumEnum1::TEE_VALUE1);
 	return true;
 }
 
@@ -45,8 +45,8 @@ bool UTbEnumEnumInterfaceImplementationPropertyProp2Test::RunTest(const FString&
 {
 	// Do implement test here
 	TScriptInterface<ITbEnumEnumInterfaceInterface> test = NewObject<UTbEnumEnumInterface>();
-	test->Execute_SetProp2(test.GetObject(), ETbEnumEnum2::VALUE2);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), test->Execute_GetProp2(test.GetObject()), ETbEnumEnum2::VALUE2);
+	test->Execute_SetProp2(test.GetObject(), ETbEnumEnum2::TEE_VALUE2);
+	TestEqual(TEXT("Getter should return the same value as set by the setter"), test->Execute_GetProp2(test.GetObject()), ETbEnumEnum2::TEE_VALUE2);
 	return true;
 }
 
@@ -55,8 +55,8 @@ bool UTbEnumEnumInterfaceImplementationPropertyProp3Test::RunTest(const FString&
 {
 	// Do implement test here
 	TScriptInterface<ITbEnumEnumInterfaceInterface> test = NewObject<UTbEnumEnumInterface>();
-	test->Execute_SetProp3(test.GetObject(), ETbEnumEnum3::VALUE3);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), test->Execute_GetProp3(test.GetObject()), ETbEnumEnum3::VALUE3);
+	test->Execute_SetProp3(test.GetObject(), ETbEnumEnum3::TEE_VALUE3);
+	TestEqual(TEXT("Getter should return the same value as set by the setter"), test->Execute_GetProp3(test.GetObject()), ETbEnumEnum3::TEE_VALUE3);
 	return true;
 }
 
@@ -65,7 +65,7 @@ bool UTbEnumEnumInterfaceImplementationOperationFunc0Test::RunTest(const FString
 {
 	// Do implement test here
 	TScriptInterface<ITbEnumEnumInterfaceInterface> test = NewObject<UTbEnumEnumInterface>();
-	test->Execute_Func0(test.GetObject(), ETbEnumEnum0::VALUE0);
+	test->Execute_Func0(test.GetObject(), ETbEnumEnum0::TEE_VALUE0);
 	return true;
 }
 
@@ -74,7 +74,7 @@ bool UTbEnumEnumInterfaceImplementationOperationFunc1Test::RunTest(const FString
 {
 	// Do implement test here
 	TScriptInterface<ITbEnumEnumInterfaceInterface> test = NewObject<UTbEnumEnumInterface>();
-	test->Execute_Func1(test.GetObject(), ETbEnumEnum1::VALUE1);
+	test->Execute_Func1(test.GetObject(), ETbEnumEnum1::TEE_VALUE1);
 	return true;
 }
 
@@ -83,7 +83,7 @@ bool UTbEnumEnumInterfaceImplementationOperationFunc2Test::RunTest(const FString
 {
 	// Do implement test here
 	TScriptInterface<ITbEnumEnumInterfaceInterface> test = NewObject<UTbEnumEnumInterface>();
-	test->Execute_Func2(test.GetObject(), ETbEnumEnum2::VALUE2);
+	test->Execute_Func2(test.GetObject(), ETbEnumEnum2::TEE_VALUE2);
 	return true;
 }
 
@@ -92,7 +92,7 @@ bool UTbEnumEnumInterfaceImplementationOperationFunc3Test::RunTest(const FString
 {
 	// Do implement test here
 	TScriptInterface<ITbEnumEnumInterfaceInterface> test = NewObject<UTbEnumEnumInterface>();
-	test->Execute_Func3(test.GetObject(), ETbEnumEnum3::VALUE3);
+	test->Execute_Func3(test.GetObject(), ETbEnumEnum3::TEE_VALUE3);
 	return true;
 }
 

@@ -79,7 +79,7 @@ private:
 
 	// properties - local copy
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1_Private, BlueprintSetter = SetProp1_Private, Category = "ApiGear|TbSame1|SameEnum1Interface")
-	ETbSame1Enum1 Prop1{ETbSame1Enum1::VALUE1};
+	ETbSame1Enum1 Prop1{ETbSame1Enum1::TSE_VALUE1};
 
 	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSame1|SameEnum1Interface", BlueprintInternalUseOnly)
 	ETbSame1Enum1 GetProp1_Private() const;

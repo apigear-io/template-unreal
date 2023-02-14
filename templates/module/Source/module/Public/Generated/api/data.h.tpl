@@ -27,6 +27,7 @@ limitations under the License.
 #include "{{ $ModuleName }}_data.generated.h"
 {{ end }}
 {{- range .Module.Enums }}
+{{- $moduleEnumName := printf "%s%s" $ModuleName .Name }}
 {{- $class := printf "E%s%s" $ModuleName .Name }}
 /**
  * Enumeration {{$class}}
@@ -34,10 +35,12 @@ limitations under the License.
 UENUM(BlueprintType)
 enum class {{$class}} : uint8
 {
+{{- $hasZeroDefaultVal := false}}
 {{- range $idx, $elem := .Members }}
 	{{- if $idx}},{{end}}
-	{{ CAMEL .Name }} UMETA(Displayname = "{{.Name}}")
+	{{ abbreviate $moduleEnumName }}_{{ CAMEL .Name }} = {{.Value}} UMETA(Displayname = "{{.Name}}"){{if eq .Value 0}}{{$hasZeroDefaultVal = true}}{{end}}
 {{- end }}
+{{- if not $hasZeroDefaultVal}},{{nl}}	UNSPECIFIED = 0 UMETA(Hidden){{end}}
 };
 
 /**

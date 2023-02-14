@@ -57,5 +57,5 @@ ETbSame2Enum1 UTbSame2SameEnum1Interface::Func1_Implementation(ETbSame2Enum1 Par
 {
 	(void)Param1;
 	// do business logic here
-	return ETbSame2Enum1::VALUE1;
+	return ETbSame2Enum1::TSE_VALUE1;
 }

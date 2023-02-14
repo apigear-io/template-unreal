@@ -25,8 +25,8 @@ bool UTbSame1SameEnum1InterfaceImplementationPropertyProp1Test::RunTest(const FS
 {
 	// Do implement test here
 	TScriptInterface<ITbSame1SameEnum1InterfaceInterface> test = NewObject<UTbSame1SameEnum1Interface>();
-	test->Execute_SetProp1(test.GetObject(), ETbSame1Enum1::VALUE1);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), test->Execute_GetProp1(test.GetObject()), ETbSame1Enum1::VALUE1);
+	test->Execute_SetProp1(test.GetObject(), ETbSame1Enum1::TSE_VALUE1);
+	TestEqual(TEXT("Getter should return the same value as set by the setter"), test->Execute_GetProp1(test.GetObject()), ETbSame1Enum1::TSE_VALUE1);
 	return true;
 }
 
@@ -35,7 +35,7 @@ bool UTbSame1SameEnum1InterfaceImplementationOperationFunc1Test::RunTest(const F
 {
 	// Do implement test here
 	TScriptInterface<ITbSame1SameEnum1InterfaceInterface> test = NewObject<UTbSame1SameEnum1Interface>();
-	test->Execute_Func1(test.GetObject(), ETbSame1Enum1::VALUE1);
+	test->Execute_Func1(test.GetObject(), ETbSame1Enum1::TSE_VALUE1);
 	return true;
 }
 

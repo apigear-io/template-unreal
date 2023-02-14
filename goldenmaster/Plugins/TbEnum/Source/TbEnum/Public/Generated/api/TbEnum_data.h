@@ -28,9 +28,9 @@ limitations under the License.
 UENUM(BlueprintType)
 enum class ETbEnumEnum0 : uint8
 {
-	VALUE0 UMETA(Displayname = "value0"),
-	VALUE1 UMETA(Displayname = "value1"),
-	VALUE2 UMETA(Displayname = "value2")
+	TEE_VALUE0 = 0 UMETA(Displayname = "value0"),
+	TEE_VALUE1 = 1 UMETA(Displayname = "value1"),
+	TEE_VALUE2 = 2 UMETA(Displayname = "value2")
 };
 
 /**
@@ -44,9 +44,10 @@ bool toUE4Type(ETbEnumEnum0& value, uint8 v);
 UENUM(BlueprintType)
 enum class ETbEnumEnum1 : uint8
 {
-	VALUE1 UMETA(Displayname = "value1"),
-	VALUE2 UMETA(Displayname = "value2"),
-	VALUE3 UMETA(Displayname = "value3")
+	TEE_VALUE1 = 1 UMETA(Displayname = "value1"),
+	TEE_VALUE2 = 2 UMETA(Displayname = "value2"),
+	TEE_VALUE3 = 3 UMETA(Displayname = "value3"),
+	UNSPECIFIED = 0 UMETA(Hidden)
 };
 
 /**
@@ -60,9 +61,9 @@ bool toUE4Type(ETbEnumEnum1& value, uint8 v);
 UENUM(BlueprintType)
 enum class ETbEnumEnum2 : uint8
 {
-	VALUE2 UMETA(Displayname = "value2"),
-	VALUE1 UMETA(Displayname = "value1"),
-	VALUE0 UMETA(Displayname = "value0")
+	TEE_VALUE2 = 2 UMETA(Displayname = "value2"),
+	TEE_VALUE1 = 1 UMETA(Displayname = "value1"),
+	TEE_VALUE0 = 0 UMETA(Displayname = "value0")
 };
 
 /**
@@ -76,9 +77,10 @@ bool toUE4Type(ETbEnumEnum2& value, uint8 v);
 UENUM(BlueprintType)
 enum class ETbEnumEnum3 : uint8
 {
-	VALUE3 UMETA(Displayname = "value3"),
-	VALUE2 UMETA(Displayname = "value2"),
-	VALUE1 UMETA(Displayname = "value1")
+	TEE_VALUE3 = 3 UMETA(Displayname = "value3"),
+	TEE_VALUE2 = 2 UMETA(Displayname = "value2"),
+	TEE_VALUE1 = 1 UMETA(Displayname = "value1"),
+	UNSPECIFIED = 0 UMETA(Hidden)
 };
 
 /**

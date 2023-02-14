@@ -104,7 +104,7 @@ private:
 
 	// properties - local copy
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1_Private, BlueprintSetter = SetProp1_Private, Category = "ApiGear|TbSame1|SameEnum2Interface")
-	ETbSame1Enum1 Prop1{ETbSame1Enum1::VALUE1};
+	ETbSame1Enum1 Prop1{ETbSame1Enum1::TSE_VALUE1};
 
 	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSame1|SameEnum2Interface", BlueprintInternalUseOnly)
 	ETbSame1Enum1 GetProp1_Private() const;
@@ -113,7 +113,7 @@ private:
 	void SetProp1_Private(ETbSame1Enum1 InProp1);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp2_Private, BlueprintSetter = SetProp2_Private, Category = "ApiGear|TbSame1|SameEnum2Interface")
-	ETbSame1Enum2 Prop2{ETbSame1Enum2::VALUE1};
+	ETbSame1Enum2 Prop2{ETbSame1Enum2::TSE_VALUE1};
 
 	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSame1|SameEnum2Interface", BlueprintInternalUseOnly)
 	ETbSame1Enum2 GetProp2_Private() const;

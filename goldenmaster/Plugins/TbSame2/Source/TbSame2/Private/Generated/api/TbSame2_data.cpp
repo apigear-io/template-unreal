@@ -25,15 +25,15 @@ bool toUE4Type(ETbSame2Enum1& value, uint8 v)
 	switch (v)
 	{
 	case 1:
-		value = ETbSame2Enum1::VALUE1;
+		value = ETbSame2Enum1::TSE_VALUE1;
 		bSuccessful = true;
 		break;
 	case 2:
-		value = ETbSame2Enum1::VALUE2;
+		value = ETbSame2Enum1::TSE_VALUE2;
 		bSuccessful = true;
 		break;
 	default:
-		value = ETbSame2Enum1::VALUE1;
+		value = ETbSame2Enum1::TSE_VALUE1;
 	}
 	return bSuccessful;
 }
@@ -46,15 +46,15 @@ bool toUE4Type(ETbSame2Enum2& value, uint8 v)
 	switch (v)
 	{
 	case 1:
-		value = ETbSame2Enum2::VALUE1;
+		value = ETbSame2Enum2::TSE_VALUE1;
 		bSuccessful = true;
 		break;
 	case 2:
-		value = ETbSame2Enum2::VALUE2;
+		value = ETbSame2Enum2::TSE_VALUE2;
 		bSuccessful = true;
 		break;
 	default:
-		value = ETbSame2Enum2::VALUE1;
+		value = ETbSame2Enum2::TSE_VALUE1;
 	}
 	return bSuccessful;
 }

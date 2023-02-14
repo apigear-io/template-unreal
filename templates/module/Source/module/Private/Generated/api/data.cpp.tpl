@@ -21,6 +21,7 @@ limitations under the License.
 
 #include "{{$ModuleName}}_data.h"
 {{- range .Module.Enums }}
+{{- $moduleEnumName := printf "%s%s" $ModuleName .Name }}
 {{- $class := printf "E%s%s" $ModuleName .Name }}
 /**
  * Enumeration {{$class}}
@@ -32,12 +33,12 @@ bool toUE4Type({{$class}}& value, uint8 v)
 	{
 {{- range .Members }}
 	case {{.Value}}:
-		value = {{$class}}::{{CAMEL .Name}};
+		value = {{$class}}::{{ abbreviate $moduleEnumName }}_{{CAMEL .Name}};
 		bSuccessful = true;
 		break;
 {{- end }}
 	default:
-		value = {{$class}}::{{CAMEL .Default.Name}};
+		value = {{$class}}::{{ abbreviate $moduleEnumName }}_{{CAMEL .Default.Name}};
 	}
 	return bSuccessful;
 }

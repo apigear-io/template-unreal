@@ -91,7 +91,7 @@ ETbSame1Enum1 UTbSame1SameEnum2Interface::Func1_Implementation(ETbSame1Enum1 Par
 {
 	(void)Param1;
 	// do business logic here
-	return ETbSame1Enum1::VALUE1;
+	return ETbSame1Enum1::TSE_VALUE1;
 }
 
 ETbSame1Enum1 UTbSame1SameEnum2Interface::Func2_Implementation(ETbSame1Enum1 Param1, ETbSame1Enum2 Param2)
@@ -99,5 +99,5 @@ ETbSame1Enum1 UTbSame1SameEnum2Interface::Func2_Implementation(ETbSame1Enum1 Par
 	(void)Param1;
 	(void)Param2;
 	// do business logic here
-	return ETbSame1Enum1::VALUE1;
+	return ETbSame1Enum1::TSE_VALUE1;
 }

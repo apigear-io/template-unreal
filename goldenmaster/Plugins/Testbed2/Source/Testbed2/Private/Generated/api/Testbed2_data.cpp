@@ -25,23 +25,23 @@ bool toUE4Type(ETestbed2Enum1& value, uint8 v)
 	switch (v)
 	{
 	case 1:
-		value = ETestbed2Enum1::VALUE1;
+		value = ETestbed2Enum1::TE_VALUE1;
 		bSuccessful = true;
 		break;
 	case 2:
-		value = ETestbed2Enum1::VALUE2;
+		value = ETestbed2Enum1::TE_VALUE2;
 		bSuccessful = true;
 		break;
 	case 3:
-		value = ETestbed2Enum1::VALUE3;
+		value = ETestbed2Enum1::TE_VALUE3;
 		bSuccessful = true;
 		break;
 	case 4:
-		value = ETestbed2Enum1::VALUE4;
+		value = ETestbed2Enum1::TE_VALUE4;
 		bSuccessful = true;
 		break;
 	default:
-		value = ETestbed2Enum1::VALUE1;
+		value = ETestbed2Enum1::TE_VALUE1;
 	}
 	return bSuccessful;
 }
@@ -54,23 +54,23 @@ bool toUE4Type(ETestbed2Enum2& value, uint8 v)
 	switch (v)
 	{
 	case 1:
-		value = ETestbed2Enum2::VALUE1;
+		value = ETestbed2Enum2::TE_VALUE1;
 		bSuccessful = true;
 		break;
 	case 2:
-		value = ETestbed2Enum2::VALUE2;
+		value = ETestbed2Enum2::TE_VALUE2;
 		bSuccessful = true;
 		break;
 	case 3:
-		value = ETestbed2Enum2::VALUE3;
+		value = ETestbed2Enum2::TE_VALUE3;
 		bSuccessful = true;
 		break;
 	case 4:
-		value = ETestbed2Enum2::VALUE4;
+		value = ETestbed2Enum2::TE_VALUE4;
 		bSuccessful = true;
 		break;
 	default:
-		value = ETestbed2Enum2::VALUE1;
+		value = ETestbed2Enum2::TE_VALUE1;
 	}
 	return bSuccessful;
 }
@@ -83,23 +83,23 @@ bool toUE4Type(ETestbed2Enum3& value, uint8 v)
 	switch (v)
 	{
 	case 1:
-		value = ETestbed2Enum3::VALUE1;
+		value = ETestbed2Enum3::TE_VALUE1;
 		bSuccessful = true;
 		break;
 	case 2:
-		value = ETestbed2Enum3::VALUE2;
+		value = ETestbed2Enum3::TE_VALUE2;
 		bSuccessful = true;
 		break;
 	case 3:
-		value = ETestbed2Enum3::VALUE3;
+		value = ETestbed2Enum3::TE_VALUE3;
 		bSuccessful = true;
 		break;
 	case 4:
-		value = ETestbed2Enum3::VALUE4;
+		value = ETestbed2Enum3::TE_VALUE4;
 		bSuccessful = true;
 		break;
 	default:
-		value = ETestbed2Enum3::VALUE1;
+		value = ETestbed2Enum3::TE_VALUE1;
 	}
 	return bSuccessful;
 }

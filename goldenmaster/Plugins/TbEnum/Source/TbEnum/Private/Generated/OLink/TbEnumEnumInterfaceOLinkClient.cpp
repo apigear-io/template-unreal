@@ -227,7 +227,7 @@ ETbEnumEnum0 UTbEnumEnumInterfaceOLinkClient::Func0_Implementation(ETbEnumEnum0 
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-		return ETbEnumEnum0::VALUE0;
+		return ETbEnumEnum0::TEE_VALUE0;
 	}
 	TPromise<ETbEnumEnum0> Promise;
 	Async(EAsyncExecution::Thread,
@@ -246,7 +246,7 @@ ETbEnumEnum1 UTbEnumEnumInterfaceOLinkClient::Func1_Implementation(ETbEnumEnum1 
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-		return ETbEnumEnum1::VALUE1;
+		return ETbEnumEnum1::TEE_VALUE1;
 	}
 	TPromise<ETbEnumEnum1> Promise;
 	Async(EAsyncExecution::Thread,
@@ -265,7 +265,7 @@ ETbEnumEnum2 UTbEnumEnumInterfaceOLinkClient::Func2_Implementation(ETbEnumEnum2 
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-		return ETbEnumEnum2::VALUE2;
+		return ETbEnumEnum2::TEE_VALUE2;
 	}
 	TPromise<ETbEnumEnum2> Promise;
 	Async(EAsyncExecution::Thread,
@@ -284,7 +284,7 @@ ETbEnumEnum3 UTbEnumEnumInterfaceOLinkClient::Func3_Implementation(ETbEnumEnum3 
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-		return ETbEnumEnum3::VALUE3;
+		return ETbEnumEnum3::TEE_VALUE3;
 	}
 	TPromise<ETbEnumEnum3> Promise;
 	Async(EAsyncExecution::Thread,

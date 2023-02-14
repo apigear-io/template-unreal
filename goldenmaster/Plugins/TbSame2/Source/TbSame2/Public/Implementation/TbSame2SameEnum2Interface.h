@@ -67,6 +67,6 @@ protected:
 
 private:
 	// properties - local copy - use setter functions to emit changed signals
-	ETbSame2Enum1 Prop1{ETbSame2Enum1::VALUE1};
-	ETbSame2Enum2 Prop2{ETbSame2Enum2::VALUE1};
+	ETbSame2Enum1 Prop1{ETbSame2Enum1::TSE_VALUE1};
+	ETbSame2Enum2 Prop2{ETbSame2Enum2::TSE_VALUE1};
 };

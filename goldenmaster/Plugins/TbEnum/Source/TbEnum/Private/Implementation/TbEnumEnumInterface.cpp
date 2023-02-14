@@ -159,26 +159,26 @@ ETbEnumEnum0 UTbEnumEnumInterface::Func0_Implementation(ETbEnumEnum0 Param0)
 {
 	(void)Param0;
 	// do business logic here
-	return ETbEnumEnum0::VALUE0;
+	return ETbEnumEnum0::TEE_VALUE0;
 }
 
 ETbEnumEnum1 UTbEnumEnumInterface::Func1_Implementation(ETbEnumEnum1 Param1)
 {
 	(void)Param1;
 	// do business logic here
-	return ETbEnumEnum1::VALUE1;
+	return ETbEnumEnum1::TEE_VALUE1;
 }
 
 ETbEnumEnum2 UTbEnumEnumInterface::Func2_Implementation(ETbEnumEnum2 Param2)
 {
 	(void)Param2;
 	// do business logic here
-	return ETbEnumEnum2::VALUE2;
+	return ETbEnumEnum2::TEE_VALUE2;
 }
 
 ETbEnumEnum3 UTbEnumEnumInterface::Func3_Implementation(ETbEnumEnum3 Param3)
 {
 	(void)Param3;
 	// do business logic here
-	return ETbEnumEnum3::VALUE3;
+	return ETbEnumEnum3::TEE_VALUE3;
 }

@@ -25,8 +25,8 @@ bool UTbSame1SameEnum2InterfaceImplementationPropertyProp1Test::RunTest(const FS
 {
 	// Do implement test here
 	TScriptInterface<ITbSame1SameEnum2InterfaceInterface> test = NewObject<UTbSame1SameEnum2Interface>();
-	test->Execute_SetProp1(test.GetObject(), ETbSame1Enum1::VALUE1);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), test->Execute_GetProp1(test.GetObject()), ETbSame1Enum1::VALUE1);
+	test->Execute_SetProp1(test.GetObject(), ETbSame1Enum1::TSE_VALUE1);
+	TestEqual(TEXT("Getter should return the same value as set by the setter"), test->Execute_GetProp1(test.GetObject()), ETbSame1Enum1::TSE_VALUE1);
 	return true;
 }
 
@@ -35,8 +35,8 @@ bool UTbSame1SameEnum2InterfaceImplementationPropertyProp2Test::RunTest(const FS
 {
 	// Do implement test here
 	TScriptInterface<ITbSame1SameEnum2InterfaceInterface> test = NewObject<UTbSame1SameEnum2Interface>();
-	test->Execute_SetProp2(test.GetObject(), ETbSame1Enum2::VALUE1);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), test->Execute_GetProp2(test.GetObject()), ETbSame1Enum2::VALUE1);
+	test->Execute_SetProp2(test.GetObject(), ETbSame1Enum2::TSE_VALUE1);
+	TestEqual(TEXT("Getter should return the same value as set by the setter"), test->Execute_GetProp2(test.GetObject()), ETbSame1Enum2::TSE_VALUE1);
 	return true;
 }
 
@@ -45,7 +45,7 @@ bool UTbSame1SameEnum2InterfaceImplementationOperationFunc1Test::RunTest(const F
 {
 	// Do implement test here
 	TScriptInterface<ITbSame1SameEnum2InterfaceInterface> test = NewObject<UTbSame1SameEnum2Interface>();
-	test->Execute_Func1(test.GetObject(), ETbSame1Enum1::VALUE1);
+	test->Execute_Func1(test.GetObject(), ETbSame1Enum1::TSE_VALUE1);
 	return true;
 }
 
@@ -54,7 +54,7 @@ bool UTbSame1SameEnum2InterfaceImplementationOperationFunc2Test::RunTest(const F
 {
 	// Do implement test here
 	TScriptInterface<ITbSame1SameEnum2InterfaceInterface> test = NewObject<UTbSame1SameEnum2Interface>();
-	test->Execute_Func2(test.GetObject(), ETbSame1Enum1::VALUE1, ETbSame1Enum2::VALUE1);
+	test->Execute_Func2(test.GetObject(), ETbSame1Enum1::TSE_VALUE1, ETbSame1Enum2::TSE_VALUE1);
 	return true;
 }
 
