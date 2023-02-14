@@ -5,7 +5,7 @@
 #include "apigear.json.adapter.h"
 
 {{- range .Module.Structs }}
-{{- $class := printf "F%s%s" $ModuleName (Camel .Name) }}
+{{- $class := printf "F%s%s" $ModuleName .Name }}
 
 static void from_json(const nlohmann::json& j, {{$class}}& p)
 {
