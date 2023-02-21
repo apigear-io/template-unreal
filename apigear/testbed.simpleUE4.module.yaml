@@ -17,49 +17,35 @@ interfaces:
       - { name: propBool, type: bool }
       - { name: propInt, type: int }
       - { name: propInt32, type: int32 }
-      - { name: propInt64, type: int64 }
       - { name: propFloat, type: float }
       - { name: propFloat32, type: float32 }
-      - { name: propFloat64, type: float64 }
       - { name: propString, type: string }
     operations:
       - name: funcVoid
       - name: funcBool
         params:
           - { name: paramBool, type: bool }
-        return:
-          type: bool
+        return: { type: bool }
       - name: funcInt
         params:
           - { name: paramInt, type: int }
-        return:
-          type: int
+        return: { type: int }
       - name: funcInt32
         params:
           - { name: paramInt32, type: int32 }
         return: { type: int32 }
-      - name: funcInt64
-        params:
-          - { name: paramInt64, type: int64 }
-        return: { type: int64 }
       - name: funcFloat
         params:
           - { name: paramFloat, type: float }
-        return:
-          type: float
+        return: { type: float }
       - name: funcFloat32
         params:
           - { name: paramFloat32, type: float32 }
         return: { type: float32 }
-      - name: funcFloat64
-        params:
-          - { name: paramFloat, type: float64 }
-        return: { type: float64 }
       - name: funcString
         params:
           - { name: paramString, type: string }
-        return:
-          type: string
+        return: { type: string }
     signals:
       - name: sigVoid
       - name: sigBool
@@ -71,18 +57,12 @@ interfaces:
       - name: sigInt32
         params:
           - { name: paramInt32, type: int32 }
-      - name: sigInt64
-        params:
-          - { name: paramInt64, type: int64 }
       - name: sigFloat
         params:
           - { name: paramFloat, type: float }
       - name: sigFloat32
         params:
           - { name: paramFloa32, type: float32 }
-      - name: sigFloat64
-        params:
-          - { name: paramFloat64, type: float64 }
       - name: sigString
         params:
           - { name: paramString, type: string }
@@ -91,52 +71,35 @@ interfaces:
       - { name: propBool, type: bool, array: true }
       - { name: propInt, type: int, array: true }
       - { name: propInt32, type: int32, array: true  }
-      - { name: propInt64, type: int64, array: true  }
       - { name: propFloat, type: float, array: true  }
       - { name: propFloat32, type: float32, array: true  }
-      - { name: propFloat64, type: float64, array: true  }
       - { name: propString, type: string, array: true }
     operations:
       - name: funcBool
         params:
           - { name: paramBool, type: bool, array: true }
-        return:
-          type: bool
-          array: true
+        return: { type: bool, array: true }
       - name: funcInt
         params:
           - { name: paramInt, type: int, array: true }
-        return:
-          type: int
-          array: true
+        return: { type: int, array: true }
       - name: funcInt32
         params:
           - { name: paramInt32, type: int32, array: true }
         return: { type: int32, array: true  }
-      - name: funcInt64
-        params:
-          - { name: paramInt64, type: int64, array: true }
-        return: { type: int64, array: true }
       - name: funcFloat
         params:
           - { name: paramFloat, type: float, array: true }
-        return:
-          type: float
-          array: true
+        return: { type: float, array: true }
       - name: funcFloat32
         params:
           - { name: paramFloat32, type: float32, array: true }
         return: { type: float32, array: true }
-      - name: funcFloat64
-        params:
-          - { name: paramFloat, type: float64, array: true }
-        return: { type: float64, array: true }
       - name: funcString
         params:
           - { name: paramString, type: string, array: true }
-        return:
-          type: string
-          array: true
+
+        return: { type: string, array: true }
     signals:
       - name: sigBool
         params:
@@ -147,18 +110,12 @@ interfaces:
       - name: sigInt32
         params:
           - { name: paramInt32, type: int32, array: true }
-      - name: sigInt64
-        params:
-          - { name: paramInt64, type: int64, array: true }
       - name: sigFloat
         params:
           - { name: paramFloat, type: float, array: true }
       - name: sigFloat32
         params:
           - { name: paramFloa32, type: float32, array: true }
-      - name: sigFloat64
-        params:
-          - { name: paramFloat64, type: float64, array: true }
       - name: sigString
         params:
           - { name: paramString, type: string, array: true }

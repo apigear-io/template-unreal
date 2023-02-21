@@ -46,8 +46,20 @@ public:
 	FTbSimpleSimpleInterfaceSigIntDelegate SigIntSignal;
 	FTbSimpleSimpleInterfaceSigIntDelegate& GetSigIntSignalDelegate() override;
 
+	FTbSimpleSimpleInterfaceSigInt32Delegate SigInt32Signal;
+	FTbSimpleSimpleInterfaceSigInt32Delegate& GetSigInt32SignalDelegate() override;
+
+	FTbSimpleSimpleInterfaceSigInt64Delegate SigInt64Signal;
+	FTbSimpleSimpleInterfaceSigInt64Delegate& GetSigInt64SignalDelegate() override;
+
 	FTbSimpleSimpleInterfaceSigFloatDelegate SigFloatSignal;
 	FTbSimpleSimpleInterfaceSigFloatDelegate& GetSigFloatSignalDelegate() override;
+
+	FTbSimpleSimpleInterfaceSigFloat32Delegate SigFloat32Signal;
+	FTbSimpleSimpleInterfaceSigFloat32Delegate& GetSigFloat32SignalDelegate() override;
+
+	FTbSimpleSimpleInterfaceSigFloat64Delegate SigFloat64Signal;
+	FTbSimpleSimpleInterfaceSigFloat64Delegate& GetSigFloat64SignalDelegate() override;
 
 	FTbSimpleSimpleInterfaceSigStringDelegate SigStringSignal;
 	FTbSimpleSimpleInterfaceSigStringDelegate& GetSigStringSignalDelegate() override;
@@ -58,8 +70,20 @@ public:
 	FTbSimpleSimpleInterfacePropIntChangedDelegate PropIntChanged;
 	FTbSimpleSimpleInterfacePropIntChangedDelegate& GetPropIntChangedDelegate() override;
 
+	FTbSimpleSimpleInterfacePropInt32ChangedDelegate PropInt32Changed;
+	FTbSimpleSimpleInterfacePropInt32ChangedDelegate& GetPropInt32ChangedDelegate() override;
+
+	FTbSimpleSimpleInterfacePropInt64ChangedDelegate PropInt64Changed;
+	FTbSimpleSimpleInterfacePropInt64ChangedDelegate& GetPropInt64ChangedDelegate() override;
+
 	FTbSimpleSimpleInterfacePropFloatChangedDelegate PropFloatChanged;
 	FTbSimpleSimpleInterfacePropFloatChangedDelegate& GetPropFloatChangedDelegate() override;
+
+	FTbSimpleSimpleInterfacePropFloat32ChangedDelegate PropFloat32Changed;
+	FTbSimpleSimpleInterfacePropFloat32ChangedDelegate& GetPropFloat32ChangedDelegate() override;
+
+	FTbSimpleSimpleInterfacePropFloat64ChangedDelegate PropFloat64Changed;
+	FTbSimpleSimpleInterfacePropFloat64ChangedDelegate& GetPropFloat64ChangedDelegate() override;
 
 	FTbSimpleSimpleInterfacePropStringChangedDelegate PropStringChanged;
 	FTbSimpleSimpleInterfacePropStringChangedDelegate& GetPropStringChangedDelegate() override;
@@ -71,8 +95,20 @@ public:
 	int32 GetPropInt_Implementation() const override;
 	void SetPropInt_Implementation(int32 PropInt) override;
 
+	int32 GetPropInt32_Implementation() const override;
+	void SetPropInt32_Implementation(int32 PropInt32) override;
+
+	int64 GetPropInt64_Implementation() const override;
+	void SetPropInt64_Implementation(int64 PropInt64) override;
+
 	float GetPropFloat_Implementation() const override;
 	void SetPropFloat_Implementation(float PropFloat) override;
+
+	float GetPropFloat32_Implementation() const override;
+	void SetPropFloat32_Implementation(float PropFloat32) override;
+
+	double GetPropFloat64_Implementation() const override;
+	void SetPropFloat64_Implementation(double PropFloat64) override;
 
 	FString GetPropString_Implementation() const override;
 	void SetPropString_Implementation(const FString& PropString) override;
@@ -86,8 +122,20 @@ public:
 	void FuncIntAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 ParamInt) override{};
 	int32 FuncInt_Implementation(int32 ParamInt) override;
 
+	void FuncInt32Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 ParamInt32) override{};
+	int32 FuncInt32_Implementation(int32 ParamInt32) override;
+
+	void FuncInt64Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int64& Result, int64 ParamInt64) override{};
+	int64 FuncInt64_Implementation(int64 ParamInt64) override;
+
 	void FuncFloatAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, float& Result, float ParamFloat) override{};
 	float FuncFloat_Implementation(float ParamFloat) override;
+
+	void FuncFloat32Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, float& Result, float ParamFloat32) override{};
+	float FuncFloat32_Implementation(float ParamFloat32) override;
+
+	void FuncFloat64Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, double& Result, double ParamFloat) override{};
+	double FuncFloat64_Implementation(double ParamFloat) override;
 
 	void FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FString& Result, const FString& ParamString) override{};
 	FString FuncString_Implementation(const FString& ParamString) override;
@@ -100,7 +148,15 @@ protected:
 
 	void BroadcastSigInt_Implementation(int32 ParamInt) override;
 
+	void BroadcastSigInt32_Implementation(int32 ParamInt32) override;
+
+	void BroadcastSigInt64_Implementation(int64 ParamInt64) override;
+
 	void BroadcastSigFloat_Implementation(float ParamFloat) override;
+
+	void BroadcastSigFloat32_Implementation(float ParamFloa32) override;
+
+	void BroadcastSigFloat64_Implementation(double ParamFloat64) override;
 
 	void BroadcastSigString_Implementation(const FString& ParamString) override;
 
@@ -108,7 +164,15 @@ protected:
 
 	void BroadcastPropIntChanged_Implementation(int32 PropInt) override;
 
+	void BroadcastPropInt32Changed_Implementation(int32 PropInt32) override;
+
+	void BroadcastPropInt64Changed_Implementation(int64 PropInt64) override;
+
 	void BroadcastPropFloatChanged_Implementation(float PropFloat) override;
+
+	void BroadcastPropFloat32Changed_Implementation(float PropFloat32) override;
+
+	void BroadcastPropFloat64Changed_Implementation(double PropFloat64) override;
 
 	void BroadcastPropStringChanged_Implementation(const FString& PropString) override;
 
@@ -120,6 +184,10 @@ private:
 	// properties - local copy
 	bool bPropBool{false};
 	int32 PropInt{0};
+	int32 PropInt32{0};
+	int64 PropInt64{0LL};
 	float PropFloat{0.0f};
+	float PropFloat32{0.0f};
+	double PropFloat64{0.0};
 	FString PropString{FString()};
 };

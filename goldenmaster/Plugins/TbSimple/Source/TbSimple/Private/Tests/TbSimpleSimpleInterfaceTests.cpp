@@ -40,6 +40,26 @@ bool UTbSimpleSimpleInterfaceImplementationPropertyPropIntTest::RunTest(const FS
 	return true;
 }
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbSimpleSimpleInterfaceImplementationPropertyPropInt32Test, "TbSimple.SimpleInterface.Implementation.Property.PropInt32", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+bool UTbSimpleSimpleInterfaceImplementationPropertyPropInt32Test::RunTest(const FString& Parameters)
+{
+	// Do implement test here
+	TScriptInterface<ITbSimpleSimpleInterfaceInterface> test = NewObject<UTbSimpleSimpleInterface>();
+	test->Execute_SetPropInt32(test.GetObject(), 0);
+	TestEqual(TEXT("Getter should return the same value as set by the setter"), test->Execute_GetPropInt32(test.GetObject()), 0);
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbSimpleSimpleInterfaceImplementationPropertyPropInt64Test, "TbSimple.SimpleInterface.Implementation.Property.PropInt64", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+bool UTbSimpleSimpleInterfaceImplementationPropertyPropInt64Test::RunTest(const FString& Parameters)
+{
+	// Do implement test here
+	TScriptInterface<ITbSimpleSimpleInterfaceInterface> test = NewObject<UTbSimpleSimpleInterface>();
+	test->Execute_SetPropInt64(test.GetObject(), 0LL);
+	TestEqual(TEXT("Getter should return the same value as set by the setter"), test->Execute_GetPropInt64(test.GetObject()), 0LL);
+	return true;
+}
+
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbSimpleSimpleInterfaceImplementationPropertyPropFloatTest, "TbSimple.SimpleInterface.Implementation.Property.PropFloat", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
 bool UTbSimpleSimpleInterfaceImplementationPropertyPropFloatTest::RunTest(const FString& Parameters)
 {
@@ -47,6 +67,26 @@ bool UTbSimpleSimpleInterfaceImplementationPropertyPropFloatTest::RunTest(const 
 	TScriptInterface<ITbSimpleSimpleInterfaceInterface> test = NewObject<UTbSimpleSimpleInterface>();
 	test->Execute_SetPropFloat(test.GetObject(), 0.0f);
 	TestEqual(TEXT("Getter should return the same value as set by the setter"), test->Execute_GetPropFloat(test.GetObject()), 0.0f);
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbSimpleSimpleInterfaceImplementationPropertyPropFloat32Test, "TbSimple.SimpleInterface.Implementation.Property.PropFloat32", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+bool UTbSimpleSimpleInterfaceImplementationPropertyPropFloat32Test::RunTest(const FString& Parameters)
+{
+	// Do implement test here
+	TScriptInterface<ITbSimpleSimpleInterfaceInterface> test = NewObject<UTbSimpleSimpleInterface>();
+	test->Execute_SetPropFloat32(test.GetObject(), 0.0f);
+	TestEqual(TEXT("Getter should return the same value as set by the setter"), test->Execute_GetPropFloat32(test.GetObject()), 0.0f);
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbSimpleSimpleInterfaceImplementationPropertyPropFloat64Test, "TbSimple.SimpleInterface.Implementation.Property.PropFloat64", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+bool UTbSimpleSimpleInterfaceImplementationPropertyPropFloat64Test::RunTest(const FString& Parameters)
+{
+	// Do implement test here
+	TScriptInterface<ITbSimpleSimpleInterfaceInterface> test = NewObject<UTbSimpleSimpleInterface>();
+	test->Execute_SetPropFloat64(test.GetObject(), 0.0);
+	TestEqual(TEXT("Getter should return the same value as set by the setter"), test->Execute_GetPropFloat64(test.GetObject()), 0.0);
 	return true;
 }
 
@@ -87,12 +127,48 @@ bool UTbSimpleSimpleInterfaceImplementationOperationFuncIntTest::RunTest(const F
 	return true;
 }
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbSimpleSimpleInterfaceImplementationOperationFuncInt32Test, "TbSimple.SimpleInterface.Implementation.Operation.FuncInt32", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+bool UTbSimpleSimpleInterfaceImplementationOperationFuncInt32Test::RunTest(const FString& Parameters)
+{
+	// Do implement test here
+	TScriptInterface<ITbSimpleSimpleInterfaceInterface> test = NewObject<UTbSimpleSimpleInterface>();
+	test->Execute_FuncInt32(test.GetObject(), 0);
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbSimpleSimpleInterfaceImplementationOperationFuncInt64Test, "TbSimple.SimpleInterface.Implementation.Operation.FuncInt64", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+bool UTbSimpleSimpleInterfaceImplementationOperationFuncInt64Test::RunTest(const FString& Parameters)
+{
+	// Do implement test here
+	TScriptInterface<ITbSimpleSimpleInterfaceInterface> test = NewObject<UTbSimpleSimpleInterface>();
+	test->Execute_FuncInt64(test.GetObject(), 0LL);
+	return true;
+}
+
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbSimpleSimpleInterfaceImplementationOperationFuncFloatTest, "TbSimple.SimpleInterface.Implementation.Operation.FuncFloat", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
 bool UTbSimpleSimpleInterfaceImplementationOperationFuncFloatTest::RunTest(const FString& Parameters)
 {
 	// Do implement test here
 	TScriptInterface<ITbSimpleSimpleInterfaceInterface> test = NewObject<UTbSimpleSimpleInterface>();
 	test->Execute_FuncFloat(test.GetObject(), 0.0f);
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbSimpleSimpleInterfaceImplementationOperationFuncFloat32Test, "TbSimple.SimpleInterface.Implementation.Operation.FuncFloat32", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+bool UTbSimpleSimpleInterfaceImplementationOperationFuncFloat32Test::RunTest(const FString& Parameters)
+{
+	// Do implement test here
+	TScriptInterface<ITbSimpleSimpleInterfaceInterface> test = NewObject<UTbSimpleSimpleInterface>();
+	test->Execute_FuncFloat32(test.GetObject(), 0.0f);
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbSimpleSimpleInterfaceImplementationOperationFuncFloat64Test, "TbSimple.SimpleInterface.Implementation.Operation.FuncFloat64", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+bool UTbSimpleSimpleInterfaceImplementationOperationFuncFloat64Test::RunTest(const FString& Parameters)
+{
+	// Do implement test here
+	TScriptInterface<ITbSimpleSimpleInterfaceInterface> test = NewObject<UTbSimpleSimpleInterface>();
+	test->Execute_FuncFloat64(test.GetObject(), 0.0);
 	return true;
 }
 

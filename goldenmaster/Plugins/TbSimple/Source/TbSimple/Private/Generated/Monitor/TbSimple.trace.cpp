@@ -11,7 +11,11 @@ void TbSimpleSimpleInterfaceTracer::capture_state(UObject* Object, ITbSimpleSimp
 	nlohmann::json fields_;
 	fields_["propBool"] = obj->Execute_GetPropBool(Object);
 	fields_["propInt"] = obj->Execute_GetPropInt(Object);
+	fields_["propInt32"] = obj->Execute_GetPropInt32(Object);
+	fields_["propInt64"] = obj->Execute_GetPropInt64(Object);
 	fields_["propFloat"] = obj->Execute_GetPropFloat(Object);
+	fields_["propFloat32"] = obj->Execute_GetPropFloat32(Object);
+	fields_["propFloat64"] = obj->Execute_GetPropFloat64(Object);
 	fields_["propString"] = obj->Execute_GetPropString(Object);
 	Tracer::instance()->state("tb.simple/SimpleInterface", fields_);
 }
@@ -27,10 +31,34 @@ void TbSimpleSimpleInterfaceTracer::trace_callSetPropInt(int32 InPropInt)
 	fields_["propInt"] = InPropInt;
 	Tracer::instance()->call("tb.simple/SimpleInterface#_set", fields_);
 }
+void TbSimpleSimpleInterfaceTracer::trace_callSetPropInt32(int32 InPropInt32)
+{
+	nlohmann::json fields_;
+	fields_["propInt32"] = InPropInt32;
+	Tracer::instance()->call("tb.simple/SimpleInterface#_set", fields_);
+}
+void TbSimpleSimpleInterfaceTracer::trace_callSetPropInt64(int64 InPropInt64)
+{
+	nlohmann::json fields_;
+	fields_["propInt64"] = InPropInt64;
+	Tracer::instance()->call("tb.simple/SimpleInterface#_set", fields_);
+}
 void TbSimpleSimpleInterfaceTracer::trace_callSetPropFloat(float InPropFloat)
 {
 	nlohmann::json fields_;
 	fields_["propFloat"] = InPropFloat;
+	Tracer::instance()->call("tb.simple/SimpleInterface#_set", fields_);
+}
+void TbSimpleSimpleInterfaceTracer::trace_callSetPropFloat32(float InPropFloat32)
+{
+	nlohmann::json fields_;
+	fields_["propFloat32"] = InPropFloat32;
+	Tracer::instance()->call("tb.simple/SimpleInterface#_set", fields_);
+}
+void TbSimpleSimpleInterfaceTracer::trace_callSetPropFloat64(double InPropFloat64)
+{
+	nlohmann::json fields_;
+	fields_["propFloat64"] = InPropFloat64;
 	Tracer::instance()->call("tb.simple/SimpleInterface#_set", fields_);
 }
 void TbSimpleSimpleInterfaceTracer::trace_callSetPropString(const FString& InPropString)
@@ -60,11 +88,39 @@ void TbSimpleSimpleInterfaceTracer::trace_signalSigInt(int32 ParamInt)
 	Tracer::instance()->signal("tb.simple/SimpleInterface#sigInt", fields_);
 }
 
+void TbSimpleSimpleInterfaceTracer::trace_signalSigInt32(int32 ParamInt32)
+{
+	nlohmann::json fields_;
+	fields_["paramInt32"] = ParamInt32;
+	Tracer::instance()->signal("tb.simple/SimpleInterface#sigInt32", fields_);
+}
+
+void TbSimpleSimpleInterfaceTracer::trace_signalSigInt64(int64 ParamInt64)
+{
+	nlohmann::json fields_;
+	fields_["paramInt64"] = ParamInt64;
+	Tracer::instance()->signal("tb.simple/SimpleInterface#sigInt64", fields_);
+}
+
 void TbSimpleSimpleInterfaceTracer::trace_signalSigFloat(float ParamFloat)
 {
 	nlohmann::json fields_;
 	fields_["paramFloat"] = ParamFloat;
 	Tracer::instance()->signal("tb.simple/SimpleInterface#sigFloat", fields_);
+}
+
+void TbSimpleSimpleInterfaceTracer::trace_signalSigFloat32(float ParamFloa32)
+{
+	nlohmann::json fields_;
+	fields_["paramFloa32"] = ParamFloa32;
+	Tracer::instance()->signal("tb.simple/SimpleInterface#sigFloat32", fields_);
+}
+
+void TbSimpleSimpleInterfaceTracer::trace_signalSigFloat64(double ParamFloat64)
+{
+	nlohmann::json fields_;
+	fields_["paramFloat64"] = ParamFloat64;
+	Tracer::instance()->signal("tb.simple/SimpleInterface#sigFloat64", fields_);
 }
 
 void TbSimpleSimpleInterfaceTracer::trace_signalSigString(const FString& ParamString)
@@ -94,11 +150,39 @@ void TbSimpleSimpleInterfaceTracer::trace_callFuncInt(int32 ParamInt)
 	Tracer::instance()->call("tb.simple/SimpleInterface#funcInt", fields_);
 }
 
+void TbSimpleSimpleInterfaceTracer::trace_callFuncInt32(int32 ParamInt32)
+{
+	nlohmann::json fields_;
+	fields_["paramInt32"] = ParamInt32;
+	Tracer::instance()->call("tb.simple/SimpleInterface#funcInt32", fields_);
+}
+
+void TbSimpleSimpleInterfaceTracer::trace_callFuncInt64(int64 ParamInt64)
+{
+	nlohmann::json fields_;
+	fields_["paramInt64"] = ParamInt64;
+	Tracer::instance()->call("tb.simple/SimpleInterface#funcInt64", fields_);
+}
+
 void TbSimpleSimpleInterfaceTracer::trace_callFuncFloat(float ParamFloat)
 {
 	nlohmann::json fields_;
 	fields_["paramFloat"] = ParamFloat;
 	Tracer::instance()->call("tb.simple/SimpleInterface#funcFloat", fields_);
+}
+
+void TbSimpleSimpleInterfaceTracer::trace_callFuncFloat32(float ParamFloat32)
+{
+	nlohmann::json fields_;
+	fields_["paramFloat32"] = ParamFloat32;
+	Tracer::instance()->call("tb.simple/SimpleInterface#funcFloat32", fields_);
+}
+
+void TbSimpleSimpleInterfaceTracer::trace_callFuncFloat64(double ParamFloat)
+{
+	nlohmann::json fields_;
+	fields_["paramFloat"] = ParamFloat;
+	Tracer::instance()->call("tb.simple/SimpleInterface#funcFloat64", fields_);
 }
 
 void TbSimpleSimpleInterfaceTracer::trace_callFuncString(const FString& ParamString)
@@ -117,7 +201,11 @@ void TbSimpleSimpleArrayInterfaceTracer::capture_state(UObject* Object, ITbSimpl
 	nlohmann::json fields_;
 	fields_["propBool"] = obj->Execute_GetPropBool(Object);
 	fields_["propInt"] = obj->Execute_GetPropInt(Object);
+	fields_["propInt32"] = obj->Execute_GetPropInt32(Object);
+	fields_["propInt64"] = obj->Execute_GetPropInt64(Object);
 	fields_["propFloat"] = obj->Execute_GetPropFloat(Object);
+	fields_["propFloat32"] = obj->Execute_GetPropFloat32(Object);
+	fields_["propFloat64"] = obj->Execute_GetPropFloat64(Object);
 	fields_["propString"] = obj->Execute_GetPropString(Object);
 	Tracer::instance()->state("tb.simple/SimpleArrayInterface", fields_);
 }
@@ -133,10 +221,34 @@ void TbSimpleSimpleArrayInterfaceTracer::trace_callSetPropInt(const TArray<int32
 	fields_["propInt"] = InPropInt;
 	Tracer::instance()->call("tb.simple/SimpleArrayInterface#_set", fields_);
 }
+void TbSimpleSimpleArrayInterfaceTracer::trace_callSetPropInt32(const TArray<int32>& InPropInt32)
+{
+	nlohmann::json fields_;
+	fields_["propInt32"] = InPropInt32;
+	Tracer::instance()->call("tb.simple/SimpleArrayInterface#_set", fields_);
+}
+void TbSimpleSimpleArrayInterfaceTracer::trace_callSetPropInt64(const TArray<int64>& InPropInt64)
+{
+	nlohmann::json fields_;
+	fields_["propInt64"] = InPropInt64;
+	Tracer::instance()->call("tb.simple/SimpleArrayInterface#_set", fields_);
+}
 void TbSimpleSimpleArrayInterfaceTracer::trace_callSetPropFloat(const TArray<float>& InPropFloat)
 {
 	nlohmann::json fields_;
 	fields_["propFloat"] = InPropFloat;
+	Tracer::instance()->call("tb.simple/SimpleArrayInterface#_set", fields_);
+}
+void TbSimpleSimpleArrayInterfaceTracer::trace_callSetPropFloat32(const TArray<float>& InPropFloat32)
+{
+	nlohmann::json fields_;
+	fields_["propFloat32"] = InPropFloat32;
+	Tracer::instance()->call("tb.simple/SimpleArrayInterface#_set", fields_);
+}
+void TbSimpleSimpleArrayInterfaceTracer::trace_callSetPropFloat64(const TArray<double>& InPropFloat64)
+{
+	nlohmann::json fields_;
+	fields_["propFloat64"] = InPropFloat64;
 	Tracer::instance()->call("tb.simple/SimpleArrayInterface#_set", fields_);
 }
 void TbSimpleSimpleArrayInterfaceTracer::trace_callSetPropString(const TArray<FString>& InPropString)
@@ -160,11 +272,39 @@ void TbSimpleSimpleArrayInterfaceTracer::trace_signalSigInt(const TArray<int32>&
 	Tracer::instance()->signal("tb.simple/SimpleArrayInterface#sigInt", fields_);
 }
 
+void TbSimpleSimpleArrayInterfaceTracer::trace_signalSigInt32(const TArray<int32>& ParamInt32)
+{
+	nlohmann::json fields_;
+	fields_["paramInt32"] = ParamInt32;
+	Tracer::instance()->signal("tb.simple/SimpleArrayInterface#sigInt32", fields_);
+}
+
+void TbSimpleSimpleArrayInterfaceTracer::trace_signalSigInt64(const TArray<int64>& ParamInt64)
+{
+	nlohmann::json fields_;
+	fields_["paramInt64"] = ParamInt64;
+	Tracer::instance()->signal("tb.simple/SimpleArrayInterface#sigInt64", fields_);
+}
+
 void TbSimpleSimpleArrayInterfaceTracer::trace_signalSigFloat(const TArray<float>& ParamFloat)
 {
 	nlohmann::json fields_;
 	fields_["paramFloat"] = ParamFloat;
 	Tracer::instance()->signal("tb.simple/SimpleArrayInterface#sigFloat", fields_);
+}
+
+void TbSimpleSimpleArrayInterfaceTracer::trace_signalSigFloat32(const TArray<float>& ParamFloa32)
+{
+	nlohmann::json fields_;
+	fields_["paramFloa32"] = ParamFloa32;
+	Tracer::instance()->signal("tb.simple/SimpleArrayInterface#sigFloat32", fields_);
+}
+
+void TbSimpleSimpleArrayInterfaceTracer::trace_signalSigFloat64(const TArray<double>& ParamFloat64)
+{
+	nlohmann::json fields_;
+	fields_["paramFloat64"] = ParamFloat64;
+	Tracer::instance()->signal("tb.simple/SimpleArrayInterface#sigFloat64", fields_);
 }
 
 void TbSimpleSimpleArrayInterfaceTracer::trace_signalSigString(const TArray<FString>& ParamString)
@@ -188,11 +328,39 @@ void TbSimpleSimpleArrayInterfaceTracer::trace_callFuncInt(const TArray<int32>& 
 	Tracer::instance()->call("tb.simple/SimpleArrayInterface#funcInt", fields_);
 }
 
+void TbSimpleSimpleArrayInterfaceTracer::trace_callFuncInt32(const TArray<int32>& ParamInt32)
+{
+	nlohmann::json fields_;
+	fields_["paramInt32"] = ParamInt32;
+	Tracer::instance()->call("tb.simple/SimpleArrayInterface#funcInt32", fields_);
+}
+
+void TbSimpleSimpleArrayInterfaceTracer::trace_callFuncInt64(const TArray<int64>& ParamInt64)
+{
+	nlohmann::json fields_;
+	fields_["paramInt64"] = ParamInt64;
+	Tracer::instance()->call("tb.simple/SimpleArrayInterface#funcInt64", fields_);
+}
+
 void TbSimpleSimpleArrayInterfaceTracer::trace_callFuncFloat(const TArray<float>& ParamFloat)
 {
 	nlohmann::json fields_;
 	fields_["paramFloat"] = ParamFloat;
 	Tracer::instance()->call("tb.simple/SimpleArrayInterface#funcFloat", fields_);
+}
+
+void TbSimpleSimpleArrayInterfaceTracer::trace_callFuncFloat32(const TArray<float>& ParamFloat32)
+{
+	nlohmann::json fields_;
+	fields_["paramFloat32"] = ParamFloat32;
+	Tracer::instance()->call("tb.simple/SimpleArrayInterface#funcFloat32", fields_);
+}
+
+void TbSimpleSimpleArrayInterfaceTracer::trace_callFuncFloat64(const TArray<double>& ParamFloat)
+{
+	nlohmann::json fields_;
+	fields_["paramFloat"] = ParamFloat;
+	Tracer::instance()->call("tb.simple/SimpleArrayInterface#funcFloat64", fields_);
 }
 
 void TbSimpleSimpleArrayInterfaceTracer::trace_callFuncString(const TArray<FString>& ParamString)

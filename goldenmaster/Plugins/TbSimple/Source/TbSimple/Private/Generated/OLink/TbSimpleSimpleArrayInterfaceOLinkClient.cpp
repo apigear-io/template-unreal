@@ -102,6 +102,26 @@ FTbSimpleSimpleArrayInterfaceSigIntDelegate& UTbSimpleSimpleArrayInterfaceOLinkC
 	return SigIntSignal;
 }
 
+void UTbSimpleSimpleArrayInterfaceOLinkClient::BroadcastSigInt32_Implementation(const TArray<int32>& ParamInt32)
+{
+	SigInt32Signal.Broadcast(ParamInt32);
+}
+
+FTbSimpleSimpleArrayInterfaceSigInt32Delegate& UTbSimpleSimpleArrayInterfaceOLinkClient::GetSigInt32SignalDelegate()
+{
+	return SigInt32Signal;
+}
+
+void UTbSimpleSimpleArrayInterfaceOLinkClient::BroadcastSigInt64_Implementation(const TArray<int64>& ParamInt64)
+{
+	SigInt64Signal.Broadcast(ParamInt64);
+}
+
+FTbSimpleSimpleArrayInterfaceSigInt64Delegate& UTbSimpleSimpleArrayInterfaceOLinkClient::GetSigInt64SignalDelegate()
+{
+	return SigInt64Signal;
+}
+
 void UTbSimpleSimpleArrayInterfaceOLinkClient::BroadcastSigFloat_Implementation(const TArray<float>& ParamFloat)
 {
 	SigFloatSignal.Broadcast(ParamFloat);
@@ -110,6 +130,26 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::BroadcastSigFloat_Implementation(
 FTbSimpleSimpleArrayInterfaceSigFloatDelegate& UTbSimpleSimpleArrayInterfaceOLinkClient::GetSigFloatSignalDelegate()
 {
 	return SigFloatSignal;
+}
+
+void UTbSimpleSimpleArrayInterfaceOLinkClient::BroadcastSigFloat32_Implementation(const TArray<float>& ParamFloa32)
+{
+	SigFloat32Signal.Broadcast(ParamFloa32);
+}
+
+FTbSimpleSimpleArrayInterfaceSigFloat32Delegate& UTbSimpleSimpleArrayInterfaceOLinkClient::GetSigFloat32SignalDelegate()
+{
+	return SigFloat32Signal;
+}
+
+void UTbSimpleSimpleArrayInterfaceOLinkClient::BroadcastSigFloat64_Implementation(const TArray<double>& ParamFloat64)
+{
+	SigFloat64Signal.Broadcast(ParamFloat64);
+}
+
+FTbSimpleSimpleArrayInterfaceSigFloat64Delegate& UTbSimpleSimpleArrayInterfaceOLinkClient::GetSigFloat64SignalDelegate()
+{
+	return SigFloat64Signal;
 }
 
 void UTbSimpleSimpleArrayInterfaceOLinkClient::BroadcastSigString_Implementation(const TArray<FString>& ParamString)
@@ -172,6 +212,56 @@ FTbSimpleSimpleArrayInterfacePropIntChangedDelegate& UTbSimpleSimpleArrayInterfa
 	return PropIntChanged;
 }
 
+void UTbSimpleSimpleArrayInterfaceOLinkClient::BroadcastPropInt32Changed_Implementation(const TArray<int32>& InPropInt32)
+{
+	PropInt32 = InPropInt32;
+	PropInt32Changed.Broadcast(InPropInt32);
+}
+
+TArray<int32> UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropInt32_Implementation() const
+{
+	return PropInt32;
+}
+
+void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropInt32_Implementation(const TArray<int32>& InPropInt32)
+{
+	if (!m_sink->IsReady())
+	{
+		return;
+	}
+	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propInt32"), InPropInt32);
+}
+
+FTbSimpleSimpleArrayInterfacePropInt32ChangedDelegate& UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropInt32ChangedDelegate()
+{
+	return PropInt32Changed;
+}
+
+void UTbSimpleSimpleArrayInterfaceOLinkClient::BroadcastPropInt64Changed_Implementation(const TArray<int64>& InPropInt64)
+{
+	PropInt64 = InPropInt64;
+	PropInt64Changed.Broadcast(InPropInt64);
+}
+
+TArray<int64> UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropInt64_Implementation() const
+{
+	return PropInt64;
+}
+
+void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropInt64_Implementation(const TArray<int64>& InPropInt64)
+{
+	if (!m_sink->IsReady())
+	{
+		return;
+	}
+	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propInt64"), InPropInt64);
+}
+
+FTbSimpleSimpleArrayInterfacePropInt64ChangedDelegate& UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropInt64ChangedDelegate()
+{
+	return PropInt64Changed;
+}
+
 void UTbSimpleSimpleArrayInterfaceOLinkClient::BroadcastPropFloatChanged_Implementation(const TArray<float>& InPropFloat)
 {
 	PropFloat = InPropFloat;
@@ -195,6 +285,56 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropFloat_Implementation(const
 FTbSimpleSimpleArrayInterfacePropFloatChangedDelegate& UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropFloatChangedDelegate()
 {
 	return PropFloatChanged;
+}
+
+void UTbSimpleSimpleArrayInterfaceOLinkClient::BroadcastPropFloat32Changed_Implementation(const TArray<float>& InPropFloat32)
+{
+	PropFloat32 = InPropFloat32;
+	PropFloat32Changed.Broadcast(InPropFloat32);
+}
+
+TArray<float> UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropFloat32_Implementation() const
+{
+	return PropFloat32;
+}
+
+void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropFloat32_Implementation(const TArray<float>& InPropFloat32)
+{
+	if (!m_sink->IsReady())
+	{
+		return;
+	}
+	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propFloat32"), InPropFloat32);
+}
+
+FTbSimpleSimpleArrayInterfacePropFloat32ChangedDelegate& UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropFloat32ChangedDelegate()
+{
+	return PropFloat32Changed;
+}
+
+void UTbSimpleSimpleArrayInterfaceOLinkClient::BroadcastPropFloat64Changed_Implementation(const TArray<double>& InPropFloat64)
+{
+	PropFloat64 = InPropFloat64;
+	PropFloat64Changed.Broadcast(InPropFloat64);
+}
+
+TArray<double> UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropFloat64_Implementation() const
+{
+	return PropFloat64;
+}
+
+void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropFloat64_Implementation(const TArray<double>& InPropFloat64)
+{
+	if (!m_sink->IsReady())
+	{
+		return;
+	}
+	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propFloat64"), InPropFloat64);
+}
+
+FTbSimpleSimpleArrayInterfacePropFloat64ChangedDelegate& UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropFloat64ChangedDelegate()
+{
+	return PropFloat64Changed;
 }
 
 void UTbSimpleSimpleArrayInterfaceOLinkClient::BroadcastPropStringChanged_Implementation(const TArray<FString>& InPropString)
@@ -260,6 +400,44 @@ TArray<int32> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncInt_Implementation(c
 	return Promise.GetFuture().Get();
 }
 
+TArray<int32> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncInt32_Implementation(const TArray<int32>& ParamInt32)
+{
+	if (!m_sink->IsReady())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		return TArray<int32>();
+	}
+	TPromise<TArray<int32>> Promise;
+	Async(EAsyncExecution::Thread,
+		[ParamInt32, &Promise, this]()
+		{
+			ApiGear::ObjectLink::InvokeReplyFunc GetSimpleArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+			{ Promise.SetValue(arg.value.get<TArray<int32>>()); };
+			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcInt32"), {ParamInt32}, GetSimpleArrayInterfaceStateFunc);
+		});
+
+	return Promise.GetFuture().Get();
+}
+
+TArray<int64> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncInt64_Implementation(const TArray<int64>& ParamInt64)
+{
+	if (!m_sink->IsReady())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		return TArray<int64>();
+	}
+	TPromise<TArray<int64>> Promise;
+	Async(EAsyncExecution::Thread,
+		[ParamInt64, &Promise, this]()
+		{
+			ApiGear::ObjectLink::InvokeReplyFunc GetSimpleArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+			{ Promise.SetValue(arg.value.get<TArray<int64>>()); };
+			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcInt64"), {ParamInt64}, GetSimpleArrayInterfaceStateFunc);
+		});
+
+	return Promise.GetFuture().Get();
+}
+
 TArray<float> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloat_Implementation(const TArray<float>& ParamFloat)
 {
 	if (!m_sink->IsReady())
@@ -274,6 +452,44 @@ TArray<float> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloat_Implementation
 			ApiGear::ObjectLink::InvokeReplyFunc GetSimpleArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 			{ Promise.SetValue(arg.value.get<TArray<float>>()); };
 			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat"), {ParamFloat}, GetSimpleArrayInterfaceStateFunc);
+		});
+
+	return Promise.GetFuture().Get();
+}
+
+TArray<float> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloat32_Implementation(const TArray<float>& ParamFloat32)
+{
+	if (!m_sink->IsReady())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		return TArray<float>();
+	}
+	TPromise<TArray<float>> Promise;
+	Async(EAsyncExecution::Thread,
+		[ParamFloat32, &Promise, this]()
+		{
+			ApiGear::ObjectLink::InvokeReplyFunc GetSimpleArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+			{ Promise.SetValue(arg.value.get<TArray<float>>()); };
+			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat32"), {ParamFloat32}, GetSimpleArrayInterfaceStateFunc);
+		});
+
+	return Promise.GetFuture().Get();
+}
+
+TArray<double> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloat64_Implementation(const TArray<double>& ParamFloat)
+{
+	if (!m_sink->IsReady())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		return TArray<double>();
+	}
+	TPromise<TArray<double>> Promise;
+	Async(EAsyncExecution::Thread,
+		[ParamFloat, &Promise, this]()
+		{
+			ApiGear::ObjectLink::InvokeReplyFunc GetSimpleArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+			{ Promise.SetValue(arg.value.get<TArray<double>>()); };
+			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat64"), {ParamFloat}, GetSimpleArrayInterfaceStateFunc);
 		});
 
 	return Promise.GetFuture().Get();
@@ -316,12 +532,44 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::applyState(const nlohmann::json& 
 			Execute_BroadcastPropIntChanged(this, PropInt);
 		}
 	}
+	if (fields.contains("propInt32"))
+	{
+		if (PropInt32 != fields["propInt32"].get<TArray<int32>>())
+		{
+			PropInt32 = fields["propInt32"].get<TArray<int32>>();
+			Execute_BroadcastPropInt32Changed(this, PropInt32);
+		}
+	}
+	if (fields.contains("propInt64"))
+	{
+		if (PropInt64 != fields["propInt64"].get<TArray<int64>>())
+		{
+			PropInt64 = fields["propInt64"].get<TArray<int64>>();
+			Execute_BroadcastPropInt64Changed(this, PropInt64);
+		}
+	}
 	if (fields.contains("propFloat"))
 	{
 		if (PropFloat != fields["propFloat"].get<TArray<float>>())
 		{
 			PropFloat = fields["propFloat"].get<TArray<float>>();
 			Execute_BroadcastPropFloatChanged(this, PropFloat);
+		}
+	}
+	if (fields.contains("propFloat32"))
+	{
+		if (PropFloat32 != fields["propFloat32"].get<TArray<float>>())
+		{
+			PropFloat32 = fields["propFloat32"].get<TArray<float>>();
+			Execute_BroadcastPropFloat32Changed(this, PropFloat32);
+		}
+	}
+	if (fields.contains("propFloat64"))
+	{
+		if (PropFloat64 != fields["propFloat64"].get<TArray<double>>())
+		{
+			PropFloat64 = fields["propFloat64"].get<TArray<double>>();
+			Execute_BroadcastPropFloat64Changed(this, PropFloat64);
 		}
 	}
 	if (fields.contains("propString"))
@@ -346,9 +594,29 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::emitSignal(const std::string& sig
 		Execute_BroadcastSigInt(this, args[0].get<TArray<int32>>());
 		return;
 	}
+	if (signalName == "sigInt32")
+	{
+		Execute_BroadcastSigInt32(this, args[0].get<TArray<int32>>());
+		return;
+	}
+	if (signalName == "sigInt64")
+	{
+		Execute_BroadcastSigInt64(this, args[0].get<TArray<int64>>());
+		return;
+	}
 	if (signalName == "sigFloat")
 	{
 		Execute_BroadcastSigFloat(this, args[0].get<TArray<float>>());
+		return;
+	}
+	if (signalName == "sigFloat32")
+	{
+		Execute_BroadcastSigFloat32(this, args[0].get<TArray<float>>());
+		return;
+	}
+	if (signalName == "sigFloat64")
+	{
+		Execute_BroadcastSigFloat64(this, args[0].get<TArray<double>>());
 		return;
 	}
 	if (signalName == "sigString")

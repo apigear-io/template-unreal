@@ -79,12 +79,20 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBa
 	BackendService = FTbSimpleModuleFactory::createITbSimpleSimpleInterfaceInterface(GetGameInstance(), Collection);
 	BackendService->GetPropBoolChangedDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropBoolChanged);
 	BackendService->GetPropIntChangedDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropIntChanged);
+	BackendService->GetPropInt32ChangedDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropInt32Changed);
+	BackendService->GetPropInt64ChangedDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropInt64Changed);
 	BackendService->GetPropFloatChangedDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloatChanged);
+	BackendService->GetPropFloat32ChangedDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloat32Changed);
+	BackendService->GetPropFloat64ChangedDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloat64Changed);
 	BackendService->GetPropStringChangedDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropStringChanged);
 	BackendService->GetSigVoidSignalDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigVoid);
 	BackendService->GetSigBoolSignalDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigBool);
 	BackendService->GetSigIntSignalDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt);
+	BackendService->GetSigInt32SignalDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt32);
+	BackendService->GetSigInt64SignalDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt64);
 	BackendService->GetSigFloatSignalDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat);
+	BackendService->GetSigFloat32SignalDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat32);
+	BackendService->GetSigFloat64SignalDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat64);
 	BackendService->GetSigStringSignalDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigString);
 }
 
@@ -101,12 +109,20 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::setBackendService(TScriptInterfac
 	{
 		BackendService->GetPropBoolChangedDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropBoolChanged);
 		BackendService->GetPropIntChangedDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropIntChanged);
+		BackendService->GetPropInt32ChangedDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropInt32Changed);
+		BackendService->GetPropInt64ChangedDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropInt64Changed);
 		BackendService->GetPropFloatChangedDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloatChanged);
+		BackendService->GetPropFloat32ChangedDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloat32Changed);
+		BackendService->GetPropFloat64ChangedDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloat64Changed);
 		BackendService->GetPropStringChangedDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropStringChanged);
 		BackendService->GetSigVoidSignalDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigVoid);
 		BackendService->GetSigBoolSignalDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigBool);
 		BackendService->GetSigIntSignalDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt);
+		BackendService->GetSigInt32SignalDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt32);
+		BackendService->GetSigInt64SignalDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt64);
 		BackendService->GetSigFloatSignalDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat);
+		BackendService->GetSigFloat32SignalDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat32);
+		BackendService->GetSigFloat64SignalDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat64);
 		BackendService->GetSigStringSignalDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigString);
 	}
 
@@ -122,17 +138,29 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::setBackendService(TScriptInterfac
 	// connect property changed signals or simple events
 	BackendService->GetPropBoolChangedDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropBoolChanged);
 	BackendService->GetPropIntChangedDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropIntChanged);
+	BackendService->GetPropInt32ChangedDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropInt32Changed);
+	BackendService->GetPropInt64ChangedDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropInt64Changed);
 	BackendService->GetPropFloatChangedDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloatChanged);
+	BackendService->GetPropFloat32ChangedDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloat32Changed);
+	BackendService->GetPropFloat64ChangedDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloat64Changed);
 	BackendService->GetPropStringChangedDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropStringChanged);
 	BackendService->GetSigVoidSignalDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigVoid);
 	BackendService->GetSigBoolSignalDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigBool);
 	BackendService->GetSigIntSignalDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt);
+	BackendService->GetSigInt32SignalDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt32);
+	BackendService->GetSigInt64SignalDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt64);
 	BackendService->GetSigFloatSignalDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat);
+	BackendService->GetSigFloat32SignalDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat32);
+	BackendService->GetSigFloat64SignalDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat64);
 	BackendService->GetSigStringSignalDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigString);
 	// populate service state to proxy
 	bPropBool = BackendService->Execute_GetPropBool(BackendService.GetObject());
 	PropInt = BackendService->Execute_GetPropInt(BackendService.GetObject());
+	PropInt32 = BackendService->Execute_GetPropInt32(BackendService.GetObject());
+	PropInt64 = BackendService->Execute_GetPropInt64(BackendService.GetObject());
 	PropFloat = BackendService->Execute_GetPropFloat(BackendService.GetObject());
+	PropFloat32 = BackendService->Execute_GetPropFloat32(BackendService.GetObject());
+	PropFloat64 = BackendService->Execute_GetPropFloat64(BackendService.GetObject());
 	PropString = BackendService->Execute_GetPropString(BackendService.GetObject());
 }
 
@@ -184,6 +212,38 @@ FTbSimpleSimpleInterfaceSigIntDelegate& UTbSimpleSimpleInterfaceLoggingDecorator
 	return SigIntSignal;
 }
 
+void UTbSimpleSimpleInterfaceLoggingDecorator::BroadcastSigInt32_Implementation(int32 ParamInt32)
+{
+	SigInt32Signal.Broadcast(ParamInt32);
+}
+
+void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt32(int32 ParamInt32)
+{
+	TbSimpleSimpleInterfaceTracer::trace_signalSigInt32(ParamInt32);
+	Execute_BroadcastSigInt32(this, ParamInt32);
+}
+
+FTbSimpleSimpleInterfaceSigInt32Delegate& UTbSimpleSimpleInterfaceLoggingDecorator::GetSigInt32SignalDelegate()
+{
+	return SigInt32Signal;
+}
+
+void UTbSimpleSimpleInterfaceLoggingDecorator::BroadcastSigInt64_Implementation(int64 ParamInt64)
+{
+	SigInt64Signal.Broadcast(ParamInt64);
+}
+
+void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt64(int64 ParamInt64)
+{
+	TbSimpleSimpleInterfaceTracer::trace_signalSigInt64(ParamInt64);
+	Execute_BroadcastSigInt64(this, ParamInt64);
+}
+
+FTbSimpleSimpleInterfaceSigInt64Delegate& UTbSimpleSimpleInterfaceLoggingDecorator::GetSigInt64SignalDelegate()
+{
+	return SigInt64Signal;
+}
+
 void UTbSimpleSimpleInterfaceLoggingDecorator::BroadcastSigFloat_Implementation(float ParamFloat)
 {
 	SigFloatSignal.Broadcast(ParamFloat);
@@ -198,6 +258,38 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat(float ParamFloat)
 FTbSimpleSimpleInterfaceSigFloatDelegate& UTbSimpleSimpleInterfaceLoggingDecorator::GetSigFloatSignalDelegate()
 {
 	return SigFloatSignal;
+}
+
+void UTbSimpleSimpleInterfaceLoggingDecorator::BroadcastSigFloat32_Implementation(float ParamFloa32)
+{
+	SigFloat32Signal.Broadcast(ParamFloa32);
+}
+
+void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat32(float ParamFloa32)
+{
+	TbSimpleSimpleInterfaceTracer::trace_signalSigFloat32(ParamFloa32);
+	Execute_BroadcastSigFloat32(this, ParamFloa32);
+}
+
+FTbSimpleSimpleInterfaceSigFloat32Delegate& UTbSimpleSimpleInterfaceLoggingDecorator::GetSigFloat32SignalDelegate()
+{
+	return SigFloat32Signal;
+}
+
+void UTbSimpleSimpleInterfaceLoggingDecorator::BroadcastSigFloat64_Implementation(double ParamFloat64)
+{
+	SigFloat64Signal.Broadcast(ParamFloat64);
+}
+
+void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat64(double ParamFloat64)
+{
+	TbSimpleSimpleInterfaceTracer::trace_signalSigFloat64(ParamFloat64);
+	Execute_BroadcastSigFloat64(this, ParamFloat64);
+}
+
+FTbSimpleSimpleInterfaceSigFloat64Delegate& UTbSimpleSimpleInterfaceLoggingDecorator::GetSigFloat64SignalDelegate()
+{
+	return SigFloat64Signal;
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::BroadcastSigString_Implementation(const FString& ParamString)
@@ -292,6 +384,82 @@ FTbSimpleSimpleInterfacePropIntChangedDelegate& UTbSimpleSimpleInterfaceLoggingD
 	return PropIntChanged;
 }
 
+void UTbSimpleSimpleInterfaceLoggingDecorator::BroadcastPropInt32Changed_Implementation(int32 InPropInt32)
+{
+	PropInt32Changed.Broadcast(InPropInt32);
+}
+
+void UTbSimpleSimpleInterfaceLoggingDecorator::OnPropInt32Changed(int32 InPropInt32)
+{
+	TbSimpleSimpleInterfaceTracer::capture_state(BackendService.GetObject(), this);
+	PropInt32 = InPropInt32;
+	Execute_BroadcastPropInt32Changed(this, InPropInt32);
+}
+
+int32 UTbSimpleSimpleInterfaceLoggingDecorator::GetPropInt32_Implementation() const
+{
+	return BackendService->Execute_GetPropInt32(BackendService.GetObject());
+}
+
+void UTbSimpleSimpleInterfaceLoggingDecorator::SetPropInt32_Implementation(int32 InPropInt32)
+{
+	TbSimpleSimpleInterfaceTracer::trace_callSetPropInt32(InPropInt32);
+	BackendService->Execute_SetPropInt32(BackendService.GetObject(), InPropInt32);
+}
+
+int32 UTbSimpleSimpleInterfaceLoggingDecorator::GetPropInt32_Private() const
+{
+	return Execute_GetPropInt32(this);
+}
+
+void UTbSimpleSimpleInterfaceLoggingDecorator::SetPropInt32_Private(int32 InPropInt32)
+{
+	Execute_SetPropInt32(this, InPropInt32);
+}
+
+FTbSimpleSimpleInterfacePropInt32ChangedDelegate& UTbSimpleSimpleInterfaceLoggingDecorator::GetPropInt32ChangedDelegate()
+{
+	return PropInt32Changed;
+}
+
+void UTbSimpleSimpleInterfaceLoggingDecorator::BroadcastPropInt64Changed_Implementation(int64 InPropInt64)
+{
+	PropInt64Changed.Broadcast(InPropInt64);
+}
+
+void UTbSimpleSimpleInterfaceLoggingDecorator::OnPropInt64Changed(int64 InPropInt64)
+{
+	TbSimpleSimpleInterfaceTracer::capture_state(BackendService.GetObject(), this);
+	PropInt64 = InPropInt64;
+	Execute_BroadcastPropInt64Changed(this, InPropInt64);
+}
+
+int64 UTbSimpleSimpleInterfaceLoggingDecorator::GetPropInt64_Implementation() const
+{
+	return BackendService->Execute_GetPropInt64(BackendService.GetObject());
+}
+
+void UTbSimpleSimpleInterfaceLoggingDecorator::SetPropInt64_Implementation(int64 InPropInt64)
+{
+	TbSimpleSimpleInterfaceTracer::trace_callSetPropInt64(InPropInt64);
+	BackendService->Execute_SetPropInt64(BackendService.GetObject(), InPropInt64);
+}
+
+int64 UTbSimpleSimpleInterfaceLoggingDecorator::GetPropInt64_Private() const
+{
+	return Execute_GetPropInt64(this);
+}
+
+void UTbSimpleSimpleInterfaceLoggingDecorator::SetPropInt64_Private(int64 InPropInt64)
+{
+	Execute_SetPropInt64(this, InPropInt64);
+}
+
+FTbSimpleSimpleInterfacePropInt64ChangedDelegate& UTbSimpleSimpleInterfaceLoggingDecorator::GetPropInt64ChangedDelegate()
+{
+	return PropInt64Changed;
+}
+
 void UTbSimpleSimpleInterfaceLoggingDecorator::BroadcastPropFloatChanged_Implementation(float InPropFloat)
 {
 	PropFloatChanged.Broadcast(InPropFloat);
@@ -328,6 +496,82 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::SetPropFloat_Private(float InProp
 FTbSimpleSimpleInterfacePropFloatChangedDelegate& UTbSimpleSimpleInterfaceLoggingDecorator::GetPropFloatChangedDelegate()
 {
 	return PropFloatChanged;
+}
+
+void UTbSimpleSimpleInterfaceLoggingDecorator::BroadcastPropFloat32Changed_Implementation(float InPropFloat32)
+{
+	PropFloat32Changed.Broadcast(InPropFloat32);
+}
+
+void UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloat32Changed(float InPropFloat32)
+{
+	TbSimpleSimpleInterfaceTracer::capture_state(BackendService.GetObject(), this);
+	PropFloat32 = InPropFloat32;
+	Execute_BroadcastPropFloat32Changed(this, InPropFloat32);
+}
+
+float UTbSimpleSimpleInterfaceLoggingDecorator::GetPropFloat32_Implementation() const
+{
+	return BackendService->Execute_GetPropFloat32(BackendService.GetObject());
+}
+
+void UTbSimpleSimpleInterfaceLoggingDecorator::SetPropFloat32_Implementation(float InPropFloat32)
+{
+	TbSimpleSimpleInterfaceTracer::trace_callSetPropFloat32(InPropFloat32);
+	BackendService->Execute_SetPropFloat32(BackendService.GetObject(), InPropFloat32);
+}
+
+float UTbSimpleSimpleInterfaceLoggingDecorator::GetPropFloat32_Private() const
+{
+	return Execute_GetPropFloat32(this);
+}
+
+void UTbSimpleSimpleInterfaceLoggingDecorator::SetPropFloat32_Private(float InPropFloat32)
+{
+	Execute_SetPropFloat32(this, InPropFloat32);
+}
+
+FTbSimpleSimpleInterfacePropFloat32ChangedDelegate& UTbSimpleSimpleInterfaceLoggingDecorator::GetPropFloat32ChangedDelegate()
+{
+	return PropFloat32Changed;
+}
+
+void UTbSimpleSimpleInterfaceLoggingDecorator::BroadcastPropFloat64Changed_Implementation(double InPropFloat64)
+{
+	PropFloat64Changed.Broadcast(InPropFloat64);
+}
+
+void UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloat64Changed(double InPropFloat64)
+{
+	TbSimpleSimpleInterfaceTracer::capture_state(BackendService.GetObject(), this);
+	PropFloat64 = InPropFloat64;
+	Execute_BroadcastPropFloat64Changed(this, InPropFloat64);
+}
+
+double UTbSimpleSimpleInterfaceLoggingDecorator::GetPropFloat64_Implementation() const
+{
+	return BackendService->Execute_GetPropFloat64(BackendService.GetObject());
+}
+
+void UTbSimpleSimpleInterfaceLoggingDecorator::SetPropFloat64_Implementation(double InPropFloat64)
+{
+	TbSimpleSimpleInterfaceTracer::trace_callSetPropFloat64(InPropFloat64);
+	BackendService->Execute_SetPropFloat64(BackendService.GetObject(), InPropFloat64);
+}
+
+double UTbSimpleSimpleInterfaceLoggingDecorator::GetPropFloat64_Private() const
+{
+	return Execute_GetPropFloat64(this);
+}
+
+void UTbSimpleSimpleInterfaceLoggingDecorator::SetPropFloat64_Private(double InPropFloat64)
+{
+	Execute_SetPropFloat64(this, InPropFloat64);
+}
+
+FTbSimpleSimpleInterfacePropFloat64ChangedDelegate& UTbSimpleSimpleInterfaceLoggingDecorator::GetPropFloat64ChangedDelegate()
+{
+	return PropFloat64Changed;
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::BroadcastPropStringChanged_Implementation(const FString& InPropString)
@@ -440,6 +684,72 @@ int32 UTbSimpleSimpleInterfaceLoggingDecorator::FuncInt_Implementation(int32 Par
 	return BackendService->Execute_FuncInt(BackendService.GetObject(), ParamInt);
 }
 
+void UTbSimpleSimpleInterfaceLoggingDecorator::FuncInt32Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 ParamInt32)
+{
+	TbSimpleSimpleInterfaceTracer::trace_callFuncInt32(ParamInt32);
+
+	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
+	{
+		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
+		FTbSimpleSimpleInterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSimpleSimpleInterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+
+		if (oldRequest != nullptr)
+		{
+			// cancel old request
+			oldRequest->Cancel();
+			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
+		}
+
+		FTbSimpleSimpleInterfaceLatentAction* CompletionAction = new FTbSimpleSimpleInterfaceLatentAction(LatentInfo);
+		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
+		Async(EAsyncExecution::Thread,
+			[ParamInt32, this, &Result, CompletionAction]()
+			{
+				Result = BackendService->Execute_FuncInt32(BackendService.GetObject(), ParamInt32);
+				CompletionAction->Cancel();
+			});
+	}
+}
+
+int32 UTbSimpleSimpleInterfaceLoggingDecorator::FuncInt32_Implementation(int32 ParamInt32)
+{
+	TbSimpleSimpleInterfaceTracer::trace_callFuncInt32(ParamInt32);
+	return BackendService->Execute_FuncInt32(BackendService.GetObject(), ParamInt32);
+}
+
+void UTbSimpleSimpleInterfaceLoggingDecorator::FuncInt64Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int64& Result, int64 ParamInt64)
+{
+	TbSimpleSimpleInterfaceTracer::trace_callFuncInt64(ParamInt64);
+
+	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
+	{
+		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
+		FTbSimpleSimpleInterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSimpleSimpleInterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+
+		if (oldRequest != nullptr)
+		{
+			// cancel old request
+			oldRequest->Cancel();
+			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
+		}
+
+		FTbSimpleSimpleInterfaceLatentAction* CompletionAction = new FTbSimpleSimpleInterfaceLatentAction(LatentInfo);
+		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
+		Async(EAsyncExecution::Thread,
+			[ParamInt64, this, &Result, CompletionAction]()
+			{
+				Result = BackendService->Execute_FuncInt64(BackendService.GetObject(), ParamInt64);
+				CompletionAction->Cancel();
+			});
+	}
+}
+
+int64 UTbSimpleSimpleInterfaceLoggingDecorator::FuncInt64_Implementation(int64 ParamInt64)
+{
+	TbSimpleSimpleInterfaceTracer::trace_callFuncInt64(ParamInt64);
+	return BackendService->Execute_FuncInt64(BackendService.GetObject(), ParamInt64);
+}
+
 void UTbSimpleSimpleInterfaceLoggingDecorator::FuncFloatAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, float& Result, float ParamFloat)
 {
 	TbSimpleSimpleInterfaceTracer::trace_callFuncFloat(ParamFloat);
@@ -471,6 +781,72 @@ float UTbSimpleSimpleInterfaceLoggingDecorator::FuncFloat_Implementation(float P
 {
 	TbSimpleSimpleInterfaceTracer::trace_callFuncFloat(ParamFloat);
 	return BackendService->Execute_FuncFloat(BackendService.GetObject(), ParamFloat);
+}
+
+void UTbSimpleSimpleInterfaceLoggingDecorator::FuncFloat32Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, float& Result, float ParamFloat32)
+{
+	TbSimpleSimpleInterfaceTracer::trace_callFuncFloat32(ParamFloat32);
+
+	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
+	{
+		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
+		FTbSimpleSimpleInterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSimpleSimpleInterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+
+		if (oldRequest != nullptr)
+		{
+			// cancel old request
+			oldRequest->Cancel();
+			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
+		}
+
+		FTbSimpleSimpleInterfaceLatentAction* CompletionAction = new FTbSimpleSimpleInterfaceLatentAction(LatentInfo);
+		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
+		Async(EAsyncExecution::Thread,
+			[ParamFloat32, this, &Result, CompletionAction]()
+			{
+				Result = BackendService->Execute_FuncFloat32(BackendService.GetObject(), ParamFloat32);
+				CompletionAction->Cancel();
+			});
+	}
+}
+
+float UTbSimpleSimpleInterfaceLoggingDecorator::FuncFloat32_Implementation(float ParamFloat32)
+{
+	TbSimpleSimpleInterfaceTracer::trace_callFuncFloat32(ParamFloat32);
+	return BackendService->Execute_FuncFloat32(BackendService.GetObject(), ParamFloat32);
+}
+
+void UTbSimpleSimpleInterfaceLoggingDecorator::FuncFloat64Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, double& Result, double ParamFloat)
+{
+	TbSimpleSimpleInterfaceTracer::trace_callFuncFloat64(ParamFloat);
+
+	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
+	{
+		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
+		FTbSimpleSimpleInterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSimpleSimpleInterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+
+		if (oldRequest != nullptr)
+		{
+			// cancel old request
+			oldRequest->Cancel();
+			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
+		}
+
+		FTbSimpleSimpleInterfaceLatentAction* CompletionAction = new FTbSimpleSimpleInterfaceLatentAction(LatentInfo);
+		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
+		Async(EAsyncExecution::Thread,
+			[ParamFloat, this, &Result, CompletionAction]()
+			{
+				Result = BackendService->Execute_FuncFloat64(BackendService.GetObject(), ParamFloat);
+				CompletionAction->Cancel();
+			});
+	}
+}
+
+double UTbSimpleSimpleInterfaceLoggingDecorator::FuncFloat64_Implementation(double ParamFloat)
+{
+	TbSimpleSimpleInterfaceTracer::trace_callFuncFloat64(ParamFloat);
+	return BackendService->Execute_FuncFloat64(BackendService.GetObject(), ParamFloat);
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FString& Result, const FString& ParamString)

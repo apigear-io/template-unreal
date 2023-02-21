@@ -10,9 +10,9 @@ layers:
       - testbed.same1.module.yaml
       - testbed.same2.module.yaml
       - testbed.simple.module.yaml
-      - testbed.struct.module.yaml
+      # - testbed.simpleUE4.module.yaml # Enable for UE4 testing
+      - testbed.struct.module.yaml # Disable for UE4 testing
     output: ../test
     template: ..
     force: true
     features: [ "all" ]
-      
