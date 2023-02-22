@@ -20,7 +20,7 @@ limitations under the License.
 // DO NOT MODIFY
 ///////////////////////////////
 
-#include "Generated/olink/Testbed2NestedStruct1InterfaceOLinkClient.h"
+#include "Generated/OLink/Testbed2NestedStruct1InterfaceOLinkClient.h"
 #include "Async/Future.h"
 #include "Async/Async.h"
 #include "Generated/api/Testbed2.json.adapter.h"

@@ -13,7 +13,7 @@
 // DO NOT MODIFY
 ///////////////////////////////
 
-#include "Generated/olink/{{$Iface}}OLinkClient.h"
+#include "Generated/OLink/{{$Iface}}OLinkClient.h"
 #include "Async/Future.h"
 #include "Async/Async.h"
 #include "Generated/api/{{$ModuleName}}.json.adapter.h"

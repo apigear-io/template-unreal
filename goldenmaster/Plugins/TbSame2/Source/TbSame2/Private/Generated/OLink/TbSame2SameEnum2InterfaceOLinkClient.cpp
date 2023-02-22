@@ -20,7 +20,7 @@ limitations under the License.
 // DO NOT MODIFY
 ///////////////////////////////
 
-#include "Generated/olink/TbSame2SameEnum2InterfaceOLinkClient.h"
+#include "Generated/OLink/TbSame2SameEnum2InterfaceOLinkClient.h"
 #include "Async/Future.h"
 #include "Async/Async.h"
 #include "Generated/api/TbSame2.json.adapter.h"

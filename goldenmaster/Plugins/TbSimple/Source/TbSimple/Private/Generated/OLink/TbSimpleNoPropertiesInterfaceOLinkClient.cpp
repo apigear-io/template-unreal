@@ -20,7 +20,7 @@ limitations under the License.
 // DO NOT MODIFY
 ///////////////////////////////
 
-#include "Generated/olink/TbSimpleNoPropertiesInterfaceOLinkClient.h"
+#include "Generated/OLink/TbSimpleNoPropertiesInterfaceOLinkClient.h"
 #include "Async/Future.h"
 #include "Async/Async.h"
 #include "Generated/api/TbSimple.json.adapter.h"
