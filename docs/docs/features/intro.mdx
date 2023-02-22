@@ -1,0 +1,141 @@
+---
+sidebar_position: 1
+---
+import Figure from '../figure'
+import CodeBlock from '@theme/CodeBlock';
+import helloWorldModuleComponent from '!!raw-loader!./helloworld.module.yaml';
+
+# Overview
+
+This guide will explain how to use the generated plugin code. Which features can be enabled and what they generate.
+
+## Get started
+
+This template generates plugin code for [*Unreal Engine*](https://www.unrealengine.com/) projects. In order to successfully compile and use the plugin, you need to have a version of the *Unreal Engine* installed. The engine can be downloaded from [here](https://www.unrealengine.com/download).
+Furthermore, we assume a basic understanding of *Unreal Engine* projects. If you have questions how the *Engine* works you can checkout the [documentation](https://docs.unrealengine.com/) or the [community](https://dev.epicgames.com/community/).
+You should be familiar how *Unreal Blueprints* work to use the plugin code. However, you do not need to write *UE C++* code unless you want to modify the template.
+
+If you did not receive already generated code you can simply generate your own. Please follow the documentation for the [ApiGear CLI](https://docs.apigear.io/cli/) or the [ApiGear Studio](https://docs.apigear.io/studio/) for more information about the general code generation.
+
+:::tip
+For questions regarding this template please go to our [discussions page](https://github.com/orgs/apigear-io/discussions). For feature requests or bug reports please use the [issue tracker](https://github.com/apigear-io/template-unreal/issues).
+:::
+
+## Example API
+
+The following code snippet contains the *API* which we will use throughout this guide to demonstrate the generated code and its use in *Unreal Engine*. It will be explained in more details in the [API](api/intro) chapter.
+
+<details><summary>Hello World API (click to expand)</summary>
+<CodeBlock language="yaml" showLineNumbers>{helloWorldModuleComponent}</CodeBlock>
+</details>
+
+## Features
+
+This template supports a series of different features. These can be basically split into two groups, *core* and *extended*. 
+
+- The full set of *core* features generates a view model for the `api`. This can be used to implement a working *C++* or *Blueprint* service and directly use it in your UI project.
+- The *extended* features can be used in combination with `api` and add more functionality on top.
+
+Each feature can be selected using the solution file or via command line tool.
+:::note
+*Features are case sensitive, make sure to always **use lower-case.** *
+:::
+
+<Figure caption="Feature overview" src="/img/feature-overview.png" />
+
+### Core
+- [api](api/intro) - will only generate pure header files and a basic implementation for data types
+- [stubs](stubs/intro) - adds a basic stubs for the `api`, but without any plugin setup
+- [plugin](plugin/intro) - generates plugin code for UE projects. This is the first state which can be compiled.
+
+### Extended
+- [olink](olink/intro) - this provides a backend which can be connected to any of the other technology templates with support for [ObjectLink](https://docs.apigear.io/objectlink/) or connect to our [simulation](https://docs.apigear.io/docs/advanced/simulation/intro)
+- [monitor](monitor/intro) - this generates a middleware layer which logs all API events to the [CLI](https://docs.apigear.io/cli/) or the [Studio](https://docs.apigear.io/studio/)
+
+There is also an *internal* feature `apigear`. This will only generate the connectivity plugin for the *extended* features.
+
+:::tip
+The *meta* feature `all` enables all specified features of the template. If you want to see the full extent of the generated code `all` is easiest solution.
+Please note, `all` is part of the code generator and not explicitly used within templates.
+:::
+## Folder structure
+
+This graph show the full folder structure which is generated when you have `all` features enabled. We will go into more details in the following chapters and explain the purpose of the files.
+
+```
+📦Plugins
+ ┣ 📂ApiGear
+ ┗ 📂IoWorld
+ ┃ ┣ 📂Config
+ ┃ ┣ 📂Source
+ ┃ ┃ ┣ 📂IoWorld
+ ┃ ┃ ┃ ┣ 📂Private
+ ┃ ┃ ┃ ┃ ┣ 📂Generated
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂api
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂Monitor
+ ┃ ┃ ┃ ┃ ┃ ┗ 📂OLink
+ ┃ ┃ ┃ ┃ ┣ 📂Implementation
+ ┃ ┃ ┃ ┃ ┣ 📂Tests
+ ┃ ┃ ┃ ┣ 📂Public
+ ┃ ┃ ┃ ┃ ┣ 📂Generated
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂api
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂Monitor
+ ┃ ┃ ┃ ┃ ┃ ┗ 📂OLink
+ ┃ ┃ ┃ ┃ ┣ 📂Implementation
+ ┃ ┃ ┗ 📂IoWorldEditor
+ ┃ ┃ ┃ ┣ 📂Private
+ ┃ ┃ ┃ ┣ 📂Public
+```
+
+<details><summary>Folder structure including files (click to expand)</summary>
+<CodeBlock>
+📦Plugins<br />
+ ┣ 📂ApiGear<br />
+ ┗ 📂IoWorld<br />
+ ┃ ┣ 📂Config<br />
+ ┃ ┃ ┗ 📜FilterPlugin.ini<br />
+ ┃ ┣ 📂Source<br />
+ ┃ ┃ ┣ 📂IoWorld<br />
+ ┃ ┃ ┃ ┣ 📂Private<br />
+ ┃ ┃ ┃ ┃ ┣ 📂Generated<br />
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂api<br />
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜IoWorld.json.adapter.h<br />
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜IoWorld_data.cpp<br />
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂Monitor<br />
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜IoWorld.trace.cpp<br />
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜IoWorld.trace.h<br />
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜IoWorldFactory.cpp<br />
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜IoWorldFactory.h<br />
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜IoWorldHelloLoggingDecorator.cpp<br />
+ ┃ ┃ ┃ ┃ ┃ ┗ 📂OLink<br />
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜IoWorldHelloOLinkClient.cpp<br />
+ ┃ ┃ ┃ ┃ ┣ 📂Implementation<br />
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜IoWorldHello.cpp<br />
+ ┃ ┃ ┃ ┃ ┣ 📂Tests<br />
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜IoWorldHelloTests.cpp<br />
+ ┃ ┃ ┃ ┃ ┣ 📜IoWorld.cpp<br />
+ ┃ ┃ ┃ ┃ ┗ 📜IoWorldSettings.cpp<br />
+ ┃ ┃ ┃ ┣ 📂Public<br />
+ ┃ ┃ ┃ ┃ ┣ 📂Generated<br />
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂api<br />
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜IoWorldHelloInterface.h<br />
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜IoWorld_apig.h<br />
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜IoWorld_data.h<br />
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂Monitor<br />
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜IoWorldHelloLoggingDecorator.h<br />
+ ┃ ┃ ┃ ┃ ┃ ┗ 📂OLink<br />
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜IoWorldHelloOLinkClient.h<br />
+ ┃ ┃ ┃ ┃ ┣ 📂Implementation<br />
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜IoWorldHello.h<br />
+ ┃ ┃ ┃ ┃ ┣ 📜IoWorld.h<br />
+ ┃ ┃ ┃ ┃ ┗ 📜IoWorldSettings.h<br />
+ ┃ ┃ ┃ ┗ 📜IoWorld.Build.cs<br />
+ ┃ ┃ ┗ 📂IoWorldEditor<br />
+ ┃ ┃ ┃ ┣ 📂Private<br />
+ ┃ ┃ ┃ ┃ ┗ 📜IoWorldEditor.cpp<br />
+ ┃ ┃ ┃ ┣ 📂Public<br />
+ ┃ ┃ ┃ ┃ ┗ 📜IoWorldEditor.h<br />
+ ┃ ┃ ┃ ┗ 📜IoWorldEditor.Build.cs<br />
+ ┃ ┗ 📜IoWorld.uplugin<br />
+</CodeBlock>
+</details>

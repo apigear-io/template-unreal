@@ -134,3 +134,13 @@ func FormatStyle() {
 func TestStyle() {
 	helper.Must(sh.RunV("bash", "-c", "clang-format --version && find goldenmaster/Plugins -type f -iname '*.h' -not -path '*ThirdParty*' -o -type f -iname '*.cpp' -not -path '*ThirdParty*' | xargs clang-format --dry-run --Werror"))
 }
+
+// run npm docs live
+func DocsDev() {
+	helper.Must(sh.RunV("npm", "run", "start", "--prefix", "docs"))
+}
+
+// build npm docs for distribution
+func DocsBuild() {
+	helper.Must(sh.RunV("npm", "run", "build", "--prefix", "docs"))
+}

@@ -1,0 +1,18 @@
+# This workflow is only used to report success on a skipped generate run
+# This is neeeded since docs does not change source files
+
+name: Technology Template Goldenmaster Test
+
+on:
+  pull_request:
+    branches: [main]
+    paths-ignore:
+      - '*/**'
+      - '!docs/**'
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - run: 'echo "No generate required"'
