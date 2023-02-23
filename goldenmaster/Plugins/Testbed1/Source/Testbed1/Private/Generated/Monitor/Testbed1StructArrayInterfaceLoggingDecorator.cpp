@@ -75,20 +75,18 @@ UTestbed1StructArrayInterfaceLoggingDecorator::~UTestbed1StructArrayInterfaceLog
 
 void UTestbed1StructArrayInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase& Collection)
 {
+	check(!bInitialized);
+	bInitialized = true;
+
 	Super::Initialize(Collection);
-	BackendService = FTestbed1ModuleFactory::createITestbed1StructArrayInterfaceInterface(GetGameInstance(), Collection);
-	BackendService->GetPropBoolChangedDelegate().AddDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnPropBoolChanged);
-	BackendService->GetPropIntChangedDelegate().AddDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnPropIntChanged);
-	BackendService->GetPropFloatChangedDelegate().AddDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnPropFloatChanged);
-	BackendService->GetPropStringChangedDelegate().AddDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnPropStringChanged);
-	BackendService->GetSigBoolSignalDelegate().AddDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnSigBool);
-	BackendService->GetSigIntSignalDelegate().AddDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnSigInt);
-	BackendService->GetSigFloatSignalDelegate().AddDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnSigFloat);
-	BackendService->GetSigStringSignalDelegate().AddDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnSigString);
+	setBackendService(FTestbed1ModuleFactory::createITestbed1StructArrayInterfaceInterface(GetGameInstance(), Collection));
 }
 
 void UTestbed1StructArrayInterfaceLoggingDecorator::Deinitialize()
 {
+	check(bInitialized);
+	bInitialized = false;
+
 	Super::Deinitialize();
 	BackendService = nullptr;
 }
@@ -109,11 +107,7 @@ void UTestbed1StructArrayInterfaceLoggingDecorator::setBackendService(TScriptInt
 	}
 
 	// only set if interface is implemented
-	if (InService.GetInterface() == nullptr)
-	{
-		UE_LOG(LogTestbed1StructArrayInterfaceLoggingDecorator, Error, TEXT("Cannot set backend service - interface Testbed1StructArrayInterface is not fully implemented"));
-		return;
-	}
+	checkf(InService.GetInterface() != nullptr, TEXT("Cannot set backend service - interface Testbed1StructArrayInterface is not fully implemented"));
 
 	// subscribe to new backend
 	BackendService = InService;

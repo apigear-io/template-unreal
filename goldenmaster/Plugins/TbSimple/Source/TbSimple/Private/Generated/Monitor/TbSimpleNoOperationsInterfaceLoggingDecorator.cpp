@@ -75,16 +75,18 @@ UTbSimpleNoOperationsInterfaceLoggingDecorator::~UTbSimpleNoOperationsInterfaceL
 
 void UTbSimpleNoOperationsInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase& Collection)
 {
+	check(!bInitialized);
+	bInitialized = true;
+
 	Super::Initialize(Collection);
-	BackendService = FTbSimpleModuleFactory::createITbSimpleNoOperationsInterfaceInterface(GetGameInstance(), Collection);
-	BackendService->GetPropBoolChangedDelegate().AddDynamic(this, &UTbSimpleNoOperationsInterfaceLoggingDecorator::OnPropBoolChanged);
-	BackendService->GetPropIntChangedDelegate().AddDynamic(this, &UTbSimpleNoOperationsInterfaceLoggingDecorator::OnPropIntChanged);
-	BackendService->GetSigVoidSignalDelegate().AddDynamic(this, &UTbSimpleNoOperationsInterfaceLoggingDecorator::OnSigVoid);
-	BackendService->GetSigBoolSignalDelegate().AddDynamic(this, &UTbSimpleNoOperationsInterfaceLoggingDecorator::OnSigBool);
+	setBackendService(FTbSimpleModuleFactory::createITbSimpleNoOperationsInterfaceInterface(GetGameInstance(), Collection));
 }
 
 void UTbSimpleNoOperationsInterfaceLoggingDecorator::Deinitialize()
 {
+	check(bInitialized);
+	bInitialized = false;
+
 	Super::Deinitialize();
 	BackendService = nullptr;
 }
@@ -101,11 +103,7 @@ void UTbSimpleNoOperationsInterfaceLoggingDecorator::setBackendService(TScriptIn
 	}
 
 	// only set if interface is implemented
-	if (InService.GetInterface() == nullptr)
-	{
-		UE_LOG(LogTbSimpleNoOperationsInterfaceLoggingDecorator, Error, TEXT("Cannot set backend service - interface TbSimpleNoOperationsInterface is not fully implemented"));
-		return;
-	}
+	checkf(InService.GetInterface() != nullptr, TEXT("Cannot set backend service - interface TbSimpleNoOperationsInterface is not fully implemented"));
 
 	// subscribe to new backend
 	BackendService = InService;

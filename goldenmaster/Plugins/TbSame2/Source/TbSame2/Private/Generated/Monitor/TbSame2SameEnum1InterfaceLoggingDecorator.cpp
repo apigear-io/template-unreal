@@ -75,14 +75,18 @@ UTbSame2SameEnum1InterfaceLoggingDecorator::~UTbSame2SameEnum1InterfaceLoggingDe
 
 void UTbSame2SameEnum1InterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase& Collection)
 {
+	check(!bInitialized);
+	bInitialized = true;
+
 	Super::Initialize(Collection);
-	BackendService = FTbSame2ModuleFactory::createITbSame2SameEnum1InterfaceInterface(GetGameInstance(), Collection);
-	BackendService->GetProp1ChangedDelegate().AddDynamic(this, &UTbSame2SameEnum1InterfaceLoggingDecorator::OnProp1Changed);
-	BackendService->GetSig1SignalDelegate().AddDynamic(this, &UTbSame2SameEnum1InterfaceLoggingDecorator::OnSig1);
+	setBackendService(FTbSame2ModuleFactory::createITbSame2SameEnum1InterfaceInterface(GetGameInstance(), Collection));
 }
 
 void UTbSame2SameEnum1InterfaceLoggingDecorator::Deinitialize()
 {
+	check(bInitialized);
+	bInitialized = false;
+
 	Super::Deinitialize();
 	BackendService = nullptr;
 }
@@ -97,11 +101,7 @@ void UTbSame2SameEnum1InterfaceLoggingDecorator::setBackendService(TScriptInterf
 	}
 
 	// only set if interface is implemented
-	if (InService.GetInterface() == nullptr)
-	{
-		UE_LOG(LogTbSame2SameEnum1InterfaceLoggingDecorator, Error, TEXT("Cannot set backend service - interface TbSame2SameEnum1Interface is not fully implemented"));
-		return;
-	}
+	checkf(InService.GetInterface() != nullptr, TEXT("Cannot set backend service - interface TbSame2SameEnum1Interface is not fully implemented"));
 
 	// subscribe to new backend
 	BackendService = InService;

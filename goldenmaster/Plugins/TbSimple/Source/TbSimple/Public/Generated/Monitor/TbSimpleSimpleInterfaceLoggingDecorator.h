@@ -101,7 +101,13 @@ public:
 	void FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FString& Result, const FString& ParamString) override;
 	FString FuncString_Implementation(const FString& ParamString) override;
 
+	bool IsInitialized() const
+	{
+		return bInitialized;
+	}
+
 private:
+	bool bInitialized = false;
 	/** The connection to the service backend. */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSimple|SimpleInterface")
 	TScriptInterface<ITbSimpleSimpleInterfaceInterface> BackendService;

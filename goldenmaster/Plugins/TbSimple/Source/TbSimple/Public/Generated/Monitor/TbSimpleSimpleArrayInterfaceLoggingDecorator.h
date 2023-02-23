@@ -99,7 +99,13 @@ public:
 	void FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FString>& Result, const TArray<FString>& ParamString) override;
 	TArray<FString> FuncString_Implementation(const TArray<FString>& ParamString) override;
 
+	bool IsInitialized() const
+	{
+		return bInitialized;
+	}
+
 private:
+	bool bInitialized = false;
 	/** The connection to the service backend. */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSimple|SimpleArrayInterface")
 	TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> BackendService;

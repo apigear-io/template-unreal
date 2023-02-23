@@ -50,7 +50,13 @@ public:
 	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame1Enum1& Result, ETbSame1Enum1 Param1) override;
 	ETbSame1Enum1 Func1_Implementation(ETbSame1Enum1 Param1) override;
 
+	bool IsInitialized() const
+	{
+		return bInitialized;
+	}
+
 private:
+	bool bInitialized = false;
 	/** The connection to the service backend. */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSame1|SameEnum1Interface")
 	TScriptInterface<ITbSame1SameEnum1InterfaceInterface> BackendService;

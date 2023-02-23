@@ -50,7 +50,13 @@ public:
 	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame1Struct1& Result, const FTbSame1Struct1& Param1) override;
 	FTbSame1Struct1 Func1_Implementation(const FTbSame1Struct1& Param1) override;
 
+	bool IsInitialized() const
+	{
+		return bInitialized;
+	}
+
 private:
+	bool bInitialized = false;
 	/** The connection to the service backend. */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSame1|SameStruct1Interface")
 	TScriptInterface<ITbSame1SameStruct1InterfaceInterface> BackendService;

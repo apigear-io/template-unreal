@@ -91,19 +91,19 @@ public:
 
 void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
 {
+	check(!bInitialized);
+	bInitialized = true;
+
 	Super::Initialize(Collection);
 {{- $Service := printf "I%sInterface" $Iface }}
-	BackendService = {{$FactoryName}}::create{{$Service}}(GetGameInstance(), Collection);
-{{- range .Interface.Properties }}
-	BackendService->Get{{Camel .Name}}ChangedDelegate().AddDynamic(this, &{{$Class}}::On{{Camel .Name}}Changed);
-{{- end }}
-{{- range .Interface.Signals }}
-	BackendService->Get{{Camel .Name}}SignalDelegate().AddDynamic(this, &{{$Class}}::On{{Camel .Name}});
-{{- end }}
+	setBackendService({{$FactoryName}}::create{{$Service}}(GetGameInstance(), Collection));
 }
 
 void {{$Class}}::Deinitialize()
 {
+	check(bInitialized);
+	bInitialized = false;
+
 	Super::Deinitialize();
 	BackendService = nullptr;
 }
@@ -122,11 +122,7 @@ void {{$Class}}::setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{Cam
 	}
 
 	// only set if interface is implemented
-	if (InService.GetInterface() == nullptr)
-	{
-		UE_LOG(Log{{$DisplayName}}, Error, TEXT("Cannot set backend service - interface {{$Iface}} is not fully implemented"));
-		return;
-	}
+	checkf(InService.GetInterface() != nullptr, TEXT("Cannot set backend service - interface {{$Iface}} is not fully implemented"));
 
 	// subscribe to new backend
 {{- $Service := printf "I%sInterface" $Iface }}

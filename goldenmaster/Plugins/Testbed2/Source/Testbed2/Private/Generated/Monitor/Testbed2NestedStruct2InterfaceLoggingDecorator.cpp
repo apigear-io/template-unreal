@@ -75,16 +75,18 @@ UTestbed2NestedStruct2InterfaceLoggingDecorator::~UTestbed2NestedStruct2Interfac
 
 void UTestbed2NestedStruct2InterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase& Collection)
 {
+	check(!bInitialized);
+	bInitialized = true;
+
 	Super::Initialize(Collection);
-	BackendService = FTestbed2ModuleFactory::createITestbed2NestedStruct2InterfaceInterface(GetGameInstance(), Collection);
-	BackendService->GetProp1ChangedDelegate().AddDynamic(this, &UTestbed2NestedStruct2InterfaceLoggingDecorator::OnProp1Changed);
-	BackendService->GetProp2ChangedDelegate().AddDynamic(this, &UTestbed2NestedStruct2InterfaceLoggingDecorator::OnProp2Changed);
-	BackendService->GetSig1SignalDelegate().AddDynamic(this, &UTestbed2NestedStruct2InterfaceLoggingDecorator::OnSig1);
-	BackendService->GetSig2SignalDelegate().AddDynamic(this, &UTestbed2NestedStruct2InterfaceLoggingDecorator::OnSig2);
+	setBackendService(FTestbed2ModuleFactory::createITestbed2NestedStruct2InterfaceInterface(GetGameInstance(), Collection));
 }
 
 void UTestbed2NestedStruct2InterfaceLoggingDecorator::Deinitialize()
 {
+	check(bInitialized);
+	bInitialized = false;
+
 	Super::Deinitialize();
 	BackendService = nullptr;
 }
@@ -101,11 +103,7 @@ void UTestbed2NestedStruct2InterfaceLoggingDecorator::setBackendService(TScriptI
 	}
 
 	// only set if interface is implemented
-	if (InService.GetInterface() == nullptr)
-	{
-		UE_LOG(LogTestbed2NestedStruct2InterfaceLoggingDecorator, Error, TEXT("Cannot set backend service - interface Testbed2NestedStruct2Interface is not fully implemented"));
-		return;
-	}
+	checkf(InService.GetInterface() != nullptr, TEXT("Cannot set backend service - interface Testbed2NestedStruct2Interface is not fully implemented"));
 
 	// subscribe to new backend
 	BackendService = InService;

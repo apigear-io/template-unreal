@@ -75,20 +75,18 @@ UTbEnumEnumInterfaceLoggingDecorator::~UTbEnumEnumInterfaceLoggingDecorator() = 
 
 void UTbEnumEnumInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase& Collection)
 {
+	check(!bInitialized);
+	bInitialized = true;
+
 	Super::Initialize(Collection);
-	BackendService = FTbEnumModuleFactory::createITbEnumEnumInterfaceInterface(GetGameInstance(), Collection);
-	BackendService->GetProp0ChangedDelegate().AddDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnProp0Changed);
-	BackendService->GetProp1ChangedDelegate().AddDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnProp1Changed);
-	BackendService->GetProp2ChangedDelegate().AddDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnProp2Changed);
-	BackendService->GetProp3ChangedDelegate().AddDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnProp3Changed);
-	BackendService->GetSig0SignalDelegate().AddDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnSig0);
-	BackendService->GetSig1SignalDelegate().AddDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnSig1);
-	BackendService->GetSig2SignalDelegate().AddDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnSig2);
-	BackendService->GetSig3SignalDelegate().AddDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnSig3);
+	setBackendService(FTbEnumModuleFactory::createITbEnumEnumInterfaceInterface(GetGameInstance(), Collection));
 }
 
 void UTbEnumEnumInterfaceLoggingDecorator::Deinitialize()
 {
+	check(bInitialized);
+	bInitialized = false;
+
 	Super::Deinitialize();
 	BackendService = nullptr;
 }
@@ -109,11 +107,7 @@ void UTbEnumEnumInterfaceLoggingDecorator::setBackendService(TScriptInterface<IT
 	}
 
 	// only set if interface is implemented
-	if (InService.GetInterface() == nullptr)
-	{
-		UE_LOG(LogTbEnumEnumInterfaceLoggingDecorator, Error, TEXT("Cannot set backend service - interface TbEnumEnumInterface is not fully implemented"));
-		return;
-	}
+	checkf(InService.GetInterface() != nullptr, TEXT("Cannot set backend service - interface TbEnumEnumInterface is not fully implemented"));
 
 	// subscribe to new backend
 	BackendService = InService;
