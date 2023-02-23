@@ -30,6 +30,6 @@ DECLARE_LOG_CATEGORY_EXTERN(LogFTestbed1ModuleFactory, Log, All);
 class FTestbed1ModuleFactory
 {
 public:
-	static TScriptInterface<ITestbed1StructInterfaceInterface> createITestbed1StructInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
-	static TScriptInterface<ITestbed1StructArrayInterfaceInterface> createITestbed1StructArrayInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
+	static TScriptInterface<ITestbed1StructInterfaceInterface> createITestbed1StructInterfaceInterface(FSubsystemCollectionBase& Collection);
+	static TScriptInterface<ITestbed1StructArrayInterfaceInterface> createITestbed1StructArrayInterfaceInterface(FSubsystemCollectionBase& Collection);
 };

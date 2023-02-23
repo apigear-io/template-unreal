@@ -79,7 +79,7 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::Initialize(FSubsystemCollect
 	bInitialized = true;
 
 	Super::Initialize(Collection);
-	setBackendService(FTbSimpleModuleFactory::createITbSimpleSimpleArrayInterfaceInterface(GetGameInstance(), Collection));
+	setBackendService(FTbSimpleModuleFactory::createITbSimpleSimpleArrayInterfaceInterface(Collection));
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::Deinitialize()

@@ -25,42 +25,31 @@ limitations under the License.
 // General Log
 DEFINE_LOG_CATEGORY(LogFTbEnumModuleFactory);
 
-TScriptInterface<ITbEnumEnumInterfaceInterface> createTbEnumEnumInterfaceOLink(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+TScriptInterface<ITbEnumEnumInterfaceInterface> createTbEnumEnumInterfaceOLink(FSubsystemCollectionBase& Collection)
 {
 	UE_LOG(LogFTbEnumModuleFactory, Log, TEXT("createITbEnumEnumInterfaceInterface: Using OLink service backend"));
-	UTbEnumEnumInterfaceOLinkClient* Instance = GameInstance->GetSubsystem<UTbEnumEnumInterfaceOLinkClient>(GameInstance);
-	if (!Instance)
-	{
-		Collection.InitializeDependency(UTbEnumEnumInterfaceOLinkClient::StaticClass());
-		Instance = GameInstance->GetSubsystem<UTbEnumEnumInterfaceOLinkClient>(GameInstance);
-	}
+	UTbEnumEnumInterfaceOLinkClient* Instance = Cast<UTbEnumEnumInterfaceOLinkClient>(Collection.InitializeDependency(UTbEnumEnumInterfaceOLinkClient::StaticClass()));
 	return Instance;
 }
 
-TScriptInterface<ITbEnumEnumInterfaceInterface> createTbEnumEnumInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+TScriptInterface<ITbEnumEnumInterfaceInterface> createTbEnumEnumInterface(FSubsystemCollectionBase& Collection)
 {
 	UE_LOG(LogFTbEnumModuleFactory, Log, TEXT("createITbEnumEnumInterfaceInterface: Using local service backend"));
-	UTbEnumEnumInterface* Instance = GameInstance->GetSubsystem<UTbEnumEnumInterface>(GameInstance);
-	if (!Instance)
-	{
-		Collection.InitializeDependency(UTbEnumEnumInterface::StaticClass());
-		Instance = GameInstance->GetSubsystem<UTbEnumEnumInterface>(GameInstance);
-	}
+	UTbEnumEnumInterface* Instance = Cast<UTbEnumEnumInterface>(Collection.InitializeDependency(UTbEnumEnumInterface::StaticClass()));
 	return Instance;
 }
 
-TScriptInterface<ITbEnumEnumInterfaceInterface> FTbEnumModuleFactory::createITbEnumEnumInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+TScriptInterface<ITbEnumEnumInterfaceInterface> FTbEnumModuleFactory::createITbEnumEnumInterfaceInterface(FSubsystemCollectionBase& Collection)
 {
 	UTbEnumSettings* settings = GetMutableDefault<UTbEnumSettings>();
 
 	switch (settings->ServiceConnection)
 	{
 	case ETbEnumConnection::CONNECTION_OLINK:
-		return createTbEnumEnumInterfaceOLink(GameInstance, Collection);
+		return createTbEnumEnumInterfaceOLink(Collection);
 	case ETbEnumConnection::CONNECTION_LOCAL:
-		return createTbEnumEnumInterface(GameInstance, Collection);
+		return createTbEnumEnumInterface(Collection);
 	default:
-
-		return createTbEnumEnumInterface(GameInstance, Collection);
+		return createTbEnumEnumInterface(Collection);
 	}
 }

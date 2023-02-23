@@ -79,7 +79,7 @@ void UTestbed1StructInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBa
 	bInitialized = true;
 
 	Super::Initialize(Collection);
-	setBackendService(FTestbed1ModuleFactory::createITestbed1StructInterfaceInterface(GetGameInstance(), Collection));
+	setBackendService(FTestbed1ModuleFactory::createITestbed1StructInterfaceInterface(Collection));
 }
 
 void UTestbed1StructInterfaceLoggingDecorator::Deinitialize()

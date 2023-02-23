@@ -79,7 +79,7 @@ void UTestbed2NestedStruct3InterfaceLoggingDecorator::Initialize(FSubsystemColle
 	bInitialized = true;
 
 	Super::Initialize(Collection);
-	setBackendService(FTestbed2ModuleFactory::createITestbed2NestedStruct3InterfaceInterface(GetGameInstance(), Collection));
+	setBackendService(FTestbed2ModuleFactory::createITestbed2NestedStruct3InterfaceInterface(Collection));
 }
 
 void UTestbed2NestedStruct3InterfaceLoggingDecorator::Deinitialize()

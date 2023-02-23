@@ -79,7 +79,7 @@ void UTestbed2ManyParamInterfaceLoggingDecorator::Initialize(FSubsystemCollectio
 	bInitialized = true;
 
 	Super::Initialize(Collection);
-	setBackendService(FTestbed2ModuleFactory::createITestbed2ManyParamInterfaceInterface(GetGameInstance(), Collection));
+	setBackendService(FTestbed2ModuleFactory::createITestbed2ManyParamInterfaceInterface(Collection));
 }
 
 void UTestbed2ManyParamInterfaceLoggingDecorator::Deinitialize()

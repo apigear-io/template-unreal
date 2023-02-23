@@ -32,8 +32,8 @@ DECLARE_LOG_CATEGORY_EXTERN(LogFTbSame2ModuleFactory, Log, All);
 class FTbSame2ModuleFactory
 {
 public:
-	static TScriptInterface<ITbSame2SameStruct1InterfaceInterface> createITbSame2SameStruct1InterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
-	static TScriptInterface<ITbSame2SameStruct2InterfaceInterface> createITbSame2SameStruct2InterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
-	static TScriptInterface<ITbSame2SameEnum1InterfaceInterface> createITbSame2SameEnum1InterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
-	static TScriptInterface<ITbSame2SameEnum2InterfaceInterface> createITbSame2SameEnum2InterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
+	static TScriptInterface<ITbSame2SameStruct1InterfaceInterface> createITbSame2SameStruct1InterfaceInterface(FSubsystemCollectionBase& Collection);
+	static TScriptInterface<ITbSame2SameStruct2InterfaceInterface> createITbSame2SameStruct2InterfaceInterface(FSubsystemCollectionBase& Collection);
+	static TScriptInterface<ITbSame2SameEnum1InterfaceInterface> createITbSame2SameEnum1InterfaceInterface(FSubsystemCollectionBase& Collection);
+	static TScriptInterface<ITbSame2SameEnum2InterfaceInterface> createITbSame2SameEnum2InterfaceInterface(FSubsystemCollectionBase& Collection);
 };

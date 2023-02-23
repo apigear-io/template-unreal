@@ -29,5 +29,5 @@ DECLARE_LOG_CATEGORY_EXTERN(LogFTbEnumModuleFactory, Log, All);
 class FTbEnumModuleFactory
 {
 public:
-	static TScriptInterface<ITbEnumEnumInterfaceInterface> createITbEnumEnumInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
+	static TScriptInterface<ITbEnumEnumInterfaceInterface> createITbEnumEnumInterfaceInterface(FSubsystemCollectionBase& Collection);
 };

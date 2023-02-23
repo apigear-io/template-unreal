@@ -79,7 +79,7 @@ void UTbSame2SameEnum1InterfaceLoggingDecorator::Initialize(FSubsystemCollection
 	bInitialized = true;
 
 	Super::Initialize(Collection);
-	setBackendService(FTbSame2ModuleFactory::createITbSame2SameEnum1InterfaceInterface(GetGameInstance(), Collection));
+	setBackendService(FTbSame2ModuleFactory::createITbSame2SameEnum1InterfaceInterface(Collection));
 }
 
 void UTbSame2SameEnum1InterfaceLoggingDecorator::Deinitialize()

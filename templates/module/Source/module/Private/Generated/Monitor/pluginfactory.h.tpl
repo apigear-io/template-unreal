@@ -40,6 +40,6 @@ public:
 
 {{- range .Module.Interfaces }}
 {{- $class := printf "%s%s" $ModuleName .Name}}
-	static TScriptInterface<I{{$class}}Interface> createI{{$class}}Interface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
+	static TScriptInterface<I{{$class}}Interface> createI{{$class}}Interface(FSubsystemCollectionBase& Collection);
 {{- end }}
 };

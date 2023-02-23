@@ -96,7 +96,7 @@ void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
 
 	Super::Initialize(Collection);
 {{- $Service := printf "I%sInterface" $Iface }}
-	setBackendService({{$FactoryName}}::create{{$Service}}(GetGameInstance(), Collection));
+	setBackendService({{$FactoryName}}::create{{$Service}}(Collection));
 }
 
 void {{$Class}}::Deinitialize()

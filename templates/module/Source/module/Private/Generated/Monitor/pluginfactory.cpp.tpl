@@ -43,47 +43,38 @@ DEFINE_LOG_CATEGORY(Log{{$mclass}});
 {{- $DisplayName := printf "%s%s" $ModuleName (Camel .Name) }}
 {{- if $.Features.olink }}
 
-TScriptInterface<I{{$class}}Interface> create{{$class}}OLink(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+TScriptInterface<I{{$class}}Interface> create{{$class}}OLink(FSubsystemCollectionBase& Collection)
 {
 	UE_LOG(Log{{$mclass}}, Log, TEXT("create{{$iclass}}: Using OLink service backend"));
-	{{ printf "U%sOLinkClient" $DisplayName}}* Instance = GameInstance->GetSubsystem<{{ printf "U%sOLinkClient" $DisplayName}}>(GameInstance);
-	if (!Instance)
-	{
-		Collection.InitializeDependency({{ printf "U%sOLinkClient" $DisplayName}}::StaticClass());
-		Instance = GameInstance->GetSubsystem<{{ printf "U%sOLinkClient" $DisplayName}}>(GameInstance);
-	}
+	{{ printf "U%sOLinkClient" $DisplayName}}* Instance = Cast<{{ printf "U%sOLinkClient" $DisplayName}}>(Collection.InitializeDependency({{ printf "U%sOLinkClient" $DisplayName}}::StaticClass()));
 	return Instance;
 }
 {{- end }}
 {{- if $.Features.stubs }}
 
-TScriptInterface<I{{$class}}Interface> create{{$class}}(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+TScriptInterface<I{{$class}}Interface> create{{$class}}(FSubsystemCollectionBase& Collection)
 {
 	UE_LOG(Log{{$mclass}}, Log, TEXT("create{{$iclass}}: Using local service backend"));
-	{{ printf "U%s" $DisplayName}}* Instance = GameInstance->GetSubsystem<{{ printf "U%s" $DisplayName}}>(GameInstance);
-	if (!Instance)
-	{
-		Collection.InitializeDependency({{ printf "U%s" $DisplayName}}::StaticClass());
-		Instance = GameInstance->GetSubsystem<{{ printf "U%s" $DisplayName}}>(GameInstance);
-	}
+	{{ printf "U%s" $DisplayName}}* Instance = Cast<{{ printf "U%s" $DisplayName}}>(Collection.InitializeDependency({{ printf "U%s" $DisplayName}}::StaticClass()));
 	return Instance;
 }
 {{- end }}
 
-TScriptInterface<I{{$class}}Interface> {{$mclass}}::create{{$iclass}}(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+TScriptInterface<I{{$class}}Interface> {{$mclass}}::create{{$iclass}}(FSubsystemCollectionBase& Collection)
 {
 	U{{$ModuleName}}Settings* settings = GetMutableDefault<U{{$ModuleName}}Settings>();
 
 	switch (settings->ServiceConnection)
 	{
 {{- if $.Features.olink }}{{ nl }}	case E{{$ModuleName}}Connection::CONNECTION_OLINK:
-		return create{{$class}}OLink(GameInstance, Collection);{{ end }}
+		return create{{$class}}OLink(Collection);{{ end }}
 {{- if $.Features.stubs }}{{ nl }}	case E{{$ModuleName}}Connection::CONNECTION_LOCAL:
-		return create{{$class}}(GameInstance, Collection);{{ end }}
+		return create{{$class}}(Collection);{{ end }}
 	default:
-{{- if $.Features.stubs }}{{ nl }}
-		return create{{$class}}(GameInstance, Collection);
-{{- else if $.Features.olink }}{{ nl }}		return create{{$class}}OLink(GameInstance, Collection);
+{{- if $.Features.stubs }}
+		return create{{$class}}(Collection);
+{{- else if $.Features.olink }}
+		return create{{$class}}OLink(GameInstance, Collection);
 {{- end }}
 	}
 }

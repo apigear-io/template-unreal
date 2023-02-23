@@ -79,7 +79,7 @@ void UTbEnumEnumInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase& 
 	bInitialized = true;
 
 	Super::Initialize(Collection);
-	setBackendService(FTbEnumModuleFactory::createITbEnumEnumInterfaceInterface(GetGameInstance(), Collection));
+	setBackendService(FTbEnumModuleFactory::createITbEnumEnumInterfaceInterface(Collection));
 }
 
 void UTbEnumEnumInterfaceLoggingDecorator::Deinitialize()

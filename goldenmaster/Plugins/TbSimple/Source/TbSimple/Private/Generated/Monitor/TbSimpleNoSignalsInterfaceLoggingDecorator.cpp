@@ -79,7 +79,7 @@ void UTbSimpleNoSignalsInterfaceLoggingDecorator::Initialize(FSubsystemCollectio
 	bInitialized = true;
 
 	Super::Initialize(Collection);
-	setBackendService(FTbSimpleModuleFactory::createITbSimpleNoSignalsInterfaceInterface(GetGameInstance(), Collection));
+	setBackendService(FTbSimpleModuleFactory::createITbSimpleNoSignalsInterfaceInterface(Collection));
 }
 
 void UTbSimpleNoSignalsInterfaceLoggingDecorator::Deinitialize()
