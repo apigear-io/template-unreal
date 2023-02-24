@@ -84,7 +84,7 @@ const config = {
             position: 'right',
           },
           {
-            href: 'https://github.com/apigear-io/apigear-docs',
+            href: 'https://github.com/apigear-io',
             label: 'GitHub',
             position: 'right',
           },
