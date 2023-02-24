@@ -34,7 +34,7 @@ export default function Home() {
   return (
     <Layout
       title={siteConfig.tagline}
-      description="{siteConfig.tagline}">
+      description={siteConfig.tagline}>
       <HomepageHeader />
       <main>
         <HomepageFeatures /><div className={styles.tip}>
