@@ -15,7 +15,7 @@ const FeatureList = [
     title: 'Blueprint ready',
     description: (
       <>
-        All APIs can be used directly within in Blueprints
+        All APIs can be used directly in Blueprints
       </>
     ),
   },
