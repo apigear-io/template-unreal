@@ -37,6 +37,18 @@ TScriptInterface<ITbEnumEnumInterfaceInterface> createTbEnumEnumInterfaceOLink(U
 	return Instance;
 }
 
+TScriptInterface<ITbEnumEnumInterfaceInterface> createTbEnumEnumInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+{
+	UE_LOG(LogFTbEnumModuleFactory, Log, TEXT("createITbEnumEnumInterfaceInterface: Using local service backend"));
+	UTbEnumEnumInterface* Instance = GameInstance->GetSubsystem<UTbEnumEnumInterface>(GameInstance);
+	if (!Instance)
+	{
+		Collection.InitializeDependency(UTbEnumEnumInterface::StaticClass());
+		Instance = GameInstance->GetSubsystem<UTbEnumEnumInterface>(GameInstance);
+	}
+	return Instance;
+}
+
 TScriptInterface<ITbEnumEnumInterfaceInterface> FTbEnumModuleFactory::createITbEnumEnumInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
 	UTbEnumSettings* settings = GetMutableDefault<UTbEnumSettings>();
@@ -46,9 +58,9 @@ TScriptInterface<ITbEnumEnumInterfaceInterface> FTbEnumModuleFactory::createITbE
 	case ETbEnumConnection::CONNECTION_OLINK:
 		return createTbEnumEnumInterfaceOLink(GameInstance, Collection);
 	case ETbEnumConnection::CONNECTION_LOCAL:
-		UE_LOG(LogFTbEnumModuleFactory, Log, TEXT("createITbEnumEnumInterfaceInterface: Using local service backend"));
+		return createTbEnumEnumInterface(GameInstance, Collection);
 	default:
-		UE_LOG(LogFTbEnumModuleFactory, Log, TEXT("createITbEnumEnumInterfaceInterface: Defaulting to local service backend"));
-		return NewObject<UTbEnumEnumInterface>();
+
+		return createTbEnumEnumInterface(GameInstance, Collection);
 	}
 }

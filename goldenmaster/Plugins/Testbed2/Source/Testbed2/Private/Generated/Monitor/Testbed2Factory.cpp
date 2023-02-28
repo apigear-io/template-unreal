@@ -43,6 +43,18 @@ TScriptInterface<ITestbed2ManyParamInterfaceInterface> createTestbed2ManyParamIn
 	return Instance;
 }
 
+TScriptInterface<ITestbed2ManyParamInterfaceInterface> createTestbed2ManyParamInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+{
+	UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2ManyParamInterfaceInterface: Using local service backend"));
+	UTestbed2ManyParamInterface* Instance = GameInstance->GetSubsystem<UTestbed2ManyParamInterface>(GameInstance);
+	if (!Instance)
+	{
+		Collection.InitializeDependency(UTestbed2ManyParamInterface::StaticClass());
+		Instance = GameInstance->GetSubsystem<UTestbed2ManyParamInterface>(GameInstance);
+	}
+	return Instance;
+}
+
 TScriptInterface<ITestbed2ManyParamInterfaceInterface> FTestbed2ModuleFactory::createITestbed2ManyParamInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
 	UTestbed2Settings* settings = GetMutableDefault<UTestbed2Settings>();
@@ -52,10 +64,10 @@ TScriptInterface<ITestbed2ManyParamInterfaceInterface> FTestbed2ModuleFactory::c
 	case ETestbed2Connection::CONNECTION_OLINK:
 		return createTestbed2ManyParamInterfaceOLink(GameInstance, Collection);
 	case ETestbed2Connection::CONNECTION_LOCAL:
-		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2ManyParamInterfaceInterface: Using local service backend"));
+		return createTestbed2ManyParamInterface(GameInstance, Collection);
 	default:
-		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2ManyParamInterfaceInterface: Defaulting to local service backend"));
-		return NewObject<UTestbed2ManyParamInterface>();
+
+		return createTestbed2ManyParamInterface(GameInstance, Collection);
 	}
 }
 
@@ -71,6 +83,18 @@ TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> createTestbed2NestedS
 	return Instance;
 }
 
+TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> createTestbed2NestedStruct1Interface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+{
+	UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct1InterfaceInterface: Using local service backend"));
+	UTestbed2NestedStruct1Interface* Instance = GameInstance->GetSubsystem<UTestbed2NestedStruct1Interface>(GameInstance);
+	if (!Instance)
+	{
+		Collection.InitializeDependency(UTestbed2NestedStruct1Interface::StaticClass());
+		Instance = GameInstance->GetSubsystem<UTestbed2NestedStruct1Interface>(GameInstance);
+	}
+	return Instance;
+}
+
 TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> FTestbed2ModuleFactory::createITestbed2NestedStruct1InterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
 	UTestbed2Settings* settings = GetMutableDefault<UTestbed2Settings>();
@@ -80,10 +104,10 @@ TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> FTestbed2ModuleFactor
 	case ETestbed2Connection::CONNECTION_OLINK:
 		return createTestbed2NestedStruct1InterfaceOLink(GameInstance, Collection);
 	case ETestbed2Connection::CONNECTION_LOCAL:
-		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct1InterfaceInterface: Using local service backend"));
+		return createTestbed2NestedStruct1Interface(GameInstance, Collection);
 	default:
-		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct1InterfaceInterface: Defaulting to local service backend"));
-		return NewObject<UTestbed2NestedStruct1Interface>();
+
+		return createTestbed2NestedStruct1Interface(GameInstance, Collection);
 	}
 }
 
@@ -99,6 +123,18 @@ TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> createTestbed2NestedS
 	return Instance;
 }
 
+TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> createTestbed2NestedStruct2Interface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+{
+	UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct2InterfaceInterface: Using local service backend"));
+	UTestbed2NestedStruct2Interface* Instance = GameInstance->GetSubsystem<UTestbed2NestedStruct2Interface>(GameInstance);
+	if (!Instance)
+	{
+		Collection.InitializeDependency(UTestbed2NestedStruct2Interface::StaticClass());
+		Instance = GameInstance->GetSubsystem<UTestbed2NestedStruct2Interface>(GameInstance);
+	}
+	return Instance;
+}
+
 TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> FTestbed2ModuleFactory::createITestbed2NestedStruct2InterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
 	UTestbed2Settings* settings = GetMutableDefault<UTestbed2Settings>();
@@ -108,10 +144,10 @@ TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> FTestbed2ModuleFactor
 	case ETestbed2Connection::CONNECTION_OLINK:
 		return createTestbed2NestedStruct2InterfaceOLink(GameInstance, Collection);
 	case ETestbed2Connection::CONNECTION_LOCAL:
-		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct2InterfaceInterface: Using local service backend"));
+		return createTestbed2NestedStruct2Interface(GameInstance, Collection);
 	default:
-		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct2InterfaceInterface: Defaulting to local service backend"));
-		return NewObject<UTestbed2NestedStruct2Interface>();
+
+		return createTestbed2NestedStruct2Interface(GameInstance, Collection);
 	}
 }
 
@@ -127,6 +163,18 @@ TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> createTestbed2NestedS
 	return Instance;
 }
 
+TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> createTestbed2NestedStruct3Interface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+{
+	UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct3InterfaceInterface: Using local service backend"));
+	UTestbed2NestedStruct3Interface* Instance = GameInstance->GetSubsystem<UTestbed2NestedStruct3Interface>(GameInstance);
+	if (!Instance)
+	{
+		Collection.InitializeDependency(UTestbed2NestedStruct3Interface::StaticClass());
+		Instance = GameInstance->GetSubsystem<UTestbed2NestedStruct3Interface>(GameInstance);
+	}
+	return Instance;
+}
+
 TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> FTestbed2ModuleFactory::createITestbed2NestedStruct3InterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
 	UTestbed2Settings* settings = GetMutableDefault<UTestbed2Settings>();
@@ -136,9 +184,9 @@ TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> FTestbed2ModuleFactor
 	case ETestbed2Connection::CONNECTION_OLINK:
 		return createTestbed2NestedStruct3InterfaceOLink(GameInstance, Collection);
 	case ETestbed2Connection::CONNECTION_LOCAL:
-		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct3InterfaceInterface: Using local service backend"));
+		return createTestbed2NestedStruct3Interface(GameInstance, Collection);
 	default:
-		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct3InterfaceInterface: Defaulting to local service backend"));
-		return NewObject<UTestbed2NestedStruct3Interface>();
+
+		return createTestbed2NestedStruct3Interface(GameInstance, Collection);
 	}
 }

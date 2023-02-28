@@ -47,6 +47,18 @@ TScriptInterface<ITbSimpleSimpleInterfaceInterface> createTbSimpleSimpleInterfac
 	return Instance;
 }
 
+TScriptInterface<ITbSimpleSimpleInterfaceInterface> createTbSimpleSimpleInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+{
+	UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleInterfaceInterface: Using local service backend"));
+	UTbSimpleSimpleInterface* Instance = GameInstance->GetSubsystem<UTbSimpleSimpleInterface>(GameInstance);
+	if (!Instance)
+	{
+		Collection.InitializeDependency(UTbSimpleSimpleInterface::StaticClass());
+		Instance = GameInstance->GetSubsystem<UTbSimpleSimpleInterface>(GameInstance);
+	}
+	return Instance;
+}
+
 TScriptInterface<ITbSimpleSimpleInterfaceInterface> FTbSimpleModuleFactory::createITbSimpleSimpleInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
 	UTbSimpleSettings* settings = GetMutableDefault<UTbSimpleSettings>();
@@ -56,10 +68,10 @@ TScriptInterface<ITbSimpleSimpleInterfaceInterface> FTbSimpleModuleFactory::crea
 	case ETbSimpleConnection::CONNECTION_OLINK:
 		return createTbSimpleSimpleInterfaceOLink(GameInstance, Collection);
 	case ETbSimpleConnection::CONNECTION_LOCAL:
-		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleInterfaceInterface: Using local service backend"));
+		return createTbSimpleSimpleInterface(GameInstance, Collection);
 	default:
-		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleInterfaceInterface: Defaulting to local service backend"));
-		return NewObject<UTbSimpleSimpleInterface>();
+
+		return createTbSimpleSimpleInterface(GameInstance, Collection);
 	}
 }
 
@@ -75,6 +87,18 @@ TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> createTbSimpleSimpleArr
 	return Instance;
 }
 
+TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> createTbSimpleSimpleArrayInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+{
+	UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleArrayInterfaceInterface: Using local service backend"));
+	UTbSimpleSimpleArrayInterface* Instance = GameInstance->GetSubsystem<UTbSimpleSimpleArrayInterface>(GameInstance);
+	if (!Instance)
+	{
+		Collection.InitializeDependency(UTbSimpleSimpleArrayInterface::StaticClass());
+		Instance = GameInstance->GetSubsystem<UTbSimpleSimpleArrayInterface>(GameInstance);
+	}
+	return Instance;
+}
+
 TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> FTbSimpleModuleFactory::createITbSimpleSimpleArrayInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
 	UTbSimpleSettings* settings = GetMutableDefault<UTbSimpleSettings>();
@@ -84,10 +108,10 @@ TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> FTbSimpleModuleFactory:
 	case ETbSimpleConnection::CONNECTION_OLINK:
 		return createTbSimpleSimpleArrayInterfaceOLink(GameInstance, Collection);
 	case ETbSimpleConnection::CONNECTION_LOCAL:
-		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleArrayInterfaceInterface: Using local service backend"));
+		return createTbSimpleSimpleArrayInterface(GameInstance, Collection);
 	default:
-		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleArrayInterfaceInterface: Defaulting to local service backend"));
-		return NewObject<UTbSimpleSimpleArrayInterface>();
+
+		return createTbSimpleSimpleArrayInterface(GameInstance, Collection);
 	}
 }
 
@@ -103,6 +127,18 @@ TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> createTbSimpleNoProper
 	return Instance;
 }
 
+TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> createTbSimpleNoPropertiesInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+{
+	UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleNoPropertiesInterfaceInterface: Using local service backend"));
+	UTbSimpleNoPropertiesInterface* Instance = GameInstance->GetSubsystem<UTbSimpleNoPropertiesInterface>(GameInstance);
+	if (!Instance)
+	{
+		Collection.InitializeDependency(UTbSimpleNoPropertiesInterface::StaticClass());
+		Instance = GameInstance->GetSubsystem<UTbSimpleNoPropertiesInterface>(GameInstance);
+	}
+	return Instance;
+}
+
 TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> FTbSimpleModuleFactory::createITbSimpleNoPropertiesInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
 	UTbSimpleSettings* settings = GetMutableDefault<UTbSimpleSettings>();
@@ -112,10 +148,10 @@ TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> FTbSimpleModuleFactory
 	case ETbSimpleConnection::CONNECTION_OLINK:
 		return createTbSimpleNoPropertiesInterfaceOLink(GameInstance, Collection);
 	case ETbSimpleConnection::CONNECTION_LOCAL:
-		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleNoPropertiesInterfaceInterface: Using local service backend"));
+		return createTbSimpleNoPropertiesInterface(GameInstance, Collection);
 	default:
-		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleNoPropertiesInterfaceInterface: Defaulting to local service backend"));
-		return NewObject<UTbSimpleNoPropertiesInterface>();
+
+		return createTbSimpleNoPropertiesInterface(GameInstance, Collection);
 	}
 }
 
@@ -131,6 +167,18 @@ TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> createTbSimpleNoOperat
 	return Instance;
 }
 
+TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> createTbSimpleNoOperationsInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+{
+	UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleNoOperationsInterfaceInterface: Using local service backend"));
+	UTbSimpleNoOperationsInterface* Instance = GameInstance->GetSubsystem<UTbSimpleNoOperationsInterface>(GameInstance);
+	if (!Instance)
+	{
+		Collection.InitializeDependency(UTbSimpleNoOperationsInterface::StaticClass());
+		Instance = GameInstance->GetSubsystem<UTbSimpleNoOperationsInterface>(GameInstance);
+	}
+	return Instance;
+}
+
 TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> FTbSimpleModuleFactory::createITbSimpleNoOperationsInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
 	UTbSimpleSettings* settings = GetMutableDefault<UTbSimpleSettings>();
@@ -140,10 +188,10 @@ TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> FTbSimpleModuleFactory
 	case ETbSimpleConnection::CONNECTION_OLINK:
 		return createTbSimpleNoOperationsInterfaceOLink(GameInstance, Collection);
 	case ETbSimpleConnection::CONNECTION_LOCAL:
-		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleNoOperationsInterfaceInterface: Using local service backend"));
+		return createTbSimpleNoOperationsInterface(GameInstance, Collection);
 	default:
-		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleNoOperationsInterfaceInterface: Defaulting to local service backend"));
-		return NewObject<UTbSimpleNoOperationsInterface>();
+
+		return createTbSimpleNoOperationsInterface(GameInstance, Collection);
 	}
 }
 
@@ -159,6 +207,18 @@ TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> createTbSimpleNoSignalsIn
 	return Instance;
 }
 
+TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> createTbSimpleNoSignalsInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+{
+	UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleNoSignalsInterfaceInterface: Using local service backend"));
+	UTbSimpleNoSignalsInterface* Instance = GameInstance->GetSubsystem<UTbSimpleNoSignalsInterface>(GameInstance);
+	if (!Instance)
+	{
+		Collection.InitializeDependency(UTbSimpleNoSignalsInterface::StaticClass());
+		Instance = GameInstance->GetSubsystem<UTbSimpleNoSignalsInterface>(GameInstance);
+	}
+	return Instance;
+}
+
 TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> FTbSimpleModuleFactory::createITbSimpleNoSignalsInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
 	UTbSimpleSettings* settings = GetMutableDefault<UTbSimpleSettings>();
@@ -168,10 +228,10 @@ TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> FTbSimpleModuleFactory::c
 	case ETbSimpleConnection::CONNECTION_OLINK:
 		return createTbSimpleNoSignalsInterfaceOLink(GameInstance, Collection);
 	case ETbSimpleConnection::CONNECTION_LOCAL:
-		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleNoSignalsInterfaceInterface: Using local service backend"));
+		return createTbSimpleNoSignalsInterface(GameInstance, Collection);
 	default:
-		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleNoSignalsInterfaceInterface: Defaulting to local service backend"));
-		return NewObject<UTbSimpleNoSignalsInterface>();
+
+		return createTbSimpleNoSignalsInterface(GameInstance, Collection);
 	}
 }
 
@@ -187,6 +247,18 @@ TScriptInterface<ITbSimpleEmptyInterfaceInterface> createTbSimpleEmptyInterfaceO
 	return Instance;
 }
 
+TScriptInterface<ITbSimpleEmptyInterfaceInterface> createTbSimpleEmptyInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+{
+	UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleEmptyInterfaceInterface: Using local service backend"));
+	UTbSimpleEmptyInterface* Instance = GameInstance->GetSubsystem<UTbSimpleEmptyInterface>(GameInstance);
+	if (!Instance)
+	{
+		Collection.InitializeDependency(UTbSimpleEmptyInterface::StaticClass());
+		Instance = GameInstance->GetSubsystem<UTbSimpleEmptyInterface>(GameInstance);
+	}
+	return Instance;
+}
+
 TScriptInterface<ITbSimpleEmptyInterfaceInterface> FTbSimpleModuleFactory::createITbSimpleEmptyInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
 	UTbSimpleSettings* settings = GetMutableDefault<UTbSimpleSettings>();
@@ -196,9 +268,9 @@ TScriptInterface<ITbSimpleEmptyInterfaceInterface> FTbSimpleModuleFactory::creat
 	case ETbSimpleConnection::CONNECTION_OLINK:
 		return createTbSimpleEmptyInterfaceOLink(GameInstance, Collection);
 	case ETbSimpleConnection::CONNECTION_LOCAL:
-		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleEmptyInterfaceInterface: Using local service backend"));
+		return createTbSimpleEmptyInterface(GameInstance, Collection);
 	default:
-		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleEmptyInterfaceInterface: Defaulting to local service backend"));
-		return NewObject<UTbSimpleEmptyInterface>();
+
+		return createTbSimpleEmptyInterface(GameInstance, Collection);
 	}
 }

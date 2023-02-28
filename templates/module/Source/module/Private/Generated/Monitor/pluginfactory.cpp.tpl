@@ -55,6 +55,20 @@ TScriptInterface<I{{$class}}Interface> create{{$class}}OLink(UGameInstance* Game
 	return Instance;
 }
 {{- end }}
+{{- if $.Features.stubs }}
+
+TScriptInterface<I{{$class}}Interface> create{{$class}}(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+{
+	UE_LOG(Log{{$mclass}}, Log, TEXT("create{{$iclass}}: Using local service backend"));
+	{{ printf "U%s" $DisplayName}}* Instance = GameInstance->GetSubsystem<{{ printf "U%s" $DisplayName}}>(GameInstance);
+	if (!Instance)
+	{
+		Collection.InitializeDependency({{ printf "U%s" $DisplayName}}::StaticClass());
+		Instance = GameInstance->GetSubsystem<{{ printf "U%s" $DisplayName}}>(GameInstance);
+	}
+	return Instance;
+}
+{{- end }}
 
 TScriptInterface<I{{$class}}Interface> {{$mclass}}::create{{$iclass}}(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
@@ -65,10 +79,10 @@ TScriptInterface<I{{$class}}Interface> {{$mclass}}::create{{$iclass}}(UGameInsta
 {{- if $.Features.olink }}{{ nl }}	case E{{$ModuleName}}Connection::CONNECTION_OLINK:
 		return create{{$class}}OLink(GameInstance, Collection);{{ end }}
 {{- if $.Features.stubs }}{{ nl }}	case E{{$ModuleName}}Connection::CONNECTION_LOCAL:
-		UE_LOG(Log{{$mclass}}, Log, TEXT("create{{$iclass}}: Using local service backend"));{{ end }}
+		return create{{$class}}(GameInstance, Collection);{{ end }}
 	default:
-{{- if $.Features.stubs }}{{ nl }}		UE_LOG(Log{{$mclass}}, Log, TEXT("create{{$iclass}}: Defaulting to local service backend"));
-		return NewObject<{{ printf "U%s" $DisplayName}}>();
+{{- if $.Features.stubs }}{{ nl }}
+		return create{{$class}}(GameInstance, Collection);
 {{- else if $.Features.olink }}{{ nl }}		return create{{$class}}OLink(GameInstance, Collection);
 {{- end }}
 	}
