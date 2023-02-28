@@ -111,7 +111,7 @@ void UTestbed1StructArrayInterfaceLoggingDecorator::setBackendService(TScriptInt
 	// only set if interface is implemented
 	if (InService.GetInterface() == nullptr)
 	{
-		UE_LOG(LogTestbed1StructArrayInterfaceLoggingDecorator, Error, TEXT("Cannot set backend service to %s - interface Testbed1StructArrayInterface is not fully implemented"), *InService.GetObject()->GetName());
+		UE_LOG(LogTestbed1StructArrayInterfaceLoggingDecorator, Error, TEXT("Cannot set backend service - interface Testbed1StructArrayInterface is not fully implemented"));
 		return;
 	}
 

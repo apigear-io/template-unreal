@@ -129,7 +129,7 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::setBackendService(TScriptInterfac
 	// only set if interface is implemented
 	if (InService.GetInterface() == nullptr)
 	{
-		UE_LOG(LogTbSimpleSimpleInterfaceLoggingDecorator, Error, TEXT("Cannot set backend service to %s - interface TbSimpleSimpleInterface is not fully implemented"), *InService.GetObject()->GetName());
+		UE_LOG(LogTbSimpleSimpleInterfaceLoggingDecorator, Error, TEXT("Cannot set backend service - interface TbSimpleSimpleInterface is not fully implemented"));
 		return;
 	}
 

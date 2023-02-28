@@ -127,7 +127,7 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::setBackendService(TScriptInt
 	// only set if interface is implemented
 	if (InService.GetInterface() == nullptr)
 	{
-		UE_LOG(LogTbSimpleSimpleArrayInterfaceLoggingDecorator, Error, TEXT("Cannot set backend service to %s - interface TbSimpleSimpleArrayInterface is not fully implemented"), *InService.GetObject()->GetName());
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceLoggingDecorator, Error, TEXT("Cannot set backend service - interface TbSimpleSimpleArrayInterface is not fully implemented"));
 		return;
 	}
 

@@ -107,7 +107,7 @@ void UTestbed2NestedStruct3InterfaceLoggingDecorator::setBackendService(TScriptI
 	// only set if interface is implemented
 	if (InService.GetInterface() == nullptr)
 	{
-		UE_LOG(LogTestbed2NestedStruct3InterfaceLoggingDecorator, Error, TEXT("Cannot set backend service to %s - interface Testbed2NestedStruct3Interface is not fully implemented"), *InService.GetObject()->GetName());
+		UE_LOG(LogTestbed2NestedStruct3InterfaceLoggingDecorator, Error, TEXT("Cannot set backend service - interface Testbed2NestedStruct3Interface is not fully implemented"));
 		return;
 	}
 
