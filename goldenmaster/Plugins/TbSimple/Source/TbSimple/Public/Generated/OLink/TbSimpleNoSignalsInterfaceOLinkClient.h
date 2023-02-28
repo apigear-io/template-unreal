@@ -24,7 +24,7 @@ THIRD_PARTY_INCLUDES_END
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "TbSimpleNoSignalsInterfaceOLinkClient.generated.h"
 
-UCLASS(BlueprintType)
+UCLASS(NotBlueprintable, BlueprintType)
 class TBSIMPLE_API UTbSimpleNoSignalsInterfaceOLinkClient : public UAbstractTbSimpleNoSignalsInterface
 {
 	GENERATED_BODY()

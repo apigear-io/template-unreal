@@ -24,7 +24,7 @@ THIRD_PARTY_INCLUDES_END
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Testbed2ManyParamInterfaceOLinkClient.generated.h"
 
-UCLASS(BlueprintType)
+UCLASS(NotBlueprintable, BlueprintType)
 class TESTBED2_API UTestbed2ManyParamInterfaceOLinkClient : public UAbstractTestbed2ManyParamInterface
 {
 	GENERATED_BODY()

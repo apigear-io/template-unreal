@@ -19,7 +19,7 @@ THIRD_PARTY_INCLUDES_END
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "{{$Iface}}OLinkClient.generated.h"
 
-UCLASS(BlueprintType)
+UCLASS(NotBlueprintable, BlueprintType)
 class {{ $API_MACRO }} {{$Class}} : public {{$abstractclass}}
 {
 	GENERATED_BODY()

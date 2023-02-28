@@ -24,7 +24,7 @@ THIRD_PARTY_INCLUDES_END
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Testbed1StructInterfaceOLinkClient.generated.h"
 
-UCLASS(BlueprintType)
+UCLASS(NotBlueprintable, BlueprintType)
 class TESTBED1_API UTestbed1StructInterfaceOLinkClient : public UAbstractTestbed1StructInterface
 {
 	GENERATED_BODY()

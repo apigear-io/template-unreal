@@ -24,7 +24,7 @@ THIRD_PARTY_INCLUDES_END
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "TbSimpleSimpleArrayInterfaceOLinkClient.generated.h"
 
-UCLASS(BlueprintType)
+UCLASS(NotBlueprintable, BlueprintType)
 class TBSIMPLE_API UTbSimpleSimpleArrayInterfaceOLinkClient : public UAbstractTbSimpleSimpleArrayInterface
 {
 	GENERATED_BODY()

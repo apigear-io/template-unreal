@@ -24,7 +24,7 @@ THIRD_PARTY_INCLUDES_END
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "TbSame2SameEnum1InterfaceOLinkClient.generated.h"
 
-UCLASS(BlueprintType)
+UCLASS(NotBlueprintable, BlueprintType)
 class TBSAME2_API UTbSame2SameEnum1InterfaceOLinkClient : public UAbstractTbSame2SameEnum1Interface
 {
 	GENERATED_BODY()

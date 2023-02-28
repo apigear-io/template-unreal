@@ -24,7 +24,7 @@ THIRD_PARTY_INCLUDES_END
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "TbSame2SameStruct2InterfaceOLinkClient.generated.h"
 
-UCLASS(BlueprintType)
+UCLASS(NotBlueprintable, BlueprintType)
 class TBSAME2_API UTbSame2SameStruct2InterfaceOLinkClient : public UAbstractTbSame2SameStruct2Interface
 {
 	GENERATED_BODY()
