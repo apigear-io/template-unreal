@@ -14,7 +14,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-#pragma once
 #include "TbSame2SameEnum2InterfaceInterface.h"
 
 UFUNCTION(Category = "ApiGear|TbSame2|SameEnum2Interface")
