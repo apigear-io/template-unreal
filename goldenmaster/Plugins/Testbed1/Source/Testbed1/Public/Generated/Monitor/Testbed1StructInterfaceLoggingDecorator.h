@@ -90,14 +90,14 @@ private:
 	void OnSigString(const FTestbed1StructString& ParamString);
 
 	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
-	void OnPropBoolChanged(const FTestbed1StructBool& PropBool);
+	void OnPropBoolChanged(const FTestbed1StructBool& InPropBool);
 
 	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
-	void OnPropIntChanged(const FTestbed1StructInt& PropInt);
+	void OnPropIntChanged(const FTestbed1StructInt& InPropInt);
 
 	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
-	void OnPropFloatChanged(const FTestbed1StructFloat& PropFloat);
+	void OnPropFloatChanged(const FTestbed1StructFloat& InPropFloat);
 
 	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
-	void OnPropStringChanged(const FTestbed1StructString& PropString);
+	void OnPropStringChanged(const FTestbed1StructString& InPropString);
 };

@@ -135,26 +135,26 @@ private:
 	void OnSigString(const FString& ParamString);
 
 	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	void OnPropBoolChanged(bool bPropBool);
+	void OnPropBoolChanged(bool bInPropBool);
 
 	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	void OnPropIntChanged(int32 PropInt);
+	void OnPropIntChanged(int32 InPropInt);
 
 	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	void OnPropInt32Changed(int32 PropInt32);
+	void OnPropInt32Changed(int32 InPropInt32);
 
 	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	void OnPropInt64Changed(int64 PropInt64);
+	void OnPropInt64Changed(int64 InPropInt64);
 
 	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	void OnPropFloatChanged(float PropFloat);
+	void OnPropFloatChanged(float InPropFloat);
 
 	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	void OnPropFloat32Changed(float PropFloat32);
+	void OnPropFloat32Changed(float InPropFloat32);
 
 	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	void OnPropFloat64Changed(double PropFloat64);
+	void OnPropFloat64Changed(double InPropFloat64);
 
 	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	void OnPropStringChanged(const FString& PropString);
+	void OnPropStringChanged(const FString& InPropString);
 };

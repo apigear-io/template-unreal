@@ -70,8 +70,8 @@ private:
 	void OnSig2(const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2);
 
 	UFUNCTION(Category = "ApiGear|TbSame1|SameStruct2Interface", BlueprintInternalUseOnly)
-	void OnProp1Changed(const FTbSame1Struct2& Prop1);
+	void OnProp1Changed(const FTbSame1Struct2& InProp1);
 
 	UFUNCTION(Category = "ApiGear|TbSame1|SameStruct2Interface", BlueprintInternalUseOnly)
-	void OnProp2Changed(const FTbSame1Struct2& Prop2);
+	void OnProp2Changed(const FTbSame1Struct2& InProp2);
 };

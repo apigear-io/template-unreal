@@ -60,5 +60,5 @@ private:
 	void OnSig1(ETbSame1Enum1 Param1);
 
 	UFUNCTION(Category = "ApiGear|TbSame1|SameEnum1Interface", BlueprintInternalUseOnly)
-	void OnProp1Changed(ETbSame1Enum1 Prop1);
+	void OnProp1Changed(ETbSame1Enum1 InProp1);
 };

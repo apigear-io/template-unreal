@@ -60,5 +60,5 @@ private:
 	void OnSig1(const FTestbed2NestedStruct1& Param1);
 
 	UFUNCTION(Category = "ApiGear|Testbed2|NestedStruct1Interface", BlueprintInternalUseOnly)
-	void OnProp1Changed(const FTestbed2NestedStruct1& Prop1);
+	void OnProp1Changed(const FTestbed2NestedStruct1& InProp1);
 };

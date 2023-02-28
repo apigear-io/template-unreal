@@ -90,14 +90,14 @@ private:
 	void OnSig3(ETbEnumEnum3 Param3);
 
 	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
-	void OnProp0Changed(ETbEnumEnum0 Prop0);
+	void OnProp0Changed(ETbEnumEnum0 InProp0);
 
 	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
-	void OnProp1Changed(ETbEnumEnum1 Prop1);
+	void OnProp1Changed(ETbEnumEnum1 InProp1);
 
 	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
-	void OnProp2Changed(ETbEnumEnum2 Prop2);
+	void OnProp2Changed(ETbEnumEnum2 InProp2);
 
 	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
-	void OnProp3Changed(ETbEnumEnum3 Prop3);
+	void OnProp3Changed(ETbEnumEnum3 InProp3);
 };

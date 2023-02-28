@@ -70,8 +70,8 @@ private:
 	void OnSig2(ETbSame2Enum1 Param1, ETbSame2Enum2 Param2);
 
 	UFUNCTION(Category = "ApiGear|TbSame2|SameEnum2Interface", BlueprintInternalUseOnly)
-	void OnProp1Changed(ETbSame2Enum1 Prop1);
+	void OnProp1Changed(ETbSame2Enum1 InProp1);
 
 	UFUNCTION(Category = "ApiGear|TbSame2|SameEnum2Interface", BlueprintInternalUseOnly)
-	void OnProp2Changed(ETbSame2Enum2 Prop2);
+	void OnProp2Changed(ETbSame2Enum2 InProp2);
 };

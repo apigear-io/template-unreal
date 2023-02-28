@@ -80,11 +80,11 @@ private:
 	void OnSig3(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3);
 
 	UFUNCTION(Category = "ApiGear|Testbed2|NestedStruct3Interface", BlueprintInternalUseOnly)
-	void OnProp1Changed(const FTestbed2NestedStruct1& Prop1);
+	void OnProp1Changed(const FTestbed2NestedStruct1& InProp1);
 
 	UFUNCTION(Category = "ApiGear|Testbed2|NestedStruct3Interface", BlueprintInternalUseOnly)
-	void OnProp2Changed(const FTestbed2NestedStruct2& Prop2);
+	void OnProp2Changed(const FTestbed2NestedStruct2& InProp2);
 
 	UFUNCTION(Category = "ApiGear|Testbed2|NestedStruct3Interface", BlueprintInternalUseOnly)
-	void OnProp3Changed(const FTestbed2NestedStruct3& Prop3);
+	void OnProp3Changed(const FTestbed2NestedStruct3& InProp3);
 };

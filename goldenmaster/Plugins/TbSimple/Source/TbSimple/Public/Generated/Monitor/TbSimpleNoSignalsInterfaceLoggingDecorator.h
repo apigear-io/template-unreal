@@ -64,8 +64,8 @@ private:
 	// signals
 
 	UFUNCTION(Category = "ApiGear|TbSimple|NoSignalsInterface", BlueprintInternalUseOnly)
-	void OnPropBoolChanged(bool bPropBool);
+	void OnPropBoolChanged(bool bInPropBool);
 
 	UFUNCTION(Category = "ApiGear|TbSimple|NoSignalsInterface", BlueprintInternalUseOnly)
-	void OnPropIntChanged(int32 PropInt);
+	void OnPropIntChanged(int32 InPropInt);
 };

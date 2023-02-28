@@ -60,5 +60,5 @@ private:
 	void OnSig1(const FTbSame1Struct1& Param1);
 
 	UFUNCTION(Category = "ApiGear|TbSame1|SameStruct1Interface", BlueprintInternalUseOnly)
-	void OnProp1Changed(const FTbSame1Struct1& Prop1);
+	void OnProp1Changed(const FTbSame1Struct1& InProp1);
 };
