@@ -25,7 +25,7 @@ limitations under the License.
 // General Log
 DECLARE_LOG_CATEGORY_EXTERN(LogTbEnumEnumInterfaceLoggingDecorator, Log, All);
 
-UCLASS(BlueprintType, Blueprintable)
+UCLASS(NotBlueprintable, BlueprintType)
 class TBENUM_API UTbEnumEnumInterfaceLoggingDecorator : public UAbstractTbEnumEnumInterface
 {
 	GENERATED_BODY()

@@ -33,7 +33,7 @@ limitations under the License.
 // General Log
 DECLARE_LOG_CATEGORY_EXTERN(Log{{$DisplayName}}, Log, All);
 
-UCLASS(BlueprintType, Blueprintable)
+UCLASS(NotBlueprintable, BlueprintType)
 class {{ $API_MACRO }} {{$Class}} : public {{$abstractclass}}
 {
 	GENERATED_BODY()

@@ -25,7 +25,7 @@ limitations under the License.
 // General Log
 DECLARE_LOG_CATEGORY_EXTERN(LogTestbed1StructArrayInterfaceLoggingDecorator, Log, All);
 
-UCLASS(BlueprintType, Blueprintable)
+UCLASS(NotBlueprintable, BlueprintType)
 class TESTBED1_API UTestbed1StructArrayInterfaceLoggingDecorator : public UAbstractTestbed1StructArrayInterface
 {
 	GENERATED_BODY()

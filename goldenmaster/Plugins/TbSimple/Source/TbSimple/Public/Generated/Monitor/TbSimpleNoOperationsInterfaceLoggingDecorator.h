@@ -25,7 +25,7 @@ limitations under the License.
 // General Log
 DECLARE_LOG_CATEGORY_EXTERN(LogTbSimpleNoOperationsInterfaceLoggingDecorator, Log, All);
 
-UCLASS(BlueprintType, Blueprintable)
+UCLASS(NotBlueprintable, BlueprintType)
 class TBSIMPLE_API UTbSimpleNoOperationsInterfaceLoggingDecorator : public UAbstractTbSimpleNoOperationsInterface
 {
 	GENERATED_BODY()

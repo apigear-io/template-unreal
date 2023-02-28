@@ -25,7 +25,7 @@ limitations under the License.
 // General Log
 DECLARE_LOG_CATEGORY_EXTERN(LogTbSame1SameEnum1InterfaceLoggingDecorator, Log, All);
 
-UCLASS(BlueprintType, Blueprintable)
+UCLASS(NotBlueprintable, BlueprintType)
 class TBSAME1_API UTbSame1SameEnum1InterfaceLoggingDecorator : public UAbstractTbSame1SameEnum1Interface
 {
 	GENERATED_BODY()
