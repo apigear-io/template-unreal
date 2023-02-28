@@ -13,6 +13,12 @@ DEFINE_LOG_CATEGORY(LogApiGearOLink);
 
 void writeLog(ApiGear::ObjectLink::LogLevel level, std::string msg)
 {
+	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
+	if (!settings->OLINK_EnableDebugLog)
+	{
+		return;
+	}
+
 	switch (level)
 	{
 	case ApiGear::ObjectLink::LogLevel::Info:
