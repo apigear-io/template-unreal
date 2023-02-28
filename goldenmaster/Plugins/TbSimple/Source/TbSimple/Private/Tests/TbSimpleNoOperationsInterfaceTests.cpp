@@ -20,21 +20,25 @@ limitations under the License.
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbSimpleNoOperationsInterfaceImplementationPropertyPropBoolTest, "TbSimple.NoOperationsInterface.Implementation.Property.PropBool", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbSimpleNoOperationsInterfaceImplementationPropertyPropBoolTest, "TbSimple.NoOperationsInterface.Implementation.Property.PropBool", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool UTbSimpleNoOperationsInterfaceImplementationPropertyPropBoolTest::RunTest(const FString& Parameters)
 {
 	// Do implement test here
-	TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> test = NewObject<UTbSimpleNoOperationsInterface>();
+	UGameInstance* GameInstance = NewObject<UGameInstance>();
+	GameInstance->Init();
+	TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> test = GameInstance->GetSubsystem<UTbSimpleNoOperationsInterface>();
 	test->Execute_SetPropBool(test.GetObject(), false);
 	TestEqual(TEXT("Getter should return the same value as set by the setter"), test->Execute_GetPropBool(test.GetObject()), false);
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbSimpleNoOperationsInterfaceImplementationPropertyPropIntTest, "TbSimple.NoOperationsInterface.Implementation.Property.PropInt", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbSimpleNoOperationsInterfaceImplementationPropertyPropIntTest, "TbSimple.NoOperationsInterface.Implementation.Property.PropInt", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool UTbSimpleNoOperationsInterfaceImplementationPropertyPropIntTest::RunTest(const FString& Parameters)
 {
 	// Do implement test here
-	TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> test = NewObject<UTbSimpleNoOperationsInterface>();
+	UGameInstance* GameInstance = NewObject<UGameInstance>();
+	GameInstance->Init();
+	TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> test = GameInstance->GetSubsystem<UTbSimpleNoOperationsInterface>();
 	test->Execute_SetPropInt(test.GetObject(), 0);
 	TestEqual(TEXT("Getter should return the same value as set by the setter"), test->Execute_GetPropInt(test.GetObject()), 0);
 	return true;

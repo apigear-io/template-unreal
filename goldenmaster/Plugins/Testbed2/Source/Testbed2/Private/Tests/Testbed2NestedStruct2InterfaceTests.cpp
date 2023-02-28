@@ -20,40 +20,48 @@ limitations under the License.
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed2NestedStruct2InterfaceImplementationPropertyProp1Test, "Testbed2.NestedStruct2Interface.Implementation.Property.Prop1", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed2NestedStruct2InterfaceImplementationPropertyProp1Test, "Testbed2.NestedStruct2Interface.Implementation.Property.Prop1", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool UTestbed2NestedStruct2InterfaceImplementationPropertyProp1Test::RunTest(const FString& Parameters)
 {
 	// Do implement test here
-	TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> test = NewObject<UTestbed2NestedStruct2Interface>();
+	UGameInstance* GameInstance = NewObject<UGameInstance>();
+	GameInstance->Init();
+	TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> test = GameInstance->GetSubsystem<UTestbed2NestedStruct2Interface>();
 	test->Execute_SetProp1(test.GetObject(), FTestbed2NestedStruct1());
 	TestEqual(TEXT("Getter should return the same value as set by the setter"), test->Execute_GetProp1(test.GetObject()), FTestbed2NestedStruct1());
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed2NestedStruct2InterfaceImplementationPropertyProp2Test, "Testbed2.NestedStruct2Interface.Implementation.Property.Prop2", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed2NestedStruct2InterfaceImplementationPropertyProp2Test, "Testbed2.NestedStruct2Interface.Implementation.Property.Prop2", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool UTestbed2NestedStruct2InterfaceImplementationPropertyProp2Test::RunTest(const FString& Parameters)
 {
 	// Do implement test here
-	TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> test = NewObject<UTestbed2NestedStruct2Interface>();
+	UGameInstance* GameInstance = NewObject<UGameInstance>();
+	GameInstance->Init();
+	TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> test = GameInstance->GetSubsystem<UTestbed2NestedStruct2Interface>();
 	test->Execute_SetProp2(test.GetObject(), FTestbed2NestedStruct2());
 	TestEqual(TEXT("Getter should return the same value as set by the setter"), test->Execute_GetProp2(test.GetObject()), FTestbed2NestedStruct2());
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed2NestedStruct2InterfaceImplementationOperationFunc1Test, "Testbed2.NestedStruct2Interface.Implementation.Operation.Func1", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed2NestedStruct2InterfaceImplementationOperationFunc1Test, "Testbed2.NestedStruct2Interface.Implementation.Operation.Func1", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool UTestbed2NestedStruct2InterfaceImplementationOperationFunc1Test::RunTest(const FString& Parameters)
 {
 	// Do implement test here
-	TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> test = NewObject<UTestbed2NestedStruct2Interface>();
+	UGameInstance* GameInstance = NewObject<UGameInstance>();
+	GameInstance->Init();
+	TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> test = GameInstance->GetSubsystem<UTestbed2NestedStruct2Interface>();
 	test->Execute_Func1(test.GetObject(), FTestbed2NestedStruct1());
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed2NestedStruct2InterfaceImplementationOperationFunc2Test, "Testbed2.NestedStruct2Interface.Implementation.Operation.Func2", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed2NestedStruct2InterfaceImplementationOperationFunc2Test, "Testbed2.NestedStruct2Interface.Implementation.Operation.Func2", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool UTestbed2NestedStruct2InterfaceImplementationOperationFunc2Test::RunTest(const FString& Parameters)
 {
 	// Do implement test here
-	TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> test = NewObject<UTestbed2NestedStruct2Interface>();
+	UGameInstance* GameInstance = NewObject<UGameInstance>();
+	GameInstance->Init();
+	TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> test = GameInstance->GetSubsystem<UTestbed2NestedStruct2Interface>();
 	test->Execute_Func2(test.GetObject(), FTestbed2NestedStruct1(), FTestbed2NestedStruct2());
 	return true;
 }

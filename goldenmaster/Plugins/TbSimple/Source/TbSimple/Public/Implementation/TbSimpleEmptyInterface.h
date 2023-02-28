@@ -21,18 +21,13 @@ limitations under the License.
 #include "Generated/api/TbSimpleEmptyInterfaceInterface.h"
 #include "TbSimpleEmptyInterface.generated.h"
 
-UCLASS(BlueprintType, Blueprintable)
-class TBSIMPLE_API UTbSimpleEmptyInterface : public UObject, public ITbSimpleEmptyInterfaceInterface
+UCLASS(BlueprintType)
+class TBSIMPLE_API UTbSimpleEmptyInterface : public UAbstractTbSimpleEmptyInterface
 {
 	GENERATED_BODY()
 public:
 	virtual ~UTbSimpleEmptyInterface();
 
-	// signals
 	// properties
 	// operations
-protected:
-	// signals
-private:
-	// properties - local copy - use setter functions to emit changed signals
 };

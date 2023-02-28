@@ -20,40 +20,48 @@ limitations under the License.
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbSame2SameStruct2InterfaceImplementationPropertyProp1Test, "TbSame2.SameStruct2Interface.Implementation.Property.Prop1", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbSame2SameStruct2InterfaceImplementationPropertyProp1Test, "TbSame2.SameStruct2Interface.Implementation.Property.Prop1", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool UTbSame2SameStruct2InterfaceImplementationPropertyProp1Test::RunTest(const FString& Parameters)
 {
 	// Do implement test here
-	TScriptInterface<ITbSame2SameStruct2InterfaceInterface> test = NewObject<UTbSame2SameStruct2Interface>();
+	UGameInstance* GameInstance = NewObject<UGameInstance>();
+	GameInstance->Init();
+	TScriptInterface<ITbSame2SameStruct2InterfaceInterface> test = GameInstance->GetSubsystem<UTbSame2SameStruct2Interface>();
 	test->Execute_SetProp1(test.GetObject(), FTbSame2Struct2());
 	TestEqual(TEXT("Getter should return the same value as set by the setter"), test->Execute_GetProp1(test.GetObject()), FTbSame2Struct2());
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbSame2SameStruct2InterfaceImplementationPropertyProp2Test, "TbSame2.SameStruct2Interface.Implementation.Property.Prop2", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbSame2SameStruct2InterfaceImplementationPropertyProp2Test, "TbSame2.SameStruct2Interface.Implementation.Property.Prop2", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool UTbSame2SameStruct2InterfaceImplementationPropertyProp2Test::RunTest(const FString& Parameters)
 {
 	// Do implement test here
-	TScriptInterface<ITbSame2SameStruct2InterfaceInterface> test = NewObject<UTbSame2SameStruct2Interface>();
+	UGameInstance* GameInstance = NewObject<UGameInstance>();
+	GameInstance->Init();
+	TScriptInterface<ITbSame2SameStruct2InterfaceInterface> test = GameInstance->GetSubsystem<UTbSame2SameStruct2Interface>();
 	test->Execute_SetProp2(test.GetObject(), FTbSame2Struct2());
 	TestEqual(TEXT("Getter should return the same value as set by the setter"), test->Execute_GetProp2(test.GetObject()), FTbSame2Struct2());
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbSame2SameStruct2InterfaceImplementationOperationFunc1Test, "TbSame2.SameStruct2Interface.Implementation.Operation.Func1", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbSame2SameStruct2InterfaceImplementationOperationFunc1Test, "TbSame2.SameStruct2Interface.Implementation.Operation.Func1", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool UTbSame2SameStruct2InterfaceImplementationOperationFunc1Test::RunTest(const FString& Parameters)
 {
 	// Do implement test here
-	TScriptInterface<ITbSame2SameStruct2InterfaceInterface> test = NewObject<UTbSame2SameStruct2Interface>();
+	UGameInstance* GameInstance = NewObject<UGameInstance>();
+	GameInstance->Init();
+	TScriptInterface<ITbSame2SameStruct2InterfaceInterface> test = GameInstance->GetSubsystem<UTbSame2SameStruct2Interface>();
 	test->Execute_Func1(test.GetObject(), FTbSame2Struct1());
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbSame2SameStruct2InterfaceImplementationOperationFunc2Test, "TbSame2.SameStruct2Interface.Implementation.Operation.Func2", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbSame2SameStruct2InterfaceImplementationOperationFunc2Test, "TbSame2.SameStruct2Interface.Implementation.Operation.Func2", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool UTbSame2SameStruct2InterfaceImplementationOperationFunc2Test::RunTest(const FString& Parameters)
 {
 	// Do implement test here
-	TScriptInterface<ITbSame2SameStruct2InterfaceInterface> test = NewObject<UTbSame2SameStruct2Interface>();
+	UGameInstance* GameInstance = NewObject<UGameInstance>();
+	GameInstance->Init();
+	TScriptInterface<ITbSame2SameStruct2InterfaceInterface> test = GameInstance->GetSubsystem<UTbSame2SameStruct2Interface>();
 	test->Execute_Func2(test.GetObject(), FTbSame2Struct1(), FTbSame2Struct2());
 	return true;
 }

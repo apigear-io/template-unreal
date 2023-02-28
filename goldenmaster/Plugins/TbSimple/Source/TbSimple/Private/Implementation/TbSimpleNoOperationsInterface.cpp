@@ -18,32 +18,6 @@ limitations under the License.
 #include "Implementation/TbSimpleNoOperationsInterface.h"
 
 UTbSimpleNoOperationsInterface::~UTbSimpleNoOperationsInterface() = default;
-
-void UTbSimpleNoOperationsInterface::BroadcastSigVoid_Implementation()
-{
-	SigVoidSignal.Broadcast();
-}
-
-FTbSimpleNoOperationsInterfaceSigVoidDelegate& UTbSimpleNoOperationsInterface::GetSigVoidSignalDelegate()
-{
-	return SigVoidSignal;
-}
-
-void UTbSimpleNoOperationsInterface::BroadcastSigBool_Implementation(bool bParamBool)
-{
-	SigBoolSignal.Broadcast(bParamBool);
-}
-
-FTbSimpleNoOperationsInterfaceSigBoolDelegate& UTbSimpleNoOperationsInterface::GetSigBoolSignalDelegate()
-{
-	return SigBoolSignal;
-}
-
-void UTbSimpleNoOperationsInterface::BroadcastPropBoolChanged_Implementation(bool bInPropBool)
-{
-	PropBoolChanged.Broadcast(bInPropBool);
-}
-
 bool UTbSimpleNoOperationsInterface::GetPropBool_Implementation() const
 {
 	return bPropBool;
@@ -57,17 +31,6 @@ void UTbSimpleNoOperationsInterface::SetPropBool_Implementation(bool bInPropBool
 		Execute_BroadcastPropBoolChanged(this, bPropBool);
 	}
 }
-
-FTbSimpleNoOperationsInterfacePropBoolChangedDelegate& UTbSimpleNoOperationsInterface::GetPropBoolChangedDelegate()
-{
-	return PropBoolChanged;
-}
-
-void UTbSimpleNoOperationsInterface::BroadcastPropIntChanged_Implementation(int32 InPropInt)
-{
-	PropIntChanged.Broadcast(InPropInt);
-}
-
 int32 UTbSimpleNoOperationsInterface::GetPropInt_Implementation() const
 {
 	return PropInt;
@@ -80,9 +43,4 @@ void UTbSimpleNoOperationsInterface::SetPropInt_Implementation(int32 InPropInt)
 		PropInt = InPropInt;
 		Execute_BroadcastPropIntChanged(this, PropInt);
 	}
-}
-
-FTbSimpleNoOperationsInterfacePropIntChangedDelegate& UTbSimpleNoOperationsInterface::GetPropIntChangedDelegate()
-{
-	return PropIntChanged;
 }

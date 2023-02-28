@@ -18,22 +18,6 @@ limitations under the License.
 #include "Implementation/Testbed2NestedStruct1Interface.h"
 
 UTestbed2NestedStruct1Interface::~UTestbed2NestedStruct1Interface() = default;
-
-void UTestbed2NestedStruct1Interface::BroadcastSig1_Implementation(const FTestbed2NestedStruct1& Param1)
-{
-	Sig1Signal.Broadcast(Param1);
-}
-
-FTestbed2NestedStruct1InterfaceSig1Delegate& UTestbed2NestedStruct1Interface::GetSig1SignalDelegate()
-{
-	return Sig1Signal;
-}
-
-void UTestbed2NestedStruct1Interface::BroadcastProp1Changed_Implementation(const FTestbed2NestedStruct1& InProp1)
-{
-	Prop1Changed.Broadcast(InProp1);
-}
-
 FTestbed2NestedStruct1 UTestbed2NestedStruct1Interface::GetProp1_Implementation() const
 {
 	return Prop1;
@@ -46,11 +30,6 @@ void UTestbed2NestedStruct1Interface::SetProp1_Implementation(const FTestbed2Nes
 		Prop1 = InProp1;
 		Execute_BroadcastProp1Changed(this, Prop1);
 	}
-}
-
-FTestbed2NestedStruct1InterfaceProp1ChangedDelegate& UTestbed2NestedStruct1Interface::GetProp1ChangedDelegate()
-{
-	return Prop1Changed;
 }
 
 FTestbed2NestedStruct1 UTestbed2NestedStruct1Interface::Func1_Implementation(const FTestbed2NestedStruct1& Param1)

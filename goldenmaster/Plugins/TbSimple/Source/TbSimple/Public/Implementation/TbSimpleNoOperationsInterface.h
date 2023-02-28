@@ -21,29 +21,12 @@ limitations under the License.
 #include "Generated/api/TbSimpleNoOperationsInterfaceInterface.h"
 #include "TbSimpleNoOperationsInterface.generated.h"
 
-UCLASS(BlueprintType, Blueprintable)
-class TBSIMPLE_API UTbSimpleNoOperationsInterface : public UObject, public ITbSimpleNoOperationsInterfaceInterface
+UCLASS(BlueprintType)
+class TBSIMPLE_API UTbSimpleNoOperationsInterface : public UAbstractTbSimpleNoOperationsInterface
 {
 	GENERATED_BODY()
 public:
 	virtual ~UTbSimpleNoOperationsInterface();
-
-	// signals
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoOperationsInterface", DisplayName = "SigVoid Signal")
-	FTbSimpleNoOperationsInterfaceSigVoidDelegate SigVoidSignal;
-	FTbSimpleNoOperationsInterfaceSigVoidDelegate& GetSigVoidSignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoOperationsInterface", DisplayName = "SigBool Signal")
-	FTbSimpleNoOperationsInterfaceSigBoolDelegate SigBoolSignal;
-	FTbSimpleNoOperationsInterfaceSigBoolDelegate& GetSigBoolSignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoOperationsInterface", DisplayName = "PropBool Changed")
-	FTbSimpleNoOperationsInterfacePropBoolChangedDelegate PropBoolChanged;
-	FTbSimpleNoOperationsInterfacePropBoolChangedDelegate& GetPropBoolChangedDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoOperationsInterface", DisplayName = "PropInt Changed")
-	FTbSimpleNoOperationsInterfacePropIntChangedDelegate PropIntChanged;
-	FTbSimpleNoOperationsInterfacePropIntChangedDelegate& GetPropIntChangedDelegate() override;
 
 	// properties
 	bool GetPropBool_Implementation() const override;
@@ -53,18 +36,4 @@ public:
 	void SetPropInt_Implementation(int32 PropInt) override;
 
 	// operations
-protected:
-	// signals
-	void BroadcastSigVoid_Implementation() override;
-
-	void BroadcastSigBool_Implementation(bool bParamBool) override;
-
-	void BroadcastPropBoolChanged_Implementation(bool bPropBool) override;
-
-	void BroadcastPropIntChanged_Implementation(int32 PropInt) override;
-
-private:
-	// properties - local copy - use setter functions to emit changed signals
-	bool bPropBool{false};
-	int32 PropInt{0};
 };

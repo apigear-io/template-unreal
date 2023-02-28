@@ -18,32 +18,6 @@ limitations under the License.
 #include "Implementation/TbSame2SameStruct2Interface.h"
 
 UTbSame2SameStruct2Interface::~UTbSame2SameStruct2Interface() = default;
-
-void UTbSame2SameStruct2Interface::BroadcastSig1_Implementation(const FTbSame2Struct1& Param1)
-{
-	Sig1Signal.Broadcast(Param1);
-}
-
-FTbSame2SameStruct2InterfaceSig1Delegate& UTbSame2SameStruct2Interface::GetSig1SignalDelegate()
-{
-	return Sig1Signal;
-}
-
-void UTbSame2SameStruct2Interface::BroadcastSig2_Implementation(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2)
-{
-	Sig2Signal.Broadcast(Param1, Param2);
-}
-
-FTbSame2SameStruct2InterfaceSig2Delegate& UTbSame2SameStruct2Interface::GetSig2SignalDelegate()
-{
-	return Sig2Signal;
-}
-
-void UTbSame2SameStruct2Interface::BroadcastProp1Changed_Implementation(const FTbSame2Struct2& InProp1)
-{
-	Prop1Changed.Broadcast(InProp1);
-}
-
 FTbSame2Struct2 UTbSame2SameStruct2Interface::GetProp1_Implementation() const
 {
 	return Prop1;
@@ -57,17 +31,6 @@ void UTbSame2SameStruct2Interface::SetProp1_Implementation(const FTbSame2Struct2
 		Execute_BroadcastProp1Changed(this, Prop1);
 	}
 }
-
-FTbSame2SameStruct2InterfaceProp1ChangedDelegate& UTbSame2SameStruct2Interface::GetProp1ChangedDelegate()
-{
-	return Prop1Changed;
-}
-
-void UTbSame2SameStruct2Interface::BroadcastProp2Changed_Implementation(const FTbSame2Struct2& InProp2)
-{
-	Prop2Changed.Broadcast(InProp2);
-}
-
 FTbSame2Struct2 UTbSame2SameStruct2Interface::GetProp2_Implementation() const
 {
 	return Prop2;
@@ -80,11 +43,6 @@ void UTbSame2SameStruct2Interface::SetProp2_Implementation(const FTbSame2Struct2
 		Prop2 = InProp2;
 		Execute_BroadcastProp2Changed(this, Prop2);
 	}
-}
-
-FTbSame2SameStruct2InterfaceProp2ChangedDelegate& UTbSame2SameStruct2Interface::GetProp2ChangedDelegate()
-{
-	return Prop2Changed;
 }
 
 FTbSame2Struct1 UTbSame2SameStruct2Interface::Func1_Implementation(const FTbSame2Struct1& Param1)

@@ -18,52 +18,6 @@ limitations under the License.
 #include "Implementation/Testbed1StructArrayInterface.h"
 
 UTestbed1StructArrayInterface::~UTestbed1StructArrayInterface() = default;
-
-void UTestbed1StructArrayInterface::BroadcastSigBool_Implementation(const TArray<FTestbed1StructBool>& ParamBool)
-{
-	SigBoolSignal.Broadcast(ParamBool);
-}
-
-FTestbed1StructArrayInterfaceSigBoolDelegate& UTestbed1StructArrayInterface::GetSigBoolSignalDelegate()
-{
-	return SigBoolSignal;
-}
-
-void UTestbed1StructArrayInterface::BroadcastSigInt_Implementation(const TArray<FTestbed1StructInt>& ParamInt)
-{
-	SigIntSignal.Broadcast(ParamInt);
-}
-
-FTestbed1StructArrayInterfaceSigIntDelegate& UTestbed1StructArrayInterface::GetSigIntSignalDelegate()
-{
-	return SigIntSignal;
-}
-
-void UTestbed1StructArrayInterface::BroadcastSigFloat_Implementation(const TArray<FTestbed1StructFloat>& ParamFloat)
-{
-	SigFloatSignal.Broadcast(ParamFloat);
-}
-
-FTestbed1StructArrayInterfaceSigFloatDelegate& UTestbed1StructArrayInterface::GetSigFloatSignalDelegate()
-{
-	return SigFloatSignal;
-}
-
-void UTestbed1StructArrayInterface::BroadcastSigString_Implementation(const TArray<FTestbed1StructString>& ParamString)
-{
-	SigStringSignal.Broadcast(ParamString);
-}
-
-FTestbed1StructArrayInterfaceSigStringDelegate& UTestbed1StructArrayInterface::GetSigStringSignalDelegate()
-{
-	return SigStringSignal;
-}
-
-void UTestbed1StructArrayInterface::BroadcastPropBoolChanged_Implementation(const TArray<FTestbed1StructBool>& InPropBool)
-{
-	PropBoolChanged.Broadcast(InPropBool);
-}
-
 TArray<FTestbed1StructBool> UTestbed1StructArrayInterface::GetPropBool_Implementation() const
 {
 	return PropBool;
@@ -77,17 +31,6 @@ void UTestbed1StructArrayInterface::SetPropBool_Implementation(const TArray<FTes
 		Execute_BroadcastPropBoolChanged(this, PropBool);
 	}
 }
-
-FTestbed1StructArrayInterfacePropBoolChangedDelegate& UTestbed1StructArrayInterface::GetPropBoolChangedDelegate()
-{
-	return PropBoolChanged;
-}
-
-void UTestbed1StructArrayInterface::BroadcastPropIntChanged_Implementation(const TArray<FTestbed1StructInt>& InPropInt)
-{
-	PropIntChanged.Broadcast(InPropInt);
-}
-
 TArray<FTestbed1StructInt> UTestbed1StructArrayInterface::GetPropInt_Implementation() const
 {
 	return PropInt;
@@ -101,17 +44,6 @@ void UTestbed1StructArrayInterface::SetPropInt_Implementation(const TArray<FTest
 		Execute_BroadcastPropIntChanged(this, PropInt);
 	}
 }
-
-FTestbed1StructArrayInterfacePropIntChangedDelegate& UTestbed1StructArrayInterface::GetPropIntChangedDelegate()
-{
-	return PropIntChanged;
-}
-
-void UTestbed1StructArrayInterface::BroadcastPropFloatChanged_Implementation(const TArray<FTestbed1StructFloat>& InPropFloat)
-{
-	PropFloatChanged.Broadcast(InPropFloat);
-}
-
 TArray<FTestbed1StructFloat> UTestbed1StructArrayInterface::GetPropFloat_Implementation() const
 {
 	return PropFloat;
@@ -125,17 +57,6 @@ void UTestbed1StructArrayInterface::SetPropFloat_Implementation(const TArray<FTe
 		Execute_BroadcastPropFloatChanged(this, PropFloat);
 	}
 }
-
-FTestbed1StructArrayInterfacePropFloatChangedDelegate& UTestbed1StructArrayInterface::GetPropFloatChangedDelegate()
-{
-	return PropFloatChanged;
-}
-
-void UTestbed1StructArrayInterface::BroadcastPropStringChanged_Implementation(const TArray<FTestbed1StructString>& InPropString)
-{
-	PropStringChanged.Broadcast(InPropString);
-}
-
 TArray<FTestbed1StructString> UTestbed1StructArrayInterface::GetPropString_Implementation() const
 {
 	return PropString;
@@ -148,11 +69,6 @@ void UTestbed1StructArrayInterface::SetPropString_Implementation(const TArray<FT
 		PropString = InPropString;
 		Execute_BroadcastPropStringChanged(this, PropString);
 	}
-}
-
-FTestbed1StructArrayInterfacePropStringChangedDelegate& UTestbed1StructArrayInterface::GetPropStringChangedDelegate()
-{
-	return PropStringChanged;
 }
 
 FTestbed1StructBool UTestbed1StructArrayInterface::FuncBool_Implementation(const TArray<FTestbed1StructBool>& ParamBool)

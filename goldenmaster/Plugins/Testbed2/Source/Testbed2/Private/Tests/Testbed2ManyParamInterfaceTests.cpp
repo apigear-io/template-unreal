@@ -20,78 +20,94 @@ limitations under the License.
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed2ManyParamInterfaceImplementationPropertyProp1Test, "Testbed2.ManyParamInterface.Implementation.Property.Prop1", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed2ManyParamInterfaceImplementationPropertyProp1Test, "Testbed2.ManyParamInterface.Implementation.Property.Prop1", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool UTestbed2ManyParamInterfaceImplementationPropertyProp1Test::RunTest(const FString& Parameters)
 {
 	// Do implement test here
-	TScriptInterface<ITestbed2ManyParamInterfaceInterface> test = NewObject<UTestbed2ManyParamInterface>();
+	UGameInstance* GameInstance = NewObject<UGameInstance>();
+	GameInstance->Init();
+	TScriptInterface<ITestbed2ManyParamInterfaceInterface> test = GameInstance->GetSubsystem<UTestbed2ManyParamInterface>();
 	test->Execute_SetProp1(test.GetObject(), 0);
 	TestEqual(TEXT("Getter should return the same value as set by the setter"), test->Execute_GetProp1(test.GetObject()), 0);
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed2ManyParamInterfaceImplementationPropertyProp2Test, "Testbed2.ManyParamInterface.Implementation.Property.Prop2", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed2ManyParamInterfaceImplementationPropertyProp2Test, "Testbed2.ManyParamInterface.Implementation.Property.Prop2", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool UTestbed2ManyParamInterfaceImplementationPropertyProp2Test::RunTest(const FString& Parameters)
 {
 	// Do implement test here
-	TScriptInterface<ITestbed2ManyParamInterfaceInterface> test = NewObject<UTestbed2ManyParamInterface>();
+	UGameInstance* GameInstance = NewObject<UGameInstance>();
+	GameInstance->Init();
+	TScriptInterface<ITestbed2ManyParamInterfaceInterface> test = GameInstance->GetSubsystem<UTestbed2ManyParamInterface>();
 	test->Execute_SetProp2(test.GetObject(), 0);
 	TestEqual(TEXT("Getter should return the same value as set by the setter"), test->Execute_GetProp2(test.GetObject()), 0);
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed2ManyParamInterfaceImplementationPropertyProp3Test, "Testbed2.ManyParamInterface.Implementation.Property.Prop3", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed2ManyParamInterfaceImplementationPropertyProp3Test, "Testbed2.ManyParamInterface.Implementation.Property.Prop3", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool UTestbed2ManyParamInterfaceImplementationPropertyProp3Test::RunTest(const FString& Parameters)
 {
 	// Do implement test here
-	TScriptInterface<ITestbed2ManyParamInterfaceInterface> test = NewObject<UTestbed2ManyParamInterface>();
+	UGameInstance* GameInstance = NewObject<UGameInstance>();
+	GameInstance->Init();
+	TScriptInterface<ITestbed2ManyParamInterfaceInterface> test = GameInstance->GetSubsystem<UTestbed2ManyParamInterface>();
 	test->Execute_SetProp3(test.GetObject(), 0);
 	TestEqual(TEXT("Getter should return the same value as set by the setter"), test->Execute_GetProp3(test.GetObject()), 0);
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed2ManyParamInterfaceImplementationPropertyProp4Test, "Testbed2.ManyParamInterface.Implementation.Property.Prop4", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed2ManyParamInterfaceImplementationPropertyProp4Test, "Testbed2.ManyParamInterface.Implementation.Property.Prop4", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool UTestbed2ManyParamInterfaceImplementationPropertyProp4Test::RunTest(const FString& Parameters)
 {
 	// Do implement test here
-	TScriptInterface<ITestbed2ManyParamInterfaceInterface> test = NewObject<UTestbed2ManyParamInterface>();
+	UGameInstance* GameInstance = NewObject<UGameInstance>();
+	GameInstance->Init();
+	TScriptInterface<ITestbed2ManyParamInterfaceInterface> test = GameInstance->GetSubsystem<UTestbed2ManyParamInterface>();
 	test->Execute_SetProp4(test.GetObject(), 0);
 	TestEqual(TEXT("Getter should return the same value as set by the setter"), test->Execute_GetProp4(test.GetObject()), 0);
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed2ManyParamInterfaceImplementationOperationFunc1Test, "Testbed2.ManyParamInterface.Implementation.Operation.Func1", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed2ManyParamInterfaceImplementationOperationFunc1Test, "Testbed2.ManyParamInterface.Implementation.Operation.Func1", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool UTestbed2ManyParamInterfaceImplementationOperationFunc1Test::RunTest(const FString& Parameters)
 {
 	// Do implement test here
-	TScriptInterface<ITestbed2ManyParamInterfaceInterface> test = NewObject<UTestbed2ManyParamInterface>();
+	UGameInstance* GameInstance = NewObject<UGameInstance>();
+	GameInstance->Init();
+	TScriptInterface<ITestbed2ManyParamInterfaceInterface> test = GameInstance->GetSubsystem<UTestbed2ManyParamInterface>();
 	test->Execute_Func1(test.GetObject(), 0);
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed2ManyParamInterfaceImplementationOperationFunc2Test, "Testbed2.ManyParamInterface.Implementation.Operation.Func2", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed2ManyParamInterfaceImplementationOperationFunc2Test, "Testbed2.ManyParamInterface.Implementation.Operation.Func2", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool UTestbed2ManyParamInterfaceImplementationOperationFunc2Test::RunTest(const FString& Parameters)
 {
 	// Do implement test here
-	TScriptInterface<ITestbed2ManyParamInterfaceInterface> test = NewObject<UTestbed2ManyParamInterface>();
+	UGameInstance* GameInstance = NewObject<UGameInstance>();
+	GameInstance->Init();
+	TScriptInterface<ITestbed2ManyParamInterfaceInterface> test = GameInstance->GetSubsystem<UTestbed2ManyParamInterface>();
 	test->Execute_Func2(test.GetObject(), 0, 0);
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed2ManyParamInterfaceImplementationOperationFunc3Test, "Testbed2.ManyParamInterface.Implementation.Operation.Func3", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed2ManyParamInterfaceImplementationOperationFunc3Test, "Testbed2.ManyParamInterface.Implementation.Operation.Func3", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool UTestbed2ManyParamInterfaceImplementationOperationFunc3Test::RunTest(const FString& Parameters)
 {
 	// Do implement test here
-	TScriptInterface<ITestbed2ManyParamInterfaceInterface> test = NewObject<UTestbed2ManyParamInterface>();
+	UGameInstance* GameInstance = NewObject<UGameInstance>();
+	GameInstance->Init();
+	TScriptInterface<ITestbed2ManyParamInterfaceInterface> test = GameInstance->GetSubsystem<UTestbed2ManyParamInterface>();
 	test->Execute_Func3(test.GetObject(), 0, 0, 0);
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed2ManyParamInterfaceImplementationOperationFunc4Test, "Testbed2.ManyParamInterface.Implementation.Operation.Func4", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed2ManyParamInterfaceImplementationOperationFunc4Test, "Testbed2.ManyParamInterface.Implementation.Operation.Func4", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool UTestbed2ManyParamInterfaceImplementationOperationFunc4Test::RunTest(const FString& Parameters)
 {
 	// Do implement test here
-	TScriptInterface<ITestbed2ManyParamInterfaceInterface> test = NewObject<UTestbed2ManyParamInterface>();
+	UGameInstance* GameInstance = NewObject<UGameInstance>();
+	GameInstance->Init();
+	TScriptInterface<ITestbed2ManyParamInterfaceInterface> test = GameInstance->GetSubsystem<UTestbed2ManyParamInterface>();
 	test->Execute_Func4(test.GetObject(), 0, 0, 0, 0);
 	return true;
 }

@@ -21,21 +21,12 @@ limitations under the License.
 #include "Generated/api/TbSimpleNoSignalsInterfaceInterface.h"
 #include "TbSimpleNoSignalsInterface.generated.h"
 
-UCLASS(BlueprintType, Blueprintable)
-class TBSIMPLE_API UTbSimpleNoSignalsInterface : public UObject, public ITbSimpleNoSignalsInterfaceInterface
+UCLASS(BlueprintType)
+class TBSIMPLE_API UTbSimpleNoSignalsInterface : public UAbstractTbSimpleNoSignalsInterface
 {
 	GENERATED_BODY()
 public:
 	virtual ~UTbSimpleNoSignalsInterface();
-
-	// signals
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoSignalsInterface", DisplayName = "PropBool Changed")
-	FTbSimpleNoSignalsInterfacePropBoolChangedDelegate PropBoolChanged;
-	FTbSimpleNoSignalsInterfacePropBoolChangedDelegate& GetPropBoolChangedDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoSignalsInterface", DisplayName = "PropInt Changed")
-	FTbSimpleNoSignalsInterfacePropIntChangedDelegate PropIntChanged;
-	FTbSimpleNoSignalsInterfacePropIntChangedDelegate& GetPropIntChangedDelegate() override;
 
 	// properties
 	bool GetPropBool_Implementation() const override;
@@ -49,15 +40,4 @@ public:
 
 	void FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool) override{};
 	bool FuncBool_Implementation(bool bParamBool) override;
-
-protected:
-	// signals
-	void BroadcastPropBoolChanged_Implementation(bool bPropBool) override;
-
-	void BroadcastPropIntChanged_Implementation(int32 PropInt) override;
-
-private:
-	// properties - local copy - use setter functions to emit changed signals
-	bool bPropBool{false};
-	int32 PropInt{0};
 };

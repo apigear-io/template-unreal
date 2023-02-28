@@ -19,26 +19,6 @@ limitations under the License.
 
 UTbSimpleNoPropertiesInterface::~UTbSimpleNoPropertiesInterface() = default;
 
-void UTbSimpleNoPropertiesInterface::BroadcastSigVoid_Implementation()
-{
-	SigVoidSignal.Broadcast();
-}
-
-FTbSimpleNoPropertiesInterfaceSigVoidDelegate& UTbSimpleNoPropertiesInterface::GetSigVoidSignalDelegate()
-{
-	return SigVoidSignal;
-}
-
-void UTbSimpleNoPropertiesInterface::BroadcastSigBool_Implementation(bool bParamBool)
-{
-	SigBoolSignal.Broadcast(bParamBool);
-}
-
-FTbSimpleNoPropertiesInterfaceSigBoolDelegate& UTbSimpleNoPropertiesInterface::GetSigBoolSignalDelegate()
-{
-	return SigBoolSignal;
-}
-
 void UTbSimpleNoPropertiesInterface::FuncVoid_Implementation()
 {
 	// do business logic here

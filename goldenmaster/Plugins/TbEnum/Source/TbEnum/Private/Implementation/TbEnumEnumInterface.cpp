@@ -18,52 +18,6 @@ limitations under the License.
 #include "Implementation/TbEnumEnumInterface.h"
 
 UTbEnumEnumInterface::~UTbEnumEnumInterface() = default;
-
-void UTbEnumEnumInterface::BroadcastSig0_Implementation(ETbEnumEnum0 Param0)
-{
-	Sig0Signal.Broadcast(Param0);
-}
-
-FTbEnumEnumInterfaceSig0Delegate& UTbEnumEnumInterface::GetSig0SignalDelegate()
-{
-	return Sig0Signal;
-}
-
-void UTbEnumEnumInterface::BroadcastSig1_Implementation(ETbEnumEnum1 Param1)
-{
-	Sig1Signal.Broadcast(Param1);
-}
-
-FTbEnumEnumInterfaceSig1Delegate& UTbEnumEnumInterface::GetSig1SignalDelegate()
-{
-	return Sig1Signal;
-}
-
-void UTbEnumEnumInterface::BroadcastSig2_Implementation(ETbEnumEnum2 Param2)
-{
-	Sig2Signal.Broadcast(Param2);
-}
-
-FTbEnumEnumInterfaceSig2Delegate& UTbEnumEnumInterface::GetSig2SignalDelegate()
-{
-	return Sig2Signal;
-}
-
-void UTbEnumEnumInterface::BroadcastSig3_Implementation(ETbEnumEnum3 Param3)
-{
-	Sig3Signal.Broadcast(Param3);
-}
-
-FTbEnumEnumInterfaceSig3Delegate& UTbEnumEnumInterface::GetSig3SignalDelegate()
-{
-	return Sig3Signal;
-}
-
-void UTbEnumEnumInterface::BroadcastProp0Changed_Implementation(ETbEnumEnum0 InProp0)
-{
-	Prop0Changed.Broadcast(InProp0);
-}
-
 ETbEnumEnum0 UTbEnumEnumInterface::GetProp0_Implementation() const
 {
 	return Prop0;
@@ -77,17 +31,6 @@ void UTbEnumEnumInterface::SetProp0_Implementation(ETbEnumEnum0 InProp0)
 		Execute_BroadcastProp0Changed(this, Prop0);
 	}
 }
-
-FTbEnumEnumInterfaceProp0ChangedDelegate& UTbEnumEnumInterface::GetProp0ChangedDelegate()
-{
-	return Prop0Changed;
-}
-
-void UTbEnumEnumInterface::BroadcastProp1Changed_Implementation(ETbEnumEnum1 InProp1)
-{
-	Prop1Changed.Broadcast(InProp1);
-}
-
 ETbEnumEnum1 UTbEnumEnumInterface::GetProp1_Implementation() const
 {
 	return Prop1;
@@ -101,17 +44,6 @@ void UTbEnumEnumInterface::SetProp1_Implementation(ETbEnumEnum1 InProp1)
 		Execute_BroadcastProp1Changed(this, Prop1);
 	}
 }
-
-FTbEnumEnumInterfaceProp1ChangedDelegate& UTbEnumEnumInterface::GetProp1ChangedDelegate()
-{
-	return Prop1Changed;
-}
-
-void UTbEnumEnumInterface::BroadcastProp2Changed_Implementation(ETbEnumEnum2 InProp2)
-{
-	Prop2Changed.Broadcast(InProp2);
-}
-
 ETbEnumEnum2 UTbEnumEnumInterface::GetProp2_Implementation() const
 {
 	return Prop2;
@@ -125,17 +57,6 @@ void UTbEnumEnumInterface::SetProp2_Implementation(ETbEnumEnum2 InProp2)
 		Execute_BroadcastProp2Changed(this, Prop2);
 	}
 }
-
-FTbEnumEnumInterfaceProp2ChangedDelegate& UTbEnumEnumInterface::GetProp2ChangedDelegate()
-{
-	return Prop2Changed;
-}
-
-void UTbEnumEnumInterface::BroadcastProp3Changed_Implementation(ETbEnumEnum3 InProp3)
-{
-	Prop3Changed.Broadcast(InProp3);
-}
-
 ETbEnumEnum3 UTbEnumEnumInterface::GetProp3_Implementation() const
 {
 	return Prop3;
@@ -148,11 +69,6 @@ void UTbEnumEnumInterface::SetProp3_Implementation(ETbEnumEnum3 InProp3)
 		Prop3 = InProp3;
 		Execute_BroadcastProp3Changed(this, Prop3);
 	}
-}
-
-FTbEnumEnumInterfaceProp3ChangedDelegate& UTbEnumEnumInterface::GetProp3ChangedDelegate()
-{
-	return Prop3Changed;
 }
 
 ETbEnumEnum0 UTbEnumEnumInterface::Func0_Implementation(ETbEnumEnum0 Param0)

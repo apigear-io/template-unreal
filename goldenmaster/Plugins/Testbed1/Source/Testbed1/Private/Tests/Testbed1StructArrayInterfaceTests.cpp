@@ -20,78 +20,94 @@ limitations under the License.
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed1StructArrayInterfaceImplementationPropertyPropBoolTest, "Testbed1.StructArrayInterface.Implementation.Property.PropBool", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed1StructArrayInterfaceImplementationPropertyPropBoolTest, "Testbed1.StructArrayInterface.Implementation.Property.PropBool", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool UTestbed1StructArrayInterfaceImplementationPropertyPropBoolTest::RunTest(const FString& Parameters)
 {
 	// Do implement test here
-	TScriptInterface<ITestbed1StructArrayInterfaceInterface> test = NewObject<UTestbed1StructArrayInterface>();
+	UGameInstance* GameInstance = NewObject<UGameInstance>();
+	GameInstance->Init();
+	TScriptInterface<ITestbed1StructArrayInterfaceInterface> test = GameInstance->GetSubsystem<UTestbed1StructArrayInterface>();
 	test->Execute_SetPropBool(test.GetObject(), TArray<FTestbed1StructBool>());
 	TestEqual(TEXT("Getter should return the same value as set by the setter"), test->Execute_GetPropBool(test.GetObject()), TArray<FTestbed1StructBool>());
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed1StructArrayInterfaceImplementationPropertyPropIntTest, "Testbed1.StructArrayInterface.Implementation.Property.PropInt", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed1StructArrayInterfaceImplementationPropertyPropIntTest, "Testbed1.StructArrayInterface.Implementation.Property.PropInt", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool UTestbed1StructArrayInterfaceImplementationPropertyPropIntTest::RunTest(const FString& Parameters)
 {
 	// Do implement test here
-	TScriptInterface<ITestbed1StructArrayInterfaceInterface> test = NewObject<UTestbed1StructArrayInterface>();
+	UGameInstance* GameInstance = NewObject<UGameInstance>();
+	GameInstance->Init();
+	TScriptInterface<ITestbed1StructArrayInterfaceInterface> test = GameInstance->GetSubsystem<UTestbed1StructArrayInterface>();
 	test->Execute_SetPropInt(test.GetObject(), TArray<FTestbed1StructInt>());
 	TestEqual(TEXT("Getter should return the same value as set by the setter"), test->Execute_GetPropInt(test.GetObject()), TArray<FTestbed1StructInt>());
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed1StructArrayInterfaceImplementationPropertyPropFloatTest, "Testbed1.StructArrayInterface.Implementation.Property.PropFloat", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed1StructArrayInterfaceImplementationPropertyPropFloatTest, "Testbed1.StructArrayInterface.Implementation.Property.PropFloat", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool UTestbed1StructArrayInterfaceImplementationPropertyPropFloatTest::RunTest(const FString& Parameters)
 {
 	// Do implement test here
-	TScriptInterface<ITestbed1StructArrayInterfaceInterface> test = NewObject<UTestbed1StructArrayInterface>();
+	UGameInstance* GameInstance = NewObject<UGameInstance>();
+	GameInstance->Init();
+	TScriptInterface<ITestbed1StructArrayInterfaceInterface> test = GameInstance->GetSubsystem<UTestbed1StructArrayInterface>();
 	test->Execute_SetPropFloat(test.GetObject(), TArray<FTestbed1StructFloat>());
 	TestEqual(TEXT("Getter should return the same value as set by the setter"), test->Execute_GetPropFloat(test.GetObject()), TArray<FTestbed1StructFloat>());
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed1StructArrayInterfaceImplementationPropertyPropStringTest, "Testbed1.StructArrayInterface.Implementation.Property.PropString", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed1StructArrayInterfaceImplementationPropertyPropStringTest, "Testbed1.StructArrayInterface.Implementation.Property.PropString", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool UTestbed1StructArrayInterfaceImplementationPropertyPropStringTest::RunTest(const FString& Parameters)
 {
 	// Do implement test here
-	TScriptInterface<ITestbed1StructArrayInterfaceInterface> test = NewObject<UTestbed1StructArrayInterface>();
+	UGameInstance* GameInstance = NewObject<UGameInstance>();
+	GameInstance->Init();
+	TScriptInterface<ITestbed1StructArrayInterfaceInterface> test = GameInstance->GetSubsystem<UTestbed1StructArrayInterface>();
 	test->Execute_SetPropString(test.GetObject(), TArray<FTestbed1StructString>());
 	TestEqual(TEXT("Getter should return the same value as set by the setter"), test->Execute_GetPropString(test.GetObject()), TArray<FTestbed1StructString>());
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed1StructArrayInterfaceImplementationOperationFuncBoolTest, "Testbed1.StructArrayInterface.Implementation.Operation.FuncBool", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed1StructArrayInterfaceImplementationOperationFuncBoolTest, "Testbed1.StructArrayInterface.Implementation.Operation.FuncBool", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool UTestbed1StructArrayInterfaceImplementationOperationFuncBoolTest::RunTest(const FString& Parameters)
 {
 	// Do implement test here
-	TScriptInterface<ITestbed1StructArrayInterfaceInterface> test = NewObject<UTestbed1StructArrayInterface>();
+	UGameInstance* GameInstance = NewObject<UGameInstance>();
+	GameInstance->Init();
+	TScriptInterface<ITestbed1StructArrayInterfaceInterface> test = GameInstance->GetSubsystem<UTestbed1StructArrayInterface>();
 	test->Execute_FuncBool(test.GetObject(), TArray<FTestbed1StructBool>());
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed1StructArrayInterfaceImplementationOperationFuncIntTest, "Testbed1.StructArrayInterface.Implementation.Operation.FuncInt", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed1StructArrayInterfaceImplementationOperationFuncIntTest, "Testbed1.StructArrayInterface.Implementation.Operation.FuncInt", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool UTestbed1StructArrayInterfaceImplementationOperationFuncIntTest::RunTest(const FString& Parameters)
 {
 	// Do implement test here
-	TScriptInterface<ITestbed1StructArrayInterfaceInterface> test = NewObject<UTestbed1StructArrayInterface>();
+	UGameInstance* GameInstance = NewObject<UGameInstance>();
+	GameInstance->Init();
+	TScriptInterface<ITestbed1StructArrayInterfaceInterface> test = GameInstance->GetSubsystem<UTestbed1StructArrayInterface>();
 	test->Execute_FuncInt(test.GetObject(), TArray<FTestbed1StructInt>());
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed1StructArrayInterfaceImplementationOperationFuncFloatTest, "Testbed1.StructArrayInterface.Implementation.Operation.FuncFloat", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed1StructArrayInterfaceImplementationOperationFuncFloatTest, "Testbed1.StructArrayInterface.Implementation.Operation.FuncFloat", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool UTestbed1StructArrayInterfaceImplementationOperationFuncFloatTest::RunTest(const FString& Parameters)
 {
 	// Do implement test here
-	TScriptInterface<ITestbed1StructArrayInterfaceInterface> test = NewObject<UTestbed1StructArrayInterface>();
+	UGameInstance* GameInstance = NewObject<UGameInstance>();
+	GameInstance->Init();
+	TScriptInterface<ITestbed1StructArrayInterfaceInterface> test = GameInstance->GetSubsystem<UTestbed1StructArrayInterface>();
 	test->Execute_FuncFloat(test.GetObject(), TArray<FTestbed1StructFloat>());
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed1StructArrayInterfaceImplementationOperationFuncStringTest, "Testbed1.StructArrayInterface.Implementation.Operation.FuncString", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed1StructArrayInterfaceImplementationOperationFuncStringTest, "Testbed1.StructArrayInterface.Implementation.Operation.FuncString", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool UTestbed1StructArrayInterfaceImplementationOperationFuncStringTest::RunTest(const FString& Parameters)
 {
 	// Do implement test here
-	TScriptInterface<ITestbed1StructArrayInterfaceInterface> test = NewObject<UTestbed1StructArrayInterface>();
+	UGameInstance* GameInstance = NewObject<UGameInstance>();
+	GameInstance->Init();
+	TScriptInterface<ITestbed1StructArrayInterfaceInterface> test = GameInstance->GetSubsystem<UTestbed1StructArrayInterface>();
 	test->Execute_FuncString(test.GetObject(), TArray<FTestbed1StructString>());
 	return true;
 }

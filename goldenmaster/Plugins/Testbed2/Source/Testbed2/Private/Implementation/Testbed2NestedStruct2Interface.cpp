@@ -18,32 +18,6 @@ limitations under the License.
 #include "Implementation/Testbed2NestedStruct2Interface.h"
 
 UTestbed2NestedStruct2Interface::~UTestbed2NestedStruct2Interface() = default;
-
-void UTestbed2NestedStruct2Interface::BroadcastSig1_Implementation(const FTestbed2NestedStruct1& Param1)
-{
-	Sig1Signal.Broadcast(Param1);
-}
-
-FTestbed2NestedStruct2InterfaceSig1Delegate& UTestbed2NestedStruct2Interface::GetSig1SignalDelegate()
-{
-	return Sig1Signal;
-}
-
-void UTestbed2NestedStruct2Interface::BroadcastSig2_Implementation(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
-{
-	Sig2Signal.Broadcast(Param1, Param2);
-}
-
-FTestbed2NestedStruct2InterfaceSig2Delegate& UTestbed2NestedStruct2Interface::GetSig2SignalDelegate()
-{
-	return Sig2Signal;
-}
-
-void UTestbed2NestedStruct2Interface::BroadcastProp1Changed_Implementation(const FTestbed2NestedStruct1& InProp1)
-{
-	Prop1Changed.Broadcast(InProp1);
-}
-
 FTestbed2NestedStruct1 UTestbed2NestedStruct2Interface::GetProp1_Implementation() const
 {
 	return Prop1;
@@ -57,17 +31,6 @@ void UTestbed2NestedStruct2Interface::SetProp1_Implementation(const FTestbed2Nes
 		Execute_BroadcastProp1Changed(this, Prop1);
 	}
 }
-
-FTestbed2NestedStruct2InterfaceProp1ChangedDelegate& UTestbed2NestedStruct2Interface::GetProp1ChangedDelegate()
-{
-	return Prop1Changed;
-}
-
-void UTestbed2NestedStruct2Interface::BroadcastProp2Changed_Implementation(const FTestbed2NestedStruct2& InProp2)
-{
-	Prop2Changed.Broadcast(InProp2);
-}
-
 FTestbed2NestedStruct2 UTestbed2NestedStruct2Interface::GetProp2_Implementation() const
 {
 	return Prop2;
@@ -80,11 +43,6 @@ void UTestbed2NestedStruct2Interface::SetProp2_Implementation(const FTestbed2Nes
 		Prop2 = InProp2;
 		Execute_BroadcastProp2Changed(this, Prop2);
 	}
-}
-
-FTestbed2NestedStruct2InterfaceProp2ChangedDelegate& UTestbed2NestedStruct2Interface::GetProp2ChangedDelegate()
-{
-	return Prop2Changed;
 }
 
 FTestbed2NestedStruct1 UTestbed2NestedStruct2Interface::Func1_Implementation(const FTestbed2NestedStruct1& Param1)

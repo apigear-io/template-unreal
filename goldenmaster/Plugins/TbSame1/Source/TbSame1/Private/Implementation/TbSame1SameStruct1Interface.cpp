@@ -18,22 +18,6 @@ limitations under the License.
 #include "Implementation/TbSame1SameStruct1Interface.h"
 
 UTbSame1SameStruct1Interface::~UTbSame1SameStruct1Interface() = default;
-
-void UTbSame1SameStruct1Interface::BroadcastSig1_Implementation(const FTbSame1Struct1& Param1)
-{
-	Sig1Signal.Broadcast(Param1);
-}
-
-FTbSame1SameStruct1InterfaceSig1Delegate& UTbSame1SameStruct1Interface::GetSig1SignalDelegate()
-{
-	return Sig1Signal;
-}
-
-void UTbSame1SameStruct1Interface::BroadcastProp1Changed_Implementation(const FTbSame1Struct1& InProp1)
-{
-	Prop1Changed.Broadcast(InProp1);
-}
-
 FTbSame1Struct1 UTbSame1SameStruct1Interface::GetProp1_Implementation() const
 {
 	return Prop1;
@@ -46,11 +30,6 @@ void UTbSame1SameStruct1Interface::SetProp1_Implementation(const FTbSame1Struct1
 		Prop1 = InProp1;
 		Execute_BroadcastProp1Changed(this, Prop1);
 	}
-}
-
-FTbSame1SameStruct1InterfaceProp1ChangedDelegate& UTbSame1SameStruct1Interface::GetProp1ChangedDelegate()
-{
-	return Prop1Changed;
 }
 
 FTbSame1Struct1 UTbSame1SameStruct1Interface::Func1_Implementation(const FTbSame1Struct1& Param1)

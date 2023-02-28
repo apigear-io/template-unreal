@@ -21,21 +21,12 @@ limitations under the License.
 #include "Generated/api/TbSimpleNoPropertiesInterfaceInterface.h"
 #include "TbSimpleNoPropertiesInterface.generated.h"
 
-UCLASS(BlueprintType, Blueprintable)
-class TBSIMPLE_API UTbSimpleNoPropertiesInterface : public UObject, public ITbSimpleNoPropertiesInterfaceInterface
+UCLASS(BlueprintType)
+class TBSIMPLE_API UTbSimpleNoPropertiesInterface : public UAbstractTbSimpleNoPropertiesInterface
 {
 	GENERATED_BODY()
 public:
 	virtual ~UTbSimpleNoPropertiesInterface();
-
-	// signals
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoPropertiesInterface", DisplayName = "SigVoid Signal")
-	FTbSimpleNoPropertiesInterfaceSigVoidDelegate SigVoidSignal;
-	FTbSimpleNoPropertiesInterfaceSigVoidDelegate& GetSigVoidSignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoPropertiesInterface", DisplayName = "SigBool Signal")
-	FTbSimpleNoPropertiesInterfaceSigBoolDelegate SigBoolSignal;
-	FTbSimpleNoPropertiesInterfaceSigBoolDelegate& GetSigBoolSignalDelegate() override;
 
 	// properties
 	// operations
@@ -43,13 +34,4 @@ public:
 
 	void FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool) override{};
 	bool FuncBool_Implementation(bool bParamBool) override;
-
-protected:
-	// signals
-	void BroadcastSigVoid_Implementation() override;
-
-	void BroadcastSigBool_Implementation(bool bParamBool) override;
-
-private:
-	// properties - local copy - use setter functions to emit changed signals
 };

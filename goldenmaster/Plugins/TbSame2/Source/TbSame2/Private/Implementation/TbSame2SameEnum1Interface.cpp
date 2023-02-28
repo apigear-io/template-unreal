@@ -18,22 +18,6 @@ limitations under the License.
 #include "Implementation/TbSame2SameEnum1Interface.h"
 
 UTbSame2SameEnum1Interface::~UTbSame2SameEnum1Interface() = default;
-
-void UTbSame2SameEnum1Interface::BroadcastSig1_Implementation(ETbSame2Enum1 Param1)
-{
-	Sig1Signal.Broadcast(Param1);
-}
-
-FTbSame2SameEnum1InterfaceSig1Delegate& UTbSame2SameEnum1Interface::GetSig1SignalDelegate()
-{
-	return Sig1Signal;
-}
-
-void UTbSame2SameEnum1Interface::BroadcastProp1Changed_Implementation(ETbSame2Enum1 InProp1)
-{
-	Prop1Changed.Broadcast(InProp1);
-}
-
 ETbSame2Enum1 UTbSame2SameEnum1Interface::GetProp1_Implementation() const
 {
 	return Prop1;
@@ -46,11 +30,6 @@ void UTbSame2SameEnum1Interface::SetProp1_Implementation(ETbSame2Enum1 InProp1)
 		Prop1 = InProp1;
 		Execute_BroadcastProp1Changed(this, Prop1);
 	}
-}
-
-FTbSame2SameEnum1InterfaceProp1ChangedDelegate& UTbSame2SameEnum1Interface::GetProp1ChangedDelegate()
-{
-	return Prop1Changed;
 }
 
 ETbSame2Enum1 UTbSame2SameEnum1Interface::Func1_Implementation(ETbSame2Enum1 Param1)

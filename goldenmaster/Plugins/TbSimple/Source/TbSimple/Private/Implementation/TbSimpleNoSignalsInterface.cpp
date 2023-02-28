@@ -18,12 +18,6 @@ limitations under the License.
 #include "Implementation/TbSimpleNoSignalsInterface.h"
 
 UTbSimpleNoSignalsInterface::~UTbSimpleNoSignalsInterface() = default;
-
-void UTbSimpleNoSignalsInterface::BroadcastPropBoolChanged_Implementation(bool bInPropBool)
-{
-	PropBoolChanged.Broadcast(bInPropBool);
-}
-
 bool UTbSimpleNoSignalsInterface::GetPropBool_Implementation() const
 {
 	return bPropBool;
@@ -37,17 +31,6 @@ void UTbSimpleNoSignalsInterface::SetPropBool_Implementation(bool bInPropBool)
 		Execute_BroadcastPropBoolChanged(this, bPropBool);
 	}
 }
-
-FTbSimpleNoSignalsInterfacePropBoolChangedDelegate& UTbSimpleNoSignalsInterface::GetPropBoolChangedDelegate()
-{
-	return PropBoolChanged;
-}
-
-void UTbSimpleNoSignalsInterface::BroadcastPropIntChanged_Implementation(int32 InPropInt)
-{
-	PropIntChanged.Broadcast(InPropInt);
-}
-
 int32 UTbSimpleNoSignalsInterface::GetPropInt_Implementation() const
 {
 	return PropInt;
@@ -60,11 +43,6 @@ void UTbSimpleNoSignalsInterface::SetPropInt_Implementation(int32 InPropInt)
 		PropInt = InPropInt;
 		Execute_BroadcastPropIntChanged(this, PropInt);
 	}
-}
-
-FTbSimpleNoSignalsInterfacePropIntChangedDelegate& UTbSimpleNoSignalsInterface::GetPropIntChangedDelegate()
-{
-	return PropIntChanged;
 }
 
 void UTbSimpleNoSignalsInterface::FuncVoid_Implementation()

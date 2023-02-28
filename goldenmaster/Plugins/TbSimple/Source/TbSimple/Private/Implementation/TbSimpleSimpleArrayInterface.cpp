@@ -18,92 +18,6 @@ limitations under the License.
 #include "Implementation/TbSimpleSimpleArrayInterface.h"
 
 UTbSimpleSimpleArrayInterface::~UTbSimpleSimpleArrayInterface() = default;
-
-void UTbSimpleSimpleArrayInterface::BroadcastSigBool_Implementation(const TArray<bool>& ParamBool)
-{
-	SigBoolSignal.Broadcast(ParamBool);
-}
-
-FTbSimpleSimpleArrayInterfaceSigBoolDelegate& UTbSimpleSimpleArrayInterface::GetSigBoolSignalDelegate()
-{
-	return SigBoolSignal;
-}
-
-void UTbSimpleSimpleArrayInterface::BroadcastSigInt_Implementation(const TArray<int32>& ParamInt)
-{
-	SigIntSignal.Broadcast(ParamInt);
-}
-
-FTbSimpleSimpleArrayInterfaceSigIntDelegate& UTbSimpleSimpleArrayInterface::GetSigIntSignalDelegate()
-{
-	return SigIntSignal;
-}
-
-void UTbSimpleSimpleArrayInterface::BroadcastSigInt32_Implementation(const TArray<int32>& ParamInt32)
-{
-	SigInt32Signal.Broadcast(ParamInt32);
-}
-
-FTbSimpleSimpleArrayInterfaceSigInt32Delegate& UTbSimpleSimpleArrayInterface::GetSigInt32SignalDelegate()
-{
-	return SigInt32Signal;
-}
-
-void UTbSimpleSimpleArrayInterface::BroadcastSigInt64_Implementation(const TArray<int64>& ParamInt64)
-{
-	SigInt64Signal.Broadcast(ParamInt64);
-}
-
-FTbSimpleSimpleArrayInterfaceSigInt64Delegate& UTbSimpleSimpleArrayInterface::GetSigInt64SignalDelegate()
-{
-	return SigInt64Signal;
-}
-
-void UTbSimpleSimpleArrayInterface::BroadcastSigFloat_Implementation(const TArray<float>& ParamFloat)
-{
-	SigFloatSignal.Broadcast(ParamFloat);
-}
-
-FTbSimpleSimpleArrayInterfaceSigFloatDelegate& UTbSimpleSimpleArrayInterface::GetSigFloatSignalDelegate()
-{
-	return SigFloatSignal;
-}
-
-void UTbSimpleSimpleArrayInterface::BroadcastSigFloat32_Implementation(const TArray<float>& ParamFloa32)
-{
-	SigFloat32Signal.Broadcast(ParamFloa32);
-}
-
-FTbSimpleSimpleArrayInterfaceSigFloat32Delegate& UTbSimpleSimpleArrayInterface::GetSigFloat32SignalDelegate()
-{
-	return SigFloat32Signal;
-}
-
-void UTbSimpleSimpleArrayInterface::BroadcastSigFloat64_Implementation(const TArray<double>& ParamFloat64)
-{
-	SigFloat64Signal.Broadcast(ParamFloat64);
-}
-
-FTbSimpleSimpleArrayInterfaceSigFloat64Delegate& UTbSimpleSimpleArrayInterface::GetSigFloat64SignalDelegate()
-{
-	return SigFloat64Signal;
-}
-
-void UTbSimpleSimpleArrayInterface::BroadcastSigString_Implementation(const TArray<FString>& ParamString)
-{
-	SigStringSignal.Broadcast(ParamString);
-}
-
-FTbSimpleSimpleArrayInterfaceSigStringDelegate& UTbSimpleSimpleArrayInterface::GetSigStringSignalDelegate()
-{
-	return SigStringSignal;
-}
-
-void UTbSimpleSimpleArrayInterface::BroadcastPropBoolChanged_Implementation(const TArray<bool>& InPropBool)
-{
-	PropBoolChanged.Broadcast(InPropBool);
-}
-
 TArray<bool> UTbSimpleSimpleArrayInterface::GetPropBool_Implementation() const
 {
 	return PropBool;
@@ -117,17 +31,6 @@ void UTbSimpleSimpleArrayInterface::SetPropBool_Implementation(const TArray<bool
 		Execute_BroadcastPropBoolChanged(this, PropBool);
 	}
 }
-
-FTbSimpleSimpleArrayInterfacePropBoolChangedDelegate& UTbSimpleSimpleArrayInterface::GetPropBoolChangedDelegate()
-{
-	return PropBoolChanged;
-}
-
-void UTbSimpleSimpleArrayInterface::BroadcastPropIntChanged_Implementation(const TArray<int32>& InPropInt)
-{
-	PropIntChanged.Broadcast(InPropInt);
-}
-
 TArray<int32> UTbSimpleSimpleArrayInterface::GetPropInt_Implementation() const
 {
 	return PropInt;
@@ -141,17 +44,6 @@ void UTbSimpleSimpleArrayInterface::SetPropInt_Implementation(const TArray<int32
 		Execute_BroadcastPropIntChanged(this, PropInt);
 	}
 }
-
-FTbSimpleSimpleArrayInterfacePropIntChangedDelegate& UTbSimpleSimpleArrayInterface::GetPropIntChangedDelegate()
-{
-	return PropIntChanged;
-}
-
-void UTbSimpleSimpleArrayInterface::BroadcastPropInt32Changed_Implementation(const TArray<int32>& InPropInt32)
-{
-	PropInt32Changed.Broadcast(InPropInt32);
-}
-
 TArray<int32> UTbSimpleSimpleArrayInterface::GetPropInt32_Implementation() const
 {
 	return PropInt32;
@@ -165,17 +57,6 @@ void UTbSimpleSimpleArrayInterface::SetPropInt32_Implementation(const TArray<int
 		Execute_BroadcastPropInt32Changed(this, PropInt32);
 	}
 }
-
-FTbSimpleSimpleArrayInterfacePropInt32ChangedDelegate& UTbSimpleSimpleArrayInterface::GetPropInt32ChangedDelegate()
-{
-	return PropInt32Changed;
-}
-
-void UTbSimpleSimpleArrayInterface::BroadcastPropInt64Changed_Implementation(const TArray<int64>& InPropInt64)
-{
-	PropInt64Changed.Broadcast(InPropInt64);
-}
-
 TArray<int64> UTbSimpleSimpleArrayInterface::GetPropInt64_Implementation() const
 {
 	return PropInt64;
@@ -189,17 +70,6 @@ void UTbSimpleSimpleArrayInterface::SetPropInt64_Implementation(const TArray<int
 		Execute_BroadcastPropInt64Changed(this, PropInt64);
 	}
 }
-
-FTbSimpleSimpleArrayInterfacePropInt64ChangedDelegate& UTbSimpleSimpleArrayInterface::GetPropInt64ChangedDelegate()
-{
-	return PropInt64Changed;
-}
-
-void UTbSimpleSimpleArrayInterface::BroadcastPropFloatChanged_Implementation(const TArray<float>& InPropFloat)
-{
-	PropFloatChanged.Broadcast(InPropFloat);
-}
-
 TArray<float> UTbSimpleSimpleArrayInterface::GetPropFloat_Implementation() const
 {
 	return PropFloat;
@@ -213,17 +83,6 @@ void UTbSimpleSimpleArrayInterface::SetPropFloat_Implementation(const TArray<flo
 		Execute_BroadcastPropFloatChanged(this, PropFloat);
 	}
 }
-
-FTbSimpleSimpleArrayInterfacePropFloatChangedDelegate& UTbSimpleSimpleArrayInterface::GetPropFloatChangedDelegate()
-{
-	return PropFloatChanged;
-}
-
-void UTbSimpleSimpleArrayInterface::BroadcastPropFloat32Changed_Implementation(const TArray<float>& InPropFloat32)
-{
-	PropFloat32Changed.Broadcast(InPropFloat32);
-}
-
 TArray<float> UTbSimpleSimpleArrayInterface::GetPropFloat32_Implementation() const
 {
 	return PropFloat32;
@@ -237,17 +96,6 @@ void UTbSimpleSimpleArrayInterface::SetPropFloat32_Implementation(const TArray<f
 		Execute_BroadcastPropFloat32Changed(this, PropFloat32);
 	}
 }
-
-FTbSimpleSimpleArrayInterfacePropFloat32ChangedDelegate& UTbSimpleSimpleArrayInterface::GetPropFloat32ChangedDelegate()
-{
-	return PropFloat32Changed;
-}
-
-void UTbSimpleSimpleArrayInterface::BroadcastPropFloat64Changed_Implementation(const TArray<double>& InPropFloat64)
-{
-	PropFloat64Changed.Broadcast(InPropFloat64);
-}
-
 TArray<double> UTbSimpleSimpleArrayInterface::GetPropFloat64_Implementation() const
 {
 	return PropFloat64;
@@ -261,17 +109,6 @@ void UTbSimpleSimpleArrayInterface::SetPropFloat64_Implementation(const TArray<d
 		Execute_BroadcastPropFloat64Changed(this, PropFloat64);
 	}
 }
-
-FTbSimpleSimpleArrayInterfacePropFloat64ChangedDelegate& UTbSimpleSimpleArrayInterface::GetPropFloat64ChangedDelegate()
-{
-	return PropFloat64Changed;
-}
-
-void UTbSimpleSimpleArrayInterface::BroadcastPropStringChanged_Implementation(const TArray<FString>& InPropString)
-{
-	PropStringChanged.Broadcast(InPropString);
-}
-
 TArray<FString> UTbSimpleSimpleArrayInterface::GetPropString_Implementation() const
 {
 	return PropString;
@@ -284,11 +121,6 @@ void UTbSimpleSimpleArrayInterface::SetPropString_Implementation(const TArray<FS
 		PropString = InPropString;
 		Execute_BroadcastPropStringChanged(this, PropString);
 	}
-}
-
-FTbSimpleSimpleArrayInterfacePropStringChangedDelegate& UTbSimpleSimpleArrayInterface::GetPropStringChangedDelegate()
-{
-	return PropStringChanged;
 }
 
 TArray<bool> UTbSimpleSimpleArrayInterface::FuncBool_Implementation(const TArray<bool>& ParamBool)

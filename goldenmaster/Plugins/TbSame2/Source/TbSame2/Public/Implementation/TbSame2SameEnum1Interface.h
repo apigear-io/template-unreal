@@ -21,21 +21,12 @@ limitations under the License.
 #include "Generated/api/TbSame2SameEnum1InterfaceInterface.h"
 #include "TbSame2SameEnum1Interface.generated.h"
 
-UCLASS(BlueprintType, Blueprintable)
-class TBSAME2_API UTbSame2SameEnum1Interface : public UObject, public ITbSame2SameEnum1InterfaceInterface
+UCLASS(BlueprintType)
+class TBSAME2_API UTbSame2SameEnum1Interface : public UAbstractTbSame2SameEnum1Interface
 {
 	GENERATED_BODY()
 public:
 	virtual ~UTbSame2SameEnum1Interface();
-
-	// signals
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame2|SameEnum1Interface", DisplayName = "Sig1 Signal")
-	FTbSame2SameEnum1InterfaceSig1Delegate Sig1Signal;
-	FTbSame2SameEnum1InterfaceSig1Delegate& GetSig1SignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame2|SameEnum1Interface", DisplayName = "Prop1 Changed")
-	FTbSame2SameEnum1InterfaceProp1ChangedDelegate Prop1Changed;
-	FTbSame2SameEnum1InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
 
 	// properties
 	ETbSame2Enum1 GetProp1_Implementation() const override;
@@ -44,14 +35,4 @@ public:
 	// operations
 	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, ETbSame2Enum1 Param1) override{};
 	ETbSame2Enum1 Func1_Implementation(ETbSame2Enum1 Param1) override;
-
-protected:
-	// signals
-	void BroadcastSig1_Implementation(ETbSame2Enum1 Param1) override;
-
-	void BroadcastProp1Changed_Implementation(ETbSame2Enum1 Prop1) override;
-
-private:
-	// properties - local copy - use setter functions to emit changed signals
-	ETbSame2Enum1 Prop1{ETbSame2Enum1::TSE_VALUE1};
 };

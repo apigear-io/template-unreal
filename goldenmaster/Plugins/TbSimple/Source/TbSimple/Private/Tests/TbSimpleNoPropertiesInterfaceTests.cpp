@@ -20,20 +20,24 @@ limitations under the License.
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbSimpleNoPropertiesInterfaceImplementationOperationFuncVoidTest, "TbSimple.NoPropertiesInterface.Implementation.Operation.FuncVoid", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbSimpleNoPropertiesInterfaceImplementationOperationFuncVoidTest, "TbSimple.NoPropertiesInterface.Implementation.Operation.FuncVoid", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool UTbSimpleNoPropertiesInterfaceImplementationOperationFuncVoidTest::RunTest(const FString& Parameters)
 {
 	// Do implement test here
-	TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> test = NewObject<UTbSimpleNoPropertiesInterface>();
+	UGameInstance* GameInstance = NewObject<UGameInstance>();
+	GameInstance->Init();
+	TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> test = GameInstance->GetSubsystem<UTbSimpleNoPropertiesInterface>();
 	test->Execute_FuncVoid(test.GetObject());
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbSimpleNoPropertiesInterfaceImplementationOperationFuncBoolTest, "TbSimple.NoPropertiesInterface.Implementation.Operation.FuncBool", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::SmokeFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbSimpleNoPropertiesInterfaceImplementationOperationFuncBoolTest, "TbSimple.NoPropertiesInterface.Implementation.Operation.FuncBool", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool UTbSimpleNoPropertiesInterfaceImplementationOperationFuncBoolTest::RunTest(const FString& Parameters)
 {
 	// Do implement test here
-	TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> test = NewObject<UTbSimpleNoPropertiesInterface>();
+	UGameInstance* GameInstance = NewObject<UGameInstance>();
+	GameInstance->Init();
+	TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> test = GameInstance->GetSubsystem<UTbSimpleNoPropertiesInterface>();
 	test->Execute_FuncBool(test.GetObject(), false);
 	return true;
 }

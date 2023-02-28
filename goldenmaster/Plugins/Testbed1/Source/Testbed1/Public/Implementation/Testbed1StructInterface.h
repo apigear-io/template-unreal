@@ -21,45 +21,12 @@ limitations under the License.
 #include "Generated/api/Testbed1StructInterfaceInterface.h"
 #include "Testbed1StructInterface.generated.h"
 
-UCLASS(BlueprintType, Blueprintable)
-class TESTBED1_API UTestbed1StructInterface : public UObject, public ITestbed1StructInterfaceInterface
+UCLASS(BlueprintType)
+class TESTBED1_API UTestbed1StructInterface : public UAbstractTestbed1StructInterface
 {
 	GENERATED_BODY()
 public:
 	virtual ~UTestbed1StructInterface();
-
-	// signals
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface", DisplayName = "SigBool Signal")
-	FTestbed1StructInterfaceSigBoolDelegate SigBoolSignal;
-	FTestbed1StructInterfaceSigBoolDelegate& GetSigBoolSignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface", DisplayName = "SigInt Signal")
-	FTestbed1StructInterfaceSigIntDelegate SigIntSignal;
-	FTestbed1StructInterfaceSigIntDelegate& GetSigIntSignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface", DisplayName = "SigFloat Signal")
-	FTestbed1StructInterfaceSigFloatDelegate SigFloatSignal;
-	FTestbed1StructInterfaceSigFloatDelegate& GetSigFloatSignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface", DisplayName = "SigString Signal")
-	FTestbed1StructInterfaceSigStringDelegate SigStringSignal;
-	FTestbed1StructInterfaceSigStringDelegate& GetSigStringSignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface", DisplayName = "PropBool Changed")
-	FTestbed1StructInterfacePropBoolChangedDelegate PropBoolChanged;
-	FTestbed1StructInterfacePropBoolChangedDelegate& GetPropBoolChangedDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface", DisplayName = "PropInt Changed")
-	FTestbed1StructInterfacePropIntChangedDelegate PropIntChanged;
-	FTestbed1StructInterfacePropIntChangedDelegate& GetPropIntChangedDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface", DisplayName = "PropFloat Changed")
-	FTestbed1StructInterfacePropFloatChangedDelegate PropFloatChanged;
-	FTestbed1StructInterfacePropFloatChangedDelegate& GetPropFloatChangedDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface", DisplayName = "PropString Changed")
-	FTestbed1StructInterfacePropStringChangedDelegate PropStringChanged;
-	FTestbed1StructInterfacePropStringChangedDelegate& GetPropStringChangedDelegate() override;
 
 	// properties
 	FTestbed1StructBool GetPropBool_Implementation() const override;
@@ -86,29 +53,4 @@ public:
 
 	void FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructString& Result, const FTestbed1StructString& ParamString) override{};
 	FTestbed1StructString FuncString_Implementation(const FTestbed1StructString& ParamString) override;
-
-protected:
-	// signals
-	void BroadcastSigBool_Implementation(const FTestbed1StructBool& ParamBool) override;
-
-	void BroadcastSigInt_Implementation(const FTestbed1StructInt& ParamInt) override;
-
-	void BroadcastSigFloat_Implementation(const FTestbed1StructFloat& ParamFloat) override;
-
-	void BroadcastSigString_Implementation(const FTestbed1StructString& ParamString) override;
-
-	void BroadcastPropBoolChanged_Implementation(const FTestbed1StructBool& PropBool) override;
-
-	void BroadcastPropIntChanged_Implementation(const FTestbed1StructInt& PropInt) override;
-
-	void BroadcastPropFloatChanged_Implementation(const FTestbed1StructFloat& PropFloat) override;
-
-	void BroadcastPropStringChanged_Implementation(const FTestbed1StructString& PropString) override;
-
-private:
-	// properties - local copy - use setter functions to emit changed signals
-	FTestbed1StructBool PropBool{FTestbed1StructBool()};
-	FTestbed1StructInt PropInt{FTestbed1StructInt()};
-	FTestbed1StructFloat PropFloat{FTestbed1StructFloat()};
-	FTestbed1StructString PropString{FTestbed1StructString()};
 };

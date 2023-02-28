@@ -21,29 +21,12 @@ limitations under the License.
 #include "Generated/api/TbSame1SameStruct2InterfaceInterface.h"
 #include "TbSame1SameStruct2Interface.generated.h"
 
-UCLASS(BlueprintType, Blueprintable)
-class TBSAME1_API UTbSame1SameStruct2Interface : public UObject, public ITbSame1SameStruct2InterfaceInterface
+UCLASS(BlueprintType)
+class TBSAME1_API UTbSame1SameStruct2Interface : public UAbstractTbSame1SameStruct2Interface
 {
 	GENERATED_BODY()
 public:
 	virtual ~UTbSame1SameStruct2Interface();
-
-	// signals
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame1|SameStruct2Interface", DisplayName = "Sig1 Signal")
-	FTbSame1SameStruct2InterfaceSig1Delegate Sig1Signal;
-	FTbSame1SameStruct2InterfaceSig1Delegate& GetSig1SignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame1|SameStruct2Interface", DisplayName = "Sig2 Signal")
-	FTbSame1SameStruct2InterfaceSig2Delegate Sig2Signal;
-	FTbSame1SameStruct2InterfaceSig2Delegate& GetSig2SignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame1|SameStruct2Interface", DisplayName = "Prop1 Changed")
-	FTbSame1SameStruct2InterfaceProp1ChangedDelegate Prop1Changed;
-	FTbSame1SameStruct2InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame1|SameStruct2Interface", DisplayName = "Prop2 Changed")
-	FTbSame1SameStruct2InterfaceProp2ChangedDelegate Prop2Changed;
-	FTbSame1SameStruct2InterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() override;
 
 	// properties
 	FTbSame1Struct2 GetProp1_Implementation() const override;
@@ -58,19 +41,4 @@ public:
 
 	void Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame1Struct1& Result, const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2) override{};
 	FTbSame1Struct1 Func2_Implementation(const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2) override;
-
-protected:
-	// signals
-	void BroadcastSig1_Implementation(const FTbSame1Struct1& Param1) override;
-
-	void BroadcastSig2_Implementation(const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2) override;
-
-	void BroadcastProp1Changed_Implementation(const FTbSame1Struct2& Prop1) override;
-
-	void BroadcastProp2Changed_Implementation(const FTbSame1Struct2& Prop2) override;
-
-private:
-	// properties - local copy - use setter functions to emit changed signals
-	FTbSame1Struct2 Prop1{FTbSame1Struct2()};
-	FTbSame1Struct2 Prop2{FTbSame1Struct2()};
 };

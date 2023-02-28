@@ -21,21 +21,12 @@ limitations under the License.
 #include "Generated/api/Testbed2NestedStruct1InterfaceInterface.h"
 #include "Testbed2NestedStruct1Interface.generated.h"
 
-UCLASS(BlueprintType, Blueprintable)
-class TESTBED2_API UTestbed2NestedStruct1Interface : public UObject, public ITestbed2NestedStruct1InterfaceInterface
+UCLASS(BlueprintType)
+class TESTBED2_API UTestbed2NestedStruct1Interface : public UAbstractTestbed2NestedStruct1Interface
 {
 	GENERATED_BODY()
 public:
 	virtual ~UTestbed2NestedStruct1Interface();
-
-	// signals
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct1Interface", DisplayName = "Sig1 Signal")
-	FTestbed2NestedStruct1InterfaceSig1Delegate Sig1Signal;
-	FTestbed2NestedStruct1InterfaceSig1Delegate& GetSig1SignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct1Interface", DisplayName = "Prop1 Changed")
-	FTestbed2NestedStruct1InterfaceProp1ChangedDelegate Prop1Changed;
-	FTestbed2NestedStruct1InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
 
 	// properties
 	FTestbed2NestedStruct1 GetProp1_Implementation() const override;
@@ -44,14 +35,4 @@ public:
 	// operations
 	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1) override{};
 	FTestbed2NestedStruct1 Func1_Implementation(const FTestbed2NestedStruct1& Param1) override;
-
-protected:
-	// signals
-	void BroadcastSig1_Implementation(const FTestbed2NestedStruct1& Param1) override;
-
-	void BroadcastProp1Changed_Implementation(const FTestbed2NestedStruct1& Prop1) override;
-
-private:
-	// properties - local copy - use setter functions to emit changed signals
-	FTestbed2NestedStruct1 Prop1{FTestbed2NestedStruct1()};
 };
