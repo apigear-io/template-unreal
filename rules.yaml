@@ -19,6 +19,9 @@ features:
           - source: "module/Source/module/Public/Generated/api/interface.h.tpl"
             target: "Public/Generated/api/{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface.h"
             force: true
+          - source: "module/Source/module/Private/Generated/api/interface.cpp.tpl"
+            target: "Private/Generated/api/{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface.cpp"
+            force: true
   - name: apigear-olinkproto
     scopes:
       - match: system

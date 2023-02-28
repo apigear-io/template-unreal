@@ -182,7 +182,7 @@ protected:
 /**
  * Abstract UAbstractTestbed2ManyParamInterface
  */
-UCLASS(Abstract, Blueprintable)
+UCLASS(Abstract, Blueprintable, NotBlueprintType)
 class TESTBED2_API UAbstractTestbed2ManyParamInterface : public UGameInstanceSubsystem, public ITestbed2ManyParamInterfaceInterface
 {
 	GENERATED_BODY()
@@ -191,67 +191,35 @@ public:
 	// signals
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface", DisplayName = "Sig1 Signal")
 	FTestbed2ManyParamInterfaceSig1Delegate Sig1Signal;
-	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface")
-	virtual FTestbed2ManyParamInterfaceSig1Delegate& GetSig1SignalDelegate() override
-	{
-		return Sig1Signal;
-	};
+	virtual FTestbed2ManyParamInterfaceSig1Delegate& GetSig1SignalDelegate() override;
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface", DisplayName = "Sig2 Signal")
 	FTestbed2ManyParamInterfaceSig2Delegate Sig2Signal;
-	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface")
-	virtual FTestbed2ManyParamInterfaceSig2Delegate& GetSig2SignalDelegate() override
-	{
-		return Sig2Signal;
-	};
+	virtual FTestbed2ManyParamInterfaceSig2Delegate& GetSig2SignalDelegate() override;
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface", DisplayName = "Sig3 Signal")
 	FTestbed2ManyParamInterfaceSig3Delegate Sig3Signal;
-	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface")
-	virtual FTestbed2ManyParamInterfaceSig3Delegate& GetSig3SignalDelegate() override
-	{
-		return Sig3Signal;
-	};
+	virtual FTestbed2ManyParamInterfaceSig3Delegate& GetSig3SignalDelegate() override;
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface", DisplayName = "Sig4 Signal")
 	FTestbed2ManyParamInterfaceSig4Delegate Sig4Signal;
-	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface")
-	virtual FTestbed2ManyParamInterfaceSig4Delegate& GetSig4SignalDelegate() override
-	{
-		return Sig4Signal;
-	};
+	virtual FTestbed2ManyParamInterfaceSig4Delegate& GetSig4SignalDelegate() override;
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface", DisplayName = "Prop1 Changed")
 	FTestbed2ManyParamInterfaceProp1ChangedDelegate Prop1Changed;
-	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface")
-	virtual FTestbed2ManyParamInterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override
-	{
-		return Prop1Changed;
-	};
+	virtual FTestbed2ManyParamInterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface", DisplayName = "Prop2 Changed")
 	FTestbed2ManyParamInterfaceProp2ChangedDelegate Prop2Changed;
-	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface")
-	virtual FTestbed2ManyParamInterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() override
-	{
-		return Prop2Changed;
-	};
+	virtual FTestbed2ManyParamInterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() override;
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface", DisplayName = "Prop3 Changed")
 	FTestbed2ManyParamInterfaceProp3ChangedDelegate Prop3Changed;
-	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface")
-	virtual FTestbed2ManyParamInterfaceProp3ChangedDelegate& GetProp3ChangedDelegate() override
-	{
-		return Prop3Changed;
-	};
+	virtual FTestbed2ManyParamInterfaceProp3ChangedDelegate& GetProp3ChangedDelegate() override;
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface", DisplayName = "Prop4 Changed")
 	FTestbed2ManyParamInterfaceProp4ChangedDelegate Prop4Changed;
-	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface")
-	virtual FTestbed2ManyParamInterfaceProp4ChangedDelegate& GetProp4ChangedDelegate() override
-	{
-		return Prop4Changed;
-	};
+	virtual FTestbed2ManyParamInterfaceProp4ChangedDelegate& GetProp4ChangedDelegate() override;
 
 	// methods
 	virtual void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1) override PURE_VIRTUAL(UAbstractTestbed2ManyParamInterface::Func1Async_Implementation, return;);
@@ -282,104 +250,56 @@ public:
 
 protected:
 	// signals
-	virtual void BroadcastSig1_Implementation(int32 Param1) override
-	{
-		Sig1Signal.Broadcast(Param1);
-	};
+	virtual void BroadcastSig1_Implementation(int32 Param1) override;
 
-	virtual void BroadcastSig2_Implementation(int32 Param1, int32 Param2) override
-	{
-		Sig2Signal.Broadcast(Param1, Param2);
-	};
+	virtual void BroadcastSig2_Implementation(int32 Param1, int32 Param2) override;
 
-	virtual void BroadcastSig3_Implementation(int32 Param1, int32 Param2, int32 Param3) override
-	{
-		Sig3Signal.Broadcast(Param1, Param2, Param3);
-	};
+	virtual void BroadcastSig3_Implementation(int32 Param1, int32 Param2, int32 Param3) override;
 
-	virtual void BroadcastSig4_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4) override
-	{
-		Sig4Signal.Broadcast(Param1, Param2, Param3, Param4);
-	};
+	virtual void BroadcastSig4_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4) override;
 
-	virtual void BroadcastProp1Changed_Implementation(int32 InProp1) override
-	{
-		Prop1Changed.Broadcast(InProp1);
-	}
+	virtual void BroadcastProp1Changed_Implementation(int32 InProp1) override;
 
-	virtual void BroadcastProp2Changed_Implementation(int32 InProp2) override
-	{
-		Prop2Changed.Broadcast(InProp2);
-	}
+	virtual void BroadcastProp2Changed_Implementation(int32 InProp2) override;
 
-	virtual void BroadcastProp3Changed_Implementation(int32 InProp3) override
-	{
-		Prop3Changed.Broadcast(InProp3);
-	}
+	virtual void BroadcastProp3Changed_Implementation(int32 InProp3) override;
 
-	virtual void BroadcastProp4Changed_Implementation(int32 InProp4) override
-	{
-		Prop4Changed.Broadcast(InProp4);
-	}
+	virtual void BroadcastProp4Changed_Implementation(int32 InProp4) override;
 
 	// properties - local copy
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1_Private, BlueprintSetter = SetProp1_Private, Category = "ApiGear|Testbed2|ManyParamInterface")
 	int32 Prop1{0};
 
 	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
-	int32 GetProp1_Private() const
-	{
-		return Execute_GetProp1(this);
-	};
+	int32 GetProp1_Private() const;
 
 	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
-	void SetProp1_Private(int32 InProp1)
-	{
-		Execute_SetProp1(this, InProp1);
-	};
+	void SetProp1_Private(int32 InProp1);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp2_Private, BlueprintSetter = SetProp2_Private, Category = "ApiGear|Testbed2|ManyParamInterface")
 	int32 Prop2{0};
 
 	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
-	int32 GetProp2_Private() const
-	{
-		return Execute_GetProp2(this);
-	};
+	int32 GetProp2_Private() const;
 
 	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
-	void SetProp2_Private(int32 InProp2)
-	{
-		Execute_SetProp2(this, InProp2);
-	};
+	void SetProp2_Private(int32 InProp2);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp3_Private, BlueprintSetter = SetProp3_Private, Category = "ApiGear|Testbed2|ManyParamInterface")
 	int32 Prop3{0};
 
 	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
-	int32 GetProp3_Private() const
-	{
-		return Execute_GetProp3(this);
-	};
+	int32 GetProp3_Private() const;
 
 	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
-	void SetProp3_Private(int32 InProp3)
-	{
-		Execute_SetProp3(this, InProp3);
-	};
+	void SetProp3_Private(int32 InProp3);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp4_Private, BlueprintSetter = SetProp4_Private, Category = "ApiGear|Testbed2|ManyParamInterface")
 	int32 Prop4{0};
 
 	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
-	int32 GetProp4_Private() const
-	{
-		return Execute_GetProp4(this);
-	};
+	int32 GetProp4_Private() const;
 
 	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
-	void SetProp4_Private(int32 InProp4)
-	{
-		Execute_SetProp4(this, InProp4);
-	};
+	void SetProp4_Private(int32 InProp4);
 };

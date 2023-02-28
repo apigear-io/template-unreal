@@ -119,7 +119,7 @@ protected:
 /**
  * Abstract {{$abstractclass}}
  */
-UCLASS(Abstract, Blueprintable)
+UCLASS(Abstract, Blueprintable, NotBlueprintType)
 class {{ $API_MACRO }} {{ $abstractclass}} : public UGameInstanceSubsystem, public {{ $class }}
 {
 	GENERATED_BODY()
@@ -130,22 +130,14 @@ public:
 	{{- if $i }}{{nl}}{{ end }}
 	UPROPERTY(BlueprintAssignable, Category = "{{$Category}}", DisplayName = "{{Camel .Name}} Signal")
 	F{{$Iface}}{{Camel .Name}}Delegate {{Camel .Name}}Signal;
-	UFUNCTION(Category = "{{$Category}}")
-	virtual F{{$Class}}{{Camel .Name}}Delegate& Get{{Camel .Name}}SignalDelegate() override
-	{
-		return {{Camel .Name}}Signal;
-	};
+	virtual F{{$Class}}{{Camel .Name}}Delegate& Get{{Camel .Name}}SignalDelegate() override;
 {{- end }}
 {{- if len .Properties }}{{ nl }}{{ end }}
 {{- range $i, $e := .Properties }}
 	{{- if $i }}{{nl}}{{ end }}
 	UPROPERTY(BlueprintAssignable, Category = "{{$Category}}", DisplayName = "{{Camel .Name}} Changed")
 	F{{$Iface}}{{Camel .Name}}ChangedDelegate {{Camel .Name}}Changed;
-	UFUNCTION(Category = "{{$Category}}")
-	virtual F{{$Class}}{{Camel .Name}}ChangedDelegate& Get{{Camel .Name}}ChangedDelegate() override
-	{
-		return {{Camel .Name}}Changed;
-	};
+	virtual F{{$Class}}{{Camel .Name}}ChangedDelegate& Get{{Camel .Name}}ChangedDelegate() override;
 {{- end }}
 
 	// methods
@@ -170,18 +162,12 @@ protected:
 	// signals
 {{- range $i, $e := .Signals }}
 	{{- if $i }}{{nl}}{{ end }}
-	virtual void Broadcast{{Camel .Name}}_Implementation({{ueParams "" .Params}}) override
-	{
-		{{Camel .Name}}Signal.Broadcast({{ueVars "" .Params }});
-	};
+	virtual void Broadcast{{Camel .Name}}_Implementation({{ueParams "" .Params}}) override;
 {{- end }}
 {{- if len .Properties }}{{ nl }}{{ end }}
 {{- range $i, $e := .Properties }}
 	{{- if $i }}{{nl}}{{ end }}
-	virtual void Broadcast{{Camel .Name}}Changed_Implementation({{ueParam "In" .}}) override
-	{
-		{{Camel .Name}}Changed.Broadcast({{ueVar "In" .}});
-	}
+	virtual void Broadcast{{Camel .Name}}Changed_Implementation({{ueParam "In" .}}) override;
 {{- end }}
 
 	// properties - local copy
@@ -194,16 +180,10 @@ protected:
 	{{ueReturn "" .}} {{ueVar "" .}}{ {{- ueDefault "" . -}} };
 
 	UFUNCTION(BlueprintGetter, Category = "{{$Category}}", BlueprintInternalUseOnly)
-	{{ueReturn "" .}} Get{{Camel .Name}}_Private() const
-	{
-		return Execute_Get{{Camel .Name}}(this);
-	};
+	{{ueReturn "" .}} Get{{Camel .Name}}_Private() const;
 
 	UFUNCTION(BlueprintSetter, Category = "{{$Category}}", BlueprintInternalUseOnly)
-	void Set{{Camel .Name}}_Private({{ueParam "In" .}})
-	{
-		Execute_Set{{Camel .Name}}(this, {{ueVar "In" .}});
-	};
+	void Set{{Camel .Name}}_Private({{ueParam "In" .}});
 {{- end }}
 };
 {{- end }}

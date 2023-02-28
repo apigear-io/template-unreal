@@ -86,7 +86,7 @@ protected:
 /**
  * Abstract UAbstractTbSame2SameEnum1Interface
  */
-UCLASS(Abstract, Blueprintable)
+UCLASS(Abstract, Blueprintable, NotBlueprintType)
 class TBSAME2_API UAbstractTbSame2SameEnum1Interface : public UGameInstanceSubsystem, public ITbSame2SameEnum1InterfaceInterface
 {
 	GENERATED_BODY()
@@ -95,19 +95,11 @@ public:
 	// signals
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame2|SameEnum1Interface", DisplayName = "Sig1 Signal")
 	FTbSame2SameEnum1InterfaceSig1Delegate Sig1Signal;
-	UFUNCTION(Category = "ApiGear|TbSame2|SameEnum1Interface")
-	virtual FTbSame2SameEnum1InterfaceSig1Delegate& GetSig1SignalDelegate() override
-	{
-		return Sig1Signal;
-	};
+	virtual FTbSame2SameEnum1InterfaceSig1Delegate& GetSig1SignalDelegate() override;
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame2|SameEnum1Interface", DisplayName = "Prop1 Changed")
 	FTbSame2SameEnum1InterfaceProp1ChangedDelegate Prop1Changed;
-	UFUNCTION(Category = "ApiGear|TbSame2|SameEnum1Interface")
-	virtual FTbSame2SameEnum1InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override
-	{
-		return Prop1Changed;
-	};
+	virtual FTbSame2SameEnum1InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
 
 	// methods
 	virtual void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, ETbSame2Enum1 Param1) override PURE_VIRTUAL(UAbstractTbSame2SameEnum1Interface::Func1Async_Implementation, return;);
@@ -120,29 +112,17 @@ public:
 
 protected:
 	// signals
-	virtual void BroadcastSig1_Implementation(ETbSame2Enum1 Param1) override
-	{
-		Sig1Signal.Broadcast(Param1);
-	};
+	virtual void BroadcastSig1_Implementation(ETbSame2Enum1 Param1) override;
 
-	virtual void BroadcastProp1Changed_Implementation(ETbSame2Enum1 InProp1) override
-	{
-		Prop1Changed.Broadcast(InProp1);
-	}
+	virtual void BroadcastProp1Changed_Implementation(ETbSame2Enum1 InProp1) override;
 
 	// properties - local copy
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1_Private, BlueprintSetter = SetProp1_Private, Category = "ApiGear|TbSame2|SameEnum1Interface")
 	ETbSame2Enum1 Prop1{ETbSame2Enum1::TSE_VALUE1};
 
 	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSame2|SameEnum1Interface", BlueprintInternalUseOnly)
-	ETbSame2Enum1 GetProp1_Private() const
-	{
-		return Execute_GetProp1(this);
-	};
+	ETbSame2Enum1 GetProp1_Private() const;
 
 	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSame2|SameEnum1Interface", BlueprintInternalUseOnly)
-	void SetProp1_Private(ETbSame2Enum1 InProp1)
-	{
-		Execute_SetProp1(this, InProp1);
-	};
+	void SetProp1_Private(ETbSame2Enum1 InProp1);
 };

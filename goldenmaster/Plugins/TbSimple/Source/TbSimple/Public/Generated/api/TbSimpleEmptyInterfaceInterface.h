@@ -57,7 +57,7 @@ protected:
 /**
  * Abstract UAbstractTbSimpleEmptyInterface
  */
-UCLASS(Abstract, Blueprintable)
+UCLASS(Abstract, Blueprintable, NotBlueprintType)
 class TBSIMPLE_API UAbstractTbSimpleEmptyInterface : public UGameInstanceSubsystem, public ITbSimpleEmptyInterfaceInterface
 {
 	GENERATED_BODY()

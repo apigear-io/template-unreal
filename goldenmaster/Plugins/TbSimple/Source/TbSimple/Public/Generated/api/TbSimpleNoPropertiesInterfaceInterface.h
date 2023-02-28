@@ -83,7 +83,7 @@ protected:
 /**
  * Abstract UAbstractTbSimpleNoPropertiesInterface
  */
-UCLASS(Abstract, Blueprintable)
+UCLASS(Abstract, Blueprintable, NotBlueprintType)
 class TBSIMPLE_API UAbstractTbSimpleNoPropertiesInterface : public UGameInstanceSubsystem, public ITbSimpleNoPropertiesInterfaceInterface
 {
 	GENERATED_BODY()
@@ -92,19 +92,11 @@ public:
 	// signals
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoPropertiesInterface", DisplayName = "SigVoid Signal")
 	FTbSimpleNoPropertiesInterfaceSigVoidDelegate SigVoidSignal;
-	UFUNCTION(Category = "ApiGear|TbSimple|NoPropertiesInterface")
-	virtual FTbSimpleNoPropertiesInterfaceSigVoidDelegate& GetSigVoidSignalDelegate() override
-	{
-		return SigVoidSignal;
-	};
+	virtual FTbSimpleNoPropertiesInterfaceSigVoidDelegate& GetSigVoidSignalDelegate() override;
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoPropertiesInterface", DisplayName = "SigBool Signal")
 	FTbSimpleNoPropertiesInterfaceSigBoolDelegate SigBoolSignal;
-	UFUNCTION(Category = "ApiGear|TbSimple|NoPropertiesInterface")
-	virtual FTbSimpleNoPropertiesInterfaceSigBoolDelegate& GetSigBoolSignalDelegate() override
-	{
-		return SigBoolSignal;
-	};
+	virtual FTbSimpleNoPropertiesInterfaceSigBoolDelegate& GetSigBoolSignalDelegate() override;
 
 	// methods
 	virtual void FuncVoid_Implementation() override PURE_VIRTUAL(UAbstractTbSimpleNoPropertiesInterface::FuncVoid_Implementation, return;);
@@ -116,15 +108,9 @@ public:
 
 protected:
 	// signals
-	virtual void BroadcastSigVoid_Implementation() override
-	{
-		SigVoidSignal.Broadcast();
-	};
+	virtual void BroadcastSigVoid_Implementation() override;
 
-	virtual void BroadcastSigBool_Implementation(bool bParamBool) override
-	{
-		SigBoolSignal.Broadcast(bParamBool);
-	};
+	virtual void BroadcastSigBool_Implementation(bool bParamBool) override;
 
 	// properties - local copy
 };
