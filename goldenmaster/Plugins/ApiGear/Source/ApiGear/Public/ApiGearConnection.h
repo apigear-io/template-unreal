@@ -4,6 +4,7 @@
 #include "CoreMinimal.h"
 #include "Containers/Ticker.h"
 #include "UObject/NoExportTypes.h"
+#include "Runtime/Launch/Resources/Version.h"
 #include "ApiGearConnection.generated.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(LogApiGearConnection, Log, All);
@@ -98,7 +99,11 @@ private:
 	bool bIsAutoReconnectEnabled;
 	bool bStopReconnectingRequested;
 
+#if (ENGINE_MAJOR_VERSION >= 5)
+	FTSTicker::FDelegateHandle RetryTickerHandle;
+#else
 	FDelegateHandle RetryTickerHandle;
+#endif
 	FTickerDelegate RetryTickerDelegate;
 
 	EApiGearConnectionState ConnectionState;
