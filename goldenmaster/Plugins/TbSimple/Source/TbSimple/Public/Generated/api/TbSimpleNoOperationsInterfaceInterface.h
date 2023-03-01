@@ -111,6 +111,10 @@ class TBSIMPLE_API UAbstractTbSimpleNoOperationsInterface : public UGameInstance
 	GENERATED_BODY()
 
 public:
+	// subsystem
+	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
+	virtual void Deinitialize() override;
+
 	// signals
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoOperationsInterface", DisplayName = "SigVoid Signal")
 	FTbSimpleNoOperationsInterfaceSigVoidDelegate SigVoidSignal;
@@ -138,7 +142,10 @@ public:
 
 	virtual void SetPropInt_Implementation(int32 InPropInt) override PURE_VIRTUAL(UAbstractTbSimpleNoOperationsInterface::SetPropInt_Implementation, return;);
 
+	virtual bool IsInitialized() const;
+
 protected:
+	bool bInitialized = false;
 	// signals
 	virtual void BroadcastSigVoid_Implementation() override;
 

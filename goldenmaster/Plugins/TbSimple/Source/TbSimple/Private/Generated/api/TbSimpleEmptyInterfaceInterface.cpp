@@ -15,3 +15,24 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbSimpleEmptyInterfaceInterface.h"
+
+void UAbstractTbSimpleEmptyInterface::Initialize(FSubsystemCollectionBase& Collection)
+{
+	check(!bInitialized);
+	bInitialized = true;
+
+	Super::Initialize(Collection);
+}
+
+void UAbstractTbSimpleEmptyInterface::Deinitialize()
+{
+	check(bInitialized);
+	bInitialized = false;
+
+	Super::Deinitialize();
+}
+
+bool UAbstractTbSimpleEmptyInterface::IsInitialized() const
+{
+	return bInitialized;
+}

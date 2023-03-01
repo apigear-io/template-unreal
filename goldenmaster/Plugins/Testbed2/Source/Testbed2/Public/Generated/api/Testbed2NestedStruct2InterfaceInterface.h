@@ -124,6 +124,10 @@ class TESTBED2_API UAbstractTestbed2NestedStruct2Interface : public UGameInstanc
 	GENERATED_BODY()
 
 public:
+	// subsystem
+	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
+	virtual void Deinitialize() override;
+
 	// signals
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct2Interface", DisplayName = "Sig1 Signal")
 	FTestbed2NestedStruct2InterfaceSig1Delegate Sig1Signal;
@@ -156,7 +160,10 @@ public:
 
 	virtual void SetProp2_Implementation(const FTestbed2NestedStruct2& InProp2) override PURE_VIRTUAL(UAbstractTestbed2NestedStruct2Interface::SetProp2_Implementation, return;);
 
+	virtual bool IsInitialized() const;
+
 protected:
+	bool bInitialized = false;
 	// signals
 	virtual void BroadcastSig1_Implementation(const FTestbed2NestedStruct1& Param1) override;
 

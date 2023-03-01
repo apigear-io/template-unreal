@@ -75,18 +75,12 @@ UTbSimpleNoPropertiesInterfaceLoggingDecorator::~UTbSimpleNoPropertiesInterfaceL
 
 void UTbSimpleNoPropertiesInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase& Collection)
 {
-	check(!bInitialized);
-	bInitialized = true;
-
 	Super::Initialize(Collection);
 	setBackendService(FTbSimpleModuleFactory::createITbSimpleNoPropertiesInterfaceInterface(Collection));
 }
 
 void UTbSimpleNoPropertiesInterfaceLoggingDecorator::Deinitialize()
 {
-	check(bInitialized);
-	bInitialized = false;
-
 	Super::Deinitialize();
 	BackendService = nullptr;
 }

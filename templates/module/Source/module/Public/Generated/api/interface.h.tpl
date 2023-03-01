@@ -125,6 +125,10 @@ class {{ $API_MACRO }} {{ $abstractclass}} : public UGameInstanceSubsystem, publ
 	GENERATED_BODY()
 
 public:
+	// subsystem
+	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
+	virtual void Deinitialize() override;
+
 	// signals
 {{- range $i, $e := .Signals }}
 	{{- if $i }}{{nl}}{{ end }}
@@ -158,7 +162,10 @@ public:
 {{- else }}
 {{- end }}
 
+	virtual bool IsInitialized() const;
+
 protected:
+	bool bInitialized = false;
 	// signals
 {{- range $i, $e := .Signals }}
 	{{- if $i }}{{nl}}{{ end }}

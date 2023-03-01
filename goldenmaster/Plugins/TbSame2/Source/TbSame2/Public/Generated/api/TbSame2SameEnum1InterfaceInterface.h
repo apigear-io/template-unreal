@@ -92,6 +92,10 @@ class TBSAME2_API UAbstractTbSame2SameEnum1Interface : public UGameInstanceSubsy
 	GENERATED_BODY()
 
 public:
+	// subsystem
+	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
+	virtual void Deinitialize() override;
+
 	// signals
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame2|SameEnum1Interface", DisplayName = "Sig1 Signal")
 	FTbSame2SameEnum1InterfaceSig1Delegate Sig1Signal;
@@ -110,7 +114,10 @@ public:
 
 	virtual void SetProp1_Implementation(ETbSame2Enum1 InProp1) override PURE_VIRTUAL(UAbstractTbSame2SameEnum1Interface::SetProp1_Implementation, return;);
 
+	virtual bool IsInitialized() const;
+
 protected:
+	bool bInitialized = false;
 	// signals
 	virtual void BroadcastSig1_Implementation(ETbSame2Enum1 Param1) override;
 

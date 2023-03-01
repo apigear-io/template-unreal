@@ -36,3 +36,24 @@ void UAbstractTbSimpleNoPropertiesInterface::BroadcastSigBool_Implementation(boo
 {
 	SigBoolSignal.Broadcast(bParamBool);
 };
+
+void UAbstractTbSimpleNoPropertiesInterface::Initialize(FSubsystemCollectionBase& Collection)
+{
+	check(!bInitialized);
+	bInitialized = true;
+
+	Super::Initialize(Collection);
+}
+
+void UAbstractTbSimpleNoPropertiesInterface::Deinitialize()
+{
+	check(bInitialized);
+	bInitialized = false;
+
+	Super::Deinitialize();
+}
+
+bool UAbstractTbSimpleNoPropertiesInterface::IsInitialized() const
+{
+	return bInitialized;
+}

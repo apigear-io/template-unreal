@@ -54,3 +54,24 @@ void UAbstractTbSimpleNoSignalsInterface::SetPropInt_Private(int32 InPropInt)
 {
 	Execute_SetPropInt(this, InPropInt);
 };
+
+void UAbstractTbSimpleNoSignalsInterface::Initialize(FSubsystemCollectionBase& Collection)
+{
+	check(!bInitialized);
+	bInitialized = true;
+
+	Super::Initialize(Collection);
+}
+
+void UAbstractTbSimpleNoSignalsInterface::Deinitialize()
+{
+	check(bInitialized);
+	bInitialized = false;
+
+	Super::Deinitialize();
+}
+
+bool UAbstractTbSimpleNoSignalsInterface::IsInitialized() const
+{
+	return bInitialized;
+}

@@ -188,6 +188,10 @@ class TESTBED2_API UAbstractTestbed2ManyParamInterface : public UGameInstanceSub
 	GENERATED_BODY()
 
 public:
+	// subsystem
+	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
+	virtual void Deinitialize() override;
+
 	// signals
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface", DisplayName = "Sig1 Signal")
 	FTestbed2ManyParamInterfaceSig1Delegate Sig1Signal;
@@ -248,7 +252,10 @@ public:
 
 	virtual void SetProp4_Implementation(int32 InProp4) override PURE_VIRTUAL(UAbstractTestbed2ManyParamInterface::SetProp4_Implementation, return;);
 
+	virtual bool IsInitialized() const;
+
 protected:
+	bool bInitialized = false;
 	// signals
 	virtual void BroadcastSig1_Implementation(int32 Param1) override;
 

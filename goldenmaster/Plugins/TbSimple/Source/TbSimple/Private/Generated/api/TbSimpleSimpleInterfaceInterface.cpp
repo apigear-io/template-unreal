@@ -272,3 +272,24 @@ void UAbstractTbSimpleSimpleInterface::SetPropString_Private(const FString& InPr
 {
 	Execute_SetPropString(this, InPropString);
 };
+
+void UAbstractTbSimpleSimpleInterface::Initialize(FSubsystemCollectionBase& Collection)
+{
+	check(!bInitialized);
+	bInitialized = true;
+
+	Super::Initialize(Collection);
+}
+
+void UAbstractTbSimpleSimpleInterface::Deinitialize()
+{
+	check(bInitialized);
+	bInitialized = false;
+
+	Super::Deinitialize();
+}
+
+bool UAbstractTbSimpleSimpleInterface::IsInitialized() const
+{
+	return bInitialized;
+}

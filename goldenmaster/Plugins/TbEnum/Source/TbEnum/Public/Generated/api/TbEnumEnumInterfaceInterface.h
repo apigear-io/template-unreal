@@ -188,6 +188,10 @@ class TBENUM_API UAbstractTbEnumEnumInterface : public UGameInstanceSubsystem, p
 	GENERATED_BODY()
 
 public:
+	// subsystem
+	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
+	virtual void Deinitialize() override;
+
 	// signals
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface", DisplayName = "Sig0 Signal")
 	FTbEnumEnumInterfaceSig0Delegate Sig0Signal;
@@ -248,7 +252,10 @@ public:
 
 	virtual void SetProp3_Implementation(ETbEnumEnum3 InProp3) override PURE_VIRTUAL(UAbstractTbEnumEnumInterface::SetProp3_Implementation, return;);
 
+	virtual bool IsInitialized() const;
+
 protected:
+	bool bInitialized = false;
 	// signals
 	virtual void BroadcastSig0_Implementation(ETbEnumEnum0 Param0) override;
 

@@ -75,18 +75,12 @@ UTbSame1SameEnum1InterfaceLoggingDecorator::~UTbSame1SameEnum1InterfaceLoggingDe
 
 void UTbSame1SameEnum1InterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase& Collection)
 {
-	check(!bInitialized);
-	bInitialized = true;
-
 	Super::Initialize(Collection);
 	setBackendService(FTbSame1ModuleFactory::createITbSame1SameEnum1InterfaceInterface(Collection));
 }
 
 void UTbSame1SameEnum1InterfaceLoggingDecorator::Deinitialize()
 {
-	check(bInitialized);
-	bInitialized = false;
-
 	Super::Deinitialize();
 	BackendService = nullptr;
 }

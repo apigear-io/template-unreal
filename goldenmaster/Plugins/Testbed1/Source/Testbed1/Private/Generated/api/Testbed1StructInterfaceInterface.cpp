@@ -137,3 +137,24 @@ void UAbstractTestbed1StructInterface::SetPropString_Private(const FTestbed1Stru
 {
 	Execute_SetPropString(this, InPropString);
 };
+
+void UAbstractTestbed1StructInterface::Initialize(FSubsystemCollectionBase& Collection)
+{
+	check(!bInitialized);
+	bInitialized = true;
+
+	Super::Initialize(Collection);
+}
+
+void UAbstractTestbed1StructInterface::Deinitialize()
+{
+	check(bInitialized);
+	bInitialized = false;
+
+	Super::Deinitialize();
+}
+
+bool UAbstractTestbed1StructInterface::IsInitialized() const
+{
+	return bInitialized;
+}

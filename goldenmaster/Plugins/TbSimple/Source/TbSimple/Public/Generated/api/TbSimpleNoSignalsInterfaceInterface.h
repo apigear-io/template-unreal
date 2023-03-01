@@ -105,6 +105,10 @@ class TBSIMPLE_API UAbstractTbSimpleNoSignalsInterface : public UGameInstanceSub
 	GENERATED_BODY()
 
 public:
+	// subsystem
+	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
+	virtual void Deinitialize() override;
+
 	// signals
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoSignalsInterface", DisplayName = "PropBool Changed")
@@ -129,7 +133,10 @@ public:
 
 	virtual void SetPropInt_Implementation(int32 InPropInt) override PURE_VIRTUAL(UAbstractTbSimpleNoSignalsInterface::SetPropInt_Implementation, return;);
 
+	virtual bool IsInitialized() const;
+
 protected:
+	bool bInitialized = false;
 	// signals
 
 	virtual void BroadcastPropBoolChanged_Implementation(bool bInPropBool) override;

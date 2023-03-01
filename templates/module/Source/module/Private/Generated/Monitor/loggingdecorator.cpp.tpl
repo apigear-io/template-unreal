@@ -91,9 +91,6 @@ public:
 
 void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
 {
-	check(!bInitialized);
-	bInitialized = true;
-
 	Super::Initialize(Collection);
 {{- $Service := printf "I%sInterface" $Iface }}
 	setBackendService({{$FactoryName}}::create{{$Service}}(Collection));
@@ -101,9 +98,6 @@ void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
 
 void {{$Class}}::Deinitialize()
 {
-	check(bInitialized);
-	bInitialized = false;
-
 	Super::Deinitialize();
 	BackendService = nullptr;
 }

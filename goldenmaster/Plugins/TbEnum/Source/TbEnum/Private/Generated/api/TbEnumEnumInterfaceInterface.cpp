@@ -137,3 +137,24 @@ void UAbstractTbEnumEnumInterface::SetProp3_Private(ETbEnumEnum3 InProp3)
 {
 	Execute_SetProp3(this, InProp3);
 };
+
+void UAbstractTbEnumEnumInterface::Initialize(FSubsystemCollectionBase& Collection)
+{
+	check(!bInitialized);
+	bInitialized = true;
+
+	Super::Initialize(Collection);
+}
+
+void UAbstractTbEnumEnumInterface::Deinitialize()
+{
+	check(bInitialized);
+	bInitialized = false;
+
+	Super::Deinitialize();
+}
+
+bool UAbstractTbEnumEnumInterface::IsInitialized() const
+{
+	return bInitialized;
+}

@@ -75,3 +75,24 @@ void UAbstractTbSame2SameEnum2Interface::SetProp2_Private(ETbSame2Enum2 InProp2)
 {
 	Execute_SetProp2(this, InProp2);
 };
+
+void UAbstractTbSame2SameEnum2Interface::Initialize(FSubsystemCollectionBase& Collection)
+{
+	check(!bInitialized);
+	bInitialized = true;
+
+	Super::Initialize(Collection);
+}
+
+void UAbstractTbSame2SameEnum2Interface::Deinitialize()
+{
+	check(bInitialized);
+	bInitialized = false;
+
+	Super::Deinitialize();
+}
+
+bool UAbstractTbSame2SameEnum2Interface::IsInitialized() const
+{
+	return bInitialized;
+}

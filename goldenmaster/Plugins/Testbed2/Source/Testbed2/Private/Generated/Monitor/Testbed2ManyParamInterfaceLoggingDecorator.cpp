@@ -75,18 +75,12 @@ UTestbed2ManyParamInterfaceLoggingDecorator::~UTestbed2ManyParamInterfaceLogging
 
 void UTestbed2ManyParamInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase& Collection)
 {
-	check(!bInitialized);
-	bInitialized = true;
-
 	Super::Initialize(Collection);
 	setBackendService(FTestbed2ModuleFactory::createITestbed2ManyParamInterfaceInterface(Collection));
 }
 
 void UTestbed2ManyParamInterfaceLoggingDecorator::Deinitialize()
 {
-	check(bInitialized);
-	bInitialized = false;
-
 	Super::Deinitialize();
 	BackendService = nullptr;
 }

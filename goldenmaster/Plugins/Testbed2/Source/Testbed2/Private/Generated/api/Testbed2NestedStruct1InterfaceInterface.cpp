@@ -44,3 +44,24 @@ void UAbstractTestbed2NestedStruct1Interface::SetProp1_Private(const FTestbed2Ne
 {
 	Execute_SetProp1(this, InProp1);
 };
+
+void UAbstractTestbed2NestedStruct1Interface::Initialize(FSubsystemCollectionBase& Collection)
+{
+	check(!bInitialized);
+	bInitialized = true;
+
+	Super::Initialize(Collection);
+}
+
+void UAbstractTestbed2NestedStruct1Interface::Deinitialize()
+{
+	check(bInitialized);
+	bInitialized = false;
+
+	Super::Deinitialize();
+}
+
+bool UAbstractTestbed2NestedStruct1Interface::IsInitialized() const
+{
+	return bInitialized;
+}

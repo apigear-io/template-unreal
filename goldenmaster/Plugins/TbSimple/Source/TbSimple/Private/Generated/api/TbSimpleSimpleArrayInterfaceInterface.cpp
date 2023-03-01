@@ -261,3 +261,24 @@ void UAbstractTbSimpleSimpleArrayInterface::SetPropString_Private(const TArray<F
 {
 	Execute_SetPropString(this, InPropString);
 };
+
+void UAbstractTbSimpleSimpleArrayInterface::Initialize(FSubsystemCollectionBase& Collection)
+{
+	check(!bInitialized);
+	bInitialized = true;
+
+	Super::Initialize(Collection);
+}
+
+void UAbstractTbSimpleSimpleArrayInterface::Deinitialize()
+{
+	check(bInitialized);
+	bInitialized = false;
+
+	Super::Deinitialize();
+}
+
+bool UAbstractTbSimpleSimpleArrayInterface::IsInitialized() const
+{
+	return bInitialized;
+}

@@ -63,13 +63,20 @@ class TBSIMPLE_API UAbstractTbSimpleEmptyInterface : public UGameInstanceSubsyst
 	GENERATED_BODY()
 
 public:
+	// subsystem
+	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
+	virtual void Deinitialize() override;
+
 	// signals
 
 	// methods
 
 	// properties
 
+	virtual bool IsInitialized() const;
+
 protected:
+	bool bInitialized = false;
 	// signals
 
 	// properties - local copy

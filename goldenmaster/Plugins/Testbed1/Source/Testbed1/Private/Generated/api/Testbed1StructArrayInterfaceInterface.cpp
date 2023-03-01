@@ -137,3 +137,24 @@ void UAbstractTestbed1StructArrayInterface::SetPropString_Private(const TArray<F
 {
 	Execute_SetPropString(this, InPropString);
 };
+
+void UAbstractTestbed1StructArrayInterface::Initialize(FSubsystemCollectionBase& Collection)
+{
+	check(!bInitialized);
+	bInitialized = true;
+
+	Super::Initialize(Collection);
+}
+
+void UAbstractTestbed1StructArrayInterface::Deinitialize()
+{
+	check(bInitialized);
+	bInitialized = false;
+
+	Super::Deinitialize();
+}
+
+bool UAbstractTestbed1StructArrayInterface::IsInitialized() const
+{
+	return bInitialized;
+}

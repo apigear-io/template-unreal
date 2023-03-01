@@ -75,18 +75,12 @@ UTestbed2NestedStruct3InterfaceLoggingDecorator::~UTestbed2NestedStruct3Interfac
 
 void UTestbed2NestedStruct3InterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase& Collection)
 {
-	check(!bInitialized);
-	bInitialized = true;
-
 	Super::Initialize(Collection);
 	setBackendService(FTestbed2ModuleFactory::createITestbed2NestedStruct3InterfaceInterface(Collection));
 }
 
 void UTestbed2NestedStruct3InterfaceLoggingDecorator::Deinitialize()
 {
-	check(bInitialized);
-	bInitialized = false;
-
 	Super::Deinitialize();
 	BackendService = nullptr;
 }

@@ -75,3 +75,24 @@ void UAbstractTbSame2SameStruct2Interface::SetProp2_Private(const FTbSame2Struct
 {
 	Execute_SetProp2(this, InProp2);
 };
+
+void UAbstractTbSame2SameStruct2Interface::Initialize(FSubsystemCollectionBase& Collection)
+{
+	check(!bInitialized);
+	bInitialized = true;
+
+	Super::Initialize(Collection);
+}
+
+void UAbstractTbSame2SameStruct2Interface::Deinitialize()
+{
+	check(bInitialized);
+	bInitialized = false;
+
+	Super::Deinitialize();
+}
+
+bool UAbstractTbSame2SameStruct2Interface::IsInitialized() const
+{
+	return bInitialized;
+}

@@ -70,4 +70,25 @@ void {{$abstractclass}}::Set{{Camel .Name}}_Private({{ueParam "In" .}})
 	Execute_Set{{Camel .Name}}(this, {{ueVar "In" .}});
 };
 {{- end }}
+
+void {{$abstractclass}}::Initialize(FSubsystemCollectionBase& Collection)
+{
+	check(!bInitialized);
+	bInitialized = true;
+
+	Super::Initialize(Collection);
+}
+
+void {{$abstractclass}}::Deinitialize()
+{
+	check(bInitialized);
+	bInitialized = false;
+
+	Super::Deinitialize();
+}
+
+bool {{$abstractclass}}::IsInitialized() const
+{
+	return bInitialized;
+}
 {{- end }}

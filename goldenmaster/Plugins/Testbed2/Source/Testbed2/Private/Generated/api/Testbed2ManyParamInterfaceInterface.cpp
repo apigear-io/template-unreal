@@ -137,3 +137,24 @@ void UAbstractTestbed2ManyParamInterface::SetProp4_Private(int32 InProp4)
 {
 	Execute_SetProp4(this, InProp4);
 };
+
+void UAbstractTestbed2ManyParamInterface::Initialize(FSubsystemCollectionBase& Collection)
+{
+	check(!bInitialized);
+	bInitialized = true;
+
+	Super::Initialize(Collection);
+}
+
+void UAbstractTestbed2ManyParamInterface::Deinitialize()
+{
+	check(bInitialized);
+	bInitialized = false;
+
+	Super::Deinitialize();
+}
+
+bool UAbstractTestbed2ManyParamInterface::IsInitialized() const
+{
+	return bInitialized;
+}

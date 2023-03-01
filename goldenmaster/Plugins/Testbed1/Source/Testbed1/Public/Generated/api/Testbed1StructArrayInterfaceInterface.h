@@ -188,6 +188,10 @@ class TESTBED1_API UAbstractTestbed1StructArrayInterface : public UGameInstanceS
 	GENERATED_BODY()
 
 public:
+	// subsystem
+	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
+	virtual void Deinitialize() override;
+
 	// signals
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface", DisplayName = "SigBool Signal")
 	FTestbed1StructArrayInterfaceSigBoolDelegate SigBoolSignal;
@@ -248,7 +252,10 @@ public:
 
 	virtual void SetPropString_Implementation(const TArray<FTestbed1StructString>& InPropString) override PURE_VIRTUAL(UAbstractTestbed1StructArrayInterface::SetPropString_Implementation, return;);
 
+	virtual bool IsInitialized() const;
+
 protected:
+	bool bInitialized = false;
 	// signals
 	virtual void BroadcastSigBool_Implementation(const TArray<FTestbed1StructBool>& ParamBool) override;
 

@@ -48,13 +48,7 @@ public:
 	void FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool) override;
 	bool FuncBool_Implementation(bool bParamBool) override;
 
-	bool IsInitialized() const
-	{
-		return bInitialized;
-	}
-
 private:
-	bool bInitialized = false;
 	/** The connection to the service backend. */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSimple|NoPropertiesInterface")
 	TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> BackendService;

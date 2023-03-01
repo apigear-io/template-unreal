@@ -75,3 +75,24 @@ void UAbstractTbSimpleNoOperationsInterface::SetPropInt_Private(int32 InPropInt)
 {
 	Execute_SetPropInt(this, InPropInt);
 };
+
+void UAbstractTbSimpleNoOperationsInterface::Initialize(FSubsystemCollectionBase& Collection)
+{
+	check(!bInitialized);
+	bInitialized = true;
+
+	Super::Initialize(Collection);
+}
+
+void UAbstractTbSimpleNoOperationsInterface::Deinitialize()
+{
+	check(bInitialized);
+	bInitialized = false;
+
+	Super::Deinitialize();
+}
+
+bool UAbstractTbSimpleNoOperationsInterface::IsInitialized() const
+{
+	return bInitialized;
+}

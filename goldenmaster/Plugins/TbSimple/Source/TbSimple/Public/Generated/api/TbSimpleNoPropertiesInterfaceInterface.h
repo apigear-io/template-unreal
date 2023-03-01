@@ -89,6 +89,10 @@ class TBSIMPLE_API UAbstractTbSimpleNoPropertiesInterface : public UGameInstance
 	GENERATED_BODY()
 
 public:
+	// subsystem
+	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
+	virtual void Deinitialize() override;
+
 	// signals
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoPropertiesInterface", DisplayName = "SigVoid Signal")
 	FTbSimpleNoPropertiesInterfaceSigVoidDelegate SigVoidSignal;
@@ -106,7 +110,10 @@ public:
 
 	// properties
 
+	virtual bool IsInitialized() const;
+
 protected:
+	bool bInitialized = false;
 	// signals
 	virtual void BroadcastSigVoid_Implementation() override;
 

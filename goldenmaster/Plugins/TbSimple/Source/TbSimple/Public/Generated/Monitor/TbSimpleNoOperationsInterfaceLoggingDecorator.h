@@ -51,13 +51,7 @@ public:
 	void SetPropInt_Implementation(int32 InPropInt) override;
 
 	// operations
-	bool IsInitialized() const
-	{
-		return bInitialized;
-	}
-
 private:
-	bool bInitialized = false;
 	/** The connection to the service backend. */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSimple|NoOperationsInterface")
 	TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> BackendService;

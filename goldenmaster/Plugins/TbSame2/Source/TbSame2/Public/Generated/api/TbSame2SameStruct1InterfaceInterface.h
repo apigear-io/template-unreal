@@ -92,6 +92,10 @@ class TBSAME2_API UAbstractTbSame2SameStruct1Interface : public UGameInstanceSub
 	GENERATED_BODY()
 
 public:
+	// subsystem
+	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
+	virtual void Deinitialize() override;
+
 	// signals
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame2|SameStruct1Interface", DisplayName = "Sig1 Signal")
 	FTbSame2SameStruct1InterfaceSig1Delegate Sig1Signal;
@@ -110,7 +114,10 @@ public:
 
 	virtual void SetProp1_Implementation(const FTbSame2Struct1& InProp1) override PURE_VIRTUAL(UAbstractTbSame2SameStruct1Interface::SetProp1_Implementation, return;);
 
+	virtual bool IsInitialized() const;
+
 protected:
+	bool bInitialized = false;
 	// signals
 	virtual void BroadcastSig1_Implementation(const FTbSame2Struct1& Param1) override;
 

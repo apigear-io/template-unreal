@@ -75,3 +75,24 @@ void UAbstractTestbed2NestedStruct2Interface::SetProp2_Private(const FTestbed2Ne
 {
 	Execute_SetProp2(this, InProp2);
 };
+
+void UAbstractTestbed2NestedStruct2Interface::Initialize(FSubsystemCollectionBase& Collection)
+{
+	check(!bInitialized);
+	bInitialized = true;
+
+	Super::Initialize(Collection);
+}
+
+void UAbstractTestbed2NestedStruct2Interface::Deinitialize()
+{
+	check(bInitialized);
+	bInitialized = false;
+
+	Super::Deinitialize();
+}
+
+bool UAbstractTestbed2NestedStruct2Interface::IsInitialized() const
+{
+	return bInitialized;
+}
