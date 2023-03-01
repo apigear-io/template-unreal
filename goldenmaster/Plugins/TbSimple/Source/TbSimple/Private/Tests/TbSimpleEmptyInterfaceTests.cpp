@@ -16,6 +16,7 @@ limitations under the License.
 */
 
 #include "Implementation/TbSimpleEmptyInterface.h"
+#include "TbSimpleTestBase.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS

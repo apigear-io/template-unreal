@@ -250,6 +250,11 @@ features:
     requires:
       - api
     scopes:
+      - match: module
+        prefix: "Plugins/{{Camel .Module.Name}}/"
+        documents:
+          - source: "module/Source/module/Private/Tests/testbase.h.tpl"
+            target: "Source/{{Camel .Module.Name}}/Private/Tests/{{Camel .Module.Name}}TestBase.h"
       - match: interface
         prefix: "Plugins/{{Camel .Module.Name}}/"
         documents:

@@ -16,53 +16,54 @@ limitations under the License.
 */
 
 #include "Implementation/TbSimpleNoSignalsInterface.h"
+#include "TbSimpleTestBase.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbSimpleNoSignalsInterfaceImplementationPropertyPropBoolTest, "TbSimple.NoSignalsInterface.Implementation.Property.PropBool", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(UTbSimpleNoSignalsInterfaceImplementationPropertyPropBoolTest, FTbSimpleTestBase, "TbSimple.NoSignalsInterface.Implementation.Property.PropBool", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool UTbSimpleNoSignalsInterfaceImplementationPropertyPropBoolTest::RunTest(const FString& Parameters)
 {
 	// Do implement test here
-	UGameInstance* GameInstance = NewObject<UGameInstance>();
-	GameInstance->Init();
-	TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> test = GameInstance->GetSubsystem<UTbSimpleNoSignalsInterface>();
+	TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> test = GetGameInstance()->GetSubsystem<UTbSimpleNoSignalsInterface>();
 	test->Execute_SetPropBool(test.GetObject(), false);
 	TestEqual(TEXT("Getter should return the same value as set by the setter"), test->Execute_GetPropBool(test.GetObject()), false);
+
+	CleanUp();
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbSimpleNoSignalsInterfaceImplementationPropertyPropIntTest, "TbSimple.NoSignalsInterface.Implementation.Property.PropInt", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(UTbSimpleNoSignalsInterfaceImplementationPropertyPropIntTest, FTbSimpleTestBase, "TbSimple.NoSignalsInterface.Implementation.Property.PropInt", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool UTbSimpleNoSignalsInterfaceImplementationPropertyPropIntTest::RunTest(const FString& Parameters)
 {
 	// Do implement test here
-	UGameInstance* GameInstance = NewObject<UGameInstance>();
-	GameInstance->Init();
-	TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> test = GameInstance->GetSubsystem<UTbSimpleNoSignalsInterface>();
+	TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> test = GetGameInstance()->GetSubsystem<UTbSimpleNoSignalsInterface>();
 	test->Execute_SetPropInt(test.GetObject(), 0);
 	TestEqual(TEXT("Getter should return the same value as set by the setter"), test->Execute_GetPropInt(test.GetObject()), 0);
+
+	CleanUp();
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbSimpleNoSignalsInterfaceImplementationOperationFuncVoidTest, "TbSimple.NoSignalsInterface.Implementation.Operation.FuncVoid", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(UTbSimpleNoSignalsInterfaceImplementationOperationFuncVoidTest, FTbSimpleTestBase, "TbSimple.NoSignalsInterface.Implementation.Operation.FuncVoid", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool UTbSimpleNoSignalsInterfaceImplementationOperationFuncVoidTest::RunTest(const FString& Parameters)
 {
 	// Do implement test here
-	UGameInstance* GameInstance = NewObject<UGameInstance>();
-	GameInstance->Init();
-	TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> test = GameInstance->GetSubsystem<UTbSimpleNoSignalsInterface>();
+	TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> test = GetGameInstance()->GetSubsystem<UTbSimpleNoSignalsInterface>();
 	test->Execute_FuncVoid(test.GetObject());
+
+	CleanUp();
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbSimpleNoSignalsInterfaceImplementationOperationFuncBoolTest, "TbSimple.NoSignalsInterface.Implementation.Operation.FuncBool", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(UTbSimpleNoSignalsInterfaceImplementationOperationFuncBoolTest, FTbSimpleTestBase, "TbSimple.NoSignalsInterface.Implementation.Operation.FuncBool", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool UTbSimpleNoSignalsInterfaceImplementationOperationFuncBoolTest::RunTest(const FString& Parameters)
 {
 	// Do implement test here
-	UGameInstance* GameInstance = NewObject<UGameInstance>();
-	GameInstance->Init();
-	TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> test = GameInstance->GetSubsystem<UTbSimpleNoSignalsInterface>();
+	TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> test = GetGameInstance()->GetSubsystem<UTbSimpleNoSignalsInterface>();
 	test->Execute_FuncBool(test.GetObject(), false);
+
+	CleanUp();
 	return true;
 }
 

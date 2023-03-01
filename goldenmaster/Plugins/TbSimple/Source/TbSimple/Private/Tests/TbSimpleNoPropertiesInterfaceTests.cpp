@@ -16,29 +16,30 @@ limitations under the License.
 */
 
 #include "Implementation/TbSimpleNoPropertiesInterface.h"
+#include "TbSimpleTestBase.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbSimpleNoPropertiesInterfaceImplementationOperationFuncVoidTest, "TbSimple.NoPropertiesInterface.Implementation.Operation.FuncVoid", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(UTbSimpleNoPropertiesInterfaceImplementationOperationFuncVoidTest, FTbSimpleTestBase, "TbSimple.NoPropertiesInterface.Implementation.Operation.FuncVoid", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool UTbSimpleNoPropertiesInterfaceImplementationOperationFuncVoidTest::RunTest(const FString& Parameters)
 {
 	// Do implement test here
-	UGameInstance* GameInstance = NewObject<UGameInstance>();
-	GameInstance->Init();
-	TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> test = GameInstance->GetSubsystem<UTbSimpleNoPropertiesInterface>();
+	TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> test = GetGameInstance()->GetSubsystem<UTbSimpleNoPropertiesInterface>();
 	test->Execute_FuncVoid(test.GetObject());
+
+	CleanUp();
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTbSimpleNoPropertiesInterfaceImplementationOperationFuncBoolTest, "TbSimple.NoPropertiesInterface.Implementation.Operation.FuncBool", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(UTbSimpleNoPropertiesInterfaceImplementationOperationFuncBoolTest, FTbSimpleTestBase, "TbSimple.NoPropertiesInterface.Implementation.Operation.FuncBool", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool UTbSimpleNoPropertiesInterfaceImplementationOperationFuncBoolTest::RunTest(const FString& Parameters)
 {
 	// Do implement test here
-	UGameInstance* GameInstance = NewObject<UGameInstance>();
-	GameInstance->Init();
-	TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> test = GameInstance->GetSubsystem<UTbSimpleNoPropertiesInterface>();
+	TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> test = GetGameInstance()->GetSubsystem<UTbSimpleNoPropertiesInterface>();
 	test->Execute_FuncBool(test.GetObject(), false);
+
+	CleanUp();
 	return true;
 }
 

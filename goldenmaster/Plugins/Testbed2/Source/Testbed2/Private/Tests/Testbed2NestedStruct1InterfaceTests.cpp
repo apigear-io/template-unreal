@@ -16,30 +16,31 @@ limitations under the License.
 */
 
 #include "Implementation/Testbed2NestedStruct1Interface.h"
+#include "Testbed2TestBase.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed2NestedStruct1InterfaceImplementationPropertyProp1Test, "Testbed2.NestedStruct1Interface.Implementation.Property.Prop1", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(UTestbed2NestedStruct1InterfaceImplementationPropertyProp1Test, FTestbed2TestBase, "Testbed2.NestedStruct1Interface.Implementation.Property.Prop1", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool UTestbed2NestedStruct1InterfaceImplementationPropertyProp1Test::RunTest(const FString& Parameters)
 {
 	// Do implement test here
-	UGameInstance* GameInstance = NewObject<UGameInstance>();
-	GameInstance->Init();
-	TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> test = GameInstance->GetSubsystem<UTestbed2NestedStruct1Interface>();
+	TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> test = GetGameInstance()->GetSubsystem<UTestbed2NestedStruct1Interface>();
 	test->Execute_SetProp1(test.GetObject(), FTestbed2NestedStruct1());
 	TestEqual(TEXT("Getter should return the same value as set by the setter"), test->Execute_GetProp1(test.GetObject()), FTestbed2NestedStruct1());
+
+	CleanUp();
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(UTestbed2NestedStruct1InterfaceImplementationOperationFunc1Test, "Testbed2.NestedStruct1Interface.Implementation.Operation.Func1", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(UTestbed2NestedStruct1InterfaceImplementationOperationFunc1Test, FTestbed2TestBase, "Testbed2.NestedStruct1Interface.Implementation.Operation.Func1", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool UTestbed2NestedStruct1InterfaceImplementationOperationFunc1Test::RunTest(const FString& Parameters)
 {
 	// Do implement test here
-	UGameInstance* GameInstance = NewObject<UGameInstance>();
-	GameInstance->Init();
-	TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> test = GameInstance->GetSubsystem<UTestbed2NestedStruct1Interface>();
+	TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> test = GetGameInstance()->GetSubsystem<UTestbed2NestedStruct1Interface>();
 	test->Execute_Func1(test.GetObject(), FTestbed2NestedStruct1());
+
+	CleanUp();
 	return true;
 }
 
