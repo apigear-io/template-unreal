@@ -31,6 +31,52 @@ limitations under the License.
 // General Log
 DEFINE_LOG_CATEGORY(LogFTbSame2ModuleFactory);
 
+#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
+TScriptInterface<ITbSame2SameStruct1InterfaceInterface> createTbSame2SameStruct1InterfaceOLink(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+{
+	UE_LOG(LogFTbSame2ModuleFactory, Log, TEXT("createITbSame2SameStruct1InterfaceInterface: Using OLink service backend"));
+
+	UTbSame2SameStruct1InterfaceOLinkClient* Instance = GameInstance->GetSubsystem<UTbSame2SameStruct1InterfaceOLinkClient>(GameInstance);
+	if (!Instance)
+	{
+		Collection.InitializeDependency(UTbSame2SameStruct1InterfaceOLinkClient::StaticClass());
+		Instance = GameInstance->GetSubsystem<UTbSame2SameStruct1InterfaceOLinkClient>(GameInstance);
+	}
+
+	return Instance;
+}
+
+TScriptInterface<ITbSame2SameStruct1InterfaceInterface> createTbSame2SameStruct1Interface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+{
+	UE_LOG(LogFTbSame2ModuleFactory, Log, TEXT("createITbSame2SameStruct1InterfaceInterface: Using local service backend"));
+
+	UTbSame2SameStruct1Interface* Instance = GameInstance->GetSubsystem<UTbSame2SameStruct1Interface>(GameInstance);
+	if (!Instance)
+	{
+		Collection.InitializeDependency(UTbSame2SameStruct1Interface::StaticClass());
+		Instance = GameInstance->GetSubsystem<UTbSame2SameStruct1Interface>(GameInstance);
+	}
+
+	return Instance;
+}
+
+TScriptInterface<ITbSame2SameStruct1InterfaceInterface> FTbSame2ModuleFactory::createITbSame2SameStruct1InterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+{
+	UTbSame2Settings* settings = GetMutableDefault<UTbSame2Settings>();
+
+	switch (settings->ServiceConnection)
+	{
+	case ETbSame2Connection::CONNECTION_OLINK:
+		return createTbSame2SameStruct1InterfaceOLink(GameInstance, Collection);
+	case ETbSame2Connection::CONNECTION_LOCAL:
+		return createTbSame2SameStruct1Interface(GameInstance, Collection);
+	default:
+		return createTbSame2SameStruct1Interface(GameInstance, Collection);
+	}
+}
+
+#else
+
 TScriptInterface<ITbSame2SameStruct1InterfaceInterface> createTbSame2SameStruct1InterfaceOLink(FSubsystemCollectionBase& Collection)
 {
 	UE_LOG(LogFTbSame2ModuleFactory, Log, TEXT("createITbSame2SameStruct1InterfaceInterface: Using OLink service backend"));
@@ -59,6 +105,53 @@ TScriptInterface<ITbSame2SameStruct1InterfaceInterface> FTbSame2ModuleFactory::c
 		return createTbSame2SameStruct1Interface(Collection);
 	}
 }
+#endif
+
+#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
+TScriptInterface<ITbSame2SameStruct2InterfaceInterface> createTbSame2SameStruct2InterfaceOLink(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+{
+	UE_LOG(LogFTbSame2ModuleFactory, Log, TEXT("createITbSame2SameStruct2InterfaceInterface: Using OLink service backend"));
+
+	UTbSame2SameStruct2InterfaceOLinkClient* Instance = GameInstance->GetSubsystem<UTbSame2SameStruct2InterfaceOLinkClient>(GameInstance);
+	if (!Instance)
+	{
+		Collection.InitializeDependency(UTbSame2SameStruct2InterfaceOLinkClient::StaticClass());
+		Instance = GameInstance->GetSubsystem<UTbSame2SameStruct2InterfaceOLinkClient>(GameInstance);
+	}
+
+	return Instance;
+}
+
+TScriptInterface<ITbSame2SameStruct2InterfaceInterface> createTbSame2SameStruct2Interface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+{
+	UE_LOG(LogFTbSame2ModuleFactory, Log, TEXT("createITbSame2SameStruct2InterfaceInterface: Using local service backend"));
+
+	UTbSame2SameStruct2Interface* Instance = GameInstance->GetSubsystem<UTbSame2SameStruct2Interface>(GameInstance);
+	if (!Instance)
+	{
+		Collection.InitializeDependency(UTbSame2SameStruct2Interface::StaticClass());
+		Instance = GameInstance->GetSubsystem<UTbSame2SameStruct2Interface>(GameInstance);
+	}
+
+	return Instance;
+}
+
+TScriptInterface<ITbSame2SameStruct2InterfaceInterface> FTbSame2ModuleFactory::createITbSame2SameStruct2InterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+{
+	UTbSame2Settings* settings = GetMutableDefault<UTbSame2Settings>();
+
+	switch (settings->ServiceConnection)
+	{
+	case ETbSame2Connection::CONNECTION_OLINK:
+		return createTbSame2SameStruct2InterfaceOLink(GameInstance, Collection);
+	case ETbSame2Connection::CONNECTION_LOCAL:
+		return createTbSame2SameStruct2Interface(GameInstance, Collection);
+	default:
+		return createTbSame2SameStruct2Interface(GameInstance, Collection);
+	}
+}
+
+#else
 
 TScriptInterface<ITbSame2SameStruct2InterfaceInterface> createTbSame2SameStruct2InterfaceOLink(FSubsystemCollectionBase& Collection)
 {
@@ -88,6 +181,53 @@ TScriptInterface<ITbSame2SameStruct2InterfaceInterface> FTbSame2ModuleFactory::c
 		return createTbSame2SameStruct2Interface(Collection);
 	}
 }
+#endif
+
+#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
+TScriptInterface<ITbSame2SameEnum1InterfaceInterface> createTbSame2SameEnum1InterfaceOLink(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+{
+	UE_LOG(LogFTbSame2ModuleFactory, Log, TEXT("createITbSame2SameEnum1InterfaceInterface: Using OLink service backend"));
+
+	UTbSame2SameEnum1InterfaceOLinkClient* Instance = GameInstance->GetSubsystem<UTbSame2SameEnum1InterfaceOLinkClient>(GameInstance);
+	if (!Instance)
+	{
+		Collection.InitializeDependency(UTbSame2SameEnum1InterfaceOLinkClient::StaticClass());
+		Instance = GameInstance->GetSubsystem<UTbSame2SameEnum1InterfaceOLinkClient>(GameInstance);
+	}
+
+	return Instance;
+}
+
+TScriptInterface<ITbSame2SameEnum1InterfaceInterface> createTbSame2SameEnum1Interface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+{
+	UE_LOG(LogFTbSame2ModuleFactory, Log, TEXT("createITbSame2SameEnum1InterfaceInterface: Using local service backend"));
+
+	UTbSame2SameEnum1Interface* Instance = GameInstance->GetSubsystem<UTbSame2SameEnum1Interface>(GameInstance);
+	if (!Instance)
+	{
+		Collection.InitializeDependency(UTbSame2SameEnum1Interface::StaticClass());
+		Instance = GameInstance->GetSubsystem<UTbSame2SameEnum1Interface>(GameInstance);
+	}
+
+	return Instance;
+}
+
+TScriptInterface<ITbSame2SameEnum1InterfaceInterface> FTbSame2ModuleFactory::createITbSame2SameEnum1InterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+{
+	UTbSame2Settings* settings = GetMutableDefault<UTbSame2Settings>();
+
+	switch (settings->ServiceConnection)
+	{
+	case ETbSame2Connection::CONNECTION_OLINK:
+		return createTbSame2SameEnum1InterfaceOLink(GameInstance, Collection);
+	case ETbSame2Connection::CONNECTION_LOCAL:
+		return createTbSame2SameEnum1Interface(GameInstance, Collection);
+	default:
+		return createTbSame2SameEnum1Interface(GameInstance, Collection);
+	}
+}
+
+#else
 
 TScriptInterface<ITbSame2SameEnum1InterfaceInterface> createTbSame2SameEnum1InterfaceOLink(FSubsystemCollectionBase& Collection)
 {
@@ -117,6 +257,53 @@ TScriptInterface<ITbSame2SameEnum1InterfaceInterface> FTbSame2ModuleFactory::cre
 		return createTbSame2SameEnum1Interface(Collection);
 	}
 }
+#endif
+
+#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
+TScriptInterface<ITbSame2SameEnum2InterfaceInterface> createTbSame2SameEnum2InterfaceOLink(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+{
+	UE_LOG(LogFTbSame2ModuleFactory, Log, TEXT("createITbSame2SameEnum2InterfaceInterface: Using OLink service backend"));
+
+	UTbSame2SameEnum2InterfaceOLinkClient* Instance = GameInstance->GetSubsystem<UTbSame2SameEnum2InterfaceOLinkClient>(GameInstance);
+	if (!Instance)
+	{
+		Collection.InitializeDependency(UTbSame2SameEnum2InterfaceOLinkClient::StaticClass());
+		Instance = GameInstance->GetSubsystem<UTbSame2SameEnum2InterfaceOLinkClient>(GameInstance);
+	}
+
+	return Instance;
+}
+
+TScriptInterface<ITbSame2SameEnum2InterfaceInterface> createTbSame2SameEnum2Interface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+{
+	UE_LOG(LogFTbSame2ModuleFactory, Log, TEXT("createITbSame2SameEnum2InterfaceInterface: Using local service backend"));
+
+	UTbSame2SameEnum2Interface* Instance = GameInstance->GetSubsystem<UTbSame2SameEnum2Interface>(GameInstance);
+	if (!Instance)
+	{
+		Collection.InitializeDependency(UTbSame2SameEnum2Interface::StaticClass());
+		Instance = GameInstance->GetSubsystem<UTbSame2SameEnum2Interface>(GameInstance);
+	}
+
+	return Instance;
+}
+
+TScriptInterface<ITbSame2SameEnum2InterfaceInterface> FTbSame2ModuleFactory::createITbSame2SameEnum2InterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+{
+	UTbSame2Settings* settings = GetMutableDefault<UTbSame2Settings>();
+
+	switch (settings->ServiceConnection)
+	{
+	case ETbSame2Connection::CONNECTION_OLINK:
+		return createTbSame2SameEnum2InterfaceOLink(GameInstance, Collection);
+	case ETbSame2Connection::CONNECTION_LOCAL:
+		return createTbSame2SameEnum2Interface(GameInstance, Collection);
+	default:
+		return createTbSame2SameEnum2Interface(GameInstance, Collection);
+	}
+}
+
+#else
 
 TScriptInterface<ITbSame2SameEnum2InterfaceInterface> createTbSame2SameEnum2InterfaceOLink(FSubsystemCollectionBase& Collection)
 {
@@ -146,3 +333,4 @@ TScriptInterface<ITbSame2SameEnum2InterfaceInterface> FTbSame2ModuleFactory::cre
 		return createTbSame2SameEnum2Interface(Collection);
 	}
 }
+#endif

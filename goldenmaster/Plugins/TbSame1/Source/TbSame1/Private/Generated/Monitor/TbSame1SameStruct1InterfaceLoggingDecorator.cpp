@@ -23,6 +23,7 @@ limitations under the License.
 #include "LatentActions.h"
 #include "Engine/LatentActionManager.h"
 #include "Engine/Engine.h"
+#include "Runtime/Launch/Resources/Version.h"
 
 DEFINE_LOG_CATEGORY(LogTbSame1SameStruct1InterfaceLoggingDecorator);
 
@@ -76,7 +77,11 @@ UTbSame1SameStruct1InterfaceLoggingDecorator::~UTbSame1SameStruct1InterfaceLoggi
 void UTbSame1SameStruct1InterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
+#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
+	setBackendService(FTbSame1ModuleFactory::createITbSame1SameStruct1InterfaceInterface(GetGameInstance(), Collection));
+#else
 	setBackendService(FTbSame1ModuleFactory::createITbSame1SameStruct1InterfaceInterface(Collection));
+#endif
 }
 
 void UTbSame1SameStruct1InterfaceLoggingDecorator::Deinitialize()

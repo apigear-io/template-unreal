@@ -33,6 +33,7 @@ limitations under the License.
 #include "LatentActions.h"
 #include "Engine/LatentActionManager.h"
 #include "Engine/Engine.h"
+#include "Runtime/Launch/Resources/Version.h"
 
 DEFINE_LOG_CATEGORY(Log{{$DisplayName}});
 
@@ -92,8 +93,13 @@ public:
 void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
+
 {{- $Service := printf "I%sInterface" $Iface }}
+#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
+	setBackendService({{$FactoryName}}::create{{$Service}}(GetGameInstance(), Collection));
+#else
 	setBackendService({{$FactoryName}}::create{{$Service}}(Collection));
+#endif
 }
 
 void {{$Class}}::Deinitialize()

@@ -23,6 +23,7 @@ limitations under the License.
 #include "LatentActions.h"
 #include "Engine/LatentActionManager.h"
 #include "Engine/Engine.h"
+#include "Runtime/Launch/Resources/Version.h"
 
 DEFINE_LOG_CATEGORY(LogTbEnumEnumInterfaceLoggingDecorator);
 
@@ -76,7 +77,11 @@ UTbEnumEnumInterfaceLoggingDecorator::~UTbEnumEnumInterfaceLoggingDecorator() = 
 void UTbEnumEnumInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
+#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
+	setBackendService(FTbEnumModuleFactory::createITbEnumEnumInterfaceInterface(GetGameInstance(), Collection));
+#else
 	setBackendService(FTbEnumModuleFactory::createITbEnumEnumInterfaceInterface(Collection));
+#endif
 }
 
 void UTbEnumEnumInterfaceLoggingDecorator::Deinitialize()

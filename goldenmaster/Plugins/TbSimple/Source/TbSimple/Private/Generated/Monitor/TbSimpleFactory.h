@@ -18,6 +18,7 @@ limitations under the License.
 
 #include "Logging/LogMacros.h"
 #include "UObject/ScriptInterface.h"
+#include "Runtime/Launch/Resources/Version.h"
 
 class UGameInstance;
 class FSubsystemCollectionBase;
@@ -34,10 +35,19 @@ DECLARE_LOG_CATEGORY_EXTERN(LogFTbSimpleModuleFactory, Log, All);
 class FTbSimpleModuleFactory
 {
 public:
+#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
+	static TScriptInterface<ITbSimpleSimpleInterfaceInterface> createITbSimpleSimpleInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
+	static TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> createITbSimpleSimpleArrayInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
+	static TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> createITbSimpleNoPropertiesInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
+	static TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> createITbSimpleNoOperationsInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
+	static TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> createITbSimpleNoSignalsInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
+	static TScriptInterface<ITbSimpleEmptyInterfaceInterface> createITbSimpleEmptyInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
+#else
 	static TScriptInterface<ITbSimpleSimpleInterfaceInterface> createITbSimpleSimpleInterfaceInterface(FSubsystemCollectionBase& Collection);
 	static TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> createITbSimpleSimpleArrayInterfaceInterface(FSubsystemCollectionBase& Collection);
 	static TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> createITbSimpleNoPropertiesInterfaceInterface(FSubsystemCollectionBase& Collection);
 	static TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> createITbSimpleNoOperationsInterfaceInterface(FSubsystemCollectionBase& Collection);
 	static TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> createITbSimpleNoSignalsInterfaceInterface(FSubsystemCollectionBase& Collection);
 	static TScriptInterface<ITbSimpleEmptyInterfaceInterface> createITbSimpleEmptyInterfaceInterface(FSubsystemCollectionBase& Collection);
+#endif
 };

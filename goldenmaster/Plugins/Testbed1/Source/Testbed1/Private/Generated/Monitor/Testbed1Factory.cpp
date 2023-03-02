@@ -27,6 +27,52 @@ limitations under the License.
 // General Log
 DEFINE_LOG_CATEGORY(LogFTestbed1ModuleFactory);
 
+#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
+TScriptInterface<ITestbed1StructInterfaceInterface> createTestbed1StructInterfaceOLink(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+{
+	UE_LOG(LogFTestbed1ModuleFactory, Log, TEXT("createITestbed1StructInterfaceInterface: Using OLink service backend"));
+
+	UTestbed1StructInterfaceOLinkClient* Instance = GameInstance->GetSubsystem<UTestbed1StructInterfaceOLinkClient>(GameInstance);
+	if (!Instance)
+	{
+		Collection.InitializeDependency(UTestbed1StructInterfaceOLinkClient::StaticClass());
+		Instance = GameInstance->GetSubsystem<UTestbed1StructInterfaceOLinkClient>(GameInstance);
+	}
+
+	return Instance;
+}
+
+TScriptInterface<ITestbed1StructInterfaceInterface> createTestbed1StructInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+{
+	UE_LOG(LogFTestbed1ModuleFactory, Log, TEXT("createITestbed1StructInterfaceInterface: Using local service backend"));
+
+	UTestbed1StructInterface* Instance = GameInstance->GetSubsystem<UTestbed1StructInterface>(GameInstance);
+	if (!Instance)
+	{
+		Collection.InitializeDependency(UTestbed1StructInterface::StaticClass());
+		Instance = GameInstance->GetSubsystem<UTestbed1StructInterface>(GameInstance);
+	}
+
+	return Instance;
+}
+
+TScriptInterface<ITestbed1StructInterfaceInterface> FTestbed1ModuleFactory::createITestbed1StructInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+{
+	UTestbed1Settings* settings = GetMutableDefault<UTestbed1Settings>();
+
+	switch (settings->ServiceConnection)
+	{
+	case ETestbed1Connection::CONNECTION_OLINK:
+		return createTestbed1StructInterfaceOLink(GameInstance, Collection);
+	case ETestbed1Connection::CONNECTION_LOCAL:
+		return createTestbed1StructInterface(GameInstance, Collection);
+	default:
+		return createTestbed1StructInterface(GameInstance, Collection);
+	}
+}
+
+#else
+
 TScriptInterface<ITestbed1StructInterfaceInterface> createTestbed1StructInterfaceOLink(FSubsystemCollectionBase& Collection)
 {
 	UE_LOG(LogFTestbed1ModuleFactory, Log, TEXT("createITestbed1StructInterfaceInterface: Using OLink service backend"));
@@ -55,6 +101,53 @@ TScriptInterface<ITestbed1StructInterfaceInterface> FTestbed1ModuleFactory::crea
 		return createTestbed1StructInterface(Collection);
 	}
 }
+#endif
+
+#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
+TScriptInterface<ITestbed1StructArrayInterfaceInterface> createTestbed1StructArrayInterfaceOLink(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+{
+	UE_LOG(LogFTestbed1ModuleFactory, Log, TEXT("createITestbed1StructArrayInterfaceInterface: Using OLink service backend"));
+
+	UTestbed1StructArrayInterfaceOLinkClient* Instance = GameInstance->GetSubsystem<UTestbed1StructArrayInterfaceOLinkClient>(GameInstance);
+	if (!Instance)
+	{
+		Collection.InitializeDependency(UTestbed1StructArrayInterfaceOLinkClient::StaticClass());
+		Instance = GameInstance->GetSubsystem<UTestbed1StructArrayInterfaceOLinkClient>(GameInstance);
+	}
+
+	return Instance;
+}
+
+TScriptInterface<ITestbed1StructArrayInterfaceInterface> createTestbed1StructArrayInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+{
+	UE_LOG(LogFTestbed1ModuleFactory, Log, TEXT("createITestbed1StructArrayInterfaceInterface: Using local service backend"));
+
+	UTestbed1StructArrayInterface* Instance = GameInstance->GetSubsystem<UTestbed1StructArrayInterface>(GameInstance);
+	if (!Instance)
+	{
+		Collection.InitializeDependency(UTestbed1StructArrayInterface::StaticClass());
+		Instance = GameInstance->GetSubsystem<UTestbed1StructArrayInterface>(GameInstance);
+	}
+
+	return Instance;
+}
+
+TScriptInterface<ITestbed1StructArrayInterfaceInterface> FTestbed1ModuleFactory::createITestbed1StructArrayInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+{
+	UTestbed1Settings* settings = GetMutableDefault<UTestbed1Settings>();
+
+	switch (settings->ServiceConnection)
+	{
+	case ETestbed1Connection::CONNECTION_OLINK:
+		return createTestbed1StructArrayInterfaceOLink(GameInstance, Collection);
+	case ETestbed1Connection::CONNECTION_LOCAL:
+		return createTestbed1StructArrayInterface(GameInstance, Collection);
+	default:
+		return createTestbed1StructArrayInterface(GameInstance, Collection);
+	}
+}
+
+#else
 
 TScriptInterface<ITestbed1StructArrayInterfaceInterface> createTestbed1StructArrayInterfaceOLink(FSubsystemCollectionBase& Collection)
 {
@@ -84,3 +177,4 @@ TScriptInterface<ITestbed1StructArrayInterfaceInterface> FTestbed1ModuleFactory:
 		return createTestbed1StructArrayInterface(Collection);
 	}
 }
+#endif

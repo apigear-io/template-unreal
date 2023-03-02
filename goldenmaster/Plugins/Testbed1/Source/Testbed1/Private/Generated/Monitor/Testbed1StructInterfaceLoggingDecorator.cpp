@@ -23,6 +23,7 @@ limitations under the License.
 #include "LatentActions.h"
 #include "Engine/LatentActionManager.h"
 #include "Engine/Engine.h"
+#include "Runtime/Launch/Resources/Version.h"
 
 DEFINE_LOG_CATEGORY(LogTestbed1StructInterfaceLoggingDecorator);
 
@@ -76,7 +77,11 @@ UTestbed1StructInterfaceLoggingDecorator::~UTestbed1StructInterfaceLoggingDecora
 void UTestbed1StructInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
+#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
+	setBackendService(FTestbed1ModuleFactory::createITestbed1StructInterfaceInterface(GetGameInstance(), Collection));
+#else
 	setBackendService(FTestbed1ModuleFactory::createITestbed1StructInterfaceInterface(Collection));
+#endif
 }
 
 void UTestbed1StructInterfaceLoggingDecorator::Deinitialize()
