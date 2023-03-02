@@ -164,10 +164,14 @@ Make sure to have the generated plugin code in your projects plugins directory a
 ### Blueprint
 
 Open your project in the Unreal Editor and choose a *Blueprint* where you want to use the interface.
-In this *Blueprint* we first create an object of the type *Io World Hello*. This can then be  directly used or stored in a variable.
-In the screenshot we use the *asynchronous say* function to say "Hello world".
+In this *Blueprint* we first get the *GameInstance* subsystem of the type *Io World Hello*.
+<Figure caption="Get subsystem in blueprint" src="/img/quick-start/quick-start-blueprint-get-subsystem.png" />
 
-<Figure caption="Hello interface blueprint" src="/img/quick-start/quick-start-blueprint.png" />
+On this subsystem we can choose the *asynchronous say* function.
+<Figure caption="Choose method on interface in blueprint" src="/img/quick-start/quick-start-blueprint-choose-method.png" />
+
+The complete setup to say "Hello world" on begin play.
+<Figure caption="Hello interface example in blueprint" src="/img/quick-start/quick-start-blueprint-complete.png" />
 
 ### C++ 
 
@@ -189,14 +193,9 @@ void Aue_docsGameModeBase::InitGame(const FString& MapName, const FString& Optio
 {
 	Super::InitGame(MapName,Options, ErrorMessage);
 
-	// Note: UObjects should be referenced from an Unreal type or property, otherwise they might be removed by garbage collection
-	IIoWorldHelloInterface* HelloWorldObjPtr = NewObject<UIoWorldHello>();
+	TScriptInterface<IIoWorldHelloInterface> HelloWorldObjPtr = GetGameInstance()->GetSubsystem<UIoWorldHello>();
 	FIoWorldMessage MyMsg;
 	MyMsg.content = FString("Hello world");
-	HelloWorldObjPtr->Say(MyMsg, EIoWorldWhen::NOW);
+	HelloWorldObjPtr->Say(MyMsg, EIoWorldWhen::IWW_NOW);
 }
 ```
-:::caution
-UObjects should be referenced from an Unreal type or property, otherwise they might be removed by garbage collection.
-For more information check the [object handling documentation](https://docs.unrealengine.com/unreal-object-handling-in-unreal-engine/#garbagecollection).
-:::
