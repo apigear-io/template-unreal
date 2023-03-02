@@ -33,6 +33,6 @@ public:
 	void SetProp1_Implementation(const FTbSame1Struct1& Prop1) override;
 
 	// operations
-	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame1Struct1& Result, const FTbSame1Struct1& Param1) override{};
+	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame1Struct1& Result, const FTbSame1Struct1& Param1) override;
 	FTbSame1Struct1 Func1_Implementation(const FTbSame1Struct1& Param1) override;
 };

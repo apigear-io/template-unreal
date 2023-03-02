@@ -16,6 +16,51 @@ limitations under the License.
 */
 
 #include "Implementation/TbSame1SameEnum2Interface.h"
+#include "Async/Async.h"
+#include "Engine/Engine.h"
+#include "Engine/LatentActionManager.h"
+#include "LatentActions.h"
+
+class FTbSame1SameEnum2InterfaceLatentAction : public FPendingLatentAction
+{
+private:
+	FName ExecutionFunction;
+	int32 OutputLink;
+	FWeakObjectPtr CallbackTarget;
+	bool bInProgress;
+
+public:
+	FTbSame1SameEnum2InterfaceLatentAction(const FLatentActionInfo& LatentInfo)
+		: ExecutionFunction(LatentInfo.ExecutionFunction)
+		, OutputLink(LatentInfo.Linkage)
+		, CallbackTarget(LatentInfo.CallbackTarget)
+		, bInProgress(true)
+	{
+	}
+
+	void Cancel()
+	{
+		bInProgress = false;
+	}
+
+	virtual void UpdateOperation(FLatentResponse& Response) override
+	{
+		if (bInProgress == false)
+		{
+			Response.FinishAndTriggerIf(true, ExecutionFunction, OutputLink, CallbackTarget);
+		}
+	}
+
+	virtual void NotifyObjectDestroyed()
+	{
+		Cancel();
+	}
+
+	virtual void NotifyActionAborted()
+	{
+		Cancel();
+	}
+};
 
 UTbSame1SameEnum2Interface::~UTbSame1SameEnum2Interface() = default;
 ETbSame1Enum1 UTbSame1SameEnum2Interface::GetProp1_Implementation() const
@@ -45,11 +90,61 @@ void UTbSame1SameEnum2Interface::SetProp2_Implementation(ETbSame1Enum2 InProp2)
 	}
 }
 
+void UTbSame1SameEnum2Interface::Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame1Enum1& Result, ETbSame1Enum1 Param1)
+{
+	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
+	{
+		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
+		FTbSame1SameEnum2InterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSame1SameEnum2InterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+
+		if (oldRequest != nullptr)
+		{
+			// cancel old request
+			oldRequest->Cancel();
+			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
+		}
+
+		FTbSame1SameEnum2InterfaceLatentAction* CompletionAction = new FTbSame1SameEnum2InterfaceLatentAction(LatentInfo);
+		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
+		Async(EAsyncExecution::Thread,
+			[Param1, this, &Result, CompletionAction]()
+			{
+				Result = Func1_Implementation(Param1);
+				CompletionAction->Cancel();
+			});
+	}
+}
+
 ETbSame1Enum1 UTbSame1SameEnum2Interface::Func1_Implementation(ETbSame1Enum1 Param1)
 {
 	(void)Param1;
 	// do business logic here
 	return ETbSame1Enum1::TSE_VALUE1;
+}
+
+void UTbSame1SameEnum2Interface::Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame1Enum1& Result, ETbSame1Enum1 Param1, ETbSame1Enum2 Param2)
+{
+	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
+	{
+		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
+		FTbSame1SameEnum2InterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSame1SameEnum2InterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+
+		if (oldRequest != nullptr)
+		{
+			// cancel old request
+			oldRequest->Cancel();
+			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
+		}
+
+		FTbSame1SameEnum2InterfaceLatentAction* CompletionAction = new FTbSame1SameEnum2InterfaceLatentAction(LatentInfo);
+		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
+		Async(EAsyncExecution::Thread,
+			[Param1, Param2, this, &Result, CompletionAction]()
+			{
+				Result = Func2_Implementation(Param1, Param2);
+				CompletionAction->Cancel();
+			});
+	}
 }
 
 ETbSame1Enum1 UTbSame1SameEnum2Interface::Func2_Implementation(ETbSame1Enum1 Param1, ETbSame1Enum2 Param2)
