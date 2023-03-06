@@ -246,22 +246,26 @@ void UTestbed1StructArrayInterfaceOLinkClient::emitSignal(const std::string& sig
 {
 	if (signalName == "sigBool")
 	{
-		Execute_BroadcastSigBool(this, args[0].get<TArray<FTestbed1StructBool>>());
+		const TArray<FTestbed1StructBool>& ParamBool = args[0].get<TArray<FTestbed1StructBool>>();
+		Execute_BroadcastSigBool(this, ParamBool);
 		return;
 	}
 	if (signalName == "sigInt")
 	{
-		Execute_BroadcastSigInt(this, args[0].get<TArray<FTestbed1StructInt>>());
+		const TArray<FTestbed1StructInt>& ParamInt = args[0].get<TArray<FTestbed1StructInt>>();
+		Execute_BroadcastSigInt(this, ParamInt);
 		return;
 	}
 	if (signalName == "sigFloat")
 	{
-		Execute_BroadcastSigFloat(this, args[0].get<TArray<FTestbed1StructFloat>>());
+		const TArray<FTestbed1StructFloat>& ParamFloat = args[0].get<TArray<FTestbed1StructFloat>>();
+		Execute_BroadcastSigFloat(this, ParamFloat);
 		return;
 	}
 	if (signalName == "sigString")
 	{
-		Execute_BroadcastSigString(this, args[0].get<TArray<FTestbed1StructString>>());
+		const TArray<FTestbed1StructString>& ParamString = args[0].get<TArray<FTestbed1StructString>>();
+		Execute_BroadcastSigString(this, ParamString);
 		return;
 	}
 }

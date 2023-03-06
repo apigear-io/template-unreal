@@ -129,7 +129,8 @@ void UTbSame1SameEnum1InterfaceOLinkClient::emitSignal(const std::string& signal
 {
 	if (signalName == "sig1")
 	{
-		Execute_BroadcastSig1(this, args[0].get<ETbSame1Enum1>());
+		ETbSame1Enum1 Param1 = args[0].get<ETbSame1Enum1>();
+		Execute_BroadcastSig1(this, Param1);
 		return;
 	}
 }

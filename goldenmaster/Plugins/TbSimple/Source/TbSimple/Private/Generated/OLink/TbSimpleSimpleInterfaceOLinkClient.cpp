@@ -418,42 +418,50 @@ void UTbSimpleSimpleInterfaceOLinkClient::emitSignal(const std::string& signalNa
 	}
 	if (signalName == "sigBool")
 	{
-		Execute_BroadcastSigBool(this, args[0].get<bool>());
+		bool bParamBool = args[0].get<bool>();
+		Execute_BroadcastSigBool(this, ParamBool);
 		return;
 	}
 	if (signalName == "sigInt")
 	{
-		Execute_BroadcastSigInt(this, args[0].get<int32>());
+		int32 ParamInt = args[0].get<int32>();
+		Execute_BroadcastSigInt(this, ParamInt);
 		return;
 	}
 	if (signalName == "sigInt32")
 	{
-		Execute_BroadcastSigInt32(this, args[0].get<int32>());
+		int32 ParamInt32 = args[0].get<int32>();
+		Execute_BroadcastSigInt32(this, ParamInt32);
 		return;
 	}
 	if (signalName == "sigInt64")
 	{
-		Execute_BroadcastSigInt64(this, args[0].get<int64>());
+		int64 ParamInt64 = args[0].get<int64>();
+		Execute_BroadcastSigInt64(this, ParamInt64);
 		return;
 	}
 	if (signalName == "sigFloat")
 	{
-		Execute_BroadcastSigFloat(this, args[0].get<float>());
+		float ParamFloat = args[0].get<float>();
+		Execute_BroadcastSigFloat(this, ParamFloat);
 		return;
 	}
 	if (signalName == "sigFloat32")
 	{
-		Execute_BroadcastSigFloat32(this, args[0].get<float>());
+		float ParamFloa32 = args[0].get<float>();
+		Execute_BroadcastSigFloat32(this, ParamFloa32);
 		return;
 	}
 	if (signalName == "sigFloat64")
 	{
-		Execute_BroadcastSigFloat64(this, args[0].get<double>());
+		double ParamFloat64 = args[0].get<double>();
+		Execute_BroadcastSigFloat64(this, ParamFloat64);
 		return;
 	}
 	if (signalName == "sigString")
 	{
-		Execute_BroadcastSigString(this, args[0].get<FString>());
+		const FString& ParamString = args[0].get<FString>();
+		Execute_BroadcastSigString(this, ParamString);
 		return;
 	}
 }

@@ -207,17 +207,23 @@ void UTestbed2NestedStruct3InterfaceOLinkClient::emitSignal(const std::string& s
 {
 	if (signalName == "sig1")
 	{
-		Execute_BroadcastSig1(this, args[0].get<FTestbed2NestedStruct1>());
+		const FTestbed2NestedStruct1& Param1 = args[0].get<FTestbed2NestedStruct1>();
+		Execute_BroadcastSig1(this, Param1);
 		return;
 	}
 	if (signalName == "sig2")
 	{
-		Execute_BroadcastSig2(this, args[0].get<FTestbed2NestedStruct1>(), args[1].get<FTestbed2NestedStruct2>());
+		const FTestbed2NestedStruct1& Param1 = args[0].get<FTestbed2NestedStruct1>();
+		const FTestbed2NestedStruct2& Param2 = args[1].get<FTestbed2NestedStruct2>();
+		Execute_BroadcastSig2(this, Param1, Param2);
 		return;
 	}
 	if (signalName == "sig3")
 	{
-		Execute_BroadcastSig3(this, args[0].get<FTestbed2NestedStruct1>(), args[1].get<FTestbed2NestedStruct2>(), args[2].get<FTestbed2NestedStruct3>());
+		const FTestbed2NestedStruct1& Param1 = args[0].get<FTestbed2NestedStruct1>();
+		const FTestbed2NestedStruct2& Param2 = args[1].get<FTestbed2NestedStruct2>();
+		const FTestbed2NestedStruct3& Param3 = args[2].get<FTestbed2NestedStruct3>();
+		Execute_BroadcastSig3(this, Param1, Param2, Param3);
 		return;
 	}
 }

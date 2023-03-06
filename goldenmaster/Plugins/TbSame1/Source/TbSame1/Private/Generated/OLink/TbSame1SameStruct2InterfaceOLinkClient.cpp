@@ -168,12 +168,15 @@ void UTbSame1SameStruct2InterfaceOLinkClient::emitSignal(const std::string& sign
 {
 	if (signalName == "sig1")
 	{
-		Execute_BroadcastSig1(this, args[0].get<FTbSame1Struct1>());
+		const FTbSame1Struct1& Param1 = args[0].get<FTbSame1Struct1>();
+		Execute_BroadcastSig1(this, Param1);
 		return;
 	}
 	if (signalName == "sig2")
 	{
-		Execute_BroadcastSig2(this, args[0].get<FTbSame1Struct1>(), args[1].get<FTbSame1Struct2>());
+		const FTbSame1Struct1& Param1 = args[0].get<FTbSame1Struct1>();
+		const FTbSame1Struct2& Param2 = args[1].get<FTbSame1Struct2>();
+		Execute_BroadcastSig2(this, Param1, Param2);
 		return;
 	}
 }

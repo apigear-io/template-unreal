@@ -168,12 +168,15 @@ void UTbSame1SameEnum2InterfaceOLinkClient::emitSignal(const std::string& signal
 {
 	if (signalName == "sig1")
 	{
-		Execute_BroadcastSig1(this, args[0].get<ETbSame1Enum1>());
+		ETbSame1Enum1 Param1 = args[0].get<ETbSame1Enum1>();
+		Execute_BroadcastSig1(this, Param1);
 		return;
 	}
 	if (signalName == "sig2")
 	{
-		Execute_BroadcastSig2(this, args[0].get<ETbSame1Enum1>(), args[1].get<ETbSame1Enum2>());
+		ETbSame1Enum1 Param1 = args[0].get<ETbSame1Enum1>();
+		ETbSame1Enum2 Param2 = args[1].get<ETbSame1Enum2>();
+		Execute_BroadcastSig2(this, Param1, Param2);
 		return;
 	}
 }

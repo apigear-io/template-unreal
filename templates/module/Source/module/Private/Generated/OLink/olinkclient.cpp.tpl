@@ -152,9 +152,12 @@ void {{$Class}}::emitSignal(const std::string& signalName, const nlohmann::json&
 {{- range .Interface.Signals }}
 	if (signalName == "{{.Name}}")
 	{
+		{{- range $idx, $elem := .Params }}
+		{{ueParam "" .}} = args[{{$idx}}].get<{{ueReturn "" .}}>();
+		{{- end }}
 		Execute_Broadcast{{Camel .Name}}(this
 		{{- range $idx, $elem := .Params -}}
-			, args[{{$idx}}].get<{{ueReturn "" .}}>()
+			, {{Camel .Name}}
 		{{- end }});
 		return;
 	}

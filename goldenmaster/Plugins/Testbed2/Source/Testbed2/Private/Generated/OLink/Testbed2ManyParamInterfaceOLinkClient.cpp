@@ -246,22 +246,32 @@ void UTestbed2ManyParamInterfaceOLinkClient::emitSignal(const std::string& signa
 {
 	if (signalName == "sig1")
 	{
-		Execute_BroadcastSig1(this, args[0].get<int32>());
+		int32 Param1 = args[0].get<int32>();
+		Execute_BroadcastSig1(this, Param1);
 		return;
 	}
 	if (signalName == "sig2")
 	{
-		Execute_BroadcastSig2(this, args[0].get<int32>(), args[1].get<int32>());
+		int32 Param1 = args[0].get<int32>();
+		int32 Param2 = args[1].get<int32>();
+		Execute_BroadcastSig2(this, Param1, Param2);
 		return;
 	}
 	if (signalName == "sig3")
 	{
-		Execute_BroadcastSig3(this, args[0].get<int32>(), args[1].get<int32>(), args[2].get<int32>());
+		int32 Param1 = args[0].get<int32>();
+		int32 Param2 = args[1].get<int32>();
+		int32 Param3 = args[2].get<int32>();
+		Execute_BroadcastSig3(this, Param1, Param2, Param3);
 		return;
 	}
 	if (signalName == "sig4")
 	{
-		Execute_BroadcastSig4(this, args[0].get<int32>(), args[1].get<int32>(), args[2].get<int32>(), args[3].get<int32>());
+		int32 Param1 = args[0].get<int32>();
+		int32 Param2 = args[1].get<int32>();
+		int32 Param3 = args[2].get<int32>();
+		int32 Param4 = args[3].get<int32>();
+		Execute_BroadcastSig4(this, Param1, Param2, Param3, Param4);
 		return;
 	}
 }

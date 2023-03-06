@@ -246,22 +246,26 @@ void UTestbed1StructInterfaceOLinkClient::emitSignal(const std::string& signalNa
 {
 	if (signalName == "sigBool")
 	{
-		Execute_BroadcastSigBool(this, args[0].get<FTestbed1StructBool>());
+		const FTestbed1StructBool& ParamBool = args[0].get<FTestbed1StructBool>();
+		Execute_BroadcastSigBool(this, ParamBool);
 		return;
 	}
 	if (signalName == "sigInt")
 	{
-		Execute_BroadcastSigInt(this, args[0].get<FTestbed1StructInt>());
+		const FTestbed1StructInt& ParamInt = args[0].get<FTestbed1StructInt>();
+		Execute_BroadcastSigInt(this, ParamInt);
 		return;
 	}
 	if (signalName == "sigFloat")
 	{
-		Execute_BroadcastSigFloat(this, args[0].get<FTestbed1StructFloat>());
+		const FTestbed1StructFloat& ParamFloat = args[0].get<FTestbed1StructFloat>();
+		Execute_BroadcastSigFloat(this, ParamFloat);
 		return;
 	}
 	if (signalName == "sigString")
 	{
-		Execute_BroadcastSigString(this, args[0].get<FTestbed1StructString>());
+		const FTestbed1StructString& ParamString = args[0].get<FTestbed1StructString>();
+		Execute_BroadcastSigString(this, ParamString);
 		return;
 	}
 }
