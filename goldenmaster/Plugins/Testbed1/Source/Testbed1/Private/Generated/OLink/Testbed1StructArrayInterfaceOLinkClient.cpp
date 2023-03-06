@@ -216,37 +216,29 @@ FTestbed1StructBool UTestbed1StructArrayInterfaceOLinkClient::FuncString_Impleme
 
 void UTestbed1StructArrayInterfaceOLinkClient::applyState(const nlohmann::json& fields)
 {
-	if (fields.contains("propBool"))
+	const bool bPropBoolChanged = fields.contains("propBool") && (PropBool != fields["propBool"].get<TArray<FTestbed1StructBool>>());
+	if (bPropBoolChanged)
 	{
-		if (PropBool != fields["propBool"].get<TArray<FTestbed1StructBool>>())
-		{
-			PropBool = fields["propBool"].get<TArray<FTestbed1StructBool>>();
-			Execute_BroadcastPropBoolChanged(this, PropBool);
-		}
+		PropBool = fields["propBool"].get<TArray<FTestbed1StructBool>>();
+		Execute_BroadcastPropBoolChanged(this, PropBool);
 	}
-	if (fields.contains("propInt"))
+	const bool bPropIntChanged = fields.contains("propInt") && (PropInt != fields["propInt"].get<TArray<FTestbed1StructInt>>());
+	if (bPropIntChanged)
 	{
-		if (PropInt != fields["propInt"].get<TArray<FTestbed1StructInt>>())
-		{
-			PropInt = fields["propInt"].get<TArray<FTestbed1StructInt>>();
-			Execute_BroadcastPropIntChanged(this, PropInt);
-		}
+		PropInt = fields["propInt"].get<TArray<FTestbed1StructInt>>();
+		Execute_BroadcastPropIntChanged(this, PropInt);
 	}
-	if (fields.contains("propFloat"))
+	const bool bPropFloatChanged = fields.contains("propFloat") && (PropFloat != fields["propFloat"].get<TArray<FTestbed1StructFloat>>());
+	if (bPropFloatChanged)
 	{
-		if (PropFloat != fields["propFloat"].get<TArray<FTestbed1StructFloat>>())
-		{
-			PropFloat = fields["propFloat"].get<TArray<FTestbed1StructFloat>>();
-			Execute_BroadcastPropFloatChanged(this, PropFloat);
-		}
+		PropFloat = fields["propFloat"].get<TArray<FTestbed1StructFloat>>();
+		Execute_BroadcastPropFloatChanged(this, PropFloat);
 	}
-	if (fields.contains("propString"))
+	const bool bPropStringChanged = fields.contains("propString") && (PropString != fields["propString"].get<TArray<FTestbed1StructString>>());
+	if (bPropStringChanged)
 	{
-		if (PropString != fields["propString"].get<TArray<FTestbed1StructString>>())
-		{
-			PropString = fields["propString"].get<TArray<FTestbed1StructString>>();
-			Execute_BroadcastPropStringChanged(this, PropString);
-		}
+		PropString = fields["propString"].get<TArray<FTestbed1StructString>>();
+		Execute_BroadcastPropStringChanged(this, PropString);
 	}
 }
 

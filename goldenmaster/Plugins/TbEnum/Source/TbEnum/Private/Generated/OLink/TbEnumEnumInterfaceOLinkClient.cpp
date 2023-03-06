@@ -216,37 +216,29 @@ ETbEnumEnum3 UTbEnumEnumInterfaceOLinkClient::Func3_Implementation(ETbEnumEnum3 
 
 void UTbEnumEnumInterfaceOLinkClient::applyState(const nlohmann::json& fields)
 {
-	if (fields.contains("prop0"))
+	const bool bProp0Changed = fields.contains("prop0") && (Prop0 != fields["prop0"].get<ETbEnumEnum0>());
+	if (bProp0Changed)
 	{
-		if (Prop0 != fields["prop0"].get<ETbEnumEnum0>())
-		{
-			Prop0 = fields["prop0"].get<ETbEnumEnum0>();
-			Execute_BroadcastProp0Changed(this, Prop0);
-		}
+		Prop0 = fields["prop0"].get<ETbEnumEnum0>();
+		Execute_BroadcastProp0Changed(this, Prop0);
 	}
-	if (fields.contains("prop1"))
+	const bool bProp1Changed = fields.contains("prop1") && (Prop1 != fields["prop1"].get<ETbEnumEnum1>());
+	if (bProp1Changed)
 	{
-		if (Prop1 != fields["prop1"].get<ETbEnumEnum1>())
-		{
-			Prop1 = fields["prop1"].get<ETbEnumEnum1>();
-			Execute_BroadcastProp1Changed(this, Prop1);
-		}
+		Prop1 = fields["prop1"].get<ETbEnumEnum1>();
+		Execute_BroadcastProp1Changed(this, Prop1);
 	}
-	if (fields.contains("prop2"))
+	const bool bProp2Changed = fields.contains("prop2") && (Prop2 != fields["prop2"].get<ETbEnumEnum2>());
+	if (bProp2Changed)
 	{
-		if (Prop2 != fields["prop2"].get<ETbEnumEnum2>())
-		{
-			Prop2 = fields["prop2"].get<ETbEnumEnum2>();
-			Execute_BroadcastProp2Changed(this, Prop2);
-		}
+		Prop2 = fields["prop2"].get<ETbEnumEnum2>();
+		Execute_BroadcastProp2Changed(this, Prop2);
 	}
-	if (fields.contains("prop3"))
+	const bool bProp3Changed = fields.contains("prop3") && (Prop3 != fields["prop3"].get<ETbEnumEnum3>());
+	if (bProp3Changed)
 	{
-		if (Prop3 != fields["prop3"].get<ETbEnumEnum3>())
-		{
-			Prop3 = fields["prop3"].get<ETbEnumEnum3>();
-			Execute_BroadcastProp3Changed(this, Prop3);
-		}
+		Prop3 = fields["prop3"].get<ETbEnumEnum3>();
+		Execute_BroadcastProp3Changed(this, Prop3);
 	}
 }
 

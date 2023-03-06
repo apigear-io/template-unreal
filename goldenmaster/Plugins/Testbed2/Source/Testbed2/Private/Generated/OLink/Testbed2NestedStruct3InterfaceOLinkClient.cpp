@@ -183,29 +183,23 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceOLinkClient::Func3_Impleme
 
 void UTestbed2NestedStruct3InterfaceOLinkClient::applyState(const nlohmann::json& fields)
 {
-	if (fields.contains("prop1"))
+	const bool bProp1Changed = fields.contains("prop1") && (Prop1 != fields["prop1"].get<FTestbed2NestedStruct1>());
+	if (bProp1Changed)
 	{
-		if (Prop1 != fields["prop1"].get<FTestbed2NestedStruct1>())
-		{
-			Prop1 = fields["prop1"].get<FTestbed2NestedStruct1>();
-			Execute_BroadcastProp1Changed(this, Prop1);
-		}
+		Prop1 = fields["prop1"].get<FTestbed2NestedStruct1>();
+		Execute_BroadcastProp1Changed(this, Prop1);
 	}
-	if (fields.contains("prop2"))
+	const bool bProp2Changed = fields.contains("prop2") && (Prop2 != fields["prop2"].get<FTestbed2NestedStruct2>());
+	if (bProp2Changed)
 	{
-		if (Prop2 != fields["prop2"].get<FTestbed2NestedStruct2>())
-		{
-			Prop2 = fields["prop2"].get<FTestbed2NestedStruct2>();
-			Execute_BroadcastProp2Changed(this, Prop2);
-		}
+		Prop2 = fields["prop2"].get<FTestbed2NestedStruct2>();
+		Execute_BroadcastProp2Changed(this, Prop2);
 	}
-	if (fields.contains("prop3"))
+	const bool bProp3Changed = fields.contains("prop3") && (Prop3 != fields["prop3"].get<FTestbed2NestedStruct3>());
+	if (bProp3Changed)
 	{
-		if (Prop3 != fields["prop3"].get<FTestbed2NestedStruct3>())
-		{
-			Prop3 = fields["prop3"].get<FTestbed2NestedStruct3>();
-			Execute_BroadcastProp3Changed(this, Prop3);
-		}
+		Prop3 = fields["prop3"].get<FTestbed2NestedStruct3>();
+		Execute_BroadcastProp3Changed(this, Prop3);
 	}
 }
 

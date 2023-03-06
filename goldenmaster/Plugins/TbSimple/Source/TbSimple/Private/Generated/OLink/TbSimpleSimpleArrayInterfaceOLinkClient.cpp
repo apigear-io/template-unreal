@@ -348,69 +348,53 @@ TArray<FString> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncString_Implementat
 
 void UTbSimpleSimpleArrayInterfaceOLinkClient::applyState(const nlohmann::json& fields)
 {
-	if (fields.contains("propBool"))
+	const bool bPropBoolChanged = fields.contains("propBool") && (PropBool != fields["propBool"].get<TArray<bool>>());
+	if (bPropBoolChanged)
 	{
-		if (PropBool != fields["propBool"].get<TArray<bool>>())
-		{
-			PropBool = fields["propBool"].get<TArray<bool>>();
-			Execute_BroadcastPropBoolChanged(this, PropBool);
-		}
+		PropBool = fields["propBool"].get<TArray<bool>>();
+		Execute_BroadcastPropBoolChanged(this, PropBool);
 	}
-	if (fields.contains("propInt"))
+	const bool bPropIntChanged = fields.contains("propInt") && (PropInt != fields["propInt"].get<TArray<int32>>());
+	if (bPropIntChanged)
 	{
-		if (PropInt != fields["propInt"].get<TArray<int32>>())
-		{
-			PropInt = fields["propInt"].get<TArray<int32>>();
-			Execute_BroadcastPropIntChanged(this, PropInt);
-		}
+		PropInt = fields["propInt"].get<TArray<int32>>();
+		Execute_BroadcastPropIntChanged(this, PropInt);
 	}
-	if (fields.contains("propInt32"))
+	const bool bPropInt32Changed = fields.contains("propInt32") && (PropInt32 != fields["propInt32"].get<TArray<int32>>());
+	if (bPropInt32Changed)
 	{
-		if (PropInt32 != fields["propInt32"].get<TArray<int32>>())
-		{
-			PropInt32 = fields["propInt32"].get<TArray<int32>>();
-			Execute_BroadcastPropInt32Changed(this, PropInt32);
-		}
+		PropInt32 = fields["propInt32"].get<TArray<int32>>();
+		Execute_BroadcastPropInt32Changed(this, PropInt32);
 	}
-	if (fields.contains("propInt64"))
+	const bool bPropInt64Changed = fields.contains("propInt64") && (PropInt64 != fields["propInt64"].get<TArray<int64>>());
+	if (bPropInt64Changed)
 	{
-		if (PropInt64 != fields["propInt64"].get<TArray<int64>>())
-		{
-			PropInt64 = fields["propInt64"].get<TArray<int64>>();
-			Execute_BroadcastPropInt64Changed(this, PropInt64);
-		}
+		PropInt64 = fields["propInt64"].get<TArray<int64>>();
+		Execute_BroadcastPropInt64Changed(this, PropInt64);
 	}
-	if (fields.contains("propFloat"))
+	const bool bPropFloatChanged = fields.contains("propFloat") && (PropFloat != fields["propFloat"].get<TArray<float>>());
+	if (bPropFloatChanged)
 	{
-		if (PropFloat != fields["propFloat"].get<TArray<float>>())
-		{
-			PropFloat = fields["propFloat"].get<TArray<float>>();
-			Execute_BroadcastPropFloatChanged(this, PropFloat);
-		}
+		PropFloat = fields["propFloat"].get<TArray<float>>();
+		Execute_BroadcastPropFloatChanged(this, PropFloat);
 	}
-	if (fields.contains("propFloat32"))
+	const bool bPropFloat32Changed = fields.contains("propFloat32") && (PropFloat32 != fields["propFloat32"].get<TArray<float>>());
+	if (bPropFloat32Changed)
 	{
-		if (PropFloat32 != fields["propFloat32"].get<TArray<float>>())
-		{
-			PropFloat32 = fields["propFloat32"].get<TArray<float>>();
-			Execute_BroadcastPropFloat32Changed(this, PropFloat32);
-		}
+		PropFloat32 = fields["propFloat32"].get<TArray<float>>();
+		Execute_BroadcastPropFloat32Changed(this, PropFloat32);
 	}
-	if (fields.contains("propFloat64"))
+	const bool bPropFloat64Changed = fields.contains("propFloat64") && (PropFloat64 != fields["propFloat64"].get<TArray<double>>());
+	if (bPropFloat64Changed)
 	{
-		if (PropFloat64 != fields["propFloat64"].get<TArray<double>>())
-		{
-			PropFloat64 = fields["propFloat64"].get<TArray<double>>();
-			Execute_BroadcastPropFloat64Changed(this, PropFloat64);
-		}
+		PropFloat64 = fields["propFloat64"].get<TArray<double>>();
+		Execute_BroadcastPropFloat64Changed(this, PropFloat64);
 	}
-	if (fields.contains("propString"))
+	const bool bPropStringChanged = fields.contains("propString") && (PropString != fields["propString"].get<TArray<FString>>());
+	if (bPropStringChanged)
 	{
-		if (PropString != fields["propString"].get<TArray<FString>>())
-		{
-			PropString = fields["propString"].get<TArray<FString>>();
-			Execute_BroadcastPropStringChanged(this, PropString);
-		}
+		PropString = fields["propString"].get<TArray<FString>>();
+		Execute_BroadcastPropStringChanged(this, PropString);
 	}
 }
 

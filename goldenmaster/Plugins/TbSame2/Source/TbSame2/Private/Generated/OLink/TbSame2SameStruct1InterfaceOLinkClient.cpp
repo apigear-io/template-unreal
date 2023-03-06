@@ -117,13 +117,11 @@ FTbSame2Struct1 UTbSame2SameStruct1InterfaceOLinkClient::Func1_Implementation(co
 
 void UTbSame2SameStruct1InterfaceOLinkClient::applyState(const nlohmann::json& fields)
 {
-	if (fields.contains("prop1"))
+	const bool bProp1Changed = fields.contains("prop1") && (Prop1 != fields["prop1"].get<FTbSame2Struct1>());
+	if (bProp1Changed)
 	{
-		if (Prop1 != fields["prop1"].get<FTbSame2Struct1>())
-		{
-			Prop1 = fields["prop1"].get<FTbSame2Struct1>();
-			Execute_BroadcastProp1Changed(this, Prop1);
-		}
+		Prop1 = fields["prop1"].get<FTbSame2Struct1>();
+		Execute_BroadcastProp1Changed(this, Prop1);
 	}
 }
 

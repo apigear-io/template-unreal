@@ -138,13 +138,11 @@ void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
 void {{$Class}}::applyState(const nlohmann::json& fields)
 {
 {{- range .Interface.Properties }}
-	if (fields.contains("{{.Name}}"))
+	const bool b{{Camel .Name}}Changed = fields.contains("{{.Name}}") && ({{ueVar "" .}} != fields["{{.Name}}"].get<{{ueReturn "" .}}>());
+	if (b{{Camel .Name}}Changed)
 	{
-		if ({{ueVar "" .}} != fields["{{.Name}}"].get<{{ueReturn "" .}}>())
-		{
-			{{ueVar "" .}} = fields["{{.Name}}"].get<{{ueReturn "" .}}>();
-			Execute_Broadcast{{Camel .Name}}Changed(this, {{ueVar "" .}});
-		}
+		{{ueVar "" .}} = fields["{{.Name}}"].get<{{ueReturn "" .}}>();
+		Execute_Broadcast{{Camel .Name}}Changed(this, {{ueVar "" .}});
 	}
 {{- end }}
 }

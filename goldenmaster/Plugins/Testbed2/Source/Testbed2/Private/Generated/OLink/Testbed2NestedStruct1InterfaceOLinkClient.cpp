@@ -117,13 +117,11 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceOLinkClient::Func1_Impleme
 
 void UTestbed2NestedStruct1InterfaceOLinkClient::applyState(const nlohmann::json& fields)
 {
-	if (fields.contains("prop1"))
+	const bool bProp1Changed = fields.contains("prop1") && (Prop1 != fields["prop1"].get<FTestbed2NestedStruct1>());
+	if (bProp1Changed)
 	{
-		if (Prop1 != fields["prop1"].get<FTestbed2NestedStruct1>())
-		{
-			Prop1 = fields["prop1"].get<FTestbed2NestedStruct1>();
-			Execute_BroadcastProp1Changed(this, Prop1);
-		}
+		Prop1 = fields["prop1"].get<FTestbed2NestedStruct1>();
+		Execute_BroadcastProp1Changed(this, Prop1);
 	}
 }
 

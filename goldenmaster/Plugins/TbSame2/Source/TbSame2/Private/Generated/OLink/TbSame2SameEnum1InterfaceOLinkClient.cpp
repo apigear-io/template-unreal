@@ -117,13 +117,11 @@ ETbSame2Enum1 UTbSame2SameEnum1InterfaceOLinkClient::Func1_Implementation(ETbSam
 
 void UTbSame2SameEnum1InterfaceOLinkClient::applyState(const nlohmann::json& fields)
 {
-	if (fields.contains("prop1"))
+	const bool bProp1Changed = fields.contains("prop1") && (Prop1 != fields["prop1"].get<ETbSame2Enum1>());
+	if (bProp1Changed)
 	{
-		if (Prop1 != fields["prop1"].get<ETbSame2Enum1>())
-		{
-			Prop1 = fields["prop1"].get<ETbSame2Enum1>();
-			Execute_BroadcastProp1Changed(this, Prop1);
-		}
+		Prop1 = fields["prop1"].get<ETbSame2Enum1>();
+		Execute_BroadcastProp1Changed(this, Prop1);
 	}
 }
 

@@ -216,37 +216,29 @@ int32 UTestbed2ManyParamInterfaceOLinkClient::Func4_Implementation(int32 Param1,
 
 void UTestbed2ManyParamInterfaceOLinkClient::applyState(const nlohmann::json& fields)
 {
-	if (fields.contains("prop1"))
+	const bool bProp1Changed = fields.contains("prop1") && (Prop1 != fields["prop1"].get<int32>());
+	if (bProp1Changed)
 	{
-		if (Prop1 != fields["prop1"].get<int32>())
-		{
-			Prop1 = fields["prop1"].get<int32>();
-			Execute_BroadcastProp1Changed(this, Prop1);
-		}
+		Prop1 = fields["prop1"].get<int32>();
+		Execute_BroadcastProp1Changed(this, Prop1);
 	}
-	if (fields.contains("prop2"))
+	const bool bProp2Changed = fields.contains("prop2") && (Prop2 != fields["prop2"].get<int32>());
+	if (bProp2Changed)
 	{
-		if (Prop2 != fields["prop2"].get<int32>())
-		{
-			Prop2 = fields["prop2"].get<int32>();
-			Execute_BroadcastProp2Changed(this, Prop2);
-		}
+		Prop2 = fields["prop2"].get<int32>();
+		Execute_BroadcastProp2Changed(this, Prop2);
 	}
-	if (fields.contains("prop3"))
+	const bool bProp3Changed = fields.contains("prop3") && (Prop3 != fields["prop3"].get<int32>());
+	if (bProp3Changed)
 	{
-		if (Prop3 != fields["prop3"].get<int32>())
-		{
-			Prop3 = fields["prop3"].get<int32>();
-			Execute_BroadcastProp3Changed(this, Prop3);
-		}
+		Prop3 = fields["prop3"].get<int32>();
+		Execute_BroadcastProp3Changed(this, Prop3);
 	}
-	if (fields.contains("prop4"))
+	const bool bProp4Changed = fields.contains("prop4") && (Prop4 != fields["prop4"].get<int32>());
+	if (bProp4Changed)
 	{
-		if (Prop4 != fields["prop4"].get<int32>())
-		{
-			Prop4 = fields["prop4"].get<int32>();
-			Execute_BroadcastProp4Changed(this, Prop4);
-		}
+		Prop4 = fields["prop4"].get<int32>();
+		Execute_BroadcastProp4Changed(this, Prop4);
 	}
 }
 

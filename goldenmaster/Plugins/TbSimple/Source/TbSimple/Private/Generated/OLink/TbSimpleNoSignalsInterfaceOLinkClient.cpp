@@ -142,21 +142,17 @@ bool UTbSimpleNoSignalsInterfaceOLinkClient::FuncBool_Implementation(bool bParam
 
 void UTbSimpleNoSignalsInterfaceOLinkClient::applyState(const nlohmann::json& fields)
 {
-	if (fields.contains("propBool"))
+	const bool bPropBoolChanged = fields.contains("propBool") && (bPropBool != fields["propBool"].get<bool>());
+	if (bPropBoolChanged)
 	{
-		if (bPropBool != fields["propBool"].get<bool>())
-		{
-			bPropBool = fields["propBool"].get<bool>();
-			Execute_BroadcastPropBoolChanged(this, bPropBool);
-		}
+		bPropBool = fields["propBool"].get<bool>();
+		Execute_BroadcastPropBoolChanged(this, bPropBool);
 	}
-	if (fields.contains("propInt"))
+	const bool bPropIntChanged = fields.contains("propInt") && (PropInt != fields["propInt"].get<int32>());
+	if (bPropIntChanged)
 	{
-		if (PropInt != fields["propInt"].get<int32>())
-		{
-			PropInt = fields["propInt"].get<int32>();
-			Execute_BroadcastPropIntChanged(this, PropInt);
-		}
+		PropInt = fields["propInt"].get<int32>();
+		Execute_BroadcastPropIntChanged(this, PropInt);
 	}
 }
 
