@@ -15,6 +15,7 @@
 ///////////////////////////////
 
 #include "Generated/OLink/{{$Iface}}OLinkClient.h"
+#include "ApiGearSettings.h"
 #include "Async/Future.h"
 #include "Async/Async.h"
 #include "Generated/api/{{$ModuleName}}.json.adapter.h"
@@ -28,6 +29,15 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
 #include "olink/iobjectsink.h"
 THIRD_PARTY_INCLUDES_END
+
+namespace
+{
+bool IsLogEnabled()
+{
+	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
+	return settings->OLINK_EnableDebugLog;
+}
+} // namespace
 {{ if .Interface.Description }}
 /**
    \brief {{.Interface.Description}}
@@ -110,7 +120,11 @@ void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
 	{{- if .Return.IsVoid }}
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		if (IsLogEnabled())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		}
+
 		return;
 	}
 	ApiGear::ObjectLink::InvokeReplyFunc Get{{$IfaceName}}StateFunc = [this](ApiGear::ObjectLink::InvokeReplyArg arg) {};
@@ -118,7 +132,11 @@ void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
 	{{- else }}
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		if (IsLogEnabled())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		}
+
 		return {{ ueDefault "" .Return }};
 	}
 	TPromise<{{$returnVal}}> Promise;

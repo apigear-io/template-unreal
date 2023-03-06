@@ -21,6 +21,7 @@ limitations under the License.
 ///////////////////////////////
 
 #include "Generated/OLink/TbSame2SameEnum2InterfaceOLinkClient.h"
+#include "ApiGearSettings.h"
 #include "Async/Future.h"
 #include "Async/Async.h"
 #include "Generated/api/TbSame2.json.adapter.h"
@@ -34,6 +35,15 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
 #include "olink/iobjectsink.h"
 THIRD_PARTY_INCLUDES_END
+
+namespace
+{
+bool IsLogEnabled()
+{
+	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
+	return settings->OLINK_EnableDebugLog;
+}
+} // namespace
 
 UTbSame2SameEnum2InterfaceOLinkClient::UTbSame2SameEnum2InterfaceOLinkClient()
 	: UAbstractTbSame2SameEnum2Interface()
@@ -114,7 +124,11 @@ ETbSame2Enum1 UTbSame2SameEnum2InterfaceOLinkClient::Func1_Implementation(ETbSam
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		if (IsLogEnabled())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		}
+
 		return ETbSame2Enum1::TSE_VALUE1;
 	}
 	TPromise<ETbSame2Enum1> Promise;
@@ -133,7 +147,11 @@ ETbSame2Enum1 UTbSame2SameEnum2InterfaceOLinkClient::Func2_Implementation(ETbSam
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		if (IsLogEnabled())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		}
+
 		return ETbSame2Enum1::TSE_VALUE1;
 	}
 	TPromise<ETbSame2Enum1> Promise;

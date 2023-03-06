@@ -21,6 +21,7 @@ limitations under the License.
 ///////////////////////////////
 
 #include "Generated/OLink/Testbed1StructInterfaceOLinkClient.h"
+#include "ApiGearSettings.h"
 #include "Async/Future.h"
 #include "Async/Async.h"
 #include "Generated/api/Testbed1.json.adapter.h"
@@ -34,6 +35,15 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
 #include "olink/iobjectsink.h"
 THIRD_PARTY_INCLUDES_END
+
+namespace
+{
+bool IsLogEnabled()
+{
+	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
+	return settings->OLINK_EnableDebugLog;
+}
+} // namespace
 
 UTestbed1StructInterfaceOLinkClient::UTestbed1StructInterfaceOLinkClient()
 	: UAbstractTestbed1StructInterface()
@@ -142,7 +152,11 @@ FTestbed1StructBool UTestbed1StructInterfaceOLinkClient::FuncBool_Implementation
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		if (IsLogEnabled())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		}
+
 		return FTestbed1StructBool();
 	}
 	TPromise<FTestbed1StructBool> Promise;
@@ -161,7 +175,11 @@ FTestbed1StructBool UTestbed1StructInterfaceOLinkClient::FuncInt_Implementation(
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		if (IsLogEnabled())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		}
+
 		return FTestbed1StructBool();
 	}
 	TPromise<FTestbed1StructBool> Promise;
@@ -180,7 +198,11 @@ FTestbed1StructFloat UTestbed1StructInterfaceOLinkClient::FuncFloat_Implementati
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		if (IsLogEnabled())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		}
+
 		return FTestbed1StructFloat();
 	}
 	TPromise<FTestbed1StructFloat> Promise;
@@ -199,7 +221,11 @@ FTestbed1StructString UTestbed1StructInterfaceOLinkClient::FuncString_Implementa
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		if (IsLogEnabled())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		}
+
 		return FTestbed1StructString();
 	}
 	TPromise<FTestbed1StructString> Promise;

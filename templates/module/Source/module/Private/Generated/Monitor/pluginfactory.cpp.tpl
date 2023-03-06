@@ -21,6 +21,7 @@ limitations under the License.
 {{- $mclass := printf "F%sModuleFactory" $ModuleName}}
 
 #include "{{$ModuleName}}Factory.h"
+#include "ApiGearSettings.h"
 {{- range .Module.Interfaces }}
 {{- $iclass := printf "%s%s" $ModuleName .Name}}
 {{- if $.Features.stubs }}
@@ -37,6 +38,15 @@ limitations under the License.
 // General Log
 DEFINE_LOG_CATEGORY(Log{{$mclass}});
 
+namespace
+{
+bool IsLogEnabled()
+{
+	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
+	return settings->Tracer_EnableDebugLog;
+}
+} // namespace
+
 {{- range .Module.Interfaces }}
 {{- $class := printf "%s%s" $ModuleName .Name }}
 {{- $iclass := printf "I%sInterface" $class }}
@@ -46,7 +56,10 @@ DEFINE_LOG_CATEGORY(Log{{$mclass}});
 {{- if $.Features.olink }}
 TScriptInterface<I{{$class}}Interface> create{{$class}}OLink(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	UE_LOG(Log{{$mclass}}, Log, TEXT("create{{$iclass}}: Using OLink service backend"));
+	if (IsLogEnabled())
+	{
+		UE_LOG(Log{{$mclass}}, Log, TEXT("create{{$iclass}}: Using OLink service backend"));
+	}
 
 	{{ printf "U%sOLinkClient" $DisplayName}}* Instance = GameInstance->GetSubsystem<{{ printf "U%sOLinkClient" $DisplayName}}>(GameInstance);
 	if (!Instance)
@@ -62,7 +75,10 @@ TScriptInterface<I{{$class}}Interface> create{{$class}}OLink(UGameInstance* Game
 
 TScriptInterface<I{{$class}}Interface> create{{$class}}(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	UE_LOG(Log{{$mclass}}, Log, TEXT("create{{$iclass}}: Using local service backend"));
+	if (IsLogEnabled())
+	{
+		UE_LOG(Log{{$mclass}}, Log, TEXT("create{{$iclass}}: Using local service backend"));
+	}
 
 	{{ printf "U%s" $DisplayName}}* Instance = GameInstance->GetSubsystem<{{ printf "U%s" $DisplayName}}>(GameInstance);
 	if (!Instance)
@@ -99,7 +115,11 @@ TScriptInterface<I{{$class}}Interface> {{$mclass}}::create{{$iclass}}(UGameInsta
 
 TScriptInterface<I{{$class}}Interface> create{{$class}}OLink(FSubsystemCollectionBase& Collection)
 {
-	UE_LOG(Log{{$mclass}}, Log, TEXT("create{{$iclass}}: Using OLink service backend"));
+	if (IsLogEnabled())
+	{
+		UE_LOG(Log{{$mclass}}, Log, TEXT("create{{$iclass}}: Using OLink service backend"));
+	}
+
 	{{ printf "U%sOLinkClient" $DisplayName}}* Instance = Cast<{{ printf "U%sOLinkClient" $DisplayName}}>(Collection.InitializeDependency({{ printf "U%sOLinkClient" $DisplayName}}::StaticClass()));
 	return Instance;
 }
@@ -108,7 +128,11 @@ TScriptInterface<I{{$class}}Interface> create{{$class}}OLink(FSubsystemCollectio
 
 TScriptInterface<I{{$class}}Interface> create{{$class}}(FSubsystemCollectionBase& Collection)
 {
-	UE_LOG(Log{{$mclass}}, Log, TEXT("create{{$iclass}}: Using local service backend"));
+	if (IsLogEnabled())
+	{
+		UE_LOG(Log{{$mclass}}, Log, TEXT("create{{$iclass}}: Using local service backend"));
+	}
+
 	{{ printf "U%s" $DisplayName}}* Instance = Cast<{{ printf "U%s" $DisplayName}}>(Collection.InitializeDependency({{ printf "U%s" $DisplayName}}::StaticClass()));
 	return Instance;
 }

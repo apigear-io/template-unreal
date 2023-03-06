@@ -21,6 +21,7 @@ limitations under the License.
 ///////////////////////////////
 
 #include "Generated/OLink/TbSimpleEmptyInterfaceOLinkClient.h"
+#include "ApiGearSettings.h"
 #include "Async/Future.h"
 #include "Async/Async.h"
 #include "Generated/api/TbSimple.json.adapter.h"
@@ -34,6 +35,15 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
 #include "olink/iobjectsink.h"
 THIRD_PARTY_INCLUDES_END
+
+namespace
+{
+bool IsLogEnabled()
+{
+	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
+	return settings->OLINK_EnableDebugLog;
+}
+} // namespace
 
 UTbSimpleEmptyInterfaceOLinkClient::UTbSimpleEmptyInterfaceOLinkClient()
 	: UAbstractTbSimpleEmptyInterface()

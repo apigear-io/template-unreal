@@ -16,6 +16,7 @@ limitations under the License.
 */
 
 #include "Testbed2Factory.h"
+#include "ApiGearSettings.h"
 #include "Implementation/Testbed2ManyParamInterface.h"
 #include "Generated/OLink/Testbed2ManyParamInterfaceOLinkClient.h"
 #include "Implementation/Testbed2NestedStruct1Interface.h"
@@ -31,10 +32,22 @@ limitations under the License.
 // General Log
 DEFINE_LOG_CATEGORY(LogFTestbed2ModuleFactory);
 
+namespace
+{
+bool IsLogEnabled()
+{
+	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
+	return settings->Tracer_EnableDebugLog;
+}
+} // namespace
+
 #if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
 TScriptInterface<ITestbed2ManyParamInterfaceInterface> createTestbed2ManyParamInterfaceOLink(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2ManyParamInterfaceInterface: Using OLink service backend"));
+	if (IsLogEnabled())
+	{
+		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2ManyParamInterfaceInterface: Using OLink service backend"));
+	}
 
 	UTestbed2ManyParamInterfaceOLinkClient* Instance = GameInstance->GetSubsystem<UTestbed2ManyParamInterfaceOLinkClient>(GameInstance);
 	if (!Instance)
@@ -48,7 +61,10 @@ TScriptInterface<ITestbed2ManyParamInterfaceInterface> createTestbed2ManyParamIn
 
 TScriptInterface<ITestbed2ManyParamInterfaceInterface> createTestbed2ManyParamInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2ManyParamInterfaceInterface: Using local service backend"));
+	if (IsLogEnabled())
+	{
+		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2ManyParamInterfaceInterface: Using local service backend"));
+	}
 
 	UTestbed2ManyParamInterface* Instance = GameInstance->GetSubsystem<UTestbed2ManyParamInterface>(GameInstance);
 	if (!Instance)
@@ -79,14 +95,22 @@ TScriptInterface<ITestbed2ManyParamInterfaceInterface> FTestbed2ModuleFactory::c
 
 TScriptInterface<ITestbed2ManyParamInterfaceInterface> createTestbed2ManyParamInterfaceOLink(FSubsystemCollectionBase& Collection)
 {
-	UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2ManyParamInterfaceInterface: Using OLink service backend"));
+	if (IsLogEnabled())
+	{
+		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2ManyParamInterfaceInterface: Using OLink service backend"));
+	}
+
 	UTestbed2ManyParamInterfaceOLinkClient* Instance = Cast<UTestbed2ManyParamInterfaceOLinkClient>(Collection.InitializeDependency(UTestbed2ManyParamInterfaceOLinkClient::StaticClass()));
 	return Instance;
 }
 
 TScriptInterface<ITestbed2ManyParamInterfaceInterface> createTestbed2ManyParamInterface(FSubsystemCollectionBase& Collection)
 {
-	UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2ManyParamInterfaceInterface: Using local service backend"));
+	if (IsLogEnabled())
+	{
+		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2ManyParamInterfaceInterface: Using local service backend"));
+	}
+
 	UTestbed2ManyParamInterface* Instance = Cast<UTestbed2ManyParamInterface>(Collection.InitializeDependency(UTestbed2ManyParamInterface::StaticClass()));
 	return Instance;
 }
@@ -110,7 +134,10 @@ TScriptInterface<ITestbed2ManyParamInterfaceInterface> FTestbed2ModuleFactory::c
 #if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
 TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> createTestbed2NestedStruct1InterfaceOLink(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct1InterfaceInterface: Using OLink service backend"));
+	if (IsLogEnabled())
+	{
+		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct1InterfaceInterface: Using OLink service backend"));
+	}
 
 	UTestbed2NestedStruct1InterfaceOLinkClient* Instance = GameInstance->GetSubsystem<UTestbed2NestedStruct1InterfaceOLinkClient>(GameInstance);
 	if (!Instance)
@@ -124,7 +151,10 @@ TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> createTestbed2NestedS
 
 TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> createTestbed2NestedStruct1Interface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct1InterfaceInterface: Using local service backend"));
+	if (IsLogEnabled())
+	{
+		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct1InterfaceInterface: Using local service backend"));
+	}
 
 	UTestbed2NestedStruct1Interface* Instance = GameInstance->GetSubsystem<UTestbed2NestedStruct1Interface>(GameInstance);
 	if (!Instance)
@@ -155,14 +185,22 @@ TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> FTestbed2ModuleFactor
 
 TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> createTestbed2NestedStruct1InterfaceOLink(FSubsystemCollectionBase& Collection)
 {
-	UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct1InterfaceInterface: Using OLink service backend"));
+	if (IsLogEnabled())
+	{
+		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct1InterfaceInterface: Using OLink service backend"));
+	}
+
 	UTestbed2NestedStruct1InterfaceOLinkClient* Instance = Cast<UTestbed2NestedStruct1InterfaceOLinkClient>(Collection.InitializeDependency(UTestbed2NestedStruct1InterfaceOLinkClient::StaticClass()));
 	return Instance;
 }
 
 TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> createTestbed2NestedStruct1Interface(FSubsystemCollectionBase& Collection)
 {
-	UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct1InterfaceInterface: Using local service backend"));
+	if (IsLogEnabled())
+	{
+		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct1InterfaceInterface: Using local service backend"));
+	}
+
 	UTestbed2NestedStruct1Interface* Instance = Cast<UTestbed2NestedStruct1Interface>(Collection.InitializeDependency(UTestbed2NestedStruct1Interface::StaticClass()));
 	return Instance;
 }
@@ -186,7 +224,10 @@ TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> FTestbed2ModuleFactor
 #if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
 TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> createTestbed2NestedStruct2InterfaceOLink(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct2InterfaceInterface: Using OLink service backend"));
+	if (IsLogEnabled())
+	{
+		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct2InterfaceInterface: Using OLink service backend"));
+	}
 
 	UTestbed2NestedStruct2InterfaceOLinkClient* Instance = GameInstance->GetSubsystem<UTestbed2NestedStruct2InterfaceOLinkClient>(GameInstance);
 	if (!Instance)
@@ -200,7 +241,10 @@ TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> createTestbed2NestedS
 
 TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> createTestbed2NestedStruct2Interface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct2InterfaceInterface: Using local service backend"));
+	if (IsLogEnabled())
+	{
+		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct2InterfaceInterface: Using local service backend"));
+	}
 
 	UTestbed2NestedStruct2Interface* Instance = GameInstance->GetSubsystem<UTestbed2NestedStruct2Interface>(GameInstance);
 	if (!Instance)
@@ -231,14 +275,22 @@ TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> FTestbed2ModuleFactor
 
 TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> createTestbed2NestedStruct2InterfaceOLink(FSubsystemCollectionBase& Collection)
 {
-	UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct2InterfaceInterface: Using OLink service backend"));
+	if (IsLogEnabled())
+	{
+		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct2InterfaceInterface: Using OLink service backend"));
+	}
+
 	UTestbed2NestedStruct2InterfaceOLinkClient* Instance = Cast<UTestbed2NestedStruct2InterfaceOLinkClient>(Collection.InitializeDependency(UTestbed2NestedStruct2InterfaceOLinkClient::StaticClass()));
 	return Instance;
 }
 
 TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> createTestbed2NestedStruct2Interface(FSubsystemCollectionBase& Collection)
 {
-	UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct2InterfaceInterface: Using local service backend"));
+	if (IsLogEnabled())
+	{
+		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct2InterfaceInterface: Using local service backend"));
+	}
+
 	UTestbed2NestedStruct2Interface* Instance = Cast<UTestbed2NestedStruct2Interface>(Collection.InitializeDependency(UTestbed2NestedStruct2Interface::StaticClass()));
 	return Instance;
 }
@@ -262,7 +314,10 @@ TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> FTestbed2ModuleFactor
 #if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
 TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> createTestbed2NestedStruct3InterfaceOLink(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct3InterfaceInterface: Using OLink service backend"));
+	if (IsLogEnabled())
+	{
+		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct3InterfaceInterface: Using OLink service backend"));
+	}
 
 	UTestbed2NestedStruct3InterfaceOLinkClient* Instance = GameInstance->GetSubsystem<UTestbed2NestedStruct3InterfaceOLinkClient>(GameInstance);
 	if (!Instance)
@@ -276,7 +331,10 @@ TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> createTestbed2NestedS
 
 TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> createTestbed2NestedStruct3Interface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct3InterfaceInterface: Using local service backend"));
+	if (IsLogEnabled())
+	{
+		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct3InterfaceInterface: Using local service backend"));
+	}
 
 	UTestbed2NestedStruct3Interface* Instance = GameInstance->GetSubsystem<UTestbed2NestedStruct3Interface>(GameInstance);
 	if (!Instance)
@@ -307,14 +365,22 @@ TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> FTestbed2ModuleFactor
 
 TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> createTestbed2NestedStruct3InterfaceOLink(FSubsystemCollectionBase& Collection)
 {
-	UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct3InterfaceInterface: Using OLink service backend"));
+	if (IsLogEnabled())
+	{
+		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct3InterfaceInterface: Using OLink service backend"));
+	}
+
 	UTestbed2NestedStruct3InterfaceOLinkClient* Instance = Cast<UTestbed2NestedStruct3InterfaceOLinkClient>(Collection.InitializeDependency(UTestbed2NestedStruct3InterfaceOLinkClient::StaticClass()));
 	return Instance;
 }
 
 TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> createTestbed2NestedStruct3Interface(FSubsystemCollectionBase& Collection)
 {
-	UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct3InterfaceInterface: Using local service backend"));
+	if (IsLogEnabled())
+	{
+		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct3InterfaceInterface: Using local service backend"));
+	}
+
 	UTestbed2NestedStruct3Interface* Instance = Cast<UTestbed2NestedStruct3Interface>(Collection.InitializeDependency(UTestbed2NestedStruct3Interface::StaticClass()));
 	return Instance;
 }

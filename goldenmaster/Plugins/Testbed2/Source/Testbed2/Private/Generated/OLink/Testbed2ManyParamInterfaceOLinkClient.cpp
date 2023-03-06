@@ -21,6 +21,7 @@ limitations under the License.
 ///////////////////////////////
 
 #include "Generated/OLink/Testbed2ManyParamInterfaceOLinkClient.h"
+#include "ApiGearSettings.h"
 #include "Async/Future.h"
 #include "Async/Async.h"
 #include "Generated/api/Testbed2.json.adapter.h"
@@ -34,6 +35,15 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
 #include "olink/iobjectsink.h"
 THIRD_PARTY_INCLUDES_END
+
+namespace
+{
+bool IsLogEnabled()
+{
+	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
+	return settings->OLINK_EnableDebugLog;
+}
+} // namespace
 
 UTestbed2ManyParamInterfaceOLinkClient::UTestbed2ManyParamInterfaceOLinkClient()
 	: UAbstractTestbed2ManyParamInterface()
@@ -142,7 +152,11 @@ int32 UTestbed2ManyParamInterfaceOLinkClient::Func1_Implementation(int32 Param1)
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		if (IsLogEnabled())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		}
+
 		return 0;
 	}
 	TPromise<int32> Promise;
@@ -161,7 +175,11 @@ int32 UTestbed2ManyParamInterfaceOLinkClient::Func2_Implementation(int32 Param1,
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		if (IsLogEnabled())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		}
+
 		return 0;
 	}
 	TPromise<int32> Promise;
@@ -180,7 +198,11 @@ int32 UTestbed2ManyParamInterfaceOLinkClient::Func3_Implementation(int32 Param1,
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		if (IsLogEnabled())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		}
+
 		return 0;
 	}
 	TPromise<int32> Promise;
@@ -199,7 +221,11 @@ int32 UTestbed2ManyParamInterfaceOLinkClient::Func4_Implementation(int32 Param1,
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		if (IsLogEnabled())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		}
+
 		return 0;
 	}
 	TPromise<int32> Promise;

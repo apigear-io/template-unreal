@@ -21,6 +21,7 @@ limitations under the License.
 ///////////////////////////////
 
 #include "Generated/OLink/TbSimpleNoPropertiesInterfaceOLinkClient.h"
+#include "ApiGearSettings.h"
 #include "Async/Future.h"
 #include "Async/Async.h"
 #include "Generated/api/TbSimple.json.adapter.h"
@@ -34,6 +35,15 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
 #include "olink/iobjectsink.h"
 THIRD_PARTY_INCLUDES_END
+
+namespace
+{
+bool IsLogEnabled()
+{
+	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
+	return settings->OLINK_EnableDebugLog;
+}
+} // namespace
 
 UTbSimpleNoPropertiesInterfaceOLinkClient::UTbSimpleNoPropertiesInterfaceOLinkClient()
 	: UAbstractTbSimpleNoPropertiesInterface()
@@ -86,7 +96,11 @@ void UTbSimpleNoPropertiesInterfaceOLinkClient::FuncVoid_Implementation()
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		if (IsLogEnabled())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		}
+
 		return;
 	}
 	ApiGear::ObjectLink::InvokeReplyFunc GetNoPropertiesInterfaceStateFunc = [this](ApiGear::ObjectLink::InvokeReplyArg arg) {};
@@ -97,7 +111,11 @@ bool UTbSimpleNoPropertiesInterfaceOLinkClient::FuncBool_Implementation(bool bPa
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		if (IsLogEnabled())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		}
+
 		return false;
 	}
 	TPromise<bool> Promise;

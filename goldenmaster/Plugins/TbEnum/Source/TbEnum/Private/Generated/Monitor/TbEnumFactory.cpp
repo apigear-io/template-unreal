@@ -16,6 +16,7 @@ limitations under the License.
 */
 
 #include "TbEnumFactory.h"
+#include "ApiGearSettings.h"
 #include "Implementation/TbEnumEnumInterface.h"
 #include "Generated/OLink/TbEnumEnumInterfaceOLinkClient.h"
 #include "TbEnumSettings.h"
@@ -25,10 +26,22 @@ limitations under the License.
 // General Log
 DEFINE_LOG_CATEGORY(LogFTbEnumModuleFactory);
 
+namespace
+{
+bool IsLogEnabled()
+{
+	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
+	return settings->Tracer_EnableDebugLog;
+}
+} // namespace
+
 #if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
 TScriptInterface<ITbEnumEnumInterfaceInterface> createTbEnumEnumInterfaceOLink(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	UE_LOG(LogFTbEnumModuleFactory, Log, TEXT("createITbEnumEnumInterfaceInterface: Using OLink service backend"));
+	if (IsLogEnabled())
+	{
+		UE_LOG(LogFTbEnumModuleFactory, Log, TEXT("createITbEnumEnumInterfaceInterface: Using OLink service backend"));
+	}
 
 	UTbEnumEnumInterfaceOLinkClient* Instance = GameInstance->GetSubsystem<UTbEnumEnumInterfaceOLinkClient>(GameInstance);
 	if (!Instance)
@@ -42,7 +55,10 @@ TScriptInterface<ITbEnumEnumInterfaceInterface> createTbEnumEnumInterfaceOLink(U
 
 TScriptInterface<ITbEnumEnumInterfaceInterface> createTbEnumEnumInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	UE_LOG(LogFTbEnumModuleFactory, Log, TEXT("createITbEnumEnumInterfaceInterface: Using local service backend"));
+	if (IsLogEnabled())
+	{
+		UE_LOG(LogFTbEnumModuleFactory, Log, TEXT("createITbEnumEnumInterfaceInterface: Using local service backend"));
+	}
 
 	UTbEnumEnumInterface* Instance = GameInstance->GetSubsystem<UTbEnumEnumInterface>(GameInstance);
 	if (!Instance)
@@ -73,14 +89,22 @@ TScriptInterface<ITbEnumEnumInterfaceInterface> FTbEnumModuleFactory::createITbE
 
 TScriptInterface<ITbEnumEnumInterfaceInterface> createTbEnumEnumInterfaceOLink(FSubsystemCollectionBase& Collection)
 {
-	UE_LOG(LogFTbEnumModuleFactory, Log, TEXT("createITbEnumEnumInterfaceInterface: Using OLink service backend"));
+	if (IsLogEnabled())
+	{
+		UE_LOG(LogFTbEnumModuleFactory, Log, TEXT("createITbEnumEnumInterfaceInterface: Using OLink service backend"));
+	}
+
 	UTbEnumEnumInterfaceOLinkClient* Instance = Cast<UTbEnumEnumInterfaceOLinkClient>(Collection.InitializeDependency(UTbEnumEnumInterfaceOLinkClient::StaticClass()));
 	return Instance;
 }
 
 TScriptInterface<ITbEnumEnumInterfaceInterface> createTbEnumEnumInterface(FSubsystemCollectionBase& Collection)
 {
-	UE_LOG(LogFTbEnumModuleFactory, Log, TEXT("createITbEnumEnumInterfaceInterface: Using local service backend"));
+	if (IsLogEnabled())
+	{
+		UE_LOG(LogFTbEnumModuleFactory, Log, TEXT("createITbEnumEnumInterfaceInterface: Using local service backend"));
+	}
+
 	UTbEnumEnumInterface* Instance = Cast<UTbEnumEnumInterface>(Collection.InitializeDependency(UTbEnumEnumInterface::StaticClass()));
 	return Instance;
 }

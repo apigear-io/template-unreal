@@ -21,6 +21,7 @@ limitations under the License.
 ///////////////////////////////
 
 #include "Generated/OLink/TbSimpleSimpleArrayInterfaceOLinkClient.h"
+#include "ApiGearSettings.h"
 #include "Async/Future.h"
 #include "Async/Async.h"
 #include "Generated/api/TbSimple.json.adapter.h"
@@ -34,6 +35,15 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
 #include "olink/iobjectsink.h"
 THIRD_PARTY_INCLUDES_END
+
+namespace
+{
+bool IsLogEnabled()
+{
+	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
+	return settings->OLINK_EnableDebugLog;
+}
+} // namespace
 
 UTbSimpleSimpleArrayInterfaceOLinkClient::UTbSimpleSimpleArrayInterfaceOLinkClient()
 	: UAbstractTbSimpleSimpleArrayInterface()
@@ -198,7 +208,11 @@ TArray<bool> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncBool_Implementation(c
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		if (IsLogEnabled())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		}
+
 		return TArray<bool>();
 	}
 	TPromise<TArray<bool>> Promise;
@@ -217,7 +231,11 @@ TArray<int32> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncInt_Implementation(c
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		if (IsLogEnabled())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		}
+
 		return TArray<int32>();
 	}
 	TPromise<TArray<int32>> Promise;
@@ -236,7 +254,11 @@ TArray<int32> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncInt32_Implementation
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		if (IsLogEnabled())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		}
+
 		return TArray<int32>();
 	}
 	TPromise<TArray<int32>> Promise;
@@ -255,7 +277,11 @@ TArray<int64> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncInt64_Implementation
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		if (IsLogEnabled())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		}
+
 		return TArray<int64>();
 	}
 	TPromise<TArray<int64>> Promise;
@@ -274,7 +300,11 @@ TArray<float> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloat_Implementation
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		if (IsLogEnabled())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		}
+
 		return TArray<float>();
 	}
 	TPromise<TArray<float>> Promise;
@@ -293,7 +323,11 @@ TArray<float> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloat32_Implementati
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		if (IsLogEnabled())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		}
+
 		return TArray<float>();
 	}
 	TPromise<TArray<float>> Promise;
@@ -312,7 +346,11 @@ TArray<double> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloat64_Implementat
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		if (IsLogEnabled())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		}
+
 		return TArray<double>();
 	}
 	TPromise<TArray<double>> Promise;
@@ -331,7 +369,11 @@ TArray<FString> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncString_Implementat
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		if (IsLogEnabled())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		}
+
 		return TArray<FString>();
 	}
 	TPromise<TArray<FString>> Promise;
