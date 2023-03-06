@@ -413,42 +413,49 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::emitSignal(const std::string& sig
 		Execute_BroadcastSigBool(this, ParamBool);
 		return;
 	}
+
 	if (signalName == "sigInt")
 	{
 		const TArray<int32>& ParamInt = args[0].get<TArray<int32>>();
 		Execute_BroadcastSigInt(this, ParamInt);
 		return;
 	}
+
 	if (signalName == "sigInt32")
 	{
 		const TArray<int32>& ParamInt32 = args[0].get<TArray<int32>>();
 		Execute_BroadcastSigInt32(this, ParamInt32);
 		return;
 	}
+
 	if (signalName == "sigInt64")
 	{
 		const TArray<int64>& ParamInt64 = args[0].get<TArray<int64>>();
 		Execute_BroadcastSigInt64(this, ParamInt64);
 		return;
 	}
+
 	if (signalName == "sigFloat")
 	{
 		const TArray<float>& ParamFloat = args[0].get<TArray<float>>();
 		Execute_BroadcastSigFloat(this, ParamFloat);
 		return;
 	}
+
 	if (signalName == "sigFloat32")
 	{
 		const TArray<float>& ParamFloa32 = args[0].get<TArray<float>>();
 		Execute_BroadcastSigFloat32(this, ParamFloa32);
 		return;
 	}
+
 	if (signalName == "sigFloat64")
 	{
 		const TArray<double>& ParamFloat64 = args[0].get<TArray<double>>();
 		Execute_BroadcastSigFloat64(this, ParamFloat64);
 		return;
 	}
+
 	if (signalName == "sigString")
 	{
 		const TArray<FString>& ParamString = args[0].get<TArray<FString>>();

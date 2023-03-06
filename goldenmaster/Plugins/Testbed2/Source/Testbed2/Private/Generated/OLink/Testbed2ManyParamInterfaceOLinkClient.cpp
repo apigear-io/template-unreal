@@ -253,6 +253,7 @@ void UTestbed2ManyParamInterfaceOLinkClient::emitSignal(const std::string& signa
 		Execute_BroadcastSig1(this, Param1);
 		return;
 	}
+
 	if (signalName == "sig2")
 	{
 		int32 Param1 = args[0].get<int32>();
@@ -260,6 +261,7 @@ void UTestbed2ManyParamInterfaceOLinkClient::emitSignal(const std::string& signa
 		Execute_BroadcastSig2(this, Param1, Param2);
 		return;
 	}
+
 	if (signalName == "sig3")
 	{
 		int32 Param1 = args[0].get<int32>();
@@ -268,6 +270,7 @@ void UTestbed2ManyParamInterfaceOLinkClient::emitSignal(const std::string& signa
 		Execute_BroadcastSig3(this, Param1, Param2, Param3);
 		return;
 	}
+
 	if (signalName == "sig4")
 	{
 		int32 Param1 = args[0].get<int32>();

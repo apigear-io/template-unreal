@@ -173,6 +173,7 @@ void UTbSame1SameStruct2InterfaceOLinkClient::emitSignal(const std::string& sign
 		Execute_BroadcastSig1(this, Param1);
 		return;
 	}
+
 	if (signalName == "sig2")
 	{
 		const FTbSame1Struct1& Param1 = args[0].get<FTbSame1Struct1>();

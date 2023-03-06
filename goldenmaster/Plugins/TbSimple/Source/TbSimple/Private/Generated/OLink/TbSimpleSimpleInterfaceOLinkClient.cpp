@@ -423,48 +423,56 @@ void UTbSimpleSimpleInterfaceOLinkClient::emitSignal(const std::string& signalNa
 		Execute_BroadcastSigVoid(this);
 		return;
 	}
+
 	if (signalName == "sigBool")
 	{
 		bool bParamBool = args[0].get<bool>();
 		Execute_BroadcastSigBool(this, ParamBool);
 		return;
 	}
+
 	if (signalName == "sigInt")
 	{
 		int32 ParamInt = args[0].get<int32>();
 		Execute_BroadcastSigInt(this, ParamInt);
 		return;
 	}
+
 	if (signalName == "sigInt32")
 	{
 		int32 ParamInt32 = args[0].get<int32>();
 		Execute_BroadcastSigInt32(this, ParamInt32);
 		return;
 	}
+
 	if (signalName == "sigInt64")
 	{
 		int64 ParamInt64 = args[0].get<int64>();
 		Execute_BroadcastSigInt64(this, ParamInt64);
 		return;
 	}
+
 	if (signalName == "sigFloat")
 	{
 		float ParamFloat = args[0].get<float>();
 		Execute_BroadcastSigFloat(this, ParamFloat);
 		return;
 	}
+
 	if (signalName == "sigFloat32")
 	{
 		float ParamFloa32 = args[0].get<float>();
 		Execute_BroadcastSigFloat32(this, ParamFloa32);
 		return;
 	}
+
 	if (signalName == "sigFloat64")
 	{
 		double ParamFloat64 = args[0].get<double>();
 		Execute_BroadcastSigFloat64(this, ParamFloat64);
 		return;
 	}
+
 	if (signalName == "sigString")
 	{
 		const FString& ParamString = args[0].get<FString>();

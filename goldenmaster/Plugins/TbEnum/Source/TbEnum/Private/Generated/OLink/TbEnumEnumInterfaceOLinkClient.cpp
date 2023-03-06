@@ -253,18 +253,21 @@ void UTbEnumEnumInterfaceOLinkClient::emitSignal(const std::string& signalName, 
 		Execute_BroadcastSig0(this, Param0);
 		return;
 	}
+
 	if (signalName == "sig1")
 	{
 		ETbEnumEnum1 Param1 = args[0].get<ETbEnumEnum1>();
 		Execute_BroadcastSig1(this, Param1);
 		return;
 	}
+
 	if (signalName == "sig2")
 	{
 		ETbEnumEnum2 Param2 = args[0].get<ETbEnumEnum2>();
 		Execute_BroadcastSig2(this, Param2);
 		return;
 	}
+
 	if (signalName == "sig3")
 	{
 		ETbEnumEnum3 Param3 = args[0].get<ETbEnumEnum3>();

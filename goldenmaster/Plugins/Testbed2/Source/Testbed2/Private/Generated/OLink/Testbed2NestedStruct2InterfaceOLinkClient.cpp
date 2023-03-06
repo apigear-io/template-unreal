@@ -173,6 +173,7 @@ void UTestbed2NestedStruct2InterfaceOLinkClient::emitSignal(const std::string& s
 		Execute_BroadcastSig1(this, Param1);
 		return;
 	}
+
 	if (signalName == "sig2")
 	{
 		const FTestbed2NestedStruct1& Param1 = args[0].get<FTestbed2NestedStruct1>();

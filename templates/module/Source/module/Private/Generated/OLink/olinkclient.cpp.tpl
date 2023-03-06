@@ -150,7 +150,8 @@ void {{$Class}}::applyState(const nlohmann::json& fields)
 
 void {{$Class}}::emitSignal(const std::string& signalName, const nlohmann::json& args)
 {
-{{- range .Interface.Signals }}
+{{- range $i, $e := .Interface.Signals }}
+{{- if $i }}{{nl}}{{ end }}
 	if (signalName == "{{.Name}}")
 	{
 		{{- range $idx, $elem := .Params }}
