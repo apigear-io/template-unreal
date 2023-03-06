@@ -1,9 +1,10 @@
 name: Deploy to Github pages
 on:
   push:
-    branches: [main]
-    paths:
-      - 'docs/**'
+    branches:
+      - "!*"
+    tags:
+      - "v*"
 
 jobs:
   build:
