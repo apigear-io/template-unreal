@@ -46,7 +46,6 @@ void UAbstractApiGearConnection::OnDisconnected(bool bReconnect)
 
 	if (bIsAutoReconnectEnabled && bReconnect && !bStopReconnectingRequested)
 	{
-		UE_LOG(LogApiGearConnection, Display, TEXT("Setting retry ticker"));
 		RetryTickerHandle = GetCoreTicker().AddTicker(RetryTickerDelegate, 1.0f);
 	}
 
