@@ -365,42 +365,49 @@ void UTbSimpleSimpleInterfaceOLinkClient::applyState(const nlohmann::json& field
 		bPropBool = fields["propBool"].get<bool>();
 		Execute_BroadcastPropBoolChanged(this, bPropBool);
 	}
+
 	const bool bPropIntChanged = fields.contains("propInt") && (PropInt != fields["propInt"].get<int32>());
 	if (bPropIntChanged)
 	{
 		PropInt = fields["propInt"].get<int32>();
 		Execute_BroadcastPropIntChanged(this, PropInt);
 	}
+
 	const bool bPropInt32Changed = fields.contains("propInt32") && (PropInt32 != fields["propInt32"].get<int32>());
 	if (bPropInt32Changed)
 	{
 		PropInt32 = fields["propInt32"].get<int32>();
 		Execute_BroadcastPropInt32Changed(this, PropInt32);
 	}
+
 	const bool bPropInt64Changed = fields.contains("propInt64") && (PropInt64 != fields["propInt64"].get<int64>());
 	if (bPropInt64Changed)
 	{
 		PropInt64 = fields["propInt64"].get<int64>();
 		Execute_BroadcastPropInt64Changed(this, PropInt64);
 	}
+
 	const bool bPropFloatChanged = fields.contains("propFloat") && (PropFloat != fields["propFloat"].get<float>());
 	if (bPropFloatChanged)
 	{
 		PropFloat = fields["propFloat"].get<float>();
 		Execute_BroadcastPropFloatChanged(this, PropFloat);
 	}
+
 	const bool bPropFloat32Changed = fields.contains("propFloat32") && (PropFloat32 != fields["propFloat32"].get<float>());
 	if (bPropFloat32Changed)
 	{
 		PropFloat32 = fields["propFloat32"].get<float>();
 		Execute_BroadcastPropFloat32Changed(this, PropFloat32);
 	}
+
 	const bool bPropFloat64Changed = fields.contains("propFloat64") && (PropFloat64 != fields["propFloat64"].get<double>());
 	if (bPropFloat64Changed)
 	{
 		PropFloat64 = fields["propFloat64"].get<double>();
 		Execute_BroadcastPropFloat64Changed(this, PropFloat64);
 	}
+
 	const bool bPropStringChanged = fields.contains("propString") && (PropString != fields["propString"].get<FString>());
 	if (bPropStringChanged)
 	{

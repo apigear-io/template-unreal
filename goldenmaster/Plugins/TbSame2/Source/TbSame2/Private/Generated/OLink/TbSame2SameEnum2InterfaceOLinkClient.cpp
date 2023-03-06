@@ -156,6 +156,7 @@ void UTbSame2SameEnum2InterfaceOLinkClient::applyState(const nlohmann::json& fie
 		Prop1 = fields["prop1"].get<ETbSame2Enum1>();
 		Execute_BroadcastProp1Changed(this, Prop1);
 	}
+
 	const bool bProp2Changed = fields.contains("prop2") && (Prop2 != fields["prop2"].get<ETbSame2Enum2>());
 	if (bProp2Changed)
 	{

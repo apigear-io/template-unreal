@@ -222,18 +222,21 @@ void UTbEnumEnumInterfaceOLinkClient::applyState(const nlohmann::json& fields)
 		Prop0 = fields["prop0"].get<ETbEnumEnum0>();
 		Execute_BroadcastProp0Changed(this, Prop0);
 	}
+
 	const bool bProp1Changed = fields.contains("prop1") && (Prop1 != fields["prop1"].get<ETbEnumEnum1>());
 	if (bProp1Changed)
 	{
 		Prop1 = fields["prop1"].get<ETbEnumEnum1>();
 		Execute_BroadcastProp1Changed(this, Prop1);
 	}
+
 	const bool bProp2Changed = fields.contains("prop2") && (Prop2 != fields["prop2"].get<ETbEnumEnum2>());
 	if (bProp2Changed)
 	{
 		Prop2 = fields["prop2"].get<ETbEnumEnum2>();
 		Execute_BroadcastProp2Changed(this, Prop2);
 	}
+
 	const bool bProp3Changed = fields.contains("prop3") && (Prop3 != fields["prop3"].get<ETbEnumEnum3>());
 	if (bProp3Changed)
 	{

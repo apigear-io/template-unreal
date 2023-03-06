@@ -222,18 +222,21 @@ void UTestbed2ManyParamInterfaceOLinkClient::applyState(const nlohmann::json& fi
 		Prop1 = fields["prop1"].get<int32>();
 		Execute_BroadcastProp1Changed(this, Prop1);
 	}
+
 	const bool bProp2Changed = fields.contains("prop2") && (Prop2 != fields["prop2"].get<int32>());
 	if (bProp2Changed)
 	{
 		Prop2 = fields["prop2"].get<int32>();
 		Execute_BroadcastProp2Changed(this, Prop2);
 	}
+
 	const bool bProp3Changed = fields.contains("prop3") && (Prop3 != fields["prop3"].get<int32>());
 	if (bProp3Changed)
 	{
 		Prop3 = fields["prop3"].get<int32>();
 		Execute_BroadcastProp3Changed(this, Prop3);
 	}
+
 	const bool bProp4Changed = fields.contains("prop4") && (Prop4 != fields["prop4"].get<int32>());
 	if (bProp4Changed)
 	{

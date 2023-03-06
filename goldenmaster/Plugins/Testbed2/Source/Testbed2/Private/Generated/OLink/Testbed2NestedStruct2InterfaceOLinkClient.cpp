@@ -156,6 +156,7 @@ void UTestbed2NestedStruct2InterfaceOLinkClient::applyState(const nlohmann::json
 		Prop1 = fields["prop1"].get<FTestbed2NestedStruct1>();
 		Execute_BroadcastProp1Changed(this, Prop1);
 	}
+
 	const bool bProp2Changed = fields.contains("prop2") && (Prop2 != fields["prop2"].get<FTestbed2NestedStruct2>());
 	if (bProp2Changed)
 	{

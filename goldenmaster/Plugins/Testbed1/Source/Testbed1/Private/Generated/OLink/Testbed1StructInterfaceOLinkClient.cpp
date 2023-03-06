@@ -222,18 +222,21 @@ void UTestbed1StructInterfaceOLinkClient::applyState(const nlohmann::json& field
 		PropBool = fields["propBool"].get<FTestbed1StructBool>();
 		Execute_BroadcastPropBoolChanged(this, PropBool);
 	}
+
 	const bool bPropIntChanged = fields.contains("propInt") && (PropInt != fields["propInt"].get<FTestbed1StructInt>());
 	if (bPropIntChanged)
 	{
 		PropInt = fields["propInt"].get<FTestbed1StructInt>();
 		Execute_BroadcastPropIntChanged(this, PropInt);
 	}
+
 	const bool bPropFloatChanged = fields.contains("propFloat") && (PropFloat != fields["propFloat"].get<FTestbed1StructFloat>());
 	if (bPropFloatChanged)
 	{
 		PropFloat = fields["propFloat"].get<FTestbed1StructFloat>();
 		Execute_BroadcastPropFloatChanged(this, PropFloat);
 	}
+
 	const bool bPropStringChanged = fields.contains("propString") && (PropString != fields["propString"].get<FTestbed1StructString>());
 	if (bPropStringChanged)
 	{

@@ -156,6 +156,7 @@ void UTbSame1SameStruct2InterfaceOLinkClient::applyState(const nlohmann::json& f
 		Prop1 = fields["prop1"].get<FTbSame1Struct2>();
 		Execute_BroadcastProp1Changed(this, Prop1);
 	}
+
 	const bool bProp2Changed = fields.contains("prop2") && (Prop2 != fields["prop2"].get<FTbSame1Struct2>());
 	if (bProp2Changed)
 	{

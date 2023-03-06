@@ -189,12 +189,14 @@ void UTestbed2NestedStruct3InterfaceOLinkClient::applyState(const nlohmann::json
 		Prop1 = fields["prop1"].get<FTestbed2NestedStruct1>();
 		Execute_BroadcastProp1Changed(this, Prop1);
 	}
+
 	const bool bProp2Changed = fields.contains("prop2") && (Prop2 != fields["prop2"].get<FTestbed2NestedStruct2>());
 	if (bProp2Changed)
 	{
 		Prop2 = fields["prop2"].get<FTestbed2NestedStruct2>();
 		Execute_BroadcastProp2Changed(this, Prop2);
 	}
+
 	const bool bProp3Changed = fields.contains("prop3") && (Prop3 != fields["prop3"].get<FTestbed2NestedStruct3>());
 	if (bProp3Changed)
 	{

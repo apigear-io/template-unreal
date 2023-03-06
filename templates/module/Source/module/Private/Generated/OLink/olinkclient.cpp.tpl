@@ -137,7 +137,8 @@ void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
 
 void {{$Class}}::applyState(const nlohmann::json& fields)
 {
-{{- range .Interface.Properties }}
+{{- range $i, $e := .Interface.Properties }}
+{{- if $i }}{{nl}}{{ end }}
 	const bool b{{Camel .Name}}Changed = fields.contains("{{.Name}}") && ({{ueVar "" .}} != fields["{{.Name}}"].get<{{ueReturn "" .}}>());
 	if (b{{Camel .Name}}Changed)
 	{
