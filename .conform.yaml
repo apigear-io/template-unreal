@@ -1,0 +1,37 @@
+policies:
+  - type: commit
+    spec:
+      header:
+        length: 50
+        imperative: true
+        case: lower
+        invalidLastCharacters: .
+      body:
+        required: false
+      dco: false
+      spellcheck:
+        locale: US
+      maximumOfOneCommit: false
+      conventional:
+        types:
+          - "feat"
+          - "fix"
+          - "docs"
+          - "style"
+          - "refactor"
+          - "perf"
+          - "test"
+          - "build"
+          - "ci"
+          - "chore"
+          - "revert"
+        scopes:
+          - "apigear"
+          - "api"
+          - "olink"
+          - "stubs"
+          - "monitor"
+          - "docs"
+          - "cli"
+          - "deps"
+        descriptionLength: 72

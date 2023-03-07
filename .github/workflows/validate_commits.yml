@@ -1,0 +1,37 @@
+# This workflow will ensure that the commit messages follow a certain format
+
+name: Validate commits
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '*/**'
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  PULL_ORIGIN_REPO: "${{ github.event.pull_request.head.repo.full_name || github.repository }}"
+  go_version: "1.19.x"
+
+jobs:
+  check_commits:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-go@v3
+
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/go/pkg/mod
+            ~/.cache/go-build
+          key: ${{ runner.os }}-go-${{ env.go_version }}-conform_ghaction-${{ hashFiles('.github/validate_commits.yml') }}
+          restore-keys: ${{ runner.os }}-go-${{ env.go_version }}-conform_ghaction
+
+      - run: go install github.com/siderolabs/conform/cmd/conform@latest
+      - run: git remote add pr_origin https://github.com/${{ env.PULL_ORIGIN_REPO }} && git fetch pr_origin ${{ github.head_ref }}
+      - run: ~/go/bin/conform enforce --revision-range remotes/origin/main..remotes/pr_origin/${{ github.head_ref }}
