@@ -6,9 +6,8 @@ name: Technology Template Goldenmaster Test
 on:
   pull_request:
     branches: [main]
-    paths-ignore:
-      - '*/**'
-      - '!docs/**'
+    paths:
+      - 'docs/**'
 
 jobs:
   generate:
