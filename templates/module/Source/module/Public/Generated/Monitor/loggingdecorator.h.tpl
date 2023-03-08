@@ -60,12 +60,7 @@ public:
 {{ end }}
 	// operations
 {{- range .Interface.Operations }}
-	{{- if .Return.IsVoid }}
 	{{ueReturn "" .Return}} {{Camel .Name}}_Implementation({{ueParams "" .Params}}) override;
-	{{- else }}
-	void {{Camel .Name}}Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, {{ueReturn "" .Return}}& Result{{if len .Params}}, {{end}}{{ueParams "" .Params}}) override;
-	{{ueReturn "" .Return}} {{Camel .Name}}_Implementation({{ueParams "" .Params}}) override;
-	{{- end }}
 {{ end }}
 private:
 	/** The connection to the service backend. */

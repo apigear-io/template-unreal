@@ -16,51 +16,6 @@ limitations under the License.
 */
 
 #include "Implementation/TbSame1SameStruct2Interface.h"
-#include "Async/Async.h"
-#include "Engine/Engine.h"
-#include "Engine/LatentActionManager.h"
-#include "LatentActions.h"
-
-class FTbSame1SameStruct2InterfaceLatentAction : public FPendingLatentAction
-{
-private:
-	FName ExecutionFunction;
-	int32 OutputLink;
-	FWeakObjectPtr CallbackTarget;
-	bool bInProgress;
-
-public:
-	FTbSame1SameStruct2InterfaceLatentAction(const FLatentActionInfo& LatentInfo)
-		: ExecutionFunction(LatentInfo.ExecutionFunction)
-		, OutputLink(LatentInfo.Linkage)
-		, CallbackTarget(LatentInfo.CallbackTarget)
-		, bInProgress(true)
-	{
-	}
-
-	void Cancel()
-	{
-		bInProgress = false;
-	}
-
-	virtual void UpdateOperation(FLatentResponse& Response) override
-	{
-		if (bInProgress == false)
-		{
-			Response.FinishAndTriggerIf(true, ExecutionFunction, OutputLink, CallbackTarget);
-		}
-	}
-
-	virtual void NotifyObjectDestroyed()
-	{
-		Cancel();
-	}
-
-	virtual void NotifyActionAborted()
-	{
-		Cancel();
-	}
-};
 
 UTbSame1SameStruct2Interface::~UTbSame1SameStruct2Interface() = default;
 FTbSame1Struct2 UTbSame1SameStruct2Interface::GetProp1_Implementation() const
@@ -90,61 +45,11 @@ void UTbSame1SameStruct2Interface::SetProp2_Implementation(const FTbSame1Struct2
 	}
 }
 
-void UTbSame1SameStruct2Interface::Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame1Struct1& Result, const FTbSame1Struct1& Param1)
-{
-	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
-	{
-		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTbSame1SameStruct2InterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSame1SameStruct2InterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
-
-		if (oldRequest != nullptr)
-		{
-			// cancel old request
-			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
-		}
-
-		FTbSame1SameStruct2InterfaceLatentAction* CompletionAction = new FTbSame1SameStruct2InterfaceLatentAction(LatentInfo);
-		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[Param1, this, &Result, CompletionAction]()
-			{
-				Result = Func1_Implementation(Param1);
-				CompletionAction->Cancel();
-			});
-	}
-}
-
 FTbSame1Struct1 UTbSame1SameStruct2Interface::Func1_Implementation(const FTbSame1Struct1& Param1)
 {
 	(void)Param1;
 	// do business logic here
 	return FTbSame1Struct1();
-}
-
-void UTbSame1SameStruct2Interface::Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame1Struct1& Result, const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2)
-{
-	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
-	{
-		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTbSame1SameStruct2InterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSame1SameStruct2InterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
-
-		if (oldRequest != nullptr)
-		{
-			// cancel old request
-			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
-		}
-
-		FTbSame1SameStruct2InterfaceLatentAction* CompletionAction = new FTbSame1SameStruct2InterfaceLatentAction(LatentInfo);
-		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[Param1, Param2, this, &Result, CompletionAction]()
-			{
-				Result = Func2_Implementation(Param1, Param2);
-				CompletionAction->Cancel();
-			});
-	}
 }
 
 FTbSame1Struct1 UTbSame1SameStruct2Interface::Func2_Implementation(const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2)

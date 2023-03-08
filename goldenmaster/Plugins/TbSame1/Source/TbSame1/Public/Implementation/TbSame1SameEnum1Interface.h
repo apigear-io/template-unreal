@@ -33,6 +33,5 @@ public:
 	void SetProp1_Implementation(ETbSame1Enum1 Prop1) override;
 
 	// operations
-	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame1Enum1& Result, ETbSame1Enum1 Param1) override;
 	ETbSame1Enum1 Func1_Implementation(ETbSame1Enum1 Param1) override;
 };

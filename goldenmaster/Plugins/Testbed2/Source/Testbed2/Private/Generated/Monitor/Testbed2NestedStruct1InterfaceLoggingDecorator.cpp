@@ -19,54 +19,9 @@ limitations under the License.
 #include "Implementation/Testbed2NestedStruct1Interface.h"
 #include "Testbed2.trace.h"
 #include "Testbed2Factory.h"
-#include "Async/Async.h"
-#include "LatentActions.h"
-#include "Engine/LatentActionManager.h"
-#include "Engine/Engine.h"
 #include "Runtime/Launch/Resources/Version.h"
 
 DEFINE_LOG_CATEGORY(LogTestbed2NestedStruct1InterfaceLoggingDecorator);
-
-class FTestbed2NestedStruct1InterfaceLoggingLatentAction : public FPendingLatentAction
-{
-private:
-	FName ExecutionFunction;
-	int32 OutputLink;
-	FWeakObjectPtr CallbackTarget;
-	bool bInProgress;
-
-public:
-	FTestbed2NestedStruct1InterfaceLoggingLatentAction(const FLatentActionInfo& LatentInfo)
-		: ExecutionFunction(LatentInfo.ExecutionFunction)
-		, OutputLink(LatentInfo.Linkage)
-		, CallbackTarget(LatentInfo.CallbackTarget)
-		, bInProgress(true)
-	{
-	}
-
-	void Cancel()
-	{
-		bInProgress = false;
-	}
-
-	virtual void UpdateOperation(FLatentResponse& Response) override
-	{
-		if (bInProgress == false)
-		{
-			Response.FinishAndTriggerIf(true, ExecutionFunction, OutputLink, CallbackTarget);
-		}
-	}
-
-	virtual void NotifyObjectDestroyed()
-	{
-		Cancel();
-	}
-
-	virtual void NotifyActionAborted()
-	{
-		Cancel();
-	}
-};
 UTestbed2NestedStruct1InterfaceLoggingDecorator::UTestbed2NestedStruct1InterfaceLoggingDecorator()
 	: UAbstractTestbed2NestedStruct1Interface()
 {
@@ -133,33 +88,6 @@ void UTestbed2NestedStruct1InterfaceLoggingDecorator::SetProp1_Implementation(co
 {
 	Testbed2NestedStruct1InterfaceTracer::trace_callSetProp1(InProp1);
 	BackendService->Execute_SetProp1(BackendService.GetObject(), InProp1);
-}
-
-void UTestbed2NestedStruct1InterfaceLoggingDecorator::Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1)
-{
-	Testbed2NestedStruct1InterfaceTracer::trace_callFunc1(Param1);
-
-	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
-	{
-		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTestbed2NestedStruct1InterfaceLoggingLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTestbed2NestedStruct1InterfaceLoggingLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
-
-		if (oldRequest != nullptr)
-		{
-			// cancel old request
-			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
-		}
-
-		FTestbed2NestedStruct1InterfaceLoggingLatentAction* CompletionAction = new FTestbed2NestedStruct1InterfaceLoggingLatentAction(LatentInfo);
-		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[Param1, this, &Result, CompletionAction]()
-			{
-				Result = BackendService->Execute_Func1(BackendService.GetObject(), Param1);
-				CompletionAction->Cancel();
-			});
-	}
 }
 
 FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceLoggingDecorator::Func1_Implementation(const FTestbed2NestedStruct1& Param1)

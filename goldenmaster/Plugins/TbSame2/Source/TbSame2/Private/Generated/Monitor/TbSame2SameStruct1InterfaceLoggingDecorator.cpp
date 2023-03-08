@@ -19,54 +19,9 @@ limitations under the License.
 #include "Implementation/TbSame2SameStruct1Interface.h"
 #include "TbSame2.trace.h"
 #include "TbSame2Factory.h"
-#include "Async/Async.h"
-#include "LatentActions.h"
-#include "Engine/LatentActionManager.h"
-#include "Engine/Engine.h"
 #include "Runtime/Launch/Resources/Version.h"
 
 DEFINE_LOG_CATEGORY(LogTbSame2SameStruct1InterfaceLoggingDecorator);
-
-class FTbSame2SameStruct1InterfaceLoggingLatentAction : public FPendingLatentAction
-{
-private:
-	FName ExecutionFunction;
-	int32 OutputLink;
-	FWeakObjectPtr CallbackTarget;
-	bool bInProgress;
-
-public:
-	FTbSame2SameStruct1InterfaceLoggingLatentAction(const FLatentActionInfo& LatentInfo)
-		: ExecutionFunction(LatentInfo.ExecutionFunction)
-		, OutputLink(LatentInfo.Linkage)
-		, CallbackTarget(LatentInfo.CallbackTarget)
-		, bInProgress(true)
-	{
-	}
-
-	void Cancel()
-	{
-		bInProgress = false;
-	}
-
-	virtual void UpdateOperation(FLatentResponse& Response) override
-	{
-		if (bInProgress == false)
-		{
-			Response.FinishAndTriggerIf(true, ExecutionFunction, OutputLink, CallbackTarget);
-		}
-	}
-
-	virtual void NotifyObjectDestroyed()
-	{
-		Cancel();
-	}
-
-	virtual void NotifyActionAborted()
-	{
-		Cancel();
-	}
-};
 UTbSame2SameStruct1InterfaceLoggingDecorator::UTbSame2SameStruct1InterfaceLoggingDecorator()
 	: UAbstractTbSame2SameStruct1Interface()
 {
@@ -133,33 +88,6 @@ void UTbSame2SameStruct1InterfaceLoggingDecorator::SetProp1_Implementation(const
 {
 	TbSame2SameStruct1InterfaceTracer::trace_callSetProp1(InProp1);
 	BackendService->Execute_SetProp1(BackendService.GetObject(), InProp1);
-}
-
-void UTbSame2SameStruct1InterfaceLoggingDecorator::Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame2Struct1& Result, const FTbSame2Struct1& Param1)
-{
-	TbSame2SameStruct1InterfaceTracer::trace_callFunc1(Param1);
-
-	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
-	{
-		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTbSame2SameStruct1InterfaceLoggingLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSame2SameStruct1InterfaceLoggingLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
-
-		if (oldRequest != nullptr)
-		{
-			// cancel old request
-			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
-		}
-
-		FTbSame2SameStruct1InterfaceLoggingLatentAction* CompletionAction = new FTbSame2SameStruct1InterfaceLoggingLatentAction(LatentInfo);
-		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[Param1, this, &Result, CompletionAction]()
-			{
-				Result = BackendService->Execute_Func1(BackendService.GetObject(), Param1);
-				CompletionAction->Cancel();
-			});
-	}
 }
 
 FTbSame2Struct1 UTbSame2SameStruct1InterfaceLoggingDecorator::Func1_Implementation(const FTbSame2Struct1& Param1)

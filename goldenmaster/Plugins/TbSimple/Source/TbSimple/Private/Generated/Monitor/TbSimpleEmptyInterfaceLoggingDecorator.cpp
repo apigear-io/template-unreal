@@ -19,54 +19,9 @@ limitations under the License.
 #include "Implementation/TbSimpleEmptyInterface.h"
 #include "TbSimple.trace.h"
 #include "TbSimpleFactory.h"
-#include "Async/Async.h"
-#include "LatentActions.h"
-#include "Engine/LatentActionManager.h"
-#include "Engine/Engine.h"
 #include "Runtime/Launch/Resources/Version.h"
 
 DEFINE_LOG_CATEGORY(LogTbSimpleEmptyInterfaceLoggingDecorator);
-
-class FTbSimpleEmptyInterfaceLoggingLatentAction : public FPendingLatentAction
-{
-private:
-	FName ExecutionFunction;
-	int32 OutputLink;
-	FWeakObjectPtr CallbackTarget;
-	bool bInProgress;
-
-public:
-	FTbSimpleEmptyInterfaceLoggingLatentAction(const FLatentActionInfo& LatentInfo)
-		: ExecutionFunction(LatentInfo.ExecutionFunction)
-		, OutputLink(LatentInfo.Linkage)
-		, CallbackTarget(LatentInfo.CallbackTarget)
-		, bInProgress(true)
-	{
-	}
-
-	void Cancel()
-	{
-		bInProgress = false;
-	}
-
-	virtual void UpdateOperation(FLatentResponse& Response) override
-	{
-		if (bInProgress == false)
-		{
-			Response.FinishAndTriggerIf(true, ExecutionFunction, OutputLink, CallbackTarget);
-		}
-	}
-
-	virtual void NotifyObjectDestroyed()
-	{
-		Cancel();
-	}
-
-	virtual void NotifyActionAborted()
-	{
-		Cancel();
-	}
-};
 UTbSimpleEmptyInterfaceLoggingDecorator::UTbSimpleEmptyInterfaceLoggingDecorator()
 	: UAbstractTbSimpleEmptyInterface()
 {

@@ -19,54 +19,9 @@ limitations under the License.
 #include "Implementation/TbSame2SameStruct2Interface.h"
 #include "TbSame2.trace.h"
 #include "TbSame2Factory.h"
-#include "Async/Async.h"
-#include "LatentActions.h"
-#include "Engine/LatentActionManager.h"
-#include "Engine/Engine.h"
 #include "Runtime/Launch/Resources/Version.h"
 
 DEFINE_LOG_CATEGORY(LogTbSame2SameStruct2InterfaceLoggingDecorator);
-
-class FTbSame2SameStruct2InterfaceLoggingLatentAction : public FPendingLatentAction
-{
-private:
-	FName ExecutionFunction;
-	int32 OutputLink;
-	FWeakObjectPtr CallbackTarget;
-	bool bInProgress;
-
-public:
-	FTbSame2SameStruct2InterfaceLoggingLatentAction(const FLatentActionInfo& LatentInfo)
-		: ExecutionFunction(LatentInfo.ExecutionFunction)
-		, OutputLink(LatentInfo.Linkage)
-		, CallbackTarget(LatentInfo.CallbackTarget)
-		, bInProgress(true)
-	{
-	}
-
-	void Cancel()
-	{
-		bInProgress = false;
-	}
-
-	virtual void UpdateOperation(FLatentResponse& Response) override
-	{
-		if (bInProgress == false)
-		{
-			Response.FinishAndTriggerIf(true, ExecutionFunction, OutputLink, CallbackTarget);
-		}
-	}
-
-	virtual void NotifyObjectDestroyed()
-	{
-		Cancel();
-	}
-
-	virtual void NotifyActionAborted()
-	{
-		Cancel();
-	}
-};
 UTbSame2SameStruct2InterfaceLoggingDecorator::UTbSame2SameStruct2InterfaceLoggingDecorator()
 	: UAbstractTbSame2SameStruct2Interface()
 {
@@ -164,64 +119,10 @@ void UTbSame2SameStruct2InterfaceLoggingDecorator::SetProp2_Implementation(const
 	BackendService->Execute_SetProp2(BackendService.GetObject(), InProp2);
 }
 
-void UTbSame2SameStruct2InterfaceLoggingDecorator::Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame2Struct1& Result, const FTbSame2Struct1& Param1)
-{
-	TbSame2SameStruct2InterfaceTracer::trace_callFunc1(Param1);
-
-	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
-	{
-		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTbSame2SameStruct2InterfaceLoggingLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSame2SameStruct2InterfaceLoggingLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
-
-		if (oldRequest != nullptr)
-		{
-			// cancel old request
-			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
-		}
-
-		FTbSame2SameStruct2InterfaceLoggingLatentAction* CompletionAction = new FTbSame2SameStruct2InterfaceLoggingLatentAction(LatentInfo);
-		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[Param1, this, &Result, CompletionAction]()
-			{
-				Result = BackendService->Execute_Func1(BackendService.GetObject(), Param1);
-				CompletionAction->Cancel();
-			});
-	}
-}
-
 FTbSame2Struct1 UTbSame2SameStruct2InterfaceLoggingDecorator::Func1_Implementation(const FTbSame2Struct1& Param1)
 {
 	TbSame2SameStruct2InterfaceTracer::trace_callFunc1(Param1);
 	return BackendService->Execute_Func1(BackendService.GetObject(), Param1);
-}
-
-void UTbSame2SameStruct2InterfaceLoggingDecorator::Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame2Struct1& Result, const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2)
-{
-	TbSame2SameStruct2InterfaceTracer::trace_callFunc2(Param1, Param2);
-
-	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
-	{
-		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTbSame2SameStruct2InterfaceLoggingLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSame2SameStruct2InterfaceLoggingLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
-
-		if (oldRequest != nullptr)
-		{
-			// cancel old request
-			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
-		}
-
-		FTbSame2SameStruct2InterfaceLoggingLatentAction* CompletionAction = new FTbSame2SameStruct2InterfaceLoggingLatentAction(LatentInfo);
-		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[Param1, Param2, this, &Result, CompletionAction]()
-			{
-				Result = BackendService->Execute_Func2(BackendService.GetObject(), Param1, Param2);
-				CompletionAction->Cancel();
-			});
-	}
 }
 
 FTbSame2Struct1 UTbSame2SameStruct2InterfaceLoggingDecorator::Func2_Implementation(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2)

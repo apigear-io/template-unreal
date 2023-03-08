@@ -59,16 +59,12 @@ public:
 	void SetProp3_Implementation(ETbEnumEnum3 InProp3) override;
 
 	// operations
-	void Func0Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum0& Result, ETbEnumEnum0 Param0) override;
 	ETbEnumEnum0 Func0_Implementation(ETbEnumEnum0 Param0) override;
 
-	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum1& Result, ETbEnumEnum1 Param1) override;
 	ETbEnumEnum1 Func1_Implementation(ETbEnumEnum1 Param1) override;
 
-	void Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum2& Result, ETbEnumEnum2 Param2) override;
 	ETbEnumEnum2 Func2_Implementation(ETbEnumEnum2 Param2) override;
 
-	void Func3Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum3& Result, ETbEnumEnum3 Param3) override;
 	ETbEnumEnum3 Func3_Implementation(ETbEnumEnum3 Param3) override;
 
 private:

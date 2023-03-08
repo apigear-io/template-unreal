@@ -106,7 +106,7 @@ public:
 	virtual FTbSame2SameEnum1InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
 
 	// methods
-	virtual void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, ETbSame2Enum1 Param1) override PURE_VIRTUAL(UAbstractTbSame2SameEnum1Interface::Func1Async_Implementation, return;);
+	virtual void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, ETbSame2Enum1 Param1) override;
 	virtual ETbSame2Enum1 Func1_Implementation(ETbSame2Enum1 Param1) override PURE_VIRTUAL(UAbstractTbSame2SameEnum1Interface::Func1_Implementation, return ETbSame2Enum1::TSE_VALUE1;);
 
 	// properties

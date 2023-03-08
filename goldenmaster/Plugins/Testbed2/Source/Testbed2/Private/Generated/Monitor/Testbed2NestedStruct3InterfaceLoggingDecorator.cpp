@@ -19,54 +19,9 @@ limitations under the License.
 #include "Implementation/Testbed2NestedStruct3Interface.h"
 #include "Testbed2.trace.h"
 #include "Testbed2Factory.h"
-#include "Async/Async.h"
-#include "LatentActions.h"
-#include "Engine/LatentActionManager.h"
-#include "Engine/Engine.h"
 #include "Runtime/Launch/Resources/Version.h"
 
 DEFINE_LOG_CATEGORY(LogTestbed2NestedStruct3InterfaceLoggingDecorator);
-
-class FTestbed2NestedStruct3InterfaceLoggingLatentAction : public FPendingLatentAction
-{
-private:
-	FName ExecutionFunction;
-	int32 OutputLink;
-	FWeakObjectPtr CallbackTarget;
-	bool bInProgress;
-
-public:
-	FTestbed2NestedStruct3InterfaceLoggingLatentAction(const FLatentActionInfo& LatentInfo)
-		: ExecutionFunction(LatentInfo.ExecutionFunction)
-		, OutputLink(LatentInfo.Linkage)
-		, CallbackTarget(LatentInfo.CallbackTarget)
-		, bInProgress(true)
-	{
-	}
-
-	void Cancel()
-	{
-		bInProgress = false;
-	}
-
-	virtual void UpdateOperation(FLatentResponse& Response) override
-	{
-		if (bInProgress == false)
-		{
-			Response.FinishAndTriggerIf(true, ExecutionFunction, OutputLink, CallbackTarget);
-		}
-	}
-
-	virtual void NotifyObjectDestroyed()
-	{
-		Cancel();
-	}
-
-	virtual void NotifyActionAborted()
-	{
-		Cancel();
-	}
-};
 UTestbed2NestedStruct3InterfaceLoggingDecorator::UTestbed2NestedStruct3InterfaceLoggingDecorator()
 	: UAbstractTestbed2NestedStruct3Interface()
 {
@@ -193,97 +148,16 @@ void UTestbed2NestedStruct3InterfaceLoggingDecorator::SetProp3_Implementation(co
 	BackendService->Execute_SetProp3(BackendService.GetObject(), InProp3);
 }
 
-void UTestbed2NestedStruct3InterfaceLoggingDecorator::Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1)
-{
-	Testbed2NestedStruct3InterfaceTracer::trace_callFunc1(Param1);
-
-	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
-	{
-		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTestbed2NestedStruct3InterfaceLoggingLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTestbed2NestedStruct3InterfaceLoggingLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
-
-		if (oldRequest != nullptr)
-		{
-			// cancel old request
-			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
-		}
-
-		FTestbed2NestedStruct3InterfaceLoggingLatentAction* CompletionAction = new FTestbed2NestedStruct3InterfaceLoggingLatentAction(LatentInfo);
-		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[Param1, this, &Result, CompletionAction]()
-			{
-				Result = BackendService->Execute_Func1(BackendService.GetObject(), Param1);
-				CompletionAction->Cancel();
-			});
-	}
-}
-
 FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceLoggingDecorator::Func1_Implementation(const FTestbed2NestedStruct1& Param1)
 {
 	Testbed2NestedStruct3InterfaceTracer::trace_callFunc1(Param1);
 	return BackendService->Execute_Func1(BackendService.GetObject(), Param1);
 }
 
-void UTestbed2NestedStruct3InterfaceLoggingDecorator::Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
-{
-	Testbed2NestedStruct3InterfaceTracer::trace_callFunc2(Param1, Param2);
-
-	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
-	{
-		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTestbed2NestedStruct3InterfaceLoggingLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTestbed2NestedStruct3InterfaceLoggingLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
-
-		if (oldRequest != nullptr)
-		{
-			// cancel old request
-			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
-		}
-
-		FTestbed2NestedStruct3InterfaceLoggingLatentAction* CompletionAction = new FTestbed2NestedStruct3InterfaceLoggingLatentAction(LatentInfo);
-		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[Param1, Param2, this, &Result, CompletionAction]()
-			{
-				Result = BackendService->Execute_Func2(BackendService.GetObject(), Param1, Param2);
-				CompletionAction->Cancel();
-			});
-	}
-}
-
 FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceLoggingDecorator::Func2_Implementation(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
 {
 	Testbed2NestedStruct3InterfaceTracer::trace_callFunc2(Param1, Param2);
 	return BackendService->Execute_Func2(BackendService.GetObject(), Param1, Param2);
-}
-
-void UTestbed2NestedStruct3InterfaceLoggingDecorator::Func3Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3)
-{
-	Testbed2NestedStruct3InterfaceTracer::trace_callFunc3(Param1, Param2, Param3);
-
-	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
-	{
-		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTestbed2NestedStruct3InterfaceLoggingLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTestbed2NestedStruct3InterfaceLoggingLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
-
-		if (oldRequest != nullptr)
-		{
-			// cancel old request
-			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
-		}
-
-		FTestbed2NestedStruct3InterfaceLoggingLatentAction* CompletionAction = new FTestbed2NestedStruct3InterfaceLoggingLatentAction(LatentInfo);
-		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[Param1, Param2, Param3, this, &Result, CompletionAction]()
-			{
-				Result = BackendService->Execute_Func3(BackendService.GetObject(), Param1, Param2, Param3);
-				CompletionAction->Cancel();
-			});
-	}
 }
 
 FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceLoggingDecorator::Func3_Implementation(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3)

@@ -226,16 +226,16 @@ public:
 	virtual FTestbed2ManyParamInterfaceProp4ChangedDelegate& GetProp4ChangedDelegate() override;
 
 	// methods
-	virtual void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1) override PURE_VIRTUAL(UAbstractTestbed2ManyParamInterface::Func1Async_Implementation, return;);
+	virtual void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1) override;
 	virtual int32 Func1_Implementation(int32 Param1) override PURE_VIRTUAL(UAbstractTestbed2ManyParamInterface::Func1_Implementation, return 0;);
 
-	virtual void Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2) override PURE_VIRTUAL(UAbstractTestbed2ManyParamInterface::Func2Async_Implementation, return;);
+	virtual void Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2) override;
 	virtual int32 Func2_Implementation(int32 Param1, int32 Param2) override PURE_VIRTUAL(UAbstractTestbed2ManyParamInterface::Func2_Implementation, return 0;);
 
-	virtual void Func3Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2, int32 Param3) override PURE_VIRTUAL(UAbstractTestbed2ManyParamInterface::Func3Async_Implementation, return;);
+	virtual void Func3Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2, int32 Param3) override;
 	virtual int32 Func3_Implementation(int32 Param1, int32 Param2, int32 Param3) override PURE_VIRTUAL(UAbstractTestbed2ManyParamInterface::Func3_Implementation, return 0;);
 
-	virtual void Func4Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2, int32 Param3, int32 Param4) override PURE_VIRTUAL(UAbstractTestbed2ManyParamInterface::Func4Async_Implementation, return;);
+	virtual void Func4Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2, int32 Param3, int32 Param4) override;
 	virtual int32 Func4_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4) override PURE_VIRTUAL(UAbstractTestbed2ManyParamInterface::Func4_Implementation, return 0;);
 
 	// properties

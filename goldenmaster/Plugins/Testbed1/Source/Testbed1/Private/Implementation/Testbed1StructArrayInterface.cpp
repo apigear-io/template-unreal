@@ -16,51 +16,6 @@ limitations under the License.
 */
 
 #include "Implementation/Testbed1StructArrayInterface.h"
-#include "Async/Async.h"
-#include "Engine/Engine.h"
-#include "Engine/LatentActionManager.h"
-#include "LatentActions.h"
-
-class FTestbed1StructArrayInterfaceLatentAction : public FPendingLatentAction
-{
-private:
-	FName ExecutionFunction;
-	int32 OutputLink;
-	FWeakObjectPtr CallbackTarget;
-	bool bInProgress;
-
-public:
-	FTestbed1StructArrayInterfaceLatentAction(const FLatentActionInfo& LatentInfo)
-		: ExecutionFunction(LatentInfo.ExecutionFunction)
-		, OutputLink(LatentInfo.Linkage)
-		, CallbackTarget(LatentInfo.CallbackTarget)
-		, bInProgress(true)
-	{
-	}
-
-	void Cancel()
-	{
-		bInProgress = false;
-	}
-
-	virtual void UpdateOperation(FLatentResponse& Response) override
-	{
-		if (bInProgress == false)
-		{
-			Response.FinishAndTriggerIf(true, ExecutionFunction, OutputLink, CallbackTarget);
-		}
-	}
-
-	virtual void NotifyObjectDestroyed()
-	{
-		Cancel();
-	}
-
-	virtual void NotifyActionAborted()
-	{
-		Cancel();
-	}
-};
 
 UTestbed1StructArrayInterface::~UTestbed1StructArrayInterface() = default;
 TArray<FTestbed1StructBool> UTestbed1StructArrayInterface::GetPropBool_Implementation() const
@@ -116,61 +71,11 @@ void UTestbed1StructArrayInterface::SetPropString_Implementation(const TArray<FT
 	}
 }
 
-void UTestbed1StructArrayInterface::FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructBool>& ParamBool)
-{
-	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
-	{
-		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTestbed1StructArrayInterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTestbed1StructArrayInterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
-
-		if (oldRequest != nullptr)
-		{
-			// cancel old request
-			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
-		}
-
-		FTestbed1StructArrayInterfaceLatentAction* CompletionAction = new FTestbed1StructArrayInterfaceLatentAction(LatentInfo);
-		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[ParamBool, this, &Result, CompletionAction]()
-			{
-				Result = FuncBool_Implementation(ParamBool);
-				CompletionAction->Cancel();
-			});
-	}
-}
-
 FTestbed1StructBool UTestbed1StructArrayInterface::FuncBool_Implementation(const TArray<FTestbed1StructBool>& ParamBool)
 {
 	(void)ParamBool;
 	// do business logic here
 	return FTestbed1StructBool();
-}
-
-void UTestbed1StructArrayInterface::FuncIntAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructInt>& ParamInt)
-{
-	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
-	{
-		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTestbed1StructArrayInterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTestbed1StructArrayInterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
-
-		if (oldRequest != nullptr)
-		{
-			// cancel old request
-			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
-		}
-
-		FTestbed1StructArrayInterfaceLatentAction* CompletionAction = new FTestbed1StructArrayInterfaceLatentAction(LatentInfo);
-		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[ParamInt, this, &Result, CompletionAction]()
-			{
-				Result = FuncInt_Implementation(ParamInt);
-				CompletionAction->Cancel();
-			});
-	}
 }
 
 FTestbed1StructBool UTestbed1StructArrayInterface::FuncInt_Implementation(const TArray<FTestbed1StructInt>& ParamInt)
@@ -180,61 +85,11 @@ FTestbed1StructBool UTestbed1StructArrayInterface::FuncInt_Implementation(const 
 	return FTestbed1StructBool();
 }
 
-void UTestbed1StructArrayInterface::FuncFloatAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructFloat>& ParamFloat)
-{
-	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
-	{
-		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTestbed1StructArrayInterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTestbed1StructArrayInterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
-
-		if (oldRequest != nullptr)
-		{
-			// cancel old request
-			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
-		}
-
-		FTestbed1StructArrayInterfaceLatentAction* CompletionAction = new FTestbed1StructArrayInterfaceLatentAction(LatentInfo);
-		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[ParamFloat, this, &Result, CompletionAction]()
-			{
-				Result = FuncFloat_Implementation(ParamFloat);
-				CompletionAction->Cancel();
-			});
-	}
-}
-
 FTestbed1StructBool UTestbed1StructArrayInterface::FuncFloat_Implementation(const TArray<FTestbed1StructFloat>& ParamFloat)
 {
 	(void)ParamFloat;
 	// do business logic here
 	return FTestbed1StructBool();
-}
-
-void UTestbed1StructArrayInterface::FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructString>& ParamString)
-{
-	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
-	{
-		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTestbed1StructArrayInterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTestbed1StructArrayInterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
-
-		if (oldRequest != nullptr)
-		{
-			// cancel old request
-			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
-		}
-
-		FTestbed1StructArrayInterfaceLatentAction* CompletionAction = new FTestbed1StructArrayInterfaceLatentAction(LatentInfo);
-		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[ParamString, this, &Result, CompletionAction]()
-			{
-				Result = FuncString_Implementation(ParamString);
-				CompletionAction->Cancel();
-			});
-	}
 }
 
 FTestbed1StructBool UTestbed1StructArrayInterface::FuncString_Implementation(const TArray<FTestbed1StructString>& ParamString)

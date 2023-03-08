@@ -16,51 +16,6 @@ limitations under the License.
 */
 
 #include "Implementation/TbSame1SameEnum1Interface.h"
-#include "Async/Async.h"
-#include "Engine/Engine.h"
-#include "Engine/LatentActionManager.h"
-#include "LatentActions.h"
-
-class FTbSame1SameEnum1InterfaceLatentAction : public FPendingLatentAction
-{
-private:
-	FName ExecutionFunction;
-	int32 OutputLink;
-	FWeakObjectPtr CallbackTarget;
-	bool bInProgress;
-
-public:
-	FTbSame1SameEnum1InterfaceLatentAction(const FLatentActionInfo& LatentInfo)
-		: ExecutionFunction(LatentInfo.ExecutionFunction)
-		, OutputLink(LatentInfo.Linkage)
-		, CallbackTarget(LatentInfo.CallbackTarget)
-		, bInProgress(true)
-	{
-	}
-
-	void Cancel()
-	{
-		bInProgress = false;
-	}
-
-	virtual void UpdateOperation(FLatentResponse& Response) override
-	{
-		if (bInProgress == false)
-		{
-			Response.FinishAndTriggerIf(true, ExecutionFunction, OutputLink, CallbackTarget);
-		}
-	}
-
-	virtual void NotifyObjectDestroyed()
-	{
-		Cancel();
-	}
-
-	virtual void NotifyActionAborted()
-	{
-		Cancel();
-	}
-};
 
 UTbSame1SameEnum1Interface::~UTbSame1SameEnum1Interface() = default;
 ETbSame1Enum1 UTbSame1SameEnum1Interface::GetProp1_Implementation() const
@@ -74,31 +29,6 @@ void UTbSame1SameEnum1Interface::SetProp1_Implementation(ETbSame1Enum1 InProp1)
 	{
 		Prop1 = InProp1;
 		Execute_BroadcastProp1Changed(this, Prop1);
-	}
-}
-
-void UTbSame1SameEnum1Interface::Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame1Enum1& Result, ETbSame1Enum1 Param1)
-{
-	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
-	{
-		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTbSame1SameEnum1InterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSame1SameEnum1InterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
-
-		if (oldRequest != nullptr)
-		{
-			// cancel old request
-			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
-		}
-
-		FTbSame1SameEnum1InterfaceLatentAction* CompletionAction = new FTbSame1SameEnum1InterfaceLatentAction(LatentInfo);
-		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[Param1, this, &Result, CompletionAction]()
-			{
-				Result = Func1_Implementation(Param1);
-				CompletionAction->Cancel();
-			});
 	}
 }
 

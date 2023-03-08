@@ -23,16 +23,69 @@ limitations under the License.
 {{- $class := printf "U%sInterface" $Class }}
 {{- $Iface := printf "%s%s" $ModuleName (Camel .Name) }}
 #include "{{$Class}}Interface.h"
+#include "Async/Async.h"
+#include "Engine/Engine.h"
+#include "Engine/LatentActionManager.h"
+#include "LatentActions.h"
 {{- $abstractclass := printf "UAbstract%s" $Class }}
+
+{{- if .Operations}}{{ nl }}
+class F{{$Iface}}LatentAction : public FPendingLatentAction
+{
+private:
+	FName ExecutionFunction;
+	int32 OutputLink;
+	FWeakObjectPtr CallbackTarget;
+	bool bInProgress;
+
+public:
+	F{{$Iface}}LatentAction(const FLatentActionInfo& LatentInfo)
+		: ExecutionFunction(LatentInfo.ExecutionFunction)
+		, OutputLink(LatentInfo.Linkage)
+		, CallbackTarget(LatentInfo.CallbackTarget)
+		, bInProgress(true)
+	{
+	}
+
+	void Cancel()
+	{
+		bInProgress = false;
+	}
+
+	virtual void UpdateOperation(FLatentResponse& Response) override
+	{
+		if (bInProgress == false)
+		{
+			Response.FinishAndTriggerIf(true, ExecutionFunction, OutputLink, CallbackTarget);
+		}
+	}
+
+	virtual void NotifyObjectDestroyed()
+	{
+		Cancel();
+	}
+
+	virtual void NotifyActionAborted()
+	{
+		Cancel();
+	}
+};
+{{- end}}
+
 {{- if len .Signals }}{{ nl }}{{ end }}
 {{- range $i, $e := .Signals }}
 {{- if $i }}{{nl}}{{ end }}
-UFUNCTION(Category = "{{$Category}}")
 F{{$Class}}{{Camel .Name}}Delegate& {{$abstractclass}}::Get{{Camel .Name}}SignalDelegate()
 {
 	return {{Camel .Name}}Signal;
 };
+
+void {{$abstractclass}}::Broadcast{{Camel .Name}}_Implementation({{ueParams "" .Params}})
+{
+	{{Camel .Name}}Signal.Broadcast({{ueVars "" .Params }});
+};
 {{- end }}
+
 {{- if len .Properties }}{{ nl }}{{ end }}
 {{- range $i, $e := .Properties }}
 {{- if $i }}{{nl}}{{ end }}
@@ -40,26 +93,12 @@ F{{$Class}}{{Camel .Name}}ChangedDelegate& {{$abstractclass}}::Get{{Camel .Name}
 {
 	return {{Camel .Name}}Changed;
 };
-{{- end }}
 
-{{- range $i, $e := .Signals }}
-{{- if $i }}{{nl}}{{ end }}
-void {{$abstractclass}}::Broadcast{{Camel .Name}}_Implementation({{ueParams "" .Params}})
-{
-	{{Camel .Name}}Signal.Broadcast({{ueVars "" .Params }});
-};
-{{- end }}
-{{- if len .Properties }}{{ nl }}{{ end }}
-{{- range $i, $e := .Properties }}
-{{- if $i }}{{nl}}{{ end }}
 void {{$abstractclass}}::Broadcast{{Camel .Name}}Changed_Implementation({{ueParam "In" .}})
 {
 	{{Camel .Name}}Changed.Broadcast({{ueVar "In" .}});
 }
-{{- end }}
 
-{{- range $i, $e := .Properties }}
-{{- if $i }}{{nl}}{{ end }}
 {{ueReturn "" .}} {{$abstractclass}}::Get{{Camel .Name}}_Private() const
 {
 	return Execute_Get{{Camel .Name}}(this);
@@ -69,6 +108,41 @@ void {{$abstractclass}}::Set{{Camel .Name}}_Private({{ueParam "In" .}})
 {
 	Execute_Set{{Camel .Name}}(this, {{ueVar "In" .}});
 };
+{{- end }}
+
+{{- range $i, $e := .Operations }}
+{{- if $i }}{{nl}}{{ end }}
+{{- if .Description }}
+/**
+   \brief {{.Description}}
+*/
+{{- end }}
+{{- if not .Return.IsVoid }}
+void {{$abstractclass}}::{{Camel .Name}}Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, {{ueReturn "" .Return}}& Result{{ if len .Params }}, {{end}}{{ueParams "" .Params}})
+{
+	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
+	{
+		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
+		F{{$Iface}}LatentAction* oldRequest = LatentActionManager.FindExistingAction<F{{$Iface}}LatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+
+		if (oldRequest != nullptr)
+		{
+			// cancel old request
+			oldRequest->Cancel();
+			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
+		}
+
+		F{{$Iface}}LatentAction* CompletionAction = new F{{$Iface}}LatentAction(LatentInfo);
+		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
+		Async(EAsyncExecution::Thread,
+			[{{range .Params}}{{ueVar "" .}}, {{ end }}this, &Result, CompletionAction]()
+			{
+				Result = Execute_{{Camel .Name}}(this{{ if len .Params }}, {{end}}{{ueVars "" .Params}});
+				CompletionAction->Cancel();
+			});
+	}
+}
+{{- end }}
 {{- end }}
 
 void {{$abstractclass}}::Initialize(FSubsystemCollectionBase& Collection)

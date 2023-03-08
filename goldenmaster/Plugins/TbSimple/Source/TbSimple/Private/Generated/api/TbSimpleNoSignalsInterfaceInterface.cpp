@@ -15,15 +15,55 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbSimpleNoSignalsInterfaceInterface.h"
+#include "Async/Async.h"
+#include "Engine/Engine.h"
+#include "Engine/LatentActionManager.h"
+#include "LatentActions.h"
+
+class FTbSimpleNoSignalsInterfaceLatentAction : public FPendingLatentAction
+{
+private:
+	FName ExecutionFunction;
+	int32 OutputLink;
+	FWeakObjectPtr CallbackTarget;
+	bool bInProgress;
+
+public:
+	FTbSimpleNoSignalsInterfaceLatentAction(const FLatentActionInfo& LatentInfo)
+		: ExecutionFunction(LatentInfo.ExecutionFunction)
+		, OutputLink(LatentInfo.Linkage)
+		, CallbackTarget(LatentInfo.CallbackTarget)
+		, bInProgress(true)
+	{
+	}
+
+	void Cancel()
+	{
+		bInProgress = false;
+	}
+
+	virtual void UpdateOperation(FLatentResponse& Response) override
+	{
+		if (bInProgress == false)
+		{
+			Response.FinishAndTriggerIf(true, ExecutionFunction, OutputLink, CallbackTarget);
+		}
+	}
+
+	virtual void NotifyObjectDestroyed()
+	{
+		Cancel();
+	}
+
+	virtual void NotifyActionAborted()
+	{
+		Cancel();
+	}
+};
 
 FTbSimpleNoSignalsInterfacePropBoolChangedDelegate& UAbstractTbSimpleNoSignalsInterface::GetPropBoolChangedDelegate()
 {
 	return PropBoolChanged;
-};
-
-FTbSimpleNoSignalsInterfacePropIntChangedDelegate& UAbstractTbSimpleNoSignalsInterface::GetPropIntChangedDelegate()
-{
-	return PropIntChanged;
 };
 
 void UAbstractTbSimpleNoSignalsInterface::BroadcastPropBoolChanged_Implementation(bool bInPropBool)
@@ -31,10 +71,6 @@ void UAbstractTbSimpleNoSignalsInterface::BroadcastPropBoolChanged_Implementatio
 	PropBoolChanged.Broadcast(bInPropBool);
 }
 
-void UAbstractTbSimpleNoSignalsInterface::BroadcastPropIntChanged_Implementation(int32 InPropInt)
-{
-	PropIntChanged.Broadcast(InPropInt);
-}
 bool UAbstractTbSimpleNoSignalsInterface::GetPropBool_Private() const
 {
 	return Execute_GetPropBool(this);
@@ -45,6 +81,16 @@ void UAbstractTbSimpleNoSignalsInterface::SetPropBool_Private(bool bInPropBool)
 	Execute_SetPropBool(this, bInPropBool);
 };
 
+FTbSimpleNoSignalsInterfacePropIntChangedDelegate& UAbstractTbSimpleNoSignalsInterface::GetPropIntChangedDelegate()
+{
+	return PropIntChanged;
+};
+
+void UAbstractTbSimpleNoSignalsInterface::BroadcastPropIntChanged_Implementation(int32 InPropInt)
+{
+	PropIntChanged.Broadcast(InPropInt);
+}
+
 int32 UAbstractTbSimpleNoSignalsInterface::GetPropInt_Private() const
 {
 	return Execute_GetPropInt(this);
@@ -54,6 +100,31 @@ void UAbstractTbSimpleNoSignalsInterface::SetPropInt_Private(int32 InPropInt)
 {
 	Execute_SetPropInt(this, InPropInt);
 };
+
+void UAbstractTbSimpleNoSignalsInterface::FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool)
+{
+	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
+	{
+		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
+		FTbSimpleNoSignalsInterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSimpleNoSignalsInterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+
+		if (oldRequest != nullptr)
+		{
+			// cancel old request
+			oldRequest->Cancel();
+			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
+		}
+
+		FTbSimpleNoSignalsInterfaceLatentAction* CompletionAction = new FTbSimpleNoSignalsInterfaceLatentAction(LatentInfo);
+		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
+		Async(EAsyncExecution::Thread,
+			[bParamBool, this, &Result, CompletionAction]()
+			{
+				Result = Execute_FuncBool(this, bParamBool);
+				CompletionAction->Cancel();
+			});
+	}
+}
 
 void UAbstractTbSimpleNoSignalsInterface::Initialize(FSubsystemCollectionBase& Collection)
 {

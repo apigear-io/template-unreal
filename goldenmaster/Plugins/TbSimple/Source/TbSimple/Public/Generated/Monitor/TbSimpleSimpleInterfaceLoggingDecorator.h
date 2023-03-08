@@ -77,28 +77,20 @@ public:
 	// operations
 	void FuncVoid_Implementation() override;
 
-	void FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool) override;
 	bool FuncBool_Implementation(bool bParamBool) override;
 
-	void FuncIntAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 ParamInt) override;
 	int32 FuncInt_Implementation(int32 ParamInt) override;
 
-	void FuncInt32Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 ParamInt32) override;
 	int32 FuncInt32_Implementation(int32 ParamInt32) override;
 
-	void FuncInt64Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int64& Result, int64 ParamInt64) override;
 	int64 FuncInt64_Implementation(int64 ParamInt64) override;
 
-	void FuncFloatAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, float& Result, float ParamFloat) override;
 	float FuncFloat_Implementation(float ParamFloat) override;
 
-	void FuncFloat32Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, float& Result, float ParamFloat32) override;
 	float FuncFloat32_Implementation(float ParamFloat32) override;
 
-	void FuncFloat64Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, double& Result, double ParamFloat) override;
 	double FuncFloat64_Implementation(double ParamFloat) override;
 
-	void FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FString& Result, const FString& ParamString) override;
 	FString FuncString_Implementation(const FString& ParamString) override;
 
 private:

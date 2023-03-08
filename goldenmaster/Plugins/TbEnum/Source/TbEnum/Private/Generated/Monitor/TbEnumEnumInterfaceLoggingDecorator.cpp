@@ -19,54 +19,9 @@ limitations under the License.
 #include "Implementation/TbEnumEnumInterface.h"
 #include "TbEnum.trace.h"
 #include "TbEnumFactory.h"
-#include "Async/Async.h"
-#include "LatentActions.h"
-#include "Engine/LatentActionManager.h"
-#include "Engine/Engine.h"
 #include "Runtime/Launch/Resources/Version.h"
 
 DEFINE_LOG_CATEGORY(LogTbEnumEnumInterfaceLoggingDecorator);
-
-class FTbEnumEnumInterfaceLoggingLatentAction : public FPendingLatentAction
-{
-private:
-	FName ExecutionFunction;
-	int32 OutputLink;
-	FWeakObjectPtr CallbackTarget;
-	bool bInProgress;
-
-public:
-	FTbEnumEnumInterfaceLoggingLatentAction(const FLatentActionInfo& LatentInfo)
-		: ExecutionFunction(LatentInfo.ExecutionFunction)
-		, OutputLink(LatentInfo.Linkage)
-		, CallbackTarget(LatentInfo.CallbackTarget)
-		, bInProgress(true)
-	{
-	}
-
-	void Cancel()
-	{
-		bInProgress = false;
-	}
-
-	virtual void UpdateOperation(FLatentResponse& Response) override
-	{
-		if (bInProgress == false)
-		{
-			Response.FinishAndTriggerIf(true, ExecutionFunction, OutputLink, CallbackTarget);
-		}
-	}
-
-	virtual void NotifyObjectDestroyed()
-	{
-		Cancel();
-	}
-
-	virtual void NotifyActionAborted()
-	{
-		Cancel();
-	}
-};
 UTbEnumEnumInterfaceLoggingDecorator::UTbEnumEnumInterfaceLoggingDecorator()
 	: UAbstractTbEnumEnumInterface()
 {
@@ -222,64 +177,10 @@ void UTbEnumEnumInterfaceLoggingDecorator::SetProp3_Implementation(ETbEnumEnum3 
 	BackendService->Execute_SetProp3(BackendService.GetObject(), InProp3);
 }
 
-void UTbEnumEnumInterfaceLoggingDecorator::Func0Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum0& Result, ETbEnumEnum0 Param0)
-{
-	TbEnumEnumInterfaceTracer::trace_callFunc0(Param0);
-
-	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
-	{
-		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTbEnumEnumInterfaceLoggingLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbEnumEnumInterfaceLoggingLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
-
-		if (oldRequest != nullptr)
-		{
-			// cancel old request
-			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
-		}
-
-		FTbEnumEnumInterfaceLoggingLatentAction* CompletionAction = new FTbEnumEnumInterfaceLoggingLatentAction(LatentInfo);
-		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[Param0, this, &Result, CompletionAction]()
-			{
-				Result = BackendService->Execute_Func0(BackendService.GetObject(), Param0);
-				CompletionAction->Cancel();
-			});
-	}
-}
-
 ETbEnumEnum0 UTbEnumEnumInterfaceLoggingDecorator::Func0_Implementation(ETbEnumEnum0 Param0)
 {
 	TbEnumEnumInterfaceTracer::trace_callFunc0(Param0);
 	return BackendService->Execute_Func0(BackendService.GetObject(), Param0);
-}
-
-void UTbEnumEnumInterfaceLoggingDecorator::Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum1& Result, ETbEnumEnum1 Param1)
-{
-	TbEnumEnumInterfaceTracer::trace_callFunc1(Param1);
-
-	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
-	{
-		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTbEnumEnumInterfaceLoggingLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbEnumEnumInterfaceLoggingLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
-
-		if (oldRequest != nullptr)
-		{
-			// cancel old request
-			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
-		}
-
-		FTbEnumEnumInterfaceLoggingLatentAction* CompletionAction = new FTbEnumEnumInterfaceLoggingLatentAction(LatentInfo);
-		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[Param1, this, &Result, CompletionAction]()
-			{
-				Result = BackendService->Execute_Func1(BackendService.GetObject(), Param1);
-				CompletionAction->Cancel();
-			});
-	}
 }
 
 ETbEnumEnum1 UTbEnumEnumInterfaceLoggingDecorator::Func1_Implementation(ETbEnumEnum1 Param1)
@@ -288,64 +189,10 @@ ETbEnumEnum1 UTbEnumEnumInterfaceLoggingDecorator::Func1_Implementation(ETbEnumE
 	return BackendService->Execute_Func1(BackendService.GetObject(), Param1);
 }
 
-void UTbEnumEnumInterfaceLoggingDecorator::Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum2& Result, ETbEnumEnum2 Param2)
-{
-	TbEnumEnumInterfaceTracer::trace_callFunc2(Param2);
-
-	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
-	{
-		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTbEnumEnumInterfaceLoggingLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbEnumEnumInterfaceLoggingLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
-
-		if (oldRequest != nullptr)
-		{
-			// cancel old request
-			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
-		}
-
-		FTbEnumEnumInterfaceLoggingLatentAction* CompletionAction = new FTbEnumEnumInterfaceLoggingLatentAction(LatentInfo);
-		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[Param2, this, &Result, CompletionAction]()
-			{
-				Result = BackendService->Execute_Func2(BackendService.GetObject(), Param2);
-				CompletionAction->Cancel();
-			});
-	}
-}
-
 ETbEnumEnum2 UTbEnumEnumInterfaceLoggingDecorator::Func2_Implementation(ETbEnumEnum2 Param2)
 {
 	TbEnumEnumInterfaceTracer::trace_callFunc2(Param2);
 	return BackendService->Execute_Func2(BackendService.GetObject(), Param2);
-}
-
-void UTbEnumEnumInterfaceLoggingDecorator::Func3Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum3& Result, ETbEnumEnum3 Param3)
-{
-	TbEnumEnumInterfaceTracer::trace_callFunc3(Param3);
-
-	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
-	{
-		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTbEnumEnumInterfaceLoggingLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbEnumEnumInterfaceLoggingLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
-
-		if (oldRequest != nullptr)
-		{
-			// cancel old request
-			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
-		}
-
-		FTbEnumEnumInterfaceLoggingLatentAction* CompletionAction = new FTbEnumEnumInterfaceLoggingLatentAction(LatentInfo);
-		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[Param3, this, &Result, CompletionAction]()
-			{
-				Result = BackendService->Execute_Func3(BackendService.GetObject(), Param3);
-				CompletionAction->Cancel();
-			});
-	}
 }
 
 ETbEnumEnum3 UTbEnumEnumInterfaceLoggingDecorator::Func3_Implementation(ETbEnumEnum3 Param3)

@@ -39,12 +39,7 @@ public:
 	// operations
 {{- range $i, $e := .Interface.Operations }}
 {{- if $i }}{{nl}}{{ end }}
-	{{- if .Return.IsVoid }}
 	{{ueReturn "" .Return}} {{Camel .Name}}_Implementation({{ueParams "" .Params}}) override;
-	{{- else }}
-	void {{Camel .Name}}Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, {{ueReturn "" .Return}}& Result{{if len .Params}}, {{end}}{{ueParams "" .Params}}) override{};
-	{{ueReturn "" .Return}} {{Camel .Name}}_Implementation({{ueParams "" .Params}}) override;
-	{{- end }}
 {{- end }}
 
 private:

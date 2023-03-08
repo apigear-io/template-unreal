@@ -36,9 +36,7 @@ public:
 	void SetProp2_Implementation(ETbSame2Enum2 Prop2) override;
 
 	// operations
-	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, ETbSame2Enum1 Param1) override;
 	ETbSame2Enum1 Func1_Implementation(ETbSame2Enum1 Param1) override;
 
-	void Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, ETbSame2Enum1 Param1, ETbSame2Enum2 Param2) override;
 	ETbSame2Enum1 Func2_Implementation(ETbSame2Enum1 Param1, ETbSame2Enum2 Param2) override;
 };

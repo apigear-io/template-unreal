@@ -15,31 +15,65 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "Testbed2NestedStruct2InterfaceInterface.h"
+#include "Async/Async.h"
+#include "Engine/Engine.h"
+#include "Engine/LatentActionManager.h"
+#include "LatentActions.h"
 
-UFUNCTION(Category = "ApiGear|Testbed2|NestedStruct2Interface")
+class FTestbed2NestedStruct2InterfaceLatentAction : public FPendingLatentAction
+{
+private:
+	FName ExecutionFunction;
+	int32 OutputLink;
+	FWeakObjectPtr CallbackTarget;
+	bool bInProgress;
+
+public:
+	FTestbed2NestedStruct2InterfaceLatentAction(const FLatentActionInfo& LatentInfo)
+		: ExecutionFunction(LatentInfo.ExecutionFunction)
+		, OutputLink(LatentInfo.Linkage)
+		, CallbackTarget(LatentInfo.CallbackTarget)
+		, bInProgress(true)
+	{
+	}
+
+	void Cancel()
+	{
+		bInProgress = false;
+	}
+
+	virtual void UpdateOperation(FLatentResponse& Response) override
+	{
+		if (bInProgress == false)
+		{
+			Response.FinishAndTriggerIf(true, ExecutionFunction, OutputLink, CallbackTarget);
+		}
+	}
+
+	virtual void NotifyObjectDestroyed()
+	{
+		Cancel();
+	}
+
+	virtual void NotifyActionAborted()
+	{
+		Cancel();
+	}
+};
+
 FTestbed2NestedStruct2InterfaceSig1Delegate& UAbstractTestbed2NestedStruct2Interface::GetSig1SignalDelegate()
 {
 	return Sig1Signal;
 };
 
-UFUNCTION(Category = "ApiGear|Testbed2|NestedStruct2Interface")
-FTestbed2NestedStruct2InterfaceSig2Delegate& UAbstractTestbed2NestedStruct2Interface::GetSig2SignalDelegate()
-{
-	return Sig2Signal;
-};
-
-FTestbed2NestedStruct2InterfaceProp1ChangedDelegate& UAbstractTestbed2NestedStruct2Interface::GetProp1ChangedDelegate()
-{
-	return Prop1Changed;
-};
-
-FTestbed2NestedStruct2InterfaceProp2ChangedDelegate& UAbstractTestbed2NestedStruct2Interface::GetProp2ChangedDelegate()
-{
-	return Prop2Changed;
-};
 void UAbstractTestbed2NestedStruct2Interface::BroadcastSig1_Implementation(const FTestbed2NestedStruct1& Param1)
 {
 	Sig1Signal.Broadcast(Param1);
+};
+
+FTestbed2NestedStruct2InterfaceSig2Delegate& UAbstractTestbed2NestedStruct2Interface::GetSig2SignalDelegate()
+{
+	return Sig2Signal;
 };
 
 void UAbstractTestbed2NestedStruct2Interface::BroadcastSig2_Implementation(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
@@ -47,15 +81,16 @@ void UAbstractTestbed2NestedStruct2Interface::BroadcastSig2_Implementation(const
 	Sig2Signal.Broadcast(Param1, Param2);
 };
 
+FTestbed2NestedStruct2InterfaceProp1ChangedDelegate& UAbstractTestbed2NestedStruct2Interface::GetProp1ChangedDelegate()
+{
+	return Prop1Changed;
+};
+
 void UAbstractTestbed2NestedStruct2Interface::BroadcastProp1Changed_Implementation(const FTestbed2NestedStruct1& InProp1)
 {
 	Prop1Changed.Broadcast(InProp1);
 }
 
-void UAbstractTestbed2NestedStruct2Interface::BroadcastProp2Changed_Implementation(const FTestbed2NestedStruct2& InProp2)
-{
-	Prop2Changed.Broadcast(InProp2);
-}
 FTestbed2NestedStruct1 UAbstractTestbed2NestedStruct2Interface::GetProp1_Private() const
 {
 	return Execute_GetProp1(this);
@@ -66,6 +101,16 @@ void UAbstractTestbed2NestedStruct2Interface::SetProp1_Private(const FTestbed2Ne
 	Execute_SetProp1(this, InProp1);
 };
 
+FTestbed2NestedStruct2InterfaceProp2ChangedDelegate& UAbstractTestbed2NestedStruct2Interface::GetProp2ChangedDelegate()
+{
+	return Prop2Changed;
+};
+
+void UAbstractTestbed2NestedStruct2Interface::BroadcastProp2Changed_Implementation(const FTestbed2NestedStruct2& InProp2)
+{
+	Prop2Changed.Broadcast(InProp2);
+}
+
 FTestbed2NestedStruct2 UAbstractTestbed2NestedStruct2Interface::GetProp2_Private() const
 {
 	return Execute_GetProp2(this);
@@ -75,6 +120,55 @@ void UAbstractTestbed2NestedStruct2Interface::SetProp2_Private(const FTestbed2Ne
 {
 	Execute_SetProp2(this, InProp2);
 };
+void UAbstractTestbed2NestedStruct2Interface::Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1)
+{
+	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
+	{
+		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
+		FTestbed2NestedStruct2InterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTestbed2NestedStruct2InterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+
+		if (oldRequest != nullptr)
+		{
+			// cancel old request
+			oldRequest->Cancel();
+			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
+		}
+
+		FTestbed2NestedStruct2InterfaceLatentAction* CompletionAction = new FTestbed2NestedStruct2InterfaceLatentAction(LatentInfo);
+		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
+		Async(EAsyncExecution::Thread,
+			[Param1, this, &Result, CompletionAction]()
+			{
+				Result = Execute_Func1(this, Param1);
+				CompletionAction->Cancel();
+			});
+	}
+}
+
+void UAbstractTestbed2NestedStruct2Interface::Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
+{
+	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
+	{
+		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
+		FTestbed2NestedStruct2InterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTestbed2NestedStruct2InterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+
+		if (oldRequest != nullptr)
+		{
+			// cancel old request
+			oldRequest->Cancel();
+			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
+		}
+
+		FTestbed2NestedStruct2InterfaceLatentAction* CompletionAction = new FTestbed2NestedStruct2InterfaceLatentAction(LatentInfo);
+		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
+		Async(EAsyncExecution::Thread,
+			[Param1, Param2, this, &Result, CompletionAction]()
+			{
+				Result = Execute_Func2(this, Param1, Param2);
+				CompletionAction->Cancel();
+			});
+	}
+}
 
 void UAbstractTestbed2NestedStruct2Interface::Initialize(FSubsystemCollectionBase& Collection)
 {

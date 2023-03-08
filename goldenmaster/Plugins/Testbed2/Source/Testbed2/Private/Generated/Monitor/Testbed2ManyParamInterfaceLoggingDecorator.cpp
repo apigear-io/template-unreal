@@ -19,54 +19,9 @@ limitations under the License.
 #include "Implementation/Testbed2ManyParamInterface.h"
 #include "Testbed2.trace.h"
 #include "Testbed2Factory.h"
-#include "Async/Async.h"
-#include "LatentActions.h"
-#include "Engine/LatentActionManager.h"
-#include "Engine/Engine.h"
 #include "Runtime/Launch/Resources/Version.h"
 
 DEFINE_LOG_CATEGORY(LogTestbed2ManyParamInterfaceLoggingDecorator);
-
-class FTestbed2ManyParamInterfaceLoggingLatentAction : public FPendingLatentAction
-{
-private:
-	FName ExecutionFunction;
-	int32 OutputLink;
-	FWeakObjectPtr CallbackTarget;
-	bool bInProgress;
-
-public:
-	FTestbed2ManyParamInterfaceLoggingLatentAction(const FLatentActionInfo& LatentInfo)
-		: ExecutionFunction(LatentInfo.ExecutionFunction)
-		, OutputLink(LatentInfo.Linkage)
-		, CallbackTarget(LatentInfo.CallbackTarget)
-		, bInProgress(true)
-	{
-	}
-
-	void Cancel()
-	{
-		bInProgress = false;
-	}
-
-	virtual void UpdateOperation(FLatentResponse& Response) override
-	{
-		if (bInProgress == false)
-		{
-			Response.FinishAndTriggerIf(true, ExecutionFunction, OutputLink, CallbackTarget);
-		}
-	}
-
-	virtual void NotifyObjectDestroyed()
-	{
-		Cancel();
-	}
-
-	virtual void NotifyActionAborted()
-	{
-		Cancel();
-	}
-};
 UTestbed2ManyParamInterfaceLoggingDecorator::UTestbed2ManyParamInterfaceLoggingDecorator()
 	: UAbstractTestbed2ManyParamInterface()
 {
@@ -222,64 +177,10 @@ void UTestbed2ManyParamInterfaceLoggingDecorator::SetProp4_Implementation(int32 
 	BackendService->Execute_SetProp4(BackendService.GetObject(), InProp4);
 }
 
-void UTestbed2ManyParamInterfaceLoggingDecorator::Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1)
-{
-	Testbed2ManyParamInterfaceTracer::trace_callFunc1(Param1);
-
-	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
-	{
-		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTestbed2ManyParamInterfaceLoggingLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTestbed2ManyParamInterfaceLoggingLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
-
-		if (oldRequest != nullptr)
-		{
-			// cancel old request
-			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
-		}
-
-		FTestbed2ManyParamInterfaceLoggingLatentAction* CompletionAction = new FTestbed2ManyParamInterfaceLoggingLatentAction(LatentInfo);
-		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[Param1, this, &Result, CompletionAction]()
-			{
-				Result = BackendService->Execute_Func1(BackendService.GetObject(), Param1);
-				CompletionAction->Cancel();
-			});
-	}
-}
-
 int32 UTestbed2ManyParamInterfaceLoggingDecorator::Func1_Implementation(int32 Param1)
 {
 	Testbed2ManyParamInterfaceTracer::trace_callFunc1(Param1);
 	return BackendService->Execute_Func1(BackendService.GetObject(), Param1);
-}
-
-void UTestbed2ManyParamInterfaceLoggingDecorator::Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2)
-{
-	Testbed2ManyParamInterfaceTracer::trace_callFunc2(Param1, Param2);
-
-	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
-	{
-		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTestbed2ManyParamInterfaceLoggingLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTestbed2ManyParamInterfaceLoggingLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
-
-		if (oldRequest != nullptr)
-		{
-			// cancel old request
-			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
-		}
-
-		FTestbed2ManyParamInterfaceLoggingLatentAction* CompletionAction = new FTestbed2ManyParamInterfaceLoggingLatentAction(LatentInfo);
-		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[Param1, Param2, this, &Result, CompletionAction]()
-			{
-				Result = BackendService->Execute_Func2(BackendService.GetObject(), Param1, Param2);
-				CompletionAction->Cancel();
-			});
-	}
 }
 
 int32 UTestbed2ManyParamInterfaceLoggingDecorator::Func2_Implementation(int32 Param1, int32 Param2)
@@ -288,64 +189,10 @@ int32 UTestbed2ManyParamInterfaceLoggingDecorator::Func2_Implementation(int32 Pa
 	return BackendService->Execute_Func2(BackendService.GetObject(), Param1, Param2);
 }
 
-void UTestbed2ManyParamInterfaceLoggingDecorator::Func3Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2, int32 Param3)
-{
-	Testbed2ManyParamInterfaceTracer::trace_callFunc3(Param1, Param2, Param3);
-
-	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
-	{
-		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTestbed2ManyParamInterfaceLoggingLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTestbed2ManyParamInterfaceLoggingLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
-
-		if (oldRequest != nullptr)
-		{
-			// cancel old request
-			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
-		}
-
-		FTestbed2ManyParamInterfaceLoggingLatentAction* CompletionAction = new FTestbed2ManyParamInterfaceLoggingLatentAction(LatentInfo);
-		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[Param1, Param2, Param3, this, &Result, CompletionAction]()
-			{
-				Result = BackendService->Execute_Func3(BackendService.GetObject(), Param1, Param2, Param3);
-				CompletionAction->Cancel();
-			});
-	}
-}
-
 int32 UTestbed2ManyParamInterfaceLoggingDecorator::Func3_Implementation(int32 Param1, int32 Param2, int32 Param3)
 {
 	Testbed2ManyParamInterfaceTracer::trace_callFunc3(Param1, Param2, Param3);
 	return BackendService->Execute_Func3(BackendService.GetObject(), Param1, Param2, Param3);
-}
-
-void UTestbed2ManyParamInterfaceLoggingDecorator::Func4Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2, int32 Param3, int32 Param4)
-{
-	Testbed2ManyParamInterfaceTracer::trace_callFunc4(Param1, Param2, Param3, Param4);
-
-	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
-	{
-		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTestbed2ManyParamInterfaceLoggingLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTestbed2ManyParamInterfaceLoggingLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
-
-		if (oldRequest != nullptr)
-		{
-			// cancel old request
-			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
-		}
-
-		FTestbed2ManyParamInterfaceLoggingLatentAction* CompletionAction = new FTestbed2ManyParamInterfaceLoggingLatentAction(LatentInfo);
-		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[Param1, Param2, Param3, Param4, this, &Result, CompletionAction]()
-			{
-				Result = BackendService->Execute_Func4(BackendService.GetObject(), Param1, Param2, Param3, Param4);
-				CompletionAction->Cancel();
-			});
-	}
 }
 
 int32 UTestbed2ManyParamInterfaceLoggingDecorator::Func4_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4)

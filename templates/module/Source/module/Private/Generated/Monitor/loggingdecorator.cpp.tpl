@@ -29,54 +29,9 @@ limitations under the License.
 #include "Implementation/{{$Iface}}.h"
 #include "{{$ModuleName}}.trace.h"
 #include "{{$ModuleName}}Factory.h"
-#include "Async/Async.h"
-#include "LatentActions.h"
-#include "Engine/LatentActionManager.h"
-#include "Engine/Engine.h"
 #include "Runtime/Launch/Resources/Version.h"
 
 DEFINE_LOG_CATEGORY(Log{{$DisplayName}});
-
-class F{{$Iface}}LoggingLatentAction : public FPendingLatentAction
-{
-private:
-	FName ExecutionFunction;
-	int32 OutputLink;
-	FWeakObjectPtr CallbackTarget;
-	bool bInProgress;
-
-public:
-	F{{$Iface}}LoggingLatentAction(const FLatentActionInfo& LatentInfo)
-		: ExecutionFunction(LatentInfo.ExecutionFunction)
-		, OutputLink(LatentInfo.Linkage)
-		, CallbackTarget(LatentInfo.CallbackTarget)
-		, bInProgress(true)
-	{
-	}
-
-	void Cancel()
-	{
-		bInProgress = false;
-	}
-
-	virtual void UpdateOperation(FLatentResponse& Response) override
-	{
-		if (bInProgress == false)
-		{
-			Response.FinishAndTriggerIf(true, ExecutionFunction, OutputLink, CallbackTarget);
-		}
-	}
-
-	virtual void NotifyObjectDestroyed()
-	{
-		Cancel();
-	}
-
-	virtual void NotifyActionAborted()
-	{
-		Cancel();
-	}
-};
 
 {{- if .Interface.Description }}
 /**
@@ -176,34 +131,6 @@ void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
 /**
    \brief {{.Description}}
 */
-{{- end }}
-{{- if not .Return.IsVoid }}
-void {{$Class}}::{{Camel .Name}}Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, {{ueReturn "" .Return}}& Result{{ if len .Params }}, {{end}}{{ueParams "" .Params}})
-{
-	{{$Iface}}Tracer::trace_call{{Camel .Name}}({{ueVars "" .Params}});
-
-	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
-	{
-		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		F{{$Iface}}LoggingLatentAction* oldRequest = LatentActionManager.FindExistingAction<F{{$Iface}}LoggingLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
-
-		if (oldRequest != nullptr)
-		{
-			// cancel old request
-			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
-		}
-
-		F{{$Iface}}LoggingLatentAction* CompletionAction = new F{{$Iface}}LoggingLatentAction(LatentInfo);
-		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[{{range .Params}}{{ueVar "" .}}, {{ end }}this, &Result, CompletionAction]()
-			{
-				Result = BackendService->Execute_{{Camel .Name}}(BackendService.GetObject(){{if len .Params}}, {{ end }}{{ueVars "" .Params}});
-				CompletionAction->Cancel();
-			});
-	}
-}{{ nl }}
 {{- end }}
 {{ueReturn "" .Return}} {{$Class}}::{{Camel .Name}}_Implementation({{ueParams "" .Params}})
 {

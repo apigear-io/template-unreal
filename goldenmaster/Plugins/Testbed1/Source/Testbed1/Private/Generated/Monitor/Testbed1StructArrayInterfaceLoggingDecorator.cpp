@@ -19,54 +19,9 @@ limitations under the License.
 #include "Implementation/Testbed1StructArrayInterface.h"
 #include "Testbed1.trace.h"
 #include "Testbed1Factory.h"
-#include "Async/Async.h"
-#include "LatentActions.h"
-#include "Engine/LatentActionManager.h"
-#include "Engine/Engine.h"
 #include "Runtime/Launch/Resources/Version.h"
 
 DEFINE_LOG_CATEGORY(LogTestbed1StructArrayInterfaceLoggingDecorator);
-
-class FTestbed1StructArrayInterfaceLoggingLatentAction : public FPendingLatentAction
-{
-private:
-	FName ExecutionFunction;
-	int32 OutputLink;
-	FWeakObjectPtr CallbackTarget;
-	bool bInProgress;
-
-public:
-	FTestbed1StructArrayInterfaceLoggingLatentAction(const FLatentActionInfo& LatentInfo)
-		: ExecutionFunction(LatentInfo.ExecutionFunction)
-		, OutputLink(LatentInfo.Linkage)
-		, CallbackTarget(LatentInfo.CallbackTarget)
-		, bInProgress(true)
-	{
-	}
-
-	void Cancel()
-	{
-		bInProgress = false;
-	}
-
-	virtual void UpdateOperation(FLatentResponse& Response) override
-	{
-		if (bInProgress == false)
-		{
-			Response.FinishAndTriggerIf(true, ExecutionFunction, OutputLink, CallbackTarget);
-		}
-	}
-
-	virtual void NotifyObjectDestroyed()
-	{
-		Cancel();
-	}
-
-	virtual void NotifyActionAborted()
-	{
-		Cancel();
-	}
-};
 UTestbed1StructArrayInterfaceLoggingDecorator::UTestbed1StructArrayInterfaceLoggingDecorator()
 	: UAbstractTestbed1StructArrayInterface()
 {
@@ -222,64 +177,10 @@ void UTestbed1StructArrayInterfaceLoggingDecorator::SetPropString_Implementation
 	BackendService->Execute_SetPropString(BackendService.GetObject(), InPropString);
 }
 
-void UTestbed1StructArrayInterfaceLoggingDecorator::FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructBool>& ParamBool)
-{
-	Testbed1StructArrayInterfaceTracer::trace_callFuncBool(ParamBool);
-
-	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
-	{
-		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTestbed1StructArrayInterfaceLoggingLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTestbed1StructArrayInterfaceLoggingLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
-
-		if (oldRequest != nullptr)
-		{
-			// cancel old request
-			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
-		}
-
-		FTestbed1StructArrayInterfaceLoggingLatentAction* CompletionAction = new FTestbed1StructArrayInterfaceLoggingLatentAction(LatentInfo);
-		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[ParamBool, this, &Result, CompletionAction]()
-			{
-				Result = BackendService->Execute_FuncBool(BackendService.GetObject(), ParamBool);
-				CompletionAction->Cancel();
-			});
-	}
-}
-
 FTestbed1StructBool UTestbed1StructArrayInterfaceLoggingDecorator::FuncBool_Implementation(const TArray<FTestbed1StructBool>& ParamBool)
 {
 	Testbed1StructArrayInterfaceTracer::trace_callFuncBool(ParamBool);
 	return BackendService->Execute_FuncBool(BackendService.GetObject(), ParamBool);
-}
-
-void UTestbed1StructArrayInterfaceLoggingDecorator::FuncIntAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructInt>& ParamInt)
-{
-	Testbed1StructArrayInterfaceTracer::trace_callFuncInt(ParamInt);
-
-	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
-	{
-		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTestbed1StructArrayInterfaceLoggingLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTestbed1StructArrayInterfaceLoggingLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
-
-		if (oldRequest != nullptr)
-		{
-			// cancel old request
-			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
-		}
-
-		FTestbed1StructArrayInterfaceLoggingLatentAction* CompletionAction = new FTestbed1StructArrayInterfaceLoggingLatentAction(LatentInfo);
-		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[ParamInt, this, &Result, CompletionAction]()
-			{
-				Result = BackendService->Execute_FuncInt(BackendService.GetObject(), ParamInt);
-				CompletionAction->Cancel();
-			});
-	}
 }
 
 FTestbed1StructBool UTestbed1StructArrayInterfaceLoggingDecorator::FuncInt_Implementation(const TArray<FTestbed1StructInt>& ParamInt)
@@ -288,64 +189,10 @@ FTestbed1StructBool UTestbed1StructArrayInterfaceLoggingDecorator::FuncInt_Imple
 	return BackendService->Execute_FuncInt(BackendService.GetObject(), ParamInt);
 }
 
-void UTestbed1StructArrayInterfaceLoggingDecorator::FuncFloatAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructFloat>& ParamFloat)
-{
-	Testbed1StructArrayInterfaceTracer::trace_callFuncFloat(ParamFloat);
-
-	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
-	{
-		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTestbed1StructArrayInterfaceLoggingLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTestbed1StructArrayInterfaceLoggingLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
-
-		if (oldRequest != nullptr)
-		{
-			// cancel old request
-			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
-		}
-
-		FTestbed1StructArrayInterfaceLoggingLatentAction* CompletionAction = new FTestbed1StructArrayInterfaceLoggingLatentAction(LatentInfo);
-		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[ParamFloat, this, &Result, CompletionAction]()
-			{
-				Result = BackendService->Execute_FuncFloat(BackendService.GetObject(), ParamFloat);
-				CompletionAction->Cancel();
-			});
-	}
-}
-
 FTestbed1StructBool UTestbed1StructArrayInterfaceLoggingDecorator::FuncFloat_Implementation(const TArray<FTestbed1StructFloat>& ParamFloat)
 {
 	Testbed1StructArrayInterfaceTracer::trace_callFuncFloat(ParamFloat);
 	return BackendService->Execute_FuncFloat(BackendService.GetObject(), ParamFloat);
-}
-
-void UTestbed1StructArrayInterfaceLoggingDecorator::FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructString>& ParamString)
-{
-	Testbed1StructArrayInterfaceTracer::trace_callFuncString(ParamString);
-
-	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
-	{
-		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTestbed1StructArrayInterfaceLoggingLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTestbed1StructArrayInterfaceLoggingLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
-
-		if (oldRequest != nullptr)
-		{
-			// cancel old request
-			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
-		}
-
-		FTestbed1StructArrayInterfaceLoggingLatentAction* CompletionAction = new FTestbed1StructArrayInterfaceLoggingLatentAction(LatentInfo);
-		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[ParamString, this, &Result, CompletionAction]()
-			{
-				Result = BackendService->Execute_FuncString(BackendService.GetObject(), ParamString);
-				CompletionAction->Cancel();
-			});
-	}
 }
 
 FTestbed1StructBool UTestbed1StructArrayInterfaceLoggingDecorator::FuncString_Implementation(const TArray<FTestbed1StructString>& ParamString)

@@ -15,31 +15,24 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbSimpleNoOperationsInterfaceInterface.h"
+#include "Async/Async.h"
+#include "Engine/Engine.h"
+#include "Engine/LatentActionManager.h"
+#include "LatentActions.h"
 
-UFUNCTION(Category = "ApiGear|TbSimple|NoOperationsInterface")
 FTbSimpleNoOperationsInterfaceSigVoidDelegate& UAbstractTbSimpleNoOperationsInterface::GetSigVoidSignalDelegate()
 {
 	return SigVoidSignal;
 };
 
-UFUNCTION(Category = "ApiGear|TbSimple|NoOperationsInterface")
-FTbSimpleNoOperationsInterfaceSigBoolDelegate& UAbstractTbSimpleNoOperationsInterface::GetSigBoolSignalDelegate()
-{
-	return SigBoolSignal;
-};
-
-FTbSimpleNoOperationsInterfacePropBoolChangedDelegate& UAbstractTbSimpleNoOperationsInterface::GetPropBoolChangedDelegate()
-{
-	return PropBoolChanged;
-};
-
-FTbSimpleNoOperationsInterfacePropIntChangedDelegate& UAbstractTbSimpleNoOperationsInterface::GetPropIntChangedDelegate()
-{
-	return PropIntChanged;
-};
 void UAbstractTbSimpleNoOperationsInterface::BroadcastSigVoid_Implementation()
 {
 	SigVoidSignal.Broadcast();
+};
+
+FTbSimpleNoOperationsInterfaceSigBoolDelegate& UAbstractTbSimpleNoOperationsInterface::GetSigBoolSignalDelegate()
+{
+	return SigBoolSignal;
 };
 
 void UAbstractTbSimpleNoOperationsInterface::BroadcastSigBool_Implementation(bool bParamBool)
@@ -47,15 +40,16 @@ void UAbstractTbSimpleNoOperationsInterface::BroadcastSigBool_Implementation(boo
 	SigBoolSignal.Broadcast(bParamBool);
 };
 
+FTbSimpleNoOperationsInterfacePropBoolChangedDelegate& UAbstractTbSimpleNoOperationsInterface::GetPropBoolChangedDelegate()
+{
+	return PropBoolChanged;
+};
+
 void UAbstractTbSimpleNoOperationsInterface::BroadcastPropBoolChanged_Implementation(bool bInPropBool)
 {
 	PropBoolChanged.Broadcast(bInPropBool);
 }
 
-void UAbstractTbSimpleNoOperationsInterface::BroadcastPropIntChanged_Implementation(int32 InPropInt)
-{
-	PropIntChanged.Broadcast(InPropInt);
-}
 bool UAbstractTbSimpleNoOperationsInterface::GetPropBool_Private() const
 {
 	return Execute_GetPropBool(this);
@@ -65,6 +59,16 @@ void UAbstractTbSimpleNoOperationsInterface::SetPropBool_Private(bool bInPropBoo
 {
 	Execute_SetPropBool(this, bInPropBool);
 };
+
+FTbSimpleNoOperationsInterfacePropIntChangedDelegate& UAbstractTbSimpleNoOperationsInterface::GetPropIntChangedDelegate()
+{
+	return PropIntChanged;
+};
+
+void UAbstractTbSimpleNoOperationsInterface::BroadcastPropIntChanged_Implementation(int32 InPropInt)
+{
+	PropIntChanged.Broadcast(InPropInt);
+}
 
 int32 UAbstractTbSimpleNoOperationsInterface::GetPropInt_Private() const
 {

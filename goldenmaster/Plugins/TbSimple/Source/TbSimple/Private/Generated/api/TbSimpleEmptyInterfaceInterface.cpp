@@ -15,6 +15,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbSimpleEmptyInterfaceInterface.h"
+#include "Async/Async.h"
+#include "Engine/Engine.h"
+#include "Engine/LatentActionManager.h"
+#include "LatentActions.h"
 
 void UAbstractTbSimpleEmptyInterface::Initialize(FSubsystemCollectionBase& Collection)
 {

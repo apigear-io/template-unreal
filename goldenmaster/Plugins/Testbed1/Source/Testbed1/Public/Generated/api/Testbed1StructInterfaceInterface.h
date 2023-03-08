@@ -226,16 +226,16 @@ public:
 	virtual FTestbed1StructInterfacePropStringChangedDelegate& GetPropStringChangedDelegate() override;
 
 	// methods
-	virtual void FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const FTestbed1StructBool& ParamBool) override PURE_VIRTUAL(UAbstractTestbed1StructInterface::FuncBoolAsync_Implementation, return;);
+	virtual void FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const FTestbed1StructBool& ParamBool) override;
 	virtual FTestbed1StructBool FuncBool_Implementation(const FTestbed1StructBool& ParamBool) override PURE_VIRTUAL(UAbstractTestbed1StructInterface::FuncBool_Implementation, return FTestbed1StructBool(););
 
-	virtual void FuncIntAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const FTestbed1StructInt& ParamInt) override PURE_VIRTUAL(UAbstractTestbed1StructInterface::FuncIntAsync_Implementation, return;);
+	virtual void FuncIntAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const FTestbed1StructInt& ParamInt) override;
 	virtual FTestbed1StructBool FuncInt_Implementation(const FTestbed1StructInt& ParamInt) override PURE_VIRTUAL(UAbstractTestbed1StructInterface::FuncInt_Implementation, return FTestbed1StructBool(););
 
-	virtual void FuncFloatAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructFloat& Result, const FTestbed1StructFloat& ParamFloat) override PURE_VIRTUAL(UAbstractTestbed1StructInterface::FuncFloatAsync_Implementation, return;);
+	virtual void FuncFloatAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructFloat& Result, const FTestbed1StructFloat& ParamFloat) override;
 	virtual FTestbed1StructFloat FuncFloat_Implementation(const FTestbed1StructFloat& ParamFloat) override PURE_VIRTUAL(UAbstractTestbed1StructInterface::FuncFloat_Implementation, return FTestbed1StructFloat(););
 
-	virtual void FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructString& Result, const FTestbed1StructString& ParamString) override PURE_VIRTUAL(UAbstractTestbed1StructInterface::FuncStringAsync_Implementation, return;);
+	virtual void FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructString& Result, const FTestbed1StructString& ParamString) override;
 	virtual FTestbed1StructString FuncString_Implementation(const FTestbed1StructString& ParamString) override PURE_VIRTUAL(UAbstractTestbed1StructInterface::FuncString_Implementation, return FTestbed1StructString(););
 
 	// properties

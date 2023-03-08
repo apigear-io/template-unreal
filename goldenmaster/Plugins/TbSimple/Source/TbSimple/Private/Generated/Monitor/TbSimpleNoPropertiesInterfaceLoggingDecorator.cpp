@@ -19,54 +19,9 @@ limitations under the License.
 #include "Implementation/TbSimpleNoPropertiesInterface.h"
 #include "TbSimple.trace.h"
 #include "TbSimpleFactory.h"
-#include "Async/Async.h"
-#include "LatentActions.h"
-#include "Engine/LatentActionManager.h"
-#include "Engine/Engine.h"
 #include "Runtime/Launch/Resources/Version.h"
 
 DEFINE_LOG_CATEGORY(LogTbSimpleNoPropertiesInterfaceLoggingDecorator);
-
-class FTbSimpleNoPropertiesInterfaceLoggingLatentAction : public FPendingLatentAction
-{
-private:
-	FName ExecutionFunction;
-	int32 OutputLink;
-	FWeakObjectPtr CallbackTarget;
-	bool bInProgress;
-
-public:
-	FTbSimpleNoPropertiesInterfaceLoggingLatentAction(const FLatentActionInfo& LatentInfo)
-		: ExecutionFunction(LatentInfo.ExecutionFunction)
-		, OutputLink(LatentInfo.Linkage)
-		, CallbackTarget(LatentInfo.CallbackTarget)
-		, bInProgress(true)
-	{
-	}
-
-	void Cancel()
-	{
-		bInProgress = false;
-	}
-
-	virtual void UpdateOperation(FLatentResponse& Response) override
-	{
-		if (bInProgress == false)
-		{
-			Response.FinishAndTriggerIf(true, ExecutionFunction, OutputLink, CallbackTarget);
-		}
-	}
-
-	virtual void NotifyObjectDestroyed()
-	{
-		Cancel();
-	}
-
-	virtual void NotifyActionAborted()
-	{
-		Cancel();
-	}
-};
 UTbSimpleNoPropertiesInterfaceLoggingDecorator::UTbSimpleNoPropertiesInterfaceLoggingDecorator()
 	: UAbstractTbSimpleNoPropertiesInterface()
 {
@@ -126,33 +81,6 @@ void UTbSimpleNoPropertiesInterfaceLoggingDecorator::FuncVoid_Implementation()
 {
 	TbSimpleNoPropertiesInterfaceTracer::trace_callFuncVoid();
 	BackendService->Execute_FuncVoid(BackendService.GetObject());
-}
-
-void UTbSimpleNoPropertiesInterfaceLoggingDecorator::FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool)
-{
-	TbSimpleNoPropertiesInterfaceTracer::trace_callFuncBool(bParamBool);
-
-	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
-	{
-		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTbSimpleNoPropertiesInterfaceLoggingLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSimpleNoPropertiesInterfaceLoggingLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
-
-		if (oldRequest != nullptr)
-		{
-			// cancel old request
-			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
-		}
-
-		FTbSimpleNoPropertiesInterfaceLoggingLatentAction* CompletionAction = new FTbSimpleNoPropertiesInterfaceLoggingLatentAction(LatentInfo);
-		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[bParamBool, this, &Result, CompletionAction]()
-			{
-				Result = BackendService->Execute_FuncBool(BackendService.GetObject(), bParamBool);
-				CompletionAction->Cancel();
-			});
-	}
 }
 
 bool UTbSimpleNoPropertiesInterfaceLoggingDecorator::FuncBool_Implementation(bool bParamBool)

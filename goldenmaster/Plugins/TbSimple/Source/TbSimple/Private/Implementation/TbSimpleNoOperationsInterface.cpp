@@ -16,51 +16,6 @@ limitations under the License.
 */
 
 #include "Implementation/TbSimpleNoOperationsInterface.h"
-#include "Async/Async.h"
-#include "Engine/Engine.h"
-#include "Engine/LatentActionManager.h"
-#include "LatentActions.h"
-
-class FTbSimpleNoOperationsInterfaceLatentAction : public FPendingLatentAction
-{
-private:
-	FName ExecutionFunction;
-	int32 OutputLink;
-	FWeakObjectPtr CallbackTarget;
-	bool bInProgress;
-
-public:
-	FTbSimpleNoOperationsInterfaceLatentAction(const FLatentActionInfo& LatentInfo)
-		: ExecutionFunction(LatentInfo.ExecutionFunction)
-		, OutputLink(LatentInfo.Linkage)
-		, CallbackTarget(LatentInfo.CallbackTarget)
-		, bInProgress(true)
-	{
-	}
-
-	void Cancel()
-	{
-		bInProgress = false;
-	}
-
-	virtual void UpdateOperation(FLatentResponse& Response) override
-	{
-		if (bInProgress == false)
-		{
-			Response.FinishAndTriggerIf(true, ExecutionFunction, OutputLink, CallbackTarget);
-		}
-	}
-
-	virtual void NotifyObjectDestroyed()
-	{
-		Cancel();
-	}
-
-	virtual void NotifyActionAborted()
-	{
-		Cancel();
-	}
-};
 
 UTbSimpleNoOperationsInterface::~UTbSimpleNoOperationsInterface() = default;
 bool UTbSimpleNoOperationsInterface::GetPropBool_Implementation() const

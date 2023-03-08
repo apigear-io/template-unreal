@@ -45,7 +45,6 @@ public:
 	// operations
 	void FuncVoid_Implementation() override;
 
-	void FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool) override;
 	bool FuncBool_Implementation(bool bParamBool) override;
 
 private:

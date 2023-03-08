@@ -42,15 +42,11 @@ public:
 	void SetPropString_Implementation(const FTestbed1StructString& PropString) override;
 
 	// operations
-	void FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const FTestbed1StructBool& ParamBool) override;
 	FTestbed1StructBool FuncBool_Implementation(const FTestbed1StructBool& ParamBool) override;
 
-	void FuncIntAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const FTestbed1StructInt& ParamInt) override;
 	FTestbed1StructBool FuncInt_Implementation(const FTestbed1StructInt& ParamInt) override;
 
-	void FuncFloatAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructFloat& Result, const FTestbed1StructFloat& ParamFloat) override;
 	FTestbed1StructFloat FuncFloat_Implementation(const FTestbed1StructFloat& ParamFloat) override;
 
-	void FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructString& Result, const FTestbed1StructString& ParamString) override;
 	FTestbed1StructString FuncString_Implementation(const FTestbed1StructString& ParamString) override;
 };

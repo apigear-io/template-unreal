@@ -59,16 +59,12 @@ public:
 	void SetProp4_Implementation(int32 InProp4) override;
 
 	// operations
-	void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1) override;
 	int32 Func1_Implementation(int32 Param1) override;
 
-	void Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2) override;
 	int32 Func2_Implementation(int32 Param1, int32 Param2) override;
 
-	void Func3Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2, int32 Param3) override;
 	int32 Func3_Implementation(int32 Param1, int32 Param2, int32 Param3) override;
 
-	void Func4Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2, int32 Param3, int32 Param4) override;
 	int32 Func4_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4) override;
 
 private:
