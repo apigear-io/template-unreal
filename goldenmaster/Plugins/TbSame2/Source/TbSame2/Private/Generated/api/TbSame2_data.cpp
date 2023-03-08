@@ -19,42 +19,42 @@ limitations under the License.
 /**
  * Enumeration ETbSame2Enum1
  */
-bool toUE4Type(ETbSame2Enum1& value, uint8 v)
+bool UTbSame2Library::toTbSame2Enum1(ETbSame2Enum1& ConvertedEnum, uint8 InValue)
 {
 	bool bSuccessful = false;
-	switch (v)
+	switch (InValue)
 	{
 	case 1:
-		value = ETbSame2Enum1::TSE_VALUE1;
+		ConvertedEnum = ETbSame2Enum1::TSE_VALUE1;
 		bSuccessful = true;
 		break;
 	case 2:
-		value = ETbSame2Enum1::TSE_VALUE2;
+		ConvertedEnum = ETbSame2Enum1::TSE_VALUE2;
 		bSuccessful = true;
 		break;
 	default:
-		value = ETbSame2Enum1::TSE_VALUE1;
+		ConvertedEnum = ETbSame2Enum1::TSE_VALUE1;
 	}
 	return bSuccessful;
 }
 /**
  * Enumeration ETbSame2Enum2
  */
-bool toUE4Type(ETbSame2Enum2& value, uint8 v)
+bool UTbSame2Library::toTbSame2Enum2(ETbSame2Enum2& ConvertedEnum, uint8 InValue)
 {
 	bool bSuccessful = false;
-	switch (v)
+	switch (InValue)
 	{
 	case 1:
-		value = ETbSame2Enum2::TSE_VALUE1;
+		ConvertedEnum = ETbSame2Enum2::TSE_VALUE1;
 		bSuccessful = true;
 		break;
 	case 2:
-		value = ETbSame2Enum2::TSE_VALUE2;
+		ConvertedEnum = ETbSame2Enum2::TSE_VALUE2;
 		bSuccessful = true;
 		break;
 	default:
-		value = ETbSame2Enum2::TSE_VALUE1;
+		ConvertedEnum = ETbSame2Enum2::TSE_VALUE1;
 	}
 	return bSuccessful;
 }

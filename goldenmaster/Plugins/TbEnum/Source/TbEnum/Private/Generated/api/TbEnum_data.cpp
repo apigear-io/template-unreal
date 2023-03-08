@@ -19,100 +19,100 @@ limitations under the License.
 /**
  * Enumeration ETbEnumEnum0
  */
-bool toUE4Type(ETbEnumEnum0& value, uint8 v)
+bool UTbEnumLibrary::toTbEnumEnum0(ETbEnumEnum0& ConvertedEnum, uint8 InValue)
 {
 	bool bSuccessful = false;
-	switch (v)
+	switch (InValue)
 	{
 	case 0:
-		value = ETbEnumEnum0::TEE_VALUE0;
+		ConvertedEnum = ETbEnumEnum0::TEE_VALUE0;
 		bSuccessful = true;
 		break;
 	case 1:
-		value = ETbEnumEnum0::TEE_VALUE1;
+		ConvertedEnum = ETbEnumEnum0::TEE_VALUE1;
 		bSuccessful = true;
 		break;
 	case 2:
-		value = ETbEnumEnum0::TEE_VALUE2;
+		ConvertedEnum = ETbEnumEnum0::TEE_VALUE2;
 		bSuccessful = true;
 		break;
 	default:
-		value = ETbEnumEnum0::TEE_VALUE0;
+		ConvertedEnum = ETbEnumEnum0::TEE_VALUE0;
 	}
 	return bSuccessful;
 }
 /**
  * Enumeration ETbEnumEnum1
  */
-bool toUE4Type(ETbEnumEnum1& value, uint8 v)
+bool UTbEnumLibrary::toTbEnumEnum1(ETbEnumEnum1& ConvertedEnum, uint8 InValue)
 {
 	bool bSuccessful = false;
-	switch (v)
+	switch (InValue)
 	{
 	case 1:
-		value = ETbEnumEnum1::TEE_VALUE1;
+		ConvertedEnum = ETbEnumEnum1::TEE_VALUE1;
 		bSuccessful = true;
 		break;
 	case 2:
-		value = ETbEnumEnum1::TEE_VALUE2;
+		ConvertedEnum = ETbEnumEnum1::TEE_VALUE2;
 		bSuccessful = true;
 		break;
 	case 3:
-		value = ETbEnumEnum1::TEE_VALUE3;
+		ConvertedEnum = ETbEnumEnum1::TEE_VALUE3;
 		bSuccessful = true;
 		break;
 	default:
-		value = ETbEnumEnum1::TEE_VALUE1;
+		ConvertedEnum = ETbEnumEnum1::TEE_VALUE1;
 	}
 	return bSuccessful;
 }
 /**
  * Enumeration ETbEnumEnum2
  */
-bool toUE4Type(ETbEnumEnum2& value, uint8 v)
+bool UTbEnumLibrary::toTbEnumEnum2(ETbEnumEnum2& ConvertedEnum, uint8 InValue)
 {
 	bool bSuccessful = false;
-	switch (v)
+	switch (InValue)
 	{
 	case 2:
-		value = ETbEnumEnum2::TEE_VALUE2;
+		ConvertedEnum = ETbEnumEnum2::TEE_VALUE2;
 		bSuccessful = true;
 		break;
 	case 1:
-		value = ETbEnumEnum2::TEE_VALUE1;
+		ConvertedEnum = ETbEnumEnum2::TEE_VALUE1;
 		bSuccessful = true;
 		break;
 	case 0:
-		value = ETbEnumEnum2::TEE_VALUE0;
+		ConvertedEnum = ETbEnumEnum2::TEE_VALUE0;
 		bSuccessful = true;
 		break;
 	default:
-		value = ETbEnumEnum2::TEE_VALUE2;
+		ConvertedEnum = ETbEnumEnum2::TEE_VALUE2;
 	}
 	return bSuccessful;
 }
 /**
  * Enumeration ETbEnumEnum3
  */
-bool toUE4Type(ETbEnumEnum3& value, uint8 v)
+bool UTbEnumLibrary::toTbEnumEnum3(ETbEnumEnum3& ConvertedEnum, uint8 InValue)
 {
 	bool bSuccessful = false;
-	switch (v)
+	switch (InValue)
 	{
 	case 3:
-		value = ETbEnumEnum3::TEE_VALUE3;
+		ConvertedEnum = ETbEnumEnum3::TEE_VALUE3;
 		bSuccessful = true;
 		break;
 	case 2:
-		value = ETbEnumEnum3::TEE_VALUE2;
+		ConvertedEnum = ETbEnumEnum3::TEE_VALUE2;
 		bSuccessful = true;
 		break;
 	case 1:
-		value = ETbEnumEnum3::TEE_VALUE1;
+		ConvertedEnum = ETbEnumEnum3::TEE_VALUE1;
 		bSuccessful = true;
 		break;
 	default:
-		value = ETbEnumEnum3::TEE_VALUE3;
+		ConvertedEnum = ETbEnumEnum3::TEE_VALUE3;
 	}
 	return bSuccessful;
 }

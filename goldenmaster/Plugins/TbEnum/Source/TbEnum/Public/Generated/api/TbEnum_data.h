@@ -34,11 +34,6 @@ enum class ETbEnumEnum0 : uint8
 };
 
 /**
- * Convert from uint8 to ETbEnumEnum0
- */
-bool toUE4Type(ETbEnumEnum0& value, uint8 v);
-
-/**
  * Enumeration ETbEnumEnum1
  */
 UENUM(BlueprintType)
@@ -51,11 +46,6 @@ enum class ETbEnumEnum1 : uint8
 };
 
 /**
- * Convert from uint8 to ETbEnumEnum1
- */
-bool toUE4Type(ETbEnumEnum1& value, uint8 v);
-
-/**
  * Enumeration ETbEnumEnum2
  */
 UENUM(BlueprintType)
@@ -65,11 +55,6 @@ enum class ETbEnumEnum2 : uint8
 	TEE_VALUE1 = 1 UMETA(Displayname = "value1"),
 	TEE_VALUE0 = 0 UMETA(Displayname = "value0")
 };
-
-/**
- * Convert from uint8 to ETbEnumEnum2
- */
-bool toUE4Type(ETbEnumEnum2& value, uint8 v);
 
 /**
  * Enumeration ETbEnumEnum3
@@ -84,6 +69,26 @@ enum class ETbEnumEnum3 : uint8
 };
 
 /**
- * Convert from uint8 to ETbEnumEnum3
+ * @brief BP Function library for data types
  */
-bool toUE4Type(ETbEnumEnum3& value, uint8 v);
+UCLASS(meta = (BlueprintThreadSafe))
+class TBENUM_API UTbEnumLibrary : public UBlueprintFunctionLibrary
+{
+	GENERATED_BODY()
+
+	/* Convert from uint8 to ETbEnumEnum0 @return true if successful */
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbEnum")
+	static bool toTbEnumEnum0(ETbEnumEnum0& ConvertedEnum, uint8 InValue);
+
+	/* Convert from uint8 to ETbEnumEnum1 @return true if successful */
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbEnum")
+	static bool toTbEnumEnum1(ETbEnumEnum1& ConvertedEnum, uint8 InValue);
+
+	/* Convert from uint8 to ETbEnumEnum2 @return true if successful */
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbEnum")
+	static bool toTbEnumEnum2(ETbEnumEnum2& ConvertedEnum, uint8 InValue);
+
+	/* Convert from uint8 to ETbEnumEnum3 @return true if successful */
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbEnum")
+	static bool toTbEnumEnum3(ETbEnumEnum3& ConvertedEnum, uint8 InValue);
+};

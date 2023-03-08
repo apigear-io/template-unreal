@@ -26,19 +26,19 @@ limitations under the License.
 /**
  * Enumeration {{$class}}
  */
-bool toUE4Type({{$class}}& value, uint8 v)
+bool U{{ $ModuleName }}Library::to{{$moduleEnumName}}({{$class}}& ConvertedEnum, uint8 InValue)
 {
 	bool bSuccessful = false;
-	switch (v)
+	switch (InValue)
 	{
 {{- range .Members }}
 	case {{.Value}}:
-		value = {{$class}}::{{ abbreviate $moduleEnumName }}_{{CAMEL .Name}};
+		ConvertedEnum = {{$class}}::{{ abbreviate $moduleEnumName }}_{{CAMEL .Name}};
 		bSuccessful = true;
 		break;
 {{- end }}
 	default:
-		value = {{$class}}::{{ abbreviate $moduleEnumName }}_{{CAMEL .Default.Name}};
+		ConvertedEnum = {{$class}}::{{ abbreviate $moduleEnumName }}_{{CAMEL .Default.Name}};
 	}
 	return bSuccessful;
 }

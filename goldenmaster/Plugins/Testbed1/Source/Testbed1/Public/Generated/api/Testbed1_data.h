@@ -89,6 +89,7 @@ UCLASS(meta = (BlueprintThreadSafe))
 class TESTBED1_API UTestbed1Library : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
+
 	/* Returns true if Testbed1StructBool A is equal to Testbed1StructBool B (A == B) */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "Equal (Testbed1StructBool)", CompactNodeTitle = "==", Keywords = "== equal"), Category = "ApiGear|Testbed1")
 	static bool EqualEqual_Testbed1StructBoolTestbed1StructBool(FTestbed1StructBool A, FTestbed1StructBool B);

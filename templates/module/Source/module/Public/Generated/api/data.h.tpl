@@ -42,11 +42,6 @@ enum class {{$class}} : uint8
 {{- end }}
 {{- if not $hasZeroDefaultVal}},{{nl}}	UNSPECIFIED = 0 UMETA(Hidden){{end}}
 };
-
-/**
- * Convert from uint8 to {{$class}}
- */
-bool toUE4Type({{$class}}& value, uint8 v);
 {{ end }}
 {{- range .Module.Structs }}
 {{- $class := printf "F%s%s" $ModuleName .Name }}
@@ -67,7 +62,7 @@ struct {{$API_MACRO}} {{$class }} : public FTableRowBase
 	bool operator!=(const {{$class }}& rhs) const;
 };
 {{ end }}
-{{- if .Module.Structs }}
+{{- if or .Module.Structs .Module.Enums }}
 /**
  * @brief BP Function library for data types
  */
@@ -75,10 +70,22 @@ UCLASS(meta = (BlueprintThreadSafe))
 class {{$API_MACRO}} U{{ $ModuleName }}Library : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
+{{- if .Module.Enums }}{{nl}}
+{{- range $idx, $elem := .Module.Enums }}
+{{- $moduleEnumName := printf "%s%s" $ModuleName .Name }}
+{{- $class := printf "E%s%s" $ModuleName .Name }}
+{{- if $idx}}{{nl}}{{end}}
+	/* Convert from uint8 to {{$class}} @return true if successful */
+	UFUNCTION(BlueprintCallable, Category = "{{$Category}}")
+	static bool to{{$moduleEnumName}}({{$class}}& ConvertedEnum, uint8 InValue);
+{{- end }}
+{{- end }}
+
+{{- if .Module.Structs }}{{nl}}
 {{- range $idx, $elem := .Module.Structs }}
-	{{- if $idx}}{{nl}}{{end}}
 {{- $class := printf "F%s%s" $ModuleName .Name }}
 {{- $shortname := printf "%s%s" $ModuleName .Name }}
+{{- if $idx}}{{nl}}{{end}}
 	/* Returns true if {{ $shortname }} A is equal to {{ $shortname }} B (A == B) */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "Equal ({{ $shortname }})", CompactNodeTitle = "==", Keywords = "== equal"), Category = "{{$Category}}")
 	static bool EqualEqual_{{ $shortname }}{{ $shortname }}({{ $class }} A, {{ $class }} B);
@@ -87,6 +94,7 @@ class {{$API_MACRO}} U{{ $ModuleName }}Library : public UBlueprintFunctionLibrar
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "Not Equal ({{ $shortname }})", CompactNodeTitle = "!=", Keywords = "!= not equal"), Category = "{{$Category}}")
 	static bool NotEqual_{{ $shortname }}{{ $shortname }}({{ $class }} A, {{ $class }} B);
 {{- end }}
+{{- end }}
 };
 {{- end }}
-{{- if .Module.Structs }}{{nl}}{{ end -}}
+{{- if or .Module.Structs .Module.Enums }}{{nl}}{{ end -}}

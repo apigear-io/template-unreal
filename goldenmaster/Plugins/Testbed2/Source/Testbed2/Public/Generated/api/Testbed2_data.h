@@ -36,11 +36,6 @@ enum class ETestbed2Enum1 : uint8
 };
 
 /**
- * Convert from uint8 to ETestbed2Enum1
- */
-bool toUE4Type(ETestbed2Enum1& value, uint8 v);
-
-/**
  * Enumeration ETestbed2Enum2
  */
 UENUM(BlueprintType)
@@ -54,11 +49,6 @@ enum class ETestbed2Enum2 : uint8
 };
 
 /**
- * Convert from uint8 to ETestbed2Enum2
- */
-bool toUE4Type(ETestbed2Enum2& value, uint8 v);
-
-/**
  * Enumeration ETestbed2Enum3
  */
 UENUM(BlueprintType)
@@ -70,11 +60,6 @@ enum class ETestbed2Enum3 : uint8
 	TE_VALUE4 = 4 UMETA(Displayname = "value4"),
 	UNSPECIFIED = 0 UMETA(Hidden)
 };
-
-/**
- * Convert from uint8 to ETestbed2Enum3
- */
-bool toUE4Type(ETestbed2Enum3& value, uint8 v);
 
 /**
  * Struct FTestbed2Struct1
@@ -215,6 +200,19 @@ UCLASS(meta = (BlueprintThreadSafe))
 class TESTBED2_API UTestbed2Library : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
+
+	/* Convert from uint8 to ETestbed2Enum1 @return true if successful */
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2")
+	static bool toTestbed2Enum1(ETestbed2Enum1& ConvertedEnum, uint8 InValue);
+
+	/* Convert from uint8 to ETestbed2Enum2 @return true if successful */
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2")
+	static bool toTestbed2Enum2(ETestbed2Enum2& ConvertedEnum, uint8 InValue);
+
+	/* Convert from uint8 to ETestbed2Enum3 @return true if successful */
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2")
+	static bool toTestbed2Enum3(ETestbed2Enum3& ConvertedEnum, uint8 InValue);
+
 	/* Returns true if Testbed2Struct1 A is equal to Testbed2Struct1 B (A == B) */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "Equal (Testbed2Struct1)", CompactNodeTitle = "==", Keywords = "== equal"), Category = "ApiGear|Testbed2")
 	static bool EqualEqual_Testbed2Struct1Testbed2Struct1(FTestbed2Struct1 A, FTestbed2Struct1 B);

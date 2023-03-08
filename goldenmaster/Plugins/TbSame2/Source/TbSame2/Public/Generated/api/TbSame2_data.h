@@ -34,11 +34,6 @@ enum class ETbSame2Enum1 : uint8
 };
 
 /**
- * Convert from uint8 to ETbSame2Enum1
- */
-bool toUE4Type(ETbSame2Enum1& value, uint8 v);
-
-/**
  * Enumeration ETbSame2Enum2
  */
 UENUM(BlueprintType)
@@ -48,11 +43,6 @@ enum class ETbSame2Enum2 : uint8
 	TSE_VALUE2 = 2 UMETA(Displayname = "value2"),
 	UNSPECIFIED = 0 UMETA(Hidden)
 };
-
-/**
- * Convert from uint8 to ETbSame2Enum2
- */
-bool toUE4Type(ETbSame2Enum2& value, uint8 v);
 
 /**
  * Struct FTbSame2Struct1
@@ -103,6 +93,15 @@ UCLASS(meta = (BlueprintThreadSafe))
 class TBSAME2_API UTbSame2Library : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
+
+	/* Convert from uint8 to ETbSame2Enum1 @return true if successful */
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2")
+	static bool toTbSame2Enum1(ETbSame2Enum1& ConvertedEnum, uint8 InValue);
+
+	/* Convert from uint8 to ETbSame2Enum2 @return true if successful */
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2")
+	static bool toTbSame2Enum2(ETbSame2Enum2& ConvertedEnum, uint8 InValue);
+
 	/* Returns true if TbSame2Struct1 A is equal to TbSame2Struct1 B (A == B) */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "Equal (TbSame2Struct1)", CompactNodeTitle = "==", Keywords = "== equal"), Category = "ApiGear|TbSame2")
 	static bool EqualEqual_TbSame2Struct1TbSame2Struct1(FTbSame2Struct1 A, FTbSame2Struct1 B);
