@@ -27,7 +27,7 @@ limitations under the License.
 
 DEFINE_LOG_CATEGORY(LogTbSame1SameEnum2InterfaceLoggingDecorator);
 
-class FTbSame1SameEnum2InterfaceLatentAction : public FPendingLatentAction
+class FTbSame1SameEnum2InterfaceLoggingLatentAction : public FPendingLatentAction
 {
 private:
 	FName ExecutionFunction;
@@ -36,7 +36,7 @@ private:
 	bool bInProgress;
 
 public:
-	FTbSame1SameEnum2InterfaceLatentAction(const FLatentActionInfo& LatentInfo)
+	FTbSame1SameEnum2InterfaceLoggingLatentAction(const FLatentActionInfo& LatentInfo)
 		: ExecutionFunction(LatentInfo.ExecutionFunction)
 		, OutputLink(LatentInfo.Linkage)
 		, CallbackTarget(LatentInfo.CallbackTarget)
@@ -171,7 +171,7 @@ void UTbSame1SameEnum2InterfaceLoggingDecorator::Func1Async_Implementation(UObje
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTbSame1SameEnum2InterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSame1SameEnum2InterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FTbSame1SameEnum2InterfaceLoggingLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSame1SameEnum2InterfaceLoggingLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -180,7 +180,7 @@ void UTbSame1SameEnum2InterfaceLoggingDecorator::Func1Async_Implementation(UObje
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FTbSame1SameEnum2InterfaceLatentAction* CompletionAction = new FTbSame1SameEnum2InterfaceLatentAction(LatentInfo);
+		FTbSame1SameEnum2InterfaceLoggingLatentAction* CompletionAction = new FTbSame1SameEnum2InterfaceLoggingLatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
 		Async(EAsyncExecution::Thread,
 			[Param1, this, &Result, CompletionAction]()
@@ -204,7 +204,7 @@ void UTbSame1SameEnum2InterfaceLoggingDecorator::Func2Async_Implementation(UObje
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTbSame1SameEnum2InterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSame1SameEnum2InterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FTbSame1SameEnum2InterfaceLoggingLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSame1SameEnum2InterfaceLoggingLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -213,7 +213,7 @@ void UTbSame1SameEnum2InterfaceLoggingDecorator::Func2Async_Implementation(UObje
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FTbSame1SameEnum2InterfaceLatentAction* CompletionAction = new FTbSame1SameEnum2InterfaceLatentAction(LatentInfo);
+		FTbSame1SameEnum2InterfaceLoggingLatentAction* CompletionAction = new FTbSame1SameEnum2InterfaceLoggingLatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
 		Async(EAsyncExecution::Thread,
 			[Param1, Param2, this, &Result, CompletionAction]()

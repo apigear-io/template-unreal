@@ -27,7 +27,7 @@ limitations under the License.
 
 DEFINE_LOG_CATEGORY(LogTbSimpleSimpleArrayInterfaceLoggingDecorator);
 
-class FTbSimpleSimpleArrayInterfaceLatentAction : public FPendingLatentAction
+class FTbSimpleSimpleArrayInterfaceLoggingLatentAction : public FPendingLatentAction
 {
 private:
 	FName ExecutionFunction;
@@ -36,7 +36,7 @@ private:
 	bool bInProgress;
 
 public:
-	FTbSimpleSimpleArrayInterfaceLatentAction(const FLatentActionInfo& LatentInfo)
+	FTbSimpleSimpleArrayInterfaceLoggingLatentAction(const FLatentActionInfo& LatentInfo)
 		: ExecutionFunction(LatentInfo.ExecutionFunction)
 		, OutputLink(LatentInfo.Linkage)
 		, CallbackTarget(LatentInfo.CallbackTarget)
@@ -345,7 +345,7 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::FuncBoolAsync_Implementation
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTbSimpleSimpleArrayInterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSimpleSimpleArrayInterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FTbSimpleSimpleArrayInterfaceLoggingLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSimpleSimpleArrayInterfaceLoggingLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -354,7 +354,7 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::FuncBoolAsync_Implementation
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FTbSimpleSimpleArrayInterfaceLatentAction* CompletionAction = new FTbSimpleSimpleArrayInterfaceLatentAction(LatentInfo);
+		FTbSimpleSimpleArrayInterfaceLoggingLatentAction* CompletionAction = new FTbSimpleSimpleArrayInterfaceLoggingLatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
 		Async(EAsyncExecution::Thread,
 			[ParamBool, this, &Result, CompletionAction]()
@@ -378,7 +378,7 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::FuncIntAsync_Implementation(
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTbSimpleSimpleArrayInterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSimpleSimpleArrayInterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FTbSimpleSimpleArrayInterfaceLoggingLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSimpleSimpleArrayInterfaceLoggingLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -387,7 +387,7 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::FuncIntAsync_Implementation(
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FTbSimpleSimpleArrayInterfaceLatentAction* CompletionAction = new FTbSimpleSimpleArrayInterfaceLatentAction(LatentInfo);
+		FTbSimpleSimpleArrayInterfaceLoggingLatentAction* CompletionAction = new FTbSimpleSimpleArrayInterfaceLoggingLatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
 		Async(EAsyncExecution::Thread,
 			[ParamInt, this, &Result, CompletionAction]()
@@ -411,7 +411,7 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::FuncInt32Async_Implementatio
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTbSimpleSimpleArrayInterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSimpleSimpleArrayInterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FTbSimpleSimpleArrayInterfaceLoggingLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSimpleSimpleArrayInterfaceLoggingLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -420,7 +420,7 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::FuncInt32Async_Implementatio
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FTbSimpleSimpleArrayInterfaceLatentAction* CompletionAction = new FTbSimpleSimpleArrayInterfaceLatentAction(LatentInfo);
+		FTbSimpleSimpleArrayInterfaceLoggingLatentAction* CompletionAction = new FTbSimpleSimpleArrayInterfaceLoggingLatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
 		Async(EAsyncExecution::Thread,
 			[ParamInt32, this, &Result, CompletionAction]()
@@ -444,7 +444,7 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::FuncInt64Async_Implementatio
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTbSimpleSimpleArrayInterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSimpleSimpleArrayInterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FTbSimpleSimpleArrayInterfaceLoggingLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSimpleSimpleArrayInterfaceLoggingLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -453,7 +453,7 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::FuncInt64Async_Implementatio
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FTbSimpleSimpleArrayInterfaceLatentAction* CompletionAction = new FTbSimpleSimpleArrayInterfaceLatentAction(LatentInfo);
+		FTbSimpleSimpleArrayInterfaceLoggingLatentAction* CompletionAction = new FTbSimpleSimpleArrayInterfaceLoggingLatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
 		Async(EAsyncExecution::Thread,
 			[ParamInt64, this, &Result, CompletionAction]()
@@ -477,7 +477,7 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::FuncFloatAsync_Implementatio
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTbSimpleSimpleArrayInterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSimpleSimpleArrayInterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FTbSimpleSimpleArrayInterfaceLoggingLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSimpleSimpleArrayInterfaceLoggingLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -486,7 +486,7 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::FuncFloatAsync_Implementatio
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FTbSimpleSimpleArrayInterfaceLatentAction* CompletionAction = new FTbSimpleSimpleArrayInterfaceLatentAction(LatentInfo);
+		FTbSimpleSimpleArrayInterfaceLoggingLatentAction* CompletionAction = new FTbSimpleSimpleArrayInterfaceLoggingLatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
 		Async(EAsyncExecution::Thread,
 			[ParamFloat, this, &Result, CompletionAction]()
@@ -510,7 +510,7 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::FuncFloat32Async_Implementat
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTbSimpleSimpleArrayInterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSimpleSimpleArrayInterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FTbSimpleSimpleArrayInterfaceLoggingLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSimpleSimpleArrayInterfaceLoggingLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -519,7 +519,7 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::FuncFloat32Async_Implementat
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FTbSimpleSimpleArrayInterfaceLatentAction* CompletionAction = new FTbSimpleSimpleArrayInterfaceLatentAction(LatentInfo);
+		FTbSimpleSimpleArrayInterfaceLoggingLatentAction* CompletionAction = new FTbSimpleSimpleArrayInterfaceLoggingLatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
 		Async(EAsyncExecution::Thread,
 			[ParamFloat32, this, &Result, CompletionAction]()
@@ -543,7 +543,7 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::FuncFloat64Async_Implementat
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTbSimpleSimpleArrayInterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSimpleSimpleArrayInterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FTbSimpleSimpleArrayInterfaceLoggingLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSimpleSimpleArrayInterfaceLoggingLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -552,7 +552,7 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::FuncFloat64Async_Implementat
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FTbSimpleSimpleArrayInterfaceLatentAction* CompletionAction = new FTbSimpleSimpleArrayInterfaceLatentAction(LatentInfo);
+		FTbSimpleSimpleArrayInterfaceLoggingLatentAction* CompletionAction = new FTbSimpleSimpleArrayInterfaceLoggingLatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
 		Async(EAsyncExecution::Thread,
 			[ParamFloat, this, &Result, CompletionAction]()
@@ -576,7 +576,7 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::FuncStringAsync_Implementati
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTbSimpleSimpleArrayInterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSimpleSimpleArrayInterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FTbSimpleSimpleArrayInterfaceLoggingLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSimpleSimpleArrayInterfaceLoggingLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -585,7 +585,7 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::FuncStringAsync_Implementati
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FTbSimpleSimpleArrayInterfaceLatentAction* CompletionAction = new FTbSimpleSimpleArrayInterfaceLatentAction(LatentInfo);
+		FTbSimpleSimpleArrayInterfaceLoggingLatentAction* CompletionAction = new FTbSimpleSimpleArrayInterfaceLoggingLatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
 		Async(EAsyncExecution::Thread,
 			[ParamString, this, &Result, CompletionAction]()

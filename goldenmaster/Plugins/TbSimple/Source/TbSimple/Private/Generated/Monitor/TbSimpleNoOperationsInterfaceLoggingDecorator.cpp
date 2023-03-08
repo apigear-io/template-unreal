@@ -27,7 +27,7 @@ limitations under the License.
 
 DEFINE_LOG_CATEGORY(LogTbSimpleNoOperationsInterfaceLoggingDecorator);
 
-class FTbSimpleNoOperationsInterfaceLatentAction : public FPendingLatentAction
+class FTbSimpleNoOperationsInterfaceLoggingLatentAction : public FPendingLatentAction
 {
 private:
 	FName ExecutionFunction;
@@ -36,7 +36,7 @@ private:
 	bool bInProgress;
 
 public:
-	FTbSimpleNoOperationsInterfaceLatentAction(const FLatentActionInfo& LatentInfo)
+	FTbSimpleNoOperationsInterfaceLoggingLatentAction(const FLatentActionInfo& LatentInfo)
 		: ExecutionFunction(LatentInfo.ExecutionFunction)
 		, OutputLink(LatentInfo.Linkage)
 		, CallbackTarget(LatentInfo.CallbackTarget)

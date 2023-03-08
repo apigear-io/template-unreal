@@ -27,7 +27,7 @@ limitations under the License.
 
 DEFINE_LOG_CATEGORY(LogTestbed2NestedStruct3InterfaceLoggingDecorator);
 
-class FTestbed2NestedStruct3InterfaceLatentAction : public FPendingLatentAction
+class FTestbed2NestedStruct3InterfaceLoggingLatentAction : public FPendingLatentAction
 {
 private:
 	FName ExecutionFunction;
@@ -36,7 +36,7 @@ private:
 	bool bInProgress;
 
 public:
-	FTestbed2NestedStruct3InterfaceLatentAction(const FLatentActionInfo& LatentInfo)
+	FTestbed2NestedStruct3InterfaceLoggingLatentAction(const FLatentActionInfo& LatentInfo)
 		: ExecutionFunction(LatentInfo.ExecutionFunction)
 		, OutputLink(LatentInfo.Linkage)
 		, CallbackTarget(LatentInfo.CallbackTarget)
@@ -200,7 +200,7 @@ void UTestbed2NestedStruct3InterfaceLoggingDecorator::Func1Async_Implementation(
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTestbed2NestedStruct3InterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTestbed2NestedStruct3InterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FTestbed2NestedStruct3InterfaceLoggingLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTestbed2NestedStruct3InterfaceLoggingLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -209,7 +209,7 @@ void UTestbed2NestedStruct3InterfaceLoggingDecorator::Func1Async_Implementation(
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FTestbed2NestedStruct3InterfaceLatentAction* CompletionAction = new FTestbed2NestedStruct3InterfaceLatentAction(LatentInfo);
+		FTestbed2NestedStruct3InterfaceLoggingLatentAction* CompletionAction = new FTestbed2NestedStruct3InterfaceLoggingLatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
 		Async(EAsyncExecution::Thread,
 			[Param1, this, &Result, CompletionAction]()
@@ -233,7 +233,7 @@ void UTestbed2NestedStruct3InterfaceLoggingDecorator::Func2Async_Implementation(
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTestbed2NestedStruct3InterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTestbed2NestedStruct3InterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FTestbed2NestedStruct3InterfaceLoggingLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTestbed2NestedStruct3InterfaceLoggingLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -242,7 +242,7 @@ void UTestbed2NestedStruct3InterfaceLoggingDecorator::Func2Async_Implementation(
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FTestbed2NestedStruct3InterfaceLatentAction* CompletionAction = new FTestbed2NestedStruct3InterfaceLatentAction(LatentInfo);
+		FTestbed2NestedStruct3InterfaceLoggingLatentAction* CompletionAction = new FTestbed2NestedStruct3InterfaceLoggingLatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
 		Async(EAsyncExecution::Thread,
 			[Param1, Param2, this, &Result, CompletionAction]()
@@ -266,7 +266,7 @@ void UTestbed2NestedStruct3InterfaceLoggingDecorator::Func3Async_Implementation(
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTestbed2NestedStruct3InterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTestbed2NestedStruct3InterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FTestbed2NestedStruct3InterfaceLoggingLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTestbed2NestedStruct3InterfaceLoggingLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -275,7 +275,7 @@ void UTestbed2NestedStruct3InterfaceLoggingDecorator::Func3Async_Implementation(
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FTestbed2NestedStruct3InterfaceLatentAction* CompletionAction = new FTestbed2NestedStruct3InterfaceLatentAction(LatentInfo);
+		FTestbed2NestedStruct3InterfaceLoggingLatentAction* CompletionAction = new FTestbed2NestedStruct3InterfaceLoggingLatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
 		Async(EAsyncExecution::Thread,
 			[Param1, Param2, Param3, this, &Result, CompletionAction]()

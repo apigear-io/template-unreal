@@ -27,7 +27,7 @@ limitations under the License.
 
 DEFINE_LOG_CATEGORY(LogTbEnumEnumInterfaceLoggingDecorator);
 
-class FTbEnumEnumInterfaceLatentAction : public FPendingLatentAction
+class FTbEnumEnumInterfaceLoggingLatentAction : public FPendingLatentAction
 {
 private:
 	FName ExecutionFunction;
@@ -36,7 +36,7 @@ private:
 	bool bInProgress;
 
 public:
-	FTbEnumEnumInterfaceLatentAction(const FLatentActionInfo& LatentInfo)
+	FTbEnumEnumInterfaceLoggingLatentAction(const FLatentActionInfo& LatentInfo)
 		: ExecutionFunction(LatentInfo.ExecutionFunction)
 		, OutputLink(LatentInfo.Linkage)
 		, CallbackTarget(LatentInfo.CallbackTarget)
@@ -229,7 +229,7 @@ void UTbEnumEnumInterfaceLoggingDecorator::Func0Async_Implementation(UObject* Wo
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTbEnumEnumInterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbEnumEnumInterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FTbEnumEnumInterfaceLoggingLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbEnumEnumInterfaceLoggingLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -238,7 +238,7 @@ void UTbEnumEnumInterfaceLoggingDecorator::Func0Async_Implementation(UObject* Wo
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FTbEnumEnumInterfaceLatentAction* CompletionAction = new FTbEnumEnumInterfaceLatentAction(LatentInfo);
+		FTbEnumEnumInterfaceLoggingLatentAction* CompletionAction = new FTbEnumEnumInterfaceLoggingLatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
 		Async(EAsyncExecution::Thread,
 			[Param0, this, &Result, CompletionAction]()
@@ -262,7 +262,7 @@ void UTbEnumEnumInterfaceLoggingDecorator::Func1Async_Implementation(UObject* Wo
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTbEnumEnumInterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbEnumEnumInterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FTbEnumEnumInterfaceLoggingLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbEnumEnumInterfaceLoggingLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -271,7 +271,7 @@ void UTbEnumEnumInterfaceLoggingDecorator::Func1Async_Implementation(UObject* Wo
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FTbEnumEnumInterfaceLatentAction* CompletionAction = new FTbEnumEnumInterfaceLatentAction(LatentInfo);
+		FTbEnumEnumInterfaceLoggingLatentAction* CompletionAction = new FTbEnumEnumInterfaceLoggingLatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
 		Async(EAsyncExecution::Thread,
 			[Param1, this, &Result, CompletionAction]()
@@ -295,7 +295,7 @@ void UTbEnumEnumInterfaceLoggingDecorator::Func2Async_Implementation(UObject* Wo
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTbEnumEnumInterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbEnumEnumInterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FTbEnumEnumInterfaceLoggingLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbEnumEnumInterfaceLoggingLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -304,7 +304,7 @@ void UTbEnumEnumInterfaceLoggingDecorator::Func2Async_Implementation(UObject* Wo
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FTbEnumEnumInterfaceLatentAction* CompletionAction = new FTbEnumEnumInterfaceLatentAction(LatentInfo);
+		FTbEnumEnumInterfaceLoggingLatentAction* CompletionAction = new FTbEnumEnumInterfaceLoggingLatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
 		Async(EAsyncExecution::Thread,
 			[Param2, this, &Result, CompletionAction]()
@@ -328,7 +328,7 @@ void UTbEnumEnumInterfaceLoggingDecorator::Func3Async_Implementation(UObject* Wo
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTbEnumEnumInterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbEnumEnumInterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FTbEnumEnumInterfaceLoggingLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbEnumEnumInterfaceLoggingLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -337,7 +337,7 @@ void UTbEnumEnumInterfaceLoggingDecorator::Func3Async_Implementation(UObject* Wo
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FTbEnumEnumInterfaceLatentAction* CompletionAction = new FTbEnumEnumInterfaceLatentAction(LatentInfo);
+		FTbEnumEnumInterfaceLoggingLatentAction* CompletionAction = new FTbEnumEnumInterfaceLoggingLatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
 		Async(EAsyncExecution::Thread,
 			[Param3, this, &Result, CompletionAction]()

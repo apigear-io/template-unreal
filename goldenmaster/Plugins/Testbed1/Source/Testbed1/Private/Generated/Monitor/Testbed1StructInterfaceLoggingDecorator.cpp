@@ -27,7 +27,7 @@ limitations under the License.
 
 DEFINE_LOG_CATEGORY(LogTestbed1StructInterfaceLoggingDecorator);
 
-class FTestbed1StructInterfaceLatentAction : public FPendingLatentAction
+class FTestbed1StructInterfaceLoggingLatentAction : public FPendingLatentAction
 {
 private:
 	FName ExecutionFunction;
@@ -36,7 +36,7 @@ private:
 	bool bInProgress;
 
 public:
-	FTestbed1StructInterfaceLatentAction(const FLatentActionInfo& LatentInfo)
+	FTestbed1StructInterfaceLoggingLatentAction(const FLatentActionInfo& LatentInfo)
 		: ExecutionFunction(LatentInfo.ExecutionFunction)
 		, OutputLink(LatentInfo.Linkage)
 		, CallbackTarget(LatentInfo.CallbackTarget)
@@ -229,7 +229,7 @@ void UTestbed1StructInterfaceLoggingDecorator::FuncBoolAsync_Implementation(UObj
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTestbed1StructInterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTestbed1StructInterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FTestbed1StructInterfaceLoggingLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTestbed1StructInterfaceLoggingLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -238,7 +238,7 @@ void UTestbed1StructInterfaceLoggingDecorator::FuncBoolAsync_Implementation(UObj
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FTestbed1StructInterfaceLatentAction* CompletionAction = new FTestbed1StructInterfaceLatentAction(LatentInfo);
+		FTestbed1StructInterfaceLoggingLatentAction* CompletionAction = new FTestbed1StructInterfaceLoggingLatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
 		Async(EAsyncExecution::Thread,
 			[ParamBool, this, &Result, CompletionAction]()
@@ -262,7 +262,7 @@ void UTestbed1StructInterfaceLoggingDecorator::FuncIntAsync_Implementation(UObje
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTestbed1StructInterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTestbed1StructInterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FTestbed1StructInterfaceLoggingLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTestbed1StructInterfaceLoggingLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -271,7 +271,7 @@ void UTestbed1StructInterfaceLoggingDecorator::FuncIntAsync_Implementation(UObje
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FTestbed1StructInterfaceLatentAction* CompletionAction = new FTestbed1StructInterfaceLatentAction(LatentInfo);
+		FTestbed1StructInterfaceLoggingLatentAction* CompletionAction = new FTestbed1StructInterfaceLoggingLatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
 		Async(EAsyncExecution::Thread,
 			[ParamInt, this, &Result, CompletionAction]()
@@ -295,7 +295,7 @@ void UTestbed1StructInterfaceLoggingDecorator::FuncFloatAsync_Implementation(UOb
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTestbed1StructInterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTestbed1StructInterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FTestbed1StructInterfaceLoggingLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTestbed1StructInterfaceLoggingLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -304,7 +304,7 @@ void UTestbed1StructInterfaceLoggingDecorator::FuncFloatAsync_Implementation(UOb
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FTestbed1StructInterfaceLatentAction* CompletionAction = new FTestbed1StructInterfaceLatentAction(LatentInfo);
+		FTestbed1StructInterfaceLoggingLatentAction* CompletionAction = new FTestbed1StructInterfaceLoggingLatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
 		Async(EAsyncExecution::Thread,
 			[ParamFloat, this, &Result, CompletionAction]()
@@ -328,7 +328,7 @@ void UTestbed1StructInterfaceLoggingDecorator::FuncStringAsync_Implementation(UO
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTestbed1StructInterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTestbed1StructInterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FTestbed1StructInterfaceLoggingLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTestbed1StructInterfaceLoggingLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -337,7 +337,7 @@ void UTestbed1StructInterfaceLoggingDecorator::FuncStringAsync_Implementation(UO
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FTestbed1StructInterfaceLatentAction* CompletionAction = new FTestbed1StructInterfaceLatentAction(LatentInfo);
+		FTestbed1StructInterfaceLoggingLatentAction* CompletionAction = new FTestbed1StructInterfaceLoggingLatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
 		Async(EAsyncExecution::Thread,
 			[ParamString, this, &Result, CompletionAction]()

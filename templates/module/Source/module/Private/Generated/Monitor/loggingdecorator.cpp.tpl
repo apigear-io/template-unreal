@@ -37,7 +37,7 @@ limitations under the License.
 
 DEFINE_LOG_CATEGORY(Log{{$DisplayName}});
 
-class F{{$Iface}}LatentAction : public FPendingLatentAction
+class F{{$Iface}}LoggingLatentAction : public FPendingLatentAction
 {
 private:
 	FName ExecutionFunction;
@@ -46,7 +46,7 @@ private:
 	bool bInProgress;
 
 public:
-	F{{$Iface}}LatentAction(const FLatentActionInfo& LatentInfo)
+	F{{$Iface}}LoggingLatentAction(const FLatentActionInfo& LatentInfo)
 		: ExecutionFunction(LatentInfo.ExecutionFunction)
 		, OutputLink(LatentInfo.Linkage)
 		, CallbackTarget(LatentInfo.CallbackTarget)
@@ -185,7 +185,7 @@ void {{$Class}}::{{Camel .Name}}Async_Implementation(UObject* WorldContextObject
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		F{{$Iface}}LatentAction* oldRequest = LatentActionManager.FindExistingAction<F{{$Iface}}LatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		F{{$Iface}}LoggingLatentAction* oldRequest = LatentActionManager.FindExistingAction<F{{$Iface}}LoggingLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -194,7 +194,7 @@ void {{$Class}}::{{Camel .Name}}Async_Implementation(UObject* WorldContextObject
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		F{{$Iface}}LatentAction* CompletionAction = new F{{$Iface}}LatentAction(LatentInfo);
+		F{{$Iface}}LoggingLatentAction* CompletionAction = new F{{$Iface}}LoggingLatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
 		Async(EAsyncExecution::Thread,
 			[{{range .Params}}{{ueVar "" .}}, {{ end }}this, &Result, CompletionAction]()
