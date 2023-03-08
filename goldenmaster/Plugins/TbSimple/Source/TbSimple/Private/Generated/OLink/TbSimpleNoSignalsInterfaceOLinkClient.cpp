@@ -38,7 +38,7 @@ THIRD_PARTY_INCLUDES_END
 
 namespace
 {
-bool IsLogEnabled()
+bool IsTbSimpleNoSignalsInterfaceLogEnabled()
 {
 	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
 	return settings->OLINK_EnableDebugLog;
@@ -124,7 +124,7 @@ void UTbSimpleNoSignalsInterfaceOLinkClient::FuncVoid_Implementation()
 {
 	if (!m_sink->IsReady())
 	{
-		if (IsLogEnabled())
+		if (IsTbSimpleNoSignalsInterfaceLogEnabled())
 		{
 			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		}
@@ -139,7 +139,7 @@ bool UTbSimpleNoSignalsInterfaceOLinkClient::FuncBool_Implementation(bool bParam
 {
 	if (!m_sink->IsReady())
 	{
-		if (IsLogEnabled())
+		if (IsTbSimpleNoSignalsInterfaceLogEnabled())
 		{
 			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		}

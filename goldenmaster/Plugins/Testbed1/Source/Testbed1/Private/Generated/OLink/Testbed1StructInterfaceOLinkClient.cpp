@@ -38,7 +38,7 @@ THIRD_PARTY_INCLUDES_END
 
 namespace
 {
-bool IsLogEnabled()
+bool IsTestbed1StructInterfaceLogEnabled()
 {
 	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
 	return settings->OLINK_EnableDebugLog;
@@ -152,7 +152,7 @@ FTestbed1StructBool UTestbed1StructInterfaceOLinkClient::FuncBool_Implementation
 {
 	if (!m_sink->IsReady())
 	{
-		if (IsLogEnabled())
+		if (IsTestbed1StructInterfaceLogEnabled())
 		{
 			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		}
@@ -175,7 +175,7 @@ FTestbed1StructBool UTestbed1StructInterfaceOLinkClient::FuncInt_Implementation(
 {
 	if (!m_sink->IsReady())
 	{
-		if (IsLogEnabled())
+		if (IsTestbed1StructInterfaceLogEnabled())
 		{
 			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		}
@@ -198,7 +198,7 @@ FTestbed1StructFloat UTestbed1StructInterfaceOLinkClient::FuncFloat_Implementati
 {
 	if (!m_sink->IsReady())
 	{
-		if (IsLogEnabled())
+		if (IsTestbed1StructInterfaceLogEnabled())
 		{
 			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		}
@@ -221,7 +221,7 @@ FTestbed1StructString UTestbed1StructInterfaceOLinkClient::FuncString_Implementa
 {
 	if (!m_sink->IsReady())
 	{
-		if (IsLogEnabled())
+		if (IsTestbed1StructInterfaceLogEnabled())
 		{
 			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		}

@@ -30,7 +30,7 @@ DEFINE_LOG_CATEGORY(LogFTestbed1ModuleFactory);
 
 namespace
 {
-bool IsLogEnabled()
+bool IsTestbed1LogEnabled()
 {
 	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
 	return settings->Tracer_EnableDebugLog;
@@ -40,7 +40,7 @@ bool IsLogEnabled()
 #if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
 TScriptInterface<ITestbed1StructInterfaceInterface> createTestbed1StructInterfaceOLink(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTestbed1LogEnabled())
 	{
 		UE_LOG(LogFTestbed1ModuleFactory, Log, TEXT("createITestbed1StructInterfaceInterface: Using OLink service backend"));
 	}
@@ -57,7 +57,7 @@ TScriptInterface<ITestbed1StructInterfaceInterface> createTestbed1StructInterfac
 
 TScriptInterface<ITestbed1StructInterfaceInterface> createTestbed1StructInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTestbed1LogEnabled())
 	{
 		UE_LOG(LogFTestbed1ModuleFactory, Log, TEXT("createITestbed1StructInterfaceInterface: Using local service backend"));
 	}
@@ -91,7 +91,7 @@ TScriptInterface<ITestbed1StructInterfaceInterface> FTestbed1ModuleFactory::crea
 
 TScriptInterface<ITestbed1StructInterfaceInterface> createTestbed1StructInterfaceOLink(FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTestbed1LogEnabled())
 	{
 		UE_LOG(LogFTestbed1ModuleFactory, Log, TEXT("createITestbed1StructInterfaceInterface: Using OLink service backend"));
 	}
@@ -102,7 +102,7 @@ TScriptInterface<ITestbed1StructInterfaceInterface> createTestbed1StructInterfac
 
 TScriptInterface<ITestbed1StructInterfaceInterface> createTestbed1StructInterface(FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTestbed1LogEnabled())
 	{
 		UE_LOG(LogFTestbed1ModuleFactory, Log, TEXT("createITestbed1StructInterfaceInterface: Using local service backend"));
 	}
@@ -130,7 +130,7 @@ TScriptInterface<ITestbed1StructInterfaceInterface> FTestbed1ModuleFactory::crea
 #if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
 TScriptInterface<ITestbed1StructArrayInterfaceInterface> createTestbed1StructArrayInterfaceOLink(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTestbed1LogEnabled())
 	{
 		UE_LOG(LogFTestbed1ModuleFactory, Log, TEXT("createITestbed1StructArrayInterfaceInterface: Using OLink service backend"));
 	}
@@ -147,7 +147,7 @@ TScriptInterface<ITestbed1StructArrayInterfaceInterface> createTestbed1StructArr
 
 TScriptInterface<ITestbed1StructArrayInterfaceInterface> createTestbed1StructArrayInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTestbed1LogEnabled())
 	{
 		UE_LOG(LogFTestbed1ModuleFactory, Log, TEXT("createITestbed1StructArrayInterfaceInterface: Using local service backend"));
 	}
@@ -181,7 +181,7 @@ TScriptInterface<ITestbed1StructArrayInterfaceInterface> FTestbed1ModuleFactory:
 
 TScriptInterface<ITestbed1StructArrayInterfaceInterface> createTestbed1StructArrayInterfaceOLink(FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTestbed1LogEnabled())
 	{
 		UE_LOG(LogFTestbed1ModuleFactory, Log, TEXT("createITestbed1StructArrayInterfaceInterface: Using OLink service backend"));
 	}
@@ -192,7 +192,7 @@ TScriptInterface<ITestbed1StructArrayInterfaceInterface> createTestbed1StructArr
 
 TScriptInterface<ITestbed1StructArrayInterfaceInterface> createTestbed1StructArrayInterface(FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTestbed1LogEnabled())
 	{
 		UE_LOG(LogFTestbed1ModuleFactory, Log, TEXT("createITestbed1StructArrayInterfaceInterface: Using local service backend"));
 	}

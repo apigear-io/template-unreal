@@ -38,7 +38,7 @@ THIRD_PARTY_INCLUDES_END
 
 namespace
 {
-bool IsLogEnabled()
+bool IsTbSimpleNoOperationsInterfaceLogEnabled()
 {
 	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
 	return settings->OLINK_EnableDebugLog;

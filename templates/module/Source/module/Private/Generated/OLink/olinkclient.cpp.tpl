@@ -32,7 +32,7 @@ THIRD_PARTY_INCLUDES_END
 
 namespace
 {
-bool IsLogEnabled()
+bool Is{{$DisplayName}}LogEnabled()
 {
 	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
 	return settings->OLINK_EnableDebugLog;
@@ -120,7 +120,7 @@ void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
 	{{- if .Return.IsVoid }}
 	if (!m_sink->IsReady())
 	{
-		if (IsLogEnabled())
+		if (Is{{$DisplayName}}LogEnabled())
 		{
 			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		}
@@ -132,7 +132,7 @@ void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
 	{{- else }}
 	if (!m_sink->IsReady())
 	{
-		if (IsLogEnabled())
+		if (Is{{$DisplayName}}LogEnabled())
 		{
 			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		}

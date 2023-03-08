@@ -40,7 +40,7 @@ DEFINE_LOG_CATEGORY(Log{{$mclass}});
 
 namespace
 {
-bool IsLogEnabled()
+bool Is{{$ModuleName}}LogEnabled()
 {
 	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
 	return settings->Tracer_EnableDebugLog;
@@ -56,7 +56,7 @@ bool IsLogEnabled()
 {{- if $.Features.olink }}
 TScriptInterface<I{{$class}}Interface> create{{$class}}OLink(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (Is{{$ModuleName}}LogEnabled())
 	{
 		UE_LOG(Log{{$mclass}}, Log, TEXT("create{{$iclass}}: Using OLink service backend"));
 	}
@@ -75,7 +75,7 @@ TScriptInterface<I{{$class}}Interface> create{{$class}}OLink(UGameInstance* Game
 
 TScriptInterface<I{{$class}}Interface> create{{$class}}(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (Is{{$ModuleName}}LogEnabled())
 	{
 		UE_LOG(Log{{$mclass}}, Log, TEXT("create{{$iclass}}: Using local service backend"));
 	}
@@ -115,7 +115,7 @@ TScriptInterface<I{{$class}}Interface> {{$mclass}}::create{{$iclass}}(UGameInsta
 
 TScriptInterface<I{{$class}}Interface> create{{$class}}OLink(FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (Is{{$ModuleName}}LogEnabled())
 	{
 		UE_LOG(Log{{$mclass}}, Log, TEXT("create{{$iclass}}: Using OLink service backend"));
 	}
@@ -128,7 +128,7 @@ TScriptInterface<I{{$class}}Interface> create{{$class}}OLink(FSubsystemCollectio
 
 TScriptInterface<I{{$class}}Interface> create{{$class}}(FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (Is{{$ModuleName}}LogEnabled())
 	{
 		UE_LOG(Log{{$mclass}}, Log, TEXT("create{{$iclass}}: Using local service backend"));
 	}

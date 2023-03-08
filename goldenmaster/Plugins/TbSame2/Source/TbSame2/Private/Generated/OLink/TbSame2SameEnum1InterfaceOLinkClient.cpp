@@ -38,7 +38,7 @@ THIRD_PARTY_INCLUDES_END
 
 namespace
 {
-bool IsLogEnabled()
+bool IsTbSame2SameEnum1InterfaceLogEnabled()
 {
 	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
 	return settings->OLINK_EnableDebugLog;
@@ -110,7 +110,7 @@ ETbSame2Enum1 UTbSame2SameEnum1InterfaceOLinkClient::Func1_Implementation(ETbSam
 {
 	if (!m_sink->IsReady())
 	{
-		if (IsLogEnabled())
+		if (IsTbSame2SameEnum1InterfaceLogEnabled())
 		{
 			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		}

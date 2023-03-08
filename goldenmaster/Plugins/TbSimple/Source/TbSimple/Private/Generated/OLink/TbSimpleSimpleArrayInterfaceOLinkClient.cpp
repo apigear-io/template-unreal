@@ -38,7 +38,7 @@ THIRD_PARTY_INCLUDES_END
 
 namespace
 {
-bool IsLogEnabled()
+bool IsTbSimpleSimpleArrayInterfaceLogEnabled()
 {
 	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
 	return settings->OLINK_EnableDebugLog;
@@ -208,7 +208,7 @@ TArray<bool> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncBool_Implementation(c
 {
 	if (!m_sink->IsReady())
 	{
-		if (IsLogEnabled())
+		if (IsTbSimpleSimpleArrayInterfaceLogEnabled())
 		{
 			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		}
@@ -231,7 +231,7 @@ TArray<int32> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncInt_Implementation(c
 {
 	if (!m_sink->IsReady())
 	{
-		if (IsLogEnabled())
+		if (IsTbSimpleSimpleArrayInterfaceLogEnabled())
 		{
 			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		}
@@ -254,7 +254,7 @@ TArray<int32> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncInt32_Implementation
 {
 	if (!m_sink->IsReady())
 	{
-		if (IsLogEnabled())
+		if (IsTbSimpleSimpleArrayInterfaceLogEnabled())
 		{
 			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		}
@@ -277,7 +277,7 @@ TArray<int64> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncInt64_Implementation
 {
 	if (!m_sink->IsReady())
 	{
-		if (IsLogEnabled())
+		if (IsTbSimpleSimpleArrayInterfaceLogEnabled())
 		{
 			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		}
@@ -300,7 +300,7 @@ TArray<float> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloat_Implementation
 {
 	if (!m_sink->IsReady())
 	{
-		if (IsLogEnabled())
+		if (IsTbSimpleSimpleArrayInterfaceLogEnabled())
 		{
 			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		}
@@ -323,7 +323,7 @@ TArray<float> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloat32_Implementati
 {
 	if (!m_sink->IsReady())
 	{
-		if (IsLogEnabled())
+		if (IsTbSimpleSimpleArrayInterfaceLogEnabled())
 		{
 			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		}
@@ -346,7 +346,7 @@ TArray<double> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloat64_Implementat
 {
 	if (!m_sink->IsReady())
 	{
-		if (IsLogEnabled())
+		if (IsTbSimpleSimpleArrayInterfaceLogEnabled())
 		{
 			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		}
@@ -369,7 +369,7 @@ TArray<FString> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncString_Implementat
 {
 	if (!m_sink->IsReady())
 	{
-		if (IsLogEnabled())
+		if (IsTbSimpleSimpleArrayInterfaceLogEnabled())
 		{
 			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		}

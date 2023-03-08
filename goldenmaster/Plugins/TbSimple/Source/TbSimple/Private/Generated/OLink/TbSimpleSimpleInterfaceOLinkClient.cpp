@@ -38,7 +38,7 @@ THIRD_PARTY_INCLUDES_END
 
 namespace
 {
-bool IsLogEnabled()
+bool IsTbSimpleSimpleInterfaceLogEnabled()
 {
 	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
 	return settings->OLINK_EnableDebugLog;
@@ -208,7 +208,7 @@ void UTbSimpleSimpleInterfaceOLinkClient::FuncVoid_Implementation()
 {
 	if (!m_sink->IsReady())
 	{
-		if (IsLogEnabled())
+		if (IsTbSimpleSimpleInterfaceLogEnabled())
 		{
 			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		}
@@ -223,7 +223,7 @@ bool UTbSimpleSimpleInterfaceOLinkClient::FuncBool_Implementation(bool bParamBoo
 {
 	if (!m_sink->IsReady())
 	{
-		if (IsLogEnabled())
+		if (IsTbSimpleSimpleInterfaceLogEnabled())
 		{
 			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		}
@@ -246,7 +246,7 @@ int32 UTbSimpleSimpleInterfaceOLinkClient::FuncInt_Implementation(int32 ParamInt
 {
 	if (!m_sink->IsReady())
 	{
-		if (IsLogEnabled())
+		if (IsTbSimpleSimpleInterfaceLogEnabled())
 		{
 			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		}
@@ -269,7 +269,7 @@ int32 UTbSimpleSimpleInterfaceOLinkClient::FuncInt32_Implementation(int32 ParamI
 {
 	if (!m_sink->IsReady())
 	{
-		if (IsLogEnabled())
+		if (IsTbSimpleSimpleInterfaceLogEnabled())
 		{
 			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		}
@@ -292,7 +292,7 @@ int64 UTbSimpleSimpleInterfaceOLinkClient::FuncInt64_Implementation(int64 ParamI
 {
 	if (!m_sink->IsReady())
 	{
-		if (IsLogEnabled())
+		if (IsTbSimpleSimpleInterfaceLogEnabled())
 		{
 			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		}
@@ -315,7 +315,7 @@ float UTbSimpleSimpleInterfaceOLinkClient::FuncFloat_Implementation(float ParamF
 {
 	if (!m_sink->IsReady())
 	{
-		if (IsLogEnabled())
+		if (IsTbSimpleSimpleInterfaceLogEnabled())
 		{
 			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		}
@@ -338,7 +338,7 @@ float UTbSimpleSimpleInterfaceOLinkClient::FuncFloat32_Implementation(float Para
 {
 	if (!m_sink->IsReady())
 	{
-		if (IsLogEnabled())
+		if (IsTbSimpleSimpleInterfaceLogEnabled())
 		{
 			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		}
@@ -361,7 +361,7 @@ double UTbSimpleSimpleInterfaceOLinkClient::FuncFloat64_Implementation(double Pa
 {
 	if (!m_sink->IsReady())
 	{
-		if (IsLogEnabled())
+		if (IsTbSimpleSimpleInterfaceLogEnabled())
 		{
 			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		}
@@ -384,7 +384,7 @@ FString UTbSimpleSimpleInterfaceOLinkClient::FuncString_Implementation(const FSt
 {
 	if (!m_sink->IsReady())
 	{
-		if (IsLogEnabled())
+		if (IsTbSimpleSimpleInterfaceLogEnabled())
 		{
 			UE_LOG(LogTemp, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		}

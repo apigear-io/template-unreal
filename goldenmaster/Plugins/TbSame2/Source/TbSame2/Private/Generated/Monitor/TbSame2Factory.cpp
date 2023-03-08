@@ -34,7 +34,7 @@ DEFINE_LOG_CATEGORY(LogFTbSame2ModuleFactory);
 
 namespace
 {
-bool IsLogEnabled()
+bool IsTbSame2LogEnabled()
 {
 	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
 	return settings->Tracer_EnableDebugLog;
@@ -44,7 +44,7 @@ bool IsLogEnabled()
 #if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
 TScriptInterface<ITbSame2SameStruct1InterfaceInterface> createTbSame2SameStruct1InterfaceOLink(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTbSame2LogEnabled())
 	{
 		UE_LOG(LogFTbSame2ModuleFactory, Log, TEXT("createITbSame2SameStruct1InterfaceInterface: Using OLink service backend"));
 	}
@@ -61,7 +61,7 @@ TScriptInterface<ITbSame2SameStruct1InterfaceInterface> createTbSame2SameStruct1
 
 TScriptInterface<ITbSame2SameStruct1InterfaceInterface> createTbSame2SameStruct1Interface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTbSame2LogEnabled())
 	{
 		UE_LOG(LogFTbSame2ModuleFactory, Log, TEXT("createITbSame2SameStruct1InterfaceInterface: Using local service backend"));
 	}
@@ -95,7 +95,7 @@ TScriptInterface<ITbSame2SameStruct1InterfaceInterface> FTbSame2ModuleFactory::c
 
 TScriptInterface<ITbSame2SameStruct1InterfaceInterface> createTbSame2SameStruct1InterfaceOLink(FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTbSame2LogEnabled())
 	{
 		UE_LOG(LogFTbSame2ModuleFactory, Log, TEXT("createITbSame2SameStruct1InterfaceInterface: Using OLink service backend"));
 	}
@@ -106,7 +106,7 @@ TScriptInterface<ITbSame2SameStruct1InterfaceInterface> createTbSame2SameStruct1
 
 TScriptInterface<ITbSame2SameStruct1InterfaceInterface> createTbSame2SameStruct1Interface(FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTbSame2LogEnabled())
 	{
 		UE_LOG(LogFTbSame2ModuleFactory, Log, TEXT("createITbSame2SameStruct1InterfaceInterface: Using local service backend"));
 	}
@@ -134,7 +134,7 @@ TScriptInterface<ITbSame2SameStruct1InterfaceInterface> FTbSame2ModuleFactory::c
 #if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
 TScriptInterface<ITbSame2SameStruct2InterfaceInterface> createTbSame2SameStruct2InterfaceOLink(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTbSame2LogEnabled())
 	{
 		UE_LOG(LogFTbSame2ModuleFactory, Log, TEXT("createITbSame2SameStruct2InterfaceInterface: Using OLink service backend"));
 	}
@@ -151,7 +151,7 @@ TScriptInterface<ITbSame2SameStruct2InterfaceInterface> createTbSame2SameStruct2
 
 TScriptInterface<ITbSame2SameStruct2InterfaceInterface> createTbSame2SameStruct2Interface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTbSame2LogEnabled())
 	{
 		UE_LOG(LogFTbSame2ModuleFactory, Log, TEXT("createITbSame2SameStruct2InterfaceInterface: Using local service backend"));
 	}
@@ -185,7 +185,7 @@ TScriptInterface<ITbSame2SameStruct2InterfaceInterface> FTbSame2ModuleFactory::c
 
 TScriptInterface<ITbSame2SameStruct2InterfaceInterface> createTbSame2SameStruct2InterfaceOLink(FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTbSame2LogEnabled())
 	{
 		UE_LOG(LogFTbSame2ModuleFactory, Log, TEXT("createITbSame2SameStruct2InterfaceInterface: Using OLink service backend"));
 	}
@@ -196,7 +196,7 @@ TScriptInterface<ITbSame2SameStruct2InterfaceInterface> createTbSame2SameStruct2
 
 TScriptInterface<ITbSame2SameStruct2InterfaceInterface> createTbSame2SameStruct2Interface(FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTbSame2LogEnabled())
 	{
 		UE_LOG(LogFTbSame2ModuleFactory, Log, TEXT("createITbSame2SameStruct2InterfaceInterface: Using local service backend"));
 	}
@@ -224,7 +224,7 @@ TScriptInterface<ITbSame2SameStruct2InterfaceInterface> FTbSame2ModuleFactory::c
 #if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
 TScriptInterface<ITbSame2SameEnum1InterfaceInterface> createTbSame2SameEnum1InterfaceOLink(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTbSame2LogEnabled())
 	{
 		UE_LOG(LogFTbSame2ModuleFactory, Log, TEXT("createITbSame2SameEnum1InterfaceInterface: Using OLink service backend"));
 	}
@@ -241,7 +241,7 @@ TScriptInterface<ITbSame2SameEnum1InterfaceInterface> createTbSame2SameEnum1Inte
 
 TScriptInterface<ITbSame2SameEnum1InterfaceInterface> createTbSame2SameEnum1Interface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTbSame2LogEnabled())
 	{
 		UE_LOG(LogFTbSame2ModuleFactory, Log, TEXT("createITbSame2SameEnum1InterfaceInterface: Using local service backend"));
 	}
@@ -275,7 +275,7 @@ TScriptInterface<ITbSame2SameEnum1InterfaceInterface> FTbSame2ModuleFactory::cre
 
 TScriptInterface<ITbSame2SameEnum1InterfaceInterface> createTbSame2SameEnum1InterfaceOLink(FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTbSame2LogEnabled())
 	{
 		UE_LOG(LogFTbSame2ModuleFactory, Log, TEXT("createITbSame2SameEnum1InterfaceInterface: Using OLink service backend"));
 	}
@@ -286,7 +286,7 @@ TScriptInterface<ITbSame2SameEnum1InterfaceInterface> createTbSame2SameEnum1Inte
 
 TScriptInterface<ITbSame2SameEnum1InterfaceInterface> createTbSame2SameEnum1Interface(FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTbSame2LogEnabled())
 	{
 		UE_LOG(LogFTbSame2ModuleFactory, Log, TEXT("createITbSame2SameEnum1InterfaceInterface: Using local service backend"));
 	}
@@ -314,7 +314,7 @@ TScriptInterface<ITbSame2SameEnum1InterfaceInterface> FTbSame2ModuleFactory::cre
 #if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
 TScriptInterface<ITbSame2SameEnum2InterfaceInterface> createTbSame2SameEnum2InterfaceOLink(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTbSame2LogEnabled())
 	{
 		UE_LOG(LogFTbSame2ModuleFactory, Log, TEXT("createITbSame2SameEnum2InterfaceInterface: Using OLink service backend"));
 	}
@@ -331,7 +331,7 @@ TScriptInterface<ITbSame2SameEnum2InterfaceInterface> createTbSame2SameEnum2Inte
 
 TScriptInterface<ITbSame2SameEnum2InterfaceInterface> createTbSame2SameEnum2Interface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTbSame2LogEnabled())
 	{
 		UE_LOG(LogFTbSame2ModuleFactory, Log, TEXT("createITbSame2SameEnum2InterfaceInterface: Using local service backend"));
 	}
@@ -365,7 +365,7 @@ TScriptInterface<ITbSame2SameEnum2InterfaceInterface> FTbSame2ModuleFactory::cre
 
 TScriptInterface<ITbSame2SameEnum2InterfaceInterface> createTbSame2SameEnum2InterfaceOLink(FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTbSame2LogEnabled())
 	{
 		UE_LOG(LogFTbSame2ModuleFactory, Log, TEXT("createITbSame2SameEnum2InterfaceInterface: Using OLink service backend"));
 	}
@@ -376,7 +376,7 @@ TScriptInterface<ITbSame2SameEnum2InterfaceInterface> createTbSame2SameEnum2Inte
 
 TScriptInterface<ITbSame2SameEnum2InterfaceInterface> createTbSame2SameEnum2Interface(FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTbSame2LogEnabled())
 	{
 		UE_LOG(LogFTbSame2ModuleFactory, Log, TEXT("createITbSame2SameEnum2InterfaceInterface: Using local service backend"));
 	}

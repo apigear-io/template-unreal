@@ -28,7 +28,7 @@ DEFINE_LOG_CATEGORY(LogFTbEnumModuleFactory);
 
 namespace
 {
-bool IsLogEnabled()
+bool IsTbEnumLogEnabled()
 {
 	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
 	return settings->Tracer_EnableDebugLog;
@@ -38,7 +38,7 @@ bool IsLogEnabled()
 #if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
 TScriptInterface<ITbEnumEnumInterfaceInterface> createTbEnumEnumInterfaceOLink(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTbEnumLogEnabled())
 	{
 		UE_LOG(LogFTbEnumModuleFactory, Log, TEXT("createITbEnumEnumInterfaceInterface: Using OLink service backend"));
 	}
@@ -55,7 +55,7 @@ TScriptInterface<ITbEnumEnumInterfaceInterface> createTbEnumEnumInterfaceOLink(U
 
 TScriptInterface<ITbEnumEnumInterfaceInterface> createTbEnumEnumInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTbEnumLogEnabled())
 	{
 		UE_LOG(LogFTbEnumModuleFactory, Log, TEXT("createITbEnumEnumInterfaceInterface: Using local service backend"));
 	}
@@ -89,7 +89,7 @@ TScriptInterface<ITbEnumEnumInterfaceInterface> FTbEnumModuleFactory::createITbE
 
 TScriptInterface<ITbEnumEnumInterfaceInterface> createTbEnumEnumInterfaceOLink(FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTbEnumLogEnabled())
 	{
 		UE_LOG(LogFTbEnumModuleFactory, Log, TEXT("createITbEnumEnumInterfaceInterface: Using OLink service backend"));
 	}
@@ -100,7 +100,7 @@ TScriptInterface<ITbEnumEnumInterfaceInterface> createTbEnumEnumInterfaceOLink(F
 
 TScriptInterface<ITbEnumEnumInterfaceInterface> createTbEnumEnumInterface(FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTbEnumLogEnabled())
 	{
 		UE_LOG(LogFTbEnumModuleFactory, Log, TEXT("createITbEnumEnumInterfaceInterface: Using local service backend"));
 	}

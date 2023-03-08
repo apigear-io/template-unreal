@@ -38,7 +38,7 @@ DEFINE_LOG_CATEGORY(LogFTbSimpleModuleFactory);
 
 namespace
 {
-bool IsLogEnabled()
+bool IsTbSimpleLogEnabled()
 {
 	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
 	return settings->Tracer_EnableDebugLog;
@@ -48,7 +48,7 @@ bool IsLogEnabled()
 #if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
 TScriptInterface<ITbSimpleSimpleInterfaceInterface> createTbSimpleSimpleInterfaceOLink(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTbSimpleLogEnabled())
 	{
 		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleInterfaceInterface: Using OLink service backend"));
 	}
@@ -65,7 +65,7 @@ TScriptInterface<ITbSimpleSimpleInterfaceInterface> createTbSimpleSimpleInterfac
 
 TScriptInterface<ITbSimpleSimpleInterfaceInterface> createTbSimpleSimpleInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTbSimpleLogEnabled())
 	{
 		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleInterfaceInterface: Using local service backend"));
 	}
@@ -99,7 +99,7 @@ TScriptInterface<ITbSimpleSimpleInterfaceInterface> FTbSimpleModuleFactory::crea
 
 TScriptInterface<ITbSimpleSimpleInterfaceInterface> createTbSimpleSimpleInterfaceOLink(FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTbSimpleLogEnabled())
 	{
 		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleInterfaceInterface: Using OLink service backend"));
 	}
@@ -110,7 +110,7 @@ TScriptInterface<ITbSimpleSimpleInterfaceInterface> createTbSimpleSimpleInterfac
 
 TScriptInterface<ITbSimpleSimpleInterfaceInterface> createTbSimpleSimpleInterface(FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTbSimpleLogEnabled())
 	{
 		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleInterfaceInterface: Using local service backend"));
 	}
@@ -138,7 +138,7 @@ TScriptInterface<ITbSimpleSimpleInterfaceInterface> FTbSimpleModuleFactory::crea
 #if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
 TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> createTbSimpleSimpleArrayInterfaceOLink(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTbSimpleLogEnabled())
 	{
 		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleArrayInterfaceInterface: Using OLink service backend"));
 	}
@@ -155,7 +155,7 @@ TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> createTbSimpleSimpleArr
 
 TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> createTbSimpleSimpleArrayInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTbSimpleLogEnabled())
 	{
 		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleArrayInterfaceInterface: Using local service backend"));
 	}
@@ -189,7 +189,7 @@ TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> FTbSimpleModuleFactory:
 
 TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> createTbSimpleSimpleArrayInterfaceOLink(FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTbSimpleLogEnabled())
 	{
 		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleArrayInterfaceInterface: Using OLink service backend"));
 	}
@@ -200,7 +200,7 @@ TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> createTbSimpleSimpleArr
 
 TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> createTbSimpleSimpleArrayInterface(FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTbSimpleLogEnabled())
 	{
 		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleArrayInterfaceInterface: Using local service backend"));
 	}
@@ -228,7 +228,7 @@ TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> FTbSimpleModuleFactory:
 #if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
 TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> createTbSimpleNoPropertiesInterfaceOLink(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTbSimpleLogEnabled())
 	{
 		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleNoPropertiesInterfaceInterface: Using OLink service backend"));
 	}
@@ -245,7 +245,7 @@ TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> createTbSimpleNoProper
 
 TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> createTbSimpleNoPropertiesInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTbSimpleLogEnabled())
 	{
 		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleNoPropertiesInterfaceInterface: Using local service backend"));
 	}
@@ -279,7 +279,7 @@ TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> FTbSimpleModuleFactory
 
 TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> createTbSimpleNoPropertiesInterfaceOLink(FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTbSimpleLogEnabled())
 	{
 		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleNoPropertiesInterfaceInterface: Using OLink service backend"));
 	}
@@ -290,7 +290,7 @@ TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> createTbSimpleNoProper
 
 TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> createTbSimpleNoPropertiesInterface(FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTbSimpleLogEnabled())
 	{
 		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleNoPropertiesInterfaceInterface: Using local service backend"));
 	}
@@ -318,7 +318,7 @@ TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> FTbSimpleModuleFactory
 #if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
 TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> createTbSimpleNoOperationsInterfaceOLink(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTbSimpleLogEnabled())
 	{
 		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleNoOperationsInterfaceInterface: Using OLink service backend"));
 	}
@@ -335,7 +335,7 @@ TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> createTbSimpleNoOperat
 
 TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> createTbSimpleNoOperationsInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTbSimpleLogEnabled())
 	{
 		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleNoOperationsInterfaceInterface: Using local service backend"));
 	}
@@ -369,7 +369,7 @@ TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> FTbSimpleModuleFactory
 
 TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> createTbSimpleNoOperationsInterfaceOLink(FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTbSimpleLogEnabled())
 	{
 		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleNoOperationsInterfaceInterface: Using OLink service backend"));
 	}
@@ -380,7 +380,7 @@ TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> createTbSimpleNoOperat
 
 TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> createTbSimpleNoOperationsInterface(FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTbSimpleLogEnabled())
 	{
 		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleNoOperationsInterfaceInterface: Using local service backend"));
 	}
@@ -408,7 +408,7 @@ TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> FTbSimpleModuleFactory
 #if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
 TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> createTbSimpleNoSignalsInterfaceOLink(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTbSimpleLogEnabled())
 	{
 		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleNoSignalsInterfaceInterface: Using OLink service backend"));
 	}
@@ -425,7 +425,7 @@ TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> createTbSimpleNoSignalsIn
 
 TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> createTbSimpleNoSignalsInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTbSimpleLogEnabled())
 	{
 		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleNoSignalsInterfaceInterface: Using local service backend"));
 	}
@@ -459,7 +459,7 @@ TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> FTbSimpleModuleFactory::c
 
 TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> createTbSimpleNoSignalsInterfaceOLink(FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTbSimpleLogEnabled())
 	{
 		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleNoSignalsInterfaceInterface: Using OLink service backend"));
 	}
@@ -470,7 +470,7 @@ TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> createTbSimpleNoSignalsIn
 
 TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> createTbSimpleNoSignalsInterface(FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTbSimpleLogEnabled())
 	{
 		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleNoSignalsInterfaceInterface: Using local service backend"));
 	}
@@ -498,7 +498,7 @@ TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> FTbSimpleModuleFactory::c
 #if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
 TScriptInterface<ITbSimpleEmptyInterfaceInterface> createTbSimpleEmptyInterfaceOLink(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTbSimpleLogEnabled())
 	{
 		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleEmptyInterfaceInterface: Using OLink service backend"));
 	}
@@ -515,7 +515,7 @@ TScriptInterface<ITbSimpleEmptyInterfaceInterface> createTbSimpleEmptyInterfaceO
 
 TScriptInterface<ITbSimpleEmptyInterfaceInterface> createTbSimpleEmptyInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTbSimpleLogEnabled())
 	{
 		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleEmptyInterfaceInterface: Using local service backend"));
 	}
@@ -549,7 +549,7 @@ TScriptInterface<ITbSimpleEmptyInterfaceInterface> FTbSimpleModuleFactory::creat
 
 TScriptInterface<ITbSimpleEmptyInterfaceInterface> createTbSimpleEmptyInterfaceOLink(FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTbSimpleLogEnabled())
 	{
 		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleEmptyInterfaceInterface: Using OLink service backend"));
 	}
@@ -560,7 +560,7 @@ TScriptInterface<ITbSimpleEmptyInterfaceInterface> createTbSimpleEmptyInterfaceO
 
 TScriptInterface<ITbSimpleEmptyInterfaceInterface> createTbSimpleEmptyInterface(FSubsystemCollectionBase& Collection)
 {
-	if (IsLogEnabled())
+	if (IsTbSimpleLogEnabled())
 	{
 		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleEmptyInterfaceInterface: Using local service backend"));
 	}
