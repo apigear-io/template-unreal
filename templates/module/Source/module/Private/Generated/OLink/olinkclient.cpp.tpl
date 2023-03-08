@@ -177,7 +177,7 @@ void {{$Class}}::emitSignal(const std::string& signalName, const nlohmann::json&
 		{{- end }}
 		Execute_Broadcast{{Camel .Name}}(this
 		{{- range $idx, $elem := .Params -}}
-			, {{Camel .Name}}
+			, {{ueVar "" .}}
 		{{- end }});
 		return;
 	}

@@ -473,7 +473,7 @@ void UTbSimpleSimpleInterfaceOLinkClient::emitSignal(const std::string& signalNa
 	if (signalName == "sigBool")
 	{
 		bool bParamBool = args[0].get<bool>();
-		Execute_BroadcastSigBool(this, ParamBool);
+		Execute_BroadcastSigBool(this, bParamBool);
 		return;
 	}
 
