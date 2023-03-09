@@ -16,12 +16,10 @@
 
 #include "Generated/OLink/{{$Iface}}OLinkClient.h"
 #include "ApiGearSettings.h"
-#include "Async/Future.h"
 #include "Async/Async.h"
 #include "Generated/api/{{$ModuleName}}.json.adapter.h"
 #include "unrealolink.h"
 #include "unrealolinksink.h"
-#include "Async/Async.h"
 #include "Engine/Engine.h"
 #include "ApiGear/Public/ApiGearConnectionManager.h"
 #include "Misc/DateTime.h"
