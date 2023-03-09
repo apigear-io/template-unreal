@@ -97,12 +97,22 @@ void UAbstractTbSimpleNoPropertiesInterface::FuncBoolAsync_Implementation(UObjec
 
 		FTbSimpleNoPropertiesInterfaceLatentAction* CompletionAction = new FTbSimpleNoPropertiesInterfaceLatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[bParamBool, this, &Result, CompletionAction]()
-			{
-				Result = Execute_FuncBool(this, bParamBool);
-				CompletionAction->Cancel();
-			});
+
+		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
+		if (this->GetClass()->IsInBlueprint())
+		{
+			Result = Execute_FuncBool(this, bParamBool);
+			CompletionAction->Cancel();
+		}
+		else
+		{
+			Async(EAsyncExecution::Thread,
+				[bParamBool, this, &Result, CompletionAction]()
+				{
+					Result = Execute_FuncBool(this, bParamBool);
+					CompletionAction->Cancel();
+				});
+		}
 	}
 }
 

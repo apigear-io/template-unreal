@@ -106,12 +106,22 @@ void UAbstractTbSame1SameEnum1Interface::Func1Async_Implementation(UObject* Worl
 
 		FTbSame1SameEnum1InterfaceLatentAction* CompletionAction = new FTbSame1SameEnum1InterfaceLatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[Param1, this, &Result, CompletionAction]()
-			{
-				Result = Execute_Func1(this, Param1);
-				CompletionAction->Cancel();
-			});
+
+		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
+		if (this->GetClass()->IsInBlueprint())
+		{
+			Result = Execute_Func1(this, Param1);
+			CompletionAction->Cancel();
+		}
+		else
+		{
+			Async(EAsyncExecution::Thread,
+				[Param1, this, &Result, CompletionAction]()
+				{
+					Result = Execute_Func1(this, Param1);
+					CompletionAction->Cancel();
+				});
+		}
 	}
 }
 

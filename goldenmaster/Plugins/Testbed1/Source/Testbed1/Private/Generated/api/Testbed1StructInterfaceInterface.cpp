@@ -196,12 +196,22 @@ void UAbstractTestbed1StructInterface::FuncBoolAsync_Implementation(UObject* Wor
 
 		FTestbed1StructInterfaceLatentAction* CompletionAction = new FTestbed1StructInterfaceLatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[ParamBool, this, &Result, CompletionAction]()
-			{
-				Result = Execute_FuncBool(this, ParamBool);
-				CompletionAction->Cancel();
-			});
+
+		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
+		if (this->GetClass()->IsInBlueprint())
+		{
+			Result = Execute_FuncBool(this, ParamBool);
+			CompletionAction->Cancel();
+		}
+		else
+		{
+			Async(EAsyncExecution::Thread,
+				[ParamBool, this, &Result, CompletionAction]()
+				{
+					Result = Execute_FuncBool(this, ParamBool);
+					CompletionAction->Cancel();
+				});
+		}
 	}
 }
 
@@ -221,12 +231,22 @@ void UAbstractTestbed1StructInterface::FuncIntAsync_Implementation(UObject* Worl
 
 		FTestbed1StructInterfaceLatentAction* CompletionAction = new FTestbed1StructInterfaceLatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[ParamInt, this, &Result, CompletionAction]()
-			{
-				Result = Execute_FuncInt(this, ParamInt);
-				CompletionAction->Cancel();
-			});
+
+		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
+		if (this->GetClass()->IsInBlueprint())
+		{
+			Result = Execute_FuncInt(this, ParamInt);
+			CompletionAction->Cancel();
+		}
+		else
+		{
+			Async(EAsyncExecution::Thread,
+				[ParamInt, this, &Result, CompletionAction]()
+				{
+					Result = Execute_FuncInt(this, ParamInt);
+					CompletionAction->Cancel();
+				});
+		}
 	}
 }
 
@@ -246,12 +266,22 @@ void UAbstractTestbed1StructInterface::FuncFloatAsync_Implementation(UObject* Wo
 
 		FTestbed1StructInterfaceLatentAction* CompletionAction = new FTestbed1StructInterfaceLatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[ParamFloat, this, &Result, CompletionAction]()
-			{
-				Result = Execute_FuncFloat(this, ParamFloat);
-				CompletionAction->Cancel();
-			});
+
+		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
+		if (this->GetClass()->IsInBlueprint())
+		{
+			Result = Execute_FuncFloat(this, ParamFloat);
+			CompletionAction->Cancel();
+		}
+		else
+		{
+			Async(EAsyncExecution::Thread,
+				[ParamFloat, this, &Result, CompletionAction]()
+				{
+					Result = Execute_FuncFloat(this, ParamFloat);
+					CompletionAction->Cancel();
+				});
+		}
 	}
 }
 
@@ -271,12 +301,22 @@ void UAbstractTestbed1StructInterface::FuncStringAsync_Implementation(UObject* W
 
 		FTestbed1StructInterfaceLatentAction* CompletionAction = new FTestbed1StructInterfaceLatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[ParamString, this, &Result, CompletionAction]()
-			{
-				Result = Execute_FuncString(this, ParamString);
-				CompletionAction->Cancel();
-			});
+
+		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
+		if (this->GetClass()->IsInBlueprint())
+		{
+			Result = Execute_FuncString(this, ParamString);
+			CompletionAction->Cancel();
+		}
+		else
+		{
+			Async(EAsyncExecution::Thread,
+				[ParamString, this, &Result, CompletionAction]()
+				{
+					Result = Execute_FuncString(this, ParamString);
+					CompletionAction->Cancel();
+				});
+		}
 	}
 }
 

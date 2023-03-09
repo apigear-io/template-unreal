@@ -166,12 +166,22 @@ void UAbstractTestbed2NestedStruct3Interface::Func1Async_Implementation(UObject*
 
 		FTestbed2NestedStruct3InterfaceLatentAction* CompletionAction = new FTestbed2NestedStruct3InterfaceLatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[Param1, this, &Result, CompletionAction]()
-			{
-				Result = Execute_Func1(this, Param1);
-				CompletionAction->Cancel();
-			});
+
+		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
+		if (this->GetClass()->IsInBlueprint())
+		{
+			Result = Execute_Func1(this, Param1);
+			CompletionAction->Cancel();
+		}
+		else
+		{
+			Async(EAsyncExecution::Thread,
+				[Param1, this, &Result, CompletionAction]()
+				{
+					Result = Execute_Func1(this, Param1);
+					CompletionAction->Cancel();
+				});
+		}
 	}
 }
 
@@ -191,12 +201,22 @@ void UAbstractTestbed2NestedStruct3Interface::Func2Async_Implementation(UObject*
 
 		FTestbed2NestedStruct3InterfaceLatentAction* CompletionAction = new FTestbed2NestedStruct3InterfaceLatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[Param1, Param2, this, &Result, CompletionAction]()
-			{
-				Result = Execute_Func2(this, Param1, Param2);
-				CompletionAction->Cancel();
-			});
+
+		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
+		if (this->GetClass()->IsInBlueprint())
+		{
+			Result = Execute_Func2(this, Param1, Param2);
+			CompletionAction->Cancel();
+		}
+		else
+		{
+			Async(EAsyncExecution::Thread,
+				[Param1, Param2, this, &Result, CompletionAction]()
+				{
+					Result = Execute_Func2(this, Param1, Param2);
+					CompletionAction->Cancel();
+				});
+		}
 	}
 }
 
@@ -216,12 +236,22 @@ void UAbstractTestbed2NestedStruct3Interface::Func3Async_Implementation(UObject*
 
 		FTestbed2NestedStruct3InterfaceLatentAction* CompletionAction = new FTestbed2NestedStruct3InterfaceLatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[Param1, Param2, Param3, this, &Result, CompletionAction]()
-			{
-				Result = Execute_Func3(this, Param1, Param2, Param3);
-				CompletionAction->Cancel();
-			});
+
+		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
+		if (this->GetClass()->IsInBlueprint())
+		{
+			Result = Execute_Func3(this, Param1, Param2, Param3);
+			CompletionAction->Cancel();
+		}
+		else
+		{
+			Async(EAsyncExecution::Thread,
+				[Param1, Param2, Param3, this, &Result, CompletionAction]()
+				{
+					Result = Execute_Func3(this, Param1, Param2, Param3);
+					CompletionAction->Cancel();
+				});
+		}
 	}
 }
 

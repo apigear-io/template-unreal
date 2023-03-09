@@ -316,12 +316,22 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncBoolAsync_Implementation(UObject
 
 		FTbSimpleSimpleArrayInterfaceLatentAction* CompletionAction = new FTbSimpleSimpleArrayInterfaceLatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[ParamBool, this, &Result, CompletionAction]()
-			{
-				Result = Execute_FuncBool(this, ParamBool);
-				CompletionAction->Cancel();
-			});
+
+		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
+		if (this->GetClass()->IsInBlueprint())
+		{
+			Result = Execute_FuncBool(this, ParamBool);
+			CompletionAction->Cancel();
+		}
+		else
+		{
+			Async(EAsyncExecution::Thread,
+				[ParamBool, this, &Result, CompletionAction]()
+				{
+					Result = Execute_FuncBool(this, ParamBool);
+					CompletionAction->Cancel();
+				});
+		}
 	}
 }
 
@@ -341,12 +351,22 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncIntAsync_Implementation(UObject*
 
 		FTbSimpleSimpleArrayInterfaceLatentAction* CompletionAction = new FTbSimpleSimpleArrayInterfaceLatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[ParamInt, this, &Result, CompletionAction]()
-			{
-				Result = Execute_FuncInt(this, ParamInt);
-				CompletionAction->Cancel();
-			});
+
+		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
+		if (this->GetClass()->IsInBlueprint())
+		{
+			Result = Execute_FuncInt(this, ParamInt);
+			CompletionAction->Cancel();
+		}
+		else
+		{
+			Async(EAsyncExecution::Thread,
+				[ParamInt, this, &Result, CompletionAction]()
+				{
+					Result = Execute_FuncInt(this, ParamInt);
+					CompletionAction->Cancel();
+				});
+		}
 	}
 }
 
@@ -366,12 +386,22 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncInt32Async_Implementation(UObjec
 
 		FTbSimpleSimpleArrayInterfaceLatentAction* CompletionAction = new FTbSimpleSimpleArrayInterfaceLatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[ParamInt32, this, &Result, CompletionAction]()
-			{
-				Result = Execute_FuncInt32(this, ParamInt32);
-				CompletionAction->Cancel();
-			});
+
+		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
+		if (this->GetClass()->IsInBlueprint())
+		{
+			Result = Execute_FuncInt32(this, ParamInt32);
+			CompletionAction->Cancel();
+		}
+		else
+		{
+			Async(EAsyncExecution::Thread,
+				[ParamInt32, this, &Result, CompletionAction]()
+				{
+					Result = Execute_FuncInt32(this, ParamInt32);
+					CompletionAction->Cancel();
+				});
+		}
 	}
 }
 
@@ -391,12 +421,22 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncInt64Async_Implementation(UObjec
 
 		FTbSimpleSimpleArrayInterfaceLatentAction* CompletionAction = new FTbSimpleSimpleArrayInterfaceLatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[ParamInt64, this, &Result, CompletionAction]()
-			{
-				Result = Execute_FuncInt64(this, ParamInt64);
-				CompletionAction->Cancel();
-			});
+
+		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
+		if (this->GetClass()->IsInBlueprint())
+		{
+			Result = Execute_FuncInt64(this, ParamInt64);
+			CompletionAction->Cancel();
+		}
+		else
+		{
+			Async(EAsyncExecution::Thread,
+				[ParamInt64, this, &Result, CompletionAction]()
+				{
+					Result = Execute_FuncInt64(this, ParamInt64);
+					CompletionAction->Cancel();
+				});
+		}
 	}
 }
 
@@ -416,12 +456,22 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncFloatAsync_Implementation(UObjec
 
 		FTbSimpleSimpleArrayInterfaceLatentAction* CompletionAction = new FTbSimpleSimpleArrayInterfaceLatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[ParamFloat, this, &Result, CompletionAction]()
-			{
-				Result = Execute_FuncFloat(this, ParamFloat);
-				CompletionAction->Cancel();
-			});
+
+		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
+		if (this->GetClass()->IsInBlueprint())
+		{
+			Result = Execute_FuncFloat(this, ParamFloat);
+			CompletionAction->Cancel();
+		}
+		else
+		{
+			Async(EAsyncExecution::Thread,
+				[ParamFloat, this, &Result, CompletionAction]()
+				{
+					Result = Execute_FuncFloat(this, ParamFloat);
+					CompletionAction->Cancel();
+				});
+		}
 	}
 }
 
@@ -441,12 +491,22 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncFloat32Async_Implementation(UObj
 
 		FTbSimpleSimpleArrayInterfaceLatentAction* CompletionAction = new FTbSimpleSimpleArrayInterfaceLatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[ParamFloat32, this, &Result, CompletionAction]()
-			{
-				Result = Execute_FuncFloat32(this, ParamFloat32);
-				CompletionAction->Cancel();
-			});
+
+		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
+		if (this->GetClass()->IsInBlueprint())
+		{
+			Result = Execute_FuncFloat32(this, ParamFloat32);
+			CompletionAction->Cancel();
+		}
+		else
+		{
+			Async(EAsyncExecution::Thread,
+				[ParamFloat32, this, &Result, CompletionAction]()
+				{
+					Result = Execute_FuncFloat32(this, ParamFloat32);
+					CompletionAction->Cancel();
+				});
+		}
 	}
 }
 
@@ -466,12 +526,22 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncFloat64Async_Implementation(UObj
 
 		FTbSimpleSimpleArrayInterfaceLatentAction* CompletionAction = new FTbSimpleSimpleArrayInterfaceLatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[ParamFloat, this, &Result, CompletionAction]()
-			{
-				Result = Execute_FuncFloat64(this, ParamFloat);
-				CompletionAction->Cancel();
-			});
+
+		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
+		if (this->GetClass()->IsInBlueprint())
+		{
+			Result = Execute_FuncFloat64(this, ParamFloat);
+			CompletionAction->Cancel();
+		}
+		else
+		{
+			Async(EAsyncExecution::Thread,
+				[ParamFloat, this, &Result, CompletionAction]()
+				{
+					Result = Execute_FuncFloat64(this, ParamFloat);
+					CompletionAction->Cancel();
+				});
+		}
 	}
 }
 
@@ -491,12 +561,22 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncStringAsync_Implementation(UObje
 
 		FTbSimpleSimpleArrayInterfaceLatentAction* CompletionAction = new FTbSimpleSimpleArrayInterfaceLatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[ParamString, this, &Result, CompletionAction]()
-			{
-				Result = Execute_FuncString(this, ParamString);
-				CompletionAction->Cancel();
-			});
+
+		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
+		if (this->GetClass()->IsInBlueprint())
+		{
+			Result = Execute_FuncString(this, ParamString);
+			CompletionAction->Cancel();
+		}
+		else
+		{
+			Async(EAsyncExecution::Thread,
+				[ParamString, this, &Result, CompletionAction]()
+				{
+					Result = Execute_FuncString(this, ParamString);
+					CompletionAction->Cancel();
+				});
+		}
 	}
 }
 

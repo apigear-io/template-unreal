@@ -196,12 +196,22 @@ void UAbstractTbEnumEnumInterface::Func0Async_Implementation(UObject* WorldConte
 
 		FTbEnumEnumInterfaceLatentAction* CompletionAction = new FTbEnumEnumInterfaceLatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[Param0, this, &Result, CompletionAction]()
-			{
-				Result = Execute_Func0(this, Param0);
-				CompletionAction->Cancel();
-			});
+
+		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
+		if (this->GetClass()->IsInBlueprint())
+		{
+			Result = Execute_Func0(this, Param0);
+			CompletionAction->Cancel();
+		}
+		else
+		{
+			Async(EAsyncExecution::Thread,
+				[Param0, this, &Result, CompletionAction]()
+				{
+					Result = Execute_Func0(this, Param0);
+					CompletionAction->Cancel();
+				});
+		}
 	}
 }
 
@@ -221,12 +231,22 @@ void UAbstractTbEnumEnumInterface::Func1Async_Implementation(UObject* WorldConte
 
 		FTbEnumEnumInterfaceLatentAction* CompletionAction = new FTbEnumEnumInterfaceLatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[Param1, this, &Result, CompletionAction]()
-			{
-				Result = Execute_Func1(this, Param1);
-				CompletionAction->Cancel();
-			});
+
+		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
+		if (this->GetClass()->IsInBlueprint())
+		{
+			Result = Execute_Func1(this, Param1);
+			CompletionAction->Cancel();
+		}
+		else
+		{
+			Async(EAsyncExecution::Thread,
+				[Param1, this, &Result, CompletionAction]()
+				{
+					Result = Execute_Func1(this, Param1);
+					CompletionAction->Cancel();
+				});
+		}
 	}
 }
 
@@ -246,12 +266,22 @@ void UAbstractTbEnumEnumInterface::Func2Async_Implementation(UObject* WorldConte
 
 		FTbEnumEnumInterfaceLatentAction* CompletionAction = new FTbEnumEnumInterfaceLatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[Param2, this, &Result, CompletionAction]()
-			{
-				Result = Execute_Func2(this, Param2);
-				CompletionAction->Cancel();
-			});
+
+		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
+		if (this->GetClass()->IsInBlueprint())
+		{
+			Result = Execute_Func2(this, Param2);
+			CompletionAction->Cancel();
+		}
+		else
+		{
+			Async(EAsyncExecution::Thread,
+				[Param2, this, &Result, CompletionAction]()
+				{
+					Result = Execute_Func2(this, Param2);
+					CompletionAction->Cancel();
+				});
+		}
 	}
 }
 
@@ -271,12 +301,22 @@ void UAbstractTbEnumEnumInterface::Func3Async_Implementation(UObject* WorldConte
 
 		FTbEnumEnumInterfaceLatentAction* CompletionAction = new FTbEnumEnumInterfaceLatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[Param3, this, &Result, CompletionAction]()
-			{
-				Result = Execute_Func3(this, Param3);
-				CompletionAction->Cancel();
-			});
+
+		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
+		if (this->GetClass()->IsInBlueprint())
+		{
+			Result = Execute_Func3(this, Param3);
+			CompletionAction->Cancel();
+		}
+		else
+		{
+			Async(EAsyncExecution::Thread,
+				[Param3, this, &Result, CompletionAction]()
+				{
+					Result = Execute_Func3(this, Param3);
+					CompletionAction->Cancel();
+				});
+		}
 	}
 }
 

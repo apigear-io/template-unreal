@@ -134,12 +134,22 @@ void {{$abstractclass}}::{{Camel .Name}}Async_Implementation(UObject* WorldConte
 
 		F{{$Iface}}LatentAction* CompletionAction = new F{{$Iface}}LatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-		Async(EAsyncExecution::Thread,
-			[{{range .Params}}{{ueVar "" .}}, {{ end }}this, &Result, CompletionAction]()
-			{
-				Result = Execute_{{Camel .Name}}(this{{ if len .Params }}, {{end}}{{ueVars "" .Params}});
-				CompletionAction->Cancel();
-			});
+
+		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
+		if (this->GetClass()->IsInBlueprint())
+		{
+			Result = Execute_{{Camel .Name}}(this{{ if len .Params }}, {{end}}{{ueVars "" .Params}});
+			CompletionAction->Cancel();
+		}
+		else
+		{
+			Async(EAsyncExecution::Thread,
+				[{{range .Params}}{{ueVar "" .}}, {{ end }}this, &Result, CompletionAction]()
+				{
+					Result = Execute_{{Camel .Name}}(this{{ if len .Params }}, {{end}}{{ueVars "" .Params}});
+					CompletionAction->Cancel();
+				});
+		}
 	}
 }
 {{- end }}
