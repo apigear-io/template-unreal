@@ -1,17 +1,17 @@
 // Copyright Epic Games, Inc. All Rights Reserved
-#include "ApiGearConnectionManager.h"
+#include "ApiGearConnectionsStore.h"
 #include "ApiGearSettings.h"
 #include "unrealolink.h"
 
-UApiGearConnectionManager::UApiGearConnectionManager()
+UApiGearConnectionsStore::UApiGearConnectionsStore()
 {
 }
 
-bool UApiGearConnectionManager::RegisterConnectionFactory(FString ConnectionTypeIdentifier, FConnectionFactoryFunction FactoryFunction)
+bool UApiGearConnectionsStore::RegisterConnectionFactory(FString ConnectionTypeIdentifier, FConnectionFactoryFunction FactoryFunction)
 {
 	if (Factories.Contains(ConnectionTypeIdentifier))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UApiGearConnectionManager register connection factory: %s - already registered"), *ConnectionTypeIdentifier);
+		UE_LOG(LogTemp, Warning, TEXT("UApiGearConnectionsStore register connection factory: %s - already registered"), *ConnectionTypeIdentifier);
 		return false;
 	}
 
@@ -20,7 +20,7 @@ bool UApiGearConnectionManager::RegisterConnectionFactory(FString ConnectionType
 	return true;
 }
 
-void UApiGearConnectionManager::Initialize(FSubsystemCollectionBase& Collection)
+void UApiGearConnectionsStore::Initialize(FSubsystemCollectionBase& Collection)
 {
 	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
 
@@ -45,7 +45,7 @@ void UApiGearConnectionManager::Initialize(FSubsystemCollectionBase& Collection)
 	}
 }
 
-void UApiGearConnectionManager::Deinitialize()
+void UApiGearConnectionsStore::Deinitialize()
 {
 	DisconnectAll();
 
@@ -59,7 +59,7 @@ void UApiGearConnectionManager::Deinitialize()
 	Connections.Reset();
 }
 
-void UApiGearConnectionManager::OverwriteAndSaveConnectionsToSettings() const
+void UApiGearConnectionsStore::OverwriteAndSaveConnectionsToSettings() const
 {
 	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
 
@@ -79,7 +79,7 @@ void UApiGearConnectionManager::OverwriteAndSaveConnectionsToSettings() const
 	settings->SaveConfig();
 }
 
-TScriptInterface<IApiGearConnection> UApiGearConnectionManager::GetConnection(FString UniqueEndpointIdentifier) const
+TScriptInterface<IApiGearConnection> UApiGearConnectionsStore::GetConnection(FString UniqueEndpointIdentifier) const
 {
 	if (DoesConnectionExist(UniqueEndpointIdentifier))
 	{
@@ -89,29 +89,29 @@ TScriptInterface<IApiGearConnection> UApiGearConnectionManager::GetConnection(FS
 	return nullptr;
 }
 
-TMap<FString, TScriptInterface<IApiGearConnection>> UApiGearConnectionManager::GetConnections() const
+TMap<FString, TScriptInterface<IApiGearConnection>> UApiGearConnectionsStore::GetConnections() const
 {
 	return Connections;
 }
 
-bool UApiGearConnectionManager::AddConnection(TScriptInterface<IApiGearConnection> Connection)
+bool UApiGearConnectionsStore::AddConnection(TScriptInterface<IApiGearConnection> Connection)
 {
 	if (DoesConnectionExist(Connection->GetUniqueEndpointIdentifier()))
 	{
 		return false;
 	}
 
-	UE_LOG(LogTemp, Log, TEXT("UApiGearConnectionManager add connection: %s"), *Connection.GetObject()->GetName());
+	UE_LOG(LogTemp, Log, TEXT("UApiGearConnectionsStore add connection: %s"), *Connection.GetObject()->GetName());
 	Connections.Add(Connection->GetUniqueEndpointIdentifier(), Connection);
 
 	return true;
 }
 
-bool UApiGearConnectionManager::AddConnection(FString UniqueEndpointIdentifier, TScriptInterface<IApiGearConnection> Connection)
+bool UApiGearConnectionsStore::AddConnection(FString UniqueEndpointIdentifier, TScriptInterface<IApiGearConnection> Connection)
 {
 	if (DoesConnectionExist(UniqueEndpointIdentifier))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UApiGearConnectionManager: Cannot add connection, please choose a different name than \"%s\". "), *UniqueEndpointIdentifier);
+		UE_LOG(LogTemp, Warning, TEXT("UApiGearConnectionsStore: Cannot add connection, please choose a different name than \"%s\". "), *UniqueEndpointIdentifier);
 		return false;
 	}
 
@@ -121,26 +121,26 @@ bool UApiGearConnectionManager::AddConnection(FString UniqueEndpointIdentifier, 
 	return true;
 }
 
-bool UApiGearConnectionManager::RemoveConnection(FString UniqueEndpointIdentifier)
+bool UApiGearConnectionsStore::RemoveConnection(FString UniqueEndpointIdentifier)
 {
 	if (!DoesConnectionExist(UniqueEndpointIdentifier))
 	{
 		return false;
 	}
 
-	UE_LOG(LogTemp, Log, TEXT("UApiGearConnectionManager remove connection: %s"), *Connections[UniqueEndpointIdentifier].GetObject()->GetName());
+	UE_LOG(LogTemp, Log, TEXT("UApiGearConnectionsStore remove connection: %s"), *Connections[UniqueEndpointIdentifier].GetObject()->GetName());
 
 	Connections.Remove(UniqueEndpointIdentifier);
 
 	return true;
 }
 
-bool UApiGearConnectionManager::DoesConnectionExist(FString UniqueEndpointIdentifier) const
+bool UApiGearConnectionsStore::DoesConnectionExist(FString UniqueEndpointIdentifier) const
 {
 	return Connections.Contains(UniqueEndpointIdentifier);
 }
 
-void UApiGearConnectionManager::ConnectAll() const
+void UApiGearConnectionsStore::ConnectAll() const
 {
 	for (auto& Connection : Connections)
 	{
@@ -149,7 +149,7 @@ void UApiGearConnectionManager::ConnectAll() const
 	}
 }
 
-void UApiGearConnectionManager::DisconnectAll() const
+void UApiGearConnectionsStore::DisconnectAll() const
 {
 	for (auto& Connection : Connections)
 	{
@@ -158,7 +158,7 @@ void UApiGearConnectionManager::DisconnectAll() const
 	}
 }
 
-TArray<FString> UApiGearConnectionManager::GetAvailableProtocols() const
+TArray<FString> UApiGearConnectionsStore::GetAvailableProtocols() const
 {
 	TArray<FString> AvailableProtocols;
 

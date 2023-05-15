@@ -210,12 +210,12 @@ features:
             target: "Source/ApiGear/Private/ApiGearSettings.cpp"
             force: true
             raw: true
-          - source: "ApiGear/Source/ApiGear/Public/ApiGearConnectionManager.h"
-            target: "Source/ApiGear/Public/ApiGearConnectionManager.h"
+          - source: "ApiGear/Source/ApiGear/Public/ApiGearConnectionsStore.h"
+            target: "Source/ApiGear/Public/ApiGearConnectionsStore.h"
             force: true
             raw: true
-          - source: "ApiGear/Source/ApiGear/Private/ApiGearConnectionManager.cpp"
-            target: "Source/ApiGear/Private/ApiGearConnectionManager.cpp"
+          - source: "ApiGear/Source/ApiGear/Private/ApiGearConnectionsStore.cpp"
+            target: "Source/ApiGear/Private/ApiGearConnectionsStore.cpp"
             force: true
             raw: true
           - source: "ApiGear/Source/ApiGearEditor/ApiGearEditor.Build.cs"

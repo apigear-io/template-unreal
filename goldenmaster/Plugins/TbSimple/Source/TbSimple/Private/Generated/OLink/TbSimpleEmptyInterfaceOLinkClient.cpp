@@ -27,7 +27,7 @@ limitations under the License.
 #include "unrealolink.h"
 #include "unrealolinksink.h"
 #include "Engine/Engine.h"
-#include "ApiGear/Public/ApiGearConnectionManager.h"
+#include "ApiGear/Public/ApiGearConnectionsStore.h"
 #include "Misc/DateTime.h"
 #include "TbSimpleSettings.h"
 THIRD_PARTY_INCLUDES_START
@@ -67,7 +67,7 @@ void UTbSimpleEmptyInterfaceOLinkClient::Initialize(FSubsystemCollectionBase& Co
 	check(GEngine);
 	UTbSimpleSettings* settings = GetMutableDefault<UTbSimpleSettings>();
 
-	UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+	UApiGearConnectionsStore* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionsStore>();
 
 	TScriptInterface<IApiGearConnection> OLinkConnection = AGCM->GetConnection(settings->ConnectionIdentifier);
 

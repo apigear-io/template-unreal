@@ -27,7 +27,7 @@ limitations under the License.
 #include "unrealolink.h"
 #include "unrealolinksink.h"
 #include "Engine/Engine.h"
-#include "ApiGear/Public/ApiGearConnectionManager.h"
+#include "ApiGear/Public/ApiGearConnectionsStore.h"
 #include "Misc/DateTime.h"
 #include "Testbed2Settings.h"
 THIRD_PARTY_INCLUDES_START
@@ -81,7 +81,7 @@ void UTestbed2NestedStruct2InterfaceOLinkClient::Initialize(FSubsystemCollection
 	check(GEngine);
 	UTestbed2Settings* settings = GetMutableDefault<UTestbed2Settings>();
 
-	UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+	UApiGearConnectionsStore* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionsStore>();
 
 	TScriptInterface<IApiGearConnection> OLinkConnection = AGCM->GetConnection(settings->ConnectionIdentifier);
 

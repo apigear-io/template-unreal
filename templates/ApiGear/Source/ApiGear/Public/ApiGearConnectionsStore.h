@@ -8,18 +8,18 @@
 #include "Engine/EngineTypes.h"
 #include "Templates/SharedPointer.h"
 #include "ApiGearConnection.h"
-#include "ApiGearConnectionManager.generated.h"
+#include "ApiGearConnectionsStore.generated.h"
 
 /**
- * Implements the connection manager for the ApiGear plugin.
+ * Implements the connections store for the ApiGear plugin.
  */
 UCLASS(BlueprintType)
-class APIGEAR_API UApiGearConnectionManager : public UEngineSubsystem
+class APIGEAR_API UApiGearConnectionsStore : public UEngineSubsystem
 {
 	GENERATED_BODY()
 
 public:
-	UApiGearConnectionManager();
+	UApiGearConnectionsStore();
 
 	/** A type of function for creating connections*/
 	using FConnectionFactoryFunction = TFunction<TScriptInterface<IApiGearConnection>(UObject*, FString)>;

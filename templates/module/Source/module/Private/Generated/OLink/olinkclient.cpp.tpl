@@ -21,7 +21,7 @@
 #include "unrealolink.h"
 #include "unrealolinksink.h"
 #include "Engine/Engine.h"
-#include "ApiGear/Public/ApiGearConnectionManager.h"
+#include "ApiGear/Public/ApiGearConnectionsStore.h"
 #include "Misc/DateTime.h"
 #include "{{$ModuleName}}Settings.h"
 THIRD_PARTY_INCLUDES_START
@@ -85,7 +85,7 @@ void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
 	check(GEngine);
 	U{{$ModuleName}}Settings* settings = GetMutableDefault<U{{$ModuleName}}Settings>();
 
-	UApiGearConnectionManager* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+	UApiGearConnectionsStore* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionsStore>();
 
 	TScriptInterface<IApiGearConnection> OLinkConnection = AGCM->GetConnection(settings->ConnectionIdentifier);
 

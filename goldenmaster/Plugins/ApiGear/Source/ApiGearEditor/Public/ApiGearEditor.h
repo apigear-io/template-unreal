@@ -31,7 +31,7 @@ private:
 	TArray<TSharedPtr<FText>> CurrentConnections;
 
 	TSharedPtr<class FUICommandList> PluginCommands;
-	class UApiGearConnectionManager* AGCM;
+	class UApiGearConnectionsStore* AGCM;
 
 	/** Handle to the test dll we will load */
 	void* FApiGearEditorModule;

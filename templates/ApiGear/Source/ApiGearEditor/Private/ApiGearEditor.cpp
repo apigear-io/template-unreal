@@ -5,7 +5,7 @@
 #include "ApiGearEditorCommands.h"
 #include "ISettingsModule.h"
 #include "ApiGearSettings.h"
-#include "ApiGearConnectionManager.h"
+#include "ApiGearConnectionsStore.h"
 #include "ApiGearConnection.h"
 #include "LevelEditor.h"
 #include "Runtime/Launch/Resources/Version.h"
@@ -70,7 +70,7 @@ void FApiGearEditorModule::ShutdownModule()
 TSharedRef<SDockTab> FApiGearEditorModule::OnSpawnPluginTab(const FSpawnTabArgs& SpawnTabArgs)
 {
 	check(GEngine);
-	AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionManager>();
+	AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionsStore>();
 
 	// clang-format off
 	TSharedRef<SDockTab> retTab = SNew(SDockTab)
