@@ -22,6 +22,7 @@ THIRD_PARTY_INCLUDES_START
 THIRD_PARTY_INCLUDES_END
 #include "unrealolinksink.h"
 #include "Subsystems/GameInstanceSubsystem.h"
+#include "Templates/PimplPtr.h"
 #include "TbSimpleEmptyInterfaceOLinkClient.generated.h"
 
 UCLASS(NotBlueprintable, BlueprintType)

@@ -43,8 +43,20 @@ bool IsTestbed1StructArrayInterfaceLogEnabled()
 }
 } // namespace
 
+/**
+   \brief data structure to hold the last sent property values
+*/
+struct Testbed1StructArrayInterfacePropertiesData
+{
+	TArray<FTestbed1StructBool> PropBool{TArray<FTestbed1StructBool>()};
+	TArray<FTestbed1StructInt> PropInt{TArray<FTestbed1StructInt>()};
+	TArray<FTestbed1StructFloat> PropFloat{TArray<FTestbed1StructFloat>()};
+	TArray<FTestbed1StructString> PropString{TArray<FTestbed1StructString>()};
+};
+
 UTestbed1StructArrayInterfaceOLinkClient::UTestbed1StructArrayInterfaceOLinkClient()
 	: UAbstractTestbed1StructArrayInterface()
+	, _SentData(MakePimpl<Testbed1StructArrayInterfacePropertiesData>())
 {
 	m_sink = std::make_shared<FUnrealOLinkSink>("testbed1.StructArrayInterface");
 }
@@ -101,7 +113,20 @@ void UTestbed1StructArrayInterfaceOLinkClient::SetPropBool_Implementation(const 
 	{
 		return;
 	}
+
+	// only send change requests if the value changed -> reduce network load
+	if (GetPropBool_Implementation() == InPropBool)
+	{
+		return;
+	}
+
+	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->PropBool == InPropBool)
+	{
+		return;
+	}
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propBool"), InPropBool);
+	_SentData->PropBool = InPropBool;
 }
 
 TArray<FTestbed1StructInt> UTestbed1StructArrayInterfaceOLinkClient::GetPropInt_Implementation() const
@@ -115,7 +140,20 @@ void UTestbed1StructArrayInterfaceOLinkClient::SetPropInt_Implementation(const T
 	{
 		return;
 	}
+
+	// only send change requests if the value changed -> reduce network load
+	if (GetPropInt_Implementation() == InPropInt)
+	{
+		return;
+	}
+
+	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->PropInt == InPropInt)
+	{
+		return;
+	}
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propInt"), InPropInt);
+	_SentData->PropInt = InPropInt;
 }
 
 TArray<FTestbed1StructFloat> UTestbed1StructArrayInterfaceOLinkClient::GetPropFloat_Implementation() const
@@ -129,7 +167,20 @@ void UTestbed1StructArrayInterfaceOLinkClient::SetPropFloat_Implementation(const
 	{
 		return;
 	}
+
+	// only send change requests if the value changed -> reduce network load
+	if (GetPropFloat_Implementation() == InPropFloat)
+	{
+		return;
+	}
+
+	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->PropFloat == InPropFloat)
+	{
+		return;
+	}
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propFloat"), InPropFloat);
+	_SentData->PropFloat = InPropFloat;
 }
 
 TArray<FTestbed1StructString> UTestbed1StructArrayInterfaceOLinkClient::GetPropString_Implementation() const
@@ -143,7 +194,20 @@ void UTestbed1StructArrayInterfaceOLinkClient::SetPropString_Implementation(cons
 	{
 		return;
 	}
+
+	// only send change requests if the value changed -> reduce network load
+	if (GetPropString_Implementation() == InPropString)
+	{
+		return;
+	}
+
+	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->PropString == InPropString)
+	{
+		return;
+	}
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propString"), InPropString);
+	_SentData->PropString = InPropString;
 }
 
 FTestbed1StructBool UTestbed1StructArrayInterfaceOLinkClient::FuncBool_Implementation(const TArray<FTestbed1StructBool>& ParamBool)

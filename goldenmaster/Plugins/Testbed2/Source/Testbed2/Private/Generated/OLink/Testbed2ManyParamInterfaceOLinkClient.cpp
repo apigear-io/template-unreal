@@ -43,8 +43,20 @@ bool IsTestbed2ManyParamInterfaceLogEnabled()
 }
 } // namespace
 
+/**
+   \brief data structure to hold the last sent property values
+*/
+struct Testbed2ManyParamInterfacePropertiesData
+{
+	int32 Prop1{0};
+	int32 Prop2{0};
+	int32 Prop3{0};
+	int32 Prop4{0};
+};
+
 UTestbed2ManyParamInterfaceOLinkClient::UTestbed2ManyParamInterfaceOLinkClient()
 	: UAbstractTestbed2ManyParamInterface()
+	, _SentData(MakePimpl<Testbed2ManyParamInterfacePropertiesData>())
 {
 	m_sink = std::make_shared<FUnrealOLinkSink>("testbed2.ManyParamInterface");
 }
@@ -101,7 +113,20 @@ void UTestbed2ManyParamInterfaceOLinkClient::SetProp1_Implementation(int32 InPro
 	{
 		return;
 	}
+
+	// only send change requests if the value changed -> reduce network load
+	if (GetProp1_Implementation() == InProp1)
+	{
+		return;
+	}
+
+	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->Prop1 == InProp1)
+	{
+		return;
+	}
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop1"), InProp1);
+	_SentData->Prop1 = InProp1;
 }
 
 int32 UTestbed2ManyParamInterfaceOLinkClient::GetProp2_Implementation() const
@@ -115,7 +140,20 @@ void UTestbed2ManyParamInterfaceOLinkClient::SetProp2_Implementation(int32 InPro
 	{
 		return;
 	}
+
+	// only send change requests if the value changed -> reduce network load
+	if (GetProp2_Implementation() == InProp2)
+	{
+		return;
+	}
+
+	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->Prop2 == InProp2)
+	{
+		return;
+	}
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop2"), InProp2);
+	_SentData->Prop2 = InProp2;
 }
 
 int32 UTestbed2ManyParamInterfaceOLinkClient::GetProp3_Implementation() const
@@ -129,7 +167,20 @@ void UTestbed2ManyParamInterfaceOLinkClient::SetProp3_Implementation(int32 InPro
 	{
 		return;
 	}
+
+	// only send change requests if the value changed -> reduce network load
+	if (GetProp3_Implementation() == InProp3)
+	{
+		return;
+	}
+
+	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->Prop3 == InProp3)
+	{
+		return;
+	}
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop3"), InProp3);
+	_SentData->Prop3 = InProp3;
 }
 
 int32 UTestbed2ManyParamInterfaceOLinkClient::GetProp4_Implementation() const
@@ -143,7 +194,20 @@ void UTestbed2ManyParamInterfaceOLinkClient::SetProp4_Implementation(int32 InPro
 	{
 		return;
 	}
+
+	// only send change requests if the value changed -> reduce network load
+	if (GetProp4_Implementation() == InProp4)
+	{
+		return;
+	}
+
+	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->Prop4 == InProp4)
+	{
+		return;
+	}
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop4"), InProp4);
+	_SentData->Prop4 = InProp4;
 }
 
 int32 UTestbed2ManyParamInterfaceOLinkClient::Func1_Implementation(int32 Param1)

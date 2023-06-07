@@ -22,7 +22,10 @@ THIRD_PARTY_INCLUDES_START
 THIRD_PARTY_INCLUDES_END
 #include "unrealolinksink.h"
 #include "Subsystems/GameInstanceSubsystem.h"
+#include "Templates/PimplPtr.h"
 #include "TbSame2SameStruct1InterfaceOLinkClient.generated.h"
+
+struct TbSame2SameStruct1InterfacePropertiesData;
 
 UCLASS(NotBlueprintable, BlueprintType)
 class TBSAME2_API UTbSame2SameStruct1InterfaceOLinkClient : public UAbstractTbSame2SameStruct1Interface
@@ -47,4 +50,7 @@ private:
 	void applyState(const nlohmann::json& fields);
 	void emitSignal(const std::string& signalName, const nlohmann::json& args);
 	std::shared_ptr<FUnrealOLinkSink> m_sink;
+
+	// member variable to store the last sent data
+	TPimplPtr<TbSame2SameStruct1InterfacePropertiesData> _SentData;
 };

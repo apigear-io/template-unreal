@@ -17,7 +17,13 @@ THIRD_PARTY_INCLUDES_START
 THIRD_PARTY_INCLUDES_END
 #include "unrealolinksink.h"
 #include "Subsystems/GameInstanceSubsystem.h"
+#include "Templates/PimplPtr.h"
 #include "{{$Iface}}OLinkClient.generated.h"
+
+{{- if len .Interface.Properties }}
+
+struct {{$Iface}}PropertiesData;
+{{- end}}
 
 UCLASS(NotBlueprintable, BlueprintType)
 class {{ $API_MACRO }} {{$Class}} : public {{$abstractclass}}
@@ -46,4 +52,10 @@ private:
 	void applyState(const nlohmann::json& fields);
 	void emitSignal(const std::string& signalName, const nlohmann::json& args);
 	std::shared_ptr<FUnrealOLinkSink> m_sink;
+
+{{- if len .Interface.Properties }}
+
+	// member variable to store the last sent data
+	TPimplPtr<{{$Iface}}PropertiesData> _SentData;
+{{- end}}
 };

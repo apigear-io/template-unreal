@@ -36,6 +36,19 @@ bool Is{{$DisplayName}}LogEnabled()
 	return settings->OLINK_EnableDebugLog;
 }
 } // namespace
+
+{{- if len .Interface.Properties }}
+
+/**
+   \brief data structure to hold the last sent property values
+*/
+struct {{$Iface}}PropertiesData
+{
+{{- range $i, $e := .Interface.Properties }}
+	{{ueReturn "" .}} {{ueVar "" .}}{ {{- ueDefault "" . -}} };
+{{- end }}
+};
+{{- end }}
 {{ if .Interface.Description }}
 /**
    \brief {{.Interface.Description}}
@@ -43,6 +56,9 @@ bool Is{{$DisplayName}}LogEnabled()
 {{- end }}
 {{$Class}}::{{$Class}}()
 	: {{$abstractclass}}()
+{{- if len .Interface.Properties }}
+	, _SentData(MakePimpl<{{$Iface}}PropertiesData>())
+{{- end }}
 {
 	m_sink = std::make_shared<FUnrealOLinkSink>("{{$ifaceId}}");
 }
@@ -101,7 +117,20 @@ void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
 	{
 		return;
 	}
+
+	// only send change requests if the value changed -> reduce network load
+	if (Get{{Camel .Name}}_Implementation() == {{ueVar "In" .}})
+	{
+		return;
+	}
+
+	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->{{ueVar "" .}} == {{ueVar "In" .}})
+	{
+		return;
+	}
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "{{.Name}}"), {{ueVar "In" .}});
+	_SentData->{{ueVar "" .}} = {{ueVar "In" .}};
 }
 {{- end }}
 {{- if len .Interface.Operations }}{{ nl }}{{ end }}

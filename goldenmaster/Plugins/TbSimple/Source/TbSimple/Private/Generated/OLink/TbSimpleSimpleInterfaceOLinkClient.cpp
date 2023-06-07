@@ -43,8 +43,24 @@ bool IsTbSimpleSimpleInterfaceLogEnabled()
 }
 } // namespace
 
+/**
+   \brief data structure to hold the last sent property values
+*/
+struct TbSimpleSimpleInterfacePropertiesData
+{
+	bool bPropBool{false};
+	int32 PropInt{0};
+	int32 PropInt32{0};
+	int64 PropInt64{0LL};
+	float PropFloat{0.0f};
+	float PropFloat32{0.0f};
+	double PropFloat64{0.0};
+	FString PropString{FString()};
+};
+
 UTbSimpleSimpleInterfaceOLinkClient::UTbSimpleSimpleInterfaceOLinkClient()
 	: UAbstractTbSimpleSimpleInterface()
+	, _SentData(MakePimpl<TbSimpleSimpleInterfacePropertiesData>())
 {
 	m_sink = std::make_shared<FUnrealOLinkSink>("tb.simple.SimpleInterface");
 }
@@ -101,7 +117,20 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropBool_Implementation(bool bInPro
 	{
 		return;
 	}
+
+	// only send change requests if the value changed -> reduce network load
+	if (GetPropBool_Implementation() == bInPropBool)
+	{
+		return;
+	}
+
+	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->bPropBool == bInPropBool)
+	{
+		return;
+	}
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propBool"), bInPropBool);
+	_SentData->bPropBool = bInPropBool;
 }
 
 int32 UTbSimpleSimpleInterfaceOLinkClient::GetPropInt_Implementation() const
@@ -115,7 +144,20 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropInt_Implementation(int32 InProp
 	{
 		return;
 	}
+
+	// only send change requests if the value changed -> reduce network load
+	if (GetPropInt_Implementation() == InPropInt)
+	{
+		return;
+	}
+
+	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->PropInt == InPropInt)
+	{
+		return;
+	}
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propInt"), InPropInt);
+	_SentData->PropInt = InPropInt;
 }
 
 int32 UTbSimpleSimpleInterfaceOLinkClient::GetPropInt32_Implementation() const
@@ -129,7 +171,20 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropInt32_Implementation(int32 InPr
 	{
 		return;
 	}
+
+	// only send change requests if the value changed -> reduce network load
+	if (GetPropInt32_Implementation() == InPropInt32)
+	{
+		return;
+	}
+
+	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->PropInt32 == InPropInt32)
+	{
+		return;
+	}
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propInt32"), InPropInt32);
+	_SentData->PropInt32 = InPropInt32;
 }
 
 int64 UTbSimpleSimpleInterfaceOLinkClient::GetPropInt64_Implementation() const
@@ -143,7 +198,20 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropInt64_Implementation(int64 InPr
 	{
 		return;
 	}
+
+	// only send change requests if the value changed -> reduce network load
+	if (GetPropInt64_Implementation() == InPropInt64)
+	{
+		return;
+	}
+
+	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->PropInt64 == InPropInt64)
+	{
+		return;
+	}
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propInt64"), InPropInt64);
+	_SentData->PropInt64 = InPropInt64;
 }
 
 float UTbSimpleSimpleInterfaceOLinkClient::GetPropFloat_Implementation() const
@@ -157,7 +225,20 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropFloat_Implementation(float InPr
 	{
 		return;
 	}
+
+	// only send change requests if the value changed -> reduce network load
+	if (GetPropFloat_Implementation() == InPropFloat)
+	{
+		return;
+	}
+
+	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->PropFloat == InPropFloat)
+	{
+		return;
+	}
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propFloat"), InPropFloat);
+	_SentData->PropFloat = InPropFloat;
 }
 
 float UTbSimpleSimpleInterfaceOLinkClient::GetPropFloat32_Implementation() const
@@ -171,7 +252,20 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropFloat32_Implementation(float In
 	{
 		return;
 	}
+
+	// only send change requests if the value changed -> reduce network load
+	if (GetPropFloat32_Implementation() == InPropFloat32)
+	{
+		return;
+	}
+
+	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->PropFloat32 == InPropFloat32)
+	{
+		return;
+	}
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propFloat32"), InPropFloat32);
+	_SentData->PropFloat32 = InPropFloat32;
 }
 
 double UTbSimpleSimpleInterfaceOLinkClient::GetPropFloat64_Implementation() const
@@ -185,7 +279,20 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropFloat64_Implementation(double I
 	{
 		return;
 	}
+
+	// only send change requests if the value changed -> reduce network load
+	if (GetPropFloat64_Implementation() == InPropFloat64)
+	{
+		return;
+	}
+
+	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->PropFloat64 == InPropFloat64)
+	{
+		return;
+	}
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propFloat64"), InPropFloat64);
+	_SentData->PropFloat64 = InPropFloat64;
 }
 
 FString UTbSimpleSimpleInterfaceOLinkClient::GetPropString_Implementation() const
@@ -199,7 +306,20 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropString_Implementation(const FSt
 	{
 		return;
 	}
+
+	// only send change requests if the value changed -> reduce network load
+	if (GetPropString_Implementation() == InPropString)
+	{
+		return;
+	}
+
+	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->PropString == InPropString)
+	{
+		return;
+	}
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propString"), InPropString);
+	_SentData->PropString = InPropString;
 }
 
 void UTbSimpleSimpleInterfaceOLinkClient::FuncVoid_Implementation()

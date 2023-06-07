@@ -43,8 +43,20 @@ bool IsTbEnumEnumInterfaceLogEnabled()
 }
 } // namespace
 
+/**
+   \brief data structure to hold the last sent property values
+*/
+struct TbEnumEnumInterfacePropertiesData
+{
+	ETbEnumEnum0 Prop0{ETbEnumEnum0::TEE_VALUE0};
+	ETbEnumEnum1 Prop1{ETbEnumEnum1::TEE_VALUE1};
+	ETbEnumEnum2 Prop2{ETbEnumEnum2::TEE_VALUE2};
+	ETbEnumEnum3 Prop3{ETbEnumEnum3::TEE_VALUE3};
+};
+
 UTbEnumEnumInterfaceOLinkClient::UTbEnumEnumInterfaceOLinkClient()
 	: UAbstractTbEnumEnumInterface()
+	, _SentData(MakePimpl<TbEnumEnumInterfacePropertiesData>())
 {
 	m_sink = std::make_shared<FUnrealOLinkSink>("tb.enum.EnumInterface");
 }
@@ -101,7 +113,20 @@ void UTbEnumEnumInterfaceOLinkClient::SetProp0_Implementation(ETbEnumEnum0 InPro
 	{
 		return;
 	}
+
+	// only send change requests if the value changed -> reduce network load
+	if (GetProp0_Implementation() == InProp0)
+	{
+		return;
+	}
+
+	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->Prop0 == InProp0)
+	{
+		return;
+	}
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop0"), InProp0);
+	_SentData->Prop0 = InProp0;
 }
 
 ETbEnumEnum1 UTbEnumEnumInterfaceOLinkClient::GetProp1_Implementation() const
@@ -115,7 +140,20 @@ void UTbEnumEnumInterfaceOLinkClient::SetProp1_Implementation(ETbEnumEnum1 InPro
 	{
 		return;
 	}
+
+	// only send change requests if the value changed -> reduce network load
+	if (GetProp1_Implementation() == InProp1)
+	{
+		return;
+	}
+
+	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->Prop1 == InProp1)
+	{
+		return;
+	}
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop1"), InProp1);
+	_SentData->Prop1 = InProp1;
 }
 
 ETbEnumEnum2 UTbEnumEnumInterfaceOLinkClient::GetProp2_Implementation() const
@@ -129,7 +167,20 @@ void UTbEnumEnumInterfaceOLinkClient::SetProp2_Implementation(ETbEnumEnum2 InPro
 	{
 		return;
 	}
+
+	// only send change requests if the value changed -> reduce network load
+	if (GetProp2_Implementation() == InProp2)
+	{
+		return;
+	}
+
+	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->Prop2 == InProp2)
+	{
+		return;
+	}
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop2"), InProp2);
+	_SentData->Prop2 = InProp2;
 }
 
 ETbEnumEnum3 UTbEnumEnumInterfaceOLinkClient::GetProp3_Implementation() const
@@ -143,7 +194,20 @@ void UTbEnumEnumInterfaceOLinkClient::SetProp3_Implementation(ETbEnumEnum3 InPro
 	{
 		return;
 	}
+
+	// only send change requests if the value changed -> reduce network load
+	if (GetProp3_Implementation() == InProp3)
+	{
+		return;
+	}
+
+	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->Prop3 == InProp3)
+	{
+		return;
+	}
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop3"), InProp3);
+	_SentData->Prop3 = InProp3;
 }
 
 ETbEnumEnum0 UTbEnumEnumInterfaceOLinkClient::Func0_Implementation(ETbEnumEnum0 Param0)

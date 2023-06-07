@@ -43,8 +43,18 @@ bool IsTbSimpleNoSignalsInterfaceLogEnabled()
 }
 } // namespace
 
+/**
+   \brief data structure to hold the last sent property values
+*/
+struct TbSimpleNoSignalsInterfacePropertiesData
+{
+	bool bPropBool{false};
+	int32 PropInt{0};
+};
+
 UTbSimpleNoSignalsInterfaceOLinkClient::UTbSimpleNoSignalsInterfaceOLinkClient()
 	: UAbstractTbSimpleNoSignalsInterface()
+	, _SentData(MakePimpl<TbSimpleNoSignalsInterfacePropertiesData>())
 {
 	m_sink = std::make_shared<FUnrealOLinkSink>("tb.simple.NoSignalsInterface");
 }
@@ -101,7 +111,20 @@ void UTbSimpleNoSignalsInterfaceOLinkClient::SetPropBool_Implementation(bool bIn
 	{
 		return;
 	}
+
+	// only send change requests if the value changed -> reduce network load
+	if (GetPropBool_Implementation() == bInPropBool)
+	{
+		return;
+	}
+
+	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->bPropBool == bInPropBool)
+	{
+		return;
+	}
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propBool"), bInPropBool);
+	_SentData->bPropBool = bInPropBool;
 }
 
 int32 UTbSimpleNoSignalsInterfaceOLinkClient::GetPropInt_Implementation() const
@@ -115,7 +138,20 @@ void UTbSimpleNoSignalsInterfaceOLinkClient::SetPropInt_Implementation(int32 InP
 	{
 		return;
 	}
+
+	// only send change requests if the value changed -> reduce network load
+	if (GetPropInt_Implementation() == InPropInt)
+	{
+		return;
+	}
+
+	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->PropInt == InPropInt)
+	{
+		return;
+	}
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propInt"), InPropInt);
+	_SentData->PropInt = InPropInt;
 }
 
 void UTbSimpleNoSignalsInterfaceOLinkClient::FuncVoid_Implementation()

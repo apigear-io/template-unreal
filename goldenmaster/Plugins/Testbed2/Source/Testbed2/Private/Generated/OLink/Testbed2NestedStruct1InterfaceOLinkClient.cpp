@@ -43,8 +43,17 @@ bool IsTestbed2NestedStruct1InterfaceLogEnabled()
 }
 } // namespace
 
+/**
+   \brief data structure to hold the last sent property values
+*/
+struct Testbed2NestedStruct1InterfacePropertiesData
+{
+	FTestbed2NestedStruct1 Prop1{FTestbed2NestedStruct1()};
+};
+
 UTestbed2NestedStruct1InterfaceOLinkClient::UTestbed2NestedStruct1InterfaceOLinkClient()
 	: UAbstractTestbed2NestedStruct1Interface()
+	, _SentData(MakePimpl<Testbed2NestedStruct1InterfacePropertiesData>())
 {
 	m_sink = std::make_shared<FUnrealOLinkSink>("testbed2.NestedStruct1Interface");
 }
@@ -101,7 +110,20 @@ void UTestbed2NestedStruct1InterfaceOLinkClient::SetProp1_Implementation(const F
 	{
 		return;
 	}
+
+	// only send change requests if the value changed -> reduce network load
+	if (GetProp1_Implementation() == InProp1)
+	{
+		return;
+	}
+
+	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->Prop1 == InProp1)
+	{
+		return;
+	}
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop1"), InProp1);
+	_SentData->Prop1 = InProp1;
 }
 
 FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceOLinkClient::Func1_Implementation(const FTestbed2NestedStruct1& Param1)

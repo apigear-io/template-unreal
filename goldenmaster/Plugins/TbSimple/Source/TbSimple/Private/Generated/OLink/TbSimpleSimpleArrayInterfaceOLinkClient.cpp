@@ -43,8 +43,24 @@ bool IsTbSimpleSimpleArrayInterfaceLogEnabled()
 }
 } // namespace
 
+/**
+   \brief data structure to hold the last sent property values
+*/
+struct TbSimpleSimpleArrayInterfacePropertiesData
+{
+	TArray<bool> PropBool{TArray<bool>()};
+	TArray<int32> PropInt{TArray<int32>()};
+	TArray<int32> PropInt32{TArray<int32>()};
+	TArray<int64> PropInt64{TArray<int64>()};
+	TArray<float> PropFloat{TArray<float>()};
+	TArray<float> PropFloat32{TArray<float>()};
+	TArray<double> PropFloat64{TArray<double>()};
+	TArray<FString> PropString{TArray<FString>()};
+};
+
 UTbSimpleSimpleArrayInterfaceOLinkClient::UTbSimpleSimpleArrayInterfaceOLinkClient()
 	: UAbstractTbSimpleSimpleArrayInterface()
+	, _SentData(MakePimpl<TbSimpleSimpleArrayInterfacePropertiesData>())
 {
 	m_sink = std::make_shared<FUnrealOLinkSink>("tb.simple.SimpleArrayInterface");
 }
@@ -101,7 +117,20 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropBool_Implementation(const 
 	{
 		return;
 	}
+
+	// only send change requests if the value changed -> reduce network load
+	if (GetPropBool_Implementation() == InPropBool)
+	{
+		return;
+	}
+
+	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->PropBool == InPropBool)
+	{
+		return;
+	}
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propBool"), InPropBool);
+	_SentData->PropBool = InPropBool;
 }
 
 TArray<int32> UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropInt_Implementation() const
@@ -115,7 +144,20 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropInt_Implementation(const T
 	{
 		return;
 	}
+
+	// only send change requests if the value changed -> reduce network load
+	if (GetPropInt_Implementation() == InPropInt)
+	{
+		return;
+	}
+
+	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->PropInt == InPropInt)
+	{
+		return;
+	}
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propInt"), InPropInt);
+	_SentData->PropInt = InPropInt;
 }
 
 TArray<int32> UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropInt32_Implementation() const
@@ -129,7 +171,20 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropInt32_Implementation(const
 	{
 		return;
 	}
+
+	// only send change requests if the value changed -> reduce network load
+	if (GetPropInt32_Implementation() == InPropInt32)
+	{
+		return;
+	}
+
+	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->PropInt32 == InPropInt32)
+	{
+		return;
+	}
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propInt32"), InPropInt32);
+	_SentData->PropInt32 = InPropInt32;
 }
 
 TArray<int64> UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropInt64_Implementation() const
@@ -143,7 +198,20 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropInt64_Implementation(const
 	{
 		return;
 	}
+
+	// only send change requests if the value changed -> reduce network load
+	if (GetPropInt64_Implementation() == InPropInt64)
+	{
+		return;
+	}
+
+	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->PropInt64 == InPropInt64)
+	{
+		return;
+	}
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propInt64"), InPropInt64);
+	_SentData->PropInt64 = InPropInt64;
 }
 
 TArray<float> UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropFloat_Implementation() const
@@ -157,7 +225,20 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropFloat_Implementation(const
 	{
 		return;
 	}
+
+	// only send change requests if the value changed -> reduce network load
+	if (GetPropFloat_Implementation() == InPropFloat)
+	{
+		return;
+	}
+
+	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->PropFloat == InPropFloat)
+	{
+		return;
+	}
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propFloat"), InPropFloat);
+	_SentData->PropFloat = InPropFloat;
 }
 
 TArray<float> UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropFloat32_Implementation() const
@@ -171,7 +252,20 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropFloat32_Implementation(con
 	{
 		return;
 	}
+
+	// only send change requests if the value changed -> reduce network load
+	if (GetPropFloat32_Implementation() == InPropFloat32)
+	{
+		return;
+	}
+
+	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->PropFloat32 == InPropFloat32)
+	{
+		return;
+	}
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propFloat32"), InPropFloat32);
+	_SentData->PropFloat32 = InPropFloat32;
 }
 
 TArray<double> UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropFloat64_Implementation() const
@@ -185,7 +279,20 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropFloat64_Implementation(con
 	{
 		return;
 	}
+
+	// only send change requests if the value changed -> reduce network load
+	if (GetPropFloat64_Implementation() == InPropFloat64)
+	{
+		return;
+	}
+
+	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->PropFloat64 == InPropFloat64)
+	{
+		return;
+	}
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propFloat64"), InPropFloat64);
+	_SentData->PropFloat64 = InPropFloat64;
 }
 
 TArray<FString> UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropString_Implementation() const
@@ -199,7 +306,20 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropString_Implementation(cons
 	{
 		return;
 	}
+
+	// only send change requests if the value changed -> reduce network load
+	if (GetPropString_Implementation() == InPropString)
+	{
+		return;
+	}
+
+	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->PropString == InPropString)
+	{
+		return;
+	}
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propString"), InPropString);
+	_SentData->PropString = InPropString;
 }
 
 TArray<bool> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncBool_Implementation(const TArray<bool>& ParamBool)

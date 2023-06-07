@@ -22,7 +22,10 @@ THIRD_PARTY_INCLUDES_START
 THIRD_PARTY_INCLUDES_END
 #include "unrealolinksink.h"
 #include "Subsystems/GameInstanceSubsystem.h"
+#include "Templates/PimplPtr.h"
 #include "TbEnumEnumInterfaceOLinkClient.generated.h"
+
+struct TbEnumEnumInterfacePropertiesData;
 
 UCLASS(NotBlueprintable, BlueprintType)
 class TBENUM_API UTbEnumEnumInterfaceOLinkClient : public UAbstractTbEnumEnumInterface
@@ -62,4 +65,7 @@ private:
 	void applyState(const nlohmann::json& fields);
 	void emitSignal(const std::string& signalName, const nlohmann::json& args);
 	std::shared_ptr<FUnrealOLinkSink> m_sink;
+
+	// member variable to store the last sent data
+	TPimplPtr<TbEnumEnumInterfacePropertiesData> _SentData;
 };

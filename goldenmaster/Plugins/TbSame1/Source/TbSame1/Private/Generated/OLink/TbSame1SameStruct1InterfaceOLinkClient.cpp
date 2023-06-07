@@ -43,8 +43,17 @@ bool IsTbSame1SameStruct1InterfaceLogEnabled()
 }
 } // namespace
 
+/**
+   \brief data structure to hold the last sent property values
+*/
+struct TbSame1SameStruct1InterfacePropertiesData
+{
+	FTbSame1Struct1 Prop1{FTbSame1Struct1()};
+};
+
 UTbSame1SameStruct1InterfaceOLinkClient::UTbSame1SameStruct1InterfaceOLinkClient()
 	: UAbstractTbSame1SameStruct1Interface()
+	, _SentData(MakePimpl<TbSame1SameStruct1InterfacePropertiesData>())
 {
 	m_sink = std::make_shared<FUnrealOLinkSink>("tb.same1.SameStruct1Interface");
 }
@@ -101,7 +110,20 @@ void UTbSame1SameStruct1InterfaceOLinkClient::SetProp1_Implementation(const FTbS
 	{
 		return;
 	}
+
+	// only send change requests if the value changed -> reduce network load
+	if (GetProp1_Implementation() == InProp1)
+	{
+		return;
+	}
+
+	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->Prop1 == InProp1)
+	{
+		return;
+	}
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop1"), InProp1);
+	_SentData->Prop1 = InProp1;
 }
 
 FTbSame1Struct1 UTbSame1SameStruct1InterfaceOLinkClient::Func1_Implementation(const FTbSame1Struct1& Param1)

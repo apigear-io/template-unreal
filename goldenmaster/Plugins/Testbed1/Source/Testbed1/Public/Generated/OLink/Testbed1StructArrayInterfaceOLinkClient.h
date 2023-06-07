@@ -22,7 +22,10 @@ THIRD_PARTY_INCLUDES_START
 THIRD_PARTY_INCLUDES_END
 #include "unrealolinksink.h"
 #include "Subsystems/GameInstanceSubsystem.h"
+#include "Templates/PimplPtr.h"
 #include "Testbed1StructArrayInterfaceOLinkClient.generated.h"
+
+struct Testbed1StructArrayInterfacePropertiesData;
 
 UCLASS(NotBlueprintable, BlueprintType)
 class TESTBED1_API UTestbed1StructArrayInterfaceOLinkClient : public UAbstractTestbed1StructArrayInterface
@@ -62,4 +65,7 @@ private:
 	void applyState(const nlohmann::json& fields);
 	void emitSignal(const std::string& signalName, const nlohmann::json& args);
 	std::shared_ptr<FUnrealOLinkSink> m_sink;
+
+	// member variable to store the last sent data
+	TPimplPtr<Testbed1StructArrayInterfacePropertiesData> _SentData;
 };

@@ -43,8 +43,18 @@ bool IsTbSame2SameEnum2InterfaceLogEnabled()
 }
 } // namespace
 
+/**
+   \brief data structure to hold the last sent property values
+*/
+struct TbSame2SameEnum2InterfacePropertiesData
+{
+	ETbSame2Enum1 Prop1{ETbSame2Enum1::TSE_VALUE1};
+	ETbSame2Enum2 Prop2{ETbSame2Enum2::TSE_VALUE1};
+};
+
 UTbSame2SameEnum2InterfaceOLinkClient::UTbSame2SameEnum2InterfaceOLinkClient()
 	: UAbstractTbSame2SameEnum2Interface()
+	, _SentData(MakePimpl<TbSame2SameEnum2InterfacePropertiesData>())
 {
 	m_sink = std::make_shared<FUnrealOLinkSink>("tb.same2.SameEnum2Interface");
 }
@@ -101,7 +111,20 @@ void UTbSame2SameEnum2InterfaceOLinkClient::SetProp1_Implementation(ETbSame2Enum
 	{
 		return;
 	}
+
+	// only send change requests if the value changed -> reduce network load
+	if (GetProp1_Implementation() == InProp1)
+	{
+		return;
+	}
+
+	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->Prop1 == InProp1)
+	{
+		return;
+	}
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop1"), InProp1);
+	_SentData->Prop1 = InProp1;
 }
 
 ETbSame2Enum2 UTbSame2SameEnum2InterfaceOLinkClient::GetProp2_Implementation() const
@@ -115,7 +138,20 @@ void UTbSame2SameEnum2InterfaceOLinkClient::SetProp2_Implementation(ETbSame2Enum
 	{
 		return;
 	}
+
+	// only send change requests if the value changed -> reduce network load
+	if (GetProp2_Implementation() == InProp2)
+	{
+		return;
+	}
+
+	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->Prop2 == InProp2)
+	{
+		return;
+	}
 	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop2"), InProp2);
+	_SentData->Prop2 = InProp2;
 }
 
 ETbSame2Enum1 UTbSame2SameEnum2InterfaceOLinkClient::Func1_Implementation(ETbSame2Enum1 Param1)
