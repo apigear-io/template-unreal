@@ -15,7 +15,7 @@ FUnrealOLinkSink::FUnrealOLinkSink(const std::string& olinkObjectName)
 
 void FUnrealOLinkSink::olinkOnSignal(const std::string& signalId, const nlohmann::json& args)
 {
-	std::string MemberName = ApiGear::ObjectLink::Name::getMemberName(signalId);
+	const std::string MemberName = ApiGear::ObjectLink::Name::getMemberName(signalId);
 	if (SignalEmittedFunc)
 	{
 		SignalEmittedFunc(MemberName, args);
@@ -24,7 +24,7 @@ void FUnrealOLinkSink::olinkOnSignal(const std::string& signalId, const nlohmann
 
 void FUnrealOLinkSink::olinkOnPropertyChanged(const std::string& propertyId, const nlohmann::json& value)
 {
-	std::string MemberName = ApiGear::ObjectLink::Name::getMemberName(propertyId);
+	const std::string MemberName = ApiGear::ObjectLink::Name::getMemberName(propertyId);
 	if (PropertyChangedFunc)
 	{
 		PropertyChangedFunc({{MemberName, value}});
