@@ -139,7 +139,8 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropBool_Implementation(const 
 	{
 		return;
 	}
-	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propBool"), InPropBool);
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propBool");
+	m_sink->GetNode()->setRemoteProperty(memberId, InPropBool);
 	_SentData->PropBool = InPropBool;
 }
 
@@ -166,7 +167,8 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropInt_Implementation(const T
 	{
 		return;
 	}
-	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propInt"), InPropInt);
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propInt");
+	m_sink->GetNode()->setRemoteProperty(memberId, InPropInt);
 	_SentData->PropInt = InPropInt;
 }
 
@@ -193,7 +195,8 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropInt32_Implementation(const
 	{
 		return;
 	}
-	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propInt32"), InPropInt32);
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propInt32");
+	m_sink->GetNode()->setRemoteProperty(memberId, InPropInt32);
 	_SentData->PropInt32 = InPropInt32;
 }
 
@@ -220,7 +223,8 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropInt64_Implementation(const
 	{
 		return;
 	}
-	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propInt64"), InPropInt64);
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propInt64");
+	m_sink->GetNode()->setRemoteProperty(memberId, InPropInt64);
 	_SentData->PropInt64 = InPropInt64;
 }
 
@@ -247,7 +251,8 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropFloat_Implementation(const
 	{
 		return;
 	}
-	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propFloat"), InPropFloat);
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propFloat");
+	m_sink->GetNode()->setRemoteProperty(memberId, InPropFloat);
 	_SentData->PropFloat = InPropFloat;
 }
 
@@ -274,7 +279,8 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropFloat32_Implementation(con
 	{
 		return;
 	}
-	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propFloat32"), InPropFloat32);
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propFloat32");
+	m_sink->GetNode()->setRemoteProperty(memberId, InPropFloat32);
 	_SentData->PropFloat32 = InPropFloat32;
 }
 
@@ -301,7 +307,8 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropFloat64_Implementation(con
 	{
 		return;
 	}
-	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propFloat64"), InPropFloat64);
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propFloat64");
+	m_sink->GetNode()->setRemoteProperty(memberId, InPropFloat64);
 	_SentData->PropFloat64 = InPropFloat64;
 }
 
@@ -328,7 +335,8 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropString_Implementation(cons
 	{
 		return;
 	}
-	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propString"), InPropString);
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propString");
+	m_sink->GetNode()->setRemoteProperty(memberId, InPropString);
 	_SentData->PropString = InPropString;
 }
 
@@ -349,7 +357,8 @@ TArray<bool> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncBool_Implementation(c
 		{
 			ApiGear::ObjectLink::InvokeReplyFunc GetSimpleArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 			{ Promise.SetValue(arg.value.get<TArray<bool>>()); };
-			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcBool"), {ParamBool}, GetSimpleArrayInterfaceStateFunc);
+			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcBool");
+			m_sink->GetNode()->invokeRemote(memberId, {ParamBool}, GetSimpleArrayInterfaceStateFunc);
 		});
 
 	return Promise.GetFuture().Get();
@@ -372,7 +381,8 @@ TArray<int32> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncInt_Implementation(c
 		{
 			ApiGear::ObjectLink::InvokeReplyFunc GetSimpleArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 			{ Promise.SetValue(arg.value.get<TArray<int32>>()); };
-			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcInt"), {ParamInt}, GetSimpleArrayInterfaceStateFunc);
+			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcInt");
+			m_sink->GetNode()->invokeRemote(memberId, {ParamInt}, GetSimpleArrayInterfaceStateFunc);
 		});
 
 	return Promise.GetFuture().Get();
@@ -395,7 +405,8 @@ TArray<int32> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncInt32_Implementation
 		{
 			ApiGear::ObjectLink::InvokeReplyFunc GetSimpleArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 			{ Promise.SetValue(arg.value.get<TArray<int32>>()); };
-			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcInt32"), {ParamInt32}, GetSimpleArrayInterfaceStateFunc);
+			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcInt32");
+			m_sink->GetNode()->invokeRemote(memberId, {ParamInt32}, GetSimpleArrayInterfaceStateFunc);
 		});
 
 	return Promise.GetFuture().Get();
@@ -418,7 +429,8 @@ TArray<int64> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncInt64_Implementation
 		{
 			ApiGear::ObjectLink::InvokeReplyFunc GetSimpleArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 			{ Promise.SetValue(arg.value.get<TArray<int64>>()); };
-			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcInt64"), {ParamInt64}, GetSimpleArrayInterfaceStateFunc);
+			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcInt64");
+			m_sink->GetNode()->invokeRemote(memberId, {ParamInt64}, GetSimpleArrayInterfaceStateFunc);
 		});
 
 	return Promise.GetFuture().Get();
@@ -441,7 +453,8 @@ TArray<float> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloat_Implementation
 		{
 			ApiGear::ObjectLink::InvokeReplyFunc GetSimpleArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 			{ Promise.SetValue(arg.value.get<TArray<float>>()); };
-			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat"), {ParamFloat}, GetSimpleArrayInterfaceStateFunc);
+			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat");
+			m_sink->GetNode()->invokeRemote(memberId, {ParamFloat}, GetSimpleArrayInterfaceStateFunc);
 		});
 
 	return Promise.GetFuture().Get();
@@ -464,7 +477,8 @@ TArray<float> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloat32_Implementati
 		{
 			ApiGear::ObjectLink::InvokeReplyFunc GetSimpleArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 			{ Promise.SetValue(arg.value.get<TArray<float>>()); };
-			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat32"), {ParamFloat32}, GetSimpleArrayInterfaceStateFunc);
+			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat32");
+			m_sink->GetNode()->invokeRemote(memberId, {ParamFloat32}, GetSimpleArrayInterfaceStateFunc);
 		});
 
 	return Promise.GetFuture().Get();
@@ -487,7 +501,8 @@ TArray<double> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloat64_Implementat
 		{
 			ApiGear::ObjectLink::InvokeReplyFunc GetSimpleArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 			{ Promise.SetValue(arg.value.get<TArray<double>>()); };
-			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat64"), {ParamFloat}, GetSimpleArrayInterfaceStateFunc);
+			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat64");
+			m_sink->GetNode()->invokeRemote(memberId, {ParamFloat}, GetSimpleArrayInterfaceStateFunc);
 		});
 
 	return Promise.GetFuture().Get();
@@ -510,7 +525,8 @@ TArray<FString> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncString_Implementat
 		{
 			ApiGear::ObjectLink::InvokeReplyFunc GetSimpleArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 			{ Promise.SetValue(arg.value.get<TArray<FString>>()); };
-			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcString"), {ParamString}, GetSimpleArrayInterfaceStateFunc);
+			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcString");
+			m_sink->GetNode()->invokeRemote(memberId, {ParamString}, GetSimpleArrayInterfaceStateFunc);
 		});
 
 	return Promise.GetFuture().Get();

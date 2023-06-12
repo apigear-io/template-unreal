@@ -135,7 +135,8 @@ void UTbEnumEnumInterfaceOLinkClient::SetProp0_Implementation(ETbEnumEnum0 InPro
 	{
 		return;
 	}
-	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop0"), InProp0);
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop0");
+	m_sink->GetNode()->setRemoteProperty(memberId, InProp0);
 	_SentData->Prop0 = InProp0;
 }
 
@@ -162,7 +163,8 @@ void UTbEnumEnumInterfaceOLinkClient::SetProp1_Implementation(ETbEnumEnum1 InPro
 	{
 		return;
 	}
-	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop1"), InProp1);
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop1");
+	m_sink->GetNode()->setRemoteProperty(memberId, InProp1);
 	_SentData->Prop1 = InProp1;
 }
 
@@ -189,7 +191,8 @@ void UTbEnumEnumInterfaceOLinkClient::SetProp2_Implementation(ETbEnumEnum2 InPro
 	{
 		return;
 	}
-	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop2"), InProp2);
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop2");
+	m_sink->GetNode()->setRemoteProperty(memberId, InProp2);
 	_SentData->Prop2 = InProp2;
 }
 
@@ -216,7 +219,8 @@ void UTbEnumEnumInterfaceOLinkClient::SetProp3_Implementation(ETbEnumEnum3 InPro
 	{
 		return;
 	}
-	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop3"), InProp3);
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop3");
+	m_sink->GetNode()->setRemoteProperty(memberId, InProp3);
 	_SentData->Prop3 = InProp3;
 }
 
@@ -237,7 +241,8 @@ ETbEnumEnum0 UTbEnumEnumInterfaceOLinkClient::Func0_Implementation(ETbEnumEnum0 
 		{
 			ApiGear::ObjectLink::InvokeReplyFunc GetEnumInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 			{ Promise.SetValue(arg.value.get<ETbEnumEnum0>()); };
-			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func0"), {Param0}, GetEnumInterfaceStateFunc);
+			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func0");
+			m_sink->GetNode()->invokeRemote(memberId, {Param0}, GetEnumInterfaceStateFunc);
 		});
 
 	return Promise.GetFuture().Get();
@@ -260,7 +265,8 @@ ETbEnumEnum1 UTbEnumEnumInterfaceOLinkClient::Func1_Implementation(ETbEnumEnum1 
 		{
 			ApiGear::ObjectLink::InvokeReplyFunc GetEnumInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 			{ Promise.SetValue(arg.value.get<ETbEnumEnum1>()); };
-			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func1"), {Param1}, GetEnumInterfaceStateFunc);
+			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func1");
+			m_sink->GetNode()->invokeRemote(memberId, {Param1}, GetEnumInterfaceStateFunc);
 		});
 
 	return Promise.GetFuture().Get();
@@ -283,7 +289,8 @@ ETbEnumEnum2 UTbEnumEnumInterfaceOLinkClient::Func2_Implementation(ETbEnumEnum2 
 		{
 			ApiGear::ObjectLink::InvokeReplyFunc GetEnumInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 			{ Promise.SetValue(arg.value.get<ETbEnumEnum2>()); };
-			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func2"), {Param2}, GetEnumInterfaceStateFunc);
+			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func2");
+			m_sink->GetNode()->invokeRemote(memberId, {Param2}, GetEnumInterfaceStateFunc);
 		});
 
 	return Promise.GetFuture().Get();
@@ -306,7 +313,8 @@ ETbEnumEnum3 UTbEnumEnumInterfaceOLinkClient::Func3_Implementation(ETbEnumEnum3 
 		{
 			ApiGear::ObjectLink::InvokeReplyFunc GetEnumInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 			{ Promise.SetValue(arg.value.get<ETbEnumEnum3>()); };
-			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func3"), {Param3}, GetEnumInterfaceStateFunc);
+			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func3");
+			m_sink->GetNode()->invokeRemote(memberId, {Param3}, GetEnumInterfaceStateFunc);
 		});
 
 	return Promise.GetFuture().Get();

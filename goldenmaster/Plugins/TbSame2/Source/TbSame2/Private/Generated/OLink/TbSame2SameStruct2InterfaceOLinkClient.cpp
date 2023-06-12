@@ -133,7 +133,8 @@ void UTbSame2SameStruct2InterfaceOLinkClient::SetProp1_Implementation(const FTbS
 	{
 		return;
 	}
-	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop1"), InProp1);
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop1");
+	m_sink->GetNode()->setRemoteProperty(memberId, InProp1);
 	_SentData->Prop1 = InProp1;
 }
 
@@ -160,7 +161,8 @@ void UTbSame2SameStruct2InterfaceOLinkClient::SetProp2_Implementation(const FTbS
 	{
 		return;
 	}
-	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop2"), InProp2);
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop2");
+	m_sink->GetNode()->setRemoteProperty(memberId, InProp2);
 	_SentData->Prop2 = InProp2;
 }
 
@@ -181,7 +183,8 @@ FTbSame2Struct1 UTbSame2SameStruct2InterfaceOLinkClient::Func1_Implementation(co
 		{
 			ApiGear::ObjectLink::InvokeReplyFunc GetSameStruct2InterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 			{ Promise.SetValue(arg.value.get<FTbSame2Struct1>()); };
-			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func1"), {Param1}, GetSameStruct2InterfaceStateFunc);
+			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func1");
+			m_sink->GetNode()->invokeRemote(memberId, {Param1}, GetSameStruct2InterfaceStateFunc);
 		});
 
 	return Promise.GetFuture().Get();
@@ -204,7 +207,8 @@ FTbSame2Struct1 UTbSame2SameStruct2InterfaceOLinkClient::Func2_Implementation(co
 		{
 			ApiGear::ObjectLink::InvokeReplyFunc GetSameStruct2InterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 			{ Promise.SetValue(arg.value.get<FTbSame2Struct1>()); };
-			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func2"), {Param1, Param2}, GetSameStruct2InterfaceStateFunc);
+			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func2");
+			m_sink->GetNode()->invokeRemote(memberId, {Param1, Param2}, GetSameStruct2InterfaceStateFunc);
 		});
 
 	return Promise.GetFuture().Get();

@@ -132,7 +132,8 @@ void UTbSame1SameEnum1InterfaceOLinkClient::SetProp1_Implementation(ETbSame1Enum
 	{
 		return;
 	}
-	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop1"), InProp1);
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop1");
+	m_sink->GetNode()->setRemoteProperty(memberId, InProp1);
 	_SentData->Prop1 = InProp1;
 }
 
@@ -153,7 +154,8 @@ ETbSame1Enum1 UTbSame1SameEnum1InterfaceOLinkClient::Func1_Implementation(ETbSam
 		{
 			ApiGear::ObjectLink::InvokeReplyFunc GetSameEnum1InterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 			{ Promise.SetValue(arg.value.get<ETbSame1Enum1>()); };
-			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func1"), {Param1}, GetSameEnum1InterfaceStateFunc);
+			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func1");
+			m_sink->GetNode()->invokeRemote(memberId, {Param1}, GetSameEnum1InterfaceStateFunc);
 		});
 
 	return Promise.GetFuture().Get();

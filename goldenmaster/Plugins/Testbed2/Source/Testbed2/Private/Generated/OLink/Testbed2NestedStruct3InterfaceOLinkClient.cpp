@@ -134,7 +134,8 @@ void UTestbed2NestedStruct3InterfaceOLinkClient::SetProp1_Implementation(const F
 	{
 		return;
 	}
-	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop1"), InProp1);
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop1");
+	m_sink->GetNode()->setRemoteProperty(memberId, InProp1);
 	_SentData->Prop1 = InProp1;
 }
 
@@ -161,7 +162,8 @@ void UTestbed2NestedStruct3InterfaceOLinkClient::SetProp2_Implementation(const F
 	{
 		return;
 	}
-	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop2"), InProp2);
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop2");
+	m_sink->GetNode()->setRemoteProperty(memberId, InProp2);
 	_SentData->Prop2 = InProp2;
 }
 
@@ -188,7 +190,8 @@ void UTestbed2NestedStruct3InterfaceOLinkClient::SetProp3_Implementation(const F
 	{
 		return;
 	}
-	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop3"), InProp3);
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop3");
+	m_sink->GetNode()->setRemoteProperty(memberId, InProp3);
 	_SentData->Prop3 = InProp3;
 }
 
@@ -209,7 +212,8 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceOLinkClient::Func1_Impleme
 		{
 			ApiGear::ObjectLink::InvokeReplyFunc GetNestedStruct3InterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 			{ Promise.SetValue(arg.value.get<FTestbed2NestedStruct1>()); };
-			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func1"), {Param1}, GetNestedStruct3InterfaceStateFunc);
+			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func1");
+			m_sink->GetNode()->invokeRemote(memberId, {Param1}, GetNestedStruct3InterfaceStateFunc);
 		});
 
 	return Promise.GetFuture().Get();
@@ -232,7 +236,8 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceOLinkClient::Func2_Impleme
 		{
 			ApiGear::ObjectLink::InvokeReplyFunc GetNestedStruct3InterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 			{ Promise.SetValue(arg.value.get<FTestbed2NestedStruct1>()); };
-			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func2"), {Param1, Param2}, GetNestedStruct3InterfaceStateFunc);
+			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func2");
+			m_sink->GetNode()->invokeRemote(memberId, {Param1, Param2}, GetNestedStruct3InterfaceStateFunc);
 		});
 
 	return Promise.GetFuture().Get();
@@ -255,7 +260,8 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceOLinkClient::Func3_Impleme
 		{
 			ApiGear::ObjectLink::InvokeReplyFunc GetNestedStruct3InterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 			{ Promise.SetValue(arg.value.get<FTestbed2NestedStruct1>()); };
-			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func3"), {Param1, Param2, Param3}, GetNestedStruct3InterfaceStateFunc);
+			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func3");
+			m_sink->GetNode()->invokeRemote(memberId, {Param1, Param2, Param3}, GetNestedStruct3InterfaceStateFunc);
 		});
 
 	return Promise.GetFuture().Get();

@@ -135,7 +135,8 @@ void UTestbed1StructArrayInterfaceOLinkClient::SetPropBool_Implementation(const 
 	{
 		return;
 	}
-	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propBool"), InPropBool);
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propBool");
+	m_sink->GetNode()->setRemoteProperty(memberId, InPropBool);
 	_SentData->PropBool = InPropBool;
 }
 
@@ -162,7 +163,8 @@ void UTestbed1StructArrayInterfaceOLinkClient::SetPropInt_Implementation(const T
 	{
 		return;
 	}
-	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propInt"), InPropInt);
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propInt");
+	m_sink->GetNode()->setRemoteProperty(memberId, InPropInt);
 	_SentData->PropInt = InPropInt;
 }
 
@@ -189,7 +191,8 @@ void UTestbed1StructArrayInterfaceOLinkClient::SetPropFloat_Implementation(const
 	{
 		return;
 	}
-	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propFloat"), InPropFloat);
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propFloat");
+	m_sink->GetNode()->setRemoteProperty(memberId, InPropFloat);
 	_SentData->PropFloat = InPropFloat;
 }
 
@@ -216,7 +219,8 @@ void UTestbed1StructArrayInterfaceOLinkClient::SetPropString_Implementation(cons
 	{
 		return;
 	}
-	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propString"), InPropString);
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propString");
+	m_sink->GetNode()->setRemoteProperty(memberId, InPropString);
 	_SentData->PropString = InPropString;
 }
 
@@ -237,7 +241,8 @@ FTestbed1StructBool UTestbed1StructArrayInterfaceOLinkClient::FuncBool_Implement
 		{
 			ApiGear::ObjectLink::InvokeReplyFunc GetStructArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 			{ Promise.SetValue(arg.value.get<FTestbed1StructBool>()); };
-			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcBool"), {ParamBool}, GetStructArrayInterfaceStateFunc);
+			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcBool");
+			m_sink->GetNode()->invokeRemote(memberId, {ParamBool}, GetStructArrayInterfaceStateFunc);
 		});
 
 	return Promise.GetFuture().Get();
@@ -260,7 +265,8 @@ FTestbed1StructBool UTestbed1StructArrayInterfaceOLinkClient::FuncInt_Implementa
 		{
 			ApiGear::ObjectLink::InvokeReplyFunc GetStructArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 			{ Promise.SetValue(arg.value.get<FTestbed1StructBool>()); };
-			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcInt"), {ParamInt}, GetStructArrayInterfaceStateFunc);
+			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcInt");
+			m_sink->GetNode()->invokeRemote(memberId, {ParamInt}, GetStructArrayInterfaceStateFunc);
 		});
 
 	return Promise.GetFuture().Get();
@@ -283,7 +289,8 @@ FTestbed1StructBool UTestbed1StructArrayInterfaceOLinkClient::FuncFloat_Implemen
 		{
 			ApiGear::ObjectLink::InvokeReplyFunc GetStructArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 			{ Promise.SetValue(arg.value.get<FTestbed1StructBool>()); };
-			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat"), {ParamFloat}, GetStructArrayInterfaceStateFunc);
+			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat");
+			m_sink->GetNode()->invokeRemote(memberId, {ParamFloat}, GetStructArrayInterfaceStateFunc);
 		});
 
 	return Promise.GetFuture().Get();
@@ -306,7 +313,8 @@ FTestbed1StructBool UTestbed1StructArrayInterfaceOLinkClient::FuncString_Impleme
 		{
 			ApiGear::ObjectLink::InvokeReplyFunc GetStructArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 			{ Promise.SetValue(arg.value.get<FTestbed1StructBool>()); };
-			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcString"), {ParamString}, GetStructArrayInterfaceStateFunc);
+			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcString");
+			m_sink->GetNode()->invokeRemote(memberId, {ParamString}, GetStructArrayInterfaceStateFunc);
 		});
 
 	return Promise.GetFuture().Get();

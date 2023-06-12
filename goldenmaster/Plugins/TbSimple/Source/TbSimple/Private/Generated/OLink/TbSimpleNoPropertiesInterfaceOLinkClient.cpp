@@ -108,7 +108,8 @@ void UTbSimpleNoPropertiesInterfaceOLinkClient::FuncVoid_Implementation()
 		return;
 	}
 	ApiGear::ObjectLink::InvokeReplyFunc GetNoPropertiesInterfaceStateFunc = [this](ApiGear::ObjectLink::InvokeReplyArg arg) {};
-	m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcVoid"), {}, GetNoPropertiesInterfaceStateFunc);
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcVoid");
+	m_sink->GetNode()->invokeRemote(memberId, {}, GetNoPropertiesInterfaceStateFunc);
 }
 
 bool UTbSimpleNoPropertiesInterfaceOLinkClient::FuncBool_Implementation(bool bParamBool)
@@ -128,7 +129,8 @@ bool UTbSimpleNoPropertiesInterfaceOLinkClient::FuncBool_Implementation(bool bPa
 		{
 			ApiGear::ObjectLink::InvokeReplyFunc GetNoPropertiesInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 			{ Promise.SetValue(arg.value.get<bool>()); };
-			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcBool"), {bParamBool}, GetNoPropertiesInterfaceStateFunc);
+			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcBool");
+			m_sink->GetNode()->invokeRemote(memberId, {bParamBool}, GetNoPropertiesInterfaceStateFunc);
 		});
 
 	return Promise.GetFuture().Get();

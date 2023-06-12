@@ -135,7 +135,8 @@ void UTestbed2ManyParamInterfaceOLinkClient::SetProp1_Implementation(int32 InPro
 	{
 		return;
 	}
-	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop1"), InProp1);
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop1");
+	m_sink->GetNode()->setRemoteProperty(memberId, InProp1);
 	_SentData->Prop1 = InProp1;
 }
 
@@ -162,7 +163,8 @@ void UTestbed2ManyParamInterfaceOLinkClient::SetProp2_Implementation(int32 InPro
 	{
 		return;
 	}
-	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop2"), InProp2);
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop2");
+	m_sink->GetNode()->setRemoteProperty(memberId, InProp2);
 	_SentData->Prop2 = InProp2;
 }
 
@@ -189,7 +191,8 @@ void UTestbed2ManyParamInterfaceOLinkClient::SetProp3_Implementation(int32 InPro
 	{
 		return;
 	}
-	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop3"), InProp3);
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop3");
+	m_sink->GetNode()->setRemoteProperty(memberId, InProp3);
 	_SentData->Prop3 = InProp3;
 }
 
@@ -216,7 +219,8 @@ void UTestbed2ManyParamInterfaceOLinkClient::SetProp4_Implementation(int32 InPro
 	{
 		return;
 	}
-	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop4"), InProp4);
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop4");
+	m_sink->GetNode()->setRemoteProperty(memberId, InProp4);
 	_SentData->Prop4 = InProp4;
 }
 
@@ -237,7 +241,8 @@ int32 UTestbed2ManyParamInterfaceOLinkClient::Func1_Implementation(int32 Param1)
 		{
 			ApiGear::ObjectLink::InvokeReplyFunc GetManyParamInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 			{ Promise.SetValue(arg.value.get<int32>()); };
-			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func1"), {Param1}, GetManyParamInterfaceStateFunc);
+			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func1");
+			m_sink->GetNode()->invokeRemote(memberId, {Param1}, GetManyParamInterfaceStateFunc);
 		});
 
 	return Promise.GetFuture().Get();
@@ -260,7 +265,8 @@ int32 UTestbed2ManyParamInterfaceOLinkClient::Func2_Implementation(int32 Param1,
 		{
 			ApiGear::ObjectLink::InvokeReplyFunc GetManyParamInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 			{ Promise.SetValue(arg.value.get<int32>()); };
-			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func2"), {Param1, Param2}, GetManyParamInterfaceStateFunc);
+			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func2");
+			m_sink->GetNode()->invokeRemote(memberId, {Param1, Param2}, GetManyParamInterfaceStateFunc);
 		});
 
 	return Promise.GetFuture().Get();
@@ -283,7 +289,8 @@ int32 UTestbed2ManyParamInterfaceOLinkClient::Func3_Implementation(int32 Param1,
 		{
 			ApiGear::ObjectLink::InvokeReplyFunc GetManyParamInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 			{ Promise.SetValue(arg.value.get<int32>()); };
-			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func3"), {Param1, Param2, Param3}, GetManyParamInterfaceStateFunc);
+			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func3");
+			m_sink->GetNode()->invokeRemote(memberId, {Param1, Param2, Param3}, GetManyParamInterfaceStateFunc);
 		});
 
 	return Promise.GetFuture().Get();
@@ -306,7 +313,8 @@ int32 UTestbed2ManyParamInterfaceOLinkClient::Func4_Implementation(int32 Param1,
 		{
 			ApiGear::ObjectLink::InvokeReplyFunc GetManyParamInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 			{ Promise.SetValue(arg.value.get<int32>()); };
-			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func4"), {Param1, Param2, Param3, Param4}, GetManyParamInterfaceStateFunc);
+			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func4");
+			m_sink->GetNode()->invokeRemote(memberId, {Param1, Param2, Param3, Param4}, GetManyParamInterfaceStateFunc);
 		});
 
 	return Promise.GetFuture().Get();

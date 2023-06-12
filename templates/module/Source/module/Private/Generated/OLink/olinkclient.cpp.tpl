@@ -139,7 +139,8 @@ void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
 	{
 		return;
 	}
-	m_sink->GetNode()->setRemoteProperty(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "{{.Name}}"), {{ueVar "In" .}});
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "{{.Name}}");
+	m_sink->GetNode()->setRemoteProperty(memberId, {{ueVar "In" .}});
 	_SentData->{{ueVar "" .}} = {{ueVar "In" .}};
 }
 {{- end }}
@@ -165,7 +166,8 @@ void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
 		return;
 	}
 	ApiGear::ObjectLink::InvokeReplyFunc Get{{$IfaceName}}StateFunc = [this](ApiGear::ObjectLink::InvokeReplyArg arg) {};
-	m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "{{.Name}}"), { {{- ueVars "" .Params -}} }, Get{{$IfaceName}}StateFunc);
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "{{.Name}}");
+	m_sink->GetNode()->invokeRemote(memberId, { {{- ueVars "" .Params -}} }, Get{{$IfaceName}}StateFunc);
 	{{- else }}
 	if (!m_sink->IsReady())
 	{
@@ -182,7 +184,8 @@ void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
 		{
 			ApiGear::ObjectLink::InvokeReplyFunc Get{{$IfaceName}}StateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 			{ Promise.SetValue(arg.value.get<{{$returnVal}}>()); };
-			m_sink->GetNode()->invokeRemote(ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "{{.Name}}"), { {{- ueVars "" .Params -}} }, Get{{$IfaceName}}StateFunc);
+			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "{{.Name}}");
+			m_sink->GetNode()->invokeRemote(memberId, { {{- ueVars "" .Params -}} }, Get{{$IfaceName}}StateFunc);
 		});
 
 	return Promise.GetFuture().Get();
