@@ -57,11 +57,21 @@ struct {{$Iface}}PropertiesData
 {{$Class}}::{{$Class}}()
 	: {{$abstractclass}}()
 {{- if len .Interface.Properties }}
+#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
+	, _SentData(MakeUnique<{{$Iface}}PropertiesData>())
+#else
 	, _SentData(MakePimpl<{{$Iface}}PropertiesData>())
+#endif
 {{- end }}
 {
 	m_sink = std::make_shared<FUnrealOLinkSink>("{{$ifaceId}}");
 }
+
+{{$Class}}::{{$Class}}(FVTableHelper& Helper)
+	: Super(Helper)
+{
+}
+{{$Class}}::~{{$Class}}() = default;
 
 void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
 {

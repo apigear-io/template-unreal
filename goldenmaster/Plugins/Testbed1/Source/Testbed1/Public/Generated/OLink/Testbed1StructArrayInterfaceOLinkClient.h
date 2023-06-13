@@ -22,7 +22,12 @@ THIRD_PARTY_INCLUDES_START
 THIRD_PARTY_INCLUDES_END
 #include "unrealolinksink.h"
 #include "Subsystems/GameInstanceSubsystem.h"
+#include "Runtime/Launch/Resources/Version.h"
+#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
+#include "Templates/UniquePtr.h"
+#else
 #include "Templates/PimplPtr.h"
+#endif
 #include "Testbed1StructArrayInterfaceOLinkClient.generated.h"
 
 struct Testbed1StructArrayInterfacePropertiesData;
@@ -33,7 +38,10 @@ class TESTBED1_API UTestbed1StructArrayInterfaceOLinkClient : public UAbstractTe
 	GENERATED_BODY()
 public:
 	explicit UTestbed1StructArrayInterfaceOLinkClient();
-	virtual ~UTestbed1StructArrayInterfaceOLinkClient() = default;
+
+	// only needed in 4.25 to use TUniquePtr<Testbed1StructArrayInterfacePropertiesData>
+	UTestbed1StructArrayInterfaceOLinkClient(FVTableHelper& Helper);
+	virtual ~UTestbed1StructArrayInterfaceOLinkClient();
 
 	// subsystem
 	void Initialize(FSubsystemCollectionBase& Collection) override;
@@ -67,5 +75,9 @@ private:
 	std::shared_ptr<FUnrealOLinkSink> m_sink;
 
 	// member variable to store the last sent data
+#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
+	TUniquePtr<Testbed1StructArrayInterfacePropertiesData> _SentData;
+#else
 	TPimplPtr<Testbed1StructArrayInterfacePropertiesData> _SentData;
+#endif
 };

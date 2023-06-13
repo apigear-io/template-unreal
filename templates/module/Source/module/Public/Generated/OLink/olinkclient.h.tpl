@@ -17,7 +17,12 @@ THIRD_PARTY_INCLUDES_START
 THIRD_PARTY_INCLUDES_END
 #include "unrealolinksink.h"
 #include "Subsystems/GameInstanceSubsystem.h"
+#include "Runtime/Launch/Resources/Version.h"
+#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
+#include "Templates/UniquePtr.h"
+#else
 #include "Templates/PimplPtr.h"
+#endif
 #include "{{$Iface}}OLinkClient.generated.h"
 
 {{- if len .Interface.Properties }}
@@ -31,7 +36,10 @@ class {{ $API_MACRO }} {{$Class}} : public {{$abstractclass}}
 	GENERATED_BODY()
 public:
 	explicit {{$Class}}();
-	virtual ~{{$Class}}() = default;
+
+	// only needed in 4.25 to use TUniquePtr<{{$Iface}}PropertiesData>
+	{{$Class}}(FVTableHelper& Helper);
+	virtual ~{{$Class}}();
 
 	// subsystem
 	void Initialize(FSubsystemCollectionBase& Collection) override;
@@ -56,6 +64,10 @@ private:
 {{- if len .Interface.Properties }}
 
 	// member variable to store the last sent data
+#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
+	TUniquePtr<{{$Iface}}PropertiesData> _SentData;
+#else
 	TPimplPtr<{{$Iface}}PropertiesData> _SentData;
+#endif
 {{- end}}
 };

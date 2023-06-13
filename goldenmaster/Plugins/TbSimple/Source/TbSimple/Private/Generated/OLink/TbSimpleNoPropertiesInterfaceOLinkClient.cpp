@@ -49,6 +49,12 @@ UTbSimpleNoPropertiesInterfaceOLinkClient::UTbSimpleNoPropertiesInterfaceOLinkCl
 	m_sink = std::make_shared<FUnrealOLinkSink>("tb.simple.NoPropertiesInterface");
 }
 
+UTbSimpleNoPropertiesInterfaceOLinkClient::UTbSimpleNoPropertiesInterfaceOLinkClient(FVTableHelper& Helper)
+	: Super(Helper)
+{
+}
+UTbSimpleNoPropertiesInterfaceOLinkClient::~UTbSimpleNoPropertiesInterfaceOLinkClient() = default;
+
 void UTbSimpleNoPropertiesInterfaceOLinkClient::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);

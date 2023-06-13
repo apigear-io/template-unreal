@@ -56,10 +56,20 @@ struct TbEnumEnumInterfacePropertiesData
 
 UTbEnumEnumInterfaceOLinkClient::UTbEnumEnumInterfaceOLinkClient()
 	: UAbstractTbEnumEnumInterface()
+#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
+	, _SentData(MakeUnique<TbEnumEnumInterfacePropertiesData>())
+#else
 	, _SentData(MakePimpl<TbEnumEnumInterfacePropertiesData>())
+#endif
 {
 	m_sink = std::make_shared<FUnrealOLinkSink>("tb.enum.EnumInterface");
 }
+
+UTbEnumEnumInterfaceOLinkClient::UTbEnumEnumInterfaceOLinkClient(FVTableHelper& Helper)
+	: Super(Helper)
+{
+}
+UTbEnumEnumInterfaceOLinkClient::~UTbEnumEnumInterfaceOLinkClient() = default;
 
 void UTbEnumEnumInterfaceOLinkClient::Initialize(FSubsystemCollectionBase& Collection)
 {

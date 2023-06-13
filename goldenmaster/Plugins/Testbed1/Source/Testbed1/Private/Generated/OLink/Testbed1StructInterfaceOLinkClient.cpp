@@ -56,10 +56,20 @@ struct Testbed1StructInterfacePropertiesData
 
 UTestbed1StructInterfaceOLinkClient::UTestbed1StructInterfaceOLinkClient()
 	: UAbstractTestbed1StructInterface()
+#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
+	, _SentData(MakeUnique<Testbed1StructInterfacePropertiesData>())
+#else
 	, _SentData(MakePimpl<Testbed1StructInterfacePropertiesData>())
+#endif
 {
 	m_sink = std::make_shared<FUnrealOLinkSink>("testbed1.StructInterface");
 }
+
+UTestbed1StructInterfaceOLinkClient::UTestbed1StructInterfaceOLinkClient(FVTableHelper& Helper)
+	: Super(Helper)
+{
+}
+UTestbed1StructInterfaceOLinkClient::~UTestbed1StructInterfaceOLinkClient() = default;
 
 void UTestbed1StructInterfaceOLinkClient::Initialize(FSubsystemCollectionBase& Collection)
 {

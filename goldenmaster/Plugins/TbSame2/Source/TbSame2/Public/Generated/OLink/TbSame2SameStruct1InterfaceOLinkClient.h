@@ -22,7 +22,12 @@ THIRD_PARTY_INCLUDES_START
 THIRD_PARTY_INCLUDES_END
 #include "unrealolinksink.h"
 #include "Subsystems/GameInstanceSubsystem.h"
+#include "Runtime/Launch/Resources/Version.h"
+#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
+#include "Templates/UniquePtr.h"
+#else
 #include "Templates/PimplPtr.h"
+#endif
 #include "TbSame2SameStruct1InterfaceOLinkClient.generated.h"
 
 struct TbSame2SameStruct1InterfacePropertiesData;
@@ -33,7 +38,10 @@ class TBSAME2_API UTbSame2SameStruct1InterfaceOLinkClient : public UAbstractTbSa
 	GENERATED_BODY()
 public:
 	explicit UTbSame2SameStruct1InterfaceOLinkClient();
-	virtual ~UTbSame2SameStruct1InterfaceOLinkClient() = default;
+
+	// only needed in 4.25 to use TUniquePtr<TbSame2SameStruct1InterfacePropertiesData>
+	UTbSame2SameStruct1InterfaceOLinkClient(FVTableHelper& Helper);
+	virtual ~UTbSame2SameStruct1InterfaceOLinkClient();
 
 	// subsystem
 	void Initialize(FSubsystemCollectionBase& Collection) override;
@@ -52,5 +60,9 @@ private:
 	std::shared_ptr<FUnrealOLinkSink> m_sink;
 
 	// member variable to store the last sent data
+#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
+	TUniquePtr<TbSame2SameStruct1InterfacePropertiesData> _SentData;
+#else
 	TPimplPtr<TbSame2SameStruct1InterfacePropertiesData> _SentData;
+#endif
 };

@@ -54,10 +54,20 @@ struct TbSimpleNoSignalsInterfacePropertiesData
 
 UTbSimpleNoSignalsInterfaceOLinkClient::UTbSimpleNoSignalsInterfaceOLinkClient()
 	: UAbstractTbSimpleNoSignalsInterface()
+#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
+	, _SentData(MakeUnique<TbSimpleNoSignalsInterfacePropertiesData>())
+#else
 	, _SentData(MakePimpl<TbSimpleNoSignalsInterfacePropertiesData>())
+#endif
 {
 	m_sink = std::make_shared<FUnrealOLinkSink>("tb.simple.NoSignalsInterface");
 }
+
+UTbSimpleNoSignalsInterfaceOLinkClient::UTbSimpleNoSignalsInterfaceOLinkClient(FVTableHelper& Helper)
+	: Super(Helper)
+{
+}
+UTbSimpleNoSignalsInterfaceOLinkClient::~UTbSimpleNoSignalsInterfaceOLinkClient() = default;
 
 void UTbSimpleNoSignalsInterfaceOLinkClient::Initialize(FSubsystemCollectionBase& Collection)
 {

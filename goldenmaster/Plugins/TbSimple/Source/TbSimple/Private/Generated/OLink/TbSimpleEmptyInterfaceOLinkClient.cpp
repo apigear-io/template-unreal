@@ -49,6 +49,12 @@ UTbSimpleEmptyInterfaceOLinkClient::UTbSimpleEmptyInterfaceOLinkClient()
 	m_sink = std::make_shared<FUnrealOLinkSink>("tb.simple.EmptyInterface");
 }
 
+UTbSimpleEmptyInterfaceOLinkClient::UTbSimpleEmptyInterfaceOLinkClient(FVTableHelper& Helper)
+	: Super(Helper)
+{
+}
+UTbSimpleEmptyInterfaceOLinkClient::~UTbSimpleEmptyInterfaceOLinkClient() = default;
+
 void UTbSimpleEmptyInterfaceOLinkClient::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);

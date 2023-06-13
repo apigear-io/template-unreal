@@ -60,10 +60,20 @@ struct TbSimpleSimpleArrayInterfacePropertiesData
 
 UTbSimpleSimpleArrayInterfaceOLinkClient::UTbSimpleSimpleArrayInterfaceOLinkClient()
 	: UAbstractTbSimpleSimpleArrayInterface()
+#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
+	, _SentData(MakeUnique<TbSimpleSimpleArrayInterfacePropertiesData>())
+#else
 	, _SentData(MakePimpl<TbSimpleSimpleArrayInterfacePropertiesData>())
+#endif
 {
 	m_sink = std::make_shared<FUnrealOLinkSink>("tb.simple.SimpleArrayInterface");
 }
+
+UTbSimpleSimpleArrayInterfaceOLinkClient::UTbSimpleSimpleArrayInterfaceOLinkClient(FVTableHelper& Helper)
+	: Super(Helper)
+{
+}
+UTbSimpleSimpleArrayInterfaceOLinkClient::~UTbSimpleSimpleArrayInterfaceOLinkClient() = default;
 
 void UTbSimpleSimpleArrayInterfaceOLinkClient::Initialize(FSubsystemCollectionBase& Collection)
 {

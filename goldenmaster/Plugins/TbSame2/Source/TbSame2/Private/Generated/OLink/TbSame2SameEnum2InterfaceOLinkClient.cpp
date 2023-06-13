@@ -54,10 +54,20 @@ struct TbSame2SameEnum2InterfacePropertiesData
 
 UTbSame2SameEnum2InterfaceOLinkClient::UTbSame2SameEnum2InterfaceOLinkClient()
 	: UAbstractTbSame2SameEnum2Interface()
+#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
+	, _SentData(MakeUnique<TbSame2SameEnum2InterfacePropertiesData>())
+#else
 	, _SentData(MakePimpl<TbSame2SameEnum2InterfacePropertiesData>())
+#endif
 {
 	m_sink = std::make_shared<FUnrealOLinkSink>("tb.same2.SameEnum2Interface");
 }
+
+UTbSame2SameEnum2InterfaceOLinkClient::UTbSame2SameEnum2InterfaceOLinkClient(FVTableHelper& Helper)
+	: Super(Helper)
+{
+}
+UTbSame2SameEnum2InterfaceOLinkClient::~UTbSame2SameEnum2InterfaceOLinkClient() = default;
 
 void UTbSame2SameEnum2InterfaceOLinkClient::Initialize(FSubsystemCollectionBase& Collection)
 {

@@ -56,10 +56,20 @@ struct Testbed2ManyParamInterfacePropertiesData
 
 UTestbed2ManyParamInterfaceOLinkClient::UTestbed2ManyParamInterfaceOLinkClient()
 	: UAbstractTestbed2ManyParamInterface()
+#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
+	, _SentData(MakeUnique<Testbed2ManyParamInterfacePropertiesData>())
+#else
 	, _SentData(MakePimpl<Testbed2ManyParamInterfacePropertiesData>())
+#endif
 {
 	m_sink = std::make_shared<FUnrealOLinkSink>("testbed2.ManyParamInterface");
 }
+
+UTestbed2ManyParamInterfaceOLinkClient::UTestbed2ManyParamInterfaceOLinkClient(FVTableHelper& Helper)
+	: Super(Helper)
+{
+}
+UTestbed2ManyParamInterfaceOLinkClient::~UTestbed2ManyParamInterfaceOLinkClient() = default;
 
 void UTestbed2ManyParamInterfaceOLinkClient::Initialize(FSubsystemCollectionBase& Collection)
 {

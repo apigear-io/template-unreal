@@ -22,7 +22,12 @@ THIRD_PARTY_INCLUDES_START
 THIRD_PARTY_INCLUDES_END
 #include "unrealolinksink.h"
 #include "Subsystems/GameInstanceSubsystem.h"
+#include "Runtime/Launch/Resources/Version.h"
+#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
+#include "Templates/UniquePtr.h"
+#else
 #include "Templates/PimplPtr.h"
+#endif
 #include "TbSimpleEmptyInterfaceOLinkClient.generated.h"
 
 UCLASS(NotBlueprintable, BlueprintType)
@@ -31,7 +36,10 @@ class TBSIMPLE_API UTbSimpleEmptyInterfaceOLinkClient : public UAbstractTbSimple
 	GENERATED_BODY()
 public:
 	explicit UTbSimpleEmptyInterfaceOLinkClient();
-	virtual ~UTbSimpleEmptyInterfaceOLinkClient() = default;
+
+	// only needed in 4.25 to use TUniquePtr<TbSimpleEmptyInterfacePropertiesData>
+	UTbSimpleEmptyInterfaceOLinkClient(FVTableHelper& Helper);
+	virtual ~UTbSimpleEmptyInterfaceOLinkClient();
 
 	// subsystem
 	void Initialize(FSubsystemCollectionBase& Collection) override;

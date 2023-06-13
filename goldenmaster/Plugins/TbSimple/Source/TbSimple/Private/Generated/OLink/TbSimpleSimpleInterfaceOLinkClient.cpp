@@ -60,10 +60,20 @@ struct TbSimpleSimpleInterfacePropertiesData
 
 UTbSimpleSimpleInterfaceOLinkClient::UTbSimpleSimpleInterfaceOLinkClient()
 	: UAbstractTbSimpleSimpleInterface()
+#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
+	, _SentData(MakeUnique<TbSimpleSimpleInterfacePropertiesData>())
+#else
 	, _SentData(MakePimpl<TbSimpleSimpleInterfacePropertiesData>())
+#endif
 {
 	m_sink = std::make_shared<FUnrealOLinkSink>("tb.simple.SimpleInterface");
 }
+
+UTbSimpleSimpleInterfaceOLinkClient::UTbSimpleSimpleInterfaceOLinkClient(FVTableHelper& Helper)
+	: Super(Helper)
+{
+}
+UTbSimpleSimpleInterfaceOLinkClient::~UTbSimpleSimpleInterfaceOLinkClient() = default;
 
 void UTbSimpleSimpleInterfaceOLinkClient::Initialize(FSubsystemCollectionBase& Collection)
 {

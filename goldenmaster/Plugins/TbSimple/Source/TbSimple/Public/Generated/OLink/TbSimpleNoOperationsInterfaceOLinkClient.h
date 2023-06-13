@@ -22,7 +22,12 @@ THIRD_PARTY_INCLUDES_START
 THIRD_PARTY_INCLUDES_END
 #include "unrealolinksink.h"
 #include "Subsystems/GameInstanceSubsystem.h"
+#include "Runtime/Launch/Resources/Version.h"
+#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
+#include "Templates/UniquePtr.h"
+#else
 #include "Templates/PimplPtr.h"
+#endif
 #include "TbSimpleNoOperationsInterfaceOLinkClient.generated.h"
 
 struct TbSimpleNoOperationsInterfacePropertiesData;
@@ -33,7 +38,10 @@ class TBSIMPLE_API UTbSimpleNoOperationsInterfaceOLinkClient : public UAbstractT
 	GENERATED_BODY()
 public:
 	explicit UTbSimpleNoOperationsInterfaceOLinkClient();
-	virtual ~UTbSimpleNoOperationsInterfaceOLinkClient() = default;
+
+	// only needed in 4.25 to use TUniquePtr<TbSimpleNoOperationsInterfacePropertiesData>
+	UTbSimpleNoOperationsInterfaceOLinkClient(FVTableHelper& Helper);
+	virtual ~UTbSimpleNoOperationsInterfaceOLinkClient();
 
 	// subsystem
 	void Initialize(FSubsystemCollectionBase& Collection) override;
@@ -54,5 +62,9 @@ private:
 	std::shared_ptr<FUnrealOLinkSink> m_sink;
 
 	// member variable to store the last sent data
+#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
+	TUniquePtr<TbSimpleNoOperationsInterfacePropertiesData> _SentData;
+#else
 	TPimplPtr<TbSimpleNoOperationsInterfacePropertiesData> _SentData;
+#endif
 };

@@ -22,7 +22,12 @@ THIRD_PARTY_INCLUDES_START
 THIRD_PARTY_INCLUDES_END
 #include "unrealolinksink.h"
 #include "Subsystems/GameInstanceSubsystem.h"
+#include "Runtime/Launch/Resources/Version.h"
+#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
+#include "Templates/UniquePtr.h"
+#else
 #include "Templates/PimplPtr.h"
+#endif
 #include "Testbed2ManyParamInterfaceOLinkClient.generated.h"
 
 struct Testbed2ManyParamInterfacePropertiesData;
@@ -33,7 +38,10 @@ class TESTBED2_API UTestbed2ManyParamInterfaceOLinkClient : public UAbstractTest
 	GENERATED_BODY()
 public:
 	explicit UTestbed2ManyParamInterfaceOLinkClient();
-	virtual ~UTestbed2ManyParamInterfaceOLinkClient() = default;
+
+	// only needed in 4.25 to use TUniquePtr<Testbed2ManyParamInterfacePropertiesData>
+	UTestbed2ManyParamInterfaceOLinkClient(FVTableHelper& Helper);
+	virtual ~UTestbed2ManyParamInterfaceOLinkClient();
 
 	// subsystem
 	void Initialize(FSubsystemCollectionBase& Collection) override;
@@ -67,5 +75,9 @@ private:
 	std::shared_ptr<FUnrealOLinkSink> m_sink;
 
 	// member variable to store the last sent data
+#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
+	TUniquePtr<Testbed2ManyParamInterfacePropertiesData> _SentData;
+#else
 	TPimplPtr<Testbed2ManyParamInterfacePropertiesData> _SentData;
+#endif
 };
