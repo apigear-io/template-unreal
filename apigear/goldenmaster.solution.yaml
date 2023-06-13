@@ -9,9 +9,9 @@ layers:
       - testbed.enum.module.yaml
       - testbed.same1.module.yaml
       - testbed.same2.module.yaml
-      - testbed.simple.module.yaml
+      - testbed.simple.module.yaml # Disable for UE4 testing
       # - testbed.simpleUE4.module.yaml # Enable for UE4 testing
-      - testbed.struct.module.yaml # Disable for UE4 testing
+      - testbed.struct.module.yaml 
     output: ../test
     template: ..
     force: true

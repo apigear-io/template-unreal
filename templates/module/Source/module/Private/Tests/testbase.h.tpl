@@ -1,6 +1,7 @@
 {{- /* Copyright Epic Games, Inc. All Rights Reserved */ -}}
 /**{{ template "copyright" }}*/
 {{- $ModuleName := Camel .Module.Name}}
+#pragma once
 
 #include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
