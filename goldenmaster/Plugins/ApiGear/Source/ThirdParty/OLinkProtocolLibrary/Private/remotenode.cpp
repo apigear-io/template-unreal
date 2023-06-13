@@ -52,7 +52,8 @@ RemoteNode::~RemoteNode()
 
 void RemoteNode::handleLink(const std::string& objectId)
 {
-    emitLog(LogLevel::Info, "handleLink name: " + objectId);
+    static const std::string handleLinkLog = "handleLink name: ";
+    emitLog(LogLevel::Info, handleLinkLog, objectId);
     auto source = m_registry.getSource(objectId).lock();
     if(source) {
         m_registry.addNodeForSource(m_nodeId, objectId);
@@ -60,7 +61,8 @@ void RemoteNode::handleLink(const std::string& objectId)
         nlohmann::json props = source->olinkCollectProperties();
         emitWrite(Protocol::initMessage(objectId, props));
     } else {
-        emitLog(LogLevel::Warning, "no source to link: " + objectId);
+        static const std::string noLinkToSourceLog = "no source to link: ";
+        emitLog(LogLevel::Warning, noLinkToSourceLog, objectId);
     }
 
 }

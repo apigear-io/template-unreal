@@ -89,19 +89,24 @@ nlohmann::json MessageConverter::fromString(const std::string& message)
 
 std::string MessageConverter::toString(const nlohmann::json& j)
 {
-    std::vector<uint8_t> v;
     switch(m_format) {
     case MessageFormat::JSON:
         return j.dump();
     case MessageFormat::BSON:
-        v = nlohmann::json::to_bson(j);
-        return std::string(v.begin(), v.end());
+    {
+        auto bsonData = nlohmann::json::to_bson(j);
+        return std::string(bsonData.begin(), bsonData.end());
+    }
     case MessageFormat::MSGPACK:
-        v = nlohmann::json::to_msgpack(j);
-        return std::string(v.begin(), v.end());
+    {
+        auto msgPackData = nlohmann::json::to_msgpack(j);
+        return std::string(msgPackData.begin(), msgPackData.end());
+    }
     case MessageFormat::CBOR:
-        v = nlohmann::json::to_cbor(j);
-        return std::string(v.begin(), v.end());
+    {
+        auto cbotData = nlohmann::json::to_cbor(j);
+        return std::string(cbotData.begin(), cbotData.end());
+    }
     }
     return std::string();
 }
@@ -135,13 +140,9 @@ void LoggerBase::onLog(WriteLogFunc func){
     m_logFunc = func;
 }
 
-void LoggerBase::emitLog(LogLevel level, const std::string& msg){
-    if(m_logFunc) {
-        m_logFunc(level, msg);
-    }
+void LoggerBase::setLogLevel(LogLevel level)
+{
+    m_Loglevel = level;
 }
 
-
-
 } } // ApiGear::ObjectLink
-

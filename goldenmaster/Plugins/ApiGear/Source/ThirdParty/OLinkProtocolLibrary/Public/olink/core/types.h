@@ -160,7 +160,13 @@ public:
 using InvokeReplyFunc = std::function<void(InvokeReplyArg)>;
 
 /** A type of function to log*/
-using WriteLogFunc = std::function<void(LogLevel level, const std::string& msg)>;
+using WriteLogFunc = std::function<void(LogLevel level, const std::string& message)>;
+
+template<typename ... Parameters>
+using LogManyParametersTemplate = std::function<void(LogLevel, const Parameters&  ...)>;
+
+
+using LogManyParameters = LogManyParametersTemplate<std::string>;
 
 /** A type of function to write messages to network, should be provided by network endpoint implementation
 @param msg message formated to network format.
@@ -178,14 +184,55 @@ public:
     */
     void onLog(WriteLogFunc func);
     /**
-    * Use this function to log any message using set logger function.
+    * Use this function to log message with a set logger function
+    * @param logLevel the level of the log. If the given log level is lower than set log level a user log function is not called
+    * @param params strings to be logged. The outgoing string is created only if log is to be logged - the log function is set and the log level is not lower than set log level.
     */
-    void emitLog(LogLevel level, const std::string& msg);
+    template<typename ... Parameters>
+    void emitLog(LogLevel logLevel, const Parameters&  ...params)
+    {
+        if (m_logFunc && logLevel >= m_Loglevel)
+        {
+            const int size = sizeof...(params);
+            std::string arg_list[size] = { params...};
+            std::string full_message = "";
+            for (const auto& element : arg_list)
+            {
+                full_message += element;
+            }
+
+            m_logFunc(logLevel, full_message);
+        }
+    }
+
+    /**
+    * Use this function to log message with payload that needs to be converted to string.
+    * @param payload a message to be converted to a string, which is a high cost operation.
+    *        Payload is put at the end of the created log message.
+    *        Conversion is performed only if message will be logged:
+    *        the log function is set and log level is not lower than a set log level.
+    * @param logMessage a log message to log.
+    * Have in mind that this operation has a high cost and should not be use often.
+    */
+    template<typename ... Parameters>
+    void emitLogWithPayload(LogLevel level, const nlohmann::json& payload, const Parameters&  ...params)
+    {
+        if (m_logFunc && level >= m_Loglevel) {
+            emitLog(level, params..., payload.dump());
+        }
+    }
+
+    /*
+    * Set LogLevel, all the logs with lower level will be skipped.
+    * By default LogLevel is set to LogLevel::Warning
+    */
+    void setLogLevel(LogLevel level);
 private:
     /**
     * User provided function that writes a log into user defined endpoint.
     */
     WriteLogFunc m_logFunc = nullptr;
+    LogLevel m_Loglevel = LogLevel::Warning;
 };
 
 } } // ApiGear::ObjectLink
