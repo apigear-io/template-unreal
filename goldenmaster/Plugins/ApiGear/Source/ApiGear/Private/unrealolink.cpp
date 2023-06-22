@@ -66,12 +66,10 @@ UUnrealOLink::UUnrealOLink(const FObjectInitializer& ObjectInitializer)
 	m_node->onWrite(func);
 
 	log("OLink instantiated");
-	// processMessages();
 }
 
 UUnrealOLink::~UUnrealOLink()
 {
-	// delete m_session;
 }
 
 void UUnrealOLink::log(const FString& logMessage)
@@ -183,10 +181,6 @@ void UUnrealOLink::open(const FString& url)
 			{
 				handleTextMessage(FString(std::string((uint8*)Data, (uint8*)Data + Size).c_str()));
 			});
-
-		// m_socket->OnMessageSent().AddLambda([](const FString& MessageString) -> void {
-		//     // This code is called after we sent a message to the server.
-		// });
 	}
 
 	if (!m_socket->IsConnected())
@@ -205,7 +199,6 @@ void UUnrealOLink::OnConnected()
 	{
 		m_node->linkRemote(objectName);
 	}
-	// m_session->init(TCHAR_TO_UTF8(*m_realm));
 	processMessages();
 }
 
@@ -228,16 +221,6 @@ void UUnrealOLink::handleTextMessage(const FString& message)
 {
 	m_node->handleMessage(TCHAR_TO_UTF8(*message));
 }
-
-// void UUnrealOLink::onError(std::string error)
-// {
-//     log("onError"); //  << error;
-// }
-
-// void UUnrealOLink::onEvent(std::string topic, Arguments args, ArgumentsKw kwargs)
-// {
-//     log("onEvent"); // << topic; // json(args).dump() << json(kwargs).dump();
-// }
 
 void UUnrealOLink::linkObjectSource(const std::string& name)
 {
@@ -269,7 +252,6 @@ void UUnrealOLink::processMessages()
 	if (!m_socket)
 	{
 		log("no socket -> creating");
-		// open(m_serverURL);
 		return;
 	}
 
