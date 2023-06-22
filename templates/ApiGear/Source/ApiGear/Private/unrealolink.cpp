@@ -49,8 +49,11 @@ UUnrealOLink::UUnrealOLink(const FObjectInitializer& ObjectInitializer)
 {
 	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
 	m_node = ApiGear::ObjectLink::ClientNode::create(m_registry);
-	m_node->onLog(logFunc());
-	m_registry.onLog(logFunc());
+	if (settings->OLINK_EnableDebugLog)
+	{
+		m_node->onLog(logFunc());
+		m_registry.onLog(logFunc());
+	}
 
 	m_loggingDisabled = !settings->OLINK_EnableDebugLog;
 	log(m_serverURL);
