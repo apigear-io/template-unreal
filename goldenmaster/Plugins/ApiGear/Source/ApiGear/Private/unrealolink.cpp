@@ -178,9 +178,11 @@ void UUnrealOLink::open(const FString& url)
 				handleTextMessage(Message);
 			});
 
-		// m_socket->OnRawMessage().AddLambda([](const void* Data, SIZE_T Size, SIZE_T BytesRemaining) -> void {
-		//     // This code will run when we receive a raw (binary) message from the server.
-		// });
+		m_socket->OnRawMessage().AddLambda(
+			[this](const void* Data, SIZE_T Size, SIZE_T /*BytesRemaining*/) -> void
+			{
+				handleTextMessage(FString(std::string((uint8*)Data, (uint8*)Data + Size).c_str()));
+			});
 
 		// m_socket->OnMessageSent().AddLambda([](const FString& MessageString) -> void {
 		//     // This code is called after we sent a message to the server.
