@@ -32,6 +32,7 @@ public class ApiGearOLink : ModuleRules
 			{
 				"CoreUObject",
 				"Engine",
+				"WebSocketNetworking"
 			}
 			);
 

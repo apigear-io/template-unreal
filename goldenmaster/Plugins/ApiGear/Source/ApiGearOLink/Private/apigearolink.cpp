@@ -4,6 +4,7 @@
 #include "WebSocketsModule.h"
 #include "ApiGearConnectionsStore.h"
 #include "unrealolink.h"
+#include "IWebSocketNetworkingModule.h"
 
 #define LOCTEXT_NAMESPACE "FApiGearModuleOLink"
 
@@ -14,6 +15,9 @@ void FApiGearModuleOLink::StartupModule()
 
 	// register olink factory function
 	UApiGearConnectionsStore::RegisterConnectionFactory(ApiGearOLinkProtocolIdentifier, &OLinkFactory::Create);
+
+	// needed for olink websocket server host
+	IWebSocketNetworkingModule& WebSocketNetworkingModule = FModuleManager::LoadModuleChecked<IWebSocketNetworkingModule>(TEXT("WebSocketNetworking"));
 }
 
 void FApiGearModuleOLink::ShutdownModule()

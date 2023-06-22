@@ -7,5 +7,7 @@ UApiGearSettings::UApiGearSettings(const FObjectInitializer& ObjectInitializer)
 	, Tracer_Enabled(false)
 	, Tracer_EnableDebugLog(false)
 	, bSaveRuntimeEdit(false)
+	, OLINK_AutoStart(true)
+	, OLINK_Port(8000)
 {
 }

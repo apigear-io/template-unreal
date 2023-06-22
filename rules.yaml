@@ -279,6 +279,26 @@ features:
             target: "Source/ApiGearOLink/Public/unrealolinksink.h"
             force: true
             raw: true
+          - source: "ApiGear/Source/ApiGearOLink/Private/UnrealOLinkHost.cpp"
+            target: "Source/ApiGearOLink/Private/UnrealOLinkHost.cpp"
+            force: true
+            raw: true
+          - source: "ApiGear/Source/ApiGearOLink/Public/UnrealOLinkHost.h"
+            target: "Source/ApiGearOLink/Public/UnrealOLinkHost.h"
+            force: true
+            raw: true
+          - source: "ApiGear/Source/ApiGearOLink/Private/OLinkHostConnection.h"
+            target: "Source/ApiGearOLink/Private/OLinkHostConnection.h"
+            force: true
+            raw: true
+          - source: "ApiGear/Source/ApiGearOLink/Private/OLinkHostWorker.h"
+            target: "Source/ApiGearOLink/Private/OLinkHostWorker.h"
+            force: true
+            raw: true
+          - source: "ApiGear/Source/ApiGearOLink/Private/OLinkHostWorker.cpp"
+            target: "Source/ApiGearOLink/Private/OLinkHostWorker.cpp"
+            force: true
+            raw: true
   - name: stubs
     requires:
       - api
@@ -392,4 +412,16 @@ features:
             force: true
           - source: "module/Source/module/Private/Generated/OLink/olinkclient.cpp.tpl"
             target: "Source/{{Camel .Module.Name}}/Private/Generated/OLink/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLinkClient.cpp"
+            force: true
+          - source: "module/Source/module/Public/Generated/OLink/olinkadapter.h.tpl"
+            target: "Source/{{Camel .Module.Name}}/Public/Generated/OLink/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLinkAdapter.h"
+            force: true
+          - source: "module/Source/module/Private/Generated/OLink/olinkadapter.cpp.tpl"
+            target: "Source/{{Camel .Module.Name}}/Private/Generated/OLink/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLinkAdapter.cpp"
+            force: true
+          - source: "module/Source/module/Private/Generated/OLink/olinksource.h.tpl"
+            target: "Source/{{Camel .Module.Name}}/Private/Generated/OLink/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLinkSource.h"
+            force: true
+          - source: "module/Source/module/Private/Generated/OLink/olinksource.cpp.tpl"
+            target: "Source/{{Camel .Module.Name}}/Private/Generated/OLink/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLinkSource.cpp"
             force: true

@@ -3,4 +3,4 @@
 
 #include "Logging/LogMacros.h"
 
-DECLARE_LOG_CATEGORY_EXTERN(LogApiGearOLinkHost, Log, All);
+APIGEAR_API DECLARE_LOG_CATEGORY_EXTERN(LogApiGearOLinkHost, Log, All);

@@ -15,6 +15,12 @@
 	"IsExperimentalVersion": false,
 	"Installed": false,
 	"EnabledByDefault" : true,
+	"Plugins": [
+		{
+			"Name": "WebSocketNetworking",
+			"Enabled": true
+		}
+	],
 	"Modules": [
 		{
 			"Name": "ApiGear",

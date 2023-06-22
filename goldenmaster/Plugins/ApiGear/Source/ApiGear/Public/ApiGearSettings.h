@@ -51,6 +51,14 @@ class APIGEAR_API UApiGearSettings : public UObject
 	UPROPERTY(EditAnywhere, config, Category = ConnectionSetup, meta = (ConfigRestartRequired = true, Display = "Use runtime changes instead of settings"))
 	bool bSaveRuntimeEdit;
 
+	// Automatically start
+	UPROPERTY(EditAnywhere, config, Category = OLinkHostSetup)
+	bool OLINK_AutoStart;
+
+	// On which Port to listen
+	UPROPERTY(EditAnywhere, config, Category = OLinkHostSetup)
+	uint32 OLINK_Port;
+
 	/** Modify connections */
 	UPROPERTY(EditAnywhere, config, Category = ConnectionSetup, meta = (ConfigRestartRequired = true))
 	TMap<FString, FApiGearConnectionSetting> Connections;

@@ -1,0 +1,60 @@
+
+{{- /* Copyright Epic Games, Inc. All Rights Reserved */ -}}
+/**{{ template "copyright" }}*/
+{{- $ModuleName := Camel .Module.Name}}
+{{- $IfaceName := Camel .Interface.Name }}
+{{- $API_MACRO := printf "%s_API" (CAMEL .Module.Name) }}
+{{- $Category := printf "ApiGear|%s|%s" $ModuleName $IfaceName }}
+{{- $DisplayName := printf "%s%s" $ModuleName $IfaceName }}
+{{- $Class := printf "%sOLinkSource" $DisplayName}}
+{{- $Iface := printf "%s%s" $ModuleName $IfaceName }}
+#pragma once
+
+#include "{{$Iface}}Interface.h"
+#include "Subsystems/GameInstanceSubsystem.h"
+THIRD_PARTY_INCLUDES_START
+#include "olink/iobjectsource.h"
+THIRD_PARTY_INCLUDES_END
+#include "UnrealOLinkHost.h"
+
+class {{$Class}} : public ApiGear::ObjectLink::IObjectSource
+{
+public:
+	explicit {{$Class}}();
+	virtual ~{{$Class}}() = default;
+
+	/** set the backend service which logic is to be used */
+	void setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface> InService);
+
+	/** set the OLink host to be used */
+	void setOLinkHost(TSoftObjectPtr<UUnrealOLinkHost> InHost);
+
+	//
+	// IObjectSource interface
+	//
+
+	// unique identifier of this module->interface
+	std::string olinkObjectName() override;
+
+	nlohmann::json olinkInvoke(const std::string& methodId, const nlohmann::json& args) override;
+	void olinkSetProperty(const std::string& propertyId, const nlohmann::json& value) override;
+	void olinkLinked(const std::string& objectId, ApiGear::ObjectLink::IRemoteNode* node) override{};
+	void olinkUnlinked(const std::string& objectId) override{};
+	nlohmann::json olinkCollectProperties() override;
+
+	// signals
+{{- range $i, $e := .Interface.Signals }}
+	void On{{Camel .Name}}({{ueParams "" .Params}});
+{{- end }}
+{{- if len .Interface.Properties }}{{ nl }}{{ end }}
+{{- range $i, $e := .Interface.Properties }}
+	void On{{Camel .Name}}Changed({{ueParam "" .}});
+{{- end }}
+
+private:
+	/** The connection to the service backend. */
+	TScriptInterface<I{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface> BackendService;
+
+	/** The host holding the connections and the registry */
+	TSoftObjectPtr<UUnrealOLinkHost> Host;
+};
