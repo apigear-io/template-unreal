@@ -60,10 +60,7 @@ UUnrealOLink::UUnrealOLink(const FObjectInitializer& ObjectInitializer)
 
 	ApiGear::ObjectLink::WriteMessageFunc func = [this](std::string msg)
 	{
-		{
-			const std::lock_guard<std::mutex> lock(m_queue_mutex);
-			m_queue.push(msg);
-		}
+		m_queue.Enqueue(msg);
 		processMessages();
 	};
 	m_node->onWrite(func);
@@ -263,6 +260,12 @@ void UUnrealOLink::unlinkObjectSource(const std::string& name)
 
 void UUnrealOLink::processMessages()
 {
+	if (m_queue.IsEmpty())
+	{
+		// no data to be sent
+		return;
+	}
+
 	if (!m_socket)
 	{
 		log("no socket -> creating");
@@ -277,17 +280,11 @@ void UUnrealOLink::processMessages()
 		return;
 	}
 
-	if (m_socket->IsConnected())
+	std::string msg;
+	while (!m_queue.IsEmpty())
 	{
-		const std::lock_guard<std::mutex> lock(m_queue_mutex);
-		while (!m_queue.empty())
-		{
-			// if we are using JSON we need to use txt message
-			// otherwise binary messages
-			//    m_socket->sendBinaryMessage(QByteArray::fromStdString(message));
-			const std::string& msg = m_queue.back();
-			m_socket->Send(UTF8_TO_TCHAR(msg.c_str()));
-			m_queue.pop();
-		}
+		// if we are using JSON we need to use txt message
+		m_queue.Dequeue(msg);
+		m_socket->Send(UTF8_TO_TCHAR(msg.c_str()));
 	}
 }

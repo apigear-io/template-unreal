@@ -7,8 +7,7 @@ THIRD_PARTY_INCLUDES_START
 THIRD_PARTY_INCLUDES_END
 #include "WebSocketsModule.h"
 #include "IWebSocket.h"
-#include <queue>
-#include <mutex>
+#include "Containers/Queue.h"
 #include "unrealolink.generated.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(LogApiGearOLink, Log, All);
@@ -52,6 +51,5 @@ private:
 	FString m_serverURL;
 	ApiGear::ObjectLink::ClientRegistry m_registry;
 	std::shared_ptr<ApiGear::ObjectLink::ClientNode> m_node;
-	std::queue<std::string> m_queue;
-	std::mutex m_queue_mutex;
+	TQueue<std::string, EQueueMode::Mpsc> m_queue;
 };
