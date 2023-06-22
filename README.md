@@ -11,10 +11,10 @@ For more details on *ApiGear* please visit [apigear.io](https://apigear.io) or t
 
 We aim for full feature parity between usage from within Blueprints or UE C++.
 
-|   |Client|Service|Network Client|Simulation Client|
-|---| :---: | :---: | :---: | :---: |
-|Blueprint|:heavy_check_mark:|:heavy_check_mark:|:heavy_check_mark:|:heavy_check_mark:|
-|UE C++|:heavy_check_mark:|:heavy_check_mark:|:heavy_check_mark:|:heavy_check_mark:|
+|   |Client|Service|Network Client|Network Service|Simulation Client|
+|---| :---: | :---: | :---: | :---: | :---: |
+|Blueprint|:heavy_check_mark:|:heavy_check_mark:|:heavy_check_mark:| :heavy_check_mark: (v3.x and later) |:heavy_check_mark:|
+|UE C++|:heavy_check_mark:|:heavy_check_mark:|:heavy_check_mark:|:heavy_check_mark: (v3.x and later)|:heavy_check_mark:|
 
 > :bulb: **Explanation**
 >
@@ -26,10 +26,10 @@ We aim for full feature parity between usage from within Blueprints or UE C++.
 ### Compatibility
 
 The generated plugin code is regularly tested in these configurations:
-| platform | UE4.25 | UE4.27 | UE5.1 |
+| platform | UE4.25 | UE4.27 | UE5.2 |
 |----------| :---: | :---: | :---: |
-| Windows  |:heavy_check_mark:|:heavy_check_mark:|:heavy_check_mark:|
-| Linux    |:heavy_check_mark:|:heavy_check_mark:|:heavy_check_mark:|
+| Windows  |:heavy_check_mark: (until v2.x)|:heavy_check_mark:|:heavy_check_mark:|
+| Linux    |:heavy_check_mark: (until v2.x)|:heavy_check_mark:|:heavy_check_mark:|
 ## Code Generation Features
 
 The template offers the following feature switches which can be enabled during code generation:
