@@ -6,7 +6,7 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/iobjectsink.h"
 THIRD_PARTY_INCLUDES_END
 
-class APIGEAR_API FUnrealOLinkSink : public ApiGear::ObjectLink::IObjectSink
+class APIGEAROLINK_API FUnrealOLinkSink : public ApiGear::ObjectLink::IObjectSink
 {
 public:
 	FUnrealOLinkSink(const std::string& olinkObjectName);

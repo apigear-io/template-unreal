@@ -203,6 +203,9 @@ TSharedRef<SWidget> FApiGearEditorModule::MakeConnectionsOverviewWidget()
 {
 	TArray<FString> ConnectionNames;
 	TArray<TSharedPtr<FText>>* ConnectionNamesShareable = &CurrentConnections;
+	// remove old connections to make sure we don't accidentally duplicate them
+	ConnectionNamesShareable->Empty();
+
 	AGCM->GetConnections().GenerateKeyArray(ConnectionNames);
 	for (auto& ConnectionName : ConnectionNames)
 	{

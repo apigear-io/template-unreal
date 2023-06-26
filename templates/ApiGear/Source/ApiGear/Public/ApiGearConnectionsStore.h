@@ -20,12 +20,11 @@ class APIGEAR_API UApiGearConnectionsStore : public UEngineSubsystem
 
 public:
 	UApiGearConnectionsStore();
-
 	/** A type of function for creating connections*/
 	using FConnectionFactoryFunction = TFunction<TScriptInterface<IApiGearConnection>(UObject*, FString)>;
 
 	/** register factories for different types of connections */
-	bool RegisterConnectionFactory(FString ConnectionTypeIdentifier, FConnectionFactoryFunction FactoryFunction);
+	static bool RegisterConnectionFactory(FString ConnectionTypeIdentifier, FConnectionFactoryFunction FactoryFunction);
 
 	// USubssystem functions
 	void Initialize(FSubsystemCollectionBase& Collection) override;
@@ -62,5 +61,5 @@ public:
 private:
 	UPROPERTY()
 	TMap<FString, TScriptInterface<IApiGearConnection>> Connections;
-	TMap<FString, FConnectionFactoryFunction> Factories;
+	static TMap<FString, FConnectionFactoryFunction> Factories;
 };

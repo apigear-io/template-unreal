@@ -53,6 +53,7 @@ public class {{$ModuleName}} : ModuleRules
 				"CoreUObject",
 				"Engine",
 {{- if .Features.apigear }}
+				"ApiGearOLink",
 				"OLinkProtocolLibrary"
 {{- end }}
 			}

@@ -12,16 +12,14 @@ THIRD_PARTY_INCLUDES_END
 
 DECLARE_LOG_CATEGORY_EXTERN(LogApiGearOLink, Log, All);
 
-using namespace ApiGear;
-
-class APIGEAR_API OLinkFactory
+class APIGEAROLINK_API OLinkFactory
 {
 public:
 	static TScriptInterface<IApiGearConnection> Create(UObject* Outer, FString UniqueConnectionIdentifier);
 };
 
 UCLASS(BlueprintType, Displayname = "ApiGear ObjectLink Connection", Category = "ApiGear|Connection")
-class APIGEAR_API UUnrealOLink : public UAbstractApiGearConnection
+class APIGEAROLINK_API UUnrealOLink : public UAbstractApiGearConnection
 {
 	GENERATED_BODY()
 public:

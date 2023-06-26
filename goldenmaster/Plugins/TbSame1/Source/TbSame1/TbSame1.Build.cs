@@ -45,6 +45,7 @@ public class TbSame1 : ModuleRules
 			{
 				"CoreUObject",
 				"Engine",
+				"ApiGearOLink",
 				"OLinkProtocolLibrary"
 			}
 			);

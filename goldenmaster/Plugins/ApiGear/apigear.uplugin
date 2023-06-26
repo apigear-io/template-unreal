@@ -22,6 +22,11 @@
 			"LoadingPhase": "Default"
 		},
 		{
+			"Name": "ApiGearOLink",
+			"Type": "Runtime",
+			"LoadingPhase": "PreDefault"
+		},
+		{
 			"Name": "OLinkProtocolLibrary",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"

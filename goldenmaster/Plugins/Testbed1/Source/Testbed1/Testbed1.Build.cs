@@ -45,6 +45,7 @@ public class Testbed1 : ModuleRules
 			{
 				"CoreUObject",
 				"Engine",
+				"ApiGearOLink",
 				"OLinkProtocolLibrary"
 			}
 			);

@@ -124,8 +124,6 @@ features:
             raw: true
             force: true
   - name: apigear
-    requires:
-      - apigear-olinkproto
     scopes:
       - match: system
         prefix: "Plugins/ApiGear/"
@@ -230,20 +228,40 @@ features:
             target: "Source/ThirdParty/nlohmannJsonLibrary/Public/nlohmann/json.hpp"
             raw: true
             force: true
-          - source: "ApiGear/Source/ApiGear/Private/unrealolink.cpp"
-            target: "Source/ApiGear/Private/unrealolink.cpp"
+  - name: apigear-olink
+    requires:
+      - apigear
+      - apigear-olinkproto
+    scopes:
+      - match: system
+        prefix: "Plugins/ApiGear/"
+        documents:
+          - source: "ApiGear/Source/ApiGearOLink/apigearolink.Build.cs"
+            target: "Source/ApiGearOLink/apigearolink.Build.cs"
             force: true
             raw: true
-          - source: "ApiGear/Source/ApiGear/Public/unrealolink.h"
-            target: "Source/ApiGear/Public/unrealolink.h"
+          - source: "ApiGear/Source/ApiGearOLink/Public/apigearolink.h"
+            target: "Source/ApiGearOLink/Public/apigearolink.h"
             force: true
             raw: true
-          - source: "ApiGear/Source/ApiGear/Private/unrealolinksink.cpp"
-            target: "Source/ApiGear/Private/unrealolinksink.cpp"
+          - source: "ApiGear/Source/ApiGearOLink/Private/apigearolink.cpp"
+            target: "Source/ApiGearOLink/Private/apigearolink.cpp"
             force: true
             raw: true
-          - source: "ApiGear/Source/ApiGear/Public/unrealolinksink.h"
-            target: "Source/ApiGear/Public/unrealolinksink.h"
+          - source: "ApiGear/Source/ApiGearOLink/Private/unrealolink.cpp"
+            target: "Source/ApiGearOLink/Private/unrealolink.cpp"
+            force: true
+            raw: true
+          - source: "ApiGear/Source/ApiGearOLink/Public/unrealolink.h"
+            target: "Source/ApiGearOLink/Public/unrealolink.h"
+            force: true
+            raw: true
+          - source: "ApiGear/Source/ApiGearOLink/Private/unrealolinksink.cpp"
+            target: "Source/ApiGearOLink/Private/unrealolinksink.cpp"
+            force: true
+            raw: true
+          - source: "ApiGear/Source/ApiGearOLink/Public/unrealolinksink.h"
+            target: "Source/ApiGearOLink/Public/unrealolinksink.h"
             force: true
             raw: true
   - name: stubs
@@ -343,7 +361,7 @@ features:
             force: true
   - name: olink
     requires:
-      - apigear
+      - apigear-olink
     scopes:
       - match: module
         prefix: "Plugins/{{Camel .Module.Name}}/"

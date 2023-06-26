@@ -1,7 +1,6 @@
 // Copyright Epic Games, Inc. All Rights Reserved
 #include "apigear.h"
 #include "Modules/ModuleManager.h"
-#include "WebSocketsModule.h"
 #include "HttpModule.h"
 
 #define LOCTEXT_NAMESPACE "FApiGearModule"
@@ -9,7 +8,6 @@
 void FApiGearModule::StartupModule()
 {
 	// No Libraries to load from non mobile platforms because of the web api
-	FWebSocketsModule& WebSocketsModule = FModuleManager::LoadModuleChecked<FWebSocketsModule>(TEXT("WebSockets"));
 	FHttpModule& HttpModule = FModuleManager::LoadModuleChecked<FHttpModule>(TEXT("HTTP"));
 }
 

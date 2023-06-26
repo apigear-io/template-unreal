@@ -45,6 +45,7 @@ public class TbEnum : ModuleRules
 			{
 				"CoreUObject",
 				"Engine",
+				"ApiGearOLink",
 				"OLinkProtocolLibrary"
 			}
 			);

@@ -20,9 +20,7 @@ public class ApiGear : ModuleRules
 			new string[]
 			{
 				"Core",
-				"WebSockets",
 				"HTTP",
-				"OLinkProtocolLibrary",
 				"nlohmannJsonLibrary"
 			}
 			);

@@ -1,7 +1,8 @@
 // Copyright Epic Games, Inc. All Rights Reserved
 #include "ApiGearConnectionsStore.h"
 #include "ApiGearSettings.h"
-#include "unrealolink.h"
+
+TMap<FString, UApiGearConnectionsStore::FConnectionFactoryFunction> UApiGearConnectionsStore::Factories{};
 
 UApiGearConnectionsStore::UApiGearConnectionsStore()
 {
@@ -23,9 +24,6 @@ bool UApiGearConnectionsStore::RegisterConnectionFactory(FString ConnectionTypeI
 void UApiGearConnectionsStore::Initialize(FSubsystemCollectionBase& Collection)
 {
 	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
-
-	// register olink here since it is the only known connection at code generation
-	RegisterConnectionFactory("olink", &OLinkFactory::Create);
 
 	for (auto& ConnectionSetting : settings->Connections)
 	{
