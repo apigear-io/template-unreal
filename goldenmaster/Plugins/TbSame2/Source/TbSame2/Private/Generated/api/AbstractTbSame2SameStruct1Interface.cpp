@@ -14,13 +14,13 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-#include "TbSame1SameStruct1InterfaceInterface.h"
+#include "AbstractTbSame2SameStruct1Interface.h"
 #include "Async/Async.h"
 #include "Engine/Engine.h"
 #include "Engine/LatentActionManager.h"
 #include "LatentActions.h"
 
-class FTbSame1SameStruct1InterfaceLatentAction : public FPendingLatentAction
+class FTbSame2SameStruct1InterfaceLatentAction : public FPendingLatentAction
 {
 private:
 	FName ExecutionFunction;
@@ -29,7 +29,7 @@ private:
 	bool bInProgress;
 
 public:
-	FTbSame1SameStruct1InterfaceLatentAction(const FLatentActionInfo& LatentInfo)
+	FTbSame2SameStruct1InterfaceLatentAction(const FLatentActionInfo& LatentInfo)
 		: ExecutionFunction(LatentInfo.ExecutionFunction)
 		, OutputLink(LatentInfo.Linkage)
 		, CallbackTarget(LatentInfo.CallbackTarget)
@@ -61,41 +61,41 @@ public:
 	}
 };
 
-FTbSame1SameStruct1InterfaceSig1Delegate& UAbstractTbSame1SameStruct1Interface::GetSig1SignalDelegate()
+FTbSame2SameStruct1InterfaceSig1Delegate& UAbstractTbSame2SameStruct1Interface::GetSig1SignalDelegate()
 {
 	return Sig1Signal;
 };
 
-void UAbstractTbSame1SameStruct1Interface::BroadcastSig1_Implementation(const FTbSame1Struct1& Param1)
+void UAbstractTbSame2SameStruct1Interface::BroadcastSig1_Implementation(const FTbSame2Struct1& Param1)
 {
 	Sig1Signal.Broadcast(Param1);
 };
 
-FTbSame1SameStruct1InterfaceProp1ChangedDelegate& UAbstractTbSame1SameStruct1Interface::GetProp1ChangedDelegate()
+FTbSame2SameStruct1InterfaceProp1ChangedDelegate& UAbstractTbSame2SameStruct1Interface::GetProp1ChangedDelegate()
 {
 	return Prop1Changed;
 };
 
-void UAbstractTbSame1SameStruct1Interface::BroadcastProp1Changed_Implementation(const FTbSame1Struct1& InProp1)
+void UAbstractTbSame2SameStruct1Interface::BroadcastProp1Changed_Implementation(const FTbSame2Struct1& InProp1)
 {
 	Prop1Changed.Broadcast(InProp1);
 }
 
-FTbSame1Struct1 UAbstractTbSame1SameStruct1Interface::GetProp1_Private() const
+FTbSame2Struct1 UAbstractTbSame2SameStruct1Interface::GetProp1_Private() const
 {
 	return Execute_GetProp1(this);
 };
 
-void UAbstractTbSame1SameStruct1Interface::SetProp1_Private(const FTbSame1Struct1& InProp1)
+void UAbstractTbSame2SameStruct1Interface::SetProp1_Private(const FTbSame2Struct1& InProp1)
 {
 	Execute_SetProp1(this, InProp1);
 };
-void UAbstractTbSame1SameStruct1Interface::Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame1Struct1& Result, const FTbSame1Struct1& Param1)
+void UAbstractTbSame2SameStruct1Interface::Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame2Struct1& Result, const FTbSame2Struct1& Param1)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTbSame1SameStruct1InterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSame1SameStruct1InterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FTbSame2SameStruct1InterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSame2SameStruct1InterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -104,7 +104,7 @@ void UAbstractTbSame1SameStruct1Interface::Func1Async_Implementation(UObject* Wo
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FTbSame1SameStruct1InterfaceLatentAction* CompletionAction = new FTbSame1SameStruct1InterfaceLatentAction(LatentInfo);
+		FTbSame2SameStruct1InterfaceLatentAction* CompletionAction = new FTbSame2SameStruct1InterfaceLatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
 
 		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
@@ -125,7 +125,7 @@ void UAbstractTbSame1SameStruct1Interface::Func1Async_Implementation(UObject* Wo
 	}
 }
 
-void UAbstractTbSame1SameStruct1Interface::Initialize(FSubsystemCollectionBase& Collection)
+void UAbstractTbSame2SameStruct1Interface::Initialize(FSubsystemCollectionBase& Collection)
 {
 	check(!bInitialized);
 	bInitialized = true;
@@ -133,7 +133,7 @@ void UAbstractTbSame1SameStruct1Interface::Initialize(FSubsystemCollectionBase& 
 	Super::Initialize(Collection);
 }
 
-void UAbstractTbSame1SameStruct1Interface::Deinitialize()
+void UAbstractTbSame2SameStruct1Interface::Deinitialize()
 {
 	check(bInitialized);
 	bInitialized = false;
@@ -141,7 +141,7 @@ void UAbstractTbSame1SameStruct1Interface::Deinitialize()
 	Super::Deinitialize();
 }
 
-bool UAbstractTbSame1SameStruct1Interface::IsInitialized() const
+bool UAbstractTbSame2SameStruct1Interface::IsInitialized() const
 {
 	return bInitialized;
 }

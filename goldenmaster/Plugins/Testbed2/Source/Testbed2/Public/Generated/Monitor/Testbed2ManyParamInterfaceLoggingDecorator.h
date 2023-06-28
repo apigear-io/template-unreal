@@ -19,7 +19,7 @@ limitations under the License.
 
 #include "CoreMinimal.h"
 #include "Subsystems/GameInstanceSubsystem.h"
-#include "Testbed2ManyParamInterfaceInterface.h"
+#include "AbstractTestbed2ManyParamInterface.h"
 #include "Testbed2ManyParamInterfaceLoggingDecorator.generated.h"
 
 // General Log

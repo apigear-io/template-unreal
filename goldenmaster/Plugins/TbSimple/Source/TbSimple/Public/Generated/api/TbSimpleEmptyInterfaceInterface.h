@@ -16,9 +16,8 @@ limitations under the License.
 */
 #pragma once
 
-#include "UObject/Interface.h"
 #include "Engine/LatentActionManager.h"
-#include "Subsystems/GameInstanceSubsystem.h"
+#include "UObject/Interface.h"
 #include "TbSimple_data.h"
 #include "TbSimpleEmptyInterfaceInterface.generated.h"
 
@@ -52,32 +51,4 @@ public:
 
 protected:
 	// signals
-};
-
-/**
- * Abstract UAbstractTbSimpleEmptyInterface
- */
-UCLASS(Abstract, Blueprintable, NotBlueprintType)
-class TBSIMPLE_API UAbstractTbSimpleEmptyInterface : public UGameInstanceSubsystem, public ITbSimpleEmptyInterfaceInterface
-{
-	GENERATED_BODY()
-
-public:
-	// subsystem
-	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
-	virtual void Deinitialize() override;
-
-	// signals
-
-	// methods
-
-	// properties
-
-	virtual bool IsInitialized() const;
-
-protected:
-	bool bInitialized = false;
-	// signals
-
-	// properties - local copy
 };

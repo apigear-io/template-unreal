@@ -18,7 +18,7 @@ limitations under the License.
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Generated/api/TbSame2SameStruct2InterfaceInterface.h"
+#include "Generated/api/AbstractTbSame2SameStruct2Interface.h"
 #include "TbSame2SameStruct2Interface.generated.h"
 
 UCLASS(BlueprintType)

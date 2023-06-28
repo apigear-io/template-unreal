@@ -16,9 +16,8 @@ limitations under the License.
 */
 #pragma once
 
-#include "UObject/Interface.h"
 #include "Engine/LatentActionManager.h"
-#include "Subsystems/GameInstanceSubsystem.h"
+#include "UObject/Interface.h"
 #include "TbSame1_data.h"
 #include "TbSame1SameEnum1InterfaceInterface.generated.h"
 
@@ -81,55 +80,4 @@ protected:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame1|SameEnum1Interface", meta = (BlueprintProtected = "true"))
 	void BroadcastProp1Changed(ETbSame1Enum1 Prop1);
 	virtual void BroadcastProp1Changed_Implementation(ETbSame1Enum1 Prop1) = 0;
-};
-
-/**
- * Abstract UAbstractTbSame1SameEnum1Interface
- */
-UCLASS(Abstract, Blueprintable, NotBlueprintType)
-class TBSAME1_API UAbstractTbSame1SameEnum1Interface : public UGameInstanceSubsystem, public ITbSame1SameEnum1InterfaceInterface
-{
-	GENERATED_BODY()
-
-public:
-	// subsystem
-	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
-	virtual void Deinitialize() override;
-
-	// signals
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame1|SameEnum1Interface", DisplayName = "Sig1 Signal")
-	FTbSame1SameEnum1InterfaceSig1Delegate Sig1Signal;
-	virtual FTbSame1SameEnum1InterfaceSig1Delegate& GetSig1SignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame1|SameEnum1Interface", DisplayName = "Prop1 Changed")
-	FTbSame1SameEnum1InterfaceProp1ChangedDelegate Prop1Changed;
-	virtual FTbSame1SameEnum1InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
-
-	// methods
-	virtual void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame1Enum1& Result, ETbSame1Enum1 Param1) override;
-	virtual ETbSame1Enum1 Func1_Implementation(ETbSame1Enum1 Param1) override PURE_VIRTUAL(UAbstractTbSame1SameEnum1Interface::Func1_Implementation, return ETbSame1Enum1::TSE_VALUE1;);
-
-	// properties
-	virtual ETbSame1Enum1 GetProp1_Implementation() const override PURE_VIRTUAL(UAbstractTbSame1SameEnum1Interface::GetProp1_Implementation, return ETbSame1Enum1::TSE_VALUE1;);
-
-	virtual void SetProp1_Implementation(ETbSame1Enum1 InProp1) override PURE_VIRTUAL(UAbstractTbSame1SameEnum1Interface::SetProp1_Implementation, return;);
-
-	virtual bool IsInitialized() const;
-
-protected:
-	bool bInitialized = false;
-	// signals
-	virtual void BroadcastSig1_Implementation(ETbSame1Enum1 Param1) override;
-
-	virtual void BroadcastProp1Changed_Implementation(ETbSame1Enum1 InProp1) override;
-
-	// properties - local copy
-	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1_Private, BlueprintSetter = SetProp1_Private, Category = "ApiGear|TbSame1|SameEnum1Interface")
-	ETbSame1Enum1 Prop1{ETbSame1Enum1::TSE_VALUE1};
-
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSame1|SameEnum1Interface", BlueprintInternalUseOnly)
-	ETbSame1Enum1 GetProp1_Private() const;
-
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSame1|SameEnum1Interface", BlueprintInternalUseOnly)
-	void SetProp1_Private(ETbSame1Enum1 InProp1);
 };

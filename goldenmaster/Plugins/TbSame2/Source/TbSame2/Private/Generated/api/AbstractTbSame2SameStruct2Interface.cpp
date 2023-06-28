@@ -14,7 +14,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-#include "TbSame2SameStruct2InterfaceInterface.h"
+#include "AbstractTbSame2SameStruct2Interface.h"
 #include "Async/Async.h"
 #include "Engine/Engine.h"
 #include "Engine/LatentActionManager.h"

@@ -14,13 +14,13 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-#include "TbSame1SameEnum1InterfaceInterface.h"
+#include "AbstractTbSimpleNoPropertiesInterface.h"
 #include "Async/Async.h"
 #include "Engine/Engine.h"
 #include "Engine/LatentActionManager.h"
 #include "LatentActions.h"
 
-class FTbSame1SameEnum1InterfaceLatentAction : public FPendingLatentAction
+class FTbSimpleNoPropertiesInterfaceLatentAction : public FPendingLatentAction
 {
 private:
 	FName ExecutionFunction;
@@ -29,7 +29,7 @@ private:
 	bool bInProgress;
 
 public:
-	FTbSame1SameEnum1InterfaceLatentAction(const FLatentActionInfo& LatentInfo)
+	FTbSimpleNoPropertiesInterfaceLatentAction(const FLatentActionInfo& LatentInfo)
 		: ExecutionFunction(LatentInfo.ExecutionFunction)
 		, OutputLink(LatentInfo.Linkage)
 		, CallbackTarget(LatentInfo.CallbackTarget)
@@ -61,41 +61,32 @@ public:
 	}
 };
 
-FTbSame1SameEnum1InterfaceSig1Delegate& UAbstractTbSame1SameEnum1Interface::GetSig1SignalDelegate()
+FTbSimpleNoPropertiesInterfaceSigVoidDelegate& UAbstractTbSimpleNoPropertiesInterface::GetSigVoidSignalDelegate()
 {
-	return Sig1Signal;
+	return SigVoidSignal;
 };
 
-void UAbstractTbSame1SameEnum1Interface::BroadcastSig1_Implementation(ETbSame1Enum1 Param1)
+void UAbstractTbSimpleNoPropertiesInterface::BroadcastSigVoid_Implementation()
 {
-	Sig1Signal.Broadcast(Param1);
+	SigVoidSignal.Broadcast();
 };
 
-FTbSame1SameEnum1InterfaceProp1ChangedDelegate& UAbstractTbSame1SameEnum1Interface::GetProp1ChangedDelegate()
+FTbSimpleNoPropertiesInterfaceSigBoolDelegate& UAbstractTbSimpleNoPropertiesInterface::GetSigBoolSignalDelegate()
 {
-	return Prop1Changed;
+	return SigBoolSignal;
 };
 
-void UAbstractTbSame1SameEnum1Interface::BroadcastProp1Changed_Implementation(ETbSame1Enum1 InProp1)
+void UAbstractTbSimpleNoPropertiesInterface::BroadcastSigBool_Implementation(bool bParamBool)
 {
-	Prop1Changed.Broadcast(InProp1);
-}
-
-ETbSame1Enum1 UAbstractTbSame1SameEnum1Interface::GetProp1_Private() const
-{
-	return Execute_GetProp1(this);
+	SigBoolSignal.Broadcast(bParamBool);
 };
 
-void UAbstractTbSame1SameEnum1Interface::SetProp1_Private(ETbSame1Enum1 InProp1)
-{
-	Execute_SetProp1(this, InProp1);
-};
-void UAbstractTbSame1SameEnum1Interface::Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame1Enum1& Result, ETbSame1Enum1 Param1)
+void UAbstractTbSimpleNoPropertiesInterface::FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTbSame1SameEnum1InterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSame1SameEnum1InterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FTbSimpleNoPropertiesInterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSimpleNoPropertiesInterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -104,28 +95,28 @@ void UAbstractTbSame1SameEnum1Interface::Func1Async_Implementation(UObject* Worl
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FTbSame1SameEnum1InterfaceLatentAction* CompletionAction = new FTbSame1SameEnum1InterfaceLatentAction(LatentInfo);
+		FTbSimpleNoPropertiesInterfaceLatentAction* CompletionAction = new FTbSimpleNoPropertiesInterfaceLatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
 
 		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
 		if (this->GetClass()->IsInBlueprint())
 		{
-			Result = Execute_Func1(this, Param1);
+			Result = Execute_FuncBool(this, bParamBool);
 			CompletionAction->Cancel();
 		}
 		else
 		{
 			Async(EAsyncExecution::Thread,
-				[Param1, this, &Result, CompletionAction]()
+				[bParamBool, this, &Result, CompletionAction]()
 				{
-					Result = Execute_Func1(this, Param1);
+					Result = Execute_FuncBool(this, bParamBool);
 					CompletionAction->Cancel();
 				});
 		}
 	}
 }
 
-void UAbstractTbSame1SameEnum1Interface::Initialize(FSubsystemCollectionBase& Collection)
+void UAbstractTbSimpleNoPropertiesInterface::Initialize(FSubsystemCollectionBase& Collection)
 {
 	check(!bInitialized);
 	bInitialized = true;
@@ -133,7 +124,7 @@ void UAbstractTbSame1SameEnum1Interface::Initialize(FSubsystemCollectionBase& Co
 	Super::Initialize(Collection);
 }
 
-void UAbstractTbSame1SameEnum1Interface::Deinitialize()
+void UAbstractTbSimpleNoPropertiesInterface::Deinitialize()
 {
 	check(bInitialized);
 	bInitialized = false;
@@ -141,7 +132,7 @@ void UAbstractTbSame1SameEnum1Interface::Deinitialize()
 	Super::Deinitialize();
 }
 
-bool UAbstractTbSame1SameEnum1Interface::IsInitialized() const
+bool UAbstractTbSimpleNoPropertiesInterface::IsInitialized() const
 {
 	return bInitialized;
 }

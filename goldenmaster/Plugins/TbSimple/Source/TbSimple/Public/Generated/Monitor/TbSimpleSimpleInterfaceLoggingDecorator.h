@@ -19,7 +19,7 @@ limitations under the License.
 
 #include "CoreMinimal.h"
 #include "Subsystems/GameInstanceSubsystem.h"
-#include "TbSimpleSimpleInterfaceInterface.h"
+#include "AbstractTbSimpleSimpleInterface.h"
 #include "TbSimpleSimpleInterfaceLoggingDecorator.generated.h"
 
 // General Log

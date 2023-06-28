@@ -16,9 +16,8 @@ limitations under the License.
 */
 #pragma once
 
-#include "UObject/Interface.h"
 #include "Engine/LatentActionManager.h"
-#include "Subsystems/GameInstanceSubsystem.h"
+#include "UObject/Interface.h"
 #include "TbSimple_data.h"
 #include "TbSimpleNoOperationsInterfaceInterface.generated.h"
 
@@ -100,77 +99,4 @@ protected:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoOperationsInterface", meta = (BlueprintProtected = "true"))
 	void BroadcastPropIntChanged(int32 PropInt);
 	virtual void BroadcastPropIntChanged_Implementation(int32 PropInt) = 0;
-};
-
-/**
- * Abstract UAbstractTbSimpleNoOperationsInterface
- */
-UCLASS(Abstract, Blueprintable, NotBlueprintType)
-class TBSIMPLE_API UAbstractTbSimpleNoOperationsInterface : public UGameInstanceSubsystem, public ITbSimpleNoOperationsInterfaceInterface
-{
-	GENERATED_BODY()
-
-public:
-	// subsystem
-	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
-	virtual void Deinitialize() override;
-
-	// signals
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoOperationsInterface", DisplayName = "SigVoid Signal")
-	FTbSimpleNoOperationsInterfaceSigVoidDelegate SigVoidSignal;
-	virtual FTbSimpleNoOperationsInterfaceSigVoidDelegate& GetSigVoidSignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoOperationsInterface", DisplayName = "SigBool Signal")
-	FTbSimpleNoOperationsInterfaceSigBoolDelegate SigBoolSignal;
-	virtual FTbSimpleNoOperationsInterfaceSigBoolDelegate& GetSigBoolSignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoOperationsInterface", DisplayName = "PropBool Changed")
-	FTbSimpleNoOperationsInterfacePropBoolChangedDelegate PropBoolChanged;
-	virtual FTbSimpleNoOperationsInterfacePropBoolChangedDelegate& GetPropBoolChangedDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoOperationsInterface", DisplayName = "PropInt Changed")
-	FTbSimpleNoOperationsInterfacePropIntChangedDelegate PropIntChanged;
-	virtual FTbSimpleNoOperationsInterfacePropIntChangedDelegate& GetPropIntChangedDelegate() override;
-
-	// methods
-
-	// properties
-	virtual bool GetPropBool_Implementation() const override PURE_VIRTUAL(UAbstractTbSimpleNoOperationsInterface::GetPropBool_Implementation, return false;);
-
-	virtual void SetPropBool_Implementation(bool bInPropBool) override PURE_VIRTUAL(UAbstractTbSimpleNoOperationsInterface::SetPropBool_Implementation, return;);
-	virtual int32 GetPropInt_Implementation() const override PURE_VIRTUAL(UAbstractTbSimpleNoOperationsInterface::GetPropInt_Implementation, return 0;);
-
-	virtual void SetPropInt_Implementation(int32 InPropInt) override PURE_VIRTUAL(UAbstractTbSimpleNoOperationsInterface::SetPropInt_Implementation, return;);
-
-	virtual bool IsInitialized() const;
-
-protected:
-	bool bInitialized = false;
-	// signals
-	virtual void BroadcastSigVoid_Implementation() override;
-
-	virtual void BroadcastSigBool_Implementation(bool bParamBool) override;
-
-	virtual void BroadcastPropBoolChanged_Implementation(bool bInPropBool) override;
-
-	virtual void BroadcastPropIntChanged_Implementation(int32 InPropInt) override;
-
-	// properties - local copy
-	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropBool_Private, BlueprintSetter = SetPropBool_Private, Category = "ApiGear|TbSimple|NoOperationsInterface")
-	bool bPropBool{false};
-
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSimple|NoOperationsInterface", BlueprintInternalUseOnly)
-	bool GetPropBool_Private() const;
-
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSimple|NoOperationsInterface", BlueprintInternalUseOnly)
-	void SetPropBool_Private(bool bInPropBool);
-
-	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropInt_Private, BlueprintSetter = SetPropInt_Private, Category = "ApiGear|TbSimple|NoOperationsInterface")
-	int32 PropInt{0};
-
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSimple|NoOperationsInterface", BlueprintInternalUseOnly)
-	int32 GetPropInt_Private() const;
-
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSimple|NoOperationsInterface", BlueprintInternalUseOnly)
-	void SetPropInt_Private(int32 InPropInt);
 };

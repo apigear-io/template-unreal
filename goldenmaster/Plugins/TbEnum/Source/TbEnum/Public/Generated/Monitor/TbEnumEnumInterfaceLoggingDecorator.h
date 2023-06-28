@@ -19,7 +19,7 @@ limitations under the License.
 
 #include "CoreMinimal.h"
 #include "Subsystems/GameInstanceSubsystem.h"
-#include "TbEnumEnumInterfaceInterface.h"
+#include "AbstractTbEnumEnumInterface.h"
 #include "TbEnumEnumInterfaceLoggingDecorator.generated.h"
 
 // General Log

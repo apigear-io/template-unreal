@@ -14,13 +14,13 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-#include "TbSimpleNoPropertiesInterfaceInterface.h"
+#include "AbstractTestbed2NestedStruct1Interface.h"
 #include "Async/Async.h"
 #include "Engine/Engine.h"
 #include "Engine/LatentActionManager.h"
 #include "LatentActions.h"
 
-class FTbSimpleNoPropertiesInterfaceLatentAction : public FPendingLatentAction
+class FTestbed2NestedStruct1InterfaceLatentAction : public FPendingLatentAction
 {
 private:
 	FName ExecutionFunction;
@@ -29,7 +29,7 @@ private:
 	bool bInProgress;
 
 public:
-	FTbSimpleNoPropertiesInterfaceLatentAction(const FLatentActionInfo& LatentInfo)
+	FTestbed2NestedStruct1InterfaceLatentAction(const FLatentActionInfo& LatentInfo)
 		: ExecutionFunction(LatentInfo.ExecutionFunction)
 		, OutputLink(LatentInfo.Linkage)
 		, CallbackTarget(LatentInfo.CallbackTarget)
@@ -61,32 +61,41 @@ public:
 	}
 };
 
-FTbSimpleNoPropertiesInterfaceSigVoidDelegate& UAbstractTbSimpleNoPropertiesInterface::GetSigVoidSignalDelegate()
+FTestbed2NestedStruct1InterfaceSig1Delegate& UAbstractTestbed2NestedStruct1Interface::GetSig1SignalDelegate()
 {
-	return SigVoidSignal;
+	return Sig1Signal;
 };
 
-void UAbstractTbSimpleNoPropertiesInterface::BroadcastSigVoid_Implementation()
+void UAbstractTestbed2NestedStruct1Interface::BroadcastSig1_Implementation(const FTestbed2NestedStruct1& Param1)
 {
-	SigVoidSignal.Broadcast();
+	Sig1Signal.Broadcast(Param1);
 };
 
-FTbSimpleNoPropertiesInterfaceSigBoolDelegate& UAbstractTbSimpleNoPropertiesInterface::GetSigBoolSignalDelegate()
+FTestbed2NestedStruct1InterfaceProp1ChangedDelegate& UAbstractTestbed2NestedStruct1Interface::GetProp1ChangedDelegate()
 {
-	return SigBoolSignal;
+	return Prop1Changed;
 };
 
-void UAbstractTbSimpleNoPropertiesInterface::BroadcastSigBool_Implementation(bool bParamBool)
+void UAbstractTestbed2NestedStruct1Interface::BroadcastProp1Changed_Implementation(const FTestbed2NestedStruct1& InProp1)
 {
-	SigBoolSignal.Broadcast(bParamBool);
+	Prop1Changed.Broadcast(InProp1);
+}
+
+FTestbed2NestedStruct1 UAbstractTestbed2NestedStruct1Interface::GetProp1_Private() const
+{
+	return Execute_GetProp1(this);
 };
 
-void UAbstractTbSimpleNoPropertiesInterface::FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool)
+void UAbstractTestbed2NestedStruct1Interface::SetProp1_Private(const FTestbed2NestedStruct1& InProp1)
+{
+	Execute_SetProp1(this, InProp1);
+};
+void UAbstractTestbed2NestedStruct1Interface::Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTbSimpleNoPropertiesInterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSimpleNoPropertiesInterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FTestbed2NestedStruct1InterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTestbed2NestedStruct1InterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -95,28 +104,28 @@ void UAbstractTbSimpleNoPropertiesInterface::FuncBoolAsync_Implementation(UObjec
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FTbSimpleNoPropertiesInterfaceLatentAction* CompletionAction = new FTbSimpleNoPropertiesInterfaceLatentAction(LatentInfo);
+		FTestbed2NestedStruct1InterfaceLatentAction* CompletionAction = new FTestbed2NestedStruct1InterfaceLatentAction(LatentInfo);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
 
 		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
 		if (this->GetClass()->IsInBlueprint())
 		{
-			Result = Execute_FuncBool(this, bParamBool);
+			Result = Execute_Func1(this, Param1);
 			CompletionAction->Cancel();
 		}
 		else
 		{
 			Async(EAsyncExecution::Thread,
-				[bParamBool, this, &Result, CompletionAction]()
+				[Param1, this, &Result, CompletionAction]()
 				{
-					Result = Execute_FuncBool(this, bParamBool);
+					Result = Execute_Func1(this, Param1);
 					CompletionAction->Cancel();
 				});
 		}
 	}
 }
 
-void UAbstractTbSimpleNoPropertiesInterface::Initialize(FSubsystemCollectionBase& Collection)
+void UAbstractTestbed2NestedStruct1Interface::Initialize(FSubsystemCollectionBase& Collection)
 {
 	check(!bInitialized);
 	bInitialized = true;
@@ -124,7 +133,7 @@ void UAbstractTbSimpleNoPropertiesInterface::Initialize(FSubsystemCollectionBase
 	Super::Initialize(Collection);
 }
 
-void UAbstractTbSimpleNoPropertiesInterface::Deinitialize()
+void UAbstractTestbed2NestedStruct1Interface::Deinitialize()
 {
 	check(bInitialized);
 	bInitialized = false;
@@ -132,7 +141,7 @@ void UAbstractTbSimpleNoPropertiesInterface::Deinitialize()
 	Super::Deinitialize();
 }
 
-bool UAbstractTbSimpleNoPropertiesInterface::IsInitialized() const
+bool UAbstractTestbed2NestedStruct1Interface::IsInitialized() const
 {
 	return bInitialized;
 }

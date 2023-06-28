@@ -18,7 +18,7 @@ limitations under the License.
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Generated/api/Testbed2ManyParamInterfaceInterface.h"
+#include "Generated/api/AbstractTestbed2ManyParamInterface.h"
 #include "Testbed2ManyParamInterface.generated.h"
 
 UCLASS(BlueprintType)
