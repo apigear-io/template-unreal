@@ -23,7 +23,7 @@ limitations under the License.
 #include "{{$ModuleName}}Factory.h"
 #include "ApiGearSettings.h"
 {{- range .Module.Interfaces }}
-{{- $iclass := printf "%s%s" $ModuleName .Name}}
+{{- $iclass := printf "%s%s" $ModuleName (Camel .Name)}}
 {{- if $.Features.stubs }}
 #include "Implementation/{{$iclass}}.h"
 {{- end }}
@@ -48,7 +48,7 @@ bool Is{{$ModuleName}}LogEnabled()
 } // namespace
 
 {{- range .Module.Interfaces }}
-{{- $class := printf "%s%s" $ModuleName .Name }}
+{{- $class := printf "%s%s" $ModuleName (Camel .Name)}}
 {{- $iclass := printf "I%sInterface" $class }}
 {{- $DisplayName := printf "%s%s" $ModuleName (Camel .Name) }}
 
