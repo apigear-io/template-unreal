@@ -12,6 +12,11 @@
 
 /**
  * Implements the connections store for the ApiGear plugin.
+ * 
+ * Can handle all connections which inherit from the IApiGearConnection interface.
+ * To register your own protocol, you need to call RegisterConnectionFactory
+ * before this class/module is initialized. The ApiGearOLink module is an example
+ * how this can be done.
  */
 UCLASS(BlueprintType)
 class APIGEAR_API UApiGearConnectionsStore : public UEngineSubsystem
