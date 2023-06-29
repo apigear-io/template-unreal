@@ -159,8 +159,12 @@ features:
             target: "Source/ApiGear/Public/ApiGearConnection.h"
             force: true
             raw: true
-          - source: "ApiGear/Source/ApiGear/Private/ApiGearConnection.cpp"
-            target: "Source/ApiGear/Private/ApiGearConnection.cpp"
+          - source: "ApiGear/Source/ApiGear/Public/AbstractApiGearConnection.h"
+            target: "Source/ApiGear/Public/AbstractApiGearConnection.h"
+            force: true
+            raw: true
+          - source: "ApiGear/Source/ApiGear/Private/AbstractApiGearConnection.cpp"
+            target: "Source/ApiGear/Private/AbstractApiGearConnection.cpp"
             force: true
             raw: true
           - source: "ApiGear/Source/ApiGear/Public/apigear.json.adapter.h"

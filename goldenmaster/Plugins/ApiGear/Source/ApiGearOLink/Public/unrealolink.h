@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ApiGearConnection.h"
+#include "AbstractApiGearConnection.h"
 THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
 #include "olink/clientregistry.h"

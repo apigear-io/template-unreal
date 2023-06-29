@@ -1,4 +1,4 @@
-#include "ApiGearConnection.h"
+#include "AbstractApiGearConnection.h"
 
 DEFINE_LOG_CATEGORY(LogApiGearConnection);
 
