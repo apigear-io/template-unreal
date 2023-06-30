@@ -82,16 +82,15 @@ public:
 
 	// properties
 	virtual int32 GetProp1_Implementation() const override PURE_VIRTUAL(UAbstractTestbed2ManyParamInterface::GetProp1_Implementation, return 0;);
-
 	virtual void SetProp1_Implementation(int32 InProp1) override PURE_VIRTUAL(UAbstractTestbed2ManyParamInterface::SetProp1_Implementation, return;);
+
 	virtual int32 GetProp2_Implementation() const override PURE_VIRTUAL(UAbstractTestbed2ManyParamInterface::GetProp2_Implementation, return 0;);
-
 	virtual void SetProp2_Implementation(int32 InProp2) override PURE_VIRTUAL(UAbstractTestbed2ManyParamInterface::SetProp2_Implementation, return;);
+
 	virtual int32 GetProp3_Implementation() const override PURE_VIRTUAL(UAbstractTestbed2ManyParamInterface::GetProp3_Implementation, return 0;);
-
 	virtual void SetProp3_Implementation(int32 InProp3) override PURE_VIRTUAL(UAbstractTestbed2ManyParamInterface::SetProp3_Implementation, return;);
-	virtual int32 GetProp4_Implementation() const override PURE_VIRTUAL(UAbstractTestbed2ManyParamInterface::GetProp4_Implementation, return 0;);
 
+	virtual int32 GetProp4_Implementation() const override PURE_VIRTUAL(UAbstractTestbed2ManyParamInterface::GetProp4_Implementation, return 0;);
 	virtual void SetProp4_Implementation(int32 InProp4) override PURE_VIRTUAL(UAbstractTestbed2ManyParamInterface::SetProp4_Implementation, return;);
 
 	virtual bool IsInitialized() const;

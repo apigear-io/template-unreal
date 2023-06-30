@@ -52,10 +52,9 @@ public:
 
 	// properties
 	virtual bool GetPropBool_Implementation() const override PURE_VIRTUAL(UAbstractTbSimpleNoSignalsInterface::GetPropBool_Implementation, return false;);
-
 	virtual void SetPropBool_Implementation(bool bInPropBool) override PURE_VIRTUAL(UAbstractTbSimpleNoSignalsInterface::SetPropBool_Implementation, return;);
-	virtual int32 GetPropInt_Implementation() const override PURE_VIRTUAL(UAbstractTbSimpleNoSignalsInterface::GetPropInt_Implementation, return 0;);
 
+	virtual int32 GetPropInt_Implementation() const override PURE_VIRTUAL(UAbstractTbSimpleNoSignalsInterface::GetPropInt_Implementation, return 0;);
 	virtual void SetPropInt_Implementation(int32 InPropInt) override PURE_VIRTUAL(UAbstractTbSimpleNoSignalsInterface::SetPropInt_Implementation, return;);
 
 	virtual bool IsInitialized() const;

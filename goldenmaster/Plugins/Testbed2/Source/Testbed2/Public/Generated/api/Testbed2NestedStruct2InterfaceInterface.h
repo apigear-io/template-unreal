@@ -83,14 +83,13 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface")
 	FTestbed2NestedStruct1 GetProp1() const;
 	virtual FTestbed2NestedStruct1 GetProp1_Implementation() const = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface")
 	void SetProp1(const FTestbed2NestedStruct1& InProp1);
 	virtual void SetProp1_Implementation(const FTestbed2NestedStruct1& InProp1) = 0;
+
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface")
 	FTestbed2NestedStruct2 GetProp2() const;
 	virtual FTestbed2NestedStruct2 GetProp2_Implementation() const = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface")
 	void SetProp2(const FTestbed2NestedStruct2& InProp2);
 	virtual void SetProp2_Implementation(const FTestbed2NestedStruct2& InProp2) = 0;

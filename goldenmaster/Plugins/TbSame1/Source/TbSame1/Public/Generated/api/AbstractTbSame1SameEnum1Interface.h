@@ -49,7 +49,6 @@ public:
 
 	// properties
 	virtual ETbSame1Enum1 GetProp1_Implementation() const override PURE_VIRTUAL(UAbstractTbSame1SameEnum1Interface::GetProp1_Implementation, return ETbSame1Enum1::TSE_VALUE1;);
-
 	virtual void SetProp1_Implementation(ETbSame1Enum1 InProp1) override PURE_VIRTUAL(UAbstractTbSame1SameEnum1Interface::SetProp1_Implementation, return;);
 
 	virtual bool IsInitialized() const;

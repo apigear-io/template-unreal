@@ -60,10 +60,9 @@ public:
 
 	// properties
 	virtual FTbSame2Struct2 GetProp1_Implementation() const override PURE_VIRTUAL(UAbstractTbSame2SameStruct2Interface::GetProp1_Implementation, return FTbSame2Struct2(););
-
 	virtual void SetProp1_Implementation(const FTbSame2Struct2& InProp1) override PURE_VIRTUAL(UAbstractTbSame2SameStruct2Interface::SetProp1_Implementation, return;);
-	virtual FTbSame2Struct2 GetProp2_Implementation() const override PURE_VIRTUAL(UAbstractTbSame2SameStruct2Interface::GetProp2_Implementation, return FTbSame2Struct2(););
 
+	virtual FTbSame2Struct2 GetProp2_Implementation() const override PURE_VIRTUAL(UAbstractTbSame2SameStruct2Interface::GetProp2_Implementation, return FTbSame2Struct2(););
 	virtual void SetProp2_Implementation(const FTbSame2Struct2& InProp2) override PURE_VIRTUAL(UAbstractTbSame2SameStruct2Interface::SetProp2_Implementation, return;);
 
 	virtual bool IsInitialized() const;

@@ -66,7 +66,6 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame1|SameStruct1Interface")
 	FTbSame1Struct1 GetProp1() const;
 	virtual FTbSame1Struct1 GetProp1_Implementation() const = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame1|SameStruct1Interface")
 	void SetProp1(const FTbSame1Struct1& InProp1);
 	virtual void SetProp1_Implementation(const FTbSame1Struct1& InProp1) = 0;

@@ -185,56 +185,55 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
 	TArray<bool> GetPropBool() const;
 	virtual TArray<bool> GetPropBool_Implementation() const = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
 	void SetPropBool(const TArray<bool>& InPropBool);
 	virtual void SetPropBool_Implementation(const TArray<bool>& InPropBool) = 0;
+
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
 	TArray<int32> GetPropInt() const;
 	virtual TArray<int32> GetPropInt_Implementation() const = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
 	void SetPropInt(const TArray<int32>& InPropInt);
 	virtual void SetPropInt_Implementation(const TArray<int32>& InPropInt) = 0;
+
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
 	TArray<int32> GetPropInt32() const;
 	virtual TArray<int32> GetPropInt32_Implementation() const = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
 	void SetPropInt32(const TArray<int32>& InPropInt32);
 	virtual void SetPropInt32_Implementation(const TArray<int32>& InPropInt32) = 0;
+
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
 	TArray<int64> GetPropInt64() const;
 	virtual TArray<int64> GetPropInt64_Implementation() const = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
 	void SetPropInt64(const TArray<int64>& InPropInt64);
 	virtual void SetPropInt64_Implementation(const TArray<int64>& InPropInt64) = 0;
+
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
 	TArray<float> GetPropFloat() const;
 	virtual TArray<float> GetPropFloat_Implementation() const = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
 	void SetPropFloat(const TArray<float>& InPropFloat);
 	virtual void SetPropFloat_Implementation(const TArray<float>& InPropFloat) = 0;
+
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
 	TArray<float> GetPropFloat32() const;
 	virtual TArray<float> GetPropFloat32_Implementation() const = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
 	void SetPropFloat32(const TArray<float>& InPropFloat32);
 	virtual void SetPropFloat32_Implementation(const TArray<float>& InPropFloat32) = 0;
+
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
 	TArray<double> GetPropFloat64() const;
 	virtual TArray<double> GetPropFloat64_Implementation() const = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
 	void SetPropFloat64(const TArray<double>& InPropFloat64);
 	virtual void SetPropFloat64_Implementation(const TArray<double>& InPropFloat64) = 0;
+
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
 	TArray<FString> GetPropString() const;
 	virtual TArray<FString> GetPropString_Implementation() const = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
 	void SetPropString(const TArray<FString>& InPropString);
 	virtual void SetPropString_Implementation(const TArray<FString>& InPropString) = 0;

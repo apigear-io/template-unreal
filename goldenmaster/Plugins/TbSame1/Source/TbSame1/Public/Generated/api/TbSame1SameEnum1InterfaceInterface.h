@@ -66,7 +66,6 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame1|SameEnum1Interface")
 	ETbSame1Enum1 GetProp1() const;
 	virtual ETbSame1Enum1 GetProp1_Implementation() const = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame1|SameEnum1Interface")
 	void SetProp1(ETbSame1Enum1 InProp1);
 	virtual void SetProp1_Implementation(ETbSame1Enum1 InProp1) = 0;

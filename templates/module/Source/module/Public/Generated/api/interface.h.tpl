@@ -91,13 +91,12 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "{{$Category}}")
 	{{ueReturn "" .}} Get{{Camel .Name}}() const;
 	virtual {{ueReturn "" .}} Get{{Camel .Name}}_Implementation() const = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "{{$Category}}")
 	void Set{{Camel .Name}}({{ueParam "In" .}});
 	virtual void Set{{Camel .Name}}_Implementation({{ueParam "In" .}}) = 0;
-{{- else }}
+{{- nl }}
+{{- else }}{{- nl }}
 {{- end }}
-
 protected:
 	// signals
 {{- range $i, $e := .Signals }}

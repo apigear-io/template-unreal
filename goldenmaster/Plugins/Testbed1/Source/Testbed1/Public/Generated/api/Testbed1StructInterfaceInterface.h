@@ -117,28 +117,27 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface")
 	FTestbed1StructBool GetPropBool() const;
 	virtual FTestbed1StructBool GetPropBool_Implementation() const = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface")
 	void SetPropBool(const FTestbed1StructBool& InPropBool);
 	virtual void SetPropBool_Implementation(const FTestbed1StructBool& InPropBool) = 0;
+
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface")
 	FTestbed1StructInt GetPropInt() const;
 	virtual FTestbed1StructInt GetPropInt_Implementation() const = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface")
 	void SetPropInt(const FTestbed1StructInt& InPropInt);
 	virtual void SetPropInt_Implementation(const FTestbed1StructInt& InPropInt) = 0;
+
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface")
 	FTestbed1StructFloat GetPropFloat() const;
 	virtual FTestbed1StructFloat GetPropFloat_Implementation() const = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface")
 	void SetPropFloat(const FTestbed1StructFloat& InPropFloat);
 	virtual void SetPropFloat_Implementation(const FTestbed1StructFloat& InPropFloat) = 0;
+
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface")
 	FTestbed1StructString GetPropString() const;
 	virtual FTestbed1StructString GetPropString_Implementation() const = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface")
 	void SetPropString(const FTestbed1StructString& InPropString);
 	virtual void SetPropString_Implementation(const FTestbed1StructString& InPropString) = 0;

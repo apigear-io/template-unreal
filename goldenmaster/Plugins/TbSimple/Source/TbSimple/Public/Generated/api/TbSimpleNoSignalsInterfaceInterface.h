@@ -71,14 +71,13 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoSignalsInterface")
 	bool GetPropBool() const;
 	virtual bool GetPropBool_Implementation() const = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoSignalsInterface")
 	void SetPropBool(bool bInPropBool);
 	virtual void SetPropBool_Implementation(bool bInPropBool) = 0;
+
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoSignalsInterface")
 	int32 GetPropInt() const;
 	virtual int32 GetPropInt_Implementation() const = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoSignalsInterface")
 	void SetPropInt(int32 InPropInt);
 	virtual void SetPropInt_Implementation(int32 InPropInt) = 0;

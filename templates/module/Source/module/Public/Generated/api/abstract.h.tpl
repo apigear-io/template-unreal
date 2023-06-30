@@ -70,11 +70,10 @@ public:
 	// properties
 {{- range .Properties }}
 	virtual {{ueReturn "" .}} Get{{Camel .Name}}_Implementation() const override PURE_VIRTUAL({{ $abstractclass}}::Get{{Camel .Name}}_Implementation, return {{ueDefault "" .}};);
-
 	virtual void Set{{Camel .Name}}_Implementation({{ueParam "In" .}}) override PURE_VIRTUAL({{ $abstractclass}}::Set{{Camel .Name}}_Implementation, return;);
-{{- else }}
+{{- nl }}
+{{- else }}{{- nl }}
 {{- end }}
-
 	virtual bool IsInitialized() const;
 
 protected:

@@ -117,28 +117,27 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface")
 	ETbEnumEnum0 GetProp0() const;
 	virtual ETbEnumEnum0 GetProp0_Implementation() const = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface")
 	void SetProp0(ETbEnumEnum0 InProp0);
 	virtual void SetProp0_Implementation(ETbEnumEnum0 InProp0) = 0;
+
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface")
 	ETbEnumEnum1 GetProp1() const;
 	virtual ETbEnumEnum1 GetProp1_Implementation() const = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface")
 	void SetProp1(ETbEnumEnum1 InProp1);
 	virtual void SetProp1_Implementation(ETbEnumEnum1 InProp1) = 0;
+
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface")
 	ETbEnumEnum2 GetProp2() const;
 	virtual ETbEnumEnum2 GetProp2_Implementation() const = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface")
 	void SetProp2(ETbEnumEnum2 InProp2);
 	virtual void SetProp2_Implementation(ETbEnumEnum2 InProp2) = 0;
+
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface")
 	ETbEnumEnum3 GetProp3() const;
 	virtual ETbEnumEnum3 GetProp3_Implementation() const = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface")
 	void SetProp3(ETbEnumEnum3 InProp3);
 	virtual void SetProp3_Implementation(ETbEnumEnum3 InProp3) = 0;

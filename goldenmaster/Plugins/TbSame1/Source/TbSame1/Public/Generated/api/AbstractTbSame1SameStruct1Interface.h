@@ -49,7 +49,6 @@ public:
 
 	// properties
 	virtual FTbSame1Struct1 GetProp1_Implementation() const override PURE_VIRTUAL(UAbstractTbSame1SameStruct1Interface::GetProp1_Implementation, return FTbSame1Struct1(););
-
 	virtual void SetProp1_Implementation(const FTbSame1Struct1& InProp1) override PURE_VIRTUAL(UAbstractTbSame1SameStruct1Interface::SetProp1_Implementation, return;);
 
 	virtual bool IsInitialized() const;

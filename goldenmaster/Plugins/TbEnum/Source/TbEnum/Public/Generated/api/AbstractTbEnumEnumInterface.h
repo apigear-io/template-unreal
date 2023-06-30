@@ -82,16 +82,15 @@ public:
 
 	// properties
 	virtual ETbEnumEnum0 GetProp0_Implementation() const override PURE_VIRTUAL(UAbstractTbEnumEnumInterface::GetProp0_Implementation, return ETbEnumEnum0::TEE_VALUE0;);
-
 	virtual void SetProp0_Implementation(ETbEnumEnum0 InProp0) override PURE_VIRTUAL(UAbstractTbEnumEnumInterface::SetProp0_Implementation, return;);
+
 	virtual ETbEnumEnum1 GetProp1_Implementation() const override PURE_VIRTUAL(UAbstractTbEnumEnumInterface::GetProp1_Implementation, return ETbEnumEnum1::TEE_VALUE1;);
-
 	virtual void SetProp1_Implementation(ETbEnumEnum1 InProp1) override PURE_VIRTUAL(UAbstractTbEnumEnumInterface::SetProp1_Implementation, return;);
+
 	virtual ETbEnumEnum2 GetProp2_Implementation() const override PURE_VIRTUAL(UAbstractTbEnumEnumInterface::GetProp2_Implementation, return ETbEnumEnum2::TEE_VALUE2;);
-
 	virtual void SetProp2_Implementation(ETbEnumEnum2 InProp2) override PURE_VIRTUAL(UAbstractTbEnumEnumInterface::SetProp2_Implementation, return;);
-	virtual ETbEnumEnum3 GetProp3_Implementation() const override PURE_VIRTUAL(UAbstractTbEnumEnumInterface::GetProp3_Implementation, return ETbEnumEnum3::TEE_VALUE3;);
 
+	virtual ETbEnumEnum3 GetProp3_Implementation() const override PURE_VIRTUAL(UAbstractTbEnumEnumInterface::GetProp3_Implementation, return ETbEnumEnum3::TEE_VALUE3;);
 	virtual void SetProp3_Implementation(ETbEnumEnum3 InProp3) override PURE_VIRTUAL(UAbstractTbEnumEnumInterface::SetProp3_Implementation, return;);
 
 	virtual bool IsInitialized() const;

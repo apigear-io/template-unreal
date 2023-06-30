@@ -82,16 +82,15 @@ public:
 
 	// properties
 	virtual FTestbed1StructBool GetPropBool_Implementation() const override PURE_VIRTUAL(UAbstractTestbed1StructInterface::GetPropBool_Implementation, return FTestbed1StructBool(););
-
 	virtual void SetPropBool_Implementation(const FTestbed1StructBool& InPropBool) override PURE_VIRTUAL(UAbstractTestbed1StructInterface::SetPropBool_Implementation, return;);
+
 	virtual FTestbed1StructInt GetPropInt_Implementation() const override PURE_VIRTUAL(UAbstractTestbed1StructInterface::GetPropInt_Implementation, return FTestbed1StructInt(););
-
 	virtual void SetPropInt_Implementation(const FTestbed1StructInt& InPropInt) override PURE_VIRTUAL(UAbstractTestbed1StructInterface::SetPropInt_Implementation, return;);
+
 	virtual FTestbed1StructFloat GetPropFloat_Implementation() const override PURE_VIRTUAL(UAbstractTestbed1StructInterface::GetPropFloat_Implementation, return FTestbed1StructFloat(););
-
 	virtual void SetPropFloat_Implementation(const FTestbed1StructFloat& InPropFloat) override PURE_VIRTUAL(UAbstractTestbed1StructInterface::SetPropFloat_Implementation, return;);
-	virtual FTestbed1StructString GetPropString_Implementation() const override PURE_VIRTUAL(UAbstractTestbed1StructInterface::GetPropString_Implementation, return FTestbed1StructString(););
 
+	virtual FTestbed1StructString GetPropString_Implementation() const override PURE_VIRTUAL(UAbstractTestbed1StructInterface::GetPropString_Implementation, return FTestbed1StructString(););
 	virtual void SetPropString_Implementation(const FTestbed1StructString& InPropString) override PURE_VIRTUAL(UAbstractTestbed1StructInterface::SetPropString_Implementation, return;);
 
 	virtual bool IsInitialized() const;

@@ -83,14 +83,13 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct2Interface")
 	FTbSame2Struct2 GetProp1() const;
 	virtual FTbSame2Struct2 GetProp1_Implementation() const = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct2Interface")
 	void SetProp1(const FTbSame2Struct2& InProp1);
 	virtual void SetProp1_Implementation(const FTbSame2Struct2& InProp1) = 0;
+
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct2Interface")
 	FTbSame2Struct2 GetProp2() const;
 	virtual FTbSame2Struct2 GetProp2_Implementation() const = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct2Interface")
 	void SetProp2(const FTbSame2Struct2& InProp2);
 	virtual void SetProp2_Implementation(const FTbSame2Struct2& InProp2) = 0;

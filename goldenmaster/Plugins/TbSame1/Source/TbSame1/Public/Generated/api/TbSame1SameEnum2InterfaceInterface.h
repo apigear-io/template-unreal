@@ -83,14 +83,13 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame1|SameEnum2Interface")
 	ETbSame1Enum1 GetProp1() const;
 	virtual ETbSame1Enum1 GetProp1_Implementation() const = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame1|SameEnum2Interface")
 	void SetProp1(ETbSame1Enum1 InProp1);
 	virtual void SetProp1_Implementation(ETbSame1Enum1 InProp1) = 0;
+
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame1|SameEnum2Interface")
 	ETbSame1Enum2 GetProp2() const;
 	virtual ETbSame1Enum2 GetProp2_Implementation() const = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame1|SameEnum2Interface")
 	void SetProp2(ETbSame1Enum2 InProp2);
 	virtual void SetProp2_Implementation(ETbSame1Enum2 InProp2) = 0;

@@ -49,7 +49,6 @@ public:
 
 	// properties
 	virtual FTestbed2NestedStruct1 GetProp1_Implementation() const override PURE_VIRTUAL(UAbstractTestbed2NestedStruct1Interface::GetProp1_Implementation, return FTestbed2NestedStruct1(););
-
 	virtual void SetProp1_Implementation(const FTestbed2NestedStruct1& InProp1) override PURE_VIRTUAL(UAbstractTestbed2NestedStruct1Interface::SetProp1_Implementation, return;);
 
 	virtual bool IsInitialized() const;
