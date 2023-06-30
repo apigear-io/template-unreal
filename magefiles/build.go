@@ -59,7 +59,7 @@ func Install() error {
 	}
 
 	gh := github.NewClient(nil)
-	release, _, err := gh.Repositories.GetLatestRelease(context.Background(), "apigear-io", "cli-releases")
+	release, _, err := gh.Repositories.GetLatestRelease(context.Background(), "apigear-io", "cli")
 	if err != nil {
 		return err
 	}
