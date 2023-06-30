@@ -311,6 +311,21 @@ void UAbstractTbSimpleSimpleInterface::SetPropString_Private(const FString& InPr
 	Execute_SetPropString(this, InPropString);
 };
 
+FTbSimpleSimpleInterfacePropReadOnlyStringChangedDelegate& UAbstractTbSimpleSimpleInterface::GetPropReadOnlyStringChangedDelegate()
+{
+	return PropReadOnlyStringChanged;
+};
+
+void UAbstractTbSimpleSimpleInterface::BroadcastPropReadOnlyStringChanged_Implementation(const FString& InPropReadOnlyString)
+{
+	PropReadOnlyStringChanged.Broadcast(InPropReadOnlyString);
+}
+
+FString UAbstractTbSimpleSimpleInterface::GetPropReadOnlyString_Private() const
+{
+	return Execute_GetPropReadOnlyString(this);
+};
+
 void UAbstractTbSimpleSimpleInterface::FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))

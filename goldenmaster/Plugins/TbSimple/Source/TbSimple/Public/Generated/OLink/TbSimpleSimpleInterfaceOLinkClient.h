@@ -73,6 +73,8 @@ public:
 	FString GetPropString_Implementation() const override;
 	void SetPropString_Implementation(const FString& PropString) override;
 
+	FString GetPropReadOnlyString_Implementation() const override;
+
 	// operations
 	void FuncVoid_Implementation() override;
 

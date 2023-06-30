@@ -19,8 +19,12 @@ bool {{$Class}}ImplementationProperty{{ Camel .Name }}Test::RunTest(const FStrin
 {
 	// Do implement test here
 	TScriptInterface<I{{$Iface}}Interface> test = GetGameInstance()->GetSubsystem<{{ $Class }}>();
+{{- if not .IsReadOnly }}
 	test->Execute_Set{{Camel .Name}}(test.GetObject(), {{ueDefault "" .}});
 	TestEqual(TEXT("Getter should return the same value as set by the setter"), test->Execute_Get{{Camel .Name}}(test.GetObject()), {{ueDefault "" .}});
+{{- else }}
+	TestEqual(TEXT("Getter should return the default value"), test->Execute_Get{{Camel .Name}}(test.GetObject()), {{ueDefault "" .}});
+{{- end }}
 
 	CleanUp();
 	return true;

@@ -117,6 +117,17 @@ bool UTbSimpleSimpleInterfaceImplementationPropertyPropStringTest::RunTest(const
 	return true;
 }
 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(UTbSimpleSimpleInterfaceImplementationPropertyPropReadOnlyStringTest, FTbSimpleTestBase, "TbSimple.SimpleInterface.Implementation.Property.PropReadOnlyString", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+bool UTbSimpleSimpleInterfaceImplementationPropertyPropReadOnlyStringTest::RunTest(const FString& Parameters)
+{
+	// Do implement test here
+	TScriptInterface<ITbSimpleSimpleInterfaceInterface> test = GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterface>();
+	TestEqual(TEXT("Getter should return the default value"), test->Execute_GetPropReadOnlyString(test.GetObject()), FString());
+
+	CleanUp();
+	return true;
+}
+
 IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(UTbSimpleSimpleInterfaceImplementationOperationFuncVoidTest, FTbSimpleTestBase, "TbSimple.SimpleInterface.Implementation.Operation.FuncVoid", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool UTbSimpleSimpleInterfaceImplementationOperationFuncVoidTest::RunTest(const FString& Parameters)
 {

@@ -118,11 +118,13 @@ void {{$Class}}::On{{Camel .Name}}Changed({{ueParam "In" .}})
 	return BackendService->Execute_Get{{Camel .Name}}(BackendService.GetObject());
 }
 
+{{- if not .IsReadOnly }}{{nl}}
 void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
 {
 	{{$Iface}}Tracer::trace_callSet{{Camel .Name}}({{ueVar "In" .}});
 	BackendService->Execute_Set{{Camel .Name}}(BackendService.GetObject(), {{ueVar "In" .}});
 }
+{{- end }}
 {{- end }}
 {{- if .Interface.Operations }}{{nl}}{{ end }}
 {{- range $i, $e := .Interface.Operations }}

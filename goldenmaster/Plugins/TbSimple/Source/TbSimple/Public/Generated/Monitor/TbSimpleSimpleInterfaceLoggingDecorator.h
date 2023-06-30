@@ -74,6 +74,8 @@ public:
 
 	void SetPropString_Implementation(const FString& InPropString) override;
 
+	FString GetPropReadOnlyString_Implementation() const override;
+
 	// operations
 	void FuncVoid_Implementation() override;
 
@@ -149,4 +151,7 @@ private:
 
 	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
 	void OnPropStringChanged(const FString& InPropString);
+
+	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
+	void OnPropReadOnlyStringChanged(const FString& InPropReadOnlyString);
 };

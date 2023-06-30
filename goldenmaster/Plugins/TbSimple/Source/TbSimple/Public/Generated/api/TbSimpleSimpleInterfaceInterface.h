@@ -60,6 +60,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfacePropFloat64C
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfacePropStringChangedDelegate, const FString&, PropString);
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfacePropReadOnlyStringChangedDelegate, const FString&, PropReadOnlyString);
+
 /**
  * Interface UTbSimpleSimpleInterfaceInterface only for Unreal Engine's reflection system
  */
@@ -128,6 +130,9 @@ public:
 
 	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface")
 	virtual FTbSimpleSimpleInterfacePropStringChangedDelegate& GetPropStringChangedDelegate() = 0;
+
+	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface")
+	virtual FTbSimpleSimpleInterfacePropReadOnlyStringChangedDelegate& GetPropReadOnlyStringChangedDelegate() = 0;
 
 	// methods
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface")
@@ -247,6 +252,10 @@ public:
 	void SetPropString(const FString& InPropString);
 	virtual void SetPropString_Implementation(const FString& InPropString) = 0;
 
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface")
+	FString GetPropReadOnlyString() const;
+	virtual FString GetPropReadOnlyString_Implementation() const = 0;
+
 protected:
 	// signals
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface", meta = (BlueprintProtected = "true"))
@@ -316,4 +325,8 @@ protected:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface", meta = (BlueprintProtected = "true"))
 	void BroadcastPropStringChanged(const FString& PropString);
 	virtual void BroadcastPropStringChanged_Implementation(const FString& PropString) = 0;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface", meta = (BlueprintProtected = "true"))
+	void BroadcastPropReadOnlyStringChanged(const FString& PropReadOnlyString);
+	virtual void BroadcastPropReadOnlyStringChanged_Implementation(const FString& PropReadOnlyString) = 0;
 };

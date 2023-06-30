@@ -17,6 +17,7 @@ void TbSimpleSimpleInterfaceTracer::capture_state(UObject* Object, ITbSimpleSimp
 	fields_["propFloat32"] = obj->Execute_GetPropFloat32(Object);
 	fields_["propFloat64"] = obj->Execute_GetPropFloat64(Object);
 	fields_["propString"] = obj->Execute_GetPropString(Object);
+	fields_["propReadOnlyString"] = obj->Execute_GetPropReadOnlyString(Object);
 	Tracer::instance()->state("tb.simple/SimpleInterface", fields_);
 }
 void TbSimpleSimpleInterfaceTracer::trace_callSetPropBool(bool bInPropBool)

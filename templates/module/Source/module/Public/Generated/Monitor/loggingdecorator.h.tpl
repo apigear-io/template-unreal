@@ -55,8 +55,9 @@ public:
 	/** {{.Description}} */
 {{- end }}
 	{{ueReturn "" .}} Get{{Camel .Name}}_Implementation() const override;
-
+{{- if not .IsReadOnly }}{{nl}}
 	void Set{{Camel .Name}}_Implementation({{ueParam "In" .}}) override;
+{{- end }}
 {{ end }}
 	// operations
 {{- range .Interface.Operations }}

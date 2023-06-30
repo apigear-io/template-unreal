@@ -26,12 +26,14 @@ void {{$class}}::capture_state(UObject* Object, I{{$ModuleName}}{{$Name}}Interfa
 }
 
 {{- range .Properties }}
+{{- if not .IsReadOnly }}
 void {{$class}}::trace_callSet{{Camel .Name}}({{ueParam "In" .}})
 {
 	nlohmann::json fields_;
 	fields_["{{.Name}}"] = {{ueVar "In" .}};
 	Tracer::instance()->call("{{$symbol}}#_set", fields_);
 }
+{{- end }}
 {{- end }}
 
 {{- range .Signals}}

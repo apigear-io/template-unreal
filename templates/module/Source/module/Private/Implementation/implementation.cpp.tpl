@@ -16,6 +16,7 @@
 	return {{ueVar "" .}};
 }
 
+{{- if not .IsReadOnly }}{{nl}}
 void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
 {
 	if ({{ueVar "" .}} != {{ueVar "In" .}})
@@ -24,6 +25,7 @@ void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
 		Execute_Broadcast{{Camel .Name}}Changed(this, {{ueVar "" .}});
 	}
 }
+{{- end }}
 {{- else }}
 {{- end }}
 {{- range .Interface.Operations }}{{ nl }}

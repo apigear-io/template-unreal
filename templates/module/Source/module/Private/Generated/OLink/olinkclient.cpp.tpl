@@ -142,6 +142,7 @@ void {{$Class}}::UseConnection(TScriptInterface<IApiGearConnection> InConnection
 	return {{ueVar "" .}};
 }
 
+{{- if not .IsReadOnly }}{{nl}}
 void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
 {
 	if (!m_sink->IsReady())
@@ -165,6 +166,7 @@ void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
 	m_sink->GetNode()->setRemoteProperty(memberId, {{ueVar "In" .}});
 	_SentData->{{ueVar "" .}} = {{ueVar "In" .}};
 }
+{{- end }}
 {{- end }}
 {{- if len .Interface.Operations }}{{ nl }}{{ end }}
 {{- range $i, $e := .Interface.Operations }}

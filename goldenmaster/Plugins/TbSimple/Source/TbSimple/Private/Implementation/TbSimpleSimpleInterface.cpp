@@ -122,6 +122,10 @@ void UTbSimpleSimpleInterface::SetPropString_Implementation(const FString& InPro
 		Execute_BroadcastPropStringChanged(this, PropString);
 	}
 }
+FString UTbSimpleSimpleInterface::GetPropReadOnlyString_Implementation() const
+{
+	return PropReadOnlyString;
+}
 
 void UTbSimpleSimpleInterface::FuncVoid_Implementation()
 {

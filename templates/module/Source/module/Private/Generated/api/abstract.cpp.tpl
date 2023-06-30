@@ -104,10 +104,12 @@ void {{$abstractclass}}::Broadcast{{Camel .Name}}Changed_Implementation({{uePara
 	return Execute_Get{{Camel .Name}}(this);
 };
 
+{{- if not .IsReadOnly }}{{nl}}
 void {{$abstractclass}}::Set{{Camel .Name}}_Private({{ueParam "In" .}})
 {
 	Execute_Set{{Camel .Name}}(this, {{ueVar "In" .}});
 };
+{{- end }}
 {{- end }}
 
 {{- range $i, $e := .Operations }}

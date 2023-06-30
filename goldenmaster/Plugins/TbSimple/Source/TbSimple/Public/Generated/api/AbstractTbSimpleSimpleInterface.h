@@ -103,6 +103,10 @@ public:
 	FTbSimpleSimpleInterfacePropStringChangedDelegate PropStringChanged;
 	virtual FTbSimpleSimpleInterfacePropStringChangedDelegate& GetPropStringChangedDelegate() override;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface", DisplayName = "PropReadOnlyString Changed")
+	FTbSimpleSimpleInterfacePropReadOnlyStringChangedDelegate PropReadOnlyStringChanged;
+	virtual FTbSimpleSimpleInterfacePropReadOnlyStringChangedDelegate& GetPropReadOnlyStringChangedDelegate() override;
+
 	// methods
 	virtual void FuncVoid_Implementation() override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::FuncVoid_Implementation, return;);
 
@@ -155,6 +159,8 @@ public:
 	virtual FString GetPropString_Implementation() const override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::GetPropString_Implementation, return FString(););
 	virtual void SetPropString_Implementation(const FString& InPropString) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::SetPropString_Implementation, return;);
 
+	virtual FString GetPropReadOnlyString_Implementation() const override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::GetPropReadOnlyString_Implementation, return FString(););
+
 	virtual bool IsInitialized() const;
 
 protected:
@@ -193,6 +199,8 @@ protected:
 	virtual void BroadcastPropFloat64Changed_Implementation(double InPropFloat64) override;
 
 	virtual void BroadcastPropStringChanged_Implementation(const FString& InPropString) override;
+
+	virtual void BroadcastPropReadOnlyStringChanged_Implementation(const FString& InPropReadOnlyString) override;
 
 	// properties - local copy
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropBool_Private, BlueprintSetter = SetPropBool_Private, Category = "ApiGear|TbSimple|SimpleInterface")
@@ -266,4 +274,10 @@ protected:
 
 	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
 	void SetPropString_Private(const FString& InPropString);
+
+	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropReadOnlyString_Private, Category = "ApiGear|TbSimple|SimpleInterface")
+	FString PropReadOnlyString{FString()};
+
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
+	FString GetPropReadOnlyString_Private() const;
 };

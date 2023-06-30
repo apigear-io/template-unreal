@@ -22,6 +22,7 @@ interfaces:
       - { name: propFloat32, type: float32 }
       - { name: propFloat64, type: float64 }
       - { name: propString, type: string }
+      - { name: propReadOnlyString, type: string, readonly: true }
     operations:
       - name: funcVoid
       - name: funcBool

@@ -39,7 +39,9 @@ public:
 	// properties
 {{- range .Interface.Properties }}
 	{{ueReturn "" .}} Get{{Camel .Name}}_Implementation() const override;
+{{- if not .IsReadOnly }}
 	void Set{{Camel .Name}}_Implementation({{ueParam "" .}}) override;
+{{- end}}
 {{ end }}
 	// operations
 {{- range $i, $e := .Interface.Operations }}

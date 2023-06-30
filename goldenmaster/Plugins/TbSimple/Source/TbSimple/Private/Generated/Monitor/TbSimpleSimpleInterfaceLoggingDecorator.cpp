@@ -58,6 +58,7 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::setBackendService(TScriptInterfac
 		BackendService->GetPropFloat32ChangedDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloat32Changed);
 		BackendService->GetPropFloat64ChangedDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloat64Changed);
 		BackendService->GetPropStringChangedDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropStringChanged);
+		BackendService->GetPropReadOnlyStringChangedDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropReadOnlyStringChanged);
 		BackendService->GetSigVoidSignalDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigVoid);
 		BackendService->GetSigBoolSignalDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigBool);
 		BackendService->GetSigIntSignalDelegate().RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt);
@@ -83,6 +84,7 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::setBackendService(TScriptInterfac
 	BackendService->GetPropFloat32ChangedDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloat32Changed);
 	BackendService->GetPropFloat64ChangedDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloat64Changed);
 	BackendService->GetPropStringChangedDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropStringChanged);
+	BackendService->GetPropReadOnlyStringChangedDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropReadOnlyStringChanged);
 	BackendService->GetSigVoidSignalDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigVoid);
 	BackendService->GetSigBoolSignalDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigBool);
 	BackendService->GetSigIntSignalDelegate().AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt);
@@ -101,6 +103,7 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::setBackendService(TScriptInterfac
 	PropFloat32 = BackendService->Execute_GetPropFloat32(BackendService.GetObject());
 	PropFloat64 = BackendService->Execute_GetPropFloat64(BackendService.GetObject());
 	PropString = BackendService->Execute_GetPropString(BackendService.GetObject());
+	PropReadOnlyString = BackendService->Execute_GetPropReadOnlyString(BackendService.GetObject());
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigVoid()
@@ -299,6 +302,18 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::SetPropString_Implementation(cons
 {
 	TbSimpleSimpleInterfaceTracer::trace_callSetPropString(InPropString);
 	BackendService->Execute_SetPropString(BackendService.GetObject(), InPropString);
+}
+
+void UTbSimpleSimpleInterfaceLoggingDecorator::OnPropReadOnlyStringChanged(const FString& InPropReadOnlyString)
+{
+	TbSimpleSimpleInterfaceTracer::capture_state(BackendService.GetObject(), this);
+	PropReadOnlyString = InPropReadOnlyString;
+	Execute_BroadcastPropReadOnlyStringChanged(this, InPropReadOnlyString);
+}
+
+FString UTbSimpleSimpleInterfaceLoggingDecorator::GetPropReadOnlyString_Implementation() const
+{
+	return BackendService->Execute_GetPropReadOnlyString(BackendService.GetObject());
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::FuncVoid_Implementation()

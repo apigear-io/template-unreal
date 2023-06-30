@@ -15,7 +15,9 @@ public:
 	{{$class}}();
 	static void capture_state(UObject* Object, I{{$ModuleName}}{{$Name}}Interface* obj);
 {{- range .Properties }}
+{{- if not .IsReadOnly }}
 	static void trace_callSet{{Camel .Name}}({{ueParam "In" .}});
+{{- end }}
 {{- end }}
 {{- range .Signals }}
 	static void trace_signal{{Camel .Name}}({{ueParams "" .Params}});

@@ -70,7 +70,9 @@ public:
 	// properties
 {{- range .Properties }}
 	virtual {{ueReturn "" .}} Get{{Camel .Name}}_Implementation() const override PURE_VIRTUAL({{ $abstractclass}}::Get{{Camel .Name}}_Implementation, return {{ueDefault "" .}};);
+{{- if not .IsReadOnly }}
 	virtual void Set{{Camel .Name}}_Implementation({{ueParam "In" .}}) override PURE_VIRTUAL({{ $abstractclass}}::Set{{Camel .Name}}_Implementation, return;);
+{{- end }}
 {{- nl }}
 {{- else }}{{- nl }}
 {{- end }}
@@ -95,14 +97,15 @@ protected:
 {{- if .Description }}
 	/** {{.Description}} */
 {{- end }}
-	UPROPERTY(EditAnywhere, BlueprintGetter = Get{{Camel .Name}}_Private, BlueprintSetter = Set{{Camel .Name}}_Private, Category = "{{$Category}}")
+	UPROPERTY(EditAnywhere, BlueprintGetter = Get{{Camel .Name}}_Private, {{ if not .IsReadOnly -}} BlueprintSetter = Set{{Camel .Name}}_Private, {{ end }}Category = "{{$Category}}")
 	{{ueReturn "" .}} {{ueVar "" .}}{ {{- ueDefault "" . -}} };
 
 	UFUNCTION(BlueprintGetter, Category = "{{$Category}}", BlueprintInternalUseOnly)
 	{{ueReturn "" .}} Get{{Camel .Name}}_Private() const;
-
+{{- if not .IsReadOnly }}{{nl}}
 	UFUNCTION(BlueprintSetter, Category = "{{$Category}}", BlueprintInternalUseOnly)
 	void Set{{Camel .Name}}_Private({{ueParam "In" .}});
+{{- end }}
 {{- end }}
 };
 {{- end }}

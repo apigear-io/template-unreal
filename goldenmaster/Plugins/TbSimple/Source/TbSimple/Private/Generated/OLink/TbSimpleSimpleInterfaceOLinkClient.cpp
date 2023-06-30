@@ -48,6 +48,7 @@ struct TbSimpleSimpleInterfacePropertiesData
 	float PropFloat32{0.0f};
 	double PropFloat64{0.0};
 	FString PropString{FString()};
+	FString PropReadOnlyString{FString()};
 };
 DEFINE_LOG_CATEGORY(LogTbSimpleSimpleInterfaceOLinkClient);
 
@@ -368,6 +369,11 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropString_Implementation(const FSt
 	_SentData->PropString = InPropString;
 }
 
+FString UTbSimpleSimpleInterfaceOLinkClient::GetPropReadOnlyString_Implementation() const
+{
+	return PropReadOnlyString;
+}
+
 void UTbSimpleSimpleInterfaceOLinkClient::FuncVoid_Implementation()
 {
 	if (!m_sink->IsReady())
@@ -605,6 +611,13 @@ void UTbSimpleSimpleInterfaceOLinkClient::applyState(const nlohmann::json& field
 	{
 		PropString = fields["propString"].get<FString>();
 		Execute_BroadcastPropStringChanged(this, PropString);
+	}
+
+	const bool bPropReadOnlyStringChanged = fields.contains("propReadOnlyString") && (PropReadOnlyString != fields["propReadOnlyString"].get<FString>());
+	if (bPropReadOnlyStringChanged)
+	{
+		PropReadOnlyString = fields["propReadOnlyString"].get<FString>();
+		Execute_BroadcastPropReadOnlyStringChanged(this, PropReadOnlyString);
 	}
 }
 
