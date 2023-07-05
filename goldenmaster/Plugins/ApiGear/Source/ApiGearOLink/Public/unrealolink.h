@@ -19,7 +19,7 @@ public:
 };
 
 UCLASS(BlueprintType, Displayname = "ApiGear ObjectLink Connection", Category = "ApiGear|Connection")
-class APIGEAROLINK_API UUnrealOLink : public UAbstractApiGearConnection
+class APIGEAROLINK_API UUnrealOLink final : public UAbstractApiGearConnection
 {
 	GENERATED_BODY()
 public:
