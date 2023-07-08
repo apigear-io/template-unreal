@@ -25,12 +25,12 @@ public:
 	void Configure(FString InServerURL, bool bInAutoReconnectEnabled) PURE_VIRTUAL(UAbstractApiGearConnection::Configure, );
 	FString GetServerURL() const PURE_VIRTUAL(UAbstractApiGearConnection::GetServerURL, return "";);
 
-	void OnConnected() override;
-	void OnDisconnected(bool bReconnect) override;
-	void Connect() override;
-	void Disconnect() PURE_VIRTUAL(UAbstractApiGearConnection::Disconnect, );
-	bool IsConnected() PURE_VIRTUAL(UAbstractApiGearConnection::IsConnected, return false;);
+	void OnConnected() final;
+	void OnDisconnected(bool bReconnect) final;
+	void Connect() final;
+	void Disconnect() final;
 	void StopReconnecting() override;
+	bool IsConnected() PURE_VIRTUAL(UAbstractApiGearConnection::IsConnected, return false;);
 
 	FString GetUniqueEndpointIdentifier() const PURE_VIRTUAL(UAbstractApiGearConnection::GetUniqueEndpointIdentifier, return "";);
 	FString GetConnectionProtocolIdentifier() const PURE_VIRTUAL(UAbstractApiGearConnection::GetConnectionProtocolIdentifier, return "";);
@@ -42,6 +42,11 @@ public:
 
 private:
 	void SetConnectionState(EApiGearConnectionState State);
+
+	virtual void OnConnected_Implementation() PURE_VIRTUAL(UAbstractApiGearConnection::OnConnected_Implementation, );
+	virtual void OnDisconnected_Implementation(bool bReconnect) PURE_VIRTUAL(UAbstractApiGearConnection::OnDisconnected_Implementation, );
+	virtual void Connect_Implementation() PURE_VIRTUAL(UAbstractApiGearConnection::Connect_Implementation, );
+	virtual void Disconnect_Implementation() PURE_VIRTUAL(UAbstractApiGearConnection::Disconnect_Implementation, );
 
 	FApiGearConnectionIsConnectedDelegate IsConnectedChanged;
 	FApiGearConnectionStateChangedDelegate ConnectionStateChanged;

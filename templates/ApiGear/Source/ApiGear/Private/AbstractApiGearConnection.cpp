@@ -38,10 +38,14 @@ void UAbstractApiGearConnection::OnConnected()
 
 	// disable reconnect ticker
 	GetCoreTicker().RemoveTicker(RetryTickerHandle);
+
+	OnConnected_Implementation();
 }
 
 void UAbstractApiGearConnection::OnDisconnected(bool bReconnect)
 {
+	OnDisconnected_Implementation(bReconnect);
+
 	SetConnectionState(EApiGearConnectionState::Disconnected);
 
 	if (bIsAutoReconnectEnabled && bReconnect && !bStopReconnectingRequested)
@@ -57,7 +61,24 @@ void UAbstractApiGearConnection::OnDisconnected(bool bReconnect)
 
 void UAbstractApiGearConnection::Connect()
 {
+	if (IsConnected() || GetConnectionState() == EApiGearConnectionState::Connecting)
+	{
+		return;
+	}
 	SetConnectionState(EApiGearConnectionState::Connecting);
+
+	Connect_Implementation();
+}
+
+void UAbstractApiGearConnection::Disconnect()
+{
+	if (!IsConnected() || GetConnectionState() == EApiGearConnectionState::Connecting)
+	{
+		UAbstractApiGearConnection::StopReconnecting();
+		return;
+	}
+
+	Disconnect_Implementation();
 }
 
 void UAbstractApiGearConnection::StopReconnecting()

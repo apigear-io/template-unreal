@@ -81,26 +81,15 @@ void UUnrealOLink::log(const FString& logMessage)
 	UE_LOG(LogApiGearOLink, Display, TEXT("%s"), *logMessage);
 }
 
-void UUnrealOLink::Connect()
+void UUnrealOLink::Connect_Implementation()
 {
-	UAbstractApiGearConnection::Connect();
+	log(m_serverURL);
 
-	if (!IsConnected() || GetConnectionState() == EApiGearConnectionState::Connecting)
-	{
-		log(m_serverURL);
-
-		open(m_serverURL);
-	}
+	open(m_serverURL);
 }
 
-void UUnrealOLink::Disconnect()
+void UUnrealOLink::Disconnect_Implementation()
 {
-	if (!IsConnected() || GetConnectionState() == EApiGearConnectionState::Connecting)
-	{
-		UAbstractApiGearConnection::StopReconnecting();
-		return;
-	}
-
 	for (std::string objectName : ListLinkedObjects)
 	{
 		m_node->unlinkRemote(objectName);
@@ -187,10 +176,9 @@ void UUnrealOLink::open(const FString& url)
 	}
 }
 
-void UUnrealOLink::OnConnected()
+void UUnrealOLink::OnConnected_Implementation()
 {
 	log("socket connected");
-	UAbstractApiGearConnection::OnConnected();
 
 	for (std::string objectName : ListLinkedObjects)
 	{
@@ -199,7 +187,7 @@ void UUnrealOLink::OnConnected()
 	processMessages();
 }
 
-void UUnrealOLink::OnDisconnected(bool bReconnect)
+void UUnrealOLink::OnDisconnected_Implementation(bool bReconnect)
 {
 	log("socket disconnected");
 	for (std::string objectName : ListLinkedObjects)
@@ -211,7 +199,6 @@ void UUnrealOLink::OnDisconnected(bool bReconnect)
 		}
 		m_registry.unsetNode(objectName);
 	}
-	UAbstractApiGearConnection::OnDisconnected(bReconnect);
 }
 
 FString UUnrealOLink::GetUniqueEndpointIdentifier() const

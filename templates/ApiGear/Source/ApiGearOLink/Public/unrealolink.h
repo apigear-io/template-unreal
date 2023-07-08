@@ -35,11 +35,11 @@ public:
 	void unlinkObjectSource(const std::string& name);
 
 	// UAbstractApiGearConnection
-	void Connect() override;
-	void Disconnect() override;
+	void Connect_Implementation() final;
+	void Disconnect_Implementation() final;
+	void OnConnected_Implementation() final;
+	void OnDisconnected_Implementation(bool bReconnect) final;
 	bool IsConnected() override;
-	void OnConnected() override;
-	void OnDisconnected(bool bReconnect) override;
 
 	/** Returns the endpoint identifier for this connection, e.g. ip:port or #connID */
 	FString GetUniqueEndpointIdentifier() const override;
