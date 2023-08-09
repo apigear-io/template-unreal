@@ -176,9 +176,10 @@ void UUnrealOLink::open(const FString& url)
 				handleTextMessage(Message);
 			});
 
-		m_socket->OnRawMessage().AddLambda(
-			[this](const void* Data, SIZE_T Size, SIZE_T /*BytesRemaining*/) -> void
+		m_socket->OnBinaryMessage().AddLambda(
+			[this](const void* Data, SIZE_T Size, bool /* bIsLastFragment */) -> void
 			{
+				// we assume the incoming binary message is actually text
 				handleTextMessage(FString(std::string((uint8*)Data, (uint8*)Data + Size).c_str()));
 			});
 	}
