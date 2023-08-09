@@ -5,6 +5,7 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/iobjectsink.h"
 THIRD_PARTY_INCLUDES_END
 #include <UObject/Object.h>
+#include "Runtime/Launch/Resources/Version.h"
 #include <functional>
 #include <chrono>
 #include <future>
@@ -169,6 +170,7 @@ void UUnrealOLink::open(const FString& url)
 				OnDisconnected(bReconnect);
 			});
 
+#if (ENGINE_MAJOR_VERSION >= 5 && ENGINE_MINOR_VERSION > 1)
 		m_socket->OnMessage().AddLambda(
 			[this](const FString& Message) -> void
 			{
@@ -182,6 +184,14 @@ void UUnrealOLink::open(const FString& url)
 				// we assume the incoming binary message is actually text
 				handleTextMessage(FString(std::string((uint8*)Data, (uint8*)Data + Size).c_str()));
 			});
+#else
+		m_socket->OnRawMessage().AddLambda(
+			[this](const void* Data, SIZE_T Size, SIZE_T /* BytesRemaining */) -> void
+			{
+				// we assume the incoming raw message is actually text
+				handleTextMessage(FString(std::string((uint8*)Data, (uint8*)Data + Size).c_str()));
+			});
+#endif
 	}
 
 	if (!m_socket->IsConnected())
