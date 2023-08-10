@@ -1,6 +1,6 @@
 schema: apigear.module/1.0
 name: tb.same2
-version: "1.0"
+version: "1.0.0"
 
 # tests same similar modules with same naming (tb.same1, tb.same2)
 

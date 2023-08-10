@@ -1,6 +1,6 @@
 schema: "apigear.solution/1.0"
 name: demo
-version: "0.1"
+version: "0.1.0"
 
 layers:
   - name: goldenmaster

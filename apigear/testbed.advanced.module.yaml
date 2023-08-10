@@ -1,6 +1,6 @@
 schema: apigear.module/1.0
 name: testbed2
-version: "1.0"
+version: "1.0.0"
 
 # test operations with many parameters (1...4)
 # each operation parameter is associated with a property (param1 -> prop1)

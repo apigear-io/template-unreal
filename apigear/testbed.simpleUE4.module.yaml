@@ -1,6 +1,6 @@
 schema: apigear.module/1.0
 name: tb.simple
-version: "1.0"
+version: "1.0.0"
 
 # test properties with simple types
 # test properties with arrays of simple types
