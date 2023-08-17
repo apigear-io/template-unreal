@@ -12,7 +12,7 @@ THIRD_PARTY_INCLUDES_END
 #include "IWebSocketServer.h"
 #include "IWebSocketNetworkingModule.h"
 
-void writeLogHost(ApiGear::ObjectLink::LogLevel level, std::string msg)
+void writeLogHost(ApiGear::ObjectLink::LogLevel level, const std::string& msg)
 {
 	switch (level)
 	{
@@ -33,7 +33,7 @@ void writeLogHost(ApiGear::ObjectLink::LogLevel level, std::string msg)
 
 ApiGear::ObjectLink::WriteLogFunc logHostFunc()
 {
-	return [](ApiGear::ObjectLink::LogLevel level, std::string msg)
+	return [](ApiGear::ObjectLink::LogLevel level, const std::string& msg)
 	{ writeLogHost(level, msg); };
 }
 

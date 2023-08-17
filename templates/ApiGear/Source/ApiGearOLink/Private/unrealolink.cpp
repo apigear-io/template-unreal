@@ -11,7 +11,7 @@ THIRD_PARTY_INCLUDES_END
 
 DEFINE_LOG_CATEGORY(LogApiGearOLink);
 
-void writeLog(ApiGear::ObjectLink::LogLevel level, std::string msg)
+void writeLog(ApiGear::ObjectLink::LogLevel level, const std::string& msg)
 {
 	switch (level)
 	{
@@ -38,7 +38,7 @@ TScriptInterface<IApiGearConnection> OLinkFactory::Create(UObject* Outer, FStrin
 
 ApiGear::ObjectLink::WriteLogFunc logFunc()
 {
-	return [](ApiGear::ObjectLink::LogLevel level, std::string msg)
+	return [](ApiGear::ObjectLink::LogLevel level, const std::string& msg)
 	{ writeLog(level, msg); };
 }
 
@@ -48,7 +48,7 @@ UUnrealOLink::UUnrealOLink(const FObjectInitializer& ObjectInitializer)
 {
 	m_node = ApiGear::ObjectLink::ClientNode::create(m_registry);
 
-	ApiGear::ObjectLink::WriteMessageFunc func = [this](std::string msg)
+	ApiGear::ObjectLink::WriteMessageFunc func = [this](const std::string& msg)
 	{
 		m_queue.Enqueue(msg);
 		processMessages();

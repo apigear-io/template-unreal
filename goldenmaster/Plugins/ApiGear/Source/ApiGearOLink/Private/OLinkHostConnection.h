@@ -19,7 +19,7 @@ public:
 		, Node(ApiGear::ObjectLink::RemoteNode::createRemoteNode(InRegistry))
 	{
 		Node->onLog(logFunc);
-		Node->onWrite([InSocket](std::string msg)
+		Node->onWrite([InSocket](const std::string& msg)
 			{
 				check(InSocket);
 				InSocket->Send(reinterpret_cast<const uint8*>(msg.c_str()), msg.size(), false);
