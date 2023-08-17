@@ -15,11 +15,11 @@ THIRD_PARTY_INCLUDES_END
 class INetworkingWebSocket;
 
 /// @brief the private implementation of the OLink server
-class APIGEAROLINK_API UnrealOLinkHostWorker
+class APIGEAROLINK_API OLinkHostPrivate
 {
 public:
-	explicit UnrealOLinkHostWorker(uint32 InPort);
-	virtual ~UnrealOLinkHostWorker();
+	explicit OLinkHostPrivate(uint32 InPort);
+	virtual ~OLinkHostPrivate();
 
 	/// @brief returns number of currently active connections
 	/// @return number of currently active connections

@@ -1,45 +1,45 @@
 #include "UnrealOLinkHost.h"
 #include "ApiGearSettings.h"
-#include "OLinkHostWorker.h"
+#include "OLinkHostPrivate.h"
 
 TSharedPtr<ApiGear::ObjectLink::RemoteRegistry> UUnrealOLinkHost::GetOLinkRegistry()
 {
-	return Worker ? Worker->GetOLinkRegistry() : nullptr;
+	return PrivateImplementation ? PrivateImplementation->GetOLinkRegistry() : nullptr;
 }
 
 void UUnrealOLinkHost::Initialize(FSubsystemCollectionBase& Collection)
 {
 	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
-	Worker = MakePimpl<UnrealOLinkHostWorker>(settings->OLINK_Port);
+	PrivateImplementation = MakePimpl<OLinkHostPrivate>(settings->OLINK_Port);
 }
 
 void UUnrealOLinkHost::Deinitialize()
 {
-	if (!Worker)
+	if (!PrivateImplementation)
 	{
 		return;
 	}
 
-	Worker->Stop();
-	Worker.Reset();
+	PrivateImplementation->Stop();
+	PrivateImplementation.Reset();
 }
 
 bool UUnrealOLinkHost::Start(int32 Port)
 {
-	if (!Worker || Port <= 0)
+	if (!PrivateImplementation || Port <= 0)
 	{
 		return false;
 	}
 
-	return Worker->Start(Port);
+	return PrivateImplementation->Start(Port);
 }
 
 void UUnrealOLinkHost::Stop()
 {
-	if (!Worker)
+	if (!PrivateImplementation)
 	{
 		return;
 	}
 
-	return Worker->Stop();
+	return PrivateImplementation->Stop();
 }

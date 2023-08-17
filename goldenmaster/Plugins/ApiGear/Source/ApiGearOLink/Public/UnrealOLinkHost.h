@@ -8,7 +8,7 @@ THIRD_PARTY_INCLUDES_START
 THIRD_PARTY_INCLUDES_END
 #include "UnrealOLinkHost.generated.h"
 
-class UnrealOLinkHostWorker;
+class OLinkHostPrivate;
 
 /// @brief the public wrapper for the OLink server
 UCLASS(BlueprintType)
@@ -40,5 +40,5 @@ public:
 
 private:
 	/// @brief pointer to the private implementation of the OLink server
-	TPimplPtr<UnrealOLinkHostWorker> Worker;
+	TPimplPtr<OLinkHostPrivate> PrivateImplementation;
 };

@@ -291,12 +291,12 @@ features:
             target: "Source/ApiGearOLink/Private/OLinkHostConnection.h"
             force: true
             raw: true
-          - source: "ApiGear/Source/ApiGearOLink/Private/OLinkHostWorker.h"
-            target: "Source/ApiGearOLink/Private/OLinkHostWorker.h"
+          - source: "ApiGear/Source/ApiGearOLink/Private/OLinkHostPrivate.h"
+            target: "Source/ApiGearOLink/Private/OLinkHostPrivate.h"
             force: true
             raw: true
-          - source: "ApiGear/Source/ApiGearOLink/Private/OLinkHostWorker.cpp"
-            target: "Source/ApiGearOLink/Private/OLinkHostWorker.cpp"
+          - source: "ApiGear/Source/ApiGearOLink/Private/OLinkHostPrivate.cpp"
+            target: "Source/ApiGearOLink/Private/OLinkHostPrivate.cpp"
             force: true
             raw: true
   - name: stubs

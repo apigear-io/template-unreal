@@ -1,4 +1,4 @@
-#include "OLinkHostWorker.h"
+#include "OLinkHostPrivate.h"
 #include "OLinkHostConnection.h"
 #include "ApiGearLogCategories.h"
 #include "ApiGearSettings.h"
@@ -37,7 +37,7 @@ ApiGear::ObjectLink::WriteLogFunc logHostFunc()
 	{ writeLogHost(level, msg); };
 }
 
-UnrealOLinkHostWorker::UnrealOLinkHostWorker(uint32 InPort)
+OLinkHostPrivate::OLinkHostPrivate(uint32 InPort)
 	: m_loggingDisabled(false)
 	, Port(InPort)
 {
@@ -52,18 +52,18 @@ UnrealOLinkHostWorker::UnrealOLinkHostWorker(uint32 InPort)
 	}
 }
 
-UnrealOLinkHostWorker::~UnrealOLinkHostWorker()
+OLinkHostPrivate::~OLinkHostPrivate()
 {
 	Stop();
 }
 
-bool UnrealOLinkHostWorker::Start(uint32 InPort)
+bool OLinkHostPrivate::Start(uint32 InPort)
 {
 	writeLogHost(ApiGear::ObjectLink::LogLevel::Debug, "Apigear OLink Server starting up...");
 	Port = InPort;
 
 	FWebSocketClientConnectedCallBack CallBack;
-	CallBack.BindRaw(this, &UnrealOLinkHostWorker::OnWebSocketClientConnected);
+	CallBack.BindRaw(this, &OLinkHostPrivate::OnWebSocketClientConnected);
 
 	Server = FModuleManager::Get().LoadModuleChecked<IWebSocketNetworkingModule>(TEXT("WebSocketNetworking")).CreateServer();
 
@@ -74,14 +74,14 @@ bool UnrealOLinkHostWorker::Start(uint32 InPort)
 	}
 
 #if (ENGINE_MAJOR_VERSION >= 5)
-	TickerHandle = FTSTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateRaw(this, &UnrealOLinkHostWorker::Tick));
+	TickerHandle = FTSTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateRaw(this, &OLinkHostPrivate::Tick));
 #else
-	TickerHandle = FTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateRaw(this, &UnrealOLinkHostWorker::Tick));
+	TickerHandle = FTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateRaw(this, &OLinkHostPrivate::Tick));
 #endif
 	return true;
 }
 
-void UnrealOLinkHostWorker::Stop()
+void OLinkHostPrivate::Stop()
 {
 	if (TickerHandle.IsValid())
 	{
@@ -99,13 +99,13 @@ void UnrealOLinkHostWorker::Stop()
 	}
 }
 
-bool UnrealOLinkHostWorker::Tick(float DeltaTime)
+bool OLinkHostPrivate::Tick(float DeltaTime)
 {
 	Server->Tick();
 	return true;
 }
 
-void UnrealOLinkHostWorker::OnWebSocketClientConnected(INetworkingWebSocket* Socket)
+void OLinkHostPrivate::OnWebSocketClientConnected(INetworkingWebSocket* Socket)
 {
 	checkf(Socket, TEXT("Socket was null while creating a new websocket connection."));
 
@@ -113,17 +113,17 @@ void UnrealOLinkHostWorker::OnWebSocketClientConnected(INetworkingWebSocket* Soc
 	TUniquePtr<FOLinkHostConnection> Connection = MakeUnique<FOLinkHostConnection>(Socket, *Registry, logHostFunc());
 
 	FWebSocketPacketReceivedCallBack ReceiveCallBack;
-	ReceiveCallBack.BindRaw(this, &UnrealOLinkHostWorker::ReceivedRawPacket, Socket);
+	ReceiveCallBack.BindRaw(this, &OLinkHostPrivate::ReceivedRawPacket, Socket);
 	Socket->SetReceiveCallBack(ReceiveCallBack);
 
 	FWebSocketInfoCallBack CloseCallback;
-	CloseCallback.BindRaw(this, &UnrealOLinkHostWorker::OnSocketClose, Socket);
+	CloseCallback.BindRaw(this, &OLinkHostPrivate::OnSocketClose, Socket);
 	Socket->SetSocketClosedCallBack(CloseCallback);
 
 	ClientConnections.Add(Socket, MoveTemp(Connection));
 }
 
-void UnrealOLinkHostWorker::ReceivedRawPacket(void* Data, int32 Size, INetworkingWebSocket* Socket)
+void OLinkHostPrivate::ReceivedRawPacket(void* Data, int32 Size, INetworkingWebSocket* Socket)
 {
 	TUniquePtr<FOLinkHostConnection>* ConnectionHandler = nullptr;
 
@@ -136,13 +136,13 @@ void UnrealOLinkHostWorker::ReceivedRawPacket(void* Data, int32 Size, INetworkin
 	ConnectionHandler->Get()->handleTextMessage(std::string((uint8*)Data, (uint8*)Data + Size));
 }
 
-void UnrealOLinkHostWorker::OnSocketClose(INetworkingWebSocket* Socket)
+void OLinkHostPrivate::OnSocketClose(INetworkingWebSocket* Socket)
 {
 	writeLogHost(ApiGear::ObjectLink::LogLevel::Info, std::string("remote: closed connection ") + TCHAR_TO_UTF8(*Socket->RemoteEndPoint(true)));
 	ClientConnections.FindAndRemoveChecked(Socket);
 }
 
-uint32 UnrealOLinkHostWorker::NumConnections() const
+uint32 OLinkHostPrivate::NumConnections() const
 {
 	return ClientConnections.Num();
 }
