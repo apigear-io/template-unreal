@@ -112,34 +112,15 @@ void OLinkHostPrivate::OnWebSocketClientConnected(INetworkingWebSocket* Socket)
 	writeLogHost(ApiGear::ObjectLink::LogLevel::Info, std::string("remote: new connection ") + TCHAR_TO_UTF8(*Socket->RemoteEndPoint(true)));
 	TUniquePtr<FOLinkHostConnection> Connection = MakeUnique<FOLinkHostConnection>(Socket, *Registry, logHostFunc());
 
-	FWebSocketPacketReceivedCallBack ReceiveCallBack;
-	ReceiveCallBack.BindRaw(this, &OLinkHostPrivate::ReceivedRawPacket, Socket);
-	Socket->SetReceiveCallBack(ReceiveCallBack);
+	Connection->ConnectionClosedCallBack.BindRaw(this, &OLinkHostPrivate::OnConnectionClose);
 
-	FWebSocketInfoCallBack CloseCallback;
-	CloseCallback.BindRaw(this, &OLinkHostPrivate::OnSocketClose, Socket);
-	Socket->SetSocketClosedCallBack(CloseCallback);
-
-	ClientConnections.Add(Socket, MoveTemp(Connection));
+	ClientConnections.Add(MoveTemp(Connection));
 }
 
-void OLinkHostPrivate::ReceivedRawPacket(void* Data, int32 Size, INetworkingWebSocket* Socket)
+void OLinkHostPrivate::OnConnectionClose(FOLinkHostConnection* Connection)
 {
-	TUniquePtr<FOLinkHostConnection>* ConnectionHandler = nullptr;
-
-	ConnectionHandler = ClientConnections.Find(Socket);
-	if (!ConnectionHandler)
-	{
-		return;
-	}
-
-	ConnectionHandler->Get()->handleTextMessage(std::string((uint8*)Data, (uint8*)Data + Size));
-}
-
-void OLinkHostPrivate::OnSocketClose(INetworkingWebSocket* Socket)
-{
-	writeLogHost(ApiGear::ObjectLink::LogLevel::Info, std::string("remote: closed connection ") + TCHAR_TO_UTF8(*Socket->RemoteEndPoint(true)));
-	ClientConnections.FindAndRemoveChecked(Socket);
+	ClientConnections.RemoveAllSwap([Connection](const TUniquePtr<FOLinkHostConnection>& InConnection)
+		{ return InConnection->IsConnection(Connection); });
 }
 
 uint32 OLinkHostPrivate::NumConnections() const

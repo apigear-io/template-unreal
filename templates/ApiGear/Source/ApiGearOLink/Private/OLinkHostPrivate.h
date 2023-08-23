@@ -45,14 +45,9 @@ private:
 	void OnWebSocketClientConnected(INetworkingWebSocket* Socket);
 
 	/// @brief callback for when the connection was closed
+	/// removes the connection from the list of currently active connections
 	/// @param Socket pointer to unique socket for each connection
-	void OnSocketClose(INetworkingWebSocket* Socket);
-
-	/// @brief callback for received data packets
-	/// @param Data pointer to the incoming data
-	/// @param Size size of the incoming data
-	/// @param Socket pointer to unique socket for each connection
-	void ReceivedRawPacket(void* Data, int32 Size, INetworkingWebSocket* Socket);
+	void OnConnectionClose(FOLinkHostConnection* Connection);
 
 	/// @brief function is called internally by the Coreticker and interacts with the libwebsocket
 	/// @param DeltaTime not used
@@ -78,5 +73,5 @@ private:
 	uint32 Port;
 
 	/// @brief holds all currently active connections
-	TMap<INetworkingWebSocket*, TUniquePtr<FOLinkHostConnection>> ClientConnections;
+	TArray<TUniquePtr<FOLinkHostConnection>> ClientConnections;
 };
