@@ -10,14 +10,14 @@
 
 void FApiGearModuleOLink::StartupModule()
 {
-	// No Libraries to load from non mobile platforms because of the web api
-	FWebSocketsModule& WebSocketsModule = FModuleManager::LoadModuleChecked<FWebSocketsModule>(TEXT("WebSockets"));
+	// used by olink client implementations
+	FModuleManager::LoadModuleChecked<FWebSocketsModule>(TEXT("WebSockets"));
 
 	// register olink factory function
 	UApiGearConnectionsStore::RegisterConnectionFactory(ApiGearOLinkProtocolIdentifier, &OLinkFactory::Create);
 
-	// needed for olink websocket server host
-	IWebSocketNetworkingModule& WebSocketNetworkingModule = FModuleManager::LoadModuleChecked<IWebSocketNetworkingModule>(TEXT("WebSocketNetworking"));
+	// used by the olink websocket server host
+	FModuleManager::LoadModuleChecked<IWebSocketNetworkingModule>(TEXT("WebSocketNetworking"));
 }
 
 void FApiGearModuleOLink::ShutdownModule()

@@ -21,6 +21,9 @@ limitations under the License.
 #include "UnrealOLinkHost.h"
 #include "TbSimpleNoSignalsInterfaceOLinkAdapter.generated.h"
 
+/// @brief handles the adaption between the service implementation and the OLink protocol
+/// takes an object of the type ITbSimpleNoSignalsInterfaceInterface
+/// and holds the corresponding TbSimpleNoSignalsInterfaceOLinkSource OLink source object
 UCLASS(BlueprintType)
 class TBSIMPLE_API UTbSimpleNoSignalsInterfaceOLinkAdapter : public UGameInstanceSubsystem
 {
@@ -48,13 +51,14 @@ private:
 	UFUNCTION(Category = "ApiGear|TbSimple|NoSignalsInterface", BlueprintInternalUseOnly)
 	void OnPropIntChanged(int32 PropInt);
 
-	/** The connection to the service backend. */
+	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSimple|NoSignalsInterface")
 	TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> BackendService;
 
 	/**
-	shared pointer to the source implementation
+	holds the olink source interface implementation
 	must be std::shared_ptr since it is expected by the olink protocol implementation
+	therefore we need to hold it as member and cannot easily inherit from the source interface
 	*/
 	std::shared_ptr<class TbSimpleNoSignalsInterfaceOLinkSource> Source;
 };

@@ -69,6 +69,8 @@ bool OLinkHostPrivate::Start(uint32 InPort)
 
 	if (!Server || !Server->Init(Port, CallBack))
 	{
+		static const std::string ErrorMsg = "Cannot start new OLink server";
+		writeLogHost(ApiGear::ObjectLink::LogLevel::Error, ErrorMsg);
 		Server.Reset();
 		return false;
 	}
@@ -109,7 +111,8 @@ void OLinkHostPrivate::OnWebSocketClientConnected(INetworkingWebSocket* Socket)
 {
 	checkf(Socket, TEXT("Socket was null while creating a new websocket connection."));
 
-	writeLogHost(ApiGear::ObjectLink::LogLevel::Info, std::string("remote: new connection ") + TCHAR_TO_UTF8(*Socket->RemoteEndPoint(true)));
+	static const std::string Msg = "remote: new connection ";
+	writeLogHost(ApiGear::ObjectLink::LogLevel::Info, Msg + TCHAR_TO_UTF8(*Socket->RemoteEndPoint(true)));
 	TUniquePtr<FOLinkHostConnection> Connection = MakeUnique<FOLinkHostConnection>(Socket, *Registry, logHostFunc());
 
 	Connection->ConnectionClosedCallBack.BindRaw(this, &OLinkHostPrivate::OnConnectionClose);

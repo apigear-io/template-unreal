@@ -52,7 +52,6 @@ void Testbed1StructInterfaceOLinkSource::setBackendService(TScriptInterface<ITes
 		return;
 	}
 
-	// set to new backend
 	BackendService = InService;
 }
 void Testbed1StructInterfaceOLinkSource::OnSigBool(const FTestbed1StructBool& ParamBool)

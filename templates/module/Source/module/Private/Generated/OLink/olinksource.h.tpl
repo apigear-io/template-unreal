@@ -17,6 +17,7 @@ THIRD_PARTY_INCLUDES_START
 THIRD_PARTY_INCLUDES_END
 #include "UnrealOLinkHost.h"
 
+/// @brief handles OLink network interactions specific to I{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface
 class {{$Class}} : public ApiGear::ObjectLink::IObjectSource
 {
 public:
@@ -52,7 +53,7 @@ public:
 {{- end }}
 
 private:
-	/** The connection to the service backend. */
+	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	TScriptInterface<I{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface> BackendService;
 
 	/** The host holding the connections and the registry */

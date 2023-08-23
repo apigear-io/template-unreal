@@ -52,7 +52,6 @@ void TbEnumEnumInterfaceOLinkSource::setBackendService(TScriptInterface<ITbEnumE
 		return;
 	}
 
-	// set to new backend
 	BackendService = InService;
 }
 void TbEnumEnumInterfaceOLinkSource::OnSig0(ETbEnumEnum0 Param0)

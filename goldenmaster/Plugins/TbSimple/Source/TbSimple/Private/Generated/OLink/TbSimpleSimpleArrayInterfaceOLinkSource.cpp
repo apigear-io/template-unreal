@@ -52,7 +52,6 @@ void TbSimpleSimpleArrayInterfaceOLinkSource::setBackendService(TScriptInterface
 		return;
 	}
 
-	// set to new backend
 	BackendService = InService;
 }
 void TbSimpleSimpleArrayInterfaceOLinkSource::OnSigBool(const TArray<bool>& ParamBool)

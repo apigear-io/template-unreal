@@ -52,7 +52,6 @@ void TbSame1SameStruct2InterfaceOLinkSource::setBackendService(TScriptInterface<
 		return;
 	}
 
-	// set to new backend
 	BackendService = InService;
 }
 void TbSame1SameStruct2InterfaceOLinkSource::OnSig1(const FTbSame1Struct1& Param1)

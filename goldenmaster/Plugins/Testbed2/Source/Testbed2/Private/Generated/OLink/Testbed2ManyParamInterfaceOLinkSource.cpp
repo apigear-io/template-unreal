@@ -52,7 +52,6 @@ void Testbed2ManyParamInterfaceOLinkSource::setBackendService(TScriptInterface<I
 		return;
 	}
 
-	// set to new backend
 	BackendService = InService;
 }
 void Testbed2ManyParamInterfaceOLinkSource::OnSig1(int32 Param1)

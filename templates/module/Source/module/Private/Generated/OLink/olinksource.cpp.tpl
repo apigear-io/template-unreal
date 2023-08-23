@@ -51,7 +51,6 @@ void {{$Class}}::setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{Cam
 		return;
 	}
 
-	// set to new backend
 	BackendService = InService;
 }
 

@@ -23,6 +23,7 @@ THIRD_PARTY_INCLUDES_START
 THIRD_PARTY_INCLUDES_END
 #include "UnrealOLinkHost.h"
 
+/// @brief handles OLink network interactions specific to ITestbed2NestedStruct2InterfaceInterface
 class Testbed2NestedStruct2InterfaceOLinkSource : public ApiGear::ObjectLink::IObjectSource
 {
 public:
@@ -56,7 +57,7 @@ public:
 	void OnProp2Changed(const FTestbed2NestedStruct2& Prop2);
 
 private:
-	/** The connection to the service backend. */
+	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> BackendService;
 
 	/** The host holding the connections and the registry */

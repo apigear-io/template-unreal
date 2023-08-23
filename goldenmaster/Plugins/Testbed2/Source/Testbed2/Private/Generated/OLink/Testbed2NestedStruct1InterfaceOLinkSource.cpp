@@ -52,7 +52,6 @@ void Testbed2NestedStruct1InterfaceOLinkSource::setBackendService(TScriptInterfa
 		return;
 	}
 
-	// set to new backend
 	BackendService = InService;
 }
 void Testbed2NestedStruct1InterfaceOLinkSource::OnSig1(const FTestbed2NestedStruct1& Param1)

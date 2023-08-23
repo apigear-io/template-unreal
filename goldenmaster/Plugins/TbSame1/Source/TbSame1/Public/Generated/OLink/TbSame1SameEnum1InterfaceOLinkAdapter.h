@@ -21,6 +21,9 @@ limitations under the License.
 #include "UnrealOLinkHost.h"
 #include "TbSame1SameEnum1InterfaceOLinkAdapter.generated.h"
 
+/// @brief handles the adaption between the service implementation and the OLink protocol
+/// takes an object of the type ITbSame1SameEnum1InterfaceInterface
+/// and holds the corresponding TbSame1SameEnum1InterfaceOLinkSource OLink source object
 UCLASS(BlueprintType)
 class TBSAME1_API UTbSame1SameEnum1InterfaceOLinkAdapter : public UGameInstanceSubsystem
 {
@@ -47,13 +50,14 @@ private:
 	UFUNCTION(Category = "ApiGear|TbSame1|SameEnum1Interface", BlueprintInternalUseOnly)
 	void OnProp1Changed(ETbSame1Enum1 Prop1);
 
-	/** The connection to the service backend. */
+	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSame1|SameEnum1Interface")
 	TScriptInterface<ITbSame1SameEnum1InterfaceInterface> BackendService;
 
 	/**
-	shared pointer to the source implementation
+	holds the olink source interface implementation
 	must be std::shared_ptr since it is expected by the olink protocol implementation
+	therefore we need to hold it as member and cannot easily inherit from the source interface
 	*/
 	std::shared_ptr<class TbSame1SameEnum1InterfaceOLinkSource> Source;
 };

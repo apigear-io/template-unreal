@@ -21,6 +21,9 @@ limitations under the License.
 #include "UnrealOLinkHost.h"
 #include "Testbed1StructArrayInterfaceOLinkAdapter.generated.h"
 
+/// @brief handles the adaption between the service implementation and the OLink protocol
+/// takes an object of the type ITestbed1StructArrayInterfaceInterface
+/// and holds the corresponding Testbed1StructArrayInterfaceOLinkSource OLink source object
 UCLASS(BlueprintType)
 class TESTBED1_API UTestbed1StructArrayInterfaceOLinkAdapter : public UGameInstanceSubsystem
 {
@@ -65,13 +68,14 @@ private:
 	UFUNCTION(Category = "ApiGear|Testbed1|StructArrayInterface", BlueprintInternalUseOnly)
 	void OnPropStringChanged(const TArray<FTestbed1StructString>& PropString);
 
-	/** The connection to the service backend. */
+	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|Testbed1|StructArrayInterface")
 	TScriptInterface<ITestbed1StructArrayInterfaceInterface> BackendService;
 
 	/**
-	shared pointer to the source implementation
+	holds the olink source interface implementation
 	must be std::shared_ptr since it is expected by the olink protocol implementation
+	therefore we need to hold it as member and cannot easily inherit from the source interface
 	*/
 	std::shared_ptr<class Testbed1StructArrayInterfaceOLinkSource> Source;
 };

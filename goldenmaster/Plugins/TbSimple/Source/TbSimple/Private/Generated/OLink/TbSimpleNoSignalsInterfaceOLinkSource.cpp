@@ -52,7 +52,6 @@ void TbSimpleNoSignalsInterfaceOLinkSource::setBackendService(TScriptInterface<I
 		return;
 	}
 
-	// set to new backend
 	BackendService = InService;
 }
 void TbSimpleNoSignalsInterfaceOLinkSource::OnPropBoolChanged(bool bInPropBool)

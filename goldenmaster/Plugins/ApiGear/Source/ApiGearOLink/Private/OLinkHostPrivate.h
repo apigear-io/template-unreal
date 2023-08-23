@@ -15,6 +15,8 @@ THIRD_PARTY_INCLUDES_END
 class INetworkingWebSocket;
 
 /// @brief the private implementation of the OLink server
+/// serves olink source implementations on the specified port
+/// and holds all connections to the clients
 class APIGEAROLINK_API OLinkHostPrivate
 {
 public:
@@ -40,13 +42,13 @@ public:
 	};
 
 private:
-	/// @brief callback for when server established a new connection
-	/// @param Socket pointer to unique socket for each connection
+	/// @brief callback for when server established a new connection, assumes ownership of the socket
+	/// @param Socket unique socket for each connection
 	void OnWebSocketClientConnected(INetworkingWebSocket* Socket);
 
 	/// @brief callback for when the connection was closed
 	/// removes the connection from the list of currently active connections
-	/// @param Socket pointer to unique socket for each connection
+	/// @param Socket unique socket for each connection
 	void OnConnectionClose(FOLinkHostConnection* Connection);
 
 	/// @brief function is called internally by the Coreticker and interacts with the libwebsocket
@@ -54,7 +56,7 @@ private:
 	/// @return always true
 	bool Tick(float /** DeltaTime */);
 
-	/// @brief pointer to the websocket wrapper
+	/// @brief the websocket wrapper
 	TUniquePtr<IWebSocketServer> Server;
 	bool m_loggingDisabled;
 

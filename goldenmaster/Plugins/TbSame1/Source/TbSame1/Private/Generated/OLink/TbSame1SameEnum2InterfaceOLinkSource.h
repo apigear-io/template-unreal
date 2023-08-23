@@ -23,6 +23,7 @@ THIRD_PARTY_INCLUDES_START
 THIRD_PARTY_INCLUDES_END
 #include "UnrealOLinkHost.h"
 
+/// @brief handles OLink network interactions specific to ITbSame1SameEnum2InterfaceInterface
 class TbSame1SameEnum2InterfaceOLinkSource : public ApiGear::ObjectLink::IObjectSource
 {
 public:
@@ -56,7 +57,7 @@ public:
 	void OnProp2Changed(ETbSame1Enum2 Prop2);
 
 private:
-	/** The connection to the service backend. */
+	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	TScriptInterface<ITbSame1SameEnum2InterfaceInterface> BackendService;
 
 	/** The host holding the connections and the registry */

@@ -52,7 +52,6 @@ void TbSame2SameEnum2InterfaceOLinkSource::setBackendService(TScriptInterface<IT
 		return;
 	}
 
-	// set to new backend
 	BackendService = InService;
 }
 void TbSame2SameEnum2InterfaceOLinkSource::OnSig1(ETbSame2Enum1 Param1)

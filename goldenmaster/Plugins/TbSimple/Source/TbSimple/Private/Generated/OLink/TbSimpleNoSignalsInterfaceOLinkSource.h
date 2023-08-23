@@ -23,6 +23,7 @@ THIRD_PARTY_INCLUDES_START
 THIRD_PARTY_INCLUDES_END
 #include "UnrealOLinkHost.h"
 
+/// @brief handles OLink network interactions specific to ITbSimpleNoSignalsInterfaceInterface
 class TbSimpleNoSignalsInterfaceOLinkSource : public ApiGear::ObjectLink::IObjectSource
 {
 public:
@@ -54,7 +55,7 @@ public:
 	void OnPropIntChanged(int32 PropInt);
 
 private:
-	/** The connection to the service backend. */
+	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> BackendService;
 
 	/** The host holding the connections and the registry */

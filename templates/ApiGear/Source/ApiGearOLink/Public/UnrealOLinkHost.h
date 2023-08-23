@@ -10,7 +10,9 @@ THIRD_PARTY_INCLUDES_END
 
 class OLinkHostPrivate;
 
-/// @brief the public wrapper for the OLink server
+/// @brief Hosts a server for OLink services.
+/// Stores connections requested by clients and provides connection endpoints (nodes) through the RemoteRegistry
+/// May hold multiple connections.
 UCLASS(BlueprintType)
 class APIGEAROLINK_API UUnrealOLinkHost
 	: public UGameInstanceSubsystem
@@ -24,7 +26,7 @@ public:
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
 
-	/// @brief starts the OLink server on the mentioned port
+	/// @brief starts the OLink server on the given port
 	/// @param Port which port the OLink server listen
 	/// @return true if started successfully
 	UFUNCTION(BlueprintCallable, Category = "ApiGear")
@@ -34,11 +36,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "ApiGear")
 	void Stop();
 
-	/// @brief returns the sharedptr to the remote registry
-	/// @return sharedptr to the remote registry
+	/// @brief Get RemoteRegistry to add or remove your sources or get nodes that are using your sources
+	/// @return RemoteRegistry used by this UUnrealOLinkHost and nodes
 	TSharedPtr<ApiGear::ObjectLink::RemoteRegistry> GetOLinkRegistry();
 
 private:
-	/// @brief pointer to the private implementation of the OLink server
+	/// @brief the private implementation of the OLink server
 	TPimplPtr<OLinkHostPrivate> PrivateImplementation;
 };

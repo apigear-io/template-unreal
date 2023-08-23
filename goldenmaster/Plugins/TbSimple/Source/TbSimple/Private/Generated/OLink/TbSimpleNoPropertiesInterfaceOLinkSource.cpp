@@ -52,7 +52,6 @@ void TbSimpleNoPropertiesInterfaceOLinkSource::setBackendService(TScriptInterfac
 		return;
 	}
 
-	// set to new backend
 	BackendService = InService;
 }
 void TbSimpleNoPropertiesInterfaceOLinkSource::OnSigVoid()

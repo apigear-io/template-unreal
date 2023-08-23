@@ -32,13 +32,13 @@ public:
 	~FOLinkHostConnection();
 
 	/// @brief helper function to check the InConnection is actually pointing to the same instance
-	/// @param InConnection pointer to be tested
+	/// @param InConnection connection to be tested
 	/// @return true if identical
 	bool IsConnection(FOLinkHostConnection* InConnection) const;
 
 private:
 	/// @brief callback for received data packets - for now we assume it is text data
-	/// @param Data pointer to the incoming data
+	/// @param Data the incoming data
 	/// @param Size size of the incoming data
 	void ReceivedRawPacket(void* Data, int32 Size) const;
 
@@ -47,10 +47,10 @@ private:
 	void handleTextMessage(const std::string& msg) const;
 
 	/// @brief callback for when the connection was closed
-	/// @param Socket pointer to unique socket for each connection
+	/// @param Socket unique socket for this connection
 	void OnSocketClose(INetworkingWebSocket* InSocket);
 
-	/// @brief pointer to unique socket for this connection
+	/// @brief unique socket for this connection
 	INetworkingWebSocket* Socket = nullptr;
 	/// @brief abstract network endpoint for this connection. Routes traffic to registered target sources in RemoteRegistry
 	std::shared_ptr<ApiGear::ObjectLink::RemoteNode> Node;

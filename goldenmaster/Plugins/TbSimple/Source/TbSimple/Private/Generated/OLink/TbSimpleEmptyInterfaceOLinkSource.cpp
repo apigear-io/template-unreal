@@ -52,7 +52,6 @@ void TbSimpleEmptyInterfaceOLinkSource::setBackendService(TScriptInterface<ITbSi
 		return;
 	}
 
-	// set to new backend
 	BackendService = InService;
 }
 void TbSimpleEmptyInterfaceOLinkSource::setOLinkHost(TSoftObjectPtr<UUnrealOLinkHost> InHost)

@@ -23,6 +23,7 @@ THIRD_PARTY_INCLUDES_START
 THIRD_PARTY_INCLUDES_END
 #include "UnrealOLinkHost.h"
 
+/// @brief handles OLink network interactions specific to ITestbed2ManyParamInterfaceInterface
 class Testbed2ManyParamInterfaceOLinkSource : public ApiGear::ObjectLink::IObjectSource
 {
 public:
@@ -60,7 +61,7 @@ public:
 	void OnProp4Changed(int32 Prop4);
 
 private:
-	/** The connection to the service backend. */
+	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	TScriptInterface<ITestbed2ManyParamInterfaceInterface> BackendService;
 
 	/** The host holding the connections and the registry */

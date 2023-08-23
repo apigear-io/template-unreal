@@ -21,6 +21,9 @@ limitations under the License.
 #include "UnrealOLinkHost.h"
 #include "Testbed2NestedStruct3InterfaceOLinkAdapter.generated.h"
 
+/// @brief handles the adaption between the service implementation and the OLink protocol
+/// takes an object of the type ITestbed2NestedStruct3InterfaceInterface
+/// and holds the corresponding Testbed2NestedStruct3InterfaceOLinkSource OLink source object
 UCLASS(BlueprintType)
 class TESTBED2_API UTestbed2NestedStruct3InterfaceOLinkAdapter : public UGameInstanceSubsystem
 {
@@ -59,13 +62,14 @@ private:
 	UFUNCTION(Category = "ApiGear|Testbed2|NestedStruct3Interface", BlueprintInternalUseOnly)
 	void OnProp3Changed(const FTestbed2NestedStruct3& Prop3);
 
-	/** The connection to the service backend. */
+	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|Testbed2|NestedStruct3Interface")
 	TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> BackendService;
 
 	/**
-	shared pointer to the source implementation
+	holds the olink source interface implementation
 	must be std::shared_ptr since it is expected by the olink protocol implementation
+	therefore we need to hold it as member and cannot easily inherit from the source interface
 	*/
 	std::shared_ptr<class Testbed2NestedStruct3InterfaceOLinkSource> Source;
 };

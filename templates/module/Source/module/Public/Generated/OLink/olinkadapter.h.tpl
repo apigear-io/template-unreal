@@ -15,6 +15,9 @@
 #include "UnrealOLinkHost.h"
 #include "{{$Iface}}OLinkAdapter.generated.h"
 
+/// @brief handles the adaption between the service implementation and the OLink protocol
+/// takes an object of the type I{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface
+/// and holds the corresponding {{$Iface}}OLinkSource OLink source object
 UCLASS(BlueprintType)
 class {{ $API_MACRO }} {{$Class}} : public UGameInstanceSubsystem
 {
@@ -47,13 +50,14 @@ private:
 	void On{{Camel .Name}}Changed({{ueParam "" .}});
 {{- end }}
 
-	/** The connection to the service backend. */
+	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "{{$Category}}")
 	TScriptInterface<I{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface> BackendService;
 
 	/**
-	shared pointer to the source implementation
+	holds the olink source interface implementation
 	must be std::shared_ptr since it is expected by the olink protocol implementation
+	therefore we need to hold it as member and cannot easily inherit from the source interface
 	*/
 	std::shared_ptr<class {{$Iface}}OLinkSource> Source;
 };

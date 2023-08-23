@@ -21,6 +21,9 @@ limitations under the License.
 #include "UnrealOLinkHost.h"
 #include "Testbed2ManyParamInterfaceOLinkAdapter.generated.h"
 
+/// @brief handles the adaption between the service implementation and the OLink protocol
+/// takes an object of the type ITestbed2ManyParamInterfaceInterface
+/// and holds the corresponding Testbed2ManyParamInterfaceOLinkSource OLink source object
 UCLASS(BlueprintType)
 class TESTBED2_API UTestbed2ManyParamInterfaceOLinkAdapter : public UGameInstanceSubsystem
 {
@@ -65,13 +68,14 @@ private:
 	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
 	void OnProp4Changed(int32 Prop4);
 
-	/** The connection to the service backend. */
+	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|Testbed2|ManyParamInterface")
 	TScriptInterface<ITestbed2ManyParamInterfaceInterface> BackendService;
 
 	/**
-	shared pointer to the source implementation
+	holds the olink source interface implementation
 	must be std::shared_ptr since it is expected by the olink protocol implementation
+	therefore we need to hold it as member and cannot easily inherit from the source interface
 	*/
 	std::shared_ptr<class Testbed2ManyParamInterfaceOLinkSource> Source;
 };
