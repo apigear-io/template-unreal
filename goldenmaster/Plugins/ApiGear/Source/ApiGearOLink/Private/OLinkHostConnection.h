@@ -1,5 +1,6 @@
 #pragma once
 
+#include "CoreTypes.h"
 THIRD_PARTY_INCLUDES_START
 #include "olink/remoteregistry.h"
 #include "olink/remotenode.h"
@@ -12,89 +13,47 @@ class FOLinkHostConnection;
 
 DECLARE_DELEGATE_OneParam(FOLinkHostConnectionClosedCallBack, FOLinkHostConnection* /*Connection*/);
 
-/// @brief an instance of this class is held by the OLink server worker for each existing connection
+/// @brief handles exclusively a connection operated by one WebSocket.
+/// Binds data from WebSocket to a RemoteNode which is an OLink network endpoint abstraction
 class APIGEAROLINK_API FOLinkHostConnection
 {
 
 public:
+	/// @brief delegate which is notified for every closed connection
 	FOLinkHostConnectionClosedCallBack ConnectionClosedCallBack;
 
-	FOLinkHostConnection(INetworkingWebSocket* InSocket, ApiGear::ObjectLink::RemoteRegistry& InRegistry, ApiGear::ObjectLink::WriteLogFunc logFunc)
-		: Socket(InSocket)
-		, Registry(InRegistry)
-		, Node(ApiGear::ObjectLink::RemoteNode::createRemoteNode(InRegistry))
-	{
-		FWebSocketPacketReceivedCallBack ReceiveCallBack;
-		ReceiveCallBack.BindRaw(this, &FOLinkHostConnection::ReceivedRawPacket);
-		Socket->SetReceiveCallBack(ReceiveCallBack);
+	/// @brief takes ownership of the socket and manages all interactions with it
+	/// @param InSocket socket with the connection to the client
+	/// @param InRegistry reference to the registry, here only forwarded to the node
+	/// @param logFunc function for logging protocol
+	FOLinkHostConnection(INetworkingWebSocket* InSocket, ApiGear::ObjectLink::RemoteRegistry& InRegistry, ApiGear::ObjectLink::WriteLogFunc logFunc);
+	FOLinkHostConnection(FOLinkHostConnection&& Other);
 
-		FWebSocketInfoCallBack CloseCallback;
-		CloseCallback.BindRaw(this, &FOLinkHostConnection::OnSocketClose, Socket);
-		Socket->SetSocketClosedCallBack(CloseCallback);
+	~FOLinkHostConnection();
 
-		Node->onLog(logFunc);
-		Node->onWrite([InSocket](const std::string& msg)
-			{
-				check(InSocket);
-				InSocket->Send(reinterpret_cast<const uint8*>(msg.c_str()), msg.size(), false);
-			});
-	}
-
-	FOLinkHostConnection(FOLinkHostConnection&& WebSocketConnection)
-		: Registry(WebSocketConnection.Registry)
-		, Node(WebSocketConnection.Node)
-	{
-		Socket = WebSocketConnection.Socket;
-		WebSocketConnection.Socket = nullptr;
-	}
-
-	~FOLinkHostConnection()
-	{
-		if (Socket)
-		{
-			delete Socket;
-			Socket = nullptr;
-		}
-	}
-
-	bool IsConnection(FOLinkHostConnection* InConnection) const
-	{
-		return this == InConnection;
-	}
+	/// @brief helper function to check the InConnection is actually pointing to the same instance
+	/// @param InConnection pointer to be tested
+	/// @return true if identical
+	bool IsConnection(FOLinkHostConnection* InConnection) const;
 
 private:
 	/// @brief callback for received data packets - for now we assume it is text data
 	/// @param Data pointer to the incoming data
 	/// @param Size size of the incoming data
-	void ReceivedRawPacket(void* Data, int32 Size)
-	{
-		this->handleTextMessage(std::string((uint8*)Data, (uint8*)Data + Size));
-	}
+	void ReceivedRawPacket(void* Data, int32 Size) const;
 
 	/// @brief function to handle incoming messages
 	/// @param msg incoming message
-	void handleTextMessage(const std::string& msg)
-	{
-		Node->handleMessage(msg);
-	}
+	void handleTextMessage(const std::string& msg) const;
 
 	/// @brief callback for when the connection was closed
 	/// @param Socket pointer to unique socket for each connection
-	void OnSocketClose(INetworkingWebSocket* InSocket)
-	{
-		if (Socket == InSocket)
-		{
-			UE_LOG(LogApiGearOLinkHost, Log, TEXT("%s %s"), "remote: closed connection ", *Socket->RemoteEndPoint(true));
-			ConnectionClosedCallBack.Execute(this);
+	void OnSocketClose(INetworkingWebSocket* InSocket);
 
-			delete Socket;
-			Socket = nullptr;
-		}
-	}
-
-	/// @brief pointer to unique socket for each connection
+	/// @brief pointer to unique socket for this connection
 	INetworkingWebSocket* Socket = nullptr;
-	/**A global registry to which network endpoints are added for olink objects. */
-	ApiGear::ObjectLink::RemoteRegistry& Registry;
+	/// @brief abstract network endpoint for this connection. Routes traffic to registered target sources in RemoteRegistry
 	std::shared_ptr<ApiGear::ObjectLink::RemoteNode> Node;
+	/// @brief the function to be used for all logging
+	ApiGear::ObjectLink::WriteLogFunc logFunction;
 };

@@ -291,6 +291,10 @@ features:
             target: "Source/ApiGearOLink/Private/OLinkHostConnection.h"
             force: true
             raw: true
+          - source: "ApiGear/Source/ApiGearOLink/Private/OLinkHostConnection.cpp"
+            target: "Source/ApiGearOLink/Private/OLinkHostConnection.cpp"
+            force: true
+            raw: true
           - source: "ApiGear/Source/ApiGearOLink/Private/OLinkHostPrivate.h"
             target: "Source/ApiGearOLink/Private/OLinkHostPrivate.h"
             force: true
