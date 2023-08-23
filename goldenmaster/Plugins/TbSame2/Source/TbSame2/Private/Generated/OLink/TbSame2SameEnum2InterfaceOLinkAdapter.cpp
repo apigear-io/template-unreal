@@ -100,6 +100,11 @@ void UTbSame2SameEnum2InterfaceOLinkAdapter::setOLinkHost(TSoftObjectPtr<UUnreal
 	check(InHost);
 	Source->setOLinkHost(InHost.Get());
 
-	// register source to host
-	InHost->GetOLinkRegistry()->addSource(Source);
+	if (Registry)
+	{
+		Registry->removeSource(Source->olinkObjectName());
+	}
+	Registry = InHost->GetOLinkRegistry();
+	// register source to host registry
+	Registry->addSource(Source);
 }

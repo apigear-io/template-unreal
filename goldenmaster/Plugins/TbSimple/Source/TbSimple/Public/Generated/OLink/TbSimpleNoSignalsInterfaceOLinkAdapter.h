@@ -55,6 +55,9 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSimple|NoSignalsInterface")
 	TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> BackendService;
 
+	/** Holds the registry */
+	TSharedPtr<ApiGear::ObjectLink::RemoteRegistry> Registry;
+
 	/**
 	holds the olink source interface implementation
 	must be std::shared_ptr since it is expected by the olink protocol implementation

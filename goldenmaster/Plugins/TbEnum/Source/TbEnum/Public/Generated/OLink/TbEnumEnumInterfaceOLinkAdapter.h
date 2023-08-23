@@ -72,6 +72,9 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbEnum|EnumInterface")
 	TScriptInterface<ITbEnumEnumInterfaceInterface> BackendService;
 
+	/** Holds the registry */
+	TSharedPtr<ApiGear::ObjectLink::RemoteRegistry> Registry;
+
 	/**
 	holds the olink source interface implementation
 	must be std::shared_ptr since it is expected by the olink protocol implementation
