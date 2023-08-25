@@ -38,6 +38,8 @@ namespace
 {
 static const std::string TbSimpleSimpleArrayInterfaceIdentifier{"tb.simple.SimpleArrayInterface"};
 }
+
+DEFINE_LOG_CATEGORY(LogTbSimpleSimpleArrayInterfaceOLinkSource);
 TbSimpleSimpleArrayInterfaceOLinkSource::TbSimpleSimpleArrayInterfaceOLinkSource()
 	: Host(nullptr)
 {
@@ -48,7 +50,7 @@ void TbSimpleSimpleArrayInterfaceOLinkSource::setBackendService(TScriptInterface
 	// only set if interface is implemented
 	if (InService.GetInterface() == nullptr)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Cannot set backend service to %s - interface TbSimpleSimpleArrayInterface is not fully implemented"), *InService.GetObject()->GetName());
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkSource, Error, TEXT("Cannot set backend service to %s - interface TbSimpleSimpleArrayInterface is not fully implemented"), *InService.GetObject()->GetName());
 		return;
 	}
 
@@ -302,6 +304,12 @@ std::string TbSimpleSimpleArrayInterfaceOLinkSource::olinkObjectName()
 
 nlohmann::json TbSimpleSimpleArrayInterfaceOLinkSource::olinkInvoke(const std::string& methodId, const nlohmann::json& args)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkSource, Error, TEXT("No backend service set - please specify a service in the adapter TbSimpleSimpleArrayInterfaceOLinkAdapter which implements the TbSimpleSimpleArrayInterface interface"));
+		return nlohmann::json();
+	}
+
 	const std::string path = Name::getMemberName(methodId);
 	if (path == "funcBool")
 	{
@@ -356,6 +364,12 @@ nlohmann::json TbSimpleSimpleArrayInterfaceOLinkSource::olinkInvoke(const std::s
 
 void TbSimpleSimpleArrayInterfaceOLinkSource::olinkSetProperty(const std::string& propertyId, const nlohmann::json& value)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkSource, Error, TEXT("No backend service set - please specify a service in the adapter TbSimpleSimpleArrayInterfaceOLinkAdapter which implements the TbSimpleSimpleArrayInterface interface"));
+		return;
+	}
+
 	const std::string path = Name::getMemberName(propertyId);
 	if (path == "propBool")
 	{
@@ -401,6 +415,12 @@ void TbSimpleSimpleArrayInterfaceOLinkSource::olinkSetProperty(const std::string
 
 nlohmann::json TbSimpleSimpleArrayInterfaceOLinkSource::olinkCollectProperties()
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkSource, Error, TEXT("No backend service set - please specify a service in the adapter TbSimpleSimpleArrayInterfaceOLinkAdapter which implements the TbSimpleSimpleArrayInterface interface"));
+		return nlohmann::json();
+	}
+
 	return nlohmann::json::object({
 
 		{"propBool", BackendService->Execute_GetPropBool(BackendService.GetObject())},

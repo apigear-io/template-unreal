@@ -38,6 +38,8 @@ namespace
 {
 static const std::string TbSimpleNoSignalsInterfaceIdentifier{"tb.simple.NoSignalsInterface"};
 }
+
+DEFINE_LOG_CATEGORY(LogTbSimpleNoSignalsInterfaceOLinkSource);
 TbSimpleNoSignalsInterfaceOLinkSource::TbSimpleNoSignalsInterfaceOLinkSource()
 	: Host(nullptr)
 {
@@ -48,7 +50,7 @@ void TbSimpleNoSignalsInterfaceOLinkSource::setBackendService(TScriptInterface<I
 	// only set if interface is implemented
 	if (InService.GetInterface() == nullptr)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Cannot set backend service to %s - interface TbSimpleNoSignalsInterface is not fully implemented"), *InService.GetObject()->GetName());
+		UE_LOG(LogTbSimpleNoSignalsInterfaceOLinkSource, Error, TEXT("Cannot set backend service to %s - interface TbSimpleNoSignalsInterface is not fully implemented"), *InService.GetObject()->GetName());
 		return;
 	}
 
@@ -98,6 +100,12 @@ std::string TbSimpleNoSignalsInterfaceOLinkSource::olinkObjectName()
 
 nlohmann::json TbSimpleNoSignalsInterfaceOLinkSource::olinkInvoke(const std::string& methodId, const nlohmann::json& args)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleNoSignalsInterfaceOLinkSource, Error, TEXT("No backend service set - please specify a service in the adapter TbSimpleNoSignalsInterfaceOLinkAdapter which implements the TbSimpleNoSignalsInterface interface"));
+		return nlohmann::json();
+	}
+
 	const std::string path = Name::getMemberName(methodId);
 	if (path == "funcVoid")
 	{
@@ -115,6 +123,12 @@ nlohmann::json TbSimpleNoSignalsInterfaceOLinkSource::olinkInvoke(const std::str
 
 void TbSimpleNoSignalsInterfaceOLinkSource::olinkSetProperty(const std::string& propertyId, const nlohmann::json& value)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleNoSignalsInterfaceOLinkSource, Error, TEXT("No backend service set - please specify a service in the adapter TbSimpleNoSignalsInterfaceOLinkAdapter which implements the TbSimpleNoSignalsInterface interface"));
+		return;
+	}
+
 	const std::string path = Name::getMemberName(propertyId);
 	if (path == "propBool")
 	{
@@ -130,6 +144,12 @@ void TbSimpleNoSignalsInterfaceOLinkSource::olinkSetProperty(const std::string& 
 
 nlohmann::json TbSimpleNoSignalsInterfaceOLinkSource::olinkCollectProperties()
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleNoSignalsInterfaceOLinkSource, Error, TEXT("No backend service set - please specify a service in the adapter TbSimpleNoSignalsInterfaceOLinkAdapter which implements the TbSimpleNoSignalsInterface interface"));
+		return nlohmann::json();
+	}
+
 	return nlohmann::json::object({
 
 		{"propBool", BackendService->Execute_GetPropBool(BackendService.GetObject())},

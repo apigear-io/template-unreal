@@ -38,6 +38,8 @@ namespace
 {
 static const std::string Testbed2NestedStruct1InterfaceIdentifier{"testbed2.NestedStruct1Interface"};
 }
+
+DEFINE_LOG_CATEGORY(LogTestbed2NestedStruct1InterfaceOLinkSource);
 Testbed2NestedStruct1InterfaceOLinkSource::Testbed2NestedStruct1InterfaceOLinkSource()
 	: Host(nullptr)
 {
@@ -48,7 +50,7 @@ void Testbed2NestedStruct1InterfaceOLinkSource::setBackendService(TScriptInterfa
 	// only set if interface is implemented
 	if (InService.GetInterface() == nullptr)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Cannot set backend service to %s - interface Testbed2NestedStruct1Interface is not fully implemented"), *InService.GetObject()->GetName());
+		UE_LOG(LogTestbed2NestedStruct1InterfaceOLinkSource, Error, TEXT("Cannot set backend service to %s - interface Testbed2NestedStruct1Interface is not fully implemented"), *InService.GetObject()->GetName());
 		return;
 	}
 
@@ -99,6 +101,12 @@ std::string Testbed2NestedStruct1InterfaceOLinkSource::olinkObjectName()
 
 nlohmann::json Testbed2NestedStruct1InterfaceOLinkSource::olinkInvoke(const std::string& methodId, const nlohmann::json& args)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2NestedStruct1InterfaceOLinkSource, Error, TEXT("No backend service set - please specify a service in the adapter Testbed2NestedStruct1InterfaceOLinkAdapter which implements the Testbed2NestedStruct1Interface interface"));
+		return nlohmann::json();
+	}
+
 	const std::string path = Name::getMemberName(methodId);
 	if (path == "func1")
 	{
@@ -111,6 +119,12 @@ nlohmann::json Testbed2NestedStruct1InterfaceOLinkSource::olinkInvoke(const std:
 
 void Testbed2NestedStruct1InterfaceOLinkSource::olinkSetProperty(const std::string& propertyId, const nlohmann::json& value)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2NestedStruct1InterfaceOLinkSource, Error, TEXT("No backend service set - please specify a service in the adapter Testbed2NestedStruct1InterfaceOLinkAdapter which implements the Testbed2NestedStruct1Interface interface"));
+		return;
+	}
+
 	const std::string path = Name::getMemberName(propertyId);
 	if (path == "prop1")
 	{
@@ -121,6 +135,12 @@ void Testbed2NestedStruct1InterfaceOLinkSource::olinkSetProperty(const std::stri
 
 nlohmann::json Testbed2NestedStruct1InterfaceOLinkSource::olinkCollectProperties()
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2NestedStruct1InterfaceOLinkSource, Error, TEXT("No backend service set - please specify a service in the adapter Testbed2NestedStruct1InterfaceOLinkAdapter which implements the Testbed2NestedStruct1Interface interface"));
+		return nlohmann::json();
+	}
+
 	return nlohmann::json::object({
 
 		{"prop1", BackendService->Execute_GetProp1(BackendService.GetObject())}});

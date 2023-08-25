@@ -32,6 +32,8 @@ namespace
 static const std::string {{$Iface}}Identifier{"{{$.Module.Name}}.{{$.Interface.Name}}"};
 }
 
+DEFINE_LOG_CATEGORY(Log{{$Class}});
+
 {{- if .Interface.Description }}
 /**
    \brief {{.Interface.Description}}
@@ -47,7 +49,7 @@ void {{$Class}}::setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{Cam
 	// only set if interface is implemented
 	if (InService.GetInterface() == nullptr)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Cannot set backend service to %s - interface {{$Iface}} is not fully implemented"), *InService.GetObject()->GetName());
+		UE_LOG(Log{{$Class}}, Error, TEXT("Cannot set backend service to %s - interface {{$Iface}} is not fully implemented"), *InService.GetObject()->GetName());
 		return;
 	}
 
@@ -102,6 +104,12 @@ std::string {{$Class}}::olinkObjectName()
 
 nlohmann::json {{$Class}}::olinkInvoke(const std::string& methodId, const nlohmann::json& args)
 {
+	if (!BackendService)
+	{
+		UE_LOG(Log{{$Class}}, Error, TEXT("No backend service set - please specify a service in the adapter {{$Iface}}OLinkAdapter which implements the {{$Iface}} interface"));
+		return nlohmann::json();
+	}
+
 	const std::string path = Name::getMemberName(methodId);
 {{- range .Interface.Operations }}
 	if (path == "{{.Name}}")
@@ -123,6 +131,12 @@ nlohmann::json {{$Class}}::olinkInvoke(const std::string& methodId, const nlohma
 
 void {{$Class}}::olinkSetProperty(const std::string& propertyId, const nlohmann::json& value)
 {
+	if (!BackendService)
+	{
+		UE_LOG(Log{{$Class}}, Error, TEXT("No backend service set - please specify a service in the adapter {{$Iface}}OLinkAdapter which implements the {{$Iface}} interface"));
+		return;
+	}
+
 	const std::string path = Name::getMemberName(propertyId);
 {{- range .Interface.Properties }}
 {{- if not .IsReadOnly }}
@@ -137,6 +151,12 @@ void {{$Class}}::olinkSetProperty(const std::string& propertyId, const nlohmann:
 
 nlohmann::json {{$Class}}::olinkCollectProperties()
 {
+	if (!BackendService)
+	{
+		UE_LOG(Log{{$Class}}, Error, TEXT("No backend service set - please specify a service in the adapter {{$Iface}}OLinkAdapter which implements the {{$Iface}} interface"));
+		return nlohmann::json();
+	}
+
 	return nlohmann::json::object({ {{- if len .Interface.Properties}}{{nl}}{{end}}
 {{- range $i, $e := .Interface.Properties }}{{if $i}},{{end}}
 		{"{{.Name}}", BackendService->Execute_Get{{Camel .Name}}(BackendService.GetObject())}

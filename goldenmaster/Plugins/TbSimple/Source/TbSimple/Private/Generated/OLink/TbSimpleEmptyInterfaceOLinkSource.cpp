@@ -38,6 +38,8 @@ namespace
 {
 static const std::string TbSimpleEmptyInterfaceIdentifier{"tb.simple.EmptyInterface"};
 }
+
+DEFINE_LOG_CATEGORY(LogTbSimpleEmptyInterfaceOLinkSource);
 TbSimpleEmptyInterfaceOLinkSource::TbSimpleEmptyInterfaceOLinkSource()
 	: Host(nullptr)
 {
@@ -48,7 +50,7 @@ void TbSimpleEmptyInterfaceOLinkSource::setBackendService(TScriptInterface<ITbSi
 	// only set if interface is implemented
 	if (InService.GetInterface() == nullptr)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Cannot set backend service to %s - interface TbSimpleEmptyInterface is not fully implemented"), *InService.GetObject()->GetName());
+		UE_LOG(LogTbSimpleEmptyInterfaceOLinkSource, Error, TEXT("Cannot set backend service to %s - interface TbSimpleEmptyInterface is not fully implemented"), *InService.GetObject()->GetName());
 		return;
 	}
 
@@ -70,16 +72,34 @@ std::string TbSimpleEmptyInterfaceOLinkSource::olinkObjectName()
 
 nlohmann::json TbSimpleEmptyInterfaceOLinkSource::olinkInvoke(const std::string& methodId, const nlohmann::json& args)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleEmptyInterfaceOLinkSource, Error, TEXT("No backend service set - please specify a service in the adapter TbSimpleEmptyInterfaceOLinkAdapter which implements the TbSimpleEmptyInterface interface"));
+		return nlohmann::json();
+	}
+
 	const std::string path = Name::getMemberName(methodId);
 	return nlohmann::json();
 }
 
 void TbSimpleEmptyInterfaceOLinkSource::olinkSetProperty(const std::string& propertyId, const nlohmann::json& value)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleEmptyInterfaceOLinkSource, Error, TEXT("No backend service set - please specify a service in the adapter TbSimpleEmptyInterfaceOLinkAdapter which implements the TbSimpleEmptyInterface interface"));
+		return;
+	}
+
 	const std::string path = Name::getMemberName(propertyId);
 }
 
 nlohmann::json TbSimpleEmptyInterfaceOLinkSource::olinkCollectProperties()
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleEmptyInterfaceOLinkSource, Error, TEXT("No backend service set - please specify a service in the adapter TbSimpleEmptyInterfaceOLinkAdapter which implements the TbSimpleEmptyInterface interface"));
+		return nlohmann::json();
+	}
+
 	return nlohmann::json::object({});
 }

@@ -38,6 +38,8 @@ namespace
 {
 static const std::string Testbed2ManyParamInterfaceIdentifier{"testbed2.ManyParamInterface"};
 }
+
+DEFINE_LOG_CATEGORY(LogTestbed2ManyParamInterfaceOLinkSource);
 Testbed2ManyParamInterfaceOLinkSource::Testbed2ManyParamInterfaceOLinkSource()
 	: Host(nullptr)
 {
@@ -48,7 +50,7 @@ void Testbed2ManyParamInterfaceOLinkSource::setBackendService(TScriptInterface<I
 	// only set if interface is implemented
 	if (InService.GetInterface() == nullptr)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Cannot set backend service to %s - interface Testbed2ManyParamInterface is not fully implemented"), *InService.GetObject()->GetName());
+		UE_LOG(LogTestbed2ManyParamInterfaceOLinkSource, Error, TEXT("Cannot set backend service to %s - interface Testbed2ManyParamInterface is not fully implemented"), *InService.GetObject()->GetName());
 		return;
 	}
 
@@ -186,6 +188,12 @@ std::string Testbed2ManyParamInterfaceOLinkSource::olinkObjectName()
 
 nlohmann::json Testbed2ManyParamInterfaceOLinkSource::olinkInvoke(const std::string& methodId, const nlohmann::json& args)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceOLinkSource, Error, TEXT("No backend service set - please specify a service in the adapter Testbed2ManyParamInterfaceOLinkAdapter which implements the Testbed2ManyParamInterface interface"));
+		return nlohmann::json();
+	}
+
 	const std::string path = Name::getMemberName(methodId);
 	if (path == "func1")
 	{
@@ -222,6 +230,12 @@ nlohmann::json Testbed2ManyParamInterfaceOLinkSource::olinkInvoke(const std::str
 
 void Testbed2ManyParamInterfaceOLinkSource::olinkSetProperty(const std::string& propertyId, const nlohmann::json& value)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceOLinkSource, Error, TEXT("No backend service set - please specify a service in the adapter Testbed2ManyParamInterfaceOLinkAdapter which implements the Testbed2ManyParamInterface interface"));
+		return;
+	}
+
 	const std::string path = Name::getMemberName(propertyId);
 	if (path == "prop1")
 	{
@@ -247,6 +261,12 @@ void Testbed2ManyParamInterfaceOLinkSource::olinkSetProperty(const std::string& 
 
 nlohmann::json Testbed2ManyParamInterfaceOLinkSource::olinkCollectProperties()
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceOLinkSource, Error, TEXT("No backend service set - please specify a service in the adapter Testbed2ManyParamInterfaceOLinkAdapter which implements the Testbed2ManyParamInterface interface"));
+		return nlohmann::json();
+	}
+
 	return nlohmann::json::object({
 
 		{"prop1", BackendService->Execute_GetProp1(BackendService.GetObject())},

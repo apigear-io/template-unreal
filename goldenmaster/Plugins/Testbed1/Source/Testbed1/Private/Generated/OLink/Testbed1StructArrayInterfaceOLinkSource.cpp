@@ -38,6 +38,8 @@ namespace
 {
 static const std::string Testbed1StructArrayInterfaceIdentifier{"testbed1.StructArrayInterface"};
 }
+
+DEFINE_LOG_CATEGORY(LogTestbed1StructArrayInterfaceOLinkSource);
 Testbed1StructArrayInterfaceOLinkSource::Testbed1StructArrayInterfaceOLinkSource()
 	: Host(nullptr)
 {
@@ -48,7 +50,7 @@ void Testbed1StructArrayInterfaceOLinkSource::setBackendService(TScriptInterface
 	// only set if interface is implemented
 	if (InService.GetInterface() == nullptr)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Cannot set backend service to %s - interface Testbed1StructArrayInterface is not fully implemented"), *InService.GetObject()->GetName());
+		UE_LOG(LogTestbed1StructArrayInterfaceOLinkSource, Error, TEXT("Cannot set backend service to %s - interface Testbed1StructArrayInterface is not fully implemented"), *InService.GetObject()->GetName());
 		return;
 	}
 
@@ -186,6 +188,12 @@ std::string Testbed1StructArrayInterfaceOLinkSource::olinkObjectName()
 
 nlohmann::json Testbed1StructArrayInterfaceOLinkSource::olinkInvoke(const std::string& methodId, const nlohmann::json& args)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed1StructArrayInterfaceOLinkSource, Error, TEXT("No backend service set - please specify a service in the adapter Testbed1StructArrayInterfaceOLinkAdapter which implements the Testbed1StructArrayInterface interface"));
+		return nlohmann::json();
+	}
+
 	const std::string path = Name::getMemberName(methodId);
 	if (path == "funcBool")
 	{
@@ -216,6 +224,12 @@ nlohmann::json Testbed1StructArrayInterfaceOLinkSource::olinkInvoke(const std::s
 
 void Testbed1StructArrayInterfaceOLinkSource::olinkSetProperty(const std::string& propertyId, const nlohmann::json& value)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed1StructArrayInterfaceOLinkSource, Error, TEXT("No backend service set - please specify a service in the adapter Testbed1StructArrayInterfaceOLinkAdapter which implements the Testbed1StructArrayInterface interface"));
+		return;
+	}
+
 	const std::string path = Name::getMemberName(propertyId);
 	if (path == "propBool")
 	{
@@ -241,6 +255,12 @@ void Testbed1StructArrayInterfaceOLinkSource::olinkSetProperty(const std::string
 
 nlohmann::json Testbed1StructArrayInterfaceOLinkSource::olinkCollectProperties()
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed1StructArrayInterfaceOLinkSource, Error, TEXT("No backend service set - please specify a service in the adapter Testbed1StructArrayInterfaceOLinkAdapter which implements the Testbed1StructArrayInterface interface"));
+		return nlohmann::json();
+	}
+
 	return nlohmann::json::object({
 
 		{"propBool", BackendService->Execute_GetPropBool(BackendService.GetObject())},

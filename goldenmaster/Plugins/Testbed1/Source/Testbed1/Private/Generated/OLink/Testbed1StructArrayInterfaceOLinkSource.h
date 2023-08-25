@@ -23,6 +23,7 @@ THIRD_PARTY_INCLUDES_START
 THIRD_PARTY_INCLUDES_END
 #include "UnrealOLinkHost.h"
 
+DECLARE_LOG_CATEGORY_EXTERN(LogTestbed1StructArrayInterfaceOLinkSource, Log, All);
 /// @brief handles OLink network interactions specific to ITestbed1StructArrayInterfaceInterface
 class Testbed1StructArrayInterfaceOLinkSource : public ApiGear::ObjectLink::IObjectSource
 {

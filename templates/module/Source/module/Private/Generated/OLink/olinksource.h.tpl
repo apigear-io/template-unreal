@@ -17,6 +17,7 @@ THIRD_PARTY_INCLUDES_START
 THIRD_PARTY_INCLUDES_END
 #include "UnrealOLinkHost.h"
 
+DECLARE_LOG_CATEGORY_EXTERN(Log{{$Class}}, Log, All);
 /// @brief handles OLink network interactions specific to I{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface
 class {{$Class}} : public ApiGear::ObjectLink::IObjectSource
 {

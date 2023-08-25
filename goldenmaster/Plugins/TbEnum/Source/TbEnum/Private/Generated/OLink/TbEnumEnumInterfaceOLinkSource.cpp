@@ -38,6 +38,8 @@ namespace
 {
 static const std::string TbEnumEnumInterfaceIdentifier{"tb.enum.EnumInterface"};
 }
+
+DEFINE_LOG_CATEGORY(LogTbEnumEnumInterfaceOLinkSource);
 TbEnumEnumInterfaceOLinkSource::TbEnumEnumInterfaceOLinkSource()
 	: Host(nullptr)
 {
@@ -48,7 +50,7 @@ void TbEnumEnumInterfaceOLinkSource::setBackendService(TScriptInterface<ITbEnumE
 	// only set if interface is implemented
 	if (InService.GetInterface() == nullptr)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Cannot set backend service to %s - interface TbEnumEnumInterface is not fully implemented"), *InService.GetObject()->GetName());
+		UE_LOG(LogTbEnumEnumInterfaceOLinkSource, Error, TEXT("Cannot set backend service to %s - interface TbEnumEnumInterface is not fully implemented"), *InService.GetObject()->GetName());
 		return;
 	}
 
@@ -186,6 +188,12 @@ std::string TbEnumEnumInterfaceOLinkSource::olinkObjectName()
 
 nlohmann::json TbEnumEnumInterfaceOLinkSource::olinkInvoke(const std::string& methodId, const nlohmann::json& args)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbEnumEnumInterfaceOLinkSource, Error, TEXT("No backend service set - please specify a service in the adapter TbEnumEnumInterfaceOLinkAdapter which implements the TbEnumEnumInterface interface"));
+		return nlohmann::json();
+	}
+
 	const std::string path = Name::getMemberName(methodId);
 	if (path == "func0")
 	{
@@ -216,6 +224,12 @@ nlohmann::json TbEnumEnumInterfaceOLinkSource::olinkInvoke(const std::string& me
 
 void TbEnumEnumInterfaceOLinkSource::olinkSetProperty(const std::string& propertyId, const nlohmann::json& value)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbEnumEnumInterfaceOLinkSource, Error, TEXT("No backend service set - please specify a service in the adapter TbEnumEnumInterfaceOLinkAdapter which implements the TbEnumEnumInterface interface"));
+		return;
+	}
+
 	const std::string path = Name::getMemberName(propertyId);
 	if (path == "prop0")
 	{
@@ -241,6 +255,12 @@ void TbEnumEnumInterfaceOLinkSource::olinkSetProperty(const std::string& propert
 
 nlohmann::json TbEnumEnumInterfaceOLinkSource::olinkCollectProperties()
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbEnumEnumInterfaceOLinkSource, Error, TEXT("No backend service set - please specify a service in the adapter TbEnumEnumInterfaceOLinkAdapter which implements the TbEnumEnumInterface interface"));
+		return nlohmann::json();
+	}
+
 	return nlohmann::json::object({
 
 		{"prop0", BackendService->Execute_GetProp0(BackendService.GetObject())},

@@ -23,6 +23,7 @@ THIRD_PARTY_INCLUDES_START
 THIRD_PARTY_INCLUDES_END
 #include "UnrealOLinkHost.h"
 
+DECLARE_LOG_CATEGORY_EXTERN(LogTbSame1SameEnum1InterfaceOLinkSource, Log, All);
 /// @brief handles OLink network interactions specific to ITbSame1SameEnum1InterfaceInterface
 class TbSame1SameEnum1InterfaceOLinkSource : public ApiGear::ObjectLink::IObjectSource
 {

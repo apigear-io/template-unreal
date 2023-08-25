@@ -38,6 +38,8 @@ namespace
 {
 static const std::string TbSame2SameStruct2InterfaceIdentifier{"tb.same2.SameStruct2Interface"};
 }
+
+DEFINE_LOG_CATEGORY(LogTbSame2SameStruct2InterfaceOLinkSource);
 TbSame2SameStruct2InterfaceOLinkSource::TbSame2SameStruct2InterfaceOLinkSource()
 	: Host(nullptr)
 {
@@ -48,7 +50,7 @@ void TbSame2SameStruct2InterfaceOLinkSource::setBackendService(TScriptInterface<
 	// only set if interface is implemented
 	if (InService.GetInterface() == nullptr)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Cannot set backend service to %s - interface TbSame2SameStruct2Interface is not fully implemented"), *InService.GetObject()->GetName());
+		UE_LOG(LogTbSame2SameStruct2InterfaceOLinkSource, Error, TEXT("Cannot set backend service to %s - interface TbSame2SameStruct2Interface is not fully implemented"), *InService.GetObject()->GetName());
 		return;
 	}
 
@@ -128,6 +130,12 @@ std::string TbSame2SameStruct2InterfaceOLinkSource::olinkObjectName()
 
 nlohmann::json TbSame2SameStruct2InterfaceOLinkSource::olinkInvoke(const std::string& methodId, const nlohmann::json& args)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSame2SameStruct2InterfaceOLinkSource, Error, TEXT("No backend service set - please specify a service in the adapter TbSame2SameStruct2InterfaceOLinkAdapter which implements the TbSame2SameStruct2Interface interface"));
+		return nlohmann::json();
+	}
+
 	const std::string path = Name::getMemberName(methodId);
 	if (path == "func1")
 	{
@@ -147,6 +155,12 @@ nlohmann::json TbSame2SameStruct2InterfaceOLinkSource::olinkInvoke(const std::st
 
 void TbSame2SameStruct2InterfaceOLinkSource::olinkSetProperty(const std::string& propertyId, const nlohmann::json& value)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSame2SameStruct2InterfaceOLinkSource, Error, TEXT("No backend service set - please specify a service in the adapter TbSame2SameStruct2InterfaceOLinkAdapter which implements the TbSame2SameStruct2Interface interface"));
+		return;
+	}
+
 	const std::string path = Name::getMemberName(propertyId);
 	if (path == "prop1")
 	{
@@ -162,6 +176,12 @@ void TbSame2SameStruct2InterfaceOLinkSource::olinkSetProperty(const std::string&
 
 nlohmann::json TbSame2SameStruct2InterfaceOLinkSource::olinkCollectProperties()
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSame2SameStruct2InterfaceOLinkSource, Error, TEXT("No backend service set - please specify a service in the adapter TbSame2SameStruct2InterfaceOLinkAdapter which implements the TbSame2SameStruct2Interface interface"));
+		return nlohmann::json();
+	}
+
 	return nlohmann::json::object({
 
 		{"prop1", BackendService->Execute_GetProp1(BackendService.GetObject())},
