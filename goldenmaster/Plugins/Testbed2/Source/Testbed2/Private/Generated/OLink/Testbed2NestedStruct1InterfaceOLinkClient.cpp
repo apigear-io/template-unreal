@@ -171,7 +171,17 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceOLinkClient::Func1_Impleme
 		[Param1, &Promise, this]()
 		{
 			ApiGear::ObjectLink::InvokeReplyFunc GetNestedStruct1InterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-			{ Promise.SetValue(arg.value.get<FTestbed2NestedStruct1>()); };
+			{
+				if (!arg.value.empty())
+				{
+					Promise.SetValue(arg.value.get<FTestbed2NestedStruct1>());
+				}
+				else
+				{
+					UE_LOG(LogTestbed2NestedStruct1InterfaceOLinkClient, Error, TEXT("Func1: OLink service returned empty value - should have returned type of FTestbed2NestedStruct1"));
+					Promise.SetValue(FTestbed2NestedStruct1());
+				}
+			};
 			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func1");
 			m_sink->GetNode()->invokeRemote(memberId, {Param1}, GetNestedStruct1InterfaceStateFunc);
 		});

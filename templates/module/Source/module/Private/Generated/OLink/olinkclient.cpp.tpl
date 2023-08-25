@@ -201,7 +201,17 @@ void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
 		[{{ueVars "" .Params }}{{if len .Params}}, {{ end }}&Promise, this]()
 		{
 			ApiGear::ObjectLink::InvokeReplyFunc Get{{$IfaceName}}StateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-			{ Promise.SetValue(arg.value.get<{{$returnVal}}>()); };
+			{
+				if (!arg.value.empty())
+				{
+					Promise.SetValue(arg.value.get<{{$returnVal}}>());
+				}
+				else
+				{
+					UE_LOG(Log{{$Iface}}OLinkClient, Error, TEXT("{{Camel .Name}}: OLink service returned empty value - should have returned type of {{$returnVal}}"));
+					Promise.SetValue({{$returnVal}}());
+				}
+			};
 			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "{{.Name}}");
 			m_sink->GetNode()->invokeRemote(memberId, { {{- ueVars "" .Params -}} }, Get{{$IfaceName}}StateFunc);
 		});

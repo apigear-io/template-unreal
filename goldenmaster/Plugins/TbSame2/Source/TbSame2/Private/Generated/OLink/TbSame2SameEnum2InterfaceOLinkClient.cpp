@@ -201,7 +201,17 @@ ETbSame2Enum1 UTbSame2SameEnum2InterfaceOLinkClient::Func1_Implementation(ETbSam
 		[Param1, &Promise, this]()
 		{
 			ApiGear::ObjectLink::InvokeReplyFunc GetSameEnum2InterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-			{ Promise.SetValue(arg.value.get<ETbSame2Enum1>()); };
+			{
+				if (!arg.value.empty())
+				{
+					Promise.SetValue(arg.value.get<ETbSame2Enum1>());
+				}
+				else
+				{
+					UE_LOG(LogTbSame2SameEnum2InterfaceOLinkClient, Error, TEXT("Func1: OLink service returned empty value - should have returned type of ETbSame2Enum1"));
+					Promise.SetValue(ETbSame2Enum1());
+				}
+			};
 			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func1");
 			m_sink->GetNode()->invokeRemote(memberId, {Param1}, GetSameEnum2InterfaceStateFunc);
 		});
@@ -222,7 +232,17 @@ ETbSame2Enum1 UTbSame2SameEnum2InterfaceOLinkClient::Func2_Implementation(ETbSam
 		[Param1, Param2, &Promise, this]()
 		{
 			ApiGear::ObjectLink::InvokeReplyFunc GetSameEnum2InterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-			{ Promise.SetValue(arg.value.get<ETbSame2Enum1>()); };
+			{
+				if (!arg.value.empty())
+				{
+					Promise.SetValue(arg.value.get<ETbSame2Enum1>());
+				}
+				else
+				{
+					UE_LOG(LogTbSame2SameEnum2InterfaceOLinkClient, Error, TEXT("Func2: OLink service returned empty value - should have returned type of ETbSame2Enum1"));
+					Promise.SetValue(ETbSame2Enum1());
+				}
+			};
 			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func2");
 			m_sink->GetNode()->invokeRemote(memberId, {Param1, Param2}, GetSameEnum2InterfaceStateFunc);
 		});

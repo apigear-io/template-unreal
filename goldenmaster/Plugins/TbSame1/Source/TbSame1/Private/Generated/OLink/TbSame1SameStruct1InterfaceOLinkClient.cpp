@@ -171,7 +171,17 @@ FTbSame1Struct1 UTbSame1SameStruct1InterfaceOLinkClient::Func1_Implementation(co
 		[Param1, &Promise, this]()
 		{
 			ApiGear::ObjectLink::InvokeReplyFunc GetSameStruct1InterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-			{ Promise.SetValue(arg.value.get<FTbSame1Struct1>()); };
+			{
+				if (!arg.value.empty())
+				{
+					Promise.SetValue(arg.value.get<FTbSame1Struct1>());
+				}
+				else
+				{
+					UE_LOG(LogTbSame1SameStruct1InterfaceOLinkClient, Error, TEXT("Func1: OLink service returned empty value - should have returned type of FTbSame1Struct1"));
+					Promise.SetValue(FTbSame1Struct1());
+				}
+			};
 			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func1");
 			m_sink->GetNode()->invokeRemote(memberId, {Param1}, GetSameStruct1InterfaceStateFunc);
 		});
