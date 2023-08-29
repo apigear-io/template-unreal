@@ -74,13 +74,13 @@ TScriptInterface<ITbEnumEnumInterfaceInterface> FTbEnumModuleFactory::createITbE
 {
 	UTbEnumSettings* TbEnumSettings = GetMutableDefault<UTbEnumSettings>();
 
-	if (TbEnumSettings->ConnectionIdentifier == "Local")
+	if (TbEnumSettings->TracerServiceIdentifier == "Local")
 	{
 		return createTbEnumEnumInterface(GameInstance, Collection);
 	}
 
 	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbEnumSettings->ConnectionIdentifier);
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbEnumSettings->TracerServiceIdentifier);
 
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTbEnumEnumInterfaceOLink and other necessary infrastructure
@@ -122,13 +122,13 @@ TScriptInterface<ITbEnumEnumInterfaceInterface> FTbEnumModuleFactory::createITbE
 {
 	UTbEnumSettings* TbEnumSettings = GetMutableDefault<UTbEnumSettings>();
 
-	if (TbEnumSettings->ConnectionIdentifier == "Local")
+	if (TbEnumSettings->TracerServiceIdentifier == "Local")
 	{
 		return createTbEnumEnumInterface(Collection);
 	}
 
 	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbEnumSettings->ConnectionIdentifier);
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbEnumSettings->TracerServiceIdentifier);
 
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTbEnumEnumInterfaceOLink and other necessary infrastructure

@@ -76,13 +76,13 @@ TScriptInterface<ITestbed1StructInterfaceInterface> FTestbed1ModuleFactory::crea
 {
 	UTestbed1Settings* Testbed1Settings = GetMutableDefault<UTestbed1Settings>();
 
-	if (Testbed1Settings->ConnectionIdentifier == "Local")
+	if (Testbed1Settings->TracerServiceIdentifier == "Local")
 	{
 		return createTestbed1StructInterface(GameInstance, Collection);
 	}
 
 	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(Testbed1Settings->ConnectionIdentifier);
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(Testbed1Settings->TracerServiceIdentifier);
 
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTestbed1StructInterfaceOLink and other necessary infrastructure
@@ -124,13 +124,13 @@ TScriptInterface<ITestbed1StructInterfaceInterface> FTestbed1ModuleFactory::crea
 {
 	UTestbed1Settings* Testbed1Settings = GetMutableDefault<UTestbed1Settings>();
 
-	if (Testbed1Settings->ConnectionIdentifier == "Local")
+	if (Testbed1Settings->TracerServiceIdentifier == "Local")
 	{
 		return createTestbed1StructInterface(Collection);
 	}
 
 	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(Testbed1Settings->ConnectionIdentifier);
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(Testbed1Settings->TracerServiceIdentifier);
 
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTestbed1StructInterfaceOLink and other necessary infrastructure
@@ -184,13 +184,13 @@ TScriptInterface<ITestbed1StructArrayInterfaceInterface> FTestbed1ModuleFactory:
 {
 	UTestbed1Settings* Testbed1Settings = GetMutableDefault<UTestbed1Settings>();
 
-	if (Testbed1Settings->ConnectionIdentifier == "Local")
+	if (Testbed1Settings->TracerServiceIdentifier == "Local")
 	{
 		return createTestbed1StructArrayInterface(GameInstance, Collection);
 	}
 
 	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(Testbed1Settings->ConnectionIdentifier);
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(Testbed1Settings->TracerServiceIdentifier);
 
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTestbed1StructArrayInterfaceOLink and other necessary infrastructure
@@ -232,13 +232,13 @@ TScriptInterface<ITestbed1StructArrayInterfaceInterface> FTestbed1ModuleFactory:
 {
 	UTestbed1Settings* Testbed1Settings = GetMutableDefault<UTestbed1Settings>();
 
-	if (Testbed1Settings->ConnectionIdentifier == "Local")
+	if (Testbed1Settings->TracerServiceIdentifier == "Local")
 	{
 		return createTestbed1StructArrayInterface(Collection);
 	}
 
 	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(Testbed1Settings->ConnectionIdentifier);
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(Testbed1Settings->TracerServiceIdentifier);
 
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTestbed1StructArrayInterfaceOLink and other necessary infrastructure

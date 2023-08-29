@@ -27,18 +27,24 @@ void UTestbed2Settings::PostInitProperties()
 {
 	Super::PostInitProperties();
 
+	check(GEngine);
+	UApiGearConnectionsStore* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionsStore>();
+
+	if (!AGCM->DoesConnectionExist(OLinkConnectionIdentifier))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("UTestbed2Settings could not find connection %s."), *OLinkConnectionIdentifier);
+		OLinkConnectionIdentifier = "";
+	}
+
 	// the local backend does not require configuration
-	if (ConnectionIdentifier == "Local")
+	if (TracerServiceIdentifier == "Local")
 	{
 		return;
 	}
 
-	check(GEngine);
-	UApiGearConnectionsStore* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionsStore>();
-
-	if (!AGCM->DoesConnectionExist(ConnectionIdentifier))
+	if (!AGCM->DoesConnectionExist(TracerServiceIdentifier))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UTestbed2Settings could not find connection %s, falling back to local backend."), *ConnectionIdentifier);
-		ConnectionIdentifier = "Local";
+		UE_LOG(LogTemp, Warning, TEXT("UTestbed2Settings could not find connection %s, falling back to local backend."), *TracerServiceIdentifier);
+		TracerServiceIdentifier = "Local";
 	}
 }

@@ -67,7 +67,6 @@ private:
 
 	TSharedPtr<IWebSocket> m_socket;
 	FString m_serverURL;
-	FString ConnectionIdentifier;
 	ApiGear::ObjectLink::ClientRegistry m_registry;
 	std::shared_ptr<ApiGear::ObjectLink::ClientNode> m_node;
 	TQueue<std::string, EQueueMode::Mpsc> m_queue;

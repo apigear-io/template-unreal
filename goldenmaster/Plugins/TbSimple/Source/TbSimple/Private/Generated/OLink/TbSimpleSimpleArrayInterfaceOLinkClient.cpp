@@ -89,8 +89,13 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::Initialize(FSubsystemCollectionBa
 
 	UApiGearConnectionsStore* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionsStore>();
 
-	TScriptInterface<IApiGearConnection> OLinkConnection = AGCM->GetConnection(settings->ConnectionIdentifier);
+	TScriptInterface<IApiGearConnection> OLinkConnection = AGCM->GetConnection(settings->OLinkConnectionIdentifier);
 
+	if (!OLinkConnection.GetInterface())
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Log, TEXT("No valid olink connection for %s, please set during run time"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		return;
+	}
 	UseConnection(OLinkConnection);
 	OLinkConnection->Connect();
 }

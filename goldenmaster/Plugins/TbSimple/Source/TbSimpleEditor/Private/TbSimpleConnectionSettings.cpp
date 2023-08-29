@@ -24,33 +24,38 @@ TSharedRef<IDetailCustomization> FTbSimpleConnectionSettingsDetails::MakeInstanc
 	return MakeShareable(new FTbSimpleConnectionSettingsDetails);
 }
 
-TSharedRef<SWidget> FTbSimpleConnectionSettingsDetails::MakeDefaultConnectionSelectorWidget(const TSharedPtr<IPropertyHandle>& PropertyHandle)
+TSharedRef<SWidget> FTbSimpleConnectionSettingsDetails::MakeDefaultBackendServiceSelectorWidget(const TSharedPtr<IPropertyHandle>& PropertyHandle)
 {
 	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
 	check(settings);
 
-	TArray<TSharedPtr<FText>>* AvailableConnectionNames = &AvailableConnections;
-	FText TooltipText = FText::FromString(TEXT("Choose which connection should be used as default. Please make sure to have at least one connection defined."));
+	TArray<TSharedPtr<FText>>* AvailableServicesNames = &AvailableServices;
+	FText TooltipText = FText::FromString(TEXT("Choose which service should be used as default."));
 
-	TSharedPtr<FText> DefaultEffectName = TSharedPtr<FText>(new FText(FText::FromString(TEXT("Local"))));
-	SelectedDefaultConnection = TSharedPtr<FText>(new FText(*DefaultEffectName));
-	PropertyHandle->GetValueAsDisplayText(*SelectedDefaultConnection);
+	TSharedPtr<FText> LocalServiceName = TSharedPtr<FText>(new FText(FText::FromString(TEXT("Local"))));
+	AvailableServicesNames->Add(LocalServiceName);
+	SelectedDefaultBackendService = LocalServiceName;
 
-	AvailableConnectionNames->Add(DefaultEffectName);
+	TSharedPtr<FText> CurrentServiceName = TSharedPtr<FText>(new FText(FText::GetEmpty()));
+	PropertyHandle->GetValueAsDisplayText(*CurrentServiceName);
+	if (!CurrentServiceName->EqualTo(FText::GetEmpty()))
+	{
+		SelectedDefaultBackendService = CurrentServiceName;
+	}
 
 	for (auto ConnectionSetting : settings->Connections)
 	{
-		AvailableConnectionNames->Add(MakeShared<FText>(FText::FromString(*ConnectionSetting.Key)));
+		AvailableServicesNames->Add(MakeShared<FText>(FText::FromString(*ConnectionSetting.Key)));
 	}
 
 	// clang-format off
 	// Text box component:
 	TSharedRef<STextBlock > EditableTextBox = SNew(STextBlock )
-		.Text_Lambda([this]() { return *SelectedDefaultConnection; });
+		.Text_Lambda([this]() { return *SelectedDefaultBackendService; });
 
 	// Combo box component:
 	TSharedRef<SWidget> ComboBox = SNew(SListView<TSharedPtr<FText>>)
-		.ListItemsSource(AvailableConnectionNames)
+		.ListItemsSource(AvailableServicesNames)
 		.OnGenerateRow_Lambda([](TSharedPtr<FText> InItem, const TSharedRef< class STableViewBase >& Owner)
 		{
 			return SNew(STableRow<TSharedPtr<FText>>, Owner)
@@ -61,7 +66,7 @@ TSharedRef<SWidget> FTbSimpleConnectionSettingsDetails::MakeDefaultConnectionSel
 		})
 		.OnSelectionChanged_Lambda([this, PropertyHandle](TSharedPtr<FText> InText, ESelectInfo::Type)
 		{
-			SelectedDefaultConnection = InText;
+			SelectedDefaultBackendService = InText;
 			PropertyHandle->SetValue(InText->ToString());
 		});
 
@@ -90,24 +95,133 @@ TSharedRef<SWidget> FTbSimpleConnectionSettingsDetails::MakeDefaultConnectionSel
 	return NewWidget;
 }
 
-void FTbSimpleConnectionSettingsDetails::CustomizeDetails(IDetailLayoutBuilder& DetailBuilder)
+TSharedRef<SWidget> FTbSimpleConnectionSettingsDetails::MakeDefaultOLinkConnectionSelectorWidget(const TSharedPtr<IPropertyHandle>& PropertyHandle)
 {
-	IDetailCategoryBuilder& ConnectionsCategory = DetailBuilder.EditCategory(TEXT("ServiceSetup"));
+	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
+	check(settings);
 
-	TSharedPtr<IPropertyHandle> ConnectionIdentifierPropertyHandle = DetailBuilder.GetProperty("ConnectionIdentifier", nullptr);
-	IDetailPropertyRow& DefaultConnectionIdentifierPropertyRow = ConnectionsCategory.AddProperty(ConnectionIdentifierPropertyHandle);
+	TArray<TSharedPtr<FText>>* AvailableOLinkConnectionNames = &AvailableOLinkConnections;
+	FText TooltipText = FText::FromString(TEXT("Choose which connection should be used as default. Please make sure to have at least one connection defined."));
+
+	for (auto ConnectionSetting : settings->Connections)
+	{
+		if (ConnectionSetting.Value.ProtocolIdentifier == "olink")
+		{
+			TSharedPtr<FText> ConnectionName = MakeShared<FText>(FText::FromString(*ConnectionSetting.Key));
+			AvailableOLinkConnectionNames->Add(ConnectionName);
+
+			if (!SelectedDefaultOLinkConnection)
+			{
+				SelectedDefaultOLinkConnection = ConnectionName;
+			}
+		}
+	}
+
+	TSharedPtr<FText> CurrentConnectionName = TSharedPtr<FText>(new FText(FText::GetEmpty()));
+	PropertyHandle->GetValueAsDisplayText(*CurrentConnectionName);
+	if (!CurrentConnectionName->EqualTo(FText::GetEmpty()))
+	{
+		SelectedDefaultOLinkConnection = CurrentConnectionName;
+	}
+
+	if (!SelectedDefaultOLinkConnection)
+	{
+		SelectedDefaultOLinkConnection = TSharedPtr<FText>(new FText(FText::FromString(TEXT("Please define a connection in the settings first!"))));
+	}
 
 	// clang-format off
-	DefaultConnectionIdentifierPropertyRow.CustomWidget()
+	// Text box component:
+	TSharedRef<STextBlock > EditableTextBox = SNew(STextBlock )
+		.Text_Lambda([this]() { return *SelectedDefaultOLinkConnection; });
+
+	// Combo box component:
+	TSharedRef<SWidget> ComboBox = SNew(SListView<TSharedPtr<FText>>)
+		.ListItemsSource(AvailableOLinkConnectionNames)
+		.OnGenerateRow_Lambda([](TSharedPtr<FText> InItem, const TSharedRef< class STableViewBase >& Owner)
+		{
+			return SNew(STableRow<TSharedPtr<FText>>, Owner)
+					.Padding(FMargin(16, 4, 16, 4))
+					[
+						SNew(STextBlock).Text(*InItem)
+					];
+		})
+		.OnSelectionChanged_Lambda([this, PropertyHandle](TSharedPtr<FText> InText, ESelectInfo::Type)
+		{
+			SelectedDefaultOLinkConnection = InText;
+			PropertyHandle->SetValue(InText->ToString());
+		});
+
+
+	//Generate widget:
+	const TSharedRef<SWidget> NewWidget = SNew(SComboButton)
+		.ContentPadding(FMargin(0, 0, 5, 0))
+		.ToolTipText(TooltipText)
+		.ButtonContent()
+		[
+			SNew(SBorder)
+#if (ENGINE_MAJOR_VERSION >= 5)
+			.BorderImage(FAppStyle::GetBrush("NoBorder"))
+#endif
+			.Padding(FMargin(0, 0, 5, 0))
+			[
+				EditableTextBox
+			]
+		]
+		.MenuContent()
+		[
+			ComboBox
+		];
+	// clang-format on
+
+	return NewWidget;
+}
+
+void FTbSimpleConnectionSettingsDetails::CustomizeTracerDetails(IDetailLayoutBuilder& DetailBuilder)
+{
+	IDetailCategoryBuilder& TracerServiceCategory = DetailBuilder.EditCategory(TEXT("TracerServiceSetup"));
+
+	TSharedPtr<IPropertyHandle> BackendServiceIdentifierPropertyHandle = DetailBuilder.GetProperty("TracerServiceIdentifier", nullptr);
+	IDetailPropertyRow& DefaultBackendServiceIdentifierPropertyRow = TracerServiceCategory.AddProperty(BackendServiceIdentifierPropertyHandle);
+
+	// clang-format off
+	DefaultBackendServiceIdentifierPropertyRow.CustomWidget()
 		.NameContent()
 		[
-			ConnectionIdentifierPropertyHandle->CreatePropertyNameWidget()
+			BackendServiceIdentifierPropertyHandle->CreatePropertyNameWidget()
 		]
 		.ValueContent()
 		.MaxDesiredWidth(500.0f)
 		.MinDesiredWidth(100.0f)
 		[
-			MakeDefaultConnectionSelectorWidget(ConnectionIdentifierPropertyHandle)
+			MakeDefaultBackendServiceSelectorWidget(BackendServiceIdentifierPropertyHandle)
 		];
 	// clang-format on
+}
+
+void FTbSimpleConnectionSettingsDetails::CustomizeOLinkDetails(IDetailLayoutBuilder& DetailBuilder)
+{
+	IDetailCategoryBuilder& OLinkConnectionsCategory = DetailBuilder.EditCategory(TEXT("OLinkConnectionSetup"));
+
+	TSharedPtr<IPropertyHandle> OLinkConnectionIdentifierPropertyHandle = DetailBuilder.GetProperty("OLinkConnectionIdentifier", nullptr);
+	IDetailPropertyRow& DefaultOLinkConnectionIdentifierPropertyRow = OLinkConnectionsCategory.AddProperty(OLinkConnectionIdentifierPropertyHandle);
+
+	// clang-format off
+	DefaultOLinkConnectionIdentifierPropertyRow.CustomWidget()
+		.NameContent()
+		[
+			OLinkConnectionIdentifierPropertyHandle->CreatePropertyNameWidget()
+		]
+		.ValueContent()
+		.MaxDesiredWidth(500.0f)
+		.MinDesiredWidth(100.0f)
+		[
+			MakeDefaultOLinkConnectionSelectorWidget(OLinkConnectionIdentifierPropertyHandle)
+		];
+	// clang-format on
+}
+
+void FTbSimpleConnectionSettingsDetails::CustomizeDetails(IDetailLayoutBuilder& DetailBuilder)
+{
+	CustomizeTracerDetails(DetailBuilder);
+	CustomizeOLinkDetails(DetailBuilder);
 }

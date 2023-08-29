@@ -95,13 +95,13 @@ TScriptInterface<I{{$class}}Interface> {{$mclass}}::create{{$iclass}}(UGameInsta
 {
 	U{{$ModuleName}}Settings* {{$ModuleName}}Settings = GetMutableDefault<U{{$ModuleName}}Settings>();
 
-	if ({{$ModuleName}}Settings->ConnectionIdentifier == "Local")
+	if ({{$ModuleName}}Settings->TracerServiceIdentifier == "Local")
 	{
 		return create{{$class}}(GameInstance, Collection);
 	}
 
 	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find({{$ModuleName}}Settings->ConnectionIdentifier);
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find({{$ModuleName}}Settings->TracerServiceIdentifier);
 
 {{- if $.Features.olink }}
 
@@ -150,13 +150,13 @@ TScriptInterface<I{{$class}}Interface> {{$mclass}}::create{{$iclass}}(FSubsystem
 {
 	U{{$ModuleName}}Settings* {{$ModuleName}}Settings = GetMutableDefault<U{{$ModuleName}}Settings>();
 
-	if ({{$ModuleName}}Settings->ConnectionIdentifier == "Local")
+	if ({{$ModuleName}}Settings->TracerServiceIdentifier == "Local")
 	{
 		return create{{$class}}(Collection);
 	}
 
 	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find({{$ModuleName}}Settings->ConnectionIdentifier);
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find({{$ModuleName}}Settings->TracerServiceIdentifier);
 
 {{- if $.Features.olink }}
 

@@ -21,8 +21,13 @@ public:
 	virtual void CustomizeDetails(IDetailLayoutBuilder& DetailBuilder) override;
 
 private:
-	TSharedRef<SWidget> MakeDefaultConnectionSelectorWidget(const TSharedPtr<IPropertyHandle>& PropertyHandle);
+	void CustomizeTracerDetails(IDetailLayoutBuilder& DetailBuilder);
+	TSharedRef<SWidget> MakeDefaultBackendServiceSelectorWidget(const TSharedPtr<IPropertyHandle>& PropertyHandle);
+	TSharedPtr<FText> SelectedDefaultBackendService;
+	TArray<TSharedPtr<FText>> AvailableServices;
 
-	TSharedPtr<FText> SelectedDefaultConnection;
-	TArray<TSharedPtr<FText>> AvailableConnections;
+	void CustomizeOLinkDetails(IDetailLayoutBuilder& DetailBuilder);
+	TSharedRef<SWidget> MakeDefaultOLinkConnectionSelectorWidget(const TSharedPtr<IPropertyHandle>& PropertyHandle);
+	TSharedPtr<FText> SelectedDefaultOLinkConnection;
+	TArray<TSharedPtr<FText>> AvailableOLinkConnections;
 };

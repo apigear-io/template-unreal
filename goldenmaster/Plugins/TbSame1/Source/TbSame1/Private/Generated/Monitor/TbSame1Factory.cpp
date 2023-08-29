@@ -80,13 +80,13 @@ TScriptInterface<ITbSame1SameStruct1InterfaceInterface> FTbSame1ModuleFactory::c
 {
 	UTbSame1Settings* TbSame1Settings = GetMutableDefault<UTbSame1Settings>();
 
-	if (TbSame1Settings->ConnectionIdentifier == "Local")
+	if (TbSame1Settings->TracerServiceIdentifier == "Local")
 	{
 		return createTbSame1SameStruct1Interface(GameInstance, Collection);
 	}
 
 	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSame1Settings->ConnectionIdentifier);
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSame1Settings->TracerServiceIdentifier);
 
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTbSame1SameStruct1InterfaceOLink and other necessary infrastructure
@@ -128,13 +128,13 @@ TScriptInterface<ITbSame1SameStruct1InterfaceInterface> FTbSame1ModuleFactory::c
 {
 	UTbSame1Settings* TbSame1Settings = GetMutableDefault<UTbSame1Settings>();
 
-	if (TbSame1Settings->ConnectionIdentifier == "Local")
+	if (TbSame1Settings->TracerServiceIdentifier == "Local")
 	{
 		return createTbSame1SameStruct1Interface(Collection);
 	}
 
 	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSame1Settings->ConnectionIdentifier);
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSame1Settings->TracerServiceIdentifier);
 
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTbSame1SameStruct1InterfaceOLink and other necessary infrastructure
@@ -188,13 +188,13 @@ TScriptInterface<ITbSame1SameStruct2InterfaceInterface> FTbSame1ModuleFactory::c
 {
 	UTbSame1Settings* TbSame1Settings = GetMutableDefault<UTbSame1Settings>();
 
-	if (TbSame1Settings->ConnectionIdentifier == "Local")
+	if (TbSame1Settings->TracerServiceIdentifier == "Local")
 	{
 		return createTbSame1SameStruct2Interface(GameInstance, Collection);
 	}
 
 	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSame1Settings->ConnectionIdentifier);
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSame1Settings->TracerServiceIdentifier);
 
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTbSame1SameStruct2InterfaceOLink and other necessary infrastructure
@@ -236,13 +236,13 @@ TScriptInterface<ITbSame1SameStruct2InterfaceInterface> FTbSame1ModuleFactory::c
 {
 	UTbSame1Settings* TbSame1Settings = GetMutableDefault<UTbSame1Settings>();
 
-	if (TbSame1Settings->ConnectionIdentifier == "Local")
+	if (TbSame1Settings->TracerServiceIdentifier == "Local")
 	{
 		return createTbSame1SameStruct2Interface(Collection);
 	}
 
 	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSame1Settings->ConnectionIdentifier);
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSame1Settings->TracerServiceIdentifier);
 
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTbSame1SameStruct2InterfaceOLink and other necessary infrastructure
@@ -296,13 +296,13 @@ TScriptInterface<ITbSame1SameEnum1InterfaceInterface> FTbSame1ModuleFactory::cre
 {
 	UTbSame1Settings* TbSame1Settings = GetMutableDefault<UTbSame1Settings>();
 
-	if (TbSame1Settings->ConnectionIdentifier == "Local")
+	if (TbSame1Settings->TracerServiceIdentifier == "Local")
 	{
 		return createTbSame1SameEnum1Interface(GameInstance, Collection);
 	}
 
 	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSame1Settings->ConnectionIdentifier);
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSame1Settings->TracerServiceIdentifier);
 
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTbSame1SameEnum1InterfaceOLink and other necessary infrastructure
@@ -344,13 +344,13 @@ TScriptInterface<ITbSame1SameEnum1InterfaceInterface> FTbSame1ModuleFactory::cre
 {
 	UTbSame1Settings* TbSame1Settings = GetMutableDefault<UTbSame1Settings>();
 
-	if (TbSame1Settings->ConnectionIdentifier == "Local")
+	if (TbSame1Settings->TracerServiceIdentifier == "Local")
 	{
 		return createTbSame1SameEnum1Interface(Collection);
 	}
 
 	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSame1Settings->ConnectionIdentifier);
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSame1Settings->TracerServiceIdentifier);
 
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTbSame1SameEnum1InterfaceOLink and other necessary infrastructure
@@ -404,13 +404,13 @@ TScriptInterface<ITbSame1SameEnum2InterfaceInterface> FTbSame1ModuleFactory::cre
 {
 	UTbSame1Settings* TbSame1Settings = GetMutableDefault<UTbSame1Settings>();
 
-	if (TbSame1Settings->ConnectionIdentifier == "Local")
+	if (TbSame1Settings->TracerServiceIdentifier == "Local")
 	{
 		return createTbSame1SameEnum2Interface(GameInstance, Collection);
 	}
 
 	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSame1Settings->ConnectionIdentifier);
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSame1Settings->TracerServiceIdentifier);
 
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTbSame1SameEnum2InterfaceOLink and other necessary infrastructure
@@ -452,13 +452,13 @@ TScriptInterface<ITbSame1SameEnum2InterfaceInterface> FTbSame1ModuleFactory::cre
 {
 	UTbSame1Settings* TbSame1Settings = GetMutableDefault<UTbSame1Settings>();
 
-	if (TbSame1Settings->ConnectionIdentifier == "Local")
+	if (TbSame1Settings->TracerServiceIdentifier == "Local")
 	{
 		return createTbSame1SameEnum2Interface(Collection);
 	}
 
 	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSame1Settings->ConnectionIdentifier);
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSame1Settings->TracerServiceIdentifier);
 
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTbSame1SameEnum2InterfaceOLink and other necessary infrastructure

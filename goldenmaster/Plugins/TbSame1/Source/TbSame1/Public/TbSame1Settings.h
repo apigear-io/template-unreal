@@ -33,6 +33,10 @@ class TBSAME1_API UTbSame1Settings : public UObject
 	virtual void PostInitProperties() override;
 
 	// Choose the backend service for the logging decorator to use
-	UPROPERTY(EditAnywhere, config, Category = ServiceSetup)
-	FString ConnectionIdentifier;
+	UPROPERTY(EditAnywhere, config, Category = TracerServiceSetup)
+	FString TracerServiceIdentifier;
+
+	// Choose the olink connection to use
+	UPROPERTY(EditAnywhere, config, Category = OLinkConnectionSetup)
+	FString OLinkConnectionIdentifier;
 };

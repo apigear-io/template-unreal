@@ -84,13 +84,13 @@ TScriptInterface<ITbSimpleSimpleInterfaceInterface> FTbSimpleModuleFactory::crea
 {
 	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
 
-	if (TbSimpleSettings->ConnectionIdentifier == "Local")
+	if (TbSimpleSettings->TracerServiceIdentifier == "Local")
 	{
 		return createTbSimpleSimpleInterface(GameInstance, Collection);
 	}
 
 	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSimpleSettings->ConnectionIdentifier);
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSimpleSettings->TracerServiceIdentifier);
 
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTbSimpleSimpleInterfaceOLink and other necessary infrastructure
@@ -132,13 +132,13 @@ TScriptInterface<ITbSimpleSimpleInterfaceInterface> FTbSimpleModuleFactory::crea
 {
 	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
 
-	if (TbSimpleSettings->ConnectionIdentifier == "Local")
+	if (TbSimpleSettings->TracerServiceIdentifier == "Local")
 	{
 		return createTbSimpleSimpleInterface(Collection);
 	}
 
 	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSimpleSettings->ConnectionIdentifier);
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSimpleSettings->TracerServiceIdentifier);
 
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTbSimpleSimpleInterfaceOLink and other necessary infrastructure
@@ -192,13 +192,13 @@ TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> FTbSimpleModuleFactory:
 {
 	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
 
-	if (TbSimpleSettings->ConnectionIdentifier == "Local")
+	if (TbSimpleSettings->TracerServiceIdentifier == "Local")
 	{
 		return createTbSimpleSimpleArrayInterface(GameInstance, Collection);
 	}
 
 	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSimpleSettings->ConnectionIdentifier);
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSimpleSettings->TracerServiceIdentifier);
 
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTbSimpleSimpleArrayInterfaceOLink and other necessary infrastructure
@@ -240,13 +240,13 @@ TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> FTbSimpleModuleFactory:
 {
 	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
 
-	if (TbSimpleSettings->ConnectionIdentifier == "Local")
+	if (TbSimpleSettings->TracerServiceIdentifier == "Local")
 	{
 		return createTbSimpleSimpleArrayInterface(Collection);
 	}
 
 	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSimpleSettings->ConnectionIdentifier);
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSimpleSettings->TracerServiceIdentifier);
 
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTbSimpleSimpleArrayInterfaceOLink and other necessary infrastructure
@@ -300,13 +300,13 @@ TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> FTbSimpleModuleFactory
 {
 	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
 
-	if (TbSimpleSettings->ConnectionIdentifier == "Local")
+	if (TbSimpleSettings->TracerServiceIdentifier == "Local")
 	{
 		return createTbSimpleNoPropertiesInterface(GameInstance, Collection);
 	}
 
 	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSimpleSettings->ConnectionIdentifier);
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSimpleSettings->TracerServiceIdentifier);
 
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTbSimpleNoPropertiesInterfaceOLink and other necessary infrastructure
@@ -348,13 +348,13 @@ TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> FTbSimpleModuleFactory
 {
 	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
 
-	if (TbSimpleSettings->ConnectionIdentifier == "Local")
+	if (TbSimpleSettings->TracerServiceIdentifier == "Local")
 	{
 		return createTbSimpleNoPropertiesInterface(Collection);
 	}
 
 	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSimpleSettings->ConnectionIdentifier);
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSimpleSettings->TracerServiceIdentifier);
 
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTbSimpleNoPropertiesInterfaceOLink and other necessary infrastructure
@@ -408,13 +408,13 @@ TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> FTbSimpleModuleFactory
 {
 	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
 
-	if (TbSimpleSettings->ConnectionIdentifier == "Local")
+	if (TbSimpleSettings->TracerServiceIdentifier == "Local")
 	{
 		return createTbSimpleNoOperationsInterface(GameInstance, Collection);
 	}
 
 	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSimpleSettings->ConnectionIdentifier);
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSimpleSettings->TracerServiceIdentifier);
 
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTbSimpleNoOperationsInterfaceOLink and other necessary infrastructure
@@ -456,13 +456,13 @@ TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> FTbSimpleModuleFactory
 {
 	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
 
-	if (TbSimpleSettings->ConnectionIdentifier == "Local")
+	if (TbSimpleSettings->TracerServiceIdentifier == "Local")
 	{
 		return createTbSimpleNoOperationsInterface(Collection);
 	}
 
 	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSimpleSettings->ConnectionIdentifier);
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSimpleSettings->TracerServiceIdentifier);
 
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTbSimpleNoOperationsInterfaceOLink and other necessary infrastructure
@@ -516,13 +516,13 @@ TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> FTbSimpleModuleFactory::c
 {
 	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
 
-	if (TbSimpleSettings->ConnectionIdentifier == "Local")
+	if (TbSimpleSettings->TracerServiceIdentifier == "Local")
 	{
 		return createTbSimpleNoSignalsInterface(GameInstance, Collection);
 	}
 
 	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSimpleSettings->ConnectionIdentifier);
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSimpleSettings->TracerServiceIdentifier);
 
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTbSimpleNoSignalsInterfaceOLink and other necessary infrastructure
@@ -564,13 +564,13 @@ TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> FTbSimpleModuleFactory::c
 {
 	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
 
-	if (TbSimpleSettings->ConnectionIdentifier == "Local")
+	if (TbSimpleSettings->TracerServiceIdentifier == "Local")
 	{
 		return createTbSimpleNoSignalsInterface(Collection);
 	}
 
 	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSimpleSettings->ConnectionIdentifier);
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSimpleSettings->TracerServiceIdentifier);
 
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTbSimpleNoSignalsInterfaceOLink and other necessary infrastructure
@@ -624,13 +624,13 @@ TScriptInterface<ITbSimpleEmptyInterfaceInterface> FTbSimpleModuleFactory::creat
 {
 	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
 
-	if (TbSimpleSettings->ConnectionIdentifier == "Local")
+	if (TbSimpleSettings->TracerServiceIdentifier == "Local")
 	{
 		return createTbSimpleEmptyInterface(GameInstance, Collection);
 	}
 
 	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSimpleSettings->ConnectionIdentifier);
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSimpleSettings->TracerServiceIdentifier);
 
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTbSimpleEmptyInterfaceOLink and other necessary infrastructure
@@ -672,13 +672,13 @@ TScriptInterface<ITbSimpleEmptyInterfaceInterface> FTbSimpleModuleFactory::creat
 {
 	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
 
-	if (TbSimpleSettings->ConnectionIdentifier == "Local")
+	if (TbSimpleSettings->TracerServiceIdentifier == "Local")
 	{
 		return createTbSimpleEmptyInterface(Collection);
 	}
 
 	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSimpleSettings->ConnectionIdentifier);
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSimpleSettings->TracerServiceIdentifier);
 
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTbSimpleEmptyInterfaceOLink and other necessary infrastructure
