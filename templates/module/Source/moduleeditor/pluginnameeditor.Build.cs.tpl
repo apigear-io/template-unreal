@@ -20,6 +20,9 @@ namespace UnrealBuildTool.Rules
 					"UnrealEd",
 					// modules below are needed for connection settings
 					"ApiGear",
+{{- if $.Features.olink }}
+					"ApiGearOLink",
+{{- end }}
 					"InputCore",
 					"PropertyEditor",
 					"Slate",

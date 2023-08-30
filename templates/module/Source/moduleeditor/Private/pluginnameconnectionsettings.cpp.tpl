@@ -7,6 +7,7 @@
 #include "{{$ModuleName}}ConnectionSettings.h"
 
 #include "ApiGearSettings.h"
+#include "apigearolink.h"
 #include "{{$ModuleName}}Settings.h"
 #include "Templates/SharedPointer.h"
 #include "IDetailCustomization.h"
@@ -113,7 +114,7 @@ TSharedRef<SWidget> F{{$ModuleName}}ConnectionSettingsDetails::MakeDefaultOLinkC
 
 	for (auto ConnectionSetting : settings->Connections)
 	{
-		if (ConnectionSetting.Value.ProtocolIdentifier == "olink")
+		if (ConnectionSetting.Value.ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
 		{
 			TSharedPtr<FText> ConnectionName = MakeShared<FText>(FText::FromString(*ConnectionSetting.Key));
 			AvailableOLinkConnectionNames->Add(ConnectionName);

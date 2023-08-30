@@ -1,6 +1,7 @@
 #pragma once
 
 #include "AbstractApiGearConnection.h"
+#include "apigearolink.h"
 THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
 #include "olink/clientregistry.h"
@@ -45,7 +46,7 @@ public:
 	FString GetUniqueEndpointIdentifier() const override;
 	FString GetConnectionProtocolIdentifier() const override
 	{
-		return "olink";
+		return ApiGearOLinkProtocolIdentifier;
 	};
 
 	std::shared_ptr<ApiGear::ObjectLink::ClientNode> node()

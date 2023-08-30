@@ -17,6 +17,7 @@ limitations under the License.
 
 #include "TbEnumFactory.h"
 #include "ApiGearSettings.h"
+#include "apigearolink.h"
 #include "TbEnumSettings.h"
 #include "Implementation/TbEnumEnumInterface.h"
 #include "Generated/OLink/TbEnumEnumInterfaceOLinkClient.h"
@@ -86,7 +87,7 @@ TScriptInterface<ITbEnumEnumInterfaceInterface> FTbEnumModuleFactory::createITbE
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTbEnumEnumInterfaceOLink and other necessary infrastructure
 	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
 	{
 		return createTbEnumEnumInterfaceOLink(GameInstance, Collection);
 	}
@@ -134,7 +135,7 @@ TScriptInterface<ITbEnumEnumInterfaceInterface> FTbEnumModuleFactory::createITbE
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTbEnumEnumInterfaceOLink and other necessary infrastructure
 	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
 	{
 		return createTbEnumEnumInterfaceOLink(Collection);
 	}

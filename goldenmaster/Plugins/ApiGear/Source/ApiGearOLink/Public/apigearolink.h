@@ -2,6 +2,9 @@
 #pragma once
 
 #include "Modules/ModuleManager.h"
+#include "Containers/UnrealString.h"
+
+const FString ApiGearOLinkProtocolIdentifier = "olink";
 
 class FApiGearModuleOLink : public IModuleInterface
 {

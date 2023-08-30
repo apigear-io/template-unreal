@@ -17,7 +17,7 @@ struct FApiGearConnectionSetting
 	 * Unique protocol identifier, based on which connection type can be recognized and created.
 	 * You can have more than one connection of the same protocol type with different urls
 	 */
-	FString ProtocolIdentifier{TEXT("olink")};
+	FString ProtocolIdentifier{"olink"};
 
 	/** Choose the server to connect to */
 	UPROPERTY(EditAnywhere, config, Category = ApiGearConnectionSetting)

@@ -22,6 +22,7 @@ limitations under the License.
 
 #include "Generated/OLink/TbSame2SameStruct1InterfaceOLinkClient.h"
 #include "ApiGearSettings.h"
+#include "apigearolink.h"
 #include "Async/Async.h"
 #include "Generated/api/TbSame2.json.adapter.h"
 #include "unrealolink.h"
@@ -114,7 +115,7 @@ void UTbSame2SameStruct1InterfaceOLinkClient::UseConnection(TScriptInterface<IAp
 	checkf(InConnection.GetInterface() != nullptr, TEXT("Cannot use connection - interface IApiGearConnection is not fully implemented"));
 
 	// only accept connections of type olink
-	checkf(InConnection->GetConnectionProtocolIdentifier() == "olink", TEXT("Cannot use connection - must be of type olink"));
+	checkf(InConnection->GetConnectionProtocolIdentifier() == ApiGearOLinkProtocolIdentifier, TEXT("Cannot use connection - must be of type olink"));
 
 	UUnrealOLink* UnrealOLinkConnection = nullptr;
 	// remove old connection

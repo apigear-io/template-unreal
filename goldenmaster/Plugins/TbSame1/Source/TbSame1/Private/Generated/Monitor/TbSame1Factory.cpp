@@ -17,6 +17,7 @@ limitations under the License.
 
 #include "TbSame1Factory.h"
 #include "ApiGearSettings.h"
+#include "apigearolink.h"
 #include "TbSame1Settings.h"
 #include "Implementation/TbSame1SameStruct1Interface.h"
 #include "Generated/OLink/TbSame1SameStruct1InterfaceOLinkClient.h"
@@ -92,7 +93,7 @@ TScriptInterface<ITbSame1SameStruct1InterfaceInterface> FTbSame1ModuleFactory::c
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTbSame1SameStruct1InterfaceOLink and other necessary infrastructure
 	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
 	{
 		return createTbSame1SameStruct1InterfaceOLink(GameInstance, Collection);
 	}
@@ -140,7 +141,7 @@ TScriptInterface<ITbSame1SameStruct1InterfaceInterface> FTbSame1ModuleFactory::c
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTbSame1SameStruct1InterfaceOLink and other necessary infrastructure
 	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
 	{
 		return createTbSame1SameStruct1InterfaceOLink(Collection);
 	}
@@ -200,7 +201,7 @@ TScriptInterface<ITbSame1SameStruct2InterfaceInterface> FTbSame1ModuleFactory::c
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTbSame1SameStruct2InterfaceOLink and other necessary infrastructure
 	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
 	{
 		return createTbSame1SameStruct2InterfaceOLink(GameInstance, Collection);
 	}
@@ -248,7 +249,7 @@ TScriptInterface<ITbSame1SameStruct2InterfaceInterface> FTbSame1ModuleFactory::c
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTbSame1SameStruct2InterfaceOLink and other necessary infrastructure
 	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
 	{
 		return createTbSame1SameStruct2InterfaceOLink(Collection);
 	}
@@ -308,7 +309,7 @@ TScriptInterface<ITbSame1SameEnum1InterfaceInterface> FTbSame1ModuleFactory::cre
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTbSame1SameEnum1InterfaceOLink and other necessary infrastructure
 	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
 	{
 		return createTbSame1SameEnum1InterfaceOLink(GameInstance, Collection);
 	}
@@ -356,7 +357,7 @@ TScriptInterface<ITbSame1SameEnum1InterfaceInterface> FTbSame1ModuleFactory::cre
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTbSame1SameEnum1InterfaceOLink and other necessary infrastructure
 	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
 	{
 		return createTbSame1SameEnum1InterfaceOLink(Collection);
 	}
@@ -416,7 +417,7 @@ TScriptInterface<ITbSame1SameEnum2InterfaceInterface> FTbSame1ModuleFactory::cre
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTbSame1SameEnum2InterfaceOLink and other necessary infrastructure
 	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
 	{
 		return createTbSame1SameEnum2InterfaceOLink(GameInstance, Collection);
 	}
@@ -464,7 +465,7 @@ TScriptInterface<ITbSame1SameEnum2InterfaceInterface> FTbSame1ModuleFactory::cre
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTbSame1SameEnum2InterfaceOLink and other necessary infrastructure
 	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
 	{
 		return createTbSame1SameEnum2InterfaceOLink(Collection);
 	}

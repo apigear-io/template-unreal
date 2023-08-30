@@ -16,6 +16,7 @@
 
 #include "Generated/OLink/{{$Iface}}OLinkClient.h"
 #include "ApiGearSettings.h"
+#include "apigearolink.h"
 #include "Async/Async.h"
 #include "Generated/api/{{$ModuleName}}.json.adapter.h"
 #include "unrealolink.h"
@@ -119,7 +120,7 @@ void {{$Class}}::UseConnection(TScriptInterface<IApiGearConnection> InConnection
 	checkf(InConnection.GetInterface() != nullptr, TEXT("Cannot use connection - interface IApiGearConnection is not fully implemented"));
 
 	// only accept connections of type olink
-	checkf(InConnection->GetConnectionProtocolIdentifier() == "olink", TEXT("Cannot use connection - must be of type olink"));
+	checkf(InConnection->GetConnectionProtocolIdentifier() == ApiGearOLinkProtocolIdentifier, TEXT("Cannot use connection - must be of type olink"));
 
 	UUnrealOLink* UnrealOLinkConnection = nullptr;
 	// remove old connection

@@ -2,6 +2,7 @@
 #include "Testbed2ConnectionSettings.h"
 
 #include "ApiGearSettings.h"
+#include "apigearolink.h"
 #include "Testbed2Settings.h"
 #include "Templates/SharedPointer.h"
 #include "IDetailCustomization.h"
@@ -106,7 +107,7 @@ TSharedRef<SWidget> FTestbed2ConnectionSettingsDetails::MakeDefaultOLinkConnecti
 
 	for (auto ConnectionSetting : settings->Connections)
 	{
-		if (ConnectionSetting.Value.ProtocolIdentifier == "olink")
+		if (ConnectionSetting.Value.ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
 		{
 			TSharedPtr<FText> ConnectionName = MakeShared<FText>(FText::FromString(*ConnectionSetting.Key));
 			AvailableOLinkConnectionNames->Add(ConnectionName);

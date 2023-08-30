@@ -22,6 +22,7 @@ limitations under the License.
 
 #include "{{$ModuleName}}Factory.h"
 #include "ApiGearSettings.h"
+#include "apigearolink.h"
 #include "{{$ModuleName}}Settings.h"
 {{- range .Module.Interfaces }}
 {{- $iclass := printf "%s%s" $ModuleName (Camel .Name)}}
@@ -109,7 +110,7 @@ TScriptInterface<I{{$class}}Interface> {{$mclass}}::create{{$iclass}}(UGameInsta
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like create{{$class}}OLink and other necessary infrastructure
 	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
 	{
 		return create{{$class}}OLink(GameInstance, Collection);
 	}
@@ -164,7 +165,7 @@ TScriptInterface<I{{$class}}Interface> {{$mclass}}::create{{$iclass}}(FSubsystem
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like create{{$class}}OLink and other necessary infrastructure
 	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
 	{
 		return create{{$class}}OLink(Collection);
 	}

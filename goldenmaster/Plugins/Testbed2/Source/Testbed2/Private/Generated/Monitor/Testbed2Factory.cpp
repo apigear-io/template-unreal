@@ -17,6 +17,7 @@ limitations under the License.
 
 #include "Testbed2Factory.h"
 #include "ApiGearSettings.h"
+#include "apigearolink.h"
 #include "Testbed2Settings.h"
 #include "Implementation/Testbed2ManyParamInterface.h"
 #include "Generated/OLink/Testbed2ManyParamInterfaceOLinkClient.h"
@@ -92,7 +93,7 @@ TScriptInterface<ITestbed2ManyParamInterfaceInterface> FTestbed2ModuleFactory::c
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTestbed2ManyParamInterfaceOLink and other necessary infrastructure
 	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
 	{
 		return createTestbed2ManyParamInterfaceOLink(GameInstance, Collection);
 	}
@@ -140,7 +141,7 @@ TScriptInterface<ITestbed2ManyParamInterfaceInterface> FTestbed2ModuleFactory::c
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTestbed2ManyParamInterfaceOLink and other necessary infrastructure
 	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
 	{
 		return createTestbed2ManyParamInterfaceOLink(Collection);
 	}
@@ -200,7 +201,7 @@ TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> FTestbed2ModuleFactor
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTestbed2NestedStruct1InterfaceOLink and other necessary infrastructure
 	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
 	{
 		return createTestbed2NestedStruct1InterfaceOLink(GameInstance, Collection);
 	}
@@ -248,7 +249,7 @@ TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> FTestbed2ModuleFactor
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTestbed2NestedStruct1InterfaceOLink and other necessary infrastructure
 	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
 	{
 		return createTestbed2NestedStruct1InterfaceOLink(Collection);
 	}
@@ -308,7 +309,7 @@ TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> FTestbed2ModuleFactor
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTestbed2NestedStruct2InterfaceOLink and other necessary infrastructure
 	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
 	{
 		return createTestbed2NestedStruct2InterfaceOLink(GameInstance, Collection);
 	}
@@ -356,7 +357,7 @@ TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> FTestbed2ModuleFactor
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTestbed2NestedStruct2InterfaceOLink and other necessary infrastructure
 	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
 	{
 		return createTestbed2NestedStruct2InterfaceOLink(Collection);
 	}
@@ -416,7 +417,7 @@ TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> FTestbed2ModuleFactor
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTestbed2NestedStruct3InterfaceOLink and other necessary infrastructure
 	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
 	{
 		return createTestbed2NestedStruct3InterfaceOLink(GameInstance, Collection);
 	}
@@ -464,7 +465,7 @@ TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> FTestbed2ModuleFactor
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTestbed2NestedStruct3InterfaceOLink and other necessary infrastructure
 	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
 	{
 		return createTestbed2NestedStruct3InterfaceOLink(Collection);
 	}

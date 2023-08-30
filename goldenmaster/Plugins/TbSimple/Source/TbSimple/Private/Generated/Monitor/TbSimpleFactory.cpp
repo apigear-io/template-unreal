@@ -17,6 +17,7 @@ limitations under the License.
 
 #include "TbSimpleFactory.h"
 #include "ApiGearSettings.h"
+#include "apigearolink.h"
 #include "TbSimpleSettings.h"
 #include "Implementation/TbSimpleSimpleInterface.h"
 #include "Generated/OLink/TbSimpleSimpleInterfaceOLinkClient.h"
@@ -96,7 +97,7 @@ TScriptInterface<ITbSimpleSimpleInterfaceInterface> FTbSimpleModuleFactory::crea
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTbSimpleSimpleInterfaceOLink and other necessary infrastructure
 	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
 	{
 		return createTbSimpleSimpleInterfaceOLink(GameInstance, Collection);
 	}
@@ -144,7 +145,7 @@ TScriptInterface<ITbSimpleSimpleInterfaceInterface> FTbSimpleModuleFactory::crea
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTbSimpleSimpleInterfaceOLink and other necessary infrastructure
 	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
 	{
 		return createTbSimpleSimpleInterfaceOLink(Collection);
 	}
@@ -204,7 +205,7 @@ TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> FTbSimpleModuleFactory:
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTbSimpleSimpleArrayInterfaceOLink and other necessary infrastructure
 	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
 	{
 		return createTbSimpleSimpleArrayInterfaceOLink(GameInstance, Collection);
 	}
@@ -252,7 +253,7 @@ TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> FTbSimpleModuleFactory:
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTbSimpleSimpleArrayInterfaceOLink and other necessary infrastructure
 	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
 	{
 		return createTbSimpleSimpleArrayInterfaceOLink(Collection);
 	}
@@ -312,7 +313,7 @@ TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> FTbSimpleModuleFactory
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTbSimpleNoPropertiesInterfaceOLink and other necessary infrastructure
 	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
 	{
 		return createTbSimpleNoPropertiesInterfaceOLink(GameInstance, Collection);
 	}
@@ -360,7 +361,7 @@ TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> FTbSimpleModuleFactory
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTbSimpleNoPropertiesInterfaceOLink and other necessary infrastructure
 	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
 	{
 		return createTbSimpleNoPropertiesInterfaceOLink(Collection);
 	}
@@ -420,7 +421,7 @@ TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> FTbSimpleModuleFactory
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTbSimpleNoOperationsInterfaceOLink and other necessary infrastructure
 	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
 	{
 		return createTbSimpleNoOperationsInterfaceOLink(GameInstance, Collection);
 	}
@@ -468,7 +469,7 @@ TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> FTbSimpleModuleFactory
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTbSimpleNoOperationsInterfaceOLink and other necessary infrastructure
 	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
 	{
 		return createTbSimpleNoOperationsInterfaceOLink(Collection);
 	}
@@ -528,7 +529,7 @@ TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> FTbSimpleModuleFactory::c
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTbSimpleNoSignalsInterfaceOLink and other necessary infrastructure
 	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
 	{
 		return createTbSimpleNoSignalsInterfaceOLink(GameInstance, Collection);
 	}
@@ -576,7 +577,7 @@ TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> FTbSimpleModuleFactory::c
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTbSimpleNoSignalsInterfaceOLink and other necessary infrastructure
 	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
 	{
 		return createTbSimpleNoSignalsInterfaceOLink(Collection);
 	}
@@ -636,7 +637,7 @@ TScriptInterface<ITbSimpleEmptyInterfaceInterface> FTbSimpleModuleFactory::creat
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTbSimpleEmptyInterfaceOLink and other necessary infrastructure
 	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
 	{
 		return createTbSimpleEmptyInterfaceOLink(GameInstance, Collection);
 	}
@@ -684,7 +685,7 @@ TScriptInterface<ITbSimpleEmptyInterfaceInterface> FTbSimpleModuleFactory::creat
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTbSimpleEmptyInterfaceOLink and other necessary infrastructure
 	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
 	{
 		return createTbSimpleEmptyInterfaceOLink(Collection);
 	}

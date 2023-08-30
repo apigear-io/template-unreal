@@ -13,7 +13,7 @@ void FApiGearModuleOLink::StartupModule()
 	FWebSocketsModule& WebSocketsModule = FModuleManager::LoadModuleChecked<FWebSocketsModule>(TEXT("WebSockets"));
 
 	// register olink factory function
-	UApiGearConnectionsStore::RegisterConnectionFactory("olink", &OLinkFactory::Create);
+	UApiGearConnectionsStore::RegisterConnectionFactory(ApiGearOLinkProtocolIdentifier, &OLinkFactory::Create);
 }
 
 void FApiGearModuleOLink::ShutdownModule()

@@ -22,6 +22,7 @@ limitations under the License.
 
 #include "Generated/OLink/Testbed2NestedStruct2InterfaceOLinkClient.h"
 #include "ApiGearSettings.h"
+#include "apigearolink.h"
 #include "Async/Async.h"
 #include "Generated/api/Testbed2.json.adapter.h"
 #include "unrealolink.h"
@@ -115,7 +116,7 @@ void UTestbed2NestedStruct2InterfaceOLinkClient::UseConnection(TScriptInterface<
 	checkf(InConnection.GetInterface() != nullptr, TEXT("Cannot use connection - interface IApiGearConnection is not fully implemented"));
 
 	// only accept connections of type olink
-	checkf(InConnection->GetConnectionProtocolIdentifier() == "olink", TEXT("Cannot use connection - must be of type olink"));
+	checkf(InConnection->GetConnectionProtocolIdentifier() == ApiGearOLinkProtocolIdentifier, TEXT("Cannot use connection - must be of type olink"));
 
 	UUnrealOLink* UnrealOLinkConnection = nullptr;
 	// remove old connection

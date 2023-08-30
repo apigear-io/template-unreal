@@ -17,6 +17,7 @@ limitations under the License.
 
 #include "Testbed1Factory.h"
 #include "ApiGearSettings.h"
+#include "apigearolink.h"
 #include "Testbed1Settings.h"
 #include "Implementation/Testbed1StructInterface.h"
 #include "Generated/OLink/Testbed1StructInterfaceOLinkClient.h"
@@ -88,7 +89,7 @@ TScriptInterface<ITestbed1StructInterfaceInterface> FTestbed1ModuleFactory::crea
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTestbed1StructInterfaceOLink and other necessary infrastructure
 	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
 	{
 		return createTestbed1StructInterfaceOLink(GameInstance, Collection);
 	}
@@ -136,7 +137,7 @@ TScriptInterface<ITestbed1StructInterfaceInterface> FTestbed1ModuleFactory::crea
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTestbed1StructInterfaceOLink and other necessary infrastructure
 	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
 	{
 		return createTestbed1StructInterfaceOLink(Collection);
 	}
@@ -196,7 +197,7 @@ TScriptInterface<ITestbed1StructArrayInterfaceInterface> FTestbed1ModuleFactory:
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTestbed1StructArrayInterfaceOLink and other necessary infrastructure
 	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
 	{
 		return createTestbed1StructArrayInterfaceOLink(GameInstance, Collection);
 	}
@@ -244,7 +245,7 @@ TScriptInterface<ITestbed1StructArrayInterfaceInterface> FTestbed1ModuleFactory:
 	// Other protocols not supported. To support it edit templates:
 	// add protocol handler class for this interface like createTestbed1StructArrayInterfaceOLink and other necessary infrastructure
 	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == "olink")
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
 	{
 		return createTestbed1StructArrayInterfaceOLink(Collection);
 	}

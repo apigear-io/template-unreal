@@ -14,6 +14,7 @@ namespace UnrealBuildTool.Rules
 					"UnrealEd",
 					// modules below are needed for connection settings
 					"ApiGear",
+					"ApiGearOLink",
 					"InputCore",
 					"PropertyEditor",
 					"Slate",
