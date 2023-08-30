@@ -17,6 +17,7 @@ limitations under the License.
 
 #include "TbEnumFactory.h"
 #include "ApiGearSettings.h"
+#include "TbEnumSettings.h"
 #include "Implementation/TbEnumEnumInterface.h"
 #include "Generated/OLink/TbEnumEnumInterfaceOLinkClient.h"
 #include "TbEnumSettings.h"
@@ -74,7 +75,7 @@ TScriptInterface<ITbEnumEnumInterfaceInterface> FTbEnumModuleFactory::createITbE
 {
 	UTbEnumSettings* TbEnumSettings = GetMutableDefault<UTbEnumSettings>();
 
-	if (TbEnumSettings->TracerServiceIdentifier == "Local")
+	if (TbEnumSettings->TracerServiceIdentifier == TbEnumLocalBackendIdentifier)
 	{
 		return createTbEnumEnumInterface(GameInstance, Collection);
 	}
@@ -122,7 +123,7 @@ TScriptInterface<ITbEnumEnumInterfaceInterface> FTbEnumModuleFactory::createITbE
 {
 	UTbEnumSettings* TbEnumSettings = GetMutableDefault<UTbEnumSettings>();
 
-	if (TbEnumSettings->TracerServiceIdentifier == "Local")
+	if (TbEnumSettings->TracerServiceIdentifier == TbEnumLocalBackendIdentifier)
 	{
 		return createTbEnumEnumInterface(Collection);
 	}

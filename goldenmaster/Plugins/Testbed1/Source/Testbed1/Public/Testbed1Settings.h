@@ -22,6 +22,8 @@ limitations under the License.
 #include "Engine/EngineTypes.h"
 #include "Testbed1Settings.generated.h"
 
+const FString Testbed1LocalBackendIdentifier = "Local";
+
 /**
  * Implements the settings for the Testbed1 plugin.
  */

@@ -17,6 +17,7 @@ limitations under the License.
 
 #include "TbSimpleFactory.h"
 #include "ApiGearSettings.h"
+#include "TbSimpleSettings.h"
 #include "Implementation/TbSimpleSimpleInterface.h"
 #include "Generated/OLink/TbSimpleSimpleInterfaceOLinkClient.h"
 #include "Implementation/TbSimpleSimpleArrayInterface.h"
@@ -84,7 +85,7 @@ TScriptInterface<ITbSimpleSimpleInterfaceInterface> FTbSimpleModuleFactory::crea
 {
 	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
 
-	if (TbSimpleSettings->TracerServiceIdentifier == "Local")
+	if (TbSimpleSettings->TracerServiceIdentifier == TbSimpleLocalBackendIdentifier)
 	{
 		return createTbSimpleSimpleInterface(GameInstance, Collection);
 	}
@@ -132,7 +133,7 @@ TScriptInterface<ITbSimpleSimpleInterfaceInterface> FTbSimpleModuleFactory::crea
 {
 	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
 
-	if (TbSimpleSettings->TracerServiceIdentifier == "Local")
+	if (TbSimpleSettings->TracerServiceIdentifier == TbSimpleLocalBackendIdentifier)
 	{
 		return createTbSimpleSimpleInterface(Collection);
 	}
@@ -192,7 +193,7 @@ TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> FTbSimpleModuleFactory:
 {
 	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
 
-	if (TbSimpleSettings->TracerServiceIdentifier == "Local")
+	if (TbSimpleSettings->TracerServiceIdentifier == TbSimpleLocalBackendIdentifier)
 	{
 		return createTbSimpleSimpleArrayInterface(GameInstance, Collection);
 	}
@@ -240,7 +241,7 @@ TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> FTbSimpleModuleFactory:
 {
 	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
 
-	if (TbSimpleSettings->TracerServiceIdentifier == "Local")
+	if (TbSimpleSettings->TracerServiceIdentifier == TbSimpleLocalBackendIdentifier)
 	{
 		return createTbSimpleSimpleArrayInterface(Collection);
 	}
@@ -300,7 +301,7 @@ TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> FTbSimpleModuleFactory
 {
 	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
 
-	if (TbSimpleSettings->TracerServiceIdentifier == "Local")
+	if (TbSimpleSettings->TracerServiceIdentifier == TbSimpleLocalBackendIdentifier)
 	{
 		return createTbSimpleNoPropertiesInterface(GameInstance, Collection);
 	}
@@ -348,7 +349,7 @@ TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> FTbSimpleModuleFactory
 {
 	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
 
-	if (TbSimpleSettings->TracerServiceIdentifier == "Local")
+	if (TbSimpleSettings->TracerServiceIdentifier == TbSimpleLocalBackendIdentifier)
 	{
 		return createTbSimpleNoPropertiesInterface(Collection);
 	}
@@ -408,7 +409,7 @@ TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> FTbSimpleModuleFactory
 {
 	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
 
-	if (TbSimpleSettings->TracerServiceIdentifier == "Local")
+	if (TbSimpleSettings->TracerServiceIdentifier == TbSimpleLocalBackendIdentifier)
 	{
 		return createTbSimpleNoOperationsInterface(GameInstance, Collection);
 	}
@@ -456,7 +457,7 @@ TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> FTbSimpleModuleFactory
 {
 	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
 
-	if (TbSimpleSettings->TracerServiceIdentifier == "Local")
+	if (TbSimpleSettings->TracerServiceIdentifier == TbSimpleLocalBackendIdentifier)
 	{
 		return createTbSimpleNoOperationsInterface(Collection);
 	}
@@ -516,7 +517,7 @@ TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> FTbSimpleModuleFactory::c
 {
 	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
 
-	if (TbSimpleSettings->TracerServiceIdentifier == "Local")
+	if (TbSimpleSettings->TracerServiceIdentifier == TbSimpleLocalBackendIdentifier)
 	{
 		return createTbSimpleNoSignalsInterface(GameInstance, Collection);
 	}
@@ -564,7 +565,7 @@ TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> FTbSimpleModuleFactory::c
 {
 	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
 
-	if (TbSimpleSettings->TracerServiceIdentifier == "Local")
+	if (TbSimpleSettings->TracerServiceIdentifier == TbSimpleLocalBackendIdentifier)
 	{
 		return createTbSimpleNoSignalsInterface(Collection);
 	}
@@ -624,7 +625,7 @@ TScriptInterface<ITbSimpleEmptyInterfaceInterface> FTbSimpleModuleFactory::creat
 {
 	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
 
-	if (TbSimpleSettings->TracerServiceIdentifier == "Local")
+	if (TbSimpleSettings->TracerServiceIdentifier == TbSimpleLocalBackendIdentifier)
 	{
 		return createTbSimpleEmptyInterface(GameInstance, Collection);
 	}
@@ -672,7 +673,7 @@ TScriptInterface<ITbSimpleEmptyInterfaceInterface> FTbSimpleModuleFactory::creat
 {
 	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
 
-	if (TbSimpleSettings->TracerServiceIdentifier == "Local")
+	if (TbSimpleSettings->TracerServiceIdentifier == TbSimpleLocalBackendIdentifier)
 	{
 		return createTbSimpleEmptyInterface(Collection);
 	}

@@ -17,6 +17,7 @@ limitations under the License.
 
 #include "Testbed1Factory.h"
 #include "ApiGearSettings.h"
+#include "Testbed1Settings.h"
 #include "Implementation/Testbed1StructInterface.h"
 #include "Generated/OLink/Testbed1StructInterfaceOLinkClient.h"
 #include "Implementation/Testbed1StructArrayInterface.h"
@@ -76,7 +77,7 @@ TScriptInterface<ITestbed1StructInterfaceInterface> FTestbed1ModuleFactory::crea
 {
 	UTestbed1Settings* Testbed1Settings = GetMutableDefault<UTestbed1Settings>();
 
-	if (Testbed1Settings->TracerServiceIdentifier == "Local")
+	if (Testbed1Settings->TracerServiceIdentifier == Testbed1LocalBackendIdentifier)
 	{
 		return createTestbed1StructInterface(GameInstance, Collection);
 	}
@@ -124,7 +125,7 @@ TScriptInterface<ITestbed1StructInterfaceInterface> FTestbed1ModuleFactory::crea
 {
 	UTestbed1Settings* Testbed1Settings = GetMutableDefault<UTestbed1Settings>();
 
-	if (Testbed1Settings->TracerServiceIdentifier == "Local")
+	if (Testbed1Settings->TracerServiceIdentifier == Testbed1LocalBackendIdentifier)
 	{
 		return createTestbed1StructInterface(Collection);
 	}
@@ -184,7 +185,7 @@ TScriptInterface<ITestbed1StructArrayInterfaceInterface> FTestbed1ModuleFactory:
 {
 	UTestbed1Settings* Testbed1Settings = GetMutableDefault<UTestbed1Settings>();
 
-	if (Testbed1Settings->TracerServiceIdentifier == "Local")
+	if (Testbed1Settings->TracerServiceIdentifier == Testbed1LocalBackendIdentifier)
 	{
 		return createTestbed1StructArrayInterface(GameInstance, Collection);
 	}
@@ -232,7 +233,7 @@ TScriptInterface<ITestbed1StructArrayInterfaceInterface> FTestbed1ModuleFactory:
 {
 	UTestbed1Settings* Testbed1Settings = GetMutableDefault<UTestbed1Settings>();
 
-	if (Testbed1Settings->TracerServiceIdentifier == "Local")
+	if (Testbed1Settings->TracerServiceIdentifier == Testbed1LocalBackendIdentifier)
 	{
 		return createTestbed1StructArrayInterface(Collection);
 	}

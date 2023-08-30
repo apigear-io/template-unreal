@@ -22,6 +22,7 @@ limitations under the License.
 
 #include "{{$ModuleName}}Factory.h"
 #include "ApiGearSettings.h"
+#include "{{$ModuleName}}Settings.h"
 {{- range .Module.Interfaces }}
 {{- $iclass := printf "%s%s" $ModuleName (Camel .Name)}}
 {{- if $.Features.stubs }}
@@ -95,7 +96,7 @@ TScriptInterface<I{{$class}}Interface> {{$mclass}}::create{{$iclass}}(UGameInsta
 {
 	U{{$ModuleName}}Settings* {{$ModuleName}}Settings = GetMutableDefault<U{{$ModuleName}}Settings>();
 
-	if ({{$ModuleName}}Settings->TracerServiceIdentifier == "Local")
+	if ({{$ModuleName}}Settings->TracerServiceIdentifier == {{$ModuleName}}LocalBackendIdentifier)
 	{
 		return create{{$class}}(GameInstance, Collection);
 	}
@@ -150,7 +151,7 @@ TScriptInterface<I{{$class}}Interface> {{$mclass}}::create{{$iclass}}(FSubsystem
 {
 	U{{$ModuleName}}Settings* {{$ModuleName}}Settings = GetMutableDefault<U{{$ModuleName}}Settings>();
 
-	if ({{$ModuleName}}Settings->TracerServiceIdentifier == "Local")
+	if ({{$ModuleName}}Settings->TracerServiceIdentifier == {{$ModuleName}}LocalBackendIdentifier)
 	{
 		return create{{$class}}(Collection);
 	}

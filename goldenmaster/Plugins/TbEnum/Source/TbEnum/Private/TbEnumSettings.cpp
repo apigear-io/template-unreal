@@ -37,7 +37,7 @@ void UTbEnumSettings::PostInitProperties()
 	}
 
 	// the local backend does not require configuration
-	if (TracerServiceIdentifier == "Local")
+	if (TracerServiceIdentifier == TbEnumLocalBackendIdentifier)
 	{
 		return;
 	}
@@ -45,6 +45,6 @@ void UTbEnumSettings::PostInitProperties()
 	if (!AGCM->DoesConnectionExist(TracerServiceIdentifier))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("UTbEnumSettings could not find connection %s, falling back to local backend."), *TracerServiceIdentifier);
-		TracerServiceIdentifier = "Local";
+		TracerServiceIdentifier = TbEnumLocalBackendIdentifier;
 	}
 }

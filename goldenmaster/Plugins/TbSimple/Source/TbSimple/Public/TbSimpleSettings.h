@@ -22,6 +22,8 @@ limitations under the License.
 #include "Engine/EngineTypes.h"
 #include "TbSimpleSettings.generated.h"
 
+const FString TbSimpleLocalBackendIdentifier = "Local";
+
 /**
  * Implements the settings for the TbSimple plugin.
  */

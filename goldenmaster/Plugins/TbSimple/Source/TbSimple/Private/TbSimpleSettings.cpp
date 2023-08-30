@@ -37,7 +37,7 @@ void UTbSimpleSettings::PostInitProperties()
 	}
 
 	// the local backend does not require configuration
-	if (TracerServiceIdentifier == "Local")
+	if (TracerServiceIdentifier == TbSimpleLocalBackendIdentifier)
 	{
 		return;
 	}
@@ -45,6 +45,6 @@ void UTbSimpleSettings::PostInitProperties()
 	if (!AGCM->DoesConnectionExist(TracerServiceIdentifier))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("UTbSimpleSettings could not find connection %s, falling back to local backend."), *TracerServiceIdentifier);
-		TracerServiceIdentifier = "Local";
+		TracerServiceIdentifier = TbSimpleLocalBackendIdentifier;
 	}
 }

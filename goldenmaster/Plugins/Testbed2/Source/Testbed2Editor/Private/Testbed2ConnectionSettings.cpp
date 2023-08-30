@@ -2,6 +2,7 @@
 #include "Testbed2ConnectionSettings.h"
 
 #include "ApiGearSettings.h"
+#include "Testbed2Settings.h"
 #include "Templates/SharedPointer.h"
 #include "IDetailCustomization.h"
 #include "PropertyHandle.h"
@@ -32,7 +33,7 @@ TSharedRef<SWidget> FTestbed2ConnectionSettingsDetails::MakeDefaultBackendServic
 	TArray<TSharedPtr<FText>>* AvailableServicesNames = &AvailableServices;
 	FText TooltipText = FText::FromString(TEXT("Choose which service should be used as default."));
 
-	TSharedPtr<FText> LocalServiceName = TSharedPtr<FText>(new FText(FText::FromString(TEXT("Local"))));
+	TSharedPtr<FText> LocalServiceName = TSharedPtr<FText>(new FText(FText::FromString(Testbed2LocalBackendIdentifier)));
 	AvailableServicesNames->Add(LocalServiceName);
 	SelectedDefaultBackendService = LocalServiceName;
 

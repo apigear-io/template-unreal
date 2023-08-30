@@ -37,7 +37,7 @@ void UTestbed1Settings::PostInitProperties()
 	}
 
 	// the local backend does not require configuration
-	if (TracerServiceIdentifier == "Local")
+	if (TracerServiceIdentifier == Testbed1LocalBackendIdentifier)
 	{
 		return;
 	}
@@ -45,6 +45,6 @@ void UTestbed1Settings::PostInitProperties()
 	if (!AGCM->DoesConnectionExist(TracerServiceIdentifier))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("UTestbed1Settings could not find connection %s, falling back to local backend."), *TracerServiceIdentifier);
-		TracerServiceIdentifier = "Local";
+		TracerServiceIdentifier = Testbed1LocalBackendIdentifier;
 	}
 }

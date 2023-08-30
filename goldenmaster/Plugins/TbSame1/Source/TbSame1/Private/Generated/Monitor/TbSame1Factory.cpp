@@ -17,6 +17,7 @@ limitations under the License.
 
 #include "TbSame1Factory.h"
 #include "ApiGearSettings.h"
+#include "TbSame1Settings.h"
 #include "Implementation/TbSame1SameStruct1Interface.h"
 #include "Generated/OLink/TbSame1SameStruct1InterfaceOLinkClient.h"
 #include "Implementation/TbSame1SameStruct2Interface.h"
@@ -80,7 +81,7 @@ TScriptInterface<ITbSame1SameStruct1InterfaceInterface> FTbSame1ModuleFactory::c
 {
 	UTbSame1Settings* TbSame1Settings = GetMutableDefault<UTbSame1Settings>();
 
-	if (TbSame1Settings->TracerServiceIdentifier == "Local")
+	if (TbSame1Settings->TracerServiceIdentifier == TbSame1LocalBackendIdentifier)
 	{
 		return createTbSame1SameStruct1Interface(GameInstance, Collection);
 	}
@@ -128,7 +129,7 @@ TScriptInterface<ITbSame1SameStruct1InterfaceInterface> FTbSame1ModuleFactory::c
 {
 	UTbSame1Settings* TbSame1Settings = GetMutableDefault<UTbSame1Settings>();
 
-	if (TbSame1Settings->TracerServiceIdentifier == "Local")
+	if (TbSame1Settings->TracerServiceIdentifier == TbSame1LocalBackendIdentifier)
 	{
 		return createTbSame1SameStruct1Interface(Collection);
 	}
@@ -188,7 +189,7 @@ TScriptInterface<ITbSame1SameStruct2InterfaceInterface> FTbSame1ModuleFactory::c
 {
 	UTbSame1Settings* TbSame1Settings = GetMutableDefault<UTbSame1Settings>();
 
-	if (TbSame1Settings->TracerServiceIdentifier == "Local")
+	if (TbSame1Settings->TracerServiceIdentifier == TbSame1LocalBackendIdentifier)
 	{
 		return createTbSame1SameStruct2Interface(GameInstance, Collection);
 	}
@@ -236,7 +237,7 @@ TScriptInterface<ITbSame1SameStruct2InterfaceInterface> FTbSame1ModuleFactory::c
 {
 	UTbSame1Settings* TbSame1Settings = GetMutableDefault<UTbSame1Settings>();
 
-	if (TbSame1Settings->TracerServiceIdentifier == "Local")
+	if (TbSame1Settings->TracerServiceIdentifier == TbSame1LocalBackendIdentifier)
 	{
 		return createTbSame1SameStruct2Interface(Collection);
 	}
@@ -296,7 +297,7 @@ TScriptInterface<ITbSame1SameEnum1InterfaceInterface> FTbSame1ModuleFactory::cre
 {
 	UTbSame1Settings* TbSame1Settings = GetMutableDefault<UTbSame1Settings>();
 
-	if (TbSame1Settings->TracerServiceIdentifier == "Local")
+	if (TbSame1Settings->TracerServiceIdentifier == TbSame1LocalBackendIdentifier)
 	{
 		return createTbSame1SameEnum1Interface(GameInstance, Collection);
 	}
@@ -344,7 +345,7 @@ TScriptInterface<ITbSame1SameEnum1InterfaceInterface> FTbSame1ModuleFactory::cre
 {
 	UTbSame1Settings* TbSame1Settings = GetMutableDefault<UTbSame1Settings>();
 
-	if (TbSame1Settings->TracerServiceIdentifier == "Local")
+	if (TbSame1Settings->TracerServiceIdentifier == TbSame1LocalBackendIdentifier)
 	{
 		return createTbSame1SameEnum1Interface(Collection);
 	}
@@ -404,7 +405,7 @@ TScriptInterface<ITbSame1SameEnum2InterfaceInterface> FTbSame1ModuleFactory::cre
 {
 	UTbSame1Settings* TbSame1Settings = GetMutableDefault<UTbSame1Settings>();
 
-	if (TbSame1Settings->TracerServiceIdentifier == "Local")
+	if (TbSame1Settings->TracerServiceIdentifier == TbSame1LocalBackendIdentifier)
 	{
 		return createTbSame1SameEnum2Interface(GameInstance, Collection);
 	}
@@ -452,7 +453,7 @@ TScriptInterface<ITbSame1SameEnum2InterfaceInterface> FTbSame1ModuleFactory::cre
 {
 	UTbSame1Settings* TbSame1Settings = GetMutableDefault<UTbSame1Settings>();
 
-	if (TbSame1Settings->TracerServiceIdentifier == "Local")
+	if (TbSame1Settings->TracerServiceIdentifier == TbSame1LocalBackendIdentifier)
 	{
 		return createTbSame1SameEnum2Interface(Collection);
 	}

@@ -22,6 +22,8 @@ limitations under the License.
 #include "Engine/EngineTypes.h"
 #include "TbSame1Settings.generated.h"
 
+const FString TbSame1LocalBackendIdentifier = "Local";
+
 /**
  * Implements the settings for the TbSame1 plugin.
  */

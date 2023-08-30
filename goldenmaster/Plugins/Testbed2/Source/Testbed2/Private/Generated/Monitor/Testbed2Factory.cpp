@@ -17,6 +17,7 @@ limitations under the License.
 
 #include "Testbed2Factory.h"
 #include "ApiGearSettings.h"
+#include "Testbed2Settings.h"
 #include "Implementation/Testbed2ManyParamInterface.h"
 #include "Generated/OLink/Testbed2ManyParamInterfaceOLinkClient.h"
 #include "Implementation/Testbed2NestedStruct1Interface.h"
@@ -80,7 +81,7 @@ TScriptInterface<ITestbed2ManyParamInterfaceInterface> FTestbed2ModuleFactory::c
 {
 	UTestbed2Settings* Testbed2Settings = GetMutableDefault<UTestbed2Settings>();
 
-	if (Testbed2Settings->TracerServiceIdentifier == "Local")
+	if (Testbed2Settings->TracerServiceIdentifier == Testbed2LocalBackendIdentifier)
 	{
 		return createTestbed2ManyParamInterface(GameInstance, Collection);
 	}
@@ -128,7 +129,7 @@ TScriptInterface<ITestbed2ManyParamInterfaceInterface> FTestbed2ModuleFactory::c
 {
 	UTestbed2Settings* Testbed2Settings = GetMutableDefault<UTestbed2Settings>();
 
-	if (Testbed2Settings->TracerServiceIdentifier == "Local")
+	if (Testbed2Settings->TracerServiceIdentifier == Testbed2LocalBackendIdentifier)
 	{
 		return createTestbed2ManyParamInterface(Collection);
 	}
@@ -188,7 +189,7 @@ TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> FTestbed2ModuleFactor
 {
 	UTestbed2Settings* Testbed2Settings = GetMutableDefault<UTestbed2Settings>();
 
-	if (Testbed2Settings->TracerServiceIdentifier == "Local")
+	if (Testbed2Settings->TracerServiceIdentifier == Testbed2LocalBackendIdentifier)
 	{
 		return createTestbed2NestedStruct1Interface(GameInstance, Collection);
 	}
@@ -236,7 +237,7 @@ TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> FTestbed2ModuleFactor
 {
 	UTestbed2Settings* Testbed2Settings = GetMutableDefault<UTestbed2Settings>();
 
-	if (Testbed2Settings->TracerServiceIdentifier == "Local")
+	if (Testbed2Settings->TracerServiceIdentifier == Testbed2LocalBackendIdentifier)
 	{
 		return createTestbed2NestedStruct1Interface(Collection);
 	}
@@ -296,7 +297,7 @@ TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> FTestbed2ModuleFactor
 {
 	UTestbed2Settings* Testbed2Settings = GetMutableDefault<UTestbed2Settings>();
 
-	if (Testbed2Settings->TracerServiceIdentifier == "Local")
+	if (Testbed2Settings->TracerServiceIdentifier == Testbed2LocalBackendIdentifier)
 	{
 		return createTestbed2NestedStruct2Interface(GameInstance, Collection);
 	}
@@ -344,7 +345,7 @@ TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> FTestbed2ModuleFactor
 {
 	UTestbed2Settings* Testbed2Settings = GetMutableDefault<UTestbed2Settings>();
 
-	if (Testbed2Settings->TracerServiceIdentifier == "Local")
+	if (Testbed2Settings->TracerServiceIdentifier == Testbed2LocalBackendIdentifier)
 	{
 		return createTestbed2NestedStruct2Interface(Collection);
 	}
@@ -404,7 +405,7 @@ TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> FTestbed2ModuleFactor
 {
 	UTestbed2Settings* Testbed2Settings = GetMutableDefault<UTestbed2Settings>();
 
-	if (Testbed2Settings->TracerServiceIdentifier == "Local")
+	if (Testbed2Settings->TracerServiceIdentifier == Testbed2LocalBackendIdentifier)
 	{
 		return createTestbed2NestedStruct3Interface(GameInstance, Collection);
 	}
@@ -452,7 +453,7 @@ TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> FTestbed2ModuleFactor
 {
 	UTestbed2Settings* Testbed2Settings = GetMutableDefault<UTestbed2Settings>();
 
-	if (Testbed2Settings->TracerServiceIdentifier == "Local")
+	if (Testbed2Settings->TracerServiceIdentifier == Testbed2LocalBackendIdentifier)
 	{
 		return createTestbed2NestedStruct3Interface(Collection);
 	}

@@ -42,7 +42,7 @@ void U{{$ModuleName}}Settings::PostInitProperties()
 	}
 
 	// the local backend does not require configuration
-	if (TracerServiceIdentifier == "Local")
+	if (TracerServiceIdentifier == {{$ModuleName}}LocalBackendIdentifier)
 	{
 		return;
 	}
@@ -50,6 +50,6 @@ void U{{$ModuleName}}Settings::PostInitProperties()
 	if (!AGCM->DoesConnectionExist(TracerServiceIdentifier))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("U{{$ModuleName}}Settings could not find connection %s, falling back to local backend."), *TracerServiceIdentifier);
-		TracerServiceIdentifier = "Local";
+		TracerServiceIdentifier = {{$ModuleName}}LocalBackendIdentifier;
 	}
 }

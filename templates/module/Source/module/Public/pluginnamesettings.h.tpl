@@ -26,6 +26,8 @@ limitations under the License.
 #include "Engine/EngineTypes.h"
 #include "{{$ModuleName}}Settings.generated.h"
 
+const FString {{$ModuleName}}LocalBackendIdentifier = "Local";
+
 /**
  * Implements the settings for the {{$ModuleName}} plugin.
  */

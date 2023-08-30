@@ -22,6 +22,8 @@ limitations under the License.
 #include "Engine/EngineTypes.h"
 #include "TbEnumSettings.generated.h"
 
+const FString TbEnumLocalBackendIdentifier = "Local";
+
 /**
  * Implements the settings for the TbEnum plugin.
  */
