@@ -71,17 +71,14 @@ void FOLinkHostConnection::handleTextMessage(const std::string& msg) const
 	Node->handleMessage(msg);
 }
 
-void FOLinkHostConnection::OnSocketClose(INetworkingWebSocket* InSocket)
+void FOLinkHostConnection::OnSocketClose(INetworkingWebSocket* /* InSocket */)
 {
-	if (Socket == InSocket)
-	{
-		logFunction(ApiGear::ObjectLink::LogLevel::Info, std::string("remote client: closed connection ") + TCHAR_TO_UTF8(*Socket->RemoteEndPoint(true)));
-		ConnectionClosedCallBack.Execute(this);
+	logFunction(ApiGear::ObjectLink::LogLevel::Info, std::string("remote client: closed connection ") + TCHAR_TO_UTF8(*Socket->RemoteEndPoint(true)));
+	ConnectionClosedCallBack.Execute(this);
 
-		// make sure we are not accidentally writing to socket
-		Node->onWrite([](const std::string&) {});
+	// make sure we are not accidentally writing to socket
+	Node->onWrite([](const std::string&) {});
 
-		delete Socket;
-		Socket = nullptr;
-	}
+	delete Socket;
+	Socket = nullptr;
 }

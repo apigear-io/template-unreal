@@ -25,7 +25,7 @@ public:
 
 	/// @brief returns number of currently active connections
 	/// @return number of currently active connections
-	uint32 NumConnections() const;
+	uint32 NumberOfConnections() const;
 
 	/// @brief starts the OLink server on the mentioned port
 	/// @param Port which port the OLink server listen
@@ -48,7 +48,7 @@ private:
 
 	/// @brief callback for when the connection was closed
 	/// removes the connection from the list of currently active connections
-	/// @param Socket unique socket for each connection
+	/// @param Connection unique connection
 	void OnConnectionClose(FOLinkHostConnection* Connection);
 
 	/// @brief function is called internally by the Coreticker and interacts with the libwebsocket

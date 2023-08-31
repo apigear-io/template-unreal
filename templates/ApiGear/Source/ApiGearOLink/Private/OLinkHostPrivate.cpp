@@ -126,7 +126,7 @@ void OLinkHostPrivate::OnConnectionClose(FOLinkHostConnection* Connection)
 		{ return InConnection->IsConnection(Connection); });
 }
 
-uint32 OLinkHostPrivate::NumConnections() const
+uint32 OLinkHostPrivate::NumberOfConnections() const
 {
 	return ClientConnections.Num();
 }
