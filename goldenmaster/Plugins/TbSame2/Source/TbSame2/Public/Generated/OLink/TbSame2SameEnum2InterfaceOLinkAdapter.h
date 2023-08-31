@@ -66,7 +66,6 @@ private:
 	/**
 	holds the olink source interface implementation
 	must be std::shared_ptr since it is expected by the olink protocol implementation
-	therefore we need to hold it as member and cannot easily inherit from the source interface
 	*/
 	std::shared_ptr<class TbSame2SameEnum2InterfaceOLinkSource> Source;
 };
