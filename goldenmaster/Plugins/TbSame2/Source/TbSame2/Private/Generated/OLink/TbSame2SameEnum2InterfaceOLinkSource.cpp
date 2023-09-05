@@ -139,14 +139,14 @@ nlohmann::json TbSame2SameEnum2InterfaceOLinkSource::olinkInvoke(const std::stri
 	const std::string path = Name::getMemberName(methodId);
 	if (path == "func1")
 	{
-		ETbSame2Enum1 Param1 = args.at(0);
+		ETbSame2Enum1 Param1 = args.at(0).get<ETbSame2Enum1>();
 		ETbSame2Enum1 result = BackendService->Execute_Func1(BackendService.GetObject(), Param1);
 		return result;
 	}
 	if (path == "func2")
 	{
-		ETbSame2Enum1 Param1 = args.at(0);
-		ETbSame2Enum2 Param2 = args.at(1);
+		ETbSame2Enum1 Param1 = args.at(0).get<ETbSame2Enum1>();
+		ETbSame2Enum2 Param2 = args.at(1).get<ETbSame2Enum2>();
 		ETbSame2Enum1 result = BackendService->Execute_Func2(BackendService.GetObject(), Param1, Param2);
 		return result;
 	}

@@ -139,14 +139,14 @@ nlohmann::json TbSame2SameStruct2InterfaceOLinkSource::olinkInvoke(const std::st
 	const std::string path = Name::getMemberName(methodId);
 	if (path == "func1")
 	{
-		FTbSame2Struct1 Param1 = args.at(0);
+		FTbSame2Struct1 Param1 = args.at(0).get<FTbSame2Struct1>();
 		FTbSame2Struct1 result = BackendService->Execute_Func1(BackendService.GetObject(), Param1);
 		return result;
 	}
 	if (path == "func2")
 	{
-		FTbSame2Struct1 Param1 = args.at(0);
-		FTbSame2Struct2 Param2 = args.at(1);
+		FTbSame2Struct1 Param1 = args.at(0).get<FTbSame2Struct1>();
+		FTbSame2Struct2 Param2 = args.at(1).get<FTbSame2Struct2>();
 		FTbSame2Struct1 result = BackendService->Execute_Func2(BackendService.GetObject(), Param1, Param2);
 		return result;
 	}

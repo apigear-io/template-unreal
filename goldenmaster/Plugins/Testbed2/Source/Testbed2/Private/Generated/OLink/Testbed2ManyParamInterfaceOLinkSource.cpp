@@ -197,31 +197,31 @@ nlohmann::json Testbed2ManyParamInterfaceOLinkSource::olinkInvoke(const std::str
 	const std::string path = Name::getMemberName(methodId);
 	if (path == "func1")
 	{
-		int32 Param1 = args.at(0);
+		int32 Param1 = args.at(0).get<int32>();
 		int32 result = BackendService->Execute_Func1(BackendService.GetObject(), Param1);
 		return result;
 	}
 	if (path == "func2")
 	{
-		int32 Param1 = args.at(0);
-		int32 Param2 = args.at(1);
+		int32 Param1 = args.at(0).get<int32>();
+		int32 Param2 = args.at(1).get<int32>();
 		int32 result = BackendService->Execute_Func2(BackendService.GetObject(), Param1, Param2);
 		return result;
 	}
 	if (path == "func3")
 	{
-		int32 Param1 = args.at(0);
-		int32 Param2 = args.at(1);
-		int32 Param3 = args.at(2);
+		int32 Param1 = args.at(0).get<int32>();
+		int32 Param2 = args.at(1).get<int32>();
+		int32 Param3 = args.at(2).get<int32>();
 		int32 result = BackendService->Execute_Func3(BackendService.GetObject(), Param1, Param2, Param3);
 		return result;
 	}
 	if (path == "func4")
 	{
-		int32 Param1 = args.at(0);
-		int32 Param2 = args.at(1);
-		int32 Param3 = args.at(2);
-		int32 Param4 = args.at(3);
+		int32 Param1 = args.at(0).get<int32>();
+		int32 Param2 = args.at(1).get<int32>();
+		int32 Param3 = args.at(2).get<int32>();
+		int32 Param4 = args.at(3).get<int32>();
 		int32 result = BackendService->Execute_Func4(BackendService.GetObject(), Param1, Param2, Param3, Param4);
 		return result;
 	}

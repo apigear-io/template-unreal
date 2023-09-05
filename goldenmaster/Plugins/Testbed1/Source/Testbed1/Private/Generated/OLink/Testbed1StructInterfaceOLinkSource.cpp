@@ -197,25 +197,25 @@ nlohmann::json Testbed1StructInterfaceOLinkSource::olinkInvoke(const std::string
 	const std::string path = Name::getMemberName(methodId);
 	if (path == "funcBool")
 	{
-		FTestbed1StructBool ParamBool = args.at(0);
+		FTestbed1StructBool ParamBool = args.at(0).get<FTestbed1StructBool>();
 		FTestbed1StructBool result = BackendService->Execute_FuncBool(BackendService.GetObject(), ParamBool);
 		return result;
 	}
 	if (path == "funcInt")
 	{
-		FTestbed1StructInt ParamInt = args.at(0);
+		FTestbed1StructInt ParamInt = args.at(0).get<FTestbed1StructInt>();
 		FTestbed1StructBool result = BackendService->Execute_FuncInt(BackendService.GetObject(), ParamInt);
 		return result;
 	}
 	if (path == "funcFloat")
 	{
-		FTestbed1StructFloat ParamFloat = args.at(0);
+		FTestbed1StructFloat ParamFloat = args.at(0).get<FTestbed1StructFloat>();
 		FTestbed1StructFloat result = BackendService->Execute_FuncFloat(BackendService.GetObject(), ParamFloat);
 		return result;
 	}
 	if (path == "funcString")
 	{
-		FTestbed1StructString ParamString = args.at(0);
+		FTestbed1StructString ParamString = args.at(0).get<FTestbed1StructString>();
 		FTestbed1StructString result = BackendService->Execute_FuncString(BackendService.GetObject(), ParamString);
 		return result;
 	}

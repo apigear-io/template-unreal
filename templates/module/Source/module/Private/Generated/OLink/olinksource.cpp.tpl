@@ -115,7 +115,7 @@ nlohmann::json {{$Class}}::olinkInvoke(const std::string& methodId, const nlohma
 	if (path == "{{.Name}}")
 	{
 {{- range  $i, $e := .Params }}
-		{{ueType "" .}} {{ueVar "" .}} = args.at({{ $i }});
+		{{ueType "" .}} {{ueVar "" .}} = args.at({{ $i }}).get<{{ueReturn "" .}}>();
 {{- end }}
 {{- if .Return.IsVoid }}
 		BackendService->Execute_{{Camel .Name}}(BackendService.GetObject(){{ if len .Params }}, {{end}}{{ ueVars "" .Params }});

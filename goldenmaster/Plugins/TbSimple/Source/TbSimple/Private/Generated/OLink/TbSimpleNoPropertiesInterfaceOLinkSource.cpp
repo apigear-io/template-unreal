@@ -116,7 +116,7 @@ nlohmann::json TbSimpleNoPropertiesInterfaceOLinkSource::olinkInvoke(const std::
 	}
 	if (path == "funcBool")
 	{
-		bool bParamBool = args.at(0);
+		bool bParamBool = args.at(0).get<bool>();
 		bool result = BackendService->Execute_FuncBool(BackendService.GetObject(), bParamBool);
 		return result;
 	}

@@ -110,7 +110,7 @@ nlohmann::json TbSame1SameEnum1InterfaceOLinkSource::olinkInvoke(const std::stri
 	const std::string path = Name::getMemberName(methodId);
 	if (path == "func1")
 	{
-		ETbSame1Enum1 Param1 = args.at(0);
+		ETbSame1Enum1 Param1 = args.at(0).get<ETbSame1Enum1>();
 		ETbSame1Enum1 result = BackendService->Execute_Func1(BackendService.GetObject(), Param1);
 		return result;
 	}

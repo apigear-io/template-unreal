@@ -197,25 +197,25 @@ nlohmann::json TbEnumEnumInterfaceOLinkSource::olinkInvoke(const std::string& me
 	const std::string path = Name::getMemberName(methodId);
 	if (path == "func0")
 	{
-		ETbEnumEnum0 Param0 = args.at(0);
+		ETbEnumEnum0 Param0 = args.at(0).get<ETbEnumEnum0>();
 		ETbEnumEnum0 result = BackendService->Execute_Func0(BackendService.GetObject(), Param0);
 		return result;
 	}
 	if (path == "func1")
 	{
-		ETbEnumEnum1 Param1 = args.at(0);
+		ETbEnumEnum1 Param1 = args.at(0).get<ETbEnumEnum1>();
 		ETbEnumEnum1 result = BackendService->Execute_Func1(BackendService.GetObject(), Param1);
 		return result;
 	}
 	if (path == "func2")
 	{
-		ETbEnumEnum2 Param2 = args.at(0);
+		ETbEnumEnum2 Param2 = args.at(0).get<ETbEnumEnum2>();
 		ETbEnumEnum2 result = BackendService->Execute_Func2(BackendService.GetObject(), Param2);
 		return result;
 	}
 	if (path == "func3")
 	{
-		ETbEnumEnum3 Param3 = args.at(0);
+		ETbEnumEnum3 Param3 = args.at(0).get<ETbEnumEnum3>();
 		ETbEnumEnum3 result = BackendService->Execute_Func3(BackendService.GetObject(), Param3);
 		return result;
 	}

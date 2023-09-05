@@ -347,49 +347,49 @@ nlohmann::json TbSimpleSimpleInterfaceOLinkSource::olinkInvoke(const std::string
 	}
 	if (path == "funcBool")
 	{
-		bool bParamBool = args.at(0);
+		bool bParamBool = args.at(0).get<bool>();
 		bool result = BackendService->Execute_FuncBool(BackendService.GetObject(), bParamBool);
 		return result;
 	}
 	if (path == "funcInt")
 	{
-		int32 ParamInt = args.at(0);
+		int32 ParamInt = args.at(0).get<int32>();
 		int32 result = BackendService->Execute_FuncInt(BackendService.GetObject(), ParamInt);
 		return result;
 	}
 	if (path == "funcInt32")
 	{
-		int32 ParamInt32 = args.at(0);
+		int32 ParamInt32 = args.at(0).get<int32>();
 		int32 result = BackendService->Execute_FuncInt32(BackendService.GetObject(), ParamInt32);
 		return result;
 	}
 	if (path == "funcInt64")
 	{
-		int64 ParamInt64 = args.at(0);
+		int64 ParamInt64 = args.at(0).get<int64>();
 		int64 result = BackendService->Execute_FuncInt64(BackendService.GetObject(), ParamInt64);
 		return result;
 	}
 	if (path == "funcFloat")
 	{
-		float ParamFloat = args.at(0);
+		float ParamFloat = args.at(0).get<float>();
 		float result = BackendService->Execute_FuncFloat(BackendService.GetObject(), ParamFloat);
 		return result;
 	}
 	if (path == "funcFloat32")
 	{
-		float ParamFloat32 = args.at(0);
+		float ParamFloat32 = args.at(0).get<float>();
 		float result = BackendService->Execute_FuncFloat32(BackendService.GetObject(), ParamFloat32);
 		return result;
 	}
 	if (path == "funcFloat64")
 	{
-		double ParamFloat = args.at(0);
+		double ParamFloat = args.at(0).get<double>();
 		double result = BackendService->Execute_FuncFloat64(BackendService.GetObject(), ParamFloat);
 		return result;
 	}
 	if (path == "funcString")
 	{
-		FString ParamString = args.at(0);
+		FString ParamString = args.at(0).get<FString>();
 		FString result = BackendService->Execute_FuncString(BackendService.GetObject(), ParamString);
 		return result;
 	}

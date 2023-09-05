@@ -313,49 +313,49 @@ nlohmann::json TbSimpleSimpleArrayInterfaceOLinkSource::olinkInvoke(const std::s
 	const std::string path = Name::getMemberName(methodId);
 	if (path == "funcBool")
 	{
-		TArray<bool> ParamBool = args.at(0);
+		TArray<bool> ParamBool = args.at(0).get<TArray<bool>>();
 		TArray<bool> result = BackendService->Execute_FuncBool(BackendService.GetObject(), ParamBool);
 		return result;
 	}
 	if (path == "funcInt")
 	{
-		TArray<int32> ParamInt = args.at(0);
+		TArray<int32> ParamInt = args.at(0).get<TArray<int32>>();
 		TArray<int32> result = BackendService->Execute_FuncInt(BackendService.GetObject(), ParamInt);
 		return result;
 	}
 	if (path == "funcInt32")
 	{
-		TArray<int32> ParamInt32 = args.at(0);
+		TArray<int32> ParamInt32 = args.at(0).get<TArray<int32>>();
 		TArray<int32> result = BackendService->Execute_FuncInt32(BackendService.GetObject(), ParamInt32);
 		return result;
 	}
 	if (path == "funcInt64")
 	{
-		TArray<int64> ParamInt64 = args.at(0);
+		TArray<int64> ParamInt64 = args.at(0).get<TArray<int64>>();
 		TArray<int64> result = BackendService->Execute_FuncInt64(BackendService.GetObject(), ParamInt64);
 		return result;
 	}
 	if (path == "funcFloat")
 	{
-		TArray<float> ParamFloat = args.at(0);
+		TArray<float> ParamFloat = args.at(0).get<TArray<float>>();
 		TArray<float> result = BackendService->Execute_FuncFloat(BackendService.GetObject(), ParamFloat);
 		return result;
 	}
 	if (path == "funcFloat32")
 	{
-		TArray<float> ParamFloat32 = args.at(0);
+		TArray<float> ParamFloat32 = args.at(0).get<TArray<float>>();
 		TArray<float> result = BackendService->Execute_FuncFloat32(BackendService.GetObject(), ParamFloat32);
 		return result;
 	}
 	if (path == "funcFloat64")
 	{
-		TArray<double> ParamFloat = args.at(0);
+		TArray<double> ParamFloat = args.at(0).get<TArray<double>>();
 		TArray<double> result = BackendService->Execute_FuncFloat64(BackendService.GetObject(), ParamFloat);
 		return result;
 	}
 	if (path == "funcString")
 	{
-		TArray<FString> ParamString = args.at(0);
+		TArray<FString> ParamString = args.at(0).get<TArray<FString>>();
 		TArray<FString> result = BackendService->Execute_FuncString(BackendService.GetObject(), ParamString);
 		return result;
 	}

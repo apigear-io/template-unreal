@@ -110,7 +110,7 @@ nlohmann::json Testbed2NestedStruct1InterfaceOLinkSource::olinkInvoke(const std:
 	const std::string path = Name::getMemberName(methodId);
 	if (path == "func1")
 	{
-		FTestbed2NestedStruct1 Param1 = args.at(0);
+		FTestbed2NestedStruct1 Param1 = args.at(0).get<FTestbed2NestedStruct1>();
 		FTestbed2NestedStruct1 result = BackendService->Execute_Func1(BackendService.GetObject(), Param1);
 		return result;
 	}

@@ -168,22 +168,22 @@ nlohmann::json Testbed2NestedStruct3InterfaceOLinkSource::olinkInvoke(const std:
 	const std::string path = Name::getMemberName(methodId);
 	if (path == "func1")
 	{
-		FTestbed2NestedStruct1 Param1 = args.at(0);
+		FTestbed2NestedStruct1 Param1 = args.at(0).get<FTestbed2NestedStruct1>();
 		FTestbed2NestedStruct1 result = BackendService->Execute_Func1(BackendService.GetObject(), Param1);
 		return result;
 	}
 	if (path == "func2")
 	{
-		FTestbed2NestedStruct1 Param1 = args.at(0);
-		FTestbed2NestedStruct2 Param2 = args.at(1);
+		FTestbed2NestedStruct1 Param1 = args.at(0).get<FTestbed2NestedStruct1>();
+		FTestbed2NestedStruct2 Param2 = args.at(1).get<FTestbed2NestedStruct2>();
 		FTestbed2NestedStruct1 result = BackendService->Execute_Func2(BackendService.GetObject(), Param1, Param2);
 		return result;
 	}
 	if (path == "func3")
 	{
-		FTestbed2NestedStruct1 Param1 = args.at(0);
-		FTestbed2NestedStruct2 Param2 = args.at(1);
-		FTestbed2NestedStruct3 Param3 = args.at(2);
+		FTestbed2NestedStruct1 Param1 = args.at(0).get<FTestbed2NestedStruct1>();
+		FTestbed2NestedStruct2 Param2 = args.at(1).get<FTestbed2NestedStruct2>();
+		FTestbed2NestedStruct3 Param3 = args.at(2).get<FTestbed2NestedStruct3>();
 		FTestbed2NestedStruct1 result = BackendService->Execute_Func3(BackendService.GetObject(), Param1, Param2, Param3);
 		return result;
 	}

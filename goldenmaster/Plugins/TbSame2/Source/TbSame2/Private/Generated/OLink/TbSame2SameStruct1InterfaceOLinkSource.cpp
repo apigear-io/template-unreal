@@ -110,7 +110,7 @@ nlohmann::json TbSame2SameStruct1InterfaceOLinkSource::olinkInvoke(const std::st
 	const std::string path = Name::getMemberName(methodId);
 	if (path == "func1")
 	{
-		FTbSame2Struct1 Param1 = args.at(0);
+		FTbSame2Struct1 Param1 = args.at(0).get<FTbSame2Struct1>();
 		FTbSame2Struct1 result = BackendService->Execute_Func1(BackendService.GetObject(), Param1);
 		return result;
 	}
