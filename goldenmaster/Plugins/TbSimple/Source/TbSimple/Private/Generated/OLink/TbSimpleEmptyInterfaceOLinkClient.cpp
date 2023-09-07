@@ -74,7 +74,7 @@ void UTbSimpleEmptyInterfaceOLinkClient::Initialize(FSubsystemCollectionBase& Co
 
 	if (!OLinkConnection.GetInterface())
 	{
-		UE_LOG(LogTbSimpleEmptyInterfaceOLinkClient, Log, TEXT("No valid olink connection for %s, please set during run time"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		UE_LOG(LogTbSimpleEmptyInterfaceOLinkClient, Warning, TEXT("No valid olink connection for the %s client, please set in the ApiGear TbSimple plugin settings or during run time"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return;
 	}
 	UseConnection(OLinkConnection);
