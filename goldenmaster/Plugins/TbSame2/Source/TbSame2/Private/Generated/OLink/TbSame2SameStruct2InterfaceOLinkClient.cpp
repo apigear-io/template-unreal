@@ -88,7 +88,7 @@ void UTbSame2SameStruct2InterfaceOLinkClient::Initialize(FSubsystemCollectionBas
 
 	if (!OLinkConnection.GetInterface())
 	{
-		UE_LOG(LogTbSame2SameStruct2InterfaceOLinkClient, Log, TEXT("No valid olink connection for %s, please set during run time"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		UE_LOG(LogTbSame2SameStruct2InterfaceOLinkClient, Warning, TEXT("No valid olink connection for the %s client, please set in the ApiGear TbSame2 plugin settings or during run time"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return;
 	}
 	UseConnection(OLinkConnection);

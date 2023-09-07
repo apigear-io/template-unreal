@@ -105,17 +105,15 @@ TSharedRef<SWidget> FTbSame1ConnectionSettingsDetails::MakeDefaultOLinkConnectio
 	TArray<TSharedPtr<FText>>* AvailableOLinkConnectionNames = &AvailableOLinkConnections;
 	FText TooltipText = FText::FromString(TEXT("Choose which connection should be used as default. Please make sure to have at least one connection defined."));
 
+	TSharedPtr<FText> PlaceholderText = TSharedPtr<FText>(new FText(FText::FromString("Please select a connection.")));
+	SelectedDefaultOLinkConnection = PlaceholderText;
+
 	for (auto ConnectionSetting : settings->Connections)
 	{
 		if (ConnectionSetting.Value.ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
 		{
 			TSharedPtr<FText> ConnectionName = MakeShared<FText>(FText::FromString(*ConnectionSetting.Key));
 			AvailableOLinkConnectionNames->Add(ConnectionName);
-
-			if (!SelectedDefaultOLinkConnection)
-			{
-				SelectedDefaultOLinkConnection = ConnectionName;
-			}
 		}
 	}
 
@@ -126,7 +124,11 @@ TSharedRef<SWidget> FTbSame1ConnectionSettingsDetails::MakeDefaultOLinkConnectio
 		SelectedDefaultOLinkConnection = CurrentConnectionName;
 	}
 
-	if (!SelectedDefaultOLinkConnection)
+#if (ENGINE_MAJOR_VERSION >= 5)
+	if (settings->Connections.IsEmpty())
+#else
+	if (settings->Connections.Num() == 0)
+#endif
 	{
 		SelectedDefaultOLinkConnection = TSharedPtr<FText>(new FText(FText::FromString(TEXT("Please define a connection in the settings first!"))));
 	}
