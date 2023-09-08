@@ -2,6 +2,8 @@
 #include "ApiGearConnectionsStore.h"
 #include "ApiGearSettings.h"
 
+DEFINE_LOG_CATEGORY(LogApiGearConnectionsStore);
+
 TMap<FString, UApiGearConnectionsStore::FConnectionFactoryFunction> UApiGearConnectionsStore::Factories{};
 
 UApiGearConnectionsStore::UApiGearConnectionsStore()
@@ -12,7 +14,7 @@ bool UApiGearConnectionsStore::RegisterConnectionFactory(FString ConnectionTypeI
 {
 	if (Factories.Contains(ConnectionTypeIdentifier))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UApiGearConnectionsStore register connection factory: %s - already registered"), *ConnectionTypeIdentifier);
+		UE_LOG(LogApiGearConnectionsStore, Warning, TEXT("Register connection factory: %s - already registered"), *ConnectionTypeIdentifier);
 		return false;
 	}
 
@@ -29,7 +31,7 @@ void UApiGearConnectionsStore::Initialize(FSubsystemCollectionBase& Collection)
 	{
 		if (!Factories.Contains(ConnectionSetting.Value.ProtocolIdentifier))
 		{
-			UE_LOG(LogTemp, Warning, TEXT("No factory to create connection type: %s"), *ConnectionSetting.Value.ProtocolIdentifier);
+			UE_LOG(LogApiGearConnectionsStore, Warning, TEXT("No factory to create connection type: %s"), *ConnectionSetting.Value.ProtocolIdentifier);
 			continue;
 		}
 
@@ -94,12 +96,6 @@ TMap<FString, TScriptInterface<IApiGearConnection>> UApiGearConnectionsStore::Ge
 
 bool UApiGearConnectionsStore::AddConnection(TScriptInterface<IApiGearConnection> Connection)
 {
-	if (DoesConnectionExist(Connection->GetUniqueEndpointIdentifier()))
-	{
-		return false;
-	}
-
-	UE_LOG(LogTemp, Log, TEXT("UApiGearConnectionsStore add connection: %s"), *Connection.GetObject()->GetName());
 	Connections.Add(Connection->GetUniqueEndpointIdentifier(), Connection);
 
 	return true;
@@ -109,7 +105,7 @@ bool UApiGearConnectionsStore::AddConnection(FString UniqueEndpointIdentifier, T
 {
 	if (DoesConnectionExist(UniqueEndpointIdentifier))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UApiGearConnectionsStore: Cannot add connection, please choose a different name than \"%s\". "), *UniqueEndpointIdentifier);
+		UE_LOG(LogApiGearConnectionsStore, Warning, TEXT("Cannot add connection, connection with the same name as \"%s\" already exists."), *UniqueEndpointIdentifier);
 		return false;
 	}
 
@@ -123,10 +119,9 @@ bool UApiGearConnectionsStore::RemoveConnection(FString UniqueEndpointIdentifier
 {
 	if (!DoesConnectionExist(UniqueEndpointIdentifier))
 	{
+		UE_LOG(LogApiGearConnectionsStore, Log, TEXT("Cannot remove connection, no connection with name %s registered."), *UniqueEndpointIdentifier);
 		return false;
 	}
-
-	UE_LOG(LogTemp, Log, TEXT("UApiGearConnectionsStore remove connection: %s"), *Connections[UniqueEndpointIdentifier].GetObject()->GetName());
 
 	Connections.Remove(UniqueEndpointIdentifier);
 
