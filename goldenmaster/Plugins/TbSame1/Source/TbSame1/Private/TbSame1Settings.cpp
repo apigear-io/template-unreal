@@ -15,6 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbSame1Settings.h"
+#include "Generated/TbSame1LogCategories.h"
 #include "ApiGearConnectionsStore.h"
 #include "Engine/Engine.h"
 #include "Misc/CoreDelegates.h"
@@ -32,7 +33,7 @@ void UTbSame1Settings::ValidateSettingsPostEngineInit()
 
 	if (!AGCM->DoesConnectionExist(OLinkConnectionIdentifier))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UTbSame1Settings could not find connection %s."), *OLinkConnectionIdentifier);
+		UE_LOG(LogTbSame1, Warning, TEXT("UTbSame1Settings could not find connection %s."), *OLinkConnectionIdentifier);
 		OLinkConnectionIdentifier = "";
 	}
 
@@ -44,7 +45,7 @@ void UTbSame1Settings::ValidateSettingsPostEngineInit()
 
 	if (!AGCM->DoesConnectionExist(TracerServiceIdentifier))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UTbSame1Settings could not find connection %s, falling back to local backend."), *TracerServiceIdentifier);
+		UE_LOG(LogTbSame1, Warning, TEXT("UTbSame1Settings could not find connection %s, falling back to local backend."), *TracerServiceIdentifier);
 		TracerServiceIdentifier = TbSame1LocalBackendIdentifier;
 	}
 }

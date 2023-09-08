@@ -20,6 +20,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "{{$ModuleName}}Settings.h"
+#include "Generated/{{$ModuleName}}LogCategories.h"
 #include "ApiGearConnectionsStore.h"
 #include "Engine/Engine.h"
 #include "Misc/CoreDelegates.h"
@@ -37,7 +38,7 @@ void U{{$ModuleName}}Settings::ValidateSettingsPostEngineInit()
 
 	if (!AGCM->DoesConnectionExist(OLinkConnectionIdentifier))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("U{{$ModuleName}}Settings could not find connection %s."), *OLinkConnectionIdentifier);
+		UE_LOG(Log{{$ModuleName}}, Warning, TEXT("U{{$ModuleName}}Settings could not find connection %s."), *OLinkConnectionIdentifier);
 		OLinkConnectionIdentifier = "";
 	}
 
@@ -49,7 +50,7 @@ void U{{$ModuleName}}Settings::ValidateSettingsPostEngineInit()
 
 	if (!AGCM->DoesConnectionExist(TracerServiceIdentifier))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("U{{$ModuleName}}Settings could not find connection %s, falling back to local backend."), *TracerServiceIdentifier);
+		UE_LOG(Log{{$ModuleName}}, Warning, TEXT("U{{$ModuleName}}Settings could not find connection %s, falling back to local backend."), *TracerServiceIdentifier);
 		TracerServiceIdentifier = {{$ModuleName}}LocalBackendIdentifier;
 	}
 }
