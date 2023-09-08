@@ -6,7 +6,11 @@ public class TbSame1 : ModuleRules
 	public TbSame1(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
-		bEnforceIWYU = true;
+		#if UE_5_2_OR_LATER 
+			IWYUSupport = IWYUSupport.Full;
+		#else
+			bEnforceIWYU = true;
+		#endif
 
 		// Disable nlohmann::json exception handling
 		PublicDefinitions.Add("JSON_NOEXCEPTION=1");

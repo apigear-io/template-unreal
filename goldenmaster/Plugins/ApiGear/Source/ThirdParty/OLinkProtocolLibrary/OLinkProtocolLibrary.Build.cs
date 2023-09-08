@@ -11,7 +11,11 @@ public class OLinkProtocolLibrary : ModuleRules
 		bRequiresImplementModule = false;
 
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
-		bEnforceIWYU = true;
+		#if UE_5_2_OR_LATER 
+			IWYUSupport = IWYUSupport.Full;
+		#else
+			bEnforceIWYU = true;
+		#endif
 
 		// Disable nlohmann::json exception handling
 		PublicDefinitions.Add("JSON_NOEXCEPTION=1");
