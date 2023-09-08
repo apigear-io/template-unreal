@@ -20,12 +20,12 @@
 		{
 			"Name": "Testbed2",
 			"Type": "Runtime",
-			"LoadingPhase": "PostEngineInit"
+			"LoadingPhase": "default"
 		},
 		{
 			"Name" : "Testbed2Editor",
 			"Type" : "Editor",
-			"LoadingPhase" : "PostEngineInit",
+			"LoadingPhase" : "default",
 			"WhitelistPlatforms" : [ "Win64", "Mac", "Linux" ]
 		}
 	],

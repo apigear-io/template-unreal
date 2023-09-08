@@ -17,16 +17,16 @@ limitations under the License.
 #include "TbSame1Settings.h"
 #include "ApiGearConnectionsStore.h"
 #include "Engine/Engine.h"
+#include "Misc/CoreDelegates.h"
 
 UTbSame1Settings::UTbSame1Settings(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
+	FCoreDelegates::OnPostEngineInit.AddUObject(this, &UTbSame1Settings::ValidateSettingsPostEngineInit);
 }
 
-void UTbSame1Settings::PostInitProperties()
+void UTbSame1Settings::ValidateSettingsPostEngineInit()
 {
-	Super::PostInitProperties();
-
 	check(GEngine);
 	UApiGearConnectionsStore* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionsStore>();
 
