@@ -13,6 +13,12 @@ features:
           - source: "module/Source/module/Private/Generated/api/data.cpp.tpl"
             target: "Private/Generated/api/{{Camel .Module.Name}}_data.cpp"
             force: true
+          - source: "module/Source/module/Private/Generated/LogCategories.h.tpl"
+            target: "Private/Generated/{{Camel .Module.Name}}LogCategories.h"
+            force: true
+          - source: "module/Source/module/Private/Generated/LogCategories.cpp.tpl"
+            target: "Private/Generated/{{Camel .Module.Name}}LogCategories.cpp"
+            force: true
       - match: interface
         prefix: "Plugins/{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}/"
         documents:
