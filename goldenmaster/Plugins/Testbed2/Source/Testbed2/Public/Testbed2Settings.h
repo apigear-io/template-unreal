@@ -32,7 +32,8 @@ class TESTBED2_API UTestbed2Settings : public UObject
 {
 	GENERATED_UCLASS_BODY()
 
-	virtual void PostInitProperties() override;
+	// Callback used to validate the settings once the engine is available
+	void ValidateSettingsPostEngineInit();
 
 	// Choose the backend service for the logging decorator to use
 	UPROPERTY(EditAnywhere, config, Category = TracerServiceSetup)

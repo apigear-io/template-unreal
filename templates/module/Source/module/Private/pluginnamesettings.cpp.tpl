@@ -22,16 +22,16 @@ limitations under the License.
 #include "{{$ModuleName}}Settings.h"
 #include "ApiGearConnectionsStore.h"
 #include "Engine/Engine.h"
+#include "Misc/CoreDelegates.h"
 
 U{{$ModuleName}}Settings::U{{$ModuleName}}Settings(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
+	FCoreDelegates::OnPostEngineInit.AddUObject(this, &U{{$ModuleName}}Settings::ValidateSettingsPostEngineInit);
 }
 
-void U{{$ModuleName}}Settings::PostInitProperties()
+void U{{$ModuleName}}Settings::ValidateSettingsPostEngineInit()
 {
-	Super::PostInitProperties();
-
 	check(GEngine);
 	UApiGearConnectionsStore* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionsStore>();
 

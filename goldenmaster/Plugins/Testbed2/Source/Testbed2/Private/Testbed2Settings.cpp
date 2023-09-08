@@ -17,16 +17,16 @@ limitations under the License.
 #include "Testbed2Settings.h"
 #include "ApiGearConnectionsStore.h"
 #include "Engine/Engine.h"
+#include "Misc/CoreDelegates.h"
 
 UTestbed2Settings::UTestbed2Settings(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
+	FCoreDelegates::OnPostEngineInit.AddUObject(this, &UTestbed2Settings::ValidateSettingsPostEngineInit);
 }
 
-void UTestbed2Settings::PostInitProperties()
+void UTestbed2Settings::ValidateSettingsPostEngineInit()
 {
-	Super::PostInitProperties();
-
 	check(GEngine);
 	UApiGearConnectionsStore* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionsStore>();
 
