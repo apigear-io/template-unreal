@@ -15,6 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbSimpleSettings.h"
+#include "Generated/TbSimpleLogCategories.h"
 #include "ApiGearConnectionsStore.h"
 #include "Engine/Engine.h"
 #include "Misc/CoreDelegates.h"
@@ -32,7 +33,7 @@ void UTbSimpleSettings::ValidateSettingsPostEngineInit()
 
 	if (!AGCM->DoesConnectionExist(OLinkConnectionIdentifier))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UTbSimpleSettings could not find connection %s."), *OLinkConnectionIdentifier);
+		UE_LOG(LogTbSimple, Warning, TEXT("UTbSimpleSettings could not find connection %s."), *OLinkConnectionIdentifier);
 		OLinkConnectionIdentifier = "";
 	}
 
@@ -44,7 +45,7 @@ void UTbSimpleSettings::ValidateSettingsPostEngineInit()
 
 	if (!AGCM->DoesConnectionExist(TracerServiceIdentifier))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UTbSimpleSettings could not find connection %s, falling back to local backend."), *TracerServiceIdentifier);
+		UE_LOG(LogTbSimple, Warning, TEXT("UTbSimpleSettings could not find connection %s, falling back to local backend."), *TracerServiceIdentifier);
 		TracerServiceIdentifier = TbSimpleLocalBackendIdentifier;
 	}
 }
