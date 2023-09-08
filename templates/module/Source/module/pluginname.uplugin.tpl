@@ -23,12 +23,12 @@
 		{
 			"Name": "{{$ModuleName}}",
 			"Type": "Runtime",
-			"LoadingPhase": "PostEngineInit"
+			"LoadingPhase": "default"
 		},
 		{
 			"Name" : "{{$ModuleName}}Editor",
 			"Type" : "Editor",
-			"LoadingPhase" : "PostEngineInit",
+			"LoadingPhase" : "default",
 			"WhitelistPlatforms" : [ "Win64", "Mac", "Linux" ]
 		}
 	]

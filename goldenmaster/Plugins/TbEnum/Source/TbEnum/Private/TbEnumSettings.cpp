@@ -17,16 +17,16 @@ limitations under the License.
 #include "TbEnumSettings.h"
 #include "ApiGearConnectionsStore.h"
 #include "Engine/Engine.h"
+#include "Misc/CoreDelegates.h"
 
 UTbEnumSettings::UTbEnumSettings(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
+	FCoreDelegates::OnPostEngineInit.AddUObject(this, &UTbEnumSettings::ValidateSettingsPostEngineInit);
 }
 
-void UTbEnumSettings::PostInitProperties()
+void UTbEnumSettings::ValidateSettingsPostEngineInit()
 {
-	Super::PostInitProperties();
-
 	check(GEngine);
 	UApiGearConnectionsStore* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionsStore>();
 
