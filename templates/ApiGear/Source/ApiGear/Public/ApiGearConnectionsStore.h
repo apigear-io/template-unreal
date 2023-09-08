@@ -10,6 +10,8 @@
 #include "ApiGearConnection.h"
 #include "ApiGearConnectionsStore.generated.h"
 
+APIGEAR_API DECLARE_LOG_CATEGORY_EXTERN(LogApiGearConnectionsStore, Log, All);
+
 /**
  * Implements the connections store for the ApiGear plugin.
  * 
@@ -35,32 +37,32 @@ public:
 	void Initialize(FSubsystemCollectionBase& Collection) override;
 	void Deinitialize() override;
 
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection")
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|ConnectionsStore")
 	TScriptInterface<IApiGearConnection> GetConnection(FString UniqueEndpointIdentifier) const;
 
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection")
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|ConnectionsStore")
 	TMap<FString, TScriptInterface<IApiGearConnection>> GetConnections() const;
 
 	bool AddConnection(TScriptInterface<IApiGearConnection> Connection);
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection")
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|ConnectionsStore")
 	bool AddConnection(FString UniqueEndpointIdentifier, TScriptInterface<IApiGearConnection> Connection);
 
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection")
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|ConnectionsStore")
 	bool RemoveConnection(FString UniqueEndpointIdentifier);
 
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection")
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|ConnectionsStore")
 	bool DoesConnectionExist(FString UniqueEndpointIdentifier) const;
 
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection")
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|ConnectionsStore")
 	void ConnectAll() const;
 
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection")
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|ConnectionsStore")
 	void DisconnectAll() const;
 
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection")
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|ConnectionsStore")
 	TArray<FString> GetAvailableProtocols() const;
 
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection")
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|ConnectionsStore")
 	void OverwriteAndSaveConnectionsToSettings() const;
 
 private:
