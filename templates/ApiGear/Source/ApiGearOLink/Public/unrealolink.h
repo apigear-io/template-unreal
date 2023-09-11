@@ -30,7 +30,7 @@ public:
 	void Configure(FString InServerURL, bool bInAutoReconnectEnabled) override;
 
 	void log(const FString& logMessage);
-	void handleTextMessage(const FString& message);
+	void handleTextMessage(const std::string& message);
 
 	void linkObjectSource(const std::string& name);
 	void unlinkObjectSource(const std::string& name);
