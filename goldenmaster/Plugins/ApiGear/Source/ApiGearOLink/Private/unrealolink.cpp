@@ -150,21 +150,21 @@ void UUnrealOLink::open(const FString& url)
 			[this](const FString& Message) -> void
 			{
 				// This code will run when we receive a string message from the server.
-				handleTextMessage(Message);
+				handleTextMessage(TCHAR_TO_UTF8(*Message));
 			});
 
 		m_socket->OnBinaryMessage().AddLambda(
 			[this](const void* Data, SIZE_T Size, bool /* bIsLastFragment */) -> void
 			{
 				// we assume the incoming binary message is actually text
-				handleTextMessage(FString(std::string((uint8*)Data, (uint8*)Data + Size).c_str()));
+				handleTextMessage(std::string((uint8*)Data, (uint8*)Data + Size));
 			});
 #else
 		m_socket->OnRawMessage().AddLambda(
 			[this](const void* Data, SIZE_T Size, SIZE_T /* BytesRemaining */) -> void
 			{
 				// we assume the incoming raw message is actually text
-				handleTextMessage(FString(std::string((uint8*)Data, (uint8*)Data + Size).c_str()));
+				handleTextMessage(std::string((uint8*)Data, (uint8*)Data + Size));
 			});
 #endif
 	}
@@ -206,9 +206,9 @@ FString UUnrealOLink::GetUniqueEndpointIdentifier() const
 	return GetName();
 }
 
-void UUnrealOLink::handleTextMessage(const FString& message)
+void UUnrealOLink::handleTextMessage(const std::string& message)
 {
-	m_node->handleMessage(TCHAR_TO_UTF8(*message));
+	m_node->handleMessage(message);
 }
 
 void UUnrealOLink::linkObjectSource(const std::string& name)
