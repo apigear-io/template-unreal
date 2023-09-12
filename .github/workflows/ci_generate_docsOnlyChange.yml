@@ -5,7 +5,7 @@ name: Technology Template Goldenmaster Test
 
 on:
   pull_request:
-    branches: [main]
+    branches: [maintenance/v2.x]
     paths:
       - 'docs/**'
 
