@@ -1,7 +1,7 @@
 name: Test docs
 on:
   push:
-    branches: [main]
+    branches: [maintenance/v2.x]
     paths:
       - 'docs/**'
 
