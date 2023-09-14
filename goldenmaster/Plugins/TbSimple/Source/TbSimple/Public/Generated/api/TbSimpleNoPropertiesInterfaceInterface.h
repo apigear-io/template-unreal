@@ -48,21 +48,21 @@ class TBSIMPLE_API ITbSimpleNoPropertiesInterfaceInterface
 
 public:
 	// signals
-	UFUNCTION(Category = "ApiGear|TbSimple|NoPropertiesInterface")
+	UFUNCTION(Category = "ApiGear|TbSimple|NoPropertiesInterface|Signals")
 	virtual FTbSimpleNoPropertiesInterfaceSigVoidDelegate& GetSigVoidSignalDelegate() = 0;
 
-	UFUNCTION(Category = "ApiGear|TbSimple|NoPropertiesInterface")
+	UFUNCTION(Category = "ApiGear|TbSimple|NoPropertiesInterface|Signals")
 	virtual FTbSimpleNoPropertiesInterfaceSigBoolDelegate& GetSigBoolSignalDelegate() = 0;
 
 	// methods
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoPropertiesInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoPropertiesInterface|Operations")
 	void FuncVoid();
 	virtual void FuncVoid_Implementation() = 0;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoPropertiesInterface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoPropertiesInterface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void FuncBoolAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool);
 	virtual void FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool) = 0;
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoPropertiesInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoPropertiesInterface|Operations")
 	bool FuncBool(bool bParamBool);
 	virtual bool FuncBool_Implementation(bool bParamBool) = 0;
 
@@ -70,11 +70,11 @@ public:
 
 protected:
 	// signals
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoPropertiesInterface", meta = (BlueprintProtected = "true"))
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoPropertiesInterface|Signals", meta = (BlueprintProtected = "true"))
 	void BroadcastSigVoid();
 	virtual void BroadcastSigVoid_Implementation() = 0;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoPropertiesInterface", meta = (BlueprintProtected = "true"))
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoPropertiesInterface|Signals", meta = (BlueprintProtected = "true"))
 	void BroadcastSigBool(bool bParamBool);
 	virtual void BroadcastSigBool_Implementation(bool bParamBool) = 0;
 };

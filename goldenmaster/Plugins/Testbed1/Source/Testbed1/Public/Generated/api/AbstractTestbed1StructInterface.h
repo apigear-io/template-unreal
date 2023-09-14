@@ -35,35 +35,35 @@ public:
 	virtual void Deinitialize() override;
 
 	// signals
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface", DisplayName = "SigBool Signal")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface|Signals", DisplayName = "SigBool Signal")
 	FTestbed1StructInterfaceSigBoolDelegate SigBoolSignal;
 	virtual FTestbed1StructInterfaceSigBoolDelegate& GetSigBoolSignalDelegate() override;
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface", DisplayName = "SigInt Signal")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface|Signals", DisplayName = "SigInt Signal")
 	FTestbed1StructInterfaceSigIntDelegate SigIntSignal;
 	virtual FTestbed1StructInterfaceSigIntDelegate& GetSigIntSignalDelegate() override;
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface", DisplayName = "SigFloat Signal")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface|Signals", DisplayName = "SigFloat Signal")
 	FTestbed1StructInterfaceSigFloatDelegate SigFloatSignal;
 	virtual FTestbed1StructInterfaceSigFloatDelegate& GetSigFloatSignalDelegate() override;
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface", DisplayName = "SigString Signal")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface|Signals", DisplayName = "SigString Signal")
 	FTestbed1StructInterfaceSigStringDelegate SigStringSignal;
 	virtual FTestbed1StructInterfaceSigStringDelegate& GetSigStringSignalDelegate() override;
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface", DisplayName = "PropBool Changed")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface|Signals", DisplayName = "PropBool Changed")
 	FTestbed1StructInterfacePropBoolChangedDelegate PropBoolChanged;
 	virtual FTestbed1StructInterfacePropBoolChangedDelegate& GetPropBoolChangedDelegate() override;
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface", DisplayName = "PropInt Changed")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface|Signals", DisplayName = "PropInt Changed")
 	FTestbed1StructInterfacePropIntChangedDelegate PropIntChanged;
 	virtual FTestbed1StructInterfacePropIntChangedDelegate& GetPropIntChangedDelegate() override;
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface", DisplayName = "PropFloat Changed")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface|Signals", DisplayName = "PropFloat Changed")
 	FTestbed1StructInterfacePropFloatChangedDelegate PropFloatChanged;
 	virtual FTestbed1StructInterfacePropFloatChangedDelegate& GetPropFloatChangedDelegate() override;
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface", DisplayName = "PropString Changed")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface|Signals", DisplayName = "PropString Changed")
 	FTestbed1StructInterfacePropStringChangedDelegate PropStringChanged;
 	virtual FTestbed1StructInterfacePropStringChangedDelegate& GetPropStringChangedDelegate() override;
 
@@ -118,36 +118,36 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropBool_Private, BlueprintSetter = SetPropBool_Private, Category = "ApiGear|Testbed1|StructInterface")
 	FTestbed1StructBool PropBool{FTestbed1StructBool()};
 
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed1|StructInterface|Properties", BlueprintInternalUseOnly)
 	FTestbed1StructBool GetPropBool_Private() const;
 
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed1|StructInterface|Properties", BlueprintInternalUseOnly)
 	void SetPropBool_Private(const FTestbed1StructBool& InPropBool);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropInt_Private, BlueprintSetter = SetPropInt_Private, Category = "ApiGear|Testbed1|StructInterface")
 	FTestbed1StructInt PropInt{FTestbed1StructInt()};
 
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed1|StructInterface|Properties", BlueprintInternalUseOnly)
 	FTestbed1StructInt GetPropInt_Private() const;
 
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed1|StructInterface|Properties", BlueprintInternalUseOnly)
 	void SetPropInt_Private(const FTestbed1StructInt& InPropInt);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropFloat_Private, BlueprintSetter = SetPropFloat_Private, Category = "ApiGear|Testbed1|StructInterface")
 	FTestbed1StructFloat PropFloat{FTestbed1StructFloat()};
 
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed1|StructInterface|Properties", BlueprintInternalUseOnly)
 	FTestbed1StructFloat GetPropFloat_Private() const;
 
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed1|StructInterface|Properties", BlueprintInternalUseOnly)
 	void SetPropFloat_Private(const FTestbed1StructFloat& InPropFloat);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropString_Private, BlueprintSetter = SetPropString_Private, Category = "ApiGear|Testbed1|StructInterface")
 	FTestbed1StructString PropString{FTestbed1StructString()};
 
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed1|StructInterface|Properties", BlueprintInternalUseOnly)
 	FTestbed1StructString GetPropString_Private() const;
 
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed1|StructInterface|Properties", BlueprintInternalUseOnly)
 	void SetPropString_Private(const FTestbed1StructString& InPropString);
 };

@@ -45,14 +45,14 @@ public:
 	// signals
 {{- range $i, $e := .Signals }}
 	{{- if $i }}{{nl}}{{ end }}
-	UPROPERTY(BlueprintAssignable, Category = "{{$Category}}", DisplayName = "{{Camel .Name}} Signal")
+	UPROPERTY(BlueprintAssignable, Category = "{{$Category}}|Signals", DisplayName = "{{Camel .Name}} Signal")
 	F{{$Iface}}{{Camel .Name}}Delegate {{Camel .Name}}Signal;
 	virtual F{{$Class}}{{Camel .Name}}Delegate& Get{{Camel .Name}}SignalDelegate() override;
 {{- end }}
 {{- if len .Properties }}{{ nl }}{{ end }}
 {{- range $i, $e := .Properties }}
 	{{- if $i }}{{nl}}{{ end }}
-	UPROPERTY(BlueprintAssignable, Category = "{{$Category}}", DisplayName = "{{Camel .Name}} Changed")
+	UPROPERTY(BlueprintAssignable, Category = "{{$Category}}|Signals", DisplayName = "{{Camel .Name}} Changed")
 	F{{$Iface}}{{Camel .Name}}ChangedDelegate {{Camel .Name}}Changed;
 	virtual F{{$Class}}{{Camel .Name}}ChangedDelegate& Get{{Camel .Name}}ChangedDelegate() override;
 {{- end }}
@@ -100,10 +100,10 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintGetter = Get{{Camel .Name}}_Private, {{ if not .IsReadOnly -}} BlueprintSetter = Set{{Camel .Name}}_Private, {{ end }}Category = "{{$Category}}")
 	{{ueReturn "" .}} {{ueVar "" .}}{ {{- ueDefault "" . -}} };
 
-	UFUNCTION(BlueprintGetter, Category = "{{$Category}}", BlueprintInternalUseOnly)
+	UFUNCTION(BlueprintGetter, Category = "{{$Category}}|Properties", BlueprintInternalUseOnly)
 	{{ueReturn "" .}} Get{{Camel .Name}}_Private() const;
 {{- if not .IsReadOnly }}{{nl}}
-	UFUNCTION(BlueprintSetter, Category = "{{$Category}}", BlueprintInternalUseOnly)
+	UFUNCTION(BlueprintSetter, Category = "{{$Category}}|Properties", BlueprintInternalUseOnly)
 	void Set{{Camel .Name}}_Private({{ueParam "In" .}});
 {{- end }}
 {{- end }}

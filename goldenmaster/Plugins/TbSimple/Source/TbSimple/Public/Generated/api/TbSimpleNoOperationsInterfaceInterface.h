@@ -52,50 +52,50 @@ class TBSIMPLE_API ITbSimpleNoOperationsInterfaceInterface
 
 public:
 	// signals
-	UFUNCTION(Category = "ApiGear|TbSimple|NoOperationsInterface")
+	UFUNCTION(Category = "ApiGear|TbSimple|NoOperationsInterface|Signals")
 	virtual FTbSimpleNoOperationsInterfaceSigVoidDelegate& GetSigVoidSignalDelegate() = 0;
 
-	UFUNCTION(Category = "ApiGear|TbSimple|NoOperationsInterface")
+	UFUNCTION(Category = "ApiGear|TbSimple|NoOperationsInterface|Signals")
 	virtual FTbSimpleNoOperationsInterfaceSigBoolDelegate& GetSigBoolSignalDelegate() = 0;
 
-	UFUNCTION(Category = "ApiGear|TbSimple|NoOperationsInterface")
+	UFUNCTION(Category = "ApiGear|TbSimple|NoOperationsInterface|Signals")
 	virtual FTbSimpleNoOperationsInterfacePropBoolChangedDelegate& GetPropBoolChangedDelegate() = 0;
 
-	UFUNCTION(Category = "ApiGear|TbSimple|NoOperationsInterface")
+	UFUNCTION(Category = "ApiGear|TbSimple|NoOperationsInterface|Signals")
 	virtual FTbSimpleNoOperationsInterfacePropIntChangedDelegate& GetPropIntChangedDelegate() = 0;
 
 	// methods
 
 	// properties
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoOperationsInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoOperationsInterface|Properties")
 	bool GetPropBool() const;
 	virtual bool GetPropBool_Implementation() const = 0;
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoOperationsInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoOperationsInterface|Properties")
 	void SetPropBool(bool bInPropBool);
 	virtual void SetPropBool_Implementation(bool bInPropBool) = 0;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoOperationsInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoOperationsInterface|Properties")
 	int32 GetPropInt() const;
 	virtual int32 GetPropInt_Implementation() const = 0;
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoOperationsInterface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoOperationsInterface|Properties")
 	void SetPropInt(int32 InPropInt);
 	virtual void SetPropInt_Implementation(int32 InPropInt) = 0;
 
 protected:
 	// signals
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoOperationsInterface", meta = (BlueprintProtected = "true"))
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoOperationsInterface|Signals", meta = (BlueprintProtected = "true"))
 	void BroadcastSigVoid();
 	virtual void BroadcastSigVoid_Implementation() = 0;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoOperationsInterface", meta = (BlueprintProtected = "true"))
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoOperationsInterface|Signals", meta = (BlueprintProtected = "true"))
 	void BroadcastSigBool(bool bParamBool);
 	virtual void BroadcastSigBool_Implementation(bool bParamBool) = 0;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoOperationsInterface", meta = (BlueprintProtected = "true"))
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoOperationsInterface|Signals", meta = (BlueprintProtected = "true"))
 	void BroadcastPropBoolChanged(bool bPropBool);
 	virtual void BroadcastPropBoolChanged_Implementation(bool bPropBool) = 0;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoOperationsInterface", meta = (BlueprintProtected = "true"))
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoOperationsInterface|Signals", meta = (BlueprintProtected = "true"))
 	void BroadcastPropIntChanged(int32 PropInt);
 	virtual void BroadcastPropIntChanged_Implementation(int32 PropInt) = 0;
 };

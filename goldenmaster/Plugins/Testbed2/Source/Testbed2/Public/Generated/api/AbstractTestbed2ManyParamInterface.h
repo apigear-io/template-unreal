@@ -35,35 +35,35 @@ public:
 	virtual void Deinitialize() override;
 
 	// signals
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface", DisplayName = "Sig1 Signal")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Sig1 Signal")
 	FTestbed2ManyParamInterfaceSig1Delegate Sig1Signal;
 	virtual FTestbed2ManyParamInterfaceSig1Delegate& GetSig1SignalDelegate() override;
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface", DisplayName = "Sig2 Signal")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Sig2 Signal")
 	FTestbed2ManyParamInterfaceSig2Delegate Sig2Signal;
 	virtual FTestbed2ManyParamInterfaceSig2Delegate& GetSig2SignalDelegate() override;
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface", DisplayName = "Sig3 Signal")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Sig3 Signal")
 	FTestbed2ManyParamInterfaceSig3Delegate Sig3Signal;
 	virtual FTestbed2ManyParamInterfaceSig3Delegate& GetSig3SignalDelegate() override;
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface", DisplayName = "Sig4 Signal")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Sig4 Signal")
 	FTestbed2ManyParamInterfaceSig4Delegate Sig4Signal;
 	virtual FTestbed2ManyParamInterfaceSig4Delegate& GetSig4SignalDelegate() override;
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface", DisplayName = "Prop1 Changed")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Prop1 Changed")
 	FTestbed2ManyParamInterfaceProp1ChangedDelegate Prop1Changed;
 	virtual FTestbed2ManyParamInterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface", DisplayName = "Prop2 Changed")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Prop2 Changed")
 	FTestbed2ManyParamInterfaceProp2ChangedDelegate Prop2Changed;
 	virtual FTestbed2ManyParamInterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() override;
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface", DisplayName = "Prop3 Changed")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Prop3 Changed")
 	FTestbed2ManyParamInterfaceProp3ChangedDelegate Prop3Changed;
 	virtual FTestbed2ManyParamInterfaceProp3ChangedDelegate& GetProp3ChangedDelegate() override;
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface", DisplayName = "Prop4 Changed")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Prop4 Changed")
 	FTestbed2ManyParamInterfaceProp4ChangedDelegate Prop4Changed;
 	virtual FTestbed2ManyParamInterfaceProp4ChangedDelegate& GetProp4ChangedDelegate() override;
 
@@ -118,36 +118,36 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1_Private, BlueprintSetter = SetProp1_Private, Category = "ApiGear|Testbed2|ManyParamInterface")
 	int32 Prop1{0};
 
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed2|ManyParamInterface|Properties", BlueprintInternalUseOnly)
 	int32 GetProp1_Private() const;
 
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed2|ManyParamInterface|Properties", BlueprintInternalUseOnly)
 	void SetProp1_Private(int32 InProp1);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp2_Private, BlueprintSetter = SetProp2_Private, Category = "ApiGear|Testbed2|ManyParamInterface")
 	int32 Prop2{0};
 
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed2|ManyParamInterface|Properties", BlueprintInternalUseOnly)
 	int32 GetProp2_Private() const;
 
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed2|ManyParamInterface|Properties", BlueprintInternalUseOnly)
 	void SetProp2_Private(int32 InProp2);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp3_Private, BlueprintSetter = SetProp3_Private, Category = "ApiGear|Testbed2|ManyParamInterface")
 	int32 Prop3{0};
 
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed2|ManyParamInterface|Properties", BlueprintInternalUseOnly)
 	int32 GetProp3_Private() const;
 
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed2|ManyParamInterface|Properties", BlueprintInternalUseOnly)
 	void SetProp3_Private(int32 InProp3);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp4_Private, BlueprintSetter = SetProp4_Private, Category = "ApiGear|Testbed2|ManyParamInterface")
 	int32 Prop4{0};
 
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed2|ManyParamInterface|Properties", BlueprintInternalUseOnly)
 	int32 GetProp4_Private() const;
 
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed2|ManyParamInterface|Properties", BlueprintInternalUseOnly)
 	void SetProp4_Private(int32 InProp4);
 };

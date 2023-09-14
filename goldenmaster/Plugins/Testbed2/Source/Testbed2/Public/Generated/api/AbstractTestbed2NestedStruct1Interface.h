@@ -35,11 +35,11 @@ public:
 	virtual void Deinitialize() override;
 
 	// signals
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct1Interface", DisplayName = "Sig1 Signal")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct1Interface|Signals", DisplayName = "Sig1 Signal")
 	FTestbed2NestedStruct1InterfaceSig1Delegate Sig1Signal;
 	virtual FTestbed2NestedStruct1InterfaceSig1Delegate& GetSig1SignalDelegate() override;
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct1Interface", DisplayName = "Prop1 Changed")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct1Interface|Signals", DisplayName = "Prop1 Changed")
 	FTestbed2NestedStruct1InterfaceProp1ChangedDelegate Prop1Changed;
 	virtual FTestbed2NestedStruct1InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
 
@@ -64,9 +64,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1_Private, BlueprintSetter = SetProp1_Private, Category = "ApiGear|Testbed2|NestedStruct1Interface")
 	FTestbed2NestedStruct1 Prop1{FTestbed2NestedStruct1()};
 
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed2|NestedStruct1Interface", BlueprintInternalUseOnly)
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed2|NestedStruct1Interface|Properties", BlueprintInternalUseOnly)
 	FTestbed2NestedStruct1 GetProp1_Private() const;
 
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed2|NestedStruct1Interface", BlueprintInternalUseOnly)
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed2|NestedStruct1Interface|Properties", BlueprintInternalUseOnly)
 	void SetProp1_Private(const FTestbed2NestedStruct1& InProp1);
 };

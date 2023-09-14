@@ -35,19 +35,19 @@ public:
 	virtual void Deinitialize() override;
 
 	// signals
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame2|SameStruct2Interface", DisplayName = "Sig1 Signal")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame2|SameStruct2Interface|Signals", DisplayName = "Sig1 Signal")
 	FTbSame2SameStruct2InterfaceSig1Delegate Sig1Signal;
 	virtual FTbSame2SameStruct2InterfaceSig1Delegate& GetSig1SignalDelegate() override;
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame2|SameStruct2Interface", DisplayName = "Sig2 Signal")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame2|SameStruct2Interface|Signals", DisplayName = "Sig2 Signal")
 	FTbSame2SameStruct2InterfaceSig2Delegate Sig2Signal;
 	virtual FTbSame2SameStruct2InterfaceSig2Delegate& GetSig2SignalDelegate() override;
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame2|SameStruct2Interface", DisplayName = "Prop1 Changed")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame2|SameStruct2Interface|Signals", DisplayName = "Prop1 Changed")
 	FTbSame2SameStruct2InterfaceProp1ChangedDelegate Prop1Changed;
 	virtual FTbSame2SameStruct2InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame2|SameStruct2Interface", DisplayName = "Prop2 Changed")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame2|SameStruct2Interface|Signals", DisplayName = "Prop2 Changed")
 	FTbSame2SameStruct2InterfaceProp2ChangedDelegate Prop2Changed;
 	virtual FTbSame2SameStruct2InterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() override;
 
@@ -82,18 +82,18 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1_Private, BlueprintSetter = SetProp1_Private, Category = "ApiGear|TbSame2|SameStruct2Interface")
 	FTbSame2Struct2 Prop1{FTbSame2Struct2()};
 
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSame2|SameStruct2Interface", BlueprintInternalUseOnly)
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSame2|SameStruct2Interface|Properties", BlueprintInternalUseOnly)
 	FTbSame2Struct2 GetProp1_Private() const;
 
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSame2|SameStruct2Interface", BlueprintInternalUseOnly)
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSame2|SameStruct2Interface|Properties", BlueprintInternalUseOnly)
 	void SetProp1_Private(const FTbSame2Struct2& InProp1);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp2_Private, BlueprintSetter = SetProp2_Private, Category = "ApiGear|TbSame2|SameStruct2Interface")
 	FTbSame2Struct2 Prop2{FTbSame2Struct2()};
 
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSame2|SameStruct2Interface", BlueprintInternalUseOnly)
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSame2|SameStruct2Interface|Properties", BlueprintInternalUseOnly)
 	FTbSame2Struct2 GetProp2_Private() const;
 
-	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSame2|SameStruct2Interface", BlueprintInternalUseOnly)
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSame2|SameStruct2Interface|Properties", BlueprintInternalUseOnly)
 	void SetProp2_Private(const FTbSame2Struct2& InProp2);
 };

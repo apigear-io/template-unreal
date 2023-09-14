@@ -60,27 +60,27 @@ public:
 	// signals
 {{- range $i, $e := .Signals }}
 	{{- if $i }}{{nl}}{{ end }}
-	UFUNCTION(Category = "{{$Category}}")
+	UFUNCTION(Category = "{{$Category}}|Signals")
 	virtual F{{$Class}}{{Camel .Name}}Delegate& Get{{Camel .Name}}SignalDelegate() = 0;
 {{- end }}
 {{- if len .Properties }}{{ nl }}{{ end }}
 {{- range $i, $e := .Properties }}
 	{{- if $i }}{{nl}}{{ end }}
-	UFUNCTION(Category = "{{$Category}}")
+	UFUNCTION(Category = "{{$Category}}|Signals")
 	virtual F{{$Class}}{{Camel .Name}}ChangedDelegate& Get{{Camel .Name}}ChangedDelegate() = 0;
 {{- end }}
 
 	// methods
 {{- range $i, $e := .Operations }}
 {{- if .Return.IsVoid }}
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "{{$Category}}")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "{{$Category}}|Operations")
 	{{ueReturn "" .Return}} {{Camel .Name}}({{ueParams "" .Params}});
 	virtual {{ueReturn "" .Return}} {{Camel .Name}}_Implementation({{ueParams "" .Params}}) = 0;
 {{- else }}
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "{{$Category}}", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "{{$Category}}|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void {{Camel .Name}}Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, {{ueReturn "" .Return}}& Result{{if len .Params}},{{end}} {{ueParams "" .Params}});
 	virtual void {{Camel .Name}}Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, {{ueReturn "" .Return}}& Result{{if len .Params}},{{end}} {{ueParams "" .Params}}) = 0;
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "{{$Category}}")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "{{$Category}}|Operations")
 	{{ueReturn "" .Return}} {{Camel .Name}}({{ueParams "" .Params}});
 	virtual {{ueReturn "" .Return}} {{Camel .Name}}_Implementation({{ueParams "" .Params}}) = 0;
 {{- end }}
@@ -88,11 +88,11 @@ public:
 {{ end }}
 	// properties
 {{- range .Properties }}
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "{{$Category}}")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "{{$Category}}|Properties")
 	{{ueReturn "" .}} Get{{Camel .Name}}() const;
 	virtual {{ueReturn "" .}} Get{{Camel .Name}}_Implementation() const = 0;
 {{- if not .IsReadOnly }}
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "{{$Category}}")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "{{$Category}}|Properties")
 	void Set{{Camel .Name}}({{ueParam "In" .}});
 	virtual void Set{{Camel .Name}}_Implementation({{ueParam "In" .}}) = 0;
 {{- end }}
@@ -103,14 +103,14 @@ protected:
 	// signals
 {{- range $i, $e := .Signals }}
 	{{- if $i }}{{nl}}{{ end }}
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "{{$Category}}", meta = (BlueprintProtected = "true"))
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "{{$Category}}|Signals", meta = (BlueprintProtected = "true"))
 	void Broadcast{{Camel .Name}}({{ueParams "" .Params}});
 	virtual void Broadcast{{Camel .Name}}_Implementation({{ueParams "" .Params}}) = 0;
 {{- end }}
 {{- if len .Properties }}{{ nl }}{{ end }}
 {{- range $i, $e := .Properties }}
 	{{- if $i }}{{nl}}{{ end }}
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "{{$Category}}", meta = (BlueprintProtected = "true"))
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "{{$Category}}|Signals", meta = (BlueprintProtected = "true"))
 	void Broadcast{{Camel .Name}}Changed({{ueParam "" .}});
 	virtual void Broadcast{{Camel .Name}}Changed_Implementation({{ueParam "" .}}) = 0;
 {{- end }}

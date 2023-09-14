@@ -48,35 +48,35 @@ class TBSAME2_API ITbSame2SameStruct1InterfaceInterface
 
 public:
 	// signals
-	UFUNCTION(Category = "ApiGear|TbSame2|SameStruct1Interface")
+	UFUNCTION(Category = "ApiGear|TbSame2|SameStruct1Interface|Signals")
 	virtual FTbSame2SameStruct1InterfaceSig1Delegate& GetSig1SignalDelegate() = 0;
 
-	UFUNCTION(Category = "ApiGear|TbSame2|SameStruct1Interface")
+	UFUNCTION(Category = "ApiGear|TbSame2|SameStruct1Interface|Signals")
 	virtual FTbSame2SameStruct1InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() = 0;
 
 	// methods
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct1Interface", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct1Interface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame2Struct1& Result, const FTbSame2Struct1& Param1);
 	virtual void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame2Struct1& Result, const FTbSame2Struct1& Param1) = 0;
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct1Interface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct1Interface|Operations")
 	FTbSame2Struct1 Func1(const FTbSame2Struct1& Param1);
 	virtual FTbSame2Struct1 Func1_Implementation(const FTbSame2Struct1& Param1) = 0;
 
 	// properties
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct1Interface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct1Interface|Properties")
 	FTbSame2Struct1 GetProp1() const;
 	virtual FTbSame2Struct1 GetProp1_Implementation() const = 0;
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct1Interface")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct1Interface|Properties")
 	void SetProp1(const FTbSame2Struct1& InProp1);
 	virtual void SetProp1_Implementation(const FTbSame2Struct1& InProp1) = 0;
 
 protected:
 	// signals
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct1Interface", meta = (BlueprintProtected = "true"))
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct1Interface|Signals", meta = (BlueprintProtected = "true"))
 	void BroadcastSig1(const FTbSame2Struct1& Param1);
 	virtual void BroadcastSig1_Implementation(const FTbSame2Struct1& Param1) = 0;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct1Interface", meta = (BlueprintProtected = "true"))
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct1Interface|Signals", meta = (BlueprintProtected = "true"))
 	void BroadcastProp1Changed(const FTbSame2Struct1& Prop1);
 	virtual void BroadcastProp1Changed_Implementation(const FTbSame2Struct1& Prop1) = 0;
 };
