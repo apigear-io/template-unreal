@@ -323,21 +323,21 @@ void UTestbed2NestedStruct3InterfaceOLinkClient::applyState(const nlohmann::json
 	if (bProp1Changed)
 	{
 		Prop1 = fields["prop1"].get<FTestbed2NestedStruct1>();
-		Execute_BroadcastProp1Changed(this, Prop1);
+		Execute__GetSignals(this)->OnProp1Changed.Broadcast(Prop1);
 	}
 
 	const bool bProp2Changed = fields.contains("prop2") && (Prop2 != fields["prop2"].get<FTestbed2NestedStruct2>());
 	if (bProp2Changed)
 	{
 		Prop2 = fields["prop2"].get<FTestbed2NestedStruct2>();
-		Execute_BroadcastProp2Changed(this, Prop2);
+		Execute__GetSignals(this)->OnProp2Changed.Broadcast(Prop2);
 	}
 
 	const bool bProp3Changed = fields.contains("prop3") && (Prop3 != fields["prop3"].get<FTestbed2NestedStruct3>());
 	if (bProp3Changed)
 	{
 		Prop3 = fields["prop3"].get<FTestbed2NestedStruct3>();
-		Execute_BroadcastProp3Changed(this, Prop3);
+		Execute__GetSignals(this)->OnProp3Changed.Broadcast(Prop3);
 	}
 }
 
@@ -346,7 +346,7 @@ void UTestbed2NestedStruct3InterfaceOLinkClient::emitSignal(const std::string& s
 	if (signalName == "sig1")
 	{
 		const FTestbed2NestedStruct1& Param1 = args[0].get<FTestbed2NestedStruct1>();
-		Execute_BroadcastSig1(this, Param1);
+		Execute__GetSignals(this)->OnSig1Signal.Broadcast(Param1);
 		return;
 	}
 
@@ -354,7 +354,7 @@ void UTestbed2NestedStruct3InterfaceOLinkClient::emitSignal(const std::string& s
 	{
 		const FTestbed2NestedStruct1& Param1 = args[0].get<FTestbed2NestedStruct1>();
 		const FTestbed2NestedStruct2& Param2 = args[1].get<FTestbed2NestedStruct2>();
-		Execute_BroadcastSig2(this, Param1, Param2);
+		Execute__GetSignals(this)->OnSig2Signal.Broadcast(Param1, Param2);
 		return;
 	}
 
@@ -363,7 +363,7 @@ void UTestbed2NestedStruct3InterfaceOLinkClient::emitSignal(const std::string& s
 		const FTestbed2NestedStruct1& Param1 = args[0].get<FTestbed2NestedStruct1>();
 		const FTestbed2NestedStruct2& Param2 = args[1].get<FTestbed2NestedStruct2>();
 		const FTestbed2NestedStruct3& Param3 = args[2].get<FTestbed2NestedStruct3>();
-		Execute_BroadcastSig3(this, Param1, Param2, Param3);
+		Execute__GetSignals(this)->OnSig3Signal.Broadcast(Param1, Param2, Param3);
 		return;
 	}
 }

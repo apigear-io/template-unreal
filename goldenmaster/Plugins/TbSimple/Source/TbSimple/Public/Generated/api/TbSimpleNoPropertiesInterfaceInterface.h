@@ -30,6 +30,25 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTbSimpleNoPropertiesInterfaceSigVoidDelegate
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleNoPropertiesInterfaceSigBoolDelegate, bool, bParamBool);
 
 // property delegates
+
+/**
+ * Class UTbSimpleNoPropertiesInterfaceInterfaceSignals
+ * Contains delegates for properties and signals
+ * this is needed since we cannot declare delegates on an UInterface
+ */
+UCLASS(BlueprintType)
+class TBSIMPLE_API UTbSimpleNoPropertiesInterfaceSignals : public UObject
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSimple|NoPropertiesInterface|Signals", DisplayName = "SigVoid Signal")
+	FTbSimpleNoPropertiesInterfaceSigVoidDelegate OnSigVoidSignal;
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSimple|NoPropertiesInterface|Signals", DisplayName = "SigBool Signal")
+	FTbSimpleNoPropertiesInterfaceSigBoolDelegate OnSigBoolSignal;
+};
+
 /**
  * Interface UTbSimpleNoPropertiesInterfaceInterface only for Unreal Engine's reflection system
  */
@@ -47,12 +66,12 @@ class TBSIMPLE_API ITbSimpleNoPropertiesInterfaceInterface
 	GENERATED_BODY()
 
 public:
-	// signals
-	UFUNCTION(Category = "ApiGear|TbSimple|NoPropertiesInterface|Signals")
-	virtual FTbSimpleNoPropertiesInterfaceSigVoidDelegate& GetSigVoidSignalDelegate() = 0;
-
-	UFUNCTION(Category = "ApiGear|TbSimple|NoPropertiesInterface|Signals")
-	virtual FTbSimpleNoPropertiesInterfaceSigBoolDelegate& GetSigBoolSignalDelegate() = 0;
+	/// Provides access to the object which holds all the delegates
+	/// this is needed since we cannot declare delegates on an UInterface
+	/// @return object with signals for property state changes or standalone signals
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoPropertiesInterface")
+	UTbSimpleNoPropertiesInterfaceSignals* _GetSignals();
+	virtual UTbSimpleNoPropertiesInterfaceSignals* _GetSignals_Implementation() = 0;
 
 	// methods
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoPropertiesInterface|Operations")
@@ -67,14 +86,4 @@ public:
 	virtual bool FuncBool_Implementation(bool bParamBool) = 0;
 
 	// properties
-
-protected:
-	// signals
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoPropertiesInterface|Signals", meta = (BlueprintProtected = "true"))
-	void BroadcastSigVoid();
-	virtual void BroadcastSigVoid_Implementation() = 0;
-
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoPropertiesInterface|Signals", meta = (BlueprintProtected = "true"))
-	void BroadcastSigBool(bool bParamBool);
-	virtual void BroadcastSigBool_Implementation(bool bParamBool) = 0;
 };

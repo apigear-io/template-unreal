@@ -16,6 +16,7 @@ limitations under the License.
 */
 #pragma once
 
+#include "Runtime/Launch/Resources/Version.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "TbSame1_data.h"
 #include "TbSame1SameEnum2InterfaceInterface.h"
@@ -30,26 +31,17 @@ class TBSAME1_API UAbstractTbSame1SameEnum2Interface : public UGameInstanceSubsy
 	GENERATED_BODY()
 
 public:
+	// constructor
+	UAbstractTbSame1SameEnum2Interface();
 	// subsystem
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
 
 	// signals
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame1|SameEnum2Interface|Signals", DisplayName = "Sig1 Signal")
-	FTbSame1SameEnum2InterfaceSig1Delegate Sig1Signal;
-	virtual FTbSame1SameEnum2InterfaceSig1Delegate& GetSig1SignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame1|SameEnum2Interface|Signals", DisplayName = "Sig2 Signal")
-	FTbSame1SameEnum2InterfaceSig2Delegate Sig2Signal;
-	virtual FTbSame1SameEnum2InterfaceSig2Delegate& GetSig2SignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame1|SameEnum2Interface|Signals", DisplayName = "Prop1 Changed")
-	FTbSame1SameEnum2InterfaceProp1ChangedDelegate Prop1Changed;
-	virtual FTbSame1SameEnum2InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame1|SameEnum2Interface|Signals", DisplayName = "Prop2 Changed")
-	FTbSame1SameEnum2InterfaceProp2ChangedDelegate Prop2Changed;
-	virtual FTbSame1SameEnum2InterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() override;
+	virtual UTbSame1SameEnum2InterfaceSignals* _GetSignals_Implementation() override
+	{
+		return TbSame1SameEnum2InterfaceSignals;
+	};
 
 	// methods
 	virtual void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame1Enum1& Result, ETbSame1Enum1 Param1) override;
@@ -69,14 +61,6 @@ public:
 
 protected:
 	bool bInitialized = false;
-	// signals
-	virtual void BroadcastSig1_Implementation(ETbSame1Enum1 Param1) override;
-
-	virtual void BroadcastSig2_Implementation(ETbSame1Enum1 Param1, ETbSame1Enum2 Param2) override;
-
-	virtual void BroadcastProp1Changed_Implementation(ETbSame1Enum1 InProp1) override;
-
-	virtual void BroadcastProp2Changed_Implementation(ETbSame1Enum2 InProp2) override;
 
 	// properties - local copy
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1_Private, BlueprintSetter = SetProp1_Private, Category = "ApiGear|TbSame1|SameEnum2Interface")
@@ -96,4 +80,9 @@ protected:
 
 	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSame1|SameEnum2Interface|Properties", BlueprintInternalUseOnly)
 	void SetProp2_Private(ETbSame1Enum2 InProp2);
+
+private:
+	// signals
+	UPROPERTY()
+	UTbSame1SameEnum2InterfaceSignals* TbSame1SameEnum2InterfaceSignals;
 };

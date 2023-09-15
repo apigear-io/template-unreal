@@ -54,10 +54,12 @@ void UTbSimpleNoOperationsInterfaceOLinkAdapter::setBackendService(TScriptInterf
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		BackendService->GetPropBoolChangedDelegate().RemoveDynamic(this, &UTbSimpleNoOperationsInterfaceOLinkAdapter::OnPropBoolChanged);
-		BackendService->GetPropIntChangedDelegate().RemoveDynamic(this, &UTbSimpleNoOperationsInterfaceOLinkAdapter::OnPropIntChanged);
-		BackendService->GetSigVoidSignalDelegate().RemoveDynamic(this, &UTbSimpleNoOperationsInterfaceOLinkAdapter::OnSigVoid);
-		BackendService->GetSigBoolSignalDelegate().RemoveDynamic(this, &UTbSimpleNoOperationsInterfaceOLinkAdapter::OnSigBool);
+		UTbSimpleNoOperationsInterfaceSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleNoOperationsInterface"));
+		BackendSignals->OnPropBoolChanged.RemoveDynamic(this, &UTbSimpleNoOperationsInterfaceOLinkAdapter::OnPropBoolChanged);
+		BackendSignals->OnPropIntChanged.RemoveDynamic(this, &UTbSimpleNoOperationsInterfaceOLinkAdapter::OnPropIntChanged);
+		BackendSignals->OnSigVoidSignal.RemoveDynamic(this, &UTbSimpleNoOperationsInterfaceOLinkAdapter::OnSigVoid);
+		BackendSignals->OnSigBoolSignal.RemoveDynamic(this, &UTbSimpleNoOperationsInterfaceOLinkAdapter::OnSigBool);
 	}
 
 	// only set if interface is implemented
@@ -65,11 +67,13 @@ void UTbSimpleNoOperationsInterfaceOLinkAdapter::setBackendService(TScriptInterf
 
 	// subscribe to new backend
 	BackendService = InService;
+	UTbSimpleNoOperationsInterfaceSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+	checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleNoOperationsInterface"));
 	// connect property changed signals or simple events
-	BackendService->GetPropBoolChangedDelegate().AddDynamic(this, &UTbSimpleNoOperationsInterfaceOLinkAdapter::OnPropBoolChanged);
-	BackendService->GetPropIntChangedDelegate().AddDynamic(this, &UTbSimpleNoOperationsInterfaceOLinkAdapter::OnPropIntChanged);
-	BackendService->GetSigVoidSignalDelegate().AddDynamic(this, &UTbSimpleNoOperationsInterfaceOLinkAdapter::OnSigVoid);
-	BackendService->GetSigBoolSignalDelegate().AddDynamic(this, &UTbSimpleNoOperationsInterfaceOLinkAdapter::OnSigBool);
+	BackendSignals->OnPropBoolChanged.AddDynamic(this, &UTbSimpleNoOperationsInterfaceOLinkAdapter::OnPropBoolChanged);
+	BackendSignals->OnPropIntChanged.AddDynamic(this, &UTbSimpleNoOperationsInterfaceOLinkAdapter::OnPropIntChanged);
+	BackendSignals->OnSigVoidSignal.AddDynamic(this, &UTbSimpleNoOperationsInterfaceOLinkAdapter::OnSigVoid);
+	BackendSignals->OnSigBoolSignal.AddDynamic(this, &UTbSimpleNoOperationsInterfaceOLinkAdapter::OnSigBool);
 
 	// update olink source with new backend
 	Source->setBackendService(InService);

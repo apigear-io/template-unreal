@@ -20,6 +20,10 @@ limitations under the License.
 #include "Engine/LatentActionManager.h"
 #include "LatentActions.h"
 
+UAbstractTbSimpleEmptyInterface::UAbstractTbSimpleEmptyInterface()
+{
+}
+
 void UAbstractTbSimpleEmptyInterface::Initialize(FSubsystemCollectionBase& Collection)
 {
 	check(!bInitialized);
@@ -32,6 +36,10 @@ void UAbstractTbSimpleEmptyInterface::Deinitialize()
 {
 	check(bInitialized);
 	bInitialized = false;
+
+	if (TbSimpleEmptyInterfaceSignals)
+	{
+	}
 
 	Super::Deinitialize();
 }

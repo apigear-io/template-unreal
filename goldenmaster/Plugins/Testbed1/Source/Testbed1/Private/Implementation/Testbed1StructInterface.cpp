@@ -28,7 +28,7 @@ void UTestbed1StructInterface::SetPropBool_Implementation(const FTestbed1StructB
 	if (PropBool != InPropBool)
 	{
 		PropBool = InPropBool;
-		Execute_BroadcastPropBoolChanged(this, PropBool);
+		Execute__GetSignals(this)->OnPropBoolChanged.Broadcast(PropBool);
 	}
 }
 FTestbed1StructInt UTestbed1StructInterface::GetPropInt_Implementation() const
@@ -41,7 +41,7 @@ void UTestbed1StructInterface::SetPropInt_Implementation(const FTestbed1StructIn
 	if (PropInt != InPropInt)
 	{
 		PropInt = InPropInt;
-		Execute_BroadcastPropIntChanged(this, PropInt);
+		Execute__GetSignals(this)->OnPropIntChanged.Broadcast(PropInt);
 	}
 }
 FTestbed1StructFloat UTestbed1StructInterface::GetPropFloat_Implementation() const
@@ -54,7 +54,7 @@ void UTestbed1StructInterface::SetPropFloat_Implementation(const FTestbed1Struct
 	if (PropFloat != InPropFloat)
 	{
 		PropFloat = InPropFloat;
-		Execute_BroadcastPropFloatChanged(this, PropFloat);
+		Execute__GetSignals(this)->OnPropFloatChanged.Broadcast(PropFloat);
 	}
 }
 FTestbed1StructString UTestbed1StructInterface::GetPropString_Implementation() const
@@ -67,7 +67,7 @@ void UTestbed1StructInterface::SetPropString_Implementation(const FTestbed1Struc
 	if (PropString != InPropString)
 	{
 		PropString = InPropString;
-		Execute_BroadcastPropStringChanged(this, PropString);
+		Execute__GetSignals(this)->OnPropStringChanged.Broadcast(PropString);
 	}
 }
 

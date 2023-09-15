@@ -68,11 +68,15 @@ void {{$Class}}::setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{Cam
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
+{{- if or (len .Interface.Properties) (.Interface.Signals) }}
+		U{{$Iface}}Signals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service {{$Iface}}"));
+{{- end }}
 {{- range .Interface.Properties }}
-		BackendService->Get{{Camel .Name}}ChangedDelegate().RemoveDynamic(this, &{{$Class}}::On{{Camel .Name}}Changed);
+		BackendSignals->On{{Camel .Name}}Changed.RemoveDynamic(this, &{{$Class}}::On{{Camel .Name}}Changed);
 {{- end }}
 {{- range .Interface.Signals }}
-		BackendService->Get{{Camel .Name}}SignalDelegate().RemoveDynamic(this, &{{$Class}}::On{{Camel .Name}});
+		BackendSignals->On{{Camel .Name}}Signal.RemoveDynamic(this, &{{$Class}}::On{{Camel .Name}});
 {{- end }}
 	}
 
@@ -82,12 +86,16 @@ void {{$Class}}::setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{Cam
 	// subscribe to new backend
 {{- $Service := printf "I%sInterface" $Iface }}
 	BackendService = InService;
+{{- if or (len .Interface.Properties) (.Interface.Signals) }}
+	U{{$Iface}}Signals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+	checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service {{$Iface}}"));
+{{- end }}
 	// connect property changed signals or simple events
 {{- range .Interface.Properties }}
-	BackendService->Get{{Camel .Name}}ChangedDelegate().AddDynamic(this, &{{$Class}}::On{{Camel .Name}}Changed);
+	BackendSignals->On{{Camel .Name}}Changed.AddDynamic(this, &{{$Class}}::On{{Camel .Name}}Changed);
 {{- end }}
 {{- range .Interface.Signals }}
-	BackendService->Get{{Camel .Name}}SignalDelegate().AddDynamic(this, &{{$Class}}::On{{Camel .Name}});
+	BackendSignals->On{{Camel .Name}}Signal.AddDynamic(this, &{{$Class}}::On{{Camel .Name}});
 {{- end }}
 	// populate service state to proxy
 {{- range .Interface.Properties }}
@@ -100,7 +108,7 @@ void {{$Class}}::setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{Cam
 void {{$Class}}::On{{Camel .Name}}({{ueParams "" .Params}})
 {
 	{{$Iface}}Tracer::trace_signal{{Camel .Name}}({{ueVars "" .Params}});
-	Execute_Broadcast{{Camel .Name}}(this{{if len .Params}}, {{ end }}{{ueVars "" .Params }});
+	Execute__GetSignals(this)->On{{Camel .Name}}Signal.Broadcast({{ueVars "" .Params }});
 }
 {{- end }}
 {{- if .Interface.Properties }}{{nl}}{{ end }}
@@ -110,7 +118,7 @@ void {{$Class}}::On{{Camel .Name}}Changed({{ueParam "In" .}})
 {
 	{{$Iface}}Tracer::capture_state(BackendService.GetObject(), this);
 	{{ueVar "" .}} = {{ueVar "In" .}};
-	Execute_Broadcast{{Camel .Name}}Changed(this, {{ueVar "In" .}});
+	Execute__GetSignals(this)->On{{Camel .Name}}Changed.Broadcast({{ueVar "In" .}});
 }
 
 {{ueReturn "" .}} {{$Class}}::Get{{Camel .Name}}_Implementation() const

@@ -61,24 +61,9 @@ public:
 	}
 };
 
-FTbSame2SameEnum1InterfaceSig1Delegate& UAbstractTbSame2SameEnum1Interface::GetSig1SignalDelegate()
+UAbstractTbSame2SameEnum1Interface::UAbstractTbSame2SameEnum1Interface()
 {
-	return Sig1Signal;
-};
-
-void UAbstractTbSame2SameEnum1Interface::BroadcastSig1_Implementation(ETbSame2Enum1 Param1)
-{
-	Sig1Signal.Broadcast(Param1);
-};
-
-FTbSame2SameEnum1InterfaceProp1ChangedDelegate& UAbstractTbSame2SameEnum1Interface::GetProp1ChangedDelegate()
-{
-	return Prop1Changed;
-};
-
-void UAbstractTbSame2SameEnum1Interface::BroadcastProp1Changed_Implementation(ETbSame2Enum1 InProp1)
-{
-	Prop1Changed.Broadcast(InProp1);
+	TbSame2SameEnum1InterfaceSignals = NewObject<UTbSame2SameEnum1InterfaceSignals>();
 }
 
 ETbSame2Enum1 UAbstractTbSame2SameEnum1Interface::GetProp1_Private() const
@@ -137,6 +122,13 @@ void UAbstractTbSame2SameEnum1Interface::Deinitialize()
 {
 	check(bInitialized);
 	bInitialized = false;
+
+	if (TbSame2SameEnum1InterfaceSignals)
+	{
+		TbSame2SameEnum1InterfaceSignals->OnSig1Signal.RemoveAll(TbSame2SameEnum1InterfaceSignals);
+
+		TbSame2SameEnum1InterfaceSignals->OnProp1Changed.RemoveAll(TbSame2SameEnum1InterfaceSignals);
+	}
 
 	Super::Deinitialize();
 }

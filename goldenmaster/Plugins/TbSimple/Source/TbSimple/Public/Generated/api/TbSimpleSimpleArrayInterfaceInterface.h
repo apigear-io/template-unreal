@@ -43,20 +43,73 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleArrayInterfaceSigStri
 
 // property delegates
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleArrayInterfacePropBoolChangedDelegate, const TArray<bool>&, PropBool);
-
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleArrayInterfacePropIntChangedDelegate, const TArray<int32>&, PropInt);
-
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleArrayInterfacePropInt32ChangedDelegate, const TArray<int32>&, PropInt32);
-
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleArrayInterfacePropInt64ChangedDelegate, const TArray<int64>&, PropInt64);
-
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleArrayInterfacePropFloatChangedDelegate, const TArray<float>&, PropFloat);
-
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleArrayInterfacePropFloat32ChangedDelegate, const TArray<float>&, PropFloat32);
-
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleArrayInterfacePropFloat64ChangedDelegate, const TArray<double>&, PropFloat64);
-
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleArrayInterfacePropStringChangedDelegate, const TArray<FString>&, PropString);
+
+/**
+ * Class UTbSimpleSimpleArrayInterfaceInterfaceSignals
+ * Contains delegates for properties and signals
+ * this is needed since we cannot declare delegates on an UInterface
+ */
+UCLASS(BlueprintType)
+class TBSIMPLE_API UTbSimpleSimpleArrayInterfaceSignals : public UObject
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", DisplayName = "SigBool Signal")
+	FTbSimpleSimpleArrayInterfaceSigBoolDelegate OnSigBoolSignal;
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", DisplayName = "SigInt Signal")
+	FTbSimpleSimpleArrayInterfaceSigIntDelegate OnSigIntSignal;
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", DisplayName = "SigInt32 Signal")
+	FTbSimpleSimpleArrayInterfaceSigInt32Delegate OnSigInt32Signal;
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", DisplayName = "SigInt64 Signal")
+	FTbSimpleSimpleArrayInterfaceSigInt64Delegate OnSigInt64Signal;
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", DisplayName = "SigFloat Signal")
+	FTbSimpleSimpleArrayInterfaceSigFloatDelegate OnSigFloatSignal;
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", DisplayName = "SigFloat32 Signal")
+	FTbSimpleSimpleArrayInterfaceSigFloat32Delegate OnSigFloat32Signal;
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", DisplayName = "SigFloat64 Signal")
+	FTbSimpleSimpleArrayInterfaceSigFloat64Delegate OnSigFloat64Signal;
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", DisplayName = "SigString Signal")
+	FTbSimpleSimpleArrayInterfaceSigStringDelegate OnSigStringSignal;
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", DisplayName = "Property PropBool Changed")
+	FTbSimpleSimpleArrayInterfacePropBoolChangedDelegate OnPropBoolChanged;
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", DisplayName = "Property PropInt Changed")
+	FTbSimpleSimpleArrayInterfacePropIntChangedDelegate OnPropIntChanged;
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", DisplayName = "Property PropInt32 Changed")
+	FTbSimpleSimpleArrayInterfacePropInt32ChangedDelegate OnPropInt32Changed;
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", DisplayName = "Property PropInt64 Changed")
+	FTbSimpleSimpleArrayInterfacePropInt64ChangedDelegate OnPropInt64Changed;
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", DisplayName = "Property PropFloat Changed")
+	FTbSimpleSimpleArrayInterfacePropFloatChangedDelegate OnPropFloatChanged;
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", DisplayName = "Property PropFloat32 Changed")
+	FTbSimpleSimpleArrayInterfacePropFloat32ChangedDelegate OnPropFloat32Changed;
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", DisplayName = "Property PropFloat64 Changed")
+	FTbSimpleSimpleArrayInterfacePropFloat64ChangedDelegate OnPropFloat64Changed;
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", DisplayName = "Property PropString Changed")
+	FTbSimpleSimpleArrayInterfacePropStringChangedDelegate OnPropStringChanged;
+};
 
 /**
  * Interface UTbSimpleSimpleArrayInterfaceInterface only for Unreal Engine's reflection system
@@ -75,54 +128,12 @@ class TBSIMPLE_API ITbSimpleSimpleArrayInterfaceInterface
 	GENERATED_BODY()
 
 public:
-	// signals
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals")
-	virtual FTbSimpleSimpleArrayInterfaceSigBoolDelegate& GetSigBoolSignalDelegate() = 0;
-
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals")
-	virtual FTbSimpleSimpleArrayInterfaceSigIntDelegate& GetSigIntSignalDelegate() = 0;
-
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals")
-	virtual FTbSimpleSimpleArrayInterfaceSigInt32Delegate& GetSigInt32SignalDelegate() = 0;
-
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals")
-	virtual FTbSimpleSimpleArrayInterfaceSigInt64Delegate& GetSigInt64SignalDelegate() = 0;
-
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals")
-	virtual FTbSimpleSimpleArrayInterfaceSigFloatDelegate& GetSigFloatSignalDelegate() = 0;
-
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals")
-	virtual FTbSimpleSimpleArrayInterfaceSigFloat32Delegate& GetSigFloat32SignalDelegate() = 0;
-
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals")
-	virtual FTbSimpleSimpleArrayInterfaceSigFloat64Delegate& GetSigFloat64SignalDelegate() = 0;
-
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals")
-	virtual FTbSimpleSimpleArrayInterfaceSigStringDelegate& GetSigStringSignalDelegate() = 0;
-
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals")
-	virtual FTbSimpleSimpleArrayInterfacePropBoolChangedDelegate& GetPropBoolChangedDelegate() = 0;
-
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals")
-	virtual FTbSimpleSimpleArrayInterfacePropIntChangedDelegate& GetPropIntChangedDelegate() = 0;
-
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals")
-	virtual FTbSimpleSimpleArrayInterfacePropInt32ChangedDelegate& GetPropInt32ChangedDelegate() = 0;
-
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals")
-	virtual FTbSimpleSimpleArrayInterfacePropInt64ChangedDelegate& GetPropInt64ChangedDelegate() = 0;
-
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals")
-	virtual FTbSimpleSimpleArrayInterfacePropFloatChangedDelegate& GetPropFloatChangedDelegate() = 0;
-
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals")
-	virtual FTbSimpleSimpleArrayInterfacePropFloat32ChangedDelegate& GetPropFloat32ChangedDelegate() = 0;
-
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals")
-	virtual FTbSimpleSimpleArrayInterfacePropFloat64ChangedDelegate& GetPropFloat64ChangedDelegate() = 0;
-
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals")
-	virtual FTbSimpleSimpleArrayInterfacePropStringChangedDelegate& GetPropStringChangedDelegate() = 0;
+	/// Provides access to the object which holds all the delegates
+	/// this is needed since we cannot declare delegates on an UInterface
+	/// @return object with signals for property state changes or standalone signals
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
+	UTbSimpleSimpleArrayInterfaceSignals* _GetSignals();
+	virtual UTbSimpleSimpleArrayInterfaceSignals* _GetSignals_Implementation() = 0;
 
 	// methods
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
@@ -188,119 +199,46 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Properties")
 	void SetPropBool(const TArray<bool>& InPropBool);
 	virtual void SetPropBool_Implementation(const TArray<bool>& InPropBool) = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Properties")
 	TArray<int32> GetPropInt() const;
 	virtual TArray<int32> GetPropInt_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Properties")
 	void SetPropInt(const TArray<int32>& InPropInt);
 	virtual void SetPropInt_Implementation(const TArray<int32>& InPropInt) = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Properties")
 	TArray<int32> GetPropInt32() const;
 	virtual TArray<int32> GetPropInt32_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Properties")
 	void SetPropInt32(const TArray<int32>& InPropInt32);
 	virtual void SetPropInt32_Implementation(const TArray<int32>& InPropInt32) = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Properties")
 	TArray<int64> GetPropInt64() const;
 	virtual TArray<int64> GetPropInt64_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Properties")
 	void SetPropInt64(const TArray<int64>& InPropInt64);
 	virtual void SetPropInt64_Implementation(const TArray<int64>& InPropInt64) = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Properties")
 	TArray<float> GetPropFloat() const;
 	virtual TArray<float> GetPropFloat_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Properties")
 	void SetPropFloat(const TArray<float>& InPropFloat);
 	virtual void SetPropFloat_Implementation(const TArray<float>& InPropFloat) = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Properties")
 	TArray<float> GetPropFloat32() const;
 	virtual TArray<float> GetPropFloat32_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Properties")
 	void SetPropFloat32(const TArray<float>& InPropFloat32);
 	virtual void SetPropFloat32_Implementation(const TArray<float>& InPropFloat32) = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Properties")
 	TArray<double> GetPropFloat64() const;
 	virtual TArray<double> GetPropFloat64_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Properties")
 	void SetPropFloat64(const TArray<double>& InPropFloat64);
 	virtual void SetPropFloat64_Implementation(const TArray<double>& InPropFloat64) = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Properties")
 	TArray<FString> GetPropString() const;
 	virtual TArray<FString> GetPropString_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Properties")
 	void SetPropString(const TArray<FString>& InPropString);
 	virtual void SetPropString_Implementation(const TArray<FString>& InPropString) = 0;
-
-protected:
-	// signals
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", meta = (BlueprintProtected = "true"))
-	void BroadcastSigBool(const TArray<bool>& ParamBool);
-	virtual void BroadcastSigBool_Implementation(const TArray<bool>& ParamBool) = 0;
-
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", meta = (BlueprintProtected = "true"))
-	void BroadcastSigInt(const TArray<int32>& ParamInt);
-	virtual void BroadcastSigInt_Implementation(const TArray<int32>& ParamInt) = 0;
-
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", meta = (BlueprintProtected = "true"))
-	void BroadcastSigInt32(const TArray<int32>& ParamInt32);
-	virtual void BroadcastSigInt32_Implementation(const TArray<int32>& ParamInt32) = 0;
-
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", meta = (BlueprintProtected = "true"))
-	void BroadcastSigInt64(const TArray<int64>& ParamInt64);
-	virtual void BroadcastSigInt64_Implementation(const TArray<int64>& ParamInt64) = 0;
-
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", meta = (BlueprintProtected = "true"))
-	void BroadcastSigFloat(const TArray<float>& ParamFloat);
-	virtual void BroadcastSigFloat_Implementation(const TArray<float>& ParamFloat) = 0;
-
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", meta = (BlueprintProtected = "true"))
-	void BroadcastSigFloat32(const TArray<float>& ParamFloa32);
-	virtual void BroadcastSigFloat32_Implementation(const TArray<float>& ParamFloa32) = 0;
-
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", meta = (BlueprintProtected = "true"))
-	void BroadcastSigFloat64(const TArray<double>& ParamFloat64);
-	virtual void BroadcastSigFloat64_Implementation(const TArray<double>& ParamFloat64) = 0;
-
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", meta = (BlueprintProtected = "true"))
-	void BroadcastSigString(const TArray<FString>& ParamString);
-	virtual void BroadcastSigString_Implementation(const TArray<FString>& ParamString) = 0;
-
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", meta = (BlueprintProtected = "true"))
-	void BroadcastPropBoolChanged(const TArray<bool>& PropBool);
-	virtual void BroadcastPropBoolChanged_Implementation(const TArray<bool>& PropBool) = 0;
-
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", meta = (BlueprintProtected = "true"))
-	void BroadcastPropIntChanged(const TArray<int32>& PropInt);
-	virtual void BroadcastPropIntChanged_Implementation(const TArray<int32>& PropInt) = 0;
-
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", meta = (BlueprintProtected = "true"))
-	void BroadcastPropInt32Changed(const TArray<int32>& PropInt32);
-	virtual void BroadcastPropInt32Changed_Implementation(const TArray<int32>& PropInt32) = 0;
-
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", meta = (BlueprintProtected = "true"))
-	void BroadcastPropInt64Changed(const TArray<int64>& PropInt64);
-	virtual void BroadcastPropInt64Changed_Implementation(const TArray<int64>& PropInt64) = 0;
-
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", meta = (BlueprintProtected = "true"))
-	void BroadcastPropFloatChanged(const TArray<float>& PropFloat);
-	virtual void BroadcastPropFloatChanged_Implementation(const TArray<float>& PropFloat) = 0;
-
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", meta = (BlueprintProtected = "true"))
-	void BroadcastPropFloat32Changed(const TArray<float>& PropFloat32);
-	virtual void BroadcastPropFloat32Changed_Implementation(const TArray<float>& PropFloat32) = 0;
-
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", meta = (BlueprintProtected = "true"))
-	void BroadcastPropFloat64Changed(const TArray<double>& PropFloat64);
-	virtual void BroadcastPropFloat64Changed_Implementation(const TArray<double>& PropFloat64) = 0;
-
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", meta = (BlueprintProtected = "true"))
-	void BroadcastPropStringChanged(const TArray<FString>& PropString);
-	virtual void BroadcastPropStringChanged_Implementation(const TArray<FString>& PropString) = 0;
 };

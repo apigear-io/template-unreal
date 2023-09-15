@@ -18,6 +18,7 @@ limitations under the License.
 */
 #pragma once
 
+#include "Runtime/Launch/Resources/Version.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 {{- $ModuleName := Camel .Module.Name}}
 #include "{{$ModuleName}}_data.h"
@@ -38,23 +39,19 @@ class {{ $API_MACRO }} {{ $abstractclass}} : public UGameInstanceSubsystem, publ
 	GENERATED_BODY()
 
 public:
+	// constructor
+	{{ $abstractclass}}();
 	// subsystem
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
 
+{{- if or (len .Properties) (len .Signals) }}
+{{- nl }}
 	// signals
-{{- range $i, $e := .Signals }}
-	{{- if $i }}{{nl}}{{ end }}
-	UPROPERTY(BlueprintAssignable, Category = "{{$Category}}|Signals", DisplayName = "{{Camel .Name}} Signal")
-	F{{$Iface}}{{Camel .Name}}Delegate {{Camel .Name}}Signal;
-	virtual F{{$Class}}{{Camel .Name}}Delegate& Get{{Camel .Name}}SignalDelegate() override;
-{{- end }}
-{{- if len .Properties }}{{ nl }}{{ end }}
-{{- range $i, $e := .Properties }}
-	{{- if $i }}{{nl}}{{ end }}
-	UPROPERTY(BlueprintAssignable, Category = "{{$Category}}|Signals", DisplayName = "{{Camel .Name}} Changed")
-	F{{$Iface}}{{Camel .Name}}ChangedDelegate {{Camel .Name}}Changed;
-	virtual F{{$Class}}{{Camel .Name}}ChangedDelegate& Get{{Camel .Name}}ChangedDelegate() override;
+	virtual U{{$Class}}Signals* _GetSignals_Implementation() override
+	{
+		return {{$Class}}Signals;
+	};
 {{- end }}
 
 	// methods
@@ -80,16 +77,6 @@ public:
 
 protected:
 	bool bInitialized = false;
-	// signals
-{{- range $i, $e := .Signals }}
-	{{- if $i }}{{nl}}{{ end }}
-	virtual void Broadcast{{Camel .Name}}_Implementation({{ueParams "" .Params}}) override;
-{{- end }}
-{{- if len .Properties }}{{ nl }}{{ end }}
-{{- range $i, $e := .Properties }}
-	{{- if $i }}{{nl}}{{ end }}
-	virtual void Broadcast{{Camel .Name}}Changed_Implementation({{ueParam "In" .}}) override;
-{{- end }}
 
 	// properties - local copy
 {{- range $i, $e := .Properties }}
@@ -106,6 +93,13 @@ protected:
 	UFUNCTION(BlueprintSetter, Category = "{{$Category}}|Properties", BlueprintInternalUseOnly)
 	void Set{{Camel .Name}}_Private({{ueParam "In" .}});
 {{- end }}
+{{- end }}
+
+private:
+{{- if or (len .Properties) (len .Signals) }}
+	// signals
+	UPROPERTY()
+	U{{$Class}}Signals* {{$Iface}}Signals;
 {{- end }}
 };
 {{- end }}

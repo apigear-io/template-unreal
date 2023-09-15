@@ -16,6 +16,7 @@ limitations under the License.
 */
 #pragma once
 
+#include "Runtime/Launch/Resources/Version.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "TbSame1_data.h"
 #include "TbSame1SameStruct1InterfaceInterface.h"
@@ -30,18 +31,17 @@ class TBSAME1_API UAbstractTbSame1SameStruct1Interface : public UGameInstanceSub
 	GENERATED_BODY()
 
 public:
+	// constructor
+	UAbstractTbSame1SameStruct1Interface();
 	// subsystem
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
 
 	// signals
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame1|SameStruct1Interface|Signals", DisplayName = "Sig1 Signal")
-	FTbSame1SameStruct1InterfaceSig1Delegate Sig1Signal;
-	virtual FTbSame1SameStruct1InterfaceSig1Delegate& GetSig1SignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame1|SameStruct1Interface|Signals", DisplayName = "Prop1 Changed")
-	FTbSame1SameStruct1InterfaceProp1ChangedDelegate Prop1Changed;
-	virtual FTbSame1SameStruct1InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
+	virtual UTbSame1SameStruct1InterfaceSignals* _GetSignals_Implementation() override
+	{
+		return TbSame1SameStruct1InterfaceSignals;
+	};
 
 	// methods
 	virtual void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame1Struct1& Result, const FTbSame1Struct1& Param1) override;
@@ -55,10 +55,6 @@ public:
 
 protected:
 	bool bInitialized = false;
-	// signals
-	virtual void BroadcastSig1_Implementation(const FTbSame1Struct1& Param1) override;
-
-	virtual void BroadcastProp1Changed_Implementation(const FTbSame1Struct1& InProp1) override;
 
 	// properties - local copy
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1_Private, BlueprintSetter = SetProp1_Private, Category = "ApiGear|TbSame1|SameStruct1Interface")
@@ -69,4 +65,9 @@ protected:
 
 	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSame1|SameStruct1Interface|Properties", BlueprintInternalUseOnly)
 	void SetProp1_Private(const FTbSame1Struct1& InProp1);
+
+private:
+	// signals
+	UPROPERTY()
+	UTbSame1SameStruct1InterfaceSignals* TbSame1SameStruct1InterfaceSignals;
 };

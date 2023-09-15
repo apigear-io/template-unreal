@@ -61,14 +61,9 @@ public:
 	}
 };
 
-FTbSimpleNoSignalsInterfacePropBoolChangedDelegate& UAbstractTbSimpleNoSignalsInterface::GetPropBoolChangedDelegate()
+UAbstractTbSimpleNoSignalsInterface::UAbstractTbSimpleNoSignalsInterface()
 {
-	return PropBoolChanged;
-};
-
-void UAbstractTbSimpleNoSignalsInterface::BroadcastPropBoolChanged_Implementation(bool bInPropBool)
-{
-	PropBoolChanged.Broadcast(bInPropBool);
+	TbSimpleNoSignalsInterfaceSignals = NewObject<UTbSimpleNoSignalsInterfaceSignals>();
 }
 
 bool UAbstractTbSimpleNoSignalsInterface::GetPropBool_Private() const
@@ -80,16 +75,6 @@ void UAbstractTbSimpleNoSignalsInterface::SetPropBool_Private(bool bInPropBool)
 {
 	Execute_SetPropBool(this, bInPropBool);
 };
-
-FTbSimpleNoSignalsInterfacePropIntChangedDelegate& UAbstractTbSimpleNoSignalsInterface::GetPropIntChangedDelegate()
-{
-	return PropIntChanged;
-};
-
-void UAbstractTbSimpleNoSignalsInterface::BroadcastPropIntChanged_Implementation(int32 InPropInt)
-{
-	PropIntChanged.Broadcast(InPropInt);
-}
 
 int32 UAbstractTbSimpleNoSignalsInterface::GetPropInt_Private() const
 {
@@ -148,6 +133,12 @@ void UAbstractTbSimpleNoSignalsInterface::Deinitialize()
 {
 	check(bInitialized);
 	bInitialized = false;
+
+	if (TbSimpleNoSignalsInterfaceSignals)
+	{
+		TbSimpleNoSignalsInterfaceSignals->OnPropBoolChanged.RemoveAll(TbSimpleNoSignalsInterfaceSignals);
+		TbSimpleNoSignalsInterfaceSignals->OnPropIntChanged.RemoveAll(TbSimpleNoSignalsInterfaceSignals);
+	}
 
 	Super::Deinitialize();
 }

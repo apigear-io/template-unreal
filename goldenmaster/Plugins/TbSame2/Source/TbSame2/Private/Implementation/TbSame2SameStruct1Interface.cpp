@@ -28,7 +28,7 @@ void UTbSame2SameStruct1Interface::SetProp1_Implementation(const FTbSame2Struct1
 	if (Prop1 != InProp1)
 	{
 		Prop1 = InProp1;
-		Execute_BroadcastProp1Changed(this, Prop1);
+		Execute__GetSignals(this)->OnProp1Changed.Broadcast(Prop1);
 	}
 }
 

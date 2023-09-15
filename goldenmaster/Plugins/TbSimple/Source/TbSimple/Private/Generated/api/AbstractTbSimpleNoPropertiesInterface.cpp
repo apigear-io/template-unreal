@@ -61,25 +61,10 @@ public:
 	}
 };
 
-FTbSimpleNoPropertiesInterfaceSigVoidDelegate& UAbstractTbSimpleNoPropertiesInterface::GetSigVoidSignalDelegate()
+UAbstractTbSimpleNoPropertiesInterface::UAbstractTbSimpleNoPropertiesInterface()
 {
-	return SigVoidSignal;
-};
-
-void UAbstractTbSimpleNoPropertiesInterface::BroadcastSigVoid_Implementation()
-{
-	SigVoidSignal.Broadcast();
-};
-
-FTbSimpleNoPropertiesInterfaceSigBoolDelegate& UAbstractTbSimpleNoPropertiesInterface::GetSigBoolSignalDelegate()
-{
-	return SigBoolSignal;
-};
-
-void UAbstractTbSimpleNoPropertiesInterface::BroadcastSigBool_Implementation(bool bParamBool)
-{
-	SigBoolSignal.Broadcast(bParamBool);
-};
+	TbSimpleNoPropertiesInterfaceSignals = NewObject<UTbSimpleNoPropertiesInterfaceSignals>();
+}
 
 void UAbstractTbSimpleNoPropertiesInterface::FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool)
 {
@@ -128,6 +113,12 @@ void UAbstractTbSimpleNoPropertiesInterface::Deinitialize()
 {
 	check(bInitialized);
 	bInitialized = false;
+
+	if (TbSimpleNoPropertiesInterfaceSignals)
+	{
+		TbSimpleNoPropertiesInterfaceSignals->OnSigVoidSignal.RemoveAll(TbSimpleNoPropertiesInterfaceSignals);
+		TbSimpleNoPropertiesInterfaceSignals->OnSigBoolSignal.RemoveAll(TbSimpleNoPropertiesInterfaceSignals);
+	}
 
 	Super::Deinitialize();
 }

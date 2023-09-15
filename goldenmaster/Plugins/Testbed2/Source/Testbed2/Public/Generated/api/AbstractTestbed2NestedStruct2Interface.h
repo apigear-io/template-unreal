@@ -16,6 +16,7 @@ limitations under the License.
 */
 #pragma once
 
+#include "Runtime/Launch/Resources/Version.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Testbed2_data.h"
 #include "Testbed2NestedStruct2InterfaceInterface.h"
@@ -30,26 +31,17 @@ class TESTBED2_API UAbstractTestbed2NestedStruct2Interface : public UGameInstanc
 	GENERATED_BODY()
 
 public:
+	// constructor
+	UAbstractTestbed2NestedStruct2Interface();
 	// subsystem
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
 
 	// signals
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct2Interface|Signals", DisplayName = "Sig1 Signal")
-	FTestbed2NestedStruct2InterfaceSig1Delegate Sig1Signal;
-	virtual FTestbed2NestedStruct2InterfaceSig1Delegate& GetSig1SignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct2Interface|Signals", DisplayName = "Sig2 Signal")
-	FTestbed2NestedStruct2InterfaceSig2Delegate Sig2Signal;
-	virtual FTestbed2NestedStruct2InterfaceSig2Delegate& GetSig2SignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct2Interface|Signals", DisplayName = "Prop1 Changed")
-	FTestbed2NestedStruct2InterfaceProp1ChangedDelegate Prop1Changed;
-	virtual FTestbed2NestedStruct2InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct2Interface|Signals", DisplayName = "Prop2 Changed")
-	FTestbed2NestedStruct2InterfaceProp2ChangedDelegate Prop2Changed;
-	virtual FTestbed2NestedStruct2InterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() override;
+	virtual UTestbed2NestedStruct2InterfaceSignals* _GetSignals_Implementation() override
+	{
+		return Testbed2NestedStruct2InterfaceSignals;
+	};
 
 	// methods
 	virtual void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1) override;
@@ -69,14 +61,6 @@ public:
 
 protected:
 	bool bInitialized = false;
-	// signals
-	virtual void BroadcastSig1_Implementation(const FTestbed2NestedStruct1& Param1) override;
-
-	virtual void BroadcastSig2_Implementation(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2) override;
-
-	virtual void BroadcastProp1Changed_Implementation(const FTestbed2NestedStruct1& InProp1) override;
-
-	virtual void BroadcastProp2Changed_Implementation(const FTestbed2NestedStruct2& InProp2) override;
 
 	// properties - local copy
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1_Private, BlueprintSetter = SetProp1_Private, Category = "ApiGear|Testbed2|NestedStruct2Interface")
@@ -96,4 +80,9 @@ protected:
 
 	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed2|NestedStruct2Interface|Properties", BlueprintInternalUseOnly)
 	void SetProp2_Private(const FTestbed2NestedStruct2& InProp2);
+
+private:
+	// signals
+	UPROPERTY()
+	UTestbed2NestedStruct2InterfaceSignals* Testbed2NestedStruct2InterfaceSignals;
 };

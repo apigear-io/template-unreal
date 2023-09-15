@@ -50,8 +50,10 @@ void UTbSimpleNoSignalsInterfaceLoggingDecorator::setBackendService(TScriptInter
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		BackendService->GetPropBoolChangedDelegate().RemoveDynamic(this, &UTbSimpleNoSignalsInterfaceLoggingDecorator::OnPropBoolChanged);
-		BackendService->GetPropIntChangedDelegate().RemoveDynamic(this, &UTbSimpleNoSignalsInterfaceLoggingDecorator::OnPropIntChanged);
+		UTbSimpleNoSignalsInterfaceSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleNoSignalsInterface"));
+		BackendSignals->OnPropBoolChanged.RemoveDynamic(this, &UTbSimpleNoSignalsInterfaceLoggingDecorator::OnPropBoolChanged);
+		BackendSignals->OnPropIntChanged.RemoveDynamic(this, &UTbSimpleNoSignalsInterfaceLoggingDecorator::OnPropIntChanged);
 	}
 
 	// only set if interface is implemented
@@ -59,9 +61,11 @@ void UTbSimpleNoSignalsInterfaceLoggingDecorator::setBackendService(TScriptInter
 
 	// subscribe to new backend
 	BackendService = InService;
+	UTbSimpleNoSignalsInterfaceSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+	checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleNoSignalsInterface"));
 	// connect property changed signals or simple events
-	BackendService->GetPropBoolChangedDelegate().AddDynamic(this, &UTbSimpleNoSignalsInterfaceLoggingDecorator::OnPropBoolChanged);
-	BackendService->GetPropIntChangedDelegate().AddDynamic(this, &UTbSimpleNoSignalsInterfaceLoggingDecorator::OnPropIntChanged);
+	BackendSignals->OnPropBoolChanged.AddDynamic(this, &UTbSimpleNoSignalsInterfaceLoggingDecorator::OnPropBoolChanged);
+	BackendSignals->OnPropIntChanged.AddDynamic(this, &UTbSimpleNoSignalsInterfaceLoggingDecorator::OnPropIntChanged);
 	// populate service state to proxy
 	bPropBool = BackendService->Execute_GetPropBool(BackendService.GetObject());
 	PropInt = BackendService->Execute_GetPropInt(BackendService.GetObject());
@@ -71,7 +75,7 @@ void UTbSimpleNoSignalsInterfaceLoggingDecorator::OnPropBoolChanged(bool bInProp
 {
 	TbSimpleNoSignalsInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	bPropBool = bInPropBool;
-	Execute_BroadcastPropBoolChanged(this, bInPropBool);
+	Execute__GetSignals(this)->OnPropBoolChanged.Broadcast(bInPropBool);
 }
 
 bool UTbSimpleNoSignalsInterfaceLoggingDecorator::GetPropBool_Implementation() const
@@ -89,7 +93,7 @@ void UTbSimpleNoSignalsInterfaceLoggingDecorator::OnPropIntChanged(int32 InPropI
 {
 	TbSimpleNoSignalsInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropInt = InPropInt;
-	Execute_BroadcastPropIntChanged(this, InPropInt);
+	Execute__GetSignals(this)->OnPropIntChanged.Broadcast(InPropInt);
 }
 
 int32 UTbSimpleNoSignalsInterfaceLoggingDecorator::GetPropInt_Implementation() const

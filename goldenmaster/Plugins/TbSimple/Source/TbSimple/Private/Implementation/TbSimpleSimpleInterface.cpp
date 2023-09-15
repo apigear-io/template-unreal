@@ -28,7 +28,7 @@ void UTbSimpleSimpleInterface::SetPropBool_Implementation(bool bInPropBool)
 	if (bPropBool != bInPropBool)
 	{
 		bPropBool = bInPropBool;
-		Execute_BroadcastPropBoolChanged(this, bPropBool);
+		Execute__GetSignals(this)->OnPropBoolChanged.Broadcast(bPropBool);
 	}
 }
 int32 UTbSimpleSimpleInterface::GetPropInt_Implementation() const
@@ -41,7 +41,7 @@ void UTbSimpleSimpleInterface::SetPropInt_Implementation(int32 InPropInt)
 	if (PropInt != InPropInt)
 	{
 		PropInt = InPropInt;
-		Execute_BroadcastPropIntChanged(this, PropInt);
+		Execute__GetSignals(this)->OnPropIntChanged.Broadcast(PropInt);
 	}
 }
 int32 UTbSimpleSimpleInterface::GetPropInt32_Implementation() const
@@ -54,7 +54,7 @@ void UTbSimpleSimpleInterface::SetPropInt32_Implementation(int32 InPropInt32)
 	if (PropInt32 != InPropInt32)
 	{
 		PropInt32 = InPropInt32;
-		Execute_BroadcastPropInt32Changed(this, PropInt32);
+		Execute__GetSignals(this)->OnPropInt32Changed.Broadcast(PropInt32);
 	}
 }
 int64 UTbSimpleSimpleInterface::GetPropInt64_Implementation() const
@@ -67,7 +67,7 @@ void UTbSimpleSimpleInterface::SetPropInt64_Implementation(int64 InPropInt64)
 	if (PropInt64 != InPropInt64)
 	{
 		PropInt64 = InPropInt64;
-		Execute_BroadcastPropInt64Changed(this, PropInt64);
+		Execute__GetSignals(this)->OnPropInt64Changed.Broadcast(PropInt64);
 	}
 }
 float UTbSimpleSimpleInterface::GetPropFloat_Implementation() const
@@ -80,7 +80,7 @@ void UTbSimpleSimpleInterface::SetPropFloat_Implementation(float InPropFloat)
 	if (PropFloat != InPropFloat)
 	{
 		PropFloat = InPropFloat;
-		Execute_BroadcastPropFloatChanged(this, PropFloat);
+		Execute__GetSignals(this)->OnPropFloatChanged.Broadcast(PropFloat);
 	}
 }
 float UTbSimpleSimpleInterface::GetPropFloat32_Implementation() const
@@ -93,7 +93,7 @@ void UTbSimpleSimpleInterface::SetPropFloat32_Implementation(float InPropFloat32
 	if (PropFloat32 != InPropFloat32)
 	{
 		PropFloat32 = InPropFloat32;
-		Execute_BroadcastPropFloat32Changed(this, PropFloat32);
+		Execute__GetSignals(this)->OnPropFloat32Changed.Broadcast(PropFloat32);
 	}
 }
 double UTbSimpleSimpleInterface::GetPropFloat64_Implementation() const
@@ -106,7 +106,7 @@ void UTbSimpleSimpleInterface::SetPropFloat64_Implementation(double InPropFloat6
 	if (PropFloat64 != InPropFloat64)
 	{
 		PropFloat64 = InPropFloat64;
-		Execute_BroadcastPropFloat64Changed(this, PropFloat64);
+		Execute__GetSignals(this)->OnPropFloat64Changed.Broadcast(PropFloat64);
 	}
 }
 FString UTbSimpleSimpleInterface::GetPropString_Implementation() const
@@ -119,7 +119,7 @@ void UTbSimpleSimpleInterface::SetPropString_Implementation(const FString& InPro
 	if (PropString != InPropString)
 	{
 		PropString = InPropString;
-		Execute_BroadcastPropStringChanged(this, PropString);
+		Execute__GetSignals(this)->OnPropStringChanged.Broadcast(PropString);
 	}
 }
 FString UTbSimpleSimpleInterface::GetPropReadOnlyString_Implementation() const

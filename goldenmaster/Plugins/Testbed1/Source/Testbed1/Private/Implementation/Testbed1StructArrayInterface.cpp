@@ -28,7 +28,7 @@ void UTestbed1StructArrayInterface::SetPropBool_Implementation(const TArray<FTes
 	if (PropBool != InPropBool)
 	{
 		PropBool = InPropBool;
-		Execute_BroadcastPropBoolChanged(this, PropBool);
+		Execute__GetSignals(this)->OnPropBoolChanged.Broadcast(PropBool);
 	}
 }
 TArray<FTestbed1StructInt> UTestbed1StructArrayInterface::GetPropInt_Implementation() const
@@ -41,7 +41,7 @@ void UTestbed1StructArrayInterface::SetPropInt_Implementation(const TArray<FTest
 	if (PropInt != InPropInt)
 	{
 		PropInt = InPropInt;
-		Execute_BroadcastPropIntChanged(this, PropInt);
+		Execute__GetSignals(this)->OnPropIntChanged.Broadcast(PropInt);
 	}
 }
 TArray<FTestbed1StructFloat> UTestbed1StructArrayInterface::GetPropFloat_Implementation() const
@@ -54,7 +54,7 @@ void UTestbed1StructArrayInterface::SetPropFloat_Implementation(const TArray<FTe
 	if (PropFloat != InPropFloat)
 	{
 		PropFloat = InPropFloat;
-		Execute_BroadcastPropFloatChanged(this, PropFloat);
+		Execute__GetSignals(this)->OnPropFloatChanged.Broadcast(PropFloat);
 	}
 }
 TArray<FTestbed1StructString> UTestbed1StructArrayInterface::GetPropString_Implementation() const
@@ -67,7 +67,7 @@ void UTestbed1StructArrayInterface::SetPropString_Implementation(const TArray<FT
 	if (PropString != InPropString)
 	{
 		PropString = InPropString;
-		Execute_BroadcastPropStringChanged(this, PropString);
+		Execute__GetSignals(this)->OnPropStringChanged.Broadcast(PropString);
 	}
 }
 

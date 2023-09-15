@@ -384,28 +384,28 @@ void UTbEnumEnumInterfaceOLinkClient::applyState(const nlohmann::json& fields)
 	if (bProp0Changed)
 	{
 		Prop0 = fields["prop0"].get<ETbEnumEnum0>();
-		Execute_BroadcastProp0Changed(this, Prop0);
+		Execute__GetSignals(this)->OnProp0Changed.Broadcast(Prop0);
 	}
 
 	const bool bProp1Changed = fields.contains("prop1") && (Prop1 != fields["prop1"].get<ETbEnumEnum1>());
 	if (bProp1Changed)
 	{
 		Prop1 = fields["prop1"].get<ETbEnumEnum1>();
-		Execute_BroadcastProp1Changed(this, Prop1);
+		Execute__GetSignals(this)->OnProp1Changed.Broadcast(Prop1);
 	}
 
 	const bool bProp2Changed = fields.contains("prop2") && (Prop2 != fields["prop2"].get<ETbEnumEnum2>());
 	if (bProp2Changed)
 	{
 		Prop2 = fields["prop2"].get<ETbEnumEnum2>();
-		Execute_BroadcastProp2Changed(this, Prop2);
+		Execute__GetSignals(this)->OnProp2Changed.Broadcast(Prop2);
 	}
 
 	const bool bProp3Changed = fields.contains("prop3") && (Prop3 != fields["prop3"].get<ETbEnumEnum3>());
 	if (bProp3Changed)
 	{
 		Prop3 = fields["prop3"].get<ETbEnumEnum3>();
-		Execute_BroadcastProp3Changed(this, Prop3);
+		Execute__GetSignals(this)->OnProp3Changed.Broadcast(Prop3);
 	}
 }
 
@@ -414,28 +414,28 @@ void UTbEnumEnumInterfaceOLinkClient::emitSignal(const std::string& signalName, 
 	if (signalName == "sig0")
 	{
 		ETbEnumEnum0 Param0 = args[0].get<ETbEnumEnum0>();
-		Execute_BroadcastSig0(this, Param0);
+		Execute__GetSignals(this)->OnSig0Signal.Broadcast(Param0);
 		return;
 	}
 
 	if (signalName == "sig1")
 	{
 		ETbEnumEnum1 Param1 = args[0].get<ETbEnumEnum1>();
-		Execute_BroadcastSig1(this, Param1);
+		Execute__GetSignals(this)->OnSig1Signal.Broadcast(Param1);
 		return;
 	}
 
 	if (signalName == "sig2")
 	{
 		ETbEnumEnum2 Param2 = args[0].get<ETbEnumEnum2>();
-		Execute_BroadcastSig2(this, Param2);
+		Execute__GetSignals(this)->OnSig2Signal.Broadcast(Param2);
 		return;
 	}
 
 	if (signalName == "sig3")
 	{
 		ETbEnumEnum3 Param3 = args[0].get<ETbEnumEnum3>();
-		Execute_BroadcastSig3(this, Param3);
+		Execute__GetSignals(this)->OnSig3Signal.Broadcast(Param3);
 		return;
 	}
 }

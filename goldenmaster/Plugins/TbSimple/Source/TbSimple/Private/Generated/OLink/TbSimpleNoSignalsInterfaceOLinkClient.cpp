@@ -244,14 +244,14 @@ void UTbSimpleNoSignalsInterfaceOLinkClient::applyState(const nlohmann::json& fi
 	if (bPropBoolChanged)
 	{
 		bPropBool = fields["propBool"].get<bool>();
-		Execute_BroadcastPropBoolChanged(this, bPropBool);
+		Execute__GetSignals(this)->OnPropBoolChanged.Broadcast(bPropBool);
 	}
 
 	const bool bPropIntChanged = fields.contains("propInt") && (PropInt != fields["propInt"].get<int32>());
 	if (bPropIntChanged)
 	{
 		PropInt = fields["propInt"].get<int32>();
-		Execute_BroadcastPropIntChanged(this, PropInt);
+		Execute__GetSignals(this)->OnPropIntChanged.Broadcast(PropInt);
 	}
 }
 

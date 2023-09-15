@@ -16,6 +16,7 @@ limitations under the License.
 */
 #pragma once
 
+#include "Runtime/Launch/Resources/Version.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "TbSimple_data.h"
 #include "TbSimpleNoSignalsInterfaceInterface.h"
@@ -30,19 +31,17 @@ class TBSIMPLE_API UAbstractTbSimpleNoSignalsInterface : public UGameInstanceSub
 	GENERATED_BODY()
 
 public:
+	// constructor
+	UAbstractTbSimpleNoSignalsInterface();
 	// subsystem
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
 
 	// signals
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoSignalsInterface|Signals", DisplayName = "PropBool Changed")
-	FTbSimpleNoSignalsInterfacePropBoolChangedDelegate PropBoolChanged;
-	virtual FTbSimpleNoSignalsInterfacePropBoolChangedDelegate& GetPropBoolChangedDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoSignalsInterface|Signals", DisplayName = "PropInt Changed")
-	FTbSimpleNoSignalsInterfacePropIntChangedDelegate PropIntChanged;
-	virtual FTbSimpleNoSignalsInterfacePropIntChangedDelegate& GetPropIntChangedDelegate() override;
+	virtual UTbSimpleNoSignalsInterfaceSignals* _GetSignals_Implementation() override
+	{
+		return TbSimpleNoSignalsInterfaceSignals;
+	};
 
 	// methods
 	virtual void FuncVoid_Implementation() override PURE_VIRTUAL(UAbstractTbSimpleNoSignalsInterface::FuncVoid_Implementation, return;);
@@ -61,11 +60,6 @@ public:
 
 protected:
 	bool bInitialized = false;
-	// signals
-
-	virtual void BroadcastPropBoolChanged_Implementation(bool bInPropBool) override;
-
-	virtual void BroadcastPropIntChanged_Implementation(int32 InPropInt) override;
 
 	// properties - local copy
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropBool_Private, BlueprintSetter = SetPropBool_Private, Category = "ApiGear|TbSimple|NoSignalsInterface")
@@ -85,4 +79,9 @@ protected:
 
 	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSimple|NoSignalsInterface|Properties", BlueprintInternalUseOnly)
 	void SetPropInt_Private(int32 InPropInt);
+
+private:
+	// signals
+	UPROPERTY()
+	UTbSimpleNoSignalsInterfaceSignals* TbSimpleNoSignalsInterfaceSignals;
 };

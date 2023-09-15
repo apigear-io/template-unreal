@@ -22,11 +22,6 @@ limitations under the License.
 #include "TbSimpleEmptyInterfaceInterface.generated.h"
 
 /**
- * Declaration for EmptyInterface
- */
-// signal delegates
-// property delegates
-/**
  * Interface UTbSimpleEmptyInterfaceInterface only for Unreal Engine's reflection system
  */
 UINTERFACE(Blueprintable, MinimalAPI)
@@ -43,12 +38,7 @@ class TBSIMPLE_API ITbSimpleEmptyInterfaceInterface
 	GENERATED_BODY()
 
 public:
-	// signals
-
 	// methods
 
 	// properties
-
-protected:
-	// signals
 };

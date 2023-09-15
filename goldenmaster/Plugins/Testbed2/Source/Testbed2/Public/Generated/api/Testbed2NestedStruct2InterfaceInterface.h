@@ -31,8 +31,31 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FTestbed2NestedStruct2InterfaceSig2
 
 // property delegates
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed2NestedStruct2InterfaceProp1ChangedDelegate, const FTestbed2NestedStruct1&, Prop1);
-
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed2NestedStruct2InterfaceProp2ChangedDelegate, const FTestbed2NestedStruct2&, Prop2);
+
+/**
+ * Class UTestbed2NestedStruct2InterfaceInterfaceSignals
+ * Contains delegates for properties and signals
+ * this is needed since we cannot declare delegates on an UInterface
+ */
+UCLASS(BlueprintType)
+class TESTBED2_API UTestbed2NestedStruct2InterfaceSignals : public UObject
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface|Signals", DisplayName = "Sig1 Signal")
+	FTestbed2NestedStruct2InterfaceSig1Delegate OnSig1Signal;
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface|Signals", DisplayName = "Sig2 Signal")
+	FTestbed2NestedStruct2InterfaceSig2Delegate OnSig2Signal;
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface|Signals", DisplayName = "Property Prop1 Changed")
+	FTestbed2NestedStruct2InterfaceProp1ChangedDelegate OnProp1Changed;
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface|Signals", DisplayName = "Property Prop2 Changed")
+	FTestbed2NestedStruct2InterfaceProp2ChangedDelegate OnProp2Changed;
+};
 
 /**
  * Interface UTestbed2NestedStruct2InterfaceInterface only for Unreal Engine's reflection system
@@ -51,18 +74,12 @@ class TESTBED2_API ITestbed2NestedStruct2InterfaceInterface
 	GENERATED_BODY()
 
 public:
-	// signals
-	UFUNCTION(Category = "ApiGear|Testbed2|NestedStruct2Interface|Signals")
-	virtual FTestbed2NestedStruct2InterfaceSig1Delegate& GetSig1SignalDelegate() = 0;
-
-	UFUNCTION(Category = "ApiGear|Testbed2|NestedStruct2Interface|Signals")
-	virtual FTestbed2NestedStruct2InterfaceSig2Delegate& GetSig2SignalDelegate() = 0;
-
-	UFUNCTION(Category = "ApiGear|Testbed2|NestedStruct2Interface|Signals")
-	virtual FTestbed2NestedStruct2InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() = 0;
-
-	UFUNCTION(Category = "ApiGear|Testbed2|NestedStruct2Interface|Signals")
-	virtual FTestbed2NestedStruct2InterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() = 0;
+	/// Provides access to the object which holds all the delegates
+	/// this is needed since we cannot declare delegates on an UInterface
+	/// @return object with signals for property state changes or standalone signals
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface")
+	UTestbed2NestedStruct2InterfaceSignals* _GetSignals();
+	virtual UTestbed2NestedStruct2InterfaceSignals* _GetSignals_Implementation() = 0;
 
 	// methods
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
@@ -86,29 +103,10 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface|Properties")
 	void SetProp1(const FTestbed2NestedStruct1& InProp1);
 	virtual void SetProp1_Implementation(const FTestbed2NestedStruct1& InProp1) = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface|Properties")
 	FTestbed2NestedStruct2 GetProp2() const;
 	virtual FTestbed2NestedStruct2 GetProp2_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface|Properties")
 	void SetProp2(const FTestbed2NestedStruct2& InProp2);
 	virtual void SetProp2_Implementation(const FTestbed2NestedStruct2& InProp2) = 0;
-
-protected:
-	// signals
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface|Signals", meta = (BlueprintProtected = "true"))
-	void BroadcastSig1(const FTestbed2NestedStruct1& Param1);
-	virtual void BroadcastSig1_Implementation(const FTestbed2NestedStruct1& Param1) = 0;
-
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface|Signals", meta = (BlueprintProtected = "true"))
-	void BroadcastSig2(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2);
-	virtual void BroadcastSig2_Implementation(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2) = 0;
-
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface|Signals", meta = (BlueprintProtected = "true"))
-	void BroadcastProp1Changed(const FTestbed2NestedStruct1& Prop1);
-	virtual void BroadcastProp1Changed_Implementation(const FTestbed2NestedStruct1& Prop1) = 0;
-
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface|Signals", meta = (BlueprintProtected = "true"))
-	void BroadcastProp2Changed(const FTestbed2NestedStruct2& Prop2);
-	virtual void BroadcastProp2Changed_Implementation(const FTestbed2NestedStruct2& Prop2) = 0;
 };

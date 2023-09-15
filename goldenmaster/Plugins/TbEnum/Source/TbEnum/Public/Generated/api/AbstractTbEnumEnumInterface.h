@@ -16,6 +16,7 @@ limitations under the License.
 */
 #pragma once
 
+#include "Runtime/Launch/Resources/Version.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "TbEnum_data.h"
 #include "TbEnumEnumInterfaceInterface.h"
@@ -30,42 +31,17 @@ class TBENUM_API UAbstractTbEnumEnumInterface : public UGameInstanceSubsystem, p
 	GENERATED_BODY()
 
 public:
+	// constructor
+	UAbstractTbEnumEnumInterface();
 	// subsystem
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
 
 	// signals
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface|Signals", DisplayName = "Sig0 Signal")
-	FTbEnumEnumInterfaceSig0Delegate Sig0Signal;
-	virtual FTbEnumEnumInterfaceSig0Delegate& GetSig0SignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface|Signals", DisplayName = "Sig1 Signal")
-	FTbEnumEnumInterfaceSig1Delegate Sig1Signal;
-	virtual FTbEnumEnumInterfaceSig1Delegate& GetSig1SignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface|Signals", DisplayName = "Sig2 Signal")
-	FTbEnumEnumInterfaceSig2Delegate Sig2Signal;
-	virtual FTbEnumEnumInterfaceSig2Delegate& GetSig2SignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface|Signals", DisplayName = "Sig3 Signal")
-	FTbEnumEnumInterfaceSig3Delegate Sig3Signal;
-	virtual FTbEnumEnumInterfaceSig3Delegate& GetSig3SignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface|Signals", DisplayName = "Prop0 Changed")
-	FTbEnumEnumInterfaceProp0ChangedDelegate Prop0Changed;
-	virtual FTbEnumEnumInterfaceProp0ChangedDelegate& GetProp0ChangedDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface|Signals", DisplayName = "Prop1 Changed")
-	FTbEnumEnumInterfaceProp1ChangedDelegate Prop1Changed;
-	virtual FTbEnumEnumInterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface|Signals", DisplayName = "Prop2 Changed")
-	FTbEnumEnumInterfaceProp2ChangedDelegate Prop2Changed;
-	virtual FTbEnumEnumInterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface|Signals", DisplayName = "Prop3 Changed")
-	FTbEnumEnumInterfaceProp3ChangedDelegate Prop3Changed;
-	virtual FTbEnumEnumInterfaceProp3ChangedDelegate& GetProp3ChangedDelegate() override;
+	virtual UTbEnumEnumInterfaceSignals* _GetSignals_Implementation() override
+	{
+		return TbEnumEnumInterfaceSignals;
+	};
 
 	// methods
 	virtual void Func0Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum0& Result, ETbEnumEnum0 Param0) override;
@@ -97,22 +73,6 @@ public:
 
 protected:
 	bool bInitialized = false;
-	// signals
-	virtual void BroadcastSig0_Implementation(ETbEnumEnum0 Param0) override;
-
-	virtual void BroadcastSig1_Implementation(ETbEnumEnum1 Param1) override;
-
-	virtual void BroadcastSig2_Implementation(ETbEnumEnum2 Param2) override;
-
-	virtual void BroadcastSig3_Implementation(ETbEnumEnum3 Param3) override;
-
-	virtual void BroadcastProp0Changed_Implementation(ETbEnumEnum0 InProp0) override;
-
-	virtual void BroadcastProp1Changed_Implementation(ETbEnumEnum1 InProp1) override;
-
-	virtual void BroadcastProp2Changed_Implementation(ETbEnumEnum2 InProp2) override;
-
-	virtual void BroadcastProp3Changed_Implementation(ETbEnumEnum3 InProp3) override;
 
 	// properties - local copy
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp0_Private, BlueprintSetter = SetProp0_Private, Category = "ApiGear|TbEnum|EnumInterface")
@@ -150,4 +110,9 @@ protected:
 
 	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbEnum|EnumInterface|Properties", BlueprintInternalUseOnly)
 	void SetProp3_Private(ETbEnumEnum3 InProp3);
+
+private:
+	// signals
+	UPROPERTY()
+	UTbEnumEnumInterfaceSignals* TbEnumEnumInterfaceSignals;
 };

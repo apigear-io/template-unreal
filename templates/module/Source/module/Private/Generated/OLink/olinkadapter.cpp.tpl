@@ -53,11 +53,15 @@ void {{$Class}}::setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{Cam
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
+{{- if or (len .Interface.Properties) (.Interface.Signals) }}
+		U{{$Iface}}Signals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service {{$Iface}}"));
+{{- end }}
 {{- range .Interface.Properties }}
-		BackendService->Get{{Camel .Name}}ChangedDelegate().RemoveDynamic(this, &{{$Class}}::On{{Camel .Name}}Changed);
+		BackendSignals->On{{Camel .Name}}Changed.RemoveDynamic(this, &{{$Class}}::On{{Camel .Name}}Changed);
 {{- end }}
 {{- range .Interface.Signals }}
-		BackendService->Get{{Camel .Name}}SignalDelegate().RemoveDynamic(this, &{{$Class}}::On{{Camel .Name}});
+		BackendSignals->On{{Camel .Name}}Signal.RemoveDynamic(this, &{{$Class}}::On{{Camel .Name}});
 {{- end }}
 	}
 
@@ -67,12 +71,16 @@ void {{$Class}}::setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{Cam
 	// subscribe to new backend
 {{- $Service := printf "I%sInterface" $Iface }}
 	BackendService = InService;
+{{- if or (len .Interface.Properties) (.Interface.Signals) }}
+	U{{$Iface}}Signals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+	checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service {{$Iface}}"));
+{{- end }}
 	// connect property changed signals or simple events
 {{- range .Interface.Properties }}
-	BackendService->Get{{Camel .Name}}ChangedDelegate().AddDynamic(this, &{{$Class}}::On{{Camel .Name}}Changed);
+	BackendSignals->On{{Camel .Name}}Changed.AddDynamic(this, &{{$Class}}::On{{Camel .Name}}Changed);
 {{- end }}
 {{- range .Interface.Signals }}
-	BackendService->Get{{Camel .Name}}SignalDelegate().AddDynamic(this, &{{$Class}}::On{{Camel .Name}});
+	BackendSignals->On{{Camel .Name}}Signal.AddDynamic(this, &{{$Class}}::On{{Camel .Name}});
 {{- end }}
 
 	// update olink source with new backend

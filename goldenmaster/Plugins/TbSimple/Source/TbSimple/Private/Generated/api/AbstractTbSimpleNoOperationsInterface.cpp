@@ -20,34 +20,9 @@ limitations under the License.
 #include "Engine/LatentActionManager.h"
 #include "LatentActions.h"
 
-FTbSimpleNoOperationsInterfaceSigVoidDelegate& UAbstractTbSimpleNoOperationsInterface::GetSigVoidSignalDelegate()
+UAbstractTbSimpleNoOperationsInterface::UAbstractTbSimpleNoOperationsInterface()
 {
-	return SigVoidSignal;
-};
-
-void UAbstractTbSimpleNoOperationsInterface::BroadcastSigVoid_Implementation()
-{
-	SigVoidSignal.Broadcast();
-};
-
-FTbSimpleNoOperationsInterfaceSigBoolDelegate& UAbstractTbSimpleNoOperationsInterface::GetSigBoolSignalDelegate()
-{
-	return SigBoolSignal;
-};
-
-void UAbstractTbSimpleNoOperationsInterface::BroadcastSigBool_Implementation(bool bParamBool)
-{
-	SigBoolSignal.Broadcast(bParamBool);
-};
-
-FTbSimpleNoOperationsInterfacePropBoolChangedDelegate& UAbstractTbSimpleNoOperationsInterface::GetPropBoolChangedDelegate()
-{
-	return PropBoolChanged;
-};
-
-void UAbstractTbSimpleNoOperationsInterface::BroadcastPropBoolChanged_Implementation(bool bInPropBool)
-{
-	PropBoolChanged.Broadcast(bInPropBool);
+	TbSimpleNoOperationsInterfaceSignals = NewObject<UTbSimpleNoOperationsInterfaceSignals>();
 }
 
 bool UAbstractTbSimpleNoOperationsInterface::GetPropBool_Private() const
@@ -59,16 +34,6 @@ void UAbstractTbSimpleNoOperationsInterface::SetPropBool_Private(bool bInPropBoo
 {
 	Execute_SetPropBool(this, bInPropBool);
 };
-
-FTbSimpleNoOperationsInterfacePropIntChangedDelegate& UAbstractTbSimpleNoOperationsInterface::GetPropIntChangedDelegate()
-{
-	return PropIntChanged;
-};
-
-void UAbstractTbSimpleNoOperationsInterface::BroadcastPropIntChanged_Implementation(int32 InPropInt)
-{
-	PropIntChanged.Broadcast(InPropInt);
-}
 
 int32 UAbstractTbSimpleNoOperationsInterface::GetPropInt_Private() const
 {
@@ -92,6 +57,15 @@ void UAbstractTbSimpleNoOperationsInterface::Deinitialize()
 {
 	check(bInitialized);
 	bInitialized = false;
+
+	if (TbSimpleNoOperationsInterfaceSignals)
+	{
+		TbSimpleNoOperationsInterfaceSignals->OnSigVoidSignal.RemoveAll(TbSimpleNoOperationsInterfaceSignals);
+		TbSimpleNoOperationsInterfaceSignals->OnSigBoolSignal.RemoveAll(TbSimpleNoOperationsInterfaceSignals);
+
+		TbSimpleNoOperationsInterfaceSignals->OnPropBoolChanged.RemoveAll(TbSimpleNoOperationsInterfaceSignals);
+		TbSimpleNoOperationsInterfaceSignals->OnPropIntChanged.RemoveAll(TbSimpleNoOperationsInterfaceSignals);
+	}
 
 	Super::Deinitialize();
 }

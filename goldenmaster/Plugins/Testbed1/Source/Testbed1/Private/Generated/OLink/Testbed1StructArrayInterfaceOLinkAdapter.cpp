@@ -54,14 +54,16 @@ void UTestbed1StructArrayInterfaceOLinkAdapter::setBackendService(TScriptInterfa
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		BackendService->GetPropBoolChangedDelegate().RemoveDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnPropBoolChanged);
-		BackendService->GetPropIntChangedDelegate().RemoveDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnPropIntChanged);
-		BackendService->GetPropFloatChangedDelegate().RemoveDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnPropFloatChanged);
-		BackendService->GetPropStringChangedDelegate().RemoveDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnPropStringChanged);
-		BackendService->GetSigBoolSignalDelegate().RemoveDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnSigBool);
-		BackendService->GetSigIntSignalDelegate().RemoveDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnSigInt);
-		BackendService->GetSigFloatSignalDelegate().RemoveDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnSigFloat);
-		BackendService->GetSigStringSignalDelegate().RemoveDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnSigString);
+		UTestbed1StructArrayInterfaceSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service Testbed1StructArrayInterface"));
+		BackendSignals->OnPropBoolChanged.RemoveDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnPropBoolChanged);
+		BackendSignals->OnPropIntChanged.RemoveDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnPropIntChanged);
+		BackendSignals->OnPropFloatChanged.RemoveDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnPropFloatChanged);
+		BackendSignals->OnPropStringChanged.RemoveDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnPropStringChanged);
+		BackendSignals->OnSigBoolSignal.RemoveDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnSigBool);
+		BackendSignals->OnSigIntSignal.RemoveDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnSigInt);
+		BackendSignals->OnSigFloatSignal.RemoveDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnSigFloat);
+		BackendSignals->OnSigStringSignal.RemoveDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnSigString);
 	}
 
 	// only set if interface is implemented
@@ -69,15 +71,17 @@ void UTestbed1StructArrayInterfaceOLinkAdapter::setBackendService(TScriptInterfa
 
 	// subscribe to new backend
 	BackendService = InService;
+	UTestbed1StructArrayInterfaceSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+	checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service Testbed1StructArrayInterface"));
 	// connect property changed signals or simple events
-	BackendService->GetPropBoolChangedDelegate().AddDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnPropBoolChanged);
-	BackendService->GetPropIntChangedDelegate().AddDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnPropIntChanged);
-	BackendService->GetPropFloatChangedDelegate().AddDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnPropFloatChanged);
-	BackendService->GetPropStringChangedDelegate().AddDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnPropStringChanged);
-	BackendService->GetSigBoolSignalDelegate().AddDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnSigBool);
-	BackendService->GetSigIntSignalDelegate().AddDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnSigInt);
-	BackendService->GetSigFloatSignalDelegate().AddDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnSigFloat);
-	BackendService->GetSigStringSignalDelegate().AddDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnSigString);
+	BackendSignals->OnPropBoolChanged.AddDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnPropBoolChanged);
+	BackendSignals->OnPropIntChanged.AddDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnPropIntChanged);
+	BackendSignals->OnPropFloatChanged.AddDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnPropFloatChanged);
+	BackendSignals->OnPropStringChanged.AddDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnPropStringChanged);
+	BackendSignals->OnSigBoolSignal.AddDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnSigBool);
+	BackendSignals->OnSigIntSignal.AddDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnSigInt);
+	BackendSignals->OnSigFloatSignal.AddDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnSigFloat);
+	BackendSignals->OnSigStringSignal.AddDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnSigString);
 
 	// update olink source with new backend
 	Source->setBackendService(InService);

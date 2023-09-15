@@ -72,33 +72,16 @@ public:
 };
 {{- end}}
 
-{{- if len .Signals }}{{ nl }}{{ end }}
-{{- range $i, $e := .Signals }}
-{{- if $i }}{{nl}}{{ end }}
-F{{$Class}}{{Camel .Name}}Delegate& {{$abstractclass}}::Get{{Camel .Name}}SignalDelegate()
+{{$abstractclass}}::{{$abstractclass}}()
 {
-	return {{Camel .Name}}Signal;
-};
-
-void {{$abstractclass}}::Broadcast{{Camel .Name}}_Implementation({{ueParams "" .Params}})
-{
-	{{Camel .Name}}Signal.Broadcast({{ueVars "" .Params }});
-};
+{{- if or (len .Properties) (len .Signals) }}
+	{{$Iface}}Signals = NewObject<U{{$Class}}Signals>();
 {{- end }}
+}
 
 {{- if len .Properties }}{{ nl }}{{ end }}
 {{- range $i, $e := .Properties }}
 {{- if $i }}{{nl}}{{ end }}
-F{{$Class}}{{Camel .Name}}ChangedDelegate& {{$abstractclass}}::Get{{Camel .Name}}ChangedDelegate()
-{
-	return {{Camel .Name}}Changed;
-};
-
-void {{$abstractclass}}::Broadcast{{Camel .Name}}Changed_Implementation({{ueParam "In" .}})
-{
-	{{Camel .Name}}Changed.Broadcast({{ueVar "In" .}});
-}
-
 {{ueReturn "" .}} {{$abstractclass}}::Get{{Camel .Name}}_Private() const
 {
 	return Execute_Get{{Camel .Name}}(this);
@@ -169,6 +152,17 @@ void {{$abstractclass}}::Deinitialize()
 {
 	check(bInitialized);
 	bInitialized = false;
+
+	if ({{$Iface}}Signals)
+	{
+{{- range $i, $e := .Signals }}
+		{{$Iface}}Signals->On{{Camel .Name}}Signal.RemoveAll({{$Iface}}Signals);
+{{- end }}
+{{- if and (len .Properties) (len .Signals) }}{{ nl }}{{ end }}
+{{- range $i, $e := .Properties }}
+		{{$Iface}}Signals->On{{Camel .Name}}Changed.RemoveAll({{$Iface}}Signals);
+{{- end }}
+	}
 
 	Super::Deinitialize();
 }

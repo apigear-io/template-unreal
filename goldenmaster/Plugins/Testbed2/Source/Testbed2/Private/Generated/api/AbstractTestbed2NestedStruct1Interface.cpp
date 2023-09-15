@@ -61,24 +61,9 @@ public:
 	}
 };
 
-FTestbed2NestedStruct1InterfaceSig1Delegate& UAbstractTestbed2NestedStruct1Interface::GetSig1SignalDelegate()
+UAbstractTestbed2NestedStruct1Interface::UAbstractTestbed2NestedStruct1Interface()
 {
-	return Sig1Signal;
-};
-
-void UAbstractTestbed2NestedStruct1Interface::BroadcastSig1_Implementation(const FTestbed2NestedStruct1& Param1)
-{
-	Sig1Signal.Broadcast(Param1);
-};
-
-FTestbed2NestedStruct1InterfaceProp1ChangedDelegate& UAbstractTestbed2NestedStruct1Interface::GetProp1ChangedDelegate()
-{
-	return Prop1Changed;
-};
-
-void UAbstractTestbed2NestedStruct1Interface::BroadcastProp1Changed_Implementation(const FTestbed2NestedStruct1& InProp1)
-{
-	Prop1Changed.Broadcast(InProp1);
+	Testbed2NestedStruct1InterfaceSignals = NewObject<UTestbed2NestedStruct1InterfaceSignals>();
 }
 
 FTestbed2NestedStruct1 UAbstractTestbed2NestedStruct1Interface::GetProp1_Private() const
@@ -137,6 +122,13 @@ void UAbstractTestbed2NestedStruct1Interface::Deinitialize()
 {
 	check(bInitialized);
 	bInitialized = false;
+
+	if (Testbed2NestedStruct1InterfaceSignals)
+	{
+		Testbed2NestedStruct1InterfaceSignals->OnSig1Signal.RemoveAll(Testbed2NestedStruct1InterfaceSignals);
+
+		Testbed2NestedStruct1InterfaceSignals->OnProp1Changed.RemoveAll(Testbed2NestedStruct1InterfaceSignals);
+	}
 
 	Super::Deinitialize();
 }

@@ -16,6 +16,7 @@ limitations under the License.
 */
 #pragma once
 
+#include "Runtime/Launch/Resources/Version.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "TbSimple_data.h"
 #include "TbSimpleNoPropertiesInterfaceInterface.h"
@@ -30,18 +31,17 @@ class TBSIMPLE_API UAbstractTbSimpleNoPropertiesInterface : public UGameInstance
 	GENERATED_BODY()
 
 public:
+	// constructor
+	UAbstractTbSimpleNoPropertiesInterface();
 	// subsystem
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
 
 	// signals
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoPropertiesInterface|Signals", DisplayName = "SigVoid Signal")
-	FTbSimpleNoPropertiesInterfaceSigVoidDelegate SigVoidSignal;
-	virtual FTbSimpleNoPropertiesInterfaceSigVoidDelegate& GetSigVoidSignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoPropertiesInterface|Signals", DisplayName = "SigBool Signal")
-	FTbSimpleNoPropertiesInterfaceSigBoolDelegate SigBoolSignal;
-	virtual FTbSimpleNoPropertiesInterfaceSigBoolDelegate& GetSigBoolSignalDelegate() override;
+	virtual UTbSimpleNoPropertiesInterfaceSignals* _GetSignals_Implementation() override
+	{
+		return TbSimpleNoPropertiesInterfaceSignals;
+	};
 
 	// methods
 	virtual void FuncVoid_Implementation() override PURE_VIRTUAL(UAbstractTbSimpleNoPropertiesInterface::FuncVoid_Implementation, return;);
@@ -55,10 +55,11 @@ public:
 
 protected:
 	bool bInitialized = false;
-	// signals
-	virtual void BroadcastSigVoid_Implementation() override;
-
-	virtual void BroadcastSigBool_Implementation(bool bParamBool) override;
 
 	// properties - local copy
+
+private:
+	// signals
+	UPROPERTY()
+	UTbSimpleNoPropertiesInterfaceSignals* TbSimpleNoPropertiesInterfaceSignals;
 };

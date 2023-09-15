@@ -50,10 +50,12 @@ void UTbSame1SameEnum2InterfaceLoggingDecorator::setBackendService(TScriptInterf
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		BackendService->GetProp1ChangedDelegate().RemoveDynamic(this, &UTbSame1SameEnum2InterfaceLoggingDecorator::OnProp1Changed);
-		BackendService->GetProp2ChangedDelegate().RemoveDynamic(this, &UTbSame1SameEnum2InterfaceLoggingDecorator::OnProp2Changed);
-		BackendService->GetSig1SignalDelegate().RemoveDynamic(this, &UTbSame1SameEnum2InterfaceLoggingDecorator::OnSig1);
-		BackendService->GetSig2SignalDelegate().RemoveDynamic(this, &UTbSame1SameEnum2InterfaceLoggingDecorator::OnSig2);
+		UTbSame1SameEnum2InterfaceSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSame1SameEnum2Interface"));
+		BackendSignals->OnProp1Changed.RemoveDynamic(this, &UTbSame1SameEnum2InterfaceLoggingDecorator::OnProp1Changed);
+		BackendSignals->OnProp2Changed.RemoveDynamic(this, &UTbSame1SameEnum2InterfaceLoggingDecorator::OnProp2Changed);
+		BackendSignals->OnSig1Signal.RemoveDynamic(this, &UTbSame1SameEnum2InterfaceLoggingDecorator::OnSig1);
+		BackendSignals->OnSig2Signal.RemoveDynamic(this, &UTbSame1SameEnum2InterfaceLoggingDecorator::OnSig2);
 	}
 
 	// only set if interface is implemented
@@ -61,11 +63,13 @@ void UTbSame1SameEnum2InterfaceLoggingDecorator::setBackendService(TScriptInterf
 
 	// subscribe to new backend
 	BackendService = InService;
+	UTbSame1SameEnum2InterfaceSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+	checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSame1SameEnum2Interface"));
 	// connect property changed signals or simple events
-	BackendService->GetProp1ChangedDelegate().AddDynamic(this, &UTbSame1SameEnum2InterfaceLoggingDecorator::OnProp1Changed);
-	BackendService->GetProp2ChangedDelegate().AddDynamic(this, &UTbSame1SameEnum2InterfaceLoggingDecorator::OnProp2Changed);
-	BackendService->GetSig1SignalDelegate().AddDynamic(this, &UTbSame1SameEnum2InterfaceLoggingDecorator::OnSig1);
-	BackendService->GetSig2SignalDelegate().AddDynamic(this, &UTbSame1SameEnum2InterfaceLoggingDecorator::OnSig2);
+	BackendSignals->OnProp1Changed.AddDynamic(this, &UTbSame1SameEnum2InterfaceLoggingDecorator::OnProp1Changed);
+	BackendSignals->OnProp2Changed.AddDynamic(this, &UTbSame1SameEnum2InterfaceLoggingDecorator::OnProp2Changed);
+	BackendSignals->OnSig1Signal.AddDynamic(this, &UTbSame1SameEnum2InterfaceLoggingDecorator::OnSig1);
+	BackendSignals->OnSig2Signal.AddDynamic(this, &UTbSame1SameEnum2InterfaceLoggingDecorator::OnSig2);
 	// populate service state to proxy
 	Prop1 = BackendService->Execute_GetProp1(BackendService.GetObject());
 	Prop2 = BackendService->Execute_GetProp2(BackendService.GetObject());
@@ -74,20 +78,20 @@ void UTbSame1SameEnum2InterfaceLoggingDecorator::setBackendService(TScriptInterf
 void UTbSame1SameEnum2InterfaceLoggingDecorator::OnSig1(ETbSame1Enum1 Param1)
 {
 	TbSame1SameEnum2InterfaceTracer::trace_signalSig1(Param1);
-	Execute_BroadcastSig1(this, Param1);
+	Execute__GetSignals(this)->OnSig1Signal.Broadcast(Param1);
 }
 
 void UTbSame1SameEnum2InterfaceLoggingDecorator::OnSig2(ETbSame1Enum1 Param1, ETbSame1Enum2 Param2)
 {
 	TbSame1SameEnum2InterfaceTracer::trace_signalSig2(Param1, Param2);
-	Execute_BroadcastSig2(this, Param1, Param2);
+	Execute__GetSignals(this)->OnSig2Signal.Broadcast(Param1, Param2);
 }
 
 void UTbSame1SameEnum2InterfaceLoggingDecorator::OnProp1Changed(ETbSame1Enum1 InProp1)
 {
 	TbSame1SameEnum2InterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop1 = InProp1;
-	Execute_BroadcastProp1Changed(this, InProp1);
+	Execute__GetSignals(this)->OnProp1Changed.Broadcast(InProp1);
 }
 
 ETbSame1Enum1 UTbSame1SameEnum2InterfaceLoggingDecorator::GetProp1_Implementation() const
@@ -105,7 +109,7 @@ void UTbSame1SameEnum2InterfaceLoggingDecorator::OnProp2Changed(ETbSame1Enum2 In
 {
 	TbSame1SameEnum2InterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop2 = InProp2;
-	Execute_BroadcastProp2Changed(this, InProp2);
+	Execute__GetSignals(this)->OnProp2Changed.Broadcast(InProp2);
 }
 
 ETbSame1Enum2 UTbSame1SameEnum2InterfaceLoggingDecorator::GetProp2_Implementation() const

@@ -16,6 +16,7 @@ limitations under the License.
 */
 #pragma once
 
+#include "Runtime/Launch/Resources/Version.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "TbSame2_data.h"
 #include "TbSame2SameEnum1InterfaceInterface.h"
@@ -30,18 +31,17 @@ class TBSAME2_API UAbstractTbSame2SameEnum1Interface : public UGameInstanceSubsy
 	GENERATED_BODY()
 
 public:
+	// constructor
+	UAbstractTbSame2SameEnum1Interface();
 	// subsystem
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
 
 	// signals
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame2|SameEnum1Interface|Signals", DisplayName = "Sig1 Signal")
-	FTbSame2SameEnum1InterfaceSig1Delegate Sig1Signal;
-	virtual FTbSame2SameEnum1InterfaceSig1Delegate& GetSig1SignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame2|SameEnum1Interface|Signals", DisplayName = "Prop1 Changed")
-	FTbSame2SameEnum1InterfaceProp1ChangedDelegate Prop1Changed;
-	virtual FTbSame2SameEnum1InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
+	virtual UTbSame2SameEnum1InterfaceSignals* _GetSignals_Implementation() override
+	{
+		return TbSame2SameEnum1InterfaceSignals;
+	};
 
 	// methods
 	virtual void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, ETbSame2Enum1 Param1) override;
@@ -55,10 +55,6 @@ public:
 
 protected:
 	bool bInitialized = false;
-	// signals
-	virtual void BroadcastSig1_Implementation(ETbSame2Enum1 Param1) override;
-
-	virtual void BroadcastProp1Changed_Implementation(ETbSame2Enum1 InProp1) override;
 
 	// properties - local copy
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1_Private, BlueprintSetter = SetProp1_Private, Category = "ApiGear|TbSame2|SameEnum1Interface")
@@ -69,4 +65,9 @@ protected:
 
 	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSame2|SameEnum1Interface|Properties", BlueprintInternalUseOnly)
 	void SetProp1_Private(ETbSame2Enum1 InProp1);
+
+private:
+	// signals
+	UPROPERTY()
+	UTbSame2SameEnum1InterfaceSignals* TbSame2SameEnum1InterfaceSignals;
 };

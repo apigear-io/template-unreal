@@ -54,10 +54,12 @@ void UTbSame1SameStruct2InterfaceOLinkAdapter::setBackendService(TScriptInterfac
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		BackendService->GetProp1ChangedDelegate().RemoveDynamic(this, &UTbSame1SameStruct2InterfaceOLinkAdapter::OnProp1Changed);
-		BackendService->GetProp2ChangedDelegate().RemoveDynamic(this, &UTbSame1SameStruct2InterfaceOLinkAdapter::OnProp2Changed);
-		BackendService->GetSig1SignalDelegate().RemoveDynamic(this, &UTbSame1SameStruct2InterfaceOLinkAdapter::OnSig1);
-		BackendService->GetSig2SignalDelegate().RemoveDynamic(this, &UTbSame1SameStruct2InterfaceOLinkAdapter::OnSig2);
+		UTbSame1SameStruct2InterfaceSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSame1SameStruct2Interface"));
+		BackendSignals->OnProp1Changed.RemoveDynamic(this, &UTbSame1SameStruct2InterfaceOLinkAdapter::OnProp1Changed);
+		BackendSignals->OnProp2Changed.RemoveDynamic(this, &UTbSame1SameStruct2InterfaceOLinkAdapter::OnProp2Changed);
+		BackendSignals->OnSig1Signal.RemoveDynamic(this, &UTbSame1SameStruct2InterfaceOLinkAdapter::OnSig1);
+		BackendSignals->OnSig2Signal.RemoveDynamic(this, &UTbSame1SameStruct2InterfaceOLinkAdapter::OnSig2);
 	}
 
 	// only set if interface is implemented
@@ -65,11 +67,13 @@ void UTbSame1SameStruct2InterfaceOLinkAdapter::setBackendService(TScriptInterfac
 
 	// subscribe to new backend
 	BackendService = InService;
+	UTbSame1SameStruct2InterfaceSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+	checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSame1SameStruct2Interface"));
 	// connect property changed signals or simple events
-	BackendService->GetProp1ChangedDelegate().AddDynamic(this, &UTbSame1SameStruct2InterfaceOLinkAdapter::OnProp1Changed);
-	BackendService->GetProp2ChangedDelegate().AddDynamic(this, &UTbSame1SameStruct2InterfaceOLinkAdapter::OnProp2Changed);
-	BackendService->GetSig1SignalDelegate().AddDynamic(this, &UTbSame1SameStruct2InterfaceOLinkAdapter::OnSig1);
-	BackendService->GetSig2SignalDelegate().AddDynamic(this, &UTbSame1SameStruct2InterfaceOLinkAdapter::OnSig2);
+	BackendSignals->OnProp1Changed.AddDynamic(this, &UTbSame1SameStruct2InterfaceOLinkAdapter::OnProp1Changed);
+	BackendSignals->OnProp2Changed.AddDynamic(this, &UTbSame1SameStruct2InterfaceOLinkAdapter::OnProp2Changed);
+	BackendSignals->OnSig1Signal.AddDynamic(this, &UTbSame1SameStruct2InterfaceOLinkAdapter::OnSig1);
+	BackendSignals->OnSig2Signal.AddDynamic(this, &UTbSame1SameStruct2InterfaceOLinkAdapter::OnSig2);
 
 	// update olink source with new backend
 	Source->setBackendService(InService);

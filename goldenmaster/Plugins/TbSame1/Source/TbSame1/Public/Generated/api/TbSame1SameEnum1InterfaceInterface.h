@@ -31,6 +31,24 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSame1SameEnum1InterfaceSig1Delega
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSame1SameEnum1InterfaceProp1ChangedDelegate, ETbSame1Enum1, Prop1);
 
 /**
+ * Class UTbSame1SameEnum1InterfaceInterfaceSignals
+ * Contains delegates for properties and signals
+ * this is needed since we cannot declare delegates on an UInterface
+ */
+UCLASS(BlueprintType)
+class TBSAME1_API UTbSame1SameEnum1InterfaceSignals : public UObject
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSame1|SameEnum1Interface|Signals", DisplayName = "Sig1 Signal")
+	FTbSame1SameEnum1InterfaceSig1Delegate OnSig1Signal;
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSame1|SameEnum1Interface|Signals", DisplayName = "Property Prop1 Changed")
+	FTbSame1SameEnum1InterfaceProp1ChangedDelegate OnProp1Changed;
+};
+
+/**
  * Interface UTbSame1SameEnum1InterfaceInterface only for Unreal Engine's reflection system
  */
 UINTERFACE(Blueprintable, MinimalAPI)
@@ -47,12 +65,12 @@ class TBSAME1_API ITbSame1SameEnum1InterfaceInterface
 	GENERATED_BODY()
 
 public:
-	// signals
-	UFUNCTION(Category = "ApiGear|TbSame1|SameEnum1Interface|Signals")
-	virtual FTbSame1SameEnum1InterfaceSig1Delegate& GetSig1SignalDelegate() = 0;
-
-	UFUNCTION(Category = "ApiGear|TbSame1|SameEnum1Interface|Signals")
-	virtual FTbSame1SameEnum1InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() = 0;
+	/// Provides access to the object which holds all the delegates
+	/// this is needed since we cannot declare delegates on an UInterface
+	/// @return object with signals for property state changes or standalone signals
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame1|SameEnum1Interface")
+	UTbSame1SameEnum1InterfaceSignals* _GetSignals();
+	virtual UTbSame1SameEnum1InterfaceSignals* _GetSignals_Implementation() = 0;
 
 	// methods
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame1|SameEnum1Interface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
@@ -69,14 +87,4 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame1|SameEnum1Interface|Properties")
 	void SetProp1(ETbSame1Enum1 InProp1);
 	virtual void SetProp1_Implementation(ETbSame1Enum1 InProp1) = 0;
-
-protected:
-	// signals
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame1|SameEnum1Interface|Signals", meta = (BlueprintProtected = "true"))
-	void BroadcastSig1(ETbSame1Enum1 Param1);
-	virtual void BroadcastSig1_Implementation(ETbSame1Enum1 Param1) = 0;
-
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame1|SameEnum1Interface|Signals", meta = (BlueprintProtected = "true"))
-	void BroadcastProp1Changed(ETbSame1Enum1 Prop1);
-	virtual void BroadcastProp1Changed_Implementation(ETbSame1Enum1 Prop1) = 0;
 };

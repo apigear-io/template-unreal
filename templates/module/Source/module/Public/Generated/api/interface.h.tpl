@@ -29,6 +29,8 @@ limitations under the License.
 {{- $Iface := printf "%s%s" $ModuleName (Camel .Name) }}
 #include "{{$Class}}Interface.generated.h"
 
+{{- if or (len .Properties) (len .Signals) }}
+{{- nl }}
 /**
  * Declaration for {{.Name}}
  */
@@ -39,7 +41,33 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE{{Int2Word (len .Params) "_" "Param"}}(F{{$Cla
 // property delegates
 {{- range .Properties }}
 DECLARE_DYNAMIC_MULTICAST_DELEGATE{{Int2Word 1 "_" "Param"}}(F{{$Class}}{{Camel .Name}}ChangedDelegate, {{ueConstType "" .}}, {{ueVar "" .}});
-{{ end }}
+{{- end }}
+
+/**
+ * Class {{$class}}Signals
+ * Contains delegates for properties and signals
+ * this is needed since we cannot declare delegates on an UInterface
+ */
+UCLASS(BlueprintType)
+class {{$API_MACRO}} U{{$Class}}Signals : public UObject
+{
+	GENERATED_BODY()
+
+public:
+{{- range $i, $e := .Signals }}
+	{{- if $i }}{{nl}}{{ end }}
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "{{$Category}}|Signals", DisplayName = "{{Camel .Name}} Signal")
+	F{{$Iface}}{{Camel .Name}}Delegate On{{Camel .Name}}Signal;
+{{- end }}
+{{- if and (len .Properties) (len .Signals) }}{{ nl }}{{ end }}
+{{- range $i, $e := .Properties }}
+	{{- if $i }}{{nl}}{{ end }}
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "{{$Category}}|Signals", DisplayName = "Property {{Camel .Name}} Changed")
+	F{{$Iface}}{{Camel .Name}}ChangedDelegate On{{Camel .Name}}Changed;
+{{- end }}
+};
+{{- end}}
+
 /**
  * Interface {{$class}} only for Unreal Engine's reflection system
  */
@@ -57,19 +85,15 @@ class {{ $API_MACRO }} {{ $class}}
 	GENERATED_BODY()
 
 public:
-	// signals
-{{- range $i, $e := .Signals }}
-	{{- if $i }}{{nl}}{{ end }}
-	UFUNCTION(Category = "{{$Category}}|Signals")
-	virtual F{{$Class}}{{Camel .Name}}Delegate& Get{{Camel .Name}}SignalDelegate() = 0;
-{{- end }}
-{{- if len .Properties }}{{ nl }}{{ end }}
-{{- range $i, $e := .Properties }}
-	{{- if $i }}{{nl}}{{ end }}
-	UFUNCTION(Category = "{{$Category}}|Signals")
-	virtual F{{$Class}}{{Camel .Name}}ChangedDelegate& Get{{Camel .Name}}ChangedDelegate() = 0;
-{{- end }}
-
+{{- if or (len .Properties) (len .Signals) }}
+	/// Provides access to the object which holds all the delegates
+	/// this is needed since we cannot declare delegates on an UInterface
+	/// @return object with signals for property state changes or standalone signals
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "{{$Category}}")
+	U{{$Class}}Signals* _GetSignals();
+	virtual U{{$Class}}Signals* _GetSignals_Implementation() = 0;
+	{{- nl }}
+{{- end}}
 	// methods
 {{- range $i, $e := .Operations }}
 {{- if .Return.IsVoid }}
@@ -96,23 +120,6 @@ public:
 	void Set{{Camel .Name}}({{ueParam "In" .}});
 	virtual void Set{{Camel .Name}}_Implementation({{ueParam "In" .}}) = 0;
 {{- end }}
-{{- nl }}
-{{- else }}{{- nl }}
-{{- end }}
-protected:
-	// signals
-{{- range $i, $e := .Signals }}
-	{{- if $i }}{{nl}}{{ end }}
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "{{$Category}}|Signals", meta = (BlueprintProtected = "true"))
-	void Broadcast{{Camel .Name}}({{ueParams "" .Params}});
-	virtual void Broadcast{{Camel .Name}}_Implementation({{ueParams "" .Params}}) = 0;
-{{- end }}
-{{- if len .Properties }}{{ nl }}{{ end }}
-{{- range $i, $e := .Properties }}
-	{{- if $i }}{{nl}}{{ end }}
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "{{$Category}}|Signals", meta = (BlueprintProtected = "true"))
-	void Broadcast{{Camel .Name}}Changed({{ueParam "" .}});
-	virtual void Broadcast{{Camel .Name}}Changed_Implementation({{ueParam "" .}}) = 0;
 {{- end }}
 };
 {{- end }}

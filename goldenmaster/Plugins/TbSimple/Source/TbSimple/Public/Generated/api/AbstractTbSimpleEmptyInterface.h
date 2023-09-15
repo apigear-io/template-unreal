@@ -16,6 +16,7 @@ limitations under the License.
 */
 #pragma once
 
+#include "Runtime/Launch/Resources/Version.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "TbSimple_data.h"
 #include "TbSimpleEmptyInterfaceInterface.h"
@@ -30,11 +31,11 @@ class TBSIMPLE_API UAbstractTbSimpleEmptyInterface : public UGameInstanceSubsyst
 	GENERATED_BODY()
 
 public:
+	// constructor
+	UAbstractTbSimpleEmptyInterface();
 	// subsystem
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
-
-	// signals
 
 	// methods
 
@@ -44,7 +45,8 @@ public:
 
 protected:
 	bool bInitialized = false;
-	// signals
 
 	// properties - local copy
+
+private:
 };

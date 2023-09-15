@@ -201,7 +201,7 @@ void UTestbed2NestedStruct1InterfaceOLinkClient::applyState(const nlohmann::json
 	if (bProp1Changed)
 	{
 		Prop1 = fields["prop1"].get<FTestbed2NestedStruct1>();
-		Execute_BroadcastProp1Changed(this, Prop1);
+		Execute__GetSignals(this)->OnProp1Changed.Broadcast(Prop1);
 	}
 }
 
@@ -210,7 +210,7 @@ void UTestbed2NestedStruct1InterfaceOLinkClient::emitSignal(const std::string& s
 	if (signalName == "sig1")
 	{
 		const FTestbed2NestedStruct1& Param1 = args[0].get<FTestbed2NestedStruct1>();
-		Execute_BroadcastSig1(this, Param1);
+		Execute__GetSignals(this)->OnSig1Signal.Broadcast(Param1);
 		return;
 	}
 }

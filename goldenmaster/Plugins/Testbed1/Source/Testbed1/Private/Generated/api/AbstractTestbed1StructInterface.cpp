@@ -61,54 +61,9 @@ public:
 	}
 };
 
-FTestbed1StructInterfaceSigBoolDelegate& UAbstractTestbed1StructInterface::GetSigBoolSignalDelegate()
+UAbstractTestbed1StructInterface::UAbstractTestbed1StructInterface()
 {
-	return SigBoolSignal;
-};
-
-void UAbstractTestbed1StructInterface::BroadcastSigBool_Implementation(const FTestbed1StructBool& ParamBool)
-{
-	SigBoolSignal.Broadcast(ParamBool);
-};
-
-FTestbed1StructInterfaceSigIntDelegate& UAbstractTestbed1StructInterface::GetSigIntSignalDelegate()
-{
-	return SigIntSignal;
-};
-
-void UAbstractTestbed1StructInterface::BroadcastSigInt_Implementation(const FTestbed1StructInt& ParamInt)
-{
-	SigIntSignal.Broadcast(ParamInt);
-};
-
-FTestbed1StructInterfaceSigFloatDelegate& UAbstractTestbed1StructInterface::GetSigFloatSignalDelegate()
-{
-	return SigFloatSignal;
-};
-
-void UAbstractTestbed1StructInterface::BroadcastSigFloat_Implementation(const FTestbed1StructFloat& ParamFloat)
-{
-	SigFloatSignal.Broadcast(ParamFloat);
-};
-
-FTestbed1StructInterfaceSigStringDelegate& UAbstractTestbed1StructInterface::GetSigStringSignalDelegate()
-{
-	return SigStringSignal;
-};
-
-void UAbstractTestbed1StructInterface::BroadcastSigString_Implementation(const FTestbed1StructString& ParamString)
-{
-	SigStringSignal.Broadcast(ParamString);
-};
-
-FTestbed1StructInterfacePropBoolChangedDelegate& UAbstractTestbed1StructInterface::GetPropBoolChangedDelegate()
-{
-	return PropBoolChanged;
-};
-
-void UAbstractTestbed1StructInterface::BroadcastPropBoolChanged_Implementation(const FTestbed1StructBool& InPropBool)
-{
-	PropBoolChanged.Broadcast(InPropBool);
+	Testbed1StructInterfaceSignals = NewObject<UTestbed1StructInterfaceSignals>();
 }
 
 FTestbed1StructBool UAbstractTestbed1StructInterface::GetPropBool_Private() const
@@ -121,16 +76,6 @@ void UAbstractTestbed1StructInterface::SetPropBool_Private(const FTestbed1Struct
 	Execute_SetPropBool(this, InPropBool);
 };
 
-FTestbed1StructInterfacePropIntChangedDelegate& UAbstractTestbed1StructInterface::GetPropIntChangedDelegate()
-{
-	return PropIntChanged;
-};
-
-void UAbstractTestbed1StructInterface::BroadcastPropIntChanged_Implementation(const FTestbed1StructInt& InPropInt)
-{
-	PropIntChanged.Broadcast(InPropInt);
-}
-
 FTestbed1StructInt UAbstractTestbed1StructInterface::GetPropInt_Private() const
 {
 	return Execute_GetPropInt(this);
@@ -141,16 +86,6 @@ void UAbstractTestbed1StructInterface::SetPropInt_Private(const FTestbed1StructI
 	Execute_SetPropInt(this, InPropInt);
 };
 
-FTestbed1StructInterfacePropFloatChangedDelegate& UAbstractTestbed1StructInterface::GetPropFloatChangedDelegate()
-{
-	return PropFloatChanged;
-};
-
-void UAbstractTestbed1StructInterface::BroadcastPropFloatChanged_Implementation(const FTestbed1StructFloat& InPropFloat)
-{
-	PropFloatChanged.Broadcast(InPropFloat);
-}
-
 FTestbed1StructFloat UAbstractTestbed1StructInterface::GetPropFloat_Private() const
 {
 	return Execute_GetPropFloat(this);
@@ -160,16 +95,6 @@ void UAbstractTestbed1StructInterface::SetPropFloat_Private(const FTestbed1Struc
 {
 	Execute_SetPropFloat(this, InPropFloat);
 };
-
-FTestbed1StructInterfacePropStringChangedDelegate& UAbstractTestbed1StructInterface::GetPropStringChangedDelegate()
-{
-	return PropStringChanged;
-};
-
-void UAbstractTestbed1StructInterface::BroadcastPropStringChanged_Implementation(const FTestbed1StructString& InPropString)
-{
-	PropStringChanged.Broadcast(InPropString);
-}
 
 FTestbed1StructString UAbstractTestbed1StructInterface::GetPropString_Private() const
 {
@@ -332,6 +257,19 @@ void UAbstractTestbed1StructInterface::Deinitialize()
 {
 	check(bInitialized);
 	bInitialized = false;
+
+	if (Testbed1StructInterfaceSignals)
+	{
+		Testbed1StructInterfaceSignals->OnSigBoolSignal.RemoveAll(Testbed1StructInterfaceSignals);
+		Testbed1StructInterfaceSignals->OnSigIntSignal.RemoveAll(Testbed1StructInterfaceSignals);
+		Testbed1StructInterfaceSignals->OnSigFloatSignal.RemoveAll(Testbed1StructInterfaceSignals);
+		Testbed1StructInterfaceSignals->OnSigStringSignal.RemoveAll(Testbed1StructInterfaceSignals);
+
+		Testbed1StructInterfaceSignals->OnPropBoolChanged.RemoveAll(Testbed1StructInterfaceSignals);
+		Testbed1StructInterfaceSignals->OnPropIntChanged.RemoveAll(Testbed1StructInterfaceSignals);
+		Testbed1StructInterfaceSignals->OnPropFloatChanged.RemoveAll(Testbed1StructInterfaceSignals);
+		Testbed1StructInterfaceSignals->OnPropStringChanged.RemoveAll(Testbed1StructInterfaceSignals);
+	}
 
 	Super::Deinitialize();
 }

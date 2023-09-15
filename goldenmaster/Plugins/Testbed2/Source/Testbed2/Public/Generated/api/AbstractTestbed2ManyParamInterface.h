@@ -16,6 +16,7 @@ limitations under the License.
 */
 #pragma once
 
+#include "Runtime/Launch/Resources/Version.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Testbed2_data.h"
 #include "Testbed2ManyParamInterfaceInterface.h"
@@ -30,42 +31,17 @@ class TESTBED2_API UAbstractTestbed2ManyParamInterface : public UGameInstanceSub
 	GENERATED_BODY()
 
 public:
+	// constructor
+	UAbstractTestbed2ManyParamInterface();
 	// subsystem
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
 
 	// signals
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Sig1 Signal")
-	FTestbed2ManyParamInterfaceSig1Delegate Sig1Signal;
-	virtual FTestbed2ManyParamInterfaceSig1Delegate& GetSig1SignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Sig2 Signal")
-	FTestbed2ManyParamInterfaceSig2Delegate Sig2Signal;
-	virtual FTestbed2ManyParamInterfaceSig2Delegate& GetSig2SignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Sig3 Signal")
-	FTestbed2ManyParamInterfaceSig3Delegate Sig3Signal;
-	virtual FTestbed2ManyParamInterfaceSig3Delegate& GetSig3SignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Sig4 Signal")
-	FTestbed2ManyParamInterfaceSig4Delegate Sig4Signal;
-	virtual FTestbed2ManyParamInterfaceSig4Delegate& GetSig4SignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Prop1 Changed")
-	FTestbed2ManyParamInterfaceProp1ChangedDelegate Prop1Changed;
-	virtual FTestbed2ManyParamInterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Prop2 Changed")
-	FTestbed2ManyParamInterfaceProp2ChangedDelegate Prop2Changed;
-	virtual FTestbed2ManyParamInterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Prop3 Changed")
-	FTestbed2ManyParamInterfaceProp3ChangedDelegate Prop3Changed;
-	virtual FTestbed2ManyParamInterfaceProp3ChangedDelegate& GetProp3ChangedDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Prop4 Changed")
-	FTestbed2ManyParamInterfaceProp4ChangedDelegate Prop4Changed;
-	virtual FTestbed2ManyParamInterfaceProp4ChangedDelegate& GetProp4ChangedDelegate() override;
+	virtual UTestbed2ManyParamInterfaceSignals* _GetSignals_Implementation() override
+	{
+		return Testbed2ManyParamInterfaceSignals;
+	};
 
 	// methods
 	virtual void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1) override;
@@ -97,22 +73,6 @@ public:
 
 protected:
 	bool bInitialized = false;
-	// signals
-	virtual void BroadcastSig1_Implementation(int32 Param1) override;
-
-	virtual void BroadcastSig2_Implementation(int32 Param1, int32 Param2) override;
-
-	virtual void BroadcastSig3_Implementation(int32 Param1, int32 Param2, int32 Param3) override;
-
-	virtual void BroadcastSig4_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4) override;
-
-	virtual void BroadcastProp1Changed_Implementation(int32 InProp1) override;
-
-	virtual void BroadcastProp2Changed_Implementation(int32 InProp2) override;
-
-	virtual void BroadcastProp3Changed_Implementation(int32 InProp3) override;
-
-	virtual void BroadcastProp4Changed_Implementation(int32 InProp4) override;
 
 	// properties - local copy
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1_Private, BlueprintSetter = SetProp1_Private, Category = "ApiGear|Testbed2|ManyParamInterface")
@@ -150,4 +110,9 @@ protected:
 
 	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed2|ManyParamInterface|Properties", BlueprintInternalUseOnly)
 	void SetProp4_Private(int32 InProp4);
+
+private:
+	// signals
+	UPROPERTY()
+	UTestbed2ManyParamInterfaceSignals* Testbed2ManyParamInterfaceSignals;
 };

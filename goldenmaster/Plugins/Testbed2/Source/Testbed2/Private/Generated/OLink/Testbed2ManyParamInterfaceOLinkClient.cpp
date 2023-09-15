@@ -384,28 +384,28 @@ void UTestbed2ManyParamInterfaceOLinkClient::applyState(const nlohmann::json& fi
 	if (bProp1Changed)
 	{
 		Prop1 = fields["prop1"].get<int32>();
-		Execute_BroadcastProp1Changed(this, Prop1);
+		Execute__GetSignals(this)->OnProp1Changed.Broadcast(Prop1);
 	}
 
 	const bool bProp2Changed = fields.contains("prop2") && (Prop2 != fields["prop2"].get<int32>());
 	if (bProp2Changed)
 	{
 		Prop2 = fields["prop2"].get<int32>();
-		Execute_BroadcastProp2Changed(this, Prop2);
+		Execute__GetSignals(this)->OnProp2Changed.Broadcast(Prop2);
 	}
 
 	const bool bProp3Changed = fields.contains("prop3") && (Prop3 != fields["prop3"].get<int32>());
 	if (bProp3Changed)
 	{
 		Prop3 = fields["prop3"].get<int32>();
-		Execute_BroadcastProp3Changed(this, Prop3);
+		Execute__GetSignals(this)->OnProp3Changed.Broadcast(Prop3);
 	}
 
 	const bool bProp4Changed = fields.contains("prop4") && (Prop4 != fields["prop4"].get<int32>());
 	if (bProp4Changed)
 	{
 		Prop4 = fields["prop4"].get<int32>();
-		Execute_BroadcastProp4Changed(this, Prop4);
+		Execute__GetSignals(this)->OnProp4Changed.Broadcast(Prop4);
 	}
 }
 
@@ -414,7 +414,7 @@ void UTestbed2ManyParamInterfaceOLinkClient::emitSignal(const std::string& signa
 	if (signalName == "sig1")
 	{
 		int32 Param1 = args[0].get<int32>();
-		Execute_BroadcastSig1(this, Param1);
+		Execute__GetSignals(this)->OnSig1Signal.Broadcast(Param1);
 		return;
 	}
 
@@ -422,7 +422,7 @@ void UTestbed2ManyParamInterfaceOLinkClient::emitSignal(const std::string& signa
 	{
 		int32 Param1 = args[0].get<int32>();
 		int32 Param2 = args[1].get<int32>();
-		Execute_BroadcastSig2(this, Param1, Param2);
+		Execute__GetSignals(this)->OnSig2Signal.Broadcast(Param1, Param2);
 		return;
 	}
 
@@ -431,7 +431,7 @@ void UTestbed2ManyParamInterfaceOLinkClient::emitSignal(const std::string& signa
 		int32 Param1 = args[0].get<int32>();
 		int32 Param2 = args[1].get<int32>();
 		int32 Param3 = args[2].get<int32>();
-		Execute_BroadcastSig3(this, Param1, Param2, Param3);
+		Execute__GetSignals(this)->OnSig3Signal.Broadcast(Param1, Param2, Param3);
 		return;
 	}
 
@@ -441,7 +441,7 @@ void UTestbed2ManyParamInterfaceOLinkClient::emitSignal(const std::string& signa
 		int32 Param2 = args[1].get<int32>();
 		int32 Param3 = args[2].get<int32>();
 		int32 Param4 = args[3].get<int32>();
-		Execute_BroadcastSig4(this, Param1, Param2, Param3, Param4);
+		Execute__GetSignals(this)->OnSig4Signal.Broadcast(Param1, Param2, Param3, Param4);
 		return;
 	}
 }

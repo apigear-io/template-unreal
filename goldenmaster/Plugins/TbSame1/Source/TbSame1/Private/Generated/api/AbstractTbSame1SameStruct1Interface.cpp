@@ -61,24 +61,9 @@ public:
 	}
 };
 
-FTbSame1SameStruct1InterfaceSig1Delegate& UAbstractTbSame1SameStruct1Interface::GetSig1SignalDelegate()
+UAbstractTbSame1SameStruct1Interface::UAbstractTbSame1SameStruct1Interface()
 {
-	return Sig1Signal;
-};
-
-void UAbstractTbSame1SameStruct1Interface::BroadcastSig1_Implementation(const FTbSame1Struct1& Param1)
-{
-	Sig1Signal.Broadcast(Param1);
-};
-
-FTbSame1SameStruct1InterfaceProp1ChangedDelegate& UAbstractTbSame1SameStruct1Interface::GetProp1ChangedDelegate()
-{
-	return Prop1Changed;
-};
-
-void UAbstractTbSame1SameStruct1Interface::BroadcastProp1Changed_Implementation(const FTbSame1Struct1& InProp1)
-{
-	Prop1Changed.Broadcast(InProp1);
+	TbSame1SameStruct1InterfaceSignals = NewObject<UTbSame1SameStruct1InterfaceSignals>();
 }
 
 FTbSame1Struct1 UAbstractTbSame1SameStruct1Interface::GetProp1_Private() const
@@ -137,6 +122,13 @@ void UAbstractTbSame1SameStruct1Interface::Deinitialize()
 {
 	check(bInitialized);
 	bInitialized = false;
+
+	if (TbSame1SameStruct1InterfaceSignals)
+	{
+		TbSame1SameStruct1InterfaceSignals->OnSig1Signal.RemoveAll(TbSame1SameStruct1InterfaceSignals);
+
+		TbSame1SameStruct1InterfaceSignals->OnProp1Changed.RemoveAll(TbSame1SameStruct1InterfaceSignals);
+	}
 
 	Super::Deinitialize();
 }

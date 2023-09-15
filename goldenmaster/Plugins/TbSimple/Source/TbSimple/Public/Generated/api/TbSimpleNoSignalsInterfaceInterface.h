@@ -27,8 +27,25 @@ limitations under the License.
 // signal delegates
 // property delegates
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleNoSignalsInterfacePropBoolChangedDelegate, bool, bPropBool);
-
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleNoSignalsInterfacePropIntChangedDelegate, int32, PropInt);
+
+/**
+ * Class UTbSimpleNoSignalsInterfaceInterfaceSignals
+ * Contains delegates for properties and signals
+ * this is needed since we cannot declare delegates on an UInterface
+ */
+UCLASS(BlueprintType)
+class TBSIMPLE_API UTbSimpleNoSignalsInterfaceSignals : public UObject
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSimple|NoSignalsInterface|Signals", DisplayName = "Property PropBool Changed")
+	FTbSimpleNoSignalsInterfacePropBoolChangedDelegate OnPropBoolChanged;
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSimple|NoSignalsInterface|Signals", DisplayName = "Property PropInt Changed")
+	FTbSimpleNoSignalsInterfacePropIntChangedDelegate OnPropIntChanged;
+};
 
 /**
  * Interface UTbSimpleNoSignalsInterfaceInterface only for Unreal Engine's reflection system
@@ -47,13 +64,12 @@ class TBSIMPLE_API ITbSimpleNoSignalsInterfaceInterface
 	GENERATED_BODY()
 
 public:
-	// signals
-
-	UFUNCTION(Category = "ApiGear|TbSimple|NoSignalsInterface|Signals")
-	virtual FTbSimpleNoSignalsInterfacePropBoolChangedDelegate& GetPropBoolChangedDelegate() = 0;
-
-	UFUNCTION(Category = "ApiGear|TbSimple|NoSignalsInterface|Signals")
-	virtual FTbSimpleNoSignalsInterfacePropIntChangedDelegate& GetPropIntChangedDelegate() = 0;
+	/// Provides access to the object which holds all the delegates
+	/// this is needed since we cannot declare delegates on an UInterface
+	/// @return object with signals for property state changes or standalone signals
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoSignalsInterface")
+	UTbSimpleNoSignalsInterfaceSignals* _GetSignals();
+	virtual UTbSimpleNoSignalsInterfaceSignals* _GetSignals_Implementation() = 0;
 
 	// methods
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoSignalsInterface|Operations")
@@ -74,22 +90,10 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoSignalsInterface|Properties")
 	void SetPropBool(bool bInPropBool);
 	virtual void SetPropBool_Implementation(bool bInPropBool) = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoSignalsInterface|Properties")
 	int32 GetPropInt() const;
 	virtual int32 GetPropInt_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoSignalsInterface|Properties")
 	void SetPropInt(int32 InPropInt);
 	virtual void SetPropInt_Implementation(int32 InPropInt) = 0;
-
-protected:
-	// signals
-
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoSignalsInterface|Signals", meta = (BlueprintProtected = "true"))
-	void BroadcastPropBoolChanged(bool bPropBool);
-	virtual void BroadcastPropBoolChanged_Implementation(bool bPropBool) = 0;
-
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoSignalsInterface|Signals", meta = (BlueprintProtected = "true"))
-	void BroadcastPropIntChanged(int32 PropInt);
-	virtual void BroadcastPropIntChanged_Implementation(int32 PropInt) = 0;
 };

@@ -35,12 +35,45 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FTestbed2ManyParamInterfaceSig4Del
 
 // property delegates
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed2ManyParamInterfaceProp1ChangedDelegate, int32, Prop1);
-
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed2ManyParamInterfaceProp2ChangedDelegate, int32, Prop2);
-
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed2ManyParamInterfaceProp3ChangedDelegate, int32, Prop3);
-
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed2ManyParamInterfaceProp4ChangedDelegate, int32, Prop4);
+
+/**
+ * Class UTestbed2ManyParamInterfaceInterfaceSignals
+ * Contains delegates for properties and signals
+ * this is needed since we cannot declare delegates on an UInterface
+ */
+UCLASS(BlueprintType)
+class TESTBED2_API UTestbed2ManyParamInterfaceSignals : public UObject
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Sig1 Signal")
+	FTestbed2ManyParamInterfaceSig1Delegate OnSig1Signal;
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Sig2 Signal")
+	FTestbed2ManyParamInterfaceSig2Delegate OnSig2Signal;
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Sig3 Signal")
+	FTestbed2ManyParamInterfaceSig3Delegate OnSig3Signal;
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Sig4 Signal")
+	FTestbed2ManyParamInterfaceSig4Delegate OnSig4Signal;
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Property Prop1 Changed")
+	FTestbed2ManyParamInterfaceProp1ChangedDelegate OnProp1Changed;
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Property Prop2 Changed")
+	FTestbed2ManyParamInterfaceProp2ChangedDelegate OnProp2Changed;
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Property Prop3 Changed")
+	FTestbed2ManyParamInterfaceProp3ChangedDelegate OnProp3Changed;
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Property Prop4 Changed")
+	FTestbed2ManyParamInterfaceProp4ChangedDelegate OnProp4Changed;
+};
 
 /**
  * Interface UTestbed2ManyParamInterfaceInterface only for Unreal Engine's reflection system
@@ -59,30 +92,12 @@ class TESTBED2_API ITestbed2ManyParamInterfaceInterface
 	GENERATED_BODY()
 
 public:
-	// signals
-	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface|Signals")
-	virtual FTestbed2ManyParamInterfaceSig1Delegate& GetSig1SignalDelegate() = 0;
-
-	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface|Signals")
-	virtual FTestbed2ManyParamInterfaceSig2Delegate& GetSig2SignalDelegate() = 0;
-
-	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface|Signals")
-	virtual FTestbed2ManyParamInterfaceSig3Delegate& GetSig3SignalDelegate() = 0;
-
-	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface|Signals")
-	virtual FTestbed2ManyParamInterfaceSig4Delegate& GetSig4SignalDelegate() = 0;
-
-	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface|Signals")
-	virtual FTestbed2ManyParamInterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() = 0;
-
-	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface|Signals")
-	virtual FTestbed2ManyParamInterfaceProp2ChangedDelegate& GetProp2ChangedDelegate() = 0;
-
-	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface|Signals")
-	virtual FTestbed2ManyParamInterfaceProp3ChangedDelegate& GetProp3ChangedDelegate() = 0;
-
-	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface|Signals")
-	virtual FTestbed2ManyParamInterfaceProp4ChangedDelegate& GetProp4ChangedDelegate() = 0;
+	/// Provides access to the object which holds all the delegates
+	/// this is needed since we cannot declare delegates on an UInterface
+	/// @return object with signals for property state changes or standalone signals
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
+	UTestbed2ManyParamInterfaceSignals* _GetSignals();
+	virtual UTestbed2ManyParamInterfaceSignals* _GetSignals_Implementation() = 0;
 
 	// methods
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
@@ -120,59 +135,22 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Properties")
 	void SetProp1(int32 InProp1);
 	virtual void SetProp1_Implementation(int32 InProp1) = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Properties")
 	int32 GetProp2() const;
 	virtual int32 GetProp2_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Properties")
 	void SetProp2(int32 InProp2);
 	virtual void SetProp2_Implementation(int32 InProp2) = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Properties")
 	int32 GetProp3() const;
 	virtual int32 GetProp3_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Properties")
 	void SetProp3(int32 InProp3);
 	virtual void SetProp3_Implementation(int32 InProp3) = 0;
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Properties")
 	int32 GetProp4() const;
 	virtual int32 GetProp4_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Properties")
 	void SetProp4(int32 InProp4);
 	virtual void SetProp4_Implementation(int32 InProp4) = 0;
-
-protected:
-	// signals
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", meta = (BlueprintProtected = "true"))
-	void BroadcastSig1(int32 Param1);
-	virtual void BroadcastSig1_Implementation(int32 Param1) = 0;
-
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", meta = (BlueprintProtected = "true"))
-	void BroadcastSig2(int32 Param1, int32 Param2);
-	virtual void BroadcastSig2_Implementation(int32 Param1, int32 Param2) = 0;
-
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", meta = (BlueprintProtected = "true"))
-	void BroadcastSig3(int32 Param1, int32 Param2, int32 Param3);
-	virtual void BroadcastSig3_Implementation(int32 Param1, int32 Param2, int32 Param3) = 0;
-
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", meta = (BlueprintProtected = "true"))
-	void BroadcastSig4(int32 Param1, int32 Param2, int32 Param3, int32 Param4);
-	virtual void BroadcastSig4_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4) = 0;
-
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", meta = (BlueprintProtected = "true"))
-	void BroadcastProp1Changed(int32 Prop1);
-	virtual void BroadcastProp1Changed_Implementation(int32 Prop1) = 0;
-
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", meta = (BlueprintProtected = "true"))
-	void BroadcastProp2Changed(int32 Prop2);
-	virtual void BroadcastProp2Changed_Implementation(int32 Prop2) = 0;
-
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", meta = (BlueprintProtected = "true"))
-	void BroadcastProp3Changed(int32 Prop3);
-	virtual void BroadcastProp3Changed_Implementation(int32 Prop3) = 0;
-
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", meta = (BlueprintProtected = "true"))
-	void BroadcastProp4Changed(int32 Prop4);
-	virtual void BroadcastProp4Changed_Implementation(int32 Prop4) = 0;
 };

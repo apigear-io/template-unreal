@@ -16,6 +16,7 @@ limitations under the License.
 */
 #pragma once
 
+#include "Runtime/Launch/Resources/Version.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Testbed2_data.h"
 #include "Testbed2NestedStruct1InterfaceInterface.h"
@@ -30,18 +31,17 @@ class TESTBED2_API UAbstractTestbed2NestedStruct1Interface : public UGameInstanc
 	GENERATED_BODY()
 
 public:
+	// constructor
+	UAbstractTestbed2NestedStruct1Interface();
 	// subsystem
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
 
 	// signals
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct1Interface|Signals", DisplayName = "Sig1 Signal")
-	FTestbed2NestedStruct1InterfaceSig1Delegate Sig1Signal;
-	virtual FTestbed2NestedStruct1InterfaceSig1Delegate& GetSig1SignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct1Interface|Signals", DisplayName = "Prop1 Changed")
-	FTestbed2NestedStruct1InterfaceProp1ChangedDelegate Prop1Changed;
-	virtual FTestbed2NestedStruct1InterfaceProp1ChangedDelegate& GetProp1ChangedDelegate() override;
+	virtual UTestbed2NestedStruct1InterfaceSignals* _GetSignals_Implementation() override
+	{
+		return Testbed2NestedStruct1InterfaceSignals;
+	};
 
 	// methods
 	virtual void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1) override;
@@ -55,10 +55,6 @@ public:
 
 protected:
 	bool bInitialized = false;
-	// signals
-	virtual void BroadcastSig1_Implementation(const FTestbed2NestedStruct1& Param1) override;
-
-	virtual void BroadcastProp1Changed_Implementation(const FTestbed2NestedStruct1& InProp1) override;
 
 	// properties - local copy
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1_Private, BlueprintSetter = SetProp1_Private, Category = "ApiGear|Testbed2|NestedStruct1Interface")
@@ -69,4 +65,9 @@ protected:
 
 	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed2|NestedStruct1Interface|Properties", BlueprintInternalUseOnly)
 	void SetProp1_Private(const FTestbed2NestedStruct1& InProp1);
+
+private:
+	// signals
+	UPROPERTY()
+	UTestbed2NestedStruct1InterfaceSignals* Testbed2NestedStruct1InterfaceSignals;
 };

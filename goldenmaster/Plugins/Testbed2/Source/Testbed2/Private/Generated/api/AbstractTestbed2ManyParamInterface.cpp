@@ -61,54 +61,9 @@ public:
 	}
 };
 
-FTestbed2ManyParamInterfaceSig1Delegate& UAbstractTestbed2ManyParamInterface::GetSig1SignalDelegate()
+UAbstractTestbed2ManyParamInterface::UAbstractTestbed2ManyParamInterface()
 {
-	return Sig1Signal;
-};
-
-void UAbstractTestbed2ManyParamInterface::BroadcastSig1_Implementation(int32 Param1)
-{
-	Sig1Signal.Broadcast(Param1);
-};
-
-FTestbed2ManyParamInterfaceSig2Delegate& UAbstractTestbed2ManyParamInterface::GetSig2SignalDelegate()
-{
-	return Sig2Signal;
-};
-
-void UAbstractTestbed2ManyParamInterface::BroadcastSig2_Implementation(int32 Param1, int32 Param2)
-{
-	Sig2Signal.Broadcast(Param1, Param2);
-};
-
-FTestbed2ManyParamInterfaceSig3Delegate& UAbstractTestbed2ManyParamInterface::GetSig3SignalDelegate()
-{
-	return Sig3Signal;
-};
-
-void UAbstractTestbed2ManyParamInterface::BroadcastSig3_Implementation(int32 Param1, int32 Param2, int32 Param3)
-{
-	Sig3Signal.Broadcast(Param1, Param2, Param3);
-};
-
-FTestbed2ManyParamInterfaceSig4Delegate& UAbstractTestbed2ManyParamInterface::GetSig4SignalDelegate()
-{
-	return Sig4Signal;
-};
-
-void UAbstractTestbed2ManyParamInterface::BroadcastSig4_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
-{
-	Sig4Signal.Broadcast(Param1, Param2, Param3, Param4);
-};
-
-FTestbed2ManyParamInterfaceProp1ChangedDelegate& UAbstractTestbed2ManyParamInterface::GetProp1ChangedDelegate()
-{
-	return Prop1Changed;
-};
-
-void UAbstractTestbed2ManyParamInterface::BroadcastProp1Changed_Implementation(int32 InProp1)
-{
-	Prop1Changed.Broadcast(InProp1);
+	Testbed2ManyParamInterfaceSignals = NewObject<UTestbed2ManyParamInterfaceSignals>();
 }
 
 int32 UAbstractTestbed2ManyParamInterface::GetProp1_Private() const
@@ -121,16 +76,6 @@ void UAbstractTestbed2ManyParamInterface::SetProp1_Private(int32 InProp1)
 	Execute_SetProp1(this, InProp1);
 };
 
-FTestbed2ManyParamInterfaceProp2ChangedDelegate& UAbstractTestbed2ManyParamInterface::GetProp2ChangedDelegate()
-{
-	return Prop2Changed;
-};
-
-void UAbstractTestbed2ManyParamInterface::BroadcastProp2Changed_Implementation(int32 InProp2)
-{
-	Prop2Changed.Broadcast(InProp2);
-}
-
 int32 UAbstractTestbed2ManyParamInterface::GetProp2_Private() const
 {
 	return Execute_GetProp2(this);
@@ -141,16 +86,6 @@ void UAbstractTestbed2ManyParamInterface::SetProp2_Private(int32 InProp2)
 	Execute_SetProp2(this, InProp2);
 };
 
-FTestbed2ManyParamInterfaceProp3ChangedDelegate& UAbstractTestbed2ManyParamInterface::GetProp3ChangedDelegate()
-{
-	return Prop3Changed;
-};
-
-void UAbstractTestbed2ManyParamInterface::BroadcastProp3Changed_Implementation(int32 InProp3)
-{
-	Prop3Changed.Broadcast(InProp3);
-}
-
 int32 UAbstractTestbed2ManyParamInterface::GetProp3_Private() const
 {
 	return Execute_GetProp3(this);
@@ -160,16 +95,6 @@ void UAbstractTestbed2ManyParamInterface::SetProp3_Private(int32 InProp3)
 {
 	Execute_SetProp3(this, InProp3);
 };
-
-FTestbed2ManyParamInterfaceProp4ChangedDelegate& UAbstractTestbed2ManyParamInterface::GetProp4ChangedDelegate()
-{
-	return Prop4Changed;
-};
-
-void UAbstractTestbed2ManyParamInterface::BroadcastProp4Changed_Implementation(int32 InProp4)
-{
-	Prop4Changed.Broadcast(InProp4);
-}
 
 int32 UAbstractTestbed2ManyParamInterface::GetProp4_Private() const
 {
@@ -332,6 +257,19 @@ void UAbstractTestbed2ManyParamInterface::Deinitialize()
 {
 	check(bInitialized);
 	bInitialized = false;
+
+	if (Testbed2ManyParamInterfaceSignals)
+	{
+		Testbed2ManyParamInterfaceSignals->OnSig1Signal.RemoveAll(Testbed2ManyParamInterfaceSignals);
+		Testbed2ManyParamInterfaceSignals->OnSig2Signal.RemoveAll(Testbed2ManyParamInterfaceSignals);
+		Testbed2ManyParamInterfaceSignals->OnSig3Signal.RemoveAll(Testbed2ManyParamInterfaceSignals);
+		Testbed2ManyParamInterfaceSignals->OnSig4Signal.RemoveAll(Testbed2ManyParamInterfaceSignals);
+
+		Testbed2ManyParamInterfaceSignals->OnProp1Changed.RemoveAll(Testbed2ManyParamInterfaceSignals);
+		Testbed2ManyParamInterfaceSignals->OnProp2Changed.RemoveAll(Testbed2ManyParamInterfaceSignals);
+		Testbed2ManyParamInterfaceSignals->OnProp3Changed.RemoveAll(Testbed2ManyParamInterfaceSignals);
+		Testbed2ManyParamInterfaceSignals->OnProp4Changed.RemoveAll(Testbed2ManyParamInterfaceSignals);
+	}
 
 	Super::Deinitialize();
 }

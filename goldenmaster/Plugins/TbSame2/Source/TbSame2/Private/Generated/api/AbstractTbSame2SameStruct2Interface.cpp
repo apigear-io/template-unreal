@@ -61,34 +61,9 @@ public:
 	}
 };
 
-FTbSame2SameStruct2InterfaceSig1Delegate& UAbstractTbSame2SameStruct2Interface::GetSig1SignalDelegate()
+UAbstractTbSame2SameStruct2Interface::UAbstractTbSame2SameStruct2Interface()
 {
-	return Sig1Signal;
-};
-
-void UAbstractTbSame2SameStruct2Interface::BroadcastSig1_Implementation(const FTbSame2Struct1& Param1)
-{
-	Sig1Signal.Broadcast(Param1);
-};
-
-FTbSame2SameStruct2InterfaceSig2Delegate& UAbstractTbSame2SameStruct2Interface::GetSig2SignalDelegate()
-{
-	return Sig2Signal;
-};
-
-void UAbstractTbSame2SameStruct2Interface::BroadcastSig2_Implementation(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2)
-{
-	Sig2Signal.Broadcast(Param1, Param2);
-};
-
-FTbSame2SameStruct2InterfaceProp1ChangedDelegate& UAbstractTbSame2SameStruct2Interface::GetProp1ChangedDelegate()
-{
-	return Prop1Changed;
-};
-
-void UAbstractTbSame2SameStruct2Interface::BroadcastProp1Changed_Implementation(const FTbSame2Struct2& InProp1)
-{
-	Prop1Changed.Broadcast(InProp1);
+	TbSame2SameStruct2InterfaceSignals = NewObject<UTbSame2SameStruct2InterfaceSignals>();
 }
 
 FTbSame2Struct2 UAbstractTbSame2SameStruct2Interface::GetProp1_Private() const
@@ -100,16 +75,6 @@ void UAbstractTbSame2SameStruct2Interface::SetProp1_Private(const FTbSame2Struct
 {
 	Execute_SetProp1(this, InProp1);
 };
-
-FTbSame2SameStruct2InterfaceProp2ChangedDelegate& UAbstractTbSame2SameStruct2Interface::GetProp2ChangedDelegate()
-{
-	return Prop2Changed;
-};
-
-void UAbstractTbSame2SameStruct2Interface::BroadcastProp2Changed_Implementation(const FTbSame2Struct2& InProp2)
-{
-	Prop2Changed.Broadcast(InProp2);
-}
 
 FTbSame2Struct2 UAbstractTbSame2SameStruct2Interface::GetProp2_Private() const
 {
@@ -202,6 +167,15 @@ void UAbstractTbSame2SameStruct2Interface::Deinitialize()
 {
 	check(bInitialized);
 	bInitialized = false;
+
+	if (TbSame2SameStruct2InterfaceSignals)
+	{
+		TbSame2SameStruct2InterfaceSignals->OnSig1Signal.RemoveAll(TbSame2SameStruct2InterfaceSignals);
+		TbSame2SameStruct2InterfaceSignals->OnSig2Signal.RemoveAll(TbSame2SameStruct2InterfaceSignals);
+
+		TbSame2SameStruct2InterfaceSignals->OnProp1Changed.RemoveAll(TbSame2SameStruct2InterfaceSignals);
+		TbSame2SameStruct2InterfaceSignals->OnProp2Changed.RemoveAll(TbSame2SameStruct2InterfaceSignals);
+	}
 
 	Super::Deinitialize();
 }

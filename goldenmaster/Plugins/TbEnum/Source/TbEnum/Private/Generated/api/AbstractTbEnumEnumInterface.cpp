@@ -61,54 +61,9 @@ public:
 	}
 };
 
-FTbEnumEnumInterfaceSig0Delegate& UAbstractTbEnumEnumInterface::GetSig0SignalDelegate()
+UAbstractTbEnumEnumInterface::UAbstractTbEnumEnumInterface()
 {
-	return Sig0Signal;
-};
-
-void UAbstractTbEnumEnumInterface::BroadcastSig0_Implementation(ETbEnumEnum0 Param0)
-{
-	Sig0Signal.Broadcast(Param0);
-};
-
-FTbEnumEnumInterfaceSig1Delegate& UAbstractTbEnumEnumInterface::GetSig1SignalDelegate()
-{
-	return Sig1Signal;
-};
-
-void UAbstractTbEnumEnumInterface::BroadcastSig1_Implementation(ETbEnumEnum1 Param1)
-{
-	Sig1Signal.Broadcast(Param1);
-};
-
-FTbEnumEnumInterfaceSig2Delegate& UAbstractTbEnumEnumInterface::GetSig2SignalDelegate()
-{
-	return Sig2Signal;
-};
-
-void UAbstractTbEnumEnumInterface::BroadcastSig2_Implementation(ETbEnumEnum2 Param2)
-{
-	Sig2Signal.Broadcast(Param2);
-};
-
-FTbEnumEnumInterfaceSig3Delegate& UAbstractTbEnumEnumInterface::GetSig3SignalDelegate()
-{
-	return Sig3Signal;
-};
-
-void UAbstractTbEnumEnumInterface::BroadcastSig3_Implementation(ETbEnumEnum3 Param3)
-{
-	Sig3Signal.Broadcast(Param3);
-};
-
-FTbEnumEnumInterfaceProp0ChangedDelegate& UAbstractTbEnumEnumInterface::GetProp0ChangedDelegate()
-{
-	return Prop0Changed;
-};
-
-void UAbstractTbEnumEnumInterface::BroadcastProp0Changed_Implementation(ETbEnumEnum0 InProp0)
-{
-	Prop0Changed.Broadcast(InProp0);
+	TbEnumEnumInterfaceSignals = NewObject<UTbEnumEnumInterfaceSignals>();
 }
 
 ETbEnumEnum0 UAbstractTbEnumEnumInterface::GetProp0_Private() const
@@ -121,16 +76,6 @@ void UAbstractTbEnumEnumInterface::SetProp0_Private(ETbEnumEnum0 InProp0)
 	Execute_SetProp0(this, InProp0);
 };
 
-FTbEnumEnumInterfaceProp1ChangedDelegate& UAbstractTbEnumEnumInterface::GetProp1ChangedDelegate()
-{
-	return Prop1Changed;
-};
-
-void UAbstractTbEnumEnumInterface::BroadcastProp1Changed_Implementation(ETbEnumEnum1 InProp1)
-{
-	Prop1Changed.Broadcast(InProp1);
-}
-
 ETbEnumEnum1 UAbstractTbEnumEnumInterface::GetProp1_Private() const
 {
 	return Execute_GetProp1(this);
@@ -141,16 +86,6 @@ void UAbstractTbEnumEnumInterface::SetProp1_Private(ETbEnumEnum1 InProp1)
 	Execute_SetProp1(this, InProp1);
 };
 
-FTbEnumEnumInterfaceProp2ChangedDelegate& UAbstractTbEnumEnumInterface::GetProp2ChangedDelegate()
-{
-	return Prop2Changed;
-};
-
-void UAbstractTbEnumEnumInterface::BroadcastProp2Changed_Implementation(ETbEnumEnum2 InProp2)
-{
-	Prop2Changed.Broadcast(InProp2);
-}
-
 ETbEnumEnum2 UAbstractTbEnumEnumInterface::GetProp2_Private() const
 {
 	return Execute_GetProp2(this);
@@ -160,16 +95,6 @@ void UAbstractTbEnumEnumInterface::SetProp2_Private(ETbEnumEnum2 InProp2)
 {
 	Execute_SetProp2(this, InProp2);
 };
-
-FTbEnumEnumInterfaceProp3ChangedDelegate& UAbstractTbEnumEnumInterface::GetProp3ChangedDelegate()
-{
-	return Prop3Changed;
-};
-
-void UAbstractTbEnumEnumInterface::BroadcastProp3Changed_Implementation(ETbEnumEnum3 InProp3)
-{
-	Prop3Changed.Broadcast(InProp3);
-}
 
 ETbEnumEnum3 UAbstractTbEnumEnumInterface::GetProp3_Private() const
 {
@@ -332,6 +257,19 @@ void UAbstractTbEnumEnumInterface::Deinitialize()
 {
 	check(bInitialized);
 	bInitialized = false;
+
+	if (TbEnumEnumInterfaceSignals)
+	{
+		TbEnumEnumInterfaceSignals->OnSig0Signal.RemoveAll(TbEnumEnumInterfaceSignals);
+		TbEnumEnumInterfaceSignals->OnSig1Signal.RemoveAll(TbEnumEnumInterfaceSignals);
+		TbEnumEnumInterfaceSignals->OnSig2Signal.RemoveAll(TbEnumEnumInterfaceSignals);
+		TbEnumEnumInterfaceSignals->OnSig3Signal.RemoveAll(TbEnumEnumInterfaceSignals);
+
+		TbEnumEnumInterfaceSignals->OnProp0Changed.RemoveAll(TbEnumEnumInterfaceSignals);
+		TbEnumEnumInterfaceSignals->OnProp1Changed.RemoveAll(TbEnumEnumInterfaceSignals);
+		TbEnumEnumInterfaceSignals->OnProp2Changed.RemoveAll(TbEnumEnumInterfaceSignals);
+		TbEnumEnumInterfaceSignals->OnProp3Changed.RemoveAll(TbEnumEnumInterfaceSignals);
+	}
 
 	Super::Deinitialize();
 }

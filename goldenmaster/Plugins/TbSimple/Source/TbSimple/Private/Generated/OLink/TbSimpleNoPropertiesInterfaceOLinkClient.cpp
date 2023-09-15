@@ -174,14 +174,14 @@ void UTbSimpleNoPropertiesInterfaceOLinkClient::emitSignal(const std::string& si
 {
 	if (signalName == "sigVoid")
 	{
-		Execute_BroadcastSigVoid(this);
+		Execute__GetSignals(this)->OnSigVoidSignal.Broadcast();
 		return;
 	}
 
 	if (signalName == "sigBool")
 	{
 		bool bParamBool = args[0].get<bool>();
-		Execute_BroadcastSigBool(this, bParamBool);
+		Execute__GetSignals(this)->OnSigBoolSignal.Broadcast(bParamBool);
 		return;
 	}
 }

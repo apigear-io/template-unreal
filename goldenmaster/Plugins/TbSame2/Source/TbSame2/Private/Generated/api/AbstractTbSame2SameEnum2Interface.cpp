@@ -61,34 +61,9 @@ public:
 	}
 };
 
-FTbSame2SameEnum2InterfaceSig1Delegate& UAbstractTbSame2SameEnum2Interface::GetSig1SignalDelegate()
+UAbstractTbSame2SameEnum2Interface::UAbstractTbSame2SameEnum2Interface()
 {
-	return Sig1Signal;
-};
-
-void UAbstractTbSame2SameEnum2Interface::BroadcastSig1_Implementation(ETbSame2Enum1 Param1)
-{
-	Sig1Signal.Broadcast(Param1);
-};
-
-FTbSame2SameEnum2InterfaceSig2Delegate& UAbstractTbSame2SameEnum2Interface::GetSig2SignalDelegate()
-{
-	return Sig2Signal;
-};
-
-void UAbstractTbSame2SameEnum2Interface::BroadcastSig2_Implementation(ETbSame2Enum1 Param1, ETbSame2Enum2 Param2)
-{
-	Sig2Signal.Broadcast(Param1, Param2);
-};
-
-FTbSame2SameEnum2InterfaceProp1ChangedDelegate& UAbstractTbSame2SameEnum2Interface::GetProp1ChangedDelegate()
-{
-	return Prop1Changed;
-};
-
-void UAbstractTbSame2SameEnum2Interface::BroadcastProp1Changed_Implementation(ETbSame2Enum1 InProp1)
-{
-	Prop1Changed.Broadcast(InProp1);
+	TbSame2SameEnum2InterfaceSignals = NewObject<UTbSame2SameEnum2InterfaceSignals>();
 }
 
 ETbSame2Enum1 UAbstractTbSame2SameEnum2Interface::GetProp1_Private() const
@@ -100,16 +75,6 @@ void UAbstractTbSame2SameEnum2Interface::SetProp1_Private(ETbSame2Enum1 InProp1)
 {
 	Execute_SetProp1(this, InProp1);
 };
-
-FTbSame2SameEnum2InterfaceProp2ChangedDelegate& UAbstractTbSame2SameEnum2Interface::GetProp2ChangedDelegate()
-{
-	return Prop2Changed;
-};
-
-void UAbstractTbSame2SameEnum2Interface::BroadcastProp2Changed_Implementation(ETbSame2Enum2 InProp2)
-{
-	Prop2Changed.Broadcast(InProp2);
-}
 
 ETbSame2Enum2 UAbstractTbSame2SameEnum2Interface::GetProp2_Private() const
 {
@@ -202,6 +167,15 @@ void UAbstractTbSame2SameEnum2Interface::Deinitialize()
 {
 	check(bInitialized);
 	bInitialized = false;
+
+	if (TbSame2SameEnum2InterfaceSignals)
+	{
+		TbSame2SameEnum2InterfaceSignals->OnSig1Signal.RemoveAll(TbSame2SameEnum2InterfaceSignals);
+		TbSame2SameEnum2InterfaceSignals->OnSig2Signal.RemoveAll(TbSame2SameEnum2InterfaceSignals);
+
+		TbSame2SameEnum2InterfaceSignals->OnProp1Changed.RemoveAll(TbSame2SameEnum2InterfaceSignals);
+		TbSame2SameEnum2InterfaceSignals->OnProp2Changed.RemoveAll(TbSame2SameEnum2InterfaceSignals);
+	}
 
 	Super::Deinitialize();
 }

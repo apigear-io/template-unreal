@@ -16,6 +16,7 @@ limitations under the License.
 */
 #pragma once
 
+#include "Runtime/Launch/Resources/Version.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Testbed1_data.h"
 #include "Testbed1StructArrayInterfaceInterface.h"
@@ -30,42 +31,17 @@ class TESTBED1_API UAbstractTestbed1StructArrayInterface : public UGameInstanceS
 	GENERATED_BODY()
 
 public:
+	// constructor
+	UAbstractTestbed1StructArrayInterface();
 	// subsystem
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
 
 	// signals
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "SigBool Signal")
-	FTestbed1StructArrayInterfaceSigBoolDelegate SigBoolSignal;
-	virtual FTestbed1StructArrayInterfaceSigBoolDelegate& GetSigBoolSignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "SigInt Signal")
-	FTestbed1StructArrayInterfaceSigIntDelegate SigIntSignal;
-	virtual FTestbed1StructArrayInterfaceSigIntDelegate& GetSigIntSignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "SigFloat Signal")
-	FTestbed1StructArrayInterfaceSigFloatDelegate SigFloatSignal;
-	virtual FTestbed1StructArrayInterfaceSigFloatDelegate& GetSigFloatSignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "SigString Signal")
-	FTestbed1StructArrayInterfaceSigStringDelegate SigStringSignal;
-	virtual FTestbed1StructArrayInterfaceSigStringDelegate& GetSigStringSignalDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "PropBool Changed")
-	FTestbed1StructArrayInterfacePropBoolChangedDelegate PropBoolChanged;
-	virtual FTestbed1StructArrayInterfacePropBoolChangedDelegate& GetPropBoolChangedDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "PropInt Changed")
-	FTestbed1StructArrayInterfacePropIntChangedDelegate PropIntChanged;
-	virtual FTestbed1StructArrayInterfacePropIntChangedDelegate& GetPropIntChangedDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "PropFloat Changed")
-	FTestbed1StructArrayInterfacePropFloatChangedDelegate PropFloatChanged;
-	virtual FTestbed1StructArrayInterfacePropFloatChangedDelegate& GetPropFloatChangedDelegate() override;
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "PropString Changed")
-	FTestbed1StructArrayInterfacePropStringChangedDelegate PropStringChanged;
-	virtual FTestbed1StructArrayInterfacePropStringChangedDelegate& GetPropStringChangedDelegate() override;
+	virtual UTestbed1StructArrayInterfaceSignals* _GetSignals_Implementation() override
+	{
+		return Testbed1StructArrayInterfaceSignals;
+	};
 
 	// methods
 	virtual void FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const TArray<FTestbed1StructBool>& ParamBool) override;
@@ -97,22 +73,6 @@ public:
 
 protected:
 	bool bInitialized = false;
-	// signals
-	virtual void BroadcastSigBool_Implementation(const TArray<FTestbed1StructBool>& ParamBool) override;
-
-	virtual void BroadcastSigInt_Implementation(const TArray<FTestbed1StructInt>& ParamInt) override;
-
-	virtual void BroadcastSigFloat_Implementation(const TArray<FTestbed1StructFloat>& ParamFloat) override;
-
-	virtual void BroadcastSigString_Implementation(const TArray<FTestbed1StructString>& ParamString) override;
-
-	virtual void BroadcastPropBoolChanged_Implementation(const TArray<FTestbed1StructBool>& InPropBool) override;
-
-	virtual void BroadcastPropIntChanged_Implementation(const TArray<FTestbed1StructInt>& InPropInt) override;
-
-	virtual void BroadcastPropFloatChanged_Implementation(const TArray<FTestbed1StructFloat>& InPropFloat) override;
-
-	virtual void BroadcastPropStringChanged_Implementation(const TArray<FTestbed1StructString>& InPropString) override;
 
 	// properties - local copy
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropBool_Private, BlueprintSetter = SetPropBool_Private, Category = "ApiGear|Testbed1|StructArrayInterface")
@@ -150,4 +110,9 @@ protected:
 
 	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed1|StructArrayInterface|Properties", BlueprintInternalUseOnly)
 	void SetPropString_Private(const TArray<FTestbed1StructString>& InPropString);
+
+private:
+	// signals
+	UPROPERTY()
+	UTestbed1StructArrayInterfaceSignals* Testbed1StructArrayInterfaceSignals;
 };

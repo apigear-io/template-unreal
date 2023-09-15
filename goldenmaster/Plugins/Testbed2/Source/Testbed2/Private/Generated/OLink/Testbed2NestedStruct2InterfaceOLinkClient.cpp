@@ -262,14 +262,14 @@ void UTestbed2NestedStruct2InterfaceOLinkClient::applyState(const nlohmann::json
 	if (bProp1Changed)
 	{
 		Prop1 = fields["prop1"].get<FTestbed2NestedStruct1>();
-		Execute_BroadcastProp1Changed(this, Prop1);
+		Execute__GetSignals(this)->OnProp1Changed.Broadcast(Prop1);
 	}
 
 	const bool bProp2Changed = fields.contains("prop2") && (Prop2 != fields["prop2"].get<FTestbed2NestedStruct2>());
 	if (bProp2Changed)
 	{
 		Prop2 = fields["prop2"].get<FTestbed2NestedStruct2>();
-		Execute_BroadcastProp2Changed(this, Prop2);
+		Execute__GetSignals(this)->OnProp2Changed.Broadcast(Prop2);
 	}
 }
 
@@ -278,7 +278,7 @@ void UTestbed2NestedStruct2InterfaceOLinkClient::emitSignal(const std::string& s
 	if (signalName == "sig1")
 	{
 		const FTestbed2NestedStruct1& Param1 = args[0].get<FTestbed2NestedStruct1>();
-		Execute_BroadcastSig1(this, Param1);
+		Execute__GetSignals(this)->OnSig1Signal.Broadcast(Param1);
 		return;
 	}
 
@@ -286,7 +286,7 @@ void UTestbed2NestedStruct2InterfaceOLinkClient::emitSignal(const std::string& s
 	{
 		const FTestbed2NestedStruct1& Param1 = args[0].get<FTestbed2NestedStruct1>();
 		const FTestbed2NestedStruct2& Param2 = args[1].get<FTestbed2NestedStruct2>();
-		Execute_BroadcastSig2(this, Param1, Param2);
+		Execute__GetSignals(this)->OnSig2Signal.Broadcast(Param1, Param2);
 		return;
 	}
 }
