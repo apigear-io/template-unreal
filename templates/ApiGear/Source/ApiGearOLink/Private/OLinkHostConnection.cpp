@@ -4,6 +4,10 @@
 #include "HAL/Platform.h"
 #if !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)
 #include "INetworkingWebSocket.h"
+#include "ProfilingDebugging/CountersTrace.h"
+
+TRACE_DECLARE_INT_COUNTER(ApiGearOLinkServerMessagesSent, TEXT("Amount of messages sent by the OLink server"));
+TRACE_DECLARE_INT_COUNTER(ApiGearOLinkServerMessagesReceived, TEXT("Amount of messages received by the OLink server"));
 
 namespace
 {
@@ -35,6 +39,7 @@ FOLinkHostConnection::FOLinkHostConnection(INetworkingWebSocket* InSocket, ApiGe
 	Node->onWrite([InSocket](const std::string& msg)
 		{
 		check(InSocket);
+		TRACE_COUNTER_INCREMENT(ApiGearOLinkServerMessagesSent);
 		InSocket->Send(ConvertFromString(msg), msg.size(), false);
 	});
 }
@@ -66,11 +71,13 @@ bool FOLinkHostConnection::IsConnection(FOLinkHostConnection* InConnection) cons
 
 void FOLinkHostConnection::ReceivedRawPacket(void* Data, int32 Size) const
 {
+	TRACE_COUNTER_INCREMENT(ApiGearOLinkServerMessagesReceived);
 	this->handleTextMessage(ConvertToString(Data, Size));
 }
 
 void FOLinkHostConnection::handleTextMessage(const std::string& msg) const
 {
+	TRACE_COUNTER_INCREMENT(ApiGearOLinkServerMessagesReceived);
 	Node->handleMessage(msg);
 }
 
