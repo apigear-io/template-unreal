@@ -8,8 +8,11 @@ THIRD_PARTY_INCLUDES_END
 #include <functional>
 #include <chrono>
 #include <future>
+#include "ProfilingDebugging/CountersTrace.h"
 
 DEFINE_LOG_CATEGORY(LogApiGearOLink);
+TRACE_DECLARE_INT_COUNTER(ApiGearOLinkClientMessagesSent, TEXT("Amount of messages sent by the OLink client"));
+TRACE_DECLARE_INT_COUNTER(ApiGearOLinkClientMessagesReceived, TEXT("Amount of messages received by the OLink client"));
 
 namespace
 {
@@ -235,6 +238,7 @@ FString UOLinkClientConnection::GetUniqueEndpointIdentifier() const
 
 void UOLinkClientConnection::handleTextMessage(const std::string& message)
 {
+	TRACE_COUNTER_INCREMENT(ApiGearOLinkClientMessagesSent);
 	m_node->handleMessage(message);
 }
 
@@ -279,6 +283,7 @@ void UOLinkClientConnection::processMessages(TWeakPtr<IWebSocket> socket)
 			// if we are using JSON we need to use txt message
 			m_queue.Dequeue(msg);
 			LockedSocket->Send(UTF8_TO_TCHAR(msg.c_str()));
+			TRACE_COUNTER_INCREMENT(ApiGearOLinkClientMessagesSent);
 		}
 	}
 	else
