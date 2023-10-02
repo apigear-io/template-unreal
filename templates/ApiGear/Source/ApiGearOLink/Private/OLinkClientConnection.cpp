@@ -9,6 +9,7 @@ THIRD_PARTY_INCLUDES_END
 #include <chrono>
 #include <future>
 #include "ProfilingDebugging/CountersTrace.h"
+#include "ProfilingDebugging/CpuProfilerTrace.h"
 
 DEFINE_LOG_CATEGORY(LogApiGearOLink);
 TRACE_DECLARE_INT_COUNTER(ApiGearOLinkClientMessagesSent, TEXT("Amount of messages sent by the OLink client"));
@@ -238,7 +239,8 @@ FString UOLinkClientConnection::GetUniqueEndpointIdentifier() const
 
 void UOLinkClientConnection::handleTextMessage(const std::string& message)
 {
-	TRACE_COUNTER_INCREMENT(ApiGearOLinkClientMessagesSent);
+	TRACE_COUNTER_INCREMENT(ApiGearOLinkClientMessagesReceived);
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.OLink.Client.HandleIncoming");
 	m_node->handleMessage(message);
 }
 
@@ -263,6 +265,7 @@ void UOLinkClientConnection::unlinkObjectSource(const std::string& name)
 
 void UOLinkClientConnection::processMessages(TWeakPtr<IWebSocket> socket)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.OLink.Client.ProcessOutgoing");
 	if (m_queue.IsEmpty())
 	{
 		// no data to be sent
@@ -280,6 +283,7 @@ void UOLinkClientConnection::processMessages(TWeakPtr<IWebSocket> socket)
 		std::string msg;
 		while (!m_queue.IsEmpty())
 		{
+			TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.OLink.Client.SendMessage");
 			// if we are using JSON we need to use txt message
 			m_queue.Dequeue(msg);
 			LockedSocket->Send(UTF8_TO_TCHAR(msg.c_str()));

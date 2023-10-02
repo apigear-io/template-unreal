@@ -5,6 +5,7 @@
 #if !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)
 #include "INetworkingWebSocket.h"
 #include "ProfilingDebugging/CountersTrace.h"
+#include "ProfilingDebugging/CpuProfilerTrace.h"
 
 TRACE_DECLARE_INT_COUNTER(ApiGearOLinkServerMessagesSent, TEXT("Amount of messages sent by the OLink server"));
 TRACE_DECLARE_INT_COUNTER(ApiGearOLinkServerMessagesReceived, TEXT("Amount of messages received by the OLink server"));
@@ -38,6 +39,7 @@ FOLinkHostConnection::FOLinkHostConnection(INetworkingWebSocket* InSocket, ApiGe
 	Node->onLog(logFunc);
 	Node->onWrite([InSocket](const std::string& msg)
 		{
+		TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.OLink.Server.SendMessage");
 		check(InSocket);
 		TRACE_COUNTER_INCREMENT(ApiGearOLinkServerMessagesSent);
 		InSocket->Send(ConvertFromString(msg), msg.size(), false);
@@ -77,7 +79,7 @@ void FOLinkHostConnection::ReceivedRawPacket(void* Data, int32 Size) const
 
 void FOLinkHostConnection::handleTextMessage(const std::string& msg) const
 {
-	TRACE_COUNTER_INCREMENT(ApiGearOLinkServerMessagesReceived);
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.OLink.Server.HandleIncoming");
 	Node->handleMessage(msg);
 }
 
