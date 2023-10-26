@@ -20,8 +20,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "{{$ModuleName}}Settings.h"
+{{- if or $.Features.olink $.Features.monitor}}
 #include "Generated/{{$ModuleName}}LogCategories.h"
+{{- end }}
+{{- if $.Features.apigear }}
 #include "ApiGearConnectionsStore.h"
+{{- end }}
 #include "Engine/Engine.h"
 #include "Misc/CoreDelegates.h"
 
@@ -34,13 +38,20 @@ U{{$ModuleName}}Settings::U{{$ModuleName}}Settings(const FObjectInitializer& Obj
 void U{{$ModuleName}}Settings::ValidateSettingsPostEngineInit()
 {
 	check(GEngine);
+{{- if $.Features.apigear }}
 	UApiGearConnectionsStore* AGCM = GEngine->GetEngineSubsystem<UApiGearConnectionsStore>();
+{{- end }}
+
+{{- if $.Features.olink}}
 
 	if (!AGCM->DoesConnectionExist(OLinkConnectionIdentifier))
 	{
 		UE_LOG(Log{{$ModuleName}}, Warning, TEXT("U{{$ModuleName}}Settings could not find connection %s."), *OLinkConnectionIdentifier);
 		OLinkConnectionIdentifier = "";
 	}
+{{- end }}
+
+{{- if $.Features.monitor }}
 
 	// the local backend does not require configuration
 	if (TracerServiceIdentifier == {{$ModuleName}}LocalBackendIdentifier)
@@ -53,4 +64,5 @@ void U{{$ModuleName}}Settings::ValidateSettingsPostEngineInit()
 		UE_LOG(Log{{$ModuleName}}, Warning, TEXT("U{{$ModuleName}}Settings could not find connection %s, falling back to local backend."), *TracerServiceIdentifier);
 		TracerServiceIdentifier = {{$ModuleName}}LocalBackendIdentifier;
 	}
+{{- end }}
 }

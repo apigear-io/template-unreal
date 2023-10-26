@@ -349,6 +349,12 @@ features:
             target: "Source/{{Camel .Module.Name}}/Public/{{Camel .Module.Name}}Settings.h"
           - source: "module/Source/module/Private/pluginnamesettings.cpp.tpl"
             target: "Source/{{Camel .Module.Name}}/Private/{{Camel .Module.Name}}Settings.cpp"
+          - source: "module/Source/moduleeditor/Public/pluginnameconnectionsettings.h.tpl"
+            target: "Source/{{Camel .Module.Name}}Editor/Public/{{Camel .Module.Name}}ConnectionSettings.h"
+            force: true
+          - source: "module/Source/moduleeditor/Private/pluginnameconnectionsettings.cpp.tpl"
+            target: "Source/{{Camel .Module.Name}}Editor/Private/{{Camel .Module.Name}}ConnectionSettings.cpp"
+            force: true
           - source: "module/Source/moduleeditor/Public/pluginnameeditor.h.tpl"
             target: "Source/{{Camel .Module.Name}}Editor/Public/{{Camel .Module.Name}}Editor.h"
           - source: "module/Source/moduleeditor/Private/pluginnameeditor.cpp.tpl"
@@ -364,22 +370,12 @@ features:
   - name: monitor
     requires:
       - api
+      - plugin
       - apigear
     scopes:
       - match: module
         prefix: "Plugins/{{Camel .Module.Name}}/"
         documents:
-          - source: "module/Source/module/Public/pluginnamesettings.h.tpl"
-            target: "Source/{{Camel .Module.Name}}/Public/{{Camel .Module.Name}}Settings.h"
-            force: true
-          - source: "module/Source/module/Private/pluginnamesettings.cpp.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/{{Camel .Module.Name}}Settings.cpp"
-            force: true
-          - source: "module/Source/moduleeditor/Public/pluginnameconnectionsettings.h.tpl"
-            target: "Source/{{Camel .Module.Name}}Editor/Public/{{Camel .Module.Name}}ConnectionSettings.h"
-          - source: "module/Source/moduleeditor/Private/pluginnameconnectionsettings.cpp.tpl"
-            target: "Source/{{Camel .Module.Name}}Editor/Private/{{Camel .Module.Name}}ConnectionSettings.cpp"
-            force: true
           - source: "module/Source/module/Private/Generated/Monitor/pluginfactory.h.tpl"
             target: "Source/{{Camel .Module.Name}}/Private/Generated/Monitor/{{Camel .Module.Name}}Factory.h"
             force: true

@@ -1,6 +1,5 @@
 // Copyright Epic Games, Inc. All Rights Reserved
 #include "Testbed1ConnectionSettings.h"
-
 #include "ApiGearSettings.h"
 #include "apigearolink.h"
 #include "Testbed1Settings.h"
@@ -97,6 +96,28 @@ TSharedRef<SWidget> FTestbed1ConnectionSettingsDetails::MakeDefaultBackendServic
 	return NewWidget;
 }
 
+void FTestbed1ConnectionSettingsDetails::CustomizeTracerDetails(IDetailLayoutBuilder& DetailBuilder)
+{
+	IDetailCategoryBuilder& TracerServiceCategory = DetailBuilder.EditCategory(TEXT("TracerServiceSetup"));
+
+	TSharedPtr<IPropertyHandle> BackendServiceIdentifierPropertyHandle = DetailBuilder.GetProperty("TracerServiceIdentifier", nullptr);
+	IDetailPropertyRow& DefaultBackendServiceIdentifierPropertyRow = TracerServiceCategory.AddProperty(BackendServiceIdentifierPropertyHandle);
+
+	// clang-format off
+	DefaultBackendServiceIdentifierPropertyRow.CustomWidget()
+		.NameContent()
+		[
+			BackendServiceIdentifierPropertyHandle->CreatePropertyNameWidget()
+		]
+		.ValueContent()
+		.MaxDesiredWidth(500.0f)
+		.MinDesiredWidth(100.0f)
+		[
+			MakeDefaultBackendServiceSelectorWidget(BackendServiceIdentifierPropertyHandle)
+		];
+	// clang-format on
+}
+
 TSharedRef<SWidget> FTestbed1ConnectionSettingsDetails::MakeDefaultOLinkConnectionSelectorWidget(const TSharedPtr<IPropertyHandle>& PropertyHandle)
 {
 	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
@@ -178,28 +199,6 @@ TSharedRef<SWidget> FTestbed1ConnectionSettingsDetails::MakeDefaultOLinkConnecti
 	// clang-format on
 
 	return NewWidget;
-}
-
-void FTestbed1ConnectionSettingsDetails::CustomizeTracerDetails(IDetailLayoutBuilder& DetailBuilder)
-{
-	IDetailCategoryBuilder& TracerServiceCategory = DetailBuilder.EditCategory(TEXT("TracerServiceSetup"));
-
-	TSharedPtr<IPropertyHandle> BackendServiceIdentifierPropertyHandle = DetailBuilder.GetProperty("TracerServiceIdentifier", nullptr);
-	IDetailPropertyRow& DefaultBackendServiceIdentifierPropertyRow = TracerServiceCategory.AddProperty(BackendServiceIdentifierPropertyHandle);
-
-	// clang-format off
-	DefaultBackendServiceIdentifierPropertyRow.CustomWidget()
-		.NameContent()
-		[
-			BackendServiceIdentifierPropertyHandle->CreatePropertyNameWidget()
-		]
-		.ValueContent()
-		.MaxDesiredWidth(500.0f)
-		.MinDesiredWidth(100.0f)
-		[
-			MakeDefaultBackendServiceSelectorWidget(BackendServiceIdentifierPropertyHandle)
-		];
-	// clang-format on
 }
 
 void FTestbed1ConnectionSettingsDetails::CustomizeOLinkDetails(IDetailLayoutBuilder& DetailBuilder)

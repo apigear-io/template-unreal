@@ -6,8 +6,12 @@
 // Copyright Epic Games, Inc. All Rights Reserved
 #include "{{$ModuleName}}ConnectionSettings.h"
 
+{{- if $.Features.apigear }}
 #include "ApiGearSettings.h"
+{{- end }}
+{{- if $.Features.olink }}
 #include "apigearolink.h"
+{{- end }}
 #include "{{$ModuleName}}Settings.h"
 #include "Templates/SharedPointer.h"
 #include "IDetailCustomization.h"
@@ -30,6 +34,8 @@ TSharedRef<IDetailCustomization> F{{$ModuleName}}ConnectionSettingsDetails::Make
 {
 	return MakeShareable(new F{{$ModuleName}}ConnectionSettingsDetails);
 }
+
+{{- if $.Features.monitor }}
 
 TSharedRef<SWidget> F{{$ModuleName}}ConnectionSettingsDetails::MakeDefaultBackendServiceSelectorWidget(const TSharedPtr<IPropertyHandle>& PropertyHandle)
 {
@@ -101,6 +107,29 @@ TSharedRef<SWidget> F{{$ModuleName}}ConnectionSettingsDetails::MakeDefaultBacken
 
 	return NewWidget;
 }
+
+void F{{$ModuleName}}ConnectionSettingsDetails::CustomizeTracerDetails(IDetailLayoutBuilder& DetailBuilder)
+{
+	IDetailCategoryBuilder& TracerServiceCategory = DetailBuilder.EditCategory(TEXT("TracerServiceSetup"));
+
+	TSharedPtr<IPropertyHandle> BackendServiceIdentifierPropertyHandle = DetailBuilder.GetProperty("TracerServiceIdentifier", nullptr);
+	IDetailPropertyRow& DefaultBackendServiceIdentifierPropertyRow = TracerServiceCategory.AddProperty(BackendServiceIdentifierPropertyHandle);
+
+	// clang-format off
+	DefaultBackendServiceIdentifierPropertyRow.CustomWidget()
+		.NameContent()
+		[
+			BackendServiceIdentifierPropertyHandle->CreatePropertyNameWidget()
+		]
+		.ValueContent()
+		.MaxDesiredWidth(500.0f)
+		.MinDesiredWidth(100.0f)
+		[
+			MakeDefaultBackendServiceSelectorWidget(BackendServiceIdentifierPropertyHandle)
+		];
+	// clang-format on
+}
+{{- end }}
 
 {{- if $.Features.olink }}
 
@@ -186,31 +215,6 @@ TSharedRef<SWidget> F{{$ModuleName}}ConnectionSettingsDetails::MakeDefaultOLinkC
 
 	return NewWidget;
 }
-{{- end }}
-
-void F{{$ModuleName}}ConnectionSettingsDetails::CustomizeTracerDetails(IDetailLayoutBuilder& DetailBuilder)
-{
-	IDetailCategoryBuilder& TracerServiceCategory = DetailBuilder.EditCategory(TEXT("TracerServiceSetup"));
-
-	TSharedPtr<IPropertyHandle> BackendServiceIdentifierPropertyHandle = DetailBuilder.GetProperty("TracerServiceIdentifier", nullptr);
-	IDetailPropertyRow& DefaultBackendServiceIdentifierPropertyRow = TracerServiceCategory.AddProperty(BackendServiceIdentifierPropertyHandle);
-
-	// clang-format off
-	DefaultBackendServiceIdentifierPropertyRow.CustomWidget()
-		.NameContent()
-		[
-			BackendServiceIdentifierPropertyHandle->CreatePropertyNameWidget()
-		]
-		.ValueContent()
-		.MaxDesiredWidth(500.0f)
-		.MinDesiredWidth(100.0f)
-		[
-			MakeDefaultBackendServiceSelectorWidget(BackendServiceIdentifierPropertyHandle)
-		];
-	// clang-format on
-}
-
-{{- if $.Features.olink }}
 
 void F{{$ModuleName}}ConnectionSettingsDetails::CustomizeOLinkDetails(IDetailLayoutBuilder& DetailBuilder)
 {
@@ -237,7 +241,9 @@ void F{{$ModuleName}}ConnectionSettingsDetails::CustomizeOLinkDetails(IDetailLay
 
 void F{{$ModuleName}}ConnectionSettingsDetails::CustomizeDetails(IDetailLayoutBuilder& DetailBuilder)
 {
+{{- if $.Features.monitor }}
 	CustomizeTracerDetails(DetailBuilder);
+{{- end }}
 {{- if $.Features.olink }}
 	CustomizeOLinkDetails(DetailBuilder);
 {{- end }}

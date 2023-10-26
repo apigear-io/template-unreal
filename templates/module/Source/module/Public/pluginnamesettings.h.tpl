@@ -39,11 +39,17 @@ class {{$API_MACRO}} U{{$ModuleName}}Settings : public UObject
 	// Callback used to validate the settings once the engine is available
 	void ValidateSettingsPostEngineInit();
 
+{{- if $.Features.monitor }}
+
 	// Choose the backend service for the logging decorator to use
 	UPROPERTY(EditAnywhere, config, Category = TracerServiceSetup)
 	FString TracerServiceIdentifier;
+{{- end}}
+
+{{- if $.Features.olink }}
 
 	// Choose the olink connection to use
 	UPROPERTY(EditAnywhere, config, Category = OLinkConnectionSetup)
 	FString OLinkConnectionIdentifier;
+{{- end }}
 };

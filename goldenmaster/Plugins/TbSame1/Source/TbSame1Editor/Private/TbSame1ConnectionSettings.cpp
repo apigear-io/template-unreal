@@ -1,6 +1,5 @@
 // Copyright Epic Games, Inc. All Rights Reserved
 #include "TbSame1ConnectionSettings.h"
-
 #include "ApiGearSettings.h"
 #include "apigearolink.h"
 #include "TbSame1Settings.h"
@@ -97,6 +96,28 @@ TSharedRef<SWidget> FTbSame1ConnectionSettingsDetails::MakeDefaultBackendService
 	return NewWidget;
 }
 
+void FTbSame1ConnectionSettingsDetails::CustomizeTracerDetails(IDetailLayoutBuilder& DetailBuilder)
+{
+	IDetailCategoryBuilder& TracerServiceCategory = DetailBuilder.EditCategory(TEXT("TracerServiceSetup"));
+
+	TSharedPtr<IPropertyHandle> BackendServiceIdentifierPropertyHandle = DetailBuilder.GetProperty("TracerServiceIdentifier", nullptr);
+	IDetailPropertyRow& DefaultBackendServiceIdentifierPropertyRow = TracerServiceCategory.AddProperty(BackendServiceIdentifierPropertyHandle);
+
+	// clang-format off
+	DefaultBackendServiceIdentifierPropertyRow.CustomWidget()
+		.NameContent()
+		[
+			BackendServiceIdentifierPropertyHandle->CreatePropertyNameWidget()
+		]
+		.ValueContent()
+		.MaxDesiredWidth(500.0f)
+		.MinDesiredWidth(100.0f)
+		[
+			MakeDefaultBackendServiceSelectorWidget(BackendServiceIdentifierPropertyHandle)
+		];
+	// clang-format on
+}
+
 TSharedRef<SWidget> FTbSame1ConnectionSettingsDetails::MakeDefaultOLinkConnectionSelectorWidget(const TSharedPtr<IPropertyHandle>& PropertyHandle)
 {
 	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
@@ -178,28 +199,6 @@ TSharedRef<SWidget> FTbSame1ConnectionSettingsDetails::MakeDefaultOLinkConnectio
 	// clang-format on
 
 	return NewWidget;
-}
-
-void FTbSame1ConnectionSettingsDetails::CustomizeTracerDetails(IDetailLayoutBuilder& DetailBuilder)
-{
-	IDetailCategoryBuilder& TracerServiceCategory = DetailBuilder.EditCategory(TEXT("TracerServiceSetup"));
-
-	TSharedPtr<IPropertyHandle> BackendServiceIdentifierPropertyHandle = DetailBuilder.GetProperty("TracerServiceIdentifier", nullptr);
-	IDetailPropertyRow& DefaultBackendServiceIdentifierPropertyRow = TracerServiceCategory.AddProperty(BackendServiceIdentifierPropertyHandle);
-
-	// clang-format off
-	DefaultBackendServiceIdentifierPropertyRow.CustomWidget()
-		.NameContent()
-		[
-			BackendServiceIdentifierPropertyHandle->CreatePropertyNameWidget()
-		]
-		.ValueContent()
-		.MaxDesiredWidth(500.0f)
-		.MinDesiredWidth(100.0f)
-		[
-			MakeDefaultBackendServiceSelectorWidget(BackendServiceIdentifierPropertyHandle)
-		];
-	// clang-format on
 }
 
 void FTbSame1ConnectionSettingsDetails::CustomizeOLinkDetails(IDetailLayoutBuilder& DetailBuilder)

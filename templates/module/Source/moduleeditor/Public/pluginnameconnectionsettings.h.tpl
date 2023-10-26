@@ -25,10 +25,12 @@ public:
 	virtual void CustomizeDetails(IDetailLayoutBuilder& DetailBuilder) override;
 
 private:
+{{- if $.Features.monitor }}
 	void CustomizeTracerDetails(IDetailLayoutBuilder& DetailBuilder);
 	TSharedRef<SWidget> MakeDefaultBackendServiceSelectorWidget(const TSharedPtr<IPropertyHandle>& PropertyHandle);
 	TSharedPtr<FText> SelectedDefaultBackendService;
 	TArray<TSharedPtr<FText>> AvailableServices;
+{{- end }}
 
 {{- if $.Features.olink }}
 
