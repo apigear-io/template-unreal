@@ -412,6 +412,8 @@ features:
             force: true
   - name: olink
     requires:
+      - api
+      - plugin
       - apigear-olink
     scopes:
       - match: module
