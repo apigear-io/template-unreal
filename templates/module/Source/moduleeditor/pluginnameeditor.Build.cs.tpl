@@ -23,7 +23,9 @@ namespace UnrealBuildTool.Rules
 					"CoreUObject",
 					"UnrealEd",
 					// modules below are needed for connection settings
+{{- if $.Features.apigear }}
 					"ApiGear",
+{{- end }}
 {{- if $.Features.olink }}
 					"ApiGearOLink",
 {{- end }}
