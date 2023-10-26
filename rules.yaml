@@ -328,8 +328,6 @@ features:
           - source: "module/Source/module/Private/Tests/implementationtest.cpp.tpl"
             target: "Source/{{Camel .Module.Name}}/Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}Tests.cpp"
   - name: plugin
-    requires:
-      - stubs
     scopes:
       - match: system
         documents:
