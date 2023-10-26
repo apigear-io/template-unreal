@@ -335,20 +335,26 @@ features:
         documents:
           - source: "buildPlugins.bat.tpl"
             target: "buildPlugins.bat"
+            force: true
           - source: "buildPlugins.sh.tpl"
             target: "buildPlugins.sh"
+            force: true
       - match: module
         prefix: "Plugins/{{Camel .Module.Name}}/"
         documents:
           - source: "module/Config/FilterPlugin.ini"
             target: "Config/FilterPlugin.ini"
             raw: true
+            force: true
           - source: "module/Source/module/pluginname.uplugin.tpl"
             target: "{{Camel .Module.Name}}.uplugin"
+            force: true
           - source: "module/Source/module/Public/pluginnamesettings.h.tpl"
             target: "Source/{{Camel .Module.Name}}/Public/{{Camel .Module.Name}}Settings.h"
+            force: true
           - source: "module/Source/module/Private/pluginnamesettings.cpp.tpl"
             target: "Source/{{Camel .Module.Name}}/Private/{{Camel .Module.Name}}Settings.cpp"
+            force: true
           - source: "module/Source/moduleeditor/Public/pluginnameconnectionsettings.h.tpl"
             target: "Source/{{Camel .Module.Name}}Editor/Public/{{Camel .Module.Name}}ConnectionSettings.h"
             force: true
@@ -357,16 +363,22 @@ features:
             force: true
           - source: "module/Source/moduleeditor/Public/pluginnameeditor.h.tpl"
             target: "Source/{{Camel .Module.Name}}Editor/Public/{{Camel .Module.Name}}Editor.h"
+            force: true
           - source: "module/Source/moduleeditor/Private/pluginnameeditor.cpp.tpl"
             target: "Source/{{Camel .Module.Name}}Editor/Private/{{Camel .Module.Name}}Editor.cpp"
+            force: true
           - source: "module/Source/moduleeditor/pluginnameeditor.Build.cs.tpl"
             target: "Source/{{Camel .Module.Name}}Editor/{{Camel .Module.Name}}Editor.Build.cs"
+            force: true
           - source: "module/Source/module/pluginname.Build.cs.tpl"
             target: "Source/{{Camel .Module.Name}}/{{Camel .Module.Name}}.Build.cs"
+            force: true
           - source: "module/Source/module/Public/pluginname.h.tpl"
             target: "Source/{{Camel .Module.Name}}/Public/{{Camel .Module.Name}}.h"
+            force: true
           - source: "module/Source/module/Private/pluginname.cpp.tpl"
             target: "Source/{{Camel .Module.Name}}/Private/{{Camel .Module.Name}}.cpp"
+            force: true
   - name: monitor
     requires:
       - api
