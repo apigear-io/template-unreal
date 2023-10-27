@@ -153,6 +153,7 @@ void {{$abstractclass}}::Deinitialize()
 	check(bInitialized);
 	bInitialized = false;
 
+{{- if or (len .Properties) (len .Signals) }}{{nl}}
 	if ({{$Iface}}Signals)
 	{
 {{- range $i, $e := .Signals }}
@@ -163,6 +164,7 @@ void {{$abstractclass}}::Deinitialize()
 		{{$Iface}}Signals->On{{Camel .Name}}Changed.RemoveAll({{$Iface}}Signals);
 {{- end }}
 	}
+{{- end }}
 
 	Super::Deinitialize();
 }

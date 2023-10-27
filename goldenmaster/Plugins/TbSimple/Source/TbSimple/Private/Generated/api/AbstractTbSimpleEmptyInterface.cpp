@@ -37,10 +37,6 @@ void UAbstractTbSimpleEmptyInterface::Deinitialize()
 	check(bInitialized);
 	bInitialized = false;
 
-	if (TbSimpleEmptyInterfaceSignals)
-	{
-	}
-
 	Super::Deinitialize();
 }
 
