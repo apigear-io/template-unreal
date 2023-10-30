@@ -31,7 +31,7 @@ features:
           - source: "module/Source/module/Private/Generated/api/abstract.cpp.tpl"
             target: "Private/Generated/api/Abstract{{Camel .Module.Name}}{{Camel .Interface.Name}}.cpp"
             force: true
-  - name: apigear-olinkproto
+  - name: apigear_olinkproto
     scopes:
       - match: system
         prefix: "Plugins/ApiGear/Source/ThirdParty/OLinkProtocolLibrary/"
@@ -249,10 +249,10 @@ features:
             target: "Source/ThirdParty/nlohmannJsonLibrary/Public/nlohmann/json.hpp"
             raw: true
             force: true
-  - name: apigear-olink
+  - name: apigear_olink
     requires:
       - apigear
-      - apigear-olinkproto
+      - apigear_olinkproto
     scopes:
       - match: system
         prefix: "Plugins/ApiGear/"
@@ -414,7 +414,7 @@ features:
     requires:
       - api
       - plugin
-      - apigear-olink
+      - apigear_olink
     scopes:
       - match: module
         prefix: "Plugins/{{Camel .Module.Name}}/"
