@@ -21,7 +21,9 @@ public class {{$ModuleName}} : ModuleRules
 		PublicDefinitions.Add("JSON_NOEXCEPTION=1");
 		
         PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "Public"));
+{{- if .Features.api }}
         PrivateIncludePaths.Add(Path.Combine(ModuleDirectory, "Public/Generated/api"));
+{{- end }}
         PrivateIncludePaths.Add(Path.Combine(ModuleDirectory, "Private"));
 
 		PublicIncludePaths.AddRange(

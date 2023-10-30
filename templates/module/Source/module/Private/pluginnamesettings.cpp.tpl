@@ -20,7 +20,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "{{$ModuleName}}Settings.h"
-{{- if or $.Features.olink $.Features.monitor}}
+{{- if .Features.api }}
 #include "Generated/{{$ModuleName}}LogCategories.h"
 {{- end }}
 {{- if $.Features.apigear }}
