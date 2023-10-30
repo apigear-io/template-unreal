@@ -16,7 +16,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "Generated/Monitor/TbSimpleSimpleInterfaceLoggingDecorator.h"
-#include "Implementation/TbSimpleSimpleInterface.h"
 #include "TbSimple.trace.h"
 #include "TbSimpleFactory.h"
 #include "Runtime/Launch/Resources/Version.h"

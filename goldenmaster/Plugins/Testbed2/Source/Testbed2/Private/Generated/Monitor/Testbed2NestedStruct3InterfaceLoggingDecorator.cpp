@@ -16,7 +16,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "Generated/Monitor/Testbed2NestedStruct3InterfaceLoggingDecorator.h"
-#include "Implementation/Testbed2NestedStruct3Interface.h"
 #include "Testbed2.trace.h"
 #include "Testbed2Factory.h"
 #include "Runtime/Launch/Resources/Version.h"

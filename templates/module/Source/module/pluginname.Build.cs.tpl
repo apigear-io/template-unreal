@@ -56,7 +56,7 @@ public class {{$ModuleName}} : ModuleRules
 			{
 				"CoreUObject",
 				"Engine",
-{{- if .Features.apigear }}
+{{- if .Features.olink }}
 				"ApiGearOLink",
 				"OLinkProtocolLibrary"
 {{- end }}

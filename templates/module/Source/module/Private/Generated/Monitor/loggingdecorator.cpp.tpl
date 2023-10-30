@@ -26,7 +26,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "Generated/Monitor/{{$Iface}}LoggingDecorator.h"
-#include "Implementation/{{$Iface}}.h"
 #include "{{$ModuleName}}.trace.h"
 #include "{{$ModuleName}}Factory.h"
 #include "Runtime/Launch/Resources/Version.h"

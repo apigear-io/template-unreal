@@ -16,7 +16,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "Generated/Monitor/TbEnumEnumInterfaceLoggingDecorator.h"
-#include "Implementation/TbEnumEnumInterface.h"
 #include "TbEnum.trace.h"
 #include "TbEnumFactory.h"
 #include "Runtime/Launch/Resources/Version.h"

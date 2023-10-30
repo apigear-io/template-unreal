@@ -133,6 +133,8 @@ features:
             raw: true
             force: true
   - name: apigear
+    requires:
+      - apigear_olink
     scopes:
       - match: system
         prefix: "Plugins/ApiGear/"
@@ -251,7 +253,6 @@ features:
             force: true
   - name: apigear_olink
     requires:
-      - apigear
       - apigear_olinkproto
     scopes:
       - match: system

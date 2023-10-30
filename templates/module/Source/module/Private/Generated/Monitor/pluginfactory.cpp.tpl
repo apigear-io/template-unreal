@@ -22,7 +22,9 @@ limitations under the License.
 
 #include "{{$ModuleName}}Factory.h"
 #include "ApiGearSettings.h"
+{{- if $.Features.olink }}
 #include "apigearolink.h"
+{{- end }}
 #include "{{$ModuleName}}Settings.h"
 {{- range .Module.Interfaces }}
 {{- $iclass := printf "%s%s" $ModuleName (Camel .Name)}}
@@ -95,7 +97,11 @@ TScriptInterface<I{{$class}}Interface> create{{$class}}(UGameInstance* GameInsta
 
 TScriptInterface<I{{$class}}Interface> {{$mclass}}::create{{$iclass}}(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
 {
+{{- if or $.Features.stubs $.Features.olink }}
 	U{{$ModuleName}}Settings* {{$ModuleName}}Settings = GetMutableDefault<U{{$ModuleName}}Settings>();
+{{- end }}
+
+{{- if $.Features.stubs }}
 
 	if ({{$ModuleName}}Settings->TracerServiceIdentifier == {{$ModuleName}}LocalBackendIdentifier)
 	{
@@ -104,6 +110,7 @@ TScriptInterface<I{{$class}}Interface> {{$mclass}}::create{{$iclass}}(UGameInsta
 
 	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
 	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find({{$ModuleName}}Settings->TracerServiceIdentifier);
+{{- end }}
 
 {{- if $.Features.olink }}
 
@@ -116,8 +123,13 @@ TScriptInterface<I{{$class}}Interface> {{$mclass}}::create{{$iclass}}(UGameInsta
 	}
 {{- end }}
 
+{{- if $.Features.stubs }}
+
 	// fallback to local implementation
 	return create{{$class}}(GameInstance, Collection);
+{{- else }}
+	return nullptr;
+{{- end }}
 }
 
 #else
@@ -150,7 +162,11 @@ TScriptInterface<I{{$class}}Interface> create{{$class}}(FSubsystemCollectionBase
 
 TScriptInterface<I{{$class}}Interface> {{$mclass}}::create{{$iclass}}(FSubsystemCollectionBase& Collection)
 {
+{{- if or $.Features.stubs $.Features.olink }}
 	U{{$ModuleName}}Settings* {{$ModuleName}}Settings = GetMutableDefault<U{{$ModuleName}}Settings>();
+{{- end }}
+
+{{- if $.Features.stubs }}
 
 	if ({{$ModuleName}}Settings->TracerServiceIdentifier == {{$ModuleName}}LocalBackendIdentifier)
 	{
@@ -159,6 +175,7 @@ TScriptInterface<I{{$class}}Interface> {{$mclass}}::create{{$iclass}}(FSubsystem
 
 	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
 	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find({{$ModuleName}}Settings->TracerServiceIdentifier);
+{{- end }}
 
 {{- if $.Features.olink }}
 
@@ -171,8 +188,13 @@ TScriptInterface<I{{$class}}Interface> {{$mclass}}::create{{$iclass}}(FSubsystem
 	}
 {{- end }}
 
+{{- if $.Features.stubs }}
+
 	// fallback to local implementation
 	return create{{$class}}(Collection);
+{{- else }}
+	return nullptr;
+{{- end }}
 }
 #endif
 {{- end }}

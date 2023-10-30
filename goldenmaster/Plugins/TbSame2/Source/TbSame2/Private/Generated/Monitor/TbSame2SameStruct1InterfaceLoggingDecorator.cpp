@@ -16,7 +16,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "Generated/Monitor/TbSame2SameStruct1InterfaceLoggingDecorator.h"
-#include "Implementation/TbSame2SameStruct1Interface.h"
 #include "TbSame2.trace.h"
 #include "TbSame2Factory.h"
 #include "Runtime/Launch/Resources/Version.h"
