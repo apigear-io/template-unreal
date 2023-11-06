@@ -41,11 +41,23 @@ class TESTBED2_API UTestbed2NestedStruct1InterfaceSignals : public UObject
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct1Interface|Signals", DisplayName = "Sig1 Signal")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct1Interface|Signals", DisplayName = "Sig1 Signal")
 	FTestbed2NestedStruct1InterfaceSig1Delegate OnSig1Signal;
+	/// C++ wrapper for BP functions to safely call Sig1Signal.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct1Interface|Signals", DisplayName = "Broadcast Sig1 Signal")
+	void BroadcastSig1Signal(const FTestbed2NestedStruct1& Param1)
+	{
+		OnSig1Signal.Broadcast(Param1);
+	}
 
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct1Interface|Signals", DisplayName = "Property Prop1 Changed")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct1Interface|Signals", DisplayName = "Property Prop1 Changed")
 	FTestbed2NestedStruct1InterfaceProp1ChangedDelegate OnProp1Changed;
+	/// C++ wrapper for BP functions to safely call OnProp1Changed.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct1Interface|Signals", DisplayName = "Broadcast Property Prop1 Changed")
+	void BroadcastProp1Changed(UPARAM(DisplayName = "Prop1") const FTestbed2NestedStruct1& InProp1)
+	{
+		OnProp1Changed.Broadcast(InProp1);
+	}
 };
 
 /**

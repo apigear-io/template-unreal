@@ -56,14 +56,26 @@ class {{$API_MACRO}} U{{$Class}}Signals : public UObject
 public:
 {{- range $i, $e := .Signals }}
 	{{- if $i }}{{nl}}{{ end }}
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "{{$Category}}|Signals", DisplayName = "{{Camel .Name}} Signal")
+	UPROPERTY(BlueprintAssignable, Category = "{{$Category}}|Signals", DisplayName = "{{Camel .Name}} Signal")
 	F{{$Iface}}{{Camel .Name}}Delegate On{{Camel .Name}}Signal;
+	/// C++ wrapper for BP functions to safely call {{Camel .Name}}Signal.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "{{$Category}}|Signals", DisplayName = "Broadcast {{Camel .Name}} Signal")
+	void Broadcast{{Camel .Name}}Signal({{ueParams "" .Params}})
+	{
+		On{{Camel .Name}}Signal.Broadcast({{ueVars "" .Params}});
+	}
 {{- end }}
 {{- if and (len .Properties) (len .Signals) }}{{ nl }}{{ end }}
 {{- range $i, $e := .Properties }}
 	{{- if $i }}{{nl}}{{ end }}
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "{{$Category}}|Signals", DisplayName = "Property {{Camel .Name}} Changed")
+	UPROPERTY(BlueprintAssignable, Category = "{{$Category}}|Signals", DisplayName = "Property {{Camel .Name}} Changed")
 	F{{$Iface}}{{Camel .Name}}ChangedDelegate On{{Camel .Name}}Changed;
+	/// C++ wrapper for BP functions to safely call On{{Camel .Name}}Changed.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "{{$Category}}|Signals", DisplayName = "Broadcast Property {{Camel .Name}} Changed")
+	void Broadcast{{Camel .Name}}Changed(UPARAM(DisplayName = "{{ueVar "" .}}") {{ueParam "In" .}})
+	{
+		On{{Camel .Name}}Changed.Broadcast({{ueVar "In" .}});
+	}
 {{- end }}
 };
 {{- end}}

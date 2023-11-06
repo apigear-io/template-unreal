@@ -65,59 +65,167 @@ class TBSIMPLE_API UTbSimpleSimpleInterfaceSignals : public UObject
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "SigVoid Signal")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "SigVoid Signal")
 	FTbSimpleSimpleInterfaceSigVoidDelegate OnSigVoidSignal;
+	/// C++ wrapper for BP functions to safely call SigVoidSignal.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast SigVoid Signal")
+	void BroadcastSigVoidSignal()
+	{
+		OnSigVoidSignal.Broadcast();
+	}
 
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "SigBool Signal")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "SigBool Signal")
 	FTbSimpleSimpleInterfaceSigBoolDelegate OnSigBoolSignal;
+	/// C++ wrapper for BP functions to safely call SigBoolSignal.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast SigBool Signal")
+	void BroadcastSigBoolSignal(bool bParamBool)
+	{
+		OnSigBoolSignal.Broadcast(bParamBool);
+	}
 
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "SigInt Signal")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "SigInt Signal")
 	FTbSimpleSimpleInterfaceSigIntDelegate OnSigIntSignal;
+	/// C++ wrapper for BP functions to safely call SigIntSignal.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast SigInt Signal")
+	void BroadcastSigIntSignal(int32 ParamInt)
+	{
+		OnSigIntSignal.Broadcast(ParamInt);
+	}
 
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "SigInt32 Signal")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "SigInt32 Signal")
 	FTbSimpleSimpleInterfaceSigInt32Delegate OnSigInt32Signal;
+	/// C++ wrapper for BP functions to safely call SigInt32Signal.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast SigInt32 Signal")
+	void BroadcastSigInt32Signal(int32 ParamInt32)
+	{
+		OnSigInt32Signal.Broadcast(ParamInt32);
+	}
 
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "SigInt64 Signal")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "SigInt64 Signal")
 	FTbSimpleSimpleInterfaceSigInt64Delegate OnSigInt64Signal;
+	/// C++ wrapper for BP functions to safely call SigInt64Signal.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast SigInt64 Signal")
+	void BroadcastSigInt64Signal(int64 ParamInt64)
+	{
+		OnSigInt64Signal.Broadcast(ParamInt64);
+	}
 
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "SigFloat Signal")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "SigFloat Signal")
 	FTbSimpleSimpleInterfaceSigFloatDelegate OnSigFloatSignal;
+	/// C++ wrapper for BP functions to safely call SigFloatSignal.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast SigFloat Signal")
+	void BroadcastSigFloatSignal(float ParamFloat)
+	{
+		OnSigFloatSignal.Broadcast(ParamFloat);
+	}
 
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "SigFloat32 Signal")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "SigFloat32 Signal")
 	FTbSimpleSimpleInterfaceSigFloat32Delegate OnSigFloat32Signal;
+	/// C++ wrapper for BP functions to safely call SigFloat32Signal.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast SigFloat32 Signal")
+	void BroadcastSigFloat32Signal(float ParamFloa32)
+	{
+		OnSigFloat32Signal.Broadcast(ParamFloa32);
+	}
 
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "SigFloat64 Signal")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "SigFloat64 Signal")
 	FTbSimpleSimpleInterfaceSigFloat64Delegate OnSigFloat64Signal;
+	/// C++ wrapper for BP functions to safely call SigFloat64Signal.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast SigFloat64 Signal")
+	void BroadcastSigFloat64Signal(double ParamFloat64)
+	{
+		OnSigFloat64Signal.Broadcast(ParamFloat64);
+	}
 
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "SigString Signal")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "SigString Signal")
 	FTbSimpleSimpleInterfaceSigStringDelegate OnSigStringSignal;
+	/// C++ wrapper for BP functions to safely call SigStringSignal.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast SigString Signal")
+	void BroadcastSigStringSignal(const FString& ParamString)
+	{
+		OnSigStringSignal.Broadcast(ParamString);
+	}
 
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Property PropBool Changed")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Property PropBool Changed")
 	FTbSimpleSimpleInterfacePropBoolChangedDelegate OnPropBoolChanged;
+	/// C++ wrapper for BP functions to safely call OnPropBoolChanged.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast Property PropBool Changed")
+	void BroadcastPropBoolChanged(UPARAM(DisplayName = "bPropBool") bool bInPropBool)
+	{
+		OnPropBoolChanged.Broadcast(bInPropBool);
+	}
 
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Property PropInt Changed")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Property PropInt Changed")
 	FTbSimpleSimpleInterfacePropIntChangedDelegate OnPropIntChanged;
+	/// C++ wrapper for BP functions to safely call OnPropIntChanged.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast Property PropInt Changed")
+	void BroadcastPropIntChanged(UPARAM(DisplayName = "PropInt") int32 InPropInt)
+	{
+		OnPropIntChanged.Broadcast(InPropInt);
+	}
 
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Property PropInt32 Changed")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Property PropInt32 Changed")
 	FTbSimpleSimpleInterfacePropInt32ChangedDelegate OnPropInt32Changed;
+	/// C++ wrapper for BP functions to safely call OnPropInt32Changed.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast Property PropInt32 Changed")
+	void BroadcastPropInt32Changed(UPARAM(DisplayName = "PropInt32") int32 InPropInt32)
+	{
+		OnPropInt32Changed.Broadcast(InPropInt32);
+	}
 
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Property PropInt64 Changed")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Property PropInt64 Changed")
 	FTbSimpleSimpleInterfacePropInt64ChangedDelegate OnPropInt64Changed;
+	/// C++ wrapper for BP functions to safely call OnPropInt64Changed.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast Property PropInt64 Changed")
+	void BroadcastPropInt64Changed(UPARAM(DisplayName = "PropInt64") int64 InPropInt64)
+	{
+		OnPropInt64Changed.Broadcast(InPropInt64);
+	}
 
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Property PropFloat Changed")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Property PropFloat Changed")
 	FTbSimpleSimpleInterfacePropFloatChangedDelegate OnPropFloatChanged;
+	/// C++ wrapper for BP functions to safely call OnPropFloatChanged.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast Property PropFloat Changed")
+	void BroadcastPropFloatChanged(UPARAM(DisplayName = "PropFloat") float InPropFloat)
+	{
+		OnPropFloatChanged.Broadcast(InPropFloat);
+	}
 
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Property PropFloat32 Changed")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Property PropFloat32 Changed")
 	FTbSimpleSimpleInterfacePropFloat32ChangedDelegate OnPropFloat32Changed;
+	/// C++ wrapper for BP functions to safely call OnPropFloat32Changed.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast Property PropFloat32 Changed")
+	void BroadcastPropFloat32Changed(UPARAM(DisplayName = "PropFloat32") float InPropFloat32)
+	{
+		OnPropFloat32Changed.Broadcast(InPropFloat32);
+	}
 
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Property PropFloat64 Changed")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Property PropFloat64 Changed")
 	FTbSimpleSimpleInterfacePropFloat64ChangedDelegate OnPropFloat64Changed;
+	/// C++ wrapper for BP functions to safely call OnPropFloat64Changed.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast Property PropFloat64 Changed")
+	void BroadcastPropFloat64Changed(UPARAM(DisplayName = "PropFloat64") double InPropFloat64)
+	{
+		OnPropFloat64Changed.Broadcast(InPropFloat64);
+	}
 
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Property PropString Changed")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Property PropString Changed")
 	FTbSimpleSimpleInterfacePropStringChangedDelegate OnPropStringChanged;
+	/// C++ wrapper for BP functions to safely call OnPropStringChanged.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast Property PropString Changed")
+	void BroadcastPropStringChanged(UPARAM(DisplayName = "PropString") const FString& InPropString)
+	{
+		OnPropStringChanged.Broadcast(InPropString);
+	}
 
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Property PropReadOnlyString Changed")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Property PropReadOnlyString Changed")
 	FTbSimpleSimpleInterfacePropReadOnlyStringChangedDelegate OnPropReadOnlyStringChanged;
+	/// C++ wrapper for BP functions to safely call OnPropReadOnlyStringChanged.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast Property PropReadOnlyString Changed")
+	void BroadcastPropReadOnlyStringChanged(UPARAM(DisplayName = "PropReadOnlyString") const FString& InPropReadOnlyString)
+	{
+		OnPropReadOnlyStringChanged.Broadcast(InPropReadOnlyString);
+	}
 };
 
 /**

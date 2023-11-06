@@ -41,11 +41,23 @@ class TBSAME1_API UTbSame1SameEnum1InterfaceSignals : public UObject
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSame1|SameEnum1Interface|Signals", DisplayName = "Sig1 Signal")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame1|SameEnum1Interface|Signals", DisplayName = "Sig1 Signal")
 	FTbSame1SameEnum1InterfaceSig1Delegate OnSig1Signal;
+	/// C++ wrapper for BP functions to safely call Sig1Signal.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1|SameEnum1Interface|Signals", DisplayName = "Broadcast Sig1 Signal")
+	void BroadcastSig1Signal(ETbSame1Enum1 Param1)
+	{
+		OnSig1Signal.Broadcast(Param1);
+	}
 
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSame1|SameEnum1Interface|Signals", DisplayName = "Property Prop1 Changed")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame1|SameEnum1Interface|Signals", DisplayName = "Property Prop1 Changed")
 	FTbSame1SameEnum1InterfaceProp1ChangedDelegate OnProp1Changed;
+	/// C++ wrapper for BP functions to safely call OnProp1Changed.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1|SameEnum1Interface|Signals", DisplayName = "Broadcast Property Prop1 Changed")
+	void BroadcastProp1Changed(UPARAM(DisplayName = "Prop1") ETbSame1Enum1 InProp1)
+	{
+		OnProp1Changed.Broadcast(InProp1);
+	}
 };
 
 /**

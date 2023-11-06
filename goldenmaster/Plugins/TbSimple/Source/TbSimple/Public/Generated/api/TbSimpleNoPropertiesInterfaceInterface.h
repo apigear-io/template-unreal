@@ -42,11 +42,23 @@ class TBSIMPLE_API UTbSimpleNoPropertiesInterfaceSignals : public UObject
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSimple|NoPropertiesInterface|Signals", DisplayName = "SigVoid Signal")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoPropertiesInterface|Signals", DisplayName = "SigVoid Signal")
 	FTbSimpleNoPropertiesInterfaceSigVoidDelegate OnSigVoidSignal;
+	/// C++ wrapper for BP functions to safely call SigVoidSignal.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoPropertiesInterface|Signals", DisplayName = "Broadcast SigVoid Signal")
+	void BroadcastSigVoidSignal()
+	{
+		OnSigVoidSignal.Broadcast();
+	}
 
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSimple|NoPropertiesInterface|Signals", DisplayName = "SigBool Signal")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoPropertiesInterface|Signals", DisplayName = "SigBool Signal")
 	FTbSimpleNoPropertiesInterfaceSigBoolDelegate OnSigBoolSignal;
+	/// C++ wrapper for BP functions to safely call SigBoolSignal.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoPropertiesInterface|Signals", DisplayName = "Broadcast SigBool Signal")
+	void BroadcastSigBoolSignal(bool bParamBool)
+	{
+		OnSigBoolSignal.Broadcast(bParamBool);
+	}
 };
 
 /**

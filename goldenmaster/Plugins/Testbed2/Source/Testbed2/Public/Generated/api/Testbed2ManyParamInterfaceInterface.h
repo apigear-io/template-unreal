@@ -50,29 +50,77 @@ class TESTBED2_API UTestbed2ManyParamInterfaceSignals : public UObject
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Sig1 Signal")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Sig1 Signal")
 	FTestbed2ManyParamInterfaceSig1Delegate OnSig1Signal;
+	/// C++ wrapper for BP functions to safely call Sig1Signal.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Broadcast Sig1 Signal")
+	void BroadcastSig1Signal(int32 Param1)
+	{
+		OnSig1Signal.Broadcast(Param1);
+	}
 
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Sig2 Signal")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Sig2 Signal")
 	FTestbed2ManyParamInterfaceSig2Delegate OnSig2Signal;
+	/// C++ wrapper for BP functions to safely call Sig2Signal.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Broadcast Sig2 Signal")
+	void BroadcastSig2Signal(int32 Param1, int32 Param2)
+	{
+		OnSig2Signal.Broadcast(Param1, Param2);
+	}
 
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Sig3 Signal")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Sig3 Signal")
 	FTestbed2ManyParamInterfaceSig3Delegate OnSig3Signal;
+	/// C++ wrapper for BP functions to safely call Sig3Signal.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Broadcast Sig3 Signal")
+	void BroadcastSig3Signal(int32 Param1, int32 Param2, int32 Param3)
+	{
+		OnSig3Signal.Broadcast(Param1, Param2, Param3);
+	}
 
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Sig4 Signal")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Sig4 Signal")
 	FTestbed2ManyParamInterfaceSig4Delegate OnSig4Signal;
+	/// C++ wrapper for BP functions to safely call Sig4Signal.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Broadcast Sig4 Signal")
+	void BroadcastSig4Signal(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
+	{
+		OnSig4Signal.Broadcast(Param1, Param2, Param3, Param4);
+	}
 
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Property Prop1 Changed")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Property Prop1 Changed")
 	FTestbed2ManyParamInterfaceProp1ChangedDelegate OnProp1Changed;
+	/// C++ wrapper for BP functions to safely call OnProp1Changed.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Broadcast Property Prop1 Changed")
+	void BroadcastProp1Changed(UPARAM(DisplayName = "Prop1") int32 InProp1)
+	{
+		OnProp1Changed.Broadcast(InProp1);
+	}
 
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Property Prop2 Changed")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Property Prop2 Changed")
 	FTestbed2ManyParamInterfaceProp2ChangedDelegate OnProp2Changed;
+	/// C++ wrapper for BP functions to safely call OnProp2Changed.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Broadcast Property Prop2 Changed")
+	void BroadcastProp2Changed(UPARAM(DisplayName = "Prop2") int32 InProp2)
+	{
+		OnProp2Changed.Broadcast(InProp2);
+	}
 
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Property Prop3 Changed")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Property Prop3 Changed")
 	FTestbed2ManyParamInterfaceProp3ChangedDelegate OnProp3Changed;
+	/// C++ wrapper for BP functions to safely call OnProp3Changed.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Broadcast Property Prop3 Changed")
+	void BroadcastProp3Changed(UPARAM(DisplayName = "Prop3") int32 InProp3)
+	{
+		OnProp3Changed.Broadcast(InProp3);
+	}
 
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Property Prop4 Changed")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Property Prop4 Changed")
 	FTestbed2ManyParamInterfaceProp4ChangedDelegate OnProp4Changed;
+	/// C++ wrapper for BP functions to safely call OnProp4Changed.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Broadcast Property Prop4 Changed")
+	void BroadcastProp4Changed(UPARAM(DisplayName = "Prop4") int32 InProp4)
+	{
+		OnProp4Changed.Broadcast(InProp4);
+	}
 };
 
 /**

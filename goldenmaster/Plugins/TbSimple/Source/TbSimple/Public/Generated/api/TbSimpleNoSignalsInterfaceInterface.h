@@ -40,11 +40,23 @@ class TBSIMPLE_API UTbSimpleNoSignalsInterfaceSignals : public UObject
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSimple|NoSignalsInterface|Signals", DisplayName = "Property PropBool Changed")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoSignalsInterface|Signals", DisplayName = "Property PropBool Changed")
 	FTbSimpleNoSignalsInterfacePropBoolChangedDelegate OnPropBoolChanged;
+	/// C++ wrapper for BP functions to safely call OnPropBoolChanged.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoSignalsInterface|Signals", DisplayName = "Broadcast Property PropBool Changed")
+	void BroadcastPropBoolChanged(UPARAM(DisplayName = "bPropBool") bool bInPropBool)
+	{
+		OnPropBoolChanged.Broadcast(bInPropBool);
+	}
 
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSimple|NoSignalsInterface|Signals", DisplayName = "Property PropInt Changed")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoSignalsInterface|Signals", DisplayName = "Property PropInt Changed")
 	FTbSimpleNoSignalsInterfacePropIntChangedDelegate OnPropIntChanged;
+	/// C++ wrapper for BP functions to safely call OnPropIntChanged.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoSignalsInterface|Signals", DisplayName = "Broadcast Property PropInt Changed")
+	void BroadcastPropIntChanged(UPARAM(DisplayName = "PropInt") int32 InPropInt)
+	{
+		OnPropIntChanged.Broadcast(InPropInt);
+	}
 };
 
 /**

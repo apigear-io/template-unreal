@@ -50,29 +50,77 @@ class TESTBED1_API UTestbed1StructArrayInterfaceSignals : public UObject
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "SigBool Signal")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "SigBool Signal")
 	FTestbed1StructArrayInterfaceSigBoolDelegate OnSigBoolSignal;
+	/// C++ wrapper for BP functions to safely call SigBoolSignal.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "Broadcast SigBool Signal")
+	void BroadcastSigBoolSignal(const TArray<FTestbed1StructBool>& ParamBool)
+	{
+		OnSigBoolSignal.Broadcast(ParamBool);
+	}
 
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "SigInt Signal")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "SigInt Signal")
 	FTestbed1StructArrayInterfaceSigIntDelegate OnSigIntSignal;
+	/// C++ wrapper for BP functions to safely call SigIntSignal.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "Broadcast SigInt Signal")
+	void BroadcastSigIntSignal(const TArray<FTestbed1StructInt>& ParamInt)
+	{
+		OnSigIntSignal.Broadcast(ParamInt);
+	}
 
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "SigFloat Signal")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "SigFloat Signal")
 	FTestbed1StructArrayInterfaceSigFloatDelegate OnSigFloatSignal;
+	/// C++ wrapper for BP functions to safely call SigFloatSignal.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "Broadcast SigFloat Signal")
+	void BroadcastSigFloatSignal(const TArray<FTestbed1StructFloat>& ParamFloat)
+	{
+		OnSigFloatSignal.Broadcast(ParamFloat);
+	}
 
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "SigString Signal")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "SigString Signal")
 	FTestbed1StructArrayInterfaceSigStringDelegate OnSigStringSignal;
+	/// C++ wrapper for BP functions to safely call SigStringSignal.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "Broadcast SigString Signal")
+	void BroadcastSigStringSignal(const TArray<FTestbed1StructString>& ParamString)
+	{
+		OnSigStringSignal.Broadcast(ParamString);
+	}
 
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "Property PropBool Changed")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "Property PropBool Changed")
 	FTestbed1StructArrayInterfacePropBoolChangedDelegate OnPropBoolChanged;
+	/// C++ wrapper for BP functions to safely call OnPropBoolChanged.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "Broadcast Property PropBool Changed")
+	void BroadcastPropBoolChanged(UPARAM(DisplayName = "PropBool") const TArray<FTestbed1StructBool>& InPropBool)
+	{
+		OnPropBoolChanged.Broadcast(InPropBool);
+	}
 
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "Property PropInt Changed")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "Property PropInt Changed")
 	FTestbed1StructArrayInterfacePropIntChangedDelegate OnPropIntChanged;
+	/// C++ wrapper for BP functions to safely call OnPropIntChanged.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "Broadcast Property PropInt Changed")
+	void BroadcastPropIntChanged(UPARAM(DisplayName = "PropInt") const TArray<FTestbed1StructInt>& InPropInt)
+	{
+		OnPropIntChanged.Broadcast(InPropInt);
+	}
 
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "Property PropFloat Changed")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "Property PropFloat Changed")
 	FTestbed1StructArrayInterfacePropFloatChangedDelegate OnPropFloatChanged;
+	/// C++ wrapper for BP functions to safely call OnPropFloatChanged.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "Broadcast Property PropFloat Changed")
+	void BroadcastPropFloatChanged(UPARAM(DisplayName = "PropFloat") const TArray<FTestbed1StructFloat>& InPropFloat)
+	{
+		OnPropFloatChanged.Broadcast(InPropFloat);
+	}
 
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "Property PropString Changed")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "Property PropString Changed")
 	FTestbed1StructArrayInterfacePropStringChangedDelegate OnPropStringChanged;
+	/// C++ wrapper for BP functions to safely call OnPropStringChanged.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "Broadcast Property PropString Changed")
+	void BroadcastPropStringChanged(UPARAM(DisplayName = "PropString") const TArray<FTestbed1StructString>& InPropString)
+	{
+		OnPropStringChanged.Broadcast(InPropString);
+	}
 };
 
 /**

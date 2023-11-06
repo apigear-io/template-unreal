@@ -44,17 +44,41 @@ class TBSIMPLE_API UTbSimpleNoOperationsInterfaceSignals : public UObject
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSimple|NoOperationsInterface|Signals", DisplayName = "SigVoid Signal")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoOperationsInterface|Signals", DisplayName = "SigVoid Signal")
 	FTbSimpleNoOperationsInterfaceSigVoidDelegate OnSigVoidSignal;
+	/// C++ wrapper for BP functions to safely call SigVoidSignal.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoOperationsInterface|Signals", DisplayName = "Broadcast SigVoid Signal")
+	void BroadcastSigVoidSignal()
+	{
+		OnSigVoidSignal.Broadcast();
+	}
 
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSimple|NoOperationsInterface|Signals", DisplayName = "SigBool Signal")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoOperationsInterface|Signals", DisplayName = "SigBool Signal")
 	FTbSimpleNoOperationsInterfaceSigBoolDelegate OnSigBoolSignal;
+	/// C++ wrapper for BP functions to safely call SigBoolSignal.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoOperationsInterface|Signals", DisplayName = "Broadcast SigBool Signal")
+	void BroadcastSigBoolSignal(bool bParamBool)
+	{
+		OnSigBoolSignal.Broadcast(bParamBool);
+	}
 
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSimple|NoOperationsInterface|Signals", DisplayName = "Property PropBool Changed")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoOperationsInterface|Signals", DisplayName = "Property PropBool Changed")
 	FTbSimpleNoOperationsInterfacePropBoolChangedDelegate OnPropBoolChanged;
+	/// C++ wrapper for BP functions to safely call OnPropBoolChanged.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoOperationsInterface|Signals", DisplayName = "Broadcast Property PropBool Changed")
+	void BroadcastPropBoolChanged(UPARAM(DisplayName = "bPropBool") bool bInPropBool)
+	{
+		OnPropBoolChanged.Broadcast(bInPropBool);
+	}
 
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "ApiGear|TbSimple|NoOperationsInterface|Signals", DisplayName = "Property PropInt Changed")
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoOperationsInterface|Signals", DisplayName = "Property PropInt Changed")
 	FTbSimpleNoOperationsInterfacePropIntChangedDelegate OnPropIntChanged;
+	/// C++ wrapper for BP functions to safely call OnPropIntChanged.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoOperationsInterface|Signals", DisplayName = "Broadcast Property PropInt Changed")
+	void BroadcastPropIntChanged(UPARAM(DisplayName = "PropInt") int32 InPropInt)
+	{
+		OnPropIntChanged.Broadcast(InPropInt);
+	}
 };
 
 /**
