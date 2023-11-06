@@ -67,7 +67,7 @@ void UTestbed2ManyParamInterfaceOLinkAdapter::setBackendService(TScriptInterface
 	}
 
 	// only set if interface is implemented
-	checkf(InService.GetInterface() != nullptr, TEXT("Cannot set backend service - interface HmiFrontDisplay is not fully implemented"));
+	checkf(InService.GetInterface() != nullptr, TEXT("Cannot set backend service - interface Testbed2ManyParamInterface is not fully implemented"));
 
 	// subscribe to new backend
 	BackendService = InService;

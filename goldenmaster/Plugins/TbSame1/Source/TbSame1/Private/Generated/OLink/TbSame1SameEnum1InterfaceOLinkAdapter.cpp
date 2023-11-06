@@ -61,7 +61,7 @@ void UTbSame1SameEnum1InterfaceOLinkAdapter::setBackendService(TScriptInterface<
 	}
 
 	// only set if interface is implemented
-	checkf(InService.GetInterface() != nullptr, TEXT("Cannot set backend service - interface HmiFrontDisplay is not fully implemented"));
+	checkf(InService.GetInterface() != nullptr, TEXT("Cannot set backend service - interface TbSame1SameEnum1Interface is not fully implemented"));
 
 	// subscribe to new backend
 	BackendService = InService;

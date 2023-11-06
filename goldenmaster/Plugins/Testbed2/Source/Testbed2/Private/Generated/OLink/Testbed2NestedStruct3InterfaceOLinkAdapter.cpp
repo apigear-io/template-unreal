@@ -65,7 +65,7 @@ void UTestbed2NestedStruct3InterfaceOLinkAdapter::setBackendService(TScriptInter
 	}
 
 	// only set if interface is implemented
-	checkf(InService.GetInterface() != nullptr, TEXT("Cannot set backend service - interface HmiFrontDisplay is not fully implemented"));
+	checkf(InService.GetInterface() != nullptr, TEXT("Cannot set backend service - interface Testbed2NestedStruct3Interface is not fully implemented"));
 
 	// subscribe to new backend
 	BackendService = InService;
