@@ -66,6 +66,15 @@ UAbstractTbSame2SameStruct1Interface::UAbstractTbSame2SameStruct1Interface()
 	TbSame2SameStruct1InterfaceSignals = NewObject<UTbSame2SameStruct1InterfaceSignals>();
 }
 
+UTbSame2SameStruct1InterfaceSignals* UAbstractTbSame2SameStruct1Interface::_GetSignals_Implementation()
+{
+	if (!TbSame2SameStruct1InterfaceSignals)
+	{
+		TbSame2SameStruct1InterfaceSignals = NewObject<UTbSame2SameStruct1InterfaceSignals>();
+	}
+	return TbSame2SameStruct1InterfaceSignals;
+}
+
 FTbSame2Struct1 UAbstractTbSame2SameStruct1Interface::GetProp1_Private() const
 {
 	return Execute_GetProp1(this);

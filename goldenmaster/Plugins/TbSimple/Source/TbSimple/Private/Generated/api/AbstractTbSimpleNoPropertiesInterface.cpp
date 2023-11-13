@@ -66,6 +66,15 @@ UAbstractTbSimpleNoPropertiesInterface::UAbstractTbSimpleNoPropertiesInterface()
 	TbSimpleNoPropertiesInterfaceSignals = NewObject<UTbSimpleNoPropertiesInterfaceSignals>();
 }
 
+UTbSimpleNoPropertiesInterfaceSignals* UAbstractTbSimpleNoPropertiesInterface::_GetSignals_Implementation()
+{
+	if (!TbSimpleNoPropertiesInterfaceSignals)
+	{
+		TbSimpleNoPropertiesInterfaceSignals = NewObject<UTbSimpleNoPropertiesInterfaceSignals>();
+	}
+	return TbSimpleNoPropertiesInterfaceSignals;
+}
+
 void UAbstractTbSimpleNoPropertiesInterface::FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))

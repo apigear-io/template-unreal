@@ -38,10 +38,7 @@ public:
 	virtual void Deinitialize() override;
 
 	// signals
-	virtual UTbSame1SameStruct1InterfaceSignals* _GetSignals_Implementation() override
-	{
-		return TbSame1SameStruct1InterfaceSignals;
-	};
+	virtual UTbSame1SameStruct1InterfaceSignals* _GetSignals_Implementation() override;
 
 	// methods
 	virtual void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame1Struct1& Result, const FTbSame1Struct1& Param1) override;

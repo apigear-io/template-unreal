@@ -38,10 +38,7 @@ public:
 	virtual void Deinitialize() override;
 
 	// signals
-	virtual UTbSimpleSimpleArrayInterfaceSignals* _GetSignals_Implementation() override
-	{
-		return TbSimpleSimpleArrayInterfaceSignals;
-	};
+	virtual UTbSimpleSimpleArrayInterfaceSignals* _GetSignals_Implementation() override;
 
 	// methods
 	virtual void FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<bool>& Result, const TArray<bool>& ParamBool) override;

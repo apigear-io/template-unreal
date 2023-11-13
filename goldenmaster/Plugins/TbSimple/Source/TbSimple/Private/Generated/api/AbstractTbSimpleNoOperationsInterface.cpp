@@ -25,6 +25,15 @@ UAbstractTbSimpleNoOperationsInterface::UAbstractTbSimpleNoOperationsInterface()
 	TbSimpleNoOperationsInterfaceSignals = NewObject<UTbSimpleNoOperationsInterfaceSignals>();
 }
 
+UTbSimpleNoOperationsInterfaceSignals* UAbstractTbSimpleNoOperationsInterface::_GetSignals_Implementation()
+{
+	if (!TbSimpleNoOperationsInterfaceSignals)
+	{
+		TbSimpleNoOperationsInterfaceSignals = NewObject<UTbSimpleNoOperationsInterfaceSignals>();
+	}
+	return TbSimpleNoOperationsInterfaceSignals;
+}
+
 bool UAbstractTbSimpleNoOperationsInterface::GetPropBool_Private() const
 {
 	return Execute_GetPropBool(this);

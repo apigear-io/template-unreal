@@ -66,6 +66,15 @@ UAbstractTbSame2SameEnum1Interface::UAbstractTbSame2SameEnum1Interface()
 	TbSame2SameEnum1InterfaceSignals = NewObject<UTbSame2SameEnum1InterfaceSignals>();
 }
 
+UTbSame2SameEnum1InterfaceSignals* UAbstractTbSame2SameEnum1Interface::_GetSignals_Implementation()
+{
+	if (!TbSame2SameEnum1InterfaceSignals)
+	{
+		TbSame2SameEnum1InterfaceSignals = NewObject<UTbSame2SameEnum1InterfaceSignals>();
+	}
+	return TbSame2SameEnum1InterfaceSignals;
+}
+
 ETbSame2Enum1 UAbstractTbSame2SameEnum1Interface::GetProp1_Private() const
 {
 	return Execute_GetProp1(this);

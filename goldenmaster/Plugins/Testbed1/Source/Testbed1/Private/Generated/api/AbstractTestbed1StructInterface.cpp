@@ -66,6 +66,15 @@ UAbstractTestbed1StructInterface::UAbstractTestbed1StructInterface()
 	Testbed1StructInterfaceSignals = NewObject<UTestbed1StructInterfaceSignals>();
 }
 
+UTestbed1StructInterfaceSignals* UAbstractTestbed1StructInterface::_GetSignals_Implementation()
+{
+	if (!Testbed1StructInterfaceSignals)
+	{
+		Testbed1StructInterfaceSignals = NewObject<UTestbed1StructInterfaceSignals>();
+	}
+	return Testbed1StructInterfaceSignals;
+}
+
 FTestbed1StructBool UAbstractTestbed1StructInterface::GetPropBool_Private() const
 {
 	return Execute_GetPropBool(this);

@@ -66,6 +66,15 @@ UAbstractTbEnumEnumInterface::UAbstractTbEnumEnumInterface()
 	TbEnumEnumInterfaceSignals = NewObject<UTbEnumEnumInterfaceSignals>();
 }
 
+UTbEnumEnumInterfaceSignals* UAbstractTbEnumEnumInterface::_GetSignals_Implementation()
+{
+	if (!TbEnumEnumInterfaceSignals)
+	{
+		TbEnumEnumInterfaceSignals = NewObject<UTbEnumEnumInterfaceSignals>();
+	}
+	return TbEnumEnumInterfaceSignals;
+}
+
 ETbEnumEnum0 UAbstractTbEnumEnumInterface::GetProp0_Private() const
 {
 	return Execute_GetProp0(this);

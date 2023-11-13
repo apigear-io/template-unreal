@@ -79,6 +79,18 @@ public:
 {{- end }}
 }
 
+{{- if or (len .Properties) (len .Signals) }}
+{{- nl }}
+U{{$Class}}Signals* {{$abstractclass}}::_GetSignals_Implementation()
+{
+	if (!{{$Iface}}Signals)
+	{
+		{{$Iface}}Signals = NewObject<U{{$Class}}Signals>();
+	}
+	return {{$Class}}Signals;
+}
+{{- end }}
+
 {{- if len .Properties }}{{ nl }}{{ end }}
 {{- range $i, $e := .Properties }}
 {{- if $i }}{{nl}}{{ end }}

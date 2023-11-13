@@ -38,10 +38,7 @@ public:
 	virtual void Deinitialize() override;
 
 	// signals
-	virtual UTestbed2NestedStruct3InterfaceSignals* _GetSignals_Implementation() override
-	{
-		return Testbed2NestedStruct3InterfaceSignals;
-	};
+	virtual UTestbed2NestedStruct3InterfaceSignals* _GetSignals_Implementation() override;
 
 	// methods
 	virtual void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1) override;

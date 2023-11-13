@@ -66,6 +66,15 @@ UAbstractTbSimpleSimpleArrayInterface::UAbstractTbSimpleSimpleArrayInterface()
 	TbSimpleSimpleArrayInterfaceSignals = NewObject<UTbSimpleSimpleArrayInterfaceSignals>();
 }
 
+UTbSimpleSimpleArrayInterfaceSignals* UAbstractTbSimpleSimpleArrayInterface::_GetSignals_Implementation()
+{
+	if (!TbSimpleSimpleArrayInterfaceSignals)
+	{
+		TbSimpleSimpleArrayInterfaceSignals = NewObject<UTbSimpleSimpleArrayInterfaceSignals>();
+	}
+	return TbSimpleSimpleArrayInterfaceSignals;
+}
+
 TArray<bool> UAbstractTbSimpleSimpleArrayInterface::GetPropBool_Private() const
 {
 	return Execute_GetPropBool(this);

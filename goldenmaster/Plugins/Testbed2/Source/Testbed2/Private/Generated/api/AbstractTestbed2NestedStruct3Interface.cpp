@@ -66,6 +66,15 @@ UAbstractTestbed2NestedStruct3Interface::UAbstractTestbed2NestedStruct3Interface
 	Testbed2NestedStruct3InterfaceSignals = NewObject<UTestbed2NestedStruct3InterfaceSignals>();
 }
 
+UTestbed2NestedStruct3InterfaceSignals* UAbstractTestbed2NestedStruct3Interface::_GetSignals_Implementation()
+{
+	if (!Testbed2NestedStruct3InterfaceSignals)
+	{
+		Testbed2NestedStruct3InterfaceSignals = NewObject<UTestbed2NestedStruct3InterfaceSignals>();
+	}
+	return Testbed2NestedStruct3InterfaceSignals;
+}
+
 FTestbed2NestedStruct1 UAbstractTestbed2NestedStruct3Interface::GetProp1_Private() const
 {
 	return Execute_GetProp1(this);

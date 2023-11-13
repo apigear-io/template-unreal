@@ -66,6 +66,15 @@ UAbstractTbSimpleNoSignalsInterface::UAbstractTbSimpleNoSignalsInterface()
 	TbSimpleNoSignalsInterfaceSignals = NewObject<UTbSimpleNoSignalsInterfaceSignals>();
 }
 
+UTbSimpleNoSignalsInterfaceSignals* UAbstractTbSimpleNoSignalsInterface::_GetSignals_Implementation()
+{
+	if (!TbSimpleNoSignalsInterfaceSignals)
+	{
+		TbSimpleNoSignalsInterfaceSignals = NewObject<UTbSimpleNoSignalsInterfaceSignals>();
+	}
+	return TbSimpleNoSignalsInterfaceSignals;
+}
+
 bool UAbstractTbSimpleNoSignalsInterface::GetPropBool_Private() const
 {
 	return Execute_GetPropBool(this);

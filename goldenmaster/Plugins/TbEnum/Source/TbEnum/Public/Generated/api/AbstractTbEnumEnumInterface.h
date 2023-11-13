@@ -38,10 +38,7 @@ public:
 	virtual void Deinitialize() override;
 
 	// signals
-	virtual UTbEnumEnumInterfaceSignals* _GetSignals_Implementation() override
-	{
-		return TbEnumEnumInterfaceSignals;
-	};
+	virtual UTbEnumEnumInterfaceSignals* _GetSignals_Implementation() override;
 
 	// methods
 	virtual void Func0Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum0& Result, ETbEnumEnum0 Param0) override;

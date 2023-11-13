@@ -38,10 +38,7 @@ public:
 	virtual void Deinitialize() override;
 
 	// signals
-	virtual UTestbed2ManyParamInterfaceSignals* _GetSignals_Implementation() override
-	{
-		return Testbed2ManyParamInterfaceSignals;
-	};
+	virtual UTestbed2ManyParamInterfaceSignals* _GetSignals_Implementation() override;
 
 	// methods
 	virtual void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1) override;

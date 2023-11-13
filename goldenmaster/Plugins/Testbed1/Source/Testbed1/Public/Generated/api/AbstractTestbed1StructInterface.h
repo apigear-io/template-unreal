@@ -38,10 +38,7 @@ public:
 	virtual void Deinitialize() override;
 
 	// signals
-	virtual UTestbed1StructInterfaceSignals* _GetSignals_Implementation() override
-	{
-		return Testbed1StructInterfaceSignals;
-	};
+	virtual UTestbed1StructInterfaceSignals* _GetSignals_Implementation() override;
 
 	// methods
 	virtual void FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const FTestbed1StructBool& ParamBool) override;

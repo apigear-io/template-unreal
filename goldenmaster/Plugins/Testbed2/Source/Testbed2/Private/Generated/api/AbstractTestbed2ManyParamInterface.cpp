@@ -66,6 +66,15 @@ UAbstractTestbed2ManyParamInterface::UAbstractTestbed2ManyParamInterface()
 	Testbed2ManyParamInterfaceSignals = NewObject<UTestbed2ManyParamInterfaceSignals>();
 }
 
+UTestbed2ManyParamInterfaceSignals* UAbstractTestbed2ManyParamInterface::_GetSignals_Implementation()
+{
+	if (!Testbed2ManyParamInterfaceSignals)
+	{
+		Testbed2ManyParamInterfaceSignals = NewObject<UTestbed2ManyParamInterfaceSignals>();
+	}
+	return Testbed2ManyParamInterfaceSignals;
+}
+
 int32 UAbstractTestbed2ManyParamInterface::GetProp1_Private() const
 {
 	return Execute_GetProp1(this);

@@ -66,6 +66,15 @@ UAbstractTestbed1StructArrayInterface::UAbstractTestbed1StructArrayInterface()
 	Testbed1StructArrayInterfaceSignals = NewObject<UTestbed1StructArrayInterfaceSignals>();
 }
 
+UTestbed1StructArrayInterfaceSignals* UAbstractTestbed1StructArrayInterface::_GetSignals_Implementation()
+{
+	if (!Testbed1StructArrayInterfaceSignals)
+	{
+		Testbed1StructArrayInterfaceSignals = NewObject<UTestbed1StructArrayInterfaceSignals>();
+	}
+	return Testbed1StructArrayInterfaceSignals;
+}
+
 TArray<FTestbed1StructBool> UAbstractTestbed1StructArrayInterface::GetPropBool_Private() const
 {
 	return Execute_GetPropBool(this);

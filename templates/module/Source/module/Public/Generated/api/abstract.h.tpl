@@ -48,10 +48,7 @@ public:
 {{- if or (len .Properties) (len .Signals) }}
 {{- nl }}
 	// signals
-	virtual U{{$Class}}Signals* _GetSignals_Implementation() override
-	{
-		return {{$Class}}Signals;
-	};
+	virtual U{{$Class}}Signals* _GetSignals_Implementation() override;
 {{- end }}
 
 	// methods

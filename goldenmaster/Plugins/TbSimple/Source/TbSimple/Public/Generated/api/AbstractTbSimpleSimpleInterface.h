@@ -38,10 +38,7 @@ public:
 	virtual void Deinitialize() override;
 
 	// signals
-	virtual UTbSimpleSimpleInterfaceSignals* _GetSignals_Implementation() override
-	{
-		return TbSimpleSimpleInterfaceSignals;
-	};
+	virtual UTbSimpleSimpleInterfaceSignals* _GetSignals_Implementation() override;
 
 	// methods
 	virtual void FuncVoid_Implementation() override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::FuncVoid_Implementation, return;);
