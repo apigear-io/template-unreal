@@ -72,7 +72,7 @@ void UTestbed1StructArrayInterfaceOLinkAdapter::setBackendService(TScriptInterfa
 	// subscribe to new backend
 	BackendService = InService;
 	UTestbed1StructArrayInterfaceSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
-	checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service Testbed1StructArrayInterface"));
+	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service Testbed1StructArrayInterface"));
 	// connect property changed signals or simple events
 	BackendSignals->OnPropBoolChanged.AddDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnPropBoolChanged);
 	BackendSignals->OnPropIntChanged.AddDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnPropIntChanged);

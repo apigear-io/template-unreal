@@ -72,7 +72,7 @@ void UTestbed2ManyParamInterfaceOLinkAdapter::setBackendService(TScriptInterface
 	// subscribe to new backend
 	BackendService = InService;
 	UTestbed2ManyParamInterfaceSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
-	checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service Testbed2ManyParamInterface"));
+	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service Testbed2ManyParamInterface"));
 	// connect property changed signals or simple events
 	BackendSignals->OnProp1Changed.AddDynamic(this, &UTestbed2ManyParamInterfaceOLinkAdapter::OnProp1Changed);
 	BackendSignals->OnProp2Changed.AddDynamic(this, &UTestbed2ManyParamInterfaceOLinkAdapter::OnProp2Changed);

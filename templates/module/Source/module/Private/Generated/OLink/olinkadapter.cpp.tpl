@@ -73,7 +73,7 @@ void {{$Class}}::setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{Cam
 	BackendService = InService;
 {{- if or (len .Interface.Properties) (.Interface.Signals) }}
 	U{{$Iface}}Signals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
-	checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service {{$Iface}}"));
+	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service {{$Iface}}"));
 {{- end }}
 	// connect property changed signals or simple events
 {{- range .Interface.Properties }}
