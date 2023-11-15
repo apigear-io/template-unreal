@@ -10,34 +10,60 @@ on:
       - '!docs/**'
 
 env:
-  GITHUB_AUTH_TOKEN: ${{ secrets.WOLFGANG_REPO_PACKAGE_READ }}
   GOPRIVATE: "github.com/apigear-io/*"
   GH_ACCESS_TOKEN: ${{ secrets.APIGEAR_REPOS }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   go_version: "1.19.x"
   
 jobs:
-  generate:
-    runs-on: ubuntu-latest
+  # generate:
+  #   runs-on: ubuntu-latest
 
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #       with:
+  #         submodules: recursive
+  #     - uses: actions/setup-go@v3
+  #       with:
+  #         go-version: ${{env.go_version}}
+
+  #     - uses: actions/cache@v3
+  #       with:
+  #         path: |
+  #           ~/go/pkg/mod
+  #           ~/.cache/go-build
+  #         key: ${{ runner.os }}-go-${{ matrix.go-version }}-${{ hashFiles('**/go.sum') }}
+  #         restore-keys: ${{ runner.os }}-go-${{ matrix.go-version }}-
+
+  #     - run: go run main.go install
+  #     - run: go run main.go diff
+  #     - name: Install clang-format-12
+  #       run: sudo apt-get install --no-install-recommends -y clang-format-12 && sudo mv /usr/bin/clang-format-12 /usr/bin/clang-format
+  #     - run: go run main.go testStyle
+
+  test-compile:
+    runs-on: UE-Docker-Runner
+    # needs: generate
+    strategy:
+      matrix:
+        UE_VERSION:
+          # - dev-slim-4.27
+          - dev-slim-5.2.1
+    container:
+      image: ghcr.io/epicgames/unreal-engine:${{ matrix.UE_VERSION }}
+      credentials:
+          username: ${{ github.actor }}
+          password: ${{ secrets.WOLFGANG_READ_PACKAGES }}
+      volumes:
+        - ${{ github.workspace }}:/project
     steps:
-      - uses: actions/checkout@v3
-        with:
-          submodules: recursive
-      - uses: actions/setup-go@v3
-        with:
-          go-version: ${{env.go_version}}
-
-      - uses: actions/cache@v3
-        with:
-          path: |
-            ~/go/pkg/mod
-            ~/.cache/go-build
-          key: ${{ runner.os }}-go-${{ matrix.go-version }}-${{ hashFiles('**/go.sum') }}
-          restore-keys: ${{ runner.os }}-go-${{ matrix.go-version }}-
-
-      - run: go run main.go install
-      - run: go run main.go diff
-      - name: Install clang-format-12
-        run: sudo apt-get install --no-install-recommends -y clang-format-12 && sudo mv /usr/bin/clang-format-12 /usr/bin/clang-format
-      - run: go run main.go testStyle
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: test
+        run: |
+          pwd
+          ls -laHR /home/
+      - name: build plugins
+        run: |
+          export PATH=$PATH:/home/ue4/UnrealEngine/Engine/Build/BatchFiles
+          bash goldenmaster/buildPlugins.sh
