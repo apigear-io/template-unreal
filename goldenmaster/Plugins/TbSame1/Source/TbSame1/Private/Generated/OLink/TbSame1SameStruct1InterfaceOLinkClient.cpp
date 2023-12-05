@@ -66,6 +66,11 @@ void UTbSame1SameStruct1InterfaceOLinkClient::Initialize(FSubsystemCollectionBas
 {
 	Super::Initialize(Collection);
 
+	m_sink->setOnInitCallback([this]()
+		{ _SubscriptionStatusChanged.Broadcast(true); });
+	m_sink->setOnReleaseCallback([this]()
+		{ _SubscriptionStatusChanged.Broadcast(false); });
+
 	FUnrealOLinkSink::FPropertyChangedFunc PropertyChangedFunc = [this](const nlohmann::json& props)
 	{
 		this->applyState(props);
@@ -99,6 +104,8 @@ void UTbSame1SameStruct1InterfaceOLinkClient::Deinitialize()
 	// tell the sink that we are gone and should not try to be invoked
 	m_sink->resetOnPropertyChangedCallback();
 	m_sink->resetOnSignalEmittedCallback();
+	m_sink->resetOnInitCallback();
+	m_sink->resetOnReleaseCallback();
 
 	if (Connection.GetObject())
 	{
@@ -193,6 +200,11 @@ FTbSame1Struct1 UTbSame1SameStruct1InterfaceOLinkClient::Func1_Implementation(co
 		});
 
 	return Promise.GetFuture().Get();
+}
+
+bool UTbSame1SameStruct1InterfaceOLinkClient::_IsSubscribed() const
+{
+	return m_sink->IsReady();
 }
 
 void UTbSame1SameStruct1InterfaceOLinkClient::applyState(const nlohmann::json& fields)

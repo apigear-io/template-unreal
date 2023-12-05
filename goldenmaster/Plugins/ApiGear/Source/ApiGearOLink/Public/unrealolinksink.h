@@ -24,11 +24,20 @@ public:
 	/** A type of function for handling signal message*/
 	using FSignalEmittedFunc = TFunction<void(const std::string& signalName, const nlohmann::json& args)>;
 
+	/** Type of function for initialized from source and ready to use callback */
+	using FInitializedFromSourceCallback = TFunction<void()>;
+	/** Type of function for unlinked from source callback */
+	using FSourceConnectionReleasedCallback = TFunction<void()>;
+
 	// set callbacks
+	void setOnInitCallback(FInitializedFromSourceCallback func);
+	void setOnReleaseCallback(FSourceConnectionReleasedCallback func);
 	void setOnPropertyChangedCallback(FPropertyChangedFunc func);
 	void setOnSignalEmittedCallback(FSignalEmittedFunc func);
 
 	// reset callbacks
+	void resetOnInitCallback();
+	void resetOnReleaseCallback();
 	void resetOnPropertyChangedCallback();
 	void resetOnSignalEmittedCallback();
 
@@ -44,4 +53,10 @@ private:
 
 	// holds function which will be called on emitted signals
 	FSignalEmittedFunc SignalEmittedFunc;
+
+	// Stores callback executed when sink is linked.
+	FInitializedFromSourceCallback OnInitCallback;
+
+	// Stores callback executed when sink is unlinked.
+	FSourceConnectionReleasedCallback OnReleaseCallback;
 };

@@ -2,7 +2,6 @@
 
 #include "UObject/Interface.h"
 #include "CoreMinimal.h"
-#include "Containers/Ticker.h"
 #include "UObject/NoExportTypes.h"
 #include "ApiGearConnection.generated.h"
 
@@ -19,8 +18,18 @@ enum class EApiGearConnectionState : uint8
 	Connected UMETA(Displayname = "Connected")
 };
 
+///  Used when Network Layer Connection changes its state to connected(true) or any other connection state (false).
 DECLARE_MULTICAST_DELEGATE_OneParam(FApiGearConnectionIsConnectedDelegate, bool);
+///  Used when Network Layer Connection changes its state.
 DECLARE_MULTICAST_DELEGATE_OneParam(FApiGearConnectionStateChangedDelegate, EApiGearConnectionState);
+/**
+ * @brief Used when the interface client changes its subscription status:
+ * either is plugged in the network and ready to use with protocol of your choice (true)
+ * or it won't be able to properly communicate with server side (false).
+ * An established network connection (ConnectionIsConnectedDelegate with true parameter) is often necessary, but not sufficient (depending on your setup and used protocol)
+ * for the Api client implementation to be used.
+ */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FApiGearRemoteApiSubscriptionStatusChangedDelegate, bool, IsSubscribed);
 
 /** 
  * @brief An interface for all connections meant to be used by ApiGear

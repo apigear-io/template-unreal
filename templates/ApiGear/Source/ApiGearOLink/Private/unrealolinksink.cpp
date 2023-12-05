@@ -34,6 +34,11 @@ void FUnrealOLinkSink::olinkOnPropertyChanged(const std::string& propertyId, con
 void FUnrealOLinkSink::olinkOnInit(const std::string& objectId, const nlohmann::json& props, ApiGear::ObjectLink::IClientNode* node)
 {
 	m_node = node;
+	if (OnInitCallback)
+	{
+		OnInitCallback();
+	}
+
 	if (PropertyChangedFunc)
 	{
 		PropertyChangedFunc(props);
@@ -42,6 +47,10 @@ void FUnrealOLinkSink::olinkOnInit(const std::string& objectId, const nlohmann::
 
 void FUnrealOLinkSink::olinkOnRelease()
 {
+	if (OnReleaseCallback)
+	{
+		OnReleaseCallback();
+	}
 	m_node = nullptr;
 }
 
@@ -55,7 +64,27 @@ void FUnrealOLinkSink::setOnSignalEmittedCallback(FSignalEmittedFunc func)
 	SignalEmittedFunc = func;
 }
 
+void FUnrealOLinkSink::setOnInitCallback(FInitializedFromSourceCallback func)
+{
+	OnInitCallback = func;
+}
+
+void FUnrealOLinkSink::setOnReleaseCallback(FSourceConnectionReleasedCallback func)
+{
+	OnReleaseCallback = func;
+}
+
 // reset callbacks
+void FUnrealOLinkSink::resetOnInitCallback()
+{
+	OnInitCallback = nullptr;
+}
+
+void FUnrealOLinkSink::resetOnReleaseCallback()
+{
+	OnReleaseCallback = nullptr;
+}
+
 void FUnrealOLinkSink::resetOnPropertyChangedCallback()
 {
 	PropertyChangedFunc = nullptr;

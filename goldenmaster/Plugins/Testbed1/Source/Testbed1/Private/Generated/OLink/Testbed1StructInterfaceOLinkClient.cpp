@@ -69,6 +69,11 @@ void UTestbed1StructInterfaceOLinkClient::Initialize(FSubsystemCollectionBase& C
 {
 	Super::Initialize(Collection);
 
+	m_sink->setOnInitCallback([this]()
+		{ _SubscriptionStatusChanged.Broadcast(true); });
+	m_sink->setOnReleaseCallback([this]()
+		{ _SubscriptionStatusChanged.Broadcast(false); });
+
 	FUnrealOLinkSink::FPropertyChangedFunc PropertyChangedFunc = [this](const nlohmann::json& props)
 	{
 		this->applyState(props);
@@ -102,6 +107,8 @@ void UTestbed1StructInterfaceOLinkClient::Deinitialize()
 	// tell the sink that we are gone and should not try to be invoked
 	m_sink->resetOnPropertyChangedCallback();
 	m_sink->resetOnSignalEmittedCallback();
+	m_sink->resetOnInitCallback();
+	m_sink->resetOnReleaseCallback();
 
 	if (Connection.GetObject())
 	{
@@ -376,6 +383,11 @@ FTestbed1StructString UTestbed1StructInterfaceOLinkClient::FuncString_Implementa
 		});
 
 	return Promise.GetFuture().Get();
+}
+
+bool UTestbed1StructInterfaceOLinkClient::_IsSubscribed() const
+{
+	return m_sink->IsReady();
 }
 
 void UTestbed1StructInterfaceOLinkClient::applyState(const nlohmann::json& fields)

@@ -69,6 +69,11 @@ void UTestbed2ManyParamInterfaceOLinkClient::Initialize(FSubsystemCollectionBase
 {
 	Super::Initialize(Collection);
 
+	m_sink->setOnInitCallback([this]()
+		{ _SubscriptionStatusChanged.Broadcast(true); });
+	m_sink->setOnReleaseCallback([this]()
+		{ _SubscriptionStatusChanged.Broadcast(false); });
+
 	FUnrealOLinkSink::FPropertyChangedFunc PropertyChangedFunc = [this](const nlohmann::json& props)
 	{
 		this->applyState(props);
@@ -102,6 +107,8 @@ void UTestbed2ManyParamInterfaceOLinkClient::Deinitialize()
 	// tell the sink that we are gone and should not try to be invoked
 	m_sink->resetOnPropertyChangedCallback();
 	m_sink->resetOnSignalEmittedCallback();
+	m_sink->resetOnInitCallback();
+	m_sink->resetOnReleaseCallback();
 
 	if (Connection.GetObject())
 	{
@@ -376,6 +383,11 @@ int32 UTestbed2ManyParamInterfaceOLinkClient::Func4_Implementation(int32 Param1,
 		});
 
 	return Promise.GetFuture().Get();
+}
+
+bool UTestbed2ManyParamInterfaceOLinkClient::_IsSubscribed() const
+{
+	return m_sink->IsReady();
 }
 
 void UTestbed2ManyParamInterfaceOLinkClient::applyState(const nlohmann::json& fields)

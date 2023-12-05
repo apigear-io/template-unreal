@@ -73,6 +73,11 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::Initialize(FSubsystemCollectionBa
 {
 	Super::Initialize(Collection);
 
+	m_sink->setOnInitCallback([this]()
+		{ _SubscriptionStatusChanged.Broadcast(true); });
+	m_sink->setOnReleaseCallback([this]()
+		{ _SubscriptionStatusChanged.Broadcast(false); });
+
 	FUnrealOLinkSink::FPropertyChangedFunc PropertyChangedFunc = [this](const nlohmann::json& props)
 	{
 		this->applyState(props);
@@ -106,6 +111,8 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::Deinitialize()
 	// tell the sink that we are gone and should not try to be invoked
 	m_sink->resetOnPropertyChangedCallback();
 	m_sink->resetOnSignalEmittedCallback();
+	m_sink->resetOnInitCallback();
+	m_sink->resetOnReleaseCallback();
 
 	if (Connection.GetObject())
 	{
@@ -620,6 +627,11 @@ TArray<FString> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncString_Implementat
 		});
 
 	return Promise.GetFuture().Get();
+}
+
+bool UTbSimpleSimpleArrayInterfaceOLinkClient::_IsSubscribed() const
+{
+	return m_sink->IsReady();
 }
 
 void UTbSimpleSimpleArrayInterfaceOLinkClient::applyState(const nlohmann::json& fields)

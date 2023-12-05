@@ -21,6 +21,7 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
 THIRD_PARTY_INCLUDES_END
 #include "unrealolinksink.h"
+#include "ApiGearConnection.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Runtime/Launch/Resources/Version.h"
 #if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
@@ -62,6 +63,20 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoSignalsInterface")
 	void UseConnection(TScriptInterface<class IApiGearConnection> InConnection);
+
+	/**
+	 * Used when the interface client changes subscription status:
+	 * either is linked(ready to use) with server side (true) or it is in unlinked state (false).
+	 */
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoSignalsInterface|Remote", DisplayName = "Subscription Status Changed")
+	FApiGearRemoteApiSubscriptionStatusChangedDelegate _SubscriptionStatusChanged;
+
+	/**
+	 * Informs about the subscription state of the interface client.
+	 * @return true if the client is subscribed (plugged in the network) and ready to send and receive messages or false if the server cannot be reached.
+	 */
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoSignalsInterface|Remote")
+	bool _IsSubscribed() const;
 
 private:
 	void applyState(const nlohmann::json& fields);
