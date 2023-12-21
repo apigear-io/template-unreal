@@ -89,7 +89,7 @@ exit /b 0
 @REM build UE plugin
 :buildUEplugin
 (
-	"%RunUAT_path%" BuildPlugin -verbose -Rocket -Plugin=%~1 -TargetPlatforms=Win64 -StrictIncludes -Package=%~2
+	"%RunUAT_path%" BuildPlugin -verbose -Rocket -Plugin=%1 -TargetPlatforms=Win64 -StrictIncludes -Package=%2
 	set buildresult=!ERRORLEVEL!
 )
 exit /b %ERRORLEVEL%
