@@ -11,6 +11,7 @@ THIRD_PARTY_INCLUDES_START
 THIRD_PARTY_INCLUDES_END
 #include "OLinkHostConnection.h"
 #include "IWebSocketServer.h"
+#include "ApiGearTicker.h"
 
 class INetworkingWebSocket;
 
@@ -63,13 +64,8 @@ private:
 	// olink registry stored here to hand it olink adapter classes
 	TSharedPtr<ApiGear::ObjectLink::RemoteRegistry> Registry;
 
-#if (ENGINE_MAJOR_VERSION >= 5)
 	/// @brief delegate which is connected to the tick function
-	FTSTicker::FDelegateHandle TickerHandle;
-#else
-	/// @brief delegate which is connected to the tick function
-	FDelegateHandle TickerHandle;
-#endif
+	ApiGear::FDelegateHandle TickerHandle;
 
 	/// @brief the port OLink server listen on
 	uint32 Port;

@@ -75,11 +75,7 @@ bool OLinkHostPrivate::Start(uint32 InPort)
 		return false;
 	}
 
-#if (ENGINE_MAJOR_VERSION >= 5)
-	TickerHandle = FTSTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateRaw(this, &OLinkHostPrivate::Tick));
-#else
-	TickerHandle = FTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateRaw(this, &OLinkHostPrivate::Tick));
-#endif
+	TickerHandle = ApiGearTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateRaw(this, &OLinkHostPrivate::Tick));
 	return true;
 }
 
@@ -87,12 +83,7 @@ void OLinkHostPrivate::Stop()
 {
 	if (TickerHandle.IsValid())
 	{
-#if (ENGINE_MAJOR_VERSION >= 5)
-		FTSTicker::GetCoreTicker().RemoveTicker(TickerHandle);
-#else
-		FTicker::GetCoreTicker().RemoveTicker(TickerHandle);
-#endif
-
+		ApiGearTicker::GetCoreTicker().RemoveTicker(TickerHandle);
 		TickerHandle.Reset();
 	}
 	if (Server)

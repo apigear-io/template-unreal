@@ -2,18 +2,6 @@
 
 DEFINE_LOG_CATEGORY(LogApiGearConnection);
 
-#if (ENGINE_MAJOR_VERSION >= 5)
-FTSTicker& GetCoreTicker()
-{
-	return FTSTicker::GetCoreTicker();
-}
-#else
-FTicker& GetCoreTicker()
-{
-	return FTicker::GetCoreTicker();
-}
-#endif
-
 UAbstractApiGearConnection::UAbstractApiGearConnection(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 	, bIsAutoReconnectEnabled(true)
@@ -37,7 +25,7 @@ void UAbstractApiGearConnection::OnConnected()
 	SetConnectionState(EApiGearConnectionState::Connected);
 
 	// disable reconnect ticker
-	GetCoreTicker().RemoveTicker(RetryTickerHandle);
+	ApiGearTicker::GetCoreTicker().RemoveTicker(RetryTickerHandle);
 
 	OnConnected_Implementation();
 }
@@ -50,7 +38,7 @@ void UAbstractApiGearConnection::OnDisconnected(bool bReconnect)
 
 	if (bIsAutoReconnectEnabled && bReconnect && !bStopReconnectingRequested)
 	{
-		RetryTickerHandle = GetCoreTicker().AddTicker(RetryTickerDelegate, 1.0f);
+		RetryTickerHandle = ApiGearTicker::GetCoreTicker().AddTicker(RetryTickerDelegate, 1.0f);
 	}
 
 	if (bStopReconnectingRequested)
@@ -85,7 +73,7 @@ void UAbstractApiGearConnection::StopReconnecting()
 {
 	bStopReconnectingRequested = true;
 	// disable reconnect ticker
-	GetCoreTicker().RemoveTicker(RetryTickerHandle);
+	ApiGearTicker::GetCoreTicker().RemoveTicker(RetryTickerHandle);
 }
 
 void UAbstractApiGearConnection::SetAutoReconnectEnabled(bool enabled)
@@ -93,7 +81,7 @@ void UAbstractApiGearConnection::SetAutoReconnectEnabled(bool enabled)
 	if (bIsAutoReconnectEnabled == true && enabled == false)
 	{
 		// disable reconnect ticker
-		GetCoreTicker().RemoveTicker(RetryTickerHandle);
+		ApiGearTicker::GetCoreTicker().RemoveTicker(RetryTickerHandle);
 	}
 	bIsAutoReconnectEnabled = enabled;
 }

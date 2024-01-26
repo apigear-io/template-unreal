@@ -1,11 +1,13 @@
 #pragma once
 
 #include "ApiGearConnection.h"
+#include "ApiGearTicker.h"
 #include "CoreMinimal.h"
 #include "Containers/Ticker.h"
 #include "UObject/NoExportTypes.h"
 #include "Runtime/Launch/Resources/Version.h"
 #include "AbstractApiGearConnection.generated.h"
+
 
 /**
  * @brief Abstract base for IApiGearConnection implementation
@@ -54,11 +56,8 @@ private:
 	bool bIsAutoReconnectEnabled;
 	bool bStopReconnectingRequested;
 
-#if (ENGINE_MAJOR_VERSION >= 5)
-	FTSTicker::FDelegateHandle RetryTickerHandle;
-#else
-	FDelegateHandle RetryTickerHandle;
-#endif
+	ApiGear::FDelegateHandle RetryTickerHandle;
+
 	FTickerDelegate RetryTickerDelegate;
 
 	EApiGearConnectionState ConnectionState;
