@@ -175,6 +175,10 @@ features:
             target: "Source/ApiGear/Private/AbstractApiGearConnection.cpp"
             force: true
             raw: true
+          - source: "ApiGear/Source/ApiGear/Public/ApiGearTicker.h"
+            target: "Source/ApiGear/Public/ApiGearTicker.h"
+            force: true
+            raw: true
           - source: "ApiGear/Source/ApiGear/Public/ApiGearLogCategories.h"
             target: "Source/ApiGear/Public/ApiGearLogCategories.h"
             force: true
