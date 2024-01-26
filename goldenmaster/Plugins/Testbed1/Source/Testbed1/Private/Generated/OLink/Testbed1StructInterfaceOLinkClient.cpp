@@ -35,15 +35,20 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
 #include "olink/iobjectsink.h"
 THIRD_PARTY_INCLUDES_END
+#include "HAL/CriticalSection.h"
 
 /**
    \brief data structure to hold the last sent property values
 */
 struct Testbed1StructInterfacePropertiesData
 {
+	FCriticalSection PropBoolMutex;
 	FTestbed1StructBool PropBool{FTestbed1StructBool()};
+	FCriticalSection PropIntMutex;
 	FTestbed1StructInt PropInt{FTestbed1StructInt()};
+	FCriticalSection PropFloatMutex;
 	FTestbed1StructFloat PropFloat{FTestbed1StructFloat()};
+	FCriticalSection PropStringMutex;
 	FTestbed1StructString PropString{FTestbed1StructString()};
 };
 DEFINE_LOG_CATEGORY(LogTestbed1StructInterfaceOLinkClient);
@@ -165,12 +170,16 @@ void UTestbed1StructInterfaceOLinkClient::SetPropBool_Implementation(const FTest
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
-	if (_SentData->PropBool == InPropBool)
 	{
-		return;
-	}
+		FScopeLock Lock(&(_SentData->PropBoolMutex));
+		if (_SentData->PropBool == InPropBool)
+		{
+			return;
+		}
+	}	
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propBool");
 	m_sink->GetNode()->setRemoteProperty(memberId, InPropBool);
+	FScopeLock Lock(&(_SentData->PropBoolMutex));	
 	_SentData->PropBool = InPropBool;
 }
 
@@ -194,12 +203,16 @@ void UTestbed1StructInterfaceOLinkClient::SetPropInt_Implementation(const FTestb
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
-	if (_SentData->PropInt == InPropInt)
 	{
-		return;
-	}
+		FScopeLock Lock(&(_SentData->PropIntMutex));
+		if (_SentData->PropInt == InPropInt)
+		{
+			return;
+		}
+	}	
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propInt");
 	m_sink->GetNode()->setRemoteProperty(memberId, InPropInt);
+	FScopeLock Lock(&(_SentData->PropIntMutex));	
 	_SentData->PropInt = InPropInt;
 }
 
@@ -223,12 +236,16 @@ void UTestbed1StructInterfaceOLinkClient::SetPropFloat_Implementation(const FTes
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
-	if (_SentData->PropFloat == InPropFloat)
 	{
-		return;
-	}
+		FScopeLock Lock(&(_SentData->PropFloatMutex));
+		if (_SentData->PropFloat == InPropFloat)
+		{
+			return;
+		}
+	}	
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propFloat");
 	m_sink->GetNode()->setRemoteProperty(memberId, InPropFloat);
+	FScopeLock Lock(&(_SentData->PropFloatMutex));	
 	_SentData->PropFloat = InPropFloat;
 }
 
@@ -252,12 +269,16 @@ void UTestbed1StructInterfaceOLinkClient::SetPropString_Implementation(const FTe
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
-	if (_SentData->PropString == InPropString)
 	{
-		return;
-	}
+		FScopeLock Lock(&(_SentData->PropStringMutex));
+		if (_SentData->PropString == InPropString)
+		{
+			return;
+		}
+	}	
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propString");
 	m_sink->GetNode()->setRemoteProperty(memberId, InPropString);
+	FScopeLock Lock(&(_SentData->PropStringMutex));	
 	_SentData->PropString = InPropString;
 }
 

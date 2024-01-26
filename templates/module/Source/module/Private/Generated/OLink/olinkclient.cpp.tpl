@@ -31,6 +31,21 @@ THIRD_PARTY_INCLUDES_START
 THIRD_PARTY_INCLUDES_END
 
 {{- if len .Interface.Properties }}
+    {{- $shouldIncludeAtomic := 0 -}}
+    {{- $shouldIncludeMutex := 0 -}}
+{{- range $i, $e := .Interface.Properties }}
+	{{- if ( ueIsStdSimpleType . ) }}
+	{{- $shouldIncludeAtomic = 1}}
+	{{- else}}
+	{{- $shouldIncludeMutex = 1}}
+	{{- end}}
+{{- end}}
+{{- if (eq $shouldIncludeAtomic  1) }}
+#include <atomic>
+{{- end}}
+{{- if (eq $shouldIncludeMutex 1) }}
+#include "HAL/CriticalSection.h"
+{{- end}}
 
 /**
    \brief data structure to hold the last sent property values
@@ -38,7 +53,12 @@ THIRD_PARTY_INCLUDES_END
 struct {{$Iface}}PropertiesData
 {
 {{- range $i, $e := .Interface.Properties }}
+	{{- if ( ueIsStdSimpleType . ) }}
+	std::atomic<{{ueReturn "" .}}> {{ueVar "" .}}{ {{- ueDefault "" . -}} };
+	{{- else }}
+	FCriticalSection {{ueVar "" .}}Mutex;
 	{{ueReturn "" .}} {{ueVar "" .}}{ {{- ueDefault "" . -}} };
+	{{- end }}
 {{- end }}
 };
 {{- end }}
@@ -171,12 +191,25 @@ void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+{{- if not ( ueIsStdSimpleType . )}}
+	{
+		FScopeLock Lock(&(_SentData->{{ueVar "" .}}Mutex));
+		if (_SentData->{{ueVar "" .}} == {{ueVar "In" .}})
+		{
+			return;
+		}
+	}
+{{- else}}
 	if (_SentData->{{ueVar "" .}} == {{ueVar "In" .}})
 	{
 		return;
 	}
+{{- end }}	
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "{{.Name}}");
 	m_sink->GetNode()->setRemoteProperty(memberId, {{ueVar "In" .}});
+{{- if not ( ueIsStdSimpleType . ) }}
+	FScopeLock Lock(&(_SentData->{{ueVar "" .}}Mutex));
+{{- end }}	
 	_SentData->{{ueVar "" .}} = {{ueVar "In" .}};
 }
 {{- end }}

@@ -35,19 +35,28 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
 #include "olink/iobjectsink.h"
 THIRD_PARTY_INCLUDES_END
+#include "HAL/CriticalSection.h"
 
 /**
    \brief data structure to hold the last sent property values
 */
 struct TbSimpleSimpleArrayInterfacePropertiesData
 {
+	FCriticalSection PropBoolMutex;
 	TArray<bool> PropBool{TArray<bool>()};
+	FCriticalSection PropIntMutex;
 	TArray<int32> PropInt{TArray<int32>()};
+	FCriticalSection PropInt32Mutex;
 	TArray<int32> PropInt32{TArray<int32>()};
+	FCriticalSection PropInt64Mutex;
 	TArray<int64> PropInt64{TArray<int64>()};
+	FCriticalSection PropFloatMutex;
 	TArray<float> PropFloat{TArray<float>()};
+	FCriticalSection PropFloat32Mutex;
 	TArray<float> PropFloat32{TArray<float>()};
+	FCriticalSection PropFloat64Mutex;
 	TArray<double> PropFloat64{TArray<double>()};
+	FCriticalSection PropStringMutex;
 	TArray<FString> PropString{TArray<FString>()};
 };
 DEFINE_LOG_CATEGORY(LogTbSimpleSimpleArrayInterfaceOLinkClient);
@@ -169,12 +178,16 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropBool_Implementation(const 
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
-	if (_SentData->PropBool == InPropBool)
 	{
-		return;
-	}
+		FScopeLock Lock(&(_SentData->PropBoolMutex));
+		if (_SentData->PropBool == InPropBool)
+		{
+			return;
+		}
+	}	
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propBool");
 	m_sink->GetNode()->setRemoteProperty(memberId, InPropBool);
+	FScopeLock Lock(&(_SentData->PropBoolMutex));	
 	_SentData->PropBool = InPropBool;
 }
 
@@ -198,12 +211,16 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropInt_Implementation(const T
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
-	if (_SentData->PropInt == InPropInt)
 	{
-		return;
-	}
+		FScopeLock Lock(&(_SentData->PropIntMutex));
+		if (_SentData->PropInt == InPropInt)
+		{
+			return;
+		}
+	}	
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propInt");
 	m_sink->GetNode()->setRemoteProperty(memberId, InPropInt);
+	FScopeLock Lock(&(_SentData->PropIntMutex));	
 	_SentData->PropInt = InPropInt;
 }
 
@@ -227,12 +244,16 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropInt32_Implementation(const
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
-	if (_SentData->PropInt32 == InPropInt32)
 	{
-		return;
-	}
+		FScopeLock Lock(&(_SentData->PropInt32Mutex));
+		if (_SentData->PropInt32 == InPropInt32)
+		{
+			return;
+		}
+	}	
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propInt32");
 	m_sink->GetNode()->setRemoteProperty(memberId, InPropInt32);
+	FScopeLock Lock(&(_SentData->PropInt32Mutex));	
 	_SentData->PropInt32 = InPropInt32;
 }
 
@@ -256,12 +277,16 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropInt64_Implementation(const
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
-	if (_SentData->PropInt64 == InPropInt64)
 	{
-		return;
-	}
+		FScopeLock Lock(&(_SentData->PropInt64Mutex));
+		if (_SentData->PropInt64 == InPropInt64)
+		{
+			return;
+		}
+	}	
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propInt64");
 	m_sink->GetNode()->setRemoteProperty(memberId, InPropInt64);
+	FScopeLock Lock(&(_SentData->PropInt64Mutex));	
 	_SentData->PropInt64 = InPropInt64;
 }
 
@@ -285,12 +310,16 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropFloat_Implementation(const
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
-	if (_SentData->PropFloat == InPropFloat)
 	{
-		return;
-	}
+		FScopeLock Lock(&(_SentData->PropFloatMutex));
+		if (_SentData->PropFloat == InPropFloat)
+		{
+			return;
+		}
+	}	
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propFloat");
 	m_sink->GetNode()->setRemoteProperty(memberId, InPropFloat);
+	FScopeLock Lock(&(_SentData->PropFloatMutex));	
 	_SentData->PropFloat = InPropFloat;
 }
 
@@ -314,12 +343,16 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropFloat32_Implementation(con
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
-	if (_SentData->PropFloat32 == InPropFloat32)
 	{
-		return;
-	}
+		FScopeLock Lock(&(_SentData->PropFloat32Mutex));
+		if (_SentData->PropFloat32 == InPropFloat32)
+		{
+			return;
+		}
+	}	
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propFloat32");
 	m_sink->GetNode()->setRemoteProperty(memberId, InPropFloat32);
+	FScopeLock Lock(&(_SentData->PropFloat32Mutex));	
 	_SentData->PropFloat32 = InPropFloat32;
 }
 
@@ -343,12 +376,16 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropFloat64_Implementation(con
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
-	if (_SentData->PropFloat64 == InPropFloat64)
 	{
-		return;
-	}
+		FScopeLock Lock(&(_SentData->PropFloat64Mutex));
+		if (_SentData->PropFloat64 == InPropFloat64)
+		{
+			return;
+		}
+	}	
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propFloat64");
 	m_sink->GetNode()->setRemoteProperty(memberId, InPropFloat64);
+	FScopeLock Lock(&(_SentData->PropFloat64Mutex));	
 	_SentData->PropFloat64 = InPropFloat64;
 }
 
@@ -372,12 +409,16 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropString_Implementation(cons
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
-	if (_SentData->PropString == InPropString)
 	{
-		return;
-	}
+		FScopeLock Lock(&(_SentData->PropStringMutex));
+		if (_SentData->PropString == InPropString)
+		{
+			return;
+		}
+	}	
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propString");
 	m_sink->GetNode()->setRemoteProperty(memberId, InPropString);
+	FScopeLock Lock(&(_SentData->PropStringMutex));	
 	_SentData->PropString = InPropString;
 }
 

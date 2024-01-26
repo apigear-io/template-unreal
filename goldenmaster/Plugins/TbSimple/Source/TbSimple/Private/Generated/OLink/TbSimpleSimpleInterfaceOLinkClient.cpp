@@ -35,20 +35,24 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
 #include "olink/iobjectsink.h"
 THIRD_PARTY_INCLUDES_END
+#include <atomic>
+#include "HAL/CriticalSection.h"
 
 /**
    \brief data structure to hold the last sent property values
 */
 struct TbSimpleSimpleInterfacePropertiesData
 {
-	bool bPropBool{false};
-	int32 PropInt{0};
-	int32 PropInt32{0};
-	int64 PropInt64{0LL};
-	float PropFloat{0.0f};
-	float PropFloat32{0.0f};
-	double PropFloat64{0.0};
+	std::atomic<bool> bPropBool{false};
+	std::atomic<int32> PropInt{0};
+	std::atomic<int32> PropInt32{0};
+	std::atomic<int64> PropInt64{0LL};
+	std::atomic<float> PropFloat{0.0f};
+	std::atomic<float> PropFloat32{0.0f};
+	std::atomic<double> PropFloat64{0.0};
+	FCriticalSection PropStringMutex;
 	FString PropString{FString()};
+	FCriticalSection PropReadOnlyStringMutex;
 	FString PropReadOnlyString{FString()};
 };
 DEFINE_LOG_CATEGORY(LogTbSimpleSimpleInterfaceOLinkClient);
@@ -173,9 +177,9 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropBool_Implementation(bool bInPro
 	if (_SentData->bPropBool == bInPropBool)
 	{
 		return;
-	}
+	}	
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propBool");
-	m_sink->GetNode()->setRemoteProperty(memberId, bInPropBool);
+	m_sink->GetNode()->setRemoteProperty(memberId, bInPropBool);	
 	_SentData->bPropBool = bInPropBool;
 }
 
@@ -202,9 +206,9 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropInt_Implementation(int32 InProp
 	if (_SentData->PropInt == InPropInt)
 	{
 		return;
-	}
+	}	
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propInt");
-	m_sink->GetNode()->setRemoteProperty(memberId, InPropInt);
+	m_sink->GetNode()->setRemoteProperty(memberId, InPropInt);	
 	_SentData->PropInt = InPropInt;
 }
 
@@ -231,9 +235,9 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropInt32_Implementation(int32 InPr
 	if (_SentData->PropInt32 == InPropInt32)
 	{
 		return;
-	}
+	}	
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propInt32");
-	m_sink->GetNode()->setRemoteProperty(memberId, InPropInt32);
+	m_sink->GetNode()->setRemoteProperty(memberId, InPropInt32);	
 	_SentData->PropInt32 = InPropInt32;
 }
 
@@ -260,9 +264,9 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropInt64_Implementation(int64 InPr
 	if (_SentData->PropInt64 == InPropInt64)
 	{
 		return;
-	}
+	}	
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propInt64");
-	m_sink->GetNode()->setRemoteProperty(memberId, InPropInt64);
+	m_sink->GetNode()->setRemoteProperty(memberId, InPropInt64);	
 	_SentData->PropInt64 = InPropInt64;
 }
 
@@ -289,9 +293,9 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropFloat_Implementation(float InPr
 	if (_SentData->PropFloat == InPropFloat)
 	{
 		return;
-	}
+	}	
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propFloat");
-	m_sink->GetNode()->setRemoteProperty(memberId, InPropFloat);
+	m_sink->GetNode()->setRemoteProperty(memberId, InPropFloat);	
 	_SentData->PropFloat = InPropFloat;
 }
 
@@ -318,9 +322,9 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropFloat32_Implementation(float In
 	if (_SentData->PropFloat32 == InPropFloat32)
 	{
 		return;
-	}
+	}	
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propFloat32");
-	m_sink->GetNode()->setRemoteProperty(memberId, InPropFloat32);
+	m_sink->GetNode()->setRemoteProperty(memberId, InPropFloat32);	
 	_SentData->PropFloat32 = InPropFloat32;
 }
 
@@ -347,9 +351,9 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropFloat64_Implementation(double I
 	if (_SentData->PropFloat64 == InPropFloat64)
 	{
 		return;
-	}
+	}	
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propFloat64");
-	m_sink->GetNode()->setRemoteProperty(memberId, InPropFloat64);
+	m_sink->GetNode()->setRemoteProperty(memberId, InPropFloat64);	
 	_SentData->PropFloat64 = InPropFloat64;
 }
 
@@ -373,12 +377,16 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropString_Implementation(const FSt
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
-	if (_SentData->PropString == InPropString)
 	{
-		return;
-	}
+		FScopeLock Lock(&(_SentData->PropStringMutex));
+		if (_SentData->PropString == InPropString)
+		{
+			return;
+		}
+	}	
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propString");
 	m_sink->GetNode()->setRemoteProperty(memberId, InPropString);
+	FScopeLock Lock(&(_SentData->PropStringMutex));	
 	_SentData->PropString = InPropString;
 }
 

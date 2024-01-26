@@ -35,16 +35,17 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
 #include "olink/iobjectsink.h"
 THIRD_PARTY_INCLUDES_END
+#include <atomic>
 
 /**
    \brief data structure to hold the last sent property values
 */
 struct TbEnumEnumInterfacePropertiesData
 {
-	ETbEnumEnum0 Prop0{ETbEnumEnum0::TEE_VALUE0};
-	ETbEnumEnum1 Prop1{ETbEnumEnum1::TEE_VALUE1};
-	ETbEnumEnum2 Prop2{ETbEnumEnum2::TEE_VALUE2};
-	ETbEnumEnum3 Prop3{ETbEnumEnum3::TEE_VALUE3};
+	std::atomic<ETbEnumEnum0> Prop0{ETbEnumEnum0::TEE_VALUE0};
+	std::atomic<ETbEnumEnum1> Prop1{ETbEnumEnum1::TEE_VALUE1};
+	std::atomic<ETbEnumEnum2> Prop2{ETbEnumEnum2::TEE_VALUE2};
+	std::atomic<ETbEnumEnum3> Prop3{ETbEnumEnum3::TEE_VALUE3};
 };
 DEFINE_LOG_CATEGORY(LogTbEnumEnumInterfaceOLinkClient);
 
@@ -168,9 +169,9 @@ void UTbEnumEnumInterfaceOLinkClient::SetProp0_Implementation(ETbEnumEnum0 InPro
 	if (_SentData->Prop0 == InProp0)
 	{
 		return;
-	}
+	}	
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop0");
-	m_sink->GetNode()->setRemoteProperty(memberId, InProp0);
+	m_sink->GetNode()->setRemoteProperty(memberId, InProp0);	
 	_SentData->Prop0 = InProp0;
 }
 
@@ -197,9 +198,9 @@ void UTbEnumEnumInterfaceOLinkClient::SetProp1_Implementation(ETbEnumEnum1 InPro
 	if (_SentData->Prop1 == InProp1)
 	{
 		return;
-	}
+	}	
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop1");
-	m_sink->GetNode()->setRemoteProperty(memberId, InProp1);
+	m_sink->GetNode()->setRemoteProperty(memberId, InProp1);	
 	_SentData->Prop1 = InProp1;
 }
 
@@ -226,9 +227,9 @@ void UTbEnumEnumInterfaceOLinkClient::SetProp2_Implementation(ETbEnumEnum2 InPro
 	if (_SentData->Prop2 == InProp2)
 	{
 		return;
-	}
+	}	
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop2");
-	m_sink->GetNode()->setRemoteProperty(memberId, InProp2);
+	m_sink->GetNode()->setRemoteProperty(memberId, InProp2);	
 	_SentData->Prop2 = InProp2;
 }
 
@@ -255,9 +256,9 @@ void UTbEnumEnumInterfaceOLinkClient::SetProp3_Implementation(ETbEnumEnum3 InPro
 	if (_SentData->Prop3 == InProp3)
 	{
 		return;
-	}
+	}	
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop3");
-	m_sink->GetNode()->setRemoteProperty(memberId, InProp3);
+	m_sink->GetNode()->setRemoteProperty(memberId, InProp3);	
 	_SentData->Prop3 = InProp3;
 }
 

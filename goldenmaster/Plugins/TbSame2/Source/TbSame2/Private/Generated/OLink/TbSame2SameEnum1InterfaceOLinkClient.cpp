@@ -35,13 +35,14 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
 #include "olink/iobjectsink.h"
 THIRD_PARTY_INCLUDES_END
+#include <atomic>
 
 /**
    \brief data structure to hold the last sent property values
 */
 struct TbSame2SameEnum1InterfacePropertiesData
 {
-	ETbSame2Enum1 Prop1{ETbSame2Enum1::TSE_VALUE1};
+	std::atomic<ETbSame2Enum1> Prop1{ETbSame2Enum1::TSE_VALUE1};
 };
 DEFINE_LOG_CATEGORY(LogTbSame2SameEnum1InterfaceOLinkClient);
 
@@ -165,9 +166,9 @@ void UTbSame2SameEnum1InterfaceOLinkClient::SetProp1_Implementation(ETbSame2Enum
 	if (_SentData->Prop1 == InProp1)
 	{
 		return;
-	}
+	}	
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop1");
-	m_sink->GetNode()->setRemoteProperty(memberId, InProp1);
+	m_sink->GetNode()->setRemoteProperty(memberId, InProp1);	
 	_SentData->Prop1 = InProp1;
 }
 

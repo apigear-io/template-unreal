@@ -35,13 +35,16 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
 #include "olink/iobjectsink.h"
 THIRD_PARTY_INCLUDES_END
+#include "HAL/CriticalSection.h"
 
 /**
    \brief data structure to hold the last sent property values
 */
 struct Testbed2NestedStruct2InterfacePropertiesData
 {
+	FCriticalSection Prop1Mutex;
 	FTestbed2NestedStruct1 Prop1{FTestbed2NestedStruct1()};
+	FCriticalSection Prop2Mutex;
 	FTestbed2NestedStruct2 Prop2{FTestbed2NestedStruct2()};
 };
 DEFINE_LOG_CATEGORY(LogTestbed2NestedStruct2InterfaceOLinkClient);
@@ -163,12 +166,16 @@ void UTestbed2NestedStruct2InterfaceOLinkClient::SetProp1_Implementation(const F
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
-	if (_SentData->Prop1 == InProp1)
 	{
-		return;
-	}
+		FScopeLock Lock(&(_SentData->Prop1Mutex));
+		if (_SentData->Prop1 == InProp1)
+		{
+			return;
+		}
+	}	
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop1");
 	m_sink->GetNode()->setRemoteProperty(memberId, InProp1);
+	FScopeLock Lock(&(_SentData->Prop1Mutex));	
 	_SentData->Prop1 = InProp1;
 }
 
@@ -192,12 +199,16 @@ void UTestbed2NestedStruct2InterfaceOLinkClient::SetProp2_Implementation(const F
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
-	if (_SentData->Prop2 == InProp2)
 	{
-		return;
-	}
+		FScopeLock Lock(&(_SentData->Prop2Mutex));
+		if (_SentData->Prop2 == InProp2)
+		{
+			return;
+		}
+	}	
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop2");
 	m_sink->GetNode()->setRemoteProperty(memberId, InProp2);
+	FScopeLock Lock(&(_SentData->Prop2Mutex));	
 	_SentData->Prop2 = InProp2;
 }
 
