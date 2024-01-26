@@ -11,6 +11,12 @@ THIRD_PARTY_INCLUDES_END
 
 DEFINE_LOG_CATEGORY(LogApiGearOLink);
 
+namespace
+{
+float processMessageDelay = 0; // [time in s, 0 is Next Frame]
+static FString processMessageFunctionName = "ProcessMessageFunction";
+} // namespace
+
 void writeLog(ApiGear::ObjectLink::LogLevel level, const std::string& msg)
 {
 	switch (level)
@@ -51,7 +57,12 @@ UUnrealOLink::UUnrealOLink(const FObjectInitializer& ObjectInitializer)
 	ApiGear::ObjectLink::WriteMessageFunc func = [this](const std::string& msg)
 	{
 		m_queue.Enqueue(msg);
-		processMessages();
+		// Schedule calling process message so they are sent from main thread. Throttling also improve sending during high load.
+		if (!m_processMessageTaskTimerHandle.IsValid())
+		{
+			m_processMessageTaskTimerHandle = ApiGearTicker::GetCoreTicker().AddTicker(*processMessageFunctionName, processMessageDelay, [this](float /*param*/)
+				{processMessages(); return true; });
+		}
 	};
 	m_node->onWrite(func);
 }
@@ -74,6 +85,7 @@ void UUnrealOLink::Configure(FString InServerURL, bool bInAutoReconnectEnabled)
 
 UUnrealOLink::~UUnrealOLink()
 {
+	ApiGearTicker::GetCoreTicker().RemoveTicker(m_processMessageTaskTimerHandle);
 }
 
 void UUnrealOLink::log(const FString& logMessage)
@@ -94,6 +106,15 @@ void UUnrealOLink::Disconnect_Implementation()
 	{
 		m_node->unlinkRemote(objectName);
 	}
+	if (m_processMessageTaskTimerHandle.IsValid())
+	{
+		ApiGearTicker::GetCoreTicker().RemoveTicker(m_processMessageTaskTimerHandle);
+	}
+	if (m_socket && m_socket->IsConnected())
+	{
+		flushMessages();
+	}
+
 	m_socket->Close();
 }
 
@@ -184,7 +205,12 @@ void UUnrealOLink::OnConnected_Implementation()
 	{
 		m_node->linkRemote(objectName);
 	}
-	processMessages();
+	// Schedule calling process message so they are sent from main thread. Throttling also improve sending during high load.
+	if (!m_processMessageTaskTimerHandle.IsValid())
+	{
+		m_processMessageTaskTimerHandle = ApiGearTicker::GetCoreTicker().AddTicker(*processMessageFunctionName, processMessageDelay, [this](float /*param*/)
+			{processMessages(); return true; });
+	}
 }
 
 void UUnrealOLink::OnDisconnected_Implementation(bool bReconnect)
@@ -232,6 +258,7 @@ void UUnrealOLink::unlinkObjectSource(const std::string& name)
 
 void UUnrealOLink::processMessages()
 {
+	ApiGearTicker::GetCoreTicker().RemoveTicker(m_processMessageTaskTimerHandle);
 	if (m_queue.IsEmpty())
 	{
 		// no data to be sent
@@ -243,7 +270,6 @@ void UUnrealOLink::processMessages()
 		log("no socket -> creating");
 		return;
 	}
-
 	if (!m_socket->IsConnected())
 	{
 		log("not connected -> connecting");
@@ -251,11 +277,19 @@ void UUnrealOLink::processMessages()
 		return;
 	}
 
+	flushMessages();
+}
+
+void UUnrealOLink::flushMessages()
+{
+	FScopeLock Lock(&m_flushMessagesMutex);
+	TQueue<std::string, EQueueMode::Mpsc> copyQueue;
+	Swap(m_queue, copyQueue);
 	std::string msg;
-	while (!m_queue.IsEmpty())
+	while (!copyQueue.IsEmpty())
 	{
 		// if we are using JSON we need to use txt message
-		m_queue.Dequeue(msg);
+		copyQueue.Dequeue(msg);
 		m_socket->Send(UTF8_TO_TCHAR(msg.c_str()));
 	}
 }
