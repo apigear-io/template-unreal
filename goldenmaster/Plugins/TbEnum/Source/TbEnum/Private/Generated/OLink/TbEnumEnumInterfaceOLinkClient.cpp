@@ -169,9 +169,9 @@ void UTbEnumEnumInterfaceOLinkClient::SetProp0_Implementation(ETbEnumEnum0 InPro
 	if (_SentData->Prop0 == InProp0)
 	{
 		return;
-	}	
+	}
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop0");
-	m_sink->GetNode()->setRemoteProperty(memberId, InProp0);	
+	m_sink->GetNode()->setRemoteProperty(memberId, InProp0);
 	_SentData->Prop0 = InProp0;
 }
 
@@ -198,9 +198,9 @@ void UTbEnumEnumInterfaceOLinkClient::SetProp1_Implementation(ETbEnumEnum1 InPro
 	if (_SentData->Prop1 == InProp1)
 	{
 		return;
-	}	
+	}
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop1");
-	m_sink->GetNode()->setRemoteProperty(memberId, InProp1);	
+	m_sink->GetNode()->setRemoteProperty(memberId, InProp1);
 	_SentData->Prop1 = InProp1;
 }
 
@@ -227,9 +227,9 @@ void UTbEnumEnumInterfaceOLinkClient::SetProp2_Implementation(ETbEnumEnum2 InPro
 	if (_SentData->Prop2 == InProp2)
 	{
 		return;
-	}	
+	}
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop2");
-	m_sink->GetNode()->setRemoteProperty(memberId, InProp2);	
+	m_sink->GetNode()->setRemoteProperty(memberId, InProp2);
 	_SentData->Prop2 = InProp2;
 }
 
@@ -256,9 +256,9 @@ void UTbEnumEnumInterfaceOLinkClient::SetProp3_Implementation(ETbEnumEnum3 InPro
 	if (_SentData->Prop3 == InProp3)
 	{
 		return;
-	}	
+	}
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop3");
-	m_sink->GetNode()->setRemoteProperty(memberId, InProp3);	
+	m_sink->GetNode()->setRemoteProperty(memberId, InProp3);
 	_SentData->Prop3 = InProp3;
 }
 

@@ -167,9 +167,9 @@ void UTbSame1SameEnum2InterfaceOLinkClient::SetProp1_Implementation(ETbSame1Enum
 	if (_SentData->Prop1 == InProp1)
 	{
 		return;
-	}	
+	}
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop1");
-	m_sink->GetNode()->setRemoteProperty(memberId, InProp1);	
+	m_sink->GetNode()->setRemoteProperty(memberId, InProp1);
 	_SentData->Prop1 = InProp1;
 }
 
@@ -196,9 +196,9 @@ void UTbSame1SameEnum2InterfaceOLinkClient::SetProp2_Implementation(ETbSame1Enum
 	if (_SentData->Prop2 == InProp2)
 	{
 		return;
-	}	
+	}
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop2");
-	m_sink->GetNode()->setRemoteProperty(memberId, InProp2);	
+	m_sink->GetNode()->setRemoteProperty(memberId, InProp2);
 	_SentData->Prop2 = InProp2;
 }
 

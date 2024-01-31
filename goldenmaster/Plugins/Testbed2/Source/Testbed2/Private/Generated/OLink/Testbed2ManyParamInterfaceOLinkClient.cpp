@@ -169,9 +169,9 @@ void UTestbed2ManyParamInterfaceOLinkClient::SetProp1_Implementation(int32 InPro
 	if (_SentData->Prop1 == InProp1)
 	{
 		return;
-	}	
+	}
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop1");
-	m_sink->GetNode()->setRemoteProperty(memberId, InProp1);	
+	m_sink->GetNode()->setRemoteProperty(memberId, InProp1);
 	_SentData->Prop1 = InProp1;
 }
 
@@ -198,9 +198,9 @@ void UTestbed2ManyParamInterfaceOLinkClient::SetProp2_Implementation(int32 InPro
 	if (_SentData->Prop2 == InProp2)
 	{
 		return;
-	}	
+	}
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop2");
-	m_sink->GetNode()->setRemoteProperty(memberId, InProp2);	
+	m_sink->GetNode()->setRemoteProperty(memberId, InProp2);
 	_SentData->Prop2 = InProp2;
 }
 
@@ -227,9 +227,9 @@ void UTestbed2ManyParamInterfaceOLinkClient::SetProp3_Implementation(int32 InPro
 	if (_SentData->Prop3 == InProp3)
 	{
 		return;
-	}	
+	}
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop3");
-	m_sink->GetNode()->setRemoteProperty(memberId, InProp3);	
+	m_sink->GetNode()->setRemoteProperty(memberId, InProp3);
 	_SentData->Prop3 = InProp3;
 }
 
@@ -256,9 +256,9 @@ void UTestbed2ManyParamInterfaceOLinkClient::SetProp4_Implementation(int32 InPro
 	if (_SentData->Prop4 == InProp4)
 	{
 		return;
-	}	
+	}
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop4");
-	m_sink->GetNode()->setRemoteProperty(memberId, InProp4);	
+	m_sink->GetNode()->setRemoteProperty(memberId, InProp4);
 	_SentData->Prop4 = InProp4;
 }
 

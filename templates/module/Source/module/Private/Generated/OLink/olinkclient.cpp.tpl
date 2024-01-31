@@ -204,12 +204,12 @@ void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
 	{
 		return;
 	}
-{{- end }}	
+{{- end }}
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "{{.Name}}");
 	m_sink->GetNode()->setRemoteProperty(memberId, {{ueVar "In" .}});
 {{- if not ( ueIsStdSimpleType . ) }}
 	FScopeLock Lock(&(_SentData->{{ueVar "" .}}Mutex));
-{{- end }}	
+{{- end }}
 	_SentData->{{ueVar "" .}} = {{ueVar "In" .}};
 }
 {{- end }}

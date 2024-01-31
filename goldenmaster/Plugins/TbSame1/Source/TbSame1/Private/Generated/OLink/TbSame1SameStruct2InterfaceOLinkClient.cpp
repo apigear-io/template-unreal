@@ -172,10 +172,10 @@ void UTbSame1SameStruct2InterfaceOLinkClient::SetProp1_Implementation(const FTbS
 		{
 			return;
 		}
-	}	
+	}
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop1");
 	m_sink->GetNode()->setRemoteProperty(memberId, InProp1);
-	FScopeLock Lock(&(_SentData->Prop1Mutex));	
+	FScopeLock Lock(&(_SentData->Prop1Mutex));
 	_SentData->Prop1 = InProp1;
 }
 
@@ -205,10 +205,10 @@ void UTbSame1SameStruct2InterfaceOLinkClient::SetProp2_Implementation(const FTbS
 		{
 			return;
 		}
-	}	
+	}
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop2");
 	m_sink->GetNode()->setRemoteProperty(memberId, InProp2);
-	FScopeLock Lock(&(_SentData->Prop2Mutex));	
+	FScopeLock Lock(&(_SentData->Prop2Mutex));
 	_SentData->Prop2 = InProp2;
 }
 

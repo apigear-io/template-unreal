@@ -174,10 +174,10 @@ void UTestbed2NestedStruct3InterfaceOLinkClient::SetProp1_Implementation(const F
 		{
 			return;
 		}
-	}	
+	}
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop1");
 	m_sink->GetNode()->setRemoteProperty(memberId, InProp1);
-	FScopeLock Lock(&(_SentData->Prop1Mutex));	
+	FScopeLock Lock(&(_SentData->Prop1Mutex));
 	_SentData->Prop1 = InProp1;
 }
 
@@ -207,10 +207,10 @@ void UTestbed2NestedStruct3InterfaceOLinkClient::SetProp2_Implementation(const F
 		{
 			return;
 		}
-	}	
+	}
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop2");
 	m_sink->GetNode()->setRemoteProperty(memberId, InProp2);
-	FScopeLock Lock(&(_SentData->Prop2Mutex));	
+	FScopeLock Lock(&(_SentData->Prop2Mutex));
 	_SentData->Prop2 = InProp2;
 }
 
@@ -240,10 +240,10 @@ void UTestbed2NestedStruct3InterfaceOLinkClient::SetProp3_Implementation(const F
 		{
 			return;
 		}
-	}	
+	}
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop3");
 	m_sink->GetNode()->setRemoteProperty(memberId, InProp3);
-	FScopeLock Lock(&(_SentData->Prop3Mutex));	
+	FScopeLock Lock(&(_SentData->Prop3Mutex));
 	_SentData->Prop3 = InProp3;
 }
 

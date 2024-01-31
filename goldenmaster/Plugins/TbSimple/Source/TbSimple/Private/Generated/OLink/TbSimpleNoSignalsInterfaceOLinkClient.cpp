@@ -167,9 +167,9 @@ void UTbSimpleNoSignalsInterfaceOLinkClient::SetPropBool_Implementation(bool bIn
 	if (_SentData->bPropBool == bInPropBool)
 	{
 		return;
-	}	
+	}
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propBool");
-	m_sink->GetNode()->setRemoteProperty(memberId, bInPropBool);	
+	m_sink->GetNode()->setRemoteProperty(memberId, bInPropBool);
 	_SentData->bPropBool = bInPropBool;
 }
 
@@ -196,9 +196,9 @@ void UTbSimpleNoSignalsInterfaceOLinkClient::SetPropInt_Implementation(int32 InP
 	if (_SentData->PropInt == InPropInt)
 	{
 		return;
-	}	
+	}
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propInt");
-	m_sink->GetNode()->setRemoteProperty(memberId, InPropInt);	
+	m_sink->GetNode()->setRemoteProperty(memberId, InPropInt);
 	_SentData->PropInt = InPropInt;
 }
 
