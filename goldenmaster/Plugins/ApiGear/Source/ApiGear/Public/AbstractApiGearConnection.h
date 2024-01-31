@@ -3,11 +3,9 @@
 #include "ApiGearConnection.h"
 #include "ApiGearTicker.h"
 #include "CoreMinimal.h"
-#include "Containers/Ticker.h"
 #include "UObject/NoExportTypes.h"
 #include "Runtime/Launch/Resources/Version.h"
 #include "AbstractApiGearConnection.generated.h"
-
 
 /**
  * @brief Abstract base for IApiGearConnection implementation

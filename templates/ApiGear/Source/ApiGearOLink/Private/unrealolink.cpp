@@ -60,8 +60,12 @@ UUnrealOLink::UUnrealOLink(const FObjectInitializer& ObjectInitializer)
 		// Schedule calling process message so they are sent from main thread. Throttling also improve sending during high load.
 		if (!m_processMessageTaskTimerHandle.IsValid())
 		{
-			m_processMessageTaskTimerHandle = ApiGearTicker::GetCoreTicker().AddTicker(*processMessageFunctionName, processMessageDelay, [this](float /*param*/)
-				{processMessages(); return true; });
+			m_processMessageTaskTimerHandle = ApiGearTicker::GetCoreTicker().AddTicker(*processMessageFunctionName, processMessageDelay,
+				[this](float /*param*/)
+				{
+					processMessages();
+					return true;
+				});
 		}
 	};
 	m_node->onWrite(func);
@@ -208,8 +212,12 @@ void UUnrealOLink::OnConnected_Implementation()
 	// Schedule calling process message so they are sent from main thread. Throttling also improve sending during high load.
 	if (!m_processMessageTaskTimerHandle.IsValid())
 	{
-		m_processMessageTaskTimerHandle = ApiGearTicker::GetCoreTicker().AddTicker(*processMessageFunctionName, processMessageDelay, [this](float /*param*/)
-			{processMessages(); return true; });
+		m_processMessageTaskTimerHandle = ApiGearTicker::GetCoreTicker().AddTicker(*processMessageFunctionName, processMessageDelay,
+			[this](float /*param*/)
+			{
+				processMessages();
+				return true;
+			});
 	}
 }
 
