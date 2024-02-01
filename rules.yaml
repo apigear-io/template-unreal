@@ -1,3 +1,5 @@
+engines:
+  cli: ">= v0.35.0"
 features:
   - name: api
     scopes:
@@ -6,31 +8,23 @@ features:
         documents:
           - source: "module/Source/module/Public/Generated/api/module.h.tpl"
             target: "Public/Generated/api/{{Camel .Module.Name}}_apig.h"
-            force: true
           - source: "module/Source/module/Public/Generated/api/data.h.tpl"
             target: "Public/Generated/api/{{Camel .Module.Name}}_data.h"
-            force: true
           - source: "module/Source/module/Private/Generated/api/data.cpp.tpl"
             target: "Private/Generated/api/{{Camel .Module.Name}}_data.cpp"
-            force: true
           - source: "module/Source/module/Private/Generated/LogCategories.h.tpl"
             target: "Private/Generated/{{Camel .Module.Name}}LogCategories.h"
-            force: true
           - source: "module/Source/module/Private/Generated/LogCategories.cpp.tpl"
             target: "Private/Generated/{{Camel .Module.Name}}LogCategories.cpp"
-            force: true
       - match: interface
         prefix: "Plugins/{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}/"
         documents:
           - source: "module/Source/module/Public/Generated/api/interface.h.tpl"
             target: "Public/Generated/api/{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface.h"
-            force: true
           - source: "module/Source/module/Public/Generated/api/abstract.h.tpl"
             target: "Public/Generated/api/Abstract{{Camel .Module.Name}}{{Camel .Interface.Name}}.h"
-            force: true
           - source: "module/Source/module/Private/Generated/api/abstract.cpp.tpl"
             target: "Private/Generated/api/Abstract{{Camel .Module.Name}}{{Camel .Interface.Name}}.cpp"
-            force: true
   - name: apigear_olinkproto
     scopes:
       - match: system
@@ -38,100 +32,76 @@ features:
         documents:
           - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/OLinkProtocolLibrary.Build.cs"
             target: "OLinkProtocolLibrary.Build.cs"
-            force: true
             raw: true
           - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Private/OLinkProtocolLibraryModule.cpp"
             target: "Private/OLinkProtocolLibraryModule.cpp"
-            force: true
             raw: true
           - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Public/olink/clientnode.h"
             target: "Public/olink/clientnode.h"
             raw: true
-            force: true
           - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Private/clientnode.cpp"
             target: "Private/clientnode.cpp"
             raw: true
-            force: true
           - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Public/olink/clientregistry.h"
             target: "Public/olink/clientregistry.h"
             raw: true
-            force: true
           - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Private/clientregistry.cpp"
             target: "Private/clientregistry.cpp"
             raw: true
-            force: true
           - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Public/olink/core/basenode.h"
             target: "Public/olink/core/basenode.h"
             raw: true
-            force: true
           - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Private/core/basenode.cpp"
             target: "Private/core/basenode.cpp"
             raw: true
-            force: true
           - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Public/olink/remotenode.h"
             target: "Public/olink/remotenode.h"
             raw: true
-            force: true
           - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Public/olink/iremotenode.h"
             target: "Public/olink/iremotenode.h"
             raw: true
-            force: true
           - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Public/olink/remoteregistry.h"
             target: "Public/olink/remoteregistry.h"
             raw: true
-            force: true
           - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Private/remoteregistry.cpp"
             target: "Private/remoteregistry.cpp"
             raw: true
-            force: true
           - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Private/remotenode.cpp"
             target: "Private/remotenode.cpp"
             raw: true
-            force: true
           - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Public/olink/consolelogger.h"
             target: "Public/olink/consolelogger.h"
             raw: true
-            force: true
           - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Private/consolelogger.cpp"
             target: "Private/consolelogger.cpp"
             raw: true
-            force: true
           - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Public/olink/iclientnode.h"
             target: "Public/olink/iclientnode.h"
             raw: true
-            force: true
           - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Public/olink/core/protocol.h"
             target: "Public/olink/core/protocol.h"
             raw: true
-            force: true
           - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Private/core/protocol.cpp"
             target: "Private/core/protocol.cpp"
             raw: true
-            force: true
           - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Public/olink/core/olink_common.h"
             target: "Public/olink/core/olink_common.h"
             raw: true
-            force: true
           - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Public/olink/iobjectsink.h"
             target: "Public/olink/iobjectsink.h"
             raw: true
-            force: true
           - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Public/olink/iobjectsource.h"
             target: "Public/olink/iobjectsource.h"
             raw: true
-            force: true
           - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Public/olink/core/types.h"
             target: "Public/olink/core/types.h"
             raw: true
-            force: true
           - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Private/core/types.cpp"
             target: "Private/core/types.cpp"
             raw: true
-            force: true
           - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Public/olink/core/uniqueidobjectstorage.h"
             target: "Public/olink/core/uniqueidobjectstorage.h"
             raw: true
-            force: true
   - name: apigear
     requires:
       - apigear_olink
@@ -141,120 +111,91 @@ features:
         documents:
           - source: "ApiGear/Source/ApiGear/apigear.Build.cs"
             target: "Source/ApiGear/apigear.Build.cs"
-            force: true
             raw: true
           - source: "ApiGear/apigear.uplugin"
             target: "apigear.uplugin"
-            force: true
             raw: true
           - source: "ApiGear/Config/FilterPlugin.ini"
             target: "Config/FilterPlugin.ini"
-            force: true
             raw: true
           - source: "ApiGear/Source/ApiGear/Public/tracer.h"
             target: "Source/ApiGear/Public/tracer.h"
-            force: true
             raw: true
           - source: "ApiGear/Source/ApiGear/Private/tracer.cpp"
             target: "Source/ApiGear/Private/tracer.cpp"
-            force: true
             raw: true
           - source: "ApiGear/Source/ApiGear/Public/apigear.h"
             target: "Source/ApiGear/Public/apigear.h"
-            force: true
             raw: true
           - source: "ApiGear/Source/ApiGear/Public/ApiGearConnection.h"
             target: "Source/ApiGear/Public/ApiGearConnection.h"
-            force: true
             raw: true
           - source: "ApiGear/Source/ApiGear/Public/AbstractApiGearConnection.h"
             target: "Source/ApiGear/Public/AbstractApiGearConnection.h"
-            force: true
             raw: true
           - source: "ApiGear/Source/ApiGear/Private/AbstractApiGearConnection.cpp"
             target: "Source/ApiGear/Private/AbstractApiGearConnection.cpp"
-            force: true
             raw: true
           - source: "ApiGear/Source/ApiGear/Public/ApiGearTicker.h"
             target: "Source/ApiGear/Public/ApiGearTicker.h"
-            force: true
             raw: true
           - source: "ApiGear/Source/ApiGear/Public/ApiGearLogCategories.h"
             target: "Source/ApiGear/Public/ApiGearLogCategories.h"
-            force: true
             raw: true
           - source: "ApiGear/Source/ApiGear/Private/ApiGearLogCategories.cpp"
             target: "Source/ApiGear/Private/ApiGearLogCategories.cpp"
-            force: true
             raw: true
           - source: "ApiGear/Source/ApiGear/Public/apigear.json.adapter.h"
             target: "Source/ApiGear/Public/apigear.json.adapter.h"
             raw: true
-            force: true
           - source: "ApiGear/Source/ApiGear/Private/apigear.cpp"
             target: "Source/ApiGear/Private/apigear.cpp"
-            force: true
             raw: true
           - source: "ApiGear/Source/ApiGearEditor/Public/ApiGearEditor.h"
             target: "Source/ApiGearEditor/Public/ApiGearEditor.h"
-            force: true
             raw: true
           - source: "ApiGear/Source/ApiGearEditor/Private/ApiGearEditor.cpp"
             target: "Source/ApiGearEditor/Private/ApiGearEditor.cpp"
-            force: true
             raw: true
           - source: "ApiGear/Resources/Icon40.png"
             target: "Resources/Icon40.png"
-            force: true
             raw: true
           - source: "ApiGear/Resources/Icon128.png"
             target: "Resources/Icon128.png"
-            force: true
             raw: true
           - source: "ApiGear/Source/ApiGearEditor/Public/ApiGearEditorStyle.h"
             target: "Source/ApiGearEditor/Public/ApiGearEditorStyle.h"
-            force: true
             raw: true
           - source: "ApiGear/Source/ApiGearEditor/Private/ApiGearEditorStyle.cpp"
             target: "Source/ApiGearEditor/Private/ApiGearEditorStyle.cpp"
-            force: true
             raw: true
           - source: "ApiGear/Source/ApiGearEditor/Public/ApiGearEditorCommands.h"
             target: "Source/ApiGearEditor/Public/ApiGearEditorCommands.h"
-            force: true
             raw: true
           - source: "ApiGear/Source/ApiGearEditor/Private/ApiGearEditorCommands.cpp"
             target: "Source/ApiGearEditor/Private/ApiGearEditorCommands.cpp"
-            force: true
             raw: true
           - source: "ApiGear/Source/ApiGear/Public/ApiGearSettings.h"
             target: "Source/ApiGear/Public/ApiGearSettings.h"
-            force: true
             raw: true
           - source: "ApiGear/Source/ApiGear/Private/ApiGearSettings.cpp"
             target: "Source/ApiGear/Private/ApiGearSettings.cpp"
-            force: true
             raw: true
           - source: "ApiGear/Source/ApiGear/Public/ApiGearConnectionsStore.h"
             target: "Source/ApiGear/Public/ApiGearConnectionsStore.h"
-            force: true
             raw: true
           - source: "ApiGear/Source/ApiGear/Private/ApiGearConnectionsStore.cpp"
             target: "Source/ApiGear/Private/ApiGearConnectionsStore.cpp"
-            force: true
             raw: true
           - source: "ApiGear/Source/ApiGearEditor/ApiGearEditor.Build.cs"
             target: "Source/ApiGearEditor/ApiGearEditor.Build.cs"
-            force: true
             raw: true
           - source: "ApiGear/Source/ThirdParty/nlohmannJsonLibrary/nlohmannJsonLibrary.Build.cs"
             target: "Source/ThirdParty/nlohmannJsonLibrary/nlohmannJsonLibrary.Build.cs"
             raw: true
-            force: true
           - source: "ApiGear/Source/ThirdParty/nlohmannJsonLibrary/Public/nlohmann/json.hpp"
             target: "Source/ThirdParty/nlohmannJsonLibrary/Public/nlohmann/json.hpp"
             raw: true
-            force: true
   - name: apigear_olink
     requires:
       - apigear_olinkproto
@@ -264,55 +205,42 @@ features:
         documents:
           - source: "ApiGear/Source/ApiGearOLink/apigearolink.Build.cs"
             target: "Source/ApiGearOLink/apigearolink.Build.cs"
-            force: true
             raw: true
           - source: "ApiGear/Source/ApiGearOLink/Public/apigearolink.h"
             target: "Source/ApiGearOLink/Public/apigearolink.h"
-            force: true
             raw: true
           - source: "ApiGear/Source/ApiGearOLink/Private/apigearolink.cpp"
             target: "Source/ApiGearOLink/Private/apigearolink.cpp"
-            force: true
             raw: true
           - source: "ApiGear/Source/ApiGearOLink/Private/unrealolink.cpp"
             target: "Source/ApiGearOLink/Private/unrealolink.cpp"
-            force: true
             raw: true
           - source: "ApiGear/Source/ApiGearOLink/Public/unrealolink.h"
             target: "Source/ApiGearOLink/Public/unrealolink.h"
-            force: true
             raw: true
           - source: "ApiGear/Source/ApiGearOLink/Private/unrealolinksink.cpp"
             target: "Source/ApiGearOLink/Private/unrealolinksink.cpp"
-            force: true
             raw: true
           - source: "ApiGear/Source/ApiGearOLink/Public/unrealolinksink.h"
             target: "Source/ApiGearOLink/Public/unrealolinksink.h"
-            force: true
             raw: true
           - source: "ApiGear/Source/ApiGearOLink/Private/UnrealOLinkHost.cpp"
             target: "Source/ApiGearOLink/Private/UnrealOLinkHost.cpp"
-            force: true
             raw: true
           - source: "ApiGear/Source/ApiGearOLink/Public/UnrealOLinkHost.h"
             target: "Source/ApiGearOLink/Public/UnrealOLinkHost.h"
-            force: true
             raw: true
           - source: "ApiGear/Source/ApiGearOLink/Private/OLinkHostConnection.h"
             target: "Source/ApiGearOLink/Private/OLinkHostConnection.h"
-            force: true
             raw: true
           - source: "ApiGear/Source/ApiGearOLink/Private/OLinkHostConnection.cpp"
             target: "Source/ApiGearOLink/Private/OLinkHostConnection.cpp"
-            force: true
             raw: true
           - source: "ApiGear/Source/ApiGearOLink/Private/OLinkHostPrivate.h"
             target: "Source/ApiGearOLink/Private/OLinkHostPrivate.h"
-            force: true
             raw: true
           - source: "ApiGear/Source/ApiGearOLink/Private/OLinkHostPrivate.cpp"
             target: "Source/ApiGearOLink/Private/OLinkHostPrivate.cpp"
-            force: true
             raw: true
   - name: stubs
     requires:
@@ -323,65 +251,55 @@ features:
         documents:
           - source: "module/Source/module/Private/Tests/testbase.h.tpl"
             target: "Source/{{Camel .Module.Name}}/Private/Tests/{{Camel .Module.Name}}TestBase.h"
+            preserve: true
       - match: interface
         prefix: "Plugins/{{Camel .Module.Name}}/"
         documents:
           - source: "module/Source/module/Public/Implementation/implementation.h.tpl"
             target: "Source/{{Camel .Module.Name}}/Public/Implementation/{{Camel .Module.Name}}{{Camel .Interface.Name}}.h"
+            preserve: true
           - source: "module/Source/module/Private/Implementation/implementation.cpp.tpl"
             target: "Source/{{Camel .Module.Name}}/Private/Implementation/{{Camel .Module.Name}}{{Camel .Interface.Name}}.cpp"
+            preserve: true
           - source: "module/Source/module/Private/Tests/implementationtest.cpp.tpl"
             target: "Source/{{Camel .Module.Name}}/Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}Tests.cpp"
+            preserve: true
   - name: plugin
     scopes:
       - match: system
         documents:
           - source: "buildPlugins.bat.tpl"
             target: "buildPlugins.bat"
-            force: true
           - source: "buildPlugins.sh.tpl"
             target: "buildPlugins.sh"
-            force: true
       - match: module
         prefix: "Plugins/{{Camel .Module.Name}}/"
         documents:
           - source: "module/Config/FilterPlugin.ini"
             target: "Config/FilterPlugin.ini"
             raw: true
-            force: true
           - source: "module/Source/module/pluginname.uplugin.tpl"
             target: "{{Camel .Module.Name}}.uplugin"
-            force: true
           - source: "module/Source/module/Public/pluginnamesettings.h.tpl"
             target: "Source/{{Camel .Module.Name}}/Public/{{Camel .Module.Name}}Settings.h"
-            force: true
           - source: "module/Source/module/Private/pluginnamesettings.cpp.tpl"
             target: "Source/{{Camel .Module.Name}}/Private/{{Camel .Module.Name}}Settings.cpp"
-            force: true
           - source: "module/Source/moduleeditor/Public/pluginnameconnectionsettings.h.tpl"
             target: "Source/{{Camel .Module.Name}}Editor/Public/{{Camel .Module.Name}}ConnectionSettings.h"
-            force: true
           - source: "module/Source/moduleeditor/Private/pluginnameconnectionsettings.cpp.tpl"
             target: "Source/{{Camel .Module.Name}}Editor/Private/{{Camel .Module.Name}}ConnectionSettings.cpp"
-            force: true
           - source: "module/Source/moduleeditor/Public/pluginnameeditor.h.tpl"
             target: "Source/{{Camel .Module.Name}}Editor/Public/{{Camel .Module.Name}}Editor.h"
-            force: true
           - source: "module/Source/moduleeditor/Private/pluginnameeditor.cpp.tpl"
             target: "Source/{{Camel .Module.Name}}Editor/Private/{{Camel .Module.Name}}Editor.cpp"
-            force: true
           - source: "module/Source/moduleeditor/pluginnameeditor.Build.cs.tpl"
             target: "Source/{{Camel .Module.Name}}Editor/{{Camel .Module.Name}}Editor.Build.cs"
-            force: true
           - source: "module/Source/module/pluginname.Build.cs.tpl"
             target: "Source/{{Camel .Module.Name}}/{{Camel .Module.Name}}.Build.cs"
-            force: true
           - source: "module/Source/module/Public/pluginname.h.tpl"
             target: "Source/{{Camel .Module.Name}}/Public/{{Camel .Module.Name}}.h"
-            force: true
           - source: "module/Source/module/Private/pluginname.cpp.tpl"
             target: "Source/{{Camel .Module.Name}}/Private/{{Camel .Module.Name}}.cpp"
-            force: true
   - name: monitor
     requires:
       - api
@@ -393,28 +311,21 @@ features:
         documents:
           - source: "module/Source/module/Private/Generated/Monitor/pluginfactory.h.tpl"
             target: "Source/{{Camel .Module.Name}}/Private/Generated/Monitor/{{Camel .Module.Name}}Factory.h"
-            force: true
           - source: "module/Source/module/Private/Generated/Monitor/pluginfactory.cpp.tpl"
             target: "Source/{{Camel .Module.Name}}/Private/Generated/Monitor/{{Camel .Module.Name}}Factory.cpp"
-            force: true
           - source: "module/Source/module/Private/Generated/api/json.adapter.h.tpl"
             target: "Source/{{Camel .Module.Name}}/Private/Generated/api/{{Camel .Module.Name}}.json.adapter.h"
-            force: true
           - source: "module/Source/module/Private/Generated/Monitor/trace.h.tpl"
             target: "Source/{{Camel .Module.Name}}/Private/Generated/Monitor/{{Camel .Module.Name}}.trace.h"
-            force: true
           - source: "module/Source/module/Private/Generated/Monitor/trace.cpp.tpl"
             target: "Source/{{Camel .Module.Name}}/Private/Generated/Monitor/{{Camel .Module.Name}}.trace.cpp"
-            force: true
       - match: interface
         prefix: "Plugins/{{Camel .Module.Name}}/"
         documents:
           - source: "module/Source/module/Public/Generated/Monitor/loggingdecorator.h.tpl"
             target: "Source/{{Camel .Module.Name}}/Public/Generated/Monitor/{{Camel .Module.Name}}{{Camel .Interface.Name}}LoggingDecorator.h"
-            force: true
           - source: "module/Source/module/Private/Generated/Monitor/loggingdecorator.cpp.tpl"
             target: "Source/{{Camel .Module.Name}}/Private/Generated/Monitor/{{Camel .Module.Name}}{{Camel .Interface.Name}}LoggingDecorator.cpp"
-            force: true
   - name: olink
     requires:
       - api
@@ -426,25 +337,18 @@ features:
         documents:
           - source: "module/Source/module/Private/Generated/api/json.adapter.h.tpl"
             target: "Source/{{Camel .Module.Name}}/Private/Generated/api/{{Camel .Module.Name}}.json.adapter.h"
-            force: true
       - match: interface
         prefix: "Plugins/{{Camel .Module.Name}}/"
         documents:
           - source: "module/Source/module/Public/Generated/OLink/olinkclient.h.tpl"
             target: "Source/{{Camel .Module.Name}}/Public/Generated/OLink/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLinkClient.h"
-            force: true
           - source: "module/Source/module/Private/Generated/OLink/olinkclient.cpp.tpl"
             target: "Source/{{Camel .Module.Name}}/Private/Generated/OLink/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLinkClient.cpp"
-            force: true
           - source: "module/Source/module/Public/Generated/OLink/olinkadapter.h.tpl"
             target: "Source/{{Camel .Module.Name}}/Public/Generated/OLink/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLinkAdapter.h"
-            force: true
           - source: "module/Source/module/Private/Generated/OLink/olinkadapter.cpp.tpl"
             target: "Source/{{Camel .Module.Name}}/Private/Generated/OLink/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLinkAdapter.cpp"
-            force: true
           - source: "module/Source/module/Private/Generated/OLink/olinksource.h.tpl"
             target: "Source/{{Camel .Module.Name}}/Private/Generated/OLink/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLinkSource.h"
-            force: true
           - source: "module/Source/module/Private/Generated/OLink/olinksource.cpp.tpl"
             target: "Source/{{Camel .Module.Name}}/Private/Generated/OLink/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLinkSource.cpp"
-            force: true
