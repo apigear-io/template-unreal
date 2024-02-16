@@ -18,12 +18,12 @@ enum class EApiGearConnectionState : uint8
 	Connected UMETA(Displayname = "Connected")
 };
 
-///  Used when Network Layer Connection changes its state to connected(true) or any other connection state (false).
+/**  Used when Network Layer Connection changes its state to connected(true) or any other connection state(false). */
 DECLARE_MULTICAST_DELEGATE_OneParam(FApiGearConnectionIsConnectedDelegate, bool);
-///  Used when Network Layer Connection changes its state.
+/** Used when Network Layer Connection changes its state. */
 DECLARE_MULTICAST_DELEGATE_OneParam(FApiGearConnectionStateChangedDelegate, EApiGearConnectionState);
 /**
- * @brief Used when the interface client changes its subscription status:
+ * Used when the interface client changes its subscription status:
  * either is plugged in the network and ready to use with protocol of your choice (true)
  * or it won't be able to properly communicate with server side (false).
  * An established network connection (ConnectionIsConnectedDelegate with true parameter) is often necessary, but not sufficient (depending on your setup and used protocol)
@@ -32,11 +32,12 @@ DECLARE_MULTICAST_DELEGATE_OneParam(FApiGearConnectionStateChangedDelegate, EApi
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FApiGearRemoteApiSubscriptionStatusChangedDelegate, bool, IsSubscribed);
 
 /** 
- * @brief An interface for all connections meant to be used by ApiGear
+ * An interface for all connections meant to be used by ApiGear
  * ensures all connections have:
  * - settings for reconnection
  * - current state
  * - general state and settings accessors
+ * @see AbstractApiGearConnection for implementation of common functionality.
  */
 UINTERFACE(MinimalAPI, meta = (CannotImplementInterfaceInBlueprint))
 class UApiGearConnection : public UInterface
@@ -49,26 +50,42 @@ class APIGEAR_API IApiGearConnection
 	GENERATED_BODY()
 
 public:
+	/** Returns a delegate for notifications informing whether connection is ready to use
+	* @see ApiGearConnectionIsConnectedDelegate
+	*/
 	virtual FApiGearConnectionIsConnectedDelegate& GetIsConnectedChangedDelegate() = 0;
+	/** Returns a delegate for notifications informing about the connection state.
+	* @see FApiGearConnectionStateChangedDelegate
+	*/
 	virtual FApiGearConnectionStateChangedDelegate& GetConnectionStateChangedDelegate() = 0;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection")
 	virtual void Configure(FString InServerURL, bool bInAutoReconnectEnabled) = 0;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection")
+	/** Call this function to request connection to be established */
 	virtual void Connect() = 0;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection")
+	/** A callback for when the network connection is established,
+	 * Use to finalize connect related actions in the implemented connection, 
+	 * For notifications on when connection is disconnected use GetIsConnectedChangedDelegate or ApiGearConnectionStateChangedDelegate.
+	 */
 	virtual void OnConnected() = 0;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection")
+	/** Call this function to request closing connection. */
 	virtual void Disconnect() = 0;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection")
+	/** A callback for when the network connection has closed,
+	 * use to finalize disconnect-related actions in the implemented connection.
+	 * For notifications on when connection is disconnected use GetIsConnectedChangedDelegate or ApiGearConnectionStateChangedDelegate.
+	 */
 	virtual void OnDisconnected(bool bReconnect) = 0;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection")
 	virtual bool IsConnected() = 0;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection")
 	virtual void StopReconnecting() = 0;
 
-	/** Returns the endpoint identifier for this connection, e.g. simulation or phone_service */
+	/** Returns the endpoint identifier for this connection, e.g. simulation or phone_service*/
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection")
 	virtual FString GetUniqueEndpointIdentifier() const = 0;
 
@@ -76,7 +93,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection")
 	virtual FString GetServerURL() const = 0;
 
-	/** Returns the type identifier for this connection, e.g. olink */
+	/** Returns the identifier of protocol used for this connection, e.g. olink */
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Connection")
 	virtual FString GetConnectionProtocolIdentifier() const = 0;
 

@@ -13,12 +13,13 @@
 APIGEAR_API DECLARE_LOG_CATEGORY_EXTERN(LogApiGearConnectionsStore, Log, All);
 
 /**
- * Implements the connections store for the ApiGear plugin.
+ * Creates and stores connections based on configured connections in settings.
+ *  @see ApiGearSettings
  * 
- * Can handle all connections which inherit from the IApiGearConnection interface.
- * To register your own protocol, you need to call RegisterConnectionFactory
- * before this class/module is initialized. The ApiGearOLink module is an example
- * how this can be done.
+ * Handles all connections which inherit from the IApiGearConnection interface.
+ * @warning For custom protocols make sure you've registered your own protocol factory with a RegisterConnectionFactory.
+ * before this class/module is initialized.
+ * You may use implemented ApiGearOLink module as an example.
  */
 UCLASS(BlueprintType)
 class APIGEAR_API UApiGearConnectionsStore : public UEngineSubsystem
@@ -30,7 +31,11 @@ public:
 	/** A type of function for creating connections*/
 	using FConnectionFactoryFunction = TFunction<TScriptInterface<IApiGearConnection>(UObject*, FString)>;
 
-	/** register factories for different types of connections */
+	/** 
+	 * Register custom factories of connections.
+	 * This function must be called before this class or module are initialized.
+	 * @see ApiGearOLink.
+	 */
 	static bool RegisterConnectionFactory(FString ConnectionTypeIdentifier, FConnectionFactoryFunction FactoryFunction);
 
 	// USubssystem functions
@@ -62,6 +67,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|ConnectionsStore")
 	TArray<FString> GetAvailableProtocols() const;
 
+	/** Replaces ApiGear plugin settings configured for the project with all currently added connections. */
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|ConnectionsStore")
 	void OverwriteAndSaveConnectionsToSettings() const;
 
