@@ -4,6 +4,7 @@
 #include "Runtime/Launch/Resources/Version.h"
 #include "Containers/Ticker.h"
 
+/** This is a a helper file to provide version independent ticker functionality */
 namespace ApiGear
 {
 #if (ENGINE_MAJOR_VERSION >= 5)
