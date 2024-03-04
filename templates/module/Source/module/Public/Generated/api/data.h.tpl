@@ -58,6 +58,15 @@ struct {{$API_MACRO}} {{$class }} : public FTableRowBase
 	{{ueType "" .}} {{.Name}}{ {{- ueDefault "" . -}} };
 {{- end }}
 
+{{- if $.Features.apigear }}
+
+	/**
+	 * {{$class}} to JSON formatted FString
+	 * @return JSON formatted FString
+	 */
+	FString ToJSON() const;
+{{- end }}
+
 	bool operator==(const {{$class}}& rhs) const;
 	bool operator!=(const {{$class }}& rhs) const;
 };
@@ -70,7 +79,9 @@ UCLASS(meta = (BlueprintThreadSafe))
 class {{$API_MACRO}} U{{ $ModuleName }}Library : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
-{{- if .Module.Enums }}{{nl}}
+
+public:
+{{- if .Module.Enums }}
 {{- range $idx, $elem := .Module.Enums }}
 {{- $moduleEnumName := printf "%s%s" $ModuleName .Name }}
 {{- $class := printf "E%s%s" $ModuleName .Name }}
@@ -79,9 +90,10 @@ class {{$API_MACRO}} U{{ $ModuleName }}Library : public UBlueprintFunctionLibrar
 	UFUNCTION(BlueprintCallable, Category = "{{$Category}}")
 	static bool to{{$moduleEnumName}}({{$class}}& ConvertedEnum, uint8 InValue);
 {{- end }}
+{{- if .Module.Structs }}{{nl}}{{ end }}
 {{- end }}
 
-{{- if .Module.Structs }}{{nl}}
+{{- if .Module.Structs }}
 {{- range $idx, $elem := .Module.Structs }}
 {{- $class := printf "F%s%s" $ModuleName .Name }}
 {{- $shortname := printf "%s%s" $ModuleName .Name }}
@@ -93,6 +105,13 @@ class {{$API_MACRO}} U{{ $ModuleName }}Library : public UBlueprintFunctionLibrar
 	/* Returns true if {{ $shortname }} A is not equal to {{ $shortname }} B (A != B) */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "Not Equal ({{ $shortname }})", CompactNodeTitle = "!=", Keywords = "!= not equal"), Category = "{{$Category}}")
 	static bool NotEqual_{{ $shortname }}{{ $shortname }}({{ $class }} A, {{ $class }} B);
+
+{{- if $.Features.apigear }}
+	
+	/** Converts a {{ $shortname }} to a JSON formatted FString */
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "To JSON ({{ $shortname }})", CompactNodeTitle = "->"), Category = "Utilities|String")
+	static FString Conv_{{ $shortname }}ToJSON(const {{ $class }}& In{{ $shortname }});
+{{- end }}
 {{- end }}
 {{- end }}
 };

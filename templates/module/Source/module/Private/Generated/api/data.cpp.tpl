@@ -20,6 +20,11 @@ limitations under the License.
 */
 
 #include "{{$ModuleName}}_data.h"
+{{- if .Features.apigear }}
+#include "{{$ModuleName}}.json.adapter.h"
+{{- end }}
+{{- nl }}
+
 {{- range .Module.Enums }}
 {{- $moduleEnumName := printf "%s%s" $ModuleName .Name }}
 {{- $class := printf "E%s%s" $ModuleName .Name }}
@@ -43,6 +48,7 @@ bool U{{ $ModuleName }}Library::to{{$moduleEnumName}}({{$class}}& ConvertedEnum,
 	return bSuccessful;
 }
 {{- end }}
+{{- if .Module.Enums }}{{nl}}{{ end -}}
 {{- range .Module.Structs}}
 {{- $class := printf "F%s%s" $ModuleName .Name}}
 bool {{$class}}::operator==(const {{$class}}& rhs) const
@@ -57,8 +63,19 @@ bool {{$class}}::operator!=(const {{$class}}& rhs) const
 {
 	return !operator==(rhs);
 }
+
+{{- if $.Features.apigear }}
+
+FString {{$class}}::ToJSON() const
+{
+	nlohmann::json object;
+	to_json(object, *this);
+	return object.dump().c_str();
+}
+{{- nl }}
 {{- end }}
-{{ range $idx, $elem := .Module.Structs }}
+{{- end }}
+{{- range $idx, $elem := .Module.Structs }}
 	{{- if $idx}}{{nl}}{{end}}
 {{- $class := printf "F%s%s" $ModuleName .Name }}
 {{- $shortname := printf "%s%s" $ModuleName .Name }}
@@ -73,5 +90,13 @@ bool U{{ $ModuleName }}Library::NotEqual_{{ $shortname }}{{ $shortname }}({{ $cl
 {
 	return A != B;
 }
+
+{{- if $.Features.apigear }}
+
+FString U{{ $ModuleName }}Library::Conv_{{ $shortname }}ToJSON(const {{ $class }}& In{{ $shortname }})
+{
+	return In{{ $shortname }}.ToJSON();
+}
+{{- end }}
 {{- end }}
 {{- if .Module.Structs }}{{nl}}{{ end -}}

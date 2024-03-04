@@ -16,3 +16,4 @@ limitations under the License.
 */
 
 #include "TbSimple_data.h"
+#include "TbSimple.json.adapter.h"

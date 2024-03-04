@@ -61,6 +61,12 @@ struct TBSAME2_API FTbSame2Struct1 : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ApiGear|TbSame2")
 	int32 field3{0};
 
+	/**
+	 * FTbSame2Struct1 to JSON formatted FString
+	 * @return JSON formatted FString
+	 */
+	FString ToJSON() const;
+
 	bool operator==(const FTbSame2Struct1& rhs) const;
 	bool operator!=(const FTbSame2Struct1& rhs) const;
 };
@@ -82,6 +88,12 @@ struct TBSAME2_API FTbSame2Struct2 : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ApiGear|TbSame2")
 	int32 field3{0};
 
+	/**
+	 * FTbSame2Struct2 to JSON formatted FString
+	 * @return JSON formatted FString
+	 */
+	FString ToJSON() const;
+
 	bool operator==(const FTbSame2Struct2& rhs) const;
 	bool operator!=(const FTbSame2Struct2& rhs) const;
 };
@@ -94,6 +106,7 @@ class TBSAME2_API UTbSame2Library : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
 
+public:
 	/* Convert from uint8 to ETbSame2Enum1 @return true if successful */
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2")
 	static bool toTbSame2Enum1(ETbSame2Enum1& ConvertedEnum, uint8 InValue);
@@ -109,6 +122,10 @@ class TBSAME2_API UTbSame2Library : public UBlueprintFunctionLibrary
 	/* Returns true if TbSame2Struct1 A is not equal to TbSame2Struct1 B (A != B) */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "Not Equal (TbSame2Struct1)", CompactNodeTitle = "!=", Keywords = "!= not equal"), Category = "ApiGear|TbSame2")
 	static bool NotEqual_TbSame2Struct1TbSame2Struct1(FTbSame2Struct1 A, FTbSame2Struct1 B);
+	
+	/** Converts a TbSame2Struct1 to a JSON formatted FString */
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "To JSON (TbSame2Struct1)", CompactNodeTitle = "->"), Category = "Utilities|String")
+	static FString Conv_TbSame2Struct1ToJSON(const FTbSame2Struct1& InTbSame2Struct1);
 
 	/* Returns true if TbSame2Struct2 A is equal to TbSame2Struct2 B (A == B) */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "Equal (TbSame2Struct2)", CompactNodeTitle = "==", Keywords = "== equal"), Category = "ApiGear|TbSame2")
@@ -117,4 +134,8 @@ class TBSAME2_API UTbSame2Library : public UBlueprintFunctionLibrary
 	/* Returns true if TbSame2Struct2 A is not equal to TbSame2Struct2 B (A != B) */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "Not Equal (TbSame2Struct2)", CompactNodeTitle = "!=", Keywords = "!= not equal"), Category = "ApiGear|TbSame2")
 	static bool NotEqual_TbSame2Struct2TbSame2Struct2(FTbSame2Struct2 A, FTbSame2Struct2 B);
+	
+	/** Converts a TbSame2Struct2 to a JSON formatted FString */
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "To JSON (TbSame2Struct2)", CompactNodeTitle = "->"), Category = "Utilities|String")
+	static FString Conv_TbSame2Struct2ToJSON(const FTbSame2Struct2& InTbSame2Struct2);
 };

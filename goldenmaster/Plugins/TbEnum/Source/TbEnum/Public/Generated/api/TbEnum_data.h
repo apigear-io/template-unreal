@@ -76,6 +76,7 @@ class TBENUM_API UTbEnumLibrary : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
 
+public:
 	/* Convert from uint8 to ETbEnumEnum0 @return true if successful */
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbEnum")
 	static bool toTbEnumEnum0(ETbEnumEnum0& ConvertedEnum, uint8 InValue);
