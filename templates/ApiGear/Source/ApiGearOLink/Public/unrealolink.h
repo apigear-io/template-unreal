@@ -78,8 +78,6 @@ private:
 
 	TArray<std::string> ListLinkedObjects;
 
-	DEFINE_LOG_CATEGORY(LogApiGearOLink);
-
 	// Delegate handle for scheduled process message task
 	ApiGear::FDelegateHandle m_processMessageTaskTimerHandle;
 
