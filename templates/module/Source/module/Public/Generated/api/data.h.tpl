@@ -65,6 +65,20 @@ struct {{$API_MACRO}} {{$class }} : public FTableRowBase
 	 * @return JSON formatted FString
 	 */
 	FString ToJSON() const;
+
+	/** 
+	 * {{$class}} to FString
+	 * WARNING: Do not rely on the format of the string, it may change in the future
+	 */
+	FString ToString() const;
+
+	/**
+	 * {{$class}} to FString
+	 * WARNING: Do not rely on the format of the string, it may change in the future
+	 * 
+	 * @return FString 
+	 */
+	explicit operator FString() const;
 {{- end }}
 
 	bool operator==(const {{$class}}& rhs) const;
@@ -111,6 +125,10 @@ public:
 	/** Converts a {{ $shortname }} to a JSON formatted FString */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "To JSON ({{ $shortname }})", CompactNodeTitle = "->"), Category = "Utilities|String")
 	static FString Conv_{{ $shortname }}ToJSON(const {{ $class }}& In{{ $shortname }});
+
+	/** Converts a {{ $shortname }} to a string. WARNING: Do not rely on the format of the string, it may change in the future */
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "To String ({{ $shortname }})", CompactNodeTitle = "->", BlueprintAutocast), Category = "Utilities|String")
+	static FString Conv_{{ $shortname }}ToString(const {{ $class }}& In{{ $shortname }});
 {{- end }}
 {{- end }}
 {{- end }}

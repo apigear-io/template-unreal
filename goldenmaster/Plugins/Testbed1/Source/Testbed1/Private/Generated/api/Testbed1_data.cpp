@@ -28,6 +28,16 @@ bool FTestbed1StructBool::operator!=(const FTestbed1StructBool& rhs) const
 	return !operator==(rhs);
 }
 
+FTestbed1StructBool::operator FString() const
+{
+	return ToString();
+}
+
+FString FTestbed1StructBool::ToString() const
+{
+	return ToJSON();
+}
+
 FString FTestbed1StructBool::ToJSON() const
 {
 	nlohmann::json object;
@@ -43,6 +53,16 @@ bool FTestbed1StructInt::operator==(const FTestbed1StructInt& rhs) const
 bool FTestbed1StructInt::operator!=(const FTestbed1StructInt& rhs) const
 {
 	return !operator==(rhs);
+}
+
+FTestbed1StructInt::operator FString() const
+{
+	return ToString();
+}
+
+FString FTestbed1StructInt::ToString() const
+{
+	return ToJSON();
 }
 
 FString FTestbed1StructInt::ToJSON() const
@@ -62,6 +82,16 @@ bool FTestbed1StructFloat::operator!=(const FTestbed1StructFloat& rhs) const
 	return !operator==(rhs);
 }
 
+FTestbed1StructFloat::operator FString() const
+{
+	return ToString();
+}
+
+FString FTestbed1StructFloat::ToString() const
+{
+	return ToJSON();
+}
+
 FString FTestbed1StructFloat::ToJSON() const
 {
 	nlohmann::json object;
@@ -77,6 +107,16 @@ bool FTestbed1StructString::operator==(const FTestbed1StructString& rhs) const
 bool FTestbed1StructString::operator!=(const FTestbed1StructString& rhs) const
 {
 	return !operator==(rhs);
+}
+
+FTestbed1StructString::operator FString() const
+{
+	return ToString();
+}
+
+FString FTestbed1StructString::ToString() const
+{
+	return ToJSON();
 }
 
 FString FTestbed1StructString::ToJSON() const
@@ -98,6 +138,11 @@ bool UTestbed1Library::NotEqual_Testbed1StructBoolTestbed1StructBool(FTestbed1St
 	return A != B;
 }
 
+FString UTestbed1Library::Conv_Testbed1StructBoolToString(const FTestbed1StructBool& InTestbed1StructBool)
+{
+	return InTestbed1StructBool.ToString();
+}
+
 FString UTestbed1Library::Conv_Testbed1StructBoolToJSON(const FTestbed1StructBool& InTestbed1StructBool)
 {
 	return InTestbed1StructBool.ToJSON();
@@ -113,6 +158,11 @@ bool UTestbed1Library::EqualEqual_Testbed1StructIntTestbed1StructInt(FTestbed1St
 bool UTestbed1Library::NotEqual_Testbed1StructIntTestbed1StructInt(FTestbed1StructInt A, FTestbed1StructInt B)
 {
 	return A != B;
+}
+
+FString UTestbed1Library::Conv_Testbed1StructIntToString(const FTestbed1StructInt& InTestbed1StructInt)
+{
+	return InTestbed1StructInt.ToString();
 }
 
 FString UTestbed1Library::Conv_Testbed1StructIntToJSON(const FTestbed1StructInt& InTestbed1StructInt)
@@ -132,6 +182,11 @@ bool UTestbed1Library::NotEqual_Testbed1StructFloatTestbed1StructFloat(FTestbed1
 	return A != B;
 }
 
+FString UTestbed1Library::Conv_Testbed1StructFloatToString(const FTestbed1StructFloat& InTestbed1StructFloat)
+{
+	return InTestbed1StructFloat.ToString();
+}
+
 FString UTestbed1Library::Conv_Testbed1StructFloatToJSON(const FTestbed1StructFloat& InTestbed1StructFloat)
 {
 	return InTestbed1StructFloat.ToJSON();
@@ -147,6 +202,11 @@ bool UTestbed1Library::EqualEqual_Testbed1StructStringTestbed1StructString(FTest
 bool UTestbed1Library::NotEqual_Testbed1StructStringTestbed1StructString(FTestbed1StructString A, FTestbed1StructString B)
 {
 	return A != B;
+}
+
+FString UTestbed1Library::Conv_Testbed1StructStringToString(const FTestbed1StructString& InTestbed1StructString)
+{
+	return InTestbed1StructString.ToString();
 }
 
 FString UTestbed1Library::Conv_Testbed1StructStringToJSON(const FTestbed1StructString& InTestbed1StructString)

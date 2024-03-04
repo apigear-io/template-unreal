@@ -66,6 +66,16 @@ bool {{$class}}::operator!=(const {{$class}}& rhs) const
 
 {{- if $.Features.apigear }}
 
+{{$class}}::operator FString() const
+{
+	return ToString();
+}
+
+FString {{$class}}::ToString() const
+{
+	return ToJSON();
+}
+
 FString {{$class}}::ToJSON() const
 {
 	nlohmann::json object;
@@ -92,6 +102,11 @@ bool U{{ $ModuleName }}Library::NotEqual_{{ $shortname }}{{ $shortname }}({{ $cl
 }
 
 {{- if $.Features.apigear }}
+
+FString U{{ $ModuleName }}Library::Conv_{{ $shortname }}ToString(const {{ $class }}& In{{ $shortname }})
+{
+	return In{{ $shortname }}.ToString();
+}
 
 FString U{{ $ModuleName }}Library::Conv_{{ $shortname }}ToJSON(const {{ $class }}& In{{ $shortname }})
 {

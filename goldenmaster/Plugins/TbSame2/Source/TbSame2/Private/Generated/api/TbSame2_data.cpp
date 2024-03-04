@@ -71,6 +71,16 @@ bool FTbSame2Struct1::operator!=(const FTbSame2Struct1& rhs) const
 	return !operator==(rhs);
 }
 
+FTbSame2Struct1::operator FString() const
+{
+	return ToString();
+}
+
+FString FTbSame2Struct1::ToString() const
+{
+	return ToJSON();
+}
+
 FString FTbSame2Struct1::ToJSON() const
 {
 	nlohmann::json object;
@@ -86,6 +96,16 @@ bool FTbSame2Struct2::operator==(const FTbSame2Struct2& rhs) const
 bool FTbSame2Struct2::operator!=(const FTbSame2Struct2& rhs) const
 {
 	return !operator==(rhs);
+}
+
+FTbSame2Struct2::operator FString() const
+{
+	return ToString();
+}
+
+FString FTbSame2Struct2::ToString() const
+{
+	return ToJSON();
 }
 
 FString FTbSame2Struct2::ToJSON() const
@@ -107,6 +127,11 @@ bool UTbSame2Library::NotEqual_TbSame2Struct1TbSame2Struct1(FTbSame2Struct1 A, F
 	return A != B;
 }
 
+FString UTbSame2Library::Conv_TbSame2Struct1ToString(const FTbSame2Struct1& InTbSame2Struct1)
+{
+	return InTbSame2Struct1.ToString();
+}
+
 FString UTbSame2Library::Conv_TbSame2Struct1ToJSON(const FTbSame2Struct1& InTbSame2Struct1)
 {
 	return InTbSame2Struct1.ToJSON();
@@ -122,6 +147,11 @@ bool UTbSame2Library::EqualEqual_TbSame2Struct2TbSame2Struct2(FTbSame2Struct2 A,
 bool UTbSame2Library::NotEqual_TbSame2Struct2TbSame2Struct2(FTbSame2Struct2 A, FTbSame2Struct2 B)
 {
 	return A != B;
+}
+
+FString UTbSame2Library::Conv_TbSame2Struct2ToString(const FTbSame2Struct2& InTbSame2Struct2)
+{
+	return InTbSame2Struct2.ToString();
 }
 
 FString UTbSame2Library::Conv_TbSame2Struct2ToJSON(const FTbSame2Struct2& InTbSame2Struct2)

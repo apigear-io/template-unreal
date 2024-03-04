@@ -67,6 +67,20 @@ struct TBSAME1_API FTbSame1Struct1 : public FTableRowBase
 	 */
 	FString ToJSON() const;
 
+	/** 
+	 * FTbSame1Struct1 to FString
+	 * WARNING: Do not rely on the format of the string, it may change in the future
+	 */
+	FString ToString() const;
+
+	/**
+	 * FTbSame1Struct1 to FString
+	 * WARNING: Do not rely on the format of the string, it may change in the future
+	 * 
+	 * @return FString 
+	 */
+	explicit operator FString() const;
+
 	bool operator==(const FTbSame1Struct1& rhs) const;
 	bool operator!=(const FTbSame1Struct1& rhs) const;
 };
@@ -93,6 +107,20 @@ struct TBSAME1_API FTbSame1Struct2 : public FTableRowBase
 	 * @return JSON formatted FString
 	 */
 	FString ToJSON() const;
+
+	/** 
+	 * FTbSame1Struct2 to FString
+	 * WARNING: Do not rely on the format of the string, it may change in the future
+	 */
+	FString ToString() const;
+
+	/**
+	 * FTbSame1Struct2 to FString
+	 * WARNING: Do not rely on the format of the string, it may change in the future
+	 * 
+	 * @return FString 
+	 */
+	explicit operator FString() const;
 
 	bool operator==(const FTbSame1Struct2& rhs) const;
 	bool operator!=(const FTbSame1Struct2& rhs) const;
@@ -127,6 +155,10 @@ public:
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "To JSON (TbSame1Struct1)", CompactNodeTitle = "->"), Category = "Utilities|String")
 	static FString Conv_TbSame1Struct1ToJSON(const FTbSame1Struct1& InTbSame1Struct1);
 
+	/** Converts a TbSame1Struct1 to a string. WARNING: Do not rely on the format of the string, it may change in the future */
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "To String (TbSame1Struct1)", CompactNodeTitle = "->", BlueprintAutocast), Category = "Utilities|String")
+	static FString Conv_TbSame1Struct1ToString(const FTbSame1Struct1& InTbSame1Struct1);
+
 	/* Returns true if TbSame1Struct2 A is equal to TbSame1Struct2 B (A == B) */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "Equal (TbSame1Struct2)", CompactNodeTitle = "==", Keywords = "== equal"), Category = "ApiGear|TbSame1")
 	static bool EqualEqual_TbSame1Struct2TbSame1Struct2(FTbSame1Struct2 A, FTbSame1Struct2 B);
@@ -138,4 +170,8 @@ public:
 	/** Converts a TbSame1Struct2 to a JSON formatted FString */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "To JSON (TbSame1Struct2)", CompactNodeTitle = "->"), Category = "Utilities|String")
 	static FString Conv_TbSame1Struct2ToJSON(const FTbSame1Struct2& InTbSame1Struct2);
+
+	/** Converts a TbSame1Struct2 to a string. WARNING: Do not rely on the format of the string, it may change in the future */
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "To String (TbSame1Struct2)", CompactNodeTitle = "->", BlueprintAutocast), Category = "Utilities|String")
+	static FString Conv_TbSame1Struct2ToString(const FTbSame1Struct2& InTbSame1Struct2);
 };
