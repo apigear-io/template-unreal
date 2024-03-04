@@ -29,7 +29,7 @@
 			"Name" : "{{$ModuleName}}Editor",
 			"Type" : "Editor",
 			"LoadingPhase" : "default",
-			"WhitelistPlatforms" : [ "Win64", "Mac", "Linux" ]
+			"PlatformAllowList" : [ "Win64", "Mac", "Linux" ]
 		}
 	]
 {{- if .Features.apigear }},
