@@ -48,7 +48,8 @@ public class {{$ModuleName}} : ModuleRules
 				"ApiGear",
 {{- end }}
 				"Projects",
-				"Engine"
+				"Engine",
+				"JsonUtilities"
 			}
 			);
 			

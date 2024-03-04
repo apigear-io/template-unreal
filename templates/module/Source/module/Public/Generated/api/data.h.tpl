@@ -58,13 +58,13 @@ struct {{$API_MACRO}} {{$class }} : public FTableRowBase
 	{{ueType "" .}} {{.Name}}{ {{- ueDefault "" . -}} };
 {{- end }}
 
-{{- if $.Features.apigear }}
-
 	/**
 	 * {{$class}} to JSON formatted FString
+	 * @param bPrettyPrint Specify whether to use pretty print (e.g., with line endings) or condensed print.
+	 * 
 	 * @return JSON formatted FString
 	 */
-	FString ToJSON() const;
+	FString ToJSON(bool bPrettyPrint = false) const;
 
 	/** 
 	 * {{$class}} to FString
@@ -79,7 +79,6 @@ struct {{$API_MACRO}} {{$class }} : public FTableRowBase
 	 * @return FString 
 	 */
 	explicit operator FString() const;
-{{- end }}
 
 	bool operator==(const {{$class}}& rhs) const;
 	bool operator!=(const {{$class }}& rhs) const;
@@ -120,8 +119,6 @@ public:
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "Not Equal ({{ $shortname }})", CompactNodeTitle = "!=", Keywords = "!= not equal"), Category = "{{$Category}}")
 	static bool NotEqual_{{ $shortname }}{{ $shortname }}({{ $class }} A, {{ $class }} B);
 
-{{- if $.Features.apigear }}
-	
 	/** Converts a {{ $shortname }} to a JSON formatted FString */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "To JSON ({{ $shortname }})", CompactNodeTitle = "->"), Category = "Utilities|String")
 	static FString Conv_{{ $shortname }}ToJSON(const {{ $class }}& In{{ $shortname }});
@@ -129,7 +126,6 @@ public:
 	/** Converts a {{ $shortname }} to a string. WARNING: Do not rely on the format of the string, it may change in the future */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "To String ({{ $shortname }})", CompactNodeTitle = "->", BlueprintAutocast), Category = "Utilities|String")
 	static FString Conv_{{ $shortname }}ToString(const {{ $class }}& In{{ $shortname }});
-{{- end }}
 {{- end }}
 {{- end }}
 };

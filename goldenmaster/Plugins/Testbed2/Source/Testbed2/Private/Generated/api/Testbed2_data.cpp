@@ -16,7 +16,7 @@ limitations under the License.
 */
 
 #include "Testbed2_data.h"
-#include "Testbed2.json.adapter.h"
+#include "Runtime/JsonUtilities/Public/JsonObjectConverter.h"
 
 /**
  * Enumeration ETestbed2Enum1
@@ -123,14 +123,14 @@ FTestbed2Struct1::operator FString() const
 
 FString FTestbed2Struct1::ToString() const
 {
-	return ToJSON();
+	return ToJSON(true);
 }
 
-FString FTestbed2Struct1::ToJSON() const
+FString FTestbed2Struct1::ToJSON(bool bPrettyPrint) const
 {
-	nlohmann::json object;
-	to_json(object, *this);
-	return object.dump().c_str();
+	FString JSONString;
+	FJsonObjectConverter::UStructToJsonObjectString(*this, JSONString, 0, 0, 0, nullptr, bPrettyPrint);
+	return JSONString;
 }
 
 bool FTestbed2Struct2::operator==(const FTestbed2Struct2& rhs) const
@@ -150,14 +150,14 @@ FTestbed2Struct2::operator FString() const
 
 FString FTestbed2Struct2::ToString() const
 {
-	return ToJSON();
+	return ToJSON(true);
 }
 
-FString FTestbed2Struct2::ToJSON() const
+FString FTestbed2Struct2::ToJSON(bool bPrettyPrint) const
 {
-	nlohmann::json object;
-	to_json(object, *this);
-	return object.dump().c_str();
+	FString JSONString;
+	FJsonObjectConverter::UStructToJsonObjectString(*this, JSONString, 0, 0, 0, nullptr, bPrettyPrint);
+	return JSONString;
 }
 
 bool FTestbed2Struct3::operator==(const FTestbed2Struct3& rhs) const
@@ -177,14 +177,14 @@ FTestbed2Struct3::operator FString() const
 
 FString FTestbed2Struct3::ToString() const
 {
-	return ToJSON();
+	return ToJSON(true);
 }
 
-FString FTestbed2Struct3::ToJSON() const
+FString FTestbed2Struct3::ToJSON(bool bPrettyPrint) const
 {
-	nlohmann::json object;
-	to_json(object, *this);
-	return object.dump().c_str();
+	FString JSONString;
+	FJsonObjectConverter::UStructToJsonObjectString(*this, JSONString, 0, 0, 0, nullptr, bPrettyPrint);
+	return JSONString;
 }
 
 bool FTestbed2Struct4::operator==(const FTestbed2Struct4& rhs) const
@@ -204,14 +204,14 @@ FTestbed2Struct4::operator FString() const
 
 FString FTestbed2Struct4::ToString() const
 {
-	return ToJSON();
+	return ToJSON(true);
 }
 
-FString FTestbed2Struct4::ToJSON() const
+FString FTestbed2Struct4::ToJSON(bool bPrettyPrint) const
 {
-	nlohmann::json object;
-	to_json(object, *this);
-	return object.dump().c_str();
+	FString JSONString;
+	FJsonObjectConverter::UStructToJsonObjectString(*this, JSONString, 0, 0, 0, nullptr, bPrettyPrint);
+	return JSONString;
 }
 
 bool FTestbed2NestedStruct1::operator==(const FTestbed2NestedStruct1& rhs) const
@@ -231,14 +231,14 @@ FTestbed2NestedStruct1::operator FString() const
 
 FString FTestbed2NestedStruct1::ToString() const
 {
-	return ToJSON();
+	return ToJSON(true);
 }
 
-FString FTestbed2NestedStruct1::ToJSON() const
+FString FTestbed2NestedStruct1::ToJSON(bool bPrettyPrint) const
 {
-	nlohmann::json object;
-	to_json(object, *this);
-	return object.dump().c_str();
+	FString JSONString;
+	FJsonObjectConverter::UStructToJsonObjectString(*this, JSONString, 0, 0, 0, nullptr, bPrettyPrint);
+	return JSONString;
 }
 
 bool FTestbed2NestedStruct2::operator==(const FTestbed2NestedStruct2& rhs) const
@@ -258,14 +258,14 @@ FTestbed2NestedStruct2::operator FString() const
 
 FString FTestbed2NestedStruct2::ToString() const
 {
-	return ToJSON();
+	return ToJSON(true);
 }
 
-FString FTestbed2NestedStruct2::ToJSON() const
+FString FTestbed2NestedStruct2::ToJSON(bool bPrettyPrint) const
 {
-	nlohmann::json object;
-	to_json(object, *this);
-	return object.dump().c_str();
+	FString JSONString;
+	FJsonObjectConverter::UStructToJsonObjectString(*this, JSONString, 0, 0, 0, nullptr, bPrettyPrint);
+	return JSONString;
 }
 
 bool FTestbed2NestedStruct3::operator==(const FTestbed2NestedStruct3& rhs) const
@@ -285,14 +285,14 @@ FTestbed2NestedStruct3::operator FString() const
 
 FString FTestbed2NestedStruct3::ToString() const
 {
-	return ToJSON();
+	return ToJSON(true);
 }
 
-FString FTestbed2NestedStruct3::ToJSON() const
+FString FTestbed2NestedStruct3::ToJSON(bool bPrettyPrint) const
 {
-	nlohmann::json object;
-	to_json(object, *this);
-	return object.dump().c_str();
+	FString JSONString;
+	FJsonObjectConverter::UStructToJsonObjectString(*this, JSONString, 0, 0, 0, nullptr, bPrettyPrint);
+	return JSONString;
 }
 
 /* Returns true if Testbed2Struct1 A is equal to Testbed2Struct1 B (A == B) */

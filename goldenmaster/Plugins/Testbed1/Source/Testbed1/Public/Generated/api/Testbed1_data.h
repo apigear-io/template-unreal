@@ -35,9 +35,11 @@ struct TESTBED1_API FTestbed1StructBool : public FTableRowBase
 
 	/**
 	 * FTestbed1StructBool to JSON formatted FString
+	 * @param bPrettyPrint Specify whether to use pretty print (e.g., with line endings) or condensed print.
+	 * 
 	 * @return JSON formatted FString
 	 */
-	FString ToJSON() const;
+	FString ToJSON(bool bPrettyPrint = false) const;
 
 	/** 
 	 * FTestbed1StructBool to FString
@@ -70,9 +72,11 @@ struct TESTBED1_API FTestbed1StructInt : public FTableRowBase
 
 	/**
 	 * FTestbed1StructInt to JSON formatted FString
+	 * @param bPrettyPrint Specify whether to use pretty print (e.g., with line endings) or condensed print.
+	 * 
 	 * @return JSON formatted FString
 	 */
-	FString ToJSON() const;
+	FString ToJSON(bool bPrettyPrint = false) const;
 
 	/** 
 	 * FTestbed1StructInt to FString
@@ -105,9 +109,11 @@ struct TESTBED1_API FTestbed1StructFloat : public FTableRowBase
 
 	/**
 	 * FTestbed1StructFloat to JSON formatted FString
+	 * @param bPrettyPrint Specify whether to use pretty print (e.g., with line endings) or condensed print.
+	 * 
 	 * @return JSON formatted FString
 	 */
-	FString ToJSON() const;
+	FString ToJSON(bool bPrettyPrint = false) const;
 
 	/** 
 	 * FTestbed1StructFloat to FString
@@ -140,9 +146,11 @@ struct TESTBED1_API FTestbed1StructString : public FTableRowBase
 
 	/**
 	 * FTestbed1StructString to JSON formatted FString
+	 * @param bPrettyPrint Specify whether to use pretty print (e.g., with line endings) or condensed print.
+	 * 
 	 * @return JSON formatted FString
 	 */
-	FString ToJSON() const;
+	FString ToJSON(bool bPrettyPrint = false) const;
 
 	/** 
 	 * FTestbed1StructString to FString
@@ -178,7 +186,7 @@ public:
 	/* Returns true if Testbed1StructBool A is not equal to Testbed1StructBool B (A != B) */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "Not Equal (Testbed1StructBool)", CompactNodeTitle = "!=", Keywords = "!= not equal"), Category = "ApiGear|Testbed1")
 	static bool NotEqual_Testbed1StructBoolTestbed1StructBool(FTestbed1StructBool A, FTestbed1StructBool B);
-	
+
 	/** Converts a Testbed1StructBool to a JSON formatted FString */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "To JSON (Testbed1StructBool)", CompactNodeTitle = "->"), Category = "Utilities|String")
 	static FString Conv_Testbed1StructBoolToJSON(const FTestbed1StructBool& InTestbed1StructBool);
@@ -194,7 +202,7 @@ public:
 	/* Returns true if Testbed1StructInt A is not equal to Testbed1StructInt B (A != B) */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "Not Equal (Testbed1StructInt)", CompactNodeTitle = "!=", Keywords = "!= not equal"), Category = "ApiGear|Testbed1")
 	static bool NotEqual_Testbed1StructIntTestbed1StructInt(FTestbed1StructInt A, FTestbed1StructInt B);
-	
+
 	/** Converts a Testbed1StructInt to a JSON formatted FString */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "To JSON (Testbed1StructInt)", CompactNodeTitle = "->"), Category = "Utilities|String")
 	static FString Conv_Testbed1StructIntToJSON(const FTestbed1StructInt& InTestbed1StructInt);
@@ -210,7 +218,7 @@ public:
 	/* Returns true if Testbed1StructFloat A is not equal to Testbed1StructFloat B (A != B) */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "Not Equal (Testbed1StructFloat)", CompactNodeTitle = "!=", Keywords = "!= not equal"), Category = "ApiGear|Testbed1")
 	static bool NotEqual_Testbed1StructFloatTestbed1StructFloat(FTestbed1StructFloat A, FTestbed1StructFloat B);
-	
+
 	/** Converts a Testbed1StructFloat to a JSON formatted FString */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "To JSON (Testbed1StructFloat)", CompactNodeTitle = "->"), Category = "Utilities|String")
 	static FString Conv_Testbed1StructFloatToJSON(const FTestbed1StructFloat& InTestbed1StructFloat);
@@ -226,7 +234,7 @@ public:
 	/* Returns true if Testbed1StructString A is not equal to Testbed1StructString B (A != B) */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "Not Equal (Testbed1StructString)", CompactNodeTitle = "!=", Keywords = "!= not equal"), Category = "ApiGear|Testbed1")
 	static bool NotEqual_Testbed1StructStringTestbed1StructString(FTestbed1StructString A, FTestbed1StructString B);
-	
+
 	/** Converts a Testbed1StructString to a JSON formatted FString */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "To JSON (Testbed1StructString)", CompactNodeTitle = "->"), Category = "Utilities|String")
 	static FString Conv_Testbed1StructStringToJSON(const FTestbed1StructString& InTestbed1StructString);

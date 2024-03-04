@@ -16,7 +16,7 @@ limitations under the License.
 */
 
 #include "TbEnum_data.h"
-#include "TbEnum.json.adapter.h"
+#include "Runtime/JsonUtilities/Public/JsonObjectConverter.h"
 
 /**
  * Enumeration ETbEnumEnum0

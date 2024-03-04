@@ -16,7 +16,7 @@ limitations under the License.
 */
 
 #include "Testbed1_data.h"
-#include "Testbed1.json.adapter.h"
+#include "Runtime/JsonUtilities/Public/JsonObjectConverter.h"
 
 bool FTestbed1StructBool::operator==(const FTestbed1StructBool& rhs) const
 {
@@ -35,14 +35,14 @@ FTestbed1StructBool::operator FString() const
 
 FString FTestbed1StructBool::ToString() const
 {
-	return ToJSON();
+	return ToJSON(true);
 }
 
-FString FTestbed1StructBool::ToJSON() const
+FString FTestbed1StructBool::ToJSON(bool bPrettyPrint) const
 {
-	nlohmann::json object;
-	to_json(object, *this);
-	return object.dump().c_str();
+	FString JSONString;
+	FJsonObjectConverter::UStructToJsonObjectString(*this, JSONString, 0, 0, 0, nullptr, bPrettyPrint);
+	return JSONString;
 }
 
 bool FTestbed1StructInt::operator==(const FTestbed1StructInt& rhs) const
@@ -62,14 +62,14 @@ FTestbed1StructInt::operator FString() const
 
 FString FTestbed1StructInt::ToString() const
 {
-	return ToJSON();
+	return ToJSON(true);
 }
 
-FString FTestbed1StructInt::ToJSON() const
+FString FTestbed1StructInt::ToJSON(bool bPrettyPrint) const
 {
-	nlohmann::json object;
-	to_json(object, *this);
-	return object.dump().c_str();
+	FString JSONString;
+	FJsonObjectConverter::UStructToJsonObjectString(*this, JSONString, 0, 0, 0, nullptr, bPrettyPrint);
+	return JSONString;
 }
 
 bool FTestbed1StructFloat::operator==(const FTestbed1StructFloat& rhs) const
@@ -89,14 +89,14 @@ FTestbed1StructFloat::operator FString() const
 
 FString FTestbed1StructFloat::ToString() const
 {
-	return ToJSON();
+	return ToJSON(true);
 }
 
-FString FTestbed1StructFloat::ToJSON() const
+FString FTestbed1StructFloat::ToJSON(bool bPrettyPrint) const
 {
-	nlohmann::json object;
-	to_json(object, *this);
-	return object.dump().c_str();
+	FString JSONString;
+	FJsonObjectConverter::UStructToJsonObjectString(*this, JSONString, 0, 0, 0, nullptr, bPrettyPrint);
+	return JSONString;
 }
 
 bool FTestbed1StructString::operator==(const FTestbed1StructString& rhs) const
@@ -116,14 +116,14 @@ FTestbed1StructString::operator FString() const
 
 FString FTestbed1StructString::ToString() const
 {
-	return ToJSON();
+	return ToJSON(true);
 }
 
-FString FTestbed1StructString::ToJSON() const
+FString FTestbed1StructString::ToJSON(bool bPrettyPrint) const
 {
-	nlohmann::json object;
-	to_json(object, *this);
-	return object.dump().c_str();
+	FString JSONString;
+	FJsonObjectConverter::UStructToJsonObjectString(*this, JSONString, 0, 0, 0, nullptr, bPrettyPrint);
+	return JSONString;
 }
 
 /* Returns true if Testbed1StructBool A is equal to Testbed1StructBool B (A == B) */

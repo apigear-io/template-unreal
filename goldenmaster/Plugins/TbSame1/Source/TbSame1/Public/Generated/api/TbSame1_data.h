@@ -63,9 +63,11 @@ struct TBSAME1_API FTbSame1Struct1 : public FTableRowBase
 
 	/**
 	 * FTbSame1Struct1 to JSON formatted FString
+	 * @param bPrettyPrint Specify whether to use pretty print (e.g., with line endings) or condensed print.
+	 * 
 	 * @return JSON formatted FString
 	 */
-	FString ToJSON() const;
+	FString ToJSON(bool bPrettyPrint = false) const;
 
 	/** 
 	 * FTbSame1Struct1 to FString
@@ -104,9 +106,11 @@ struct TBSAME1_API FTbSame1Struct2 : public FTableRowBase
 
 	/**
 	 * FTbSame1Struct2 to JSON formatted FString
+	 * @param bPrettyPrint Specify whether to use pretty print (e.g., with line endings) or condensed print.
+	 * 
 	 * @return JSON formatted FString
 	 */
-	FString ToJSON() const;
+	FString ToJSON(bool bPrettyPrint = false) const;
 
 	/** 
 	 * FTbSame1Struct2 to FString
@@ -150,7 +154,7 @@ public:
 	/* Returns true if TbSame1Struct1 A is not equal to TbSame1Struct1 B (A != B) */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "Not Equal (TbSame1Struct1)", CompactNodeTitle = "!=", Keywords = "!= not equal"), Category = "ApiGear|TbSame1")
 	static bool NotEqual_TbSame1Struct1TbSame1Struct1(FTbSame1Struct1 A, FTbSame1Struct1 B);
-	
+
 	/** Converts a TbSame1Struct1 to a JSON formatted FString */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "To JSON (TbSame1Struct1)", CompactNodeTitle = "->"), Category = "Utilities|String")
 	static FString Conv_TbSame1Struct1ToJSON(const FTbSame1Struct1& InTbSame1Struct1);
@@ -166,7 +170,7 @@ public:
 	/* Returns true if TbSame1Struct2 A is not equal to TbSame1Struct2 B (A != B) */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "Not Equal (TbSame1Struct2)", CompactNodeTitle = "!=", Keywords = "!= not equal"), Category = "ApiGear|TbSame1")
 	static bool NotEqual_TbSame1Struct2TbSame1Struct2(FTbSame1Struct2 A, FTbSame1Struct2 B);
-	
+
 	/** Converts a TbSame1Struct2 to a JSON formatted FString */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "To JSON (TbSame1Struct2)", CompactNodeTitle = "->"), Category = "Utilities|String")
 	static FString Conv_TbSame1Struct2ToJSON(const FTbSame1Struct2& InTbSame1Struct2);

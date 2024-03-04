@@ -39,7 +39,8 @@ public class TbEnum : ModuleRules
 				"Core",
 				"ApiGear",
 				"Projects",
-				"Engine"
+				"Engine",
+				"JsonUtilities"
 			}
 			);
 			

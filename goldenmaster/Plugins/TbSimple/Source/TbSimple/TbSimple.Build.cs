@@ -39,7 +39,8 @@ public class TbSimple : ModuleRules
 				"Core",
 				"ApiGear",
 				"Projects",
-				"Engine"
+				"Engine",
+				"JsonUtilities"
 			}
 			);
 			

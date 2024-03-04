@@ -20,9 +20,7 @@ limitations under the License.
 */
 
 #include "{{$ModuleName}}_data.h"
-{{- if .Features.apigear }}
-#include "{{$ModuleName}}.json.adapter.h"
-{{- end }}
+#include "Runtime/JsonUtilities/Public/JsonObjectConverter.h"
 {{- nl }}
 
 {{- range .Module.Enums }}
@@ -64,8 +62,6 @@ bool {{$class}}::operator!=(const {{$class}}& rhs) const
 	return !operator==(rhs);
 }
 
-{{- if $.Features.apigear }}
-
 {{$class}}::operator FString() const
 {
 	return ToString();
@@ -73,17 +69,16 @@ bool {{$class}}::operator!=(const {{$class}}& rhs) const
 
 FString {{$class}}::ToString() const
 {
-	return ToJSON();
+	return ToJSON(true);
 }
 
-FString {{$class}}::ToJSON() const
+FString {{$class}}::ToJSON(bool bPrettyPrint) const
 {
-	nlohmann::json object;
-	to_json(object, *this);
-	return object.dump().c_str();
+	FString JSONString;
+	FJsonObjectConverter::UStructToJsonObjectString(*this, JSONString, 0, 0, 0, nullptr, bPrettyPrint);
+	return JSONString;
 }
 {{- nl }}
-{{- end }}
 {{- end }}
 {{- range $idx, $elem := .Module.Structs }}
 	{{- if $idx}}{{nl}}{{end}}
@@ -101,8 +96,6 @@ bool U{{ $ModuleName }}Library::NotEqual_{{ $shortname }}{{ $shortname }}({{ $cl
 	return A != B;
 }
 
-{{- if $.Features.apigear }}
-
 FString U{{ $ModuleName }}Library::Conv_{{ $shortname }}ToString(const {{ $class }}& In{{ $shortname }})
 {
 	return In{{ $shortname }}.ToString();
@@ -112,6 +105,5 @@ FString U{{ $ModuleName }}Library::Conv_{{ $shortname }}ToJSON(const {{ $class }
 {
 	return In{{ $shortname }}.ToJSON();
 }
-{{- end }}
 {{- end }}
 {{- if .Module.Structs }}{{nl}}{{ end -}}

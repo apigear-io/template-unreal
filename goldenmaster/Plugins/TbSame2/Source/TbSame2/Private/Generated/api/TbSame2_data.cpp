@@ -16,7 +16,7 @@ limitations under the License.
 */
 
 #include "TbSame2_data.h"
-#include "TbSame2.json.adapter.h"
+#include "Runtime/JsonUtilities/Public/JsonObjectConverter.h"
 
 /**
  * Enumeration ETbSame2Enum1
@@ -78,14 +78,14 @@ FTbSame2Struct1::operator FString() const
 
 FString FTbSame2Struct1::ToString() const
 {
-	return ToJSON();
+	return ToJSON(true);
 }
 
-FString FTbSame2Struct1::ToJSON() const
+FString FTbSame2Struct1::ToJSON(bool bPrettyPrint) const
 {
-	nlohmann::json object;
-	to_json(object, *this);
-	return object.dump().c_str();
+	FString JSONString;
+	FJsonObjectConverter::UStructToJsonObjectString(*this, JSONString, 0, 0, 0, nullptr, bPrettyPrint);
+	return JSONString;
 }
 
 bool FTbSame2Struct2::operator==(const FTbSame2Struct2& rhs) const
@@ -105,14 +105,14 @@ FTbSame2Struct2::operator FString() const
 
 FString FTbSame2Struct2::ToString() const
 {
-	return ToJSON();
+	return ToJSON(true);
 }
 
-FString FTbSame2Struct2::ToJSON() const
+FString FTbSame2Struct2::ToJSON(bool bPrettyPrint) const
 {
-	nlohmann::json object;
-	to_json(object, *this);
-	return object.dump().c_str();
+	FString JSONString;
+	FJsonObjectConverter::UStructToJsonObjectString(*this, JSONString, 0, 0, 0, nullptr, bPrettyPrint);
+	return JSONString;
 }
 
 /* Returns true if TbSame2Struct1 A is equal to TbSame2Struct1 B (A == B) */
