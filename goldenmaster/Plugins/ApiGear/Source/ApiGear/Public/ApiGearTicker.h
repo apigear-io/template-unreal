@@ -22,9 +22,9 @@ public:
 		return FTSTicker::GetCoreTicker();
 	}
 #else
-	static FTicker& ApiGearTicker::GetCoreTicker()
+	static FTicker& GetCoreTicker()
 	{
-		return GetCoreTicker();
+		return FTicker::GetCoreTicker();
 	}
 #endif
 };
