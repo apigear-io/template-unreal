@@ -9,7 +9,7 @@ The Quick-Start guide explains how to, in few steps, get from an API to a functi
 
 ## 1. Install the code generator
 
-Get [ApiGear Studio](https://github.com/apigear-io/studio-releases/releases) or [ApiGear CLI](https://github.com/apigear-io/cli-releases/releases). For more information check the [ApiGear documentation](https://docs.apigear.io/docs/start/install).
+Get [ApiGear Studio](https://github.com/apigear-io/studio/releases) or [ApiGear CLI](https://github.com/apigear-io/cli/releases). For more information check the [ApiGear documentation](https://docs.apigear.io/docs/start/install).
 
 ## 2. Get the template
 
