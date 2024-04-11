@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# Introduction
+# Template Unreal Engine
 
 This is the documentation for the *Unreal Engine* template.
 
