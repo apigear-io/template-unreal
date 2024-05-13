@@ -65,14 +65,14 @@ nlohmann::json Protocol::propertyChangeMessage(const std::string& propertyId, co
                 );
 }
 
-nlohmann::json Protocol::invokeMessage(int requestId, const std::string& methodId, const nlohmann::json& args)
+nlohmann::json Protocol::invokeMessage(unsigned int requestId, const std::string& methodId, const nlohmann::json& args)
 {
     return nlohmann::json::array(
                 { MsgType::Invoke, requestId, methodId, args }
                 );
 }
 
-nlohmann::json Protocol::invokeReplyMessage(int requestId, const std::string& methodId, const nlohmann::json& value)
+nlohmann::json Protocol::invokeReplyMessage(unsigned int requestId, const std::string& methodId, const nlohmann::json& value)
 {
     return nlohmann::json::array(
                 { MsgType::InvokeReply, requestId, methodId, value }
@@ -131,14 +131,14 @@ bool Protocol::handleMessage(const nlohmann::json& msg, IProtocolListener& liste
         break;
     }
     case int(MsgType::Invoke): {
-        const auto& id = msg[1].get<int>();
+        const auto& id = msg[1].get<unsigned int>();
         const auto& methodId = msg[2].get<std::string>();
         const auto& args = msg[3].get<nlohmann::json>();
         listener.handleInvoke(id, methodId, args);
         break;
     }
     case int(MsgType::InvokeReply): {
-        const auto& id = msg[1].get<int>();
+        const auto& id = msg[1].get<unsigned int>();
         const auto& methodId = msg[2].get<std::string>();
         const auto& value = msg[3].get<nlohmann::json>();
         listener.handleInvokeReply(id, methodId, value);

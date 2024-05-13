@@ -80,7 +80,7 @@ public:
      * @param methodId Unambiguously describes method in object for which invoke message was received.
      * @param args Arguments with which method should be invoked.
      */
-    virtual void handleInvoke(int requestId, const std::string& methodId, const nlohmann::json& args) = 0;
+    virtual void handleInvoke(unsigned int requestId, const std::string& methodId, const nlohmann::json& args) = 0;
     /**
      * Client side handler, handles invokeReply message.
      * @param requestId Identifier of a request with which the client requested method invocation.
@@ -88,7 +88,7 @@ public:
      * @param methodId Unambiguously describes method in object for which invokeReply message was received.
      * @param value Method's result value.
      */
-    virtual void handleInvokeReply(int requestId, const std::string& methodId, const nlohmann::json& value) = 0;
+    virtual void handleInvokeReply(unsigned int requestId, const std::string& methodId, const nlohmann::json& value) = 0;
     /**
      * Client side handler, handles signal message.
      * @param signalId Unambiguously describes signal in object for which signal message was received.
@@ -166,7 +166,7 @@ public:
     * @param args Arguments with which method should be invoked.
     * @return Composed invokeMessage in json format.
     */
-    static nlohmann::json invokeMessage(int requestId, const std::string& methodId, const nlohmann::json& args);
+    static nlohmann::json invokeMessage(unsigned int requestId, const std::string& methodId, const nlohmann::json& args);
     /**
     * Method message.
     * Composes a response to a method invocation message for a methodId.
@@ -176,7 +176,7 @@ public:
     * @param value Value that is an outcome of method invocation.
     * @return Composed invokeReplyMessage in json format.
     */
-    static nlohmann::json invokeReplyMessage(int requestId, const std::string& methodId, const nlohmann::json& value);
+    static nlohmann::json invokeReplyMessage(unsigned int requestId, const std::string& methodId, const nlohmann::json& value);
     /**
     * Signal message.
     * Composes a notification message for signal emitted for signalId.

@@ -83,7 +83,7 @@ public:
     /** IProtocolListener::handleSetProperty implementation. */
     void handleSetProperty(const std::string& propertyId, const nlohmann::json& value) override;
     /** IProtocolListener::handleInvoke implementation. */
-    void handleInvoke(int requestId, const std::string& methodId, const nlohmann::json& args) override;
+    void handleInvoke(unsigned int requestId, const std::string& methodId, const nlohmann::json& args) override;
 
     /** IRemoteNode::notifyPropertyChange implementation. */
     void notifyPropertyChange(const std::string& propertyId, const nlohmann::json& value) override;

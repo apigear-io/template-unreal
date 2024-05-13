@@ -76,7 +76,7 @@ protected:
     /** IProtocolListener::handlePropertyChange implementation */
     void handlePropertyChange(const std::string& propertyId, const nlohmann::json& value) override;
     /** IProtocolListener::handleInvokeReply implementation */
-    void handleInvokeReply(int requestId, const std::string& methodId, const nlohmann::json& value) override;
+    void handleInvokeReply(unsigned int requestId, const std::string& methodId, const nlohmann::json& value) override;
     /** IProtocolListener::handleSignal implementation */
     void handleSignal(const std::string& signalId, const nlohmann::json& args) override;
     /** IProtocolListener::handleError implementation */
@@ -86,7 +86,7 @@ protected:
      * Returns a request id for outgoing messages.
      * @return a unique, non negative id.
      */
-    int nextRequestId();
+    unsigned int nextRequestId();
 private:
     /* The registry in which client is registered and which provides sinks connected with this node*/
     ClientRegistry& m_registry;
@@ -94,9 +94,9 @@ private:
     unsigned long m_nodeId;
 
     /* Value of last request id.*/
-    std::atomic<int> m_nextRequestId;
+    std::atomic<unsigned int> m_nextRequestId = {0};
     /** Collection of callbacks for method replies that client is waiting for associated with the id for invocation request message.*/
-    std::map<int,InvokeReplyFunc> m_invokesPending;
+    std::map<unsigned int,InvokeReplyFunc> m_invokesPending;
     std::mutex m_pendingInvokesMutex;
 };
 

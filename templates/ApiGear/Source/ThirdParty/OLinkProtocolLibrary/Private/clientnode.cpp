@@ -9,7 +9,6 @@ namespace ApiGear { namespace ObjectLink {
 ClientNode::ClientNode(ClientRegistry& registry)
     : BaseNode()
     , m_registry(registry)
-    , m_nextRequestId(0)
 {
 }
 
@@ -49,8 +48,8 @@ void ClientNode::invokeRemote(const std::string& methodId, const nlohmann::json&
 {
     static const std::string invokeRemoteLog = "ClientNode.invokeRemote: ";
     emitLog(LogLevel::Info, invokeRemoteLog, methodId);
-    int requestId = nextRequestId();
     std::unique_lock<std::mutex> lock(m_pendingInvokesMutex);
+    auto requestId = nextRequestId();
     m_invokesPending[requestId] = func;
     lock.unlock();
     nlohmann::json msg = Protocol::invokeMessage(requestId, methodId, args);
@@ -113,7 +112,7 @@ void ClientNode::handlePropertyChange(const std::string& propertyId, const nlohm
     }
 }
 
-void ClientNode::handleInvokeReply(int requestId, const std::string& methodId, const nlohmann::json& value)
+void ClientNode::handleInvokeReply(unsigned int requestId, const std::string& methodId, const nlohmann::json& value)
 {
     static const std::string handleInvokeLog = "ClientNode.handleInvokeReply: ";
     emitLogWithPayload(LogLevel::Info, value, handleInvokeLog, methodId);
@@ -154,12 +153,9 @@ void ClientNode::handleError(int msgType, int requestId, const std::string& erro
     emitLog(LogLevel::Info, errorLog, std::to_string(msgType), std::to_string(requestId), error);
 }
 
-int ClientNode::nextRequestId()
+unsigned int ClientNode::nextRequestId()
 {
     m_nextRequestId++;
-    if (m_nextRequestId < 0){
-        m_nextRequestId = 0;
-    }
     return m_nextRequestId;
 }
 

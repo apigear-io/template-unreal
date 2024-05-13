@@ -85,7 +85,7 @@ void RemoteNode::handleSetProperty(const std::string& propertyId, const nlohmann
     }
 }
 
-void RemoteNode::handleInvoke(int requestId, const std::string& methodId, const nlohmann::json& args)
+void RemoteNode::handleInvoke(unsigned int requestId, const std::string& methodId, const nlohmann::json& args)
 {
     auto objectId = ApiGear::ObjectLink::Name::getObjectId(methodId);
     auto source = m_registry.getSource(objectId).lock();

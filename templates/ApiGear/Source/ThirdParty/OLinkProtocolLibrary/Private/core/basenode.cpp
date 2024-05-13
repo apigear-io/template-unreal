@@ -44,7 +44,7 @@ void BaseNode::handleUnlink(const std::string& objectId)
     emitLog(LogLevel::Warning, notImplementedLog, std::string(__func__), objectId);
 }
 
-void BaseNode::handleInvoke(int, const std::string& methodId, const nlohmann::json& args)
+void BaseNode::handleInvoke(unsigned int, const std::string& methodId, const nlohmann::json& args)
 {
     emitLogWithPayload(LogLevel::Warning, args, notImplementedLog, std::string(__func__), methodId, " args ");
 }
@@ -59,7 +59,7 @@ void BaseNode::handleInit(const std::string& objectId, const nlohmann::json& pro
     emitLogWithPayload(LogLevel::Warning, props, notImplementedLog, std::string(__func__), objectId, " props ");
 }
 
-void BaseNode::handleInvokeReply(int requestId, const std::string& methodId, const nlohmann::json& value)
+void BaseNode::handleInvokeReply(unsigned int requestId, const std::string& methodId, const nlohmann::json& value)
 {
     emitLog(LogLevel::Warning, notImplementedLog, std::string(__func__), methodId, " requestId ", std::to_string(requestId), " value ", value);
 }

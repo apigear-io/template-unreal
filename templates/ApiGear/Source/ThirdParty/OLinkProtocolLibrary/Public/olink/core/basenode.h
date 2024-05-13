@@ -43,13 +43,13 @@ public:
     // Empty, logging only implementation of IProtocolListener::handleUnlink, should be overwritten on server side.
     void handleUnlink(const std::string& objectId) override;
     // Empty, logging only implementation of IProtocolListener::handleInvoke, should be overwritten on server side.
-    void handleInvoke(int requestId, const std::string& methodId, const nlohmann::json& args) override;
+    void handleInvoke(unsigned int requestId, const std::string& methodId, const nlohmann::json& args) override;
     // Empty, logging only implementation of IProtocolListener::handleSetProperty, should be overwritten on server side.
     void handleSetProperty(const std::string& propertyId, const nlohmann::json& value) override;
     // Empty, logging only implementation of IProtocolListener::handleInit, should be overwritten on client side.
     void handleInit(const std::string& objectId, const nlohmann::json& props) override;
     // Empty, logging only implementation of IProtocolListener::handleInvokeReply, should be overwritten on client side.
-    void handleInvokeReply(int requestId, const std::string& methodId, const nlohmann::json& value) override;
+    void handleInvokeReply(unsigned int requestId, const std::string& methodId, const nlohmann::json& value) override;
     // Empty, logging only implementation of IProtocolListener::handleSignal, should be overwritten on client side.
     void handleSignal(const std::string& signalId, const nlohmann::json& args) override;
     // Empty, logging only implementation of IProtocolListener::handlePropertyChange, should be overwritten on client side.
