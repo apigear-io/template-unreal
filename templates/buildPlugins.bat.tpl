@@ -1,4 +1,10 @@
-
+{{- $exports := getEmptyStringList}}
+{{- range .System.Modules }}
+{{- range .Imports }}
+{{- $exports = appendList $exports .Name }}
+{{- end }}
+{{- end }}
+{{- $exports = unique $exports}}
 @Echo off
 SET script_path=%~dp0
 echo Script is in %script_path:~0,-1%
@@ -30,23 +36,24 @@ if exist "%UEplugins_path%\" (
 	exit /b 1
 )
 
-{{ if .Features.apigear -}}
-@REM Check for existing ApiGear plugin
-set ApiGearPluginTarget_path=%UEplugins_path%\Marketplace\ApiGear
-set RestoreApiGearPlugin=0
-if exist "%ApiGearPluginTarget_path%\" (
-	echo Existing ApiGear plugin found at %ApiGearPluginTarget_path%
-	move "%ApiGearPluginTarget_path%" "%UEplugins_path%\..\ApiGearBackUp" >nul
+@REM Check for existing ApiGear plugins
+set ApiGearTarget_path=%UEplugins_path%\Marketplace\ApiGear
+set RestoreApiGearPlugins=0
+if exist "%ApiGearTarget_path%\" (
+	echo Existing ApiGear plugins found at %ApiGearTarget_path%
+	move "%ApiGearTarget_path%" "%UEplugins_path%\..\ApiGearBackUp" >nul
 	if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
-	set "RestoreApiGearPlugin=1"
+	set "RestoreApiGearPlugins=1"
 )
 
+{{ if .Features.apigear -}}
 @REM Build ApiGear plugin
 call :buildUEplugin "%script_path%\Plugins\ApiGear\ApiGear.uplugin" , "%script_path%build\Plugins\ApiGear"
 if !buildresult! GEQ 1 call :cleanup !buildresult!
 if !buildresult! GEQ 1 exit /b !buildresult!
 
 @REM copy ApiGear plugin to UE installation for use by other plugins
+set ApiGearPluginTarget_path=%ApiGearTarget_path%\ApiGear
 xcopy /E /Y "%script_path%build\Plugins\ApiGear" "%ApiGearPluginTarget_path%\"  >nul
 if %ERRORLEVEL% GEQ 1 call :cleanup %ERRORLEVEL%
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
@@ -56,6 +63,15 @@ if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
 call :buildUEplugin "%script_path%\Plugins\{{Camel .Name}}\{{Camel .Name}}.uplugin" , "%script_path%build\Plugins\{{Camel .Name}}"
 if !buildresult! GEQ 1 call :cleanup !buildresult!
 if !buildresult! GEQ 1 exit /b !buildresult!
+
+{{- if contains $exports .Name }}
+
+@REM copy {{ Camel .Name}} plugin to UE installation for use by other plugins
+set {{ Camel .Name}}PluginTarget_path=%ApiGearTarget_path%\{{ Camel .Name}}
+xcopy /E /Y "%script_path%build\Plugins\{{ Camel .Name}}" "%{{ Camel .Name}}PluginTarget_path%\"  >nul
+if %ERRORLEVEL% GEQ 1 call :cleanup %ERRORLEVEL%
+if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
+{{- end }}
 {{ end }}
 
 call :cleanup 0
@@ -73,16 +89,14 @@ exit /b %ERRORLEVEL%
 
 @REM Clean up ApiGear plugin installation
 :cleanup
-{{ if .Features.apigear -}}
-if %RestoreApiGearPlugin% equ 1 (
-	echo Restoring old ApiGear plugin in UE installation
-	@RD /S /Q "%ApiGearPluginTarget_path%"
-	move "%UEplugins_path%\..\ApiGearBackUp" "%ApiGearPluginTarget_path%" >nul
+if %RestoreApiGearPlugins% equ 1 (
+	echo Restoring old ApiGear plugins in UE installation
+	@RD /S /Q "%ApiGearTarget_path%"
+	move "%UEplugins_path%\..\ApiGearBackUp" "%ApiGearTarget_path%" >nul
 	if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
 ) else (
 	echo Deleting temporary ApiGear plugin installation from UE
-	@RD /S /Q "%ApiGearPluginTarget_path%"
+	@RD /S /Q "%ApiGearTarget_path%"
 	if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
 )
-{{- end }}
 exit /b %~1

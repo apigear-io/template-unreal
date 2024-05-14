@@ -20,9 +20,18 @@ limitations under the License.
 */
 #pragma once
 
-#include "CoreMinimal.h"
-#include "Engine/DataTable.h"
-#include "Kismet/BlueprintFunctionLibrary.h"
+{{- $includes := getEmptyStringList}}
+{{- $includes = (appendList $includes "\"CoreMinimal.h\"") }}
+{{- $includes = (appendList $includes "\"Engine/DataTable.h\"") }}
+{{- $includes = (appendList $includes "\"Kismet/BlueprintFunctionLibrary.h\"") }}
+{{- range .Module.Imports }}
+{{- $includeName :=  printf "\"Generated/api/%s_data.h\"" (Camel .Name) }}
+{{- $includes = (appendList $includes $includeName) }}
+{{- end }}
+{{- $includes = unique $includes }}
+{{ range $includes }}
+#include {{ .}}
+{{- end }}
 {{ if or (len .Module.Enums) (len .Module.Structs) -}}
 #include "{{ $ModuleName }}_data.generated.h"
 {{ end }}

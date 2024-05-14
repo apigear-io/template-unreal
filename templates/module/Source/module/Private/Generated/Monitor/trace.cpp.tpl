@@ -5,6 +5,9 @@
 {{- $Category := printf "ApiGear%s" $ModuleName -}}
 #include "{{$ModuleName}}.trace.h"
 #include "Generated/api/{{$ModuleName}}.json.adapter.h"
+{{- range .Module.Imports }}
+#include "{{Camel .Name}}/Private/Generated/api/{{Camel .Name}}.json.adapter.h"
+{{- end }}
 #include "tracer.h"
 
 {{- range .Module.Interfaces }}

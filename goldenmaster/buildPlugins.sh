@@ -34,14 +34,14 @@ else
 fi
 
 # Check for existing ApiGear plugin
-ApiGearPluginTarget_path=$UEplugins_path/Marketplace/ApiGear
-RestoreApiGearPlugin=0
-if [ -d "$ApiGearPluginTarget_path" ]
+ApiGearTarget_path=$UEplugins_path/Marketplace/ApiGear
+RestoreApiGearPlugins=0
+if [ -d "$ApiGearTarget_path" ]
 then
-	echo "Existing ApiGear plugin found at $ApiGearPluginTarget_path"
-	mv $ApiGearPluginTarget_path "$UEplugins_path/../ApiGearBackUp" 1>&-
+	echo "Existing ApiGear plugins found at $ApiGearTarget_path"
+	mv $ApiGearTarget_path "$UEplugins_path/../ApiGearBackUp" 1>&-
 	if [ $? -ne 0 ]; then exit 1; fi;
-	RestoreApiGearPlugin=1
+	RestoreApiGearPlugins=1
 fi
 
 #
@@ -55,17 +55,17 @@ buildUEplugin()
 	buildresult=$?
 }
 
-# Clean up ApiGear plugin installation
+# Clean up ApiGear plugins installation
 cleanup()
 {
-	if [ "$RestoreApiGearPlugin" == 1 ]
+	if [ "$RestoreApiGearPlugins" == 1 ]
 	then
-		echo "Restoring old ApiGear plugin in UE installation"
-		rm -rf "$ApiGearPluginTarget_path"
-		mv "$UEplugins_path/../ApiGearBackUp" "$ApiGearPluginTarget_path" >nul
+		echo "Restoring old ApiGear plugins in UE installation"
+		rm -rf "$ApiGearTarget_path"
+		mv "$UEplugins_path/../ApiGearBackUp" "$ApiGearTarget_path" >nul
 	else
 		echo "Deleting temporary ApiGear plugin installation from UE"
-		rm -rf "$ApiGearPluginTarget_path"
+		rm -rf "$ApiGearTarget_path"
 	fi
 }
 
@@ -79,6 +79,7 @@ buildUEplugin "$script_path/Plugins/ApiGear/apigear.uplugin" "$script_path/build
 if [ $buildresult -ne 0 ]; then cleanup && exit 1; fi;
 
 # copy ApiGear plugin to UE installation for use by other plugins
+ApiGearPluginTarget_path=$ApiGearTarget_path/ApiGear
 mkdir -p "$ApiGearPluginTarget_path" && cp -rf "$script_path/build/Plugins/ApiGear" "$ApiGearPluginTarget_path" 1>&-
 if [ $? -ne 0 ]; then cleanup && exit 1; fi;
 
