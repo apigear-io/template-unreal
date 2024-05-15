@@ -24,6 +24,13 @@ limitations under the License.
 {{- $includes = (appendList $includes "\"CoreMinimal.h\"") }}
 {{- $includes = (appendList $includes "\"Engine/DataTable.h\"") }}
 {{- $includes = (appendList $includes "\"Kismet/BlueprintFunctionLibrary.h\"") }}
+{{- range .Module.Externs }}
+{{- $class := ueExtern . }}
+{{- if $class.Include }}
+{{- $includeName :=  printf "\"%s\"" $class.Include }}
+{{- $includes = (appendList $includes $includeName) }}
+{{- end }}
+{{- end }}
 {{- range .Module.Imports }}
 {{- $includeName :=  printf "\"Generated/api/%s_data.h\"" (Camel .Name) }}
 {{- $includes = (appendList $includes $includeName) }}

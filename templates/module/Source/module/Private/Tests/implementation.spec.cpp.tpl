@@ -132,7 +132,7 @@ void {{$Class}}ImplSpec::Define()
 }
 
 {{- range .Interface.Properties }}
-{{- if not .IsReadOnly }}
+{{- if and (not .IsReadOnly) (not (eq .KindType "extern")) }}
 {{- $type := printf "F%s%s" $ModuleName .Type }}
 
 void {{$Class}}ImplSpec::{{ Camel .Name }}PropertyCb({{ueParam "In" .}})
