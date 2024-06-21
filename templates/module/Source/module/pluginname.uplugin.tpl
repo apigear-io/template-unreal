@@ -32,12 +32,21 @@
 			"PlatformAllowList" : [ "Win64", "Mac", "Linux" ]
 		}
 	]
-{{- if .Features.apigear }},
+{{- if or .Features.apigear .Module.Imports }},
 	"Plugins": [
+		{{- if .Features.apigear }}
 		{
 			"Name": "ApiGear",
 			"Enabled": true
+		}{{- if .Module.Imports }}, {{- end}}
+		{{- end }}
+		{{- range $idx, $elem := .Module.Imports }}
+		{{- if $idx}}, {{ end }}
+		{
+			"Name": "{{Camel .Name}}",
+			"Enabled": true
 		}
+		{{- end }}
 	]
 {{- end }}
 }
