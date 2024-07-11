@@ -64,7 +64,7 @@ UUnrealOLink::UUnrealOLink(const FObjectInitializer& ObjectInitializer)
 				[this](float /*param*/)
 				{
 					processMessages();
-					return true;
+					return false;
 				});
 		}
 	};
@@ -90,6 +90,7 @@ void UUnrealOLink::Configure(FString InServerURL, bool bInAutoReconnectEnabled)
 UUnrealOLink::~UUnrealOLink()
 {
 	ApiGearTicker::GetCoreTicker().RemoveTicker(m_processMessageTaskTimerHandle);
+	m_processMessageTaskTimerHandle.Reset();
 }
 
 void UUnrealOLink::log(const FString& logMessage)
@@ -113,6 +114,7 @@ void UUnrealOLink::Disconnect_Implementation()
 	if (m_processMessageTaskTimerHandle.IsValid())
 	{
 		ApiGearTicker::GetCoreTicker().RemoveTicker(m_processMessageTaskTimerHandle);
+		m_processMessageTaskTimerHandle.Reset();
 	}
 	if (m_socket && m_socket->IsConnected())
 	{
@@ -216,7 +218,7 @@ void UUnrealOLink::OnConnected_Implementation()
 			[this](float /*param*/)
 			{
 				processMessages();
-				return true;
+				return false;
 			});
 	}
 }
@@ -267,6 +269,7 @@ void UUnrealOLink::unlinkObjectSource(const std::string& name)
 void UUnrealOLink::processMessages()
 {
 	ApiGearTicker::GetCoreTicker().RemoveTicker(m_processMessageTaskTimerHandle);
+	m_processMessageTaskTimerHandle.Reset();
 	if (m_queue.IsEmpty())
 	{
 		// no data to be sent
