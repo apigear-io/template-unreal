@@ -21,26 +21,14 @@ limitations under the License.
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-class FTestbed2TestBase : public FAutomationTestBase
+class FTestbed2GameInstanceFixture
 {
 public:
-	FTestbed2TestBase(const FString& InName, const bool bInComplexTask)
-		: FAutomationTestBase(InName, bInComplexTask)
+	~FTestbed2GameInstanceFixture()
 	{
+		CleanUp();
 	}
 
-	~FTestbed2TestBase()
-	{
-		if (GameInstance.IsValid())
-		{
-			GameInstance->Shutdown();
-		}
-
-		// Unregister the automation test from the automation testing framework
-		FAutomationTestFramework::Get().UnregisterAutomationTest(TestName);
-	}
-
-protected:
 	UGameInstance* GetGameInstance()
 	{
 		if (!GameInstance.IsValid())
@@ -52,6 +40,7 @@ protected:
 		return GameInstance.Get();
 	}
 
+private:
 	void CleanUp()
 	{
 		if (GameInstance.IsValid())
@@ -60,7 +49,6 @@ protected:
 		}
 	}
 
-private:
 	TWeakObjectPtr<UGameInstance> GameInstance;
 };
 

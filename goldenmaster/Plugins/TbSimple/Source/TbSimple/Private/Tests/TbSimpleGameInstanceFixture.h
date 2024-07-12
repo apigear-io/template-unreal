@@ -21,26 +21,14 @@ limitations under the License.
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-class FTbEnumTestBase : public FAutomationTestBase
+class FTbSimpleGameInstanceFixture
 {
 public:
-	FTbEnumTestBase(const FString& InName, const bool bInComplexTask)
-		: FAutomationTestBase(InName, bInComplexTask)
+	~FTbSimpleGameInstanceFixture()
 	{
+		CleanUp();
 	}
 
-	~FTbEnumTestBase()
-	{
-		if (GameInstance.IsValid())
-		{
-			GameInstance->Shutdown();
-		}
-
-		// Unregister the automation test from the automation testing framework
-		FAutomationTestFramework::Get().UnregisterAutomationTest(TestName);
-	}
-
-protected:
 	UGameInstance* GetGameInstance()
 	{
 		if (!GameInstance.IsValid())
@@ -52,6 +40,7 @@ protected:
 		return GameInstance.Get();
 	}
 
+private:
 	void CleanUp()
 	{
 		if (GameInstance.IsValid())
@@ -60,7 +49,6 @@ protected:
 		}
 	}
 
-private:
 	TWeakObjectPtr<UGameInstance> GameInstance;
 };
 

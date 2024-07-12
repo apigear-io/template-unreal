@@ -8,26 +8,14 @@
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-class F{{ $ModuleName }}TestBase : public FAutomationTestBase
+class F{{ $ModuleName }}GameInstanceFixture
 {
 public:
-	F{{ $ModuleName }}TestBase(const FString& InName, const bool bInComplexTask)
-		: FAutomationTestBase(InName, bInComplexTask)
+	~F{{ $ModuleName }}GameInstanceFixture()
 	{
+		CleanUp();
 	}
 
-	~F{{ $ModuleName }}TestBase()
-	{
-		if (GameInstance.IsValid())
-		{
-			GameInstance->Shutdown();
-		}
-
-		// Unregister the automation test from the automation testing framework
-		FAutomationTestFramework::Get().UnregisterAutomationTest(TestName);
-	}
-
-protected:
 	UGameInstance* GetGameInstance()
 	{
 		if (!GameInstance.IsValid())
@@ -39,6 +27,7 @@ protected:
 		return GameInstance.Get();
 	}
 
+private:
 	void CleanUp()
 	{
 		if (GameInstance.IsValid())
@@ -47,7 +36,6 @@ protected:
 		}
 	}
 
-private:
 	TWeakObjectPtr<UGameInstance> GameInstance;
 };
 

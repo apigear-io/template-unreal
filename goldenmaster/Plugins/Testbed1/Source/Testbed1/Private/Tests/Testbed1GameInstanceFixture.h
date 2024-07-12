@@ -14,11 +14,42 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+#pragma once
 
-#include "Implementation/TbSimpleEmptyInterface.h"
-#include "TbSimpleTestBase.h"
+#include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
+
+class FTestbed1GameInstanceFixture
+{
+public:
+	~FTestbed1GameInstanceFixture()
+	{
+		CleanUp();
+	}
+
+	UGameInstance* GetGameInstance()
+	{
+		if (!GameInstance.IsValid())
+		{
+			GameInstance = NewObject<UGameInstance>();
+			GameInstance->Init();
+		}
+
+		return GameInstance.Get();
+	}
+
+private:
+	void CleanUp()
+	{
+		if (GameInstance.IsValid())
+		{
+			GameInstance->Shutdown();
+		}
+	}
+
+	TWeakObjectPtr<UGameInstance> GameInstance;
+};
 
 #endif // WITH_DEV_AUTOMATION_TESTS
