@@ -246,12 +246,6 @@ features:
     requires:
       - api
     scopes:
-      - match: module
-        prefix: "Plugins/{{Camel .Module.Name}}/"
-        documents:
-          - source: "module/Source/module/Private/Tests/gameinstancefixture.h.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Tests/{{Camel .Module.Name}}GameInstanceFixture.h"
-            preserve: true
       - match: interface
         prefix: "Plugins/{{Camel .Module.Name}}/"
         documents:
@@ -261,8 +255,17 @@ features:
           - source: "module/Source/module/Private/Implementation/implementation.cpp.tpl"
             target: "Source/{{Camel .Module.Name}}/Private/Implementation/{{Camel .Module.Name}}{{Camel .Interface.Name}}.cpp"
             preserve: true
+          - source: "module/Source/module/Private/Tests/implementation.spec.h.tpl"
+            target: "Source/{{Camel .Module.Name}}/Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}Impl.spec.h"
+            preserve: true
           - source: "module/Source/module/Private/Tests/implementation.spec.cpp.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}.spec.cpp"
+            target: "Source/{{Camel .Module.Name}}/Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}Impl.spec.cpp"
+            preserve: true
+          - source: "module/Source/module/Private/Tests/implementationfixture.h.tpl"
+            target: "Source/{{Camel .Module.Name}}/Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}ImplFixture.h"
+            preserve: true
+          - source: "module/Source/module/Private/Tests/implementationfixture.cpp.tpl"
+            target: "Source/{{Camel .Module.Name}}/Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}ImplFixture.cpp"
             preserve: true
   - name: plugin
     scopes:

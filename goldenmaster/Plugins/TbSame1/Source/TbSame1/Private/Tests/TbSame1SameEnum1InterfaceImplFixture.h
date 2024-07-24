@@ -1,0 +1,50 @@
+
+#pragma once
+
+#include "Engine/GameInstance.h"
+#include "Misc/AutomationTest.h"
+
+#include "CoreMinimal.h"
+#include "UObject/Object.h"
+#include "UObject/NoExportTypes.h"
+#include "TbSame1SameEnum1InterfaceImplFixture.generated.h"
+
+class UTbSame1SameEnum1InterfaceImplSpec;
+class ITbSame1SameEnum1InterfaceInterface;
+
+UCLASS()
+class UTbSame1SameEnum1InterfaceImplHelper : public UObject
+{
+	GENERATED_BODY()
+public:
+	void SetSpec(UTbSame1SameEnum1InterfaceImplSpec* InSpec);
+
+	UFUNCTION()
+	void Sig1SignalCb(ETbSame1Enum1 Param1);
+
+protected:
+	const FDoneDelegate* testDoneDelegate;
+	UTbSame1SameEnum1InterfaceImplSpec* Spec;
+};
+
+#if WITH_DEV_AUTOMATION_TESTS
+
+class FTbSame1SameEnum1InterfaceImplFixture
+{
+public:
+	FTbSame1SameEnum1InterfaceImplFixture();
+	~FTbSame1SameEnum1InterfaceImplFixture();
+
+	UGameInstance* GetGameInstance();
+	TScriptInterface<ITbSame1SameEnum1InterfaceInterface> GetImplementation();
+	TWeakObjectPtr<UTbSame1SameEnum1InterfaceImplHelper> GetHelper();
+
+private:
+	void CleanUp();
+
+	TWeakObjectPtr<UGameInstance> GameInstance;
+	TScriptInterface<ITbSame1SameEnum1InterfaceInterface> testImplementation;
+	TWeakObjectPtr<UTbSame1SameEnum1InterfaceImplHelper> Helper;
+};
+
+#endif // WITH_DEV_AUTOMATION_TESTS

@@ -6,35 +6,29 @@
 {{- $Class := printf "U%s" $DisplayName}}
 {{- $Iface := printf "%s%s" $ModuleName $IfaceName }}
 
+#include "{{$DisplayName}}Impl.spec.h"
 #include "Implementation/{{$Iface}}.h"
-#include "{{$ModuleName}}GameInstanceFixture.h"
+#include "{{$DisplayName}}ImplFixture.h"
 #include "Misc/AutomationTest.h"
 
-#if WITH_DEV_AUTOMATION_TESTS 
+#if WITH_DEV_AUTOMATION_TESTS
 
-
-BEGIN_DEFINE_SPEC({{$Class}}ImplementationSpec, "{{$ModuleName}}.{{$IfaceName}}.Implementation",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
-
-	TUniquePtr<F{{$ModuleName}}GameInstanceFixture> GameInstanceFixture;
-	TScriptInterface<I{{$Iface}}Interface> testImplementation;
-
-END_DEFINE_SPEC({{$Class}}ImplementationSpec);
-
-void {{$Class}}ImplementationSpec::Define()
+void {{$Class}}ImplSpec::Define()
 {
 	BeforeEach([this]()
 	{
-		GameInstanceFixture = MakeUnique<F{{$ModuleName}}GameInstanceFixture>();
-		TestTrue("Check for valid GameInstanceFixture", GameInstanceFixture.IsValid());
-		
-		testImplementation = GameInstanceFixture->GetGameInstance()->GetSubsystem<{{ $Class }}>();
-		TestTrue("Check for valid testImplementation", testImplementation.GetInterface() != nullptr);
+		ImplFixture = MakeUnique<F{{$DisplayName}}ImplFixture>();
+		TestTrue("Check for valid ImplFixture", ImplFixture.IsValid());
+
+		TestTrue("Check for valid testImplementation", ImplFixture->GetImplementation().GetInterface() != nullptr);
+
+		TestTrue("Check for valid Helper", ImplFixture->GetHelper().IsValid());
+		ImplFixture->GetHelper()->SetSpec(this);
 	});
 
 	AfterEach([this]()
 	{
-		GameInstanceFixture.Reset();
+		ImplFixture.Reset();
 	});
 {{- range .Interface.Properties }}
 
@@ -42,10 +36,10 @@ void {{$Class}}ImplementationSpec::Define()
 	{
 		// Do implement test here
 	{{- if not .IsReadOnly }}
-		testImplementation->Execute_Set{{Camel .Name}}(testImplementation.GetObject(), {{ueDefault "" .}});
-		TestEqual(TEXT("Getter should return the same value as set by the setter"), testImplementation->Execute_Get{{Camel .Name}}(testImplementation.GetObject()), {{ueDefault "" .}});
+		ImplFixture->GetImplementation()->Execute_Set{{Camel .Name}}(ImplFixture->GetImplementation().GetObject(), {{ueDefault "" .}});
+		TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_Get{{Camel .Name}}(ImplFixture->GetImplementation().GetObject()), {{ueDefault "" .}});
 	{{- else }}
-		TestEqual(TEXT("Getter should return the default value"), testImplementation->Execute_Get{{Camel .Name}}(testImplementation.GetObject()), {{ueDefault "" .}});
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_Get{{Camel .Name}}(ImplFixture->GetImplementation().GetObject()), {{ueDefault "" .}});
 	{{- end }}
 	});
 
@@ -56,7 +50,7 @@ void {{$Class}}ImplementationSpec::Define()
 	It("Operation.{{ Camel .Name }}", [this]()
 	{
 		// Do implement test here
-		testImplementation->Execute_{{Camel .Name}}(testImplementation.GetObject()
+		ImplFixture->GetImplementation()->Execute_{{Camel .Name}}(ImplFixture->GetImplementation().GetObject()
 			{{- range $i, $e := .Params -}}
 			, {{ueDefault "" .}}
 			{{- end -}}
@@ -64,6 +58,52 @@ void {{$Class}}ImplementationSpec::Define()
 	});
 
 {{- end }}
+
+{{- range .Interface.Signals }}
+
+	LatentIt("Signal.{{ Camel .Name }}", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+	{
+		testDoneDelegate = TestDone;
+		{{$Class}}Signals* {{$Iface}}Signals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
+		{{$Iface}}Signals->On{{Camel .Name}}Signal.AddDynamic(ImplFixture->GetHelper().Get(), &{{$Class}}ImplHelper::{{ Camel .Name }}SignalCb);
+
+		// use different test value
+		{{- range $i, $e := .Params -}}
+		{{- if .IsArray }}
+		{{- $type := printf "F%s%s" $ModuleName .Type }}
+		{{ ueType "" . }} {{ueVar "" .}}TestValue = createTest{{ $type }}Array();
+		{{- else if and (not .IsPrimitive) (not (eq .KindType "enum"))}}
+		{{ ueType "" . }} {{ueVar "" .}}TestValue = createTest{{ ueType "" . }}();
+		{{- else }}
+		{{ ueType "" . }} {{ueVar "" .}}TestValue = {{ ueTestValue "" . }};
+		{{- end }}
+		{{- end }}
+		{{$Iface}}Signals->Broadcast{{Camel .Name}}Signal(
+			{{- range $i, $e := .Params -}}
+			{{- if $i }}, {{ end }}{{ueVar "" .}}TestValue
+			{{- end -}});
+	});
+
+{{- end }}
 }
 
+{{- range .Interface.Signals }}
+
+void {{$Class}}ImplSpec::{{ Camel .Name }}SignalCb({{ueParams "In" .Params}})
+{
+	// known test value
+	{{- range $i, $e := .Params -}}
+	{{- if .IsArray }}
+	{{- $type := printf "F%s%s" $ModuleName .Type }}
+	{{ ueType "" . }} {{ueVar "" .}}TestValue = createTest{{ $type }}Array();
+	{{- else if and (not .IsPrimitive) (not (eq .KindType "enum"))}}
+	{{ ueType "" . }} {{ueVar "" .}}TestValue = createTest{{ ueType "" . }}();
+	{{- else }}
+	{{ ueType "" . }} {{ueVar "" .}}TestValue = {{ ueTestValue "" . }};
+	{{- end }}
+	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), {{ueVar "In" .}}, {{ueVar "" .}}TestValue);
+	{{- end }}
+	testDoneDelegate.Execute();
+}
+{{- end }}
 #endif // WITH_DEV_AUTOMATION_TESTS
