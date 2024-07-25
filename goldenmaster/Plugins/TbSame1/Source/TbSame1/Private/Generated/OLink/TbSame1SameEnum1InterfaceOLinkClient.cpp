@@ -42,7 +42,7 @@ THIRD_PARTY_INCLUDES_END
 */
 struct TbSame1SameEnum1InterfacePropertiesData
 {
-	std::atomic<ETbSame1Enum1> Prop1{ETbSame1Enum1::TSE_VALUE1};
+	std::atomic<ETbSame1Enum1> Prop1{ETbSame1Enum1::TS1E1_VALUE1};
 };
 DEFINE_LOG_CATEGORY(LogTbSame1SameEnum1InterfaceOLinkClient);
 
@@ -178,7 +178,7 @@ ETbSame1Enum1 UTbSame1SameEnum1InterfaceOLinkClient::Func1_Implementation(ETbSam
 	{
 		UE_LOG(LogTbSame1SameEnum1InterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
-		return ETbSame1Enum1::TSE_VALUE1;
+		return ETbSame1Enum1::TS1E1_VALUE1;
 	}
 	TPromise<ETbSame1Enum1> Promise;
 	Async(EAsyncExecution::Thread,

@@ -42,10 +42,10 @@ public:
 
 	// methods
 	virtual void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, ETbSame2Enum1 Param1) override;
-	virtual ETbSame2Enum1 Func1_Implementation(ETbSame2Enum1 Param1) override PURE_VIRTUAL(UAbstractTbSame2SameEnum1Interface::Func1_Implementation, return ETbSame2Enum1::TSE_VALUE1;);
+	virtual ETbSame2Enum1 Func1_Implementation(ETbSame2Enum1 Param1) override PURE_VIRTUAL(UAbstractTbSame2SameEnum1Interface::Func1_Implementation, return ETbSame2Enum1::TS2E1_VALUE1;);
 
 	// properties
-	virtual ETbSame2Enum1 GetProp1_Implementation() const override PURE_VIRTUAL(UAbstractTbSame2SameEnum1Interface::GetProp1_Implementation, return ETbSame2Enum1::TSE_VALUE1;);
+	virtual ETbSame2Enum1 GetProp1_Implementation() const override PURE_VIRTUAL(UAbstractTbSame2SameEnum1Interface::GetProp1_Implementation, return ETbSame2Enum1::TS2E1_VALUE1;);
 	virtual void SetProp1_Implementation(ETbSame2Enum1 InProp1) override PURE_VIRTUAL(UAbstractTbSame2SameEnum1Interface::SetProp1_Implementation, return;);
 
 	virtual bool IsInitialized() const;
@@ -55,7 +55,7 @@ protected:
 
 	// properties - local copy
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1_Private, BlueprintSetter = SetProp1_Private, Category = "ApiGear|TbSame2|SameEnum1Interface")
-	ETbSame2Enum1 Prop1{ETbSame2Enum1::TSE_VALUE1};
+	ETbSame2Enum1 Prop1{ETbSame2Enum1::TS2E1_VALUE1};
 
 	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSame2|SameEnum1Interface|Properties", BlueprintInternalUseOnly)
 	ETbSame2Enum1 GetProp1_Private() const;

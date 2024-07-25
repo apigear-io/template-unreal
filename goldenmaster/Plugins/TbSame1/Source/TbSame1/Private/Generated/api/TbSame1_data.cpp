@@ -27,15 +27,15 @@ bool UTbSame1Library::toTbSame1Enum1(ETbSame1Enum1& ConvertedEnum, uint8 InValue
 	switch (InValue)
 	{
 	case 1:
-		ConvertedEnum = ETbSame1Enum1::TSE_VALUE1;
+		ConvertedEnum = ETbSame1Enum1::TS1E1_VALUE1;
 		bSuccessful = true;
 		break;
 	case 2:
-		ConvertedEnum = ETbSame1Enum1::TSE_VALUE2;
+		ConvertedEnum = ETbSame1Enum1::TS1E1_VALUE2;
 		bSuccessful = true;
 		break;
 	default:
-		ConvertedEnum = ETbSame1Enum1::TSE_VALUE1;
+		ConvertedEnum = ETbSame1Enum1::TS1E1_VALUE1;
 	}
 	return bSuccessful;
 }
@@ -48,15 +48,15 @@ bool UTbSame1Library::toTbSame1Enum2(ETbSame1Enum2& ConvertedEnum, uint8 InValue
 	switch (InValue)
 	{
 	case 1:
-		ConvertedEnum = ETbSame1Enum2::TSE_VALUE1;
+		ConvertedEnum = ETbSame1Enum2::TS1E2_VALUE1;
 		bSuccessful = true;
 		break;
 	case 2:
-		ConvertedEnum = ETbSame1Enum2::TSE_VALUE2;
+		ConvertedEnum = ETbSame1Enum2::TS1E2_VALUE2;
 		bSuccessful = true;
 		break;
 	default:
-		ConvertedEnum = ETbSame1Enum2::TSE_VALUE1;
+		ConvertedEnum = ETbSame1Enum2::TS1E2_VALUE1;
 	}
 	return bSuccessful;
 }

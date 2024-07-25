@@ -49,14 +49,14 @@ void UTbSame2SameEnum1InterfaceImplementationSpec::Define()
 	It("Property.Prop1", [this]()
 	{
 		// Do implement test here
-		testImplementation->Execute_SetProp1(testImplementation.GetObject(), ETbSame2Enum1::TSE_VALUE1);
-		TestEqual(TEXT("Getter should return the same value as set by the setter"), testImplementation->Execute_GetProp1(testImplementation.GetObject()), ETbSame2Enum1::TSE_VALUE1);
+		testImplementation->Execute_SetProp1(testImplementation.GetObject(), ETbSame2Enum1::TS2E1_VALUE1);
+		TestEqual(TEXT("Getter should return the same value as set by the setter"), testImplementation->Execute_GetProp1(testImplementation.GetObject()), ETbSame2Enum1::TS2E1_VALUE1);
 	});
 
 	It("Operation.Func1", [this]()
 	{
 		// Do implement test here
-		testImplementation->Execute_Func1(testImplementation.GetObject(), ETbSame2Enum1::TSE_VALUE1);
+		testImplementation->Execute_Func1(testImplementation.GetObject(), ETbSame2Enum1::TS2E1_VALUE1);
 	});
 }
 

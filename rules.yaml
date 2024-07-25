@@ -1,5 +1,5 @@
 engines:
-  cli: ">= v0.35.0"
+  cli: ">= v0.38.2"
 features:
   - name: api
     scopes:

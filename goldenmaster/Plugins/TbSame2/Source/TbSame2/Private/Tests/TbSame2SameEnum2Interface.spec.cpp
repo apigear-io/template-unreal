@@ -49,27 +49,27 @@ void UTbSame2SameEnum2InterfaceImplementationSpec::Define()
 	It("Property.Prop1", [this]()
 	{
 		// Do implement test here
-		testImplementation->Execute_SetProp1(testImplementation.GetObject(), ETbSame2Enum1::TSE_VALUE1);
-		TestEqual(TEXT("Getter should return the same value as set by the setter"), testImplementation->Execute_GetProp1(testImplementation.GetObject()), ETbSame2Enum1::TSE_VALUE1);
+		testImplementation->Execute_SetProp1(testImplementation.GetObject(), ETbSame2Enum1::TS2E1_VALUE1);
+		TestEqual(TEXT("Getter should return the same value as set by the setter"), testImplementation->Execute_GetProp1(testImplementation.GetObject()), ETbSame2Enum1::TS2E1_VALUE1);
 	});
 
 	It("Property.Prop2", [this]()
 	{
 		// Do implement test here
-		testImplementation->Execute_SetProp2(testImplementation.GetObject(), ETbSame2Enum2::TSE_VALUE1);
-		TestEqual(TEXT("Getter should return the same value as set by the setter"), testImplementation->Execute_GetProp2(testImplementation.GetObject()), ETbSame2Enum2::TSE_VALUE1);
+		testImplementation->Execute_SetProp2(testImplementation.GetObject(), ETbSame2Enum2::TS2E2_VALUE1);
+		TestEqual(TEXT("Getter should return the same value as set by the setter"), testImplementation->Execute_GetProp2(testImplementation.GetObject()), ETbSame2Enum2::TS2E2_VALUE1);
 	});
 
 	It("Operation.Func1", [this]()
 	{
 		// Do implement test here
-		testImplementation->Execute_Func1(testImplementation.GetObject(), ETbSame2Enum1::TSE_VALUE1);
+		testImplementation->Execute_Func1(testImplementation.GetObject(), ETbSame2Enum1::TS2E1_VALUE1);
 	});
 
 	It("Operation.Func2", [this]()
 	{
 		// Do implement test here
-		testImplementation->Execute_Func2(testImplementation.GetObject(), ETbSame2Enum1::TSE_VALUE1, ETbSame2Enum2::TSE_VALUE1);
+		testImplementation->Execute_Func2(testImplementation.GetObject(), ETbSame2Enum1::TS2E1_VALUE1, ETbSame2Enum2::TS2E2_VALUE1);
 	});
 }
 

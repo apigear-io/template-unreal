@@ -27,23 +27,23 @@ bool UTestbed2Library::toTestbed2Enum1(ETestbed2Enum1& ConvertedEnum, uint8 InVa
 	switch (InValue)
 	{
 	case 1:
-		ConvertedEnum = ETestbed2Enum1::TE_VALUE1;
+		ConvertedEnum = ETestbed2Enum1::T2E1_VALUE1;
 		bSuccessful = true;
 		break;
 	case 2:
-		ConvertedEnum = ETestbed2Enum1::TE_VALUE2;
+		ConvertedEnum = ETestbed2Enum1::T2E1_VALUE2;
 		bSuccessful = true;
 		break;
 	case 3:
-		ConvertedEnum = ETestbed2Enum1::TE_VALUE3;
+		ConvertedEnum = ETestbed2Enum1::T2E1_VALUE3;
 		bSuccessful = true;
 		break;
 	case 4:
-		ConvertedEnum = ETestbed2Enum1::TE_VALUE4;
+		ConvertedEnum = ETestbed2Enum1::T2E1_VALUE4;
 		bSuccessful = true;
 		break;
 	default:
-		ConvertedEnum = ETestbed2Enum1::TE_VALUE1;
+		ConvertedEnum = ETestbed2Enum1::T2E1_VALUE1;
 	}
 	return bSuccessful;
 }
@@ -56,23 +56,23 @@ bool UTestbed2Library::toTestbed2Enum2(ETestbed2Enum2& ConvertedEnum, uint8 InVa
 	switch (InValue)
 	{
 	case 1:
-		ConvertedEnum = ETestbed2Enum2::TE_VALUE1;
+		ConvertedEnum = ETestbed2Enum2::T2E2_VALUE1;
 		bSuccessful = true;
 		break;
 	case 2:
-		ConvertedEnum = ETestbed2Enum2::TE_VALUE2;
+		ConvertedEnum = ETestbed2Enum2::T2E2_VALUE2;
 		bSuccessful = true;
 		break;
 	case 3:
-		ConvertedEnum = ETestbed2Enum2::TE_VALUE3;
+		ConvertedEnum = ETestbed2Enum2::T2E2_VALUE3;
 		bSuccessful = true;
 		break;
 	case 4:
-		ConvertedEnum = ETestbed2Enum2::TE_VALUE4;
+		ConvertedEnum = ETestbed2Enum2::T2E2_VALUE4;
 		bSuccessful = true;
 		break;
 	default:
-		ConvertedEnum = ETestbed2Enum2::TE_VALUE1;
+		ConvertedEnum = ETestbed2Enum2::T2E2_VALUE1;
 	}
 	return bSuccessful;
 }
@@ -85,23 +85,23 @@ bool UTestbed2Library::toTestbed2Enum3(ETestbed2Enum3& ConvertedEnum, uint8 InVa
 	switch (InValue)
 	{
 	case 1:
-		ConvertedEnum = ETestbed2Enum3::TE_VALUE1;
+		ConvertedEnum = ETestbed2Enum3::T2E3_VALUE1;
 		bSuccessful = true;
 		break;
 	case 2:
-		ConvertedEnum = ETestbed2Enum3::TE_VALUE2;
+		ConvertedEnum = ETestbed2Enum3::T2E3_VALUE2;
 		bSuccessful = true;
 		break;
 	case 3:
-		ConvertedEnum = ETestbed2Enum3::TE_VALUE3;
+		ConvertedEnum = ETestbed2Enum3::T2E3_VALUE3;
 		bSuccessful = true;
 		break;
 	case 4:
-		ConvertedEnum = ETestbed2Enum3::TE_VALUE4;
+		ConvertedEnum = ETestbed2Enum3::T2E3_VALUE4;
 		bSuccessful = true;
 		break;
 	default:
-		ConvertedEnum = ETestbed2Enum3::TE_VALUE1;
+		ConvertedEnum = ETestbed2Enum3::T2E3_VALUE1;
 	}
 	return bSuccessful;
 }
