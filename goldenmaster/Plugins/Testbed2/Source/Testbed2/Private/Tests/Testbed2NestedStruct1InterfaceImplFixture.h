@@ -20,6 +20,9 @@ public:
 	void SetSpec(UTestbed2NestedStruct1InterfaceImplSpec* InSpec);
 
 	UFUNCTION()
+	void Prop1PropertyCb(const FTestbed2NestedStruct1& Prop1);
+
+	UFUNCTION()
 	void Sig1SignalCb(const FTestbed2NestedStruct1& Param1);
 
 protected:

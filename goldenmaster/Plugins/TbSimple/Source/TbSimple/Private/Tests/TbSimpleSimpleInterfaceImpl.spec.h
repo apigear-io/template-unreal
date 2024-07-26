@@ -27,6 +27,15 @@ BEGIN_DEFINE_SPEC(UTbSimpleSimpleInterfaceImplSpec, "TbSimple.SimpleInterface.Im
 	TUniquePtr<FTbSimpleSimpleInterfaceImplFixture> ImplFixture;
 
 	// signal callbacks for testing
+	void PropBoolPropertyCb(bool bPropBool);
+	void PropIntPropertyCb(int32 PropInt);
+	void PropInt32PropertyCb(int32 PropInt32);
+	void PropInt64PropertyCb(int64 PropInt64);
+	void PropFloatPropertyCb(float PropFloat);
+	void PropFloat32PropertyCb(float PropFloat32);
+	void PropFloat64PropertyCb(double PropFloat64);
+	void PropStringPropertyCb(const FString& PropString);
+	void PropReadOnlyStringPropertyCb(const FString& PropReadOnlyString);
 	void SigVoidSignalCb();
 	void SigBoolSignalCb(bool bParamBool);
 	void SigIntSignalCb(int32 ParamInt);

@@ -24,6 +24,46 @@ void UTbSimpleSimpleArrayInterfaceImplHelper::SetSpec(UTbSimpleSimpleArrayInterf
 	Spec = InSpec;
 }
 
+void UTbSimpleSimpleArrayInterfaceImplHelper::PropBoolPropertyCb(const TArray<bool>& PropBool)
+{
+	Spec->PropBoolPropertyCb(PropBool);
+}
+
+void UTbSimpleSimpleArrayInterfaceImplHelper::PropIntPropertyCb(const TArray<int32>& PropInt)
+{
+	Spec->PropIntPropertyCb(PropInt);
+}
+
+void UTbSimpleSimpleArrayInterfaceImplHelper::PropInt32PropertyCb(const TArray<int32>& PropInt32)
+{
+	Spec->PropInt32PropertyCb(PropInt32);
+}
+
+void UTbSimpleSimpleArrayInterfaceImplHelper::PropInt64PropertyCb(const TArray<int64>& PropInt64)
+{
+	Spec->PropInt64PropertyCb(PropInt64);
+}
+
+void UTbSimpleSimpleArrayInterfaceImplHelper::PropFloatPropertyCb(const TArray<float>& PropFloat)
+{
+	Spec->PropFloatPropertyCb(PropFloat);
+}
+
+void UTbSimpleSimpleArrayInterfaceImplHelper::PropFloat32PropertyCb(const TArray<float>& PropFloat32)
+{
+	Spec->PropFloat32PropertyCb(PropFloat32);
+}
+
+void UTbSimpleSimpleArrayInterfaceImplHelper::PropFloat64PropertyCb(const TArray<double>& PropFloat64)
+{
+	Spec->PropFloat64PropertyCb(PropFloat64);
+}
+
+void UTbSimpleSimpleArrayInterfaceImplHelper::PropStringPropertyCb(const TArray<FString>& PropString)
+{
+	Spec->PropStringPropertyCb(PropString);
+}
+
 void UTbSimpleSimpleArrayInterfaceImplHelper::SigBoolSignalCb(const TArray<bool>& ParamBool)
 {
 	Spec->SigBoolSignalCb(ParamBool);

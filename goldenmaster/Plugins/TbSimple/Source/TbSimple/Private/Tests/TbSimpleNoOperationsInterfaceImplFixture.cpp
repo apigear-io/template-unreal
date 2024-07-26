@@ -24,6 +24,16 @@ void UTbSimpleNoOperationsInterfaceImplHelper::SetSpec(UTbSimpleNoOperationsInte
 	Spec = InSpec;
 }
 
+void UTbSimpleNoOperationsInterfaceImplHelper::PropBoolPropertyCb(bool bPropBool)
+{
+	Spec->PropBoolPropertyCb(bPropBool);
+}
+
+void UTbSimpleNoOperationsInterfaceImplHelper::PropIntPropertyCb(int32 PropInt)
+{
+	Spec->PropIntPropertyCb(PropInt);
+}
+
 void UTbSimpleNoOperationsInterfaceImplHelper::SigVoidSignalCb()
 {
 	Spec->SigVoidSignalCb();

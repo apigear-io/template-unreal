@@ -20,6 +20,9 @@ public:
 	void SetSpec(UTbSame2SameEnum1InterfaceImplSpec* InSpec);
 
 	UFUNCTION()
+	void Prop1PropertyCb(ETbSame2Enum1 Prop1);
+
+	UFUNCTION()
 	void Sig1SignalCb(ETbSame2Enum1 Param1);
 
 protected:

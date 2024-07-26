@@ -27,6 +27,14 @@ BEGIN_DEFINE_SPEC(UTbSimpleSimpleArrayInterfaceImplSpec, "TbSimple.SimpleArrayIn
 	TUniquePtr<FTbSimpleSimpleArrayInterfaceImplFixture> ImplFixture;
 
 	// signal callbacks for testing
+	void PropBoolPropertyCb(const TArray<bool>& PropBool);
+	void PropIntPropertyCb(const TArray<int32>& PropInt);
+	void PropInt32PropertyCb(const TArray<int32>& PropInt32);
+	void PropInt64PropertyCb(const TArray<int64>& PropInt64);
+	void PropFloatPropertyCb(const TArray<float>& PropFloat);
+	void PropFloat32PropertyCb(const TArray<float>& PropFloat32);
+	void PropFloat64PropertyCb(const TArray<double>& PropFloat64);
+	void PropStringPropertyCb(const TArray<FString>& PropString);
 	void SigBoolSignalCb(const TArray<bool>& ParamBool);
 	void SigIntSignalCb(const TArray<int32>& ParamInt);
 	void SigInt32SignalCb(const TArray<int32>& ParamInt32);

@@ -19,6 +19,12 @@ class UTbSimpleNoSignalsInterfaceImplHelper : public UObject
 public:
 	void SetSpec(UTbSimpleNoSignalsInterfaceImplSpec* InSpec);
 
+	UFUNCTION()
+	void PropBoolPropertyCb(bool bPropBool);
+
+	UFUNCTION()
+	void PropIntPropertyCb(int32 PropInt);
+
 protected:
 	const FDoneDelegate* testDoneDelegate;
 	UTbSimpleNoSignalsInterfaceImplSpec* Spec;

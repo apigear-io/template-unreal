@@ -14,6 +14,14 @@ void {{$Class}}ImplHelper::SetSpec({{$Class}}ImplSpec* InSpec)
 	Spec = InSpec;
 }
 
+{{- range .Interface.Properties }}
+
+void {{$Class}}ImplHelper::{{ Camel .Name }}PropertyCb({{ueParam "" .}})
+{
+	Spec->{{ Camel .Name }}PropertyCb({{ueVar "" .}});
+}
+{{- end }}
+
 {{- range .Interface.Signals }}
 
 void {{$Class}}ImplHelper::{{ Camel .Name }}SignalCb({{ueParams "" .Params}})

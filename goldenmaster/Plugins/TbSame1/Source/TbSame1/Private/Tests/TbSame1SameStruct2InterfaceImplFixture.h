@@ -20,6 +20,12 @@ public:
 	void SetSpec(UTbSame1SameStruct2InterfaceImplSpec* InSpec);
 
 	UFUNCTION()
+	void Prop1PropertyCb(const FTbSame1Struct2& Prop1);
+
+	UFUNCTION()
+	void Prop2PropertyCb(const FTbSame1Struct2& Prop2);
+
+	UFUNCTION()
 	void Sig1SignalCb(const FTbSame1Struct1& Param1);
 
 	UFUNCTION()

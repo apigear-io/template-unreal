@@ -20,6 +20,18 @@ public:
 	void SetSpec(UTbEnumEnumInterfaceImplSpec* InSpec);
 
 	UFUNCTION()
+	void Prop0PropertyCb(ETbEnumEnum0 Prop0);
+
+	UFUNCTION()
+	void Prop1PropertyCb(ETbEnumEnum1 Prop1);
+
+	UFUNCTION()
+	void Prop2PropertyCb(ETbEnumEnum2 Prop2);
+
+	UFUNCTION()
+	void Prop3PropertyCb(ETbEnumEnum3 Prop3);
+
+	UFUNCTION()
 	void Sig0SignalCb(ETbEnumEnum0 Param0);
 
 	UFUNCTION()

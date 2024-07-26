@@ -20,6 +20,30 @@ public:
 	void SetSpec(UTbSimpleSimpleArrayInterfaceImplSpec* InSpec);
 
 	UFUNCTION()
+	void PropBoolPropertyCb(const TArray<bool>& PropBool);
+
+	UFUNCTION()
+	void PropIntPropertyCb(const TArray<int32>& PropInt);
+
+	UFUNCTION()
+	void PropInt32PropertyCb(const TArray<int32>& PropInt32);
+
+	UFUNCTION()
+	void PropInt64PropertyCb(const TArray<int64>& PropInt64);
+
+	UFUNCTION()
+	void PropFloatPropertyCb(const TArray<float>& PropFloat);
+
+	UFUNCTION()
+	void PropFloat32PropertyCb(const TArray<float>& PropFloat32);
+
+	UFUNCTION()
+	void PropFloat64PropertyCb(const TArray<double>& PropFloat64);
+
+	UFUNCTION()
+	void PropStringPropertyCb(const TArray<FString>& PropString);
+
+	UFUNCTION()
 	void SigBoolSignalCb(const TArray<bool>& ParamBool);
 
 	UFUNCTION()

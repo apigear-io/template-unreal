@@ -24,6 +24,51 @@ void UTbSimpleSimpleInterfaceImplHelper::SetSpec(UTbSimpleSimpleInterfaceImplSpe
 	Spec = InSpec;
 }
 
+void UTbSimpleSimpleInterfaceImplHelper::PropBoolPropertyCb(bool bPropBool)
+{
+	Spec->PropBoolPropertyCb(bPropBool);
+}
+
+void UTbSimpleSimpleInterfaceImplHelper::PropIntPropertyCb(int32 PropInt)
+{
+	Spec->PropIntPropertyCb(PropInt);
+}
+
+void UTbSimpleSimpleInterfaceImplHelper::PropInt32PropertyCb(int32 PropInt32)
+{
+	Spec->PropInt32PropertyCb(PropInt32);
+}
+
+void UTbSimpleSimpleInterfaceImplHelper::PropInt64PropertyCb(int64 PropInt64)
+{
+	Spec->PropInt64PropertyCb(PropInt64);
+}
+
+void UTbSimpleSimpleInterfaceImplHelper::PropFloatPropertyCb(float PropFloat)
+{
+	Spec->PropFloatPropertyCb(PropFloat);
+}
+
+void UTbSimpleSimpleInterfaceImplHelper::PropFloat32PropertyCb(float PropFloat32)
+{
+	Spec->PropFloat32PropertyCb(PropFloat32);
+}
+
+void UTbSimpleSimpleInterfaceImplHelper::PropFloat64PropertyCb(double PropFloat64)
+{
+	Spec->PropFloat64PropertyCb(PropFloat64);
+}
+
+void UTbSimpleSimpleInterfaceImplHelper::PropStringPropertyCb(const FString& PropString)
+{
+	Spec->PropStringPropertyCb(PropString);
+}
+
+void UTbSimpleSimpleInterfaceImplHelper::PropReadOnlyStringPropertyCb(const FString& PropReadOnlyString)
+{
+	Spec->PropReadOnlyStringPropertyCb(PropReadOnlyString);
+}
+
 void UTbSimpleSimpleInterfaceImplHelper::SigVoidSignalCb()
 {
 	Spec->SigVoidSignalCb();

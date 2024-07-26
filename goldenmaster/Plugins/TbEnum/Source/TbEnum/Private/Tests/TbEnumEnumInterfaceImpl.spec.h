@@ -27,6 +27,10 @@ BEGIN_DEFINE_SPEC(UTbEnumEnumInterfaceImplSpec, "TbEnum.EnumInterface.Impl",
 	TUniquePtr<FTbEnumEnumInterfaceImplFixture> ImplFixture;
 
 	// signal callbacks for testing
+	void Prop0PropertyCb(ETbEnumEnum0 Prop0);
+	void Prop1PropertyCb(ETbEnumEnum1 Prop1);
+	void Prop2PropertyCb(ETbEnumEnum2 Prop2);
+	void Prop3PropertyCb(ETbEnumEnum3 Prop3);
 	void Sig0SignalCb(ETbEnumEnum0 Param0);
 	void Sig1SignalCb(ETbEnumEnum1 Param1);
 	void Sig2SignalCb(ETbEnumEnum2 Param2);

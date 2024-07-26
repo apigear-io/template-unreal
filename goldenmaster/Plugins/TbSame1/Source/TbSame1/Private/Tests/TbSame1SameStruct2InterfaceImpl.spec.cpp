@@ -41,28 +41,46 @@ void UTbSame1SameStruct2InterfaceImplSpec::Define()
 		ImplFixture.Reset();
 	});
 
-	It("Property.Prop1", [this]()
+	It("Property.Prop1.Default", [this]()
+	{
+		// Do implement test here
+		FTbSame1Struct2 TestValue = FTbSame1Struct2(); // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetProp1(ImplFixture->GetImplementation().GetObject()), TestValue);
+	});
+	
+	LatentIt("Property.Prop1.Change", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 	{
 		// Do implement test here
 		FTbSame1Struct2 TestValue = FTbSame1Struct2(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetProp1(ImplFixture->GetImplementation().GetObject()), TestValue);
 
+		testDoneDelegate = TestDone;
+		UTbSame1SameStruct2InterfaceSignals* TbSame1SameStruct2InterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
+		TbSame1SameStruct2InterfaceSignals->OnProp1Changed.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame1SameStruct2InterfaceImplHelper::Prop1PropertyCb);
 		// use different test value
 		TestValue = createTestFTbSame1Struct2();
 		ImplFixture->GetImplementation()->Execute_SetProp1(ImplFixture->GetImplementation().GetObject(), TestValue);
-		TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetProp1(ImplFixture->GetImplementation().GetObject()), TestValue);
 	});
 
-	It("Property.Prop2", [this]()
+	It("Property.Prop2.Default", [this]()
+	{
+		// Do implement test here
+		FTbSame1Struct2 TestValue = FTbSame1Struct2(); // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetProp2(ImplFixture->GetImplementation().GetObject()), TestValue);
+	});
+	
+	LatentIt("Property.Prop2.Change", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 	{
 		// Do implement test here
 		FTbSame1Struct2 TestValue = FTbSame1Struct2(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetProp2(ImplFixture->GetImplementation().GetObject()), TestValue);
 
+		testDoneDelegate = TestDone;
+		UTbSame1SameStruct2InterfaceSignals* TbSame1SameStruct2InterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
+		TbSame1SameStruct2InterfaceSignals->OnProp2Changed.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame1SameStruct2InterfaceImplHelper::Prop2PropertyCb);
 		// use different test value
 		TestValue = createTestFTbSame1Struct2();
 		ImplFixture->GetImplementation()->Execute_SetProp2(ImplFixture->GetImplementation().GetObject(), TestValue);
-		TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetProp2(ImplFixture->GetImplementation().GetObject()), TestValue);
 	});
 
 	It("Operation.Func1", [this]()
@@ -99,6 +117,26 @@ void UTbSame1SameStruct2InterfaceImplSpec::Define()
 		FTbSame1Struct2 Param2TestValue = createTestFTbSame1Struct2();
 		TbSame1SameStruct2InterfaceSignals->BroadcastSig2Signal(Param1TestValue, Param2TestValue);
 	});
+}
+
+void UTbSame1SameStruct2InterfaceImplSpec::Prop1PropertyCb(const FTbSame1Struct2& InProp1)
+{
+	FTbSame1Struct2 TestValue = FTbSame1Struct2();
+	// use different test value
+	TestValue = createTestFTbSame1Struct2();
+	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
+	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetProp1(ImplFixture->GetImplementation().GetObject()), TestValue);
+	testDoneDelegate.Execute();
+}
+
+void UTbSame1SameStruct2InterfaceImplSpec::Prop2PropertyCb(const FTbSame1Struct2& InProp2)
+{
+	FTbSame1Struct2 TestValue = FTbSame1Struct2();
+	// use different test value
+	TestValue = createTestFTbSame1Struct2();
+	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp2, TestValue);
+	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetProp2(ImplFixture->GetImplementation().GetObject()), TestValue);
+	testDoneDelegate.Execute();
 }
 
 void UTbSame1SameStruct2InterfaceImplSpec::Sig1SignalCb(const FTbSame1Struct1& InParam1)

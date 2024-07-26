@@ -27,6 +27,10 @@ BEGIN_DEFINE_SPEC(UTestbed1StructInterfaceImplSpec, "Testbed1.StructInterface.Im
 	TUniquePtr<FTestbed1StructInterfaceImplFixture> ImplFixture;
 
 	// signal callbacks for testing
+	void PropBoolPropertyCb(const FTestbed1StructBool& PropBool);
+	void PropIntPropertyCb(const FTestbed1StructInt& PropInt);
+	void PropFloatPropertyCb(const FTestbed1StructFloat& PropFloat);
+	void PropStringPropertyCb(const FTestbed1StructString& PropString);
 	void SigBoolSignalCb(const FTestbed1StructBool& ParamBool);
 	void SigIntSignalCb(const FTestbed1StructInt& ParamInt);
 	void SigFloatSignalCb(const FTestbed1StructFloat& ParamFloat);

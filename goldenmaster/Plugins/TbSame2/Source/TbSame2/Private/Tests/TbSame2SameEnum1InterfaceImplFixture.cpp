@@ -24,6 +24,11 @@ void UTbSame2SameEnum1InterfaceImplHelper::SetSpec(UTbSame2SameEnum1InterfaceImp
 	Spec = InSpec;
 }
 
+void UTbSame2SameEnum1InterfaceImplHelper::Prop1PropertyCb(ETbSame2Enum1 Prop1)
+{
+	Spec->Prop1PropertyCb(Prop1);
+}
+
 void UTbSame2SameEnum1InterfaceImplHelper::Sig1SignalCb(ETbSame2Enum1 Param1)
 {
 	Spec->Sig1SignalCb(Param1);

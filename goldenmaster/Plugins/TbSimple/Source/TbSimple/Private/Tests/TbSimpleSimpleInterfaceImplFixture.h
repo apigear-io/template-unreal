@@ -20,6 +20,33 @@ public:
 	void SetSpec(UTbSimpleSimpleInterfaceImplSpec* InSpec);
 
 	UFUNCTION()
+	void PropBoolPropertyCb(bool bPropBool);
+
+	UFUNCTION()
+	void PropIntPropertyCb(int32 PropInt);
+
+	UFUNCTION()
+	void PropInt32PropertyCb(int32 PropInt32);
+
+	UFUNCTION()
+	void PropInt64PropertyCb(int64 PropInt64);
+
+	UFUNCTION()
+	void PropFloatPropertyCb(float PropFloat);
+
+	UFUNCTION()
+	void PropFloat32PropertyCb(float PropFloat32);
+
+	UFUNCTION()
+	void PropFloat64PropertyCb(double PropFloat64);
+
+	UFUNCTION()
+	void PropStringPropertyCb(const FString& PropString);
+
+	UFUNCTION()
+	void PropReadOnlyStringPropertyCb(const FString& PropReadOnlyString);
+
+	UFUNCTION()
 	void SigVoidSignalCb();
 
 	UFUNCTION()

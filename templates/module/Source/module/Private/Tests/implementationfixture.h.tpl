@@ -22,6 +22,11 @@ class {{$Class}}ImplHelper : public UObject
 	GENERATED_BODY()
 public:
 	void SetSpec({{$Class}}ImplSpec* InSpec);
+{{- range .Interface.Properties }}
+
+	UFUNCTION()
+	void {{ Camel .Name }}PropertyCb({{ueParam "" .}});
+{{- end }}
 {{- range .Interface.Signals }}
 
 	UFUNCTION()

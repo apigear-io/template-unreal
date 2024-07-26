@@ -24,6 +24,21 @@ void UTestbed2NestedStruct3InterfaceImplHelper::SetSpec(UTestbed2NestedStruct3In
 	Spec = InSpec;
 }
 
+void UTestbed2NestedStruct3InterfaceImplHelper::Prop1PropertyCb(const FTestbed2NestedStruct1& Prop1)
+{
+	Spec->Prop1PropertyCb(Prop1);
+}
+
+void UTestbed2NestedStruct3InterfaceImplHelper::Prop2PropertyCb(const FTestbed2NestedStruct2& Prop2)
+{
+	Spec->Prop2PropertyCb(Prop2);
+}
+
+void UTestbed2NestedStruct3InterfaceImplHelper::Prop3PropertyCb(const FTestbed2NestedStruct3& Prop3)
+{
+	Spec->Prop3PropertyCb(Prop3);
+}
+
 void UTestbed2NestedStruct3InterfaceImplHelper::Sig1SignalCb(const FTestbed2NestedStruct1& Param1)
 {
 	Spec->Sig1SignalCb(Param1);

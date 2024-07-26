@@ -27,6 +27,8 @@ BEGIN_DEFINE_SPEC(UTbSimpleNoSignalsInterfaceImplSpec, "TbSimple.NoSignalsInterf
 	TUniquePtr<FTbSimpleNoSignalsInterfaceImplFixture> ImplFixture;
 
 	// signal callbacks for testing
+	void PropBoolPropertyCb(bool bPropBool);
+	void PropIntPropertyCb(int32 PropInt);
 	FDoneDelegate testDoneDelegate;
 
 	friend class UTbSimpleNoSignalsInterfaceImplHelper;

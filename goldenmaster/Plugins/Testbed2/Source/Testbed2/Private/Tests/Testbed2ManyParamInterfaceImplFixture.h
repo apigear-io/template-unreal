@@ -20,6 +20,18 @@ public:
 	void SetSpec(UTestbed2ManyParamInterfaceImplSpec* InSpec);
 
 	UFUNCTION()
+	void Prop1PropertyCb(int32 Prop1);
+
+	UFUNCTION()
+	void Prop2PropertyCb(int32 Prop2);
+
+	UFUNCTION()
+	void Prop3PropertyCb(int32 Prop3);
+
+	UFUNCTION()
+	void Prop4PropertyCb(int32 Prop4);
+
+	UFUNCTION()
 	void Sig1SignalCb(int32 Param1);
 
 	UFUNCTION()

@@ -20,6 +20,12 @@ public:
 	void SetSpec(UTbSimpleNoOperationsInterfaceImplSpec* InSpec);
 
 	UFUNCTION()
+	void PropBoolPropertyCb(bool bPropBool);
+
+	UFUNCTION()
+	void PropIntPropertyCb(int32 PropInt);
+
+	UFUNCTION()
 	void SigVoidSignalCb();
 
 	UFUNCTION()

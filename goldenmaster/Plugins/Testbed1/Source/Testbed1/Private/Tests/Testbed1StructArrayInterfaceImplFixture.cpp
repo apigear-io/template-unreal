@@ -24,6 +24,26 @@ void UTestbed1StructArrayInterfaceImplHelper::SetSpec(UTestbed1StructArrayInterf
 	Spec = InSpec;
 }
 
+void UTestbed1StructArrayInterfaceImplHelper::PropBoolPropertyCb(const TArray<FTestbed1StructBool>& PropBool)
+{
+	Spec->PropBoolPropertyCb(PropBool);
+}
+
+void UTestbed1StructArrayInterfaceImplHelper::PropIntPropertyCb(const TArray<FTestbed1StructInt>& PropInt)
+{
+	Spec->PropIntPropertyCb(PropInt);
+}
+
+void UTestbed1StructArrayInterfaceImplHelper::PropFloatPropertyCb(const TArray<FTestbed1StructFloat>& PropFloat)
+{
+	Spec->PropFloatPropertyCb(PropFloat);
+}
+
+void UTestbed1StructArrayInterfaceImplHelper::PropStringPropertyCb(const TArray<FTestbed1StructString>& PropString)
+{
+	Spec->PropStringPropertyCb(PropString);
+}
+
 void UTestbed1StructArrayInterfaceImplHelper::SigBoolSignalCb(const TArray<FTestbed1StructBool>& ParamBool)
 {
 	Spec->SigBoolSignalCb(ParamBool);

@@ -24,6 +24,16 @@ void UTbSimpleNoSignalsInterfaceImplHelper::SetSpec(UTbSimpleNoSignalsInterfaceI
 	Spec = InSpec;
 }
 
+void UTbSimpleNoSignalsInterfaceImplHelper::PropBoolPropertyCb(bool bPropBool)
+{
+	Spec->PropBoolPropertyCb(bPropBool);
+}
+
+void UTbSimpleNoSignalsInterfaceImplHelper::PropIntPropertyCb(int32 PropInt)
+{
+	Spec->PropIntPropertyCb(PropInt);
+}
+
 #if WITH_DEV_AUTOMATION_TESTS
 
 FTbSimpleNoSignalsInterfaceImplFixture::FTbSimpleNoSignalsInterfaceImplFixture()

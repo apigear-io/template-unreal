@@ -27,6 +27,8 @@ BEGIN_DEFINE_SPEC(UTbSame2SameStruct2InterfaceImplSpec, "TbSame2.SameStruct2Inte
 	TUniquePtr<FTbSame2SameStruct2InterfaceImplFixture> ImplFixture;
 
 	// signal callbacks for testing
+	void Prop1PropertyCb(const FTbSame2Struct2& Prop1);
+	void Prop2PropertyCb(const FTbSame2Struct2& Prop2);
 	void Sig1SignalCb(const FTbSame2Struct1& Param1);
 	void Sig2SignalCb(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2);
 	FDoneDelegate testDoneDelegate;

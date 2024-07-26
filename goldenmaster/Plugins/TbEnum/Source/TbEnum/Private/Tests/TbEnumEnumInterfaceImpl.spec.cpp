@@ -41,52 +41,88 @@ void UTbEnumEnumInterfaceImplSpec::Define()
 		ImplFixture.Reset();
 	});
 
-	It("Property.Prop0", [this]()
+	It("Property.Prop0.Default", [this]()
+	{
+		// Do implement test here
+		ETbEnumEnum0 TestValue = ETbEnumEnum0::TEE0_VALUE0; // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetProp0(ImplFixture->GetImplementation().GetObject()), TestValue);
+	});
+	
+	LatentIt("Property.Prop0.Change", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 	{
 		// Do implement test here
 		ETbEnumEnum0 TestValue = ETbEnumEnum0::TEE0_VALUE0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetProp0(ImplFixture->GetImplementation().GetObject()), TestValue);
 
+		testDoneDelegate = TestDone;
+		UTbEnumEnumInterfaceSignals* TbEnumEnumInterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
+		TbEnumEnumInterfaceSignals->OnProp0Changed.AddDynamic(ImplFixture->GetHelper().Get(), &UTbEnumEnumInterfaceImplHelper::Prop0PropertyCb);
 		// use different test value
 		TestValue = ETbEnumEnum0::TEE0_VALUE1;
 		ImplFixture->GetImplementation()->Execute_SetProp0(ImplFixture->GetImplementation().GetObject(), TestValue);
-		TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetProp0(ImplFixture->GetImplementation().GetObject()), TestValue);
 	});
 
-	It("Property.Prop1", [this]()
+	It("Property.Prop1.Default", [this]()
+	{
+		// Do implement test here
+		ETbEnumEnum1 TestValue = ETbEnumEnum1::TEE1_VALUE1; // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetProp1(ImplFixture->GetImplementation().GetObject()), TestValue);
+	});
+	
+	LatentIt("Property.Prop1.Change", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 	{
 		// Do implement test here
 		ETbEnumEnum1 TestValue = ETbEnumEnum1::TEE1_VALUE1; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetProp1(ImplFixture->GetImplementation().GetObject()), TestValue);
 
+		testDoneDelegate = TestDone;
+		UTbEnumEnumInterfaceSignals* TbEnumEnumInterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
+		TbEnumEnumInterfaceSignals->OnProp1Changed.AddDynamic(ImplFixture->GetHelper().Get(), &UTbEnumEnumInterfaceImplHelper::Prop1PropertyCb);
 		// use different test value
 		TestValue = ETbEnumEnum1::TEE1_VALUE2;
 		ImplFixture->GetImplementation()->Execute_SetProp1(ImplFixture->GetImplementation().GetObject(), TestValue);
-		TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetProp1(ImplFixture->GetImplementation().GetObject()), TestValue);
 	});
 
-	It("Property.Prop2", [this]()
+	It("Property.Prop2.Default", [this]()
+	{
+		// Do implement test here
+		ETbEnumEnum2 TestValue = ETbEnumEnum2::TEE2_VALUE2; // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetProp2(ImplFixture->GetImplementation().GetObject()), TestValue);
+	});
+	
+	LatentIt("Property.Prop2.Change", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 	{
 		// Do implement test here
 		ETbEnumEnum2 TestValue = ETbEnumEnum2::TEE2_VALUE2; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetProp2(ImplFixture->GetImplementation().GetObject()), TestValue);
 
+		testDoneDelegate = TestDone;
+		UTbEnumEnumInterfaceSignals* TbEnumEnumInterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
+		TbEnumEnumInterfaceSignals->OnProp2Changed.AddDynamic(ImplFixture->GetHelper().Get(), &UTbEnumEnumInterfaceImplHelper::Prop2PropertyCb);
 		// use different test value
 		TestValue = ETbEnumEnum2::TEE2_VALUE1;
 		ImplFixture->GetImplementation()->Execute_SetProp2(ImplFixture->GetImplementation().GetObject(), TestValue);
-		TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetProp2(ImplFixture->GetImplementation().GetObject()), TestValue);
 	});
 
-	It("Property.Prop3", [this]()
+	It("Property.Prop3.Default", [this]()
+	{
+		// Do implement test here
+		ETbEnumEnum3 TestValue = ETbEnumEnum3::TEE3_VALUE3; // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetProp3(ImplFixture->GetImplementation().GetObject()), TestValue);
+	});
+	
+	LatentIt("Property.Prop3.Change", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 	{
 		// Do implement test here
 		ETbEnumEnum3 TestValue = ETbEnumEnum3::TEE3_VALUE3; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetProp3(ImplFixture->GetImplementation().GetObject()), TestValue);
 
+		testDoneDelegate = TestDone;
+		UTbEnumEnumInterfaceSignals* TbEnumEnumInterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
+		TbEnumEnumInterfaceSignals->OnProp3Changed.AddDynamic(ImplFixture->GetHelper().Get(), &UTbEnumEnumInterfaceImplHelper::Prop3PropertyCb);
 		// use different test value
 		TestValue = ETbEnumEnum3::TEE3_VALUE2;
 		ImplFixture->GetImplementation()->Execute_SetProp3(ImplFixture->GetImplementation().GetObject(), TestValue);
-		TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetProp3(ImplFixture->GetImplementation().GetObject()), TestValue);
 	});
 
 	It("Operation.Func0", [this]()
@@ -156,6 +192,46 @@ void UTbEnumEnumInterfaceImplSpec::Define()
 		ETbEnumEnum3 Param3TestValue = ETbEnumEnum3::TEE3_VALUE2;
 		TbEnumEnumInterfaceSignals->BroadcastSig3Signal(Param3TestValue);
 	});
+}
+
+void UTbEnumEnumInterfaceImplSpec::Prop0PropertyCb(ETbEnumEnum0 InProp0)
+{
+	ETbEnumEnum0 TestValue = ETbEnumEnum0::TEE0_VALUE0;
+	// use different test value
+	TestValue = ETbEnumEnum0::TEE0_VALUE1;
+	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp0, TestValue);
+	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetProp0(ImplFixture->GetImplementation().GetObject()), TestValue);
+	testDoneDelegate.Execute();
+}
+
+void UTbEnumEnumInterfaceImplSpec::Prop1PropertyCb(ETbEnumEnum1 InProp1)
+{
+	ETbEnumEnum1 TestValue = ETbEnumEnum1::TEE1_VALUE1;
+	// use different test value
+	TestValue = ETbEnumEnum1::TEE1_VALUE2;
+	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
+	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetProp1(ImplFixture->GetImplementation().GetObject()), TestValue);
+	testDoneDelegate.Execute();
+}
+
+void UTbEnumEnumInterfaceImplSpec::Prop2PropertyCb(ETbEnumEnum2 InProp2)
+{
+	ETbEnumEnum2 TestValue = ETbEnumEnum2::TEE2_VALUE2;
+	// use different test value
+	TestValue = ETbEnumEnum2::TEE2_VALUE1;
+	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp2, TestValue);
+	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetProp2(ImplFixture->GetImplementation().GetObject()), TestValue);
+	testDoneDelegate.Execute();
+}
+
+void UTbEnumEnumInterfaceImplSpec::Prop3PropertyCb(ETbEnumEnum3 InProp3)
+{
+	ETbEnumEnum3 TestValue = ETbEnumEnum3::TEE3_VALUE3;
+	// use different test value
+	TestValue = ETbEnumEnum3::TEE3_VALUE2;
+	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp3, TestValue);
+	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetProp3(ImplFixture->GetImplementation().GetObject()), TestValue);
+	testDoneDelegate.Execute();
 }
 
 void UTbEnumEnumInterfaceImplSpec::Sig0SignalCb(ETbEnumEnum0 InParam0)

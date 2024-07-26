@@ -24,6 +24,26 @@ void UTbEnumEnumInterfaceImplHelper::SetSpec(UTbEnumEnumInterfaceImplSpec* InSpe
 	Spec = InSpec;
 }
 
+void UTbEnumEnumInterfaceImplHelper::Prop0PropertyCb(ETbEnumEnum0 Prop0)
+{
+	Spec->Prop0PropertyCb(Prop0);
+}
+
+void UTbEnumEnumInterfaceImplHelper::Prop1PropertyCb(ETbEnumEnum1 Prop1)
+{
+	Spec->Prop1PropertyCb(Prop1);
+}
+
+void UTbEnumEnumInterfaceImplHelper::Prop2PropertyCb(ETbEnumEnum2 Prop2)
+{
+	Spec->Prop2PropertyCb(Prop2);
+}
+
+void UTbEnumEnumInterfaceImplHelper::Prop3PropertyCb(ETbEnumEnum3 Prop3)
+{
+	Spec->Prop3PropertyCb(Prop3);
+}
+
 void UTbEnumEnumInterfaceImplHelper::Sig0SignalCb(ETbEnumEnum0 Param0)
 {
 	Spec->Sig0SignalCb(Param0);

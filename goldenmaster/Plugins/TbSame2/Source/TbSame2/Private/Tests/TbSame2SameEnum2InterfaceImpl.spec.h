@@ -27,6 +27,8 @@ BEGIN_DEFINE_SPEC(UTbSame2SameEnum2InterfaceImplSpec, "TbSame2.SameEnum2Interfac
 	TUniquePtr<FTbSame2SameEnum2InterfaceImplFixture> ImplFixture;
 
 	// signal callbacks for testing
+	void Prop1PropertyCb(ETbSame2Enum1 Prop1);
+	void Prop2PropertyCb(ETbSame2Enum2 Prop2);
 	void Sig1SignalCb(ETbSame2Enum1 Param1);
 	void Sig2SignalCb(ETbSame2Enum1 Param1, ETbSame2Enum2 Param2);
 	FDoneDelegate testDoneDelegate;

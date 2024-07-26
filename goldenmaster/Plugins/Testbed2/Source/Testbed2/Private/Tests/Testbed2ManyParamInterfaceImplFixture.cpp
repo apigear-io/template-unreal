@@ -24,6 +24,26 @@ void UTestbed2ManyParamInterfaceImplHelper::SetSpec(UTestbed2ManyParamInterfaceI
 	Spec = InSpec;
 }
 
+void UTestbed2ManyParamInterfaceImplHelper::Prop1PropertyCb(int32 Prop1)
+{
+	Spec->Prop1PropertyCb(Prop1);
+}
+
+void UTestbed2ManyParamInterfaceImplHelper::Prop2PropertyCb(int32 Prop2)
+{
+	Spec->Prop2PropertyCb(Prop2);
+}
+
+void UTestbed2ManyParamInterfaceImplHelper::Prop3PropertyCb(int32 Prop3)
+{
+	Spec->Prop3PropertyCb(Prop3);
+}
+
+void UTestbed2ManyParamInterfaceImplHelper::Prop4PropertyCb(int32 Prop4)
+{
+	Spec->Prop4PropertyCb(Prop4);
+}
+
 void UTestbed2ManyParamInterfaceImplHelper::Sig1SignalCb(int32 Param1)
 {
 	Spec->Sig1SignalCb(Param1);

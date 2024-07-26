@@ -18,6 +18,9 @@ BEGIN_DEFINE_SPEC({{$Class}}ImplSpec, "{{$ModuleName}}.{{$IfaceName}}.Impl",
 	TUniquePtr<F{{$DisplayName}}ImplFixture> ImplFixture;
 
 	// signal callbacks for testing
+{{- range .Interface.Properties }}
+	void {{ Camel .Name }}PropertyCb({{ueParam "" .}});
+{{- end }}
 {{- range .Interface.Signals }}
 	void {{ Camel .Name }}SignalCb({{ueParams "" .Params}});
 {{- end }}

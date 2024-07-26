@@ -27,6 +27,7 @@ BEGIN_DEFINE_SPEC(UTbSame1SameEnum1InterfaceImplSpec, "TbSame1.SameEnum1Interfac
 	TUniquePtr<FTbSame1SameEnum1InterfaceImplFixture> ImplFixture;
 
 	// signal callbacks for testing
+	void Prop1PropertyCb(ETbSame1Enum1 Prop1);
 	void Sig1SignalCb(ETbSame1Enum1 Param1);
 	FDoneDelegate testDoneDelegate;
 

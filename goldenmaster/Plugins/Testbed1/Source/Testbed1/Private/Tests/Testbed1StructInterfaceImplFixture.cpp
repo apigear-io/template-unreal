@@ -24,6 +24,26 @@ void UTestbed1StructInterfaceImplHelper::SetSpec(UTestbed1StructInterfaceImplSpe
 	Spec = InSpec;
 }
 
+void UTestbed1StructInterfaceImplHelper::PropBoolPropertyCb(const FTestbed1StructBool& PropBool)
+{
+	Spec->PropBoolPropertyCb(PropBool);
+}
+
+void UTestbed1StructInterfaceImplHelper::PropIntPropertyCb(const FTestbed1StructInt& PropInt)
+{
+	Spec->PropIntPropertyCb(PropInt);
+}
+
+void UTestbed1StructInterfaceImplHelper::PropFloatPropertyCb(const FTestbed1StructFloat& PropFloat)
+{
+	Spec->PropFloatPropertyCb(PropFloat);
+}
+
+void UTestbed1StructInterfaceImplHelper::PropStringPropertyCb(const FTestbed1StructString& PropString)
+{
+	Spec->PropStringPropertyCb(PropString);
+}
+
 void UTestbed1StructInterfaceImplHelper::SigBoolSignalCb(const FTestbed1StructBool& ParamBool)
 {
 	Spec->SigBoolSignalCb(ParamBool);

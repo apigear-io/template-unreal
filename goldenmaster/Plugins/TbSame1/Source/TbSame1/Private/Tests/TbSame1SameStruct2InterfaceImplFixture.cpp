@@ -24,6 +24,16 @@ void UTbSame1SameStruct2InterfaceImplHelper::SetSpec(UTbSame1SameStruct2Interfac
 	Spec = InSpec;
 }
 
+void UTbSame1SameStruct2InterfaceImplHelper::Prop1PropertyCb(const FTbSame1Struct2& Prop1)
+{
+	Spec->Prop1PropertyCb(Prop1);
+}
+
+void UTbSame1SameStruct2InterfaceImplHelper::Prop2PropertyCb(const FTbSame1Struct2& Prop2)
+{
+	Spec->Prop2PropertyCb(Prop2);
+}
+
 void UTbSame1SameStruct2InterfaceImplHelper::Sig1SignalCb(const FTbSame1Struct1& Param1)
 {
 	Spec->Sig1SignalCb(Param1);
