@@ -18,6 +18,7 @@ limitations under the License.
 #include "Testbed2NestedStruct1InterfaceImpl.spec.h"
 #include "Implementation/Testbed2NestedStruct1Interface.h"
 #include "Testbed2NestedStruct1InterfaceImplFixture.h"
+#include "Testbed2TestsCommon.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
@@ -43,8 +44,13 @@ void UTestbed2NestedStruct1InterfaceImplSpec::Define()
 	It("Property.Prop1", [this]()
 	{
 		// Do implement test here
-		ImplFixture->GetImplementation()->Execute_SetProp1(ImplFixture->GetImplementation().GetObject(), FTestbed2NestedStruct1());
-		TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetProp1(ImplFixture->GetImplementation().GetObject()), FTestbed2NestedStruct1());
+		FTestbed2NestedStruct1 TestValue = FTestbed2NestedStruct1(); // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetProp1(ImplFixture->GetImplementation().GetObject()), TestValue);
+
+		// use different test value
+		TestValue = createTestFTestbed2NestedStruct1();
+		ImplFixture->GetImplementation()->Execute_SetProp1(ImplFixture->GetImplementation().GetObject(), TestValue);
+		TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetProp1(ImplFixture->GetImplementation().GetObject()), TestValue);
 	});
 
 	It("Operation.Func1", [this]()

@@ -18,6 +18,7 @@ limitations under the License.
 #include "TbSame2SameStruct1InterfaceImpl.spec.h"
 #include "Implementation/TbSame2SameStruct1Interface.h"
 #include "TbSame2SameStruct1InterfaceImplFixture.h"
+#include "TbSame2TestsCommon.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
@@ -43,8 +44,13 @@ void UTbSame2SameStruct1InterfaceImplSpec::Define()
 	It("Property.Prop1", [this]()
 	{
 		// Do implement test here
-		ImplFixture->GetImplementation()->Execute_SetProp1(ImplFixture->GetImplementation().GetObject(), FTbSame2Struct1());
-		TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetProp1(ImplFixture->GetImplementation().GetObject()), FTbSame2Struct1());
+		FTbSame2Struct1 TestValue = FTbSame2Struct1(); // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetProp1(ImplFixture->GetImplementation().GetObject()), TestValue);
+
+		// use different test value
+		TestValue = createTestFTbSame2Struct1();
+		ImplFixture->GetImplementation()->Execute_SetProp1(ImplFixture->GetImplementation().GetObject(), TestValue);
+		TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetProp1(ImplFixture->GetImplementation().GetObject()), TestValue);
 	});
 
 	It("Operation.Func1", [this]()

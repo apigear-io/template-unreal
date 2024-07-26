@@ -18,6 +18,7 @@ limitations under the License.
 #include "TbSame1SameEnum1InterfaceImpl.spec.h"
 #include "Implementation/TbSame1SameEnum1Interface.h"
 #include "TbSame1SameEnum1InterfaceImplFixture.h"
+#include "TbSame1TestsCommon.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
@@ -43,8 +44,13 @@ void UTbSame1SameEnum1InterfaceImplSpec::Define()
 	It("Property.Prop1", [this]()
 	{
 		// Do implement test here
-		ImplFixture->GetImplementation()->Execute_SetProp1(ImplFixture->GetImplementation().GetObject(), ETbSame1Enum1::TS1E1_VALUE1);
-		TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetProp1(ImplFixture->GetImplementation().GetObject()), ETbSame1Enum1::TS1E1_VALUE1);
+		ETbSame1Enum1 TestValue = ETbSame1Enum1::TS1E1_VALUE1; // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetProp1(ImplFixture->GetImplementation().GetObject()), TestValue);
+
+		// use different test value
+		TestValue = ETbSame1Enum1::TS1E1_VALUE2;
+		ImplFixture->GetImplementation()->Execute_SetProp1(ImplFixture->GetImplementation().GetObject(), TestValue);
+		TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetProp1(ImplFixture->GetImplementation().GetObject()), TestValue);
 	});
 
 	It("Operation.Func1", [this]()

@@ -9,6 +9,7 @@
 #include "{{$DisplayName}}Impl.spec.h"
 #include "Implementation/{{$Iface}}.h"
 #include "{{$DisplayName}}ImplFixture.h"
+#include "{{$ModuleName}}TestsCommon.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
@@ -35,9 +36,21 @@ void {{$Class}}ImplSpec::Define()
 	It("Property.{{ Camel .Name }}", [this]()
 	{
 		// Do implement test here
+		{{ueType "" .}} TestValue = {{ueDefault "" .}}; // default value
 	{{- if not .IsReadOnly }}
-		ImplFixture->GetImplementation()->Execute_Set{{Camel .Name}}(ImplFixture->GetImplementation().GetObject(), {{ueDefault "" .}});
-		TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_Get{{Camel .Name}}(ImplFixture->GetImplementation().GetObject()), {{ueDefault "" .}});
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_Get{{Camel .Name}}(ImplFixture->GetImplementation().GetObject()), TestValue);
+
+		// use different test value
+		{{- if .IsArray }}
+		{{- $type := printf "F%s%s" $ModuleName .Type }}
+		TestValue = createTest{{$type}}Array();
+		{{- else if and (not .IsPrimitive) (not (eq .KindType "enum"))}}
+		TestValue = createTest{{ueType "" .}}();
+		{{- else }}
+		TestValue = {{ ueTestValue "" . }};
+		{{- end }}
+		ImplFixture->GetImplementation()->Execute_Set{{Camel .Name}}(ImplFixture->GetImplementation().GetObject(), TestValue);
+		TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_Get{{Camel .Name}}(ImplFixture->GetImplementation().GetObject()), TestValue);
 	{{- else }}
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_Get{{Camel .Name}}(ImplFixture->GetImplementation().GetObject()), {{ueDefault "" .}});
 	{{- end }}

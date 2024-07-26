@@ -18,6 +18,7 @@ limitations under the License.
 #include "TbSame2SameStruct2InterfaceImpl.spec.h"
 #include "Implementation/TbSame2SameStruct2Interface.h"
 #include "TbSame2SameStruct2InterfaceImplFixture.h"
+#include "TbSame2TestsCommon.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
@@ -43,15 +44,25 @@ void UTbSame2SameStruct2InterfaceImplSpec::Define()
 	It("Property.Prop1", [this]()
 	{
 		// Do implement test here
-		ImplFixture->GetImplementation()->Execute_SetProp1(ImplFixture->GetImplementation().GetObject(), FTbSame2Struct2());
-		TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetProp1(ImplFixture->GetImplementation().GetObject()), FTbSame2Struct2());
+		FTbSame2Struct2 TestValue = FTbSame2Struct2(); // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetProp1(ImplFixture->GetImplementation().GetObject()), TestValue);
+
+		// use different test value
+		TestValue = createTestFTbSame2Struct2();
+		ImplFixture->GetImplementation()->Execute_SetProp1(ImplFixture->GetImplementation().GetObject(), TestValue);
+		TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetProp1(ImplFixture->GetImplementation().GetObject()), TestValue);
 	});
 
 	It("Property.Prop2", [this]()
 	{
 		// Do implement test here
-		ImplFixture->GetImplementation()->Execute_SetProp2(ImplFixture->GetImplementation().GetObject(), FTbSame2Struct2());
-		TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetProp2(ImplFixture->GetImplementation().GetObject()), FTbSame2Struct2());
+		FTbSame2Struct2 TestValue = FTbSame2Struct2(); // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetProp2(ImplFixture->GetImplementation().GetObject()), TestValue);
+
+		// use different test value
+		TestValue = createTestFTbSame2Struct2();
+		ImplFixture->GetImplementation()->Execute_SetProp2(ImplFixture->GetImplementation().GetObject(), TestValue);
+		TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetProp2(ImplFixture->GetImplementation().GetObject()), TestValue);
 	});
 
 	It("Operation.Func1", [this]()
