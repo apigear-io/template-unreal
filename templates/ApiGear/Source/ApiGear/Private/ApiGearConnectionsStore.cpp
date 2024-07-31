@@ -41,7 +41,8 @@ void UApiGearConnectionsStore::Initialize(FSubsystemCollectionBase& Collection)
 		Connection->Configure(ConnectionSetting.Value.URL, ConnectionSetting.Value.AutoReconnectEnabled);
 
 		// connection successfully set up, so add it to the storage
-		check(AddConnection(Connection));
+		bool bAddedSuccessfully = AddConnection(Connection);
+		check(bAddedSuccessfully);
 	}
 }
 
