@@ -17,7 +17,7 @@ limitations under the License.
 
 #include "TbEnumFactory.h"
 #include "ApiGearSettings.h"
-#include "apigearolink.h"
+#include "ApiGearOLink.h"
 #include "TbEnumSettings.h"
 #include "Implementation/TbEnumEnumInterface.h"
 #include "Generated/OLink/TbEnumEnumInterfaceOLinkClient.h"

@@ -22,11 +22,11 @@ limitations under the License.
 
 #include "Generated/OLink/Testbed2NestedStruct3InterfaceOLinkClient.h"
 #include "ApiGearSettings.h"
-#include "apigearolink.h"
+#include "ApiGearOLink.h"
 #include "Async/Async.h"
 #include "Generated/api/Testbed2.json.adapter.h"
-#include "unrealolink.h"
-#include "unrealolinksink.h"
+#include "OLinkClientConnection.h"
+#include "OLinkSink.h"
 #include "Engine/Engine.h"
 #include "ApiGear/Public/ApiGearConnectionsStore.h"
 #include "Misc/DateTime.h"
@@ -59,7 +59,7 @@ UTestbed2NestedStruct3InterfaceOLinkClient::UTestbed2NestedStruct3InterfaceOLink
 	, _SentData(MakePimpl<Testbed2NestedStruct3InterfacePropertiesData>())
 #endif
 {
-	m_sink = std::make_shared<FUnrealOLinkSink>("testbed2.NestedStruct3Interface");
+	m_sink = std::make_shared<FOLinkSink>("testbed2.NestedStruct3Interface");
 }
 
 UTestbed2NestedStruct3InterfaceOLinkClient::UTestbed2NestedStruct3InterfaceOLinkClient(FVTableHelper& Helper)
@@ -77,13 +77,13 @@ void UTestbed2NestedStruct3InterfaceOLinkClient::Initialize(FSubsystemCollection
 	m_sink->setOnReleaseCallback([this]()
 		{ _SubscriptionStatusChanged.Broadcast(false); });
 
-	FUnrealOLinkSink::FPropertyChangedFunc PropertyChangedFunc = [this](const nlohmann::json& props)
+	FOLinkSink::FPropertyChangedFunc PropertyChangedFunc = [this](const nlohmann::json& props)
 	{
 		this->applyState(props);
 	};
 	m_sink->setOnPropertyChangedCallback(PropertyChangedFunc);
 
-	FUnrealOLinkSink::FSignalEmittedFunc SignalEmittedFunc = [this](const std::string& signalName, const nlohmann::json& args)
+	FOLinkSink::FSignalEmittedFunc SignalEmittedFunc = [this](const std::string& signalName, const nlohmann::json& args)
 	{
 		this->emitSignal(signalName, args);
 	};
@@ -115,7 +115,7 @@ void UTestbed2NestedStruct3InterfaceOLinkClient::Deinitialize()
 
 	if (Connection.GetObject())
 	{
-		UUnrealOLink* UnrealOLinkConnection = Cast<UUnrealOLink>(Connection.GetObject());
+		UOLinkClientConnection* UnrealOLinkConnection = Cast<UOLinkClientConnection>(Connection.GetObject());
 		UnrealOLinkConnection->unlinkObjectSource(m_sink->olinkObjectName());
 		UnrealOLinkConnection->node()->registry().removeSink(m_sink->olinkObjectName());
 	}
@@ -130,18 +130,18 @@ void UTestbed2NestedStruct3InterfaceOLinkClient::UseConnection(TScriptInterface<
 	// only accept connections of type olink
 	checkf(InConnection->GetConnectionProtocolIdentifier() == ApiGearOLinkProtocolIdentifier, TEXT("Cannot use connection - must be of type olink"));
 
-	UUnrealOLink* UnrealOLinkConnection = nullptr;
+	UOLinkClientConnection* UnrealOLinkConnection = nullptr;
 	// remove old connection
 	if (Connection.GetObject())
 	{
-		UnrealOLinkConnection = Cast<UUnrealOLink>(Connection.GetObject());
+		UnrealOLinkConnection = Cast<UOLinkClientConnection>(Connection.GetObject());
 		UnrealOLinkConnection->unlinkObjectSource(m_sink->olinkObjectName());
 		UnrealOLinkConnection->node()->registry().removeSink(m_sink->olinkObjectName());
 		UnrealOLinkConnection = nullptr;
 	}
 
 	// set up new connection
-	UnrealOLinkConnection = Cast<UUnrealOLink>(InConnection.GetObject());
+	UnrealOLinkConnection = Cast<UOLinkClientConnection>(InConnection.GetObject());
 	UnrealOLinkConnection->node()->registry().addSink(m_sink);
 	UnrealOLinkConnection->linkObjectSource(m_sink->olinkObjectName());
 

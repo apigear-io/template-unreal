@@ -24,7 +24,7 @@ limitations under the License.
 #include "Async/Future.h"
 #include "Async/Async.h"
 #include "Generated/api/TbSame2.json.adapter.h"
-#include "unrealolink.h"
+#include "OLinkClientConnection.h"
 #include "Async/Async.h"
 #include "Engine/Engine.h"
 #include "Misc/DateTime.h"
@@ -85,7 +85,7 @@ void UTbSame2SameEnum1InterfaceOLinkAdapter::OnProp1Changed(ETbSame2Enum1 InProp
 	Source->OnProp1Changed(InProp1);
 }
 
-void UTbSame2SameEnum1InterfaceOLinkAdapter::setOLinkHost(TSoftObjectPtr<UUnrealOLinkHost> InHost)
+void UTbSame2SameEnum1InterfaceOLinkAdapter::setOLinkHost(TSoftObjectPtr<UOLinkHost> InHost)
 {
 	check(InHost);
 	Source->setOLinkHost(InHost.Get());

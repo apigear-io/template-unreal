@@ -17,7 +17,7 @@ limitations under the License.
 
 #include "Testbed1Factory.h"
 #include "ApiGearSettings.h"
-#include "apigearolink.h"
+#include "ApiGearOLink.h"
 #include "Testbed1Settings.h"
 #include "Implementation/Testbed1StructInterface.h"
 #include "Generated/OLink/Testbed1StructInterfaceOLinkClient.h"

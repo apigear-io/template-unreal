@@ -10,7 +10,7 @@
 #include "ApiGearSettings.h"
 {{- end }}
 {{- if $.Features.olink }}
-#include "apigearolink.h"
+#include "ApiGearOLink.h"
 {{- end }}
 #include "{{$ModuleName}}Settings.h"
 #include "Templates/SharedPointer.h"

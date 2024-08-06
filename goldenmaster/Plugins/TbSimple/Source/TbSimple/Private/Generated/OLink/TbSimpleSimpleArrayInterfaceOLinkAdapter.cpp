@@ -24,7 +24,7 @@ limitations under the License.
 #include "Async/Future.h"
 #include "Async/Async.h"
 #include "Generated/api/TbSimple.json.adapter.h"
-#include "unrealolink.h"
+#include "OLinkClientConnection.h"
 #include "Async/Async.h"
 #include "Engine/Engine.h"
 #include "Misc/DateTime.h"
@@ -183,7 +183,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropStringChanged(const TArray
 	Source->OnPropStringChanged(InPropString);
 }
 
-void UTbSimpleSimpleArrayInterfaceOLinkAdapter::setOLinkHost(TSoftObjectPtr<UUnrealOLinkHost> InHost)
+void UTbSimpleSimpleArrayInterfaceOLinkAdapter::setOLinkHost(TSoftObjectPtr<UOLinkHost> InHost)
 {
 	check(InHost);
 	Source->setOLinkHost(InHost.Get());

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "AbstractApiGearConnection.h"
-#include "apigearolink.h"
+#include "ApiGearOLink.h"
 THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
 #include "olink/clientregistry.h"
@@ -11,7 +11,7 @@ THIRD_PARTY_INCLUDES_END
 #include "Containers/Queue.h"
 #include "HAL/CriticalSection.h"
 #include "ApiGearTicker.h"
-#include "unrealolink.generated.h"
+#include "OLinkClientConnection.generated.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(LogApiGearOLink, Log, All);
 
@@ -22,12 +22,12 @@ public:
 };
 
 UCLASS(BlueprintType, Displayname = "ApiGear ObjectLink Connection", Category = "ApiGear|Connection")
-class APIGEAROLINK_API UUnrealOLink final : public UAbstractApiGearConnection
+class APIGEAROLINK_API UOLinkClientConnection final : public UAbstractApiGearConnection
 {
 	GENERATED_BODY()
 public:
-	explicit UUnrealOLink(const FObjectInitializer& ObjectInitializer);
-	virtual ~UUnrealOLink();
+	explicit UOLinkClientConnection(const FObjectInitializer& ObjectInitializer);
+	virtual ~UOLinkClientConnection();
 
 	void Configure(FString InServerURL, bool bInAutoReconnectEnabled) override;
 
@@ -72,7 +72,7 @@ private:
 	/*
 	* Sends queued messages
 	* Uses m_flushMessagesMutex, to ensure it called only once at one time.
-	* It is not thread safe function - uses a m_socket and m_queue which are not guarded separately across the UUnrealOLink
+	* It is not thread safe function - uses a m_socket and m_queue which are not guarded separately across the UOLinkClientConnection
 	*/
 	void flushMessages();
 

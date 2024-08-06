@@ -22,11 +22,11 @@ limitations under the License.
 
 #include "Generated/OLink/TbSame2SameStruct1InterfaceOLinkClient.h"
 #include "ApiGearSettings.h"
-#include "apigearolink.h"
+#include "ApiGearOLink.h"
 #include "Async/Async.h"
 #include "Generated/api/TbSame2.json.adapter.h"
-#include "unrealolink.h"
-#include "unrealolinksink.h"
+#include "OLinkClientConnection.h"
+#include "OLinkSink.h"
 #include "Engine/Engine.h"
 #include "ApiGear/Public/ApiGearConnectionsStore.h"
 #include "Misc/DateTime.h"
@@ -55,7 +55,7 @@ UTbSame2SameStruct1InterfaceOLinkClient::UTbSame2SameStruct1InterfaceOLinkClient
 	, _SentData(MakePimpl<TbSame2SameStruct1InterfacePropertiesData>())
 #endif
 {
-	m_sink = std::make_shared<FUnrealOLinkSink>("tb.same2.SameStruct1Interface");
+	m_sink = std::make_shared<FOLinkSink>("tb.same2.SameStruct1Interface");
 }
 
 UTbSame2SameStruct1InterfaceOLinkClient::UTbSame2SameStruct1InterfaceOLinkClient(FVTableHelper& Helper)
@@ -73,13 +73,13 @@ void UTbSame2SameStruct1InterfaceOLinkClient::Initialize(FSubsystemCollectionBas
 	m_sink->setOnReleaseCallback([this]()
 		{ _SubscriptionStatusChanged.Broadcast(false); });
 
-	FUnrealOLinkSink::FPropertyChangedFunc PropertyChangedFunc = [this](const nlohmann::json& props)
+	FOLinkSink::FPropertyChangedFunc PropertyChangedFunc = [this](const nlohmann::json& props)
 	{
 		this->applyState(props);
 	};
 	m_sink->setOnPropertyChangedCallback(PropertyChangedFunc);
 
-	FUnrealOLinkSink::FSignalEmittedFunc SignalEmittedFunc = [this](const std::string& signalName, const nlohmann::json& args)
+	FOLinkSink::FSignalEmittedFunc SignalEmittedFunc = [this](const std::string& signalName, const nlohmann::json& args)
 	{
 		this->emitSignal(signalName, args);
 	};
@@ -111,7 +111,7 @@ void UTbSame2SameStruct1InterfaceOLinkClient::Deinitialize()
 
 	if (Connection.GetObject())
 	{
-		UUnrealOLink* UnrealOLinkConnection = Cast<UUnrealOLink>(Connection.GetObject());
+		UOLinkClientConnection* UnrealOLinkConnection = Cast<UOLinkClientConnection>(Connection.GetObject());
 		UnrealOLinkConnection->unlinkObjectSource(m_sink->olinkObjectName());
 		UnrealOLinkConnection->node()->registry().removeSink(m_sink->olinkObjectName());
 	}
@@ -126,18 +126,18 @@ void UTbSame2SameStruct1InterfaceOLinkClient::UseConnection(TScriptInterface<IAp
 	// only accept connections of type olink
 	checkf(InConnection->GetConnectionProtocolIdentifier() == ApiGearOLinkProtocolIdentifier, TEXT("Cannot use connection - must be of type olink"));
 
-	UUnrealOLink* UnrealOLinkConnection = nullptr;
+	UOLinkClientConnection* UnrealOLinkConnection = nullptr;
 	// remove old connection
 	if (Connection.GetObject())
 	{
-		UnrealOLinkConnection = Cast<UUnrealOLink>(Connection.GetObject());
+		UnrealOLinkConnection = Cast<UOLinkClientConnection>(Connection.GetObject());
 		UnrealOLinkConnection->unlinkObjectSource(m_sink->olinkObjectName());
 		UnrealOLinkConnection->node()->registry().removeSink(m_sink->olinkObjectName());
 		UnrealOLinkConnection = nullptr;
 	}
 
 	// set up new connection
-	UnrealOLinkConnection = Cast<UUnrealOLink>(InConnection.GetObject());
+	UnrealOLinkConnection = Cast<UOLinkClientConnection>(InConnection.GetObject());
 	UnrealOLinkConnection->node()->registry().addSink(m_sink);
 	UnrealOLinkConnection->linkObjectSource(m_sink->olinkObjectName());
 

@@ -1,14 +1,14 @@
 // Copyright Epic Games, Inc. All Rights Reserved
-#include "apigearolink.h"
+#include "ApiGearOLink.h"
 #include "Modules/ModuleManager.h"
 #include "WebSocketsModule.h"
 #include "ApiGearConnectionsStore.h"
-#include "unrealolink.h"
+#include "OLinkClientConnection.h"
 #include "IWebSocketNetworkingModule.h"
 
-#define LOCTEXT_NAMESPACE "FApiGearModuleOLink"
+#define LOCTEXT_NAMESPACE "FApiGearOLinkModule"
 
-void FApiGearModuleOLink::StartupModule()
+void FApiGearOLinkModule::StartupModule()
 {
 	// used by olink client implementations
 	FModuleManager::LoadModuleChecked<FWebSocketsModule>(TEXT("WebSockets"));
@@ -20,7 +20,7 @@ void FApiGearModuleOLink::StartupModule()
 	FModuleManager::LoadModuleChecked<IWebSocketNetworkingModule>(TEXT("WebSocketNetworking"));
 }
 
-void FApiGearModuleOLink::ShutdownModule()
+void FApiGearOLinkModule::ShutdownModule()
 {
 	// This function may be called during shutdown to clean up your module.  For modules that support dynamic reloading,
 	// we call this function before unloading the module.
@@ -28,4 +28,4 @@ void FApiGearModuleOLink::ShutdownModule()
 
 #undef LOCTEXT_NAMESPACE
 
-IMPLEMENT_MODULE(FApiGearModuleOLink, ApiGearOLink)
+IMPLEMENT_MODULE(FApiGearOLinkModule, ApiGearOLink)

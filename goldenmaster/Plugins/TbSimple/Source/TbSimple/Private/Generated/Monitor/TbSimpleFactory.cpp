@@ -17,7 +17,7 @@ limitations under the License.
 
 #include "TbSimpleFactory.h"
 #include "ApiGearSettings.h"
-#include "apigearolink.h"
+#include "ApiGearOLink.h"
 #include "TbSimpleSettings.h"
 #include "Implementation/TbSimpleSimpleInterface.h"
 #include "Generated/OLink/TbSimpleSimpleInterfaceOLinkClient.h"

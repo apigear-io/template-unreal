@@ -17,7 +17,7 @@
 #include "Async/Future.h"
 #include "Async/Async.h"
 #include "Generated/api/{{$ModuleName}}.json.adapter.h"
-#include "unrealolink.h"
+#include "OLinkClientConnection.h"
 #include "Async/Async.h"
 #include "Engine/Engine.h"
 #include "Misc/DateTime.h"
@@ -101,7 +101,7 @@ void {{$Class}}::On{{Camel .Name}}Changed({{ueParam "In" .}})
 }
 {{- end }}
 
-void {{$Class}}::setOLinkHost(TSoftObjectPtr<UUnrealOLinkHost> InHost)
+void {{$Class}}::setOLinkHost(TSoftObjectPtr<UOLinkHost> InHost)
 {
 	check(InHost);
 	Source->setOLinkHost(InHost.Get());

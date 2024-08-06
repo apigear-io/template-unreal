@@ -1,6 +1,6 @@
 #pragma once
 
-#include "UnrealOLinkHost.h"
+#include "OLinkHost.h"
 #include "ApiGearSettings.h"
 #include "Containers/Ticker.h"
 #include "Templates/UniquePtr.h"

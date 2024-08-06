@@ -206,29 +206,29 @@ features:
           - source: "ApiGear/Source/ApiGearOLink/apigearolink.Build.cs"
             target: "Source/ApiGearOLink/apigearolink.Build.cs"
             raw: true
-          - source: "ApiGear/Source/ApiGearOLink/Public/apigearolink.h"
-            target: "Source/ApiGearOLink/Public/apigearolink.h"
+          - source: "ApiGear/Source/ApiGearOLink/Public/ApiGearOLink.h"
+            target: "Source/ApiGearOLink/Public/ApiGearOLink.h"
             raw: true
-          - source: "ApiGear/Source/ApiGearOLink/Private/apigearolink.cpp"
-            target: "Source/ApiGearOLink/Private/apigearolink.cpp"
+          - source: "ApiGear/Source/ApiGearOLink/Private/ApiGearOLink.cpp"
+            target: "Source/ApiGearOLink/Private/ApiGearOLink.cpp"
             raw: true
-          - source: "ApiGear/Source/ApiGearOLink/Private/unrealolink.cpp"
-            target: "Source/ApiGearOLink/Private/unrealolink.cpp"
+          - source: "ApiGear/Source/ApiGearOLink/Private/OLinkClientConnection.cpp"
+            target: "Source/ApiGearOLink/Private/OLinkClientConnection.cpp"
             raw: true
-          - source: "ApiGear/Source/ApiGearOLink/Public/unrealolink.h"
-            target: "Source/ApiGearOLink/Public/unrealolink.h"
+          - source: "ApiGear/Source/ApiGearOLink/Public/OLinkClientConnection.h"
+            target: "Source/ApiGearOLink/Public/OLinkClientConnection.h"
             raw: true
-          - source: "ApiGear/Source/ApiGearOLink/Private/unrealolinksink.cpp"
-            target: "Source/ApiGearOLink/Private/unrealolinksink.cpp"
+          - source: "ApiGear/Source/ApiGearOLink/Private/OLinkSink.cpp"
+            target: "Source/ApiGearOLink/Private/OLinkSink.cpp"
             raw: true
-          - source: "ApiGear/Source/ApiGearOLink/Public/unrealolinksink.h"
-            target: "Source/ApiGearOLink/Public/unrealolinksink.h"
+          - source: "ApiGear/Source/ApiGearOLink/Public/OLinkSink.h"
+            target: "Source/ApiGearOLink/Public/OLinkSink.h"
             raw: true
-          - source: "ApiGear/Source/ApiGearOLink/Private/UnrealOLinkHost.cpp"
-            target: "Source/ApiGearOLink/Private/UnrealOLinkHost.cpp"
+          - source: "ApiGear/Source/ApiGearOLink/Private/OLinkHost.cpp"
+            target: "Source/ApiGearOLink/Private/OLinkHost.cpp"
             raw: true
-          - source: "ApiGear/Source/ApiGearOLink/Public/UnrealOLinkHost.h"
-            target: "Source/ApiGearOLink/Public/UnrealOLinkHost.h"
+          - source: "ApiGear/Source/ApiGearOLink/Public/OLinkHost.h"
+            target: "Source/ApiGearOLink/Public/OLinkHost.h"
             raw: true
           - source: "ApiGear/Source/ApiGearOLink/Private/OLinkHostConnection.h"
             target: "Source/ApiGearOLink/Private/OLinkHostConnection.h"

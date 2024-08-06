@@ -17,7 +17,7 @@ limitations under the License.
 
 #include "TbSame1Factory.h"
 #include "ApiGearSettings.h"
-#include "apigearolink.h"
+#include "ApiGearOLink.h"
 #include "TbSame1Settings.h"
 #include "Implementation/TbSame1SameStruct1Interface.h"
 #include "Generated/OLink/TbSame1SameStruct1InterfaceOLinkClient.h"

@@ -1,7 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved
 #include "Testbed1ConnectionSettings.h"
 #include "ApiGearSettings.h"
-#include "apigearolink.h"
+#include "ApiGearOLink.h"
 #include "Testbed1Settings.h"
 #include "Templates/SharedPointer.h"
 #include "IDetailCustomization.h"

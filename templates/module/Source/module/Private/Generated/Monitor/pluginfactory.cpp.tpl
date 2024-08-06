@@ -23,7 +23,7 @@ limitations under the License.
 #include "{{$ModuleName}}Factory.h"
 #include "ApiGearSettings.h"
 {{- if $.Features.olink }}
-#include "apigearolink.h"
+#include "ApiGearOLink.h"
 {{- end }}
 #include "{{$ModuleName}}Settings.h"
 {{- range .Module.Interfaces }}
