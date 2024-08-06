@@ -24,7 +24,7 @@ limitations under the License.
 #include "Async/Future.h"
 #include "Async/Async.h"
 #include "Generated/api/Testbed1.json.adapter.h"
-#include "unrealolink.h"
+#include "OLinkClientConnection.h"
 #include "Async/Async.h"
 #include "Engine/Engine.h"
 #include "Misc/DateTime.h"
@@ -127,7 +127,7 @@ void UTestbed1StructInterfaceOLinkAdapter::OnPropStringChanged(const FTestbed1St
 	Source->OnPropStringChanged(InPropString);
 }
 
-void UTestbed1StructInterfaceOLinkAdapter::setOLinkHost(TSoftObjectPtr<UUnrealOLinkHost> InHost)
+void UTestbed1StructInterfaceOLinkAdapter::setOLinkHost(TSoftObjectPtr<UOLinkHost> InHost)
 {
 	check(InHost);
 	Source->setOLinkHost(InHost.Get());

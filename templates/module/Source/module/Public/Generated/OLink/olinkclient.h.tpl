@@ -15,7 +15,7 @@
 THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
 THIRD_PARTY_INCLUDES_END
-#include "unrealolinksink.h"
+#include "OLinkSink.h"
 #include "ApiGearConnection.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Runtime/Launch/Resources/Version.h"
@@ -80,7 +80,7 @@ public:
 private:
 	void applyState(const nlohmann::json& fields);
 	void emitSignal(const std::string& signalName, const nlohmann::json& args);
-	std::shared_ptr<FUnrealOLinkSink> m_sink;
+	std::shared_ptr<FOLinkSink> m_sink;
 
 {{- if len .Interface.Properties }}
 

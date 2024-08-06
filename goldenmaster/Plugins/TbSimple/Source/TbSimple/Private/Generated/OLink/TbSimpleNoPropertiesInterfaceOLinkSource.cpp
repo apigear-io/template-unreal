@@ -24,7 +24,7 @@ limitations under the License.
 #include "Async/Future.h"
 #include "Async/Async.h"
 #include "Generated/api/TbSimple.json.adapter.h"
-#include "unrealolink.h"
+#include "OLinkClientConnection.h"
 #include "Async/Async.h"
 #include "Engine/Engine.h"
 #include "Misc/DateTime.h"
@@ -86,7 +86,7 @@ void TbSimpleNoPropertiesInterfaceOLinkSource::OnSigBool(bool bParamBool)
 	}
 }
 
-void TbSimpleNoPropertiesInterfaceOLinkSource::setOLinkHost(TSoftObjectPtr<UUnrealOLinkHost> InHost)
+void TbSimpleNoPropertiesInterfaceOLinkSource::setOLinkHost(TSoftObjectPtr<UOLinkHost> InHost)
 {
 	Host = InHost.Get();
 }

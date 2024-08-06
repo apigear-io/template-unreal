@@ -1,7 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved
 #include "TbEnumConnectionSettings.h"
 #include "ApiGearSettings.h"
-#include "apigearolink.h"
+#include "ApiGearOLink.h"
 #include "TbEnumSettings.h"
 #include "Templates/SharedPointer.h"
 #include "IDetailCustomization.h"

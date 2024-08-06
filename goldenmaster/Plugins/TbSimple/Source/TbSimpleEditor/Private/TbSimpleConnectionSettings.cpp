@@ -1,7 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved
 #include "TbSimpleConnectionSettings.h"
 #include "ApiGearSettings.h"
-#include "apigearolink.h"
+#include "ApiGearOLink.h"
 #include "TbSimpleSettings.h"
 #include "Templates/SharedPointer.h"
 #include "IDetailCustomization.h"

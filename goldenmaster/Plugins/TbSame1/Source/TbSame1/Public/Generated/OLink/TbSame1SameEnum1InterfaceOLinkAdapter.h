@@ -18,7 +18,7 @@ limitations under the License.
 
 #include "TbSame1SameEnum1InterfaceInterface.h"
 #include "Subsystems/GameInstanceSubsystem.h"
-#include "UnrealOLinkHost.h"
+#include "OLinkHost.h"
 #include "TbSame1SameEnum1InterfaceOLinkAdapter.generated.h"
 
 /// @brief handles the adaption between the service implementation and the OLink protocol
@@ -40,7 +40,7 @@ public:
 	void setBackendService(TScriptInterface<ITbSame1SameEnum1InterfaceInterface> InService);
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1|SameEnum1Interface")
-	void setOLinkHost(TSoftObjectPtr<UUnrealOLinkHost> InHost);
+	void setOLinkHost(TSoftObjectPtr<UOLinkHost> InHost);
 
 private:
 	// signals

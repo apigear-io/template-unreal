@@ -1,4 +1,4 @@
-#include "unrealolink.h"
+#include "OLinkClientConnection.h"
 THIRD_PARTY_INCLUDES_START
 #include "olink/clientregistry.h"
 #include "olink/iobjectsink.h"
@@ -38,7 +38,7 @@ void writeLog(ApiGear::ObjectLink::LogLevel level, const std::string& msg)
 
 TScriptInterface<IApiGearConnection> OLinkFactory::Create(UObject* Outer, FString UniqueConnectionIdentifier)
 {
-	TScriptInterface<IApiGearConnection> OLinkConnection = NewObject<UUnrealOLink>(Outer, *UniqueConnectionIdentifier);
+	TScriptInterface<IApiGearConnection> OLinkConnection = NewObject<UOLinkClientConnection>(Outer, *UniqueConnectionIdentifier);
 	return OLinkConnection;
 }
 
@@ -48,7 +48,7 @@ ApiGear::ObjectLink::WriteLogFunc logFunc()
 	{ writeLog(level, msg); };
 }
 
-UUnrealOLink::UUnrealOLink(const FObjectInitializer& ObjectInitializer)
+UOLinkClientConnection::UOLinkClientConnection(const FObjectInitializer& ObjectInitializer)
 	: UAbstractApiGearConnection(ObjectInitializer)
 	, m_socket(nullptr)
 {
@@ -71,7 +71,7 @@ UUnrealOLink::UUnrealOLink(const FObjectInitializer& ObjectInitializer)
 	m_node->onWrite(func);
 }
 
-void UUnrealOLink::Configure(FString InServerURL, bool bInAutoReconnectEnabled)
+void UOLinkClientConnection::Configure(FString InServerURL, bool bInAutoReconnectEnabled)
 {
 	check(!bInitialized);
 	bInitialized = true;
@@ -87,25 +87,25 @@ void UUnrealOLink::Configure(FString InServerURL, bool bInAutoReconnectEnabled)
 	log("OLink instantiated");
 }
 
-UUnrealOLink::~UUnrealOLink()
+UOLinkClientConnection::~UOLinkClientConnection()
 {
 	ApiGearTicker::GetCoreTicker().RemoveTicker(m_processMessageTaskTimerHandle);
 	m_processMessageTaskTimerHandle.Reset();
 }
 
-void UUnrealOLink::log(const FString& logMessage)
+void UOLinkClientConnection::log(const FString& logMessage)
 {
 	UE_LOG(LogApiGearOLink, Display, TEXT("%s"), *logMessage);
 }
 
-void UUnrealOLink::Connect_Implementation()
+void UOLinkClientConnection::Connect_Implementation()
 {
 	log(m_serverURL);
 
 	open(m_serverURL);
 }
 
-void UUnrealOLink::Disconnect_Implementation()
+void UOLinkClientConnection::Disconnect_Implementation()
 {
 	for (std::string objectName : ListLinkedObjects)
 	{
@@ -124,7 +124,7 @@ void UUnrealOLink::Disconnect_Implementation()
 	m_socket->Close();
 }
 
-bool UUnrealOLink::IsConnected()
+bool UOLinkClientConnection::IsConnected()
 {
 	if (m_socket && m_socket->IsConnected())
 	{
@@ -133,7 +133,7 @@ bool UUnrealOLink::IsConnected()
 	return false;
 }
 
-void UUnrealOLink::open(const FString& url)
+void UOLinkClientConnection::open(const FString& url)
 {
 	if (!m_socket)
 	{
@@ -203,7 +203,7 @@ void UUnrealOLink::open(const FString& url)
 	}
 }
 
-void UUnrealOLink::OnConnected_Implementation()
+void UOLinkClientConnection::OnConnected_Implementation()
 {
 	log("socket connected");
 
@@ -223,7 +223,7 @@ void UUnrealOLink::OnConnected_Implementation()
 	}
 }
 
-void UUnrealOLink::OnDisconnected_Implementation(bool bReconnect)
+void UOLinkClientConnection::OnDisconnected_Implementation(bool bReconnect)
 {
 	log("socket disconnected");
 	for (std::string objectName : ListLinkedObjects)
@@ -237,17 +237,17 @@ void UUnrealOLink::OnDisconnected_Implementation(bool bReconnect)
 	}
 }
 
-FString UUnrealOLink::GetUniqueEndpointIdentifier() const
+FString UOLinkClientConnection::GetUniqueEndpointIdentifier() const
 {
 	return GetName();
 }
 
-void UUnrealOLink::handleTextMessage(const std::string& message)
+void UOLinkClientConnection::handleTextMessage(const std::string& message)
 {
 	m_node->handleMessage(message);
 }
 
-void UUnrealOLink::linkObjectSource(const std::string& name)
+void UOLinkClientConnection::linkObjectSource(const std::string& name)
 {
 	ListLinkedObjects.AddUnique(name);
 
@@ -257,7 +257,7 @@ void UUnrealOLink::linkObjectSource(const std::string& name)
 	}
 }
 
-void UUnrealOLink::unlinkObjectSource(const std::string& name)
+void UOLinkClientConnection::unlinkObjectSource(const std::string& name)
 {
 	if (IsConnected())
 	{
@@ -266,7 +266,7 @@ void UUnrealOLink::unlinkObjectSource(const std::string& name)
 	ListLinkedObjects.Remove(name);
 }
 
-void UUnrealOLink::processMessages()
+void UOLinkClientConnection::processMessages()
 {
 	ApiGearTicker::GetCoreTicker().RemoveTicker(m_processMessageTaskTimerHandle);
 	m_processMessageTaskTimerHandle.Reset();
@@ -291,7 +291,7 @@ void UUnrealOLink::processMessages()
 	flushMessages();
 }
 
-void UUnrealOLink::flushMessages()
+void UOLinkClientConnection::flushMessages()
 {
 	FScopeLock Lock(&m_flushMessagesMutex);
 	TQueue<std::string, EQueueMode::Mpsc> copyQueue;

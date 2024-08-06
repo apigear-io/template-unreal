@@ -6,7 +6,7 @@
 
 const FString ApiGearOLinkProtocolIdentifier = "olink";
 
-class FApiGearModuleOLink : public IModuleInterface
+class FApiGearOLinkModule : public IModuleInterface
 {
 public:
 	/** IModuleInterface implementation */
@@ -15,5 +15,5 @@ public:
 
 private:
 	/** Handle to the test dll we will load */
-	void* FApiGearModuleOLink;
+	void* FApiGearOLinkModule;
 };

@@ -6,10 +6,10 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/iobjectsink.h"
 THIRD_PARTY_INCLUDES_END
 
-class APIGEAROLINK_API FUnrealOLinkSink : public ApiGear::ObjectLink::IObjectSink
+class APIGEAROLINK_API FOLinkSink : public ApiGear::ObjectLink::IObjectSink
 {
 public:
-	FUnrealOLinkSink(const std::string& olinkObjectName);
+	FOLinkSink(const std::string& olinkObjectName);
 
 	// olink sink interface
 	std::string olinkObjectName() override;

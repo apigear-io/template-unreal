@@ -18,7 +18,7 @@ limitations under the License.
 
 #include "Testbed2NestedStruct2InterfaceInterface.h"
 #include "Subsystems/GameInstanceSubsystem.h"
-#include "UnrealOLinkHost.h"
+#include "OLinkHost.h"
 #include "Testbed2NestedStruct2InterfaceOLinkAdapter.generated.h"
 
 /// @brief handles the adaption between the service implementation and the OLink protocol
@@ -40,7 +40,7 @@ public:
 	void setBackendService(TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> InService);
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface")
-	void setOLinkHost(TSoftObjectPtr<UUnrealOLinkHost> InHost);
+	void setOLinkHost(TSoftObjectPtr<UOLinkHost> InHost);
 
 private:
 	// signals

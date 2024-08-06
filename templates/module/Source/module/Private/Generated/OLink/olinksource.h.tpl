@@ -15,7 +15,7 @@
 THIRD_PARTY_INCLUDES_START
 #include "olink/iobjectsource.h"
 THIRD_PARTY_INCLUDES_END
-#include "UnrealOLinkHost.h"
+#include "OLinkHost.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(Log{{$Class}}, Log, All);
 /// @brief handles OLink network interactions specific to I{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface
@@ -29,7 +29,7 @@ public:
 	void setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface> InService);
 
 	/** set the OLink host to be used */
-	void setOLinkHost(TSoftObjectPtr<UUnrealOLinkHost> InHost);
+	void setOLinkHost(TSoftObjectPtr<UOLinkHost> InHost);
 
 	//
 	// IObjectSource interface
@@ -58,5 +58,5 @@ private:
 	TScriptInterface<I{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface> BackendService;
 
 	/** The host holding the connections and the registry */
-	TSoftObjectPtr<UUnrealOLinkHost> Host;
+	TSoftObjectPtr<UOLinkHost> Host;
 };

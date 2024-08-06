@@ -21,7 +21,7 @@ limitations under the License.
 THIRD_PARTY_INCLUDES_START
 #include "olink/iobjectsource.h"
 THIRD_PARTY_INCLUDES_END
-#include "UnrealOLinkHost.h"
+#include "OLinkHost.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTestbed2ManyParamInterfaceOLinkSource, Log, All);
 /// @brief handles OLink network interactions specific to ITestbed2ManyParamInterfaceInterface
@@ -35,7 +35,7 @@ public:
 	void setBackendService(TScriptInterface<ITestbed2ManyParamInterfaceInterface> InService);
 
 	/** set the OLink host to be used */
-	void setOLinkHost(TSoftObjectPtr<UUnrealOLinkHost> InHost);
+	void setOLinkHost(TSoftObjectPtr<UOLinkHost> InHost);
 
 	//
 	// IObjectSource interface
@@ -66,5 +66,5 @@ private:
 	TScriptInterface<ITestbed2ManyParamInterfaceInterface> BackendService;
 
 	/** The host holding the connections and the registry */
-	TSoftObjectPtr<UUnrealOLinkHost> Host;
+	TSoftObjectPtr<UOLinkHost> Host;
 };

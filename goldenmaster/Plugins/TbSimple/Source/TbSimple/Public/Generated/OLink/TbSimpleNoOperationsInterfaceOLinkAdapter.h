@@ -18,7 +18,7 @@ limitations under the License.
 
 #include "TbSimpleNoOperationsInterfaceInterface.h"
 #include "Subsystems/GameInstanceSubsystem.h"
-#include "UnrealOLinkHost.h"
+#include "OLinkHost.h"
 #include "TbSimpleNoOperationsInterfaceOLinkAdapter.generated.h"
 
 /// @brief handles the adaption between the service implementation and the OLink protocol
@@ -40,7 +40,7 @@ public:
 	void setBackendService(TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> InService);
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoOperationsInterface")
-	void setOLinkHost(TSoftObjectPtr<UUnrealOLinkHost> InHost);
+	void setOLinkHost(TSoftObjectPtr<UOLinkHost> InHost);
 
 private:
 	// signals

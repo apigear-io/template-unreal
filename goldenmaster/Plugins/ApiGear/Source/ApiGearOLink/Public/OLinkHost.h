@@ -6,7 +6,7 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/remotenode.h"
 #include "olink/remoteregistry.h"
 THIRD_PARTY_INCLUDES_END
-#include "UnrealOLinkHost.generated.h"
+#include "OLinkHost.generated.h"
 
 class OLinkHostPrivate;
 
@@ -14,13 +14,13 @@ class OLinkHostPrivate;
 /// Stores connections requested by clients and provides connection endpoints (nodes) through the RemoteRegistry
 /// May hold multiple connections.
 UCLASS(BlueprintType)
-class APIGEAROLINK_API UUnrealOLinkHost
+class APIGEAROLINK_API UOLinkHost
 	: public UGameInstanceSubsystem
 {
 	GENERATED_BODY()
 public:
-	explicit UUnrealOLinkHost() = default;
-	virtual ~UUnrealOLinkHost() = default;
+	explicit UOLinkHost() = default;
+	virtual ~UOLinkHost() = default;
 
 	// USubssystem functions
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
@@ -37,7 +37,7 @@ public:
 	void Stop();
 
 	/// @brief Get RemoteRegistry to add or remove your sources or get nodes that are using your sources
-	/// @return RemoteRegistry used by this UUnrealOLinkHost and nodes
+	/// @return RemoteRegistry used by this UOLinkHost and nodes
 	TSharedPtr<ApiGear::ObjectLink::RemoteRegistry> GetOLinkRegistry();
 
 private:
