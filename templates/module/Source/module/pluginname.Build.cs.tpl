@@ -50,6 +50,11 @@ public class {{$ModuleName}} : ModuleRules
 				"Projects",
 				"Engine",
 				"JsonUtilities"
+{{- if .Module.Imports }}, {{- end}}
+{{- range $idx, $elem := .Module.Imports }}
+{{- if $idx}}, {{ end }}
+				"{{Camel .Name}}"
+{{- end }}
 			}
 			);
 			

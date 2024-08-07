@@ -23,6 +23,12 @@ limitations under the License.
 #include "CoreMinimal.h"
 #include "Engine/DataTable.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
+{{- range .Module.Externs }}
+{{- $class := ueExtern . }}
+{{- if $class.Include }}
+#include "{{$class.Include}}"
+{{- end }}
+{{- end }}
 {{ if or (len .Module.Enums) (len .Module.Structs) -}}
 #include "{{ $ModuleName }}_data.generated.h"
 {{ end }}
