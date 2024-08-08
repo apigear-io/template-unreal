@@ -19,19 +19,18 @@ limitations under the License.
 #include "Implementation/Testbed2NestedStruct1Interface.h"
 #include "Testbed2NestedStruct1InterfaceImplFixture.h"
 
-#if WITH_DEV_AUTOMATION_TESTS 
+#if WITH_DEV_AUTOMATION_TESTS
 
-BEGIN_DEFINE_SPEC(UTestbed2NestedStruct1InterfaceImplSpec, "Testbed2.NestedStruct1Interface.Impl",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
+BEGIN_DEFINE_SPEC(UTestbed2NestedStruct1InterfaceImplSpec, "Testbed2.NestedStruct1Interface.Impl", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
 
-	TUniquePtr<FTestbed2NestedStruct1InterfaceImplFixture> ImplFixture;
+TUniquePtr<FTestbed2NestedStruct1InterfaceImplFixture> ImplFixture;
 
-	// signal callbacks for testing
-	void Prop1PropertyCb(const FTestbed2NestedStruct1& Prop1);
-	void Sig1SignalCb(const FTestbed2NestedStruct1& Param1);
-	FDoneDelegate testDoneDelegate;
+// signal callbacks for testing
+void Prop1PropertyCb(const FTestbed2NestedStruct1& Prop1);
+void Sig1SignalCb(const FTestbed2NestedStruct1& Param1);
+FDoneDelegate testDoneDelegate;
 
-	friend class UTestbed2NestedStruct1InterfaceImplHelper;
+friend class UTestbed2NestedStruct1InterfaceImplHelper;
 END_DEFINE_SPEC(UTestbed2NestedStruct1InterfaceImplSpec);
 
 #endif // WITH_DEV_AUTOMATION_TESTS

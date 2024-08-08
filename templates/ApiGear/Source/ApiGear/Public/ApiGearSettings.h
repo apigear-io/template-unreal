@@ -13,7 +13,7 @@ struct FApiGearConnectionSetting
 {
 	GENERATED_BODY()
 
-	/** 
+	/**
 	 * Unique protocol identifier, based on which connection type can be recognized and created.
 	 * You can have more than one connection of the same protocol type with different urls
 	 */

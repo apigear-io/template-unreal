@@ -68,9 +68,13 @@ void UTbSame2SameEnum1InterfaceOLinkClient::Initialize(FSubsystemCollectionBase&
 	Super::Initialize(Collection);
 
 	m_sink->setOnInitCallback([this]()
-		{ _SubscriptionStatusChanged.Broadcast(true); });
+		{
+		_SubscriptionStatusChanged.Broadcast(true);
+	});
 	m_sink->setOnReleaseCallback([this]()
-		{ _SubscriptionStatusChanged.Broadcast(false); });
+		{
+		_SubscriptionStatusChanged.Broadcast(false);
+	});
 
 	FOLinkSink::FPropertyChangedFunc PropertyChangedFunc = [this](const nlohmann::json& props)
 	{
@@ -184,21 +188,21 @@ ETbSame2Enum1 UTbSame2SameEnum1InterfaceOLinkClient::Func1_Implementation(ETbSam
 	Async(EAsyncExecution::Thread,
 		[Param1, &Promise, this]()
 		{
-			ApiGear::ObjectLink::InvokeReplyFunc GetSameEnum1InterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetSameEnum1InterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+			if (!arg.value.empty())
 			{
-				if (!arg.value.empty())
-				{
-					Promise.SetValue(arg.value.get<ETbSame2Enum1>());
-				}
-				else
-				{
-					UE_LOG(LogTbSame2SameEnum1InterfaceOLinkClient, Error, TEXT("Func1: OLink service returned empty value - should have returned type of ETbSame2Enum1"));
-					Promise.SetValue(ETbSame2Enum1());
-				}
-			};
-			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func1");
-			m_sink->GetNode()->invokeRemote(memberId, {Param1}, GetSameEnum1InterfaceStateFunc);
-		});
+				Promise.SetValue(arg.value.get<ETbSame2Enum1>());
+			}
+			else
+			{
+				UE_LOG(LogTbSame2SameEnum1InterfaceOLinkClient, Error, TEXT("Func1: OLink service returned empty value - should have returned type of ETbSame2Enum1"));
+				Promise.SetValue(ETbSame2Enum1());
+			}
+		};
+		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func1");
+		m_sink->GetNode()->invokeRemote(memberId, {Param1}, GetSameEnum1InterfaceStateFunc);
+	});
 
 	return Promise.GetFuture().Get();
 }

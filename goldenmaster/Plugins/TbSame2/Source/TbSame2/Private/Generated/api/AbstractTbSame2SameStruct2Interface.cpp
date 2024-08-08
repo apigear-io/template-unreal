@@ -122,9 +122,9 @@ void UAbstractTbSame2SameStruct2Interface::Func1Async_Implementation(UObject* Wo
 			Async(EAsyncExecution::Thread,
 				[Param1, this, &Result, CompletionAction]()
 				{
-					Result = Execute_Func1(this, Param1);
-					CompletionAction->Cancel();
-				});
+				Result = Execute_Func1(this, Param1);
+				CompletionAction->Cancel();
+			});
 		}
 	}
 }
@@ -157,9 +157,9 @@ void UAbstractTbSame2SameStruct2Interface::Func2Async_Implementation(UObject* Wo
 			Async(EAsyncExecution::Thread,
 				[Param1, Param2, this, &Result, CompletionAction]()
 				{
-					Result = Execute_Func2(this, Param1, Param2);
-					CompletionAction->Cancel();
-				});
+				Result = Execute_Func2(this, Param1, Param2);
+				CompletionAction->Cancel();
+			});
 		}
 	}
 }

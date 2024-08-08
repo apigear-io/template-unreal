@@ -17,7 +17,7 @@
 void {{$Class}}ImplSpec::Define()
 {
 	BeforeEach([this]()
-	{
+		{
 		ImplFixture = MakeUnique<F{{$DisplayName}}ImplFixture>();
 		TestTrue("Check for valid ImplFixture", ImplFixture.IsValid());
 
@@ -28,13 +28,13 @@ void {{$Class}}ImplSpec::Define()
 	});
 
 	AfterEach([this]()
-	{
+		{
 		ImplFixture.Reset();
 	});
 {{- range .Interface.Properties }}
 
 	It("Property.{{ Camel .Name }}.Default", [this]()
-	{
+		{
 		// Do implement test here
 		{{ueType "" .}} TestValue = {{ueDefault "" .}}; // default value
 	{{- if not .IsReadOnly }}
@@ -45,9 +45,9 @@ void {{$Class}}ImplSpec::Define()
 	});
 
 	{{- if not .IsReadOnly }}
-	
+
 	LatentIt("Property.{{ Camel .Name }}.Change", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
-	{
+		{
 		// Do implement test here
 		{{ueType "" .}} TestValue = {{ueDefault "" .}}; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_Get{{Camel .Name}}(ImplFixture->GetImplementation().GetObject()), TestValue);
@@ -73,7 +73,7 @@ void {{$Class}}ImplSpec::Define()
 {{- range .Interface.Operations }}
 
 	It("Operation.{{ Camel .Name }}", [this]()
-	{
+		{
 		// Do implement test here
 		ImplFixture->GetImplementation()->Execute_{{Camel .Name}}(ImplFixture->GetImplementation().GetObject()
 			{{- range $i, $e := .Params -}}
@@ -87,7 +87,7 @@ void {{$Class}}ImplSpec::Define()
 {{- range .Interface.Signals }}
 
 	LatentIt("Signal.{{ Camel .Name }}", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
-	{
+		{
 		testDoneDelegate = TestDone;
 		{{$Class}}Signals* {{$Iface}}Signals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		{{$Iface}}Signals->On{{Camel .Name}}Signal.AddDynamic(ImplFixture->GetHelper().Get(), &{{$Class}}ImplHelper::{{ Camel .Name }}SignalCb);

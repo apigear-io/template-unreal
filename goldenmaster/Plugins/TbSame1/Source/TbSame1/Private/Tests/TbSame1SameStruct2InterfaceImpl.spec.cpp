@@ -26,7 +26,7 @@ limitations under the License.
 void UTbSame1SameStruct2InterfaceImplSpec::Define()
 {
 	BeforeEach([this]()
-	{
+		{
 		ImplFixture = MakeUnique<FTbSame1SameStruct2InterfaceImplFixture>();
 		TestTrue("Check for valid ImplFixture", ImplFixture.IsValid());
 
@@ -37,19 +37,19 @@ void UTbSame1SameStruct2InterfaceImplSpec::Define()
 	});
 
 	AfterEach([this]()
-	{
+		{
 		ImplFixture.Reset();
 	});
 
 	It("Property.Prop1.Default", [this]()
-	{
+		{
 		// Do implement test here
 		FTbSame1Struct2 TestValue = FTbSame1Struct2(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetProp1(ImplFixture->GetImplementation().GetObject()), TestValue);
 	});
-	
+
 	LatentIt("Property.Prop1.Change", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
-	{
+		{
 		// Do implement test here
 		FTbSame1Struct2 TestValue = FTbSame1Struct2(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetProp1(ImplFixture->GetImplementation().GetObject()), TestValue);
@@ -63,14 +63,14 @@ void UTbSame1SameStruct2InterfaceImplSpec::Define()
 	});
 
 	It("Property.Prop2.Default", [this]()
-	{
+		{
 		// Do implement test here
 		FTbSame1Struct2 TestValue = FTbSame1Struct2(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetProp2(ImplFixture->GetImplementation().GetObject()), TestValue);
 	});
-	
+
 	LatentIt("Property.Prop2.Change", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
-	{
+		{
 		// Do implement test here
 		FTbSame1Struct2 TestValue = FTbSame1Struct2(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetProp2(ImplFixture->GetImplementation().GetObject()), TestValue);
@@ -84,19 +84,19 @@ void UTbSame1SameStruct2InterfaceImplSpec::Define()
 	});
 
 	It("Operation.Func1", [this]()
-	{
+		{
 		// Do implement test here
 		ImplFixture->GetImplementation()->Execute_Func1(ImplFixture->GetImplementation().GetObject(), FTbSame1Struct1());
 	});
 
 	It("Operation.Func2", [this]()
-	{
+		{
 		// Do implement test here
 		ImplFixture->GetImplementation()->Execute_Func2(ImplFixture->GetImplementation().GetObject(), FTbSame1Struct1(), FTbSame1Struct2());
 	});
 
 	LatentIt("Signal.Sig1", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
-	{
+		{
 		testDoneDelegate = TestDone;
 		UTbSame1SameStruct2InterfaceSignals* TbSame1SameStruct2InterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		TbSame1SameStruct2InterfaceSignals->OnSig1Signal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame1SameStruct2InterfaceImplHelper::Sig1SignalCb);
@@ -107,7 +107,7 @@ void UTbSame1SameStruct2InterfaceImplSpec::Define()
 	});
 
 	LatentIt("Signal.Sig2", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
-	{
+		{
 		testDoneDelegate = TestDone;
 		UTbSame1SameStruct2InterfaceSignals* TbSame1SameStruct2InterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		TbSame1SameStruct2InterfaceSignals->OnSig2Signal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame1SameStruct2InterfaceImplHelper::Sig2SignalCb);

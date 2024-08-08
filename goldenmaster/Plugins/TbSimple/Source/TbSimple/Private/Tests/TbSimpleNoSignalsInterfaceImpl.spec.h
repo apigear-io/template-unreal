@@ -19,19 +19,18 @@ limitations under the License.
 #include "Implementation/TbSimpleNoSignalsInterface.h"
 #include "TbSimpleNoSignalsInterfaceImplFixture.h"
 
-#if WITH_DEV_AUTOMATION_TESTS 
+#if WITH_DEV_AUTOMATION_TESTS
 
-BEGIN_DEFINE_SPEC(UTbSimpleNoSignalsInterfaceImplSpec, "TbSimple.NoSignalsInterface.Impl",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
+BEGIN_DEFINE_SPEC(UTbSimpleNoSignalsInterfaceImplSpec, "TbSimple.NoSignalsInterface.Impl", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
 
-	TUniquePtr<FTbSimpleNoSignalsInterfaceImplFixture> ImplFixture;
+TUniquePtr<FTbSimpleNoSignalsInterfaceImplFixture> ImplFixture;
 
-	// signal callbacks for testing
-	void PropBoolPropertyCb(bool bPropBool);
-	void PropIntPropertyCb(int32 PropInt);
-	FDoneDelegate testDoneDelegate;
+// signal callbacks for testing
+void PropBoolPropertyCb(bool bPropBool);
+void PropIntPropertyCb(int32 PropInt);
+FDoneDelegate testDoneDelegate;
 
-	friend class UTbSimpleNoSignalsInterfaceImplHelper;
+friend class UTbSimpleNoSignalsInterfaceImplHelper;
 END_DEFINE_SPEC(UTbSimpleNoSignalsInterfaceImplSpec);
 
 #endif // WITH_DEV_AUTOMATION_TESTS

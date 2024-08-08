@@ -26,7 +26,7 @@ limitations under the License.
 void UTestbed2ManyParamInterfaceImplSpec::Define()
 {
 	BeforeEach([this]()
-	{
+		{
 		ImplFixture = MakeUnique<FTestbed2ManyParamInterfaceImplFixture>();
 		TestTrue("Check for valid ImplFixture", ImplFixture.IsValid());
 
@@ -37,19 +37,19 @@ void UTestbed2ManyParamInterfaceImplSpec::Define()
 	});
 
 	AfterEach([this]()
-	{
+		{
 		ImplFixture.Reset();
 	});
 
 	It("Property.Prop1.Default", [this]()
-	{
+		{
 		// Do implement test here
 		int32 TestValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetProp1(ImplFixture->GetImplementation().GetObject()), TestValue);
 	});
-	
+
 	LatentIt("Property.Prop1.Change", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
-	{
+		{
 		// Do implement test here
 		int32 TestValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetProp1(ImplFixture->GetImplementation().GetObject()), TestValue);
@@ -63,14 +63,14 @@ void UTestbed2ManyParamInterfaceImplSpec::Define()
 	});
 
 	It("Property.Prop2.Default", [this]()
-	{
+		{
 		// Do implement test here
 		int32 TestValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetProp2(ImplFixture->GetImplementation().GetObject()), TestValue);
 	});
-	
+
 	LatentIt("Property.Prop2.Change", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
-	{
+		{
 		// Do implement test here
 		int32 TestValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetProp2(ImplFixture->GetImplementation().GetObject()), TestValue);
@@ -84,14 +84,14 @@ void UTestbed2ManyParamInterfaceImplSpec::Define()
 	});
 
 	It("Property.Prop3.Default", [this]()
-	{
+		{
 		// Do implement test here
 		int32 TestValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetProp3(ImplFixture->GetImplementation().GetObject()), TestValue);
 	});
-	
+
 	LatentIt("Property.Prop3.Change", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
-	{
+		{
 		// Do implement test here
 		int32 TestValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetProp3(ImplFixture->GetImplementation().GetObject()), TestValue);
@@ -105,14 +105,14 @@ void UTestbed2ManyParamInterfaceImplSpec::Define()
 	});
 
 	It("Property.Prop4.Default", [this]()
-	{
+		{
 		// Do implement test here
 		int32 TestValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetProp4(ImplFixture->GetImplementation().GetObject()), TestValue);
 	});
-	
+
 	LatentIt("Property.Prop4.Change", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
-	{
+		{
 		// Do implement test here
 		int32 TestValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetProp4(ImplFixture->GetImplementation().GetObject()), TestValue);
@@ -126,31 +126,31 @@ void UTestbed2ManyParamInterfaceImplSpec::Define()
 	});
 
 	It("Operation.Func1", [this]()
-	{
+		{
 		// Do implement test here
 		ImplFixture->GetImplementation()->Execute_Func1(ImplFixture->GetImplementation().GetObject(), 0);
 	});
 
 	It("Operation.Func2", [this]()
-	{
+		{
 		// Do implement test here
 		ImplFixture->GetImplementation()->Execute_Func2(ImplFixture->GetImplementation().GetObject(), 0, 0);
 	});
 
 	It("Operation.Func3", [this]()
-	{
+		{
 		// Do implement test here
 		ImplFixture->GetImplementation()->Execute_Func3(ImplFixture->GetImplementation().GetObject(), 0, 0, 0);
 	});
 
 	It("Operation.Func4", [this]()
-	{
+		{
 		// Do implement test here
 		ImplFixture->GetImplementation()->Execute_Func4(ImplFixture->GetImplementation().GetObject(), 0, 0, 0, 0);
 	});
 
 	LatentIt("Signal.Sig1", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
-	{
+		{
 		testDoneDelegate = TestDone;
 		UTestbed2ManyParamInterfaceSignals* Testbed2ManyParamInterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		Testbed2ManyParamInterfaceSignals->OnSig1Signal.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2ManyParamInterfaceImplHelper::Sig1SignalCb);
@@ -161,7 +161,7 @@ void UTestbed2ManyParamInterfaceImplSpec::Define()
 	});
 
 	LatentIt("Signal.Sig2", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
-	{
+		{
 		testDoneDelegate = TestDone;
 		UTestbed2ManyParamInterfaceSignals* Testbed2ManyParamInterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		Testbed2ManyParamInterfaceSignals->OnSig2Signal.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2ManyParamInterfaceImplHelper::Sig2SignalCb);
@@ -173,7 +173,7 @@ void UTestbed2ManyParamInterfaceImplSpec::Define()
 	});
 
 	LatentIt("Signal.Sig3", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
-	{
+		{
 		testDoneDelegate = TestDone;
 		UTestbed2ManyParamInterfaceSignals* Testbed2ManyParamInterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		Testbed2ManyParamInterfaceSignals->OnSig3Signal.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2ManyParamInterfaceImplHelper::Sig3SignalCb);
@@ -186,7 +186,7 @@ void UTestbed2ManyParamInterfaceImplSpec::Define()
 	});
 
 	LatentIt("Signal.Sig4", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
-	{
+		{
 		testDoneDelegate = TestDone;
 		UTestbed2ManyParamInterfaceSignals* Testbed2ManyParamInterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		Testbed2ManyParamInterfaceSignals->OnSig4Signal.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2ManyParamInterfaceImplHelper::Sig4SignalCb);

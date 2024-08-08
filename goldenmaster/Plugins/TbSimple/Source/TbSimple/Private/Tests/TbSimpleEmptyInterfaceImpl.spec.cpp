@@ -26,7 +26,7 @@ limitations under the License.
 void UTbSimpleEmptyInterfaceImplSpec::Define()
 {
 	BeforeEach([this]()
-	{
+		{
 		ImplFixture = MakeUnique<FTbSimpleEmptyInterfaceImplFixture>();
 		TestTrue("Check for valid ImplFixture", ImplFixture.IsValid());
 
@@ -37,7 +37,7 @@ void UTbSimpleEmptyInterfaceImplSpec::Define()
 	});
 
 	AfterEach([this]()
-	{
+		{
 		ImplFixture.Reset();
 	});
 }

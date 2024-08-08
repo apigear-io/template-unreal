@@ -26,7 +26,7 @@ limitations under the License.
 void UTbSimpleSimpleInterfaceImplSpec::Define()
 {
 	BeforeEach([this]()
-	{
+		{
 		ImplFixture = MakeUnique<FTbSimpleSimpleInterfaceImplFixture>();
 		TestTrue("Check for valid ImplFixture", ImplFixture.IsValid());
 
@@ -37,19 +37,19 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 	});
 
 	AfterEach([this]()
-	{
+		{
 		ImplFixture.Reset();
 	});
 
 	It("Property.PropBool.Default", [this]()
-	{
+		{
 		// Do implement test here
 		bool TestValue = false; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetPropBool(ImplFixture->GetImplementation().GetObject()), TestValue);
 	});
-	
+
 	LatentIt("Property.PropBool.Change", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
-	{
+		{
 		// Do implement test here
 		bool TestValue = false; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetPropBool(ImplFixture->GetImplementation().GetObject()), TestValue);
@@ -63,14 +63,14 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 	});
 
 	It("Property.PropInt.Default", [this]()
-	{
+		{
 		// Do implement test here
 		int32 TestValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetPropInt(ImplFixture->GetImplementation().GetObject()), TestValue);
 	});
-	
+
 	LatentIt("Property.PropInt.Change", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
-	{
+		{
 		// Do implement test here
 		int32 TestValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetPropInt(ImplFixture->GetImplementation().GetObject()), TestValue);
@@ -84,14 +84,14 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 	});
 
 	It("Property.PropInt32.Default", [this]()
-	{
+		{
 		// Do implement test here
 		int32 TestValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetPropInt32(ImplFixture->GetImplementation().GetObject()), TestValue);
 	});
-	
+
 	LatentIt("Property.PropInt32.Change", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
-	{
+		{
 		// Do implement test here
 		int32 TestValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetPropInt32(ImplFixture->GetImplementation().GetObject()), TestValue);
@@ -105,14 +105,14 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 	});
 
 	It("Property.PropInt64.Default", [this]()
-	{
+		{
 		// Do implement test here
 		int64 TestValue = 0LL; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetPropInt64(ImplFixture->GetImplementation().GetObject()), TestValue);
 	});
-	
+
 	LatentIt("Property.PropInt64.Change", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
-	{
+		{
 		// Do implement test here
 		int64 TestValue = 0LL; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetPropInt64(ImplFixture->GetImplementation().GetObject()), TestValue);
@@ -126,14 +126,14 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 	});
 
 	It("Property.PropFloat.Default", [this]()
-	{
+		{
 		// Do implement test here
 		float TestValue = 0.0f; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetPropFloat(ImplFixture->GetImplementation().GetObject()), TestValue);
 	});
-	
+
 	LatentIt("Property.PropFloat.Change", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
-	{
+		{
 		// Do implement test here
 		float TestValue = 0.0f; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetPropFloat(ImplFixture->GetImplementation().GetObject()), TestValue);
@@ -147,14 +147,14 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 	});
 
 	It("Property.PropFloat32.Default", [this]()
-	{
+		{
 		// Do implement test here
 		float TestValue = 0.0f; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetPropFloat32(ImplFixture->GetImplementation().GetObject()), TestValue);
 	});
-	
+
 	LatentIt("Property.PropFloat32.Change", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
-	{
+		{
 		// Do implement test here
 		float TestValue = 0.0f; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetPropFloat32(ImplFixture->GetImplementation().GetObject()), TestValue);
@@ -168,14 +168,14 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 	});
 
 	It("Property.PropFloat64.Default", [this]()
-	{
+		{
 		// Do implement test here
 		double TestValue = 0.0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetPropFloat64(ImplFixture->GetImplementation().GetObject()), TestValue);
 	});
-	
+
 	LatentIt("Property.PropFloat64.Change", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
-	{
+		{
 		// Do implement test here
 		double TestValue = 0.0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetPropFloat64(ImplFixture->GetImplementation().GetObject()), TestValue);
@@ -189,14 +189,14 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 	});
 
 	It("Property.PropString.Default", [this]()
-	{
+		{
 		// Do implement test here
 		FString TestValue = FString(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetPropString(ImplFixture->GetImplementation().GetObject()), TestValue);
 	});
-	
+
 	LatentIt("Property.PropString.Change", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
-	{
+		{
 		// Do implement test here
 		FString TestValue = FString(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetPropString(ImplFixture->GetImplementation().GetObject()), TestValue);
@@ -210,68 +210,68 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 	});
 
 	It("Property.PropReadOnlyString.Default", [this]()
-	{
+		{
 		// Do implement test here
 		FString TestValue = FString(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetPropReadOnlyString(ImplFixture->GetImplementation().GetObject()), FString());
 	});
 
 	It("Operation.FuncVoid", [this]()
-	{
+		{
 		// Do implement test here
 		ImplFixture->GetImplementation()->Execute_FuncVoid(ImplFixture->GetImplementation().GetObject());
 	});
 
 	It("Operation.FuncBool", [this]()
-	{
+		{
 		// Do implement test here
 		ImplFixture->GetImplementation()->Execute_FuncBool(ImplFixture->GetImplementation().GetObject(), false);
 	});
 
 	It("Operation.FuncInt", [this]()
-	{
+		{
 		// Do implement test here
 		ImplFixture->GetImplementation()->Execute_FuncInt(ImplFixture->GetImplementation().GetObject(), 0);
 	});
 
 	It("Operation.FuncInt32", [this]()
-	{
+		{
 		// Do implement test here
 		ImplFixture->GetImplementation()->Execute_FuncInt32(ImplFixture->GetImplementation().GetObject(), 0);
 	});
 
 	It("Operation.FuncInt64", [this]()
-	{
+		{
 		// Do implement test here
 		ImplFixture->GetImplementation()->Execute_FuncInt64(ImplFixture->GetImplementation().GetObject(), 0LL);
 	});
 
 	It("Operation.FuncFloat", [this]()
-	{
+		{
 		// Do implement test here
 		ImplFixture->GetImplementation()->Execute_FuncFloat(ImplFixture->GetImplementation().GetObject(), 0.0f);
 	});
 
 	It("Operation.FuncFloat32", [this]()
-	{
+		{
 		// Do implement test here
 		ImplFixture->GetImplementation()->Execute_FuncFloat32(ImplFixture->GetImplementation().GetObject(), 0.0f);
 	});
 
 	It("Operation.FuncFloat64", [this]()
-	{
+		{
 		// Do implement test here
 		ImplFixture->GetImplementation()->Execute_FuncFloat64(ImplFixture->GetImplementation().GetObject(), 0.0);
 	});
 
 	It("Operation.FuncString", [this]()
-	{
+		{
 		// Do implement test here
 		ImplFixture->GetImplementation()->Execute_FuncString(ImplFixture->GetImplementation().GetObject(), FString());
 	});
 
 	LatentIt("Signal.SigVoid", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
-	{
+		{
 		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		TbSimpleSimpleInterfaceSignals->OnSigVoidSignal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::SigVoidSignalCb);
@@ -281,7 +281,7 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 	});
 
 	LatentIt("Signal.SigBool", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
-	{
+		{
 		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		TbSimpleSimpleInterfaceSignals->OnSigBoolSignal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::SigBoolSignalCb);
@@ -292,7 +292,7 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 	});
 
 	LatentIt("Signal.SigInt", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
-	{
+		{
 		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		TbSimpleSimpleInterfaceSignals->OnSigIntSignal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::SigIntSignalCb);
@@ -303,7 +303,7 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 	});
 
 	LatentIt("Signal.SigInt32", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
-	{
+		{
 		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		TbSimpleSimpleInterfaceSignals->OnSigInt32Signal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::SigInt32SignalCb);
@@ -314,7 +314,7 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 	});
 
 	LatentIt("Signal.SigInt64", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
-	{
+		{
 		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		TbSimpleSimpleInterfaceSignals->OnSigInt64Signal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::SigInt64SignalCb);
@@ -325,7 +325,7 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 	});
 
 	LatentIt("Signal.SigFloat", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
-	{
+		{
 		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		TbSimpleSimpleInterfaceSignals->OnSigFloatSignal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::SigFloatSignalCb);
@@ -336,7 +336,7 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 	});
 
 	LatentIt("Signal.SigFloat32", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
-	{
+		{
 		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		TbSimpleSimpleInterfaceSignals->OnSigFloat32Signal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::SigFloat32SignalCb);
@@ -347,7 +347,7 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 	});
 
 	LatentIt("Signal.SigFloat64", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
-	{
+		{
 		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		TbSimpleSimpleInterfaceSignals->OnSigFloat64Signal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::SigFloat64SignalCb);
@@ -358,7 +358,7 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 	});
 
 	LatentIt("Signal.SigString", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
-	{
+		{
 		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		TbSimpleSimpleInterfaceSignals->OnSigStringSignal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::SigStringSignalCb);

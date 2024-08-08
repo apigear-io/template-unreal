@@ -31,7 +31,7 @@ DECLARE_MULTICAST_DELEGATE_OneParam(FApiGearConnectionStateChangedDelegate, EApi
  */
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FApiGearRemoteApiSubscriptionStatusChangedDelegate, bool, IsSubscribed);
 
-/** 
+/**
  * @brief An interface for all connections meant to be used by ApiGear
  * ensures all connections have:
  * - settings for reconnection

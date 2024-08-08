@@ -10,23 +10,22 @@
 #include "Implementation/{{$Iface}}.h"
 #include "{{$DisplayName}}ImplFixture.h"
 
-#if WITH_DEV_AUTOMATION_TESTS 
+#if WITH_DEV_AUTOMATION_TESTS
 
-BEGIN_DEFINE_SPEC({{$Class}}ImplSpec, "{{$ModuleName}}.{{$IfaceName}}.Impl",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
+BEGIN_DEFINE_SPEC({{$Class}}ImplSpec, "{{$ModuleName}}.{{$IfaceName}}.Impl", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
 
-	TUniquePtr<F{{$DisplayName}}ImplFixture> ImplFixture;
+TUniquePtr<F{{$DisplayName}}ImplFixture> ImplFixture;
 
-	// signal callbacks for testing
+// signal callbacks for testing
 {{- range .Interface.Properties }}
-	void {{ Camel .Name }}PropertyCb({{ueParam "" .}});
+void {{ Camel .Name }}PropertyCb({{ueParam "" .}});
 {{- end }}
 {{- range .Interface.Signals }}
-	void {{ Camel .Name }}SignalCb({{ueParams "" .Params}});
+void {{ Camel .Name }}SignalCb({{ueParams "" .Params}});
 {{- end }}
-	FDoneDelegate testDoneDelegate;
+FDoneDelegate testDoneDelegate;
 
-	friend class {{$Class}}ImplHelper;
+friend class {{$Class}}ImplHelper;
 END_DEFINE_SPEC({{$Class}}ImplSpec);
 
 #endif // WITH_DEV_AUTOMATION_TESTS

@@ -19,33 +19,32 @@ limitations under the License.
 #include "Implementation/TbSimpleSimpleArrayInterface.h"
 #include "TbSimpleSimpleArrayInterfaceImplFixture.h"
 
-#if WITH_DEV_AUTOMATION_TESTS 
+#if WITH_DEV_AUTOMATION_TESTS
 
-BEGIN_DEFINE_SPEC(UTbSimpleSimpleArrayInterfaceImplSpec, "TbSimple.SimpleArrayInterface.Impl",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
+BEGIN_DEFINE_SPEC(UTbSimpleSimpleArrayInterfaceImplSpec, "TbSimple.SimpleArrayInterface.Impl", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
 
-	TUniquePtr<FTbSimpleSimpleArrayInterfaceImplFixture> ImplFixture;
+TUniquePtr<FTbSimpleSimpleArrayInterfaceImplFixture> ImplFixture;
 
-	// signal callbacks for testing
-	void PropBoolPropertyCb(const TArray<bool>& PropBool);
-	void PropIntPropertyCb(const TArray<int32>& PropInt);
-	void PropInt32PropertyCb(const TArray<int32>& PropInt32);
-	void PropInt64PropertyCb(const TArray<int64>& PropInt64);
-	void PropFloatPropertyCb(const TArray<float>& PropFloat);
-	void PropFloat32PropertyCb(const TArray<float>& PropFloat32);
-	void PropFloat64PropertyCb(const TArray<double>& PropFloat64);
-	void PropStringPropertyCb(const TArray<FString>& PropString);
-	void SigBoolSignalCb(const TArray<bool>& ParamBool);
-	void SigIntSignalCb(const TArray<int32>& ParamInt);
-	void SigInt32SignalCb(const TArray<int32>& ParamInt32);
-	void SigInt64SignalCb(const TArray<int64>& ParamInt64);
-	void SigFloatSignalCb(const TArray<float>& ParamFloat);
-	void SigFloat32SignalCb(const TArray<float>& ParamFloa32);
-	void SigFloat64SignalCb(const TArray<double>& ParamFloat64);
-	void SigStringSignalCb(const TArray<FString>& ParamString);
-	FDoneDelegate testDoneDelegate;
+// signal callbacks for testing
+void PropBoolPropertyCb(const TArray<bool>& PropBool);
+void PropIntPropertyCb(const TArray<int32>& PropInt);
+void PropInt32PropertyCb(const TArray<int32>& PropInt32);
+void PropInt64PropertyCb(const TArray<int64>& PropInt64);
+void PropFloatPropertyCb(const TArray<float>& PropFloat);
+void PropFloat32PropertyCb(const TArray<float>& PropFloat32);
+void PropFloat64PropertyCb(const TArray<double>& PropFloat64);
+void PropStringPropertyCb(const TArray<FString>& PropString);
+void SigBoolSignalCb(const TArray<bool>& ParamBool);
+void SigIntSignalCb(const TArray<int32>& ParamInt);
+void SigInt32SignalCb(const TArray<int32>& ParamInt32);
+void SigInt64SignalCb(const TArray<int64>& ParamInt64);
+void SigFloatSignalCb(const TArray<float>& ParamFloat);
+void SigFloat32SignalCb(const TArray<float>& ParamFloa32);
+void SigFloat64SignalCb(const TArray<double>& ParamFloat64);
+void SigStringSignalCb(const TArray<FString>& ParamString);
+FDoneDelegate testDoneDelegate;
 
-	friend class UTbSimpleSimpleArrayInterfaceImplHelper;
+friend class UTbSimpleSimpleArrayInterfaceImplHelper;
 END_DEFINE_SPEC(UTbSimpleSimpleArrayInterfaceImplSpec);
 
 #endif // WITH_DEV_AUTOMATION_TESTS

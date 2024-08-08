@@ -188,9 +188,9 @@ void UAbstractTbSimpleSimpleInterface::FuncBoolAsync_Implementation(UObject* Wor
 			Async(EAsyncExecution::Thread,
 				[bParamBool, this, &Result, CompletionAction]()
 				{
-					Result = Execute_FuncBool(this, bParamBool);
-					CompletionAction->Cancel();
-				});
+				Result = Execute_FuncBool(this, bParamBool);
+				CompletionAction->Cancel();
+			});
 		}
 	}
 }
@@ -223,9 +223,9 @@ void UAbstractTbSimpleSimpleInterface::FuncIntAsync_Implementation(UObject* Worl
 			Async(EAsyncExecution::Thread,
 				[ParamInt, this, &Result, CompletionAction]()
 				{
-					Result = Execute_FuncInt(this, ParamInt);
-					CompletionAction->Cancel();
-				});
+				Result = Execute_FuncInt(this, ParamInt);
+				CompletionAction->Cancel();
+			});
 		}
 	}
 }
@@ -258,9 +258,9 @@ void UAbstractTbSimpleSimpleInterface::FuncInt32Async_Implementation(UObject* Wo
 			Async(EAsyncExecution::Thread,
 				[ParamInt32, this, &Result, CompletionAction]()
 				{
-					Result = Execute_FuncInt32(this, ParamInt32);
-					CompletionAction->Cancel();
-				});
+				Result = Execute_FuncInt32(this, ParamInt32);
+				CompletionAction->Cancel();
+			});
 		}
 	}
 }
@@ -293,9 +293,9 @@ void UAbstractTbSimpleSimpleInterface::FuncInt64Async_Implementation(UObject* Wo
 			Async(EAsyncExecution::Thread,
 				[ParamInt64, this, &Result, CompletionAction]()
 				{
-					Result = Execute_FuncInt64(this, ParamInt64);
-					CompletionAction->Cancel();
-				});
+				Result = Execute_FuncInt64(this, ParamInt64);
+				CompletionAction->Cancel();
+			});
 		}
 	}
 }
@@ -328,9 +328,9 @@ void UAbstractTbSimpleSimpleInterface::FuncFloatAsync_Implementation(UObject* Wo
 			Async(EAsyncExecution::Thread,
 				[ParamFloat, this, &Result, CompletionAction]()
 				{
-					Result = Execute_FuncFloat(this, ParamFloat);
-					CompletionAction->Cancel();
-				});
+				Result = Execute_FuncFloat(this, ParamFloat);
+				CompletionAction->Cancel();
+			});
 		}
 	}
 }
@@ -363,9 +363,9 @@ void UAbstractTbSimpleSimpleInterface::FuncFloat32Async_Implementation(UObject* 
 			Async(EAsyncExecution::Thread,
 				[ParamFloat32, this, &Result, CompletionAction]()
 				{
-					Result = Execute_FuncFloat32(this, ParamFloat32);
-					CompletionAction->Cancel();
-				});
+				Result = Execute_FuncFloat32(this, ParamFloat32);
+				CompletionAction->Cancel();
+			});
 		}
 	}
 }
@@ -398,9 +398,9 @@ void UAbstractTbSimpleSimpleInterface::FuncFloat64Async_Implementation(UObject* 
 			Async(EAsyncExecution::Thread,
 				[ParamFloat, this, &Result, CompletionAction]()
 				{
-					Result = Execute_FuncFloat64(this, ParamFloat);
-					CompletionAction->Cancel();
-				});
+				Result = Execute_FuncFloat64(this, ParamFloat);
+				CompletionAction->Cancel();
+			});
 		}
 	}
 }
@@ -433,9 +433,9 @@ void UAbstractTbSimpleSimpleInterface::FuncStringAsync_Implementation(UObject* W
 			Async(EAsyncExecution::Thread,
 				[ParamString, this, &Result, CompletionAction]()
 				{
-					Result = Execute_FuncString(this, ParamString);
-					CompletionAction->Cancel();
-				});
+				Result = Execute_FuncString(this, ParamString);
+				CompletionAction->Cancel();
+			});
 		}
 	}
 }

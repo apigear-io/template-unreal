@@ -19,21 +19,20 @@ limitations under the License.
 #include "Implementation/TbSame1SameEnum2Interface.h"
 #include "TbSame1SameEnum2InterfaceImplFixture.h"
 
-#if WITH_DEV_AUTOMATION_TESTS 
+#if WITH_DEV_AUTOMATION_TESTS
 
-BEGIN_DEFINE_SPEC(UTbSame1SameEnum2InterfaceImplSpec, "TbSame1.SameEnum2Interface.Impl",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
+BEGIN_DEFINE_SPEC(UTbSame1SameEnum2InterfaceImplSpec, "TbSame1.SameEnum2Interface.Impl", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
 
-	TUniquePtr<FTbSame1SameEnum2InterfaceImplFixture> ImplFixture;
+TUniquePtr<FTbSame1SameEnum2InterfaceImplFixture> ImplFixture;
 
-	// signal callbacks for testing
-	void Prop1PropertyCb(ETbSame1Enum1 Prop1);
-	void Prop2PropertyCb(ETbSame1Enum2 Prop2);
-	void Sig1SignalCb(ETbSame1Enum1 Param1);
-	void Sig2SignalCb(ETbSame1Enum1 Param1, ETbSame1Enum2 Param2);
-	FDoneDelegate testDoneDelegate;
+// signal callbacks for testing
+void Prop1PropertyCb(ETbSame1Enum1 Prop1);
+void Prop2PropertyCb(ETbSame1Enum2 Prop2);
+void Sig1SignalCb(ETbSame1Enum1 Param1);
+void Sig2SignalCb(ETbSame1Enum1 Param1, ETbSame1Enum2 Param2);
+FDoneDelegate testDoneDelegate;
 
-	friend class UTbSame1SameEnum2InterfaceImplHelper;
+friend class UTbSame1SameEnum2InterfaceImplHelper;
 END_DEFINE_SPEC(UTbSame1SameEnum2InterfaceImplSpec);
 
 #endif // WITH_DEV_AUTOMATION_TESTS

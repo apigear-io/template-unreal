@@ -34,7 +34,9 @@ void writeLogHost(ApiGear::ObjectLink::LogLevel level, const std::string& msg)
 ApiGear::ObjectLink::WriteLogFunc logHostFunc()
 {
 	return [](ApiGear::ObjectLink::LogLevel level, const std::string& msg)
-	{ writeLogHost(level, msg); };
+	{
+		writeLogHost(level, msg);
+		};
 }
 
 OLinkHostPrivate::OLinkHostPrivate(uint32 InPort)
@@ -114,7 +116,9 @@ void OLinkHostPrivate::OnWebSocketClientConnected(INetworkingWebSocket* Socket)
 void OLinkHostPrivate::OnConnectionClose(FOLinkHostConnection* Connection)
 {
 	ClientConnections.RemoveAllSwap([Connection](const TUniquePtr<FOLinkHostConnection>& InConnection)
-		{ return InConnection->IsConnection(Connection); });
+		{
+		return InConnection->IsConnection(Connection);
+	});
 }
 
 uint32 OLinkHostPrivate::NumberOfConnections() const

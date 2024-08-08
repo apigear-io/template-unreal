@@ -26,7 +26,7 @@ limitations under the License.
 void UTestbed1StructInterfaceImplSpec::Define()
 {
 	BeforeEach([this]()
-	{
+		{
 		ImplFixture = MakeUnique<FTestbed1StructInterfaceImplFixture>();
 		TestTrue("Check for valid ImplFixture", ImplFixture.IsValid());
 
@@ -37,19 +37,19 @@ void UTestbed1StructInterfaceImplSpec::Define()
 	});
 
 	AfterEach([this]()
-	{
+		{
 		ImplFixture.Reset();
 	});
 
 	It("Property.PropBool.Default", [this]()
-	{
+		{
 		// Do implement test here
 		FTestbed1StructBool TestValue = FTestbed1StructBool(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetPropBool(ImplFixture->GetImplementation().GetObject()), TestValue);
 	});
-	
+
 	LatentIt("Property.PropBool.Change", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
-	{
+		{
 		// Do implement test here
 		FTestbed1StructBool TestValue = FTestbed1StructBool(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetPropBool(ImplFixture->GetImplementation().GetObject()), TestValue);
@@ -63,14 +63,14 @@ void UTestbed1StructInterfaceImplSpec::Define()
 	});
 
 	It("Property.PropInt.Default", [this]()
-	{
+		{
 		// Do implement test here
 		FTestbed1StructInt TestValue = FTestbed1StructInt(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetPropInt(ImplFixture->GetImplementation().GetObject()), TestValue);
 	});
-	
+
 	LatentIt("Property.PropInt.Change", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
-	{
+		{
 		// Do implement test here
 		FTestbed1StructInt TestValue = FTestbed1StructInt(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetPropInt(ImplFixture->GetImplementation().GetObject()), TestValue);
@@ -84,14 +84,14 @@ void UTestbed1StructInterfaceImplSpec::Define()
 	});
 
 	It("Property.PropFloat.Default", [this]()
-	{
+		{
 		// Do implement test here
 		FTestbed1StructFloat TestValue = FTestbed1StructFloat(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetPropFloat(ImplFixture->GetImplementation().GetObject()), TestValue);
 	});
-	
+
 	LatentIt("Property.PropFloat.Change", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
-	{
+		{
 		// Do implement test here
 		FTestbed1StructFloat TestValue = FTestbed1StructFloat(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetPropFloat(ImplFixture->GetImplementation().GetObject()), TestValue);
@@ -105,14 +105,14 @@ void UTestbed1StructInterfaceImplSpec::Define()
 	});
 
 	It("Property.PropString.Default", [this]()
-	{
+		{
 		// Do implement test here
 		FTestbed1StructString TestValue = FTestbed1StructString(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetPropString(ImplFixture->GetImplementation().GetObject()), TestValue);
 	});
-	
+
 	LatentIt("Property.PropString.Change", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
-	{
+		{
 		// Do implement test here
 		FTestbed1StructString TestValue = FTestbed1StructString(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetPropString(ImplFixture->GetImplementation().GetObject()), TestValue);
@@ -126,31 +126,31 @@ void UTestbed1StructInterfaceImplSpec::Define()
 	});
 
 	It("Operation.FuncBool", [this]()
-	{
+		{
 		// Do implement test here
 		ImplFixture->GetImplementation()->Execute_FuncBool(ImplFixture->GetImplementation().GetObject(), FTestbed1StructBool());
 	});
 
 	It("Operation.FuncInt", [this]()
-	{
+		{
 		// Do implement test here
 		ImplFixture->GetImplementation()->Execute_FuncInt(ImplFixture->GetImplementation().GetObject(), FTestbed1StructInt());
 	});
 
 	It("Operation.FuncFloat", [this]()
-	{
+		{
 		// Do implement test here
 		ImplFixture->GetImplementation()->Execute_FuncFloat(ImplFixture->GetImplementation().GetObject(), FTestbed1StructFloat());
 	});
 
 	It("Operation.FuncString", [this]()
-	{
+		{
 		// Do implement test here
 		ImplFixture->GetImplementation()->Execute_FuncString(ImplFixture->GetImplementation().GetObject(), FTestbed1StructString());
 	});
 
 	LatentIt("Signal.SigBool", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
-	{
+		{
 		testDoneDelegate = TestDone;
 		UTestbed1StructInterfaceSignals* Testbed1StructInterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		Testbed1StructInterfaceSignals->OnSigBoolSignal.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructInterfaceImplHelper::SigBoolSignalCb);
@@ -161,7 +161,7 @@ void UTestbed1StructInterfaceImplSpec::Define()
 	});
 
 	LatentIt("Signal.SigInt", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
-	{
+		{
 		testDoneDelegate = TestDone;
 		UTestbed1StructInterfaceSignals* Testbed1StructInterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		Testbed1StructInterfaceSignals->OnSigIntSignal.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructInterfaceImplHelper::SigIntSignalCb);
@@ -172,7 +172,7 @@ void UTestbed1StructInterfaceImplSpec::Define()
 	});
 
 	LatentIt("Signal.SigFloat", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
-	{
+		{
 		testDoneDelegate = TestDone;
 		UTestbed1StructInterfaceSignals* Testbed1StructInterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		Testbed1StructInterfaceSignals->OnSigFloatSignal.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructInterfaceImplHelper::SigFloatSignalCb);
@@ -183,7 +183,7 @@ void UTestbed1StructInterfaceImplSpec::Define()
 	});
 
 	LatentIt("Signal.SigString", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
-	{
+		{
 		testDoneDelegate = TestDone;
 		UTestbed1StructInterfaceSignals* Testbed1StructInterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		Testbed1StructInterfaceSignals->OnSigStringSignal.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructInterfaceImplHelper::SigStringSignalCb);

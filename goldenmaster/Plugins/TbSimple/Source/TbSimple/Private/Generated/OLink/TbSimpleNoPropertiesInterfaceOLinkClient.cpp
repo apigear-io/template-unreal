@@ -54,9 +54,13 @@ void UTbSimpleNoPropertiesInterfaceOLinkClient::Initialize(FSubsystemCollectionB
 	Super::Initialize(Collection);
 
 	m_sink->setOnInitCallback([this]()
-		{ _SubscriptionStatusChanged.Broadcast(true); });
+		{
+		_SubscriptionStatusChanged.Broadcast(true);
+	});
 	m_sink->setOnReleaseCallback([this]()
-		{ _SubscriptionStatusChanged.Broadcast(false); });
+		{
+		_SubscriptionStatusChanged.Broadcast(false);
+	});
 
 	FOLinkSink::FPropertyChangedFunc PropertyChangedFunc = [this](const nlohmann::json& props)
 	{
@@ -154,21 +158,21 @@ bool UTbSimpleNoPropertiesInterfaceOLinkClient::FuncBool_Implementation(bool bPa
 	Async(EAsyncExecution::Thread,
 		[bParamBool, &Promise, this]()
 		{
-			ApiGear::ObjectLink::InvokeReplyFunc GetNoPropertiesInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetNoPropertiesInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+			if (!arg.value.empty())
 			{
-				if (!arg.value.empty())
-				{
-					Promise.SetValue(arg.value.get<bool>());
-				}
-				else
-				{
-					UE_LOG(LogTbSimpleNoPropertiesInterfaceOLinkClient, Error, TEXT("FuncBool: OLink service returned empty value - should have returned type of bool"));
-					Promise.SetValue(bool());
-				}
-			};
-			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcBool");
-			m_sink->GetNode()->invokeRemote(memberId, {bParamBool}, GetNoPropertiesInterfaceStateFunc);
-		});
+				Promise.SetValue(arg.value.get<bool>());
+			}
+			else
+			{
+				UE_LOG(LogTbSimpleNoPropertiesInterfaceOLinkClient, Error, TEXT("FuncBool: OLink service returned empty value - should have returned type of bool"));
+				Promise.SetValue(bool());
+			}
+		};
+		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcBool");
+		m_sink->GetNode()->invokeRemote(memberId, {bParamBool}, GetNoPropertiesInterfaceStateFunc);
+	});
 
 	return Promise.GetFuture().Get();
 }

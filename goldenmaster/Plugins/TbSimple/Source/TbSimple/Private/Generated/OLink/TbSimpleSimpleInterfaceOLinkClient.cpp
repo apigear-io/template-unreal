@@ -79,9 +79,13 @@ void UTbSimpleSimpleInterfaceOLinkClient::Initialize(FSubsystemCollectionBase& C
 	Super::Initialize(Collection);
 
 	m_sink->setOnInitCallback([this]()
-		{ _SubscriptionStatusChanged.Broadcast(true); });
+		{
+		_SubscriptionStatusChanged.Broadcast(true);
+	});
 	m_sink->setOnReleaseCallback([this]()
-		{ _SubscriptionStatusChanged.Broadcast(false); });
+		{
+		_SubscriptionStatusChanged.Broadcast(false);
+	});
 
 	FOLinkSink::FPropertyChangedFunc PropertyChangedFunc = [this](const nlohmann::json& props)
 	{
@@ -420,21 +424,21 @@ bool UTbSimpleSimpleInterfaceOLinkClient::FuncBool_Implementation(bool bParamBoo
 	Async(EAsyncExecution::Thread,
 		[bParamBool, &Promise, this]()
 		{
-			ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+			if (!arg.value.empty())
 			{
-				if (!arg.value.empty())
-				{
-					Promise.SetValue(arg.value.get<bool>());
-				}
-				else
-				{
-					UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("FuncBool: OLink service returned empty value - should have returned type of bool"));
-					Promise.SetValue(bool());
-				}
-			};
-			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcBool");
-			m_sink->GetNode()->invokeRemote(memberId, {bParamBool}, GetSimpleInterfaceStateFunc);
-		});
+				Promise.SetValue(arg.value.get<bool>());
+			}
+			else
+			{
+				UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("FuncBool: OLink service returned empty value - should have returned type of bool"));
+				Promise.SetValue(bool());
+			}
+		};
+		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcBool");
+		m_sink->GetNode()->invokeRemote(memberId, {bParamBool}, GetSimpleInterfaceStateFunc);
+	});
 
 	return Promise.GetFuture().Get();
 }
@@ -451,21 +455,21 @@ int32 UTbSimpleSimpleInterfaceOLinkClient::FuncInt_Implementation(int32 ParamInt
 	Async(EAsyncExecution::Thread,
 		[ParamInt, &Promise, this]()
 		{
-			ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+			if (!arg.value.empty())
 			{
-				if (!arg.value.empty())
-				{
-					Promise.SetValue(arg.value.get<int32>());
-				}
-				else
-				{
-					UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("FuncInt: OLink service returned empty value - should have returned type of int32"));
-					Promise.SetValue(int32());
-				}
-			};
-			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcInt");
-			m_sink->GetNode()->invokeRemote(memberId, {ParamInt}, GetSimpleInterfaceStateFunc);
-		});
+				Promise.SetValue(arg.value.get<int32>());
+			}
+			else
+			{
+				UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("FuncInt: OLink service returned empty value - should have returned type of int32"));
+				Promise.SetValue(int32());
+			}
+		};
+		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcInt");
+		m_sink->GetNode()->invokeRemote(memberId, {ParamInt}, GetSimpleInterfaceStateFunc);
+	});
 
 	return Promise.GetFuture().Get();
 }
@@ -482,21 +486,21 @@ int32 UTbSimpleSimpleInterfaceOLinkClient::FuncInt32_Implementation(int32 ParamI
 	Async(EAsyncExecution::Thread,
 		[ParamInt32, &Promise, this]()
 		{
-			ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+			if (!arg.value.empty())
 			{
-				if (!arg.value.empty())
-				{
-					Promise.SetValue(arg.value.get<int32>());
-				}
-				else
-				{
-					UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("FuncInt32: OLink service returned empty value - should have returned type of int32"));
-					Promise.SetValue(int32());
-				}
-			};
-			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcInt32");
-			m_sink->GetNode()->invokeRemote(memberId, {ParamInt32}, GetSimpleInterfaceStateFunc);
-		});
+				Promise.SetValue(arg.value.get<int32>());
+			}
+			else
+			{
+				UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("FuncInt32: OLink service returned empty value - should have returned type of int32"));
+				Promise.SetValue(int32());
+			}
+		};
+		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcInt32");
+		m_sink->GetNode()->invokeRemote(memberId, {ParamInt32}, GetSimpleInterfaceStateFunc);
+	});
 
 	return Promise.GetFuture().Get();
 }
@@ -513,21 +517,21 @@ int64 UTbSimpleSimpleInterfaceOLinkClient::FuncInt64_Implementation(int64 ParamI
 	Async(EAsyncExecution::Thread,
 		[ParamInt64, &Promise, this]()
 		{
-			ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+			if (!arg.value.empty())
 			{
-				if (!arg.value.empty())
-				{
-					Promise.SetValue(arg.value.get<int64>());
-				}
-				else
-				{
-					UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("FuncInt64: OLink service returned empty value - should have returned type of int64"));
-					Promise.SetValue(int64());
-				}
-			};
-			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcInt64");
-			m_sink->GetNode()->invokeRemote(memberId, {ParamInt64}, GetSimpleInterfaceStateFunc);
-		});
+				Promise.SetValue(arg.value.get<int64>());
+			}
+			else
+			{
+				UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("FuncInt64: OLink service returned empty value - should have returned type of int64"));
+				Promise.SetValue(int64());
+			}
+		};
+		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcInt64");
+		m_sink->GetNode()->invokeRemote(memberId, {ParamInt64}, GetSimpleInterfaceStateFunc);
+	});
 
 	return Promise.GetFuture().Get();
 }
@@ -544,21 +548,21 @@ float UTbSimpleSimpleInterfaceOLinkClient::FuncFloat_Implementation(float ParamF
 	Async(EAsyncExecution::Thread,
 		[ParamFloat, &Promise, this]()
 		{
-			ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+			if (!arg.value.empty())
 			{
-				if (!arg.value.empty())
-				{
-					Promise.SetValue(arg.value.get<float>());
-				}
-				else
-				{
-					UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("FuncFloat: OLink service returned empty value - should have returned type of float"));
-					Promise.SetValue(float());
-				}
-			};
-			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat");
-			m_sink->GetNode()->invokeRemote(memberId, {ParamFloat}, GetSimpleInterfaceStateFunc);
-		});
+				Promise.SetValue(arg.value.get<float>());
+			}
+			else
+			{
+				UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("FuncFloat: OLink service returned empty value - should have returned type of float"));
+				Promise.SetValue(float());
+			}
+		};
+		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat");
+		m_sink->GetNode()->invokeRemote(memberId, {ParamFloat}, GetSimpleInterfaceStateFunc);
+	});
 
 	return Promise.GetFuture().Get();
 }
@@ -575,21 +579,21 @@ float UTbSimpleSimpleInterfaceOLinkClient::FuncFloat32_Implementation(float Para
 	Async(EAsyncExecution::Thread,
 		[ParamFloat32, &Promise, this]()
 		{
-			ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+			if (!arg.value.empty())
 			{
-				if (!arg.value.empty())
-				{
-					Promise.SetValue(arg.value.get<float>());
-				}
-				else
-				{
-					UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("FuncFloat32: OLink service returned empty value - should have returned type of float"));
-					Promise.SetValue(float());
-				}
-			};
-			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat32");
-			m_sink->GetNode()->invokeRemote(memberId, {ParamFloat32}, GetSimpleInterfaceStateFunc);
-		});
+				Promise.SetValue(arg.value.get<float>());
+			}
+			else
+			{
+				UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("FuncFloat32: OLink service returned empty value - should have returned type of float"));
+				Promise.SetValue(float());
+			}
+		};
+		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat32");
+		m_sink->GetNode()->invokeRemote(memberId, {ParamFloat32}, GetSimpleInterfaceStateFunc);
+	});
 
 	return Promise.GetFuture().Get();
 }
@@ -606,21 +610,21 @@ double UTbSimpleSimpleInterfaceOLinkClient::FuncFloat64_Implementation(double Pa
 	Async(EAsyncExecution::Thread,
 		[ParamFloat, &Promise, this]()
 		{
-			ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+			if (!arg.value.empty())
 			{
-				if (!arg.value.empty())
-				{
-					Promise.SetValue(arg.value.get<double>());
-				}
-				else
-				{
-					UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("FuncFloat64: OLink service returned empty value - should have returned type of double"));
-					Promise.SetValue(double());
-				}
-			};
-			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat64");
-			m_sink->GetNode()->invokeRemote(memberId, {ParamFloat}, GetSimpleInterfaceStateFunc);
-		});
+				Promise.SetValue(arg.value.get<double>());
+			}
+			else
+			{
+				UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("FuncFloat64: OLink service returned empty value - should have returned type of double"));
+				Promise.SetValue(double());
+			}
+		};
+		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat64");
+		m_sink->GetNode()->invokeRemote(memberId, {ParamFloat}, GetSimpleInterfaceStateFunc);
+	});
 
 	return Promise.GetFuture().Get();
 }
@@ -637,21 +641,21 @@ FString UTbSimpleSimpleInterfaceOLinkClient::FuncString_Implementation(const FSt
 	Async(EAsyncExecution::Thread,
 		[ParamString, &Promise, this]()
 		{
-			ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+			if (!arg.value.empty())
 			{
-				if (!arg.value.empty())
-				{
-					Promise.SetValue(arg.value.get<FString>());
-				}
-				else
-				{
-					UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("FuncString: OLink service returned empty value - should have returned type of FString"));
-					Promise.SetValue(FString());
-				}
-			};
-			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcString");
-			m_sink->GetNode()->invokeRemote(memberId, {ParamString}, GetSimpleInterfaceStateFunc);
-		});
+				Promise.SetValue(arg.value.get<FString>());
+			}
+			else
+			{
+				UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("FuncString: OLink service returned empty value - should have returned type of FString"));
+				Promise.SetValue(FString());
+			}
+		};
+		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcString");
+		m_sink->GetNode()->invokeRemote(memberId, {ParamString}, GetSimpleInterfaceStateFunc);
+	});
 
 	return Promise.GetFuture().Get();
 }

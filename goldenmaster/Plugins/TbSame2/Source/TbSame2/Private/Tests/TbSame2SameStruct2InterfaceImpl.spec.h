@@ -19,21 +19,20 @@ limitations under the License.
 #include "Implementation/TbSame2SameStruct2Interface.h"
 #include "TbSame2SameStruct2InterfaceImplFixture.h"
 
-#if WITH_DEV_AUTOMATION_TESTS 
+#if WITH_DEV_AUTOMATION_TESTS
 
-BEGIN_DEFINE_SPEC(UTbSame2SameStruct2InterfaceImplSpec, "TbSame2.SameStruct2Interface.Impl",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
+BEGIN_DEFINE_SPEC(UTbSame2SameStruct2InterfaceImplSpec, "TbSame2.SameStruct2Interface.Impl", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
 
-	TUniquePtr<FTbSame2SameStruct2InterfaceImplFixture> ImplFixture;
+TUniquePtr<FTbSame2SameStruct2InterfaceImplFixture> ImplFixture;
 
-	// signal callbacks for testing
-	void Prop1PropertyCb(const FTbSame2Struct2& Prop1);
-	void Prop2PropertyCb(const FTbSame2Struct2& Prop2);
-	void Sig1SignalCb(const FTbSame2Struct1& Param1);
-	void Sig2SignalCb(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2);
-	FDoneDelegate testDoneDelegate;
+// signal callbacks for testing
+void Prop1PropertyCb(const FTbSame2Struct2& Prop1);
+void Prop2PropertyCb(const FTbSame2Struct2& Prop2);
+void Sig1SignalCb(const FTbSame2Struct1& Param1);
+void Sig2SignalCb(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2);
+FDoneDelegate testDoneDelegate;
 
-	friend class UTbSame2SameStruct2InterfaceImplHelper;
+friend class UTbSame2SameStruct2InterfaceImplHelper;
 END_DEFINE_SPEC(UTbSame2SameStruct2InterfaceImplSpec);
 
 #endif // WITH_DEV_AUTOMATION_TESTS

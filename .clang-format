@@ -14,4 +14,8 @@ BreakConstructorInitializers: BeforeComma
 ColumnLimit:     0
 SortIncludes:    false
 PointerAlignment: Left
+LambdaBodyIndentation: OuterScope
+AllowShortLambdasOnASingleLine: Empty
 MaxEmptyLinesToKeep: 1
+AllowAllArgumentsOnNextLine: true
+BinPackParameters: false

@@ -182,9 +182,9 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncBoolAsync_Implementation(UObject
 			Async(EAsyncExecution::Thread,
 				[ParamBool, this, &Result, CompletionAction]()
 				{
-					Result = Execute_FuncBool(this, ParamBool);
-					CompletionAction->Cancel();
-				});
+				Result = Execute_FuncBool(this, ParamBool);
+				CompletionAction->Cancel();
+			});
 		}
 	}
 }
@@ -217,9 +217,9 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncIntAsync_Implementation(UObject*
 			Async(EAsyncExecution::Thread,
 				[ParamInt, this, &Result, CompletionAction]()
 				{
-					Result = Execute_FuncInt(this, ParamInt);
-					CompletionAction->Cancel();
-				});
+				Result = Execute_FuncInt(this, ParamInt);
+				CompletionAction->Cancel();
+			});
 		}
 	}
 }
@@ -252,9 +252,9 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncInt32Async_Implementation(UObjec
 			Async(EAsyncExecution::Thread,
 				[ParamInt32, this, &Result, CompletionAction]()
 				{
-					Result = Execute_FuncInt32(this, ParamInt32);
-					CompletionAction->Cancel();
-				});
+				Result = Execute_FuncInt32(this, ParamInt32);
+				CompletionAction->Cancel();
+			});
 		}
 	}
 }
@@ -287,9 +287,9 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncInt64Async_Implementation(UObjec
 			Async(EAsyncExecution::Thread,
 				[ParamInt64, this, &Result, CompletionAction]()
 				{
-					Result = Execute_FuncInt64(this, ParamInt64);
-					CompletionAction->Cancel();
-				});
+				Result = Execute_FuncInt64(this, ParamInt64);
+				CompletionAction->Cancel();
+			});
 		}
 	}
 }
@@ -322,9 +322,9 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncFloatAsync_Implementation(UObjec
 			Async(EAsyncExecution::Thread,
 				[ParamFloat, this, &Result, CompletionAction]()
 				{
-					Result = Execute_FuncFloat(this, ParamFloat);
-					CompletionAction->Cancel();
-				});
+				Result = Execute_FuncFloat(this, ParamFloat);
+				CompletionAction->Cancel();
+			});
 		}
 	}
 }
@@ -357,9 +357,9 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncFloat32Async_Implementation(UObj
 			Async(EAsyncExecution::Thread,
 				[ParamFloat32, this, &Result, CompletionAction]()
 				{
-					Result = Execute_FuncFloat32(this, ParamFloat32);
-					CompletionAction->Cancel();
-				});
+				Result = Execute_FuncFloat32(this, ParamFloat32);
+				CompletionAction->Cancel();
+			});
 		}
 	}
 }
@@ -392,9 +392,9 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncFloat64Async_Implementation(UObj
 			Async(EAsyncExecution::Thread,
 				[ParamFloat, this, &Result, CompletionAction]()
 				{
-					Result = Execute_FuncFloat64(this, ParamFloat);
-					CompletionAction->Cancel();
-				});
+				Result = Execute_FuncFloat64(this, ParamFloat);
+				CompletionAction->Cancel();
+			});
 		}
 	}
 }
@@ -427,9 +427,9 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncStringAsync_Implementation(UObje
 			Async(EAsyncExecution::Thread,
 				[ParamString, this, &Result, CompletionAction]()
 				{
-					Result = Execute_FuncString(this, ParamString);
-					CompletionAction->Cancel();
-				});
+				Result = Execute_FuncString(this, ParamString);
+				CompletionAction->Cancel();
+			});
 		}
 	}
 }

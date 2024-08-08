@@ -112,9 +112,9 @@ void UAbstractTestbed2NestedStruct1Interface::Func1Async_Implementation(UObject*
 			Async(EAsyncExecution::Thread,
 				[Param1, this, &Result, CompletionAction]()
 				{
-					Result = Execute_Func1(this, Param1);
-					CompletionAction->Cancel();
-				});
+				Result = Execute_Func1(this, Param1);
+				CompletionAction->Cancel();
+			});
 		}
 	}
 }

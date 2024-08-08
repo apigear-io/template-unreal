@@ -123,9 +123,9 @@ void UAbstractTbSimpleNoSignalsInterface::FuncBoolAsync_Implementation(UObject* 
 			Async(EAsyncExecution::Thread,
 				[bParamBool, this, &Result, CompletionAction]()
 				{
-					Result = Execute_FuncBool(this, bParamBool);
-					CompletionAction->Cancel();
-				});
+				Result = Execute_FuncBool(this, bParamBool);
+				CompletionAction->Cancel();
+			});
 		}
 	}
 }

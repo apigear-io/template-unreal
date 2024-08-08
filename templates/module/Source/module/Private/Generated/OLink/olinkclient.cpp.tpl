@@ -92,9 +92,13 @@ void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
 	Super::Initialize(Collection);
 
 	m_sink->setOnInitCallback([this]()
-		{ _SubscriptionStatusChanged.Broadcast(true); });
+		{
+		_SubscriptionStatusChanged.Broadcast(true);
+	});
 	m_sink->setOnReleaseCallback([this]()
-		{ _SubscriptionStatusChanged.Broadcast(false); });
+		{
+		_SubscriptionStatusChanged.Broadcast(false);
+	});
 
 	FOLinkSink::FPropertyChangedFunc PropertyChangedFunc = [this](const nlohmann::json& props)
 	{
@@ -246,21 +250,21 @@ void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
 	Async(EAsyncExecution::Thread,
 		[{{ueVars "" .Params }}{{if len .Params}}, {{ end }}&Promise, this]()
 		{
-			ApiGear::ObjectLink::InvokeReplyFunc Get{{$IfaceName}}StateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc Get{{$IfaceName}}StateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+			if (!arg.value.empty())
 			{
-				if (!arg.value.empty())
-				{
-					Promise.SetValue(arg.value.get<{{$returnVal}}>());
-				}
-				else
-				{
-					UE_LOG(Log{{$Iface}}OLinkClient, Error, TEXT("{{Camel .Name}}: OLink service returned empty value - should have returned type of {{$returnVal}}"));
-					Promise.SetValue({{$returnVal}}());
-				}
-			};
-			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "{{.Name}}");
-			m_sink->GetNode()->invokeRemote(memberId, { {{- ueVars "" .Params -}} }, Get{{$IfaceName}}StateFunc);
-		});
+				Promise.SetValue(arg.value.get<{{$returnVal}}>());
+			}
+			else
+			{
+				UE_LOG(Log{{$Iface}}OLinkClient, Error, TEXT("{{Camel .Name}}: OLink service returned empty value - should have returned type of {{$returnVal}}"));
+				Promise.SetValue({{$returnVal}}());
+			}
+		};
+		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "{{.Name}}");
+		m_sink->GetNode()->invokeRemote(memberId, { {{- ueVars "" .Params -}} }, Get{{$IfaceName}}StateFunc);
+	});
 
 	return Promise.GetFuture().Get();
 	{{- end }}

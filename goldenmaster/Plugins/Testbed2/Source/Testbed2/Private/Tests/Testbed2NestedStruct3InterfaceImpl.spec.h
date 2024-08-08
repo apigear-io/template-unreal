@@ -19,23 +19,22 @@ limitations under the License.
 #include "Implementation/Testbed2NestedStruct3Interface.h"
 #include "Testbed2NestedStruct3InterfaceImplFixture.h"
 
-#if WITH_DEV_AUTOMATION_TESTS 
+#if WITH_DEV_AUTOMATION_TESTS
 
-BEGIN_DEFINE_SPEC(UTestbed2NestedStruct3InterfaceImplSpec, "Testbed2.NestedStruct3Interface.Impl",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
+BEGIN_DEFINE_SPEC(UTestbed2NestedStruct3InterfaceImplSpec, "Testbed2.NestedStruct3Interface.Impl", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
 
-	TUniquePtr<FTestbed2NestedStruct3InterfaceImplFixture> ImplFixture;
+TUniquePtr<FTestbed2NestedStruct3InterfaceImplFixture> ImplFixture;
 
-	// signal callbacks for testing
-	void Prop1PropertyCb(const FTestbed2NestedStruct1& Prop1);
-	void Prop2PropertyCb(const FTestbed2NestedStruct2& Prop2);
-	void Prop3PropertyCb(const FTestbed2NestedStruct3& Prop3);
-	void Sig1SignalCb(const FTestbed2NestedStruct1& Param1);
-	void Sig2SignalCb(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2);
-	void Sig3SignalCb(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3);
-	FDoneDelegate testDoneDelegate;
+// signal callbacks for testing
+void Prop1PropertyCb(const FTestbed2NestedStruct1& Prop1);
+void Prop2PropertyCb(const FTestbed2NestedStruct2& Prop2);
+void Prop3PropertyCb(const FTestbed2NestedStruct3& Prop3);
+void Sig1SignalCb(const FTestbed2NestedStruct1& Param1);
+void Sig2SignalCb(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2);
+void Sig3SignalCb(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3);
+FDoneDelegate testDoneDelegate;
 
-	friend class UTestbed2NestedStruct3InterfaceImplHelper;
+friend class UTestbed2NestedStruct3InterfaceImplHelper;
 END_DEFINE_SPEC(UTestbed2NestedStruct3InterfaceImplSpec);
 
 #endif // WITH_DEV_AUTOMATION_TESTS

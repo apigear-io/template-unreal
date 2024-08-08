@@ -19,19 +19,18 @@ limitations under the License.
 #include "Implementation/TbSame1SameStruct1Interface.h"
 #include "TbSame1SameStruct1InterfaceImplFixture.h"
 
-#if WITH_DEV_AUTOMATION_TESTS 
+#if WITH_DEV_AUTOMATION_TESTS
 
-BEGIN_DEFINE_SPEC(UTbSame1SameStruct1InterfaceImplSpec, "TbSame1.SameStruct1Interface.Impl",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
+BEGIN_DEFINE_SPEC(UTbSame1SameStruct1InterfaceImplSpec, "TbSame1.SameStruct1Interface.Impl", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
 
-	TUniquePtr<FTbSame1SameStruct1InterfaceImplFixture> ImplFixture;
+TUniquePtr<FTbSame1SameStruct1InterfaceImplFixture> ImplFixture;
 
-	// signal callbacks for testing
-	void Prop1PropertyCb(const FTbSame1Struct1& Prop1);
-	void Sig1SignalCb(const FTbSame1Struct1& Param1);
-	FDoneDelegate testDoneDelegate;
+// signal callbacks for testing
+void Prop1PropertyCb(const FTbSame1Struct1& Prop1);
+void Sig1SignalCb(const FTbSame1Struct1& Param1);
+FDoneDelegate testDoneDelegate;
 
-	friend class UTbSame1SameStruct1InterfaceImplHelper;
+friend class UTbSame1SameStruct1InterfaceImplHelper;
 END_DEFINE_SPEC(UTbSame1SameStruct1InterfaceImplSpec);
 
 #endif // WITH_DEV_AUTOMATION_TESTS

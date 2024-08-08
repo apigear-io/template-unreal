@@ -142,9 +142,9 @@ void UAbstractTestbed1StructInterface::FuncBoolAsync_Implementation(UObject* Wor
 			Async(EAsyncExecution::Thread,
 				[ParamBool, this, &Result, CompletionAction]()
 				{
-					Result = Execute_FuncBool(this, ParamBool);
-					CompletionAction->Cancel();
-				});
+				Result = Execute_FuncBool(this, ParamBool);
+				CompletionAction->Cancel();
+			});
 		}
 	}
 }
@@ -177,9 +177,9 @@ void UAbstractTestbed1StructInterface::FuncIntAsync_Implementation(UObject* Worl
 			Async(EAsyncExecution::Thread,
 				[ParamInt, this, &Result, CompletionAction]()
 				{
-					Result = Execute_FuncInt(this, ParamInt);
-					CompletionAction->Cancel();
-				});
+				Result = Execute_FuncInt(this, ParamInt);
+				CompletionAction->Cancel();
+			});
 		}
 	}
 }
@@ -212,9 +212,9 @@ void UAbstractTestbed1StructInterface::FuncFloatAsync_Implementation(UObject* Wo
 			Async(EAsyncExecution::Thread,
 				[ParamFloat, this, &Result, CompletionAction]()
 				{
-					Result = Execute_FuncFloat(this, ParamFloat);
-					CompletionAction->Cancel();
-				});
+				Result = Execute_FuncFloat(this, ParamFloat);
+				CompletionAction->Cancel();
+			});
 		}
 	}
 }
@@ -247,9 +247,9 @@ void UAbstractTestbed1StructInterface::FuncStringAsync_Implementation(UObject* W
 			Async(EAsyncExecution::Thread,
 				[ParamString, this, &Result, CompletionAction]()
 				{
-					Result = Execute_FuncString(this, ParamString);
-					CompletionAction->Cancel();
-				});
+				Result = Execute_FuncString(this, ParamString);
+				CompletionAction->Cancel();
+			});
 		}
 	}
 }

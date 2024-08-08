@@ -75,9 +75,13 @@ void UTestbed1StructArrayInterfaceOLinkClient::Initialize(FSubsystemCollectionBa
 	Super::Initialize(Collection);
 
 	m_sink->setOnInitCallback([this]()
-		{ _SubscriptionStatusChanged.Broadcast(true); });
+		{
+		_SubscriptionStatusChanged.Broadcast(true);
+	});
 	m_sink->setOnReleaseCallback([this]()
-		{ _SubscriptionStatusChanged.Broadcast(false); });
+		{
+		_SubscriptionStatusChanged.Broadcast(false);
+	});
 
 	FOLinkSink::FPropertyChangedFunc PropertyChangedFunc = [this](const nlohmann::json& props)
 	{
@@ -294,21 +298,21 @@ FTestbed1StructBool UTestbed1StructArrayInterfaceOLinkClient::FuncBool_Implement
 	Async(EAsyncExecution::Thread,
 		[ParamBool, &Promise, this]()
 		{
-			ApiGear::ObjectLink::InvokeReplyFunc GetStructArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetStructArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+			if (!arg.value.empty())
 			{
-				if (!arg.value.empty())
-				{
-					Promise.SetValue(arg.value.get<FTestbed1StructBool>());
-				}
-				else
-				{
-					UE_LOG(LogTestbed1StructArrayInterfaceOLinkClient, Error, TEXT("FuncBool: OLink service returned empty value - should have returned type of FTestbed1StructBool"));
-					Promise.SetValue(FTestbed1StructBool());
-				}
-			};
-			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcBool");
-			m_sink->GetNode()->invokeRemote(memberId, {ParamBool}, GetStructArrayInterfaceStateFunc);
-		});
+				Promise.SetValue(arg.value.get<FTestbed1StructBool>());
+			}
+			else
+			{
+				UE_LOG(LogTestbed1StructArrayInterfaceOLinkClient, Error, TEXT("FuncBool: OLink service returned empty value - should have returned type of FTestbed1StructBool"));
+				Promise.SetValue(FTestbed1StructBool());
+			}
+		};
+		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcBool");
+		m_sink->GetNode()->invokeRemote(memberId, {ParamBool}, GetStructArrayInterfaceStateFunc);
+	});
 
 	return Promise.GetFuture().Get();
 }
@@ -325,21 +329,21 @@ FTestbed1StructBool UTestbed1StructArrayInterfaceOLinkClient::FuncInt_Implementa
 	Async(EAsyncExecution::Thread,
 		[ParamInt, &Promise, this]()
 		{
-			ApiGear::ObjectLink::InvokeReplyFunc GetStructArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetStructArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+			if (!arg.value.empty())
 			{
-				if (!arg.value.empty())
-				{
-					Promise.SetValue(arg.value.get<FTestbed1StructBool>());
-				}
-				else
-				{
-					UE_LOG(LogTestbed1StructArrayInterfaceOLinkClient, Error, TEXT("FuncInt: OLink service returned empty value - should have returned type of FTestbed1StructBool"));
-					Promise.SetValue(FTestbed1StructBool());
-				}
-			};
-			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcInt");
-			m_sink->GetNode()->invokeRemote(memberId, {ParamInt}, GetStructArrayInterfaceStateFunc);
-		});
+				Promise.SetValue(arg.value.get<FTestbed1StructBool>());
+			}
+			else
+			{
+				UE_LOG(LogTestbed1StructArrayInterfaceOLinkClient, Error, TEXT("FuncInt: OLink service returned empty value - should have returned type of FTestbed1StructBool"));
+				Promise.SetValue(FTestbed1StructBool());
+			}
+		};
+		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcInt");
+		m_sink->GetNode()->invokeRemote(memberId, {ParamInt}, GetStructArrayInterfaceStateFunc);
+	});
 
 	return Promise.GetFuture().Get();
 }
@@ -356,21 +360,21 @@ FTestbed1StructBool UTestbed1StructArrayInterfaceOLinkClient::FuncFloat_Implemen
 	Async(EAsyncExecution::Thread,
 		[ParamFloat, &Promise, this]()
 		{
-			ApiGear::ObjectLink::InvokeReplyFunc GetStructArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetStructArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+			if (!arg.value.empty())
 			{
-				if (!arg.value.empty())
-				{
-					Promise.SetValue(arg.value.get<FTestbed1StructBool>());
-				}
-				else
-				{
-					UE_LOG(LogTestbed1StructArrayInterfaceOLinkClient, Error, TEXT("FuncFloat: OLink service returned empty value - should have returned type of FTestbed1StructBool"));
-					Promise.SetValue(FTestbed1StructBool());
-				}
-			};
-			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat");
-			m_sink->GetNode()->invokeRemote(memberId, {ParamFloat}, GetStructArrayInterfaceStateFunc);
-		});
+				Promise.SetValue(arg.value.get<FTestbed1StructBool>());
+			}
+			else
+			{
+				UE_LOG(LogTestbed1StructArrayInterfaceOLinkClient, Error, TEXT("FuncFloat: OLink service returned empty value - should have returned type of FTestbed1StructBool"));
+				Promise.SetValue(FTestbed1StructBool());
+			}
+		};
+		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat");
+		m_sink->GetNode()->invokeRemote(memberId, {ParamFloat}, GetStructArrayInterfaceStateFunc);
+	});
 
 	return Promise.GetFuture().Get();
 }
@@ -387,21 +391,21 @@ FTestbed1StructBool UTestbed1StructArrayInterfaceOLinkClient::FuncString_Impleme
 	Async(EAsyncExecution::Thread,
 		[ParamString, &Promise, this]()
 		{
-			ApiGear::ObjectLink::InvokeReplyFunc GetStructArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetStructArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+			if (!arg.value.empty())
 			{
-				if (!arg.value.empty())
-				{
-					Promise.SetValue(arg.value.get<FTestbed1StructBool>());
-				}
-				else
-				{
-					UE_LOG(LogTestbed1StructArrayInterfaceOLinkClient, Error, TEXT("FuncString: OLink service returned empty value - should have returned type of FTestbed1StructBool"));
-					Promise.SetValue(FTestbed1StructBool());
-				}
-			};
-			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcString");
-			m_sink->GetNode()->invokeRemote(memberId, {ParamString}, GetStructArrayInterfaceStateFunc);
-		});
+				Promise.SetValue(arg.value.get<FTestbed1StructBool>());
+			}
+			else
+			{
+				UE_LOG(LogTestbed1StructArrayInterfaceOLinkClient, Error, TEXT("FuncString: OLink service returned empty value - should have returned type of FTestbed1StructBool"));
+				Promise.SetValue(FTestbed1StructBool());
+			}
+		};
+		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcString");
+		m_sink->GetNode()->invokeRemote(memberId, {ParamString}, GetStructArrayInterfaceStateFunc);
+	});
 
 	return Promise.GetFuture().Get();
 }

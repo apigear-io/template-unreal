@@ -19,25 +19,24 @@ limitations under the License.
 #include "Implementation/Testbed1StructArrayInterface.h"
 #include "Testbed1StructArrayInterfaceImplFixture.h"
 
-#if WITH_DEV_AUTOMATION_TESTS 
+#if WITH_DEV_AUTOMATION_TESTS
 
-BEGIN_DEFINE_SPEC(UTestbed1StructArrayInterfaceImplSpec, "Testbed1.StructArrayInterface.Impl",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
+BEGIN_DEFINE_SPEC(UTestbed1StructArrayInterfaceImplSpec, "Testbed1.StructArrayInterface.Impl", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
 
-	TUniquePtr<FTestbed1StructArrayInterfaceImplFixture> ImplFixture;
+TUniquePtr<FTestbed1StructArrayInterfaceImplFixture> ImplFixture;
 
-	// signal callbacks for testing
-	void PropBoolPropertyCb(const TArray<FTestbed1StructBool>& PropBool);
-	void PropIntPropertyCb(const TArray<FTestbed1StructInt>& PropInt);
-	void PropFloatPropertyCb(const TArray<FTestbed1StructFloat>& PropFloat);
-	void PropStringPropertyCb(const TArray<FTestbed1StructString>& PropString);
-	void SigBoolSignalCb(const TArray<FTestbed1StructBool>& ParamBool);
-	void SigIntSignalCb(const TArray<FTestbed1StructInt>& ParamInt);
-	void SigFloatSignalCb(const TArray<FTestbed1StructFloat>& ParamFloat);
-	void SigStringSignalCb(const TArray<FTestbed1StructString>& ParamString);
-	FDoneDelegate testDoneDelegate;
+// signal callbacks for testing
+void PropBoolPropertyCb(const TArray<FTestbed1StructBool>& PropBool);
+void PropIntPropertyCb(const TArray<FTestbed1StructInt>& PropInt);
+void PropFloatPropertyCb(const TArray<FTestbed1StructFloat>& PropFloat);
+void PropStringPropertyCb(const TArray<FTestbed1StructString>& PropString);
+void SigBoolSignalCb(const TArray<FTestbed1StructBool>& ParamBool);
+void SigIntSignalCb(const TArray<FTestbed1StructInt>& ParamInt);
+void SigFloatSignalCb(const TArray<FTestbed1StructFloat>& ParamFloat);
+void SigStringSignalCb(const TArray<FTestbed1StructString>& ParamString);
+FDoneDelegate testDoneDelegate;
 
-	friend class UTestbed1StructArrayInterfaceImplHelper;
+friend class UTestbed1StructArrayInterfaceImplHelper;
 END_DEFINE_SPEC(UTestbed1StructArrayInterfaceImplSpec);
 
 #endif // WITH_DEV_AUTOMATION_TESTS

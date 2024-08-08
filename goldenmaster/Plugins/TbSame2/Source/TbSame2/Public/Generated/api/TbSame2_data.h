@@ -64,12 +64,12 @@ struct TBSAME2_API FTbSame2Struct1 : public FTableRowBase
 	/**
 	 * FTbSame2Struct1 to JSON formatted FString
 	 * @param bPrettyPrint Specify whether to use pretty print (e.g., with line endings) or condensed print.
-	 * 
+	 *
 	 * @return JSON formatted FString
 	 */
 	FString ToJSON(bool bPrettyPrint = false) const;
 
-	/** 
+	/**
 	 * FTbSame2Struct1 to FString
 	 * WARNING: Do not rely on the format of the string, it may change in the future
 	 */
@@ -78,8 +78,8 @@ struct TBSAME2_API FTbSame2Struct1 : public FTableRowBase
 	/**
 	 * FTbSame2Struct1 to FString
 	 * WARNING: Do not rely on the format of the string, it may change in the future
-	 * 
-	 * @return FString 
+	 *
+	 * @return FString
 	 */
 	explicit operator FString() const;
 
@@ -107,12 +107,12 @@ struct TBSAME2_API FTbSame2Struct2 : public FTableRowBase
 	/**
 	 * FTbSame2Struct2 to JSON formatted FString
 	 * @param bPrettyPrint Specify whether to use pretty print (e.g., with line endings) or condensed print.
-	 * 
+	 *
 	 * @return JSON formatted FString
 	 */
 	FString ToJSON(bool bPrettyPrint = false) const;
 
-	/** 
+	/**
 	 * FTbSame2Struct2 to FString
 	 * WARNING: Do not rely on the format of the string, it may change in the future
 	 */
@@ -121,8 +121,8 @@ struct TBSAME2_API FTbSame2Struct2 : public FTableRowBase
 	/**
 	 * FTbSame2Struct2 to FString
 	 * WARNING: Do not rely on the format of the string, it may change in the future
-	 * 
-	 * @return FString 
+	 *
+	 * @return FString
 	 */
 	explicit operator FString() const;
 

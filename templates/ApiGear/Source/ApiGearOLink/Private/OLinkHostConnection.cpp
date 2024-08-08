@@ -31,9 +31,9 @@ FOLinkHostConnection::FOLinkHostConnection(INetworkingWebSocket* InSocket, ApiGe
 	Node->onLog(logFunc);
 	Node->onWrite([InSocket](const std::string& msg)
 		{
-			check(InSocket);
-			InSocket->Send(ConvertFromString(msg), msg.size(), false);
-		});
+		check(InSocket);
+		InSocket->Send(ConvertFromString(msg), msg.size(), false);
+	});
 }
 
 FOLinkHostConnection::FOLinkHostConnection(FOLinkHostConnection&& Other)

@@ -83,9 +83,13 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::Initialize(FSubsystemCollectionBa
 	Super::Initialize(Collection);
 
 	m_sink->setOnInitCallback([this]()
-		{ _SubscriptionStatusChanged.Broadcast(true); });
+		{
+		_SubscriptionStatusChanged.Broadcast(true);
+	});
 	m_sink->setOnReleaseCallback([this]()
-		{ _SubscriptionStatusChanged.Broadcast(false); });
+		{
+		_SubscriptionStatusChanged.Broadcast(false);
+	});
 
 	FOLinkSink::FPropertyChangedFunc PropertyChangedFunc = [this](const nlohmann::json& props)
 	{
@@ -434,21 +438,21 @@ TArray<bool> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncBool_Implementation(c
 	Async(EAsyncExecution::Thread,
 		[ParamBool, &Promise, this]()
 		{
-			ApiGear::ObjectLink::InvokeReplyFunc GetSimpleArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+			if (!arg.value.empty())
 			{
-				if (!arg.value.empty())
-				{
-					Promise.SetValue(arg.value.get<TArray<bool>>());
-				}
-				else
-				{
-					UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("FuncBool: OLink service returned empty value - should have returned type of TArray<bool>"));
-					Promise.SetValue(TArray<bool>());
-				}
-			};
-			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcBool");
-			m_sink->GetNode()->invokeRemote(memberId, {ParamBool}, GetSimpleArrayInterfaceStateFunc);
-		});
+				Promise.SetValue(arg.value.get<TArray<bool>>());
+			}
+			else
+			{
+				UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("FuncBool: OLink service returned empty value - should have returned type of TArray<bool>"));
+				Promise.SetValue(TArray<bool>());
+			}
+		};
+		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcBool");
+		m_sink->GetNode()->invokeRemote(memberId, {ParamBool}, GetSimpleArrayInterfaceStateFunc);
+	});
 
 	return Promise.GetFuture().Get();
 }
@@ -465,21 +469,21 @@ TArray<int32> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncInt_Implementation(c
 	Async(EAsyncExecution::Thread,
 		[ParamInt, &Promise, this]()
 		{
-			ApiGear::ObjectLink::InvokeReplyFunc GetSimpleArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+			if (!arg.value.empty())
 			{
-				if (!arg.value.empty())
-				{
-					Promise.SetValue(arg.value.get<TArray<int32>>());
-				}
-				else
-				{
-					UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("FuncInt: OLink service returned empty value - should have returned type of TArray<int32>"));
-					Promise.SetValue(TArray<int32>());
-				}
-			};
-			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcInt");
-			m_sink->GetNode()->invokeRemote(memberId, {ParamInt}, GetSimpleArrayInterfaceStateFunc);
-		});
+				Promise.SetValue(arg.value.get<TArray<int32>>());
+			}
+			else
+			{
+				UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("FuncInt: OLink service returned empty value - should have returned type of TArray<int32>"));
+				Promise.SetValue(TArray<int32>());
+			}
+		};
+		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcInt");
+		m_sink->GetNode()->invokeRemote(memberId, {ParamInt}, GetSimpleArrayInterfaceStateFunc);
+	});
 
 	return Promise.GetFuture().Get();
 }
@@ -496,21 +500,21 @@ TArray<int32> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncInt32_Implementation
 	Async(EAsyncExecution::Thread,
 		[ParamInt32, &Promise, this]()
 		{
-			ApiGear::ObjectLink::InvokeReplyFunc GetSimpleArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+			if (!arg.value.empty())
 			{
-				if (!arg.value.empty())
-				{
-					Promise.SetValue(arg.value.get<TArray<int32>>());
-				}
-				else
-				{
-					UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("FuncInt32: OLink service returned empty value - should have returned type of TArray<int32>"));
-					Promise.SetValue(TArray<int32>());
-				}
-			};
-			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcInt32");
-			m_sink->GetNode()->invokeRemote(memberId, {ParamInt32}, GetSimpleArrayInterfaceStateFunc);
-		});
+				Promise.SetValue(arg.value.get<TArray<int32>>());
+			}
+			else
+			{
+				UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("FuncInt32: OLink service returned empty value - should have returned type of TArray<int32>"));
+				Promise.SetValue(TArray<int32>());
+			}
+		};
+		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcInt32");
+		m_sink->GetNode()->invokeRemote(memberId, {ParamInt32}, GetSimpleArrayInterfaceStateFunc);
+	});
 
 	return Promise.GetFuture().Get();
 }
@@ -527,21 +531,21 @@ TArray<int64> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncInt64_Implementation
 	Async(EAsyncExecution::Thread,
 		[ParamInt64, &Promise, this]()
 		{
-			ApiGear::ObjectLink::InvokeReplyFunc GetSimpleArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+			if (!arg.value.empty())
 			{
-				if (!arg.value.empty())
-				{
-					Promise.SetValue(arg.value.get<TArray<int64>>());
-				}
-				else
-				{
-					UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("FuncInt64: OLink service returned empty value - should have returned type of TArray<int64>"));
-					Promise.SetValue(TArray<int64>());
-				}
-			};
-			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcInt64");
-			m_sink->GetNode()->invokeRemote(memberId, {ParamInt64}, GetSimpleArrayInterfaceStateFunc);
-		});
+				Promise.SetValue(arg.value.get<TArray<int64>>());
+			}
+			else
+			{
+				UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("FuncInt64: OLink service returned empty value - should have returned type of TArray<int64>"));
+				Promise.SetValue(TArray<int64>());
+			}
+		};
+		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcInt64");
+		m_sink->GetNode()->invokeRemote(memberId, {ParamInt64}, GetSimpleArrayInterfaceStateFunc);
+	});
 
 	return Promise.GetFuture().Get();
 }
@@ -558,21 +562,21 @@ TArray<float> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloat_Implementation
 	Async(EAsyncExecution::Thread,
 		[ParamFloat, &Promise, this]()
 		{
-			ApiGear::ObjectLink::InvokeReplyFunc GetSimpleArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+			if (!arg.value.empty())
 			{
-				if (!arg.value.empty())
-				{
-					Promise.SetValue(arg.value.get<TArray<float>>());
-				}
-				else
-				{
-					UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("FuncFloat: OLink service returned empty value - should have returned type of TArray<float>"));
-					Promise.SetValue(TArray<float>());
-				}
-			};
-			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat");
-			m_sink->GetNode()->invokeRemote(memberId, {ParamFloat}, GetSimpleArrayInterfaceStateFunc);
-		});
+				Promise.SetValue(arg.value.get<TArray<float>>());
+			}
+			else
+			{
+				UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("FuncFloat: OLink service returned empty value - should have returned type of TArray<float>"));
+				Promise.SetValue(TArray<float>());
+			}
+		};
+		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat");
+		m_sink->GetNode()->invokeRemote(memberId, {ParamFloat}, GetSimpleArrayInterfaceStateFunc);
+	});
 
 	return Promise.GetFuture().Get();
 }
@@ -589,21 +593,21 @@ TArray<float> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloat32_Implementati
 	Async(EAsyncExecution::Thread,
 		[ParamFloat32, &Promise, this]()
 		{
-			ApiGear::ObjectLink::InvokeReplyFunc GetSimpleArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+			if (!arg.value.empty())
 			{
-				if (!arg.value.empty())
-				{
-					Promise.SetValue(arg.value.get<TArray<float>>());
-				}
-				else
-				{
-					UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("FuncFloat32: OLink service returned empty value - should have returned type of TArray<float>"));
-					Promise.SetValue(TArray<float>());
-				}
-			};
-			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat32");
-			m_sink->GetNode()->invokeRemote(memberId, {ParamFloat32}, GetSimpleArrayInterfaceStateFunc);
-		});
+				Promise.SetValue(arg.value.get<TArray<float>>());
+			}
+			else
+			{
+				UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("FuncFloat32: OLink service returned empty value - should have returned type of TArray<float>"));
+				Promise.SetValue(TArray<float>());
+			}
+		};
+		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat32");
+		m_sink->GetNode()->invokeRemote(memberId, {ParamFloat32}, GetSimpleArrayInterfaceStateFunc);
+	});
 
 	return Promise.GetFuture().Get();
 }
@@ -620,21 +624,21 @@ TArray<double> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloat64_Implementat
 	Async(EAsyncExecution::Thread,
 		[ParamFloat, &Promise, this]()
 		{
-			ApiGear::ObjectLink::InvokeReplyFunc GetSimpleArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+			if (!arg.value.empty())
 			{
-				if (!arg.value.empty())
-				{
-					Promise.SetValue(arg.value.get<TArray<double>>());
-				}
-				else
-				{
-					UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("FuncFloat64: OLink service returned empty value - should have returned type of TArray<double>"));
-					Promise.SetValue(TArray<double>());
-				}
-			};
-			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat64");
-			m_sink->GetNode()->invokeRemote(memberId, {ParamFloat}, GetSimpleArrayInterfaceStateFunc);
-		});
+				Promise.SetValue(arg.value.get<TArray<double>>());
+			}
+			else
+			{
+				UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("FuncFloat64: OLink service returned empty value - should have returned type of TArray<double>"));
+				Promise.SetValue(TArray<double>());
+			}
+		};
+		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat64");
+		m_sink->GetNode()->invokeRemote(memberId, {ParamFloat}, GetSimpleArrayInterfaceStateFunc);
+	});
 
 	return Promise.GetFuture().Get();
 }
@@ -651,21 +655,21 @@ TArray<FString> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncString_Implementat
 	Async(EAsyncExecution::Thread,
 		[ParamString, &Promise, this]()
 		{
-			ApiGear::ObjectLink::InvokeReplyFunc GetSimpleArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+			if (!arg.value.empty())
 			{
-				if (!arg.value.empty())
-				{
-					Promise.SetValue(arg.value.get<TArray<FString>>());
-				}
-				else
-				{
-					UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("FuncString: OLink service returned empty value - should have returned type of TArray<FString>"));
-					Promise.SetValue(TArray<FString>());
-				}
-			};
-			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcString");
-			m_sink->GetNode()->invokeRemote(memberId, {ParamString}, GetSimpleArrayInterfaceStateFunc);
-		});
+				Promise.SetValue(arg.value.get<TArray<FString>>());
+			}
+			else
+			{
+				UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("FuncString: OLink service returned empty value - should have returned type of TArray<FString>"));
+				Promise.SetValue(TArray<FString>());
+			}
+		};
+		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcString");
+		m_sink->GetNode()->invokeRemote(memberId, {ParamString}, GetSimpleArrayInterfaceStateFunc);
+	});
 
 	return Promise.GetFuture().Get();
 }

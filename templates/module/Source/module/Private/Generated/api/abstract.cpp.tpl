@@ -143,9 +143,9 @@ void {{$abstractclass}}::{{Camel .Name}}Async_Implementation(UObject* WorldConte
 			Async(EAsyncExecution::Thread,
 				[{{range .Params}}{{ueVar "" .}}, {{ end }}this, &Result, CompletionAction]()
 				{
-					Result = Execute_{{Camel .Name}}(this{{ if len .Params }}, {{end}}{{ueVars "" .Params}});
-					CompletionAction->Cancel();
-				});
+				Result = Execute_{{Camel .Name}}(this{{ if len .Params }}, {{end}}{{ueVars "" .Params}});
+				CompletionAction->Cancel();
+			});
 		}
 	}
 }

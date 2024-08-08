@@ -19,25 +19,24 @@ limitations under the License.
 #include "Implementation/Testbed2ManyParamInterface.h"
 #include "Testbed2ManyParamInterfaceImplFixture.h"
 
-#if WITH_DEV_AUTOMATION_TESTS 
+#if WITH_DEV_AUTOMATION_TESTS
 
-BEGIN_DEFINE_SPEC(UTestbed2ManyParamInterfaceImplSpec, "Testbed2.ManyParamInterface.Impl",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
+BEGIN_DEFINE_SPEC(UTestbed2ManyParamInterfaceImplSpec, "Testbed2.ManyParamInterface.Impl", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
 
-	TUniquePtr<FTestbed2ManyParamInterfaceImplFixture> ImplFixture;
+TUniquePtr<FTestbed2ManyParamInterfaceImplFixture> ImplFixture;
 
-	// signal callbacks for testing
-	void Prop1PropertyCb(int32 Prop1);
-	void Prop2PropertyCb(int32 Prop2);
-	void Prop3PropertyCb(int32 Prop3);
-	void Prop4PropertyCb(int32 Prop4);
-	void Sig1SignalCb(int32 Param1);
-	void Sig2SignalCb(int32 Param1, int32 Param2);
-	void Sig3SignalCb(int32 Param1, int32 Param2, int32 Param3);
-	void Sig4SignalCb(int32 Param1, int32 Param2, int32 Param3, int32 Param4);
-	FDoneDelegate testDoneDelegate;
+// signal callbacks for testing
+void Prop1PropertyCb(int32 Prop1);
+void Prop2PropertyCb(int32 Prop2);
+void Prop3PropertyCb(int32 Prop3);
+void Prop4PropertyCb(int32 Prop4);
+void Sig1SignalCb(int32 Param1);
+void Sig2SignalCb(int32 Param1, int32 Param2);
+void Sig3SignalCb(int32 Param1, int32 Param2, int32 Param3);
+void Sig4SignalCb(int32 Param1, int32 Param2, int32 Param3, int32 Param4);
+FDoneDelegate testDoneDelegate;
 
-	friend class UTestbed2ManyParamInterfaceImplHelper;
+friend class UTestbed2ManyParamInterfaceImplHelper;
 END_DEFINE_SPEC(UTestbed2ManyParamInterfaceImplSpec);
 
 #endif // WITH_DEV_AUTOMATION_TESTS

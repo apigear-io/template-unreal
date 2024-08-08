@@ -71,9 +71,13 @@ void UTestbed2ManyParamInterfaceOLinkClient::Initialize(FSubsystemCollectionBase
 	Super::Initialize(Collection);
 
 	m_sink->setOnInitCallback([this]()
-		{ _SubscriptionStatusChanged.Broadcast(true); });
+		{
+		_SubscriptionStatusChanged.Broadcast(true);
+	});
 	m_sink->setOnReleaseCallback([this]()
-		{ _SubscriptionStatusChanged.Broadcast(false); });
+		{
+		_SubscriptionStatusChanged.Broadcast(false);
+	});
 
 	FOLinkSink::FPropertyChangedFunc PropertyChangedFunc = [this](const nlohmann::json& props)
 	{
@@ -274,21 +278,21 @@ int32 UTestbed2ManyParamInterfaceOLinkClient::Func1_Implementation(int32 Param1)
 	Async(EAsyncExecution::Thread,
 		[Param1, &Promise, this]()
 		{
-			ApiGear::ObjectLink::InvokeReplyFunc GetManyParamInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetManyParamInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+			if (!arg.value.empty())
 			{
-				if (!arg.value.empty())
-				{
-					Promise.SetValue(arg.value.get<int32>());
-				}
-				else
-				{
-					UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Error, TEXT("Func1: OLink service returned empty value - should have returned type of int32"));
-					Promise.SetValue(int32());
-				}
-			};
-			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func1");
-			m_sink->GetNode()->invokeRemote(memberId, {Param1}, GetManyParamInterfaceStateFunc);
-		});
+				Promise.SetValue(arg.value.get<int32>());
+			}
+			else
+			{
+				UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Error, TEXT("Func1: OLink service returned empty value - should have returned type of int32"));
+				Promise.SetValue(int32());
+			}
+		};
+		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func1");
+		m_sink->GetNode()->invokeRemote(memberId, {Param1}, GetManyParamInterfaceStateFunc);
+	});
 
 	return Promise.GetFuture().Get();
 }
@@ -305,21 +309,21 @@ int32 UTestbed2ManyParamInterfaceOLinkClient::Func2_Implementation(int32 Param1,
 	Async(EAsyncExecution::Thread,
 		[Param1, Param2, &Promise, this]()
 		{
-			ApiGear::ObjectLink::InvokeReplyFunc GetManyParamInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetManyParamInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+			if (!arg.value.empty())
 			{
-				if (!arg.value.empty())
-				{
-					Promise.SetValue(arg.value.get<int32>());
-				}
-				else
-				{
-					UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Error, TEXT("Func2: OLink service returned empty value - should have returned type of int32"));
-					Promise.SetValue(int32());
-				}
-			};
-			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func2");
-			m_sink->GetNode()->invokeRemote(memberId, {Param1, Param2}, GetManyParamInterfaceStateFunc);
-		});
+				Promise.SetValue(arg.value.get<int32>());
+			}
+			else
+			{
+				UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Error, TEXT("Func2: OLink service returned empty value - should have returned type of int32"));
+				Promise.SetValue(int32());
+			}
+		};
+		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func2");
+		m_sink->GetNode()->invokeRemote(memberId, {Param1, Param2}, GetManyParamInterfaceStateFunc);
+	});
 
 	return Promise.GetFuture().Get();
 }
@@ -336,21 +340,21 @@ int32 UTestbed2ManyParamInterfaceOLinkClient::Func3_Implementation(int32 Param1,
 	Async(EAsyncExecution::Thread,
 		[Param1, Param2, Param3, &Promise, this]()
 		{
-			ApiGear::ObjectLink::InvokeReplyFunc GetManyParamInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetManyParamInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+			if (!arg.value.empty())
 			{
-				if (!arg.value.empty())
-				{
-					Promise.SetValue(arg.value.get<int32>());
-				}
-				else
-				{
-					UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Error, TEXT("Func3: OLink service returned empty value - should have returned type of int32"));
-					Promise.SetValue(int32());
-				}
-			};
-			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func3");
-			m_sink->GetNode()->invokeRemote(memberId, {Param1, Param2, Param3}, GetManyParamInterfaceStateFunc);
-		});
+				Promise.SetValue(arg.value.get<int32>());
+			}
+			else
+			{
+				UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Error, TEXT("Func3: OLink service returned empty value - should have returned type of int32"));
+				Promise.SetValue(int32());
+			}
+		};
+		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func3");
+		m_sink->GetNode()->invokeRemote(memberId, {Param1, Param2, Param3}, GetManyParamInterfaceStateFunc);
+	});
 
 	return Promise.GetFuture().Get();
 }
@@ -367,21 +371,21 @@ int32 UTestbed2ManyParamInterfaceOLinkClient::Func4_Implementation(int32 Param1,
 	Async(EAsyncExecution::Thread,
 		[Param1, Param2, Param3, Param4, &Promise, this]()
 		{
-			ApiGear::ObjectLink::InvokeReplyFunc GetManyParamInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetManyParamInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+			if (!arg.value.empty())
 			{
-				if (!arg.value.empty())
-				{
-					Promise.SetValue(arg.value.get<int32>());
-				}
-				else
-				{
-					UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Error, TEXT("Func4: OLink service returned empty value - should have returned type of int32"));
-					Promise.SetValue(int32());
-				}
-			};
-			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func4");
-			m_sink->GetNode()->invokeRemote(memberId, {Param1, Param2, Param3, Param4}, GetManyParamInterfaceStateFunc);
-		});
+				Promise.SetValue(arg.value.get<int32>());
+			}
+			else
+			{
+				UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Error, TEXT("Func4: OLink service returned empty value - should have returned type of int32"));
+				Promise.SetValue(int32());
+			}
+		};
+		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func4");
+		m_sink->GetNode()->invokeRemote(memberId, {Param1, Param2, Param3, Param4}, GetManyParamInterfaceStateFunc);
+	});
 
 	return Promise.GetFuture().Get();
 }

@@ -71,9 +71,13 @@ void UTbEnumEnumInterfaceOLinkClient::Initialize(FSubsystemCollectionBase& Colle
 	Super::Initialize(Collection);
 
 	m_sink->setOnInitCallback([this]()
-		{ _SubscriptionStatusChanged.Broadcast(true); });
+		{
+		_SubscriptionStatusChanged.Broadcast(true);
+	});
 	m_sink->setOnReleaseCallback([this]()
-		{ _SubscriptionStatusChanged.Broadcast(false); });
+		{
+		_SubscriptionStatusChanged.Broadcast(false);
+	});
 
 	FOLinkSink::FPropertyChangedFunc PropertyChangedFunc = [this](const nlohmann::json& props)
 	{
@@ -274,21 +278,21 @@ ETbEnumEnum0 UTbEnumEnumInterfaceOLinkClient::Func0_Implementation(ETbEnumEnum0 
 	Async(EAsyncExecution::Thread,
 		[Param0, &Promise, this]()
 		{
-			ApiGear::ObjectLink::InvokeReplyFunc GetEnumInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetEnumInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+			if (!arg.value.empty())
 			{
-				if (!arg.value.empty())
-				{
-					Promise.SetValue(arg.value.get<ETbEnumEnum0>());
-				}
-				else
-				{
-					UE_LOG(LogTbEnumEnumInterfaceOLinkClient, Error, TEXT("Func0: OLink service returned empty value - should have returned type of ETbEnumEnum0"));
-					Promise.SetValue(ETbEnumEnum0());
-				}
-			};
-			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func0");
-			m_sink->GetNode()->invokeRemote(memberId, {Param0}, GetEnumInterfaceStateFunc);
-		});
+				Promise.SetValue(arg.value.get<ETbEnumEnum0>());
+			}
+			else
+			{
+				UE_LOG(LogTbEnumEnumInterfaceOLinkClient, Error, TEXT("Func0: OLink service returned empty value - should have returned type of ETbEnumEnum0"));
+				Promise.SetValue(ETbEnumEnum0());
+			}
+		};
+		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func0");
+		m_sink->GetNode()->invokeRemote(memberId, {Param0}, GetEnumInterfaceStateFunc);
+	});
 
 	return Promise.GetFuture().Get();
 }
@@ -305,21 +309,21 @@ ETbEnumEnum1 UTbEnumEnumInterfaceOLinkClient::Func1_Implementation(ETbEnumEnum1 
 	Async(EAsyncExecution::Thread,
 		[Param1, &Promise, this]()
 		{
-			ApiGear::ObjectLink::InvokeReplyFunc GetEnumInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetEnumInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+			if (!arg.value.empty())
 			{
-				if (!arg.value.empty())
-				{
-					Promise.SetValue(arg.value.get<ETbEnumEnum1>());
-				}
-				else
-				{
-					UE_LOG(LogTbEnumEnumInterfaceOLinkClient, Error, TEXT("Func1: OLink service returned empty value - should have returned type of ETbEnumEnum1"));
-					Promise.SetValue(ETbEnumEnum1());
-				}
-			};
-			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func1");
-			m_sink->GetNode()->invokeRemote(memberId, {Param1}, GetEnumInterfaceStateFunc);
-		});
+				Promise.SetValue(arg.value.get<ETbEnumEnum1>());
+			}
+			else
+			{
+				UE_LOG(LogTbEnumEnumInterfaceOLinkClient, Error, TEXT("Func1: OLink service returned empty value - should have returned type of ETbEnumEnum1"));
+				Promise.SetValue(ETbEnumEnum1());
+			}
+		};
+		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func1");
+		m_sink->GetNode()->invokeRemote(memberId, {Param1}, GetEnumInterfaceStateFunc);
+	});
 
 	return Promise.GetFuture().Get();
 }
@@ -336,21 +340,21 @@ ETbEnumEnum2 UTbEnumEnumInterfaceOLinkClient::Func2_Implementation(ETbEnumEnum2 
 	Async(EAsyncExecution::Thread,
 		[Param2, &Promise, this]()
 		{
-			ApiGear::ObjectLink::InvokeReplyFunc GetEnumInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetEnumInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+			if (!arg.value.empty())
 			{
-				if (!arg.value.empty())
-				{
-					Promise.SetValue(arg.value.get<ETbEnumEnum2>());
-				}
-				else
-				{
-					UE_LOG(LogTbEnumEnumInterfaceOLinkClient, Error, TEXT("Func2: OLink service returned empty value - should have returned type of ETbEnumEnum2"));
-					Promise.SetValue(ETbEnumEnum2());
-				}
-			};
-			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func2");
-			m_sink->GetNode()->invokeRemote(memberId, {Param2}, GetEnumInterfaceStateFunc);
-		});
+				Promise.SetValue(arg.value.get<ETbEnumEnum2>());
+			}
+			else
+			{
+				UE_LOG(LogTbEnumEnumInterfaceOLinkClient, Error, TEXT("Func2: OLink service returned empty value - should have returned type of ETbEnumEnum2"));
+				Promise.SetValue(ETbEnumEnum2());
+			}
+		};
+		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func2");
+		m_sink->GetNode()->invokeRemote(memberId, {Param2}, GetEnumInterfaceStateFunc);
+	});
 
 	return Promise.GetFuture().Get();
 }
@@ -367,21 +371,21 @@ ETbEnumEnum3 UTbEnumEnumInterfaceOLinkClient::Func3_Implementation(ETbEnumEnum3 
 	Async(EAsyncExecution::Thread,
 		[Param3, &Promise, this]()
 		{
-			ApiGear::ObjectLink::InvokeReplyFunc GetEnumInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetEnumInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+			if (!arg.value.empty())
 			{
-				if (!arg.value.empty())
-				{
-					Promise.SetValue(arg.value.get<ETbEnumEnum3>());
-				}
-				else
-				{
-					UE_LOG(LogTbEnumEnumInterfaceOLinkClient, Error, TEXT("Func3: OLink service returned empty value - should have returned type of ETbEnumEnum3"));
-					Promise.SetValue(ETbEnumEnum3());
-				}
-			};
-			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func3");
-			m_sink->GetNode()->invokeRemote(memberId, {Param3}, GetEnumInterfaceStateFunc);
-		});
+				Promise.SetValue(arg.value.get<ETbEnumEnum3>());
+			}
+			else
+			{
+				UE_LOG(LogTbEnumEnumInterfaceOLinkClient, Error, TEXT("Func3: OLink service returned empty value - should have returned type of ETbEnumEnum3"));
+				Promise.SetValue(ETbEnumEnum3());
+			}
+		};
+		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func3");
+		m_sink->GetNode()->invokeRemote(memberId, {Param3}, GetEnumInterfaceStateFunc);
+	});
 
 	return Promise.GetFuture().Get();
 }

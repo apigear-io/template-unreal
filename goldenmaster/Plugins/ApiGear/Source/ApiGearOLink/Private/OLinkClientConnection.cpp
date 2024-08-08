@@ -45,7 +45,9 @@ TScriptInterface<IApiGearConnection> OLinkFactory::Create(UObject* Outer, FStrin
 ApiGear::ObjectLink::WriteLogFunc logFunc()
 {
 	return [](ApiGear::ObjectLink::LogLevel level, const std::string& msg)
-	{ writeLog(level, msg); };
+	{
+		writeLog(level, msg);
+		};
 }
 
 UOLinkClientConnection::UOLinkClientConnection(const FObjectInitializer& ObjectInitializer)
@@ -63,9 +65,9 @@ UOLinkClientConnection::UOLinkClientConnection(const FObjectInitializer& ObjectI
 			m_processMessageTaskTimerHandle = ApiGearTicker::GetCoreTicker().AddTicker(*processMessageFunctionName, processMessageDelay,
 				[this](float /*param*/)
 				{
-					processMessages();
-					return false;
-				});
+				processMessages();
+				return false;
+			});
 		}
 	};
 	m_node->onWrite(func);
@@ -144,54 +146,56 @@ void UOLinkClientConnection::open(const FString& url)
 		m_socket = FWebSocketsModule::Get().CreateWebSocket(url);
 
 		m_socket->OnConnected().AddLambda([this]() -> void
-			{ OnConnected(); });
+			{
+			OnConnected();
+		});
 
 		m_socket->OnConnectionError().AddLambda(
 			[this](const FString& Error) -> void
 			{
-				// This code will run if the connection failed. Check Error to see what happened.
-				log(FString::Printf(TEXT("connection error: %s"), *Error));
-				UAbstractApiGearConnection::OnDisconnected(IsAutoReconnectEnabled());
+			// This code will run if the connection failed. Check Error to see what happened.
+			log(FString::Printf(TEXT("connection error: %s"), *Error));
+			UAbstractApiGearConnection::OnDisconnected(IsAutoReconnectEnabled());
 			});
 
 		m_socket->OnClosed().AddLambda(
 			[this](int32 StatusCode, const FString& Reason, bool bWasClean) -> void
 			{
-				(void)StatusCode;
-				(void)Reason;
-				(void)bWasClean;
-				UE_LOG(LogApiGearOLink, Display, TEXT("status: %d, reason: %s, clean: %d"), StatusCode, *Reason, bWasClean);
+			(void)StatusCode;
+			(void)Reason;
+			(void)bWasClean;
+			UE_LOG(LogApiGearOLink, Display, TEXT("status: %d, reason: %s, clean: %d"), StatusCode, *Reason, bWasClean);
 
-				bool bReconnect = IsAutoReconnectEnabled();
+			bool bReconnect = IsAutoReconnectEnabled();
 
-				// 1000 == we closed the connection -> do not reconnect
-				if (StatusCode == 1000)
-				{
-					bReconnect = false;
-				}
-				OnDisconnected(bReconnect);
+			// 1000 == we closed the connection -> do not reconnect
+			if (StatusCode == 1000)
+			{
+				bReconnect = false;
+			}
+			OnDisconnected(bReconnect);
 			});
 
 #if (ENGINE_MAJOR_VERSION >= 5 && ENGINE_MINOR_VERSION > 1)
 		m_socket->OnMessage().AddLambda(
 			[this](const FString& Message) -> void
 			{
-				// This code will run when we receive a string message from the server.
-				handleTextMessage(TCHAR_TO_UTF8(*Message));
+			// This code will run when we receive a string message from the server.
+			handleTextMessage(TCHAR_TO_UTF8(*Message));
 			});
 
 		m_socket->OnBinaryMessage().AddLambda(
 			[this](const void* Data, SIZE_T Size, bool /* bIsLastFragment */) -> void
 			{
-				// we assume the incoming binary message is actually text
-				handleTextMessage(std::string((uint8*)Data, (uint8*)Data + Size));
+			// we assume the incoming binary message is actually text
+			handleTextMessage(std::string((uint8*)Data, (uint8*)Data + Size));
 			});
 #else
 		m_socket->OnRawMessage().AddLambda(
 			[this](const void* Data, SIZE_T Size, SIZE_T /* BytesRemaining */) -> void
 			{
-				// we assume the incoming raw message is actually text
-				handleTextMessage(std::string((uint8*)Data, (uint8*)Data + Size));
+			// we assume the incoming raw message is actually text
+			handleTextMessage(std::string((uint8*)Data, (uint8*)Data + Size));
 			});
 #endif
 	}
@@ -217,9 +221,9 @@ void UOLinkClientConnection::OnConnected_Implementation()
 		m_processMessageTaskTimerHandle = ApiGearTicker::GetCoreTicker().AddTicker(*processMessageFunctionName, processMessageDelay,
 			[this](float /*param*/)
 			{
-				processMessages();
-				return false;
-			});
+			processMessages();
+			return false;
+		});
 	}
 }
 

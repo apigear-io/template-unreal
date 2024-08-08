@@ -19,25 +19,24 @@ limitations under the License.
 #include "Implementation/Testbed1StructInterface.h"
 #include "Testbed1StructInterfaceImplFixture.h"
 
-#if WITH_DEV_AUTOMATION_TESTS 
+#if WITH_DEV_AUTOMATION_TESTS
 
-BEGIN_DEFINE_SPEC(UTestbed1StructInterfaceImplSpec, "Testbed1.StructInterface.Impl",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
+BEGIN_DEFINE_SPEC(UTestbed1StructInterfaceImplSpec, "Testbed1.StructInterface.Impl", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
 
-	TUniquePtr<FTestbed1StructInterfaceImplFixture> ImplFixture;
+TUniquePtr<FTestbed1StructInterfaceImplFixture> ImplFixture;
 
-	// signal callbacks for testing
-	void PropBoolPropertyCb(const FTestbed1StructBool& PropBool);
-	void PropIntPropertyCb(const FTestbed1StructInt& PropInt);
-	void PropFloatPropertyCb(const FTestbed1StructFloat& PropFloat);
-	void PropStringPropertyCb(const FTestbed1StructString& PropString);
-	void SigBoolSignalCb(const FTestbed1StructBool& ParamBool);
-	void SigIntSignalCb(const FTestbed1StructInt& ParamInt);
-	void SigFloatSignalCb(const FTestbed1StructFloat& ParamFloat);
-	void SigStringSignalCb(const FTestbed1StructString& ParamString);
-	FDoneDelegate testDoneDelegate;
+// signal callbacks for testing
+void PropBoolPropertyCb(const FTestbed1StructBool& PropBool);
+void PropIntPropertyCb(const FTestbed1StructInt& PropInt);
+void PropFloatPropertyCb(const FTestbed1StructFloat& PropFloat);
+void PropStringPropertyCb(const FTestbed1StructString& PropString);
+void SigBoolSignalCb(const FTestbed1StructBool& ParamBool);
+void SigIntSignalCb(const FTestbed1StructInt& ParamInt);
+void SigFloatSignalCb(const FTestbed1StructFloat& ParamFloat);
+void SigStringSignalCb(const FTestbed1StructString& ParamString);
+FDoneDelegate testDoneDelegate;
 
-	friend class UTestbed1StructInterfaceImplHelper;
+friend class UTestbed1StructInterfaceImplHelper;
 END_DEFINE_SPEC(UTestbed1StructInterfaceImplSpec);
 
 #endif // WITH_DEV_AUTOMATION_TESTS

@@ -132,9 +132,9 @@ void UAbstractTestbed2NestedStruct3Interface::Func1Async_Implementation(UObject*
 			Async(EAsyncExecution::Thread,
 				[Param1, this, &Result, CompletionAction]()
 				{
-					Result = Execute_Func1(this, Param1);
-					CompletionAction->Cancel();
-				});
+				Result = Execute_Func1(this, Param1);
+				CompletionAction->Cancel();
+			});
 		}
 	}
 }
@@ -167,9 +167,9 @@ void UAbstractTestbed2NestedStruct3Interface::Func2Async_Implementation(UObject*
 			Async(EAsyncExecution::Thread,
 				[Param1, Param2, this, &Result, CompletionAction]()
 				{
-					Result = Execute_Func2(this, Param1, Param2);
-					CompletionAction->Cancel();
-				});
+				Result = Execute_Func2(this, Param1, Param2);
+				CompletionAction->Cancel();
+			});
 		}
 	}
 }
@@ -202,9 +202,9 @@ void UAbstractTestbed2NestedStruct3Interface::Func3Async_Implementation(UObject*
 			Async(EAsyncExecution::Thread,
 				[Param1, Param2, Param3, this, &Result, CompletionAction]()
 				{
-					Result = Execute_Func3(this, Param1, Param2, Param3);
-					CompletionAction->Cancel();
-				});
+				Result = Execute_Func3(this, Param1, Param2, Param3);
+				CompletionAction->Cancel();
+			});
 		}
 	}
 }

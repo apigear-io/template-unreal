@@ -19,19 +19,18 @@ limitations under the License.
 #include "Implementation/TbSame2SameEnum1Interface.h"
 #include "TbSame2SameEnum1InterfaceImplFixture.h"
 
-#if WITH_DEV_AUTOMATION_TESTS 
+#if WITH_DEV_AUTOMATION_TESTS
 
-BEGIN_DEFINE_SPEC(UTbSame2SameEnum1InterfaceImplSpec, "TbSame2.SameEnum1Interface.Impl",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
+BEGIN_DEFINE_SPEC(UTbSame2SameEnum1InterfaceImplSpec, "TbSame2.SameEnum1Interface.Impl", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
 
-	TUniquePtr<FTbSame2SameEnum1InterfaceImplFixture> ImplFixture;
+TUniquePtr<FTbSame2SameEnum1InterfaceImplFixture> ImplFixture;
 
-	// signal callbacks for testing
-	void Prop1PropertyCb(ETbSame2Enum1 Prop1);
-	void Sig1SignalCb(ETbSame2Enum1 Param1);
-	FDoneDelegate testDoneDelegate;
+// signal callbacks for testing
+void Prop1PropertyCb(ETbSame2Enum1 Prop1);
+void Sig1SignalCb(ETbSame2Enum1 Param1);
+FDoneDelegate testDoneDelegate;
 
-	friend class UTbSame2SameEnum1InterfaceImplHelper;
+friend class UTbSame2SameEnum1InterfaceImplHelper;
 END_DEFINE_SPEC(UTbSame2SameEnum1InterfaceImplSpec);
 
 #endif // WITH_DEV_AUTOMATION_TESTS

@@ -36,12 +36,12 @@ struct TESTBED1_API FTestbed1StructBool : public FTableRowBase
 	/**
 	 * FTestbed1StructBool to JSON formatted FString
 	 * @param bPrettyPrint Specify whether to use pretty print (e.g., with line endings) or condensed print.
-	 * 
+	 *
 	 * @return JSON formatted FString
 	 */
 	FString ToJSON(bool bPrettyPrint = false) const;
 
-	/** 
+	/**
 	 * FTestbed1StructBool to FString
 	 * WARNING: Do not rely on the format of the string, it may change in the future
 	 */
@@ -50,8 +50,8 @@ struct TESTBED1_API FTestbed1StructBool : public FTableRowBase
 	/**
 	 * FTestbed1StructBool to FString
 	 * WARNING: Do not rely on the format of the string, it may change in the future
-	 * 
-	 * @return FString 
+	 *
+	 * @return FString
 	 */
 	explicit operator FString() const;
 
@@ -73,12 +73,12 @@ struct TESTBED1_API FTestbed1StructInt : public FTableRowBase
 	/**
 	 * FTestbed1StructInt to JSON formatted FString
 	 * @param bPrettyPrint Specify whether to use pretty print (e.g., with line endings) or condensed print.
-	 * 
+	 *
 	 * @return JSON formatted FString
 	 */
 	FString ToJSON(bool bPrettyPrint = false) const;
 
-	/** 
+	/**
 	 * FTestbed1StructInt to FString
 	 * WARNING: Do not rely on the format of the string, it may change in the future
 	 */
@@ -87,8 +87,8 @@ struct TESTBED1_API FTestbed1StructInt : public FTableRowBase
 	/**
 	 * FTestbed1StructInt to FString
 	 * WARNING: Do not rely on the format of the string, it may change in the future
-	 * 
-	 * @return FString 
+	 *
+	 * @return FString
 	 */
 	explicit operator FString() const;
 
@@ -110,12 +110,12 @@ struct TESTBED1_API FTestbed1StructFloat : public FTableRowBase
 	/**
 	 * FTestbed1StructFloat to JSON formatted FString
 	 * @param bPrettyPrint Specify whether to use pretty print (e.g., with line endings) or condensed print.
-	 * 
+	 *
 	 * @return JSON formatted FString
 	 */
 	FString ToJSON(bool bPrettyPrint = false) const;
 
-	/** 
+	/**
 	 * FTestbed1StructFloat to FString
 	 * WARNING: Do not rely on the format of the string, it may change in the future
 	 */
@@ -124,8 +124,8 @@ struct TESTBED1_API FTestbed1StructFloat : public FTableRowBase
 	/**
 	 * FTestbed1StructFloat to FString
 	 * WARNING: Do not rely on the format of the string, it may change in the future
-	 * 
-	 * @return FString 
+	 *
+	 * @return FString
 	 */
 	explicit operator FString() const;
 
@@ -147,12 +147,12 @@ struct TESTBED1_API FTestbed1StructString : public FTableRowBase
 	/**
 	 * FTestbed1StructString to JSON formatted FString
 	 * @param bPrettyPrint Specify whether to use pretty print (e.g., with line endings) or condensed print.
-	 * 
+	 *
 	 * @return JSON formatted FString
 	 */
 	FString ToJSON(bool bPrettyPrint = false) const;
 
-	/** 
+	/**
 	 * FTestbed1StructString to FString
 	 * WARNING: Do not rely on the format of the string, it may change in the future
 	 */
@@ -161,8 +161,8 @@ struct TESTBED1_API FTestbed1StructString : public FTableRowBase
 	/**
 	 * FTestbed1StructString to FString
 	 * WARNING: Do not rely on the format of the string, it may change in the future
-	 * 
-	 * @return FString 
+	 *
+	 * @return FString
 	 */
 	explicit operator FString() const;
 

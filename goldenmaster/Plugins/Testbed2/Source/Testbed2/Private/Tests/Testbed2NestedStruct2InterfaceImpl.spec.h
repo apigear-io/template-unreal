@@ -19,21 +19,20 @@ limitations under the License.
 #include "Implementation/Testbed2NestedStruct2Interface.h"
 #include "Testbed2NestedStruct2InterfaceImplFixture.h"
 
-#if WITH_DEV_AUTOMATION_TESTS 
+#if WITH_DEV_AUTOMATION_TESTS
 
-BEGIN_DEFINE_SPEC(UTestbed2NestedStruct2InterfaceImplSpec, "Testbed2.NestedStruct2Interface.Impl",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
+BEGIN_DEFINE_SPEC(UTestbed2NestedStruct2InterfaceImplSpec, "Testbed2.NestedStruct2Interface.Impl", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
 
-	TUniquePtr<FTestbed2NestedStruct2InterfaceImplFixture> ImplFixture;
+TUniquePtr<FTestbed2NestedStruct2InterfaceImplFixture> ImplFixture;
 
-	// signal callbacks for testing
-	void Prop1PropertyCb(const FTestbed2NestedStruct1& Prop1);
-	void Prop2PropertyCb(const FTestbed2NestedStruct2& Prop2);
-	void Sig1SignalCb(const FTestbed2NestedStruct1& Param1);
-	void Sig2SignalCb(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2);
-	FDoneDelegate testDoneDelegate;
+// signal callbacks for testing
+void Prop1PropertyCb(const FTestbed2NestedStruct1& Prop1);
+void Prop2PropertyCb(const FTestbed2NestedStruct2& Prop2);
+void Sig1SignalCb(const FTestbed2NestedStruct1& Param1);
+void Sig2SignalCb(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2);
+FDoneDelegate testDoneDelegate;
 
-	friend class UTestbed2NestedStruct2InterfaceImplHelper;
+friend class UTestbed2NestedStruct2InterfaceImplHelper;
 END_DEFINE_SPEC(UTestbed2NestedStruct2InterfaceImplSpec);
 
 #endif // WITH_DEV_AUTOMATION_TESTS

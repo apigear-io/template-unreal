@@ -75,12 +75,12 @@ struct TESTBED2_API FTestbed2Struct1 : public FTableRowBase
 	/**
 	 * FTestbed2Struct1 to JSON formatted FString
 	 * @param bPrettyPrint Specify whether to use pretty print (e.g., with line endings) or condensed print.
-	 * 
+	 *
 	 * @return JSON formatted FString
 	 */
 	FString ToJSON(bool bPrettyPrint = false) const;
 
-	/** 
+	/**
 	 * FTestbed2Struct1 to FString
 	 * WARNING: Do not rely on the format of the string, it may change in the future
 	 */
@@ -89,8 +89,8 @@ struct TESTBED2_API FTestbed2Struct1 : public FTableRowBase
 	/**
 	 * FTestbed2Struct1 to FString
 	 * WARNING: Do not rely on the format of the string, it may change in the future
-	 * 
-	 * @return FString 
+	 *
+	 * @return FString
 	 */
 	explicit operator FString() const;
 
@@ -115,12 +115,12 @@ struct TESTBED2_API FTestbed2Struct2 : public FTableRowBase
 	/**
 	 * FTestbed2Struct2 to JSON formatted FString
 	 * @param bPrettyPrint Specify whether to use pretty print (e.g., with line endings) or condensed print.
-	 * 
+	 *
 	 * @return JSON formatted FString
 	 */
 	FString ToJSON(bool bPrettyPrint = false) const;
 
-	/** 
+	/**
 	 * FTestbed2Struct2 to FString
 	 * WARNING: Do not rely on the format of the string, it may change in the future
 	 */
@@ -129,8 +129,8 @@ struct TESTBED2_API FTestbed2Struct2 : public FTableRowBase
 	/**
 	 * FTestbed2Struct2 to FString
 	 * WARNING: Do not rely on the format of the string, it may change in the future
-	 * 
-	 * @return FString 
+	 *
+	 * @return FString
 	 */
 	explicit operator FString() const;
 
@@ -158,12 +158,12 @@ struct TESTBED2_API FTestbed2Struct3 : public FTableRowBase
 	/**
 	 * FTestbed2Struct3 to JSON formatted FString
 	 * @param bPrettyPrint Specify whether to use pretty print (e.g., with line endings) or condensed print.
-	 * 
+	 *
 	 * @return JSON formatted FString
 	 */
 	FString ToJSON(bool bPrettyPrint = false) const;
 
-	/** 
+	/**
 	 * FTestbed2Struct3 to FString
 	 * WARNING: Do not rely on the format of the string, it may change in the future
 	 */
@@ -172,8 +172,8 @@ struct TESTBED2_API FTestbed2Struct3 : public FTableRowBase
 	/**
 	 * FTestbed2Struct3 to FString
 	 * WARNING: Do not rely on the format of the string, it may change in the future
-	 * 
-	 * @return FString 
+	 *
+	 * @return FString
 	 */
 	explicit operator FString() const;
 
@@ -204,12 +204,12 @@ struct TESTBED2_API FTestbed2Struct4 : public FTableRowBase
 	/**
 	 * FTestbed2Struct4 to JSON formatted FString
 	 * @param bPrettyPrint Specify whether to use pretty print (e.g., with line endings) or condensed print.
-	 * 
+	 *
 	 * @return JSON formatted FString
 	 */
 	FString ToJSON(bool bPrettyPrint = false) const;
 
-	/** 
+	/**
 	 * FTestbed2Struct4 to FString
 	 * WARNING: Do not rely on the format of the string, it may change in the future
 	 */
@@ -218,8 +218,8 @@ struct TESTBED2_API FTestbed2Struct4 : public FTableRowBase
 	/**
 	 * FTestbed2Struct4 to FString
 	 * WARNING: Do not rely on the format of the string, it may change in the future
-	 * 
-	 * @return FString 
+	 *
+	 * @return FString
 	 */
 	explicit operator FString() const;
 
@@ -241,12 +241,12 @@ struct TESTBED2_API FTestbed2NestedStruct1 : public FTableRowBase
 	/**
 	 * FTestbed2NestedStruct1 to JSON formatted FString
 	 * @param bPrettyPrint Specify whether to use pretty print (e.g., with line endings) or condensed print.
-	 * 
+	 *
 	 * @return JSON formatted FString
 	 */
 	FString ToJSON(bool bPrettyPrint = false) const;
 
-	/** 
+	/**
 	 * FTestbed2NestedStruct1 to FString
 	 * WARNING: Do not rely on the format of the string, it may change in the future
 	 */
@@ -255,8 +255,8 @@ struct TESTBED2_API FTestbed2NestedStruct1 : public FTableRowBase
 	/**
 	 * FTestbed2NestedStruct1 to FString
 	 * WARNING: Do not rely on the format of the string, it may change in the future
-	 * 
-	 * @return FString 
+	 *
+	 * @return FString
 	 */
 	explicit operator FString() const;
 
@@ -281,12 +281,12 @@ struct TESTBED2_API FTestbed2NestedStruct2 : public FTableRowBase
 	/**
 	 * FTestbed2NestedStruct2 to JSON formatted FString
 	 * @param bPrettyPrint Specify whether to use pretty print (e.g., with line endings) or condensed print.
-	 * 
+	 *
 	 * @return JSON formatted FString
 	 */
 	FString ToJSON(bool bPrettyPrint = false) const;
 
-	/** 
+	/**
 	 * FTestbed2NestedStruct2 to FString
 	 * WARNING: Do not rely on the format of the string, it may change in the future
 	 */
@@ -295,8 +295,8 @@ struct TESTBED2_API FTestbed2NestedStruct2 : public FTableRowBase
 	/**
 	 * FTestbed2NestedStruct2 to FString
 	 * WARNING: Do not rely on the format of the string, it may change in the future
-	 * 
-	 * @return FString 
+	 *
+	 * @return FString
 	 */
 	explicit operator FString() const;
 
@@ -324,12 +324,12 @@ struct TESTBED2_API FTestbed2NestedStruct3 : public FTableRowBase
 	/**
 	 * FTestbed2NestedStruct3 to JSON formatted FString
 	 * @param bPrettyPrint Specify whether to use pretty print (e.g., with line endings) or condensed print.
-	 * 
+	 *
 	 * @return JSON formatted FString
 	 */
 	FString ToJSON(bool bPrettyPrint = false) const;
 
-	/** 
+	/**
 	 * FTestbed2NestedStruct3 to FString
 	 * WARNING: Do not rely on the format of the string, it may change in the future
 	 */
@@ -338,8 +338,8 @@ struct TESTBED2_API FTestbed2NestedStruct3 : public FTableRowBase
 	/**
 	 * FTestbed2NestedStruct3 to FString
 	 * WARNING: Do not rely on the format of the string, it may change in the future
-	 * 
-	 * @return FString 
+	 *
+	 * @return FString
 	 */
 	explicit operator FString() const;
 

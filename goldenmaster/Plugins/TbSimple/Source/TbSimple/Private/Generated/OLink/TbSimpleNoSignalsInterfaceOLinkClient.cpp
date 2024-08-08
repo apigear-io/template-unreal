@@ -69,9 +69,13 @@ void UTbSimpleNoSignalsInterfaceOLinkClient::Initialize(FSubsystemCollectionBase
 	Super::Initialize(Collection);
 
 	m_sink->setOnInitCallback([this]()
-		{ _SubscriptionStatusChanged.Broadcast(true); });
+		{
+		_SubscriptionStatusChanged.Broadcast(true);
+	});
 	m_sink->setOnReleaseCallback([this]()
-		{ _SubscriptionStatusChanged.Broadcast(false); });
+		{
+		_SubscriptionStatusChanged.Broadcast(false);
+	});
 
 	FOLinkSink::FPropertyChangedFunc PropertyChangedFunc = [this](const nlohmann::json& props)
 	{
@@ -227,21 +231,21 @@ bool UTbSimpleNoSignalsInterfaceOLinkClient::FuncBool_Implementation(bool bParam
 	Async(EAsyncExecution::Thread,
 		[bParamBool, &Promise, this]()
 		{
-			ApiGear::ObjectLink::InvokeReplyFunc GetNoSignalsInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetNoSignalsInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+			if (!arg.value.empty())
 			{
-				if (!arg.value.empty())
-				{
-					Promise.SetValue(arg.value.get<bool>());
-				}
-				else
-				{
-					UE_LOG(LogTbSimpleNoSignalsInterfaceOLinkClient, Error, TEXT("FuncBool: OLink service returned empty value - should have returned type of bool"));
-					Promise.SetValue(bool());
-				}
-			};
-			static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcBool");
-			m_sink->GetNode()->invokeRemote(memberId, {bParamBool}, GetNoSignalsInterfaceStateFunc);
-		});
+				Promise.SetValue(arg.value.get<bool>());
+			}
+			else
+			{
+				UE_LOG(LogTbSimpleNoSignalsInterfaceOLinkClient, Error, TEXT("FuncBool: OLink service returned empty value - should have returned type of bool"));
+				Promise.SetValue(bool());
+			}
+		};
+		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcBool");
+		m_sink->GetNode()->invokeRemote(memberId, {bParamBool}, GetNoSignalsInterfaceStateFunc);
+	});
 
 	return Promise.GetFuture().Get();
 }
