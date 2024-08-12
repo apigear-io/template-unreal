@@ -11,7 +11,7 @@ targets:
       - test-apis/testbed.same2.module.yaml
       - test-apis/testbed.simple.module.yaml
       - test-apis/testbed.struct.module.yaml
-      # - test-apis/testbed.names.module.yaml
+      - test-apis/testbed.names.module.yaml
       - test-apis/custom_types.module.yaml
       - test-apis/extern_types.module.yaml
       - test-apis/counter.module.yaml

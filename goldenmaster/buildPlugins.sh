@@ -107,6 +107,10 @@ if [ $buildresult -ne 0 ]; then cleanup && exit 1; fi;
 buildUEplugin "$script_path/Plugins/Testbed1/Testbed1.uplugin" "$script_path/build/Plugins/Testbed1"
 if [ $buildresult -ne 0 ]; then cleanup && exit 1; fi;
 
+# Building and testing TbNames module
+buildUEplugin "$script_path/Plugins/TbNames/TbNames.uplugin" "$script_path/build/Plugins/TbNames"
+if [ $buildresult -ne 0 ]; then cleanup && exit 1; fi;
+
 # Building and testing CustomTypes module
 buildUEplugin "$script_path/Plugins/CustomTypes/CustomTypes.uplugin" "$script_path/build/Plugins/CustomTypes"
 if [ $buildresult -ne 0 ]; then cleanup && exit 1; fi;

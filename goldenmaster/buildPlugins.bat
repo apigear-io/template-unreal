@@ -81,6 +81,11 @@ call :buildUEplugin "%script_path%\Plugins\Testbed1\Testbed1.uplugin" , "%script
 if !buildresult! GEQ 1 call :cleanup !buildresult!
 if !buildresult! GEQ 1 exit /b !buildresult!
 
+@REM Building and testing TbNames module
+call :buildUEplugin "%script_path%\Plugins\TbNames\TbNames.uplugin" , "%script_path%build\Plugins\TbNames"
+if !buildresult! GEQ 1 call :cleanup !buildresult!
+if !buildresult! GEQ 1 exit /b !buildresult!
+
 @REM Building and testing CustomTypes module
 call :buildUEplugin "%script_path%\Plugins\CustomTypes\CustomTypes.uplugin" , "%script_path%build\Plugins\CustomTypes"
 if !buildresult! GEQ 1 call :cleanup !buildresult!
