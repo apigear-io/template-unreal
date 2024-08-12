@@ -11,6 +11,7 @@
 #include "CoreMinimal.h"
 #include "UObject/Object.h"
 #include "UObject/NoExportTypes.h"
+#include "Generated/api/{{$ModuleName}}_data.h"
 #include "{{$DisplayName}}ImplFixture.generated.h"
 
 class {{$Class}}ImplSpec;

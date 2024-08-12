@@ -7,6 +7,7 @@
 #include "CoreMinimal.h"
 #include "UObject/Object.h"
 #include "UObject/NoExportTypes.h"
+#include "Generated/api/Testbed2_data.h"
 #include "Testbed2ManyParamInterfaceImplFixture.generated.h"
 
 class UTestbed2ManyParamInterfaceImplSpec;
