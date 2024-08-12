@@ -17,11 +17,13 @@ void {{$Class}}ImplHelper::SetSpec({{$Class}}ImplSpec* InSpec)
 }
 
 {{- range .Interface.Properties }}
+{{- if not .IsReadOnly }}
 
 void {{$Class}}ImplHelper::{{ Camel .Name }}PropertyCb({{ueParam "" .}})
 {
 	Spec->{{ Camel .Name }}PropertyCb({{ueVar "" .}});
 }
+{{- end }}
 {{- end }}
 
 {{- range .Interface.Signals }}
@@ -78,11 +80,13 @@ void {{$Class}}ImplHelper::SetSpec({{$Class}}ImplSpec* /* InSpec */)
 }
 
 {{- range .Interface.Properties }}
+{{- if not .IsReadOnly }}
 
 void {{$Class}}ImplHelper::{{ Camel .Name }}PropertyCb({{ueParam "" .}})
 {
 	(void) {{ueVar "" .}};
 }
+{{- end }}
 {{- end }}
 
 {{- range .Interface.Signals }}

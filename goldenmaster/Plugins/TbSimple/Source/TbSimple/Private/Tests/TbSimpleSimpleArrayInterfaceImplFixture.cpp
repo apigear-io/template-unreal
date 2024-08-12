@@ -66,11 +66,6 @@ void UTbSimpleSimpleArrayInterfaceImplHelper::PropStringPropertyCb(const TArray<
 	Spec->PropStringPropertyCb(PropString);
 }
 
-void UTbSimpleSimpleArrayInterfaceImplHelper::PropReadOnlyStringPropertyCb(const FString& PropReadOnlyString)
-{
-	Spec->PropReadOnlyStringPropertyCb(PropReadOnlyString);
-}
-
 void UTbSimpleSimpleArrayInterfaceImplHelper::SigBoolSignalCb(const TArray<bool>& ParamBool)
 {
 	Spec->SigBoolSignalCb(ParamBool);
@@ -194,11 +189,6 @@ void UTbSimpleSimpleArrayInterfaceImplHelper::PropFloat64PropertyCb(const TArray
 void UTbSimpleSimpleArrayInterfaceImplHelper::PropStringPropertyCb(const TArray<FString>& PropString)
 {
 	(void) PropString;
-}
-
-void UTbSimpleSimpleArrayInterfaceImplHelper::PropReadOnlyStringPropertyCb(const FString& PropReadOnlyString)
-{
-	(void) PropReadOnlyString;
 }
 
 void UTbSimpleSimpleArrayInterfaceImplHelper::SigBoolSignalCb(const TArray<bool>& ParamBool)

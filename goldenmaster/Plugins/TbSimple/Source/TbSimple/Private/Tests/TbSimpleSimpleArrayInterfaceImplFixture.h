@@ -45,9 +45,6 @@ public:
 	void PropStringPropertyCb(const TArray<FString>& PropString);
 
 	UFUNCTION()
-	void PropReadOnlyStringPropertyCb(const FString& PropReadOnlyString);
-
-	UFUNCTION()
 	void SigBoolSignalCb(const TArray<bool>& ParamBool);
 
 	UFUNCTION()

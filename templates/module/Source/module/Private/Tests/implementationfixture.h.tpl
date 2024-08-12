@@ -24,9 +24,11 @@ class {{$Class}}ImplHelper : public UObject
 public:
 	void SetSpec({{$Class}}ImplSpec* InSpec);
 {{- range .Interface.Properties }}
+{{- if not .IsReadOnly }}
 
 	UFUNCTION()
 	void {{ Camel .Name }}PropertyCb({{ueParam "" .}});
+{{- end }}
 {{- end }}
 {{- range .Interface.Signals }}
 

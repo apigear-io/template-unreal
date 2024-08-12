@@ -57,10 +57,19 @@ void {{$Class}}ImplSpec::Define()
 		{{$Iface}}Signals->On{{Camel .Name}}Changed.AddDynamic(ImplFixture->GetHelper().Get(), &{{$Class}}ImplHelper::{{ Camel .Name }}PropertyCb);
 		// use different test value
 		{{- if .IsArray }}
-		{{- $type := printf "F%s%s" $ModuleName .Type }}
-		TestValue = createTest{{$type}}Array();
+		{{- if .IsPrimitive }}
+		TestValue.Add({{ ueTestValue "" .}});
+		{{- else }}
+		{{- $type := ""}}
+		{{- if not (eq .Import "") }}
+		{{- $type = printf "F%s%s" (Camel .Import) .Type }}
+		{{- else }}
+		{{- $type = printf "F%s%s" $ModuleName .Type }}
+		{{- end }}
+		TestValue = createTest{{ $type }}Array();
+		{{- end }}
 		{{- else if and (not .IsPrimitive) (not (eq .KindType "enum"))}}
-		TestValue = createTest{{ueType "" .}}();
+		TestValue = createTest{{ ueType "" . }}();
 		{{- else }}
 		TestValue = {{ ueTestValue "" . }};
 		{{- end }}
@@ -95,8 +104,18 @@ void {{$Class}}ImplSpec::Define()
 		// use different test value
 		{{- range $i, $e := .Params -}}
 		{{- if .IsArray }}
-		{{- $type := printf "F%s%s" $ModuleName .Type }}
+		{{- if .IsPrimitive }}
+		{{ueType "" .}} {{ueVar "" .}}TestValue = {{ueDefault "" .}}; // default value
+		{{ueVar "" .}}TestValue.Add({{ ueTestValue "" .}});
+		{{- else }}
+		{{- $type := ""}}
+		{{- if not (eq .Import "") }}
+		{{- $type = printf "F%s%s" (Camel .Import) .Type }}
+		{{- else }}
+		{{- $type = printf "F%s%s" $ModuleName .Type }}
+		{{- end }}
 		{{ ueType "" . }} {{ueVar "" .}}TestValue = createTest{{ $type }}Array();
+		{{- end }}
 		{{- else if and (not .IsPrimitive) (not (eq .KindType "enum"))}}
 		{{ ueType "" . }} {{ueVar "" .}}TestValue = createTest{{ ueType "" . }}();
 		{{- else }}
@@ -113,6 +132,7 @@ void {{$Class}}ImplSpec::Define()
 }
 
 {{- range .Interface.Properties }}
+{{- if not .IsReadOnly }}
 {{- $type := printf "F%s%s" $ModuleName .Type }}
 
 void {{$Class}}ImplSpec::{{ Camel .Name }}PropertyCb({{ueParam "In" .}})
@@ -120,9 +140,19 @@ void {{$Class}}ImplSpec::{{ Camel .Name }}PropertyCb({{ueParam "In" .}})
 	{{ueType "" .}} TestValue = {{ueDefault "" .}};
 	// use different test value
 	{{- if .IsArray }}
-	TestValue = createTest{{$type}}Array();
+	{{- if .IsPrimitive }}
+	TestValue.Add({{ ueTestValue "" .}});
+	{{- else }}
+	{{- $type := ""}}
+	{{- if not (eq .Import "") }}
+	{{- $type = printf "F%s%s" (Camel .Import) .Type }}
+	{{- else }}
+	{{- $type = printf "F%s%s" $ModuleName .Type }}
+	{{- end }}
+	TestValue = createTest{{ $type }}Array();
+	{{- end }}
 	{{- else if and (not .IsPrimitive) (not (eq .KindType "enum"))}}
-	TestValue = createTest{{$type}}();
+	TestValue = createTest{{ ueType "" . }}();
 	{{- else }}
 	TestValue = {{ ueTestValue "" . }};
 	{{- end }}
@@ -130,6 +160,7 @@ void {{$Class}}ImplSpec::{{ Camel .Name }}PropertyCb({{ueParam "In" .}})
 	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_Get{{Camel .Name}}(ImplFixture->GetImplementation().GetObject()), TestValue);
 	testDoneDelegate.Execute();
 }
+{{- end }}
 {{- end }}
 
 {{- range .Interface.Signals }}
@@ -139,12 +170,22 @@ void {{$Class}}ImplSpec::{{ Camel .Name }}SignalCb({{ueParams "In" .Params}})
 	// known test value
 	{{- range $i, $e := .Params -}}
 	{{- if .IsArray }}
-	{{- $type := printf "F%s%s" $ModuleName .Type }}
-	{{ ueType "" . }} {{ueVar "" .}}TestValue = createTest{{ $type }}Array();
-	{{- else if and (not .IsPrimitive) (not (eq .KindType "enum"))}}
-	{{ ueType "" . }} {{ueVar "" .}}TestValue = createTest{{ ueType "" . }}();
+	{{- if .IsPrimitive }}
+	{{ueType "" .}} {{ueVar "" .}}TestValue = {{ueDefault "" .}}; // default value
+	{{ueVar "" .}}TestValue.Add({{ ueTestValue "" .}});
 	{{- else }}
-	{{ ueType "" . }} {{ueVar "" .}}TestValue = {{ ueTestValue "" . }};
+	{{- $type := ""}}
+	{{- if not (eq .Import "") }}
+	{{- $type = printf "F%s%s" (Camel .Import) .Type }}
+	{{- else }}
+	{{- $type = printf "F%s%s" $ModuleName .Type }}
+	{{- end }}
+	{{ueType "" .}} {{ueVar "" .}}TestValue = createTest{{ $type }}Array();
+	{{- end }}
+	{{- else if and (not .IsPrimitive) (not (eq .KindType "enum"))}}
+	{{ueType "" .}} {{ueVar "" .}}TestValue = createTest{{ ueType "" . }}();
+	{{- else }}
+	{{ueType "" .}} {{ueVar "" .}}TestValue = {{ ueTestValue "" . }};
 	{{- end }}
 	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), {{ueVar "In" .}}, {{ueVar "" .}}TestValue);
 	{{- end }}
