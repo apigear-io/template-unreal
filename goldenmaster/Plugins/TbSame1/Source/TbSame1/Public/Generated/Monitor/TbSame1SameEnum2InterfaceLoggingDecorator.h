@@ -62,10 +62,10 @@ private:
 
 	// signals
 	UFUNCTION(Category = "ApiGear|TbSame1|SameEnum2Interface", BlueprintInternalUseOnly)
-	void OnSig1(ETbSame1Enum1 Param1);
+	void OnSig1(ETbSame1Enum1 InParam1);
 
 	UFUNCTION(Category = "ApiGear|TbSame1|SameEnum2Interface", BlueprintInternalUseOnly)
-	void OnSig2(ETbSame1Enum1 Param1, ETbSame1Enum2 Param2);
+	void OnSig2(ETbSame1Enum1 InParam1, ETbSame1Enum2 InParam2);
 
 	UFUNCTION(Category = "ApiGear|TbSame1|SameEnum2Interface", BlueprintInternalUseOnly)
 	void OnProp1Changed(ETbSame1Enum1 InProp1);

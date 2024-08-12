@@ -62,10 +62,10 @@ private:
 
 	// signals
 	UFUNCTION(Category = "ApiGear|TbSame1|SameStruct2Interface", BlueprintInternalUseOnly)
-	void OnSig1(const FTbSame1Struct1& Param1);
+	void OnSig1(const FTbSame1Struct1& InParam1);
 
 	UFUNCTION(Category = "ApiGear|TbSame1|SameStruct2Interface", BlueprintInternalUseOnly)
-	void OnSig2(const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2);
+	void OnSig2(const FTbSame1Struct1& InParam1, const FTbSame1Struct2& InParam2);
 
 	UFUNCTION(Category = "ApiGear|TbSame1|SameStruct2Interface", BlueprintInternalUseOnly)
 	void OnProp1Changed(const FTbSame1Struct2& InProp1);

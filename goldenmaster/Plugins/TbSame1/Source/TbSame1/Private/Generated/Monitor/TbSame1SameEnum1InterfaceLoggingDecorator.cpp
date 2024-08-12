@@ -69,10 +69,10 @@ void UTbSame1SameEnum1InterfaceLoggingDecorator::setBackendService(TScriptInterf
 	Prop1 = BackendService->Execute_GetProp1(BackendService.GetObject());
 }
 
-void UTbSame1SameEnum1InterfaceLoggingDecorator::OnSig1(ETbSame1Enum1 Param1)
+void UTbSame1SameEnum1InterfaceLoggingDecorator::OnSig1(ETbSame1Enum1 InParam1)
 {
-	TbSame1SameEnum1InterfaceTracer::trace_signalSig1(Param1);
-	Execute__GetSignals(this)->OnSig1Signal.Broadcast(Param1);
+	TbSame1SameEnum1InterfaceTracer::trace_signalSig1(InParam1);
+	Execute__GetSignals(this)->OnSig1Signal.Broadcast(InParam1);
 }
 
 void UTbSame1SameEnum1InterfaceLoggingDecorator::OnProp1Changed(ETbSame1Enum1 InProp1)

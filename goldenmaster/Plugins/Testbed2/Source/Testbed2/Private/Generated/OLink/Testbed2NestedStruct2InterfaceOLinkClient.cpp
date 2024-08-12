@@ -304,16 +304,16 @@ void UTestbed2NestedStruct2InterfaceOLinkClient::emitSignal(const std::string& s
 {
 	if (signalName == "sig1")
 	{
-		const FTestbed2NestedStruct1& Param1 = args[0].get<FTestbed2NestedStruct1>();
-		Execute__GetSignals(this)->OnSig1Signal.Broadcast(Param1);
+		const FTestbed2NestedStruct1& outParam1 = args[0].get<FTestbed2NestedStruct1>();
+		Execute__GetSignals(this)->OnSig1Signal.Broadcast(outParam1);
 		return;
 	}
 
 	if (signalName == "sig2")
 	{
-		const FTestbed2NestedStruct1& Param1 = args[0].get<FTestbed2NestedStruct1>();
-		const FTestbed2NestedStruct2& Param2 = args[1].get<FTestbed2NestedStruct2>();
-		Execute__GetSignals(this)->OnSig2Signal.Broadcast(Param1, Param2);
+		const FTestbed2NestedStruct1& outParam1 = args[0].get<FTestbed2NestedStruct1>();
+		const FTestbed2NestedStruct2& outParam2 = args[1].get<FTestbed2NestedStruct2>();
+		Execute__GetSignals(this)->OnSig2Signal.Broadcast(outParam1, outParam2);
 		return;
 	}
 }

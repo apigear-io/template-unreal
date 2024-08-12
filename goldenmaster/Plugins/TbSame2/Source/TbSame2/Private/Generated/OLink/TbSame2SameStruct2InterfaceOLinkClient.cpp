@@ -304,16 +304,16 @@ void UTbSame2SameStruct2InterfaceOLinkClient::emitSignal(const std::string& sign
 {
 	if (signalName == "sig1")
 	{
-		const FTbSame2Struct1& Param1 = args[0].get<FTbSame2Struct1>();
-		Execute__GetSignals(this)->OnSig1Signal.Broadcast(Param1);
+		const FTbSame2Struct1& outParam1 = args[0].get<FTbSame2Struct1>();
+		Execute__GetSignals(this)->OnSig1Signal.Broadcast(outParam1);
 		return;
 	}
 
 	if (signalName == "sig2")
 	{
-		const FTbSame2Struct1& Param1 = args[0].get<FTbSame2Struct1>();
-		const FTbSame2Struct2& Param2 = args[1].get<FTbSame2Struct2>();
-		Execute__GetSignals(this)->OnSig2Signal.Broadcast(Param1, Param2);
+		const FTbSame2Struct1& outParam1 = args[0].get<FTbSame2Struct1>();
+		const FTbSame2Struct2& outParam2 = args[1].get<FTbSame2Struct2>();
+		Execute__GetSignals(this)->OnSig2Signal.Broadcast(outParam1, outParam2);
 		return;
 	}
 }

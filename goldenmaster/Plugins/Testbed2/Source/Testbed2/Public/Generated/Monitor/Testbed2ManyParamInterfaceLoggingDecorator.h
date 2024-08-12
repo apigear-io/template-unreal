@@ -74,16 +74,16 @@ private:
 
 	// signals
 	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
-	void OnSig1(int32 Param1);
+	void OnSig1(int32 InParam1);
 
 	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
-	void OnSig2(int32 Param1, int32 Param2);
+	void OnSig2(int32 InParam1, int32 InParam2);
 
 	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
-	void OnSig3(int32 Param1, int32 Param2, int32 Param3);
+	void OnSig3(int32 InParam1, int32 InParam2, int32 InParam3);
 
 	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
-	void OnSig4(int32 Param1, int32 Param2, int32 Param3, int32 Param4);
+	void OnSig4(int32 InParam1, int32 InParam2, int32 InParam3, int32 InParam4);
 
 	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
 	void OnProp1Changed(int32 InProp1);

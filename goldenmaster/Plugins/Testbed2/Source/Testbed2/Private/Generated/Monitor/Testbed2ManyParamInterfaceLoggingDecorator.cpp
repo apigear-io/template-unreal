@@ -84,28 +84,28 @@ void UTestbed2ManyParamInterfaceLoggingDecorator::setBackendService(TScriptInter
 	Prop4 = BackendService->Execute_GetProp4(BackendService.GetObject());
 }
 
-void UTestbed2ManyParamInterfaceLoggingDecorator::OnSig1(int32 Param1)
+void UTestbed2ManyParamInterfaceLoggingDecorator::OnSig1(int32 InParam1)
 {
-	Testbed2ManyParamInterfaceTracer::trace_signalSig1(Param1);
-	Execute__GetSignals(this)->OnSig1Signal.Broadcast(Param1);
+	Testbed2ManyParamInterfaceTracer::trace_signalSig1(InParam1);
+	Execute__GetSignals(this)->OnSig1Signal.Broadcast(InParam1);
 }
 
-void UTestbed2ManyParamInterfaceLoggingDecorator::OnSig2(int32 Param1, int32 Param2)
+void UTestbed2ManyParamInterfaceLoggingDecorator::OnSig2(int32 InParam1, int32 InParam2)
 {
-	Testbed2ManyParamInterfaceTracer::trace_signalSig2(Param1, Param2);
-	Execute__GetSignals(this)->OnSig2Signal.Broadcast(Param1, Param2);
+	Testbed2ManyParamInterfaceTracer::trace_signalSig2(InParam1, InParam2);
+	Execute__GetSignals(this)->OnSig2Signal.Broadcast(InParam1, InParam2);
 }
 
-void UTestbed2ManyParamInterfaceLoggingDecorator::OnSig3(int32 Param1, int32 Param2, int32 Param3)
+void UTestbed2ManyParamInterfaceLoggingDecorator::OnSig3(int32 InParam1, int32 InParam2, int32 InParam3)
 {
-	Testbed2ManyParamInterfaceTracer::trace_signalSig3(Param1, Param2, Param3);
-	Execute__GetSignals(this)->OnSig3Signal.Broadcast(Param1, Param2, Param3);
+	Testbed2ManyParamInterfaceTracer::trace_signalSig3(InParam1, InParam2, InParam3);
+	Execute__GetSignals(this)->OnSig3Signal.Broadcast(InParam1, InParam2, InParam3);
 }
 
-void UTestbed2ManyParamInterfaceLoggingDecorator::OnSig4(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
+void UTestbed2ManyParamInterfaceLoggingDecorator::OnSig4(int32 InParam1, int32 InParam2, int32 InParam3, int32 InParam4)
 {
-	Testbed2ManyParamInterfaceTracer::trace_signalSig4(Param1, Param2, Param3, Param4);
-	Execute__GetSignals(this)->OnSig4Signal.Broadcast(Param1, Param2, Param3, Param4);
+	Testbed2ManyParamInterfaceTracer::trace_signalSig4(InParam1, InParam2, InParam3, InParam4);
+	Execute__GetSignals(this)->OnSig4Signal.Broadcast(InParam1, InParam2, InParam3, InParam4);
 }
 
 void UTestbed2ManyParamInterfaceLoggingDecorator::OnProp1Changed(int32 InProp1)

@@ -238,8 +238,8 @@ void UTbSimpleNoOperationsInterfaceOLinkClient::emitSignal(const std::string& si
 
 	if (signalName == "sigBool")
 	{
-		bool bParamBool = args[0].get<bool>();
-		Execute__GetSignals(this)->OnSigBoolSignal.Broadcast(bParamBool);
+		bool boutParamBool = args[0].get<bool>();
+		Execute__GetSignals(this)->OnSigBoolSignal.Broadcast(boutParamBool);
 		return;
 	}
 }

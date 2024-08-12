@@ -100,28 +100,28 @@ private:
 
 	// signals
 	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface", BlueprintInternalUseOnly)
-	void OnSigBool(const TArray<bool>& ParamBool);
+	void OnSigBool(const TArray<bool>& InParamBool);
 
 	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface", BlueprintInternalUseOnly)
-	void OnSigInt(const TArray<int32>& ParamInt);
+	void OnSigInt(const TArray<int32>& InParamInt);
 
 	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface", BlueprintInternalUseOnly)
-	void OnSigInt32(const TArray<int32>& ParamInt32);
+	void OnSigInt32(const TArray<int32>& InParamInt32);
 
 	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface", BlueprintInternalUseOnly)
-	void OnSigInt64(const TArray<int64>& ParamInt64);
+	void OnSigInt64(const TArray<int64>& InParamInt64);
 
 	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface", BlueprintInternalUseOnly)
-	void OnSigFloat(const TArray<float>& ParamFloat);
+	void OnSigFloat(const TArray<float>& InParamFloat);
 
 	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface", BlueprintInternalUseOnly)
-	void OnSigFloat32(const TArray<float>& ParamFloa32);
+	void OnSigFloat32(const TArray<float>& InParamFloa32);
 
 	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface", BlueprintInternalUseOnly)
-	void OnSigFloat64(const TArray<double>& ParamFloat64);
+	void OnSigFloat64(const TArray<double>& InParamFloat64);
 
 	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface", BlueprintInternalUseOnly)
-	void OnSigString(const TArray<FString>& ParamString);
+	void OnSigString(const TArray<FString>& InParamString);
 
 	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface", BlueprintInternalUseOnly)
 	void OnPropBoolChanged(const TArray<bool>& InPropBool);

@@ -72,7 +72,7 @@ private:
 {{- range $i, $e := .Interface.Signals }}
 {{- if $i }}{{nl}}{{ end }}
 	UFUNCTION(Category = "{{$Category}}", BlueprintInternalUseOnly)
-	void On{{Camel .Name}}({{ueParams "" .Params}});
+	void On{{Camel .Name}}({{ueParams "In" .Params}});
 {{- end }}
 {{- if len .Interface.Properties }}{{ nl }}{{ end }}
 {{- range $i, $e := .Interface.Properties }}

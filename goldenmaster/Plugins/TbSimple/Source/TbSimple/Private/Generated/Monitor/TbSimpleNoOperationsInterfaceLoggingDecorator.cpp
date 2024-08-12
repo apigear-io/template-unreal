@@ -80,10 +80,10 @@ void UTbSimpleNoOperationsInterfaceLoggingDecorator::OnSigVoid()
 	Execute__GetSignals(this)->OnSigVoidSignal.Broadcast();
 }
 
-void UTbSimpleNoOperationsInterfaceLoggingDecorator::OnSigBool(bool bParamBool)
+void UTbSimpleNoOperationsInterfaceLoggingDecorator::OnSigBool(bool bInParamBool)
 {
-	TbSimpleNoOperationsInterfaceTracer::trace_signalSigBool(bParamBool);
-	Execute__GetSignals(this)->OnSigBoolSignal.Broadcast(bParamBool);
+	TbSimpleNoOperationsInterfaceTracer::trace_signalSigBool(bInParamBool);
+	Execute__GetSignals(this)->OnSigBoolSignal.Broadcast(bInParamBool);
 }
 
 void UTbSimpleNoOperationsInterfaceLoggingDecorator::OnPropBoolChanged(bool bInPropBool)

@@ -721,57 +721,57 @@ void UTbSimpleSimpleInterfaceOLinkClient::emitSignal(const std::string& signalNa
 {
 	if (signalName == "sigBool")
 	{
-		bool bParamBool = args[0].get<bool>();
-		Execute__GetSignals(this)->OnSigBoolSignal.Broadcast(bParamBool);
+		bool boutParamBool = args[0].get<bool>();
+		Execute__GetSignals(this)->OnSigBoolSignal.Broadcast(boutParamBool);
 		return;
 	}
 
 	if (signalName == "sigInt")
 	{
-		int32 ParamInt = args[0].get<int32>();
-		Execute__GetSignals(this)->OnSigIntSignal.Broadcast(ParamInt);
+		int32 outParamInt = args[0].get<int32>();
+		Execute__GetSignals(this)->OnSigIntSignal.Broadcast(outParamInt);
 		return;
 	}
 
 	if (signalName == "sigInt32")
 	{
-		int32 ParamInt32 = args[0].get<int32>();
-		Execute__GetSignals(this)->OnSigInt32Signal.Broadcast(ParamInt32);
+		int32 outParamInt32 = args[0].get<int32>();
+		Execute__GetSignals(this)->OnSigInt32Signal.Broadcast(outParamInt32);
 		return;
 	}
 
 	if (signalName == "sigInt64")
 	{
-		int64 ParamInt64 = args[0].get<int64>();
-		Execute__GetSignals(this)->OnSigInt64Signal.Broadcast(ParamInt64);
+		int64 outParamInt64 = args[0].get<int64>();
+		Execute__GetSignals(this)->OnSigInt64Signal.Broadcast(outParamInt64);
 		return;
 	}
 
 	if (signalName == "sigFloat")
 	{
-		float ParamFloat = args[0].get<float>();
-		Execute__GetSignals(this)->OnSigFloatSignal.Broadcast(ParamFloat);
+		float outParamFloat = args[0].get<float>();
+		Execute__GetSignals(this)->OnSigFloatSignal.Broadcast(outParamFloat);
 		return;
 	}
 
 	if (signalName == "sigFloat32")
 	{
-		float ParamFloat32 = args[0].get<float>();
-		Execute__GetSignals(this)->OnSigFloat32Signal.Broadcast(ParamFloat32);
+		float outParamFloat32 = args[0].get<float>();
+		Execute__GetSignals(this)->OnSigFloat32Signal.Broadcast(outParamFloat32);
 		return;
 	}
 
 	if (signalName == "sigFloat64")
 	{
-		double ParamFloat64 = args[0].get<double>();
-		Execute__GetSignals(this)->OnSigFloat64Signal.Broadcast(ParamFloat64);
+		double outParamFloat64 = args[0].get<double>();
+		Execute__GetSignals(this)->OnSigFloat64Signal.Broadcast(outParamFloat64);
 		return;
 	}
 
 	if (signalName == "sigString")
 	{
-		const FString& ParamString = args[0].get<FString>();
-		Execute__GetSignals(this)->OnSigStringSignal.Broadcast(ParamString);
+		const FString& outParamString = args[0].get<FString>();
+		Execute__GetSignals(this)->OnSigStringSignal.Broadcast(outParamString);
 		return;
 	}
 }

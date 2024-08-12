@@ -84,28 +84,28 @@ void UTestbed1StructArrayInterfaceLoggingDecorator::setBackendService(TScriptInt
 	PropString = BackendService->Execute_GetPropString(BackendService.GetObject());
 }
 
-void UTestbed1StructArrayInterfaceLoggingDecorator::OnSigBool(const TArray<FTestbed1StructBool>& ParamBool)
+void UTestbed1StructArrayInterfaceLoggingDecorator::OnSigBool(const TArray<FTestbed1StructBool>& InParamBool)
 {
-	Testbed1StructArrayInterfaceTracer::trace_signalSigBool(ParamBool);
-	Execute__GetSignals(this)->OnSigBoolSignal.Broadcast(ParamBool);
+	Testbed1StructArrayInterfaceTracer::trace_signalSigBool(InParamBool);
+	Execute__GetSignals(this)->OnSigBoolSignal.Broadcast(InParamBool);
 }
 
-void UTestbed1StructArrayInterfaceLoggingDecorator::OnSigInt(const TArray<FTestbed1StructInt>& ParamInt)
+void UTestbed1StructArrayInterfaceLoggingDecorator::OnSigInt(const TArray<FTestbed1StructInt>& InParamInt)
 {
-	Testbed1StructArrayInterfaceTracer::trace_signalSigInt(ParamInt);
-	Execute__GetSignals(this)->OnSigIntSignal.Broadcast(ParamInt);
+	Testbed1StructArrayInterfaceTracer::trace_signalSigInt(InParamInt);
+	Execute__GetSignals(this)->OnSigIntSignal.Broadcast(InParamInt);
 }
 
-void UTestbed1StructArrayInterfaceLoggingDecorator::OnSigFloat(const TArray<FTestbed1StructFloat>& ParamFloat)
+void UTestbed1StructArrayInterfaceLoggingDecorator::OnSigFloat(const TArray<FTestbed1StructFloat>& InParamFloat)
 {
-	Testbed1StructArrayInterfaceTracer::trace_signalSigFloat(ParamFloat);
-	Execute__GetSignals(this)->OnSigFloatSignal.Broadcast(ParamFloat);
+	Testbed1StructArrayInterfaceTracer::trace_signalSigFloat(InParamFloat);
+	Execute__GetSignals(this)->OnSigFloatSignal.Broadcast(InParamFloat);
 }
 
-void UTestbed1StructArrayInterfaceLoggingDecorator::OnSigString(const TArray<FTestbed1StructString>& ParamString)
+void UTestbed1StructArrayInterfaceLoggingDecorator::OnSigString(const TArray<FTestbed1StructString>& InParamString)
 {
-	Testbed1StructArrayInterfaceTracer::trace_signalSigString(ParamString);
-	Execute__GetSignals(this)->OnSigStringSignal.Broadcast(ParamString);
+	Testbed1StructArrayInterfaceTracer::trace_signalSigString(InParamString);
+	Execute__GetSignals(this)->OnSigStringSignal.Broadcast(InParamString);
 }
 
 void UTestbed1StructArrayInterfaceLoggingDecorator::OnPropBoolChanged(const TArray<FTestbed1StructBool>& InPropBool)

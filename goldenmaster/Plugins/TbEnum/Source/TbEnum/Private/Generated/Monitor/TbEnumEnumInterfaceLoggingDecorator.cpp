@@ -84,28 +84,28 @@ void UTbEnumEnumInterfaceLoggingDecorator::setBackendService(TScriptInterface<IT
 	Prop3 = BackendService->Execute_GetProp3(BackendService.GetObject());
 }
 
-void UTbEnumEnumInterfaceLoggingDecorator::OnSig0(ETbEnumEnum0 Param0)
+void UTbEnumEnumInterfaceLoggingDecorator::OnSig0(ETbEnumEnum0 InParam0)
 {
-	TbEnumEnumInterfaceTracer::trace_signalSig0(Param0);
-	Execute__GetSignals(this)->OnSig0Signal.Broadcast(Param0);
+	TbEnumEnumInterfaceTracer::trace_signalSig0(InParam0);
+	Execute__GetSignals(this)->OnSig0Signal.Broadcast(InParam0);
 }
 
-void UTbEnumEnumInterfaceLoggingDecorator::OnSig1(ETbEnumEnum1 Param1)
+void UTbEnumEnumInterfaceLoggingDecorator::OnSig1(ETbEnumEnum1 InParam1)
 {
-	TbEnumEnumInterfaceTracer::trace_signalSig1(Param1);
-	Execute__GetSignals(this)->OnSig1Signal.Broadcast(Param1);
+	TbEnumEnumInterfaceTracer::trace_signalSig1(InParam1);
+	Execute__GetSignals(this)->OnSig1Signal.Broadcast(InParam1);
 }
 
-void UTbEnumEnumInterfaceLoggingDecorator::OnSig2(ETbEnumEnum2 Param2)
+void UTbEnumEnumInterfaceLoggingDecorator::OnSig2(ETbEnumEnum2 InParam2)
 {
-	TbEnumEnumInterfaceTracer::trace_signalSig2(Param2);
-	Execute__GetSignals(this)->OnSig2Signal.Broadcast(Param2);
+	TbEnumEnumInterfaceTracer::trace_signalSig2(InParam2);
+	Execute__GetSignals(this)->OnSig2Signal.Broadcast(InParam2);
 }
 
-void UTbEnumEnumInterfaceLoggingDecorator::OnSig3(ETbEnumEnum3 Param3)
+void UTbEnumEnumInterfaceLoggingDecorator::OnSig3(ETbEnumEnum3 InParam3)
 {
-	TbEnumEnumInterfaceTracer::trace_signalSig3(Param3);
-	Execute__GetSignals(this)->OnSig3Signal.Broadcast(Param3);
+	TbEnumEnumInterfaceTracer::trace_signalSig3(InParam3);
+	Execute__GetSignals(this)->OnSig3Signal.Broadcast(InParam3);
 }
 
 void UTbEnumEnumInterfaceLoggingDecorator::OnProp0Changed(ETbEnumEnum0 InProp0)

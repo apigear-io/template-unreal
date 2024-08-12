@@ -100,28 +100,28 @@ private:
 
 	// signals
 	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	void OnSigBool(bool bParamBool);
+	void OnSigBool(bool bInParamBool);
 
 	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	void OnSigInt(int32 ParamInt);
+	void OnSigInt(int32 InParamInt);
 
 	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	void OnSigInt32(int32 ParamInt32);
+	void OnSigInt32(int32 InParamInt32);
 
 	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	void OnSigInt64(int64 ParamInt64);
+	void OnSigInt64(int64 InParamInt64);
 
 	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	void OnSigFloat(float ParamFloat);
+	void OnSigFloat(float InParamFloat);
 
 	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	void OnSigFloat32(float ParamFloat32);
+	void OnSigFloat32(float InParamFloat32);
 
 	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	void OnSigFloat64(double ParamFloat64);
+	void OnSigFloat64(double InParamFloat64);
 
 	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	void OnSigString(const FString& ParamString);
+	void OnSigString(const FString& InParamString);
 
 	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
 	void OnPropBoolChanged(bool bInPropBool);

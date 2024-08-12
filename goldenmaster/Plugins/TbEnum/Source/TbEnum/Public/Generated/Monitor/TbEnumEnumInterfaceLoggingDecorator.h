@@ -74,16 +74,16 @@ private:
 
 	// signals
 	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
-	void OnSig0(ETbEnumEnum0 Param0);
+	void OnSig0(ETbEnumEnum0 InParam0);
 
 	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
-	void OnSig1(ETbEnumEnum1 Param1);
+	void OnSig1(ETbEnumEnum1 InParam1);
 
 	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
-	void OnSig2(ETbEnumEnum2 Param2);
+	void OnSig2(ETbEnumEnum2 InParam2);
 
 	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
-	void OnSig3(ETbEnumEnum3 Param3);
+	void OnSig3(ETbEnumEnum3 InParam3);
 
 	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
 	void OnProp0Changed(ETbEnumEnum0 InProp0);

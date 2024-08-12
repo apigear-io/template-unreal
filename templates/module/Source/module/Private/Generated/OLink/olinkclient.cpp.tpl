@@ -296,9 +296,9 @@ void {{$Class}}::emitSignal(const std::string& signalName, const nlohmann::json&
 	if (signalName == "{{.Name}}")
 	{
 		{{- range $idx, $elem := .Params }}
-		{{ueParam "" .}} = args[{{$idx}}].get<{{ueReturn "" .}}>();
+		{{ueParam "out" .}} = args[{{$idx}}].get<{{ueReturn "" .}}>();
 		{{- end }}
-		Execute__GetSignals(this)->On{{Camel .Name}}Signal.Broadcast({{ueVars "" .Params}});
+		Execute__GetSignals(this)->On{{Camel .Name}}Signal.Broadcast({{ueVars "out" .Params}});
 		return;
 	}
 {{- end }}

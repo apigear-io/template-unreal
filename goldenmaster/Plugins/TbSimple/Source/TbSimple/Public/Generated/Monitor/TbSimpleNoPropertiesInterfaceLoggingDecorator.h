@@ -57,5 +57,5 @@ private:
 	void OnSigVoid();
 
 	UFUNCTION(Category = "ApiGear|TbSimple|NoPropertiesInterface", BlueprintInternalUseOnly)
-	void OnSigBool(bool bParamBool);
+	void OnSigBool(bool bInParamBool);
 };

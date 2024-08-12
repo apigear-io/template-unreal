@@ -430,29 +430,29 @@ void UTbEnumEnumInterfaceOLinkClient::emitSignal(const std::string& signalName, 
 {
 	if (signalName == "sig0")
 	{
-		ETbEnumEnum0 Param0 = args[0].get<ETbEnumEnum0>();
-		Execute__GetSignals(this)->OnSig0Signal.Broadcast(Param0);
+		ETbEnumEnum0 outParam0 = args[0].get<ETbEnumEnum0>();
+		Execute__GetSignals(this)->OnSig0Signal.Broadcast(outParam0);
 		return;
 	}
 
 	if (signalName == "sig1")
 	{
-		ETbEnumEnum1 Param1 = args[0].get<ETbEnumEnum1>();
-		Execute__GetSignals(this)->OnSig1Signal.Broadcast(Param1);
+		ETbEnumEnum1 outParam1 = args[0].get<ETbEnumEnum1>();
+		Execute__GetSignals(this)->OnSig1Signal.Broadcast(outParam1);
 		return;
 	}
 
 	if (signalName == "sig2")
 	{
-		ETbEnumEnum2 Param2 = args[0].get<ETbEnumEnum2>();
-		Execute__GetSignals(this)->OnSig2Signal.Broadcast(Param2);
+		ETbEnumEnum2 outParam2 = args[0].get<ETbEnumEnum2>();
+		Execute__GetSignals(this)->OnSig2Signal.Broadcast(outParam2);
 		return;
 	}
 
 	if (signalName == "sig3")
 	{
-		ETbEnumEnum3 Param3 = args[0].get<ETbEnumEnum3>();
-		Execute__GetSignals(this)->OnSig3Signal.Broadcast(Param3);
+		ETbEnumEnum3 outParam3 = args[0].get<ETbEnumEnum3>();
+		Execute__GetSignals(this)->OnSig3Signal.Broadcast(outParam3);
 		return;
 	}
 }

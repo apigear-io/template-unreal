@@ -74,16 +74,16 @@ void UTbSame2SameStruct2InterfaceLoggingDecorator::setBackendService(TScriptInte
 	Prop2 = BackendService->Execute_GetProp2(BackendService.GetObject());
 }
 
-void UTbSame2SameStruct2InterfaceLoggingDecorator::OnSig1(const FTbSame2Struct1& Param1)
+void UTbSame2SameStruct2InterfaceLoggingDecorator::OnSig1(const FTbSame2Struct1& InParam1)
 {
-	TbSame2SameStruct2InterfaceTracer::trace_signalSig1(Param1);
-	Execute__GetSignals(this)->OnSig1Signal.Broadcast(Param1);
+	TbSame2SameStruct2InterfaceTracer::trace_signalSig1(InParam1);
+	Execute__GetSignals(this)->OnSig1Signal.Broadcast(InParam1);
 }
 
-void UTbSame2SameStruct2InterfaceLoggingDecorator::OnSig2(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2)
+void UTbSame2SameStruct2InterfaceLoggingDecorator::OnSig2(const FTbSame2Struct1& InParam1, const FTbSame2Struct2& InParam2)
 {
-	TbSame2SameStruct2InterfaceTracer::trace_signalSig2(Param1, Param2);
-	Execute__GetSignals(this)->OnSig2Signal.Broadcast(Param1, Param2);
+	TbSame2SameStruct2InterfaceTracer::trace_signalSig2(InParam1, InParam2);
+	Execute__GetSignals(this)->OnSig2Signal.Broadcast(InParam1, InParam2);
 }
 
 void UTbSame2SameStruct2InterfaceLoggingDecorator::OnProp1Changed(const FTbSame2Struct2& InProp1)

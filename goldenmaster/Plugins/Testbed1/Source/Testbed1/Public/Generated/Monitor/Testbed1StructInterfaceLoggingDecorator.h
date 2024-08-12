@@ -74,16 +74,16 @@ private:
 
 	// signals
 	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
-	void OnSigBool(const FTestbed1StructBool& ParamBool);
+	void OnSigBool(const FTestbed1StructBool& InParamBool);
 
 	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
-	void OnSigInt(const FTestbed1StructInt& ParamInt);
+	void OnSigInt(const FTestbed1StructInt& InParamInt);
 
 	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
-	void OnSigFloat(const FTestbed1StructFloat& ParamFloat);
+	void OnSigFloat(const FTestbed1StructFloat& InParamFloat);
 
 	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
-	void OnSigString(const FTestbed1StructString& ParamString);
+	void OnSigString(const FTestbed1StructString& InParamString);
 
 	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
 	void OnPropBoolChanged(const FTestbed1StructBool& InPropBool);

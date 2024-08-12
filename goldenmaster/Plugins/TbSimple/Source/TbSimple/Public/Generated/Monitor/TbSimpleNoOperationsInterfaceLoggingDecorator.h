@@ -61,7 +61,7 @@ private:
 	void OnSigVoid();
 
 	UFUNCTION(Category = "ApiGear|TbSimple|NoOperationsInterface", BlueprintInternalUseOnly)
-	void OnSigBool(bool bParamBool);
+	void OnSigBool(bool bInParamBool);
 
 	UFUNCTION(Category = "ApiGear|TbSimple|NoOperationsInterface", BlueprintInternalUseOnly)
 	void OnPropBoolChanged(bool bInPropBool);

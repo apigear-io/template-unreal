@@ -74,10 +74,10 @@ void UTbSimpleNoPropertiesInterfaceLoggingDecorator::OnSigVoid()
 	Execute__GetSignals(this)->OnSigVoidSignal.Broadcast();
 }
 
-void UTbSimpleNoPropertiesInterfaceLoggingDecorator::OnSigBool(bool bParamBool)
+void UTbSimpleNoPropertiesInterfaceLoggingDecorator::OnSigBool(bool bInParamBool)
 {
-	TbSimpleNoPropertiesInterfaceTracer::trace_signalSigBool(bParamBool);
-	Execute__GetSignals(this)->OnSigBoolSignal.Broadcast(bParamBool);
+	TbSimpleNoPropertiesInterfaceTracer::trace_signalSigBool(bInParamBool);
+	Execute__GetSignals(this)->OnSigBoolSignal.Broadcast(bInParamBool);
 }
 
 void UTbSimpleNoPropertiesInterfaceLoggingDecorator::FuncVoid_Implementation()

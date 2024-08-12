@@ -104,10 +104,10 @@ void {{$Class}}::setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{Cam
 {{- if .Interface.Signals }}{{nl}}{{ end }}
 {{- range $i, $e := .Interface.Signals }}
 {{- if $i }}{{nl}}{{ end }}
-void {{$Class}}::On{{Camel .Name}}({{ueParams "" .Params}})
+void {{$Class}}::On{{Camel .Name}}({{ueParams "In" .Params}})
 {
-	{{$Iface}}Tracer::trace_signal{{Camel .Name}}({{ueVars "" .Params}});
-	Execute__GetSignals(this)->On{{Camel .Name}}Signal.Broadcast({{ueVars "" .Params }});
+	{{$Iface}}Tracer::trace_signal{{Camel .Name}}({{ueVars "In" .Params}});
+	Execute__GetSignals(this)->On{{Camel .Name}}Signal.Broadcast({{ueVars "In" .Params }});
 }
 {{- end }}
 {{- if .Interface.Properties }}{{nl}}{{ end }}

@@ -104,52 +104,52 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::setBackendService(TScriptInterfac
 	PropString = BackendService->Execute_GetPropString(BackendService.GetObject());
 }
 
-void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigBool(bool bParamBool)
+void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigBool(bool bInParamBool)
 {
-	TbSimpleSimpleInterfaceTracer::trace_signalSigBool(bParamBool);
-	Execute__GetSignals(this)->OnSigBoolSignal.Broadcast(bParamBool);
+	TbSimpleSimpleInterfaceTracer::trace_signalSigBool(bInParamBool);
+	Execute__GetSignals(this)->OnSigBoolSignal.Broadcast(bInParamBool);
 }
 
-void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt(int32 ParamInt)
+void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt(int32 InParamInt)
 {
-	TbSimpleSimpleInterfaceTracer::trace_signalSigInt(ParamInt);
-	Execute__GetSignals(this)->OnSigIntSignal.Broadcast(ParamInt);
+	TbSimpleSimpleInterfaceTracer::trace_signalSigInt(InParamInt);
+	Execute__GetSignals(this)->OnSigIntSignal.Broadcast(InParamInt);
 }
 
-void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt32(int32 ParamInt32)
+void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt32(int32 InParamInt32)
 {
-	TbSimpleSimpleInterfaceTracer::trace_signalSigInt32(ParamInt32);
-	Execute__GetSignals(this)->OnSigInt32Signal.Broadcast(ParamInt32);
+	TbSimpleSimpleInterfaceTracer::trace_signalSigInt32(InParamInt32);
+	Execute__GetSignals(this)->OnSigInt32Signal.Broadcast(InParamInt32);
 }
 
-void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt64(int64 ParamInt64)
+void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt64(int64 InParamInt64)
 {
-	TbSimpleSimpleInterfaceTracer::trace_signalSigInt64(ParamInt64);
-	Execute__GetSignals(this)->OnSigInt64Signal.Broadcast(ParamInt64);
+	TbSimpleSimpleInterfaceTracer::trace_signalSigInt64(InParamInt64);
+	Execute__GetSignals(this)->OnSigInt64Signal.Broadcast(InParamInt64);
 }
 
-void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat(float ParamFloat)
+void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat(float InParamFloat)
 {
-	TbSimpleSimpleInterfaceTracer::trace_signalSigFloat(ParamFloat);
-	Execute__GetSignals(this)->OnSigFloatSignal.Broadcast(ParamFloat);
+	TbSimpleSimpleInterfaceTracer::trace_signalSigFloat(InParamFloat);
+	Execute__GetSignals(this)->OnSigFloatSignal.Broadcast(InParamFloat);
 }
 
-void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat32(float ParamFloat32)
+void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat32(float InParamFloat32)
 {
-	TbSimpleSimpleInterfaceTracer::trace_signalSigFloat32(ParamFloat32);
-	Execute__GetSignals(this)->OnSigFloat32Signal.Broadcast(ParamFloat32);
+	TbSimpleSimpleInterfaceTracer::trace_signalSigFloat32(InParamFloat32);
+	Execute__GetSignals(this)->OnSigFloat32Signal.Broadcast(InParamFloat32);
 }
 
-void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat64(double ParamFloat64)
+void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat64(double InParamFloat64)
 {
-	TbSimpleSimpleInterfaceTracer::trace_signalSigFloat64(ParamFloat64);
-	Execute__GetSignals(this)->OnSigFloat64Signal.Broadcast(ParamFloat64);
+	TbSimpleSimpleInterfaceTracer::trace_signalSigFloat64(InParamFloat64);
+	Execute__GetSignals(this)->OnSigFloat64Signal.Broadcast(InParamFloat64);
 }
 
-void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigString(const FString& ParamString)
+void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigString(const FString& InParamString)
 {
-	TbSimpleSimpleInterfaceTracer::trace_signalSigString(ParamString);
-	Execute__GetSignals(this)->OnSigStringSignal.Broadcast(ParamString);
+	TbSimpleSimpleInterfaceTracer::trace_signalSigString(InParamString);
+	Execute__GetSignals(this)->OnSigStringSignal.Broadcast(InParamString);
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnPropBoolChanged(bool bInPropBool)

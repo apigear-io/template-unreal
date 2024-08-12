@@ -450,29 +450,29 @@ void UTestbed1StructArrayInterfaceOLinkClient::emitSignal(const std::string& sig
 {
 	if (signalName == "sigBool")
 	{
-		const TArray<FTestbed1StructBool>& ParamBool = args[0].get<TArray<FTestbed1StructBool>>();
-		Execute__GetSignals(this)->OnSigBoolSignal.Broadcast(ParamBool);
+		const TArray<FTestbed1StructBool>& outParamBool = args[0].get<TArray<FTestbed1StructBool>>();
+		Execute__GetSignals(this)->OnSigBoolSignal.Broadcast(outParamBool);
 		return;
 	}
 
 	if (signalName == "sigInt")
 	{
-		const TArray<FTestbed1StructInt>& ParamInt = args[0].get<TArray<FTestbed1StructInt>>();
-		Execute__GetSignals(this)->OnSigIntSignal.Broadcast(ParamInt);
+		const TArray<FTestbed1StructInt>& outParamInt = args[0].get<TArray<FTestbed1StructInt>>();
+		Execute__GetSignals(this)->OnSigIntSignal.Broadcast(outParamInt);
 		return;
 	}
 
 	if (signalName == "sigFloat")
 	{
-		const TArray<FTestbed1StructFloat>& ParamFloat = args[0].get<TArray<FTestbed1StructFloat>>();
-		Execute__GetSignals(this)->OnSigFloatSignal.Broadcast(ParamFloat);
+		const TArray<FTestbed1StructFloat>& outParamFloat = args[0].get<TArray<FTestbed1StructFloat>>();
+		Execute__GetSignals(this)->OnSigFloatSignal.Broadcast(outParamFloat);
 		return;
 	}
 
 	if (signalName == "sigString")
 	{
-		const TArray<FTestbed1StructString>& ParamString = args[0].get<TArray<FTestbed1StructString>>();
-		Execute__GetSignals(this)->OnSigStringSignal.Broadcast(ParamString);
+		const TArray<FTestbed1StructString>& outParamString = args[0].get<TArray<FTestbed1StructString>>();
+		Execute__GetSignals(this)->OnSigStringSignal.Broadcast(outParamString);
 		return;
 	}
 }

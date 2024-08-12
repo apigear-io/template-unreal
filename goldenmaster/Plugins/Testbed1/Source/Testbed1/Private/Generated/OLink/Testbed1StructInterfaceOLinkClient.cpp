@@ -450,29 +450,29 @@ void UTestbed1StructInterfaceOLinkClient::emitSignal(const std::string& signalNa
 {
 	if (signalName == "sigBool")
 	{
-		const FTestbed1StructBool& ParamBool = args[0].get<FTestbed1StructBool>();
-		Execute__GetSignals(this)->OnSigBoolSignal.Broadcast(ParamBool);
+		const FTestbed1StructBool& outParamBool = args[0].get<FTestbed1StructBool>();
+		Execute__GetSignals(this)->OnSigBoolSignal.Broadcast(outParamBool);
 		return;
 	}
 
 	if (signalName == "sigInt")
 	{
-		const FTestbed1StructInt& ParamInt = args[0].get<FTestbed1StructInt>();
-		Execute__GetSignals(this)->OnSigIntSignal.Broadcast(ParamInt);
+		const FTestbed1StructInt& outParamInt = args[0].get<FTestbed1StructInt>();
+		Execute__GetSignals(this)->OnSigIntSignal.Broadcast(outParamInt);
 		return;
 	}
 
 	if (signalName == "sigFloat")
 	{
-		const FTestbed1StructFloat& ParamFloat = args[0].get<FTestbed1StructFloat>();
-		Execute__GetSignals(this)->OnSigFloatSignal.Broadcast(ParamFloat);
+		const FTestbed1StructFloat& outParamFloat = args[0].get<FTestbed1StructFloat>();
+		Execute__GetSignals(this)->OnSigFloatSignal.Broadcast(outParamFloat);
 		return;
 	}
 
 	if (signalName == "sigString")
 	{
-		const FTestbed1StructString& ParamString = args[0].get<FTestbed1StructString>();
-		Execute__GetSignals(this)->OnSigStringSignal.Broadcast(ParamString);
+		const FTestbed1StructString& outParamString = args[0].get<FTestbed1StructString>();
+		Execute__GetSignals(this)->OnSigStringSignal.Broadcast(outParamString);
 		return;
 	}
 }

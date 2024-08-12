@@ -74,16 +74,16 @@ private:
 
 	// signals
 	UFUNCTION(Category = "ApiGear|Testbed1|StructArrayInterface", BlueprintInternalUseOnly)
-	void OnSigBool(const TArray<FTestbed1StructBool>& ParamBool);
+	void OnSigBool(const TArray<FTestbed1StructBool>& InParamBool);
 
 	UFUNCTION(Category = "ApiGear|Testbed1|StructArrayInterface", BlueprintInternalUseOnly)
-	void OnSigInt(const TArray<FTestbed1StructInt>& ParamInt);
+	void OnSigInt(const TArray<FTestbed1StructInt>& InParamInt);
 
 	UFUNCTION(Category = "ApiGear|Testbed1|StructArrayInterface", BlueprintInternalUseOnly)
-	void OnSigFloat(const TArray<FTestbed1StructFloat>& ParamFloat);
+	void OnSigFloat(const TArray<FTestbed1StructFloat>& InParamFloat);
 
 	UFUNCTION(Category = "ApiGear|Testbed1|StructArrayInterface", BlueprintInternalUseOnly)
-	void OnSigString(const TArray<FTestbed1StructString>& ParamString);
+	void OnSigString(const TArray<FTestbed1StructString>& InParamString);
 
 	UFUNCTION(Category = "ApiGear|Testbed1|StructArrayInterface", BlueprintInternalUseOnly)
 	void OnPropBoolChanged(const TArray<FTestbed1StructBool>& InPropBool);

@@ -74,16 +74,16 @@ void UTbSame2SameEnum2InterfaceLoggingDecorator::setBackendService(TScriptInterf
 	Prop2 = BackendService->Execute_GetProp2(BackendService.GetObject());
 }
 
-void UTbSame2SameEnum2InterfaceLoggingDecorator::OnSig1(ETbSame2Enum1 Param1)
+void UTbSame2SameEnum2InterfaceLoggingDecorator::OnSig1(ETbSame2Enum1 InParam1)
 {
-	TbSame2SameEnum2InterfaceTracer::trace_signalSig1(Param1);
-	Execute__GetSignals(this)->OnSig1Signal.Broadcast(Param1);
+	TbSame2SameEnum2InterfaceTracer::trace_signalSig1(InParam1);
+	Execute__GetSignals(this)->OnSig1Signal.Broadcast(InParam1);
 }
 
-void UTbSame2SameEnum2InterfaceLoggingDecorator::OnSig2(ETbSame2Enum1 Param1, ETbSame2Enum2 Param2)
+void UTbSame2SameEnum2InterfaceLoggingDecorator::OnSig2(ETbSame2Enum1 InParam1, ETbSame2Enum2 InParam2)
 {
-	TbSame2SameEnum2InterfaceTracer::trace_signalSig2(Param1, Param2);
-	Execute__GetSignals(this)->OnSig2Signal.Broadcast(Param1, Param2);
+	TbSame2SameEnum2InterfaceTracer::trace_signalSig2(InParam1, InParam2);
+	Execute__GetSignals(this)->OnSig2Signal.Broadcast(InParam1, InParam2);
 }
 
 void UTbSame2SameEnum2InterfaceLoggingDecorator::OnProp1Changed(ETbSame2Enum1 InProp1)

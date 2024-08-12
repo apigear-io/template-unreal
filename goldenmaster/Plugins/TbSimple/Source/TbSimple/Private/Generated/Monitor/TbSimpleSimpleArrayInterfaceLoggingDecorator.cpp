@@ -107,52 +107,52 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::setBackendService(TScriptInt
 	PropReadOnlyString = BackendService->Execute_GetPropReadOnlyString(BackendService.GetObject());
 }
 
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigBool(const TArray<bool>& ParamBool)
+void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigBool(const TArray<bool>& InParamBool)
 {
-	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigBool(ParamBool);
-	Execute__GetSignals(this)->OnSigBoolSignal.Broadcast(ParamBool);
+	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigBool(InParamBool);
+	Execute__GetSignals(this)->OnSigBoolSignal.Broadcast(InParamBool);
 }
 
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigInt(const TArray<int32>& ParamInt)
+void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigInt(const TArray<int32>& InParamInt)
 {
-	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigInt(ParamInt);
-	Execute__GetSignals(this)->OnSigIntSignal.Broadcast(ParamInt);
+	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigInt(InParamInt);
+	Execute__GetSignals(this)->OnSigIntSignal.Broadcast(InParamInt);
 }
 
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigInt32(const TArray<int32>& ParamInt32)
+void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigInt32(const TArray<int32>& InParamInt32)
 {
-	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigInt32(ParamInt32);
-	Execute__GetSignals(this)->OnSigInt32Signal.Broadcast(ParamInt32);
+	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigInt32(InParamInt32);
+	Execute__GetSignals(this)->OnSigInt32Signal.Broadcast(InParamInt32);
 }
 
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigInt64(const TArray<int64>& ParamInt64)
+void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigInt64(const TArray<int64>& InParamInt64)
 {
-	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigInt64(ParamInt64);
-	Execute__GetSignals(this)->OnSigInt64Signal.Broadcast(ParamInt64);
+	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigInt64(InParamInt64);
+	Execute__GetSignals(this)->OnSigInt64Signal.Broadcast(InParamInt64);
 }
 
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigFloat(const TArray<float>& ParamFloat)
+void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigFloat(const TArray<float>& InParamFloat)
 {
-	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigFloat(ParamFloat);
-	Execute__GetSignals(this)->OnSigFloatSignal.Broadcast(ParamFloat);
+	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigFloat(InParamFloat);
+	Execute__GetSignals(this)->OnSigFloatSignal.Broadcast(InParamFloat);
 }
 
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigFloat32(const TArray<float>& ParamFloa32)
+void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigFloat32(const TArray<float>& InParamFloa32)
 {
-	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigFloat32(ParamFloa32);
-	Execute__GetSignals(this)->OnSigFloat32Signal.Broadcast(ParamFloa32);
+	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigFloat32(InParamFloa32);
+	Execute__GetSignals(this)->OnSigFloat32Signal.Broadcast(InParamFloa32);
 }
 
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigFloat64(const TArray<double>& ParamFloat64)
+void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigFloat64(const TArray<double>& InParamFloat64)
 {
-	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigFloat64(ParamFloat64);
-	Execute__GetSignals(this)->OnSigFloat64Signal.Broadcast(ParamFloat64);
+	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigFloat64(InParamFloat64);
+	Execute__GetSignals(this)->OnSigFloat64Signal.Broadcast(InParamFloat64);
 }
 
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigString(const TArray<FString>& ParamString)
+void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigString(const TArray<FString>& InParamString)
 {
-	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigString(ParamString);
-	Execute__GetSignals(this)->OnSigStringSignal.Broadcast(ParamString);
+	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigString(InParamString);
+	Execute__GetSignals(this)->OnSigStringSignal.Broadcast(InParamString);
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropBoolChanged(const TArray<bool>& InPropBool)
