@@ -19,6 +19,8 @@ limitations under the License.
 #include "ApiGearSettings.h"
 #include "ApiGearOLink.h"
 #include "TbSimpleSettings.h"
+#include "Implementation/TbSimpleVoidInterface.h"
+#include "Generated/OLink/TbSimpleVoidInterfaceOLinkClient.h"
 #include "Implementation/TbSimpleSimpleInterface.h"
 #include "Generated/OLink/TbSimpleSimpleInterfaceOLinkClient.h"
 #include "Implementation/TbSimpleSimpleArrayInterface.h"
@@ -46,6 +48,114 @@ bool IsTbSimpleLogEnabled()
 	return settings->Tracer_EnableDebugLog;
 }
 } // namespace
+
+#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
+TScriptInterface<ITbSimpleVoidInterfaceInterface> createTbSimpleVoidInterfaceOLink(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+{
+	if (IsTbSimpleLogEnabled())
+	{
+		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleVoidInterfaceInterface: Using OLink service backend"));
+	}
+
+	UTbSimpleVoidInterfaceOLinkClient* Instance = GameInstance->GetSubsystem<UTbSimpleVoidInterfaceOLinkClient>(GameInstance);
+	if (!Instance)
+	{
+		Collection.InitializeDependency(UTbSimpleVoidInterfaceOLinkClient::StaticClass());
+		Instance = GameInstance->GetSubsystem<UTbSimpleVoidInterfaceOLinkClient>(GameInstance);
+	}
+
+	return Instance;
+}
+
+TScriptInterface<ITbSimpleVoidInterfaceInterface> createTbSimpleVoidInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+{
+	if (IsTbSimpleLogEnabled())
+	{
+		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleVoidInterfaceInterface: Using local service backend"));
+	}
+
+	UTbSimpleVoidInterface* Instance = GameInstance->GetSubsystem<UTbSimpleVoidInterface>(GameInstance);
+	if (!Instance)
+	{
+		Collection.InitializeDependency(UTbSimpleVoidInterface::StaticClass());
+		Instance = GameInstance->GetSubsystem<UTbSimpleVoidInterface>(GameInstance);
+	}
+
+	return Instance;
+}
+
+TScriptInterface<ITbSimpleVoidInterfaceInterface> FTbSimpleModuleFactory::createITbSimpleVoidInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+{
+	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
+
+	if (TbSimpleSettings->TracerServiceIdentifier == TbSimpleLocalBackendIdentifier)
+	{
+		return createTbSimpleVoidInterface(GameInstance, Collection);
+	}
+
+	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSimpleSettings->TracerServiceIdentifier);
+
+	// Other protocols not supported. To support it edit templates:
+	// add protocol handler class for this interface like createTbSimpleVoidInterfaceOLink and other necessary infrastructure
+	// extend this function in templates to handle protocol of your choice
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
+	{
+		return createTbSimpleVoidInterfaceOLink(GameInstance, Collection);
+	}
+
+	// fallback to local implementation
+	return createTbSimpleVoidInterface(GameInstance, Collection);
+}
+
+#else
+
+TScriptInterface<ITbSimpleVoidInterfaceInterface> createTbSimpleVoidInterfaceOLink(FSubsystemCollectionBase& Collection)
+{
+	if (IsTbSimpleLogEnabled())
+	{
+		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleVoidInterfaceInterface: Using OLink service backend"));
+	}
+
+	UTbSimpleVoidInterfaceOLinkClient* Instance = Cast<UTbSimpleVoidInterfaceOLinkClient>(Collection.InitializeDependency(UTbSimpleVoidInterfaceOLinkClient::StaticClass()));
+	return Instance;
+}
+
+TScriptInterface<ITbSimpleVoidInterfaceInterface> createTbSimpleVoidInterface(FSubsystemCollectionBase& Collection)
+{
+	if (IsTbSimpleLogEnabled())
+	{
+		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleVoidInterfaceInterface: Using local service backend"));
+	}
+
+	UTbSimpleVoidInterface* Instance = Cast<UTbSimpleVoidInterface>(Collection.InitializeDependency(UTbSimpleVoidInterface::StaticClass()));
+	return Instance;
+}
+
+TScriptInterface<ITbSimpleVoidInterfaceInterface> FTbSimpleModuleFactory::createITbSimpleVoidInterfaceInterface(FSubsystemCollectionBase& Collection)
+{
+	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
+
+	if (TbSimpleSettings->TracerServiceIdentifier == TbSimpleLocalBackendIdentifier)
+	{
+		return createTbSimpleVoidInterface(Collection);
+	}
+
+	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSimpleSettings->TracerServiceIdentifier);
+
+	// Other protocols not supported. To support it edit templates:
+	// add protocol handler class for this interface like createTbSimpleVoidInterfaceOLink and other necessary infrastructure
+	// extend this function in templates to handle protocol of your choice
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
+	{
+		return createTbSimpleVoidInterfaceOLink(Collection);
+	}
+
+	// fallback to local implementation
+	return createTbSimpleVoidInterface(Collection);
+}
+#endif
 
 #if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
 TScriptInterface<ITbSimpleSimpleInterfaceInterface> createTbSimpleSimpleInterfaceOLink(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)

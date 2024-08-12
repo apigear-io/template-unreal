@@ -25,8 +25,6 @@ limitations under the License.
  * Declaration for SimpleInterface
  */
 // signal delegates
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTbSimpleSimpleInterfaceSigVoidDelegate);
-
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfaceSigBoolDelegate, bool, bParamBool);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfaceSigIntDelegate, int32, ParamInt);
@@ -37,7 +35,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfaceSigInt64Dele
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfaceSigFloatDelegate, float, ParamFloat);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfaceSigFloat32Delegate, float, ParamFloa32);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfaceSigFloat32Delegate, float, ParamFloat32);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfaceSigFloat64Delegate, double, ParamFloat64);
 
@@ -52,7 +50,6 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfacePropFloatCha
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfacePropFloat32ChangedDelegate, float, PropFloat32);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfacePropFloat64ChangedDelegate, double, PropFloat64);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfacePropStringChangedDelegate, const FString&, PropString);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfacePropReadOnlyStringChangedDelegate, const FString&, PropReadOnlyString);
 
 /**
  * Class UTbSimpleSimpleInterfaceInterfaceSignals
@@ -65,15 +62,6 @@ class TBSIMPLE_API UTbSimpleSimpleInterfaceSignals : public UObject
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "SigVoid Signal")
-	FTbSimpleSimpleInterfaceSigVoidDelegate OnSigVoidSignal;
-	/// C++ wrapper for BP functions to safely call SigVoidSignal.Broadcast
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast SigVoid Signal")
-	void BroadcastSigVoidSignal()
-	{
-		OnSigVoidSignal.Broadcast();
-	}
-
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "SigBool Signal")
 	FTbSimpleSimpleInterfaceSigBoolDelegate OnSigBoolSignal;
 	/// C++ wrapper for BP functions to safely call SigBoolSignal.Broadcast
@@ -123,9 +111,9 @@ public:
 	FTbSimpleSimpleInterfaceSigFloat32Delegate OnSigFloat32Signal;
 	/// C++ wrapper for BP functions to safely call SigFloat32Signal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast SigFloat32 Signal")
-	void BroadcastSigFloat32Signal(float ParamFloa32)
+	void BroadcastSigFloat32Signal(float ParamFloat32)
 	{
-		OnSigFloat32Signal.Broadcast(ParamFloa32);
+		OnSigFloat32Signal.Broadcast(ParamFloat32);
 	}
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "SigFloat64 Signal")
@@ -217,15 +205,6 @@ public:
 	{
 		OnPropStringChanged.Broadcast(InPropString);
 	}
-
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Property PropReadOnlyString Changed")
-	FTbSimpleSimpleInterfacePropReadOnlyStringChangedDelegate OnPropReadOnlyStringChanged;
-	/// C++ wrapper for BP functions to safely call OnPropReadOnlyStringChanged.Broadcast
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast Property PropReadOnlyString Changed")
-	void BroadcastPropReadOnlyStringChanged(UPARAM(DisplayName = "PropReadOnlyString") const FString& InPropReadOnlyString)
-	{
-		OnPropReadOnlyStringChanged.Broadcast(InPropReadOnlyString);
-	}
 };
 
 /**
@@ -254,8 +233,8 @@ public:
 
 	// methods
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Operations")
-	void FuncVoid();
-	virtual void FuncVoid_Implementation() = 0;
+	void FuncNoReturnValue(bool bParamBool);
+	virtual void FuncNoReturnValue_Implementation(bool bParamBool) = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	void FuncBoolAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool);
@@ -362,7 +341,4 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Properties")
 	void SetPropString(const FString& InPropString);
 	virtual void SetPropString_Implementation(const FString& InPropString) = 0;
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Properties")
-	FString GetPropReadOnlyString() const;
-	virtual FString GetPropReadOnlyString_Implementation() const = 0;
 };

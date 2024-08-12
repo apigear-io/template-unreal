@@ -71,30 +71,30 @@ void UTestbed1StructArrayInterface::SetPropString_Implementation(const TArray<FT
 	}
 }
 
-FTestbed1StructBool UTestbed1StructArrayInterface::FuncBool_Implementation(const TArray<FTestbed1StructBool>& ParamBool)
+TArray<FTestbed1StructBool> UTestbed1StructArrayInterface::FuncBool_Implementation(const TArray<FTestbed1StructBool>& ParamBool)
 {
 	(void)ParamBool;
 	// do business logic here
-	return FTestbed1StructBool();
+	return TArray<FTestbed1StructBool>();
 }
 
-FTestbed1StructBool UTestbed1StructArrayInterface::FuncInt_Implementation(const TArray<FTestbed1StructInt>& ParamInt)
+TArray<FTestbed1StructInt> UTestbed1StructArrayInterface::FuncInt_Implementation(const TArray<FTestbed1StructInt>& ParamInt)
 {
 	(void)ParamInt;
 	// do business logic here
-	return FTestbed1StructBool();
+	return TArray<FTestbed1StructInt>();
 }
 
-FTestbed1StructBool UTestbed1StructArrayInterface::FuncFloat_Implementation(const TArray<FTestbed1StructFloat>& ParamFloat)
+TArray<FTestbed1StructFloat> UTestbed1StructArrayInterface::FuncFloat_Implementation(const TArray<FTestbed1StructFloat>& ParamFloat)
 {
 	(void)ParamFloat;
 	// do business logic here
-	return FTestbed1StructBool();
+	return TArray<FTestbed1StructFloat>();
 }
 
-FTestbed1StructBool UTestbed1StructArrayInterface::FuncString_Implementation(const TArray<FTestbed1StructString>& ParamString)
+TArray<FTestbed1StructString> UTestbed1StructArrayInterface::FuncString_Implementation(const TArray<FTestbed1StructString>& ParamString)
 {
 	(void)ParamString;
 	// do business logic here
-	return FTestbed1StructBool();
+	return TArray<FTestbed1StructString>();
 }

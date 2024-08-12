@@ -74,10 +74,8 @@ public:
 
 	void SetPropString_Implementation(const FString& InPropString) override;
 
-	FString GetPropReadOnlyString_Implementation() const override;
-
 	// operations
-	void FuncVoid_Implementation() override;
+	void FuncNoReturnValue_Implementation(bool bParamBool) override;
 
 	bool FuncBool_Implementation(bool bParamBool) override;
 
@@ -102,9 +100,6 @@ private:
 
 	// signals
 	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	void OnSigVoid();
-
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
 	void OnSigBool(bool bParamBool);
 
 	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
@@ -120,7 +115,7 @@ private:
 	void OnSigFloat(float ParamFloat);
 
 	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	void OnSigFloat32(float ParamFloa32);
+	void OnSigFloat32(float ParamFloat32);
 
 	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
 	void OnSigFloat64(double ParamFloat64);
@@ -151,7 +146,4 @@ private:
 
 	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
 	void OnPropStringChanged(const FString& InPropString);
-
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	void OnPropReadOnlyStringChanged(const FString& InPropReadOnlyString);
 };

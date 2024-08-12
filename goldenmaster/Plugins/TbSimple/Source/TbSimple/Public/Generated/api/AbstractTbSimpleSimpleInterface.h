@@ -41,7 +41,7 @@ public:
 	virtual UTbSimpleSimpleInterfaceSignals* _GetSignals_Implementation() override;
 
 	// methods
-	virtual void FuncVoid_Implementation() override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::FuncVoid_Implementation, return;);
+	virtual void FuncNoReturnValue_Implementation(bool bParamBool) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::FuncNoReturnValue_Implementation, return;);
 
 	virtual void FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool) override;
 	virtual bool FuncBool_Implementation(bool bParamBool) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::FuncBool_Implementation, return false;);
@@ -91,8 +91,6 @@ public:
 
 	virtual FString GetPropString_Implementation() const override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::GetPropString_Implementation, return FString(););
 	virtual void SetPropString_Implementation(const FString& InPropString) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::SetPropString_Implementation, return;);
-
-	virtual FString GetPropReadOnlyString_Implementation() const override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::GetPropReadOnlyString_Implementation, return FString(););
 
 	virtual bool IsInitialized() const;
 
@@ -171,12 +169,6 @@ protected:
 
 	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSimple|SimpleInterface|Properties", BlueprintInternalUseOnly)
 	void SetPropString_Private(const FString& InPropString);
-
-	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropReadOnlyString_Private, Category = "ApiGear|TbSimple|SimpleInterface")
-	FString PropReadOnlyString{FString()};
-
-	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSimple|SimpleInterface|Properties", BlueprintInternalUseOnly)
-	FString GetPropReadOnlyString_Private() const;
 
 private:
 	// signals

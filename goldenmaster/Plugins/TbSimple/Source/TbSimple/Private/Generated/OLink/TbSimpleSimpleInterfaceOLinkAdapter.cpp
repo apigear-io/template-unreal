@@ -64,8 +64,6 @@ void UTbSimpleSimpleInterfaceOLinkAdapter::setBackendService(TScriptInterface<IT
 		BackendSignals->OnPropFloat32Changed.RemoveDynamic(this, &UTbSimpleSimpleInterfaceOLinkAdapter::OnPropFloat32Changed);
 		BackendSignals->OnPropFloat64Changed.RemoveDynamic(this, &UTbSimpleSimpleInterfaceOLinkAdapter::OnPropFloat64Changed);
 		BackendSignals->OnPropStringChanged.RemoveDynamic(this, &UTbSimpleSimpleInterfaceOLinkAdapter::OnPropStringChanged);
-		BackendSignals->OnPropReadOnlyStringChanged.RemoveDynamic(this, &UTbSimpleSimpleInterfaceOLinkAdapter::OnPropReadOnlyStringChanged);
-		BackendSignals->OnSigVoidSignal.RemoveDynamic(this, &UTbSimpleSimpleInterfaceOLinkAdapter::OnSigVoid);
 		BackendSignals->OnSigBoolSignal.RemoveDynamic(this, &UTbSimpleSimpleInterfaceOLinkAdapter::OnSigBool);
 		BackendSignals->OnSigIntSignal.RemoveDynamic(this, &UTbSimpleSimpleInterfaceOLinkAdapter::OnSigInt);
 		BackendSignals->OnSigInt32Signal.RemoveDynamic(this, &UTbSimpleSimpleInterfaceOLinkAdapter::OnSigInt32);
@@ -92,8 +90,6 @@ void UTbSimpleSimpleInterfaceOLinkAdapter::setBackendService(TScriptInterface<IT
 	BackendSignals->OnPropFloat32Changed.AddDynamic(this, &UTbSimpleSimpleInterfaceOLinkAdapter::OnPropFloat32Changed);
 	BackendSignals->OnPropFloat64Changed.AddDynamic(this, &UTbSimpleSimpleInterfaceOLinkAdapter::OnPropFloat64Changed);
 	BackendSignals->OnPropStringChanged.AddDynamic(this, &UTbSimpleSimpleInterfaceOLinkAdapter::OnPropStringChanged);
-	BackendSignals->OnPropReadOnlyStringChanged.AddDynamic(this, &UTbSimpleSimpleInterfaceOLinkAdapter::OnPropReadOnlyStringChanged);
-	BackendSignals->OnSigVoidSignal.AddDynamic(this, &UTbSimpleSimpleInterfaceOLinkAdapter::OnSigVoid);
 	BackendSignals->OnSigBoolSignal.AddDynamic(this, &UTbSimpleSimpleInterfaceOLinkAdapter::OnSigBool);
 	BackendSignals->OnSigIntSignal.AddDynamic(this, &UTbSimpleSimpleInterfaceOLinkAdapter::OnSigInt);
 	BackendSignals->OnSigInt32Signal.AddDynamic(this, &UTbSimpleSimpleInterfaceOLinkAdapter::OnSigInt32);
@@ -105,11 +101,6 @@ void UTbSimpleSimpleInterfaceOLinkAdapter::setBackendService(TScriptInterface<IT
 
 	// update olink source with new backend
 	Source->setBackendService(InService);
-}
-
-void UTbSimpleSimpleInterfaceOLinkAdapter::OnSigVoid()
-{
-	Source->OnSigVoid();
 }
 
 void UTbSimpleSimpleInterfaceOLinkAdapter::OnSigBool(bool bParamBool)
@@ -137,9 +128,9 @@ void UTbSimpleSimpleInterfaceOLinkAdapter::OnSigFloat(float ParamFloat)
 	Source->OnSigFloat(ParamFloat);
 }
 
-void UTbSimpleSimpleInterfaceOLinkAdapter::OnSigFloat32(float ParamFloa32)
+void UTbSimpleSimpleInterfaceOLinkAdapter::OnSigFloat32(float ParamFloat32)
 {
-	Source->OnSigFloat32(ParamFloa32);
+	Source->OnSigFloat32(ParamFloat32);
 }
 
 void UTbSimpleSimpleInterfaceOLinkAdapter::OnSigFloat64(double ParamFloat64)
@@ -190,11 +181,6 @@ void UTbSimpleSimpleInterfaceOLinkAdapter::OnPropFloat64Changed(double InPropFlo
 void UTbSimpleSimpleInterfaceOLinkAdapter::OnPropStringChanged(const FString& InPropString)
 {
 	Source->OnPropStringChanged(InPropString);
-}
-
-void UTbSimpleSimpleInterfaceOLinkAdapter::OnPropReadOnlyStringChanged(const FString& InPropReadOnlyString)
-{
-	Source->OnPropReadOnlyStringChanged(InPropReadOnlyString);
 }
 
 void UTbSimpleSimpleInterfaceOLinkAdapter::setOLinkHost(TSoftObjectPtr<UOLinkHost> InHost)

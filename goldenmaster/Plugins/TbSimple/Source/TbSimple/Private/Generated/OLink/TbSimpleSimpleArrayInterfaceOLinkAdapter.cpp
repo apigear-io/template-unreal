@@ -64,6 +64,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkAdapter::setBackendService(TScriptInterfa
 		BackendSignals->OnPropFloat32Changed.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropFloat32Changed);
 		BackendSignals->OnPropFloat64Changed.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropFloat64Changed);
 		BackendSignals->OnPropStringChanged.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropStringChanged);
+		BackendSignals->OnPropReadOnlyStringChanged.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropReadOnlyStringChanged);
 		BackendSignals->OnSigBoolSignal.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigBool);
 		BackendSignals->OnSigIntSignal.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigInt);
 		BackendSignals->OnSigInt32Signal.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigInt32);
@@ -90,6 +91,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkAdapter::setBackendService(TScriptInterfa
 	BackendSignals->OnPropFloat32Changed.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropFloat32Changed);
 	BackendSignals->OnPropFloat64Changed.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropFloat64Changed);
 	BackendSignals->OnPropStringChanged.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropStringChanged);
+	BackendSignals->OnPropReadOnlyStringChanged.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropReadOnlyStringChanged);
 	BackendSignals->OnSigBoolSignal.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigBool);
 	BackendSignals->OnSigIntSignal.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigInt);
 	BackendSignals->OnSigInt32Signal.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigInt32);
@@ -181,6 +183,11 @@ void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropFloat64Changed(const TArra
 void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropStringChanged(const TArray<FString>& InPropString)
 {
 	Source->OnPropStringChanged(InPropString);
+}
+
+void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropReadOnlyStringChanged(const FString& InPropReadOnlyString)
+{
+	Source->OnPropReadOnlyStringChanged(InPropReadOnlyString);
 }
 
 void UTbSimpleSimpleArrayInterfaceOLinkAdapter::setOLinkHost(TSoftObjectPtr<UOLinkHost> InHost)

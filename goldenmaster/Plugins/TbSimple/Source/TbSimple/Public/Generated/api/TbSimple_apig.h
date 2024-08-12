@@ -16,6 +16,7 @@ limitations under the License.
 */
 #pragma once
 
+#include "TbSimpleVoidInterfaceInterface.h"
 #include "TbSimpleSimpleInterfaceInterface.h"
 #include "TbSimpleSimpleArrayInterfaceInterface.h"
 #include "TbSimpleNoPropertiesInterfaceInterface.h"

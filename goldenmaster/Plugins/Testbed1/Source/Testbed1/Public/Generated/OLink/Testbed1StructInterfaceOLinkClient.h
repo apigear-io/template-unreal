@@ -65,7 +65,7 @@ public:
 	// operations
 	FTestbed1StructBool FuncBool_Implementation(const FTestbed1StructBool& ParamBool) override;
 
-	FTestbed1StructBool FuncInt_Implementation(const FTestbed1StructInt& ParamInt) override;
+	FTestbed1StructInt FuncInt_Implementation(const FTestbed1StructInt& ParamInt) override;
 
 	FTestbed1StructFloat FuncFloat_Implementation(const FTestbed1StructFloat& ParamFloat) override;
 

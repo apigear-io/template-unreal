@@ -209,6 +209,13 @@ void UTbSimpleSimpleArrayInterfaceImplSpec::Define()
 		ImplFixture->GetImplementation()->Execute_SetPropString(ImplFixture->GetImplementation().GetObject(), TestValue);
 	});
 
+	It("Property.PropReadOnlyString.Default", [this]()
+		{
+		// Do implement test here
+		FString TestValue = FString(); // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetPropReadOnlyString(ImplFixture->GetImplementation().GetObject()), FString());
+	});
+
 	It("Operation.FuncBool", [this]()
 		{
 		// Do implement test here
@@ -423,6 +430,16 @@ void UTbSimpleSimpleArrayInterfaceImplSpec::PropStringPropertyCb(const TArray<FS
 	TestValue = createTestFTbSimplestringArray();
 	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropString, TestValue);
 	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetPropString(ImplFixture->GetImplementation().GetObject()), TestValue);
+	testDoneDelegate.Execute();
+}
+
+void UTbSimpleSimpleArrayInterfaceImplSpec::PropReadOnlyStringPropertyCb(const FString& InPropReadOnlyString)
+{
+	FString TestValue = FString();
+	// use different test value
+	TestValue = FString("xyz");
+	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropReadOnlyString, TestValue);
+	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetPropReadOnlyString(ImplFixture->GetImplementation().GetObject()), TestValue);
 	testDoneDelegate.Execute();
 }
 

@@ -64,16 +64,6 @@ void UTbSimpleSimpleInterfaceImplHelper::PropStringPropertyCb(const FString& Pro
 	Spec->PropStringPropertyCb(PropString);
 }
 
-void UTbSimpleSimpleInterfaceImplHelper::PropReadOnlyStringPropertyCb(const FString& PropReadOnlyString)
-{
-	Spec->PropReadOnlyStringPropertyCb(PropReadOnlyString);
-}
-
-void UTbSimpleSimpleInterfaceImplHelper::SigVoidSignalCb()
-{
-	Spec->SigVoidSignalCb();
-}
-
 void UTbSimpleSimpleInterfaceImplHelper::SigBoolSignalCb(bool bParamBool)
 {
 	Spec->SigBoolSignalCb(bParamBool);
@@ -99,9 +89,9 @@ void UTbSimpleSimpleInterfaceImplHelper::SigFloatSignalCb(float ParamFloat)
 	Spec->SigFloatSignalCb(ParamFloat);
 }
 
-void UTbSimpleSimpleInterfaceImplHelper::SigFloat32SignalCb(float ParamFloa32)
+void UTbSimpleSimpleInterfaceImplHelper::SigFloat32SignalCb(float ParamFloat32)
 {
-	Spec->SigFloat32SignalCb(ParamFloa32);
+	Spec->SigFloat32SignalCb(ParamFloat32);
 }
 
 void UTbSimpleSimpleInterfaceImplHelper::SigFloat64SignalCb(double ParamFloat64)

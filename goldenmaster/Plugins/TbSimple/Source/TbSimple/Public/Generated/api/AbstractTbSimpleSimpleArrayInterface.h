@@ -90,6 +90,8 @@ public:
 	virtual TArray<FString> GetPropString_Implementation() const override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::GetPropString_Implementation, return TArray<FString>(););
 	virtual void SetPropString_Implementation(const TArray<FString>& InPropString) override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::SetPropString_Implementation, return;);
 
+	virtual FString GetPropReadOnlyString_Implementation() const override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::GetPropReadOnlyString_Implementation, return FString(););
+
 	virtual bool IsInitialized() const;
 
 protected:
@@ -167,6 +169,12 @@ protected:
 
 	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbSimple|SimpleArrayInterface|Properties", BlueprintInternalUseOnly)
 	void SetPropString_Private(const TArray<FString>& InPropString);
+
+	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropReadOnlyString_Private, Category = "ApiGear|TbSimple|SimpleArrayInterface")
+	FString PropReadOnlyString{FString()};
+
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSimple|SimpleArrayInterface|Properties", BlueprintInternalUseOnly)
+	FString GetPropReadOnlyString_Private() const;
 
 private:
 	// signals

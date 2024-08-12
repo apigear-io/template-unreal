@@ -198,25 +198,25 @@ nlohmann::json Testbed1StructArrayInterfaceOLinkSource::olinkInvoke(const std::s
 	if (path == "funcBool")
 	{
 		TArray<FTestbed1StructBool> ParamBool = args.at(0).get<TArray<FTestbed1StructBool>>();
-		FTestbed1StructBool result = BackendService->Execute_FuncBool(BackendService.GetObject(), ParamBool);
+		TArray<FTestbed1StructBool> result = BackendService->Execute_FuncBool(BackendService.GetObject(), ParamBool);
 		return result;
 	}
 	if (path == "funcInt")
 	{
 		TArray<FTestbed1StructInt> ParamInt = args.at(0).get<TArray<FTestbed1StructInt>>();
-		FTestbed1StructBool result = BackendService->Execute_FuncInt(BackendService.GetObject(), ParamInt);
+		TArray<FTestbed1StructInt> result = BackendService->Execute_FuncInt(BackendService.GetObject(), ParamInt);
 		return result;
 	}
 	if (path == "funcFloat")
 	{
 		TArray<FTestbed1StructFloat> ParamFloat = args.at(0).get<TArray<FTestbed1StructFloat>>();
-		FTestbed1StructBool result = BackendService->Execute_FuncFloat(BackendService.GetObject(), ParamFloat);
+		TArray<FTestbed1StructFloat> result = BackendService->Execute_FuncFloat(BackendService.GetObject(), ParamFloat);
 		return result;
 	}
 	if (path == "funcString")
 	{
 		TArray<FTestbed1StructString> ParamString = args.at(0).get<TArray<FTestbed1StructString>>();
-		FTestbed1StructBool result = BackendService->Execute_FuncString(BackendService.GetObject(), ParamString);
+		TArray<FTestbed1StructString> result = BackendService->Execute_FuncString(BackendService.GetObject(), ParamString);
 		return result;
 	}
 	return nlohmann::json();

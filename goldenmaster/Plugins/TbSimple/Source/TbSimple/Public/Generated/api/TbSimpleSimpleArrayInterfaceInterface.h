@@ -50,6 +50,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleArrayInterfacePropFlo
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleArrayInterfacePropFloat32ChangedDelegate, const TArray<float>&, PropFloat32);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleArrayInterfacePropFloat64ChangedDelegate, const TArray<double>&, PropFloat64);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleArrayInterfacePropStringChangedDelegate, const TArray<FString>&, PropString);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleArrayInterfacePropReadOnlyStringChangedDelegate, const FString&, PropReadOnlyString);
 
 /**
  * Class UTbSimpleSimpleArrayInterfaceInterfaceSignals
@@ -205,6 +206,15 @@ public:
 	{
 		OnPropStringChanged.Broadcast(InPropString);
 	}
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", DisplayName = "Property PropReadOnlyString Changed")
+	FTbSimpleSimpleArrayInterfacePropReadOnlyStringChangedDelegate OnPropReadOnlyStringChanged;
+	/// C++ wrapper for BP functions to safely call OnPropReadOnlyStringChanged.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", DisplayName = "Broadcast Property PropReadOnlyString Changed")
+	void BroadcastPropReadOnlyStringChanged(UPARAM(DisplayName = "PropReadOnlyString") const FString& InPropReadOnlyString)
+	{
+		OnPropReadOnlyStringChanged.Broadcast(InPropReadOnlyString);
+	}
 };
 
 /**
@@ -337,4 +347,7 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Properties")
 	void SetPropString(const TArray<FString>& InPropString);
 	virtual void SetPropString_Implementation(const TArray<FString>& InPropString) = 0;
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Properties")
+	FString GetPropReadOnlyString() const;
+	virtual FString GetPropReadOnlyString_Implementation() const = 0;
 };

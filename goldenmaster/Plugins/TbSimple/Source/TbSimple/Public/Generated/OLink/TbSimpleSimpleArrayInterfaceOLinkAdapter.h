@@ -92,6 +92,9 @@ private:
 	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface", BlueprintInternalUseOnly)
 	void OnPropStringChanged(const TArray<FString>& PropString);
 
+	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface", BlueprintInternalUseOnly)
+	void OnPropReadOnlyStringChanged(const FString& PropReadOnlyString);
+
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSimple|SimpleArrayInterface")
 	TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> BackendService;

@@ -78,11 +78,11 @@ FTestbed1StructBool UTestbed1StructInterface::FuncBool_Implementation(const FTes
 	return FTestbed1StructBool();
 }
 
-FTestbed1StructBool UTestbed1StructInterface::FuncInt_Implementation(const FTestbed1StructInt& ParamInt)
+FTestbed1StructInt UTestbed1StructInterface::FuncInt_Implementation(const FTestbed1StructInt& ParamInt)
 {
 	(void)ParamInt;
 	// do business logic here
-	return FTestbed1StructBool();
+	return FTestbed1StructInt();
 }
 
 FTestbed1StructFloat UTestbed1StructInterface::FuncFloat_Implementation(const FTestbed1StructFloat& ParamFloat)

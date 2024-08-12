@@ -68,6 +68,7 @@ public:
 	void OnPropFloat32Changed(const TArray<float>& PropFloat32);
 	void OnPropFloat64Changed(const TArray<double>& PropFloat64);
 	void OnPropStringChanged(const TArray<FString>& PropString);
+	void OnPropReadOnlyStringChanged(const FString& PropReadOnlyString);
 
 private:
 	/** Holds the service backend, can be exchanged with different implementation during runtime */

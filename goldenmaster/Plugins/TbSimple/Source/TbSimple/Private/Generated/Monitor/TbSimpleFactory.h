@@ -22,6 +22,7 @@ limitations under the License.
 
 class UGameInstance;
 class FSubsystemCollectionBase;
+class ITbSimpleVoidInterfaceInterface;
 class ITbSimpleSimpleInterfaceInterface;
 class ITbSimpleSimpleArrayInterfaceInterface;
 class ITbSimpleNoPropertiesInterfaceInterface;
@@ -36,6 +37,7 @@ class FTbSimpleModuleFactory
 {
 public:
 #if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
+	static TScriptInterface<ITbSimpleVoidInterfaceInterface> createITbSimpleVoidInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
 	static TScriptInterface<ITbSimpleSimpleInterfaceInterface> createITbSimpleSimpleInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
 	static TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> createITbSimpleSimpleArrayInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
 	static TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> createITbSimpleNoPropertiesInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
@@ -43,6 +45,7 @@ public:
 	static TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> createITbSimpleNoSignalsInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
 	static TScriptInterface<ITbSimpleEmptyInterfaceInterface> createITbSimpleEmptyInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
 #else
+	static TScriptInterface<ITbSimpleVoidInterfaceInterface> createITbSimpleVoidInterfaceInterface(FSubsystemCollectionBase& Collection);
 	static TScriptInterface<ITbSimpleSimpleInterfaceInterface> createITbSimpleSimpleInterfaceInterface(FSubsystemCollectionBase& Collection);
 	static TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> createITbSimpleSimpleArrayInterfaceInterface(FSubsystemCollectionBase& Collection);
 	static TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> createITbSimpleNoPropertiesInterfaceInterface(FSubsystemCollectionBase& Collection);

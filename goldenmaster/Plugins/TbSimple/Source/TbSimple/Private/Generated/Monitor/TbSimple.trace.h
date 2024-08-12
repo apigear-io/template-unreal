@@ -2,6 +2,15 @@
 
 #include "TbSimple_apig.h"
 
+class TbSimpleVoidInterfaceTracer
+{
+public:
+	TbSimpleVoidInterfaceTracer();
+	static void capture_state(UObject* Object, ITbSimpleVoidInterfaceInterface* obj);
+	static void trace_signalSigVoid();
+	static void trace_callFuncVoid();
+};
+
 class TbSimpleSimpleInterfaceTracer
 {
 public:
@@ -15,16 +24,15 @@ public:
 	static void trace_callSetPropFloat32(float InPropFloat32);
 	static void trace_callSetPropFloat64(double InPropFloat64);
 	static void trace_callSetPropString(const FString& InPropString);
-	static void trace_signalSigVoid();
 	static void trace_signalSigBool(bool bParamBool);
 	static void trace_signalSigInt(int32 ParamInt);
 	static void trace_signalSigInt32(int32 ParamInt32);
 	static void trace_signalSigInt64(int64 ParamInt64);
 	static void trace_signalSigFloat(float ParamFloat);
-	static void trace_signalSigFloat32(float ParamFloa32);
+	static void trace_signalSigFloat32(float ParamFloat32);
 	static void trace_signalSigFloat64(double ParamFloat64);
 	static void trace_signalSigString(const FString& ParamString);
-	static void trace_callFuncVoid();
+	static void trace_callFuncNoReturnValue(bool bParamBool);
 	static void trace_callFuncBool(bool bParamBool);
 	static void trace_callFuncInt(int32 ParamInt);
 	static void trace_callFuncInt32(int32 ParamInt32);

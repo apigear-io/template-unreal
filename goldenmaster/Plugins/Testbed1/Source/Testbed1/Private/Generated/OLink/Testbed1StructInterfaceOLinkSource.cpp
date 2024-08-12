@@ -204,7 +204,7 @@ nlohmann::json Testbed1StructInterfaceOLinkSource::olinkInvoke(const std::string
 	if (path == "funcInt")
 	{
 		FTestbed1StructInt ParamInt = args.at(0).get<FTestbed1StructInt>();
-		FTestbed1StructBool result = BackendService->Execute_FuncInt(BackendService.GetObject(), ParamInt);
+		FTestbed1StructInt result = BackendService->Execute_FuncInt(BackendService.GetObject(), ParamInt);
 		return result;
 	}
 	if (path == "funcFloat")

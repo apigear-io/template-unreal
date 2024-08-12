@@ -45,9 +45,6 @@ public:
 private:
 	// signals
 	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	void OnSigVoid();
-
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
 	void OnSigBool(bool bParamBool);
 
 	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
@@ -63,7 +60,7 @@ private:
 	void OnSigFloat(float ParamFloat);
 
 	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	void OnSigFloat32(float ParamFloa32);
+	void OnSigFloat32(float ParamFloat32);
 
 	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
 	void OnSigFloat64(double ParamFloat64);
@@ -94,9 +91,6 @@ private:
 
 	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
 	void OnPropStringChanged(const FString& PropString);
-
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	void OnPropReadOnlyStringChanged(const FString& PropReadOnlyString);
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSimple|SimpleInterface")

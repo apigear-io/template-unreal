@@ -59,6 +59,7 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::setBackendService(TScriptInt
 		BackendSignals->OnPropFloat32Changed.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropFloat32Changed);
 		BackendSignals->OnPropFloat64Changed.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropFloat64Changed);
 		BackendSignals->OnPropStringChanged.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropStringChanged);
+		BackendSignals->OnPropReadOnlyStringChanged.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropReadOnlyStringChanged);
 		BackendSignals->OnSigBoolSignal.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigBool);
 		BackendSignals->OnSigIntSignal.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigInt);
 		BackendSignals->OnSigInt32Signal.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigInt32);
@@ -85,6 +86,7 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::setBackendService(TScriptInt
 	BackendSignals->OnPropFloat32Changed.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropFloat32Changed);
 	BackendSignals->OnPropFloat64Changed.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropFloat64Changed);
 	BackendSignals->OnPropStringChanged.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropStringChanged);
+	BackendSignals->OnPropReadOnlyStringChanged.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropReadOnlyStringChanged);
 	BackendSignals->OnSigBoolSignal.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigBool);
 	BackendSignals->OnSigIntSignal.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigInt);
 	BackendSignals->OnSigInt32Signal.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigInt32);
@@ -102,6 +104,7 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::setBackendService(TScriptInt
 	PropFloat32 = BackendService->Execute_GetPropFloat32(BackendService.GetObject());
 	PropFloat64 = BackendService->Execute_GetPropFloat64(BackendService.GetObject());
 	PropString = BackendService->Execute_GetPropString(BackendService.GetObject());
+	PropReadOnlyString = BackendService->Execute_GetPropReadOnlyString(BackendService.GetObject());
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigBool(const TArray<bool>& ParamBool)
@@ -294,6 +297,18 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::SetPropString_Implementation
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_callSetPropString(InPropString);
 	BackendService->Execute_SetPropString(BackendService.GetObject(), InPropString);
+}
+
+void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropReadOnlyStringChanged(const FString& InPropReadOnlyString)
+{
+	TbSimpleSimpleArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
+	PropReadOnlyString = InPropReadOnlyString;
+	Execute__GetSignals(this)->OnPropReadOnlyStringChanged.Broadcast(InPropReadOnlyString);
+}
+
+FString UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropReadOnlyString_Implementation() const
+{
+	return BackendService->Execute_GetPropReadOnlyString(BackendService.GetObject());
 }
 
 TArray<bool> UTbSimpleSimpleArrayInterfaceLoggingDecorator::FuncBool_Implementation(const TArray<bool>& ParamBool)

@@ -52,8 +52,6 @@ struct TbSimpleSimpleInterfacePropertiesData
 	std::atomic<double> PropFloat64{0.0};
 	FCriticalSection PropStringMutex;
 	FString PropString{FString()};
-	FCriticalSection PropReadOnlyStringMutex;
-	FString PropReadOnlyString{FString()};
 };
 DEFINE_LOG_CATEGORY(LogTbSimpleSimpleInterfaceOLinkClient);
 
@@ -394,12 +392,7 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropString_Implementation(const FSt
 	_SentData->PropString = InPropString;
 }
 
-FString UTbSimpleSimpleInterfaceOLinkClient::GetPropReadOnlyString_Implementation() const
-{
-	return PropReadOnlyString;
-}
-
-void UTbSimpleSimpleInterfaceOLinkClient::FuncVoid_Implementation()
+void UTbSimpleSimpleInterfaceOLinkClient::FuncNoReturnValue_Implementation(bool bParamBool)
 {
 	if (!m_sink->IsReady())
 	{
@@ -408,8 +401,8 @@ void UTbSimpleSimpleInterfaceOLinkClient::FuncVoid_Implementation()
 		return;
 	}
 	ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [this](ApiGear::ObjectLink::InvokeReplyArg arg) {};
-	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcVoid");
-	m_sink->GetNode()->invokeRemote(memberId, {}, GetSimpleInterfaceStateFunc);
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcNoReturnValue");
+	m_sink->GetNode()->invokeRemote(memberId, {bParamBool}, GetSimpleInterfaceStateFunc);
 }
 
 bool UTbSimpleSimpleInterfaceOLinkClient::FuncBool_Implementation(bool bParamBool)
@@ -722,23 +715,10 @@ void UTbSimpleSimpleInterfaceOLinkClient::applyState(const nlohmann::json& field
 		PropString = fields["propString"].get<FString>();
 		Execute__GetSignals(this)->OnPropStringChanged.Broadcast(PropString);
 	}
-
-	const bool bPropReadOnlyStringChanged = fields.contains("propReadOnlyString") && (PropReadOnlyString != fields["propReadOnlyString"].get<FString>());
-	if (bPropReadOnlyStringChanged)
-	{
-		PropReadOnlyString = fields["propReadOnlyString"].get<FString>();
-		Execute__GetSignals(this)->OnPropReadOnlyStringChanged.Broadcast(PropReadOnlyString);
-	}
 }
 
 void UTbSimpleSimpleInterfaceOLinkClient::emitSignal(const std::string& signalName, const nlohmann::json& args)
 {
-	if (signalName == "sigVoid")
-	{
-		Execute__GetSignals(this)->OnSigVoidSignal.Broadcast();
-		return;
-	}
-
 	if (signalName == "sigBool")
 	{
 		bool bParamBool = args[0].get<bool>();
@@ -776,8 +756,8 @@ void UTbSimpleSimpleInterfaceOLinkClient::emitSignal(const std::string& signalNa
 
 	if (signalName == "sigFloat32")
 	{
-		float ParamFloa32 = args[0].get<float>();
-		Execute__GetSignals(this)->OnSigFloat32Signal.Broadcast(ParamFloa32);
+		float ParamFloat32 = args[0].get<float>();
+		Execute__GetSignals(this)->OnSigFloat32Signal.Broadcast(ParamFloat32);
 		return;
 	}
 

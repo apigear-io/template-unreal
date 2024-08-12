@@ -34,6 +34,7 @@ void PropFloatPropertyCb(const TArray<float>& PropFloat);
 void PropFloat32PropertyCb(const TArray<float>& PropFloat32);
 void PropFloat64PropertyCb(const TArray<double>& PropFloat64);
 void PropStringPropertyCb(const TArray<FString>& PropString);
+void PropReadOnlyStringPropertyCb(const FString& PropReadOnlyString);
 void SigBoolSignalCb(const TArray<bool>& ParamBool);
 void SigIntSignalCb(const TArray<int32>& ParamInt);
 void SigInt32SignalCb(const TArray<int32>& ParamInt32);

@@ -58,6 +58,8 @@ struct TbSimpleSimpleArrayInterfacePropertiesData
 	TArray<double> PropFloat64{TArray<double>()};
 	FCriticalSection PropStringMutex;
 	TArray<FString> PropString{TArray<FString>()};
+	FCriticalSection PropReadOnlyStringMutex;
+	FString PropReadOnlyString{FString()};
 };
 DEFINE_LOG_CATEGORY(LogTbSimpleSimpleArrayInterfaceOLinkClient);
 
@@ -426,6 +428,11 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropString_Implementation(cons
 	_SentData->PropString = InPropString;
 }
 
+FString UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropReadOnlyString_Implementation() const
+{
+	return PropReadOnlyString;
+}
+
 TArray<bool> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncBool_Implementation(const TArray<bool>& ParamBool)
 {
 	if (!m_sink->IsReady())
@@ -735,6 +742,13 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::applyState(const nlohmann::json& 
 	{
 		PropString = fields["propString"].get<TArray<FString>>();
 		Execute__GetSignals(this)->OnPropStringChanged.Broadcast(PropString);
+	}
+
+	const bool bPropReadOnlyStringChanged = fields.contains("propReadOnlyString") && (PropReadOnlyString != fields["propReadOnlyString"].get<FString>());
+	if (bPropReadOnlyStringChanged)
+	{
+		PropReadOnlyString = fields["propReadOnlyString"].get<FString>();
+		Execute__GetSignals(this)->OnPropReadOnlyStringChanged.Broadcast(PropReadOnlyString);
 	}
 }
 

@@ -44,12 +44,6 @@ public:
 	void PropStringPropertyCb(const FString& PropString);
 
 	UFUNCTION()
-	void PropReadOnlyStringPropertyCb(const FString& PropReadOnlyString);
-
-	UFUNCTION()
-	void SigVoidSignalCb();
-
-	UFUNCTION()
 	void SigBoolSignalCb(bool bParamBool);
 
 	UFUNCTION()
@@ -65,7 +59,7 @@ public:
 	void SigFloatSignalCb(float ParamFloat);
 
 	UFUNCTION()
-	void SigFloat32SignalCb(float ParamFloa32);
+	void SigFloat32SignalCb(float ParamFloat32);
 
 	UFUNCTION()
 	void SigFloat64SignalCb(double ParamFloat64);

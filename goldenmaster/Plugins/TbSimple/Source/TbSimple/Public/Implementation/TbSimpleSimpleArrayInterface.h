@@ -53,6 +53,8 @@ public:
 	TArray<FString> GetPropString_Implementation() const override;
 	void SetPropString_Implementation(const TArray<FString>& PropString) override;
 
+	FString GetPropReadOnlyString_Implementation() const override;
+
 	// operations
 	TArray<bool> FuncBool_Implementation(const TArray<bool>& ParamBool) override;
 

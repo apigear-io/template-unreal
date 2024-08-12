@@ -122,6 +122,10 @@ void UTbSimpleSimpleArrayInterface::SetPropString_Implementation(const TArray<FS
 		Execute__GetSignals(this)->OnPropStringChanged.Broadcast(PropString);
 	}
 }
+FString UTbSimpleSimpleArrayInterface::GetPropReadOnlyString_Implementation() const
+{
+	return PropReadOnlyString;
+}
 
 TArray<bool> UTbSimpleSimpleArrayInterface::FuncBool_Implementation(const TArray<bool>& ParamBool)
 {

@@ -209,17 +209,10 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 		ImplFixture->GetImplementation()->Execute_SetPropString(ImplFixture->GetImplementation().GetObject(), TestValue);
 	});
 
-	It("Property.PropReadOnlyString.Default", [this]()
+	It("Operation.FuncNoReturnValue", [this]()
 		{
 		// Do implement test here
-		FString TestValue = FString(); // default value
-		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetPropReadOnlyString(ImplFixture->GetImplementation().GetObject()), FString());
-	});
-
-	It("Operation.FuncVoid", [this]()
-		{
-		// Do implement test here
-		ImplFixture->GetImplementation()->Execute_FuncVoid(ImplFixture->GetImplementation().GetObject());
+		ImplFixture->GetImplementation()->Execute_FuncNoReturnValue(ImplFixture->GetImplementation().GetObject(), false);
 	});
 
 	It("Operation.FuncBool", [this]()
@@ -268,16 +261,6 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 		{
 		// Do implement test here
 		ImplFixture->GetImplementation()->Execute_FuncString(ImplFixture->GetImplementation().GetObject(), FString());
-	});
-
-	LatentIt("Signal.SigVoid", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
-		{
-		testDoneDelegate = TestDone;
-		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
-		TbSimpleSimpleInterfaceSignals->OnSigVoidSignal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::SigVoidSignalCb);
-
-		// use different test value
-		TbSimpleSimpleInterfaceSignals->BroadcastSigVoidSignal();
 	});
 
 	LatentIt("Signal.SigBool", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
@@ -342,8 +325,8 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 		TbSimpleSimpleInterfaceSignals->OnSigFloat32Signal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::SigFloat32SignalCb);
 
 		// use different test value
-		float ParamFloa32TestValue = 1.0f;
-		TbSimpleSimpleInterfaceSignals->BroadcastSigFloat32Signal(ParamFloa32TestValue);
+		float ParamFloat32TestValue = 1.0f;
+		TbSimpleSimpleInterfaceSignals->BroadcastSigFloat32Signal(ParamFloat32TestValue);
 	});
 
 	LatentIt("Signal.SigFloat64", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
@@ -449,22 +432,6 @@ void UTbSimpleSimpleInterfaceImplSpec::PropStringPropertyCb(const FString& InPro
 	testDoneDelegate.Execute();
 }
 
-void UTbSimpleSimpleInterfaceImplSpec::PropReadOnlyStringPropertyCb(const FString& InPropReadOnlyString)
-{
-	FString TestValue = FString();
-	// use different test value
-	TestValue = FString("xyz");
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropReadOnlyString, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetPropReadOnlyString(ImplFixture->GetImplementation().GetObject()), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleSimpleInterfaceImplSpec::SigVoidSignalCb()
-{
-	// known test value
-	testDoneDelegate.Execute();
-}
-
 void UTbSimpleSimpleInterfaceImplSpec::SigBoolSignalCb(bool bInParamBool)
 {
 	// known test value
@@ -505,11 +472,11 @@ void UTbSimpleSimpleInterfaceImplSpec::SigFloatSignalCb(float InParamFloat)
 	testDoneDelegate.Execute();
 }
 
-void UTbSimpleSimpleInterfaceImplSpec::SigFloat32SignalCb(float InParamFloa32)
+void UTbSimpleSimpleInterfaceImplSpec::SigFloat32SignalCb(float InParamFloat32)
 {
 	// known test value
-	float ParamFloa32TestValue = 1.0f;
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamFloa32, ParamFloa32TestValue);
+	float ParamFloat32TestValue = 1.0f;
+	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamFloat32, ParamFloat32TestValue);
 	testDoneDelegate.Execute();
 }
 

@@ -155,11 +155,6 @@ void UAbstractTbSimpleSimpleInterface::SetPropString_Private(const FString& InPr
 	Execute_SetPropString(this, InPropString);
 };
 
-FString UAbstractTbSimpleSimpleInterface::GetPropReadOnlyString_Private() const
-{
-	return Execute_GetPropReadOnlyString(this);
-};
-
 void UAbstractTbSimpleSimpleInterface::FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
@@ -455,7 +450,6 @@ void UAbstractTbSimpleSimpleInterface::Deinitialize()
 
 	if (TbSimpleSimpleInterfaceSignals)
 	{
-		TbSimpleSimpleInterfaceSignals->OnSigVoidSignal.RemoveAll(TbSimpleSimpleInterfaceSignals);
 		TbSimpleSimpleInterfaceSignals->OnSigBoolSignal.RemoveAll(TbSimpleSimpleInterfaceSignals);
 		TbSimpleSimpleInterfaceSignals->OnSigIntSignal.RemoveAll(TbSimpleSimpleInterfaceSignals);
 		TbSimpleSimpleInterfaceSignals->OnSigInt32Signal.RemoveAll(TbSimpleSimpleInterfaceSignals);
@@ -473,7 +467,6 @@ void UAbstractTbSimpleSimpleInterface::Deinitialize()
 		TbSimpleSimpleInterfaceSignals->OnPropFloat32Changed.RemoveAll(TbSimpleSimpleInterfaceSignals);
 		TbSimpleSimpleInterfaceSignals->OnPropFloat64Changed.RemoveAll(TbSimpleSimpleInterfaceSignals);
 		TbSimpleSimpleInterfaceSignals->OnPropStringChanged.RemoveAll(TbSimpleSimpleInterfaceSignals);
-		TbSimpleSimpleInterfaceSignals->OnPropReadOnlyStringChanged.RemoveAll(TbSimpleSimpleInterfaceSignals);
 	}
 
 	Super::Deinitialize();

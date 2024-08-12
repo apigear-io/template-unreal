@@ -186,7 +186,7 @@ FTestbed1StructBool UTestbed1StructInterfaceLoggingDecorator::FuncBool_Implement
 	return BackendService->Execute_FuncBool(BackendService.GetObject(), ParamBool);
 }
 
-FTestbed1StructBool UTestbed1StructInterfaceLoggingDecorator::FuncInt_Implementation(const FTestbed1StructInt& ParamInt)
+FTestbed1StructInt UTestbed1StructInterfaceLoggingDecorator::FuncInt_Implementation(const FTestbed1StructInt& ParamInt)
 {
 	Testbed1StructInterfaceTracer::trace_callFuncInt(ParamInt);
 	return BackendService->Execute_FuncInt(BackendService.GetObject(), ParamInt);

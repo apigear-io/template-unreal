@@ -74,6 +74,8 @@ public:
 
 	void SetPropString_Implementation(const TArray<FString>& InPropString) override;
 
+	FString GetPropReadOnlyString_Implementation() const override;
+
 	// operations
 	TArray<bool> FuncBool_Implementation(const TArray<bool>& ParamBool) override;
 
@@ -144,4 +146,7 @@ private:
 
 	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface", BlueprintInternalUseOnly)
 	void OnPropStringChanged(const TArray<FString>& InPropString);
+
+	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface", BlueprintInternalUseOnly)
+	void OnPropReadOnlyStringChanged(const FString& InPropReadOnlyString);
 };

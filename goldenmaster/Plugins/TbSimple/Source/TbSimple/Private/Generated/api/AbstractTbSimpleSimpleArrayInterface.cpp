@@ -154,6 +154,11 @@ void UAbstractTbSimpleSimpleArrayInterface::SetPropString_Private(const TArray<F
 {
 	Execute_SetPropString(this, InPropString);
 };
+
+FString UAbstractTbSimpleSimpleArrayInterface::GetPropReadOnlyString_Private() const
+{
+	return Execute_GetPropReadOnlyString(this);
+};
 void UAbstractTbSimpleSimpleArrayInterface::FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<bool>& Result, const TArray<bool>& ParamBool)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
@@ -466,6 +471,7 @@ void UAbstractTbSimpleSimpleArrayInterface::Deinitialize()
 		TbSimpleSimpleArrayInterfaceSignals->OnPropFloat32Changed.RemoveAll(TbSimpleSimpleArrayInterfaceSignals);
 		TbSimpleSimpleArrayInterfaceSignals->OnPropFloat64Changed.RemoveAll(TbSimpleSimpleArrayInterfaceSignals);
 		TbSimpleSimpleArrayInterfaceSignals->OnPropStringChanged.RemoveAll(TbSimpleSimpleArrayInterfaceSignals);
+		TbSimpleSimpleArrayInterfaceSignals->OnPropReadOnlyStringChanged.RemoveAll(TbSimpleSimpleArrayInterfaceSignals);
 	}
 
 	Super::Deinitialize();

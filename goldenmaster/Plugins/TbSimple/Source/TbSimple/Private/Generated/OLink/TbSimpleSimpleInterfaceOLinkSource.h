@@ -51,13 +51,12 @@ public:
 	nlohmann::json olinkCollectProperties() override;
 
 	// signals
-	void OnSigVoid();
 	void OnSigBool(bool bParamBool);
 	void OnSigInt(int32 ParamInt);
 	void OnSigInt32(int32 ParamInt32);
 	void OnSigInt64(int64 ParamInt64);
 	void OnSigFloat(float ParamFloat);
-	void OnSigFloat32(float ParamFloa32);
+	void OnSigFloat32(float ParamFloat32);
 	void OnSigFloat64(double ParamFloat64);
 	void OnSigString(const FString& ParamString);
 
@@ -69,7 +68,6 @@ public:
 	void OnPropFloat32Changed(float PropFloat32);
 	void OnPropFloat64Changed(double PropFloat64);
 	void OnPropStringChanged(const FString& PropString);
-	void OnPropReadOnlyStringChanged(const FString& PropReadOnlyString);
 
 private:
 	/** Holds the service backend, can be exchanged with different implementation during runtime */

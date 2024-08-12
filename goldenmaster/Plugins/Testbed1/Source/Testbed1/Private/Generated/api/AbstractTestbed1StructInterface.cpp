@@ -149,7 +149,7 @@ void UAbstractTestbed1StructInterface::FuncBoolAsync_Implementation(UObject* Wor
 	}
 }
 
-void UAbstractTestbed1StructInterface::FuncIntAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const FTestbed1StructInt& ParamInt)
+void UAbstractTestbed1StructInterface::FuncIntAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructInt& Result, const FTestbed1StructInt& ParamInt)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{

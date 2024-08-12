@@ -2,6 +2,28 @@
 #include "Generated/api/TbSimple.json.adapter.h"
 #include "tracer.h"
 
+TbSimpleVoidInterfaceTracer::TbSimpleVoidInterfaceTracer()
+{
+}
+
+void TbSimpleVoidInterfaceTracer::capture_state(UObject* Object, ITbSimpleVoidInterfaceInterface* obj)
+{
+	nlohmann::json fields_;
+	Tracer::instance()->state("tb.simple/VoidInterface", fields_);
+}
+
+void TbSimpleVoidInterfaceTracer::trace_signalSigVoid()
+{
+	nlohmann::json fields_;
+	Tracer::instance()->signal("tb.simple/VoidInterface#sigVoid", fields_);
+}
+
+void TbSimpleVoidInterfaceTracer::trace_callFuncVoid()
+{
+	nlohmann::json fields_;
+	Tracer::instance()->call("tb.simple/VoidInterface#funcVoid", fields_);
+}
+
 TbSimpleSimpleInterfaceTracer::TbSimpleSimpleInterfaceTracer()
 {
 }
@@ -17,7 +39,6 @@ void TbSimpleSimpleInterfaceTracer::capture_state(UObject* Object, ITbSimpleSimp
 	fields_["propFloat32"] = obj->Execute_GetPropFloat32(Object);
 	fields_["propFloat64"] = obj->Execute_GetPropFloat64(Object);
 	fields_["propString"] = obj->Execute_GetPropString(Object);
-	fields_["propReadOnlyString"] = obj->Execute_GetPropReadOnlyString(Object);
 	Tracer::instance()->state("tb.simple/SimpleInterface", fields_);
 }
 void TbSimpleSimpleInterfaceTracer::trace_callSetPropBool(bool bInPropBool)
@@ -69,12 +90,6 @@ void TbSimpleSimpleInterfaceTracer::trace_callSetPropString(const FString& InPro
 	Tracer::instance()->call("tb.simple/SimpleInterface#_set", fields_);
 }
 
-void TbSimpleSimpleInterfaceTracer::trace_signalSigVoid()
-{
-	nlohmann::json fields_;
-	Tracer::instance()->signal("tb.simple/SimpleInterface#sigVoid", fields_);
-}
-
 void TbSimpleSimpleInterfaceTracer::trace_signalSigBool(bool bParamBool)
 {
 	nlohmann::json fields_;
@@ -110,10 +125,10 @@ void TbSimpleSimpleInterfaceTracer::trace_signalSigFloat(float ParamFloat)
 	Tracer::instance()->signal("tb.simple/SimpleInterface#sigFloat", fields_);
 }
 
-void TbSimpleSimpleInterfaceTracer::trace_signalSigFloat32(float ParamFloa32)
+void TbSimpleSimpleInterfaceTracer::trace_signalSigFloat32(float ParamFloat32)
 {
 	nlohmann::json fields_;
-	fields_["paramFloa32"] = ParamFloa32;
+	fields_["paramFloat32"] = ParamFloat32;
 	Tracer::instance()->signal("tb.simple/SimpleInterface#sigFloat32", fields_);
 }
 
@@ -131,10 +146,11 @@ void TbSimpleSimpleInterfaceTracer::trace_signalSigString(const FString& ParamSt
 	Tracer::instance()->signal("tb.simple/SimpleInterface#sigString", fields_);
 }
 
-void TbSimpleSimpleInterfaceTracer::trace_callFuncVoid()
+void TbSimpleSimpleInterfaceTracer::trace_callFuncNoReturnValue(bool bParamBool)
 {
 	nlohmann::json fields_;
-	Tracer::instance()->call("tb.simple/SimpleInterface#funcVoid", fields_);
+	fields_["paramBool"] = bParamBool;
+	Tracer::instance()->call("tb.simple/SimpleInterface#funcNoReturnValue", fields_);
 }
 
 void TbSimpleSimpleInterfaceTracer::trace_callFuncBool(bool bParamBool)
@@ -208,6 +224,7 @@ void TbSimpleSimpleArrayInterfaceTracer::capture_state(UObject* Object, ITbSimpl
 	fields_["propFloat32"] = obj->Execute_GetPropFloat32(Object);
 	fields_["propFloat64"] = obj->Execute_GetPropFloat64(Object);
 	fields_["propString"] = obj->Execute_GetPropString(Object);
+	fields_["propReadOnlyString"] = obj->Execute_GetPropReadOnlyString(Object);
 	Tracer::instance()->state("tb.simple/SimpleArrayInterface", fields_);
 }
 void TbSimpleSimpleArrayInterfaceTracer::trace_callSetPropBool(const TArray<bool>& InPropBool)

@@ -56,21 +56,6 @@ void TbSimpleSimpleInterfaceOLinkSource::setBackendService(TScriptInterface<ITbS
 
 	BackendService = InService;
 }
-void TbSimpleSimpleInterfaceOLinkSource::OnSigVoid()
-{
-	static const auto& signalId = ApiGear::ObjectLink::Name::createMemberId(olinkObjectName(), "sigVoid");
-	static const auto& objectId = ApiGear::ObjectLink::Name::getObjectId(signalId);
-	const nlohmann::json& args = {};
-	for (auto node : Host->GetOLinkRegistry()->getNodes(objectId))
-	{
-		auto lockedNode = node.lock();
-		if (lockedNode)
-		{
-			lockedNode->notifySignal(signalId, args);
-		}
-	}
-}
-
 void TbSimpleSimpleInterfaceOLinkSource::OnSigBool(bool bParamBool)
 {
 	static const auto& signalId = ApiGear::ObjectLink::Name::createMemberId(olinkObjectName(), "sigBool");
@@ -146,11 +131,11 @@ void TbSimpleSimpleInterfaceOLinkSource::OnSigFloat(float ParamFloat)
 	}
 }
 
-void TbSimpleSimpleInterfaceOLinkSource::OnSigFloat32(float ParamFloa32)
+void TbSimpleSimpleInterfaceOLinkSource::OnSigFloat32(float ParamFloat32)
 {
 	static const auto& signalId = ApiGear::ObjectLink::Name::createMemberId(olinkObjectName(), "sigFloat32");
 	static const auto& objectId = ApiGear::ObjectLink::Name::getObjectId(signalId);
-	const nlohmann::json& args = {ParamFloa32};
+	const nlohmann::json& args = {ParamFloat32};
 	for (auto node : Host->GetOLinkRegistry()->getNodes(objectId))
 	{
 		auto lockedNode = node.lock();
@@ -303,20 +288,6 @@ void TbSimpleSimpleInterfaceOLinkSource::OnPropStringChanged(const FString& InPr
 	}
 }
 
-void TbSimpleSimpleInterfaceOLinkSource::OnPropReadOnlyStringChanged(const FString& InPropReadOnlyString)
-{
-	static const auto& propertyId = ApiGear::ObjectLink::Name::createMemberId(olinkObjectName(), "propReadOnlyString");
-	static const auto& objectId = ApiGear::ObjectLink::Name::getObjectId(propertyId);
-	for (auto node : Host->GetOLinkRegistry()->getNodes(objectId))
-	{
-		auto lockedNode = node.lock();
-		if (lockedNode)
-		{
-			lockedNode->notifyPropertyChange(propertyId, InPropReadOnlyString);
-		}
-	}
-}
-
 void TbSimpleSimpleInterfaceOLinkSource::setOLinkHost(TSoftObjectPtr<UOLinkHost> InHost)
 {
 	Host = InHost.Get();
@@ -340,9 +311,10 @@ nlohmann::json TbSimpleSimpleInterfaceOLinkSource::olinkInvoke(const std::string
 	}
 
 	const std::string path = Name::getMemberName(methodId);
-	if (path == "funcVoid")
+	if (path == "funcNoReturnValue")
 	{
-		BackendService->Execute_FuncVoid(BackendService.GetObject());
+		bool bParamBool = args.at(0).get<bool>();
+		BackendService->Execute_FuncNoReturnValue(BackendService.GetObject(), bParamBool);
 		return nlohmann::json{};
 	}
 	if (path == "funcBool")
@@ -464,6 +436,5 @@ nlohmann::json TbSimpleSimpleInterfaceOLinkSource::olinkCollectProperties()
 		{"propFloat", BackendService->Execute_GetPropFloat(BackendService.GetObject())},
 		{"propFloat32", BackendService->Execute_GetPropFloat32(BackendService.GetObject())},
 		{"propFloat64", BackendService->Execute_GetPropFloat64(BackendService.GetObject())},
-		{"propString", BackendService->Execute_GetPropString(BackendService.GetObject())},
-		{"propReadOnlyString", BackendService->Execute_GetPropReadOnlyString(BackendService.GetObject())}});
+		{"propString", BackendService->Execute_GetPropString(BackendService.GetObject())}});
 }
