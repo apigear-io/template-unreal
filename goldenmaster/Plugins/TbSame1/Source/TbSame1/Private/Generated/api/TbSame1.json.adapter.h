@@ -1,6 +1,7 @@
 #pragma once
 
 #include "apigear.json.adapter.h"
+#include "Generated/api/TbSame1_data.h"
 
 static void from_json(const nlohmann::json& j, FTbSame1Struct1& p)
 {

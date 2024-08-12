@@ -3,6 +3,7 @@
 #pragma once
 
 #include "apigear.json.adapter.h"
+#include "Generated/api/{{$ModuleName}}_data.h"
 
 {{- range .Module.Structs }}
 {{- $class := printf "F%s%s" $ModuleName .Name }}

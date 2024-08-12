@@ -1,6 +1,7 @@
 #pragma once
 
 #include "apigear.json.adapter.h"
+#include "Generated/api/Testbed2_data.h"
 
 static void from_json(const nlohmann::json& j, FTestbed2Struct1& p)
 {
