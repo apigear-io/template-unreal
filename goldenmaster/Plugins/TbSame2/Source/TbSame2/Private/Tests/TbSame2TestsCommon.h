@@ -20,12 +20,12 @@ limitations under the License.
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
-FTbSame2Struct1 createTestFTbSame2Struct1();
+FTbSame2Struct1 TBSAME2_API createTestFTbSame2Struct1();
 
-TArray<FTbSame2Struct1> createTestFTbSame2Struct1Array();
+TArray<FTbSame2Struct1> TBSAME2_API createTestFTbSame2Struct1Array();
 
-FTbSame2Struct2 createTestFTbSame2Struct2();
+FTbSame2Struct2 TBSAME2_API createTestFTbSame2Struct2();
 
-TArray<FTbSame2Struct2> createTestFTbSame2Struct2Array();
+TArray<FTbSame2Struct2> TBSAME2_API createTestFTbSame2Struct2Array();
 
 #endif // WITH_DEV_AUTOMATION_TESTS

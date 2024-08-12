@@ -18,7 +18,7 @@ TUniquePtr<F{{$DisplayName}}ImplFixture> ImplFixture;
 
 // signal callbacks for testing
 {{- range .Interface.Properties }}
-{{- if not .IsReadOnly }}
+{{- if and (not .IsReadOnly) (not (eq .KindType "extern")) }}
 void {{ Camel .Name }}PropertyCb({{ueParam "" .}});
 {{- end }}
 {{- end }}

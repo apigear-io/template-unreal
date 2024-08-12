@@ -1,5 +1,6 @@
 {{- /* Copyright Epic Games, Inc. All Rights Reserved */ -}}
 /**{{ template "copyright" }}*/
+{{- $API_MACRO := printf "%s_API" (CAMEL .Module.Name ) -}}
 {{- $ModuleName := Camel .Module.Name}}
 #pragma once
 
@@ -10,8 +11,8 @@
 
 {{- range .Module.Structs }}
 {{- $class := printf "F%s%s" $ModuleName .Name }}
-{{$class }} createTest{{$class }}();
+{{$class }} {{$API_MACRO}} createTest{{$class }}();
 
-TArray<{{$class}}> createTest{{$class }}Array();
+TArray<{{$class}}> {{$API_MACRO}} createTest{{$class }}Array();
 {{ end }}
 #endif // WITH_DEV_AUTOMATION_TESTS

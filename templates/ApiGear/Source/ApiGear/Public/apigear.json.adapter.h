@@ -7,6 +7,9 @@
 // Disable nlohmann::json exception handling
 #define JSON_NOEXCEPTION 1
 #include <nlohmann/json.hpp>
+#include "Containers/Array.h"
+#include "Containers/StringConv.h"
+#include "Containers/UnrealString.h"
 
 static void from_json(const nlohmann::json& j, FString& p)
 {

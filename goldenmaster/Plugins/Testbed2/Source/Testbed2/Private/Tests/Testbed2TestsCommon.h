@@ -20,32 +20,32 @@ limitations under the License.
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
-FTestbed2Struct1 createTestFTestbed2Struct1();
+FTestbed2Struct1 TESTBED2_API createTestFTestbed2Struct1();
 
-TArray<FTestbed2Struct1> createTestFTestbed2Struct1Array();
+TArray<FTestbed2Struct1> TESTBED2_API createTestFTestbed2Struct1Array();
 
-FTestbed2Struct2 createTestFTestbed2Struct2();
+FTestbed2Struct2 TESTBED2_API createTestFTestbed2Struct2();
 
-TArray<FTestbed2Struct2> createTestFTestbed2Struct2Array();
+TArray<FTestbed2Struct2> TESTBED2_API createTestFTestbed2Struct2Array();
 
-FTestbed2Struct3 createTestFTestbed2Struct3();
+FTestbed2Struct3 TESTBED2_API createTestFTestbed2Struct3();
 
-TArray<FTestbed2Struct3> createTestFTestbed2Struct3Array();
+TArray<FTestbed2Struct3> TESTBED2_API createTestFTestbed2Struct3Array();
 
-FTestbed2Struct4 createTestFTestbed2Struct4();
+FTestbed2Struct4 TESTBED2_API createTestFTestbed2Struct4();
 
-TArray<FTestbed2Struct4> createTestFTestbed2Struct4Array();
+TArray<FTestbed2Struct4> TESTBED2_API createTestFTestbed2Struct4Array();
 
-FTestbed2NestedStruct1 createTestFTestbed2NestedStruct1();
+FTestbed2NestedStruct1 TESTBED2_API createTestFTestbed2NestedStruct1();
 
-TArray<FTestbed2NestedStruct1> createTestFTestbed2NestedStruct1Array();
+TArray<FTestbed2NestedStruct1> TESTBED2_API createTestFTestbed2NestedStruct1Array();
 
-FTestbed2NestedStruct2 createTestFTestbed2NestedStruct2();
+FTestbed2NestedStruct2 TESTBED2_API createTestFTestbed2NestedStruct2();
 
-TArray<FTestbed2NestedStruct2> createTestFTestbed2NestedStruct2Array();
+TArray<FTestbed2NestedStruct2> TESTBED2_API createTestFTestbed2NestedStruct2Array();
 
-FTestbed2NestedStruct3 createTestFTestbed2NestedStruct3();
+FTestbed2NestedStruct3 TESTBED2_API createTestFTestbed2NestedStruct3();
 
-TArray<FTestbed2NestedStruct3> createTestFTestbed2NestedStruct3Array();
+TArray<FTestbed2NestedStruct3> TESTBED2_API createTestFTestbed2NestedStruct3Array();
 
 #endif // WITH_DEV_AUTOMATION_TESTS

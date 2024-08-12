@@ -20,20 +20,20 @@ limitations under the License.
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
-FTestbed1StructBool createTestFTestbed1StructBool();
+FTestbed1StructBool TESTBED1_API createTestFTestbed1StructBool();
 
-TArray<FTestbed1StructBool> createTestFTestbed1StructBoolArray();
+TArray<FTestbed1StructBool> TESTBED1_API createTestFTestbed1StructBoolArray();
 
-FTestbed1StructInt createTestFTestbed1StructInt();
+FTestbed1StructInt TESTBED1_API createTestFTestbed1StructInt();
 
-TArray<FTestbed1StructInt> createTestFTestbed1StructIntArray();
+TArray<FTestbed1StructInt> TESTBED1_API createTestFTestbed1StructIntArray();
 
-FTestbed1StructFloat createTestFTestbed1StructFloat();
+FTestbed1StructFloat TESTBED1_API createTestFTestbed1StructFloat();
 
-TArray<FTestbed1StructFloat> createTestFTestbed1StructFloatArray();
+TArray<FTestbed1StructFloat> TESTBED1_API createTestFTestbed1StructFloatArray();
 
-FTestbed1StructString createTestFTestbed1StructString();
+FTestbed1StructString TESTBED1_API createTestFTestbed1StructString();
 
-TArray<FTestbed1StructString> createTestFTestbed1StructStringArray();
+TArray<FTestbed1StructString> TESTBED1_API createTestFTestbed1StructStringArray();
 
 #endif // WITH_DEV_AUTOMATION_TESTS

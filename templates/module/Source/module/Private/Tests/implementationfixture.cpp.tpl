@@ -17,7 +17,7 @@ void {{$Class}}ImplHelper::SetSpec({{$Class}}ImplSpec* InSpec)
 }
 
 {{- range .Interface.Properties }}
-{{- if not .IsReadOnly }}
+{{- if and (not .IsReadOnly) (not (eq .KindType "extern")) }}
 
 void {{$Class}}ImplHelper::{{ Camel .Name }}PropertyCb({{ueParam "" .}})
 {

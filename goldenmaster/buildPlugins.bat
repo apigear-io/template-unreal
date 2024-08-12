@@ -81,6 +81,33 @@ call :buildUEplugin "%script_path%\Plugins\Testbed1\Testbed1.uplugin" , "%script
 if !buildresult! GEQ 1 call :cleanup !buildresult!
 if !buildresult! GEQ 1 exit /b !buildresult!
 
+@REM Building and testing CustomTypes module
+call :buildUEplugin "%script_path%\Plugins\CustomTypes\CustomTypes.uplugin" , "%script_path%build\Plugins\CustomTypes"
+if !buildresult! GEQ 1 call :cleanup !buildresult!
+if !buildresult! GEQ 1 exit /b !buildresult!
+
+@REM copy CustomTypes plugin to UE installation for use by other plugins
+set CustomTypesPluginTarget_path=%ApiGearTarget_path%\CustomTypes
+xcopy /E /Y "%script_path%build\Plugins\CustomTypes" "%CustomTypesPluginTarget_path%\"  >nul
+if %ERRORLEVEL% GEQ 1 call :cleanup %ERRORLEVEL%
+if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
+
+@REM Building and testing ExternTypes module
+call :buildUEplugin "%script_path%\Plugins\ExternTypes\ExternTypes.uplugin" , "%script_path%build\Plugins\ExternTypes"
+if !buildresult! GEQ 1 call :cleanup !buildresult!
+if !buildresult! GEQ 1 exit /b !buildresult!
+
+@REM copy ExternTypes plugin to UE installation for use by other plugins
+set ExternTypesPluginTarget_path=%ApiGearTarget_path%\ExternTypes
+xcopy /E /Y "%script_path%build\Plugins\ExternTypes" "%ExternTypesPluginTarget_path%\"  >nul
+if %ERRORLEVEL% GEQ 1 call :cleanup %ERRORLEVEL%
+if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
+
+@REM Building and testing Counter module
+call :buildUEplugin "%script_path%\Plugins\Counter\Counter.uplugin" , "%script_path%build\Plugins\Counter"
+if !buildresult! GEQ 1 call :cleanup !buildresult!
+if !buildresult! GEQ 1 exit /b !buildresult!
+
 
 call :cleanup 0
 exit /b 0

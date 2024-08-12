@@ -10,6 +10,9 @@
 #include "Implementation/{{$Iface}}.h"
 #include "{{$DisplayName}}ImplFixture.h"
 #include "{{$ModuleName}}TestsCommon.h"
+{{- range .Module.Imports }}
+#include "{{Camel .Name}}/Private/Tests/{{Camel .Name}}TestsCommon.h"
+{{- end }}
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
@@ -44,7 +47,7 @@ void {{$Class}}ImplSpec::Define()
 	{{- end }}
 	});
 
-	{{- if not .IsReadOnly }}
+	{{- if and (not .IsReadOnly) (not (eq .KindType "extern")) }}
 
 	LatentIt("Property.{{ Camel .Name }}.Change", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
@@ -103,6 +106,7 @@ void {{$Class}}ImplSpec::Define()
 
 		// use different test value
 		{{- range $i, $e := .Params -}}
+		{{- if not (eq .KindType "extern") }}
 		{{- if .IsArray }}
 		{{- if .IsPrimitive }}
 		{{ueType "" .}} {{ueVar "" .}}TestValue = {{ueDefault "" .}}; // default value
@@ -120,6 +124,9 @@ void {{$Class}}ImplSpec::Define()
 		{{ ueType "" . }} {{ueVar "" .}}TestValue = createTest{{ ueType "" . }}();
 		{{- else }}
 		{{ ueType "" . }} {{ueVar "" .}}TestValue = {{ ueTestValue "" . }};
+		{{- end }}
+		{{- else }}
+		{{ ueType "" . }} {{ueVar "" .}}TestValue = {{ ueDefault "" . }};
 		{{- end }}
 		{{- end }}
 		{{$Iface}}Signals->Broadcast{{Camel .Name}}Signal(
@@ -169,6 +176,7 @@ void {{$Class}}ImplSpec::{{ Camel .Name }}SignalCb({{ueParams "In" .Params}})
 {
 	// known test value
 	{{- range $i, $e := .Params -}}
+	{{- if not (eq .KindType "extern") }}
 	{{- if .IsArray }}
 	{{- if .IsPrimitive }}
 	{{ueType "" .}} {{ueVar "" .}}TestValue = {{ueDefault "" .}}; // default value
@@ -188,6 +196,7 @@ void {{$Class}}ImplSpec::{{ Camel .Name }}SignalCb({{ueParams "In" .Params}})
 	{{ueType "" .}} {{ueVar "" .}}TestValue = {{ ueTestValue "" . }};
 	{{- end }}
 	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), {{ueVar "In" .}}, {{ueVar "" .}}TestValue);
+	{{- end }}
 	{{- end }}
 	testDoneDelegate.Execute();
 }
