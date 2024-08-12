@@ -19,6 +19,8 @@ limitations under the License.
 #include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
 
+#if WITH_DEV_AUTOMATION_TESTS
+
 void UTbSimpleNoOperationsInterfaceImplHelper::SetSpec(UTbSimpleNoOperationsInterfaceImplSpec* InSpec)
 {
 	Spec = InSpec;
@@ -43,8 +45,6 @@ void UTbSimpleNoOperationsInterfaceImplHelper::SigBoolSignalCb(bool bParamBool)
 {
 	Spec->SigBoolSignalCb(bParamBool);
 }
-
-#if WITH_DEV_AUTOMATION_TESTS
 
 FTbSimpleNoOperationsInterfaceImplFixture::FTbSimpleNoOperationsInterfaceImplFixture()
 {
@@ -85,5 +85,28 @@ void FTbSimpleNoOperationsInterfaceImplFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
+#else // WITH_DEV_AUTOMATION_TESTS
+// create empty implementation in case we do not want to do automated testing
+void UTbSimpleNoOperationsInterfaceImplHelper::SetSpec(UTbSimpleNoOperationsInterfaceImplSpec* /* InSpec */)
+{
+}
 
+void UTbSimpleNoOperationsInterfaceImplHelper::PropBoolPropertyCb(bool bPropBool)
+{
+	(void) bPropBool;
+}
+
+void UTbSimpleNoOperationsInterfaceImplHelper::PropIntPropertyCb(int32 PropInt)
+{
+	(void) PropInt;
+}
+
+void UTbSimpleNoOperationsInterfaceImplHelper::SigVoidSignalCb()
+{
+}
+
+void UTbSimpleNoOperationsInterfaceImplHelper::SigBoolSignalCb(bool bParamBool)
+{
+	(void) bParamBool;
+}
 #endif // WITH_DEV_AUTOMATION_TESTS

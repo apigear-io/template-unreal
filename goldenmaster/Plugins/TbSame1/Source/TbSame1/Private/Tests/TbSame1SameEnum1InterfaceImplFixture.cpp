@@ -19,6 +19,8 @@ limitations under the License.
 #include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
 
+#if WITH_DEV_AUTOMATION_TESTS
+
 void UTbSame1SameEnum1InterfaceImplHelper::SetSpec(UTbSame1SameEnum1InterfaceImplSpec* InSpec)
 {
 	Spec = InSpec;
@@ -33,8 +35,6 @@ void UTbSame1SameEnum1InterfaceImplHelper::Sig1SignalCb(ETbSame1Enum1 Param1)
 {
 	Spec->Sig1SignalCb(Param1);
 }
-
-#if WITH_DEV_AUTOMATION_TESTS
 
 FTbSame1SameEnum1InterfaceImplFixture::FTbSame1SameEnum1InterfaceImplFixture()
 {
@@ -75,5 +75,19 @@ void FTbSame1SameEnum1InterfaceImplFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
+#else // WITH_DEV_AUTOMATION_TESTS
+// create empty implementation in case we do not want to do automated testing
+void UTbSame1SameEnum1InterfaceImplHelper::SetSpec(UTbSame1SameEnum1InterfaceImplSpec* /* InSpec */)
+{
+}
 
+void UTbSame1SameEnum1InterfaceImplHelper::Prop1PropertyCb(ETbSame1Enum1 Prop1)
+{
+	(void) Prop1;
+}
+
+void UTbSame1SameEnum1InterfaceImplHelper::Sig1SignalCb(ETbSame1Enum1 Param1)
+{
+	(void) Param1;
+}
 #endif // WITH_DEV_AUTOMATION_TESTS

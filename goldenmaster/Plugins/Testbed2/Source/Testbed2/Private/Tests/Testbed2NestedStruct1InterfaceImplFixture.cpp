@@ -19,6 +19,8 @@ limitations under the License.
 #include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
 
+#if WITH_DEV_AUTOMATION_TESTS
+
 void UTestbed2NestedStruct1InterfaceImplHelper::SetSpec(UTestbed2NestedStruct1InterfaceImplSpec* InSpec)
 {
 	Spec = InSpec;
@@ -33,8 +35,6 @@ void UTestbed2NestedStruct1InterfaceImplHelper::Sig1SignalCb(const FTestbed2Nest
 {
 	Spec->Sig1SignalCb(Param1);
 }
-
-#if WITH_DEV_AUTOMATION_TESTS
 
 FTestbed2NestedStruct1InterfaceImplFixture::FTestbed2NestedStruct1InterfaceImplFixture()
 {
@@ -75,5 +75,19 @@ void FTestbed2NestedStruct1InterfaceImplFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
+#else // WITH_DEV_AUTOMATION_TESTS
+// create empty implementation in case we do not want to do automated testing
+void UTestbed2NestedStruct1InterfaceImplHelper::SetSpec(UTestbed2NestedStruct1InterfaceImplSpec* /* InSpec */)
+{
+}
 
+void UTestbed2NestedStruct1InterfaceImplHelper::Prop1PropertyCb(const FTestbed2NestedStruct1& Prop1)
+{
+	(void) Prop1;
+}
+
+void UTestbed2NestedStruct1InterfaceImplHelper::Sig1SignalCb(const FTestbed2NestedStruct1& Param1)
+{
+	(void) Param1;
+}
 #endif // WITH_DEV_AUTOMATION_TESTS

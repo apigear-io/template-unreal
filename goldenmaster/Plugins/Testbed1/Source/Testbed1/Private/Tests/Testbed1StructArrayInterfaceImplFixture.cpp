@@ -19,6 +19,8 @@ limitations under the License.
 #include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
 
+#if WITH_DEV_AUTOMATION_TESTS
+
 void UTestbed1StructArrayInterfaceImplHelper::SetSpec(UTestbed1StructArrayInterfaceImplSpec* InSpec)
 {
 	Spec = InSpec;
@@ -64,8 +66,6 @@ void UTestbed1StructArrayInterfaceImplHelper::SigStringSignalCb(const TArray<FTe
 	Spec->SigStringSignalCb(ParamString);
 }
 
-#if WITH_DEV_AUTOMATION_TESTS
-
 FTestbed1StructArrayInterfaceImplFixture::FTestbed1StructArrayInterfaceImplFixture()
 {
 	testImplementation = GetGameInstance()->GetSubsystem<UTestbed1StructArrayInterface>();
@@ -105,5 +105,49 @@ void FTestbed1StructArrayInterfaceImplFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
+#else // WITH_DEV_AUTOMATION_TESTS
+// create empty implementation in case we do not want to do automated testing
+void UTestbed1StructArrayInterfaceImplHelper::SetSpec(UTestbed1StructArrayInterfaceImplSpec* /* InSpec */)
+{
+}
 
+void UTestbed1StructArrayInterfaceImplHelper::PropBoolPropertyCb(const TArray<FTestbed1StructBool>& PropBool)
+{
+	(void) PropBool;
+}
+
+void UTestbed1StructArrayInterfaceImplHelper::PropIntPropertyCb(const TArray<FTestbed1StructInt>& PropInt)
+{
+	(void) PropInt;
+}
+
+void UTestbed1StructArrayInterfaceImplHelper::PropFloatPropertyCb(const TArray<FTestbed1StructFloat>& PropFloat)
+{
+	(void) PropFloat;
+}
+
+void UTestbed1StructArrayInterfaceImplHelper::PropStringPropertyCb(const TArray<FTestbed1StructString>& PropString)
+{
+	(void) PropString;
+}
+
+void UTestbed1StructArrayInterfaceImplHelper::SigBoolSignalCb(const TArray<FTestbed1StructBool>& ParamBool)
+{
+	(void) ParamBool;
+}
+
+void UTestbed1StructArrayInterfaceImplHelper::SigIntSignalCb(const TArray<FTestbed1StructInt>& ParamInt)
+{
+	(void) ParamInt;
+}
+
+void UTestbed1StructArrayInterfaceImplHelper::SigFloatSignalCb(const TArray<FTestbed1StructFloat>& ParamFloat)
+{
+	(void) ParamFloat;
+}
+
+void UTestbed1StructArrayInterfaceImplHelper::SigStringSignalCb(const TArray<FTestbed1StructString>& ParamString)
+{
+	(void) ParamString;
+}
 #endif // WITH_DEV_AUTOMATION_TESTS

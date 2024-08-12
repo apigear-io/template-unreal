@@ -19,12 +19,12 @@ limitations under the License.
 #include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
 
+#if WITH_DEV_AUTOMATION_TESTS
+
 void UTbSimpleEmptyInterfaceImplHelper::SetSpec(UTbSimpleEmptyInterfaceImplSpec* InSpec)
 {
 	Spec = InSpec;
 }
-
-#if WITH_DEV_AUTOMATION_TESTS
 
 FTbSimpleEmptyInterfaceImplFixture::FTbSimpleEmptyInterfaceImplFixture()
 {
@@ -65,5 +65,9 @@ void FTbSimpleEmptyInterfaceImplFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
-
+#else // WITH_DEV_AUTOMATION_TESTS
+// create empty implementation in case we do not want to do automated testing
+void UTbSimpleEmptyInterfaceImplHelper::SetSpec(UTbSimpleEmptyInterfaceImplSpec* /* InSpec */)
+{
+}
 #endif // WITH_DEV_AUTOMATION_TESTS

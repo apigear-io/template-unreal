@@ -19,6 +19,8 @@ limitations under the License.
 #include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
 
+#if WITH_DEV_AUTOMATION_TESTS
+
 void UTestbed1StructInterfaceImplHelper::SetSpec(UTestbed1StructInterfaceImplSpec* InSpec)
 {
 	Spec = InSpec;
@@ -64,8 +66,6 @@ void UTestbed1StructInterfaceImplHelper::SigStringSignalCb(const FTestbed1Struct
 	Spec->SigStringSignalCb(ParamString);
 }
 
-#if WITH_DEV_AUTOMATION_TESTS
-
 FTestbed1StructInterfaceImplFixture::FTestbed1StructInterfaceImplFixture()
 {
 	testImplementation = GetGameInstance()->GetSubsystem<UTestbed1StructInterface>();
@@ -105,5 +105,49 @@ void FTestbed1StructInterfaceImplFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
+#else // WITH_DEV_AUTOMATION_TESTS
+// create empty implementation in case we do not want to do automated testing
+void UTestbed1StructInterfaceImplHelper::SetSpec(UTestbed1StructInterfaceImplSpec* /* InSpec */)
+{
+}
 
+void UTestbed1StructInterfaceImplHelper::PropBoolPropertyCb(const FTestbed1StructBool& PropBool)
+{
+	(void) PropBool;
+}
+
+void UTestbed1StructInterfaceImplHelper::PropIntPropertyCb(const FTestbed1StructInt& PropInt)
+{
+	(void) PropInt;
+}
+
+void UTestbed1StructInterfaceImplHelper::PropFloatPropertyCb(const FTestbed1StructFloat& PropFloat)
+{
+	(void) PropFloat;
+}
+
+void UTestbed1StructInterfaceImplHelper::PropStringPropertyCb(const FTestbed1StructString& PropString)
+{
+	(void) PropString;
+}
+
+void UTestbed1StructInterfaceImplHelper::SigBoolSignalCb(const FTestbed1StructBool& ParamBool)
+{
+	(void) ParamBool;
+}
+
+void UTestbed1StructInterfaceImplHelper::SigIntSignalCb(const FTestbed1StructInt& ParamInt)
+{
+	(void) ParamInt;
+}
+
+void UTestbed1StructInterfaceImplHelper::SigFloatSignalCb(const FTestbed1StructFloat& ParamFloat)
+{
+	(void) ParamFloat;
+}
+
+void UTestbed1StructInterfaceImplHelper::SigStringSignalCb(const FTestbed1StructString& ParamString)
+{
+	(void) ParamString;
+}
 #endif // WITH_DEV_AUTOMATION_TESTS

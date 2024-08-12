@@ -19,6 +19,8 @@ limitations under the License.
 #include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
 
+#if WITH_DEV_AUTOMATION_TESTS
+
 void UTbSimpleSimpleInterfaceImplHelper::SetSpec(UTbSimpleSimpleInterfaceImplSpec* InSpec)
 {
 	Spec = InSpec;
@@ -104,8 +106,6 @@ void UTbSimpleSimpleInterfaceImplHelper::SigStringSignalCb(const FString& ParamS
 	Spec->SigStringSignalCb(ParamString);
 }
 
-#if WITH_DEV_AUTOMATION_TESTS
-
 FTbSimpleSimpleInterfaceImplFixture::FTbSimpleSimpleInterfaceImplFixture()
 {
 	testImplementation = GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterface>();
@@ -145,5 +145,89 @@ void FTbSimpleSimpleInterfaceImplFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
+#else // WITH_DEV_AUTOMATION_TESTS
+// create empty implementation in case we do not want to do automated testing
+void UTbSimpleSimpleInterfaceImplHelper::SetSpec(UTbSimpleSimpleInterfaceImplSpec* /* InSpec */)
+{
+}
 
+void UTbSimpleSimpleInterfaceImplHelper::PropBoolPropertyCb(bool bPropBool)
+{
+	(void) bPropBool;
+}
+
+void UTbSimpleSimpleInterfaceImplHelper::PropIntPropertyCb(int32 PropInt)
+{
+	(void) PropInt;
+}
+
+void UTbSimpleSimpleInterfaceImplHelper::PropInt32PropertyCb(int32 PropInt32)
+{
+	(void) PropInt32;
+}
+
+void UTbSimpleSimpleInterfaceImplHelper::PropInt64PropertyCb(int64 PropInt64)
+{
+	(void) PropInt64;
+}
+
+void UTbSimpleSimpleInterfaceImplHelper::PropFloatPropertyCb(float PropFloat)
+{
+	(void) PropFloat;
+}
+
+void UTbSimpleSimpleInterfaceImplHelper::PropFloat32PropertyCb(float PropFloat32)
+{
+	(void) PropFloat32;
+}
+
+void UTbSimpleSimpleInterfaceImplHelper::PropFloat64PropertyCb(double PropFloat64)
+{
+	(void) PropFloat64;
+}
+
+void UTbSimpleSimpleInterfaceImplHelper::PropStringPropertyCb(const FString& PropString)
+{
+	(void) PropString;
+}
+
+void UTbSimpleSimpleInterfaceImplHelper::SigBoolSignalCb(bool bParamBool)
+{
+	(void) bParamBool;
+}
+
+void UTbSimpleSimpleInterfaceImplHelper::SigIntSignalCb(int32 ParamInt)
+{
+	(void) ParamInt;
+}
+
+void UTbSimpleSimpleInterfaceImplHelper::SigInt32SignalCb(int32 ParamInt32)
+{
+	(void) ParamInt32;
+}
+
+void UTbSimpleSimpleInterfaceImplHelper::SigInt64SignalCb(int64 ParamInt64)
+{
+	(void) ParamInt64;
+}
+
+void UTbSimpleSimpleInterfaceImplHelper::SigFloatSignalCb(float ParamFloat)
+{
+	(void) ParamFloat;
+}
+
+void UTbSimpleSimpleInterfaceImplHelper::SigFloat32SignalCb(float ParamFloat32)
+{
+	(void) ParamFloat32;
+}
+
+void UTbSimpleSimpleInterfaceImplHelper::SigFloat64SignalCb(double ParamFloat64)
+{
+	(void) ParamFloat64;
+}
+
+void UTbSimpleSimpleInterfaceImplHelper::SigStringSignalCb(const FString& ParamString)
+{
+	(void) ParamString;
+}
 #endif // WITH_DEV_AUTOMATION_TESTS

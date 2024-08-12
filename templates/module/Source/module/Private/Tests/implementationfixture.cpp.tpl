@@ -9,6 +9,8 @@
 #include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
 
+#if WITH_DEV_AUTOMATION_TESTS
+
 void {{$Class}}ImplHelper::SetSpec({{$Class}}ImplSpec* InSpec)
 {
 	Spec = InSpec;
@@ -29,8 +31,6 @@ void {{$Class}}ImplHelper::{{ Camel .Name }}SignalCb({{ueParams "" .Params}})
 	Spec->{{ Camel .Name }}SignalCb({{ueVars "" .Params}});
 }
 {{- end }}
-
-#if WITH_DEV_AUTOMATION_TESTS
 
 F{{ $DisplayName }}ImplFixture::F{{ $DisplayName }}ImplFixture()
 {
@@ -71,5 +71,27 @@ void F{{ $DisplayName }}ImplFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
+#else // WITH_DEV_AUTOMATION_TESTS
+// create empty implementation in case we do not want to do automated testing
+void {{$Class}}ImplHelper::SetSpec({{$Class}}ImplSpec* /* InSpec */)
+{
+}
 
+{{- range .Interface.Properties }}
+
+void {{$Class}}ImplHelper::{{ Camel .Name }}PropertyCb({{ueParam "" .}})
+{
+	(void) {{ueVar "" .}};
+}
+{{- end }}
+
+{{- range .Interface.Signals }}
+
+void {{$Class}}ImplHelper::{{ Camel .Name }}SignalCb({{ueParams "" .Params}})
+{
+	{{- range $i, $e := .Params }}
+	(void) {{ueVar "" .}};
+	{{- end }}
+}
+{{- end }}
 #endif // WITH_DEV_AUTOMATION_TESTS
