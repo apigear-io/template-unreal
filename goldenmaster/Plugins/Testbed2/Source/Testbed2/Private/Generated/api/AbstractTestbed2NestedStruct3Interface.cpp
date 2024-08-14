@@ -104,6 +104,7 @@ void UAbstractTestbed2NestedStruct3Interface::SetProp3_Private(const FTestbed2Ne
 {
 	Execute_SetProp3(this, InProp3);
 };
+
 void UAbstractTestbed2NestedStruct3Interface::Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))

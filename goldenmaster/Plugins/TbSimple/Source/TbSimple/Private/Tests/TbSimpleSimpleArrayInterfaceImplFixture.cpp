@@ -145,7 +145,7 @@ void FTbSimpleSimpleArrayInterfaceImplFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
-#else // WITH_DEV_AUTOMATION_TESTS
+#else  // WITH_DEV_AUTOMATION_TESTS
 // create empty implementation in case we do not want to do automated testing
 void UTbSimpleSimpleArrayInterfaceImplHelper::SetSpec(UTbSimpleSimpleArrayInterfaceImplSpec* /* InSpec */)
 {
@@ -153,81 +153,81 @@ void UTbSimpleSimpleArrayInterfaceImplHelper::SetSpec(UTbSimpleSimpleArrayInterf
 
 void UTbSimpleSimpleArrayInterfaceImplHelper::PropBoolPropertyCb(const TArray<bool>& PropBool)
 {
-	(void) PropBool;
+	(void)PropBool;
 }
 
 void UTbSimpleSimpleArrayInterfaceImplHelper::PropIntPropertyCb(const TArray<int32>& PropInt)
 {
-	(void) PropInt;
+	(void)PropInt;
 }
 
 void UTbSimpleSimpleArrayInterfaceImplHelper::PropInt32PropertyCb(const TArray<int32>& PropInt32)
 {
-	(void) PropInt32;
+	(void)PropInt32;
 }
 
 void UTbSimpleSimpleArrayInterfaceImplHelper::PropInt64PropertyCb(const TArray<int64>& PropInt64)
 {
-	(void) PropInt64;
+	(void)PropInt64;
 }
 
 void UTbSimpleSimpleArrayInterfaceImplHelper::PropFloatPropertyCb(const TArray<float>& PropFloat)
 {
-	(void) PropFloat;
+	(void)PropFloat;
 }
 
 void UTbSimpleSimpleArrayInterfaceImplHelper::PropFloat32PropertyCb(const TArray<float>& PropFloat32)
 {
-	(void) PropFloat32;
+	(void)PropFloat32;
 }
 
 void UTbSimpleSimpleArrayInterfaceImplHelper::PropFloat64PropertyCb(const TArray<double>& PropFloat64)
 {
-	(void) PropFloat64;
+	(void)PropFloat64;
 }
 
 void UTbSimpleSimpleArrayInterfaceImplHelper::PropStringPropertyCb(const TArray<FString>& PropString)
 {
-	(void) PropString;
+	(void)PropString;
 }
 
 void UTbSimpleSimpleArrayInterfaceImplHelper::SigBoolSignalCb(const TArray<bool>& ParamBool)
 {
-	(void) ParamBool;
+	(void)ParamBool;
 }
 
 void UTbSimpleSimpleArrayInterfaceImplHelper::SigIntSignalCb(const TArray<int32>& ParamInt)
 {
-	(void) ParamInt;
+	(void)ParamInt;
 }
 
 void UTbSimpleSimpleArrayInterfaceImplHelper::SigInt32SignalCb(const TArray<int32>& ParamInt32)
 {
-	(void) ParamInt32;
+	(void)ParamInt32;
 }
 
 void UTbSimpleSimpleArrayInterfaceImplHelper::SigInt64SignalCb(const TArray<int64>& ParamInt64)
 {
-	(void) ParamInt64;
+	(void)ParamInt64;
 }
 
 void UTbSimpleSimpleArrayInterfaceImplHelper::SigFloatSignalCb(const TArray<float>& ParamFloat)
 {
-	(void) ParamFloat;
+	(void)ParamFloat;
 }
 
 void UTbSimpleSimpleArrayInterfaceImplHelper::SigFloat32SignalCb(const TArray<float>& ParamFloa32)
 {
-	(void) ParamFloa32;
+	(void)ParamFloa32;
 }
 
 void UTbSimpleSimpleArrayInterfaceImplHelper::SigFloat64SignalCb(const TArray<double>& ParamFloat64)
 {
-	(void) ParamFloat64;
+	(void)ParamFloat64;
 }
 
 void UTbSimpleSimpleArrayInterfaceImplHelper::SigStringSignalCb(const TArray<FString>& ParamString)
 {
-	(void) ParamString;
+	(void)ParamString;
 }
 #endif // WITH_DEV_AUTOMATION_TESTS

@@ -94,6 +94,7 @@ void UAbstractTbSame2SameStruct2Interface::SetProp2_Private(const FTbSame2Struct
 {
 	Execute_SetProp2(this, InProp2);
 };
+
 void UAbstractTbSame2SameStruct2Interface::Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame2Struct1& Result, const FTbSame2Struct1& Param1)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))

@@ -67,7 +67,7 @@ void UCounterCounterImplSpec::Define()
 	It("Property.ExternVector.Default", [this]()
 		{
 		// Do implement test here
-		FVector TestValue = FVector(0.f,0.f,0.f); // default value
+		FVector TestValue = FVector(0.f, 0.f, 0.f); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetExternVector(ImplFixture->GetImplementation().GetObject()), TestValue);
 	});
 
@@ -102,7 +102,7 @@ void UCounterCounterImplSpec::Define()
 	It("Operation.Increment", [this]()
 		{
 		// Do implement test here
-		ImplFixture->GetImplementation()->Execute_Increment(ImplFixture->GetImplementation().GetObject(), FVector(0.f,0.f,0.f));
+		ImplFixture->GetImplementation()->Execute_Increment(ImplFixture->GetImplementation().GetObject(), FVector(0.f, 0.f, 0.f));
 	});
 
 	It("Operation.IncrementArray", [this]()
@@ -131,7 +131,7 @@ void UCounterCounterImplSpec::Define()
 
 		// use different test value
 		FCustomTypesVector3D VectorTestValue = createTestFCustomTypesVector3D();
-		FVector ExternVectorTestValue = FVector(0.f,0.f,0.f);
+		FVector ExternVectorTestValue = FVector(0.f, 0.f, 0.f);
 		TArray<FCustomTypesVector3D> VectorArrayTestValue = createTestFCustomTypesVector3DArray();
 		TArray<FVector> ExternVectorArrayTestValue = TArray<FVector>();
 		CounterCounterSignals->BroadcastValueChangedSignal(VectorTestValue, ExternVectorTestValue, VectorArrayTestValue, ExternVectorArrayTestValue);

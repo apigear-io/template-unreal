@@ -75,7 +75,7 @@ FVector UCounterCounter::Increment_Implementation(const FVector& Vec)
 {
 	(void)Vec;
 	// do business logic here
-	return FVector(0.f,0.f,0.f);
+	return FVector(0.f, 0.f, 0.f);
 }
 
 TArray<FVector> UCounterCounter::IncrementArray_Implementation(const TArray<FVector>& Vec)

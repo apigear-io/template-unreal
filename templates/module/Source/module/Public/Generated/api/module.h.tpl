@@ -19,7 +19,8 @@ limitations under the License.
 #pragma once
 
 {{- $ModuleName := Camel .Module.Name}}
-{{ range .Module.Interfaces }}
+{{- if len .Module.Interfaces }}{{nl}}{{end}}
+{{- range .Module.Interfaces }}
 {{- $Class := printf "%s%s" $ModuleName (Camel .Name) }}
 {{- $class := printf "%sInterface" $Class }}
 #include "{{$class}}.h"

@@ -85,7 +85,7 @@ void FTbSame2SameEnum2InterfaceImplFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
-#else // WITH_DEV_AUTOMATION_TESTS
+#else  // WITH_DEV_AUTOMATION_TESTS
 // create empty implementation in case we do not want to do automated testing
 void UTbSame2SameEnum2InterfaceImplHelper::SetSpec(UTbSame2SameEnum2InterfaceImplSpec* /* InSpec */)
 {
@@ -93,22 +93,22 @@ void UTbSame2SameEnum2InterfaceImplHelper::SetSpec(UTbSame2SameEnum2InterfaceImp
 
 void UTbSame2SameEnum2InterfaceImplHelper::Prop1PropertyCb(ETbSame2Enum1 Prop1)
 {
-	(void) Prop1;
+	(void)Prop1;
 }
 
 void UTbSame2SameEnum2InterfaceImplHelper::Prop2PropertyCb(ETbSame2Enum2 Prop2)
 {
-	(void) Prop2;
+	(void)Prop2;
 }
 
 void UTbSame2SameEnum2InterfaceImplHelper::Sig1SignalCb(ETbSame2Enum1 Param1)
 {
-	(void) Param1;
+	(void)Param1;
 }
 
 void UTbSame2SameEnum2InterfaceImplHelper::Sig2SignalCb(ETbSame2Enum1 Param1, ETbSame2Enum2 Param2)
 {
-	(void) Param1;
-	(void) Param2;
+	(void)Param1;
+	(void)Param2;
 }
 #endif // WITH_DEV_AUTOMATION_TESTS

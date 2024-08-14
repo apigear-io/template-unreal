@@ -42,7 +42,7 @@ public:
 
 	// methods
 	virtual void IncrementAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FVector& Result, const FVector& Vec) override;
-	virtual FVector Increment_Implementation(const FVector& Vec) override PURE_VIRTUAL(UAbstractCounterCounter::Increment_Implementation, return FVector(0.f,0.f,0.f););
+	virtual FVector Increment_Implementation(const FVector& Vec) override PURE_VIRTUAL(UAbstractCounterCounter::Increment_Implementation, return FVector(0.f, 0.f, 0.f););
 
 	virtual void IncrementArrayAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FVector>& Result, const TArray<FVector>& Vec) override;
 	virtual TArray<FVector> IncrementArray_Implementation(const TArray<FVector>& Vec) override PURE_VIRTUAL(UAbstractCounterCounter::IncrementArray_Implementation, return TArray<FVector>(););
@@ -57,7 +57,7 @@ public:
 	virtual FCustomTypesVector3D GetVector_Implementation() const override PURE_VIRTUAL(UAbstractCounterCounter::GetVector_Implementation, return FCustomTypesVector3D(););
 	virtual void SetVector_Implementation(const FCustomTypesVector3D& InVector) override PURE_VIRTUAL(UAbstractCounterCounter::SetVector_Implementation, return;);
 
-	virtual FVector GetExternVector_Implementation() const override PURE_VIRTUAL(UAbstractCounterCounter::GetExternVector_Implementation, return FVector(0.f,0.f,0.f););
+	virtual FVector GetExternVector_Implementation() const override PURE_VIRTUAL(UAbstractCounterCounter::GetExternVector_Implementation, return FVector(0.f, 0.f, 0.f););
 	virtual void SetExternVector_Implementation(const FVector& InExternVector) override PURE_VIRTUAL(UAbstractCounterCounter::SetExternVector_Implementation, return;);
 
 	virtual TArray<FCustomTypesVector3D> GetVectorArray_Implementation() const override PURE_VIRTUAL(UAbstractCounterCounter::GetVectorArray_Implementation, return TArray<FCustomTypesVector3D>(););
@@ -82,7 +82,7 @@ protected:
 	void SetVector_Private(const FCustomTypesVector3D& InVector);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetExternVector_Private, BlueprintSetter = SetExternVector_Private, Category = "ApiGear|Counter|Counter")
-	FVector ExternVector{FVector(0.f,0.f,0.f)};
+	FVector ExternVector{FVector(0.f, 0.f, 0.f)};
 
 	UFUNCTION(BlueprintGetter, Category = "ApiGear|Counter|Counter|Properties", BlueprintInternalUseOnly)
 	FVector GetExternVector_Private() const;

@@ -105,7 +105,7 @@ void FTestbed2ManyParamInterfaceImplFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
-#else // WITH_DEV_AUTOMATION_TESTS
+#else  // WITH_DEV_AUTOMATION_TESTS
 // create empty implementation in case we do not want to do automated testing
 void UTestbed2ManyParamInterfaceImplHelper::SetSpec(UTestbed2ManyParamInterfaceImplSpec* /* InSpec */)
 {
@@ -113,47 +113,47 @@ void UTestbed2ManyParamInterfaceImplHelper::SetSpec(UTestbed2ManyParamInterfaceI
 
 void UTestbed2ManyParamInterfaceImplHelper::Prop1PropertyCb(int32 Prop1)
 {
-	(void) Prop1;
+	(void)Prop1;
 }
 
 void UTestbed2ManyParamInterfaceImplHelper::Prop2PropertyCb(int32 Prop2)
 {
-	(void) Prop2;
+	(void)Prop2;
 }
 
 void UTestbed2ManyParamInterfaceImplHelper::Prop3PropertyCb(int32 Prop3)
 {
-	(void) Prop3;
+	(void)Prop3;
 }
 
 void UTestbed2ManyParamInterfaceImplHelper::Prop4PropertyCb(int32 Prop4)
 {
-	(void) Prop4;
+	(void)Prop4;
 }
 
 void UTestbed2ManyParamInterfaceImplHelper::Sig1SignalCb(int32 Param1)
 {
-	(void) Param1;
+	(void)Param1;
 }
 
 void UTestbed2ManyParamInterfaceImplHelper::Sig2SignalCb(int32 Param1, int32 Param2)
 {
-	(void) Param1;
-	(void) Param2;
+	(void)Param1;
+	(void)Param2;
 }
 
 void UTestbed2ManyParamInterfaceImplHelper::Sig3SignalCb(int32 Param1, int32 Param2, int32 Param3)
 {
-	(void) Param1;
-	(void) Param2;
-	(void) Param3;
+	(void)Param1;
+	(void)Param2;
+	(void)Param3;
 }
 
 void UTestbed2ManyParamInterfaceImplHelper::Sig4SignalCb(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
 {
-	(void) Param1;
-	(void) Param2;
-	(void) Param3;
-	(void) Param4;
+	(void)Param1;
+	(void)Param2;
+	(void)Param3;
+	(void)Param4;
 }
 #endif // WITH_DEV_AUTOMATION_TESTS

@@ -105,7 +105,7 @@ void FTestbed1StructArrayInterfaceImplFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
-#else // WITH_DEV_AUTOMATION_TESTS
+#else  // WITH_DEV_AUTOMATION_TESTS
 // create empty implementation in case we do not want to do automated testing
 void UTestbed1StructArrayInterfaceImplHelper::SetSpec(UTestbed1StructArrayInterfaceImplSpec* /* InSpec */)
 {
@@ -113,41 +113,41 @@ void UTestbed1StructArrayInterfaceImplHelper::SetSpec(UTestbed1StructArrayInterf
 
 void UTestbed1StructArrayInterfaceImplHelper::PropBoolPropertyCb(const TArray<FTestbed1StructBool>& PropBool)
 {
-	(void) PropBool;
+	(void)PropBool;
 }
 
 void UTestbed1StructArrayInterfaceImplHelper::PropIntPropertyCb(const TArray<FTestbed1StructInt>& PropInt)
 {
-	(void) PropInt;
+	(void)PropInt;
 }
 
 void UTestbed1StructArrayInterfaceImplHelper::PropFloatPropertyCb(const TArray<FTestbed1StructFloat>& PropFloat)
 {
-	(void) PropFloat;
+	(void)PropFloat;
 }
 
 void UTestbed1StructArrayInterfaceImplHelper::PropStringPropertyCb(const TArray<FTestbed1StructString>& PropString)
 {
-	(void) PropString;
+	(void)PropString;
 }
 
 void UTestbed1StructArrayInterfaceImplHelper::SigBoolSignalCb(const TArray<FTestbed1StructBool>& ParamBool)
 {
-	(void) ParamBool;
+	(void)ParamBool;
 }
 
 void UTestbed1StructArrayInterfaceImplHelper::SigIntSignalCb(const TArray<FTestbed1StructInt>& ParamInt)
 {
-	(void) ParamInt;
+	(void)ParamInt;
 }
 
 void UTestbed1StructArrayInterfaceImplHelper::SigFloatSignalCb(const TArray<FTestbed1StructFloat>& ParamFloat)
 {
-	(void) ParamFloat;
+	(void)ParamFloat;
 }
 
 void UTestbed1StructArrayInterfaceImplHelper::SigStringSignalCb(const TArray<FTestbed1StructString>& ParamString)
 {
-	(void) ParamString;
+	(void)ParamString;
 }
 #endif // WITH_DEV_AUTOMATION_TESTS

@@ -23,7 +23,6 @@ limitations under the License.
 UAbstractTbSimpleEmptyInterface::UAbstractTbSimpleEmptyInterface()
 {
 }
-
 void UAbstractTbSimpleEmptyInterface::Initialize(FSubsystemCollectionBase& Collection)
 {
 	check(!bInitialized);

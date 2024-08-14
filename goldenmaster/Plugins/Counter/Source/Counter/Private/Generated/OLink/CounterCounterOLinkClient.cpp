@@ -47,7 +47,7 @@ struct CounterCounterPropertiesData
 	FCriticalSection VectorMutex;
 	FCustomTypesVector3D Vector{FCustomTypesVector3D()};
 	FCriticalSection ExternVectorMutex;
-	FVector ExternVector{FVector(0.f,0.f,0.f)};
+	FVector ExternVector{FVector(0.f, 0.f, 0.f)};
 	FCriticalSection VectorArrayMutex;
 	TArray<FCustomTypesVector3D> VectorArray{TArray<FCustomTypesVector3D>()};
 	FCriticalSection ExternVectorArrayMutex;
@@ -294,7 +294,7 @@ FVector UCounterCounterOLinkClient::Increment_Implementation(const FVector& Vec)
 	{
 		UE_LOG(LogCounterCounterOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
-		return FVector(0.f,0.f,0.f);
+		return FVector(0.f, 0.f, 0.f);
 	}
 	TPromise<FVector> Promise;
 	Async(EAsyncExecution::Thread,

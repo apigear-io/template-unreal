@@ -75,7 +75,7 @@ void FTbSimpleNoPropertiesInterfaceImplFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
-#else // WITH_DEV_AUTOMATION_TESTS
+#else  // WITH_DEV_AUTOMATION_TESTS
 // create empty implementation in case we do not want to do automated testing
 void UTbSimpleNoPropertiesInterfaceImplHelper::SetSpec(UTbSimpleNoPropertiesInterfaceImplSpec* /* InSpec */)
 {
@@ -87,6 +87,6 @@ void UTbSimpleNoPropertiesInterfaceImplHelper::SigVoidSignalCb()
 
 void UTbSimpleNoPropertiesInterfaceImplHelper::SigBoolSignalCb(bool bParamBool)
 {
-	(void) bParamBool;
+	(void)bParamBool;
 }
 #endif // WITH_DEV_AUTOMATION_TESTS

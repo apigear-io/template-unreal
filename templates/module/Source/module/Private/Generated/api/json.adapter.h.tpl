@@ -37,7 +37,8 @@ static void to_json(nlohmann::json& j, const {{$class}}& p)
 
 // do the specialization of the adl_serializer for the in the nlohmann namespace
 // we do not want to modify the external namespace
-namespace nlohmann {
+namespace nlohmann
+{
 {{- end }}
 {{- range $.Module.Externs }}
 {{- $system:= $.System }}
@@ -45,22 +46,25 @@ namespace nlohmann {
 {{- $ext := (ueExtern .) }}
 {{- $class:= $ext.Name }}
 
-	template <>
-	struct {{$API_MACRO}} adl_serializer<{{ $ext.NameSpace }}::{{$class}}> {
-		static {{ $ext.NameSpace }}::{{$class}} from_json(const json& j) {
-			(void) j;
-			// Do deserialization here, e.g.
-			// return { j.at("xyz").get<Int>() };
-			return {};
-		}
+template <>
+struct {{$API_MACRO}} adl_serializer<{{ $ext.NameSpace }}::{{$class}}>
+{
+	static {{ $ext.NameSpace }}::{{$class}} from_json(const json& j)
+	{
+		(void)j;
+		// Do deserialization here, e.g.
+		// return { j.at("xyz").get<Int>() };
+		return {};
+	}
 
-		static void to_json(json& j, {{ $ext.NameSpace }}::{{$class}} t) {
-			(void) j;
-			(void) t;
-			// Do serialization here, e.g.
-			// j = t.xyz;
-		}
-	};
+	static void to_json(json& j, {{ $ext.NameSpace }}::{{$class}} t)
+	{
+		(void)j;
+		(void)t;
+		// Do serialization here, e.g.
+		// j = t.xyz;
+	}
+};
 {{- nl}}
 {{- end }}
 {{- if len .Module.Externs }}

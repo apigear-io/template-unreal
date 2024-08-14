@@ -114,6 +114,7 @@ void UAbstractCounterCounter::SetExternVectorArray_Private(const TArray<FVector>
 {
 	Execute_SetExternVectorArray(this, InExternVectorArray);
 };
+
 void UAbstractCounterCounter::IncrementAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FVector& Result, const FVector& Vec)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))

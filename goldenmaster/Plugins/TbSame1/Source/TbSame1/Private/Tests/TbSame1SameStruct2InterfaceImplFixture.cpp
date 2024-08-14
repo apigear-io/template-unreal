@@ -85,7 +85,7 @@ void FTbSame1SameStruct2InterfaceImplFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
-#else // WITH_DEV_AUTOMATION_TESTS
+#else  // WITH_DEV_AUTOMATION_TESTS
 // create empty implementation in case we do not want to do automated testing
 void UTbSame1SameStruct2InterfaceImplHelper::SetSpec(UTbSame1SameStruct2InterfaceImplSpec* /* InSpec */)
 {
@@ -93,22 +93,22 @@ void UTbSame1SameStruct2InterfaceImplHelper::SetSpec(UTbSame1SameStruct2Interfac
 
 void UTbSame1SameStruct2InterfaceImplHelper::Prop1PropertyCb(const FTbSame1Struct2& Prop1)
 {
-	(void) Prop1;
+	(void)Prop1;
 }
 
 void UTbSame1SameStruct2InterfaceImplHelper::Prop2PropertyCb(const FTbSame1Struct2& Prop2)
 {
-	(void) Prop2;
+	(void)Prop2;
 }
 
 void UTbSame1SameStruct2InterfaceImplHelper::Sig1SignalCb(const FTbSame1Struct1& Param1)
 {
-	(void) Param1;
+	(void)Param1;
 }
 
 void UTbSame1SameStruct2InterfaceImplHelper::Sig2SignalCb(const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2)
 {
-	(void) Param1;
-	(void) Param2;
+	(void)Param1;
+	(void)Param2;
 }
 #endif // WITH_DEV_AUTOMATION_TESTS

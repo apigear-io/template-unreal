@@ -75,7 +75,7 @@ void FTestbed2NestedStruct1InterfaceImplFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
-#else // WITH_DEV_AUTOMATION_TESTS
+#else  // WITH_DEV_AUTOMATION_TESTS
 // create empty implementation in case we do not want to do automated testing
 void UTestbed2NestedStruct1InterfaceImplHelper::SetSpec(UTestbed2NestedStruct1InterfaceImplSpec* /* InSpec */)
 {
@@ -83,11 +83,11 @@ void UTestbed2NestedStruct1InterfaceImplHelper::SetSpec(UTestbed2NestedStruct1In
 
 void UTestbed2NestedStruct1InterfaceImplHelper::Prop1PropertyCb(const FTestbed2NestedStruct1& Prop1)
 {
-	(void) Prop1;
+	(void)Prop1;
 }
 
 void UTestbed2NestedStruct1InterfaceImplHelper::Sig1SignalCb(const FTestbed2NestedStruct1& Param1)
 {
-	(void) Param1;
+	(void)Param1;
 }
 #endif // WITH_DEV_AUTOMATION_TESTS

@@ -114,6 +114,7 @@ void UAbstractTestbed1StructInterface::SetPropString_Private(const FTestbed1Stru
 {
 	Execute_SetPropString(this, InPropString);
 };
+
 void UAbstractTestbed1StructInterface::FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const FTestbed1StructBool& ParamBool)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))

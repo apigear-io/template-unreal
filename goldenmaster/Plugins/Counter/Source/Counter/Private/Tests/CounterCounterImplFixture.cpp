@@ -80,7 +80,7 @@ void FCounterCounterImplFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
-#else // WITH_DEV_AUTOMATION_TESTS
+#else  // WITH_DEV_AUTOMATION_TESTS
 // create empty implementation in case we do not want to do automated testing
 void UCounterCounterImplHelper::SetSpec(UCounterCounterImplSpec* /* InSpec */)
 {
@@ -88,19 +88,19 @@ void UCounterCounterImplHelper::SetSpec(UCounterCounterImplSpec* /* InSpec */)
 
 void UCounterCounterImplHelper::VectorPropertyCb(const FCustomTypesVector3D& Vector)
 {
-	(void) Vector;
+	(void)Vector;
 }
 
 void UCounterCounterImplHelper::VectorArrayPropertyCb(const TArray<FCustomTypesVector3D>& VectorArray)
 {
-	(void) VectorArray;
+	(void)VectorArray;
 }
 
 void UCounterCounterImplHelper::ValueChangedSignalCb(const FCustomTypesVector3D& Vector, const FVector& ExternVector, const TArray<FCustomTypesVector3D>& VectorArray, const TArray<FVector>& ExternVectorArray)
 {
-	(void) Vector;
-	(void) ExternVector;
-	(void) VectorArray;
-	(void) ExternVectorArray;
+	(void)Vector;
+	(void)ExternVector;
+	(void)VectorArray;
+	(void)ExternVectorArray;
 }
 #endif // WITH_DEV_AUTOMATION_TESTS

@@ -84,6 +84,7 @@ void UAbstractTbSame2SameEnum1Interface::SetProp1_Private(ETbSame2Enum1 InProp1)
 {
 	Execute_SetProp1(this, InProp1);
 };
+
 void UAbstractTbSame2SameEnum1Interface::Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, ETbSame2Enum1 Param1)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))

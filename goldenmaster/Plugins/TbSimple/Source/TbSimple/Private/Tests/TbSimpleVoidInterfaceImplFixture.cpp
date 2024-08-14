@@ -70,7 +70,7 @@ void FTbSimpleVoidInterfaceImplFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
-#else // WITH_DEV_AUTOMATION_TESTS
+#else  // WITH_DEV_AUTOMATION_TESTS
 // create empty implementation in case we do not want to do automated testing
 void UTbSimpleVoidInterfaceImplHelper::SetSpec(UTbSimpleVoidInterfaceImplSpec* /* InSpec */)
 {

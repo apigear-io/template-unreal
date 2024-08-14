@@ -105,7 +105,7 @@ void FTbEnumEnumInterfaceImplFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
-#else // WITH_DEV_AUTOMATION_TESTS
+#else  // WITH_DEV_AUTOMATION_TESTS
 // create empty implementation in case we do not want to do automated testing
 void UTbEnumEnumInterfaceImplHelper::SetSpec(UTbEnumEnumInterfaceImplSpec* /* InSpec */)
 {
@@ -113,41 +113,41 @@ void UTbEnumEnumInterfaceImplHelper::SetSpec(UTbEnumEnumInterfaceImplSpec* /* In
 
 void UTbEnumEnumInterfaceImplHelper::Prop0PropertyCb(ETbEnumEnum0 Prop0)
 {
-	(void) Prop0;
+	(void)Prop0;
 }
 
 void UTbEnumEnumInterfaceImplHelper::Prop1PropertyCb(ETbEnumEnum1 Prop1)
 {
-	(void) Prop1;
+	(void)Prop1;
 }
 
 void UTbEnumEnumInterfaceImplHelper::Prop2PropertyCb(ETbEnumEnum2 Prop2)
 {
-	(void) Prop2;
+	(void)Prop2;
 }
 
 void UTbEnumEnumInterfaceImplHelper::Prop3PropertyCb(ETbEnumEnum3 Prop3)
 {
-	(void) Prop3;
+	(void)Prop3;
 }
 
 void UTbEnumEnumInterfaceImplHelper::Sig0SignalCb(ETbEnumEnum0 Param0)
 {
-	(void) Param0;
+	(void)Param0;
 }
 
 void UTbEnumEnumInterfaceImplHelper::Sig1SignalCb(ETbEnumEnum1 Param1)
 {
-	(void) Param1;
+	(void)Param1;
 }
 
 void UTbEnumEnumInterfaceImplHelper::Sig2SignalCb(ETbEnumEnum2 Param2)
 {
-	(void) Param2;
+	(void)Param2;
 }
 
 void UTbEnumEnumInterfaceImplHelper::Sig3SignalCb(ETbEnumEnum3 Param3)
 {
-	(void) Param3;
+	(void)Param3;
 }
 #endif // WITH_DEV_AUTOMATION_TESTS

@@ -90,7 +90,7 @@ void FTbNamesNamEsImplFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
-#else // WITH_DEV_AUTOMATION_TESTS
+#else  // WITH_DEV_AUTOMATION_TESTS
 // create empty implementation in case we do not want to do automated testing
 void UTbNamesNamEsImplHelper::SetSpec(UTbNamesNamEsImplSpec* /* InSpec */)
 {
@@ -98,26 +98,26 @@ void UTbNamesNamEsImplHelper::SetSpec(UTbNamesNamEsImplSpec* /* InSpec */)
 
 void UTbNamesNamEsImplHelper::SwitchPropertyCb(bool bSwitch)
 {
-	(void) bSwitch;
+	(void)bSwitch;
 }
 
 void UTbNamesNamEsImplHelper::SomePropertyPropertyCb(int32 SomeProperty)
 {
-	(void) SomeProperty;
+	(void)SomeProperty;
 }
 
 void UTbNamesNamEsImplHelper::SomePoperty2PropertyCb(int32 SomePoperty2)
 {
-	(void) SomePoperty2;
+	(void)SomePoperty2;
 }
 
 void UTbNamesNamEsImplHelper::SomeSignalSignalCb(bool bSomeParam)
 {
-	(void) bSomeParam;
+	(void)bSomeParam;
 }
 
 void UTbNamesNamEsImplHelper::SomeSignal2SignalCb(bool bSomeParam)
 {
-	(void) bSomeParam;
+	(void)bSomeParam;
 }
 #endif // WITH_DEV_AUTOMATION_TESTS

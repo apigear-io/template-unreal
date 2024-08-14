@@ -89,11 +89,10 @@ U{{$Class}}Signals* {{$abstractclass}}::_GetSignals_Implementation()
 	}
 	return {{$Class}}Signals;
 }
+{{- nl }}
 {{- end }}
 
-{{- if len .Properties }}{{ nl }}{{ end }}
 {{- range $i, $e := .Properties }}
-{{- if $i }}{{nl}}{{ end }}
 {{ueReturn "" .}} {{$abstractclass}}::Get{{Camel .Name}}_Private() const
 {
 	return Execute_Get{{Camel .Name}}(this);
@@ -105,10 +104,11 @@ void {{$abstractclass}}::Set{{Camel .Name}}_Private({{ueParam "In" .}})
 	Execute_Set{{Camel .Name}}(this, {{ueVar "In" .}});
 };
 {{- end }}
+{{- nl }}
 {{- end }}
 
+{{- if len .Operations }}
 {{- range $i, $e := .Operations }}
-{{- if $i }}{{nl}}{{ end }}
 {{- if .Description }}
 /**
    \brief {{.Description}}
@@ -149,9 +149,10 @@ void {{$abstractclass}}::{{Camel .Name}}Async_Implementation(UObject* WorldConte
 		}
 	}
 }
+{{- nl }}
 {{- end }}
 {{- end }}
-
+{{- end }}
 void {{$abstractclass}}::Initialize(FSubsystemCollectionBase& Collection)
 {
 	check(!bInitialized);

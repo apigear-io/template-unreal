@@ -105,7 +105,6 @@ void UAbstractTbNamesNamEs::SetSomePoperty2_Private(int32 InSomePoperty2)
 	Execute_SetSomePoperty2(this, InSomePoperty2);
 };
 
-
 void UAbstractTbNamesNamEs::Initialize(FSubsystemCollectionBase& Collection)
 {
 	check(!bInitialized);
