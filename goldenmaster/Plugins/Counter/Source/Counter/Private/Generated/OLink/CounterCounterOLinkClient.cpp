@@ -333,15 +333,7 @@ TArray<FVector> UCounterCounterOLinkClient::IncrementArray_Implementation(const 
 		{
 		ApiGear::ObjectLink::InvokeReplyFunc GetCounterStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			if (!arg.value.empty())
-			{
-				Promise.SetValue(arg.value.get<TArray<FVector>>());
-			}
-			else
-			{
-				UE_LOG(LogCounterCounterOLinkClient, Error, TEXT("IncrementArray: OLink service returned empty value - should have returned type of TArray<FVector>"));
-				Promise.SetValue(TArray<FVector>());
-			}
+			Promise.SetValue(arg.value.get<TArray<FVector>>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "incrementArray");
 		m_sink->GetNode()->invokeRemote(memberId, {Vec}, GetCounterStateFunc);
@@ -395,15 +387,7 @@ TArray<FCustomTypesVector3D> UCounterCounterOLinkClient::DecrementArray_Implemen
 		{
 		ApiGear::ObjectLink::InvokeReplyFunc GetCounterStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			if (!arg.value.empty())
-			{
-				Promise.SetValue(arg.value.get<TArray<FCustomTypesVector3D>>());
-			}
-			else
-			{
-				UE_LOG(LogCounterCounterOLinkClient, Error, TEXT("DecrementArray: OLink service returned empty value - should have returned type of TArray<FCustomTypesVector3D>"));
-				Promise.SetValue(TArray<FCustomTypesVector3D>());
-			}
+			Promise.SetValue(arg.value.get<TArray<FCustomTypesVector3D>>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "decrementArray");
 		m_sink->GetNode()->invokeRemote(memberId, {Vec}, GetCounterStateFunc);
