@@ -273,8 +273,12 @@ features:
         documents:
           - source: "buildPlugins.bat.tpl"
             target: "buildPlugins.bat"
+          - source: "buildTestPlugins.bat.tpl"
+            target: "buildTestPlugins.bat"
           - source: "buildPlugins.sh.tpl"
             target: "buildPlugins.sh"
+          - source: "buildTestPlugins.sh.tpl"
+            target: "buildTestPlugins.sh"
       - match: module
         prefix: "Plugins/{{Camel .Module.Name}}/"
         documents:
