@@ -130,17 +130,17 @@ public:
 	virtual bool GetSwitch_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Properties")
 	void SetSwitch(bool bInSwitch);
-	virtual void SetSwitch_Implementation(bool bInSwitch) = 0;
+	virtual void SetSwitch_Implementation(UPARAM(DisplayName = "bSwitch") bool bInSwitch) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Properties")
 	int32 GetSomeProperty() const;
 	virtual int32 GetSomeProperty_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Properties")
 	void SetSomeProperty(int32 InSomeProperty);
-	virtual void SetSomeProperty_Implementation(int32 InSomeProperty) = 0;
+	virtual void SetSomeProperty_Implementation(UPARAM(DisplayName = "SomeProperty") int32 InSomeProperty) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Properties")
 	int32 GetSomePoperty2() const;
 	virtual int32 GetSomePoperty2_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Properties")
 	void SetSomePoperty2(int32 InSomePoperty2);
-	virtual void SetSomePoperty2_Implementation(int32 InSomePoperty2) = 0;
+	virtual void SetSomePoperty2_Implementation(UPARAM(DisplayName = "SomePoperty2") int32 InSomePoperty2) = 0;
 };

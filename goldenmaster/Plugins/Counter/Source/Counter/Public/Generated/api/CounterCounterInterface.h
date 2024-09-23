@@ -151,23 +151,23 @@ public:
 	virtual FCustomTypesVector3D GetVector_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Counter|Counter|Properties")
 	void SetVector(const FCustomTypesVector3D& InVector);
-	virtual void SetVector_Implementation(const FCustomTypesVector3D& InVector) = 0;
+	virtual void SetVector_Implementation(UPARAM(DisplayName = "Vector") const FCustomTypesVector3D& InVector) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Counter|Counter|Properties")
 	FVector GetExternVector() const;
 	virtual FVector GetExternVector_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Counter|Counter|Properties")
 	void SetExternVector(const FVector& InExternVector);
-	virtual void SetExternVector_Implementation(const FVector& InExternVector) = 0;
+	virtual void SetExternVector_Implementation(UPARAM(DisplayName = "ExternVector") const FVector& InExternVector) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Counter|Counter|Properties")
 	TArray<FCustomTypesVector3D> GetVectorArray() const;
 	virtual TArray<FCustomTypesVector3D> GetVectorArray_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Counter|Counter|Properties")
 	void SetVectorArray(const TArray<FCustomTypesVector3D>& InVectorArray);
-	virtual void SetVectorArray_Implementation(const TArray<FCustomTypesVector3D>& InVectorArray) = 0;
+	virtual void SetVectorArray_Implementation(UPARAM(DisplayName = "VectorArray") const TArray<FCustomTypesVector3D>& InVectorArray) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Counter|Counter|Properties")
 	TArray<FVector> GetExternVectorArray() const;
 	virtual TArray<FVector> GetExternVectorArray_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Counter|Counter|Properties")
 	void SetExternVectorArray(const TArray<FVector>& InExternVectorArray);
-	virtual void SetExternVectorArray_Implementation(const TArray<FVector>& InExternVectorArray) = 0;
+	virtual void SetExternVectorArray_Implementation(UPARAM(DisplayName = "ExternVectorArray") const TArray<FVector>& InExternVectorArray) = 0;
 };

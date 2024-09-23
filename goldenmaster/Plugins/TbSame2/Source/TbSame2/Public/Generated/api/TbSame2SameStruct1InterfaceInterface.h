@@ -98,5 +98,5 @@ public:
 	virtual FTbSame2Struct1 GetProp1_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct1Interface|Properties")
 	void SetProp1(const FTbSame2Struct1& InProp1);
-	virtual void SetProp1_Implementation(const FTbSame2Struct1& InProp1) = 0;
+	virtual void SetProp1_Implementation(UPARAM(DisplayName = "Prop1") const FTbSame2Struct1& InProp1) = 0;
 };

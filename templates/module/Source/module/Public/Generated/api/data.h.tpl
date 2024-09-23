@@ -117,7 +117,7 @@ public:
 {{- if $idx}}{{nl}}{{end}}
 	/* Convert from uint8 to {{$class}} @return true if successful */
 	UFUNCTION(BlueprintCallable, Category = "{{$Category}}")
-	static bool to{{$moduleEnumName}}({{$class}}& ConvertedEnum, uint8 InValue);
+	static bool to{{$moduleEnumName}}({{$class}}& ConvertedEnum, UPARAM(DisplayName = "Value") uint8 InValue);
 {{- end }}
 {{- if .Module.Structs }}{{nl}}{{ end }}
 {{- end }}
@@ -137,11 +137,11 @@ public:
 
 	/** Converts a {{ $shortname }} to a JSON formatted FString */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "To JSON ({{ $shortname }})", CompactNodeTitle = "->"), Category = "Utilities|String")
-	static FString Conv_{{ $shortname }}ToJSON(const {{ $class }}& In{{ $shortname }});
+	static FString Conv_{{ $shortname }}ToJSON(UPARAM(DisplayName = "{{$shortname}}") const {{ $class }}& In{{ $shortname }});
 
 	/** Converts a {{ $shortname }} to a string. WARNING: Do not rely on the format of the string, it may change in the future */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "To String ({{ $shortname }})", CompactNodeTitle = "->", BlueprintAutocast), Category = "Utilities|String")
-	static FString Conv_{{ $shortname }}ToString(const {{ $class }}& In{{ $shortname }});
+	static FString Conv_{{ $shortname }}ToString(UPARAM(DisplayName = "{{$shortname}}") const {{ $class }}& In{{ $shortname }});
 {{- end }}
 {{- end }}
 };

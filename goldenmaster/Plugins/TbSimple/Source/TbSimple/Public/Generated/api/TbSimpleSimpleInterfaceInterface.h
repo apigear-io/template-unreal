@@ -298,47 +298,47 @@ public:
 	virtual bool GetPropBool_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Properties")
 	void SetPropBool(bool bInPropBool);
-	virtual void SetPropBool_Implementation(bool bInPropBool) = 0;
+	virtual void SetPropBool_Implementation(UPARAM(DisplayName = "bPropBool") bool bInPropBool) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Properties")
 	int32 GetPropInt() const;
 	virtual int32 GetPropInt_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Properties")
 	void SetPropInt(int32 InPropInt);
-	virtual void SetPropInt_Implementation(int32 InPropInt) = 0;
+	virtual void SetPropInt_Implementation(UPARAM(DisplayName = "PropInt") int32 InPropInt) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Properties")
 	int32 GetPropInt32() const;
 	virtual int32 GetPropInt32_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Properties")
 	void SetPropInt32(int32 InPropInt32);
-	virtual void SetPropInt32_Implementation(int32 InPropInt32) = 0;
+	virtual void SetPropInt32_Implementation(UPARAM(DisplayName = "PropInt32") int32 InPropInt32) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Properties")
 	int64 GetPropInt64() const;
 	virtual int64 GetPropInt64_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Properties")
 	void SetPropInt64(int64 InPropInt64);
-	virtual void SetPropInt64_Implementation(int64 InPropInt64) = 0;
+	virtual void SetPropInt64_Implementation(UPARAM(DisplayName = "PropInt64") int64 InPropInt64) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Properties")
 	float GetPropFloat() const;
 	virtual float GetPropFloat_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Properties")
 	void SetPropFloat(float InPropFloat);
-	virtual void SetPropFloat_Implementation(float InPropFloat) = 0;
+	virtual void SetPropFloat_Implementation(UPARAM(DisplayName = "PropFloat") float InPropFloat) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Properties")
 	float GetPropFloat32() const;
 	virtual float GetPropFloat32_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Properties")
 	void SetPropFloat32(float InPropFloat32);
-	virtual void SetPropFloat32_Implementation(float InPropFloat32) = 0;
+	virtual void SetPropFloat32_Implementation(UPARAM(DisplayName = "PropFloat32") float InPropFloat32) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Properties")
 	double GetPropFloat64() const;
 	virtual double GetPropFloat64_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Properties")
 	void SetPropFloat64(double InPropFloat64);
-	virtual void SetPropFloat64_Implementation(double InPropFloat64) = 0;
+	virtual void SetPropFloat64_Implementation(UPARAM(DisplayName = "PropFloat64") double InPropFloat64) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Properties")
 	FString GetPropString() const;
 	virtual FString GetPropString_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Properties")
 	void SetPropString(const FString& InPropString);
-	virtual void SetPropString_Implementation(const FString& InPropString) = 0;
+	virtual void SetPropString_Implementation(UPARAM(DisplayName = "PropString") const FString& InPropString) = 0;
 };

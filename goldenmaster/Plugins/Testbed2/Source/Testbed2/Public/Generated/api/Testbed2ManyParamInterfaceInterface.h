@@ -182,23 +182,23 @@ public:
 	virtual int32 GetProp1_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Properties")
 	void SetProp1(int32 InProp1);
-	virtual void SetProp1_Implementation(int32 InProp1) = 0;
+	virtual void SetProp1_Implementation(UPARAM(DisplayName = "Prop1") int32 InProp1) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Properties")
 	int32 GetProp2() const;
 	virtual int32 GetProp2_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Properties")
 	void SetProp2(int32 InProp2);
-	virtual void SetProp2_Implementation(int32 InProp2) = 0;
+	virtual void SetProp2_Implementation(UPARAM(DisplayName = "Prop2") int32 InProp2) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Properties")
 	int32 GetProp3() const;
 	virtual int32 GetProp3_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Properties")
 	void SetProp3(int32 InProp3);
-	virtual void SetProp3_Implementation(int32 InProp3) = 0;
+	virtual void SetProp3_Implementation(UPARAM(DisplayName = "Prop3") int32 InProp3) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Properties")
 	int32 GetProp4() const;
 	virtual int32 GetProp4_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Properties")
 	void SetProp4(int32 InProp4);
-	virtual void SetProp4_Implementation(int32 InProp4) = 0;
+	virtual void SetProp4_Implementation(UPARAM(DisplayName = "Prop4") int32 InProp4) = 0;
 };

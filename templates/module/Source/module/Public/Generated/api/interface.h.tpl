@@ -133,7 +133,7 @@ public:
 {{- if not .IsReadOnly }}
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "{{$Category}}|Properties")
 	void Set{{Camel .Name}}({{ueParam "In" .}});
-	virtual void Set{{Camel .Name}}_Implementation({{ueParam "In" .}}) = 0;
+	virtual void Set{{Camel .Name}}_Implementation(UPARAM(DisplayName = "{{ueVar "" .}}") {{ueParam "In" .}}) = 0;
 {{- end }}
 {{- end }}
 };

@@ -98,5 +98,5 @@ public:
 	virtual FTestbed2NestedStruct1 GetProp1_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct1Interface|Properties")
 	void SetProp1(const FTestbed2NestedStruct1& InProp1);
-	virtual void SetProp1_Implementation(const FTestbed2NestedStruct1& InProp1) = 0;
+	virtual void SetProp1_Implementation(UPARAM(DisplayName = "Prop1") const FTestbed2NestedStruct1& InProp1) = 0;
 };

@@ -358,15 +358,15 @@ class TESTBED2_API UTestbed2Library : public UBlueprintFunctionLibrary
 public:
 	/* Convert from uint8 to ETestbed2Enum1 @return true if successful */
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2")
-	static bool toTestbed2Enum1(ETestbed2Enum1& ConvertedEnum, uint8 InValue);
+	static bool toTestbed2Enum1(ETestbed2Enum1& ConvertedEnum, UPARAM(DisplayName = "Value") uint8 InValue);
 
 	/* Convert from uint8 to ETestbed2Enum2 @return true if successful */
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2")
-	static bool toTestbed2Enum2(ETestbed2Enum2& ConvertedEnum, uint8 InValue);
+	static bool toTestbed2Enum2(ETestbed2Enum2& ConvertedEnum, UPARAM(DisplayName = "Value") uint8 InValue);
 
 	/* Convert from uint8 to ETestbed2Enum3 @return true if successful */
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2")
-	static bool toTestbed2Enum3(ETestbed2Enum3& ConvertedEnum, uint8 InValue);
+	static bool toTestbed2Enum3(ETestbed2Enum3& ConvertedEnum, UPARAM(DisplayName = "Value") uint8 InValue);
 
 	/* Returns true if Testbed2Struct1 A is equal to Testbed2Struct1 B (A == B) */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "Equal (Testbed2Struct1)", CompactNodeTitle = "==", Keywords = "== equal"), Category = "ApiGear|Testbed2")
@@ -378,11 +378,11 @@ public:
 
 	/** Converts a Testbed2Struct1 to a JSON formatted FString */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "To JSON (Testbed2Struct1)", CompactNodeTitle = "->"), Category = "Utilities|String")
-	static FString Conv_Testbed2Struct1ToJSON(const FTestbed2Struct1& InTestbed2Struct1);
+	static FString Conv_Testbed2Struct1ToJSON(UPARAM(DisplayName = "Testbed2Struct1") const FTestbed2Struct1& InTestbed2Struct1);
 
 	/** Converts a Testbed2Struct1 to a string. WARNING: Do not rely on the format of the string, it may change in the future */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "To String (Testbed2Struct1)", CompactNodeTitle = "->", BlueprintAutocast), Category = "Utilities|String")
-	static FString Conv_Testbed2Struct1ToString(const FTestbed2Struct1& InTestbed2Struct1);
+	static FString Conv_Testbed2Struct1ToString(UPARAM(DisplayName = "Testbed2Struct1") const FTestbed2Struct1& InTestbed2Struct1);
 
 	/* Returns true if Testbed2Struct2 A is equal to Testbed2Struct2 B (A == B) */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "Equal (Testbed2Struct2)", CompactNodeTitle = "==", Keywords = "== equal"), Category = "ApiGear|Testbed2")
@@ -394,11 +394,11 @@ public:
 
 	/** Converts a Testbed2Struct2 to a JSON formatted FString */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "To JSON (Testbed2Struct2)", CompactNodeTitle = "->"), Category = "Utilities|String")
-	static FString Conv_Testbed2Struct2ToJSON(const FTestbed2Struct2& InTestbed2Struct2);
+	static FString Conv_Testbed2Struct2ToJSON(UPARAM(DisplayName = "Testbed2Struct2") const FTestbed2Struct2& InTestbed2Struct2);
 
 	/** Converts a Testbed2Struct2 to a string. WARNING: Do not rely on the format of the string, it may change in the future */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "To String (Testbed2Struct2)", CompactNodeTitle = "->", BlueprintAutocast), Category = "Utilities|String")
-	static FString Conv_Testbed2Struct2ToString(const FTestbed2Struct2& InTestbed2Struct2);
+	static FString Conv_Testbed2Struct2ToString(UPARAM(DisplayName = "Testbed2Struct2") const FTestbed2Struct2& InTestbed2Struct2);
 
 	/* Returns true if Testbed2Struct3 A is equal to Testbed2Struct3 B (A == B) */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "Equal (Testbed2Struct3)", CompactNodeTitle = "==", Keywords = "== equal"), Category = "ApiGear|Testbed2")
@@ -410,11 +410,11 @@ public:
 
 	/** Converts a Testbed2Struct3 to a JSON formatted FString */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "To JSON (Testbed2Struct3)", CompactNodeTitle = "->"), Category = "Utilities|String")
-	static FString Conv_Testbed2Struct3ToJSON(const FTestbed2Struct3& InTestbed2Struct3);
+	static FString Conv_Testbed2Struct3ToJSON(UPARAM(DisplayName = "Testbed2Struct3") const FTestbed2Struct3& InTestbed2Struct3);
 
 	/** Converts a Testbed2Struct3 to a string. WARNING: Do not rely on the format of the string, it may change in the future */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "To String (Testbed2Struct3)", CompactNodeTitle = "->", BlueprintAutocast), Category = "Utilities|String")
-	static FString Conv_Testbed2Struct3ToString(const FTestbed2Struct3& InTestbed2Struct3);
+	static FString Conv_Testbed2Struct3ToString(UPARAM(DisplayName = "Testbed2Struct3") const FTestbed2Struct3& InTestbed2Struct3);
 
 	/* Returns true if Testbed2Struct4 A is equal to Testbed2Struct4 B (A == B) */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "Equal (Testbed2Struct4)", CompactNodeTitle = "==", Keywords = "== equal"), Category = "ApiGear|Testbed2")
@@ -426,11 +426,11 @@ public:
 
 	/** Converts a Testbed2Struct4 to a JSON formatted FString */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "To JSON (Testbed2Struct4)", CompactNodeTitle = "->"), Category = "Utilities|String")
-	static FString Conv_Testbed2Struct4ToJSON(const FTestbed2Struct4& InTestbed2Struct4);
+	static FString Conv_Testbed2Struct4ToJSON(UPARAM(DisplayName = "Testbed2Struct4") const FTestbed2Struct4& InTestbed2Struct4);
 
 	/** Converts a Testbed2Struct4 to a string. WARNING: Do not rely on the format of the string, it may change in the future */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "To String (Testbed2Struct4)", CompactNodeTitle = "->", BlueprintAutocast), Category = "Utilities|String")
-	static FString Conv_Testbed2Struct4ToString(const FTestbed2Struct4& InTestbed2Struct4);
+	static FString Conv_Testbed2Struct4ToString(UPARAM(DisplayName = "Testbed2Struct4") const FTestbed2Struct4& InTestbed2Struct4);
 
 	/* Returns true if Testbed2NestedStruct1 A is equal to Testbed2NestedStruct1 B (A == B) */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "Equal (Testbed2NestedStruct1)", CompactNodeTitle = "==", Keywords = "== equal"), Category = "ApiGear|Testbed2")
@@ -442,11 +442,11 @@ public:
 
 	/** Converts a Testbed2NestedStruct1 to a JSON formatted FString */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "To JSON (Testbed2NestedStruct1)", CompactNodeTitle = "->"), Category = "Utilities|String")
-	static FString Conv_Testbed2NestedStruct1ToJSON(const FTestbed2NestedStruct1& InTestbed2NestedStruct1);
+	static FString Conv_Testbed2NestedStruct1ToJSON(UPARAM(DisplayName = "Testbed2NestedStruct1") const FTestbed2NestedStruct1& InTestbed2NestedStruct1);
 
 	/** Converts a Testbed2NestedStruct1 to a string. WARNING: Do not rely on the format of the string, it may change in the future */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "To String (Testbed2NestedStruct1)", CompactNodeTitle = "->", BlueprintAutocast), Category = "Utilities|String")
-	static FString Conv_Testbed2NestedStruct1ToString(const FTestbed2NestedStruct1& InTestbed2NestedStruct1);
+	static FString Conv_Testbed2NestedStruct1ToString(UPARAM(DisplayName = "Testbed2NestedStruct1") const FTestbed2NestedStruct1& InTestbed2NestedStruct1);
 
 	/* Returns true if Testbed2NestedStruct2 A is equal to Testbed2NestedStruct2 B (A == B) */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "Equal (Testbed2NestedStruct2)", CompactNodeTitle = "==", Keywords = "== equal"), Category = "ApiGear|Testbed2")
@@ -458,11 +458,11 @@ public:
 
 	/** Converts a Testbed2NestedStruct2 to a JSON formatted FString */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "To JSON (Testbed2NestedStruct2)", CompactNodeTitle = "->"), Category = "Utilities|String")
-	static FString Conv_Testbed2NestedStruct2ToJSON(const FTestbed2NestedStruct2& InTestbed2NestedStruct2);
+	static FString Conv_Testbed2NestedStruct2ToJSON(UPARAM(DisplayName = "Testbed2NestedStruct2") const FTestbed2NestedStruct2& InTestbed2NestedStruct2);
 
 	/** Converts a Testbed2NestedStruct2 to a string. WARNING: Do not rely on the format of the string, it may change in the future */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "To String (Testbed2NestedStruct2)", CompactNodeTitle = "->", BlueprintAutocast), Category = "Utilities|String")
-	static FString Conv_Testbed2NestedStruct2ToString(const FTestbed2NestedStruct2& InTestbed2NestedStruct2);
+	static FString Conv_Testbed2NestedStruct2ToString(UPARAM(DisplayName = "Testbed2NestedStruct2") const FTestbed2NestedStruct2& InTestbed2NestedStruct2);
 
 	/* Returns true if Testbed2NestedStruct3 A is equal to Testbed2NestedStruct3 B (A == B) */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "Equal (Testbed2NestedStruct3)", CompactNodeTitle = "==", Keywords = "== equal"), Category = "ApiGear|Testbed2")
@@ -474,9 +474,9 @@ public:
 
 	/** Converts a Testbed2NestedStruct3 to a JSON formatted FString */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "To JSON (Testbed2NestedStruct3)", CompactNodeTitle = "->"), Category = "Utilities|String")
-	static FString Conv_Testbed2NestedStruct3ToJSON(const FTestbed2NestedStruct3& InTestbed2NestedStruct3);
+	static FString Conv_Testbed2NestedStruct3ToJSON(UPARAM(DisplayName = "Testbed2NestedStruct3") const FTestbed2NestedStruct3& InTestbed2NestedStruct3);
 
 	/** Converts a Testbed2NestedStruct3 to a string. WARNING: Do not rely on the format of the string, it may change in the future */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "To String (Testbed2NestedStruct3)", CompactNodeTitle = "->", BlueprintAutocast), Category = "Utilities|String")
-	static FString Conv_Testbed2NestedStruct3ToString(const FTestbed2NestedStruct3& InTestbed2NestedStruct3);
+	static FString Conv_Testbed2NestedStruct3ToString(UPARAM(DisplayName = "Testbed2NestedStruct3") const FTestbed2NestedStruct3& InTestbed2NestedStruct3);
 };

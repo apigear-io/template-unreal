@@ -141,11 +141,11 @@ class TBSAME1_API UTbSame1Library : public UBlueprintFunctionLibrary
 public:
 	/* Convert from uint8 to ETbSame1Enum1 @return true if successful */
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1")
-	static bool toTbSame1Enum1(ETbSame1Enum1& ConvertedEnum, uint8 InValue);
+	static bool toTbSame1Enum1(ETbSame1Enum1& ConvertedEnum, UPARAM(DisplayName = "Value") uint8 InValue);
 
 	/* Convert from uint8 to ETbSame1Enum2 @return true if successful */
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1")
-	static bool toTbSame1Enum2(ETbSame1Enum2& ConvertedEnum, uint8 InValue);
+	static bool toTbSame1Enum2(ETbSame1Enum2& ConvertedEnum, UPARAM(DisplayName = "Value") uint8 InValue);
 
 	/* Returns true if TbSame1Struct1 A is equal to TbSame1Struct1 B (A == B) */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "Equal (TbSame1Struct1)", CompactNodeTitle = "==", Keywords = "== equal"), Category = "ApiGear|TbSame1")
@@ -157,11 +157,11 @@ public:
 
 	/** Converts a TbSame1Struct1 to a JSON formatted FString */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "To JSON (TbSame1Struct1)", CompactNodeTitle = "->"), Category = "Utilities|String")
-	static FString Conv_TbSame1Struct1ToJSON(const FTbSame1Struct1& InTbSame1Struct1);
+	static FString Conv_TbSame1Struct1ToJSON(UPARAM(DisplayName = "TbSame1Struct1") const FTbSame1Struct1& InTbSame1Struct1);
 
 	/** Converts a TbSame1Struct1 to a string. WARNING: Do not rely on the format of the string, it may change in the future */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "To String (TbSame1Struct1)", CompactNodeTitle = "->", BlueprintAutocast), Category = "Utilities|String")
-	static FString Conv_TbSame1Struct1ToString(const FTbSame1Struct1& InTbSame1Struct1);
+	static FString Conv_TbSame1Struct1ToString(UPARAM(DisplayName = "TbSame1Struct1") const FTbSame1Struct1& InTbSame1Struct1);
 
 	/* Returns true if TbSame1Struct2 A is equal to TbSame1Struct2 B (A == B) */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "Equal (TbSame1Struct2)", CompactNodeTitle = "==", Keywords = "== equal"), Category = "ApiGear|TbSame1")
@@ -173,9 +173,9 @@ public:
 
 	/** Converts a TbSame1Struct2 to a JSON formatted FString */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "To JSON (TbSame1Struct2)", CompactNodeTitle = "->"), Category = "Utilities|String")
-	static FString Conv_TbSame1Struct2ToJSON(const FTbSame1Struct2& InTbSame1Struct2);
+	static FString Conv_TbSame1Struct2ToJSON(UPARAM(DisplayName = "TbSame1Struct2") const FTbSame1Struct2& InTbSame1Struct2);
 
 	/** Converts a TbSame1Struct2 to a string. WARNING: Do not rely on the format of the string, it may change in the future */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "To String (TbSame1Struct2)", CompactNodeTitle = "->", BlueprintAutocast), Category = "Utilities|String")
-	static FString Conv_TbSame1Struct2ToString(const FTbSame1Struct2& InTbSame1Struct2);
+	static FString Conv_TbSame1Struct2ToString(UPARAM(DisplayName = "TbSame1Struct2") const FTbSame1Struct2& InTbSame1Struct2);
 };

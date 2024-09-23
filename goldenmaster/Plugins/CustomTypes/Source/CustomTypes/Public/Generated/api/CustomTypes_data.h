@@ -84,9 +84,9 @@ public:
 
 	/** Converts a CustomTypesVector3D to a JSON formatted FString */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "To JSON (CustomTypesVector3D)", CompactNodeTitle = "->"), Category = "Utilities|String")
-	static FString Conv_CustomTypesVector3DToJSON(const FCustomTypesVector3D& InCustomTypesVector3D);
+	static FString Conv_CustomTypesVector3DToJSON(UPARAM(DisplayName = "CustomTypesVector3D") const FCustomTypesVector3D& InCustomTypesVector3D);
 
 	/** Converts a CustomTypesVector3D to a string. WARNING: Do not rely on the format of the string, it may change in the future */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "To String (CustomTypesVector3D)", CompactNodeTitle = "->", BlueprintAutocast), Category = "Utilities|String")
-	static FString Conv_CustomTypesVector3DToString(const FCustomTypesVector3D& InCustomTypesVector3D);
+	static FString Conv_CustomTypesVector3DToString(UPARAM(DisplayName = "CustomTypesVector3D") const FCustomTypesVector3D& InCustomTypesVector3D);
 };

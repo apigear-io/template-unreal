@@ -98,5 +98,5 @@ public:
 	virtual ETbSame2Enum1 GetProp1_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum1Interface|Properties")
 	void SetProp1(ETbSame2Enum1 InProp1);
-	virtual void SetProp1_Implementation(ETbSame2Enum1 InProp1) = 0;
+	virtual void SetProp1_Implementation(UPARAM(DisplayName = "Prop1") ETbSame2Enum1 InProp1) = 0;
 };

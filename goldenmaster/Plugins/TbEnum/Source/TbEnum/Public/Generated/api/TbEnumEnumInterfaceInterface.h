@@ -182,23 +182,23 @@ public:
 	virtual ETbEnumEnum0 GetProp0_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface|Properties")
 	void SetProp0(ETbEnumEnum0 InProp0);
-	virtual void SetProp0_Implementation(ETbEnumEnum0 InProp0) = 0;
+	virtual void SetProp0_Implementation(UPARAM(DisplayName = "Prop0") ETbEnumEnum0 InProp0) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface|Properties")
 	ETbEnumEnum1 GetProp1() const;
 	virtual ETbEnumEnum1 GetProp1_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface|Properties")
 	void SetProp1(ETbEnumEnum1 InProp1);
-	virtual void SetProp1_Implementation(ETbEnumEnum1 InProp1) = 0;
+	virtual void SetProp1_Implementation(UPARAM(DisplayName = "Prop1") ETbEnumEnum1 InProp1) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface|Properties")
 	ETbEnumEnum2 GetProp2() const;
 	virtual ETbEnumEnum2 GetProp2_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface|Properties")
 	void SetProp2(ETbEnumEnum2 InProp2);
-	virtual void SetProp2_Implementation(ETbEnumEnum2 InProp2) = 0;
+	virtual void SetProp2_Implementation(UPARAM(DisplayName = "Prop2") ETbEnumEnum2 InProp2) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface|Properties")
 	ETbEnumEnum3 GetProp3() const;
 	virtual ETbEnumEnum3 GetProp3_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface|Properties")
 	void SetProp3(ETbEnumEnum3 InProp3);
-	virtual void SetProp3_Implementation(ETbEnumEnum3 InProp3) = 0;
+	virtual void SetProp3_Implementation(UPARAM(DisplayName = "Prop3") ETbEnumEnum3 InProp3) = 0;
 };

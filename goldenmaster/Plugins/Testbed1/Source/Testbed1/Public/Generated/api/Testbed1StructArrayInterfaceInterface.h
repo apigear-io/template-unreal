@@ -182,23 +182,23 @@ public:
 	virtual TArray<FTestbed1StructBool> GetPropBool_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Properties")
 	void SetPropBool(const TArray<FTestbed1StructBool>& InPropBool);
-	virtual void SetPropBool_Implementation(const TArray<FTestbed1StructBool>& InPropBool) = 0;
+	virtual void SetPropBool_Implementation(UPARAM(DisplayName = "PropBool") const TArray<FTestbed1StructBool>& InPropBool) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Properties")
 	TArray<FTestbed1StructInt> GetPropInt() const;
 	virtual TArray<FTestbed1StructInt> GetPropInt_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Properties")
 	void SetPropInt(const TArray<FTestbed1StructInt>& InPropInt);
-	virtual void SetPropInt_Implementation(const TArray<FTestbed1StructInt>& InPropInt) = 0;
+	virtual void SetPropInt_Implementation(UPARAM(DisplayName = "PropInt") const TArray<FTestbed1StructInt>& InPropInt) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Properties")
 	TArray<FTestbed1StructFloat> GetPropFloat() const;
 	virtual TArray<FTestbed1StructFloat> GetPropFloat_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Properties")
 	void SetPropFloat(const TArray<FTestbed1StructFloat>& InPropFloat);
-	virtual void SetPropFloat_Implementation(const TArray<FTestbed1StructFloat>& InPropFloat) = 0;
+	virtual void SetPropFloat_Implementation(UPARAM(DisplayName = "PropFloat") const TArray<FTestbed1StructFloat>& InPropFloat) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Properties")
 	TArray<FTestbed1StructString> GetPropString() const;
 	virtual TArray<FTestbed1StructString> GetPropString_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Properties")
 	void SetPropString(const TArray<FTestbed1StructString>& InPropString);
-	virtual void SetPropString_Implementation(const TArray<FTestbed1StructString>& InPropString) = 0;
+	virtual void SetPropString_Implementation(UPARAM(DisplayName = "PropString") const TArray<FTestbed1StructString>& InPropString) = 0;
 };

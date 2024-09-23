@@ -126,11 +126,11 @@ public:
 	virtual ETbSame2Enum1 GetProp1_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum2Interface|Properties")
 	void SetProp1(ETbSame2Enum1 InProp1);
-	virtual void SetProp1_Implementation(ETbSame2Enum1 InProp1) = 0;
+	virtual void SetProp1_Implementation(UPARAM(DisplayName = "Prop1") ETbSame2Enum1 InProp1) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum2Interface|Properties")
 	ETbSame2Enum2 GetProp2() const;
 	virtual ETbSame2Enum2 GetProp2_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum2Interface|Properties")
 	void SetProp2(ETbSame2Enum2 InProp2);
-	virtual void SetProp2_Implementation(ETbSame2Enum2 InProp2) = 0;
+	virtual void SetProp2_Implementation(UPARAM(DisplayName = "Prop2") ETbSame2Enum2 InProp2) = 0;
 };

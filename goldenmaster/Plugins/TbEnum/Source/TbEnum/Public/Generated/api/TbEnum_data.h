@@ -79,17 +79,17 @@ class TBENUM_API UTbEnumLibrary : public UBlueprintFunctionLibrary
 public:
 	/* Convert from uint8 to ETbEnumEnum0 @return true if successful */
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbEnum")
-	static bool toTbEnumEnum0(ETbEnumEnum0& ConvertedEnum, uint8 InValue);
+	static bool toTbEnumEnum0(ETbEnumEnum0& ConvertedEnum, UPARAM(DisplayName = "Value") uint8 InValue);
 
 	/* Convert from uint8 to ETbEnumEnum1 @return true if successful */
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbEnum")
-	static bool toTbEnumEnum1(ETbEnumEnum1& ConvertedEnum, uint8 InValue);
+	static bool toTbEnumEnum1(ETbEnumEnum1& ConvertedEnum, UPARAM(DisplayName = "Value") uint8 InValue);
 
 	/* Convert from uint8 to ETbEnumEnum2 @return true if successful */
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbEnum")
-	static bool toTbEnumEnum2(ETbEnumEnum2& ConvertedEnum, uint8 InValue);
+	static bool toTbEnumEnum2(ETbEnumEnum2& ConvertedEnum, UPARAM(DisplayName = "Value") uint8 InValue);
 
 	/* Convert from uint8 to ETbEnumEnum3 @return true if successful */
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbEnum")
-	static bool toTbEnumEnum3(ETbEnumEnum3& ConvertedEnum, uint8 InValue);
+	static bool toTbEnumEnum3(ETbEnumEnum3& ConvertedEnum, UPARAM(DisplayName = "Value") uint8 InValue);
 };

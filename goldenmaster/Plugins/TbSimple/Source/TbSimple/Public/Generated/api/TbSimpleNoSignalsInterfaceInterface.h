@@ -101,11 +101,11 @@ public:
 	virtual bool GetPropBool_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoSignalsInterface|Properties")
 	void SetPropBool(bool bInPropBool);
-	virtual void SetPropBool_Implementation(bool bInPropBool) = 0;
+	virtual void SetPropBool_Implementation(UPARAM(DisplayName = "bPropBool") bool bInPropBool) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoSignalsInterface|Properties")
 	int32 GetPropInt() const;
 	virtual int32 GetPropInt_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoSignalsInterface|Properties")
 	void SetPropInt(int32 InPropInt);
-	virtual void SetPropInt_Implementation(int32 InPropInt) = 0;
+	virtual void SetPropInt_Implementation(UPARAM(DisplayName = "PropInt") int32 InPropInt) = 0;
 };

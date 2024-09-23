@@ -182,23 +182,23 @@ public:
 	virtual FTestbed1StructBool GetPropBool_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface|Properties")
 	void SetPropBool(const FTestbed1StructBool& InPropBool);
-	virtual void SetPropBool_Implementation(const FTestbed1StructBool& InPropBool) = 0;
+	virtual void SetPropBool_Implementation(UPARAM(DisplayName = "PropBool") const FTestbed1StructBool& InPropBool) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface|Properties")
 	FTestbed1StructInt GetPropInt() const;
 	virtual FTestbed1StructInt GetPropInt_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface|Properties")
 	void SetPropInt(const FTestbed1StructInt& InPropInt);
-	virtual void SetPropInt_Implementation(const FTestbed1StructInt& InPropInt) = 0;
+	virtual void SetPropInt_Implementation(UPARAM(DisplayName = "PropInt") const FTestbed1StructInt& InPropInt) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface|Properties")
 	FTestbed1StructFloat GetPropFloat() const;
 	virtual FTestbed1StructFloat GetPropFloat_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface|Properties")
 	void SetPropFloat(const FTestbed1StructFloat& InPropFloat);
-	virtual void SetPropFloat_Implementation(const FTestbed1StructFloat& InPropFloat) = 0;
+	virtual void SetPropFloat_Implementation(UPARAM(DisplayName = "PropFloat") const FTestbed1StructFloat& InPropFloat) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface|Properties")
 	FTestbed1StructString GetPropString() const;
 	virtual FTestbed1StructString GetPropString_Implementation() const = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface|Properties")
 	void SetPropString(const FTestbed1StructString& InPropString);
-	virtual void SetPropString_Implementation(const FTestbed1StructString& InPropString) = 0;
+	virtual void SetPropString_Implementation(UPARAM(DisplayName = "PropString") const FTestbed1StructString& InPropString) = 0;
 };

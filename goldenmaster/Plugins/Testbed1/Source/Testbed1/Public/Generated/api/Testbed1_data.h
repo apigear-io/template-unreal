@@ -189,11 +189,11 @@ public:
 
 	/** Converts a Testbed1StructBool to a JSON formatted FString */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "To JSON (Testbed1StructBool)", CompactNodeTitle = "->"), Category = "Utilities|String")
-	static FString Conv_Testbed1StructBoolToJSON(const FTestbed1StructBool& InTestbed1StructBool);
+	static FString Conv_Testbed1StructBoolToJSON(UPARAM(DisplayName = "Testbed1StructBool") const FTestbed1StructBool& InTestbed1StructBool);
 
 	/** Converts a Testbed1StructBool to a string. WARNING: Do not rely on the format of the string, it may change in the future */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "To String (Testbed1StructBool)", CompactNodeTitle = "->", BlueprintAutocast), Category = "Utilities|String")
-	static FString Conv_Testbed1StructBoolToString(const FTestbed1StructBool& InTestbed1StructBool);
+	static FString Conv_Testbed1StructBoolToString(UPARAM(DisplayName = "Testbed1StructBool") const FTestbed1StructBool& InTestbed1StructBool);
 
 	/* Returns true if Testbed1StructInt A is equal to Testbed1StructInt B (A == B) */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "Equal (Testbed1StructInt)", CompactNodeTitle = "==", Keywords = "== equal"), Category = "ApiGear|Testbed1")
@@ -205,11 +205,11 @@ public:
 
 	/** Converts a Testbed1StructInt to a JSON formatted FString */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "To JSON (Testbed1StructInt)", CompactNodeTitle = "->"), Category = "Utilities|String")
-	static FString Conv_Testbed1StructIntToJSON(const FTestbed1StructInt& InTestbed1StructInt);
+	static FString Conv_Testbed1StructIntToJSON(UPARAM(DisplayName = "Testbed1StructInt") const FTestbed1StructInt& InTestbed1StructInt);
 
 	/** Converts a Testbed1StructInt to a string. WARNING: Do not rely on the format of the string, it may change in the future */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "To String (Testbed1StructInt)", CompactNodeTitle = "->", BlueprintAutocast), Category = "Utilities|String")
-	static FString Conv_Testbed1StructIntToString(const FTestbed1StructInt& InTestbed1StructInt);
+	static FString Conv_Testbed1StructIntToString(UPARAM(DisplayName = "Testbed1StructInt") const FTestbed1StructInt& InTestbed1StructInt);
 
 	/* Returns true if Testbed1StructFloat A is equal to Testbed1StructFloat B (A == B) */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "Equal (Testbed1StructFloat)", CompactNodeTitle = "==", Keywords = "== equal"), Category = "ApiGear|Testbed1")
@@ -221,11 +221,11 @@ public:
 
 	/** Converts a Testbed1StructFloat to a JSON formatted FString */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "To JSON (Testbed1StructFloat)", CompactNodeTitle = "->"), Category = "Utilities|String")
-	static FString Conv_Testbed1StructFloatToJSON(const FTestbed1StructFloat& InTestbed1StructFloat);
+	static FString Conv_Testbed1StructFloatToJSON(UPARAM(DisplayName = "Testbed1StructFloat") const FTestbed1StructFloat& InTestbed1StructFloat);
 
 	/** Converts a Testbed1StructFloat to a string. WARNING: Do not rely on the format of the string, it may change in the future */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "To String (Testbed1StructFloat)", CompactNodeTitle = "->", BlueprintAutocast), Category = "Utilities|String")
-	static FString Conv_Testbed1StructFloatToString(const FTestbed1StructFloat& InTestbed1StructFloat);
+	static FString Conv_Testbed1StructFloatToString(UPARAM(DisplayName = "Testbed1StructFloat") const FTestbed1StructFloat& InTestbed1StructFloat);
 
 	/* Returns true if Testbed1StructString A is equal to Testbed1StructString B (A == B) */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "Equal (Testbed1StructString)", CompactNodeTitle = "==", Keywords = "== equal"), Category = "ApiGear|Testbed1")
@@ -237,9 +237,9 @@ public:
 
 	/** Converts a Testbed1StructString to a JSON formatted FString */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "To JSON (Testbed1StructString)", CompactNodeTitle = "->"), Category = "Utilities|String")
-	static FString Conv_Testbed1StructStringToJSON(const FTestbed1StructString& InTestbed1StructString);
+	static FString Conv_Testbed1StructStringToJSON(UPARAM(DisplayName = "Testbed1StructString") const FTestbed1StructString& InTestbed1StructString);
 
 	/** Converts a Testbed1StructString to a string. WARNING: Do not rely on the format of the string, it may change in the future */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "To String (Testbed1StructString)", CompactNodeTitle = "->", BlueprintAutocast), Category = "Utilities|String")
-	static FString Conv_Testbed1StructStringToString(const FTestbed1StructString& InTestbed1StructString);
+	static FString Conv_Testbed1StructStringToString(UPARAM(DisplayName = "Testbed1StructString") const FTestbed1StructString& InTestbed1StructString);
 };
