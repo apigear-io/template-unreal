@@ -140,7 +140,7 @@ void UAbstractTestbed2ManyParamInterface::Func1Async_Implementation(UObject* Wor
 		}
 		else
 		{
-			Async(EAsyncExecution::Thread,
+			Async(EAsyncExecution::ThreadPool,
 				[Param1, this, &Result, CompletionAction]()
 				{
 				Result = Execute_Func1(this, Param1);
@@ -175,7 +175,7 @@ void UAbstractTestbed2ManyParamInterface::Func2Async_Implementation(UObject* Wor
 		}
 		else
 		{
-			Async(EAsyncExecution::Thread,
+			Async(EAsyncExecution::ThreadPool,
 				[Param1, Param2, this, &Result, CompletionAction]()
 				{
 				Result = Execute_Func2(this, Param1, Param2);
@@ -210,7 +210,7 @@ void UAbstractTestbed2ManyParamInterface::Func3Async_Implementation(UObject* Wor
 		}
 		else
 		{
-			Async(EAsyncExecution::Thread,
+			Async(EAsyncExecution::ThreadPool,
 				[Param1, Param2, Param3, this, &Result, CompletionAction]()
 				{
 				Result = Execute_Func3(this, Param1, Param2, Param3);
@@ -245,7 +245,7 @@ void UAbstractTestbed2ManyParamInterface::Func4Async_Implementation(UObject* Wor
 		}
 		else
 		{
-			Async(EAsyncExecution::Thread,
+			Async(EAsyncExecution::ThreadPool,
 				[Param1, Param2, Param3, Param4, this, &Result, CompletionAction]()
 				{
 				Result = Execute_Func4(this, Param1, Param2, Param3, Param4);

@@ -250,7 +250,7 @@ void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
 		return {{ ueDefault "" .Return }};
 	}
 	TPromise<{{$returnVal}}> Promise;
-	Async(EAsyncExecution::Thread,
+	Async(EAsyncExecution::ThreadPool,
 		[{{ueVars "" .Params }}{{if len .Params}}, {{ end }}&Promise, this]()
 		{
 		ApiGear::ObjectLink::InvokeReplyFunc Get{{$IfaceName}}StateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)

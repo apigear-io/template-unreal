@@ -120,7 +120,7 @@ void UAbstractTbSimpleNoSignalsInterface::FuncBoolAsync_Implementation(UObject* 
 		}
 		else
 		{
-			Async(EAsyncExecution::Thread,
+			Async(EAsyncExecution::ThreadPool,
 				[bParamBool, this, &Result, CompletionAction]()
 				{
 				Result = Execute_FuncBool(this, bParamBool);

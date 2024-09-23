@@ -275,7 +275,7 @@ int32 UTestbed2ManyParamInterfaceOLinkClient::Func1_Implementation(int32 Param1)
 		return 0;
 	}
 	TPromise<int32> Promise;
-	Async(EAsyncExecution::Thread,
+	Async(EAsyncExecution::ThreadPool,
 		[Param1, &Promise, this]()
 		{
 		ApiGear::ObjectLink::InvokeReplyFunc GetManyParamInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
@@ -306,7 +306,7 @@ int32 UTestbed2ManyParamInterfaceOLinkClient::Func2_Implementation(int32 Param1,
 		return 0;
 	}
 	TPromise<int32> Promise;
-	Async(EAsyncExecution::Thread,
+	Async(EAsyncExecution::ThreadPool,
 		[Param1, Param2, &Promise, this]()
 		{
 		ApiGear::ObjectLink::InvokeReplyFunc GetManyParamInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
@@ -337,7 +337,7 @@ int32 UTestbed2ManyParamInterfaceOLinkClient::Func3_Implementation(int32 Param1,
 		return 0;
 	}
 	TPromise<int32> Promise;
-	Async(EAsyncExecution::Thread,
+	Async(EAsyncExecution::ThreadPool,
 		[Param1, Param2, Param3, &Promise, this]()
 		{
 		ApiGear::ObjectLink::InvokeReplyFunc GetManyParamInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
@@ -368,7 +368,7 @@ int32 UTestbed2ManyParamInterfaceOLinkClient::Func4_Implementation(int32 Param1,
 		return 0;
 	}
 	TPromise<int32> Promise;
-	Async(EAsyncExecution::Thread,
+	Async(EAsyncExecution::ThreadPool,
 		[Param1, Param2, Param3, Param4, &Promise, this]()
 		{
 		ApiGear::ObjectLink::InvokeReplyFunc GetManyParamInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)

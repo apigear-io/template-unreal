@@ -185,7 +185,7 @@ ETbSame1Enum1 UTbSame1SameEnum1InterfaceOLinkClient::Func1_Implementation(ETbSam
 		return ETbSame1Enum1::TS1E1_VALUE1;
 	}
 	TPromise<ETbSame1Enum1> Promise;
-	Async(EAsyncExecution::Thread,
+	Async(EAsyncExecution::ThreadPool,
 		[Param1, &Promise, this]()
 		{
 		ApiGear::ObjectLink::InvokeReplyFunc GetSameEnum1InterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)

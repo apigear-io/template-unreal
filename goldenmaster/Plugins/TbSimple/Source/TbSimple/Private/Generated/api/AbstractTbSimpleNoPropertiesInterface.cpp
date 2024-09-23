@@ -100,7 +100,7 @@ void UAbstractTbSimpleNoPropertiesInterface::FuncBoolAsync_Implementation(UObjec
 		}
 		else
 		{
-			Async(EAsyncExecution::Thread,
+			Async(EAsyncExecution::ThreadPool,
 				[bParamBool, this, &Result, CompletionAction]()
 				{
 				Result = Execute_FuncBool(this, bParamBool);

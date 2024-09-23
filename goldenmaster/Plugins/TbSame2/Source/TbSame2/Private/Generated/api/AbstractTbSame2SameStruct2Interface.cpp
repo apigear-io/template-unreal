@@ -120,7 +120,7 @@ void UAbstractTbSame2SameStruct2Interface::Func1Async_Implementation(UObject* Wo
 		}
 		else
 		{
-			Async(EAsyncExecution::Thread,
+			Async(EAsyncExecution::ThreadPool,
 				[Param1, this, &Result, CompletionAction]()
 				{
 				Result = Execute_Func1(this, Param1);
@@ -155,7 +155,7 @@ void UAbstractTbSame2SameStruct2Interface::Func2Async_Implementation(UObject* Wo
 		}
 		else
 		{
-			Async(EAsyncExecution::Thread,
+			Async(EAsyncExecution::ThreadPool,
 				[Param1, Param2, this, &Result, CompletionAction]()
 				{
 				Result = Execute_Func2(this, Param1, Param2);

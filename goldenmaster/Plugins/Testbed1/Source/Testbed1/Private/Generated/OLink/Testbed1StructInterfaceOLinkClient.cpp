@@ -295,7 +295,7 @@ FTestbed1StructBool UTestbed1StructInterfaceOLinkClient::FuncBool_Implementation
 		return FTestbed1StructBool();
 	}
 	TPromise<FTestbed1StructBool> Promise;
-	Async(EAsyncExecution::Thread,
+	Async(EAsyncExecution::ThreadPool,
 		[ParamBool, &Promise, this]()
 		{
 		ApiGear::ObjectLink::InvokeReplyFunc GetStructInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
@@ -326,7 +326,7 @@ FTestbed1StructInt UTestbed1StructInterfaceOLinkClient::FuncInt_Implementation(c
 		return FTestbed1StructInt();
 	}
 	TPromise<FTestbed1StructInt> Promise;
-	Async(EAsyncExecution::Thread,
+	Async(EAsyncExecution::ThreadPool,
 		[ParamInt, &Promise, this]()
 		{
 		ApiGear::ObjectLink::InvokeReplyFunc GetStructInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
@@ -357,7 +357,7 @@ FTestbed1StructFloat UTestbed1StructInterfaceOLinkClient::FuncFloat_Implementati
 		return FTestbed1StructFloat();
 	}
 	TPromise<FTestbed1StructFloat> Promise;
-	Async(EAsyncExecution::Thread,
+	Async(EAsyncExecution::ThreadPool,
 		[ParamFloat, &Promise, this]()
 		{
 		ApiGear::ObjectLink::InvokeReplyFunc GetStructInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
@@ -388,7 +388,7 @@ FTestbed1StructString UTestbed1StructInterfaceOLinkClient::FuncString_Implementa
 		return FTestbed1StructString();
 	}
 	TPromise<FTestbed1StructString> Promise;
-	Async(EAsyncExecution::Thread,
+	Async(EAsyncExecution::ThreadPool,
 		[ParamString, &Promise, this]()
 		{
 		ApiGear::ObjectLink::InvokeReplyFunc GetStructInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)

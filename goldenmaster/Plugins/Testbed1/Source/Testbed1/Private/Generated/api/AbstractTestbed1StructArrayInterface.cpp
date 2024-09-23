@@ -140,7 +140,7 @@ void UAbstractTestbed1StructArrayInterface::FuncBoolAsync_Implementation(UObject
 		}
 		else
 		{
-			Async(EAsyncExecution::Thread,
+			Async(EAsyncExecution::ThreadPool,
 				[ParamBool, this, &Result, CompletionAction]()
 				{
 				Result = Execute_FuncBool(this, ParamBool);
@@ -175,7 +175,7 @@ void UAbstractTestbed1StructArrayInterface::FuncIntAsync_Implementation(UObject*
 		}
 		else
 		{
-			Async(EAsyncExecution::Thread,
+			Async(EAsyncExecution::ThreadPool,
 				[ParamInt, this, &Result, CompletionAction]()
 				{
 				Result = Execute_FuncInt(this, ParamInt);
@@ -210,7 +210,7 @@ void UAbstractTestbed1StructArrayInterface::FuncFloatAsync_Implementation(UObjec
 		}
 		else
 		{
-			Async(EAsyncExecution::Thread,
+			Async(EAsyncExecution::ThreadPool,
 				[ParamFloat, this, &Result, CompletionAction]()
 				{
 				Result = Execute_FuncFloat(this, ParamFloat);
@@ -245,7 +245,7 @@ void UAbstractTestbed1StructArrayInterface::FuncStringAsync_Implementation(UObje
 		}
 		else
 		{
-			Async(EAsyncExecution::Thread,
+			Async(EAsyncExecution::ThreadPool,
 				[ParamString, this, &Result, CompletionAction]()
 				{
 				Result = Execute_FuncString(this, ParamString);

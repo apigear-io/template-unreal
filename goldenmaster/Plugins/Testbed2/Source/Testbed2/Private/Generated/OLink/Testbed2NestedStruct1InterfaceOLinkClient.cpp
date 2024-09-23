@@ -190,7 +190,7 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceOLinkClient::Func1_Impleme
 		return FTestbed2NestedStruct1();
 	}
 	TPromise<FTestbed2NestedStruct1> Promise;
-	Async(EAsyncExecution::Thread,
+	Async(EAsyncExecution::ThreadPool,
 		[Param1, &Promise, this]()
 		{
 		ApiGear::ObjectLink::InvokeReplyFunc GetNestedStruct1InterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)

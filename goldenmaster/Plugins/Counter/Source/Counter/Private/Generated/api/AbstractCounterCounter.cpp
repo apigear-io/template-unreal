@@ -140,7 +140,7 @@ void UAbstractCounterCounter::IncrementAsync_Implementation(UObject* WorldContex
 		}
 		else
 		{
-			Async(EAsyncExecution::Thread,
+			Async(EAsyncExecution::ThreadPool,
 				[Vec, this, &Result, CompletionAction]()
 				{
 				Result = Execute_Increment(this, Vec);
@@ -175,7 +175,7 @@ void UAbstractCounterCounter::IncrementArrayAsync_Implementation(UObject* WorldC
 		}
 		else
 		{
-			Async(EAsyncExecution::Thread,
+			Async(EAsyncExecution::ThreadPool,
 				[Vec, this, &Result, CompletionAction]()
 				{
 				Result = Execute_IncrementArray(this, Vec);
@@ -210,7 +210,7 @@ void UAbstractCounterCounter::DecrementAsync_Implementation(UObject* WorldContex
 		}
 		else
 		{
-			Async(EAsyncExecution::Thread,
+			Async(EAsyncExecution::ThreadPool,
 				[Vec, this, &Result, CompletionAction]()
 				{
 				Result = Execute_Decrement(this, Vec);
@@ -245,7 +245,7 @@ void UAbstractCounterCounter::DecrementArrayAsync_Implementation(UObject* WorldC
 		}
 		else
 		{
-			Async(EAsyncExecution::Thread,
+			Async(EAsyncExecution::ThreadPool,
 				[Vec, this, &Result, CompletionAction]()
 				{
 				Result = Execute_DecrementArray(this, Vec);

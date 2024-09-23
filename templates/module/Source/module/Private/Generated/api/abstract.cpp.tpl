@@ -140,7 +140,7 @@ void {{$abstractclass}}::{{Camel .Name}}Async_Implementation(UObject* WorldConte
 		}
 		else
 		{
-			Async(EAsyncExecution::Thread,
+			Async(EAsyncExecution::ThreadPool,
 				[{{range .Params}}{{ueVar "" .}}, {{ end }}this, &Result, CompletionAction]()
 				{
 				Result = Execute_{{Camel .Name}}(this{{ if len .Params }}, {{end}}{{ueVars "" .Params}});

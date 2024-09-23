@@ -297,7 +297,7 @@ FVector UCounterCounterOLinkClient::Increment_Implementation(const FVector& Vec)
 		return FVector(0.f, 0.f, 0.f);
 	}
 	TPromise<FVector> Promise;
-	Async(EAsyncExecution::Thread,
+	Async(EAsyncExecution::ThreadPool,
 		[Vec, &Promise, this]()
 		{
 		ApiGear::ObjectLink::InvokeReplyFunc GetCounterStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
@@ -328,7 +328,7 @@ TArray<FVector> UCounterCounterOLinkClient::IncrementArray_Implementation(const 
 		return TArray<FVector>();
 	}
 	TPromise<TArray<FVector>> Promise;
-	Async(EAsyncExecution::Thread,
+	Async(EAsyncExecution::ThreadPool,
 		[Vec, &Promise, this]()
 		{
 		ApiGear::ObjectLink::InvokeReplyFunc GetCounterStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
@@ -351,7 +351,7 @@ FCustomTypesVector3D UCounterCounterOLinkClient::Decrement_Implementation(const 
 		return FCustomTypesVector3D();
 	}
 	TPromise<FCustomTypesVector3D> Promise;
-	Async(EAsyncExecution::Thread,
+	Async(EAsyncExecution::ThreadPool,
 		[Vec, &Promise, this]()
 		{
 		ApiGear::ObjectLink::InvokeReplyFunc GetCounterStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
@@ -382,7 +382,7 @@ TArray<FCustomTypesVector3D> UCounterCounterOLinkClient::DecrementArray_Implemen
 		return TArray<FCustomTypesVector3D>();
 	}
 	TPromise<TArray<FCustomTypesVector3D>> Promise;
-	Async(EAsyncExecution::Thread,
+	Async(EAsyncExecution::ThreadPool,
 		[Vec, &Promise, this]()
 		{
 		ApiGear::ObjectLink::InvokeReplyFunc GetCounterStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)

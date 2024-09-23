@@ -155,7 +155,7 @@ bool UTbSimpleNoPropertiesInterfaceOLinkClient::FuncBool_Implementation(bool bPa
 		return false;
 	}
 	TPromise<bool> Promise;
-	Async(EAsyncExecution::Thread,
+	Async(EAsyncExecution::ThreadPool,
 		[bParamBool, &Promise, this]()
 		{
 		ApiGear::ObjectLink::InvokeReplyFunc GetNoPropertiesInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)

@@ -190,7 +190,7 @@ FTbSame1Struct1 UTbSame1SameStruct1InterfaceOLinkClient::Func1_Implementation(co
 		return FTbSame1Struct1();
 	}
 	TPromise<FTbSame1Struct1> Promise;
-	Async(EAsyncExecution::Thread,
+	Async(EAsyncExecution::ThreadPool,
 		[Param1, &Promise, this]()
 		{
 		ApiGear::ObjectLink::InvokeReplyFunc GetSameStruct1InterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)

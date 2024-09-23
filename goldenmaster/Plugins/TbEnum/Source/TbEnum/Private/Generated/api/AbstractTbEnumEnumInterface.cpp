@@ -140,7 +140,7 @@ void UAbstractTbEnumEnumInterface::Func0Async_Implementation(UObject* WorldConte
 		}
 		else
 		{
-			Async(EAsyncExecution::Thread,
+			Async(EAsyncExecution::ThreadPool,
 				[Param0, this, &Result, CompletionAction]()
 				{
 				Result = Execute_Func0(this, Param0);
@@ -175,7 +175,7 @@ void UAbstractTbEnumEnumInterface::Func1Async_Implementation(UObject* WorldConte
 		}
 		else
 		{
-			Async(EAsyncExecution::Thread,
+			Async(EAsyncExecution::ThreadPool,
 				[Param1, this, &Result, CompletionAction]()
 				{
 				Result = Execute_Func1(this, Param1);
@@ -210,7 +210,7 @@ void UAbstractTbEnumEnumInterface::Func2Async_Implementation(UObject* WorldConte
 		}
 		else
 		{
-			Async(EAsyncExecution::Thread,
+			Async(EAsyncExecution::ThreadPool,
 				[Param2, this, &Result, CompletionAction]()
 				{
 				Result = Execute_Func2(this, Param2);
@@ -245,7 +245,7 @@ void UAbstractTbEnumEnumInterface::Func3Async_Implementation(UObject* WorldConte
 		}
 		else
 		{
-			Async(EAsyncExecution::Thread,
+			Async(EAsyncExecution::ThreadPool,
 				[Param3, this, &Result, CompletionAction]()
 				{
 				Result = Execute_Func3(this, Param3);

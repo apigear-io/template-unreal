@@ -185,7 +185,7 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncBoolAsync_Implementation(UObject
 		}
 		else
 		{
-			Async(EAsyncExecution::Thread,
+			Async(EAsyncExecution::ThreadPool,
 				[ParamBool, this, &Result, CompletionAction]()
 				{
 				Result = Execute_FuncBool(this, ParamBool);
@@ -220,7 +220,7 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncIntAsync_Implementation(UObject*
 		}
 		else
 		{
-			Async(EAsyncExecution::Thread,
+			Async(EAsyncExecution::ThreadPool,
 				[ParamInt, this, &Result, CompletionAction]()
 				{
 				Result = Execute_FuncInt(this, ParamInt);
@@ -255,7 +255,7 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncInt32Async_Implementation(UObjec
 		}
 		else
 		{
-			Async(EAsyncExecution::Thread,
+			Async(EAsyncExecution::ThreadPool,
 				[ParamInt32, this, &Result, CompletionAction]()
 				{
 				Result = Execute_FuncInt32(this, ParamInt32);
@@ -290,7 +290,7 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncInt64Async_Implementation(UObjec
 		}
 		else
 		{
-			Async(EAsyncExecution::Thread,
+			Async(EAsyncExecution::ThreadPool,
 				[ParamInt64, this, &Result, CompletionAction]()
 				{
 				Result = Execute_FuncInt64(this, ParamInt64);
@@ -325,7 +325,7 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncFloatAsync_Implementation(UObjec
 		}
 		else
 		{
-			Async(EAsyncExecution::Thread,
+			Async(EAsyncExecution::ThreadPool,
 				[ParamFloat, this, &Result, CompletionAction]()
 				{
 				Result = Execute_FuncFloat(this, ParamFloat);
@@ -360,7 +360,7 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncFloat32Async_Implementation(UObj
 		}
 		else
 		{
-			Async(EAsyncExecution::Thread,
+			Async(EAsyncExecution::ThreadPool,
 				[ParamFloat32, this, &Result, CompletionAction]()
 				{
 				Result = Execute_FuncFloat32(this, ParamFloat32);
@@ -395,7 +395,7 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncFloat64Async_Implementation(UObj
 		}
 		else
 		{
-			Async(EAsyncExecution::Thread,
+			Async(EAsyncExecution::ThreadPool,
 				[ParamFloat, this, &Result, CompletionAction]()
 				{
 				Result = Execute_FuncFloat64(this, ParamFloat);
@@ -430,7 +430,7 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncStringAsync_Implementation(UObje
 		}
 		else
 		{
-			Async(EAsyncExecution::Thread,
+			Async(EAsyncExecution::ThreadPool,
 				[ParamString, this, &Result, CompletionAction]()
 				{
 				Result = Execute_FuncString(this, ParamString);

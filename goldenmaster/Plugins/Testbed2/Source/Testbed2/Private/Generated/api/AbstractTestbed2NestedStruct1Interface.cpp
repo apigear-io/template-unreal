@@ -110,7 +110,7 @@ void UAbstractTestbed2NestedStruct1Interface::Func1Async_Implementation(UObject*
 		}
 		else
 		{
-			Async(EAsyncExecution::Thread,
+			Async(EAsyncExecution::ThreadPool,
 				[Param1, this, &Result, CompletionAction]()
 				{
 				Result = Execute_Func1(this, Param1);
