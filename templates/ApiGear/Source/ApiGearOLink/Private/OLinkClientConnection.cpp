@@ -13,7 +13,7 @@ DEFINE_LOG_CATEGORY(LogApiGearOLink);
 
 namespace
 {
-float processMessageDelay = 0; // [time in s, 0 is Next Frame]
+static const float processMessageDelay = 0; // [time in s, 0 is Next Frame]
 static FString processMessageFunctionName = "ProcessMessageFunction";
 } // namespace
 
@@ -59,16 +59,6 @@ UOLinkClientConnection::UOLinkClientConnection(const FObjectInitializer& ObjectI
 	ApiGear::ObjectLink::WriteMessageFunc func = [this](const std::string& msg)
 	{
 		m_queue.Enqueue(msg);
-		// Schedule calling process message so they are sent from main thread. Throttling also improve sending during high load.
-		if (!m_processMessageTaskTimerHandle.IsValid())
-		{
-			m_processMessageTaskTimerHandle = ApiGearTicker::GetCoreTicker().AddTicker(*processMessageFunctionName, processMessageDelay,
-				[this](float /*param*/)
-				{
-				processMessages();
-				return false;
-			});
-		}
 	};
 	m_node->onWrite(func);
 }
@@ -113,15 +103,6 @@ void UOLinkClientConnection::Disconnect_Implementation()
 	{
 		m_node->unlinkRemote(objectName);
 	}
-	if (m_processMessageTaskTimerHandle.IsValid())
-	{
-		ApiGearTicker::GetCoreTicker().RemoveTicker(m_processMessageTaskTimerHandle);
-		m_processMessageTaskTimerHandle.Reset();
-	}
-	if (m_socket && m_socket->IsConnected())
-	{
-		flushMessages();
-	}
 
 	m_socket->Close();
 }
@@ -154,7 +135,7 @@ void UOLinkClientConnection::open(const FString& url)
 			[this](const FString& Error) -> void
 			{
 			// This code will run if the connection failed. Check Error to see what happened.
-			log(FString::Printf(TEXT("connection error: %s"), *Error));
+			log(FString::Printf(TEXT("connection error: %s -> %s"), *GetServerURL(), *Error));
 			UAbstractApiGearConnection::OnDisconnected(IsAutoReconnectEnabled());
 			});
 
@@ -218,11 +199,12 @@ void UOLinkClientConnection::OnConnected_Implementation()
 	// Schedule calling process message so they are sent from main thread. Throttling also improve sending during high load.
 	if (!m_processMessageTaskTimerHandle.IsValid())
 	{
+		TWeakPtr<IWebSocket> socket(m_socket);
 		m_processMessageTaskTimerHandle = ApiGearTicker::GetCoreTicker().AddTicker(*processMessageFunctionName, processMessageDelay,
-			[this](float /*param*/)
+			[this, socket](float /*param*/)
 			{
-			processMessages();
-			return false;
+			processMessages(socket);
+			return true;
 		});
 	}
 }
@@ -238,6 +220,11 @@ void UOLinkClientConnection::OnDisconnected_Implementation(bool bReconnect)
 			sink->olinkOnRelease();
 		}
 		m_registry.unsetNode(objectName);
+	}
+	if (m_processMessageTaskTimerHandle.IsValid())
+	{
+		ApiGearTicker::GetCoreTicker().RemoveTicker(m_processMessageTaskTimerHandle);
+		m_processMessageTaskTimerHandle.Reset();
 	}
 }
 
@@ -270,41 +257,33 @@ void UOLinkClientConnection::unlinkObjectSource(const std::string& name)
 	ListLinkedObjects.Remove(name);
 }
 
-void UOLinkClientConnection::processMessages()
+void UOLinkClientConnection::processMessages(TWeakPtr<IWebSocket> socket)
 {
-	ApiGearTicker::GetCoreTicker().RemoveTicker(m_processMessageTaskTimerHandle);
-	m_processMessageTaskTimerHandle.Reset();
 	if (m_queue.IsEmpty())
 	{
 		// no data to be sent
 		return;
 	}
+	if (TSharedPtr<IWebSocket> LockedSocket = socket.Pin())
+	{
+		if (!LockedSocket->IsConnected())
+		{
+			log("not connected -> connecting");
+			Connect();
+			return;
+		}
 
-	if (!m_socket)
+		std::string msg;
+		while (!m_queue.IsEmpty())
+		{
+			// if we are using JSON we need to use txt message
+			m_queue.Dequeue(msg);
+			LockedSocket->Send(UTF8_TO_TCHAR(msg.c_str()));
+		}
+	}
+	else
 	{
 		log("no socket -> creating");
 		return;
-	}
-	if (!m_socket->IsConnected())
-	{
-		log("not connected -> connecting");
-		Connect();
-		return;
-	}
-
-	flushMessages();
-}
-
-void UOLinkClientConnection::flushMessages()
-{
-	FScopeLock Lock(&m_flushMessagesMutex);
-	TQueue<std::string, EQueueMode::Mpsc> copyQueue;
-	Swap(m_queue, copyQueue);
-	std::string msg;
-	while (!copyQueue.IsEmpty())
-	{
-		// if we are using JSON we need to use txt message
-		copyQueue.Dequeue(msg);
-		m_socket->Send(UTF8_TO_TCHAR(msg.c_str()));
 	}
 }

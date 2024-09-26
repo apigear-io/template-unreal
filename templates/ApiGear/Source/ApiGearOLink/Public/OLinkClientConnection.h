@@ -68,13 +68,7 @@ private:
 	 * Helper method for sending messages, should be used from one thread, here achieved with scheduling task to main thread.
 	 * see m_processMessageTaskTimerHandle
 	 */
-	void processMessages();
-	/*
-	 * Sends queued messages
-	 * Uses m_flushMessagesMutex, to ensure it called only once at one time.
-	 * It is not thread safe function - uses a m_socket and m_queue which are not guarded separately across the UOLinkClientConnection
-	 */
-	void flushMessages();
+	void processMessages(TWeakPtr<IWebSocket> socket);
 
 	TArray<std::string> ListLinkedObjects;
 
@@ -86,6 +80,4 @@ private:
 	ApiGear::ObjectLink::ClientRegistry m_registry;
 	std::shared_ptr<ApiGear::ObjectLink::ClientNode> m_node;
 	TQueue<std::string, EQueueMode::Mpsc> m_queue;
-	// Mutex for flushMessages().
-	FCriticalSection m_flushMessagesMutex;
 };
