@@ -56,4 +56,8 @@ private:
 	std::shared_ptr<ApiGear::ObjectLink::RemoteNode> Node;
 	/// @brief the function to be used for all logging
 	ApiGear::ObjectLink::WriteLogFunc logFunction;
+
+#if WITH_DEV_AUTOMATION_TESTS
+	friend class UOLinkHostConnectionSpec;
+#endif
 };

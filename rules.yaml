@@ -242,6 +242,18 @@ features:
           - source: "ApiGear/Source/ApiGearOLink/Private/OLinkHostPrivate.cpp"
             target: "Source/ApiGearOLink/Private/OLinkHostPrivate.cpp"
             raw: true
+          - source: "ApiGear/Source/ApiGearOLink/Private/Tests/OLinkHostConnection.spec.cpp"
+            target: "Source/ApiGearOLink/Private/Tests/OLinkHostConnection.spec.cpp"
+            raw: true
+          - source: "ApiGear/Source/ApiGearOLink/Private/Tests/OLinkHostConnectionFixture.h"
+            target: "Source/ApiGearOLink/Private/Tests/OLinkHostConnectionFixture.h"
+            raw: true
+          - source: "ApiGear/Source/ApiGearOLink/Private/Tests/OLinkSink.spec.cpp"
+            target: "Source/ApiGearOLink/Private/Tests/OLinkSink.spec.cpp"
+            raw: true
+          - source: "ApiGear/Source/ApiGearOLink/Private/Tests/OLinkSinkFixture.h"
+            target: "Source/ApiGearOLink/Private/Tests/OLinkSinkFixture.h"
+            raw: true
   - name: stubs
     requires:
       - api
