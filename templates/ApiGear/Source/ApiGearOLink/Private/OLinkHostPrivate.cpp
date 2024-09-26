@@ -96,7 +96,8 @@ void OLinkHostPrivate::Stop()
 
 bool OLinkHostPrivate::Tick(float DeltaTime)
 {
-	Server->Tick();
+	if (Server)
+		Server->Tick();
 	return true;
 }
 
