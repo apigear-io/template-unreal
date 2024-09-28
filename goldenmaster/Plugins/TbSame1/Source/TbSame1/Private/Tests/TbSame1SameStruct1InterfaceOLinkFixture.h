@@ -55,7 +55,7 @@ public:
 private:
 	void CleanUp();
 
-	TWeakObjectPtr<UGameInstance> GameInstance;
+	TSoftObjectPtr<UGameInstance> GameInstance;
 	TScriptInterface<ITbSame1SameStruct1InterfaceInterface> testImplementation;
 	TSoftObjectPtr<UTbSame1SameStruct1InterfaceOLinkHelper> Helper;
 };

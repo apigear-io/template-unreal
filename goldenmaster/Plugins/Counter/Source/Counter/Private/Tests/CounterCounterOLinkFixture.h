@@ -58,7 +58,7 @@ public:
 private:
 	void CleanUp();
 
-	TWeakObjectPtr<UGameInstance> GameInstance;
+	TSoftObjectPtr<UGameInstance> GameInstance;
 	TScriptInterface<ICounterCounterInterface> testImplementation;
 	TSoftObjectPtr<UCounterCounterOLinkHelper> Helper;
 };

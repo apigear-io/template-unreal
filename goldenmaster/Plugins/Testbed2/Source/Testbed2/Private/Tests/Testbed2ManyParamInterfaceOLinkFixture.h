@@ -73,7 +73,7 @@ public:
 private:
 	void CleanUp();
 
-	TWeakObjectPtr<UGameInstance> GameInstance;
+	TSoftObjectPtr<UGameInstance> GameInstance;
 	TScriptInterface<ITestbed2ManyParamInterfaceInterface> testImplementation;
 	TSoftObjectPtr<UTestbed2ManyParamInterfaceOLinkHelper> Helper;
 };

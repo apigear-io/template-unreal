@@ -73,7 +73,7 @@ public:
 private:
 	void CleanUp();
 
-	TWeakObjectPtr<UGameInstance> GameInstance;
+	TSoftObjectPtr<UGameInstance> GameInstance;
 	TScriptInterface<ITbEnumEnumInterfaceInterface> testImplementation;
 	TSoftObjectPtr<UTbEnumEnumInterfaceOLinkHelper> Helper;
 };
