@@ -26,7 +26,7 @@ We aim for full feature parity between usage from within Blueprints or UE C++.
 ### Compatibility
 
 The generated plugin code is regularly tested in these configurations:
-| platform | UE4.25 | UE4.27 | UE5.2 |
+| platform | UE4.25 | UE4.27 | UE5.4 |
 |----------| :---: | :---: | :---: |
 | Windows  |:heavy_check_mark: (until v2.x)|:heavy_check_mark:|:heavy_check_mark:|
 | Linux    |:heavy_check_mark: (until v2.x)|:heavy_check_mark:|:heavy_check_mark:|
