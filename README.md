@@ -37,4 +37,4 @@ The template offers the following feature switches which can be enabled during c
 * `stubs`: create a stub implementation in C++ with some test cases
 * `plugin`: create a fully functional plugin with including the stub implementations and tests
 * `monitor`: create a thin decorator class which can be used to log traffic going through API layer
-* `olink`: create the adaption layer for the [OLink](https://docs.apigear.io/docs/advanced/objectlink/intro) protocol. This can be used to connect to the simulation.
+* `olink`: create the adaption layer for the [OLink](https://docs.apigear.io/docs/advanced/protocols/objectlink/intro) protocol. This can be used to connect to the simulation.
