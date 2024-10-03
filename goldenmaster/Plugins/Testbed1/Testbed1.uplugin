@@ -18,6 +18,11 @@
 	"EnabledByDefault" : true,
 	"Modules": [
 		{
+			"Name": "Testbed1API",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
 			"Name": "Testbed1",
 			"Type": "Runtime",
 			"LoadingPhase": "default"

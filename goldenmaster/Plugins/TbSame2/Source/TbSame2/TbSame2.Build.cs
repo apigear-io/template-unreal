@@ -14,6 +14,9 @@ public class TbSame2 : ModuleRules
 
 		// Disable nlohmann::json exception handling
 		PublicDefinitions.Add("JSON_NOEXCEPTION=1");
+		
+        PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "Public"));
+        PrivateIncludePaths.Add(Path.Combine(ModuleDirectory, "Private"));
 
 		PublicIncludePaths.AddRange(
 			new string[] {
@@ -32,7 +35,7 @@ public class TbSame2 : ModuleRules
 		PublicDependencyModuleNames.AddRange(
 			new string[]
 			{
-				"Core",
+				"TbSame2API",
 				"ApiGear",
 				"Projects",
 				"Engine",
@@ -47,8 +50,11 @@ public class TbSame2 : ModuleRules
 		PrivateDependencyModuleNames.AddRange(
 			new string[]
 			{
+				"Core",
 				"CoreUObject",
-				"Engine"
+				"Engine",
+				"ApiGearOLink",
+				"OLinkProtocolLibrary"
 			}
 			);
 		

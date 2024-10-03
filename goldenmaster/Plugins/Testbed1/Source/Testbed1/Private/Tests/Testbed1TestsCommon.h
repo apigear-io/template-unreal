@@ -16,7 +16,7 @@ limitations under the License.
 */
 #pragma once
 
-#include "Generated/api/Testbed1_data.h"
+#include "Testbed1/Generated/api/Testbed1_data.h"
 #include "Runtime/Launch/Resources/Version.h"
 #include "Misc/AutomationTest.h"
 

@@ -4,7 +4,7 @@
 {{- $ModuleName := Camel .Module.Name}}
 #pragma once
 
-#include "Generated/api/{{$ModuleName}}_data.h"
+#include "{{$ModuleName}}/Generated/api/{{$ModuleName}}_data.h"
 #include "Runtime/Launch/Resources/Version.h"
 #include "Misc/AutomationTest.h"
 

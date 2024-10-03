@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Generated/api/Testbed1_apig.h"
+#include "Testbed1/Generated/api/Testbed1_apig.h"
 
 class Testbed1StructInterfaceTracer
 {

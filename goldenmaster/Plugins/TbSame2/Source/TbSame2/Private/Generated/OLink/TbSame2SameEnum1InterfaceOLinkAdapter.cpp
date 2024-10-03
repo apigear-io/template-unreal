@@ -23,7 +23,7 @@ limitations under the License.
 #include "Generated/OLink/TbSame2SameEnum1InterfaceOLinkAdapter.h"
 #include "Async/Future.h"
 #include "Async/Async.h"
-#include "Generated/api/TbSame2.json.adapter.h"
+#include "TbSame2/Generated/api/TbSame2.json.adapter.h"
 #include "OLinkClientConnection.h"
 #include "Async/Async.h"
 #include "Engine/Engine.h"

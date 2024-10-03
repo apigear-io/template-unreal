@@ -1,5 +1,5 @@
-#include "Generated/Monitor/Testbed2.trace.h"
-#include "Generated/api/Testbed2.json.adapter.h"
+#include "Testbed2.trace.h"
+#include "Testbed2/Generated/api/Testbed2.json.adapter.h"
 #include "tracer.h"
 
 Testbed2ManyParamInterfaceTracer::Testbed2ManyParamInterfaceTracer()

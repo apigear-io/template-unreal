@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "CounterSettings.h"
-#include "Generated/CounterLogCategories.h"
+#include "Counter/Generated/CounterLogCategories.h"
 #include "ApiGearConnectionsStore.h"
 #include "Engine/Engine.h"
 #include "Misc/CoreDelegates.h"

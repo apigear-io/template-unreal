@@ -1,5 +1,5 @@
-#include "Generated/Monitor/TbSame1.trace.h"
-#include "Generated/api/TbSame1.json.adapter.h"
+#include "TbSame1.trace.h"
+#include "TbSame1/Generated/api/TbSame1.json.adapter.h"
 #include "tracer.h"
 
 TbSame1SameStruct1InterfaceTracer::TbSame1SameStruct1InterfaceTracer()

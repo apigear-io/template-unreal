@@ -16,7 +16,7 @@ limitations under the License.
 */
 #pragma once
 
-#include "Generated/api/TbSame1_data.h"
+#include "TbSame1/Generated/api/TbSame1_data.h"
 #include "TbSame1SameEnum2InterfaceMsgBusMessages.generated.h"
 
 USTRUCT()

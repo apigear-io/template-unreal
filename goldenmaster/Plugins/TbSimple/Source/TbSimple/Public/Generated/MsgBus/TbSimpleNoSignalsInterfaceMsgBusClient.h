@@ -16,7 +16,7 @@ limitations under the License.
 */
 #pragma once
 
-#include "Generated/api/AbstractTbSimpleNoSignalsInterface.h"
+#include "TbSimple/Generated/api/AbstractTbSimpleNoSignalsInterface.h"
 #include "Containers/Array.h"
 #include "Containers/Map.h"
 #include "HAL/CriticalSection.h"

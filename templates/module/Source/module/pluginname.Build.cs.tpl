@@ -1,7 +1,6 @@
 {{- /* Copyright Epic Games, Inc. All Rights Reserved */ -}}
 {{- $ModuleName := Camel .Module.Name}}
 {{- $ModulePath := path .Module.Name}}
-{{- $API_MACRO := printf "%s_API" $ModuleName }}
 {{- $Category := printf "ApiGear%s" $ModuleName -}}
 using UnrealBuildTool;
 using System.IO;
@@ -19,6 +18,9 @@ public class {{$ModuleName}} : ModuleRules
 
 		// Disable nlohmann::json exception handling
 		PublicDefinitions.Add("JSON_NOEXCEPTION=1");
+		
+        PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "Public"));
+        PrivateIncludePaths.Add(Path.Combine(ModuleDirectory, "Private"));
 
 		PublicIncludePaths.AddRange(
 			new string[] {
@@ -37,7 +39,9 @@ public class {{$ModuleName}} : ModuleRules
 		PublicDependencyModuleNames.AddRange(
 			new string[]
 			{
-				"Core",
+{{- if .Features.api }}
+				"{{Camel .Module.Name}}API",
+{{- end }}
 {{- if .Features.apigear }}
 				"ApiGear",
 {{- end }}
@@ -62,8 +66,16 @@ public class {{$ModuleName}} : ModuleRules
 		PrivateDependencyModuleNames.AddRange(
 			new string[]
 			{
+				"Core",
 				"CoreUObject",
-				"Engine"
+				"Engine",
+{{- range $idx, $elem := .Module.Imports }}
+				"{{Camel .Name}}API",
+{{- end }}
+{{- if .Features.olink }}
+				"ApiGearOLink",
+				"OLinkProtocolLibrary"
+{{- end }}
 			}
 			);
 		

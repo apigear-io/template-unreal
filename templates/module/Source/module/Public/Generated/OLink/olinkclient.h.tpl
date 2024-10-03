@@ -11,7 +11,7 @@
 {{- $Iface := printf "%s%s" $ModuleName $IfaceName }}
 #pragma once
 
-#include "Generated/api/Abstract{{$Iface}}.h"
+#include "{{$ModuleName}}/Generated/api/Abstract{{$Iface}}.h"
 THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
 THIRD_PARTY_INCLUDES_END

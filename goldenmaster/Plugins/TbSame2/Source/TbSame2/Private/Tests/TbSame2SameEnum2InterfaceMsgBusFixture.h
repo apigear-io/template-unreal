@@ -7,7 +7,7 @@
 #include "CoreMinimal.h"
 #include "UObject/Object.h"
 #include "UObject/NoExportTypes.h"
-#include "Generated/api/TbSame2_data.h"
+#include "TbSame2/Generated/api/TbSame2_data.h"
 #include "HAL/Platform.h"
 #include "TbSame2SameEnum2InterfaceMsgBusFixture.generated.h"
 

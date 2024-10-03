@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "Testbed1TestsCommon.h"
-#include "Generated/api/Testbed1_data.h"
+#include "Testbed1/Generated/api/Testbed1_data.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS

@@ -16,7 +16,7 @@ limitations under the License.
 */
 #pragma once
 
-#include "Generated/api/Counter_data.h"
+#include "Counter/Generated/api/Counter_data.h"
 #include "Runtime/Launch/Resources/Version.h"
 #include "Misc/AutomationTest.h"
 

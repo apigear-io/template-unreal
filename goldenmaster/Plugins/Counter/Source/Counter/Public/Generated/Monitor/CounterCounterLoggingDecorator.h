@@ -19,7 +19,7 @@ limitations under the License.
 
 #include "CoreMinimal.h"
 #include "Subsystems/GameInstanceSubsystem.h"
-#include "Generated/api/AbstractCounterCounter.h"
+#include "Counter/Generated/api/AbstractCounterCounter.h"
 #include "CounterCounterLoggingDecorator.generated.h"
 
 // General Log

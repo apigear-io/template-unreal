@@ -18,6 +18,11 @@
 	"EnabledByDefault" : true,
 	"Modules": [
 		{
+			"Name": "TbSimpleAPI",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
 			"Name": "TbSimple",
 			"Type": "Runtime",
 			"LoadingPhase": "default"

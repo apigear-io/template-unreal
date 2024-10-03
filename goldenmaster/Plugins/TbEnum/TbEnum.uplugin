@@ -18,6 +18,11 @@
 	"EnabledByDefault" : true,
 	"Modules": [
 		{
+			"Name": "TbEnumAPI",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
 			"Name": "TbEnum",
 			"Type": "Runtime",
 			"LoadingPhase": "default"

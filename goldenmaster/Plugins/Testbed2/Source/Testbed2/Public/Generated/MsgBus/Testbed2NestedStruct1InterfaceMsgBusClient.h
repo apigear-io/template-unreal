@@ -16,7 +16,7 @@ limitations under the License.
 */
 #pragma once
 
-#include "Generated/api/AbstractTestbed2NestedStruct1Interface.h"
+#include "Testbed2/Generated/api/AbstractTestbed2NestedStruct1Interface.h"
 #include "Containers/Array.h"
 #include "Containers/Map.h"
 #include "HAL/CriticalSection.h"

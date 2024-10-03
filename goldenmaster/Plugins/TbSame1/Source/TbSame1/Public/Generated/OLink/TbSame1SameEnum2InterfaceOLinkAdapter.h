@@ -16,7 +16,7 @@ limitations under the License.
 */
 #pragma once
 
-#include "Generated/api/TbSame1SameEnum2InterfaceInterface.h"
+#include "TbSame1/Generated/api/TbSame1SameEnum2InterfaceInterface.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include <memory>
 #include "TbSame1SameEnum2InterfaceOLinkAdapter.generated.h"

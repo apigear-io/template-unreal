@@ -16,7 +16,7 @@ limitations under the License.
 */
 #pragma once
 
-#include "Generated/api/Testbed2_data.h"
+#include "Testbed2/Generated/api/Testbed2_data.h"
 #include "Testbed2NestedStruct2InterfaceMsgBusMessages.generated.h"
 
 USTRUCT()

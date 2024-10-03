@@ -16,7 +16,7 @@ limitations under the License.
 */
 #pragma once
 
-#include "Generated/api/AbstractTestbed2NestedStruct3Interface.h"
+#include "Testbed2/Generated/api/AbstractTestbed2NestedStruct3Interface.h"
 THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
 THIRD_PARTY_INCLUDES_END

@@ -16,7 +16,7 @@ limitations under the License.
 */
 #pragma once
 
-#include "Generated/api/AbstractTbSimpleSimpleArrayInterface.h"
+#include "TbSimple/Generated/api/AbstractTbSimpleSimpleArrayInterface.h"
 #include "Containers/Array.h"
 #include "Containers/Map.h"
 #include "HAL/CriticalSection.h"

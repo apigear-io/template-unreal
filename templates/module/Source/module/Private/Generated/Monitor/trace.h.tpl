@@ -1,10 +1,10 @@
 {{/* Copyright Epic Games, Inc. All Rights Reserved */}}
 {{- $ModuleName := Camel .Module.Name}}
-{{- $API_MACRO := printf "%s_API" $ModuleName }}
+{{- $API_MACRO := printf "%s_API" (Camel .Module.Name) }}
 {{- $Category := printf "ApiGear%s" $ModuleName -}}
 #pragma once
 
-#include "Generated/api/{{$ModuleName}}_apig.h"
+#include "{{$ModuleName}}/Generated/api/{{$ModuleName}}_apig.h"
 {{- range .Module.Interfaces }}
 {{- $class := printf "%s%sTracer" $ModuleName (Camel .Name) }}
 {{- $Name := (Camel .Name)}}

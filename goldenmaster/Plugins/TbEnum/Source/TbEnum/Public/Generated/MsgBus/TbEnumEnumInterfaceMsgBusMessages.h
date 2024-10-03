@@ -16,7 +16,7 @@ limitations under the License.
 */
 #pragma once
 
-#include "Generated/api/TbEnum_data.h"
+#include "TbEnum/Generated/api/TbEnum_data.h"
 #include "TbEnumEnumInterfaceMsgBusMessages.generated.h"
 
 USTRUCT()

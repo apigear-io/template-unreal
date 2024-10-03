@@ -7,7 +7,7 @@
 #include "CoreMinimal.h"
 #include "UObject/Object.h"
 #include "UObject/NoExportTypes.h"
-#include "Generated/api/Testbed1_data.h"
+#include "Testbed1/Generated/api/Testbed1_data.h"
 #include "HAL/Platform.h"
 #include "Testbed1StructArrayInterfaceMsgBusFixture.generated.h"
 

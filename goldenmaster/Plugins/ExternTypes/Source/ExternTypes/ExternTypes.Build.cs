@@ -14,6 +14,9 @@ public class ExternTypes : ModuleRules
 
 		// Disable nlohmann::json exception handling
 		PublicDefinitions.Add("JSON_NOEXCEPTION=1");
+		
+        PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "Public"));
+        PrivateIncludePaths.Add(Path.Combine(ModuleDirectory, "Private"));
 
 		PublicIncludePaths.AddRange(
 			new string[] {
@@ -32,7 +35,7 @@ public class ExternTypes : ModuleRules
 		PublicDependencyModuleNames.AddRange(
 			new string[]
 			{
-				"Core",
+				"ExternTypesAPI",
 				"ApiGear",
 				"Projects",
 				"Engine",
@@ -47,8 +50,11 @@ public class ExternTypes : ModuleRules
 		PrivateDependencyModuleNames.AddRange(
 			new string[]
 			{
+				"Core",
 				"CoreUObject",
-				"Engine"
+				"Engine",
+				"ApiGearOLink",
+				"OLinkProtocolLibrary"
 			}
 			);
 		

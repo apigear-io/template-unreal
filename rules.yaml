@@ -4,26 +4,32 @@ features:
   - name: api
     scopes:
       - match: module
-        prefix: "Plugins/{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}/"
+        prefix: "Plugins/{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}API/"
         documents:
-          - source: "module/Source/module/Public/Generated/api/module.h.tpl"
-            target: "Public/Generated/api/{{Camel .Module.Name}}_apig.h"
-          - source: "module/Source/module/Public/Generated/api/data.h.tpl"
-            target: "Public/Generated/api/{{Camel .Module.Name}}_data.h"
-          - source: "module/Source/module/Private/Generated/api/data.cpp.tpl"
+          - source: "module/Source/moduleapi/Public/module/Generated/api/module.h.tpl"
+            target: "Public/{{Camel .Module.Name}}/Generated/api/{{Camel .Module.Name}}_apig.h"
+          - source: "module/Source/moduleapi/Public/module/Generated/api/data.h.tpl"
+            target: "Public/{{Camel .Module.Name}}/Generated/api/{{Camel .Module.Name}}_data.h"
+          - source: "module/Source/moduleapi/Private/Generated/api/data.cpp.tpl"
             target: "Private/Generated/api/{{Camel .Module.Name}}_data.cpp"
-          - source: "module/Source/module/Private/Generated/LogCategories.h.tpl"
-            target: "Private/Generated/{{Camel .Module.Name}}LogCategories.h"
-          - source: "module/Source/module/Private/Generated/LogCategories.cpp.tpl"
+          - source: "module/Source/moduleapi/Private/Generated/LogCategories.h.tpl"
+            target: "Public/{{Camel .Module.Name}}/Generated/{{Camel .Module.Name}}LogCategories.h"
+          - source: "module/Source/moduleapi/Private/Generated/LogCategories.cpp.tpl"
             target: "Private/Generated/{{Camel .Module.Name}}LogCategories.cpp"
+          - source: "module/Source/moduleapi/Public/module/Generated/moduleapi.h.tpl"
+            target: "Public/{{Camel .Module.Name}}/Generated/{{Camel .Module.Name}}API.h"
+          - source: "module/Source/moduleapi/Private/moduleapi.cpp.tpl"
+            target: "Private/Generated/{{Camel .Module.Name}}API.cpp"
+          - source: "module/Source/moduleapi/moduleapi.Build.cs.tpl"
+            target: "{{Camel .Module.Name}}API.Build.cs"
       - match: interface
-        prefix: "Plugins/{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}/"
+        prefix: "Plugins/{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}API/"
         documents:
-          - source: "module/Source/module/Public/Generated/api/interface.h.tpl"
-            target: "Public/Generated/api/{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface.h"
-          - source: "module/Source/module/Public/Generated/api/abstract.h.tpl"
-            target: "Public/Generated/api/Abstract{{Camel .Module.Name}}{{Camel .Interface.Name}}.h"
-          - source: "module/Source/module/Private/Generated/api/abstract.cpp.tpl"
+          - source: "module/Source/moduleapi/Public/module/Generated/api/interface.h.tpl"
+            target: "Public/{{Camel .Module.Name}}/Generated/api/{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface.h"
+          - source: "module/Source/moduleapi/Public/module/Generated/api/abstract.h.tpl"
+            target: "Public/{{Camel .Module.Name}}/Generated/api/Abstract{{Camel .Module.Name}}{{Camel .Interface.Name}}.h"
+          - source: "module/Source/moduleapi/Private/Generated/api/abstract.cpp.tpl"
             target: "Private/Generated/api/Abstract{{Camel .Module.Name}}{{Camel .Interface.Name}}.cpp"
   - name: apigear_olinkproto
     scopes:
@@ -297,7 +303,7 @@ features:
           - source: "module/Config/FilterPlugin.ini"
             target: "Config/FilterPlugin.ini"
             raw: true
-          - source: "module/Source/module/pluginname.uplugin.tpl"
+          - source: "module/Source/pluginname.uplugin.tpl"
             target: "{{Camel .Module.Name}}.uplugin"
           - source: "module/Source/module/Public/pluginnamesettings.h.tpl"
             target: "Source/{{Camel .Module.Name}}/Public/{{Camel .Module.Name}}Settings.h"
@@ -336,8 +342,8 @@ features:
             target: "Source/{{Camel .Module.Name}}/Private/Generated/Monitor/{{Camel .Module.Name}}Factory.h"
           - source: "module/Source/module/Private/Generated/Monitor/pluginfactory.cpp.tpl"
             target: "Source/{{Camel .Module.Name}}/Private/Generated/Monitor/{{Camel .Module.Name}}Factory.cpp"
-          - source: "module/Source/module/Private/Generated/api/json.adapter.h.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Generated/api/{{Camel .Module.Name}}.json.adapter.h"
+          - source: "module/Source/moduleapi/Private/Generated/api/json.adapter.h.tpl"
+            target: "Source/{{Camel .Module.Name}}API/Public/{{Camel .Module.Name}}/Generated/api/{{Camel .Module.Name}}.json.adapter.h"
           - source: "module/Source/module/Private/Generated/Monitor/trace.h.tpl"
             target: "Source/{{Camel .Module.Name}}/Private/Generated/Monitor/{{Camel .Module.Name}}.trace.h"
           - source: "module/Source/module/Private/Generated/Monitor/trace.cpp.tpl"
@@ -358,8 +364,8 @@ features:
       - match: module
         prefix: "Plugins/{{Camel .Module.Name}}/"
         documents:
-          - source: "module/Source/module/Private/Generated/api/json.adapter.h.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Generated/api/{{Camel .Module.Name}}.json.adapter.h"
+          - source: "module/Source/moduleapi/Private/Generated/api/json.adapter.h.tpl"
+            target: "Source/{{Camel .Module.Name}}API/Public/{{Camel .Module.Name}}/Generated/api/{{Camel .Module.Name}}.json.adapter.h"
       - match: interface
         prefix: "Plugins/{{Camel .Module.Name}}/"
         documents:

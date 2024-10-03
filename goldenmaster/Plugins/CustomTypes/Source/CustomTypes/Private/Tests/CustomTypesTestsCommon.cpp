@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "CustomTypesTestsCommon.h"
-#include "Generated/api/CustomTypes_data.h"
+#include "CustomTypes/Generated/api/CustomTypes_data.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS

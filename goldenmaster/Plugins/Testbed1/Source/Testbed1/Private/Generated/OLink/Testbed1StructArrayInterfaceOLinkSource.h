@@ -16,7 +16,7 @@ limitations under the License.
 */
 #pragma once
 
-#include "Generated/api/Testbed1StructArrayInterfaceInterface.h"
+#include "Testbed1/Generated/api/Testbed1StructArrayInterfaceInterface.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 THIRD_PARTY_INCLUDES_START
 #include "olink/iobjectsource.h"

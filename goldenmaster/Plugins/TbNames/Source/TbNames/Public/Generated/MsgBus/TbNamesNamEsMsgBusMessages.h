@@ -16,7 +16,7 @@ limitations under the License.
 */
 #pragma once
 
-#include "Generated/api/TbNames_data.h"
+#include "TbNames/Generated/api/TbNames_data.h"
 #include "TbNamesNamEsMsgBusMessages.generated.h"
 
 USTRUCT()

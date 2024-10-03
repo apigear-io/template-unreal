@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbSame2Settings.h"
-#include "Generated/TbSame2LogCategories.h"
+#include "TbSame2/Generated/TbSame2LogCategories.h"
 #include "ApiGearConnectionsStore.h"
 #include "Engine/Engine.h"
 #include "Misc/CoreDelegates.h"

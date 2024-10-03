@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Generated/api/TbEnum_apig.h"
+#include "TbEnum/Generated/api/TbEnum_apig.h"
 
 class TbEnumEnumInterfaceTracer
 {

@@ -11,7 +11,7 @@
 {{- $Iface := printf "%s%s" $ModuleName $IfaceName }}
 #pragma once
 
-#include "Generated/api/Abstract{{$Iface}}.h"
+#include "{{$ModuleName}}/Generated/api/Abstract{{$Iface}}.h"
 #include "Containers/Array.h"
 #include "Containers/Map.h"
 #include "HAL/CriticalSection.h"

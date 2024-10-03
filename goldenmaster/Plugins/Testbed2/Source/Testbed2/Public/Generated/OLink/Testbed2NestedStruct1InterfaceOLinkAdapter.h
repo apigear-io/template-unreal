@@ -16,7 +16,7 @@ limitations under the License.
 */
 #pragma once
 
-#include "Generated/api/Testbed2NestedStruct1InterfaceInterface.h"
+#include "Testbed2/Generated/api/Testbed2NestedStruct1InterfaceInterface.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include <memory>
 #include "Testbed2NestedStruct1InterfaceOLinkAdapter.generated.h"

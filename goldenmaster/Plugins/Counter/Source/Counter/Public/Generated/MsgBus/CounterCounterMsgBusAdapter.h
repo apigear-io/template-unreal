@@ -16,7 +16,7 @@ limitations under the License.
 */
 #pragma once
 
-#include "Generated/api/CounterCounterInterface.h"
+#include "Counter/Generated/api/CounterCounterInterface.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "IMessageContext.h"
 #include "Templates/SharedPointer.h"

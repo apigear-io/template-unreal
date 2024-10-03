@@ -25,7 +25,7 @@ limitations under the License.
 #if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #include "Async/Future.h"
 #include "Async/Async.h"
-#include "Generated/api/TbSimple.json.adapter.h"
+#include "TbSimple/Generated/api/TbSimple.json.adapter.h"
 #include "OLinkClientConnection.h"
 #include "Async/Async.h"
 #include "Engine/Engine.h"

@@ -16,7 +16,7 @@ limitations under the License.
 */
 #pragma once
 
-#include "Generated/api/AbstractTbSame2SameEnum1Interface.h"
+#include "TbSame2/Generated/api/AbstractTbSame2SameEnum1Interface.h"
 #include "Containers/Array.h"
 #include "Containers/Map.h"
 #include "HAL/CriticalSection.h"

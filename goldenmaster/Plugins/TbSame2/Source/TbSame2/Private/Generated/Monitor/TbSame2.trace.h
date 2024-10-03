@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Generated/api/TbSame2_apig.h"
+#include "TbSame2/Generated/api/TbSame2_apig.h"
 
 class TbSame2SameStruct1InterfaceTracer
 {

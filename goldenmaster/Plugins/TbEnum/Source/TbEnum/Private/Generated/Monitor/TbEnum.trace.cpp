@@ -1,5 +1,5 @@
-#include "Generated/Monitor/TbEnum.trace.h"
-#include "Generated/api/TbEnum.json.adapter.h"
+#include "TbEnum.trace.h"
+#include "TbEnum/Generated/api/TbEnum.json.adapter.h"
 #include "tracer.h"
 
 TbEnumEnumInterfaceTracer::TbEnumEnumInterfaceTracer()

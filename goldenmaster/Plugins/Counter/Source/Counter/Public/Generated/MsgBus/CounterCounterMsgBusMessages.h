@@ -16,9 +16,9 @@ limitations under the License.
 */
 #pragma once
 
-#include "Generated/api/Counter_data.h"
-#include "Generated/api/CustomTypes_data.h"
-#include "Generated/api/ExternTypes_data.h"
+#include "Counter/Generated/api/Counter_data.h"
+#include "CustomTypes/Generated/api/CustomTypes_data.h"
+#include "ExternTypes/Generated/api/ExternTypes_data.h"
 #include "CounterCounterMsgBusMessages.generated.h"
 
 USTRUCT()

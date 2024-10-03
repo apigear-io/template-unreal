@@ -1,5 +1,5 @@
-#include "Generated/Monitor/TbNames.trace.h"
-#include "Generated/api/TbNames.json.adapter.h"
+#include "TbNames.trace.h"
+#include "TbNames/Generated/api/TbNames.json.adapter.h"
 #include "tracer.h"
 
 TbNamesNamEsTracer::TbNamesNamEsTracer()

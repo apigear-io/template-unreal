@@ -1,12 +1,12 @@
 {{/* Copyright Epic Games, Inc. All Rights Reserved */}}
 {{- $ModuleName := Camel .Module.Name}}
 {{- $moduleName := .Module.Name}}
-{{- $API_MACRO := printf "%s_API" $ModuleName }}
+{{- $API_MACRO := printf "%s_API" (Camel .Module.Name) }}
 {{- $Category := printf "ApiGear%s" $ModuleName -}}
-#include "Generated/Monitor/{{$ModuleName}}.trace.h"
-#include "Generated/api/{{$ModuleName}}.json.adapter.h"
+#include "{{$ModuleName}}.trace.h"
+#include "{{$ModuleName}}/Generated/api/{{$ModuleName}}.json.adapter.h"
 {{- range .Module.Imports }}
-#include "{{Camel .Name}}/Private/Generated/api/{{Camel .Name}}.json.adapter.h"
+#include "{{Camel .Name}}/Generated/api/{{Camel .Name}}.json.adapter.h"
 {{- end }}
 #include "tracer.h"
 

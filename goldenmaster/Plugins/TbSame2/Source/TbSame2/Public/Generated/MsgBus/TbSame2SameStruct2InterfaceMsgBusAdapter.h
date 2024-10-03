@@ -16,7 +16,7 @@ limitations under the License.
 */
 #pragma once
 
-#include "Generated/api/TbSame2SameStruct2InterfaceInterface.h"
+#include "TbSame2/Generated/api/TbSame2SameStruct2InterfaceInterface.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "IMessageContext.h"
 #include "Templates/SharedPointer.h"

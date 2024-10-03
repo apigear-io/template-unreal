@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "CounterTestsCommon.h"
-#include "Generated/api/Counter_data.h"
+#include "Counter/Generated/api/Counter_data.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS

@@ -24,7 +24,7 @@ limitations under the License.
 #include "ApiGearSettings.h"
 #include "ApiGearOLink.h"
 #include "Async/Async.h"
-#include "Generated/api/TbNames.json.adapter.h"
+#include "TbNames/Generated/api/TbNames.json.adapter.h"
 #include "OLinkClientConnection.h"
 #include "OLinkSink.h"
 #include "Engine/Engine.h"

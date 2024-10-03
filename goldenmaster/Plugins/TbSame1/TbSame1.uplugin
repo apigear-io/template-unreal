@@ -18,6 +18,11 @@
 	"EnabledByDefault" : true,
 	"Modules": [
 		{
+			"Name": "TbSame1API",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
 			"Name": "TbSame1",
 			"Type": "Runtime",
 			"LoadingPhase": "default"

@@ -11,7 +11,7 @@
 #include "CoreMinimal.h"
 #include "UObject/Object.h"
 #include "UObject/NoExportTypes.h"
-#include "Generated/api/{{$ModuleName}}_data.h"
+#include "{{$ModuleName}}/Generated/api/{{$ModuleName}}_data.h"
 #include "HAL/Platform.h"
 #include "{{$DisplayName}}MsgBusFixture.generated.h"
 

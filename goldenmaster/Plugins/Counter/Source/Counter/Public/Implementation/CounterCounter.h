@@ -18,7 +18,7 @@ limitations under the License.
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Generated/api/AbstractCounterCounter.h"
+#include "Counter/Generated/api/AbstractCounterCounter.h"
 #include "CounterCounter.generated.h"
 
 UCLASS(BlueprintType)

@@ -7,7 +7,7 @@
 #include "CoreMinimal.h"
 #include "UObject/Object.h"
 #include "UObject/NoExportTypes.h"
-#include "Generated/api/Counter_data.h"
+#include "Counter/Generated/api/Counter_data.h"
 #include "HAL/Platform.h"
 #include "CounterCounterOLinkFixture.generated.h"
 

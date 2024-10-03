@@ -1,7 +1,7 @@
-#include "Generated/Monitor/Counter.trace.h"
-#include "Generated/api/Counter.json.adapter.h"
-#include "CustomTypes/Private/Generated/api/CustomTypes.json.adapter.h"
-#include "ExternTypes/Private/Generated/api/ExternTypes.json.adapter.h"
+#include "Counter.trace.h"
+#include "Counter/Generated/api/Counter.json.adapter.h"
+#include "CustomTypes/Generated/api/CustomTypes.json.adapter.h"
+#include "ExternTypes/Generated/api/ExternTypes.json.adapter.h"
 #include "tracer.h"
 
 CounterCounterTracer::CounterCounterTracer()

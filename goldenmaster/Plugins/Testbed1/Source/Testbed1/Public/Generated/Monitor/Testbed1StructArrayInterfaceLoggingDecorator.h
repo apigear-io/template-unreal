@@ -19,7 +19,7 @@ limitations under the License.
 
 #include "CoreMinimal.h"
 #include "Subsystems/GameInstanceSubsystem.h"
-#include "Generated/api/AbstractTestbed1StructArrayInterface.h"
+#include "Testbed1/Generated/api/AbstractTestbed1StructArrayInterface.h"
 #include "Testbed1StructArrayInterfaceLoggingDecorator.generated.h"
 
 // General Log

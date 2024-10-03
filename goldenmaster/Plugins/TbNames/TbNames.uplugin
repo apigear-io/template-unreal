@@ -18,6 +18,11 @@
 	"EnabledByDefault" : true,
 	"Modules": [
 		{
+			"Name": "TbNamesAPI",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
 			"Name": "TbNames",
 			"Type": "Runtime",
 			"LoadingPhase": "default"

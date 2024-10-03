@@ -25,9 +25,9 @@ limitations under the License.
 #if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #include "Async/Future.h"
 #include "Async/Async.h"
-#include "Generated/api/Counter.json.adapter.h"
-#include "CustomTypes/Private/Generated/api/CustomTypes.json.adapter.h"
-#include "ExternTypes/Private/Generated/api/ExternTypes.json.adapter.h"
+#include "Counter/Generated/api/Counter.json.adapter.h"
+#include "CustomTypes/Generated/api/CustomTypes.json.adapter.h"
+#include "ExternTypes/Generated/api/ExternTypes.json.adapter.h"
 #include "OLinkClientConnection.h"
 #include "Async/Async.h"
 #include "Engine/Engine.h"

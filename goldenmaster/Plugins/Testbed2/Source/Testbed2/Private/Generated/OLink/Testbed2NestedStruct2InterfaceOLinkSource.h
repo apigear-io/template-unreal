@@ -16,7 +16,7 @@ limitations under the License.
 */
 #pragma once
 
-#include "Generated/api/Testbed2NestedStruct2InterfaceInterface.h"
+#include "Testbed2/Generated/api/Testbed2NestedStruct2InterfaceInterface.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 THIRD_PARTY_INCLUDES_START
 #include "olink/iobjectsource.h"

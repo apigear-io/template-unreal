@@ -24,7 +24,7 @@ limitations under the License.
 #include "ApiGearSettings.h"
 #include "ApiGearOLink.h"
 #include "Async/Async.h"
-#include "Generated/api/Testbed2.json.adapter.h"
+#include "Testbed2/Generated/api/Testbed2.json.adapter.h"
 #include "OLinkClientConnection.h"
 #include "OLinkSink.h"
 #include "Engine/Engine.h"

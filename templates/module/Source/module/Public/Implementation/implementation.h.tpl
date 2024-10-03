@@ -26,7 +26,7 @@ limitations under the License.
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Generated/api/Abstract{{$Iface}}.h"
+#include "{{$ModuleName}}/Generated/api/Abstract{{$Iface}}.h"
 #include "{{$Iface}}.generated.h"
 
 UCLASS(BlueprintType)

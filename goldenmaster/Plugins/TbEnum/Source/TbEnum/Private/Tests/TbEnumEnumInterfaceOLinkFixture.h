@@ -7,7 +7,7 @@
 #include "CoreMinimal.h"
 #include "UObject/Object.h"
 #include "UObject/NoExportTypes.h"
-#include "Generated/api/TbEnum_data.h"
+#include "TbEnum/Generated/api/TbEnum_data.h"
 #include "HAL/Platform.h"
 #include "TbEnumEnumInterfaceOLinkFixture.generated.h"
 

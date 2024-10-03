@@ -16,7 +16,7 @@ limitations under the License.
 */
 #pragma once
 
-#include "Generated/api/TbSame2_data.h"
+#include "TbSame2/Generated/api/TbSame2_data.h"
 #include "Runtime/Launch/Resources/Version.h"
 #include "Misc/AutomationTest.h"
 

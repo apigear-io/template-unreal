@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Generated/api/TbNames_apig.h"
+#include "TbNames/Generated/api/TbNames_apig.h"
 
 class TbNamesNamEsTracer
 {

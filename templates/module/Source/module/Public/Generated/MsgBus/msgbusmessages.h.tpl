@@ -12,7 +12,7 @@
 #pragma once
 
 {{- $includes := getEmptyStringList}}
-{{- $includeName :=  printf "\"Generated/api/%s_data.h\"" $ModuleName }}
+{{- $includeName :=  printf "\"%s/Generated/api/%s_data.h\"" $ModuleName $ModuleName }}
 {{- $includes = (appendList $includes $includeName) }}
 {{- range .Module.Externs }}
 {{- $class := ueExtern . }}
@@ -22,7 +22,7 @@
 {{- end }}
 {{- end }}
 {{- range .Module.Imports }}
-{{- $includeName :=  printf "\"Generated/api/%s_data.h\"" (Camel .Name) }}
+{{- $includeName :=  printf "\"%s/Generated/api/%s_data.h\"" (Camel .Name) (Camel .Name) }}
 {{- $includes = (appendList $includes $includeName) }}
 {{- end }}
 {{- $includes = unique $includes }}

@@ -27,7 +27,7 @@ limitations under the License.
 
 #include "CoreMinimal.h"
 #include "Subsystems/GameInstanceSubsystem.h"
-#include "Generated/api/Abstract{{$Iface}}.h"
+#include "{{$ModuleName}}/Generated/api/Abstract{{$Iface}}.h"
 #include "{{$Iface}}LoggingDecorator.generated.h"
 
 // General Log
