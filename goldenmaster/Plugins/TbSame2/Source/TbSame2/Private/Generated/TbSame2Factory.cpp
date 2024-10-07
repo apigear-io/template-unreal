@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include "TbSame2Factory.h"
+#include "Generated/TbSame2Factory.h"
 #include "ApiGearSettings.h"
 #include "ApiGearOLink.h"
 #include "TbSame2Settings.h"

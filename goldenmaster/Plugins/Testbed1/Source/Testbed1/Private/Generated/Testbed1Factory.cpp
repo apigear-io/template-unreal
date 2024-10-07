@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include "Testbed1Factory.h"
+#include "Generated/Testbed1Factory.h"
 #include "ApiGearSettings.h"
 #include "ApiGearOLink.h"
 #include "Testbed1Settings.h"

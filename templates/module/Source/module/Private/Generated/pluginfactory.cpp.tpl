@@ -20,7 +20,7 @@ limitations under the License.
 */
 {{- $mclass := printf "F%sModuleFactory" $ModuleName}}
 
-#include "{{$ModuleName}}Factory.h"
+#include "Generated/{{$ModuleName}}Factory.h"
 #include "ApiGearSettings.h"
 {{- if $.Features.olink }}
 #include "ApiGearOLink.h"

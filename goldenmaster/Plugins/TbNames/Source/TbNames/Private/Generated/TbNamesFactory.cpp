@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include "TbNamesFactory.h"
+#include "Generated/TbNamesFactory.h"
 #include "ApiGearSettings.h"
 #include "ApiGearOLink.h"
 #include "TbNamesSettings.h"

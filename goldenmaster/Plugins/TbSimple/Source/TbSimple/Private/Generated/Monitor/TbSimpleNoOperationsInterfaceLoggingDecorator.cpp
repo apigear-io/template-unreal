@@ -16,8 +16,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "Generated/Monitor/TbSimpleNoOperationsInterfaceLoggingDecorator.h"
-#include "Generated/Monitor/TbSimple.trace.h"
-#include "Generated/Monitor/TbSimpleFactory.h"
+#include "TbSimple.trace.h"
+#include "Generated/TbSimpleFactory.h"
 #include "Runtime/Launch/Resources/Version.h"
 
 DEFINE_LOG_CATEGORY(LogTbSimpleNoOperationsInterfaceLoggingDecorator);

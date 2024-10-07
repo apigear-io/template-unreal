@@ -305,6 +305,10 @@ features:
             raw: true
           - source: "module/Source/pluginname.uplugin.tpl"
             target: "{{Camel .Module.Name}}.uplugin"
+          - source: "module/Source/module/Public/Generated/pluginfactory.h.tpl"
+            target: "Source/{{Camel .Module.Name}}/Public/Generated/{{Camel .Module.Name}}Factory.h"
+          - source: "module/Source/module/Private/Generated/pluginfactory.cpp.tpl"
+            target: "Source/{{Camel .Module.Name}}/Private/Generated/{{Camel .Module.Name}}Factory.cpp"
           - source: "module/Source/module/Public/pluginnamesettings.h.tpl"
             target: "Source/{{Camel .Module.Name}}/Public/{{Camel .Module.Name}}Settings.h"
           - source: "module/Source/module/Private/pluginnamesettings.cpp.tpl"
@@ -338,10 +342,6 @@ features:
       - match: module
         prefix: "Plugins/{{Camel .Module.Name}}/"
         documents:
-          - source: "module/Source/module/Private/Generated/Monitor/pluginfactory.h.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Generated/Monitor/{{Camel .Module.Name}}Factory.h"
-          - source: "module/Source/module/Private/Generated/Monitor/pluginfactory.cpp.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Generated/Monitor/{{Camel .Module.Name}}Factory.cpp"
           - source: "module/Source/moduleapi/Private/Generated/api/json.adapter.h.tpl"
             target: "Source/{{Camel .Module.Name}}API/Public/{{Camel .Module.Name}}/Generated/api/{{Camel .Module.Name}}.json.adapter.h"
           - source: "module/Source/module/Private/Generated/Monitor/trace.h.tpl"

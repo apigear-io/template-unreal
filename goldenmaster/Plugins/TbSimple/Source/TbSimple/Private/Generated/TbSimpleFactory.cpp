@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include "TbSimpleFactory.h"
+#include "Generated/TbSimpleFactory.h"
 #include "ApiGearSettings.h"
 #include "ApiGearOLink.h"
 #include "TbSimpleSettings.h"

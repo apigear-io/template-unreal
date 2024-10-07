@@ -15,20 +15,20 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include "ExternTypesFactory.h"
+#include "Generated/CustomTypesFactory.h"
 #include "ApiGearSettings.h"
 #include "ApiGearOLink.h"
-#include "ExternTypesSettings.h"
-#include "ExternTypesSettings.h"
+#include "CustomTypesSettings.h"
+#include "CustomTypesSettings.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Engine/GameInstance.h"
 
 // General Log
-DEFINE_LOG_CATEGORY(LogFExternTypesModuleFactory);
+DEFINE_LOG_CATEGORY(LogFCustomTypesModuleFactory);
 
 namespace
 {
-bool IsExternTypesLogEnabled()
+bool IsCustomTypesLogEnabled()
 {
 	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
 	return settings->Tracer_EnableDebugLog;
