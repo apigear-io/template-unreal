@@ -19,11 +19,7 @@ THIRD_PARTY_INCLUDES_END
 #include "ApiGearConnection.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Runtime/Launch/Resources/Version.h"
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-#include "Templates/UniquePtr.h"
-#else
 #include "Templates/PimplPtr.h"
-#endif
 #include "{{$Iface}}OLinkClient.generated.h"
 
 {{- if len .Interface.Properties }}
@@ -85,11 +81,7 @@ private:
 {{- if len .Interface.Properties }}
 
 	// member variable to store the last sent data
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-	TUniquePtr<{{$Iface}}PropertiesData> _SentData;
-#else
 	TPimplPtr<{{$Iface}}PropertiesData> _SentData;
-#endif
 {{- end}}
 	TScriptInterface<class IApiGearConnection> Connection;
 };

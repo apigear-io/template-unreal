@@ -31,11 +31,7 @@ UTbSimpleNoPropertiesInterfaceLoggingDecorator::~UTbSimpleNoPropertiesInterfaceL
 void UTbSimpleNoPropertiesInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-	setBackendService(FTbSimpleModuleFactory::createITbSimpleNoPropertiesInterfaceInterface(GetGameInstance(), Collection));
-#else
 	setBackendService(FTbSimpleModuleFactory::createITbSimpleNoPropertiesInterfaceInterface(Collection));
-#endif
 }
 
 void UTbSimpleNoPropertiesInterfaceLoggingDecorator::Deinitialize()

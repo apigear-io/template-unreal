@@ -65,11 +65,7 @@ DEFINE_LOG_CATEGORY(LogTbSimpleSimpleArrayInterfaceOLinkClient);
 
 UTbSimpleSimpleArrayInterfaceOLinkClient::UTbSimpleSimpleArrayInterfaceOLinkClient()
 	: UAbstractTbSimpleSimpleArrayInterface()
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-	, _SentData(MakeUnique<TbSimpleSimpleArrayInterfacePropertiesData>())
-#else
 	, _SentData(MakePimpl<TbSimpleSimpleArrayInterfacePropertiesData>())
-#endif
 {
 	m_sink = std::make_shared<FOLinkSink>("tb.simple.SimpleArrayInterface");
 }

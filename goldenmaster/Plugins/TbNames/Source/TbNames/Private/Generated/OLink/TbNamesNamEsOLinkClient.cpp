@@ -50,11 +50,7 @@ DEFINE_LOG_CATEGORY(LogTbNamesNamEsOLinkClient);
 
 UTbNamesNamEsOLinkClient::UTbNamesNamEsOLinkClient()
 	: UAbstractTbNamesNamEs()
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-	, _SentData(MakeUnique<TbNamesNamEsPropertiesData>())
-#else
 	, _SentData(MakePimpl<TbNamesNamEsPropertiesData>())
-#endif
 {
 	m_sink = std::make_shared<FOLinkSink>("tb.names.Nam_Es");
 }

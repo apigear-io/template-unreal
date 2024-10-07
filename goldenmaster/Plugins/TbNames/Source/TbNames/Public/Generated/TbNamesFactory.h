@@ -30,9 +30,5 @@ DECLARE_LOG_CATEGORY_EXTERN(LogFTbNamesModuleFactory, Log, All);
 class FTbNamesModuleFactory
 {
 public:
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-	static TScriptInterface<ITbNamesNamEsInterface> createITbNamesNamEsInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
-#else
 	static TScriptInterface<ITbNamesNamEsInterface> createITbNamesNamEsInterface(FSubsystemCollectionBase& Collection);
-#endif
 };

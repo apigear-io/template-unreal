@@ -51,11 +51,7 @@ DEFINE_LOG_CATEGORY(LogTbEnumEnumInterfaceOLinkClient);
 
 UTbEnumEnumInterfaceOLinkClient::UTbEnumEnumInterfaceOLinkClient()
 	: UAbstractTbEnumEnumInterface()
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-	, _SentData(MakeUnique<TbEnumEnumInterfacePropertiesData>())
-#else
 	, _SentData(MakePimpl<TbEnumEnumInterfacePropertiesData>())
-#endif
 {
 	m_sink = std::make_shared<FOLinkSink>("tb.enum.EnumInterface");
 }

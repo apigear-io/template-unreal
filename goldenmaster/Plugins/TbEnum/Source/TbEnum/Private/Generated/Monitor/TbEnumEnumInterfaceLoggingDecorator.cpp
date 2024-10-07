@@ -31,11 +31,7 @@ UTbEnumEnumInterfaceLoggingDecorator::~UTbEnumEnumInterfaceLoggingDecorator() = 
 void UTbEnumEnumInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-	setBackendService(FTbEnumModuleFactory::createITbEnumEnumInterfaceInterface(GetGameInstance(), Collection));
-#else
 	setBackendService(FTbEnumModuleFactory::createITbEnumEnumInterfaceInterface(Collection));
-#endif
 }
 
 void UTbEnumEnumInterfaceLoggingDecorator::Deinitialize()

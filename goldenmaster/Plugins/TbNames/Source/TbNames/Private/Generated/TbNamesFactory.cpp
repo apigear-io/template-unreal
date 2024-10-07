@@ -37,67 +37,6 @@ bool IsTbNamesLogEnabled()
 }
 } // namespace
 
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-TScriptInterface<ITbNamesNamEsInterface> createTbNamesNamEsOLink(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
-{
-	if (IsTbNamesLogEnabled())
-	{
-		UE_LOG(LogFTbNamesModuleFactory, Log, TEXT("createITbNamesNamEsInterface: Using OLink service backend"));
-	}
-
-	UTbNamesNamEsOLinkClient* Instance = GameInstance->GetSubsystem<UTbNamesNamEsOLinkClient>(GameInstance);
-	if (!Instance)
-	{
-		Collection.InitializeDependency(UTbNamesNamEsOLinkClient::StaticClass());
-		Instance = GameInstance->GetSubsystem<UTbNamesNamEsOLinkClient>(GameInstance);
-	}
-
-	return Instance;
-}
-
-TScriptInterface<ITbNamesNamEsInterface> createTbNamesNamEs(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
-{
-	if (IsTbNamesLogEnabled())
-	{
-		UE_LOG(LogFTbNamesModuleFactory, Log, TEXT("createITbNamesNamEsInterface: Using local service backend"));
-	}
-
-	UTbNamesNamEs* Instance = GameInstance->GetSubsystem<UTbNamesNamEs>(GameInstance);
-	if (!Instance)
-	{
-		Collection.InitializeDependency(UTbNamesNamEs::StaticClass());
-		Instance = GameInstance->GetSubsystem<UTbNamesNamEs>(GameInstance);
-	}
-
-	return Instance;
-}
-
-TScriptInterface<ITbNamesNamEsInterface> FTbNamesModuleFactory::createITbNamesNamEsInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
-{
-	UTbNamesSettings* TbNamesSettings = GetMutableDefault<UTbNamesSettings>();
-
-	if (TbNamesSettings->TracerServiceIdentifier == TbNamesLocalBackendIdentifier)
-	{
-		return createTbNamesNamEs(GameInstance, Collection);
-	}
-
-	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbNamesSettings->TracerServiceIdentifier);
-
-	// Other protocols not supported. To support it edit templates:
-	// add protocol handler class for this interface like createTbNamesNamEsOLink and other necessary infrastructure
-	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
-	{
-		return createTbNamesNamEsOLink(GameInstance, Collection);
-	}
-
-	// fallback to local implementation
-	return createTbNamesNamEs(GameInstance, Collection);
-}
-
-#else
-
 TScriptInterface<ITbNamesNamEsInterface> createTbNamesNamEsOLink(FSubsystemCollectionBase& Collection)
 {
 	if (IsTbNamesLogEnabled())
@@ -143,4 +82,3 @@ TScriptInterface<ITbNamesNamEsInterface> FTbNamesModuleFactory::createITbNamesNa
 	// fallback to local implementation
 	return createTbNamesNamEs(Collection);
 }
-#endif

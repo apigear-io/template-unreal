@@ -30,9 +30,5 @@ DECLARE_LOG_CATEGORY_EXTERN(LogFCounterModuleFactory, Log, All);
 class FCounterModuleFactory
 {
 public:
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-	static TScriptInterface<ICounterCounterInterface> createICounterCounterInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
-#else
 	static TScriptInterface<ICounterCounterInterface> createICounterCounterInterface(FSubsystemCollectionBase& Collection);
-#endif
 };

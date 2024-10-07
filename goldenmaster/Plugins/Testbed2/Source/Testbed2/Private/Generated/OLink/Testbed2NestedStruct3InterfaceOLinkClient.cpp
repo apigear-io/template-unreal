@@ -53,11 +53,7 @@ DEFINE_LOG_CATEGORY(LogTestbed2NestedStruct3InterfaceOLinkClient);
 
 UTestbed2NestedStruct3InterfaceOLinkClient::UTestbed2NestedStruct3InterfaceOLinkClient()
 	: UAbstractTestbed2NestedStruct3Interface()
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-	, _SentData(MakeUnique<Testbed2NestedStruct3InterfacePropertiesData>())
-#else
 	, _SentData(MakePimpl<Testbed2NestedStruct3InterfacePropertiesData>())
-#endif
 {
 	m_sink = std::make_shared<FOLinkSink>("testbed2.NestedStruct3Interface");
 }

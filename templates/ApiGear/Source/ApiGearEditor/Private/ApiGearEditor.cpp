@@ -89,11 +89,7 @@ TSharedRef<SDockTab> FApiGearEditorModule::OnSpawnPluginTab(const FSpawnTabArgs&
 
 void FApiGearEditorModule::PluginButtonClicked()
 {
-#if (ENGINE_MAJOR_VERSION >= 5) || (ENGINE_MAJOR_VERSION >= 4 && ENGINE_MINOR_VERSION > 25)
 	FGlobalTabmanager::Get()->TryInvokeTab(ApiGearConnectionTabName);
-#else
-	FGlobalTabmanager::Get()->InvokeTab(ApiGearConnectionTabName);
-#endif
 }
 
 FReply FApiGearEditorModule::ConnectButtonClicked(FString InConnectionName)

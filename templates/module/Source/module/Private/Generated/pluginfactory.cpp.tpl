@@ -56,83 +56,6 @@ bool Is{{$ModuleName}}LogEnabled()
 {{- $iclass := printf "I%sInterface" $class }}
 {{- $DisplayName := printf "%s%s" $ModuleName (Camel .Name) }}
 
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-{{- if $.Features.olink }}
-TScriptInterface<I{{$class}}Interface> create{{$class}}OLink(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
-{
-	if (Is{{$ModuleName}}LogEnabled())
-	{
-		UE_LOG(Log{{$mclass}}, Log, TEXT("create{{$iclass}}: Using OLink service backend"));
-	}
-
-	{{ printf "U%sOLinkClient" $DisplayName}}* Instance = GameInstance->GetSubsystem<{{ printf "U%sOLinkClient" $DisplayName}}>(GameInstance);
-	if (!Instance)
-	{
-		Collection.InitializeDependency({{ printf "U%sOLinkClient" $DisplayName}}::StaticClass());
-		Instance = GameInstance->GetSubsystem<{{ printf "U%sOLinkClient" $DisplayName}}>(GameInstance);
-	}
-
-	return Instance;
-}
-{{- end }}
-{{- if $.Features.stubs }}
-
-TScriptInterface<I{{$class}}Interface> create{{$class}}(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
-{
-	if (Is{{$ModuleName}}LogEnabled())
-	{
-		UE_LOG(Log{{$mclass}}, Log, TEXT("create{{$iclass}}: Using local service backend"));
-	}
-
-	{{ printf "U%s" $DisplayName}}* Instance = GameInstance->GetSubsystem<{{ printf "U%s" $DisplayName}}>(GameInstance);
-	if (!Instance)
-	{
-		Collection.InitializeDependency({{ printf "U%s" $DisplayName}}::StaticClass());
-		Instance = GameInstance->GetSubsystem<{{ printf "U%s" $DisplayName}}>(GameInstance);
-	}
-
-	return Instance;
-}
-{{- end }}
-
-TScriptInterface<I{{$class}}Interface> {{$mclass}}::create{{$iclass}}(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
-{
-{{- if or $.Features.stubs $.Features.olink }}
-	U{{$ModuleName}}Settings* {{$ModuleName}}Settings = GetMutableDefault<U{{$ModuleName}}Settings>();
-{{- end }}
-
-{{- if $.Features.stubs }}
-
-	if ({{$ModuleName}}Settings->TracerServiceIdentifier == {{$ModuleName}}LocalBackendIdentifier)
-	{
-		return create{{$class}}(GameInstance, Collection);
-	}
-
-	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find({{$ModuleName}}Settings->TracerServiceIdentifier);
-{{- end }}
-
-{{- if $.Features.olink }}
-
-	// Other protocols not supported. To support it edit templates:
-	// add protocol handler class for this interface like create{{$class}}OLink and other necessary infrastructure
-	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
-	{
-		return create{{$class}}OLink(GameInstance, Collection);
-	}
-{{- end }}
-
-{{- if $.Features.stubs }}
-
-	// fallback to local implementation
-	return create{{$class}}(GameInstance, Collection);
-{{- else }}
-	return nullptr;
-{{- end }}
-}
-
-#else
 {{- if $.Features.olink }}
 
 TScriptInterface<I{{$class}}Interface> create{{$class}}OLink(FSubsystemCollectionBase& Collection)
@@ -196,5 +119,4 @@ TScriptInterface<I{{$class}}Interface> {{$mclass}}::create{{$iclass}}(FSubsystem
 	return nullptr;
 {{- end }}
 }
-#endif
 {{- end }}

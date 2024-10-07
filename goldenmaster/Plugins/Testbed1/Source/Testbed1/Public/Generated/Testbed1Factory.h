@@ -31,11 +31,6 @@ DECLARE_LOG_CATEGORY_EXTERN(LogFTestbed1ModuleFactory, Log, All);
 class FTestbed1ModuleFactory
 {
 public:
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-	static TScriptInterface<ITestbed1StructInterfaceInterface> createITestbed1StructInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
-	static TScriptInterface<ITestbed1StructArrayInterfaceInterface> createITestbed1StructArrayInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
-#else
 	static TScriptInterface<ITestbed1StructInterfaceInterface> createITestbed1StructInterfaceInterface(FSubsystemCollectionBase& Collection);
 	static TScriptInterface<ITestbed1StructArrayInterfaceInterface> createITestbed1StructArrayInterfaceInterface(FSubsystemCollectionBase& Collection);
-#endif
 };

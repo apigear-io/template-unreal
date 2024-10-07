@@ -24,11 +24,7 @@ THIRD_PARTY_INCLUDES_END
 #include "ApiGearConnection.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Runtime/Launch/Resources/Version.h"
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-#include "Templates/UniquePtr.h"
-#else
 #include "Templates/PimplPtr.h"
-#endif
 #include "TbSame1SameEnum1InterfaceOLinkClient.generated.h"
 
 struct TbSame1SameEnum1InterfacePropertiesData;
@@ -79,10 +75,6 @@ private:
 	std::shared_ptr<FOLinkSink> m_sink;
 
 	// member variable to store the last sent data
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-	TUniquePtr<TbSame1SameEnum1InterfacePropertiesData> _SentData;
-#else
 	TPimplPtr<TbSame1SameEnum1InterfacePropertiesData> _SentData;
-#endif
 	TScriptInterface<class IApiGearConnection> Connection;
 };

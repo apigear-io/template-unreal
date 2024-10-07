@@ -37,67 +37,6 @@ bool IsCounterLogEnabled()
 }
 } // namespace
 
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-TScriptInterface<ICounterCounterInterface> createCounterCounterOLink(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
-{
-	if (IsCounterLogEnabled())
-	{
-		UE_LOG(LogFCounterModuleFactory, Log, TEXT("createICounterCounterInterface: Using OLink service backend"));
-	}
-
-	UCounterCounterOLinkClient* Instance = GameInstance->GetSubsystem<UCounterCounterOLinkClient>(GameInstance);
-	if (!Instance)
-	{
-		Collection.InitializeDependency(UCounterCounterOLinkClient::StaticClass());
-		Instance = GameInstance->GetSubsystem<UCounterCounterOLinkClient>(GameInstance);
-	}
-
-	return Instance;
-}
-
-TScriptInterface<ICounterCounterInterface> createCounterCounter(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
-{
-	if (IsCounterLogEnabled())
-	{
-		UE_LOG(LogFCounterModuleFactory, Log, TEXT("createICounterCounterInterface: Using local service backend"));
-	}
-
-	UCounterCounter* Instance = GameInstance->GetSubsystem<UCounterCounter>(GameInstance);
-	if (!Instance)
-	{
-		Collection.InitializeDependency(UCounterCounter::StaticClass());
-		Instance = GameInstance->GetSubsystem<UCounterCounter>(GameInstance);
-	}
-
-	return Instance;
-}
-
-TScriptInterface<ICounterCounterInterface> FCounterModuleFactory::createICounterCounterInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
-{
-	UCounterSettings* CounterSettings = GetMutableDefault<UCounterSettings>();
-
-	if (CounterSettings->TracerServiceIdentifier == CounterLocalBackendIdentifier)
-	{
-		return createCounterCounter(GameInstance, Collection);
-	}
-
-	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(CounterSettings->TracerServiceIdentifier);
-
-	// Other protocols not supported. To support it edit templates:
-	// add protocol handler class for this interface like createCounterCounterOLink and other necessary infrastructure
-	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
-	{
-		return createCounterCounterOLink(GameInstance, Collection);
-	}
-
-	// fallback to local implementation
-	return createCounterCounter(GameInstance, Collection);
-}
-
-#else
-
 TScriptInterface<ICounterCounterInterface> createCounterCounterOLink(FSubsystemCollectionBase& Collection)
 {
 	if (IsCounterLogEnabled())
@@ -143,4 +82,3 @@ TScriptInterface<ICounterCounterInterface> FCounterModuleFactory::createICounter
 	// fallback to local implementation
 	return createCounterCounter(Collection);
 }
-#endif

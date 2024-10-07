@@ -31,11 +31,7 @@ UCounterCounterLoggingDecorator::~UCounterCounterLoggingDecorator() = default;
 void UCounterCounterLoggingDecorator::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-	setBackendService(FCounterModuleFactory::createICounterCounterInterface(GetGameInstance(), Collection));
-#else
 	setBackendService(FCounterModuleFactory::createICounterCounterInterface(Collection));
-#endif
 }
 
 void UCounterCounterLoggingDecorator::Deinitialize()

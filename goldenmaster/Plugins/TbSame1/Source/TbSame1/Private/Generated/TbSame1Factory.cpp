@@ -43,67 +43,6 @@ bool IsTbSame1LogEnabled()
 }
 } // namespace
 
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-TScriptInterface<ITbSame1SameStruct1InterfaceInterface> createTbSame1SameStruct1InterfaceOLink(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
-{
-	if (IsTbSame1LogEnabled())
-	{
-		UE_LOG(LogFTbSame1ModuleFactory, Log, TEXT("createITbSame1SameStruct1InterfaceInterface: Using OLink service backend"));
-	}
-
-	UTbSame1SameStruct1InterfaceOLinkClient* Instance = GameInstance->GetSubsystem<UTbSame1SameStruct1InterfaceOLinkClient>(GameInstance);
-	if (!Instance)
-	{
-		Collection.InitializeDependency(UTbSame1SameStruct1InterfaceOLinkClient::StaticClass());
-		Instance = GameInstance->GetSubsystem<UTbSame1SameStruct1InterfaceOLinkClient>(GameInstance);
-	}
-
-	return Instance;
-}
-
-TScriptInterface<ITbSame1SameStruct1InterfaceInterface> createTbSame1SameStruct1Interface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
-{
-	if (IsTbSame1LogEnabled())
-	{
-		UE_LOG(LogFTbSame1ModuleFactory, Log, TEXT("createITbSame1SameStruct1InterfaceInterface: Using local service backend"));
-	}
-
-	UTbSame1SameStruct1Interface* Instance = GameInstance->GetSubsystem<UTbSame1SameStruct1Interface>(GameInstance);
-	if (!Instance)
-	{
-		Collection.InitializeDependency(UTbSame1SameStruct1Interface::StaticClass());
-		Instance = GameInstance->GetSubsystem<UTbSame1SameStruct1Interface>(GameInstance);
-	}
-
-	return Instance;
-}
-
-TScriptInterface<ITbSame1SameStruct1InterfaceInterface> FTbSame1ModuleFactory::createITbSame1SameStruct1InterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
-{
-	UTbSame1Settings* TbSame1Settings = GetMutableDefault<UTbSame1Settings>();
-
-	if (TbSame1Settings->TracerServiceIdentifier == TbSame1LocalBackendIdentifier)
-	{
-		return createTbSame1SameStruct1Interface(GameInstance, Collection);
-	}
-
-	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSame1Settings->TracerServiceIdentifier);
-
-	// Other protocols not supported. To support it edit templates:
-	// add protocol handler class for this interface like createTbSame1SameStruct1InterfaceOLink and other necessary infrastructure
-	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
-	{
-		return createTbSame1SameStruct1InterfaceOLink(GameInstance, Collection);
-	}
-
-	// fallback to local implementation
-	return createTbSame1SameStruct1Interface(GameInstance, Collection);
-}
-
-#else
-
 TScriptInterface<ITbSame1SameStruct1InterfaceInterface> createTbSame1SameStruct1InterfaceOLink(FSubsystemCollectionBase& Collection)
 {
 	if (IsTbSame1LogEnabled())
@@ -149,68 +88,6 @@ TScriptInterface<ITbSame1SameStruct1InterfaceInterface> FTbSame1ModuleFactory::c
 	// fallback to local implementation
 	return createTbSame1SameStruct1Interface(Collection);
 }
-#endif
-
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-TScriptInterface<ITbSame1SameStruct2InterfaceInterface> createTbSame1SameStruct2InterfaceOLink(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
-{
-	if (IsTbSame1LogEnabled())
-	{
-		UE_LOG(LogFTbSame1ModuleFactory, Log, TEXT("createITbSame1SameStruct2InterfaceInterface: Using OLink service backend"));
-	}
-
-	UTbSame1SameStruct2InterfaceOLinkClient* Instance = GameInstance->GetSubsystem<UTbSame1SameStruct2InterfaceOLinkClient>(GameInstance);
-	if (!Instance)
-	{
-		Collection.InitializeDependency(UTbSame1SameStruct2InterfaceOLinkClient::StaticClass());
-		Instance = GameInstance->GetSubsystem<UTbSame1SameStruct2InterfaceOLinkClient>(GameInstance);
-	}
-
-	return Instance;
-}
-
-TScriptInterface<ITbSame1SameStruct2InterfaceInterface> createTbSame1SameStruct2Interface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
-{
-	if (IsTbSame1LogEnabled())
-	{
-		UE_LOG(LogFTbSame1ModuleFactory, Log, TEXT("createITbSame1SameStruct2InterfaceInterface: Using local service backend"));
-	}
-
-	UTbSame1SameStruct2Interface* Instance = GameInstance->GetSubsystem<UTbSame1SameStruct2Interface>(GameInstance);
-	if (!Instance)
-	{
-		Collection.InitializeDependency(UTbSame1SameStruct2Interface::StaticClass());
-		Instance = GameInstance->GetSubsystem<UTbSame1SameStruct2Interface>(GameInstance);
-	}
-
-	return Instance;
-}
-
-TScriptInterface<ITbSame1SameStruct2InterfaceInterface> FTbSame1ModuleFactory::createITbSame1SameStruct2InterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
-{
-	UTbSame1Settings* TbSame1Settings = GetMutableDefault<UTbSame1Settings>();
-
-	if (TbSame1Settings->TracerServiceIdentifier == TbSame1LocalBackendIdentifier)
-	{
-		return createTbSame1SameStruct2Interface(GameInstance, Collection);
-	}
-
-	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSame1Settings->TracerServiceIdentifier);
-
-	// Other protocols not supported. To support it edit templates:
-	// add protocol handler class for this interface like createTbSame1SameStruct2InterfaceOLink and other necessary infrastructure
-	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
-	{
-		return createTbSame1SameStruct2InterfaceOLink(GameInstance, Collection);
-	}
-
-	// fallback to local implementation
-	return createTbSame1SameStruct2Interface(GameInstance, Collection);
-}
-
-#else
 
 TScriptInterface<ITbSame1SameStruct2InterfaceInterface> createTbSame1SameStruct2InterfaceOLink(FSubsystemCollectionBase& Collection)
 {
@@ -257,68 +134,6 @@ TScriptInterface<ITbSame1SameStruct2InterfaceInterface> FTbSame1ModuleFactory::c
 	// fallback to local implementation
 	return createTbSame1SameStruct2Interface(Collection);
 }
-#endif
-
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-TScriptInterface<ITbSame1SameEnum1InterfaceInterface> createTbSame1SameEnum1InterfaceOLink(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
-{
-	if (IsTbSame1LogEnabled())
-	{
-		UE_LOG(LogFTbSame1ModuleFactory, Log, TEXT("createITbSame1SameEnum1InterfaceInterface: Using OLink service backend"));
-	}
-
-	UTbSame1SameEnum1InterfaceOLinkClient* Instance = GameInstance->GetSubsystem<UTbSame1SameEnum1InterfaceOLinkClient>(GameInstance);
-	if (!Instance)
-	{
-		Collection.InitializeDependency(UTbSame1SameEnum1InterfaceOLinkClient::StaticClass());
-		Instance = GameInstance->GetSubsystem<UTbSame1SameEnum1InterfaceOLinkClient>(GameInstance);
-	}
-
-	return Instance;
-}
-
-TScriptInterface<ITbSame1SameEnum1InterfaceInterface> createTbSame1SameEnum1Interface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
-{
-	if (IsTbSame1LogEnabled())
-	{
-		UE_LOG(LogFTbSame1ModuleFactory, Log, TEXT("createITbSame1SameEnum1InterfaceInterface: Using local service backend"));
-	}
-
-	UTbSame1SameEnum1Interface* Instance = GameInstance->GetSubsystem<UTbSame1SameEnum1Interface>(GameInstance);
-	if (!Instance)
-	{
-		Collection.InitializeDependency(UTbSame1SameEnum1Interface::StaticClass());
-		Instance = GameInstance->GetSubsystem<UTbSame1SameEnum1Interface>(GameInstance);
-	}
-
-	return Instance;
-}
-
-TScriptInterface<ITbSame1SameEnum1InterfaceInterface> FTbSame1ModuleFactory::createITbSame1SameEnum1InterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
-{
-	UTbSame1Settings* TbSame1Settings = GetMutableDefault<UTbSame1Settings>();
-
-	if (TbSame1Settings->TracerServiceIdentifier == TbSame1LocalBackendIdentifier)
-	{
-		return createTbSame1SameEnum1Interface(GameInstance, Collection);
-	}
-
-	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSame1Settings->TracerServiceIdentifier);
-
-	// Other protocols not supported. To support it edit templates:
-	// add protocol handler class for this interface like createTbSame1SameEnum1InterfaceOLink and other necessary infrastructure
-	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
-	{
-		return createTbSame1SameEnum1InterfaceOLink(GameInstance, Collection);
-	}
-
-	// fallback to local implementation
-	return createTbSame1SameEnum1Interface(GameInstance, Collection);
-}
-
-#else
 
 TScriptInterface<ITbSame1SameEnum1InterfaceInterface> createTbSame1SameEnum1InterfaceOLink(FSubsystemCollectionBase& Collection)
 {
@@ -365,68 +180,6 @@ TScriptInterface<ITbSame1SameEnum1InterfaceInterface> FTbSame1ModuleFactory::cre
 	// fallback to local implementation
 	return createTbSame1SameEnum1Interface(Collection);
 }
-#endif
-
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-TScriptInterface<ITbSame1SameEnum2InterfaceInterface> createTbSame1SameEnum2InterfaceOLink(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
-{
-	if (IsTbSame1LogEnabled())
-	{
-		UE_LOG(LogFTbSame1ModuleFactory, Log, TEXT("createITbSame1SameEnum2InterfaceInterface: Using OLink service backend"));
-	}
-
-	UTbSame1SameEnum2InterfaceOLinkClient* Instance = GameInstance->GetSubsystem<UTbSame1SameEnum2InterfaceOLinkClient>(GameInstance);
-	if (!Instance)
-	{
-		Collection.InitializeDependency(UTbSame1SameEnum2InterfaceOLinkClient::StaticClass());
-		Instance = GameInstance->GetSubsystem<UTbSame1SameEnum2InterfaceOLinkClient>(GameInstance);
-	}
-
-	return Instance;
-}
-
-TScriptInterface<ITbSame1SameEnum2InterfaceInterface> createTbSame1SameEnum2Interface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
-{
-	if (IsTbSame1LogEnabled())
-	{
-		UE_LOG(LogFTbSame1ModuleFactory, Log, TEXT("createITbSame1SameEnum2InterfaceInterface: Using local service backend"));
-	}
-
-	UTbSame1SameEnum2Interface* Instance = GameInstance->GetSubsystem<UTbSame1SameEnum2Interface>(GameInstance);
-	if (!Instance)
-	{
-		Collection.InitializeDependency(UTbSame1SameEnum2Interface::StaticClass());
-		Instance = GameInstance->GetSubsystem<UTbSame1SameEnum2Interface>(GameInstance);
-	}
-
-	return Instance;
-}
-
-TScriptInterface<ITbSame1SameEnum2InterfaceInterface> FTbSame1ModuleFactory::createITbSame1SameEnum2InterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
-{
-	UTbSame1Settings* TbSame1Settings = GetMutableDefault<UTbSame1Settings>();
-
-	if (TbSame1Settings->TracerServiceIdentifier == TbSame1LocalBackendIdentifier)
-	{
-		return createTbSame1SameEnum2Interface(GameInstance, Collection);
-	}
-
-	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSame1Settings->TracerServiceIdentifier);
-
-	// Other protocols not supported. To support it edit templates:
-	// add protocol handler class for this interface like createTbSame1SameEnum2InterfaceOLink and other necessary infrastructure
-	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
-	{
-		return createTbSame1SameEnum2InterfaceOLink(GameInstance, Collection);
-	}
-
-	// fallback to local implementation
-	return createTbSame1SameEnum2Interface(GameInstance, Collection);
-}
-
-#else
 
 TScriptInterface<ITbSame1SameEnum2InterfaceInterface> createTbSame1SameEnum2InterfaceOLink(FSubsystemCollectionBase& Collection)
 {
@@ -473,4 +226,3 @@ TScriptInterface<ITbSame1SameEnum2InterfaceInterface> FTbSame1ModuleFactory::cre
 	// fallback to local implementation
 	return createTbSame1SameEnum2Interface(Collection);
 }
-#endif

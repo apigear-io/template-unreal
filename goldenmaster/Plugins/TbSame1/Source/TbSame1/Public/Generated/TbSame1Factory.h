@@ -33,15 +33,8 @@ DECLARE_LOG_CATEGORY_EXTERN(LogFTbSame1ModuleFactory, Log, All);
 class FTbSame1ModuleFactory
 {
 public:
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-	static TScriptInterface<ITbSame1SameStruct1InterfaceInterface> createITbSame1SameStruct1InterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
-	static TScriptInterface<ITbSame1SameStruct2InterfaceInterface> createITbSame1SameStruct2InterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
-	static TScriptInterface<ITbSame1SameEnum1InterfaceInterface> createITbSame1SameEnum1InterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
-	static TScriptInterface<ITbSame1SameEnum2InterfaceInterface> createITbSame1SameEnum2InterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
-#else
 	static TScriptInterface<ITbSame1SameStruct1InterfaceInterface> createITbSame1SameStruct1InterfaceInterface(FSubsystemCollectionBase& Collection);
 	static TScriptInterface<ITbSame1SameStruct2InterfaceInterface> createITbSame1SameStruct2InterfaceInterface(FSubsystemCollectionBase& Collection);
 	static TScriptInterface<ITbSame1SameEnum1InterfaceInterface> createITbSame1SameEnum1InterfaceInterface(FSubsystemCollectionBase& Collection);
 	static TScriptInterface<ITbSame1SameEnum2InterfaceInterface> createITbSame1SameEnum2InterfaceInterface(FSubsystemCollectionBase& Collection);
-#endif
 };

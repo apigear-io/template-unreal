@@ -31,11 +31,7 @@ UTbSimpleNoSignalsInterfaceLoggingDecorator::~UTbSimpleNoSignalsInterfaceLogging
 void UTbSimpleNoSignalsInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-	setBackendService(FTbSimpleModuleFactory::createITbSimpleNoSignalsInterfaceInterface(GetGameInstance(), Collection));
-#else
 	setBackendService(FTbSimpleModuleFactory::createITbSimpleNoSignalsInterfaceInterface(Collection));
-#endif
 }
 
 void UTbSimpleNoSignalsInterfaceLoggingDecorator::Deinitialize()

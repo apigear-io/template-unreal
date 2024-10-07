@@ -37,67 +37,6 @@ bool IsTbEnumLogEnabled()
 }
 } // namespace
 
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-TScriptInterface<ITbEnumEnumInterfaceInterface> createTbEnumEnumInterfaceOLink(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
-{
-	if (IsTbEnumLogEnabled())
-	{
-		UE_LOG(LogFTbEnumModuleFactory, Log, TEXT("createITbEnumEnumInterfaceInterface: Using OLink service backend"));
-	}
-
-	UTbEnumEnumInterfaceOLinkClient* Instance = GameInstance->GetSubsystem<UTbEnumEnumInterfaceOLinkClient>(GameInstance);
-	if (!Instance)
-	{
-		Collection.InitializeDependency(UTbEnumEnumInterfaceOLinkClient::StaticClass());
-		Instance = GameInstance->GetSubsystem<UTbEnumEnumInterfaceOLinkClient>(GameInstance);
-	}
-
-	return Instance;
-}
-
-TScriptInterface<ITbEnumEnumInterfaceInterface> createTbEnumEnumInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
-{
-	if (IsTbEnumLogEnabled())
-	{
-		UE_LOG(LogFTbEnumModuleFactory, Log, TEXT("createITbEnumEnumInterfaceInterface: Using local service backend"));
-	}
-
-	UTbEnumEnumInterface* Instance = GameInstance->GetSubsystem<UTbEnumEnumInterface>(GameInstance);
-	if (!Instance)
-	{
-		Collection.InitializeDependency(UTbEnumEnumInterface::StaticClass());
-		Instance = GameInstance->GetSubsystem<UTbEnumEnumInterface>(GameInstance);
-	}
-
-	return Instance;
-}
-
-TScriptInterface<ITbEnumEnumInterfaceInterface> FTbEnumModuleFactory::createITbEnumEnumInterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
-{
-	UTbEnumSettings* TbEnumSettings = GetMutableDefault<UTbEnumSettings>();
-
-	if (TbEnumSettings->TracerServiceIdentifier == TbEnumLocalBackendIdentifier)
-	{
-		return createTbEnumEnumInterface(GameInstance, Collection);
-	}
-
-	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbEnumSettings->TracerServiceIdentifier);
-
-	// Other protocols not supported. To support it edit templates:
-	// add protocol handler class for this interface like createTbEnumEnumInterfaceOLink and other necessary infrastructure
-	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
-	{
-		return createTbEnumEnumInterfaceOLink(GameInstance, Collection);
-	}
-
-	// fallback to local implementation
-	return createTbEnumEnumInterface(GameInstance, Collection);
-}
-
-#else
-
 TScriptInterface<ITbEnumEnumInterfaceInterface> createTbEnumEnumInterfaceOLink(FSubsystemCollectionBase& Collection)
 {
 	if (IsTbEnumLogEnabled())
@@ -143,4 +82,3 @@ TScriptInterface<ITbEnumEnumInterfaceInterface> FTbEnumModuleFactory::createITbE
 	// fallback to local implementation
 	return createTbEnumEnumInterface(Collection);
 }
-#endif

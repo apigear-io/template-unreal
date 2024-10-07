@@ -49,11 +49,7 @@ void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
 	Super::Initialize(Collection);
 
 {{- $Service := printf "I%sInterface" $Iface }}
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-	setBackendService({{$FactoryName}}::create{{$Service}}(GetGameInstance(), Collection));
-#else
 	setBackendService({{$FactoryName}}::create{{$Service}}(Collection));
-#endif
 }
 
 void {{$Class}}::Deinitialize()

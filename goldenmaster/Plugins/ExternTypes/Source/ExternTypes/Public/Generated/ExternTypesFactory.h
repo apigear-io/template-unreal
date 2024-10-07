@@ -29,7 +29,4 @@ DECLARE_LOG_CATEGORY_EXTERN(LogFExternTypesModuleFactory, Log, All);
 class FExternTypesModuleFactory
 {
 public:
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-#else
-#endif
 };

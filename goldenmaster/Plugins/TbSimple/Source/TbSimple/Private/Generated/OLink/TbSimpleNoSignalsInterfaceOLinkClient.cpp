@@ -49,11 +49,7 @@ DEFINE_LOG_CATEGORY(LogTbSimpleNoSignalsInterfaceOLinkClient);
 
 UTbSimpleNoSignalsInterfaceOLinkClient::UTbSimpleNoSignalsInterfaceOLinkClient()
 	: UAbstractTbSimpleNoSignalsInterface()
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-	, _SentData(MakeUnique<TbSimpleNoSignalsInterfacePropertiesData>())
-#else
 	, _SentData(MakePimpl<TbSimpleNoSignalsInterfacePropertiesData>())
-#endif
 {
 	m_sink = std::make_shared<FOLinkSink>("tb.simple.NoSignalsInterface");
 }

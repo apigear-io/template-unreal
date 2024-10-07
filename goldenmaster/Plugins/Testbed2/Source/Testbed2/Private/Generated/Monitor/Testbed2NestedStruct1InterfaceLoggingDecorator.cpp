@@ -31,11 +31,7 @@ UTestbed2NestedStruct1InterfaceLoggingDecorator::~UTestbed2NestedStruct1Interfac
 void UTestbed2NestedStruct1InterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-	setBackendService(FTestbed2ModuleFactory::createITestbed2NestedStruct1InterfaceInterface(GetGameInstance(), Collection));
-#else
 	setBackendService(FTestbed2ModuleFactory::createITestbed2NestedStruct1InterfaceInterface(Collection));
-#endif
 }
 
 void UTestbed2NestedStruct1InterfaceLoggingDecorator::Deinitialize()

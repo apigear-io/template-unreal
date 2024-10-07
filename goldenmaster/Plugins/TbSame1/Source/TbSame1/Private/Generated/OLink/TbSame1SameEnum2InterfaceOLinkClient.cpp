@@ -49,11 +49,7 @@ DEFINE_LOG_CATEGORY(LogTbSame1SameEnum2InterfaceOLinkClient);
 
 UTbSame1SameEnum2InterfaceOLinkClient::UTbSame1SameEnum2InterfaceOLinkClient()
 	: UAbstractTbSame1SameEnum2Interface()
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-	, _SentData(MakeUnique<TbSame1SameEnum2InterfacePropertiesData>())
-#else
 	, _SentData(MakePimpl<TbSame1SameEnum2InterfacePropertiesData>())
-#endif
 {
 	m_sink = std::make_shared<FOLinkSink>("tb.same1.SameEnum2Interface");
 }

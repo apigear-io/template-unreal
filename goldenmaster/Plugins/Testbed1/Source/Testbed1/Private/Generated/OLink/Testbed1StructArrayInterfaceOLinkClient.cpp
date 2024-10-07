@@ -55,11 +55,7 @@ DEFINE_LOG_CATEGORY(LogTestbed1StructArrayInterfaceOLinkClient);
 
 UTestbed1StructArrayInterfaceOLinkClient::UTestbed1StructArrayInterfaceOLinkClient()
 	: UAbstractTestbed1StructArrayInterface()
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-	, _SentData(MakeUnique<Testbed1StructArrayInterfacePropertiesData>())
-#else
 	, _SentData(MakePimpl<Testbed1StructArrayInterfacePropertiesData>())
-#endif
 {
 	m_sink = std::make_shared<FOLinkSink>("testbed1.StructArrayInterface");
 }

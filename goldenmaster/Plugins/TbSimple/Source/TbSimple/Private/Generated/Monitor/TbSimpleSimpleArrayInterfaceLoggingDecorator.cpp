@@ -31,11 +31,7 @@ UTbSimpleSimpleArrayInterfaceLoggingDecorator::~UTbSimpleSimpleArrayInterfaceLog
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-	setBackendService(FTbSimpleModuleFactory::createITbSimpleSimpleArrayInterfaceInterface(GetGameInstance(), Collection));
-#else
 	setBackendService(FTbSimpleModuleFactory::createITbSimpleSimpleArrayInterfaceInterface(Collection));
-#endif
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::Deinitialize()

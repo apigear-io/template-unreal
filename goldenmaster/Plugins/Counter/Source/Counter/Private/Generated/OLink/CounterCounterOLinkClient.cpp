@@ -57,11 +57,7 @@ DEFINE_LOG_CATEGORY(LogCounterCounterOLinkClient);
 
 UCounterCounterOLinkClient::UCounterCounterOLinkClient()
 	: UAbstractCounterCounter()
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-	, _SentData(MakeUnique<CounterCounterPropertiesData>())
-#else
 	, _SentData(MakePimpl<CounterCounterPropertiesData>())
-#endif
 {
 	m_sink = std::make_shared<FOLinkSink>("counter.Counter");
 }

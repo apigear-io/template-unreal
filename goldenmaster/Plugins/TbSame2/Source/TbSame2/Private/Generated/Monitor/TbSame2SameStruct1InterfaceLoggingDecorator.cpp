@@ -31,11 +31,7 @@ UTbSame2SameStruct1InterfaceLoggingDecorator::~UTbSame2SameStruct1InterfaceLoggi
 void UTbSame2SameStruct1InterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-	setBackendService(FTbSame2ModuleFactory::createITbSame2SameStruct1InterfaceInterface(GetGameInstance(), Collection));
-#else
 	setBackendService(FTbSame2ModuleFactory::createITbSame2SameStruct1InterfaceInterface(Collection));
-#endif
 }
 
 void UTbSame2SameStruct1InterfaceLoggingDecorator::Deinitialize()

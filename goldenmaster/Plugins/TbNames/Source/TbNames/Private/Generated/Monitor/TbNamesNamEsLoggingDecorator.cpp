@@ -31,11 +31,7 @@ UTbNamesNamEsLoggingDecorator::~UTbNamesNamEsLoggingDecorator() = default;
 void UTbNamesNamEsLoggingDecorator::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-	setBackendService(FTbNamesModuleFactory::createITbNamesNamEsInterface(GetGameInstance(), Collection));
-#else
 	setBackendService(FTbNamesModuleFactory::createITbNamesNamEsInterface(Collection));
-#endif
 }
 
 void UTbNamesNamEsLoggingDecorator::Deinitialize()

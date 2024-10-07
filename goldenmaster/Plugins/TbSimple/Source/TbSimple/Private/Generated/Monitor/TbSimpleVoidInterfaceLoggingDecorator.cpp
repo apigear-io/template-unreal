@@ -31,11 +31,7 @@ UTbSimpleVoidInterfaceLoggingDecorator::~UTbSimpleVoidInterfaceLoggingDecorator(
 void UTbSimpleVoidInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-	setBackendService(FTbSimpleModuleFactory::createITbSimpleVoidInterfaceInterface(GetGameInstance(), Collection));
-#else
 	setBackendService(FTbSimpleModuleFactory::createITbSimpleVoidInterfaceInterface(Collection));
-#endif
 }
 
 void UTbSimpleVoidInterfaceLoggingDecorator::Deinitialize()

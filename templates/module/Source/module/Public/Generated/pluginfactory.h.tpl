@@ -38,15 +38,8 @@ DECLARE_LOG_CATEGORY_EXTERN(Log{{$class}}, Log, All);
 class {{$class}}
 {
 public:
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-{{- range .Module.Interfaces }}
-{{- $class := printf "%s%s" $ModuleName (Camel .Name)}}
-	static TScriptInterface<I{{$class}}Interface> createI{{$class}}Interface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection);
-{{- end }}
-#else
 {{- range .Module.Interfaces }}
 {{- $class := printf "%s%s" $ModuleName (Camel .Name)}}
 	static TScriptInterface<I{{$class}}Interface> createI{{$class}}Interface(FSubsystemCollectionBase& Collection);
 {{- end }}
-#endif
 };

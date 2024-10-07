@@ -57,11 +57,7 @@ DEFINE_LOG_CATEGORY(LogTbSimpleSimpleInterfaceOLinkClient);
 
 UTbSimpleSimpleInterfaceOLinkClient::UTbSimpleSimpleInterfaceOLinkClient()
 	: UAbstractTbSimpleSimpleInterface()
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-	, _SentData(MakeUnique<TbSimpleSimpleInterfacePropertiesData>())
-#else
 	, _SentData(MakePimpl<TbSimpleSimpleInterfacePropertiesData>())
-#endif
 {
 	m_sink = std::make_shared<FOLinkSink>("tb.simple.SimpleInterface");
 }

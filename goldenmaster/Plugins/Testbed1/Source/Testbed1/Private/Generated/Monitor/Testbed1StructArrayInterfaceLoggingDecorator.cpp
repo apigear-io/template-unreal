@@ -31,11 +31,7 @@ UTestbed1StructArrayInterfaceLoggingDecorator::~UTestbed1StructArrayInterfaceLog
 void UTestbed1StructArrayInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-	setBackendService(FTestbed1ModuleFactory::createITestbed1StructArrayInterfaceInterface(GetGameInstance(), Collection));
-#else
 	setBackendService(FTestbed1ModuleFactory::createITestbed1StructArrayInterfaceInterface(Collection));
-#endif
 }
 
 void UTestbed1StructArrayInterfaceLoggingDecorator::Deinitialize()
