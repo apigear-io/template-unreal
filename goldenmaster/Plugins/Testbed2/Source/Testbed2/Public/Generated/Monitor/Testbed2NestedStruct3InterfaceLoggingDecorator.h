@@ -19,7 +19,7 @@ limitations under the License.
 
 #include "CoreMinimal.h"
 #include "Subsystems/GameInstanceSubsystem.h"
-#include "AbstractTestbed2NestedStruct3Interface.h"
+#include "Testbed2/Generated/api/AbstractTestbed2NestedStruct3Interface.h"
 #include "Testbed2NestedStruct3InterfaceLoggingDecorator.generated.h"
 
 // General Log

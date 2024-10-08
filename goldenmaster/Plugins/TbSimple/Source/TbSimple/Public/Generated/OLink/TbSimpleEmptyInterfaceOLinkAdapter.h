@@ -16,7 +16,7 @@ limitations under the License.
 */
 #pragma once
 
-#include "TbSimpleEmptyInterfaceInterface.h"
+#include "TbSimple/Generated/api/TbSimpleEmptyInterfaceInterface.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "OLinkHost.h"
 #include "TbSimpleEmptyInterfaceOLinkAdapter.generated.h"

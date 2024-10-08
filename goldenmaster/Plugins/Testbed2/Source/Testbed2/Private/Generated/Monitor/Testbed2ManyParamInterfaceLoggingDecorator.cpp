@@ -1,4 +1,5 @@
 
+
 /**
 Copyright 2021 ApiGear UG
 Copyright 2021 Epic Games, Inc.
@@ -16,8 +17,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "Generated/Monitor/Testbed2ManyParamInterfaceLoggingDecorator.h"
+#include "Testbed2Settings.h"
 #include "Testbed2.trace.h"
-#include "Testbed2Factory.h"
+#include "Generated/Testbed2Factory.h"
 #include "Runtime/Launch/Resources/Version.h"
 
 DEFINE_LOG_CATEGORY(LogTestbed2ManyParamInterfaceLoggingDecorator);
@@ -31,11 +33,7 @@ UTestbed2ManyParamInterfaceLoggingDecorator::~UTestbed2ManyParamInterfaceLogging
 void UTestbed2ManyParamInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-	setBackendService(FTestbed2ModuleFactory::createITestbed2ManyParamInterfaceInterface(GetGameInstance(), Collection));
-#else
-	setBackendService(FTestbed2ModuleFactory::createITestbed2ManyParamInterfaceInterface(Collection));
-#endif
+	setBackendService(UTestbed2Settings::GetITestbed2ManyParamInterfaceInterfaceForLogging(Collection));
 }
 
 void UTestbed2ManyParamInterfaceLoggingDecorator::Deinitialize()

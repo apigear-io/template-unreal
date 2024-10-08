@@ -15,7 +15,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "ExternTypesSettings.h"
-#include "Generated/ExternTypesLogCategories.h"
+#include "Generated/ExternTypesFactory.h"
+#include "ExternTypes/Generated/ExternTypesLogCategories.h"
 #include "ApiGearConnectionsStore.h"
 #include "Engine/Engine.h"
 #include "Misc/CoreDelegates.h"

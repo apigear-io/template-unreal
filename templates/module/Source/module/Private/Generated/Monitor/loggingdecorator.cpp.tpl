@@ -2,13 +2,12 @@
 {{/* Copyright Epic Games, Inc. All Rights Reserved */}}
 {{- $ModuleName := Camel .Module.Name}}
 {{- $IfaceName := Camel .Interface.Name }}
-{{- $API_MACRO := printf "%s_API" $ModuleName }}
+{{- $API_MACRO := printf "%s_API" (Camel .Module.Name) }}
 {{- $Category := printf "ApiGear|%s|%s" $ModuleName $IfaceName }}
 {{- $DisplayName := printf "%s%sLoggingDecorator" $ModuleName (Camel .Interface.Name) }}
 {{- $Class := printf "U%s" $DisplayName}}
 {{- $Iface := printf "%s%s" $ModuleName $IfaceName }}
 {{- $abstractclass := printf "UAbstract%s%s" (Camel .Module.Name) (Camel .Interface.Name) }}
-{{- $FactoryName := printf "F%sModuleFactory" $ModuleName -}}
 /**
 Copyright 2021 ApiGear UG
 Copyright 2021 Epic Games, Inc.
@@ -26,8 +25,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "Generated/Monitor/{{$Iface}}LoggingDecorator.h"
+#include "{{$ModuleName}}Settings.h"
 #include "{{$ModuleName}}.trace.h"
-#include "{{$ModuleName}}Factory.h"
+#include "Generated/{{$ModuleName}}Factory.h"
 #include "Runtime/Launch/Resources/Version.h"
 
 DEFINE_LOG_CATEGORY(Log{{$DisplayName}});
@@ -49,11 +49,7 @@ void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
 	Super::Initialize(Collection);
 
 {{- $Service := printf "I%sInterface" $Iface }}
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-	setBackendService({{$FactoryName}}::create{{$Service}}(GetGameInstance(), Collection));
-#else
-	setBackendService({{$FactoryName}}::create{{$Service}}(Collection));
-#endif
+	setBackendService(U{{$ModuleName}}Settings::Get{{$Service}}ForLogging(Collection));
 }
 
 void {{$Class}}::Deinitialize()

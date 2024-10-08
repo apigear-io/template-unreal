@@ -2,7 +2,7 @@
 /**{{ template "copyright" }}*/
 {{- $ModuleName := Camel .Module.Name}}
 #include "{{$ModuleName}}TestsCommon.h"
-#include "Generated/api/{{$ModuleName}}_data.h"
+#include "{{$ModuleName}}/Generated/api/{{$ModuleName}}_data.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS 

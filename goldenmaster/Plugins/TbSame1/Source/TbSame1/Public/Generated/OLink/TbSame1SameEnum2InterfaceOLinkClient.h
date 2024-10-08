@@ -16,7 +16,7 @@ limitations under the License.
 */
 #pragma once
 
-#include "AbstractTbSame1SameEnum2Interface.h"
+#include "TbSame1/Generated/api/AbstractTbSame1SameEnum2Interface.h"
 THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
 THIRD_PARTY_INCLUDES_END
@@ -24,11 +24,7 @@ THIRD_PARTY_INCLUDES_END
 #include "ApiGearConnection.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Runtime/Launch/Resources/Version.h"
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-#include "Templates/UniquePtr.h"
-#else
 #include "Templates/PimplPtr.h"
-#endif
 #include "TbSame1SameEnum2InterfaceOLinkClient.generated.h"
 
 struct TbSame1SameEnum2InterfacePropertiesData;
@@ -84,10 +80,6 @@ private:
 	std::shared_ptr<FOLinkSink> m_sink;
 
 	// member variable to store the last sent data
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-	TUniquePtr<TbSame1SameEnum2InterfacePropertiesData> _SentData;
-#else
 	TPimplPtr<TbSame1SameEnum2InterfacePropertiesData> _SentData;
-#endif
 	TScriptInterface<class IApiGearConnection> Connection;
 };

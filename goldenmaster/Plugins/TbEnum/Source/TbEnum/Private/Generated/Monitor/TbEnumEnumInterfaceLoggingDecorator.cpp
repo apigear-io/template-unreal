@@ -1,4 +1,5 @@
 
+
 /**
 Copyright 2021 ApiGear UG
 Copyright 2021 Epic Games, Inc.
@@ -16,8 +17,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "Generated/Monitor/TbEnumEnumInterfaceLoggingDecorator.h"
+#include "TbEnumSettings.h"
 #include "TbEnum.trace.h"
-#include "TbEnumFactory.h"
+#include "Generated/TbEnumFactory.h"
 #include "Runtime/Launch/Resources/Version.h"
 
 DEFINE_LOG_CATEGORY(LogTbEnumEnumInterfaceLoggingDecorator);
@@ -31,11 +33,7 @@ UTbEnumEnumInterfaceLoggingDecorator::~UTbEnumEnumInterfaceLoggingDecorator() = 
 void UTbEnumEnumInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-	setBackendService(FTbEnumModuleFactory::createITbEnumEnumInterfaceInterface(GetGameInstance(), Collection));
-#else
-	setBackendService(FTbEnumModuleFactory::createITbEnumEnumInterfaceInterface(Collection));
-#endif
+	setBackendService(UTbEnumSettings::GetITbEnumEnumInterfaceInterfaceForLogging(Collection));
 }
 
 void UTbEnumEnumInterfaceLoggingDecorator::Deinitialize()

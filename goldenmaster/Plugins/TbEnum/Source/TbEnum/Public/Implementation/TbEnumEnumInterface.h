@@ -18,7 +18,7 @@ limitations under the License.
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Generated/api/AbstractTbEnumEnumInterface.h"
+#include "TbEnum/Generated/api/AbstractTbEnumEnumInterface.h"
 #include "TbEnumEnumInterface.generated.h"
 
 UCLASS(BlueprintType)

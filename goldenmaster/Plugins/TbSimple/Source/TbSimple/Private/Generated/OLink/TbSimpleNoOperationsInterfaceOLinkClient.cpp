@@ -24,7 +24,7 @@ limitations under the License.
 #include "ApiGearSettings.h"
 #include "ApiGearOLink.h"
 #include "Async/Async.h"
-#include "Generated/api/TbSimple.json.adapter.h"
+#include "TbSimple/Generated/api/TbSimple.json.adapter.h"
 #include "OLinkClientConnection.h"
 #include "OLinkSink.h"
 #include "Engine/Engine.h"
@@ -49,11 +49,7 @@ DEFINE_LOG_CATEGORY(LogTbSimpleNoOperationsInterfaceOLinkClient);
 
 UTbSimpleNoOperationsInterfaceOLinkClient::UTbSimpleNoOperationsInterfaceOLinkClient()
 	: UAbstractTbSimpleNoOperationsInterface()
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-	, _SentData(MakeUnique<TbSimpleNoOperationsInterfacePropertiesData>())
-#else
 	, _SentData(MakePimpl<TbSimpleNoOperationsInterfacePropertiesData>())
-#endif
 {
 	m_sink = std::make_shared<FOLinkSink>("tb.simple.NoOperationsInterface");
 }

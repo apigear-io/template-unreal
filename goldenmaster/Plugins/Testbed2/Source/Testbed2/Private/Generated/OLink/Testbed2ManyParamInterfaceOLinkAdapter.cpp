@@ -23,7 +23,7 @@ limitations under the License.
 #include "Generated/OLink/Testbed2ManyParamInterfaceOLinkAdapter.h"
 #include "Async/Future.h"
 #include "Async/Async.h"
-#include "Generated/api/Testbed2.json.adapter.h"
+#include "Testbed2/Generated/api/Testbed2.json.adapter.h"
 #include "OLinkClientConnection.h"
 #include "Async/Async.h"
 #include "Engine/Engine.h"

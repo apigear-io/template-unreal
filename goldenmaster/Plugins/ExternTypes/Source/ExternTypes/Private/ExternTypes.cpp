@@ -16,13 +16,16 @@ limitations under the License.
 */
 
 #include "ExternTypes.h"
+#include "Generated/ExternTypesFactory.h"
 #include "Engine/Engine.h"
+#include "ExternTypesSettings.h"
 #include "Modules/ModuleManager.h"
 
 #define LOCTEXT_NAMESPACE "ExternTypes"
 
 void FExternTypesModule::StartupModule()
 {
+
 }
 
 void FExternTypesModule::ShutdownModule()

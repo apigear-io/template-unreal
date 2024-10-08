@@ -18,9 +18,9 @@
 #include "ApiGearSettings.h"
 #include "ApiGearOLink.h"
 #include "Async/Async.h"
-#include "Generated/api/{{$ModuleName}}.json.adapter.h"
+#include "{{$ModuleName}}/Generated/api/{{$ModuleName}}.json.adapter.h"
 {{- range .Module.Imports }}
-#include "{{Camel .Name}}/Private/Generated/api/{{Camel .Name}}.json.adapter.h"
+#include "{{Camel .Name}}/Generated/api/{{Camel .Name}}.json.adapter.h"
 {{- end }}
 #include "OLinkClientConnection.h"
 #include "OLinkSink.h"
@@ -74,11 +74,7 @@ DEFINE_LOG_CATEGORY(Log{{$Iface}}OLinkClient);
 {{$Class}}::{{$Class}}()
 	: {{$abstractclass}}()
 {{- if len .Interface.Properties }}
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-	, _SentData(MakeUnique<{{$Iface}}PropertiesData>())
-#else
 	, _SentData(MakePimpl<{{$Iface}}PropertiesData>())
-#endif
 {{- end }}
 {
 	m_sink = std::make_shared<FOLinkSink>("{{$ifaceId}}");

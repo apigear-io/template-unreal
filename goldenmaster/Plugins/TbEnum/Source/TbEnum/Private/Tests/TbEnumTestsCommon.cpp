@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbEnumTestsCommon.h"
-#include "Generated/api/TbEnum_data.h"
+#include "TbEnum/Generated/api/TbEnum_data.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS

@@ -16,7 +16,6 @@ public class Counter : ModuleRules
 		PublicDefinitions.Add("JSON_NOEXCEPTION=1");
 		
         PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "Public"));
-        PrivateIncludePaths.Add(Path.Combine(ModuleDirectory, "Public/Generated/api"));
         PrivateIncludePaths.Add(Path.Combine(ModuleDirectory, "Private"));
 
 		PublicIncludePaths.AddRange(
@@ -36,7 +35,7 @@ public class Counter : ModuleRules
 		PublicDependencyModuleNames.AddRange(
 			new string[]
 			{
-				"Core",
+				"CounterAPI",
 				"ApiGear",
 				"Projects",
 				"Engine",
@@ -50,8 +49,11 @@ public class Counter : ModuleRules
 		PrivateDependencyModuleNames.AddRange(
 			new string[]
 			{
+				"Core",
 				"CoreUObject",
 				"Engine",
+				"CustomTypesAPI",
+				"ExternTypesAPI",
 				"ApiGearOLink",
 				"OLinkProtocolLibrary"
 			}

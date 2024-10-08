@@ -1,4 +1,5 @@
 
+
 /**
 Copyright 2021 ApiGear UG
 Copyright 2021 Epic Games, Inc.
@@ -16,8 +17,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "Generated/Monitor/TbSimpleEmptyInterfaceLoggingDecorator.h"
+#include "TbSimpleSettings.h"
 #include "TbSimple.trace.h"
-#include "TbSimpleFactory.h"
+#include "Generated/TbSimpleFactory.h"
 #include "Runtime/Launch/Resources/Version.h"
 
 DEFINE_LOG_CATEGORY(LogTbSimpleEmptyInterfaceLoggingDecorator);
@@ -31,11 +33,7 @@ UTbSimpleEmptyInterfaceLoggingDecorator::~UTbSimpleEmptyInterfaceLoggingDecorato
 void UTbSimpleEmptyInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-	setBackendService(FTbSimpleModuleFactory::createITbSimpleEmptyInterfaceInterface(GetGameInstance(), Collection));
-#else
-	setBackendService(FTbSimpleModuleFactory::createITbSimpleEmptyInterfaceInterface(Collection));
-#endif
+	setBackendService(UTbSimpleSettings::GetITbSimpleEmptyInterfaceInterfaceForLogging(Collection));
 }
 
 void UTbSimpleEmptyInterfaceLoggingDecorator::Deinitialize()

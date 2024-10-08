@@ -1,4 +1,5 @@
 
+
 /**
 Copyright 2021 ApiGear UG
 Copyright 2021 Epic Games, Inc.
@@ -16,8 +17,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "Generated/Monitor/Testbed2NestedStruct3InterfaceLoggingDecorator.h"
+#include "Testbed2Settings.h"
 #include "Testbed2.trace.h"
-#include "Testbed2Factory.h"
+#include "Generated/Testbed2Factory.h"
 #include "Runtime/Launch/Resources/Version.h"
 
 DEFINE_LOG_CATEGORY(LogTestbed2NestedStruct3InterfaceLoggingDecorator);
@@ -31,11 +33,7 @@ UTestbed2NestedStruct3InterfaceLoggingDecorator::~UTestbed2NestedStruct3Interfac
 void UTestbed2NestedStruct3InterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-	setBackendService(FTestbed2ModuleFactory::createITestbed2NestedStruct3InterfaceInterface(GetGameInstance(), Collection));
-#else
-	setBackendService(FTestbed2ModuleFactory::createITestbed2NestedStruct3InterfaceInterface(Collection));
-#endif
+	setBackendService(UTestbed2Settings::GetITestbed2NestedStruct3InterfaceInterfaceForLogging(Collection));
 }
 
 void UTestbed2NestedStruct3InterfaceLoggingDecorator::Deinitialize()

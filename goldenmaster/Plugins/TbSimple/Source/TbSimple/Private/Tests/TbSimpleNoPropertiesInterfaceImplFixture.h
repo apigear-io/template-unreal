@@ -7,7 +7,7 @@
 #include "CoreMinimal.h"
 #include "UObject/Object.h"
 #include "UObject/NoExportTypes.h"
-#include "Generated/api/TbSimple_data.h"
+#include "TbSimple/Generated/api/TbSimple_data.h"
 #include "TbSimpleNoPropertiesInterfaceImplFixture.generated.h"
 
 class UTbSimpleNoPropertiesInterfaceImplSpec;

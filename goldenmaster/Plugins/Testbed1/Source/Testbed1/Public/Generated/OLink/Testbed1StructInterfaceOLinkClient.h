@@ -16,7 +16,7 @@ limitations under the License.
 */
 #pragma once
 
-#include "AbstractTestbed1StructInterface.h"
+#include "Testbed1/Generated/api/AbstractTestbed1StructInterface.h"
 THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
 THIRD_PARTY_INCLUDES_END
@@ -24,11 +24,7 @@ THIRD_PARTY_INCLUDES_END
 #include "ApiGearConnection.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Runtime/Launch/Resources/Version.h"
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-#include "Templates/UniquePtr.h"
-#else
 #include "Templates/PimplPtr.h"
-#endif
 #include "Testbed1StructInterfaceOLinkClient.generated.h"
 
 struct Testbed1StructInterfacePropertiesData;
@@ -94,10 +90,6 @@ private:
 	std::shared_ptr<FOLinkSink> m_sink;
 
 	// member variable to store the last sent data
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-	TUniquePtr<Testbed1StructInterfacePropertiesData> _SentData;
-#else
 	TPimplPtr<Testbed1StructInterfacePropertiesData> _SentData;
-#endif
 	TScriptInterface<class IApiGearConnection> Connection;
 };

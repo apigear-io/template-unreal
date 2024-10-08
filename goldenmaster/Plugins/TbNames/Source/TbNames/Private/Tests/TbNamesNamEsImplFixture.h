@@ -7,7 +7,7 @@
 #include "CoreMinimal.h"
 #include "UObject/Object.h"
 #include "UObject/NoExportTypes.h"
-#include "Generated/api/TbNames_data.h"
+#include "TbNames/Generated/api/TbNames_data.h"
 #include "TbNamesNamEsImplFixture.generated.h"
 
 class UTbNamesNamEsImplSpec;

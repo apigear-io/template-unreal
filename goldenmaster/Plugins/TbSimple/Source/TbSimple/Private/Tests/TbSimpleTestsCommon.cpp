@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbSimpleTestsCommon.h"
-#include "Generated/api/TbSimple_data.h"
+#include "TbSimple/Generated/api/TbSimple_data.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS

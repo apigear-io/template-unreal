@@ -7,7 +7,7 @@
 #include "CoreMinimal.h"
 #include "UObject/Object.h"
 #include "UObject/NoExportTypes.h"
-#include "Generated/api/TbSame1_data.h"
+#include "TbSame1/Generated/api/TbSame1_data.h"
 #include "TbSame1SameStruct2InterfaceImplFixture.generated.h"
 
 class UTbSame1SameStruct2InterfaceImplSpec;

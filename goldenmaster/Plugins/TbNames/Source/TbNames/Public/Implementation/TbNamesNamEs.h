@@ -18,7 +18,7 @@ limitations under the License.
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Generated/api/AbstractTbNamesNamEs.h"
+#include "TbNames/Generated/api/AbstractTbNamesNamEs.h"
 #include "TbNamesNamEs.generated.h"
 
 UCLASS(BlueprintType)

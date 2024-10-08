@@ -16,7 +16,7 @@ limitations under the License.
 */
 #pragma once
 
-#include "TbEnumEnumInterfaceInterface.h"
+#include "TbEnum/Generated/api/TbEnumEnumInterfaceInterface.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "OLinkHost.h"
 #include "TbEnumEnumInterfaceOLinkAdapter.generated.h"

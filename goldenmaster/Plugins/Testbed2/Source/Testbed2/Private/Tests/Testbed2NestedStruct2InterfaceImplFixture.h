@@ -7,7 +7,7 @@
 #include "CoreMinimal.h"
 #include "UObject/Object.h"
 #include "UObject/NoExportTypes.h"
-#include "Generated/api/Testbed2_data.h"
+#include "Testbed2/Generated/api/Testbed2_data.h"
 #include "Testbed2NestedStruct2InterfaceImplFixture.generated.h"
 
 class UTestbed2NestedStruct2InterfaceImplSpec;

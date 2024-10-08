@@ -24,7 +24,7 @@ limitations under the License.
 #include "ApiGearSettings.h"
 #include "ApiGearOLink.h"
 #include "Async/Async.h"
-#include "Generated/api/TbSame1.json.adapter.h"
+#include "TbSame1/Generated/api/TbSame1.json.adapter.h"
 #include "OLinkClientConnection.h"
 #include "OLinkSink.h"
 #include "Engine/Engine.h"
@@ -51,11 +51,7 @@ DEFINE_LOG_CATEGORY(LogTbSame1SameStruct2InterfaceOLinkClient);
 
 UTbSame1SameStruct2InterfaceOLinkClient::UTbSame1SameStruct2InterfaceOLinkClient()
 	: UAbstractTbSame1SameStruct2Interface()
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-	, _SentData(MakeUnique<TbSame1SameStruct2InterfacePropertiesData>())
-#else
 	, _SentData(MakePimpl<TbSame1SameStruct2InterfacePropertiesData>())
-#endif
 {
 	m_sink = std::make_shared<FOLinkSink>("tb.same1.SameStruct2Interface");
 }

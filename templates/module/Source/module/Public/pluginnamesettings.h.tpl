@@ -28,6 +28,12 @@ limitations under the License.
 
 const FString {{$ModuleName}}LocalBackendIdentifier = "Local";
 
+class FSubsystemCollectionBase;
+{{- range .Module.Interfaces }}
+{{- $class := printf "%s%s" $ModuleName (Camel .Name)}}
+class I{{$class}}Interface;
+{{- end }}
+
 /**
  * Implements the settings for the {{$ModuleName}} plugin.
  */
@@ -51,5 +57,10 @@ class {{$API_MACRO}} U{{$ModuleName}}Settings : public UObject
 	// Choose the olink connection to use
 	UPROPERTY(EditAnywhere, config, Category = OLinkConnectionSetup)
 	FString OLinkConnectionIdentifier;
+{{- end }}
+
+{{- range .Module.Interfaces }}
+{{- $class := printf "%s%s" $ModuleName (Camel .Name)}}
+	static TScriptInterface<I{{$class}}Interface> GetI{{$class}}InterfaceForLogging(FSubsystemCollectionBase& Collection);
 {{- end }}
 };

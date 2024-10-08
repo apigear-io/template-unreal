@@ -16,7 +16,7 @@ limitations under the License.
 */
 #pragma once
 
-#include "TbNamesNamEsInterface.h"
+#include "TbNames/Generated/api/TbNamesNamEsInterface.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "OLinkHost.h"
 #include "TbNamesNamEsOLinkAdapter.generated.h"

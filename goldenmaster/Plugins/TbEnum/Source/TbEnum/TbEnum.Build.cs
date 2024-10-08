@@ -16,7 +16,6 @@ public class TbEnum : ModuleRules
 		PublicDefinitions.Add("JSON_NOEXCEPTION=1");
 		
         PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "Public"));
-        PrivateIncludePaths.Add(Path.Combine(ModuleDirectory, "Public/Generated/api"));
         PrivateIncludePaths.Add(Path.Combine(ModuleDirectory, "Private"));
 
 		PublicIncludePaths.AddRange(
@@ -36,7 +35,7 @@ public class TbEnum : ModuleRules
 		PublicDependencyModuleNames.AddRange(
 			new string[]
 			{
-				"Core",
+				"TbEnumAPI",
 				"ApiGear",
 				"Projects",
 				"Engine",
@@ -48,6 +47,7 @@ public class TbEnum : ModuleRules
 		PrivateDependencyModuleNames.AddRange(
 			new string[]
 			{
+				"Core",
 				"CoreUObject",
 				"Engine",
 				"ApiGearOLink",

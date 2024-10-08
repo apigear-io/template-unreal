@@ -16,7 +16,7 @@ limitations under the License.
 */
 #pragma once
 
-#include "Testbed2ManyParamInterfaceInterface.h"
+#include "Testbed2/Generated/api/Testbed2ManyParamInterfaceInterface.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "OLinkHost.h"
 #include "Testbed2ManyParamInterfaceOLinkAdapter.generated.h"

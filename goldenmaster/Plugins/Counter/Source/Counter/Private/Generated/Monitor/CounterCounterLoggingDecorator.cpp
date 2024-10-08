@@ -1,4 +1,5 @@
 
+
 /**
 Copyright 2021 ApiGear UG
 Copyright 2021 Epic Games, Inc.
@@ -16,8 +17,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "Generated/Monitor/CounterCounterLoggingDecorator.h"
+#include "CounterSettings.h"
 #include "Counter.trace.h"
-#include "CounterFactory.h"
+#include "Generated/CounterFactory.h"
 #include "Runtime/Launch/Resources/Version.h"
 
 DEFINE_LOG_CATEGORY(LogCounterCounterLoggingDecorator);
@@ -31,11 +33,7 @@ UCounterCounterLoggingDecorator::~UCounterCounterLoggingDecorator() = default;
 void UCounterCounterLoggingDecorator::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-	setBackendService(FCounterModuleFactory::createICounterCounterInterface(GetGameInstance(), Collection));
-#else
-	setBackendService(FCounterModuleFactory::createICounterCounterInterface(Collection));
-#endif
+	setBackendService(UCounterSettings::GetICounterCounterInterfaceForLogging(Collection));
 }
 
 void UCounterCounterLoggingDecorator::Deinitialize()

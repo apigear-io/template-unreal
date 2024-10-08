@@ -23,7 +23,7 @@ limitations under the License.
 #include "Generated/OLink/CounterCounterOLinkAdapter.h"
 #include "Async/Future.h"
 #include "Async/Async.h"
-#include "Generated/api/Counter.json.adapter.h"
+#include "Counter/Generated/api/Counter.json.adapter.h"
 #include "OLinkClientConnection.h"
 #include "Async/Async.h"
 #include "Engine/Engine.h"

@@ -16,7 +16,7 @@
 #include "Generated/OLink/{{$Iface}}OLinkAdapter.h"
 #include "Async/Future.h"
 #include "Async/Async.h"
-#include "Generated/api/{{$ModuleName}}.json.adapter.h"
+#include "{{$ModuleName}}/Generated/api/{{$ModuleName}}.json.adapter.h"
 #include "OLinkClientConnection.h"
 #include "Async/Async.h"
 #include "Engine/Engine.h"

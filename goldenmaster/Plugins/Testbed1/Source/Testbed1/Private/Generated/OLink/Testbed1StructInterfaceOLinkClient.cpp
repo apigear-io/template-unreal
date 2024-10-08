@@ -24,7 +24,7 @@ limitations under the License.
 #include "ApiGearSettings.h"
 #include "ApiGearOLink.h"
 #include "Async/Async.h"
-#include "Generated/api/Testbed1.json.adapter.h"
+#include "Testbed1/Generated/api/Testbed1.json.adapter.h"
 #include "OLinkClientConnection.h"
 #include "OLinkSink.h"
 #include "Engine/Engine.h"
@@ -55,11 +55,7 @@ DEFINE_LOG_CATEGORY(LogTestbed1StructInterfaceOLinkClient);
 
 UTestbed1StructInterfaceOLinkClient::UTestbed1StructInterfaceOLinkClient()
 	: UAbstractTestbed1StructInterface()
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-	, _SentData(MakeUnique<Testbed1StructInterfacePropertiesData>())
-#else
 	, _SentData(MakePimpl<Testbed1StructInterfacePropertiesData>())
-#endif
 {
 	m_sink = std::make_shared<FOLinkSink>("testbed1.StructInterface");
 }

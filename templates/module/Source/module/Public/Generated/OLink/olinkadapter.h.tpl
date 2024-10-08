@@ -10,7 +10,7 @@
 {{- $Iface := printf "%s%s" $ModuleName $IfaceName }}
 #pragma once
 
-#include "{{$Iface}}Interface.h"
+#include "{{$ModuleName}}/Generated/api/{{$Iface}}Interface.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "OLinkHost.h"
 #include "{{$Iface}}OLinkAdapter.generated.h"

@@ -16,7 +16,7 @@ limitations under the License.
 */
 #pragma once
 
-#include "AbstractTbSimpleNoPropertiesInterface.h"
+#include "TbSimple/Generated/api/AbstractTbSimpleNoPropertiesInterface.h"
 THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
 THIRD_PARTY_INCLUDES_END
@@ -24,11 +24,7 @@ THIRD_PARTY_INCLUDES_END
 #include "ApiGearConnection.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Runtime/Launch/Resources/Version.h"
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-#include "Templates/UniquePtr.h"
-#else
 #include "Templates/PimplPtr.h"
-#endif
 #include "TbSimpleNoPropertiesInterfaceOLinkClient.generated.h"
 DECLARE_LOG_CATEGORY_EXTERN(LogTbSimpleNoPropertiesInterfaceOLinkClient, Log, All);
 
