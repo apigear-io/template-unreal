@@ -38,8 +38,26 @@ DECLARE_LOG_CATEGORY_EXTERN(Log{{$class}}, Log, All);
 class {{$class}}
 {
 public:
+	/** type of function for creating implementations*/
 {{- range .Module.Interfaces }}
 {{- $class := printf "%s%s" $ModuleName (Camel .Name)}}
-	static TScriptInterface<I{{$class}}Interface> createI{{$class}}Interface(FSubsystemCollectionBase& Collection);
+	using F{{$class}}FactoryFunction = TFunction<TScriptInterface<I{{$class}}Interface>(FSubsystemCollectionBase& Collection)>;
+{{- end }}
+
+	/** register factories for different types of implementations and interfaces */
+{{- range .Module.Interfaces }}
+{{- $class := printf "%s%s" $ModuleName (Camel .Name)}}
+	static bool RegisterFactory(FString TypeIdentifier, F{{$class}}FactoryFunction FactoryFunction);
+{{- end }}
+
+{{- range .Module.Interfaces }}
+{{- $class := printf "%s%s" $ModuleName (Camel .Name)}}
+	static TScriptInterface<I{{$class}}Interface> Get{{$class}}Implementation(FString UniqueImplementationIdentifier, FSubsystemCollectionBase& Collection);
+{{- end }}
+
+private:
+{{- range .Module.Interfaces }}
+{{- $iclass := printf "%s%s" $ModuleName (Camel .Name)}}
+	static TMap<FString, {{$class}}::F{{$iclass}}FactoryFunction> {{$iclass}}Factories;
 {{- end }}
 };

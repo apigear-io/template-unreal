@@ -33,8 +33,25 @@ DECLARE_LOG_CATEGORY_EXTERN(LogFTestbed2ModuleFactory, Log, All);
 class FTestbed2ModuleFactory
 {
 public:
-	static TScriptInterface<ITestbed2ManyParamInterfaceInterface> createITestbed2ManyParamInterfaceInterface(FSubsystemCollectionBase& Collection);
-	static TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> createITestbed2NestedStruct1InterfaceInterface(FSubsystemCollectionBase& Collection);
-	static TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> createITestbed2NestedStruct2InterfaceInterface(FSubsystemCollectionBase& Collection);
-	static TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> createITestbed2NestedStruct3InterfaceInterface(FSubsystemCollectionBase& Collection);
+	/** type of function for creating implementations*/
+	using FTestbed2ManyParamInterfaceFactoryFunction = TFunction<TScriptInterface<ITestbed2ManyParamInterfaceInterface>(FSubsystemCollectionBase& Collection)>;
+	using FTestbed2NestedStruct1InterfaceFactoryFunction = TFunction<TScriptInterface<ITestbed2NestedStruct1InterfaceInterface>(FSubsystemCollectionBase& Collection)>;
+	using FTestbed2NestedStruct2InterfaceFactoryFunction = TFunction<TScriptInterface<ITestbed2NestedStruct2InterfaceInterface>(FSubsystemCollectionBase& Collection)>;
+	using FTestbed2NestedStruct3InterfaceFactoryFunction = TFunction<TScriptInterface<ITestbed2NestedStruct3InterfaceInterface>(FSubsystemCollectionBase& Collection)>;
+
+	/** register factories for different types of implementations and interfaces */
+	static bool RegisterFactory(FString TypeIdentifier, FTestbed2ManyParamInterfaceFactoryFunction FactoryFunction);
+	static bool RegisterFactory(FString TypeIdentifier, FTestbed2NestedStruct1InterfaceFactoryFunction FactoryFunction);
+	static bool RegisterFactory(FString TypeIdentifier, FTestbed2NestedStruct2InterfaceFactoryFunction FactoryFunction);
+	static bool RegisterFactory(FString TypeIdentifier, FTestbed2NestedStruct3InterfaceFactoryFunction FactoryFunction);
+	static TScriptInterface<ITestbed2ManyParamInterfaceInterface> GetTestbed2ManyParamInterfaceImplementation(FString UniqueImplementationIdentifier, FSubsystemCollectionBase& Collection);
+	static TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> GetTestbed2NestedStruct1InterfaceImplementation(FString UniqueImplementationIdentifier, FSubsystemCollectionBase& Collection);
+	static TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> GetTestbed2NestedStruct2InterfaceImplementation(FString UniqueImplementationIdentifier, FSubsystemCollectionBase& Collection);
+	static TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> GetTestbed2NestedStruct3InterfaceImplementation(FString UniqueImplementationIdentifier, FSubsystemCollectionBase& Collection);
+
+private:
+	static TMap<FString, FTestbed2ModuleFactory::FTestbed2ManyParamInterfaceFactoryFunction> Testbed2ManyParamInterfaceFactories;
+	static TMap<FString, FTestbed2ModuleFactory::FTestbed2NestedStruct1InterfaceFactoryFunction> Testbed2NestedStruct1InterfaceFactories;
+	static TMap<FString, FTestbed2ModuleFactory::FTestbed2NestedStruct2InterfaceFactoryFunction> Testbed2NestedStruct2InterfaceFactories;
+	static TMap<FString, FTestbed2ModuleFactory::FTestbed2NestedStruct3InterfaceFactoryFunction> Testbed2NestedStruct3InterfaceFactories;
 };

@@ -15,6 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbNamesSettings.h"
+#include "Generated/TbNamesFactory.h"
 #include "TbNames/Generated/TbNamesLogCategories.h"
 #include "ApiGearConnectionsStore.h"
 #include "Engine/Engine.h"
@@ -48,4 +49,23 @@ void UTbNamesSettings::ValidateSettingsPostEngineInit()
 		UE_LOG(LogTbNames, Warning, TEXT("UTbNamesSettings could not find connection %s, falling back to local backend."), *TracerServiceIdentifier);
 		TracerServiceIdentifier = TbNamesLocalBackendIdentifier;
 	}
+}
+
+TScriptInterface<ITbNamesNamEsInterface> UTbNamesSettings::GetITbNamesNamEsInterfaceForLogging(FSubsystemCollectionBase& Collection)
+{
+	UTbNamesSettings* TbNamesSettings = GetMutableDefault<UTbNamesSettings>();
+
+	FString BackendIdentifier = TbNamesSettings->TracerServiceIdentifier;
+
+	if (TbNamesSettings->TracerServiceIdentifier == TbNamesLocalBackendIdentifier)
+	{
+		return FTbNamesModuleFactory::GetTbNamesNamEsImplementation(TbNamesLocalBackendIdentifier, Collection);
+	}
+
+	if (TbNamesSettings->TracerServiceIdentifier != TbNamesLocalBackendIdentifier)
+	{
+		return FTbNamesModuleFactory::GetTbNamesNamEsImplementation("olink", Collection);
+	}
+
+	return nullptr;
 }

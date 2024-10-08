@@ -15,6 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "Testbed2Settings.h"
+#include "Generated/Testbed2Factory.h"
 #include "Testbed2/Generated/Testbed2LogCategories.h"
 #include "ApiGearConnectionsStore.h"
 #include "Engine/Engine.h"
@@ -48,4 +49,80 @@ void UTestbed2Settings::ValidateSettingsPostEngineInit()
 		UE_LOG(LogTestbed2, Warning, TEXT("UTestbed2Settings could not find connection %s, falling back to local backend."), *TracerServiceIdentifier);
 		TracerServiceIdentifier = Testbed2LocalBackendIdentifier;
 	}
+}
+
+TScriptInterface<ITestbed2ManyParamInterfaceInterface> UTestbed2Settings::GetITestbed2ManyParamInterfaceInterfaceForLogging(FSubsystemCollectionBase& Collection)
+{
+	UTestbed2Settings* Testbed2Settings = GetMutableDefault<UTestbed2Settings>();
+
+	FString BackendIdentifier = Testbed2Settings->TracerServiceIdentifier;
+
+	if (Testbed2Settings->TracerServiceIdentifier == Testbed2LocalBackendIdentifier)
+	{
+		return FTestbed2ModuleFactory::GetTestbed2ManyParamInterfaceImplementation(Testbed2LocalBackendIdentifier, Collection);
+	}
+
+	if (Testbed2Settings->TracerServiceIdentifier != Testbed2LocalBackendIdentifier)
+	{
+		return FTestbed2ModuleFactory::GetTestbed2ManyParamInterfaceImplementation("olink", Collection);
+	}
+
+	return nullptr;
+}
+
+TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> UTestbed2Settings::GetITestbed2NestedStruct1InterfaceInterfaceForLogging(FSubsystemCollectionBase& Collection)
+{
+	UTestbed2Settings* Testbed2Settings = GetMutableDefault<UTestbed2Settings>();
+
+	FString BackendIdentifier = Testbed2Settings->TracerServiceIdentifier;
+
+	if (Testbed2Settings->TracerServiceIdentifier == Testbed2LocalBackendIdentifier)
+	{
+		return FTestbed2ModuleFactory::GetTestbed2NestedStruct1InterfaceImplementation(Testbed2LocalBackendIdentifier, Collection);
+	}
+
+	if (Testbed2Settings->TracerServiceIdentifier != Testbed2LocalBackendIdentifier)
+	{
+		return FTestbed2ModuleFactory::GetTestbed2NestedStruct1InterfaceImplementation("olink", Collection);
+	}
+
+	return nullptr;
+}
+
+TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> UTestbed2Settings::GetITestbed2NestedStruct2InterfaceInterfaceForLogging(FSubsystemCollectionBase& Collection)
+{
+	UTestbed2Settings* Testbed2Settings = GetMutableDefault<UTestbed2Settings>();
+
+	FString BackendIdentifier = Testbed2Settings->TracerServiceIdentifier;
+
+	if (Testbed2Settings->TracerServiceIdentifier == Testbed2LocalBackendIdentifier)
+	{
+		return FTestbed2ModuleFactory::GetTestbed2NestedStruct2InterfaceImplementation(Testbed2LocalBackendIdentifier, Collection);
+	}
+
+	if (Testbed2Settings->TracerServiceIdentifier != Testbed2LocalBackendIdentifier)
+	{
+		return FTestbed2ModuleFactory::GetTestbed2NestedStruct2InterfaceImplementation("olink", Collection);
+	}
+
+	return nullptr;
+}
+
+TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> UTestbed2Settings::GetITestbed2NestedStruct3InterfaceInterfaceForLogging(FSubsystemCollectionBase& Collection)
+{
+	UTestbed2Settings* Testbed2Settings = GetMutableDefault<UTestbed2Settings>();
+
+	FString BackendIdentifier = Testbed2Settings->TracerServiceIdentifier;
+
+	if (Testbed2Settings->TracerServiceIdentifier == Testbed2LocalBackendIdentifier)
+	{
+		return FTestbed2ModuleFactory::GetTestbed2NestedStruct3InterfaceImplementation(Testbed2LocalBackendIdentifier, Collection);
+	}
+
+	if (Testbed2Settings->TracerServiceIdentifier != Testbed2LocalBackendIdentifier)
+	{
+		return FTestbed2ModuleFactory::GetTestbed2NestedStruct3InterfaceImplementation("olink", Collection);
+	}
+
+	return nullptr;
 }

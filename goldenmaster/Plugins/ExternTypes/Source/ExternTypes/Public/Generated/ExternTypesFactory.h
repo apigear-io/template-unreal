@@ -29,4 +29,9 @@ DECLARE_LOG_CATEGORY_EXTERN(LogFExternTypesModuleFactory, Log, All);
 class FExternTypesModuleFactory
 {
 public:
+	/** type of function for creating implementations*/
+
+	/** register factories for different types of implementations and interfaces */
+
+private:
 };

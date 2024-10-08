@@ -30,5 +30,13 @@ DECLARE_LOG_CATEGORY_EXTERN(LogFCounterModuleFactory, Log, All);
 class FCounterModuleFactory
 {
 public:
-	static TScriptInterface<ICounterCounterInterface> createICounterCounterInterface(FSubsystemCollectionBase& Collection);
+	/** type of function for creating implementations*/
+	using FCounterCounterFactoryFunction = TFunction<TScriptInterface<ICounterCounterInterface>(FSubsystemCollectionBase& Collection)>;
+
+	/** register factories for different types of implementations and interfaces */
+	static bool RegisterFactory(FString TypeIdentifier, FCounterCounterFactoryFunction FactoryFunction);
+	static TScriptInterface<ICounterCounterInterface> GetCounterCounterImplementation(FString UniqueImplementationIdentifier, FSubsystemCollectionBase& Collection);
+
+private:
+	static TMap<FString, FCounterModuleFactory::FCounterCounterFactoryFunction> CounterCounterFactories;
 };

@@ -18,4 +18,4 @@ targets:
     output: ../test
     template: ..
     force: true
-    features: [ "all" ]
+    features: [ "api",  "stubs", "plugin", "monitor", "olink" ]

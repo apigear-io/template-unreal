@@ -15,6 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbSame2Settings.h"
+#include "Generated/TbSame2Factory.h"
 #include "TbSame2/Generated/TbSame2LogCategories.h"
 #include "ApiGearConnectionsStore.h"
 #include "Engine/Engine.h"
@@ -48,4 +49,80 @@ void UTbSame2Settings::ValidateSettingsPostEngineInit()
 		UE_LOG(LogTbSame2, Warning, TEXT("UTbSame2Settings could not find connection %s, falling back to local backend."), *TracerServiceIdentifier);
 		TracerServiceIdentifier = TbSame2LocalBackendIdentifier;
 	}
+}
+
+TScriptInterface<ITbSame2SameStruct1InterfaceInterface> UTbSame2Settings::GetITbSame2SameStruct1InterfaceInterfaceForLogging(FSubsystemCollectionBase& Collection)
+{
+	UTbSame2Settings* TbSame2Settings = GetMutableDefault<UTbSame2Settings>();
+
+	FString BackendIdentifier = TbSame2Settings->TracerServiceIdentifier;
+
+	if (TbSame2Settings->TracerServiceIdentifier == TbSame2LocalBackendIdentifier)
+	{
+		return FTbSame2ModuleFactory::GetTbSame2SameStruct1InterfaceImplementation(TbSame2LocalBackendIdentifier, Collection);
+	}
+
+	if (TbSame2Settings->TracerServiceIdentifier != TbSame2LocalBackendIdentifier)
+	{
+		return FTbSame2ModuleFactory::GetTbSame2SameStruct1InterfaceImplementation("olink", Collection);
+	}
+
+	return nullptr;
+}
+
+TScriptInterface<ITbSame2SameStruct2InterfaceInterface> UTbSame2Settings::GetITbSame2SameStruct2InterfaceInterfaceForLogging(FSubsystemCollectionBase& Collection)
+{
+	UTbSame2Settings* TbSame2Settings = GetMutableDefault<UTbSame2Settings>();
+
+	FString BackendIdentifier = TbSame2Settings->TracerServiceIdentifier;
+
+	if (TbSame2Settings->TracerServiceIdentifier == TbSame2LocalBackendIdentifier)
+	{
+		return FTbSame2ModuleFactory::GetTbSame2SameStruct2InterfaceImplementation(TbSame2LocalBackendIdentifier, Collection);
+	}
+
+	if (TbSame2Settings->TracerServiceIdentifier != TbSame2LocalBackendIdentifier)
+	{
+		return FTbSame2ModuleFactory::GetTbSame2SameStruct2InterfaceImplementation("olink", Collection);
+	}
+
+	return nullptr;
+}
+
+TScriptInterface<ITbSame2SameEnum1InterfaceInterface> UTbSame2Settings::GetITbSame2SameEnum1InterfaceInterfaceForLogging(FSubsystemCollectionBase& Collection)
+{
+	UTbSame2Settings* TbSame2Settings = GetMutableDefault<UTbSame2Settings>();
+
+	FString BackendIdentifier = TbSame2Settings->TracerServiceIdentifier;
+
+	if (TbSame2Settings->TracerServiceIdentifier == TbSame2LocalBackendIdentifier)
+	{
+		return FTbSame2ModuleFactory::GetTbSame2SameEnum1InterfaceImplementation(TbSame2LocalBackendIdentifier, Collection);
+	}
+
+	if (TbSame2Settings->TracerServiceIdentifier != TbSame2LocalBackendIdentifier)
+	{
+		return FTbSame2ModuleFactory::GetTbSame2SameEnum1InterfaceImplementation("olink", Collection);
+	}
+
+	return nullptr;
+}
+
+TScriptInterface<ITbSame2SameEnum2InterfaceInterface> UTbSame2Settings::GetITbSame2SameEnum2InterfaceInterfaceForLogging(FSubsystemCollectionBase& Collection)
+{
+	UTbSame2Settings* TbSame2Settings = GetMutableDefault<UTbSame2Settings>();
+
+	FString BackendIdentifier = TbSame2Settings->TracerServiceIdentifier;
+
+	if (TbSame2Settings->TracerServiceIdentifier == TbSame2LocalBackendIdentifier)
+	{
+		return FTbSame2ModuleFactory::GetTbSame2SameEnum2InterfaceImplementation(TbSame2LocalBackendIdentifier, Collection);
+	}
+
+	if (TbSame2Settings->TracerServiceIdentifier != TbSame2LocalBackendIdentifier)
+	{
+		return FTbSame2ModuleFactory::GetTbSame2SameEnum2InterfaceImplementation("olink", Collection);
+	}
+
+	return nullptr;
 }

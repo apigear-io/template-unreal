@@ -15,6 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbSimpleSettings.h"
+#include "Generated/TbSimpleFactory.h"
 #include "TbSimple/Generated/TbSimpleLogCategories.h"
 #include "ApiGearConnectionsStore.h"
 #include "Engine/Engine.h"
@@ -48,4 +49,137 @@ void UTbSimpleSettings::ValidateSettingsPostEngineInit()
 		UE_LOG(LogTbSimple, Warning, TEXT("UTbSimpleSettings could not find connection %s, falling back to local backend."), *TracerServiceIdentifier);
 		TracerServiceIdentifier = TbSimpleLocalBackendIdentifier;
 	}
+}
+
+TScriptInterface<ITbSimpleVoidInterfaceInterface> UTbSimpleSettings::GetITbSimpleVoidInterfaceInterfaceForLogging(FSubsystemCollectionBase& Collection)
+{
+	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
+
+	FString BackendIdentifier = TbSimpleSettings->TracerServiceIdentifier;
+
+	if (TbSimpleSettings->TracerServiceIdentifier == TbSimpleLocalBackendIdentifier)
+	{
+		return FTbSimpleModuleFactory::GetTbSimpleVoidInterfaceImplementation(TbSimpleLocalBackendIdentifier, Collection);
+	}
+
+	if (TbSimpleSettings->TracerServiceIdentifier != TbSimpleLocalBackendIdentifier)
+	{
+		return FTbSimpleModuleFactory::GetTbSimpleVoidInterfaceImplementation("olink", Collection);
+	}
+
+	return nullptr;
+}
+
+TScriptInterface<ITbSimpleSimpleInterfaceInterface> UTbSimpleSettings::GetITbSimpleSimpleInterfaceInterfaceForLogging(FSubsystemCollectionBase& Collection)
+{
+	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
+
+	FString BackendIdentifier = TbSimpleSettings->TracerServiceIdentifier;
+
+	if (TbSimpleSettings->TracerServiceIdentifier == TbSimpleLocalBackendIdentifier)
+	{
+		return FTbSimpleModuleFactory::GetTbSimpleSimpleInterfaceImplementation(TbSimpleLocalBackendIdentifier, Collection);
+	}
+
+	if (TbSimpleSettings->TracerServiceIdentifier != TbSimpleLocalBackendIdentifier)
+	{
+		return FTbSimpleModuleFactory::GetTbSimpleSimpleInterfaceImplementation("olink", Collection);
+	}
+
+	return nullptr;
+}
+
+TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> UTbSimpleSettings::GetITbSimpleSimpleArrayInterfaceInterfaceForLogging(FSubsystemCollectionBase& Collection)
+{
+	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
+
+	FString BackendIdentifier = TbSimpleSettings->TracerServiceIdentifier;
+
+	if (TbSimpleSettings->TracerServiceIdentifier == TbSimpleLocalBackendIdentifier)
+	{
+		return FTbSimpleModuleFactory::GetTbSimpleSimpleArrayInterfaceImplementation(TbSimpleLocalBackendIdentifier, Collection);
+	}
+
+	if (TbSimpleSettings->TracerServiceIdentifier != TbSimpleLocalBackendIdentifier)
+	{
+		return FTbSimpleModuleFactory::GetTbSimpleSimpleArrayInterfaceImplementation("olink", Collection);
+	}
+
+	return nullptr;
+}
+
+TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> UTbSimpleSettings::GetITbSimpleNoPropertiesInterfaceInterfaceForLogging(FSubsystemCollectionBase& Collection)
+{
+	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
+
+	FString BackendIdentifier = TbSimpleSettings->TracerServiceIdentifier;
+
+	if (TbSimpleSettings->TracerServiceIdentifier == TbSimpleLocalBackendIdentifier)
+	{
+		return FTbSimpleModuleFactory::GetTbSimpleNoPropertiesInterfaceImplementation(TbSimpleLocalBackendIdentifier, Collection);
+	}
+
+	if (TbSimpleSettings->TracerServiceIdentifier != TbSimpleLocalBackendIdentifier)
+	{
+		return FTbSimpleModuleFactory::GetTbSimpleNoPropertiesInterfaceImplementation("olink", Collection);
+	}
+
+	return nullptr;
+}
+
+TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> UTbSimpleSettings::GetITbSimpleNoOperationsInterfaceInterfaceForLogging(FSubsystemCollectionBase& Collection)
+{
+	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
+
+	FString BackendIdentifier = TbSimpleSettings->TracerServiceIdentifier;
+
+	if (TbSimpleSettings->TracerServiceIdentifier == TbSimpleLocalBackendIdentifier)
+	{
+		return FTbSimpleModuleFactory::GetTbSimpleNoOperationsInterfaceImplementation(TbSimpleLocalBackendIdentifier, Collection);
+	}
+
+	if (TbSimpleSettings->TracerServiceIdentifier != TbSimpleLocalBackendIdentifier)
+	{
+		return FTbSimpleModuleFactory::GetTbSimpleNoOperationsInterfaceImplementation("olink", Collection);
+	}
+
+	return nullptr;
+}
+
+TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> UTbSimpleSettings::GetITbSimpleNoSignalsInterfaceInterfaceForLogging(FSubsystemCollectionBase& Collection)
+{
+	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
+
+	FString BackendIdentifier = TbSimpleSettings->TracerServiceIdentifier;
+
+	if (TbSimpleSettings->TracerServiceIdentifier == TbSimpleLocalBackendIdentifier)
+	{
+		return FTbSimpleModuleFactory::GetTbSimpleNoSignalsInterfaceImplementation(TbSimpleLocalBackendIdentifier, Collection);
+	}
+
+	if (TbSimpleSettings->TracerServiceIdentifier != TbSimpleLocalBackendIdentifier)
+	{
+		return FTbSimpleModuleFactory::GetTbSimpleNoSignalsInterfaceImplementation("olink", Collection);
+	}
+
+	return nullptr;
+}
+
+TScriptInterface<ITbSimpleEmptyInterfaceInterface> UTbSimpleSettings::GetITbSimpleEmptyInterfaceInterfaceForLogging(FSubsystemCollectionBase& Collection)
+{
+	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
+
+	FString BackendIdentifier = TbSimpleSettings->TracerServiceIdentifier;
+
+	if (TbSimpleSettings->TracerServiceIdentifier == TbSimpleLocalBackendIdentifier)
+	{
+		return FTbSimpleModuleFactory::GetTbSimpleEmptyInterfaceImplementation(TbSimpleLocalBackendIdentifier, Collection);
+	}
+
+	if (TbSimpleSettings->TracerServiceIdentifier != TbSimpleLocalBackendIdentifier)
+	{
+		return FTbSimpleModuleFactory::GetTbSimpleEmptyInterfaceImplementation("olink", Collection);
+	}
+
+	return nullptr;
 }

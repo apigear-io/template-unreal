@@ -1,4 +1,5 @@
 
+
 /**
 Copyright 2021 ApiGear UG
 Copyright 2021 Epic Games, Inc.
@@ -16,6 +17,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "Generated/Monitor/TbSame2SameEnum1InterfaceLoggingDecorator.h"
+#include "TbSame2Settings.h"
 #include "TbSame2.trace.h"
 #include "Generated/TbSame2Factory.h"
 #include "Runtime/Launch/Resources/Version.h"
@@ -31,7 +33,7 @@ UTbSame2SameEnum1InterfaceLoggingDecorator::~UTbSame2SameEnum1InterfaceLoggingDe
 void UTbSame2SameEnum1InterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-	setBackendService(FTbSame2ModuleFactory::createITbSame2SameEnum1InterfaceInterface(Collection));
+	setBackendService(UTbSame2Settings::GetITbSame2SameEnum1InterfaceInterfaceForLogging(Collection));
 }
 
 void UTbSame2SameEnum1InterfaceLoggingDecorator::Deinitialize()

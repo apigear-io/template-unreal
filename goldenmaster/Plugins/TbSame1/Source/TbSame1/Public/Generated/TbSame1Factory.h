@@ -33,8 +33,25 @@ DECLARE_LOG_CATEGORY_EXTERN(LogFTbSame1ModuleFactory, Log, All);
 class FTbSame1ModuleFactory
 {
 public:
-	static TScriptInterface<ITbSame1SameStruct1InterfaceInterface> createITbSame1SameStruct1InterfaceInterface(FSubsystemCollectionBase& Collection);
-	static TScriptInterface<ITbSame1SameStruct2InterfaceInterface> createITbSame1SameStruct2InterfaceInterface(FSubsystemCollectionBase& Collection);
-	static TScriptInterface<ITbSame1SameEnum1InterfaceInterface> createITbSame1SameEnum1InterfaceInterface(FSubsystemCollectionBase& Collection);
-	static TScriptInterface<ITbSame1SameEnum2InterfaceInterface> createITbSame1SameEnum2InterfaceInterface(FSubsystemCollectionBase& Collection);
+	/** type of function for creating implementations*/
+	using FTbSame1SameStruct1InterfaceFactoryFunction = TFunction<TScriptInterface<ITbSame1SameStruct1InterfaceInterface>(FSubsystemCollectionBase& Collection)>;
+	using FTbSame1SameStruct2InterfaceFactoryFunction = TFunction<TScriptInterface<ITbSame1SameStruct2InterfaceInterface>(FSubsystemCollectionBase& Collection)>;
+	using FTbSame1SameEnum1InterfaceFactoryFunction = TFunction<TScriptInterface<ITbSame1SameEnum1InterfaceInterface>(FSubsystemCollectionBase& Collection)>;
+	using FTbSame1SameEnum2InterfaceFactoryFunction = TFunction<TScriptInterface<ITbSame1SameEnum2InterfaceInterface>(FSubsystemCollectionBase& Collection)>;
+
+	/** register factories for different types of implementations and interfaces */
+	static bool RegisterFactory(FString TypeIdentifier, FTbSame1SameStruct1InterfaceFactoryFunction FactoryFunction);
+	static bool RegisterFactory(FString TypeIdentifier, FTbSame1SameStruct2InterfaceFactoryFunction FactoryFunction);
+	static bool RegisterFactory(FString TypeIdentifier, FTbSame1SameEnum1InterfaceFactoryFunction FactoryFunction);
+	static bool RegisterFactory(FString TypeIdentifier, FTbSame1SameEnum2InterfaceFactoryFunction FactoryFunction);
+	static TScriptInterface<ITbSame1SameStruct1InterfaceInterface> GetTbSame1SameStruct1InterfaceImplementation(FString UniqueImplementationIdentifier, FSubsystemCollectionBase& Collection);
+	static TScriptInterface<ITbSame1SameStruct2InterfaceInterface> GetTbSame1SameStruct2InterfaceImplementation(FString UniqueImplementationIdentifier, FSubsystemCollectionBase& Collection);
+	static TScriptInterface<ITbSame1SameEnum1InterfaceInterface> GetTbSame1SameEnum1InterfaceImplementation(FString UniqueImplementationIdentifier, FSubsystemCollectionBase& Collection);
+	static TScriptInterface<ITbSame1SameEnum2InterfaceInterface> GetTbSame1SameEnum2InterfaceImplementation(FString UniqueImplementationIdentifier, FSubsystemCollectionBase& Collection);
+
+private:
+	static TMap<FString, FTbSame1ModuleFactory::FTbSame1SameStruct1InterfaceFactoryFunction> TbSame1SameStruct1InterfaceFactories;
+	static TMap<FString, FTbSame1ModuleFactory::FTbSame1SameStruct2InterfaceFactoryFunction> TbSame1SameStruct2InterfaceFactories;
+	static TMap<FString, FTbSame1ModuleFactory::FTbSame1SameEnum1InterfaceFactoryFunction> TbSame1SameEnum1InterfaceFactories;
+	static TMap<FString, FTbSame1ModuleFactory::FTbSame1SameEnum2InterfaceFactoryFunction> TbSame1SameEnum2InterfaceFactories;
 };

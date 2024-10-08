@@ -24,6 +24,9 @@ limitations under the License.
 
 const FString TbNamesLocalBackendIdentifier = "Local";
 
+class FSubsystemCollectionBase;
+class ITbNamesNamEsInterface;
+
 /**
  * Implements the settings for the TbNames plugin.
  */
@@ -42,4 +45,5 @@ class TBNAMES_API UTbNamesSettings : public UObject
 	// Choose the olink connection to use
 	UPROPERTY(EditAnywhere, config, Category = OLinkConnectionSetup)
 	FString OLinkConnectionIdentifier;
+	static TScriptInterface<ITbNamesNamEsInterface> GetITbNamesNamEsInterfaceForLogging(FSubsystemCollectionBase& Collection);
 };
