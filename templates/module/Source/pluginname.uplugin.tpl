@@ -39,6 +39,13 @@
 			"LoadingPhase": "default"
 		},
 {{- end }}
+{{- if and .Features.olink (len .Module.Interfaces) }}
+		{
+			"Name": "{{$ModuleName}}OLink",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+{{- end }}
 		{
 			"Name" : "{{$ModuleName}}Editor",
 			"Type" : "Editor",

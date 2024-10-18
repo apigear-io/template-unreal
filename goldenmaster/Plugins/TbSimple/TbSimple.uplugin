@@ -33,6 +33,11 @@
 			"LoadingPhase": "default"
 		},
 		{
+			"Name": "TbSimpleOLink",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
 			"Name" : "TbSimpleEditor",
 			"Type" : "Editor",
 			"LoadingPhase" : "default",

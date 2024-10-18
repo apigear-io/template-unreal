@@ -54,8 +54,6 @@ public class CounterCore : ModuleRules
 				"Engine",
 				"CustomTypesAPI",
 				"ExternTypesAPI",
-				"ApiGearOLink",
-				"OLinkProtocolLibrary"
 			}
 			);
 		

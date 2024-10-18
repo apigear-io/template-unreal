@@ -33,6 +33,11 @@
 			"LoadingPhase": "default"
 		},
 		{
+			"Name": "Testbed1OLink",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
 			"Name" : "Testbed1Editor",
 			"Type" : "Editor",
 			"LoadingPhase" : "default",

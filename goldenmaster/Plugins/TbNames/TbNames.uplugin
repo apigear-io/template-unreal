@@ -33,6 +33,11 @@
 			"LoadingPhase": "default"
 		},
 		{
+			"Name": "TbNamesOLink",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
 			"Name" : "TbNamesEditor",
 			"Type" : "Editor",
 			"LoadingPhase" : "default",

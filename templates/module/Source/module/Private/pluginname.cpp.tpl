@@ -22,12 +22,6 @@ limitations under the License.
 
 #include "{{$ModuleName}}.h"
 #include "Generated/{{$ModuleName}}Factory.h"
-{{- range .Module.Interfaces }}
-{{- $class := printf "%s%s" $ModuleName (Camel .Name)}}
-{{- if $.Features.olink }}
-#include "Generated/OLink/{{$class}}OLinkClient.h"
-{{- end }}
-{{- end }}
 #include "Engine/Engine.h"
 #include "{{$ModuleName}}Settings.h"
 #include "Modules/ModuleManager.h"
@@ -36,16 +30,6 @@ limitations under the License.
 
 void {{$class}}::StartupModule()
 {
-{{- $classFactory := printf "F%sModuleFactory" $ModuleName}}
-{{- range .Module.Interfaces }}
-{{- $class := printf "%s%s" $ModuleName (Camel .Name)}}
-{{- if $.Features.olink }}
-	{{$classFactory}}::RegisterFactory(TEXT("olink"), [](FSubsystemCollectionBase& Collection) -> TScriptInterface<I{{$class}}Interface>
-		{
-		return Cast<{{ printf "U%sOLinkClient" $class}}>(Collection.InitializeDependency({{ printf "U%sOLinkClient" $class}}::StaticClass()));
-	});
-{{- end }}
-{{- end }}
 }
 
 void {{$class}}::ShutdownModule()
