@@ -16,7 +16,6 @@ limitations under the License.
 */
 
 #include "Testbed1StructArrayInterfaceOLink.spec.h"
-#include "Implementation/Testbed1StructArrayInterface.h"
 #include "Testbed1StructArrayInterfaceOLinkFixture.h"
 #include "Generated/OLink/Testbed1StructArrayInterfaceOLinkClient.h"
 #include "Generated/OLink/Testbed1StructArrayInterfaceOLinkAdapter.h"
@@ -25,6 +24,7 @@ limitations under the License.
 #if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #include "OLinkHost.h"
 #include "OLinkClientConnection.h" // for olink factory
+#include "Testbed1/Tests/Testbed1TestsCommon.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS

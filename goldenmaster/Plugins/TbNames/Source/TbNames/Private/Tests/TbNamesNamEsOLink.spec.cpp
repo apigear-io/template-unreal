@@ -16,7 +16,6 @@ limitations under the License.
 */
 
 #include "TbNamesNamEsOLink.spec.h"
-#include "Implementation/TbNamesNamEs.h"
 #include "TbNamesNamEsOLinkFixture.h"
 #include "Generated/OLink/TbNamesNamEsOLinkClient.h"
 #include "Generated/OLink/TbNamesNamEsOLinkAdapter.h"
@@ -25,6 +24,7 @@ limitations under the License.
 #if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #include "OLinkHost.h"
 #include "OLinkClientConnection.h" // for olink factory
+#include "TbNames/Tests/TbNamesTestsCommon.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS

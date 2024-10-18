@@ -1,6 +1,5 @@
 {{/* Copyright Epic Games, Inc. All Rights Reserved */}}
 {{- $ModuleName := Camel .Module.Name}}
-{{- $API_MACRO := printf "%s_API" (Camel .Module.Name) }}
 {{- $Category := printf "ApiGear%s" $ModuleName -}}
 /**
 Copyright 2021 ApiGear UG
@@ -20,7 +19,7 @@ limitations under the License.
 */
 {{- $mclass := printf "F%sModuleFactory" $ModuleName}}
 
-#include "Generated/{{$ModuleName}}Factory.h"
+#include "{{$ModuleName}}/Generated/{{$ModuleName}}Factory.h"
 #include "{{$ModuleName}}Settings.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Engine/GameInstance.h"

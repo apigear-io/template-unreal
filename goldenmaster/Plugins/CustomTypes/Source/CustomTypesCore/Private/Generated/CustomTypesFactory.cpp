@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include "Generated/CustomTypesFactory.h"
+#include "CustomTypes/Generated/CustomTypesFactory.h"
 #include "CustomTypesSettings.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Engine/GameInstance.h"

@@ -1,7 +1,6 @@
 {{/* Copyright Epic Games, Inc. All Rights Reserved */}}
 {{- $ModuleName := Camel .Module.Name}}
 {{- $moduleName := .Module.Name}}
-{{- $API_MACRO := printf "%s_API" (Camel .Module.Name) }}
 {{- $Category := printf "ApiGear%s" $ModuleName -}}
 #include "{{$ModuleName}}.trace.h"
 #include "{{$ModuleName}}/Generated/api/{{$ModuleName}}.json.adapter.h"

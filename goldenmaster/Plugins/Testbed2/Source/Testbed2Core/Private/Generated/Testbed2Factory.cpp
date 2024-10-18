@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include "Generated/Testbed2Factory.h"
+#include "Testbed2/Generated/Testbed2Factory.h"
 #include "Testbed2Settings.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Engine/GameInstance.h"

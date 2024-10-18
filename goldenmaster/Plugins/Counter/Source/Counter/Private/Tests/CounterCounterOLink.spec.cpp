@@ -16,7 +16,6 @@ limitations under the License.
 */
 
 #include "CounterCounterOLink.spec.h"
-#include "Implementation/CounterCounter.h"
 #include "CounterCounterOLinkFixture.h"
 #include "Generated/OLink/CounterCounterOLinkClient.h"
 #include "Generated/OLink/CounterCounterOLinkAdapter.h"
@@ -25,8 +24,9 @@ limitations under the License.
 #if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #include "OLinkHost.h"
 #include "OLinkClientConnection.h" // for olink factory
-#include "CustomTypes/Private/Tests/CustomTypesTestsCommon.h"
-#include "ExternTypes/Private/Tests/ExternTypesTestsCommon.h"
+#include "Counter/Tests/CounterTestsCommon.h"
+#include "CustomTypes/Tests/CustomTypesTestsCommon.h"
+#include "ExternTypes/Tests/ExternTypesTestsCommon.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS

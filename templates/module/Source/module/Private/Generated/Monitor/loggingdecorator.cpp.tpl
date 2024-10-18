@@ -2,7 +2,6 @@
 {{/* Copyright Epic Games, Inc. All Rights Reserved */}}
 {{- $ModuleName := Camel .Module.Name}}
 {{- $IfaceName := Camel .Interface.Name }}
-{{- $API_MACRO := printf "%s_API" (Camel .Module.Name) }}
 {{- $Category := printf "ApiGear|%s|%s" $ModuleName $IfaceName }}
 {{- $DisplayName := printf "%s%sLoggingDecorator" $ModuleName (Camel .Interface.Name) }}
 {{- $Class := printf "U%s" $DisplayName}}

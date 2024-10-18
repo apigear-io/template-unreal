@@ -16,7 +16,7 @@ limitations under the License.
 */
 
 #include "TbSame2Core.h"
-#include "Generated/TbSame2Factory.h"
+#include "TbSame2/Generated/TbSame2Factory.h"
 #include "Engine/Engine.h"
 #include "TbSame2Settings.h"
 #include "Modules/ModuleManager.h"

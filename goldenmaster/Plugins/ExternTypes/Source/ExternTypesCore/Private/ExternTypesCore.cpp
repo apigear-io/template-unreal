@@ -16,7 +16,7 @@ limitations under the License.
 */
 
 #include "ExternTypesCore.h"
-#include "Generated/ExternTypesFactory.h"
+#include "ExternTypes/Generated/ExternTypesFactory.h"
 #include "Engine/Engine.h"
 #include "ExternTypesSettings.h"
 #include "Modules/ModuleManager.h"

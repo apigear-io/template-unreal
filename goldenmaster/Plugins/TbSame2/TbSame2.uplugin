@@ -28,6 +28,11 @@
 			"LoadingPhase": "default"
 		},
 		{
+			"Name": "TbSame2Implementation",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
 			"Name" : "TbSame2Editor",
 			"Type" : "Editor",
 			"LoadingPhase" : "default",

@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbSimpleSettings.h"
-#include "Generated/TbSimpleFactory.h"
+#include "TbSimple/Generated/TbSimpleFactory.h"
 #include "TbSimple/Generated/TbSimpleLogCategories.h"
 #include "ApiGearConnectionsStore.h"
 #include "Engine/Engine.h"

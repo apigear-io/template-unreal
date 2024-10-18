@@ -16,7 +16,7 @@ limitations under the License.
 */
 
 #include "Testbed2Core.h"
-#include "Generated/Testbed2Factory.h"
+#include "Testbed2/Generated/Testbed2Factory.h"
 #include "Engine/Engine.h"
 #include "Testbed2Settings.h"
 #include "Modules/ModuleManager.h"

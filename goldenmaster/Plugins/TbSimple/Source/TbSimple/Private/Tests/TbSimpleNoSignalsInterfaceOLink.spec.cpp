@@ -16,7 +16,6 @@ limitations under the License.
 */
 
 #include "TbSimpleNoSignalsInterfaceOLink.spec.h"
-#include "Implementation/TbSimpleNoSignalsInterface.h"
 #include "TbSimpleNoSignalsInterfaceOLinkFixture.h"
 #include "Generated/OLink/TbSimpleNoSignalsInterfaceOLinkClient.h"
 #include "Generated/OLink/TbSimpleNoSignalsInterfaceOLinkAdapter.h"
@@ -25,6 +24,7 @@ limitations under the License.
 #if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #include "OLinkHost.h"
 #include "OLinkClientConnection.h" // for olink factory
+#include "TbSimple/Tests/TbSimpleTestsCommon.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS

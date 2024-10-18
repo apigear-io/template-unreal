@@ -16,7 +16,7 @@ limitations under the License.
 */
 
 #include "TbNamesCore.h"
-#include "Generated/TbNamesFactory.h"
+#include "TbNames/Generated/TbNamesFactory.h"
 #include "Engine/Engine.h"
 #include "TbNamesSettings.h"
 #include "Modules/ModuleManager.h"

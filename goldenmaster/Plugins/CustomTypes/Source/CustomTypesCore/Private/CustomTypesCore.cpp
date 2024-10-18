@@ -16,7 +16,7 @@ limitations under the License.
 */
 
 #include "CustomTypesCore.h"
-#include "Generated/CustomTypesFactory.h"
+#include "CustomTypes/Generated/CustomTypesFactory.h"
 #include "Engine/Engine.h"
 #include "CustomTypesSettings.h"
 #include "Modules/ModuleManager.h"

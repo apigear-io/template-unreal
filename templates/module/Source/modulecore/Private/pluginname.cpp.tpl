@@ -22,7 +22,7 @@ limitations under the License.
 {{- $class := printf "F%sCoreModule" $ModuleName}}
 
 #include "{{$ModuleName}}Core.h"
-#include "Generated/{{$ModuleName}}Factory.h"
+#include "{{$ModuleName}}/Generated/{{$ModuleName}}Factory.h"
 #include "Engine/Engine.h"
 #include "{{$ModuleName}}Settings.h"
 #include "Modules/ModuleManager.h"

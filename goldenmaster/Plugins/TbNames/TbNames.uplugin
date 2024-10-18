@@ -28,6 +28,11 @@
 			"LoadingPhase": "default"
 		},
 		{
+			"Name": "TbNamesImplementation",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
 			"Name" : "TbNamesEditor",
 			"Type" : "Editor",
 			"LoadingPhase" : "default",

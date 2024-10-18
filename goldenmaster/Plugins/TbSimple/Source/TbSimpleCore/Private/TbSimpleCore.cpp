@@ -16,7 +16,7 @@ limitations under the License.
 */
 
 #include "TbSimpleCore.h"
-#include "Generated/TbSimpleFactory.h"
+#include "TbSimple/Generated/TbSimpleFactory.h"
 #include "Engine/Engine.h"
 #include "TbSimpleSettings.h"
 #include "Modules/ModuleManager.h"

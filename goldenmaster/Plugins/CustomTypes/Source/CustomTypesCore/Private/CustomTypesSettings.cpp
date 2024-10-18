@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "CustomTypesSettings.h"
-#include "Generated/CustomTypesFactory.h"
+#include "CustomTypes/Generated/CustomTypesFactory.h"
 #include "CustomTypes/Generated/CustomTypesLogCategories.h"
 #include "ApiGearConnectionsStore.h"
 #include "Engine/Engine.h"

@@ -16,7 +16,7 @@ limitations under the License.
 */
 
 #include "TbEnumCore.h"
-#include "Generated/TbEnumFactory.h"
+#include "TbEnum/Generated/TbEnumFactory.h"
 #include "Engine/Engine.h"
 #include "TbEnumSettings.h"
 #include "Modules/ModuleManager.h"

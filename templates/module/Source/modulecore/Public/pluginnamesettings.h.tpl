@@ -63,7 +63,9 @@ public:
 {{- end }}
 
 {{- range .Module.Interfaces }}
+{{- if $.Features.monitor }}
 {{- $class := printf "%s%s" $ModuleName (Camel .Name)}}
 	static TScriptInterface<I{{$class}}Interface> GetI{{$class}}InterfaceForLogging(FSubsystemCollectionBase& Collection);
+{{- end }}
 {{- end }}
 };

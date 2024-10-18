@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbEnumSettings.h"
-#include "Generated/TbEnumFactory.h"
+#include "TbEnum/Generated/TbEnumFactory.h"
 #include "TbEnum/Generated/TbEnumLogCategories.h"
 #include "ApiGearConnectionsStore.h"
 #include "Engine/Engine.h"

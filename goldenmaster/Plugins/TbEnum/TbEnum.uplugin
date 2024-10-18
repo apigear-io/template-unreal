@@ -28,6 +28,11 @@
 			"LoadingPhase": "default"
 		},
 		{
+			"Name": "TbEnumImplementation",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
 			"Name" : "TbEnumEditor",
 			"Type" : "Editor",
 			"LoadingPhase" : "default",

@@ -7,7 +7,6 @@
 {{- $Iface := printf "%s%s" $ModuleName $IfaceName }}
 
 #include "{{$DisplayName}}OLink.spec.h"
-#include "Implementation/{{$Iface}}.h"
 #include "{{$DisplayName}}OLinkFixture.h"
 #include "Generated/OLink/{{$DisplayName}}OLinkClient.h"
 #include "Generated/OLink/{{$DisplayName}}OLinkAdapter.h"
@@ -16,8 +15,9 @@
 #if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #include "OLinkHost.h"
 #include "OLinkClientConnection.h" // for olink factory
+#include "{{$ModuleName}}/Tests/{{$ModuleName}}TestsCommon.h"
 {{- range .Module.Imports }}
-#include "{{Camel .Name}}/Private/Tests/{{Camel .Name}}TestsCommon.h"
+#include "{{Camel .Name}}/Tests/{{Camel .Name}}TestsCommon.h"
 {{- end }}
 #include "Misc/AutomationTest.h"
 

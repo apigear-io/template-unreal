@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include "Generated/TbSame1Factory.h"
+#include "TbSame1/Generated/TbSame1Factory.h"
 #include "TbSame1Settings.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Engine/GameInstance.h"

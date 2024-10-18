@@ -35,7 +35,7 @@ class I{{$class}}Interface;
 // General Log
 DECLARE_LOG_CATEGORY_EXTERN(Log{{$class}}, Log, All);
 
-class {{$class}}
+class {{ $API_MACRO }} {{$class}}
 {
 public:
 	/** type of function for creating implementations*/

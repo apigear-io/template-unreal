@@ -28,6 +28,11 @@
 			"LoadingPhase": "default"
 		},
 		{
+			"Name": "CounterImplementation",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
 			"Name" : "CounterEditor",
 			"Type" : "Editor",
 			"LoadingPhase" : "default",

@@ -28,6 +28,11 @@
 			"LoadingPhase": "default"
 		},
 		{
+			"Name": "Testbed2Implementation",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
 			"Name" : "Testbed2Editor",
 			"Type" : "Editor",
 			"LoadingPhase" : "default",

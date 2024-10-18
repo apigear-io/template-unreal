@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "Testbed2Settings.h"
-#include "Generated/Testbed2Factory.h"
+#include "Testbed2/Generated/Testbed2Factory.h"
 #include "Testbed2/Generated/Testbed2LogCategories.h"
 #include "ApiGearConnectionsStore.h"
 #include "Engine/Engine.h"

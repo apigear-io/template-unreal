@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include "Generated/CounterFactory.h"
+#include "Counter/Generated/CounterFactory.h"
 #include "CounterSettings.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Engine/GameInstance.h"

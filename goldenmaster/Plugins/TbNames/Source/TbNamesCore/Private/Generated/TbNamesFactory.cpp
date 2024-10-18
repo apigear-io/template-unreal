@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include "Generated/TbNamesFactory.h"
+#include "TbNames/Generated/TbNamesFactory.h"
 #include "TbNamesSettings.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Engine/GameInstance.h"

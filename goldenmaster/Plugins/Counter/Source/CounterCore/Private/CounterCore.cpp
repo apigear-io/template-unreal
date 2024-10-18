@@ -16,7 +16,7 @@ limitations under the License.
 */
 
 #include "CounterCore.h"
-#include "Generated/CounterFactory.h"
+#include "Counter/Generated/CounterFactory.h"
 #include "Engine/Engine.h"
 #include "CounterSettings.h"
 #include "Modules/ModuleManager.h"

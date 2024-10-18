@@ -16,7 +16,6 @@ limitations under the License.
 */
 
 #include "TbSame1SameStruct2InterfaceOLink.spec.h"
-#include "Implementation/TbSame1SameStruct2Interface.h"
 #include "TbSame1SameStruct2InterfaceOLinkFixture.h"
 #include "Generated/OLink/TbSame1SameStruct2InterfaceOLinkClient.h"
 #include "Generated/OLink/TbSame1SameStruct2InterfaceOLinkAdapter.h"
@@ -25,6 +24,7 @@ limitations under the License.
 #if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #include "OLinkHost.h"
 #include "OLinkClientConnection.h" // for olink factory
+#include "TbSame1/Tests/TbSame1TestsCommon.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS

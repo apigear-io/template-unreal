@@ -1,5 +1,4 @@
 {{/* Copyright Epic Games, Inc. All Rights Reserved */}}
-{{- $API_MACRO := printf "%sAPI_API" (CAMEL .Module.Name) }}
 {{- $ModuleName := Camel .Module.Name -}}
 {{- $Category := printf "ApiGear%s" $ModuleName -}}
 /**

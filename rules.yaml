@@ -264,26 +264,36 @@ features:
     requires:
       - api
     scopes:
-      - match: interface
-        prefix: "Plugins/{{Camel .Module.Name}}/"
+      - match: module
+        prefix: "Plugins/{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}Implementation/"
         documents:
-          - source: "module/Source/module/Public/Implementation/implementation.h.tpl"
-            target: "Source/{{Camel .Module.Name}}/Public/Implementation/{{Camel .Module.Name}}{{Camel .Interface.Name}}.h"
+          - source: "module/Source/moduleimpl/Private/moduleimpl.cpp.tpl"
+            target: "Private/Generated/{{Camel .Module.Name}}Implementation.cpp"
+          - source: "module/Source/moduleimpl/Public/moduleimpl.h.tpl"
+            target: "Public/{{Camel .Module.Name}}/{{Camel .Module.Name}}Implementation.h"
+      - match: interface
+        prefix: "Plugins/{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}Implementation/"
+        documents:
+          - source: "module/Source/moduleimpl/moduleimpl.Build.cs.tpl"
+            target: "{{Camel .Module.Name}}Implementation.Build.cs"
             preserve: true
-          - source: "module/Source/module/Private/Implementation/implementation.cpp.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Implementation/{{Camel .Module.Name}}{{Camel .Interface.Name}}.cpp"
+          - source: "module/Source/moduleimpl/Public/module/Implementation/implementation.h.tpl"
+            target: "Public/{{Camel .Module.Name}}/Implementation/{{Camel .Module.Name}}{{Camel .Interface.Name}}.h"
             preserve: true
-          - source: "module/Source/module/Private/Tests/implementation.spec.h.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}Impl.spec.h"
+          - source: "module/Source/moduleimpl/Private/Implementation/implementation.cpp.tpl"
+            target: "Private/Implementation/{{Camel .Module.Name}}{{Camel .Interface.Name}}.cpp"
             preserve: true
-          - source: "module/Source/module/Private/Tests/implementation.spec.cpp.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}Impl.spec.cpp"
+          - source: "module/Source/moduleimpl/Private/Tests/implementation.spec.h.tpl"
+            target: "Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}Impl.spec.h"
             preserve: true
-          - source: "module/Source/module/Private/Tests/implementationfixture.h.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}ImplFixture.h"
+          - source: "module/Source/moduleimpl/Private/Tests/implementation.spec.cpp.tpl"
+            target: "Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}Impl.spec.cpp"
             preserve: true
-          - source: "module/Source/module/Private/Tests/implementationfixture.cpp.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}ImplFixture.cpp"
+          - source: "module/Source/moduleimpl/Private/Tests/implementationfixture.h.tpl"
+            target: "Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}ImplFixture.h"
+            preserve: true
+          - source: "module/Source/moduleimpl/Private/Tests/implementationfixture.cpp.tpl"
+            target: "Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}ImplFixture.cpp"
             preserve: true
   - name: plugin
     scopes:
@@ -306,7 +316,7 @@ features:
           - source: "module/Source/pluginname.uplugin.tpl"
             target: "{{Camel .Module.Name}}.uplugin"
           - source: "module/Source/modulecore/Public/Generated/pluginfactory.h.tpl"
-            target: "Source/{{Camel .Module.Name}}Core/Public/Generated/{{Camel .Module.Name}}Factory.h"
+            target: "Source/{{Camel .Module.Name}}Core/Public/{{Camel .Module.Name}}/Generated/{{Camel .Module.Name}}Factory.h"
           - source: "module/Source/modulecore/Private/Generated/pluginfactory.cpp.tpl"
             target: "Source/{{Camel .Module.Name}}Core/Private/Generated/{{Camel .Module.Name}}Factory.cpp"
           - source: "module/Source/modulecore/Public/pluginnamesettings.h.tpl"
