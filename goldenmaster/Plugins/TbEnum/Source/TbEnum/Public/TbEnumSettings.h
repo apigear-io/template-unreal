@@ -24,6 +24,9 @@ limitations under the License.
 
 const FString TbEnumLocalBackendIdentifier = "Local";
 
+class FSubsystemCollectionBase;
+class ITbEnumEnumInterfaceInterface;
+
 /**
  * Implements the settings for the TbEnum plugin.
  */
@@ -45,4 +48,5 @@ public:
 	/** Choose the olink connection to use */
 	UPROPERTY(EditAnywhere, config, Category = OLinkConnectionSetup)
 	FString OLinkConnectionIdentifier;
+	static TScriptInterface<ITbEnumEnumInterfaceInterface> GetITbEnumEnumInterfaceInterfaceForLogging(FSubsystemCollectionBase& Collection);
 };

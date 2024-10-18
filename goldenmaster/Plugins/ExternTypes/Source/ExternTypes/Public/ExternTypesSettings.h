@@ -24,6 +24,8 @@ limitations under the License.
 
 const FString ExternTypesLocalBackendIdentifier = "Local";
 
+class FSubsystemCollectionBase;
+
 /**
  * Implements the settings for the ExternTypes plugin.
  */

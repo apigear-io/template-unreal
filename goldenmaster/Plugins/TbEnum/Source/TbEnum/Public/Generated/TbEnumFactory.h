@@ -30,5 +30,13 @@ DECLARE_LOG_CATEGORY_EXTERN(LogFTbEnumModuleFactory, Log, All);
 class FTbEnumModuleFactory
 {
 public:
-	static TScriptInterface<ITbEnumEnumInterfaceInterface> createITbEnumEnumInterfaceInterface(FSubsystemCollectionBase& Collection);
+	/** type of function for creating implementations*/
+	using FTbEnumEnumInterfaceFactoryFunction = TFunction<TScriptInterface<ITbEnumEnumInterfaceInterface>(FSubsystemCollectionBase& Collection)>;
+
+	/** register factories for different types of implementations and interfaces */
+	static bool RegisterFactory(FString TypeIdentifier, FTbEnumEnumInterfaceFactoryFunction FactoryFunction);
+	static TScriptInterface<ITbEnumEnumInterfaceInterface> GetTbEnumEnumInterfaceImplementation(FString UniqueImplementationIdentifier, FSubsystemCollectionBase& Collection);
+
+private:
+	static TMap<FString, FTbEnumModuleFactory::FTbEnumEnumInterfaceFactoryFunction> TbEnumEnumInterfaceFactories;
 };

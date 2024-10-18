@@ -21,102 +21,43 @@ limitations under the License.
 {{- $mclass := printf "F%sModuleFactory" $ModuleName}}
 
 #include "Generated/{{$ModuleName}}Factory.h"
-#include "ApiGearSettings.h"
-{{- if $.Features.olink }}
-#include "ApiGearOLink.h"
-{{- end }}
-#include "{{$ModuleName}}Settings.h"
-{{- range .Module.Interfaces }}
-{{- $iclass := printf "%s%s" $ModuleName (Camel .Name)}}
-{{- if $.Features.stubs }}
-#include "Implementation/{{$iclass}}.h"
-{{- end }}
-{{- if $.Features.olink }}
-#include "Generated/OLink/{{$iclass}}OLinkClient.h"
-{{- end }}
-{{- end }}
 #include "{{$ModuleName}}Settings.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Engine/GameInstance.h"
+{{- range $i, $e := .Module.Interfaces -}}
+{{- if eq $i 0 }}{{nl}}{{ end }}
+{{- $class := printf "%s%s" $ModuleName (Camel .Name)}}
+TMap<FString, {{$mclass}}::F{{$class}}FactoryFunction> {{$mclass}}::{{$class}}Factories{};
+{{- end }}
 
 // General Log
 DEFINE_LOG_CATEGORY(Log{{$mclass}});
-
-namespace
-{
-bool Is{{$ModuleName}}LogEnabled()
-{
-	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
-	return settings->Tracer_EnableDebugLog;
-}
-} // namespace
 
 {{- range .Module.Interfaces }}
 {{- $class := printf "%s%s" $ModuleName (Camel .Name)}}
 {{- $iclass := printf "I%sInterface" $class }}
 {{- $DisplayName := printf "%s%s" $ModuleName (Camel .Name) }}
 
-{{- if $.Features.olink }}
-
-TScriptInterface<I{{$class}}Interface> create{{$class}}OLink(FSubsystemCollectionBase& Collection)
+bool {{$mclass}}::RegisterFactory(FString TypeIdentifier, F{{$class}}FactoryFunction FactoryFunction)
 {
-	if (Is{{$ModuleName}}LogEnabled())
+	if ({{$class}}Factories.Contains(TypeIdentifier))
 	{
-		UE_LOG(Log{{$mclass}}, Log, TEXT("create{{$iclass}}: Using OLink service backend"));
+		UE_LOG(Log{{$mclass}}, Warning, TEXT("Register connection factory: %s - already registered"), *TypeIdentifier);
+		return false;
 	}
 
-	{{ printf "U%sOLinkClient" $DisplayName}}* Instance = Cast<{{ printf "U%sOLinkClient" $DisplayName}}>(Collection.InitializeDependency({{ printf "U%sOLinkClient" $DisplayName}}::StaticClass()));
-	return Instance;
+	{{$class}}Factories.Add(TypeIdentifier, FactoryFunction);
+
+	return true;
 }
-{{- end }}
-{{- if $.Features.stubs }}
 
-TScriptInterface<I{{$class}}Interface> create{{$class}}(FSubsystemCollectionBase& Collection)
+TScriptInterface<I{{$class}}Interface> {{$mclass}}::Get{{$class}}Implementation(FString UniqueImplementationIdentifier, FSubsystemCollectionBase& Collection)
 {
-	if (Is{{$ModuleName}}LogEnabled())
+	if ({{$class}}Factories.Contains(UniqueImplementationIdentifier))
 	{
-		UE_LOG(Log{{$mclass}}, Log, TEXT("create{{$iclass}}: Using local service backend"));
+		return {{$class}}Factories[UniqueImplementationIdentifier](Collection);
 	}
 
-	{{ printf "U%s" $DisplayName}}* Instance = Cast<{{ printf "U%s" $DisplayName}}>(Collection.InitializeDependency({{ printf "U%s" $DisplayName}}::StaticClass()));
-	return Instance;
-}
-{{- end }}
-
-TScriptInterface<I{{$class}}Interface> {{$mclass}}::create{{$iclass}}(FSubsystemCollectionBase& Collection)
-{
-{{- if or $.Features.stubs $.Features.olink }}
-	U{{$ModuleName}}Settings* {{$ModuleName}}Settings = GetMutableDefault<U{{$ModuleName}}Settings>();
-{{- end }}
-
-{{- if $.Features.stubs }}
-
-	if ({{$ModuleName}}Settings->TracerServiceIdentifier == {{$ModuleName}}LocalBackendIdentifier)
-	{
-		return create{{$class}}(Collection);
-	}
-
-	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find({{$ModuleName}}Settings->TracerServiceIdentifier);
-{{- end }}
-
-{{- if $.Features.olink }}
-
-	// Other protocols not supported. To support it edit templates:
-	// add protocol handler class for this interface like create{{$class}}OLink and other necessary infrastructure
-	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
-	{
-		return create{{$class}}OLink(Collection);
-	}
-{{- end }}
-
-{{- if $.Features.stubs }}
-
-	// fallback to local implementation
-	return create{{$class}}(Collection);
-{{- else }}
 	return nullptr;
-{{- end }}
 }
 {{- end }}

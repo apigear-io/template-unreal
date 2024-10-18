@@ -15,6 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "CounterSettings.h"
+#include "Generated/CounterFactory.h"
 #include "Counter/Generated/CounterLogCategories.h"
 #include "ApiGearConnectionsStore.h"
 #include "Engine/Engine.h"
@@ -48,4 +49,23 @@ void UCounterSettings::ValidateSettingsPostEngineInit()
 		UE_LOG(LogCounter, Warning, TEXT("UCounterSettings could not find connection %s, falling back to local backend."), *TracerServiceIdentifier);
 		TracerServiceIdentifier = CounterLocalBackendIdentifier;
 	}
+}
+
+TScriptInterface<ICounterCounterInterface> UCounterSettings::GetICounterCounterInterfaceForLogging(FSubsystemCollectionBase& Collection)
+{
+	UCounterSettings* CounterSettings = GetMutableDefault<UCounterSettings>();
+
+	FString BackendIdentifier = CounterSettings->TracerServiceIdentifier;
+
+	if (CounterSettings->TracerServiceIdentifier == CounterLocalBackendIdentifier)
+	{
+		return FCounterModuleFactory::GetCounterCounterImplementation(CounterLocalBackendIdentifier, Collection);
+	}
+
+	if (CounterSettings->TracerServiceIdentifier != CounterLocalBackendIdentifier)
+	{
+		return FCounterModuleFactory::GetCounterCounterImplementation("olink", Collection);
+	}
+
+	return nullptr;
 }

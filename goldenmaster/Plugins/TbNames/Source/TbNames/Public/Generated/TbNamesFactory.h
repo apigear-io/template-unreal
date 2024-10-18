@@ -30,5 +30,13 @@ DECLARE_LOG_CATEGORY_EXTERN(LogFTbNamesModuleFactory, Log, All);
 class FTbNamesModuleFactory
 {
 public:
-	static TScriptInterface<ITbNamesNamEsInterface> createITbNamesNamEsInterface(FSubsystemCollectionBase& Collection);
+	/** type of function for creating implementations*/
+	using FTbNamesNamEsFactoryFunction = TFunction<TScriptInterface<ITbNamesNamEsInterface>(FSubsystemCollectionBase& Collection)>;
+
+	/** register factories for different types of implementations and interfaces */
+	static bool RegisterFactory(FString TypeIdentifier, FTbNamesNamEsFactoryFunction FactoryFunction);
+	static TScriptInterface<ITbNamesNamEsInterface> GetTbNamesNamEsImplementation(FString UniqueImplementationIdentifier, FSubsystemCollectionBase& Collection);
+
+private:
+	static TMap<FString, FTbNamesModuleFactory::FTbNamesNamEsFactoryFunction> TbNamesNamEsFactories;
 };

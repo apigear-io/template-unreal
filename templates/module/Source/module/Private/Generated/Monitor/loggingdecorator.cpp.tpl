@@ -8,7 +8,6 @@
 {{- $Class := printf "U%s" $DisplayName}}
 {{- $Iface := printf "%s%s" $ModuleName $IfaceName }}
 {{- $abstractclass := printf "UAbstract%s%s" (Camel .Module.Name) (Camel .Interface.Name) }}
-{{- $FactoryName := printf "F%sModuleFactory" $ModuleName -}}
 /**
 Copyright 2021 ApiGear UG
 Copyright 2021 Epic Games, Inc.
@@ -26,6 +25,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "Generated/Monitor/{{$Iface}}LoggingDecorator.h"
+#include "{{$ModuleName}}Settings.h"
 #include "{{$ModuleName}}.trace.h"
 #include "Generated/{{$ModuleName}}Factory.h"
 #include "Runtime/Launch/Resources/Version.h"
@@ -49,7 +49,7 @@ void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
 	Super::Initialize(Collection);
 
 {{- $Service := printf "I%sInterface" $Iface }}
-	setBackendService({{$FactoryName}}::create{{$Service}}(Collection));
+	setBackendService(U{{$ModuleName}}Settings::Get{{$Service}}ForLogging(Collection));
 }
 
 void {{$Class}}::Deinitialize()

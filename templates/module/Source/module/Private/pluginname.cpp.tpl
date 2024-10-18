@@ -22,13 +22,40 @@ limitations under the License.
 {{- $class := printf "F%sModule" $ModuleName}}
 
 #include "{{$ModuleName}}.h"
+#include "Generated/{{$ModuleName}}Factory.h"
+{{- range .Module.Interfaces }}
+{{- $class := printf "%s%s" $ModuleName (Camel .Name)}}
+{{- if $.Features.stubs }}
+#include "Implementation/{{$class}}.h"
+{{- end }}
+{{- if $.Features.olink }}
+#include "Generated/OLink/{{$class}}OLinkClient.h"
+{{- end }}
+{{- end }}
 #include "Engine/Engine.h"
+#include "{{$ModuleName}}Settings.h"
 #include "Modules/ModuleManager.h"
 
 #define LOCTEXT_NAMESPACE "{{$ModuleName}}"
 
 void {{$class}}::StartupModule()
 {
+{{- $classFactory := printf "F%sModuleFactory" $ModuleName}}
+{{- range .Module.Interfaces }}
+{{- $class := printf "%s%s" $ModuleName (Camel .Name)}}
+{{- if $.Features.stubs }}
+	{{$classFactory}}::RegisterFactory({{$ModuleName}}LocalBackendIdentifier, [](FSubsystemCollectionBase& Collection) -> TScriptInterface<I{{$class}}Interface>
+		{
+		return Cast<U{{$class}}>(Collection.InitializeDependency(U{{$class}}::StaticClass()));
+	});
+{{- end }}
+{{- if $.Features.olink }}
+	{{$classFactory}}::RegisterFactory(TEXT("olink"), [](FSubsystemCollectionBase& Collection) -> TScriptInterface<I{{$class}}Interface>
+		{
+		return Cast<{{ printf "U%sOLinkClient" $class}}>(Collection.InitializeDependency({{ printf "U%sOLinkClient" $class}}::StaticClass()));
+	});
+{{- end }}
+{{- end }}
 }
 
 void {{$class}}::ShutdownModule()

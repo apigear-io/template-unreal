@@ -16,357 +16,178 @@ limitations under the License.
 */
 
 #include "Generated/TbSimpleFactory.h"
-#include "ApiGearSettings.h"
-#include "ApiGearOLink.h"
-#include "TbSimpleSettings.h"
-#include "Implementation/TbSimpleVoidInterface.h"
-#include "Generated/OLink/TbSimpleVoidInterfaceOLinkClient.h"
-#include "Implementation/TbSimpleSimpleInterface.h"
-#include "Generated/OLink/TbSimpleSimpleInterfaceOLinkClient.h"
-#include "Implementation/TbSimpleSimpleArrayInterface.h"
-#include "Generated/OLink/TbSimpleSimpleArrayInterfaceOLinkClient.h"
-#include "Implementation/TbSimpleNoPropertiesInterface.h"
-#include "Generated/OLink/TbSimpleNoPropertiesInterfaceOLinkClient.h"
-#include "Implementation/TbSimpleNoOperationsInterface.h"
-#include "Generated/OLink/TbSimpleNoOperationsInterfaceOLinkClient.h"
-#include "Implementation/TbSimpleNoSignalsInterface.h"
-#include "Generated/OLink/TbSimpleNoSignalsInterfaceOLinkClient.h"
-#include "Implementation/TbSimpleEmptyInterface.h"
-#include "Generated/OLink/TbSimpleEmptyInterfaceOLinkClient.h"
 #include "TbSimpleSettings.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Engine/GameInstance.h"
 
+TMap<FString, FTbSimpleModuleFactory::FTbSimpleVoidInterfaceFactoryFunction> FTbSimpleModuleFactory::TbSimpleVoidInterfaceFactories{};
+TMap<FString, FTbSimpleModuleFactory::FTbSimpleSimpleInterfaceFactoryFunction> FTbSimpleModuleFactory::TbSimpleSimpleInterfaceFactories{};
+TMap<FString, FTbSimpleModuleFactory::FTbSimpleSimpleArrayInterfaceFactoryFunction> FTbSimpleModuleFactory::TbSimpleSimpleArrayInterfaceFactories{};
+TMap<FString, FTbSimpleModuleFactory::FTbSimpleNoPropertiesInterfaceFactoryFunction> FTbSimpleModuleFactory::TbSimpleNoPropertiesInterfaceFactories{};
+TMap<FString, FTbSimpleModuleFactory::FTbSimpleNoOperationsInterfaceFactoryFunction> FTbSimpleModuleFactory::TbSimpleNoOperationsInterfaceFactories{};
+TMap<FString, FTbSimpleModuleFactory::FTbSimpleNoSignalsInterfaceFactoryFunction> FTbSimpleModuleFactory::TbSimpleNoSignalsInterfaceFactories{};
+TMap<FString, FTbSimpleModuleFactory::FTbSimpleEmptyInterfaceFactoryFunction> FTbSimpleModuleFactory::TbSimpleEmptyInterfaceFactories{};
+
 // General Log
 DEFINE_LOG_CATEGORY(LogFTbSimpleModuleFactory);
 
-namespace
+bool FTbSimpleModuleFactory::RegisterFactory(FString TypeIdentifier, FTbSimpleVoidInterfaceFactoryFunction FactoryFunction)
 {
-bool IsTbSimpleLogEnabled()
-{
-	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
-	return settings->Tracer_EnableDebugLog;
-}
-} // namespace
-
-TScriptInterface<ITbSimpleVoidInterfaceInterface> createTbSimpleVoidInterfaceOLink(FSubsystemCollectionBase& Collection)
-{
-	if (IsTbSimpleLogEnabled())
+	if (TbSimpleVoidInterfaceFactories.Contains(TypeIdentifier))
 	{
-		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleVoidInterfaceInterface: Using OLink service backend"));
+		UE_LOG(LogFTbSimpleModuleFactory, Warning, TEXT("Register connection factory: %s - already registered"), *TypeIdentifier);
+		return false;
 	}
 
-	UTbSimpleVoidInterfaceOLinkClient* Instance = Cast<UTbSimpleVoidInterfaceOLinkClient>(Collection.InitializeDependency(UTbSimpleVoidInterfaceOLinkClient::StaticClass()));
-	return Instance;
+	TbSimpleVoidInterfaceFactories.Add(TypeIdentifier, FactoryFunction);
+
+	return true;
 }
 
-TScriptInterface<ITbSimpleVoidInterfaceInterface> createTbSimpleVoidInterface(FSubsystemCollectionBase& Collection)
+TScriptInterface<ITbSimpleVoidInterfaceInterface> FTbSimpleModuleFactory::GetTbSimpleVoidInterfaceImplementation(FString UniqueImplementationIdentifier, FSubsystemCollectionBase& Collection)
 {
-	if (IsTbSimpleLogEnabled())
+	if (TbSimpleVoidInterfaceFactories.Contains(UniqueImplementationIdentifier))
 	{
-		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleVoidInterfaceInterface: Using local service backend"));
+		return TbSimpleVoidInterfaceFactories[UniqueImplementationIdentifier](Collection);
 	}
 
-	UTbSimpleVoidInterface* Instance = Cast<UTbSimpleVoidInterface>(Collection.InitializeDependency(UTbSimpleVoidInterface::StaticClass()));
-	return Instance;
+	return nullptr;
 }
 
-TScriptInterface<ITbSimpleVoidInterfaceInterface> FTbSimpleModuleFactory::createITbSimpleVoidInterfaceInterface(FSubsystemCollectionBase& Collection)
+bool FTbSimpleModuleFactory::RegisterFactory(FString TypeIdentifier, FTbSimpleSimpleInterfaceFactoryFunction FactoryFunction)
 {
-	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
-
-	if (TbSimpleSettings->TracerServiceIdentifier == TbSimpleLocalBackendIdentifier)
+	if (TbSimpleSimpleInterfaceFactories.Contains(TypeIdentifier))
 	{
-		return createTbSimpleVoidInterface(Collection);
+		UE_LOG(LogFTbSimpleModuleFactory, Warning, TEXT("Register connection factory: %s - already registered"), *TypeIdentifier);
+		return false;
 	}
 
-	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSimpleSettings->TracerServiceIdentifier);
+	TbSimpleSimpleInterfaceFactories.Add(TypeIdentifier, FactoryFunction);
 
-	// Other protocols not supported. To support it edit templates:
-	// add protocol handler class for this interface like createTbSimpleVoidInterfaceOLink and other necessary infrastructure
-	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
-	{
-		return createTbSimpleVoidInterfaceOLink(Collection);
-	}
-
-	// fallback to local implementation
-	return createTbSimpleVoidInterface(Collection);
+	return true;
 }
 
-TScriptInterface<ITbSimpleSimpleInterfaceInterface> createTbSimpleSimpleInterfaceOLink(FSubsystemCollectionBase& Collection)
+TScriptInterface<ITbSimpleSimpleInterfaceInterface> FTbSimpleModuleFactory::GetTbSimpleSimpleInterfaceImplementation(FString UniqueImplementationIdentifier, FSubsystemCollectionBase& Collection)
 {
-	if (IsTbSimpleLogEnabled())
+	if (TbSimpleSimpleInterfaceFactories.Contains(UniqueImplementationIdentifier))
 	{
-		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleInterfaceInterface: Using OLink service backend"));
+		return TbSimpleSimpleInterfaceFactories[UniqueImplementationIdentifier](Collection);
 	}
 
-	UTbSimpleSimpleInterfaceOLinkClient* Instance = Cast<UTbSimpleSimpleInterfaceOLinkClient>(Collection.InitializeDependency(UTbSimpleSimpleInterfaceOLinkClient::StaticClass()));
-	return Instance;
+	return nullptr;
 }
 
-TScriptInterface<ITbSimpleSimpleInterfaceInterface> createTbSimpleSimpleInterface(FSubsystemCollectionBase& Collection)
+bool FTbSimpleModuleFactory::RegisterFactory(FString TypeIdentifier, FTbSimpleSimpleArrayInterfaceFactoryFunction FactoryFunction)
 {
-	if (IsTbSimpleLogEnabled())
+	if (TbSimpleSimpleArrayInterfaceFactories.Contains(TypeIdentifier))
 	{
-		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleInterfaceInterface: Using local service backend"));
+		UE_LOG(LogFTbSimpleModuleFactory, Warning, TEXT("Register connection factory: %s - already registered"), *TypeIdentifier);
+		return false;
 	}
 
-	UTbSimpleSimpleInterface* Instance = Cast<UTbSimpleSimpleInterface>(Collection.InitializeDependency(UTbSimpleSimpleInterface::StaticClass()));
-	return Instance;
+	TbSimpleSimpleArrayInterfaceFactories.Add(TypeIdentifier, FactoryFunction);
+
+	return true;
 }
 
-TScriptInterface<ITbSimpleSimpleInterfaceInterface> FTbSimpleModuleFactory::createITbSimpleSimpleInterfaceInterface(FSubsystemCollectionBase& Collection)
+TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> FTbSimpleModuleFactory::GetTbSimpleSimpleArrayInterfaceImplementation(FString UniqueImplementationIdentifier, FSubsystemCollectionBase& Collection)
 {
-	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
-
-	if (TbSimpleSettings->TracerServiceIdentifier == TbSimpleLocalBackendIdentifier)
+	if (TbSimpleSimpleArrayInterfaceFactories.Contains(UniqueImplementationIdentifier))
 	{
-		return createTbSimpleSimpleInterface(Collection);
+		return TbSimpleSimpleArrayInterfaceFactories[UniqueImplementationIdentifier](Collection);
 	}
 
-	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSimpleSettings->TracerServiceIdentifier);
-
-	// Other protocols not supported. To support it edit templates:
-	// add protocol handler class for this interface like createTbSimpleSimpleInterfaceOLink and other necessary infrastructure
-	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
-	{
-		return createTbSimpleSimpleInterfaceOLink(Collection);
-	}
-
-	// fallback to local implementation
-	return createTbSimpleSimpleInterface(Collection);
+	return nullptr;
 }
 
-TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> createTbSimpleSimpleArrayInterfaceOLink(FSubsystemCollectionBase& Collection)
+bool FTbSimpleModuleFactory::RegisterFactory(FString TypeIdentifier, FTbSimpleNoPropertiesInterfaceFactoryFunction FactoryFunction)
 {
-	if (IsTbSimpleLogEnabled())
+	if (TbSimpleNoPropertiesInterfaceFactories.Contains(TypeIdentifier))
 	{
-		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleArrayInterfaceInterface: Using OLink service backend"));
+		UE_LOG(LogFTbSimpleModuleFactory, Warning, TEXT("Register connection factory: %s - already registered"), *TypeIdentifier);
+		return false;
 	}
 
-	UTbSimpleSimpleArrayInterfaceOLinkClient* Instance = Cast<UTbSimpleSimpleArrayInterfaceOLinkClient>(Collection.InitializeDependency(UTbSimpleSimpleArrayInterfaceOLinkClient::StaticClass()));
-	return Instance;
+	TbSimpleNoPropertiesInterfaceFactories.Add(TypeIdentifier, FactoryFunction);
+
+	return true;
 }
 
-TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> createTbSimpleSimpleArrayInterface(FSubsystemCollectionBase& Collection)
+TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> FTbSimpleModuleFactory::GetTbSimpleNoPropertiesInterfaceImplementation(FString UniqueImplementationIdentifier, FSubsystemCollectionBase& Collection)
 {
-	if (IsTbSimpleLogEnabled())
+	if (TbSimpleNoPropertiesInterfaceFactories.Contains(UniqueImplementationIdentifier))
 	{
-		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleSimpleArrayInterfaceInterface: Using local service backend"));
+		return TbSimpleNoPropertiesInterfaceFactories[UniqueImplementationIdentifier](Collection);
 	}
 
-	UTbSimpleSimpleArrayInterface* Instance = Cast<UTbSimpleSimpleArrayInterface>(Collection.InitializeDependency(UTbSimpleSimpleArrayInterface::StaticClass()));
-	return Instance;
+	return nullptr;
 }
 
-TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> FTbSimpleModuleFactory::createITbSimpleSimpleArrayInterfaceInterface(FSubsystemCollectionBase& Collection)
+bool FTbSimpleModuleFactory::RegisterFactory(FString TypeIdentifier, FTbSimpleNoOperationsInterfaceFactoryFunction FactoryFunction)
 {
-	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
-
-	if (TbSimpleSettings->TracerServiceIdentifier == TbSimpleLocalBackendIdentifier)
+	if (TbSimpleNoOperationsInterfaceFactories.Contains(TypeIdentifier))
 	{
-		return createTbSimpleSimpleArrayInterface(Collection);
+		UE_LOG(LogFTbSimpleModuleFactory, Warning, TEXT("Register connection factory: %s - already registered"), *TypeIdentifier);
+		return false;
 	}
 
-	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSimpleSettings->TracerServiceIdentifier);
+	TbSimpleNoOperationsInterfaceFactories.Add(TypeIdentifier, FactoryFunction);
 
-	// Other protocols not supported. To support it edit templates:
-	// add protocol handler class for this interface like createTbSimpleSimpleArrayInterfaceOLink and other necessary infrastructure
-	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
-	{
-		return createTbSimpleSimpleArrayInterfaceOLink(Collection);
-	}
-
-	// fallback to local implementation
-	return createTbSimpleSimpleArrayInterface(Collection);
+	return true;
 }
 
-TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> createTbSimpleNoPropertiesInterfaceOLink(FSubsystemCollectionBase& Collection)
+TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> FTbSimpleModuleFactory::GetTbSimpleNoOperationsInterfaceImplementation(FString UniqueImplementationIdentifier, FSubsystemCollectionBase& Collection)
 {
-	if (IsTbSimpleLogEnabled())
+	if (TbSimpleNoOperationsInterfaceFactories.Contains(UniqueImplementationIdentifier))
 	{
-		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleNoPropertiesInterfaceInterface: Using OLink service backend"));
+		return TbSimpleNoOperationsInterfaceFactories[UniqueImplementationIdentifier](Collection);
 	}
 
-	UTbSimpleNoPropertiesInterfaceOLinkClient* Instance = Cast<UTbSimpleNoPropertiesInterfaceOLinkClient>(Collection.InitializeDependency(UTbSimpleNoPropertiesInterfaceOLinkClient::StaticClass()));
-	return Instance;
+	return nullptr;
 }
 
-TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> createTbSimpleNoPropertiesInterface(FSubsystemCollectionBase& Collection)
+bool FTbSimpleModuleFactory::RegisterFactory(FString TypeIdentifier, FTbSimpleNoSignalsInterfaceFactoryFunction FactoryFunction)
 {
-	if (IsTbSimpleLogEnabled())
+	if (TbSimpleNoSignalsInterfaceFactories.Contains(TypeIdentifier))
 	{
-		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleNoPropertiesInterfaceInterface: Using local service backend"));
+		UE_LOG(LogFTbSimpleModuleFactory, Warning, TEXT("Register connection factory: %s - already registered"), *TypeIdentifier);
+		return false;
 	}
 
-	UTbSimpleNoPropertiesInterface* Instance = Cast<UTbSimpleNoPropertiesInterface>(Collection.InitializeDependency(UTbSimpleNoPropertiesInterface::StaticClass()));
-	return Instance;
+	TbSimpleNoSignalsInterfaceFactories.Add(TypeIdentifier, FactoryFunction);
+
+	return true;
 }
 
-TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> FTbSimpleModuleFactory::createITbSimpleNoPropertiesInterfaceInterface(FSubsystemCollectionBase& Collection)
+TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> FTbSimpleModuleFactory::GetTbSimpleNoSignalsInterfaceImplementation(FString UniqueImplementationIdentifier, FSubsystemCollectionBase& Collection)
 {
-	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
-
-	if (TbSimpleSettings->TracerServiceIdentifier == TbSimpleLocalBackendIdentifier)
+	if (TbSimpleNoSignalsInterfaceFactories.Contains(UniqueImplementationIdentifier))
 	{
-		return createTbSimpleNoPropertiesInterface(Collection);
+		return TbSimpleNoSignalsInterfaceFactories[UniqueImplementationIdentifier](Collection);
 	}
 
-	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSimpleSettings->TracerServiceIdentifier);
-
-	// Other protocols not supported. To support it edit templates:
-	// add protocol handler class for this interface like createTbSimpleNoPropertiesInterfaceOLink and other necessary infrastructure
-	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
-	{
-		return createTbSimpleNoPropertiesInterfaceOLink(Collection);
-	}
-
-	// fallback to local implementation
-	return createTbSimpleNoPropertiesInterface(Collection);
+	return nullptr;
 }
 
-TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> createTbSimpleNoOperationsInterfaceOLink(FSubsystemCollectionBase& Collection)
+bool FTbSimpleModuleFactory::RegisterFactory(FString TypeIdentifier, FTbSimpleEmptyInterfaceFactoryFunction FactoryFunction)
 {
-	if (IsTbSimpleLogEnabled())
+	if (TbSimpleEmptyInterfaceFactories.Contains(TypeIdentifier))
 	{
-		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleNoOperationsInterfaceInterface: Using OLink service backend"));
+		UE_LOG(LogFTbSimpleModuleFactory, Warning, TEXT("Register connection factory: %s - already registered"), *TypeIdentifier);
+		return false;
 	}
 
-	UTbSimpleNoOperationsInterfaceOLinkClient* Instance = Cast<UTbSimpleNoOperationsInterfaceOLinkClient>(Collection.InitializeDependency(UTbSimpleNoOperationsInterfaceOLinkClient::StaticClass()));
-	return Instance;
+	TbSimpleEmptyInterfaceFactories.Add(TypeIdentifier, FactoryFunction);
+
+	return true;
 }
 
-TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> createTbSimpleNoOperationsInterface(FSubsystemCollectionBase& Collection)
+TScriptInterface<ITbSimpleEmptyInterfaceInterface> FTbSimpleModuleFactory::GetTbSimpleEmptyInterfaceImplementation(FString UniqueImplementationIdentifier, FSubsystemCollectionBase& Collection)
 {
-	if (IsTbSimpleLogEnabled())
+	if (TbSimpleEmptyInterfaceFactories.Contains(UniqueImplementationIdentifier))
 	{
-		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleNoOperationsInterfaceInterface: Using local service backend"));
+		return TbSimpleEmptyInterfaceFactories[UniqueImplementationIdentifier](Collection);
 	}
 
-	UTbSimpleNoOperationsInterface* Instance = Cast<UTbSimpleNoOperationsInterface>(Collection.InitializeDependency(UTbSimpleNoOperationsInterface::StaticClass()));
-	return Instance;
-}
-
-TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> FTbSimpleModuleFactory::createITbSimpleNoOperationsInterfaceInterface(FSubsystemCollectionBase& Collection)
-{
-	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
-
-	if (TbSimpleSettings->TracerServiceIdentifier == TbSimpleLocalBackendIdentifier)
-	{
-		return createTbSimpleNoOperationsInterface(Collection);
-	}
-
-	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSimpleSettings->TracerServiceIdentifier);
-
-	// Other protocols not supported. To support it edit templates:
-	// add protocol handler class for this interface like createTbSimpleNoOperationsInterfaceOLink and other necessary infrastructure
-	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
-	{
-		return createTbSimpleNoOperationsInterfaceOLink(Collection);
-	}
-
-	// fallback to local implementation
-	return createTbSimpleNoOperationsInterface(Collection);
-}
-
-TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> createTbSimpleNoSignalsInterfaceOLink(FSubsystemCollectionBase& Collection)
-{
-	if (IsTbSimpleLogEnabled())
-	{
-		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleNoSignalsInterfaceInterface: Using OLink service backend"));
-	}
-
-	UTbSimpleNoSignalsInterfaceOLinkClient* Instance = Cast<UTbSimpleNoSignalsInterfaceOLinkClient>(Collection.InitializeDependency(UTbSimpleNoSignalsInterfaceOLinkClient::StaticClass()));
-	return Instance;
-}
-
-TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> createTbSimpleNoSignalsInterface(FSubsystemCollectionBase& Collection)
-{
-	if (IsTbSimpleLogEnabled())
-	{
-		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleNoSignalsInterfaceInterface: Using local service backend"));
-	}
-
-	UTbSimpleNoSignalsInterface* Instance = Cast<UTbSimpleNoSignalsInterface>(Collection.InitializeDependency(UTbSimpleNoSignalsInterface::StaticClass()));
-	return Instance;
-}
-
-TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> FTbSimpleModuleFactory::createITbSimpleNoSignalsInterfaceInterface(FSubsystemCollectionBase& Collection)
-{
-	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
-
-	if (TbSimpleSettings->TracerServiceIdentifier == TbSimpleLocalBackendIdentifier)
-	{
-		return createTbSimpleNoSignalsInterface(Collection);
-	}
-
-	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSimpleSettings->TracerServiceIdentifier);
-
-	// Other protocols not supported. To support it edit templates:
-	// add protocol handler class for this interface like createTbSimpleNoSignalsInterfaceOLink and other necessary infrastructure
-	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
-	{
-		return createTbSimpleNoSignalsInterfaceOLink(Collection);
-	}
-
-	// fallback to local implementation
-	return createTbSimpleNoSignalsInterface(Collection);
-}
-
-TScriptInterface<ITbSimpleEmptyInterfaceInterface> createTbSimpleEmptyInterfaceOLink(FSubsystemCollectionBase& Collection)
-{
-	if (IsTbSimpleLogEnabled())
-	{
-		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleEmptyInterfaceInterface: Using OLink service backend"));
-	}
-
-	UTbSimpleEmptyInterfaceOLinkClient* Instance = Cast<UTbSimpleEmptyInterfaceOLinkClient>(Collection.InitializeDependency(UTbSimpleEmptyInterfaceOLinkClient::StaticClass()));
-	return Instance;
-}
-
-TScriptInterface<ITbSimpleEmptyInterfaceInterface> createTbSimpleEmptyInterface(FSubsystemCollectionBase& Collection)
-{
-	if (IsTbSimpleLogEnabled())
-	{
-		UE_LOG(LogFTbSimpleModuleFactory, Log, TEXT("createITbSimpleEmptyInterfaceInterface: Using local service backend"));
-	}
-
-	UTbSimpleEmptyInterface* Instance = Cast<UTbSimpleEmptyInterface>(Collection.InitializeDependency(UTbSimpleEmptyInterface::StaticClass()));
-	return Instance;
-}
-
-TScriptInterface<ITbSimpleEmptyInterfaceInterface> FTbSimpleModuleFactory::createITbSimpleEmptyInterfaceInterface(FSubsystemCollectionBase& Collection)
-{
-	UTbSimpleSettings* TbSimpleSettings = GetMutableDefault<UTbSimpleSettings>();
-
-	if (TbSimpleSettings->TracerServiceIdentifier == TbSimpleLocalBackendIdentifier)
-	{
-		return createTbSimpleEmptyInterface(Collection);
-	}
-
-	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbSimpleSettings->TracerServiceIdentifier);
-
-	// Other protocols not supported. To support it edit templates:
-	// add protocol handler class for this interface like createTbSimpleEmptyInterfaceOLink and other necessary infrastructure
-	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
-	{
-		return createTbSimpleEmptyInterfaceOLink(Collection);
-	}
-
-	// fallback to local implementation
-	return createTbSimpleEmptyInterface(Collection);
+	return nullptr;
 }

@@ -16,13 +16,25 @@ limitations under the License.
 */
 
 #include "Counter.h"
+#include "Generated/CounterFactory.h"
+#include "Implementation/CounterCounter.h"
+#include "Generated/OLink/CounterCounterOLinkClient.h"
 #include "Engine/Engine.h"
+#include "CounterSettings.h"
 #include "Modules/ModuleManager.h"
 
 #define LOCTEXT_NAMESPACE "Counter"
 
 void FCounterModule::StartupModule()
 {
+	FCounterModuleFactory::RegisterFactory(CounterLocalBackendIdentifier, [](FSubsystemCollectionBase& Collection) -> TScriptInterface<ICounterCounterInterface>
+		{
+		return Cast<UCounterCounter>(Collection.InitializeDependency(UCounterCounter::StaticClass()));
+	});
+	FCounterModuleFactory::RegisterFactory(TEXT("olink"), [](FSubsystemCollectionBase& Collection) -> TScriptInterface<ICounterCounterInterface>
+		{
+		return Cast<UCounterCounterOLinkClient>(Collection.InitializeDependency(UCounterCounterOLinkClient::StaticClass()));
+	});
 }
 
 void FCounterModule::ShutdownModule()

@@ -16,13 +16,25 @@ limitations under the License.
 */
 
 #include "TbNames.h"
+#include "Generated/TbNamesFactory.h"
+#include "Implementation/TbNamesNamEs.h"
+#include "Generated/OLink/TbNamesNamEsOLinkClient.h"
 #include "Engine/Engine.h"
+#include "TbNamesSettings.h"
 #include "Modules/ModuleManager.h"
 
 #define LOCTEXT_NAMESPACE "TbNames"
 
 void FTbNamesModule::StartupModule()
 {
+	FTbNamesModuleFactory::RegisterFactory(TbNamesLocalBackendIdentifier, [](FSubsystemCollectionBase& Collection) -> TScriptInterface<ITbNamesNamEsInterface>
+		{
+		return Cast<UTbNamesNamEs>(Collection.InitializeDependency(UTbNamesNamEs::StaticClass()));
+	});
+	FTbNamesModuleFactory::RegisterFactory(TEXT("olink"), [](FSubsystemCollectionBase& Collection) -> TScriptInterface<ITbNamesNamEsInterface>
+		{
+		return Cast<UTbNamesNamEsOLinkClient>(Collection.InitializeDependency(UTbNamesNamEsOLinkClient::StaticClass()));
+	});
 }
 
 void FTbNamesModule::ShutdownModule()

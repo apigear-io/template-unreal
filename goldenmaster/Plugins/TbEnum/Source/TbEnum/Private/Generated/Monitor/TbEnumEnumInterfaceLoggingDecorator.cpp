@@ -1,4 +1,5 @@
 
+
 /**
 Copyright 2021 ApiGear UG
 Copyright 2021 Epic Games, Inc.
@@ -16,6 +17,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "Generated/Monitor/TbEnumEnumInterfaceLoggingDecorator.h"
+#include "TbEnumSettings.h"
 #include "TbEnum.trace.h"
 #include "Generated/TbEnumFactory.h"
 #include "Runtime/Launch/Resources/Version.h"
@@ -31,7 +33,7 @@ UTbEnumEnumInterfaceLoggingDecorator::~UTbEnumEnumInterfaceLoggingDecorator() = 
 void UTbEnumEnumInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-	setBackendService(FTbEnumModuleFactory::createITbEnumEnumInterfaceInterface(Collection));
+	setBackendService(UTbEnumSettings::GetITbEnumEnumInterfaceInterfaceForLogging(Collection));
 }
 
 void UTbEnumEnumInterfaceLoggingDecorator::Deinitialize()

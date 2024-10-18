@@ -16,69 +16,34 @@ limitations under the License.
 */
 
 #include "Generated/CounterFactory.h"
-#include "ApiGearSettings.h"
-#include "ApiGearOLink.h"
-#include "CounterSettings.h"
-#include "Implementation/CounterCounter.h"
-#include "Generated/OLink/CounterCounterOLinkClient.h"
 #include "CounterSettings.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Engine/GameInstance.h"
 
+TMap<FString, FCounterModuleFactory::FCounterCounterFactoryFunction> FCounterModuleFactory::CounterCounterFactories{};
+
 // General Log
 DEFINE_LOG_CATEGORY(LogFCounterModuleFactory);
 
-namespace
+bool FCounterModuleFactory::RegisterFactory(FString TypeIdentifier, FCounterCounterFactoryFunction FactoryFunction)
 {
-bool IsCounterLogEnabled()
-{
-	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
-	return settings->Tracer_EnableDebugLog;
-}
-} // namespace
-
-TScriptInterface<ICounterCounterInterface> createCounterCounterOLink(FSubsystemCollectionBase& Collection)
-{
-	if (IsCounterLogEnabled())
+	if (CounterCounterFactories.Contains(TypeIdentifier))
 	{
-		UE_LOG(LogFCounterModuleFactory, Log, TEXT("createICounterCounterInterface: Using OLink service backend"));
+		UE_LOG(LogFCounterModuleFactory, Warning, TEXT("Register connection factory: %s - already registered"), *TypeIdentifier);
+		return false;
 	}
 
-	UCounterCounterOLinkClient* Instance = Cast<UCounterCounterOLinkClient>(Collection.InitializeDependency(UCounterCounterOLinkClient::StaticClass()));
-	return Instance;
+	CounterCounterFactories.Add(TypeIdentifier, FactoryFunction);
+
+	return true;
 }
 
-TScriptInterface<ICounterCounterInterface> createCounterCounter(FSubsystemCollectionBase& Collection)
+TScriptInterface<ICounterCounterInterface> FCounterModuleFactory::GetCounterCounterImplementation(FString UniqueImplementationIdentifier, FSubsystemCollectionBase& Collection)
 {
-	if (IsCounterLogEnabled())
+	if (CounterCounterFactories.Contains(UniqueImplementationIdentifier))
 	{
-		UE_LOG(LogFCounterModuleFactory, Log, TEXT("createICounterCounterInterface: Using local service backend"));
+		return CounterCounterFactories[UniqueImplementationIdentifier](Collection);
 	}
 
-	UCounterCounter* Instance = Cast<UCounterCounter>(Collection.InitializeDependency(UCounterCounter::StaticClass()));
-	return Instance;
-}
-
-TScriptInterface<ICounterCounterInterface> FCounterModuleFactory::createICounterCounterInterface(FSubsystemCollectionBase& Collection)
-{
-	UCounterSettings* CounterSettings = GetMutableDefault<UCounterSettings>();
-
-	if (CounterSettings->TracerServiceIdentifier == CounterLocalBackendIdentifier)
-	{
-		return createCounterCounter(Collection);
-	}
-
-	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(CounterSettings->TracerServiceIdentifier);
-
-	// Other protocols not supported. To support it edit templates:
-	// add protocol handler class for this interface like createCounterCounterOLink and other necessary infrastructure
-	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
-	{
-		return createCounterCounterOLink(Collection);
-	}
-
-	// fallback to local implementation
-	return createCounterCounter(Collection);
+	return nullptr;
 }

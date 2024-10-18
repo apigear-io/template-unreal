@@ -24,6 +24,15 @@ limitations under the License.
 
 const FString TbSimpleLocalBackendIdentifier = "Local";
 
+class FSubsystemCollectionBase;
+class ITbSimpleVoidInterfaceInterface;
+class ITbSimpleSimpleInterfaceInterface;
+class ITbSimpleSimpleArrayInterfaceInterface;
+class ITbSimpleNoPropertiesInterfaceInterface;
+class ITbSimpleNoOperationsInterfaceInterface;
+class ITbSimpleNoSignalsInterfaceInterface;
+class ITbSimpleEmptyInterfaceInterface;
+
 /**
  * Implements the settings for the TbSimple plugin.
  */
@@ -45,4 +54,11 @@ public:
 	/** Choose the olink connection to use */
 	UPROPERTY(EditAnywhere, config, Category = OLinkConnectionSetup)
 	FString OLinkConnectionIdentifier;
+	static TScriptInterface<ITbSimpleVoidInterfaceInterface> GetITbSimpleVoidInterfaceInterfaceForLogging(FSubsystemCollectionBase& Collection);
+	static TScriptInterface<ITbSimpleSimpleInterfaceInterface> GetITbSimpleSimpleInterfaceInterfaceForLogging(FSubsystemCollectionBase& Collection);
+	static TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> GetITbSimpleSimpleArrayInterfaceInterfaceForLogging(FSubsystemCollectionBase& Collection);
+	static TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> GetITbSimpleNoPropertiesInterfaceInterfaceForLogging(FSubsystemCollectionBase& Collection);
+	static TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> GetITbSimpleNoOperationsInterfaceInterfaceForLogging(FSubsystemCollectionBase& Collection);
+	static TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> GetITbSimpleNoSignalsInterfaceInterfaceForLogging(FSubsystemCollectionBase& Collection);
+	static TScriptInterface<ITbSimpleEmptyInterfaceInterface> GetITbSimpleEmptyInterfaceInterfaceForLogging(FSubsystemCollectionBase& Collection);
 };

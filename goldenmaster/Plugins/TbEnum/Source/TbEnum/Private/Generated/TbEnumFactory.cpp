@@ -16,69 +16,34 @@ limitations under the License.
 */
 
 #include "Generated/TbEnumFactory.h"
-#include "ApiGearSettings.h"
-#include "ApiGearOLink.h"
-#include "TbEnumSettings.h"
-#include "Implementation/TbEnumEnumInterface.h"
-#include "Generated/OLink/TbEnumEnumInterfaceOLinkClient.h"
 #include "TbEnumSettings.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Engine/GameInstance.h"
 
+TMap<FString, FTbEnumModuleFactory::FTbEnumEnumInterfaceFactoryFunction> FTbEnumModuleFactory::TbEnumEnumInterfaceFactories{};
+
 // General Log
 DEFINE_LOG_CATEGORY(LogFTbEnumModuleFactory);
 
-namespace
+bool FTbEnumModuleFactory::RegisterFactory(FString TypeIdentifier, FTbEnumEnumInterfaceFactoryFunction FactoryFunction)
 {
-bool IsTbEnumLogEnabled()
-{
-	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
-	return settings->Tracer_EnableDebugLog;
-}
-} // namespace
-
-TScriptInterface<ITbEnumEnumInterfaceInterface> createTbEnumEnumInterfaceOLink(FSubsystemCollectionBase& Collection)
-{
-	if (IsTbEnumLogEnabled())
+	if (TbEnumEnumInterfaceFactories.Contains(TypeIdentifier))
 	{
-		UE_LOG(LogFTbEnumModuleFactory, Log, TEXT("createITbEnumEnumInterfaceInterface: Using OLink service backend"));
+		UE_LOG(LogFTbEnumModuleFactory, Warning, TEXT("Register connection factory: %s - already registered"), *TypeIdentifier);
+		return false;
 	}
 
-	UTbEnumEnumInterfaceOLinkClient* Instance = Cast<UTbEnumEnumInterfaceOLinkClient>(Collection.InitializeDependency(UTbEnumEnumInterfaceOLinkClient::StaticClass()));
-	return Instance;
+	TbEnumEnumInterfaceFactories.Add(TypeIdentifier, FactoryFunction);
+
+	return true;
 }
 
-TScriptInterface<ITbEnumEnumInterfaceInterface> createTbEnumEnumInterface(FSubsystemCollectionBase& Collection)
+TScriptInterface<ITbEnumEnumInterfaceInterface> FTbEnumModuleFactory::GetTbEnumEnumInterfaceImplementation(FString UniqueImplementationIdentifier, FSubsystemCollectionBase& Collection)
 {
-	if (IsTbEnumLogEnabled())
+	if (TbEnumEnumInterfaceFactories.Contains(UniqueImplementationIdentifier))
 	{
-		UE_LOG(LogFTbEnumModuleFactory, Log, TEXT("createITbEnumEnumInterfaceInterface: Using local service backend"));
+		return TbEnumEnumInterfaceFactories[UniqueImplementationIdentifier](Collection);
 	}
 
-	UTbEnumEnumInterface* Instance = Cast<UTbEnumEnumInterface>(Collection.InitializeDependency(UTbEnumEnumInterface::StaticClass()));
-	return Instance;
-}
-
-TScriptInterface<ITbEnumEnumInterfaceInterface> FTbEnumModuleFactory::createITbEnumEnumInterfaceInterface(FSubsystemCollectionBase& Collection)
-{
-	UTbEnumSettings* TbEnumSettings = GetMutableDefault<UTbEnumSettings>();
-
-	if (TbEnumSettings->TracerServiceIdentifier == TbEnumLocalBackendIdentifier)
-	{
-		return createTbEnumEnumInterface(Collection);
-	}
-
-	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbEnumSettings->TracerServiceIdentifier);
-
-	// Other protocols not supported. To support it edit templates:
-	// add protocol handler class for this interface like createTbEnumEnumInterfaceOLink and other necessary infrastructure
-	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
-	{
-		return createTbEnumEnumInterfaceOLink(Collection);
-	}
-
-	// fallback to local implementation
-	return createTbEnumEnumInterface(Collection);
+	return nullptr;
 }

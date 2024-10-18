@@ -16,13 +16,35 @@ limitations under the License.
 */
 
 #include "Testbed1.h"
+#include "Generated/Testbed1Factory.h"
+#include "Implementation/Testbed1StructInterface.h"
+#include "Generated/OLink/Testbed1StructInterfaceOLinkClient.h"
+#include "Implementation/Testbed1StructArrayInterface.h"
+#include "Generated/OLink/Testbed1StructArrayInterfaceOLinkClient.h"
 #include "Engine/Engine.h"
+#include "Testbed1Settings.h"
 #include "Modules/ModuleManager.h"
 
 #define LOCTEXT_NAMESPACE "Testbed1"
 
 void FTestbed1Module::StartupModule()
 {
+	FTestbed1ModuleFactory::RegisterFactory(Testbed1LocalBackendIdentifier, [](FSubsystemCollectionBase& Collection) -> TScriptInterface<ITestbed1StructInterfaceInterface>
+		{
+		return Cast<UTestbed1StructInterface>(Collection.InitializeDependency(UTestbed1StructInterface::StaticClass()));
+	});
+	FTestbed1ModuleFactory::RegisterFactory(TEXT("olink"), [](FSubsystemCollectionBase& Collection) -> TScriptInterface<ITestbed1StructInterfaceInterface>
+		{
+		return Cast<UTestbed1StructInterfaceOLinkClient>(Collection.InitializeDependency(UTestbed1StructInterfaceOLinkClient::StaticClass()));
+	});
+	FTestbed1ModuleFactory::RegisterFactory(Testbed1LocalBackendIdentifier, [](FSubsystemCollectionBase& Collection) -> TScriptInterface<ITestbed1StructArrayInterfaceInterface>
+		{
+		return Cast<UTestbed1StructArrayInterface>(Collection.InitializeDependency(UTestbed1StructArrayInterface::StaticClass()));
+	});
+	FTestbed1ModuleFactory::RegisterFactory(TEXT("olink"), [](FSubsystemCollectionBase& Collection) -> TScriptInterface<ITestbed1StructArrayInterfaceInterface>
+		{
+		return Cast<UTestbed1StructArrayInterfaceOLinkClient>(Collection.InitializeDependency(UTestbed1StructArrayInterfaceOLinkClient::StaticClass()));
+	});
 }
 
 void FTestbed1Module::ShutdownModule()

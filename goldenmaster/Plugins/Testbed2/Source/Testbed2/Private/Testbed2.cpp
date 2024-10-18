@@ -16,13 +16,55 @@ limitations under the License.
 */
 
 #include "Testbed2.h"
+#include "Generated/Testbed2Factory.h"
+#include "Implementation/Testbed2ManyParamInterface.h"
+#include "Generated/OLink/Testbed2ManyParamInterfaceOLinkClient.h"
+#include "Implementation/Testbed2NestedStruct1Interface.h"
+#include "Generated/OLink/Testbed2NestedStruct1InterfaceOLinkClient.h"
+#include "Implementation/Testbed2NestedStruct2Interface.h"
+#include "Generated/OLink/Testbed2NestedStruct2InterfaceOLinkClient.h"
+#include "Implementation/Testbed2NestedStruct3Interface.h"
+#include "Generated/OLink/Testbed2NestedStruct3InterfaceOLinkClient.h"
 #include "Engine/Engine.h"
+#include "Testbed2Settings.h"
 #include "Modules/ModuleManager.h"
 
 #define LOCTEXT_NAMESPACE "Testbed2"
 
 void FTestbed2Module::StartupModule()
 {
+	FTestbed2ModuleFactory::RegisterFactory(Testbed2LocalBackendIdentifier, [](FSubsystemCollectionBase& Collection) -> TScriptInterface<ITestbed2ManyParamInterfaceInterface>
+		{
+		return Cast<UTestbed2ManyParamInterface>(Collection.InitializeDependency(UTestbed2ManyParamInterface::StaticClass()));
+	});
+	FTestbed2ModuleFactory::RegisterFactory(TEXT("olink"), [](FSubsystemCollectionBase& Collection) -> TScriptInterface<ITestbed2ManyParamInterfaceInterface>
+		{
+		return Cast<UTestbed2ManyParamInterfaceOLinkClient>(Collection.InitializeDependency(UTestbed2ManyParamInterfaceOLinkClient::StaticClass()));
+	});
+	FTestbed2ModuleFactory::RegisterFactory(Testbed2LocalBackendIdentifier, [](FSubsystemCollectionBase& Collection) -> TScriptInterface<ITestbed2NestedStruct1InterfaceInterface>
+		{
+		return Cast<UTestbed2NestedStruct1Interface>(Collection.InitializeDependency(UTestbed2NestedStruct1Interface::StaticClass()));
+	});
+	FTestbed2ModuleFactory::RegisterFactory(TEXT("olink"), [](FSubsystemCollectionBase& Collection) -> TScriptInterface<ITestbed2NestedStruct1InterfaceInterface>
+		{
+		return Cast<UTestbed2NestedStruct1InterfaceOLinkClient>(Collection.InitializeDependency(UTestbed2NestedStruct1InterfaceOLinkClient::StaticClass()));
+	});
+	FTestbed2ModuleFactory::RegisterFactory(Testbed2LocalBackendIdentifier, [](FSubsystemCollectionBase& Collection) -> TScriptInterface<ITestbed2NestedStruct2InterfaceInterface>
+		{
+		return Cast<UTestbed2NestedStruct2Interface>(Collection.InitializeDependency(UTestbed2NestedStruct2Interface::StaticClass()));
+	});
+	FTestbed2ModuleFactory::RegisterFactory(TEXT("olink"), [](FSubsystemCollectionBase& Collection) -> TScriptInterface<ITestbed2NestedStruct2InterfaceInterface>
+		{
+		return Cast<UTestbed2NestedStruct2InterfaceOLinkClient>(Collection.InitializeDependency(UTestbed2NestedStruct2InterfaceOLinkClient::StaticClass()));
+	});
+	FTestbed2ModuleFactory::RegisterFactory(Testbed2LocalBackendIdentifier, [](FSubsystemCollectionBase& Collection) -> TScriptInterface<ITestbed2NestedStruct3InterfaceInterface>
+		{
+		return Cast<UTestbed2NestedStruct3Interface>(Collection.InitializeDependency(UTestbed2NestedStruct3Interface::StaticClass()));
+	});
+	FTestbed2ModuleFactory::RegisterFactory(TEXT("olink"), [](FSubsystemCollectionBase& Collection) -> TScriptInterface<ITestbed2NestedStruct3InterfaceInterface>
+		{
+		return Cast<UTestbed2NestedStruct3InterfaceOLinkClient>(Collection.InitializeDependency(UTestbed2NestedStruct3InterfaceOLinkClient::StaticClass()));
+	});
 }
 
 void FTestbed2Module::ShutdownModule()

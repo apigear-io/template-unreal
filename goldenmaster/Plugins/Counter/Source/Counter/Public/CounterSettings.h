@@ -24,6 +24,9 @@ limitations under the License.
 
 const FString CounterLocalBackendIdentifier = "Local";
 
+class FSubsystemCollectionBase;
+class ICounterCounterInterface;
+
 /**
  * Implements the settings for the Counter plugin.
  */
@@ -45,4 +48,5 @@ public:
 	/** Choose the olink connection to use */
 	UPROPERTY(EditAnywhere, config, Category = OLinkConnectionSetup)
 	FString OLinkConnectionIdentifier;
+	static TScriptInterface<ICounterCounterInterface> GetICounterCounterInterfaceForLogging(FSubsystemCollectionBase& Collection);
 };

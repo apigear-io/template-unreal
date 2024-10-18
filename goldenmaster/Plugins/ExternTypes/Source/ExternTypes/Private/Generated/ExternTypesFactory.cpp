@@ -16,21 +16,9 @@ limitations under the License.
 */
 
 #include "Generated/ExternTypesFactory.h"
-#include "ApiGearSettings.h"
-#include "ApiGearOLink.h"
-#include "ExternTypesSettings.h"
 #include "ExternTypesSettings.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Engine/GameInstance.h"
 
 // General Log
 DEFINE_LOG_CATEGORY(LogFExternTypesModuleFactory);
-
-namespace
-{
-bool IsExternTypesLogEnabled()
-{
-	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
-	return settings->Tracer_EnableDebugLog;
-}
-} // namespace

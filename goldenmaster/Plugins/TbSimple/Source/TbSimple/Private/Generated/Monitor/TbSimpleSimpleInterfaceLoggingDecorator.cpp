@@ -1,4 +1,5 @@
 
+
 /**
 Copyright 2021 ApiGear UG
 Copyright 2021 Epic Games, Inc.
@@ -16,6 +17,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "Generated/Monitor/TbSimpleSimpleInterfaceLoggingDecorator.h"
+#include "TbSimpleSettings.h"
 #include "TbSimple.trace.h"
 #include "Generated/TbSimpleFactory.h"
 #include "Runtime/Launch/Resources/Version.h"
@@ -31,7 +33,7 @@ UTbSimpleSimpleInterfaceLoggingDecorator::~UTbSimpleSimpleInterfaceLoggingDecora
 void UTbSimpleSimpleInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-	setBackendService(FTbSimpleModuleFactory::createITbSimpleSimpleInterfaceInterface(Collection));
+	setBackendService(UTbSimpleSettings::GetITbSimpleSimpleInterfaceInterfaceForLogging(Collection));
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::Deinitialize()

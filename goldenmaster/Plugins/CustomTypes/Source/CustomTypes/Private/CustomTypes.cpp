@@ -16,7 +16,9 @@ limitations under the License.
 */
 
 #include "CustomTypes.h"
+#include "Generated/CustomTypesFactory.h"
 #include "Engine/Engine.h"
+#include "CustomTypesSettings.h"
 #include "Modules/ModuleManager.h"
 
 #define LOCTEXT_NAMESPACE "CustomTypes"

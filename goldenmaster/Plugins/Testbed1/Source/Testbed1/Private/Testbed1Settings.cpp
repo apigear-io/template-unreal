@@ -15,6 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "Testbed1Settings.h"
+#include "Generated/Testbed1Factory.h"
 #include "Testbed1/Generated/Testbed1LogCategories.h"
 #include "ApiGearConnectionsStore.h"
 #include "Engine/Engine.h"
@@ -48,4 +49,42 @@ void UTestbed1Settings::ValidateSettingsPostEngineInit()
 		UE_LOG(LogTestbed1, Warning, TEXT("UTestbed1Settings could not find connection %s, falling back to local backend."), *TracerServiceIdentifier);
 		TracerServiceIdentifier = Testbed1LocalBackendIdentifier;
 	}
+}
+
+TScriptInterface<ITestbed1StructInterfaceInterface> UTestbed1Settings::GetITestbed1StructInterfaceInterfaceForLogging(FSubsystemCollectionBase& Collection)
+{
+	UTestbed1Settings* Testbed1Settings = GetMutableDefault<UTestbed1Settings>();
+
+	FString BackendIdentifier = Testbed1Settings->TracerServiceIdentifier;
+
+	if (Testbed1Settings->TracerServiceIdentifier == Testbed1LocalBackendIdentifier)
+	{
+		return FTestbed1ModuleFactory::GetTestbed1StructInterfaceImplementation(Testbed1LocalBackendIdentifier, Collection);
+	}
+
+	if (Testbed1Settings->TracerServiceIdentifier != Testbed1LocalBackendIdentifier)
+	{
+		return FTestbed1ModuleFactory::GetTestbed1StructInterfaceImplementation("olink", Collection);
+	}
+
+	return nullptr;
+}
+
+TScriptInterface<ITestbed1StructArrayInterfaceInterface> UTestbed1Settings::GetITestbed1StructArrayInterfaceInterfaceForLogging(FSubsystemCollectionBase& Collection)
+{
+	UTestbed1Settings* Testbed1Settings = GetMutableDefault<UTestbed1Settings>();
+
+	FString BackendIdentifier = Testbed1Settings->TracerServiceIdentifier;
+
+	if (Testbed1Settings->TracerServiceIdentifier == Testbed1LocalBackendIdentifier)
+	{
+		return FTestbed1ModuleFactory::GetTestbed1StructArrayInterfaceImplementation(Testbed1LocalBackendIdentifier, Collection);
+	}
+
+	if (Testbed1Settings->TracerServiceIdentifier != Testbed1LocalBackendIdentifier)
+	{
+		return FTestbed1ModuleFactory::GetTestbed1StructArrayInterfaceImplementation("olink", Collection);
+	}
+
+	return nullptr;
 }

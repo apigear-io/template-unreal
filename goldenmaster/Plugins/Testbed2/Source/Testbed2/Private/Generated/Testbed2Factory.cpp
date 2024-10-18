@@ -16,213 +16,106 @@ limitations under the License.
 */
 
 #include "Generated/Testbed2Factory.h"
-#include "ApiGearSettings.h"
-#include "ApiGearOLink.h"
-#include "Testbed2Settings.h"
-#include "Implementation/Testbed2ManyParamInterface.h"
-#include "Generated/OLink/Testbed2ManyParamInterfaceOLinkClient.h"
-#include "Implementation/Testbed2NestedStruct1Interface.h"
-#include "Generated/OLink/Testbed2NestedStruct1InterfaceOLinkClient.h"
-#include "Implementation/Testbed2NestedStruct2Interface.h"
-#include "Generated/OLink/Testbed2NestedStruct2InterfaceOLinkClient.h"
-#include "Implementation/Testbed2NestedStruct3Interface.h"
-#include "Generated/OLink/Testbed2NestedStruct3InterfaceOLinkClient.h"
 #include "Testbed2Settings.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Engine/GameInstance.h"
 
+TMap<FString, FTestbed2ModuleFactory::FTestbed2ManyParamInterfaceFactoryFunction> FTestbed2ModuleFactory::Testbed2ManyParamInterfaceFactories{};
+TMap<FString, FTestbed2ModuleFactory::FTestbed2NestedStruct1InterfaceFactoryFunction> FTestbed2ModuleFactory::Testbed2NestedStruct1InterfaceFactories{};
+TMap<FString, FTestbed2ModuleFactory::FTestbed2NestedStruct2InterfaceFactoryFunction> FTestbed2ModuleFactory::Testbed2NestedStruct2InterfaceFactories{};
+TMap<FString, FTestbed2ModuleFactory::FTestbed2NestedStruct3InterfaceFactoryFunction> FTestbed2ModuleFactory::Testbed2NestedStruct3InterfaceFactories{};
+
 // General Log
 DEFINE_LOG_CATEGORY(LogFTestbed2ModuleFactory);
 
-namespace
+bool FTestbed2ModuleFactory::RegisterFactory(FString TypeIdentifier, FTestbed2ManyParamInterfaceFactoryFunction FactoryFunction)
 {
-bool IsTestbed2LogEnabled()
-{
-	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
-	return settings->Tracer_EnableDebugLog;
-}
-} // namespace
-
-TScriptInterface<ITestbed2ManyParamInterfaceInterface> createTestbed2ManyParamInterfaceOLink(FSubsystemCollectionBase& Collection)
-{
-	if (IsTestbed2LogEnabled())
+	if (Testbed2ManyParamInterfaceFactories.Contains(TypeIdentifier))
 	{
-		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2ManyParamInterfaceInterface: Using OLink service backend"));
+		UE_LOG(LogFTestbed2ModuleFactory, Warning, TEXT("Register connection factory: %s - already registered"), *TypeIdentifier);
+		return false;
 	}
 
-	UTestbed2ManyParamInterfaceOLinkClient* Instance = Cast<UTestbed2ManyParamInterfaceOLinkClient>(Collection.InitializeDependency(UTestbed2ManyParamInterfaceOLinkClient::StaticClass()));
-	return Instance;
+	Testbed2ManyParamInterfaceFactories.Add(TypeIdentifier, FactoryFunction);
+
+	return true;
 }
 
-TScriptInterface<ITestbed2ManyParamInterfaceInterface> createTestbed2ManyParamInterface(FSubsystemCollectionBase& Collection)
+TScriptInterface<ITestbed2ManyParamInterfaceInterface> FTestbed2ModuleFactory::GetTestbed2ManyParamInterfaceImplementation(FString UniqueImplementationIdentifier, FSubsystemCollectionBase& Collection)
 {
-	if (IsTestbed2LogEnabled())
+	if (Testbed2ManyParamInterfaceFactories.Contains(UniqueImplementationIdentifier))
 	{
-		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2ManyParamInterfaceInterface: Using local service backend"));
+		return Testbed2ManyParamInterfaceFactories[UniqueImplementationIdentifier](Collection);
 	}
 
-	UTestbed2ManyParamInterface* Instance = Cast<UTestbed2ManyParamInterface>(Collection.InitializeDependency(UTestbed2ManyParamInterface::StaticClass()));
-	return Instance;
+	return nullptr;
 }
 
-TScriptInterface<ITestbed2ManyParamInterfaceInterface> FTestbed2ModuleFactory::createITestbed2ManyParamInterfaceInterface(FSubsystemCollectionBase& Collection)
+bool FTestbed2ModuleFactory::RegisterFactory(FString TypeIdentifier, FTestbed2NestedStruct1InterfaceFactoryFunction FactoryFunction)
 {
-	UTestbed2Settings* Testbed2Settings = GetMutableDefault<UTestbed2Settings>();
-
-	if (Testbed2Settings->TracerServiceIdentifier == Testbed2LocalBackendIdentifier)
+	if (Testbed2NestedStruct1InterfaceFactories.Contains(TypeIdentifier))
 	{
-		return createTestbed2ManyParamInterface(Collection);
+		UE_LOG(LogFTestbed2ModuleFactory, Warning, TEXT("Register connection factory: %s - already registered"), *TypeIdentifier);
+		return false;
 	}
 
-	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(Testbed2Settings->TracerServiceIdentifier);
+	Testbed2NestedStruct1InterfaceFactories.Add(TypeIdentifier, FactoryFunction);
 
-	// Other protocols not supported. To support it edit templates:
-	// add protocol handler class for this interface like createTestbed2ManyParamInterfaceOLink and other necessary infrastructure
-	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
-	{
-		return createTestbed2ManyParamInterfaceOLink(Collection);
-	}
-
-	// fallback to local implementation
-	return createTestbed2ManyParamInterface(Collection);
+	return true;
 }
 
-TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> createTestbed2NestedStruct1InterfaceOLink(FSubsystemCollectionBase& Collection)
+TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> FTestbed2ModuleFactory::GetTestbed2NestedStruct1InterfaceImplementation(FString UniqueImplementationIdentifier, FSubsystemCollectionBase& Collection)
 {
-	if (IsTestbed2LogEnabled())
+	if (Testbed2NestedStruct1InterfaceFactories.Contains(UniqueImplementationIdentifier))
 	{
-		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct1InterfaceInterface: Using OLink service backend"));
+		return Testbed2NestedStruct1InterfaceFactories[UniqueImplementationIdentifier](Collection);
 	}
 
-	UTestbed2NestedStruct1InterfaceOLinkClient* Instance = Cast<UTestbed2NestedStruct1InterfaceOLinkClient>(Collection.InitializeDependency(UTestbed2NestedStruct1InterfaceOLinkClient::StaticClass()));
-	return Instance;
+	return nullptr;
 }
 
-TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> createTestbed2NestedStruct1Interface(FSubsystemCollectionBase& Collection)
+bool FTestbed2ModuleFactory::RegisterFactory(FString TypeIdentifier, FTestbed2NestedStruct2InterfaceFactoryFunction FactoryFunction)
 {
-	if (IsTestbed2LogEnabled())
+	if (Testbed2NestedStruct2InterfaceFactories.Contains(TypeIdentifier))
 	{
-		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct1InterfaceInterface: Using local service backend"));
+		UE_LOG(LogFTestbed2ModuleFactory, Warning, TEXT("Register connection factory: %s - already registered"), *TypeIdentifier);
+		return false;
 	}
 
-	UTestbed2NestedStruct1Interface* Instance = Cast<UTestbed2NestedStruct1Interface>(Collection.InitializeDependency(UTestbed2NestedStruct1Interface::StaticClass()));
-	return Instance;
+	Testbed2NestedStruct2InterfaceFactories.Add(TypeIdentifier, FactoryFunction);
+
+	return true;
 }
 
-TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> FTestbed2ModuleFactory::createITestbed2NestedStruct1InterfaceInterface(FSubsystemCollectionBase& Collection)
+TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> FTestbed2ModuleFactory::GetTestbed2NestedStruct2InterfaceImplementation(FString UniqueImplementationIdentifier, FSubsystemCollectionBase& Collection)
 {
-	UTestbed2Settings* Testbed2Settings = GetMutableDefault<UTestbed2Settings>();
-
-	if (Testbed2Settings->TracerServiceIdentifier == Testbed2LocalBackendIdentifier)
+	if (Testbed2NestedStruct2InterfaceFactories.Contains(UniqueImplementationIdentifier))
 	{
-		return createTestbed2NestedStruct1Interface(Collection);
+		return Testbed2NestedStruct2InterfaceFactories[UniqueImplementationIdentifier](Collection);
 	}
 
-	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(Testbed2Settings->TracerServiceIdentifier);
-
-	// Other protocols not supported. To support it edit templates:
-	// add protocol handler class for this interface like createTestbed2NestedStruct1InterfaceOLink and other necessary infrastructure
-	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
-	{
-		return createTestbed2NestedStruct1InterfaceOLink(Collection);
-	}
-
-	// fallback to local implementation
-	return createTestbed2NestedStruct1Interface(Collection);
+	return nullptr;
 }
 
-TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> createTestbed2NestedStruct2InterfaceOLink(FSubsystemCollectionBase& Collection)
+bool FTestbed2ModuleFactory::RegisterFactory(FString TypeIdentifier, FTestbed2NestedStruct3InterfaceFactoryFunction FactoryFunction)
 {
-	if (IsTestbed2LogEnabled())
+	if (Testbed2NestedStruct3InterfaceFactories.Contains(TypeIdentifier))
 	{
-		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct2InterfaceInterface: Using OLink service backend"));
+		UE_LOG(LogFTestbed2ModuleFactory, Warning, TEXT("Register connection factory: %s - already registered"), *TypeIdentifier);
+		return false;
 	}
 
-	UTestbed2NestedStruct2InterfaceOLinkClient* Instance = Cast<UTestbed2NestedStruct2InterfaceOLinkClient>(Collection.InitializeDependency(UTestbed2NestedStruct2InterfaceOLinkClient::StaticClass()));
-	return Instance;
+	Testbed2NestedStruct3InterfaceFactories.Add(TypeIdentifier, FactoryFunction);
+
+	return true;
 }
 
-TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> createTestbed2NestedStruct2Interface(FSubsystemCollectionBase& Collection)
+TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> FTestbed2ModuleFactory::GetTestbed2NestedStruct3InterfaceImplementation(FString UniqueImplementationIdentifier, FSubsystemCollectionBase& Collection)
 {
-	if (IsTestbed2LogEnabled())
+	if (Testbed2NestedStruct3InterfaceFactories.Contains(UniqueImplementationIdentifier))
 	{
-		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct2InterfaceInterface: Using local service backend"));
+		return Testbed2NestedStruct3InterfaceFactories[UniqueImplementationIdentifier](Collection);
 	}
 
-	UTestbed2NestedStruct2Interface* Instance = Cast<UTestbed2NestedStruct2Interface>(Collection.InitializeDependency(UTestbed2NestedStruct2Interface::StaticClass()));
-	return Instance;
-}
-
-TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> FTestbed2ModuleFactory::createITestbed2NestedStruct2InterfaceInterface(FSubsystemCollectionBase& Collection)
-{
-	UTestbed2Settings* Testbed2Settings = GetMutableDefault<UTestbed2Settings>();
-
-	if (Testbed2Settings->TracerServiceIdentifier == Testbed2LocalBackendIdentifier)
-	{
-		return createTestbed2NestedStruct2Interface(Collection);
-	}
-
-	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(Testbed2Settings->TracerServiceIdentifier);
-
-	// Other protocols not supported. To support it edit templates:
-	// add protocol handler class for this interface like createTestbed2NestedStruct2InterfaceOLink and other necessary infrastructure
-	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
-	{
-		return createTestbed2NestedStruct2InterfaceOLink(Collection);
-	}
-
-	// fallback to local implementation
-	return createTestbed2NestedStruct2Interface(Collection);
-}
-
-TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> createTestbed2NestedStruct3InterfaceOLink(FSubsystemCollectionBase& Collection)
-{
-	if (IsTestbed2LogEnabled())
-	{
-		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct3InterfaceInterface: Using OLink service backend"));
-	}
-
-	UTestbed2NestedStruct3InterfaceOLinkClient* Instance = Cast<UTestbed2NestedStruct3InterfaceOLinkClient>(Collection.InitializeDependency(UTestbed2NestedStruct3InterfaceOLinkClient::StaticClass()));
-	return Instance;
-}
-
-TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> createTestbed2NestedStruct3Interface(FSubsystemCollectionBase& Collection)
-{
-	if (IsTestbed2LogEnabled())
-	{
-		UE_LOG(LogFTestbed2ModuleFactory, Log, TEXT("createITestbed2NestedStruct3InterfaceInterface: Using local service backend"));
-	}
-
-	UTestbed2NestedStruct3Interface* Instance = Cast<UTestbed2NestedStruct3Interface>(Collection.InitializeDependency(UTestbed2NestedStruct3Interface::StaticClass()));
-	return Instance;
-}
-
-TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> FTestbed2ModuleFactory::createITestbed2NestedStruct3InterfaceInterface(FSubsystemCollectionBase& Collection)
-{
-	UTestbed2Settings* Testbed2Settings = GetMutableDefault<UTestbed2Settings>();
-
-	if (Testbed2Settings->TracerServiceIdentifier == Testbed2LocalBackendIdentifier)
-	{
-		return createTestbed2NestedStruct3Interface(Collection);
-	}
-
-	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(Testbed2Settings->TracerServiceIdentifier);
-
-	// Other protocols not supported. To support it edit templates:
-	// add protocol handler class for this interface like createTestbed2NestedStruct3InterfaceOLink and other necessary infrastructure
-	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
-	{
-		return createTestbed2NestedStruct3InterfaceOLink(Collection);
-	}
-
-	// fallback to local implementation
-	return createTestbed2NestedStruct3Interface(Collection);
+	return nullptr;
 }

@@ -16,69 +16,34 @@ limitations under the License.
 */
 
 #include "Generated/TbNamesFactory.h"
-#include "ApiGearSettings.h"
-#include "ApiGearOLink.h"
-#include "TbNamesSettings.h"
-#include "Implementation/TbNamesNamEs.h"
-#include "Generated/OLink/TbNamesNamEsOLinkClient.h"
 #include "TbNamesSettings.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Engine/GameInstance.h"
 
+TMap<FString, FTbNamesModuleFactory::FTbNamesNamEsFactoryFunction> FTbNamesModuleFactory::TbNamesNamEsFactories{};
+
 // General Log
 DEFINE_LOG_CATEGORY(LogFTbNamesModuleFactory);
 
-namespace
+bool FTbNamesModuleFactory::RegisterFactory(FString TypeIdentifier, FTbNamesNamEsFactoryFunction FactoryFunction)
 {
-bool IsTbNamesLogEnabled()
-{
-	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
-	return settings->Tracer_EnableDebugLog;
-}
-} // namespace
-
-TScriptInterface<ITbNamesNamEsInterface> createTbNamesNamEsOLink(FSubsystemCollectionBase& Collection)
-{
-	if (IsTbNamesLogEnabled())
+	if (TbNamesNamEsFactories.Contains(TypeIdentifier))
 	{
-		UE_LOG(LogFTbNamesModuleFactory, Log, TEXT("createITbNamesNamEsInterface: Using OLink service backend"));
+		UE_LOG(LogFTbNamesModuleFactory, Warning, TEXT("Register connection factory: %s - already registered"), *TypeIdentifier);
+		return false;
 	}
 
-	UTbNamesNamEsOLinkClient* Instance = Cast<UTbNamesNamEsOLinkClient>(Collection.InitializeDependency(UTbNamesNamEsOLinkClient::StaticClass()));
-	return Instance;
+	TbNamesNamEsFactories.Add(TypeIdentifier, FactoryFunction);
+
+	return true;
 }
 
-TScriptInterface<ITbNamesNamEsInterface> createTbNamesNamEs(FSubsystemCollectionBase& Collection)
+TScriptInterface<ITbNamesNamEsInterface> FTbNamesModuleFactory::GetTbNamesNamEsImplementation(FString UniqueImplementationIdentifier, FSubsystemCollectionBase& Collection)
 {
-	if (IsTbNamesLogEnabled())
+	if (TbNamesNamEsFactories.Contains(UniqueImplementationIdentifier))
 	{
-		UE_LOG(LogFTbNamesModuleFactory, Log, TEXT("createITbNamesNamEsInterface: Using local service backend"));
+		return TbNamesNamEsFactories[UniqueImplementationIdentifier](Collection);
 	}
 
-	UTbNamesNamEs* Instance = Cast<UTbNamesNamEs>(Collection.InitializeDependency(UTbNamesNamEs::StaticClass()));
-	return Instance;
-}
-
-TScriptInterface<ITbNamesNamEsInterface> FTbNamesModuleFactory::createITbNamesNamEsInterface(FSubsystemCollectionBase& Collection)
-{
-	UTbNamesSettings* TbNamesSettings = GetMutableDefault<UTbNamesSettings>();
-
-	if (TbNamesSettings->TracerServiceIdentifier == TbNamesLocalBackendIdentifier)
-	{
-		return createTbNamesNamEs(Collection);
-	}
-
-	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
-	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(TbNamesSettings->TracerServiceIdentifier);
-
-	// Other protocols not supported. To support it edit templates:
-	// add protocol handler class for this interface like createTbNamesNamEsOLink and other necessary infrastructure
-	// extend this function in templates to handle protocol of your choice
-	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
-	{
-		return createTbNamesNamEsOLink(Collection);
-	}
-
-	// fallback to local implementation
-	return createTbNamesNamEs(Collection);
+	return nullptr;
 }

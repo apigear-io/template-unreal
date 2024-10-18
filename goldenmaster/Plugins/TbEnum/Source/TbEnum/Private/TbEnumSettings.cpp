@@ -15,6 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbEnumSettings.h"
+#include "Generated/TbEnumFactory.h"
 #include "TbEnum/Generated/TbEnumLogCategories.h"
 #include "ApiGearConnectionsStore.h"
 #include "Engine/Engine.h"
@@ -48,4 +49,23 @@ void UTbEnumSettings::ValidateSettingsPostEngineInit()
 		UE_LOG(LogTbEnum, Warning, TEXT("UTbEnumSettings could not find connection %s, falling back to local backend."), *TracerServiceIdentifier);
 		TracerServiceIdentifier = TbEnumLocalBackendIdentifier;
 	}
+}
+
+TScriptInterface<ITbEnumEnumInterfaceInterface> UTbEnumSettings::GetITbEnumEnumInterfaceInterfaceForLogging(FSubsystemCollectionBase& Collection)
+{
+	UTbEnumSettings* TbEnumSettings = GetMutableDefault<UTbEnumSettings>();
+
+	FString BackendIdentifier = TbEnumSettings->TracerServiceIdentifier;
+
+	if (TbEnumSettings->TracerServiceIdentifier == TbEnumLocalBackendIdentifier)
+	{
+		return FTbEnumModuleFactory::GetTbEnumEnumInterfaceImplementation(TbEnumLocalBackendIdentifier, Collection);
+	}
+
+	if (TbEnumSettings->TracerServiceIdentifier != TbEnumLocalBackendIdentifier)
+	{
+		return FTbEnumModuleFactory::GetTbEnumEnumInterfaceImplementation("olink", Collection);
+	}
+
+	return nullptr;
 }

@@ -24,6 +24,8 @@ limitations under the License.
 
 const FString CustomTypesLocalBackendIdentifier = "Local";
 
+class FSubsystemCollectionBase;
+
 /**
  * Implements the settings for the CustomTypes plugin.
  */

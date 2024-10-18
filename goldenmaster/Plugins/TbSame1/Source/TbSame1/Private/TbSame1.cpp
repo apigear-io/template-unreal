@@ -16,13 +16,55 @@ limitations under the License.
 */
 
 #include "TbSame1.h"
+#include "Generated/TbSame1Factory.h"
+#include "Implementation/TbSame1SameStruct1Interface.h"
+#include "Generated/OLink/TbSame1SameStruct1InterfaceOLinkClient.h"
+#include "Implementation/TbSame1SameStruct2Interface.h"
+#include "Generated/OLink/TbSame1SameStruct2InterfaceOLinkClient.h"
+#include "Implementation/TbSame1SameEnum1Interface.h"
+#include "Generated/OLink/TbSame1SameEnum1InterfaceOLinkClient.h"
+#include "Implementation/TbSame1SameEnum2Interface.h"
+#include "Generated/OLink/TbSame1SameEnum2InterfaceOLinkClient.h"
 #include "Engine/Engine.h"
+#include "TbSame1Settings.h"
 #include "Modules/ModuleManager.h"
 
 #define LOCTEXT_NAMESPACE "TbSame1"
 
 void FTbSame1Module::StartupModule()
 {
+	FTbSame1ModuleFactory::RegisterFactory(TbSame1LocalBackendIdentifier, [](FSubsystemCollectionBase& Collection) -> TScriptInterface<ITbSame1SameStruct1InterfaceInterface>
+		{
+		return Cast<UTbSame1SameStruct1Interface>(Collection.InitializeDependency(UTbSame1SameStruct1Interface::StaticClass()));
+	});
+	FTbSame1ModuleFactory::RegisterFactory(TEXT("olink"), [](FSubsystemCollectionBase& Collection) -> TScriptInterface<ITbSame1SameStruct1InterfaceInterface>
+		{
+		return Cast<UTbSame1SameStruct1InterfaceOLinkClient>(Collection.InitializeDependency(UTbSame1SameStruct1InterfaceOLinkClient::StaticClass()));
+	});
+	FTbSame1ModuleFactory::RegisterFactory(TbSame1LocalBackendIdentifier, [](FSubsystemCollectionBase& Collection) -> TScriptInterface<ITbSame1SameStruct2InterfaceInterface>
+		{
+		return Cast<UTbSame1SameStruct2Interface>(Collection.InitializeDependency(UTbSame1SameStruct2Interface::StaticClass()));
+	});
+	FTbSame1ModuleFactory::RegisterFactory(TEXT("olink"), [](FSubsystemCollectionBase& Collection) -> TScriptInterface<ITbSame1SameStruct2InterfaceInterface>
+		{
+		return Cast<UTbSame1SameStruct2InterfaceOLinkClient>(Collection.InitializeDependency(UTbSame1SameStruct2InterfaceOLinkClient::StaticClass()));
+	});
+	FTbSame1ModuleFactory::RegisterFactory(TbSame1LocalBackendIdentifier, [](FSubsystemCollectionBase& Collection) -> TScriptInterface<ITbSame1SameEnum1InterfaceInterface>
+		{
+		return Cast<UTbSame1SameEnum1Interface>(Collection.InitializeDependency(UTbSame1SameEnum1Interface::StaticClass()));
+	});
+	FTbSame1ModuleFactory::RegisterFactory(TEXT("olink"), [](FSubsystemCollectionBase& Collection) -> TScriptInterface<ITbSame1SameEnum1InterfaceInterface>
+		{
+		return Cast<UTbSame1SameEnum1InterfaceOLinkClient>(Collection.InitializeDependency(UTbSame1SameEnum1InterfaceOLinkClient::StaticClass()));
+	});
+	FTbSame1ModuleFactory::RegisterFactory(TbSame1LocalBackendIdentifier, [](FSubsystemCollectionBase& Collection) -> TScriptInterface<ITbSame1SameEnum2InterfaceInterface>
+		{
+		return Cast<UTbSame1SameEnum2Interface>(Collection.InitializeDependency(UTbSame1SameEnum2Interface::StaticClass()));
+	});
+	FTbSame1ModuleFactory::RegisterFactory(TEXT("olink"), [](FSubsystemCollectionBase& Collection) -> TScriptInterface<ITbSame1SameEnum2InterfaceInterface>
+		{
+		return Cast<UTbSame1SameEnum2InterfaceOLinkClient>(Collection.InitializeDependency(UTbSame1SameEnum2InterfaceOLinkClient::StaticClass()));
+	});
 }
 
 void FTbSame1Module::ShutdownModule()

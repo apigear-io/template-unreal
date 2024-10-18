@@ -24,6 +24,12 @@ limitations under the License.
 
 const FString TbSame2LocalBackendIdentifier = "Local";
 
+class FSubsystemCollectionBase;
+class ITbSame2SameStruct1InterfaceInterface;
+class ITbSame2SameStruct2InterfaceInterface;
+class ITbSame2SameEnum1InterfaceInterface;
+class ITbSame2SameEnum2InterfaceInterface;
+
 /**
  * Implements the settings for the TbSame2 plugin.
  */
@@ -45,4 +51,8 @@ public:
 	/** Choose the olink connection to use */
 	UPROPERTY(EditAnywhere, config, Category = OLinkConnectionSetup)
 	FString OLinkConnectionIdentifier;
+	static TScriptInterface<ITbSame2SameStruct1InterfaceInterface> GetITbSame2SameStruct1InterfaceInterfaceForLogging(FSubsystemCollectionBase& Collection);
+	static TScriptInterface<ITbSame2SameStruct2InterfaceInterface> GetITbSame2SameStruct2InterfaceInterfaceForLogging(FSubsystemCollectionBase& Collection);
+	static TScriptInterface<ITbSame2SameEnum1InterfaceInterface> GetITbSame2SameEnum1InterfaceInterfaceForLogging(FSubsystemCollectionBase& Collection);
+	static TScriptInterface<ITbSame2SameEnum2InterfaceInterface> GetITbSame2SameEnum2InterfaceInterfaceForLogging(FSubsystemCollectionBase& Collection);
 };

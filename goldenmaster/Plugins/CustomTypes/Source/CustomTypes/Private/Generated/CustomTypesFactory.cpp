@@ -16,21 +16,9 @@ limitations under the License.
 */
 
 #include "Generated/CustomTypesFactory.h"
-#include "ApiGearSettings.h"
-#include "ApiGearOLink.h"
-#include "CustomTypesSettings.h"
 #include "CustomTypesSettings.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Engine/GameInstance.h"
 
 // General Log
 DEFINE_LOG_CATEGORY(LogFCustomTypesModuleFactory);
-
-namespace
-{
-bool IsCustomTypesLogEnabled()
-{
-	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
-	return settings->Tracer_EnableDebugLog;
-}
-} // namespace

@@ -20,6 +20,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "{{$ModuleName}}Settings.h"
+#include "Generated/{{$ModuleName}}Factory.h"
 {{- if .Features.api }}
 #include "{{$ModuleName}}/Generated/{{$ModuleName}}LogCategories.h"
 {{- end }}
@@ -28,6 +29,8 @@ limitations under the License.
 {{- end }}
 #include "Engine/Engine.h"
 #include "Misc/CoreDelegates.h"
+
+{{- $factoryclass := printf "F%sModuleFactory" $ModuleName}}
 
 U{{$ModuleName}}Settings::U{{$ModuleName}}Settings(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -66,3 +69,36 @@ void U{{$ModuleName}}Settings::ValidateSettingsPostEngineInit()
 	}
 {{- end }}
 }
+
+{{- range .Module.Interfaces }}
+{{- $class := printf "%s%s" $ModuleName (Camel .Name)}}
+{{- $iclass := printf "I%sInterface" $class }}
+{{- $DisplayName := printf "%s%s" $ModuleName (Camel .Name) }}
+
+TScriptInterface<I{{$class}}Interface> U{{$ModuleName}}Settings::Get{{$iclass}}ForLogging(FSubsystemCollectionBase& Collection)
+{
+{{- if or $.Features.stubs $.Features.olink }}
+	U{{$ModuleName}}Settings* {{$ModuleName}}Settings = GetMutableDefault<U{{$ModuleName}}Settings>();
+
+	FString BackendIdentifier = {{$ModuleName}}Settings->TracerServiceIdentifier;
+
+{{- end }}
+
+{{- if $.Features.stubs }}
+
+	if ({{$ModuleName}}Settings->TracerServiceIdentifier == {{$ModuleName}}LocalBackendIdentifier)
+	{
+		return {{$factoryclass}}::Get{{$class}}Implementation({{$ModuleName}}LocalBackendIdentifier, Collection);
+	}
+{{- end }}
+{{- if $.Features.olink }}
+
+	if ({{$ModuleName}}Settings->TracerServiceIdentifier != {{$ModuleName}}LocalBackendIdentifier)
+	{
+		return {{$factoryclass}}::Get{{$class}}Implementation("olink", Collection);
+	}
+{{- end }}
+
+	return nullptr;
+}
+{{- end }}
