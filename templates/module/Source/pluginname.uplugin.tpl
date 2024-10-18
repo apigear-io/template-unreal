@@ -46,6 +46,13 @@
 			"LoadingPhase": "default"
 		},
 {{- end }}
+{{- if and .Features.monitor (len .Module.Interfaces) }}
+		{
+			"Name": "{{$ModuleName}}Monitor",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+{{- end }}
 		{
 			"Name" : "{{$ModuleName}}Editor",
 			"Type" : "Editor",

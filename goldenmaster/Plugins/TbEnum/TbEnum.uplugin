@@ -38,6 +38,11 @@
 			"LoadingPhase": "default"
 		},
 		{
+			"Name": "TbEnumMonitor",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
 			"Name" : "TbEnumEditor",
 			"Type" : "Editor",
 			"LoadingPhase" : "default",

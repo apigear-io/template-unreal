@@ -38,6 +38,11 @@
 			"LoadingPhase": "default"
 		},
 		{
+			"Name": "TbSame2Monitor",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
 			"Name" : "TbSame2Editor",
 			"Type" : "Editor",
 			"LoadingPhase" : "default",

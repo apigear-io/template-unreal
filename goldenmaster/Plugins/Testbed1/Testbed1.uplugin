@@ -38,6 +38,11 @@
 			"LoadingPhase": "default"
 		},
 		{
+			"Name": "Testbed1Monitor",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
 			"Name" : "Testbed1Editor",
 			"Type" : "Editor",
 			"LoadingPhase" : "default",

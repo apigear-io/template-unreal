@@ -354,17 +354,23 @@ features:
         documents:
           - source: "module/Source/moduleapi/Private/Generated/api/json.adapter.h.tpl"
             target: "Source/{{Camel .Module.Name}}API/Public/{{Camel .Module.Name}}/Generated/api/{{Camel .Module.Name}}.json.adapter.h"
-          - source: "module/Source/module/Private/Generated/Monitor/trace.h.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Generated/Monitor/{{Camel .Module.Name}}.trace.h"
-          - source: "module/Source/module/Private/Generated/Monitor/trace.cpp.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Generated/Monitor/{{Camel .Module.Name}}.trace.cpp"
+          - source: "module/Source/modulemonitor/Private/modulemonitor.cpp.tpl"
+            target: "Source/{{Camel .Module.Name}}Monitor/Private/Generated/{{Camel .Module.Name}}Monitor.cpp"
+          - source: "module/Source/modulemonitor/Public/modulemonitor.h.tpl"
+            target: "Source/{{Camel .Module.Name}}Monitor/Public/{{Camel .Module.Name}}/{{Camel .Module.Name}}Monitor.h"
+          - source: "module/Source/modulemonitor/Private/Generated/Monitor/trace.h.tpl"
+            target: "Source/{{Camel .Module.Name}}Monitor/Private/Generated/Monitor/{{Camel .Module.Name}}.trace.h"
+          - source: "module/Source/modulemonitor/Private/Generated/Monitor/trace.cpp.tpl"
+            target: "Source/{{Camel .Module.Name}}Monitor/Private/Generated/Monitor/{{Camel .Module.Name}}.trace.cpp"
       - match: interface
-        prefix: "Plugins/{{Camel .Module.Name}}/"
+        prefix: "Plugins/{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}Monitor/"
         documents:
-          - source: "module/Source/module/Public/Generated/Monitor/loggingdecorator.h.tpl"
-            target: "Source/{{Camel .Module.Name}}/Public/Generated/Monitor/{{Camel .Module.Name}}{{Camel .Interface.Name}}LoggingDecorator.h"
-          - source: "module/Source/module/Private/Generated/Monitor/loggingdecorator.cpp.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Generated/Monitor/{{Camel .Module.Name}}{{Camel .Interface.Name}}LoggingDecorator.cpp"
+          - source: "module/Source/modulemonitor/modulemonitor.Build.cs.tpl"
+            target: "{{Camel .Module.Name}}Monitor.Build.cs"
+          - source: "module/Source/modulemonitor/Public/Generated/Monitor/loggingdecorator.h.tpl"
+            target: "Public/{{Camel .Module.Name}}/Generated/Monitor/{{Camel .Module.Name}}{{Camel .Interface.Name}}LoggingDecorator.h"
+          - source: "module/Source/modulemonitor/Private/Generated/Monitor/loggingdecorator.cpp.tpl"
+            target: "Private/Generated/Monitor/{{Camel .Module.Name}}{{Camel .Interface.Name}}LoggingDecorator.cpp"
   - name: olink
     requires:
       - api

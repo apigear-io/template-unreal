@@ -38,6 +38,11 @@
 			"LoadingPhase": "default"
 		},
 		{
+			"Name": "TbNamesMonitor",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
 			"Name" : "TbNamesEditor",
 			"Type" : "Editor",
 			"LoadingPhase" : "default",

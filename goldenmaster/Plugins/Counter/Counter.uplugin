@@ -38,6 +38,11 @@
 			"LoadingPhase": "default"
 		},
 		{
+			"Name": "CounterMonitor",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
 			"Name" : "CounterEditor",
 			"Type" : "Editor",
 			"LoadingPhase" : "default",

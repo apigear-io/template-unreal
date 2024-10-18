@@ -38,6 +38,11 @@
 			"LoadingPhase": "default"
 		},
 		{
+			"Name": "TbSimpleMonitor",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
 			"Name" : "TbSimpleEditor",
 			"Type" : "Editor",
 			"LoadingPhase" : "default",
