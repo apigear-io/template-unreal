@@ -14,10 +14,6 @@ public class TbSame1API : ModuleRules
 
 		// Disable nlohmann::json exception handling
 		PublicDefinitions.Add("JSON_NOEXCEPTION=1");
-        PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "Public"));
-        PrivateIncludePaths.Add(Path.Combine(ModuleDirectory, "Private"));
-        PrivateIncludePaths.Add(Path.Combine(ModuleDirectory, "Public/TbSame1/Generated"));
-        PrivateIncludePaths.Add(Path.Combine(ModuleDirectory, "Public/TbSame1/Generated/api"));
 
 		PublicIncludePaths.AddRange(
 			new string[] {

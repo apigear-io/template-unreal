@@ -23,7 +23,7 @@
 			"LoadingPhase": "default"
 		},
 		{
-			"Name": "Testbed1",
+			"Name": "Testbed1Core",
 			"Type": "Runtime",
 			"LoadingPhase": "default"
 		},

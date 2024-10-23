@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include "TbSame1API.h"
+#include "TbSame1/Generated/TbSame1API.h"
 #include "Engine/Engine.h"
 #include "Modules/ModuleManager.h"
 

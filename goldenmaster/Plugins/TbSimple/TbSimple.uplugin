@@ -23,7 +23,7 @@
 			"LoadingPhase": "default"
 		},
 		{
-			"Name": "TbSimple",
+			"Name": "TbSimpleCore",
 			"Type": "Runtime",
 			"LoadingPhase": "default"
 		},

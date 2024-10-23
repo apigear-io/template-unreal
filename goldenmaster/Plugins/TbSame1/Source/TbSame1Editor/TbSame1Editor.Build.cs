@@ -33,7 +33,7 @@ namespace UnrealBuildTool.Rules
 			PrivateDependencyModuleNames.AddRange(
 				new string[]
 				{
-					"TbSame1"
+					"TbSame1Core"
 				}
 				);
 			}

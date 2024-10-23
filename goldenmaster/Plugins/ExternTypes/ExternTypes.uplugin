@@ -23,7 +23,7 @@
 			"LoadingPhase": "default"
 		},
 		{
-			"Name": "ExternTypes",
+			"Name": "ExternTypesCore",
 			"Type": "Runtime",
 			"LoadingPhase": "default"
 		},

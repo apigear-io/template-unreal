@@ -18,10 +18,6 @@ public class {{$ModuleName}}API : ModuleRules
 		PublicDefinitions.Add("JSON_NOEXCEPTION=1");
 		
 {{- $ModuleName := Camel .Module.Name }}
-        PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "Public"));
-        PrivateIncludePaths.Add(Path.Combine(ModuleDirectory, "Private"));
-        PrivateIncludePaths.Add(Path.Combine(ModuleDirectory, "Public/{{$ModuleName}}/Generated"));
-        PrivateIncludePaths.Add(Path.Combine(ModuleDirectory, "Public/{{$ModuleName}}/Generated/api"));
 
 		PublicIncludePaths.AddRange(
 			new string[] {

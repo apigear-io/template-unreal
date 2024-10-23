@@ -14,10 +14,6 @@ public class Testbed2API : ModuleRules
 
 		// Disable nlohmann::json exception handling
 		PublicDefinitions.Add("JSON_NOEXCEPTION=1");
-        PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "Public"));
-        PrivateIncludePaths.Add(Path.Combine(ModuleDirectory, "Private"));
-        PrivateIncludePaths.Add(Path.Combine(ModuleDirectory, "Public/Testbed2/Generated"));
-        PrivateIncludePaths.Add(Path.Combine(ModuleDirectory, "Public/Testbed2/Generated/api"));
 
 		PublicIncludePaths.AddRange(
 			new string[] {

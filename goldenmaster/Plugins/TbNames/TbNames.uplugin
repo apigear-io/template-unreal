@@ -23,7 +23,7 @@
 			"LoadingPhase": "default"
 		},
 		{
-			"Name": "TbNames",
+			"Name": "TbNamesCore",
 			"Type": "Runtime",
 			"LoadingPhase": "default"
 		},

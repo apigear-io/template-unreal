@@ -23,7 +23,7 @@
 			"LoadingPhase": "default"
 		},
 		{
-			"Name": "TbEnum",
+			"Name": "TbEnumCore",
 			"Type": "Runtime",
 			"LoadingPhase": "default"
 		},

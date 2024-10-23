@@ -23,7 +23,7 @@
 			"LoadingPhase": "default"
 		},
 		{
-			"Name": "TbSame2",
+			"Name": "TbSame2Core",
 			"Type": "Runtime",
 			"LoadingPhase": "default"
 		},

@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include "CounterAPI.h"
+#include "Counter/Generated/CounterAPI.h"
 #include "Engine/Engine.h"
 #include "Modules/ModuleManager.h"
 

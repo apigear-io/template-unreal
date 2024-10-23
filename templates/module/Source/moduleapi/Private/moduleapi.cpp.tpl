@@ -20,7 +20,7 @@ limitations under the License.
 
 {{- $class := printf "F%sAPIModule" $ModuleName}}
 
-#include "{{$ModuleName}}API.h"
+#include "{{$ModuleName}}/Generated/{{$ModuleName}}API.h"
 #include "Engine/Engine.h"
 #include "Modules/ModuleManager.h"
 

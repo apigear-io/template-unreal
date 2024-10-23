@@ -28,7 +28,7 @@
 		},
 {{- end }}
 		{
-			"Name": "{{$ModuleName}}",
+			"Name": "{{$ModuleName}}Core",
 			"Type": "Runtime",
 			"LoadingPhase": "default"
 		},

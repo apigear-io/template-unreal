@@ -1,3 +1,3 @@
-#include "TbNamesLogCategories.h"
+#include "TbNames/Generated/TbNamesLogCategories.h"
 
 DEFINE_LOG_CATEGORY(LogTbNames);

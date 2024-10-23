@@ -23,7 +23,7 @@
 			"LoadingPhase": "default"
 		},
 		{
-			"Name": "CustomTypes",
+			"Name": "CustomTypesCore",
 			"Type": "Runtime",
 			"LoadingPhase": "default"
 		},

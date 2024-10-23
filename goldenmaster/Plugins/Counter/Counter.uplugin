@@ -23,7 +23,7 @@
 			"LoadingPhase": "default"
 		},
 		{
-			"Name": "Counter",
+			"Name": "CounterCore",
 			"Type": "Runtime",
 			"LoadingPhase": "default"
 		},
