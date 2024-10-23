@@ -1,6 +1,6 @@
 {{/* Copyright Epic Games, Inc. All Rights Reserved */}}
 {{- $ModuleName := Camel .Module.Name}}
-{{- $API_MACRO := printf "%s_API" $ModuleName }}
+{{- $API_MACRO := printf "%s_API" (Camel .Module.Name) }}
 {{- $Category := printf "ApiGear%s" $ModuleName -}}
 {{- $ModulePath := (path .Module.Name)}}
 {{- $class := printf "%sEditor" $ModuleName -}}
@@ -43,7 +43,7 @@ namespace UnrealBuildTool.Rules
 			PrivateDependencyModuleNames.AddRange(
 				new string[]
 				{
-					"{{$ModuleName}}"
+					"{{$ModuleName}}Core"
 				}
 				);
 			}

@@ -18,7 +18,27 @@
 	"EnabledByDefault" : true,
 	"Modules": [
 		{
-			"Name": "TbSimple",
+			"Name": "TbSimpleAPI",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
+			"Name": "TbSimpleCore",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
+			"Name": "TbSimpleImplementation",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
+			"Name": "TbSimpleOLink",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
+			"Name": "TbSimpleMonitor",
 			"Type": "Runtime",
 			"LoadingPhase": "default"
 		},

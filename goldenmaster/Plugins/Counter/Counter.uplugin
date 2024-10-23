@@ -18,7 +18,27 @@
 	"EnabledByDefault" : true,
 	"Modules": [
 		{
-			"Name": "Counter",
+			"Name": "CounterAPI",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
+			"Name": "CounterCore",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
+			"Name": "CounterImplementation",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
+			"Name": "CounterOLink",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
+			"Name": "CounterMonitor",
 			"Type": "Runtime",
 			"LoadingPhase": "default"
 		},

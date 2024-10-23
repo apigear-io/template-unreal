@@ -18,7 +18,27 @@
 	"EnabledByDefault" : true,
 	"Modules": [
 		{
-			"Name": "Testbed2",
+			"Name": "Testbed2API",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
+			"Name": "Testbed2Core",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
+			"Name": "Testbed2Implementation",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
+			"Name": "Testbed2OLink",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
+			"Name": "Testbed2Monitor",
 			"Type": "Runtime",
 			"LoadingPhase": "default"
 		},

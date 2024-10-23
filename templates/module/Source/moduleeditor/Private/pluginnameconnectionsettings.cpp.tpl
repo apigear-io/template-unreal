@@ -1,6 +1,5 @@
 {{/* Copyright Epic Games, Inc. All Rights Reserved */}}
 {{- $ModuleName := Camel .Module.Name}}
-{{- $API_MACRO := printf "%s_API" $ModuleName }}
 {{- $ConnecitonEnabled := or .Features.stubs .Features.olink -}}
 {{- $Category := printf "ApiGear%s" $ModuleName -}}
 // Copyright Epic Games, Inc. All Rights Reserved

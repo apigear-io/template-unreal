@@ -18,7 +18,12 @@
 	"EnabledByDefault" : true,
 	"Modules": [
 		{
-			"Name": "ExternTypes",
+			"Name": "ExternTypesAPI",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
+			"Name": "ExternTypesCore",
 			"Type": "Runtime",
 			"LoadingPhase": "default"
 		},

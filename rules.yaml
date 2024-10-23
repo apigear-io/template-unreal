@@ -4,26 +4,32 @@ features:
   - name: api
     scopes:
       - match: module
-        prefix: "Plugins/{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}/"
+        prefix: "Plugins/{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}API/"
         documents:
-          - source: "module/Source/module/Public/Generated/api/module.h.tpl"
-            target: "Public/Generated/api/{{Camel .Module.Name}}_apig.h"
-          - source: "module/Source/module/Public/Generated/api/data.h.tpl"
-            target: "Public/Generated/api/{{Camel .Module.Name}}_data.h"
-          - source: "module/Source/module/Private/Generated/api/data.cpp.tpl"
+          - source: "module/Source/moduleapi/Public/module/Generated/api/module.h.tpl"
+            target: "Public/{{Camel .Module.Name}}/Generated/api/{{Camel .Module.Name}}_apig.h"
+          - source: "module/Source/moduleapi/Public/module/Generated/api/data.h.tpl"
+            target: "Public/{{Camel .Module.Name}}/Generated/api/{{Camel .Module.Name}}_data.h"
+          - source: "module/Source/moduleapi/Private/Generated/api/data.cpp.tpl"
             target: "Private/Generated/api/{{Camel .Module.Name}}_data.cpp"
-          - source: "module/Source/module/Private/Generated/LogCategories.h.tpl"
-            target: "Private/Generated/{{Camel .Module.Name}}LogCategories.h"
-          - source: "module/Source/module/Private/Generated/LogCategories.cpp.tpl"
+          - source: "module/Source/moduleapi/Private/Generated/LogCategories.h.tpl"
+            target: "Public/{{Camel .Module.Name}}/Generated/{{Camel .Module.Name}}LogCategories.h"
+          - source: "module/Source/moduleapi/Private/Generated/LogCategories.cpp.tpl"
             target: "Private/Generated/{{Camel .Module.Name}}LogCategories.cpp"
+          - source: "module/Source/moduleapi/Public/module/Generated/moduleapi.h.tpl"
+            target: "Public/{{Camel .Module.Name}}/Generated/{{Camel .Module.Name}}API.h"
+          - source: "module/Source/moduleapi/Private/moduleapi.cpp.tpl"
+            target: "Private/Generated/{{Camel .Module.Name}}API.cpp"
+          - source: "module/Source/moduleapi/moduleapi.Build.cs.tpl"
+            target: "{{Camel .Module.Name}}API.Build.cs"
       - match: interface
-        prefix: "Plugins/{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}/"
+        prefix: "Plugins/{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}API/"
         documents:
-          - source: "module/Source/module/Public/Generated/api/interface.h.tpl"
-            target: "Public/Generated/api/{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface.h"
-          - source: "module/Source/module/Public/Generated/api/abstract.h.tpl"
-            target: "Public/Generated/api/Abstract{{Camel .Module.Name}}{{Camel .Interface.Name}}.h"
-          - source: "module/Source/module/Private/Generated/api/abstract.cpp.tpl"
+          - source: "module/Source/moduleapi/Public/module/Generated/api/interface.h.tpl"
+            target: "Public/{{Camel .Module.Name}}/Generated/api/{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface.h"
+          - source: "module/Source/moduleapi/Public/module/Generated/api/abstract.h.tpl"
+            target: "Public/{{Camel .Module.Name}}/Generated/api/Abstract{{Camel .Module.Name}}{{Camel .Interface.Name}}.h"
+          - source: "module/Source/moduleapi/Private/Generated/api/abstract.cpp.tpl"
             target: "Private/Generated/api/Abstract{{Camel .Module.Name}}{{Camel .Interface.Name}}.cpp"
   - name: apigear_olinkproto
     scopes:
@@ -258,26 +264,36 @@ features:
     requires:
       - api
     scopes:
-      - match: interface
-        prefix: "Plugins/{{Camel .Module.Name}}/"
+      - match: module
+        prefix: "Plugins/{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}Implementation/"
         documents:
-          - source: "module/Source/module/Public/Implementation/implementation.h.tpl"
-            target: "Source/{{Camel .Module.Name}}/Public/Implementation/{{Camel .Module.Name}}{{Camel .Interface.Name}}.h"
+          - source: "module/Source/moduleimpl/Private/moduleimpl.cpp.tpl"
+            target: "Private/Generated/{{Camel .Module.Name}}Implementation.cpp"
+          - source: "module/Source/moduleimpl/Public/moduleimpl.h.tpl"
+            target: "Public/{{Camel .Module.Name}}/{{Camel .Module.Name}}Implementation.h"
+      - match: interface
+        prefix: "Plugins/{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}Implementation/"
+        documents:
+          - source: "module/Source/moduleimpl/moduleimpl.Build.cs.tpl"
+            target: "{{Camel .Module.Name}}Implementation.Build.cs"
             preserve: true
-          - source: "module/Source/module/Private/Implementation/implementation.cpp.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Implementation/{{Camel .Module.Name}}{{Camel .Interface.Name}}.cpp"
+          - source: "module/Source/moduleimpl/Public/module/Implementation/implementation.h.tpl"
+            target: "Public/{{Camel .Module.Name}}/Implementation/{{Camel .Module.Name}}{{Camel .Interface.Name}}.h"
             preserve: true
-          - source: "module/Source/module/Private/Tests/implementation.spec.h.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}Impl.spec.h"
+          - source: "module/Source/moduleimpl/Private/Implementation/implementation.cpp.tpl"
+            target: "Private/Implementation/{{Camel .Module.Name}}{{Camel .Interface.Name}}.cpp"
             preserve: true
-          - source: "module/Source/module/Private/Tests/implementation.spec.cpp.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}Impl.spec.cpp"
+          - source: "module/Source/moduleimpl/Private/Tests/implementation.spec.h.tpl"
+            target: "Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}Impl.spec.h"
             preserve: true
-          - source: "module/Source/module/Private/Tests/implementationfixture.h.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}ImplFixture.h"
+          - source: "module/Source/moduleimpl/Private/Tests/implementation.spec.cpp.tpl"
+            target: "Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}Impl.spec.cpp"
             preserve: true
-          - source: "module/Source/module/Private/Tests/implementationfixture.cpp.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}ImplFixture.cpp"
+          - source: "module/Source/moduleimpl/Private/Tests/implementationfixture.h.tpl"
+            target: "Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}ImplFixture.h"
+            preserve: true
+          - source: "module/Source/moduleimpl/Private/Tests/implementationfixture.cpp.tpl"
+            target: "Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}ImplFixture.cpp"
             preserve: true
   - name: plugin
     scopes:
@@ -297,12 +313,26 @@ features:
           - source: "module/Config/FilterPlugin.ini"
             target: "Config/FilterPlugin.ini"
             raw: true
-          - source: "module/Source/module/pluginname.uplugin.tpl"
+          - source: "module/Source/pluginname.uplugin.tpl"
             target: "{{Camel .Module.Name}}.uplugin"
-          - source: "module/Source/module/Public/pluginnamesettings.h.tpl"
-            target: "Source/{{Camel .Module.Name}}/Public/{{Camel .Module.Name}}Settings.h"
-          - source: "module/Source/module/Private/pluginnamesettings.cpp.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/{{Camel .Module.Name}}Settings.cpp"
+          - source: "module/Source/modulecore/Public/Generated/pluginfactory.h.tpl"
+            target: "Source/{{Camel .Module.Name}}Core/Public/Generated/{{Camel .Module.Name}}Factory.h"
+          - source: "module/Source/modulecore/Private/Generated/pluginfactory.cpp.tpl"
+            target: "Source/{{Camel .Module.Name}}Core/Private/Generated/{{Camel .Module.Name}}Factory.cpp"
+          - source: "module/Source/modulecore/Public/pluginnamesettings.h.tpl"
+            target: "Source/{{Camel .Module.Name}}Core/Public/{{Camel .Module.Name}}Settings.h"
+          - source: "module/Source/modulecore/Private/pluginnamesettings.cpp.tpl"
+            target: "Source/{{Camel .Module.Name}}Core/Private/{{Camel .Module.Name}}Settings.cpp"
+          - source: "module/Source/modulecore/pluginname.Build.cs.tpl"
+            target: "Source/{{Camel .Module.Name}}Core/{{Camel .Module.Name}}Core.Build.cs"
+          - source: "module/Source/modulecore/Public/pluginname.h.tpl"
+            target: "Source/{{Camel .Module.Name}}Core/Public/{{Camel .Module.Name}}Core.h"
+          - source: "module/Source/modulecore/Private/pluginname.cpp.tpl"
+            target: "Source/{{Camel .Module.Name}}Core/Private/{{Camel .Module.Name}}Core.cpp"
+          - source: "module/Source/modulecore/Public/Tests/tests_common.h.tpl"
+            target: "Source/{{Camel .Module.Name}}Core/Public/{{Camel .Module.Name}}/Tests/{{Camel .Module.Name}}TestsCommon.h"
+          - source: "module/Source/modulecore/Private/Tests/tests_common.cpp.tpl"
+            target: "Source/{{Camel .Module.Name}}Core/Private/Tests/{{Camel .Module.Name}}TestsCommon.cpp"
           - source: "module/Source/moduleeditor/Public/pluginnameconnectionsettings.h.tpl"
             target: "Source/{{Camel .Module.Name}}Editor/Public/{{Camel .Module.Name}}ConnectionSettings.h"
           - source: "module/Source/moduleeditor/Private/pluginnameconnectionsettings.cpp.tpl"
@@ -313,16 +343,6 @@ features:
             target: "Source/{{Camel .Module.Name}}Editor/Private/{{Camel .Module.Name}}Editor.cpp"
           - source: "module/Source/moduleeditor/pluginnameeditor.Build.cs.tpl"
             target: "Source/{{Camel .Module.Name}}Editor/{{Camel .Module.Name}}Editor.Build.cs"
-          - source: "module/Source/module/pluginname.Build.cs.tpl"
-            target: "Source/{{Camel .Module.Name}}/{{Camel .Module.Name}}.Build.cs"
-          - source: "module/Source/module/Public/pluginname.h.tpl"
-            target: "Source/{{Camel .Module.Name}}/Public/{{Camel .Module.Name}}.h"
-          - source: "module/Source/module/Private/pluginname.cpp.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/{{Camel .Module.Name}}.cpp"
-          - source: "module/Source/module/Private/Tests/tests_common.h.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Tests/{{Camel .Module.Name}}TestsCommon.h"
-          - source: "module/Source/module/Private/Tests/tests_common.cpp.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Tests/{{Camel .Module.Name}}TestsCommon.cpp"
   - name: monitor
     requires:
       - api
@@ -332,23 +352,25 @@ features:
       - match: module
         prefix: "Plugins/{{Camel .Module.Name}}/"
         documents:
-          - source: "module/Source/module/Private/Generated/Monitor/pluginfactory.h.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Generated/Monitor/{{Camel .Module.Name}}Factory.h"
-          - source: "module/Source/module/Private/Generated/Monitor/pluginfactory.cpp.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Generated/Monitor/{{Camel .Module.Name}}Factory.cpp"
-          - source: "module/Source/module/Private/Generated/api/json.adapter.h.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Generated/api/{{Camel .Module.Name}}.json.adapter.h"
-          - source: "module/Source/module/Private/Generated/Monitor/trace.h.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Generated/Monitor/{{Camel .Module.Name}}.trace.h"
-          - source: "module/Source/module/Private/Generated/Monitor/trace.cpp.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Generated/Monitor/{{Camel .Module.Name}}.trace.cpp"
+          - source: "module/Source/moduleapi/Private/Generated/api/json.adapter.h.tpl"
+            target: "Source/{{Camel .Module.Name}}API/Public/{{Camel .Module.Name}}/Generated/api/{{Camel .Module.Name}}.json.adapter.h"
+          - source: "module/Source/modulemonitor/Private/modulemonitor.cpp.tpl"
+            target: "Source/{{Camel .Module.Name}}Monitor/Private/Generated/{{Camel .Module.Name}}Monitor.cpp"
+          - source: "module/Source/modulemonitor/Public/modulemonitor.h.tpl"
+            target: "Source/{{Camel .Module.Name}}Monitor/Public/{{Camel .Module.Name}}/{{Camel .Module.Name}}Monitor.h"
+          - source: "module/Source/modulemonitor/Private/Generated/Monitor/trace.h.tpl"
+            target: "Source/{{Camel .Module.Name}}Monitor/Private/Generated/Monitor/{{Camel .Module.Name}}.trace.h"
+          - source: "module/Source/modulemonitor/Private/Generated/Monitor/trace.cpp.tpl"
+            target: "Source/{{Camel .Module.Name}}Monitor/Private/Generated/Monitor/{{Camel .Module.Name}}.trace.cpp"
       - match: interface
-        prefix: "Plugins/{{Camel .Module.Name}}/"
+        prefix: "Plugins/{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}Monitor/"
         documents:
-          - source: "module/Source/module/Public/Generated/Monitor/loggingdecorator.h.tpl"
-            target: "Source/{{Camel .Module.Name}}/Public/Generated/Monitor/{{Camel .Module.Name}}{{Camel .Interface.Name}}LoggingDecorator.h"
-          - source: "module/Source/module/Private/Generated/Monitor/loggingdecorator.cpp.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Generated/Monitor/{{Camel .Module.Name}}{{Camel .Interface.Name}}LoggingDecorator.cpp"
+          - source: "module/Source/modulemonitor/modulemonitor.Build.cs.tpl"
+            target: "{{Camel .Module.Name}}Monitor.Build.cs"
+          - source: "module/Source/modulemonitor/Public/Generated/Monitor/loggingdecorator.h.tpl"
+            target: "Public/Generated/Monitor/{{Camel .Module.Name}}{{Camel .Interface.Name}}LoggingDecorator.h"
+          - source: "module/Source/modulemonitor/Private/Generated/Monitor/loggingdecorator.cpp.tpl"
+            target: "Private/Generated/Monitor/{{Camel .Module.Name}}{{Camel .Interface.Name}}LoggingDecorator.cpp"
   - name: olink
     requires:
       - api
@@ -358,32 +380,38 @@ features:
       - match: module
         prefix: "Plugins/{{Camel .Module.Name}}/"
         documents:
-          - source: "module/Source/module/Private/Generated/api/json.adapter.h.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Generated/api/{{Camel .Module.Name}}.json.adapter.h"
+          - source: "module/Source/moduleapi/Private/Generated/api/json.adapter.h.tpl"
+            target: "Source/{{Camel .Module.Name}}API/Public/{{Camel .Module.Name}}OLink/Generated/api/{{Camel .Module.Name}}.json.adapter.h"
+          - source: "module/Source/moduleolink/Private/moduleolink.cpp.tpl"
+            target: "Source/{{Camel .Module.Name}}OLink/Private/Generated/{{Camel .Module.Name}}OLink.cpp"
+          - source: "module/Source/moduleolink/Public/moduleolink.h.tpl"
+            target: "Source/{{Camel .Module.Name}}OLink/Public/{{Camel .Module.Name}}/{{Camel .Module.Name}}OLink.h"
       - match: interface
-        prefix: "Plugins/{{Camel .Module.Name}}/"
+        prefix: "Plugins/{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}OLink/"
         documents:
-          - source: "module/Source/module/Public/Generated/OLink/olinkclient.h.tpl"
-            target: "Source/{{Camel .Module.Name}}/Public/Generated/OLink/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLinkClient.h"
-          - source: "module/Source/module/Private/Generated/OLink/olinkclient.cpp.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Generated/OLink/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLinkClient.cpp"
-          - source: "module/Source/module/Public/Generated/OLink/olinkadapter.h.tpl"
-            target: "Source/{{Camel .Module.Name}}/Public/Generated/OLink/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLinkAdapter.h"
-          - source: "module/Source/module/Private/Generated/OLink/olinkadapter.cpp.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Generated/OLink/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLinkAdapter.cpp"
-          - source: "module/Source/module/Private/Generated/OLink/olinksource.h.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Generated/OLink/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLinkSource.h"
-          - source: "module/Source/module/Private/Generated/OLink/olinksource.cpp.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Generated/OLink/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLinkSource.cpp"
-          - source: "module/Source/module/Private/Tests/olink.spec.h.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLink.spec.h"
+          - source: "module/Source/moduleolink/moduleolink.Build.cs.tpl"
+            target: "{{Camel .Module.Name}}OLink.Build.cs"
+          - source: "module/Source/moduleolink/Public/Generated/OLink/olinkclient.h.tpl"
+            target: "Public/Generated/OLink/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLinkClient.h"
+          - source: "module/Source/moduleolink/Private/Generated/OLink/olinkclient.cpp.tpl"
+            target: "Private/Generated/OLink/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLinkClient.cpp"
+          - source: "module/Source/moduleolink/Public/Generated/OLink/olinkadapter.h.tpl"
+            target: "Public/Generated/OLink/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLinkAdapter.h"
+          - source: "module/Source/moduleolink/Private/Generated/OLink/olinkadapter.cpp.tpl"
+            target: "Private/Generated/OLink/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLinkAdapter.cpp"
+          - source: "module/Source/moduleolink/Private/Generated/OLink/olinksource.h.tpl"
+            target: "Private/Generated/OLink/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLinkSource.h"
+          - source: "module/Source/moduleolink/Private/Generated/OLink/olinksource.cpp.tpl"
+            target: "Private/Generated/OLink/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLinkSource.cpp"
+          - source: "module/Source/moduleolink/Private/Tests/olink.spec.h.tpl"
+            target: "Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLink.spec.h"
             preserve: true
-          - source: "module/Source/module/Private/Tests/olink.spec.cpp.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLink.spec.cpp"
+          - source: "module/Source/moduleolink/Private/Tests/olink.spec.cpp.tpl"
+            target: "Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLink.spec.cpp"
             preserve: true
-          - source: "module/Source/module/Private/Tests/olinkfixture.h.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLinkFixture.h"
+          - source: "module/Source/moduleolink/Private/Tests/olinkfixture.h.tpl"
+            target: "Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLinkFixture.h"
             preserve: true
-          - source: "module/Source/module/Private/Tests/olinkfixture.cpp.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLinkFixture.cpp"
+          - source: "module/Source/moduleolink/Private/Tests/olinkfixture.cpp.tpl"
+            target: "Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLinkFixture.cpp"
             preserve: true

@@ -18,7 +18,12 @@
 	"EnabledByDefault" : true,
 	"Modules": [
 		{
-			"Name": "CustomTypes",
+			"Name": "CustomTypesAPI",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
+			"Name": "CustomTypesCore",
 			"Type": "Runtime",
 			"LoadingPhase": "default"
 		},

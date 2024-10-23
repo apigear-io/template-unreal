@@ -18,7 +18,27 @@
 	"EnabledByDefault" : true,
 	"Modules": [
 		{
-			"Name": "TbEnum",
+			"Name": "TbEnumAPI",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
+			"Name": "TbEnumCore",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
+			"Name": "TbEnumImplementation",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
+			"Name": "TbEnumOLink",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
+			"Name": "TbEnumMonitor",
 			"Type": "Runtime",
 			"LoadingPhase": "default"
 		},

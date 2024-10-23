@@ -33,7 +33,7 @@ namespace UnrealBuildTool.Rules
 			PrivateDependencyModuleNames.AddRange(
 				new string[]
 				{
-					"Testbed2"
+					"Testbed2Core"
 				}
 				);
 			}
