@@ -50,7 +50,7 @@ void Testbed2NestedStruct1InterfaceOLinkSource::setBackendService(TScriptInterfa
 	// only set if interface is implemented
 	if (InService.GetInterface() == nullptr)
 	{
-		UE_LOG(LogTestbed2NestedStruct1InterfaceOLinkSource, Error, TEXT("Cannot set backend service to %s - interface Testbed2NestedStruct1Interface is not fully implemented"), *InService.GetObject()->GetName());
+		UE_LOG(LogTestbed2NestedStruct1InterfaceOLinkSource, Error, TEXT("Cannot set backend service - interface Testbed2NestedStruct1Interface is not fully implemented"));
 		return;
 	}
 

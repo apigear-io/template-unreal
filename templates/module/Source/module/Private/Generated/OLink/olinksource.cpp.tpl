@@ -52,7 +52,7 @@ void {{$Class}}::setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{Cam
 	// only set if interface is implemented
 	if (InService.GetInterface() == nullptr)
 	{
-		UE_LOG(Log{{$Class}}, Error, TEXT("Cannot set backend service to %s - interface {{$Iface}} is not fully implemented"), *InService.GetObject()->GetName());
+		UE_LOG(Log{{$Class}}, Error, TEXT("Cannot set backend service - interface {{$Iface}} is not fully implemented"));
 		return;
 	}
 

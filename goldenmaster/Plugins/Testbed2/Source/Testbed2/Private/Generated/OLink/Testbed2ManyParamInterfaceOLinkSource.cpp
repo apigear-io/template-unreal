@@ -50,7 +50,7 @@ void Testbed2ManyParamInterfaceOLinkSource::setBackendService(TScriptInterface<I
 	// only set if interface is implemented
 	if (InService.GetInterface() == nullptr)
 	{
-		UE_LOG(LogTestbed2ManyParamInterfaceOLinkSource, Error, TEXT("Cannot set backend service to %s - interface Testbed2ManyParamInterface is not fully implemented"), *InService.GetObject()->GetName());
+		UE_LOG(LogTestbed2ManyParamInterfaceOLinkSource, Error, TEXT("Cannot set backend service - interface Testbed2ManyParamInterface is not fully implemented"));
 		return;
 	}
 

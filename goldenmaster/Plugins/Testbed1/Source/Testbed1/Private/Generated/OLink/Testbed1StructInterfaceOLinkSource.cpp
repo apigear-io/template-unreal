@@ -50,7 +50,7 @@ void Testbed1StructInterfaceOLinkSource::setBackendService(TScriptInterface<ITes
 	// only set if interface is implemented
 	if (InService.GetInterface() == nullptr)
 	{
-		UE_LOG(LogTestbed1StructInterfaceOLinkSource, Error, TEXT("Cannot set backend service to %s - interface Testbed1StructInterface is not fully implemented"), *InService.GetObject()->GetName());
+		UE_LOG(LogTestbed1StructInterfaceOLinkSource, Error, TEXT("Cannot set backend service - interface Testbed1StructInterface is not fully implemented"));
 		return;
 	}
 

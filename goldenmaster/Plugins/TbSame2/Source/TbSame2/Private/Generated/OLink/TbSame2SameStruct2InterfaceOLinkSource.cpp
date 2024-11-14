@@ -50,7 +50,7 @@ void TbSame2SameStruct2InterfaceOLinkSource::setBackendService(TScriptInterface<
 	// only set if interface is implemented
 	if (InService.GetInterface() == nullptr)
 	{
-		UE_LOG(LogTbSame2SameStruct2InterfaceOLinkSource, Error, TEXT("Cannot set backend service to %s - interface TbSame2SameStruct2Interface is not fully implemented"), *InService.GetObject()->GetName());
+		UE_LOG(LogTbSame2SameStruct2InterfaceOLinkSource, Error, TEXT("Cannot set backend service - interface TbSame2SameStruct2Interface is not fully implemented"));
 		return;
 	}
 

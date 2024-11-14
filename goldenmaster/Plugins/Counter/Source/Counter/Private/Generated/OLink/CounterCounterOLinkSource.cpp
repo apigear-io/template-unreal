@@ -52,7 +52,7 @@ void CounterCounterOLinkSource::setBackendService(TScriptInterface<ICounterCount
 	// only set if interface is implemented
 	if (InService.GetInterface() == nullptr)
 	{
-		UE_LOG(LogCounterCounterOLinkSource, Error, TEXT("Cannot set backend service to %s - interface CounterCounter is not fully implemented"), *InService.GetObject()->GetName());
+		UE_LOG(LogCounterCounterOLinkSource, Error, TEXT("Cannot set backend service - interface CounterCounter is not fully implemented"));
 		return;
 	}
 

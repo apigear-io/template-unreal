@@ -50,7 +50,7 @@ void TbEnumEnumInterfaceOLinkSource::setBackendService(TScriptInterface<ITbEnumE
 	// only set if interface is implemented
 	if (InService.GetInterface() == nullptr)
 	{
-		UE_LOG(LogTbEnumEnumInterfaceOLinkSource, Error, TEXT("Cannot set backend service to %s - interface TbEnumEnumInterface is not fully implemented"), *InService.GetObject()->GetName());
+		UE_LOG(LogTbEnumEnumInterfaceOLinkSource, Error, TEXT("Cannot set backend service - interface TbEnumEnumInterface is not fully implemented"));
 		return;
 	}
 

@@ -50,7 +50,7 @@ void TbSimpleNoSignalsInterfaceOLinkSource::setBackendService(TScriptInterface<I
 	// only set if interface is implemented
 	if (InService.GetInterface() == nullptr)
 	{
-		UE_LOG(LogTbSimpleNoSignalsInterfaceOLinkSource, Error, TEXT("Cannot set backend service to %s - interface TbSimpleNoSignalsInterface is not fully implemented"), *InService.GetObject()->GetName());
+		UE_LOG(LogTbSimpleNoSignalsInterfaceOLinkSource, Error, TEXT("Cannot set backend service - interface TbSimpleNoSignalsInterface is not fully implemented"));
 		return;
 	}
 

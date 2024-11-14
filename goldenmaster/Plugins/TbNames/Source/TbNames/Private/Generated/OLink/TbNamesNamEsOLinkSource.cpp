@@ -50,7 +50,7 @@ void TbNamesNamEsOLinkSource::setBackendService(TScriptInterface<ITbNamesNamEsIn
 	// only set if interface is implemented
 	if (InService.GetInterface() == nullptr)
 	{
-		UE_LOG(LogTbNamesNamEsOLinkSource, Error, TEXT("Cannot set backend service to %s - interface TbNamesNamEs is not fully implemented"), *InService.GetObject()->GetName());
+		UE_LOG(LogTbNamesNamEsOLinkSource, Error, TEXT("Cannot set backend service - interface TbNamesNamEs is not fully implemented"));
 		return;
 	}
 
