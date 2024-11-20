@@ -22,7 +22,6 @@ limitations under the License.
 #include "Generated/OLink/TbSimpleSimpleArrayInterfaceOLinkAdapter.h"
 #include "OLinkHost.h"
 #include "OLinkClientConnection.h" // for olink factory
-#include "TbSimpleTestsCommon.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS

@@ -18,10 +18,11 @@ limitations under the License.
 
 #include "Implementation/TbNamesNamEs.h"
 #include "TbNamesNamEsImplFixture.h"
+#include "TbNamesTestsCommon.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-BEGIN_DEFINE_SPEC(UTbNamesNamEsImplSpec, "TbNames.NamEs.Impl", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
+BEGIN_DEFINE_SPEC(UTbNamesNamEsImplSpec, "TbNames.NamEs.Impl", TbNamesTestFilterMask);
 
 TUniquePtr<FTbNamesNamEsImplFixture> ImplFixture;
 

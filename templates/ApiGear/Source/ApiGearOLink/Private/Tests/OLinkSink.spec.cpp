@@ -5,8 +5,19 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/clientregistry.h"
 THIRD_PARTY_INCLUDES_END
 #include "Misc/AutomationTest.h"
+#include "Runtime/Launch/Resources/Version.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
+
+#if (ENGINE_MAJOR_VERSION >= 5)
+#if (ENGINE_MINOR_VERSION >= 5)
+inline constexpr EAutomationTestFlags ApiGearOLinkSinkTestFilterMask = EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter;
+#else
+inline constexpr int ApiGearOLinkSinkTestFilterMask = EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter;
+#endif
+#else
+constexpr int ApiGearOLinkSinkTestFilterMask = EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter;
+#endif
 
 class MockClientNode : public ApiGear::ObjectLink::IClientNode
 {
@@ -16,7 +27,7 @@ class MockClientNode : public ApiGear::ObjectLink::IClientNode
 	void setRemoteProperty(const std::string&, const nlohmann::json&){};
 };
 
-BEGIN_DEFINE_SPEC(UOLinkSinkSpec, "ApiGear.OLink.Sink", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
+BEGIN_DEFINE_SPEC(UOLinkSinkSpec, "ApiGear.OLink.Sink", ApiGearOLinkSinkTestFilterMask);
 
 TUniquePtr<FOLinkSinkFixture> Fixture;
 

@@ -17,9 +17,21 @@ limitations under the License.
 #pragma once
 
 #include "Generated/api/CustomTypes_data.h"
+#include "Runtime/Launch/Resources/Version.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
+
+#if (ENGINE_MAJOR_VERSION >= 5)
+#if (ENGINE_MINOR_VERSION >= 5)
+inline constexpr EAutomationTestFlags CustomTypesTestFilterMask = EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter;
+#else
+inline constexpr int CustomTypesTestFilterMask = EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter;
+#endif
+#else
+constexpr int CustomTypesTestFilterMask = EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter;
+#endif
+
 FCustomTypesVector3D CUSTOMTYPES_API createTestFCustomTypesVector3D();
 
 TArray<FCustomTypesVector3D> CUSTOMTYPES_API createTestFCustomTypesVector3DArray();

@@ -8,11 +8,12 @@
 #pragma once
 
 #include "Generated/OLink/{{$Iface}}OLinkClient.h"
+#include "{{$ModuleName}}TestsCommon.h"
 #include "{{$DisplayName}}OLinkFixture.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-BEGIN_DEFINE_SPEC({{$Class}}OLinkSpec, "{{$ModuleName}}.{{$IfaceName}}.OLink", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
+BEGIN_DEFINE_SPEC({{$Class}}OLinkSpec, "{{$ModuleName}}.{{$IfaceName}}.OLink", {{$ModuleName}}TestFilterMask);
 
 TUniquePtr<F{{$DisplayName}}OLinkFixture> ImplFixture;
 

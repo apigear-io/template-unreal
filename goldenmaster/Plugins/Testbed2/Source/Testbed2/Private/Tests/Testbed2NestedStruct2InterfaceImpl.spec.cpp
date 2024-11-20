@@ -18,7 +18,6 @@ limitations under the License.
 #include "Testbed2NestedStruct2InterfaceImpl.spec.h"
 #include "Implementation/Testbed2NestedStruct2Interface.h"
 #include "Testbed2NestedStruct2InterfaceImplFixture.h"
-#include "Testbed2TestsCommon.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS

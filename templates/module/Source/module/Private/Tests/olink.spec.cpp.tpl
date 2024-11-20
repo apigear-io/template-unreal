@@ -13,7 +13,6 @@
 #include "Generated/OLink/{{$DisplayName}}OLinkAdapter.h"
 #include "OLinkHost.h"
 #include "OLinkClientConnection.h" // for olink factory
-#include "{{$ModuleName}}TestsCommon.h"
 {{- range .Module.Imports }}
 #include "{{Camel .Name}}/Private/Tests/{{Camel .Name}}TestsCommon.h"
 {{- end }}

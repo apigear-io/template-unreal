@@ -22,7 +22,6 @@ limitations under the License.
 #include "Generated/OLink/Testbed1StructInterfaceOLinkAdapter.h"
 #include "OLinkHost.h"
 #include "OLinkClientConnection.h" // for olink factory
-#include "Testbed1TestsCommon.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS

@@ -17,11 +17,12 @@ limitations under the License.
 #pragma once
 
 #include "Generated/OLink/TbSimpleEmptyInterfaceOLinkClient.h"
+#include "TbSimpleTestsCommon.h"
 #include "TbSimpleEmptyInterfaceOLinkFixture.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-BEGIN_DEFINE_SPEC(UTbSimpleEmptyInterfaceOLinkSpec, "TbSimple.EmptyInterface.OLink", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
+BEGIN_DEFINE_SPEC(UTbSimpleEmptyInterfaceOLinkSpec, "TbSimple.EmptyInterface.OLink", TbSimpleTestFilterMask);
 
 TUniquePtr<FTbSimpleEmptyInterfaceOLinkFixture> ImplFixture;
 

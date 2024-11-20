@@ -18,10 +18,11 @@ limitations under the License.
 
 #include "Implementation/TbEnumEnumInterface.h"
 #include "TbEnumEnumInterfaceImplFixture.h"
+#include "TbEnumTestsCommon.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-BEGIN_DEFINE_SPEC(UTbEnumEnumInterfaceImplSpec, "TbEnum.EnumInterface.Impl", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
+BEGIN_DEFINE_SPEC(UTbEnumEnumInterfaceImplSpec, "TbEnum.EnumInterface.Impl", TbEnumTestFilterMask);
 
 TUniquePtr<FTbEnumEnumInterfaceImplFixture> ImplFixture;
 

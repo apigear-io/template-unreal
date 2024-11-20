@@ -18,7 +18,6 @@ limitations under the License.
 #include "Testbed1StructInterfaceImpl.spec.h"
 #include "Implementation/Testbed1StructInterface.h"
 #include "Testbed1StructInterfaceImplFixture.h"
-#include "Testbed1TestsCommon.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS

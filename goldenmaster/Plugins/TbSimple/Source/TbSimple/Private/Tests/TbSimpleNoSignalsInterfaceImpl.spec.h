@@ -18,10 +18,11 @@ limitations under the License.
 
 #include "Implementation/TbSimpleNoSignalsInterface.h"
 #include "TbSimpleNoSignalsInterfaceImplFixture.h"
+#include "TbSimpleTestsCommon.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-BEGIN_DEFINE_SPEC(UTbSimpleNoSignalsInterfaceImplSpec, "TbSimple.NoSignalsInterface.Impl", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
+BEGIN_DEFINE_SPEC(UTbSimpleNoSignalsInterfaceImplSpec, "TbSimple.NoSignalsInterface.Impl", TbSimpleTestFilterMask);
 
 TUniquePtr<FTbSimpleNoSignalsInterfaceImplFixture> ImplFixture;
 

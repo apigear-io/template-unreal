@@ -17,9 +17,21 @@ limitations under the License.
 #pragma once
 
 #include "Generated/api/TbSame2_data.h"
+#include "Runtime/Launch/Resources/Version.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
+
+#if (ENGINE_MAJOR_VERSION >= 5)
+#if (ENGINE_MINOR_VERSION >= 5)
+inline constexpr EAutomationTestFlags TbSame2TestFilterMask = EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter;
+#else
+inline constexpr int TbSame2TestFilterMask = EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter;
+#endif
+#else
+constexpr int TbSame2TestFilterMask = EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter;
+#endif
+
 FTbSame2Struct1 TBSAME2_API createTestFTbSame2Struct1();
 
 TArray<FTbSame2Struct1> TBSAME2_API createTestFTbSame2Struct1Array();

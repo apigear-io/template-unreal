@@ -18,7 +18,6 @@ limitations under the License.
 #include "CounterCounterImpl.spec.h"
 #include "Implementation/CounterCounter.h"
 #include "CounterCounterImplFixture.h"
-#include "CounterTestsCommon.h"
 #include "CustomTypes/Private/Tests/CustomTypesTestsCommon.h"
 #include "ExternTypes/Private/Tests/ExternTypesTestsCommon.h"
 #include "Misc/AutomationTest.h"

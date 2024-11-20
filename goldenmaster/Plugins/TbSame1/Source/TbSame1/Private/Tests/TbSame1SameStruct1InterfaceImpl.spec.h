@@ -18,10 +18,11 @@ limitations under the License.
 
 #include "Implementation/TbSame1SameStruct1Interface.h"
 #include "TbSame1SameStruct1InterfaceImplFixture.h"
+#include "TbSame1TestsCommon.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-BEGIN_DEFINE_SPEC(UTbSame1SameStruct1InterfaceImplSpec, "TbSame1.SameStruct1Interface.Impl", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
+BEGIN_DEFINE_SPEC(UTbSame1SameStruct1InterfaceImplSpec, "TbSame1.SameStruct1Interface.Impl", TbSame1TestFilterMask);
 
 TUniquePtr<FTbSame1SameStruct1InterfaceImplFixture> ImplFixture;
 

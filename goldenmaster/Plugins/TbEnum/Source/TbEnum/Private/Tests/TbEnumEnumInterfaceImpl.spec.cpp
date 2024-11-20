@@ -18,7 +18,6 @@ limitations under the License.
 #include "TbEnumEnumInterfaceImpl.spec.h"
 #include "Implementation/TbEnumEnumInterface.h"
 #include "TbEnumEnumInterfaceImplFixture.h"
-#include "TbEnumTestsCommon.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS

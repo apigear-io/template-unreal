@@ -18,10 +18,11 @@ limitations under the License.
 
 #include "Implementation/CounterCounter.h"
 #include "CounterCounterImplFixture.h"
+#include "CounterTestsCommon.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-BEGIN_DEFINE_SPEC(UCounterCounterImplSpec, "Counter.Counter.Impl", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
+BEGIN_DEFINE_SPEC(UCounterCounterImplSpec, "Counter.Counter.Impl", CounterTestFilterMask);
 
 TUniquePtr<FCounterCounterImplFixture> ImplFixture;
 

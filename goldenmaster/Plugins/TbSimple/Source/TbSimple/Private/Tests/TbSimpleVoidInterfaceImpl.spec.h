@@ -18,10 +18,11 @@ limitations under the License.
 
 #include "Implementation/TbSimpleVoidInterface.h"
 #include "TbSimpleVoidInterfaceImplFixture.h"
+#include "TbSimpleTestsCommon.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-BEGIN_DEFINE_SPEC(UTbSimpleVoidInterfaceImplSpec, "TbSimple.VoidInterface.Impl", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
+BEGIN_DEFINE_SPEC(UTbSimpleVoidInterfaceImplSpec, "TbSimple.VoidInterface.Impl", TbSimpleTestFilterMask);
 
 TUniquePtr<FTbSimpleVoidInterfaceImplFixture> ImplFixture;
 

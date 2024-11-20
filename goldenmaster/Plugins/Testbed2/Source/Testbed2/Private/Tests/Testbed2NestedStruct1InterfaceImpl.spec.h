@@ -18,10 +18,11 @@ limitations under the License.
 
 #include "Implementation/Testbed2NestedStruct1Interface.h"
 #include "Testbed2NestedStruct1InterfaceImplFixture.h"
+#include "Testbed2TestsCommon.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-BEGIN_DEFINE_SPEC(UTestbed2NestedStruct1InterfaceImplSpec, "Testbed2.NestedStruct1Interface.Impl", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
+BEGIN_DEFINE_SPEC(UTestbed2NestedStruct1InterfaceImplSpec, "Testbed2.NestedStruct1Interface.Impl", Testbed2TestFilterMask);
 
 TUniquePtr<FTestbed2NestedStruct1InterfaceImplFixture> ImplFixture;
 

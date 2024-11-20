@@ -17,11 +17,12 @@ limitations under the License.
 #pragma once
 
 #include "Generated/OLink/TbSimpleNoOperationsInterfaceOLinkClient.h"
+#include "TbSimpleTestsCommon.h"
 #include "TbSimpleNoOperationsInterfaceOLinkFixture.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-BEGIN_DEFINE_SPEC(UTbSimpleNoOperationsInterfaceOLinkSpec, "TbSimple.NoOperationsInterface.OLink", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
+BEGIN_DEFINE_SPEC(UTbSimpleNoOperationsInterfaceOLinkSpec, "TbSimple.NoOperationsInterface.OLink", TbSimpleTestFilterMask);
 
 TUniquePtr<FTbSimpleNoOperationsInterfaceOLinkFixture> ImplFixture;
 

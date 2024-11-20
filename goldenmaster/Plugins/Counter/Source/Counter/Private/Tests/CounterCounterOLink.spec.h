@@ -17,11 +17,12 @@ limitations under the License.
 #pragma once
 
 #include "Generated/OLink/CounterCounterOLinkClient.h"
+#include "CounterTestsCommon.h"
 #include "CounterCounterOLinkFixture.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-BEGIN_DEFINE_SPEC(UCounterCounterOLinkSpec, "Counter.Counter.OLink", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
+BEGIN_DEFINE_SPEC(UCounterCounterOLinkSpec, "Counter.Counter.OLink", CounterTestFilterMask);
 
 TUniquePtr<FCounterCounterOLinkFixture> ImplFixture;
 

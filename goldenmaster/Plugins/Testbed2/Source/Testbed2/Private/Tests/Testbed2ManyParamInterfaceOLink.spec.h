@@ -17,11 +17,12 @@ limitations under the License.
 #pragma once
 
 #include "Generated/OLink/Testbed2ManyParamInterfaceOLinkClient.h"
+#include "Testbed2TestsCommon.h"
 #include "Testbed2ManyParamInterfaceOLinkFixture.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-BEGIN_DEFINE_SPEC(UTestbed2ManyParamInterfaceOLinkSpec, "Testbed2.ManyParamInterface.OLink", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
+BEGIN_DEFINE_SPEC(UTestbed2ManyParamInterfaceOLinkSpec, "Testbed2.ManyParamInterface.OLink", Testbed2TestFilterMask);
 
 TUniquePtr<FTestbed2ManyParamInterfaceOLinkFixture> ImplFixture;
 

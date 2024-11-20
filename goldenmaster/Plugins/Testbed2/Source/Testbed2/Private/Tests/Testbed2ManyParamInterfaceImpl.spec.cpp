@@ -18,7 +18,6 @@ limitations under the License.
 #include "Testbed2ManyParamInterfaceImpl.spec.h"
 #include "Implementation/Testbed2ManyParamInterface.h"
 #include "Testbed2ManyParamInterfaceImplFixture.h"
-#include "Testbed2TestsCommon.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS

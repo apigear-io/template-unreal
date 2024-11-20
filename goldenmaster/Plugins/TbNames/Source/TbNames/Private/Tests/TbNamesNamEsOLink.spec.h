@@ -17,11 +17,12 @@ limitations under the License.
 #pragma once
 
 #include "Generated/OLink/TbNamesNamEsOLinkClient.h"
+#include "TbNamesTestsCommon.h"
 #include "TbNamesNamEsOLinkFixture.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-BEGIN_DEFINE_SPEC(UTbNamesNamEsOLinkSpec, "TbNames.NamEs.OLink", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
+BEGIN_DEFINE_SPEC(UTbNamesNamEsOLinkSpec, "TbNames.NamEs.OLink", TbNamesTestFilterMask);
 
 TUniquePtr<FTbNamesNamEsOLinkFixture> ImplFixture;
 

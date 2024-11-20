@@ -9,10 +9,11 @@
 
 #include "Implementation/{{$Iface}}.h"
 #include "{{$DisplayName}}ImplFixture.h"
+#include "{{$ModuleName}}TestsCommon.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-BEGIN_DEFINE_SPEC({{$Class}}ImplSpec, "{{$ModuleName}}.{{$IfaceName}}.Impl", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
+BEGIN_DEFINE_SPEC({{$Class}}ImplSpec, "{{$ModuleName}}.{{$IfaceName}}.Impl", {{$ModuleName}}TestFilterMask);
 
 TUniquePtr<F{{$DisplayName}}ImplFixture> ImplFixture;
 

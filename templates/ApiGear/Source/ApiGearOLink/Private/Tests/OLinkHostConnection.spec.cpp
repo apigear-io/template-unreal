@@ -10,6 +10,16 @@ THIRD_PARTY_INCLUDES_END
 #include "Misc/AutomationTest.h"
 #include "Runtime/Launch/Resources/Version.h"
 
+#if (ENGINE_MAJOR_VERSION >= 5)
+#if (ENGINE_MINOR_VERSION >= 5)
+inline constexpr EAutomationTestFlags ApiGearOLinkHostConnTestFilterMask = EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter;
+#else
+inline constexpr int ApiGearOLinkHostConnTestFilterMask = EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter;
+#endif
+#else
+constexpr int ApiGearOLinkHostConnTestFilterMask = EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter;
+#endif
+
 #if WITH_DEV_AUTOMATION_TESTS
 
 class MockNetworkingWebSocket : public INetworkingWebSocket
@@ -89,7 +99,7 @@ private:
 	FunctionCallback FunctionCB;
 };
 
-BEGIN_DEFINE_SPEC(UOLinkHostConnectionSpec, "ApiGear.OLink.HostConnection", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
+BEGIN_DEFINE_SPEC(UOLinkHostConnectionSpec, "ApiGear.OLink.HostConnection", ApiGearOLinkHostConnTestFilterMask);
 
 TUniquePtr<FOLinkHostConnectionFixture> Fixture;
 

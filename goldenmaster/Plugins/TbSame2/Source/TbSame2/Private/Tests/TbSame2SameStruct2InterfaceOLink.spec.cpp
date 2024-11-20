@@ -22,7 +22,6 @@ limitations under the License.
 #include "Generated/OLink/TbSame2SameStruct2InterfaceOLinkAdapter.h"
 #include "OLinkHost.h"
 #include "OLinkClientConnection.h" // for olink factory
-#include "TbSame2TestsCommon.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS

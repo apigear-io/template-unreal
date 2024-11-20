@@ -18,10 +18,11 @@ limitations under the License.
 
 #include "Implementation/Testbed1StructArrayInterface.h"
 #include "Testbed1StructArrayInterfaceImplFixture.h"
+#include "Testbed1TestsCommon.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-BEGIN_DEFINE_SPEC(UTestbed1StructArrayInterfaceImplSpec, "Testbed1.StructArrayInterface.Impl", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
+BEGIN_DEFINE_SPEC(UTestbed1StructArrayInterfaceImplSpec, "Testbed1.StructArrayInterface.Impl", Testbed1TestFilterMask);
 
 TUniquePtr<FTestbed1StructArrayInterfaceImplFixture> ImplFixture;
 

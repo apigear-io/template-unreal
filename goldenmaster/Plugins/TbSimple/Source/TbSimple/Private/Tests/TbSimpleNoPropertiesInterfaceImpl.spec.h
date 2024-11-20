@@ -18,10 +18,11 @@ limitations under the License.
 
 #include "Implementation/TbSimpleNoPropertiesInterface.h"
 #include "TbSimpleNoPropertiesInterfaceImplFixture.h"
+#include "TbSimpleTestsCommon.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-BEGIN_DEFINE_SPEC(UTbSimpleNoPropertiesInterfaceImplSpec, "TbSimple.NoPropertiesInterface.Impl", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
+BEGIN_DEFINE_SPEC(UTbSimpleNoPropertiesInterfaceImplSpec, "TbSimple.NoPropertiesInterface.Impl", TbSimpleTestFilterMask);
 
 TUniquePtr<FTbSimpleNoPropertiesInterfaceImplFixture> ImplFixture;
 

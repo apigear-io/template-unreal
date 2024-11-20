@@ -17,11 +17,12 @@ limitations under the License.
 #pragma once
 
 #include "Generated/OLink/TbSame2SameEnum1InterfaceOLinkClient.h"
+#include "TbSame2TestsCommon.h"
 #include "TbSame2SameEnum1InterfaceOLinkFixture.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-BEGIN_DEFINE_SPEC(UTbSame2SameEnum1InterfaceOLinkSpec, "TbSame2.SameEnum1Interface.OLink", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
+BEGIN_DEFINE_SPEC(UTbSame2SameEnum1InterfaceOLinkSpec, "TbSame2.SameEnum1Interface.OLink", TbSame2TestFilterMask);
 
 TUniquePtr<FTbSame2SameEnum1InterfaceOLinkFixture> ImplFixture;
 

@@ -18,10 +18,11 @@ limitations under the License.
 
 #include "Implementation/TbSimpleSimpleArrayInterface.h"
 #include "TbSimpleSimpleArrayInterfaceImplFixture.h"
+#include "TbSimpleTestsCommon.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-BEGIN_DEFINE_SPEC(UTbSimpleSimpleArrayInterfaceImplSpec, "TbSimple.SimpleArrayInterface.Impl", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
+BEGIN_DEFINE_SPEC(UTbSimpleSimpleArrayInterfaceImplSpec, "TbSimple.SimpleArrayInterface.Impl", TbSimpleTestFilterMask);
 
 TUniquePtr<FTbSimpleSimpleArrayInterfaceImplFixture> ImplFixture;
 

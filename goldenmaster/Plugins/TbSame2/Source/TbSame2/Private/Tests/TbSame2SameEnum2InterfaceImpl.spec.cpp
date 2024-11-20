@@ -18,7 +18,6 @@ limitations under the License.
 #include "TbSame2SameEnum2InterfaceImpl.spec.h"
 #include "Implementation/TbSame2SameEnum2Interface.h"
 #include "TbSame2SameEnum2InterfaceImplFixture.h"
-#include "TbSame2TestsCommon.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS

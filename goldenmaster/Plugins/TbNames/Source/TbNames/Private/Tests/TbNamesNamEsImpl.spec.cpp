@@ -18,7 +18,6 @@ limitations under the License.
 #include "TbNamesNamEsImpl.spec.h"
 #include "Implementation/TbNamesNamEs.h"
 #include "TbNamesNamEsImplFixture.h"
-#include "TbNamesTestsCommon.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS

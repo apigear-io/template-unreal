@@ -22,7 +22,6 @@ limitations under the License.
 #include "Generated/OLink/CounterCounterOLinkAdapter.h"
 #include "OLinkHost.h"
 #include "OLinkClientConnection.h" // for olink factory
-#include "CounterTestsCommon.h"
 #include "CustomTypes/Private/Tests/CustomTypesTestsCommon.h"
 #include "ExternTypes/Private/Tests/ExternTypesTestsCommon.h"
 #include "Misc/AutomationTest.h"

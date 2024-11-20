@@ -18,7 +18,6 @@ limitations under the License.
 #include "Testbed1StructArrayInterfaceImpl.spec.h"
 #include "Implementation/Testbed1StructArrayInterface.h"
 #include "Testbed1StructArrayInterfaceImplFixture.h"
-#include "Testbed1TestsCommon.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS

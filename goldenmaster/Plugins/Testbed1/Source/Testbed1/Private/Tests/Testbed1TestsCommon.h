@@ -17,9 +17,21 @@ limitations under the License.
 #pragma once
 
 #include "Generated/api/Testbed1_data.h"
+#include "Runtime/Launch/Resources/Version.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
+
+#if (ENGINE_MAJOR_VERSION >= 5)
+#if (ENGINE_MINOR_VERSION >= 5)
+inline constexpr EAutomationTestFlags Testbed1TestFilterMask = EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter;
+#else
+inline constexpr int Testbed1TestFilterMask = EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter;
+#endif
+#else
+constexpr int Testbed1TestFilterMask = EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter;
+#endif
+
 FTestbed1StructBool TESTBED1_API createTestFTestbed1StructBool();
 
 TArray<FTestbed1StructBool> TESTBED1_API createTestFTestbed1StructBoolArray();

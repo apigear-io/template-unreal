@@ -18,7 +18,6 @@ limitations under the License.
 #include "TbSimpleSimpleArrayInterfaceImpl.spec.h"
 #include "Implementation/TbSimpleSimpleArrayInterface.h"
 #include "TbSimpleSimpleArrayInterfaceImplFixture.h"
-#include "TbSimpleTestsCommon.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS

@@ -18,7 +18,6 @@ limitations under the License.
 #include "TbSame2SameStruct1InterfaceImpl.spec.h"
 #include "Implementation/TbSame2SameStruct1Interface.h"
 #include "TbSame2SameStruct1InterfaceImplFixture.h"
-#include "TbSame2TestsCommon.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS

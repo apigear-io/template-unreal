@@ -18,7 +18,6 @@ limitations under the License.
 #include "TbSame1SameEnum1InterfaceImpl.spec.h"
 #include "Implementation/TbSame1SameEnum1Interface.h"
 #include "TbSame1SameEnum1InterfaceImplFixture.h"
-#include "TbSame1TestsCommon.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS

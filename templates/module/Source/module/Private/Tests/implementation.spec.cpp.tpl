@@ -9,7 +9,6 @@
 #include "{{$DisplayName}}Impl.spec.h"
 #include "Implementation/{{$Iface}}.h"
 #include "{{$DisplayName}}ImplFixture.h"
-#include "{{$ModuleName}}TestsCommon.h"
 {{- range .Module.Imports }}
 #include "{{Camel .Name}}/Private/Tests/{{Camel .Name}}TestsCommon.h"
 {{- end }}
