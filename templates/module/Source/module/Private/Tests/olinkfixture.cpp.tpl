@@ -8,11 +8,11 @@
 #include "{{$DisplayName}}OLink.spec.h"
 #include "Generated/OLink/{{$DisplayName}}OLinkClient.h"
 #include "Generated/OLink/{{$DisplayName}}OLinkAdapter.h"
-#include "OLinkHost.h"
 #include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
 
-#if WITH_DEV_AUTOMATION_TESTS
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#include "OLinkHost.h"
 
 void {{$Class}}OLinkHelper::SetSpec({{$Class}}OLinkSpec* InSpec)
 {
@@ -91,7 +91,7 @@ void F{{ $DisplayName }}OLinkFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
-#else  // WITH_DEV_AUTOMATION_TESTS
+#else  // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
 // create empty implementation in case we do not want to do automated testing
 void {{$Class}}OLinkHelper::SetSpec({{$Class}}OLinkSpec* /* InSpec */)
 {
@@ -121,4 +121,4 @@ void {{$Class}}OLinkHelper::_SubscriptionStatusChangedCb(bool bSubscribed)
 {
 	(void)bSubscribed;
 }
-#endif // WITH_DEV_AUTOMATION_TESTS
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

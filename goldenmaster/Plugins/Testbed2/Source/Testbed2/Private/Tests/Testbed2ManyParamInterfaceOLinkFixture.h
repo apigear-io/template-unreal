@@ -8,6 +8,7 @@
 #include "UObject/Object.h"
 #include "UObject/NoExportTypes.h"
 #include "Generated/api/Testbed2_data.h"
+#include "HAL/Platform.h"
 #include "Testbed2ManyParamInterfaceOLinkFixture.generated.h"
 
 class UTestbed2ManyParamInterfaceOLinkSpec;
@@ -55,7 +56,7 @@ protected:
 	UTestbed2ManyParamInterfaceOLinkSpec* Spec;
 };
 
-#if WITH_DEV_AUTOMATION_TESTS
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
 
 class FTestbed2ManyParamInterfaceOLinkFixture
 {
@@ -78,4 +79,4 @@ private:
 	TSoftObjectPtr<UTestbed2ManyParamInterfaceOLinkHelper> Helper;
 };
 
-#endif // WITH_DEV_AUTOMATION_TESTS
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

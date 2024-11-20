@@ -8,6 +8,7 @@
 #include "UObject/Object.h"
 #include "UObject/NoExportTypes.h"
 #include "Generated/api/Counter_data.h"
+#include "HAL/Platform.h"
 #include "CounterCounterOLinkFixture.generated.h"
 
 class UCounterCounterOLinkSpec;
@@ -40,7 +41,7 @@ protected:
 	UCounterCounterOLinkSpec* Spec;
 };
 
-#if WITH_DEV_AUTOMATION_TESTS
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
 
 class FCounterCounterOLinkFixture
 {
@@ -63,4 +64,4 @@ private:
 	TSoftObjectPtr<UCounterCounterOLinkHelper> Helper;
 };
 
-#endif // WITH_DEV_AUTOMATION_TESTS
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

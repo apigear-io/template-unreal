@@ -32,6 +32,8 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/iobjectsource.h"
 THIRD_PARTY_INCLUDES_END
 #include "Testbed2NestedStruct1InterfaceOLinkSource.h"
+#include "HAL/Platform.h"
+#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 
 using namespace ApiGear::ObjectLink;
 UTestbed2NestedStruct1InterfaceOLinkAdapter::UTestbed2NestedStruct1InterfaceOLinkAdapter()
@@ -98,3 +100,36 @@ void UTestbed2NestedStruct1InterfaceOLinkAdapter::setOLinkHost(TSoftObjectPtr<UO
 	// register source to host registry
 	Registry->addSource(Source);
 }
+#else  // !(PLATFORM_IOS || PLATFORM_ANDROID)
+
+UTestbed2NestedStruct1InterfaceOLinkAdapter::UTestbed2NestedStruct1InterfaceOLinkAdapter()
+	: Source(std::make_shared<Testbed2NestedStruct1InterfaceOLinkSource>())
+{
+}
+
+void UTestbed2NestedStruct1InterfaceOLinkAdapter::Initialize(FSubsystemCollectionBase& Collection)
+{
+	Super::Initialize(Collection);
+}
+
+void UTestbed2NestedStruct1InterfaceOLinkAdapter::Deinitialize()
+{
+	Super::Deinitialize();
+}
+
+void UTestbed2NestedStruct1InterfaceOLinkAdapter::setBackendService(TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> InService)
+{
+}
+
+void UTestbed2NestedStruct1InterfaceOLinkAdapter::OnSig1(const FTestbed2NestedStruct1& Param1)
+{
+}
+
+void UTestbed2NestedStruct1InterfaceOLinkAdapter::OnProp1Changed(const FTestbed2NestedStruct1& InProp1)
+{
+}
+
+void UTestbed2NestedStruct1InterfaceOLinkAdapter::setOLinkHost(TSoftObjectPtr<UOLinkHost> InHost)
+{
+}
+#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

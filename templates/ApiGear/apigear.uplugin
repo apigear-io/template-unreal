@@ -18,7 +18,8 @@
 	"Plugins": [
 		{
 			"Name": "WebSocketNetworking",
-			"Enabled": true
+			"Enabled": true,
+			"WhitelistPlatforms" : [ "Win64", "Mac", "Linux" ]
 		}
 	],
 	"Modules": [

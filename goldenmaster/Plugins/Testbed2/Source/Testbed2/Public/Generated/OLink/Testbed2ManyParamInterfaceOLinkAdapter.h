@@ -18,8 +18,17 @@ limitations under the License.
 
 #include "Generated/api/Testbed2ManyParamInterfaceInterface.h"
 #include "Subsystems/GameInstanceSubsystem.h"
-#include "OLinkHost.h"
+#include <memory>
 #include "Testbed2ManyParamInterfaceOLinkAdapter.generated.h"
+
+class UOLinkHost;
+namespace ApiGear
+{
+namespace ObjectLink
+{
+class RemoteRegistry;
+}
+} // namespace ApiGear
 
 /// @brief handles the adaption between the service implementation and the OLink protocol
 /// takes an object of the type ITestbed2ManyParamInterfaceInterface

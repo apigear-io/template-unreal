@@ -18,11 +18,11 @@ limitations under the License.
 #include "TbSimpleSimpleInterfaceOLink.spec.h"
 #include "Generated/OLink/TbSimpleSimpleInterfaceOLinkClient.h"
 #include "Generated/OLink/TbSimpleSimpleInterfaceOLinkAdapter.h"
-#include "OLinkHost.h"
 #include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
 
-#if WITH_DEV_AUTOMATION_TESTS
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#include "OLinkHost.h"
 
 void UTbSimpleSimpleInterfaceOLinkHelper::SetSpec(UTbSimpleSimpleInterfaceOLinkSpec* InSpec)
 {
@@ -163,7 +163,7 @@ void FTbSimpleSimpleInterfaceOLinkFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
-#else  // WITH_DEV_AUTOMATION_TESTS
+#else  // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
 // create empty implementation in case we do not want to do automated testing
 void UTbSimpleSimpleInterfaceOLinkHelper::SetSpec(UTbSimpleSimpleInterfaceOLinkSpec* /* InSpec */)
 {
@@ -253,4 +253,4 @@ void UTbSimpleSimpleInterfaceOLinkHelper::_SubscriptionStatusChangedCb(bool bSub
 {
 	(void)bSubscribed;
 }
-#endif // WITH_DEV_AUTOMATION_TESTS
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

@@ -25,6 +25,8 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/iobjectsource.h"
 THIRD_PARTY_INCLUDES_END
 #include "{{$Iface}}OLinkSource.h"
+#include "HAL/Platform.h"
+#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 
 using namespace ApiGear::ObjectLink;
 
@@ -114,3 +116,40 @@ void {{$Class}}::setOLinkHost(TSoftObjectPtr<UOLinkHost> InHost)
 	// register source to host registry
 	Registry->addSource(Source);
 }
+#else  // !(PLATFORM_IOS || PLATFORM_ANDROID)
+
+{{$Class}}::{{$Class}}()
+	: Source(std::make_shared<{{$Iface}}OLinkSource>())
+{
+}
+
+void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
+{
+	Super::Initialize(Collection);
+}
+
+void {{$Class}}::Deinitialize()
+{
+	Super::Deinitialize();
+}
+
+void {{$Class}}::setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface> InService)
+{
+}
+{{- range .Interface.Signals }}
+
+void {{$Class}}::On{{Camel .Name}}({{ueParams "" .Params}})
+{
+}
+{{- end }}
+{{- range .Interface.Properties }}
+
+void {{$Class}}::On{{Camel .Name}}Changed({{ueParam "In" .}})
+{
+}
+{{- end }}
+
+void {{$Class}}::setOLinkHost(TSoftObjectPtr<UOLinkHost> InHost)
+{
+}
+#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

@@ -8,6 +8,7 @@
 #include "UObject/Object.h"
 #include "UObject/NoExportTypes.h"
 #include "Generated/api/TbSame2_data.h"
+#include "HAL/Platform.h"
 #include "TbSame2SameEnum1InterfaceOLinkFixture.generated.h"
 
 class UTbSame2SameEnum1InterfaceOLinkSpec;
@@ -37,7 +38,7 @@ protected:
 	UTbSame2SameEnum1InterfaceOLinkSpec* Spec;
 };
 
-#if WITH_DEV_AUTOMATION_TESTS
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
 
 class FTbSame2SameEnum1InterfaceOLinkFixture
 {
@@ -60,4 +61,4 @@ private:
 	TSoftObjectPtr<UTbSame2SameEnum1InterfaceOLinkHelper> Helper;
 };
 
-#endif // WITH_DEV_AUTOMATION_TESTS
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

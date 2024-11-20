@@ -12,6 +12,7 @@
 #include "UObject/Object.h"
 #include "UObject/NoExportTypes.h"
 #include "Generated/api/{{$ModuleName}}_data.h"
+#include "HAL/Platform.h"
 #include "{{$DisplayName}}OLinkFixture.generated.h"
 
 class {{$Class}}OLinkSpec;
@@ -47,7 +48,7 @@ protected:
 	{{$Class}}OLinkSpec* Spec;
 };
 
-#if WITH_DEV_AUTOMATION_TESTS
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
 
 class F{{ $DisplayName }}OLinkFixture
 {
@@ -70,4 +71,4 @@ private:
 	TSoftObjectPtr<{{$Class}}OLinkHelper> Helper;
 };
 
-#endif // WITH_DEV_AUTOMATION_TESTS
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

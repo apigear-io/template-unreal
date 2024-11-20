@@ -21,6 +21,8 @@ limitations under the License.
 ///////////////////////////////
 
 #include "TbSimpleSimpleInterfaceOLinkSource.h"
+#include "HAL/Platform.h"
+#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #include "Async/Future.h"
 #include "Async/Async.h"
 #include "Generated/api/TbSimple.json.adapter.h"
@@ -438,3 +440,4 @@ nlohmann::json TbSimpleSimpleInterfaceOLinkSource::olinkCollectProperties()
 		{"propFloat64", BackendService->Execute_GetPropFloat64(BackendService.GetObject())},
 		{"propString", BackendService->Execute_GetPropString(BackendService.GetObject())}});
 }
+#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

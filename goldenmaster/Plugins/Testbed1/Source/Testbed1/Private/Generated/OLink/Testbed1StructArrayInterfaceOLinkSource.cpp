@@ -21,6 +21,8 @@ limitations under the License.
 ///////////////////////////////
 
 #include "Testbed1StructArrayInterfaceOLinkSource.h"
+#include "HAL/Platform.h"
+#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #include "Async/Future.h"
 #include "Async/Async.h"
 #include "Generated/api/Testbed1.json.adapter.h"
@@ -268,3 +270,4 @@ nlohmann::json Testbed1StructArrayInterfaceOLinkSource::olinkCollectProperties()
 		{"propFloat", BackendService->Execute_GetPropFloat(BackendService.GetObject())},
 		{"propString", BackendService->Execute_GetPropString(BackendService.GetObject())}});
 }
+#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

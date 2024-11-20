@@ -18,11 +18,11 @@ limitations under the License.
 #include "TbSame2SameStruct2InterfaceOLink.spec.h"
 #include "Generated/OLink/TbSame2SameStruct2InterfaceOLinkClient.h"
 #include "Generated/OLink/TbSame2SameStruct2InterfaceOLinkAdapter.h"
-#include "OLinkHost.h"
 #include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
 
-#if WITH_DEV_AUTOMATION_TESTS
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#include "OLinkHost.h"
 
 void UTbSame2SameStruct2InterfaceOLinkHelper::SetSpec(UTbSame2SameStruct2InterfaceOLinkSpec* InSpec)
 {
@@ -103,7 +103,7 @@ void FTbSame2SameStruct2InterfaceOLinkFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
-#else  // WITH_DEV_AUTOMATION_TESTS
+#else  // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
 // create empty implementation in case we do not want to do automated testing
 void UTbSame2SameStruct2InterfaceOLinkHelper::SetSpec(UTbSame2SameStruct2InterfaceOLinkSpec* /* InSpec */)
 {
@@ -134,4 +134,4 @@ void UTbSame2SameStruct2InterfaceOLinkHelper::_SubscriptionStatusChangedCb(bool 
 {
 	(void)bSubscribed;
 }
-#endif // WITH_DEV_AUTOMATION_TESTS
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

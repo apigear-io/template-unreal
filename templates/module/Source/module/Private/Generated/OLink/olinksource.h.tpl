@@ -15,6 +15,9 @@
 THIRD_PARTY_INCLUDES_START
 #include "olink/iobjectsource.h"
 THIRD_PARTY_INCLUDES_END
+#include "HAL/Platform.h"
+
+#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #include "OLinkHost.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(Log{{$Class}}, Log, All);
@@ -60,3 +63,8 @@ private:
 	/** The host holding the connections and the registry */
 	TSoftObjectPtr<UOLinkHost> Host;
 };
+#else  // !(PLATFORM_IOS || PLATFORM_ANDROID)
+class {{$Class}}
+{
+};
+#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

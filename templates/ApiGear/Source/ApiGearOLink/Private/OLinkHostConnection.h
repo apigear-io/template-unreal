@@ -7,8 +7,8 @@ THIRD_PARTY_INCLUDES_START
 THIRD_PARTY_INCLUDES_END
 #include <UObject/Object.h>
 #include "ApiGearLogCategories.h"
-#include "INetworkingWebSocket.h"
 
+class INetworkingWebSocket;
 class FOLinkHostConnection;
 
 DECLARE_DELEGATE_OneParam(FOLinkHostConnectionClosedCallBack, FOLinkHostConnection* /*Connection*/);

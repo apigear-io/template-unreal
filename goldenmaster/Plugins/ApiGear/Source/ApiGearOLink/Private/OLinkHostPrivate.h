@@ -10,9 +10,9 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/remotenode.h"
 THIRD_PARTY_INCLUDES_END
 #include "OLinkHostConnection.h"
-#include "IWebSocketServer.h"
 #include "ApiGearTicker.h"
 
+class IWebSocketServer;
 class INetworkingWebSocket;
 
 /// @brief the private implementation of the OLink server

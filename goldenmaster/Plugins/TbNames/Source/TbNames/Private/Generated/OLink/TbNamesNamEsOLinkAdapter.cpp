@@ -32,6 +32,8 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/iobjectsource.h"
 THIRD_PARTY_INCLUDES_END
 #include "TbNamesNamEsOLinkSource.h"
+#include "HAL/Platform.h"
+#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 
 using namespace ApiGear::ObjectLink;
 UTbNamesNamEsOLinkAdapter::UTbNamesNamEsOLinkAdapter()
@@ -119,3 +121,48 @@ void UTbNamesNamEsOLinkAdapter::setOLinkHost(TSoftObjectPtr<UOLinkHost> InHost)
 	// register source to host registry
 	Registry->addSource(Source);
 }
+#else  // !(PLATFORM_IOS || PLATFORM_ANDROID)
+
+UTbNamesNamEsOLinkAdapter::UTbNamesNamEsOLinkAdapter()
+	: Source(std::make_shared<TbNamesNamEsOLinkSource>())
+{
+}
+
+void UTbNamesNamEsOLinkAdapter::Initialize(FSubsystemCollectionBase& Collection)
+{
+	Super::Initialize(Collection);
+}
+
+void UTbNamesNamEsOLinkAdapter::Deinitialize()
+{
+	Super::Deinitialize();
+}
+
+void UTbNamesNamEsOLinkAdapter::setBackendService(TScriptInterface<ITbNamesNamEsInterface> InService)
+{
+}
+
+void UTbNamesNamEsOLinkAdapter::OnSomeSignal(bool bSomeParam)
+{
+}
+
+void UTbNamesNamEsOLinkAdapter::OnSomeSignal2(bool bSomeParam)
+{
+}
+
+void UTbNamesNamEsOLinkAdapter::OnSwitchChanged(bool bInSwitch)
+{
+}
+
+void UTbNamesNamEsOLinkAdapter::OnSomePropertyChanged(int32 InSomeProperty)
+{
+}
+
+void UTbNamesNamEsOLinkAdapter::OnSomePoperty2Changed(int32 InSomePoperty2)
+{
+}
+
+void UTbNamesNamEsOLinkAdapter::setOLinkHost(TSoftObjectPtr<UOLinkHost> InHost)
+{
+}
+#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

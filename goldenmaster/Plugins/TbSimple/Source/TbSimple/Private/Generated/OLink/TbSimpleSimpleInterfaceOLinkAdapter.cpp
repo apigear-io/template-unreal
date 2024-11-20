@@ -32,6 +32,8 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/iobjectsource.h"
 THIRD_PARTY_INCLUDES_END
 #include "TbSimpleSimpleInterfaceOLinkSource.h"
+#include "HAL/Platform.h"
+#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 
 using namespace ApiGear::ObjectLink;
 UTbSimpleSimpleInterfaceOLinkAdapter::UTbSimpleSimpleInterfaceOLinkAdapter()
@@ -196,3 +198,92 @@ void UTbSimpleSimpleInterfaceOLinkAdapter::setOLinkHost(TSoftObjectPtr<UOLinkHos
 	// register source to host registry
 	Registry->addSource(Source);
 }
+#else  // !(PLATFORM_IOS || PLATFORM_ANDROID)
+
+UTbSimpleSimpleInterfaceOLinkAdapter::UTbSimpleSimpleInterfaceOLinkAdapter()
+	: Source(std::make_shared<TbSimpleSimpleInterfaceOLinkSource>())
+{
+}
+
+void UTbSimpleSimpleInterfaceOLinkAdapter::Initialize(FSubsystemCollectionBase& Collection)
+{
+	Super::Initialize(Collection);
+}
+
+void UTbSimpleSimpleInterfaceOLinkAdapter::Deinitialize()
+{
+	Super::Deinitialize();
+}
+
+void UTbSimpleSimpleInterfaceOLinkAdapter::setBackendService(TScriptInterface<ITbSimpleSimpleInterfaceInterface> InService)
+{
+}
+
+void UTbSimpleSimpleInterfaceOLinkAdapter::OnSigBool(bool bParamBool)
+{
+}
+
+void UTbSimpleSimpleInterfaceOLinkAdapter::OnSigInt(int32 ParamInt)
+{
+}
+
+void UTbSimpleSimpleInterfaceOLinkAdapter::OnSigInt32(int32 ParamInt32)
+{
+}
+
+void UTbSimpleSimpleInterfaceOLinkAdapter::OnSigInt64(int64 ParamInt64)
+{
+}
+
+void UTbSimpleSimpleInterfaceOLinkAdapter::OnSigFloat(float ParamFloat)
+{
+}
+
+void UTbSimpleSimpleInterfaceOLinkAdapter::OnSigFloat32(float ParamFloat32)
+{
+}
+
+void UTbSimpleSimpleInterfaceOLinkAdapter::OnSigFloat64(double ParamFloat64)
+{
+}
+
+void UTbSimpleSimpleInterfaceOLinkAdapter::OnSigString(const FString& ParamString)
+{
+}
+
+void UTbSimpleSimpleInterfaceOLinkAdapter::OnPropBoolChanged(bool bInPropBool)
+{
+}
+
+void UTbSimpleSimpleInterfaceOLinkAdapter::OnPropIntChanged(int32 InPropInt)
+{
+}
+
+void UTbSimpleSimpleInterfaceOLinkAdapter::OnPropInt32Changed(int32 InPropInt32)
+{
+}
+
+void UTbSimpleSimpleInterfaceOLinkAdapter::OnPropInt64Changed(int64 InPropInt64)
+{
+}
+
+void UTbSimpleSimpleInterfaceOLinkAdapter::OnPropFloatChanged(float InPropFloat)
+{
+}
+
+void UTbSimpleSimpleInterfaceOLinkAdapter::OnPropFloat32Changed(float InPropFloat32)
+{
+}
+
+void UTbSimpleSimpleInterfaceOLinkAdapter::OnPropFloat64Changed(double InPropFloat64)
+{
+}
+
+void UTbSimpleSimpleInterfaceOLinkAdapter::OnPropStringChanged(const FString& InPropString)
+{
+}
+
+void UTbSimpleSimpleInterfaceOLinkAdapter::setOLinkHost(TSoftObjectPtr<UOLinkHost> InHost)
+{
+}
+#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

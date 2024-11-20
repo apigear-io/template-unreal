@@ -32,6 +32,8 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/iobjectsource.h"
 THIRD_PARTY_INCLUDES_END
 #include "CounterCounterOLinkSource.h"
+#include "HAL/Platform.h"
+#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 
 using namespace ApiGear::ObjectLink;
 UCounterCounterOLinkAdapter::UCounterCounterOLinkAdapter()
@@ -119,3 +121,48 @@ void UCounterCounterOLinkAdapter::setOLinkHost(TSoftObjectPtr<UOLinkHost> InHost
 	// register source to host registry
 	Registry->addSource(Source);
 }
+#else  // !(PLATFORM_IOS || PLATFORM_ANDROID)
+
+UCounterCounterOLinkAdapter::UCounterCounterOLinkAdapter()
+	: Source(std::make_shared<CounterCounterOLinkSource>())
+{
+}
+
+void UCounterCounterOLinkAdapter::Initialize(FSubsystemCollectionBase& Collection)
+{
+	Super::Initialize(Collection);
+}
+
+void UCounterCounterOLinkAdapter::Deinitialize()
+{
+	Super::Deinitialize();
+}
+
+void UCounterCounterOLinkAdapter::setBackendService(TScriptInterface<ICounterCounterInterface> InService)
+{
+}
+
+void UCounterCounterOLinkAdapter::OnValueChanged(const FCustomTypesVector3D& Vector, const FVector& ExternVector, const TArray<FCustomTypesVector3D>& VectorArray, const TArray<FVector>& ExternVectorArray)
+{
+}
+
+void UCounterCounterOLinkAdapter::OnVectorChanged(const FCustomTypesVector3D& InVector)
+{
+}
+
+void UCounterCounterOLinkAdapter::OnExternVectorChanged(const FVector& InExternVector)
+{
+}
+
+void UCounterCounterOLinkAdapter::OnVectorArrayChanged(const TArray<FCustomTypesVector3D>& InVectorArray)
+{
+}
+
+void UCounterCounterOLinkAdapter::OnExternVectorArrayChanged(const TArray<FVector>& InExternVectorArray)
+{
+}
+
+void UCounterCounterOLinkAdapter::setOLinkHost(TSoftObjectPtr<UOLinkHost> InHost)
+{
+}
+#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

@@ -8,6 +8,7 @@
 #include "UObject/Object.h"
 #include "UObject/NoExportTypes.h"
 #include "Generated/api/TbSame1_data.h"
+#include "HAL/Platform.h"
 #include "TbSame1SameStruct1InterfaceOLinkFixture.generated.h"
 
 class UTbSame1SameStruct1InterfaceOLinkSpec;
@@ -37,7 +38,7 @@ protected:
 	UTbSame1SameStruct1InterfaceOLinkSpec* Spec;
 };
 
-#if WITH_DEV_AUTOMATION_TESTS
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
 
 class FTbSame1SameStruct1InterfaceOLinkFixture
 {
@@ -60,4 +61,4 @@ private:
 	TSoftObjectPtr<UTbSame1SameStruct1InterfaceOLinkHelper> Helper;
 };
 
-#endif // WITH_DEV_AUTOMATION_TESTS
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

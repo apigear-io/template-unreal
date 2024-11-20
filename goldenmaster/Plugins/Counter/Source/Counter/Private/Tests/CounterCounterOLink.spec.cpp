@@ -20,6 +20,9 @@ limitations under the License.
 #include "CounterCounterOLinkFixture.h"
 #include "Generated/OLink/CounterCounterOLinkClient.h"
 #include "Generated/OLink/CounterCounterOLinkAdapter.h"
+#include "HAL/Platform.h"
+
+#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #include "OLinkHost.h"
 #include "OLinkClientConnection.h" // for olink factory
 #include "CustomTypes/Private/Tests/CustomTypesTestsCommon.h"
@@ -223,3 +226,4 @@ void UCounterCounterOLinkSpec::ValueChangedSignalCb(const FCustomTypesVector3D& 
 	testDoneDelegate.Execute();
 }
 #endif // WITH_DEV_AUTOMATION_TESTS
+#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

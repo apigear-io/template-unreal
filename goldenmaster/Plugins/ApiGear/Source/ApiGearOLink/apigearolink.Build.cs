@@ -36,10 +36,15 @@ public class ApiGearOLink : ModuleRules
 			new string[]
 			{
 				"CoreUObject",
-				"Engine",
-				"WebSocketNetworking"
+				"Engine"
 			}
 			);
+
+		// the WebSocketNetworking lib does not work on mobile
+		if (Target.Platform != UnrealTargetPlatform.Android && Target.Platform != UnrealTargetPlatform.IOS)
+		{
+			PrivateDependencyModuleNames.Add("WebSocketNetworking");
+		}
 
 		DynamicallyLoadedModuleNames.AddRange(
 			new string[]

@@ -8,6 +8,7 @@
 #include "UObject/Object.h"
 #include "UObject/NoExportTypes.h"
 #include "Generated/api/Testbed1_data.h"
+#include "HAL/Platform.h"
 #include "Testbed1StructArrayInterfaceOLinkFixture.generated.h"
 
 class UTestbed1StructArrayInterfaceOLinkSpec;
@@ -55,7 +56,7 @@ protected:
 	UTestbed1StructArrayInterfaceOLinkSpec* Spec;
 };
 
-#if WITH_DEV_AUTOMATION_TESTS
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
 
 class FTestbed1StructArrayInterfaceOLinkFixture
 {
@@ -78,4 +79,4 @@ private:
 	TSoftObjectPtr<UTestbed1StructArrayInterfaceOLinkHelper> Helper;
 };
 
-#endif // WITH_DEV_AUTOMATION_TESTS
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

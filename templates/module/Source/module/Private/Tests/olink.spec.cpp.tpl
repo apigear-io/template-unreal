@@ -11,6 +11,9 @@
 #include "{{$DisplayName}}OLinkFixture.h"
 #include "Generated/OLink/{{$DisplayName}}OLinkClient.h"
 #include "Generated/OLink/{{$DisplayName}}OLinkAdapter.h"
+#include "HAL/Platform.h"
+
+#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #include "OLinkHost.h"
 #include "OLinkClientConnection.h" // for olink factory
 {{- range .Module.Imports }}
@@ -248,3 +251,4 @@ void {{$Class}}OLinkSpec::{{ Camel .Name }}SignalCb({{ueParams "In" .Params}})
 }
 {{- end }}
 #endif // WITH_DEV_AUTOMATION_TESTS
+#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

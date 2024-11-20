@@ -32,6 +32,8 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/iobjectsource.h"
 THIRD_PARTY_INCLUDES_END
 #include "Testbed2ManyParamInterfaceOLinkSource.h"
+#include "HAL/Platform.h"
+#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 
 using namespace ApiGear::ObjectLink;
 UTestbed2ManyParamInterfaceOLinkAdapter::UTestbed2ManyParamInterfaceOLinkAdapter()
@@ -140,3 +142,60 @@ void UTestbed2ManyParamInterfaceOLinkAdapter::setOLinkHost(TSoftObjectPtr<UOLink
 	// register source to host registry
 	Registry->addSource(Source);
 }
+#else  // !(PLATFORM_IOS || PLATFORM_ANDROID)
+
+UTestbed2ManyParamInterfaceOLinkAdapter::UTestbed2ManyParamInterfaceOLinkAdapter()
+	: Source(std::make_shared<Testbed2ManyParamInterfaceOLinkSource>())
+{
+}
+
+void UTestbed2ManyParamInterfaceOLinkAdapter::Initialize(FSubsystemCollectionBase& Collection)
+{
+	Super::Initialize(Collection);
+}
+
+void UTestbed2ManyParamInterfaceOLinkAdapter::Deinitialize()
+{
+	Super::Deinitialize();
+}
+
+void UTestbed2ManyParamInterfaceOLinkAdapter::setBackendService(TScriptInterface<ITestbed2ManyParamInterfaceInterface> InService)
+{
+}
+
+void UTestbed2ManyParamInterfaceOLinkAdapter::OnSig1(int32 Param1)
+{
+}
+
+void UTestbed2ManyParamInterfaceOLinkAdapter::OnSig2(int32 Param1, int32 Param2)
+{
+}
+
+void UTestbed2ManyParamInterfaceOLinkAdapter::OnSig3(int32 Param1, int32 Param2, int32 Param3)
+{
+}
+
+void UTestbed2ManyParamInterfaceOLinkAdapter::OnSig4(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
+{
+}
+
+void UTestbed2ManyParamInterfaceOLinkAdapter::OnProp1Changed(int32 InProp1)
+{
+}
+
+void UTestbed2ManyParamInterfaceOLinkAdapter::OnProp2Changed(int32 InProp2)
+{
+}
+
+void UTestbed2ManyParamInterfaceOLinkAdapter::OnProp3Changed(int32 InProp3)
+{
+}
+
+void UTestbed2ManyParamInterfaceOLinkAdapter::OnProp4Changed(int32 InProp4)
+{
+}
+
+void UTestbed2ManyParamInterfaceOLinkAdapter::setOLinkHost(TSoftObjectPtr<UOLinkHost> InHost)
+{
+}
+#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

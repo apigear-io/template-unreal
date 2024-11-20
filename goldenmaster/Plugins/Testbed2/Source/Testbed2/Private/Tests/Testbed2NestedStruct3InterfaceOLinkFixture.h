@@ -8,6 +8,7 @@
 #include "UObject/Object.h"
 #include "UObject/NoExportTypes.h"
 #include "Generated/api/Testbed2_data.h"
+#include "HAL/Platform.h"
 #include "Testbed2NestedStruct3InterfaceOLinkFixture.generated.h"
 
 class UTestbed2NestedStruct3InterfaceOLinkSpec;
@@ -49,7 +50,7 @@ protected:
 	UTestbed2NestedStruct3InterfaceOLinkSpec* Spec;
 };
 
-#if WITH_DEV_AUTOMATION_TESTS
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
 
 class FTestbed2NestedStruct3InterfaceOLinkFixture
 {
@@ -72,4 +73,4 @@ private:
 	TSoftObjectPtr<UTestbed2NestedStruct3InterfaceOLinkHelper> Helper;
 };
 
-#endif // WITH_DEV_AUTOMATION_TESTS
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

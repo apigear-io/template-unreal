@@ -32,6 +32,8 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/iobjectsource.h"
 THIRD_PARTY_INCLUDES_END
 #include "TbSimpleNoPropertiesInterfaceOLinkSource.h"
+#include "HAL/Platform.h"
+#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 
 using namespace ApiGear::ObjectLink;
 UTbSimpleNoPropertiesInterfaceOLinkAdapter::UTbSimpleNoPropertiesInterfaceOLinkAdapter()
@@ -98,3 +100,36 @@ void UTbSimpleNoPropertiesInterfaceOLinkAdapter::setOLinkHost(TSoftObjectPtr<UOL
 	// register source to host registry
 	Registry->addSource(Source);
 }
+#else  // !(PLATFORM_IOS || PLATFORM_ANDROID)
+
+UTbSimpleNoPropertiesInterfaceOLinkAdapter::UTbSimpleNoPropertiesInterfaceOLinkAdapter()
+	: Source(std::make_shared<TbSimpleNoPropertiesInterfaceOLinkSource>())
+{
+}
+
+void UTbSimpleNoPropertiesInterfaceOLinkAdapter::Initialize(FSubsystemCollectionBase& Collection)
+{
+	Super::Initialize(Collection);
+}
+
+void UTbSimpleNoPropertiesInterfaceOLinkAdapter::Deinitialize()
+{
+	Super::Deinitialize();
+}
+
+void UTbSimpleNoPropertiesInterfaceOLinkAdapter::setBackendService(TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> InService)
+{
+}
+
+void UTbSimpleNoPropertiesInterfaceOLinkAdapter::OnSigVoid()
+{
+}
+
+void UTbSimpleNoPropertiesInterfaceOLinkAdapter::OnSigBool(bool bParamBool)
+{
+}
+
+void UTbSimpleNoPropertiesInterfaceOLinkAdapter::setOLinkHost(TSoftObjectPtr<UOLinkHost> InHost)
+{
+}
+#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

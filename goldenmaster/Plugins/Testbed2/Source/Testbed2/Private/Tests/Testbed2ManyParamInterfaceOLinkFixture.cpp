@@ -18,11 +18,11 @@ limitations under the License.
 #include "Testbed2ManyParamInterfaceOLink.spec.h"
 #include "Generated/OLink/Testbed2ManyParamInterfaceOLinkClient.h"
 #include "Generated/OLink/Testbed2ManyParamInterfaceOLinkAdapter.h"
-#include "OLinkHost.h"
 #include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
 
-#if WITH_DEV_AUTOMATION_TESTS
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#include "OLinkHost.h"
 
 void UTestbed2ManyParamInterfaceOLinkHelper::SetSpec(UTestbed2ManyParamInterfaceOLinkSpec* InSpec)
 {
@@ -123,7 +123,7 @@ void FTestbed2ManyParamInterfaceOLinkFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
-#else  // WITH_DEV_AUTOMATION_TESTS
+#else  // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
 // create empty implementation in case we do not want to do automated testing
 void UTestbed2ManyParamInterfaceOLinkHelper::SetSpec(UTestbed2ManyParamInterfaceOLinkSpec* /* InSpec */)
 {
@@ -179,4 +179,4 @@ void UTestbed2ManyParamInterfaceOLinkHelper::_SubscriptionStatusChangedCb(bool b
 {
 	(void)bSubscribed;
 }
-#endif // WITH_DEV_AUTOMATION_TESTS
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

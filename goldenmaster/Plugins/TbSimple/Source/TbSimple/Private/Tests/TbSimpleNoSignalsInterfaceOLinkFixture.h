@@ -8,6 +8,7 @@
 #include "UObject/Object.h"
 #include "UObject/NoExportTypes.h"
 #include "Generated/api/TbSimple_data.h"
+#include "HAL/Platform.h"
 #include "TbSimpleNoSignalsInterfaceOLinkFixture.generated.h"
 
 class UTbSimpleNoSignalsInterfaceOLinkSpec;
@@ -37,7 +38,7 @@ protected:
 	UTbSimpleNoSignalsInterfaceOLinkSpec* Spec;
 };
 
-#if WITH_DEV_AUTOMATION_TESTS
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
 
 class FTbSimpleNoSignalsInterfaceOLinkFixture
 {
@@ -60,4 +61,4 @@ private:
 	TSoftObjectPtr<UTbSimpleNoSignalsInterfaceOLinkHelper> Helper;
 };
 
-#endif // WITH_DEV_AUTOMATION_TESTS
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

@@ -18,11 +18,11 @@ limitations under the License.
 #include "TbSimpleNoSignalsInterfaceOLink.spec.h"
 #include "Generated/OLink/TbSimpleNoSignalsInterfaceOLinkClient.h"
 #include "Generated/OLink/TbSimpleNoSignalsInterfaceOLinkAdapter.h"
-#include "OLinkHost.h"
 #include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
 
-#if WITH_DEV_AUTOMATION_TESTS
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#include "OLinkHost.h"
 
 void UTbSimpleNoSignalsInterfaceOLinkHelper::SetSpec(UTbSimpleNoSignalsInterfaceOLinkSpec* InSpec)
 {
@@ -93,7 +93,7 @@ void FTbSimpleNoSignalsInterfaceOLinkFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
-#else  // WITH_DEV_AUTOMATION_TESTS
+#else  // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
 // create empty implementation in case we do not want to do automated testing
 void UTbSimpleNoSignalsInterfaceOLinkHelper::SetSpec(UTbSimpleNoSignalsInterfaceOLinkSpec* /* InSpec */)
 {
@@ -113,4 +113,4 @@ void UTbSimpleNoSignalsInterfaceOLinkHelper::_SubscriptionStatusChangedCb(bool b
 {
 	(void)bSubscribed;
 }
-#endif // WITH_DEV_AUTOMATION_TESTS
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

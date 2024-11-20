@@ -20,6 +20,9 @@ limitations under the License.
 #include "TbSimpleSimpleArrayInterfaceOLinkFixture.h"
 #include "Generated/OLink/TbSimpleSimpleArrayInterfaceOLinkClient.h"
 #include "Generated/OLink/TbSimpleSimpleArrayInterfaceOLinkAdapter.h"
+#include "HAL/Platform.h"
+
+#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #include "OLinkHost.h"
 #include "OLinkClientConnection.h" // for olink factory
 #include "Misc/AutomationTest.h"
@@ -580,3 +583,4 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::SigStringSignalCb(const TArray<FStr
 	testDoneDelegate.Execute();
 }
 #endif // WITH_DEV_AUTOMATION_TESTS
+#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

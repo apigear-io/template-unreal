@@ -32,6 +32,8 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/iobjectsource.h"
 THIRD_PARTY_INCLUDES_END
 #include "Testbed1StructArrayInterfaceOLinkSource.h"
+#include "HAL/Platform.h"
+#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 
 using namespace ApiGear::ObjectLink;
 UTestbed1StructArrayInterfaceOLinkAdapter::UTestbed1StructArrayInterfaceOLinkAdapter()
@@ -140,3 +142,60 @@ void UTestbed1StructArrayInterfaceOLinkAdapter::setOLinkHost(TSoftObjectPtr<UOLi
 	// register source to host registry
 	Registry->addSource(Source);
 }
+#else  // !(PLATFORM_IOS || PLATFORM_ANDROID)
+
+UTestbed1StructArrayInterfaceOLinkAdapter::UTestbed1StructArrayInterfaceOLinkAdapter()
+	: Source(std::make_shared<Testbed1StructArrayInterfaceOLinkSource>())
+{
+}
+
+void UTestbed1StructArrayInterfaceOLinkAdapter::Initialize(FSubsystemCollectionBase& Collection)
+{
+	Super::Initialize(Collection);
+}
+
+void UTestbed1StructArrayInterfaceOLinkAdapter::Deinitialize()
+{
+	Super::Deinitialize();
+}
+
+void UTestbed1StructArrayInterfaceOLinkAdapter::setBackendService(TScriptInterface<ITestbed1StructArrayInterfaceInterface> InService)
+{
+}
+
+void UTestbed1StructArrayInterfaceOLinkAdapter::OnSigBool(const TArray<FTestbed1StructBool>& ParamBool)
+{
+}
+
+void UTestbed1StructArrayInterfaceOLinkAdapter::OnSigInt(const TArray<FTestbed1StructInt>& ParamInt)
+{
+}
+
+void UTestbed1StructArrayInterfaceOLinkAdapter::OnSigFloat(const TArray<FTestbed1StructFloat>& ParamFloat)
+{
+}
+
+void UTestbed1StructArrayInterfaceOLinkAdapter::OnSigString(const TArray<FTestbed1StructString>& ParamString)
+{
+}
+
+void UTestbed1StructArrayInterfaceOLinkAdapter::OnPropBoolChanged(const TArray<FTestbed1StructBool>& InPropBool)
+{
+}
+
+void UTestbed1StructArrayInterfaceOLinkAdapter::OnPropIntChanged(const TArray<FTestbed1StructInt>& InPropInt)
+{
+}
+
+void UTestbed1StructArrayInterfaceOLinkAdapter::OnPropFloatChanged(const TArray<FTestbed1StructFloat>& InPropFloat)
+{
+}
+
+void UTestbed1StructArrayInterfaceOLinkAdapter::OnPropStringChanged(const TArray<FTestbed1StructString>& InPropString)
+{
+}
+
+void UTestbed1StructArrayInterfaceOLinkAdapter::setOLinkHost(TSoftObjectPtr<UOLinkHost> InHost)
+{
+}
+#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

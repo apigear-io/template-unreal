@@ -32,6 +32,8 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/iobjectsource.h"
 THIRD_PARTY_INCLUDES_END
 #include "TbEnumEnumInterfaceOLinkSource.h"
+#include "HAL/Platform.h"
+#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 
 using namespace ApiGear::ObjectLink;
 UTbEnumEnumInterfaceOLinkAdapter::UTbEnumEnumInterfaceOLinkAdapter()
@@ -140,3 +142,60 @@ void UTbEnumEnumInterfaceOLinkAdapter::setOLinkHost(TSoftObjectPtr<UOLinkHost> I
 	// register source to host registry
 	Registry->addSource(Source);
 }
+#else  // !(PLATFORM_IOS || PLATFORM_ANDROID)
+
+UTbEnumEnumInterfaceOLinkAdapter::UTbEnumEnumInterfaceOLinkAdapter()
+	: Source(std::make_shared<TbEnumEnumInterfaceOLinkSource>())
+{
+}
+
+void UTbEnumEnumInterfaceOLinkAdapter::Initialize(FSubsystemCollectionBase& Collection)
+{
+	Super::Initialize(Collection);
+}
+
+void UTbEnumEnumInterfaceOLinkAdapter::Deinitialize()
+{
+	Super::Deinitialize();
+}
+
+void UTbEnumEnumInterfaceOLinkAdapter::setBackendService(TScriptInterface<ITbEnumEnumInterfaceInterface> InService)
+{
+}
+
+void UTbEnumEnumInterfaceOLinkAdapter::OnSig0(ETbEnumEnum0 Param0)
+{
+}
+
+void UTbEnumEnumInterfaceOLinkAdapter::OnSig1(ETbEnumEnum1 Param1)
+{
+}
+
+void UTbEnumEnumInterfaceOLinkAdapter::OnSig2(ETbEnumEnum2 Param2)
+{
+}
+
+void UTbEnumEnumInterfaceOLinkAdapter::OnSig3(ETbEnumEnum3 Param3)
+{
+}
+
+void UTbEnumEnumInterfaceOLinkAdapter::OnProp0Changed(ETbEnumEnum0 InProp0)
+{
+}
+
+void UTbEnumEnumInterfaceOLinkAdapter::OnProp1Changed(ETbEnumEnum1 InProp1)
+{
+}
+
+void UTbEnumEnumInterfaceOLinkAdapter::OnProp2Changed(ETbEnumEnum2 InProp2)
+{
+}
+
+void UTbEnumEnumInterfaceOLinkAdapter::OnProp3Changed(ETbEnumEnum3 InProp3)
+{
+}
+
+void UTbEnumEnumInterfaceOLinkAdapter::setOLinkHost(TSoftObjectPtr<UOLinkHost> InHost)
+{
+}
+#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

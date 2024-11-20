@@ -4,7 +4,11 @@
 #include "WebSocketsModule.h"
 #include "ApiGearConnectionsStore.h"
 #include "OLinkClientConnection.h"
+#include "HAL/Platform.h"
+
+#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #include "IWebSocketNetworkingModule.h"
+#endif
 
 #define LOCTEXT_NAMESPACE "FApiGearOLinkModule"
 
@@ -16,8 +20,10 @@ void FApiGearOLinkModule::StartupModule()
 	// register olink factory function
 	UApiGearConnectionsStore::RegisterConnectionFactory(ApiGearOLinkProtocolIdentifier, &OLinkFactory::Create);
 
+#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 	// used by the olink websocket server host
 	FModuleManager::LoadModuleChecked<IWebSocketNetworkingModule>(TEXT("WebSocketNetworking"));
+#endif
 }
 
 void FApiGearOLinkModule::ShutdownModule()

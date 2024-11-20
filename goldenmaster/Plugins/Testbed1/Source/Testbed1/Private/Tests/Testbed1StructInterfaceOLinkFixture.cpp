@@ -18,11 +18,11 @@ limitations under the License.
 #include "Testbed1StructInterfaceOLink.spec.h"
 #include "Generated/OLink/Testbed1StructInterfaceOLinkClient.h"
 #include "Generated/OLink/Testbed1StructInterfaceOLinkAdapter.h"
-#include "OLinkHost.h"
 #include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
 
-#if WITH_DEV_AUTOMATION_TESTS
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#include "OLinkHost.h"
 
 void UTestbed1StructInterfaceOLinkHelper::SetSpec(UTestbed1StructInterfaceOLinkSpec* InSpec)
 {
@@ -123,7 +123,7 @@ void FTestbed1StructInterfaceOLinkFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
-#else  // WITH_DEV_AUTOMATION_TESTS
+#else  // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
 // create empty implementation in case we do not want to do automated testing
 void UTestbed1StructInterfaceOLinkHelper::SetSpec(UTestbed1StructInterfaceOLinkSpec* /* InSpec */)
 {
@@ -173,4 +173,4 @@ void UTestbed1StructInterfaceOLinkHelper::_SubscriptionStatusChangedCb(bool bSub
 {
 	(void)bSubscribed;
 }
-#endif // WITH_DEV_AUTOMATION_TESTS
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

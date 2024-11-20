@@ -8,6 +8,7 @@
 #include "UObject/Object.h"
 #include "UObject/NoExportTypes.h"
 #include "Generated/api/TbSimple_data.h"
+#include "HAL/Platform.h"
 #include "TbSimpleEmptyInterfaceOLinkFixture.generated.h"
 
 class UTbSimpleEmptyInterfaceOLinkSpec;
@@ -31,7 +32,7 @@ protected:
 	UTbSimpleEmptyInterfaceOLinkSpec* Spec;
 };
 
-#if WITH_DEV_AUTOMATION_TESTS
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
 
 class FTbSimpleEmptyInterfaceOLinkFixture
 {
@@ -54,4 +55,4 @@ private:
 	TSoftObjectPtr<UTbSimpleEmptyInterfaceOLinkHelper> Helper;
 };
 
-#endif // WITH_DEV_AUTOMATION_TESTS
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

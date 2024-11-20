@@ -32,6 +32,8 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/iobjectsource.h"
 THIRD_PARTY_INCLUDES_END
 #include "TbSimpleSimpleArrayInterfaceOLinkSource.h"
+#include "HAL/Platform.h"
+#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 
 using namespace ApiGear::ObjectLink;
 UTbSimpleSimpleArrayInterfaceOLinkAdapter::UTbSimpleSimpleArrayInterfaceOLinkAdapter()
@@ -203,3 +205,96 @@ void UTbSimpleSimpleArrayInterfaceOLinkAdapter::setOLinkHost(TSoftObjectPtr<UOLi
 	// register source to host registry
 	Registry->addSource(Source);
 }
+#else  // !(PLATFORM_IOS || PLATFORM_ANDROID)
+
+UTbSimpleSimpleArrayInterfaceOLinkAdapter::UTbSimpleSimpleArrayInterfaceOLinkAdapter()
+	: Source(std::make_shared<TbSimpleSimpleArrayInterfaceOLinkSource>())
+{
+}
+
+void UTbSimpleSimpleArrayInterfaceOLinkAdapter::Initialize(FSubsystemCollectionBase& Collection)
+{
+	Super::Initialize(Collection);
+}
+
+void UTbSimpleSimpleArrayInterfaceOLinkAdapter::Deinitialize()
+{
+	Super::Deinitialize();
+}
+
+void UTbSimpleSimpleArrayInterfaceOLinkAdapter::setBackendService(TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> InService)
+{
+}
+
+void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigBool(const TArray<bool>& ParamBool)
+{
+}
+
+void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigInt(const TArray<int32>& ParamInt)
+{
+}
+
+void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigInt32(const TArray<int32>& ParamInt32)
+{
+}
+
+void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigInt64(const TArray<int64>& ParamInt64)
+{
+}
+
+void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigFloat(const TArray<float>& ParamFloat)
+{
+}
+
+void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigFloat32(const TArray<float>& ParamFloa32)
+{
+}
+
+void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigFloat64(const TArray<double>& ParamFloat64)
+{
+}
+
+void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigString(const TArray<FString>& ParamString)
+{
+}
+
+void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropBoolChanged(const TArray<bool>& InPropBool)
+{
+}
+
+void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropIntChanged(const TArray<int32>& InPropInt)
+{
+}
+
+void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropInt32Changed(const TArray<int32>& InPropInt32)
+{
+}
+
+void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropInt64Changed(const TArray<int64>& InPropInt64)
+{
+}
+
+void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropFloatChanged(const TArray<float>& InPropFloat)
+{
+}
+
+void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropFloat32Changed(const TArray<float>& InPropFloat32)
+{
+}
+
+void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropFloat64Changed(const TArray<double>& InPropFloat64)
+{
+}
+
+void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropStringChanged(const TArray<FString>& InPropString)
+{
+}
+
+void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropReadOnlyStringChanged(const FString& InPropReadOnlyString)
+{
+}
+
+void UTbSimpleSimpleArrayInterfaceOLinkAdapter::setOLinkHost(TSoftObjectPtr<UOLinkHost> InHost)
+{
+}
+#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

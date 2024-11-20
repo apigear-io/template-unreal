@@ -20,6 +20,9 @@ limitations under the License.
 #include "TbSimpleEmptyInterfaceOLinkFixture.h"
 #include "Generated/OLink/TbSimpleEmptyInterfaceOLinkClient.h"
 #include "Generated/OLink/TbSimpleEmptyInterfaceOLinkAdapter.h"
+#include "HAL/Platform.h"
+
+#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #include "OLinkHost.h"
 #include "OLinkClientConnection.h" // for olink factory
 #include "Misc/AutomationTest.h"
@@ -77,3 +80,4 @@ void UTbSimpleEmptyInterfaceOLinkSpec::Define()
 	});
 }
 #endif // WITH_DEV_AUTOMATION_TESTS
+#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

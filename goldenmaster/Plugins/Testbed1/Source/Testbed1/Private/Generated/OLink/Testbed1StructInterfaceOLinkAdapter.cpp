@@ -32,6 +32,8 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/iobjectsource.h"
 THIRD_PARTY_INCLUDES_END
 #include "Testbed1StructInterfaceOLinkSource.h"
+#include "HAL/Platform.h"
+#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 
 using namespace ApiGear::ObjectLink;
 UTestbed1StructInterfaceOLinkAdapter::UTestbed1StructInterfaceOLinkAdapter()
@@ -140,3 +142,60 @@ void UTestbed1StructInterfaceOLinkAdapter::setOLinkHost(TSoftObjectPtr<UOLinkHos
 	// register source to host registry
 	Registry->addSource(Source);
 }
+#else  // !(PLATFORM_IOS || PLATFORM_ANDROID)
+
+UTestbed1StructInterfaceOLinkAdapter::UTestbed1StructInterfaceOLinkAdapter()
+	: Source(std::make_shared<Testbed1StructInterfaceOLinkSource>())
+{
+}
+
+void UTestbed1StructInterfaceOLinkAdapter::Initialize(FSubsystemCollectionBase& Collection)
+{
+	Super::Initialize(Collection);
+}
+
+void UTestbed1StructInterfaceOLinkAdapter::Deinitialize()
+{
+	Super::Deinitialize();
+}
+
+void UTestbed1StructInterfaceOLinkAdapter::setBackendService(TScriptInterface<ITestbed1StructInterfaceInterface> InService)
+{
+}
+
+void UTestbed1StructInterfaceOLinkAdapter::OnSigBool(const FTestbed1StructBool& ParamBool)
+{
+}
+
+void UTestbed1StructInterfaceOLinkAdapter::OnSigInt(const FTestbed1StructInt& ParamInt)
+{
+}
+
+void UTestbed1StructInterfaceOLinkAdapter::OnSigFloat(const FTestbed1StructFloat& ParamFloat)
+{
+}
+
+void UTestbed1StructInterfaceOLinkAdapter::OnSigString(const FTestbed1StructString& ParamString)
+{
+}
+
+void UTestbed1StructInterfaceOLinkAdapter::OnPropBoolChanged(const FTestbed1StructBool& InPropBool)
+{
+}
+
+void UTestbed1StructInterfaceOLinkAdapter::OnPropIntChanged(const FTestbed1StructInt& InPropInt)
+{
+}
+
+void UTestbed1StructInterfaceOLinkAdapter::OnPropFloatChanged(const FTestbed1StructFloat& InPropFloat)
+{
+}
+
+void UTestbed1StructInterfaceOLinkAdapter::OnPropStringChanged(const FTestbed1StructString& InPropString)
+{
+}
+
+void UTestbed1StructInterfaceOLinkAdapter::setOLinkHost(TSoftObjectPtr<UOLinkHost> InHost)
+{
+}
+#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

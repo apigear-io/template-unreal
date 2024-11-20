@@ -1,6 +1,8 @@
 #include "OLinkHost.h"
 #include "ApiGearSettings.h"
 #include "OLinkHostPrivate.h"
+#include "HAL/Platform.h"
+#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 
 TSharedPtr<ApiGear::ObjectLink::RemoteRegistry> UOLinkHost::GetOLinkRegistry()
 {
@@ -43,3 +45,28 @@ void UOLinkHost::Stop()
 
 	return PrivateImplementation->Stop();
 }
+#else  // !(PLATFORM_IOS || PLATFORM_ANDROID)
+
+TSharedPtr<ApiGear::ObjectLink::RemoteRegistry> UOLinkHost::GetOLinkRegistry()
+{
+	return PrivateImplementation ? PrivateImplementation->GetOLinkRegistry() : nullptr;
+}
+
+void UOLinkHost::Initialize(FSubsystemCollectionBase& Collection)
+{
+	UE_LOG(LogApiGearOLinkHost, Warning, TEXT("OLink server is not supported on Android and iOS"));
+}
+
+void UOLinkHost::Deinitialize()
+{
+}
+
+bool UOLinkHost::Start(int32 Port)
+{
+	return false;
+}
+
+void UOLinkHost::Stop()
+{
+}
+#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

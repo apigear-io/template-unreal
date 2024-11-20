@@ -32,6 +32,8 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/iobjectsource.h"
 THIRD_PARTY_INCLUDES_END
 #include "TbSame2SameEnum2InterfaceOLinkSource.h"
+#include "HAL/Platform.h"
+#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 
 using namespace ApiGear::ObjectLink;
 UTbSame2SameEnum2InterfaceOLinkAdapter::UTbSame2SameEnum2InterfaceOLinkAdapter()
@@ -112,3 +114,44 @@ void UTbSame2SameEnum2InterfaceOLinkAdapter::setOLinkHost(TSoftObjectPtr<UOLinkH
 	// register source to host registry
 	Registry->addSource(Source);
 }
+#else  // !(PLATFORM_IOS || PLATFORM_ANDROID)
+
+UTbSame2SameEnum2InterfaceOLinkAdapter::UTbSame2SameEnum2InterfaceOLinkAdapter()
+	: Source(std::make_shared<TbSame2SameEnum2InterfaceOLinkSource>())
+{
+}
+
+void UTbSame2SameEnum2InterfaceOLinkAdapter::Initialize(FSubsystemCollectionBase& Collection)
+{
+	Super::Initialize(Collection);
+}
+
+void UTbSame2SameEnum2InterfaceOLinkAdapter::Deinitialize()
+{
+	Super::Deinitialize();
+}
+
+void UTbSame2SameEnum2InterfaceOLinkAdapter::setBackendService(TScriptInterface<ITbSame2SameEnum2InterfaceInterface> InService)
+{
+}
+
+void UTbSame2SameEnum2InterfaceOLinkAdapter::OnSig1(ETbSame2Enum1 Param1)
+{
+}
+
+void UTbSame2SameEnum2InterfaceOLinkAdapter::OnSig2(ETbSame2Enum1 Param1, ETbSame2Enum2 Param2)
+{
+}
+
+void UTbSame2SameEnum2InterfaceOLinkAdapter::OnProp1Changed(ETbSame2Enum1 InProp1)
+{
+}
+
+void UTbSame2SameEnum2InterfaceOLinkAdapter::OnProp2Changed(ETbSame2Enum2 InProp2)
+{
+}
+
+void UTbSame2SameEnum2InterfaceOLinkAdapter::setOLinkHost(TSoftObjectPtr<UOLinkHost> InHost)
+{
+}
+#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

@@ -8,6 +8,8 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/remotenode.h"
 THIRD_PARTY_INCLUDES_END
 #include "SocketSubsystem.h"
+#include "HAL/Platform.h"
+#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #include "INetworkingWebSocket.h"
 #include "IWebSocketServer.h"
 #include "IWebSocketNetworkingModule.h"
@@ -126,3 +128,5 @@ uint32 OLinkHostPrivate::NumberOfConnections() const
 {
 	return ClientConnections.Num();
 }
+
+#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

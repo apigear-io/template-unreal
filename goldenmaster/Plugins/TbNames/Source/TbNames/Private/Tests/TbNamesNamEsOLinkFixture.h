@@ -8,6 +8,7 @@
 #include "UObject/Object.h"
 #include "UObject/NoExportTypes.h"
 #include "Generated/api/TbNames_data.h"
+#include "HAL/Platform.h"
 #include "TbNamesNamEsOLinkFixture.generated.h"
 
 class UTbNamesNamEsOLinkSpec;
@@ -46,7 +47,7 @@ protected:
 	UTbNamesNamEsOLinkSpec* Spec;
 };
 
-#if WITH_DEV_AUTOMATION_TESTS
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
 
 class FTbNamesNamEsOLinkFixture
 {
@@ -69,4 +70,4 @@ private:
 	TSoftObjectPtr<UTbNamesNamEsOLinkHelper> Helper;
 };
 
-#endif // WITH_DEV_AUTOMATION_TESTS
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

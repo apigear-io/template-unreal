@@ -8,6 +8,7 @@
 #include "UObject/Object.h"
 #include "UObject/NoExportTypes.h"
 #include "Generated/api/TbEnum_data.h"
+#include "HAL/Platform.h"
 #include "TbEnumEnumInterfaceOLinkFixture.generated.h"
 
 class UTbEnumEnumInterfaceOLinkSpec;
@@ -55,7 +56,7 @@ protected:
 	UTbEnumEnumInterfaceOLinkSpec* Spec;
 };
 
-#if WITH_DEV_AUTOMATION_TESTS
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
 
 class FTbEnumEnumInterfaceOLinkFixture
 {
@@ -78,4 +79,4 @@ private:
 	TSoftObjectPtr<UTbEnumEnumInterfaceOLinkHelper> Helper;
 };
 
-#endif // WITH_DEV_AUTOMATION_TESTS
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

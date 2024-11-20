@@ -18,8 +18,17 @@ limitations under the License.
 
 #include "Generated/api/TbSame2SameEnum2InterfaceInterface.h"
 #include "Subsystems/GameInstanceSubsystem.h"
-#include "OLinkHost.h"
+#include <memory>
 #include "TbSame2SameEnum2InterfaceOLinkAdapter.generated.h"
+
+class UOLinkHost;
+namespace ApiGear
+{
+namespace ObjectLink
+{
+class RemoteRegistry;
+}
+} // namespace ApiGear
 
 /// @brief handles the adaption between the service implementation and the OLink protocol
 /// takes an object of the type ITbSame2SameEnum2InterfaceInterface

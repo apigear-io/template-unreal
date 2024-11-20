@@ -21,6 +21,8 @@ limitations under the License.
 ///////////////////////////////
 
 #include "TbNamesNamEsOLinkSource.h"
+#include "HAL/Platform.h"
+#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #include "Async/Future.h"
 #include "Async/Async.h"
 #include "Generated/api/TbNames.json.adapter.h"
@@ -206,3 +208,4 @@ nlohmann::json TbNamesNamEsOLinkSource::olinkCollectProperties()
 		{"SOME_PROPERTY", BackendService->Execute_GetSomeProperty(BackendService.GetObject())},
 		{"Some_Poperty2", BackendService->Execute_GetSomePoperty2(BackendService.GetObject())}});
 }
+#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

@@ -20,6 +20,9 @@ limitations under the License.
 #include "TbSame2SameEnum1InterfaceOLinkFixture.h"
 #include "Generated/OLink/TbSame2SameEnum1InterfaceOLinkClient.h"
 #include "Generated/OLink/TbSame2SameEnum1InterfaceOLinkAdapter.h"
+#include "HAL/Platform.h"
+
+#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #include "OLinkHost.h"
 #include "OLinkClientConnection.h" // for olink factory
 #include "Misc/AutomationTest.h"
@@ -137,3 +140,4 @@ void UTbSame2SameEnum1InterfaceOLinkSpec::Sig1SignalCb(ETbSame2Enum1 InParam1)
 	testDoneDelegate.Execute();
 }
 #endif // WITH_DEV_AUTOMATION_TESTS
+#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

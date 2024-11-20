@@ -20,6 +20,9 @@ limitations under the License.
 #include "TbSimpleVoidInterfaceOLinkFixture.h"
 #include "Generated/OLink/TbSimpleVoidInterfaceOLinkClient.h"
 #include "Generated/OLink/TbSimpleVoidInterfaceOLinkAdapter.h"
+#include "HAL/Platform.h"
+
+#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #include "OLinkHost.h"
 #include "OLinkClientConnection.h" // for olink factory
 #include "Misc/AutomationTest.h"
@@ -103,3 +106,4 @@ void UTbSimpleVoidInterfaceOLinkSpec::SigVoidSignalCb()
 	testDoneDelegate.Execute();
 }
 #endif // WITH_DEV_AUTOMATION_TESTS
+#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

@@ -1,5 +1,7 @@
 #include "OLinkHostConnection.h"
 #include "ApiGearLogCategories.h"
+#include "HAL/Platform.h"
+#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #include "INetworkingWebSocket.h"
 
 namespace
@@ -82,3 +84,5 @@ void FOLinkHostConnection::OnSocketClose(INetworkingWebSocket* /* InSocket */)
 	delete Socket;
 	Socket = nullptr;
 }
+
+#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)
