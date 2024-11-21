@@ -57,7 +57,7 @@ class MockNetworkingWebSocket : public INetworkingWebSocket
 		return nullptr;
 	};
 
-#if (ENGINE_MAJOR_VERSION >= 5)
+#if (ENGINE_MAJOR_VERSION >= 5 && ENGINE_MINOR_VERSION >= 4)
 	virtual TArray<FString> GetUrlArgs() override
 	{
 		return TArray<FString>();
@@ -66,7 +66,7 @@ class MockNetworkingWebSocket : public INetworkingWebSocket
 	{
 		return FString();
 	}
-#endif // ENGINE_MAJOR_VERSION >= 5
+#endif // ENGINE_MAJOR_VERSION >= 5 && ENGINE_MINOR_VERSION >= 4
 };
 
 class MockNode final : public ApiGear::ObjectLink::RemoteNode
