@@ -106,7 +106,6 @@ void UCounterCounterOLinkClient::Initialize(FSubsystemCollectionBase& Collection
 
 	if (!OLinkConnection.GetInterface())
 	{
-		UE_LOG(LogCounterCounterOLinkClient, Warning, TEXT("No valid olink connection for the %s client, please set in the ApiGear Counter plugin settings or during run time"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return;
 	}
 	UseConnection(OLinkConnection);
@@ -133,7 +132,11 @@ void UCounterCounterOLinkClient::Deinitialize()
 
 void UCounterCounterOLinkClient::UseConnection(TScriptInterface<IApiGearConnection> InConnection)
 {
-	checkf(InConnection.GetInterface() != nullptr, TEXT("Cannot use connection - interface IApiGearConnection is not fully implemented"));
+	if (!InConnection.GetInterface())
+	{
+		UE_LOG(LogCounterCounterOLinkClient, Error, TEXT("The olink connection for the %s client does not implement the connection interface."), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		return;
+	}
 
 	// only accept connections of type olink
 	checkf(InConnection->GetConnectionProtocolIdentifier() == ApiGearOLinkProtocolIdentifier, TEXT("Cannot use connection - must be of type olink"));
@@ -165,7 +168,7 @@ void UCounterCounterOLinkClient::SetVector_Implementation(const FCustomTypesVect
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogCounterCounterOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		UE_LOG(LogCounterCounterOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Counter plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return;
 	}
 
@@ -198,7 +201,7 @@ void UCounterCounterOLinkClient::SetExternVector_Implementation(const FVector& I
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogCounterCounterOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		UE_LOG(LogCounterCounterOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Counter plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return;
 	}
 
@@ -231,7 +234,7 @@ void UCounterCounterOLinkClient::SetVectorArray_Implementation(const TArray<FCus
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogCounterCounterOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		UE_LOG(LogCounterCounterOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Counter plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return;
 	}
 
@@ -264,7 +267,7 @@ void UCounterCounterOLinkClient::SetExternVectorArray_Implementation(const TArra
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogCounterCounterOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		UE_LOG(LogCounterCounterOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Counter plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return;
 	}
 
@@ -292,7 +295,7 @@ FVector UCounterCounterOLinkClient::Increment_Implementation(const FVector& Vec)
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogCounterCounterOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		UE_LOG(LogCounterCounterOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Counter plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
 		return FVector(0.f, 0.f, 0.f);
 	}
@@ -323,7 +326,7 @@ TArray<FVector> UCounterCounterOLinkClient::IncrementArray_Implementation(const 
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogCounterCounterOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		UE_LOG(LogCounterCounterOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Counter plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
 		return TArray<FVector>();
 	}
@@ -346,7 +349,7 @@ FCustomTypesVector3D UCounterCounterOLinkClient::Decrement_Implementation(const 
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogCounterCounterOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		UE_LOG(LogCounterCounterOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Counter plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
 		return FCustomTypesVector3D();
 	}
@@ -377,7 +380,7 @@ TArray<FCustomTypesVector3D> UCounterCounterOLinkClient::DecrementArray_Implemen
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogCounterCounterOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		UE_LOG(LogCounterCounterOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Counter plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
 		return TArray<FCustomTypesVector3D>();
 	}

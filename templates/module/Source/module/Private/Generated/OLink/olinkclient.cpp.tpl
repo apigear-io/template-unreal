@@ -124,7 +124,6 @@ void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
 
 	if (!OLinkConnection.GetInterface())
 	{
-		UE_LOG(Log{{$Iface}}OLinkClient, Warning, TEXT("No valid olink connection for the %s client, please set in the ApiGear {{ $ModuleName }} plugin settings or during run time"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return;
 	}
 	UseConnection(OLinkConnection);
@@ -151,7 +150,11 @@ void {{$Class}}::Deinitialize()
 
 void {{$Class}}::UseConnection(TScriptInterface<IApiGearConnection> InConnection)
 {
-	checkf(InConnection.GetInterface() != nullptr, TEXT("Cannot use connection - interface IApiGearConnection is not fully implemented"));
+	if (!InConnection.GetInterface())
+	{
+		UE_LOG(Log{{$Iface}}OLinkClient, Error, TEXT("The olink connection for the %s client does not implement the connection interface."), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		return;
+	}
 
 	// only accept connections of type olink
 	checkf(InConnection->GetConnectionProtocolIdentifier() == ApiGearOLinkProtocolIdentifier, TEXT("Cannot use connection - must be of type olink"));
@@ -187,7 +190,7 @@ void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(Log{{$Iface}}OLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		UE_LOG(Log{{$Iface}}OLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear {{ $ModuleName }} plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return;
 	}
 
@@ -235,7 +238,7 @@ void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
 	{{- if .Return.IsVoid }}
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(Log{{$Iface}}OLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		UE_LOG(Log{{$Iface}}OLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear {{ $ModuleName }} plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
 		return;
 	}
@@ -245,7 +248,7 @@ void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
 	{{- else }}
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(Log{{$Iface}}OLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		UE_LOG(Log{{$Iface}}OLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear {{ $ModuleName }} plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
 		return {{ ueDefault "" .Return }};
 	}

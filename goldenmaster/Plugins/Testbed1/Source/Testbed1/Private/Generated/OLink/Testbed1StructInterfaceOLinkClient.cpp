@@ -104,7 +104,6 @@ void UTestbed1StructInterfaceOLinkClient::Initialize(FSubsystemCollectionBase& C
 
 	if (!OLinkConnection.GetInterface())
 	{
-		UE_LOG(LogTestbed1StructInterfaceOLinkClient, Warning, TEXT("No valid olink connection for the %s client, please set in the ApiGear Testbed1 plugin settings or during run time"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return;
 	}
 	UseConnection(OLinkConnection);
@@ -131,7 +130,11 @@ void UTestbed1StructInterfaceOLinkClient::Deinitialize()
 
 void UTestbed1StructInterfaceOLinkClient::UseConnection(TScriptInterface<IApiGearConnection> InConnection)
 {
-	checkf(InConnection.GetInterface() != nullptr, TEXT("Cannot use connection - interface IApiGearConnection is not fully implemented"));
+	if (!InConnection.GetInterface())
+	{
+		UE_LOG(LogTestbed1StructInterfaceOLinkClient, Error, TEXT("The olink connection for the %s client does not implement the connection interface."), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		return;
+	}
 
 	// only accept connections of type olink
 	checkf(InConnection->GetConnectionProtocolIdentifier() == ApiGearOLinkProtocolIdentifier, TEXT("Cannot use connection - must be of type olink"));
@@ -163,7 +166,7 @@ void UTestbed1StructInterfaceOLinkClient::SetPropBool_Implementation(const FTest
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTestbed1StructInterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		UE_LOG(LogTestbed1StructInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed1 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return;
 	}
 
@@ -196,7 +199,7 @@ void UTestbed1StructInterfaceOLinkClient::SetPropInt_Implementation(const FTestb
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTestbed1StructInterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		UE_LOG(LogTestbed1StructInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed1 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return;
 	}
 
@@ -229,7 +232,7 @@ void UTestbed1StructInterfaceOLinkClient::SetPropFloat_Implementation(const FTes
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTestbed1StructInterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		UE_LOG(LogTestbed1StructInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed1 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return;
 	}
 
@@ -262,7 +265,7 @@ void UTestbed1StructInterfaceOLinkClient::SetPropString_Implementation(const FTe
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTestbed1StructInterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		UE_LOG(LogTestbed1StructInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed1 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return;
 	}
 
@@ -290,7 +293,7 @@ FTestbed1StructBool UTestbed1StructInterfaceOLinkClient::FuncBool_Implementation
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTestbed1StructInterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		UE_LOG(LogTestbed1StructInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed1 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
 		return FTestbed1StructBool();
 	}
@@ -321,7 +324,7 @@ FTestbed1StructInt UTestbed1StructInterfaceOLinkClient::FuncInt_Implementation(c
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTestbed1StructInterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		UE_LOG(LogTestbed1StructInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed1 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
 		return FTestbed1StructInt();
 	}
@@ -352,7 +355,7 @@ FTestbed1StructFloat UTestbed1StructInterfaceOLinkClient::FuncFloat_Implementati
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTestbed1StructInterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		UE_LOG(LogTestbed1StructInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed1 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
 		return FTestbed1StructFloat();
 	}
@@ -383,7 +386,7 @@ FTestbed1StructString UTestbed1StructInterfaceOLinkClient::FuncString_Implementa
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTestbed1StructInterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		UE_LOG(LogTestbed1StructInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed1 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
 		return FTestbed1StructString();
 	}

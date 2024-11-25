@@ -83,7 +83,6 @@ void UTbSimpleEmptyInterfaceOLinkClient::Initialize(FSubsystemCollectionBase& Co
 
 	if (!OLinkConnection.GetInterface())
 	{
-		UE_LOG(LogTbSimpleEmptyInterfaceOLinkClient, Warning, TEXT("No valid olink connection for the %s client, please set in the ApiGear TbSimple plugin settings or during run time"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return;
 	}
 	UseConnection(OLinkConnection);
@@ -110,7 +109,11 @@ void UTbSimpleEmptyInterfaceOLinkClient::Deinitialize()
 
 void UTbSimpleEmptyInterfaceOLinkClient::UseConnection(TScriptInterface<IApiGearConnection> InConnection)
 {
-	checkf(InConnection.GetInterface() != nullptr, TEXT("Cannot use connection - interface IApiGearConnection is not fully implemented"));
+	if (!InConnection.GetInterface())
+	{
+		UE_LOG(LogTbSimpleEmptyInterfaceOLinkClient, Error, TEXT("The olink connection for the %s client does not implement the connection interface."), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		return;
+	}
 
 	// only accept connections of type olink
 	checkf(InConnection->GetConnectionProtocolIdentifier() == ApiGearOLinkProtocolIdentifier, TEXT("Cannot use connection - must be of type olink"));

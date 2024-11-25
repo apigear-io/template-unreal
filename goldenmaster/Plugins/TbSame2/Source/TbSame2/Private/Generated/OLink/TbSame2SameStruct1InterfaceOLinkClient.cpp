@@ -98,7 +98,6 @@ void UTbSame2SameStruct1InterfaceOLinkClient::Initialize(FSubsystemCollectionBas
 
 	if (!OLinkConnection.GetInterface())
 	{
-		UE_LOG(LogTbSame2SameStruct1InterfaceOLinkClient, Warning, TEXT("No valid olink connection for the %s client, please set in the ApiGear TbSame2 plugin settings or during run time"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return;
 	}
 	UseConnection(OLinkConnection);
@@ -125,7 +124,11 @@ void UTbSame2SameStruct1InterfaceOLinkClient::Deinitialize()
 
 void UTbSame2SameStruct1InterfaceOLinkClient::UseConnection(TScriptInterface<IApiGearConnection> InConnection)
 {
-	checkf(InConnection.GetInterface() != nullptr, TEXT("Cannot use connection - interface IApiGearConnection is not fully implemented"));
+	if (!InConnection.GetInterface())
+	{
+		UE_LOG(LogTbSame2SameStruct1InterfaceOLinkClient, Error, TEXT("The olink connection for the %s client does not implement the connection interface."), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		return;
+	}
 
 	// only accept connections of type olink
 	checkf(InConnection->GetConnectionProtocolIdentifier() == ApiGearOLinkProtocolIdentifier, TEXT("Cannot use connection - must be of type olink"));
@@ -157,7 +160,7 @@ void UTbSame2SameStruct1InterfaceOLinkClient::SetProp1_Implementation(const FTbS
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTbSame2SameStruct1InterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		UE_LOG(LogTbSame2SameStruct1InterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSame2 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return;
 	}
 
@@ -185,7 +188,7 @@ FTbSame2Struct1 UTbSame2SameStruct1InterfaceOLinkClient::Func1_Implementation(co
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTbSame2SameStruct1InterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		UE_LOG(LogTbSame2SameStruct1InterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSame2 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
 		return FTbSame2Struct1();
 	}

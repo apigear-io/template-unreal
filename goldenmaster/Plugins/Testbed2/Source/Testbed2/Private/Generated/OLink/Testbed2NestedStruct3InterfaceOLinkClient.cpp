@@ -102,7 +102,6 @@ void UTestbed2NestedStruct3InterfaceOLinkClient::Initialize(FSubsystemCollection
 
 	if (!OLinkConnection.GetInterface())
 	{
-		UE_LOG(LogTestbed2NestedStruct3InterfaceOLinkClient, Warning, TEXT("No valid olink connection for the %s client, please set in the ApiGear Testbed2 plugin settings or during run time"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return;
 	}
 	UseConnection(OLinkConnection);
@@ -129,7 +128,11 @@ void UTestbed2NestedStruct3InterfaceOLinkClient::Deinitialize()
 
 void UTestbed2NestedStruct3InterfaceOLinkClient::UseConnection(TScriptInterface<IApiGearConnection> InConnection)
 {
-	checkf(InConnection.GetInterface() != nullptr, TEXT("Cannot use connection - interface IApiGearConnection is not fully implemented"));
+	if (!InConnection.GetInterface())
+	{
+		UE_LOG(LogTestbed2NestedStruct3InterfaceOLinkClient, Error, TEXT("The olink connection for the %s client does not implement the connection interface."), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		return;
+	}
 
 	// only accept connections of type olink
 	checkf(InConnection->GetConnectionProtocolIdentifier() == ApiGearOLinkProtocolIdentifier, TEXT("Cannot use connection - must be of type olink"));
@@ -161,7 +164,7 @@ void UTestbed2NestedStruct3InterfaceOLinkClient::SetProp1_Implementation(const F
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTestbed2NestedStruct3InterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		UE_LOG(LogTestbed2NestedStruct3InterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed2 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return;
 	}
 
@@ -194,7 +197,7 @@ void UTestbed2NestedStruct3InterfaceOLinkClient::SetProp2_Implementation(const F
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTestbed2NestedStruct3InterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		UE_LOG(LogTestbed2NestedStruct3InterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed2 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return;
 	}
 
@@ -227,7 +230,7 @@ void UTestbed2NestedStruct3InterfaceOLinkClient::SetProp3_Implementation(const F
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTestbed2NestedStruct3InterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		UE_LOG(LogTestbed2NestedStruct3InterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed2 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return;
 	}
 
@@ -255,7 +258,7 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceOLinkClient::Func1_Impleme
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTestbed2NestedStruct3InterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		UE_LOG(LogTestbed2NestedStruct3InterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed2 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
 		return FTestbed2NestedStruct1();
 	}
@@ -286,7 +289,7 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceOLinkClient::Func2_Impleme
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTestbed2NestedStruct3InterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		UE_LOG(LogTestbed2NestedStruct3InterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed2 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
 		return FTestbed2NestedStruct1();
 	}
@@ -317,7 +320,7 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceOLinkClient::Func3_Impleme
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTestbed2NestedStruct3InterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		UE_LOG(LogTestbed2NestedStruct3InterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed2 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
 		return FTestbed2NestedStruct1();
 	}

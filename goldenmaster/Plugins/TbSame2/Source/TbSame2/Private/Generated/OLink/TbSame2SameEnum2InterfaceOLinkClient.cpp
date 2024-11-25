@@ -98,7 +98,6 @@ void UTbSame2SameEnum2InterfaceOLinkClient::Initialize(FSubsystemCollectionBase&
 
 	if (!OLinkConnection.GetInterface())
 	{
-		UE_LOG(LogTbSame2SameEnum2InterfaceOLinkClient, Warning, TEXT("No valid olink connection for the %s client, please set in the ApiGear TbSame2 plugin settings or during run time"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return;
 	}
 	UseConnection(OLinkConnection);
@@ -125,7 +124,11 @@ void UTbSame2SameEnum2InterfaceOLinkClient::Deinitialize()
 
 void UTbSame2SameEnum2InterfaceOLinkClient::UseConnection(TScriptInterface<IApiGearConnection> InConnection)
 {
-	checkf(InConnection.GetInterface() != nullptr, TEXT("Cannot use connection - interface IApiGearConnection is not fully implemented"));
+	if (!InConnection.GetInterface())
+	{
+		UE_LOG(LogTbSame2SameEnum2InterfaceOLinkClient, Error, TEXT("The olink connection for the %s client does not implement the connection interface."), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		return;
+	}
 
 	// only accept connections of type olink
 	checkf(InConnection->GetConnectionProtocolIdentifier() == ApiGearOLinkProtocolIdentifier, TEXT("Cannot use connection - must be of type olink"));
@@ -157,7 +160,7 @@ void UTbSame2SameEnum2InterfaceOLinkClient::SetProp1_Implementation(ETbSame2Enum
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTbSame2SameEnum2InterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		UE_LOG(LogTbSame2SameEnum2InterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSame2 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return;
 	}
 
@@ -186,7 +189,7 @@ void UTbSame2SameEnum2InterfaceOLinkClient::SetProp2_Implementation(ETbSame2Enum
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTbSame2SameEnum2InterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		UE_LOG(LogTbSame2SameEnum2InterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSame2 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 		return;
 	}
 
@@ -210,7 +213,7 @@ ETbSame2Enum1 UTbSame2SameEnum2InterfaceOLinkClient::Func1_Implementation(ETbSam
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTbSame2SameEnum2InterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		UE_LOG(LogTbSame2SameEnum2InterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSame2 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
 		return ETbSame2Enum1::TS2E1_VALUE1;
 	}
@@ -241,7 +244,7 @@ ETbSame2Enum1 UTbSame2SameEnum2InterfaceOLinkClient::Func2_Implementation(ETbSam
 {
 	if (!m_sink->IsReady())
 	{
-		UE_LOG(LogTbSame2SameEnum2InterfaceOLinkClient, Warning, TEXT("%s has no node"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		UE_LOG(LogTbSame2SameEnum2InterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSame2 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
 		return ETbSame2Enum1::TS2E1_VALUE1;
 	}
