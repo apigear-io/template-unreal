@@ -49,10 +49,10 @@ The complete setup to say "Hello world" on begin play.
 
 ### C++ 
 
-Since the generated interface is used outside of its own module, we have to add the module identifier to the list of dependency modules in the dependent module e.g. your project's or another plugin's module.
-To do this, open the dependents module, e.g. `ue_docs.Build.cs`, and add *IoWorld* to the `PublicDependencyModuleNames`. *IoWorld* is the demo module's name in the example.
+For any C++ module (e.g. your project's, or another plugin's) to have access to the generated interface, you must specify a dependency to it in the dependent module's `.Build.cs` file.  The name of the Unreal Engine module that is generated from each ApiGear module is a PascalCase transformation with punctuation removed.  `io.world`, for example, becomes `IoWorld`.
+
 ```cs showLineNumbers title="ue_docs.Build.cs"
-PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "IoWorld" });
+PrivateDependencyModuleNames.AddRange(new string[] { "IoWorld" });
 ```
 
 Afterwards, we can simply include the header files for the `api` interface, the `stub` implementation and use it.
