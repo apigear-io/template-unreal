@@ -24,7 +24,7 @@ static void to_json(nlohmann::json& j, const FString& value)
 template <typename T>
 void from_json(const nlohmann::json& j, TArray<T>& p)
 {
-	p.Reset();
+	p.Reset(j.size());
 
 	for (const nlohmann::json& element : j)
 	{

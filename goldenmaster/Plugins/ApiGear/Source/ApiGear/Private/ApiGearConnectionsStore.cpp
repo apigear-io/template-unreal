@@ -57,7 +57,7 @@ void UApiGearConnectionsStore::Deinitialize()
 		OverwriteAndSaveConnectionsToSettings();
 	}
 
-	Connections.Reset();
+	Connections.Empty();
 }
 
 void UApiGearConnectionsStore::OverwriteAndSaveConnectionsToSettings() const
@@ -65,7 +65,7 @@ void UApiGearConnectionsStore::OverwriteAndSaveConnectionsToSettings() const
 	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
 
 	// remove existing connections in settings
-	settings->Connections.Reset();
+	settings->Connections.Empty(Connections.Num());
 
 	for (auto& Connection : Connections)
 	{
