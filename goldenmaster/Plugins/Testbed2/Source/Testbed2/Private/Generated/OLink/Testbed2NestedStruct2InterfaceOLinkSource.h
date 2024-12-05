@@ -27,7 +27,7 @@ THIRD_PARTY_INCLUDES_END
 #include "OLinkHost.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTestbed2NestedStruct2InterfaceOLinkSource, Log, All);
-/// @brief handles OLink network interactions specific to ITestbed2NestedStruct2InterfaceInterface
+/** @brief handles OLink network interactions specific to ITestbed2NestedStruct2InterfaceInterface */
 class Testbed2NestedStruct2InterfaceOLinkSource : public ApiGear::ObjectLink::IObjectSource
 {
 public:

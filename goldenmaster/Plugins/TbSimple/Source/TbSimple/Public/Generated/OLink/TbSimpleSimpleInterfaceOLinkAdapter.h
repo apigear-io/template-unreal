@@ -30,9 +30,10 @@ class RemoteRegistry;
 }
 } // namespace ApiGear
 
-/// @brief handles the adaption between the service implementation and the OLink protocol
-/// takes an object of the type ITbSimpleSimpleInterfaceInterface
-/// and holds the corresponding TbSimpleSimpleInterfaceOLinkSource OLink source object
+/** @brief handles the adaption between the service implementation and the OLink protocol
+ * takes an object of the type ITbSimpleSimpleInterfaceInterface
+ * and holds the corresponding TbSimpleSimpleInterfaceOLinkSource OLink source object
+ */
 UCLASS(BlueprintType)
 class TBSIMPLE_API UTbSimpleSimpleInterfaceOLinkAdapter : public UGameInstanceSubsystem
 {

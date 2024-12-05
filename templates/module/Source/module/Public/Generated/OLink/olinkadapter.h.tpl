@@ -24,9 +24,10 @@ class RemoteRegistry;
 }
 } // namespace ApiGear
 
-/// @brief handles the adaption between the service implementation and the OLink protocol
-/// takes an object of the type I{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface
-/// and holds the corresponding {{$Iface}}OLinkSource OLink source object
+/** @brief handles the adaption between the service implementation and the OLink protocol
+ * takes an object of the type I{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface
+ * and holds the corresponding {{$Iface}}OLinkSource OLink source object
+ */
 UCLASS(BlueprintType)
 class {{ $API_MACRO }} {{$Class}} : public UGameInstanceSubsystem
 {

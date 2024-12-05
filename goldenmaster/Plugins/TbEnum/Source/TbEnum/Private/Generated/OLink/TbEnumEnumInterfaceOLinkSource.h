@@ -27,7 +27,7 @@ THIRD_PARTY_INCLUDES_END
 #include "OLinkHost.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTbEnumEnumInterfaceOLinkSource, Log, All);
-/// @brief handles OLink network interactions specific to ITbEnumEnumInterfaceInterface
+/** @brief handles OLink network interactions specific to ITbEnumEnumInterfaceInterface */
 class TbEnumEnumInterfaceOLinkSource : public ApiGear::ObjectLink::IObjectSource
 {
 public:

@@ -27,7 +27,7 @@ THIRD_PARTY_INCLUDES_END
 #include "OLinkHost.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTbSame2SameEnum1InterfaceOLinkSource, Log, All);
-/// @brief handles OLink network interactions specific to ITbSame2SameEnum1InterfaceInterface
+/** @brief handles OLink network interactions specific to ITbSame2SameEnum1InterfaceInterface */
 class TbSame2SameEnum1InterfaceOLinkSource : public ApiGear::ObjectLink::IObjectSource
 {
 public:

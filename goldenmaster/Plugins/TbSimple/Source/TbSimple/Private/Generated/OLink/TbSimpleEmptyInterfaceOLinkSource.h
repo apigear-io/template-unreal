@@ -27,7 +27,7 @@ THIRD_PARTY_INCLUDES_END
 #include "OLinkHost.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTbSimpleEmptyInterfaceOLinkSource, Log, All);
-/// @brief handles OLink network interactions specific to ITbSimpleEmptyInterfaceInterface
+/** @brief handles OLink network interactions specific to ITbSimpleEmptyInterfaceInterface */
 class TbSimpleEmptyInterfaceOLinkSource : public ApiGear::ObjectLink::IObjectSource
 {
 public:

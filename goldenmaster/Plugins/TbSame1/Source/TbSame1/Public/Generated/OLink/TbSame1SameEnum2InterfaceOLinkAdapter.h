@@ -30,9 +30,10 @@ class RemoteRegistry;
 }
 } // namespace ApiGear
 
-/// @brief handles the adaption between the service implementation and the OLink protocol
-/// takes an object of the type ITbSame1SameEnum2InterfaceInterface
-/// and holds the corresponding TbSame1SameEnum2InterfaceOLinkSource OLink source object
+/** @brief handles the adaption between the service implementation and the OLink protocol
+ * takes an object of the type ITbSame1SameEnum2InterfaceInterface
+ * and holds the corresponding TbSame1SameEnum2InterfaceOLinkSource OLink source object
+ */
 UCLASS(BlueprintType)
 class TBSAME1_API UTbSame1SameEnum2InterfaceOLinkAdapter : public UGameInstanceSubsystem
 {

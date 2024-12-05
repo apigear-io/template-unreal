@@ -30,9 +30,10 @@ class RemoteRegistry;
 }
 } // namespace ApiGear
 
-/// @brief handles the adaption between the service implementation and the OLink protocol
-/// takes an object of the type ICounterCounterInterface
-/// and holds the corresponding CounterCounterOLinkSource OLink source object
+/** @brief handles the adaption between the service implementation and the OLink protocol
+ * takes an object of the type ICounterCounterInterface
+ * and holds the corresponding CounterCounterOLinkSource OLink source object
+ */
 UCLASS(BlueprintType)
 class COUNTER_API UCounterCounterOLinkAdapter : public UGameInstanceSubsystem
 {

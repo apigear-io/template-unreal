@@ -30,9 +30,10 @@ class RemoteRegistry;
 }
 } // namespace ApiGear
 
-/// @brief handles the adaption between the service implementation and the OLink protocol
-/// takes an object of the type ITestbed1StructArrayInterfaceInterface
-/// and holds the corresponding Testbed1StructArrayInterfaceOLinkSource OLink source object
+/** @brief handles the adaption between the service implementation and the OLink protocol
+ * takes an object of the type ITestbed1StructArrayInterfaceInterface
+ * and holds the corresponding Testbed1StructArrayInterfaceOLinkSource OLink source object
+ */
 UCLASS(BlueprintType)
 class TESTBED1_API UTestbed1StructArrayInterfaceOLinkAdapter : public UGameInstanceSubsystem
 {

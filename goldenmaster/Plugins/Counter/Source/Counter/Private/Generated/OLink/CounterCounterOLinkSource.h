@@ -27,7 +27,7 @@ THIRD_PARTY_INCLUDES_END
 #include "OLinkHost.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(LogCounterCounterOLinkSource, Log, All);
-/// @brief handles OLink network interactions specific to ICounterCounterInterface
+/** @brief handles OLink network interactions specific to ICounterCounterInterface */
 class CounterCounterOLinkSource : public ApiGear::ObjectLink::IObjectSource
 {
 public:
