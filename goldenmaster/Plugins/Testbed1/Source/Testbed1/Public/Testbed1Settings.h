@@ -30,8 +30,11 @@ const FString Testbed1LocalBackendIdentifier = "Local";
 UCLASS(Config = Engine, DefaultConfig)
 class TESTBED1_API UTestbed1Settings : public UObject
 {
-	GENERATED_UCLASS_BODY()
+	GENERATED_BODY()
 
+	UTestbed1Settings(const FObjectInitializer& ObjectInitializer);
+
+public:
 	// Callback used to validate the settings once the engine is available
 	void ValidateSettingsPostEngineInit();
 

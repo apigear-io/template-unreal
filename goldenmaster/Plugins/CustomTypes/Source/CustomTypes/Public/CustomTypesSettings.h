@@ -30,8 +30,11 @@ const FString CustomTypesLocalBackendIdentifier = "Local";
 UCLASS(Config = Engine, DefaultConfig)
 class CUSTOMTYPES_API UCustomTypesSettings : public UObject
 {
-	GENERATED_UCLASS_BODY()
+	GENERATED_BODY()
 
+	UCustomTypesSettings(const FObjectInitializer& ObjectInitializer);
+
+public:
 	// Callback used to validate the settings once the engine is available
 	void ValidateSettingsPostEngineInit();
 

@@ -30,8 +30,11 @@ const FString TbSimpleLocalBackendIdentifier = "Local";
 UCLASS(Config = Engine, DefaultConfig)
 class TBSIMPLE_API UTbSimpleSettings : public UObject
 {
-	GENERATED_UCLASS_BODY()
+	GENERATED_BODY()
 
+	UTbSimpleSettings(const FObjectInitializer& ObjectInitializer);
+
+public:
 	// Callback used to validate the settings once the engine is available
 	void ValidateSettingsPostEngineInit();
 

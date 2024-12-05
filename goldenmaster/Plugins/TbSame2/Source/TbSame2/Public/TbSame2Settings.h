@@ -30,8 +30,11 @@ const FString TbSame2LocalBackendIdentifier = "Local";
 UCLASS(Config = Engine, DefaultConfig)
 class TBSAME2_API UTbSame2Settings : public UObject
 {
-	GENERATED_UCLASS_BODY()
+	GENERATED_BODY()
 
+	UTbSame2Settings(const FObjectInitializer& ObjectInitializer);
+
+public:
 	// Callback used to validate the settings once the engine is available
 	void ValidateSettingsPostEngineInit();
 

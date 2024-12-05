@@ -30,8 +30,11 @@ const FString TbEnumLocalBackendIdentifier = "Local";
 UCLASS(Config = Engine, DefaultConfig)
 class TBENUM_API UTbEnumSettings : public UObject
 {
-	GENERATED_UCLASS_BODY()
+	GENERATED_BODY()
 
+	UTbEnumSettings(const FObjectInitializer& ObjectInitializer);
+
+public:
 	// Callback used to validate the settings once the engine is available
 	void ValidateSettingsPostEngineInit();
 
