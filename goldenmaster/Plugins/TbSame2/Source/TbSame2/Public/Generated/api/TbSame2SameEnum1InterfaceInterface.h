@@ -18,7 +18,7 @@ limitations under the License.
 
 #include "Engine/LatentActionManager.h"
 #include "UObject/Interface.h"
-#include "TbSame2_data.h"
+#include "Generated/api/TbSame2_data.h"
 #include "TbSame2SameEnum1InterfaceInterface.generated.h"
 
 /**

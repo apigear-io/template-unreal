@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include "TbEnum_data.h"
+#include "Generated/api/TbEnum_data.h"
 #include "Runtime/JsonUtilities/Public/JsonObjectConverter.h"
 
 /**

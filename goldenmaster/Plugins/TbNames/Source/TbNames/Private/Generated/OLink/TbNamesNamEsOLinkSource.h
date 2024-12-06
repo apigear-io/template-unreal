@@ -16,7 +16,7 @@ limitations under the License.
 */
 #pragma once
 
-#include "TbNamesNamEsInterface.h"
+#include "Generated/api/TbNamesNamEsInterface.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 THIRD_PARTY_INCLUDES_START
 #include "olink/iobjectsource.h"

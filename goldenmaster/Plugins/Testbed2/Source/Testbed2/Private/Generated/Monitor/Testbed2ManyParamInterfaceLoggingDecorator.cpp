@@ -16,8 +16,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "Generated/Monitor/Testbed2ManyParamInterfaceLoggingDecorator.h"
-#include "Testbed2.trace.h"
-#include "Testbed2Factory.h"
+#include "Generated/Monitor/Testbed2.trace.h"
+#include "Generated/Monitor/Testbed2Factory.h"
 #include "Runtime/Launch/Resources/Version.h"
 
 DEFINE_LOG_CATEGORY(LogTestbed2ManyParamInterfaceLoggingDecorator);

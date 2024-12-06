@@ -4,7 +4,7 @@
 {{- $Category := printf "ApiGear%s" $ModuleName -}}
 #pragma once
 
-#include "{{$ModuleName}}_apig.h"
+#include "Generated/api/{{$ModuleName}}_apig.h"
 {{- range .Module.Interfaces }}
 {{- $class := printf "%s%sTracer" $ModuleName (Camel .Name) }}
 {{- $Name := (Camel .Name)}}

@@ -18,8 +18,8 @@ limitations under the License.
 
 #include "Runtime/Launch/Resources/Version.h"
 #include "Subsystems/GameInstanceSubsystem.h"
-#include "Counter_data.h"
-#include "CounterCounterInterface.h"
+#include "Generated/api/Counter_data.h"
+#include "Generated/api/CounterCounterInterface.h"
 #include "AbstractCounterCounter.generated.h"
 
 /**

@@ -18,8 +18,8 @@ limitations under the License.
 
 #include "Runtime/Launch/Resources/Version.h"
 #include "Subsystems/GameInstanceSubsystem.h"
-#include "Testbed2_data.h"
-#include "Testbed2ManyParamInterfaceInterface.h"
+#include "Generated/api/Testbed2_data.h"
+#include "Generated/api/Testbed2ManyParamInterfaceInterface.h"
 #include "AbstractTestbed2ManyParamInterface.generated.h"
 
 /**

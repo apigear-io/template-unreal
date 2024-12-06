@@ -18,9 +18,9 @@ limitations under the License.
 
 #include "Engine/LatentActionManager.h"
 #include "UObject/Interface.h"
-#include "Counter_data.h"
-#include "CustomTypes/Public/Generated/api/CustomTypes_data.h"
-#include "ExternTypes/Public/Generated/api/ExternTypes_data.h"
+#include "Generated/api/Counter_data.h"
+#include "Generated/api/CustomTypes_data.h"
+#include "Generated/api/ExternTypes_data.h"
 #include "CounterCounterInterface.generated.h"
 
 /**

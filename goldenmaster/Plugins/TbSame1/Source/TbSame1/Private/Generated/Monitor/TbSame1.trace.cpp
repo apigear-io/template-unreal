@@ -1,4 +1,4 @@
-#include "TbSame1.trace.h"
+#include "Generated/Monitor/TbSame1.trace.h"
 #include "Generated/api/TbSame1.json.adapter.h"
 #include "tracer.h"
 

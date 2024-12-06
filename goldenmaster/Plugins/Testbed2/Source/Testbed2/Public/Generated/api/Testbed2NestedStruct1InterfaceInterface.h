@@ -18,7 +18,7 @@ limitations under the License.
 
 #include "Engine/LatentActionManager.h"
 #include "UObject/Interface.h"
-#include "Testbed2_data.h"
+#include "Generated/api/Testbed2_data.h"
 #include "Testbed2NestedStruct1InterfaceInterface.generated.h"
 
 /**

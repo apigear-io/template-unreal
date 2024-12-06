@@ -18,8 +18,8 @@ limitations under the License.
 
 #include "Runtime/Launch/Resources/Version.h"
 #include "Subsystems/GameInstanceSubsystem.h"
-#include "TbEnum_data.h"
-#include "TbEnumEnumInterfaceInterface.h"
+#include "Generated/api/TbEnum_data.h"
+#include "Generated/api/TbEnumEnumInterfaceInterface.h"
 #include "AbstractTbEnumEnumInterface.generated.h"
 
 /**

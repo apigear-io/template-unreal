@@ -18,7 +18,7 @@ limitations under the License.
 
 #include "Engine/LatentActionManager.h"
 #include "UObject/Interface.h"
-#include "TbSimple_data.h"
+#include "Generated/api/TbSimple_data.h"
 #include "TbSimpleNoPropertiesInterfaceInterface.generated.h"
 
 /**

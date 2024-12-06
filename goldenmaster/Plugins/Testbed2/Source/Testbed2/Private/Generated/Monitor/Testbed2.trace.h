@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Testbed2_apig.h"
+#include "Generated/api/Testbed2_apig.h"
 
 class Testbed2ManyParamInterfaceTracer
 {

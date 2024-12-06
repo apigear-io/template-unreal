@@ -18,8 +18,8 @@ limitations under the License.
 
 #include "Runtime/Launch/Resources/Version.h"
 #include "Subsystems/GameInstanceSubsystem.h"
-#include "Testbed1_data.h"
-#include "Testbed1StructInterfaceInterface.h"
+#include "Generated/api/Testbed1_data.h"
+#include "Generated/api/Testbed1StructInterfaceInterface.h"
 #include "AbstractTestbed1StructInterface.generated.h"
 
 /**

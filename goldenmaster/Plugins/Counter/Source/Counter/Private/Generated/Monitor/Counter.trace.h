@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Counter_apig.h"
+#include "Generated/api/Counter_apig.h"
 
 class CounterCounterTracer
 {

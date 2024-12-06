@@ -18,8 +18,8 @@ limitations under the License.
 
 #include "Runtime/Launch/Resources/Version.h"
 #include "Subsystems/GameInstanceSubsystem.h"
-#include "TbSimple_data.h"
-#include "TbSimpleVoidInterfaceInterface.h"
+#include "Generated/api/TbSimple_data.h"
+#include "Generated/api/TbSimpleVoidInterfaceInterface.h"
 #include "AbstractTbSimpleVoidInterface.generated.h"
 
 /**

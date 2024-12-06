@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include "CustomTypes_data.h"
+#include "Generated/api/CustomTypes_data.h"
 #include "Runtime/JsonUtilities/Public/JsonObjectConverter.h"
 
 bool FCustomTypesVector3D::operator==(const FCustomTypesVector3D& rhs) const

@@ -1,4 +1,4 @@
-#include "TbEnum.trace.h"
+#include "Generated/Monitor/TbEnum.trace.h"
 #include "Generated/api/TbEnum.json.adapter.h"
 #include "tracer.h"
 

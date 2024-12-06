@@ -3,7 +3,7 @@
 {{- $moduleName := .Module.Name}}
 {{- $API_MACRO := printf "%s_API" $ModuleName }}
 {{- $Category := printf "ApiGear%s" $ModuleName -}}
-#include "{{$ModuleName}}.trace.h"
+#include "Generated/Monitor/{{$ModuleName}}.trace.h"
 #include "Generated/api/{{$ModuleName}}.json.adapter.h"
 {{- range .Module.Imports }}
 #include "{{Camel .Name}}/Private/Generated/api/{{Camel .Name}}.json.adapter.h"

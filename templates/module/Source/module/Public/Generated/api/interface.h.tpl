@@ -21,14 +21,14 @@ limitations under the License.
 #include "Engine/LatentActionManager.h"
 #include "UObject/Interface.h"
 {{- $ModuleName := Camel .Module.Name}}
-#include "{{$ModuleName}}_data.h"
+#include "Generated/api/{{$ModuleName}}_data.h"
 {{- with .Interface }}
 {{- $Class := printf "%s%s" $ModuleName (Camel .Name) }}
 {{- $Category := printf "ApiGear|%s|%s" $ModuleName (Camel .Name) }}
 {{- $class := printf "U%sInterface" $Class }}
 {{- $Iface := printf "%s%s" $ModuleName (Camel .Name) }}
 {{- range .Module.Imports }}
-#include "{{Camel .Name}}/Public/Generated/api/{{Camel .Name}}_data.h"
+#include "Generated/api/{{Camel .Name}}_data.h"
 {{- end }}
 #include "{{$Class}}Interface.generated.h"
 

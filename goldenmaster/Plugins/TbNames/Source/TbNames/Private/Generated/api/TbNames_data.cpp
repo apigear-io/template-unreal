@@ -15,5 +15,5 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include "TbNames_data.h"
+#include "Generated/api/TbNames_data.h"
 #include "Runtime/JsonUtilities/Public/JsonObjectConverter.h"

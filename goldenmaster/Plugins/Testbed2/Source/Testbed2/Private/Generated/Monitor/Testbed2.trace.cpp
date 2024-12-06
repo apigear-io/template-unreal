@@ -1,4 +1,4 @@
-#include "Testbed2.trace.h"
+#include "Generated/Monitor/Testbed2.trace.h"
 #include "Generated/api/Testbed2.json.adapter.h"
 #include "tracer.h"
 

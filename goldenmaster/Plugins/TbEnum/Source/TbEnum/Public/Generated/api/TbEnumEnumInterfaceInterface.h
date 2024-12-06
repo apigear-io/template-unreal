@@ -18,7 +18,7 @@ limitations under the License.
 
 #include "Engine/LatentActionManager.h"
 #include "UObject/Interface.h"
-#include "TbEnum_data.h"
+#include "Generated/api/TbEnum_data.h"
 #include "TbEnumEnumInterfaceInterface.generated.h"
 
 /**

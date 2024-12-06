@@ -1,4 +1,4 @@
-#include "TbNames.trace.h"
+#include "Generated/Monitor/TbNames.trace.h"
 #include "Generated/api/TbNames.json.adapter.h"
 #include "tracer.h"
 

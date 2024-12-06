@@ -18,8 +18,8 @@ limitations under the License.
 
 #include "Runtime/Launch/Resources/Version.h"
 #include "Subsystems/GameInstanceSubsystem.h"
-#include "TbNames_data.h"
-#include "TbNamesNamEsInterface.h"
+#include "Generated/api/TbNames_data.h"
+#include "Generated/api/TbNamesNamEsInterface.h"
 #include "AbstractTbNamesNamEs.generated.h"
 
 /**

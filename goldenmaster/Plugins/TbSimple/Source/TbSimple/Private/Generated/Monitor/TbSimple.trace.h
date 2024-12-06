@@ -1,6 +1,6 @@
 #pragma once
 
-#include "TbSimple_apig.h"
+#include "Generated/api/TbSimple_apig.h"
 
 class TbSimpleVoidInterfaceTracer
 {
