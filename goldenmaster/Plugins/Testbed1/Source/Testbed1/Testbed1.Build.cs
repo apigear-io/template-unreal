@@ -36,9 +36,10 @@ public class Testbed1 : ModuleRules
 				"ApiGear",
 				"Projects",
 				"Engine",
+				"Messaging",
 				"JsonUtilities",
 				"ApiGearOLink",
-				"OLinkProtocolLibrary"
+				"OLinkProtocolLibrary",
 			}
 			);
 			

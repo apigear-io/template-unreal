@@ -43,12 +43,14 @@ public class {{$ModuleName}} : ModuleRules
 {{- end }}
 				"Projects",
 				"Engine",
+{{- if .Features.msgbus }}
+				"Messaging",
+{{- end }}
 				"JsonUtilities",
 {{- if .Features.olink }}
 				"ApiGearOLink",
-				"OLinkProtocolLibrary"
+				"OLinkProtocolLibrary",
 {{- end }}
-{{- if .Module.Imports }}, {{- end}}
 {{- range $idx, $elem := .Module.Imports }}
 {{- if $idx}}, {{ end }}
 				"{{Camel .Name}}"

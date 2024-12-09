@@ -36,9 +36,10 @@ public class TbSame2 : ModuleRules
 				"ApiGear",
 				"Projects",
 				"Engine",
+				"Messaging",
 				"JsonUtilities",
 				"ApiGearOLink",
-				"OLinkProtocolLibrary"
+				"OLinkProtocolLibrary",
 			}
 			);
 			

@@ -1,0 +1,137 @@
+/**
+Copyright 2021 ApiGear UG
+Copyright 2021 Epic Games, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+#pragma once
+
+#include "Generated/api/AbstractTestbed1StructInterface.h"
+#include "Containers/Map.h"
+#include "HAL/CriticalSection.h"
+#include "Async/Future.h"
+#include "Runtime/Launch/Resources/Version.h"
+#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
+#include "Templates/UniquePtr.h"
+#else
+#include "Templates/PimplPtr.h"
+#endif
+#include "IMessageContext.h"
+#include "Testbed1StructInterfaceMsgBusClient.generated.h"
+
+class FMessageEndpoint;
+// messages
+struct FTestbed1StructInterfaceInitMessage;
+struct FTestbed1StructInterfaceServiceDisconnectMessage;
+struct FTestbed1StructInterfaceSigBoolSignalMessage;
+struct FTestbed1StructInterfaceSigIntSignalMessage;
+struct FTestbed1StructInterfaceSigFloatSignalMessage;
+struct FTestbed1StructInterfaceSigStringSignalMessage;
+struct FTestbed1StructInterfacePropBoolChangedMessage;
+struct FTestbed1StructInterfacePropIntChangedMessage;
+struct FTestbed1StructInterfacePropFloatChangedMessage;
+struct FTestbed1StructInterfacePropStringChangedMessage;
+struct FTestbed1StructInterfaceFuncBoolReplyMessage;
+struct FTestbed1StructInterfaceFuncIntReplyMessage;
+struct FTestbed1StructInterfaceFuncFloatReplyMessage;
+struct FTestbed1StructInterfaceFuncStringReplyMessage;
+
+struct Testbed1StructInterfacePropertiesMsgBusData;
+DECLARE_LOG_CATEGORY_EXTERN(LogTestbed1StructInterfaceMsgBusClient, Log, All);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed1StructInterfaceConnectionStatusChangedDelegate, bool, IsConnected);
+
+UCLASS(NotBlueprintable, BlueprintType)
+class TESTBED1_API UTestbed1StructInterfaceMsgBusClient : public UAbstractTestbed1StructInterface
+{
+	GENERATED_BODY()
+public:
+	explicit UTestbed1StructInterfaceMsgBusClient();
+	virtual ~UTestbed1StructInterfaceMsgBusClient();
+
+	// subsystem
+	void Initialize(FSubsystemCollectionBase& Collection) override;
+	void Deinitialize() override;
+
+	// connection handling
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface|Remote")
+	void Connect();
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface|Remote")
+	void Disconnect();
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface|Remote")
+	bool IsConnected() const;
+
+	/**
+	 * Used when the interface client changes connection status:
+	 */
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface|Remote", DisplayName = "Connection Status Changed")
+	FTestbed1StructInterfaceConnectionStatusChangedDelegate _ConnectionStatusChanged;
+
+	// properties
+	FTestbed1StructBool GetPropBool_Implementation() const override;
+	void SetPropBool_Implementation(const FTestbed1StructBool& PropBool) override;
+
+	FTestbed1StructInt GetPropInt_Implementation() const override;
+	void SetPropInt_Implementation(const FTestbed1StructInt& PropInt) override;
+
+	FTestbed1StructFloat GetPropFloat_Implementation() const override;
+	void SetPropFloat_Implementation(const FTestbed1StructFloat& PropFloat) override;
+
+	FTestbed1StructString GetPropString_Implementation() const override;
+	void SetPropString_Implementation(const FTestbed1StructString& PropString) override;
+
+	// operations
+	FTestbed1StructBool FuncBool_Implementation(const FTestbed1StructBool& ParamBool) override;
+
+	FTestbed1StructInt FuncInt_Implementation(const FTestbed1StructInt& ParamInt) override;
+
+	FTestbed1StructFloat FuncFloat_Implementation(const FTestbed1StructFloat& ParamFloat) override;
+
+	FTestbed1StructString FuncString_Implementation(const FTestbed1StructString& ParamString) override;
+
+private:
+	TSharedPtr<FMessageEndpoint, ESPMode::ThreadSafe> Testbed1StructInterfaceMsgBusEndpoint;
+
+	void DiscoverService();
+	FMessageAddress ServiceAddress;
+
+	// connection handling
+	void OnConnectionInit(const FTestbed1StructInterfaceInitMessage& InInitMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnServiceClosedConnection(const FTestbed1StructInterfaceServiceDisconnectMessage& InInitMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnSigBool(const FTestbed1StructInterfaceSigBoolSignalMessage& InSigBoolMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnSigInt(const FTestbed1StructInterfaceSigIntSignalMessage& InSigIntMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnSigFloat(const FTestbed1StructInterfaceSigFloatSignalMessage& InSigFloatMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnSigString(const FTestbed1StructInterfaceSigStringSignalMessage& InSigStringMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnPropBoolChanged(const FTestbed1StructInterfacePropBoolChangedMessage& InPropBoolMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnPropIntChanged(const FTestbed1StructInterfacePropIntChangedMessage& InPropIntMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnPropFloatChanged(const FTestbed1StructInterfacePropFloatChangedMessage& InPropFloatMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnPropStringChanged(const FTestbed1StructInterfacePropStringChangedMessage& InPropStringMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnFuncBoolReply(const FTestbed1StructInterfaceFuncBoolReplyMessage& InFuncBoolMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnFuncIntReply(const FTestbed1StructInterfaceFuncIntReplyMessage& InFuncIntMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnFuncFloatReply(const FTestbed1StructInterfaceFuncFloatReplyMessage& InFuncFloatMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnFuncStringReply(const FTestbed1StructInterfaceFuncStringReplyMessage& InFuncStringMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+
+	// member variable to store the last sent data
+	TPimplPtr<Testbed1StructInterfacePropertiesMsgBusData> _SentData;
+
+	TMap<FGuid, void*> ReplyPromisesMap;
+	FCriticalSection ReplyPromisesMapCS;
+
+	template <typename ResultType>
+	bool StorePromise(const FGuid& Id, TPromise<ResultType>& Promise);
+
+	template <typename ResultType>
+	bool FulfillPromise(const FGuid& Id, const ResultType& Value);
+};

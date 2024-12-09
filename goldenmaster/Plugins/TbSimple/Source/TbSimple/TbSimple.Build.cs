@@ -36,9 +36,10 @@ public class TbSimple : ModuleRules
 				"ApiGear",
 				"Projects",
 				"Engine",
+				"Messaging",
 				"JsonUtilities",
 				"ApiGearOLink",
-				"OLinkProtocolLibrary"
+				"OLinkProtocolLibrary",
 			}
 			);
 			

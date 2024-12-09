@@ -29,6 +29,7 @@ policies:
           - "apigear"
           - "api"
           - "olink"
+          - "msgbus"
           - "plugin"
           - "stubs"
           - "monitor"

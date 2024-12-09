@@ -387,3 +387,41 @@ features:
           - source: "module/Source/module/Private/Tests/olinkfixture.cpp.tpl"
             target: "Source/{{Camel .Module.Name}}/Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLinkFixture.cpp"
             preserve: true
+  - name: msgbus
+    requires:
+      - api
+      - plugin
+    scopes:
+      - match: interface
+        prefix: "Plugins/{{Camel .Module.Name}}/"
+        documents:
+          - source: "module/Source/module/Public/Generated/MsgBus/msgbusclient.h.tpl"
+            target: "Source/{{Camel .Module.Name}}/Public/Generated/MsgBus/{{Camel .Module.Name}}{{Camel .Interface.Name}}MsgBusClient.h"
+          - source: "module/Source/module/Private/Generated/MsgBus/msgbusclient.cpp.tpl"
+            target: "Source/{{Camel .Module.Name}}/Private/Generated/MsgBus/{{Camel .Module.Name}}{{Camel .Interface.Name}}MsgBusClient.cpp"
+          - source: "module/Source/module/Public/Generated/MsgBus/msgbusadapter.h.tpl"
+            target: "Source/{{Camel .Module.Name}}/Public/Generated/MsgBus/{{Camel .Module.Name}}{{Camel .Interface.Name}}MsgBusAdapter.h"
+          - source: "module/Source/module/Private/Generated/MsgBus/msgbusadapter.cpp.tpl"
+            target: "Source/{{Camel .Module.Name}}/Private/Generated/MsgBus/{{Camel .Module.Name}}{{Camel .Interface.Name}}MsgBusAdapter.cpp"
+          - source: "module/Source/module/Public/Generated/MsgBus/msgbusmessages.h.tpl"
+            target: "Source/{{Camel .Module.Name}}/Public/Generated/MsgBus/{{Camel .Module.Name}}{{Camel .Interface.Name}}MsgBusMessages.h"
+  - name: msgbus_tests
+    requires:
+      - msgbus
+      - stubs
+    scopes:
+      - match: interface
+        prefix: "Plugins/{{Camel .Module.Name}}/"
+        documents:
+          - source: "module/Source/module/Private/Tests/msgbus.spec.h.tpl"
+            target: "Source/{{Camel .Module.Name}}/Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}MsgBus.spec.h"
+            preserve: true
+          - source: "module/Source/module/Private/Tests/msgbus.spec.cpp.tpl"
+            target: "Source/{{Camel .Module.Name}}/Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}MsgBus.spec.cpp"
+            preserve: true
+          - source: "module/Source/module/Private/Tests/msgbusfixture.h.tpl"
+            target: "Source/{{Camel .Module.Name}}/Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}MsgBusFixture.h"
+            preserve: true
+          - source: "module/Source/module/Private/Tests/msgbusfixture.cpp.tpl"
+            target: "Source/{{Camel .Module.Name}}/Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}MsgBusFixture.cpp"
+            preserve: true

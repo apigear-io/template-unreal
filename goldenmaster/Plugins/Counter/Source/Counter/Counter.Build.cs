@@ -36,6 +36,7 @@ public class Counter : ModuleRules
 				"ApiGear",
 				"Projects",
 				"Engine",
+				"Messaging",
 				"JsonUtilities",
 				"ApiGearOLink",
 				"OLinkProtocolLibrary",
