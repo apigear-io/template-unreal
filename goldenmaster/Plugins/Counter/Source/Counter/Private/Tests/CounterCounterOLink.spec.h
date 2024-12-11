@@ -20,7 +20,7 @@ limitations under the License.
 #include "CounterTestsCommon.h"
 #include "CounterCounterOLinkFixture.h"
 
-#if WITH_DEV_AUTOMATION_TESTS
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
 
 BEGIN_DEFINE_SPEC(UCounterCounterOLinkSpec, "Counter.Counter.OLink", CounterTestFilterMask);
 
@@ -36,4 +36,4 @@ FDoneDelegate testDoneDelegate;
 friend class UCounterCounterOLinkHelper;
 END_DEFINE_SPEC(UCounterCounterOLinkSpec);
 
-#endif // WITH_DEV_AUTOMATION_TESTS
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

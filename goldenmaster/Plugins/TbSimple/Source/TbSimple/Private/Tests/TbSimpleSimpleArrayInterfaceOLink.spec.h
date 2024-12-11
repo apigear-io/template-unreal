@@ -20,7 +20,7 @@ limitations under the License.
 #include "TbSimpleTestsCommon.h"
 #include "TbSimpleSimpleArrayInterfaceOLinkFixture.h"
 
-#if WITH_DEV_AUTOMATION_TESTS
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
 
 BEGIN_DEFINE_SPEC(UTbSimpleSimpleArrayInterfaceOLinkSpec, "TbSimple.SimpleArrayInterface.OLink", TbSimpleTestFilterMask);
 
@@ -49,4 +49,4 @@ FDoneDelegate testDoneDelegate;
 friend class UTbSimpleSimpleArrayInterfaceOLinkHelper;
 END_DEFINE_SPEC(UTbSimpleSimpleArrayInterfaceOLinkSpec);
 
-#endif // WITH_DEV_AUTOMATION_TESTS
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

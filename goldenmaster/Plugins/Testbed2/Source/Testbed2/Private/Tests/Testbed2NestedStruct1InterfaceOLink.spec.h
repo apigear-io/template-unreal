@@ -20,7 +20,7 @@ limitations under the License.
 #include "Testbed2TestsCommon.h"
 #include "Testbed2NestedStruct1InterfaceOLinkFixture.h"
 
-#if WITH_DEV_AUTOMATION_TESTS
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
 
 BEGIN_DEFINE_SPEC(UTestbed2NestedStruct1InterfaceOLinkSpec, "Testbed2.NestedStruct1Interface.OLink", Testbed2TestFilterMask);
 
@@ -35,4 +35,4 @@ FDoneDelegate testDoneDelegate;
 friend class UTestbed2NestedStruct1InterfaceOLinkHelper;
 END_DEFINE_SPEC(UTestbed2NestedStruct1InterfaceOLinkSpec);
 
-#endif // WITH_DEV_AUTOMATION_TESTS
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

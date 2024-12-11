@@ -20,7 +20,7 @@ limitations under the License.
 #include "TbSame1TestsCommon.h"
 #include "TbSame1SameStruct1InterfaceOLinkFixture.h"
 
-#if WITH_DEV_AUTOMATION_TESTS
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
 
 BEGIN_DEFINE_SPEC(UTbSame1SameStruct1InterfaceOLinkSpec, "TbSame1.SameStruct1Interface.OLink", TbSame1TestFilterMask);
 
@@ -35,4 +35,4 @@ FDoneDelegate testDoneDelegate;
 friend class UTbSame1SameStruct1InterfaceOLinkHelper;
 END_DEFINE_SPEC(UTbSame1SameStruct1InterfaceOLinkSpec);
 
-#endif // WITH_DEV_AUTOMATION_TESTS
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

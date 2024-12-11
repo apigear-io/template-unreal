@@ -20,7 +20,7 @@ limitations under the License.
 #include "Testbed2TestsCommon.h"
 #include "Testbed2ManyParamInterfaceOLinkFixture.h"
 
-#if WITH_DEV_AUTOMATION_TESTS
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
 
 BEGIN_DEFINE_SPEC(UTestbed2ManyParamInterfaceOLinkSpec, "Testbed2.ManyParamInterface.OLink", Testbed2TestFilterMask);
 
@@ -41,4 +41,4 @@ FDoneDelegate testDoneDelegate;
 friend class UTestbed2ManyParamInterfaceOLinkHelper;
 END_DEFINE_SPEC(UTestbed2ManyParamInterfaceOLinkSpec);
 
-#endif // WITH_DEV_AUTOMATION_TESTS
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

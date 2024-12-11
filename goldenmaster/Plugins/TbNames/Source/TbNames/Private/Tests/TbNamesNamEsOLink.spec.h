@@ -20,7 +20,7 @@ limitations under the License.
 #include "TbNamesTestsCommon.h"
 #include "TbNamesNamEsOLinkFixture.h"
 
-#if WITH_DEV_AUTOMATION_TESTS
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
 
 BEGIN_DEFINE_SPEC(UTbNamesNamEsOLinkSpec, "TbNames.NamEs.OLink", TbNamesTestFilterMask);
 
@@ -38,4 +38,4 @@ FDoneDelegate testDoneDelegate;
 friend class UTbNamesNamEsOLinkHelper;
 END_DEFINE_SPEC(UTbNamesNamEsOLinkSpec);
 
-#endif // WITH_DEV_AUTOMATION_TESTS
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

@@ -11,7 +11,7 @@
 #include "{{$ModuleName}}TestsCommon.h"
 #include "{{$DisplayName}}OLinkFixture.h"
 
-#if WITH_DEV_AUTOMATION_TESTS
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
 
 BEGIN_DEFINE_SPEC({{$Class}}OLinkSpec, "{{$ModuleName}}.{{$IfaceName}}.OLink", {{$ModuleName}}TestFilterMask);
 
@@ -32,4 +32,4 @@ FDoneDelegate testDoneDelegate;
 friend class {{$Class}}OLinkHelper;
 END_DEFINE_SPEC({{$Class}}OLinkSpec);
 
-#endif // WITH_DEV_AUTOMATION_TESTS
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
