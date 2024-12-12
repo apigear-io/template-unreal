@@ -71,7 +71,7 @@ if [ $? -ne 0 ]; then exit 1; fi;
 {{ range .System.Modules }}
 
 # copy {{ Camel .Name}} plugin to blank project for build and functional testing
-cp -rf "$script_path/Plugins/{{Camel .Name}}" "$ProjectTarget_path/Plugins/" 1>&-
+mkdir -p "$ProjectTarget_path/Plugins/{{Camel .Name}}" && cp -rf "$script_path/Plugins/{{Camel .Name}}" "$ProjectTarget_path/Plugins/" 1>&-
 if [ $? -ne 0 ]; then exit 1; fi;
 {{ end }}
 

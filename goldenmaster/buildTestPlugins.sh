@@ -62,52 +62,52 @@ if [ $? -ne 0 ]; then exit 1; fi;
 
 
 # copy Testbed2 plugin to blank project for build and functional testing
-cp -rf "$script_path/Plugins/Testbed2" "$ProjectTarget_path/Plugins/" 1>&-
+mkdir -p "$ProjectTarget_path/Plugins/Testbed2" && cp -rf "$script_path/Plugins/Testbed2" "$ProjectTarget_path/Plugins/" 1>&-
 if [ $? -ne 0 ]; then exit 1; fi;
 
 
 # copy TbEnum plugin to blank project for build and functional testing
-cp -rf "$script_path/Plugins/TbEnum" "$ProjectTarget_path/Plugins/" 1>&-
+mkdir -p "$ProjectTarget_path/Plugins/TbEnum" && cp -rf "$script_path/Plugins/TbEnum" "$ProjectTarget_path/Plugins/" 1>&-
 if [ $? -ne 0 ]; then exit 1; fi;
 
 
 # copy TbSame1 plugin to blank project for build and functional testing
-cp -rf "$script_path/Plugins/TbSame1" "$ProjectTarget_path/Plugins/" 1>&-
+mkdir -p "$ProjectTarget_path/Plugins/TbSame1" && cp -rf "$script_path/Plugins/TbSame1" "$ProjectTarget_path/Plugins/" 1>&-
 if [ $? -ne 0 ]; then exit 1; fi;
 
 
 # copy TbSame2 plugin to blank project for build and functional testing
-cp -rf "$script_path/Plugins/TbSame2" "$ProjectTarget_path/Plugins/" 1>&-
+mkdir -p "$ProjectTarget_path/Plugins/TbSame2" && cp -rf "$script_path/Plugins/TbSame2" "$ProjectTarget_path/Plugins/" 1>&-
 if [ $? -ne 0 ]; then exit 1; fi;
 
 
 # copy TbSimple plugin to blank project for build and functional testing
-cp -rf "$script_path/Plugins/TbSimple" "$ProjectTarget_path/Plugins/" 1>&-
+mkdir -p "$ProjectTarget_path/Plugins/TbSimple" && cp -rf "$script_path/Plugins/TbSimple" "$ProjectTarget_path/Plugins/" 1>&-
 if [ $? -ne 0 ]; then exit 1; fi;
 
 
 # copy Testbed1 plugin to blank project for build and functional testing
-cp -rf "$script_path/Plugins/Testbed1" "$ProjectTarget_path/Plugins/" 1>&-
+mkdir -p "$ProjectTarget_path/Plugins/Testbed1" && cp -rf "$script_path/Plugins/Testbed1" "$ProjectTarget_path/Plugins/" 1>&-
 if [ $? -ne 0 ]; then exit 1; fi;
 
 
 # copy TbNames plugin to blank project for build and functional testing
-cp -rf "$script_path/Plugins/TbNames" "$ProjectTarget_path/Plugins/" 1>&-
+mkdir -p "$ProjectTarget_path/Plugins/TbNames" && cp -rf "$script_path/Plugins/TbNames" "$ProjectTarget_path/Plugins/" 1>&-
 if [ $? -ne 0 ]; then exit 1; fi;
 
 
 # copy CustomTypes plugin to blank project for build and functional testing
-cp -rf "$script_path/Plugins/CustomTypes" "$ProjectTarget_path/Plugins/" 1>&-
+mkdir -p "$ProjectTarget_path/Plugins/CustomTypes" && cp -rf "$script_path/Plugins/CustomTypes" "$ProjectTarget_path/Plugins/" 1>&-
 if [ $? -ne 0 ]; then exit 1; fi;
 
 
 # copy ExternTypes plugin to blank project for build and functional testing
-cp -rf "$script_path/Plugins/ExternTypes" "$ProjectTarget_path/Plugins/" 1>&-
+mkdir -p "$ProjectTarget_path/Plugins/ExternTypes" && cp -rf "$script_path/Plugins/ExternTypes" "$ProjectTarget_path/Plugins/" 1>&-
 if [ $? -ne 0 ]; then exit 1; fi;
 
 
 # copy Counter plugin to blank project for build and functional testing
-cp -rf "$script_path/Plugins/Counter" "$ProjectTarget_path/Plugins/" 1>&-
+mkdir -p "$ProjectTarget_path/Plugins/Counter" && cp -rf "$script_path/Plugins/Counter" "$ProjectTarget_path/Plugins/" 1>&-
 if [ $? -ne 0 ]; then exit 1; fi;
 
 
