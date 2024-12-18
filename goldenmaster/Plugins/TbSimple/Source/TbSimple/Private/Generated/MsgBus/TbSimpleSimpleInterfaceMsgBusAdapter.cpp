@@ -40,12 +40,12 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::Initialize(FSubsystemCollectionBase&
 
 void UTbSimpleSimpleInterfaceMsgBusAdapter::Deinitialize()
 {
-	StopListening();
+	_StopListening();
 
 	Super::Deinitialize();
 }
 
-void UTbSimpleSimpleInterfaceMsgBusAdapter::StartListening()
+void UTbSimpleSimpleInterfaceMsgBusAdapter::_StartListening()
 {
 	if (TbSimpleSimpleInterfaceMsgBusEndpoint.IsValid())
 		return;
@@ -53,6 +53,7 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::StartListening()
 	// clang-format off
 	TbSimpleSimpleInterfaceMsgBusEndpoint = FMessageEndpoint::Builder("ApiGear/TbSimple/SimpleInterface/Service")
 		.Handling<FTbSimpleSimpleInterfaceDiscoveryMessage>(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnNewClientDiscovered)
+		.Handling<FTbSimpleSimpleInterfacePingMessage>(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnPing)
 		.Handling<FTbSimpleSimpleInterfaceClientDisconnectMessage>(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnClientDisconnected)
 		.Handling<FTbSimpleSimpleInterfaceSetPropBoolRequestMessage>(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnSetPropBoolRequest)
 		.Handling<FTbSimpleSimpleInterfaceSetPropIntRequestMessage>(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnSetPropIntRequest)
@@ -80,7 +81,7 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::StartListening()
 	}
 }
 
-void UTbSimpleSimpleInterfaceMsgBusAdapter::StopListening()
+void UTbSimpleSimpleInterfaceMsgBusAdapter::_StopListening()
 {
 	auto msg = new FTbSimpleSimpleInterfaceServiceDisconnectMessage();
 
@@ -97,12 +98,12 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::StopListening()
 	ConnectedClients.Reset();
 }
 
-bool UTbSimpleSimpleInterfaceMsgBusAdapter::IsListening() const
+bool UTbSimpleSimpleInterfaceMsgBusAdapter::_IsListening() const
 {
 	return TbSimpleSimpleInterfaceMsgBusEndpoint.IsValid();
 }
 
-void UTbSimpleSimpleInterfaceMsgBusAdapter::setBackendService(TScriptInterface<ITbSimpleSimpleInterfaceInterface> InService)
+void UTbSimpleSimpleInterfaceMsgBusAdapter::_setBackendService(TScriptInterface<ITbSimpleSimpleInterfaceInterface> InService)
 {
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
@@ -178,6 +179,21 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnNewClientDiscovered(const FTbSimpl
 	}
 }
 
+void UTbSimpleSimpleInterfaceMsgBusAdapter::OnPing(const FTbSimpleSimpleInterfacePingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	auto msg = new FTbSimpleSimpleInterfacePongMessage();
+	msg->Timestamp = InMessage.Timestamp;
+
+	if (TbSimpleSimpleInterfaceMsgBusEndpoint.IsValid())
+	{
+		TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfacePongMessage>(msg, EMessageFlags::Reliable,
+			nullptr,
+			TArrayBuilder<FMessageAddress>().Add(Context->GetSender()),
+			FTimespan::Zero(),
+			FDateTime::MaxValue());
+	}
+}
+
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnClientDisconnected(const FTbSimpleSimpleInterfaceClientDisconnectMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	ConnectedClients.Remove(Context->GetSender());
@@ -191,7 +207,7 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncNoReturnValueRequest(const FTb
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncBoolRequest(const FTbSimpleSimpleInterfaceFuncBoolRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	auto msg = new FTbSimpleSimpleInterfaceFuncBoolReplyMessage();
-	msg->RepsonseId = InMessage.RepsonseId;
+	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->Execute_FuncBool(BackendService.GetObject(), InMessage.bParamBool);
 
 	if (TbSimpleSimpleInterfaceMsgBusEndpoint.IsValid())
@@ -207,7 +223,7 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncBoolRequest(const FTbSimpleSim
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncIntRequest(const FTbSimpleSimpleInterfaceFuncIntRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	auto msg = new FTbSimpleSimpleInterfaceFuncIntReplyMessage();
-	msg->RepsonseId = InMessage.RepsonseId;
+	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->Execute_FuncInt(BackendService.GetObject(), InMessage.ParamInt);
 
 	if (TbSimpleSimpleInterfaceMsgBusEndpoint.IsValid())
@@ -223,7 +239,7 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncIntRequest(const FTbSimpleSimp
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncInt32Request(const FTbSimpleSimpleInterfaceFuncInt32RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	auto msg = new FTbSimpleSimpleInterfaceFuncInt32ReplyMessage();
-	msg->RepsonseId = InMessage.RepsonseId;
+	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->Execute_FuncInt32(BackendService.GetObject(), InMessage.ParamInt32);
 
 	if (TbSimpleSimpleInterfaceMsgBusEndpoint.IsValid())
@@ -239,7 +255,7 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncInt32Request(const FTbSimpleSi
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncInt64Request(const FTbSimpleSimpleInterfaceFuncInt64RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	auto msg = new FTbSimpleSimpleInterfaceFuncInt64ReplyMessage();
-	msg->RepsonseId = InMessage.RepsonseId;
+	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->Execute_FuncInt64(BackendService.GetObject(), InMessage.ParamInt64);
 
 	if (TbSimpleSimpleInterfaceMsgBusEndpoint.IsValid())
@@ -255,7 +271,7 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncInt64Request(const FTbSimpleSi
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncFloatRequest(const FTbSimpleSimpleInterfaceFuncFloatRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	auto msg = new FTbSimpleSimpleInterfaceFuncFloatReplyMessage();
-	msg->RepsonseId = InMessage.RepsonseId;
+	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->Execute_FuncFloat(BackendService.GetObject(), InMessage.ParamFloat);
 
 	if (TbSimpleSimpleInterfaceMsgBusEndpoint.IsValid())
@@ -271,7 +287,7 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncFloatRequest(const FTbSimpleSi
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncFloat32Request(const FTbSimpleSimpleInterfaceFuncFloat32RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	auto msg = new FTbSimpleSimpleInterfaceFuncFloat32ReplyMessage();
-	msg->RepsonseId = InMessage.RepsonseId;
+	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->Execute_FuncFloat32(BackendService.GetObject(), InMessage.ParamFloat32);
 
 	if (TbSimpleSimpleInterfaceMsgBusEndpoint.IsValid())
@@ -287,7 +303,7 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncFloat32Request(const FTbSimple
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncFloat64Request(const FTbSimpleSimpleInterfaceFuncFloat64RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	auto msg = new FTbSimpleSimpleInterfaceFuncFloat64ReplyMessage();
-	msg->RepsonseId = InMessage.RepsonseId;
+	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->Execute_FuncFloat64(BackendService.GetObject(), InMessage.ParamFloat);
 
 	if (TbSimpleSimpleInterfaceMsgBusEndpoint.IsValid())
@@ -303,7 +319,7 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncFloat64Request(const FTbSimple
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncStringRequest(const FTbSimpleSimpleInterfaceFuncStringRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	auto msg = new FTbSimpleSimpleInterfaceFuncStringReplyMessage();
-	msg->RepsonseId = InMessage.RepsonseId;
+	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->Execute_FuncString(BackendService.GetObject(), InMessage.ParamString);
 
 	if (TbSimpleSimpleInterfaceMsgBusEndpoint.IsValid())

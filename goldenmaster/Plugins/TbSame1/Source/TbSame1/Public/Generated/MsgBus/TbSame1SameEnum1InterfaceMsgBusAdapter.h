@@ -25,6 +25,7 @@ limitations under the License.
 class FMessageEndpoint;
 // messages
 struct FTbSame1SameEnum1InterfaceDiscoveryMessage;
+struct FTbSame1SameEnum1InterfacePingMessage;
 struct FTbSame1SameEnum1InterfaceClientDisconnectMessage;
 struct FTbSame1SameEnum1InterfaceSig1SignalMessage;
 struct FTbSame1SameEnum1InterfaceSetProp1RequestMessage;
@@ -48,21 +49,22 @@ public:
 
 	// connection handling
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1|SameEnum1Interface|Remote")
-	void StartListening();
+	void _StartListening();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1|SameEnum1Interface|Remote")
-	void StopListening();
+	void _StopListening();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1|SameEnum1Interface|Remote")
-	bool IsListening() const;
+	bool _IsListening() const;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1|SameEnum1Interface")
-	void setBackendService(TScriptInterface<ITbSame1SameEnum1InterfaceInterface> InService);
+	void _setBackendService(TScriptInterface<ITbSame1SameEnum1InterfaceInterface> InService);
 
 private:
 	TSharedPtr<FMessageEndpoint, ESPMode::ThreadSafe> TbSame1SameEnum1InterfaceMsgBusEndpoint;
 
 	void OnNewClientDiscovered(const FTbSame1SameEnum1InterfaceDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnPing(const FTbSame1SameEnum1InterfacePingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnClientDisconnected(const FTbSame1SameEnum1InterfaceClientDisconnectMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnFunc1Request(const FTbSame1SameEnum1InterfaceFunc1RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnSetProp1Request(const FTbSame1SameEnum1InterfaceSetProp1RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);

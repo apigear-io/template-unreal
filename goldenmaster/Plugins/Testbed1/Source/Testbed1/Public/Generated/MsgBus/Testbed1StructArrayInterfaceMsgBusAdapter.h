@@ -25,23 +25,18 @@ limitations under the License.
 class FMessageEndpoint;
 // messages
 struct FTestbed1StructArrayInterfaceDiscoveryMessage;
+struct FTestbed1StructArrayInterfacePingMessage;
 struct FTestbed1StructArrayInterfaceClientDisconnectMessage;
 struct FTestbed1StructArrayInterfaceSigBoolSignalMessage;
-
 struct FTestbed1StructArrayInterfaceSigIntSignalMessage;
-
 struct FTestbed1StructArrayInterfaceSigFloatSignalMessage;
-
 struct FTestbed1StructArrayInterfaceSigStringSignalMessage;
 struct FTestbed1StructArrayInterfaceSetPropBoolRequestMessage;
 struct FTestbed1StructArrayInterfacePropBoolChangedMessage;
-
 struct FTestbed1StructArrayInterfaceSetPropIntRequestMessage;
 struct FTestbed1StructArrayInterfacePropIntChangedMessage;
-
 struct FTestbed1StructArrayInterfaceSetPropFloatRequestMessage;
 struct FTestbed1StructArrayInterfacePropFloatChangedMessage;
-
 struct FTestbed1StructArrayInterfaceSetPropStringRequestMessage;
 struct FTestbed1StructArrayInterfacePropStringChangedMessage;
 struct FTestbed1StructArrayInterfaceFuncBoolRequestMessage;
@@ -66,21 +61,22 @@ public:
 
 	// connection handling
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Remote")
-	void StartListening();
+	void _StartListening();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Remote")
-	void StopListening();
+	void _StopListening();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Remote")
-	bool IsListening() const;
+	bool _IsListening() const;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface")
-	void setBackendService(TScriptInterface<ITestbed1StructArrayInterfaceInterface> InService);
+	void _setBackendService(TScriptInterface<ITestbed1StructArrayInterfaceInterface> InService);
 
 private:
 	TSharedPtr<FMessageEndpoint, ESPMode::ThreadSafe> Testbed1StructArrayInterfaceMsgBusEndpoint;
 
 	void OnNewClientDiscovered(const FTestbed1StructArrayInterfaceDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnPing(const FTestbed1StructArrayInterfacePingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnClientDisconnected(const FTestbed1StructArrayInterfaceClientDisconnectMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnFuncBoolRequest(const FTestbed1StructArrayInterfaceFuncBoolRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnFuncIntRequest(const FTestbed1StructArrayInterfaceFuncIntRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);

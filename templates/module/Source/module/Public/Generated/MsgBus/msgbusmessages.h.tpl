@@ -65,6 +65,24 @@ struct F{{$DisplayName}}ServiceDisconnectMessage
 	GENERATED_BODY()
 };
 
+USTRUCT()
+struct F{{$DisplayName}}PingMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	double Timestamp = 0.0;
+};
+
+USTRUCT()
+struct F{{$DisplayName}}PongMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	double Timestamp = 0.0;
+};
+
 {{- if len .Interface.Signals }}{{ nl }}{{ end }}
 {{- range $i, $e := .Interface.Signals }}
 {{- if $i }}{{nl}}{{ end }}
@@ -111,11 +129,14 @@ struct F{{$DisplayName}}{{Camel .Name}}RequestMessage
 {
 	GENERATED_BODY()
 
+{{- if not .Return.IsVoid }}
+
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
+{{- end }}
 
 {{- range $i, $e := .Params }}
-{{- if $i }}{{nl}}{{ end }}
+
 	UPROPERTY()
 	{{ueType "" .}} {{ueVar "" .}} = {{ueDefault "" .}};
 {{- end}}
@@ -128,8 +149,11 @@ struct F{{$DisplayName}}{{Camel .Name}}ReplyMessage
 {
 	GENERATED_BODY()
 
+{{- if not .Return.IsVoid }}
+
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
+{{- end }}
 
 	UPROPERTY()
 	{{ueReturn "" .Return}} Result = {{ueDefault "" .Return}};

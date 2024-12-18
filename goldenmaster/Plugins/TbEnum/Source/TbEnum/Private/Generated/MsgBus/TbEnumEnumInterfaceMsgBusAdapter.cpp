@@ -40,12 +40,12 @@ void UTbEnumEnumInterfaceMsgBusAdapter::Initialize(FSubsystemCollectionBase& Col
 
 void UTbEnumEnumInterfaceMsgBusAdapter::Deinitialize()
 {
-	StopListening();
+	_StopListening();
 
 	Super::Deinitialize();
 }
 
-void UTbEnumEnumInterfaceMsgBusAdapter::StartListening()
+void UTbEnumEnumInterfaceMsgBusAdapter::_StartListening()
 {
 	if (TbEnumEnumInterfaceMsgBusEndpoint.IsValid())
 		return;
@@ -53,6 +53,7 @@ void UTbEnumEnumInterfaceMsgBusAdapter::StartListening()
 	// clang-format off
 	TbEnumEnumInterfaceMsgBusEndpoint = FMessageEndpoint::Builder("ApiGear/TbEnum/EnumInterface/Service")
 		.Handling<FTbEnumEnumInterfaceDiscoveryMessage>(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnNewClientDiscovered)
+		.Handling<FTbEnumEnumInterfacePingMessage>(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnPing)
 		.Handling<FTbEnumEnumInterfaceClientDisconnectMessage>(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnClientDisconnected)
 		.Handling<FTbEnumEnumInterfaceSetProp0RequestMessage>(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnSetProp0Request)
 		.Handling<FTbEnumEnumInterfaceSetProp1RequestMessage>(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnSetProp1Request)
@@ -71,7 +72,7 @@ void UTbEnumEnumInterfaceMsgBusAdapter::StartListening()
 	}
 }
 
-void UTbEnumEnumInterfaceMsgBusAdapter::StopListening()
+void UTbEnumEnumInterfaceMsgBusAdapter::_StopListening()
 {
 	auto msg = new FTbEnumEnumInterfaceServiceDisconnectMessage();
 
@@ -88,12 +89,12 @@ void UTbEnumEnumInterfaceMsgBusAdapter::StopListening()
 	ConnectedClients.Reset();
 }
 
-bool UTbEnumEnumInterfaceMsgBusAdapter::IsListening() const
+bool UTbEnumEnumInterfaceMsgBusAdapter::_IsListening() const
 {
 	return TbEnumEnumInterfaceMsgBusEndpoint.IsValid();
 }
 
-void UTbEnumEnumInterfaceMsgBusAdapter::setBackendService(TScriptInterface<ITbEnumEnumInterfaceInterface> InService)
+void UTbEnumEnumInterfaceMsgBusAdapter::_setBackendService(TScriptInterface<ITbEnumEnumInterfaceInterface> InService)
 {
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
@@ -149,6 +150,21 @@ void UTbEnumEnumInterfaceMsgBusAdapter::OnNewClientDiscovered(const FTbEnumEnumI
 	}
 }
 
+void UTbEnumEnumInterfaceMsgBusAdapter::OnPing(const FTbEnumEnumInterfacePingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	auto msg = new FTbEnumEnumInterfacePongMessage();
+	msg->Timestamp = InMessage.Timestamp;
+
+	if (TbEnumEnumInterfaceMsgBusEndpoint.IsValid())
+	{
+		TbEnumEnumInterfaceMsgBusEndpoint->Send<FTbEnumEnumInterfacePongMessage>(msg, EMessageFlags::Reliable,
+			nullptr,
+			TArrayBuilder<FMessageAddress>().Add(Context->GetSender()),
+			FTimespan::Zero(),
+			FDateTime::MaxValue());
+	}
+}
+
 void UTbEnumEnumInterfaceMsgBusAdapter::OnClientDisconnected(const FTbEnumEnumInterfaceClientDisconnectMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	ConnectedClients.Remove(Context->GetSender());
@@ -157,7 +173,7 @@ void UTbEnumEnumInterfaceMsgBusAdapter::OnClientDisconnected(const FTbEnumEnumIn
 void UTbEnumEnumInterfaceMsgBusAdapter::OnFunc0Request(const FTbEnumEnumInterfaceFunc0RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	auto msg = new FTbEnumEnumInterfaceFunc0ReplyMessage();
-	msg->RepsonseId = InMessage.RepsonseId;
+	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->Execute_Func0(BackendService.GetObject(), InMessage.Param0);
 
 	if (TbEnumEnumInterfaceMsgBusEndpoint.IsValid())
@@ -173,7 +189,7 @@ void UTbEnumEnumInterfaceMsgBusAdapter::OnFunc0Request(const FTbEnumEnumInterfac
 void UTbEnumEnumInterfaceMsgBusAdapter::OnFunc1Request(const FTbEnumEnumInterfaceFunc1RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	auto msg = new FTbEnumEnumInterfaceFunc1ReplyMessage();
-	msg->RepsonseId = InMessage.RepsonseId;
+	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->Execute_Func1(BackendService.GetObject(), InMessage.Param1);
 
 	if (TbEnumEnumInterfaceMsgBusEndpoint.IsValid())
@@ -189,7 +205,7 @@ void UTbEnumEnumInterfaceMsgBusAdapter::OnFunc1Request(const FTbEnumEnumInterfac
 void UTbEnumEnumInterfaceMsgBusAdapter::OnFunc2Request(const FTbEnumEnumInterfaceFunc2RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	auto msg = new FTbEnumEnumInterfaceFunc2ReplyMessage();
-	msg->RepsonseId = InMessage.RepsonseId;
+	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->Execute_Func2(BackendService.GetObject(), InMessage.Param2);
 
 	if (TbEnumEnumInterfaceMsgBusEndpoint.IsValid())
@@ -205,7 +221,7 @@ void UTbEnumEnumInterfaceMsgBusAdapter::OnFunc2Request(const FTbEnumEnumInterfac
 void UTbEnumEnumInterfaceMsgBusAdapter::OnFunc3Request(const FTbEnumEnumInterfaceFunc3RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	auto msg = new FTbEnumEnumInterfaceFunc3ReplyMessage();
-	msg->RepsonseId = InMessage.RepsonseId;
+	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->Execute_Func3(BackendService.GetObject(), InMessage.Param3);
 
 	if (TbEnumEnumInterfaceMsgBusEndpoint.IsValid())

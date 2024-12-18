@@ -40,12 +40,12 @@ void UTbSame1SameStruct2InterfaceMsgBusAdapter::Initialize(FSubsystemCollectionB
 
 void UTbSame1SameStruct2InterfaceMsgBusAdapter::Deinitialize()
 {
-	StopListening();
+	_StopListening();
 
 	Super::Deinitialize();
 }
 
-void UTbSame1SameStruct2InterfaceMsgBusAdapter::StartListening()
+void UTbSame1SameStruct2InterfaceMsgBusAdapter::_StartListening()
 {
 	if (TbSame1SameStruct2InterfaceMsgBusEndpoint.IsValid())
 		return;
@@ -53,6 +53,7 @@ void UTbSame1SameStruct2InterfaceMsgBusAdapter::StartListening()
 	// clang-format off
 	TbSame1SameStruct2InterfaceMsgBusEndpoint = FMessageEndpoint::Builder("ApiGear/TbSame1/SameStruct2Interface/Service")
 		.Handling<FTbSame1SameStruct2InterfaceDiscoveryMessage>(this, &UTbSame1SameStruct2InterfaceMsgBusAdapter::OnNewClientDiscovered)
+		.Handling<FTbSame1SameStruct2InterfacePingMessage>(this, &UTbSame1SameStruct2InterfaceMsgBusAdapter::OnPing)
 		.Handling<FTbSame1SameStruct2InterfaceClientDisconnectMessage>(this, &UTbSame1SameStruct2InterfaceMsgBusAdapter::OnClientDisconnected)
 		.Handling<FTbSame1SameStruct2InterfaceSetProp1RequestMessage>(this, &UTbSame1SameStruct2InterfaceMsgBusAdapter::OnSetProp1Request)
 		.Handling<FTbSame1SameStruct2InterfaceSetProp2RequestMessage>(this, &UTbSame1SameStruct2InterfaceMsgBusAdapter::OnSetProp2Request)
@@ -67,7 +68,7 @@ void UTbSame1SameStruct2InterfaceMsgBusAdapter::StartListening()
 	}
 }
 
-void UTbSame1SameStruct2InterfaceMsgBusAdapter::StopListening()
+void UTbSame1SameStruct2InterfaceMsgBusAdapter::_StopListening()
 {
 	auto msg = new FTbSame1SameStruct2InterfaceServiceDisconnectMessage();
 
@@ -84,12 +85,12 @@ void UTbSame1SameStruct2InterfaceMsgBusAdapter::StopListening()
 	ConnectedClients.Reset();
 }
 
-bool UTbSame1SameStruct2InterfaceMsgBusAdapter::IsListening() const
+bool UTbSame1SameStruct2InterfaceMsgBusAdapter::_IsListening() const
 {
 	return TbSame1SameStruct2InterfaceMsgBusEndpoint.IsValid();
 }
 
-void UTbSame1SameStruct2InterfaceMsgBusAdapter::setBackendService(TScriptInterface<ITbSame1SameStruct2InterfaceInterface> InService)
+void UTbSame1SameStruct2InterfaceMsgBusAdapter::_setBackendService(TScriptInterface<ITbSame1SameStruct2InterfaceInterface> InService)
 {
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
@@ -135,6 +136,21 @@ void UTbSame1SameStruct2InterfaceMsgBusAdapter::OnNewClientDiscovered(const FTbS
 	}
 }
 
+void UTbSame1SameStruct2InterfaceMsgBusAdapter::OnPing(const FTbSame1SameStruct2InterfacePingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	auto msg = new FTbSame1SameStruct2InterfacePongMessage();
+	msg->Timestamp = InMessage.Timestamp;
+
+	if (TbSame1SameStruct2InterfaceMsgBusEndpoint.IsValid())
+	{
+		TbSame1SameStruct2InterfaceMsgBusEndpoint->Send<FTbSame1SameStruct2InterfacePongMessage>(msg, EMessageFlags::Reliable,
+			nullptr,
+			TArrayBuilder<FMessageAddress>().Add(Context->GetSender()),
+			FTimespan::Zero(),
+			FDateTime::MaxValue());
+	}
+}
+
 void UTbSame1SameStruct2InterfaceMsgBusAdapter::OnClientDisconnected(const FTbSame1SameStruct2InterfaceClientDisconnectMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	ConnectedClients.Remove(Context->GetSender());
@@ -143,7 +159,7 @@ void UTbSame1SameStruct2InterfaceMsgBusAdapter::OnClientDisconnected(const FTbSa
 void UTbSame1SameStruct2InterfaceMsgBusAdapter::OnFunc1Request(const FTbSame1SameStruct2InterfaceFunc1RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	auto msg = new FTbSame1SameStruct2InterfaceFunc1ReplyMessage();
-	msg->RepsonseId = InMessage.RepsonseId;
+	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->Execute_Func1(BackendService.GetObject(), InMessage.Param1);
 
 	if (TbSame1SameStruct2InterfaceMsgBusEndpoint.IsValid())
@@ -159,7 +175,7 @@ void UTbSame1SameStruct2InterfaceMsgBusAdapter::OnFunc1Request(const FTbSame1Sam
 void UTbSame1SameStruct2InterfaceMsgBusAdapter::OnFunc2Request(const FTbSame1SameStruct2InterfaceFunc2RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	auto msg = new FTbSame1SameStruct2InterfaceFunc2ReplyMessage();
-	msg->RepsonseId = InMessage.RepsonseId;
+	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->Execute_Func2(BackendService.GetObject(), InMessage.Param1, InMessage.Param2);
 
 	if (TbSame1SameStruct2InterfaceMsgBusEndpoint.IsValid())

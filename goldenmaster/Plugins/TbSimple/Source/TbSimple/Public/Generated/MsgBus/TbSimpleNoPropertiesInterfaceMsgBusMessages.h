@@ -47,6 +47,24 @@ struct FTbSimpleNoPropertiesInterfaceServiceDisconnectMessage
 };
 
 USTRUCT()
+struct FTbSimpleNoPropertiesInterfacePingMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	double Timestamp = 0.0;
+};
+
+USTRUCT()
+struct FTbSimpleNoPropertiesInterfacePongMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	double Timestamp = 0.0;
+};
+
+USTRUCT()
 struct FTbSimpleNoPropertiesInterfaceSigVoidSignalMessage
 {
 	GENERATED_BODY()
@@ -65,9 +83,6 @@ USTRUCT()
 struct FTbSimpleNoPropertiesInterfaceFuncVoidRequestMessage
 {
 	GENERATED_BODY()
-
-	UPROPERTY()
-	FGuid RepsonseId;
 };
 
 USTRUCT()
@@ -76,7 +91,8 @@ struct FTbSimpleNoPropertiesInterfaceFuncBoolRequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
+
 	UPROPERTY()
 	bool bParamBool = false;
 };
@@ -87,7 +103,7 @@ struct FTbSimpleNoPropertiesInterfaceFuncBoolReplyMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
 
 	UPROPERTY()
 	bool Result = false;

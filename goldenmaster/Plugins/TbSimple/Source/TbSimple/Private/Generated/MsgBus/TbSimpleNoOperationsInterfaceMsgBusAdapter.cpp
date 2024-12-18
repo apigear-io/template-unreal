@@ -40,12 +40,12 @@ void UTbSimpleNoOperationsInterfaceMsgBusAdapter::Initialize(FSubsystemCollectio
 
 void UTbSimpleNoOperationsInterfaceMsgBusAdapter::Deinitialize()
 {
-	StopListening();
+	_StopListening();
 
 	Super::Deinitialize();
 }
 
-void UTbSimpleNoOperationsInterfaceMsgBusAdapter::StartListening()
+void UTbSimpleNoOperationsInterfaceMsgBusAdapter::_StartListening()
 {
 	if (TbSimpleNoOperationsInterfaceMsgBusEndpoint.IsValid())
 		return;
@@ -53,6 +53,7 @@ void UTbSimpleNoOperationsInterfaceMsgBusAdapter::StartListening()
 	// clang-format off
 	TbSimpleNoOperationsInterfaceMsgBusEndpoint = FMessageEndpoint::Builder("ApiGear/TbSimple/NoOperationsInterface/Service")
 		.Handling<FTbSimpleNoOperationsInterfaceDiscoveryMessage>(this, &UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnNewClientDiscovered)
+		.Handling<FTbSimpleNoOperationsInterfacePingMessage>(this, &UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnPing)
 		.Handling<FTbSimpleNoOperationsInterfaceClientDisconnectMessage>(this, &UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnClientDisconnected)
 		.Handling<FTbSimpleNoOperationsInterfaceSetPropBoolRequestMessage>(this, &UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnSetPropBoolRequest)
 		.Handling<FTbSimpleNoOperationsInterfaceSetPropIntRequestMessage>(this, &UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnSetPropIntRequest)
@@ -65,7 +66,7 @@ void UTbSimpleNoOperationsInterfaceMsgBusAdapter::StartListening()
 	}
 }
 
-void UTbSimpleNoOperationsInterfaceMsgBusAdapter::StopListening()
+void UTbSimpleNoOperationsInterfaceMsgBusAdapter::_StopListening()
 {
 	auto msg = new FTbSimpleNoOperationsInterfaceServiceDisconnectMessage();
 
@@ -82,12 +83,12 @@ void UTbSimpleNoOperationsInterfaceMsgBusAdapter::StopListening()
 	ConnectedClients.Reset();
 }
 
-bool UTbSimpleNoOperationsInterfaceMsgBusAdapter::IsListening() const
+bool UTbSimpleNoOperationsInterfaceMsgBusAdapter::_IsListening() const
 {
 	return TbSimpleNoOperationsInterfaceMsgBusEndpoint.IsValid();
 }
 
-void UTbSimpleNoOperationsInterfaceMsgBusAdapter::setBackendService(TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> InService)
+void UTbSimpleNoOperationsInterfaceMsgBusAdapter::_setBackendService(TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> InService)
 {
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
@@ -128,6 +129,21 @@ void UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnNewClientDiscovered(const FT
 		TbSimpleNoOperationsInterfaceMsgBusEndpoint->Send<FTbSimpleNoOperationsInterfaceInitMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
 			TArrayBuilder<FMessageAddress>().Add(ClientAddress),
+			FTimespan::Zero(),
+			FDateTime::MaxValue());
+	}
+}
+
+void UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnPing(const FTbSimpleNoOperationsInterfacePingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	auto msg = new FTbSimpleNoOperationsInterfacePongMessage();
+	msg->Timestamp = InMessage.Timestamp;
+
+	if (TbSimpleNoOperationsInterfaceMsgBusEndpoint.IsValid())
+	{
+		TbSimpleNoOperationsInterfaceMsgBusEndpoint->Send<FTbSimpleNoOperationsInterfacePongMessage>(msg, EMessageFlags::Reliable,
+			nullptr,
+			TArrayBuilder<FMessageAddress>().Add(Context->GetSender()),
 			FTimespan::Zero(),
 			FDateTime::MaxValue());
 	}

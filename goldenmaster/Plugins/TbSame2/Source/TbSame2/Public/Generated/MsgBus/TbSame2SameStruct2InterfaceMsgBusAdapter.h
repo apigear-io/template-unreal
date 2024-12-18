@@ -25,13 +25,12 @@ limitations under the License.
 class FMessageEndpoint;
 // messages
 struct FTbSame2SameStruct2InterfaceDiscoveryMessage;
+struct FTbSame2SameStruct2InterfacePingMessage;
 struct FTbSame2SameStruct2InterfaceClientDisconnectMessage;
 struct FTbSame2SameStruct2InterfaceSig1SignalMessage;
-
 struct FTbSame2SameStruct2InterfaceSig2SignalMessage;
 struct FTbSame2SameStruct2InterfaceSetProp1RequestMessage;
 struct FTbSame2SameStruct2InterfaceProp1ChangedMessage;
-
 struct FTbSame2SameStruct2InterfaceSetProp2RequestMessage;
 struct FTbSame2SameStruct2InterfaceProp2ChangedMessage;
 struct FTbSame2SameStruct2InterfaceFunc1RequestMessage;
@@ -54,21 +53,22 @@ public:
 
 	// connection handling
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct2Interface|Remote")
-	void StartListening();
+	void _StartListening();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct2Interface|Remote")
-	void StopListening();
+	void _StopListening();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct2Interface|Remote")
-	bool IsListening() const;
+	bool _IsListening() const;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct2Interface")
-	void setBackendService(TScriptInterface<ITbSame2SameStruct2InterfaceInterface> InService);
+	void _setBackendService(TScriptInterface<ITbSame2SameStruct2InterfaceInterface> InService);
 
 private:
 	TSharedPtr<FMessageEndpoint, ESPMode::ThreadSafe> TbSame2SameStruct2InterfaceMsgBusEndpoint;
 
 	void OnNewClientDiscovered(const FTbSame2SameStruct2InterfaceDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnPing(const FTbSame2SameStruct2InterfacePingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnClientDisconnected(const FTbSame2SameStruct2InterfaceClientDisconnectMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnFunc1Request(const FTbSame2SameStruct2InterfaceFunc1RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnFunc2Request(const FTbSame2SameStruct2InterfaceFunc2RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);

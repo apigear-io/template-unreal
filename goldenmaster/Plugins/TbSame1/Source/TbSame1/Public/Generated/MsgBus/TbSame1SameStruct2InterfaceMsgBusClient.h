@@ -21,17 +21,19 @@ limitations under the License.
 #include "HAL/CriticalSection.h"
 #include "Async/Future.h"
 #include "Runtime/Launch/Resources/Version.h"
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-#include "Templates/UniquePtr.h"
+#if (ENGINE_MAJOR_VERSION < 5)
+#include "Engine/EngineTypes.h"
 #else
-#include "Templates/PimplPtr.h"
+#include "Engine/TimerHandle.h"
 #endif
+#include "Templates/PimplPtr.h"
 #include "IMessageContext.h"
 #include "TbSame1SameStruct2InterfaceMsgBusClient.generated.h"
 
 class FMessageEndpoint;
 // messages
 struct FTbSame1SameStruct2InterfaceInitMessage;
+struct FTbSame1SameStruct2InterfacePongMessage;
 struct FTbSame1SameStruct2InterfaceServiceDisconnectMessage;
 struct FTbSame1SameStruct2InterfaceSig1SignalMessage;
 struct FTbSame1SameStruct2InterfaceSig2SignalMessage;
@@ -39,6 +41,25 @@ struct FTbSame1SameStruct2InterfaceProp1ChangedMessage;
 struct FTbSame1SameStruct2InterfaceProp2ChangedMessage;
 struct FTbSame1SameStruct2InterfaceFunc1ReplyMessage;
 struct FTbSame1SameStruct2InterfaceFunc2ReplyMessage;
+
+USTRUCT(BlueprintType)
+struct FTbSame1SameStruct2InterfaceStats
+{
+	GENERATED_BODY()
+
+	UPROPERTY(BlueprintReadOnly, Category = "ApiGear|TbSame1|SameStruct2Interface|Remote", DisplayName = "Current round trip time in MS")
+	float CurrentRTT_MS = 0.0f;
+
+	UPROPERTY(BlueprintReadOnly, Category = "ApiGear|TbSame1|SameStruct2Interface|Remote", DisplayName = "Average round trip time in MS")
+	float AverageRTT_MS = 0.0f;
+
+	UPROPERTY(BlueprintReadOnly, Category = "ApiGear|TbSame1|SameStruct2Interface|Remote", DisplayName = "Maximum round trip time in MS")
+	float MaxRTT_MS = 0.0f;
+
+	UPROPERTY(BlueprintReadOnly, Category = "ApiGear|TbSame1|SameStruct2Interface|Remote", DisplayName = "Minimum round trip time in MS")
+	float MinRTT_MS = 10000.0f;
+};
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSame1SameStruct2InterfaceStatsUpdatedDelegate, FTbSame1SameStruct2InterfaceStats, Stats);
 
 struct TbSame1SameStruct2InterfacePropertiesMsgBusData;
 DECLARE_LOG_CATEGORY_EXTERN(LogTbSame1SameStruct2InterfaceMsgBusClient, Log, All);
@@ -59,13 +80,19 @@ public:
 
 	// connection handling
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1|SameStruct2Interface|Remote")
-	void Connect();
+	void _Connect();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1|SameStruct2Interface|Remote")
-	void Disconnect();
+	void _Disconnect();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1|SameStruct2Interface|Remote")
-	bool IsConnected() const;
+	bool _IsConnected() const;
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1|SameStruct2Interface|Remote")
+	const FTbSame1SameStruct2InterfaceStats& _GetStats() const;
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame1|SameStruct2Interface|Remote", DisplayName = "Statistics Updated")
+	FTbSame1SameStruct2InterfaceStatsUpdatedDelegate _StatsUpdated;
 
 	/**
 	 * Used when the interface client changes connection status:
@@ -88,18 +115,26 @@ public:
 private:
 	TSharedPtr<FMessageEndpoint, ESPMode::ThreadSafe> TbSame1SameStruct2InterfaceMsgBusEndpoint;
 
-	void DiscoverService();
+	void _DiscoverService();
 	FMessageAddress ServiceAddress;
+
+	// connection health
+	double _LastHbTimestamp = 0.0;
+	FTbSame1SameStruct2InterfaceStats Stats;
+	FTimerHandle _HeartbeatTimerHandle;
+	void _OnHeartbeat();
+	uint32 _HeartbeatIntervalMS = 1000;
 
 	// connection handling
 	void OnConnectionInit(const FTbSame1SameStruct2InterfaceInitMessage& InInitMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnPong(const FTbSame1SameStruct2InterfacePongMessage& IntMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnServiceClosedConnection(const FTbSame1SameStruct2InterfaceServiceDisconnectMessage& InInitMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnSig1(const FTbSame1SameStruct2InterfaceSig1SignalMessage& InSig1Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnSig2(const FTbSame1SameStruct2InterfaceSig2SignalMessage& InSig2Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnProp1Changed(const FTbSame1SameStruct2InterfaceProp1ChangedMessage& InProp1Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnProp2Changed(const FTbSame1SameStruct2InterfaceProp2ChangedMessage& InProp2Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnFunc1Reply(const FTbSame1SameStruct2InterfaceFunc1ReplyMessage& InFunc1Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnFunc2Reply(const FTbSame1SameStruct2InterfaceFunc2ReplyMessage& InFunc2Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnSig1(const FTbSame1SameStruct2InterfaceSig1SignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnSig2(const FTbSame1SameStruct2InterfaceSig2SignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnProp1Changed(const FTbSame1SameStruct2InterfaceProp1ChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnProp2Changed(const FTbSame1SameStruct2InterfaceProp2ChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnFunc1Reply(const FTbSame1SameStruct2InterfaceFunc1ReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnFunc2Reply(const FTbSame1SameStruct2InterfaceFunc2ReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 
 	// member variable to store the last sent data
 	TPimplPtr<TbSame1SameStruct2InterfacePropertiesMsgBusData> _SentData;

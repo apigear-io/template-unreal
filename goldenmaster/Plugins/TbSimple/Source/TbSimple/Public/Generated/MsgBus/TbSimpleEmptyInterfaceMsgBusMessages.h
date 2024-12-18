@@ -45,3 +45,21 @@ struct FTbSimpleEmptyInterfaceServiceDisconnectMessage
 {
 	GENERATED_BODY()
 };
+
+USTRUCT()
+struct FTbSimpleEmptyInterfacePingMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	double Timestamp = 0.0;
+};
+
+USTRUCT()
+struct FTbSimpleEmptyInterfacePongMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	double Timestamp = 0.0;
+};

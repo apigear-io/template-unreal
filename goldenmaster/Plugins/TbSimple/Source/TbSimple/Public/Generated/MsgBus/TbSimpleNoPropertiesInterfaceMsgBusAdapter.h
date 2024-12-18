@@ -25,9 +25,9 @@ limitations under the License.
 class FMessageEndpoint;
 // messages
 struct FTbSimpleNoPropertiesInterfaceDiscoveryMessage;
+struct FTbSimpleNoPropertiesInterfacePingMessage;
 struct FTbSimpleNoPropertiesInterfaceClientDisconnectMessage;
 struct FTbSimpleNoPropertiesInterfaceSigVoidSignalMessage;
-
 struct FTbSimpleNoPropertiesInterfaceSigBoolSignalMessage;
 struct FTbSimpleNoPropertiesInterfaceFuncVoidRequestMessage;
 struct FTbSimpleNoPropertiesInterfaceFuncBoolRequestMessage;
@@ -49,21 +49,22 @@ public:
 
 	// connection handling
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoPropertiesInterface|Remote")
-	void StartListening();
+	void _StartListening();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoPropertiesInterface|Remote")
-	void StopListening();
+	void _StopListening();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoPropertiesInterface|Remote")
-	bool IsListening() const;
+	bool _IsListening() const;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoPropertiesInterface")
-	void setBackendService(TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> InService);
+	void _setBackendService(TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> InService);
 
 private:
 	TSharedPtr<FMessageEndpoint, ESPMode::ThreadSafe> TbSimpleNoPropertiesInterfaceMsgBusEndpoint;
 
 	void OnNewClientDiscovered(const FTbSimpleNoPropertiesInterfaceDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnPing(const FTbSimpleNoPropertiesInterfacePingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnClientDisconnected(const FTbSimpleNoPropertiesInterfaceClientDisconnectMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnFuncVoidRequest(const FTbSimpleNoPropertiesInterfaceFuncVoidRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnFuncBoolRequest(const FTbSimpleNoPropertiesInterfaceFuncBoolRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);

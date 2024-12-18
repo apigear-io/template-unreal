@@ -21,23 +21,44 @@ limitations under the License.
 #include "HAL/CriticalSection.h"
 #include "Async/Future.h"
 #include "Runtime/Launch/Resources/Version.h"
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-#include "Templates/UniquePtr.h"
+#if (ENGINE_MAJOR_VERSION < 5)
+#include "Engine/EngineTypes.h"
 #else
-#include "Templates/PimplPtr.h"
+#include "Engine/TimerHandle.h"
 #endif
+#include "Templates/PimplPtr.h"
 #include "IMessageContext.h"
 #include "TbNamesNamEsMsgBusClient.generated.h"
 
 class FMessageEndpoint;
 // messages
 struct FTbNamesNamEsInitMessage;
+struct FTbNamesNamEsPongMessage;
 struct FTbNamesNamEsServiceDisconnectMessage;
 struct FTbNamesNamEsSomeSignalSignalMessage;
 struct FTbNamesNamEsSomeSignal2SignalMessage;
 struct FTbNamesNamEsSwitchChangedMessage;
 struct FTbNamesNamEsSomePropertyChangedMessage;
 struct FTbNamesNamEsSomePoperty2ChangedMessage;
+
+USTRUCT(BlueprintType)
+struct FTbNamesNamEsStats
+{
+	GENERATED_BODY()
+
+	UPROPERTY(BlueprintReadOnly, Category = "ApiGear|TbNames|NamEs|Remote", DisplayName = "Current round trip time in MS")
+	float CurrentRTT_MS = 0.0f;
+
+	UPROPERTY(BlueprintReadOnly, Category = "ApiGear|TbNames|NamEs|Remote", DisplayName = "Average round trip time in MS")
+	float AverageRTT_MS = 0.0f;
+
+	UPROPERTY(BlueprintReadOnly, Category = "ApiGear|TbNames|NamEs|Remote", DisplayName = "Maximum round trip time in MS")
+	float MaxRTT_MS = 0.0f;
+
+	UPROPERTY(BlueprintReadOnly, Category = "ApiGear|TbNames|NamEs|Remote", DisplayName = "Minimum round trip time in MS")
+	float MinRTT_MS = 10000.0f;
+};
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbNamesNamEsStatsUpdatedDelegate, FTbNamesNamEsStats, Stats);
 
 struct TbNamesNamEsPropertiesMsgBusData;
 DECLARE_LOG_CATEGORY_EXTERN(LogTbNamesNamEsMsgBusClient, Log, All);
@@ -58,13 +79,19 @@ public:
 
 	// connection handling
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Remote")
-	void Connect();
+	void _Connect();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Remote")
-	void Disconnect();
+	void _Disconnect();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Remote")
-	bool IsConnected() const;
+	bool _IsConnected() const;
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Remote")
+	const FTbNamesNamEsStats& _GetStats() const;
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbNames|NamEs|Remote", DisplayName = "Statistics Updated")
+	FTbNamesNamEsStatsUpdatedDelegate _StatsUpdated;
 
 	/**
 	 * Used when the interface client changes connection status:
@@ -90,17 +117,25 @@ public:
 private:
 	TSharedPtr<FMessageEndpoint, ESPMode::ThreadSafe> TbNamesNamEsMsgBusEndpoint;
 
-	void DiscoverService();
+	void _DiscoverService();
 	FMessageAddress ServiceAddress;
+
+	// connection health
+	double _LastHbTimestamp = 0.0;
+	FTbNamesNamEsStats Stats;
+	FTimerHandle _HeartbeatTimerHandle;
+	void _OnHeartbeat();
+	uint32 _HeartbeatIntervalMS = 1000;
 
 	// connection handling
 	void OnConnectionInit(const FTbNamesNamEsInitMessage& InInitMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnPong(const FTbNamesNamEsPongMessage& IntMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnServiceClosedConnection(const FTbNamesNamEsServiceDisconnectMessage& InInitMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnSomeSignal(const FTbNamesNamEsSomeSignalSignalMessage& InSomeSignalMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnSomeSignal2(const FTbNamesNamEsSomeSignal2SignalMessage& InSomeSignal2Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnSwitchChanged(const FTbNamesNamEsSwitchChangedMessage& bInSwitchMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnSomePropertyChanged(const FTbNamesNamEsSomePropertyChangedMessage& InSomePropertyMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnSomePoperty2Changed(const FTbNamesNamEsSomePoperty2ChangedMessage& InSomePoperty2Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnSomeSignal(const FTbNamesNamEsSomeSignalSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnSomeSignal2(const FTbNamesNamEsSomeSignal2SignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnSwitchChanged(const FTbNamesNamEsSwitchChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnSomePropertyChanged(const FTbNamesNamEsSomePropertyChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnSomePoperty2Changed(const FTbNamesNamEsSomePoperty2ChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 
 	// member variable to store the last sent data
 	TPimplPtr<TbNamesNamEsPropertiesMsgBusData> _SentData;

@@ -19,13 +19,12 @@
 class FMessageEndpoint;
 // messages
 struct F{{$Iface}}DiscoveryMessage;
+struct F{{$Iface}}PingMessage;
 struct F{{$Iface}}ClientDisconnectMessage;
 {{- range $i, $e := .Interface.Signals }}
-{{- if $i }}{{nl}}{{ end }}
 struct F{{$Iface}}{{Camel .Name}}SignalMessage;
 {{- end }}
 {{- range $i, $e := .Interface.Properties }}
-{{- if $i }}{{nl}}{{ end }}
 struct F{{$Iface}}Set{{Camel .Name}}RequestMessage;
 struct F{{$Iface}}{{Camel .Name}}ChangedMessage;
 {{- end }}
@@ -50,21 +49,22 @@ public:
 
 	// connection handling
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|{{$ModuleName}}|{{$IfaceName}}|Remote")
-	void StartListening();
+	void _StartListening();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|{{$ModuleName}}|{{$IfaceName}}|Remote")
-	void StopListening();
+	void _StopListening();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|{{$ModuleName}}|{{$IfaceName}}|Remote")
-	bool IsListening() const;
+	bool _IsListening() const;
 
 	UFUNCTION(BlueprintCallable, Category = "{{$Category}}")
-	void setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface> InService);
+	void _setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface> InService);
 
 private:
 	TSharedPtr<FMessageEndpoint, ESPMode::ThreadSafe> {{Camel .Module.Name}}{{Camel .Interface.Name}}MsgBusEndpoint;
 
 	void OnNewClientDiscovered(const F{{$Iface}}DiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnPing(const F{{$Iface}}PingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnClientDisconnected(const F{{$Iface}}ClientDisconnectMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 {{- range $i, $e := .Interface.Operations }}
 	void On{{Camel .Name}}Request(const F{{$Iface}}{{Camel .Name}}RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);

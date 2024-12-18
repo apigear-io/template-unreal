@@ -56,6 +56,24 @@ struct FTbNamesNamEsServiceDisconnectMessage
 };
 
 USTRUCT()
+struct FTbNamesNamEsPingMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	double Timestamp = 0.0;
+};
+
+USTRUCT()
+struct FTbNamesNamEsPongMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	double Timestamp = 0.0;
+};
+
+USTRUCT()
 struct FTbNamesNamEsSomeSignalSignalMessage
 {
 	GENERATED_BODY()
@@ -133,8 +151,6 @@ struct FTbNamesNamEsSomeFunctionRequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
-	UPROPERTY()
 	bool bSomeParam = false;
 };
 
@@ -143,8 +159,6 @@ struct FTbNamesNamEsSomeFunction2RequestMessage
 {
 	GENERATED_BODY()
 
-	UPROPERTY()
-	FGuid RepsonseId;
 	UPROPERTY()
 	bool bSomeParam = false;
 };

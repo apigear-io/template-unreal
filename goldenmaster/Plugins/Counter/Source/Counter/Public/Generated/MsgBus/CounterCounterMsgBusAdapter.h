@@ -25,17 +25,15 @@ limitations under the License.
 class FMessageEndpoint;
 // messages
 struct FCounterCounterDiscoveryMessage;
+struct FCounterCounterPingMessage;
 struct FCounterCounterClientDisconnectMessage;
 struct FCounterCounterValueChangedSignalMessage;
 struct FCounterCounterSetVectorRequestMessage;
 struct FCounterCounterVectorChangedMessage;
-
 struct FCounterCounterSetExternVectorRequestMessage;
 struct FCounterCounterExternVectorChangedMessage;
-
 struct FCounterCounterSetVectorArrayRequestMessage;
 struct FCounterCounterVectorArrayChangedMessage;
-
 struct FCounterCounterSetExternVectorArrayRequestMessage;
 struct FCounterCounterExternVectorArrayChangedMessage;
 struct FCounterCounterIncrementRequestMessage;
@@ -60,21 +58,22 @@ public:
 
 	// connection handling
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Remote")
-	void StartListening();
+	void _StartListening();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Remote")
-	void StopListening();
+	void _StopListening();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Remote")
-	bool IsListening() const;
+	bool _IsListening() const;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter")
-	void setBackendService(TScriptInterface<ICounterCounterInterface> InService);
+	void _setBackendService(TScriptInterface<ICounterCounterInterface> InService);
 
 private:
 	TSharedPtr<FMessageEndpoint, ESPMode::ThreadSafe> CounterCounterMsgBusEndpoint;
 
 	void OnNewClientDiscovered(const FCounterCounterDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnPing(const FCounterCounterPingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnClientDisconnected(const FCounterCounterClientDisconnectMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnIncrementRequest(const FCounterCounterIncrementRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnIncrementArrayRequest(const FCounterCounterIncrementArrayRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);

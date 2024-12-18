@@ -25,13 +25,12 @@ limitations under the License.
 class FMessageEndpoint;
 // messages
 struct FTestbed2NestedStruct2InterfaceDiscoveryMessage;
+struct FTestbed2NestedStruct2InterfacePingMessage;
 struct FTestbed2NestedStruct2InterfaceClientDisconnectMessage;
 struct FTestbed2NestedStruct2InterfaceSig1SignalMessage;
-
 struct FTestbed2NestedStruct2InterfaceSig2SignalMessage;
 struct FTestbed2NestedStruct2InterfaceSetProp1RequestMessage;
 struct FTestbed2NestedStruct2InterfaceProp1ChangedMessage;
-
 struct FTestbed2NestedStruct2InterfaceSetProp2RequestMessage;
 struct FTestbed2NestedStruct2InterfaceProp2ChangedMessage;
 struct FTestbed2NestedStruct2InterfaceFunc1RequestMessage;
@@ -54,21 +53,22 @@ public:
 
 	// connection handling
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface|Remote")
-	void StartListening();
+	void _StartListening();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface|Remote")
-	void StopListening();
+	void _StopListening();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface|Remote")
-	bool IsListening() const;
+	bool _IsListening() const;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface")
-	void setBackendService(TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> InService);
+	void _setBackendService(TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> InService);
 
 private:
 	TSharedPtr<FMessageEndpoint, ESPMode::ThreadSafe> Testbed2NestedStruct2InterfaceMsgBusEndpoint;
 
 	void OnNewClientDiscovered(const FTestbed2NestedStruct2InterfaceDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnPing(const FTestbed2NestedStruct2InterfacePingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnClientDisconnected(const FTestbed2NestedStruct2InterfaceClientDisconnectMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnFunc1Request(const FTestbed2NestedStruct2InterfaceFunc1RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnFunc2Request(const FTestbed2NestedStruct2InterfaceFunc2RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);

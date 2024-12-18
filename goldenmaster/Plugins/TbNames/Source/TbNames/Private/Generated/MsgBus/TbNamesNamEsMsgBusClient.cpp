@@ -24,7 +24,10 @@ limitations under the License.
 #include "Generated/MsgBus/TbNamesNamEsMsgBusMessages.h"
 #include "Async/Async.h"
 #include "Engine/Engine.h"
+#include "TimerManager.h"
 #include "Misc/DateTime.h"
+#include "GenericPlatform/GenericPlatformMath.h"
+#include "GenericPlatform/GenericPlatformTime.h"
 #include "MessageEndpointBuilder.h"
 #include "MessageEndpoint.h"
 #include <atomic>
@@ -44,7 +47,6 @@ UTbNamesNamEsMsgBusClient::UTbNamesNamEsMsgBusClient()
 	: UAbstractTbNamesNamEs()
 	, _SentData(MakePimpl<TbNamesNamEsPropertiesMsgBusData>())
 {
-	/* m_sink = std::make_shared<FOLinkSink>("tb.names.Nam_Es"); */
 }
 
 UTbNamesNamEsMsgBusClient::~UTbNamesNamEsMsgBusClient() = default;
@@ -52,116 +54,177 @@ UTbNamesNamEsMsgBusClient::~UTbNamesNamEsMsgBusClient() = default;
 void UTbNamesNamEsMsgBusClient::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-
-	Connect();
 }
 
 void UTbNamesNamEsMsgBusClient::Deinitialize()
 {
-	Disconnect();
+	_Disconnect();
 
 	Super::Deinitialize();
 }
 
-void UTbNamesNamEsMsgBusClient::Connect()
+void UTbNamesNamEsMsgBusClient::_Connect()
 {
-	if (IsConnected())
+	if (!_HeartbeatTimerHandle.IsValid() && GetWorld())
 	{
+		GetWorld()->GetTimerManager().SetTimer(_HeartbeatTimerHandle, this, &UTbNamesNamEsMsgBusClient::_OnHeartbeat, _HeartbeatIntervalMS / 1000.0f, true);
+	}
+
+	if (_IsConnected())
+	{
+		UE_LOG(LogTbNamesNamEsMsgBusClient, Log, TEXT("Already connected, cannot connect again."));
 		return;
 	}
 
 	if (TbNamesNamEsMsgBusEndpoint.IsValid() && !ServiceAddress.IsValid())
 	{
-		DiscoverService();
+		_DiscoverService();
 		return;
 	}
 
 	// clang-format off
 	TbNamesNamEsMsgBusEndpoint = FMessageEndpoint::Builder("ApiGear/TbNames/NamEs/Client")
 		.Handling<FTbNamesNamEsInitMessage>(this, &UTbNamesNamEsMsgBusClient::OnConnectionInit)
+		.Handling<FTbNamesNamEsPongMessage>(this, &UTbNamesNamEsMsgBusClient::OnPong)
 		.Handling<FTbNamesNamEsServiceDisconnectMessage>(this, &UTbNamesNamEsMsgBusClient::OnServiceClosedConnection)
 		.Handling<FTbNamesNamEsSomeSignalSignalMessage>(this, &UTbNamesNamEsMsgBusClient::OnSomeSignal)
-
 		.Handling<FTbNamesNamEsSomeSignal2SignalMessage>(this, &UTbNamesNamEsMsgBusClient::OnSomeSignal2)
 		.Handling<FTbNamesNamEsSwitchChangedMessage>(this, &UTbNamesNamEsMsgBusClient::OnSwitchChanged)
-
 		.Handling<FTbNamesNamEsSomePropertyChangedMessage>(this, &UTbNamesNamEsMsgBusClient::OnSomePropertyChanged)
-
 		.Handling<FTbNamesNamEsSomePoperty2ChangedMessage>(this, &UTbNamesNamEsMsgBusClient::OnSomePoperty2Changed)
 		.Build();
 	// clang-format on
 
-	DiscoverService();
+	_DiscoverService();
 }
 
-void UTbNamesNamEsMsgBusClient::Disconnect()
+void UTbNamesNamEsMsgBusClient::_Disconnect()
 {
-	if (!IsConnected())
+	_LastHbTimestamp = 0.0f;
+	if (_HeartbeatTimerHandle.IsValid() && GetWorld())
+	{
+		GetWorld()->GetTimerManager().ClearTimer(_HeartbeatTimerHandle);
+	}
+
+	if (!_IsConnected())
 	{
 		return;
 	}
 
 	auto msg = new FTbNamesNamEsClientDisconnectMessage();
 
-	if (TbNamesNamEsMsgBusEndpoint.IsValid())
-	{
-		TbNamesNamEsMsgBusEndpoint->Send<FTbNamesNamEsClientDisconnectMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-	}
+	TbNamesNamEsMsgBusEndpoint->Send<FTbNamesNamEsClientDisconnectMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
 
 	TbNamesNamEsMsgBusEndpoint.Reset();
 	ServiceAddress.Invalidate();
 	_ConnectionStatusChanged.Broadcast(false);
 }
 
-void UTbNamesNamEsMsgBusClient::DiscoverService()
+void UTbNamesNamEsMsgBusClient::_DiscoverService()
 {
-	if (TbNamesNamEsMsgBusEndpoint.IsValid())
+	if (!TbNamesNamEsMsgBusEndpoint.IsValid())
 	{
-		TbNamesNamEsMsgBusEndpoint->Publish<FTbNamesNamEsDiscoveryMessage>(new FTbNamesNamEsDiscoveryMessage());
+		return;
 	}
+
+	auto msg = new FTbNamesNamEsDiscoveryMessage();
+	msg->ClientPingIntervalMS = _HeartbeatIntervalMS;
+
+	TbNamesNamEsMsgBusEndpoint->Publish<FTbNamesNamEsDiscoveryMessage>(msg);
 }
 
-bool UTbNamesNamEsMsgBusClient::IsConnected() const
+bool UTbNamesNamEsMsgBusClient::_IsConnected() const
 {
 	return TbNamesNamEsMsgBusEndpoint.IsValid() && ServiceAddress.IsValid();
 }
 
-void UTbNamesNamEsMsgBusClient::OnConnectionInit(const FTbNamesNamEsInitMessage& InInitMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTbNamesNamEsMsgBusClient::OnConnectionInit(const FTbNamesNamEsInitMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	if (!ServiceAddress.IsValid())
+	if (ServiceAddress.IsValid())
 	{
-		ServiceAddress = Context->GetSender();
-		const bool bbSwitchChanged = InInitMessage.bSwitch != bSwitch;
-		if (bbSwitchChanged)
-		{
-			bSwitch = InInitMessage.bSwitch;
-			Execute__GetSignals(this)->OnSwitchChanged.Broadcast(bSwitch);
-		}
-
-		const bool bSomePropertyChanged = InInitMessage.SomeProperty != SomeProperty;
-		if (bSomePropertyChanged)
-		{
-			SomeProperty = InInitMessage.SomeProperty;
-			Execute__GetSignals(this)->OnSomePropertyChanged.Broadcast(SomeProperty);
-		}
-
-		const bool bSomePoperty2Changed = InInitMessage.SomePoperty2 != SomePoperty2;
-		if (bSomePoperty2Changed)
-		{
-			SomePoperty2 = InInitMessage.SomePoperty2;
-			Execute__GetSignals(this)->OnSomePoperty2Changed.Broadcast(SomePoperty2);
-		}
-
-		_ConnectionStatusChanged.Broadcast(true);
+		UE_LOG(LogTbNamesNamEsMsgBusClient, Warning, TEXT("Got a second init message - should not happen"));
+		return;
 	}
-	else
+
+	ServiceAddress = Context->GetSender();
+	const bool bbSwitchChanged = InMessage.bSwitch != bSwitch;
+	if (bbSwitchChanged)
 	{
-		UE_LOG(LogTbNamesNamEsMsgBusClient, Error, TEXT("Got a second init message - should not happen"));
+		bSwitch = InMessage.bSwitch;
+		Execute__GetSignals(this)->OnSwitchChanged.Broadcast(bSwitch);
 	}
+
+	const bool bSomePropertyChanged = InMessage.SomeProperty != SomeProperty;
+	if (bSomePropertyChanged)
+	{
+		SomeProperty = InMessage.SomeProperty;
+		Execute__GetSignals(this)->OnSomePropertyChanged.Broadcast(SomeProperty);
+	}
+
+	const bool bSomePoperty2Changed = InMessage.SomePoperty2 != SomePoperty2;
+	if (bSomePoperty2Changed)
+	{
+		SomePoperty2 = InMessage.SomePoperty2;
+		Execute__GetSignals(this)->OnSomePoperty2Changed.Broadcast(SomePoperty2);
+	}
+
+	_ConnectionStatusChanged.Broadcast(true);
+}
+
+void UTbNamesNamEsMsgBusClient::_OnHeartbeat()
+{
+	if (_LastHbTimestamp > 0.1f)
+	{
+		double Delta = (FPlatformTime::Seconds() - _LastHbTimestamp) * 1000;
+
+		if (Delta > 2 * _HeartbeatIntervalMS)
+		{
+			// service seems to be dead or not responding - reset connection
+			ServiceAddress.Invalidate();
+			_LastHbTimestamp = 0.0f;
+		}
+	}
+
+	if (!_IsConnected())
+	{
+		UE_LOG(LogTbNamesNamEsMsgBusClient, Warning, TEXT("Heartbeat failed. Client has no connection to service. Reconnecting ..."));
+
+		_Connect();
+		return;
+	}
+
+	auto msg = new FTbNamesNamEsPingMessage();
+	msg->Timestamp = FPlatformTime::Seconds();
+
+	TbNamesNamEsMsgBusEndpoint->Send<FTbNamesNamEsPingMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
+}
+
+void UTbNamesNamEsMsgBusClient::OnPong(const FTbNamesNamEsPongMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	_LastHbTimestamp = InMessage.Timestamp;
+
+	const double Current = FPlatformTime::Seconds();
+	const double DeltaMS = (Current - InMessage.Timestamp) * 1000.0f;
+
+	Stats.CurrentRTT_MS = DeltaMS;
+	Stats.AverageRTT_MS = (Stats.AverageRTT_MS + Stats.CurrentRTT_MS) / 2.0f;
+	Stats.MaxRTT_MS = FGenericPlatformMath::Max(Stats.MaxRTT_MS, Stats.CurrentRTT_MS);
+	Stats.MinRTT_MS = FGenericPlatformMath::Min(Stats.MinRTT_MS, Stats.CurrentRTT_MS);
+
+	_StatsUpdated.Broadcast(Stats);
+}
+
+const FTbNamesNamEsStats& UTbNamesNamEsMsgBusClient::_GetStats() const
+{
+	return Stats;
 }
 
 void UTbNamesNamEsMsgBusClient::OnServiceClosedConnection(const FTbNamesNamEsServiceDisconnectMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -182,7 +245,7 @@ bool UTbNamesNamEsMsgBusClient::GetSwitch_Implementation() const
 
 void UTbNamesNamEsMsgBusClient::SetSwitch_Implementation(bool bInSwitch)
 {
-	if (!IsConnected())
+	if (!_IsConnected())
 	{
 		UE_LOG(LogTbNamesNamEsMsgBusClient, Error, TEXT("Client has no connection to service."));
 		return;
@@ -203,15 +266,12 @@ void UTbNamesNamEsMsgBusClient::SetSwitch_Implementation(bool bInSwitch)
 	auto msg = new FTbNamesNamEsSetSwitchRequestMessage();
 	msg->bSwitch = bInSwitch;
 
-	if (TbNamesNamEsMsgBusEndpoint.IsValid())
-	{
-		TbNamesNamEsMsgBusEndpoint->Send<FTbNamesNamEsSetSwitchRequestMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-		_SentData->bSwitch = bInSwitch;
-	}
+	TbNamesNamEsMsgBusEndpoint->Send<FTbNamesNamEsSetSwitchRequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
+	_SentData->bSwitch = bInSwitch;
 }
 
 int32 UTbNamesNamEsMsgBusClient::GetSomeProperty_Implementation() const
@@ -221,7 +281,7 @@ int32 UTbNamesNamEsMsgBusClient::GetSomeProperty_Implementation() const
 
 void UTbNamesNamEsMsgBusClient::SetSomeProperty_Implementation(int32 InSomeProperty)
 {
-	if (!IsConnected())
+	if (!_IsConnected())
 	{
 		UE_LOG(LogTbNamesNamEsMsgBusClient, Error, TEXT("Client has no connection to service."));
 		return;
@@ -242,15 +302,12 @@ void UTbNamesNamEsMsgBusClient::SetSomeProperty_Implementation(int32 InSomePrope
 	auto msg = new FTbNamesNamEsSetSomePropertyRequestMessage();
 	msg->SomeProperty = InSomeProperty;
 
-	if (TbNamesNamEsMsgBusEndpoint.IsValid())
-	{
-		TbNamesNamEsMsgBusEndpoint->Send<FTbNamesNamEsSetSomePropertyRequestMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-		_SentData->SomeProperty = InSomeProperty;
-	}
+	TbNamesNamEsMsgBusEndpoint->Send<FTbNamesNamEsSetSomePropertyRequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
+	_SentData->SomeProperty = InSomeProperty;
 }
 
 int32 UTbNamesNamEsMsgBusClient::GetSomePoperty2_Implementation() const
@@ -260,7 +317,7 @@ int32 UTbNamesNamEsMsgBusClient::GetSomePoperty2_Implementation() const
 
 void UTbNamesNamEsMsgBusClient::SetSomePoperty2_Implementation(int32 InSomePoperty2)
 {
-	if (!IsConnected())
+	if (!_IsConnected())
 	{
 		UE_LOG(LogTbNamesNamEsMsgBusClient, Error, TEXT("Client has no connection to service."));
 		return;
@@ -281,20 +338,17 @@ void UTbNamesNamEsMsgBusClient::SetSomePoperty2_Implementation(int32 InSomePoper
 	auto msg = new FTbNamesNamEsSetSomePoperty2RequestMessage();
 	msg->SomePoperty2 = InSomePoperty2;
 
-	if (TbNamesNamEsMsgBusEndpoint.IsValid())
-	{
-		TbNamesNamEsMsgBusEndpoint->Send<FTbNamesNamEsSetSomePoperty2RequestMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-		_SentData->SomePoperty2 = InSomePoperty2;
-	}
+	TbNamesNamEsMsgBusEndpoint->Send<FTbNamesNamEsSetSomePoperty2RequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
+	_SentData->SomePoperty2 = InSomePoperty2;
 }
 
 void UTbNamesNamEsMsgBusClient::SomeFunction_Implementation(bool bInSomeParam)
 {
-	if (!IsConnected())
+	if (!_IsConnected())
 	{
 		UE_LOG(LogTbNamesNamEsMsgBusClient, Error, TEXT("Client has no connection to service."));
 
@@ -302,27 +356,20 @@ void UTbNamesNamEsMsgBusClient::SomeFunction_Implementation(bool bInSomeParam)
 	}
 
 	auto msg = new FTbNamesNamEsSomeFunctionRequestMessage();
-	msg->RepsonseId = FGuid::NewGuid();
 	msg->bSomeParam = bInSomeParam;
 
-	if (TbNamesNamEsMsgBusEndpoint.IsValid())
-	{
-
-		TbNamesNamEsMsgBusEndpoint->Send<FTbNamesNamEsSomeFunctionRequestMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-
-		return;
-	}
+	TbNamesNamEsMsgBusEndpoint->Send<FTbNamesNamEsSomeFunctionRequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
 
 	return;
 }
 
 void UTbNamesNamEsMsgBusClient::SomeFunction2_Implementation(bool bInSomeParam)
 {
-	if (!IsConnected())
+	if (!_IsConnected())
 	{
 		UE_LOG(LogTbNamesNamEsMsgBusClient, Error, TEXT("Client has no connection to service."));
 
@@ -330,25 +377,18 @@ void UTbNamesNamEsMsgBusClient::SomeFunction2_Implementation(bool bInSomeParam)
 	}
 
 	auto msg = new FTbNamesNamEsSomeFunction2RequestMessage();
-	msg->RepsonseId = FGuid::NewGuid();
 	msg->bSomeParam = bInSomeParam;
 
-	if (TbNamesNamEsMsgBusEndpoint.IsValid())
-	{
-
-		TbNamesNamEsMsgBusEndpoint->Send<FTbNamesNamEsSomeFunction2RequestMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-
-		return;
-	}
+	TbNamesNamEsMsgBusEndpoint->Send<FTbNamesNamEsSomeFunction2RequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
 
 	return;
 }
 
-void UTbNamesNamEsMsgBusClient::OnSomeSignal(const FTbNamesNamEsSomeSignalSignalMessage& InSomeSignalMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTbNamesNamEsMsgBusClient::OnSomeSignal(const FTbNamesNamEsSomeSignalSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ServiceAddress != Context->GetSender())
 	{
@@ -356,11 +396,11 @@ void UTbNamesNamEsMsgBusClient::OnSomeSignal(const FTbNamesNamEsSomeSignalSignal
 		return;
 	}
 
-	Execute__GetSignals(this)->OnSomeSignalSignal.Broadcast(InSomeSignalMessage.bSomeParam);
+	Execute__GetSignals(this)->OnSomeSignalSignal.Broadcast(InMessage.bSomeParam);
 	return;
 }
 
-void UTbNamesNamEsMsgBusClient::OnSomeSignal2(const FTbNamesNamEsSomeSignal2SignalMessage& InSomeSignal2Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTbNamesNamEsMsgBusClient::OnSomeSignal2(const FTbNamesNamEsSomeSignal2SignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ServiceAddress != Context->GetSender())
 	{
@@ -368,11 +408,11 @@ void UTbNamesNamEsMsgBusClient::OnSomeSignal2(const FTbNamesNamEsSomeSignal2Sign
 		return;
 	}
 
-	Execute__GetSignals(this)->OnSomeSignal2Signal.Broadcast(InSomeSignal2Message.bSomeParam);
+	Execute__GetSignals(this)->OnSomeSignal2Signal.Broadcast(InMessage.bSomeParam);
 	return;
 }
 
-void UTbNamesNamEsMsgBusClient::OnSwitchChanged(const FTbNamesNamEsSwitchChangedMessage& bInSwitchMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTbNamesNamEsMsgBusClient::OnSwitchChanged(const FTbNamesNamEsSwitchChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ServiceAddress != Context->GetSender())
 	{
@@ -380,15 +420,15 @@ void UTbNamesNamEsMsgBusClient::OnSwitchChanged(const FTbNamesNamEsSwitchChanged
 		return;
 	}
 
-	const bool bbSwitchChanged = bInSwitchMessage.bSwitch != bSwitch;
+	const bool bbSwitchChanged = InMessage.bSwitch != bSwitch;
 	if (bbSwitchChanged)
 	{
-		bSwitch = bInSwitchMessage.bSwitch;
+		bSwitch = InMessage.bSwitch;
 		Execute__GetSignals(this)->OnSwitchChanged.Broadcast(bSwitch);
 	}
 }
 
-void UTbNamesNamEsMsgBusClient::OnSomePropertyChanged(const FTbNamesNamEsSomePropertyChangedMessage& InSomePropertyMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTbNamesNamEsMsgBusClient::OnSomePropertyChanged(const FTbNamesNamEsSomePropertyChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ServiceAddress != Context->GetSender())
 	{
@@ -396,15 +436,15 @@ void UTbNamesNamEsMsgBusClient::OnSomePropertyChanged(const FTbNamesNamEsSomePro
 		return;
 	}
 
-	const bool bSomePropertyChanged = InSomePropertyMessage.SomeProperty != SomeProperty;
+	const bool bSomePropertyChanged = InMessage.SomeProperty != SomeProperty;
 	if (bSomePropertyChanged)
 	{
-		SomeProperty = InSomePropertyMessage.SomeProperty;
+		SomeProperty = InMessage.SomeProperty;
 		Execute__GetSignals(this)->OnSomePropertyChanged.Broadcast(SomeProperty);
 	}
 }
 
-void UTbNamesNamEsMsgBusClient::OnSomePoperty2Changed(const FTbNamesNamEsSomePoperty2ChangedMessage& InSomePoperty2Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTbNamesNamEsMsgBusClient::OnSomePoperty2Changed(const FTbNamesNamEsSomePoperty2ChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ServiceAddress != Context->GetSender())
 	{
@@ -412,10 +452,10 @@ void UTbNamesNamEsMsgBusClient::OnSomePoperty2Changed(const FTbNamesNamEsSomePop
 		return;
 	}
 
-	const bool bSomePoperty2Changed = InSomePoperty2Message.SomePoperty2 != SomePoperty2;
+	const bool bSomePoperty2Changed = InMessage.SomePoperty2 != SomePoperty2;
 	if (bSomePoperty2Changed)
 	{
-		SomePoperty2 = InSomePoperty2Message.SomePoperty2;
+		SomePoperty2 = InMessage.SomePoperty2;
 		Execute__GetSignals(this)->OnSomePoperty2Changed.Broadcast(SomePoperty2);
 	}
 }

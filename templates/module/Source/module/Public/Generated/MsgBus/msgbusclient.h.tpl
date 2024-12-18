@@ -16,17 +16,19 @@
 #include "HAL/CriticalSection.h"
 #include "Async/Future.h"
 #include "Runtime/Launch/Resources/Version.h"
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-#include "Templates/UniquePtr.h"
+#if (ENGINE_MAJOR_VERSION < 5)
+#include "Engine/EngineTypes.h"
 #else
-#include "Templates/PimplPtr.h"
+#include "Engine/TimerHandle.h"
 #endif
+#include "Templates/PimplPtr.h"
 #include "IMessageContext.h"
 #include "{{$Iface}}MsgBusClient.generated.h"
 
 class FMessageEndpoint;
 // messages
 struct F{{$DisplayName}}InitMessage;
+struct F{{$Iface}}PongMessage;
 struct F{{$DisplayName}}ServiceDisconnectMessage;
 {{- range $i, $e := .Interface.Signals }}
 struct F{{$DisplayName}}{{Camel .Name}}SignalMessage;
@@ -39,6 +41,25 @@ struct F{{$DisplayName}}{{Camel .Name}}ChangedMessage;
 struct F{{$DisplayName}}{{Camel .Name}}ReplyMessage;
 {{- end }}
 {{- end }}
+
+USTRUCT(BlueprintType)
+struct F{{$DisplayName}}Stats
+{
+	GENERATED_BODY()
+
+	UPROPERTY(BlueprintReadOnly, Category = "ApiGear|{{$ModuleName}}|{{$IfaceName}}|Remote", DisplayName = "Current round trip time in MS")
+	float CurrentRTT_MS = 0.0f;
+
+	UPROPERTY(BlueprintReadOnly, Category = "ApiGear|{{$ModuleName}}|{{$IfaceName}}|Remote", DisplayName = "Average round trip time in MS")
+	float AverageRTT_MS = 0.0f;
+
+	UPROPERTY(BlueprintReadOnly, Category = "ApiGear|{{$ModuleName}}|{{$IfaceName}}|Remote", DisplayName = "Maximum round trip time in MS")
+	float MaxRTT_MS = 0.0f;
+
+	UPROPERTY(BlueprintReadOnly, Category = "ApiGear|{{$ModuleName}}|{{$IfaceName}}|Remote", DisplayName = "Minimum round trip time in MS")
+	float MinRTT_MS = 10000.0f;
+};
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(F{{$Iface}}StatsUpdatedDelegate, F{{$DisplayName}}Stats, Stats);
 
 {{- if len .Interface.Properties }}
 
@@ -62,13 +83,19 @@ public:
 
 	// connection handling
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|{{$ModuleName}}|{{$IfaceName}}|Remote")
-	void Connect();
+	void _Connect();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|{{$ModuleName}}|{{$IfaceName}}|Remote")
-	void Disconnect();
+	void _Disconnect();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|{{$ModuleName}}|{{$IfaceName}}|Remote")
-	bool IsConnected() const;
+	bool _IsConnected() const;
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|{{$ModuleName}}|{{$IfaceName}}|Remote")
+	const F{{$DisplayName}}Stats& _GetStats() const;
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|{{$ModuleName}}|{{$IfaceName}}|Remote", DisplayName = "Statistics Updated")
+	F{{$Iface}}StatsUpdatedDelegate _StatsUpdated;
 
 	/**
 	 * Used when the interface client changes connection status:
@@ -92,21 +119,29 @@ public:
 private:
 	TSharedPtr<FMessageEndpoint, ESPMode::ThreadSafe> {{$Iface}}MsgBusEndpoint;
 
-	void DiscoverService();
+	void _DiscoverService();
 	FMessageAddress ServiceAddress;
+
+	// connection health
+	double _LastHbTimestamp = 0.0;
+	F{{$DisplayName}}Stats Stats;
+	FTimerHandle _HeartbeatTimerHandle;
+	void _OnHeartbeat();
+	uint32 _HeartbeatIntervalMS = 1000;
 
 	// connection handling
 	void OnConnectionInit(const F{{$DisplayName}}InitMessage& InInitMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnPong(const F{{$DisplayName}}PongMessage& IntMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnServiceClosedConnection(const F{{$DisplayName}}ServiceDisconnectMessage& InInitMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 {{- range $i, $e := .Interface.Signals }}
-	void On{{Camel .Name}}(const F{{$DisplayName}}{{Camel .Name}}SignalMessage& In{{Camel .Name}}Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void On{{Camel .Name}}(const F{{$DisplayName}}{{Camel .Name}}SignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 {{- end }}
 {{- range $i, $e := .Interface.Properties }}
-	void On{{Camel .Name}}Changed(const F{{$DisplayName}}{{Camel .Name}}ChangedMessage& {{ueVar "In" .}}Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void On{{Camel .Name}}Changed(const F{{$DisplayName}}{{Camel .Name}}ChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 {{- end }}
 {{- range $i, $e := .Interface.Operations }}
 {{- if not .Return.IsVoid }}
-	void On{{Camel .Name}}Reply(const F{{$DisplayName}}{{Camel .Name}}ReplyMessage& In{{Camel .Name}}Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void On{{Camel .Name}}Reply(const F{{$DisplayName}}{{Camel .Name}}ReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 {{- end }}
 {{- end }}
 

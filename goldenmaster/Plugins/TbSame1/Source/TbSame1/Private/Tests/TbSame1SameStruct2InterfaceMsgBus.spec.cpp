@@ -50,8 +50,8 @@ void UTbSame1SameStruct2InterfaceMsgBusSpec::Define()
 
 		// set up service and adapter
 		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSame1SameStruct2Interface>();
-		ImplFixture->GetAdapter()->setBackendService(service);
-		ImplFixture->GetAdapter()->StartListening();
+		ImplFixture->GetAdapter()->_setBackendService(service);
+		ImplFixture->GetAdapter()->_StartListening();
 
 		// setup client
 		testDoneDelegate = TestDone;
@@ -60,7 +60,7 @@ void UTbSame1SameStruct2InterfaceMsgBusSpec::Define()
 
 		MsgBusClient->_ConnectionStatusChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame1SameStruct2InterfaceMsgBusHelper::_ConnectionStatusChangedCb);
 
-		MsgBusClient->Connect();
+		MsgBusClient->_Connect();
 	});
 
 	AfterEach([this]()

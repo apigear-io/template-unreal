@@ -25,10 +25,10 @@ limitations under the License.
 class FMessageEndpoint;
 // messages
 struct FTbSimpleNoSignalsInterfaceDiscoveryMessage;
+struct FTbSimpleNoSignalsInterfacePingMessage;
 struct FTbSimpleNoSignalsInterfaceClientDisconnectMessage;
 struct FTbSimpleNoSignalsInterfaceSetPropBoolRequestMessage;
 struct FTbSimpleNoSignalsInterfacePropBoolChangedMessage;
-
 struct FTbSimpleNoSignalsInterfaceSetPropIntRequestMessage;
 struct FTbSimpleNoSignalsInterfacePropIntChangedMessage;
 struct FTbSimpleNoSignalsInterfaceFuncVoidRequestMessage;
@@ -51,21 +51,22 @@ public:
 
 	// connection handling
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoSignalsInterface|Remote")
-	void StartListening();
+	void _StartListening();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoSignalsInterface|Remote")
-	void StopListening();
+	void _StopListening();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoSignalsInterface|Remote")
-	bool IsListening() const;
+	bool _IsListening() const;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoSignalsInterface")
-	void setBackendService(TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> InService);
+	void _setBackendService(TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> InService);
 
 private:
 	TSharedPtr<FMessageEndpoint, ESPMode::ThreadSafe> TbSimpleNoSignalsInterfaceMsgBusEndpoint;
 
 	void OnNewClientDiscovered(const FTbSimpleNoSignalsInterfaceDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnPing(const FTbSimpleNoSignalsInterfacePingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnClientDisconnected(const FTbSimpleNoSignalsInterfaceClientDisconnectMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnFuncVoidRequest(const FTbSimpleNoSignalsInterfaceFuncVoidRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnFuncBoolRequest(const FTbSimpleNoSignalsInterfaceFuncBoolRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);

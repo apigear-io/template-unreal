@@ -24,7 +24,10 @@ limitations under the License.
 #include "Generated/MsgBus/TbSimpleNoPropertiesInterfaceMsgBusMessages.h"
 #include "Async/Async.h"
 #include "Engine/Engine.h"
+#include "TimerManager.h"
 #include "Misc/DateTime.h"
+#include "GenericPlatform/GenericPlatformMath.h"
+#include "GenericPlatform/GenericPlatformTime.h"
 #include "MessageEndpointBuilder.h"
 #include "MessageEndpoint.h"
 DEFINE_LOG_CATEGORY(LogTbSimpleNoPropertiesInterfaceMsgBusClient);
@@ -32,7 +35,6 @@ DEFINE_LOG_CATEGORY(LogTbSimpleNoPropertiesInterfaceMsgBusClient);
 UTbSimpleNoPropertiesInterfaceMsgBusClient::UTbSimpleNoPropertiesInterfaceMsgBusClient()
 	: UAbstractTbSimpleNoPropertiesInterface()
 {
-	/* m_sink = std::make_shared<FOLinkSink>("tb.simple.NoPropertiesInterface"); */
 }
 
 UTbSimpleNoPropertiesInterfaceMsgBusClient::~UTbSimpleNoPropertiesInterfaceMsgBusClient() = default;
@@ -40,92 +42,155 @@ UTbSimpleNoPropertiesInterfaceMsgBusClient::~UTbSimpleNoPropertiesInterfaceMsgBu
 void UTbSimpleNoPropertiesInterfaceMsgBusClient::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-
-	Connect();
 }
 
 void UTbSimpleNoPropertiesInterfaceMsgBusClient::Deinitialize()
 {
-	Disconnect();
+	_Disconnect();
 
 	Super::Deinitialize();
 }
 
-void UTbSimpleNoPropertiesInterfaceMsgBusClient::Connect()
+void UTbSimpleNoPropertiesInterfaceMsgBusClient::_Connect()
 {
-	if (IsConnected())
+	if (!_HeartbeatTimerHandle.IsValid() && GetWorld())
 	{
+		GetWorld()->GetTimerManager().SetTimer(_HeartbeatTimerHandle, this, &UTbSimpleNoPropertiesInterfaceMsgBusClient::_OnHeartbeat, _HeartbeatIntervalMS / 1000.0f, true);
+	}
+
+	if (_IsConnected())
+	{
+		UE_LOG(LogTbSimpleNoPropertiesInterfaceMsgBusClient, Log, TEXT("Already connected, cannot connect again."));
 		return;
 	}
 
 	if (TbSimpleNoPropertiesInterfaceMsgBusEndpoint.IsValid() && !ServiceAddress.IsValid())
 	{
-		DiscoverService();
+		_DiscoverService();
 		return;
 	}
 
 	// clang-format off
 	TbSimpleNoPropertiesInterfaceMsgBusEndpoint = FMessageEndpoint::Builder("ApiGear/TbSimple/NoPropertiesInterface/Client")
 		.Handling<FTbSimpleNoPropertiesInterfaceInitMessage>(this, &UTbSimpleNoPropertiesInterfaceMsgBusClient::OnConnectionInit)
+		.Handling<FTbSimpleNoPropertiesInterfacePongMessage>(this, &UTbSimpleNoPropertiesInterfaceMsgBusClient::OnPong)
 		.Handling<FTbSimpleNoPropertiesInterfaceServiceDisconnectMessage>(this, &UTbSimpleNoPropertiesInterfaceMsgBusClient::OnServiceClosedConnection)
 		.Handling<FTbSimpleNoPropertiesInterfaceSigVoidSignalMessage>(this, &UTbSimpleNoPropertiesInterfaceMsgBusClient::OnSigVoid)
-
 		.Handling<FTbSimpleNoPropertiesInterfaceSigBoolSignalMessage>(this, &UTbSimpleNoPropertiesInterfaceMsgBusClient::OnSigBool)
 		.Handling<FTbSimpleNoPropertiesInterfaceFuncBoolReplyMessage>(this, &UTbSimpleNoPropertiesInterfaceMsgBusClient::OnFuncBoolReply)
 		.Build();
 	// clang-format on
 
-	DiscoverService();
+	_DiscoverService();
 }
 
-void UTbSimpleNoPropertiesInterfaceMsgBusClient::Disconnect()
+void UTbSimpleNoPropertiesInterfaceMsgBusClient::_Disconnect()
 {
-	if (!IsConnected())
+	_LastHbTimestamp = 0.0f;
+	if (_HeartbeatTimerHandle.IsValid() && GetWorld())
+	{
+		GetWorld()->GetTimerManager().ClearTimer(_HeartbeatTimerHandle);
+	}
+
+	if (!_IsConnected())
 	{
 		return;
 	}
 
 	auto msg = new FTbSimpleNoPropertiesInterfaceClientDisconnectMessage();
 
-	if (TbSimpleNoPropertiesInterfaceMsgBusEndpoint.IsValid())
-	{
-		TbSimpleNoPropertiesInterfaceMsgBusEndpoint->Send<FTbSimpleNoPropertiesInterfaceClientDisconnectMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-	}
+	TbSimpleNoPropertiesInterfaceMsgBusEndpoint->Send<FTbSimpleNoPropertiesInterfaceClientDisconnectMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
 
 	TbSimpleNoPropertiesInterfaceMsgBusEndpoint.Reset();
 	ServiceAddress.Invalidate();
 	_ConnectionStatusChanged.Broadcast(false);
 }
 
-void UTbSimpleNoPropertiesInterfaceMsgBusClient::DiscoverService()
+void UTbSimpleNoPropertiesInterfaceMsgBusClient::_DiscoverService()
 {
-	if (TbSimpleNoPropertiesInterfaceMsgBusEndpoint.IsValid())
+	if (!TbSimpleNoPropertiesInterfaceMsgBusEndpoint.IsValid())
 	{
-		TbSimpleNoPropertiesInterfaceMsgBusEndpoint->Publish<FTbSimpleNoPropertiesInterfaceDiscoveryMessage>(new FTbSimpleNoPropertiesInterfaceDiscoveryMessage());
+		return;
 	}
+
+	auto msg = new FTbSimpleNoPropertiesInterfaceDiscoveryMessage();
+	msg->ClientPingIntervalMS = _HeartbeatIntervalMS;
+
+	TbSimpleNoPropertiesInterfaceMsgBusEndpoint->Publish<FTbSimpleNoPropertiesInterfaceDiscoveryMessage>(msg);
 }
 
-bool UTbSimpleNoPropertiesInterfaceMsgBusClient::IsConnected() const
+bool UTbSimpleNoPropertiesInterfaceMsgBusClient::_IsConnected() const
 {
 	return TbSimpleNoPropertiesInterfaceMsgBusEndpoint.IsValid() && ServiceAddress.IsValid();
 }
 
-void UTbSimpleNoPropertiesInterfaceMsgBusClient::OnConnectionInit(const FTbSimpleNoPropertiesInterfaceInitMessage& InInitMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTbSimpleNoPropertiesInterfaceMsgBusClient::OnConnectionInit(const FTbSimpleNoPropertiesInterfaceInitMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	if (!ServiceAddress.IsValid())
+	if (ServiceAddress.IsValid())
 	{
-		ServiceAddress = Context->GetSender();
+		UE_LOG(LogTbSimpleNoPropertiesInterfaceMsgBusClient, Warning, TEXT("Got a second init message - should not happen"));
+		return;
+	}
 
-		_ConnectionStatusChanged.Broadcast(true);
-	}
-	else
+	ServiceAddress = Context->GetSender();
+
+	_ConnectionStatusChanged.Broadcast(true);
+}
+
+void UTbSimpleNoPropertiesInterfaceMsgBusClient::_OnHeartbeat()
+{
+	if (_LastHbTimestamp > 0.1f)
 	{
-		UE_LOG(LogTbSimpleNoPropertiesInterfaceMsgBusClient, Error, TEXT("Got a second init message - should not happen"));
+		double Delta = (FPlatformTime::Seconds() - _LastHbTimestamp) * 1000;
+
+		if (Delta > 2 * _HeartbeatIntervalMS)
+		{
+			// service seems to be dead or not responding - reset connection
+			ServiceAddress.Invalidate();
+			_LastHbTimestamp = 0.0f;
+		}
 	}
+
+	if (!_IsConnected())
+	{
+		UE_LOG(LogTbSimpleNoPropertiesInterfaceMsgBusClient, Warning, TEXT("Heartbeat failed. Client has no connection to service. Reconnecting ..."));
+
+		_Connect();
+		return;
+	}
+
+	auto msg = new FTbSimpleNoPropertiesInterfacePingMessage();
+	msg->Timestamp = FPlatformTime::Seconds();
+
+	TbSimpleNoPropertiesInterfaceMsgBusEndpoint->Send<FTbSimpleNoPropertiesInterfacePingMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
+}
+
+void UTbSimpleNoPropertiesInterfaceMsgBusClient::OnPong(const FTbSimpleNoPropertiesInterfacePongMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	_LastHbTimestamp = InMessage.Timestamp;
+
+	const double Current = FPlatformTime::Seconds();
+	const double DeltaMS = (Current - InMessage.Timestamp) * 1000.0f;
+
+	Stats.CurrentRTT_MS = DeltaMS;
+	Stats.AverageRTT_MS = (Stats.AverageRTT_MS + Stats.CurrentRTT_MS) / 2.0f;
+	Stats.MaxRTT_MS = FGenericPlatformMath::Max(Stats.MaxRTT_MS, Stats.CurrentRTT_MS);
+	Stats.MinRTT_MS = FGenericPlatformMath::Min(Stats.MinRTT_MS, Stats.CurrentRTT_MS);
+
+	_StatsUpdated.Broadcast(Stats);
+}
+
+const FTbSimpleNoPropertiesInterfaceStats& UTbSimpleNoPropertiesInterfaceMsgBusClient::_GetStats() const
+{
+	return Stats;
 }
 
 void UTbSimpleNoPropertiesInterfaceMsgBusClient::OnServiceClosedConnection(const FTbSimpleNoPropertiesInterfaceServiceDisconnectMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -141,7 +206,7 @@ void UTbSimpleNoPropertiesInterfaceMsgBusClient::OnServiceClosedConnection(const
 
 void UTbSimpleNoPropertiesInterfaceMsgBusClient::FuncVoid_Implementation()
 {
-	if (!IsConnected())
+	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSimpleNoPropertiesInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
 
@@ -149,26 +214,19 @@ void UTbSimpleNoPropertiesInterfaceMsgBusClient::FuncVoid_Implementation()
 	}
 
 	auto msg = new FTbSimpleNoPropertiesInterfaceFuncVoidRequestMessage();
-	msg->RepsonseId = FGuid::NewGuid();
 
-	if (TbSimpleNoPropertiesInterfaceMsgBusEndpoint.IsValid())
-	{
-
-		TbSimpleNoPropertiesInterfaceMsgBusEndpoint->Send<FTbSimpleNoPropertiesInterfaceFuncVoidRequestMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-
-		return;
-	}
+	TbSimpleNoPropertiesInterfaceMsgBusEndpoint->Send<FTbSimpleNoPropertiesInterfaceFuncVoidRequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
 
 	return;
 }
 
 bool UTbSimpleNoPropertiesInterfaceMsgBusClient::FuncBool_Implementation(bool bInParamBool)
 {
-	if (!IsConnected())
+	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSimpleNoPropertiesInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
 
@@ -176,32 +234,26 @@ bool UTbSimpleNoPropertiesInterfaceMsgBusClient::FuncBool_Implementation(bool bI
 	}
 
 	auto msg = new FTbSimpleNoPropertiesInterfaceFuncBoolRequestMessage();
-	msg->RepsonseId = FGuid::NewGuid();
+	msg->ResponseId = FGuid::NewGuid();
 	msg->bParamBool = bInParamBool;
+	TPromise<bool> Promise;
+	StorePromise(msg->ResponseId, Promise);
 
-	if (TbSimpleNoPropertiesInterfaceMsgBusEndpoint.IsValid())
-	{
-		TPromise<bool> Promise;
-		StorePromise(msg->RepsonseId, Promise);
+	TbSimpleNoPropertiesInterfaceMsgBusEndpoint->Send<FTbSimpleNoPropertiesInterfaceFuncBoolRequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
 
-		TbSimpleNoPropertiesInterfaceMsgBusEndpoint->Send<FTbSimpleNoPropertiesInterfaceFuncBoolRequestMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-
-		return Promise.GetFuture().Get();
-	}
-
-	return false;
+	return Promise.GetFuture().Get();
 }
 
-void UTbSimpleNoPropertiesInterfaceMsgBusClient::OnFuncBoolReply(const FTbSimpleNoPropertiesInterfaceFuncBoolReplyMessage& InFuncBoolReplyMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTbSimpleNoPropertiesInterfaceMsgBusClient::OnFuncBoolReply(const FTbSimpleNoPropertiesInterfaceFuncBoolReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	FulfillPromise(InFuncBoolReplyMessage.RepsonseId, InFuncBoolReplyMessage.Result);
+	FulfillPromise(InMessage.ResponseId, InMessage.Result);
 }
 
-void UTbSimpleNoPropertiesInterfaceMsgBusClient::OnSigVoid(const FTbSimpleNoPropertiesInterfaceSigVoidSignalMessage& InSigVoidMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTbSimpleNoPropertiesInterfaceMsgBusClient::OnSigVoid(const FTbSimpleNoPropertiesInterfaceSigVoidSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ServiceAddress != Context->GetSender())
 	{
@@ -213,7 +265,7 @@ void UTbSimpleNoPropertiesInterfaceMsgBusClient::OnSigVoid(const FTbSimpleNoProp
 	return;
 }
 
-void UTbSimpleNoPropertiesInterfaceMsgBusClient::OnSigBool(const FTbSimpleNoPropertiesInterfaceSigBoolSignalMessage& InSigBoolMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTbSimpleNoPropertiesInterfaceMsgBusClient::OnSigBool(const FTbSimpleNoPropertiesInterfaceSigBoolSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ServiceAddress != Context->GetSender())
 	{
@@ -221,7 +273,7 @@ void UTbSimpleNoPropertiesInterfaceMsgBusClient::OnSigBool(const FTbSimpleNoProp
 		return;
 	}
 
-	Execute__GetSignals(this)->OnSigBoolSignal.Broadcast(InSigBoolMessage.bParamBool);
+	Execute__GetSignals(this)->OnSigBoolSignal.Broadcast(InMessage.bParamBool);
 	return;
 }
 

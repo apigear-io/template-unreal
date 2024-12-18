@@ -52,8 +52,8 @@ void UCounterCounterMsgBusSpec::Define()
 
 		// set up service and adapter
 		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UCounterCounter>();
-		ImplFixture->GetAdapter()->setBackendService(service);
-		ImplFixture->GetAdapter()->StartListening();
+		ImplFixture->GetAdapter()->_setBackendService(service);
+		ImplFixture->GetAdapter()->_StartListening();
 
 		// setup client
 		testDoneDelegate = TestDone;
@@ -62,7 +62,7 @@ void UCounterCounterMsgBusSpec::Define()
 
 		MsgBusClient->_ConnectionStatusChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UCounterCounterMsgBusHelper::_ConnectionStatusChangedCb);
 
-		MsgBusClient->Connect();
+		MsgBusClient->_Connect();
 	});
 
 	AfterEach([this]()

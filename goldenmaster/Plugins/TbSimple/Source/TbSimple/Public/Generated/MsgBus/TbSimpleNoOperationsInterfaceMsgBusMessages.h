@@ -53,6 +53,24 @@ struct FTbSimpleNoOperationsInterfaceServiceDisconnectMessage
 };
 
 USTRUCT()
+struct FTbSimpleNoOperationsInterfacePingMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	double Timestamp = 0.0;
+};
+
+USTRUCT()
+struct FTbSimpleNoOperationsInterfacePongMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	double Timestamp = 0.0;
+};
+
+USTRUCT()
 struct FTbSimpleNoOperationsInterfaceSigVoidSignalMessage
 {
 	GENERATED_BODY()

@@ -21,17 +21,19 @@ limitations under the License.
 #include "HAL/CriticalSection.h"
 #include "Async/Future.h"
 #include "Runtime/Launch/Resources/Version.h"
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-#include "Templates/UniquePtr.h"
+#if (ENGINE_MAJOR_VERSION < 5)
+#include "Engine/EngineTypes.h"
 #else
-#include "Templates/PimplPtr.h"
+#include "Engine/TimerHandle.h"
 #endif
+#include "Templates/PimplPtr.h"
 #include "IMessageContext.h"
 #include "TbEnumEnumInterfaceMsgBusClient.generated.h"
 
 class FMessageEndpoint;
 // messages
 struct FTbEnumEnumInterfaceInitMessage;
+struct FTbEnumEnumInterfacePongMessage;
 struct FTbEnumEnumInterfaceServiceDisconnectMessage;
 struct FTbEnumEnumInterfaceSig0SignalMessage;
 struct FTbEnumEnumInterfaceSig1SignalMessage;
@@ -45,6 +47,25 @@ struct FTbEnumEnumInterfaceFunc0ReplyMessage;
 struct FTbEnumEnumInterfaceFunc1ReplyMessage;
 struct FTbEnumEnumInterfaceFunc2ReplyMessage;
 struct FTbEnumEnumInterfaceFunc3ReplyMessage;
+
+USTRUCT(BlueprintType)
+struct FTbEnumEnumInterfaceStats
+{
+	GENERATED_BODY()
+
+	UPROPERTY(BlueprintReadOnly, Category = "ApiGear|TbEnum|EnumInterface|Remote", DisplayName = "Current round trip time in MS")
+	float CurrentRTT_MS = 0.0f;
+
+	UPROPERTY(BlueprintReadOnly, Category = "ApiGear|TbEnum|EnumInterface|Remote", DisplayName = "Average round trip time in MS")
+	float AverageRTT_MS = 0.0f;
+
+	UPROPERTY(BlueprintReadOnly, Category = "ApiGear|TbEnum|EnumInterface|Remote", DisplayName = "Maximum round trip time in MS")
+	float MaxRTT_MS = 0.0f;
+
+	UPROPERTY(BlueprintReadOnly, Category = "ApiGear|TbEnum|EnumInterface|Remote", DisplayName = "Minimum round trip time in MS")
+	float MinRTT_MS = 10000.0f;
+};
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbEnumEnumInterfaceStatsUpdatedDelegate, FTbEnumEnumInterfaceStats, Stats);
 
 struct TbEnumEnumInterfacePropertiesMsgBusData;
 DECLARE_LOG_CATEGORY_EXTERN(LogTbEnumEnumInterfaceMsgBusClient, Log, All);
@@ -65,13 +86,19 @@ public:
 
 	// connection handling
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface|Remote")
-	void Connect();
+	void _Connect();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface|Remote")
-	void Disconnect();
+	void _Disconnect();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface|Remote")
-	bool IsConnected() const;
+	bool _IsConnected() const;
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface|Remote")
+	const FTbEnumEnumInterfaceStats& _GetStats() const;
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface|Remote", DisplayName = "Statistics Updated")
+	FTbEnumEnumInterfaceStatsUpdatedDelegate _StatsUpdated;
 
 	/**
 	 * Used when the interface client changes connection status:
@@ -104,24 +131,32 @@ public:
 private:
 	TSharedPtr<FMessageEndpoint, ESPMode::ThreadSafe> TbEnumEnumInterfaceMsgBusEndpoint;
 
-	void DiscoverService();
+	void _DiscoverService();
 	FMessageAddress ServiceAddress;
+
+	// connection health
+	double _LastHbTimestamp = 0.0;
+	FTbEnumEnumInterfaceStats Stats;
+	FTimerHandle _HeartbeatTimerHandle;
+	void _OnHeartbeat();
+	uint32 _HeartbeatIntervalMS = 1000;
 
 	// connection handling
 	void OnConnectionInit(const FTbEnumEnumInterfaceInitMessage& InInitMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnPong(const FTbEnumEnumInterfacePongMessage& IntMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnServiceClosedConnection(const FTbEnumEnumInterfaceServiceDisconnectMessage& InInitMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnSig0(const FTbEnumEnumInterfaceSig0SignalMessage& InSig0Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnSig1(const FTbEnumEnumInterfaceSig1SignalMessage& InSig1Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnSig2(const FTbEnumEnumInterfaceSig2SignalMessage& InSig2Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnSig3(const FTbEnumEnumInterfaceSig3SignalMessage& InSig3Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnProp0Changed(const FTbEnumEnumInterfaceProp0ChangedMessage& InProp0Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnProp1Changed(const FTbEnumEnumInterfaceProp1ChangedMessage& InProp1Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnProp2Changed(const FTbEnumEnumInterfaceProp2ChangedMessage& InProp2Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnProp3Changed(const FTbEnumEnumInterfaceProp3ChangedMessage& InProp3Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnFunc0Reply(const FTbEnumEnumInterfaceFunc0ReplyMessage& InFunc0Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnFunc1Reply(const FTbEnumEnumInterfaceFunc1ReplyMessage& InFunc1Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnFunc2Reply(const FTbEnumEnumInterfaceFunc2ReplyMessage& InFunc2Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnFunc3Reply(const FTbEnumEnumInterfaceFunc3ReplyMessage& InFunc3Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnSig0(const FTbEnumEnumInterfaceSig0SignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnSig1(const FTbEnumEnumInterfaceSig1SignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnSig2(const FTbEnumEnumInterfaceSig2SignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnSig3(const FTbEnumEnumInterfaceSig3SignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnProp0Changed(const FTbEnumEnumInterfaceProp0ChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnProp1Changed(const FTbEnumEnumInterfaceProp1ChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnProp2Changed(const FTbEnumEnumInterfaceProp2ChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnProp3Changed(const FTbEnumEnumInterfaceProp3ChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnFunc0Reply(const FTbEnumEnumInterfaceFunc0ReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnFunc1Reply(const FTbEnumEnumInterfaceFunc1ReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnFunc2Reply(const FTbEnumEnumInterfaceFunc2ReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnFunc3Reply(const FTbEnumEnumInterfaceFunc3ReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 
 	// member variable to store the last sent data
 	TPimplPtr<TbEnumEnumInterfacePropertiesMsgBusData> _SentData;

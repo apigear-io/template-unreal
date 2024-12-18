@@ -40,12 +40,12 @@ void UTbSame1SameStruct1InterfaceMsgBusAdapter::Initialize(FSubsystemCollectionB
 
 void UTbSame1SameStruct1InterfaceMsgBusAdapter::Deinitialize()
 {
-	StopListening();
+	_StopListening();
 
 	Super::Deinitialize();
 }
 
-void UTbSame1SameStruct1InterfaceMsgBusAdapter::StartListening()
+void UTbSame1SameStruct1InterfaceMsgBusAdapter::_StartListening()
 {
 	if (TbSame1SameStruct1InterfaceMsgBusEndpoint.IsValid())
 		return;
@@ -53,6 +53,7 @@ void UTbSame1SameStruct1InterfaceMsgBusAdapter::StartListening()
 	// clang-format off
 	TbSame1SameStruct1InterfaceMsgBusEndpoint = FMessageEndpoint::Builder("ApiGear/TbSame1/SameStruct1Interface/Service")
 		.Handling<FTbSame1SameStruct1InterfaceDiscoveryMessage>(this, &UTbSame1SameStruct1InterfaceMsgBusAdapter::OnNewClientDiscovered)
+		.Handling<FTbSame1SameStruct1InterfacePingMessage>(this, &UTbSame1SameStruct1InterfaceMsgBusAdapter::OnPing)
 		.Handling<FTbSame1SameStruct1InterfaceClientDisconnectMessage>(this, &UTbSame1SameStruct1InterfaceMsgBusAdapter::OnClientDisconnected)
 		.Handling<FTbSame1SameStruct1InterfaceSetProp1RequestMessage>(this, &UTbSame1SameStruct1InterfaceMsgBusAdapter::OnSetProp1Request)
 		.Handling<FTbSame1SameStruct1InterfaceFunc1RequestMessage>(this, &UTbSame1SameStruct1InterfaceMsgBusAdapter::OnFunc1Request)
@@ -65,7 +66,7 @@ void UTbSame1SameStruct1InterfaceMsgBusAdapter::StartListening()
 	}
 }
 
-void UTbSame1SameStruct1InterfaceMsgBusAdapter::StopListening()
+void UTbSame1SameStruct1InterfaceMsgBusAdapter::_StopListening()
 {
 	auto msg = new FTbSame1SameStruct1InterfaceServiceDisconnectMessage();
 
@@ -82,12 +83,12 @@ void UTbSame1SameStruct1InterfaceMsgBusAdapter::StopListening()
 	ConnectedClients.Reset();
 }
 
-bool UTbSame1SameStruct1InterfaceMsgBusAdapter::IsListening() const
+bool UTbSame1SameStruct1InterfaceMsgBusAdapter::_IsListening() const
 {
 	return TbSame1SameStruct1InterfaceMsgBusEndpoint.IsValid();
 }
 
-void UTbSame1SameStruct1InterfaceMsgBusAdapter::setBackendService(TScriptInterface<ITbSame1SameStruct1InterfaceInterface> InService)
+void UTbSame1SameStruct1InterfaceMsgBusAdapter::_setBackendService(TScriptInterface<ITbSame1SameStruct1InterfaceInterface> InService)
 {
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
@@ -128,6 +129,21 @@ void UTbSame1SameStruct1InterfaceMsgBusAdapter::OnNewClientDiscovered(const FTbS
 	}
 }
 
+void UTbSame1SameStruct1InterfaceMsgBusAdapter::OnPing(const FTbSame1SameStruct1InterfacePingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	auto msg = new FTbSame1SameStruct1InterfacePongMessage();
+	msg->Timestamp = InMessage.Timestamp;
+
+	if (TbSame1SameStruct1InterfaceMsgBusEndpoint.IsValid())
+	{
+		TbSame1SameStruct1InterfaceMsgBusEndpoint->Send<FTbSame1SameStruct1InterfacePongMessage>(msg, EMessageFlags::Reliable,
+			nullptr,
+			TArrayBuilder<FMessageAddress>().Add(Context->GetSender()),
+			FTimespan::Zero(),
+			FDateTime::MaxValue());
+	}
+}
+
 void UTbSame1SameStruct1InterfaceMsgBusAdapter::OnClientDisconnected(const FTbSame1SameStruct1InterfaceClientDisconnectMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	ConnectedClients.Remove(Context->GetSender());
@@ -136,7 +152,7 @@ void UTbSame1SameStruct1InterfaceMsgBusAdapter::OnClientDisconnected(const FTbSa
 void UTbSame1SameStruct1InterfaceMsgBusAdapter::OnFunc1Request(const FTbSame1SameStruct1InterfaceFunc1RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	auto msg = new FTbSame1SameStruct1InterfaceFunc1ReplyMessage();
-	msg->RepsonseId = InMessage.RepsonseId;
+	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->Execute_Func1(BackendService.GetObject(), InMessage.Param1);
 
 	if (TbSame1SameStruct1InterfaceMsgBusEndpoint.IsValid())

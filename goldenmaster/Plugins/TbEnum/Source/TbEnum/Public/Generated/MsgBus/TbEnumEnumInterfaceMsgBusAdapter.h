@@ -25,23 +25,18 @@ limitations under the License.
 class FMessageEndpoint;
 // messages
 struct FTbEnumEnumInterfaceDiscoveryMessage;
+struct FTbEnumEnumInterfacePingMessage;
 struct FTbEnumEnumInterfaceClientDisconnectMessage;
 struct FTbEnumEnumInterfaceSig0SignalMessage;
-
 struct FTbEnumEnumInterfaceSig1SignalMessage;
-
 struct FTbEnumEnumInterfaceSig2SignalMessage;
-
 struct FTbEnumEnumInterfaceSig3SignalMessage;
 struct FTbEnumEnumInterfaceSetProp0RequestMessage;
 struct FTbEnumEnumInterfaceProp0ChangedMessage;
-
 struct FTbEnumEnumInterfaceSetProp1RequestMessage;
 struct FTbEnumEnumInterfaceProp1ChangedMessage;
-
 struct FTbEnumEnumInterfaceSetProp2RequestMessage;
 struct FTbEnumEnumInterfaceProp2ChangedMessage;
-
 struct FTbEnumEnumInterfaceSetProp3RequestMessage;
 struct FTbEnumEnumInterfaceProp3ChangedMessage;
 struct FTbEnumEnumInterfaceFunc0RequestMessage;
@@ -66,21 +61,22 @@ public:
 
 	// connection handling
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface|Remote")
-	void StartListening();
+	void _StartListening();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface|Remote")
-	void StopListening();
+	void _StopListening();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface|Remote")
-	bool IsListening() const;
+	bool _IsListening() const;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface")
-	void setBackendService(TScriptInterface<ITbEnumEnumInterfaceInterface> InService);
+	void _setBackendService(TScriptInterface<ITbEnumEnumInterfaceInterface> InService);
 
 private:
 	TSharedPtr<FMessageEndpoint, ESPMode::ThreadSafe> TbEnumEnumInterfaceMsgBusEndpoint;
 
 	void OnNewClientDiscovered(const FTbEnumEnumInterfaceDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnPing(const FTbEnumEnumInterfacePingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnClientDisconnected(const FTbEnumEnumInterfaceClientDisconnectMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnFunc0Request(const FTbEnumEnumInterfaceFunc0RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnFunc1Request(const FTbEnumEnumInterfaceFunc1RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);

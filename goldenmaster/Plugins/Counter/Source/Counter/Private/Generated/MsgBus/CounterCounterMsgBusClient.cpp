@@ -24,7 +24,10 @@ limitations under the License.
 #include "Generated/MsgBus/CounterCounterMsgBusMessages.h"
 #include "Async/Async.h"
 #include "Engine/Engine.h"
+#include "TimerManager.h"
 #include "Misc/DateTime.h"
+#include "GenericPlatform/GenericPlatformMath.h"
+#include "GenericPlatform/GenericPlatformTime.h"
 #include "MessageEndpointBuilder.h"
 #include "MessageEndpoint.h"
 #include "HAL/CriticalSection.h"
@@ -49,7 +52,6 @@ UCounterCounterMsgBusClient::UCounterCounterMsgBusClient()
 	: UAbstractCounterCounter()
 	, _SentData(MakePimpl<CounterCounterPropertiesMsgBusData>())
 {
-	/* m_sink = std::make_shared<FOLinkSink>("counter.Counter"); */
 }
 
 UCounterCounterMsgBusClient::~UCounterCounterMsgBusClient() = default;
@@ -57,41 +59,43 @@ UCounterCounterMsgBusClient::~UCounterCounterMsgBusClient() = default;
 void UCounterCounterMsgBusClient::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-
-	Connect();
 }
 
 void UCounterCounterMsgBusClient::Deinitialize()
 {
-	Disconnect();
+	_Disconnect();
 
 	Super::Deinitialize();
 }
 
-void UCounterCounterMsgBusClient::Connect()
+void UCounterCounterMsgBusClient::_Connect()
 {
-	if (IsConnected())
+	if (!_HeartbeatTimerHandle.IsValid() && GetWorld())
 	{
+		GetWorld()->GetTimerManager().SetTimer(_HeartbeatTimerHandle, this, &UCounterCounterMsgBusClient::_OnHeartbeat, _HeartbeatIntervalMS / 1000.0f, true);
+	}
+
+	if (_IsConnected())
+	{
+		UE_LOG(LogCounterCounterMsgBusClient, Log, TEXT("Already connected, cannot connect again."));
 		return;
 	}
 
 	if (CounterCounterMsgBusEndpoint.IsValid() && !ServiceAddress.IsValid())
 	{
-		DiscoverService();
+		_DiscoverService();
 		return;
 	}
 
 	// clang-format off
 	CounterCounterMsgBusEndpoint = FMessageEndpoint::Builder("ApiGear/Counter/Counter/Client")
 		.Handling<FCounterCounterInitMessage>(this, &UCounterCounterMsgBusClient::OnConnectionInit)
+		.Handling<FCounterCounterPongMessage>(this, &UCounterCounterMsgBusClient::OnPong)
 		.Handling<FCounterCounterServiceDisconnectMessage>(this, &UCounterCounterMsgBusClient::OnServiceClosedConnection)
 		.Handling<FCounterCounterValueChangedSignalMessage>(this, &UCounterCounterMsgBusClient::OnValueChanged)
 		.Handling<FCounterCounterVectorChangedMessage>(this, &UCounterCounterMsgBusClient::OnVectorChanged)
-
 		.Handling<FCounterCounterExternVectorChangedMessage>(this, &UCounterCounterMsgBusClient::OnExternVectorChanged)
-
 		.Handling<FCounterCounterVectorArrayChangedMessage>(this, &UCounterCounterMsgBusClient::OnVectorArrayChanged)
-
 		.Handling<FCounterCounterExternVectorArrayChangedMessage>(this, &UCounterCounterMsgBusClient::OnExternVectorArrayChanged)
 		.Handling<FCounterCounterIncrementReplyMessage>(this, &UCounterCounterMsgBusClient::OnIncrementReply)
 		.Handling<FCounterCounterIncrementArrayReplyMessage>(this, &UCounterCounterMsgBusClient::OnIncrementArrayReply)
@@ -100,84 +104,143 @@ void UCounterCounterMsgBusClient::Connect()
 		.Build();
 	// clang-format on
 
-	DiscoverService();
+	_DiscoverService();
 }
 
-void UCounterCounterMsgBusClient::Disconnect()
+void UCounterCounterMsgBusClient::_Disconnect()
 {
-	if (!IsConnected())
+	_LastHbTimestamp = 0.0f;
+	if (_HeartbeatTimerHandle.IsValid() && GetWorld())
+	{
+		GetWorld()->GetTimerManager().ClearTimer(_HeartbeatTimerHandle);
+	}
+
+	if (!_IsConnected())
 	{
 		return;
 	}
 
 	auto msg = new FCounterCounterClientDisconnectMessage();
 
-	if (CounterCounterMsgBusEndpoint.IsValid())
-	{
-		CounterCounterMsgBusEndpoint->Send<FCounterCounterClientDisconnectMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-	}
+	CounterCounterMsgBusEndpoint->Send<FCounterCounterClientDisconnectMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
 
 	CounterCounterMsgBusEndpoint.Reset();
 	ServiceAddress.Invalidate();
 	_ConnectionStatusChanged.Broadcast(false);
 }
 
-void UCounterCounterMsgBusClient::DiscoverService()
+void UCounterCounterMsgBusClient::_DiscoverService()
 {
-	if (CounterCounterMsgBusEndpoint.IsValid())
+	if (!CounterCounterMsgBusEndpoint.IsValid())
 	{
-		CounterCounterMsgBusEndpoint->Publish<FCounterCounterDiscoveryMessage>(new FCounterCounterDiscoveryMessage());
+		return;
 	}
+
+	auto msg = new FCounterCounterDiscoveryMessage();
+	msg->ClientPingIntervalMS = _HeartbeatIntervalMS;
+
+	CounterCounterMsgBusEndpoint->Publish<FCounterCounterDiscoveryMessage>(msg);
 }
 
-bool UCounterCounterMsgBusClient::IsConnected() const
+bool UCounterCounterMsgBusClient::_IsConnected() const
 {
 	return CounterCounterMsgBusEndpoint.IsValid() && ServiceAddress.IsValid();
 }
 
-void UCounterCounterMsgBusClient::OnConnectionInit(const FCounterCounterInitMessage& InInitMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UCounterCounterMsgBusClient::OnConnectionInit(const FCounterCounterInitMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	if (!ServiceAddress.IsValid())
+	if (ServiceAddress.IsValid())
 	{
-		ServiceAddress = Context->GetSender();
-		const bool bVectorChanged = InInitMessage.Vector != Vector;
-		if (bVectorChanged)
-		{
-			Vector = InInitMessage.Vector;
-			Execute__GetSignals(this)->OnVectorChanged.Broadcast(Vector);
-		}
-
-		const bool bExternVectorChanged = InInitMessage.ExternVector != ExternVector;
-		if (bExternVectorChanged)
-		{
-			ExternVector = InInitMessage.ExternVector;
-			Execute__GetSignals(this)->OnExternVectorChanged.Broadcast(ExternVector);
-		}
-
-		const bool bVectorArrayChanged = InInitMessage.VectorArray != VectorArray;
-		if (bVectorArrayChanged)
-		{
-			VectorArray = InInitMessage.VectorArray;
-			Execute__GetSignals(this)->OnVectorArrayChanged.Broadcast(VectorArray);
-		}
-
-		const bool bExternVectorArrayChanged = InInitMessage.ExternVectorArray != ExternVectorArray;
-		if (bExternVectorArrayChanged)
-		{
-			ExternVectorArray = InInitMessage.ExternVectorArray;
-			Execute__GetSignals(this)->OnExternVectorArrayChanged.Broadcast(ExternVectorArray);
-		}
-
-		_ConnectionStatusChanged.Broadcast(true);
+		UE_LOG(LogCounterCounterMsgBusClient, Warning, TEXT("Got a second init message - should not happen"));
+		return;
 	}
-	else
+
+	ServiceAddress = Context->GetSender();
+	const bool bVectorChanged = InMessage.Vector != Vector;
+	if (bVectorChanged)
 	{
-		UE_LOG(LogCounterCounterMsgBusClient, Error, TEXT("Got a second init message - should not happen"));
+		Vector = InMessage.Vector;
+		Execute__GetSignals(this)->OnVectorChanged.Broadcast(Vector);
 	}
+
+	const bool bExternVectorChanged = InMessage.ExternVector != ExternVector;
+	if (bExternVectorChanged)
+	{
+		ExternVector = InMessage.ExternVector;
+		Execute__GetSignals(this)->OnExternVectorChanged.Broadcast(ExternVector);
+	}
+
+	const bool bVectorArrayChanged = InMessage.VectorArray != VectorArray;
+	if (bVectorArrayChanged)
+	{
+		VectorArray = InMessage.VectorArray;
+		Execute__GetSignals(this)->OnVectorArrayChanged.Broadcast(VectorArray);
+	}
+
+	const bool bExternVectorArrayChanged = InMessage.ExternVectorArray != ExternVectorArray;
+	if (bExternVectorArrayChanged)
+	{
+		ExternVectorArray = InMessage.ExternVectorArray;
+		Execute__GetSignals(this)->OnExternVectorArrayChanged.Broadcast(ExternVectorArray);
+	}
+
+	_ConnectionStatusChanged.Broadcast(true);
+}
+
+void UCounterCounterMsgBusClient::_OnHeartbeat()
+{
+	if (_LastHbTimestamp > 0.1f)
+	{
+		double Delta = (FPlatformTime::Seconds() - _LastHbTimestamp) * 1000;
+
+		if (Delta > 2 * _HeartbeatIntervalMS)
+		{
+			// service seems to be dead or not responding - reset connection
+			ServiceAddress.Invalidate();
+			_LastHbTimestamp = 0.0f;
+		}
+	}
+
+	if (!_IsConnected())
+	{
+		UE_LOG(LogCounterCounterMsgBusClient, Warning, TEXT("Heartbeat failed. Client has no connection to service. Reconnecting ..."));
+
+		_Connect();
+		return;
+	}
+
+	auto msg = new FCounterCounterPingMessage();
+	msg->Timestamp = FPlatformTime::Seconds();
+
+	CounterCounterMsgBusEndpoint->Send<FCounterCounterPingMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
+}
+
+void UCounterCounterMsgBusClient::OnPong(const FCounterCounterPongMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	_LastHbTimestamp = InMessage.Timestamp;
+
+	const double Current = FPlatformTime::Seconds();
+	const double DeltaMS = (Current - InMessage.Timestamp) * 1000.0f;
+
+	Stats.CurrentRTT_MS = DeltaMS;
+	Stats.AverageRTT_MS = (Stats.AverageRTT_MS + Stats.CurrentRTT_MS) / 2.0f;
+	Stats.MaxRTT_MS = FGenericPlatformMath::Max(Stats.MaxRTT_MS, Stats.CurrentRTT_MS);
+	Stats.MinRTT_MS = FGenericPlatformMath::Min(Stats.MinRTT_MS, Stats.CurrentRTT_MS);
+
+	_StatsUpdated.Broadcast(Stats);
+}
+
+const FCounterCounterStats& UCounterCounterMsgBusClient::_GetStats() const
+{
+	return Stats;
 }
 
 void UCounterCounterMsgBusClient::OnServiceClosedConnection(const FCounterCounterServiceDisconnectMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -198,7 +261,7 @@ FCustomTypesVector3D UCounterCounterMsgBusClient::GetVector_Implementation() con
 
 void UCounterCounterMsgBusClient::SetVector_Implementation(const FCustomTypesVector3D& InVector)
 {
-	if (!IsConnected())
+	if (!_IsConnected())
 	{
 		UE_LOG(LogCounterCounterMsgBusClient, Error, TEXT("Client has no connection to service."));
 		return;
@@ -222,16 +285,13 @@ void UCounterCounterMsgBusClient::SetVector_Implementation(const FCustomTypesVec
 	auto msg = new FCounterCounterSetVectorRequestMessage();
 	msg->Vector = InVector;
 
-	if (CounterCounterMsgBusEndpoint.IsValid())
-	{
-		CounterCounterMsgBusEndpoint->Send<FCounterCounterSetVectorRequestMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-		FScopeLock Lock(&(_SentData->VectorMutex));
-		_SentData->Vector = InVector;
-	}
+	CounterCounterMsgBusEndpoint->Send<FCounterCounterSetVectorRequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
+	FScopeLock Lock(&(_SentData->VectorMutex));
+	_SentData->Vector = InVector;
 }
 
 FVector UCounterCounterMsgBusClient::GetExternVector_Implementation() const
@@ -241,7 +301,7 @@ FVector UCounterCounterMsgBusClient::GetExternVector_Implementation() const
 
 void UCounterCounterMsgBusClient::SetExternVector_Implementation(const FVector& InExternVector)
 {
-	if (!IsConnected())
+	if (!_IsConnected())
 	{
 		UE_LOG(LogCounterCounterMsgBusClient, Error, TEXT("Client has no connection to service."));
 		return;
@@ -265,16 +325,13 @@ void UCounterCounterMsgBusClient::SetExternVector_Implementation(const FVector& 
 	auto msg = new FCounterCounterSetExternVectorRequestMessage();
 	msg->ExternVector = InExternVector;
 
-	if (CounterCounterMsgBusEndpoint.IsValid())
-	{
-		CounterCounterMsgBusEndpoint->Send<FCounterCounterSetExternVectorRequestMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-		FScopeLock Lock(&(_SentData->ExternVectorMutex));
-		_SentData->ExternVector = InExternVector;
-	}
+	CounterCounterMsgBusEndpoint->Send<FCounterCounterSetExternVectorRequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
+	FScopeLock Lock(&(_SentData->ExternVectorMutex));
+	_SentData->ExternVector = InExternVector;
 }
 
 TArray<FCustomTypesVector3D> UCounterCounterMsgBusClient::GetVectorArray_Implementation() const
@@ -284,7 +341,7 @@ TArray<FCustomTypesVector3D> UCounterCounterMsgBusClient::GetVectorArray_Impleme
 
 void UCounterCounterMsgBusClient::SetVectorArray_Implementation(const TArray<FCustomTypesVector3D>& InVectorArray)
 {
-	if (!IsConnected())
+	if (!_IsConnected())
 	{
 		UE_LOG(LogCounterCounterMsgBusClient, Error, TEXT("Client has no connection to service."));
 		return;
@@ -308,16 +365,13 @@ void UCounterCounterMsgBusClient::SetVectorArray_Implementation(const TArray<FCu
 	auto msg = new FCounterCounterSetVectorArrayRequestMessage();
 	msg->VectorArray = InVectorArray;
 
-	if (CounterCounterMsgBusEndpoint.IsValid())
-	{
-		CounterCounterMsgBusEndpoint->Send<FCounterCounterSetVectorArrayRequestMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-		FScopeLock Lock(&(_SentData->VectorArrayMutex));
-		_SentData->VectorArray = InVectorArray;
-	}
+	CounterCounterMsgBusEndpoint->Send<FCounterCounterSetVectorArrayRequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
+	FScopeLock Lock(&(_SentData->VectorArrayMutex));
+	_SentData->VectorArray = InVectorArray;
 }
 
 TArray<FVector> UCounterCounterMsgBusClient::GetExternVectorArray_Implementation() const
@@ -327,7 +381,7 @@ TArray<FVector> UCounterCounterMsgBusClient::GetExternVectorArray_Implementation
 
 void UCounterCounterMsgBusClient::SetExternVectorArray_Implementation(const TArray<FVector>& InExternVectorArray)
 {
-	if (!IsConnected())
+	if (!_IsConnected())
 	{
 		UE_LOG(LogCounterCounterMsgBusClient, Error, TEXT("Client has no connection to service."));
 		return;
@@ -351,21 +405,18 @@ void UCounterCounterMsgBusClient::SetExternVectorArray_Implementation(const TArr
 	auto msg = new FCounterCounterSetExternVectorArrayRequestMessage();
 	msg->ExternVectorArray = InExternVectorArray;
 
-	if (CounterCounterMsgBusEndpoint.IsValid())
-	{
-		CounterCounterMsgBusEndpoint->Send<FCounterCounterSetExternVectorArrayRequestMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-		FScopeLock Lock(&(_SentData->ExternVectorArrayMutex));
-		_SentData->ExternVectorArray = InExternVectorArray;
-	}
+	CounterCounterMsgBusEndpoint->Send<FCounterCounterSetExternVectorArrayRequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
+	FScopeLock Lock(&(_SentData->ExternVectorArrayMutex));
+	_SentData->ExternVectorArray = InExternVectorArray;
 }
 
 FVector UCounterCounterMsgBusClient::Increment_Implementation(const FVector& InVec)
 {
-	if (!IsConnected())
+	if (!_IsConnected())
 	{
 		UE_LOG(LogCounterCounterMsgBusClient, Error, TEXT("Client has no connection to service."));
 
@@ -373,34 +424,28 @@ FVector UCounterCounterMsgBusClient::Increment_Implementation(const FVector& InV
 	}
 
 	auto msg = new FCounterCounterIncrementRequestMessage();
-	msg->RepsonseId = FGuid::NewGuid();
+	msg->ResponseId = FGuid::NewGuid();
 	msg->Vec = InVec;
+	TPromise<FVector> Promise;
+	StorePromise(msg->ResponseId, Promise);
 
-	if (CounterCounterMsgBusEndpoint.IsValid())
-	{
-		TPromise<FVector> Promise;
-		StorePromise(msg->RepsonseId, Promise);
+	CounterCounterMsgBusEndpoint->Send<FCounterCounterIncrementRequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
 
-		CounterCounterMsgBusEndpoint->Send<FCounterCounterIncrementRequestMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-
-		return Promise.GetFuture().Get();
-	}
-
-	return FVector(0.f, 0.f, 0.f);
+	return Promise.GetFuture().Get();
 }
 
-void UCounterCounterMsgBusClient::OnIncrementReply(const FCounterCounterIncrementReplyMessage& InIncrementReplyMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UCounterCounterMsgBusClient::OnIncrementReply(const FCounterCounterIncrementReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	FulfillPromise(InIncrementReplyMessage.RepsonseId, InIncrementReplyMessage.Result);
+	FulfillPromise(InMessage.ResponseId, InMessage.Result);
 }
 
 TArray<FVector> UCounterCounterMsgBusClient::IncrementArray_Implementation(const TArray<FVector>& InVec)
 {
-	if (!IsConnected())
+	if (!_IsConnected())
 	{
 		UE_LOG(LogCounterCounterMsgBusClient, Error, TEXT("Client has no connection to service."));
 
@@ -408,34 +453,28 @@ TArray<FVector> UCounterCounterMsgBusClient::IncrementArray_Implementation(const
 	}
 
 	auto msg = new FCounterCounterIncrementArrayRequestMessage();
-	msg->RepsonseId = FGuid::NewGuid();
+	msg->ResponseId = FGuid::NewGuid();
 	msg->Vec = InVec;
+	TPromise<TArray<FVector>> Promise;
+	StorePromise(msg->ResponseId, Promise);
 
-	if (CounterCounterMsgBusEndpoint.IsValid())
-	{
-		TPromise<TArray<FVector>> Promise;
-		StorePromise(msg->RepsonseId, Promise);
+	CounterCounterMsgBusEndpoint->Send<FCounterCounterIncrementArrayRequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
 
-		CounterCounterMsgBusEndpoint->Send<FCounterCounterIncrementArrayRequestMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-
-		return Promise.GetFuture().Get();
-	}
-
-	return TArray<FVector>();
+	return Promise.GetFuture().Get();
 }
 
-void UCounterCounterMsgBusClient::OnIncrementArrayReply(const FCounterCounterIncrementArrayReplyMessage& InIncrementArrayReplyMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UCounterCounterMsgBusClient::OnIncrementArrayReply(const FCounterCounterIncrementArrayReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	FulfillPromise(InIncrementArrayReplyMessage.RepsonseId, InIncrementArrayReplyMessage.Result);
+	FulfillPromise(InMessage.ResponseId, InMessage.Result);
 }
 
 FCustomTypesVector3D UCounterCounterMsgBusClient::Decrement_Implementation(const FCustomTypesVector3D& InVec)
 {
-	if (!IsConnected())
+	if (!_IsConnected())
 	{
 		UE_LOG(LogCounterCounterMsgBusClient, Error, TEXT("Client has no connection to service."));
 
@@ -443,34 +482,28 @@ FCustomTypesVector3D UCounterCounterMsgBusClient::Decrement_Implementation(const
 	}
 
 	auto msg = new FCounterCounterDecrementRequestMessage();
-	msg->RepsonseId = FGuid::NewGuid();
+	msg->ResponseId = FGuid::NewGuid();
 	msg->Vec = InVec;
+	TPromise<FCustomTypesVector3D> Promise;
+	StorePromise(msg->ResponseId, Promise);
 
-	if (CounterCounterMsgBusEndpoint.IsValid())
-	{
-		TPromise<FCustomTypesVector3D> Promise;
-		StorePromise(msg->RepsonseId, Promise);
+	CounterCounterMsgBusEndpoint->Send<FCounterCounterDecrementRequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
 
-		CounterCounterMsgBusEndpoint->Send<FCounterCounterDecrementRequestMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-
-		return Promise.GetFuture().Get();
-	}
-
-	return FCustomTypesVector3D();
+	return Promise.GetFuture().Get();
 }
 
-void UCounterCounterMsgBusClient::OnDecrementReply(const FCounterCounterDecrementReplyMessage& InDecrementReplyMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UCounterCounterMsgBusClient::OnDecrementReply(const FCounterCounterDecrementReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	FulfillPromise(InDecrementReplyMessage.RepsonseId, InDecrementReplyMessage.Result);
+	FulfillPromise(InMessage.ResponseId, InMessage.Result);
 }
 
 TArray<FCustomTypesVector3D> UCounterCounterMsgBusClient::DecrementArray_Implementation(const TArray<FCustomTypesVector3D>& InVec)
 {
-	if (!IsConnected())
+	if (!_IsConnected())
 	{
 		UE_LOG(LogCounterCounterMsgBusClient, Error, TEXT("Client has no connection to service."));
 
@@ -478,32 +511,26 @@ TArray<FCustomTypesVector3D> UCounterCounterMsgBusClient::DecrementArray_Impleme
 	}
 
 	auto msg = new FCounterCounterDecrementArrayRequestMessage();
-	msg->RepsonseId = FGuid::NewGuid();
+	msg->ResponseId = FGuid::NewGuid();
 	msg->Vec = InVec;
+	TPromise<TArray<FCustomTypesVector3D>> Promise;
+	StorePromise(msg->ResponseId, Promise);
 
-	if (CounterCounterMsgBusEndpoint.IsValid())
-	{
-		TPromise<TArray<FCustomTypesVector3D>> Promise;
-		StorePromise(msg->RepsonseId, Promise);
+	CounterCounterMsgBusEndpoint->Send<FCounterCounterDecrementArrayRequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
 
-		CounterCounterMsgBusEndpoint->Send<FCounterCounterDecrementArrayRequestMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-
-		return Promise.GetFuture().Get();
-	}
-
-	return TArray<FCustomTypesVector3D>();
+	return Promise.GetFuture().Get();
 }
 
-void UCounterCounterMsgBusClient::OnDecrementArrayReply(const FCounterCounterDecrementArrayReplyMessage& InDecrementArrayReplyMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UCounterCounterMsgBusClient::OnDecrementArrayReply(const FCounterCounterDecrementArrayReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	FulfillPromise(InDecrementArrayReplyMessage.RepsonseId, InDecrementArrayReplyMessage.Result);
+	FulfillPromise(InMessage.ResponseId, InMessage.Result);
 }
 
-void UCounterCounterMsgBusClient::OnValueChanged(const FCounterCounterValueChangedSignalMessage& InValueChangedMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UCounterCounterMsgBusClient::OnValueChanged(const FCounterCounterValueChangedSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ServiceAddress != Context->GetSender())
 	{
@@ -511,11 +538,11 @@ void UCounterCounterMsgBusClient::OnValueChanged(const FCounterCounterValueChang
 		return;
 	}
 
-	Execute__GetSignals(this)->OnValueChangedSignal.Broadcast(InValueChangedMessage.Vector, InValueChangedMessage.ExternVector, InValueChangedMessage.VectorArray, InValueChangedMessage.ExternVectorArray);
+	Execute__GetSignals(this)->OnValueChangedSignal.Broadcast(InMessage.Vector, InMessage.ExternVector, InMessage.VectorArray, InMessage.ExternVectorArray);
 	return;
 }
 
-void UCounterCounterMsgBusClient::OnVectorChanged(const FCounterCounterVectorChangedMessage& InVectorMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UCounterCounterMsgBusClient::OnVectorChanged(const FCounterCounterVectorChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ServiceAddress != Context->GetSender())
 	{
@@ -523,15 +550,15 @@ void UCounterCounterMsgBusClient::OnVectorChanged(const FCounterCounterVectorCha
 		return;
 	}
 
-	const bool bVectorChanged = InVectorMessage.Vector != Vector;
+	const bool bVectorChanged = InMessage.Vector != Vector;
 	if (bVectorChanged)
 	{
-		Vector = InVectorMessage.Vector;
+		Vector = InMessage.Vector;
 		Execute__GetSignals(this)->OnVectorChanged.Broadcast(Vector);
 	}
 }
 
-void UCounterCounterMsgBusClient::OnExternVectorChanged(const FCounterCounterExternVectorChangedMessage& InExternVectorMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UCounterCounterMsgBusClient::OnExternVectorChanged(const FCounterCounterExternVectorChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ServiceAddress != Context->GetSender())
 	{
@@ -539,15 +566,15 @@ void UCounterCounterMsgBusClient::OnExternVectorChanged(const FCounterCounterExt
 		return;
 	}
 
-	const bool bExternVectorChanged = InExternVectorMessage.ExternVector != ExternVector;
+	const bool bExternVectorChanged = InMessage.ExternVector != ExternVector;
 	if (bExternVectorChanged)
 	{
-		ExternVector = InExternVectorMessage.ExternVector;
+		ExternVector = InMessage.ExternVector;
 		Execute__GetSignals(this)->OnExternVectorChanged.Broadcast(ExternVector);
 	}
 }
 
-void UCounterCounterMsgBusClient::OnVectorArrayChanged(const FCounterCounterVectorArrayChangedMessage& InVectorArrayMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UCounterCounterMsgBusClient::OnVectorArrayChanged(const FCounterCounterVectorArrayChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ServiceAddress != Context->GetSender())
 	{
@@ -555,15 +582,15 @@ void UCounterCounterMsgBusClient::OnVectorArrayChanged(const FCounterCounterVect
 		return;
 	}
 
-	const bool bVectorArrayChanged = InVectorArrayMessage.VectorArray != VectorArray;
+	const bool bVectorArrayChanged = InMessage.VectorArray != VectorArray;
 	if (bVectorArrayChanged)
 	{
-		VectorArray = InVectorArrayMessage.VectorArray;
+		VectorArray = InMessage.VectorArray;
 		Execute__GetSignals(this)->OnVectorArrayChanged.Broadcast(VectorArray);
 	}
 }
 
-void UCounterCounterMsgBusClient::OnExternVectorArrayChanged(const FCounterCounterExternVectorArrayChangedMessage& InExternVectorArrayMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UCounterCounterMsgBusClient::OnExternVectorArrayChanged(const FCounterCounterExternVectorArrayChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ServiceAddress != Context->GetSender())
 	{
@@ -571,10 +598,10 @@ void UCounterCounterMsgBusClient::OnExternVectorArrayChanged(const FCounterCount
 		return;
 	}
 
-	const bool bExternVectorArrayChanged = InExternVectorArrayMessage.ExternVectorArray != ExternVectorArray;
+	const bool bExternVectorArrayChanged = InMessage.ExternVectorArray != ExternVectorArray;
 	if (bExternVectorArrayChanged)
 	{
-		ExternVectorArray = InExternVectorArrayMessage.ExternVectorArray;
+		ExternVectorArray = InMessage.ExternVectorArray;
 		Execute__GetSignals(this)->OnExternVectorArrayChanged.Broadcast(ExternVectorArray);
 	}
 }

@@ -21,22 +21,43 @@ limitations under the License.
 #include "HAL/CriticalSection.h"
 #include "Async/Future.h"
 #include "Runtime/Launch/Resources/Version.h"
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-#include "Templates/UniquePtr.h"
+#if (ENGINE_MAJOR_VERSION < 5)
+#include "Engine/EngineTypes.h"
 #else
-#include "Templates/PimplPtr.h"
+#include "Engine/TimerHandle.h"
 #endif
+#include "Templates/PimplPtr.h"
 #include "IMessageContext.h"
 #include "TbSimpleNoOperationsInterfaceMsgBusClient.generated.h"
 
 class FMessageEndpoint;
 // messages
 struct FTbSimpleNoOperationsInterfaceInitMessage;
+struct FTbSimpleNoOperationsInterfacePongMessage;
 struct FTbSimpleNoOperationsInterfaceServiceDisconnectMessage;
 struct FTbSimpleNoOperationsInterfaceSigVoidSignalMessage;
 struct FTbSimpleNoOperationsInterfaceSigBoolSignalMessage;
 struct FTbSimpleNoOperationsInterfacePropBoolChangedMessage;
 struct FTbSimpleNoOperationsInterfacePropIntChangedMessage;
+
+USTRUCT(BlueprintType)
+struct FTbSimpleNoOperationsInterfaceStats
+{
+	GENERATED_BODY()
+
+	UPROPERTY(BlueprintReadOnly, Category = "ApiGear|TbSimple|NoOperationsInterface|Remote", DisplayName = "Current round trip time in MS")
+	float CurrentRTT_MS = 0.0f;
+
+	UPROPERTY(BlueprintReadOnly, Category = "ApiGear|TbSimple|NoOperationsInterface|Remote", DisplayName = "Average round trip time in MS")
+	float AverageRTT_MS = 0.0f;
+
+	UPROPERTY(BlueprintReadOnly, Category = "ApiGear|TbSimple|NoOperationsInterface|Remote", DisplayName = "Maximum round trip time in MS")
+	float MaxRTT_MS = 0.0f;
+
+	UPROPERTY(BlueprintReadOnly, Category = "ApiGear|TbSimple|NoOperationsInterface|Remote", DisplayName = "Minimum round trip time in MS")
+	float MinRTT_MS = 10000.0f;
+};
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleNoOperationsInterfaceStatsUpdatedDelegate, FTbSimpleNoOperationsInterfaceStats, Stats);
 
 struct TbSimpleNoOperationsInterfacePropertiesMsgBusData;
 DECLARE_LOG_CATEGORY_EXTERN(LogTbSimpleNoOperationsInterfaceMsgBusClient, Log, All);
@@ -57,13 +78,19 @@ public:
 
 	// connection handling
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoOperationsInterface|Remote")
-	void Connect();
+	void _Connect();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoOperationsInterface|Remote")
-	void Disconnect();
+	void _Disconnect();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoOperationsInterface|Remote")
-	bool IsConnected() const;
+	bool _IsConnected() const;
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoOperationsInterface|Remote")
+	const FTbSimpleNoOperationsInterfaceStats& _GetStats() const;
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoOperationsInterface|Remote", DisplayName = "Statistics Updated")
+	FTbSimpleNoOperationsInterfaceStatsUpdatedDelegate _StatsUpdated;
 
 	/**
 	 * Used when the interface client changes connection status:
@@ -83,16 +110,24 @@ public:
 private:
 	TSharedPtr<FMessageEndpoint, ESPMode::ThreadSafe> TbSimpleNoOperationsInterfaceMsgBusEndpoint;
 
-	void DiscoverService();
+	void _DiscoverService();
 	FMessageAddress ServiceAddress;
+
+	// connection health
+	double _LastHbTimestamp = 0.0;
+	FTbSimpleNoOperationsInterfaceStats Stats;
+	FTimerHandle _HeartbeatTimerHandle;
+	void _OnHeartbeat();
+	uint32 _HeartbeatIntervalMS = 1000;
 
 	// connection handling
 	void OnConnectionInit(const FTbSimpleNoOperationsInterfaceInitMessage& InInitMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnPong(const FTbSimpleNoOperationsInterfacePongMessage& IntMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnServiceClosedConnection(const FTbSimpleNoOperationsInterfaceServiceDisconnectMessage& InInitMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnSigVoid(const FTbSimpleNoOperationsInterfaceSigVoidSignalMessage& InSigVoidMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnSigBool(const FTbSimpleNoOperationsInterfaceSigBoolSignalMessage& InSigBoolMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnPropBoolChanged(const FTbSimpleNoOperationsInterfacePropBoolChangedMessage& bInPropBoolMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnPropIntChanged(const FTbSimpleNoOperationsInterfacePropIntChangedMessage& InPropIntMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnSigVoid(const FTbSimpleNoOperationsInterfaceSigVoidSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnSigBool(const FTbSimpleNoOperationsInterfaceSigBoolSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnPropBoolChanged(const FTbSimpleNoOperationsInterfacePropBoolChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnPropIntChanged(const FTbSimpleNoOperationsInterfacePropIntChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 
 	// member variable to store the last sent data
 	TPimplPtr<TbSimpleNoOperationsInterfacePropertiesMsgBusData> _SentData;

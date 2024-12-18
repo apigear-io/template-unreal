@@ -47,6 +47,24 @@ struct FTbSimpleVoidInterfaceServiceDisconnectMessage
 };
 
 USTRUCT()
+struct FTbSimpleVoidInterfacePingMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	double Timestamp = 0.0;
+};
+
+USTRUCT()
+struct FTbSimpleVoidInterfacePongMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	double Timestamp = 0.0;
+};
+
+USTRUCT()
 struct FTbSimpleVoidInterfaceSigVoidSignalMessage
 {
 	GENERATED_BODY()
@@ -56,7 +74,4 @@ USTRUCT()
 struct FTbSimpleVoidInterfaceFuncVoidRequestMessage
 {
 	GENERATED_BODY()
-
-	UPROPERTY()
-	FGuid RepsonseId;
 };

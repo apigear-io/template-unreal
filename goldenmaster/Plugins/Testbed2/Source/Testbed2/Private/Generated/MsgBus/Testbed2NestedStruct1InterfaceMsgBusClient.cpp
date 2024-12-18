@@ -24,7 +24,10 @@ limitations under the License.
 #include "Generated/MsgBus/Testbed2NestedStruct1InterfaceMsgBusMessages.h"
 #include "Async/Async.h"
 #include "Engine/Engine.h"
+#include "TimerManager.h"
 #include "Misc/DateTime.h"
+#include "GenericPlatform/GenericPlatformMath.h"
+#include "GenericPlatform/GenericPlatformTime.h"
 #include "MessageEndpointBuilder.h"
 #include "MessageEndpoint.h"
 #include "HAL/CriticalSection.h"
@@ -43,7 +46,6 @@ UTestbed2NestedStruct1InterfaceMsgBusClient::UTestbed2NestedStruct1InterfaceMsgB
 	: UAbstractTestbed2NestedStruct1Interface()
 	, _SentData(MakePimpl<Testbed2NestedStruct1InterfacePropertiesMsgBusData>())
 {
-	/* m_sink = std::make_shared<FOLinkSink>("testbed2.NestedStruct1Interface"); */
 }
 
 UTestbed2NestedStruct1InterfaceMsgBusClient::~UTestbed2NestedStruct1InterfaceMsgBusClient() = default;
@@ -51,33 +53,38 @@ UTestbed2NestedStruct1InterfaceMsgBusClient::~UTestbed2NestedStruct1InterfaceMsg
 void UTestbed2NestedStruct1InterfaceMsgBusClient::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-
-	Connect();
 }
 
 void UTestbed2NestedStruct1InterfaceMsgBusClient::Deinitialize()
 {
-	Disconnect();
+	_Disconnect();
 
 	Super::Deinitialize();
 }
 
-void UTestbed2NestedStruct1InterfaceMsgBusClient::Connect()
+void UTestbed2NestedStruct1InterfaceMsgBusClient::_Connect()
 {
-	if (IsConnected())
+	if (!_HeartbeatTimerHandle.IsValid() && GetWorld())
 	{
+		GetWorld()->GetTimerManager().SetTimer(_HeartbeatTimerHandle, this, &UTestbed2NestedStruct1InterfaceMsgBusClient::_OnHeartbeat, _HeartbeatIntervalMS / 1000.0f, true);
+	}
+
+	if (_IsConnected())
+	{
+		UE_LOG(LogTestbed2NestedStruct1InterfaceMsgBusClient, Log, TEXT("Already connected, cannot connect again."));
 		return;
 	}
 
 	if (Testbed2NestedStruct1InterfaceMsgBusEndpoint.IsValid() && !ServiceAddress.IsValid())
 	{
-		DiscoverService();
+		_DiscoverService();
 		return;
 	}
 
 	// clang-format off
 	Testbed2NestedStruct1InterfaceMsgBusEndpoint = FMessageEndpoint::Builder("ApiGear/Testbed2/NestedStruct1Interface/Client")
 		.Handling<FTestbed2NestedStruct1InterfaceInitMessage>(this, &UTestbed2NestedStruct1InterfaceMsgBusClient::OnConnectionInit)
+		.Handling<FTestbed2NestedStruct1InterfacePongMessage>(this, &UTestbed2NestedStruct1InterfaceMsgBusClient::OnPong)
 		.Handling<FTestbed2NestedStruct1InterfaceServiceDisconnectMessage>(this, &UTestbed2NestedStruct1InterfaceMsgBusClient::OnServiceClosedConnection)
 		.Handling<FTestbed2NestedStruct1InterfaceSig1SignalMessage>(this, &UTestbed2NestedStruct1InterfaceMsgBusClient::OnSig1)
 		.Handling<FTestbed2NestedStruct1InterfaceProp1ChangedMessage>(this, &UTestbed2NestedStruct1InterfaceMsgBusClient::OnProp1Changed)
@@ -85,63 +92,122 @@ void UTestbed2NestedStruct1InterfaceMsgBusClient::Connect()
 		.Build();
 	// clang-format on
 
-	DiscoverService();
+	_DiscoverService();
 }
 
-void UTestbed2NestedStruct1InterfaceMsgBusClient::Disconnect()
+void UTestbed2NestedStruct1InterfaceMsgBusClient::_Disconnect()
 {
-	if (!IsConnected())
+	_LastHbTimestamp = 0.0f;
+	if (_HeartbeatTimerHandle.IsValid() && GetWorld())
+	{
+		GetWorld()->GetTimerManager().ClearTimer(_HeartbeatTimerHandle);
+	}
+
+	if (!_IsConnected())
 	{
 		return;
 	}
 
 	auto msg = new FTestbed2NestedStruct1InterfaceClientDisconnectMessage();
 
-	if (Testbed2NestedStruct1InterfaceMsgBusEndpoint.IsValid())
-	{
-		Testbed2NestedStruct1InterfaceMsgBusEndpoint->Send<FTestbed2NestedStruct1InterfaceClientDisconnectMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-	}
+	Testbed2NestedStruct1InterfaceMsgBusEndpoint->Send<FTestbed2NestedStruct1InterfaceClientDisconnectMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
 
 	Testbed2NestedStruct1InterfaceMsgBusEndpoint.Reset();
 	ServiceAddress.Invalidate();
 	_ConnectionStatusChanged.Broadcast(false);
 }
 
-void UTestbed2NestedStruct1InterfaceMsgBusClient::DiscoverService()
+void UTestbed2NestedStruct1InterfaceMsgBusClient::_DiscoverService()
 {
-	if (Testbed2NestedStruct1InterfaceMsgBusEndpoint.IsValid())
+	if (!Testbed2NestedStruct1InterfaceMsgBusEndpoint.IsValid())
 	{
-		Testbed2NestedStruct1InterfaceMsgBusEndpoint->Publish<FTestbed2NestedStruct1InterfaceDiscoveryMessage>(new FTestbed2NestedStruct1InterfaceDiscoveryMessage());
+		return;
 	}
+
+	auto msg = new FTestbed2NestedStruct1InterfaceDiscoveryMessage();
+	msg->ClientPingIntervalMS = _HeartbeatIntervalMS;
+
+	Testbed2NestedStruct1InterfaceMsgBusEndpoint->Publish<FTestbed2NestedStruct1InterfaceDiscoveryMessage>(msg);
 }
 
-bool UTestbed2NestedStruct1InterfaceMsgBusClient::IsConnected() const
+bool UTestbed2NestedStruct1InterfaceMsgBusClient::_IsConnected() const
 {
 	return Testbed2NestedStruct1InterfaceMsgBusEndpoint.IsValid() && ServiceAddress.IsValid();
 }
 
-void UTestbed2NestedStruct1InterfaceMsgBusClient::OnConnectionInit(const FTestbed2NestedStruct1InterfaceInitMessage& InInitMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTestbed2NestedStruct1InterfaceMsgBusClient::OnConnectionInit(const FTestbed2NestedStruct1InterfaceInitMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	if (!ServiceAddress.IsValid())
+	if (ServiceAddress.IsValid())
 	{
-		ServiceAddress = Context->GetSender();
-		const bool bProp1Changed = InInitMessage.Prop1 != Prop1;
-		if (bProp1Changed)
-		{
-			Prop1 = InInitMessage.Prop1;
-			Execute__GetSignals(this)->OnProp1Changed.Broadcast(Prop1);
-		}
+		UE_LOG(LogTestbed2NestedStruct1InterfaceMsgBusClient, Warning, TEXT("Got a second init message - should not happen"));
+		return;
+	}
 
-		_ConnectionStatusChanged.Broadcast(true);
-	}
-	else
+	ServiceAddress = Context->GetSender();
+	const bool bProp1Changed = InMessage.Prop1 != Prop1;
+	if (bProp1Changed)
 	{
-		UE_LOG(LogTestbed2NestedStruct1InterfaceMsgBusClient, Error, TEXT("Got a second init message - should not happen"));
+		Prop1 = InMessage.Prop1;
+		Execute__GetSignals(this)->OnProp1Changed.Broadcast(Prop1);
 	}
+
+	_ConnectionStatusChanged.Broadcast(true);
+}
+
+void UTestbed2NestedStruct1InterfaceMsgBusClient::_OnHeartbeat()
+{
+	if (_LastHbTimestamp > 0.1f)
+	{
+		double Delta = (FPlatformTime::Seconds() - _LastHbTimestamp) * 1000;
+
+		if (Delta > 2 * _HeartbeatIntervalMS)
+		{
+			// service seems to be dead or not responding - reset connection
+			ServiceAddress.Invalidate();
+			_LastHbTimestamp = 0.0f;
+		}
+	}
+
+	if (!_IsConnected())
+	{
+		UE_LOG(LogTestbed2NestedStruct1InterfaceMsgBusClient, Warning, TEXT("Heartbeat failed. Client has no connection to service. Reconnecting ..."));
+
+		_Connect();
+		return;
+	}
+
+	auto msg = new FTestbed2NestedStruct1InterfacePingMessage();
+	msg->Timestamp = FPlatformTime::Seconds();
+
+	Testbed2NestedStruct1InterfaceMsgBusEndpoint->Send<FTestbed2NestedStruct1InterfacePingMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
+}
+
+void UTestbed2NestedStruct1InterfaceMsgBusClient::OnPong(const FTestbed2NestedStruct1InterfacePongMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	_LastHbTimestamp = InMessage.Timestamp;
+
+	const double Current = FPlatformTime::Seconds();
+	const double DeltaMS = (Current - InMessage.Timestamp) * 1000.0f;
+
+	Stats.CurrentRTT_MS = DeltaMS;
+	Stats.AverageRTT_MS = (Stats.AverageRTT_MS + Stats.CurrentRTT_MS) / 2.0f;
+	Stats.MaxRTT_MS = FGenericPlatformMath::Max(Stats.MaxRTT_MS, Stats.CurrentRTT_MS);
+	Stats.MinRTT_MS = FGenericPlatformMath::Min(Stats.MinRTT_MS, Stats.CurrentRTT_MS);
+
+	_StatsUpdated.Broadcast(Stats);
+}
+
+const FTestbed2NestedStruct1InterfaceStats& UTestbed2NestedStruct1InterfaceMsgBusClient::_GetStats() const
+{
+	return Stats;
 }
 
 void UTestbed2NestedStruct1InterfaceMsgBusClient::OnServiceClosedConnection(const FTestbed2NestedStruct1InterfaceServiceDisconnectMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -162,7 +228,7 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceMsgBusClient::GetProp1_Imp
 
 void UTestbed2NestedStruct1InterfaceMsgBusClient::SetProp1_Implementation(const FTestbed2NestedStruct1& InProp1)
 {
-	if (!IsConnected())
+	if (!_IsConnected())
 	{
 		UE_LOG(LogTestbed2NestedStruct1InterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
 		return;
@@ -186,21 +252,18 @@ void UTestbed2NestedStruct1InterfaceMsgBusClient::SetProp1_Implementation(const 
 	auto msg = new FTestbed2NestedStruct1InterfaceSetProp1RequestMessage();
 	msg->Prop1 = InProp1;
 
-	if (Testbed2NestedStruct1InterfaceMsgBusEndpoint.IsValid())
-	{
-		Testbed2NestedStruct1InterfaceMsgBusEndpoint->Send<FTestbed2NestedStruct1InterfaceSetProp1RequestMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-		FScopeLock Lock(&(_SentData->Prop1Mutex));
-		_SentData->Prop1 = InProp1;
-	}
+	Testbed2NestedStruct1InterfaceMsgBusEndpoint->Send<FTestbed2NestedStruct1InterfaceSetProp1RequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
+	FScopeLock Lock(&(_SentData->Prop1Mutex));
+	_SentData->Prop1 = InProp1;
 }
 
 FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceMsgBusClient::Func1_Implementation(const FTestbed2NestedStruct1& InParam1)
 {
-	if (!IsConnected())
+	if (!_IsConnected())
 	{
 		UE_LOG(LogTestbed2NestedStruct1InterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
 
@@ -208,32 +271,26 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceMsgBusClient::Func1_Implem
 	}
 
 	auto msg = new FTestbed2NestedStruct1InterfaceFunc1RequestMessage();
-	msg->RepsonseId = FGuid::NewGuid();
+	msg->ResponseId = FGuid::NewGuid();
 	msg->Param1 = InParam1;
+	TPromise<FTestbed2NestedStruct1> Promise;
+	StorePromise(msg->ResponseId, Promise);
 
-	if (Testbed2NestedStruct1InterfaceMsgBusEndpoint.IsValid())
-	{
-		TPromise<FTestbed2NestedStruct1> Promise;
-		StorePromise(msg->RepsonseId, Promise);
+	Testbed2NestedStruct1InterfaceMsgBusEndpoint->Send<FTestbed2NestedStruct1InterfaceFunc1RequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
 
-		Testbed2NestedStruct1InterfaceMsgBusEndpoint->Send<FTestbed2NestedStruct1InterfaceFunc1RequestMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-
-		return Promise.GetFuture().Get();
-	}
-
-	return FTestbed2NestedStruct1();
+	return Promise.GetFuture().Get();
 }
 
-void UTestbed2NestedStruct1InterfaceMsgBusClient::OnFunc1Reply(const FTestbed2NestedStruct1InterfaceFunc1ReplyMessage& InFunc1ReplyMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTestbed2NestedStruct1InterfaceMsgBusClient::OnFunc1Reply(const FTestbed2NestedStruct1InterfaceFunc1ReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	FulfillPromise(InFunc1ReplyMessage.RepsonseId, InFunc1ReplyMessage.Result);
+	FulfillPromise(InMessage.ResponseId, InMessage.Result);
 }
 
-void UTestbed2NestedStruct1InterfaceMsgBusClient::OnSig1(const FTestbed2NestedStruct1InterfaceSig1SignalMessage& InSig1Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTestbed2NestedStruct1InterfaceMsgBusClient::OnSig1(const FTestbed2NestedStruct1InterfaceSig1SignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ServiceAddress != Context->GetSender())
 	{
@@ -241,11 +298,11 @@ void UTestbed2NestedStruct1InterfaceMsgBusClient::OnSig1(const FTestbed2NestedSt
 		return;
 	}
 
-	Execute__GetSignals(this)->OnSig1Signal.Broadcast(InSig1Message.Param1);
+	Execute__GetSignals(this)->OnSig1Signal.Broadcast(InMessage.Param1);
 	return;
 }
 
-void UTestbed2NestedStruct1InterfaceMsgBusClient::OnProp1Changed(const FTestbed2NestedStruct1InterfaceProp1ChangedMessage& InProp1Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTestbed2NestedStruct1InterfaceMsgBusClient::OnProp1Changed(const FTestbed2NestedStruct1InterfaceProp1ChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ServiceAddress != Context->GetSender())
 	{
@@ -253,10 +310,10 @@ void UTestbed2NestedStruct1InterfaceMsgBusClient::OnProp1Changed(const FTestbed2
 		return;
 	}
 
-	const bool bProp1Changed = InProp1Message.Prop1 != Prop1;
+	const bool bProp1Changed = InMessage.Prop1 != Prop1;
 	if (bProp1Changed)
 	{
-		Prop1 = InProp1Message.Prop1;
+		Prop1 = InMessage.Prop1;
 		Execute__GetSignals(this)->OnProp1Changed.Broadcast(Prop1);
 	}
 }

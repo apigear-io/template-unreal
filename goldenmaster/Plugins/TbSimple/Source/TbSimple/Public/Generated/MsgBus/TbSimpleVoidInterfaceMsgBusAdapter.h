@@ -25,6 +25,7 @@ limitations under the License.
 class FMessageEndpoint;
 // messages
 struct FTbSimpleVoidInterfaceDiscoveryMessage;
+struct FTbSimpleVoidInterfacePingMessage;
 struct FTbSimpleVoidInterfaceClientDisconnectMessage;
 struct FTbSimpleVoidInterfaceSigVoidSignalMessage;
 struct FTbSimpleVoidInterfaceFuncVoidRequestMessage;
@@ -46,21 +47,22 @@ public:
 
 	// connection handling
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|VoidInterface|Remote")
-	void StartListening();
+	void _StartListening();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|VoidInterface|Remote")
-	void StopListening();
+	void _StopListening();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|VoidInterface|Remote")
-	bool IsListening() const;
+	bool _IsListening() const;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|VoidInterface")
-	void setBackendService(TScriptInterface<ITbSimpleVoidInterfaceInterface> InService);
+	void _setBackendService(TScriptInterface<ITbSimpleVoidInterfaceInterface> InService);
 
 private:
 	TSharedPtr<FMessageEndpoint, ESPMode::ThreadSafe> TbSimpleVoidInterfaceMsgBusEndpoint;
 
 	void OnNewClientDiscovered(const FTbSimpleVoidInterfaceDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnPing(const FTbSimpleVoidInterfacePingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnClientDisconnected(const FTbSimpleVoidInterfaceClientDisconnectMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnFuncVoidRequest(const FTbSimpleVoidInterfaceFuncVoidRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 

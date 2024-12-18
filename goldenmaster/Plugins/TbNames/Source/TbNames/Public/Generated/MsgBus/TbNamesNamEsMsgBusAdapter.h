@@ -25,16 +25,14 @@ limitations under the License.
 class FMessageEndpoint;
 // messages
 struct FTbNamesNamEsDiscoveryMessage;
+struct FTbNamesNamEsPingMessage;
 struct FTbNamesNamEsClientDisconnectMessage;
 struct FTbNamesNamEsSomeSignalSignalMessage;
-
 struct FTbNamesNamEsSomeSignal2SignalMessage;
 struct FTbNamesNamEsSetSwitchRequestMessage;
 struct FTbNamesNamEsSwitchChangedMessage;
-
 struct FTbNamesNamEsSetSomePropertyRequestMessage;
 struct FTbNamesNamEsSomePropertyChangedMessage;
-
 struct FTbNamesNamEsSetSomePoperty2RequestMessage;
 struct FTbNamesNamEsSomePoperty2ChangedMessage;
 struct FTbNamesNamEsSomeFunctionRequestMessage;
@@ -57,21 +55,22 @@ public:
 
 	// connection handling
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Remote")
-	void StartListening();
+	void _StartListening();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Remote")
-	void StopListening();
+	void _StopListening();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Remote")
-	bool IsListening() const;
+	bool _IsListening() const;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbNames|NamEs")
-	void setBackendService(TScriptInterface<ITbNamesNamEsInterface> InService);
+	void _setBackendService(TScriptInterface<ITbNamesNamEsInterface> InService);
 
 private:
 	TSharedPtr<FMessageEndpoint, ESPMode::ThreadSafe> TbNamesNamEsMsgBusEndpoint;
 
 	void OnNewClientDiscovered(const FTbNamesNamEsDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnPing(const FTbNamesNamEsPingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnClientDisconnected(const FTbNamesNamEsClientDisconnectMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnSomeFunctionRequest(const FTbNamesNamEsSomeFunctionRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnSomeFunction2Request(const FTbNamesNamEsSomeFunction2RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);

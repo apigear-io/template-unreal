@@ -40,12 +40,12 @@ void UTestbed2NestedStruct2InterfaceMsgBusAdapter::Initialize(FSubsystemCollecti
 
 void UTestbed2NestedStruct2InterfaceMsgBusAdapter::Deinitialize()
 {
-	StopListening();
+	_StopListening();
 
 	Super::Deinitialize();
 }
 
-void UTestbed2NestedStruct2InterfaceMsgBusAdapter::StartListening()
+void UTestbed2NestedStruct2InterfaceMsgBusAdapter::_StartListening()
 {
 	if (Testbed2NestedStruct2InterfaceMsgBusEndpoint.IsValid())
 		return;
@@ -53,6 +53,7 @@ void UTestbed2NestedStruct2InterfaceMsgBusAdapter::StartListening()
 	// clang-format off
 	Testbed2NestedStruct2InterfaceMsgBusEndpoint = FMessageEndpoint::Builder("ApiGear/Testbed2/NestedStruct2Interface/Service")
 		.Handling<FTestbed2NestedStruct2InterfaceDiscoveryMessage>(this, &UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnNewClientDiscovered)
+		.Handling<FTestbed2NestedStruct2InterfacePingMessage>(this, &UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnPing)
 		.Handling<FTestbed2NestedStruct2InterfaceClientDisconnectMessage>(this, &UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnClientDisconnected)
 		.Handling<FTestbed2NestedStruct2InterfaceSetProp1RequestMessage>(this, &UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnSetProp1Request)
 		.Handling<FTestbed2NestedStruct2InterfaceSetProp2RequestMessage>(this, &UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnSetProp2Request)
@@ -67,7 +68,7 @@ void UTestbed2NestedStruct2InterfaceMsgBusAdapter::StartListening()
 	}
 }
 
-void UTestbed2NestedStruct2InterfaceMsgBusAdapter::StopListening()
+void UTestbed2NestedStruct2InterfaceMsgBusAdapter::_StopListening()
 {
 	auto msg = new FTestbed2NestedStruct2InterfaceServiceDisconnectMessage();
 
@@ -84,12 +85,12 @@ void UTestbed2NestedStruct2InterfaceMsgBusAdapter::StopListening()
 	ConnectedClients.Reset();
 }
 
-bool UTestbed2NestedStruct2InterfaceMsgBusAdapter::IsListening() const
+bool UTestbed2NestedStruct2InterfaceMsgBusAdapter::_IsListening() const
 {
 	return Testbed2NestedStruct2InterfaceMsgBusEndpoint.IsValid();
 }
 
-void UTestbed2NestedStruct2InterfaceMsgBusAdapter::setBackendService(TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> InService)
+void UTestbed2NestedStruct2InterfaceMsgBusAdapter::_setBackendService(TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> InService)
 {
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
@@ -135,6 +136,21 @@ void UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnNewClientDiscovered(const F
 	}
 }
 
+void UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnPing(const FTestbed2NestedStruct2InterfacePingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	auto msg = new FTestbed2NestedStruct2InterfacePongMessage();
+	msg->Timestamp = InMessage.Timestamp;
+
+	if (Testbed2NestedStruct2InterfaceMsgBusEndpoint.IsValid())
+	{
+		Testbed2NestedStruct2InterfaceMsgBusEndpoint->Send<FTestbed2NestedStruct2InterfacePongMessage>(msg, EMessageFlags::Reliable,
+			nullptr,
+			TArrayBuilder<FMessageAddress>().Add(Context->GetSender()),
+			FTimespan::Zero(),
+			FDateTime::MaxValue());
+	}
+}
+
 void UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnClientDisconnected(const FTestbed2NestedStruct2InterfaceClientDisconnectMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	ConnectedClients.Remove(Context->GetSender());
@@ -143,7 +159,7 @@ void UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnClientDisconnected(const FT
 void UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnFunc1Request(const FTestbed2NestedStruct2InterfaceFunc1RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	auto msg = new FTestbed2NestedStruct2InterfaceFunc1ReplyMessage();
-	msg->RepsonseId = InMessage.RepsonseId;
+	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->Execute_Func1(BackendService.GetObject(), InMessage.Param1);
 
 	if (Testbed2NestedStruct2InterfaceMsgBusEndpoint.IsValid())
@@ -159,7 +175,7 @@ void UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnFunc1Request(const FTestbed
 void UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnFunc2Request(const FTestbed2NestedStruct2InterfaceFunc2RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	auto msg = new FTestbed2NestedStruct2InterfaceFunc2ReplyMessage();
-	msg->RepsonseId = InMessage.RepsonseId;
+	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->Execute_Func2(BackendService.GetObject(), InMessage.Param1, InMessage.Param2);
 
 	if (Testbed2NestedStruct2InterfaceMsgBusEndpoint.IsValid())

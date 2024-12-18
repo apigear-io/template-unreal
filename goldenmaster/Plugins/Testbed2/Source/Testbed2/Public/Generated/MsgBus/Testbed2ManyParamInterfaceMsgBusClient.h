@@ -21,17 +21,19 @@ limitations under the License.
 #include "HAL/CriticalSection.h"
 #include "Async/Future.h"
 #include "Runtime/Launch/Resources/Version.h"
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-#include "Templates/UniquePtr.h"
+#if (ENGINE_MAJOR_VERSION < 5)
+#include "Engine/EngineTypes.h"
 #else
-#include "Templates/PimplPtr.h"
+#include "Engine/TimerHandle.h"
 #endif
+#include "Templates/PimplPtr.h"
 #include "IMessageContext.h"
 #include "Testbed2ManyParamInterfaceMsgBusClient.generated.h"
 
 class FMessageEndpoint;
 // messages
 struct FTestbed2ManyParamInterfaceInitMessage;
+struct FTestbed2ManyParamInterfacePongMessage;
 struct FTestbed2ManyParamInterfaceServiceDisconnectMessage;
 struct FTestbed2ManyParamInterfaceSig1SignalMessage;
 struct FTestbed2ManyParamInterfaceSig2SignalMessage;
@@ -45,6 +47,25 @@ struct FTestbed2ManyParamInterfaceFunc1ReplyMessage;
 struct FTestbed2ManyParamInterfaceFunc2ReplyMessage;
 struct FTestbed2ManyParamInterfaceFunc3ReplyMessage;
 struct FTestbed2ManyParamInterfaceFunc4ReplyMessage;
+
+USTRUCT(BlueprintType)
+struct FTestbed2ManyParamInterfaceStats
+{
+	GENERATED_BODY()
+
+	UPROPERTY(BlueprintReadOnly, Category = "ApiGear|Testbed2|ManyParamInterface|Remote", DisplayName = "Current round trip time in MS")
+	float CurrentRTT_MS = 0.0f;
+
+	UPROPERTY(BlueprintReadOnly, Category = "ApiGear|Testbed2|ManyParamInterface|Remote", DisplayName = "Average round trip time in MS")
+	float AverageRTT_MS = 0.0f;
+
+	UPROPERTY(BlueprintReadOnly, Category = "ApiGear|Testbed2|ManyParamInterface|Remote", DisplayName = "Maximum round trip time in MS")
+	float MaxRTT_MS = 0.0f;
+
+	UPROPERTY(BlueprintReadOnly, Category = "ApiGear|Testbed2|ManyParamInterface|Remote", DisplayName = "Minimum round trip time in MS")
+	float MinRTT_MS = 10000.0f;
+};
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed2ManyParamInterfaceStatsUpdatedDelegate, FTestbed2ManyParamInterfaceStats, Stats);
 
 struct Testbed2ManyParamInterfacePropertiesMsgBusData;
 DECLARE_LOG_CATEGORY_EXTERN(LogTestbed2ManyParamInterfaceMsgBusClient, Log, All);
@@ -65,13 +86,19 @@ public:
 
 	// connection handling
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Remote")
-	void Connect();
+	void _Connect();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Remote")
-	void Disconnect();
+	void _Disconnect();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Remote")
-	bool IsConnected() const;
+	bool _IsConnected() const;
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Remote")
+	const FTestbed2ManyParamInterfaceStats& _GetStats() const;
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface|Remote", DisplayName = "Statistics Updated")
+	FTestbed2ManyParamInterfaceStatsUpdatedDelegate _StatsUpdated;
 
 	/**
 	 * Used when the interface client changes connection status:
@@ -104,24 +131,32 @@ public:
 private:
 	TSharedPtr<FMessageEndpoint, ESPMode::ThreadSafe> Testbed2ManyParamInterfaceMsgBusEndpoint;
 
-	void DiscoverService();
+	void _DiscoverService();
 	FMessageAddress ServiceAddress;
+
+	// connection health
+	double _LastHbTimestamp = 0.0;
+	FTestbed2ManyParamInterfaceStats Stats;
+	FTimerHandle _HeartbeatTimerHandle;
+	void _OnHeartbeat();
+	uint32 _HeartbeatIntervalMS = 1000;
 
 	// connection handling
 	void OnConnectionInit(const FTestbed2ManyParamInterfaceInitMessage& InInitMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnPong(const FTestbed2ManyParamInterfacePongMessage& IntMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnServiceClosedConnection(const FTestbed2ManyParamInterfaceServiceDisconnectMessage& InInitMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnSig1(const FTestbed2ManyParamInterfaceSig1SignalMessage& InSig1Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnSig2(const FTestbed2ManyParamInterfaceSig2SignalMessage& InSig2Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnSig3(const FTestbed2ManyParamInterfaceSig3SignalMessage& InSig3Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnSig4(const FTestbed2ManyParamInterfaceSig4SignalMessage& InSig4Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnProp1Changed(const FTestbed2ManyParamInterfaceProp1ChangedMessage& InProp1Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnProp2Changed(const FTestbed2ManyParamInterfaceProp2ChangedMessage& InProp2Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnProp3Changed(const FTestbed2ManyParamInterfaceProp3ChangedMessage& InProp3Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnProp4Changed(const FTestbed2ManyParamInterfaceProp4ChangedMessage& InProp4Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnFunc1Reply(const FTestbed2ManyParamInterfaceFunc1ReplyMessage& InFunc1Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnFunc2Reply(const FTestbed2ManyParamInterfaceFunc2ReplyMessage& InFunc2Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnFunc3Reply(const FTestbed2ManyParamInterfaceFunc3ReplyMessage& InFunc3Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnFunc4Reply(const FTestbed2ManyParamInterfaceFunc4ReplyMessage& InFunc4Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnSig1(const FTestbed2ManyParamInterfaceSig1SignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnSig2(const FTestbed2ManyParamInterfaceSig2SignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnSig3(const FTestbed2ManyParamInterfaceSig3SignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnSig4(const FTestbed2ManyParamInterfaceSig4SignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnProp1Changed(const FTestbed2ManyParamInterfaceProp1ChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnProp2Changed(const FTestbed2ManyParamInterfaceProp2ChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnProp3Changed(const FTestbed2ManyParamInterfaceProp3ChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnProp4Changed(const FTestbed2ManyParamInterfaceProp4ChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnFunc1Reply(const FTestbed2ManyParamInterfaceFunc1ReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnFunc2Reply(const FTestbed2ManyParamInterfaceFunc2ReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnFunc3Reply(const FTestbed2ManyParamInterfaceFunc3ReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnFunc4Reply(const FTestbed2ManyParamInterfaceFunc4ReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 
 	// member variable to store the last sent data
 	TPimplPtr<Testbed2ManyParamInterfacePropertiesMsgBusData> _SentData;

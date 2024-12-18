@@ -50,8 +50,8 @@ void UTestbed2NestedStruct2InterfaceMsgBusSpec::Define()
 
 		// set up service and adapter
 		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed2NestedStruct2Interface>();
-		ImplFixture->GetAdapter()->setBackendService(service);
-		ImplFixture->GetAdapter()->StartListening();
+		ImplFixture->GetAdapter()->_setBackendService(service);
+		ImplFixture->GetAdapter()->_StartListening();
 
 		// setup client
 		testDoneDelegate = TestDone;
@@ -60,7 +60,7 @@ void UTestbed2NestedStruct2InterfaceMsgBusSpec::Define()
 
 		MsgBusClient->_ConnectionStatusChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2NestedStruct2InterfaceMsgBusHelper::_ConnectionStatusChangedCb);
 
-		MsgBusClient->Connect();
+		MsgBusClient->_Connect();
 	});
 
 	AfterEach([this]()

@@ -74,6 +74,24 @@ struct FTbSimpleSimpleArrayInterfaceServiceDisconnectMessage
 };
 
 USTRUCT()
+struct FTbSimpleSimpleArrayInterfacePingMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	double Timestamp = 0.0;
+};
+
+USTRUCT()
+struct FTbSimpleSimpleArrayInterfacePongMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	double Timestamp = 0.0;
+};
+
+USTRUCT()
 struct FTbSimpleSimpleArrayInterfaceSigBoolSignalMessage
 {
 	GENERATED_BODY()
@@ -313,7 +331,8 @@ struct FTbSimpleSimpleArrayInterfaceFuncBoolRequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
+
 	UPROPERTY()
 	TArray<bool> ParamBool = TArray<bool>();
 };
@@ -324,7 +343,7 @@ struct FTbSimpleSimpleArrayInterfaceFuncBoolReplyMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
 
 	UPROPERTY()
 	TArray<bool> Result = TArray<bool>();
@@ -336,7 +355,8 @@ struct FTbSimpleSimpleArrayInterfaceFuncIntRequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
+
 	UPROPERTY()
 	TArray<int32> ParamInt = TArray<int32>();
 };
@@ -347,7 +367,7 @@ struct FTbSimpleSimpleArrayInterfaceFuncIntReplyMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
 
 	UPROPERTY()
 	TArray<int32> Result = TArray<int32>();
@@ -359,7 +379,8 @@ struct FTbSimpleSimpleArrayInterfaceFuncInt32RequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
+
 	UPROPERTY()
 	TArray<int32> ParamInt32 = TArray<int32>();
 };
@@ -370,7 +391,7 @@ struct FTbSimpleSimpleArrayInterfaceFuncInt32ReplyMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
 
 	UPROPERTY()
 	TArray<int32> Result = TArray<int32>();
@@ -382,7 +403,8 @@ struct FTbSimpleSimpleArrayInterfaceFuncInt64RequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
+
 	UPROPERTY()
 	TArray<int64> ParamInt64 = TArray<int64>();
 };
@@ -393,7 +415,7 @@ struct FTbSimpleSimpleArrayInterfaceFuncInt64ReplyMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
 
 	UPROPERTY()
 	TArray<int64> Result = TArray<int64>();
@@ -405,7 +427,8 @@ struct FTbSimpleSimpleArrayInterfaceFuncFloatRequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
+
 	UPROPERTY()
 	TArray<float> ParamFloat = TArray<float>();
 };
@@ -416,7 +439,7 @@ struct FTbSimpleSimpleArrayInterfaceFuncFloatReplyMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
 
 	UPROPERTY()
 	TArray<float> Result = TArray<float>();
@@ -428,7 +451,8 @@ struct FTbSimpleSimpleArrayInterfaceFuncFloat32RequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
+
 	UPROPERTY()
 	TArray<float> ParamFloat32 = TArray<float>();
 };
@@ -439,7 +463,7 @@ struct FTbSimpleSimpleArrayInterfaceFuncFloat32ReplyMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
 
 	UPROPERTY()
 	TArray<float> Result = TArray<float>();
@@ -451,7 +475,8 @@ struct FTbSimpleSimpleArrayInterfaceFuncFloat64RequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
+
 	UPROPERTY()
 	TArray<double> ParamFloat = TArray<double>();
 };
@@ -462,7 +487,7 @@ struct FTbSimpleSimpleArrayInterfaceFuncFloat64ReplyMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
 
 	UPROPERTY()
 	TArray<double> Result = TArray<double>();
@@ -474,7 +499,8 @@ struct FTbSimpleSimpleArrayInterfaceFuncStringRequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
+
 	UPROPERTY()
 	TArray<FString> ParamString = TArray<FString>();
 };
@@ -485,7 +511,7 @@ struct FTbSimpleSimpleArrayInterfaceFuncStringReplyMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
 
 	UPROPERTY()
 	TArray<FString> Result = TArray<FString>();

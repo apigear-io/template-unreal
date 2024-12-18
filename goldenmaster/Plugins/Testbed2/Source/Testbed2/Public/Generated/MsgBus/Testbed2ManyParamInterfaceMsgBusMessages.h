@@ -59,6 +59,24 @@ struct FTestbed2ManyParamInterfaceServiceDisconnectMessage
 };
 
 USTRUCT()
+struct FTestbed2ManyParamInterfacePingMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	double Timestamp = 0.0;
+};
+
+USTRUCT()
+struct FTestbed2ManyParamInterfacePongMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	double Timestamp = 0.0;
+};
+
+USTRUCT()
 struct FTestbed2ManyParamInterfaceSig1SignalMessage
 {
 	GENERATED_BODY()
@@ -190,7 +208,8 @@ struct FTestbed2ManyParamInterfaceFunc1RequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
+
 	UPROPERTY()
 	int32 Param1 = 0;
 };
@@ -201,7 +220,7 @@ struct FTestbed2ManyParamInterfaceFunc1ReplyMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
 
 	UPROPERTY()
 	int32 Result = 0;
@@ -213,7 +232,8 @@ struct FTestbed2ManyParamInterfaceFunc2RequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
+
 	UPROPERTY()
 	int32 Param1 = 0;
 
@@ -227,7 +247,7 @@ struct FTestbed2ManyParamInterfaceFunc2ReplyMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
 
 	UPROPERTY()
 	int32 Result = 0;
@@ -239,7 +259,8 @@ struct FTestbed2ManyParamInterfaceFunc3RequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
+
 	UPROPERTY()
 	int32 Param1 = 0;
 
@@ -256,7 +277,7 @@ struct FTestbed2ManyParamInterfaceFunc3ReplyMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
 
 	UPROPERTY()
 	int32 Result = 0;
@@ -268,7 +289,8 @@ struct FTestbed2ManyParamInterfaceFunc4RequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
+
 	UPROPERTY()
 	int32 Param1 = 0;
 
@@ -288,7 +310,7 @@ struct FTestbed2ManyParamInterfaceFunc4ReplyMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
 
 	UPROPERTY()
 	int32 Result = 0;

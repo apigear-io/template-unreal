@@ -59,6 +59,24 @@ struct FTbEnumEnumInterfaceServiceDisconnectMessage
 };
 
 USTRUCT()
+struct FTbEnumEnumInterfacePingMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	double Timestamp = 0.0;
+};
+
+USTRUCT()
+struct FTbEnumEnumInterfacePongMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	double Timestamp = 0.0;
+};
+
+USTRUCT()
 struct FTbEnumEnumInterfaceSig0SignalMessage
 {
 	GENERATED_BODY()
@@ -172,7 +190,8 @@ struct FTbEnumEnumInterfaceFunc0RequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
+
 	UPROPERTY()
 	ETbEnumEnum0 Param0 = ETbEnumEnum0::TEE0_VALUE0;
 };
@@ -183,7 +202,7 @@ struct FTbEnumEnumInterfaceFunc0ReplyMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
 
 	UPROPERTY()
 	ETbEnumEnum0 Result = ETbEnumEnum0::TEE0_VALUE0;
@@ -195,7 +214,8 @@ struct FTbEnumEnumInterfaceFunc1RequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
+
 	UPROPERTY()
 	ETbEnumEnum1 Param1 = ETbEnumEnum1::TEE1_VALUE1;
 };
@@ -206,7 +226,7 @@ struct FTbEnumEnumInterfaceFunc1ReplyMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
 
 	UPROPERTY()
 	ETbEnumEnum1 Result = ETbEnumEnum1::TEE1_VALUE1;
@@ -218,7 +238,8 @@ struct FTbEnumEnumInterfaceFunc2RequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
+
 	UPROPERTY()
 	ETbEnumEnum2 Param2 = ETbEnumEnum2::TEE2_VALUE2;
 };
@@ -229,7 +250,7 @@ struct FTbEnumEnumInterfaceFunc2ReplyMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
 
 	UPROPERTY()
 	ETbEnumEnum2 Result = ETbEnumEnum2::TEE2_VALUE2;
@@ -241,7 +262,8 @@ struct FTbEnumEnumInterfaceFunc3RequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
+
 	UPROPERTY()
 	ETbEnumEnum3 Param3 = ETbEnumEnum3::TEE3_VALUE3;
 };
@@ -252,7 +274,7 @@ struct FTbEnumEnumInterfaceFunc3ReplyMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
 
 	UPROPERTY()
 	ETbEnumEnum3 Result = ETbEnumEnum3::TEE3_VALUE3;

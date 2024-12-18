@@ -24,7 +24,10 @@ limitations under the License.
 #include "Generated/MsgBus/TbSimpleSimpleInterfaceMsgBusMessages.h"
 #include "Async/Async.h"
 #include "Engine/Engine.h"
+#include "TimerManager.h"
 #include "Misc/DateTime.h"
+#include "GenericPlatform/GenericPlatformMath.h"
+#include "GenericPlatform/GenericPlatformTime.h"
 #include "MessageEndpointBuilder.h"
 #include "MessageEndpoint.h"
 #include <atomic>
@@ -51,7 +54,6 @@ UTbSimpleSimpleInterfaceMsgBusClient::UTbSimpleSimpleInterfaceMsgBusClient()
 	: UAbstractTbSimpleSimpleInterface()
 	, _SentData(MakePimpl<TbSimpleSimpleInterfacePropertiesMsgBusData>())
 {
-	/* m_sink = std::make_shared<FOLinkSink>("tb.simple.SimpleInterface"); */
 }
 
 UTbSimpleSimpleInterfaceMsgBusClient::~UTbSimpleSimpleInterfaceMsgBusClient() = default;
@@ -59,63 +61,54 @@ UTbSimpleSimpleInterfaceMsgBusClient::~UTbSimpleSimpleInterfaceMsgBusClient() = 
 void UTbSimpleSimpleInterfaceMsgBusClient::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-
-	Connect();
 }
 
 void UTbSimpleSimpleInterfaceMsgBusClient::Deinitialize()
 {
-	Disconnect();
+	_Disconnect();
 
 	Super::Deinitialize();
 }
 
-void UTbSimpleSimpleInterfaceMsgBusClient::Connect()
+void UTbSimpleSimpleInterfaceMsgBusClient::_Connect()
 {
-	if (IsConnected())
+	if (!_HeartbeatTimerHandle.IsValid() && GetWorld())
 	{
+		GetWorld()->GetTimerManager().SetTimer(_HeartbeatTimerHandle, this, &UTbSimpleSimpleInterfaceMsgBusClient::_OnHeartbeat, _HeartbeatIntervalMS / 1000.0f, true);
+	}
+
+	if (_IsConnected())
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusClient, Log, TEXT("Already connected, cannot connect again."));
 		return;
 	}
 
 	if (TbSimpleSimpleInterfaceMsgBusEndpoint.IsValid() && !ServiceAddress.IsValid())
 	{
-		DiscoverService();
+		_DiscoverService();
 		return;
 	}
 
 	// clang-format off
 	TbSimpleSimpleInterfaceMsgBusEndpoint = FMessageEndpoint::Builder("ApiGear/TbSimple/SimpleInterface/Client")
 		.Handling<FTbSimpleSimpleInterfaceInitMessage>(this, &UTbSimpleSimpleInterfaceMsgBusClient::OnConnectionInit)
+		.Handling<FTbSimpleSimpleInterfacePongMessage>(this, &UTbSimpleSimpleInterfaceMsgBusClient::OnPong)
 		.Handling<FTbSimpleSimpleInterfaceServiceDisconnectMessage>(this, &UTbSimpleSimpleInterfaceMsgBusClient::OnServiceClosedConnection)
 		.Handling<FTbSimpleSimpleInterfaceSigBoolSignalMessage>(this, &UTbSimpleSimpleInterfaceMsgBusClient::OnSigBool)
-
 		.Handling<FTbSimpleSimpleInterfaceSigIntSignalMessage>(this, &UTbSimpleSimpleInterfaceMsgBusClient::OnSigInt)
-
 		.Handling<FTbSimpleSimpleInterfaceSigInt32SignalMessage>(this, &UTbSimpleSimpleInterfaceMsgBusClient::OnSigInt32)
-
 		.Handling<FTbSimpleSimpleInterfaceSigInt64SignalMessage>(this, &UTbSimpleSimpleInterfaceMsgBusClient::OnSigInt64)
-
 		.Handling<FTbSimpleSimpleInterfaceSigFloatSignalMessage>(this, &UTbSimpleSimpleInterfaceMsgBusClient::OnSigFloat)
-
 		.Handling<FTbSimpleSimpleInterfaceSigFloat32SignalMessage>(this, &UTbSimpleSimpleInterfaceMsgBusClient::OnSigFloat32)
-
 		.Handling<FTbSimpleSimpleInterfaceSigFloat64SignalMessage>(this, &UTbSimpleSimpleInterfaceMsgBusClient::OnSigFloat64)
-
 		.Handling<FTbSimpleSimpleInterfaceSigStringSignalMessage>(this, &UTbSimpleSimpleInterfaceMsgBusClient::OnSigString)
 		.Handling<FTbSimpleSimpleInterfacePropBoolChangedMessage>(this, &UTbSimpleSimpleInterfaceMsgBusClient::OnPropBoolChanged)
-
 		.Handling<FTbSimpleSimpleInterfacePropIntChangedMessage>(this, &UTbSimpleSimpleInterfaceMsgBusClient::OnPropIntChanged)
-
 		.Handling<FTbSimpleSimpleInterfacePropInt32ChangedMessage>(this, &UTbSimpleSimpleInterfaceMsgBusClient::OnPropInt32Changed)
-
 		.Handling<FTbSimpleSimpleInterfacePropInt64ChangedMessage>(this, &UTbSimpleSimpleInterfaceMsgBusClient::OnPropInt64Changed)
-
 		.Handling<FTbSimpleSimpleInterfacePropFloatChangedMessage>(this, &UTbSimpleSimpleInterfaceMsgBusClient::OnPropFloatChanged)
-
 		.Handling<FTbSimpleSimpleInterfacePropFloat32ChangedMessage>(this, &UTbSimpleSimpleInterfaceMsgBusClient::OnPropFloat32Changed)
-
 		.Handling<FTbSimpleSimpleInterfacePropFloat64ChangedMessage>(this, &UTbSimpleSimpleInterfaceMsgBusClient::OnPropFloat64Changed)
-
 		.Handling<FTbSimpleSimpleInterfacePropStringChangedMessage>(this, &UTbSimpleSimpleInterfaceMsgBusClient::OnPropStringChanged)
 		.Handling<FTbSimpleSimpleInterfaceFuncBoolReplyMessage>(this, &UTbSimpleSimpleInterfaceMsgBusClient::OnFuncBoolReply)
 		.Handling<FTbSimpleSimpleInterfaceFuncIntReplyMessage>(this, &UTbSimpleSimpleInterfaceMsgBusClient::OnFuncIntReply)
@@ -128,112 +121,171 @@ void UTbSimpleSimpleInterfaceMsgBusClient::Connect()
 		.Build();
 	// clang-format on
 
-	DiscoverService();
+	_DiscoverService();
 }
 
-void UTbSimpleSimpleInterfaceMsgBusClient::Disconnect()
+void UTbSimpleSimpleInterfaceMsgBusClient::_Disconnect()
 {
-	if (!IsConnected())
+	_LastHbTimestamp = 0.0f;
+	if (_HeartbeatTimerHandle.IsValid() && GetWorld())
+	{
+		GetWorld()->GetTimerManager().ClearTimer(_HeartbeatTimerHandle);
+	}
+
+	if (!_IsConnected())
 	{
 		return;
 	}
 
 	auto msg = new FTbSimpleSimpleInterfaceClientDisconnectMessage();
 
-	if (TbSimpleSimpleInterfaceMsgBusEndpoint.IsValid())
-	{
-		TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfaceClientDisconnectMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-	}
+	TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfaceClientDisconnectMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
 
 	TbSimpleSimpleInterfaceMsgBusEndpoint.Reset();
 	ServiceAddress.Invalidate();
 	_ConnectionStatusChanged.Broadcast(false);
 }
 
-void UTbSimpleSimpleInterfaceMsgBusClient::DiscoverService()
+void UTbSimpleSimpleInterfaceMsgBusClient::_DiscoverService()
 {
-	if (TbSimpleSimpleInterfaceMsgBusEndpoint.IsValid())
+	if (!TbSimpleSimpleInterfaceMsgBusEndpoint.IsValid())
 	{
-		TbSimpleSimpleInterfaceMsgBusEndpoint->Publish<FTbSimpleSimpleInterfaceDiscoveryMessage>(new FTbSimpleSimpleInterfaceDiscoveryMessage());
+		return;
 	}
+
+	auto msg = new FTbSimpleSimpleInterfaceDiscoveryMessage();
+	msg->ClientPingIntervalMS = _HeartbeatIntervalMS;
+
+	TbSimpleSimpleInterfaceMsgBusEndpoint->Publish<FTbSimpleSimpleInterfaceDiscoveryMessage>(msg);
 }
 
-bool UTbSimpleSimpleInterfaceMsgBusClient::IsConnected() const
+bool UTbSimpleSimpleInterfaceMsgBusClient::_IsConnected() const
 {
 	return TbSimpleSimpleInterfaceMsgBusEndpoint.IsValid() && ServiceAddress.IsValid();
 }
 
-void UTbSimpleSimpleInterfaceMsgBusClient::OnConnectionInit(const FTbSimpleSimpleInterfaceInitMessage& InInitMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTbSimpleSimpleInterfaceMsgBusClient::OnConnectionInit(const FTbSimpleSimpleInterfaceInitMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	if (!ServiceAddress.IsValid())
+	if (ServiceAddress.IsValid())
 	{
-		ServiceAddress = Context->GetSender();
-		const bool bbPropBoolChanged = InInitMessage.bPropBool != bPropBool;
-		if (bbPropBoolChanged)
-		{
-			bPropBool = InInitMessage.bPropBool;
-			Execute__GetSignals(this)->OnPropBoolChanged.Broadcast(bPropBool);
-		}
-
-		const bool bPropIntChanged = InInitMessage.PropInt != PropInt;
-		if (bPropIntChanged)
-		{
-			PropInt = InInitMessage.PropInt;
-			Execute__GetSignals(this)->OnPropIntChanged.Broadcast(PropInt);
-		}
-
-		const bool bPropInt32Changed = InInitMessage.PropInt32 != PropInt32;
-		if (bPropInt32Changed)
-		{
-			PropInt32 = InInitMessage.PropInt32;
-			Execute__GetSignals(this)->OnPropInt32Changed.Broadcast(PropInt32);
-		}
-
-		const bool bPropInt64Changed = InInitMessage.PropInt64 != PropInt64;
-		if (bPropInt64Changed)
-		{
-			PropInt64 = InInitMessage.PropInt64;
-			Execute__GetSignals(this)->OnPropInt64Changed.Broadcast(PropInt64);
-		}
-
-		const bool bPropFloatChanged = InInitMessage.PropFloat != PropFloat;
-		if (bPropFloatChanged)
-		{
-			PropFloat = InInitMessage.PropFloat;
-			Execute__GetSignals(this)->OnPropFloatChanged.Broadcast(PropFloat);
-		}
-
-		const bool bPropFloat32Changed = InInitMessage.PropFloat32 != PropFloat32;
-		if (bPropFloat32Changed)
-		{
-			PropFloat32 = InInitMessage.PropFloat32;
-			Execute__GetSignals(this)->OnPropFloat32Changed.Broadcast(PropFloat32);
-		}
-
-		const bool bPropFloat64Changed = InInitMessage.PropFloat64 != PropFloat64;
-		if (bPropFloat64Changed)
-		{
-			PropFloat64 = InInitMessage.PropFloat64;
-			Execute__GetSignals(this)->OnPropFloat64Changed.Broadcast(PropFloat64);
-		}
-
-		const bool bPropStringChanged = InInitMessage.PropString != PropString;
-		if (bPropStringChanged)
-		{
-			PropString = InInitMessage.PropString;
-			Execute__GetSignals(this)->OnPropStringChanged.Broadcast(PropString);
-		}
-
-		_ConnectionStatusChanged.Broadcast(true);
+		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusClient, Warning, TEXT("Got a second init message - should not happen"));
+		return;
 	}
-	else
+
+	ServiceAddress = Context->GetSender();
+	const bool bbPropBoolChanged = InMessage.bPropBool != bPropBool;
+	if (bbPropBoolChanged)
 	{
-		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusClient, Error, TEXT("Got a second init message - should not happen"));
+		bPropBool = InMessage.bPropBool;
+		Execute__GetSignals(this)->OnPropBoolChanged.Broadcast(bPropBool);
 	}
+
+	const bool bPropIntChanged = InMessage.PropInt != PropInt;
+	if (bPropIntChanged)
+	{
+		PropInt = InMessage.PropInt;
+		Execute__GetSignals(this)->OnPropIntChanged.Broadcast(PropInt);
+	}
+
+	const bool bPropInt32Changed = InMessage.PropInt32 != PropInt32;
+	if (bPropInt32Changed)
+	{
+		PropInt32 = InMessage.PropInt32;
+		Execute__GetSignals(this)->OnPropInt32Changed.Broadcast(PropInt32);
+	}
+
+	const bool bPropInt64Changed = InMessage.PropInt64 != PropInt64;
+	if (bPropInt64Changed)
+	{
+		PropInt64 = InMessage.PropInt64;
+		Execute__GetSignals(this)->OnPropInt64Changed.Broadcast(PropInt64);
+	}
+
+	const bool bPropFloatChanged = InMessage.PropFloat != PropFloat;
+	if (bPropFloatChanged)
+	{
+		PropFloat = InMessage.PropFloat;
+		Execute__GetSignals(this)->OnPropFloatChanged.Broadcast(PropFloat);
+	}
+
+	const bool bPropFloat32Changed = InMessage.PropFloat32 != PropFloat32;
+	if (bPropFloat32Changed)
+	{
+		PropFloat32 = InMessage.PropFloat32;
+		Execute__GetSignals(this)->OnPropFloat32Changed.Broadcast(PropFloat32);
+	}
+
+	const bool bPropFloat64Changed = InMessage.PropFloat64 != PropFloat64;
+	if (bPropFloat64Changed)
+	{
+		PropFloat64 = InMessage.PropFloat64;
+		Execute__GetSignals(this)->OnPropFloat64Changed.Broadcast(PropFloat64);
+	}
+
+	const bool bPropStringChanged = InMessage.PropString != PropString;
+	if (bPropStringChanged)
+	{
+		PropString = InMessage.PropString;
+		Execute__GetSignals(this)->OnPropStringChanged.Broadcast(PropString);
+	}
+
+	_ConnectionStatusChanged.Broadcast(true);
+}
+
+void UTbSimpleSimpleInterfaceMsgBusClient::_OnHeartbeat()
+{
+	if (_LastHbTimestamp > 0.1f)
+	{
+		double Delta = (FPlatformTime::Seconds() - _LastHbTimestamp) * 1000;
+
+		if (Delta > 2 * _HeartbeatIntervalMS)
+		{
+			// service seems to be dead or not responding - reset connection
+			ServiceAddress.Invalidate();
+			_LastHbTimestamp = 0.0f;
+		}
+	}
+
+	if (!_IsConnected())
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusClient, Warning, TEXT("Heartbeat failed. Client has no connection to service. Reconnecting ..."));
+
+		_Connect();
+		return;
+	}
+
+	auto msg = new FTbSimpleSimpleInterfacePingMessage();
+	msg->Timestamp = FPlatformTime::Seconds();
+
+	TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfacePingMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
+}
+
+void UTbSimpleSimpleInterfaceMsgBusClient::OnPong(const FTbSimpleSimpleInterfacePongMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	_LastHbTimestamp = InMessage.Timestamp;
+
+	const double Current = FPlatformTime::Seconds();
+	const double DeltaMS = (Current - InMessage.Timestamp) * 1000.0f;
+
+	Stats.CurrentRTT_MS = DeltaMS;
+	Stats.AverageRTT_MS = (Stats.AverageRTT_MS + Stats.CurrentRTT_MS) / 2.0f;
+	Stats.MaxRTT_MS = FGenericPlatformMath::Max(Stats.MaxRTT_MS, Stats.CurrentRTT_MS);
+	Stats.MinRTT_MS = FGenericPlatformMath::Min(Stats.MinRTT_MS, Stats.CurrentRTT_MS);
+
+	_StatsUpdated.Broadcast(Stats);
+}
+
+const FTbSimpleSimpleInterfaceStats& UTbSimpleSimpleInterfaceMsgBusClient::_GetStats() const
+{
+	return Stats;
 }
 
 void UTbSimpleSimpleInterfaceMsgBusClient::OnServiceClosedConnection(const FTbSimpleSimpleInterfaceServiceDisconnectMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -254,7 +306,7 @@ bool UTbSimpleSimpleInterfaceMsgBusClient::GetPropBool_Implementation() const
 
 void UTbSimpleSimpleInterfaceMsgBusClient::SetPropBool_Implementation(bool bInPropBool)
 {
-	if (!IsConnected())
+	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
 		return;
@@ -275,15 +327,12 @@ void UTbSimpleSimpleInterfaceMsgBusClient::SetPropBool_Implementation(bool bInPr
 	auto msg = new FTbSimpleSimpleInterfaceSetPropBoolRequestMessage();
 	msg->bPropBool = bInPropBool;
 
-	if (TbSimpleSimpleInterfaceMsgBusEndpoint.IsValid())
-	{
-		TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfaceSetPropBoolRequestMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-		_SentData->bPropBool = bInPropBool;
-	}
+	TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfaceSetPropBoolRequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
+	_SentData->bPropBool = bInPropBool;
 }
 
 int32 UTbSimpleSimpleInterfaceMsgBusClient::GetPropInt_Implementation() const
@@ -293,7 +342,7 @@ int32 UTbSimpleSimpleInterfaceMsgBusClient::GetPropInt_Implementation() const
 
 void UTbSimpleSimpleInterfaceMsgBusClient::SetPropInt_Implementation(int32 InPropInt)
 {
-	if (!IsConnected())
+	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
 		return;
@@ -314,15 +363,12 @@ void UTbSimpleSimpleInterfaceMsgBusClient::SetPropInt_Implementation(int32 InPro
 	auto msg = new FTbSimpleSimpleInterfaceSetPropIntRequestMessage();
 	msg->PropInt = InPropInt;
 
-	if (TbSimpleSimpleInterfaceMsgBusEndpoint.IsValid())
-	{
-		TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfaceSetPropIntRequestMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-		_SentData->PropInt = InPropInt;
-	}
+	TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfaceSetPropIntRequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
+	_SentData->PropInt = InPropInt;
 }
 
 int32 UTbSimpleSimpleInterfaceMsgBusClient::GetPropInt32_Implementation() const
@@ -332,7 +378,7 @@ int32 UTbSimpleSimpleInterfaceMsgBusClient::GetPropInt32_Implementation() const
 
 void UTbSimpleSimpleInterfaceMsgBusClient::SetPropInt32_Implementation(int32 InPropInt32)
 {
-	if (!IsConnected())
+	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
 		return;
@@ -353,15 +399,12 @@ void UTbSimpleSimpleInterfaceMsgBusClient::SetPropInt32_Implementation(int32 InP
 	auto msg = new FTbSimpleSimpleInterfaceSetPropInt32RequestMessage();
 	msg->PropInt32 = InPropInt32;
 
-	if (TbSimpleSimpleInterfaceMsgBusEndpoint.IsValid())
-	{
-		TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfaceSetPropInt32RequestMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-		_SentData->PropInt32 = InPropInt32;
-	}
+	TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfaceSetPropInt32RequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
+	_SentData->PropInt32 = InPropInt32;
 }
 
 int64 UTbSimpleSimpleInterfaceMsgBusClient::GetPropInt64_Implementation() const
@@ -371,7 +414,7 @@ int64 UTbSimpleSimpleInterfaceMsgBusClient::GetPropInt64_Implementation() const
 
 void UTbSimpleSimpleInterfaceMsgBusClient::SetPropInt64_Implementation(int64 InPropInt64)
 {
-	if (!IsConnected())
+	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
 		return;
@@ -392,15 +435,12 @@ void UTbSimpleSimpleInterfaceMsgBusClient::SetPropInt64_Implementation(int64 InP
 	auto msg = new FTbSimpleSimpleInterfaceSetPropInt64RequestMessage();
 	msg->PropInt64 = InPropInt64;
 
-	if (TbSimpleSimpleInterfaceMsgBusEndpoint.IsValid())
-	{
-		TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfaceSetPropInt64RequestMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-		_SentData->PropInt64 = InPropInt64;
-	}
+	TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfaceSetPropInt64RequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
+	_SentData->PropInt64 = InPropInt64;
 }
 
 float UTbSimpleSimpleInterfaceMsgBusClient::GetPropFloat_Implementation() const
@@ -410,7 +450,7 @@ float UTbSimpleSimpleInterfaceMsgBusClient::GetPropFloat_Implementation() const
 
 void UTbSimpleSimpleInterfaceMsgBusClient::SetPropFloat_Implementation(float InPropFloat)
 {
-	if (!IsConnected())
+	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
 		return;
@@ -431,15 +471,12 @@ void UTbSimpleSimpleInterfaceMsgBusClient::SetPropFloat_Implementation(float InP
 	auto msg = new FTbSimpleSimpleInterfaceSetPropFloatRequestMessage();
 	msg->PropFloat = InPropFloat;
 
-	if (TbSimpleSimpleInterfaceMsgBusEndpoint.IsValid())
-	{
-		TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfaceSetPropFloatRequestMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-		_SentData->PropFloat = InPropFloat;
-	}
+	TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfaceSetPropFloatRequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
+	_SentData->PropFloat = InPropFloat;
 }
 
 float UTbSimpleSimpleInterfaceMsgBusClient::GetPropFloat32_Implementation() const
@@ -449,7 +486,7 @@ float UTbSimpleSimpleInterfaceMsgBusClient::GetPropFloat32_Implementation() cons
 
 void UTbSimpleSimpleInterfaceMsgBusClient::SetPropFloat32_Implementation(float InPropFloat32)
 {
-	if (!IsConnected())
+	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
 		return;
@@ -470,15 +507,12 @@ void UTbSimpleSimpleInterfaceMsgBusClient::SetPropFloat32_Implementation(float I
 	auto msg = new FTbSimpleSimpleInterfaceSetPropFloat32RequestMessage();
 	msg->PropFloat32 = InPropFloat32;
 
-	if (TbSimpleSimpleInterfaceMsgBusEndpoint.IsValid())
-	{
-		TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfaceSetPropFloat32RequestMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-		_SentData->PropFloat32 = InPropFloat32;
-	}
+	TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfaceSetPropFloat32RequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
+	_SentData->PropFloat32 = InPropFloat32;
 }
 
 double UTbSimpleSimpleInterfaceMsgBusClient::GetPropFloat64_Implementation() const
@@ -488,7 +522,7 @@ double UTbSimpleSimpleInterfaceMsgBusClient::GetPropFloat64_Implementation() con
 
 void UTbSimpleSimpleInterfaceMsgBusClient::SetPropFloat64_Implementation(double InPropFloat64)
 {
-	if (!IsConnected())
+	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
 		return;
@@ -509,15 +543,12 @@ void UTbSimpleSimpleInterfaceMsgBusClient::SetPropFloat64_Implementation(double 
 	auto msg = new FTbSimpleSimpleInterfaceSetPropFloat64RequestMessage();
 	msg->PropFloat64 = InPropFloat64;
 
-	if (TbSimpleSimpleInterfaceMsgBusEndpoint.IsValid())
-	{
-		TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfaceSetPropFloat64RequestMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-		_SentData->PropFloat64 = InPropFloat64;
-	}
+	TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfaceSetPropFloat64RequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
+	_SentData->PropFloat64 = InPropFloat64;
 }
 
 FString UTbSimpleSimpleInterfaceMsgBusClient::GetPropString_Implementation() const
@@ -527,7 +558,7 @@ FString UTbSimpleSimpleInterfaceMsgBusClient::GetPropString_Implementation() con
 
 void UTbSimpleSimpleInterfaceMsgBusClient::SetPropString_Implementation(const FString& InPropString)
 {
-	if (!IsConnected())
+	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
 		return;
@@ -551,21 +582,18 @@ void UTbSimpleSimpleInterfaceMsgBusClient::SetPropString_Implementation(const FS
 	auto msg = new FTbSimpleSimpleInterfaceSetPropStringRequestMessage();
 	msg->PropString = InPropString;
 
-	if (TbSimpleSimpleInterfaceMsgBusEndpoint.IsValid())
-	{
-		TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfaceSetPropStringRequestMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-		FScopeLock Lock(&(_SentData->PropStringMutex));
-		_SentData->PropString = InPropString;
-	}
+	TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfaceSetPropStringRequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
+	FScopeLock Lock(&(_SentData->PropStringMutex));
+	_SentData->PropString = InPropString;
 }
 
 void UTbSimpleSimpleInterfaceMsgBusClient::FuncNoReturnValue_Implementation(bool bInParamBool)
 {
-	if (!IsConnected())
+	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
 
@@ -573,27 +601,20 @@ void UTbSimpleSimpleInterfaceMsgBusClient::FuncNoReturnValue_Implementation(bool
 	}
 
 	auto msg = new FTbSimpleSimpleInterfaceFuncNoReturnValueRequestMessage();
-	msg->RepsonseId = FGuid::NewGuid();
 	msg->bParamBool = bInParamBool;
 
-	if (TbSimpleSimpleInterfaceMsgBusEndpoint.IsValid())
-	{
-
-		TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfaceFuncNoReturnValueRequestMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-
-		return;
-	}
+	TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfaceFuncNoReturnValueRequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
 
 	return;
 }
 
 bool UTbSimpleSimpleInterfaceMsgBusClient::FuncBool_Implementation(bool bInParamBool)
 {
-	if (!IsConnected())
+	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
 
@@ -601,34 +622,28 @@ bool UTbSimpleSimpleInterfaceMsgBusClient::FuncBool_Implementation(bool bInParam
 	}
 
 	auto msg = new FTbSimpleSimpleInterfaceFuncBoolRequestMessage();
-	msg->RepsonseId = FGuid::NewGuid();
+	msg->ResponseId = FGuid::NewGuid();
 	msg->bParamBool = bInParamBool;
+	TPromise<bool> Promise;
+	StorePromise(msg->ResponseId, Promise);
 
-	if (TbSimpleSimpleInterfaceMsgBusEndpoint.IsValid())
-	{
-		TPromise<bool> Promise;
-		StorePromise(msg->RepsonseId, Promise);
+	TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfaceFuncBoolRequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
 
-		TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfaceFuncBoolRequestMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-
-		return Promise.GetFuture().Get();
-	}
-
-	return false;
+	return Promise.GetFuture().Get();
 }
 
-void UTbSimpleSimpleInterfaceMsgBusClient::OnFuncBoolReply(const FTbSimpleSimpleInterfaceFuncBoolReplyMessage& InFuncBoolReplyMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTbSimpleSimpleInterfaceMsgBusClient::OnFuncBoolReply(const FTbSimpleSimpleInterfaceFuncBoolReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	FulfillPromise(InFuncBoolReplyMessage.RepsonseId, InFuncBoolReplyMessage.Result);
+	FulfillPromise(InMessage.ResponseId, InMessage.Result);
 }
 
 int32 UTbSimpleSimpleInterfaceMsgBusClient::FuncInt_Implementation(int32 InParamInt)
 {
-	if (!IsConnected())
+	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
 
@@ -636,34 +651,28 @@ int32 UTbSimpleSimpleInterfaceMsgBusClient::FuncInt_Implementation(int32 InParam
 	}
 
 	auto msg = new FTbSimpleSimpleInterfaceFuncIntRequestMessage();
-	msg->RepsonseId = FGuid::NewGuid();
+	msg->ResponseId = FGuid::NewGuid();
 	msg->ParamInt = InParamInt;
+	TPromise<int32> Promise;
+	StorePromise(msg->ResponseId, Promise);
 
-	if (TbSimpleSimpleInterfaceMsgBusEndpoint.IsValid())
-	{
-		TPromise<int32> Promise;
-		StorePromise(msg->RepsonseId, Promise);
+	TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfaceFuncIntRequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
 
-		TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfaceFuncIntRequestMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-
-		return Promise.GetFuture().Get();
-	}
-
-	return 0;
+	return Promise.GetFuture().Get();
 }
 
-void UTbSimpleSimpleInterfaceMsgBusClient::OnFuncIntReply(const FTbSimpleSimpleInterfaceFuncIntReplyMessage& InFuncIntReplyMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTbSimpleSimpleInterfaceMsgBusClient::OnFuncIntReply(const FTbSimpleSimpleInterfaceFuncIntReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	FulfillPromise(InFuncIntReplyMessage.RepsonseId, InFuncIntReplyMessage.Result);
+	FulfillPromise(InMessage.ResponseId, InMessage.Result);
 }
 
 int32 UTbSimpleSimpleInterfaceMsgBusClient::FuncInt32_Implementation(int32 InParamInt32)
 {
-	if (!IsConnected())
+	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
 
@@ -671,34 +680,28 @@ int32 UTbSimpleSimpleInterfaceMsgBusClient::FuncInt32_Implementation(int32 InPar
 	}
 
 	auto msg = new FTbSimpleSimpleInterfaceFuncInt32RequestMessage();
-	msg->RepsonseId = FGuid::NewGuid();
+	msg->ResponseId = FGuid::NewGuid();
 	msg->ParamInt32 = InParamInt32;
+	TPromise<int32> Promise;
+	StorePromise(msg->ResponseId, Promise);
 
-	if (TbSimpleSimpleInterfaceMsgBusEndpoint.IsValid())
-	{
-		TPromise<int32> Promise;
-		StorePromise(msg->RepsonseId, Promise);
+	TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfaceFuncInt32RequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
 
-		TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfaceFuncInt32RequestMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-
-		return Promise.GetFuture().Get();
-	}
-
-	return 0;
+	return Promise.GetFuture().Get();
 }
 
-void UTbSimpleSimpleInterfaceMsgBusClient::OnFuncInt32Reply(const FTbSimpleSimpleInterfaceFuncInt32ReplyMessage& InFuncInt32ReplyMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTbSimpleSimpleInterfaceMsgBusClient::OnFuncInt32Reply(const FTbSimpleSimpleInterfaceFuncInt32ReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	FulfillPromise(InFuncInt32ReplyMessage.RepsonseId, InFuncInt32ReplyMessage.Result);
+	FulfillPromise(InMessage.ResponseId, InMessage.Result);
 }
 
 int64 UTbSimpleSimpleInterfaceMsgBusClient::FuncInt64_Implementation(int64 InParamInt64)
 {
-	if (!IsConnected())
+	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
 
@@ -706,34 +709,28 @@ int64 UTbSimpleSimpleInterfaceMsgBusClient::FuncInt64_Implementation(int64 InPar
 	}
 
 	auto msg = new FTbSimpleSimpleInterfaceFuncInt64RequestMessage();
-	msg->RepsonseId = FGuid::NewGuid();
+	msg->ResponseId = FGuid::NewGuid();
 	msg->ParamInt64 = InParamInt64;
+	TPromise<int64> Promise;
+	StorePromise(msg->ResponseId, Promise);
 
-	if (TbSimpleSimpleInterfaceMsgBusEndpoint.IsValid())
-	{
-		TPromise<int64> Promise;
-		StorePromise(msg->RepsonseId, Promise);
+	TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfaceFuncInt64RequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
 
-		TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfaceFuncInt64RequestMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-
-		return Promise.GetFuture().Get();
-	}
-
-	return 0LL;
+	return Promise.GetFuture().Get();
 }
 
-void UTbSimpleSimpleInterfaceMsgBusClient::OnFuncInt64Reply(const FTbSimpleSimpleInterfaceFuncInt64ReplyMessage& InFuncInt64ReplyMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTbSimpleSimpleInterfaceMsgBusClient::OnFuncInt64Reply(const FTbSimpleSimpleInterfaceFuncInt64ReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	FulfillPromise(InFuncInt64ReplyMessage.RepsonseId, InFuncInt64ReplyMessage.Result);
+	FulfillPromise(InMessage.ResponseId, InMessage.Result);
 }
 
 float UTbSimpleSimpleInterfaceMsgBusClient::FuncFloat_Implementation(float InParamFloat)
 {
-	if (!IsConnected())
+	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
 
@@ -741,34 +738,28 @@ float UTbSimpleSimpleInterfaceMsgBusClient::FuncFloat_Implementation(float InPar
 	}
 
 	auto msg = new FTbSimpleSimpleInterfaceFuncFloatRequestMessage();
-	msg->RepsonseId = FGuid::NewGuid();
+	msg->ResponseId = FGuid::NewGuid();
 	msg->ParamFloat = InParamFloat;
+	TPromise<float> Promise;
+	StorePromise(msg->ResponseId, Promise);
 
-	if (TbSimpleSimpleInterfaceMsgBusEndpoint.IsValid())
-	{
-		TPromise<float> Promise;
-		StorePromise(msg->RepsonseId, Promise);
+	TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfaceFuncFloatRequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
 
-		TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfaceFuncFloatRequestMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-
-		return Promise.GetFuture().Get();
-	}
-
-	return 0.0f;
+	return Promise.GetFuture().Get();
 }
 
-void UTbSimpleSimpleInterfaceMsgBusClient::OnFuncFloatReply(const FTbSimpleSimpleInterfaceFuncFloatReplyMessage& InFuncFloatReplyMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTbSimpleSimpleInterfaceMsgBusClient::OnFuncFloatReply(const FTbSimpleSimpleInterfaceFuncFloatReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	FulfillPromise(InFuncFloatReplyMessage.RepsonseId, InFuncFloatReplyMessage.Result);
+	FulfillPromise(InMessage.ResponseId, InMessage.Result);
 }
 
 float UTbSimpleSimpleInterfaceMsgBusClient::FuncFloat32_Implementation(float InParamFloat32)
 {
-	if (!IsConnected())
+	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
 
@@ -776,34 +767,28 @@ float UTbSimpleSimpleInterfaceMsgBusClient::FuncFloat32_Implementation(float InP
 	}
 
 	auto msg = new FTbSimpleSimpleInterfaceFuncFloat32RequestMessage();
-	msg->RepsonseId = FGuid::NewGuid();
+	msg->ResponseId = FGuid::NewGuid();
 	msg->ParamFloat32 = InParamFloat32;
+	TPromise<float> Promise;
+	StorePromise(msg->ResponseId, Promise);
 
-	if (TbSimpleSimpleInterfaceMsgBusEndpoint.IsValid())
-	{
-		TPromise<float> Promise;
-		StorePromise(msg->RepsonseId, Promise);
+	TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfaceFuncFloat32RequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
 
-		TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfaceFuncFloat32RequestMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-
-		return Promise.GetFuture().Get();
-	}
-
-	return 0.0f;
+	return Promise.GetFuture().Get();
 }
 
-void UTbSimpleSimpleInterfaceMsgBusClient::OnFuncFloat32Reply(const FTbSimpleSimpleInterfaceFuncFloat32ReplyMessage& InFuncFloat32ReplyMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTbSimpleSimpleInterfaceMsgBusClient::OnFuncFloat32Reply(const FTbSimpleSimpleInterfaceFuncFloat32ReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	FulfillPromise(InFuncFloat32ReplyMessage.RepsonseId, InFuncFloat32ReplyMessage.Result);
+	FulfillPromise(InMessage.ResponseId, InMessage.Result);
 }
 
 double UTbSimpleSimpleInterfaceMsgBusClient::FuncFloat64_Implementation(double InParamFloat)
 {
-	if (!IsConnected())
+	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
 
@@ -811,34 +796,28 @@ double UTbSimpleSimpleInterfaceMsgBusClient::FuncFloat64_Implementation(double I
 	}
 
 	auto msg = new FTbSimpleSimpleInterfaceFuncFloat64RequestMessage();
-	msg->RepsonseId = FGuid::NewGuid();
+	msg->ResponseId = FGuid::NewGuid();
 	msg->ParamFloat = InParamFloat;
+	TPromise<double> Promise;
+	StorePromise(msg->ResponseId, Promise);
 
-	if (TbSimpleSimpleInterfaceMsgBusEndpoint.IsValid())
-	{
-		TPromise<double> Promise;
-		StorePromise(msg->RepsonseId, Promise);
+	TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfaceFuncFloat64RequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
 
-		TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfaceFuncFloat64RequestMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-
-		return Promise.GetFuture().Get();
-	}
-
-	return 0.0;
+	return Promise.GetFuture().Get();
 }
 
-void UTbSimpleSimpleInterfaceMsgBusClient::OnFuncFloat64Reply(const FTbSimpleSimpleInterfaceFuncFloat64ReplyMessage& InFuncFloat64ReplyMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTbSimpleSimpleInterfaceMsgBusClient::OnFuncFloat64Reply(const FTbSimpleSimpleInterfaceFuncFloat64ReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	FulfillPromise(InFuncFloat64ReplyMessage.RepsonseId, InFuncFloat64ReplyMessage.Result);
+	FulfillPromise(InMessage.ResponseId, InMessage.Result);
 }
 
 FString UTbSimpleSimpleInterfaceMsgBusClient::FuncString_Implementation(const FString& InParamString)
 {
-	if (!IsConnected())
+	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
 
@@ -846,32 +825,26 @@ FString UTbSimpleSimpleInterfaceMsgBusClient::FuncString_Implementation(const FS
 	}
 
 	auto msg = new FTbSimpleSimpleInterfaceFuncStringRequestMessage();
-	msg->RepsonseId = FGuid::NewGuid();
+	msg->ResponseId = FGuid::NewGuid();
 	msg->ParamString = InParamString;
+	TPromise<FString> Promise;
+	StorePromise(msg->ResponseId, Promise);
 
-	if (TbSimpleSimpleInterfaceMsgBusEndpoint.IsValid())
-	{
-		TPromise<FString> Promise;
-		StorePromise(msg->RepsonseId, Promise);
+	TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfaceFuncStringRequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
 
-		TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfaceFuncStringRequestMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-
-		return Promise.GetFuture().Get();
-	}
-
-	return FString();
+	return Promise.GetFuture().Get();
 }
 
-void UTbSimpleSimpleInterfaceMsgBusClient::OnFuncStringReply(const FTbSimpleSimpleInterfaceFuncStringReplyMessage& InFuncStringReplyMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTbSimpleSimpleInterfaceMsgBusClient::OnFuncStringReply(const FTbSimpleSimpleInterfaceFuncStringReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	FulfillPromise(InFuncStringReplyMessage.RepsonseId, InFuncStringReplyMessage.Result);
+	FulfillPromise(InMessage.ResponseId, InMessage.Result);
 }
 
-void UTbSimpleSimpleInterfaceMsgBusClient::OnSigBool(const FTbSimpleSimpleInterfaceSigBoolSignalMessage& InSigBoolMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTbSimpleSimpleInterfaceMsgBusClient::OnSigBool(const FTbSimpleSimpleInterfaceSigBoolSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ServiceAddress != Context->GetSender())
 	{
@@ -879,11 +852,11 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnSigBool(const FTbSimpleSimpleInterf
 		return;
 	}
 
-	Execute__GetSignals(this)->OnSigBoolSignal.Broadcast(InSigBoolMessage.bParamBool);
+	Execute__GetSignals(this)->OnSigBoolSignal.Broadcast(InMessage.bParamBool);
 	return;
 }
 
-void UTbSimpleSimpleInterfaceMsgBusClient::OnSigInt(const FTbSimpleSimpleInterfaceSigIntSignalMessage& InSigIntMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTbSimpleSimpleInterfaceMsgBusClient::OnSigInt(const FTbSimpleSimpleInterfaceSigIntSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ServiceAddress != Context->GetSender())
 	{
@@ -891,11 +864,11 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnSigInt(const FTbSimpleSimpleInterfa
 		return;
 	}
 
-	Execute__GetSignals(this)->OnSigIntSignal.Broadcast(InSigIntMessage.ParamInt);
+	Execute__GetSignals(this)->OnSigIntSignal.Broadcast(InMessage.ParamInt);
 	return;
 }
 
-void UTbSimpleSimpleInterfaceMsgBusClient::OnSigInt32(const FTbSimpleSimpleInterfaceSigInt32SignalMessage& InSigInt32Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTbSimpleSimpleInterfaceMsgBusClient::OnSigInt32(const FTbSimpleSimpleInterfaceSigInt32SignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ServiceAddress != Context->GetSender())
 	{
@@ -903,11 +876,11 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnSigInt32(const FTbSimpleSimpleInter
 		return;
 	}
 
-	Execute__GetSignals(this)->OnSigInt32Signal.Broadcast(InSigInt32Message.ParamInt32);
+	Execute__GetSignals(this)->OnSigInt32Signal.Broadcast(InMessage.ParamInt32);
 	return;
 }
 
-void UTbSimpleSimpleInterfaceMsgBusClient::OnSigInt64(const FTbSimpleSimpleInterfaceSigInt64SignalMessage& InSigInt64Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTbSimpleSimpleInterfaceMsgBusClient::OnSigInt64(const FTbSimpleSimpleInterfaceSigInt64SignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ServiceAddress != Context->GetSender())
 	{
@@ -915,11 +888,11 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnSigInt64(const FTbSimpleSimpleInter
 		return;
 	}
 
-	Execute__GetSignals(this)->OnSigInt64Signal.Broadcast(InSigInt64Message.ParamInt64);
+	Execute__GetSignals(this)->OnSigInt64Signal.Broadcast(InMessage.ParamInt64);
 	return;
 }
 
-void UTbSimpleSimpleInterfaceMsgBusClient::OnSigFloat(const FTbSimpleSimpleInterfaceSigFloatSignalMessage& InSigFloatMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTbSimpleSimpleInterfaceMsgBusClient::OnSigFloat(const FTbSimpleSimpleInterfaceSigFloatSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ServiceAddress != Context->GetSender())
 	{
@@ -927,11 +900,11 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnSigFloat(const FTbSimpleSimpleInter
 		return;
 	}
 
-	Execute__GetSignals(this)->OnSigFloatSignal.Broadcast(InSigFloatMessage.ParamFloat);
+	Execute__GetSignals(this)->OnSigFloatSignal.Broadcast(InMessage.ParamFloat);
 	return;
 }
 
-void UTbSimpleSimpleInterfaceMsgBusClient::OnSigFloat32(const FTbSimpleSimpleInterfaceSigFloat32SignalMessage& InSigFloat32Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTbSimpleSimpleInterfaceMsgBusClient::OnSigFloat32(const FTbSimpleSimpleInterfaceSigFloat32SignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ServiceAddress != Context->GetSender())
 	{
@@ -939,11 +912,11 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnSigFloat32(const FTbSimpleSimpleInt
 		return;
 	}
 
-	Execute__GetSignals(this)->OnSigFloat32Signal.Broadcast(InSigFloat32Message.ParamFloat32);
+	Execute__GetSignals(this)->OnSigFloat32Signal.Broadcast(InMessage.ParamFloat32);
 	return;
 }
 
-void UTbSimpleSimpleInterfaceMsgBusClient::OnSigFloat64(const FTbSimpleSimpleInterfaceSigFloat64SignalMessage& InSigFloat64Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTbSimpleSimpleInterfaceMsgBusClient::OnSigFloat64(const FTbSimpleSimpleInterfaceSigFloat64SignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ServiceAddress != Context->GetSender())
 	{
@@ -951,11 +924,11 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnSigFloat64(const FTbSimpleSimpleInt
 		return;
 	}
 
-	Execute__GetSignals(this)->OnSigFloat64Signal.Broadcast(InSigFloat64Message.ParamFloat64);
+	Execute__GetSignals(this)->OnSigFloat64Signal.Broadcast(InMessage.ParamFloat64);
 	return;
 }
 
-void UTbSimpleSimpleInterfaceMsgBusClient::OnSigString(const FTbSimpleSimpleInterfaceSigStringSignalMessage& InSigStringMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTbSimpleSimpleInterfaceMsgBusClient::OnSigString(const FTbSimpleSimpleInterfaceSigStringSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ServiceAddress != Context->GetSender())
 	{
@@ -963,11 +936,11 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnSigString(const FTbSimpleSimpleInte
 		return;
 	}
 
-	Execute__GetSignals(this)->OnSigStringSignal.Broadcast(InSigStringMessage.ParamString);
+	Execute__GetSignals(this)->OnSigStringSignal.Broadcast(InMessage.ParamString);
 	return;
 }
 
-void UTbSimpleSimpleInterfaceMsgBusClient::OnPropBoolChanged(const FTbSimpleSimpleInterfacePropBoolChangedMessage& bInPropBoolMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTbSimpleSimpleInterfaceMsgBusClient::OnPropBoolChanged(const FTbSimpleSimpleInterfacePropBoolChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ServiceAddress != Context->GetSender())
 	{
@@ -975,15 +948,15 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnPropBoolChanged(const FTbSimpleSimp
 		return;
 	}
 
-	const bool bbPropBoolChanged = bInPropBoolMessage.bPropBool != bPropBool;
+	const bool bbPropBoolChanged = InMessage.bPropBool != bPropBool;
 	if (bbPropBoolChanged)
 	{
-		bPropBool = bInPropBoolMessage.bPropBool;
+		bPropBool = InMessage.bPropBool;
 		Execute__GetSignals(this)->OnPropBoolChanged.Broadcast(bPropBool);
 	}
 }
 
-void UTbSimpleSimpleInterfaceMsgBusClient::OnPropIntChanged(const FTbSimpleSimpleInterfacePropIntChangedMessage& InPropIntMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTbSimpleSimpleInterfaceMsgBusClient::OnPropIntChanged(const FTbSimpleSimpleInterfacePropIntChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ServiceAddress != Context->GetSender())
 	{
@@ -991,15 +964,15 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnPropIntChanged(const FTbSimpleSimpl
 		return;
 	}
 
-	const bool bPropIntChanged = InPropIntMessage.PropInt != PropInt;
+	const bool bPropIntChanged = InMessage.PropInt != PropInt;
 	if (bPropIntChanged)
 	{
-		PropInt = InPropIntMessage.PropInt;
+		PropInt = InMessage.PropInt;
 		Execute__GetSignals(this)->OnPropIntChanged.Broadcast(PropInt);
 	}
 }
 
-void UTbSimpleSimpleInterfaceMsgBusClient::OnPropInt32Changed(const FTbSimpleSimpleInterfacePropInt32ChangedMessage& InPropInt32Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTbSimpleSimpleInterfaceMsgBusClient::OnPropInt32Changed(const FTbSimpleSimpleInterfacePropInt32ChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ServiceAddress != Context->GetSender())
 	{
@@ -1007,15 +980,15 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnPropInt32Changed(const FTbSimpleSim
 		return;
 	}
 
-	const bool bPropInt32Changed = InPropInt32Message.PropInt32 != PropInt32;
+	const bool bPropInt32Changed = InMessage.PropInt32 != PropInt32;
 	if (bPropInt32Changed)
 	{
-		PropInt32 = InPropInt32Message.PropInt32;
+		PropInt32 = InMessage.PropInt32;
 		Execute__GetSignals(this)->OnPropInt32Changed.Broadcast(PropInt32);
 	}
 }
 
-void UTbSimpleSimpleInterfaceMsgBusClient::OnPropInt64Changed(const FTbSimpleSimpleInterfacePropInt64ChangedMessage& InPropInt64Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTbSimpleSimpleInterfaceMsgBusClient::OnPropInt64Changed(const FTbSimpleSimpleInterfacePropInt64ChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ServiceAddress != Context->GetSender())
 	{
@@ -1023,15 +996,15 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnPropInt64Changed(const FTbSimpleSim
 		return;
 	}
 
-	const bool bPropInt64Changed = InPropInt64Message.PropInt64 != PropInt64;
+	const bool bPropInt64Changed = InMessage.PropInt64 != PropInt64;
 	if (bPropInt64Changed)
 	{
-		PropInt64 = InPropInt64Message.PropInt64;
+		PropInt64 = InMessage.PropInt64;
 		Execute__GetSignals(this)->OnPropInt64Changed.Broadcast(PropInt64);
 	}
 }
 
-void UTbSimpleSimpleInterfaceMsgBusClient::OnPropFloatChanged(const FTbSimpleSimpleInterfacePropFloatChangedMessage& InPropFloatMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTbSimpleSimpleInterfaceMsgBusClient::OnPropFloatChanged(const FTbSimpleSimpleInterfacePropFloatChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ServiceAddress != Context->GetSender())
 	{
@@ -1039,15 +1012,15 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnPropFloatChanged(const FTbSimpleSim
 		return;
 	}
 
-	const bool bPropFloatChanged = InPropFloatMessage.PropFloat != PropFloat;
+	const bool bPropFloatChanged = InMessage.PropFloat != PropFloat;
 	if (bPropFloatChanged)
 	{
-		PropFloat = InPropFloatMessage.PropFloat;
+		PropFloat = InMessage.PropFloat;
 		Execute__GetSignals(this)->OnPropFloatChanged.Broadcast(PropFloat);
 	}
 }
 
-void UTbSimpleSimpleInterfaceMsgBusClient::OnPropFloat32Changed(const FTbSimpleSimpleInterfacePropFloat32ChangedMessage& InPropFloat32Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTbSimpleSimpleInterfaceMsgBusClient::OnPropFloat32Changed(const FTbSimpleSimpleInterfacePropFloat32ChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ServiceAddress != Context->GetSender())
 	{
@@ -1055,15 +1028,15 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnPropFloat32Changed(const FTbSimpleS
 		return;
 	}
 
-	const bool bPropFloat32Changed = InPropFloat32Message.PropFloat32 != PropFloat32;
+	const bool bPropFloat32Changed = InMessage.PropFloat32 != PropFloat32;
 	if (bPropFloat32Changed)
 	{
-		PropFloat32 = InPropFloat32Message.PropFloat32;
+		PropFloat32 = InMessage.PropFloat32;
 		Execute__GetSignals(this)->OnPropFloat32Changed.Broadcast(PropFloat32);
 	}
 }
 
-void UTbSimpleSimpleInterfaceMsgBusClient::OnPropFloat64Changed(const FTbSimpleSimpleInterfacePropFloat64ChangedMessage& InPropFloat64Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTbSimpleSimpleInterfaceMsgBusClient::OnPropFloat64Changed(const FTbSimpleSimpleInterfacePropFloat64ChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ServiceAddress != Context->GetSender())
 	{
@@ -1071,15 +1044,15 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnPropFloat64Changed(const FTbSimpleS
 		return;
 	}
 
-	const bool bPropFloat64Changed = InPropFloat64Message.PropFloat64 != PropFloat64;
+	const bool bPropFloat64Changed = InMessage.PropFloat64 != PropFloat64;
 	if (bPropFloat64Changed)
 	{
-		PropFloat64 = InPropFloat64Message.PropFloat64;
+		PropFloat64 = InMessage.PropFloat64;
 		Execute__GetSignals(this)->OnPropFloat64Changed.Broadcast(PropFloat64);
 	}
 }
 
-void UTbSimpleSimpleInterfaceMsgBusClient::OnPropStringChanged(const FTbSimpleSimpleInterfacePropStringChangedMessage& InPropStringMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTbSimpleSimpleInterfaceMsgBusClient::OnPropStringChanged(const FTbSimpleSimpleInterfacePropStringChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ServiceAddress != Context->GetSender())
 	{
@@ -1087,10 +1060,10 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnPropStringChanged(const FTbSimpleSi
 		return;
 	}
 
-	const bool bPropStringChanged = InPropStringMessage.PropString != PropString;
+	const bool bPropStringChanged = InMessage.PropString != PropString;
 	if (bPropStringChanged)
 	{
-		PropString = InPropStringMessage.PropString;
+		PropString = InMessage.PropString;
 		Execute__GetSignals(this)->OnPropStringChanged.Broadcast(PropString);
 	}
 }

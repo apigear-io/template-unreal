@@ -25,6 +25,7 @@ limitations under the License.
 class FMessageEndpoint;
 // messages
 struct FTbSimpleEmptyInterfaceDiscoveryMessage;
+struct FTbSimpleEmptyInterfacePingMessage;
 struct FTbSimpleEmptyInterfaceClientDisconnectMessage;
 
 /// @brief handles the adaption between the service implementation and the OLink protocol
@@ -44,21 +45,22 @@ public:
 
 	// connection handling
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|EmptyInterface|Remote")
-	void StartListening();
+	void _StartListening();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|EmptyInterface|Remote")
-	void StopListening();
+	void _StopListening();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|EmptyInterface|Remote")
-	bool IsListening() const;
+	bool _IsListening() const;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|EmptyInterface")
-	void setBackendService(TScriptInterface<ITbSimpleEmptyInterfaceInterface> InService);
+	void _setBackendService(TScriptInterface<ITbSimpleEmptyInterfaceInterface> InService);
 
 private:
 	TSharedPtr<FMessageEndpoint, ESPMode::ThreadSafe> TbSimpleEmptyInterfaceMsgBusEndpoint;
 
 	void OnNewClientDiscovered(const FTbSimpleEmptyInterfaceDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnPing(const FTbSimpleEmptyInterfacePingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnClientDisconnected(const FTbSimpleEmptyInterfaceClientDisconnectMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 
 	// signals

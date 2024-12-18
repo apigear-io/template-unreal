@@ -40,12 +40,12 @@ void UTestbed2ManyParamInterfaceMsgBusAdapter::Initialize(FSubsystemCollectionBa
 
 void UTestbed2ManyParamInterfaceMsgBusAdapter::Deinitialize()
 {
-	StopListening();
+	_StopListening();
 
 	Super::Deinitialize();
 }
 
-void UTestbed2ManyParamInterfaceMsgBusAdapter::StartListening()
+void UTestbed2ManyParamInterfaceMsgBusAdapter::_StartListening()
 {
 	if (Testbed2ManyParamInterfaceMsgBusEndpoint.IsValid())
 		return;
@@ -53,6 +53,7 @@ void UTestbed2ManyParamInterfaceMsgBusAdapter::StartListening()
 	// clang-format off
 	Testbed2ManyParamInterfaceMsgBusEndpoint = FMessageEndpoint::Builder("ApiGear/Testbed2/ManyParamInterface/Service")
 		.Handling<FTestbed2ManyParamInterfaceDiscoveryMessage>(this, &UTestbed2ManyParamInterfaceMsgBusAdapter::OnNewClientDiscovered)
+		.Handling<FTestbed2ManyParamInterfacePingMessage>(this, &UTestbed2ManyParamInterfaceMsgBusAdapter::OnPing)
 		.Handling<FTestbed2ManyParamInterfaceClientDisconnectMessage>(this, &UTestbed2ManyParamInterfaceMsgBusAdapter::OnClientDisconnected)
 		.Handling<FTestbed2ManyParamInterfaceSetProp1RequestMessage>(this, &UTestbed2ManyParamInterfaceMsgBusAdapter::OnSetProp1Request)
 		.Handling<FTestbed2ManyParamInterfaceSetProp2RequestMessage>(this, &UTestbed2ManyParamInterfaceMsgBusAdapter::OnSetProp2Request)
@@ -71,7 +72,7 @@ void UTestbed2ManyParamInterfaceMsgBusAdapter::StartListening()
 	}
 }
 
-void UTestbed2ManyParamInterfaceMsgBusAdapter::StopListening()
+void UTestbed2ManyParamInterfaceMsgBusAdapter::_StopListening()
 {
 	auto msg = new FTestbed2ManyParamInterfaceServiceDisconnectMessage();
 
@@ -88,12 +89,12 @@ void UTestbed2ManyParamInterfaceMsgBusAdapter::StopListening()
 	ConnectedClients.Reset();
 }
 
-bool UTestbed2ManyParamInterfaceMsgBusAdapter::IsListening() const
+bool UTestbed2ManyParamInterfaceMsgBusAdapter::_IsListening() const
 {
 	return Testbed2ManyParamInterfaceMsgBusEndpoint.IsValid();
 }
 
-void UTestbed2ManyParamInterfaceMsgBusAdapter::setBackendService(TScriptInterface<ITestbed2ManyParamInterfaceInterface> InService)
+void UTestbed2ManyParamInterfaceMsgBusAdapter::_setBackendService(TScriptInterface<ITestbed2ManyParamInterfaceInterface> InService)
 {
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
@@ -149,6 +150,21 @@ void UTestbed2ManyParamInterfaceMsgBusAdapter::OnNewClientDiscovered(const FTest
 	}
 }
 
+void UTestbed2ManyParamInterfaceMsgBusAdapter::OnPing(const FTestbed2ManyParamInterfacePingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	auto msg = new FTestbed2ManyParamInterfacePongMessage();
+	msg->Timestamp = InMessage.Timestamp;
+
+	if (Testbed2ManyParamInterfaceMsgBusEndpoint.IsValid())
+	{
+		Testbed2ManyParamInterfaceMsgBusEndpoint->Send<FTestbed2ManyParamInterfacePongMessage>(msg, EMessageFlags::Reliable,
+			nullptr,
+			TArrayBuilder<FMessageAddress>().Add(Context->GetSender()),
+			FTimespan::Zero(),
+			FDateTime::MaxValue());
+	}
+}
+
 void UTestbed2ManyParamInterfaceMsgBusAdapter::OnClientDisconnected(const FTestbed2ManyParamInterfaceClientDisconnectMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	ConnectedClients.Remove(Context->GetSender());
@@ -157,7 +173,7 @@ void UTestbed2ManyParamInterfaceMsgBusAdapter::OnClientDisconnected(const FTestb
 void UTestbed2ManyParamInterfaceMsgBusAdapter::OnFunc1Request(const FTestbed2ManyParamInterfaceFunc1RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	auto msg = new FTestbed2ManyParamInterfaceFunc1ReplyMessage();
-	msg->RepsonseId = InMessage.RepsonseId;
+	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->Execute_Func1(BackendService.GetObject(), InMessage.Param1);
 
 	if (Testbed2ManyParamInterfaceMsgBusEndpoint.IsValid())
@@ -173,7 +189,7 @@ void UTestbed2ManyParamInterfaceMsgBusAdapter::OnFunc1Request(const FTestbed2Man
 void UTestbed2ManyParamInterfaceMsgBusAdapter::OnFunc2Request(const FTestbed2ManyParamInterfaceFunc2RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	auto msg = new FTestbed2ManyParamInterfaceFunc2ReplyMessage();
-	msg->RepsonseId = InMessage.RepsonseId;
+	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->Execute_Func2(BackendService.GetObject(), InMessage.Param1, InMessage.Param2);
 
 	if (Testbed2ManyParamInterfaceMsgBusEndpoint.IsValid())
@@ -189,7 +205,7 @@ void UTestbed2ManyParamInterfaceMsgBusAdapter::OnFunc2Request(const FTestbed2Man
 void UTestbed2ManyParamInterfaceMsgBusAdapter::OnFunc3Request(const FTestbed2ManyParamInterfaceFunc3RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	auto msg = new FTestbed2ManyParamInterfaceFunc3ReplyMessage();
-	msg->RepsonseId = InMessage.RepsonseId;
+	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->Execute_Func3(BackendService.GetObject(), InMessage.Param1, InMessage.Param2, InMessage.Param3);
 
 	if (Testbed2ManyParamInterfaceMsgBusEndpoint.IsValid())
@@ -205,7 +221,7 @@ void UTestbed2ManyParamInterfaceMsgBusAdapter::OnFunc3Request(const FTestbed2Man
 void UTestbed2ManyParamInterfaceMsgBusAdapter::OnFunc4Request(const FTestbed2ManyParamInterfaceFunc4RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	auto msg = new FTestbed2ManyParamInterfaceFunc4ReplyMessage();
-	msg->RepsonseId = InMessage.RepsonseId;
+	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->Execute_Func4(BackendService.GetObject(), InMessage.Param1, InMessage.Param2, InMessage.Param3, InMessage.Param4);
 
 	if (Testbed2ManyParamInterfaceMsgBusEndpoint.IsValid())

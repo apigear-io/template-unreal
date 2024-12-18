@@ -56,6 +56,24 @@ struct FTestbed2NestedStruct3InterfaceServiceDisconnectMessage
 };
 
 USTRUCT()
+struct FTestbed2NestedStruct3InterfacePingMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	double Timestamp = 0.0;
+};
+
+USTRUCT()
+struct FTestbed2NestedStruct3InterfacePongMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	double Timestamp = 0.0;
+};
+
+USTRUCT()
 struct FTestbed2NestedStruct3InterfaceSig1SignalMessage
 {
 	GENERATED_BODY()
@@ -151,7 +169,8 @@ struct FTestbed2NestedStruct3InterfaceFunc1RequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
+
 	UPROPERTY()
 	FTestbed2NestedStruct1 Param1 = FTestbed2NestedStruct1();
 };
@@ -162,7 +181,7 @@ struct FTestbed2NestedStruct3InterfaceFunc1ReplyMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
 
 	UPROPERTY()
 	FTestbed2NestedStruct1 Result = FTestbed2NestedStruct1();
@@ -174,7 +193,8 @@ struct FTestbed2NestedStruct3InterfaceFunc2RequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
+
 	UPROPERTY()
 	FTestbed2NestedStruct1 Param1 = FTestbed2NestedStruct1();
 
@@ -188,7 +208,7 @@ struct FTestbed2NestedStruct3InterfaceFunc2ReplyMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
 
 	UPROPERTY()
 	FTestbed2NestedStruct1 Result = FTestbed2NestedStruct1();
@@ -200,7 +220,8 @@ struct FTestbed2NestedStruct3InterfaceFunc3RequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
+
 	UPROPERTY()
 	FTestbed2NestedStruct1 Param1 = FTestbed2NestedStruct1();
 
@@ -217,7 +238,7 @@ struct FTestbed2NestedStruct3InterfaceFunc3ReplyMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
 
 	UPROPERTY()
 	FTestbed2NestedStruct1 Result = FTestbed2NestedStruct1();

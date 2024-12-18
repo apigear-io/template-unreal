@@ -25,13 +25,12 @@ limitations under the License.
 class FMessageEndpoint;
 // messages
 struct FTbSimpleNoOperationsInterfaceDiscoveryMessage;
+struct FTbSimpleNoOperationsInterfacePingMessage;
 struct FTbSimpleNoOperationsInterfaceClientDisconnectMessage;
 struct FTbSimpleNoOperationsInterfaceSigVoidSignalMessage;
-
 struct FTbSimpleNoOperationsInterfaceSigBoolSignalMessage;
 struct FTbSimpleNoOperationsInterfaceSetPropBoolRequestMessage;
 struct FTbSimpleNoOperationsInterfacePropBoolChangedMessage;
-
 struct FTbSimpleNoOperationsInterfaceSetPropIntRequestMessage;
 struct FTbSimpleNoOperationsInterfacePropIntChangedMessage;
 
@@ -52,21 +51,22 @@ public:
 
 	// connection handling
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoOperationsInterface|Remote")
-	void StartListening();
+	void _StartListening();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoOperationsInterface|Remote")
-	void StopListening();
+	void _StopListening();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoOperationsInterface|Remote")
-	bool IsListening() const;
+	bool _IsListening() const;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoOperationsInterface")
-	void setBackendService(TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> InService);
+	void _setBackendService(TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> InService);
 
 private:
 	TSharedPtr<FMessageEndpoint, ESPMode::ThreadSafe> TbSimpleNoOperationsInterfaceMsgBusEndpoint;
 
 	void OnNewClientDiscovered(const FTbSimpleNoOperationsInterfaceDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnPing(const FTbSimpleNoOperationsInterfacePingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnClientDisconnected(const FTbSimpleNoOperationsInterfaceClientDisconnectMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnSetPropBoolRequest(const FTbSimpleNoOperationsInterfaceSetPropBoolRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnSetPropIntRequest(const FTbSimpleNoOperationsInterfaceSetPropIntRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);

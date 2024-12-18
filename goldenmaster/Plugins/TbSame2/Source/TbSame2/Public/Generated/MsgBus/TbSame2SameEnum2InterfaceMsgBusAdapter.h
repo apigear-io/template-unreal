@@ -25,13 +25,12 @@ limitations under the License.
 class FMessageEndpoint;
 // messages
 struct FTbSame2SameEnum2InterfaceDiscoveryMessage;
+struct FTbSame2SameEnum2InterfacePingMessage;
 struct FTbSame2SameEnum2InterfaceClientDisconnectMessage;
 struct FTbSame2SameEnum2InterfaceSig1SignalMessage;
-
 struct FTbSame2SameEnum2InterfaceSig2SignalMessage;
 struct FTbSame2SameEnum2InterfaceSetProp1RequestMessage;
 struct FTbSame2SameEnum2InterfaceProp1ChangedMessage;
-
 struct FTbSame2SameEnum2InterfaceSetProp2RequestMessage;
 struct FTbSame2SameEnum2InterfaceProp2ChangedMessage;
 struct FTbSame2SameEnum2InterfaceFunc1RequestMessage;
@@ -54,21 +53,22 @@ public:
 
 	// connection handling
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum2Interface|Remote")
-	void StartListening();
+	void _StartListening();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum2Interface|Remote")
-	void StopListening();
+	void _StopListening();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum2Interface|Remote")
-	bool IsListening() const;
+	bool _IsListening() const;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum2Interface")
-	void setBackendService(TScriptInterface<ITbSame2SameEnum2InterfaceInterface> InService);
+	void _setBackendService(TScriptInterface<ITbSame2SameEnum2InterfaceInterface> InService);
 
 private:
 	TSharedPtr<FMessageEndpoint, ESPMode::ThreadSafe> TbSame2SameEnum2InterfaceMsgBusEndpoint;
 
 	void OnNewClientDiscovered(const FTbSame2SameEnum2InterfaceDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnPing(const FTbSame2SameEnum2InterfacePingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnClientDisconnected(const FTbSame2SameEnum2InterfaceClientDisconnectMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnFunc1Request(const FTbSame2SameEnum2InterfaceFunc1RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnFunc2Request(const FTbSame2SameEnum2InterfaceFunc2RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);

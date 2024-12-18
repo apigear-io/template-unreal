@@ -53,6 +53,24 @@ struct FTbSame1SameEnum2InterfaceServiceDisconnectMessage
 };
 
 USTRUCT()
+struct FTbSame1SameEnum2InterfacePingMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	double Timestamp = 0.0;
+};
+
+USTRUCT()
+struct FTbSame1SameEnum2InterfacePongMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	double Timestamp = 0.0;
+};
+
+USTRUCT()
 struct FTbSame1SameEnum2InterfaceSig1SignalMessage
 {
 	GENERATED_BODY()
@@ -115,7 +133,8 @@ struct FTbSame1SameEnum2InterfaceFunc1RequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
+
 	UPROPERTY()
 	ETbSame1Enum1 Param1 = ETbSame1Enum1::TS1E1_VALUE1;
 };
@@ -126,7 +145,7 @@ struct FTbSame1SameEnum2InterfaceFunc1ReplyMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
 
 	UPROPERTY()
 	ETbSame1Enum1 Result = ETbSame1Enum1::TS1E1_VALUE1;
@@ -138,7 +157,8 @@ struct FTbSame1SameEnum2InterfaceFunc2RequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
+
 	UPROPERTY()
 	ETbSame1Enum1 Param1 = ETbSame1Enum1::TS1E1_VALUE1;
 
@@ -152,7 +172,7 @@ struct FTbSame1SameEnum2InterfaceFunc2ReplyMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
 
 	UPROPERTY()
 	ETbSame1Enum1 Result = ETbSame1Enum1::TS1E1_VALUE1;

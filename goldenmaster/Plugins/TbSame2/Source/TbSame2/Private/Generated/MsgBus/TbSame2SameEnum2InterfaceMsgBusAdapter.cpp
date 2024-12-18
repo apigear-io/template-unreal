@@ -40,12 +40,12 @@ void UTbSame2SameEnum2InterfaceMsgBusAdapter::Initialize(FSubsystemCollectionBas
 
 void UTbSame2SameEnum2InterfaceMsgBusAdapter::Deinitialize()
 {
-	StopListening();
+	_StopListening();
 
 	Super::Deinitialize();
 }
 
-void UTbSame2SameEnum2InterfaceMsgBusAdapter::StartListening()
+void UTbSame2SameEnum2InterfaceMsgBusAdapter::_StartListening()
 {
 	if (TbSame2SameEnum2InterfaceMsgBusEndpoint.IsValid())
 		return;
@@ -53,6 +53,7 @@ void UTbSame2SameEnum2InterfaceMsgBusAdapter::StartListening()
 	// clang-format off
 	TbSame2SameEnum2InterfaceMsgBusEndpoint = FMessageEndpoint::Builder("ApiGear/TbSame2/SameEnum2Interface/Service")
 		.Handling<FTbSame2SameEnum2InterfaceDiscoveryMessage>(this, &UTbSame2SameEnum2InterfaceMsgBusAdapter::OnNewClientDiscovered)
+		.Handling<FTbSame2SameEnum2InterfacePingMessage>(this, &UTbSame2SameEnum2InterfaceMsgBusAdapter::OnPing)
 		.Handling<FTbSame2SameEnum2InterfaceClientDisconnectMessage>(this, &UTbSame2SameEnum2InterfaceMsgBusAdapter::OnClientDisconnected)
 		.Handling<FTbSame2SameEnum2InterfaceSetProp1RequestMessage>(this, &UTbSame2SameEnum2InterfaceMsgBusAdapter::OnSetProp1Request)
 		.Handling<FTbSame2SameEnum2InterfaceSetProp2RequestMessage>(this, &UTbSame2SameEnum2InterfaceMsgBusAdapter::OnSetProp2Request)
@@ -67,7 +68,7 @@ void UTbSame2SameEnum2InterfaceMsgBusAdapter::StartListening()
 	}
 }
 
-void UTbSame2SameEnum2InterfaceMsgBusAdapter::StopListening()
+void UTbSame2SameEnum2InterfaceMsgBusAdapter::_StopListening()
 {
 	auto msg = new FTbSame2SameEnum2InterfaceServiceDisconnectMessage();
 
@@ -84,12 +85,12 @@ void UTbSame2SameEnum2InterfaceMsgBusAdapter::StopListening()
 	ConnectedClients.Reset();
 }
 
-bool UTbSame2SameEnum2InterfaceMsgBusAdapter::IsListening() const
+bool UTbSame2SameEnum2InterfaceMsgBusAdapter::_IsListening() const
 {
 	return TbSame2SameEnum2InterfaceMsgBusEndpoint.IsValid();
 }
 
-void UTbSame2SameEnum2InterfaceMsgBusAdapter::setBackendService(TScriptInterface<ITbSame2SameEnum2InterfaceInterface> InService)
+void UTbSame2SameEnum2InterfaceMsgBusAdapter::_setBackendService(TScriptInterface<ITbSame2SameEnum2InterfaceInterface> InService)
 {
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
@@ -135,6 +136,21 @@ void UTbSame2SameEnum2InterfaceMsgBusAdapter::OnNewClientDiscovered(const FTbSam
 	}
 }
 
+void UTbSame2SameEnum2InterfaceMsgBusAdapter::OnPing(const FTbSame2SameEnum2InterfacePingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	auto msg = new FTbSame2SameEnum2InterfacePongMessage();
+	msg->Timestamp = InMessage.Timestamp;
+
+	if (TbSame2SameEnum2InterfaceMsgBusEndpoint.IsValid())
+	{
+		TbSame2SameEnum2InterfaceMsgBusEndpoint->Send<FTbSame2SameEnum2InterfacePongMessage>(msg, EMessageFlags::Reliable,
+			nullptr,
+			TArrayBuilder<FMessageAddress>().Add(Context->GetSender()),
+			FTimespan::Zero(),
+			FDateTime::MaxValue());
+	}
+}
+
 void UTbSame2SameEnum2InterfaceMsgBusAdapter::OnClientDisconnected(const FTbSame2SameEnum2InterfaceClientDisconnectMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	ConnectedClients.Remove(Context->GetSender());
@@ -143,7 +159,7 @@ void UTbSame2SameEnum2InterfaceMsgBusAdapter::OnClientDisconnected(const FTbSame
 void UTbSame2SameEnum2InterfaceMsgBusAdapter::OnFunc1Request(const FTbSame2SameEnum2InterfaceFunc1RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	auto msg = new FTbSame2SameEnum2InterfaceFunc1ReplyMessage();
-	msg->RepsonseId = InMessage.RepsonseId;
+	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->Execute_Func1(BackendService.GetObject(), InMessage.Param1);
 
 	if (TbSame2SameEnum2InterfaceMsgBusEndpoint.IsValid())
@@ -159,7 +175,7 @@ void UTbSame2SameEnum2InterfaceMsgBusAdapter::OnFunc1Request(const FTbSame2SameE
 void UTbSame2SameEnum2InterfaceMsgBusAdapter::OnFunc2Request(const FTbSame2SameEnum2InterfaceFunc2RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	auto msg = new FTbSame2SameEnum2InterfaceFunc2ReplyMessage();
-	msg->RepsonseId = InMessage.RepsonseId;
+	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->Execute_Func2(BackendService.GetObject(), InMessage.Param1, InMessage.Param2);
 
 	if (TbSame2SameEnum2InterfaceMsgBusEndpoint.IsValid())

@@ -25,43 +25,30 @@ limitations under the License.
 class FMessageEndpoint;
 // messages
 struct FTbSimpleSimpleInterfaceDiscoveryMessage;
+struct FTbSimpleSimpleInterfacePingMessage;
 struct FTbSimpleSimpleInterfaceClientDisconnectMessage;
 struct FTbSimpleSimpleInterfaceSigBoolSignalMessage;
-
 struct FTbSimpleSimpleInterfaceSigIntSignalMessage;
-
 struct FTbSimpleSimpleInterfaceSigInt32SignalMessage;
-
 struct FTbSimpleSimpleInterfaceSigInt64SignalMessage;
-
 struct FTbSimpleSimpleInterfaceSigFloatSignalMessage;
-
 struct FTbSimpleSimpleInterfaceSigFloat32SignalMessage;
-
 struct FTbSimpleSimpleInterfaceSigFloat64SignalMessage;
-
 struct FTbSimpleSimpleInterfaceSigStringSignalMessage;
 struct FTbSimpleSimpleInterfaceSetPropBoolRequestMessage;
 struct FTbSimpleSimpleInterfacePropBoolChangedMessage;
-
 struct FTbSimpleSimpleInterfaceSetPropIntRequestMessage;
 struct FTbSimpleSimpleInterfacePropIntChangedMessage;
-
 struct FTbSimpleSimpleInterfaceSetPropInt32RequestMessage;
 struct FTbSimpleSimpleInterfacePropInt32ChangedMessage;
-
 struct FTbSimpleSimpleInterfaceSetPropInt64RequestMessage;
 struct FTbSimpleSimpleInterfacePropInt64ChangedMessage;
-
 struct FTbSimpleSimpleInterfaceSetPropFloatRequestMessage;
 struct FTbSimpleSimpleInterfacePropFloatChangedMessage;
-
 struct FTbSimpleSimpleInterfaceSetPropFloat32RequestMessage;
 struct FTbSimpleSimpleInterfacePropFloat32ChangedMessage;
-
 struct FTbSimpleSimpleInterfaceSetPropFloat64RequestMessage;
 struct FTbSimpleSimpleInterfacePropFloat64ChangedMessage;
-
 struct FTbSimpleSimpleInterfaceSetPropStringRequestMessage;
 struct FTbSimpleSimpleInterfacePropStringChangedMessage;
 struct FTbSimpleSimpleInterfaceFuncNoReturnValueRequestMessage;
@@ -91,21 +78,22 @@ public:
 
 	// connection handling
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Remote")
-	void StartListening();
+	void _StartListening();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Remote")
-	void StopListening();
+	void _StopListening();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Remote")
-	bool IsListening() const;
+	bool _IsListening() const;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface")
-	void setBackendService(TScriptInterface<ITbSimpleSimpleInterfaceInterface> InService);
+	void _setBackendService(TScriptInterface<ITbSimpleSimpleInterfaceInterface> InService);
 
 private:
 	TSharedPtr<FMessageEndpoint, ESPMode::ThreadSafe> TbSimpleSimpleInterfaceMsgBusEndpoint;
 
 	void OnNewClientDiscovered(const FTbSimpleSimpleInterfaceDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnPing(const FTbSimpleSimpleInterfacePingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnClientDisconnected(const FTbSimpleSimpleInterfaceClientDisconnectMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnFuncNoReturnValueRequest(const FTbSimpleSimpleInterfaceFuncNoReturnValueRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnFuncBoolRequest(const FTbSimpleSimpleInterfaceFuncBoolRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);

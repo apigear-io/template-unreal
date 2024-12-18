@@ -25,46 +25,32 @@ limitations under the License.
 class FMessageEndpoint;
 // messages
 struct FTbSimpleSimpleArrayInterfaceDiscoveryMessage;
+struct FTbSimpleSimpleArrayInterfacePingMessage;
 struct FTbSimpleSimpleArrayInterfaceClientDisconnectMessage;
 struct FTbSimpleSimpleArrayInterfaceSigBoolSignalMessage;
-
 struct FTbSimpleSimpleArrayInterfaceSigIntSignalMessage;
-
 struct FTbSimpleSimpleArrayInterfaceSigInt32SignalMessage;
-
 struct FTbSimpleSimpleArrayInterfaceSigInt64SignalMessage;
-
 struct FTbSimpleSimpleArrayInterfaceSigFloatSignalMessage;
-
 struct FTbSimpleSimpleArrayInterfaceSigFloat32SignalMessage;
-
 struct FTbSimpleSimpleArrayInterfaceSigFloat64SignalMessage;
-
 struct FTbSimpleSimpleArrayInterfaceSigStringSignalMessage;
 struct FTbSimpleSimpleArrayInterfaceSetPropBoolRequestMessage;
 struct FTbSimpleSimpleArrayInterfacePropBoolChangedMessage;
-
 struct FTbSimpleSimpleArrayInterfaceSetPropIntRequestMessage;
 struct FTbSimpleSimpleArrayInterfacePropIntChangedMessage;
-
 struct FTbSimpleSimpleArrayInterfaceSetPropInt32RequestMessage;
 struct FTbSimpleSimpleArrayInterfacePropInt32ChangedMessage;
-
 struct FTbSimpleSimpleArrayInterfaceSetPropInt64RequestMessage;
 struct FTbSimpleSimpleArrayInterfacePropInt64ChangedMessage;
-
 struct FTbSimpleSimpleArrayInterfaceSetPropFloatRequestMessage;
 struct FTbSimpleSimpleArrayInterfacePropFloatChangedMessage;
-
 struct FTbSimpleSimpleArrayInterfaceSetPropFloat32RequestMessage;
 struct FTbSimpleSimpleArrayInterfacePropFloat32ChangedMessage;
-
 struct FTbSimpleSimpleArrayInterfaceSetPropFloat64RequestMessage;
 struct FTbSimpleSimpleArrayInterfacePropFloat64ChangedMessage;
-
 struct FTbSimpleSimpleArrayInterfaceSetPropStringRequestMessage;
 struct FTbSimpleSimpleArrayInterfacePropStringChangedMessage;
-
 struct FTbSimpleSimpleArrayInterfaceSetPropReadOnlyStringRequestMessage;
 struct FTbSimpleSimpleArrayInterfacePropReadOnlyStringChangedMessage;
 struct FTbSimpleSimpleArrayInterfaceFuncBoolRequestMessage;
@@ -93,21 +79,22 @@ public:
 
 	// connection handling
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Remote")
-	void StartListening();
+	void _StartListening();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Remote")
-	void StopListening();
+	void _StopListening();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Remote")
-	bool IsListening() const;
+	bool _IsListening() const;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
-	void setBackendService(TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> InService);
+	void _setBackendService(TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> InService);
 
 private:
 	TSharedPtr<FMessageEndpoint, ESPMode::ThreadSafe> TbSimpleSimpleArrayInterfaceMsgBusEndpoint;
 
 	void OnNewClientDiscovered(const FTbSimpleSimpleArrayInterfaceDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnPing(const FTbSimpleSimpleArrayInterfacePingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnClientDisconnected(const FTbSimpleSimpleArrayInterfaceClientDisconnectMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnFuncBoolRequest(const FTbSimpleSimpleArrayInterfaceFuncBoolRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnFuncIntRequest(const FTbSimpleSimpleArrayInterfaceFuncIntRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);

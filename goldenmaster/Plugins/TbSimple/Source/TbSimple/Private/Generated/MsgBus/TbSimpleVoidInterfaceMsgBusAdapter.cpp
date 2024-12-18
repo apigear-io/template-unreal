@@ -40,12 +40,12 @@ void UTbSimpleVoidInterfaceMsgBusAdapter::Initialize(FSubsystemCollectionBase& C
 
 void UTbSimpleVoidInterfaceMsgBusAdapter::Deinitialize()
 {
-	StopListening();
+	_StopListening();
 
 	Super::Deinitialize();
 }
 
-void UTbSimpleVoidInterfaceMsgBusAdapter::StartListening()
+void UTbSimpleVoidInterfaceMsgBusAdapter::_StartListening()
 {
 	if (TbSimpleVoidInterfaceMsgBusEndpoint.IsValid())
 		return;
@@ -53,6 +53,7 @@ void UTbSimpleVoidInterfaceMsgBusAdapter::StartListening()
 	// clang-format off
 	TbSimpleVoidInterfaceMsgBusEndpoint = FMessageEndpoint::Builder("ApiGear/TbSimple/VoidInterface/Service")
 		.Handling<FTbSimpleVoidInterfaceDiscoveryMessage>(this, &UTbSimpleVoidInterfaceMsgBusAdapter::OnNewClientDiscovered)
+		.Handling<FTbSimpleVoidInterfacePingMessage>(this, &UTbSimpleVoidInterfaceMsgBusAdapter::OnPing)
 		.Handling<FTbSimpleVoidInterfaceClientDisconnectMessage>(this, &UTbSimpleVoidInterfaceMsgBusAdapter::OnClientDisconnected)
 		.Handling<FTbSimpleVoidInterfaceFuncVoidRequestMessage>(this, &UTbSimpleVoidInterfaceMsgBusAdapter::OnFuncVoidRequest)
 		.Build();
@@ -64,7 +65,7 @@ void UTbSimpleVoidInterfaceMsgBusAdapter::StartListening()
 	}
 }
 
-void UTbSimpleVoidInterfaceMsgBusAdapter::StopListening()
+void UTbSimpleVoidInterfaceMsgBusAdapter::_StopListening()
 {
 	auto msg = new FTbSimpleVoidInterfaceServiceDisconnectMessage();
 
@@ -81,12 +82,12 @@ void UTbSimpleVoidInterfaceMsgBusAdapter::StopListening()
 	ConnectedClients.Reset();
 }
 
-bool UTbSimpleVoidInterfaceMsgBusAdapter::IsListening() const
+bool UTbSimpleVoidInterfaceMsgBusAdapter::_IsListening() const
 {
 	return TbSimpleVoidInterfaceMsgBusEndpoint.IsValid();
 }
 
-void UTbSimpleVoidInterfaceMsgBusAdapter::setBackendService(TScriptInterface<ITbSimpleVoidInterfaceInterface> InService)
+void UTbSimpleVoidInterfaceMsgBusAdapter::_setBackendService(TScriptInterface<ITbSimpleVoidInterfaceInterface> InService)
 {
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
@@ -119,6 +120,21 @@ void UTbSimpleVoidInterfaceMsgBusAdapter::OnNewClientDiscovered(const FTbSimpleV
 		TbSimpleVoidInterfaceMsgBusEndpoint->Send<FTbSimpleVoidInterfaceInitMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
 			TArrayBuilder<FMessageAddress>().Add(ClientAddress),
+			FTimespan::Zero(),
+			FDateTime::MaxValue());
+	}
+}
+
+void UTbSimpleVoidInterfaceMsgBusAdapter::OnPing(const FTbSimpleVoidInterfacePingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	auto msg = new FTbSimpleVoidInterfacePongMessage();
+	msg->Timestamp = InMessage.Timestamp;
+
+	if (TbSimpleVoidInterfaceMsgBusEndpoint.IsValid())
+	{
+		TbSimpleVoidInterfaceMsgBusEndpoint->Send<FTbSimpleVoidInterfacePongMessage>(msg, EMessageFlags::Reliable,
+			nullptr,
+			TArrayBuilder<FMessageAddress>().Add(Context->GetSender()),
 			FTimespan::Zero(),
 			FDateTime::MaxValue());
 	}

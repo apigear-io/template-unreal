@@ -40,12 +40,12 @@ void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::Initialize(FSubsystemCollectio
 
 void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::Deinitialize()
 {
-	StopListening();
+	_StopListening();
 
 	Super::Deinitialize();
 }
 
-void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::StartListening()
+void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::_StartListening()
 {
 	if (TbSimpleNoPropertiesInterfaceMsgBusEndpoint.IsValid())
 		return;
@@ -53,6 +53,7 @@ void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::StartListening()
 	// clang-format off
 	TbSimpleNoPropertiesInterfaceMsgBusEndpoint = FMessageEndpoint::Builder("ApiGear/TbSimple/NoPropertiesInterface/Service")
 		.Handling<FTbSimpleNoPropertiesInterfaceDiscoveryMessage>(this, &UTbSimpleNoPropertiesInterfaceMsgBusAdapter::OnNewClientDiscovered)
+		.Handling<FTbSimpleNoPropertiesInterfacePingMessage>(this, &UTbSimpleNoPropertiesInterfaceMsgBusAdapter::OnPing)
 		.Handling<FTbSimpleNoPropertiesInterfaceClientDisconnectMessage>(this, &UTbSimpleNoPropertiesInterfaceMsgBusAdapter::OnClientDisconnected)
 		.Handling<FTbSimpleNoPropertiesInterfaceFuncVoidRequestMessage>(this, &UTbSimpleNoPropertiesInterfaceMsgBusAdapter::OnFuncVoidRequest)
 		.Handling<FTbSimpleNoPropertiesInterfaceFuncBoolRequestMessage>(this, &UTbSimpleNoPropertiesInterfaceMsgBusAdapter::OnFuncBoolRequest)
@@ -65,7 +66,7 @@ void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::StartListening()
 	}
 }
 
-void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::StopListening()
+void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::_StopListening()
 {
 	auto msg = new FTbSimpleNoPropertiesInterfaceServiceDisconnectMessage();
 
@@ -82,12 +83,12 @@ void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::StopListening()
 	ConnectedClients.Reset();
 }
 
-bool UTbSimpleNoPropertiesInterfaceMsgBusAdapter::IsListening() const
+bool UTbSimpleNoPropertiesInterfaceMsgBusAdapter::_IsListening() const
 {
 	return TbSimpleNoPropertiesInterfaceMsgBusEndpoint.IsValid();
 }
 
-void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::setBackendService(TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> InService)
+void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::_setBackendService(TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> InService)
 {
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
@@ -127,6 +128,21 @@ void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::OnNewClientDiscovered(const FT
 	}
 }
 
+void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::OnPing(const FTbSimpleNoPropertiesInterfacePingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	auto msg = new FTbSimpleNoPropertiesInterfacePongMessage();
+	msg->Timestamp = InMessage.Timestamp;
+
+	if (TbSimpleNoPropertiesInterfaceMsgBusEndpoint.IsValid())
+	{
+		TbSimpleNoPropertiesInterfaceMsgBusEndpoint->Send<FTbSimpleNoPropertiesInterfacePongMessage>(msg, EMessageFlags::Reliable,
+			nullptr,
+			TArrayBuilder<FMessageAddress>().Add(Context->GetSender()),
+			FTimespan::Zero(),
+			FDateTime::MaxValue());
+	}
+}
+
 void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::OnClientDisconnected(const FTbSimpleNoPropertiesInterfaceClientDisconnectMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	ConnectedClients.Remove(Context->GetSender());
@@ -140,7 +156,7 @@ void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::OnFuncVoidRequest(const FTbSim
 void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::OnFuncBoolRequest(const FTbSimpleNoPropertiesInterfaceFuncBoolRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	auto msg = new FTbSimpleNoPropertiesInterfaceFuncBoolReplyMessage();
-	msg->RepsonseId = InMessage.RepsonseId;
+	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->Execute_FuncBool(BackendService.GetObject(), InMessage.bParamBool);
 
 	if (TbSimpleNoPropertiesInterfaceMsgBusEndpoint.IsValid())

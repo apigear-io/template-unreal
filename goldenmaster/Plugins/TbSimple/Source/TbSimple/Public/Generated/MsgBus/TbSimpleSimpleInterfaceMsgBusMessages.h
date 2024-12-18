@@ -71,6 +71,24 @@ struct FTbSimpleSimpleInterfaceServiceDisconnectMessage
 };
 
 USTRUCT()
+struct FTbSimpleSimpleInterfacePingMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	double Timestamp = 0.0;
+};
+
+USTRUCT()
+struct FTbSimpleSimpleInterfacePongMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	double Timestamp = 0.0;
+};
+
+USTRUCT()
 struct FTbSimpleSimpleInterfaceSigBoolSignalMessage
 {
 	GENERATED_BODY()
@@ -292,8 +310,6 @@ struct FTbSimpleSimpleInterfaceFuncNoReturnValueRequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
-	UPROPERTY()
 	bool bParamBool = false;
 };
 
@@ -303,7 +319,8 @@ struct FTbSimpleSimpleInterfaceFuncBoolRequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
+
 	UPROPERTY()
 	bool bParamBool = false;
 };
@@ -314,7 +331,7 @@ struct FTbSimpleSimpleInterfaceFuncBoolReplyMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
 
 	UPROPERTY()
 	bool Result = false;
@@ -326,7 +343,8 @@ struct FTbSimpleSimpleInterfaceFuncIntRequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
+
 	UPROPERTY()
 	int32 ParamInt = 0;
 };
@@ -337,7 +355,7 @@ struct FTbSimpleSimpleInterfaceFuncIntReplyMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
 
 	UPROPERTY()
 	int32 Result = 0;
@@ -349,7 +367,8 @@ struct FTbSimpleSimpleInterfaceFuncInt32RequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
+
 	UPROPERTY()
 	int32 ParamInt32 = 0;
 };
@@ -360,7 +379,7 @@ struct FTbSimpleSimpleInterfaceFuncInt32ReplyMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
 
 	UPROPERTY()
 	int32 Result = 0;
@@ -372,7 +391,8 @@ struct FTbSimpleSimpleInterfaceFuncInt64RequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
+
 	UPROPERTY()
 	int64 ParamInt64 = 0LL;
 };
@@ -383,7 +403,7 @@ struct FTbSimpleSimpleInterfaceFuncInt64ReplyMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
 
 	UPROPERTY()
 	int64 Result = 0LL;
@@ -395,7 +415,8 @@ struct FTbSimpleSimpleInterfaceFuncFloatRequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
+
 	UPROPERTY()
 	float ParamFloat = 0.0f;
 };
@@ -406,7 +427,7 @@ struct FTbSimpleSimpleInterfaceFuncFloatReplyMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
 
 	UPROPERTY()
 	float Result = 0.0f;
@@ -418,7 +439,8 @@ struct FTbSimpleSimpleInterfaceFuncFloat32RequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
+
 	UPROPERTY()
 	float ParamFloat32 = 0.0f;
 };
@@ -429,7 +451,7 @@ struct FTbSimpleSimpleInterfaceFuncFloat32ReplyMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
 
 	UPROPERTY()
 	float Result = 0.0f;
@@ -441,7 +463,8 @@ struct FTbSimpleSimpleInterfaceFuncFloat64RequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
+
 	UPROPERTY()
 	double ParamFloat = 0.0;
 };
@@ -452,7 +475,7 @@ struct FTbSimpleSimpleInterfaceFuncFloat64ReplyMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
 
 	UPROPERTY()
 	double Result = 0.0;
@@ -464,7 +487,8 @@ struct FTbSimpleSimpleInterfaceFuncStringRequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
+
 	UPROPERTY()
 	FString ParamString = FString();
 };
@@ -475,7 +499,7 @@ struct FTbSimpleSimpleInterfaceFuncStringReplyMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
 
 	UPROPERTY()
 	FString Result = FString();

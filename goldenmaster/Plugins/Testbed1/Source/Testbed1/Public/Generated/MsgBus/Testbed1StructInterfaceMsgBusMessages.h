@@ -59,6 +59,24 @@ struct FTestbed1StructInterfaceServiceDisconnectMessage
 };
 
 USTRUCT()
+struct FTestbed1StructInterfacePingMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	double Timestamp = 0.0;
+};
+
+USTRUCT()
+struct FTestbed1StructInterfacePongMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	double Timestamp = 0.0;
+};
+
+USTRUCT()
 struct FTestbed1StructInterfaceSigBoolSignalMessage
 {
 	GENERATED_BODY()
@@ -172,7 +190,8 @@ struct FTestbed1StructInterfaceFuncBoolRequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
+
 	UPROPERTY()
 	FTestbed1StructBool ParamBool = FTestbed1StructBool();
 };
@@ -183,7 +202,7 @@ struct FTestbed1StructInterfaceFuncBoolReplyMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
 
 	UPROPERTY()
 	FTestbed1StructBool Result = FTestbed1StructBool();
@@ -195,7 +214,8 @@ struct FTestbed1StructInterfaceFuncIntRequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
+
 	UPROPERTY()
 	FTestbed1StructInt ParamInt = FTestbed1StructInt();
 };
@@ -206,7 +226,7 @@ struct FTestbed1StructInterfaceFuncIntReplyMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
 
 	UPROPERTY()
 	FTestbed1StructInt Result = FTestbed1StructInt();
@@ -218,7 +238,8 @@ struct FTestbed1StructInterfaceFuncFloatRequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
+
 	UPROPERTY()
 	FTestbed1StructFloat ParamFloat = FTestbed1StructFloat();
 };
@@ -229,7 +250,7 @@ struct FTestbed1StructInterfaceFuncFloatReplyMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
 
 	UPROPERTY()
 	FTestbed1StructFloat Result = FTestbed1StructFloat();
@@ -241,7 +262,8 @@ struct FTestbed1StructInterfaceFuncStringRequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
+
 	UPROPERTY()
 	FTestbed1StructString ParamString = FTestbed1StructString();
 };
@@ -252,7 +274,7 @@ struct FTestbed1StructInterfaceFuncStringReplyMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
 
 	UPROPERTY()
 	FTestbed1StructString Result = FTestbed1StructString();

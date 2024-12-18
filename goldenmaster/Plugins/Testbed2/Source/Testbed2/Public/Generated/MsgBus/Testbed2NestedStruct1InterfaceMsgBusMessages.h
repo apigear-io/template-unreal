@@ -50,6 +50,24 @@ struct FTestbed2NestedStruct1InterfaceServiceDisconnectMessage
 };
 
 USTRUCT()
+struct FTestbed2NestedStruct1InterfacePingMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	double Timestamp = 0.0;
+};
+
+USTRUCT()
+struct FTestbed2NestedStruct1InterfacePongMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	double Timestamp = 0.0;
+};
+
+USTRUCT()
 struct FTestbed2NestedStruct1InterfaceSig1SignalMessage
 {
 	GENERATED_BODY()
@@ -82,7 +100,8 @@ struct FTestbed2NestedStruct1InterfaceFunc1RequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
+
 	UPROPERTY()
 	FTestbed2NestedStruct1 Param1 = FTestbed2NestedStruct1();
 };
@@ -93,7 +112,7 @@ struct FTestbed2NestedStruct1InterfaceFunc1ReplyMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
 
 	UPROPERTY()
 	FTestbed2NestedStruct1 Result = FTestbed2NestedStruct1();

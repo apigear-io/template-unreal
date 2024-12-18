@@ -61,6 +61,24 @@ struct FCounterCounterServiceDisconnectMessage
 };
 
 USTRUCT()
+struct FCounterCounterPingMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	double Timestamp = 0.0;
+};
+
+USTRUCT()
+struct FCounterCounterPongMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	double Timestamp = 0.0;
+};
+
+USTRUCT()
 struct FCounterCounterValueChangedSignalMessage
 {
 	GENERATED_BODY()
@@ -156,7 +174,8 @@ struct FCounterCounterIncrementRequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
+
 	UPROPERTY()
 	FVector Vec = FVector(0.f, 0.f, 0.f);
 };
@@ -167,7 +186,7 @@ struct FCounterCounterIncrementReplyMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
 
 	UPROPERTY()
 	FVector Result = FVector(0.f, 0.f, 0.f);
@@ -179,7 +198,8 @@ struct FCounterCounterIncrementArrayRequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
+
 	UPROPERTY()
 	TArray<FVector> Vec = TArray<FVector>();
 };
@@ -190,7 +210,7 @@ struct FCounterCounterIncrementArrayReplyMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
 
 	UPROPERTY()
 	TArray<FVector> Result = TArray<FVector>();
@@ -202,7 +222,8 @@ struct FCounterCounterDecrementRequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
+
 	UPROPERTY()
 	FCustomTypesVector3D Vec = FCustomTypesVector3D();
 };
@@ -213,7 +234,7 @@ struct FCounterCounterDecrementReplyMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
 
 	UPROPERTY()
 	FCustomTypesVector3D Result = FCustomTypesVector3D();
@@ -225,7 +246,8 @@ struct FCounterCounterDecrementArrayRequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
+
 	UPROPERTY()
 	TArray<FCustomTypesVector3D> Vec = TArray<FCustomTypesVector3D>();
 };
@@ -236,7 +258,7 @@ struct FCounterCounterDecrementArrayReplyMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
 
 	UPROPERTY()
 	TArray<FCustomTypesVector3D> Result = TArray<FCustomTypesVector3D>();

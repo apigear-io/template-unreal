@@ -25,23 +25,18 @@ limitations under the License.
 class FMessageEndpoint;
 // messages
 struct FTestbed2ManyParamInterfaceDiscoveryMessage;
+struct FTestbed2ManyParamInterfacePingMessage;
 struct FTestbed2ManyParamInterfaceClientDisconnectMessage;
 struct FTestbed2ManyParamInterfaceSig1SignalMessage;
-
 struct FTestbed2ManyParamInterfaceSig2SignalMessage;
-
 struct FTestbed2ManyParamInterfaceSig3SignalMessage;
-
 struct FTestbed2ManyParamInterfaceSig4SignalMessage;
 struct FTestbed2ManyParamInterfaceSetProp1RequestMessage;
 struct FTestbed2ManyParamInterfaceProp1ChangedMessage;
-
 struct FTestbed2ManyParamInterfaceSetProp2RequestMessage;
 struct FTestbed2ManyParamInterfaceProp2ChangedMessage;
-
 struct FTestbed2ManyParamInterfaceSetProp3RequestMessage;
 struct FTestbed2ManyParamInterfaceProp3ChangedMessage;
-
 struct FTestbed2ManyParamInterfaceSetProp4RequestMessage;
 struct FTestbed2ManyParamInterfaceProp4ChangedMessage;
 struct FTestbed2ManyParamInterfaceFunc1RequestMessage;
@@ -66,21 +61,22 @@ public:
 
 	// connection handling
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Remote")
-	void StartListening();
+	void _StartListening();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Remote")
-	void StopListening();
+	void _StopListening();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Remote")
-	bool IsListening() const;
+	bool _IsListening() const;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
-	void setBackendService(TScriptInterface<ITestbed2ManyParamInterfaceInterface> InService);
+	void _setBackendService(TScriptInterface<ITestbed2ManyParamInterfaceInterface> InService);
 
 private:
 	TSharedPtr<FMessageEndpoint, ESPMode::ThreadSafe> Testbed2ManyParamInterfaceMsgBusEndpoint;
 
 	void OnNewClientDiscovered(const FTestbed2ManyParamInterfaceDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnPing(const FTestbed2ManyParamInterfacePingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnClientDisconnected(const FTestbed2ManyParamInterfaceClientDisconnectMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnFunc1Request(const FTestbed2ManyParamInterfaceFunc1RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnFunc2Request(const FTestbed2ManyParamInterfaceFunc2RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);

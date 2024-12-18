@@ -39,12 +39,12 @@ void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
 
 void {{$Class}}::Deinitialize()
 {
-	StopListening();
+	_StopListening();
 
 	Super::Deinitialize();
 }
 
-void {{$Class}}::StartListening()
+void {{$Class}}::_StartListening()
 {
 	if ({{$Iface}}MsgBusEndpoint.IsValid())
 		return;
@@ -52,6 +52,7 @@ void {{$Class}}::StartListening()
 	// clang-format off
 	{{$Iface}}MsgBusEndpoint = FMessageEndpoint::Builder("ApiGear/{{$ModuleName}}/{{$IfaceName}}/Service")
 		.Handling<F{{$Iface}}DiscoveryMessage>(this, &{{$Class}}::OnNewClientDiscovered)
+		.Handling<F{{$Iface}}PingMessage>(this, &{{$Class}}::OnPing)
 		.Handling<F{{$Iface}}ClientDisconnectMessage>(this, &{{$Class}}::OnClientDisconnected)
 {{- range $i, $e := .Interface.Properties }}
 {{- if not .IsReadOnly }}
@@ -70,7 +71,7 @@ void {{$Class}}::StartListening()
 	}
 }
 
-void {{$Class}}::StopListening()
+void {{$Class}}::_StopListening()
 {
 	auto msg = new F{{$Iface}}ServiceDisconnectMessage();
 
@@ -87,12 +88,12 @@ void {{$Class}}::StopListening()
 	ConnectedClients.Reset();
 }
 
-bool {{$Class}}::IsListening() const
+bool {{$Class}}::_IsListening() const
 {
 	return {{$Iface}}MsgBusEndpoint.IsValid();
 }
 
-void {{$Class}}::setBackendService(TScriptInterface<I{{$Iface}}Interface> InService)
+void {{$Class}}::_setBackendService(TScriptInterface<I{{$Iface}}Interface> InService)
 {
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
@@ -148,6 +149,21 @@ void {{$Class}}::OnNewClientDiscovered(const F{{$Iface}}DiscoveryMessage& /*InMe
 	}
 }
 
+void {{$Class}}::OnPing(const F{{$Iface}}PingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	auto msg = new F{{$Iface}}PongMessage();
+	msg->Timestamp = InMessage.Timestamp;
+
+	if ({{$Iface}}MsgBusEndpoint.IsValid())
+	{
+		{{$Iface}}MsgBusEndpoint->Send<F{{$Iface}}PongMessage>(msg, EMessageFlags::Reliable,
+			nullptr,
+			TArrayBuilder<FMessageAddress>().Add(Context->GetSender()),
+			FTimespan::Zero(),
+			FDateTime::MaxValue());
+	}
+}
+
 void {{$Class}}::OnClientDisconnected(const F{{$Iface}}ClientDisconnectMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	ConnectedClients.Remove(Context->GetSender());
@@ -164,7 +180,7 @@ void {{$Class}}::On{{Camel .Name}}Request(const F{{$Iface}}{{Camel .Name}}Reques
 	);
 {{- else }}
 	auto msg = new F{{$Iface}}{{Camel .Name}}ReplyMessage();
-	msg->RepsonseId = InMessage.RepsonseId;
+	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->Execute_{{Camel .Name}}(BackendService.GetObject()
 {{- range $i, $e := .Params -}}
 	, InMessage.{{ueVar "" .}}

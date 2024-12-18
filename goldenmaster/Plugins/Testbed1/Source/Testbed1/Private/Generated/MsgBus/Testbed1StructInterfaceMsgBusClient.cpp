@@ -24,7 +24,10 @@ limitations under the License.
 #include "Generated/MsgBus/Testbed1StructInterfaceMsgBusMessages.h"
 #include "Async/Async.h"
 #include "Engine/Engine.h"
+#include "TimerManager.h"
 #include "Misc/DateTime.h"
+#include "GenericPlatform/GenericPlatformMath.h"
+#include "GenericPlatform/GenericPlatformTime.h"
 #include "MessageEndpointBuilder.h"
 #include "MessageEndpoint.h"
 #include "HAL/CriticalSection.h"
@@ -49,7 +52,6 @@ UTestbed1StructInterfaceMsgBusClient::UTestbed1StructInterfaceMsgBusClient()
 	: UAbstractTestbed1StructInterface()
 	, _SentData(MakePimpl<Testbed1StructInterfacePropertiesMsgBusData>())
 {
-	/* m_sink = std::make_shared<FOLinkSink>("testbed1.StructInterface"); */
 }
 
 UTestbed1StructInterfaceMsgBusClient::~UTestbed1StructInterfaceMsgBusClient() = default;
@@ -57,47 +59,46 @@ UTestbed1StructInterfaceMsgBusClient::~UTestbed1StructInterfaceMsgBusClient() = 
 void UTestbed1StructInterfaceMsgBusClient::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-
-	Connect();
 }
 
 void UTestbed1StructInterfaceMsgBusClient::Deinitialize()
 {
-	Disconnect();
+	_Disconnect();
 
 	Super::Deinitialize();
 }
 
-void UTestbed1StructInterfaceMsgBusClient::Connect()
+void UTestbed1StructInterfaceMsgBusClient::_Connect()
 {
-	if (IsConnected())
+	if (!_HeartbeatTimerHandle.IsValid() && GetWorld())
 	{
+		GetWorld()->GetTimerManager().SetTimer(_HeartbeatTimerHandle, this, &UTestbed1StructInterfaceMsgBusClient::_OnHeartbeat, _HeartbeatIntervalMS / 1000.0f, true);
+	}
+
+	if (_IsConnected())
+	{
+		UE_LOG(LogTestbed1StructInterfaceMsgBusClient, Log, TEXT("Already connected, cannot connect again."));
 		return;
 	}
 
 	if (Testbed1StructInterfaceMsgBusEndpoint.IsValid() && !ServiceAddress.IsValid())
 	{
-		DiscoverService();
+		_DiscoverService();
 		return;
 	}
 
 	// clang-format off
 	Testbed1StructInterfaceMsgBusEndpoint = FMessageEndpoint::Builder("ApiGear/Testbed1/StructInterface/Client")
 		.Handling<FTestbed1StructInterfaceInitMessage>(this, &UTestbed1StructInterfaceMsgBusClient::OnConnectionInit)
+		.Handling<FTestbed1StructInterfacePongMessage>(this, &UTestbed1StructInterfaceMsgBusClient::OnPong)
 		.Handling<FTestbed1StructInterfaceServiceDisconnectMessage>(this, &UTestbed1StructInterfaceMsgBusClient::OnServiceClosedConnection)
 		.Handling<FTestbed1StructInterfaceSigBoolSignalMessage>(this, &UTestbed1StructInterfaceMsgBusClient::OnSigBool)
-
 		.Handling<FTestbed1StructInterfaceSigIntSignalMessage>(this, &UTestbed1StructInterfaceMsgBusClient::OnSigInt)
-
 		.Handling<FTestbed1StructInterfaceSigFloatSignalMessage>(this, &UTestbed1StructInterfaceMsgBusClient::OnSigFloat)
-
 		.Handling<FTestbed1StructInterfaceSigStringSignalMessage>(this, &UTestbed1StructInterfaceMsgBusClient::OnSigString)
 		.Handling<FTestbed1StructInterfacePropBoolChangedMessage>(this, &UTestbed1StructInterfaceMsgBusClient::OnPropBoolChanged)
-
 		.Handling<FTestbed1StructInterfacePropIntChangedMessage>(this, &UTestbed1StructInterfaceMsgBusClient::OnPropIntChanged)
-
 		.Handling<FTestbed1StructInterfacePropFloatChangedMessage>(this, &UTestbed1StructInterfaceMsgBusClient::OnPropFloatChanged)
-
 		.Handling<FTestbed1StructInterfacePropStringChangedMessage>(this, &UTestbed1StructInterfaceMsgBusClient::OnPropStringChanged)
 		.Handling<FTestbed1StructInterfaceFuncBoolReplyMessage>(this, &UTestbed1StructInterfaceMsgBusClient::OnFuncBoolReply)
 		.Handling<FTestbed1StructInterfaceFuncIntReplyMessage>(this, &UTestbed1StructInterfaceMsgBusClient::OnFuncIntReply)
@@ -106,84 +107,143 @@ void UTestbed1StructInterfaceMsgBusClient::Connect()
 		.Build();
 	// clang-format on
 
-	DiscoverService();
+	_DiscoverService();
 }
 
-void UTestbed1StructInterfaceMsgBusClient::Disconnect()
+void UTestbed1StructInterfaceMsgBusClient::_Disconnect()
 {
-	if (!IsConnected())
+	_LastHbTimestamp = 0.0f;
+	if (_HeartbeatTimerHandle.IsValid() && GetWorld())
+	{
+		GetWorld()->GetTimerManager().ClearTimer(_HeartbeatTimerHandle);
+	}
+
+	if (!_IsConnected())
 	{
 		return;
 	}
 
 	auto msg = new FTestbed1StructInterfaceClientDisconnectMessage();
 
-	if (Testbed1StructInterfaceMsgBusEndpoint.IsValid())
-	{
-		Testbed1StructInterfaceMsgBusEndpoint->Send<FTestbed1StructInterfaceClientDisconnectMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-	}
+	Testbed1StructInterfaceMsgBusEndpoint->Send<FTestbed1StructInterfaceClientDisconnectMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
 
 	Testbed1StructInterfaceMsgBusEndpoint.Reset();
 	ServiceAddress.Invalidate();
 	_ConnectionStatusChanged.Broadcast(false);
 }
 
-void UTestbed1StructInterfaceMsgBusClient::DiscoverService()
+void UTestbed1StructInterfaceMsgBusClient::_DiscoverService()
 {
-	if (Testbed1StructInterfaceMsgBusEndpoint.IsValid())
+	if (!Testbed1StructInterfaceMsgBusEndpoint.IsValid())
 	{
-		Testbed1StructInterfaceMsgBusEndpoint->Publish<FTestbed1StructInterfaceDiscoveryMessage>(new FTestbed1StructInterfaceDiscoveryMessage());
+		return;
 	}
+
+	auto msg = new FTestbed1StructInterfaceDiscoveryMessage();
+	msg->ClientPingIntervalMS = _HeartbeatIntervalMS;
+
+	Testbed1StructInterfaceMsgBusEndpoint->Publish<FTestbed1StructInterfaceDiscoveryMessage>(msg);
 }
 
-bool UTestbed1StructInterfaceMsgBusClient::IsConnected() const
+bool UTestbed1StructInterfaceMsgBusClient::_IsConnected() const
 {
 	return Testbed1StructInterfaceMsgBusEndpoint.IsValid() && ServiceAddress.IsValid();
 }
 
-void UTestbed1StructInterfaceMsgBusClient::OnConnectionInit(const FTestbed1StructInterfaceInitMessage& InInitMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTestbed1StructInterfaceMsgBusClient::OnConnectionInit(const FTestbed1StructInterfaceInitMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	if (!ServiceAddress.IsValid())
+	if (ServiceAddress.IsValid())
 	{
-		ServiceAddress = Context->GetSender();
-		const bool bPropBoolChanged = InInitMessage.PropBool != PropBool;
-		if (bPropBoolChanged)
-		{
-			PropBool = InInitMessage.PropBool;
-			Execute__GetSignals(this)->OnPropBoolChanged.Broadcast(PropBool);
-		}
-
-		const bool bPropIntChanged = InInitMessage.PropInt != PropInt;
-		if (bPropIntChanged)
-		{
-			PropInt = InInitMessage.PropInt;
-			Execute__GetSignals(this)->OnPropIntChanged.Broadcast(PropInt);
-		}
-
-		const bool bPropFloatChanged = InInitMessage.PropFloat != PropFloat;
-		if (bPropFloatChanged)
-		{
-			PropFloat = InInitMessage.PropFloat;
-			Execute__GetSignals(this)->OnPropFloatChanged.Broadcast(PropFloat);
-		}
-
-		const bool bPropStringChanged = InInitMessage.PropString != PropString;
-		if (bPropStringChanged)
-		{
-			PropString = InInitMessage.PropString;
-			Execute__GetSignals(this)->OnPropStringChanged.Broadcast(PropString);
-		}
-
-		_ConnectionStatusChanged.Broadcast(true);
+		UE_LOG(LogTestbed1StructInterfaceMsgBusClient, Warning, TEXT("Got a second init message - should not happen"));
+		return;
 	}
-	else
+
+	ServiceAddress = Context->GetSender();
+	const bool bPropBoolChanged = InMessage.PropBool != PropBool;
+	if (bPropBoolChanged)
 	{
-		UE_LOG(LogTestbed1StructInterfaceMsgBusClient, Error, TEXT("Got a second init message - should not happen"));
+		PropBool = InMessage.PropBool;
+		Execute__GetSignals(this)->OnPropBoolChanged.Broadcast(PropBool);
 	}
+
+	const bool bPropIntChanged = InMessage.PropInt != PropInt;
+	if (bPropIntChanged)
+	{
+		PropInt = InMessage.PropInt;
+		Execute__GetSignals(this)->OnPropIntChanged.Broadcast(PropInt);
+	}
+
+	const bool bPropFloatChanged = InMessage.PropFloat != PropFloat;
+	if (bPropFloatChanged)
+	{
+		PropFloat = InMessage.PropFloat;
+		Execute__GetSignals(this)->OnPropFloatChanged.Broadcast(PropFloat);
+	}
+
+	const bool bPropStringChanged = InMessage.PropString != PropString;
+	if (bPropStringChanged)
+	{
+		PropString = InMessage.PropString;
+		Execute__GetSignals(this)->OnPropStringChanged.Broadcast(PropString);
+	}
+
+	_ConnectionStatusChanged.Broadcast(true);
+}
+
+void UTestbed1StructInterfaceMsgBusClient::_OnHeartbeat()
+{
+	if (_LastHbTimestamp > 0.1f)
+	{
+		double Delta = (FPlatformTime::Seconds() - _LastHbTimestamp) * 1000;
+
+		if (Delta > 2 * _HeartbeatIntervalMS)
+		{
+			// service seems to be dead or not responding - reset connection
+			ServiceAddress.Invalidate();
+			_LastHbTimestamp = 0.0f;
+		}
+	}
+
+	if (!_IsConnected())
+	{
+		UE_LOG(LogTestbed1StructInterfaceMsgBusClient, Warning, TEXT("Heartbeat failed. Client has no connection to service. Reconnecting ..."));
+
+		_Connect();
+		return;
+	}
+
+	auto msg = new FTestbed1StructInterfacePingMessage();
+	msg->Timestamp = FPlatformTime::Seconds();
+
+	Testbed1StructInterfaceMsgBusEndpoint->Send<FTestbed1StructInterfacePingMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
+}
+
+void UTestbed1StructInterfaceMsgBusClient::OnPong(const FTestbed1StructInterfacePongMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	_LastHbTimestamp = InMessage.Timestamp;
+
+	const double Current = FPlatformTime::Seconds();
+	const double DeltaMS = (Current - InMessage.Timestamp) * 1000.0f;
+
+	Stats.CurrentRTT_MS = DeltaMS;
+	Stats.AverageRTT_MS = (Stats.AverageRTT_MS + Stats.CurrentRTT_MS) / 2.0f;
+	Stats.MaxRTT_MS = FGenericPlatformMath::Max(Stats.MaxRTT_MS, Stats.CurrentRTT_MS);
+	Stats.MinRTT_MS = FGenericPlatformMath::Min(Stats.MinRTT_MS, Stats.CurrentRTT_MS);
+
+	_StatsUpdated.Broadcast(Stats);
+}
+
+const FTestbed1StructInterfaceStats& UTestbed1StructInterfaceMsgBusClient::_GetStats() const
+{
+	return Stats;
 }
 
 void UTestbed1StructInterfaceMsgBusClient::OnServiceClosedConnection(const FTestbed1StructInterfaceServiceDisconnectMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -204,7 +264,7 @@ FTestbed1StructBool UTestbed1StructInterfaceMsgBusClient::GetPropBool_Implementa
 
 void UTestbed1StructInterfaceMsgBusClient::SetPropBool_Implementation(const FTestbed1StructBool& InPropBool)
 {
-	if (!IsConnected())
+	if (!_IsConnected())
 	{
 		UE_LOG(LogTestbed1StructInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
 		return;
@@ -228,16 +288,13 @@ void UTestbed1StructInterfaceMsgBusClient::SetPropBool_Implementation(const FTes
 	auto msg = new FTestbed1StructInterfaceSetPropBoolRequestMessage();
 	msg->PropBool = InPropBool;
 
-	if (Testbed1StructInterfaceMsgBusEndpoint.IsValid())
-	{
-		Testbed1StructInterfaceMsgBusEndpoint->Send<FTestbed1StructInterfaceSetPropBoolRequestMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-		FScopeLock Lock(&(_SentData->PropBoolMutex));
-		_SentData->PropBool = InPropBool;
-	}
+	Testbed1StructInterfaceMsgBusEndpoint->Send<FTestbed1StructInterfaceSetPropBoolRequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
+	FScopeLock Lock(&(_SentData->PropBoolMutex));
+	_SentData->PropBool = InPropBool;
 }
 
 FTestbed1StructInt UTestbed1StructInterfaceMsgBusClient::GetPropInt_Implementation() const
@@ -247,7 +304,7 @@ FTestbed1StructInt UTestbed1StructInterfaceMsgBusClient::GetPropInt_Implementati
 
 void UTestbed1StructInterfaceMsgBusClient::SetPropInt_Implementation(const FTestbed1StructInt& InPropInt)
 {
-	if (!IsConnected())
+	if (!_IsConnected())
 	{
 		UE_LOG(LogTestbed1StructInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
 		return;
@@ -271,16 +328,13 @@ void UTestbed1StructInterfaceMsgBusClient::SetPropInt_Implementation(const FTest
 	auto msg = new FTestbed1StructInterfaceSetPropIntRequestMessage();
 	msg->PropInt = InPropInt;
 
-	if (Testbed1StructInterfaceMsgBusEndpoint.IsValid())
-	{
-		Testbed1StructInterfaceMsgBusEndpoint->Send<FTestbed1StructInterfaceSetPropIntRequestMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-		FScopeLock Lock(&(_SentData->PropIntMutex));
-		_SentData->PropInt = InPropInt;
-	}
+	Testbed1StructInterfaceMsgBusEndpoint->Send<FTestbed1StructInterfaceSetPropIntRequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
+	FScopeLock Lock(&(_SentData->PropIntMutex));
+	_SentData->PropInt = InPropInt;
 }
 
 FTestbed1StructFloat UTestbed1StructInterfaceMsgBusClient::GetPropFloat_Implementation() const
@@ -290,7 +344,7 @@ FTestbed1StructFloat UTestbed1StructInterfaceMsgBusClient::GetPropFloat_Implemen
 
 void UTestbed1StructInterfaceMsgBusClient::SetPropFloat_Implementation(const FTestbed1StructFloat& InPropFloat)
 {
-	if (!IsConnected())
+	if (!_IsConnected())
 	{
 		UE_LOG(LogTestbed1StructInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
 		return;
@@ -314,16 +368,13 @@ void UTestbed1StructInterfaceMsgBusClient::SetPropFloat_Implementation(const FTe
 	auto msg = new FTestbed1StructInterfaceSetPropFloatRequestMessage();
 	msg->PropFloat = InPropFloat;
 
-	if (Testbed1StructInterfaceMsgBusEndpoint.IsValid())
-	{
-		Testbed1StructInterfaceMsgBusEndpoint->Send<FTestbed1StructInterfaceSetPropFloatRequestMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-		FScopeLock Lock(&(_SentData->PropFloatMutex));
-		_SentData->PropFloat = InPropFloat;
-	}
+	Testbed1StructInterfaceMsgBusEndpoint->Send<FTestbed1StructInterfaceSetPropFloatRequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
+	FScopeLock Lock(&(_SentData->PropFloatMutex));
+	_SentData->PropFloat = InPropFloat;
 }
 
 FTestbed1StructString UTestbed1StructInterfaceMsgBusClient::GetPropString_Implementation() const
@@ -333,7 +384,7 @@ FTestbed1StructString UTestbed1StructInterfaceMsgBusClient::GetPropString_Implem
 
 void UTestbed1StructInterfaceMsgBusClient::SetPropString_Implementation(const FTestbed1StructString& InPropString)
 {
-	if (!IsConnected())
+	if (!_IsConnected())
 	{
 		UE_LOG(LogTestbed1StructInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
 		return;
@@ -357,21 +408,18 @@ void UTestbed1StructInterfaceMsgBusClient::SetPropString_Implementation(const FT
 	auto msg = new FTestbed1StructInterfaceSetPropStringRequestMessage();
 	msg->PropString = InPropString;
 
-	if (Testbed1StructInterfaceMsgBusEndpoint.IsValid())
-	{
-		Testbed1StructInterfaceMsgBusEndpoint->Send<FTestbed1StructInterfaceSetPropStringRequestMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-		FScopeLock Lock(&(_SentData->PropStringMutex));
-		_SentData->PropString = InPropString;
-	}
+	Testbed1StructInterfaceMsgBusEndpoint->Send<FTestbed1StructInterfaceSetPropStringRequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
+	FScopeLock Lock(&(_SentData->PropStringMutex));
+	_SentData->PropString = InPropString;
 }
 
 FTestbed1StructBool UTestbed1StructInterfaceMsgBusClient::FuncBool_Implementation(const FTestbed1StructBool& InParamBool)
 {
-	if (!IsConnected())
+	if (!_IsConnected())
 	{
 		UE_LOG(LogTestbed1StructInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
 
@@ -379,34 +427,28 @@ FTestbed1StructBool UTestbed1StructInterfaceMsgBusClient::FuncBool_Implementatio
 	}
 
 	auto msg = new FTestbed1StructInterfaceFuncBoolRequestMessage();
-	msg->RepsonseId = FGuid::NewGuid();
+	msg->ResponseId = FGuid::NewGuid();
 	msg->ParamBool = InParamBool;
+	TPromise<FTestbed1StructBool> Promise;
+	StorePromise(msg->ResponseId, Promise);
 
-	if (Testbed1StructInterfaceMsgBusEndpoint.IsValid())
-	{
-		TPromise<FTestbed1StructBool> Promise;
-		StorePromise(msg->RepsonseId, Promise);
+	Testbed1StructInterfaceMsgBusEndpoint->Send<FTestbed1StructInterfaceFuncBoolRequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
 
-		Testbed1StructInterfaceMsgBusEndpoint->Send<FTestbed1StructInterfaceFuncBoolRequestMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-
-		return Promise.GetFuture().Get();
-	}
-
-	return FTestbed1StructBool();
+	return Promise.GetFuture().Get();
 }
 
-void UTestbed1StructInterfaceMsgBusClient::OnFuncBoolReply(const FTestbed1StructInterfaceFuncBoolReplyMessage& InFuncBoolReplyMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTestbed1StructInterfaceMsgBusClient::OnFuncBoolReply(const FTestbed1StructInterfaceFuncBoolReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	FulfillPromise(InFuncBoolReplyMessage.RepsonseId, InFuncBoolReplyMessage.Result);
+	FulfillPromise(InMessage.ResponseId, InMessage.Result);
 }
 
 FTestbed1StructInt UTestbed1StructInterfaceMsgBusClient::FuncInt_Implementation(const FTestbed1StructInt& InParamInt)
 {
-	if (!IsConnected())
+	if (!_IsConnected())
 	{
 		UE_LOG(LogTestbed1StructInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
 
@@ -414,34 +456,28 @@ FTestbed1StructInt UTestbed1StructInterfaceMsgBusClient::FuncInt_Implementation(
 	}
 
 	auto msg = new FTestbed1StructInterfaceFuncIntRequestMessage();
-	msg->RepsonseId = FGuid::NewGuid();
+	msg->ResponseId = FGuid::NewGuid();
 	msg->ParamInt = InParamInt;
+	TPromise<FTestbed1StructInt> Promise;
+	StorePromise(msg->ResponseId, Promise);
 
-	if (Testbed1StructInterfaceMsgBusEndpoint.IsValid())
-	{
-		TPromise<FTestbed1StructInt> Promise;
-		StorePromise(msg->RepsonseId, Promise);
+	Testbed1StructInterfaceMsgBusEndpoint->Send<FTestbed1StructInterfaceFuncIntRequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
 
-		Testbed1StructInterfaceMsgBusEndpoint->Send<FTestbed1StructInterfaceFuncIntRequestMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-
-		return Promise.GetFuture().Get();
-	}
-
-	return FTestbed1StructInt();
+	return Promise.GetFuture().Get();
 }
 
-void UTestbed1StructInterfaceMsgBusClient::OnFuncIntReply(const FTestbed1StructInterfaceFuncIntReplyMessage& InFuncIntReplyMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTestbed1StructInterfaceMsgBusClient::OnFuncIntReply(const FTestbed1StructInterfaceFuncIntReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	FulfillPromise(InFuncIntReplyMessage.RepsonseId, InFuncIntReplyMessage.Result);
+	FulfillPromise(InMessage.ResponseId, InMessage.Result);
 }
 
 FTestbed1StructFloat UTestbed1StructInterfaceMsgBusClient::FuncFloat_Implementation(const FTestbed1StructFloat& InParamFloat)
 {
-	if (!IsConnected())
+	if (!_IsConnected())
 	{
 		UE_LOG(LogTestbed1StructInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
 
@@ -449,34 +485,28 @@ FTestbed1StructFloat UTestbed1StructInterfaceMsgBusClient::FuncFloat_Implementat
 	}
 
 	auto msg = new FTestbed1StructInterfaceFuncFloatRequestMessage();
-	msg->RepsonseId = FGuid::NewGuid();
+	msg->ResponseId = FGuid::NewGuid();
 	msg->ParamFloat = InParamFloat;
+	TPromise<FTestbed1StructFloat> Promise;
+	StorePromise(msg->ResponseId, Promise);
 
-	if (Testbed1StructInterfaceMsgBusEndpoint.IsValid())
-	{
-		TPromise<FTestbed1StructFloat> Promise;
-		StorePromise(msg->RepsonseId, Promise);
+	Testbed1StructInterfaceMsgBusEndpoint->Send<FTestbed1StructInterfaceFuncFloatRequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
 
-		Testbed1StructInterfaceMsgBusEndpoint->Send<FTestbed1StructInterfaceFuncFloatRequestMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-
-		return Promise.GetFuture().Get();
-	}
-
-	return FTestbed1StructFloat();
+	return Promise.GetFuture().Get();
 }
 
-void UTestbed1StructInterfaceMsgBusClient::OnFuncFloatReply(const FTestbed1StructInterfaceFuncFloatReplyMessage& InFuncFloatReplyMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTestbed1StructInterfaceMsgBusClient::OnFuncFloatReply(const FTestbed1StructInterfaceFuncFloatReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	FulfillPromise(InFuncFloatReplyMessage.RepsonseId, InFuncFloatReplyMessage.Result);
+	FulfillPromise(InMessage.ResponseId, InMessage.Result);
 }
 
 FTestbed1StructString UTestbed1StructInterfaceMsgBusClient::FuncString_Implementation(const FTestbed1StructString& InParamString)
 {
-	if (!IsConnected())
+	if (!_IsConnected())
 	{
 		UE_LOG(LogTestbed1StructInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
 
@@ -484,32 +514,26 @@ FTestbed1StructString UTestbed1StructInterfaceMsgBusClient::FuncString_Implement
 	}
 
 	auto msg = new FTestbed1StructInterfaceFuncStringRequestMessage();
-	msg->RepsonseId = FGuid::NewGuid();
+	msg->ResponseId = FGuid::NewGuid();
 	msg->ParamString = InParamString;
+	TPromise<FTestbed1StructString> Promise;
+	StorePromise(msg->ResponseId, Promise);
 
-	if (Testbed1StructInterfaceMsgBusEndpoint.IsValid())
-	{
-		TPromise<FTestbed1StructString> Promise;
-		StorePromise(msg->RepsonseId, Promise);
+	Testbed1StructInterfaceMsgBusEndpoint->Send<FTestbed1StructInterfaceFuncStringRequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
 
-		Testbed1StructInterfaceMsgBusEndpoint->Send<FTestbed1StructInterfaceFuncStringRequestMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-
-		return Promise.GetFuture().Get();
-	}
-
-	return FTestbed1StructString();
+	return Promise.GetFuture().Get();
 }
 
-void UTestbed1StructInterfaceMsgBusClient::OnFuncStringReply(const FTestbed1StructInterfaceFuncStringReplyMessage& InFuncStringReplyMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTestbed1StructInterfaceMsgBusClient::OnFuncStringReply(const FTestbed1StructInterfaceFuncStringReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	FulfillPromise(InFuncStringReplyMessage.RepsonseId, InFuncStringReplyMessage.Result);
+	FulfillPromise(InMessage.ResponseId, InMessage.Result);
 }
 
-void UTestbed1StructInterfaceMsgBusClient::OnSigBool(const FTestbed1StructInterfaceSigBoolSignalMessage& InSigBoolMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTestbed1StructInterfaceMsgBusClient::OnSigBool(const FTestbed1StructInterfaceSigBoolSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ServiceAddress != Context->GetSender())
 	{
@@ -517,11 +541,11 @@ void UTestbed1StructInterfaceMsgBusClient::OnSigBool(const FTestbed1StructInterf
 		return;
 	}
 
-	Execute__GetSignals(this)->OnSigBoolSignal.Broadcast(InSigBoolMessage.ParamBool);
+	Execute__GetSignals(this)->OnSigBoolSignal.Broadcast(InMessage.ParamBool);
 	return;
 }
 
-void UTestbed1StructInterfaceMsgBusClient::OnSigInt(const FTestbed1StructInterfaceSigIntSignalMessage& InSigIntMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTestbed1StructInterfaceMsgBusClient::OnSigInt(const FTestbed1StructInterfaceSigIntSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ServiceAddress != Context->GetSender())
 	{
@@ -529,11 +553,11 @@ void UTestbed1StructInterfaceMsgBusClient::OnSigInt(const FTestbed1StructInterfa
 		return;
 	}
 
-	Execute__GetSignals(this)->OnSigIntSignal.Broadcast(InSigIntMessage.ParamInt);
+	Execute__GetSignals(this)->OnSigIntSignal.Broadcast(InMessage.ParamInt);
 	return;
 }
 
-void UTestbed1StructInterfaceMsgBusClient::OnSigFloat(const FTestbed1StructInterfaceSigFloatSignalMessage& InSigFloatMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTestbed1StructInterfaceMsgBusClient::OnSigFloat(const FTestbed1StructInterfaceSigFloatSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ServiceAddress != Context->GetSender())
 	{
@@ -541,11 +565,11 @@ void UTestbed1StructInterfaceMsgBusClient::OnSigFloat(const FTestbed1StructInter
 		return;
 	}
 
-	Execute__GetSignals(this)->OnSigFloatSignal.Broadcast(InSigFloatMessage.ParamFloat);
+	Execute__GetSignals(this)->OnSigFloatSignal.Broadcast(InMessage.ParamFloat);
 	return;
 }
 
-void UTestbed1StructInterfaceMsgBusClient::OnSigString(const FTestbed1StructInterfaceSigStringSignalMessage& InSigStringMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTestbed1StructInterfaceMsgBusClient::OnSigString(const FTestbed1StructInterfaceSigStringSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ServiceAddress != Context->GetSender())
 	{
@@ -553,11 +577,11 @@ void UTestbed1StructInterfaceMsgBusClient::OnSigString(const FTestbed1StructInte
 		return;
 	}
 
-	Execute__GetSignals(this)->OnSigStringSignal.Broadcast(InSigStringMessage.ParamString);
+	Execute__GetSignals(this)->OnSigStringSignal.Broadcast(InMessage.ParamString);
 	return;
 }
 
-void UTestbed1StructInterfaceMsgBusClient::OnPropBoolChanged(const FTestbed1StructInterfacePropBoolChangedMessage& InPropBoolMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTestbed1StructInterfaceMsgBusClient::OnPropBoolChanged(const FTestbed1StructInterfacePropBoolChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ServiceAddress != Context->GetSender())
 	{
@@ -565,15 +589,15 @@ void UTestbed1StructInterfaceMsgBusClient::OnPropBoolChanged(const FTestbed1Stru
 		return;
 	}
 
-	const bool bPropBoolChanged = InPropBoolMessage.PropBool != PropBool;
+	const bool bPropBoolChanged = InMessage.PropBool != PropBool;
 	if (bPropBoolChanged)
 	{
-		PropBool = InPropBoolMessage.PropBool;
+		PropBool = InMessage.PropBool;
 		Execute__GetSignals(this)->OnPropBoolChanged.Broadcast(PropBool);
 	}
 }
 
-void UTestbed1StructInterfaceMsgBusClient::OnPropIntChanged(const FTestbed1StructInterfacePropIntChangedMessage& InPropIntMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTestbed1StructInterfaceMsgBusClient::OnPropIntChanged(const FTestbed1StructInterfacePropIntChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ServiceAddress != Context->GetSender())
 	{
@@ -581,15 +605,15 @@ void UTestbed1StructInterfaceMsgBusClient::OnPropIntChanged(const FTestbed1Struc
 		return;
 	}
 
-	const bool bPropIntChanged = InPropIntMessage.PropInt != PropInt;
+	const bool bPropIntChanged = InMessage.PropInt != PropInt;
 	if (bPropIntChanged)
 	{
-		PropInt = InPropIntMessage.PropInt;
+		PropInt = InMessage.PropInt;
 		Execute__GetSignals(this)->OnPropIntChanged.Broadcast(PropInt);
 	}
 }
 
-void UTestbed1StructInterfaceMsgBusClient::OnPropFloatChanged(const FTestbed1StructInterfacePropFloatChangedMessage& InPropFloatMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTestbed1StructInterfaceMsgBusClient::OnPropFloatChanged(const FTestbed1StructInterfacePropFloatChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ServiceAddress != Context->GetSender())
 	{
@@ -597,15 +621,15 @@ void UTestbed1StructInterfaceMsgBusClient::OnPropFloatChanged(const FTestbed1Str
 		return;
 	}
 
-	const bool bPropFloatChanged = InPropFloatMessage.PropFloat != PropFloat;
+	const bool bPropFloatChanged = InMessage.PropFloat != PropFloat;
 	if (bPropFloatChanged)
 	{
-		PropFloat = InPropFloatMessage.PropFloat;
+		PropFloat = InMessage.PropFloat;
 		Execute__GetSignals(this)->OnPropFloatChanged.Broadcast(PropFloat);
 	}
 }
 
-void UTestbed1StructInterfaceMsgBusClient::OnPropStringChanged(const FTestbed1StructInterfacePropStringChangedMessage& InPropStringMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTestbed1StructInterfaceMsgBusClient::OnPropStringChanged(const FTestbed1StructInterfacePropStringChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ServiceAddress != Context->GetSender())
 	{
@@ -613,10 +637,10 @@ void UTestbed1StructInterfaceMsgBusClient::OnPropStringChanged(const FTestbed1St
 		return;
 	}
 
-	const bool bPropStringChanged = InPropStringMessage.PropString != PropString;
+	const bool bPropStringChanged = InMessage.PropString != PropString;
 	if (bPropStringChanged)
 	{
-		PropString = InPropStringMessage.PropString;
+		PropString = InMessage.PropString;
 		Execute__GetSignals(this)->OnPropStringChanged.Broadcast(PropString);
 	}
 }

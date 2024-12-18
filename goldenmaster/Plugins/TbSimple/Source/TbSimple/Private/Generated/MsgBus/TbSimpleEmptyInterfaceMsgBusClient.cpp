@@ -24,7 +24,10 @@ limitations under the License.
 #include "Generated/MsgBus/TbSimpleEmptyInterfaceMsgBusMessages.h"
 #include "Async/Async.h"
 #include "Engine/Engine.h"
+#include "TimerManager.h"
 #include "Misc/DateTime.h"
+#include "GenericPlatform/GenericPlatformMath.h"
+#include "GenericPlatform/GenericPlatformTime.h"
 #include "MessageEndpointBuilder.h"
 #include "MessageEndpoint.h"
 DEFINE_LOG_CATEGORY(LogTbSimpleEmptyInterfaceMsgBusClient);
@@ -32,7 +35,6 @@ DEFINE_LOG_CATEGORY(LogTbSimpleEmptyInterfaceMsgBusClient);
 UTbSimpleEmptyInterfaceMsgBusClient::UTbSimpleEmptyInterfaceMsgBusClient()
 	: UAbstractTbSimpleEmptyInterface()
 {
-	/* m_sink = std::make_shared<FOLinkSink>("tb.simple.EmptyInterface"); */
 }
 
 UTbSimpleEmptyInterfaceMsgBusClient::~UTbSimpleEmptyInterfaceMsgBusClient() = default;
@@ -40,88 +42,152 @@ UTbSimpleEmptyInterfaceMsgBusClient::~UTbSimpleEmptyInterfaceMsgBusClient() = de
 void UTbSimpleEmptyInterfaceMsgBusClient::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-
-	Connect();
 }
 
 void UTbSimpleEmptyInterfaceMsgBusClient::Deinitialize()
 {
-	Disconnect();
+	_Disconnect();
 
 	Super::Deinitialize();
 }
 
-void UTbSimpleEmptyInterfaceMsgBusClient::Connect()
+void UTbSimpleEmptyInterfaceMsgBusClient::_Connect()
 {
-	if (IsConnected())
+	if (!_HeartbeatTimerHandle.IsValid() && GetWorld())
 	{
+		GetWorld()->GetTimerManager().SetTimer(_HeartbeatTimerHandle, this, &UTbSimpleEmptyInterfaceMsgBusClient::_OnHeartbeat, _HeartbeatIntervalMS / 1000.0f, true);
+	}
+
+	if (_IsConnected())
+	{
+		UE_LOG(LogTbSimpleEmptyInterfaceMsgBusClient, Log, TEXT("Already connected, cannot connect again."));
 		return;
 	}
 
 	if (TbSimpleEmptyInterfaceMsgBusEndpoint.IsValid() && !ServiceAddress.IsValid())
 	{
-		DiscoverService();
+		_DiscoverService();
 		return;
 	}
 
 	// clang-format off
 	TbSimpleEmptyInterfaceMsgBusEndpoint = FMessageEndpoint::Builder("ApiGear/TbSimple/EmptyInterface/Client")
 		.Handling<FTbSimpleEmptyInterfaceInitMessage>(this, &UTbSimpleEmptyInterfaceMsgBusClient::OnConnectionInit)
+		.Handling<FTbSimpleEmptyInterfacePongMessage>(this, &UTbSimpleEmptyInterfaceMsgBusClient::OnPong)
 		.Handling<FTbSimpleEmptyInterfaceServiceDisconnectMessage>(this, &UTbSimpleEmptyInterfaceMsgBusClient::OnServiceClosedConnection)
 		.Build();
 	// clang-format on
 
-	DiscoverService();
+	_DiscoverService();
 }
 
-void UTbSimpleEmptyInterfaceMsgBusClient::Disconnect()
+void UTbSimpleEmptyInterfaceMsgBusClient::_Disconnect()
 {
-	if (!IsConnected())
+	_LastHbTimestamp = 0.0f;
+	if (_HeartbeatTimerHandle.IsValid() && GetWorld())
+	{
+		GetWorld()->GetTimerManager().ClearTimer(_HeartbeatTimerHandle);
+	}
+
+	if (!_IsConnected())
 	{
 		return;
 	}
 
 	auto msg = new FTbSimpleEmptyInterfaceClientDisconnectMessage();
 
-	if (TbSimpleEmptyInterfaceMsgBusEndpoint.IsValid())
-	{
-		TbSimpleEmptyInterfaceMsgBusEndpoint->Send<FTbSimpleEmptyInterfaceClientDisconnectMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-	}
+	TbSimpleEmptyInterfaceMsgBusEndpoint->Send<FTbSimpleEmptyInterfaceClientDisconnectMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
 
 	TbSimpleEmptyInterfaceMsgBusEndpoint.Reset();
 	ServiceAddress.Invalidate();
 	_ConnectionStatusChanged.Broadcast(false);
 }
 
-void UTbSimpleEmptyInterfaceMsgBusClient::DiscoverService()
+void UTbSimpleEmptyInterfaceMsgBusClient::_DiscoverService()
 {
-	if (TbSimpleEmptyInterfaceMsgBusEndpoint.IsValid())
+	if (!TbSimpleEmptyInterfaceMsgBusEndpoint.IsValid())
 	{
-		TbSimpleEmptyInterfaceMsgBusEndpoint->Publish<FTbSimpleEmptyInterfaceDiscoveryMessage>(new FTbSimpleEmptyInterfaceDiscoveryMessage());
+		return;
 	}
+
+	auto msg = new FTbSimpleEmptyInterfaceDiscoveryMessage();
+	msg->ClientPingIntervalMS = _HeartbeatIntervalMS;
+
+	TbSimpleEmptyInterfaceMsgBusEndpoint->Publish<FTbSimpleEmptyInterfaceDiscoveryMessage>(msg);
 }
 
-bool UTbSimpleEmptyInterfaceMsgBusClient::IsConnected() const
+bool UTbSimpleEmptyInterfaceMsgBusClient::_IsConnected() const
 {
 	return TbSimpleEmptyInterfaceMsgBusEndpoint.IsValid() && ServiceAddress.IsValid();
 }
 
-void UTbSimpleEmptyInterfaceMsgBusClient::OnConnectionInit(const FTbSimpleEmptyInterfaceInitMessage& InInitMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTbSimpleEmptyInterfaceMsgBusClient::OnConnectionInit(const FTbSimpleEmptyInterfaceInitMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	if (!ServiceAddress.IsValid())
+	if (ServiceAddress.IsValid())
 	{
-		ServiceAddress = Context->GetSender();
+		UE_LOG(LogTbSimpleEmptyInterfaceMsgBusClient, Warning, TEXT("Got a second init message - should not happen"));
+		return;
+	}
 
-		_ConnectionStatusChanged.Broadcast(true);
-	}
-	else
+	ServiceAddress = Context->GetSender();
+
+	_ConnectionStatusChanged.Broadcast(true);
+}
+
+void UTbSimpleEmptyInterfaceMsgBusClient::_OnHeartbeat()
+{
+	if (_LastHbTimestamp > 0.1f)
 	{
-		UE_LOG(LogTbSimpleEmptyInterfaceMsgBusClient, Error, TEXT("Got a second init message - should not happen"));
+		double Delta = (FPlatformTime::Seconds() - _LastHbTimestamp) * 1000;
+
+		if (Delta > 2 * _HeartbeatIntervalMS)
+		{
+			// service seems to be dead or not responding - reset connection
+			ServiceAddress.Invalidate();
+			_LastHbTimestamp = 0.0f;
+		}
 	}
+
+	if (!_IsConnected())
+	{
+		UE_LOG(LogTbSimpleEmptyInterfaceMsgBusClient, Warning, TEXT("Heartbeat failed. Client has no connection to service. Reconnecting ..."));
+
+		_Connect();
+		return;
+	}
+
+	auto msg = new FTbSimpleEmptyInterfacePingMessage();
+	msg->Timestamp = FPlatformTime::Seconds();
+
+	TbSimpleEmptyInterfaceMsgBusEndpoint->Send<FTbSimpleEmptyInterfacePingMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
+}
+
+void UTbSimpleEmptyInterfaceMsgBusClient::OnPong(const FTbSimpleEmptyInterfacePongMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	_LastHbTimestamp = InMessage.Timestamp;
+
+	const double Current = FPlatformTime::Seconds();
+	const double DeltaMS = (Current - InMessage.Timestamp) * 1000.0f;
+
+	Stats.CurrentRTT_MS = DeltaMS;
+	Stats.AverageRTT_MS = (Stats.AverageRTT_MS + Stats.CurrentRTT_MS) / 2.0f;
+	Stats.MaxRTT_MS = FGenericPlatformMath::Max(Stats.MaxRTT_MS, Stats.CurrentRTT_MS);
+	Stats.MinRTT_MS = FGenericPlatformMath::Min(Stats.MinRTT_MS, Stats.CurrentRTT_MS);
+
+	_StatsUpdated.Broadcast(Stats);
+}
+
+const FTbSimpleEmptyInterfaceStats& UTbSimpleEmptyInterfaceMsgBusClient::_GetStats() const
+{
+	return Stats;
 }
 
 void UTbSimpleEmptyInterfaceMsgBusClient::OnServiceClosedConnection(const FTbSimpleEmptyInterfaceServiceDisconnectMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)

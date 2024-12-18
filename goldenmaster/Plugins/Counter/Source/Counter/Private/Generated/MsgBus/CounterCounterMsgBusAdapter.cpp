@@ -40,12 +40,12 @@ void UCounterCounterMsgBusAdapter::Initialize(FSubsystemCollectionBase& Collecti
 
 void UCounterCounterMsgBusAdapter::Deinitialize()
 {
-	StopListening();
+	_StopListening();
 
 	Super::Deinitialize();
 }
 
-void UCounterCounterMsgBusAdapter::StartListening()
+void UCounterCounterMsgBusAdapter::_StartListening()
 {
 	if (CounterCounterMsgBusEndpoint.IsValid())
 		return;
@@ -53,6 +53,7 @@ void UCounterCounterMsgBusAdapter::StartListening()
 	// clang-format off
 	CounterCounterMsgBusEndpoint = FMessageEndpoint::Builder("ApiGear/Counter/Counter/Service")
 		.Handling<FCounterCounterDiscoveryMessage>(this, &UCounterCounterMsgBusAdapter::OnNewClientDiscovered)
+		.Handling<FCounterCounterPingMessage>(this, &UCounterCounterMsgBusAdapter::OnPing)
 		.Handling<FCounterCounterClientDisconnectMessage>(this, &UCounterCounterMsgBusAdapter::OnClientDisconnected)
 		.Handling<FCounterCounterSetVectorRequestMessage>(this, &UCounterCounterMsgBusAdapter::OnSetVectorRequest)
 		.Handling<FCounterCounterSetExternVectorRequestMessage>(this, &UCounterCounterMsgBusAdapter::OnSetExternVectorRequest)
@@ -71,7 +72,7 @@ void UCounterCounterMsgBusAdapter::StartListening()
 	}
 }
 
-void UCounterCounterMsgBusAdapter::StopListening()
+void UCounterCounterMsgBusAdapter::_StopListening()
 {
 	auto msg = new FCounterCounterServiceDisconnectMessage();
 
@@ -88,12 +89,12 @@ void UCounterCounterMsgBusAdapter::StopListening()
 	ConnectedClients.Reset();
 }
 
-bool UCounterCounterMsgBusAdapter::IsListening() const
+bool UCounterCounterMsgBusAdapter::_IsListening() const
 {
 	return CounterCounterMsgBusEndpoint.IsValid();
 }
 
-void UCounterCounterMsgBusAdapter::setBackendService(TScriptInterface<ICounterCounterInterface> InService)
+void UCounterCounterMsgBusAdapter::_setBackendService(TScriptInterface<ICounterCounterInterface> InService)
 {
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
@@ -143,6 +144,21 @@ void UCounterCounterMsgBusAdapter::OnNewClientDiscovered(const FCounterCounterDi
 	}
 }
 
+void UCounterCounterMsgBusAdapter::OnPing(const FCounterCounterPingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	auto msg = new FCounterCounterPongMessage();
+	msg->Timestamp = InMessage.Timestamp;
+
+	if (CounterCounterMsgBusEndpoint.IsValid())
+	{
+		CounterCounterMsgBusEndpoint->Send<FCounterCounterPongMessage>(msg, EMessageFlags::Reliable,
+			nullptr,
+			TArrayBuilder<FMessageAddress>().Add(Context->GetSender()),
+			FTimespan::Zero(),
+			FDateTime::MaxValue());
+	}
+}
+
 void UCounterCounterMsgBusAdapter::OnClientDisconnected(const FCounterCounterClientDisconnectMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	ConnectedClients.Remove(Context->GetSender());
@@ -151,7 +167,7 @@ void UCounterCounterMsgBusAdapter::OnClientDisconnected(const FCounterCounterCli
 void UCounterCounterMsgBusAdapter::OnIncrementRequest(const FCounterCounterIncrementRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	auto msg = new FCounterCounterIncrementReplyMessage();
-	msg->RepsonseId = InMessage.RepsonseId;
+	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->Execute_Increment(BackendService.GetObject(), InMessage.Vec);
 
 	if (CounterCounterMsgBusEndpoint.IsValid())
@@ -167,7 +183,7 @@ void UCounterCounterMsgBusAdapter::OnIncrementRequest(const FCounterCounterIncre
 void UCounterCounterMsgBusAdapter::OnIncrementArrayRequest(const FCounterCounterIncrementArrayRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	auto msg = new FCounterCounterIncrementArrayReplyMessage();
-	msg->RepsonseId = InMessage.RepsonseId;
+	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->Execute_IncrementArray(BackendService.GetObject(), InMessage.Vec);
 
 	if (CounterCounterMsgBusEndpoint.IsValid())
@@ -183,7 +199,7 @@ void UCounterCounterMsgBusAdapter::OnIncrementArrayRequest(const FCounterCounter
 void UCounterCounterMsgBusAdapter::OnDecrementRequest(const FCounterCounterDecrementRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	auto msg = new FCounterCounterDecrementReplyMessage();
-	msg->RepsonseId = InMessage.RepsonseId;
+	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->Execute_Decrement(BackendService.GetObject(), InMessage.Vec);
 
 	if (CounterCounterMsgBusEndpoint.IsValid())
@@ -199,7 +215,7 @@ void UCounterCounterMsgBusAdapter::OnDecrementRequest(const FCounterCounterDecre
 void UCounterCounterMsgBusAdapter::OnDecrementArrayRequest(const FCounterCounterDecrementArrayRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	auto msg = new FCounterCounterDecrementArrayReplyMessage();
-	msg->RepsonseId = InMessage.RepsonseId;
+	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->Execute_DecrementArray(BackendService.GetObject(), InMessage.Vec);
 
 	if (CounterCounterMsgBusEndpoint.IsValid())

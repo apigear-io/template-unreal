@@ -25,18 +25,15 @@ limitations under the License.
 class FMessageEndpoint;
 // messages
 struct FTestbed2NestedStruct3InterfaceDiscoveryMessage;
+struct FTestbed2NestedStruct3InterfacePingMessage;
 struct FTestbed2NestedStruct3InterfaceClientDisconnectMessage;
 struct FTestbed2NestedStruct3InterfaceSig1SignalMessage;
-
 struct FTestbed2NestedStruct3InterfaceSig2SignalMessage;
-
 struct FTestbed2NestedStruct3InterfaceSig3SignalMessage;
 struct FTestbed2NestedStruct3InterfaceSetProp1RequestMessage;
 struct FTestbed2NestedStruct3InterfaceProp1ChangedMessage;
-
 struct FTestbed2NestedStruct3InterfaceSetProp2RequestMessage;
 struct FTestbed2NestedStruct3InterfaceProp2ChangedMessage;
-
 struct FTestbed2NestedStruct3InterfaceSetProp3RequestMessage;
 struct FTestbed2NestedStruct3InterfaceProp3ChangedMessage;
 struct FTestbed2NestedStruct3InterfaceFunc1RequestMessage;
@@ -60,21 +57,22 @@ public:
 
 	// connection handling
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface|Remote")
-	void StartListening();
+	void _StartListening();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface|Remote")
-	void StopListening();
+	void _StopListening();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface|Remote")
-	bool IsListening() const;
+	bool _IsListening() const;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface")
-	void setBackendService(TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> InService);
+	void _setBackendService(TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> InService);
 
 private:
 	TSharedPtr<FMessageEndpoint, ESPMode::ThreadSafe> Testbed2NestedStruct3InterfaceMsgBusEndpoint;
 
 	void OnNewClientDiscovered(const FTestbed2NestedStruct3InterfaceDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnPing(const FTestbed2NestedStruct3InterfacePingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnClientDisconnected(const FTestbed2NestedStruct3InterfaceClientDisconnectMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnFunc1Request(const FTestbed2NestedStruct3InterfaceFunc1RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnFunc2Request(const FTestbed2NestedStruct3InterfaceFunc2RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);

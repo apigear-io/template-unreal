@@ -40,12 +40,12 @@ void UTbNamesNamEsMsgBusAdapter::Initialize(FSubsystemCollectionBase& Collection
 
 void UTbNamesNamEsMsgBusAdapter::Deinitialize()
 {
-	StopListening();
+	_StopListening();
 
 	Super::Deinitialize();
 }
 
-void UTbNamesNamEsMsgBusAdapter::StartListening()
+void UTbNamesNamEsMsgBusAdapter::_StartListening()
 {
 	if (TbNamesNamEsMsgBusEndpoint.IsValid())
 		return;
@@ -53,6 +53,7 @@ void UTbNamesNamEsMsgBusAdapter::StartListening()
 	// clang-format off
 	TbNamesNamEsMsgBusEndpoint = FMessageEndpoint::Builder("ApiGear/TbNames/NamEs/Service")
 		.Handling<FTbNamesNamEsDiscoveryMessage>(this, &UTbNamesNamEsMsgBusAdapter::OnNewClientDiscovered)
+		.Handling<FTbNamesNamEsPingMessage>(this, &UTbNamesNamEsMsgBusAdapter::OnPing)
 		.Handling<FTbNamesNamEsClientDisconnectMessage>(this, &UTbNamesNamEsMsgBusAdapter::OnClientDisconnected)
 		.Handling<FTbNamesNamEsSetSwitchRequestMessage>(this, &UTbNamesNamEsMsgBusAdapter::OnSetSwitchRequest)
 		.Handling<FTbNamesNamEsSetSomePropertyRequestMessage>(this, &UTbNamesNamEsMsgBusAdapter::OnSetSomePropertyRequest)
@@ -68,7 +69,7 @@ void UTbNamesNamEsMsgBusAdapter::StartListening()
 	}
 }
 
-void UTbNamesNamEsMsgBusAdapter::StopListening()
+void UTbNamesNamEsMsgBusAdapter::_StopListening()
 {
 	auto msg = new FTbNamesNamEsServiceDisconnectMessage();
 
@@ -85,12 +86,12 @@ void UTbNamesNamEsMsgBusAdapter::StopListening()
 	ConnectedClients.Reset();
 }
 
-bool UTbNamesNamEsMsgBusAdapter::IsListening() const
+bool UTbNamesNamEsMsgBusAdapter::_IsListening() const
 {
 	return TbNamesNamEsMsgBusEndpoint.IsValid();
 }
 
-void UTbNamesNamEsMsgBusAdapter::setBackendService(TScriptInterface<ITbNamesNamEsInterface> InService)
+void UTbNamesNamEsMsgBusAdapter::_setBackendService(TScriptInterface<ITbNamesNamEsInterface> InService)
 {
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
@@ -134,6 +135,21 @@ void UTbNamesNamEsMsgBusAdapter::OnNewClientDiscovered(const FTbNamesNamEsDiscov
 		TbNamesNamEsMsgBusEndpoint->Send<FTbNamesNamEsInitMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
 			TArrayBuilder<FMessageAddress>().Add(ClientAddress),
+			FTimespan::Zero(),
+			FDateTime::MaxValue());
+	}
+}
+
+void UTbNamesNamEsMsgBusAdapter::OnPing(const FTbNamesNamEsPingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	auto msg = new FTbNamesNamEsPongMessage();
+	msg->Timestamp = InMessage.Timestamp;
+
+	if (TbNamesNamEsMsgBusEndpoint.IsValid())
+	{
+		TbNamesNamEsMsgBusEndpoint->Send<FTbNamesNamEsPongMessage>(msg, EMessageFlags::Reliable,
+			nullptr,
+			TArrayBuilder<FMessageAddress>().Add(Context->GetSender()),
 			FTimespan::Zero(),
 			FDateTime::MaxValue());
 	}

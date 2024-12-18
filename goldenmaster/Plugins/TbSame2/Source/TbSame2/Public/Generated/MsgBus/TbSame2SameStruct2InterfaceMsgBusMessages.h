@@ -53,6 +53,24 @@ struct FTbSame2SameStruct2InterfaceServiceDisconnectMessage
 };
 
 USTRUCT()
+struct FTbSame2SameStruct2InterfacePingMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	double Timestamp = 0.0;
+};
+
+USTRUCT()
+struct FTbSame2SameStruct2InterfacePongMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	double Timestamp = 0.0;
+};
+
+USTRUCT()
 struct FTbSame2SameStruct2InterfaceSig1SignalMessage
 {
 	GENERATED_BODY()
@@ -115,7 +133,8 @@ struct FTbSame2SameStruct2InterfaceFunc1RequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
+
 	UPROPERTY()
 	FTbSame2Struct1 Param1 = FTbSame2Struct1();
 };
@@ -126,7 +145,7 @@ struct FTbSame2SameStruct2InterfaceFunc1ReplyMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
 
 	UPROPERTY()
 	FTbSame2Struct1 Result = FTbSame2Struct1();
@@ -138,7 +157,8 @@ struct FTbSame2SameStruct2InterfaceFunc2RequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
+
 	UPROPERTY()
 	FTbSame2Struct1 Param1 = FTbSame2Struct1();
 
@@ -152,7 +172,7 @@ struct FTbSame2SameStruct2InterfaceFunc2ReplyMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
 
 	UPROPERTY()
 	FTbSame2Struct1 Result = FTbSame2Struct1();

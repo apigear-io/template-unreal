@@ -59,6 +59,24 @@ struct FTestbed1StructArrayInterfaceServiceDisconnectMessage
 };
 
 USTRUCT()
+struct FTestbed1StructArrayInterfacePingMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	double Timestamp = 0.0;
+};
+
+USTRUCT()
+struct FTestbed1StructArrayInterfacePongMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	double Timestamp = 0.0;
+};
+
+USTRUCT()
 struct FTestbed1StructArrayInterfaceSigBoolSignalMessage
 {
 	GENERATED_BODY()
@@ -172,7 +190,8 @@ struct FTestbed1StructArrayInterfaceFuncBoolRequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
+
 	UPROPERTY()
 	TArray<FTestbed1StructBool> ParamBool = TArray<FTestbed1StructBool>();
 };
@@ -183,7 +202,7 @@ struct FTestbed1StructArrayInterfaceFuncBoolReplyMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
 
 	UPROPERTY()
 	TArray<FTestbed1StructBool> Result = TArray<FTestbed1StructBool>();
@@ -195,7 +214,8 @@ struct FTestbed1StructArrayInterfaceFuncIntRequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
+
 	UPROPERTY()
 	TArray<FTestbed1StructInt> ParamInt = TArray<FTestbed1StructInt>();
 };
@@ -206,7 +226,7 @@ struct FTestbed1StructArrayInterfaceFuncIntReplyMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
 
 	UPROPERTY()
 	TArray<FTestbed1StructInt> Result = TArray<FTestbed1StructInt>();
@@ -218,7 +238,8 @@ struct FTestbed1StructArrayInterfaceFuncFloatRequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
+
 	UPROPERTY()
 	TArray<FTestbed1StructFloat> ParamFloat = TArray<FTestbed1StructFloat>();
 };
@@ -229,7 +250,7 @@ struct FTestbed1StructArrayInterfaceFuncFloatReplyMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
 
 	UPROPERTY()
 	TArray<FTestbed1StructFloat> Result = TArray<FTestbed1StructFloat>();
@@ -241,7 +262,8 @@ struct FTestbed1StructArrayInterfaceFuncStringRequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
+
 	UPROPERTY()
 	TArray<FTestbed1StructString> ParamString = TArray<FTestbed1StructString>();
 };
@@ -252,7 +274,7 @@ struct FTestbed1StructArrayInterfaceFuncStringReplyMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	FGuid RepsonseId;
+	FGuid ResponseId;
 
 	UPROPERTY()
 	TArray<FTestbed1StructString> Result = TArray<FTestbed1StructString>();

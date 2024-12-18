@@ -21,17 +21,19 @@ limitations under the License.
 #include "HAL/CriticalSection.h"
 #include "Async/Future.h"
 #include "Runtime/Launch/Resources/Version.h"
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-#include "Templates/UniquePtr.h"
+#if (ENGINE_MAJOR_VERSION < 5)
+#include "Engine/EngineTypes.h"
 #else
-#include "Templates/PimplPtr.h"
+#include "Engine/TimerHandle.h"
 #endif
+#include "Templates/PimplPtr.h"
 #include "IMessageContext.h"
 #include "TbSimpleSimpleArrayInterfaceMsgBusClient.generated.h"
 
 class FMessageEndpoint;
 // messages
 struct FTbSimpleSimpleArrayInterfaceInitMessage;
+struct FTbSimpleSimpleArrayInterfacePongMessage;
 struct FTbSimpleSimpleArrayInterfaceServiceDisconnectMessage;
 struct FTbSimpleSimpleArrayInterfaceSigBoolSignalMessage;
 struct FTbSimpleSimpleArrayInterfaceSigIntSignalMessage;
@@ -59,6 +61,25 @@ struct FTbSimpleSimpleArrayInterfaceFuncFloat32ReplyMessage;
 struct FTbSimpleSimpleArrayInterfaceFuncFloat64ReplyMessage;
 struct FTbSimpleSimpleArrayInterfaceFuncStringReplyMessage;
 
+USTRUCT(BlueprintType)
+struct FTbSimpleSimpleArrayInterfaceStats
+{
+	GENERATED_BODY()
+
+	UPROPERTY(BlueprintReadOnly, Category = "ApiGear|TbSimple|SimpleArrayInterface|Remote", DisplayName = "Current round trip time in MS")
+	float CurrentRTT_MS = 0.0f;
+
+	UPROPERTY(BlueprintReadOnly, Category = "ApiGear|TbSimple|SimpleArrayInterface|Remote", DisplayName = "Average round trip time in MS")
+	float AverageRTT_MS = 0.0f;
+
+	UPROPERTY(BlueprintReadOnly, Category = "ApiGear|TbSimple|SimpleArrayInterface|Remote", DisplayName = "Maximum round trip time in MS")
+	float MaxRTT_MS = 0.0f;
+
+	UPROPERTY(BlueprintReadOnly, Category = "ApiGear|TbSimple|SimpleArrayInterface|Remote", DisplayName = "Minimum round trip time in MS")
+	float MinRTT_MS = 10000.0f;
+};
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleArrayInterfaceStatsUpdatedDelegate, FTbSimpleSimpleArrayInterfaceStats, Stats);
+
 struct TbSimpleSimpleArrayInterfacePropertiesMsgBusData;
 DECLARE_LOG_CATEGORY_EXTERN(LogTbSimpleSimpleArrayInterfaceMsgBusClient, Log, All);
 
@@ -78,13 +99,19 @@ public:
 
 	// connection handling
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Remote")
-	void Connect();
+	void _Connect();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Remote")
-	void Disconnect();
+	void _Disconnect();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Remote")
-	bool IsConnected() const;
+	bool _IsConnected() const;
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Remote")
+	const FTbSimpleSimpleArrayInterfaceStats& _GetStats() const;
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Remote", DisplayName = "Statistics Updated")
+	FTbSimpleSimpleArrayInterfaceStatsUpdatedDelegate _StatsUpdated;
 
 	/**
 	 * Used when the interface client changes connection status:
@@ -139,37 +166,45 @@ public:
 private:
 	TSharedPtr<FMessageEndpoint, ESPMode::ThreadSafe> TbSimpleSimpleArrayInterfaceMsgBusEndpoint;
 
-	void DiscoverService();
+	void _DiscoverService();
 	FMessageAddress ServiceAddress;
+
+	// connection health
+	double _LastHbTimestamp = 0.0;
+	FTbSimpleSimpleArrayInterfaceStats Stats;
+	FTimerHandle _HeartbeatTimerHandle;
+	void _OnHeartbeat();
+	uint32 _HeartbeatIntervalMS = 1000;
 
 	// connection handling
 	void OnConnectionInit(const FTbSimpleSimpleArrayInterfaceInitMessage& InInitMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnPong(const FTbSimpleSimpleArrayInterfacePongMessage& IntMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnServiceClosedConnection(const FTbSimpleSimpleArrayInterfaceServiceDisconnectMessage& InInitMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnSigBool(const FTbSimpleSimpleArrayInterfaceSigBoolSignalMessage& InSigBoolMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnSigInt(const FTbSimpleSimpleArrayInterfaceSigIntSignalMessage& InSigIntMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnSigInt32(const FTbSimpleSimpleArrayInterfaceSigInt32SignalMessage& InSigInt32Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnSigInt64(const FTbSimpleSimpleArrayInterfaceSigInt64SignalMessage& InSigInt64Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnSigFloat(const FTbSimpleSimpleArrayInterfaceSigFloatSignalMessage& InSigFloatMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnSigFloat32(const FTbSimpleSimpleArrayInterfaceSigFloat32SignalMessage& InSigFloat32Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnSigFloat64(const FTbSimpleSimpleArrayInterfaceSigFloat64SignalMessage& InSigFloat64Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnSigString(const FTbSimpleSimpleArrayInterfaceSigStringSignalMessage& InSigStringMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnPropBoolChanged(const FTbSimpleSimpleArrayInterfacePropBoolChangedMessage& InPropBoolMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnPropIntChanged(const FTbSimpleSimpleArrayInterfacePropIntChangedMessage& InPropIntMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnPropInt32Changed(const FTbSimpleSimpleArrayInterfacePropInt32ChangedMessage& InPropInt32Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnPropInt64Changed(const FTbSimpleSimpleArrayInterfacePropInt64ChangedMessage& InPropInt64Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnPropFloatChanged(const FTbSimpleSimpleArrayInterfacePropFloatChangedMessage& InPropFloatMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnPropFloat32Changed(const FTbSimpleSimpleArrayInterfacePropFloat32ChangedMessage& InPropFloat32Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnPropFloat64Changed(const FTbSimpleSimpleArrayInterfacePropFloat64ChangedMessage& InPropFloat64Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnPropStringChanged(const FTbSimpleSimpleArrayInterfacePropStringChangedMessage& InPropStringMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnPropReadOnlyStringChanged(const FTbSimpleSimpleArrayInterfacePropReadOnlyStringChangedMessage& InPropReadOnlyStringMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnFuncBoolReply(const FTbSimpleSimpleArrayInterfaceFuncBoolReplyMessage& InFuncBoolMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnFuncIntReply(const FTbSimpleSimpleArrayInterfaceFuncIntReplyMessage& InFuncIntMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnFuncInt32Reply(const FTbSimpleSimpleArrayInterfaceFuncInt32ReplyMessage& InFuncInt32Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnFuncInt64Reply(const FTbSimpleSimpleArrayInterfaceFuncInt64ReplyMessage& InFuncInt64Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnFuncFloatReply(const FTbSimpleSimpleArrayInterfaceFuncFloatReplyMessage& InFuncFloatMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnFuncFloat32Reply(const FTbSimpleSimpleArrayInterfaceFuncFloat32ReplyMessage& InFuncFloat32Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnFuncFloat64Reply(const FTbSimpleSimpleArrayInterfaceFuncFloat64ReplyMessage& InFuncFloat64Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnFuncStringReply(const FTbSimpleSimpleArrayInterfaceFuncStringReplyMessage& InFuncStringMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnSigBool(const FTbSimpleSimpleArrayInterfaceSigBoolSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnSigInt(const FTbSimpleSimpleArrayInterfaceSigIntSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnSigInt32(const FTbSimpleSimpleArrayInterfaceSigInt32SignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnSigInt64(const FTbSimpleSimpleArrayInterfaceSigInt64SignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnSigFloat(const FTbSimpleSimpleArrayInterfaceSigFloatSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnSigFloat32(const FTbSimpleSimpleArrayInterfaceSigFloat32SignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnSigFloat64(const FTbSimpleSimpleArrayInterfaceSigFloat64SignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnSigString(const FTbSimpleSimpleArrayInterfaceSigStringSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnPropBoolChanged(const FTbSimpleSimpleArrayInterfacePropBoolChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnPropIntChanged(const FTbSimpleSimpleArrayInterfacePropIntChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnPropInt32Changed(const FTbSimpleSimpleArrayInterfacePropInt32ChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnPropInt64Changed(const FTbSimpleSimpleArrayInterfacePropInt64ChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnPropFloatChanged(const FTbSimpleSimpleArrayInterfacePropFloatChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnPropFloat32Changed(const FTbSimpleSimpleArrayInterfacePropFloat32ChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnPropFloat64Changed(const FTbSimpleSimpleArrayInterfacePropFloat64ChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnPropStringChanged(const FTbSimpleSimpleArrayInterfacePropStringChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnPropReadOnlyStringChanged(const FTbSimpleSimpleArrayInterfacePropReadOnlyStringChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnFuncBoolReply(const FTbSimpleSimpleArrayInterfaceFuncBoolReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnFuncIntReply(const FTbSimpleSimpleArrayInterfaceFuncIntReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnFuncInt32Reply(const FTbSimpleSimpleArrayInterfaceFuncInt32ReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnFuncInt64Reply(const FTbSimpleSimpleArrayInterfaceFuncInt64ReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnFuncFloatReply(const FTbSimpleSimpleArrayInterfaceFuncFloatReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnFuncFloat32Reply(const FTbSimpleSimpleArrayInterfaceFuncFloat32ReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnFuncFloat64Reply(const FTbSimpleSimpleArrayInterfaceFuncFloat64ReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnFuncStringReply(const FTbSimpleSimpleArrayInterfaceFuncStringReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 
 	// member variable to store the last sent data
 	TPimplPtr<TbSimpleSimpleArrayInterfacePropertiesMsgBusData> _SentData;

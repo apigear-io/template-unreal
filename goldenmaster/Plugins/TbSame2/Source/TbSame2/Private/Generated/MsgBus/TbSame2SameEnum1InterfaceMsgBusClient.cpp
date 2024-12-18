@@ -24,7 +24,10 @@ limitations under the License.
 #include "Generated/MsgBus/TbSame2SameEnum1InterfaceMsgBusMessages.h"
 #include "Async/Async.h"
 #include "Engine/Engine.h"
+#include "TimerManager.h"
 #include "Misc/DateTime.h"
+#include "GenericPlatform/GenericPlatformMath.h"
+#include "GenericPlatform/GenericPlatformTime.h"
 #include "MessageEndpointBuilder.h"
 #include "MessageEndpoint.h"
 #include <atomic>
@@ -42,7 +45,6 @@ UTbSame2SameEnum1InterfaceMsgBusClient::UTbSame2SameEnum1InterfaceMsgBusClient()
 	: UAbstractTbSame2SameEnum1Interface()
 	, _SentData(MakePimpl<TbSame2SameEnum1InterfacePropertiesMsgBusData>())
 {
-	/* m_sink = std::make_shared<FOLinkSink>("tb.same2.SameEnum1Interface"); */
 }
 
 UTbSame2SameEnum1InterfaceMsgBusClient::~UTbSame2SameEnum1InterfaceMsgBusClient() = default;
@@ -50,33 +52,38 @@ UTbSame2SameEnum1InterfaceMsgBusClient::~UTbSame2SameEnum1InterfaceMsgBusClient(
 void UTbSame2SameEnum1InterfaceMsgBusClient::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-
-	Connect();
 }
 
 void UTbSame2SameEnum1InterfaceMsgBusClient::Deinitialize()
 {
-	Disconnect();
+	_Disconnect();
 
 	Super::Deinitialize();
 }
 
-void UTbSame2SameEnum1InterfaceMsgBusClient::Connect()
+void UTbSame2SameEnum1InterfaceMsgBusClient::_Connect()
 {
-	if (IsConnected())
+	if (!_HeartbeatTimerHandle.IsValid() && GetWorld())
 	{
+		GetWorld()->GetTimerManager().SetTimer(_HeartbeatTimerHandle, this, &UTbSame2SameEnum1InterfaceMsgBusClient::_OnHeartbeat, _HeartbeatIntervalMS / 1000.0f, true);
+	}
+
+	if (_IsConnected())
+	{
+		UE_LOG(LogTbSame2SameEnum1InterfaceMsgBusClient, Log, TEXT("Already connected, cannot connect again."));
 		return;
 	}
 
 	if (TbSame2SameEnum1InterfaceMsgBusEndpoint.IsValid() && !ServiceAddress.IsValid())
 	{
-		DiscoverService();
+		_DiscoverService();
 		return;
 	}
 
 	// clang-format off
 	TbSame2SameEnum1InterfaceMsgBusEndpoint = FMessageEndpoint::Builder("ApiGear/TbSame2/SameEnum1Interface/Client")
 		.Handling<FTbSame2SameEnum1InterfaceInitMessage>(this, &UTbSame2SameEnum1InterfaceMsgBusClient::OnConnectionInit)
+		.Handling<FTbSame2SameEnum1InterfacePongMessage>(this, &UTbSame2SameEnum1InterfaceMsgBusClient::OnPong)
 		.Handling<FTbSame2SameEnum1InterfaceServiceDisconnectMessage>(this, &UTbSame2SameEnum1InterfaceMsgBusClient::OnServiceClosedConnection)
 		.Handling<FTbSame2SameEnum1InterfaceSig1SignalMessage>(this, &UTbSame2SameEnum1InterfaceMsgBusClient::OnSig1)
 		.Handling<FTbSame2SameEnum1InterfaceProp1ChangedMessage>(this, &UTbSame2SameEnum1InterfaceMsgBusClient::OnProp1Changed)
@@ -84,63 +91,122 @@ void UTbSame2SameEnum1InterfaceMsgBusClient::Connect()
 		.Build();
 	// clang-format on
 
-	DiscoverService();
+	_DiscoverService();
 }
 
-void UTbSame2SameEnum1InterfaceMsgBusClient::Disconnect()
+void UTbSame2SameEnum1InterfaceMsgBusClient::_Disconnect()
 {
-	if (!IsConnected())
+	_LastHbTimestamp = 0.0f;
+	if (_HeartbeatTimerHandle.IsValid() && GetWorld())
+	{
+		GetWorld()->GetTimerManager().ClearTimer(_HeartbeatTimerHandle);
+	}
+
+	if (!_IsConnected())
 	{
 		return;
 	}
 
 	auto msg = new FTbSame2SameEnum1InterfaceClientDisconnectMessage();
 
-	if (TbSame2SameEnum1InterfaceMsgBusEndpoint.IsValid())
-	{
-		TbSame2SameEnum1InterfaceMsgBusEndpoint->Send<FTbSame2SameEnum1InterfaceClientDisconnectMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-	}
+	TbSame2SameEnum1InterfaceMsgBusEndpoint->Send<FTbSame2SameEnum1InterfaceClientDisconnectMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
 
 	TbSame2SameEnum1InterfaceMsgBusEndpoint.Reset();
 	ServiceAddress.Invalidate();
 	_ConnectionStatusChanged.Broadcast(false);
 }
 
-void UTbSame2SameEnum1InterfaceMsgBusClient::DiscoverService()
+void UTbSame2SameEnum1InterfaceMsgBusClient::_DiscoverService()
 {
-	if (TbSame2SameEnum1InterfaceMsgBusEndpoint.IsValid())
+	if (!TbSame2SameEnum1InterfaceMsgBusEndpoint.IsValid())
 	{
-		TbSame2SameEnum1InterfaceMsgBusEndpoint->Publish<FTbSame2SameEnum1InterfaceDiscoveryMessage>(new FTbSame2SameEnum1InterfaceDiscoveryMessage());
+		return;
 	}
+
+	auto msg = new FTbSame2SameEnum1InterfaceDiscoveryMessage();
+	msg->ClientPingIntervalMS = _HeartbeatIntervalMS;
+
+	TbSame2SameEnum1InterfaceMsgBusEndpoint->Publish<FTbSame2SameEnum1InterfaceDiscoveryMessage>(msg);
 }
 
-bool UTbSame2SameEnum1InterfaceMsgBusClient::IsConnected() const
+bool UTbSame2SameEnum1InterfaceMsgBusClient::_IsConnected() const
 {
 	return TbSame2SameEnum1InterfaceMsgBusEndpoint.IsValid() && ServiceAddress.IsValid();
 }
 
-void UTbSame2SameEnum1InterfaceMsgBusClient::OnConnectionInit(const FTbSame2SameEnum1InterfaceInitMessage& InInitMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTbSame2SameEnum1InterfaceMsgBusClient::OnConnectionInit(const FTbSame2SameEnum1InterfaceInitMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	if (!ServiceAddress.IsValid())
+	if (ServiceAddress.IsValid())
 	{
-		ServiceAddress = Context->GetSender();
-		const bool bProp1Changed = InInitMessage.Prop1 != Prop1;
-		if (bProp1Changed)
-		{
-			Prop1 = InInitMessage.Prop1;
-			Execute__GetSignals(this)->OnProp1Changed.Broadcast(Prop1);
-		}
+		UE_LOG(LogTbSame2SameEnum1InterfaceMsgBusClient, Warning, TEXT("Got a second init message - should not happen"));
+		return;
+	}
 
-		_ConnectionStatusChanged.Broadcast(true);
-	}
-	else
+	ServiceAddress = Context->GetSender();
+	const bool bProp1Changed = InMessage.Prop1 != Prop1;
+	if (bProp1Changed)
 	{
-		UE_LOG(LogTbSame2SameEnum1InterfaceMsgBusClient, Error, TEXT("Got a second init message - should not happen"));
+		Prop1 = InMessage.Prop1;
+		Execute__GetSignals(this)->OnProp1Changed.Broadcast(Prop1);
 	}
+
+	_ConnectionStatusChanged.Broadcast(true);
+}
+
+void UTbSame2SameEnum1InterfaceMsgBusClient::_OnHeartbeat()
+{
+	if (_LastHbTimestamp > 0.1f)
+	{
+		double Delta = (FPlatformTime::Seconds() - _LastHbTimestamp) * 1000;
+
+		if (Delta > 2 * _HeartbeatIntervalMS)
+		{
+			// service seems to be dead or not responding - reset connection
+			ServiceAddress.Invalidate();
+			_LastHbTimestamp = 0.0f;
+		}
+	}
+
+	if (!_IsConnected())
+	{
+		UE_LOG(LogTbSame2SameEnum1InterfaceMsgBusClient, Warning, TEXT("Heartbeat failed. Client has no connection to service. Reconnecting ..."));
+
+		_Connect();
+		return;
+	}
+
+	auto msg = new FTbSame2SameEnum1InterfacePingMessage();
+	msg->Timestamp = FPlatformTime::Seconds();
+
+	TbSame2SameEnum1InterfaceMsgBusEndpoint->Send<FTbSame2SameEnum1InterfacePingMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
+}
+
+void UTbSame2SameEnum1InterfaceMsgBusClient::OnPong(const FTbSame2SameEnum1InterfacePongMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	_LastHbTimestamp = InMessage.Timestamp;
+
+	const double Current = FPlatformTime::Seconds();
+	const double DeltaMS = (Current - InMessage.Timestamp) * 1000.0f;
+
+	Stats.CurrentRTT_MS = DeltaMS;
+	Stats.AverageRTT_MS = (Stats.AverageRTT_MS + Stats.CurrentRTT_MS) / 2.0f;
+	Stats.MaxRTT_MS = FGenericPlatformMath::Max(Stats.MaxRTT_MS, Stats.CurrentRTT_MS);
+	Stats.MinRTT_MS = FGenericPlatformMath::Min(Stats.MinRTT_MS, Stats.CurrentRTT_MS);
+
+	_StatsUpdated.Broadcast(Stats);
+}
+
+const FTbSame2SameEnum1InterfaceStats& UTbSame2SameEnum1InterfaceMsgBusClient::_GetStats() const
+{
+	return Stats;
 }
 
 void UTbSame2SameEnum1InterfaceMsgBusClient::OnServiceClosedConnection(const FTbSame2SameEnum1InterfaceServiceDisconnectMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -161,7 +227,7 @@ ETbSame2Enum1 UTbSame2SameEnum1InterfaceMsgBusClient::GetProp1_Implementation() 
 
 void UTbSame2SameEnum1InterfaceMsgBusClient::SetProp1_Implementation(ETbSame2Enum1 InProp1)
 {
-	if (!IsConnected())
+	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSame2SameEnum1InterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
 		return;
@@ -182,20 +248,17 @@ void UTbSame2SameEnum1InterfaceMsgBusClient::SetProp1_Implementation(ETbSame2Enu
 	auto msg = new FTbSame2SameEnum1InterfaceSetProp1RequestMessage();
 	msg->Prop1 = InProp1;
 
-	if (TbSame2SameEnum1InterfaceMsgBusEndpoint.IsValid())
-	{
-		TbSame2SameEnum1InterfaceMsgBusEndpoint->Send<FTbSame2SameEnum1InterfaceSetProp1RequestMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-		_SentData->Prop1 = InProp1;
-	}
+	TbSame2SameEnum1InterfaceMsgBusEndpoint->Send<FTbSame2SameEnum1InterfaceSetProp1RequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
+	_SentData->Prop1 = InProp1;
 }
 
 ETbSame2Enum1 UTbSame2SameEnum1InterfaceMsgBusClient::Func1_Implementation(ETbSame2Enum1 InParam1)
 {
-	if (!IsConnected())
+	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSame2SameEnum1InterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
 
@@ -203,32 +266,26 @@ ETbSame2Enum1 UTbSame2SameEnum1InterfaceMsgBusClient::Func1_Implementation(ETbSa
 	}
 
 	auto msg = new FTbSame2SameEnum1InterfaceFunc1RequestMessage();
-	msg->RepsonseId = FGuid::NewGuid();
+	msg->ResponseId = FGuid::NewGuid();
 	msg->Param1 = InParam1;
+	TPromise<ETbSame2Enum1> Promise;
+	StorePromise(msg->ResponseId, Promise);
 
-	if (TbSame2SameEnum1InterfaceMsgBusEndpoint.IsValid())
-	{
-		TPromise<ETbSame2Enum1> Promise;
-		StorePromise(msg->RepsonseId, Promise);
+	TbSame2SameEnum1InterfaceMsgBusEndpoint->Send<FTbSame2SameEnum1InterfaceFunc1RequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
 
-		TbSame2SameEnum1InterfaceMsgBusEndpoint->Send<FTbSame2SameEnum1InterfaceFunc1RequestMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-
-		return Promise.GetFuture().Get();
-	}
-
-	return ETbSame2Enum1::TS2E1_VALUE1;
+	return Promise.GetFuture().Get();
 }
 
-void UTbSame2SameEnum1InterfaceMsgBusClient::OnFunc1Reply(const FTbSame2SameEnum1InterfaceFunc1ReplyMessage& InFunc1ReplyMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTbSame2SameEnum1InterfaceMsgBusClient::OnFunc1Reply(const FTbSame2SameEnum1InterfaceFunc1ReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	FulfillPromise(InFunc1ReplyMessage.RepsonseId, InFunc1ReplyMessage.Result);
+	FulfillPromise(InMessage.ResponseId, InMessage.Result);
 }
 
-void UTbSame2SameEnum1InterfaceMsgBusClient::OnSig1(const FTbSame2SameEnum1InterfaceSig1SignalMessage& InSig1Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTbSame2SameEnum1InterfaceMsgBusClient::OnSig1(const FTbSame2SameEnum1InterfaceSig1SignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ServiceAddress != Context->GetSender())
 	{
@@ -236,11 +293,11 @@ void UTbSame2SameEnum1InterfaceMsgBusClient::OnSig1(const FTbSame2SameEnum1Inter
 		return;
 	}
 
-	Execute__GetSignals(this)->OnSig1Signal.Broadcast(InSig1Message.Param1);
+	Execute__GetSignals(this)->OnSig1Signal.Broadcast(InMessage.Param1);
 	return;
 }
 
-void UTbSame2SameEnum1InterfaceMsgBusClient::OnProp1Changed(const FTbSame2SameEnum1InterfaceProp1ChangedMessage& InProp1Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTbSame2SameEnum1InterfaceMsgBusClient::OnProp1Changed(const FTbSame2SameEnum1InterfaceProp1ChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ServiceAddress != Context->GetSender())
 	{
@@ -248,10 +305,10 @@ void UTbSame2SameEnum1InterfaceMsgBusClient::OnProp1Changed(const FTbSame2SameEn
 		return;
 	}
 
-	const bool bProp1Changed = InProp1Message.Prop1 != Prop1;
+	const bool bProp1Changed = InMessage.Prop1 != Prop1;
 	if (bProp1Changed)
 	{
-		Prop1 = InProp1Message.Prop1;
+		Prop1 = InMessage.Prop1;
 		Execute__GetSignals(this)->OnProp1Changed.Broadcast(Prop1);
 	}
 }

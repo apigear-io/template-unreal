@@ -21,17 +21,19 @@ limitations under the License.
 #include "HAL/CriticalSection.h"
 #include "Async/Future.h"
 #include "Runtime/Launch/Resources/Version.h"
-#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
-#include "Templates/UniquePtr.h"
+#if (ENGINE_MAJOR_VERSION < 5)
+#include "Engine/EngineTypes.h"
 #else
-#include "Templates/PimplPtr.h"
+#include "Engine/TimerHandle.h"
 #endif
+#include "Templates/PimplPtr.h"
 #include "IMessageContext.h"
 #include "CounterCounterMsgBusClient.generated.h"
 
 class FMessageEndpoint;
 // messages
 struct FCounterCounterInitMessage;
+struct FCounterCounterPongMessage;
 struct FCounterCounterServiceDisconnectMessage;
 struct FCounterCounterValueChangedSignalMessage;
 struct FCounterCounterVectorChangedMessage;
@@ -42,6 +44,25 @@ struct FCounterCounterIncrementReplyMessage;
 struct FCounterCounterIncrementArrayReplyMessage;
 struct FCounterCounterDecrementReplyMessage;
 struct FCounterCounterDecrementArrayReplyMessage;
+
+USTRUCT(BlueprintType)
+struct FCounterCounterStats
+{
+	GENERATED_BODY()
+
+	UPROPERTY(BlueprintReadOnly, Category = "ApiGear|Counter|Counter|Remote", DisplayName = "Current round trip time in MS")
+	float CurrentRTT_MS = 0.0f;
+
+	UPROPERTY(BlueprintReadOnly, Category = "ApiGear|Counter|Counter|Remote", DisplayName = "Average round trip time in MS")
+	float AverageRTT_MS = 0.0f;
+
+	UPROPERTY(BlueprintReadOnly, Category = "ApiGear|Counter|Counter|Remote", DisplayName = "Maximum round trip time in MS")
+	float MaxRTT_MS = 0.0f;
+
+	UPROPERTY(BlueprintReadOnly, Category = "ApiGear|Counter|Counter|Remote", DisplayName = "Minimum round trip time in MS")
+	float MinRTT_MS = 10000.0f;
+};
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCounterCounterStatsUpdatedDelegate, FCounterCounterStats, Stats);
 
 struct CounterCounterPropertiesMsgBusData;
 DECLARE_LOG_CATEGORY_EXTERN(LogCounterCounterMsgBusClient, Log, All);
@@ -62,13 +83,19 @@ public:
 
 	// connection handling
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Remote")
-	void Connect();
+	void _Connect();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Remote")
-	void Disconnect();
+	void _Disconnect();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Remote")
-	bool IsConnected() const;
+	bool _IsConnected() const;
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Remote")
+	const FCounterCounterStats& _GetStats() const;
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Counter|Counter|Remote", DisplayName = "Statistics Updated")
+	FCounterCounterStatsUpdatedDelegate _StatsUpdated;
 
 	/**
 	 * Used when the interface client changes connection status:
@@ -101,21 +128,29 @@ public:
 private:
 	TSharedPtr<FMessageEndpoint, ESPMode::ThreadSafe> CounterCounterMsgBusEndpoint;
 
-	void DiscoverService();
+	void _DiscoverService();
 	FMessageAddress ServiceAddress;
+
+	// connection health
+	double _LastHbTimestamp = 0.0;
+	FCounterCounterStats Stats;
+	FTimerHandle _HeartbeatTimerHandle;
+	void _OnHeartbeat();
+	uint32 _HeartbeatIntervalMS = 1000;
 
 	// connection handling
 	void OnConnectionInit(const FCounterCounterInitMessage& InInitMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnPong(const FCounterCounterPongMessage& IntMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnServiceClosedConnection(const FCounterCounterServiceDisconnectMessage& InInitMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnValueChanged(const FCounterCounterValueChangedSignalMessage& InValueChangedMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnVectorChanged(const FCounterCounterVectorChangedMessage& InVectorMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnExternVectorChanged(const FCounterCounterExternVectorChangedMessage& InExternVectorMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnVectorArrayChanged(const FCounterCounterVectorArrayChangedMessage& InVectorArrayMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnExternVectorArrayChanged(const FCounterCounterExternVectorArrayChangedMessage& InExternVectorArrayMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnIncrementReply(const FCounterCounterIncrementReplyMessage& InIncrementMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnIncrementArrayReply(const FCounterCounterIncrementArrayReplyMessage& InIncrementArrayMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnDecrementReply(const FCounterCounterDecrementReplyMessage& InDecrementMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
-	void OnDecrementArrayReply(const FCounterCounterDecrementArrayReplyMessage& InDecrementArrayMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnValueChanged(const FCounterCounterValueChangedSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnVectorChanged(const FCounterCounterVectorChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnExternVectorChanged(const FCounterCounterExternVectorChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnVectorArrayChanged(const FCounterCounterVectorArrayChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnExternVectorArrayChanged(const FCounterCounterExternVectorArrayChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnIncrementReply(const FCounterCounterIncrementReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnIncrementArrayReply(const FCounterCounterIncrementArrayReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnDecrementReply(const FCounterCounterDecrementReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnDecrementArrayReply(const FCounterCounterDecrementArrayReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 
 	// member variable to store the last sent data
 	TPimplPtr<CounterCounterPropertiesMsgBusData> _SentData;

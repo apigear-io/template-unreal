@@ -18,7 +18,10 @@
 #include "Generated/MsgBus/{{$Iface}}MsgBusMessages.h"
 #include "Async/Async.h"
 #include "Engine/Engine.h"
+#include "TimerManager.h"
 #include "Misc/DateTime.h"
+#include "GenericPlatform/GenericPlatformMath.h"
+#include "GenericPlatform/GenericPlatformTime.h"
 #include "MessageEndpointBuilder.h"
 #include "MessageEndpoint.h"
 
@@ -66,7 +69,6 @@ DEFINE_LOG_CATEGORY(Log{{$Iface}}MsgBusClient);
 	, _SentData(MakePimpl<{{$Iface}}PropertiesMsgBusData>())
 {{- end }}
 {
-	/* m_sink = std::make_shared<FOLinkSink>("{{$ifaceId}}"); */
 }
 
 {{$Class}}::~{{$Class}}() = default;
@@ -74,40 +76,43 @@ DEFINE_LOG_CATEGORY(Log{{$Iface}}MsgBusClient);
 void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-
-	Connect();
 }
 
 void {{$Class}}::Deinitialize()
 {
-	Disconnect();
+	_Disconnect();
 
 	Super::Deinitialize();
 }
 
-void {{$Class}}::Connect()
+void {{$Class}}::_Connect()
 {
-	if (IsConnected())
+	if (!_HeartbeatTimerHandle.IsValid() && GetWorld())
 	{
+		GetWorld()->GetTimerManager().SetTimer(_HeartbeatTimerHandle, this, &{{$Class}}::_OnHeartbeat, _HeartbeatIntervalMS / 1000.0f, true);
+	}
+
+	if (_IsConnected())
+	{
+		UE_LOG(Log{{$Iface}}MsgBusClient, Log, TEXT("Already connected, cannot connect again."));
 		return;
 	}
 
 	if ({{$Iface}}MsgBusEndpoint.IsValid() && !ServiceAddress.IsValid())
 	{
-		DiscoverService();
+		_DiscoverService();
 		return;
 	}
 
 	// clang-format off
 	{{$Iface}}MsgBusEndpoint = FMessageEndpoint::Builder("ApiGear/{{$ModuleName}}/{{$IfaceName}}/Client")
 		.Handling<F{{$Iface}}InitMessage>(this, &{{$Class}}::OnConnectionInit)
+		.Handling<F{{$Iface}}PongMessage>(this, &{{$Class}}::OnPong)
 		.Handling<F{{$Iface}}ServiceDisconnectMessage>(this, &{{$Class}}::OnServiceClosedConnection)
 {{- range $i, $e := .Interface.Signals }}
-{{- if $i }}{{nl}}{{ end }}
 		.Handling<F{{$Iface}}{{Camel .Name}}SignalMessage>(this, &{{$Class}}::On{{Camel .Name}})
 {{- end }}
 {{- range $i, $e := .Interface.Properties }}
-{{- if $i }}{{nl}}{{ end }}
 		.Handling<F{{$Iface}}{{Camel .Name}}ChangedMessage>(this, &{{$Class}}::On{{Camel .Name}}Changed)
 {{- end }}
 {{- range $i, $e := .Interface.Operations }}
@@ -118,67 +123,126 @@ void {{$Class}}::Connect()
 		.Build();
 	// clang-format on
 
-	DiscoverService();
+	_DiscoverService();
 }
 
-void {{$Class}}::Disconnect()
+void {{$Class}}::_Disconnect()
 {
-	if (!IsConnected())
+	_LastHbTimestamp = 0.0f;
+	if (_HeartbeatTimerHandle.IsValid() && GetWorld())
+	{
+		GetWorld()->GetTimerManager().ClearTimer(_HeartbeatTimerHandle);
+	}
+
+	if (!_IsConnected())
 	{
 		return;
 	}
 
 	auto msg = new F{{$Iface}}ClientDisconnectMessage();
 
-	if ({{$Iface}}MsgBusEndpoint.IsValid())
-	{
-		{{$Iface}}MsgBusEndpoint->Send<F{{$Iface}}ClientDisconnectMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-	}
+	{{$Iface}}MsgBusEndpoint->Send<F{{$Iface}}ClientDisconnectMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
 
 	{{$Iface}}MsgBusEndpoint.Reset();
 	ServiceAddress.Invalidate();
 	_ConnectionStatusChanged.Broadcast(false);
 }
 
-void {{$Class}}::DiscoverService()
+void {{$Class}}::_DiscoverService()
 {
-	if ({{$Iface}}MsgBusEndpoint.IsValid())
+	if (!{{$Iface}}MsgBusEndpoint.IsValid())
 	{
-		{{$Iface}}MsgBusEndpoint->Publish<F{{$Iface}}DiscoveryMessage>(new F{{$Iface}}DiscoveryMessage());
+		return;
 	}
+
+	auto msg = new F{{$Iface}}DiscoveryMessage();
+	msg->ClientPingIntervalMS = _HeartbeatIntervalMS;
+
+	{{$Iface}}MsgBusEndpoint->Publish<F{{$Iface}}DiscoveryMessage>(msg);
 }
 
-bool {{$Class}}::IsConnected() const
+bool {{$Class}}::_IsConnected() const
 {
 	return {{$Iface}}MsgBusEndpoint.IsValid() && ServiceAddress.IsValid();
 }
 
-void {{$Class}}::OnConnectionInit(const F{{$Iface}}InitMessage& InInitMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void {{$Class}}::OnConnectionInit(const F{{$Iface}}InitMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	if (!ServiceAddress.IsValid())
+	if (ServiceAddress.IsValid())
 	{
-		ServiceAddress = Context->GetSender();
+		UE_LOG(Log{{$Iface}}MsgBusClient, Warning, TEXT("Got a second init message - should not happen"));
+		return;
+	}
+
+	ServiceAddress = Context->GetSender();
 
 {{- range $i, $e := .Interface.Properties }}
 {{- if $i }}{{nl}}{{ end }}
-		const bool b{{ueVar "" .}}Changed = InInitMessage.{{ueVar "" .}} != {{ueVar "" .}};
-		if (b{{ueVar "" .}}Changed)
-		{
-			{{ueVar "" .}} = InInitMessage.{{ueVar "" .}};
-			Execute__GetSignals(this)->On{{ Camel .Name }}Changed.Broadcast({{ueVar "" .}});
-		}
+	const bool b{{ueVar "" .}}Changed = InMessage.{{ueVar "" .}} != {{ueVar "" .}};
+	if (b{{ueVar "" .}}Changed)
+	{
+		{{ueVar "" .}} = InMessage.{{ueVar "" .}};
+		Execute__GetSignals(this)->On{{ Camel .Name }}Changed.Broadcast({{ueVar "" .}});
+	}
 {{- end }}
 
-		_ConnectionStatusChanged.Broadcast(true);
-	}
-	else
+	_ConnectionStatusChanged.Broadcast(true);
+}
+
+void {{$Class}}::_OnHeartbeat()
+{
+	if (_LastHbTimestamp > 0.1f)
 	{
-		UE_LOG(Log{{$Iface}}MsgBusClient, Error, TEXT("Got a second init message - should not happen"));
+		double Delta = (FPlatformTime::Seconds() - _LastHbTimestamp) * 1000;
+
+		if (Delta > 2 * _HeartbeatIntervalMS)
+		{
+			// service seems to be dead or not responding - reset connection
+			ServiceAddress.Invalidate();
+			_LastHbTimestamp = 0.0f;
+		}
 	}
+
+	if (!_IsConnected())
+	{
+		UE_LOG(Log{{$Iface}}MsgBusClient, Warning, TEXT("Heartbeat failed. Client has no connection to service. Reconnecting ..."));
+
+		_Connect();
+		return;
+	}
+
+	auto msg = new F{{$DisplayName}}PingMessage();
+	msg->Timestamp = FPlatformTime::Seconds();
+
+	{{$Iface}}MsgBusEndpoint->Send<F{{$DisplayName}}PingMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
+}
+
+void {{$Class}}::OnPong(const F{{$Iface}}PongMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	_LastHbTimestamp = InMessage.Timestamp;
+
+	const double Current = FPlatformTime::Seconds();
+	const double DeltaMS = (Current - InMessage.Timestamp) * 1000.0f;
+
+	Stats.CurrentRTT_MS = DeltaMS;
+	Stats.AverageRTT_MS = (Stats.AverageRTT_MS + Stats.CurrentRTT_MS) / 2.0f;
+	Stats.MaxRTT_MS = FGenericPlatformMath::Max(Stats.MaxRTT_MS, Stats.CurrentRTT_MS);
+	Stats.MinRTT_MS = FGenericPlatformMath::Min(Stats.MinRTT_MS, Stats.CurrentRTT_MS);
+
+	_StatsUpdated.Broadcast(Stats);
+}
+
+const F{{$DisplayName}}Stats& {{$Class}}::_GetStats() const
+{
+	return Stats;
 }
 
 void {{$Class}}::OnServiceClosedConnection(const F{{$Iface}}ServiceDisconnectMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -203,7 +267,7 @@ void {{$Class}}::OnServiceClosedConnection(const F{{$Iface}}ServiceDisconnectMes
 {{- if not .IsReadOnly }}{{nl}}
 void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
 {
-	if (!IsConnected())
+	if (!_IsConnected())
 	{
 		UE_LOG(Log{{$Iface}}MsgBusClient, Error, TEXT("Client has no connection to service."));
 		return;
@@ -234,18 +298,15 @@ void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
 	auto msg = new F{{$Iface}}Set{{Camel .Name}}RequestMessage();
 	msg->{{ueVar "" .}} = {{ueVar "In" .}};
 
-	if ({{$Iface}}MsgBusEndpoint.IsValid())
-	{
-		{{$Iface}}MsgBusEndpoint->Send<F{{$Iface}}Set{{Camel .Name}}RequestMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
+	{{$Iface}}MsgBusEndpoint->Send<F{{$Iface}}Set{{Camel .Name}}RequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
 {{- if not ( ueIsStdSimpleType . ) }}
-		FScopeLock Lock(&(_SentData->{{ueVar "" .}}Mutex));
+	FScopeLock Lock(&(_SentData->{{ueVar "" .}}Mutex));
 {{- end }}
-		_SentData->{{ueVar "" .}} = {{ueVar "In" .}};
-	}
+	_SentData->{{ueVar "" .}} = {{ueVar "In" .}};
 }
 {{- end }}
 {{- end }}
@@ -261,7 +322,7 @@ void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
 {{- $returnVal := (ueReturn "" .Return)}}
 {{$returnVal}} {{$Class}}::{{Camel .Name}}_Implementation({{ueParams "In" .Params}})
 {
-	if (!IsConnected())
+	if (!_IsConnected())
 	{
 		UE_LOG(Log{{$Iface}}MsgBusClient, Error, TEXT("Client has no connection to service."));
 	{{- if .Return.IsVoid }}
@@ -274,46 +335,37 @@ void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
 	}
 
 	auto msg = new F{{$Iface}}{{Camel .Name}}RequestMessage();
-	msg->RepsonseId = FGuid::NewGuid();
+{{- if not .Return.IsVoid }}
+	msg->ResponseId = FGuid::NewGuid();
+{{- end }}
 {{- range $i, $e := .Params }}
 	msg->{{ueVar "" . }} = {{ueVar "In" . }};
 {{- end }}
 
-	if ({{$Iface}}MsgBusEndpoint.IsValid())
-	{
 	{{- if not .Return.IsVoid }}
-		TPromise<{{$returnVal}}> Promise;
-		StorePromise(msg->RepsonseId, Promise);
+	TPromise<{{$returnVal}}> Promise;
+	StorePromise(msg->ResponseId, Promise);
 	{{- end }}
 
-		{{$Iface}}MsgBusEndpoint->Send<F{{$Iface}}{{Camel .Name}}RequestMessage>(msg, EMessageFlags::Reliable,
-			nullptr,
-			TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
-			FTimespan::Zero(),
-			FDateTime::MaxValue());
-
-	{{- if .Return.IsVoid }}
-
-		return;
-	{{- else }}
-
-		return Promise.GetFuture().Get();
-	{{- end }}
-	}
+	{{$Iface}}MsgBusEndpoint->Send<F{{$Iface}}{{Camel .Name}}RequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
 
 {{- if .Return.IsVoid }}
 
 	return;
 {{- else }}
 
-	return {{ ueDefault "" .Return }};
+	return Promise.GetFuture().Get();
 {{- end }}
 }
 {{- if not .Return.IsVoid }}
 
-void {{$Class}}::On{{Camel .Name}}Reply(const F{{$Iface}}{{Camel .Name}}ReplyMessage& In{{Camel .Name}}ReplyMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void {{$Class}}::On{{Camel .Name}}Reply(const F{{$Iface}}{{Camel .Name}}ReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	FulfillPromise(In{{Camel .Name}}ReplyMessage.RepsonseId, In{{Camel .Name}}ReplyMessage.Result);
+	FulfillPromise(InMessage.ResponseId, InMessage.Result);
 }
 {{- end }}
 {{- end }}
@@ -321,7 +373,7 @@ void {{$Class}}::On{{Camel .Name}}Reply(const F{{$Iface}}{{Camel .Name}}ReplyMes
 {{- if len .Interface.Signals }}{{ nl }}{{ end }}
 {{- range $i, $e := .Interface.Signals }}
 {{- if $i }}{{nl}}{{ end }}
-void {{$Class}}::On{{Camel .Name}}(const F{{$DisplayName}}{{Camel .Name}}SignalMessage& In{{Camel .Name}}Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void {{$Class}}::On{{Camel .Name}}(const F{{$DisplayName}}{{Camel .Name}}SignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ServiceAddress != Context->GetSender())
 	{
@@ -333,7 +385,7 @@ void {{$Class}}::On{{Camel .Name}}(const F{{$DisplayName}}{{Camel .Name}}SignalM
 
 	Execute__GetSignals(this)->On{{Camel .Name}}Signal.Broadcast(
 {{- range $i, $e := .Params -}}
-	{{ if $i }}, {{end}}In{{$sigName}}Message.{{ueVar "" .}}
+	{{ if $i }}, {{end}}InMessage.{{ueVar "" .}}
 {{- end -}}
 	);
 	return;
@@ -342,7 +394,7 @@ void {{$Class}}::On{{Camel .Name}}(const F{{$DisplayName}}{{Camel .Name}}SignalM
 {{- if len .Interface.Properties }}{{ nl }}{{ end }}
 {{- range $i, $e := .Interface.Properties }}
 {{- if $i }}{{nl}}{{ end }}
-void {{$Class}}::On{{Camel .Name}}Changed(const F{{$DisplayName}}{{Camel .Name}}ChangedMessage& {{ueVar "In" .}}Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void {{$Class}}::On{{Camel .Name}}Changed(const F{{$DisplayName}}{{Camel .Name}}ChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ServiceAddress != Context->GetSender())
 	{
@@ -350,10 +402,10 @@ void {{$Class}}::On{{Camel .Name}}Changed(const F{{$DisplayName}}{{Camel .Name}}
 		return;
 	}
 
-	const bool b{{ueVar "" .}}Changed = {{ueVar "In" .}}Message.{{ueVar "" .}} != {{ueVar "" .}};
+	const bool b{{ueVar "" .}}Changed = InMessage.{{ueVar "" .}} != {{ueVar "" .}};
 	if (b{{ueVar "" .}}Changed)
 	{
-		{{ueVar "" .}} = {{ueVar "In" .}}Message.{{ueVar "" .}};
+		{{ueVar "" .}} = InMessage.{{ueVar "" .}};
 		Execute__GetSignals(this)->On{{Camel .Name}}Changed.Broadcast({{ueVar "" .}});
 	}
 }
