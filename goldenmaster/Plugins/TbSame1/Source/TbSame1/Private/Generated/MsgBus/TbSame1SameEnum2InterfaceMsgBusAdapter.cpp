@@ -123,6 +123,7 @@ void UTbSame1SameEnum2InterfaceMsgBusAdapter::OnNewClientDiscovered(const FTbSam
 	ClientAddress = Context->GetSender();
 
 	auto msg = new FTbSame1SameEnum2InterfaceInitMessage();
+	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
 	msg->Prop1 = BackendService->Execute_GetProp1(BackendService.GetObject());
 	msg->Prop2 = BackendService->Execute_GetProp2(BackendService.GetObject());
 

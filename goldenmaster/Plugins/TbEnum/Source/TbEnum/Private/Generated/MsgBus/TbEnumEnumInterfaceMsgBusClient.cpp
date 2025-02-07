@@ -140,8 +140,6 @@ void UTbEnumEnumInterfaceMsgBusClient::_DiscoverService()
 	}
 
 	auto msg = new FTbEnumEnumInterfaceDiscoveryMessage();
-	msg->ClientPingIntervalMS = _HeartbeatIntervalMS;
-
 	TbEnumEnumInterfaceMsgBusEndpoint->Publish<FTbEnumEnumInterfaceDiscoveryMessage>(msg);
 }
 
@@ -159,6 +157,22 @@ void UTbEnumEnumInterfaceMsgBusClient::OnConnectionInit(const FTbEnumEnumInterfa
 	}
 
 	ServiceAddress = Context->GetSender();
+
+	const bool b_ClientPingIntervalMSChanged = InMessage._ClientPingIntervalMS != _HeartbeatIntervalMS;
+	if (b_ClientPingIntervalMSChanged)
+	{
+		_HeartbeatIntervalMS = InMessage._ClientPingIntervalMS;
+
+		if (_HeartbeatTimerHandle.IsValid() && GetWorld())
+		{
+			GetWorld()->GetTimerManager().ClearTimer(_HeartbeatTimerHandle);
+		}
+
+		if (!_HeartbeatTimerHandle.IsValid() && GetWorld())
+		{
+			GetWorld()->GetTimerManager().SetTimer(_HeartbeatTimerHandle, this, &UTbEnumEnumInterfaceMsgBusClient::_OnHeartbeat, _HeartbeatIntervalMS / 1000.0f, true);
+		}
+	}
 	const bool bProp0Changed = InMessage.Prop0 != Prop0;
 	if (bProp0Changed)
 	{

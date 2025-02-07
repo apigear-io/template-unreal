@@ -117,6 +117,7 @@ void UTbSame2SameStruct1InterfaceMsgBusAdapter::OnNewClientDiscovered(const FTbS
 	ClientAddress = Context->GetSender();
 
 	auto msg = new FTbSame2SameStruct1InterfaceInitMessage();
+	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
 	msg->Prop1 = BackendService->Execute_GetProp1(BackendService.GetObject());
 
 	if (TbSame2SameStruct1InterfaceMsgBusEndpoint.IsValid())

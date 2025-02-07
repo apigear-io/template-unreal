@@ -25,15 +25,15 @@ USTRUCT()
 struct FCounterCounterDiscoveryMessage
 {
 	GENERATED_BODY()
-
-	UPROPERTY()
-	int32 ClientPingIntervalMS = 1000;
 };
 
 USTRUCT()
 struct FCounterCounterInitMessage
 {
 	GENERATED_BODY()
+
+	UPROPERTY()
+	int32 _ClientPingIntervalMS = 1000;
 
 	UPROPERTY()
 	FCustomTypesVector3D Vector = FCustomTypesVector3D();

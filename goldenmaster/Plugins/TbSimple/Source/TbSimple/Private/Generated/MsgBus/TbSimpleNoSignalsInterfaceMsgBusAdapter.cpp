@@ -119,6 +119,7 @@ void UTbSimpleNoSignalsInterfaceMsgBusAdapter::OnNewClientDiscovered(const FTbSi
 	ClientAddress = Context->GetSender();
 
 	auto msg = new FTbSimpleNoSignalsInterfaceInitMessage();
+	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
 	msg->bPropBool = BackendService->Execute_GetPropBool(BackendService.GetObject());
 	msg->PropInt = BackendService->Execute_GetPropInt(BackendService.GetObject());
 

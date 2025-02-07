@@ -23,15 +23,15 @@ USTRUCT()
 struct FTbSimpleSimpleArrayInterfaceDiscoveryMessage
 {
 	GENERATED_BODY()
-
-	UPROPERTY()
-	int32 ClientPingIntervalMS = 1000;
 };
 
 USTRUCT()
 struct FTbSimpleSimpleArrayInterfaceInitMessage
 {
 	GENERATED_BODY()
+
+	UPROPERTY()
+	int32 _ClientPingIntervalMS = 1000;
 
 	UPROPERTY()
 	TArray<bool> PropBool = TArray<bool>();

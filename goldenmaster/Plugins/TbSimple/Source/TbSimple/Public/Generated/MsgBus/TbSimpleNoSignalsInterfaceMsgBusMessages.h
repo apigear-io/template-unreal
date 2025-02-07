@@ -23,15 +23,15 @@ USTRUCT()
 struct FTbSimpleNoSignalsInterfaceDiscoveryMessage
 {
 	GENERATED_BODY()
-
-	UPROPERTY()
-	int32 ClientPingIntervalMS = 1000;
 };
 
 USTRUCT()
 struct FTbSimpleNoSignalsInterfaceInitMessage
 {
 	GENERATED_BODY()
+
+	UPROPERTY()
+	int32 _ClientPingIntervalMS = 1000;
 
 	UPROPERTY()
 	bool bPropBool = false;

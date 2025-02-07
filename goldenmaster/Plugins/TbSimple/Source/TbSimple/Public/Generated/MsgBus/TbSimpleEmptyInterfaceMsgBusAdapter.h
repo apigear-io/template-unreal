@@ -70,4 +70,6 @@ private:
 	TScriptInterface<ITbSimpleEmptyInterfaceInterface> BackendService;
 
 	TArray<FMessageAddress> ConnectedClients;
+
+	uint32 _HeartbeatIntervalMS = 1000;
 };

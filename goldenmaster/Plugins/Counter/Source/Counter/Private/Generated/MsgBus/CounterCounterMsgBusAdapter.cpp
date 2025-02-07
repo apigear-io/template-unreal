@@ -129,6 +129,7 @@ void UCounterCounterMsgBusAdapter::OnNewClientDiscovered(const FCounterCounterDi
 	ClientAddress = Context->GetSender();
 
 	auto msg = new FCounterCounterInitMessage();
+	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
 	msg->Vector = BackendService->Execute_GetVector(BackendService.GetObject());
 	msg->ExternVector = BackendService->Execute_GetExternVector(BackendService.GetObject());
 	msg->VectorArray = BackendService->Execute_GetVectorArray(BackendService.GetObject());

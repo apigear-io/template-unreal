@@ -132,8 +132,6 @@ void UTbNamesNamEsMsgBusClient::_DiscoverService()
 	}
 
 	auto msg = new FTbNamesNamEsDiscoveryMessage();
-	msg->ClientPingIntervalMS = _HeartbeatIntervalMS;
-
 	TbNamesNamEsMsgBusEndpoint->Publish<FTbNamesNamEsDiscoveryMessage>(msg);
 }
 
@@ -151,6 +149,22 @@ void UTbNamesNamEsMsgBusClient::OnConnectionInit(const FTbNamesNamEsInitMessage&
 	}
 
 	ServiceAddress = Context->GetSender();
+
+	const bool b_ClientPingIntervalMSChanged = InMessage._ClientPingIntervalMS != _HeartbeatIntervalMS;
+	if (b_ClientPingIntervalMSChanged)
+	{
+		_HeartbeatIntervalMS = InMessage._ClientPingIntervalMS;
+
+		if (_HeartbeatTimerHandle.IsValid() && GetWorld())
+		{
+			GetWorld()->GetTimerManager().ClearTimer(_HeartbeatTimerHandle);
+		}
+
+		if (!_HeartbeatTimerHandle.IsValid() && GetWorld())
+		{
+			GetWorld()->GetTimerManager().SetTimer(_HeartbeatTimerHandle, this, &UTbNamesNamEsMsgBusClient::_OnHeartbeat, _HeartbeatIntervalMS / 1000.0f, true);
+		}
+	}
 	const bool bbSwitchChanged = InMessage.bSwitch != bSwitch;
 	if (bbSwitchChanged)
 	{

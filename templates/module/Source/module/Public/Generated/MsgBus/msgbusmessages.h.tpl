@@ -35,15 +35,15 @@ USTRUCT()
 struct F{{$DisplayName}}DiscoveryMessage
 {
 	GENERATED_BODY()
-
-	UPROPERTY()
-	int32 ClientPingIntervalMS = 1000;
 };
 
 USTRUCT()
 struct F{{$DisplayName}}InitMessage
 {
 	GENERATED_BODY()
+
+	UPROPERTY()
+	int32 _ClientPingIntervalMS = 1000;
 
 {{- if len .Interface.Properties }}{{ nl }}{{ end }}
 {{- range $i, $e := .Interface.Properties }}

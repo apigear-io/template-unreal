@@ -161,6 +161,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnNewClientDiscovered(const FTb
 	ClientAddress = Context->GetSender();
 
 	auto msg = new FTbSimpleSimpleArrayInterfaceInitMessage();
+	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
 	msg->PropBool = BackendService->Execute_GetPropBool(BackendService.GetObject());
 	msg->PropInt = BackendService->Execute_GetPropInt(BackendService.GetObject());
 	msg->PropInt32 = BackendService->Execute_GetPropInt32(BackendService.GetObject());

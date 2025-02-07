@@ -114,6 +114,7 @@ void UTbSimpleVoidInterfaceMsgBusAdapter::OnNewClientDiscovered(const FTbSimpleV
 	ClientAddress = Context->GetSender();
 
 	auto msg = new FTbSimpleVoidInterfaceInitMessage();
+	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
 
 	if (TbSimpleVoidInterfaceMsgBusEndpoint.IsValid())
 	{

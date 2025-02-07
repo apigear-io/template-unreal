@@ -134,8 +134,6 @@ void UTbSame1SameStruct2InterfaceMsgBusClient::_DiscoverService()
 	}
 
 	auto msg = new FTbSame1SameStruct2InterfaceDiscoveryMessage();
-	msg->ClientPingIntervalMS = _HeartbeatIntervalMS;
-
 	TbSame1SameStruct2InterfaceMsgBusEndpoint->Publish<FTbSame1SameStruct2InterfaceDiscoveryMessage>(msg);
 }
 
@@ -153,6 +151,22 @@ void UTbSame1SameStruct2InterfaceMsgBusClient::OnConnectionInit(const FTbSame1Sa
 	}
 
 	ServiceAddress = Context->GetSender();
+
+	const bool b_ClientPingIntervalMSChanged = InMessage._ClientPingIntervalMS != _HeartbeatIntervalMS;
+	if (b_ClientPingIntervalMSChanged)
+	{
+		_HeartbeatIntervalMS = InMessage._ClientPingIntervalMS;
+
+		if (_HeartbeatTimerHandle.IsValid() && GetWorld())
+		{
+			GetWorld()->GetTimerManager().ClearTimer(_HeartbeatTimerHandle);
+		}
+
+		if (!_HeartbeatTimerHandle.IsValid() && GetWorld())
+		{
+			GetWorld()->GetTimerManager().SetTimer(_HeartbeatTimerHandle, this, &UTbSame1SameStruct2InterfaceMsgBusClient::_OnHeartbeat, _HeartbeatIntervalMS / 1000.0f, true);
+		}
+	}
 	const bool bProp1Changed = InMessage.Prop1 != Prop1;
 	if (bProp1Changed)
 	{

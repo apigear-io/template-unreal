@@ -23,15 +23,15 @@ USTRUCT()
 struct FTbSame1SameEnum2InterfaceDiscoveryMessage
 {
 	GENERATED_BODY()
-
-	UPROPERTY()
-	int32 ClientPingIntervalMS = 1000;
 };
 
 USTRUCT()
 struct FTbSame1SameEnum2InterfaceInitMessage
 {
 	GENERATED_BODY()
+
+	UPROPERTY()
+	int32 _ClientPingIntervalMS = 1000;
 
 	UPROPERTY()
 	ETbSame1Enum1 Prop1 = ETbSame1Enum1::TS1E1_VALUE1;

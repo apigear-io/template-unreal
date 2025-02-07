@@ -135,6 +135,7 @@ void UTbEnumEnumInterfaceMsgBusAdapter::OnNewClientDiscovered(const FTbEnumEnumI
 	ClientAddress = Context->GetSender();
 
 	auto msg = new FTbEnumEnumInterfaceInitMessage();
+	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
 	msg->Prop0 = BackendService->Execute_GetProp0(BackendService.GetObject());
 	msg->Prop1 = BackendService->Execute_GetProp1(BackendService.GetObject());
 	msg->Prop2 = BackendService->Execute_GetProp2(BackendService.GetObject());

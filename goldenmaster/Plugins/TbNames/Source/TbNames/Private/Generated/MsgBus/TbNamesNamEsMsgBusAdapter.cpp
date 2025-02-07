@@ -126,6 +126,7 @@ void UTbNamesNamEsMsgBusAdapter::OnNewClientDiscovered(const FTbNamesNamEsDiscov
 	ClientAddress = Context->GetSender();
 
 	auto msg = new FTbNamesNamEsInitMessage();
+	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
 	msg->bSwitch = BackendService->Execute_GetSwitch(BackendService.GetObject());
 	msg->SomeProperty = BackendService->Execute_GetSomeProperty(BackendService.GetObject());
 	msg->SomePoperty2 = BackendService->Execute_GetSomePoperty2(BackendService.GetObject());

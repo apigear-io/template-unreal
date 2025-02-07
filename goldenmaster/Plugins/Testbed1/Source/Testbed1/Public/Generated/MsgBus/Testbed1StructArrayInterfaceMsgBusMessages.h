@@ -23,15 +23,15 @@ USTRUCT()
 struct FTestbed1StructArrayInterfaceDiscoveryMessage
 {
 	GENERATED_BODY()
-
-	UPROPERTY()
-	int32 ClientPingIntervalMS = 1000;
 };
 
 USTRUCT()
 struct FTestbed1StructArrayInterfaceInitMessage
 {
 	GENERATED_BODY()
+
+	UPROPERTY()
+	int32 _ClientPingIntervalMS = 1000;
 
 	UPROPERTY()
 	TArray<FTestbed1StructBool> PropBool = TArray<FTestbed1StructBool>();

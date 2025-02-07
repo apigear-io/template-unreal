@@ -23,15 +23,15 @@ USTRUCT()
 struct FTbSame1SameStruct1InterfaceDiscoveryMessage
 {
 	GENERATED_BODY()
-
-	UPROPERTY()
-	int32 ClientPingIntervalMS = 1000;
 };
 
 USTRUCT()
 struct FTbSame1SameStruct1InterfaceInitMessage
 {
 	GENERATED_BODY()
+
+	UPROPERTY()
+	int32 _ClientPingIntervalMS = 1000;
 
 	UPROPERTY()
 	FTbSame1Struct1 Prop1 = FTbSame1Struct1();

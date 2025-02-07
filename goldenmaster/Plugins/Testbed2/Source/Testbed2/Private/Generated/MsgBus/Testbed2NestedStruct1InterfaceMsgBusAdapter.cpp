@@ -117,6 +117,7 @@ void UTestbed2NestedStruct1InterfaceMsgBusAdapter::OnNewClientDiscovered(const F
 	ClientAddress = Context->GetSender();
 
 	auto msg = new FTestbed2NestedStruct1InterfaceInitMessage();
+	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
 	msg->Prop1 = BackendService->Execute_GetProp1(BackendService.GetObject());
 
 	if (Testbed2NestedStruct1InterfaceMsgBusEndpoint.IsValid())

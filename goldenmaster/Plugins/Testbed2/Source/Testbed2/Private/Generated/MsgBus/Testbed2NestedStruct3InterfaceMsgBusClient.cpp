@@ -139,8 +139,6 @@ void UTestbed2NestedStruct3InterfaceMsgBusClient::_DiscoverService()
 	}
 
 	auto msg = new FTestbed2NestedStruct3InterfaceDiscoveryMessage();
-	msg->ClientPingIntervalMS = _HeartbeatIntervalMS;
-
 	Testbed2NestedStruct3InterfaceMsgBusEndpoint->Publish<FTestbed2NestedStruct3InterfaceDiscoveryMessage>(msg);
 }
 
@@ -158,6 +156,22 @@ void UTestbed2NestedStruct3InterfaceMsgBusClient::OnConnectionInit(const FTestbe
 	}
 
 	ServiceAddress = Context->GetSender();
+
+	const bool b_ClientPingIntervalMSChanged = InMessage._ClientPingIntervalMS != _HeartbeatIntervalMS;
+	if (b_ClientPingIntervalMSChanged)
+	{
+		_HeartbeatIntervalMS = InMessage._ClientPingIntervalMS;
+
+		if (_HeartbeatTimerHandle.IsValid() && GetWorld())
+		{
+			GetWorld()->GetTimerManager().ClearTimer(_HeartbeatTimerHandle);
+		}
+
+		if (!_HeartbeatTimerHandle.IsValid() && GetWorld())
+		{
+			GetWorld()->GetTimerManager().SetTimer(_HeartbeatTimerHandle, this, &UTestbed2NestedStruct3InterfaceMsgBusClient::_OnHeartbeat, _HeartbeatIntervalMS / 1000.0f, true);
+		}
+	}
 	const bool bProp1Changed = InMessage.Prop1 != Prop1;
 	if (bProp1Changed)
 	{

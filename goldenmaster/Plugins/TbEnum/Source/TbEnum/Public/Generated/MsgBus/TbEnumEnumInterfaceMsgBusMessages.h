@@ -23,15 +23,15 @@ USTRUCT()
 struct FTbEnumEnumInterfaceDiscoveryMessage
 {
 	GENERATED_BODY()
-
-	UPROPERTY()
-	int32 ClientPingIntervalMS = 1000;
 };
 
 USTRUCT()
 struct FTbEnumEnumInterfaceInitMessage
 {
 	GENERATED_BODY()
+
+	UPROPERTY()
+	int32 _ClientPingIntervalMS = 1000;
 
 	UPROPERTY()
 	ETbEnumEnum0 Prop0 = ETbEnumEnum0::TEE0_VALUE0;

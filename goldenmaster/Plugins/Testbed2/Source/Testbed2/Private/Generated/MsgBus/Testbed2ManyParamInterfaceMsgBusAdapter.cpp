@@ -135,6 +135,7 @@ void UTestbed2ManyParamInterfaceMsgBusAdapter::OnNewClientDiscovered(const FTest
 	ClientAddress = Context->GetSender();
 
 	auto msg = new FTestbed2ManyParamInterfaceInitMessage();
+	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
 	msg->Prop1 = BackendService->Execute_GetProp1(BackendService.GetObject());
 	msg->Prop2 = BackendService->Execute_GetProp2(BackendService.GetObject());
 	msg->Prop3 = BackendService->Execute_GetProp3(BackendService.GetObject());

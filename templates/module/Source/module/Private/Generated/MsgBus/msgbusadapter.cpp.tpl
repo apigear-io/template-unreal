@@ -135,6 +135,8 @@ void {{$Class}}::OnNewClientDiscovered(const F{{$Iface}}DiscoveryMessage& /*InMe
 	ClientAddress = Context->GetSender();
 
 	auto msg = new F{{$Iface}}InitMessage();
+	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
+
 {{- range $i, $e := .Interface.Properties }}
 	msg->{{ueVar "" .}} = BackendService->Execute_Get{{Camel .Name}}(BackendService.GetObject());
 {{- end }}

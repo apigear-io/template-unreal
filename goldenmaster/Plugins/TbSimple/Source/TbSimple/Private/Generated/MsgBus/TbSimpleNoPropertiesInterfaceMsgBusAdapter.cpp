@@ -117,6 +117,7 @@ void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::OnNewClientDiscovered(const FT
 	ClientAddress = Context->GetSender();
 
 	auto msg = new FTbSimpleNoPropertiesInterfaceInitMessage();
+	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
 
 	if (TbSimpleNoPropertiesInterfaceMsgBusEndpoint.IsValid())
 	{

@@ -93,4 +93,6 @@ private:
 	TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> BackendService;
 
 	TArray<FMessageAddress> ConnectedClients;
+
+	uint32 _HeartbeatIntervalMS = 1000;
 };

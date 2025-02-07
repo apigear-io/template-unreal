@@ -23,15 +23,15 @@ USTRUCT()
 struct FTestbed2NestedStruct2InterfaceDiscoveryMessage
 {
 	GENERATED_BODY()
-
-	UPROPERTY()
-	int32 ClientPingIntervalMS = 1000;
 };
 
 USTRUCT()
 struct FTestbed2NestedStruct2InterfaceInitMessage
 {
 	GENERATED_BODY()
+
+	UPROPERTY()
+	int32 _ClientPingIntervalMS = 1000;
 
 	UPROPERTY()
 	FTestbed2NestedStruct1 Prop1 = FTestbed2NestedStruct1();

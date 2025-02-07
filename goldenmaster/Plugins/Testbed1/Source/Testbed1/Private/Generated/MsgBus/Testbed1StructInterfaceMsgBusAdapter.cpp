@@ -135,6 +135,7 @@ void UTestbed1StructInterfaceMsgBusAdapter::OnNewClientDiscovered(const FTestbed
 	ClientAddress = Context->GetSender();
 
 	auto msg = new FTestbed1StructInterfaceInitMessage();
+	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
 	msg->PropBool = BackendService->Execute_GetPropBool(BackendService.GetObject());
 	msg->PropInt = BackendService->Execute_GetPropInt(BackendService.GetObject());
 	msg->PropFloat = BackendService->Execute_GetPropFloat(BackendService.GetObject());

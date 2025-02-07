@@ -167,8 +167,6 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::_DiscoverService()
 	}
 
 	auto msg = new FTbSimpleSimpleArrayInterfaceDiscoveryMessage();
-	msg->ClientPingIntervalMS = _HeartbeatIntervalMS;
-
 	TbSimpleSimpleArrayInterfaceMsgBusEndpoint->Publish<FTbSimpleSimpleArrayInterfaceDiscoveryMessage>(msg);
 }
 
@@ -186,6 +184,22 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnConnectionInit(const FTbSimple
 	}
 
 	ServiceAddress = Context->GetSender();
+
+	const bool b_ClientPingIntervalMSChanged = InMessage._ClientPingIntervalMS != _HeartbeatIntervalMS;
+	if (b_ClientPingIntervalMSChanged)
+	{
+		_HeartbeatIntervalMS = InMessage._ClientPingIntervalMS;
+
+		if (_HeartbeatTimerHandle.IsValid() && GetWorld())
+		{
+			GetWorld()->GetTimerManager().ClearTimer(_HeartbeatTimerHandle);
+		}
+
+		if (!_HeartbeatTimerHandle.IsValid() && GetWorld())
+		{
+			GetWorld()->GetTimerManager().SetTimer(_HeartbeatTimerHandle, this, &UTbSimpleSimpleArrayInterfaceMsgBusClient::_OnHeartbeat, _HeartbeatIntervalMS / 1000.0f, true);
+		}
+	}
 	const bool bPropBoolChanged = InMessage.PropBool != PropBool;
 	if (bPropBoolChanged)
 	{
