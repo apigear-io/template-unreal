@@ -20,6 +20,12 @@ limitations under the License.
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "IMessageContext.h"
 #include "Templates/SharedPointer.h"
+#include "Runtime/Launch/Resources/Version.h"
+#if (ENGINE_MAJOR_VERSION < 5)
+#include "Engine/EngineTypes.h"
+#else
+#include "Engine/TimerHandle.h"
+#endif
 #include "Testbed2NestedStruct3InterfaceMsgBusAdapter.generated.h"
 
 class FMessageEndpoint;
@@ -39,6 +45,11 @@ struct FTestbed2NestedStruct3InterfaceProp3ChangedMessage;
 struct FTestbed2NestedStruct3InterfaceFunc1RequestMessage;
 struct FTestbed2NestedStruct3InterfaceFunc2RequestMessage;
 struct FTestbed2NestedStruct3InterfaceFunc3RequestMessage;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed2NestedStruct3InterfaceClientConnectedDelegate, const FString&, ClientAddress);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed2NestedStruct3InterfaceClientDisconnectedDelegate, const FString&, ClientAddress);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed2NestedStruct3InterfaceClientTimeoutDelegate, const FString&, ClientAddress);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed2NestedStruct3InterfaceClientCountDelegate, int32, Count);
 
 /// @brief handles the adaption between the service implementation and the OLink protocol
 /// takes an object of the type ITestbed2NestedStruct3InterfaceInterface
@@ -64,6 +75,24 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface|Remote")
 	bool _IsListening() const;
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct3Interface|Remote", DisplayName = "New client connected")
+	FTestbed2NestedStruct3InterfaceClientConnectedDelegate _OnClientConnected;
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct3Interface|Remote", DisplayName = "Client disconnected")
+	FTestbed2NestedStruct3InterfaceClientDisconnectedDelegate _OnClientDisconnected;
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct3Interface|Remote", DisplayName = "Client timed out")
+	FTestbed2NestedStruct3InterfaceClientTimeoutDelegate _OnClientTimeout;
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct3Interface|Remote", DisplayName = "Clients connected count changed")
+	FTestbed2NestedStruct3InterfaceClientCountDelegate _OnClientsConnectedCountChanged;
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface|Remote")
+	const int32 _GetClientsConnectedCount() const
+	{
+		return _ClientsConnected;
+	};
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface")
 	void _setBackendService(TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> InService);
@@ -104,7 +133,11 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|Testbed2|NestedStruct3Interface")
 	TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> BackendService;
 
-	TArray<FMessageAddress> ConnectedClients;
-
+	// Heartbeat handling
+	void _CheckClientTimeouts();
+	void _UpdateClientsConnected();
+	TMap<FMessageAddress, double> ConnectedClientsTimestamps;
+	FTimerHandle _HeartbeatTimerHandle;
+	int32 _ClientsConnected = 0;
 	uint32 _HeartbeatIntervalMS = 1000;
 };

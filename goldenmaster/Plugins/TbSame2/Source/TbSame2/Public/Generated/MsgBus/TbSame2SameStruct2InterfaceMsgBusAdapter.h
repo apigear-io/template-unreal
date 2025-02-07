@@ -20,6 +20,12 @@ limitations under the License.
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "IMessageContext.h"
 #include "Templates/SharedPointer.h"
+#include "Runtime/Launch/Resources/Version.h"
+#if (ENGINE_MAJOR_VERSION < 5)
+#include "Engine/EngineTypes.h"
+#else
+#include "Engine/TimerHandle.h"
+#endif
 #include "TbSame2SameStruct2InterfaceMsgBusAdapter.generated.h"
 
 class FMessageEndpoint;
@@ -35,6 +41,11 @@ struct FTbSame2SameStruct2InterfaceSetProp2RequestMessage;
 struct FTbSame2SameStruct2InterfaceProp2ChangedMessage;
 struct FTbSame2SameStruct2InterfaceFunc1RequestMessage;
 struct FTbSame2SameStruct2InterfaceFunc2RequestMessage;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSame2SameStruct2InterfaceClientConnectedDelegate, const FString&, ClientAddress);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSame2SameStruct2InterfaceClientDisconnectedDelegate, const FString&, ClientAddress);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSame2SameStruct2InterfaceClientTimeoutDelegate, const FString&, ClientAddress);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSame2SameStruct2InterfaceClientCountDelegate, int32, Count);
 
 /// @brief handles the adaption between the service implementation and the OLink protocol
 /// takes an object of the type ITbSame2SameStruct2InterfaceInterface
@@ -60,6 +71,24 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct2Interface|Remote")
 	bool _IsListening() const;
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame2|SameStruct2Interface|Remote", DisplayName = "New client connected")
+	FTbSame2SameStruct2InterfaceClientConnectedDelegate _OnClientConnected;
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame2|SameStruct2Interface|Remote", DisplayName = "Client disconnected")
+	FTbSame2SameStruct2InterfaceClientDisconnectedDelegate _OnClientDisconnected;
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame2|SameStruct2Interface|Remote", DisplayName = "Client timed out")
+	FTbSame2SameStruct2InterfaceClientTimeoutDelegate _OnClientTimeout;
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame2|SameStruct2Interface|Remote", DisplayName = "Clients connected count changed")
+	FTbSame2SameStruct2InterfaceClientCountDelegate _OnClientsConnectedCountChanged;
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct2Interface|Remote")
+	const int32 _GetClientsConnectedCount() const
+	{
+		return _ClientsConnected;
+	};
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct2Interface")
 	void _setBackendService(TScriptInterface<ITbSame2SameStruct2InterfaceInterface> InService);
@@ -92,7 +121,11 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSame2|SameStruct2Interface")
 	TScriptInterface<ITbSame2SameStruct2InterfaceInterface> BackendService;
 
-	TArray<FMessageAddress> ConnectedClients;
-
+	// Heartbeat handling
+	void _CheckClientTimeouts();
+	void _UpdateClientsConnected();
+	TMap<FMessageAddress, double> ConnectedClientsTimestamps;
+	FTimerHandle _HeartbeatTimerHandle;
+	int32 _ClientsConnected = 0;
 	uint32 _HeartbeatIntervalMS = 1000;
 };

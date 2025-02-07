@@ -26,6 +26,7 @@ limitations under the License.
 #include "Async/Async.h"
 #include "Async/Async.h"
 #include "Engine/Engine.h"
+#include "TimerManager.h"
 #include "MessageEndpoint.h"
 #include "MessageEndpointBuilder.h"
 #include "Misc/DateTime.h"
@@ -47,6 +48,12 @@ void UTbSimpleNoSignalsInterfaceMsgBusAdapter::Deinitialize()
 
 void UTbSimpleNoSignalsInterfaceMsgBusAdapter::_StartListening()
 {
+
+	if (!_HeartbeatTimerHandle.IsValid() && GetWorld())
+	{
+		GetWorld()->GetTimerManager().SetTimer(_HeartbeatTimerHandle, this, &UTbSimpleNoSignalsInterfaceMsgBusAdapter::_CheckClientTimeouts, _HeartbeatIntervalMS / 1000.0f, true);
+	}
+
 	if (TbSimpleNoSignalsInterfaceMsgBusEndpoint.IsValid())
 		return;
 
@@ -70,9 +77,17 @@ void UTbSimpleNoSignalsInterfaceMsgBusAdapter::_StartListening()
 
 void UTbSimpleNoSignalsInterfaceMsgBusAdapter::_StopListening()
 {
+	if (_HeartbeatTimerHandle.IsValid() && GetWorld())
+	{
+		GetWorld()->GetTimerManager().ClearTimer(_HeartbeatTimerHandle);
+	}
+
 	auto msg = new FTbSimpleNoSignalsInterfaceServiceDisconnectMessage();
 
-	if (TbSimpleNoSignalsInterfaceMsgBusEndpoint.IsValid())
+	TArray<FMessageAddress> ConnectedClients;
+	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+
+	if (TbSimpleNoSignalsInterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
 	{
 		TbSimpleNoSignalsInterfaceMsgBusEndpoint->Send<FTbSimpleNoSignalsInterfaceServiceDisconnectMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -82,7 +97,8 @@ void UTbSimpleNoSignalsInterfaceMsgBusAdapter::_StopListening()
 	}
 
 	TbSimpleNoSignalsInterfaceMsgBusEndpoint.Reset();
-	ConnectedClients.Reset();
+	ConnectedClientsTimestamps.Empty();
+	_UpdateClientsConnected();
 }
 
 bool UTbSimpleNoSignalsInterfaceMsgBusAdapter::_IsListening() const
@@ -115,8 +131,7 @@ void UTbSimpleNoSignalsInterfaceMsgBusAdapter::_setBackendService(TScriptInterfa
 
 void UTbSimpleNoSignalsInterfaceMsgBusAdapter::OnNewClientDiscovered(const FTbSimpleNoSignalsInterfaceDiscoveryMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	FMessageAddress& ClientAddress = ConnectedClients.AddDefaulted_GetRef();
-	ClientAddress = Context->GetSender();
+	const FMessageAddress& ClientAddress = Context->GetSender();
 
 	auto msg = new FTbSimpleNoSignalsInterfaceInitMessage();
 	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
@@ -131,12 +146,18 @@ void UTbSimpleNoSignalsInterfaceMsgBusAdapter::OnNewClientDiscovered(const FTbSi
 			FTimespan::Zero(),
 			FDateTime::MaxValue());
 	}
+
+	_OnClientConnected.Broadcast(ClientAddress.ToString());
+	ConnectedClientsTimestamps.Add(ClientAddress, FPlatformTime::Seconds());
+	_UpdateClientsConnected();
 }
 
 void UTbSimpleNoSignalsInterfaceMsgBusAdapter::OnPing(const FTbSimpleNoSignalsInterfacePingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	auto msg = new FTbSimpleNoSignalsInterfacePongMessage();
 	msg->Timestamp = InMessage.Timestamp;
+
+	ConnectedClientsTimestamps.Add(Context->GetSender(), FPlatformTime::Seconds());
 
 	if (TbSimpleNoSignalsInterfaceMsgBusEndpoint.IsValid())
 	{
@@ -150,7 +171,41 @@ void UTbSimpleNoSignalsInterfaceMsgBusAdapter::OnPing(const FTbSimpleNoSignalsIn
 
 void UTbSimpleNoSignalsInterfaceMsgBusAdapter::OnClientDisconnected(const FTbSimpleNoSignalsInterfaceClientDisconnectMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	ConnectedClients.Remove(Context->GetSender());
+	_OnClientDisconnected.Broadcast(Context->GetSender().ToString());
+	ConnectedClientsTimestamps.Remove(Context->GetSender());
+	_UpdateClientsConnected();
+}
+
+void UTbSimpleNoSignalsInterfaceMsgBusAdapter::_CheckClientTimeouts()
+{
+	float CurrentTime = FPlatformTime::Seconds();
+	TArray<FMessageAddress> TimedOutClients;
+
+	for (const auto& ClientPair : ConnectedClientsTimestamps)
+	{
+		const double Delta = (CurrentTime - ClientPair.Value) * 1000;
+
+		if (Delta > 2 * _HeartbeatIntervalMS)
+		{
+			// service seems to be dead or not responding - reset connection
+			TimedOutClients.Add(ClientPair.Key);
+		}
+	}
+
+	for (const auto& ClientAddress : TimedOutClients)
+	{
+		_OnClientTimeout.Broadcast(ClientAddress.ToString());
+		ConnectedClientsTimestamps.Remove(ClientAddress);
+	}
+	_UpdateClientsConnected();
+}
+
+void UTbSimpleNoSignalsInterfaceMsgBusAdapter::_UpdateClientsConnected()
+{
+	TArray<FMessageAddress> ConnectedClients;
+	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	_ClientsConnected = NumberOfClients;
+	_OnClientsConnectedCountChanged.Broadcast(_ClientsConnected);
 }
 
 void UTbSimpleNoSignalsInterfaceMsgBusAdapter::OnFuncVoidRequest(const FTbSimpleNoSignalsInterfaceFuncVoidRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -181,10 +236,13 @@ void UTbSimpleNoSignalsInterfaceMsgBusAdapter::OnSetPropBoolRequest(const FTbSim
 
 void UTbSimpleNoSignalsInterfaceMsgBusAdapter::OnPropBoolChanged(bool bInPropBool)
 {
+	TArray<FMessageAddress> ConnectedClients;
+	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+
 	auto msg = new FTbSimpleNoSignalsInterfacePropBoolChangedMessage();
 	msg->bPropBool = bInPropBool;
 
-	if (TbSimpleNoSignalsInterfaceMsgBusEndpoint.IsValid())
+	if (TbSimpleNoSignalsInterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
 	{
 		TbSimpleNoSignalsInterfaceMsgBusEndpoint->Send<FTbSimpleNoSignalsInterfacePropBoolChangedMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -201,10 +259,13 @@ void UTbSimpleNoSignalsInterfaceMsgBusAdapter::OnSetPropIntRequest(const FTbSimp
 
 void UTbSimpleNoSignalsInterfaceMsgBusAdapter::OnPropIntChanged(int32 InPropInt)
 {
+	TArray<FMessageAddress> ConnectedClients;
+	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+
 	auto msg = new FTbSimpleNoSignalsInterfacePropIntChangedMessage();
 	msg->PropInt = InPropInt;
 
-	if (TbSimpleNoSignalsInterfaceMsgBusEndpoint.IsValid())
+	if (TbSimpleNoSignalsInterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
 	{
 		TbSimpleNoSignalsInterfaceMsgBusEndpoint->Send<FTbSimpleNoSignalsInterfacePropIntChangedMessage>(msg, EMessageFlags::Reliable,
 			nullptr,

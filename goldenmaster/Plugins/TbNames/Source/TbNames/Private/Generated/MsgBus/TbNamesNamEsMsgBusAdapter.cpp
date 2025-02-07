@@ -26,6 +26,7 @@ limitations under the License.
 #include "Async/Async.h"
 #include "Async/Async.h"
 #include "Engine/Engine.h"
+#include "TimerManager.h"
 #include "MessageEndpoint.h"
 #include "MessageEndpointBuilder.h"
 #include "Misc/DateTime.h"
@@ -47,6 +48,12 @@ void UTbNamesNamEsMsgBusAdapter::Deinitialize()
 
 void UTbNamesNamEsMsgBusAdapter::_StartListening()
 {
+
+	if (!_HeartbeatTimerHandle.IsValid() && GetWorld())
+	{
+		GetWorld()->GetTimerManager().SetTimer(_HeartbeatTimerHandle, this, &UTbNamesNamEsMsgBusAdapter::_CheckClientTimeouts, _HeartbeatIntervalMS / 1000.0f, true);
+	}
+
 	if (TbNamesNamEsMsgBusEndpoint.IsValid())
 		return;
 
@@ -71,9 +78,17 @@ void UTbNamesNamEsMsgBusAdapter::_StartListening()
 
 void UTbNamesNamEsMsgBusAdapter::_StopListening()
 {
+	if (_HeartbeatTimerHandle.IsValid() && GetWorld())
+	{
+		GetWorld()->GetTimerManager().ClearTimer(_HeartbeatTimerHandle);
+	}
+
 	auto msg = new FTbNamesNamEsServiceDisconnectMessage();
 
-	if (TbNamesNamEsMsgBusEndpoint.IsValid())
+	TArray<FMessageAddress> ConnectedClients;
+	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+
+	if (TbNamesNamEsMsgBusEndpoint.IsValid() && NumberOfClients > 0)
 	{
 		TbNamesNamEsMsgBusEndpoint->Send<FTbNamesNamEsServiceDisconnectMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -83,7 +98,8 @@ void UTbNamesNamEsMsgBusAdapter::_StopListening()
 	}
 
 	TbNamesNamEsMsgBusEndpoint.Reset();
-	ConnectedClients.Reset();
+	ConnectedClientsTimestamps.Empty();
+	_UpdateClientsConnected();
 }
 
 bool UTbNamesNamEsMsgBusAdapter::_IsListening() const
@@ -122,8 +138,7 @@ void UTbNamesNamEsMsgBusAdapter::_setBackendService(TScriptInterface<ITbNamesNam
 
 void UTbNamesNamEsMsgBusAdapter::OnNewClientDiscovered(const FTbNamesNamEsDiscoveryMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	FMessageAddress& ClientAddress = ConnectedClients.AddDefaulted_GetRef();
-	ClientAddress = Context->GetSender();
+	const FMessageAddress& ClientAddress = Context->GetSender();
 
 	auto msg = new FTbNamesNamEsInitMessage();
 	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
@@ -139,12 +154,18 @@ void UTbNamesNamEsMsgBusAdapter::OnNewClientDiscovered(const FTbNamesNamEsDiscov
 			FTimespan::Zero(),
 			FDateTime::MaxValue());
 	}
+
+	_OnClientConnected.Broadcast(ClientAddress.ToString());
+	ConnectedClientsTimestamps.Add(ClientAddress, FPlatformTime::Seconds());
+	_UpdateClientsConnected();
 }
 
 void UTbNamesNamEsMsgBusAdapter::OnPing(const FTbNamesNamEsPingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	auto msg = new FTbNamesNamEsPongMessage();
 	msg->Timestamp = InMessage.Timestamp;
+
+	ConnectedClientsTimestamps.Add(Context->GetSender(), FPlatformTime::Seconds());
 
 	if (TbNamesNamEsMsgBusEndpoint.IsValid())
 	{
@@ -158,7 +179,41 @@ void UTbNamesNamEsMsgBusAdapter::OnPing(const FTbNamesNamEsPingMessage& InMessag
 
 void UTbNamesNamEsMsgBusAdapter::OnClientDisconnected(const FTbNamesNamEsClientDisconnectMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	ConnectedClients.Remove(Context->GetSender());
+	_OnClientDisconnected.Broadcast(Context->GetSender().ToString());
+	ConnectedClientsTimestamps.Remove(Context->GetSender());
+	_UpdateClientsConnected();
+}
+
+void UTbNamesNamEsMsgBusAdapter::_CheckClientTimeouts()
+{
+	float CurrentTime = FPlatformTime::Seconds();
+	TArray<FMessageAddress> TimedOutClients;
+
+	for (const auto& ClientPair : ConnectedClientsTimestamps)
+	{
+		const double Delta = (CurrentTime - ClientPair.Value) * 1000;
+
+		if (Delta > 2 * _HeartbeatIntervalMS)
+		{
+			// service seems to be dead or not responding - reset connection
+			TimedOutClients.Add(ClientPair.Key);
+		}
+	}
+
+	for (const auto& ClientAddress : TimedOutClients)
+	{
+		_OnClientTimeout.Broadcast(ClientAddress.ToString());
+		ConnectedClientsTimestamps.Remove(ClientAddress);
+	}
+	_UpdateClientsConnected();
+}
+
+void UTbNamesNamEsMsgBusAdapter::_UpdateClientsConnected()
+{
+	TArray<FMessageAddress> ConnectedClients;
+	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	_ClientsConnected = NumberOfClients;
+	_OnClientsConnectedCountChanged.Broadcast(_ClientsConnected);
 }
 
 void UTbNamesNamEsMsgBusAdapter::OnSomeFunctionRequest(const FTbNamesNamEsSomeFunctionRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -173,9 +228,12 @@ void UTbNamesNamEsMsgBusAdapter::OnSomeFunction2Request(const FTbNamesNamEsSomeF
 
 void UTbNamesNamEsMsgBusAdapter::OnSomeSignal(bool bInSomeParam)
 {
+	TArray<FMessageAddress> ConnectedClients;
+	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+
 	auto msg = new FTbNamesNamEsSomeSignalSignalMessage();
 	msg->bSomeParam = bInSomeParam;
-	if (TbNamesNamEsMsgBusEndpoint.IsValid())
+	if (TbNamesNamEsMsgBusEndpoint.IsValid() && NumberOfClients > 0)
 	{
 		TbNamesNamEsMsgBusEndpoint->Send<FTbNamesNamEsSomeSignalSignalMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -187,9 +245,12 @@ void UTbNamesNamEsMsgBusAdapter::OnSomeSignal(bool bInSomeParam)
 
 void UTbNamesNamEsMsgBusAdapter::OnSomeSignal2(bool bInSomeParam)
 {
+	TArray<FMessageAddress> ConnectedClients;
+	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+
 	auto msg = new FTbNamesNamEsSomeSignal2SignalMessage();
 	msg->bSomeParam = bInSomeParam;
-	if (TbNamesNamEsMsgBusEndpoint.IsValid())
+	if (TbNamesNamEsMsgBusEndpoint.IsValid() && NumberOfClients > 0)
 	{
 		TbNamesNamEsMsgBusEndpoint->Send<FTbNamesNamEsSomeSignal2SignalMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -206,10 +267,13 @@ void UTbNamesNamEsMsgBusAdapter::OnSetSwitchRequest(const FTbNamesNamEsSetSwitch
 
 void UTbNamesNamEsMsgBusAdapter::OnSwitchChanged(bool bInSwitch)
 {
+	TArray<FMessageAddress> ConnectedClients;
+	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+
 	auto msg = new FTbNamesNamEsSwitchChangedMessage();
 	msg->bSwitch = bInSwitch;
 
-	if (TbNamesNamEsMsgBusEndpoint.IsValid())
+	if (TbNamesNamEsMsgBusEndpoint.IsValid() && NumberOfClients > 0)
 	{
 		TbNamesNamEsMsgBusEndpoint->Send<FTbNamesNamEsSwitchChangedMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -226,10 +290,13 @@ void UTbNamesNamEsMsgBusAdapter::OnSetSomePropertyRequest(const FTbNamesNamEsSet
 
 void UTbNamesNamEsMsgBusAdapter::OnSomePropertyChanged(int32 InSomeProperty)
 {
+	TArray<FMessageAddress> ConnectedClients;
+	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+
 	auto msg = new FTbNamesNamEsSomePropertyChangedMessage();
 	msg->SomeProperty = InSomeProperty;
 
-	if (TbNamesNamEsMsgBusEndpoint.IsValid())
+	if (TbNamesNamEsMsgBusEndpoint.IsValid() && NumberOfClients > 0)
 	{
 		TbNamesNamEsMsgBusEndpoint->Send<FTbNamesNamEsSomePropertyChangedMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -246,10 +313,13 @@ void UTbNamesNamEsMsgBusAdapter::OnSetSomePoperty2Request(const FTbNamesNamEsSet
 
 void UTbNamesNamEsMsgBusAdapter::OnSomePoperty2Changed(int32 InSomePoperty2)
 {
+	TArray<FMessageAddress> ConnectedClients;
+	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+
 	auto msg = new FTbNamesNamEsSomePoperty2ChangedMessage();
 	msg->SomePoperty2 = InSomePoperty2;
 
-	if (TbNamesNamEsMsgBusEndpoint.IsValid())
+	if (TbNamesNamEsMsgBusEndpoint.IsValid() && NumberOfClients > 0)
 	{
 		TbNamesNamEsMsgBusEndpoint->Send<FTbNamesNamEsSomePoperty2ChangedMessage>(msg, EMessageFlags::Reliable,
 			nullptr,

@@ -20,6 +20,12 @@ limitations under the License.
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "IMessageContext.h"
 #include "Templates/SharedPointer.h"
+#include "Runtime/Launch/Resources/Version.h"
+#if (ENGINE_MAJOR_VERSION < 5)
+#include "Engine/EngineTypes.h"
+#else
+#include "Engine/TimerHandle.h"
+#endif
 #include "TbNamesNamEsMsgBusAdapter.generated.h"
 
 class FMessageEndpoint;
@@ -37,6 +43,11 @@ struct FTbNamesNamEsSetSomePoperty2RequestMessage;
 struct FTbNamesNamEsSomePoperty2ChangedMessage;
 struct FTbNamesNamEsSomeFunctionRequestMessage;
 struct FTbNamesNamEsSomeFunction2RequestMessage;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbNamesNamEsClientConnectedDelegate, const FString&, ClientAddress);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbNamesNamEsClientDisconnectedDelegate, const FString&, ClientAddress);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbNamesNamEsClientTimeoutDelegate, const FString&, ClientAddress);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbNamesNamEsClientCountDelegate, int32, Count);
 
 /// @brief handles the adaption between the service implementation and the OLink protocol
 /// takes an object of the type ITbNamesNamEsInterface
@@ -62,6 +73,24 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Remote")
 	bool _IsListening() const;
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbNames|NamEs|Remote", DisplayName = "New client connected")
+	FTbNamesNamEsClientConnectedDelegate _OnClientConnected;
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbNames|NamEs|Remote", DisplayName = "Client disconnected")
+	FTbNamesNamEsClientDisconnectedDelegate _OnClientDisconnected;
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbNames|NamEs|Remote", DisplayName = "Client timed out")
+	FTbNamesNamEsClientTimeoutDelegate _OnClientTimeout;
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbNames|NamEs|Remote", DisplayName = "Clients connected count changed")
+	FTbNamesNamEsClientCountDelegate _OnClientsConnectedCountChanged;
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Remote")
+	const int32 _GetClientsConnectedCount() const
+	{
+		return _ClientsConnected;
+	};
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbNames|NamEs")
 	void _setBackendService(TScriptInterface<ITbNamesNamEsInterface> InService);
@@ -98,7 +127,11 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbNames|NamEs")
 	TScriptInterface<ITbNamesNamEsInterface> BackendService;
 
-	TArray<FMessageAddress> ConnectedClients;
-
+	// Heartbeat handling
+	void _CheckClientTimeouts();
+	void _UpdateClientsConnected();
+	TMap<FMessageAddress, double> ConnectedClientsTimestamps;
+	FTimerHandle _HeartbeatTimerHandle;
+	int32 _ClientsConnected = 0;
 	uint32 _HeartbeatIntervalMS = 1000;
 };

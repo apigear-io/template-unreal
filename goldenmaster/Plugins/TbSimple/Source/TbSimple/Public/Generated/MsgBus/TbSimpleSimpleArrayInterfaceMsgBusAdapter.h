@@ -20,6 +20,12 @@ limitations under the License.
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "IMessageContext.h"
 #include "Templates/SharedPointer.h"
+#include "Runtime/Launch/Resources/Version.h"
+#if (ENGINE_MAJOR_VERSION < 5)
+#include "Engine/EngineTypes.h"
+#else
+#include "Engine/TimerHandle.h"
+#endif
 #include "TbSimpleSimpleArrayInterfaceMsgBusAdapter.generated.h"
 
 class FMessageEndpoint;
@@ -62,6 +68,11 @@ struct FTbSimpleSimpleArrayInterfaceFuncFloat32RequestMessage;
 struct FTbSimpleSimpleArrayInterfaceFuncFloat64RequestMessage;
 struct FTbSimpleSimpleArrayInterfaceFuncStringRequestMessage;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleArrayInterfaceClientConnectedDelegate, const FString&, ClientAddress);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleArrayInterfaceClientDisconnectedDelegate, const FString&, ClientAddress);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleArrayInterfaceClientTimeoutDelegate, const FString&, ClientAddress);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleArrayInterfaceClientCountDelegate, int32, Count);
+
 /// @brief handles the adaption between the service implementation and the OLink protocol
 /// takes an object of the type ITbSimpleSimpleArrayInterfaceInterface
 /// and holds the corresponding TbSimpleSimpleArrayInterfaceOLinkSource OLink source object
@@ -86,6 +97,24 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Remote")
 	bool _IsListening() const;
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Remote", DisplayName = "New client connected")
+	FTbSimpleSimpleArrayInterfaceClientConnectedDelegate _OnClientConnected;
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Remote", DisplayName = "Client disconnected")
+	FTbSimpleSimpleArrayInterfaceClientDisconnectedDelegate _OnClientDisconnected;
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Remote", DisplayName = "Client timed out")
+	FTbSimpleSimpleArrayInterfaceClientTimeoutDelegate _OnClientTimeout;
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Remote", DisplayName = "Clients connected count changed")
+	FTbSimpleSimpleArrayInterfaceClientCountDelegate _OnClientsConnectedCountChanged;
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Remote")
+	const int32 _GetClientsConnectedCount() const
+	{
+		return _ClientsConnected;
+	};
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
 	void _setBackendService(TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> InService);
@@ -169,7 +198,11 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSimple|SimpleArrayInterface")
 	TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> BackendService;
 
-	TArray<FMessageAddress> ConnectedClients;
-
+	// Heartbeat handling
+	void _CheckClientTimeouts();
+	void _UpdateClientsConnected();
+	TMap<FMessageAddress, double> ConnectedClientsTimestamps;
+	FTimerHandle _HeartbeatTimerHandle;
+	int32 _ClientsConnected = 0;
 	uint32 _HeartbeatIntervalMS = 1000;
 };

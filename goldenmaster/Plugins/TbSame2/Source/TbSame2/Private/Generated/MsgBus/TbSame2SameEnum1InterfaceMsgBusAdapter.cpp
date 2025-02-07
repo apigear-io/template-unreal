@@ -26,6 +26,7 @@ limitations under the License.
 #include "Async/Async.h"
 #include "Async/Async.h"
 #include "Engine/Engine.h"
+#include "TimerManager.h"
 #include "MessageEndpoint.h"
 #include "MessageEndpointBuilder.h"
 #include "Misc/DateTime.h"
@@ -47,6 +48,12 @@ void UTbSame2SameEnum1InterfaceMsgBusAdapter::Deinitialize()
 
 void UTbSame2SameEnum1InterfaceMsgBusAdapter::_StartListening()
 {
+
+	if (!_HeartbeatTimerHandle.IsValid() && GetWorld())
+	{
+		GetWorld()->GetTimerManager().SetTimer(_HeartbeatTimerHandle, this, &UTbSame2SameEnum1InterfaceMsgBusAdapter::_CheckClientTimeouts, _HeartbeatIntervalMS / 1000.0f, true);
+	}
+
 	if (TbSame2SameEnum1InterfaceMsgBusEndpoint.IsValid())
 		return;
 
@@ -68,9 +75,17 @@ void UTbSame2SameEnum1InterfaceMsgBusAdapter::_StartListening()
 
 void UTbSame2SameEnum1InterfaceMsgBusAdapter::_StopListening()
 {
+	if (_HeartbeatTimerHandle.IsValid() && GetWorld())
+	{
+		GetWorld()->GetTimerManager().ClearTimer(_HeartbeatTimerHandle);
+	}
+
 	auto msg = new FTbSame2SameEnum1InterfaceServiceDisconnectMessage();
 
-	if (TbSame2SameEnum1InterfaceMsgBusEndpoint.IsValid())
+	TArray<FMessageAddress> ConnectedClients;
+	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+
+	if (TbSame2SameEnum1InterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
 	{
 		TbSame2SameEnum1InterfaceMsgBusEndpoint->Send<FTbSame2SameEnum1InterfaceServiceDisconnectMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -80,7 +95,8 @@ void UTbSame2SameEnum1InterfaceMsgBusAdapter::_StopListening()
 	}
 
 	TbSame2SameEnum1InterfaceMsgBusEndpoint.Reset();
-	ConnectedClients.Reset();
+	ConnectedClientsTimestamps.Empty();
+	_UpdateClientsConnected();
 }
 
 bool UTbSame2SameEnum1InterfaceMsgBusAdapter::_IsListening() const
@@ -113,8 +129,7 @@ void UTbSame2SameEnum1InterfaceMsgBusAdapter::_setBackendService(TScriptInterfac
 
 void UTbSame2SameEnum1InterfaceMsgBusAdapter::OnNewClientDiscovered(const FTbSame2SameEnum1InterfaceDiscoveryMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	FMessageAddress& ClientAddress = ConnectedClients.AddDefaulted_GetRef();
-	ClientAddress = Context->GetSender();
+	const FMessageAddress& ClientAddress = Context->GetSender();
 
 	auto msg = new FTbSame2SameEnum1InterfaceInitMessage();
 	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
@@ -128,12 +143,18 @@ void UTbSame2SameEnum1InterfaceMsgBusAdapter::OnNewClientDiscovered(const FTbSam
 			FTimespan::Zero(),
 			FDateTime::MaxValue());
 	}
+
+	_OnClientConnected.Broadcast(ClientAddress.ToString());
+	ConnectedClientsTimestamps.Add(ClientAddress, FPlatformTime::Seconds());
+	_UpdateClientsConnected();
 }
 
 void UTbSame2SameEnum1InterfaceMsgBusAdapter::OnPing(const FTbSame2SameEnum1InterfacePingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	auto msg = new FTbSame2SameEnum1InterfacePongMessage();
 	msg->Timestamp = InMessage.Timestamp;
+
+	ConnectedClientsTimestamps.Add(Context->GetSender(), FPlatformTime::Seconds());
 
 	if (TbSame2SameEnum1InterfaceMsgBusEndpoint.IsValid())
 	{
@@ -147,7 +168,41 @@ void UTbSame2SameEnum1InterfaceMsgBusAdapter::OnPing(const FTbSame2SameEnum1Inte
 
 void UTbSame2SameEnum1InterfaceMsgBusAdapter::OnClientDisconnected(const FTbSame2SameEnum1InterfaceClientDisconnectMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	ConnectedClients.Remove(Context->GetSender());
+	_OnClientDisconnected.Broadcast(Context->GetSender().ToString());
+	ConnectedClientsTimestamps.Remove(Context->GetSender());
+	_UpdateClientsConnected();
+}
+
+void UTbSame2SameEnum1InterfaceMsgBusAdapter::_CheckClientTimeouts()
+{
+	float CurrentTime = FPlatformTime::Seconds();
+	TArray<FMessageAddress> TimedOutClients;
+
+	for (const auto& ClientPair : ConnectedClientsTimestamps)
+	{
+		const double Delta = (CurrentTime - ClientPair.Value) * 1000;
+
+		if (Delta > 2 * _HeartbeatIntervalMS)
+		{
+			// service seems to be dead or not responding - reset connection
+			TimedOutClients.Add(ClientPair.Key);
+		}
+	}
+
+	for (const auto& ClientAddress : TimedOutClients)
+	{
+		_OnClientTimeout.Broadcast(ClientAddress.ToString());
+		ConnectedClientsTimestamps.Remove(ClientAddress);
+	}
+	_UpdateClientsConnected();
+}
+
+void UTbSame2SameEnum1InterfaceMsgBusAdapter::_UpdateClientsConnected()
+{
+	TArray<FMessageAddress> ConnectedClients;
+	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	_ClientsConnected = NumberOfClients;
+	_OnClientsConnectedCountChanged.Broadcast(_ClientsConnected);
 }
 
 void UTbSame2SameEnum1InterfaceMsgBusAdapter::OnFunc1Request(const FTbSame2SameEnum1InterfaceFunc1RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -168,9 +223,12 @@ void UTbSame2SameEnum1InterfaceMsgBusAdapter::OnFunc1Request(const FTbSame2SameE
 
 void UTbSame2SameEnum1InterfaceMsgBusAdapter::OnSig1(ETbSame2Enum1 InParam1)
 {
+	TArray<FMessageAddress> ConnectedClients;
+	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+
 	auto msg = new FTbSame2SameEnum1InterfaceSig1SignalMessage();
 	msg->Param1 = InParam1;
-	if (TbSame2SameEnum1InterfaceMsgBusEndpoint.IsValid())
+	if (TbSame2SameEnum1InterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
 	{
 		TbSame2SameEnum1InterfaceMsgBusEndpoint->Send<FTbSame2SameEnum1InterfaceSig1SignalMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -187,10 +245,13 @@ void UTbSame2SameEnum1InterfaceMsgBusAdapter::OnSetProp1Request(const FTbSame2Sa
 
 void UTbSame2SameEnum1InterfaceMsgBusAdapter::OnProp1Changed(ETbSame2Enum1 InProp1)
 {
+	TArray<FMessageAddress> ConnectedClients;
+	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+
 	auto msg = new FTbSame2SameEnum1InterfaceProp1ChangedMessage();
 	msg->Prop1 = InProp1;
 
-	if (TbSame2SameEnum1InterfaceMsgBusEndpoint.IsValid())
+	if (TbSame2SameEnum1InterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
 	{
 		TbSame2SameEnum1InterfaceMsgBusEndpoint->Send<FTbSame2SameEnum1InterfaceProp1ChangedMessage>(msg, EMessageFlags::Reliable,
 			nullptr,

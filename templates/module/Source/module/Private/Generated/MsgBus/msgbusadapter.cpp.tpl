@@ -19,6 +19,7 @@
 #include "Async/Async.h"
 #include "Async/Async.h"
 #include "Engine/Engine.h"
+#include "TimerManager.h"
 #include "MessageEndpoint.h"
 #include "MessageEndpointBuilder.h"
 #include "Misc/DateTime.h"
@@ -46,6 +47,12 @@ void {{$Class}}::Deinitialize()
 
 void {{$Class}}::_StartListening()
 {
+
+	if (!_HeartbeatTimerHandle.IsValid() && GetWorld())
+	{
+		GetWorld()->GetTimerManager().SetTimer(_HeartbeatTimerHandle, this, &{{$Class}}::_CheckClientTimeouts, _HeartbeatIntervalMS / 1000.0f, true);
+	}
+
 	if ({{$Iface}}MsgBusEndpoint.IsValid())
 		return;
 
@@ -73,9 +80,17 @@ void {{$Class}}::_StartListening()
 
 void {{$Class}}::_StopListening()
 {
+	if (_HeartbeatTimerHandle.IsValid() && GetWorld())
+	{
+		GetWorld()->GetTimerManager().ClearTimer(_HeartbeatTimerHandle);
+	}
+
 	auto msg = new F{{$Iface}}ServiceDisconnectMessage();
 
-	if ({{$Iface}}MsgBusEndpoint.IsValid())
+	TArray<FMessageAddress> ConnectedClients;
+	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+
+	if ({{$Iface}}MsgBusEndpoint.IsValid() && NumberOfClients > 0)
 	{
 		{{$Iface}}MsgBusEndpoint->Send<F{{$Iface}}ServiceDisconnectMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -85,7 +100,8 @@ void {{$Class}}::_StopListening()
 	}
 
 	{{$Iface}}MsgBusEndpoint.Reset();
-	ConnectedClients.Reset();
+	ConnectedClientsTimestamps.Empty();
+	_UpdateClientsConnected();
 }
 
 bool {{$Class}}::_IsListening() const
@@ -131,8 +147,7 @@ void {{$Class}}::_setBackendService(TScriptInterface<I{{$Iface}}Interface> InSer
 
 void {{$Class}}::OnNewClientDiscovered(const F{{$Iface}}DiscoveryMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	FMessageAddress& ClientAddress = ConnectedClients.AddDefaulted_GetRef();
-	ClientAddress = Context->GetSender();
+	const FMessageAddress& ClientAddress = Context->GetSender();
 
 	auto msg = new F{{$Iface}}InitMessage();
 	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
@@ -149,12 +164,18 @@ void {{$Class}}::OnNewClientDiscovered(const F{{$Iface}}DiscoveryMessage& /*InMe
 			FTimespan::Zero(),
 			FDateTime::MaxValue());
 	}
+
+	_OnClientConnected.Broadcast(ClientAddress.ToString());
+	ConnectedClientsTimestamps.Add(ClientAddress, FPlatformTime::Seconds());
+	_UpdateClientsConnected();
 }
 
 void {{$Class}}::OnPing(const F{{$Iface}}PingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	auto msg = new F{{$Iface}}PongMessage();
 	msg->Timestamp = InMessage.Timestamp;
+
+	ConnectedClientsTimestamps.Add(Context->GetSender(), FPlatformTime::Seconds());
 
 	if ({{$Iface}}MsgBusEndpoint.IsValid())
 	{
@@ -168,7 +189,41 @@ void {{$Class}}::OnPing(const F{{$Iface}}PingMessage& InMessage, const TSharedRe
 
 void {{$Class}}::OnClientDisconnected(const F{{$Iface}}ClientDisconnectMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	ConnectedClients.Remove(Context->GetSender());
+	_OnClientDisconnected.Broadcast(Context->GetSender().ToString());
+	ConnectedClientsTimestamps.Remove(Context->GetSender());
+	_UpdateClientsConnected();
+}
+
+void {{$Class}}::_CheckClientTimeouts()
+{
+	float CurrentTime = FPlatformTime::Seconds();
+	TArray<FMessageAddress> TimedOutClients;
+
+	for (const auto& ClientPair : ConnectedClientsTimestamps)
+	{
+		const double Delta = (CurrentTime - ClientPair.Value) * 1000;
+
+		if (Delta > 2 * _HeartbeatIntervalMS)
+		{
+			// service seems to be dead or not responding - reset connection
+			TimedOutClients.Add(ClientPair.Key);
+		}
+	}
+
+	for (const auto& ClientAddress : TimedOutClients)
+	{
+		_OnClientTimeout.Broadcast(ClientAddress.ToString());
+		ConnectedClientsTimestamps.Remove(ClientAddress);
+	}
+	_UpdateClientsConnected();
+}
+
+void {{$Class}}::_UpdateClientsConnected()
+{
+	TArray<FMessageAddress> ConnectedClients;
+	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	_ClientsConnected = NumberOfClients;
+	_OnClientsConnectedCountChanged.Broadcast(_ClientsConnected);
 }
 {{- range .Interface.Operations }}
 
@@ -204,11 +259,14 @@ void {{$Class}}::On{{Camel .Name}}Request(const F{{$Iface}}{{Camel .Name}}Reques
 
 void {{$Class}}::On{{Camel .Name}}({{ueParams "In" .Params}})
 {
+	TArray<FMessageAddress> ConnectedClients;
+	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+
 	auto msg = new F{{$Iface}}{{Camel .Name}}SignalMessage();
 {{- range $i, $e := .Params }}
 	msg->{{ueVar "" .}} = {{ueVar "In" .}};
 {{- end }}
-	if ({{$Iface}}MsgBusEndpoint.IsValid())
+	if ({{$Iface}}MsgBusEndpoint.IsValid() && NumberOfClients > 0)
 	{
 		{{$Iface}}MsgBusEndpoint->Send<F{{$Iface}}{{Camel .Name}}SignalMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -229,10 +287,13 @@ void {{$Class}}::OnSet{{Camel .Name}}Request(const F{{$Iface}}Set{{Camel .Name}}
 
 void {{$Class}}::On{{Camel .Name}}Changed({{ueParam "In" .}})
 {
+	TArray<FMessageAddress> ConnectedClients;
+	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+
 	auto msg = new F{{$Iface}}{{Camel .Name}}ChangedMessage();
 	msg->{{ueVar "" .}} = {{ueVar "In" .}};
 
-	if ({{$Iface}}MsgBusEndpoint.IsValid())
+	if ({{$Iface}}MsgBusEndpoint.IsValid() && NumberOfClients > 0)
 	{
 		{{$Iface}}MsgBusEndpoint->Send<F{{$Iface}}{{Camel .Name}}ChangedMessage>(msg, EMessageFlags::Reliable,
 			nullptr,

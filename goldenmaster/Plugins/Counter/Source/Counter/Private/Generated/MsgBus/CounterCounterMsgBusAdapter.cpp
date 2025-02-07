@@ -26,6 +26,7 @@ limitations under the License.
 #include "Async/Async.h"
 #include "Async/Async.h"
 #include "Engine/Engine.h"
+#include "TimerManager.h"
 #include "MessageEndpoint.h"
 #include "MessageEndpointBuilder.h"
 #include "Misc/DateTime.h"
@@ -47,6 +48,12 @@ void UCounterCounterMsgBusAdapter::Deinitialize()
 
 void UCounterCounterMsgBusAdapter::_StartListening()
 {
+
+	if (!_HeartbeatTimerHandle.IsValid() && GetWorld())
+	{
+		GetWorld()->GetTimerManager().SetTimer(_HeartbeatTimerHandle, this, &UCounterCounterMsgBusAdapter::_CheckClientTimeouts, _HeartbeatIntervalMS / 1000.0f, true);
+	}
+
 	if (CounterCounterMsgBusEndpoint.IsValid())
 		return;
 
@@ -74,9 +81,17 @@ void UCounterCounterMsgBusAdapter::_StartListening()
 
 void UCounterCounterMsgBusAdapter::_StopListening()
 {
+	if (_HeartbeatTimerHandle.IsValid() && GetWorld())
+	{
+		GetWorld()->GetTimerManager().ClearTimer(_HeartbeatTimerHandle);
+	}
+
 	auto msg = new FCounterCounterServiceDisconnectMessage();
 
-	if (CounterCounterMsgBusEndpoint.IsValid())
+	TArray<FMessageAddress> ConnectedClients;
+	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+
+	if (CounterCounterMsgBusEndpoint.IsValid() && NumberOfClients > 0)
 	{
 		CounterCounterMsgBusEndpoint->Send<FCounterCounterServiceDisconnectMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -86,7 +101,8 @@ void UCounterCounterMsgBusAdapter::_StopListening()
 	}
 
 	CounterCounterMsgBusEndpoint.Reset();
-	ConnectedClients.Reset();
+	ConnectedClientsTimestamps.Empty();
+	_UpdateClientsConnected();
 }
 
 bool UCounterCounterMsgBusAdapter::_IsListening() const
@@ -125,8 +141,7 @@ void UCounterCounterMsgBusAdapter::_setBackendService(TScriptInterface<ICounterC
 
 void UCounterCounterMsgBusAdapter::OnNewClientDiscovered(const FCounterCounterDiscoveryMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	FMessageAddress& ClientAddress = ConnectedClients.AddDefaulted_GetRef();
-	ClientAddress = Context->GetSender();
+	const FMessageAddress& ClientAddress = Context->GetSender();
 
 	auto msg = new FCounterCounterInitMessage();
 	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
@@ -143,12 +158,18 @@ void UCounterCounterMsgBusAdapter::OnNewClientDiscovered(const FCounterCounterDi
 			FTimespan::Zero(),
 			FDateTime::MaxValue());
 	}
+
+	_OnClientConnected.Broadcast(ClientAddress.ToString());
+	ConnectedClientsTimestamps.Add(ClientAddress, FPlatformTime::Seconds());
+	_UpdateClientsConnected();
 }
 
 void UCounterCounterMsgBusAdapter::OnPing(const FCounterCounterPingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	auto msg = new FCounterCounterPongMessage();
 	msg->Timestamp = InMessage.Timestamp;
+
+	ConnectedClientsTimestamps.Add(Context->GetSender(), FPlatformTime::Seconds());
 
 	if (CounterCounterMsgBusEndpoint.IsValid())
 	{
@@ -162,7 +183,41 @@ void UCounterCounterMsgBusAdapter::OnPing(const FCounterCounterPingMessage& InMe
 
 void UCounterCounterMsgBusAdapter::OnClientDisconnected(const FCounterCounterClientDisconnectMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	ConnectedClients.Remove(Context->GetSender());
+	_OnClientDisconnected.Broadcast(Context->GetSender().ToString());
+	ConnectedClientsTimestamps.Remove(Context->GetSender());
+	_UpdateClientsConnected();
+}
+
+void UCounterCounterMsgBusAdapter::_CheckClientTimeouts()
+{
+	float CurrentTime = FPlatformTime::Seconds();
+	TArray<FMessageAddress> TimedOutClients;
+
+	for (const auto& ClientPair : ConnectedClientsTimestamps)
+	{
+		const double Delta = (CurrentTime - ClientPair.Value) * 1000;
+
+		if (Delta > 2 * _HeartbeatIntervalMS)
+		{
+			// service seems to be dead or not responding - reset connection
+			TimedOutClients.Add(ClientPair.Key);
+		}
+	}
+
+	for (const auto& ClientAddress : TimedOutClients)
+	{
+		_OnClientTimeout.Broadcast(ClientAddress.ToString());
+		ConnectedClientsTimestamps.Remove(ClientAddress);
+	}
+	_UpdateClientsConnected();
+}
+
+void UCounterCounterMsgBusAdapter::_UpdateClientsConnected()
+{
+	TArray<FMessageAddress> ConnectedClients;
+	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	_ClientsConnected = NumberOfClients;
+	_OnClientsConnectedCountChanged.Broadcast(_ClientsConnected);
 }
 
 void UCounterCounterMsgBusAdapter::OnIncrementRequest(const FCounterCounterIncrementRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -231,12 +286,15 @@ void UCounterCounterMsgBusAdapter::OnDecrementArrayRequest(const FCounterCounter
 
 void UCounterCounterMsgBusAdapter::OnValueChanged(const FCustomTypesVector3D& InVector, const FVector& InExternVector, const TArray<FCustomTypesVector3D>& InVectorArray, const TArray<FVector>& InExternVectorArray)
 {
+	TArray<FMessageAddress> ConnectedClients;
+	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+
 	auto msg = new FCounterCounterValueChangedSignalMessage();
 	msg->Vector = InVector;
 	msg->ExternVector = InExternVector;
 	msg->VectorArray = InVectorArray;
 	msg->ExternVectorArray = InExternVectorArray;
-	if (CounterCounterMsgBusEndpoint.IsValid())
+	if (CounterCounterMsgBusEndpoint.IsValid() && NumberOfClients > 0)
 	{
 		CounterCounterMsgBusEndpoint->Send<FCounterCounterValueChangedSignalMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -253,10 +311,13 @@ void UCounterCounterMsgBusAdapter::OnSetVectorRequest(const FCounterCounterSetVe
 
 void UCounterCounterMsgBusAdapter::OnVectorChanged(const FCustomTypesVector3D& InVector)
 {
+	TArray<FMessageAddress> ConnectedClients;
+	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+
 	auto msg = new FCounterCounterVectorChangedMessage();
 	msg->Vector = InVector;
 
-	if (CounterCounterMsgBusEndpoint.IsValid())
+	if (CounterCounterMsgBusEndpoint.IsValid() && NumberOfClients > 0)
 	{
 		CounterCounterMsgBusEndpoint->Send<FCounterCounterVectorChangedMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -273,10 +334,13 @@ void UCounterCounterMsgBusAdapter::OnSetExternVectorRequest(const FCounterCounte
 
 void UCounterCounterMsgBusAdapter::OnExternVectorChanged(const FVector& InExternVector)
 {
+	TArray<FMessageAddress> ConnectedClients;
+	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+
 	auto msg = new FCounterCounterExternVectorChangedMessage();
 	msg->ExternVector = InExternVector;
 
-	if (CounterCounterMsgBusEndpoint.IsValid())
+	if (CounterCounterMsgBusEndpoint.IsValid() && NumberOfClients > 0)
 	{
 		CounterCounterMsgBusEndpoint->Send<FCounterCounterExternVectorChangedMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -293,10 +357,13 @@ void UCounterCounterMsgBusAdapter::OnSetVectorArrayRequest(const FCounterCounter
 
 void UCounterCounterMsgBusAdapter::OnVectorArrayChanged(const TArray<FCustomTypesVector3D>& InVectorArray)
 {
+	TArray<FMessageAddress> ConnectedClients;
+	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+
 	auto msg = new FCounterCounterVectorArrayChangedMessage();
 	msg->VectorArray = InVectorArray;
 
-	if (CounterCounterMsgBusEndpoint.IsValid())
+	if (CounterCounterMsgBusEndpoint.IsValid() && NumberOfClients > 0)
 	{
 		CounterCounterMsgBusEndpoint->Send<FCounterCounterVectorArrayChangedMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -313,10 +380,13 @@ void UCounterCounterMsgBusAdapter::OnSetExternVectorArrayRequest(const FCounterC
 
 void UCounterCounterMsgBusAdapter::OnExternVectorArrayChanged(const TArray<FVector>& InExternVectorArray)
 {
+	TArray<FMessageAddress> ConnectedClients;
+	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+
 	auto msg = new FCounterCounterExternVectorArrayChangedMessage();
 	msg->ExternVectorArray = InExternVectorArray;
 
-	if (CounterCounterMsgBusEndpoint.IsValid())
+	if (CounterCounterMsgBusEndpoint.IsValid() && NumberOfClients > 0)
 	{
 		CounterCounterMsgBusEndpoint->Send<FCounterCounterExternVectorArrayChangedMessage>(msg, EMessageFlags::Reliable,
 			nullptr,

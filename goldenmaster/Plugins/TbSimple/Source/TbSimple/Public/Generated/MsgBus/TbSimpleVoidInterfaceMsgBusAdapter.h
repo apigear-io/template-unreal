@@ -20,6 +20,12 @@ limitations under the License.
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "IMessageContext.h"
 #include "Templates/SharedPointer.h"
+#include "Runtime/Launch/Resources/Version.h"
+#if (ENGINE_MAJOR_VERSION < 5)
+#include "Engine/EngineTypes.h"
+#else
+#include "Engine/TimerHandle.h"
+#endif
 #include "TbSimpleVoidInterfaceMsgBusAdapter.generated.h"
 
 class FMessageEndpoint;
@@ -29,6 +35,11 @@ struct FTbSimpleVoidInterfacePingMessage;
 struct FTbSimpleVoidInterfaceClientDisconnectMessage;
 struct FTbSimpleVoidInterfaceSigVoidSignalMessage;
 struct FTbSimpleVoidInterfaceFuncVoidRequestMessage;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleVoidInterfaceClientConnectedDelegate, const FString&, ClientAddress);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleVoidInterfaceClientDisconnectedDelegate, const FString&, ClientAddress);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleVoidInterfaceClientTimeoutDelegate, const FString&, ClientAddress);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleVoidInterfaceClientCountDelegate, int32, Count);
 
 /// @brief handles the adaption between the service implementation and the OLink protocol
 /// takes an object of the type ITbSimpleVoidInterfaceInterface
@@ -55,6 +66,24 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|VoidInterface|Remote")
 	bool _IsListening() const;
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|VoidInterface|Remote", DisplayName = "New client connected")
+	FTbSimpleVoidInterfaceClientConnectedDelegate _OnClientConnected;
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|VoidInterface|Remote", DisplayName = "Client disconnected")
+	FTbSimpleVoidInterfaceClientDisconnectedDelegate _OnClientDisconnected;
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|VoidInterface|Remote", DisplayName = "Client timed out")
+	FTbSimpleVoidInterfaceClientTimeoutDelegate _OnClientTimeout;
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|VoidInterface|Remote", DisplayName = "Clients connected count changed")
+	FTbSimpleVoidInterfaceClientCountDelegate _OnClientsConnectedCountChanged;
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|VoidInterface|Remote")
+	const int32 _GetClientsConnectedCount() const
+	{
+		return _ClientsConnected;
+	};
+
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|VoidInterface")
 	void _setBackendService(TScriptInterface<ITbSimpleVoidInterfaceInterface> InService);
 
@@ -74,7 +103,11 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSimple|VoidInterface")
 	TScriptInterface<ITbSimpleVoidInterfaceInterface> BackendService;
 
-	TArray<FMessageAddress> ConnectedClients;
-
+	// Heartbeat handling
+	void _CheckClientTimeouts();
+	void _UpdateClientsConnected();
+	TMap<FMessageAddress, double> ConnectedClientsTimestamps;
+	FTimerHandle _HeartbeatTimerHandle;
+	int32 _ClientsConnected = 0;
 	uint32 _HeartbeatIntervalMS = 1000;
 };

@@ -20,6 +20,12 @@ limitations under the License.
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "IMessageContext.h"
 #include "Templates/SharedPointer.h"
+#include "Runtime/Launch/Resources/Version.h"
+#if (ENGINE_MAJOR_VERSION < 5)
+#include "Engine/EngineTypes.h"
+#else
+#include "Engine/TimerHandle.h"
+#endif
 #include "CounterCounterMsgBusAdapter.generated.h"
 
 class FMessageEndpoint;
@@ -40,6 +46,11 @@ struct FCounterCounterIncrementRequestMessage;
 struct FCounterCounterIncrementArrayRequestMessage;
 struct FCounterCounterDecrementRequestMessage;
 struct FCounterCounterDecrementArrayRequestMessage;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCounterCounterClientConnectedDelegate, const FString&, ClientAddress);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCounterCounterClientDisconnectedDelegate, const FString&, ClientAddress);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCounterCounterClientTimeoutDelegate, const FString&, ClientAddress);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCounterCounterClientCountDelegate, int32, Count);
 
 /// @brief handles the adaption between the service implementation and the OLink protocol
 /// takes an object of the type ICounterCounterInterface
@@ -65,6 +76,24 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Remote")
 	bool _IsListening() const;
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Counter|Counter|Remote", DisplayName = "New client connected")
+	FCounterCounterClientConnectedDelegate _OnClientConnected;
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Counter|Counter|Remote", DisplayName = "Client disconnected")
+	FCounterCounterClientDisconnectedDelegate _OnClientDisconnected;
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Counter|Counter|Remote", DisplayName = "Client timed out")
+	FCounterCounterClientTimeoutDelegate _OnClientTimeout;
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Counter|Counter|Remote", DisplayName = "Clients connected count changed")
+	FCounterCounterClientCountDelegate _OnClientsConnectedCountChanged;
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Remote")
+	const int32 _GetClientsConnectedCount() const
+	{
+		return _ClientsConnected;
+	};
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter")
 	void _setBackendService(TScriptInterface<ICounterCounterInterface> InService);
@@ -104,7 +133,11 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|Counter|Counter")
 	TScriptInterface<ICounterCounterInterface> BackendService;
 
-	TArray<FMessageAddress> ConnectedClients;
-
+	// Heartbeat handling
+	void _CheckClientTimeouts();
+	void _UpdateClientsConnected();
+	TMap<FMessageAddress, double> ConnectedClientsTimestamps;
+	FTimerHandle _HeartbeatTimerHandle;
+	int32 _ClientsConnected = 0;
 	uint32 _HeartbeatIntervalMS = 1000;
 };

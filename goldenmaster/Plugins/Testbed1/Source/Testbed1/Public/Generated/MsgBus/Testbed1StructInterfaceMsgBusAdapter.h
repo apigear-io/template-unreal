@@ -20,6 +20,12 @@ limitations under the License.
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "IMessageContext.h"
 #include "Templates/SharedPointer.h"
+#include "Runtime/Launch/Resources/Version.h"
+#if (ENGINE_MAJOR_VERSION < 5)
+#include "Engine/EngineTypes.h"
+#else
+#include "Engine/TimerHandle.h"
+#endif
 #include "Testbed1StructInterfaceMsgBusAdapter.generated.h"
 
 class FMessageEndpoint;
@@ -43,6 +49,11 @@ struct FTestbed1StructInterfaceFuncBoolRequestMessage;
 struct FTestbed1StructInterfaceFuncIntRequestMessage;
 struct FTestbed1StructInterfaceFuncFloatRequestMessage;
 struct FTestbed1StructInterfaceFuncStringRequestMessage;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed1StructInterfaceClientConnectedDelegate, const FString&, ClientAddress);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed1StructInterfaceClientDisconnectedDelegate, const FString&, ClientAddress);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed1StructInterfaceClientTimeoutDelegate, const FString&, ClientAddress);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed1StructInterfaceClientCountDelegate, int32, Count);
 
 /// @brief handles the adaption between the service implementation and the OLink protocol
 /// takes an object of the type ITestbed1StructInterfaceInterface
@@ -68,6 +79,24 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface|Remote")
 	bool _IsListening() const;
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface|Remote", DisplayName = "New client connected")
+	FTestbed1StructInterfaceClientConnectedDelegate _OnClientConnected;
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface|Remote", DisplayName = "Client disconnected")
+	FTestbed1StructInterfaceClientDisconnectedDelegate _OnClientDisconnected;
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface|Remote", DisplayName = "Client timed out")
+	FTestbed1StructInterfaceClientTimeoutDelegate _OnClientTimeout;
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface|Remote", DisplayName = "Clients connected count changed")
+	FTestbed1StructInterfaceClientCountDelegate _OnClientsConnectedCountChanged;
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface|Remote")
+	const int32 _GetClientsConnectedCount() const
+	{
+		return _ClientsConnected;
+	};
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface")
 	void _setBackendService(TScriptInterface<ITestbed1StructInterfaceInterface> InService);
@@ -116,7 +145,11 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|Testbed1|StructInterface")
 	TScriptInterface<ITestbed1StructInterfaceInterface> BackendService;
 
-	TArray<FMessageAddress> ConnectedClients;
-
+	// Heartbeat handling
+	void _CheckClientTimeouts();
+	void _UpdateClientsConnected();
+	TMap<FMessageAddress, double> ConnectedClientsTimestamps;
+	FTimerHandle _HeartbeatTimerHandle;
+	int32 _ClientsConnected = 0;
 	uint32 _HeartbeatIntervalMS = 1000;
 };
