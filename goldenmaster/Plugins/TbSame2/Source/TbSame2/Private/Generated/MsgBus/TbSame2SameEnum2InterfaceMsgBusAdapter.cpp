@@ -175,8 +175,13 @@ void UTbSame2SameEnum2InterfaceMsgBusAdapter::OnPing(const FTbSame2SameEnum2Inte
 
 void UTbSame2SameEnum2InterfaceMsgBusAdapter::OnClientDisconnected(const FTbSame2SameEnum2InterfaceClientDisconnectMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	_OnClientDisconnected.Broadcast(Context->GetSender().ToString());
+	if (!ConnectedClientsTimestamps.Contains(Context->GetSender()))
+	{
+		return;
+	}
+
 	ConnectedClientsTimestamps.Remove(Context->GetSender());
+	_OnClientDisconnected.Broadcast(Context->GetSender().ToString());
 	_UpdateClientsConnected();
 }
 

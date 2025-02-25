@@ -182,8 +182,13 @@ void UTestbed2NestedStruct3InterfaceMsgBusAdapter::OnPing(const FTestbed2NestedS
 
 void UTestbed2NestedStruct3InterfaceMsgBusAdapter::OnClientDisconnected(const FTestbed2NestedStruct3InterfaceClientDisconnectMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	_OnClientDisconnected.Broadcast(Context->GetSender().ToString());
+	if (!ConnectedClientsTimestamps.Contains(Context->GetSender()))
+	{
+		return;
+	}
+
 	ConnectedClientsTimestamps.Remove(Context->GetSender());
+	_OnClientDisconnected.Broadcast(Context->GetSender().ToString());
 	_UpdateClientsConnected();
 }
 

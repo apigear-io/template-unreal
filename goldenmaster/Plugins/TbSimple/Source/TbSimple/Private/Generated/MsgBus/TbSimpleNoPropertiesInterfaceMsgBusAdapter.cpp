@@ -167,8 +167,13 @@ void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::OnPing(const FTbSimpleNoProper
 
 void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::OnClientDisconnected(const FTbSimpleNoPropertiesInterfaceClientDisconnectMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	_OnClientDisconnected.Broadcast(Context->GetSender().ToString());
+	if (!ConnectedClientsTimestamps.Contains(Context->GetSender()))
+	{
+		return;
+	}
+
 	ConnectedClientsTimestamps.Remove(Context->GetSender());
+	_OnClientDisconnected.Broadcast(Context->GetSender().ToString());
 	_UpdateClientsConnected();
 }
 

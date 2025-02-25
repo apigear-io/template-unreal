@@ -179,8 +179,13 @@ void UTbNamesNamEsMsgBusAdapter::OnPing(const FTbNamesNamEsPingMessage& InMessag
 
 void UTbNamesNamEsMsgBusAdapter::OnClientDisconnected(const FTbNamesNamEsClientDisconnectMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	_OnClientDisconnected.Broadcast(Context->GetSender().ToString());
+	if (!ConnectedClientsTimestamps.Contains(Context->GetSender()))
+	{
+		return;
+	}
+
 	ConnectedClientsTimestamps.Remove(Context->GetSender());
+	_OnClientDisconnected.Broadcast(Context->GetSender().ToString());
 	_UpdateClientsConnected();
 }
 
