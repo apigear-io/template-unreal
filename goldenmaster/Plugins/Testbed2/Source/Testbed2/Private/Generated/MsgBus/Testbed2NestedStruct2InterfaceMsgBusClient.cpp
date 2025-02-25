@@ -48,6 +48,7 @@ UTestbed2NestedStruct2InterfaceMsgBusClient::UTestbed2NestedStruct2InterfaceMsgB
 	: UAbstractTestbed2NestedStruct2Interface()
 	, _SentData(MakePimpl<Testbed2NestedStruct2InterfacePropertiesMsgBusData>())
 {
+	PingRTTBuffer.SetNumZeroed(PING_RTT_BUFFER_SIZE);
 }
 
 UTestbed2NestedStruct2InterfaceMsgBusClient::~UTestbed2NestedStruct2InterfaceMsgBusClient() = default;
@@ -151,6 +152,14 @@ void UTestbed2NestedStruct2InterfaceMsgBusClient::OnConnectionInit(const FTestbe
 	}
 
 	ServiceAddress = Context->GetSender();
+	// reset ping stats for a new connection
+	PingRTTBuffer.Empty();
+	PingRTTBuffer.SetNumZeroed(PING_RTT_BUFFER_SIZE);
+	CurrentPingCounter = 0;
+	Stats.CurrentRTT_MS = 0.0f;
+	Stats.AverageRTT_MS = 0.0f;
+	Stats.MaxRTT_MS = 0.0f;
+	Stats.MinRTT_MS = 0.0f;
 
 	const bool b_ClientPingIntervalMSChanged = InMessage._ClientPingIntervalMS != _HeartbeatIntervalMS;
 	if (b_ClientPingIntervalMSChanged)
@@ -216,6 +225,23 @@ void UTestbed2NestedStruct2InterfaceMsgBusClient::_OnHeartbeat()
 		FDateTime::MaxValue());
 }
 
+float UTestbed2NestedStruct2InterfaceMsgBusClient::_CalculateAverageRTT() const
+{
+	if (CurrentPingCounter == 0)
+	{
+		return 0.0f;
+	}
+
+	float TotalRTT = 0.0f;
+
+	for (const float& RTT : PingRTTBuffer)
+	{
+		TotalRTT += RTT;
+	}
+
+	return CurrentPingCounter > 0 ? TotalRTT / CurrentPingCounter : 0.0f;
+}
+
 void UTestbed2NestedStruct2InterfaceMsgBusClient::OnPong(const FTestbed2NestedStruct2InterfacePongMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	_LastHbTimestamp = InMessage.Timestamp;
@@ -224,7 +250,13 @@ void UTestbed2NestedStruct2InterfaceMsgBusClient::OnPong(const FTestbed2NestedSt
 	const double DeltaMS = (Current - InMessage.Timestamp) * 1000.0f;
 
 	Stats.CurrentRTT_MS = DeltaMS;
-	Stats.AverageRTT_MS = (Stats.AverageRTT_MS + Stats.CurrentRTT_MS) / 2.0f;
+	if (CurrentPingCounter < PING_RTT_BUFFER_SIZE)
+	{
+		CurrentPingCounter++;
+	}
+	PingRTTBuffer.RemoveAt(0);
+	PingRTTBuffer.Add(Stats.CurrentRTT_MS);
+	Stats.AverageRTT_MS = _CalculateAverageRTT();
 	Stats.MaxRTT_MS = FGenericPlatformMath::Max(Stats.MaxRTT_MS, Stats.CurrentRTT_MS);
 	Stats.MinRTT_MS = FGenericPlatformMath::Min(Stats.MinRTT_MS, Stats.CurrentRTT_MS);
 

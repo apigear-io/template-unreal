@@ -17,6 +17,7 @@ limitations under the License.
 #pragma once
 
 #include "Generated/api/AbstractTestbed2ManyParamInterface.h"
+#include "Containers/Array.h"
 #include "Containers/Map.h"
 #include "HAL/CriticalSection.h"
 #include "Async/Future.h"
@@ -136,6 +137,10 @@ private:
 
 	// connection health
 	double _LastHbTimestamp = 0.0;
+	TArray<float> PingRTTBuffer;
+	static const size_t PING_RTT_BUFFER_SIZE = 60;
+	size_t CurrentPingCounter = 0;
+	float _CalculateAverageRTT() const;
 	FTestbed2ManyParamInterfaceStats Stats;
 	FTimerHandle _HeartbeatTimerHandle;
 	void _OnHeartbeat();
