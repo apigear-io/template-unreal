@@ -53,6 +53,13 @@
 			"LoadingPhase": "default"
 		},
 {{- end }}
+{{- if and .Features.msgbus (len .Module.Interfaces) }}
+		{
+			"Name": "{{$ModuleName}}MsgBus",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+{{- end }}
 		{
 			"Name" : "{{$ModuleName}}Editor",
 			"Type" : "Editor",

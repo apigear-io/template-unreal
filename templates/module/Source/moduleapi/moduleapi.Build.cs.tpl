@@ -17,8 +17,6 @@ public class {{$ModuleName}}API : ModuleRules
 		// Disable nlohmann::json exception handling
 		PublicDefinitions.Add("JSON_NOEXCEPTION=1");
 		
-{{- $ModuleName := Camel .Module.Name }}
-
 		PublicIncludePaths.AddRange(
 			new string[] {
 				// ... add public include paths required here ...

@@ -43,6 +43,11 @@
 			"LoadingPhase": "default"
 		},
 		{
+			"Name": "TbNamesMsgBus",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
 			"Name" : "TbNamesEditor",
 			"Type" : "Editor",
 			"LoadingPhase" : "default",

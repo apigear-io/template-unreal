@@ -43,6 +43,11 @@
 			"LoadingPhase": "default"
 		},
 		{
+			"Name": "TbSimpleMsgBus",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
 			"Name" : "TbSimpleEditor",
 			"Type" : "Editor",
 			"LoadingPhase" : "default",

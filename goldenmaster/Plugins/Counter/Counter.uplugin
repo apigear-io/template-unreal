@@ -43,6 +43,11 @@
 			"LoadingPhase": "default"
 		},
 		{
+			"Name": "CounterMsgBus",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
 			"Name" : "CounterEditor",
 			"Type" : "Editor",
 			"LoadingPhase" : "default",

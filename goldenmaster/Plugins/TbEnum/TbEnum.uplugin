@@ -43,6 +43,11 @@
 			"LoadingPhase": "default"
 		},
 		{
+			"Name": "TbEnumMsgBus",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
 			"Name" : "TbEnumEditor",
 			"Type" : "Editor",
 			"LoadingPhase" : "default",
