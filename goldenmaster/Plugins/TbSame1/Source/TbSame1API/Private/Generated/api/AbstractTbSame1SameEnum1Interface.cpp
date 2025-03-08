@@ -66,7 +66,7 @@ UAbstractTbSame1SameEnum1Interface::UAbstractTbSame1SameEnum1Interface()
 	TbSame1SameEnum1InterfaceSignals = NewObject<UTbSame1SameEnum1InterfaceSignals>();
 }
 
-UTbSame1SameEnum1InterfaceSignals* UAbstractTbSame1SameEnum1Interface::_GetSignals_Implementation()
+UTbSame1SameEnum1InterfaceSignals* UAbstractTbSame1SameEnum1Interface::_GetSignals()
 {
 	if (!TbSame1SameEnum1InterfaceSignals)
 	{
@@ -77,15 +77,15 @@ UTbSame1SameEnum1InterfaceSignals* UAbstractTbSame1SameEnum1Interface::_GetSigna
 
 ETbSame1Enum1 UAbstractTbSame1SameEnum1Interface::GetProp1_Private() const
 {
-	return Execute_GetProp1(this);
+	return GetProp1();
 };
 
 void UAbstractTbSame1SameEnum1Interface::SetProp1_Private(ETbSame1Enum1 InProp1)
 {
-	Execute_SetProp1(this, InProp1);
+	SetProp1(InProp1);
 };
 
-void UAbstractTbSame1SameEnum1Interface::Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame1Enum1& Result, ETbSame1Enum1 Param1)
+void UAbstractTbSame1SameEnum1Interface::Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame1Enum1& Result, ETbSame1Enum1 Param1)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
@@ -105,7 +105,7 @@ void UAbstractTbSame1SameEnum1Interface::Func1Async_Implementation(UObject* Worl
 		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
 		if (this->GetClass()->IsInBlueprint())
 		{
-			Result = Execute_Func1(this, Param1);
+			Result = Func1(Param1);
 			CompletionAction->Cancel();
 		}
 		else
@@ -113,7 +113,7 @@ void UAbstractTbSame1SameEnum1Interface::Func1Async_Implementation(UObject* Worl
 			Async(EAsyncExecution::ThreadPool,
 				[Param1, this, &Result, CompletionAction]()
 				{
-				Result = Execute_Func1(this, Param1);
+				Result = Func1(Param1);
 				CompletionAction->Cancel();
 			});
 		}

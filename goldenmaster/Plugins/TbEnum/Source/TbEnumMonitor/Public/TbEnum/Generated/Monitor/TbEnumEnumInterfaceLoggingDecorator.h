@@ -42,30 +42,30 @@ public:
 	void Deinitialize() override;
 
 	// properties
-	ETbEnumEnum0 GetProp0_Implementation() const override;
+	ETbEnumEnum0 GetProp0() const override;
 
-	void SetProp0_Implementation(ETbEnumEnum0 InProp0) override;
+	void SetProp0(ETbEnumEnum0 InProp0) override;
 
-	ETbEnumEnum1 GetProp1_Implementation() const override;
+	ETbEnumEnum1 GetProp1() const override;
 
-	void SetProp1_Implementation(ETbEnumEnum1 InProp1) override;
+	void SetProp1(ETbEnumEnum1 InProp1) override;
 
-	ETbEnumEnum2 GetProp2_Implementation() const override;
+	ETbEnumEnum2 GetProp2() const override;
 
-	void SetProp2_Implementation(ETbEnumEnum2 InProp2) override;
+	void SetProp2(ETbEnumEnum2 InProp2) override;
 
-	ETbEnumEnum3 GetProp3_Implementation() const override;
+	ETbEnumEnum3 GetProp3() const override;
 
-	void SetProp3_Implementation(ETbEnumEnum3 InProp3) override;
+	void SetProp3(ETbEnumEnum3 InProp3) override;
 
 	// operations
-	ETbEnumEnum0 Func0_Implementation(ETbEnumEnum0 Param0) override;
+	ETbEnumEnum0 Func0(ETbEnumEnum0 Param0) override;
 
-	ETbEnumEnum1 Func1_Implementation(ETbEnumEnum1 Param1) override;
+	ETbEnumEnum1 Func1(ETbEnumEnum1 Param1) override;
 
-	ETbEnumEnum2 Func2_Implementation(ETbEnumEnum2 Param2) override;
+	ETbEnumEnum2 Func2(ETbEnumEnum2 Param2) override;
 
-	ETbEnumEnum3 Func3_Implementation(ETbEnumEnum3 Param3) override;
+	ETbEnumEnum3 Func3(ETbEnumEnum3 Param3) override;
 
 private:
 	/** The connection to the service backend. */

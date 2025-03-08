@@ -108,7 +108,7 @@ void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::_setBackendService(TScriptInte
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		UTbSimpleNoPropertiesInterfaceSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+		UTbSimpleNoPropertiesInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleNoPropertiesInterface"));
 		BackendSignals->OnSigVoidSignal.RemoveDynamic(this, &UTbSimpleNoPropertiesInterfaceMsgBusAdapter::OnSigVoid);
 		BackendSignals->OnSigBoolSignal.RemoveDynamic(this, &UTbSimpleNoPropertiesInterfaceMsgBusAdapter::OnSigBool);
@@ -119,7 +119,7 @@ void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::_setBackendService(TScriptInte
 
 	// subscribe to new backend
 	BackendService = InService;
-	UTbSimpleNoPropertiesInterfaceSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+	UTbSimpleNoPropertiesInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service TbSimpleNoPropertiesInterface"));
 	// connect property changed signals or simple events
 	BackendSignals->OnSigVoidSignal.AddDynamic(this, &UTbSimpleNoPropertiesInterfaceMsgBusAdapter::OnSigVoid);
@@ -210,14 +210,14 @@ void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::_UpdateClientsConnected()
 
 void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::OnFuncVoidRequest(const FTbSimpleNoPropertiesInterfaceFuncVoidRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	BackendService->Execute_FuncVoid(BackendService.GetObject());
+	BackendService->FuncVoid();
 }
 
 void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::OnFuncBoolRequest(const FTbSimpleNoPropertiesInterfaceFuncBoolRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	auto msg = new FTbSimpleNoPropertiesInterfaceFuncBoolReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
-	msg->Result = BackendService->Execute_FuncBool(BackendService.GetObject(), InMessage.bParamBool);
+	msg->Result = BackendService->FuncBool(InMessage.bParamBool);
 
 	if (TbSimpleNoPropertiesInterfaceMsgBusEndpoint.IsValid())
 	{

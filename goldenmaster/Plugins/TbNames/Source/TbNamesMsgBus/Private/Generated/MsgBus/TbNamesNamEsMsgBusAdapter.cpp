@@ -111,7 +111,7 @@ void UTbNamesNamEsMsgBusAdapter::_setBackendService(TScriptInterface<ITbNamesNam
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		UTbNamesNamEsSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+		UTbNamesNamEsSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbNamesNamEs"));
 		BackendSignals->OnSwitchChanged.RemoveDynamic(this, &UTbNamesNamEsMsgBusAdapter::OnSwitchChanged);
 		BackendSignals->OnSomePropertyChanged.RemoveDynamic(this, &UTbNamesNamEsMsgBusAdapter::OnSomePropertyChanged);
@@ -125,7 +125,7 @@ void UTbNamesNamEsMsgBusAdapter::_setBackendService(TScriptInterface<ITbNamesNam
 
 	// subscribe to new backend
 	BackendService = InService;
-	UTbNamesNamEsSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+	UTbNamesNamEsSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service TbNamesNamEs"));
 	// connect property changed signals or simple events
 	BackendSignals->OnSwitchChanged.AddDynamic(this, &UTbNamesNamEsMsgBusAdapter::OnSwitchChanged);
@@ -141,9 +141,9 @@ void UTbNamesNamEsMsgBusAdapter::OnNewClientDiscovered(const FTbNamesNamEsDiscov
 
 	auto msg = new FTbNamesNamEsInitMessage();
 	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
-	msg->bSwitch = BackendService->Execute_GetSwitch(BackendService.GetObject());
-	msg->SomeProperty = BackendService->Execute_GetSomeProperty(BackendService.GetObject());
-	msg->SomePoperty2 = BackendService->Execute_GetSomePoperty2(BackendService.GetObject());
+	msg->bSwitch = BackendService->GetSwitch();
+	msg->SomeProperty = BackendService->GetSomeProperty();
+	msg->SomePoperty2 = BackendService->GetSomePoperty2();
 
 	if (TbNamesNamEsMsgBusEndpoint.IsValid())
 	{
@@ -222,12 +222,12 @@ void UTbNamesNamEsMsgBusAdapter::_UpdateClientsConnected()
 
 void UTbNamesNamEsMsgBusAdapter::OnSomeFunctionRequest(const FTbNamesNamEsSomeFunctionRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	BackendService->Execute_SomeFunction(BackendService.GetObject(), InMessage.bSomeParam);
+	BackendService->SomeFunction(InMessage.bSomeParam);
 }
 
 void UTbNamesNamEsMsgBusAdapter::OnSomeFunction2Request(const FTbNamesNamEsSomeFunction2RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	BackendService->Execute_SomeFunction2(BackendService.GetObject(), InMessage.bSomeParam);
+	BackendService->SomeFunction2(InMessage.bSomeParam);
 }
 
 void UTbNamesNamEsMsgBusAdapter::OnSomeSignal(bool bInSomeParam)
@@ -266,7 +266,7 @@ void UTbNamesNamEsMsgBusAdapter::OnSomeSignal2(bool bInSomeParam)
 
 void UTbNamesNamEsMsgBusAdapter::OnSetSwitchRequest(const FTbNamesNamEsSetSwitchRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
-	BackendService->Execute_SetSwitch(BackendService.GetObject(), InMessage.bSwitch);
+	BackendService->SetSwitch(InMessage.bSwitch);
 }
 
 void UTbNamesNamEsMsgBusAdapter::OnSwitchChanged(bool bInSwitch)
@@ -289,7 +289,7 @@ void UTbNamesNamEsMsgBusAdapter::OnSwitchChanged(bool bInSwitch)
 
 void UTbNamesNamEsMsgBusAdapter::OnSetSomePropertyRequest(const FTbNamesNamEsSetSomePropertyRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
-	BackendService->Execute_SetSomeProperty(BackendService.GetObject(), InMessage.SomeProperty);
+	BackendService->SetSomeProperty(InMessage.SomeProperty);
 }
 
 void UTbNamesNamEsMsgBusAdapter::OnSomePropertyChanged(int32 InSomeProperty)
@@ -312,7 +312,7 @@ void UTbNamesNamEsMsgBusAdapter::OnSomePropertyChanged(int32 InSomeProperty)
 
 void UTbNamesNamEsMsgBusAdapter::OnSetSomePoperty2Request(const FTbNamesNamEsSetSomePoperty2RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
-	BackendService->Execute_SetSomePoperty2(BackendService.GetObject(), InMessage.SomePoperty2);
+	BackendService->SetSomePoperty2(InMessage.SomePoperty2);
 }
 
 void UTbNamesNamEsMsgBusAdapter::OnSomePoperty2Changed(int32 InSomePoperty2)

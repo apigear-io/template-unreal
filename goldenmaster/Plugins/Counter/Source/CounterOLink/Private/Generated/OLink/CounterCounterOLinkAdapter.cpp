@@ -56,7 +56,7 @@ void UCounterCounterOLinkAdapter::setBackendService(TScriptInterface<ICounterCou
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		UCounterCounterSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+		UCounterCounterSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service CounterCounter"));
 		BackendSignals->OnVectorChanged.RemoveDynamic(this, &UCounterCounterOLinkAdapter::OnVectorChanged);
 		BackendSignals->OnExternVectorChanged.RemoveDynamic(this, &UCounterCounterOLinkAdapter::OnExternVectorChanged);
@@ -70,7 +70,7 @@ void UCounterCounterOLinkAdapter::setBackendService(TScriptInterface<ICounterCou
 
 	// subscribe to new backend
 	BackendService = InService;
-	UCounterCounterSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+	UCounterCounterSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service CounterCounter"));
 	// connect property changed signals or simple events
 	BackendSignals->OnVectorChanged.AddDynamic(this, &UCounterCounterOLinkAdapter::OnVectorChanged);

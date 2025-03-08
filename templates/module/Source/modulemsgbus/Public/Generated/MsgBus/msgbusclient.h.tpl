@@ -106,15 +106,15 @@ public:
 
 	// properties
 {{- range .Interface.Properties }}
-	{{ueReturn "" .}} Get{{Camel .Name}}_Implementation() const override;
+	{{ueReturn "" .}} Get{{Camel .Name}}() const override;
 {{- if not .IsReadOnly }}
-	void Set{{Camel .Name}}_Implementation({{ueParam "" .}}) override;
+	void Set{{Camel .Name}}({{ueParam "" .}}) override;
 {{- end }}
 {{ end }}
 	// operations
 {{- range $i, $e := .Interface.Operations }}
 {{- if $i }}{{nl}}{{ end }}
-	{{ueReturn "" .Return}} {{Camel .Name}}_Implementation({{ueParams "" .Params}}) override;
+	{{ueReturn "" .Return}} {{Camel .Name}}({{ueParams "" .Params}}) override;
 {{- end }}
 
 private:

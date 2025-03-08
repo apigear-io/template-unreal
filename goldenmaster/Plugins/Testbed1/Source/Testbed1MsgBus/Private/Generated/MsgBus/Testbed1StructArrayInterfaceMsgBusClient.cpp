@@ -190,28 +190,28 @@ void UTestbed1StructArrayInterfaceMsgBusClient::OnConnectionInit(const FTestbed1
 	if (bPropBoolChanged)
 	{
 		PropBool = InMessage.PropBool;
-		Execute__GetSignals(this)->OnPropBoolChanged.Broadcast(PropBool);
+		_GetSignals()->OnPropBoolChanged.Broadcast(PropBool);
 	}
 
 	const bool bPropIntChanged = InMessage.PropInt != PropInt;
 	if (bPropIntChanged)
 	{
 		PropInt = InMessage.PropInt;
-		Execute__GetSignals(this)->OnPropIntChanged.Broadcast(PropInt);
+		_GetSignals()->OnPropIntChanged.Broadcast(PropInt);
 	}
 
 	const bool bPropFloatChanged = InMessage.PropFloat != PropFloat;
 	if (bPropFloatChanged)
 	{
 		PropFloat = InMessage.PropFloat;
-		Execute__GetSignals(this)->OnPropFloatChanged.Broadcast(PropFloat);
+		_GetSignals()->OnPropFloatChanged.Broadcast(PropFloat);
 	}
 
 	const bool bPropStringChanged = InMessage.PropString != PropString;
 	if (bPropStringChanged)
 	{
 		PropString = InMessage.PropString;
-		Execute__GetSignals(this)->OnPropStringChanged.Broadcast(PropString);
+		_GetSignals()->OnPropStringChanged.Broadcast(PropString);
 	}
 
 	_ConnectionStatusChanged.Broadcast(true);
@@ -303,12 +303,12 @@ void UTestbed1StructArrayInterfaceMsgBusClient::OnServiceClosedConnection(const 
 	_ConnectionStatusChanged.Broadcast(false);
 }
 
-TArray<FTestbed1StructBool> UTestbed1StructArrayInterfaceMsgBusClient::GetPropBool_Implementation() const
+TArray<FTestbed1StructBool> UTestbed1StructArrayInterfaceMsgBusClient::GetPropBool() const
 {
 	return PropBool;
 }
 
-void UTestbed1StructArrayInterfaceMsgBusClient::SetPropBool_Implementation(const TArray<FTestbed1StructBool>& InPropBool)
+void UTestbed1StructArrayInterfaceMsgBusClient::SetPropBool(const TArray<FTestbed1StructBool>& InPropBool)
 {
 	if (!_IsConnected())
 	{
@@ -317,7 +317,7 @@ void UTestbed1StructArrayInterfaceMsgBusClient::SetPropBool_Implementation(const
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetPropBool_Implementation() == InPropBool)
+	if (GetPropBool() == InPropBool)
 	{
 		return;
 	}
@@ -343,12 +343,12 @@ void UTestbed1StructArrayInterfaceMsgBusClient::SetPropBool_Implementation(const
 	_SentData->PropBool = InPropBool;
 }
 
-TArray<FTestbed1StructInt> UTestbed1StructArrayInterfaceMsgBusClient::GetPropInt_Implementation() const
+TArray<FTestbed1StructInt> UTestbed1StructArrayInterfaceMsgBusClient::GetPropInt() const
 {
 	return PropInt;
 }
 
-void UTestbed1StructArrayInterfaceMsgBusClient::SetPropInt_Implementation(const TArray<FTestbed1StructInt>& InPropInt)
+void UTestbed1StructArrayInterfaceMsgBusClient::SetPropInt(const TArray<FTestbed1StructInt>& InPropInt)
 {
 	if (!_IsConnected())
 	{
@@ -357,7 +357,7 @@ void UTestbed1StructArrayInterfaceMsgBusClient::SetPropInt_Implementation(const 
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetPropInt_Implementation() == InPropInt)
+	if (GetPropInt() == InPropInt)
 	{
 		return;
 	}
@@ -383,12 +383,12 @@ void UTestbed1StructArrayInterfaceMsgBusClient::SetPropInt_Implementation(const 
 	_SentData->PropInt = InPropInt;
 }
 
-TArray<FTestbed1StructFloat> UTestbed1StructArrayInterfaceMsgBusClient::GetPropFloat_Implementation() const
+TArray<FTestbed1StructFloat> UTestbed1StructArrayInterfaceMsgBusClient::GetPropFloat() const
 {
 	return PropFloat;
 }
 
-void UTestbed1StructArrayInterfaceMsgBusClient::SetPropFloat_Implementation(const TArray<FTestbed1StructFloat>& InPropFloat)
+void UTestbed1StructArrayInterfaceMsgBusClient::SetPropFloat(const TArray<FTestbed1StructFloat>& InPropFloat)
 {
 	if (!_IsConnected())
 	{
@@ -397,7 +397,7 @@ void UTestbed1StructArrayInterfaceMsgBusClient::SetPropFloat_Implementation(cons
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetPropFloat_Implementation() == InPropFloat)
+	if (GetPropFloat() == InPropFloat)
 	{
 		return;
 	}
@@ -423,12 +423,12 @@ void UTestbed1StructArrayInterfaceMsgBusClient::SetPropFloat_Implementation(cons
 	_SentData->PropFloat = InPropFloat;
 }
 
-TArray<FTestbed1StructString> UTestbed1StructArrayInterfaceMsgBusClient::GetPropString_Implementation() const
+TArray<FTestbed1StructString> UTestbed1StructArrayInterfaceMsgBusClient::GetPropString() const
 {
 	return PropString;
 }
 
-void UTestbed1StructArrayInterfaceMsgBusClient::SetPropString_Implementation(const TArray<FTestbed1StructString>& InPropString)
+void UTestbed1StructArrayInterfaceMsgBusClient::SetPropString(const TArray<FTestbed1StructString>& InPropString)
 {
 	if (!_IsConnected())
 	{
@@ -437,7 +437,7 @@ void UTestbed1StructArrayInterfaceMsgBusClient::SetPropString_Implementation(con
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetPropString_Implementation() == InPropString)
+	if (GetPropString() == InPropString)
 	{
 		return;
 	}
@@ -463,7 +463,7 @@ void UTestbed1StructArrayInterfaceMsgBusClient::SetPropString_Implementation(con
 	_SentData->PropString = InPropString;
 }
 
-TArray<FTestbed1StructBool> UTestbed1StructArrayInterfaceMsgBusClient::FuncBool_Implementation(const TArray<FTestbed1StructBool>& InParamBool)
+TArray<FTestbed1StructBool> UTestbed1StructArrayInterfaceMsgBusClient::FuncBool(const TArray<FTestbed1StructBool>& InParamBool)
 {
 	if (!_IsConnected())
 	{
@@ -492,7 +492,7 @@ void UTestbed1StructArrayInterfaceMsgBusClient::OnFuncBoolReply(const FTestbed1S
 	FulfillPromise(InMessage.ResponseId, InMessage.Result);
 }
 
-TArray<FTestbed1StructInt> UTestbed1StructArrayInterfaceMsgBusClient::FuncInt_Implementation(const TArray<FTestbed1StructInt>& InParamInt)
+TArray<FTestbed1StructInt> UTestbed1StructArrayInterfaceMsgBusClient::FuncInt(const TArray<FTestbed1StructInt>& InParamInt)
 {
 	if (!_IsConnected())
 	{
@@ -521,7 +521,7 @@ void UTestbed1StructArrayInterfaceMsgBusClient::OnFuncIntReply(const FTestbed1St
 	FulfillPromise(InMessage.ResponseId, InMessage.Result);
 }
 
-TArray<FTestbed1StructFloat> UTestbed1StructArrayInterfaceMsgBusClient::FuncFloat_Implementation(const TArray<FTestbed1StructFloat>& InParamFloat)
+TArray<FTestbed1StructFloat> UTestbed1StructArrayInterfaceMsgBusClient::FuncFloat(const TArray<FTestbed1StructFloat>& InParamFloat)
 {
 	if (!_IsConnected())
 	{
@@ -550,7 +550,7 @@ void UTestbed1StructArrayInterfaceMsgBusClient::OnFuncFloatReply(const FTestbed1
 	FulfillPromise(InMessage.ResponseId, InMessage.Result);
 }
 
-TArray<FTestbed1StructString> UTestbed1StructArrayInterfaceMsgBusClient::FuncString_Implementation(const TArray<FTestbed1StructString>& InParamString)
+TArray<FTestbed1StructString> UTestbed1StructArrayInterfaceMsgBusClient::FuncString(const TArray<FTestbed1StructString>& InParamString)
 {
 	if (!_IsConnected())
 	{
@@ -587,7 +587,7 @@ void UTestbed1StructArrayInterfaceMsgBusClient::OnSigBool(const FTestbed1StructA
 		return;
 	}
 
-	Execute__GetSignals(this)->OnSigBoolSignal.Broadcast(InMessage.ParamBool);
+	_GetSignals()->OnSigBoolSignal.Broadcast(InMessage.ParamBool);
 	return;
 }
 
@@ -599,7 +599,7 @@ void UTestbed1StructArrayInterfaceMsgBusClient::OnSigInt(const FTestbed1StructAr
 		return;
 	}
 
-	Execute__GetSignals(this)->OnSigIntSignal.Broadcast(InMessage.ParamInt);
+	_GetSignals()->OnSigIntSignal.Broadcast(InMessage.ParamInt);
 	return;
 }
 
@@ -611,7 +611,7 @@ void UTestbed1StructArrayInterfaceMsgBusClient::OnSigFloat(const FTestbed1Struct
 		return;
 	}
 
-	Execute__GetSignals(this)->OnSigFloatSignal.Broadcast(InMessage.ParamFloat);
+	_GetSignals()->OnSigFloatSignal.Broadcast(InMessage.ParamFloat);
 	return;
 }
 
@@ -623,7 +623,7 @@ void UTestbed1StructArrayInterfaceMsgBusClient::OnSigString(const FTestbed1Struc
 		return;
 	}
 
-	Execute__GetSignals(this)->OnSigStringSignal.Broadcast(InMessage.ParamString);
+	_GetSignals()->OnSigStringSignal.Broadcast(InMessage.ParamString);
 	return;
 }
 
@@ -639,7 +639,7 @@ void UTestbed1StructArrayInterfaceMsgBusClient::OnPropBoolChanged(const FTestbed
 	if (bPropBoolChanged)
 	{
 		PropBool = InMessage.PropBool;
-		Execute__GetSignals(this)->OnPropBoolChanged.Broadcast(PropBool);
+		_GetSignals()->OnPropBoolChanged.Broadcast(PropBool);
 	}
 }
 
@@ -655,7 +655,7 @@ void UTestbed1StructArrayInterfaceMsgBusClient::OnPropIntChanged(const FTestbed1
 	if (bPropIntChanged)
 	{
 		PropInt = InMessage.PropInt;
-		Execute__GetSignals(this)->OnPropIntChanged.Broadcast(PropInt);
+		_GetSignals()->OnPropIntChanged.Broadcast(PropInt);
 	}
 }
 
@@ -671,7 +671,7 @@ void UTestbed1StructArrayInterfaceMsgBusClient::OnPropFloatChanged(const FTestbe
 	if (bPropFloatChanged)
 	{
 		PropFloat = InMessage.PropFloat;
-		Execute__GetSignals(this)->OnPropFloatChanged.Broadcast(PropFloat);
+		_GetSignals()->OnPropFloatChanged.Broadcast(PropFloat);
 	}
 }
 
@@ -687,7 +687,7 @@ void UTestbed1StructArrayInterfaceMsgBusClient::OnPropStringChanged(const FTestb
 	if (bPropStringChanged)
 	{
 		PropString = InMessage.PropString;
-		Execute__GetSignals(this)->OnPropStringChanged.Broadcast(PropString);
+		_GetSignals()->OnPropStringChanged.Broadcast(PropString);
 	}
 }
 

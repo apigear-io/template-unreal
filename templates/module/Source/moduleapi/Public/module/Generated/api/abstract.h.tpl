@@ -48,24 +48,24 @@ public:
 {{- if or (len .Properties) (len .Signals) }}
 {{- nl }}
 	// signals
-	virtual U{{$Class}}Signals* _GetSignals_Implementation() override;
+	virtual U{{$Class}}Signals* _GetSignals() override;
 {{- end }}
 
 	// methods
 {{- range $i, $e := .Operations }}
 {{- if .Return.IsVoid }}
-	virtual {{ueReturn "" .Return}} {{Camel .Name}}_Implementation({{ueParams "" .Params}}) override PURE_VIRTUAL({{ $abstractclass}}::{{Camel .Name}}_Implementation, return;);
+	virtual {{ueReturn "" .Return}} {{Camel .Name}}({{ueParams "" .Params}}) override PURE_VIRTUAL({{ $abstractclass}}::{{Camel .Name}}, return;);
 {{- else }}
-	virtual void {{Camel .Name}}Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, {{ueReturn "" .Return}}& Result{{if len .Params}},{{end}} {{ueParams "" .Params}}) override;
-	virtual {{ueReturn "" .Return}} {{Camel .Name}}_Implementation({{ueParams "" .Params}}) override PURE_VIRTUAL({{ $abstractclass}}::{{Camel .Name}}_Implementation, return {{ueDefault "" .Return}};);
+	virtual void {{Camel .Name}}Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, {{ueReturn "" .Return}}& Result{{if len .Params}},{{end}} {{ueParams "" .Params}}) override;
+	virtual {{ueReturn "" .Return}} {{Camel .Name}}({{ueParams "" .Params}}) override PURE_VIRTUAL({{ $abstractclass}}::{{Camel .Name}}, return {{ueDefault "" .Return}};);
 {{- end }}
 {{ else }}
 {{ end }}
 	// properties
 {{- range .Properties }}
-	virtual {{ueReturn "" .}} Get{{Camel .Name}}_Implementation() const override PURE_VIRTUAL({{ $abstractclass}}::Get{{Camel .Name}}_Implementation, return {{ueDefault "" .}};);
+	virtual {{ueReturn "" .}} Get{{Camel .Name}}() const override PURE_VIRTUAL({{ $abstractclass}}::Get{{Camel .Name}}, return {{ueDefault "" .}};);
 {{- if not .IsReadOnly }}
-	virtual void Set{{Camel .Name}}_Implementation({{ueParam "In" .}}) override PURE_VIRTUAL({{ $abstractclass}}::Set{{Camel .Name}}_Implementation, return;);
+	virtual void Set{{Camel .Name}}({{ueParam "In" .}}) override PURE_VIRTUAL({{ $abstractclass}}::Set{{Camel .Name}}, return;);
 {{- end }}
 {{- nl }}
 {{- else }}{{- nl }}

@@ -30,5 +30,5 @@ public:
 
 	// properties
 	// operations
-	void FuncVoid_Implementation() override;
+	void FuncVoid() override;
 };

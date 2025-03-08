@@ -99,11 +99,11 @@ public:
 	FTbSame1SameStruct1InterfaceConnectionStatusChangedDelegate _ConnectionStatusChanged;
 
 	// properties
-	FTbSame1Struct1 GetProp1_Implementation() const override;
-	void SetProp1_Implementation(const FTbSame1Struct1& Prop1) override;
+	FTbSame1Struct1 GetProp1() const override;
+	void SetProp1(const FTbSame1Struct1& Prop1) override;
 
 	// operations
-	FTbSame1Struct1 Func1_Implementation(const FTbSame1Struct1& Param1) override;
+	FTbSame1Struct1 Func1(const FTbSame1Struct1& Param1) override;
 
 private:
 	TSharedPtr<FMessageEndpoint, ESPMode::ThreadSafe> TbSame1SameStruct1InterfaceMsgBusEndpoint;

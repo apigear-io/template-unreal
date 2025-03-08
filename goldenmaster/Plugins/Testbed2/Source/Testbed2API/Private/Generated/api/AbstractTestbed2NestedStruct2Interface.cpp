@@ -66,7 +66,7 @@ UAbstractTestbed2NestedStruct2Interface::UAbstractTestbed2NestedStruct2Interface
 	Testbed2NestedStruct2InterfaceSignals = NewObject<UTestbed2NestedStruct2InterfaceSignals>();
 }
 
-UTestbed2NestedStruct2InterfaceSignals* UAbstractTestbed2NestedStruct2Interface::_GetSignals_Implementation()
+UTestbed2NestedStruct2InterfaceSignals* UAbstractTestbed2NestedStruct2Interface::_GetSignals()
 {
 	if (!Testbed2NestedStruct2InterfaceSignals)
 	{
@@ -77,25 +77,25 @@ UTestbed2NestedStruct2InterfaceSignals* UAbstractTestbed2NestedStruct2Interface:
 
 FTestbed2NestedStruct1 UAbstractTestbed2NestedStruct2Interface::GetProp1_Private() const
 {
-	return Execute_GetProp1(this);
+	return GetProp1();
 };
 
 void UAbstractTestbed2NestedStruct2Interface::SetProp1_Private(const FTestbed2NestedStruct1& InProp1)
 {
-	Execute_SetProp1(this, InProp1);
+	SetProp1(InProp1);
 };
 
 FTestbed2NestedStruct2 UAbstractTestbed2NestedStruct2Interface::GetProp2_Private() const
 {
-	return Execute_GetProp2(this);
+	return GetProp2();
 };
 
 void UAbstractTestbed2NestedStruct2Interface::SetProp2_Private(const FTestbed2NestedStruct2& InProp2)
 {
-	Execute_SetProp2(this, InProp2);
+	SetProp2(InProp2);
 };
 
-void UAbstractTestbed2NestedStruct2Interface::Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1)
+void UAbstractTestbed2NestedStruct2Interface::Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
@@ -115,7 +115,7 @@ void UAbstractTestbed2NestedStruct2Interface::Func1Async_Implementation(UObject*
 		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
 		if (this->GetClass()->IsInBlueprint())
 		{
-			Result = Execute_Func1(this, Param1);
+			Result = Func1(Param1);
 			CompletionAction->Cancel();
 		}
 		else
@@ -123,14 +123,14 @@ void UAbstractTestbed2NestedStruct2Interface::Func1Async_Implementation(UObject*
 			Async(EAsyncExecution::ThreadPool,
 				[Param1, this, &Result, CompletionAction]()
 				{
-				Result = Execute_Func1(this, Param1);
+				Result = Func1(Param1);
 				CompletionAction->Cancel();
 			});
 		}
 	}
 }
 
-void UAbstractTestbed2NestedStruct2Interface::Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
+void UAbstractTestbed2NestedStruct2Interface::Func2Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
@@ -150,7 +150,7 @@ void UAbstractTestbed2NestedStruct2Interface::Func2Async_Implementation(UObject*
 		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
 		if (this->GetClass()->IsInBlueprint())
 		{
-			Result = Execute_Func2(this, Param1, Param2);
+			Result = Func2(Param1, Param2);
 			CompletionAction->Cancel();
 		}
 		else
@@ -158,7 +158,7 @@ void UAbstractTestbed2NestedStruct2Interface::Func2Async_Implementation(UObject*
 			Async(EAsyncExecution::ThreadPool,
 				[Param1, Param2, this, &Result, CompletionAction]()
 				{
-				Result = Execute_Func2(this, Param1, Param2);
+				Result = Func2(Param1, Param2);
 				CompletionAction->Cancel();
 			});
 		}

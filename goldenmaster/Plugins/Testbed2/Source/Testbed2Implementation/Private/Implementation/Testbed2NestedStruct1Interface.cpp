@@ -18,21 +18,21 @@ limitations under the License.
 #include "Testbed2/Implementation/Testbed2NestedStruct1Interface.h"
 
 UTestbed2NestedStruct1Interface::~UTestbed2NestedStruct1Interface() = default;
-FTestbed2NestedStruct1 UTestbed2NestedStruct1Interface::GetProp1_Implementation() const
+FTestbed2NestedStruct1 UTestbed2NestedStruct1Interface::GetProp1() const
 {
 	return Prop1;
 }
 
-void UTestbed2NestedStruct1Interface::SetProp1_Implementation(const FTestbed2NestedStruct1& InProp1)
+void UTestbed2NestedStruct1Interface::SetProp1(const FTestbed2NestedStruct1& InProp1)
 {
 	if (Prop1 != InProp1)
 	{
 		Prop1 = InProp1;
-		Execute__GetSignals(this)->OnProp1Changed.Broadcast(Prop1);
+		_GetSignals()->OnProp1Changed.Broadcast(Prop1);
 	}
 }
 
-FTestbed2NestedStruct1 UTestbed2NestedStruct1Interface::Func1_Implementation(const FTestbed2NestedStruct1& Param1)
+FTestbed2NestedStruct1 UTestbed2NestedStruct1Interface::Func1(const FTestbed2NestedStruct1& Param1)
 {
 	(void)Param1;
 	// do business logic here

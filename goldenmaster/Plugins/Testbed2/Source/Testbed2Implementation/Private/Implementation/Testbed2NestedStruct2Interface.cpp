@@ -18,41 +18,41 @@ limitations under the License.
 #include "Testbed2/Implementation/Testbed2NestedStruct2Interface.h"
 
 UTestbed2NestedStruct2Interface::~UTestbed2NestedStruct2Interface() = default;
-FTestbed2NestedStruct1 UTestbed2NestedStruct2Interface::GetProp1_Implementation() const
+FTestbed2NestedStruct1 UTestbed2NestedStruct2Interface::GetProp1() const
 {
 	return Prop1;
 }
 
-void UTestbed2NestedStruct2Interface::SetProp1_Implementation(const FTestbed2NestedStruct1& InProp1)
+void UTestbed2NestedStruct2Interface::SetProp1(const FTestbed2NestedStruct1& InProp1)
 {
 	if (Prop1 != InProp1)
 	{
 		Prop1 = InProp1;
-		Execute__GetSignals(this)->OnProp1Changed.Broadcast(Prop1);
+		_GetSignals()->OnProp1Changed.Broadcast(Prop1);
 	}
 }
-FTestbed2NestedStruct2 UTestbed2NestedStruct2Interface::GetProp2_Implementation() const
+FTestbed2NestedStruct2 UTestbed2NestedStruct2Interface::GetProp2() const
 {
 	return Prop2;
 }
 
-void UTestbed2NestedStruct2Interface::SetProp2_Implementation(const FTestbed2NestedStruct2& InProp2)
+void UTestbed2NestedStruct2Interface::SetProp2(const FTestbed2NestedStruct2& InProp2)
 {
 	if (Prop2 != InProp2)
 	{
 		Prop2 = InProp2;
-		Execute__GetSignals(this)->OnProp2Changed.Broadcast(Prop2);
+		_GetSignals()->OnProp2Changed.Broadcast(Prop2);
 	}
 }
 
-FTestbed2NestedStruct1 UTestbed2NestedStruct2Interface::Func1_Implementation(const FTestbed2NestedStruct1& Param1)
+FTestbed2NestedStruct1 UTestbed2NestedStruct2Interface::Func1(const FTestbed2NestedStruct1& Param1)
 {
 	(void)Param1;
 	// do business logic here
 	return FTestbed2NestedStruct1();
 }
 
-FTestbed2NestedStruct1 UTestbed2NestedStruct2Interface::Func2_Implementation(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
+FTestbed2NestedStruct1 UTestbed2NestedStruct2Interface::Func2(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
 {
 	(void)Param1;
 	(void)Param2;

@@ -54,14 +54,14 @@ public:
 {{- if .Description }}
 	/** {{.Description}} */
 {{- end }}
-	{{ueReturn "" .}} Get{{Camel .Name}}_Implementation() const override;
+	{{ueReturn "" .}} Get{{Camel .Name}}() const override;
 {{- if not .IsReadOnly }}{{nl}}
-	void Set{{Camel .Name}}_Implementation({{ueParam "In" .}}) override;
+	void Set{{Camel .Name}}({{ueParam "In" .}}) override;
 {{- end }}
 {{ end }}
 	// operations
 {{- range .Interface.Operations }}
-	{{ueReturn "" .Return}} {{Camel .Name}}_Implementation({{ueParams "" .Params}}) override;
+	{{ueReturn "" .Return}} {{Camel .Name}}({{ueParams "" .Params}}) override;
 {{ end }}
 private:
 	/** The connection to the service backend. */

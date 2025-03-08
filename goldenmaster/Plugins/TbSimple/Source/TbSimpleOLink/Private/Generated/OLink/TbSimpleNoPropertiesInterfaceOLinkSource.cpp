@@ -113,13 +113,13 @@ nlohmann::json TbSimpleNoPropertiesInterfaceOLinkSource::olinkInvoke(const std::
 	const std::string path = Name::getMemberName(methodId);
 	if (path == "funcVoid")
 	{
-		BackendService->Execute_FuncVoid(BackendService.GetObject());
+		BackendService->FuncVoid();
 		return nlohmann::json{};
 	}
 	if (path == "funcBool")
 	{
 		bool bParamBool = args.at(0).get<bool>();
-		bool result = BackendService->Execute_FuncBool(BackendService.GetObject(), bParamBool);
+		bool result = BackendService->FuncBool(bParamBool);
 		return result;
 	}
 	return nlohmann::json();

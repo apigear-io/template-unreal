@@ -123,10 +123,10 @@ nlohmann::json {{$Class}}::olinkInvoke(const std::string& methodId, const nlohma
 		{{ueType "" .}} {{ueVar "" .}} = args.at({{ $i }}).get<{{ueReturn "" .}}>();
 {{- end }}
 {{- if .Return.IsVoid }}
-		BackendService->Execute_{{Camel .Name}}(BackendService.GetObject(){{ if len .Params }}, {{end}}{{ ueVars "" .Params }});
+		BackendService->{{Camel .Name}}({{ ueVars "" .Params }});
 		return nlohmann::json{};
 {{- else }}
-		{{ueReturn "" .Return}} result = BackendService->Execute_{{Camel .Name}}(BackendService.GetObject(){{ if len .Params }}, {{end}}{{ ueVars "" .Params }});
+		{{ueReturn "" .Return}} result = BackendService->{{Camel .Name}}({{ ueVars "" .Params }});
 		return result;
 {{- end }}
 	}
@@ -148,7 +148,7 @@ void {{$Class}}::olinkSetProperty(const std::string& propertyId, const nlohmann:
 	if (path == "{{.Name}}")
 	{
 		{{ueReturn "" .}} {{ueVar "" .}} = value.get<{{ueReturn "" .}}>();
-		BackendService->Execute_Set{{Camel .Name}}(BackendService.GetObject(), {{ueVar "" .}});
+		BackendService->Set{{Camel .Name}}({{ueVar "" .}});
 	}
 {{- end }}
 {{- end }}
@@ -164,7 +164,7 @@ nlohmann::json {{$Class}}::olinkCollectProperties()
 
 	return nlohmann::json::object({ {{- if len .Interface.Properties}}{{nl}}{{end}}
 {{- range $i, $e := .Interface.Properties }}{{if $i}},{{end}}
-		{"{{.Name}}", BackendService->Execute_Get{{Camel .Name}}(BackendService.GetObject())}
+		{"{{.Name}}", BackendService->Get{{Camel .Name}}()}
 {{- end }}});
 }
 #endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

@@ -178,14 +178,14 @@ void UTbSame2SameEnum2InterfaceMsgBusClient::OnConnectionInit(const FTbSame2Same
 	if (bProp1Changed)
 	{
 		Prop1 = InMessage.Prop1;
-		Execute__GetSignals(this)->OnProp1Changed.Broadcast(Prop1);
+		_GetSignals()->OnProp1Changed.Broadcast(Prop1);
 	}
 
 	const bool bProp2Changed = InMessage.Prop2 != Prop2;
 	if (bProp2Changed)
 	{
 		Prop2 = InMessage.Prop2;
-		Execute__GetSignals(this)->OnProp2Changed.Broadcast(Prop2);
+		_GetSignals()->OnProp2Changed.Broadcast(Prop2);
 	}
 
 	_ConnectionStatusChanged.Broadcast(true);
@@ -277,12 +277,12 @@ void UTbSame2SameEnum2InterfaceMsgBusClient::OnServiceClosedConnection(const FTb
 	_ConnectionStatusChanged.Broadcast(false);
 }
 
-ETbSame2Enum1 UTbSame2SameEnum2InterfaceMsgBusClient::GetProp1_Implementation() const
+ETbSame2Enum1 UTbSame2SameEnum2InterfaceMsgBusClient::GetProp1() const
 {
 	return Prop1;
 }
 
-void UTbSame2SameEnum2InterfaceMsgBusClient::SetProp1_Implementation(ETbSame2Enum1 InProp1)
+void UTbSame2SameEnum2InterfaceMsgBusClient::SetProp1(ETbSame2Enum1 InProp1)
 {
 	if (!_IsConnected())
 	{
@@ -291,7 +291,7 @@ void UTbSame2SameEnum2InterfaceMsgBusClient::SetProp1_Implementation(ETbSame2Enu
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetProp1_Implementation() == InProp1)
+	if (GetProp1() == InProp1)
 	{
 		return;
 	}
@@ -313,12 +313,12 @@ void UTbSame2SameEnum2InterfaceMsgBusClient::SetProp1_Implementation(ETbSame2Enu
 	_SentData->Prop1 = InProp1;
 }
 
-ETbSame2Enum2 UTbSame2SameEnum2InterfaceMsgBusClient::GetProp2_Implementation() const
+ETbSame2Enum2 UTbSame2SameEnum2InterfaceMsgBusClient::GetProp2() const
 {
 	return Prop2;
 }
 
-void UTbSame2SameEnum2InterfaceMsgBusClient::SetProp2_Implementation(ETbSame2Enum2 InProp2)
+void UTbSame2SameEnum2InterfaceMsgBusClient::SetProp2(ETbSame2Enum2 InProp2)
 {
 	if (!_IsConnected())
 	{
@@ -327,7 +327,7 @@ void UTbSame2SameEnum2InterfaceMsgBusClient::SetProp2_Implementation(ETbSame2Enu
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetProp2_Implementation() == InProp2)
+	if (GetProp2() == InProp2)
 	{
 		return;
 	}
@@ -349,7 +349,7 @@ void UTbSame2SameEnum2InterfaceMsgBusClient::SetProp2_Implementation(ETbSame2Enu
 	_SentData->Prop2 = InProp2;
 }
 
-ETbSame2Enum1 UTbSame2SameEnum2InterfaceMsgBusClient::Func1_Implementation(ETbSame2Enum1 InParam1)
+ETbSame2Enum1 UTbSame2SameEnum2InterfaceMsgBusClient::Func1(ETbSame2Enum1 InParam1)
 {
 	if (!_IsConnected())
 	{
@@ -378,7 +378,7 @@ void UTbSame2SameEnum2InterfaceMsgBusClient::OnFunc1Reply(const FTbSame2SameEnum
 	FulfillPromise(InMessage.ResponseId, InMessage.Result);
 }
 
-ETbSame2Enum1 UTbSame2SameEnum2InterfaceMsgBusClient::Func2_Implementation(ETbSame2Enum1 InParam1, ETbSame2Enum2 InParam2)
+ETbSame2Enum1 UTbSame2SameEnum2InterfaceMsgBusClient::Func2(ETbSame2Enum1 InParam1, ETbSame2Enum2 InParam2)
 {
 	if (!_IsConnected())
 	{
@@ -416,7 +416,7 @@ void UTbSame2SameEnum2InterfaceMsgBusClient::OnSig1(const FTbSame2SameEnum2Inter
 		return;
 	}
 
-	Execute__GetSignals(this)->OnSig1Signal.Broadcast(InMessage.Param1);
+	_GetSignals()->OnSig1Signal.Broadcast(InMessage.Param1);
 	return;
 }
 
@@ -428,7 +428,7 @@ void UTbSame2SameEnum2InterfaceMsgBusClient::OnSig2(const FTbSame2SameEnum2Inter
 		return;
 	}
 
-	Execute__GetSignals(this)->OnSig2Signal.Broadcast(InMessage.Param1, InMessage.Param2);
+	_GetSignals()->OnSig2Signal.Broadcast(InMessage.Param1, InMessage.Param2);
 	return;
 }
 
@@ -444,7 +444,7 @@ void UTbSame2SameEnum2InterfaceMsgBusClient::OnProp1Changed(const FTbSame2SameEn
 	if (bProp1Changed)
 	{
 		Prop1 = InMessage.Prop1;
-		Execute__GetSignals(this)->OnProp1Changed.Broadcast(Prop1);
+		_GetSignals()->OnProp1Changed.Broadcast(Prop1);
 	}
 }
 
@@ -460,7 +460,7 @@ void UTbSame2SameEnum2InterfaceMsgBusClient::OnProp2Changed(const FTbSame2SameEn
 	if (bProp2Changed)
 	{
 		Prop2 = InMessage.Prop2;
-		Execute__GetSignals(this)->OnProp2Changed.Broadcast(Prop2);
+		_GetSignals()->OnProp2Changed.Broadcast(Prop2);
 	}
 }
 

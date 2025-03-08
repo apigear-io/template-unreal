@@ -123,7 +123,7 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::_setBackendService(TScriptInterface<
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		UTbSimpleSimpleInterfaceSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+		UTbSimpleSimpleInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleSimpleInterface"));
 		BackendSignals->OnPropBoolChanged.RemoveDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropBoolChanged);
 		BackendSignals->OnPropIntChanged.RemoveDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropIntChanged);
@@ -148,7 +148,7 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::_setBackendService(TScriptInterface<
 
 	// subscribe to new backend
 	BackendService = InService;
-	UTbSimpleSimpleInterfaceSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+	UTbSimpleSimpleInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service TbSimpleSimpleInterface"));
 	// connect property changed signals or simple events
 	BackendSignals->OnPropBoolChanged.AddDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropBoolChanged);
@@ -175,14 +175,14 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnNewClientDiscovered(const FTbSimpl
 
 	auto msg = new FTbSimpleSimpleInterfaceInitMessage();
 	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
-	msg->bPropBool = BackendService->Execute_GetPropBool(BackendService.GetObject());
-	msg->PropInt = BackendService->Execute_GetPropInt(BackendService.GetObject());
-	msg->PropInt32 = BackendService->Execute_GetPropInt32(BackendService.GetObject());
-	msg->PropInt64 = BackendService->Execute_GetPropInt64(BackendService.GetObject());
-	msg->PropFloat = BackendService->Execute_GetPropFloat(BackendService.GetObject());
-	msg->PropFloat32 = BackendService->Execute_GetPropFloat32(BackendService.GetObject());
-	msg->PropFloat64 = BackendService->Execute_GetPropFloat64(BackendService.GetObject());
-	msg->PropString = BackendService->Execute_GetPropString(BackendService.GetObject());
+	msg->bPropBool = BackendService->GetPropBool();
+	msg->PropInt = BackendService->GetPropInt();
+	msg->PropInt32 = BackendService->GetPropInt32();
+	msg->PropInt64 = BackendService->GetPropInt64();
+	msg->PropFloat = BackendService->GetPropFloat();
+	msg->PropFloat32 = BackendService->GetPropFloat32();
+	msg->PropFloat64 = BackendService->GetPropFloat64();
+	msg->PropString = BackendService->GetPropString();
 
 	if (TbSimpleSimpleInterfaceMsgBusEndpoint.IsValid())
 	{
@@ -261,14 +261,14 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::_UpdateClientsConnected()
 
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncNoReturnValueRequest(const FTbSimpleSimpleInterfaceFuncNoReturnValueRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	BackendService->Execute_FuncNoReturnValue(BackendService.GetObject(), InMessage.bParamBool);
+	BackendService->FuncNoReturnValue(InMessage.bParamBool);
 }
 
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncBoolRequest(const FTbSimpleSimpleInterfaceFuncBoolRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	auto msg = new FTbSimpleSimpleInterfaceFuncBoolReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
-	msg->Result = BackendService->Execute_FuncBool(BackendService.GetObject(), InMessage.bParamBool);
+	msg->Result = BackendService->FuncBool(InMessage.bParamBool);
 
 	if (TbSimpleSimpleInterfaceMsgBusEndpoint.IsValid())
 	{
@@ -284,7 +284,7 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncIntRequest(const FTbSimpleSimp
 {
 	auto msg = new FTbSimpleSimpleInterfaceFuncIntReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
-	msg->Result = BackendService->Execute_FuncInt(BackendService.GetObject(), InMessage.ParamInt);
+	msg->Result = BackendService->FuncInt(InMessage.ParamInt);
 
 	if (TbSimpleSimpleInterfaceMsgBusEndpoint.IsValid())
 	{
@@ -300,7 +300,7 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncInt32Request(const FTbSimpleSi
 {
 	auto msg = new FTbSimpleSimpleInterfaceFuncInt32ReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
-	msg->Result = BackendService->Execute_FuncInt32(BackendService.GetObject(), InMessage.ParamInt32);
+	msg->Result = BackendService->FuncInt32(InMessage.ParamInt32);
 
 	if (TbSimpleSimpleInterfaceMsgBusEndpoint.IsValid())
 	{
@@ -316,7 +316,7 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncInt64Request(const FTbSimpleSi
 {
 	auto msg = new FTbSimpleSimpleInterfaceFuncInt64ReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
-	msg->Result = BackendService->Execute_FuncInt64(BackendService.GetObject(), InMessage.ParamInt64);
+	msg->Result = BackendService->FuncInt64(InMessage.ParamInt64);
 
 	if (TbSimpleSimpleInterfaceMsgBusEndpoint.IsValid())
 	{
@@ -332,7 +332,7 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncFloatRequest(const FTbSimpleSi
 {
 	auto msg = new FTbSimpleSimpleInterfaceFuncFloatReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
-	msg->Result = BackendService->Execute_FuncFloat(BackendService.GetObject(), InMessage.ParamFloat);
+	msg->Result = BackendService->FuncFloat(InMessage.ParamFloat);
 
 	if (TbSimpleSimpleInterfaceMsgBusEndpoint.IsValid())
 	{
@@ -348,7 +348,7 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncFloat32Request(const FTbSimple
 {
 	auto msg = new FTbSimpleSimpleInterfaceFuncFloat32ReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
-	msg->Result = BackendService->Execute_FuncFloat32(BackendService.GetObject(), InMessage.ParamFloat32);
+	msg->Result = BackendService->FuncFloat32(InMessage.ParamFloat32);
 
 	if (TbSimpleSimpleInterfaceMsgBusEndpoint.IsValid())
 	{
@@ -364,7 +364,7 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncFloat64Request(const FTbSimple
 {
 	auto msg = new FTbSimpleSimpleInterfaceFuncFloat64ReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
-	msg->Result = BackendService->Execute_FuncFloat64(BackendService.GetObject(), InMessage.ParamFloat);
+	msg->Result = BackendService->FuncFloat64(InMessage.ParamFloat);
 
 	if (TbSimpleSimpleInterfaceMsgBusEndpoint.IsValid())
 	{
@@ -380,7 +380,7 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncStringRequest(const FTbSimpleS
 {
 	auto msg = new FTbSimpleSimpleInterfaceFuncStringReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
-	msg->Result = BackendService->Execute_FuncString(BackendService.GetObject(), InMessage.ParamString);
+	msg->Result = BackendService->FuncString(InMessage.ParamString);
 
 	if (TbSimpleSimpleInterfaceMsgBusEndpoint.IsValid())
 	{
@@ -530,7 +530,7 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigString(const FString& InParamSt
 
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnSetPropBoolRequest(const FTbSimpleSimpleInterfaceSetPropBoolRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
-	BackendService->Execute_SetPropBool(BackendService.GetObject(), InMessage.bPropBool);
+	BackendService->SetPropBool(InMessage.bPropBool);
 }
 
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropBoolChanged(bool bInPropBool)
@@ -553,7 +553,7 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropBoolChanged(bool bInPropBool)
 
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnSetPropIntRequest(const FTbSimpleSimpleInterfaceSetPropIntRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
-	BackendService->Execute_SetPropInt(BackendService.GetObject(), InMessage.PropInt);
+	BackendService->SetPropInt(InMessage.PropInt);
 }
 
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropIntChanged(int32 InPropInt)
@@ -576,7 +576,7 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropIntChanged(int32 InPropInt)
 
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnSetPropInt32Request(const FTbSimpleSimpleInterfaceSetPropInt32RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
-	BackendService->Execute_SetPropInt32(BackendService.GetObject(), InMessage.PropInt32);
+	BackendService->SetPropInt32(InMessage.PropInt32);
 }
 
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropInt32Changed(int32 InPropInt32)
@@ -599,7 +599,7 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropInt32Changed(int32 InPropInt32
 
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnSetPropInt64Request(const FTbSimpleSimpleInterfaceSetPropInt64RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
-	BackendService->Execute_SetPropInt64(BackendService.GetObject(), InMessage.PropInt64);
+	BackendService->SetPropInt64(InMessage.PropInt64);
 }
 
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropInt64Changed(int64 InPropInt64)
@@ -622,7 +622,7 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropInt64Changed(int64 InPropInt64
 
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnSetPropFloatRequest(const FTbSimpleSimpleInterfaceSetPropFloatRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
-	BackendService->Execute_SetPropFloat(BackendService.GetObject(), InMessage.PropFloat);
+	BackendService->SetPropFloat(InMessage.PropFloat);
 }
 
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropFloatChanged(float InPropFloat)
@@ -645,7 +645,7 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropFloatChanged(float InPropFloat
 
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnSetPropFloat32Request(const FTbSimpleSimpleInterfaceSetPropFloat32RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
-	BackendService->Execute_SetPropFloat32(BackendService.GetObject(), InMessage.PropFloat32);
+	BackendService->SetPropFloat32(InMessage.PropFloat32);
 }
 
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropFloat32Changed(float InPropFloat32)
@@ -668,7 +668,7 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropFloat32Changed(float InPropFlo
 
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnSetPropFloat64Request(const FTbSimpleSimpleInterfaceSetPropFloat64RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
-	BackendService->Execute_SetPropFloat64(BackendService.GetObject(), InMessage.PropFloat64);
+	BackendService->SetPropFloat64(InMessage.PropFloat64);
 }
 
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropFloat64Changed(double InPropFloat64)
@@ -691,7 +691,7 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropFloat64Changed(double InPropFl
 
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnSetPropStringRequest(const FTbSimpleSimpleInterfaceSetPropStringRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
-	BackendService->Execute_SetPropString(BackendService.GetObject(), InMessage.PropString);
+	BackendService->SetPropString(InMessage.PropString);
 }
 
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropStringChanged(const FString& InPropString)

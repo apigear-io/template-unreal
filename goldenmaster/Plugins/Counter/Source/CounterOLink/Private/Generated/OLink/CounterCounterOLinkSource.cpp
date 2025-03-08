@@ -157,25 +157,25 @@ nlohmann::json CounterCounterOLinkSource::olinkInvoke(const std::string& methodI
 	if (path == "increment")
 	{
 		FVector Vec = args.at(0).get<FVector>();
-		FVector result = BackendService->Execute_Increment(BackendService.GetObject(), Vec);
+		FVector result = BackendService->Increment(Vec);
 		return result;
 	}
 	if (path == "incrementArray")
 	{
 		TArray<FVector> Vec = args.at(0).get<TArray<FVector>>();
-		TArray<FVector> result = BackendService->Execute_IncrementArray(BackendService.GetObject(), Vec);
+		TArray<FVector> result = BackendService->IncrementArray(Vec);
 		return result;
 	}
 	if (path == "decrement")
 	{
 		FCustomTypesVector3D Vec = args.at(0).get<FCustomTypesVector3D>();
-		FCustomTypesVector3D result = BackendService->Execute_Decrement(BackendService.GetObject(), Vec);
+		FCustomTypesVector3D result = BackendService->Decrement(Vec);
 		return result;
 	}
 	if (path == "decrementArray")
 	{
 		TArray<FCustomTypesVector3D> Vec = args.at(0).get<TArray<FCustomTypesVector3D>>();
-		TArray<FCustomTypesVector3D> result = BackendService->Execute_DecrementArray(BackendService.GetObject(), Vec);
+		TArray<FCustomTypesVector3D> result = BackendService->DecrementArray(Vec);
 		return result;
 	}
 	return nlohmann::json();
@@ -193,22 +193,22 @@ void CounterCounterOLinkSource::olinkSetProperty(const std::string& propertyId, 
 	if (path == "vector")
 	{
 		FCustomTypesVector3D Vector = value.get<FCustomTypesVector3D>();
-		BackendService->Execute_SetVector(BackendService.GetObject(), Vector);
+		BackendService->SetVector(Vector);
 	}
 	if (path == "extern_vector")
 	{
 		FVector ExternVector = value.get<FVector>();
-		BackendService->Execute_SetExternVector(BackendService.GetObject(), ExternVector);
+		BackendService->SetExternVector(ExternVector);
 	}
 	if (path == "vectorArray")
 	{
 		TArray<FCustomTypesVector3D> VectorArray = value.get<TArray<FCustomTypesVector3D>>();
-		BackendService->Execute_SetVectorArray(BackendService.GetObject(), VectorArray);
+		BackendService->SetVectorArray(VectorArray);
 	}
 	if (path == "extern_vectorArray")
 	{
 		TArray<FVector> ExternVectorArray = value.get<TArray<FVector>>();
-		BackendService->Execute_SetExternVectorArray(BackendService.GetObject(), ExternVectorArray);
+		BackendService->SetExternVectorArray(ExternVectorArray);
 	}
 }
 
@@ -222,9 +222,9 @@ nlohmann::json CounterCounterOLinkSource::olinkCollectProperties()
 
 	return nlohmann::json::object({
 
-		{"vector", BackendService->Execute_GetVector(BackendService.GetObject())},
-		{"extern_vector", BackendService->Execute_GetExternVector(BackendService.GetObject())},
-		{"vectorArray", BackendService->Execute_GetVectorArray(BackendService.GetObject())},
-		{"extern_vectorArray", BackendService->Execute_GetExternVectorArray(BackendService.GetObject())}});
+		{"vector", BackendService->GetVector()},
+		{"extern_vector", BackendService->GetExternVector()},
+		{"vectorArray", BackendService->GetVectorArray()},
+		{"extern_vectorArray", BackendService->GetExternVectorArray()}});
 }
 #endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

@@ -56,7 +56,7 @@ void UTbNamesNamEsOLinkAdapter::setBackendService(TScriptInterface<ITbNamesNamEs
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		UTbNamesNamEsSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+		UTbNamesNamEsSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbNamesNamEs"));
 		BackendSignals->OnSwitchChanged.RemoveDynamic(this, &UTbNamesNamEsOLinkAdapter::OnSwitchChanged);
 		BackendSignals->OnSomePropertyChanged.RemoveDynamic(this, &UTbNamesNamEsOLinkAdapter::OnSomePropertyChanged);
@@ -70,7 +70,7 @@ void UTbNamesNamEsOLinkAdapter::setBackendService(TScriptInterface<ITbNamesNamEs
 
 	// subscribe to new backend
 	BackendService = InService;
-	UTbNamesNamEsSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+	UTbNamesNamEsSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service TbNamesNamEs"));
 	// connect property changed signals or simple events
 	BackendSignals->OnSwitchChanged.AddDynamic(this, &UTbNamesNamEsOLinkAdapter::OnSwitchChanged);

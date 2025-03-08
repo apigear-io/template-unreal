@@ -147,12 +147,12 @@ void UTbSimpleNoSignalsInterfaceOLinkClient::UseConnection(TScriptInterface<IApi
 	Connection = InConnection;
 }
 
-bool UTbSimpleNoSignalsInterfaceOLinkClient::GetPropBool_Implementation() const
+bool UTbSimpleNoSignalsInterfaceOLinkClient::GetPropBool() const
 {
 	return bPropBool;
 }
 
-void UTbSimpleNoSignalsInterfaceOLinkClient::SetPropBool_Implementation(bool bInPropBool)
+void UTbSimpleNoSignalsInterfaceOLinkClient::SetPropBool(bool bInPropBool)
 {
 	if (!m_sink->IsReady())
 	{
@@ -161,7 +161,7 @@ void UTbSimpleNoSignalsInterfaceOLinkClient::SetPropBool_Implementation(bool bIn
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetPropBool_Implementation() == bInPropBool)
+	if (GetPropBool() == bInPropBool)
 	{
 		return;
 	}
@@ -176,12 +176,12 @@ void UTbSimpleNoSignalsInterfaceOLinkClient::SetPropBool_Implementation(bool bIn
 	_SentData->bPropBool = bInPropBool;
 }
 
-int32 UTbSimpleNoSignalsInterfaceOLinkClient::GetPropInt_Implementation() const
+int32 UTbSimpleNoSignalsInterfaceOLinkClient::GetPropInt() const
 {
 	return PropInt;
 }
 
-void UTbSimpleNoSignalsInterfaceOLinkClient::SetPropInt_Implementation(int32 InPropInt)
+void UTbSimpleNoSignalsInterfaceOLinkClient::SetPropInt(int32 InPropInt)
 {
 	if (!m_sink->IsReady())
 	{
@@ -190,7 +190,7 @@ void UTbSimpleNoSignalsInterfaceOLinkClient::SetPropInt_Implementation(int32 InP
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetPropInt_Implementation() == InPropInt)
+	if (GetPropInt() == InPropInt)
 	{
 		return;
 	}
@@ -205,7 +205,7 @@ void UTbSimpleNoSignalsInterfaceOLinkClient::SetPropInt_Implementation(int32 InP
 	_SentData->PropInt = InPropInt;
 }
 
-void UTbSimpleNoSignalsInterfaceOLinkClient::FuncVoid_Implementation()
+void UTbSimpleNoSignalsInterfaceOLinkClient::FuncVoid()
 {
 	if (!m_sink->IsReady())
 	{
@@ -218,7 +218,7 @@ void UTbSimpleNoSignalsInterfaceOLinkClient::FuncVoid_Implementation()
 	m_sink->GetNode()->invokeRemote(memberId, {}, GetNoSignalsInterfaceStateFunc);
 }
 
-bool UTbSimpleNoSignalsInterfaceOLinkClient::FuncBool_Implementation(bool bParamBool)
+bool UTbSimpleNoSignalsInterfaceOLinkClient::FuncBool(bool bParamBool)
 {
 	if (!m_sink->IsReady())
 	{
@@ -260,14 +260,14 @@ void UTbSimpleNoSignalsInterfaceOLinkClient::applyState(const nlohmann::json& fi
 	if (bPropBoolChanged)
 	{
 		bPropBool = fields["propBool"].get<bool>();
-		Execute__GetSignals(this)->OnPropBoolChanged.Broadcast(bPropBool);
+		_GetSignals()->OnPropBoolChanged.Broadcast(bPropBool);
 	}
 
 	const bool bPropIntChanged = fields.contains("propInt") && (PropInt != fields["propInt"].get<int32>());
 	if (bPropIntChanged)
 	{
 		PropInt = fields["propInt"].get<int32>();
-		Execute__GetSignals(this)->OnPropIntChanged.Broadcast(PropInt);
+		_GetSignals()->OnPropIntChanged.Broadcast(PropInt);
 	}
 }
 

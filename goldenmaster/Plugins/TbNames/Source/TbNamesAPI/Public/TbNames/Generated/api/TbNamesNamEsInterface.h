@@ -93,7 +93,8 @@ public:
 /**
  * Interface UTbNamesNamEsInterface only for Unreal Engine's reflection system
  */
-UINTERFACE(Blueprintable, MinimalAPI)
+// Note: meta=(CannotImplementInterfaceInBlueprint) is equal to NotBlueprintable and is only needed for UE 4.27
+UINTERFACE(NotBlueprintable, MinimalAPI, meta = (CannotImplementInterfaceInBlueprint))
 class UTbNamesNamEsInterface : public UInterface
 {
 	GENERATED_BODY()
@@ -110,36 +111,27 @@ public:
 	/// Provides access to the object which holds all the delegates
 	/// this is needed since we cannot declare delegates on an UInterface
 	/// @return object with signals for property state changes or standalone signals
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbNames|NamEs")
-	UTbNamesNamEsSignals* _GetSignals();
-	virtual UTbNamesNamEsSignals* _GetSignals_Implementation() = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbNames|NamEs")
+	virtual UTbNamesNamEsSignals* _GetSignals() = 0;
 
 	// methods
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Operations")
-	void SomeFunction(bool bSomeParam);
-	virtual void SomeFunction_Implementation(bool bSomeParam) = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Operations")
+	virtual void SomeFunction(bool bSomeParam) = 0;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Operations")
-	void SomeFunction2(bool bSomeParam);
-	virtual void SomeFunction2_Implementation(bool bSomeParam) = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Operations")
+	virtual void SomeFunction2(bool bSomeParam) = 0;
 
 	// properties
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Properties")
-	bool GetSwitch() const;
-	virtual bool GetSwitch_Implementation() const = 0;
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Properties")
-	void SetSwitch(bool bInSwitch);
-	virtual void SetSwitch_Implementation(UPARAM(DisplayName = "bSwitch") bool bInSwitch) = 0;
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Properties")
-	int32 GetSomeProperty() const;
-	virtual int32 GetSomeProperty_Implementation() const = 0;
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Properties")
-	void SetSomeProperty(int32 InSomeProperty);
-	virtual void SetSomeProperty_Implementation(UPARAM(DisplayName = "SomeProperty") int32 InSomeProperty) = 0;
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Properties")
-	int32 GetSomePoperty2() const;
-	virtual int32 GetSomePoperty2_Implementation() const = 0;
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Properties")
-	void SetSomePoperty2(int32 InSomePoperty2);
-	virtual void SetSomePoperty2_Implementation(UPARAM(DisplayName = "SomePoperty2") int32 InSomePoperty2) = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Properties")
+	virtual bool GetSwitch() const = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Properties")
+	virtual void SetSwitch(UPARAM(DisplayName = "bSwitch") bool bInSwitch) = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Properties")
+	virtual int32 GetSomeProperty() const = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Properties")
+	virtual void SetSomeProperty(UPARAM(DisplayName = "SomeProperty") int32 InSomeProperty) = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Properties")
+	virtual int32 GetSomePoperty2() const = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Properties")
+	virtual void SetSomePoperty2(UPARAM(DisplayName = "SomePoperty2") int32 InSomePoperty2) = 0;
 };

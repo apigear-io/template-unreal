@@ -86,7 +86,8 @@ public:
 /**
  * Interface {{$class}} only for Unreal Engine's reflection system
  */
-UINTERFACE(Blueprintable, MinimalAPI)
+// Note: meta=(CannotImplementInterfaceInBlueprint) is equal to NotBlueprintable and is only needed for UE 4.27
+UINTERFACE(NotBlueprintable, MinimalAPI, meta = (CannotImplementInterfaceInBlueprint))
 class {{$class}} : public UInterface
 {
 	GENERATED_BODY()
@@ -104,36 +105,30 @@ public:
 	/// Provides access to the object which holds all the delegates
 	/// this is needed since we cannot declare delegates on an UInterface
 	/// @return object with signals for property state changes or standalone signals
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "{{$Category}}")
-	U{{$Class}}Signals* _GetSignals();
-	virtual U{{$Class}}Signals* _GetSignals_Implementation() = 0;
+	UFUNCTION(BlueprintCallable, Category = "{{$Category}}")
+	virtual U{{$Class}}Signals* _GetSignals() = 0;
 	{{- nl }}
 {{- end}}
 	// methods
 {{- range $i, $e := .Operations }}
 {{- if .Return.IsVoid }}
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "{{$Category}}|Operations")
-	{{ueReturn "" .Return}} {{Camel .Name}}({{ueParams "" .Params}});
-	virtual {{ueReturn "" .Return}} {{Camel .Name}}_Implementation({{ueParams "" .Params}}) = 0;
+	UFUNCTION(BlueprintCallable, Category = "{{$Category}}|Operations")
+	virtual {{ueReturn "" .Return}} {{Camel .Name}}({{ueParams "" .Params}}) = 0;
 {{- else }}
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "{{$Category}}|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-	void {{Camel .Name}}Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, {{ueReturn "" .Return}}& Result{{if len .Params}},{{end}} {{ueParams "" .Params}});
-	virtual void {{Camel .Name}}Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, {{ueReturn "" .Return}}& Result{{if len .Params}},{{end}} {{ueParams "" .Params}}) = 0;
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "{{$Category}}|Operations")
-	{{ueReturn "" .Return}} {{Camel .Name}}({{ueParams "" .Params}});
-	virtual {{ueReturn "" .Return}} {{Camel .Name}}_Implementation({{ueParams "" .Params}}) = 0;
+	UFUNCTION(BlueprintCallable, Category = "{{$Category}}|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	virtual void {{Camel .Name}}Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, {{ueReturn "" .Return}}& Result{{if len .Params}},{{end}} {{ueParams "" .Params}}) = 0;
+	UFUNCTION(BlueprintCallable, Category = "{{$Category}}|Operations")
+	virtual {{ueReturn "" .Return}} {{Camel .Name}}({{ueParams "" .Params}}) = 0;
 {{- end }}
 {{ else }}
 {{ end }}
 	// properties
 {{- range .Properties }}
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "{{$Category}}|Properties")
-	{{ueReturn "" .}} Get{{Camel .Name}}() const;
-	virtual {{ueReturn "" .}} Get{{Camel .Name}}_Implementation() const = 0;
+	UFUNCTION(BlueprintCallable, Category = "{{$Category}}|Properties")
+	virtual {{ueReturn "" .}} Get{{Camel .Name}}() const = 0;
 {{- if not .IsReadOnly }}
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "{{$Category}}|Properties")
-	void Set{{Camel .Name}}({{ueParam "In" .}});
-	virtual void Set{{Camel .Name}}_Implementation(UPARAM(DisplayName = "{{ueVar "" .}}") {{ueParam "In" .}}) = 0;
+	UFUNCTION(BlueprintCallable, Category = "{{$Category}}|Properties")
+	virtual void Set{{Camel .Name}}(UPARAM(DisplayName = "{{ueVar "" .}}") {{ueParam "In" .}}) = 0;
 {{- end }}
 {{- end }}
 };

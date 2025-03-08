@@ -153,12 +153,12 @@ void UTestbed1StructInterfaceOLinkClient::UseConnection(TScriptInterface<IApiGea
 	Connection = InConnection;
 }
 
-FTestbed1StructBool UTestbed1StructInterfaceOLinkClient::GetPropBool_Implementation() const
+FTestbed1StructBool UTestbed1StructInterfaceOLinkClient::GetPropBool() const
 {
 	return PropBool;
 }
 
-void UTestbed1StructInterfaceOLinkClient::SetPropBool_Implementation(const FTestbed1StructBool& InPropBool)
+void UTestbed1StructInterfaceOLinkClient::SetPropBool(const FTestbed1StructBool& InPropBool)
 {
 	if (!m_sink->IsReady())
 	{
@@ -167,7 +167,7 @@ void UTestbed1StructInterfaceOLinkClient::SetPropBool_Implementation(const FTest
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetPropBool_Implementation() == InPropBool)
+	if (GetPropBool() == InPropBool)
 	{
 		return;
 	}
@@ -186,12 +186,12 @@ void UTestbed1StructInterfaceOLinkClient::SetPropBool_Implementation(const FTest
 	_SentData->PropBool = InPropBool;
 }
 
-FTestbed1StructInt UTestbed1StructInterfaceOLinkClient::GetPropInt_Implementation() const
+FTestbed1StructInt UTestbed1StructInterfaceOLinkClient::GetPropInt() const
 {
 	return PropInt;
 }
 
-void UTestbed1StructInterfaceOLinkClient::SetPropInt_Implementation(const FTestbed1StructInt& InPropInt)
+void UTestbed1StructInterfaceOLinkClient::SetPropInt(const FTestbed1StructInt& InPropInt)
 {
 	if (!m_sink->IsReady())
 	{
@@ -200,7 +200,7 @@ void UTestbed1StructInterfaceOLinkClient::SetPropInt_Implementation(const FTestb
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetPropInt_Implementation() == InPropInt)
+	if (GetPropInt() == InPropInt)
 	{
 		return;
 	}
@@ -219,12 +219,12 @@ void UTestbed1StructInterfaceOLinkClient::SetPropInt_Implementation(const FTestb
 	_SentData->PropInt = InPropInt;
 }
 
-FTestbed1StructFloat UTestbed1StructInterfaceOLinkClient::GetPropFloat_Implementation() const
+FTestbed1StructFloat UTestbed1StructInterfaceOLinkClient::GetPropFloat() const
 {
 	return PropFloat;
 }
 
-void UTestbed1StructInterfaceOLinkClient::SetPropFloat_Implementation(const FTestbed1StructFloat& InPropFloat)
+void UTestbed1StructInterfaceOLinkClient::SetPropFloat(const FTestbed1StructFloat& InPropFloat)
 {
 	if (!m_sink->IsReady())
 	{
@@ -233,7 +233,7 @@ void UTestbed1StructInterfaceOLinkClient::SetPropFloat_Implementation(const FTes
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetPropFloat_Implementation() == InPropFloat)
+	if (GetPropFloat() == InPropFloat)
 	{
 		return;
 	}
@@ -252,12 +252,12 @@ void UTestbed1StructInterfaceOLinkClient::SetPropFloat_Implementation(const FTes
 	_SentData->PropFloat = InPropFloat;
 }
 
-FTestbed1StructString UTestbed1StructInterfaceOLinkClient::GetPropString_Implementation() const
+FTestbed1StructString UTestbed1StructInterfaceOLinkClient::GetPropString() const
 {
 	return PropString;
 }
 
-void UTestbed1StructInterfaceOLinkClient::SetPropString_Implementation(const FTestbed1StructString& InPropString)
+void UTestbed1StructInterfaceOLinkClient::SetPropString(const FTestbed1StructString& InPropString)
 {
 	if (!m_sink->IsReady())
 	{
@@ -266,7 +266,7 @@ void UTestbed1StructInterfaceOLinkClient::SetPropString_Implementation(const FTe
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetPropString_Implementation() == InPropString)
+	if (GetPropString() == InPropString)
 	{
 		return;
 	}
@@ -285,7 +285,7 @@ void UTestbed1StructInterfaceOLinkClient::SetPropString_Implementation(const FTe
 	_SentData->PropString = InPropString;
 }
 
-FTestbed1StructBool UTestbed1StructInterfaceOLinkClient::FuncBool_Implementation(const FTestbed1StructBool& ParamBool)
+FTestbed1StructBool UTestbed1StructInterfaceOLinkClient::FuncBool(const FTestbed1StructBool& ParamBool)
 {
 	if (!m_sink->IsReady())
 	{
@@ -316,7 +316,7 @@ FTestbed1StructBool UTestbed1StructInterfaceOLinkClient::FuncBool_Implementation
 	return Promise.GetFuture().Get();
 }
 
-FTestbed1StructInt UTestbed1StructInterfaceOLinkClient::FuncInt_Implementation(const FTestbed1StructInt& ParamInt)
+FTestbed1StructInt UTestbed1StructInterfaceOLinkClient::FuncInt(const FTestbed1StructInt& ParamInt)
 {
 	if (!m_sink->IsReady())
 	{
@@ -347,7 +347,7 @@ FTestbed1StructInt UTestbed1StructInterfaceOLinkClient::FuncInt_Implementation(c
 	return Promise.GetFuture().Get();
 }
 
-FTestbed1StructFloat UTestbed1StructInterfaceOLinkClient::FuncFloat_Implementation(const FTestbed1StructFloat& ParamFloat)
+FTestbed1StructFloat UTestbed1StructInterfaceOLinkClient::FuncFloat(const FTestbed1StructFloat& ParamFloat)
 {
 	if (!m_sink->IsReady())
 	{
@@ -378,7 +378,7 @@ FTestbed1StructFloat UTestbed1StructInterfaceOLinkClient::FuncFloat_Implementati
 	return Promise.GetFuture().Get();
 }
 
-FTestbed1StructString UTestbed1StructInterfaceOLinkClient::FuncString_Implementation(const FTestbed1StructString& ParamString)
+FTestbed1StructString UTestbed1StructInterfaceOLinkClient::FuncString(const FTestbed1StructString& ParamString)
 {
 	if (!m_sink->IsReady())
 	{
@@ -420,28 +420,28 @@ void UTestbed1StructInterfaceOLinkClient::applyState(const nlohmann::json& field
 	if (bPropBoolChanged)
 	{
 		PropBool = fields["propBool"].get<FTestbed1StructBool>();
-		Execute__GetSignals(this)->OnPropBoolChanged.Broadcast(PropBool);
+		_GetSignals()->OnPropBoolChanged.Broadcast(PropBool);
 	}
 
 	const bool bPropIntChanged = fields.contains("propInt") && (PropInt != fields["propInt"].get<FTestbed1StructInt>());
 	if (bPropIntChanged)
 	{
 		PropInt = fields["propInt"].get<FTestbed1StructInt>();
-		Execute__GetSignals(this)->OnPropIntChanged.Broadcast(PropInt);
+		_GetSignals()->OnPropIntChanged.Broadcast(PropInt);
 	}
 
 	const bool bPropFloatChanged = fields.contains("propFloat") && (PropFloat != fields["propFloat"].get<FTestbed1StructFloat>());
 	if (bPropFloatChanged)
 	{
 		PropFloat = fields["propFloat"].get<FTestbed1StructFloat>();
-		Execute__GetSignals(this)->OnPropFloatChanged.Broadcast(PropFloat);
+		_GetSignals()->OnPropFloatChanged.Broadcast(PropFloat);
 	}
 
 	const bool bPropStringChanged = fields.contains("propString") && (PropString != fields["propString"].get<FTestbed1StructString>());
 	if (bPropStringChanged)
 	{
 		PropString = fields["propString"].get<FTestbed1StructString>();
-		Execute__GetSignals(this)->OnPropStringChanged.Broadcast(PropString);
+		_GetSignals()->OnPropStringChanged.Broadcast(PropString);
 	}
 }
 
@@ -450,28 +450,28 @@ void UTestbed1StructInterfaceOLinkClient::emitSignal(const std::string& signalNa
 	if (signalName == "sigBool")
 	{
 		const FTestbed1StructBool& outParamBool = args[0].get<FTestbed1StructBool>();
-		Execute__GetSignals(this)->OnSigBoolSignal.Broadcast(outParamBool);
+		_GetSignals()->OnSigBoolSignal.Broadcast(outParamBool);
 		return;
 	}
 
 	if (signalName == "sigInt")
 	{
 		const FTestbed1StructInt& outParamInt = args[0].get<FTestbed1StructInt>();
-		Execute__GetSignals(this)->OnSigIntSignal.Broadcast(outParamInt);
+		_GetSignals()->OnSigIntSignal.Broadcast(outParamInt);
 		return;
 	}
 
 	if (signalName == "sigFloat")
 	{
 		const FTestbed1StructFloat& outParamFloat = args[0].get<FTestbed1StructFloat>();
-		Execute__GetSignals(this)->OnSigFloatSignal.Broadcast(outParamFloat);
+		_GetSignals()->OnSigFloatSignal.Broadcast(outParamFloat);
 		return;
 	}
 
 	if (signalName == "sigString")
 	{
 		const FTestbed1StructString& outParamString = args[0].get<FTestbed1StructString>();
-		Execute__GetSignals(this)->OnSigStringSignal.Broadcast(outParamString);
+		_GetSignals()->OnSigStringSignal.Broadcast(outParamString);
 		return;
 	}
 }

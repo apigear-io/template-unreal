@@ -120,48 +120,48 @@ public:
 	FTbSimpleSimpleInterfaceConnectionStatusChangedDelegate _ConnectionStatusChanged;
 
 	// properties
-	bool GetPropBool_Implementation() const override;
-	void SetPropBool_Implementation(bool bPropBool) override;
+	bool GetPropBool() const override;
+	void SetPropBool(bool bPropBool) override;
 
-	int32 GetPropInt_Implementation() const override;
-	void SetPropInt_Implementation(int32 PropInt) override;
+	int32 GetPropInt() const override;
+	void SetPropInt(int32 PropInt) override;
 
-	int32 GetPropInt32_Implementation() const override;
-	void SetPropInt32_Implementation(int32 PropInt32) override;
+	int32 GetPropInt32() const override;
+	void SetPropInt32(int32 PropInt32) override;
 
-	int64 GetPropInt64_Implementation() const override;
-	void SetPropInt64_Implementation(int64 PropInt64) override;
+	int64 GetPropInt64() const override;
+	void SetPropInt64(int64 PropInt64) override;
 
-	float GetPropFloat_Implementation() const override;
-	void SetPropFloat_Implementation(float PropFloat) override;
+	float GetPropFloat() const override;
+	void SetPropFloat(float PropFloat) override;
 
-	float GetPropFloat32_Implementation() const override;
-	void SetPropFloat32_Implementation(float PropFloat32) override;
+	float GetPropFloat32() const override;
+	void SetPropFloat32(float PropFloat32) override;
 
-	double GetPropFloat64_Implementation() const override;
-	void SetPropFloat64_Implementation(double PropFloat64) override;
+	double GetPropFloat64() const override;
+	void SetPropFloat64(double PropFloat64) override;
 
-	FString GetPropString_Implementation() const override;
-	void SetPropString_Implementation(const FString& PropString) override;
+	FString GetPropString() const override;
+	void SetPropString(const FString& PropString) override;
 
 	// operations
-	void FuncNoReturnValue_Implementation(bool bParamBool) override;
+	void FuncNoReturnValue(bool bParamBool) override;
 
-	bool FuncBool_Implementation(bool bParamBool) override;
+	bool FuncBool(bool bParamBool) override;
 
-	int32 FuncInt_Implementation(int32 ParamInt) override;
+	int32 FuncInt(int32 ParamInt) override;
 
-	int32 FuncInt32_Implementation(int32 ParamInt32) override;
+	int32 FuncInt32(int32 ParamInt32) override;
 
-	int64 FuncInt64_Implementation(int64 ParamInt64) override;
+	int64 FuncInt64(int64 ParamInt64) override;
 
-	float FuncFloat_Implementation(float ParamFloat) override;
+	float FuncFloat(float ParamFloat) override;
 
-	float FuncFloat32_Implementation(float ParamFloat32) override;
+	float FuncFloat32(float ParamFloat32) override;
 
-	double FuncFloat64_Implementation(double ParamFloat) override;
+	double FuncFloat64(double ParamFloat) override;
 
-	FString FuncString_Implementation(const FString& ParamString) override;
+	FString FuncString(const FString& ParamString) override;
 
 private:
 	TSharedPtr<FMessageEndpoint, ESPMode::ThreadSafe> TbSimpleSimpleInterfaceMsgBusEndpoint;

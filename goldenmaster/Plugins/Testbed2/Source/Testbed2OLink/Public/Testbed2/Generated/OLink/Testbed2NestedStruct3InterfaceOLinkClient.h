@@ -46,21 +46,21 @@ public:
 	void Deinitialize() override;
 
 	// properties
-	FTestbed2NestedStruct1 GetProp1_Implementation() const override;
-	void SetProp1_Implementation(const FTestbed2NestedStruct1& Prop1) override;
+	FTestbed2NestedStruct1 GetProp1() const override;
+	void SetProp1(const FTestbed2NestedStruct1& Prop1) override;
 
-	FTestbed2NestedStruct2 GetProp2_Implementation() const override;
-	void SetProp2_Implementation(const FTestbed2NestedStruct2& Prop2) override;
+	FTestbed2NestedStruct2 GetProp2() const override;
+	void SetProp2(const FTestbed2NestedStruct2& Prop2) override;
 
-	FTestbed2NestedStruct3 GetProp3_Implementation() const override;
-	void SetProp3_Implementation(const FTestbed2NestedStruct3& Prop3) override;
+	FTestbed2NestedStruct3 GetProp3() const override;
+	void SetProp3(const FTestbed2NestedStruct3& Prop3) override;
 
 	// operations
-	FTestbed2NestedStruct1 Func1_Implementation(const FTestbed2NestedStruct1& Param1) override;
+	FTestbed2NestedStruct1 Func1(const FTestbed2NestedStruct1& Param1) override;
 
-	FTestbed2NestedStruct1 Func2_Implementation(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2) override;
+	FTestbed2NestedStruct1 Func2(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2) override;
 
-	FTestbed2NestedStruct1 Func3_Implementation(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3) override;
+	FTestbed2NestedStruct1 Func3(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface")
 	void UseConnection(TScriptInterface<class IApiGearConnection> InConnection);

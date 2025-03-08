@@ -52,7 +52,8 @@ public:
 /**
  * Interface UTbSimpleVoidInterfaceInterface only for Unreal Engine's reflection system
  */
-UINTERFACE(Blueprintable, MinimalAPI)
+// Note: meta=(CannotImplementInterfaceInBlueprint) is equal to NotBlueprintable and is only needed for UE 4.27
+UINTERFACE(NotBlueprintable, MinimalAPI, meta = (CannotImplementInterfaceInBlueprint))
 class UTbSimpleVoidInterfaceInterface : public UInterface
 {
 	GENERATED_BODY()
@@ -69,14 +70,12 @@ public:
 	/// Provides access to the object which holds all the delegates
 	/// this is needed since we cannot declare delegates on an UInterface
 	/// @return object with signals for property state changes or standalone signals
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|VoidInterface")
-	UTbSimpleVoidInterfaceSignals* _GetSignals();
-	virtual UTbSimpleVoidInterfaceSignals* _GetSignals_Implementation() = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|VoidInterface")
+	virtual UTbSimpleVoidInterfaceSignals* _GetSignals() = 0;
 
 	// methods
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|VoidInterface|Operations")
-	void FuncVoid();
-	virtual void FuncVoid_Implementation() = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|VoidInterface|Operations")
+	virtual void FuncVoid() = 0;
 
 	// properties
 };

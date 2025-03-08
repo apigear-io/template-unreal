@@ -18,67 +18,67 @@ limitations under the License.
 #include "Testbed2/Implementation/Testbed2ManyParamInterface.h"
 
 UTestbed2ManyParamInterface::~UTestbed2ManyParamInterface() = default;
-int32 UTestbed2ManyParamInterface::GetProp1_Implementation() const
+int32 UTestbed2ManyParamInterface::GetProp1() const
 {
 	return Prop1;
 }
 
-void UTestbed2ManyParamInterface::SetProp1_Implementation(int32 InProp1)
+void UTestbed2ManyParamInterface::SetProp1(int32 InProp1)
 {
 	if (Prop1 != InProp1)
 	{
 		Prop1 = InProp1;
-		Execute__GetSignals(this)->OnProp1Changed.Broadcast(Prop1);
+		_GetSignals()->OnProp1Changed.Broadcast(Prop1);
 	}
 }
-int32 UTestbed2ManyParamInterface::GetProp2_Implementation() const
+int32 UTestbed2ManyParamInterface::GetProp2() const
 {
 	return Prop2;
 }
 
-void UTestbed2ManyParamInterface::SetProp2_Implementation(int32 InProp2)
+void UTestbed2ManyParamInterface::SetProp2(int32 InProp2)
 {
 	if (Prop2 != InProp2)
 	{
 		Prop2 = InProp2;
-		Execute__GetSignals(this)->OnProp2Changed.Broadcast(Prop2);
+		_GetSignals()->OnProp2Changed.Broadcast(Prop2);
 	}
 }
-int32 UTestbed2ManyParamInterface::GetProp3_Implementation() const
+int32 UTestbed2ManyParamInterface::GetProp3() const
 {
 	return Prop3;
 }
 
-void UTestbed2ManyParamInterface::SetProp3_Implementation(int32 InProp3)
+void UTestbed2ManyParamInterface::SetProp3(int32 InProp3)
 {
 	if (Prop3 != InProp3)
 	{
 		Prop3 = InProp3;
-		Execute__GetSignals(this)->OnProp3Changed.Broadcast(Prop3);
+		_GetSignals()->OnProp3Changed.Broadcast(Prop3);
 	}
 }
-int32 UTestbed2ManyParamInterface::GetProp4_Implementation() const
+int32 UTestbed2ManyParamInterface::GetProp4() const
 {
 	return Prop4;
 }
 
-void UTestbed2ManyParamInterface::SetProp4_Implementation(int32 InProp4)
+void UTestbed2ManyParamInterface::SetProp4(int32 InProp4)
 {
 	if (Prop4 != InProp4)
 	{
 		Prop4 = InProp4;
-		Execute__GetSignals(this)->OnProp4Changed.Broadcast(Prop4);
+		_GetSignals()->OnProp4Changed.Broadcast(Prop4);
 	}
 }
 
-int32 UTestbed2ManyParamInterface::Func1_Implementation(int32 Param1)
+int32 UTestbed2ManyParamInterface::Func1(int32 Param1)
 {
 	(void)Param1;
 	// do business logic here
 	return 0;
 }
 
-int32 UTestbed2ManyParamInterface::Func2_Implementation(int32 Param1, int32 Param2)
+int32 UTestbed2ManyParamInterface::Func2(int32 Param1, int32 Param2)
 {
 	(void)Param1;
 	(void)Param2;
@@ -86,7 +86,7 @@ int32 UTestbed2ManyParamInterface::Func2_Implementation(int32 Param1, int32 Para
 	return 0;
 }
 
-int32 UTestbed2ManyParamInterface::Func3_Implementation(int32 Param1, int32 Param2, int32 Param3)
+int32 UTestbed2ManyParamInterface::Func3(int32 Param1, int32 Param2, int32 Param3)
 {
 	(void)Param1;
 	(void)Param2;
@@ -95,7 +95,7 @@ int32 UTestbed2ManyParamInterface::Func3_Implementation(int32 Param1, int32 Para
 	return 0;
 }
 
-int32 UTestbed2ManyParamInterface::Func4_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
+int32 UTestbed2ManyParamInterface::Func4(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
 {
 	(void)Param1;
 	(void)Param2;

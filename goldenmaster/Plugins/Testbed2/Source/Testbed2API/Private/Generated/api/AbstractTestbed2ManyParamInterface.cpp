@@ -66,7 +66,7 @@ UAbstractTestbed2ManyParamInterface::UAbstractTestbed2ManyParamInterface()
 	Testbed2ManyParamInterfaceSignals = NewObject<UTestbed2ManyParamInterfaceSignals>();
 }
 
-UTestbed2ManyParamInterfaceSignals* UAbstractTestbed2ManyParamInterface::_GetSignals_Implementation()
+UTestbed2ManyParamInterfaceSignals* UAbstractTestbed2ManyParamInterface::_GetSignals()
 {
 	if (!Testbed2ManyParamInterfaceSignals)
 	{
@@ -77,45 +77,45 @@ UTestbed2ManyParamInterfaceSignals* UAbstractTestbed2ManyParamInterface::_GetSig
 
 int32 UAbstractTestbed2ManyParamInterface::GetProp1_Private() const
 {
-	return Execute_GetProp1(this);
+	return GetProp1();
 };
 
 void UAbstractTestbed2ManyParamInterface::SetProp1_Private(int32 InProp1)
 {
-	Execute_SetProp1(this, InProp1);
+	SetProp1(InProp1);
 };
 
 int32 UAbstractTestbed2ManyParamInterface::GetProp2_Private() const
 {
-	return Execute_GetProp2(this);
+	return GetProp2();
 };
 
 void UAbstractTestbed2ManyParamInterface::SetProp2_Private(int32 InProp2)
 {
-	Execute_SetProp2(this, InProp2);
+	SetProp2(InProp2);
 };
 
 int32 UAbstractTestbed2ManyParamInterface::GetProp3_Private() const
 {
-	return Execute_GetProp3(this);
+	return GetProp3();
 };
 
 void UAbstractTestbed2ManyParamInterface::SetProp3_Private(int32 InProp3)
 {
-	Execute_SetProp3(this, InProp3);
+	SetProp3(InProp3);
 };
 
 int32 UAbstractTestbed2ManyParamInterface::GetProp4_Private() const
 {
-	return Execute_GetProp4(this);
+	return GetProp4();
 };
 
 void UAbstractTestbed2ManyParamInterface::SetProp4_Private(int32 InProp4)
 {
-	Execute_SetProp4(this, InProp4);
+	SetProp4(InProp4);
 };
 
-void UAbstractTestbed2ManyParamInterface::Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1)
+void UAbstractTestbed2ManyParamInterface::Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
@@ -135,7 +135,7 @@ void UAbstractTestbed2ManyParamInterface::Func1Async_Implementation(UObject* Wor
 		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
 		if (this->GetClass()->IsInBlueprint())
 		{
-			Result = Execute_Func1(this, Param1);
+			Result = Func1(Param1);
 			CompletionAction->Cancel();
 		}
 		else
@@ -143,14 +143,14 @@ void UAbstractTestbed2ManyParamInterface::Func1Async_Implementation(UObject* Wor
 			Async(EAsyncExecution::ThreadPool,
 				[Param1, this, &Result, CompletionAction]()
 				{
-				Result = Execute_Func1(this, Param1);
+				Result = Func1(Param1);
 				CompletionAction->Cancel();
 			});
 		}
 	}
 }
 
-void UAbstractTestbed2ManyParamInterface::Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2)
+void UAbstractTestbed2ManyParamInterface::Func2Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
@@ -170,7 +170,7 @@ void UAbstractTestbed2ManyParamInterface::Func2Async_Implementation(UObject* Wor
 		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
 		if (this->GetClass()->IsInBlueprint())
 		{
-			Result = Execute_Func2(this, Param1, Param2);
+			Result = Func2(Param1, Param2);
 			CompletionAction->Cancel();
 		}
 		else
@@ -178,14 +178,14 @@ void UAbstractTestbed2ManyParamInterface::Func2Async_Implementation(UObject* Wor
 			Async(EAsyncExecution::ThreadPool,
 				[Param1, Param2, this, &Result, CompletionAction]()
 				{
-				Result = Execute_Func2(this, Param1, Param2);
+				Result = Func2(Param1, Param2);
 				CompletionAction->Cancel();
 			});
 		}
 	}
 }
 
-void UAbstractTestbed2ManyParamInterface::Func3Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2, int32 Param3)
+void UAbstractTestbed2ManyParamInterface::Func3Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2, int32 Param3)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
@@ -205,7 +205,7 @@ void UAbstractTestbed2ManyParamInterface::Func3Async_Implementation(UObject* Wor
 		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
 		if (this->GetClass()->IsInBlueprint())
 		{
-			Result = Execute_Func3(this, Param1, Param2, Param3);
+			Result = Func3(Param1, Param2, Param3);
 			CompletionAction->Cancel();
 		}
 		else
@@ -213,14 +213,14 @@ void UAbstractTestbed2ManyParamInterface::Func3Async_Implementation(UObject* Wor
 			Async(EAsyncExecution::ThreadPool,
 				[Param1, Param2, Param3, this, &Result, CompletionAction]()
 				{
-				Result = Execute_Func3(this, Param1, Param2, Param3);
+				Result = Func3(Param1, Param2, Param3);
 				CompletionAction->Cancel();
 			});
 		}
 	}
 }
 
-void UAbstractTestbed2ManyParamInterface::Func4Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2, int32 Param3, int32 Param4)
+void UAbstractTestbed2ManyParamInterface::Func4Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2, int32 Param3, int32 Param4)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
@@ -240,7 +240,7 @@ void UAbstractTestbed2ManyParamInterface::Func4Async_Implementation(UObject* Wor
 		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
 		if (this->GetClass()->IsInBlueprint())
 		{
-			Result = Execute_Func4(this, Param1, Param2, Param3, Param4);
+			Result = Func4(Param1, Param2, Param3, Param4);
 			CompletionAction->Cancel();
 		}
 		else
@@ -248,7 +248,7 @@ void UAbstractTestbed2ManyParamInterface::Func4Async_Implementation(UObject* Wor
 			Async(EAsyncExecution::ThreadPool,
 				[Param1, Param2, Param3, Param4, this, &Result, CompletionAction]()
 				{
-				Result = Execute_Func4(this, Param1, Param2, Param3, Param4);
+				Result = Func4(Param1, Param2, Param3, Param4);
 				CompletionAction->Cancel();
 			});
 		}

@@ -30,7 +30,7 @@ public:
 
 	// properties
 	// operations
-	void FuncVoid_Implementation() override;
+	void FuncVoid() override;
 
-	bool FuncBool_Implementation(bool bParamBool) override;
+	bool FuncBool(bool bParamBool) override;
 };

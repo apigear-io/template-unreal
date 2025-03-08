@@ -18,53 +18,53 @@ limitations under the License.
 #include "TbNames/Implementation/TbNamesNamEs.h"
 
 UTbNamesNamEs::~UTbNamesNamEs() = default;
-bool UTbNamesNamEs::GetSwitch_Implementation() const
+bool UTbNamesNamEs::GetSwitch() const
 {
 	return bSwitch;
 }
 
-void UTbNamesNamEs::SetSwitch_Implementation(bool bInSwitch)
+void UTbNamesNamEs::SetSwitch(bool bInSwitch)
 {
 	if (bSwitch != bInSwitch)
 	{
 		bSwitch = bInSwitch;
-		Execute__GetSignals(this)->OnSwitchChanged.Broadcast(bSwitch);
+		_GetSignals()->OnSwitchChanged.Broadcast(bSwitch);
 	}
 }
-int32 UTbNamesNamEs::GetSomeProperty_Implementation() const
+int32 UTbNamesNamEs::GetSomeProperty() const
 {
 	return SomeProperty;
 }
 
-void UTbNamesNamEs::SetSomeProperty_Implementation(int32 InSomeProperty)
+void UTbNamesNamEs::SetSomeProperty(int32 InSomeProperty)
 {
 	if (SomeProperty != InSomeProperty)
 	{
 		SomeProperty = InSomeProperty;
-		Execute__GetSignals(this)->OnSomePropertyChanged.Broadcast(SomeProperty);
+		_GetSignals()->OnSomePropertyChanged.Broadcast(SomeProperty);
 	}
 }
-int32 UTbNamesNamEs::GetSomePoperty2_Implementation() const
+int32 UTbNamesNamEs::GetSomePoperty2() const
 {
 	return SomePoperty2;
 }
 
-void UTbNamesNamEs::SetSomePoperty2_Implementation(int32 InSomePoperty2)
+void UTbNamesNamEs::SetSomePoperty2(int32 InSomePoperty2)
 {
 	if (SomePoperty2 != InSomePoperty2)
 	{
 		SomePoperty2 = InSomePoperty2;
-		Execute__GetSignals(this)->OnSomePoperty2Changed.Broadcast(SomePoperty2);
+		_GetSignals()->OnSomePoperty2Changed.Broadcast(SomePoperty2);
 	}
 }
 
-void UTbNamesNamEs::SomeFunction_Implementation(bool bSomeParam)
+void UTbNamesNamEs::SomeFunction(bool bSomeParam)
 {
 	(void)bSomeParam;
 	// do business logic here
 }
 
-void UTbNamesNamEs::SomeFunction2_Implementation(bool bSomeParam)
+void UTbNamesNamEs::SomeFunction2(bool bSomeParam)
 {
 	(void)bSomeParam;
 	// do business logic here

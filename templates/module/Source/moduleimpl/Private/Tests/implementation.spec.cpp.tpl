@@ -41,9 +41,9 @@ void {{$Class}}ImplSpec::Define()
 		// Do implement test here
 		{{ueType "" .}} TestValue = {{ueDefault "" .}}; // default value
 	{{- if not .IsReadOnly }}
-		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_Get{{Camel .Name}}(ImplFixture->GetImplementation().GetObject()), TestValue);
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Get{{Camel .Name}}(), TestValue);
 	{{- else }}
-		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_Get{{Camel .Name}}(ImplFixture->GetImplementation().GetObject()), {{ueDefault "" .}});
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Get{{Camel .Name}}(), {{ueDefault "" .}});
 	{{- end }}
 	});
 
@@ -53,10 +53,10 @@ void {{$Class}}ImplSpec::Define()
 		{
 		// Do implement test here
 		{{ueType "" .}} TestValue = {{ueDefault "" .}}; // default value
-		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_Get{{Camel .Name}}(ImplFixture->GetImplementation().GetObject()), TestValue);
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Get{{Camel .Name}}(), TestValue);
 
 		testDoneDelegate = TestDone;
-		{{$Class}}Signals* {{$Iface}}Signals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
+		{{$Class}}Signals* {{$Iface}}Signals = ImplFixture->GetImplementation()->_GetSignals();
 		{{$Iface}}Signals->On{{Camel .Name}}Changed.AddDynamic(ImplFixture->GetHelper().Get(), &{{$Class}}ImplHelper::{{ Camel .Name }}PropertyCb);
 		// use different test value
 		{{- if .IsArray }}
@@ -76,7 +76,7 @@ void {{$Class}}ImplSpec::Define()
 		{{- else }}
 		TestValue = {{ ueTestValue "" . }};
 		{{- end }}
-		ImplFixture->GetImplementation()->Execute_Set{{Camel .Name}}(ImplFixture->GetImplementation().GetObject(), TestValue);
+		ImplFixture->GetImplementation()->Set{{Camel .Name}}(TestValue);
 	});
 	{{- end }}
 
@@ -87,9 +87,9 @@ void {{$Class}}ImplSpec::Define()
 	It("Operation.{{ Camel .Name }}", [this]()
 		{
 		// Do implement test here
-		ImplFixture->GetImplementation()->Execute_{{Camel .Name}}(ImplFixture->GetImplementation().GetObject()
+		ImplFixture->GetImplementation()->{{Camel .Name}}(
 			{{- range $i, $e := .Params -}}
-			, {{ueDefault "" .}}
+			{{ if $i }}, {{end}}{{ueDefault "" .}}
 			{{- end -}}
 		);
 	});
@@ -101,7 +101,7 @@ void {{$Class}}ImplSpec::Define()
 	LatentIt("Signal.{{ Camel .Name }}", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		testDoneDelegate = TestDone;
-		{{$Class}}Signals* {{$Iface}}Signals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
+		{{$Class}}Signals* {{$Iface}}Signals = ImplFixture->GetImplementation()->_GetSignals();
 		{{$Iface}}Signals->On{{Camel .Name}}Signal.AddDynamic(ImplFixture->GetHelper().Get(), &{{$Class}}ImplHelper::{{ Camel .Name }}SignalCb);
 
 		// use different test value
@@ -164,7 +164,7 @@ void {{$Class}}ImplSpec::{{ Camel .Name }}PropertyCb({{ueParam "In" .}})
 	TestValue = {{ ueTestValue "" . }};
 	{{- end }}
 	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), {{ueVar "In" .}}, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_Get{{Camel .Name}}(ImplFixture->GetImplementation().GetObject()), TestValue);
+	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Get{{Camel .Name}}(), TestValue);
 	testDoneDelegate.Execute();
 }
 {{- end }}

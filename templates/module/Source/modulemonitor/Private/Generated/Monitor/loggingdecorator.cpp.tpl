@@ -63,7 +63,7 @@ void {{$Class}}::setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{Cam
 	if (BackendService != nullptr)
 	{
 {{- if or (len .Interface.Properties) (.Interface.Signals) }}
-		U{{$Iface}}Signals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+		U{{$Iface}}Signals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service {{$Iface}}"));
 {{- end }}
 {{- range .Interface.Properties }}
@@ -81,7 +81,7 @@ void {{$Class}}::setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{Cam
 {{- $Service := printf "I%sInterface" $Iface }}
 	BackendService = InService;
 {{- if or (len .Interface.Properties) (.Interface.Signals) }}
-	U{{$Iface}}Signals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+	U{{$Iface}}Signals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service {{$Iface}}"));
 {{- end }}
 	// connect property changed signals or simple events
@@ -93,7 +93,7 @@ void {{$Class}}::setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{Cam
 {{- end }}
 	// populate service state to proxy
 {{- range .Interface.Properties }}
-	{{ueVar "" .}} = BackendService->Execute_Get{{Camel .Name}}(BackendService.GetObject());
+	{{ueVar "" .}} = BackendService->Get{{Camel .Name}}();
 {{- end }}
 }
 {{- if .Interface.Signals }}{{nl}}{{ end }}
@@ -102,7 +102,7 @@ void {{$Class}}::setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{Cam
 void {{$Class}}::On{{Camel .Name}}({{ueParams "In" .Params}})
 {
 	{{$Iface}}Tracer::trace_signal{{Camel .Name}}({{ueVars "In" .Params}});
-	Execute__GetSignals(this)->On{{Camel .Name}}Signal.Broadcast({{ueVars "In" .Params }});
+	_GetSignals()->On{{Camel .Name}}Signal.Broadcast({{ueVars "In" .Params }});
 }
 {{- end }}
 {{- if .Interface.Properties }}{{nl}}{{ end }}
@@ -112,19 +112,19 @@ void {{$Class}}::On{{Camel .Name}}Changed({{ueParam "In" .}})
 {
 	{{$Iface}}Tracer::capture_state(BackendService.GetObject(), this);
 	{{ueVar "" .}} = {{ueVar "In" .}};
-	Execute__GetSignals(this)->On{{Camel .Name}}Changed.Broadcast({{ueVar "In" .}});
+	_GetSignals()->On{{Camel .Name}}Changed.Broadcast({{ueVar "In" .}});
 }
 
-{{ueReturn "" .}} {{$Class}}::Get{{Camel .Name}}_Implementation() const
+{{ueReturn "" .}} {{$Class}}::Get{{Camel .Name}}() const
 {
-	return BackendService->Execute_Get{{Camel .Name}}(BackendService.GetObject());
+	return BackendService->Get{{Camel .Name}}();
 }
 
 {{- if not .IsReadOnly }}{{nl}}
-void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
+void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
 {
 	{{$Iface}}Tracer::trace_callSet{{Camel .Name}}({{ueVar "In" .}});
-	BackendService->Execute_Set{{Camel .Name}}(BackendService.GetObject(), {{ueVar "In" .}});
+	BackendService->Set{{Camel .Name}}({{ueVar "In" .}});
 }
 {{- end }}
 {{- end }}
@@ -136,13 +136,13 @@ void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
    \brief {{.Description}}
 */
 {{- end }}
-{{ueReturn "" .Return}} {{$Class}}::{{Camel .Name}}_Implementation({{ueParams "" .Params}})
+{{ueReturn "" .Return}} {{$Class}}::{{Camel .Name}}({{ueParams "" .Params}})
 {
 	{{ $Iface}}Tracer::trace_call{{Camel .Name}}({{ueVars "" .Params }});
 	{{- if not .Return.IsVoid }}
-	return BackendService->Execute_{{Camel .Name}}(BackendService.GetObject(){{if len .Params}}, {{ end }}{{ ueVars "" .Params }});
+	return BackendService->{{Camel .Name}}({{ ueVars "" .Params }});
 	{{- else }}
-	BackendService->Execute_{{Camel .Name}}(BackendService.GetObject(){{if len .Params}}, {{ end }}{{ ueVars "" .Params}});
+	BackendService->{{Camel .Name}}({{ ueVars "" .Params}});
 	{{- end }}
 }
 {{- end }}

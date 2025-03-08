@@ -47,7 +47,7 @@ void UTbSame1SameStruct1InterfaceLoggingDecorator::setBackendService(TScriptInte
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		UTbSame1SameStruct1InterfaceSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+		UTbSame1SameStruct1InterfaceSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSame1SameStruct1Interface"));
 		BackendSignals->OnProp1Changed.RemoveDynamic(this, &UTbSame1SameStruct1InterfaceLoggingDecorator::OnProp1Changed);
 		BackendSignals->OnSig1Signal.RemoveDynamic(this, &UTbSame1SameStruct1InterfaceLoggingDecorator::OnSig1);
@@ -58,41 +58,41 @@ void UTbSame1SameStruct1InterfaceLoggingDecorator::setBackendService(TScriptInte
 
 	// subscribe to new backend
 	BackendService = InService;
-	UTbSame1SameStruct1InterfaceSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+	UTbSame1SameStruct1InterfaceSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSame1SameStruct1Interface"));
 	// connect property changed signals or simple events
 	BackendSignals->OnProp1Changed.AddDynamic(this, &UTbSame1SameStruct1InterfaceLoggingDecorator::OnProp1Changed);
 	BackendSignals->OnSig1Signal.AddDynamic(this, &UTbSame1SameStruct1InterfaceLoggingDecorator::OnSig1);
 	// populate service state to proxy
-	Prop1 = BackendService->Execute_GetProp1(BackendService.GetObject());
+	Prop1 = BackendService->GetProp1();
 }
 
 void UTbSame1SameStruct1InterfaceLoggingDecorator::OnSig1(const FTbSame1Struct1& InParam1)
 {
 	TbSame1SameStruct1InterfaceTracer::trace_signalSig1(InParam1);
-	Execute__GetSignals(this)->OnSig1Signal.Broadcast(InParam1);
+	_GetSignals()->OnSig1Signal.Broadcast(InParam1);
 }
 
 void UTbSame1SameStruct1InterfaceLoggingDecorator::OnProp1Changed(const FTbSame1Struct1& InProp1)
 {
 	TbSame1SameStruct1InterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop1 = InProp1;
-	Execute__GetSignals(this)->OnProp1Changed.Broadcast(InProp1);
+	_GetSignals()->OnProp1Changed.Broadcast(InProp1);
 }
 
-FTbSame1Struct1 UTbSame1SameStruct1InterfaceLoggingDecorator::GetProp1_Implementation() const
+FTbSame1Struct1 UTbSame1SameStruct1InterfaceLoggingDecorator::GetProp1() const
 {
-	return BackendService->Execute_GetProp1(BackendService.GetObject());
+	return BackendService->GetProp1();
 }
 
-void UTbSame1SameStruct1InterfaceLoggingDecorator::SetProp1_Implementation(const FTbSame1Struct1& InProp1)
+void UTbSame1SameStruct1InterfaceLoggingDecorator::SetProp1(const FTbSame1Struct1& InProp1)
 {
 	TbSame1SameStruct1InterfaceTracer::trace_callSetProp1(InProp1);
-	BackendService->Execute_SetProp1(BackendService.GetObject(), InProp1);
+	BackendService->SetProp1(InProp1);
 }
 
-FTbSame1Struct1 UTbSame1SameStruct1InterfaceLoggingDecorator::Func1_Implementation(const FTbSame1Struct1& Param1)
+FTbSame1Struct1 UTbSame1SameStruct1InterfaceLoggingDecorator::Func1(const FTbSame1Struct1& Param1)
 {
 	TbSame1SameStruct1InterfaceTracer::trace_callFunc1(Param1);
-	return BackendService->Execute_Func1(BackendService.GetObject(), Param1);
+	return BackendService->Func1(Param1);
 }

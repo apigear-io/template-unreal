@@ -42,30 +42,30 @@ public:
 	void Deinitialize() override;
 
 	// properties
-	FCustomTypesVector3D GetVector_Implementation() const override;
+	FCustomTypesVector3D GetVector() const override;
 
-	void SetVector_Implementation(const FCustomTypesVector3D& InVector) override;
+	void SetVector(const FCustomTypesVector3D& InVector) override;
 
-	FVector GetExternVector_Implementation() const override;
+	FVector GetExternVector() const override;
 
-	void SetExternVector_Implementation(const FVector& InExternVector) override;
+	void SetExternVector(const FVector& InExternVector) override;
 
-	TArray<FCustomTypesVector3D> GetVectorArray_Implementation() const override;
+	TArray<FCustomTypesVector3D> GetVectorArray() const override;
 
-	void SetVectorArray_Implementation(const TArray<FCustomTypesVector3D>& InVectorArray) override;
+	void SetVectorArray(const TArray<FCustomTypesVector3D>& InVectorArray) override;
 
-	TArray<FVector> GetExternVectorArray_Implementation() const override;
+	TArray<FVector> GetExternVectorArray() const override;
 
-	void SetExternVectorArray_Implementation(const TArray<FVector>& InExternVectorArray) override;
+	void SetExternVectorArray(const TArray<FVector>& InExternVectorArray) override;
 
 	// operations
-	FVector Increment_Implementation(const FVector& Vec) override;
+	FVector Increment(const FVector& Vec) override;
 
-	TArray<FVector> IncrementArray_Implementation(const TArray<FVector>& Vec) override;
+	TArray<FVector> IncrementArray(const TArray<FVector>& Vec) override;
 
-	FCustomTypesVector3D Decrement_Implementation(const FCustomTypesVector3D& Vec) override;
+	FCustomTypesVector3D Decrement(const FCustomTypesVector3D& Vec) override;
 
-	TArray<FCustomTypesVector3D> DecrementArray_Implementation(const TArray<FCustomTypesVector3D>& Vec) override;
+	TArray<FCustomTypesVector3D> DecrementArray(const TArray<FCustomTypesVector3D>& Vec) override;
 
 private:
 	/** The connection to the service backend. */

@@ -47,7 +47,7 @@ void UTestbed2NestedStruct3InterfaceLoggingDecorator::setBackendService(TScriptI
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		UTestbed2NestedStruct3InterfaceSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+		UTestbed2NestedStruct3InterfaceSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service Testbed2NestedStruct3Interface"));
 		BackendSignals->OnProp1Changed.RemoveDynamic(this, &UTestbed2NestedStruct3InterfaceLoggingDecorator::OnProp1Changed);
 		BackendSignals->OnProp2Changed.RemoveDynamic(this, &UTestbed2NestedStruct3InterfaceLoggingDecorator::OnProp2Changed);
@@ -62,7 +62,7 @@ void UTestbed2NestedStruct3InterfaceLoggingDecorator::setBackendService(TScriptI
 
 	// subscribe to new backend
 	BackendService = InService;
-	UTestbed2NestedStruct3InterfaceSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+	UTestbed2NestedStruct3InterfaceSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service Testbed2NestedStruct3Interface"));
 	// connect property changed signals or simple events
 	BackendSignals->OnProp1Changed.AddDynamic(this, &UTestbed2NestedStruct3InterfaceLoggingDecorator::OnProp1Changed);
@@ -72,97 +72,97 @@ void UTestbed2NestedStruct3InterfaceLoggingDecorator::setBackendService(TScriptI
 	BackendSignals->OnSig2Signal.AddDynamic(this, &UTestbed2NestedStruct3InterfaceLoggingDecorator::OnSig2);
 	BackendSignals->OnSig3Signal.AddDynamic(this, &UTestbed2NestedStruct3InterfaceLoggingDecorator::OnSig3);
 	// populate service state to proxy
-	Prop1 = BackendService->Execute_GetProp1(BackendService.GetObject());
-	Prop2 = BackendService->Execute_GetProp2(BackendService.GetObject());
-	Prop3 = BackendService->Execute_GetProp3(BackendService.GetObject());
+	Prop1 = BackendService->GetProp1();
+	Prop2 = BackendService->GetProp2();
+	Prop3 = BackendService->GetProp3();
 }
 
 void UTestbed2NestedStruct3InterfaceLoggingDecorator::OnSig1(const FTestbed2NestedStruct1& InParam1)
 {
 	Testbed2NestedStruct3InterfaceTracer::trace_signalSig1(InParam1);
-	Execute__GetSignals(this)->OnSig1Signal.Broadcast(InParam1);
+	_GetSignals()->OnSig1Signal.Broadcast(InParam1);
 }
 
 void UTestbed2NestedStruct3InterfaceLoggingDecorator::OnSig2(const FTestbed2NestedStruct1& InParam1, const FTestbed2NestedStruct2& InParam2)
 {
 	Testbed2NestedStruct3InterfaceTracer::trace_signalSig2(InParam1, InParam2);
-	Execute__GetSignals(this)->OnSig2Signal.Broadcast(InParam1, InParam2);
+	_GetSignals()->OnSig2Signal.Broadcast(InParam1, InParam2);
 }
 
 void UTestbed2NestedStruct3InterfaceLoggingDecorator::OnSig3(const FTestbed2NestedStruct1& InParam1, const FTestbed2NestedStruct2& InParam2, const FTestbed2NestedStruct3& InParam3)
 {
 	Testbed2NestedStruct3InterfaceTracer::trace_signalSig3(InParam1, InParam2, InParam3);
-	Execute__GetSignals(this)->OnSig3Signal.Broadcast(InParam1, InParam2, InParam3);
+	_GetSignals()->OnSig3Signal.Broadcast(InParam1, InParam2, InParam3);
 }
 
 void UTestbed2NestedStruct3InterfaceLoggingDecorator::OnProp1Changed(const FTestbed2NestedStruct1& InProp1)
 {
 	Testbed2NestedStruct3InterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop1 = InProp1;
-	Execute__GetSignals(this)->OnProp1Changed.Broadcast(InProp1);
+	_GetSignals()->OnProp1Changed.Broadcast(InProp1);
 }
 
-FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceLoggingDecorator::GetProp1_Implementation() const
+FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceLoggingDecorator::GetProp1() const
 {
-	return BackendService->Execute_GetProp1(BackendService.GetObject());
+	return BackendService->GetProp1();
 }
 
-void UTestbed2NestedStruct3InterfaceLoggingDecorator::SetProp1_Implementation(const FTestbed2NestedStruct1& InProp1)
+void UTestbed2NestedStruct3InterfaceLoggingDecorator::SetProp1(const FTestbed2NestedStruct1& InProp1)
 {
 	Testbed2NestedStruct3InterfaceTracer::trace_callSetProp1(InProp1);
-	BackendService->Execute_SetProp1(BackendService.GetObject(), InProp1);
+	BackendService->SetProp1(InProp1);
 }
 
 void UTestbed2NestedStruct3InterfaceLoggingDecorator::OnProp2Changed(const FTestbed2NestedStruct2& InProp2)
 {
 	Testbed2NestedStruct3InterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop2 = InProp2;
-	Execute__GetSignals(this)->OnProp2Changed.Broadcast(InProp2);
+	_GetSignals()->OnProp2Changed.Broadcast(InProp2);
 }
 
-FTestbed2NestedStruct2 UTestbed2NestedStruct3InterfaceLoggingDecorator::GetProp2_Implementation() const
+FTestbed2NestedStruct2 UTestbed2NestedStruct3InterfaceLoggingDecorator::GetProp2() const
 {
-	return BackendService->Execute_GetProp2(BackendService.GetObject());
+	return BackendService->GetProp2();
 }
 
-void UTestbed2NestedStruct3InterfaceLoggingDecorator::SetProp2_Implementation(const FTestbed2NestedStruct2& InProp2)
+void UTestbed2NestedStruct3InterfaceLoggingDecorator::SetProp2(const FTestbed2NestedStruct2& InProp2)
 {
 	Testbed2NestedStruct3InterfaceTracer::trace_callSetProp2(InProp2);
-	BackendService->Execute_SetProp2(BackendService.GetObject(), InProp2);
+	BackendService->SetProp2(InProp2);
 }
 
 void UTestbed2NestedStruct3InterfaceLoggingDecorator::OnProp3Changed(const FTestbed2NestedStruct3& InProp3)
 {
 	Testbed2NestedStruct3InterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop3 = InProp3;
-	Execute__GetSignals(this)->OnProp3Changed.Broadcast(InProp3);
+	_GetSignals()->OnProp3Changed.Broadcast(InProp3);
 }
 
-FTestbed2NestedStruct3 UTestbed2NestedStruct3InterfaceLoggingDecorator::GetProp3_Implementation() const
+FTestbed2NestedStruct3 UTestbed2NestedStruct3InterfaceLoggingDecorator::GetProp3() const
 {
-	return BackendService->Execute_GetProp3(BackendService.GetObject());
+	return BackendService->GetProp3();
 }
 
-void UTestbed2NestedStruct3InterfaceLoggingDecorator::SetProp3_Implementation(const FTestbed2NestedStruct3& InProp3)
+void UTestbed2NestedStruct3InterfaceLoggingDecorator::SetProp3(const FTestbed2NestedStruct3& InProp3)
 {
 	Testbed2NestedStruct3InterfaceTracer::trace_callSetProp3(InProp3);
-	BackendService->Execute_SetProp3(BackendService.GetObject(), InProp3);
+	BackendService->SetProp3(InProp3);
 }
 
-FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceLoggingDecorator::Func1_Implementation(const FTestbed2NestedStruct1& Param1)
+FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceLoggingDecorator::Func1(const FTestbed2NestedStruct1& Param1)
 {
 	Testbed2NestedStruct3InterfaceTracer::trace_callFunc1(Param1);
-	return BackendService->Execute_Func1(BackendService.GetObject(), Param1);
+	return BackendService->Func1(Param1);
 }
 
-FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceLoggingDecorator::Func2_Implementation(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
+FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceLoggingDecorator::Func2(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
 {
 	Testbed2NestedStruct3InterfaceTracer::trace_callFunc2(Param1, Param2);
-	return BackendService->Execute_Func2(BackendService.GetObject(), Param1, Param2);
+	return BackendService->Func2(Param1, Param2);
 }
 
-FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceLoggingDecorator::Func3_Implementation(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3)
+FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceLoggingDecorator::Func3(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3)
 {
 	Testbed2NestedStruct3InterfaceTracer::trace_callFunc3(Param1, Param2, Param3);
-	return BackendService->Execute_Func3(BackendService.GetObject(), Param1, Param2, Param3);
+	return BackendService->Func3(Param1, Param2, Param3);
 }

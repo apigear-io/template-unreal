@@ -38,20 +38,20 @@ public:
 	virtual void Deinitialize() override;
 
 	// signals
-	virtual UTbSimpleNoSignalsInterfaceSignals* _GetSignals_Implementation() override;
+	virtual UTbSimpleNoSignalsInterfaceSignals* _GetSignals() override;
 
 	// methods
-	virtual void FuncVoid_Implementation() override PURE_VIRTUAL(UAbstractTbSimpleNoSignalsInterface::FuncVoid_Implementation, return;);
+	virtual void FuncVoid() override PURE_VIRTUAL(UAbstractTbSimpleNoSignalsInterface::FuncVoid, return;);
 
-	virtual void FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool) override;
-	virtual bool FuncBool_Implementation(bool bParamBool) override PURE_VIRTUAL(UAbstractTbSimpleNoSignalsInterface::FuncBool_Implementation, return false;);
+	virtual void FuncBoolAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool) override;
+	virtual bool FuncBool(bool bParamBool) override PURE_VIRTUAL(UAbstractTbSimpleNoSignalsInterface::FuncBool, return false;);
 
 	// properties
-	virtual bool GetPropBool_Implementation() const override PURE_VIRTUAL(UAbstractTbSimpleNoSignalsInterface::GetPropBool_Implementation, return false;);
-	virtual void SetPropBool_Implementation(bool bInPropBool) override PURE_VIRTUAL(UAbstractTbSimpleNoSignalsInterface::SetPropBool_Implementation, return;);
+	virtual bool GetPropBool() const override PURE_VIRTUAL(UAbstractTbSimpleNoSignalsInterface::GetPropBool, return false;);
+	virtual void SetPropBool(bool bInPropBool) override PURE_VIRTUAL(UAbstractTbSimpleNoSignalsInterface::SetPropBool, return;);
 
-	virtual int32 GetPropInt_Implementation() const override PURE_VIRTUAL(UAbstractTbSimpleNoSignalsInterface::GetPropInt_Implementation, return 0;);
-	virtual void SetPropInt_Implementation(int32 InPropInt) override PURE_VIRTUAL(UAbstractTbSimpleNoSignalsInterface::SetPropInt_Implementation, return;);
+	virtual int32 GetPropInt() const override PURE_VIRTUAL(UAbstractTbSimpleNoSignalsInterface::GetPropInt, return 0;);
+	virtual void SetPropInt(int32 InPropInt) override PURE_VIRTUAL(UAbstractTbSimpleNoSignalsInterface::SetPropInt, return;);
 
 	virtual bool IsInitialized() const;
 

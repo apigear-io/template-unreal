@@ -209,7 +209,7 @@ void {{$Class}}::OnConnectionInit(const F{{$Iface}}InitMessage& InMessage, const
 	if (b{{ueVar "" .}}Changed)
 	{
 		{{ueVar "" .}} = InMessage.{{ueVar "" .}};
-		Execute__GetSignals(this)->On{{ Camel .Name }}Changed.Broadcast({{ueVar "" .}});
+		_GetSignals()->On{{ Camel .Name }}Changed.Broadcast({{ueVar "" .}});
 	}
 {{- end }}
 
@@ -305,13 +305,13 @@ void {{$Class}}::OnServiceClosedConnection(const F{{$Iface}}ServiceDisconnectMes
 {{- if len .Interface.Properties }}{{ nl }}{{ end }}
 {{- range $i, $e := .Interface.Properties }}
 {{- if $i }}{{nl}}{{ end }}
-{{ueReturn "" .}} {{$Class}}::Get{{Camel .Name}}_Implementation() const
+{{ueReturn "" .}} {{$Class}}::Get{{Camel .Name}}() const
 {
 	return {{ueVar "" .}};
 }
 
 {{- if not .IsReadOnly }}{{nl}}
-void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
+void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
 {
 	if (!_IsConnected())
 	{
@@ -320,7 +320,7 @@ void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (Get{{Camel .Name}}_Implementation() == {{ueVar "In" .}})
+	if (Get{{Camel .Name}}() == {{ueVar "In" .}})
 	{
 		return;
 	}
@@ -366,7 +366,7 @@ void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
 */
 {{- end }}
 {{- $returnVal := (ueReturn "" .Return)}}
-{{$returnVal}} {{$Class}}::{{Camel .Name}}_Implementation({{ueParams "In" .Params}})
+{{$returnVal}} {{$Class}}::{{Camel .Name}}({{ueParams "In" .Params}})
 {
 	if (!_IsConnected())
 	{
@@ -429,7 +429,7 @@ void {{$Class}}::On{{Camel .Name}}(const F{{$DisplayName}}{{Camel .Name}}SignalM
 
 {{- $sigName := Camel .Name}}
 
-	Execute__GetSignals(this)->On{{Camel .Name}}Signal.Broadcast(
+	_GetSignals()->On{{Camel .Name}}Signal.Broadcast(
 {{- range $i, $e := .Params -}}
 	{{ if $i }}, {{end}}InMessage.{{ueVar "" .}}
 {{- end -}}
@@ -452,7 +452,7 @@ void {{$Class}}::On{{Camel .Name}}Changed(const F{{$DisplayName}}{{Camel .Name}}
 	if (b{{ueVar "" .}}Changed)
 	{
 		{{ueVar "" .}} = InMessage.{{ueVar "" .}};
-		Execute__GetSignals(this)->On{{Camel .Name}}Changed.Broadcast({{ueVar "" .}});
+		_GetSignals()->On{{Camel .Name}}Changed.Broadcast({{ueVar "" .}});
 	}
 }
 {{- end }}

@@ -98,7 +98,7 @@ nlohmann::json TbSimpleVoidInterfaceOLinkSource::olinkInvoke(const std::string& 
 	const std::string path = Name::getMemberName(methodId);
 	if (path == "funcVoid")
 	{
-		BackendService->Execute_FuncVoid(BackendService.GetObject());
+		BackendService->FuncVoid();
 		return nlohmann::json{};
 	}
 	return nlohmann::json();

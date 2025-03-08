@@ -108,7 +108,7 @@ void UTbSame2SameEnum1InterfaceMsgBusAdapter::_setBackendService(TScriptInterfac
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		UTbSame2SameEnum1InterfaceSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+		UTbSame2SameEnum1InterfaceSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSame2SameEnum1Interface"));
 		BackendSignals->OnProp1Changed.RemoveDynamic(this, &UTbSame2SameEnum1InterfaceMsgBusAdapter::OnProp1Changed);
 		BackendSignals->OnSig1Signal.RemoveDynamic(this, &UTbSame2SameEnum1InterfaceMsgBusAdapter::OnSig1);
@@ -119,7 +119,7 @@ void UTbSame2SameEnum1InterfaceMsgBusAdapter::_setBackendService(TScriptInterfac
 
 	// subscribe to new backend
 	BackendService = InService;
-	UTbSame2SameEnum1InterfaceSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+	UTbSame2SameEnum1InterfaceSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service TbSame2SameEnum1Interface"));
 	// connect property changed signals or simple events
 	BackendSignals->OnProp1Changed.AddDynamic(this, &UTbSame2SameEnum1InterfaceMsgBusAdapter::OnProp1Changed);
@@ -132,7 +132,7 @@ void UTbSame2SameEnum1InterfaceMsgBusAdapter::OnNewClientDiscovered(const FTbSam
 
 	auto msg = new FTbSame2SameEnum1InterfaceInitMessage();
 	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
-	msg->Prop1 = BackendService->Execute_GetProp1(BackendService.GetObject());
+	msg->Prop1 = BackendService->GetProp1();
 
 	if (TbSame2SameEnum1InterfaceMsgBusEndpoint.IsValid())
 	{
@@ -213,7 +213,7 @@ void UTbSame2SameEnum1InterfaceMsgBusAdapter::OnFunc1Request(const FTbSame2SameE
 {
 	auto msg = new FTbSame2SameEnum1InterfaceFunc1ReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
-	msg->Result = BackendService->Execute_Func1(BackendService.GetObject(), InMessage.Param1);
+	msg->Result = BackendService->Func1(InMessage.Param1);
 
 	if (TbSame2SameEnum1InterfaceMsgBusEndpoint.IsValid())
 	{
@@ -244,7 +244,7 @@ void UTbSame2SameEnum1InterfaceMsgBusAdapter::OnSig1(ETbSame2Enum1 InParam1)
 
 void UTbSame2SameEnum1InterfaceMsgBusAdapter::OnSetProp1Request(const FTbSame2SameEnum1InterfaceSetProp1RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
-	BackendService->Execute_SetProp1(BackendService.GetObject(), InMessage.Prop1);
+	BackendService->SetProp1(InMessage.Prop1);
 }
 
 void UTbSame2SameEnum1InterfaceMsgBusAdapter::OnProp1Changed(ETbSame2Enum1 InProp1)

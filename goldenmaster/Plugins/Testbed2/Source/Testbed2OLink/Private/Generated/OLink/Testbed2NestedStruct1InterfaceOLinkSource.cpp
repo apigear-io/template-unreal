@@ -113,7 +113,7 @@ nlohmann::json Testbed2NestedStruct1InterfaceOLinkSource::olinkInvoke(const std:
 	if (path == "func1")
 	{
 		FTestbed2NestedStruct1 Param1 = args.at(0).get<FTestbed2NestedStruct1>();
-		FTestbed2NestedStruct1 result = BackendService->Execute_Func1(BackendService.GetObject(), Param1);
+		FTestbed2NestedStruct1 result = BackendService->Func1(Param1);
 		return result;
 	}
 	return nlohmann::json();
@@ -131,7 +131,7 @@ void Testbed2NestedStruct1InterfaceOLinkSource::olinkSetProperty(const std::stri
 	if (path == "prop1")
 	{
 		FTestbed2NestedStruct1 Prop1 = value.get<FTestbed2NestedStruct1>();
-		BackendService->Execute_SetProp1(BackendService.GetObject(), Prop1);
+		BackendService->SetProp1(Prop1);
 	}
 }
 
@@ -145,6 +145,6 @@ nlohmann::json Testbed2NestedStruct1InterfaceOLinkSource::olinkCollectProperties
 
 	return nlohmann::json::object({
 
-		{"prop1", BackendService->Execute_GetProp1(BackendService.GetObject())}});
+		{"prop1", BackendService->GetProp1()}});
 }
 #endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

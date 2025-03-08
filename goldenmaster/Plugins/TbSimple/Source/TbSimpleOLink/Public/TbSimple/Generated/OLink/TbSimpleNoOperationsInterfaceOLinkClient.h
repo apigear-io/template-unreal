@@ -46,11 +46,11 @@ public:
 	void Deinitialize() override;
 
 	// properties
-	bool GetPropBool_Implementation() const override;
-	void SetPropBool_Implementation(bool bPropBool) override;
+	bool GetPropBool() const override;
+	void SetPropBool(bool bPropBool) override;
 
-	int32 GetPropInt_Implementation() const override;
-	void SetPropInt_Implementation(int32 PropInt) override;
+	int32 GetPropInt() const override;
+	void SetPropInt(int32 PropInt) override;
 
 	// operations
 

@@ -18,39 +18,39 @@ limitations under the License.
 #include "TbSimple/Implementation/TbSimpleNoSignalsInterface.h"
 
 UTbSimpleNoSignalsInterface::~UTbSimpleNoSignalsInterface() = default;
-bool UTbSimpleNoSignalsInterface::GetPropBool_Implementation() const
+bool UTbSimpleNoSignalsInterface::GetPropBool() const
 {
 	return bPropBool;
 }
 
-void UTbSimpleNoSignalsInterface::SetPropBool_Implementation(bool bInPropBool)
+void UTbSimpleNoSignalsInterface::SetPropBool(bool bInPropBool)
 {
 	if (bPropBool != bInPropBool)
 	{
 		bPropBool = bInPropBool;
-		Execute__GetSignals(this)->OnPropBoolChanged.Broadcast(bPropBool);
+		_GetSignals()->OnPropBoolChanged.Broadcast(bPropBool);
 	}
 }
-int32 UTbSimpleNoSignalsInterface::GetPropInt_Implementation() const
+int32 UTbSimpleNoSignalsInterface::GetPropInt() const
 {
 	return PropInt;
 }
 
-void UTbSimpleNoSignalsInterface::SetPropInt_Implementation(int32 InPropInt)
+void UTbSimpleNoSignalsInterface::SetPropInt(int32 InPropInt)
 {
 	if (PropInt != InPropInt)
 	{
 		PropInt = InPropInt;
-		Execute__GetSignals(this)->OnPropIntChanged.Broadcast(PropInt);
+		_GetSignals()->OnPropIntChanged.Broadcast(PropInt);
 	}
 }
 
-void UTbSimpleNoSignalsInterface::FuncVoid_Implementation()
+void UTbSimpleNoSignalsInterface::FuncVoid()
 {
 	// do business logic here
 }
 
-bool UTbSimpleNoSignalsInterface::FuncBool_Implementation(bool bParamBool)
+bool UTbSimpleNoSignalsInterface::FuncBool(bool bParamBool)
 {
 	(void)bParamBool;
 	// do business logic here

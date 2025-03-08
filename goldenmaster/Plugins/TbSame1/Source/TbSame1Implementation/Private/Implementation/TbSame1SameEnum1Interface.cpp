@@ -18,21 +18,21 @@ limitations under the License.
 #include "TbSame1/Implementation/TbSame1SameEnum1Interface.h"
 
 UTbSame1SameEnum1Interface::~UTbSame1SameEnum1Interface() = default;
-ETbSame1Enum1 UTbSame1SameEnum1Interface::GetProp1_Implementation() const
+ETbSame1Enum1 UTbSame1SameEnum1Interface::GetProp1() const
 {
 	return Prop1;
 }
 
-void UTbSame1SameEnum1Interface::SetProp1_Implementation(ETbSame1Enum1 InProp1)
+void UTbSame1SameEnum1Interface::SetProp1(ETbSame1Enum1 InProp1)
 {
 	if (Prop1 != InProp1)
 	{
 		Prop1 = InProp1;
-		Execute__GetSignals(this)->OnProp1Changed.Broadcast(Prop1);
+		_GetSignals()->OnProp1Changed.Broadcast(Prop1);
 	}
 }
 
-ETbSame1Enum1 UTbSame1SameEnum1Interface::Func1_Implementation(ETbSame1Enum1 Param1)
+ETbSame1Enum1 UTbSame1SameEnum1Interface::Func1(ETbSame1Enum1 Param1)
 {
 	(void)Param1;
 	// do business logic here

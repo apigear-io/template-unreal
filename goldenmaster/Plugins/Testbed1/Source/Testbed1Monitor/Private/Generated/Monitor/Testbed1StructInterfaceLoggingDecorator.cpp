@@ -47,7 +47,7 @@ void UTestbed1StructInterfaceLoggingDecorator::setBackendService(TScriptInterfac
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		UTestbed1StructInterfaceSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+		UTestbed1StructInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service Testbed1StructInterface"));
 		BackendSignals->OnPropBoolChanged.RemoveDynamic(this, &UTestbed1StructInterfaceLoggingDecorator::OnPropBoolChanged);
 		BackendSignals->OnPropIntChanged.RemoveDynamic(this, &UTestbed1StructInterfaceLoggingDecorator::OnPropIntChanged);
@@ -64,7 +64,7 @@ void UTestbed1StructInterfaceLoggingDecorator::setBackendService(TScriptInterfac
 
 	// subscribe to new backend
 	BackendService = InService;
-	UTestbed1StructInterfaceSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+	UTestbed1StructInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service Testbed1StructInterface"));
 	// connect property changed signals or simple events
 	BackendSignals->OnPropBoolChanged.AddDynamic(this, &UTestbed1StructInterfaceLoggingDecorator::OnPropBoolChanged);
@@ -76,128 +76,128 @@ void UTestbed1StructInterfaceLoggingDecorator::setBackendService(TScriptInterfac
 	BackendSignals->OnSigFloatSignal.AddDynamic(this, &UTestbed1StructInterfaceLoggingDecorator::OnSigFloat);
 	BackendSignals->OnSigStringSignal.AddDynamic(this, &UTestbed1StructInterfaceLoggingDecorator::OnSigString);
 	// populate service state to proxy
-	PropBool = BackendService->Execute_GetPropBool(BackendService.GetObject());
-	PropInt = BackendService->Execute_GetPropInt(BackendService.GetObject());
-	PropFloat = BackendService->Execute_GetPropFloat(BackendService.GetObject());
-	PropString = BackendService->Execute_GetPropString(BackendService.GetObject());
+	PropBool = BackendService->GetPropBool();
+	PropInt = BackendService->GetPropInt();
+	PropFloat = BackendService->GetPropFloat();
+	PropString = BackendService->GetPropString();
 }
 
 void UTestbed1StructInterfaceLoggingDecorator::OnSigBool(const FTestbed1StructBool& InParamBool)
 {
 	Testbed1StructInterfaceTracer::trace_signalSigBool(InParamBool);
-	Execute__GetSignals(this)->OnSigBoolSignal.Broadcast(InParamBool);
+	_GetSignals()->OnSigBoolSignal.Broadcast(InParamBool);
 }
 
 void UTestbed1StructInterfaceLoggingDecorator::OnSigInt(const FTestbed1StructInt& InParamInt)
 {
 	Testbed1StructInterfaceTracer::trace_signalSigInt(InParamInt);
-	Execute__GetSignals(this)->OnSigIntSignal.Broadcast(InParamInt);
+	_GetSignals()->OnSigIntSignal.Broadcast(InParamInt);
 }
 
 void UTestbed1StructInterfaceLoggingDecorator::OnSigFloat(const FTestbed1StructFloat& InParamFloat)
 {
 	Testbed1StructInterfaceTracer::trace_signalSigFloat(InParamFloat);
-	Execute__GetSignals(this)->OnSigFloatSignal.Broadcast(InParamFloat);
+	_GetSignals()->OnSigFloatSignal.Broadcast(InParamFloat);
 }
 
 void UTestbed1StructInterfaceLoggingDecorator::OnSigString(const FTestbed1StructString& InParamString)
 {
 	Testbed1StructInterfaceTracer::trace_signalSigString(InParamString);
-	Execute__GetSignals(this)->OnSigStringSignal.Broadcast(InParamString);
+	_GetSignals()->OnSigStringSignal.Broadcast(InParamString);
 }
 
 void UTestbed1StructInterfaceLoggingDecorator::OnPropBoolChanged(const FTestbed1StructBool& InPropBool)
 {
 	Testbed1StructInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropBool = InPropBool;
-	Execute__GetSignals(this)->OnPropBoolChanged.Broadcast(InPropBool);
+	_GetSignals()->OnPropBoolChanged.Broadcast(InPropBool);
 }
 
-FTestbed1StructBool UTestbed1StructInterfaceLoggingDecorator::GetPropBool_Implementation() const
+FTestbed1StructBool UTestbed1StructInterfaceLoggingDecorator::GetPropBool() const
 {
-	return BackendService->Execute_GetPropBool(BackendService.GetObject());
+	return BackendService->GetPropBool();
 }
 
-void UTestbed1StructInterfaceLoggingDecorator::SetPropBool_Implementation(const FTestbed1StructBool& InPropBool)
+void UTestbed1StructInterfaceLoggingDecorator::SetPropBool(const FTestbed1StructBool& InPropBool)
 {
 	Testbed1StructInterfaceTracer::trace_callSetPropBool(InPropBool);
-	BackendService->Execute_SetPropBool(BackendService.GetObject(), InPropBool);
+	BackendService->SetPropBool(InPropBool);
 }
 
 void UTestbed1StructInterfaceLoggingDecorator::OnPropIntChanged(const FTestbed1StructInt& InPropInt)
 {
 	Testbed1StructInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropInt = InPropInt;
-	Execute__GetSignals(this)->OnPropIntChanged.Broadcast(InPropInt);
+	_GetSignals()->OnPropIntChanged.Broadcast(InPropInt);
 }
 
-FTestbed1StructInt UTestbed1StructInterfaceLoggingDecorator::GetPropInt_Implementation() const
+FTestbed1StructInt UTestbed1StructInterfaceLoggingDecorator::GetPropInt() const
 {
-	return BackendService->Execute_GetPropInt(BackendService.GetObject());
+	return BackendService->GetPropInt();
 }
 
-void UTestbed1StructInterfaceLoggingDecorator::SetPropInt_Implementation(const FTestbed1StructInt& InPropInt)
+void UTestbed1StructInterfaceLoggingDecorator::SetPropInt(const FTestbed1StructInt& InPropInt)
 {
 	Testbed1StructInterfaceTracer::trace_callSetPropInt(InPropInt);
-	BackendService->Execute_SetPropInt(BackendService.GetObject(), InPropInt);
+	BackendService->SetPropInt(InPropInt);
 }
 
 void UTestbed1StructInterfaceLoggingDecorator::OnPropFloatChanged(const FTestbed1StructFloat& InPropFloat)
 {
 	Testbed1StructInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropFloat = InPropFloat;
-	Execute__GetSignals(this)->OnPropFloatChanged.Broadcast(InPropFloat);
+	_GetSignals()->OnPropFloatChanged.Broadcast(InPropFloat);
 }
 
-FTestbed1StructFloat UTestbed1StructInterfaceLoggingDecorator::GetPropFloat_Implementation() const
+FTestbed1StructFloat UTestbed1StructInterfaceLoggingDecorator::GetPropFloat() const
 {
-	return BackendService->Execute_GetPropFloat(BackendService.GetObject());
+	return BackendService->GetPropFloat();
 }
 
-void UTestbed1StructInterfaceLoggingDecorator::SetPropFloat_Implementation(const FTestbed1StructFloat& InPropFloat)
+void UTestbed1StructInterfaceLoggingDecorator::SetPropFloat(const FTestbed1StructFloat& InPropFloat)
 {
 	Testbed1StructInterfaceTracer::trace_callSetPropFloat(InPropFloat);
-	BackendService->Execute_SetPropFloat(BackendService.GetObject(), InPropFloat);
+	BackendService->SetPropFloat(InPropFloat);
 }
 
 void UTestbed1StructInterfaceLoggingDecorator::OnPropStringChanged(const FTestbed1StructString& InPropString)
 {
 	Testbed1StructInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropString = InPropString;
-	Execute__GetSignals(this)->OnPropStringChanged.Broadcast(InPropString);
+	_GetSignals()->OnPropStringChanged.Broadcast(InPropString);
 }
 
-FTestbed1StructString UTestbed1StructInterfaceLoggingDecorator::GetPropString_Implementation() const
+FTestbed1StructString UTestbed1StructInterfaceLoggingDecorator::GetPropString() const
 {
-	return BackendService->Execute_GetPropString(BackendService.GetObject());
+	return BackendService->GetPropString();
 }
 
-void UTestbed1StructInterfaceLoggingDecorator::SetPropString_Implementation(const FTestbed1StructString& InPropString)
+void UTestbed1StructInterfaceLoggingDecorator::SetPropString(const FTestbed1StructString& InPropString)
 {
 	Testbed1StructInterfaceTracer::trace_callSetPropString(InPropString);
-	BackendService->Execute_SetPropString(BackendService.GetObject(), InPropString);
+	BackendService->SetPropString(InPropString);
 }
 
-FTestbed1StructBool UTestbed1StructInterfaceLoggingDecorator::FuncBool_Implementation(const FTestbed1StructBool& ParamBool)
+FTestbed1StructBool UTestbed1StructInterfaceLoggingDecorator::FuncBool(const FTestbed1StructBool& ParamBool)
 {
 	Testbed1StructInterfaceTracer::trace_callFuncBool(ParamBool);
-	return BackendService->Execute_FuncBool(BackendService.GetObject(), ParamBool);
+	return BackendService->FuncBool(ParamBool);
 }
 
-FTestbed1StructInt UTestbed1StructInterfaceLoggingDecorator::FuncInt_Implementation(const FTestbed1StructInt& ParamInt)
+FTestbed1StructInt UTestbed1StructInterfaceLoggingDecorator::FuncInt(const FTestbed1StructInt& ParamInt)
 {
 	Testbed1StructInterfaceTracer::trace_callFuncInt(ParamInt);
-	return BackendService->Execute_FuncInt(BackendService.GetObject(), ParamInt);
+	return BackendService->FuncInt(ParamInt);
 }
 
-FTestbed1StructFloat UTestbed1StructInterfaceLoggingDecorator::FuncFloat_Implementation(const FTestbed1StructFloat& ParamFloat)
+FTestbed1StructFloat UTestbed1StructInterfaceLoggingDecorator::FuncFloat(const FTestbed1StructFloat& ParamFloat)
 {
 	Testbed1StructInterfaceTracer::trace_callFuncFloat(ParamFloat);
-	return BackendService->Execute_FuncFloat(BackendService.GetObject(), ParamFloat);
+	return BackendService->FuncFloat(ParamFloat);
 }
 
-FTestbed1StructString UTestbed1StructInterfaceLoggingDecorator::FuncString_Implementation(const FTestbed1StructString& ParamString)
+FTestbed1StructString UTestbed1StructInterfaceLoggingDecorator::FuncString(const FTestbed1StructString& ParamString)
 {
 	Testbed1StructInterfaceTracer::trace_callFuncString(ParamString);
-	return BackendService->Execute_FuncString(BackendService.GetObject(), ParamString);
+	return BackendService->FuncString(ParamString);
 }

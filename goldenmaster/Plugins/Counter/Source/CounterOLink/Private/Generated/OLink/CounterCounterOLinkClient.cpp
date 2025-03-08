@@ -155,12 +155,12 @@ void UCounterCounterOLinkClient::UseConnection(TScriptInterface<IApiGearConnecti
 	Connection = InConnection;
 }
 
-FCustomTypesVector3D UCounterCounterOLinkClient::GetVector_Implementation() const
+FCustomTypesVector3D UCounterCounterOLinkClient::GetVector() const
 {
 	return Vector;
 }
 
-void UCounterCounterOLinkClient::SetVector_Implementation(const FCustomTypesVector3D& InVector)
+void UCounterCounterOLinkClient::SetVector(const FCustomTypesVector3D& InVector)
 {
 	if (!m_sink->IsReady())
 	{
@@ -169,7 +169,7 @@ void UCounterCounterOLinkClient::SetVector_Implementation(const FCustomTypesVect
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetVector_Implementation() == InVector)
+	if (GetVector() == InVector)
 	{
 		return;
 	}
@@ -188,12 +188,12 @@ void UCounterCounterOLinkClient::SetVector_Implementation(const FCustomTypesVect
 	_SentData->Vector = InVector;
 }
 
-FVector UCounterCounterOLinkClient::GetExternVector_Implementation() const
+FVector UCounterCounterOLinkClient::GetExternVector() const
 {
 	return ExternVector;
 }
 
-void UCounterCounterOLinkClient::SetExternVector_Implementation(const FVector& InExternVector)
+void UCounterCounterOLinkClient::SetExternVector(const FVector& InExternVector)
 {
 	if (!m_sink->IsReady())
 	{
@@ -202,7 +202,7 @@ void UCounterCounterOLinkClient::SetExternVector_Implementation(const FVector& I
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetExternVector_Implementation() == InExternVector)
+	if (GetExternVector() == InExternVector)
 	{
 		return;
 	}
@@ -221,12 +221,12 @@ void UCounterCounterOLinkClient::SetExternVector_Implementation(const FVector& I
 	_SentData->ExternVector = InExternVector;
 }
 
-TArray<FCustomTypesVector3D> UCounterCounterOLinkClient::GetVectorArray_Implementation() const
+TArray<FCustomTypesVector3D> UCounterCounterOLinkClient::GetVectorArray() const
 {
 	return VectorArray;
 }
 
-void UCounterCounterOLinkClient::SetVectorArray_Implementation(const TArray<FCustomTypesVector3D>& InVectorArray)
+void UCounterCounterOLinkClient::SetVectorArray(const TArray<FCustomTypesVector3D>& InVectorArray)
 {
 	if (!m_sink->IsReady())
 	{
@@ -235,7 +235,7 @@ void UCounterCounterOLinkClient::SetVectorArray_Implementation(const TArray<FCus
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetVectorArray_Implementation() == InVectorArray)
+	if (GetVectorArray() == InVectorArray)
 	{
 		return;
 	}
@@ -254,12 +254,12 @@ void UCounterCounterOLinkClient::SetVectorArray_Implementation(const TArray<FCus
 	_SentData->VectorArray = InVectorArray;
 }
 
-TArray<FVector> UCounterCounterOLinkClient::GetExternVectorArray_Implementation() const
+TArray<FVector> UCounterCounterOLinkClient::GetExternVectorArray() const
 {
 	return ExternVectorArray;
 }
 
-void UCounterCounterOLinkClient::SetExternVectorArray_Implementation(const TArray<FVector>& InExternVectorArray)
+void UCounterCounterOLinkClient::SetExternVectorArray(const TArray<FVector>& InExternVectorArray)
 {
 	if (!m_sink->IsReady())
 	{
@@ -268,7 +268,7 @@ void UCounterCounterOLinkClient::SetExternVectorArray_Implementation(const TArra
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetExternVectorArray_Implementation() == InExternVectorArray)
+	if (GetExternVectorArray() == InExternVectorArray)
 	{
 		return;
 	}
@@ -287,7 +287,7 @@ void UCounterCounterOLinkClient::SetExternVectorArray_Implementation(const TArra
 	_SentData->ExternVectorArray = InExternVectorArray;
 }
 
-FVector UCounterCounterOLinkClient::Increment_Implementation(const FVector& Vec)
+FVector UCounterCounterOLinkClient::Increment(const FVector& Vec)
 {
 	if (!m_sink->IsReady())
 	{
@@ -318,7 +318,7 @@ FVector UCounterCounterOLinkClient::Increment_Implementation(const FVector& Vec)
 	return Promise.GetFuture().Get();
 }
 
-TArray<FVector> UCounterCounterOLinkClient::IncrementArray_Implementation(const TArray<FVector>& Vec)
+TArray<FVector> UCounterCounterOLinkClient::IncrementArray(const TArray<FVector>& Vec)
 {
 	if (!m_sink->IsReady())
 	{
@@ -341,7 +341,7 @@ TArray<FVector> UCounterCounterOLinkClient::IncrementArray_Implementation(const 
 	return Promise.GetFuture().Get();
 }
 
-FCustomTypesVector3D UCounterCounterOLinkClient::Decrement_Implementation(const FCustomTypesVector3D& Vec)
+FCustomTypesVector3D UCounterCounterOLinkClient::Decrement(const FCustomTypesVector3D& Vec)
 {
 	if (!m_sink->IsReady())
 	{
@@ -372,7 +372,7 @@ FCustomTypesVector3D UCounterCounterOLinkClient::Decrement_Implementation(const 
 	return Promise.GetFuture().Get();
 }
 
-TArray<FCustomTypesVector3D> UCounterCounterOLinkClient::DecrementArray_Implementation(const TArray<FCustomTypesVector3D>& Vec)
+TArray<FCustomTypesVector3D> UCounterCounterOLinkClient::DecrementArray(const TArray<FCustomTypesVector3D>& Vec)
 {
 	if (!m_sink->IsReady())
 	{
@@ -406,28 +406,28 @@ void UCounterCounterOLinkClient::applyState(const nlohmann::json& fields)
 	if (bVectorChanged)
 	{
 		Vector = fields["vector"].get<FCustomTypesVector3D>();
-		Execute__GetSignals(this)->OnVectorChanged.Broadcast(Vector);
+		_GetSignals()->OnVectorChanged.Broadcast(Vector);
 	}
 
 	const bool bExternVectorChanged = fields.contains("extern_vector") && (ExternVector != fields["extern_vector"].get<FVector>());
 	if (bExternVectorChanged)
 	{
 		ExternVector = fields["extern_vector"].get<FVector>();
-		Execute__GetSignals(this)->OnExternVectorChanged.Broadcast(ExternVector);
+		_GetSignals()->OnExternVectorChanged.Broadcast(ExternVector);
 	}
 
 	const bool bVectorArrayChanged = fields.contains("vectorArray") && (VectorArray != fields["vectorArray"].get<TArray<FCustomTypesVector3D>>());
 	if (bVectorArrayChanged)
 	{
 		VectorArray = fields["vectorArray"].get<TArray<FCustomTypesVector3D>>();
-		Execute__GetSignals(this)->OnVectorArrayChanged.Broadcast(VectorArray);
+		_GetSignals()->OnVectorArrayChanged.Broadcast(VectorArray);
 	}
 
 	const bool bExternVectorArrayChanged = fields.contains("extern_vectorArray") && (ExternVectorArray != fields["extern_vectorArray"].get<TArray<FVector>>());
 	if (bExternVectorArrayChanged)
 	{
 		ExternVectorArray = fields["extern_vectorArray"].get<TArray<FVector>>();
-		Execute__GetSignals(this)->OnExternVectorArrayChanged.Broadcast(ExternVectorArray);
+		_GetSignals()->OnExternVectorArrayChanged.Broadcast(ExternVectorArray);
 	}
 }
 
@@ -439,7 +439,7 @@ void UCounterCounterOLinkClient::emitSignal(const std::string& signalName, const
 		const FVector& outExternVector = args[1].get<FVector>();
 		const TArray<FCustomTypesVector3D>& outVectorArray = args[2].get<TArray<FCustomTypesVector3D>>();
 		const TArray<FVector>& outExternVectorArray = args[3].get<TArray<FVector>>();
-		Execute__GetSignals(this)->OnValueChangedSignal.Broadcast(outVector, outExternVector, outVectorArray, outExternVectorArray);
+		_GetSignals()->OnValueChangedSignal.Broadcast(outVector, outExternVector, outVectorArray, outExternVectorArray);
 		return;
 	}
 }

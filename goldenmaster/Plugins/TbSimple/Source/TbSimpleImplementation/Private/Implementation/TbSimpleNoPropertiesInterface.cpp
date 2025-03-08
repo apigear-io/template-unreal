@@ -19,12 +19,12 @@ limitations under the License.
 
 UTbSimpleNoPropertiesInterface::~UTbSimpleNoPropertiesInterface() = default;
 
-void UTbSimpleNoPropertiesInterface::FuncVoid_Implementation()
+void UTbSimpleNoPropertiesInterface::FuncVoid()
 {
 	// do business logic here
 }
 
-bool UTbSimpleNoPropertiesInterface::FuncBool_Implementation(bool bParamBool)
+bool UTbSimpleNoPropertiesInterface::FuncBool(bool bParamBool)
 {
 	(void)bParamBool;
 	// do business logic here

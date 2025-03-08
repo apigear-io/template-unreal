@@ -11,18 +11,18 @@
 {{$Class}}::~{{$Class}}() = default;
 
 {{- range .Interface.Properties }}
-{{ueReturn "" .}} {{$Class}}::Get{{Camel .Name}}_Implementation() const
+{{ueReturn "" .}} {{$Class}}::Get{{Camel .Name}}() const
 {
 	return {{ueVar "" .}};
 }
 
 {{- if not .IsReadOnly }}{{nl}}
-void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
+void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
 {
 	if ({{ueVar "" .}} != {{ueVar "In" .}})
 	{
 		{{ueVar "" .}} = {{ueVar "In" .}};
-		Execute__GetSignals(this)->On{{Camel .Name}}Changed.Broadcast({{ueVar "" .}});
+		_GetSignals()->On{{Camel .Name}}Changed.Broadcast({{ueVar "" .}});
 	}
 }
 {{- end }}
@@ -34,7 +34,7 @@ void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
    \brief {{.Description}}
 */
 {{- end }}
-{{ueReturn "" .Return}} {{$Class}}::{{Camel .Name}}_Implementation({{ueParams "" .Params}})
+{{ueReturn "" .Return}} {{$Class}}::{{Camel .Name}}({{ueParams "" .Params}})
 {
 	{{- range .Params }}
 	(void){{ueVar "" .}};

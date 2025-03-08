@@ -47,7 +47,7 @@ void UTbNamesNamEsLoggingDecorator::setBackendService(TScriptInterface<ITbNamesN
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		UTbNamesNamEsSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+		UTbNamesNamEsSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbNamesNamEs"));
 		BackendSignals->OnSwitchChanged.RemoveDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSwitchChanged);
 		BackendSignals->OnSomePropertyChanged.RemoveDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomePropertyChanged);
@@ -61,7 +61,7 @@ void UTbNamesNamEsLoggingDecorator::setBackendService(TScriptInterface<ITbNamesN
 
 	// subscribe to new backend
 	BackendService = InService;
-	UTbNamesNamEsSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+	UTbNamesNamEsSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbNamesNamEs"));
 	// connect property changed signals or simple events
 	BackendSignals->OnSwitchChanged.AddDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSwitchChanged);
@@ -70,85 +70,85 @@ void UTbNamesNamEsLoggingDecorator::setBackendService(TScriptInterface<ITbNamesN
 	BackendSignals->OnSomeSignalSignal.AddDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomeSignal);
 	BackendSignals->OnSomeSignal2Signal.AddDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomeSignal2);
 	// populate service state to proxy
-	bSwitch = BackendService->Execute_GetSwitch(BackendService.GetObject());
-	SomeProperty = BackendService->Execute_GetSomeProperty(BackendService.GetObject());
-	SomePoperty2 = BackendService->Execute_GetSomePoperty2(BackendService.GetObject());
+	bSwitch = BackendService->GetSwitch();
+	SomeProperty = BackendService->GetSomeProperty();
+	SomePoperty2 = BackendService->GetSomePoperty2();
 }
 
 void UTbNamesNamEsLoggingDecorator::OnSomeSignal(bool bInSomeParam)
 {
 	TbNamesNamEsTracer::trace_signalSomeSignal(bInSomeParam);
-	Execute__GetSignals(this)->OnSomeSignalSignal.Broadcast(bInSomeParam);
+	_GetSignals()->OnSomeSignalSignal.Broadcast(bInSomeParam);
 }
 
 void UTbNamesNamEsLoggingDecorator::OnSomeSignal2(bool bInSomeParam)
 {
 	TbNamesNamEsTracer::trace_signalSomeSignal2(bInSomeParam);
-	Execute__GetSignals(this)->OnSomeSignal2Signal.Broadcast(bInSomeParam);
+	_GetSignals()->OnSomeSignal2Signal.Broadcast(bInSomeParam);
 }
 
 void UTbNamesNamEsLoggingDecorator::OnSwitchChanged(bool bInSwitch)
 {
 	TbNamesNamEsTracer::capture_state(BackendService.GetObject(), this);
 	bSwitch = bInSwitch;
-	Execute__GetSignals(this)->OnSwitchChanged.Broadcast(bInSwitch);
+	_GetSignals()->OnSwitchChanged.Broadcast(bInSwitch);
 }
 
-bool UTbNamesNamEsLoggingDecorator::GetSwitch_Implementation() const
+bool UTbNamesNamEsLoggingDecorator::GetSwitch() const
 {
-	return BackendService->Execute_GetSwitch(BackendService.GetObject());
+	return BackendService->GetSwitch();
 }
 
-void UTbNamesNamEsLoggingDecorator::SetSwitch_Implementation(bool bInSwitch)
+void UTbNamesNamEsLoggingDecorator::SetSwitch(bool bInSwitch)
 {
 	TbNamesNamEsTracer::trace_callSetSwitch(bInSwitch);
-	BackendService->Execute_SetSwitch(BackendService.GetObject(), bInSwitch);
+	BackendService->SetSwitch(bInSwitch);
 }
 
 void UTbNamesNamEsLoggingDecorator::OnSomePropertyChanged(int32 InSomeProperty)
 {
 	TbNamesNamEsTracer::capture_state(BackendService.GetObject(), this);
 	SomeProperty = InSomeProperty;
-	Execute__GetSignals(this)->OnSomePropertyChanged.Broadcast(InSomeProperty);
+	_GetSignals()->OnSomePropertyChanged.Broadcast(InSomeProperty);
 }
 
-int32 UTbNamesNamEsLoggingDecorator::GetSomeProperty_Implementation() const
+int32 UTbNamesNamEsLoggingDecorator::GetSomeProperty() const
 {
-	return BackendService->Execute_GetSomeProperty(BackendService.GetObject());
+	return BackendService->GetSomeProperty();
 }
 
-void UTbNamesNamEsLoggingDecorator::SetSomeProperty_Implementation(int32 InSomeProperty)
+void UTbNamesNamEsLoggingDecorator::SetSomeProperty(int32 InSomeProperty)
 {
 	TbNamesNamEsTracer::trace_callSetSomeProperty(InSomeProperty);
-	BackendService->Execute_SetSomeProperty(BackendService.GetObject(), InSomeProperty);
+	BackendService->SetSomeProperty(InSomeProperty);
 }
 
 void UTbNamesNamEsLoggingDecorator::OnSomePoperty2Changed(int32 InSomePoperty2)
 {
 	TbNamesNamEsTracer::capture_state(BackendService.GetObject(), this);
 	SomePoperty2 = InSomePoperty2;
-	Execute__GetSignals(this)->OnSomePoperty2Changed.Broadcast(InSomePoperty2);
+	_GetSignals()->OnSomePoperty2Changed.Broadcast(InSomePoperty2);
 }
 
-int32 UTbNamesNamEsLoggingDecorator::GetSomePoperty2_Implementation() const
+int32 UTbNamesNamEsLoggingDecorator::GetSomePoperty2() const
 {
-	return BackendService->Execute_GetSomePoperty2(BackendService.GetObject());
+	return BackendService->GetSomePoperty2();
 }
 
-void UTbNamesNamEsLoggingDecorator::SetSomePoperty2_Implementation(int32 InSomePoperty2)
+void UTbNamesNamEsLoggingDecorator::SetSomePoperty2(int32 InSomePoperty2)
 {
 	TbNamesNamEsTracer::trace_callSetSomePoperty2(InSomePoperty2);
-	BackendService->Execute_SetSomePoperty2(BackendService.GetObject(), InSomePoperty2);
+	BackendService->SetSomePoperty2(InSomePoperty2);
 }
 
-void UTbNamesNamEsLoggingDecorator::SomeFunction_Implementation(bool bSomeParam)
+void UTbNamesNamEsLoggingDecorator::SomeFunction(bool bSomeParam)
 {
 	TbNamesNamEsTracer::trace_callSomeFunction(bSomeParam);
-	BackendService->Execute_SomeFunction(BackendService.GetObject(), bSomeParam);
+	BackendService->SomeFunction(bSomeParam);
 }
 
-void UTbNamesNamEsLoggingDecorator::SomeFunction2_Implementation(bool bSomeParam)
+void UTbNamesNamEsLoggingDecorator::SomeFunction2(bool bSomeParam)
 {
 	TbNamesNamEsTracer::trace_callSomeFunction2(bSomeParam);
-	BackendService->Execute_SomeFunction2(BackendService.GetObject(), bSomeParam);
+	BackendService->SomeFunction2(bSomeParam);
 }

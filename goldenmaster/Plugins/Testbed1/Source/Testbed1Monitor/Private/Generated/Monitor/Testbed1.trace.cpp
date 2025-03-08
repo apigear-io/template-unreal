@@ -9,10 +9,10 @@ Testbed1StructInterfaceTracer::Testbed1StructInterfaceTracer()
 void Testbed1StructInterfaceTracer::capture_state(UObject* Object, ITestbed1StructInterfaceInterface* obj)
 {
 	nlohmann::json fields_;
-	fields_["propBool"] = obj->Execute_GetPropBool(Object);
-	fields_["propInt"] = obj->Execute_GetPropInt(Object);
-	fields_["propFloat"] = obj->Execute_GetPropFloat(Object);
-	fields_["propString"] = obj->Execute_GetPropString(Object);
+	fields_["propBool"] = obj->GetPropBool();
+	fields_["propInt"] = obj->GetPropInt();
+	fields_["propFloat"] = obj->GetPropFloat();
+	fields_["propString"] = obj->GetPropString();
 	Tracer::instance()->state("testbed1/StructInterface", fields_);
 }
 void Testbed1StructInterfaceTracer::trace_callSetPropBool(const FTestbed1StructBool& InPropBool)
@@ -103,10 +103,10 @@ Testbed1StructArrayInterfaceTracer::Testbed1StructArrayInterfaceTracer()
 void Testbed1StructArrayInterfaceTracer::capture_state(UObject* Object, ITestbed1StructArrayInterfaceInterface* obj)
 {
 	nlohmann::json fields_;
-	fields_["propBool"] = obj->Execute_GetPropBool(Object);
-	fields_["propInt"] = obj->Execute_GetPropInt(Object);
-	fields_["propFloat"] = obj->Execute_GetPropFloat(Object);
-	fields_["propString"] = obj->Execute_GetPropString(Object);
+	fields_["propBool"] = obj->GetPropBool();
+	fields_["propInt"] = obj->GetPropInt();
+	fields_["propFloat"] = obj->GetPropFloat();
+	fields_["propString"] = obj->GetPropString();
 	Tracer::instance()->state("testbed1/StructArrayInterface", fields_);
 }
 void Testbed1StructArrayInterfaceTracer::trace_callSetPropBool(const TArray<FTestbed1StructBool>& InPropBool)

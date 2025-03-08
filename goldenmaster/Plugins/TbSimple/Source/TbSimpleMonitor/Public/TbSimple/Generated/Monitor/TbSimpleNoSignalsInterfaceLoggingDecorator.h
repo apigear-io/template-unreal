@@ -42,18 +42,18 @@ public:
 	void Deinitialize() override;
 
 	// properties
-	bool GetPropBool_Implementation() const override;
+	bool GetPropBool() const override;
 
-	void SetPropBool_Implementation(bool bInPropBool) override;
+	void SetPropBool(bool bInPropBool) override;
 
-	int32 GetPropInt_Implementation() const override;
+	int32 GetPropInt() const override;
 
-	void SetPropInt_Implementation(int32 InPropInt) override;
+	void SetPropInt(int32 InPropInt) override;
 
 	// operations
-	void FuncVoid_Implementation() override;
+	void FuncVoid() override;
 
-	bool FuncBool_Implementation(bool bParamBool) override;
+	bool FuncBool(bool bParamBool) override;
 
 private:
 	/** The connection to the service backend. */

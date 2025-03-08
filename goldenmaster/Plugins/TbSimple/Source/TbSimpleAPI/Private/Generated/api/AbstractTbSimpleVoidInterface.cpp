@@ -66,7 +66,7 @@ UAbstractTbSimpleVoidInterface::UAbstractTbSimpleVoidInterface()
 	TbSimpleVoidInterfaceSignals = NewObject<UTbSimpleVoidInterfaceSignals>();
 }
 
-UTbSimpleVoidInterfaceSignals* UAbstractTbSimpleVoidInterface::_GetSignals_Implementation()
+UTbSimpleVoidInterfaceSignals* UAbstractTbSimpleVoidInterface::_GetSignals()
 {
 	if (!TbSimpleVoidInterfaceSignals)
 	{

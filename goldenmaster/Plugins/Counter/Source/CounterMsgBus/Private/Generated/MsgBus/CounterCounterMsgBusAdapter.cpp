@@ -114,7 +114,7 @@ void UCounterCounterMsgBusAdapter::_setBackendService(TScriptInterface<ICounterC
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		UCounterCounterSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+		UCounterCounterSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service CounterCounter"));
 		BackendSignals->OnVectorChanged.RemoveDynamic(this, &UCounterCounterMsgBusAdapter::OnVectorChanged);
 		BackendSignals->OnExternVectorChanged.RemoveDynamic(this, &UCounterCounterMsgBusAdapter::OnExternVectorChanged);
@@ -128,7 +128,7 @@ void UCounterCounterMsgBusAdapter::_setBackendService(TScriptInterface<ICounterC
 
 	// subscribe to new backend
 	BackendService = InService;
-	UCounterCounterSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+	UCounterCounterSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service CounterCounter"));
 	// connect property changed signals or simple events
 	BackendSignals->OnVectorChanged.AddDynamic(this, &UCounterCounterMsgBusAdapter::OnVectorChanged);
@@ -144,10 +144,10 @@ void UCounterCounterMsgBusAdapter::OnNewClientDiscovered(const FCounterCounterDi
 
 	auto msg = new FCounterCounterInitMessage();
 	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
-	msg->Vector = BackendService->Execute_GetVector(BackendService.GetObject());
-	msg->ExternVector = BackendService->Execute_GetExternVector(BackendService.GetObject());
-	msg->VectorArray = BackendService->Execute_GetVectorArray(BackendService.GetObject());
-	msg->ExternVectorArray = BackendService->Execute_GetExternVectorArray(BackendService.GetObject());
+	msg->Vector = BackendService->GetVector();
+	msg->ExternVector = BackendService->GetExternVector();
+	msg->VectorArray = BackendService->GetVectorArray();
+	msg->ExternVectorArray = BackendService->GetExternVectorArray();
 
 	if (CounterCounterMsgBusEndpoint.IsValid())
 	{
@@ -228,7 +228,7 @@ void UCounterCounterMsgBusAdapter::OnIncrementRequest(const FCounterCounterIncre
 {
 	auto msg = new FCounterCounterIncrementReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
-	msg->Result = BackendService->Execute_Increment(BackendService.GetObject(), InMessage.Vec);
+	msg->Result = BackendService->Increment(InMessage.Vec);
 
 	if (CounterCounterMsgBusEndpoint.IsValid())
 	{
@@ -244,7 +244,7 @@ void UCounterCounterMsgBusAdapter::OnIncrementArrayRequest(const FCounterCounter
 {
 	auto msg = new FCounterCounterIncrementArrayReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
-	msg->Result = BackendService->Execute_IncrementArray(BackendService.GetObject(), InMessage.Vec);
+	msg->Result = BackendService->IncrementArray(InMessage.Vec);
 
 	if (CounterCounterMsgBusEndpoint.IsValid())
 	{
@@ -260,7 +260,7 @@ void UCounterCounterMsgBusAdapter::OnDecrementRequest(const FCounterCounterDecre
 {
 	auto msg = new FCounterCounterDecrementReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
-	msg->Result = BackendService->Execute_Decrement(BackendService.GetObject(), InMessage.Vec);
+	msg->Result = BackendService->Decrement(InMessage.Vec);
 
 	if (CounterCounterMsgBusEndpoint.IsValid())
 	{
@@ -276,7 +276,7 @@ void UCounterCounterMsgBusAdapter::OnDecrementArrayRequest(const FCounterCounter
 {
 	auto msg = new FCounterCounterDecrementArrayReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
-	msg->Result = BackendService->Execute_DecrementArray(BackendService.GetObject(), InMessage.Vec);
+	msg->Result = BackendService->DecrementArray(InMessage.Vec);
 
 	if (CounterCounterMsgBusEndpoint.IsValid())
 	{
@@ -310,7 +310,7 @@ void UCounterCounterMsgBusAdapter::OnValueChanged(const FCustomTypesVector3D& In
 
 void UCounterCounterMsgBusAdapter::OnSetVectorRequest(const FCounterCounterSetVectorRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
-	BackendService->Execute_SetVector(BackendService.GetObject(), InMessage.Vector);
+	BackendService->SetVector(InMessage.Vector);
 }
 
 void UCounterCounterMsgBusAdapter::OnVectorChanged(const FCustomTypesVector3D& InVector)
@@ -333,7 +333,7 @@ void UCounterCounterMsgBusAdapter::OnVectorChanged(const FCustomTypesVector3D& I
 
 void UCounterCounterMsgBusAdapter::OnSetExternVectorRequest(const FCounterCounterSetExternVectorRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
-	BackendService->Execute_SetExternVector(BackendService.GetObject(), InMessage.ExternVector);
+	BackendService->SetExternVector(InMessage.ExternVector);
 }
 
 void UCounterCounterMsgBusAdapter::OnExternVectorChanged(const FVector& InExternVector)
@@ -356,7 +356,7 @@ void UCounterCounterMsgBusAdapter::OnExternVectorChanged(const FVector& InExtern
 
 void UCounterCounterMsgBusAdapter::OnSetVectorArrayRequest(const FCounterCounterSetVectorArrayRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
-	BackendService->Execute_SetVectorArray(BackendService.GetObject(), InMessage.VectorArray);
+	BackendService->SetVectorArray(InMessage.VectorArray);
 }
 
 void UCounterCounterMsgBusAdapter::OnVectorArrayChanged(const TArray<FCustomTypesVector3D>& InVectorArray)
@@ -379,7 +379,7 @@ void UCounterCounterMsgBusAdapter::OnVectorArrayChanged(const TArray<FCustomType
 
 void UCounterCounterMsgBusAdapter::OnSetExternVectorArrayRequest(const FCounterCounterSetExternVectorArrayRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
-	BackendService->Execute_SetExternVectorArray(BackendService.GetObject(), InMessage.ExternVectorArray);
+	BackendService->SetExternVectorArray(InMessage.ExternVectorArray);
 }
 
 void UCounterCounterMsgBusAdapter::OnExternVectorArrayChanged(const TArray<FVector>& InExternVectorArray)

@@ -66,7 +66,7 @@ UAbstractTbSimpleSimpleArrayInterface::UAbstractTbSimpleSimpleArrayInterface()
 	TbSimpleSimpleArrayInterfaceSignals = NewObject<UTbSimpleSimpleArrayInterfaceSignals>();
 }
 
-UTbSimpleSimpleArrayInterfaceSignals* UAbstractTbSimpleSimpleArrayInterface::_GetSignals_Implementation()
+UTbSimpleSimpleArrayInterfaceSignals* UAbstractTbSimpleSimpleArrayInterface::_GetSignals()
 {
 	if (!TbSimpleSimpleArrayInterfaceSignals)
 	{
@@ -77,90 +77,90 @@ UTbSimpleSimpleArrayInterfaceSignals* UAbstractTbSimpleSimpleArrayInterface::_Ge
 
 TArray<bool> UAbstractTbSimpleSimpleArrayInterface::GetPropBool_Private() const
 {
-	return Execute_GetPropBool(this);
+	return GetPropBool();
 };
 
 void UAbstractTbSimpleSimpleArrayInterface::SetPropBool_Private(const TArray<bool>& InPropBool)
 {
-	Execute_SetPropBool(this, InPropBool);
+	SetPropBool(InPropBool);
 };
 
 TArray<int32> UAbstractTbSimpleSimpleArrayInterface::GetPropInt_Private() const
 {
-	return Execute_GetPropInt(this);
+	return GetPropInt();
 };
 
 void UAbstractTbSimpleSimpleArrayInterface::SetPropInt_Private(const TArray<int32>& InPropInt)
 {
-	Execute_SetPropInt(this, InPropInt);
+	SetPropInt(InPropInt);
 };
 
 TArray<int32> UAbstractTbSimpleSimpleArrayInterface::GetPropInt32_Private() const
 {
-	return Execute_GetPropInt32(this);
+	return GetPropInt32();
 };
 
 void UAbstractTbSimpleSimpleArrayInterface::SetPropInt32_Private(const TArray<int32>& InPropInt32)
 {
-	Execute_SetPropInt32(this, InPropInt32);
+	SetPropInt32(InPropInt32);
 };
 
 TArray<int64> UAbstractTbSimpleSimpleArrayInterface::GetPropInt64_Private() const
 {
-	return Execute_GetPropInt64(this);
+	return GetPropInt64();
 };
 
 void UAbstractTbSimpleSimpleArrayInterface::SetPropInt64_Private(const TArray<int64>& InPropInt64)
 {
-	Execute_SetPropInt64(this, InPropInt64);
+	SetPropInt64(InPropInt64);
 };
 
 TArray<float> UAbstractTbSimpleSimpleArrayInterface::GetPropFloat_Private() const
 {
-	return Execute_GetPropFloat(this);
+	return GetPropFloat();
 };
 
 void UAbstractTbSimpleSimpleArrayInterface::SetPropFloat_Private(const TArray<float>& InPropFloat)
 {
-	Execute_SetPropFloat(this, InPropFloat);
+	SetPropFloat(InPropFloat);
 };
 
 TArray<float> UAbstractTbSimpleSimpleArrayInterface::GetPropFloat32_Private() const
 {
-	return Execute_GetPropFloat32(this);
+	return GetPropFloat32();
 };
 
 void UAbstractTbSimpleSimpleArrayInterface::SetPropFloat32_Private(const TArray<float>& InPropFloat32)
 {
-	Execute_SetPropFloat32(this, InPropFloat32);
+	SetPropFloat32(InPropFloat32);
 };
 
 TArray<double> UAbstractTbSimpleSimpleArrayInterface::GetPropFloat64_Private() const
 {
-	return Execute_GetPropFloat64(this);
+	return GetPropFloat64();
 };
 
 void UAbstractTbSimpleSimpleArrayInterface::SetPropFloat64_Private(const TArray<double>& InPropFloat64)
 {
-	Execute_SetPropFloat64(this, InPropFloat64);
+	SetPropFloat64(InPropFloat64);
 };
 
 TArray<FString> UAbstractTbSimpleSimpleArrayInterface::GetPropString_Private() const
 {
-	return Execute_GetPropString(this);
+	return GetPropString();
 };
 
 void UAbstractTbSimpleSimpleArrayInterface::SetPropString_Private(const TArray<FString>& InPropString)
 {
-	Execute_SetPropString(this, InPropString);
+	SetPropString(InPropString);
 };
 
 FString UAbstractTbSimpleSimpleArrayInterface::GetPropReadOnlyString_Private() const
 {
-	return Execute_GetPropReadOnlyString(this);
+	return GetPropReadOnlyString();
 };
 
-void UAbstractTbSimpleSimpleArrayInterface::FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<bool>& Result, const TArray<bool>& ParamBool)
+void UAbstractTbSimpleSimpleArrayInterface::FuncBoolAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<bool>& Result, const TArray<bool>& ParamBool)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
@@ -180,7 +180,7 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncBoolAsync_Implementation(UObject
 		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
 		if (this->GetClass()->IsInBlueprint())
 		{
-			Result = Execute_FuncBool(this, ParamBool);
+			Result = FuncBool(ParamBool);
 			CompletionAction->Cancel();
 		}
 		else
@@ -188,14 +188,14 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncBoolAsync_Implementation(UObject
 			Async(EAsyncExecution::ThreadPool,
 				[ParamBool, this, &Result, CompletionAction]()
 				{
-				Result = Execute_FuncBool(this, ParamBool);
+				Result = FuncBool(ParamBool);
 				CompletionAction->Cancel();
 			});
 		}
 	}
 }
 
-void UAbstractTbSimpleSimpleArrayInterface::FuncIntAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<int32>& Result, const TArray<int32>& ParamInt)
+void UAbstractTbSimpleSimpleArrayInterface::FuncIntAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<int32>& Result, const TArray<int32>& ParamInt)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
@@ -215,7 +215,7 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncIntAsync_Implementation(UObject*
 		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
 		if (this->GetClass()->IsInBlueprint())
 		{
-			Result = Execute_FuncInt(this, ParamInt);
+			Result = FuncInt(ParamInt);
 			CompletionAction->Cancel();
 		}
 		else
@@ -223,14 +223,14 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncIntAsync_Implementation(UObject*
 			Async(EAsyncExecution::ThreadPool,
 				[ParamInt, this, &Result, CompletionAction]()
 				{
-				Result = Execute_FuncInt(this, ParamInt);
+				Result = FuncInt(ParamInt);
 				CompletionAction->Cancel();
 			});
 		}
 	}
 }
 
-void UAbstractTbSimpleSimpleArrayInterface::FuncInt32Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<int32>& Result, const TArray<int32>& ParamInt32)
+void UAbstractTbSimpleSimpleArrayInterface::FuncInt32Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<int32>& Result, const TArray<int32>& ParamInt32)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
@@ -250,7 +250,7 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncInt32Async_Implementation(UObjec
 		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
 		if (this->GetClass()->IsInBlueprint())
 		{
-			Result = Execute_FuncInt32(this, ParamInt32);
+			Result = FuncInt32(ParamInt32);
 			CompletionAction->Cancel();
 		}
 		else
@@ -258,14 +258,14 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncInt32Async_Implementation(UObjec
 			Async(EAsyncExecution::ThreadPool,
 				[ParamInt32, this, &Result, CompletionAction]()
 				{
-				Result = Execute_FuncInt32(this, ParamInt32);
+				Result = FuncInt32(ParamInt32);
 				CompletionAction->Cancel();
 			});
 		}
 	}
 }
 
-void UAbstractTbSimpleSimpleArrayInterface::FuncInt64Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<int64>& Result, const TArray<int64>& ParamInt64)
+void UAbstractTbSimpleSimpleArrayInterface::FuncInt64Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<int64>& Result, const TArray<int64>& ParamInt64)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
@@ -285,7 +285,7 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncInt64Async_Implementation(UObjec
 		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
 		if (this->GetClass()->IsInBlueprint())
 		{
-			Result = Execute_FuncInt64(this, ParamInt64);
+			Result = FuncInt64(ParamInt64);
 			CompletionAction->Cancel();
 		}
 		else
@@ -293,14 +293,14 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncInt64Async_Implementation(UObjec
 			Async(EAsyncExecution::ThreadPool,
 				[ParamInt64, this, &Result, CompletionAction]()
 				{
-				Result = Execute_FuncInt64(this, ParamInt64);
+				Result = FuncInt64(ParamInt64);
 				CompletionAction->Cancel();
 			});
 		}
 	}
 }
 
-void UAbstractTbSimpleSimpleArrayInterface::FuncFloatAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<float>& Result, const TArray<float>& ParamFloat)
+void UAbstractTbSimpleSimpleArrayInterface::FuncFloatAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<float>& Result, const TArray<float>& ParamFloat)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
@@ -320,7 +320,7 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncFloatAsync_Implementation(UObjec
 		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
 		if (this->GetClass()->IsInBlueprint())
 		{
-			Result = Execute_FuncFloat(this, ParamFloat);
+			Result = FuncFloat(ParamFloat);
 			CompletionAction->Cancel();
 		}
 		else
@@ -328,14 +328,14 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncFloatAsync_Implementation(UObjec
 			Async(EAsyncExecution::ThreadPool,
 				[ParamFloat, this, &Result, CompletionAction]()
 				{
-				Result = Execute_FuncFloat(this, ParamFloat);
+				Result = FuncFloat(ParamFloat);
 				CompletionAction->Cancel();
 			});
 		}
 	}
 }
 
-void UAbstractTbSimpleSimpleArrayInterface::FuncFloat32Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<float>& Result, const TArray<float>& ParamFloat32)
+void UAbstractTbSimpleSimpleArrayInterface::FuncFloat32Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<float>& Result, const TArray<float>& ParamFloat32)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
@@ -355,7 +355,7 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncFloat32Async_Implementation(UObj
 		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
 		if (this->GetClass()->IsInBlueprint())
 		{
-			Result = Execute_FuncFloat32(this, ParamFloat32);
+			Result = FuncFloat32(ParamFloat32);
 			CompletionAction->Cancel();
 		}
 		else
@@ -363,14 +363,14 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncFloat32Async_Implementation(UObj
 			Async(EAsyncExecution::ThreadPool,
 				[ParamFloat32, this, &Result, CompletionAction]()
 				{
-				Result = Execute_FuncFloat32(this, ParamFloat32);
+				Result = FuncFloat32(ParamFloat32);
 				CompletionAction->Cancel();
 			});
 		}
 	}
 }
 
-void UAbstractTbSimpleSimpleArrayInterface::FuncFloat64Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<double>& Result, const TArray<double>& ParamFloat)
+void UAbstractTbSimpleSimpleArrayInterface::FuncFloat64Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<double>& Result, const TArray<double>& ParamFloat)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
@@ -390,7 +390,7 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncFloat64Async_Implementation(UObj
 		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
 		if (this->GetClass()->IsInBlueprint())
 		{
-			Result = Execute_FuncFloat64(this, ParamFloat);
+			Result = FuncFloat64(ParamFloat);
 			CompletionAction->Cancel();
 		}
 		else
@@ -398,14 +398,14 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncFloat64Async_Implementation(UObj
 			Async(EAsyncExecution::ThreadPool,
 				[ParamFloat, this, &Result, CompletionAction]()
 				{
-				Result = Execute_FuncFloat64(this, ParamFloat);
+				Result = FuncFloat64(ParamFloat);
 				CompletionAction->Cancel();
 			});
 		}
 	}
 }
 
-void UAbstractTbSimpleSimpleArrayInterface::FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FString>& Result, const TArray<FString>& ParamString)
+void UAbstractTbSimpleSimpleArrayInterface::FuncStringAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FString>& Result, const TArray<FString>& ParamString)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
@@ -425,7 +425,7 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncStringAsync_Implementation(UObje
 		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
 		if (this->GetClass()->IsInBlueprint())
 		{
-			Result = Execute_FuncString(this, ParamString);
+			Result = FuncString(ParamString);
 			CompletionAction->Cancel();
 		}
 		else
@@ -433,7 +433,7 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncStringAsync_Implementation(UObje
 			Async(EAsyncExecution::ThreadPool,
 				[ParamString, this, &Result, CompletionAction]()
 				{
-				Result = Execute_FuncString(this, ParamString);
+				Result = FuncString(ParamString);
 				CompletionAction->Cancel();
 			});
 		}

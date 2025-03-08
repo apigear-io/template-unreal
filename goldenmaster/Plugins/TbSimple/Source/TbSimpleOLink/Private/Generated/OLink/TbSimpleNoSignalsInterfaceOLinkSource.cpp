@@ -111,13 +111,13 @@ nlohmann::json TbSimpleNoSignalsInterfaceOLinkSource::olinkInvoke(const std::str
 	const std::string path = Name::getMemberName(methodId);
 	if (path == "funcVoid")
 	{
-		BackendService->Execute_FuncVoid(BackendService.GetObject());
+		BackendService->FuncVoid();
 		return nlohmann::json{};
 	}
 	if (path == "funcBool")
 	{
 		bool bParamBool = args.at(0).get<bool>();
-		bool result = BackendService->Execute_FuncBool(BackendService.GetObject(), bParamBool);
+		bool result = BackendService->FuncBool(bParamBool);
 		return result;
 	}
 	return nlohmann::json();
@@ -135,12 +135,12 @@ void TbSimpleNoSignalsInterfaceOLinkSource::olinkSetProperty(const std::string& 
 	if (path == "propBool")
 	{
 		bool bPropBool = value.get<bool>();
-		BackendService->Execute_SetPropBool(BackendService.GetObject(), bPropBool);
+		BackendService->SetPropBool(bPropBool);
 	}
 	if (path == "propInt")
 	{
 		int32 PropInt = value.get<int32>();
-		BackendService->Execute_SetPropInt(BackendService.GetObject(), PropInt);
+		BackendService->SetPropInt(PropInt);
 	}
 }
 
@@ -154,7 +154,7 @@ nlohmann::json TbSimpleNoSignalsInterfaceOLinkSource::olinkCollectProperties()
 
 	return nlohmann::json::object({
 
-		{"propBool", BackendService->Execute_GetPropBool(BackendService.GetObject())},
-		{"propInt", BackendService->Execute_GetPropInt(BackendService.GetObject())}});
+		{"propBool", BackendService->GetPropBool()},
+		{"propInt", BackendService->GetPropInt()}});
 }
 #endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

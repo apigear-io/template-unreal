@@ -121,48 +121,48 @@ public:
 	FTbSimpleSimpleArrayInterfaceConnectionStatusChangedDelegate _ConnectionStatusChanged;
 
 	// properties
-	TArray<bool> GetPropBool_Implementation() const override;
-	void SetPropBool_Implementation(const TArray<bool>& PropBool) override;
+	TArray<bool> GetPropBool() const override;
+	void SetPropBool(const TArray<bool>& PropBool) override;
 
-	TArray<int32> GetPropInt_Implementation() const override;
-	void SetPropInt_Implementation(const TArray<int32>& PropInt) override;
+	TArray<int32> GetPropInt() const override;
+	void SetPropInt(const TArray<int32>& PropInt) override;
 
-	TArray<int32> GetPropInt32_Implementation() const override;
-	void SetPropInt32_Implementation(const TArray<int32>& PropInt32) override;
+	TArray<int32> GetPropInt32() const override;
+	void SetPropInt32(const TArray<int32>& PropInt32) override;
 
-	TArray<int64> GetPropInt64_Implementation() const override;
-	void SetPropInt64_Implementation(const TArray<int64>& PropInt64) override;
+	TArray<int64> GetPropInt64() const override;
+	void SetPropInt64(const TArray<int64>& PropInt64) override;
 
-	TArray<float> GetPropFloat_Implementation() const override;
-	void SetPropFloat_Implementation(const TArray<float>& PropFloat) override;
+	TArray<float> GetPropFloat() const override;
+	void SetPropFloat(const TArray<float>& PropFloat) override;
 
-	TArray<float> GetPropFloat32_Implementation() const override;
-	void SetPropFloat32_Implementation(const TArray<float>& PropFloat32) override;
+	TArray<float> GetPropFloat32() const override;
+	void SetPropFloat32(const TArray<float>& PropFloat32) override;
 
-	TArray<double> GetPropFloat64_Implementation() const override;
-	void SetPropFloat64_Implementation(const TArray<double>& PropFloat64) override;
+	TArray<double> GetPropFloat64() const override;
+	void SetPropFloat64(const TArray<double>& PropFloat64) override;
 
-	TArray<FString> GetPropString_Implementation() const override;
-	void SetPropString_Implementation(const TArray<FString>& PropString) override;
+	TArray<FString> GetPropString() const override;
+	void SetPropString(const TArray<FString>& PropString) override;
 
-	FString GetPropReadOnlyString_Implementation() const override;
+	FString GetPropReadOnlyString() const override;
 
 	// operations
-	TArray<bool> FuncBool_Implementation(const TArray<bool>& ParamBool) override;
+	TArray<bool> FuncBool(const TArray<bool>& ParamBool) override;
 
-	TArray<int32> FuncInt_Implementation(const TArray<int32>& ParamInt) override;
+	TArray<int32> FuncInt(const TArray<int32>& ParamInt) override;
 
-	TArray<int32> FuncInt32_Implementation(const TArray<int32>& ParamInt32) override;
+	TArray<int32> FuncInt32(const TArray<int32>& ParamInt32) override;
 
-	TArray<int64> FuncInt64_Implementation(const TArray<int64>& ParamInt64) override;
+	TArray<int64> FuncInt64(const TArray<int64>& ParamInt64) override;
 
-	TArray<float> FuncFloat_Implementation(const TArray<float>& ParamFloat) override;
+	TArray<float> FuncFloat(const TArray<float>& ParamFloat) override;
 
-	TArray<float> FuncFloat32_Implementation(const TArray<float>& ParamFloat32) override;
+	TArray<float> FuncFloat32(const TArray<float>& ParamFloat32) override;
 
-	TArray<double> FuncFloat64_Implementation(const TArray<double>& ParamFloat) override;
+	TArray<double> FuncFloat64(const TArray<double>& ParamFloat) override;
 
-	TArray<FString> FuncString_Implementation(const TArray<FString>& ParamString) override;
+	TArray<FString> FuncString(const TArray<FString>& ParamString) override;
 
 private:
 	TSharedPtr<FMessageEndpoint, ESPMode::ThreadSafe> TbSimpleSimpleArrayInterfaceMsgBusEndpoint;

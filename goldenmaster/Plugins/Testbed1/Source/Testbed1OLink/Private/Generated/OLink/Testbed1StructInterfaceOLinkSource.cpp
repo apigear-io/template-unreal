@@ -200,25 +200,25 @@ nlohmann::json Testbed1StructInterfaceOLinkSource::olinkInvoke(const std::string
 	if (path == "funcBool")
 	{
 		FTestbed1StructBool ParamBool = args.at(0).get<FTestbed1StructBool>();
-		FTestbed1StructBool result = BackendService->Execute_FuncBool(BackendService.GetObject(), ParamBool);
+		FTestbed1StructBool result = BackendService->FuncBool(ParamBool);
 		return result;
 	}
 	if (path == "funcInt")
 	{
 		FTestbed1StructInt ParamInt = args.at(0).get<FTestbed1StructInt>();
-		FTestbed1StructInt result = BackendService->Execute_FuncInt(BackendService.GetObject(), ParamInt);
+		FTestbed1StructInt result = BackendService->FuncInt(ParamInt);
 		return result;
 	}
 	if (path == "funcFloat")
 	{
 		FTestbed1StructFloat ParamFloat = args.at(0).get<FTestbed1StructFloat>();
-		FTestbed1StructFloat result = BackendService->Execute_FuncFloat(BackendService.GetObject(), ParamFloat);
+		FTestbed1StructFloat result = BackendService->FuncFloat(ParamFloat);
 		return result;
 	}
 	if (path == "funcString")
 	{
 		FTestbed1StructString ParamString = args.at(0).get<FTestbed1StructString>();
-		FTestbed1StructString result = BackendService->Execute_FuncString(BackendService.GetObject(), ParamString);
+		FTestbed1StructString result = BackendService->FuncString(ParamString);
 		return result;
 	}
 	return nlohmann::json();
@@ -236,22 +236,22 @@ void Testbed1StructInterfaceOLinkSource::olinkSetProperty(const std::string& pro
 	if (path == "propBool")
 	{
 		FTestbed1StructBool PropBool = value.get<FTestbed1StructBool>();
-		BackendService->Execute_SetPropBool(BackendService.GetObject(), PropBool);
+		BackendService->SetPropBool(PropBool);
 	}
 	if (path == "propInt")
 	{
 		FTestbed1StructInt PropInt = value.get<FTestbed1StructInt>();
-		BackendService->Execute_SetPropInt(BackendService.GetObject(), PropInt);
+		BackendService->SetPropInt(PropInt);
 	}
 	if (path == "propFloat")
 	{
 		FTestbed1StructFloat PropFloat = value.get<FTestbed1StructFloat>();
-		BackendService->Execute_SetPropFloat(BackendService.GetObject(), PropFloat);
+		BackendService->SetPropFloat(PropFloat);
 	}
 	if (path == "propString")
 	{
 		FTestbed1StructString PropString = value.get<FTestbed1StructString>();
-		BackendService->Execute_SetPropString(BackendService.GetObject(), PropString);
+		BackendService->SetPropString(PropString);
 	}
 }
 
@@ -265,9 +265,9 @@ nlohmann::json Testbed1StructInterfaceOLinkSource::olinkCollectProperties()
 
 	return nlohmann::json::object({
 
-		{"propBool", BackendService->Execute_GetPropBool(BackendService.GetObject())},
-		{"propInt", BackendService->Execute_GetPropInt(BackendService.GetObject())},
-		{"propFloat", BackendService->Execute_GetPropFloat(BackendService.GetObject())},
-		{"propString", BackendService->Execute_GetPropString(BackendService.GetObject())}});
+		{"propBool", BackendService->GetPropBool()},
+		{"propInt", BackendService->GetPropInt()},
+		{"propFloat", BackendService->GetPropFloat()},
+		{"propString", BackendService->GetPropString()}});
 }
 #endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

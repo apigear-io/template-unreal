@@ -66,7 +66,7 @@ UAbstractTestbed2NestedStruct1Interface::UAbstractTestbed2NestedStruct1Interface
 	Testbed2NestedStruct1InterfaceSignals = NewObject<UTestbed2NestedStruct1InterfaceSignals>();
 }
 
-UTestbed2NestedStruct1InterfaceSignals* UAbstractTestbed2NestedStruct1Interface::_GetSignals_Implementation()
+UTestbed2NestedStruct1InterfaceSignals* UAbstractTestbed2NestedStruct1Interface::_GetSignals()
 {
 	if (!Testbed2NestedStruct1InterfaceSignals)
 	{
@@ -77,15 +77,15 @@ UTestbed2NestedStruct1InterfaceSignals* UAbstractTestbed2NestedStruct1Interface:
 
 FTestbed2NestedStruct1 UAbstractTestbed2NestedStruct1Interface::GetProp1_Private() const
 {
-	return Execute_GetProp1(this);
+	return GetProp1();
 };
 
 void UAbstractTestbed2NestedStruct1Interface::SetProp1_Private(const FTestbed2NestedStruct1& InProp1)
 {
-	Execute_SetProp1(this, InProp1);
+	SetProp1(InProp1);
 };
 
-void UAbstractTestbed2NestedStruct1Interface::Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1)
+void UAbstractTestbed2NestedStruct1Interface::Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
@@ -105,7 +105,7 @@ void UAbstractTestbed2NestedStruct1Interface::Func1Async_Implementation(UObject*
 		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
 		if (this->GetClass()->IsInBlueprint())
 		{
-			Result = Execute_Func1(this, Param1);
+			Result = Func1(Param1);
 			CompletionAction->Cancel();
 		}
 		else
@@ -113,7 +113,7 @@ void UAbstractTestbed2NestedStruct1Interface::Func1Async_Implementation(UObject*
 			Async(EAsyncExecution::ThreadPool,
 				[Param1, this, &Result, CompletionAction]()
 				{
-				Result = Execute_Func1(this, Param1);
+				Result = Func1(Param1);
 				CompletionAction->Cancel();
 			});
 		}

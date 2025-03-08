@@ -38,13 +38,13 @@ public:
 	virtual void Deinitialize() override;
 
 	// signals
-	virtual UTbSimpleNoPropertiesInterfaceSignals* _GetSignals_Implementation() override;
+	virtual UTbSimpleNoPropertiesInterfaceSignals* _GetSignals() override;
 
 	// methods
-	virtual void FuncVoid_Implementation() override PURE_VIRTUAL(UAbstractTbSimpleNoPropertiesInterface::FuncVoid_Implementation, return;);
+	virtual void FuncVoid() override PURE_VIRTUAL(UAbstractTbSimpleNoPropertiesInterface::FuncVoid, return;);
 
-	virtual void FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool) override;
-	virtual bool FuncBool_Implementation(bool bParamBool) override PURE_VIRTUAL(UAbstractTbSimpleNoPropertiesInterface::FuncBool_Implementation, return false;);
+	virtual void FuncBoolAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool) override;
+	virtual bool FuncBool(bool bParamBool) override PURE_VIRTUAL(UAbstractTbSimpleNoPropertiesInterface::FuncBool, return false;);
 
 	// properties
 

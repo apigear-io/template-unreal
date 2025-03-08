@@ -175,7 +175,7 @@ void UTestbed2NestedStruct1InterfaceMsgBusClient::OnConnectionInit(const FTestbe
 	if (bProp1Changed)
 	{
 		Prop1 = InMessage.Prop1;
-		Execute__GetSignals(this)->OnProp1Changed.Broadcast(Prop1);
+		_GetSignals()->OnProp1Changed.Broadcast(Prop1);
 	}
 
 	_ConnectionStatusChanged.Broadcast(true);
@@ -267,12 +267,12 @@ void UTestbed2NestedStruct1InterfaceMsgBusClient::OnServiceClosedConnection(cons
 	_ConnectionStatusChanged.Broadcast(false);
 }
 
-FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceMsgBusClient::GetProp1_Implementation() const
+FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceMsgBusClient::GetProp1() const
 {
 	return Prop1;
 }
 
-void UTestbed2NestedStruct1InterfaceMsgBusClient::SetProp1_Implementation(const FTestbed2NestedStruct1& InProp1)
+void UTestbed2NestedStruct1InterfaceMsgBusClient::SetProp1(const FTestbed2NestedStruct1& InProp1)
 {
 	if (!_IsConnected())
 	{
@@ -281,7 +281,7 @@ void UTestbed2NestedStruct1InterfaceMsgBusClient::SetProp1_Implementation(const 
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetProp1_Implementation() == InProp1)
+	if (GetProp1() == InProp1)
 	{
 		return;
 	}
@@ -307,7 +307,7 @@ void UTestbed2NestedStruct1InterfaceMsgBusClient::SetProp1_Implementation(const 
 	_SentData->Prop1 = InProp1;
 }
 
-FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceMsgBusClient::Func1_Implementation(const FTestbed2NestedStruct1& InParam1)
+FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceMsgBusClient::Func1(const FTestbed2NestedStruct1& InParam1)
 {
 	if (!_IsConnected())
 	{
@@ -344,7 +344,7 @@ void UTestbed2NestedStruct1InterfaceMsgBusClient::OnSig1(const FTestbed2NestedSt
 		return;
 	}
 
-	Execute__GetSignals(this)->OnSig1Signal.Broadcast(InMessage.Param1);
+	_GetSignals()->OnSig1Signal.Broadcast(InMessage.Param1);
 	return;
 }
 
@@ -360,7 +360,7 @@ void UTestbed2NestedStruct1InterfaceMsgBusClient::OnProp1Changed(const FTestbed2
 	if (bProp1Changed)
 	{
 		Prop1 = InMessage.Prop1;
-		Execute__GetSignals(this)->OnProp1Changed.Broadcast(Prop1);
+		_GetSignals()->OnProp1Changed.Broadcast(Prop1);
 	}
 }
 

@@ -66,7 +66,7 @@ UAbstractTbSimpleNoPropertiesInterface::UAbstractTbSimpleNoPropertiesInterface()
 	TbSimpleNoPropertiesInterfaceSignals = NewObject<UTbSimpleNoPropertiesInterfaceSignals>();
 }
 
-UTbSimpleNoPropertiesInterfaceSignals* UAbstractTbSimpleNoPropertiesInterface::_GetSignals_Implementation()
+UTbSimpleNoPropertiesInterfaceSignals* UAbstractTbSimpleNoPropertiesInterface::_GetSignals()
 {
 	if (!TbSimpleNoPropertiesInterfaceSignals)
 	{
@@ -75,7 +75,7 @@ UTbSimpleNoPropertiesInterfaceSignals* UAbstractTbSimpleNoPropertiesInterface::_
 	return TbSimpleNoPropertiesInterfaceSignals;
 }
 
-void UAbstractTbSimpleNoPropertiesInterface::FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool)
+void UAbstractTbSimpleNoPropertiesInterface::FuncBoolAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
@@ -95,7 +95,7 @@ void UAbstractTbSimpleNoPropertiesInterface::FuncBoolAsync_Implementation(UObjec
 		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
 		if (this->GetClass()->IsInBlueprint())
 		{
-			Result = Execute_FuncBool(this, bParamBool);
+			Result = FuncBool(bParamBool);
 			CompletionAction->Cancel();
 		}
 		else
@@ -103,7 +103,7 @@ void UAbstractTbSimpleNoPropertiesInterface::FuncBoolAsync_Implementation(UObjec
 			Async(EAsyncExecution::ThreadPool,
 				[bParamBool, this, &Result, CompletionAction]()
 				{
-				Result = Execute_FuncBool(this, bParamBool);
+				Result = FuncBool(bParamBool);
 				CompletionAction->Cancel();
 			});
 		}

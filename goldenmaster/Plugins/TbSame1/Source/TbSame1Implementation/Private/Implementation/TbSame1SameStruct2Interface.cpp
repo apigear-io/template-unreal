@@ -18,41 +18,41 @@ limitations under the License.
 #include "TbSame1/Implementation/TbSame1SameStruct2Interface.h"
 
 UTbSame1SameStruct2Interface::~UTbSame1SameStruct2Interface() = default;
-FTbSame1Struct2 UTbSame1SameStruct2Interface::GetProp1_Implementation() const
+FTbSame1Struct2 UTbSame1SameStruct2Interface::GetProp1() const
 {
 	return Prop1;
 }
 
-void UTbSame1SameStruct2Interface::SetProp1_Implementation(const FTbSame1Struct2& InProp1)
+void UTbSame1SameStruct2Interface::SetProp1(const FTbSame1Struct2& InProp1)
 {
 	if (Prop1 != InProp1)
 	{
 		Prop1 = InProp1;
-		Execute__GetSignals(this)->OnProp1Changed.Broadcast(Prop1);
+		_GetSignals()->OnProp1Changed.Broadcast(Prop1);
 	}
 }
-FTbSame1Struct2 UTbSame1SameStruct2Interface::GetProp2_Implementation() const
+FTbSame1Struct2 UTbSame1SameStruct2Interface::GetProp2() const
 {
 	return Prop2;
 }
 
-void UTbSame1SameStruct2Interface::SetProp2_Implementation(const FTbSame1Struct2& InProp2)
+void UTbSame1SameStruct2Interface::SetProp2(const FTbSame1Struct2& InProp2)
 {
 	if (Prop2 != InProp2)
 	{
 		Prop2 = InProp2;
-		Execute__GetSignals(this)->OnProp2Changed.Broadcast(Prop2);
+		_GetSignals()->OnProp2Changed.Broadcast(Prop2);
 	}
 }
 
-FTbSame1Struct1 UTbSame1SameStruct2Interface::Func1_Implementation(const FTbSame1Struct1& Param1)
+FTbSame1Struct1 UTbSame1SameStruct2Interface::Func1(const FTbSame1Struct1& Param1)
 {
 	(void)Param1;
 	// do business logic here
 	return FTbSame1Struct1();
 }
 
-FTbSame1Struct1 UTbSame1SameStruct2Interface::Func2_Implementation(const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2)
+FTbSame1Struct1 UTbSame1SameStruct2Interface::Func2(const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2)
 {
 	(void)Param1;
 	(void)Param2;

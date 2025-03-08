@@ -94,7 +94,8 @@ public:
 /**
  * Interface UCounterCounterInterface only for Unreal Engine's reflection system
  */
-UINTERFACE(Blueprintable, MinimalAPI)
+// Note: meta=(CannotImplementInterfaceInBlueprint) is equal to NotBlueprintable and is only needed for UE 4.27
+UINTERFACE(NotBlueprintable, MinimalAPI, meta = (CannotImplementInterfaceInBlueprint))
 class UCounterCounterInterface : public UInterface
 {
 	GENERATED_BODY()
@@ -111,62 +112,45 @@ public:
 	/// Provides access to the object which holds all the delegates
 	/// this is needed since we cannot declare delegates on an UInterface
 	/// @return object with signals for property state changes or standalone signals
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Counter|Counter")
-	UCounterCounterSignals* _GetSignals();
-	virtual UCounterCounterSignals* _GetSignals_Implementation() = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter")
+	virtual UCounterCounterSignals* _GetSignals() = 0;
 
 	// methods
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Counter|Counter|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-	void IncrementAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FVector& Result, const FVector& Vec);
-	virtual void IncrementAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FVector& Result, const FVector& Vec) = 0;
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Counter|Counter|Operations")
-	FVector Increment(const FVector& Vec);
-	virtual FVector Increment_Implementation(const FVector& Vec) = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	virtual void IncrementAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FVector& Result, const FVector& Vec) = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Operations")
+	virtual FVector Increment(const FVector& Vec) = 0;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Counter|Counter|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-	void IncrementArrayAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FVector>& Result, const TArray<FVector>& Vec);
-	virtual void IncrementArrayAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FVector>& Result, const TArray<FVector>& Vec) = 0;
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Counter|Counter|Operations")
-	TArray<FVector> IncrementArray(const TArray<FVector>& Vec);
-	virtual TArray<FVector> IncrementArray_Implementation(const TArray<FVector>& Vec) = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	virtual void IncrementArrayAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FVector>& Result, const TArray<FVector>& Vec) = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Operations")
+	virtual TArray<FVector> IncrementArray(const TArray<FVector>& Vec) = 0;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Counter|Counter|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-	void DecrementAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FCustomTypesVector3D& Result, const FCustomTypesVector3D& Vec);
-	virtual void DecrementAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FCustomTypesVector3D& Result, const FCustomTypesVector3D& Vec) = 0;
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Counter|Counter|Operations")
-	FCustomTypesVector3D Decrement(const FCustomTypesVector3D& Vec);
-	virtual FCustomTypesVector3D Decrement_Implementation(const FCustomTypesVector3D& Vec) = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	virtual void DecrementAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FCustomTypesVector3D& Result, const FCustomTypesVector3D& Vec) = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Operations")
+	virtual FCustomTypesVector3D Decrement(const FCustomTypesVector3D& Vec) = 0;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Counter|Counter|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-	void DecrementArrayAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FCustomTypesVector3D>& Result, const TArray<FCustomTypesVector3D>& Vec);
-	virtual void DecrementArrayAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FCustomTypesVector3D>& Result, const TArray<FCustomTypesVector3D>& Vec) = 0;
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Counter|Counter|Operations")
-	TArray<FCustomTypesVector3D> DecrementArray(const TArray<FCustomTypesVector3D>& Vec);
-	virtual TArray<FCustomTypesVector3D> DecrementArray_Implementation(const TArray<FCustomTypesVector3D>& Vec) = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	virtual void DecrementArrayAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FCustomTypesVector3D>& Result, const TArray<FCustomTypesVector3D>& Vec) = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Operations")
+	virtual TArray<FCustomTypesVector3D> DecrementArray(const TArray<FCustomTypesVector3D>& Vec) = 0;
 
 	// properties
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Counter|Counter|Properties")
-	FCustomTypesVector3D GetVector() const;
-	virtual FCustomTypesVector3D GetVector_Implementation() const = 0;
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Counter|Counter|Properties")
-	void SetVector(const FCustomTypesVector3D& InVector);
-	virtual void SetVector_Implementation(UPARAM(DisplayName = "Vector") const FCustomTypesVector3D& InVector) = 0;
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Counter|Counter|Properties")
-	FVector GetExternVector() const;
-	virtual FVector GetExternVector_Implementation() const = 0;
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Counter|Counter|Properties")
-	void SetExternVector(const FVector& InExternVector);
-	virtual void SetExternVector_Implementation(UPARAM(DisplayName = "ExternVector") const FVector& InExternVector) = 0;
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Counter|Counter|Properties")
-	TArray<FCustomTypesVector3D> GetVectorArray() const;
-	virtual TArray<FCustomTypesVector3D> GetVectorArray_Implementation() const = 0;
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Counter|Counter|Properties")
-	void SetVectorArray(const TArray<FCustomTypesVector3D>& InVectorArray);
-	virtual void SetVectorArray_Implementation(UPARAM(DisplayName = "VectorArray") const TArray<FCustomTypesVector3D>& InVectorArray) = 0;
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Counter|Counter|Properties")
-	TArray<FVector> GetExternVectorArray() const;
-	virtual TArray<FVector> GetExternVectorArray_Implementation() const = 0;
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Counter|Counter|Properties")
-	void SetExternVectorArray(const TArray<FVector>& InExternVectorArray);
-	virtual void SetExternVectorArray_Implementation(UPARAM(DisplayName = "ExternVectorArray") const TArray<FVector>& InExternVectorArray) = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Properties")
+	virtual FCustomTypesVector3D GetVector() const = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Properties")
+	virtual void SetVector(UPARAM(DisplayName = "Vector") const FCustomTypesVector3D& InVector) = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Properties")
+	virtual FVector GetExternVector() const = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Properties")
+	virtual void SetExternVector(UPARAM(DisplayName = "ExternVector") const FVector& InExternVector) = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Properties")
+	virtual TArray<FCustomTypesVector3D> GetVectorArray() const = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Properties")
+	virtual void SetVectorArray(UPARAM(DisplayName = "VectorArray") const TArray<FCustomTypesVector3D>& InVectorArray) = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Properties")
+	virtual TArray<FVector> GetExternVectorArray() const = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Properties")
+	virtual void SetExternVectorArray(UPARAM(DisplayName = "ExternVectorArray") const TArray<FVector>& InExternVectorArray) = 0;
 };

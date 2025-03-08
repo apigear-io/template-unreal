@@ -42,22 +42,22 @@ public:
 	void Deinitialize() override;
 
 	// properties
-	bool GetSwitch_Implementation() const override;
+	bool GetSwitch() const override;
 
-	void SetSwitch_Implementation(bool bInSwitch) override;
+	void SetSwitch(bool bInSwitch) override;
 
-	int32 GetSomeProperty_Implementation() const override;
+	int32 GetSomeProperty() const override;
 
-	void SetSomeProperty_Implementation(int32 InSomeProperty) override;
+	void SetSomeProperty(int32 InSomeProperty) override;
 
-	int32 GetSomePoperty2_Implementation() const override;
+	int32 GetSomePoperty2() const override;
 
-	void SetSomePoperty2_Implementation(int32 InSomePoperty2) override;
+	void SetSomePoperty2(int32 InSomePoperty2) override;
 
 	// operations
-	void SomeFunction_Implementation(bool bSomeParam) override;
+	void SomeFunction(bool bSomeParam) override;
 
-	void SomeFunction2_Implementation(bool bSomeParam) override;
+	void SomeFunction2(bool bSomeParam) override;
 
 private:
 	/** The connection to the service backend. */

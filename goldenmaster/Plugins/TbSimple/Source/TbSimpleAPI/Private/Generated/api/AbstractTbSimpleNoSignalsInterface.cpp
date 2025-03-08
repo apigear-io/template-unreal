@@ -66,7 +66,7 @@ UAbstractTbSimpleNoSignalsInterface::UAbstractTbSimpleNoSignalsInterface()
 	TbSimpleNoSignalsInterfaceSignals = NewObject<UTbSimpleNoSignalsInterfaceSignals>();
 }
 
-UTbSimpleNoSignalsInterfaceSignals* UAbstractTbSimpleNoSignalsInterface::_GetSignals_Implementation()
+UTbSimpleNoSignalsInterfaceSignals* UAbstractTbSimpleNoSignalsInterface::_GetSignals()
 {
 	if (!TbSimpleNoSignalsInterfaceSignals)
 	{
@@ -77,25 +77,25 @@ UTbSimpleNoSignalsInterfaceSignals* UAbstractTbSimpleNoSignalsInterface::_GetSig
 
 bool UAbstractTbSimpleNoSignalsInterface::GetPropBool_Private() const
 {
-	return Execute_GetPropBool(this);
+	return GetPropBool();
 };
 
 void UAbstractTbSimpleNoSignalsInterface::SetPropBool_Private(bool bInPropBool)
 {
-	Execute_SetPropBool(this, bInPropBool);
+	SetPropBool(bInPropBool);
 };
 
 int32 UAbstractTbSimpleNoSignalsInterface::GetPropInt_Private() const
 {
-	return Execute_GetPropInt(this);
+	return GetPropInt();
 };
 
 void UAbstractTbSimpleNoSignalsInterface::SetPropInt_Private(int32 InPropInt)
 {
-	Execute_SetPropInt(this, InPropInt);
+	SetPropInt(InPropInt);
 };
 
-void UAbstractTbSimpleNoSignalsInterface::FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool)
+void UAbstractTbSimpleNoSignalsInterface::FuncBoolAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
@@ -115,7 +115,7 @@ void UAbstractTbSimpleNoSignalsInterface::FuncBoolAsync_Implementation(UObject* 
 		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
 		if (this->GetClass()->IsInBlueprint())
 		{
-			Result = Execute_FuncBool(this, bParamBool);
+			Result = FuncBool(bParamBool);
 			CompletionAction->Cancel();
 		}
 		else
@@ -123,7 +123,7 @@ void UAbstractTbSimpleNoSignalsInterface::FuncBoolAsync_Implementation(UObject* 
 			Async(EAsyncExecution::ThreadPool,
 				[bParamBool, this, &Result, CompletionAction]()
 				{
-				Result = Execute_FuncBool(this, bParamBool);
+				Result = FuncBool(bParamBool);
 				CompletionAction->Cancel();
 			});
 		}

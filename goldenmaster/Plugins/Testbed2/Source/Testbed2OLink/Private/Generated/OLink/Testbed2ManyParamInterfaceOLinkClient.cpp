@@ -149,12 +149,12 @@ void UTestbed2ManyParamInterfaceOLinkClient::UseConnection(TScriptInterface<IApi
 	Connection = InConnection;
 }
 
-int32 UTestbed2ManyParamInterfaceOLinkClient::GetProp1_Implementation() const
+int32 UTestbed2ManyParamInterfaceOLinkClient::GetProp1() const
 {
 	return Prop1;
 }
 
-void UTestbed2ManyParamInterfaceOLinkClient::SetProp1_Implementation(int32 InProp1)
+void UTestbed2ManyParamInterfaceOLinkClient::SetProp1(int32 InProp1)
 {
 	if (!m_sink->IsReady())
 	{
@@ -163,7 +163,7 @@ void UTestbed2ManyParamInterfaceOLinkClient::SetProp1_Implementation(int32 InPro
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetProp1_Implementation() == InProp1)
+	if (GetProp1() == InProp1)
 	{
 		return;
 	}
@@ -178,12 +178,12 @@ void UTestbed2ManyParamInterfaceOLinkClient::SetProp1_Implementation(int32 InPro
 	_SentData->Prop1 = InProp1;
 }
 
-int32 UTestbed2ManyParamInterfaceOLinkClient::GetProp2_Implementation() const
+int32 UTestbed2ManyParamInterfaceOLinkClient::GetProp2() const
 {
 	return Prop2;
 }
 
-void UTestbed2ManyParamInterfaceOLinkClient::SetProp2_Implementation(int32 InProp2)
+void UTestbed2ManyParamInterfaceOLinkClient::SetProp2(int32 InProp2)
 {
 	if (!m_sink->IsReady())
 	{
@@ -192,7 +192,7 @@ void UTestbed2ManyParamInterfaceOLinkClient::SetProp2_Implementation(int32 InPro
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetProp2_Implementation() == InProp2)
+	if (GetProp2() == InProp2)
 	{
 		return;
 	}
@@ -207,12 +207,12 @@ void UTestbed2ManyParamInterfaceOLinkClient::SetProp2_Implementation(int32 InPro
 	_SentData->Prop2 = InProp2;
 }
 
-int32 UTestbed2ManyParamInterfaceOLinkClient::GetProp3_Implementation() const
+int32 UTestbed2ManyParamInterfaceOLinkClient::GetProp3() const
 {
 	return Prop3;
 }
 
-void UTestbed2ManyParamInterfaceOLinkClient::SetProp3_Implementation(int32 InProp3)
+void UTestbed2ManyParamInterfaceOLinkClient::SetProp3(int32 InProp3)
 {
 	if (!m_sink->IsReady())
 	{
@@ -221,7 +221,7 @@ void UTestbed2ManyParamInterfaceOLinkClient::SetProp3_Implementation(int32 InPro
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetProp3_Implementation() == InProp3)
+	if (GetProp3() == InProp3)
 	{
 		return;
 	}
@@ -236,12 +236,12 @@ void UTestbed2ManyParamInterfaceOLinkClient::SetProp3_Implementation(int32 InPro
 	_SentData->Prop3 = InProp3;
 }
 
-int32 UTestbed2ManyParamInterfaceOLinkClient::GetProp4_Implementation() const
+int32 UTestbed2ManyParamInterfaceOLinkClient::GetProp4() const
 {
 	return Prop4;
 }
 
-void UTestbed2ManyParamInterfaceOLinkClient::SetProp4_Implementation(int32 InProp4)
+void UTestbed2ManyParamInterfaceOLinkClient::SetProp4(int32 InProp4)
 {
 	if (!m_sink->IsReady())
 	{
@@ -250,7 +250,7 @@ void UTestbed2ManyParamInterfaceOLinkClient::SetProp4_Implementation(int32 InPro
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetProp4_Implementation() == InProp4)
+	if (GetProp4() == InProp4)
 	{
 		return;
 	}
@@ -265,7 +265,7 @@ void UTestbed2ManyParamInterfaceOLinkClient::SetProp4_Implementation(int32 InPro
 	_SentData->Prop4 = InProp4;
 }
 
-int32 UTestbed2ManyParamInterfaceOLinkClient::Func1_Implementation(int32 Param1)
+int32 UTestbed2ManyParamInterfaceOLinkClient::Func1(int32 Param1)
 {
 	if (!m_sink->IsReady())
 	{
@@ -296,7 +296,7 @@ int32 UTestbed2ManyParamInterfaceOLinkClient::Func1_Implementation(int32 Param1)
 	return Promise.GetFuture().Get();
 }
 
-int32 UTestbed2ManyParamInterfaceOLinkClient::Func2_Implementation(int32 Param1, int32 Param2)
+int32 UTestbed2ManyParamInterfaceOLinkClient::Func2(int32 Param1, int32 Param2)
 {
 	if (!m_sink->IsReady())
 	{
@@ -327,7 +327,7 @@ int32 UTestbed2ManyParamInterfaceOLinkClient::Func2_Implementation(int32 Param1,
 	return Promise.GetFuture().Get();
 }
 
-int32 UTestbed2ManyParamInterfaceOLinkClient::Func3_Implementation(int32 Param1, int32 Param2, int32 Param3)
+int32 UTestbed2ManyParamInterfaceOLinkClient::Func3(int32 Param1, int32 Param2, int32 Param3)
 {
 	if (!m_sink->IsReady())
 	{
@@ -358,7 +358,7 @@ int32 UTestbed2ManyParamInterfaceOLinkClient::Func3_Implementation(int32 Param1,
 	return Promise.GetFuture().Get();
 }
 
-int32 UTestbed2ManyParamInterfaceOLinkClient::Func4_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
+int32 UTestbed2ManyParamInterfaceOLinkClient::Func4(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
 {
 	if (!m_sink->IsReady())
 	{
@@ -400,28 +400,28 @@ void UTestbed2ManyParamInterfaceOLinkClient::applyState(const nlohmann::json& fi
 	if (bProp1Changed)
 	{
 		Prop1 = fields["prop1"].get<int32>();
-		Execute__GetSignals(this)->OnProp1Changed.Broadcast(Prop1);
+		_GetSignals()->OnProp1Changed.Broadcast(Prop1);
 	}
 
 	const bool bProp2Changed = fields.contains("prop2") && (Prop2 != fields["prop2"].get<int32>());
 	if (bProp2Changed)
 	{
 		Prop2 = fields["prop2"].get<int32>();
-		Execute__GetSignals(this)->OnProp2Changed.Broadcast(Prop2);
+		_GetSignals()->OnProp2Changed.Broadcast(Prop2);
 	}
 
 	const bool bProp3Changed = fields.contains("prop3") && (Prop3 != fields["prop3"].get<int32>());
 	if (bProp3Changed)
 	{
 		Prop3 = fields["prop3"].get<int32>();
-		Execute__GetSignals(this)->OnProp3Changed.Broadcast(Prop3);
+		_GetSignals()->OnProp3Changed.Broadcast(Prop3);
 	}
 
 	const bool bProp4Changed = fields.contains("prop4") && (Prop4 != fields["prop4"].get<int32>());
 	if (bProp4Changed)
 	{
 		Prop4 = fields["prop4"].get<int32>();
-		Execute__GetSignals(this)->OnProp4Changed.Broadcast(Prop4);
+		_GetSignals()->OnProp4Changed.Broadcast(Prop4);
 	}
 }
 
@@ -430,7 +430,7 @@ void UTestbed2ManyParamInterfaceOLinkClient::emitSignal(const std::string& signa
 	if (signalName == "sig1")
 	{
 		int32 outParam1 = args[0].get<int32>();
-		Execute__GetSignals(this)->OnSig1Signal.Broadcast(outParam1);
+		_GetSignals()->OnSig1Signal.Broadcast(outParam1);
 		return;
 	}
 
@@ -438,7 +438,7 @@ void UTestbed2ManyParamInterfaceOLinkClient::emitSignal(const std::string& signa
 	{
 		int32 outParam1 = args[0].get<int32>();
 		int32 outParam2 = args[1].get<int32>();
-		Execute__GetSignals(this)->OnSig2Signal.Broadcast(outParam1, outParam2);
+		_GetSignals()->OnSig2Signal.Broadcast(outParam1, outParam2);
 		return;
 	}
 
@@ -447,7 +447,7 @@ void UTestbed2ManyParamInterfaceOLinkClient::emitSignal(const std::string& signa
 		int32 outParam1 = args[0].get<int32>();
 		int32 outParam2 = args[1].get<int32>();
 		int32 outParam3 = args[2].get<int32>();
-		Execute__GetSignals(this)->OnSig3Signal.Broadcast(outParam1, outParam2, outParam3);
+		_GetSignals()->OnSig3Signal.Broadcast(outParam1, outParam2, outParam3);
 		return;
 	}
 
@@ -457,7 +457,7 @@ void UTestbed2ManyParamInterfaceOLinkClient::emitSignal(const std::string& signa
 		int32 outParam2 = args[1].get<int32>();
 		int32 outParam3 = args[2].get<int32>();
 		int32 outParam4 = args[3].get<int32>();
-		Execute__GetSignals(this)->OnSig4Signal.Broadcast(outParam1, outParam2, outParam3, outParam4);
+		_GetSignals()->OnSig4Signal.Broadcast(outParam1, outParam2, outParam3, outParam4);
 		return;
 	}
 }
