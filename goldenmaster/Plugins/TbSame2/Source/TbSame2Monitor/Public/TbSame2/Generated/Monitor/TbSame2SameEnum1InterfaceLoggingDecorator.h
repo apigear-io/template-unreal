@@ -42,12 +42,12 @@ public:
 	void Deinitialize() override;
 
 	// properties
-	ETbSame2Enum1 GetProp1_Implementation() const override;
+	ETbSame2Enum1 GetProp1() const override;
 
-	void SetProp1_Implementation(ETbSame2Enum1 InProp1) override;
+	void SetProp1(ETbSame2Enum1 InProp1) override;
 
 	// operations
-	ETbSame2Enum1 Func1_Implementation(ETbSame2Enum1 Param1) override;
+	ETbSame2Enum1 Func1(ETbSame2Enum1 Param1) override;
 
 private:
 	/** The connection to the service backend. */

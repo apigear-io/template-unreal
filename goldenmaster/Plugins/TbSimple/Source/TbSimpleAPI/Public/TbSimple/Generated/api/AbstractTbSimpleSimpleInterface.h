@@ -38,59 +38,59 @@ public:
 	virtual void Deinitialize() override;
 
 	// signals
-	virtual UTbSimpleSimpleInterfaceSignals* _GetSignals_Implementation() override;
+	virtual UTbSimpleSimpleInterfaceSignals* _GetSignals() override;
 
 	// methods
-	virtual void FuncNoReturnValue_Implementation(bool bParamBool) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::FuncNoReturnValue_Implementation, return;);
+	virtual void FuncNoReturnValue(bool bParamBool) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::FuncNoReturnValue, return;);
 
-	virtual void FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool) override;
-	virtual bool FuncBool_Implementation(bool bParamBool) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::FuncBool_Implementation, return false;);
+	virtual void FuncBoolAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool) override;
+	virtual bool FuncBool(bool bParamBool) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::FuncBool, return false;);
 
-	virtual void FuncIntAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 ParamInt) override;
-	virtual int32 FuncInt_Implementation(int32 ParamInt) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::FuncInt_Implementation, return 0;);
+	virtual void FuncIntAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 ParamInt) override;
+	virtual int32 FuncInt(int32 ParamInt) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::FuncInt, return 0;);
 
-	virtual void FuncInt32Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 ParamInt32) override;
-	virtual int32 FuncInt32_Implementation(int32 ParamInt32) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::FuncInt32_Implementation, return 0;);
+	virtual void FuncInt32Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 ParamInt32) override;
+	virtual int32 FuncInt32(int32 ParamInt32) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::FuncInt32, return 0;);
 
-	virtual void FuncInt64Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int64& Result, int64 ParamInt64) override;
-	virtual int64 FuncInt64_Implementation(int64 ParamInt64) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::FuncInt64_Implementation, return 0LL;);
+	virtual void FuncInt64Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int64& Result, int64 ParamInt64) override;
+	virtual int64 FuncInt64(int64 ParamInt64) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::FuncInt64, return 0LL;);
 
-	virtual void FuncFloatAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, float& Result, float ParamFloat) override;
-	virtual float FuncFloat_Implementation(float ParamFloat) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::FuncFloat_Implementation, return 0.0f;);
+	virtual void FuncFloatAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, float& Result, float ParamFloat) override;
+	virtual float FuncFloat(float ParamFloat) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::FuncFloat, return 0.0f;);
 
-	virtual void FuncFloat32Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, float& Result, float ParamFloat32) override;
-	virtual float FuncFloat32_Implementation(float ParamFloat32) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::FuncFloat32_Implementation, return 0.0f;);
+	virtual void FuncFloat32Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, float& Result, float ParamFloat32) override;
+	virtual float FuncFloat32(float ParamFloat32) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::FuncFloat32, return 0.0f;);
 
-	virtual void FuncFloat64Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, double& Result, double ParamFloat) override;
-	virtual double FuncFloat64_Implementation(double ParamFloat) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::FuncFloat64_Implementation, return 0.0;);
+	virtual void FuncFloat64Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, double& Result, double ParamFloat) override;
+	virtual double FuncFloat64(double ParamFloat) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::FuncFloat64, return 0.0;);
 
-	virtual void FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FString& Result, const FString& ParamString) override;
-	virtual FString FuncString_Implementation(const FString& ParamString) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::FuncString_Implementation, return FString(););
+	virtual void FuncStringAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FString& Result, const FString& ParamString) override;
+	virtual FString FuncString(const FString& ParamString) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::FuncString, return FString(););
 
 	// properties
-	virtual bool GetPropBool_Implementation() const override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::GetPropBool_Implementation, return false;);
-	virtual void SetPropBool_Implementation(bool bInPropBool) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::SetPropBool_Implementation, return;);
+	virtual bool GetPropBool() const override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::GetPropBool, return false;);
+	virtual void SetPropBool(bool bInPropBool) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::SetPropBool, return;);
 
-	virtual int32 GetPropInt_Implementation() const override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::GetPropInt_Implementation, return 0;);
-	virtual void SetPropInt_Implementation(int32 InPropInt) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::SetPropInt_Implementation, return;);
+	virtual int32 GetPropInt() const override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::GetPropInt, return 0;);
+	virtual void SetPropInt(int32 InPropInt) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::SetPropInt, return;);
 
-	virtual int32 GetPropInt32_Implementation() const override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::GetPropInt32_Implementation, return 0;);
-	virtual void SetPropInt32_Implementation(int32 InPropInt32) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::SetPropInt32_Implementation, return;);
+	virtual int32 GetPropInt32() const override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::GetPropInt32, return 0;);
+	virtual void SetPropInt32(int32 InPropInt32) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::SetPropInt32, return;);
 
-	virtual int64 GetPropInt64_Implementation() const override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::GetPropInt64_Implementation, return 0LL;);
-	virtual void SetPropInt64_Implementation(int64 InPropInt64) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::SetPropInt64_Implementation, return;);
+	virtual int64 GetPropInt64() const override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::GetPropInt64, return 0LL;);
+	virtual void SetPropInt64(int64 InPropInt64) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::SetPropInt64, return;);
 
-	virtual float GetPropFloat_Implementation() const override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::GetPropFloat_Implementation, return 0.0f;);
-	virtual void SetPropFloat_Implementation(float InPropFloat) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::SetPropFloat_Implementation, return;);
+	virtual float GetPropFloat() const override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::GetPropFloat, return 0.0f;);
+	virtual void SetPropFloat(float InPropFloat) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::SetPropFloat, return;);
 
-	virtual float GetPropFloat32_Implementation() const override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::GetPropFloat32_Implementation, return 0.0f;);
-	virtual void SetPropFloat32_Implementation(float InPropFloat32) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::SetPropFloat32_Implementation, return;);
+	virtual float GetPropFloat32() const override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::GetPropFloat32, return 0.0f;);
+	virtual void SetPropFloat32(float InPropFloat32) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::SetPropFloat32, return;);
 
-	virtual double GetPropFloat64_Implementation() const override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::GetPropFloat64_Implementation, return 0.0;);
-	virtual void SetPropFloat64_Implementation(double InPropFloat64) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::SetPropFloat64_Implementation, return;);
+	virtual double GetPropFloat64() const override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::GetPropFloat64, return 0.0;);
+	virtual void SetPropFloat64(double InPropFloat64) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::SetPropFloat64, return;);
 
-	virtual FString GetPropString_Implementation() const override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::GetPropString_Implementation, return FString(););
-	virtual void SetPropString_Implementation(const FString& InPropString) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::SetPropString_Implementation, return;);
+	virtual FString GetPropString() const override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::GetPropString, return FString(););
+	virtual void SetPropString(const FString& InPropString) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::SetPropString, return;);
 
 	virtual bool IsInitialized() const;
 

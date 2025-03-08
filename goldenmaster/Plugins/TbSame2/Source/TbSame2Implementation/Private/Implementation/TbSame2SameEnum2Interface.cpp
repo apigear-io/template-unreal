@@ -18,41 +18,41 @@ limitations under the License.
 #include "TbSame2/Implementation/TbSame2SameEnum2Interface.h"
 
 UTbSame2SameEnum2Interface::~UTbSame2SameEnum2Interface() = default;
-ETbSame2Enum1 UTbSame2SameEnum2Interface::GetProp1_Implementation() const
+ETbSame2Enum1 UTbSame2SameEnum2Interface::GetProp1() const
 {
 	return Prop1;
 }
 
-void UTbSame2SameEnum2Interface::SetProp1_Implementation(ETbSame2Enum1 InProp1)
+void UTbSame2SameEnum2Interface::SetProp1(ETbSame2Enum1 InProp1)
 {
 	if (Prop1 != InProp1)
 	{
 		Prop1 = InProp1;
-		Execute__GetSignals(this)->OnProp1Changed.Broadcast(Prop1);
+		_GetSignals()->OnProp1Changed.Broadcast(Prop1);
 	}
 }
-ETbSame2Enum2 UTbSame2SameEnum2Interface::GetProp2_Implementation() const
+ETbSame2Enum2 UTbSame2SameEnum2Interface::GetProp2() const
 {
 	return Prop2;
 }
 
-void UTbSame2SameEnum2Interface::SetProp2_Implementation(ETbSame2Enum2 InProp2)
+void UTbSame2SameEnum2Interface::SetProp2(ETbSame2Enum2 InProp2)
 {
 	if (Prop2 != InProp2)
 	{
 		Prop2 = InProp2;
-		Execute__GetSignals(this)->OnProp2Changed.Broadcast(Prop2);
+		_GetSignals()->OnProp2Changed.Broadcast(Prop2);
 	}
 }
 
-ETbSame2Enum1 UTbSame2SameEnum2Interface::Func1_Implementation(ETbSame2Enum1 Param1)
+ETbSame2Enum1 UTbSame2SameEnum2Interface::Func1(ETbSame2Enum1 Param1)
 {
 	(void)Param1;
 	// do business logic here
 	return ETbSame2Enum1::TS2E1_VALUE1;
 }
 
-ETbSame2Enum1 UTbSame2SameEnum2Interface::Func2_Implementation(ETbSame2Enum1 Param1, ETbSame2Enum2 Param2)
+ETbSame2Enum1 UTbSame2SameEnum2Interface::Func2(ETbSame2Enum1 Param1, ETbSame2Enum2 Param2)
 {
 	(void)Param1;
 	(void)Param2;

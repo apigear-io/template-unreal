@@ -136,7 +136,7 @@ void UTbSimpleNoPropertiesInterfaceOLinkClient::UseConnection(TScriptInterface<I
 	Connection = InConnection;
 }
 
-void UTbSimpleNoPropertiesInterfaceOLinkClient::FuncVoid_Implementation()
+void UTbSimpleNoPropertiesInterfaceOLinkClient::FuncVoid()
 {
 	if (!m_sink->IsReady())
 	{
@@ -149,7 +149,7 @@ void UTbSimpleNoPropertiesInterfaceOLinkClient::FuncVoid_Implementation()
 	m_sink->GetNode()->invokeRemote(memberId, {}, GetNoPropertiesInterfaceStateFunc);
 }
 
-bool UTbSimpleNoPropertiesInterfaceOLinkClient::FuncBool_Implementation(bool bParamBool)
+bool UTbSimpleNoPropertiesInterfaceOLinkClient::FuncBool(bool bParamBool)
 {
 	if (!m_sink->IsReady())
 	{
@@ -193,14 +193,14 @@ void UTbSimpleNoPropertiesInterfaceOLinkClient::emitSignal(const std::string& si
 {
 	if (signalName == "sigVoid")
 	{
-		Execute__GetSignals(this)->OnSigVoidSignal.Broadcast();
+		_GetSignals()->OnSigVoidSignal.Broadcast();
 		return;
 	}
 
 	if (signalName == "sigBool")
 	{
 		bool boutParamBool = args[0].get<bool>();
-		Execute__GetSignals(this)->OnSigBoolSignal.Broadcast(boutParamBool);
+		_GetSignals()->OnSigBoolSignal.Broadcast(boutParamBool);
 		return;
 	}
 }

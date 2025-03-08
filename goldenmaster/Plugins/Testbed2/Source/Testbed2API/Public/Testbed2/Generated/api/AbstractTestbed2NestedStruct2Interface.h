@@ -38,21 +38,21 @@ public:
 	virtual void Deinitialize() override;
 
 	// signals
-	virtual UTestbed2NestedStruct2InterfaceSignals* _GetSignals_Implementation() override;
+	virtual UTestbed2NestedStruct2InterfaceSignals* _GetSignals() override;
 
 	// methods
-	virtual void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1) override;
-	virtual FTestbed2NestedStruct1 Func1_Implementation(const FTestbed2NestedStruct1& Param1) override PURE_VIRTUAL(UAbstractTestbed2NestedStruct2Interface::Func1_Implementation, return FTestbed2NestedStruct1(););
+	virtual void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1) override;
+	virtual FTestbed2NestedStruct1 Func1(const FTestbed2NestedStruct1& Param1) override PURE_VIRTUAL(UAbstractTestbed2NestedStruct2Interface::Func1, return FTestbed2NestedStruct1(););
 
-	virtual void Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2) override;
-	virtual FTestbed2NestedStruct1 Func2_Implementation(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2) override PURE_VIRTUAL(UAbstractTestbed2NestedStruct2Interface::Func2_Implementation, return FTestbed2NestedStruct1(););
+	virtual void Func2Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2) override;
+	virtual FTestbed2NestedStruct1 Func2(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2) override PURE_VIRTUAL(UAbstractTestbed2NestedStruct2Interface::Func2, return FTestbed2NestedStruct1(););
 
 	// properties
-	virtual FTestbed2NestedStruct1 GetProp1_Implementation() const override PURE_VIRTUAL(UAbstractTestbed2NestedStruct2Interface::GetProp1_Implementation, return FTestbed2NestedStruct1(););
-	virtual void SetProp1_Implementation(const FTestbed2NestedStruct1& InProp1) override PURE_VIRTUAL(UAbstractTestbed2NestedStruct2Interface::SetProp1_Implementation, return;);
+	virtual FTestbed2NestedStruct1 GetProp1() const override PURE_VIRTUAL(UAbstractTestbed2NestedStruct2Interface::GetProp1, return FTestbed2NestedStruct1(););
+	virtual void SetProp1(const FTestbed2NestedStruct1& InProp1) override PURE_VIRTUAL(UAbstractTestbed2NestedStruct2Interface::SetProp1, return;);
 
-	virtual FTestbed2NestedStruct2 GetProp2_Implementation() const override PURE_VIRTUAL(UAbstractTestbed2NestedStruct2Interface::GetProp2_Implementation, return FTestbed2NestedStruct2(););
-	virtual void SetProp2_Implementation(const FTestbed2NestedStruct2& InProp2) override PURE_VIRTUAL(UAbstractTestbed2NestedStruct2Interface::SetProp2_Implementation, return;);
+	virtual FTestbed2NestedStruct2 GetProp2() const override PURE_VIRTUAL(UAbstractTestbed2NestedStruct2Interface::GetProp2, return FTestbed2NestedStruct2(););
+	virtual void SetProp2(const FTestbed2NestedStruct2& InProp2) override PURE_VIRTUAL(UAbstractTestbed2NestedStruct2Interface::SetProp2, return;);
 
 	virtual bool IsInitialized() const;
 

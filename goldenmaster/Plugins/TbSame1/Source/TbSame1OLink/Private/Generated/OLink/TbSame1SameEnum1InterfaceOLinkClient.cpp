@@ -146,12 +146,12 @@ void UTbSame1SameEnum1InterfaceOLinkClient::UseConnection(TScriptInterface<IApiG
 	Connection = InConnection;
 }
 
-ETbSame1Enum1 UTbSame1SameEnum1InterfaceOLinkClient::GetProp1_Implementation() const
+ETbSame1Enum1 UTbSame1SameEnum1InterfaceOLinkClient::GetProp1() const
 {
 	return Prop1;
 }
 
-void UTbSame1SameEnum1InterfaceOLinkClient::SetProp1_Implementation(ETbSame1Enum1 InProp1)
+void UTbSame1SameEnum1InterfaceOLinkClient::SetProp1(ETbSame1Enum1 InProp1)
 {
 	if (!m_sink->IsReady())
 	{
@@ -160,7 +160,7 @@ void UTbSame1SameEnum1InterfaceOLinkClient::SetProp1_Implementation(ETbSame1Enum
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetProp1_Implementation() == InProp1)
+	if (GetProp1() == InProp1)
 	{
 		return;
 	}
@@ -175,7 +175,7 @@ void UTbSame1SameEnum1InterfaceOLinkClient::SetProp1_Implementation(ETbSame1Enum
 	_SentData->Prop1 = InProp1;
 }
 
-ETbSame1Enum1 UTbSame1SameEnum1InterfaceOLinkClient::Func1_Implementation(ETbSame1Enum1 Param1)
+ETbSame1Enum1 UTbSame1SameEnum1InterfaceOLinkClient::Func1(ETbSame1Enum1 Param1)
 {
 	if (!m_sink->IsReady())
 	{
@@ -217,7 +217,7 @@ void UTbSame1SameEnum1InterfaceOLinkClient::applyState(const nlohmann::json& fie
 	if (bProp1Changed)
 	{
 		Prop1 = fields["prop1"].get<ETbSame1Enum1>();
-		Execute__GetSignals(this)->OnProp1Changed.Broadcast(Prop1);
+		_GetSignals()->OnProp1Changed.Broadcast(Prop1);
 	}
 }
 
@@ -226,7 +226,7 @@ void UTbSame1SameEnum1InterfaceOLinkClient::emitSignal(const std::string& signal
 	if (signalName == "sig1")
 	{
 		ETbSame1Enum1 outParam1 = args[0].get<ETbSame1Enum1>();
-		Execute__GetSignals(this)->OnSig1Signal.Broadcast(outParam1);
+		_GetSignals()->OnSig1Signal.Broadcast(outParam1);
 		return;
 	}
 }

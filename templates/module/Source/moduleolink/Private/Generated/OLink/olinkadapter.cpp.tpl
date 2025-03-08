@@ -56,7 +56,7 @@ void {{$Class}}::setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{Cam
 	if (BackendService != nullptr)
 	{
 {{- if or (len .Interface.Properties) (.Interface.Signals) }}
-		U{{$Iface}}Signals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+		U{{$Iface}}Signals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service {{$Iface}}"));
 {{- end }}
 {{- range .Interface.Properties }}
@@ -74,7 +74,7 @@ void {{$Class}}::setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{Cam
 {{- $Service := printf "I%sInterface" $Iface }}
 	BackendService = InService;
 {{- if or (len .Interface.Properties) (.Interface.Signals) }}
-	U{{$Iface}}Signals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+	U{{$Iface}}Signals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service {{$Iface}}"));
 {{- end }}
 	// connect property changed signals or simple events

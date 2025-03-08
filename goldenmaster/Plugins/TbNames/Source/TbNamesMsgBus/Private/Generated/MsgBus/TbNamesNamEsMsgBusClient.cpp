@@ -178,21 +178,21 @@ void UTbNamesNamEsMsgBusClient::OnConnectionInit(const FTbNamesNamEsInitMessage&
 	if (bbSwitchChanged)
 	{
 		bSwitch = InMessage.bSwitch;
-		Execute__GetSignals(this)->OnSwitchChanged.Broadcast(bSwitch);
+		_GetSignals()->OnSwitchChanged.Broadcast(bSwitch);
 	}
 
 	const bool bSomePropertyChanged = InMessage.SomeProperty != SomeProperty;
 	if (bSomePropertyChanged)
 	{
 		SomeProperty = InMessage.SomeProperty;
-		Execute__GetSignals(this)->OnSomePropertyChanged.Broadcast(SomeProperty);
+		_GetSignals()->OnSomePropertyChanged.Broadcast(SomeProperty);
 	}
 
 	const bool bSomePoperty2Changed = InMessage.SomePoperty2 != SomePoperty2;
 	if (bSomePoperty2Changed)
 	{
 		SomePoperty2 = InMessage.SomePoperty2;
-		Execute__GetSignals(this)->OnSomePoperty2Changed.Broadcast(SomePoperty2);
+		_GetSignals()->OnSomePoperty2Changed.Broadcast(SomePoperty2);
 	}
 
 	_ConnectionStatusChanged.Broadcast(true);
@@ -284,12 +284,12 @@ void UTbNamesNamEsMsgBusClient::OnServiceClosedConnection(const FTbNamesNamEsSer
 	_ConnectionStatusChanged.Broadcast(false);
 }
 
-bool UTbNamesNamEsMsgBusClient::GetSwitch_Implementation() const
+bool UTbNamesNamEsMsgBusClient::GetSwitch() const
 {
 	return bSwitch;
 }
 
-void UTbNamesNamEsMsgBusClient::SetSwitch_Implementation(bool bInSwitch)
+void UTbNamesNamEsMsgBusClient::SetSwitch(bool bInSwitch)
 {
 	if (!_IsConnected())
 	{
@@ -298,7 +298,7 @@ void UTbNamesNamEsMsgBusClient::SetSwitch_Implementation(bool bInSwitch)
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetSwitch_Implementation() == bInSwitch)
+	if (GetSwitch() == bInSwitch)
 	{
 		return;
 	}
@@ -320,12 +320,12 @@ void UTbNamesNamEsMsgBusClient::SetSwitch_Implementation(bool bInSwitch)
 	_SentData->bSwitch = bInSwitch;
 }
 
-int32 UTbNamesNamEsMsgBusClient::GetSomeProperty_Implementation() const
+int32 UTbNamesNamEsMsgBusClient::GetSomeProperty() const
 {
 	return SomeProperty;
 }
 
-void UTbNamesNamEsMsgBusClient::SetSomeProperty_Implementation(int32 InSomeProperty)
+void UTbNamesNamEsMsgBusClient::SetSomeProperty(int32 InSomeProperty)
 {
 	if (!_IsConnected())
 	{
@@ -334,7 +334,7 @@ void UTbNamesNamEsMsgBusClient::SetSomeProperty_Implementation(int32 InSomePrope
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetSomeProperty_Implementation() == InSomeProperty)
+	if (GetSomeProperty() == InSomeProperty)
 	{
 		return;
 	}
@@ -356,12 +356,12 @@ void UTbNamesNamEsMsgBusClient::SetSomeProperty_Implementation(int32 InSomePrope
 	_SentData->SomeProperty = InSomeProperty;
 }
 
-int32 UTbNamesNamEsMsgBusClient::GetSomePoperty2_Implementation() const
+int32 UTbNamesNamEsMsgBusClient::GetSomePoperty2() const
 {
 	return SomePoperty2;
 }
 
-void UTbNamesNamEsMsgBusClient::SetSomePoperty2_Implementation(int32 InSomePoperty2)
+void UTbNamesNamEsMsgBusClient::SetSomePoperty2(int32 InSomePoperty2)
 {
 	if (!_IsConnected())
 	{
@@ -370,7 +370,7 @@ void UTbNamesNamEsMsgBusClient::SetSomePoperty2_Implementation(int32 InSomePoper
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetSomePoperty2_Implementation() == InSomePoperty2)
+	if (GetSomePoperty2() == InSomePoperty2)
 	{
 		return;
 	}
@@ -392,7 +392,7 @@ void UTbNamesNamEsMsgBusClient::SetSomePoperty2_Implementation(int32 InSomePoper
 	_SentData->SomePoperty2 = InSomePoperty2;
 }
 
-void UTbNamesNamEsMsgBusClient::SomeFunction_Implementation(bool bInSomeParam)
+void UTbNamesNamEsMsgBusClient::SomeFunction(bool bInSomeParam)
 {
 	if (!_IsConnected())
 	{
@@ -413,7 +413,7 @@ void UTbNamesNamEsMsgBusClient::SomeFunction_Implementation(bool bInSomeParam)
 	return;
 }
 
-void UTbNamesNamEsMsgBusClient::SomeFunction2_Implementation(bool bInSomeParam)
+void UTbNamesNamEsMsgBusClient::SomeFunction2(bool bInSomeParam)
 {
 	if (!_IsConnected())
 	{
@@ -442,7 +442,7 @@ void UTbNamesNamEsMsgBusClient::OnSomeSignal(const FTbNamesNamEsSomeSignalSignal
 		return;
 	}
 
-	Execute__GetSignals(this)->OnSomeSignalSignal.Broadcast(InMessage.bSomeParam);
+	_GetSignals()->OnSomeSignalSignal.Broadcast(InMessage.bSomeParam);
 	return;
 }
 
@@ -454,7 +454,7 @@ void UTbNamesNamEsMsgBusClient::OnSomeSignal2(const FTbNamesNamEsSomeSignal2Sign
 		return;
 	}
 
-	Execute__GetSignals(this)->OnSomeSignal2Signal.Broadcast(InMessage.bSomeParam);
+	_GetSignals()->OnSomeSignal2Signal.Broadcast(InMessage.bSomeParam);
 	return;
 }
 
@@ -470,7 +470,7 @@ void UTbNamesNamEsMsgBusClient::OnSwitchChanged(const FTbNamesNamEsSwitchChanged
 	if (bbSwitchChanged)
 	{
 		bSwitch = InMessage.bSwitch;
-		Execute__GetSignals(this)->OnSwitchChanged.Broadcast(bSwitch);
+		_GetSignals()->OnSwitchChanged.Broadcast(bSwitch);
 	}
 }
 
@@ -486,7 +486,7 @@ void UTbNamesNamEsMsgBusClient::OnSomePropertyChanged(const FTbNamesNamEsSomePro
 	if (bSomePropertyChanged)
 	{
 		SomeProperty = InMessage.SomeProperty;
-		Execute__GetSignals(this)->OnSomePropertyChanged.Broadcast(SomeProperty);
+		_GetSignals()->OnSomePropertyChanged.Broadcast(SomeProperty);
 	}
 }
 
@@ -502,7 +502,7 @@ void UTbNamesNamEsMsgBusClient::OnSomePoperty2Changed(const FTbNamesNamEsSomePop
 	if (bSomePoperty2Changed)
 	{
 		SomePoperty2 = InMessage.SomePoperty2;
-		Execute__GetSignals(this)->OnSomePoperty2Changed.Broadcast(SomePoperty2);
+		_GetSignals()->OnSomePoperty2Changed.Broadcast(SomePoperty2);
 	}
 }
 

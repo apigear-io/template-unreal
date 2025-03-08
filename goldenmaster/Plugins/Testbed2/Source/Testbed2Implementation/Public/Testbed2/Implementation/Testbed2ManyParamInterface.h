@@ -29,24 +29,24 @@ public:
 	virtual ~UTestbed2ManyParamInterface();
 
 	// properties
-	int32 GetProp1_Implementation() const override;
-	void SetProp1_Implementation(int32 Prop1) override;
+	int32 GetProp1() const override;
+	void SetProp1(int32 Prop1) override;
 
-	int32 GetProp2_Implementation() const override;
-	void SetProp2_Implementation(int32 Prop2) override;
+	int32 GetProp2() const override;
+	void SetProp2(int32 Prop2) override;
 
-	int32 GetProp3_Implementation() const override;
-	void SetProp3_Implementation(int32 Prop3) override;
+	int32 GetProp3() const override;
+	void SetProp3(int32 Prop3) override;
 
-	int32 GetProp4_Implementation() const override;
-	void SetProp4_Implementation(int32 Prop4) override;
+	int32 GetProp4() const override;
+	void SetProp4(int32 Prop4) override;
 
 	// operations
-	int32 Func1_Implementation(int32 Param1) override;
+	int32 Func1(int32 Param1) override;
 
-	int32 Func2_Implementation(int32 Param1, int32 Param2) override;
+	int32 Func2(int32 Param1, int32 Param2) override;
 
-	int32 Func3_Implementation(int32 Param1, int32 Param2, int32 Param3) override;
+	int32 Func3(int32 Param1, int32 Param2, int32 Param3) override;
 
-	int32 Func4_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4) override;
+	int32 Func4(int32 Param1, int32 Param2, int32 Param3, int32 Param4) override;
 };

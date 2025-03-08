@@ -46,19 +46,19 @@ public:
 	void Deinitialize() override;
 
 	// properties
-	bool GetSwitch_Implementation() const override;
-	void SetSwitch_Implementation(bool bSwitch) override;
+	bool GetSwitch() const override;
+	void SetSwitch(bool bSwitch) override;
 
-	int32 GetSomeProperty_Implementation() const override;
-	void SetSomeProperty_Implementation(int32 SomeProperty) override;
+	int32 GetSomeProperty() const override;
+	void SetSomeProperty(int32 SomeProperty) override;
 
-	int32 GetSomePoperty2_Implementation() const override;
-	void SetSomePoperty2_Implementation(int32 SomePoperty2) override;
+	int32 GetSomePoperty2() const override;
+	void SetSomePoperty2(int32 SomePoperty2) override;
 
 	// operations
-	void SomeFunction_Implementation(bool bSomeParam) override;
+	void SomeFunction(bool bSomeParam) override;
 
-	void SomeFunction2_Implementation(bool bSomeParam) override;
+	void SomeFunction2(bool bSomeParam) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbNames|NamEs")
 	void UseConnection(TScriptInterface<class IApiGearConnection> InConnection);

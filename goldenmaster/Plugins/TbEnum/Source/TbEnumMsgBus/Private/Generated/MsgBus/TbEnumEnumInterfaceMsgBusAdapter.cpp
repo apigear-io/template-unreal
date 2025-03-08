@@ -114,7 +114,7 @@ void UTbEnumEnumInterfaceMsgBusAdapter::_setBackendService(TScriptInterface<ITbE
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		UTbEnumEnumInterfaceSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+		UTbEnumEnumInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbEnumEnumInterface"));
 		BackendSignals->OnProp0Changed.RemoveDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnProp0Changed);
 		BackendSignals->OnProp1Changed.RemoveDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnProp1Changed);
@@ -131,7 +131,7 @@ void UTbEnumEnumInterfaceMsgBusAdapter::_setBackendService(TScriptInterface<ITbE
 
 	// subscribe to new backend
 	BackendService = InService;
-	UTbEnumEnumInterfaceSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+	UTbEnumEnumInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service TbEnumEnumInterface"));
 	// connect property changed signals or simple events
 	BackendSignals->OnProp0Changed.AddDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnProp0Changed);
@@ -150,10 +150,10 @@ void UTbEnumEnumInterfaceMsgBusAdapter::OnNewClientDiscovered(const FTbEnumEnumI
 
 	auto msg = new FTbEnumEnumInterfaceInitMessage();
 	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
-	msg->Prop0 = BackendService->Execute_GetProp0(BackendService.GetObject());
-	msg->Prop1 = BackendService->Execute_GetProp1(BackendService.GetObject());
-	msg->Prop2 = BackendService->Execute_GetProp2(BackendService.GetObject());
-	msg->Prop3 = BackendService->Execute_GetProp3(BackendService.GetObject());
+	msg->Prop0 = BackendService->GetProp0();
+	msg->Prop1 = BackendService->GetProp1();
+	msg->Prop2 = BackendService->GetProp2();
+	msg->Prop3 = BackendService->GetProp3();
 
 	if (TbEnumEnumInterfaceMsgBusEndpoint.IsValid())
 	{
@@ -234,7 +234,7 @@ void UTbEnumEnumInterfaceMsgBusAdapter::OnFunc0Request(const FTbEnumEnumInterfac
 {
 	auto msg = new FTbEnumEnumInterfaceFunc0ReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
-	msg->Result = BackendService->Execute_Func0(BackendService.GetObject(), InMessage.Param0);
+	msg->Result = BackendService->Func0(InMessage.Param0);
 
 	if (TbEnumEnumInterfaceMsgBusEndpoint.IsValid())
 	{
@@ -250,7 +250,7 @@ void UTbEnumEnumInterfaceMsgBusAdapter::OnFunc1Request(const FTbEnumEnumInterfac
 {
 	auto msg = new FTbEnumEnumInterfaceFunc1ReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
-	msg->Result = BackendService->Execute_Func1(BackendService.GetObject(), InMessage.Param1);
+	msg->Result = BackendService->Func1(InMessage.Param1);
 
 	if (TbEnumEnumInterfaceMsgBusEndpoint.IsValid())
 	{
@@ -266,7 +266,7 @@ void UTbEnumEnumInterfaceMsgBusAdapter::OnFunc2Request(const FTbEnumEnumInterfac
 {
 	auto msg = new FTbEnumEnumInterfaceFunc2ReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
-	msg->Result = BackendService->Execute_Func2(BackendService.GetObject(), InMessage.Param2);
+	msg->Result = BackendService->Func2(InMessage.Param2);
 
 	if (TbEnumEnumInterfaceMsgBusEndpoint.IsValid())
 	{
@@ -282,7 +282,7 @@ void UTbEnumEnumInterfaceMsgBusAdapter::OnFunc3Request(const FTbEnumEnumInterfac
 {
 	auto msg = new FTbEnumEnumInterfaceFunc3ReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
-	msg->Result = BackendService->Execute_Func3(BackendService.GetObject(), InMessage.Param3);
+	msg->Result = BackendService->Func3(InMessage.Param3);
 
 	if (TbEnumEnumInterfaceMsgBusEndpoint.IsValid())
 	{
@@ -364,7 +364,7 @@ void UTbEnumEnumInterfaceMsgBusAdapter::OnSig3(ETbEnumEnum3 InParam3)
 
 void UTbEnumEnumInterfaceMsgBusAdapter::OnSetProp0Request(const FTbEnumEnumInterfaceSetProp0RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
-	BackendService->Execute_SetProp0(BackendService.GetObject(), InMessage.Prop0);
+	BackendService->SetProp0(InMessage.Prop0);
 }
 
 void UTbEnumEnumInterfaceMsgBusAdapter::OnProp0Changed(ETbEnumEnum0 InProp0)
@@ -387,7 +387,7 @@ void UTbEnumEnumInterfaceMsgBusAdapter::OnProp0Changed(ETbEnumEnum0 InProp0)
 
 void UTbEnumEnumInterfaceMsgBusAdapter::OnSetProp1Request(const FTbEnumEnumInterfaceSetProp1RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
-	BackendService->Execute_SetProp1(BackendService.GetObject(), InMessage.Prop1);
+	BackendService->SetProp1(InMessage.Prop1);
 }
 
 void UTbEnumEnumInterfaceMsgBusAdapter::OnProp1Changed(ETbEnumEnum1 InProp1)
@@ -410,7 +410,7 @@ void UTbEnumEnumInterfaceMsgBusAdapter::OnProp1Changed(ETbEnumEnum1 InProp1)
 
 void UTbEnumEnumInterfaceMsgBusAdapter::OnSetProp2Request(const FTbEnumEnumInterfaceSetProp2RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
-	BackendService->Execute_SetProp2(BackendService.GetObject(), InMessage.Prop2);
+	BackendService->SetProp2(InMessage.Prop2);
 }
 
 void UTbEnumEnumInterfaceMsgBusAdapter::OnProp2Changed(ETbEnumEnum2 InProp2)
@@ -433,7 +433,7 @@ void UTbEnumEnumInterfaceMsgBusAdapter::OnProp2Changed(ETbEnumEnum2 InProp2)
 
 void UTbEnumEnumInterfaceMsgBusAdapter::OnSetProp3Request(const FTbEnumEnumInterfaceSetProp3RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
-	BackendService->Execute_SetProp3(BackendService.GetObject(), InMessage.Prop3);
+	BackendService->SetProp3(InMessage.Prop3);
 }
 
 void UTbEnumEnumInterfaceMsgBusAdapter::OnProp3Changed(ETbEnumEnum3 InProp3)

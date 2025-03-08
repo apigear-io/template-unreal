@@ -114,7 +114,7 @@ void {{$Class}}::_setBackendService(TScriptInterface<I{{$Iface}}Interface> InSer
 	if (BackendService != nullptr)
 	{
 {{- if or (len .Interface.Properties) (.Interface.Signals) }}
-		U{{$Iface}}Signals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+		U{{$Iface}}Signals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service {{$Iface}}"));
 {{- end }}
 {{- range .Interface.Properties }}
@@ -132,7 +132,7 @@ void {{$Class}}::_setBackendService(TScriptInterface<I{{$Iface}}Interface> InSer
 {{- $Service := printf "I%sInterface" $Iface }}
 	BackendService = InService;
 {{- if or (len .Interface.Properties) (.Interface.Signals) }}
-	U{{$Iface}}Signals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+	U{{$Iface}}Signals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service {{$Iface}}"));
 {{- end }}
 	// connect property changed signals or simple events
@@ -152,7 +152,7 @@ void {{$Class}}::OnNewClientDiscovered(const F{{$Iface}}DiscoveryMessage& /*InMe
 	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
 
 {{- range $i, $e := .Interface.Properties }}
-	msg->{{ueVar "" .}} = BackendService->Execute_Get{{Camel .Name}}(BackendService.GetObject());
+	msg->{{ueVar "" .}} = BackendService->Get{{Camel .Name}}();
 {{- end }}
 
 	if ({{$Iface}}MsgBusEndpoint.IsValid())
@@ -234,17 +234,17 @@ void {{$Class}}::_UpdateClientsConnected()
 void {{$Class}}::On{{Camel .Name}}Request(const F{{$Iface}}{{Camel .Name}}RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 {{- if .Return.IsVoid }}
-	BackendService->Execute_{{Camel .Name}}(BackendService.GetObject()
+	BackendService->{{Camel .Name}}(
 {{- range $i, $e := .Params -}}
-	, InMessage.{{ueVar "" .}}
+	{{ if $i }}, {{end}}InMessage.{{ueVar "" .}}
 {{- end -}}
 	);
 {{- else }}
 	auto msg = new F{{$Iface}}{{Camel .Name}}ReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
-	msg->Result = BackendService->Execute_{{Camel .Name}}(BackendService.GetObject()
+	msg->Result = BackendService->{{Camel .Name}}(
 {{- range $i, $e := .Params -}}
-	, InMessage.{{ueVar "" .}}
+	{{ if $i }}, {{end}}InMessage.{{ueVar "" .}}
 {{- end -}}
 	);
 
@@ -285,7 +285,7 @@ void {{$Class}}::On{{Camel .Name}}({{ueParams "In" .Params}})
 
 void {{$Class}}::OnSet{{Camel .Name}}Request(const F{{$Iface}}Set{{Camel .Name}}RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
-	BackendService->Execute_Set{{Camel .Name}}(BackendService.GetObject(), InMessage.{{ueVar "" .}});
+	BackendService->Set{{Camel .Name}}(InMessage.{{ueVar "" .}});
 }
 {{- end }}
 

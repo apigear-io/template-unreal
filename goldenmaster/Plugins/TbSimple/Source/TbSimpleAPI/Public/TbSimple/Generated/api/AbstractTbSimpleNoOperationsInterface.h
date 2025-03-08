@@ -38,16 +38,16 @@ public:
 	virtual void Deinitialize() override;
 
 	// signals
-	virtual UTbSimpleNoOperationsInterfaceSignals* _GetSignals_Implementation() override;
+	virtual UTbSimpleNoOperationsInterfaceSignals* _GetSignals() override;
 
 	// methods
 
 	// properties
-	virtual bool GetPropBool_Implementation() const override PURE_VIRTUAL(UAbstractTbSimpleNoOperationsInterface::GetPropBool_Implementation, return false;);
-	virtual void SetPropBool_Implementation(bool bInPropBool) override PURE_VIRTUAL(UAbstractTbSimpleNoOperationsInterface::SetPropBool_Implementation, return;);
+	virtual bool GetPropBool() const override PURE_VIRTUAL(UAbstractTbSimpleNoOperationsInterface::GetPropBool, return false;);
+	virtual void SetPropBool(bool bInPropBool) override PURE_VIRTUAL(UAbstractTbSimpleNoOperationsInterface::SetPropBool, return;);
 
-	virtual int32 GetPropInt_Implementation() const override PURE_VIRTUAL(UAbstractTbSimpleNoOperationsInterface::GetPropInt_Implementation, return 0;);
-	virtual void SetPropInt_Implementation(int32 InPropInt) override PURE_VIRTUAL(UAbstractTbSimpleNoOperationsInterface::SetPropInt_Implementation, return;);
+	virtual int32 GetPropInt() const override PURE_VIRTUAL(UAbstractTbSimpleNoOperationsInterface::GetPropInt, return 0;);
+	virtual void SetPropInt(int32 InPropInt) override PURE_VIRTUAL(UAbstractTbSimpleNoOperationsInterface::SetPropInt, return;);
 
 	virtual bool IsInitialized() const;
 

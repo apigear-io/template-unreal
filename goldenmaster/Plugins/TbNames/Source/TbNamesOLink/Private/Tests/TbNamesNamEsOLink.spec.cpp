@@ -84,63 +84,63 @@ void UTbNamesNamEsOLinkSpec::Define()
 		{
 		// Do implement test here
 		bool TestValue = false; // default value
-		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetSwitch(ImplFixture->GetImplementation().GetObject()), TestValue);
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetSwitch(), TestValue);
 	});
 
 	LatentIt("Property.Switch.Change", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		// Do implement test here
 		bool TestValue = false; // default value
-		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetSwitch(ImplFixture->GetImplementation().GetObject()), TestValue);
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetSwitch(), TestValue);
 
 		testDoneDelegate = TestDone;
-		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
+		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->_GetSignals();
 		TbNamesNamEsSignals->OnSwitchChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTbNamesNamEsOLinkHelper::SwitchPropertyCb);
 		// use different test value
 		TestValue = true;
-		ImplFixture->GetImplementation()->Execute_SetSwitch(ImplFixture->GetImplementation().GetObject(), TestValue);
+		ImplFixture->GetImplementation()->SetSwitch(TestValue);
 	});
 
 	It("Property.SomeProperty.Default", [this]()
 		{
 		// Do implement test here
 		int32 TestValue = 0; // default value
-		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetSomeProperty(ImplFixture->GetImplementation().GetObject()), TestValue);
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetSomeProperty(), TestValue);
 	});
 
 	LatentIt("Property.SomeProperty.Change", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		// Do implement test here
 		int32 TestValue = 0; // default value
-		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetSomeProperty(ImplFixture->GetImplementation().GetObject()), TestValue);
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetSomeProperty(), TestValue);
 
 		testDoneDelegate = TestDone;
-		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
+		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->_GetSignals();
 		TbNamesNamEsSignals->OnSomePropertyChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTbNamesNamEsOLinkHelper::SomePropertyPropertyCb);
 		// use different test value
 		TestValue = 1;
-		ImplFixture->GetImplementation()->Execute_SetSomeProperty(ImplFixture->GetImplementation().GetObject(), TestValue);
+		ImplFixture->GetImplementation()->SetSomeProperty(TestValue);
 	});
 
 	It("Property.SomePoperty2.Default", [this]()
 		{
 		// Do implement test here
 		int32 TestValue = 0; // default value
-		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetSomePoperty2(ImplFixture->GetImplementation().GetObject()), TestValue);
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetSomePoperty2(), TestValue);
 	});
 
 	LatentIt("Property.SomePoperty2.Change", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		// Do implement test here
 		int32 TestValue = 0; // default value
-		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetSomePoperty2(ImplFixture->GetImplementation().GetObject()), TestValue);
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetSomePoperty2(), TestValue);
 
 		testDoneDelegate = TestDone;
-		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
+		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->_GetSignals();
 		TbNamesNamEsSignals->OnSomePoperty2Changed.AddDynamic(ImplFixture->GetHelper().Get(), &UTbNamesNamEsOLinkHelper::SomePoperty2PropertyCb);
 		// use different test value
 		TestValue = 1;
-		ImplFixture->GetImplementation()->Execute_SetSomePoperty2(ImplFixture->GetImplementation().GetObject(), TestValue);
+		ImplFixture->GetImplementation()->SetSomePoperty2(TestValue);
 	});
 
 	LatentIt("Operation.SomeFunction", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
@@ -148,7 +148,7 @@ void UTbNamesNamEsOLinkSpec::Define()
 		// Do implement test here
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
-			ImplFixture->GetImplementation()->Execute_SomeFunction(ImplFixture->GetImplementation().GetObject(), false);
+			ImplFixture->GetImplementation()->SomeFunction(false);
 			TestDone.Execute();
 		});
 	});
@@ -158,7 +158,7 @@ void UTbNamesNamEsOLinkSpec::Define()
 		// Do implement test here
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
-			ImplFixture->GetImplementation()->Execute_SomeFunction2(ImplFixture->GetImplementation().GetObject(), false);
+			ImplFixture->GetImplementation()->SomeFunction2(false);
 			TestDone.Execute();
 		});
 	});
@@ -166,7 +166,7 @@ void UTbNamesNamEsOLinkSpec::Define()
 	LatentIt("Signal.SomeSignal", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		testDoneDelegate = TestDone;
-		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
+		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->_GetSignals();
 		TbNamesNamEsSignals->OnSomeSignalSignal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbNamesNamEsOLinkHelper::SomeSignalSignalCb);
 
 		// use different test value
@@ -177,7 +177,7 @@ void UTbNamesNamEsOLinkSpec::Define()
 	LatentIt("Signal.SomeSignal2", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		testDoneDelegate = TestDone;
-		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
+		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->_GetSignals();
 		TbNamesNamEsSignals->OnSomeSignal2Signal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbNamesNamEsOLinkHelper::SomeSignal2SignalCb);
 
 		// use different test value
@@ -192,7 +192,7 @@ void UTbNamesNamEsOLinkSpec::SwitchPropertyCb(bool bInSwitch)
 	// use different test value
 	TestValue = true;
 	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), bInSwitch, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetSwitch(ImplFixture->GetImplementation().GetObject()), TestValue);
+	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetSwitch(), TestValue);
 	testDoneDelegate.Execute();
 }
 
@@ -202,7 +202,7 @@ void UTbNamesNamEsOLinkSpec::SomePropertyPropertyCb(int32 InSomeProperty)
 	// use different test value
 	TestValue = 1;
 	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InSomeProperty, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetSomeProperty(ImplFixture->GetImplementation().GetObject()), TestValue);
+	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetSomeProperty(), TestValue);
 	testDoneDelegate.Execute();
 }
 
@@ -212,7 +212,7 @@ void UTbNamesNamEsOLinkSpec::SomePoperty2PropertyCb(int32 InSomePoperty2)
 	// use different test value
 	TestValue = 1;
 	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InSomePoperty2, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetSomePoperty2(ImplFixture->GetImplementation().GetObject()), TestValue);
+	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetSomePoperty2(), TestValue);
 	testDoneDelegate.Execute();
 }
 

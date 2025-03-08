@@ -113,7 +113,7 @@ nlohmann::json TbSame1SameEnum1InterfaceOLinkSource::olinkInvoke(const std::stri
 	if (path == "func1")
 	{
 		ETbSame1Enum1 Param1 = args.at(0).get<ETbSame1Enum1>();
-		ETbSame1Enum1 result = BackendService->Execute_Func1(BackendService.GetObject(), Param1);
+		ETbSame1Enum1 result = BackendService->Func1(Param1);
 		return result;
 	}
 	return nlohmann::json();
@@ -131,7 +131,7 @@ void TbSame1SameEnum1InterfaceOLinkSource::olinkSetProperty(const std::string& p
 	if (path == "prop1")
 	{
 		ETbSame1Enum1 Prop1 = value.get<ETbSame1Enum1>();
-		BackendService->Execute_SetProp1(BackendService.GetObject(), Prop1);
+		BackendService->SetProp1(Prop1);
 	}
 }
 
@@ -145,6 +145,6 @@ nlohmann::json TbSame1SameEnum1InterfaceOLinkSource::olinkCollectProperties()
 
 	return nlohmann::json::object({
 
-		{"prop1", BackendService->Execute_GetProp1(BackendService.GetObject())}});
+		{"prop1", BackendService->GetProp1()}});
 }
 #endif // !(PLATFORM_IOS || PLATFORM_ANDROID)
