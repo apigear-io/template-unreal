@@ -22,7 +22,7 @@ void {{$class}}::capture_state(UObject* Object, I{{$ModuleName}}{{$Name}}Interfa
 {
 	nlohmann::json fields_;
 {{- range .Properties }}
-	fields_["{{.Name}}"] = obj->Execute_Get{{Camel .Name}}(Object);
+	fields_["{{.Name}}"] = obj->Get{{Camel .Name}}();
 {{- end }}
 	Tracer::instance()->state("{{$symbol}}", fields_);
 }

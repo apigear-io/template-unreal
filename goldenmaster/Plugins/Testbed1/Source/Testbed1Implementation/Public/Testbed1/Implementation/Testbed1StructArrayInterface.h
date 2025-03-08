@@ -29,24 +29,24 @@ public:
 	virtual ~UTestbed1StructArrayInterface();
 
 	// properties
-	TArray<FTestbed1StructBool> GetPropBool_Implementation() const override;
-	void SetPropBool_Implementation(const TArray<FTestbed1StructBool>& PropBool) override;
+	TArray<FTestbed1StructBool> GetPropBool() const override;
+	void SetPropBool(const TArray<FTestbed1StructBool>& PropBool) override;
 
-	TArray<FTestbed1StructInt> GetPropInt_Implementation() const override;
-	void SetPropInt_Implementation(const TArray<FTestbed1StructInt>& PropInt) override;
+	TArray<FTestbed1StructInt> GetPropInt() const override;
+	void SetPropInt(const TArray<FTestbed1StructInt>& PropInt) override;
 
-	TArray<FTestbed1StructFloat> GetPropFloat_Implementation() const override;
-	void SetPropFloat_Implementation(const TArray<FTestbed1StructFloat>& PropFloat) override;
+	TArray<FTestbed1StructFloat> GetPropFloat() const override;
+	void SetPropFloat(const TArray<FTestbed1StructFloat>& PropFloat) override;
 
-	TArray<FTestbed1StructString> GetPropString_Implementation() const override;
-	void SetPropString_Implementation(const TArray<FTestbed1StructString>& PropString) override;
+	TArray<FTestbed1StructString> GetPropString() const override;
+	void SetPropString(const TArray<FTestbed1StructString>& PropString) override;
 
 	// operations
-	TArray<FTestbed1StructBool> FuncBool_Implementation(const TArray<FTestbed1StructBool>& ParamBool) override;
+	TArray<FTestbed1StructBool> FuncBool(const TArray<FTestbed1StructBool>& ParamBool) override;
 
-	TArray<FTestbed1StructInt> FuncInt_Implementation(const TArray<FTestbed1StructInt>& ParamInt) override;
+	TArray<FTestbed1StructInt> FuncInt(const TArray<FTestbed1StructInt>& ParamInt) override;
 
-	TArray<FTestbed1StructFloat> FuncFloat_Implementation(const TArray<FTestbed1StructFloat>& ParamFloat) override;
+	TArray<FTestbed1StructFloat> FuncFloat(const TArray<FTestbed1StructFloat>& ParamFloat) override;
 
-	TArray<FTestbed1StructString> FuncString_Implementation(const TArray<FTestbed1StructString>& ParamString) override;
+	TArray<FTestbed1StructString> FuncString(const TArray<FTestbed1StructString>& ParamString) override;
 };

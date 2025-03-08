@@ -61,7 +61,8 @@ public:
 /**
  * Interface UTbSimpleNoSignalsInterfaceInterface only for Unreal Engine's reflection system
  */
-UINTERFACE(Blueprintable, MinimalAPI)
+// Note: meta=(CannotImplementInterfaceInBlueprint) is equal to NotBlueprintable and is only needed for UE 4.27
+UINTERFACE(NotBlueprintable, MinimalAPI, meta = (CannotImplementInterfaceInBlueprint))
 class UTbSimpleNoSignalsInterfaceInterface : public UInterface
 {
 	GENERATED_BODY()
@@ -78,33 +79,25 @@ public:
 	/// Provides access to the object which holds all the delegates
 	/// this is needed since we cannot declare delegates on an UInterface
 	/// @return object with signals for property state changes or standalone signals
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoSignalsInterface")
-	UTbSimpleNoSignalsInterfaceSignals* _GetSignals();
-	virtual UTbSimpleNoSignalsInterfaceSignals* _GetSignals_Implementation() = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoSignalsInterface")
+	virtual UTbSimpleNoSignalsInterfaceSignals* _GetSignals() = 0;
 
 	// methods
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoSignalsInterface|Operations")
-	void FuncVoid();
-	virtual void FuncVoid_Implementation() = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoSignalsInterface|Operations")
+	virtual void FuncVoid() = 0;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoSignalsInterface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-	void FuncBoolAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool);
-	virtual void FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool) = 0;
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoSignalsInterface|Operations")
-	bool FuncBool(bool bParamBool);
-	virtual bool FuncBool_Implementation(bool bParamBool) = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoSignalsInterface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	virtual void FuncBoolAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool) = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoSignalsInterface|Operations")
+	virtual bool FuncBool(bool bParamBool) = 0;
 
 	// properties
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoSignalsInterface|Properties")
-	bool GetPropBool() const;
-	virtual bool GetPropBool_Implementation() const = 0;
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoSignalsInterface|Properties")
-	void SetPropBool(bool bInPropBool);
-	virtual void SetPropBool_Implementation(UPARAM(DisplayName = "bPropBool") bool bInPropBool) = 0;
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoSignalsInterface|Properties")
-	int32 GetPropInt() const;
-	virtual int32 GetPropInt_Implementation() const = 0;
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|NoSignalsInterface|Properties")
-	void SetPropInt(int32 InPropInt);
-	virtual void SetPropInt_Implementation(UPARAM(DisplayName = "PropInt") int32 InPropInt) = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoSignalsInterface|Properties")
+	virtual bool GetPropBool() const = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoSignalsInterface|Properties")
+	virtual void SetPropBool(UPARAM(DisplayName = "bPropBool") bool bInPropBool) = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoSignalsInterface|Properties")
+	virtual int32 GetPropInt() const = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoSignalsInterface|Properties")
+	virtual void SetPropInt(UPARAM(DisplayName = "PropInt") int32 InPropInt) = 0;
 };

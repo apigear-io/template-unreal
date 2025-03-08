@@ -148,12 +148,12 @@ void UTbNamesNamEsOLinkClient::UseConnection(TScriptInterface<IApiGearConnection
 	Connection = InConnection;
 }
 
-bool UTbNamesNamEsOLinkClient::GetSwitch_Implementation() const
+bool UTbNamesNamEsOLinkClient::GetSwitch() const
 {
 	return bSwitch;
 }
 
-void UTbNamesNamEsOLinkClient::SetSwitch_Implementation(bool bInSwitch)
+void UTbNamesNamEsOLinkClient::SetSwitch(bool bInSwitch)
 {
 	if (!m_sink->IsReady())
 	{
@@ -162,7 +162,7 @@ void UTbNamesNamEsOLinkClient::SetSwitch_Implementation(bool bInSwitch)
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetSwitch_Implementation() == bInSwitch)
+	if (GetSwitch() == bInSwitch)
 	{
 		return;
 	}
@@ -177,12 +177,12 @@ void UTbNamesNamEsOLinkClient::SetSwitch_Implementation(bool bInSwitch)
 	_SentData->bSwitch = bInSwitch;
 }
 
-int32 UTbNamesNamEsOLinkClient::GetSomeProperty_Implementation() const
+int32 UTbNamesNamEsOLinkClient::GetSomeProperty() const
 {
 	return SomeProperty;
 }
 
-void UTbNamesNamEsOLinkClient::SetSomeProperty_Implementation(int32 InSomeProperty)
+void UTbNamesNamEsOLinkClient::SetSomeProperty(int32 InSomeProperty)
 {
 	if (!m_sink->IsReady())
 	{
@@ -191,7 +191,7 @@ void UTbNamesNamEsOLinkClient::SetSomeProperty_Implementation(int32 InSomeProper
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetSomeProperty_Implementation() == InSomeProperty)
+	if (GetSomeProperty() == InSomeProperty)
 	{
 		return;
 	}
@@ -206,12 +206,12 @@ void UTbNamesNamEsOLinkClient::SetSomeProperty_Implementation(int32 InSomeProper
 	_SentData->SomeProperty = InSomeProperty;
 }
 
-int32 UTbNamesNamEsOLinkClient::GetSomePoperty2_Implementation() const
+int32 UTbNamesNamEsOLinkClient::GetSomePoperty2() const
 {
 	return SomePoperty2;
 }
 
-void UTbNamesNamEsOLinkClient::SetSomePoperty2_Implementation(int32 InSomePoperty2)
+void UTbNamesNamEsOLinkClient::SetSomePoperty2(int32 InSomePoperty2)
 {
 	if (!m_sink->IsReady())
 	{
@@ -220,7 +220,7 @@ void UTbNamesNamEsOLinkClient::SetSomePoperty2_Implementation(int32 InSomePopert
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetSomePoperty2_Implementation() == InSomePoperty2)
+	if (GetSomePoperty2() == InSomePoperty2)
 	{
 		return;
 	}
@@ -235,7 +235,7 @@ void UTbNamesNamEsOLinkClient::SetSomePoperty2_Implementation(int32 InSomePopert
 	_SentData->SomePoperty2 = InSomePoperty2;
 }
 
-void UTbNamesNamEsOLinkClient::SomeFunction_Implementation(bool bSomeParam)
+void UTbNamesNamEsOLinkClient::SomeFunction(bool bSomeParam)
 {
 	if (!m_sink->IsReady())
 	{
@@ -248,7 +248,7 @@ void UTbNamesNamEsOLinkClient::SomeFunction_Implementation(bool bSomeParam)
 	m_sink->GetNode()->invokeRemote(memberId, {bSomeParam}, GetNamEsStateFunc);
 }
 
-void UTbNamesNamEsOLinkClient::SomeFunction2_Implementation(bool bSomeParam)
+void UTbNamesNamEsOLinkClient::SomeFunction2(bool bSomeParam)
 {
 	if (!m_sink->IsReady())
 	{
@@ -272,21 +272,21 @@ void UTbNamesNamEsOLinkClient::applyState(const nlohmann::json& fields)
 	if (bSwitchChanged)
 	{
 		bSwitch = fields["Switch"].get<bool>();
-		Execute__GetSignals(this)->OnSwitchChanged.Broadcast(bSwitch);
+		_GetSignals()->OnSwitchChanged.Broadcast(bSwitch);
 	}
 
 	const bool bSomePropertyChanged = fields.contains("SOME_PROPERTY") && (SomeProperty != fields["SOME_PROPERTY"].get<int32>());
 	if (bSomePropertyChanged)
 	{
 		SomeProperty = fields["SOME_PROPERTY"].get<int32>();
-		Execute__GetSignals(this)->OnSomePropertyChanged.Broadcast(SomeProperty);
+		_GetSignals()->OnSomePropertyChanged.Broadcast(SomeProperty);
 	}
 
 	const bool bSomePoperty2Changed = fields.contains("Some_Poperty2") && (SomePoperty2 != fields["Some_Poperty2"].get<int32>());
 	if (bSomePoperty2Changed)
 	{
 		SomePoperty2 = fields["Some_Poperty2"].get<int32>();
-		Execute__GetSignals(this)->OnSomePoperty2Changed.Broadcast(SomePoperty2);
+		_GetSignals()->OnSomePoperty2Changed.Broadcast(SomePoperty2);
 	}
 }
 
@@ -295,14 +295,14 @@ void UTbNamesNamEsOLinkClient::emitSignal(const std::string& signalName, const n
 	if (signalName == "SOME_SIGNAL")
 	{
 		bool boutSomeParam = args[0].get<bool>();
-		Execute__GetSignals(this)->OnSomeSignalSignal.Broadcast(boutSomeParam);
+		_GetSignals()->OnSomeSignalSignal.Broadcast(boutSomeParam);
 		return;
 	}
 
 	if (signalName == "Some_Signal2")
 	{
 		bool boutSomeParam = args[0].get<bool>();
-		Execute__GetSignals(this)->OnSomeSignal2Signal.Broadcast(boutSomeParam);
+		_GetSignals()->OnSomeSignal2Signal.Broadcast(boutSomeParam);
 		return;
 	}
 }

@@ -147,12 +147,12 @@ void UTestbed2NestedStruct1InterfaceOLinkClient::UseConnection(TScriptInterface<
 	Connection = InConnection;
 }
 
-FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceOLinkClient::GetProp1_Implementation() const
+FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceOLinkClient::GetProp1() const
 {
 	return Prop1;
 }
 
-void UTestbed2NestedStruct1InterfaceOLinkClient::SetProp1_Implementation(const FTestbed2NestedStruct1& InProp1)
+void UTestbed2NestedStruct1InterfaceOLinkClient::SetProp1(const FTestbed2NestedStruct1& InProp1)
 {
 	if (!m_sink->IsReady())
 	{
@@ -161,7 +161,7 @@ void UTestbed2NestedStruct1InterfaceOLinkClient::SetProp1_Implementation(const F
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetProp1_Implementation() == InProp1)
+	if (GetProp1() == InProp1)
 	{
 		return;
 	}
@@ -180,7 +180,7 @@ void UTestbed2NestedStruct1InterfaceOLinkClient::SetProp1_Implementation(const F
 	_SentData->Prop1 = InProp1;
 }
 
-FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceOLinkClient::Func1_Implementation(const FTestbed2NestedStruct1& Param1)
+FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceOLinkClient::Func1(const FTestbed2NestedStruct1& Param1)
 {
 	if (!m_sink->IsReady())
 	{
@@ -222,7 +222,7 @@ void UTestbed2NestedStruct1InterfaceOLinkClient::applyState(const nlohmann::json
 	if (bProp1Changed)
 	{
 		Prop1 = fields["prop1"].get<FTestbed2NestedStruct1>();
-		Execute__GetSignals(this)->OnProp1Changed.Broadcast(Prop1);
+		_GetSignals()->OnProp1Changed.Broadcast(Prop1);
 	}
 }
 
@@ -231,7 +231,7 @@ void UTestbed2NestedStruct1InterfaceOLinkClient::emitSignal(const std::string& s
 	if (signalName == "sig1")
 	{
 		const FTestbed2NestedStruct1& outParam1 = args[0].get<FTestbed2NestedStruct1>();
-		Execute__GetSignals(this)->OnSig1Signal.Broadcast(outParam1);
+		_GetSignals()->OnSig1Signal.Broadcast(outParam1);
 		return;
 	}
 }

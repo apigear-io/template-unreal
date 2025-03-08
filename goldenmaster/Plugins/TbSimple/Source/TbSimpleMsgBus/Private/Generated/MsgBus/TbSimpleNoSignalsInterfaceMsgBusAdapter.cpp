@@ -110,7 +110,7 @@ void UTbSimpleNoSignalsInterfaceMsgBusAdapter::_setBackendService(TScriptInterfa
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		UTbSimpleNoSignalsInterfaceSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+		UTbSimpleNoSignalsInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleNoSignalsInterface"));
 		BackendSignals->OnPropBoolChanged.RemoveDynamic(this, &UTbSimpleNoSignalsInterfaceMsgBusAdapter::OnPropBoolChanged);
 		BackendSignals->OnPropIntChanged.RemoveDynamic(this, &UTbSimpleNoSignalsInterfaceMsgBusAdapter::OnPropIntChanged);
@@ -121,7 +121,7 @@ void UTbSimpleNoSignalsInterfaceMsgBusAdapter::_setBackendService(TScriptInterfa
 
 	// subscribe to new backend
 	BackendService = InService;
-	UTbSimpleNoSignalsInterfaceSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+	UTbSimpleNoSignalsInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service TbSimpleNoSignalsInterface"));
 	// connect property changed signals or simple events
 	BackendSignals->OnPropBoolChanged.AddDynamic(this, &UTbSimpleNoSignalsInterfaceMsgBusAdapter::OnPropBoolChanged);
@@ -134,8 +134,8 @@ void UTbSimpleNoSignalsInterfaceMsgBusAdapter::OnNewClientDiscovered(const FTbSi
 
 	auto msg = new FTbSimpleNoSignalsInterfaceInitMessage();
 	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
-	msg->bPropBool = BackendService->Execute_GetPropBool(BackendService.GetObject());
-	msg->PropInt = BackendService->Execute_GetPropInt(BackendService.GetObject());
+	msg->bPropBool = BackendService->GetPropBool();
+	msg->PropInt = BackendService->GetPropInt();
 
 	if (TbSimpleNoSignalsInterfaceMsgBusEndpoint.IsValid())
 	{
@@ -214,14 +214,14 @@ void UTbSimpleNoSignalsInterfaceMsgBusAdapter::_UpdateClientsConnected()
 
 void UTbSimpleNoSignalsInterfaceMsgBusAdapter::OnFuncVoidRequest(const FTbSimpleNoSignalsInterfaceFuncVoidRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	BackendService->Execute_FuncVoid(BackendService.GetObject());
+	BackendService->FuncVoid();
 }
 
 void UTbSimpleNoSignalsInterfaceMsgBusAdapter::OnFuncBoolRequest(const FTbSimpleNoSignalsInterfaceFuncBoolRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	auto msg = new FTbSimpleNoSignalsInterfaceFuncBoolReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
-	msg->Result = BackendService->Execute_FuncBool(BackendService.GetObject(), InMessage.bParamBool);
+	msg->Result = BackendService->FuncBool(InMessage.bParamBool);
 
 	if (TbSimpleNoSignalsInterfaceMsgBusEndpoint.IsValid())
 	{
@@ -235,7 +235,7 @@ void UTbSimpleNoSignalsInterfaceMsgBusAdapter::OnFuncBoolRequest(const FTbSimple
 
 void UTbSimpleNoSignalsInterfaceMsgBusAdapter::OnSetPropBoolRequest(const FTbSimpleNoSignalsInterfaceSetPropBoolRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
-	BackendService->Execute_SetPropBool(BackendService.GetObject(), InMessage.bPropBool);
+	BackendService->SetPropBool(InMessage.bPropBool);
 }
 
 void UTbSimpleNoSignalsInterfaceMsgBusAdapter::OnPropBoolChanged(bool bInPropBool)
@@ -258,7 +258,7 @@ void UTbSimpleNoSignalsInterfaceMsgBusAdapter::OnPropBoolChanged(bool bInPropBoo
 
 void UTbSimpleNoSignalsInterfaceMsgBusAdapter::OnSetPropIntRequest(const FTbSimpleNoSignalsInterfaceSetPropIntRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
-	BackendService->Execute_SetPropInt(BackendService.GetObject(), InMessage.PropInt);
+	BackendService->SetPropInt(InMessage.PropInt);
 }
 
 void UTbSimpleNoSignalsInterfaceMsgBusAdapter::OnPropIntChanged(int32 InPropInt)

@@ -122,7 +122,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::_setBackendService(TScriptInter
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		UTbSimpleSimpleArrayInterfaceSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+		UTbSimpleSimpleArrayInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleSimpleArrayInterface"));
 		BackendSignals->OnPropBoolChanged.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropBoolChanged);
 		BackendSignals->OnPropIntChanged.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropIntChanged);
@@ -148,7 +148,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::_setBackendService(TScriptInter
 
 	// subscribe to new backend
 	BackendService = InService;
-	UTbSimpleSimpleArrayInterfaceSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+	UTbSimpleSimpleArrayInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service TbSimpleSimpleArrayInterface"));
 	// connect property changed signals or simple events
 	BackendSignals->OnPropBoolChanged.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropBoolChanged);
@@ -176,15 +176,15 @@ void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnNewClientDiscovered(const FTb
 
 	auto msg = new FTbSimpleSimpleArrayInterfaceInitMessage();
 	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
-	msg->PropBool = BackendService->Execute_GetPropBool(BackendService.GetObject());
-	msg->PropInt = BackendService->Execute_GetPropInt(BackendService.GetObject());
-	msg->PropInt32 = BackendService->Execute_GetPropInt32(BackendService.GetObject());
-	msg->PropInt64 = BackendService->Execute_GetPropInt64(BackendService.GetObject());
-	msg->PropFloat = BackendService->Execute_GetPropFloat(BackendService.GetObject());
-	msg->PropFloat32 = BackendService->Execute_GetPropFloat32(BackendService.GetObject());
-	msg->PropFloat64 = BackendService->Execute_GetPropFloat64(BackendService.GetObject());
-	msg->PropString = BackendService->Execute_GetPropString(BackendService.GetObject());
-	msg->PropReadOnlyString = BackendService->Execute_GetPropReadOnlyString(BackendService.GetObject());
+	msg->PropBool = BackendService->GetPropBool();
+	msg->PropInt = BackendService->GetPropInt();
+	msg->PropInt32 = BackendService->GetPropInt32();
+	msg->PropInt64 = BackendService->GetPropInt64();
+	msg->PropFloat = BackendService->GetPropFloat();
+	msg->PropFloat32 = BackendService->GetPropFloat32();
+	msg->PropFloat64 = BackendService->GetPropFloat64();
+	msg->PropString = BackendService->GetPropString();
+	msg->PropReadOnlyString = BackendService->GetPropReadOnlyString();
 
 	if (TbSimpleSimpleArrayInterfaceMsgBusEndpoint.IsValid())
 	{
@@ -265,7 +265,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnFuncBoolRequest(const FTbSimp
 {
 	auto msg = new FTbSimpleSimpleArrayInterfaceFuncBoolReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
-	msg->Result = BackendService->Execute_FuncBool(BackendService.GetObject(), InMessage.ParamBool);
+	msg->Result = BackendService->FuncBool(InMessage.ParamBool);
 
 	if (TbSimpleSimpleArrayInterfaceMsgBusEndpoint.IsValid())
 	{
@@ -281,7 +281,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnFuncIntRequest(const FTbSimpl
 {
 	auto msg = new FTbSimpleSimpleArrayInterfaceFuncIntReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
-	msg->Result = BackendService->Execute_FuncInt(BackendService.GetObject(), InMessage.ParamInt);
+	msg->Result = BackendService->FuncInt(InMessage.ParamInt);
 
 	if (TbSimpleSimpleArrayInterfaceMsgBusEndpoint.IsValid())
 	{
@@ -297,7 +297,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnFuncInt32Request(const FTbSim
 {
 	auto msg = new FTbSimpleSimpleArrayInterfaceFuncInt32ReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
-	msg->Result = BackendService->Execute_FuncInt32(BackendService.GetObject(), InMessage.ParamInt32);
+	msg->Result = BackendService->FuncInt32(InMessage.ParamInt32);
 
 	if (TbSimpleSimpleArrayInterfaceMsgBusEndpoint.IsValid())
 	{
@@ -313,7 +313,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnFuncInt64Request(const FTbSim
 {
 	auto msg = new FTbSimpleSimpleArrayInterfaceFuncInt64ReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
-	msg->Result = BackendService->Execute_FuncInt64(BackendService.GetObject(), InMessage.ParamInt64);
+	msg->Result = BackendService->FuncInt64(InMessage.ParamInt64);
 
 	if (TbSimpleSimpleArrayInterfaceMsgBusEndpoint.IsValid())
 	{
@@ -329,7 +329,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnFuncFloatRequest(const FTbSim
 {
 	auto msg = new FTbSimpleSimpleArrayInterfaceFuncFloatReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
-	msg->Result = BackendService->Execute_FuncFloat(BackendService.GetObject(), InMessage.ParamFloat);
+	msg->Result = BackendService->FuncFloat(InMessage.ParamFloat);
 
 	if (TbSimpleSimpleArrayInterfaceMsgBusEndpoint.IsValid())
 	{
@@ -345,7 +345,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnFuncFloat32Request(const FTbS
 {
 	auto msg = new FTbSimpleSimpleArrayInterfaceFuncFloat32ReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
-	msg->Result = BackendService->Execute_FuncFloat32(BackendService.GetObject(), InMessage.ParamFloat32);
+	msg->Result = BackendService->FuncFloat32(InMessage.ParamFloat32);
 
 	if (TbSimpleSimpleArrayInterfaceMsgBusEndpoint.IsValid())
 	{
@@ -361,7 +361,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnFuncFloat64Request(const FTbS
 {
 	auto msg = new FTbSimpleSimpleArrayInterfaceFuncFloat64ReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
-	msg->Result = BackendService->Execute_FuncFloat64(BackendService.GetObject(), InMessage.ParamFloat);
+	msg->Result = BackendService->FuncFloat64(InMessage.ParamFloat);
 
 	if (TbSimpleSimpleArrayInterfaceMsgBusEndpoint.IsValid())
 	{
@@ -377,7 +377,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnFuncStringRequest(const FTbSi
 {
 	auto msg = new FTbSimpleSimpleArrayInterfaceFuncStringReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
-	msg->Result = BackendService->Execute_FuncString(BackendService.GetObject(), InMessage.ParamString);
+	msg->Result = BackendService->FuncString(InMessage.ParamString);
 
 	if (TbSimpleSimpleArrayInterfaceMsgBusEndpoint.IsValid())
 	{
@@ -527,7 +527,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSigString(const TArray<FStrin
 
 void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSetPropBoolRequest(const FTbSimpleSimpleArrayInterfaceSetPropBoolRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
-	BackendService->Execute_SetPropBool(BackendService.GetObject(), InMessage.PropBool);
+	BackendService->SetPropBool(InMessage.PropBool);
 }
 
 void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropBoolChanged(const TArray<bool>& InPropBool)
@@ -550,7 +550,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropBoolChanged(const TArray<
 
 void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSetPropIntRequest(const FTbSimpleSimpleArrayInterfaceSetPropIntRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
-	BackendService->Execute_SetPropInt(BackendService.GetObject(), InMessage.PropInt);
+	BackendService->SetPropInt(InMessage.PropInt);
 }
 
 void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropIntChanged(const TArray<int32>& InPropInt)
@@ -573,7 +573,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropIntChanged(const TArray<i
 
 void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSetPropInt32Request(const FTbSimpleSimpleArrayInterfaceSetPropInt32RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
-	BackendService->Execute_SetPropInt32(BackendService.GetObject(), InMessage.PropInt32);
+	BackendService->SetPropInt32(InMessage.PropInt32);
 }
 
 void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropInt32Changed(const TArray<int32>& InPropInt32)
@@ -596,7 +596,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropInt32Changed(const TArray
 
 void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSetPropInt64Request(const FTbSimpleSimpleArrayInterfaceSetPropInt64RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
-	BackendService->Execute_SetPropInt64(BackendService.GetObject(), InMessage.PropInt64);
+	BackendService->SetPropInt64(InMessage.PropInt64);
 }
 
 void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropInt64Changed(const TArray<int64>& InPropInt64)
@@ -619,7 +619,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropInt64Changed(const TArray
 
 void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSetPropFloatRequest(const FTbSimpleSimpleArrayInterfaceSetPropFloatRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
-	BackendService->Execute_SetPropFloat(BackendService.GetObject(), InMessage.PropFloat);
+	BackendService->SetPropFloat(InMessage.PropFloat);
 }
 
 void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropFloatChanged(const TArray<float>& InPropFloat)
@@ -642,7 +642,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropFloatChanged(const TArray
 
 void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSetPropFloat32Request(const FTbSimpleSimpleArrayInterfaceSetPropFloat32RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
-	BackendService->Execute_SetPropFloat32(BackendService.GetObject(), InMessage.PropFloat32);
+	BackendService->SetPropFloat32(InMessage.PropFloat32);
 }
 
 void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropFloat32Changed(const TArray<float>& InPropFloat32)
@@ -665,7 +665,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropFloat32Changed(const TArr
 
 void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSetPropFloat64Request(const FTbSimpleSimpleArrayInterfaceSetPropFloat64RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
-	BackendService->Execute_SetPropFloat64(BackendService.GetObject(), InMessage.PropFloat64);
+	BackendService->SetPropFloat64(InMessage.PropFloat64);
 }
 
 void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropFloat64Changed(const TArray<double>& InPropFloat64)
@@ -688,7 +688,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropFloat64Changed(const TArr
 
 void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSetPropStringRequest(const FTbSimpleSimpleArrayInterfaceSetPropStringRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
-	BackendService->Execute_SetPropString(BackendService.GetObject(), InMessage.PropString);
+	BackendService->SetPropString(InMessage.PropString);
 }
 
 void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropStringChanged(const TArray<FString>& InPropString)

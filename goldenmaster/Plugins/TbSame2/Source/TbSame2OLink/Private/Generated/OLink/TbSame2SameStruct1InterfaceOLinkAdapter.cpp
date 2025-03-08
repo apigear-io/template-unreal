@@ -56,7 +56,7 @@ void UTbSame2SameStruct1InterfaceOLinkAdapter::setBackendService(TScriptInterfac
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		UTbSame2SameStruct1InterfaceSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+		UTbSame2SameStruct1InterfaceSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSame2SameStruct1Interface"));
 		BackendSignals->OnProp1Changed.RemoveDynamic(this, &UTbSame2SameStruct1InterfaceOLinkAdapter::OnProp1Changed);
 		BackendSignals->OnSig1Signal.RemoveDynamic(this, &UTbSame2SameStruct1InterfaceOLinkAdapter::OnSig1);
@@ -67,7 +67,7 @@ void UTbSame2SameStruct1InterfaceOLinkAdapter::setBackendService(TScriptInterfac
 
 	// subscribe to new backend
 	BackendService = InService;
-	UTbSame2SameStruct1InterfaceSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+	UTbSame2SameStruct1InterfaceSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service TbSame2SameStruct1Interface"));
 	// connect property changed signals or simple events
 	BackendSignals->OnProp1Changed.AddDynamic(this, &UTbSame2SameStruct1InterfaceOLinkAdapter::OnProp1Changed);

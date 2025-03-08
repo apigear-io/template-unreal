@@ -154,12 +154,12 @@ void TbSimpleNoOperationsInterfaceOLinkSource::olinkSetProperty(const std::strin
 	if (path == "propBool")
 	{
 		bool bPropBool = value.get<bool>();
-		BackendService->Execute_SetPropBool(BackendService.GetObject(), bPropBool);
+		BackendService->SetPropBool(bPropBool);
 	}
 	if (path == "propInt")
 	{
 		int32 PropInt = value.get<int32>();
-		BackendService->Execute_SetPropInt(BackendService.GetObject(), PropInt);
+		BackendService->SetPropInt(PropInt);
 	}
 }
 
@@ -173,7 +173,7 @@ nlohmann::json TbSimpleNoOperationsInterfaceOLinkSource::olinkCollectProperties(
 
 	return nlohmann::json::object({
 
-		{"propBool", BackendService->Execute_GetPropBool(BackendService.GetObject())},
-		{"propInt", BackendService->Execute_GetPropInt(BackendService.GetObject())}});
+		{"propBool", BackendService->GetPropBool()},
+		{"propInt", BackendService->GetPropInt()}});
 }
 #endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

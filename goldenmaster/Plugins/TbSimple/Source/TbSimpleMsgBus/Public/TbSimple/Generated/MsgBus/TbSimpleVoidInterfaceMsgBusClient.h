@@ -96,7 +96,7 @@ public:
 
 	// properties
 	// operations
-	void FuncVoid_Implementation() override;
+	void FuncVoid() override;
 
 private:
 	TSharedPtr<FMessageEndpoint, ESPMode::ThreadSafe> TbSimpleVoidInterfaceMsgBusEndpoint;

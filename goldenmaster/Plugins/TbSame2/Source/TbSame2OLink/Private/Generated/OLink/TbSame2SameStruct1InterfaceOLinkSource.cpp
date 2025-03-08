@@ -113,7 +113,7 @@ nlohmann::json TbSame2SameStruct1InterfaceOLinkSource::olinkInvoke(const std::st
 	if (path == "func1")
 	{
 		FTbSame2Struct1 Param1 = args.at(0).get<FTbSame2Struct1>();
-		FTbSame2Struct1 result = BackendService->Execute_Func1(BackendService.GetObject(), Param1);
+		FTbSame2Struct1 result = BackendService->Func1(Param1);
 		return result;
 	}
 	return nlohmann::json();
@@ -131,7 +131,7 @@ void TbSame2SameStruct1InterfaceOLinkSource::olinkSetProperty(const std::string&
 	if (path == "prop1")
 	{
 		FTbSame2Struct1 Prop1 = value.get<FTbSame2Struct1>();
-		BackendService->Execute_SetProp1(BackendService.GetObject(), Prop1);
+		BackendService->SetProp1(Prop1);
 	}
 }
 
@@ -145,6 +145,6 @@ nlohmann::json TbSame2SameStruct1InterfaceOLinkSource::olinkCollectProperties()
 
 	return nlohmann::json::object({
 
-		{"prop1", BackendService->Execute_GetProp1(BackendService.GetObject())}});
+		{"prop1", BackendService->GetProp1()}});
 }
 #endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

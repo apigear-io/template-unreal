@@ -155,12 +155,12 @@ void UTbSimpleSimpleInterfaceOLinkClient::UseConnection(TScriptInterface<IApiGea
 	Connection = InConnection;
 }
 
-bool UTbSimpleSimpleInterfaceOLinkClient::GetPropBool_Implementation() const
+bool UTbSimpleSimpleInterfaceOLinkClient::GetPropBool() const
 {
 	return bPropBool;
 }
 
-void UTbSimpleSimpleInterfaceOLinkClient::SetPropBool_Implementation(bool bInPropBool)
+void UTbSimpleSimpleInterfaceOLinkClient::SetPropBool(bool bInPropBool)
 {
 	if (!m_sink->IsReady())
 	{
@@ -169,7 +169,7 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropBool_Implementation(bool bInPro
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetPropBool_Implementation() == bInPropBool)
+	if (GetPropBool() == bInPropBool)
 	{
 		return;
 	}
@@ -184,12 +184,12 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropBool_Implementation(bool bInPro
 	_SentData->bPropBool = bInPropBool;
 }
 
-int32 UTbSimpleSimpleInterfaceOLinkClient::GetPropInt_Implementation() const
+int32 UTbSimpleSimpleInterfaceOLinkClient::GetPropInt() const
 {
 	return PropInt;
 }
 
-void UTbSimpleSimpleInterfaceOLinkClient::SetPropInt_Implementation(int32 InPropInt)
+void UTbSimpleSimpleInterfaceOLinkClient::SetPropInt(int32 InPropInt)
 {
 	if (!m_sink->IsReady())
 	{
@@ -198,7 +198,7 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropInt_Implementation(int32 InProp
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetPropInt_Implementation() == InPropInt)
+	if (GetPropInt() == InPropInt)
 	{
 		return;
 	}
@@ -213,12 +213,12 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropInt_Implementation(int32 InProp
 	_SentData->PropInt = InPropInt;
 }
 
-int32 UTbSimpleSimpleInterfaceOLinkClient::GetPropInt32_Implementation() const
+int32 UTbSimpleSimpleInterfaceOLinkClient::GetPropInt32() const
 {
 	return PropInt32;
 }
 
-void UTbSimpleSimpleInterfaceOLinkClient::SetPropInt32_Implementation(int32 InPropInt32)
+void UTbSimpleSimpleInterfaceOLinkClient::SetPropInt32(int32 InPropInt32)
 {
 	if (!m_sink->IsReady())
 	{
@@ -227,7 +227,7 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropInt32_Implementation(int32 InPr
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetPropInt32_Implementation() == InPropInt32)
+	if (GetPropInt32() == InPropInt32)
 	{
 		return;
 	}
@@ -242,12 +242,12 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropInt32_Implementation(int32 InPr
 	_SentData->PropInt32 = InPropInt32;
 }
 
-int64 UTbSimpleSimpleInterfaceOLinkClient::GetPropInt64_Implementation() const
+int64 UTbSimpleSimpleInterfaceOLinkClient::GetPropInt64() const
 {
 	return PropInt64;
 }
 
-void UTbSimpleSimpleInterfaceOLinkClient::SetPropInt64_Implementation(int64 InPropInt64)
+void UTbSimpleSimpleInterfaceOLinkClient::SetPropInt64(int64 InPropInt64)
 {
 	if (!m_sink->IsReady())
 	{
@@ -256,7 +256,7 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropInt64_Implementation(int64 InPr
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetPropInt64_Implementation() == InPropInt64)
+	if (GetPropInt64() == InPropInt64)
 	{
 		return;
 	}
@@ -271,12 +271,12 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropInt64_Implementation(int64 InPr
 	_SentData->PropInt64 = InPropInt64;
 }
 
-float UTbSimpleSimpleInterfaceOLinkClient::GetPropFloat_Implementation() const
+float UTbSimpleSimpleInterfaceOLinkClient::GetPropFloat() const
 {
 	return PropFloat;
 }
 
-void UTbSimpleSimpleInterfaceOLinkClient::SetPropFloat_Implementation(float InPropFloat)
+void UTbSimpleSimpleInterfaceOLinkClient::SetPropFloat(float InPropFloat)
 {
 	if (!m_sink->IsReady())
 	{
@@ -285,7 +285,7 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropFloat_Implementation(float InPr
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetPropFloat_Implementation() == InPropFloat)
+	if (GetPropFloat() == InPropFloat)
 	{
 		return;
 	}
@@ -300,12 +300,12 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropFloat_Implementation(float InPr
 	_SentData->PropFloat = InPropFloat;
 }
 
-float UTbSimpleSimpleInterfaceOLinkClient::GetPropFloat32_Implementation() const
+float UTbSimpleSimpleInterfaceOLinkClient::GetPropFloat32() const
 {
 	return PropFloat32;
 }
 
-void UTbSimpleSimpleInterfaceOLinkClient::SetPropFloat32_Implementation(float InPropFloat32)
+void UTbSimpleSimpleInterfaceOLinkClient::SetPropFloat32(float InPropFloat32)
 {
 	if (!m_sink->IsReady())
 	{
@@ -314,7 +314,7 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropFloat32_Implementation(float In
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetPropFloat32_Implementation() == InPropFloat32)
+	if (GetPropFloat32() == InPropFloat32)
 	{
 		return;
 	}
@@ -329,12 +329,12 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropFloat32_Implementation(float In
 	_SentData->PropFloat32 = InPropFloat32;
 }
 
-double UTbSimpleSimpleInterfaceOLinkClient::GetPropFloat64_Implementation() const
+double UTbSimpleSimpleInterfaceOLinkClient::GetPropFloat64() const
 {
 	return PropFloat64;
 }
 
-void UTbSimpleSimpleInterfaceOLinkClient::SetPropFloat64_Implementation(double InPropFloat64)
+void UTbSimpleSimpleInterfaceOLinkClient::SetPropFloat64(double InPropFloat64)
 {
 	if (!m_sink->IsReady())
 	{
@@ -343,7 +343,7 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropFloat64_Implementation(double I
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetPropFloat64_Implementation() == InPropFloat64)
+	if (GetPropFloat64() == InPropFloat64)
 	{
 		return;
 	}
@@ -358,12 +358,12 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropFloat64_Implementation(double I
 	_SentData->PropFloat64 = InPropFloat64;
 }
 
-FString UTbSimpleSimpleInterfaceOLinkClient::GetPropString_Implementation() const
+FString UTbSimpleSimpleInterfaceOLinkClient::GetPropString() const
 {
 	return PropString;
 }
 
-void UTbSimpleSimpleInterfaceOLinkClient::SetPropString_Implementation(const FString& InPropString)
+void UTbSimpleSimpleInterfaceOLinkClient::SetPropString(const FString& InPropString)
 {
 	if (!m_sink->IsReady())
 	{
@@ -372,7 +372,7 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropString_Implementation(const FSt
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetPropString_Implementation() == InPropString)
+	if (GetPropString() == InPropString)
 	{
 		return;
 	}
@@ -391,7 +391,7 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropString_Implementation(const FSt
 	_SentData->PropString = InPropString;
 }
 
-void UTbSimpleSimpleInterfaceOLinkClient::FuncNoReturnValue_Implementation(bool bParamBool)
+void UTbSimpleSimpleInterfaceOLinkClient::FuncNoReturnValue(bool bParamBool)
 {
 	if (!m_sink->IsReady())
 	{
@@ -404,7 +404,7 @@ void UTbSimpleSimpleInterfaceOLinkClient::FuncNoReturnValue_Implementation(bool 
 	m_sink->GetNode()->invokeRemote(memberId, {bParamBool}, GetSimpleInterfaceStateFunc);
 }
 
-bool UTbSimpleSimpleInterfaceOLinkClient::FuncBool_Implementation(bool bParamBool)
+bool UTbSimpleSimpleInterfaceOLinkClient::FuncBool(bool bParamBool)
 {
 	if (!m_sink->IsReady())
 	{
@@ -435,7 +435,7 @@ bool UTbSimpleSimpleInterfaceOLinkClient::FuncBool_Implementation(bool bParamBoo
 	return Promise.GetFuture().Get();
 }
 
-int32 UTbSimpleSimpleInterfaceOLinkClient::FuncInt_Implementation(int32 ParamInt)
+int32 UTbSimpleSimpleInterfaceOLinkClient::FuncInt(int32 ParamInt)
 {
 	if (!m_sink->IsReady())
 	{
@@ -466,7 +466,7 @@ int32 UTbSimpleSimpleInterfaceOLinkClient::FuncInt_Implementation(int32 ParamInt
 	return Promise.GetFuture().Get();
 }
 
-int32 UTbSimpleSimpleInterfaceOLinkClient::FuncInt32_Implementation(int32 ParamInt32)
+int32 UTbSimpleSimpleInterfaceOLinkClient::FuncInt32(int32 ParamInt32)
 {
 	if (!m_sink->IsReady())
 	{
@@ -497,7 +497,7 @@ int32 UTbSimpleSimpleInterfaceOLinkClient::FuncInt32_Implementation(int32 ParamI
 	return Promise.GetFuture().Get();
 }
 
-int64 UTbSimpleSimpleInterfaceOLinkClient::FuncInt64_Implementation(int64 ParamInt64)
+int64 UTbSimpleSimpleInterfaceOLinkClient::FuncInt64(int64 ParamInt64)
 {
 	if (!m_sink->IsReady())
 	{
@@ -528,7 +528,7 @@ int64 UTbSimpleSimpleInterfaceOLinkClient::FuncInt64_Implementation(int64 ParamI
 	return Promise.GetFuture().Get();
 }
 
-float UTbSimpleSimpleInterfaceOLinkClient::FuncFloat_Implementation(float ParamFloat)
+float UTbSimpleSimpleInterfaceOLinkClient::FuncFloat(float ParamFloat)
 {
 	if (!m_sink->IsReady())
 	{
@@ -559,7 +559,7 @@ float UTbSimpleSimpleInterfaceOLinkClient::FuncFloat_Implementation(float ParamF
 	return Promise.GetFuture().Get();
 }
 
-float UTbSimpleSimpleInterfaceOLinkClient::FuncFloat32_Implementation(float ParamFloat32)
+float UTbSimpleSimpleInterfaceOLinkClient::FuncFloat32(float ParamFloat32)
 {
 	if (!m_sink->IsReady())
 	{
@@ -590,7 +590,7 @@ float UTbSimpleSimpleInterfaceOLinkClient::FuncFloat32_Implementation(float Para
 	return Promise.GetFuture().Get();
 }
 
-double UTbSimpleSimpleInterfaceOLinkClient::FuncFloat64_Implementation(double ParamFloat)
+double UTbSimpleSimpleInterfaceOLinkClient::FuncFloat64(double ParamFloat)
 {
 	if (!m_sink->IsReady())
 	{
@@ -621,7 +621,7 @@ double UTbSimpleSimpleInterfaceOLinkClient::FuncFloat64_Implementation(double Pa
 	return Promise.GetFuture().Get();
 }
 
-FString UTbSimpleSimpleInterfaceOLinkClient::FuncString_Implementation(const FString& ParamString)
+FString UTbSimpleSimpleInterfaceOLinkClient::FuncString(const FString& ParamString)
 {
 	if (!m_sink->IsReady())
 	{
@@ -663,56 +663,56 @@ void UTbSimpleSimpleInterfaceOLinkClient::applyState(const nlohmann::json& field
 	if (bPropBoolChanged)
 	{
 		bPropBool = fields["propBool"].get<bool>();
-		Execute__GetSignals(this)->OnPropBoolChanged.Broadcast(bPropBool);
+		_GetSignals()->OnPropBoolChanged.Broadcast(bPropBool);
 	}
 
 	const bool bPropIntChanged = fields.contains("propInt") && (PropInt != fields["propInt"].get<int32>());
 	if (bPropIntChanged)
 	{
 		PropInt = fields["propInt"].get<int32>();
-		Execute__GetSignals(this)->OnPropIntChanged.Broadcast(PropInt);
+		_GetSignals()->OnPropIntChanged.Broadcast(PropInt);
 	}
 
 	const bool bPropInt32Changed = fields.contains("propInt32") && (PropInt32 != fields["propInt32"].get<int32>());
 	if (bPropInt32Changed)
 	{
 		PropInt32 = fields["propInt32"].get<int32>();
-		Execute__GetSignals(this)->OnPropInt32Changed.Broadcast(PropInt32);
+		_GetSignals()->OnPropInt32Changed.Broadcast(PropInt32);
 	}
 
 	const bool bPropInt64Changed = fields.contains("propInt64") && (PropInt64 != fields["propInt64"].get<int64>());
 	if (bPropInt64Changed)
 	{
 		PropInt64 = fields["propInt64"].get<int64>();
-		Execute__GetSignals(this)->OnPropInt64Changed.Broadcast(PropInt64);
+		_GetSignals()->OnPropInt64Changed.Broadcast(PropInt64);
 	}
 
 	const bool bPropFloatChanged = fields.contains("propFloat") && (PropFloat != fields["propFloat"].get<float>());
 	if (bPropFloatChanged)
 	{
 		PropFloat = fields["propFloat"].get<float>();
-		Execute__GetSignals(this)->OnPropFloatChanged.Broadcast(PropFloat);
+		_GetSignals()->OnPropFloatChanged.Broadcast(PropFloat);
 	}
 
 	const bool bPropFloat32Changed = fields.contains("propFloat32") && (PropFloat32 != fields["propFloat32"].get<float>());
 	if (bPropFloat32Changed)
 	{
 		PropFloat32 = fields["propFloat32"].get<float>();
-		Execute__GetSignals(this)->OnPropFloat32Changed.Broadcast(PropFloat32);
+		_GetSignals()->OnPropFloat32Changed.Broadcast(PropFloat32);
 	}
 
 	const bool bPropFloat64Changed = fields.contains("propFloat64") && (PropFloat64 != fields["propFloat64"].get<double>());
 	if (bPropFloat64Changed)
 	{
 		PropFloat64 = fields["propFloat64"].get<double>();
-		Execute__GetSignals(this)->OnPropFloat64Changed.Broadcast(PropFloat64);
+		_GetSignals()->OnPropFloat64Changed.Broadcast(PropFloat64);
 	}
 
 	const bool bPropStringChanged = fields.contains("propString") && (PropString != fields["propString"].get<FString>());
 	if (bPropStringChanged)
 	{
 		PropString = fields["propString"].get<FString>();
-		Execute__GetSignals(this)->OnPropStringChanged.Broadcast(PropString);
+		_GetSignals()->OnPropStringChanged.Broadcast(PropString);
 	}
 }
 
@@ -721,56 +721,56 @@ void UTbSimpleSimpleInterfaceOLinkClient::emitSignal(const std::string& signalNa
 	if (signalName == "sigBool")
 	{
 		bool boutParamBool = args[0].get<bool>();
-		Execute__GetSignals(this)->OnSigBoolSignal.Broadcast(boutParamBool);
+		_GetSignals()->OnSigBoolSignal.Broadcast(boutParamBool);
 		return;
 	}
 
 	if (signalName == "sigInt")
 	{
 		int32 outParamInt = args[0].get<int32>();
-		Execute__GetSignals(this)->OnSigIntSignal.Broadcast(outParamInt);
+		_GetSignals()->OnSigIntSignal.Broadcast(outParamInt);
 		return;
 	}
 
 	if (signalName == "sigInt32")
 	{
 		int32 outParamInt32 = args[0].get<int32>();
-		Execute__GetSignals(this)->OnSigInt32Signal.Broadcast(outParamInt32);
+		_GetSignals()->OnSigInt32Signal.Broadcast(outParamInt32);
 		return;
 	}
 
 	if (signalName == "sigInt64")
 	{
 		int64 outParamInt64 = args[0].get<int64>();
-		Execute__GetSignals(this)->OnSigInt64Signal.Broadcast(outParamInt64);
+		_GetSignals()->OnSigInt64Signal.Broadcast(outParamInt64);
 		return;
 	}
 
 	if (signalName == "sigFloat")
 	{
 		float outParamFloat = args[0].get<float>();
-		Execute__GetSignals(this)->OnSigFloatSignal.Broadcast(outParamFloat);
+		_GetSignals()->OnSigFloatSignal.Broadcast(outParamFloat);
 		return;
 	}
 
 	if (signalName == "sigFloat32")
 	{
 		float outParamFloat32 = args[0].get<float>();
-		Execute__GetSignals(this)->OnSigFloat32Signal.Broadcast(outParamFloat32);
+		_GetSignals()->OnSigFloat32Signal.Broadcast(outParamFloat32);
 		return;
 	}
 
 	if (signalName == "sigFloat64")
 	{
 		double outParamFloat64 = args[0].get<double>();
-		Execute__GetSignals(this)->OnSigFloat64Signal.Broadcast(outParamFloat64);
+		_GetSignals()->OnSigFloat64Signal.Broadcast(outParamFloat64);
 		return;
 	}
 
 	if (signalName == "sigString")
 	{
 		const FString& outParamString = args[0].get<FString>();
-		Execute__GetSignals(this)->OnSigStringSignal.Broadcast(outParamString);
+		_GetSignals()->OnSigStringSignal.Broadcast(outParamString);
 		return;
 	}
 }

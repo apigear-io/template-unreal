@@ -46,11 +46,11 @@ public:
 	void Deinitialize() override;
 
 	// properties
-	ETbSame2Enum1 GetProp1_Implementation() const override;
-	void SetProp1_Implementation(ETbSame2Enum1 Prop1) override;
+	ETbSame2Enum1 GetProp1() const override;
+	void SetProp1(ETbSame2Enum1 Prop1) override;
 
 	// operations
-	ETbSame2Enum1 Func1_Implementation(ETbSame2Enum1 Param1) override;
+	ETbSame2Enum1 Func1(ETbSame2Enum1 Param1) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum1Interface")
 	void UseConnection(TScriptInterface<class IApiGearConnection> InConnection);

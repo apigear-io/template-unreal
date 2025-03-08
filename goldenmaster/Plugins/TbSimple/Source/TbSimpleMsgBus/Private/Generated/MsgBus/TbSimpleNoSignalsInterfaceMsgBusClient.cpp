@@ -175,14 +175,14 @@ void UTbSimpleNoSignalsInterfaceMsgBusClient::OnConnectionInit(const FTbSimpleNo
 	if (bbPropBoolChanged)
 	{
 		bPropBool = InMessage.bPropBool;
-		Execute__GetSignals(this)->OnPropBoolChanged.Broadcast(bPropBool);
+		_GetSignals()->OnPropBoolChanged.Broadcast(bPropBool);
 	}
 
 	const bool bPropIntChanged = InMessage.PropInt != PropInt;
 	if (bPropIntChanged)
 	{
 		PropInt = InMessage.PropInt;
-		Execute__GetSignals(this)->OnPropIntChanged.Broadcast(PropInt);
+		_GetSignals()->OnPropIntChanged.Broadcast(PropInt);
 	}
 
 	_ConnectionStatusChanged.Broadcast(true);
@@ -274,12 +274,12 @@ void UTbSimpleNoSignalsInterfaceMsgBusClient::OnServiceClosedConnection(const FT
 	_ConnectionStatusChanged.Broadcast(false);
 }
 
-bool UTbSimpleNoSignalsInterfaceMsgBusClient::GetPropBool_Implementation() const
+bool UTbSimpleNoSignalsInterfaceMsgBusClient::GetPropBool() const
 {
 	return bPropBool;
 }
 
-void UTbSimpleNoSignalsInterfaceMsgBusClient::SetPropBool_Implementation(bool bInPropBool)
+void UTbSimpleNoSignalsInterfaceMsgBusClient::SetPropBool(bool bInPropBool)
 {
 	if (!_IsConnected())
 	{
@@ -288,7 +288,7 @@ void UTbSimpleNoSignalsInterfaceMsgBusClient::SetPropBool_Implementation(bool bI
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetPropBool_Implementation() == bInPropBool)
+	if (GetPropBool() == bInPropBool)
 	{
 		return;
 	}
@@ -310,12 +310,12 @@ void UTbSimpleNoSignalsInterfaceMsgBusClient::SetPropBool_Implementation(bool bI
 	_SentData->bPropBool = bInPropBool;
 }
 
-int32 UTbSimpleNoSignalsInterfaceMsgBusClient::GetPropInt_Implementation() const
+int32 UTbSimpleNoSignalsInterfaceMsgBusClient::GetPropInt() const
 {
 	return PropInt;
 }
 
-void UTbSimpleNoSignalsInterfaceMsgBusClient::SetPropInt_Implementation(int32 InPropInt)
+void UTbSimpleNoSignalsInterfaceMsgBusClient::SetPropInt(int32 InPropInt)
 {
 	if (!_IsConnected())
 	{
@@ -324,7 +324,7 @@ void UTbSimpleNoSignalsInterfaceMsgBusClient::SetPropInt_Implementation(int32 In
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetPropInt_Implementation() == InPropInt)
+	if (GetPropInt() == InPropInt)
 	{
 		return;
 	}
@@ -346,7 +346,7 @@ void UTbSimpleNoSignalsInterfaceMsgBusClient::SetPropInt_Implementation(int32 In
 	_SentData->PropInt = InPropInt;
 }
 
-void UTbSimpleNoSignalsInterfaceMsgBusClient::FuncVoid_Implementation()
+void UTbSimpleNoSignalsInterfaceMsgBusClient::FuncVoid()
 {
 	if (!_IsConnected())
 	{
@@ -366,7 +366,7 @@ void UTbSimpleNoSignalsInterfaceMsgBusClient::FuncVoid_Implementation()
 	return;
 }
 
-bool UTbSimpleNoSignalsInterfaceMsgBusClient::FuncBool_Implementation(bool bInParamBool)
+bool UTbSimpleNoSignalsInterfaceMsgBusClient::FuncBool(bool bInParamBool)
 {
 	if (!_IsConnected())
 	{
@@ -407,7 +407,7 @@ void UTbSimpleNoSignalsInterfaceMsgBusClient::OnPropBoolChanged(const FTbSimpleN
 	if (bbPropBoolChanged)
 	{
 		bPropBool = InMessage.bPropBool;
-		Execute__GetSignals(this)->OnPropBoolChanged.Broadcast(bPropBool);
+		_GetSignals()->OnPropBoolChanged.Broadcast(bPropBool);
 	}
 }
 
@@ -423,7 +423,7 @@ void UTbSimpleNoSignalsInterfaceMsgBusClient::OnPropIntChanged(const FTbSimpleNo
 	if (bPropIntChanged)
 	{
 		PropInt = InMessage.PropInt;
-		Execute__GetSignals(this)->OnPropIntChanged.Broadcast(PropInt);
+		_GetSignals()->OnPropIntChanged.Broadcast(PropInt);
 	}
 }
 

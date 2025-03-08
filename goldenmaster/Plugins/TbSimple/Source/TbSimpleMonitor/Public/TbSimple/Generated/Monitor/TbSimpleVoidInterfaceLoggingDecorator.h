@@ -43,7 +43,7 @@ public:
 
 	// properties
 	// operations
-	void FuncVoid_Implementation() override;
+	void FuncVoid() override;
 
 private:
 	/** The connection to the service backend. */

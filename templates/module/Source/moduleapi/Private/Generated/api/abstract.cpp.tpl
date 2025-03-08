@@ -80,7 +80,7 @@ public:
 
 {{- if or (len .Properties) (len .Signals) }}
 {{- nl }}
-U{{$Class}}Signals* {{$abstractclass}}::_GetSignals_Implementation()
+U{{$Class}}Signals* {{$abstractclass}}::_GetSignals()
 {
 	if (!{{$Iface}}Signals)
 	{
@@ -94,13 +94,13 @@ U{{$Class}}Signals* {{$abstractclass}}::_GetSignals_Implementation()
 {{- range $i, $e := .Properties }}
 {{ueReturn "" .}} {{$abstractclass}}::Get{{Camel .Name}}_Private() const
 {
-	return Execute_Get{{Camel .Name}}(this);
+	return Get{{Camel .Name}}();
 };
 
 {{- if not .IsReadOnly }}{{nl}}
 void {{$abstractclass}}::Set{{Camel .Name}}_Private({{ueParam "In" .}})
 {
-	Execute_Set{{Camel .Name}}(this, {{ueVar "In" .}});
+	Set{{Camel .Name}}({{ueVar "In" .}});
 };
 {{- end }}
 {{- nl }}
@@ -114,7 +114,7 @@ void {{$abstractclass}}::Set{{Camel .Name}}_Private({{ueParam "In" .}})
 */
 {{- end }}
 {{- if not .Return.IsVoid }}
-void {{$abstractclass}}::{{Camel .Name}}Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, {{ueReturn "" .Return}}& Result{{ if len .Params }}, {{end}}{{ueParams "" .Params}})
+void {{$abstractclass}}::{{Camel .Name}}Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, {{ueReturn "" .Return}}& Result{{ if len .Params }}, {{end}}{{ueParams "" .Params}})
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
@@ -134,7 +134,7 @@ void {{$abstractclass}}::{{Camel .Name}}Async_Implementation(UObject* WorldConte
 		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
 		if (this->GetClass()->IsInBlueprint())
 		{
-			Result = Execute_{{Camel .Name}}(this{{ if len .Params }}, {{end}}{{ueVars "" .Params}});
+			Result = {{Camel .Name}}({{ueVars "" .Params}});
 			CompletionAction->Cancel();
 		}
 		else
@@ -142,7 +142,7 @@ void {{$abstractclass}}::{{Camel .Name}}Async_Implementation(UObject* WorldConte
 			Async(EAsyncExecution::ThreadPool,
 				[{{range .Params}}{{ueVar "" .}}, {{ end }}this, &Result, CompletionAction]()
 				{
-				Result = Execute_{{Camel .Name}}(this{{ if len .Params }}, {{end}}{{ueVars "" .Params}});
+				Result = {{Camel .Name}}({{ueVars "" .Params}});
 				CompletionAction->Cancel();
 			});
 		}

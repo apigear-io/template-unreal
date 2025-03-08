@@ -62,7 +62,8 @@ public:
 /**
  * Interface UTestbed2NestedStruct1InterfaceInterface only for Unreal Engine's reflection system
  */
-UINTERFACE(Blueprintable, MinimalAPI)
+// Note: meta=(CannotImplementInterfaceInBlueprint) is equal to NotBlueprintable and is only needed for UE 4.27
+UINTERFACE(NotBlueprintable, MinimalAPI, meta = (CannotImplementInterfaceInBlueprint))
 class UTestbed2NestedStruct1InterfaceInterface : public UInterface
 {
 	GENERATED_BODY()
@@ -79,23 +80,18 @@ public:
 	/// Provides access to the object which holds all the delegates
 	/// this is needed since we cannot declare delegates on an UInterface
 	/// @return object with signals for property state changes or standalone signals
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct1Interface")
-	UTestbed2NestedStruct1InterfaceSignals* _GetSignals();
-	virtual UTestbed2NestedStruct1InterfaceSignals* _GetSignals_Implementation() = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct1Interface")
+	virtual UTestbed2NestedStruct1InterfaceSignals* _GetSignals() = 0;
 
 	// methods
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct1Interface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-	void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1);
-	virtual void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1) = 0;
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct1Interface|Operations")
-	FTestbed2NestedStruct1 Func1(const FTestbed2NestedStruct1& Param1);
-	virtual FTestbed2NestedStruct1 Func1_Implementation(const FTestbed2NestedStruct1& Param1) = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct1Interface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	virtual void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1) = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct1Interface|Operations")
+	virtual FTestbed2NestedStruct1 Func1(const FTestbed2NestedStruct1& Param1) = 0;
 
 	// properties
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct1Interface|Properties")
-	FTestbed2NestedStruct1 GetProp1() const;
-	virtual FTestbed2NestedStruct1 GetProp1_Implementation() const = 0;
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct1Interface|Properties")
-	void SetProp1(const FTestbed2NestedStruct1& InProp1);
-	virtual void SetProp1_Implementation(UPARAM(DisplayName = "Prop1") const FTestbed2NestedStruct1& InProp1) = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct1Interface|Properties")
+	virtual FTestbed2NestedStruct1 GetProp1() const = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct1Interface|Properties")
+	virtual void SetProp1(UPARAM(DisplayName = "Prop1") const FTestbed2NestedStruct1& InProp1) = 0;
 };

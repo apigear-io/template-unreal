@@ -38,21 +38,21 @@ public:
 	virtual void Deinitialize() override;
 
 	// signals
-	virtual UTbSame2SameEnum2InterfaceSignals* _GetSignals_Implementation() override;
+	virtual UTbSame2SameEnum2InterfaceSignals* _GetSignals() override;
 
 	// methods
-	virtual void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, ETbSame2Enum1 Param1) override;
-	virtual ETbSame2Enum1 Func1_Implementation(ETbSame2Enum1 Param1) override PURE_VIRTUAL(UAbstractTbSame2SameEnum2Interface::Func1_Implementation, return ETbSame2Enum1::TS2E1_VALUE1;);
+	virtual void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, ETbSame2Enum1 Param1) override;
+	virtual ETbSame2Enum1 Func1(ETbSame2Enum1 Param1) override PURE_VIRTUAL(UAbstractTbSame2SameEnum2Interface::Func1, return ETbSame2Enum1::TS2E1_VALUE1;);
 
-	virtual void Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, ETbSame2Enum1 Param1, ETbSame2Enum2 Param2) override;
-	virtual ETbSame2Enum1 Func2_Implementation(ETbSame2Enum1 Param1, ETbSame2Enum2 Param2) override PURE_VIRTUAL(UAbstractTbSame2SameEnum2Interface::Func2_Implementation, return ETbSame2Enum1::TS2E1_VALUE1;);
+	virtual void Func2Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, ETbSame2Enum1 Param1, ETbSame2Enum2 Param2) override;
+	virtual ETbSame2Enum1 Func2(ETbSame2Enum1 Param1, ETbSame2Enum2 Param2) override PURE_VIRTUAL(UAbstractTbSame2SameEnum2Interface::Func2, return ETbSame2Enum1::TS2E1_VALUE1;);
 
 	// properties
-	virtual ETbSame2Enum1 GetProp1_Implementation() const override PURE_VIRTUAL(UAbstractTbSame2SameEnum2Interface::GetProp1_Implementation, return ETbSame2Enum1::TS2E1_VALUE1;);
-	virtual void SetProp1_Implementation(ETbSame2Enum1 InProp1) override PURE_VIRTUAL(UAbstractTbSame2SameEnum2Interface::SetProp1_Implementation, return;);
+	virtual ETbSame2Enum1 GetProp1() const override PURE_VIRTUAL(UAbstractTbSame2SameEnum2Interface::GetProp1, return ETbSame2Enum1::TS2E1_VALUE1;);
+	virtual void SetProp1(ETbSame2Enum1 InProp1) override PURE_VIRTUAL(UAbstractTbSame2SameEnum2Interface::SetProp1, return;);
 
-	virtual ETbSame2Enum2 GetProp2_Implementation() const override PURE_VIRTUAL(UAbstractTbSame2SameEnum2Interface::GetProp2_Implementation, return ETbSame2Enum2::TS2E2_VALUE1;);
-	virtual void SetProp2_Implementation(ETbSame2Enum2 InProp2) override PURE_VIRTUAL(UAbstractTbSame2SameEnum2Interface::SetProp2_Implementation, return;);
+	virtual ETbSame2Enum2 GetProp2() const override PURE_VIRTUAL(UAbstractTbSame2SameEnum2Interface::GetProp2, return ETbSame2Enum2::TS2E2_VALUE1;);
+	virtual void SetProp2(ETbSame2Enum2 InProp2) override PURE_VIRTUAL(UAbstractTbSame2SameEnum2Interface::SetProp2, return;);
 
 	virtual bool IsInitialized() const;
 

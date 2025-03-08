@@ -107,7 +107,7 @@ void UTbSimpleVoidInterfaceMsgBusAdapter::_setBackendService(TScriptInterface<IT
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		UTbSimpleVoidInterfaceSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+		UTbSimpleVoidInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleVoidInterface"));
 		BackendSignals->OnSigVoidSignal.RemoveDynamic(this, &UTbSimpleVoidInterfaceMsgBusAdapter::OnSigVoid);
 	}
@@ -117,7 +117,7 @@ void UTbSimpleVoidInterfaceMsgBusAdapter::_setBackendService(TScriptInterface<IT
 
 	// subscribe to new backend
 	BackendService = InService;
-	UTbSimpleVoidInterfaceSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+	UTbSimpleVoidInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service TbSimpleVoidInterface"));
 	// connect property changed signals or simple events
 	BackendSignals->OnSigVoidSignal.AddDynamic(this, &UTbSimpleVoidInterfaceMsgBusAdapter::OnSigVoid);
@@ -207,7 +207,7 @@ void UTbSimpleVoidInterfaceMsgBusAdapter::_UpdateClientsConnected()
 
 void UTbSimpleVoidInterfaceMsgBusAdapter::OnFuncVoidRequest(const FTbSimpleVoidInterfaceFuncVoidRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	BackendService->Execute_FuncVoid(BackendService.GetObject());
+	BackendService->FuncVoid();
 }
 
 void UTbSimpleVoidInterfaceMsgBusAdapter::OnSigVoid()

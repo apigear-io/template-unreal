@@ -38,33 +38,33 @@ public:
 	virtual void Deinitialize() override;
 
 	// signals
-	virtual UTestbed1StructArrayInterfaceSignals* _GetSignals_Implementation() override;
+	virtual UTestbed1StructArrayInterfaceSignals* _GetSignals() override;
 
 	// methods
-	virtual void FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FTestbed1StructBool>& Result, const TArray<FTestbed1StructBool>& ParamBool) override;
-	virtual TArray<FTestbed1StructBool> FuncBool_Implementation(const TArray<FTestbed1StructBool>& ParamBool) override PURE_VIRTUAL(UAbstractTestbed1StructArrayInterface::FuncBool_Implementation, return TArray<FTestbed1StructBool>(););
+	virtual void FuncBoolAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FTestbed1StructBool>& Result, const TArray<FTestbed1StructBool>& ParamBool) override;
+	virtual TArray<FTestbed1StructBool> FuncBool(const TArray<FTestbed1StructBool>& ParamBool) override PURE_VIRTUAL(UAbstractTestbed1StructArrayInterface::FuncBool, return TArray<FTestbed1StructBool>(););
 
-	virtual void FuncIntAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FTestbed1StructInt>& Result, const TArray<FTestbed1StructInt>& ParamInt) override;
-	virtual TArray<FTestbed1StructInt> FuncInt_Implementation(const TArray<FTestbed1StructInt>& ParamInt) override PURE_VIRTUAL(UAbstractTestbed1StructArrayInterface::FuncInt_Implementation, return TArray<FTestbed1StructInt>(););
+	virtual void FuncIntAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FTestbed1StructInt>& Result, const TArray<FTestbed1StructInt>& ParamInt) override;
+	virtual TArray<FTestbed1StructInt> FuncInt(const TArray<FTestbed1StructInt>& ParamInt) override PURE_VIRTUAL(UAbstractTestbed1StructArrayInterface::FuncInt, return TArray<FTestbed1StructInt>(););
 
-	virtual void FuncFloatAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FTestbed1StructFloat>& Result, const TArray<FTestbed1StructFloat>& ParamFloat) override;
-	virtual TArray<FTestbed1StructFloat> FuncFloat_Implementation(const TArray<FTestbed1StructFloat>& ParamFloat) override PURE_VIRTUAL(UAbstractTestbed1StructArrayInterface::FuncFloat_Implementation, return TArray<FTestbed1StructFloat>(););
+	virtual void FuncFloatAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FTestbed1StructFloat>& Result, const TArray<FTestbed1StructFloat>& ParamFloat) override;
+	virtual TArray<FTestbed1StructFloat> FuncFloat(const TArray<FTestbed1StructFloat>& ParamFloat) override PURE_VIRTUAL(UAbstractTestbed1StructArrayInterface::FuncFloat, return TArray<FTestbed1StructFloat>(););
 
-	virtual void FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FTestbed1StructString>& Result, const TArray<FTestbed1StructString>& ParamString) override;
-	virtual TArray<FTestbed1StructString> FuncString_Implementation(const TArray<FTestbed1StructString>& ParamString) override PURE_VIRTUAL(UAbstractTestbed1StructArrayInterface::FuncString_Implementation, return TArray<FTestbed1StructString>(););
+	virtual void FuncStringAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FTestbed1StructString>& Result, const TArray<FTestbed1StructString>& ParamString) override;
+	virtual TArray<FTestbed1StructString> FuncString(const TArray<FTestbed1StructString>& ParamString) override PURE_VIRTUAL(UAbstractTestbed1StructArrayInterface::FuncString, return TArray<FTestbed1StructString>(););
 
 	// properties
-	virtual TArray<FTestbed1StructBool> GetPropBool_Implementation() const override PURE_VIRTUAL(UAbstractTestbed1StructArrayInterface::GetPropBool_Implementation, return TArray<FTestbed1StructBool>(););
-	virtual void SetPropBool_Implementation(const TArray<FTestbed1StructBool>& InPropBool) override PURE_VIRTUAL(UAbstractTestbed1StructArrayInterface::SetPropBool_Implementation, return;);
+	virtual TArray<FTestbed1StructBool> GetPropBool() const override PURE_VIRTUAL(UAbstractTestbed1StructArrayInterface::GetPropBool, return TArray<FTestbed1StructBool>(););
+	virtual void SetPropBool(const TArray<FTestbed1StructBool>& InPropBool) override PURE_VIRTUAL(UAbstractTestbed1StructArrayInterface::SetPropBool, return;);
 
-	virtual TArray<FTestbed1StructInt> GetPropInt_Implementation() const override PURE_VIRTUAL(UAbstractTestbed1StructArrayInterface::GetPropInt_Implementation, return TArray<FTestbed1StructInt>(););
-	virtual void SetPropInt_Implementation(const TArray<FTestbed1StructInt>& InPropInt) override PURE_VIRTUAL(UAbstractTestbed1StructArrayInterface::SetPropInt_Implementation, return;);
+	virtual TArray<FTestbed1StructInt> GetPropInt() const override PURE_VIRTUAL(UAbstractTestbed1StructArrayInterface::GetPropInt, return TArray<FTestbed1StructInt>(););
+	virtual void SetPropInt(const TArray<FTestbed1StructInt>& InPropInt) override PURE_VIRTUAL(UAbstractTestbed1StructArrayInterface::SetPropInt, return;);
 
-	virtual TArray<FTestbed1StructFloat> GetPropFloat_Implementation() const override PURE_VIRTUAL(UAbstractTestbed1StructArrayInterface::GetPropFloat_Implementation, return TArray<FTestbed1StructFloat>(););
-	virtual void SetPropFloat_Implementation(const TArray<FTestbed1StructFloat>& InPropFloat) override PURE_VIRTUAL(UAbstractTestbed1StructArrayInterface::SetPropFloat_Implementation, return;);
+	virtual TArray<FTestbed1StructFloat> GetPropFloat() const override PURE_VIRTUAL(UAbstractTestbed1StructArrayInterface::GetPropFloat, return TArray<FTestbed1StructFloat>(););
+	virtual void SetPropFloat(const TArray<FTestbed1StructFloat>& InPropFloat) override PURE_VIRTUAL(UAbstractTestbed1StructArrayInterface::SetPropFloat, return;);
 
-	virtual TArray<FTestbed1StructString> GetPropString_Implementation() const override PURE_VIRTUAL(UAbstractTestbed1StructArrayInterface::GetPropString_Implementation, return TArray<FTestbed1StructString>(););
-	virtual void SetPropString_Implementation(const TArray<FTestbed1StructString>& InPropString) override PURE_VIRTUAL(UAbstractTestbed1StructArrayInterface::SetPropString_Implementation, return;);
+	virtual TArray<FTestbed1StructString> GetPropString() const override PURE_VIRTUAL(UAbstractTestbed1StructArrayInterface::GetPropString, return TArray<FTestbed1StructString>(););
+	virtual void SetPropString(const TArray<FTestbed1StructString>& InPropString) override PURE_VIRTUAL(UAbstractTestbed1StructArrayInterface::SetPropString, return;);
 
 	virtual bool IsInitialized() const;
 

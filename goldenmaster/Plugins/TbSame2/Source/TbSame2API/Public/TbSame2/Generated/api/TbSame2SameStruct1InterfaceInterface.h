@@ -62,7 +62,8 @@ public:
 /**
  * Interface UTbSame2SameStruct1InterfaceInterface only for Unreal Engine's reflection system
  */
-UINTERFACE(Blueprintable, MinimalAPI)
+// Note: meta=(CannotImplementInterfaceInBlueprint) is equal to NotBlueprintable and is only needed for UE 4.27
+UINTERFACE(NotBlueprintable, MinimalAPI, meta = (CannotImplementInterfaceInBlueprint))
 class UTbSame2SameStruct1InterfaceInterface : public UInterface
 {
 	GENERATED_BODY()
@@ -79,23 +80,18 @@ public:
 	/// Provides access to the object which holds all the delegates
 	/// this is needed since we cannot declare delegates on an UInterface
 	/// @return object with signals for property state changes or standalone signals
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct1Interface")
-	UTbSame2SameStruct1InterfaceSignals* _GetSignals();
-	virtual UTbSame2SameStruct1InterfaceSignals* _GetSignals_Implementation() = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct1Interface")
+	virtual UTbSame2SameStruct1InterfaceSignals* _GetSignals() = 0;
 
 	// methods
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct1Interface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-	void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame2Struct1& Result, const FTbSame2Struct1& Param1);
-	virtual void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame2Struct1& Result, const FTbSame2Struct1& Param1) = 0;
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct1Interface|Operations")
-	FTbSame2Struct1 Func1(const FTbSame2Struct1& Param1);
-	virtual FTbSame2Struct1 Func1_Implementation(const FTbSame2Struct1& Param1) = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct1Interface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	virtual void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame2Struct1& Result, const FTbSame2Struct1& Param1) = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct1Interface|Operations")
+	virtual FTbSame2Struct1 Func1(const FTbSame2Struct1& Param1) = 0;
 
 	// properties
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct1Interface|Properties")
-	FTbSame2Struct1 GetProp1() const;
-	virtual FTbSame2Struct1 GetProp1_Implementation() const = 0;
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct1Interface|Properties")
-	void SetProp1(const FTbSame2Struct1& InProp1);
-	virtual void SetProp1_Implementation(UPARAM(DisplayName = "Prop1") const FTbSame2Struct1& InProp1) = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct1Interface|Properties")
+	virtual FTbSame2Struct1 GetProp1() const = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct1Interface|Properties")
+	virtual void SetProp1(UPARAM(DisplayName = "Prop1") const FTbSame2Struct1& InProp1) = 0;
 };

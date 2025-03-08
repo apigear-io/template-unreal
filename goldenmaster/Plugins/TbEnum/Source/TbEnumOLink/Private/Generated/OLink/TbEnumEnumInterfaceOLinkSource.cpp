@@ -200,25 +200,25 @@ nlohmann::json TbEnumEnumInterfaceOLinkSource::olinkInvoke(const std::string& me
 	if (path == "func0")
 	{
 		ETbEnumEnum0 Param0 = args.at(0).get<ETbEnumEnum0>();
-		ETbEnumEnum0 result = BackendService->Execute_Func0(BackendService.GetObject(), Param0);
+		ETbEnumEnum0 result = BackendService->Func0(Param0);
 		return result;
 	}
 	if (path == "func1")
 	{
 		ETbEnumEnum1 Param1 = args.at(0).get<ETbEnumEnum1>();
-		ETbEnumEnum1 result = BackendService->Execute_Func1(BackendService.GetObject(), Param1);
+		ETbEnumEnum1 result = BackendService->Func1(Param1);
 		return result;
 	}
 	if (path == "func2")
 	{
 		ETbEnumEnum2 Param2 = args.at(0).get<ETbEnumEnum2>();
-		ETbEnumEnum2 result = BackendService->Execute_Func2(BackendService.GetObject(), Param2);
+		ETbEnumEnum2 result = BackendService->Func2(Param2);
 		return result;
 	}
 	if (path == "func3")
 	{
 		ETbEnumEnum3 Param3 = args.at(0).get<ETbEnumEnum3>();
-		ETbEnumEnum3 result = BackendService->Execute_Func3(BackendService.GetObject(), Param3);
+		ETbEnumEnum3 result = BackendService->Func3(Param3);
 		return result;
 	}
 	return nlohmann::json();
@@ -236,22 +236,22 @@ void TbEnumEnumInterfaceOLinkSource::olinkSetProperty(const std::string& propert
 	if (path == "prop0")
 	{
 		ETbEnumEnum0 Prop0 = value.get<ETbEnumEnum0>();
-		BackendService->Execute_SetProp0(BackendService.GetObject(), Prop0);
+		BackendService->SetProp0(Prop0);
 	}
 	if (path == "prop1")
 	{
 		ETbEnumEnum1 Prop1 = value.get<ETbEnumEnum1>();
-		BackendService->Execute_SetProp1(BackendService.GetObject(), Prop1);
+		BackendService->SetProp1(Prop1);
 	}
 	if (path == "prop2")
 	{
 		ETbEnumEnum2 Prop2 = value.get<ETbEnumEnum2>();
-		BackendService->Execute_SetProp2(BackendService.GetObject(), Prop2);
+		BackendService->SetProp2(Prop2);
 	}
 	if (path == "prop3")
 	{
 		ETbEnumEnum3 Prop3 = value.get<ETbEnumEnum3>();
-		BackendService->Execute_SetProp3(BackendService.GetObject(), Prop3);
+		BackendService->SetProp3(Prop3);
 	}
 }
 
@@ -265,9 +265,9 @@ nlohmann::json TbEnumEnumInterfaceOLinkSource::olinkCollectProperties()
 
 	return nlohmann::json::object({
 
-		{"prop0", BackendService->Execute_GetProp0(BackendService.GetObject())},
-		{"prop1", BackendService->Execute_GetProp1(BackendService.GetObject())},
-		{"prop2", BackendService->Execute_GetProp2(BackendService.GetObject())},
-		{"prop3", BackendService->Execute_GetProp3(BackendService.GetObject())}});
+		{"prop0", BackendService->GetProp0()},
+		{"prop1", BackendService->GetProp1()},
+		{"prop2", BackendService->GetProp2()},
+		{"prop3", BackendService->GetProp3()}});
 }
 #endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

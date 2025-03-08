@@ -248,7 +248,7 @@ void UTbSimpleVoidInterfaceMsgBusClient::OnServiceClosedConnection(const FTbSimp
 	_ConnectionStatusChanged.Broadcast(false);
 }
 
-void UTbSimpleVoidInterfaceMsgBusClient::FuncVoid_Implementation()
+void UTbSimpleVoidInterfaceMsgBusClient::FuncVoid()
 {
 	if (!_IsConnected())
 	{
@@ -276,7 +276,7 @@ void UTbSimpleVoidInterfaceMsgBusClient::OnSigVoid(const FTbSimpleVoidInterfaceS
 		return;
 	}
 
-	Execute__GetSignals(this)->OnSigVoidSignal.Broadcast();
+	_GetSignals()->OnSigVoidSignal.Broadcast();
 	return;
 }
 

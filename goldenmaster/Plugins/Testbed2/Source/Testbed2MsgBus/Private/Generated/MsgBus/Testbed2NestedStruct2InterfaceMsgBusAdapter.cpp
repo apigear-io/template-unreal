@@ -110,7 +110,7 @@ void UTestbed2NestedStruct2InterfaceMsgBusAdapter::_setBackendService(TScriptInt
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		UTestbed2NestedStruct2InterfaceSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+		UTestbed2NestedStruct2InterfaceSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service Testbed2NestedStruct2Interface"));
 		BackendSignals->OnProp1Changed.RemoveDynamic(this, &UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnProp1Changed);
 		BackendSignals->OnProp2Changed.RemoveDynamic(this, &UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnProp2Changed);
@@ -123,7 +123,7 @@ void UTestbed2NestedStruct2InterfaceMsgBusAdapter::_setBackendService(TScriptInt
 
 	// subscribe to new backend
 	BackendService = InService;
-	UTestbed2NestedStruct2InterfaceSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+	UTestbed2NestedStruct2InterfaceSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service Testbed2NestedStruct2Interface"));
 	// connect property changed signals or simple events
 	BackendSignals->OnProp1Changed.AddDynamic(this, &UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnProp1Changed);
@@ -138,8 +138,8 @@ void UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnNewClientDiscovered(const F
 
 	auto msg = new FTestbed2NestedStruct2InterfaceInitMessage();
 	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
-	msg->Prop1 = BackendService->Execute_GetProp1(BackendService.GetObject());
-	msg->Prop2 = BackendService->Execute_GetProp2(BackendService.GetObject());
+	msg->Prop1 = BackendService->GetProp1();
+	msg->Prop2 = BackendService->GetProp2();
 
 	if (Testbed2NestedStruct2InterfaceMsgBusEndpoint.IsValid())
 	{
@@ -220,7 +220,7 @@ void UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnFunc1Request(const FTestbed
 {
 	auto msg = new FTestbed2NestedStruct2InterfaceFunc1ReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
-	msg->Result = BackendService->Execute_Func1(BackendService.GetObject(), InMessage.Param1);
+	msg->Result = BackendService->Func1(InMessage.Param1);
 
 	if (Testbed2NestedStruct2InterfaceMsgBusEndpoint.IsValid())
 	{
@@ -236,7 +236,7 @@ void UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnFunc2Request(const FTestbed
 {
 	auto msg = new FTestbed2NestedStruct2InterfaceFunc2ReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
-	msg->Result = BackendService->Execute_Func2(BackendService.GetObject(), InMessage.Param1, InMessage.Param2);
+	msg->Result = BackendService->Func2(InMessage.Param1, InMessage.Param2);
 
 	if (Testbed2NestedStruct2InterfaceMsgBusEndpoint.IsValid())
 	{
@@ -285,7 +285,7 @@ void UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnSig2(const FTestbed2NestedS
 
 void UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnSetProp1Request(const FTestbed2NestedStruct2InterfaceSetProp1RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
-	BackendService->Execute_SetProp1(BackendService.GetObject(), InMessage.Prop1);
+	BackendService->SetProp1(InMessage.Prop1);
 }
 
 void UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnProp1Changed(const FTestbed2NestedStruct1& InProp1)
@@ -308,7 +308,7 @@ void UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnProp1Changed(const FTestbed
 
 void UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnSetProp2Request(const FTestbed2NestedStruct2InterfaceSetProp2RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
-	BackendService->Execute_SetProp2(BackendService.GetObject(), InMessage.Prop2);
+	BackendService->SetProp2(InMessage.Prop2);
 }
 
 void UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnProp2Changed(const FTestbed2NestedStruct2& InProp2)
