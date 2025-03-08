@@ -38,59 +38,59 @@ public:
 	virtual void Deinitialize() override;
 
 	// signals
-	virtual UTbSimpleSimpleArrayInterfaceSignals* _GetSignals_Implementation() override;
+	virtual UTbSimpleSimpleArrayInterfaceSignals* _GetSignals() override;
 
 	// methods
-	virtual void FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<bool>& Result, const TArray<bool>& ParamBool) override;
-	virtual TArray<bool> FuncBool_Implementation(const TArray<bool>& ParamBool) override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::FuncBool_Implementation, return TArray<bool>(););
+	virtual void FuncBoolAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<bool>& Result, const TArray<bool>& ParamBool) override;
+	virtual TArray<bool> FuncBool(const TArray<bool>& ParamBool) override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::FuncBool, return TArray<bool>(););
 
-	virtual void FuncIntAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<int32>& Result, const TArray<int32>& ParamInt) override;
-	virtual TArray<int32> FuncInt_Implementation(const TArray<int32>& ParamInt) override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::FuncInt_Implementation, return TArray<int32>(););
+	virtual void FuncIntAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<int32>& Result, const TArray<int32>& ParamInt) override;
+	virtual TArray<int32> FuncInt(const TArray<int32>& ParamInt) override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::FuncInt, return TArray<int32>(););
 
-	virtual void FuncInt32Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<int32>& Result, const TArray<int32>& ParamInt32) override;
-	virtual TArray<int32> FuncInt32_Implementation(const TArray<int32>& ParamInt32) override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::FuncInt32_Implementation, return TArray<int32>(););
+	virtual void FuncInt32Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<int32>& Result, const TArray<int32>& ParamInt32) override;
+	virtual TArray<int32> FuncInt32(const TArray<int32>& ParamInt32) override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::FuncInt32, return TArray<int32>(););
 
-	virtual void FuncInt64Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<int64>& Result, const TArray<int64>& ParamInt64) override;
-	virtual TArray<int64> FuncInt64_Implementation(const TArray<int64>& ParamInt64) override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::FuncInt64_Implementation, return TArray<int64>(););
+	virtual void FuncInt64Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<int64>& Result, const TArray<int64>& ParamInt64) override;
+	virtual TArray<int64> FuncInt64(const TArray<int64>& ParamInt64) override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::FuncInt64, return TArray<int64>(););
 
-	virtual void FuncFloatAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<float>& Result, const TArray<float>& ParamFloat) override;
-	virtual TArray<float> FuncFloat_Implementation(const TArray<float>& ParamFloat) override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::FuncFloat_Implementation, return TArray<float>(););
+	virtual void FuncFloatAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<float>& Result, const TArray<float>& ParamFloat) override;
+	virtual TArray<float> FuncFloat(const TArray<float>& ParamFloat) override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::FuncFloat, return TArray<float>(););
 
-	virtual void FuncFloat32Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<float>& Result, const TArray<float>& ParamFloat32) override;
-	virtual TArray<float> FuncFloat32_Implementation(const TArray<float>& ParamFloat32) override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::FuncFloat32_Implementation, return TArray<float>(););
+	virtual void FuncFloat32Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<float>& Result, const TArray<float>& ParamFloat32) override;
+	virtual TArray<float> FuncFloat32(const TArray<float>& ParamFloat32) override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::FuncFloat32, return TArray<float>(););
 
-	virtual void FuncFloat64Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<double>& Result, const TArray<double>& ParamFloat) override;
-	virtual TArray<double> FuncFloat64_Implementation(const TArray<double>& ParamFloat) override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::FuncFloat64_Implementation, return TArray<double>(););
+	virtual void FuncFloat64Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<double>& Result, const TArray<double>& ParamFloat) override;
+	virtual TArray<double> FuncFloat64(const TArray<double>& ParamFloat) override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::FuncFloat64, return TArray<double>(););
 
-	virtual void FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FString>& Result, const TArray<FString>& ParamString) override;
-	virtual TArray<FString> FuncString_Implementation(const TArray<FString>& ParamString) override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::FuncString_Implementation, return TArray<FString>(););
+	virtual void FuncStringAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FString>& Result, const TArray<FString>& ParamString) override;
+	virtual TArray<FString> FuncString(const TArray<FString>& ParamString) override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::FuncString, return TArray<FString>(););
 
 	// properties
-	virtual TArray<bool> GetPropBool_Implementation() const override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::GetPropBool_Implementation, return TArray<bool>(););
-	virtual void SetPropBool_Implementation(const TArray<bool>& InPropBool) override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::SetPropBool_Implementation, return;);
+	virtual TArray<bool> GetPropBool() const override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::GetPropBool, return TArray<bool>(););
+	virtual void SetPropBool(const TArray<bool>& InPropBool) override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::SetPropBool, return;);
 
-	virtual TArray<int32> GetPropInt_Implementation() const override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::GetPropInt_Implementation, return TArray<int32>(););
-	virtual void SetPropInt_Implementation(const TArray<int32>& InPropInt) override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::SetPropInt_Implementation, return;);
+	virtual TArray<int32> GetPropInt() const override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::GetPropInt, return TArray<int32>(););
+	virtual void SetPropInt(const TArray<int32>& InPropInt) override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::SetPropInt, return;);
 
-	virtual TArray<int32> GetPropInt32_Implementation() const override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::GetPropInt32_Implementation, return TArray<int32>(););
-	virtual void SetPropInt32_Implementation(const TArray<int32>& InPropInt32) override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::SetPropInt32_Implementation, return;);
+	virtual TArray<int32> GetPropInt32() const override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::GetPropInt32, return TArray<int32>(););
+	virtual void SetPropInt32(const TArray<int32>& InPropInt32) override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::SetPropInt32, return;);
 
-	virtual TArray<int64> GetPropInt64_Implementation() const override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::GetPropInt64_Implementation, return TArray<int64>(););
-	virtual void SetPropInt64_Implementation(const TArray<int64>& InPropInt64) override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::SetPropInt64_Implementation, return;);
+	virtual TArray<int64> GetPropInt64() const override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::GetPropInt64, return TArray<int64>(););
+	virtual void SetPropInt64(const TArray<int64>& InPropInt64) override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::SetPropInt64, return;);
 
-	virtual TArray<float> GetPropFloat_Implementation() const override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::GetPropFloat_Implementation, return TArray<float>(););
-	virtual void SetPropFloat_Implementation(const TArray<float>& InPropFloat) override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::SetPropFloat_Implementation, return;);
+	virtual TArray<float> GetPropFloat() const override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::GetPropFloat, return TArray<float>(););
+	virtual void SetPropFloat(const TArray<float>& InPropFloat) override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::SetPropFloat, return;);
 
-	virtual TArray<float> GetPropFloat32_Implementation() const override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::GetPropFloat32_Implementation, return TArray<float>(););
-	virtual void SetPropFloat32_Implementation(const TArray<float>& InPropFloat32) override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::SetPropFloat32_Implementation, return;);
+	virtual TArray<float> GetPropFloat32() const override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::GetPropFloat32, return TArray<float>(););
+	virtual void SetPropFloat32(const TArray<float>& InPropFloat32) override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::SetPropFloat32, return;);
 
-	virtual TArray<double> GetPropFloat64_Implementation() const override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::GetPropFloat64_Implementation, return TArray<double>(););
-	virtual void SetPropFloat64_Implementation(const TArray<double>& InPropFloat64) override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::SetPropFloat64_Implementation, return;);
+	virtual TArray<double> GetPropFloat64() const override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::GetPropFloat64, return TArray<double>(););
+	virtual void SetPropFloat64(const TArray<double>& InPropFloat64) override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::SetPropFloat64, return;);
 
-	virtual TArray<FString> GetPropString_Implementation() const override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::GetPropString_Implementation, return TArray<FString>(););
-	virtual void SetPropString_Implementation(const TArray<FString>& InPropString) override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::SetPropString_Implementation, return;);
+	virtual TArray<FString> GetPropString() const override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::GetPropString, return TArray<FString>(););
+	virtual void SetPropString(const TArray<FString>& InPropString) override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::SetPropString, return;);
 
-	virtual FString GetPropReadOnlyString_Implementation() const override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::GetPropReadOnlyString_Implementation, return FString(););
+	virtual FString GetPropReadOnlyString() const override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::GetPropReadOnlyString, return FString(););
 
 	virtual bool IsInitialized() const;
 

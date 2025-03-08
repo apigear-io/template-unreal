@@ -149,12 +149,12 @@ void UTbEnumEnumInterfaceOLinkClient::UseConnection(TScriptInterface<IApiGearCon
 	Connection = InConnection;
 }
 
-ETbEnumEnum0 UTbEnumEnumInterfaceOLinkClient::GetProp0_Implementation() const
+ETbEnumEnum0 UTbEnumEnumInterfaceOLinkClient::GetProp0() const
 {
 	return Prop0;
 }
 
-void UTbEnumEnumInterfaceOLinkClient::SetProp0_Implementation(ETbEnumEnum0 InProp0)
+void UTbEnumEnumInterfaceOLinkClient::SetProp0(ETbEnumEnum0 InProp0)
 {
 	if (!m_sink->IsReady())
 	{
@@ -163,7 +163,7 @@ void UTbEnumEnumInterfaceOLinkClient::SetProp0_Implementation(ETbEnumEnum0 InPro
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetProp0_Implementation() == InProp0)
+	if (GetProp0() == InProp0)
 	{
 		return;
 	}
@@ -178,12 +178,12 @@ void UTbEnumEnumInterfaceOLinkClient::SetProp0_Implementation(ETbEnumEnum0 InPro
 	_SentData->Prop0 = InProp0;
 }
 
-ETbEnumEnum1 UTbEnumEnumInterfaceOLinkClient::GetProp1_Implementation() const
+ETbEnumEnum1 UTbEnumEnumInterfaceOLinkClient::GetProp1() const
 {
 	return Prop1;
 }
 
-void UTbEnumEnumInterfaceOLinkClient::SetProp1_Implementation(ETbEnumEnum1 InProp1)
+void UTbEnumEnumInterfaceOLinkClient::SetProp1(ETbEnumEnum1 InProp1)
 {
 	if (!m_sink->IsReady())
 	{
@@ -192,7 +192,7 @@ void UTbEnumEnumInterfaceOLinkClient::SetProp1_Implementation(ETbEnumEnum1 InPro
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetProp1_Implementation() == InProp1)
+	if (GetProp1() == InProp1)
 	{
 		return;
 	}
@@ -207,12 +207,12 @@ void UTbEnumEnumInterfaceOLinkClient::SetProp1_Implementation(ETbEnumEnum1 InPro
 	_SentData->Prop1 = InProp1;
 }
 
-ETbEnumEnum2 UTbEnumEnumInterfaceOLinkClient::GetProp2_Implementation() const
+ETbEnumEnum2 UTbEnumEnumInterfaceOLinkClient::GetProp2() const
 {
 	return Prop2;
 }
 
-void UTbEnumEnumInterfaceOLinkClient::SetProp2_Implementation(ETbEnumEnum2 InProp2)
+void UTbEnumEnumInterfaceOLinkClient::SetProp2(ETbEnumEnum2 InProp2)
 {
 	if (!m_sink->IsReady())
 	{
@@ -221,7 +221,7 @@ void UTbEnumEnumInterfaceOLinkClient::SetProp2_Implementation(ETbEnumEnum2 InPro
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetProp2_Implementation() == InProp2)
+	if (GetProp2() == InProp2)
 	{
 		return;
 	}
@@ -236,12 +236,12 @@ void UTbEnumEnumInterfaceOLinkClient::SetProp2_Implementation(ETbEnumEnum2 InPro
 	_SentData->Prop2 = InProp2;
 }
 
-ETbEnumEnum3 UTbEnumEnumInterfaceOLinkClient::GetProp3_Implementation() const
+ETbEnumEnum3 UTbEnumEnumInterfaceOLinkClient::GetProp3() const
 {
 	return Prop3;
 }
 
-void UTbEnumEnumInterfaceOLinkClient::SetProp3_Implementation(ETbEnumEnum3 InProp3)
+void UTbEnumEnumInterfaceOLinkClient::SetProp3(ETbEnumEnum3 InProp3)
 {
 	if (!m_sink->IsReady())
 	{
@@ -250,7 +250,7 @@ void UTbEnumEnumInterfaceOLinkClient::SetProp3_Implementation(ETbEnumEnum3 InPro
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetProp3_Implementation() == InProp3)
+	if (GetProp3() == InProp3)
 	{
 		return;
 	}
@@ -265,7 +265,7 @@ void UTbEnumEnumInterfaceOLinkClient::SetProp3_Implementation(ETbEnumEnum3 InPro
 	_SentData->Prop3 = InProp3;
 }
 
-ETbEnumEnum0 UTbEnumEnumInterfaceOLinkClient::Func0_Implementation(ETbEnumEnum0 Param0)
+ETbEnumEnum0 UTbEnumEnumInterfaceOLinkClient::Func0(ETbEnumEnum0 Param0)
 {
 	if (!m_sink->IsReady())
 	{
@@ -296,7 +296,7 @@ ETbEnumEnum0 UTbEnumEnumInterfaceOLinkClient::Func0_Implementation(ETbEnumEnum0 
 	return Promise.GetFuture().Get();
 }
 
-ETbEnumEnum1 UTbEnumEnumInterfaceOLinkClient::Func1_Implementation(ETbEnumEnum1 Param1)
+ETbEnumEnum1 UTbEnumEnumInterfaceOLinkClient::Func1(ETbEnumEnum1 Param1)
 {
 	if (!m_sink->IsReady())
 	{
@@ -327,7 +327,7 @@ ETbEnumEnum1 UTbEnumEnumInterfaceOLinkClient::Func1_Implementation(ETbEnumEnum1 
 	return Promise.GetFuture().Get();
 }
 
-ETbEnumEnum2 UTbEnumEnumInterfaceOLinkClient::Func2_Implementation(ETbEnumEnum2 Param2)
+ETbEnumEnum2 UTbEnumEnumInterfaceOLinkClient::Func2(ETbEnumEnum2 Param2)
 {
 	if (!m_sink->IsReady())
 	{
@@ -358,7 +358,7 @@ ETbEnumEnum2 UTbEnumEnumInterfaceOLinkClient::Func2_Implementation(ETbEnumEnum2 
 	return Promise.GetFuture().Get();
 }
 
-ETbEnumEnum3 UTbEnumEnumInterfaceOLinkClient::Func3_Implementation(ETbEnumEnum3 Param3)
+ETbEnumEnum3 UTbEnumEnumInterfaceOLinkClient::Func3(ETbEnumEnum3 Param3)
 {
 	if (!m_sink->IsReady())
 	{
@@ -400,28 +400,28 @@ void UTbEnumEnumInterfaceOLinkClient::applyState(const nlohmann::json& fields)
 	if (bProp0Changed)
 	{
 		Prop0 = fields["prop0"].get<ETbEnumEnum0>();
-		Execute__GetSignals(this)->OnProp0Changed.Broadcast(Prop0);
+		_GetSignals()->OnProp0Changed.Broadcast(Prop0);
 	}
 
 	const bool bProp1Changed = fields.contains("prop1") && (Prop1 != fields["prop1"].get<ETbEnumEnum1>());
 	if (bProp1Changed)
 	{
 		Prop1 = fields["prop1"].get<ETbEnumEnum1>();
-		Execute__GetSignals(this)->OnProp1Changed.Broadcast(Prop1);
+		_GetSignals()->OnProp1Changed.Broadcast(Prop1);
 	}
 
 	const bool bProp2Changed = fields.contains("prop2") && (Prop2 != fields["prop2"].get<ETbEnumEnum2>());
 	if (bProp2Changed)
 	{
 		Prop2 = fields["prop2"].get<ETbEnumEnum2>();
-		Execute__GetSignals(this)->OnProp2Changed.Broadcast(Prop2);
+		_GetSignals()->OnProp2Changed.Broadcast(Prop2);
 	}
 
 	const bool bProp3Changed = fields.contains("prop3") && (Prop3 != fields["prop3"].get<ETbEnumEnum3>());
 	if (bProp3Changed)
 	{
 		Prop3 = fields["prop3"].get<ETbEnumEnum3>();
-		Execute__GetSignals(this)->OnProp3Changed.Broadcast(Prop3);
+		_GetSignals()->OnProp3Changed.Broadcast(Prop3);
 	}
 }
 
@@ -430,28 +430,28 @@ void UTbEnumEnumInterfaceOLinkClient::emitSignal(const std::string& signalName, 
 	if (signalName == "sig0")
 	{
 		ETbEnumEnum0 outParam0 = args[0].get<ETbEnumEnum0>();
-		Execute__GetSignals(this)->OnSig0Signal.Broadcast(outParam0);
+		_GetSignals()->OnSig0Signal.Broadcast(outParam0);
 		return;
 	}
 
 	if (signalName == "sig1")
 	{
 		ETbEnumEnum1 outParam1 = args[0].get<ETbEnumEnum1>();
-		Execute__GetSignals(this)->OnSig1Signal.Broadcast(outParam1);
+		_GetSignals()->OnSig1Signal.Broadcast(outParam1);
 		return;
 	}
 
 	if (signalName == "sig2")
 	{
 		ETbEnumEnum2 outParam2 = args[0].get<ETbEnumEnum2>();
-		Execute__GetSignals(this)->OnSig2Signal.Broadcast(outParam2);
+		_GetSignals()->OnSig2Signal.Broadcast(outParam2);
 		return;
 	}
 
 	if (signalName == "sig3")
 	{
 		ETbEnumEnum3 outParam3 = args[0].get<ETbEnumEnum3>();
-		Execute__GetSignals(this)->OnSig3Signal.Broadcast(outParam3);
+		_GetSignals()->OnSig3Signal.Broadcast(outParam3);
 		return;
 	}
 }

@@ -23,7 +23,7 @@ limitations under the License.
 /**
  * Interface UTbSimpleEmptyInterfaceInterface only for Unreal Engine's reflection system
  */
-UINTERFACE(Blueprintable, MinimalAPI)
+UINTERFACE(NotBlueprintable, MinimalAPI)
 class UTbSimpleEmptyInterfaceInterface : public UInterface
 {
 	GENERATED_BODY()

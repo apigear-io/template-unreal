@@ -38,21 +38,21 @@ public:
 	virtual void Deinitialize() override;
 
 	// signals
-	virtual UTbSame1SameStruct2InterfaceSignals* _GetSignals_Implementation() override;
+	virtual UTbSame1SameStruct2InterfaceSignals* _GetSignals() override;
 
 	// methods
-	virtual void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame1Struct1& Result, const FTbSame1Struct1& Param1) override;
-	virtual FTbSame1Struct1 Func1_Implementation(const FTbSame1Struct1& Param1) override PURE_VIRTUAL(UAbstractTbSame1SameStruct2Interface::Func1_Implementation, return FTbSame1Struct1(););
+	virtual void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame1Struct1& Result, const FTbSame1Struct1& Param1) override;
+	virtual FTbSame1Struct1 Func1(const FTbSame1Struct1& Param1) override PURE_VIRTUAL(UAbstractTbSame1SameStruct2Interface::Func1, return FTbSame1Struct1(););
 
-	virtual void Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame1Struct1& Result, const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2) override;
-	virtual FTbSame1Struct1 Func2_Implementation(const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2) override PURE_VIRTUAL(UAbstractTbSame1SameStruct2Interface::Func2_Implementation, return FTbSame1Struct1(););
+	virtual void Func2Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame1Struct1& Result, const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2) override;
+	virtual FTbSame1Struct1 Func2(const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2) override PURE_VIRTUAL(UAbstractTbSame1SameStruct2Interface::Func2, return FTbSame1Struct1(););
 
 	// properties
-	virtual FTbSame1Struct2 GetProp1_Implementation() const override PURE_VIRTUAL(UAbstractTbSame1SameStruct2Interface::GetProp1_Implementation, return FTbSame1Struct2(););
-	virtual void SetProp1_Implementation(const FTbSame1Struct2& InProp1) override PURE_VIRTUAL(UAbstractTbSame1SameStruct2Interface::SetProp1_Implementation, return;);
+	virtual FTbSame1Struct2 GetProp1() const override PURE_VIRTUAL(UAbstractTbSame1SameStruct2Interface::GetProp1, return FTbSame1Struct2(););
+	virtual void SetProp1(const FTbSame1Struct2& InProp1) override PURE_VIRTUAL(UAbstractTbSame1SameStruct2Interface::SetProp1, return;);
 
-	virtual FTbSame1Struct2 GetProp2_Implementation() const override PURE_VIRTUAL(UAbstractTbSame1SameStruct2Interface::GetProp2_Implementation, return FTbSame1Struct2(););
-	virtual void SetProp2_Implementation(const FTbSame1Struct2& InProp2) override PURE_VIRTUAL(UAbstractTbSame1SameStruct2Interface::SetProp2_Implementation, return;);
+	virtual FTbSame1Struct2 GetProp2() const override PURE_VIRTUAL(UAbstractTbSame1SameStruct2Interface::GetProp2, return FTbSame1Struct2(););
+	virtual void SetProp2(const FTbSame1Struct2& InProp2) override PURE_VIRTUAL(UAbstractTbSame1SameStruct2Interface::SetProp2, return;);
 
 	virtual bool IsInitialized() const;
 

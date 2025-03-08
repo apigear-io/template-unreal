@@ -46,16 +46,16 @@ public:
 	void Deinitialize() override;
 
 	// properties
-	FTbSame1Struct2 GetProp1_Implementation() const override;
-	void SetProp1_Implementation(const FTbSame1Struct2& Prop1) override;
+	FTbSame1Struct2 GetProp1() const override;
+	void SetProp1(const FTbSame1Struct2& Prop1) override;
 
-	FTbSame1Struct2 GetProp2_Implementation() const override;
-	void SetProp2_Implementation(const FTbSame1Struct2& Prop2) override;
+	FTbSame1Struct2 GetProp2() const override;
+	void SetProp2(const FTbSame1Struct2& Prop2) override;
 
 	// operations
-	FTbSame1Struct1 Func1_Implementation(const FTbSame1Struct1& Param1) override;
+	FTbSame1Struct1 Func1(const FTbSame1Struct1& Param1) override;
 
-	FTbSame1Struct1 Func2_Implementation(const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2) override;
+	FTbSame1Struct1 Func2(const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1|SameStruct2Interface")
 	void UseConnection(TScriptInterface<class IApiGearConnection> InConnection);

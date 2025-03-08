@@ -66,7 +66,7 @@ UAbstractTbNamesNamEs::UAbstractTbNamesNamEs()
 	TbNamesNamEsSignals = NewObject<UTbNamesNamEsSignals>();
 }
 
-UTbNamesNamEsSignals* UAbstractTbNamesNamEs::_GetSignals_Implementation()
+UTbNamesNamEsSignals* UAbstractTbNamesNamEs::_GetSignals()
 {
 	if (!TbNamesNamEsSignals)
 	{
@@ -77,32 +77,32 @@ UTbNamesNamEsSignals* UAbstractTbNamesNamEs::_GetSignals_Implementation()
 
 bool UAbstractTbNamesNamEs::GetSwitch_Private() const
 {
-	return Execute_GetSwitch(this);
+	return GetSwitch();
 };
 
 void UAbstractTbNamesNamEs::SetSwitch_Private(bool bInSwitch)
 {
-	Execute_SetSwitch(this, bInSwitch);
+	SetSwitch(bInSwitch);
 };
 
 int32 UAbstractTbNamesNamEs::GetSomeProperty_Private() const
 {
-	return Execute_GetSomeProperty(this);
+	return GetSomeProperty();
 };
 
 void UAbstractTbNamesNamEs::SetSomeProperty_Private(int32 InSomeProperty)
 {
-	Execute_SetSomeProperty(this, InSomeProperty);
+	SetSomeProperty(InSomeProperty);
 };
 
 int32 UAbstractTbNamesNamEs::GetSomePoperty2_Private() const
 {
-	return Execute_GetSomePoperty2(this);
+	return GetSomePoperty2();
 };
 
 void UAbstractTbNamesNamEs::SetSomePoperty2_Private(int32 InSomePoperty2)
 {
-	Execute_SetSomePoperty2(this, InSomePoperty2);
+	SetSomePoperty2(InSomePoperty2);
 };
 
 void UAbstractTbNamesNamEs::Initialize(FSubsystemCollectionBase& Collection)

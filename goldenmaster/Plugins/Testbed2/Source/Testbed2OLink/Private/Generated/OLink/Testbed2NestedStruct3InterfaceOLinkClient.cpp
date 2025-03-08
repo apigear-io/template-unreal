@@ -151,12 +151,12 @@ void UTestbed2NestedStruct3InterfaceOLinkClient::UseConnection(TScriptInterface<
 	Connection = InConnection;
 }
 
-FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceOLinkClient::GetProp1_Implementation() const
+FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceOLinkClient::GetProp1() const
 {
 	return Prop1;
 }
 
-void UTestbed2NestedStruct3InterfaceOLinkClient::SetProp1_Implementation(const FTestbed2NestedStruct1& InProp1)
+void UTestbed2NestedStruct3InterfaceOLinkClient::SetProp1(const FTestbed2NestedStruct1& InProp1)
 {
 	if (!m_sink->IsReady())
 	{
@@ -165,7 +165,7 @@ void UTestbed2NestedStruct3InterfaceOLinkClient::SetProp1_Implementation(const F
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetProp1_Implementation() == InProp1)
+	if (GetProp1() == InProp1)
 	{
 		return;
 	}
@@ -184,12 +184,12 @@ void UTestbed2NestedStruct3InterfaceOLinkClient::SetProp1_Implementation(const F
 	_SentData->Prop1 = InProp1;
 }
 
-FTestbed2NestedStruct2 UTestbed2NestedStruct3InterfaceOLinkClient::GetProp2_Implementation() const
+FTestbed2NestedStruct2 UTestbed2NestedStruct3InterfaceOLinkClient::GetProp2() const
 {
 	return Prop2;
 }
 
-void UTestbed2NestedStruct3InterfaceOLinkClient::SetProp2_Implementation(const FTestbed2NestedStruct2& InProp2)
+void UTestbed2NestedStruct3InterfaceOLinkClient::SetProp2(const FTestbed2NestedStruct2& InProp2)
 {
 	if (!m_sink->IsReady())
 	{
@@ -198,7 +198,7 @@ void UTestbed2NestedStruct3InterfaceOLinkClient::SetProp2_Implementation(const F
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetProp2_Implementation() == InProp2)
+	if (GetProp2() == InProp2)
 	{
 		return;
 	}
@@ -217,12 +217,12 @@ void UTestbed2NestedStruct3InterfaceOLinkClient::SetProp2_Implementation(const F
 	_SentData->Prop2 = InProp2;
 }
 
-FTestbed2NestedStruct3 UTestbed2NestedStruct3InterfaceOLinkClient::GetProp3_Implementation() const
+FTestbed2NestedStruct3 UTestbed2NestedStruct3InterfaceOLinkClient::GetProp3() const
 {
 	return Prop3;
 }
 
-void UTestbed2NestedStruct3InterfaceOLinkClient::SetProp3_Implementation(const FTestbed2NestedStruct3& InProp3)
+void UTestbed2NestedStruct3InterfaceOLinkClient::SetProp3(const FTestbed2NestedStruct3& InProp3)
 {
 	if (!m_sink->IsReady())
 	{
@@ -231,7 +231,7 @@ void UTestbed2NestedStruct3InterfaceOLinkClient::SetProp3_Implementation(const F
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetProp3_Implementation() == InProp3)
+	if (GetProp3() == InProp3)
 	{
 		return;
 	}
@@ -250,7 +250,7 @@ void UTestbed2NestedStruct3InterfaceOLinkClient::SetProp3_Implementation(const F
 	_SentData->Prop3 = InProp3;
 }
 
-FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceOLinkClient::Func1_Implementation(const FTestbed2NestedStruct1& Param1)
+FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceOLinkClient::Func1(const FTestbed2NestedStruct1& Param1)
 {
 	if (!m_sink->IsReady())
 	{
@@ -281,7 +281,7 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceOLinkClient::Func1_Impleme
 	return Promise.GetFuture().Get();
 }
 
-FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceOLinkClient::Func2_Implementation(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
+FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceOLinkClient::Func2(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
 {
 	if (!m_sink->IsReady())
 	{
@@ -312,7 +312,7 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceOLinkClient::Func2_Impleme
 	return Promise.GetFuture().Get();
 }
 
-FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceOLinkClient::Func3_Implementation(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3)
+FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceOLinkClient::Func3(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3)
 {
 	if (!m_sink->IsReady())
 	{
@@ -354,21 +354,21 @@ void UTestbed2NestedStruct3InterfaceOLinkClient::applyState(const nlohmann::json
 	if (bProp1Changed)
 	{
 		Prop1 = fields["prop1"].get<FTestbed2NestedStruct1>();
-		Execute__GetSignals(this)->OnProp1Changed.Broadcast(Prop1);
+		_GetSignals()->OnProp1Changed.Broadcast(Prop1);
 	}
 
 	const bool bProp2Changed = fields.contains("prop2") && (Prop2 != fields["prop2"].get<FTestbed2NestedStruct2>());
 	if (bProp2Changed)
 	{
 		Prop2 = fields["prop2"].get<FTestbed2NestedStruct2>();
-		Execute__GetSignals(this)->OnProp2Changed.Broadcast(Prop2);
+		_GetSignals()->OnProp2Changed.Broadcast(Prop2);
 	}
 
 	const bool bProp3Changed = fields.contains("prop3") && (Prop3 != fields["prop3"].get<FTestbed2NestedStruct3>());
 	if (bProp3Changed)
 	{
 		Prop3 = fields["prop3"].get<FTestbed2NestedStruct3>();
-		Execute__GetSignals(this)->OnProp3Changed.Broadcast(Prop3);
+		_GetSignals()->OnProp3Changed.Broadcast(Prop3);
 	}
 }
 
@@ -377,7 +377,7 @@ void UTestbed2NestedStruct3InterfaceOLinkClient::emitSignal(const std::string& s
 	if (signalName == "sig1")
 	{
 		const FTestbed2NestedStruct1& outParam1 = args[0].get<FTestbed2NestedStruct1>();
-		Execute__GetSignals(this)->OnSig1Signal.Broadcast(outParam1);
+		_GetSignals()->OnSig1Signal.Broadcast(outParam1);
 		return;
 	}
 
@@ -385,7 +385,7 @@ void UTestbed2NestedStruct3InterfaceOLinkClient::emitSignal(const std::string& s
 	{
 		const FTestbed2NestedStruct1& outParam1 = args[0].get<FTestbed2NestedStruct1>();
 		const FTestbed2NestedStruct2& outParam2 = args[1].get<FTestbed2NestedStruct2>();
-		Execute__GetSignals(this)->OnSig2Signal.Broadcast(outParam1, outParam2);
+		_GetSignals()->OnSig2Signal.Broadcast(outParam1, outParam2);
 		return;
 	}
 
@@ -394,7 +394,7 @@ void UTestbed2NestedStruct3InterfaceOLinkClient::emitSignal(const std::string& s
 		const FTestbed2NestedStruct1& outParam1 = args[0].get<FTestbed2NestedStruct1>();
 		const FTestbed2NestedStruct2& outParam2 = args[1].get<FTestbed2NestedStruct2>();
 		const FTestbed2NestedStruct3& outParam3 = args[2].get<FTestbed2NestedStruct3>();
-		Execute__GetSignals(this)->OnSig3Signal.Broadcast(outParam1, outParam2, outParam3);
+		_GetSignals()->OnSig3Signal.Broadcast(outParam1, outParam2, outParam3);
 		return;
 	}
 }

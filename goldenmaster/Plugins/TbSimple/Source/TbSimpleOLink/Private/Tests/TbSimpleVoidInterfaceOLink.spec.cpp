@@ -85,7 +85,7 @@ void UTbSimpleVoidInterfaceOLinkSpec::Define()
 		// Do implement test here
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
-			ImplFixture->GetImplementation()->Execute_FuncVoid(ImplFixture->GetImplementation().GetObject());
+			ImplFixture->GetImplementation()->FuncVoid();
 			TestDone.Execute();
 		});
 	});
@@ -93,7 +93,7 @@ void UTbSimpleVoidInterfaceOLinkSpec::Define()
 	LatentIt("Signal.SigVoid", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		testDoneDelegate = TestDone;
-		UTbSimpleVoidInterfaceSignals* TbSimpleVoidInterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
+		UTbSimpleVoidInterfaceSignals* TbSimpleVoidInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
 		TbSimpleVoidInterfaceSignals->OnSigVoidSignal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleVoidInterfaceOLinkHelper::SigVoidSignalCb);
 
 		// use different test value

@@ -38,22 +38,22 @@ public:
 	virtual void Deinitialize() override;
 
 	// signals
-	virtual UTbNamesNamEsSignals* _GetSignals_Implementation() override;
+	virtual UTbNamesNamEsSignals* _GetSignals() override;
 
 	// methods
-	virtual void SomeFunction_Implementation(bool bSomeParam) override PURE_VIRTUAL(UAbstractTbNamesNamEs::SomeFunction_Implementation, return;);
+	virtual void SomeFunction(bool bSomeParam) override PURE_VIRTUAL(UAbstractTbNamesNamEs::SomeFunction, return;);
 
-	virtual void SomeFunction2_Implementation(bool bSomeParam) override PURE_VIRTUAL(UAbstractTbNamesNamEs::SomeFunction2_Implementation, return;);
+	virtual void SomeFunction2(bool bSomeParam) override PURE_VIRTUAL(UAbstractTbNamesNamEs::SomeFunction2, return;);
 
 	// properties
-	virtual bool GetSwitch_Implementation() const override PURE_VIRTUAL(UAbstractTbNamesNamEs::GetSwitch_Implementation, return false;);
-	virtual void SetSwitch_Implementation(bool bInSwitch) override PURE_VIRTUAL(UAbstractTbNamesNamEs::SetSwitch_Implementation, return;);
+	virtual bool GetSwitch() const override PURE_VIRTUAL(UAbstractTbNamesNamEs::GetSwitch, return false;);
+	virtual void SetSwitch(bool bInSwitch) override PURE_VIRTUAL(UAbstractTbNamesNamEs::SetSwitch, return;);
 
-	virtual int32 GetSomeProperty_Implementation() const override PURE_VIRTUAL(UAbstractTbNamesNamEs::GetSomeProperty_Implementation, return 0;);
-	virtual void SetSomeProperty_Implementation(int32 InSomeProperty) override PURE_VIRTUAL(UAbstractTbNamesNamEs::SetSomeProperty_Implementation, return;);
+	virtual int32 GetSomeProperty() const override PURE_VIRTUAL(UAbstractTbNamesNamEs::GetSomeProperty, return 0;);
+	virtual void SetSomeProperty(int32 InSomeProperty) override PURE_VIRTUAL(UAbstractTbNamesNamEs::SetSomeProperty, return;);
 
-	virtual int32 GetSomePoperty2_Implementation() const override PURE_VIRTUAL(UAbstractTbNamesNamEs::GetSomePoperty2_Implementation, return 0;);
-	virtual void SetSomePoperty2_Implementation(int32 InSomePoperty2) override PURE_VIRTUAL(UAbstractTbNamesNamEs::SetSomePoperty2_Implementation, return;);
+	virtual int32 GetSomePoperty2() const override PURE_VIRTUAL(UAbstractTbNamesNamEs::GetSomePoperty2, return 0;);
+	virtual void SetSomePoperty2(int32 InSomePoperty2) override PURE_VIRTUAL(UAbstractTbNamesNamEs::SetSomePoperty2, return;);
 
 	virtual bool IsInitialized() const;
 

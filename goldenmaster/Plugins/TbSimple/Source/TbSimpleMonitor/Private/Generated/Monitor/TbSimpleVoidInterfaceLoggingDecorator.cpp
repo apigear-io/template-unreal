@@ -47,7 +47,7 @@ void UTbSimpleVoidInterfaceLoggingDecorator::setBackendService(TScriptInterface<
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		UTbSimpleVoidInterfaceSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+		UTbSimpleVoidInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleVoidInterface"));
 		BackendSignals->OnSigVoidSignal.RemoveDynamic(this, &UTbSimpleVoidInterfaceLoggingDecorator::OnSigVoid);
 	}
@@ -57,7 +57,7 @@ void UTbSimpleVoidInterfaceLoggingDecorator::setBackendService(TScriptInterface<
 
 	// subscribe to new backend
 	BackendService = InService;
-	UTbSimpleVoidInterfaceSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+	UTbSimpleVoidInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleVoidInterface"));
 	// connect property changed signals or simple events
 	BackendSignals->OnSigVoidSignal.AddDynamic(this, &UTbSimpleVoidInterfaceLoggingDecorator::OnSigVoid);
@@ -67,11 +67,11 @@ void UTbSimpleVoidInterfaceLoggingDecorator::setBackendService(TScriptInterface<
 void UTbSimpleVoidInterfaceLoggingDecorator::OnSigVoid()
 {
 	TbSimpleVoidInterfaceTracer::trace_signalSigVoid();
-	Execute__GetSignals(this)->OnSigVoidSignal.Broadcast();
+	_GetSignals()->OnSigVoidSignal.Broadcast();
 }
 
-void UTbSimpleVoidInterfaceLoggingDecorator::FuncVoid_Implementation()
+void UTbSimpleVoidInterfaceLoggingDecorator::FuncVoid()
 {
 	TbSimpleVoidInterfaceTracer::trace_callFuncVoid();
-	BackendService->Execute_FuncVoid(BackendService.GetObject());
+	BackendService->FuncVoid();
 }

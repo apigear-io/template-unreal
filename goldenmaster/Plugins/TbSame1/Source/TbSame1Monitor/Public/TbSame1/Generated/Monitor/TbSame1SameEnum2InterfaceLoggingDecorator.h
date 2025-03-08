@@ -42,18 +42,18 @@ public:
 	void Deinitialize() override;
 
 	// properties
-	ETbSame1Enum1 GetProp1_Implementation() const override;
+	ETbSame1Enum1 GetProp1() const override;
 
-	void SetProp1_Implementation(ETbSame1Enum1 InProp1) override;
+	void SetProp1(ETbSame1Enum1 InProp1) override;
 
-	ETbSame1Enum2 GetProp2_Implementation() const override;
+	ETbSame1Enum2 GetProp2() const override;
 
-	void SetProp2_Implementation(ETbSame1Enum2 InProp2) override;
+	void SetProp2(ETbSame1Enum2 InProp2) override;
 
 	// operations
-	ETbSame1Enum1 Func1_Implementation(ETbSame1Enum1 Param1) override;
+	ETbSame1Enum1 Func1(ETbSame1Enum1 Param1) override;
 
-	ETbSame1Enum1 Func2_Implementation(ETbSame1Enum1 Param1, ETbSame1Enum2 Param2) override;
+	ETbSame1Enum1 Func2(ETbSame1Enum1 Param1, ETbSame1Enum2 Param2) override;
 
 private:
 	/** The connection to the service backend. */

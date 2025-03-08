@@ -47,7 +47,7 @@ void UTestbed2ManyParamInterfaceLoggingDecorator::setBackendService(TScriptInter
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		UTestbed2ManyParamInterfaceSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+		UTestbed2ManyParamInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service Testbed2ManyParamInterface"));
 		BackendSignals->OnProp1Changed.RemoveDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnProp1Changed);
 		BackendSignals->OnProp2Changed.RemoveDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnProp2Changed);
@@ -64,7 +64,7 @@ void UTestbed2ManyParamInterfaceLoggingDecorator::setBackendService(TScriptInter
 
 	// subscribe to new backend
 	BackendService = InService;
-	UTestbed2ManyParamInterfaceSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+	UTestbed2ManyParamInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service Testbed2ManyParamInterface"));
 	// connect property changed signals or simple events
 	BackendSignals->OnProp1Changed.AddDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnProp1Changed);
@@ -76,128 +76,128 @@ void UTestbed2ManyParamInterfaceLoggingDecorator::setBackendService(TScriptInter
 	BackendSignals->OnSig3Signal.AddDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnSig3);
 	BackendSignals->OnSig4Signal.AddDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnSig4);
 	// populate service state to proxy
-	Prop1 = BackendService->Execute_GetProp1(BackendService.GetObject());
-	Prop2 = BackendService->Execute_GetProp2(BackendService.GetObject());
-	Prop3 = BackendService->Execute_GetProp3(BackendService.GetObject());
-	Prop4 = BackendService->Execute_GetProp4(BackendService.GetObject());
+	Prop1 = BackendService->GetProp1();
+	Prop2 = BackendService->GetProp2();
+	Prop3 = BackendService->GetProp3();
+	Prop4 = BackendService->GetProp4();
 }
 
 void UTestbed2ManyParamInterfaceLoggingDecorator::OnSig1(int32 InParam1)
 {
 	Testbed2ManyParamInterfaceTracer::trace_signalSig1(InParam1);
-	Execute__GetSignals(this)->OnSig1Signal.Broadcast(InParam1);
+	_GetSignals()->OnSig1Signal.Broadcast(InParam1);
 }
 
 void UTestbed2ManyParamInterfaceLoggingDecorator::OnSig2(int32 InParam1, int32 InParam2)
 {
 	Testbed2ManyParamInterfaceTracer::trace_signalSig2(InParam1, InParam2);
-	Execute__GetSignals(this)->OnSig2Signal.Broadcast(InParam1, InParam2);
+	_GetSignals()->OnSig2Signal.Broadcast(InParam1, InParam2);
 }
 
 void UTestbed2ManyParamInterfaceLoggingDecorator::OnSig3(int32 InParam1, int32 InParam2, int32 InParam3)
 {
 	Testbed2ManyParamInterfaceTracer::trace_signalSig3(InParam1, InParam2, InParam3);
-	Execute__GetSignals(this)->OnSig3Signal.Broadcast(InParam1, InParam2, InParam3);
+	_GetSignals()->OnSig3Signal.Broadcast(InParam1, InParam2, InParam3);
 }
 
 void UTestbed2ManyParamInterfaceLoggingDecorator::OnSig4(int32 InParam1, int32 InParam2, int32 InParam3, int32 InParam4)
 {
 	Testbed2ManyParamInterfaceTracer::trace_signalSig4(InParam1, InParam2, InParam3, InParam4);
-	Execute__GetSignals(this)->OnSig4Signal.Broadcast(InParam1, InParam2, InParam3, InParam4);
+	_GetSignals()->OnSig4Signal.Broadcast(InParam1, InParam2, InParam3, InParam4);
 }
 
 void UTestbed2ManyParamInterfaceLoggingDecorator::OnProp1Changed(int32 InProp1)
 {
 	Testbed2ManyParamInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop1 = InProp1;
-	Execute__GetSignals(this)->OnProp1Changed.Broadcast(InProp1);
+	_GetSignals()->OnProp1Changed.Broadcast(InProp1);
 }
 
-int32 UTestbed2ManyParamInterfaceLoggingDecorator::GetProp1_Implementation() const
+int32 UTestbed2ManyParamInterfaceLoggingDecorator::GetProp1() const
 {
-	return BackendService->Execute_GetProp1(BackendService.GetObject());
+	return BackendService->GetProp1();
 }
 
-void UTestbed2ManyParamInterfaceLoggingDecorator::SetProp1_Implementation(int32 InProp1)
+void UTestbed2ManyParamInterfaceLoggingDecorator::SetProp1(int32 InProp1)
 {
 	Testbed2ManyParamInterfaceTracer::trace_callSetProp1(InProp1);
-	BackendService->Execute_SetProp1(BackendService.GetObject(), InProp1);
+	BackendService->SetProp1(InProp1);
 }
 
 void UTestbed2ManyParamInterfaceLoggingDecorator::OnProp2Changed(int32 InProp2)
 {
 	Testbed2ManyParamInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop2 = InProp2;
-	Execute__GetSignals(this)->OnProp2Changed.Broadcast(InProp2);
+	_GetSignals()->OnProp2Changed.Broadcast(InProp2);
 }
 
-int32 UTestbed2ManyParamInterfaceLoggingDecorator::GetProp2_Implementation() const
+int32 UTestbed2ManyParamInterfaceLoggingDecorator::GetProp2() const
 {
-	return BackendService->Execute_GetProp2(BackendService.GetObject());
+	return BackendService->GetProp2();
 }
 
-void UTestbed2ManyParamInterfaceLoggingDecorator::SetProp2_Implementation(int32 InProp2)
+void UTestbed2ManyParamInterfaceLoggingDecorator::SetProp2(int32 InProp2)
 {
 	Testbed2ManyParamInterfaceTracer::trace_callSetProp2(InProp2);
-	BackendService->Execute_SetProp2(BackendService.GetObject(), InProp2);
+	BackendService->SetProp2(InProp2);
 }
 
 void UTestbed2ManyParamInterfaceLoggingDecorator::OnProp3Changed(int32 InProp3)
 {
 	Testbed2ManyParamInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop3 = InProp3;
-	Execute__GetSignals(this)->OnProp3Changed.Broadcast(InProp3);
+	_GetSignals()->OnProp3Changed.Broadcast(InProp3);
 }
 
-int32 UTestbed2ManyParamInterfaceLoggingDecorator::GetProp3_Implementation() const
+int32 UTestbed2ManyParamInterfaceLoggingDecorator::GetProp3() const
 {
-	return BackendService->Execute_GetProp3(BackendService.GetObject());
+	return BackendService->GetProp3();
 }
 
-void UTestbed2ManyParamInterfaceLoggingDecorator::SetProp3_Implementation(int32 InProp3)
+void UTestbed2ManyParamInterfaceLoggingDecorator::SetProp3(int32 InProp3)
 {
 	Testbed2ManyParamInterfaceTracer::trace_callSetProp3(InProp3);
-	BackendService->Execute_SetProp3(BackendService.GetObject(), InProp3);
+	BackendService->SetProp3(InProp3);
 }
 
 void UTestbed2ManyParamInterfaceLoggingDecorator::OnProp4Changed(int32 InProp4)
 {
 	Testbed2ManyParamInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop4 = InProp4;
-	Execute__GetSignals(this)->OnProp4Changed.Broadcast(InProp4);
+	_GetSignals()->OnProp4Changed.Broadcast(InProp4);
 }
 
-int32 UTestbed2ManyParamInterfaceLoggingDecorator::GetProp4_Implementation() const
+int32 UTestbed2ManyParamInterfaceLoggingDecorator::GetProp4() const
 {
-	return BackendService->Execute_GetProp4(BackendService.GetObject());
+	return BackendService->GetProp4();
 }
 
-void UTestbed2ManyParamInterfaceLoggingDecorator::SetProp4_Implementation(int32 InProp4)
+void UTestbed2ManyParamInterfaceLoggingDecorator::SetProp4(int32 InProp4)
 {
 	Testbed2ManyParamInterfaceTracer::trace_callSetProp4(InProp4);
-	BackendService->Execute_SetProp4(BackendService.GetObject(), InProp4);
+	BackendService->SetProp4(InProp4);
 }
 
-int32 UTestbed2ManyParamInterfaceLoggingDecorator::Func1_Implementation(int32 Param1)
+int32 UTestbed2ManyParamInterfaceLoggingDecorator::Func1(int32 Param1)
 {
 	Testbed2ManyParamInterfaceTracer::trace_callFunc1(Param1);
-	return BackendService->Execute_Func1(BackendService.GetObject(), Param1);
+	return BackendService->Func1(Param1);
 }
 
-int32 UTestbed2ManyParamInterfaceLoggingDecorator::Func2_Implementation(int32 Param1, int32 Param2)
+int32 UTestbed2ManyParamInterfaceLoggingDecorator::Func2(int32 Param1, int32 Param2)
 {
 	Testbed2ManyParamInterfaceTracer::trace_callFunc2(Param1, Param2);
-	return BackendService->Execute_Func2(BackendService.GetObject(), Param1, Param2);
+	return BackendService->Func2(Param1, Param2);
 }
 
-int32 UTestbed2ManyParamInterfaceLoggingDecorator::Func3_Implementation(int32 Param1, int32 Param2, int32 Param3)
+int32 UTestbed2ManyParamInterfaceLoggingDecorator::Func3(int32 Param1, int32 Param2, int32 Param3)
 {
 	Testbed2ManyParamInterfaceTracer::trace_callFunc3(Param1, Param2, Param3);
-	return BackendService->Execute_Func3(BackendService.GetObject(), Param1, Param2, Param3);
+	return BackendService->Func3(Param1, Param2, Param3);
 }
 
-int32 UTestbed2ManyParamInterfaceLoggingDecorator::Func4_Implementation(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
+int32 UTestbed2ManyParamInterfaceLoggingDecorator::Func4(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
 {
 	Testbed2ManyParamInterfaceTracer::trace_callFunc4(Param1, Param2, Param3, Param4);
-	return BackendService->Execute_Func4(BackendService.GetObject(), Param1, Param2, Param3, Param4);
+	return BackendService->Func4(Param1, Param2, Param3, Param4);
 }
