@@ -99,11 +99,11 @@ public:
 	FTbSame2SameEnum1InterfaceConnectionStatusChangedDelegate _ConnectionStatusChanged;
 
 	// properties
-	ETbSame2Enum1 GetProp1_Implementation() const override;
-	void SetProp1_Implementation(ETbSame2Enum1 Prop1) override;
+	ETbSame2Enum1 GetProp1() const override;
+	void SetProp1(ETbSame2Enum1 Prop1) override;
 
 	// operations
-	ETbSame2Enum1 Func1_Implementation(ETbSame2Enum1 Param1) override;
+	ETbSame2Enum1 Func1(ETbSame2Enum1 Param1) override;
 
 private:
 	TSharedPtr<FMessageEndpoint, ESPMode::ThreadSafe> TbSame2SameEnum1InterfaceMsgBusEndpoint;

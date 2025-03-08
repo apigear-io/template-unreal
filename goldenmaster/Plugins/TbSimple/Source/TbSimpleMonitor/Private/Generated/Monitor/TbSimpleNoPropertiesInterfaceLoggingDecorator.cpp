@@ -47,7 +47,7 @@ void UTbSimpleNoPropertiesInterfaceLoggingDecorator::setBackendService(TScriptIn
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		UTbSimpleNoPropertiesInterfaceSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+		UTbSimpleNoPropertiesInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleNoPropertiesInterface"));
 		BackendSignals->OnSigVoidSignal.RemoveDynamic(this, &UTbSimpleNoPropertiesInterfaceLoggingDecorator::OnSigVoid);
 		BackendSignals->OnSigBoolSignal.RemoveDynamic(this, &UTbSimpleNoPropertiesInterfaceLoggingDecorator::OnSigBool);
@@ -58,7 +58,7 @@ void UTbSimpleNoPropertiesInterfaceLoggingDecorator::setBackendService(TScriptIn
 
 	// subscribe to new backend
 	BackendService = InService;
-	UTbSimpleNoPropertiesInterfaceSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+	UTbSimpleNoPropertiesInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleNoPropertiesInterface"));
 	// connect property changed signals or simple events
 	BackendSignals->OnSigVoidSignal.AddDynamic(this, &UTbSimpleNoPropertiesInterfaceLoggingDecorator::OnSigVoid);
@@ -69,23 +69,23 @@ void UTbSimpleNoPropertiesInterfaceLoggingDecorator::setBackendService(TScriptIn
 void UTbSimpleNoPropertiesInterfaceLoggingDecorator::OnSigVoid()
 {
 	TbSimpleNoPropertiesInterfaceTracer::trace_signalSigVoid();
-	Execute__GetSignals(this)->OnSigVoidSignal.Broadcast();
+	_GetSignals()->OnSigVoidSignal.Broadcast();
 }
 
 void UTbSimpleNoPropertiesInterfaceLoggingDecorator::OnSigBool(bool bInParamBool)
 {
 	TbSimpleNoPropertiesInterfaceTracer::trace_signalSigBool(bInParamBool);
-	Execute__GetSignals(this)->OnSigBoolSignal.Broadcast(bInParamBool);
+	_GetSignals()->OnSigBoolSignal.Broadcast(bInParamBool);
 }
 
-void UTbSimpleNoPropertiesInterfaceLoggingDecorator::FuncVoid_Implementation()
+void UTbSimpleNoPropertiesInterfaceLoggingDecorator::FuncVoid()
 {
 	TbSimpleNoPropertiesInterfaceTracer::trace_callFuncVoid();
-	BackendService->Execute_FuncVoid(BackendService.GetObject());
+	BackendService->FuncVoid();
 }
 
-bool UTbSimpleNoPropertiesInterfaceLoggingDecorator::FuncBool_Implementation(bool bParamBool)
+bool UTbSimpleNoPropertiesInterfaceLoggingDecorator::FuncBool(bool bParamBool)
 {
 	TbSimpleNoPropertiesInterfaceTracer::trace_callFuncBool(bParamBool);
-	return BackendService->Execute_FuncBool(BackendService.GetObject(), bParamBool);
+	return BackendService->FuncBool(bParamBool);
 }

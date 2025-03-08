@@ -149,12 +149,12 @@ void UTbSame2SameStruct2InterfaceOLinkClient::UseConnection(TScriptInterface<IAp
 	Connection = InConnection;
 }
 
-FTbSame2Struct2 UTbSame2SameStruct2InterfaceOLinkClient::GetProp1_Implementation() const
+FTbSame2Struct2 UTbSame2SameStruct2InterfaceOLinkClient::GetProp1() const
 {
 	return Prop1;
 }
 
-void UTbSame2SameStruct2InterfaceOLinkClient::SetProp1_Implementation(const FTbSame2Struct2& InProp1)
+void UTbSame2SameStruct2InterfaceOLinkClient::SetProp1(const FTbSame2Struct2& InProp1)
 {
 	if (!m_sink->IsReady())
 	{
@@ -163,7 +163,7 @@ void UTbSame2SameStruct2InterfaceOLinkClient::SetProp1_Implementation(const FTbS
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetProp1_Implementation() == InProp1)
+	if (GetProp1() == InProp1)
 	{
 		return;
 	}
@@ -182,12 +182,12 @@ void UTbSame2SameStruct2InterfaceOLinkClient::SetProp1_Implementation(const FTbS
 	_SentData->Prop1 = InProp1;
 }
 
-FTbSame2Struct2 UTbSame2SameStruct2InterfaceOLinkClient::GetProp2_Implementation() const
+FTbSame2Struct2 UTbSame2SameStruct2InterfaceOLinkClient::GetProp2() const
 {
 	return Prop2;
 }
 
-void UTbSame2SameStruct2InterfaceOLinkClient::SetProp2_Implementation(const FTbSame2Struct2& InProp2)
+void UTbSame2SameStruct2InterfaceOLinkClient::SetProp2(const FTbSame2Struct2& InProp2)
 {
 	if (!m_sink->IsReady())
 	{
@@ -196,7 +196,7 @@ void UTbSame2SameStruct2InterfaceOLinkClient::SetProp2_Implementation(const FTbS
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetProp2_Implementation() == InProp2)
+	if (GetProp2() == InProp2)
 	{
 		return;
 	}
@@ -215,7 +215,7 @@ void UTbSame2SameStruct2InterfaceOLinkClient::SetProp2_Implementation(const FTbS
 	_SentData->Prop2 = InProp2;
 }
 
-FTbSame2Struct1 UTbSame2SameStruct2InterfaceOLinkClient::Func1_Implementation(const FTbSame2Struct1& Param1)
+FTbSame2Struct1 UTbSame2SameStruct2InterfaceOLinkClient::Func1(const FTbSame2Struct1& Param1)
 {
 	if (!m_sink->IsReady())
 	{
@@ -246,7 +246,7 @@ FTbSame2Struct1 UTbSame2SameStruct2InterfaceOLinkClient::Func1_Implementation(co
 	return Promise.GetFuture().Get();
 }
 
-FTbSame2Struct1 UTbSame2SameStruct2InterfaceOLinkClient::Func2_Implementation(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2)
+FTbSame2Struct1 UTbSame2SameStruct2InterfaceOLinkClient::Func2(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2)
 {
 	if (!m_sink->IsReady())
 	{
@@ -288,14 +288,14 @@ void UTbSame2SameStruct2InterfaceOLinkClient::applyState(const nlohmann::json& f
 	if (bProp1Changed)
 	{
 		Prop1 = fields["prop1"].get<FTbSame2Struct2>();
-		Execute__GetSignals(this)->OnProp1Changed.Broadcast(Prop1);
+		_GetSignals()->OnProp1Changed.Broadcast(Prop1);
 	}
 
 	const bool bProp2Changed = fields.contains("prop2") && (Prop2 != fields["prop2"].get<FTbSame2Struct2>());
 	if (bProp2Changed)
 	{
 		Prop2 = fields["prop2"].get<FTbSame2Struct2>();
-		Execute__GetSignals(this)->OnProp2Changed.Broadcast(Prop2);
+		_GetSignals()->OnProp2Changed.Broadcast(Prop2);
 	}
 }
 
@@ -304,7 +304,7 @@ void UTbSame2SameStruct2InterfaceOLinkClient::emitSignal(const std::string& sign
 	if (signalName == "sig1")
 	{
 		const FTbSame2Struct1& outParam1 = args[0].get<FTbSame2Struct1>();
-		Execute__GetSignals(this)->OnSig1Signal.Broadcast(outParam1);
+		_GetSignals()->OnSig1Signal.Broadcast(outParam1);
 		return;
 	}
 
@@ -312,7 +312,7 @@ void UTbSame2SameStruct2InterfaceOLinkClient::emitSignal(const std::string& sign
 	{
 		const FTbSame2Struct1& outParam1 = args[0].get<FTbSame2Struct1>();
 		const FTbSame2Struct2& outParam2 = args[1].get<FTbSame2Struct2>();
-		Execute__GetSignals(this)->OnSig2Signal.Broadcast(outParam1, outParam2);
+		_GetSignals()->OnSig2Signal.Broadcast(outParam1, outParam2);
 		return;
 	}
 }

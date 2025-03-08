@@ -19,7 +19,7 @@ limitations under the License.
 
 UTbSimpleVoidInterface::~UTbSimpleVoidInterface() = default;
 
-void UTbSimpleVoidInterface::FuncVoid_Implementation()
+void UTbSimpleVoidInterface::FuncVoid()
 {
 	// do business logic here
 }

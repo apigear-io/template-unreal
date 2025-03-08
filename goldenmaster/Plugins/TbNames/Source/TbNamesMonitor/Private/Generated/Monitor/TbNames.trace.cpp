@@ -9,9 +9,9 @@ TbNamesNamEsTracer::TbNamesNamEsTracer()
 void TbNamesNamEsTracer::capture_state(UObject* Object, ITbNamesNamEsInterface* obj)
 {
 	nlohmann::json fields_;
-	fields_["Switch"] = obj->Execute_GetSwitch(Object);
-	fields_["SOME_PROPERTY"] = obj->Execute_GetSomeProperty(Object);
-	fields_["Some_Poperty2"] = obj->Execute_GetSomePoperty2(Object);
+	fields_["Switch"] = obj->GetSwitch();
+	fields_["SOME_PROPERTY"] = obj->GetSomeProperty();
+	fields_["Some_Poperty2"] = obj->GetSomePoperty2();
 	Tracer::instance()->state("tb.names/Nam_Es", fields_);
 }
 void TbNamesNamEsTracer::trace_callSetSwitch(bool bInSwitch)

@@ -47,7 +47,7 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::setBackendService(TScriptInt
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		UTbSimpleSimpleArrayInterfaceSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+		UTbSimpleSimpleArrayInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleSimpleArrayInterface"));
 		BackendSignals->OnPropBoolChanged.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropBoolChanged);
 		BackendSignals->OnPropIntChanged.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropIntChanged);
@@ -73,7 +73,7 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::setBackendService(TScriptInt
 
 	// subscribe to new backend
 	BackendService = InService;
-	UTbSimpleSimpleArrayInterfaceSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+	UTbSimpleSimpleArrayInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleSimpleArrayInterface"));
 	// connect property changed signals or simple events
 	BackendSignals->OnPropBoolChanged.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropBoolChanged);
@@ -94,265 +94,265 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::setBackendService(TScriptInt
 	BackendSignals->OnSigFloat64Signal.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigFloat64);
 	BackendSignals->OnSigStringSignal.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigString);
 	// populate service state to proxy
-	PropBool = BackendService->Execute_GetPropBool(BackendService.GetObject());
-	PropInt = BackendService->Execute_GetPropInt(BackendService.GetObject());
-	PropInt32 = BackendService->Execute_GetPropInt32(BackendService.GetObject());
-	PropInt64 = BackendService->Execute_GetPropInt64(BackendService.GetObject());
-	PropFloat = BackendService->Execute_GetPropFloat(BackendService.GetObject());
-	PropFloat32 = BackendService->Execute_GetPropFloat32(BackendService.GetObject());
-	PropFloat64 = BackendService->Execute_GetPropFloat64(BackendService.GetObject());
-	PropString = BackendService->Execute_GetPropString(BackendService.GetObject());
-	PropReadOnlyString = BackendService->Execute_GetPropReadOnlyString(BackendService.GetObject());
+	PropBool = BackendService->GetPropBool();
+	PropInt = BackendService->GetPropInt();
+	PropInt32 = BackendService->GetPropInt32();
+	PropInt64 = BackendService->GetPropInt64();
+	PropFloat = BackendService->GetPropFloat();
+	PropFloat32 = BackendService->GetPropFloat32();
+	PropFloat64 = BackendService->GetPropFloat64();
+	PropString = BackendService->GetPropString();
+	PropReadOnlyString = BackendService->GetPropReadOnlyString();
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigBool(const TArray<bool>& InParamBool)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigBool(InParamBool);
-	Execute__GetSignals(this)->OnSigBoolSignal.Broadcast(InParamBool);
+	_GetSignals()->OnSigBoolSignal.Broadcast(InParamBool);
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigInt(const TArray<int32>& InParamInt)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigInt(InParamInt);
-	Execute__GetSignals(this)->OnSigIntSignal.Broadcast(InParamInt);
+	_GetSignals()->OnSigIntSignal.Broadcast(InParamInt);
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigInt32(const TArray<int32>& InParamInt32)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigInt32(InParamInt32);
-	Execute__GetSignals(this)->OnSigInt32Signal.Broadcast(InParamInt32);
+	_GetSignals()->OnSigInt32Signal.Broadcast(InParamInt32);
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigInt64(const TArray<int64>& InParamInt64)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigInt64(InParamInt64);
-	Execute__GetSignals(this)->OnSigInt64Signal.Broadcast(InParamInt64);
+	_GetSignals()->OnSigInt64Signal.Broadcast(InParamInt64);
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigFloat(const TArray<float>& InParamFloat)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigFloat(InParamFloat);
-	Execute__GetSignals(this)->OnSigFloatSignal.Broadcast(InParamFloat);
+	_GetSignals()->OnSigFloatSignal.Broadcast(InParamFloat);
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigFloat32(const TArray<float>& InParamFloa32)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigFloat32(InParamFloa32);
-	Execute__GetSignals(this)->OnSigFloat32Signal.Broadcast(InParamFloa32);
+	_GetSignals()->OnSigFloat32Signal.Broadcast(InParamFloa32);
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigFloat64(const TArray<double>& InParamFloat64)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigFloat64(InParamFloat64);
-	Execute__GetSignals(this)->OnSigFloat64Signal.Broadcast(InParamFloat64);
+	_GetSignals()->OnSigFloat64Signal.Broadcast(InParamFloat64);
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigString(const TArray<FString>& InParamString)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigString(InParamString);
-	Execute__GetSignals(this)->OnSigStringSignal.Broadcast(InParamString);
+	_GetSignals()->OnSigStringSignal.Broadcast(InParamString);
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropBoolChanged(const TArray<bool>& InPropBool)
 {
 	TbSimpleSimpleArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropBool = InPropBool;
-	Execute__GetSignals(this)->OnPropBoolChanged.Broadcast(InPropBool);
+	_GetSignals()->OnPropBoolChanged.Broadcast(InPropBool);
 }
 
-TArray<bool> UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropBool_Implementation() const
+TArray<bool> UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropBool() const
 {
-	return BackendService->Execute_GetPropBool(BackendService.GetObject());
+	return BackendService->GetPropBool();
 }
 
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::SetPropBool_Implementation(const TArray<bool>& InPropBool)
+void UTbSimpleSimpleArrayInterfaceLoggingDecorator::SetPropBool(const TArray<bool>& InPropBool)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_callSetPropBool(InPropBool);
-	BackendService->Execute_SetPropBool(BackendService.GetObject(), InPropBool);
+	BackendService->SetPropBool(InPropBool);
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropIntChanged(const TArray<int32>& InPropInt)
 {
 	TbSimpleSimpleArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropInt = InPropInt;
-	Execute__GetSignals(this)->OnPropIntChanged.Broadcast(InPropInt);
+	_GetSignals()->OnPropIntChanged.Broadcast(InPropInt);
 }
 
-TArray<int32> UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropInt_Implementation() const
+TArray<int32> UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropInt() const
 {
-	return BackendService->Execute_GetPropInt(BackendService.GetObject());
+	return BackendService->GetPropInt();
 }
 
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::SetPropInt_Implementation(const TArray<int32>& InPropInt)
+void UTbSimpleSimpleArrayInterfaceLoggingDecorator::SetPropInt(const TArray<int32>& InPropInt)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_callSetPropInt(InPropInt);
-	BackendService->Execute_SetPropInt(BackendService.GetObject(), InPropInt);
+	BackendService->SetPropInt(InPropInt);
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropInt32Changed(const TArray<int32>& InPropInt32)
 {
 	TbSimpleSimpleArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropInt32 = InPropInt32;
-	Execute__GetSignals(this)->OnPropInt32Changed.Broadcast(InPropInt32);
+	_GetSignals()->OnPropInt32Changed.Broadcast(InPropInt32);
 }
 
-TArray<int32> UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropInt32_Implementation() const
+TArray<int32> UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropInt32() const
 {
-	return BackendService->Execute_GetPropInt32(BackendService.GetObject());
+	return BackendService->GetPropInt32();
 }
 
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::SetPropInt32_Implementation(const TArray<int32>& InPropInt32)
+void UTbSimpleSimpleArrayInterfaceLoggingDecorator::SetPropInt32(const TArray<int32>& InPropInt32)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_callSetPropInt32(InPropInt32);
-	BackendService->Execute_SetPropInt32(BackendService.GetObject(), InPropInt32);
+	BackendService->SetPropInt32(InPropInt32);
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropInt64Changed(const TArray<int64>& InPropInt64)
 {
 	TbSimpleSimpleArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropInt64 = InPropInt64;
-	Execute__GetSignals(this)->OnPropInt64Changed.Broadcast(InPropInt64);
+	_GetSignals()->OnPropInt64Changed.Broadcast(InPropInt64);
 }
 
-TArray<int64> UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropInt64_Implementation() const
+TArray<int64> UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropInt64() const
 {
-	return BackendService->Execute_GetPropInt64(BackendService.GetObject());
+	return BackendService->GetPropInt64();
 }
 
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::SetPropInt64_Implementation(const TArray<int64>& InPropInt64)
+void UTbSimpleSimpleArrayInterfaceLoggingDecorator::SetPropInt64(const TArray<int64>& InPropInt64)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_callSetPropInt64(InPropInt64);
-	BackendService->Execute_SetPropInt64(BackendService.GetObject(), InPropInt64);
+	BackendService->SetPropInt64(InPropInt64);
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropFloatChanged(const TArray<float>& InPropFloat)
 {
 	TbSimpleSimpleArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropFloat = InPropFloat;
-	Execute__GetSignals(this)->OnPropFloatChanged.Broadcast(InPropFloat);
+	_GetSignals()->OnPropFloatChanged.Broadcast(InPropFloat);
 }
 
-TArray<float> UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropFloat_Implementation() const
+TArray<float> UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropFloat() const
 {
-	return BackendService->Execute_GetPropFloat(BackendService.GetObject());
+	return BackendService->GetPropFloat();
 }
 
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::SetPropFloat_Implementation(const TArray<float>& InPropFloat)
+void UTbSimpleSimpleArrayInterfaceLoggingDecorator::SetPropFloat(const TArray<float>& InPropFloat)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_callSetPropFloat(InPropFloat);
-	BackendService->Execute_SetPropFloat(BackendService.GetObject(), InPropFloat);
+	BackendService->SetPropFloat(InPropFloat);
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropFloat32Changed(const TArray<float>& InPropFloat32)
 {
 	TbSimpleSimpleArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropFloat32 = InPropFloat32;
-	Execute__GetSignals(this)->OnPropFloat32Changed.Broadcast(InPropFloat32);
+	_GetSignals()->OnPropFloat32Changed.Broadcast(InPropFloat32);
 }
 
-TArray<float> UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropFloat32_Implementation() const
+TArray<float> UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropFloat32() const
 {
-	return BackendService->Execute_GetPropFloat32(BackendService.GetObject());
+	return BackendService->GetPropFloat32();
 }
 
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::SetPropFloat32_Implementation(const TArray<float>& InPropFloat32)
+void UTbSimpleSimpleArrayInterfaceLoggingDecorator::SetPropFloat32(const TArray<float>& InPropFloat32)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_callSetPropFloat32(InPropFloat32);
-	BackendService->Execute_SetPropFloat32(BackendService.GetObject(), InPropFloat32);
+	BackendService->SetPropFloat32(InPropFloat32);
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropFloat64Changed(const TArray<double>& InPropFloat64)
 {
 	TbSimpleSimpleArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropFloat64 = InPropFloat64;
-	Execute__GetSignals(this)->OnPropFloat64Changed.Broadcast(InPropFloat64);
+	_GetSignals()->OnPropFloat64Changed.Broadcast(InPropFloat64);
 }
 
-TArray<double> UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropFloat64_Implementation() const
+TArray<double> UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropFloat64() const
 {
-	return BackendService->Execute_GetPropFloat64(BackendService.GetObject());
+	return BackendService->GetPropFloat64();
 }
 
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::SetPropFloat64_Implementation(const TArray<double>& InPropFloat64)
+void UTbSimpleSimpleArrayInterfaceLoggingDecorator::SetPropFloat64(const TArray<double>& InPropFloat64)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_callSetPropFloat64(InPropFloat64);
-	BackendService->Execute_SetPropFloat64(BackendService.GetObject(), InPropFloat64);
+	BackendService->SetPropFloat64(InPropFloat64);
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropStringChanged(const TArray<FString>& InPropString)
 {
 	TbSimpleSimpleArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropString = InPropString;
-	Execute__GetSignals(this)->OnPropStringChanged.Broadcast(InPropString);
+	_GetSignals()->OnPropStringChanged.Broadcast(InPropString);
 }
 
-TArray<FString> UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropString_Implementation() const
+TArray<FString> UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropString() const
 {
-	return BackendService->Execute_GetPropString(BackendService.GetObject());
+	return BackendService->GetPropString();
 }
 
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::SetPropString_Implementation(const TArray<FString>& InPropString)
+void UTbSimpleSimpleArrayInterfaceLoggingDecorator::SetPropString(const TArray<FString>& InPropString)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_callSetPropString(InPropString);
-	BackendService->Execute_SetPropString(BackendService.GetObject(), InPropString);
+	BackendService->SetPropString(InPropString);
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropReadOnlyStringChanged(const FString& InPropReadOnlyString)
 {
 	TbSimpleSimpleArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropReadOnlyString = InPropReadOnlyString;
-	Execute__GetSignals(this)->OnPropReadOnlyStringChanged.Broadcast(InPropReadOnlyString);
+	_GetSignals()->OnPropReadOnlyStringChanged.Broadcast(InPropReadOnlyString);
 }
 
-FString UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropReadOnlyString_Implementation() const
+FString UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropReadOnlyString() const
 {
-	return BackendService->Execute_GetPropReadOnlyString(BackendService.GetObject());
+	return BackendService->GetPropReadOnlyString();
 }
 
-TArray<bool> UTbSimpleSimpleArrayInterfaceLoggingDecorator::FuncBool_Implementation(const TArray<bool>& ParamBool)
+TArray<bool> UTbSimpleSimpleArrayInterfaceLoggingDecorator::FuncBool(const TArray<bool>& ParamBool)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_callFuncBool(ParamBool);
-	return BackendService->Execute_FuncBool(BackendService.GetObject(), ParamBool);
+	return BackendService->FuncBool(ParamBool);
 }
 
-TArray<int32> UTbSimpleSimpleArrayInterfaceLoggingDecorator::FuncInt_Implementation(const TArray<int32>& ParamInt)
+TArray<int32> UTbSimpleSimpleArrayInterfaceLoggingDecorator::FuncInt(const TArray<int32>& ParamInt)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_callFuncInt(ParamInt);
-	return BackendService->Execute_FuncInt(BackendService.GetObject(), ParamInt);
+	return BackendService->FuncInt(ParamInt);
 }
 
-TArray<int32> UTbSimpleSimpleArrayInterfaceLoggingDecorator::FuncInt32_Implementation(const TArray<int32>& ParamInt32)
+TArray<int32> UTbSimpleSimpleArrayInterfaceLoggingDecorator::FuncInt32(const TArray<int32>& ParamInt32)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_callFuncInt32(ParamInt32);
-	return BackendService->Execute_FuncInt32(BackendService.GetObject(), ParamInt32);
+	return BackendService->FuncInt32(ParamInt32);
 }
 
-TArray<int64> UTbSimpleSimpleArrayInterfaceLoggingDecorator::FuncInt64_Implementation(const TArray<int64>& ParamInt64)
+TArray<int64> UTbSimpleSimpleArrayInterfaceLoggingDecorator::FuncInt64(const TArray<int64>& ParamInt64)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_callFuncInt64(ParamInt64);
-	return BackendService->Execute_FuncInt64(BackendService.GetObject(), ParamInt64);
+	return BackendService->FuncInt64(ParamInt64);
 }
 
-TArray<float> UTbSimpleSimpleArrayInterfaceLoggingDecorator::FuncFloat_Implementation(const TArray<float>& ParamFloat)
+TArray<float> UTbSimpleSimpleArrayInterfaceLoggingDecorator::FuncFloat(const TArray<float>& ParamFloat)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_callFuncFloat(ParamFloat);
-	return BackendService->Execute_FuncFloat(BackendService.GetObject(), ParamFloat);
+	return BackendService->FuncFloat(ParamFloat);
 }
 
-TArray<float> UTbSimpleSimpleArrayInterfaceLoggingDecorator::FuncFloat32_Implementation(const TArray<float>& ParamFloat32)
+TArray<float> UTbSimpleSimpleArrayInterfaceLoggingDecorator::FuncFloat32(const TArray<float>& ParamFloat32)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_callFuncFloat32(ParamFloat32);
-	return BackendService->Execute_FuncFloat32(BackendService.GetObject(), ParamFloat32);
+	return BackendService->FuncFloat32(ParamFloat32);
 }
 
-TArray<double> UTbSimpleSimpleArrayInterfaceLoggingDecorator::FuncFloat64_Implementation(const TArray<double>& ParamFloat)
+TArray<double> UTbSimpleSimpleArrayInterfaceLoggingDecorator::FuncFloat64(const TArray<double>& ParamFloat)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_callFuncFloat64(ParamFloat);
-	return BackendService->Execute_FuncFloat64(BackendService.GetObject(), ParamFloat);
+	return BackendService->FuncFloat64(ParamFloat);
 }
 
-TArray<FString> UTbSimpleSimpleArrayInterfaceLoggingDecorator::FuncString_Implementation(const TArray<FString>& ParamString)
+TArray<FString> UTbSimpleSimpleArrayInterfaceLoggingDecorator::FuncString(const TArray<FString>& ParamString)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_callFuncString(ParamString);
-	return BackendService->Execute_FuncString(BackendService.GetObject(), ParamString);
+	return BackendService->FuncString(ParamString);
 }

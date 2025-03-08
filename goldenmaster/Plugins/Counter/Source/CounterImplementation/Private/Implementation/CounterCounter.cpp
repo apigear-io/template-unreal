@@ -18,81 +18,81 @@ limitations under the License.
 #include "Counter/Implementation/CounterCounter.h"
 
 UCounterCounter::~UCounterCounter() = default;
-FCustomTypesVector3D UCounterCounter::GetVector_Implementation() const
+FCustomTypesVector3D UCounterCounter::GetVector() const
 {
 	return Vector;
 }
 
-void UCounterCounter::SetVector_Implementation(const FCustomTypesVector3D& InVector)
+void UCounterCounter::SetVector(const FCustomTypesVector3D& InVector)
 {
 	if (Vector != InVector)
 	{
 		Vector = InVector;
-		Execute__GetSignals(this)->OnVectorChanged.Broadcast(Vector);
+		_GetSignals()->OnVectorChanged.Broadcast(Vector);
 	}
 }
-FVector UCounterCounter::GetExternVector_Implementation() const
+FVector UCounterCounter::GetExternVector() const
 {
 	return ExternVector;
 }
 
-void UCounterCounter::SetExternVector_Implementation(const FVector& InExternVector)
+void UCounterCounter::SetExternVector(const FVector& InExternVector)
 {
 	if (ExternVector != InExternVector)
 	{
 		ExternVector = InExternVector;
-		Execute__GetSignals(this)->OnExternVectorChanged.Broadcast(ExternVector);
+		_GetSignals()->OnExternVectorChanged.Broadcast(ExternVector);
 	}
 }
-TArray<FCustomTypesVector3D> UCounterCounter::GetVectorArray_Implementation() const
+TArray<FCustomTypesVector3D> UCounterCounter::GetVectorArray() const
 {
 	return VectorArray;
 }
 
-void UCounterCounter::SetVectorArray_Implementation(const TArray<FCustomTypesVector3D>& InVectorArray)
+void UCounterCounter::SetVectorArray(const TArray<FCustomTypesVector3D>& InVectorArray)
 {
 	if (VectorArray != InVectorArray)
 	{
 		VectorArray = InVectorArray;
-		Execute__GetSignals(this)->OnVectorArrayChanged.Broadcast(VectorArray);
+		_GetSignals()->OnVectorArrayChanged.Broadcast(VectorArray);
 	}
 }
-TArray<FVector> UCounterCounter::GetExternVectorArray_Implementation() const
+TArray<FVector> UCounterCounter::GetExternVectorArray() const
 {
 	return ExternVectorArray;
 }
 
-void UCounterCounter::SetExternVectorArray_Implementation(const TArray<FVector>& InExternVectorArray)
+void UCounterCounter::SetExternVectorArray(const TArray<FVector>& InExternVectorArray)
 {
 	if (ExternVectorArray != InExternVectorArray)
 	{
 		ExternVectorArray = InExternVectorArray;
-		Execute__GetSignals(this)->OnExternVectorArrayChanged.Broadcast(ExternVectorArray);
+		_GetSignals()->OnExternVectorArrayChanged.Broadcast(ExternVectorArray);
 	}
 }
 
-FVector UCounterCounter::Increment_Implementation(const FVector& Vec)
+FVector UCounterCounter::Increment(const FVector& Vec)
 {
 	(void)Vec;
 	// do business logic here
 	return FVector(0.f, 0.f, 0.f);
 }
 
-TArray<FVector> UCounterCounter::IncrementArray_Implementation(const TArray<FVector>& Vec)
+TArray<FVector> UCounterCounter::IncrementArray(const TArray<FVector>& Vec)
 {
 	(void)Vec;
 	// do business logic here
 	return TArray<FVector>();
 }
 
-FCustomTypesVector3D UCounterCounter::Decrement_Implementation(const FCustomTypesVector3D& Vec)
+FCustomTypesVector3D UCounterCounter::Decrement(const FCustomTypesVector3D& Vec)
 {
 	(void)Vec;
 	// do business logic here
 	return FCustomTypesVector3D();
 }
 
-TArray<FCustomTypesVector3D> UCounterCounter::DecrementArray_Implementation(const TArray<FCustomTypesVector3D>& Vec)
+TArray<FCustomTypesVector3D> UCounterCounter::DecrementArray(const TArray<FCustomTypesVector3D>& Vec)
 {
 	(void)Vec;
 	// do business logic here

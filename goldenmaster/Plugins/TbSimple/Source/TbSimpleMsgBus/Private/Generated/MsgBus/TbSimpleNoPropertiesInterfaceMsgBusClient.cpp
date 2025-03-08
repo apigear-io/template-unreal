@@ -250,7 +250,7 @@ void UTbSimpleNoPropertiesInterfaceMsgBusClient::OnServiceClosedConnection(const
 	_ConnectionStatusChanged.Broadcast(false);
 }
 
-void UTbSimpleNoPropertiesInterfaceMsgBusClient::FuncVoid_Implementation()
+void UTbSimpleNoPropertiesInterfaceMsgBusClient::FuncVoid()
 {
 	if (!_IsConnected())
 	{
@@ -270,7 +270,7 @@ void UTbSimpleNoPropertiesInterfaceMsgBusClient::FuncVoid_Implementation()
 	return;
 }
 
-bool UTbSimpleNoPropertiesInterfaceMsgBusClient::FuncBool_Implementation(bool bInParamBool)
+bool UTbSimpleNoPropertiesInterfaceMsgBusClient::FuncBool(bool bInParamBool)
 {
 	if (!_IsConnected())
 	{
@@ -307,7 +307,7 @@ void UTbSimpleNoPropertiesInterfaceMsgBusClient::OnSigVoid(const FTbSimpleNoProp
 		return;
 	}
 
-	Execute__GetSignals(this)->OnSigVoidSignal.Broadcast();
+	_GetSignals()->OnSigVoidSignal.Broadcast();
 	return;
 }
 
@@ -319,7 +319,7 @@ void UTbSimpleNoPropertiesInterfaceMsgBusClient::OnSigBool(const FTbSimpleNoProp
 		return;
 	}
 
-	Execute__GetSignals(this)->OnSigBoolSignal.Broadcast(InMessage.bParamBool);
+	_GetSignals()->OnSigBoolSignal.Broadcast(InMessage.bParamBool);
 	return;
 }
 

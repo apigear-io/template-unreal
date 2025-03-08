@@ -142,14 +142,14 @@ nlohmann::json Testbed2NestedStruct2InterfaceOLinkSource::olinkInvoke(const std:
 	if (path == "func1")
 	{
 		FTestbed2NestedStruct1 Param1 = args.at(0).get<FTestbed2NestedStruct1>();
-		FTestbed2NestedStruct1 result = BackendService->Execute_Func1(BackendService.GetObject(), Param1);
+		FTestbed2NestedStruct1 result = BackendService->Func1(Param1);
 		return result;
 	}
 	if (path == "func2")
 	{
 		FTestbed2NestedStruct1 Param1 = args.at(0).get<FTestbed2NestedStruct1>();
 		FTestbed2NestedStruct2 Param2 = args.at(1).get<FTestbed2NestedStruct2>();
-		FTestbed2NestedStruct1 result = BackendService->Execute_Func2(BackendService.GetObject(), Param1, Param2);
+		FTestbed2NestedStruct1 result = BackendService->Func2(Param1, Param2);
 		return result;
 	}
 	return nlohmann::json();
@@ -167,12 +167,12 @@ void Testbed2NestedStruct2InterfaceOLinkSource::olinkSetProperty(const std::stri
 	if (path == "prop1")
 	{
 		FTestbed2NestedStruct1 Prop1 = value.get<FTestbed2NestedStruct1>();
-		BackendService->Execute_SetProp1(BackendService.GetObject(), Prop1);
+		BackendService->SetProp1(Prop1);
 	}
 	if (path == "prop2")
 	{
 		FTestbed2NestedStruct2 Prop2 = value.get<FTestbed2NestedStruct2>();
-		BackendService->Execute_SetProp2(BackendService.GetObject(), Prop2);
+		BackendService->SetProp2(Prop2);
 	}
 }
 
@@ -186,7 +186,7 @@ nlohmann::json Testbed2NestedStruct2InterfaceOLinkSource::olinkCollectProperties
 
 	return nlohmann::json::object({
 
-		{"prop1", BackendService->Execute_GetProp1(BackendService.GetObject())},
-		{"prop2", BackendService->Execute_GetProp2(BackendService.GetObject())}});
+		{"prop1", BackendService->GetProp1()},
+		{"prop2", BackendService->GetProp2()}});
 }
 #endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

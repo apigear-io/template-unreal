@@ -99,11 +99,11 @@ public:
 	FTestbed2NestedStruct1InterfaceConnectionStatusChangedDelegate _ConnectionStatusChanged;
 
 	// properties
-	FTestbed2NestedStruct1 GetProp1_Implementation() const override;
-	void SetProp1_Implementation(const FTestbed2NestedStruct1& Prop1) override;
+	FTestbed2NestedStruct1 GetProp1() const override;
+	void SetProp1(const FTestbed2NestedStruct1& Prop1) override;
 
 	// operations
-	FTestbed2NestedStruct1 Func1_Implementation(const FTestbed2NestedStruct1& Param1) override;
+	FTestbed2NestedStruct1 Func1(const FTestbed2NestedStruct1& Param1) override;
 
 private:
 	TSharedPtr<FMessageEndpoint, ESPMode::ThreadSafe> Testbed2NestedStruct1InterfaceMsgBusEndpoint;

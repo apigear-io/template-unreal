@@ -200,14 +200,14 @@ nlohmann::json Testbed2ManyParamInterfaceOLinkSource::olinkInvoke(const std::str
 	if (path == "func1")
 	{
 		int32 Param1 = args.at(0).get<int32>();
-		int32 result = BackendService->Execute_Func1(BackendService.GetObject(), Param1);
+		int32 result = BackendService->Func1(Param1);
 		return result;
 	}
 	if (path == "func2")
 	{
 		int32 Param1 = args.at(0).get<int32>();
 		int32 Param2 = args.at(1).get<int32>();
-		int32 result = BackendService->Execute_Func2(BackendService.GetObject(), Param1, Param2);
+		int32 result = BackendService->Func2(Param1, Param2);
 		return result;
 	}
 	if (path == "func3")
@@ -215,7 +215,7 @@ nlohmann::json Testbed2ManyParamInterfaceOLinkSource::olinkInvoke(const std::str
 		int32 Param1 = args.at(0).get<int32>();
 		int32 Param2 = args.at(1).get<int32>();
 		int32 Param3 = args.at(2).get<int32>();
-		int32 result = BackendService->Execute_Func3(BackendService.GetObject(), Param1, Param2, Param3);
+		int32 result = BackendService->Func3(Param1, Param2, Param3);
 		return result;
 	}
 	if (path == "func4")
@@ -224,7 +224,7 @@ nlohmann::json Testbed2ManyParamInterfaceOLinkSource::olinkInvoke(const std::str
 		int32 Param2 = args.at(1).get<int32>();
 		int32 Param3 = args.at(2).get<int32>();
 		int32 Param4 = args.at(3).get<int32>();
-		int32 result = BackendService->Execute_Func4(BackendService.GetObject(), Param1, Param2, Param3, Param4);
+		int32 result = BackendService->Func4(Param1, Param2, Param3, Param4);
 		return result;
 	}
 	return nlohmann::json();
@@ -242,22 +242,22 @@ void Testbed2ManyParamInterfaceOLinkSource::olinkSetProperty(const std::string& 
 	if (path == "prop1")
 	{
 		int32 Prop1 = value.get<int32>();
-		BackendService->Execute_SetProp1(BackendService.GetObject(), Prop1);
+		BackendService->SetProp1(Prop1);
 	}
 	if (path == "prop2")
 	{
 		int32 Prop2 = value.get<int32>();
-		BackendService->Execute_SetProp2(BackendService.GetObject(), Prop2);
+		BackendService->SetProp2(Prop2);
 	}
 	if (path == "prop3")
 	{
 		int32 Prop3 = value.get<int32>();
-		BackendService->Execute_SetProp3(BackendService.GetObject(), Prop3);
+		BackendService->SetProp3(Prop3);
 	}
 	if (path == "prop4")
 	{
 		int32 Prop4 = value.get<int32>();
-		BackendService->Execute_SetProp4(BackendService.GetObject(), Prop4);
+		BackendService->SetProp4(Prop4);
 	}
 }
 
@@ -271,9 +271,9 @@ nlohmann::json Testbed2ManyParamInterfaceOLinkSource::olinkCollectProperties()
 
 	return nlohmann::json::object({
 
-		{"prop1", BackendService->Execute_GetProp1(BackendService.GetObject())},
-		{"prop2", BackendService->Execute_GetProp2(BackendService.GetObject())},
-		{"prop3", BackendService->Execute_GetProp3(BackendService.GetObject())},
-		{"prop4", BackendService->Execute_GetProp4(BackendService.GetObject())}});
+		{"prop1", BackendService->GetProp1()},
+		{"prop2", BackendService->GetProp2()},
+		{"prop3", BackendService->GetProp3()},
+		{"prop4", BackendService->GetProp4()}});
 }
 #endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

@@ -11,10 +11,10 @@ CounterCounterTracer::CounterCounterTracer()
 void CounterCounterTracer::capture_state(UObject* Object, ICounterCounterInterface* obj)
 {
 	nlohmann::json fields_;
-	fields_["vector"] = obj->Execute_GetVector(Object);
-	fields_["extern_vector"] = obj->Execute_GetExternVector(Object);
-	fields_["vectorArray"] = obj->Execute_GetVectorArray(Object);
-	fields_["extern_vectorArray"] = obj->Execute_GetExternVectorArray(Object);
+	fields_["vector"] = obj->GetVector();
+	fields_["extern_vector"] = obj->GetExternVector();
+	fields_["vectorArray"] = obj->GetVectorArray();
+	fields_["extern_vectorArray"] = obj->GetExternVectorArray();
 	Tracer::instance()->state("counter/Counter", fields_);
 }
 void CounterCounterTracer::trace_callSetVector(const FCustomTypesVector3D& InVector)

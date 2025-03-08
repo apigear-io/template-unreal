@@ -66,7 +66,7 @@ UAbstractCounterCounter::UAbstractCounterCounter()
 	CounterCounterSignals = NewObject<UCounterCounterSignals>();
 }
 
-UCounterCounterSignals* UAbstractCounterCounter::_GetSignals_Implementation()
+UCounterCounterSignals* UAbstractCounterCounter::_GetSignals()
 {
 	if (!CounterCounterSignals)
 	{
@@ -77,45 +77,45 @@ UCounterCounterSignals* UAbstractCounterCounter::_GetSignals_Implementation()
 
 FCustomTypesVector3D UAbstractCounterCounter::GetVector_Private() const
 {
-	return Execute_GetVector(this);
+	return GetVector();
 };
 
 void UAbstractCounterCounter::SetVector_Private(const FCustomTypesVector3D& InVector)
 {
-	Execute_SetVector(this, InVector);
+	SetVector(InVector);
 };
 
 FVector UAbstractCounterCounter::GetExternVector_Private() const
 {
-	return Execute_GetExternVector(this);
+	return GetExternVector();
 };
 
 void UAbstractCounterCounter::SetExternVector_Private(const FVector& InExternVector)
 {
-	Execute_SetExternVector(this, InExternVector);
+	SetExternVector(InExternVector);
 };
 
 TArray<FCustomTypesVector3D> UAbstractCounterCounter::GetVectorArray_Private() const
 {
-	return Execute_GetVectorArray(this);
+	return GetVectorArray();
 };
 
 void UAbstractCounterCounter::SetVectorArray_Private(const TArray<FCustomTypesVector3D>& InVectorArray)
 {
-	Execute_SetVectorArray(this, InVectorArray);
+	SetVectorArray(InVectorArray);
 };
 
 TArray<FVector> UAbstractCounterCounter::GetExternVectorArray_Private() const
 {
-	return Execute_GetExternVectorArray(this);
+	return GetExternVectorArray();
 };
 
 void UAbstractCounterCounter::SetExternVectorArray_Private(const TArray<FVector>& InExternVectorArray)
 {
-	Execute_SetExternVectorArray(this, InExternVectorArray);
+	SetExternVectorArray(InExternVectorArray);
 };
 
-void UAbstractCounterCounter::IncrementAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FVector& Result, const FVector& Vec)
+void UAbstractCounterCounter::IncrementAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FVector& Result, const FVector& Vec)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
@@ -135,7 +135,7 @@ void UAbstractCounterCounter::IncrementAsync_Implementation(UObject* WorldContex
 		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
 		if (this->GetClass()->IsInBlueprint())
 		{
-			Result = Execute_Increment(this, Vec);
+			Result = Increment(Vec);
 			CompletionAction->Cancel();
 		}
 		else
@@ -143,14 +143,14 @@ void UAbstractCounterCounter::IncrementAsync_Implementation(UObject* WorldContex
 			Async(EAsyncExecution::ThreadPool,
 				[Vec, this, &Result, CompletionAction]()
 				{
-				Result = Execute_Increment(this, Vec);
+				Result = Increment(Vec);
 				CompletionAction->Cancel();
 			});
 		}
 	}
 }
 
-void UAbstractCounterCounter::IncrementArrayAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FVector>& Result, const TArray<FVector>& Vec)
+void UAbstractCounterCounter::IncrementArrayAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FVector>& Result, const TArray<FVector>& Vec)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
@@ -170,7 +170,7 @@ void UAbstractCounterCounter::IncrementArrayAsync_Implementation(UObject* WorldC
 		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
 		if (this->GetClass()->IsInBlueprint())
 		{
-			Result = Execute_IncrementArray(this, Vec);
+			Result = IncrementArray(Vec);
 			CompletionAction->Cancel();
 		}
 		else
@@ -178,14 +178,14 @@ void UAbstractCounterCounter::IncrementArrayAsync_Implementation(UObject* WorldC
 			Async(EAsyncExecution::ThreadPool,
 				[Vec, this, &Result, CompletionAction]()
 				{
-				Result = Execute_IncrementArray(this, Vec);
+				Result = IncrementArray(Vec);
 				CompletionAction->Cancel();
 			});
 		}
 	}
 }
 
-void UAbstractCounterCounter::DecrementAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FCustomTypesVector3D& Result, const FCustomTypesVector3D& Vec)
+void UAbstractCounterCounter::DecrementAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FCustomTypesVector3D& Result, const FCustomTypesVector3D& Vec)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
@@ -205,7 +205,7 @@ void UAbstractCounterCounter::DecrementAsync_Implementation(UObject* WorldContex
 		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
 		if (this->GetClass()->IsInBlueprint())
 		{
-			Result = Execute_Decrement(this, Vec);
+			Result = Decrement(Vec);
 			CompletionAction->Cancel();
 		}
 		else
@@ -213,14 +213,14 @@ void UAbstractCounterCounter::DecrementAsync_Implementation(UObject* WorldContex
 			Async(EAsyncExecution::ThreadPool,
 				[Vec, this, &Result, CompletionAction]()
 				{
-				Result = Execute_Decrement(this, Vec);
+				Result = Decrement(Vec);
 				CompletionAction->Cancel();
 			});
 		}
 	}
 }
 
-void UAbstractCounterCounter::DecrementArrayAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FCustomTypesVector3D>& Result, const TArray<FCustomTypesVector3D>& Vec)
+void UAbstractCounterCounter::DecrementArrayAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FCustomTypesVector3D>& Result, const TArray<FCustomTypesVector3D>& Vec)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
@@ -240,7 +240,7 @@ void UAbstractCounterCounter::DecrementArrayAsync_Implementation(UObject* WorldC
 		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
 		if (this->GetClass()->IsInBlueprint())
 		{
-			Result = Execute_DecrementArray(this, Vec);
+			Result = DecrementArray(Vec);
 			CompletionAction->Cancel();
 		}
 		else
@@ -248,7 +248,7 @@ void UAbstractCounterCounter::DecrementArrayAsync_Implementation(UObject* WorldC
 			Async(EAsyncExecution::ThreadPool,
 				[Vec, this, &Result, CompletionAction]()
 				{
-				Result = Execute_DecrementArray(this, Vec);
+				Result = DecrementArray(Vec);
 				CompletionAction->Cancel();
 			});
 		}

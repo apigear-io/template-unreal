@@ -156,13 +156,13 @@ nlohmann::json TbNamesNamEsOLinkSource::olinkInvoke(const std::string& methodId,
 	if (path == "SOME_FUNCTION")
 	{
 		bool bSomeParam = args.at(0).get<bool>();
-		BackendService->Execute_SomeFunction(BackendService.GetObject(), bSomeParam);
+		BackendService->SomeFunction(bSomeParam);
 		return nlohmann::json{};
 	}
 	if (path == "Some_Function2")
 	{
 		bool bSomeParam = args.at(0).get<bool>();
-		BackendService->Execute_SomeFunction2(BackendService.GetObject(), bSomeParam);
+		BackendService->SomeFunction2(bSomeParam);
 		return nlohmann::json{};
 	}
 	return nlohmann::json();
@@ -180,17 +180,17 @@ void TbNamesNamEsOLinkSource::olinkSetProperty(const std::string& propertyId, co
 	if (path == "Switch")
 	{
 		bool bSwitch = value.get<bool>();
-		BackendService->Execute_SetSwitch(BackendService.GetObject(), bSwitch);
+		BackendService->SetSwitch(bSwitch);
 	}
 	if (path == "SOME_PROPERTY")
 	{
 		int32 SomeProperty = value.get<int32>();
-		BackendService->Execute_SetSomeProperty(BackendService.GetObject(), SomeProperty);
+		BackendService->SetSomeProperty(SomeProperty);
 	}
 	if (path == "Some_Poperty2")
 	{
 		int32 SomePoperty2 = value.get<int32>();
-		BackendService->Execute_SetSomePoperty2(BackendService.GetObject(), SomePoperty2);
+		BackendService->SetSomePoperty2(SomePoperty2);
 	}
 }
 
@@ -204,8 +204,8 @@ nlohmann::json TbNamesNamEsOLinkSource::olinkCollectProperties()
 
 	return nlohmann::json::object({
 
-		{"Switch", BackendService->Execute_GetSwitch(BackendService.GetObject())},
-		{"SOME_PROPERTY", BackendService->Execute_GetSomeProperty(BackendService.GetObject())},
-		{"Some_Poperty2", BackendService->Execute_GetSomePoperty2(BackendService.GetObject())}});
+		{"Switch", BackendService->GetSwitch()},
+		{"SOME_PROPERTY", BackendService->GetSomeProperty()},
+		{"Some_Poperty2", BackendService->GetSomePoperty2()}});
 }
 #endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

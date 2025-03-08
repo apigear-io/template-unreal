@@ -114,7 +114,7 @@ void UTestbed1StructInterfaceMsgBusAdapter::_setBackendService(TScriptInterface<
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		UTestbed1StructInterfaceSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+		UTestbed1StructInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service Testbed1StructInterface"));
 		BackendSignals->OnPropBoolChanged.RemoveDynamic(this, &UTestbed1StructInterfaceMsgBusAdapter::OnPropBoolChanged);
 		BackendSignals->OnPropIntChanged.RemoveDynamic(this, &UTestbed1StructInterfaceMsgBusAdapter::OnPropIntChanged);
@@ -131,7 +131,7 @@ void UTestbed1StructInterfaceMsgBusAdapter::_setBackendService(TScriptInterface<
 
 	// subscribe to new backend
 	BackendService = InService;
-	UTestbed1StructInterfaceSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+	UTestbed1StructInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service Testbed1StructInterface"));
 	// connect property changed signals or simple events
 	BackendSignals->OnPropBoolChanged.AddDynamic(this, &UTestbed1StructInterfaceMsgBusAdapter::OnPropBoolChanged);
@@ -150,10 +150,10 @@ void UTestbed1StructInterfaceMsgBusAdapter::OnNewClientDiscovered(const FTestbed
 
 	auto msg = new FTestbed1StructInterfaceInitMessage();
 	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
-	msg->PropBool = BackendService->Execute_GetPropBool(BackendService.GetObject());
-	msg->PropInt = BackendService->Execute_GetPropInt(BackendService.GetObject());
-	msg->PropFloat = BackendService->Execute_GetPropFloat(BackendService.GetObject());
-	msg->PropString = BackendService->Execute_GetPropString(BackendService.GetObject());
+	msg->PropBool = BackendService->GetPropBool();
+	msg->PropInt = BackendService->GetPropInt();
+	msg->PropFloat = BackendService->GetPropFloat();
+	msg->PropString = BackendService->GetPropString();
 
 	if (Testbed1StructInterfaceMsgBusEndpoint.IsValid())
 	{
@@ -234,7 +234,7 @@ void UTestbed1StructInterfaceMsgBusAdapter::OnFuncBoolRequest(const FTestbed1Str
 {
 	auto msg = new FTestbed1StructInterfaceFuncBoolReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
-	msg->Result = BackendService->Execute_FuncBool(BackendService.GetObject(), InMessage.ParamBool);
+	msg->Result = BackendService->FuncBool(InMessage.ParamBool);
 
 	if (Testbed1StructInterfaceMsgBusEndpoint.IsValid())
 	{
@@ -250,7 +250,7 @@ void UTestbed1StructInterfaceMsgBusAdapter::OnFuncIntRequest(const FTestbed1Stru
 {
 	auto msg = new FTestbed1StructInterfaceFuncIntReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
-	msg->Result = BackendService->Execute_FuncInt(BackendService.GetObject(), InMessage.ParamInt);
+	msg->Result = BackendService->FuncInt(InMessage.ParamInt);
 
 	if (Testbed1StructInterfaceMsgBusEndpoint.IsValid())
 	{
@@ -266,7 +266,7 @@ void UTestbed1StructInterfaceMsgBusAdapter::OnFuncFloatRequest(const FTestbed1St
 {
 	auto msg = new FTestbed1StructInterfaceFuncFloatReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
-	msg->Result = BackendService->Execute_FuncFloat(BackendService.GetObject(), InMessage.ParamFloat);
+	msg->Result = BackendService->FuncFloat(InMessage.ParamFloat);
 
 	if (Testbed1StructInterfaceMsgBusEndpoint.IsValid())
 	{
@@ -282,7 +282,7 @@ void UTestbed1StructInterfaceMsgBusAdapter::OnFuncStringRequest(const FTestbed1S
 {
 	auto msg = new FTestbed1StructInterfaceFuncStringReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
-	msg->Result = BackendService->Execute_FuncString(BackendService.GetObject(), InMessage.ParamString);
+	msg->Result = BackendService->FuncString(InMessage.ParamString);
 
 	if (Testbed1StructInterfaceMsgBusEndpoint.IsValid())
 	{
@@ -364,7 +364,7 @@ void UTestbed1StructInterfaceMsgBusAdapter::OnSigString(const FTestbed1StructStr
 
 void UTestbed1StructInterfaceMsgBusAdapter::OnSetPropBoolRequest(const FTestbed1StructInterfaceSetPropBoolRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
-	BackendService->Execute_SetPropBool(BackendService.GetObject(), InMessage.PropBool);
+	BackendService->SetPropBool(InMessage.PropBool);
 }
 
 void UTestbed1StructInterfaceMsgBusAdapter::OnPropBoolChanged(const FTestbed1StructBool& InPropBool)
@@ -387,7 +387,7 @@ void UTestbed1StructInterfaceMsgBusAdapter::OnPropBoolChanged(const FTestbed1Str
 
 void UTestbed1StructInterfaceMsgBusAdapter::OnSetPropIntRequest(const FTestbed1StructInterfaceSetPropIntRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
-	BackendService->Execute_SetPropInt(BackendService.GetObject(), InMessage.PropInt);
+	BackendService->SetPropInt(InMessage.PropInt);
 }
 
 void UTestbed1StructInterfaceMsgBusAdapter::OnPropIntChanged(const FTestbed1StructInt& InPropInt)
@@ -410,7 +410,7 @@ void UTestbed1StructInterfaceMsgBusAdapter::OnPropIntChanged(const FTestbed1Stru
 
 void UTestbed1StructInterfaceMsgBusAdapter::OnSetPropFloatRequest(const FTestbed1StructInterfaceSetPropFloatRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
-	BackendService->Execute_SetPropFloat(BackendService.GetObject(), InMessage.PropFloat);
+	BackendService->SetPropFloat(InMessage.PropFloat);
 }
 
 void UTestbed1StructInterfaceMsgBusAdapter::OnPropFloatChanged(const FTestbed1StructFloat& InPropFloat)
@@ -433,7 +433,7 @@ void UTestbed1StructInterfaceMsgBusAdapter::OnPropFloatChanged(const FTestbed1St
 
 void UTestbed1StructInterfaceMsgBusAdapter::OnSetPropStringRequest(const FTestbed1StructInterfaceSetPropStringRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
-	BackendService->Execute_SetPropString(BackendService.GetObject(), InMessage.PropString);
+	BackendService->SetPropString(InMessage.PropString);
 }
 
 void UTestbed1StructInterfaceMsgBusAdapter::OnPropStringChanged(const FTestbed1StructString& InPropString)
