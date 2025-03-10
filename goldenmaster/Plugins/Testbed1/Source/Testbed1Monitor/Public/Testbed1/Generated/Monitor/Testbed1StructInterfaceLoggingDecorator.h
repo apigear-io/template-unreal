@@ -42,30 +42,30 @@ public:
 	void Deinitialize() override;
 
 	// properties
-	FTestbed1StructBool GetPropBool_Implementation() const override;
+	FTestbed1StructBool GetPropBool() const override;
 
-	void SetPropBool_Implementation(const FTestbed1StructBool& InPropBool) override;
+	void SetPropBool(const FTestbed1StructBool& InPropBool) override;
 
-	FTestbed1StructInt GetPropInt_Implementation() const override;
+	FTestbed1StructInt GetPropInt() const override;
 
-	void SetPropInt_Implementation(const FTestbed1StructInt& InPropInt) override;
+	void SetPropInt(const FTestbed1StructInt& InPropInt) override;
 
-	FTestbed1StructFloat GetPropFloat_Implementation() const override;
+	FTestbed1StructFloat GetPropFloat() const override;
 
-	void SetPropFloat_Implementation(const FTestbed1StructFloat& InPropFloat) override;
+	void SetPropFloat(const FTestbed1StructFloat& InPropFloat) override;
 
-	FTestbed1StructString GetPropString_Implementation() const override;
+	FTestbed1StructString GetPropString() const override;
 
-	void SetPropString_Implementation(const FTestbed1StructString& InPropString) override;
+	void SetPropString(const FTestbed1StructString& InPropString) override;
 
 	// operations
-	FTestbed1StructBool FuncBool_Implementation(const FTestbed1StructBool& ParamBool) override;
+	FTestbed1StructBool FuncBool(const FTestbed1StructBool& ParamBool) override;
 
-	FTestbed1StructInt FuncInt_Implementation(const FTestbed1StructInt& ParamInt) override;
+	FTestbed1StructInt FuncInt(const FTestbed1StructInt& ParamInt) override;
 
-	FTestbed1StructFloat FuncFloat_Implementation(const FTestbed1StructFloat& ParamFloat) override;
+	FTestbed1StructFloat FuncFloat(const FTestbed1StructFloat& ParamFloat) override;
 
-	FTestbed1StructString FuncString_Implementation(const FTestbed1StructString& ParamString) override;
+	FTestbed1StructString FuncString(const FTestbed1StructString& ParamString) override;
 
 private:
 	/** The connection to the service backend. */

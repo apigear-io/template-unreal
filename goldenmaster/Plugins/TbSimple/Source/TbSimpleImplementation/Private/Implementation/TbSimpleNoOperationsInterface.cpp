@@ -18,29 +18,29 @@ limitations under the License.
 #include "TbSimple/Implementation/TbSimpleNoOperationsInterface.h"
 
 UTbSimpleNoOperationsInterface::~UTbSimpleNoOperationsInterface() = default;
-bool UTbSimpleNoOperationsInterface::GetPropBool_Implementation() const
+bool UTbSimpleNoOperationsInterface::GetPropBool() const
 {
 	return bPropBool;
 }
 
-void UTbSimpleNoOperationsInterface::SetPropBool_Implementation(bool bInPropBool)
+void UTbSimpleNoOperationsInterface::SetPropBool(bool bInPropBool)
 {
 	if (bPropBool != bInPropBool)
 	{
 		bPropBool = bInPropBool;
-		Execute__GetSignals(this)->OnPropBoolChanged.Broadcast(bPropBool);
+		_GetSignals()->OnPropBoolChanged.Broadcast(bPropBool);
 	}
 }
-int32 UTbSimpleNoOperationsInterface::GetPropInt_Implementation() const
+int32 UTbSimpleNoOperationsInterface::GetPropInt() const
 {
 	return PropInt;
 }
 
-void UTbSimpleNoOperationsInterface::SetPropInt_Implementation(int32 InPropInt)
+void UTbSimpleNoOperationsInterface::SetPropInt(int32 InPropInt)
 {
 	if (PropInt != InPropInt)
 	{
 		PropInt = InPropInt;
-		Execute__GetSignals(this)->OnPropIntChanged.Broadcast(PropInt);
+		_GetSignals()->OnPropIntChanged.Broadcast(PropInt);
 	}
 }

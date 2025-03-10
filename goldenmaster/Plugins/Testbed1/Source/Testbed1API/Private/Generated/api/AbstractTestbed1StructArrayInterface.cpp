@@ -66,7 +66,7 @@ UAbstractTestbed1StructArrayInterface::UAbstractTestbed1StructArrayInterface()
 	Testbed1StructArrayInterfaceSignals = NewObject<UTestbed1StructArrayInterfaceSignals>();
 }
 
-UTestbed1StructArrayInterfaceSignals* UAbstractTestbed1StructArrayInterface::_GetSignals_Implementation()
+UTestbed1StructArrayInterfaceSignals* UAbstractTestbed1StructArrayInterface::_GetSignals()
 {
 	if (!Testbed1StructArrayInterfaceSignals)
 	{
@@ -77,45 +77,45 @@ UTestbed1StructArrayInterfaceSignals* UAbstractTestbed1StructArrayInterface::_Ge
 
 TArray<FTestbed1StructBool> UAbstractTestbed1StructArrayInterface::GetPropBool_Private() const
 {
-	return Execute_GetPropBool(this);
+	return GetPropBool();
 };
 
 void UAbstractTestbed1StructArrayInterface::SetPropBool_Private(const TArray<FTestbed1StructBool>& InPropBool)
 {
-	Execute_SetPropBool(this, InPropBool);
+	SetPropBool(InPropBool);
 };
 
 TArray<FTestbed1StructInt> UAbstractTestbed1StructArrayInterface::GetPropInt_Private() const
 {
-	return Execute_GetPropInt(this);
+	return GetPropInt();
 };
 
 void UAbstractTestbed1StructArrayInterface::SetPropInt_Private(const TArray<FTestbed1StructInt>& InPropInt)
 {
-	Execute_SetPropInt(this, InPropInt);
+	SetPropInt(InPropInt);
 };
 
 TArray<FTestbed1StructFloat> UAbstractTestbed1StructArrayInterface::GetPropFloat_Private() const
 {
-	return Execute_GetPropFloat(this);
+	return GetPropFloat();
 };
 
 void UAbstractTestbed1StructArrayInterface::SetPropFloat_Private(const TArray<FTestbed1StructFloat>& InPropFloat)
 {
-	Execute_SetPropFloat(this, InPropFloat);
+	SetPropFloat(InPropFloat);
 };
 
 TArray<FTestbed1StructString> UAbstractTestbed1StructArrayInterface::GetPropString_Private() const
 {
-	return Execute_GetPropString(this);
+	return GetPropString();
 };
 
 void UAbstractTestbed1StructArrayInterface::SetPropString_Private(const TArray<FTestbed1StructString>& InPropString)
 {
-	Execute_SetPropString(this, InPropString);
+	SetPropString(InPropString);
 };
 
-void UAbstractTestbed1StructArrayInterface::FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FTestbed1StructBool>& Result, const TArray<FTestbed1StructBool>& ParamBool)
+void UAbstractTestbed1StructArrayInterface::FuncBoolAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FTestbed1StructBool>& Result, const TArray<FTestbed1StructBool>& ParamBool)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
@@ -135,7 +135,7 @@ void UAbstractTestbed1StructArrayInterface::FuncBoolAsync_Implementation(UObject
 		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
 		if (this->GetClass()->IsInBlueprint())
 		{
-			Result = Execute_FuncBool(this, ParamBool);
+			Result = FuncBool(ParamBool);
 			CompletionAction->Cancel();
 		}
 		else
@@ -143,14 +143,14 @@ void UAbstractTestbed1StructArrayInterface::FuncBoolAsync_Implementation(UObject
 			Async(EAsyncExecution::ThreadPool,
 				[ParamBool, this, &Result, CompletionAction]()
 				{
-				Result = Execute_FuncBool(this, ParamBool);
+				Result = FuncBool(ParamBool);
 				CompletionAction->Cancel();
 			});
 		}
 	}
 }
 
-void UAbstractTestbed1StructArrayInterface::FuncIntAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FTestbed1StructInt>& Result, const TArray<FTestbed1StructInt>& ParamInt)
+void UAbstractTestbed1StructArrayInterface::FuncIntAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FTestbed1StructInt>& Result, const TArray<FTestbed1StructInt>& ParamInt)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
@@ -170,7 +170,7 @@ void UAbstractTestbed1StructArrayInterface::FuncIntAsync_Implementation(UObject*
 		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
 		if (this->GetClass()->IsInBlueprint())
 		{
-			Result = Execute_FuncInt(this, ParamInt);
+			Result = FuncInt(ParamInt);
 			CompletionAction->Cancel();
 		}
 		else
@@ -178,14 +178,14 @@ void UAbstractTestbed1StructArrayInterface::FuncIntAsync_Implementation(UObject*
 			Async(EAsyncExecution::ThreadPool,
 				[ParamInt, this, &Result, CompletionAction]()
 				{
-				Result = Execute_FuncInt(this, ParamInt);
+				Result = FuncInt(ParamInt);
 				CompletionAction->Cancel();
 			});
 		}
 	}
 }
 
-void UAbstractTestbed1StructArrayInterface::FuncFloatAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FTestbed1StructFloat>& Result, const TArray<FTestbed1StructFloat>& ParamFloat)
+void UAbstractTestbed1StructArrayInterface::FuncFloatAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FTestbed1StructFloat>& Result, const TArray<FTestbed1StructFloat>& ParamFloat)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
@@ -205,7 +205,7 @@ void UAbstractTestbed1StructArrayInterface::FuncFloatAsync_Implementation(UObjec
 		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
 		if (this->GetClass()->IsInBlueprint())
 		{
-			Result = Execute_FuncFloat(this, ParamFloat);
+			Result = FuncFloat(ParamFloat);
 			CompletionAction->Cancel();
 		}
 		else
@@ -213,14 +213,14 @@ void UAbstractTestbed1StructArrayInterface::FuncFloatAsync_Implementation(UObjec
 			Async(EAsyncExecution::ThreadPool,
 				[ParamFloat, this, &Result, CompletionAction]()
 				{
-				Result = Execute_FuncFloat(this, ParamFloat);
+				Result = FuncFloat(ParamFloat);
 				CompletionAction->Cancel();
 			});
 		}
 	}
 }
 
-void UAbstractTestbed1StructArrayInterface::FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FTestbed1StructString>& Result, const TArray<FTestbed1StructString>& ParamString)
+void UAbstractTestbed1StructArrayInterface::FuncStringAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FTestbed1StructString>& Result, const TArray<FTestbed1StructString>& ParamString)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
@@ -240,7 +240,7 @@ void UAbstractTestbed1StructArrayInterface::FuncStringAsync_Implementation(UObje
 		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
 		if (this->GetClass()->IsInBlueprint())
 		{
-			Result = Execute_FuncString(this, ParamString);
+			Result = FuncString(ParamString);
 			CompletionAction->Cancel();
 		}
 		else
@@ -248,7 +248,7 @@ void UAbstractTestbed1StructArrayInterface::FuncStringAsync_Implementation(UObje
 			Async(EAsyncExecution::ThreadPool,
 				[ParamString, this, &Result, CompletionAction]()
 				{
-				Result = Execute_FuncString(this, ParamString);
+				Result = FuncString(ParamString);
 				CompletionAction->Cancel();
 			});
 		}

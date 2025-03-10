@@ -136,7 +136,7 @@ void UTbSimpleVoidInterfaceOLinkClient::UseConnection(TScriptInterface<IApiGearC
 	Connection = InConnection;
 }
 
-void UTbSimpleVoidInterfaceOLinkClient::FuncVoid_Implementation()
+void UTbSimpleVoidInterfaceOLinkClient::FuncVoid()
 {
 	if (!m_sink->IsReady())
 	{
@@ -162,7 +162,7 @@ void UTbSimpleVoidInterfaceOLinkClient::emitSignal(const std::string& signalName
 {
 	if (signalName == "sigVoid")
 	{
-		Execute__GetSignals(this)->OnSigVoidSignal.Broadcast();
+		_GetSignals()->OnSigVoidSignal.Broadcast();
 		return;
 	}
 }

@@ -200,25 +200,25 @@ nlohmann::json Testbed1StructArrayInterfaceOLinkSource::olinkInvoke(const std::s
 	if (path == "funcBool")
 	{
 		TArray<FTestbed1StructBool> ParamBool = args.at(0).get<TArray<FTestbed1StructBool>>();
-		TArray<FTestbed1StructBool> result = BackendService->Execute_FuncBool(BackendService.GetObject(), ParamBool);
+		TArray<FTestbed1StructBool> result = BackendService->FuncBool(ParamBool);
 		return result;
 	}
 	if (path == "funcInt")
 	{
 		TArray<FTestbed1StructInt> ParamInt = args.at(0).get<TArray<FTestbed1StructInt>>();
-		TArray<FTestbed1StructInt> result = BackendService->Execute_FuncInt(BackendService.GetObject(), ParamInt);
+		TArray<FTestbed1StructInt> result = BackendService->FuncInt(ParamInt);
 		return result;
 	}
 	if (path == "funcFloat")
 	{
 		TArray<FTestbed1StructFloat> ParamFloat = args.at(0).get<TArray<FTestbed1StructFloat>>();
-		TArray<FTestbed1StructFloat> result = BackendService->Execute_FuncFloat(BackendService.GetObject(), ParamFloat);
+		TArray<FTestbed1StructFloat> result = BackendService->FuncFloat(ParamFloat);
 		return result;
 	}
 	if (path == "funcString")
 	{
 		TArray<FTestbed1StructString> ParamString = args.at(0).get<TArray<FTestbed1StructString>>();
-		TArray<FTestbed1StructString> result = BackendService->Execute_FuncString(BackendService.GetObject(), ParamString);
+		TArray<FTestbed1StructString> result = BackendService->FuncString(ParamString);
 		return result;
 	}
 	return nlohmann::json();
@@ -236,22 +236,22 @@ void Testbed1StructArrayInterfaceOLinkSource::olinkSetProperty(const std::string
 	if (path == "propBool")
 	{
 		TArray<FTestbed1StructBool> PropBool = value.get<TArray<FTestbed1StructBool>>();
-		BackendService->Execute_SetPropBool(BackendService.GetObject(), PropBool);
+		BackendService->SetPropBool(PropBool);
 	}
 	if (path == "propInt")
 	{
 		TArray<FTestbed1StructInt> PropInt = value.get<TArray<FTestbed1StructInt>>();
-		BackendService->Execute_SetPropInt(BackendService.GetObject(), PropInt);
+		BackendService->SetPropInt(PropInt);
 	}
 	if (path == "propFloat")
 	{
 		TArray<FTestbed1StructFloat> PropFloat = value.get<TArray<FTestbed1StructFloat>>();
-		BackendService->Execute_SetPropFloat(BackendService.GetObject(), PropFloat);
+		BackendService->SetPropFloat(PropFloat);
 	}
 	if (path == "propString")
 	{
 		TArray<FTestbed1StructString> PropString = value.get<TArray<FTestbed1StructString>>();
-		BackendService->Execute_SetPropString(BackendService.GetObject(), PropString);
+		BackendService->SetPropString(PropString);
 	}
 }
 
@@ -265,9 +265,9 @@ nlohmann::json Testbed1StructArrayInterfaceOLinkSource::olinkCollectProperties()
 
 	return nlohmann::json::object({
 
-		{"propBool", BackendService->Execute_GetPropBool(BackendService.GetObject())},
-		{"propInt", BackendService->Execute_GetPropInt(BackendService.GetObject())},
-		{"propFloat", BackendService->Execute_GetPropFloat(BackendService.GetObject())},
-		{"propString", BackendService->Execute_GetPropString(BackendService.GetObject())}});
+		{"propBool", BackendService->GetPropBool()},
+		{"propInt", BackendService->GetPropInt()},
+		{"propFloat", BackendService->GetPropFloat()},
+		{"propString", BackendService->GetPropString()}});
 }
 #endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

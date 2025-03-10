@@ -25,7 +25,7 @@ UAbstractTbSimpleNoOperationsInterface::UAbstractTbSimpleNoOperationsInterface()
 	TbSimpleNoOperationsInterfaceSignals = NewObject<UTbSimpleNoOperationsInterfaceSignals>();
 }
 
-UTbSimpleNoOperationsInterfaceSignals* UAbstractTbSimpleNoOperationsInterface::_GetSignals_Implementation()
+UTbSimpleNoOperationsInterfaceSignals* UAbstractTbSimpleNoOperationsInterface::_GetSignals()
 {
 	if (!TbSimpleNoOperationsInterfaceSignals)
 	{
@@ -36,22 +36,22 @@ UTbSimpleNoOperationsInterfaceSignals* UAbstractTbSimpleNoOperationsInterface::_
 
 bool UAbstractTbSimpleNoOperationsInterface::GetPropBool_Private() const
 {
-	return Execute_GetPropBool(this);
+	return GetPropBool();
 };
 
 void UAbstractTbSimpleNoOperationsInterface::SetPropBool_Private(bool bInPropBool)
 {
-	Execute_SetPropBool(this, bInPropBool);
+	SetPropBool(bInPropBool);
 };
 
 int32 UAbstractTbSimpleNoOperationsInterface::GetPropInt_Private() const
 {
-	return Execute_GetPropInt(this);
+	return GetPropInt();
 };
 
 void UAbstractTbSimpleNoOperationsInterface::SetPropInt_Private(int32 InPropInt)
 {
-	Execute_SetPropInt(this, InPropInt);
+	SetPropInt(InPropInt);
 };
 
 void UAbstractTbSimpleNoOperationsInterface::Initialize(FSubsystemCollectionBase& Collection)

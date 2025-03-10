@@ -47,7 +47,7 @@ void UCounterCounterLoggingDecorator::setBackendService(TScriptInterface<ICounte
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		UCounterCounterSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+		UCounterCounterSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service CounterCounter"));
 		BackendSignals->OnVectorChanged.RemoveDynamic(this, &UCounterCounterLoggingDecorator::OnVectorChanged);
 		BackendSignals->OnExternVectorChanged.RemoveDynamic(this, &UCounterCounterLoggingDecorator::OnExternVectorChanged);
@@ -61,7 +61,7 @@ void UCounterCounterLoggingDecorator::setBackendService(TScriptInterface<ICounte
 
 	// subscribe to new backend
 	BackendService = InService;
-	UCounterCounterSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+	UCounterCounterSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service CounterCounter"));
 	// connect property changed signals or simple events
 	BackendSignals->OnVectorChanged.AddDynamic(this, &UCounterCounterLoggingDecorator::OnVectorChanged);
@@ -70,110 +70,110 @@ void UCounterCounterLoggingDecorator::setBackendService(TScriptInterface<ICounte
 	BackendSignals->OnExternVectorArrayChanged.AddDynamic(this, &UCounterCounterLoggingDecorator::OnExternVectorArrayChanged);
 	BackendSignals->OnValueChangedSignal.AddDynamic(this, &UCounterCounterLoggingDecorator::OnValueChanged);
 	// populate service state to proxy
-	Vector = BackendService->Execute_GetVector(BackendService.GetObject());
-	ExternVector = BackendService->Execute_GetExternVector(BackendService.GetObject());
-	VectorArray = BackendService->Execute_GetVectorArray(BackendService.GetObject());
-	ExternVectorArray = BackendService->Execute_GetExternVectorArray(BackendService.GetObject());
+	Vector = BackendService->GetVector();
+	ExternVector = BackendService->GetExternVector();
+	VectorArray = BackendService->GetVectorArray();
+	ExternVectorArray = BackendService->GetExternVectorArray();
 }
 
 void UCounterCounterLoggingDecorator::OnValueChanged(const FCustomTypesVector3D& InVector, const FVector& InExternVector, const TArray<FCustomTypesVector3D>& InVectorArray, const TArray<FVector>& InExternVectorArray)
 {
 	CounterCounterTracer::trace_signalValueChanged(InVector, InExternVector, InVectorArray, InExternVectorArray);
-	Execute__GetSignals(this)->OnValueChangedSignal.Broadcast(InVector, InExternVector, InVectorArray, InExternVectorArray);
+	_GetSignals()->OnValueChangedSignal.Broadcast(InVector, InExternVector, InVectorArray, InExternVectorArray);
 }
 
 void UCounterCounterLoggingDecorator::OnVectorChanged(const FCustomTypesVector3D& InVector)
 {
 	CounterCounterTracer::capture_state(BackendService.GetObject(), this);
 	Vector = InVector;
-	Execute__GetSignals(this)->OnVectorChanged.Broadcast(InVector);
+	_GetSignals()->OnVectorChanged.Broadcast(InVector);
 }
 
-FCustomTypesVector3D UCounterCounterLoggingDecorator::GetVector_Implementation() const
+FCustomTypesVector3D UCounterCounterLoggingDecorator::GetVector() const
 {
-	return BackendService->Execute_GetVector(BackendService.GetObject());
+	return BackendService->GetVector();
 }
 
-void UCounterCounterLoggingDecorator::SetVector_Implementation(const FCustomTypesVector3D& InVector)
+void UCounterCounterLoggingDecorator::SetVector(const FCustomTypesVector3D& InVector)
 {
 	CounterCounterTracer::trace_callSetVector(InVector);
-	BackendService->Execute_SetVector(BackendService.GetObject(), InVector);
+	BackendService->SetVector(InVector);
 }
 
 void UCounterCounterLoggingDecorator::OnExternVectorChanged(const FVector& InExternVector)
 {
 	CounterCounterTracer::capture_state(BackendService.GetObject(), this);
 	ExternVector = InExternVector;
-	Execute__GetSignals(this)->OnExternVectorChanged.Broadcast(InExternVector);
+	_GetSignals()->OnExternVectorChanged.Broadcast(InExternVector);
 }
 
-FVector UCounterCounterLoggingDecorator::GetExternVector_Implementation() const
+FVector UCounterCounterLoggingDecorator::GetExternVector() const
 {
-	return BackendService->Execute_GetExternVector(BackendService.GetObject());
+	return BackendService->GetExternVector();
 }
 
-void UCounterCounterLoggingDecorator::SetExternVector_Implementation(const FVector& InExternVector)
+void UCounterCounterLoggingDecorator::SetExternVector(const FVector& InExternVector)
 {
 	CounterCounterTracer::trace_callSetExternVector(InExternVector);
-	BackendService->Execute_SetExternVector(BackendService.GetObject(), InExternVector);
+	BackendService->SetExternVector(InExternVector);
 }
 
 void UCounterCounterLoggingDecorator::OnVectorArrayChanged(const TArray<FCustomTypesVector3D>& InVectorArray)
 {
 	CounterCounterTracer::capture_state(BackendService.GetObject(), this);
 	VectorArray = InVectorArray;
-	Execute__GetSignals(this)->OnVectorArrayChanged.Broadcast(InVectorArray);
+	_GetSignals()->OnVectorArrayChanged.Broadcast(InVectorArray);
 }
 
-TArray<FCustomTypesVector3D> UCounterCounterLoggingDecorator::GetVectorArray_Implementation() const
+TArray<FCustomTypesVector3D> UCounterCounterLoggingDecorator::GetVectorArray() const
 {
-	return BackendService->Execute_GetVectorArray(BackendService.GetObject());
+	return BackendService->GetVectorArray();
 }
 
-void UCounterCounterLoggingDecorator::SetVectorArray_Implementation(const TArray<FCustomTypesVector3D>& InVectorArray)
+void UCounterCounterLoggingDecorator::SetVectorArray(const TArray<FCustomTypesVector3D>& InVectorArray)
 {
 	CounterCounterTracer::trace_callSetVectorArray(InVectorArray);
-	BackendService->Execute_SetVectorArray(BackendService.GetObject(), InVectorArray);
+	BackendService->SetVectorArray(InVectorArray);
 }
 
 void UCounterCounterLoggingDecorator::OnExternVectorArrayChanged(const TArray<FVector>& InExternVectorArray)
 {
 	CounterCounterTracer::capture_state(BackendService.GetObject(), this);
 	ExternVectorArray = InExternVectorArray;
-	Execute__GetSignals(this)->OnExternVectorArrayChanged.Broadcast(InExternVectorArray);
+	_GetSignals()->OnExternVectorArrayChanged.Broadcast(InExternVectorArray);
 }
 
-TArray<FVector> UCounterCounterLoggingDecorator::GetExternVectorArray_Implementation() const
+TArray<FVector> UCounterCounterLoggingDecorator::GetExternVectorArray() const
 {
-	return BackendService->Execute_GetExternVectorArray(BackendService.GetObject());
+	return BackendService->GetExternVectorArray();
 }
 
-void UCounterCounterLoggingDecorator::SetExternVectorArray_Implementation(const TArray<FVector>& InExternVectorArray)
+void UCounterCounterLoggingDecorator::SetExternVectorArray(const TArray<FVector>& InExternVectorArray)
 {
 	CounterCounterTracer::trace_callSetExternVectorArray(InExternVectorArray);
-	BackendService->Execute_SetExternVectorArray(BackendService.GetObject(), InExternVectorArray);
+	BackendService->SetExternVectorArray(InExternVectorArray);
 }
 
-FVector UCounterCounterLoggingDecorator::Increment_Implementation(const FVector& Vec)
+FVector UCounterCounterLoggingDecorator::Increment(const FVector& Vec)
 {
 	CounterCounterTracer::trace_callIncrement(Vec);
-	return BackendService->Execute_Increment(BackendService.GetObject(), Vec);
+	return BackendService->Increment(Vec);
 }
 
-TArray<FVector> UCounterCounterLoggingDecorator::IncrementArray_Implementation(const TArray<FVector>& Vec)
+TArray<FVector> UCounterCounterLoggingDecorator::IncrementArray(const TArray<FVector>& Vec)
 {
 	CounterCounterTracer::trace_callIncrementArray(Vec);
-	return BackendService->Execute_IncrementArray(BackendService.GetObject(), Vec);
+	return BackendService->IncrementArray(Vec);
 }
 
-FCustomTypesVector3D UCounterCounterLoggingDecorator::Decrement_Implementation(const FCustomTypesVector3D& Vec)
+FCustomTypesVector3D UCounterCounterLoggingDecorator::Decrement(const FCustomTypesVector3D& Vec)
 {
 	CounterCounterTracer::trace_callDecrement(Vec);
-	return BackendService->Execute_Decrement(BackendService.GetObject(), Vec);
+	return BackendService->Decrement(Vec);
 }
 
-TArray<FCustomTypesVector3D> UCounterCounterLoggingDecorator::DecrementArray_Implementation(const TArray<FCustomTypesVector3D>& Vec)
+TArray<FCustomTypesVector3D> UCounterCounterLoggingDecorator::DecrementArray(const TArray<FCustomTypesVector3D>& Vec)
 {
 	CounterCounterTracer::trace_callDecrementArray(Vec);
-	return BackendService->Execute_DecrementArray(BackendService.GetObject(), Vec);
+	return BackendService->DecrementArray(Vec);
 }

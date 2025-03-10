@@ -330,49 +330,49 @@ nlohmann::json TbSimpleSimpleArrayInterfaceOLinkSource::olinkInvoke(const std::s
 	if (path == "funcBool")
 	{
 		TArray<bool> ParamBool = args.at(0).get<TArray<bool>>();
-		TArray<bool> result = BackendService->Execute_FuncBool(BackendService.GetObject(), ParamBool);
+		TArray<bool> result = BackendService->FuncBool(ParamBool);
 		return result;
 	}
 	if (path == "funcInt")
 	{
 		TArray<int32> ParamInt = args.at(0).get<TArray<int32>>();
-		TArray<int32> result = BackendService->Execute_FuncInt(BackendService.GetObject(), ParamInt);
+		TArray<int32> result = BackendService->FuncInt(ParamInt);
 		return result;
 	}
 	if (path == "funcInt32")
 	{
 		TArray<int32> ParamInt32 = args.at(0).get<TArray<int32>>();
-		TArray<int32> result = BackendService->Execute_FuncInt32(BackendService.GetObject(), ParamInt32);
+		TArray<int32> result = BackendService->FuncInt32(ParamInt32);
 		return result;
 	}
 	if (path == "funcInt64")
 	{
 		TArray<int64> ParamInt64 = args.at(0).get<TArray<int64>>();
-		TArray<int64> result = BackendService->Execute_FuncInt64(BackendService.GetObject(), ParamInt64);
+		TArray<int64> result = BackendService->FuncInt64(ParamInt64);
 		return result;
 	}
 	if (path == "funcFloat")
 	{
 		TArray<float> ParamFloat = args.at(0).get<TArray<float>>();
-		TArray<float> result = BackendService->Execute_FuncFloat(BackendService.GetObject(), ParamFloat);
+		TArray<float> result = BackendService->FuncFloat(ParamFloat);
 		return result;
 	}
 	if (path == "funcFloat32")
 	{
 		TArray<float> ParamFloat32 = args.at(0).get<TArray<float>>();
-		TArray<float> result = BackendService->Execute_FuncFloat32(BackendService.GetObject(), ParamFloat32);
+		TArray<float> result = BackendService->FuncFloat32(ParamFloat32);
 		return result;
 	}
 	if (path == "funcFloat64")
 	{
 		TArray<double> ParamFloat = args.at(0).get<TArray<double>>();
-		TArray<double> result = BackendService->Execute_FuncFloat64(BackendService.GetObject(), ParamFloat);
+		TArray<double> result = BackendService->FuncFloat64(ParamFloat);
 		return result;
 	}
 	if (path == "funcString")
 	{
 		TArray<FString> ParamString = args.at(0).get<TArray<FString>>();
-		TArray<FString> result = BackendService->Execute_FuncString(BackendService.GetObject(), ParamString);
+		TArray<FString> result = BackendService->FuncString(ParamString);
 		return result;
 	}
 	return nlohmann::json();
@@ -390,42 +390,42 @@ void TbSimpleSimpleArrayInterfaceOLinkSource::olinkSetProperty(const std::string
 	if (path == "propBool")
 	{
 		TArray<bool> PropBool = value.get<TArray<bool>>();
-		BackendService->Execute_SetPropBool(BackendService.GetObject(), PropBool);
+		BackendService->SetPropBool(PropBool);
 	}
 	if (path == "propInt")
 	{
 		TArray<int32> PropInt = value.get<TArray<int32>>();
-		BackendService->Execute_SetPropInt(BackendService.GetObject(), PropInt);
+		BackendService->SetPropInt(PropInt);
 	}
 	if (path == "propInt32")
 	{
 		TArray<int32> PropInt32 = value.get<TArray<int32>>();
-		BackendService->Execute_SetPropInt32(BackendService.GetObject(), PropInt32);
+		BackendService->SetPropInt32(PropInt32);
 	}
 	if (path == "propInt64")
 	{
 		TArray<int64> PropInt64 = value.get<TArray<int64>>();
-		BackendService->Execute_SetPropInt64(BackendService.GetObject(), PropInt64);
+		BackendService->SetPropInt64(PropInt64);
 	}
 	if (path == "propFloat")
 	{
 		TArray<float> PropFloat = value.get<TArray<float>>();
-		BackendService->Execute_SetPropFloat(BackendService.GetObject(), PropFloat);
+		BackendService->SetPropFloat(PropFloat);
 	}
 	if (path == "propFloat32")
 	{
 		TArray<float> PropFloat32 = value.get<TArray<float>>();
-		BackendService->Execute_SetPropFloat32(BackendService.GetObject(), PropFloat32);
+		BackendService->SetPropFloat32(PropFloat32);
 	}
 	if (path == "propFloat64")
 	{
 		TArray<double> PropFloat64 = value.get<TArray<double>>();
-		BackendService->Execute_SetPropFloat64(BackendService.GetObject(), PropFloat64);
+		BackendService->SetPropFloat64(PropFloat64);
 	}
 	if (path == "propString")
 	{
 		TArray<FString> PropString = value.get<TArray<FString>>();
-		BackendService->Execute_SetPropString(BackendService.GetObject(), PropString);
+		BackendService->SetPropString(PropString);
 	}
 }
 
@@ -439,14 +439,14 @@ nlohmann::json TbSimpleSimpleArrayInterfaceOLinkSource::olinkCollectProperties()
 
 	return nlohmann::json::object({
 
-		{"propBool", BackendService->Execute_GetPropBool(BackendService.GetObject())},
-		{"propInt", BackendService->Execute_GetPropInt(BackendService.GetObject())},
-		{"propInt32", BackendService->Execute_GetPropInt32(BackendService.GetObject())},
-		{"propInt64", BackendService->Execute_GetPropInt64(BackendService.GetObject())},
-		{"propFloat", BackendService->Execute_GetPropFloat(BackendService.GetObject())},
-		{"propFloat32", BackendService->Execute_GetPropFloat32(BackendService.GetObject())},
-		{"propFloat64", BackendService->Execute_GetPropFloat64(BackendService.GetObject())},
-		{"propString", BackendService->Execute_GetPropString(BackendService.GetObject())},
-		{"propReadOnlyString", BackendService->Execute_GetPropReadOnlyString(BackendService.GetObject())}});
+		{"propBool", BackendService->GetPropBool()},
+		{"propInt", BackendService->GetPropInt()},
+		{"propInt32", BackendService->GetPropInt32()},
+		{"propInt64", BackendService->GetPropInt64()},
+		{"propFloat", BackendService->GetPropFloat()},
+		{"propFloat32", BackendService->GetPropFloat32()},
+		{"propFloat64", BackendService->GetPropFloat64()},
+		{"propString", BackendService->GetPropString()},
+		{"propReadOnlyString", BackendService->GetPropReadOnlyString()}});
 }
 #endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

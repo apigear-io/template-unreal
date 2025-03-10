@@ -38,33 +38,33 @@ public:
 	virtual void Deinitialize() override;
 
 	// signals
-	virtual UCounterCounterSignals* _GetSignals_Implementation() override;
+	virtual UCounterCounterSignals* _GetSignals() override;
 
 	// methods
-	virtual void IncrementAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FVector& Result, const FVector& Vec) override;
-	virtual FVector Increment_Implementation(const FVector& Vec) override PURE_VIRTUAL(UAbstractCounterCounter::Increment_Implementation, return FVector(0.f, 0.f, 0.f););
+	virtual void IncrementAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FVector& Result, const FVector& Vec) override;
+	virtual FVector Increment(const FVector& Vec) override PURE_VIRTUAL(UAbstractCounterCounter::Increment, return FVector(0.f, 0.f, 0.f););
 
-	virtual void IncrementArrayAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FVector>& Result, const TArray<FVector>& Vec) override;
-	virtual TArray<FVector> IncrementArray_Implementation(const TArray<FVector>& Vec) override PURE_VIRTUAL(UAbstractCounterCounter::IncrementArray_Implementation, return TArray<FVector>(););
+	virtual void IncrementArrayAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FVector>& Result, const TArray<FVector>& Vec) override;
+	virtual TArray<FVector> IncrementArray(const TArray<FVector>& Vec) override PURE_VIRTUAL(UAbstractCounterCounter::IncrementArray, return TArray<FVector>(););
 
-	virtual void DecrementAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FCustomTypesVector3D& Result, const FCustomTypesVector3D& Vec) override;
-	virtual FCustomTypesVector3D Decrement_Implementation(const FCustomTypesVector3D& Vec) override PURE_VIRTUAL(UAbstractCounterCounter::Decrement_Implementation, return FCustomTypesVector3D(););
+	virtual void DecrementAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FCustomTypesVector3D& Result, const FCustomTypesVector3D& Vec) override;
+	virtual FCustomTypesVector3D Decrement(const FCustomTypesVector3D& Vec) override PURE_VIRTUAL(UAbstractCounterCounter::Decrement, return FCustomTypesVector3D(););
 
-	virtual void DecrementArrayAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FCustomTypesVector3D>& Result, const TArray<FCustomTypesVector3D>& Vec) override;
-	virtual TArray<FCustomTypesVector3D> DecrementArray_Implementation(const TArray<FCustomTypesVector3D>& Vec) override PURE_VIRTUAL(UAbstractCounterCounter::DecrementArray_Implementation, return TArray<FCustomTypesVector3D>(););
+	virtual void DecrementArrayAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FCustomTypesVector3D>& Result, const TArray<FCustomTypesVector3D>& Vec) override;
+	virtual TArray<FCustomTypesVector3D> DecrementArray(const TArray<FCustomTypesVector3D>& Vec) override PURE_VIRTUAL(UAbstractCounterCounter::DecrementArray, return TArray<FCustomTypesVector3D>(););
 
 	// properties
-	virtual FCustomTypesVector3D GetVector_Implementation() const override PURE_VIRTUAL(UAbstractCounterCounter::GetVector_Implementation, return FCustomTypesVector3D(););
-	virtual void SetVector_Implementation(const FCustomTypesVector3D& InVector) override PURE_VIRTUAL(UAbstractCounterCounter::SetVector_Implementation, return;);
+	virtual FCustomTypesVector3D GetVector() const override PURE_VIRTUAL(UAbstractCounterCounter::GetVector, return FCustomTypesVector3D(););
+	virtual void SetVector(const FCustomTypesVector3D& InVector) override PURE_VIRTUAL(UAbstractCounterCounter::SetVector, return;);
 
-	virtual FVector GetExternVector_Implementation() const override PURE_VIRTUAL(UAbstractCounterCounter::GetExternVector_Implementation, return FVector(0.f, 0.f, 0.f););
-	virtual void SetExternVector_Implementation(const FVector& InExternVector) override PURE_VIRTUAL(UAbstractCounterCounter::SetExternVector_Implementation, return;);
+	virtual FVector GetExternVector() const override PURE_VIRTUAL(UAbstractCounterCounter::GetExternVector, return FVector(0.f, 0.f, 0.f););
+	virtual void SetExternVector(const FVector& InExternVector) override PURE_VIRTUAL(UAbstractCounterCounter::SetExternVector, return;);
 
-	virtual TArray<FCustomTypesVector3D> GetVectorArray_Implementation() const override PURE_VIRTUAL(UAbstractCounterCounter::GetVectorArray_Implementation, return TArray<FCustomTypesVector3D>(););
-	virtual void SetVectorArray_Implementation(const TArray<FCustomTypesVector3D>& InVectorArray) override PURE_VIRTUAL(UAbstractCounterCounter::SetVectorArray_Implementation, return;);
+	virtual TArray<FCustomTypesVector3D> GetVectorArray() const override PURE_VIRTUAL(UAbstractCounterCounter::GetVectorArray, return TArray<FCustomTypesVector3D>(););
+	virtual void SetVectorArray(const TArray<FCustomTypesVector3D>& InVectorArray) override PURE_VIRTUAL(UAbstractCounterCounter::SetVectorArray, return;);
 
-	virtual TArray<FVector> GetExternVectorArray_Implementation() const override PURE_VIRTUAL(UAbstractCounterCounter::GetExternVectorArray_Implementation, return TArray<FVector>(););
-	virtual void SetExternVectorArray_Implementation(const TArray<FVector>& InExternVectorArray) override PURE_VIRTUAL(UAbstractCounterCounter::SetExternVectorArray_Implementation, return;);
+	virtual TArray<FVector> GetExternVectorArray() const override PURE_VIRTUAL(UAbstractCounterCounter::GetExternVectorArray, return TArray<FVector>(););
+	virtual void SetExternVectorArray(const TArray<FVector>& InExternVectorArray) override PURE_VIRTUAL(UAbstractCounterCounter::SetExternVectorArray, return;);
 
 	virtual bool IsInitialized() const;
 

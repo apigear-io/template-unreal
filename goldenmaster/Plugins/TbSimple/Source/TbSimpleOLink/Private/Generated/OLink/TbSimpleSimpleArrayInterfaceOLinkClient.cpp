@@ -163,12 +163,12 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::UseConnection(TScriptInterface<IA
 	Connection = InConnection;
 }
 
-TArray<bool> UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropBool_Implementation() const
+TArray<bool> UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropBool() const
 {
 	return PropBool;
 }
 
-void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropBool_Implementation(const TArray<bool>& InPropBool)
+void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropBool(const TArray<bool>& InPropBool)
 {
 	if (!m_sink->IsReady())
 	{
@@ -177,7 +177,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropBool_Implementation(const 
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetPropBool_Implementation() == InPropBool)
+	if (GetPropBool() == InPropBool)
 	{
 		return;
 	}
@@ -196,12 +196,12 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropBool_Implementation(const 
 	_SentData->PropBool = InPropBool;
 }
 
-TArray<int32> UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropInt_Implementation() const
+TArray<int32> UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropInt() const
 {
 	return PropInt;
 }
 
-void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropInt_Implementation(const TArray<int32>& InPropInt)
+void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropInt(const TArray<int32>& InPropInt)
 {
 	if (!m_sink->IsReady())
 	{
@@ -210,7 +210,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropInt_Implementation(const T
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetPropInt_Implementation() == InPropInt)
+	if (GetPropInt() == InPropInt)
 	{
 		return;
 	}
@@ -229,12 +229,12 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropInt_Implementation(const T
 	_SentData->PropInt = InPropInt;
 }
 
-TArray<int32> UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropInt32_Implementation() const
+TArray<int32> UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropInt32() const
 {
 	return PropInt32;
 }
 
-void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropInt32_Implementation(const TArray<int32>& InPropInt32)
+void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropInt32(const TArray<int32>& InPropInt32)
 {
 	if (!m_sink->IsReady())
 	{
@@ -243,7 +243,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropInt32_Implementation(const
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetPropInt32_Implementation() == InPropInt32)
+	if (GetPropInt32() == InPropInt32)
 	{
 		return;
 	}
@@ -262,12 +262,12 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropInt32_Implementation(const
 	_SentData->PropInt32 = InPropInt32;
 }
 
-TArray<int64> UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropInt64_Implementation() const
+TArray<int64> UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropInt64() const
 {
 	return PropInt64;
 }
 
-void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropInt64_Implementation(const TArray<int64>& InPropInt64)
+void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropInt64(const TArray<int64>& InPropInt64)
 {
 	if (!m_sink->IsReady())
 	{
@@ -276,7 +276,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropInt64_Implementation(const
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetPropInt64_Implementation() == InPropInt64)
+	if (GetPropInt64() == InPropInt64)
 	{
 		return;
 	}
@@ -295,12 +295,12 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropInt64_Implementation(const
 	_SentData->PropInt64 = InPropInt64;
 }
 
-TArray<float> UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropFloat_Implementation() const
+TArray<float> UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropFloat() const
 {
 	return PropFloat;
 }
 
-void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropFloat_Implementation(const TArray<float>& InPropFloat)
+void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropFloat(const TArray<float>& InPropFloat)
 {
 	if (!m_sink->IsReady())
 	{
@@ -309,7 +309,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropFloat_Implementation(const
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetPropFloat_Implementation() == InPropFloat)
+	if (GetPropFloat() == InPropFloat)
 	{
 		return;
 	}
@@ -328,12 +328,12 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropFloat_Implementation(const
 	_SentData->PropFloat = InPropFloat;
 }
 
-TArray<float> UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropFloat32_Implementation() const
+TArray<float> UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropFloat32() const
 {
 	return PropFloat32;
 }
 
-void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropFloat32_Implementation(const TArray<float>& InPropFloat32)
+void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropFloat32(const TArray<float>& InPropFloat32)
 {
 	if (!m_sink->IsReady())
 	{
@@ -342,7 +342,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropFloat32_Implementation(con
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetPropFloat32_Implementation() == InPropFloat32)
+	if (GetPropFloat32() == InPropFloat32)
 	{
 		return;
 	}
@@ -361,12 +361,12 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropFloat32_Implementation(con
 	_SentData->PropFloat32 = InPropFloat32;
 }
 
-TArray<double> UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropFloat64_Implementation() const
+TArray<double> UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropFloat64() const
 {
 	return PropFloat64;
 }
 
-void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropFloat64_Implementation(const TArray<double>& InPropFloat64)
+void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropFloat64(const TArray<double>& InPropFloat64)
 {
 	if (!m_sink->IsReady())
 	{
@@ -375,7 +375,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropFloat64_Implementation(con
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetPropFloat64_Implementation() == InPropFloat64)
+	if (GetPropFloat64() == InPropFloat64)
 	{
 		return;
 	}
@@ -394,12 +394,12 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropFloat64_Implementation(con
 	_SentData->PropFloat64 = InPropFloat64;
 }
 
-TArray<FString> UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropString_Implementation() const
+TArray<FString> UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropString() const
 {
 	return PropString;
 }
 
-void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropString_Implementation(const TArray<FString>& InPropString)
+void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropString(const TArray<FString>& InPropString)
 {
 	if (!m_sink->IsReady())
 	{
@@ -408,7 +408,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropString_Implementation(cons
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetPropString_Implementation() == InPropString)
+	if (GetPropString() == InPropString)
 	{
 		return;
 	}
@@ -427,12 +427,12 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropString_Implementation(cons
 	_SentData->PropString = InPropString;
 }
 
-FString UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropReadOnlyString_Implementation() const
+FString UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropReadOnlyString() const
 {
 	return PropReadOnlyString;
 }
 
-TArray<bool> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncBool_Implementation(const TArray<bool>& ParamBool)
+TArray<bool> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncBool(const TArray<bool>& ParamBool)
 {
 	if (!m_sink->IsReady())
 	{
@@ -455,7 +455,7 @@ TArray<bool> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncBool_Implementation(c
 	return Promise.GetFuture().Get();
 }
 
-TArray<int32> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncInt_Implementation(const TArray<int32>& ParamInt)
+TArray<int32> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncInt(const TArray<int32>& ParamInt)
 {
 	if (!m_sink->IsReady())
 	{
@@ -478,7 +478,7 @@ TArray<int32> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncInt_Implementation(c
 	return Promise.GetFuture().Get();
 }
 
-TArray<int32> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncInt32_Implementation(const TArray<int32>& ParamInt32)
+TArray<int32> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncInt32(const TArray<int32>& ParamInt32)
 {
 	if (!m_sink->IsReady())
 	{
@@ -501,7 +501,7 @@ TArray<int32> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncInt32_Implementation
 	return Promise.GetFuture().Get();
 }
 
-TArray<int64> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncInt64_Implementation(const TArray<int64>& ParamInt64)
+TArray<int64> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncInt64(const TArray<int64>& ParamInt64)
 {
 	if (!m_sink->IsReady())
 	{
@@ -524,7 +524,7 @@ TArray<int64> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncInt64_Implementation
 	return Promise.GetFuture().Get();
 }
 
-TArray<float> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloat_Implementation(const TArray<float>& ParamFloat)
+TArray<float> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloat(const TArray<float>& ParamFloat)
 {
 	if (!m_sink->IsReady())
 	{
@@ -547,7 +547,7 @@ TArray<float> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloat_Implementation
 	return Promise.GetFuture().Get();
 }
 
-TArray<float> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloat32_Implementation(const TArray<float>& ParamFloat32)
+TArray<float> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloat32(const TArray<float>& ParamFloat32)
 {
 	if (!m_sink->IsReady())
 	{
@@ -570,7 +570,7 @@ TArray<float> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloat32_Implementati
 	return Promise.GetFuture().Get();
 }
 
-TArray<double> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloat64_Implementation(const TArray<double>& ParamFloat)
+TArray<double> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloat64(const TArray<double>& ParamFloat)
 {
 	if (!m_sink->IsReady())
 	{
@@ -593,7 +593,7 @@ TArray<double> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloat64_Implementat
 	return Promise.GetFuture().Get();
 }
 
-TArray<FString> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncString_Implementation(const TArray<FString>& ParamString)
+TArray<FString> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncString(const TArray<FString>& ParamString)
 {
 	if (!m_sink->IsReady())
 	{
@@ -627,63 +627,63 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::applyState(const nlohmann::json& 
 	if (bPropBoolChanged)
 	{
 		PropBool = fields["propBool"].get<TArray<bool>>();
-		Execute__GetSignals(this)->OnPropBoolChanged.Broadcast(PropBool);
+		_GetSignals()->OnPropBoolChanged.Broadcast(PropBool);
 	}
 
 	const bool bPropIntChanged = fields.contains("propInt") && (PropInt != fields["propInt"].get<TArray<int32>>());
 	if (bPropIntChanged)
 	{
 		PropInt = fields["propInt"].get<TArray<int32>>();
-		Execute__GetSignals(this)->OnPropIntChanged.Broadcast(PropInt);
+		_GetSignals()->OnPropIntChanged.Broadcast(PropInt);
 	}
 
 	const bool bPropInt32Changed = fields.contains("propInt32") && (PropInt32 != fields["propInt32"].get<TArray<int32>>());
 	if (bPropInt32Changed)
 	{
 		PropInt32 = fields["propInt32"].get<TArray<int32>>();
-		Execute__GetSignals(this)->OnPropInt32Changed.Broadcast(PropInt32);
+		_GetSignals()->OnPropInt32Changed.Broadcast(PropInt32);
 	}
 
 	const bool bPropInt64Changed = fields.contains("propInt64") && (PropInt64 != fields["propInt64"].get<TArray<int64>>());
 	if (bPropInt64Changed)
 	{
 		PropInt64 = fields["propInt64"].get<TArray<int64>>();
-		Execute__GetSignals(this)->OnPropInt64Changed.Broadcast(PropInt64);
+		_GetSignals()->OnPropInt64Changed.Broadcast(PropInt64);
 	}
 
 	const bool bPropFloatChanged = fields.contains("propFloat") && (PropFloat != fields["propFloat"].get<TArray<float>>());
 	if (bPropFloatChanged)
 	{
 		PropFloat = fields["propFloat"].get<TArray<float>>();
-		Execute__GetSignals(this)->OnPropFloatChanged.Broadcast(PropFloat);
+		_GetSignals()->OnPropFloatChanged.Broadcast(PropFloat);
 	}
 
 	const bool bPropFloat32Changed = fields.contains("propFloat32") && (PropFloat32 != fields["propFloat32"].get<TArray<float>>());
 	if (bPropFloat32Changed)
 	{
 		PropFloat32 = fields["propFloat32"].get<TArray<float>>();
-		Execute__GetSignals(this)->OnPropFloat32Changed.Broadcast(PropFloat32);
+		_GetSignals()->OnPropFloat32Changed.Broadcast(PropFloat32);
 	}
 
 	const bool bPropFloat64Changed = fields.contains("propFloat64") && (PropFloat64 != fields["propFloat64"].get<TArray<double>>());
 	if (bPropFloat64Changed)
 	{
 		PropFloat64 = fields["propFloat64"].get<TArray<double>>();
-		Execute__GetSignals(this)->OnPropFloat64Changed.Broadcast(PropFloat64);
+		_GetSignals()->OnPropFloat64Changed.Broadcast(PropFloat64);
 	}
 
 	const bool bPropStringChanged = fields.contains("propString") && (PropString != fields["propString"].get<TArray<FString>>());
 	if (bPropStringChanged)
 	{
 		PropString = fields["propString"].get<TArray<FString>>();
-		Execute__GetSignals(this)->OnPropStringChanged.Broadcast(PropString);
+		_GetSignals()->OnPropStringChanged.Broadcast(PropString);
 	}
 
 	const bool bPropReadOnlyStringChanged = fields.contains("propReadOnlyString") && (PropReadOnlyString != fields["propReadOnlyString"].get<FString>());
 	if (bPropReadOnlyStringChanged)
 	{
 		PropReadOnlyString = fields["propReadOnlyString"].get<FString>();
-		Execute__GetSignals(this)->OnPropReadOnlyStringChanged.Broadcast(PropReadOnlyString);
+		_GetSignals()->OnPropReadOnlyStringChanged.Broadcast(PropReadOnlyString);
 	}
 }
 
@@ -692,56 +692,56 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::emitSignal(const std::string& sig
 	if (signalName == "sigBool")
 	{
 		const TArray<bool>& outParamBool = args[0].get<TArray<bool>>();
-		Execute__GetSignals(this)->OnSigBoolSignal.Broadcast(outParamBool);
+		_GetSignals()->OnSigBoolSignal.Broadcast(outParamBool);
 		return;
 	}
 
 	if (signalName == "sigInt")
 	{
 		const TArray<int32>& outParamInt = args[0].get<TArray<int32>>();
-		Execute__GetSignals(this)->OnSigIntSignal.Broadcast(outParamInt);
+		_GetSignals()->OnSigIntSignal.Broadcast(outParamInt);
 		return;
 	}
 
 	if (signalName == "sigInt32")
 	{
 		const TArray<int32>& outParamInt32 = args[0].get<TArray<int32>>();
-		Execute__GetSignals(this)->OnSigInt32Signal.Broadcast(outParamInt32);
+		_GetSignals()->OnSigInt32Signal.Broadcast(outParamInt32);
 		return;
 	}
 
 	if (signalName == "sigInt64")
 	{
 		const TArray<int64>& outParamInt64 = args[0].get<TArray<int64>>();
-		Execute__GetSignals(this)->OnSigInt64Signal.Broadcast(outParamInt64);
+		_GetSignals()->OnSigInt64Signal.Broadcast(outParamInt64);
 		return;
 	}
 
 	if (signalName == "sigFloat")
 	{
 		const TArray<float>& outParamFloat = args[0].get<TArray<float>>();
-		Execute__GetSignals(this)->OnSigFloatSignal.Broadcast(outParamFloat);
+		_GetSignals()->OnSigFloatSignal.Broadcast(outParamFloat);
 		return;
 	}
 
 	if (signalName == "sigFloat32")
 	{
 		const TArray<float>& outParamFloa32 = args[0].get<TArray<float>>();
-		Execute__GetSignals(this)->OnSigFloat32Signal.Broadcast(outParamFloa32);
+		_GetSignals()->OnSigFloat32Signal.Broadcast(outParamFloa32);
 		return;
 	}
 
 	if (signalName == "sigFloat64")
 	{
 		const TArray<double>& outParamFloat64 = args[0].get<TArray<double>>();
-		Execute__GetSignals(this)->OnSigFloat64Signal.Broadcast(outParamFloat64);
+		_GetSignals()->OnSigFloat64Signal.Broadcast(outParamFloat64);
 		return;
 	}
 
 	if (signalName == "sigString")
 	{
 		const TArray<FString>& outParamString = args[0].get<TArray<FString>>();
-		Execute__GetSignals(this)->OnSigStringSignal.Broadcast(outParamString);
+		_GetSignals()->OnSigStringSignal.Broadcast(outParamString);
 		return;
 	}
 }

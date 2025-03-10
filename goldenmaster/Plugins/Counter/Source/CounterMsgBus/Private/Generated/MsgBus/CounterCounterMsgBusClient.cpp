@@ -187,28 +187,28 @@ void UCounterCounterMsgBusClient::OnConnectionInit(const FCounterCounterInitMess
 	if (bVectorChanged)
 	{
 		Vector = InMessage.Vector;
-		Execute__GetSignals(this)->OnVectorChanged.Broadcast(Vector);
+		_GetSignals()->OnVectorChanged.Broadcast(Vector);
 	}
 
 	const bool bExternVectorChanged = InMessage.ExternVector != ExternVector;
 	if (bExternVectorChanged)
 	{
 		ExternVector = InMessage.ExternVector;
-		Execute__GetSignals(this)->OnExternVectorChanged.Broadcast(ExternVector);
+		_GetSignals()->OnExternVectorChanged.Broadcast(ExternVector);
 	}
 
 	const bool bVectorArrayChanged = InMessage.VectorArray != VectorArray;
 	if (bVectorArrayChanged)
 	{
 		VectorArray = InMessage.VectorArray;
-		Execute__GetSignals(this)->OnVectorArrayChanged.Broadcast(VectorArray);
+		_GetSignals()->OnVectorArrayChanged.Broadcast(VectorArray);
 	}
 
 	const bool bExternVectorArrayChanged = InMessage.ExternVectorArray != ExternVectorArray;
 	if (bExternVectorArrayChanged)
 	{
 		ExternVectorArray = InMessage.ExternVectorArray;
-		Execute__GetSignals(this)->OnExternVectorArrayChanged.Broadcast(ExternVectorArray);
+		_GetSignals()->OnExternVectorArrayChanged.Broadcast(ExternVectorArray);
 	}
 
 	_ConnectionStatusChanged.Broadcast(true);
@@ -300,12 +300,12 @@ void UCounterCounterMsgBusClient::OnServiceClosedConnection(const FCounterCounte
 	_ConnectionStatusChanged.Broadcast(false);
 }
 
-FCustomTypesVector3D UCounterCounterMsgBusClient::GetVector_Implementation() const
+FCustomTypesVector3D UCounterCounterMsgBusClient::GetVector() const
 {
 	return Vector;
 }
 
-void UCounterCounterMsgBusClient::SetVector_Implementation(const FCustomTypesVector3D& InVector)
+void UCounterCounterMsgBusClient::SetVector(const FCustomTypesVector3D& InVector)
 {
 	if (!_IsConnected())
 	{
@@ -314,7 +314,7 @@ void UCounterCounterMsgBusClient::SetVector_Implementation(const FCustomTypesVec
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetVector_Implementation() == InVector)
+	if (GetVector() == InVector)
 	{
 		return;
 	}
@@ -340,12 +340,12 @@ void UCounterCounterMsgBusClient::SetVector_Implementation(const FCustomTypesVec
 	_SentData->Vector = InVector;
 }
 
-FVector UCounterCounterMsgBusClient::GetExternVector_Implementation() const
+FVector UCounterCounterMsgBusClient::GetExternVector() const
 {
 	return ExternVector;
 }
 
-void UCounterCounterMsgBusClient::SetExternVector_Implementation(const FVector& InExternVector)
+void UCounterCounterMsgBusClient::SetExternVector(const FVector& InExternVector)
 {
 	if (!_IsConnected())
 	{
@@ -354,7 +354,7 @@ void UCounterCounterMsgBusClient::SetExternVector_Implementation(const FVector& 
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetExternVector_Implementation() == InExternVector)
+	if (GetExternVector() == InExternVector)
 	{
 		return;
 	}
@@ -380,12 +380,12 @@ void UCounterCounterMsgBusClient::SetExternVector_Implementation(const FVector& 
 	_SentData->ExternVector = InExternVector;
 }
 
-TArray<FCustomTypesVector3D> UCounterCounterMsgBusClient::GetVectorArray_Implementation() const
+TArray<FCustomTypesVector3D> UCounterCounterMsgBusClient::GetVectorArray() const
 {
 	return VectorArray;
 }
 
-void UCounterCounterMsgBusClient::SetVectorArray_Implementation(const TArray<FCustomTypesVector3D>& InVectorArray)
+void UCounterCounterMsgBusClient::SetVectorArray(const TArray<FCustomTypesVector3D>& InVectorArray)
 {
 	if (!_IsConnected())
 	{
@@ -394,7 +394,7 @@ void UCounterCounterMsgBusClient::SetVectorArray_Implementation(const TArray<FCu
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetVectorArray_Implementation() == InVectorArray)
+	if (GetVectorArray() == InVectorArray)
 	{
 		return;
 	}
@@ -420,12 +420,12 @@ void UCounterCounterMsgBusClient::SetVectorArray_Implementation(const TArray<FCu
 	_SentData->VectorArray = InVectorArray;
 }
 
-TArray<FVector> UCounterCounterMsgBusClient::GetExternVectorArray_Implementation() const
+TArray<FVector> UCounterCounterMsgBusClient::GetExternVectorArray() const
 {
 	return ExternVectorArray;
 }
 
-void UCounterCounterMsgBusClient::SetExternVectorArray_Implementation(const TArray<FVector>& InExternVectorArray)
+void UCounterCounterMsgBusClient::SetExternVectorArray(const TArray<FVector>& InExternVectorArray)
 {
 	if (!_IsConnected())
 	{
@@ -434,7 +434,7 @@ void UCounterCounterMsgBusClient::SetExternVectorArray_Implementation(const TArr
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetExternVectorArray_Implementation() == InExternVectorArray)
+	if (GetExternVectorArray() == InExternVectorArray)
 	{
 		return;
 	}
@@ -460,7 +460,7 @@ void UCounterCounterMsgBusClient::SetExternVectorArray_Implementation(const TArr
 	_SentData->ExternVectorArray = InExternVectorArray;
 }
 
-FVector UCounterCounterMsgBusClient::Increment_Implementation(const FVector& InVec)
+FVector UCounterCounterMsgBusClient::Increment(const FVector& InVec)
 {
 	if (!_IsConnected())
 	{
@@ -489,7 +489,7 @@ void UCounterCounterMsgBusClient::OnIncrementReply(const FCounterCounterIncremen
 	FulfillPromise(InMessage.ResponseId, InMessage.Result);
 }
 
-TArray<FVector> UCounterCounterMsgBusClient::IncrementArray_Implementation(const TArray<FVector>& InVec)
+TArray<FVector> UCounterCounterMsgBusClient::IncrementArray(const TArray<FVector>& InVec)
 {
 	if (!_IsConnected())
 	{
@@ -518,7 +518,7 @@ void UCounterCounterMsgBusClient::OnIncrementArrayReply(const FCounterCounterInc
 	FulfillPromise(InMessage.ResponseId, InMessage.Result);
 }
 
-FCustomTypesVector3D UCounterCounterMsgBusClient::Decrement_Implementation(const FCustomTypesVector3D& InVec)
+FCustomTypesVector3D UCounterCounterMsgBusClient::Decrement(const FCustomTypesVector3D& InVec)
 {
 	if (!_IsConnected())
 	{
@@ -547,7 +547,7 @@ void UCounterCounterMsgBusClient::OnDecrementReply(const FCounterCounterDecremen
 	FulfillPromise(InMessage.ResponseId, InMessage.Result);
 }
 
-TArray<FCustomTypesVector3D> UCounterCounterMsgBusClient::DecrementArray_Implementation(const TArray<FCustomTypesVector3D>& InVec)
+TArray<FCustomTypesVector3D> UCounterCounterMsgBusClient::DecrementArray(const TArray<FCustomTypesVector3D>& InVec)
 {
 	if (!_IsConnected())
 	{
@@ -584,7 +584,7 @@ void UCounterCounterMsgBusClient::OnValueChanged(const FCounterCounterValueChang
 		return;
 	}
 
-	Execute__GetSignals(this)->OnValueChangedSignal.Broadcast(InMessage.Vector, InMessage.ExternVector, InMessage.VectorArray, InMessage.ExternVectorArray);
+	_GetSignals()->OnValueChangedSignal.Broadcast(InMessage.Vector, InMessage.ExternVector, InMessage.VectorArray, InMessage.ExternVectorArray);
 	return;
 }
 
@@ -600,7 +600,7 @@ void UCounterCounterMsgBusClient::OnVectorChanged(const FCounterCounterVectorCha
 	if (bVectorChanged)
 	{
 		Vector = InMessage.Vector;
-		Execute__GetSignals(this)->OnVectorChanged.Broadcast(Vector);
+		_GetSignals()->OnVectorChanged.Broadcast(Vector);
 	}
 }
 
@@ -616,7 +616,7 @@ void UCounterCounterMsgBusClient::OnExternVectorChanged(const FCounterCounterExt
 	if (bExternVectorChanged)
 	{
 		ExternVector = InMessage.ExternVector;
-		Execute__GetSignals(this)->OnExternVectorChanged.Broadcast(ExternVector);
+		_GetSignals()->OnExternVectorChanged.Broadcast(ExternVector);
 	}
 }
 
@@ -632,7 +632,7 @@ void UCounterCounterMsgBusClient::OnVectorArrayChanged(const FCounterCounterVect
 	if (bVectorArrayChanged)
 	{
 		VectorArray = InMessage.VectorArray;
-		Execute__GetSignals(this)->OnVectorArrayChanged.Broadcast(VectorArray);
+		_GetSignals()->OnVectorArrayChanged.Broadcast(VectorArray);
 	}
 }
 
@@ -648,7 +648,7 @@ void UCounterCounterMsgBusClient::OnExternVectorArrayChanged(const FCounterCount
 	if (bExternVectorArrayChanged)
 	{
 		ExternVectorArray = InMessage.ExternVectorArray;
-		Execute__GetSignals(this)->OnExternVectorArrayChanged.Broadcast(ExternVectorArray);
+		_GetSignals()->OnExternVectorArrayChanged.Broadcast(ExternVectorArray);
 	}
 }
 
