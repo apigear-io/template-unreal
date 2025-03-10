@@ -26,13 +26,18 @@ limitations under the License.
  * Declaration for Counter
  */
 // signal delegates
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FCounterCounterValueChangedDelegate, const FCustomTypesVector3D&, Vector, const FVector&, ExternVector, const TArray<FCustomTypesVector3D>&, VectorArray, const TArray<FVector>&, ExternVectorArray);
+DECLARE_MULTICAST_DELEGATE_FourParams(FCounterCounterValueChangedDelegate, const FCustomTypesVector3D& /* Vector */, const FVector& /* ExternVector */, const TArray<FCustomTypesVector3D>& /* VectorArray */, const TArray<FVector>& /* ExternVectorArray */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FCounterCounterValueChangedDelegateBP, const FCustomTypesVector3D&, Vector, const FVector&, ExternVector, const TArray<FCustomTypesVector3D>&, VectorArray, const TArray<FVector>&, ExternVectorArray);
 
 // property delegates
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCounterCounterVectorChangedDelegate, const FCustomTypesVector3D&, Vector);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCounterCounterExternVectorChangedDelegate, const FVector&, ExternVector);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCounterCounterVectorArrayChangedDelegate, const TArray<FCustomTypesVector3D>&, VectorArray);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCounterCounterExternVectorArrayChangedDelegate, const TArray<FVector>&, ExternVectorArray);
+DECLARE_MULTICAST_DELEGATE_OneParam(FCounterCounterVectorChangedDelegate, const FCustomTypesVector3D& /* Vector */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCounterCounterVectorChangedDelegateBP, const FCustomTypesVector3D&, Vector);
+DECLARE_MULTICAST_DELEGATE_OneParam(FCounterCounterExternVectorChangedDelegate, const FVector& /* ExternVector */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCounterCounterExternVectorChangedDelegateBP, const FVector&, ExternVector);
+DECLARE_MULTICAST_DELEGATE_OneParam(FCounterCounterVectorArrayChangedDelegate, const TArray<FCustomTypesVector3D>& /* VectorArray */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCounterCounterVectorArrayChangedDelegateBP, const TArray<FCustomTypesVector3D>&, VectorArray);
+DECLARE_MULTICAST_DELEGATE_OneParam(FCounterCounterExternVectorArrayChangedDelegate, const TArray<FVector>& /* ExternVectorArray */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCounterCounterExternVectorArrayChangedDelegateBP, const TArray<FVector>&, ExternVectorArray);
 
 /**
  * Class UCounterCounterInterfaceSignals
@@ -45,49 +50,59 @@ class COUNTERAPI_API UCounterCounterSignals : public UObject
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Counter|Counter|Signals", DisplayName = "ValueChanged Signal")
 	FCounterCounterValueChangedDelegate OnValueChangedSignal;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Counter|Counter|Signals", DisplayName = "ValueChanged Signal")
+	FCounterCounterValueChangedDelegateBP OnValueChangedSignalBP;
 	/// C++ wrapper for BP functions to safely call ValueChangedSignal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Signals", DisplayName = "Broadcast ValueChanged Signal")
 	void BroadcastValueChangedSignal(const FCustomTypesVector3D& Vector, const FVector& ExternVector, const TArray<FCustomTypesVector3D>& VectorArray, const TArray<FVector>& ExternVectorArray)
 	{
 		OnValueChangedSignal.Broadcast(Vector, ExternVector, VectorArray, ExternVectorArray);
+		OnValueChangedSignalBP.Broadcast(Vector, ExternVector, VectorArray, ExternVectorArray);
 	}
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Counter|Counter|Signals", DisplayName = "Property Vector Changed")
 	FCounterCounterVectorChangedDelegate OnVectorChanged;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Counter|Counter|Signals", DisplayName = "Property Vector Changed")
+	FCounterCounterVectorChangedDelegateBP OnVectorChangedBP;
 	/// C++ wrapper for BP functions to safely call OnVectorChanged.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Signals", DisplayName = "Broadcast Property Vector Changed")
 	void BroadcastVectorChanged(UPARAM(DisplayName = "Vector") const FCustomTypesVector3D& InVector)
 	{
 		OnVectorChanged.Broadcast(InVector);
+		OnVectorChangedBP.Broadcast(InVector);
 	}
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Counter|Counter|Signals", DisplayName = "Property ExternVector Changed")
 	FCounterCounterExternVectorChangedDelegate OnExternVectorChanged;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Counter|Counter|Signals", DisplayName = "Property ExternVector Changed")
+	FCounterCounterExternVectorChangedDelegateBP OnExternVectorChangedBP;
 	/// C++ wrapper for BP functions to safely call OnExternVectorChanged.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Signals", DisplayName = "Broadcast Property ExternVector Changed")
 	void BroadcastExternVectorChanged(UPARAM(DisplayName = "ExternVector") const FVector& InExternVector)
 	{
 		OnExternVectorChanged.Broadcast(InExternVector);
+		OnExternVectorChangedBP.Broadcast(InExternVector);
 	}
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Counter|Counter|Signals", DisplayName = "Property VectorArray Changed")
 	FCounterCounterVectorArrayChangedDelegate OnVectorArrayChanged;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Counter|Counter|Signals", DisplayName = "Property VectorArray Changed")
+	FCounterCounterVectorArrayChangedDelegateBP OnVectorArrayChangedBP;
 	/// C++ wrapper for BP functions to safely call OnVectorArrayChanged.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Signals", DisplayName = "Broadcast Property VectorArray Changed")
 	void BroadcastVectorArrayChanged(UPARAM(DisplayName = "VectorArray") const TArray<FCustomTypesVector3D>& InVectorArray)
 	{
 		OnVectorArrayChanged.Broadcast(InVectorArray);
+		OnVectorArrayChangedBP.Broadcast(InVectorArray);
 	}
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Counter|Counter|Signals", DisplayName = "Property ExternVectorArray Changed")
 	FCounterCounterExternVectorArrayChangedDelegate OnExternVectorArrayChanged;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Counter|Counter|Signals", DisplayName = "Property ExternVectorArray Changed")
+	FCounterCounterExternVectorArrayChangedDelegateBP OnExternVectorArrayChangedBP;
 	/// C++ wrapper for BP functions to safely call OnExternVectorArrayChanged.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Signals", DisplayName = "Broadcast Property ExternVectorArray Changed")
 	void BroadcastExternVectorArrayChanged(UPARAM(DisplayName = "ExternVectorArray") const TArray<FVector>& InExternVectorArray)
 	{
 		OnExternVectorArrayChanged.Broadcast(InExternVectorArray);
+		OnExternVectorArrayChangedBP.Broadcast(InExternVectorArray);
 	}
 };
 

@@ -49,10 +49,10 @@ void UTbSame1SameStruct2InterfaceLoggingDecorator::setBackendService(TScriptInte
 	{
 		UTbSame1SameStruct2InterfaceSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSame1SameStruct2Interface"));
-		BackendSignals->OnProp1Changed.RemoveDynamic(this, &UTbSame1SameStruct2InterfaceLoggingDecorator::OnProp1Changed);
-		BackendSignals->OnProp2Changed.RemoveDynamic(this, &UTbSame1SameStruct2InterfaceLoggingDecorator::OnProp2Changed);
-		BackendSignals->OnSig1Signal.RemoveDynamic(this, &UTbSame1SameStruct2InterfaceLoggingDecorator::OnSig1);
-		BackendSignals->OnSig2Signal.RemoveDynamic(this, &UTbSame1SameStruct2InterfaceLoggingDecorator::OnSig2);
+		BackendSignals->OnProp1ChangedBP.RemoveDynamic(this, &UTbSame1SameStruct2InterfaceLoggingDecorator::OnProp1Changed);
+		BackendSignals->OnProp2ChangedBP.RemoveDynamic(this, &UTbSame1SameStruct2InterfaceLoggingDecorator::OnProp2Changed);
+		BackendSignals->OnSig1SignalBP.RemoveDynamic(this, &UTbSame1SameStruct2InterfaceLoggingDecorator::OnSig1);
+		BackendSignals->OnSig2SignalBP.RemoveDynamic(this, &UTbSame1SameStruct2InterfaceLoggingDecorator::OnSig2);
 	}
 
 	// only set if interface is implemented
@@ -63,10 +63,10 @@ void UTbSame1SameStruct2InterfaceLoggingDecorator::setBackendService(TScriptInte
 	UTbSame1SameStruct2InterfaceSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSame1SameStruct2Interface"));
 	// connect property changed signals or simple events
-	BackendSignals->OnProp1Changed.AddDynamic(this, &UTbSame1SameStruct2InterfaceLoggingDecorator::OnProp1Changed);
-	BackendSignals->OnProp2Changed.AddDynamic(this, &UTbSame1SameStruct2InterfaceLoggingDecorator::OnProp2Changed);
-	BackendSignals->OnSig1Signal.AddDynamic(this, &UTbSame1SameStruct2InterfaceLoggingDecorator::OnSig1);
-	BackendSignals->OnSig2Signal.AddDynamic(this, &UTbSame1SameStruct2InterfaceLoggingDecorator::OnSig2);
+	BackendSignals->OnProp1ChangedBP.AddDynamic(this, &UTbSame1SameStruct2InterfaceLoggingDecorator::OnProp1Changed);
+	BackendSignals->OnProp2ChangedBP.AddDynamic(this, &UTbSame1SameStruct2InterfaceLoggingDecorator::OnProp2Changed);
+	BackendSignals->OnSig1SignalBP.AddDynamic(this, &UTbSame1SameStruct2InterfaceLoggingDecorator::OnSig1);
+	BackendSignals->OnSig2SignalBP.AddDynamic(this, &UTbSame1SameStruct2InterfaceLoggingDecorator::OnSig2);
 	// populate service state to proxy
 	Prop1 = BackendService->GetProp1();
 	Prop2 = BackendService->GetProp2();

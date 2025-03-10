@@ -110,8 +110,8 @@ void UTbSame1SameEnum1InterfaceMsgBusAdapter::_setBackendService(TScriptInterfac
 	{
 		UTbSame1SameEnum1InterfaceSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSame1SameEnum1Interface"));
-		BackendSignals->OnProp1Changed.RemoveDynamic(this, &UTbSame1SameEnum1InterfaceMsgBusAdapter::OnProp1Changed);
-		BackendSignals->OnSig1Signal.RemoveDynamic(this, &UTbSame1SameEnum1InterfaceMsgBusAdapter::OnSig1);
+		BackendSignals->OnProp1ChangedBP.RemoveDynamic(this, &UTbSame1SameEnum1InterfaceMsgBusAdapter::OnProp1Changed);
+		BackendSignals->OnSig1SignalBP.RemoveDynamic(this, &UTbSame1SameEnum1InterfaceMsgBusAdapter::OnSig1);
 	}
 
 	// only set if interface is implemented
@@ -122,8 +122,8 @@ void UTbSame1SameEnum1InterfaceMsgBusAdapter::_setBackendService(TScriptInterfac
 	UTbSame1SameEnum1InterfaceSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service TbSame1SameEnum1Interface"));
 	// connect property changed signals or simple events
-	BackendSignals->OnProp1Changed.AddDynamic(this, &UTbSame1SameEnum1InterfaceMsgBusAdapter::OnProp1Changed);
-	BackendSignals->OnSig1Signal.AddDynamic(this, &UTbSame1SameEnum1InterfaceMsgBusAdapter::OnSig1);
+	BackendSignals->OnProp1ChangedBP.AddDynamic(this, &UTbSame1SameEnum1InterfaceMsgBusAdapter::OnProp1Changed);
+	BackendSignals->OnSig1SignalBP.AddDynamic(this, &UTbSame1SameEnum1InterfaceMsgBusAdapter::OnSig1);
 }
 
 void UTbSame1SameEnum1InterfaceMsgBusAdapter::OnNewClientDiscovered(const FTbSame1SameEnum1InterfaceDiscoveryMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)

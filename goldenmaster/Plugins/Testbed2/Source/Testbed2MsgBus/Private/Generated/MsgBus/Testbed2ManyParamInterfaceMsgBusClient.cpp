@@ -625,7 +625,7 @@ void UTestbed2ManyParamInterfaceMsgBusClient::OnProp1Changed(const FTestbed2Many
 	if (bProp1Changed)
 	{
 		Prop1 = InMessage.Prop1;
-		_GetSignals()->BroadcastProp1ChangedProp1);
+		_GetSignals()->BroadcastProp1Changed(Prop1);
 	}
 }
 
@@ -641,7 +641,7 @@ void UTestbed2ManyParamInterfaceMsgBusClient::OnProp2Changed(const FTestbed2Many
 	if (bProp2Changed)
 	{
 		Prop2 = InMessage.Prop2;
-		_GetSignals()->BroadcastProp2ChangedProp2);
+		_GetSignals()->BroadcastProp2Changed(Prop2);
 	}
 }
 
@@ -657,7 +657,7 @@ void UTestbed2ManyParamInterfaceMsgBusClient::OnProp3Changed(const FTestbed2Many
 	if (bProp3Changed)
 	{
 		Prop3 = InMessage.Prop3;
-		_GetSignals()->BroadcastProp3ChangedProp3);
+		_GetSignals()->BroadcastProp3Changed(Prop3);
 	}
 }
 
@@ -673,7 +673,7 @@ void UTestbed2ManyParamInterfaceMsgBusClient::OnProp4Changed(const FTestbed2Many
 	if (bProp4Changed)
 	{
 		Prop4 = InMessage.Prop4;
-		_GetSignals()->BroadcastProp4ChangedProp4);
+		_GetSignals()->BroadcastProp4Changed(Prop4);
 	}
 }
 

@@ -181,10 +181,14 @@ void UAbstractTestbed2NestedStruct2Interface::Deinitialize()
 	if (Testbed2NestedStruct2InterfaceSignals)
 	{
 		Testbed2NestedStruct2InterfaceSignals->OnSig1Signal.RemoveAll(Testbed2NestedStruct2InterfaceSignals);
+		Testbed2NestedStruct2InterfaceSignals->OnSig1SignalBP.RemoveAll(Testbed2NestedStruct2InterfaceSignals);
 		Testbed2NestedStruct2InterfaceSignals->OnSig2Signal.RemoveAll(Testbed2NestedStruct2InterfaceSignals);
+		Testbed2NestedStruct2InterfaceSignals->OnSig2SignalBP.RemoveAll(Testbed2NestedStruct2InterfaceSignals);
 
 		Testbed2NestedStruct2InterfaceSignals->OnProp1Changed.RemoveAll(Testbed2NestedStruct2InterfaceSignals);
+		Testbed2NestedStruct2InterfaceSignals->OnProp1ChangedBP.RemoveAll(Testbed2NestedStruct2InterfaceSignals);
 		Testbed2NestedStruct2InterfaceSignals->OnProp2Changed.RemoveAll(Testbed2NestedStruct2InterfaceSignals);
+		Testbed2NestedStruct2InterfaceSignals->OnProp2ChangedBP.RemoveAll(Testbed2NestedStruct2InterfaceSignals);
 	}
 
 	Super::Deinitialize();

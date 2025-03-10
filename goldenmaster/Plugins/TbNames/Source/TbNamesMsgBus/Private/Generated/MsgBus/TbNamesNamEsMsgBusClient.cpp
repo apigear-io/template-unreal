@@ -470,7 +470,7 @@ void UTbNamesNamEsMsgBusClient::OnSwitchChanged(const FTbNamesNamEsSwitchChanged
 	if (bbSwitchChanged)
 	{
 		bSwitch = InMessage.bSwitch;
-		_GetSignals()->BroadcastSwitchChangedbSwitch);
+		_GetSignals()->BroadcastSwitchChanged(bSwitch);
 	}
 }
 
@@ -486,7 +486,7 @@ void UTbNamesNamEsMsgBusClient::OnSomePropertyChanged(const FTbNamesNamEsSomePro
 	if (bSomePropertyChanged)
 	{
 		SomeProperty = InMessage.SomeProperty;
-		_GetSignals()->BroadcastSomePropertyChangedSomeProperty);
+		_GetSignals()->BroadcastSomePropertyChanged(SomeProperty);
 	}
 }
 
@@ -502,7 +502,7 @@ void UTbNamesNamEsMsgBusClient::OnSomePoperty2Changed(const FTbNamesNamEsSomePop
 	if (bSomePoperty2Changed)
 	{
 		SomePoperty2 = InMessage.SomePoperty2;
-		_GetSignals()->BroadcastSomePoperty2ChangedSomePoperty2);
+		_GetSignals()->BroadcastSomePoperty2Changed(SomePoperty2);
 	}
 }
 

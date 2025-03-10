@@ -49,11 +49,11 @@ void UTbNamesNamEsLoggingDecorator::setBackendService(TScriptInterface<ITbNamesN
 	{
 		UTbNamesNamEsSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbNamesNamEs"));
-		BackendSignals->OnSwitchChanged.RemoveDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSwitchChanged);
-		BackendSignals->OnSomePropertyChanged.RemoveDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomePropertyChanged);
-		BackendSignals->OnSomePoperty2Changed.RemoveDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomePoperty2Changed);
-		BackendSignals->OnSomeSignalSignal.RemoveDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomeSignal);
-		BackendSignals->OnSomeSignal2Signal.RemoveDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomeSignal2);
+		BackendSignals->OnSwitchChangedBP.RemoveDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSwitchChanged);
+		BackendSignals->OnSomePropertyChangedBP.RemoveDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomePropertyChanged);
+		BackendSignals->OnSomePoperty2ChangedBP.RemoveDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomePoperty2Changed);
+		BackendSignals->OnSomeSignalSignalBP.RemoveDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomeSignal);
+		BackendSignals->OnSomeSignal2SignalBP.RemoveDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomeSignal2);
 	}
 
 	// only set if interface is implemented
@@ -64,11 +64,11 @@ void UTbNamesNamEsLoggingDecorator::setBackendService(TScriptInterface<ITbNamesN
 	UTbNamesNamEsSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbNamesNamEs"));
 	// connect property changed signals or simple events
-	BackendSignals->OnSwitchChanged.AddDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSwitchChanged);
-	BackendSignals->OnSomePropertyChanged.AddDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomePropertyChanged);
-	BackendSignals->OnSomePoperty2Changed.AddDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomePoperty2Changed);
-	BackendSignals->OnSomeSignalSignal.AddDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomeSignal);
-	BackendSignals->OnSomeSignal2Signal.AddDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomeSignal2);
+	BackendSignals->OnSwitchChangedBP.AddDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSwitchChanged);
+	BackendSignals->OnSomePropertyChangedBP.AddDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomePropertyChanged);
+	BackendSignals->OnSomePoperty2ChangedBP.AddDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomePoperty2Changed);
+	BackendSignals->OnSomeSignalSignalBP.AddDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomeSignal);
+	BackendSignals->OnSomeSignal2SignalBP.AddDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomeSignal2);
 	// populate service state to proxy
 	bSwitch = BackendService->GetSwitch();
 	SomeProperty = BackendService->GetSomeProperty();

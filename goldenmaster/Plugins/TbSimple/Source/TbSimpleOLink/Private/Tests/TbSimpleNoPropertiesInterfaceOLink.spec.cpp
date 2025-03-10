@@ -104,7 +104,7 @@ void UTbSimpleNoPropertiesInterfaceOLinkSpec::Define()
 		{
 		testDoneDelegate = TestDone;
 		UTbSimpleNoPropertiesInterfaceSignals* TbSimpleNoPropertiesInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleNoPropertiesInterfaceSignals->OnSigVoidSignal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleNoPropertiesInterfaceOLinkHelper::SigVoidSignalCb);
+		TbSimpleNoPropertiesInterfaceSignals->OnSigVoidSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleNoPropertiesInterfaceOLinkHelper::SigVoidSignalCb);
 
 		// use different test value
 		TbSimpleNoPropertiesInterfaceSignals->BroadcastSigVoidSignal();
@@ -114,7 +114,7 @@ void UTbSimpleNoPropertiesInterfaceOLinkSpec::Define()
 		{
 		testDoneDelegate = TestDone;
 		UTbSimpleNoPropertiesInterfaceSignals* TbSimpleNoPropertiesInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleNoPropertiesInterfaceSignals->OnSigBoolSignal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleNoPropertiesInterfaceOLinkHelper::SigBoolSignalCb);
+		TbSimpleNoPropertiesInterfaceSignals->OnSigBoolSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleNoPropertiesInterfaceOLinkHelper::SigBoolSignalCb);
 
 		// use different test value
 		bool bParamBoolTestValue = true;

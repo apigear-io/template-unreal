@@ -226,12 +226,18 @@ void UAbstractTestbed2NestedStruct3Interface::Deinitialize()
 	if (Testbed2NestedStruct3InterfaceSignals)
 	{
 		Testbed2NestedStruct3InterfaceSignals->OnSig1Signal.RemoveAll(Testbed2NestedStruct3InterfaceSignals);
+		Testbed2NestedStruct3InterfaceSignals->OnSig1SignalBP.RemoveAll(Testbed2NestedStruct3InterfaceSignals);
 		Testbed2NestedStruct3InterfaceSignals->OnSig2Signal.RemoveAll(Testbed2NestedStruct3InterfaceSignals);
+		Testbed2NestedStruct3InterfaceSignals->OnSig2SignalBP.RemoveAll(Testbed2NestedStruct3InterfaceSignals);
 		Testbed2NestedStruct3InterfaceSignals->OnSig3Signal.RemoveAll(Testbed2NestedStruct3InterfaceSignals);
+		Testbed2NestedStruct3InterfaceSignals->OnSig3SignalBP.RemoveAll(Testbed2NestedStruct3InterfaceSignals);
 
 		Testbed2NestedStruct3InterfaceSignals->OnProp1Changed.RemoveAll(Testbed2NestedStruct3InterfaceSignals);
+		Testbed2NestedStruct3InterfaceSignals->OnProp1ChangedBP.RemoveAll(Testbed2NestedStruct3InterfaceSignals);
 		Testbed2NestedStruct3InterfaceSignals->OnProp2Changed.RemoveAll(Testbed2NestedStruct3InterfaceSignals);
+		Testbed2NestedStruct3InterfaceSignals->OnProp2ChangedBP.RemoveAll(Testbed2NestedStruct3InterfaceSignals);
 		Testbed2NestedStruct3InterfaceSignals->OnProp3Changed.RemoveAll(Testbed2NestedStruct3InterfaceSignals);
+		Testbed2NestedStruct3InterfaceSignals->OnProp3ChangedBP.RemoveAll(Testbed2NestedStruct3InterfaceSignals);
 	}
 
 	Super::Deinitialize();

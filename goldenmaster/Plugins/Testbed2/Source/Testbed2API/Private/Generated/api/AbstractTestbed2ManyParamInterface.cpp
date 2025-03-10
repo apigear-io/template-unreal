@@ -271,14 +271,22 @@ void UAbstractTestbed2ManyParamInterface::Deinitialize()
 	if (Testbed2ManyParamInterfaceSignals)
 	{
 		Testbed2ManyParamInterfaceSignals->OnSig1Signal.RemoveAll(Testbed2ManyParamInterfaceSignals);
+		Testbed2ManyParamInterfaceSignals->OnSig1SignalBP.RemoveAll(Testbed2ManyParamInterfaceSignals);
 		Testbed2ManyParamInterfaceSignals->OnSig2Signal.RemoveAll(Testbed2ManyParamInterfaceSignals);
+		Testbed2ManyParamInterfaceSignals->OnSig2SignalBP.RemoveAll(Testbed2ManyParamInterfaceSignals);
 		Testbed2ManyParamInterfaceSignals->OnSig3Signal.RemoveAll(Testbed2ManyParamInterfaceSignals);
+		Testbed2ManyParamInterfaceSignals->OnSig3SignalBP.RemoveAll(Testbed2ManyParamInterfaceSignals);
 		Testbed2ManyParamInterfaceSignals->OnSig4Signal.RemoveAll(Testbed2ManyParamInterfaceSignals);
+		Testbed2ManyParamInterfaceSignals->OnSig4SignalBP.RemoveAll(Testbed2ManyParamInterfaceSignals);
 
 		Testbed2ManyParamInterfaceSignals->OnProp1Changed.RemoveAll(Testbed2ManyParamInterfaceSignals);
+		Testbed2ManyParamInterfaceSignals->OnProp1ChangedBP.RemoveAll(Testbed2ManyParamInterfaceSignals);
 		Testbed2ManyParamInterfaceSignals->OnProp2Changed.RemoveAll(Testbed2ManyParamInterfaceSignals);
+		Testbed2ManyParamInterfaceSignals->OnProp2ChangedBP.RemoveAll(Testbed2ManyParamInterfaceSignals);
 		Testbed2ManyParamInterfaceSignals->OnProp3Changed.RemoveAll(Testbed2ManyParamInterfaceSignals);
+		Testbed2ManyParamInterfaceSignals->OnProp3ChangedBP.RemoveAll(Testbed2ManyParamInterfaceSignals);
 		Testbed2ManyParamInterfaceSignals->OnProp4Changed.RemoveAll(Testbed2ManyParamInterfaceSignals);
+		Testbed2ManyParamInterfaceSignals->OnProp4ChangedBP.RemoveAll(Testbed2ManyParamInterfaceSignals);
 	}
 
 	Super::Deinitialize();

@@ -271,11 +271,16 @@ void UAbstractCounterCounter::Deinitialize()
 	if (CounterCounterSignals)
 	{
 		CounterCounterSignals->OnValueChangedSignal.RemoveAll(CounterCounterSignals);
+		CounterCounterSignals->OnValueChangedSignalBP.RemoveAll(CounterCounterSignals);
 
 		CounterCounterSignals->OnVectorChanged.RemoveAll(CounterCounterSignals);
+		CounterCounterSignals->OnVectorChangedBP.RemoveAll(CounterCounterSignals);
 		CounterCounterSignals->OnExternVectorChanged.RemoveAll(CounterCounterSignals);
+		CounterCounterSignals->OnExternVectorChangedBP.RemoveAll(CounterCounterSignals);
 		CounterCounterSignals->OnVectorArrayChanged.RemoveAll(CounterCounterSignals);
+		CounterCounterSignals->OnVectorArrayChangedBP.RemoveAll(CounterCounterSignals);
 		CounterCounterSignals->OnExternVectorArrayChanged.RemoveAll(CounterCounterSignals);
+		CounterCounterSignals->OnExternVectorArrayChangedBP.RemoveAll(CounterCounterSignals);
 	}
 
 	Super::Deinitialize();

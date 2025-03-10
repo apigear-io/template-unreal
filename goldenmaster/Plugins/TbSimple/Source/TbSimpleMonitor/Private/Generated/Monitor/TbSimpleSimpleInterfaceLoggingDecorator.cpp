@@ -49,22 +49,22 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::setBackendService(TScriptInterfac
 	{
 		UTbSimpleSimpleInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleSimpleInterface"));
-		BackendSignals->OnPropBoolChanged.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropBoolChanged);
-		BackendSignals->OnPropIntChanged.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropIntChanged);
-		BackendSignals->OnPropInt32Changed.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropInt32Changed);
-		BackendSignals->OnPropInt64Changed.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropInt64Changed);
-		BackendSignals->OnPropFloatChanged.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloatChanged);
-		BackendSignals->OnPropFloat32Changed.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloat32Changed);
-		BackendSignals->OnPropFloat64Changed.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloat64Changed);
-		BackendSignals->OnPropStringChanged.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropStringChanged);
-		BackendSignals->OnSigBoolSignal.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigBool);
-		BackendSignals->OnSigIntSignal.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt);
-		BackendSignals->OnSigInt32Signal.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt32);
-		BackendSignals->OnSigInt64Signal.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt64);
-		BackendSignals->OnSigFloatSignal.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat);
-		BackendSignals->OnSigFloat32Signal.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat32);
-		BackendSignals->OnSigFloat64Signal.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat64);
-		BackendSignals->OnSigStringSignal.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigString);
+		BackendSignals->OnPropBoolChangedBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropBoolChanged);
+		BackendSignals->OnPropIntChangedBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropIntChanged);
+		BackendSignals->OnPropInt32ChangedBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropInt32Changed);
+		BackendSignals->OnPropInt64ChangedBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropInt64Changed);
+		BackendSignals->OnPropFloatChangedBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloatChanged);
+		BackendSignals->OnPropFloat32ChangedBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloat32Changed);
+		BackendSignals->OnPropFloat64ChangedBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloat64Changed);
+		BackendSignals->OnPropStringChangedBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropStringChanged);
+		BackendSignals->OnSigBoolSignalBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigBool);
+		BackendSignals->OnSigIntSignalBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt);
+		BackendSignals->OnSigInt32SignalBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt32);
+		BackendSignals->OnSigInt64SignalBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt64);
+		BackendSignals->OnSigFloatSignalBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat);
+		BackendSignals->OnSigFloat32SignalBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat32);
+		BackendSignals->OnSigFloat64SignalBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat64);
+		BackendSignals->OnSigStringSignalBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigString);
 	}
 
 	// only set if interface is implemented
@@ -75,22 +75,22 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::setBackendService(TScriptInterfac
 	UTbSimpleSimpleInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleSimpleInterface"));
 	// connect property changed signals or simple events
-	BackendSignals->OnPropBoolChanged.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropBoolChanged);
-	BackendSignals->OnPropIntChanged.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropIntChanged);
-	BackendSignals->OnPropInt32Changed.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropInt32Changed);
-	BackendSignals->OnPropInt64Changed.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropInt64Changed);
-	BackendSignals->OnPropFloatChanged.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloatChanged);
-	BackendSignals->OnPropFloat32Changed.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloat32Changed);
-	BackendSignals->OnPropFloat64Changed.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloat64Changed);
-	BackendSignals->OnPropStringChanged.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropStringChanged);
-	BackendSignals->OnSigBoolSignal.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigBool);
-	BackendSignals->OnSigIntSignal.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt);
-	BackendSignals->OnSigInt32Signal.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt32);
-	BackendSignals->OnSigInt64Signal.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt64);
-	BackendSignals->OnSigFloatSignal.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat);
-	BackendSignals->OnSigFloat32Signal.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat32);
-	BackendSignals->OnSigFloat64Signal.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat64);
-	BackendSignals->OnSigStringSignal.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigString);
+	BackendSignals->OnPropBoolChangedBP.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropBoolChanged);
+	BackendSignals->OnPropIntChangedBP.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropIntChanged);
+	BackendSignals->OnPropInt32ChangedBP.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropInt32Changed);
+	BackendSignals->OnPropInt64ChangedBP.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropInt64Changed);
+	BackendSignals->OnPropFloatChangedBP.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloatChanged);
+	BackendSignals->OnPropFloat32ChangedBP.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloat32Changed);
+	BackendSignals->OnPropFloat64ChangedBP.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloat64Changed);
+	BackendSignals->OnPropStringChangedBP.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropStringChanged);
+	BackendSignals->OnSigBoolSignalBP.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigBool);
+	BackendSignals->OnSigIntSignalBP.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt);
+	BackendSignals->OnSigInt32SignalBP.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt32);
+	BackendSignals->OnSigInt64SignalBP.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt64);
+	BackendSignals->OnSigFloatSignalBP.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat);
+	BackendSignals->OnSigFloat32SignalBP.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat32);
+	BackendSignals->OnSigFloat64SignalBP.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat64);
+	BackendSignals->OnSigStringSignalBP.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigString);
 	// populate service state to proxy
 	bPropBool = BackendService->GetPropBool();
 	PropInt = BackendService->GetPropInt();

@@ -56,7 +56,7 @@ void UTestbed2ManyParamInterfaceImplSpec::Define()
 
 		testDoneDelegate = TestDone;
 		UTestbed2ManyParamInterfaceSignals* Testbed2ManyParamInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2ManyParamInterfaceSignals->OnProp1Changed.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2ManyParamInterfaceImplHelper::Prop1PropertyCb);
+		Testbed2ManyParamInterfaceSignals->OnProp1ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2ManyParamInterfaceImplHelper::Prop1PropertyCb);
 		// use different test value
 		TestValue = 1;
 		ImplFixture->GetImplementation()->SetProp1(TestValue);
@@ -77,7 +77,7 @@ void UTestbed2ManyParamInterfaceImplSpec::Define()
 
 		testDoneDelegate = TestDone;
 		UTestbed2ManyParamInterfaceSignals* Testbed2ManyParamInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2ManyParamInterfaceSignals->OnProp2Changed.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2ManyParamInterfaceImplHelper::Prop2PropertyCb);
+		Testbed2ManyParamInterfaceSignals->OnProp2ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2ManyParamInterfaceImplHelper::Prop2PropertyCb);
 		// use different test value
 		TestValue = 1;
 		ImplFixture->GetImplementation()->SetProp2(TestValue);
@@ -98,7 +98,7 @@ void UTestbed2ManyParamInterfaceImplSpec::Define()
 
 		testDoneDelegate = TestDone;
 		UTestbed2ManyParamInterfaceSignals* Testbed2ManyParamInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2ManyParamInterfaceSignals->OnProp3Changed.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2ManyParamInterfaceImplHelper::Prop3PropertyCb);
+		Testbed2ManyParamInterfaceSignals->OnProp3ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2ManyParamInterfaceImplHelper::Prop3PropertyCb);
 		// use different test value
 		TestValue = 1;
 		ImplFixture->GetImplementation()->SetProp3(TestValue);
@@ -119,7 +119,7 @@ void UTestbed2ManyParamInterfaceImplSpec::Define()
 
 		testDoneDelegate = TestDone;
 		UTestbed2ManyParamInterfaceSignals* Testbed2ManyParamInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2ManyParamInterfaceSignals->OnProp4Changed.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2ManyParamInterfaceImplHelper::Prop4PropertyCb);
+		Testbed2ManyParamInterfaceSignals->OnProp4ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2ManyParamInterfaceImplHelper::Prop4PropertyCb);
 		// use different test value
 		TestValue = 1;
 		ImplFixture->GetImplementation()->SetProp4(TestValue);
@@ -153,7 +153,7 @@ void UTestbed2ManyParamInterfaceImplSpec::Define()
 		{
 		testDoneDelegate = TestDone;
 		UTestbed2ManyParamInterfaceSignals* Testbed2ManyParamInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2ManyParamInterfaceSignals->OnSig1Signal.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2ManyParamInterfaceImplHelper::Sig1SignalCb);
+		Testbed2ManyParamInterfaceSignals->OnSig1SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2ManyParamInterfaceImplHelper::Sig1SignalCb);
 
 		// use different test value
 		int32 Param1TestValue = 1;
@@ -164,7 +164,7 @@ void UTestbed2ManyParamInterfaceImplSpec::Define()
 		{
 		testDoneDelegate = TestDone;
 		UTestbed2ManyParamInterfaceSignals* Testbed2ManyParamInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2ManyParamInterfaceSignals->OnSig2Signal.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2ManyParamInterfaceImplHelper::Sig2SignalCb);
+		Testbed2ManyParamInterfaceSignals->OnSig2SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2ManyParamInterfaceImplHelper::Sig2SignalCb);
 
 		// use different test value
 		int32 Param1TestValue = 1;
@@ -176,7 +176,7 @@ void UTestbed2ManyParamInterfaceImplSpec::Define()
 		{
 		testDoneDelegate = TestDone;
 		UTestbed2ManyParamInterfaceSignals* Testbed2ManyParamInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2ManyParamInterfaceSignals->OnSig3Signal.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2ManyParamInterfaceImplHelper::Sig3SignalCb);
+		Testbed2ManyParamInterfaceSignals->OnSig3SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2ManyParamInterfaceImplHelper::Sig3SignalCb);
 
 		// use different test value
 		int32 Param1TestValue = 1;
@@ -189,7 +189,7 @@ void UTestbed2ManyParamInterfaceImplSpec::Define()
 		{
 		testDoneDelegate = TestDone;
 		UTestbed2ManyParamInterfaceSignals* Testbed2ManyParamInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2ManyParamInterfaceSignals->OnSig4Signal.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2ManyParamInterfaceImplHelper::Sig4SignalCb);
+		Testbed2ManyParamInterfaceSignals->OnSig4SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2ManyParamInterfaceImplHelper::Sig4SignalCb);
 
 		// use different test value
 		int32 Param1TestValue = 1;

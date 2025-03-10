@@ -116,14 +116,14 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::_setBackendService(TScriptInter
 	{
 		UTestbed1StructArrayInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service Testbed1StructArrayInterface"));
-		BackendSignals->OnPropBoolChanged.RemoveDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropBoolChanged);
-		BackendSignals->OnPropIntChanged.RemoveDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropIntChanged);
-		BackendSignals->OnPropFloatChanged.RemoveDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropFloatChanged);
-		BackendSignals->OnPropStringChanged.RemoveDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropStringChanged);
-		BackendSignals->OnSigBoolSignal.RemoveDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigBool);
-		BackendSignals->OnSigIntSignal.RemoveDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigInt);
-		BackendSignals->OnSigFloatSignal.RemoveDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigFloat);
-		BackendSignals->OnSigStringSignal.RemoveDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigString);
+		BackendSignals->OnPropBoolChangedBP.RemoveDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropBoolChanged);
+		BackendSignals->OnPropIntChangedBP.RemoveDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropIntChanged);
+		BackendSignals->OnPropFloatChangedBP.RemoveDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropFloatChanged);
+		BackendSignals->OnPropStringChangedBP.RemoveDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropStringChanged);
+		BackendSignals->OnSigBoolSignalBP.RemoveDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigBool);
+		BackendSignals->OnSigIntSignalBP.RemoveDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigInt);
+		BackendSignals->OnSigFloatSignalBP.RemoveDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigFloat);
+		BackendSignals->OnSigStringSignalBP.RemoveDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigString);
 	}
 
 	// only set if interface is implemented
@@ -134,14 +134,14 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::_setBackendService(TScriptInter
 	UTestbed1StructArrayInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service Testbed1StructArrayInterface"));
 	// connect property changed signals or simple events
-	BackendSignals->OnPropBoolChanged.AddDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropBoolChanged);
-	BackendSignals->OnPropIntChanged.AddDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropIntChanged);
-	BackendSignals->OnPropFloatChanged.AddDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropFloatChanged);
-	BackendSignals->OnPropStringChanged.AddDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropStringChanged);
-	BackendSignals->OnSigBoolSignal.AddDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigBool);
-	BackendSignals->OnSigIntSignal.AddDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigInt);
-	BackendSignals->OnSigFloatSignal.AddDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigFloat);
-	BackendSignals->OnSigStringSignal.AddDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigString);
+	BackendSignals->OnPropBoolChangedBP.AddDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropBoolChanged);
+	BackendSignals->OnPropIntChangedBP.AddDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropIntChanged);
+	BackendSignals->OnPropFloatChangedBP.AddDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropFloatChanged);
+	BackendSignals->OnPropStringChangedBP.AddDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropStringChanged);
+	BackendSignals->OnSigBoolSignalBP.AddDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigBool);
+	BackendSignals->OnSigIntSignalBP.AddDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigInt);
+	BackendSignals->OnSigFloatSignalBP.AddDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigFloat);
+	BackendSignals->OnSigStringSignalBP.AddDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigString);
 }
 
 void UTestbed1StructArrayInterfaceMsgBusAdapter::OnNewClientDiscovered(const FTestbed1StructArrayInterfaceDiscoveryMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)

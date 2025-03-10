@@ -452,7 +452,7 @@ void {{$Class}}::On{{Camel .Name}}Changed(const F{{$DisplayName}}{{Camel .Name}}
 	if (b{{ueVar "" .}}Changed)
 	{
 		{{ueVar "" .}} = InMessage.{{ueVar "" .}};
-		_GetSignals()->Broadcast{{Camel .Name}}Changed{{ueVar "" .}});
+		_GetSignals()->Broadcast{{Camel .Name}}Changed({{ueVar "" .}});
 	}
 }
 {{- end }}

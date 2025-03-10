@@ -360,7 +360,7 @@ void UTestbed2NestedStruct1InterfaceMsgBusClient::OnProp1Changed(const FTestbed2
 	if (bProp1Changed)
 	{
 		Prop1 = InMessage.Prop1;
-		_GetSignals()->BroadcastProp1ChangedProp1);
+		_GetSignals()->BroadcastProp1Changed(Prop1);
 	}
 }
 

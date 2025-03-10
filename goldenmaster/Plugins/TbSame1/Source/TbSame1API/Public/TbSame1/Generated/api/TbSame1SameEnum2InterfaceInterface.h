@@ -24,13 +24,17 @@ limitations under the License.
  * Declaration for SameEnum2Interface
  */
 // signal delegates
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSame1SameEnum2InterfaceSig1Delegate, ETbSame1Enum1, Param1);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTbSame1SameEnum2InterfaceSig1Delegate, ETbSame1Enum1 /* Param1 */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSame1SameEnum2InterfaceSig1DelegateBP, ETbSame1Enum1, Param1);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FTbSame1SameEnum2InterfaceSig2Delegate, ETbSame1Enum1, Param1, ETbSame1Enum2, Param2);
+DECLARE_MULTICAST_DELEGATE_TwoParams(FTbSame1SameEnum2InterfaceSig2Delegate, ETbSame1Enum1 /* Param1 */, ETbSame1Enum2 /* Param2 */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FTbSame1SameEnum2InterfaceSig2DelegateBP, ETbSame1Enum1, Param1, ETbSame1Enum2, Param2);
 
 // property delegates
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSame1SameEnum2InterfaceProp1ChangedDelegate, ETbSame1Enum1, Prop1);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSame1SameEnum2InterfaceProp2ChangedDelegate, ETbSame1Enum2, Prop2);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTbSame1SameEnum2InterfaceProp1ChangedDelegate, ETbSame1Enum1 /* Prop1 */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSame1SameEnum2InterfaceProp1ChangedDelegateBP, ETbSame1Enum1, Prop1);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTbSame1SameEnum2InterfaceProp2ChangedDelegate, ETbSame1Enum2 /* Prop2 */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSame1SameEnum2InterfaceProp2ChangedDelegateBP, ETbSame1Enum2, Prop2);
 
 /**
  * Class UTbSame1SameEnum2InterfaceInterfaceSignals
@@ -43,40 +47,48 @@ class TBSAME1API_API UTbSame1SameEnum2InterfaceSignals : public UObject
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame1|SameEnum2Interface|Signals", DisplayName = "Sig1 Signal")
 	FTbSame1SameEnum2InterfaceSig1Delegate OnSig1Signal;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame1|SameEnum2Interface|Signals", DisplayName = "Sig1 Signal")
+	FTbSame1SameEnum2InterfaceSig1DelegateBP OnSig1SignalBP;
 	/// C++ wrapper for BP functions to safely call Sig1Signal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1|SameEnum2Interface|Signals", DisplayName = "Broadcast Sig1 Signal")
 	void BroadcastSig1Signal(ETbSame1Enum1 Param1)
 	{
 		OnSig1Signal.Broadcast(Param1);
+		OnSig1SignalBP.Broadcast(Param1);
 	}
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame1|SameEnum2Interface|Signals", DisplayName = "Sig2 Signal")
 	FTbSame1SameEnum2InterfaceSig2Delegate OnSig2Signal;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame1|SameEnum2Interface|Signals", DisplayName = "Sig2 Signal")
+	FTbSame1SameEnum2InterfaceSig2DelegateBP OnSig2SignalBP;
 	/// C++ wrapper for BP functions to safely call Sig2Signal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1|SameEnum2Interface|Signals", DisplayName = "Broadcast Sig2 Signal")
 	void BroadcastSig2Signal(ETbSame1Enum1 Param1, ETbSame1Enum2 Param2)
 	{
 		OnSig2Signal.Broadcast(Param1, Param2);
+		OnSig2SignalBP.Broadcast(Param1, Param2);
 	}
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame1|SameEnum2Interface|Signals", DisplayName = "Property Prop1 Changed")
 	FTbSame1SameEnum2InterfaceProp1ChangedDelegate OnProp1Changed;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame1|SameEnum2Interface|Signals", DisplayName = "Property Prop1 Changed")
+	FTbSame1SameEnum2InterfaceProp1ChangedDelegateBP OnProp1ChangedBP;
 	/// C++ wrapper for BP functions to safely call OnProp1Changed.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1|SameEnum2Interface|Signals", DisplayName = "Broadcast Property Prop1 Changed")
 	void BroadcastProp1Changed(UPARAM(DisplayName = "Prop1") ETbSame1Enum1 InProp1)
 	{
 		OnProp1Changed.Broadcast(InProp1);
+		OnProp1ChangedBP.Broadcast(InProp1);
 	}
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame1|SameEnum2Interface|Signals", DisplayName = "Property Prop2 Changed")
 	FTbSame1SameEnum2InterfaceProp2ChangedDelegate OnProp2Changed;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame1|SameEnum2Interface|Signals", DisplayName = "Property Prop2 Changed")
+	FTbSame1SameEnum2InterfaceProp2ChangedDelegateBP OnProp2ChangedBP;
 	/// C++ wrapper for BP functions to safely call OnProp2Changed.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1|SameEnum2Interface|Signals", DisplayName = "Broadcast Property Prop2 Changed")
 	void BroadcastProp2Changed(UPARAM(DisplayName = "Prop2") ETbSame1Enum2 InProp2)
 	{
 		OnProp2Changed.Broadcast(InProp2);
+		OnProp2ChangedBP.Broadcast(InProp2);
 	}
 };
 

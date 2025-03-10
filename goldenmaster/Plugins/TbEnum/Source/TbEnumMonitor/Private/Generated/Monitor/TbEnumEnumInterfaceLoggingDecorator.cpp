@@ -49,14 +49,14 @@ void UTbEnumEnumInterfaceLoggingDecorator::setBackendService(TScriptInterface<IT
 	{
 		UTbEnumEnumInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbEnumEnumInterface"));
-		BackendSignals->OnProp0Changed.RemoveDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnProp0Changed);
-		BackendSignals->OnProp1Changed.RemoveDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnProp1Changed);
-		BackendSignals->OnProp2Changed.RemoveDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnProp2Changed);
-		BackendSignals->OnProp3Changed.RemoveDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnProp3Changed);
-		BackendSignals->OnSig0Signal.RemoveDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnSig0);
-		BackendSignals->OnSig1Signal.RemoveDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnSig1);
-		BackendSignals->OnSig2Signal.RemoveDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnSig2);
-		BackendSignals->OnSig3Signal.RemoveDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnSig3);
+		BackendSignals->OnProp0ChangedBP.RemoveDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnProp0Changed);
+		BackendSignals->OnProp1ChangedBP.RemoveDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnProp1Changed);
+		BackendSignals->OnProp2ChangedBP.RemoveDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnProp2Changed);
+		BackendSignals->OnProp3ChangedBP.RemoveDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnProp3Changed);
+		BackendSignals->OnSig0SignalBP.RemoveDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnSig0);
+		BackendSignals->OnSig1SignalBP.RemoveDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnSig1);
+		BackendSignals->OnSig2SignalBP.RemoveDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnSig2);
+		BackendSignals->OnSig3SignalBP.RemoveDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnSig3);
 	}
 
 	// only set if interface is implemented
@@ -67,14 +67,14 @@ void UTbEnumEnumInterfaceLoggingDecorator::setBackendService(TScriptInterface<IT
 	UTbEnumEnumInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbEnumEnumInterface"));
 	// connect property changed signals or simple events
-	BackendSignals->OnProp0Changed.AddDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnProp0Changed);
-	BackendSignals->OnProp1Changed.AddDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnProp1Changed);
-	BackendSignals->OnProp2Changed.AddDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnProp2Changed);
-	BackendSignals->OnProp3Changed.AddDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnProp3Changed);
-	BackendSignals->OnSig0Signal.AddDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnSig0);
-	BackendSignals->OnSig1Signal.AddDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnSig1);
-	BackendSignals->OnSig2Signal.AddDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnSig2);
-	BackendSignals->OnSig3Signal.AddDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnSig3);
+	BackendSignals->OnProp0ChangedBP.AddDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnProp0Changed);
+	BackendSignals->OnProp1ChangedBP.AddDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnProp1Changed);
+	BackendSignals->OnProp2ChangedBP.AddDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnProp2Changed);
+	BackendSignals->OnProp3ChangedBP.AddDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnProp3Changed);
+	BackendSignals->OnSig0SignalBP.AddDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnSig0);
+	BackendSignals->OnSig1SignalBP.AddDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnSig1);
+	BackendSignals->OnSig2SignalBP.AddDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnSig2);
+	BackendSignals->OnSig3SignalBP.AddDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnSig3);
 	// populate service state to proxy
 	Prop0 = BackendService->GetProp0();
 	Prop1 = BackendService->GetProp1();

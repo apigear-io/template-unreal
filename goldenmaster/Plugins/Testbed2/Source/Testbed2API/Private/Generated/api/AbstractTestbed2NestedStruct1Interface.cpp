@@ -136,8 +136,10 @@ void UAbstractTestbed2NestedStruct1Interface::Deinitialize()
 	if (Testbed2NestedStruct1InterfaceSignals)
 	{
 		Testbed2NestedStruct1InterfaceSignals->OnSig1Signal.RemoveAll(Testbed2NestedStruct1InterfaceSignals);
+		Testbed2NestedStruct1InterfaceSignals->OnSig1SignalBP.RemoveAll(Testbed2NestedStruct1InterfaceSignals);
 
 		Testbed2NestedStruct1InterfaceSignals->OnProp1Changed.RemoveAll(Testbed2NestedStruct1InterfaceSignals);
+		Testbed2NestedStruct1InterfaceSignals->OnProp1ChangedBP.RemoveAll(Testbed2NestedStruct1InterfaceSignals);
 	}
 
 	Super::Deinitialize();

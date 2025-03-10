@@ -136,8 +136,10 @@ void UAbstractTbSame1SameEnum1Interface::Deinitialize()
 	if (TbSame1SameEnum1InterfaceSignals)
 	{
 		TbSame1SameEnum1InterfaceSignals->OnSig1Signal.RemoveAll(TbSame1SameEnum1InterfaceSignals);
+		TbSame1SameEnum1InterfaceSignals->OnSig1SignalBP.RemoveAll(TbSame1SameEnum1InterfaceSignals);
 
 		TbSame1SameEnum1InterfaceSignals->OnProp1Changed.RemoveAll(TbSame1SameEnum1InterfaceSignals);
+		TbSame1SameEnum1InterfaceSignals->OnProp1ChangedBP.RemoveAll(TbSame1SameEnum1InterfaceSignals);
 	}
 
 	Super::Deinitialize();

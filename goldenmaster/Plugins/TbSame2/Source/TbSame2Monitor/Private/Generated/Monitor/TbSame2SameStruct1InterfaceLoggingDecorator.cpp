@@ -49,8 +49,8 @@ void UTbSame2SameStruct1InterfaceLoggingDecorator::setBackendService(TScriptInte
 	{
 		UTbSame2SameStruct1InterfaceSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSame2SameStruct1Interface"));
-		BackendSignals->OnProp1Changed.RemoveDynamic(this, &UTbSame2SameStruct1InterfaceLoggingDecorator::OnProp1Changed);
-		BackendSignals->OnSig1Signal.RemoveDynamic(this, &UTbSame2SameStruct1InterfaceLoggingDecorator::OnSig1);
+		BackendSignals->OnProp1ChangedBP.RemoveDynamic(this, &UTbSame2SameStruct1InterfaceLoggingDecorator::OnProp1Changed);
+		BackendSignals->OnSig1SignalBP.RemoveDynamic(this, &UTbSame2SameStruct1InterfaceLoggingDecorator::OnSig1);
 	}
 
 	// only set if interface is implemented
@@ -61,8 +61,8 @@ void UTbSame2SameStruct1InterfaceLoggingDecorator::setBackendService(TScriptInte
 	UTbSame2SameStruct1InterfaceSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSame2SameStruct1Interface"));
 	// connect property changed signals or simple events
-	BackendSignals->OnProp1Changed.AddDynamic(this, &UTbSame2SameStruct1InterfaceLoggingDecorator::OnProp1Changed);
-	BackendSignals->OnSig1Signal.AddDynamic(this, &UTbSame2SameStruct1InterfaceLoggingDecorator::OnSig1);
+	BackendSignals->OnProp1ChangedBP.AddDynamic(this, &UTbSame2SameStruct1InterfaceLoggingDecorator::OnProp1Changed);
+	BackendSignals->OnSig1SignalBP.AddDynamic(this, &UTbSame2SameStruct1InterfaceLoggingDecorator::OnSig1);
 	// populate service state to proxy
 	Prop1 = BackendService->GetProp1();
 }

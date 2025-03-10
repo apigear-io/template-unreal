@@ -83,7 +83,7 @@ void UTbSimpleNoOperationsInterfaceMsgBusSpec::Define()
 
 		testDoneDelegate = TestDone;
 		UTbSimpleNoOperationsInterfaceSignals* TbSimpleNoOperationsInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleNoOperationsInterfaceSignals->OnPropBoolChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleNoOperationsInterfaceMsgBusHelper::PropBoolPropertyCb);
+		TbSimpleNoOperationsInterfaceSignals->OnPropBoolChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleNoOperationsInterfaceMsgBusHelper::PropBoolPropertyCb);
 		// use different test value
 		TestValue = true;
 		ImplFixture->GetImplementation()->SetPropBool(TestValue);
@@ -104,7 +104,7 @@ void UTbSimpleNoOperationsInterfaceMsgBusSpec::Define()
 
 		testDoneDelegate = TestDone;
 		UTbSimpleNoOperationsInterfaceSignals* TbSimpleNoOperationsInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleNoOperationsInterfaceSignals->OnPropIntChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleNoOperationsInterfaceMsgBusHelper::PropIntPropertyCb);
+		TbSimpleNoOperationsInterfaceSignals->OnPropIntChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleNoOperationsInterfaceMsgBusHelper::PropIntPropertyCb);
 		// use different test value
 		TestValue = 1;
 		ImplFixture->GetImplementation()->SetPropInt(TestValue);
@@ -114,7 +114,7 @@ void UTbSimpleNoOperationsInterfaceMsgBusSpec::Define()
 		{
 		testDoneDelegate = TestDone;
 		UTbSimpleNoOperationsInterfaceSignals* TbSimpleNoOperationsInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleNoOperationsInterfaceSignals->OnSigVoidSignal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleNoOperationsInterfaceMsgBusHelper::SigVoidSignalCb);
+		TbSimpleNoOperationsInterfaceSignals->OnSigVoidSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleNoOperationsInterfaceMsgBusHelper::SigVoidSignalCb);
 
 		// use different test value
 		TbSimpleNoOperationsInterfaceSignals->BroadcastSigVoidSignal();
@@ -124,7 +124,7 @@ void UTbSimpleNoOperationsInterfaceMsgBusSpec::Define()
 		{
 		testDoneDelegate = TestDone;
 		UTbSimpleNoOperationsInterfaceSignals* TbSimpleNoOperationsInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleNoOperationsInterfaceSignals->OnSigBoolSignal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleNoOperationsInterfaceMsgBusHelper::SigBoolSignalCb);
+		TbSimpleNoOperationsInterfaceSignals->OnSigBoolSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleNoOperationsInterfaceMsgBusHelper::SigBoolSignalCb);
 
 		// use different test value
 		bool bParamBoolTestValue = true;

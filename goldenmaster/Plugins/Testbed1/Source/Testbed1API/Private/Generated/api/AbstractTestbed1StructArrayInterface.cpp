@@ -271,14 +271,22 @@ void UAbstractTestbed1StructArrayInterface::Deinitialize()
 	if (Testbed1StructArrayInterfaceSignals)
 	{
 		Testbed1StructArrayInterfaceSignals->OnSigBoolSignal.RemoveAll(Testbed1StructArrayInterfaceSignals);
+		Testbed1StructArrayInterfaceSignals->OnSigBoolSignalBP.RemoveAll(Testbed1StructArrayInterfaceSignals);
 		Testbed1StructArrayInterfaceSignals->OnSigIntSignal.RemoveAll(Testbed1StructArrayInterfaceSignals);
+		Testbed1StructArrayInterfaceSignals->OnSigIntSignalBP.RemoveAll(Testbed1StructArrayInterfaceSignals);
 		Testbed1StructArrayInterfaceSignals->OnSigFloatSignal.RemoveAll(Testbed1StructArrayInterfaceSignals);
+		Testbed1StructArrayInterfaceSignals->OnSigFloatSignalBP.RemoveAll(Testbed1StructArrayInterfaceSignals);
 		Testbed1StructArrayInterfaceSignals->OnSigStringSignal.RemoveAll(Testbed1StructArrayInterfaceSignals);
+		Testbed1StructArrayInterfaceSignals->OnSigStringSignalBP.RemoveAll(Testbed1StructArrayInterfaceSignals);
 
 		Testbed1StructArrayInterfaceSignals->OnPropBoolChanged.RemoveAll(Testbed1StructArrayInterfaceSignals);
+		Testbed1StructArrayInterfaceSignals->OnPropBoolChangedBP.RemoveAll(Testbed1StructArrayInterfaceSignals);
 		Testbed1StructArrayInterfaceSignals->OnPropIntChanged.RemoveAll(Testbed1StructArrayInterfaceSignals);
+		Testbed1StructArrayInterfaceSignals->OnPropIntChangedBP.RemoveAll(Testbed1StructArrayInterfaceSignals);
 		Testbed1StructArrayInterfaceSignals->OnPropFloatChanged.RemoveAll(Testbed1StructArrayInterfaceSignals);
+		Testbed1StructArrayInterfaceSignals->OnPropFloatChangedBP.RemoveAll(Testbed1StructArrayInterfaceSignals);
 		Testbed1StructArrayInterfaceSignals->OnPropStringChanged.RemoveAll(Testbed1StructArrayInterfaceSignals);
+		Testbed1StructArrayInterfaceSignals->OnPropStringChangedBP.RemoveAll(Testbed1StructArrayInterfaceSignals);
 	}
 
 	Super::Deinitialize();

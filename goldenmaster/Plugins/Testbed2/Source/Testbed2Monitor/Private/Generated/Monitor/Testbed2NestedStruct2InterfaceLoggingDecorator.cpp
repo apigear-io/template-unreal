@@ -49,10 +49,10 @@ void UTestbed2NestedStruct2InterfaceLoggingDecorator::setBackendService(TScriptI
 	{
 		UTestbed2NestedStruct2InterfaceSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service Testbed2NestedStruct2Interface"));
-		BackendSignals->OnProp1Changed.RemoveDynamic(this, &UTestbed2NestedStruct2InterfaceLoggingDecorator::OnProp1Changed);
-		BackendSignals->OnProp2Changed.RemoveDynamic(this, &UTestbed2NestedStruct2InterfaceLoggingDecorator::OnProp2Changed);
-		BackendSignals->OnSig1Signal.RemoveDynamic(this, &UTestbed2NestedStruct2InterfaceLoggingDecorator::OnSig1);
-		BackendSignals->OnSig2Signal.RemoveDynamic(this, &UTestbed2NestedStruct2InterfaceLoggingDecorator::OnSig2);
+		BackendSignals->OnProp1ChangedBP.RemoveDynamic(this, &UTestbed2NestedStruct2InterfaceLoggingDecorator::OnProp1Changed);
+		BackendSignals->OnProp2ChangedBP.RemoveDynamic(this, &UTestbed2NestedStruct2InterfaceLoggingDecorator::OnProp2Changed);
+		BackendSignals->OnSig1SignalBP.RemoveDynamic(this, &UTestbed2NestedStruct2InterfaceLoggingDecorator::OnSig1);
+		BackendSignals->OnSig2SignalBP.RemoveDynamic(this, &UTestbed2NestedStruct2InterfaceLoggingDecorator::OnSig2);
 	}
 
 	// only set if interface is implemented
@@ -63,10 +63,10 @@ void UTestbed2NestedStruct2InterfaceLoggingDecorator::setBackendService(TScriptI
 	UTestbed2NestedStruct2InterfaceSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service Testbed2NestedStruct2Interface"));
 	// connect property changed signals or simple events
-	BackendSignals->OnProp1Changed.AddDynamic(this, &UTestbed2NestedStruct2InterfaceLoggingDecorator::OnProp1Changed);
-	BackendSignals->OnProp2Changed.AddDynamic(this, &UTestbed2NestedStruct2InterfaceLoggingDecorator::OnProp2Changed);
-	BackendSignals->OnSig1Signal.AddDynamic(this, &UTestbed2NestedStruct2InterfaceLoggingDecorator::OnSig1);
-	BackendSignals->OnSig2Signal.AddDynamic(this, &UTestbed2NestedStruct2InterfaceLoggingDecorator::OnSig2);
+	BackendSignals->OnProp1ChangedBP.AddDynamic(this, &UTestbed2NestedStruct2InterfaceLoggingDecorator::OnProp1Changed);
+	BackendSignals->OnProp2ChangedBP.AddDynamic(this, &UTestbed2NestedStruct2InterfaceLoggingDecorator::OnProp2Changed);
+	BackendSignals->OnSig1SignalBP.AddDynamic(this, &UTestbed2NestedStruct2InterfaceLoggingDecorator::OnSig1);
+	BackendSignals->OnSig2SignalBP.AddDynamic(this, &UTestbed2NestedStruct2InterfaceLoggingDecorator::OnSig2);
 	// populate service state to proxy
 	Prop1 = BackendService->GetProp1();
 	Prop2 = BackendService->GetProp2();

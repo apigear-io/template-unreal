@@ -84,7 +84,7 @@ void {{$Class}}MsgBusSpec::Define()
 
 		testDoneDelegate = TestDone;
 		{{$Class}}Signals* {{$Iface}}Signals = ImplFixture->GetImplementation()->_GetSignals();
-		{{$Iface}}Signals->On{{Camel .Name}}Changed.AddDynamic(ImplFixture->GetHelper().Get(), &{{$Class}}MsgBusHelper::{{ Camel .Name }}PropertyCb);
+		{{$Iface}}Signals->On{{Camel .Name}}ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &{{$Class}}MsgBusHelper::{{ Camel .Name }}PropertyCb);
 		// use different test value
 		{{- if .IsArray }}
 		{{- if .IsPrimitive }}
@@ -140,7 +140,7 @@ void {{$Class}}MsgBusSpec::Define()
 		{
 		testDoneDelegate = TestDone;
 		{{$Class}}Signals* {{$Iface}}Signals = ImplFixture->GetImplementation()->_GetSignals();
-		{{$Iface}}Signals->On{{Camel .Name}}Signal.AddDynamic(ImplFixture->GetHelper().Get(), &{{$Class}}MsgBusHelper::{{ Camel .Name }}SignalCb);
+		{{$Iface}}Signals->On{{Camel .Name}}SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &{{$Class}}MsgBusHelper::{{ Camel .Name }}SignalCb);
 
 		// use different test value
 		{{- range $i, $e := .Params -}}

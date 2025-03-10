@@ -600,7 +600,7 @@ void UCounterCounterMsgBusClient::OnVectorChanged(const FCounterCounterVectorCha
 	if (bVectorChanged)
 	{
 		Vector = InMessage.Vector;
-		_GetSignals()->BroadcastVectorChangedVector);
+		_GetSignals()->BroadcastVectorChanged(Vector);
 	}
 }
 
@@ -616,7 +616,7 @@ void UCounterCounterMsgBusClient::OnExternVectorChanged(const FCounterCounterExt
 	if (bExternVectorChanged)
 	{
 		ExternVector = InMessage.ExternVector;
-		_GetSignals()->BroadcastExternVectorChangedExternVector);
+		_GetSignals()->BroadcastExternVectorChanged(ExternVector);
 	}
 }
 
@@ -632,7 +632,7 @@ void UCounterCounterMsgBusClient::OnVectorArrayChanged(const FCounterCounterVect
 	if (bVectorArrayChanged)
 	{
 		VectorArray = InMessage.VectorArray;
-		_GetSignals()->BroadcastVectorArrayChangedVectorArray);
+		_GetSignals()->BroadcastVectorArrayChanged(VectorArray);
 	}
 }
 
@@ -648,7 +648,7 @@ void UCounterCounterMsgBusClient::OnExternVectorArrayChanged(const FCounterCount
 	if (bExternVectorArrayChanged)
 	{
 		ExternVectorArray = InMessage.ExternVectorArray;
-		_GetSignals()->BroadcastExternVectorArrayChangedExternVectorArray);
+		_GetSignals()->BroadcastExternVectorArrayChanged(ExternVectorArray);
 	}
 }
 

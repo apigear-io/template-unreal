@@ -85,7 +85,7 @@ void UCounterCounterMsgBusSpec::Define()
 
 		testDoneDelegate = TestDone;
 		UCounterCounterSignals* CounterCounterSignals = ImplFixture->GetImplementation()->_GetSignals();
-		CounterCounterSignals->OnVectorChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UCounterCounterMsgBusHelper::VectorPropertyCb);
+		CounterCounterSignals->OnVectorChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UCounterCounterMsgBusHelper::VectorPropertyCb);
 		// use different test value
 		TestValue = createTestFCustomTypesVector3D();
 		ImplFixture->GetImplementation()->SetVector(TestValue);
@@ -113,7 +113,7 @@ void UCounterCounterMsgBusSpec::Define()
 
 		testDoneDelegate = TestDone;
 		UCounterCounterSignals* CounterCounterSignals = ImplFixture->GetImplementation()->_GetSignals();
-		CounterCounterSignals->OnVectorArrayChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UCounterCounterMsgBusHelper::VectorArrayPropertyCb);
+		CounterCounterSignals->OnVectorArrayChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UCounterCounterMsgBusHelper::VectorArrayPropertyCb);
 		// use different test value
 		TestValue = createTestFCustomTypesVector3DArray();
 		ImplFixture->GetImplementation()->SetVectorArray(TestValue);
@@ -174,7 +174,7 @@ void UCounterCounterMsgBusSpec::Define()
 		{
 		testDoneDelegate = TestDone;
 		UCounterCounterSignals* CounterCounterSignals = ImplFixture->GetImplementation()->_GetSignals();
-		CounterCounterSignals->OnValueChangedSignal.AddDynamic(ImplFixture->GetHelper().Get(), &UCounterCounterMsgBusHelper::ValueChangedSignalCb);
+		CounterCounterSignals->OnValueChangedSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UCounterCounterMsgBusHelper::ValueChangedSignalCb);
 
 		// use different test value
 		FCustomTypesVector3D VectorTestValue = createTestFCustomTypesVector3D();

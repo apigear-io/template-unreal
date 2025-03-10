@@ -24,31 +24,47 @@ limitations under the License.
  * Declaration for SimpleInterface
  */
 // signal delegates
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfaceSigBoolDelegate, bool, bParamBool);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfaceSigBoolDelegate, bool /* bParamBool */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfaceSigBoolDelegateBP, bool, bParamBool);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfaceSigIntDelegate, int32, ParamInt);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfaceSigIntDelegate, int32 /* ParamInt */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfaceSigIntDelegateBP, int32, ParamInt);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfaceSigInt32Delegate, int32, ParamInt32);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfaceSigInt32Delegate, int32 /* ParamInt32 */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfaceSigInt32DelegateBP, int32, ParamInt32);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfaceSigInt64Delegate, int64, ParamInt64);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfaceSigInt64Delegate, int64 /* ParamInt64 */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfaceSigInt64DelegateBP, int64, ParamInt64);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfaceSigFloatDelegate, float, ParamFloat);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfaceSigFloatDelegate, float /* ParamFloat */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfaceSigFloatDelegateBP, float, ParamFloat);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfaceSigFloat32Delegate, float, ParamFloat32);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfaceSigFloat32Delegate, float /* ParamFloat32 */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfaceSigFloat32DelegateBP, float, ParamFloat32);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfaceSigFloat64Delegate, double, ParamFloat64);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfaceSigFloat64Delegate, double /* ParamFloat64 */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfaceSigFloat64DelegateBP, double, ParamFloat64);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfaceSigStringDelegate, const FString&, ParamString);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfaceSigStringDelegate, const FString& /* ParamString */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfaceSigStringDelegateBP, const FString&, ParamString);
 
 // property delegates
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfacePropBoolChangedDelegate, bool, bPropBool);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfacePropIntChangedDelegate, int32, PropInt);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfacePropInt32ChangedDelegate, int32, PropInt32);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfacePropInt64ChangedDelegate, int64, PropInt64);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfacePropFloatChangedDelegate, float, PropFloat);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfacePropFloat32ChangedDelegate, float, PropFloat32);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfacePropFloat64ChangedDelegate, double, PropFloat64);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfacePropStringChangedDelegate, const FString&, PropString);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfacePropBoolChangedDelegate, bool /* bPropBool */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfacePropBoolChangedDelegateBP, bool, bPropBool);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfacePropIntChangedDelegate, int32 /* PropInt */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfacePropIntChangedDelegateBP, int32, PropInt);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfacePropInt32ChangedDelegate, int32 /* PropInt32 */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfacePropInt32ChangedDelegateBP, int32, PropInt32);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfacePropInt64ChangedDelegate, int64 /* PropInt64 */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfacePropInt64ChangedDelegateBP, int64, PropInt64);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfacePropFloatChangedDelegate, float /* PropFloat */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfacePropFloatChangedDelegateBP, float, PropFloat);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfacePropFloat32ChangedDelegate, float /* PropFloat32 */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfacePropFloat32ChangedDelegateBP, float, PropFloat32);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfacePropFloat64ChangedDelegate, double /* PropFloat64 */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfacePropFloat64ChangedDelegateBP, double, PropFloat64);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfacePropStringChangedDelegate, const FString& /* PropString */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleInterfacePropStringChangedDelegateBP, const FString&, PropString);
 
 /**
  * Class UTbSimpleSimpleInterfaceInterfaceSignals
@@ -61,148 +77,180 @@ class TBSIMPLEAPI_API UTbSimpleSimpleInterfaceSignals : public UObject
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "SigBool Signal")
 	FTbSimpleSimpleInterfaceSigBoolDelegate OnSigBoolSignal;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "SigBool Signal")
+	FTbSimpleSimpleInterfaceSigBoolDelegateBP OnSigBoolSignalBP;
 	/// C++ wrapper for BP functions to safely call SigBoolSignal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast SigBool Signal")
 	void BroadcastSigBoolSignal(bool bParamBool)
 	{
 		OnSigBoolSignal.Broadcast(bParamBool);
+		OnSigBoolSignalBP.Broadcast(bParamBool);
 	}
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "SigInt Signal")
 	FTbSimpleSimpleInterfaceSigIntDelegate OnSigIntSignal;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "SigInt Signal")
+	FTbSimpleSimpleInterfaceSigIntDelegateBP OnSigIntSignalBP;
 	/// C++ wrapper for BP functions to safely call SigIntSignal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast SigInt Signal")
 	void BroadcastSigIntSignal(int32 ParamInt)
 	{
 		OnSigIntSignal.Broadcast(ParamInt);
+		OnSigIntSignalBP.Broadcast(ParamInt);
 	}
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "SigInt32 Signal")
 	FTbSimpleSimpleInterfaceSigInt32Delegate OnSigInt32Signal;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "SigInt32 Signal")
+	FTbSimpleSimpleInterfaceSigInt32DelegateBP OnSigInt32SignalBP;
 	/// C++ wrapper for BP functions to safely call SigInt32Signal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast SigInt32 Signal")
 	void BroadcastSigInt32Signal(int32 ParamInt32)
 	{
 		OnSigInt32Signal.Broadcast(ParamInt32);
+		OnSigInt32SignalBP.Broadcast(ParamInt32);
 	}
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "SigInt64 Signal")
 	FTbSimpleSimpleInterfaceSigInt64Delegate OnSigInt64Signal;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "SigInt64 Signal")
+	FTbSimpleSimpleInterfaceSigInt64DelegateBP OnSigInt64SignalBP;
 	/// C++ wrapper for BP functions to safely call SigInt64Signal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast SigInt64 Signal")
 	void BroadcastSigInt64Signal(int64 ParamInt64)
 	{
 		OnSigInt64Signal.Broadcast(ParamInt64);
+		OnSigInt64SignalBP.Broadcast(ParamInt64);
 	}
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "SigFloat Signal")
 	FTbSimpleSimpleInterfaceSigFloatDelegate OnSigFloatSignal;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "SigFloat Signal")
+	FTbSimpleSimpleInterfaceSigFloatDelegateBP OnSigFloatSignalBP;
 	/// C++ wrapper for BP functions to safely call SigFloatSignal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast SigFloat Signal")
 	void BroadcastSigFloatSignal(float ParamFloat)
 	{
 		OnSigFloatSignal.Broadcast(ParamFloat);
+		OnSigFloatSignalBP.Broadcast(ParamFloat);
 	}
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "SigFloat32 Signal")
 	FTbSimpleSimpleInterfaceSigFloat32Delegate OnSigFloat32Signal;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "SigFloat32 Signal")
+	FTbSimpleSimpleInterfaceSigFloat32DelegateBP OnSigFloat32SignalBP;
 	/// C++ wrapper for BP functions to safely call SigFloat32Signal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast SigFloat32 Signal")
 	void BroadcastSigFloat32Signal(float ParamFloat32)
 	{
 		OnSigFloat32Signal.Broadcast(ParamFloat32);
+		OnSigFloat32SignalBP.Broadcast(ParamFloat32);
 	}
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "SigFloat64 Signal")
 	FTbSimpleSimpleInterfaceSigFloat64Delegate OnSigFloat64Signal;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "SigFloat64 Signal")
+	FTbSimpleSimpleInterfaceSigFloat64DelegateBP OnSigFloat64SignalBP;
 	/// C++ wrapper for BP functions to safely call SigFloat64Signal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast SigFloat64 Signal")
 	void BroadcastSigFloat64Signal(double ParamFloat64)
 	{
 		OnSigFloat64Signal.Broadcast(ParamFloat64);
+		OnSigFloat64SignalBP.Broadcast(ParamFloat64);
 	}
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "SigString Signal")
 	FTbSimpleSimpleInterfaceSigStringDelegate OnSigStringSignal;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "SigString Signal")
+	FTbSimpleSimpleInterfaceSigStringDelegateBP OnSigStringSignalBP;
 	/// C++ wrapper for BP functions to safely call SigStringSignal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast SigString Signal")
 	void BroadcastSigStringSignal(const FString& ParamString)
 	{
 		OnSigStringSignal.Broadcast(ParamString);
+		OnSigStringSignalBP.Broadcast(ParamString);
 	}
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Property PropBool Changed")
 	FTbSimpleSimpleInterfacePropBoolChangedDelegate OnPropBoolChanged;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Property PropBool Changed")
+	FTbSimpleSimpleInterfacePropBoolChangedDelegateBP OnPropBoolChangedBP;
 	/// C++ wrapper for BP functions to safely call OnPropBoolChanged.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast Property PropBool Changed")
 	void BroadcastPropBoolChanged(UPARAM(DisplayName = "bPropBool") bool bInPropBool)
 	{
 		OnPropBoolChanged.Broadcast(bInPropBool);
+		OnPropBoolChangedBP.Broadcast(bInPropBool);
 	}
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Property PropInt Changed")
 	FTbSimpleSimpleInterfacePropIntChangedDelegate OnPropIntChanged;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Property PropInt Changed")
+	FTbSimpleSimpleInterfacePropIntChangedDelegateBP OnPropIntChangedBP;
 	/// C++ wrapper for BP functions to safely call OnPropIntChanged.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast Property PropInt Changed")
 	void BroadcastPropIntChanged(UPARAM(DisplayName = "PropInt") int32 InPropInt)
 	{
 		OnPropIntChanged.Broadcast(InPropInt);
+		OnPropIntChangedBP.Broadcast(InPropInt);
 	}
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Property PropInt32 Changed")
 	FTbSimpleSimpleInterfacePropInt32ChangedDelegate OnPropInt32Changed;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Property PropInt32 Changed")
+	FTbSimpleSimpleInterfacePropInt32ChangedDelegateBP OnPropInt32ChangedBP;
 	/// C++ wrapper for BP functions to safely call OnPropInt32Changed.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast Property PropInt32 Changed")
 	void BroadcastPropInt32Changed(UPARAM(DisplayName = "PropInt32") int32 InPropInt32)
 	{
 		OnPropInt32Changed.Broadcast(InPropInt32);
+		OnPropInt32ChangedBP.Broadcast(InPropInt32);
 	}
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Property PropInt64 Changed")
 	FTbSimpleSimpleInterfacePropInt64ChangedDelegate OnPropInt64Changed;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Property PropInt64 Changed")
+	FTbSimpleSimpleInterfacePropInt64ChangedDelegateBP OnPropInt64ChangedBP;
 	/// C++ wrapper for BP functions to safely call OnPropInt64Changed.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast Property PropInt64 Changed")
 	void BroadcastPropInt64Changed(UPARAM(DisplayName = "PropInt64") int64 InPropInt64)
 	{
 		OnPropInt64Changed.Broadcast(InPropInt64);
+		OnPropInt64ChangedBP.Broadcast(InPropInt64);
 	}
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Property PropFloat Changed")
 	FTbSimpleSimpleInterfacePropFloatChangedDelegate OnPropFloatChanged;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Property PropFloat Changed")
+	FTbSimpleSimpleInterfacePropFloatChangedDelegateBP OnPropFloatChangedBP;
 	/// C++ wrapper for BP functions to safely call OnPropFloatChanged.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast Property PropFloat Changed")
 	void BroadcastPropFloatChanged(UPARAM(DisplayName = "PropFloat") float InPropFloat)
 	{
 		OnPropFloatChanged.Broadcast(InPropFloat);
+		OnPropFloatChangedBP.Broadcast(InPropFloat);
 	}
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Property PropFloat32 Changed")
 	FTbSimpleSimpleInterfacePropFloat32ChangedDelegate OnPropFloat32Changed;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Property PropFloat32 Changed")
+	FTbSimpleSimpleInterfacePropFloat32ChangedDelegateBP OnPropFloat32ChangedBP;
 	/// C++ wrapper for BP functions to safely call OnPropFloat32Changed.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast Property PropFloat32 Changed")
 	void BroadcastPropFloat32Changed(UPARAM(DisplayName = "PropFloat32") float InPropFloat32)
 	{
 		OnPropFloat32Changed.Broadcast(InPropFloat32);
+		OnPropFloat32ChangedBP.Broadcast(InPropFloat32);
 	}
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Property PropFloat64 Changed")
 	FTbSimpleSimpleInterfacePropFloat64ChangedDelegate OnPropFloat64Changed;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Property PropFloat64 Changed")
+	FTbSimpleSimpleInterfacePropFloat64ChangedDelegateBP OnPropFloat64ChangedBP;
 	/// C++ wrapper for BP functions to safely call OnPropFloat64Changed.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast Property PropFloat64 Changed")
 	void BroadcastPropFloat64Changed(UPARAM(DisplayName = "PropFloat64") double InPropFloat64)
 	{
 		OnPropFloat64Changed.Broadcast(InPropFloat64);
+		OnPropFloat64ChangedBP.Broadcast(InPropFloat64);
 	}
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Property PropString Changed")
 	FTbSimpleSimpleInterfacePropStringChangedDelegate OnPropStringChanged;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Property PropString Changed")
+	FTbSimpleSimpleInterfacePropStringChangedDelegateBP OnPropStringChangedBP;
 	/// C++ wrapper for BP functions to safely call OnPropStringChanged.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast Property PropString Changed")
 	void BroadcastPropStringChanged(UPARAM(DisplayName = "PropString") const FString& InPropString)
 	{
 		OnPropStringChanged.Broadcast(InPropString);
+		OnPropStringChangedBP.Broadcast(InPropString);
 	}
 };
 

@@ -56,7 +56,7 @@ void UTestbed2NestedStruct1InterfaceImplSpec::Define()
 
 		testDoneDelegate = TestDone;
 		UTestbed2NestedStruct1InterfaceSignals* Testbed2NestedStruct1InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2NestedStruct1InterfaceSignals->OnProp1Changed.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2NestedStruct1InterfaceImplHelper::Prop1PropertyCb);
+		Testbed2NestedStruct1InterfaceSignals->OnProp1ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2NestedStruct1InterfaceImplHelper::Prop1PropertyCb);
 		// use different test value
 		TestValue = createTestFTestbed2NestedStruct1();
 		ImplFixture->GetImplementation()->SetProp1(TestValue);
@@ -72,7 +72,7 @@ void UTestbed2NestedStruct1InterfaceImplSpec::Define()
 		{
 		testDoneDelegate = TestDone;
 		UTestbed2NestedStruct1InterfaceSignals* Testbed2NestedStruct1InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2NestedStruct1InterfaceSignals->OnSig1Signal.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2NestedStruct1InterfaceImplHelper::Sig1SignalCb);
+		Testbed2NestedStruct1InterfaceSignals->OnSig1SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2NestedStruct1InterfaceImplHelper::Sig1SignalCb);
 
 		// use different test value
 		FTestbed2NestedStruct1 Param1TestValue = createTestFTestbed2NestedStruct1();

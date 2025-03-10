@@ -118,10 +118,10 @@ void {{$Class}}::_setBackendService(TScriptInterface<I{{$Iface}}Interface> InSer
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service {{$Iface}}"));
 {{- end }}
 {{- range .Interface.Properties }}
-		BackendSignals->On{{Camel .Name}}Changed.RemoveDynamic(this, &{{$Class}}::On{{Camel .Name}}Changed);
+		BackendSignals->On{{Camel .Name}}ChangedBP.RemoveDynamic(this, &{{$Class}}::On{{Camel .Name}}Changed);
 {{- end }}
 {{- range .Interface.Signals }}
-		BackendSignals->On{{Camel .Name}}Signal.RemoveDynamic(this, &{{$Class}}::On{{Camel .Name}});
+		BackendSignals->On{{Camel .Name}}SignalBP.RemoveDynamic(this, &{{$Class}}::On{{Camel .Name}});
 {{- end }}
 	}
 
@@ -137,10 +137,10 @@ void {{$Class}}::_setBackendService(TScriptInterface<I{{$Iface}}Interface> InSer
 {{- end }}
 	// connect property changed signals or simple events
 {{- range .Interface.Properties }}
-	BackendSignals->On{{Camel .Name}}Changed.AddDynamic(this, &{{$Class}}::On{{Camel .Name}}Changed);
+	BackendSignals->On{{Camel .Name}}ChangedBP.AddDynamic(this, &{{$Class}}::On{{Camel .Name}}Changed);
 {{- end }}
 {{- range .Interface.Signals }}
-	BackendSignals->On{{Camel .Name}}Signal.AddDynamic(this, &{{$Class}}::On{{Camel .Name}});
+	BackendSignals->On{{Camel .Name}}SignalBP.AddDynamic(this, &{{$Class}}::On{{Camel .Name}});
 {{- end }}
 }
 

@@ -444,7 +444,7 @@ void UTbSame1SameEnum2InterfaceMsgBusClient::OnProp1Changed(const FTbSame1SameEn
 	if (bProp1Changed)
 	{
 		Prop1 = InMessage.Prop1;
-		_GetSignals()->BroadcastProp1ChangedProp1);
+		_GetSignals()->BroadcastProp1Changed(Prop1);
 	}
 }
 
@@ -460,7 +460,7 @@ void UTbSame1SameEnum2InterfaceMsgBusClient::OnProp2Changed(const FTbSame1SameEn
 	if (bProp2Changed)
 	{
 		Prop2 = InMessage.Prop2;
-		_GetSignals()->BroadcastProp2ChangedProp2);
+		_GetSignals()->BroadcastProp2Changed(Prop2);
 	}
 }
 

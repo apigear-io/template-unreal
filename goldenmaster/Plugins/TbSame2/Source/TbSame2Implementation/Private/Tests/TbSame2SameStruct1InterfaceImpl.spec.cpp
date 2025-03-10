@@ -56,7 +56,7 @@ void UTbSame2SameStruct1InterfaceImplSpec::Define()
 
 		testDoneDelegate = TestDone;
 		UTbSame2SameStruct1InterfaceSignals* TbSame2SameStruct1InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSame2SameStruct1InterfaceSignals->OnProp1Changed.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame2SameStruct1InterfaceImplHelper::Prop1PropertyCb);
+		TbSame2SameStruct1InterfaceSignals->OnProp1ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame2SameStruct1InterfaceImplHelper::Prop1PropertyCb);
 		// use different test value
 		TestValue = createTestFTbSame2Struct1();
 		ImplFixture->GetImplementation()->SetProp1(TestValue);
@@ -72,7 +72,7 @@ void UTbSame2SameStruct1InterfaceImplSpec::Define()
 		{
 		testDoneDelegate = TestDone;
 		UTbSame2SameStruct1InterfaceSignals* TbSame2SameStruct1InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSame2SameStruct1InterfaceSignals->OnSig1Signal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame2SameStruct1InterfaceImplHelper::Sig1SignalCb);
+		TbSame2SameStruct1InterfaceSignals->OnSig1SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame2SameStruct1InterfaceImplHelper::Sig1SignalCb);
 
 		// use different test value
 		FTbSame2Struct1 Param1TestValue = createTestFTbSame2Struct1();

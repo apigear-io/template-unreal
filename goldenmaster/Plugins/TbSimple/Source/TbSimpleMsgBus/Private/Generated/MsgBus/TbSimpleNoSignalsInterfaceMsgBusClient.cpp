@@ -407,7 +407,7 @@ void UTbSimpleNoSignalsInterfaceMsgBusClient::OnPropBoolChanged(const FTbSimpleN
 	if (bbPropBoolChanged)
 	{
 		bPropBool = InMessage.bPropBool;
-		_GetSignals()->BroadcastPropBoolChangedbPropBool);
+		_GetSignals()->BroadcastPropBoolChanged(bPropBool);
 	}
 }
 
@@ -423,7 +423,7 @@ void UTbSimpleNoSignalsInterfaceMsgBusClient::OnPropIntChanged(const FTbSimpleNo
 	if (bPropIntChanged)
 	{
 		PropInt = InMessage.PropInt;
-		_GetSignals()->BroadcastPropIntChangedPropInt);
+		_GetSignals()->BroadcastPropIntChanged(PropInt);
 	}
 }
 

@@ -70,10 +70,14 @@ void UAbstractTbSimpleNoOperationsInterface::Deinitialize()
 	if (TbSimpleNoOperationsInterfaceSignals)
 	{
 		TbSimpleNoOperationsInterfaceSignals->OnSigVoidSignal.RemoveAll(TbSimpleNoOperationsInterfaceSignals);
+		TbSimpleNoOperationsInterfaceSignals->OnSigVoidSignalBP.RemoveAll(TbSimpleNoOperationsInterfaceSignals);
 		TbSimpleNoOperationsInterfaceSignals->OnSigBoolSignal.RemoveAll(TbSimpleNoOperationsInterfaceSignals);
+		TbSimpleNoOperationsInterfaceSignals->OnSigBoolSignalBP.RemoveAll(TbSimpleNoOperationsInterfaceSignals);
 
 		TbSimpleNoOperationsInterfaceSignals->OnPropBoolChanged.RemoveAll(TbSimpleNoOperationsInterfaceSignals);
+		TbSimpleNoOperationsInterfaceSignals->OnPropBoolChangedBP.RemoveAll(TbSimpleNoOperationsInterfaceSignals);
 		TbSimpleNoOperationsInterfaceSignals->OnPropIntChanged.RemoveAll(TbSimpleNoOperationsInterfaceSignals);
+		TbSimpleNoOperationsInterfaceSignals->OnPropIntChangedBP.RemoveAll(TbSimpleNoOperationsInterfaceSignals);
 	}
 
 	Super::Deinitialize();

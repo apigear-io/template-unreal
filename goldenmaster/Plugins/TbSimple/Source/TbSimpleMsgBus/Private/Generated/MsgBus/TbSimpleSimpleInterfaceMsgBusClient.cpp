@@ -998,7 +998,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnPropBoolChanged(const FTbSimpleSimp
 	if (bbPropBoolChanged)
 	{
 		bPropBool = InMessage.bPropBool;
-		_GetSignals()->BroadcastPropBoolChangedbPropBool);
+		_GetSignals()->BroadcastPropBoolChanged(bPropBool);
 	}
 }
 
@@ -1014,7 +1014,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnPropIntChanged(const FTbSimpleSimpl
 	if (bPropIntChanged)
 	{
 		PropInt = InMessage.PropInt;
-		_GetSignals()->BroadcastPropIntChangedPropInt);
+		_GetSignals()->BroadcastPropIntChanged(PropInt);
 	}
 }
 
@@ -1030,7 +1030,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnPropInt32Changed(const FTbSimpleSim
 	if (bPropInt32Changed)
 	{
 		PropInt32 = InMessage.PropInt32;
-		_GetSignals()->BroadcastPropInt32ChangedPropInt32);
+		_GetSignals()->BroadcastPropInt32Changed(PropInt32);
 	}
 }
 
@@ -1046,7 +1046,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnPropInt64Changed(const FTbSimpleSim
 	if (bPropInt64Changed)
 	{
 		PropInt64 = InMessage.PropInt64;
-		_GetSignals()->BroadcastPropInt64ChangedPropInt64);
+		_GetSignals()->BroadcastPropInt64Changed(PropInt64);
 	}
 }
 
@@ -1062,7 +1062,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnPropFloatChanged(const FTbSimpleSim
 	if (bPropFloatChanged)
 	{
 		PropFloat = InMessage.PropFloat;
-		_GetSignals()->BroadcastPropFloatChangedPropFloat);
+		_GetSignals()->BroadcastPropFloatChanged(PropFloat);
 	}
 }
 
@@ -1078,7 +1078,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnPropFloat32Changed(const FTbSimpleS
 	if (bPropFloat32Changed)
 	{
 		PropFloat32 = InMessage.PropFloat32;
-		_GetSignals()->BroadcastPropFloat32ChangedPropFloat32);
+		_GetSignals()->BroadcastPropFloat32Changed(PropFloat32);
 	}
 }
 
@@ -1094,7 +1094,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnPropFloat64Changed(const FTbSimpleS
 	if (bPropFloat64Changed)
 	{
 		PropFloat64 = InMessage.PropFloat64;
-		_GetSignals()->BroadcastPropFloat64ChangedPropFloat64);
+		_GetSignals()->BroadcastPropFloat64Changed(PropFloat64);
 	}
 }
 
@@ -1110,7 +1110,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnPropStringChanged(const FTbSimpleSi
 	if (bPropStringChanged)
 	{
 		PropString = InMessage.PropString;
-		_GetSignals()->BroadcastPropStringChangedPropString);
+		_GetSignals()->BroadcastPropStringChanged(PropString);
 	}
 }
 

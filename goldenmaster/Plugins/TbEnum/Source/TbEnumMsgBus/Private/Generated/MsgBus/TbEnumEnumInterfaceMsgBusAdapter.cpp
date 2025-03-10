@@ -116,14 +116,14 @@ void UTbEnumEnumInterfaceMsgBusAdapter::_setBackendService(TScriptInterface<ITbE
 	{
 		UTbEnumEnumInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbEnumEnumInterface"));
-		BackendSignals->OnProp0Changed.RemoveDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnProp0Changed);
-		BackendSignals->OnProp1Changed.RemoveDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnProp1Changed);
-		BackendSignals->OnProp2Changed.RemoveDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnProp2Changed);
-		BackendSignals->OnProp3Changed.RemoveDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnProp3Changed);
-		BackendSignals->OnSig0Signal.RemoveDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnSig0);
-		BackendSignals->OnSig1Signal.RemoveDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnSig1);
-		BackendSignals->OnSig2Signal.RemoveDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnSig2);
-		BackendSignals->OnSig3Signal.RemoveDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnSig3);
+		BackendSignals->OnProp0ChangedBP.RemoveDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnProp0Changed);
+		BackendSignals->OnProp1ChangedBP.RemoveDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnProp1Changed);
+		BackendSignals->OnProp2ChangedBP.RemoveDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnProp2Changed);
+		BackendSignals->OnProp3ChangedBP.RemoveDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnProp3Changed);
+		BackendSignals->OnSig0SignalBP.RemoveDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnSig0);
+		BackendSignals->OnSig1SignalBP.RemoveDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnSig1);
+		BackendSignals->OnSig2SignalBP.RemoveDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnSig2);
+		BackendSignals->OnSig3SignalBP.RemoveDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnSig3);
 	}
 
 	// only set if interface is implemented
@@ -134,14 +134,14 @@ void UTbEnumEnumInterfaceMsgBusAdapter::_setBackendService(TScriptInterface<ITbE
 	UTbEnumEnumInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service TbEnumEnumInterface"));
 	// connect property changed signals or simple events
-	BackendSignals->OnProp0Changed.AddDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnProp0Changed);
-	BackendSignals->OnProp1Changed.AddDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnProp1Changed);
-	BackendSignals->OnProp2Changed.AddDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnProp2Changed);
-	BackendSignals->OnProp3Changed.AddDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnProp3Changed);
-	BackendSignals->OnSig0Signal.AddDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnSig0);
-	BackendSignals->OnSig1Signal.AddDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnSig1);
-	BackendSignals->OnSig2Signal.AddDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnSig2);
-	BackendSignals->OnSig3Signal.AddDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnSig3);
+	BackendSignals->OnProp0ChangedBP.AddDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnProp0Changed);
+	BackendSignals->OnProp1ChangedBP.AddDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnProp1Changed);
+	BackendSignals->OnProp2ChangedBP.AddDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnProp2Changed);
+	BackendSignals->OnProp3ChangedBP.AddDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnProp3Changed);
+	BackendSignals->OnSig0SignalBP.AddDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnSig0);
+	BackendSignals->OnSig1SignalBP.AddDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnSig1);
+	BackendSignals->OnSig2SignalBP.AddDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnSig2);
+	BackendSignals->OnSig3SignalBP.AddDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnSig3);
 }
 
 void UTbEnumEnumInterfaceMsgBusAdapter::OnNewClientDiscovered(const FTbEnumEnumInterfaceDiscoveryMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)

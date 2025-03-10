@@ -113,11 +113,11 @@ void UTbNamesNamEsMsgBusAdapter::_setBackendService(TScriptInterface<ITbNamesNam
 	{
 		UTbNamesNamEsSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbNamesNamEs"));
-		BackendSignals->OnSwitchChanged.RemoveDynamic(this, &UTbNamesNamEsMsgBusAdapter::OnSwitchChanged);
-		BackendSignals->OnSomePropertyChanged.RemoveDynamic(this, &UTbNamesNamEsMsgBusAdapter::OnSomePropertyChanged);
-		BackendSignals->OnSomePoperty2Changed.RemoveDynamic(this, &UTbNamesNamEsMsgBusAdapter::OnSomePoperty2Changed);
-		BackendSignals->OnSomeSignalSignal.RemoveDynamic(this, &UTbNamesNamEsMsgBusAdapter::OnSomeSignal);
-		BackendSignals->OnSomeSignal2Signal.RemoveDynamic(this, &UTbNamesNamEsMsgBusAdapter::OnSomeSignal2);
+		BackendSignals->OnSwitchChangedBP.RemoveDynamic(this, &UTbNamesNamEsMsgBusAdapter::OnSwitchChanged);
+		BackendSignals->OnSomePropertyChangedBP.RemoveDynamic(this, &UTbNamesNamEsMsgBusAdapter::OnSomePropertyChanged);
+		BackendSignals->OnSomePoperty2ChangedBP.RemoveDynamic(this, &UTbNamesNamEsMsgBusAdapter::OnSomePoperty2Changed);
+		BackendSignals->OnSomeSignalSignalBP.RemoveDynamic(this, &UTbNamesNamEsMsgBusAdapter::OnSomeSignal);
+		BackendSignals->OnSomeSignal2SignalBP.RemoveDynamic(this, &UTbNamesNamEsMsgBusAdapter::OnSomeSignal2);
 	}
 
 	// only set if interface is implemented
@@ -128,11 +128,11 @@ void UTbNamesNamEsMsgBusAdapter::_setBackendService(TScriptInterface<ITbNamesNam
 	UTbNamesNamEsSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service TbNamesNamEs"));
 	// connect property changed signals or simple events
-	BackendSignals->OnSwitchChanged.AddDynamic(this, &UTbNamesNamEsMsgBusAdapter::OnSwitchChanged);
-	BackendSignals->OnSomePropertyChanged.AddDynamic(this, &UTbNamesNamEsMsgBusAdapter::OnSomePropertyChanged);
-	BackendSignals->OnSomePoperty2Changed.AddDynamic(this, &UTbNamesNamEsMsgBusAdapter::OnSomePoperty2Changed);
-	BackendSignals->OnSomeSignalSignal.AddDynamic(this, &UTbNamesNamEsMsgBusAdapter::OnSomeSignal);
-	BackendSignals->OnSomeSignal2Signal.AddDynamic(this, &UTbNamesNamEsMsgBusAdapter::OnSomeSignal2);
+	BackendSignals->OnSwitchChangedBP.AddDynamic(this, &UTbNamesNamEsMsgBusAdapter::OnSwitchChanged);
+	BackendSignals->OnSomePropertyChangedBP.AddDynamic(this, &UTbNamesNamEsMsgBusAdapter::OnSomePropertyChanged);
+	BackendSignals->OnSomePoperty2ChangedBP.AddDynamic(this, &UTbNamesNamEsMsgBusAdapter::OnSomePoperty2Changed);
+	BackendSignals->OnSomeSignalSignalBP.AddDynamic(this, &UTbNamesNamEsMsgBusAdapter::OnSomeSignal);
+	BackendSignals->OnSomeSignal2SignalBP.AddDynamic(this, &UTbNamesNamEsMsgBusAdapter::OnSomeSignal2);
 }
 
 void UTbNamesNamEsMsgBusAdapter::OnNewClientDiscovered(const FTbNamesNamEsDiscoveryMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)

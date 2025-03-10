@@ -639,7 +639,7 @@ void UTestbed1StructArrayInterfaceMsgBusClient::OnPropBoolChanged(const FTestbed
 	if (bPropBoolChanged)
 	{
 		PropBool = InMessage.PropBool;
-		_GetSignals()->BroadcastPropBoolChangedPropBool);
+		_GetSignals()->BroadcastPropBoolChanged(PropBool);
 	}
 }
 
@@ -655,7 +655,7 @@ void UTestbed1StructArrayInterfaceMsgBusClient::OnPropIntChanged(const FTestbed1
 	if (bPropIntChanged)
 	{
 		PropInt = InMessage.PropInt;
-		_GetSignals()->BroadcastPropIntChangedPropInt);
+		_GetSignals()->BroadcastPropIntChanged(PropInt);
 	}
 }
 
@@ -671,7 +671,7 @@ void UTestbed1StructArrayInterfaceMsgBusClient::OnPropFloatChanged(const FTestbe
 	if (bPropFloatChanged)
 	{
 		PropFloat = InMessage.PropFloat;
-		_GetSignals()->BroadcastPropFloatChangedPropFloat);
+		_GetSignals()->BroadcastPropFloatChanged(PropFloat);
 	}
 }
 
@@ -687,7 +687,7 @@ void UTestbed1StructArrayInterfaceMsgBusClient::OnPropStringChanged(const FTestb
 	if (bPropStringChanged)
 	{
 		PropString = InMessage.PropString;
-		_GetSignals()->BroadcastPropStringChangedPropString);
+		_GetSignals()->BroadcastPropStringChanged(PropString);
 	}
 }
 

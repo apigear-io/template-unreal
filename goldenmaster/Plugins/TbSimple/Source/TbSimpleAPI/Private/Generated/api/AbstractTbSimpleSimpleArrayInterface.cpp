@@ -456,23 +456,40 @@ void UAbstractTbSimpleSimpleArrayInterface::Deinitialize()
 	if (TbSimpleSimpleArrayInterfaceSignals)
 	{
 		TbSimpleSimpleArrayInterfaceSignals->OnSigBoolSignal.RemoveAll(TbSimpleSimpleArrayInterfaceSignals);
+		TbSimpleSimpleArrayInterfaceSignals->OnSigBoolSignalBP.RemoveAll(TbSimpleSimpleArrayInterfaceSignals);
 		TbSimpleSimpleArrayInterfaceSignals->OnSigIntSignal.RemoveAll(TbSimpleSimpleArrayInterfaceSignals);
+		TbSimpleSimpleArrayInterfaceSignals->OnSigIntSignalBP.RemoveAll(TbSimpleSimpleArrayInterfaceSignals);
 		TbSimpleSimpleArrayInterfaceSignals->OnSigInt32Signal.RemoveAll(TbSimpleSimpleArrayInterfaceSignals);
+		TbSimpleSimpleArrayInterfaceSignals->OnSigInt32SignalBP.RemoveAll(TbSimpleSimpleArrayInterfaceSignals);
 		TbSimpleSimpleArrayInterfaceSignals->OnSigInt64Signal.RemoveAll(TbSimpleSimpleArrayInterfaceSignals);
+		TbSimpleSimpleArrayInterfaceSignals->OnSigInt64SignalBP.RemoveAll(TbSimpleSimpleArrayInterfaceSignals);
 		TbSimpleSimpleArrayInterfaceSignals->OnSigFloatSignal.RemoveAll(TbSimpleSimpleArrayInterfaceSignals);
+		TbSimpleSimpleArrayInterfaceSignals->OnSigFloatSignalBP.RemoveAll(TbSimpleSimpleArrayInterfaceSignals);
 		TbSimpleSimpleArrayInterfaceSignals->OnSigFloat32Signal.RemoveAll(TbSimpleSimpleArrayInterfaceSignals);
+		TbSimpleSimpleArrayInterfaceSignals->OnSigFloat32SignalBP.RemoveAll(TbSimpleSimpleArrayInterfaceSignals);
 		TbSimpleSimpleArrayInterfaceSignals->OnSigFloat64Signal.RemoveAll(TbSimpleSimpleArrayInterfaceSignals);
+		TbSimpleSimpleArrayInterfaceSignals->OnSigFloat64SignalBP.RemoveAll(TbSimpleSimpleArrayInterfaceSignals);
 		TbSimpleSimpleArrayInterfaceSignals->OnSigStringSignal.RemoveAll(TbSimpleSimpleArrayInterfaceSignals);
+		TbSimpleSimpleArrayInterfaceSignals->OnSigStringSignalBP.RemoveAll(TbSimpleSimpleArrayInterfaceSignals);
 
 		TbSimpleSimpleArrayInterfaceSignals->OnPropBoolChanged.RemoveAll(TbSimpleSimpleArrayInterfaceSignals);
+		TbSimpleSimpleArrayInterfaceSignals->OnPropBoolChangedBP.RemoveAll(TbSimpleSimpleArrayInterfaceSignals);
 		TbSimpleSimpleArrayInterfaceSignals->OnPropIntChanged.RemoveAll(TbSimpleSimpleArrayInterfaceSignals);
+		TbSimpleSimpleArrayInterfaceSignals->OnPropIntChangedBP.RemoveAll(TbSimpleSimpleArrayInterfaceSignals);
 		TbSimpleSimpleArrayInterfaceSignals->OnPropInt32Changed.RemoveAll(TbSimpleSimpleArrayInterfaceSignals);
+		TbSimpleSimpleArrayInterfaceSignals->OnPropInt32ChangedBP.RemoveAll(TbSimpleSimpleArrayInterfaceSignals);
 		TbSimpleSimpleArrayInterfaceSignals->OnPropInt64Changed.RemoveAll(TbSimpleSimpleArrayInterfaceSignals);
+		TbSimpleSimpleArrayInterfaceSignals->OnPropInt64ChangedBP.RemoveAll(TbSimpleSimpleArrayInterfaceSignals);
 		TbSimpleSimpleArrayInterfaceSignals->OnPropFloatChanged.RemoveAll(TbSimpleSimpleArrayInterfaceSignals);
+		TbSimpleSimpleArrayInterfaceSignals->OnPropFloatChangedBP.RemoveAll(TbSimpleSimpleArrayInterfaceSignals);
 		TbSimpleSimpleArrayInterfaceSignals->OnPropFloat32Changed.RemoveAll(TbSimpleSimpleArrayInterfaceSignals);
+		TbSimpleSimpleArrayInterfaceSignals->OnPropFloat32ChangedBP.RemoveAll(TbSimpleSimpleArrayInterfaceSignals);
 		TbSimpleSimpleArrayInterfaceSignals->OnPropFloat64Changed.RemoveAll(TbSimpleSimpleArrayInterfaceSignals);
+		TbSimpleSimpleArrayInterfaceSignals->OnPropFloat64ChangedBP.RemoveAll(TbSimpleSimpleArrayInterfaceSignals);
 		TbSimpleSimpleArrayInterfaceSignals->OnPropStringChanged.RemoveAll(TbSimpleSimpleArrayInterfaceSignals);
+		TbSimpleSimpleArrayInterfaceSignals->OnPropStringChangedBP.RemoveAll(TbSimpleSimpleArrayInterfaceSignals);
 		TbSimpleSimpleArrayInterfaceSignals->OnPropReadOnlyStringChanged.RemoveAll(TbSimpleSimpleArrayInterfaceSignals);
+		TbSimpleSimpleArrayInterfaceSignals->OnPropReadOnlyStringChangedBP.RemoveAll(TbSimpleSimpleArrayInterfaceSignals);
 	}
 
 	Super::Deinitialize();

@@ -39,11 +39,13 @@ limitations under the License.
  */
 // signal delegates
 {{- range .Signals }}
-DECLARE_DYNAMIC_MULTICAST_DELEGATE{{Int2Word (len .Params) "_" "Param"}}(F{{$Class}}{{Camel .Name}}Delegate{{range $idx, $elem := .Params}}, {{ueConstType "" .}}, {{ueVar "" .}}{{end}});
+DECLARE_MULTICAST_DELEGATE{{Int2Word (len .Params) "_" "Param"}}(F{{$Class}}{{Camel .Name}}Delegate{{range $idx, $elem := .Params}}, {{ueConstType "" .}} /* {{ueVar "" .}} */{{end}});
+DECLARE_DYNAMIC_MULTICAST_DELEGATE{{Int2Word (len .Params) "_" "Param"}}(F{{$Class}}{{Camel .Name}}DelegateBP{{range $idx, $elem := .Params}}, {{ueConstType "" .}}, {{ueVar "" .}}{{end}});
 {{ end }}
 // property delegates
 {{- range .Properties }}
-DECLARE_DYNAMIC_MULTICAST_DELEGATE{{Int2Word 1 "_" "Param"}}(F{{$Class}}{{Camel .Name}}ChangedDelegate, {{ueConstType "" .}}, {{ueVar "" .}});
+DECLARE_MULTICAST_DELEGATE{{Int2Word 1 "_" "Param"}}(F{{$Class}}{{Camel .Name}}ChangedDelegate, {{ueConstType "" .}} /* {{ueVar "" .}} */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE{{Int2Word 1 "_" "Param"}}(F{{$Class}}{{Camel .Name}}ChangedDelegateBP, {{ueConstType "" .}}, {{ueVar "" .}});
 {{- end }}
 
 /**
@@ -59,25 +61,29 @@ class {{$API_MACRO}} U{{$Class}}Signals : public UObject
 public:
 {{- range $i, $e := .Signals }}
 	{{- if $i }}{{nl}}{{ end }}
-	UPROPERTY(BlueprintAssignable, Category = "{{$Category}}|Signals", DisplayName = "{{Camel .Name}} Signal")
 	F{{$Iface}}{{Camel .Name}}Delegate On{{Camel .Name}}Signal;
+	UPROPERTY(BlueprintAssignable, Category = "{{$Category}}|Signals", DisplayName = "{{Camel .Name}} Signal")
+	F{{$Iface}}{{Camel .Name}}DelegateBP On{{Camel .Name}}SignalBP;
 	/// C++ wrapper for BP functions to safely call {{Camel .Name}}Signal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "{{$Category}}|Signals", DisplayName = "Broadcast {{Camel .Name}} Signal")
 	void Broadcast{{Camel .Name}}Signal({{ueParams "" .Params}})
 	{
 		On{{Camel .Name}}Signal.Broadcast({{ueVars "" .Params}});
+		On{{Camel .Name}}SignalBP.Broadcast({{ueVars "" .Params}});
 	}
 {{- end }}
 {{- if and (len .Properties) (len .Signals) }}{{ nl }}{{ end }}
 {{- range $i, $e := .Properties }}
 	{{- if $i }}{{nl}}{{ end }}
-	UPROPERTY(BlueprintAssignable, Category = "{{$Category}}|Signals", DisplayName = "Property {{Camel .Name}} Changed")
 	F{{$Iface}}{{Camel .Name}}ChangedDelegate On{{Camel .Name}}Changed;
+	UPROPERTY(BlueprintAssignable, Category = "{{$Category}}|Signals", DisplayName = "Property {{Camel .Name}} Changed")
+	F{{$Iface}}{{Camel .Name}}ChangedDelegateBP On{{Camel .Name}}ChangedBP;
 	/// C++ wrapper for BP functions to safely call On{{Camel .Name}}Changed.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "{{$Category}}|Signals", DisplayName = "Broadcast Property {{Camel .Name}} Changed")
 	void Broadcast{{Camel .Name}}Changed(UPARAM(DisplayName = "{{ueVar "" .}}") {{ueParam "In" .}})
 	{
 		On{{Camel .Name}}Changed.Broadcast({{ueVar "In" .}});
+		On{{Camel .Name}}ChangedBP.Broadcast({{ueVar "In" .}});
 	}
 {{- end }}
 };

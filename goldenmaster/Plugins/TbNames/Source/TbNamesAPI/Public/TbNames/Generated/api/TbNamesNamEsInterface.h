@@ -24,14 +24,19 @@ limitations under the License.
  * Declaration for Nam_Es
  */
 // signal delegates
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbNamesNamEsSomeSignalDelegate, bool, bSomeParam);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTbNamesNamEsSomeSignalDelegate, bool /* bSomeParam */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbNamesNamEsSomeSignalDelegateBP, bool, bSomeParam);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbNamesNamEsSomeSignal2Delegate, bool, bSomeParam);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTbNamesNamEsSomeSignal2Delegate, bool /* bSomeParam */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbNamesNamEsSomeSignal2DelegateBP, bool, bSomeParam);
 
 // property delegates
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbNamesNamEsSwitchChangedDelegate, bool, bSwitch);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbNamesNamEsSomePropertyChangedDelegate, int32, SomeProperty);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbNamesNamEsSomePoperty2ChangedDelegate, int32, SomePoperty2);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTbNamesNamEsSwitchChangedDelegate, bool /* bSwitch */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbNamesNamEsSwitchChangedDelegateBP, bool, bSwitch);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTbNamesNamEsSomePropertyChangedDelegate, int32 /* SomeProperty */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbNamesNamEsSomePropertyChangedDelegateBP, int32, SomeProperty);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTbNamesNamEsSomePoperty2ChangedDelegate, int32 /* SomePoperty2 */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbNamesNamEsSomePoperty2ChangedDelegateBP, int32, SomePoperty2);
 
 /**
  * Class UTbNamesNamEsInterfaceSignals
@@ -44,49 +49,59 @@ class TBNAMESAPI_API UTbNamesNamEsSignals : public UObject
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbNames|NamEs|Signals", DisplayName = "SomeSignal Signal")
 	FTbNamesNamEsSomeSignalDelegate OnSomeSignalSignal;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbNames|NamEs|Signals", DisplayName = "SomeSignal Signal")
+	FTbNamesNamEsSomeSignalDelegateBP OnSomeSignalSignalBP;
 	/// C++ wrapper for BP functions to safely call SomeSignalSignal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Signals", DisplayName = "Broadcast SomeSignal Signal")
 	void BroadcastSomeSignalSignal(bool bSomeParam)
 	{
 		OnSomeSignalSignal.Broadcast(bSomeParam);
+		OnSomeSignalSignalBP.Broadcast(bSomeParam);
 	}
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbNames|NamEs|Signals", DisplayName = "SomeSignal2 Signal")
 	FTbNamesNamEsSomeSignal2Delegate OnSomeSignal2Signal;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbNames|NamEs|Signals", DisplayName = "SomeSignal2 Signal")
+	FTbNamesNamEsSomeSignal2DelegateBP OnSomeSignal2SignalBP;
 	/// C++ wrapper for BP functions to safely call SomeSignal2Signal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Signals", DisplayName = "Broadcast SomeSignal2 Signal")
 	void BroadcastSomeSignal2Signal(bool bSomeParam)
 	{
 		OnSomeSignal2Signal.Broadcast(bSomeParam);
+		OnSomeSignal2SignalBP.Broadcast(bSomeParam);
 	}
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbNames|NamEs|Signals", DisplayName = "Property Switch Changed")
 	FTbNamesNamEsSwitchChangedDelegate OnSwitchChanged;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbNames|NamEs|Signals", DisplayName = "Property Switch Changed")
+	FTbNamesNamEsSwitchChangedDelegateBP OnSwitchChangedBP;
 	/// C++ wrapper for BP functions to safely call OnSwitchChanged.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Signals", DisplayName = "Broadcast Property Switch Changed")
 	void BroadcastSwitchChanged(UPARAM(DisplayName = "bSwitch") bool bInSwitch)
 	{
 		OnSwitchChanged.Broadcast(bInSwitch);
+		OnSwitchChangedBP.Broadcast(bInSwitch);
 	}
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbNames|NamEs|Signals", DisplayName = "Property SomeProperty Changed")
 	FTbNamesNamEsSomePropertyChangedDelegate OnSomePropertyChanged;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbNames|NamEs|Signals", DisplayName = "Property SomeProperty Changed")
+	FTbNamesNamEsSomePropertyChangedDelegateBP OnSomePropertyChangedBP;
 	/// C++ wrapper for BP functions to safely call OnSomePropertyChanged.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Signals", DisplayName = "Broadcast Property SomeProperty Changed")
 	void BroadcastSomePropertyChanged(UPARAM(DisplayName = "SomeProperty") int32 InSomeProperty)
 	{
 		OnSomePropertyChanged.Broadcast(InSomeProperty);
+		OnSomePropertyChangedBP.Broadcast(InSomeProperty);
 	}
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbNames|NamEs|Signals", DisplayName = "Property SomePoperty2 Changed")
 	FTbNamesNamEsSomePoperty2ChangedDelegate OnSomePoperty2Changed;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbNames|NamEs|Signals", DisplayName = "Property SomePoperty2 Changed")
+	FTbNamesNamEsSomePoperty2ChangedDelegateBP OnSomePoperty2ChangedBP;
 	/// C++ wrapper for BP functions to safely call OnSomePoperty2Changed.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Signals", DisplayName = "Broadcast Property SomePoperty2 Changed")
 	void BroadcastSomePoperty2Changed(UPARAM(DisplayName = "SomePoperty2") int32 InSomePoperty2)
 	{
 		OnSomePoperty2Changed.Broadcast(InSomePoperty2);
+		OnSomePoperty2ChangedBP.Broadcast(InSomePoperty2);
 	}
 };
 

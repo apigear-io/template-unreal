@@ -109,7 +109,7 @@ void UTbSimpleVoidInterfaceMsgBusAdapter::_setBackendService(TScriptInterface<IT
 	{
 		UTbSimpleVoidInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleVoidInterface"));
-		BackendSignals->OnSigVoidSignal.RemoveDynamic(this, &UTbSimpleVoidInterfaceMsgBusAdapter::OnSigVoid);
+		BackendSignals->OnSigVoidSignalBP.RemoveDynamic(this, &UTbSimpleVoidInterfaceMsgBusAdapter::OnSigVoid);
 	}
 
 	// only set if interface is implemented
@@ -120,7 +120,7 @@ void UTbSimpleVoidInterfaceMsgBusAdapter::_setBackendService(TScriptInterface<IT
 	UTbSimpleVoidInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service TbSimpleVoidInterface"));
 	// connect property changed signals or simple events
-	BackendSignals->OnSigVoidSignal.AddDynamic(this, &UTbSimpleVoidInterfaceMsgBusAdapter::OnSigVoid);
+	BackendSignals->OnSigVoidSignalBP.AddDynamic(this, &UTbSimpleVoidInterfaceMsgBusAdapter::OnSigVoid);
 }
 
 void UTbSimpleVoidInterfaceMsgBusAdapter::OnNewClientDiscovered(const FTbSimpleVoidInterfaceDiscoveryMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)

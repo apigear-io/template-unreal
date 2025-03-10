@@ -49,7 +49,7 @@ void UTbSimpleVoidInterfaceLoggingDecorator::setBackendService(TScriptInterface<
 	{
 		UTbSimpleVoidInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleVoidInterface"));
-		BackendSignals->OnSigVoidSignal.RemoveDynamic(this, &UTbSimpleVoidInterfaceLoggingDecorator::OnSigVoid);
+		BackendSignals->OnSigVoidSignalBP.RemoveDynamic(this, &UTbSimpleVoidInterfaceLoggingDecorator::OnSigVoid);
 	}
 
 	// only set if interface is implemented
@@ -60,7 +60,7 @@ void UTbSimpleVoidInterfaceLoggingDecorator::setBackendService(TScriptInterface<
 	UTbSimpleVoidInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleVoidInterface"));
 	// connect property changed signals or simple events
-	BackendSignals->OnSigVoidSignal.AddDynamic(this, &UTbSimpleVoidInterfaceLoggingDecorator::OnSigVoid);
+	BackendSignals->OnSigVoidSignalBP.AddDynamic(this, &UTbSimpleVoidInterfaceLoggingDecorator::OnSigVoid);
 	// populate service state to proxy
 }
 

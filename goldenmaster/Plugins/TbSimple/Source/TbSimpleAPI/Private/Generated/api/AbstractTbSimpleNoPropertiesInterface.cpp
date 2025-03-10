@@ -126,7 +126,9 @@ void UAbstractTbSimpleNoPropertiesInterface::Deinitialize()
 	if (TbSimpleNoPropertiesInterfaceSignals)
 	{
 		TbSimpleNoPropertiesInterfaceSignals->OnSigVoidSignal.RemoveAll(TbSimpleNoPropertiesInterfaceSignals);
+		TbSimpleNoPropertiesInterfaceSignals->OnSigVoidSignalBP.RemoveAll(TbSimpleNoPropertiesInterfaceSignals);
 		TbSimpleNoPropertiesInterfaceSignals->OnSigBoolSignal.RemoveAll(TbSimpleNoPropertiesInterfaceSignals);
+		TbSimpleNoPropertiesInterfaceSignals->OnSigBoolSignalBP.RemoveAll(TbSimpleNoPropertiesInterfaceSignals);
 	}
 
 	Super::Deinitialize();

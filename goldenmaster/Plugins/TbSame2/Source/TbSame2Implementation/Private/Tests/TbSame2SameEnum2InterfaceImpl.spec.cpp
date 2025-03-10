@@ -56,7 +56,7 @@ void UTbSame2SameEnum2InterfaceImplSpec::Define()
 
 		testDoneDelegate = TestDone;
 		UTbSame2SameEnum2InterfaceSignals* TbSame2SameEnum2InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSame2SameEnum2InterfaceSignals->OnProp1Changed.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame2SameEnum2InterfaceImplHelper::Prop1PropertyCb);
+		TbSame2SameEnum2InterfaceSignals->OnProp1ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame2SameEnum2InterfaceImplHelper::Prop1PropertyCb);
 		// use different test value
 		TestValue = ETbSame2Enum1::TS2E1_VALUE2;
 		ImplFixture->GetImplementation()->SetProp1(TestValue);
@@ -77,7 +77,7 @@ void UTbSame2SameEnum2InterfaceImplSpec::Define()
 
 		testDoneDelegate = TestDone;
 		UTbSame2SameEnum2InterfaceSignals* TbSame2SameEnum2InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSame2SameEnum2InterfaceSignals->OnProp2Changed.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame2SameEnum2InterfaceImplHelper::Prop2PropertyCb);
+		TbSame2SameEnum2InterfaceSignals->OnProp2ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame2SameEnum2InterfaceImplHelper::Prop2PropertyCb);
 		// use different test value
 		TestValue = ETbSame2Enum2::TS2E2_VALUE2;
 		ImplFixture->GetImplementation()->SetProp2(TestValue);
@@ -99,7 +99,7 @@ void UTbSame2SameEnum2InterfaceImplSpec::Define()
 		{
 		testDoneDelegate = TestDone;
 		UTbSame2SameEnum2InterfaceSignals* TbSame2SameEnum2InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSame2SameEnum2InterfaceSignals->OnSig1Signal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame2SameEnum2InterfaceImplHelper::Sig1SignalCb);
+		TbSame2SameEnum2InterfaceSignals->OnSig1SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame2SameEnum2InterfaceImplHelper::Sig1SignalCb);
 
 		// use different test value
 		ETbSame2Enum1 Param1TestValue = ETbSame2Enum1::TS2E1_VALUE2;
@@ -110,7 +110,7 @@ void UTbSame2SameEnum2InterfaceImplSpec::Define()
 		{
 		testDoneDelegate = TestDone;
 		UTbSame2SameEnum2InterfaceSignals* TbSame2SameEnum2InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSame2SameEnum2InterfaceSignals->OnSig2Signal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame2SameEnum2InterfaceImplHelper::Sig2SignalCb);
+		TbSame2SameEnum2InterfaceSignals->OnSig2SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame2SameEnum2InterfaceImplHelper::Sig2SignalCb);
 
 		// use different test value
 		ETbSame2Enum1 Param1TestValue = ETbSame2Enum1::TS2E1_VALUE2;

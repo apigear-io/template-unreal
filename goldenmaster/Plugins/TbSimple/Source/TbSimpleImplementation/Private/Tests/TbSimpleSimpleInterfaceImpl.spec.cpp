@@ -56,7 +56,7 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 
 		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnPropBoolChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::PropBoolPropertyCb);
+		TbSimpleSimpleInterfaceSignals->OnPropBoolChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::PropBoolPropertyCb);
 		// use different test value
 		TestValue = true;
 		ImplFixture->GetImplementation()->SetPropBool(TestValue);
@@ -77,7 +77,7 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 
 		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnPropIntChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::PropIntPropertyCb);
+		TbSimpleSimpleInterfaceSignals->OnPropIntChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::PropIntPropertyCb);
 		// use different test value
 		TestValue = 1;
 		ImplFixture->GetImplementation()->SetPropInt(TestValue);
@@ -98,7 +98,7 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 
 		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnPropInt32Changed.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::PropInt32PropertyCb);
+		TbSimpleSimpleInterfaceSignals->OnPropInt32ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::PropInt32PropertyCb);
 		// use different test value
 		TestValue = 1;
 		ImplFixture->GetImplementation()->SetPropInt32(TestValue);
@@ -119,7 +119,7 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 
 		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnPropInt64Changed.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::PropInt64PropertyCb);
+		TbSimpleSimpleInterfaceSignals->OnPropInt64ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::PropInt64PropertyCb);
 		// use different test value
 		TestValue = 1LL;
 		ImplFixture->GetImplementation()->SetPropInt64(TestValue);
@@ -140,7 +140,7 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 
 		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnPropFloatChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::PropFloatPropertyCb);
+		TbSimpleSimpleInterfaceSignals->OnPropFloatChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::PropFloatPropertyCb);
 		// use different test value
 		TestValue = 1.0f;
 		ImplFixture->GetImplementation()->SetPropFloat(TestValue);
@@ -161,7 +161,7 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 
 		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnPropFloat32Changed.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::PropFloat32PropertyCb);
+		TbSimpleSimpleInterfaceSignals->OnPropFloat32ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::PropFloat32PropertyCb);
 		// use different test value
 		TestValue = 1.0f;
 		ImplFixture->GetImplementation()->SetPropFloat32(TestValue);
@@ -182,7 +182,7 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 
 		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnPropFloat64Changed.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::PropFloat64PropertyCb);
+		TbSimpleSimpleInterfaceSignals->OnPropFloat64ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::PropFloat64PropertyCb);
 		// use different test value
 		TestValue = 1.0;
 		ImplFixture->GetImplementation()->SetPropFloat64(TestValue);
@@ -203,7 +203,7 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 
 		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnPropStringChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::PropStringPropertyCb);
+		TbSimpleSimpleInterfaceSignals->OnPropStringChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::PropStringPropertyCb);
 		// use different test value
 		TestValue = FString("xyz");
 		ImplFixture->GetImplementation()->SetPropString(TestValue);
@@ -267,7 +267,7 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 		{
 		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnSigBoolSignal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::SigBoolSignalCb);
+		TbSimpleSimpleInterfaceSignals->OnSigBoolSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::SigBoolSignalCb);
 
 		// use different test value
 		bool bParamBoolTestValue = true;
@@ -278,7 +278,7 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 		{
 		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnSigIntSignal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::SigIntSignalCb);
+		TbSimpleSimpleInterfaceSignals->OnSigIntSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::SigIntSignalCb);
 
 		// use different test value
 		int32 ParamIntTestValue = 1;
@@ -289,7 +289,7 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 		{
 		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnSigInt32Signal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::SigInt32SignalCb);
+		TbSimpleSimpleInterfaceSignals->OnSigInt32SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::SigInt32SignalCb);
 
 		// use different test value
 		int32 ParamInt32TestValue = 1;
@@ -300,7 +300,7 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 		{
 		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnSigInt64Signal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::SigInt64SignalCb);
+		TbSimpleSimpleInterfaceSignals->OnSigInt64SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::SigInt64SignalCb);
 
 		// use different test value
 		int64 ParamInt64TestValue = 1LL;
@@ -311,7 +311,7 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 		{
 		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnSigFloatSignal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::SigFloatSignalCb);
+		TbSimpleSimpleInterfaceSignals->OnSigFloatSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::SigFloatSignalCb);
 
 		// use different test value
 		float ParamFloatTestValue = 1.0f;
@@ -322,7 +322,7 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 		{
 		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnSigFloat32Signal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::SigFloat32SignalCb);
+		TbSimpleSimpleInterfaceSignals->OnSigFloat32SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::SigFloat32SignalCb);
 
 		// use different test value
 		float ParamFloat32TestValue = 1.0f;
@@ -333,7 +333,7 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 		{
 		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnSigFloat64Signal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::SigFloat64SignalCb);
+		TbSimpleSimpleInterfaceSignals->OnSigFloat64SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::SigFloat64SignalCb);
 
 		// use different test value
 		double ParamFloat64TestValue = 1.0;
@@ -344,7 +344,7 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 		{
 		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnSigStringSignal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::SigStringSignalCb);
+		TbSimpleSimpleInterfaceSignals->OnSigStringSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::SigStringSignalCb);
 
 		// use different test value
 		FString ParamStringTestValue = FString("xyz");

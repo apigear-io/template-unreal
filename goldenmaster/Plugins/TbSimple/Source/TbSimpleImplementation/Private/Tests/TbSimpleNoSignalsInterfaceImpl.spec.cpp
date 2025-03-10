@@ -56,7 +56,7 @@ void UTbSimpleNoSignalsInterfaceImplSpec::Define()
 
 		testDoneDelegate = TestDone;
 		UTbSimpleNoSignalsInterfaceSignals* TbSimpleNoSignalsInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleNoSignalsInterfaceSignals->OnPropBoolChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleNoSignalsInterfaceImplHelper::PropBoolPropertyCb);
+		TbSimpleNoSignalsInterfaceSignals->OnPropBoolChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleNoSignalsInterfaceImplHelper::PropBoolPropertyCb);
 		// use different test value
 		TestValue = true;
 		ImplFixture->GetImplementation()->SetPropBool(TestValue);
@@ -77,7 +77,7 @@ void UTbSimpleNoSignalsInterfaceImplSpec::Define()
 
 		testDoneDelegate = TestDone;
 		UTbSimpleNoSignalsInterfaceSignals* TbSimpleNoSignalsInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleNoSignalsInterfaceSignals->OnPropIntChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleNoSignalsInterfaceImplHelper::PropIntPropertyCb);
+		TbSimpleNoSignalsInterfaceSignals->OnPropIntChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleNoSignalsInterfaceImplHelper::PropIntPropertyCb);
 		// use different test value
 		TestValue = 1;
 		ImplFixture->GetImplementation()->SetPropInt(TestValue);

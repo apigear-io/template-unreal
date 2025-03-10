@@ -58,23 +58,23 @@ void UTbSimpleSimpleArrayInterfaceOLinkAdapter::setBackendService(TScriptInterfa
 	{
 		UTbSimpleSimpleArrayInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleSimpleArrayInterface"));
-		BackendSignals->OnPropBoolChanged.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropBoolChanged);
-		BackendSignals->OnPropIntChanged.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropIntChanged);
-		BackendSignals->OnPropInt32Changed.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropInt32Changed);
-		BackendSignals->OnPropInt64Changed.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropInt64Changed);
-		BackendSignals->OnPropFloatChanged.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropFloatChanged);
-		BackendSignals->OnPropFloat32Changed.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropFloat32Changed);
-		BackendSignals->OnPropFloat64Changed.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropFloat64Changed);
-		BackendSignals->OnPropStringChanged.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropStringChanged);
-		BackendSignals->OnPropReadOnlyStringChanged.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropReadOnlyStringChanged);
-		BackendSignals->OnSigBoolSignal.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigBool);
-		BackendSignals->OnSigIntSignal.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigInt);
-		BackendSignals->OnSigInt32Signal.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigInt32);
-		BackendSignals->OnSigInt64Signal.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigInt64);
-		BackendSignals->OnSigFloatSignal.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigFloat);
-		BackendSignals->OnSigFloat32Signal.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigFloat32);
-		BackendSignals->OnSigFloat64Signal.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigFloat64);
-		BackendSignals->OnSigStringSignal.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigString);
+		BackendSignals->OnPropBoolChangedBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropBoolChanged);
+		BackendSignals->OnPropIntChangedBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropIntChanged);
+		BackendSignals->OnPropInt32ChangedBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropInt32Changed);
+		BackendSignals->OnPropInt64ChangedBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropInt64Changed);
+		BackendSignals->OnPropFloatChangedBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropFloatChanged);
+		BackendSignals->OnPropFloat32ChangedBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropFloat32Changed);
+		BackendSignals->OnPropFloat64ChangedBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropFloat64Changed);
+		BackendSignals->OnPropStringChangedBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropStringChanged);
+		BackendSignals->OnPropReadOnlyStringChangedBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropReadOnlyStringChanged);
+		BackendSignals->OnSigBoolSignalBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigBool);
+		BackendSignals->OnSigIntSignalBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigInt);
+		BackendSignals->OnSigInt32SignalBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigInt32);
+		BackendSignals->OnSigInt64SignalBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigInt64);
+		BackendSignals->OnSigFloatSignalBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigFloat);
+		BackendSignals->OnSigFloat32SignalBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigFloat32);
+		BackendSignals->OnSigFloat64SignalBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigFloat64);
+		BackendSignals->OnSigStringSignalBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigString);
 	}
 
 	// only set if interface is implemented
@@ -85,23 +85,23 @@ void UTbSimpleSimpleArrayInterfaceOLinkAdapter::setBackendService(TScriptInterfa
 	UTbSimpleSimpleArrayInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service TbSimpleSimpleArrayInterface"));
 	// connect property changed signals or simple events
-	BackendSignals->OnPropBoolChanged.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropBoolChanged);
-	BackendSignals->OnPropIntChanged.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropIntChanged);
-	BackendSignals->OnPropInt32Changed.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropInt32Changed);
-	BackendSignals->OnPropInt64Changed.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropInt64Changed);
-	BackendSignals->OnPropFloatChanged.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropFloatChanged);
-	BackendSignals->OnPropFloat32Changed.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropFloat32Changed);
-	BackendSignals->OnPropFloat64Changed.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropFloat64Changed);
-	BackendSignals->OnPropStringChanged.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropStringChanged);
-	BackendSignals->OnPropReadOnlyStringChanged.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropReadOnlyStringChanged);
-	BackendSignals->OnSigBoolSignal.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigBool);
-	BackendSignals->OnSigIntSignal.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigInt);
-	BackendSignals->OnSigInt32Signal.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigInt32);
-	BackendSignals->OnSigInt64Signal.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigInt64);
-	BackendSignals->OnSigFloatSignal.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigFloat);
-	BackendSignals->OnSigFloat32Signal.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigFloat32);
-	BackendSignals->OnSigFloat64Signal.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigFloat64);
-	BackendSignals->OnSigStringSignal.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigString);
+	BackendSignals->OnPropBoolChangedBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropBoolChanged);
+	BackendSignals->OnPropIntChangedBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropIntChanged);
+	BackendSignals->OnPropInt32ChangedBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropInt32Changed);
+	BackendSignals->OnPropInt64ChangedBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropInt64Changed);
+	BackendSignals->OnPropFloatChangedBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropFloatChanged);
+	BackendSignals->OnPropFloat32ChangedBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropFloat32Changed);
+	BackendSignals->OnPropFloat64ChangedBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropFloat64Changed);
+	BackendSignals->OnPropStringChangedBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropStringChanged);
+	BackendSignals->OnPropReadOnlyStringChangedBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropReadOnlyStringChanged);
+	BackendSignals->OnSigBoolSignalBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigBool);
+	BackendSignals->OnSigIntSignalBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigInt);
+	BackendSignals->OnSigInt32SignalBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigInt32);
+	BackendSignals->OnSigInt64SignalBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigInt64);
+	BackendSignals->OnSigFloatSignalBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigFloat);
+	BackendSignals->OnSigFloat32SignalBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigFloat32);
+	BackendSignals->OnSigFloat64SignalBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigFloat64);
+	BackendSignals->OnSigStringSignalBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigString);
 
 	// update olink source with new backend
 	Source->setBackendService(InService);

@@ -56,7 +56,7 @@ void UTestbed1StructInterfaceImplSpec::Define()
 
 		testDoneDelegate = TestDone;
 		UTestbed1StructInterfaceSignals* Testbed1StructInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructInterfaceSignals->OnPropBoolChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructInterfaceImplHelper::PropBoolPropertyCb);
+		Testbed1StructInterfaceSignals->OnPropBoolChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructInterfaceImplHelper::PropBoolPropertyCb);
 		// use different test value
 		TestValue = createTestFTestbed1StructBool();
 		ImplFixture->GetImplementation()->SetPropBool(TestValue);
@@ -77,7 +77,7 @@ void UTestbed1StructInterfaceImplSpec::Define()
 
 		testDoneDelegate = TestDone;
 		UTestbed1StructInterfaceSignals* Testbed1StructInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructInterfaceSignals->OnPropIntChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructInterfaceImplHelper::PropIntPropertyCb);
+		Testbed1StructInterfaceSignals->OnPropIntChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructInterfaceImplHelper::PropIntPropertyCb);
 		// use different test value
 		TestValue = createTestFTestbed1StructInt();
 		ImplFixture->GetImplementation()->SetPropInt(TestValue);
@@ -98,7 +98,7 @@ void UTestbed1StructInterfaceImplSpec::Define()
 
 		testDoneDelegate = TestDone;
 		UTestbed1StructInterfaceSignals* Testbed1StructInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructInterfaceSignals->OnPropFloatChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructInterfaceImplHelper::PropFloatPropertyCb);
+		Testbed1StructInterfaceSignals->OnPropFloatChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructInterfaceImplHelper::PropFloatPropertyCb);
 		// use different test value
 		TestValue = createTestFTestbed1StructFloat();
 		ImplFixture->GetImplementation()->SetPropFloat(TestValue);
@@ -119,7 +119,7 @@ void UTestbed1StructInterfaceImplSpec::Define()
 
 		testDoneDelegate = TestDone;
 		UTestbed1StructInterfaceSignals* Testbed1StructInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructInterfaceSignals->OnPropStringChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructInterfaceImplHelper::PropStringPropertyCb);
+		Testbed1StructInterfaceSignals->OnPropStringChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructInterfaceImplHelper::PropStringPropertyCb);
 		// use different test value
 		TestValue = createTestFTestbed1StructString();
 		ImplFixture->GetImplementation()->SetPropString(TestValue);
@@ -153,7 +153,7 @@ void UTestbed1StructInterfaceImplSpec::Define()
 		{
 		testDoneDelegate = TestDone;
 		UTestbed1StructInterfaceSignals* Testbed1StructInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructInterfaceSignals->OnSigBoolSignal.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructInterfaceImplHelper::SigBoolSignalCb);
+		Testbed1StructInterfaceSignals->OnSigBoolSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructInterfaceImplHelper::SigBoolSignalCb);
 
 		// use different test value
 		FTestbed1StructBool ParamBoolTestValue = createTestFTestbed1StructBool();
@@ -164,7 +164,7 @@ void UTestbed1StructInterfaceImplSpec::Define()
 		{
 		testDoneDelegate = TestDone;
 		UTestbed1StructInterfaceSignals* Testbed1StructInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructInterfaceSignals->OnSigIntSignal.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructInterfaceImplHelper::SigIntSignalCb);
+		Testbed1StructInterfaceSignals->OnSigIntSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructInterfaceImplHelper::SigIntSignalCb);
 
 		// use different test value
 		FTestbed1StructInt ParamIntTestValue = createTestFTestbed1StructInt();
@@ -175,7 +175,7 @@ void UTestbed1StructInterfaceImplSpec::Define()
 		{
 		testDoneDelegate = TestDone;
 		UTestbed1StructInterfaceSignals* Testbed1StructInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructInterfaceSignals->OnSigFloatSignal.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructInterfaceImplHelper::SigFloatSignalCb);
+		Testbed1StructInterfaceSignals->OnSigFloatSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructInterfaceImplHelper::SigFloatSignalCb);
 
 		// use different test value
 		FTestbed1StructFloat ParamFloatTestValue = createTestFTestbed1StructFloat();
@@ -186,7 +186,7 @@ void UTestbed1StructInterfaceImplSpec::Define()
 		{
 		testDoneDelegate = TestDone;
 		UTestbed1StructInterfaceSignals* Testbed1StructInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructInterfaceSignals->OnSigStringSignal.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructInterfaceImplHelper::SigStringSignalCb);
+		Testbed1StructInterfaceSignals->OnSigStringSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructInterfaceImplHelper::SigStringSignalCb);
 
 		// use different test value
 		FTestbed1StructString ParamStringTestValue = createTestFTestbed1StructString();

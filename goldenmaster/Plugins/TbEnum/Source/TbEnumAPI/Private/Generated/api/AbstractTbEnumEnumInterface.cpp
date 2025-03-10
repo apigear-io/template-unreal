@@ -271,14 +271,22 @@ void UAbstractTbEnumEnumInterface::Deinitialize()
 	if (TbEnumEnumInterfaceSignals)
 	{
 		TbEnumEnumInterfaceSignals->OnSig0Signal.RemoveAll(TbEnumEnumInterfaceSignals);
+		TbEnumEnumInterfaceSignals->OnSig0SignalBP.RemoveAll(TbEnumEnumInterfaceSignals);
 		TbEnumEnumInterfaceSignals->OnSig1Signal.RemoveAll(TbEnumEnumInterfaceSignals);
+		TbEnumEnumInterfaceSignals->OnSig1SignalBP.RemoveAll(TbEnumEnumInterfaceSignals);
 		TbEnumEnumInterfaceSignals->OnSig2Signal.RemoveAll(TbEnumEnumInterfaceSignals);
+		TbEnumEnumInterfaceSignals->OnSig2SignalBP.RemoveAll(TbEnumEnumInterfaceSignals);
 		TbEnumEnumInterfaceSignals->OnSig3Signal.RemoveAll(TbEnumEnumInterfaceSignals);
+		TbEnumEnumInterfaceSignals->OnSig3SignalBP.RemoveAll(TbEnumEnumInterfaceSignals);
 
 		TbEnumEnumInterfaceSignals->OnProp0Changed.RemoveAll(TbEnumEnumInterfaceSignals);
+		TbEnumEnumInterfaceSignals->OnProp0ChangedBP.RemoveAll(TbEnumEnumInterfaceSignals);
 		TbEnumEnumInterfaceSignals->OnProp1Changed.RemoveAll(TbEnumEnumInterfaceSignals);
+		TbEnumEnumInterfaceSignals->OnProp1ChangedBP.RemoveAll(TbEnumEnumInterfaceSignals);
 		TbEnumEnumInterfaceSignals->OnProp2Changed.RemoveAll(TbEnumEnumInterfaceSignals);
+		TbEnumEnumInterfaceSignals->OnProp2ChangedBP.RemoveAll(TbEnumEnumInterfaceSignals);
 		TbEnumEnumInterfaceSignals->OnProp3Changed.RemoveAll(TbEnumEnumInterfaceSignals);
+		TbEnumEnumInterfaceSignals->OnProp3ChangedBP.RemoveAll(TbEnumEnumInterfaceSignals);
 	}
 
 	Super::Deinitialize();

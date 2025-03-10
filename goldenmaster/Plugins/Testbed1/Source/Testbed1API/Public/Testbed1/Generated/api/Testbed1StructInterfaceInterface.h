@@ -24,19 +24,27 @@ limitations under the License.
  * Declaration for StructInterface
  */
 // signal delegates
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed1StructInterfaceSigBoolDelegate, const FTestbed1StructBool&, ParamBool);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTestbed1StructInterfaceSigBoolDelegate, const FTestbed1StructBool& /* ParamBool */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed1StructInterfaceSigBoolDelegateBP, const FTestbed1StructBool&, ParamBool);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed1StructInterfaceSigIntDelegate, const FTestbed1StructInt&, ParamInt);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTestbed1StructInterfaceSigIntDelegate, const FTestbed1StructInt& /* ParamInt */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed1StructInterfaceSigIntDelegateBP, const FTestbed1StructInt&, ParamInt);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed1StructInterfaceSigFloatDelegate, const FTestbed1StructFloat&, ParamFloat);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTestbed1StructInterfaceSigFloatDelegate, const FTestbed1StructFloat& /* ParamFloat */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed1StructInterfaceSigFloatDelegateBP, const FTestbed1StructFloat&, ParamFloat);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed1StructInterfaceSigStringDelegate, const FTestbed1StructString&, ParamString);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTestbed1StructInterfaceSigStringDelegate, const FTestbed1StructString& /* ParamString */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed1StructInterfaceSigStringDelegateBP, const FTestbed1StructString&, ParamString);
 
 // property delegates
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed1StructInterfacePropBoolChangedDelegate, const FTestbed1StructBool&, PropBool);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed1StructInterfacePropIntChangedDelegate, const FTestbed1StructInt&, PropInt);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed1StructInterfacePropFloatChangedDelegate, const FTestbed1StructFloat&, PropFloat);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed1StructInterfacePropStringChangedDelegate, const FTestbed1StructString&, PropString);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTestbed1StructInterfacePropBoolChangedDelegate, const FTestbed1StructBool& /* PropBool */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed1StructInterfacePropBoolChangedDelegateBP, const FTestbed1StructBool&, PropBool);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTestbed1StructInterfacePropIntChangedDelegate, const FTestbed1StructInt& /* PropInt */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed1StructInterfacePropIntChangedDelegateBP, const FTestbed1StructInt&, PropInt);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTestbed1StructInterfacePropFloatChangedDelegate, const FTestbed1StructFloat& /* PropFloat */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed1StructInterfacePropFloatChangedDelegateBP, const FTestbed1StructFloat&, PropFloat);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTestbed1StructInterfacePropStringChangedDelegate, const FTestbed1StructString& /* PropString */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed1StructInterfacePropStringChangedDelegateBP, const FTestbed1StructString&, PropString);
 
 /**
  * Class UTestbed1StructInterfaceInterfaceSignals
@@ -49,76 +57,92 @@ class TESTBED1API_API UTestbed1StructInterfaceSignals : public UObject
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface|Signals", DisplayName = "SigBool Signal")
 	FTestbed1StructInterfaceSigBoolDelegate OnSigBoolSignal;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface|Signals", DisplayName = "SigBool Signal")
+	FTestbed1StructInterfaceSigBoolDelegateBP OnSigBoolSignalBP;
 	/// C++ wrapper for BP functions to safely call SigBoolSignal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface|Signals", DisplayName = "Broadcast SigBool Signal")
 	void BroadcastSigBoolSignal(const FTestbed1StructBool& ParamBool)
 	{
 		OnSigBoolSignal.Broadcast(ParamBool);
+		OnSigBoolSignalBP.Broadcast(ParamBool);
 	}
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface|Signals", DisplayName = "SigInt Signal")
 	FTestbed1StructInterfaceSigIntDelegate OnSigIntSignal;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface|Signals", DisplayName = "SigInt Signal")
+	FTestbed1StructInterfaceSigIntDelegateBP OnSigIntSignalBP;
 	/// C++ wrapper for BP functions to safely call SigIntSignal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface|Signals", DisplayName = "Broadcast SigInt Signal")
 	void BroadcastSigIntSignal(const FTestbed1StructInt& ParamInt)
 	{
 		OnSigIntSignal.Broadcast(ParamInt);
+		OnSigIntSignalBP.Broadcast(ParamInt);
 	}
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface|Signals", DisplayName = "SigFloat Signal")
 	FTestbed1StructInterfaceSigFloatDelegate OnSigFloatSignal;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface|Signals", DisplayName = "SigFloat Signal")
+	FTestbed1StructInterfaceSigFloatDelegateBP OnSigFloatSignalBP;
 	/// C++ wrapper for BP functions to safely call SigFloatSignal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface|Signals", DisplayName = "Broadcast SigFloat Signal")
 	void BroadcastSigFloatSignal(const FTestbed1StructFloat& ParamFloat)
 	{
 		OnSigFloatSignal.Broadcast(ParamFloat);
+		OnSigFloatSignalBP.Broadcast(ParamFloat);
 	}
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface|Signals", DisplayName = "SigString Signal")
 	FTestbed1StructInterfaceSigStringDelegate OnSigStringSignal;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface|Signals", DisplayName = "SigString Signal")
+	FTestbed1StructInterfaceSigStringDelegateBP OnSigStringSignalBP;
 	/// C++ wrapper for BP functions to safely call SigStringSignal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface|Signals", DisplayName = "Broadcast SigString Signal")
 	void BroadcastSigStringSignal(const FTestbed1StructString& ParamString)
 	{
 		OnSigStringSignal.Broadcast(ParamString);
+		OnSigStringSignalBP.Broadcast(ParamString);
 	}
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface|Signals", DisplayName = "Property PropBool Changed")
 	FTestbed1StructInterfacePropBoolChangedDelegate OnPropBoolChanged;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface|Signals", DisplayName = "Property PropBool Changed")
+	FTestbed1StructInterfacePropBoolChangedDelegateBP OnPropBoolChangedBP;
 	/// C++ wrapper for BP functions to safely call OnPropBoolChanged.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface|Signals", DisplayName = "Broadcast Property PropBool Changed")
 	void BroadcastPropBoolChanged(UPARAM(DisplayName = "PropBool") const FTestbed1StructBool& InPropBool)
 	{
 		OnPropBoolChanged.Broadcast(InPropBool);
+		OnPropBoolChangedBP.Broadcast(InPropBool);
 	}
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface|Signals", DisplayName = "Property PropInt Changed")
 	FTestbed1StructInterfacePropIntChangedDelegate OnPropIntChanged;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface|Signals", DisplayName = "Property PropInt Changed")
+	FTestbed1StructInterfacePropIntChangedDelegateBP OnPropIntChangedBP;
 	/// C++ wrapper for BP functions to safely call OnPropIntChanged.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface|Signals", DisplayName = "Broadcast Property PropInt Changed")
 	void BroadcastPropIntChanged(UPARAM(DisplayName = "PropInt") const FTestbed1StructInt& InPropInt)
 	{
 		OnPropIntChanged.Broadcast(InPropInt);
+		OnPropIntChangedBP.Broadcast(InPropInt);
 	}
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface|Signals", DisplayName = "Property PropFloat Changed")
 	FTestbed1StructInterfacePropFloatChangedDelegate OnPropFloatChanged;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface|Signals", DisplayName = "Property PropFloat Changed")
+	FTestbed1StructInterfacePropFloatChangedDelegateBP OnPropFloatChangedBP;
 	/// C++ wrapper for BP functions to safely call OnPropFloatChanged.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface|Signals", DisplayName = "Broadcast Property PropFloat Changed")
 	void BroadcastPropFloatChanged(UPARAM(DisplayName = "PropFloat") const FTestbed1StructFloat& InPropFloat)
 	{
 		OnPropFloatChanged.Broadcast(InPropFloat);
+		OnPropFloatChangedBP.Broadcast(InPropFloat);
 	}
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface|Signals", DisplayName = "Property PropString Changed")
 	FTestbed1StructInterfacePropStringChangedDelegate OnPropStringChanged;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface|Signals", DisplayName = "Property PropString Changed")
+	FTestbed1StructInterfacePropStringChangedDelegateBP OnPropStringChangedBP;
 	/// C++ wrapper for BP functions to safely call OnPropStringChanged.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface|Signals", DisplayName = "Broadcast Property PropString Changed")
 	void BroadcastPropStringChanged(UPARAM(DisplayName = "PropString") const FTestbed1StructString& InPropString)
 	{
 		OnPropStringChanged.Broadcast(InPropString);
+		OnPropStringChangedBP.Broadcast(InPropString);
 	}
 };
 

@@ -125,22 +125,22 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::_setBackendService(TScriptInterface<
 	{
 		UTbSimpleSimpleInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleSimpleInterface"));
-		BackendSignals->OnPropBoolChanged.RemoveDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropBoolChanged);
-		BackendSignals->OnPropIntChanged.RemoveDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropIntChanged);
-		BackendSignals->OnPropInt32Changed.RemoveDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropInt32Changed);
-		BackendSignals->OnPropInt64Changed.RemoveDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropInt64Changed);
-		BackendSignals->OnPropFloatChanged.RemoveDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropFloatChanged);
-		BackendSignals->OnPropFloat32Changed.RemoveDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropFloat32Changed);
-		BackendSignals->OnPropFloat64Changed.RemoveDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropFloat64Changed);
-		BackendSignals->OnPropStringChanged.RemoveDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropStringChanged);
-		BackendSignals->OnSigBoolSignal.RemoveDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigBool);
-		BackendSignals->OnSigIntSignal.RemoveDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigInt);
-		BackendSignals->OnSigInt32Signal.RemoveDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigInt32);
-		BackendSignals->OnSigInt64Signal.RemoveDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigInt64);
-		BackendSignals->OnSigFloatSignal.RemoveDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigFloat);
-		BackendSignals->OnSigFloat32Signal.RemoveDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigFloat32);
-		BackendSignals->OnSigFloat64Signal.RemoveDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigFloat64);
-		BackendSignals->OnSigStringSignal.RemoveDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigString);
+		BackendSignals->OnPropBoolChangedBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropBoolChanged);
+		BackendSignals->OnPropIntChangedBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropIntChanged);
+		BackendSignals->OnPropInt32ChangedBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropInt32Changed);
+		BackendSignals->OnPropInt64ChangedBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropInt64Changed);
+		BackendSignals->OnPropFloatChangedBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropFloatChanged);
+		BackendSignals->OnPropFloat32ChangedBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropFloat32Changed);
+		BackendSignals->OnPropFloat64ChangedBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropFloat64Changed);
+		BackendSignals->OnPropStringChangedBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropStringChanged);
+		BackendSignals->OnSigBoolSignalBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigBool);
+		BackendSignals->OnSigIntSignalBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigInt);
+		BackendSignals->OnSigInt32SignalBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigInt32);
+		BackendSignals->OnSigInt64SignalBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigInt64);
+		BackendSignals->OnSigFloatSignalBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigFloat);
+		BackendSignals->OnSigFloat32SignalBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigFloat32);
+		BackendSignals->OnSigFloat64SignalBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigFloat64);
+		BackendSignals->OnSigStringSignalBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigString);
 	}
 
 	// only set if interface is implemented
@@ -151,22 +151,22 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::_setBackendService(TScriptInterface<
 	UTbSimpleSimpleInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service TbSimpleSimpleInterface"));
 	// connect property changed signals or simple events
-	BackendSignals->OnPropBoolChanged.AddDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropBoolChanged);
-	BackendSignals->OnPropIntChanged.AddDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropIntChanged);
-	BackendSignals->OnPropInt32Changed.AddDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropInt32Changed);
-	BackendSignals->OnPropInt64Changed.AddDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropInt64Changed);
-	BackendSignals->OnPropFloatChanged.AddDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropFloatChanged);
-	BackendSignals->OnPropFloat32Changed.AddDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropFloat32Changed);
-	BackendSignals->OnPropFloat64Changed.AddDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropFloat64Changed);
-	BackendSignals->OnPropStringChanged.AddDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropStringChanged);
-	BackendSignals->OnSigBoolSignal.AddDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigBool);
-	BackendSignals->OnSigIntSignal.AddDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigInt);
-	BackendSignals->OnSigInt32Signal.AddDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigInt32);
-	BackendSignals->OnSigInt64Signal.AddDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigInt64);
-	BackendSignals->OnSigFloatSignal.AddDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigFloat);
-	BackendSignals->OnSigFloat32Signal.AddDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigFloat32);
-	BackendSignals->OnSigFloat64Signal.AddDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigFloat64);
-	BackendSignals->OnSigStringSignal.AddDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigString);
+	BackendSignals->OnPropBoolChangedBP.AddDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropBoolChanged);
+	BackendSignals->OnPropIntChangedBP.AddDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropIntChanged);
+	BackendSignals->OnPropInt32ChangedBP.AddDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropInt32Changed);
+	BackendSignals->OnPropInt64ChangedBP.AddDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropInt64Changed);
+	BackendSignals->OnPropFloatChangedBP.AddDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropFloatChanged);
+	BackendSignals->OnPropFloat32ChangedBP.AddDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropFloat32Changed);
+	BackendSignals->OnPropFloat64ChangedBP.AddDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropFloat64Changed);
+	BackendSignals->OnPropStringChangedBP.AddDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropStringChanged);
+	BackendSignals->OnSigBoolSignalBP.AddDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigBool);
+	BackendSignals->OnSigIntSignalBP.AddDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigInt);
+	BackendSignals->OnSigInt32SignalBP.AddDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigInt32);
+	BackendSignals->OnSigInt64SignalBP.AddDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigInt64);
+	BackendSignals->OnSigFloatSignalBP.AddDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigFloat);
+	BackendSignals->OnSigFloat32SignalBP.AddDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigFloat32);
+	BackendSignals->OnSigFloat64SignalBP.AddDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigFloat64);
+	BackendSignals->OnSigStringSignalBP.AddDynamic(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigString);
 }
 
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnNewClientDiscovered(const FTbSimpleSimpleInterfaceDiscoveryMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)

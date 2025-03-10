@@ -24,13 +24,17 @@ limitations under the License.
  * Declaration for NestedStruct2Interface
  */
 // signal delegates
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed2NestedStruct2InterfaceSig1Delegate, const FTestbed2NestedStruct1&, Param1);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTestbed2NestedStruct2InterfaceSig1Delegate, const FTestbed2NestedStruct1& /* Param1 */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed2NestedStruct2InterfaceSig1DelegateBP, const FTestbed2NestedStruct1&, Param1);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FTestbed2NestedStruct2InterfaceSig2Delegate, const FTestbed2NestedStruct1&, Param1, const FTestbed2NestedStruct2&, Param2);
+DECLARE_MULTICAST_DELEGATE_TwoParams(FTestbed2NestedStruct2InterfaceSig2Delegate, const FTestbed2NestedStruct1& /* Param1 */, const FTestbed2NestedStruct2& /* Param2 */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FTestbed2NestedStruct2InterfaceSig2DelegateBP, const FTestbed2NestedStruct1&, Param1, const FTestbed2NestedStruct2&, Param2);
 
 // property delegates
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed2NestedStruct2InterfaceProp1ChangedDelegate, const FTestbed2NestedStruct1&, Prop1);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed2NestedStruct2InterfaceProp2ChangedDelegate, const FTestbed2NestedStruct2&, Prop2);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTestbed2NestedStruct2InterfaceProp1ChangedDelegate, const FTestbed2NestedStruct1& /* Prop1 */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed2NestedStruct2InterfaceProp1ChangedDelegateBP, const FTestbed2NestedStruct1&, Prop1);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTestbed2NestedStruct2InterfaceProp2ChangedDelegate, const FTestbed2NestedStruct2& /* Prop2 */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed2NestedStruct2InterfaceProp2ChangedDelegateBP, const FTestbed2NestedStruct2&, Prop2);
 
 /**
  * Class UTestbed2NestedStruct2InterfaceInterfaceSignals
@@ -43,40 +47,48 @@ class TESTBED2API_API UTestbed2NestedStruct2InterfaceSignals : public UObject
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct2Interface|Signals", DisplayName = "Sig1 Signal")
 	FTestbed2NestedStruct2InterfaceSig1Delegate OnSig1Signal;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct2Interface|Signals", DisplayName = "Sig1 Signal")
+	FTestbed2NestedStruct2InterfaceSig1DelegateBP OnSig1SignalBP;
 	/// C++ wrapper for BP functions to safely call Sig1Signal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface|Signals", DisplayName = "Broadcast Sig1 Signal")
 	void BroadcastSig1Signal(const FTestbed2NestedStruct1& Param1)
 	{
 		OnSig1Signal.Broadcast(Param1);
+		OnSig1SignalBP.Broadcast(Param1);
 	}
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct2Interface|Signals", DisplayName = "Sig2 Signal")
 	FTestbed2NestedStruct2InterfaceSig2Delegate OnSig2Signal;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct2Interface|Signals", DisplayName = "Sig2 Signal")
+	FTestbed2NestedStruct2InterfaceSig2DelegateBP OnSig2SignalBP;
 	/// C++ wrapper for BP functions to safely call Sig2Signal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface|Signals", DisplayName = "Broadcast Sig2 Signal")
 	void BroadcastSig2Signal(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
 	{
 		OnSig2Signal.Broadcast(Param1, Param2);
+		OnSig2SignalBP.Broadcast(Param1, Param2);
 	}
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct2Interface|Signals", DisplayName = "Property Prop1 Changed")
 	FTestbed2NestedStruct2InterfaceProp1ChangedDelegate OnProp1Changed;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct2Interface|Signals", DisplayName = "Property Prop1 Changed")
+	FTestbed2NestedStruct2InterfaceProp1ChangedDelegateBP OnProp1ChangedBP;
 	/// C++ wrapper for BP functions to safely call OnProp1Changed.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface|Signals", DisplayName = "Broadcast Property Prop1 Changed")
 	void BroadcastProp1Changed(UPARAM(DisplayName = "Prop1") const FTestbed2NestedStruct1& InProp1)
 	{
 		OnProp1Changed.Broadcast(InProp1);
+		OnProp1ChangedBP.Broadcast(InProp1);
 	}
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct2Interface|Signals", DisplayName = "Property Prop2 Changed")
 	FTestbed2NestedStruct2InterfaceProp2ChangedDelegate OnProp2Changed;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct2Interface|Signals", DisplayName = "Property Prop2 Changed")
+	FTestbed2NestedStruct2InterfaceProp2ChangedDelegateBP OnProp2ChangedBP;
 	/// C++ wrapper for BP functions to safely call OnProp2Changed.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface|Signals", DisplayName = "Broadcast Property Prop2 Changed")
 	void BroadcastProp2Changed(UPARAM(DisplayName = "Prop2") const FTestbed2NestedStruct2& InProp2)
 	{
 		OnProp2Changed.Broadcast(InProp2);
+		OnProp2ChangedBP.Broadcast(InProp2);
 	}
 };
 

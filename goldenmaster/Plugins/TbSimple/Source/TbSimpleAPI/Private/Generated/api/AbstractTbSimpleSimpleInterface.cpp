@@ -451,22 +451,38 @@ void UAbstractTbSimpleSimpleInterface::Deinitialize()
 	if (TbSimpleSimpleInterfaceSignals)
 	{
 		TbSimpleSimpleInterfaceSignals->OnSigBoolSignal.RemoveAll(TbSimpleSimpleInterfaceSignals);
+		TbSimpleSimpleInterfaceSignals->OnSigBoolSignalBP.RemoveAll(TbSimpleSimpleInterfaceSignals);
 		TbSimpleSimpleInterfaceSignals->OnSigIntSignal.RemoveAll(TbSimpleSimpleInterfaceSignals);
+		TbSimpleSimpleInterfaceSignals->OnSigIntSignalBP.RemoveAll(TbSimpleSimpleInterfaceSignals);
 		TbSimpleSimpleInterfaceSignals->OnSigInt32Signal.RemoveAll(TbSimpleSimpleInterfaceSignals);
+		TbSimpleSimpleInterfaceSignals->OnSigInt32SignalBP.RemoveAll(TbSimpleSimpleInterfaceSignals);
 		TbSimpleSimpleInterfaceSignals->OnSigInt64Signal.RemoveAll(TbSimpleSimpleInterfaceSignals);
+		TbSimpleSimpleInterfaceSignals->OnSigInt64SignalBP.RemoveAll(TbSimpleSimpleInterfaceSignals);
 		TbSimpleSimpleInterfaceSignals->OnSigFloatSignal.RemoveAll(TbSimpleSimpleInterfaceSignals);
+		TbSimpleSimpleInterfaceSignals->OnSigFloatSignalBP.RemoveAll(TbSimpleSimpleInterfaceSignals);
 		TbSimpleSimpleInterfaceSignals->OnSigFloat32Signal.RemoveAll(TbSimpleSimpleInterfaceSignals);
+		TbSimpleSimpleInterfaceSignals->OnSigFloat32SignalBP.RemoveAll(TbSimpleSimpleInterfaceSignals);
 		TbSimpleSimpleInterfaceSignals->OnSigFloat64Signal.RemoveAll(TbSimpleSimpleInterfaceSignals);
+		TbSimpleSimpleInterfaceSignals->OnSigFloat64SignalBP.RemoveAll(TbSimpleSimpleInterfaceSignals);
 		TbSimpleSimpleInterfaceSignals->OnSigStringSignal.RemoveAll(TbSimpleSimpleInterfaceSignals);
+		TbSimpleSimpleInterfaceSignals->OnSigStringSignalBP.RemoveAll(TbSimpleSimpleInterfaceSignals);
 
 		TbSimpleSimpleInterfaceSignals->OnPropBoolChanged.RemoveAll(TbSimpleSimpleInterfaceSignals);
+		TbSimpleSimpleInterfaceSignals->OnPropBoolChangedBP.RemoveAll(TbSimpleSimpleInterfaceSignals);
 		TbSimpleSimpleInterfaceSignals->OnPropIntChanged.RemoveAll(TbSimpleSimpleInterfaceSignals);
+		TbSimpleSimpleInterfaceSignals->OnPropIntChangedBP.RemoveAll(TbSimpleSimpleInterfaceSignals);
 		TbSimpleSimpleInterfaceSignals->OnPropInt32Changed.RemoveAll(TbSimpleSimpleInterfaceSignals);
+		TbSimpleSimpleInterfaceSignals->OnPropInt32ChangedBP.RemoveAll(TbSimpleSimpleInterfaceSignals);
 		TbSimpleSimpleInterfaceSignals->OnPropInt64Changed.RemoveAll(TbSimpleSimpleInterfaceSignals);
+		TbSimpleSimpleInterfaceSignals->OnPropInt64ChangedBP.RemoveAll(TbSimpleSimpleInterfaceSignals);
 		TbSimpleSimpleInterfaceSignals->OnPropFloatChanged.RemoveAll(TbSimpleSimpleInterfaceSignals);
+		TbSimpleSimpleInterfaceSignals->OnPropFloatChangedBP.RemoveAll(TbSimpleSimpleInterfaceSignals);
 		TbSimpleSimpleInterfaceSignals->OnPropFloat32Changed.RemoveAll(TbSimpleSimpleInterfaceSignals);
+		TbSimpleSimpleInterfaceSignals->OnPropFloat32ChangedBP.RemoveAll(TbSimpleSimpleInterfaceSignals);
 		TbSimpleSimpleInterfaceSignals->OnPropFloat64Changed.RemoveAll(TbSimpleSimpleInterfaceSignals);
+		TbSimpleSimpleInterfaceSignals->OnPropFloat64ChangedBP.RemoveAll(TbSimpleSimpleInterfaceSignals);
 		TbSimpleSimpleInterfaceSignals->OnPropStringChanged.RemoveAll(TbSimpleSimpleInterfaceSignals);
+		TbSimpleSimpleInterfaceSignals->OnPropStringChangedBP.RemoveAll(TbSimpleSimpleInterfaceSignals);
 	}
 
 	Super::Deinitialize();

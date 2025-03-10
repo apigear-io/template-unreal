@@ -58,8 +58,8 @@ void UTbSimpleNoSignalsInterfaceOLinkAdapter::setBackendService(TScriptInterface
 	{
 		UTbSimpleNoSignalsInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleNoSignalsInterface"));
-		BackendSignals->OnPropBoolChanged.RemoveDynamic(this, &UTbSimpleNoSignalsInterfaceOLinkAdapter::OnPropBoolChanged);
-		BackendSignals->OnPropIntChanged.RemoveDynamic(this, &UTbSimpleNoSignalsInterfaceOLinkAdapter::OnPropIntChanged);
+		BackendSignals->OnPropBoolChangedBP.RemoveDynamic(this, &UTbSimpleNoSignalsInterfaceOLinkAdapter::OnPropBoolChanged);
+		BackendSignals->OnPropIntChangedBP.RemoveDynamic(this, &UTbSimpleNoSignalsInterfaceOLinkAdapter::OnPropIntChanged);
 	}
 
 	// only set if interface is implemented
@@ -70,8 +70,8 @@ void UTbSimpleNoSignalsInterfaceOLinkAdapter::setBackendService(TScriptInterface
 	UTbSimpleNoSignalsInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service TbSimpleNoSignalsInterface"));
 	// connect property changed signals or simple events
-	BackendSignals->OnPropBoolChanged.AddDynamic(this, &UTbSimpleNoSignalsInterfaceOLinkAdapter::OnPropBoolChanged);
-	BackendSignals->OnPropIntChanged.AddDynamic(this, &UTbSimpleNoSignalsInterfaceOLinkAdapter::OnPropIntChanged);
+	BackendSignals->OnPropBoolChangedBP.AddDynamic(this, &UTbSimpleNoSignalsInterfaceOLinkAdapter::OnPropBoolChanged);
+	BackendSignals->OnPropIntChangedBP.AddDynamic(this, &UTbSimpleNoSignalsInterfaceOLinkAdapter::OnPropIntChanged);
 
 	// update olink source with new backend
 	Source->setBackendService(InService);

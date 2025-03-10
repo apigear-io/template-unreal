@@ -56,7 +56,7 @@ void UTbNamesNamEsImplSpec::Define()
 
 		testDoneDelegate = TestDone;
 		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbNamesNamEsSignals->OnSwitchChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTbNamesNamEsImplHelper::SwitchPropertyCb);
+		TbNamesNamEsSignals->OnSwitchChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbNamesNamEsImplHelper::SwitchPropertyCb);
 		// use different test value
 		TestValue = true;
 		ImplFixture->GetImplementation()->SetSwitch(TestValue);
@@ -77,7 +77,7 @@ void UTbNamesNamEsImplSpec::Define()
 
 		testDoneDelegate = TestDone;
 		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbNamesNamEsSignals->OnSomePropertyChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTbNamesNamEsImplHelper::SomePropertyPropertyCb);
+		TbNamesNamEsSignals->OnSomePropertyChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbNamesNamEsImplHelper::SomePropertyPropertyCb);
 		// use different test value
 		TestValue = 1;
 		ImplFixture->GetImplementation()->SetSomeProperty(TestValue);
@@ -98,7 +98,7 @@ void UTbNamesNamEsImplSpec::Define()
 
 		testDoneDelegate = TestDone;
 		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbNamesNamEsSignals->OnSomePoperty2Changed.AddDynamic(ImplFixture->GetHelper().Get(), &UTbNamesNamEsImplHelper::SomePoperty2PropertyCb);
+		TbNamesNamEsSignals->OnSomePoperty2ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbNamesNamEsImplHelper::SomePoperty2PropertyCb);
 		// use different test value
 		TestValue = 1;
 		ImplFixture->GetImplementation()->SetSomePoperty2(TestValue);
@@ -120,7 +120,7 @@ void UTbNamesNamEsImplSpec::Define()
 		{
 		testDoneDelegate = TestDone;
 		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbNamesNamEsSignals->OnSomeSignalSignal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbNamesNamEsImplHelper::SomeSignalSignalCb);
+		TbNamesNamEsSignals->OnSomeSignalSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbNamesNamEsImplHelper::SomeSignalSignalCb);
 
 		// use different test value
 		bool bSomeParamTestValue = true;
@@ -131,7 +131,7 @@ void UTbNamesNamEsImplSpec::Define()
 		{
 		testDoneDelegate = TestDone;
 		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbNamesNamEsSignals->OnSomeSignal2Signal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbNamesNamEsImplHelper::SomeSignal2SignalCb);
+		TbNamesNamEsSignals->OnSomeSignal2SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbNamesNamEsImplHelper::SomeSignal2SignalCb);
 
 		// use different test value
 		bool bSomeParamTestValue = true;

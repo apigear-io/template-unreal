@@ -58,14 +58,14 @@ void UTbEnumEnumInterfaceOLinkAdapter::setBackendService(TScriptInterface<ITbEnu
 	{
 		UTbEnumEnumInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbEnumEnumInterface"));
-		BackendSignals->OnProp0Changed.RemoveDynamic(this, &UTbEnumEnumInterfaceOLinkAdapter::OnProp0Changed);
-		BackendSignals->OnProp1Changed.RemoveDynamic(this, &UTbEnumEnumInterfaceOLinkAdapter::OnProp1Changed);
-		BackendSignals->OnProp2Changed.RemoveDynamic(this, &UTbEnumEnumInterfaceOLinkAdapter::OnProp2Changed);
-		BackendSignals->OnProp3Changed.RemoveDynamic(this, &UTbEnumEnumInterfaceOLinkAdapter::OnProp3Changed);
-		BackendSignals->OnSig0Signal.RemoveDynamic(this, &UTbEnumEnumInterfaceOLinkAdapter::OnSig0);
-		BackendSignals->OnSig1Signal.RemoveDynamic(this, &UTbEnumEnumInterfaceOLinkAdapter::OnSig1);
-		BackendSignals->OnSig2Signal.RemoveDynamic(this, &UTbEnumEnumInterfaceOLinkAdapter::OnSig2);
-		BackendSignals->OnSig3Signal.RemoveDynamic(this, &UTbEnumEnumInterfaceOLinkAdapter::OnSig3);
+		BackendSignals->OnProp0ChangedBP.RemoveDynamic(this, &UTbEnumEnumInterfaceOLinkAdapter::OnProp0Changed);
+		BackendSignals->OnProp1ChangedBP.RemoveDynamic(this, &UTbEnumEnumInterfaceOLinkAdapter::OnProp1Changed);
+		BackendSignals->OnProp2ChangedBP.RemoveDynamic(this, &UTbEnumEnumInterfaceOLinkAdapter::OnProp2Changed);
+		BackendSignals->OnProp3ChangedBP.RemoveDynamic(this, &UTbEnumEnumInterfaceOLinkAdapter::OnProp3Changed);
+		BackendSignals->OnSig0SignalBP.RemoveDynamic(this, &UTbEnumEnumInterfaceOLinkAdapter::OnSig0);
+		BackendSignals->OnSig1SignalBP.RemoveDynamic(this, &UTbEnumEnumInterfaceOLinkAdapter::OnSig1);
+		BackendSignals->OnSig2SignalBP.RemoveDynamic(this, &UTbEnumEnumInterfaceOLinkAdapter::OnSig2);
+		BackendSignals->OnSig3SignalBP.RemoveDynamic(this, &UTbEnumEnumInterfaceOLinkAdapter::OnSig3);
 	}
 
 	// only set if interface is implemented
@@ -76,14 +76,14 @@ void UTbEnumEnumInterfaceOLinkAdapter::setBackendService(TScriptInterface<ITbEnu
 	UTbEnumEnumInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service TbEnumEnumInterface"));
 	// connect property changed signals or simple events
-	BackendSignals->OnProp0Changed.AddDynamic(this, &UTbEnumEnumInterfaceOLinkAdapter::OnProp0Changed);
-	BackendSignals->OnProp1Changed.AddDynamic(this, &UTbEnumEnumInterfaceOLinkAdapter::OnProp1Changed);
-	BackendSignals->OnProp2Changed.AddDynamic(this, &UTbEnumEnumInterfaceOLinkAdapter::OnProp2Changed);
-	BackendSignals->OnProp3Changed.AddDynamic(this, &UTbEnumEnumInterfaceOLinkAdapter::OnProp3Changed);
-	BackendSignals->OnSig0Signal.AddDynamic(this, &UTbEnumEnumInterfaceOLinkAdapter::OnSig0);
-	BackendSignals->OnSig1Signal.AddDynamic(this, &UTbEnumEnumInterfaceOLinkAdapter::OnSig1);
-	BackendSignals->OnSig2Signal.AddDynamic(this, &UTbEnumEnumInterfaceOLinkAdapter::OnSig2);
-	BackendSignals->OnSig3Signal.AddDynamic(this, &UTbEnumEnumInterfaceOLinkAdapter::OnSig3);
+	BackendSignals->OnProp0ChangedBP.AddDynamic(this, &UTbEnumEnumInterfaceOLinkAdapter::OnProp0Changed);
+	BackendSignals->OnProp1ChangedBP.AddDynamic(this, &UTbEnumEnumInterfaceOLinkAdapter::OnProp1Changed);
+	BackendSignals->OnProp2ChangedBP.AddDynamic(this, &UTbEnumEnumInterfaceOLinkAdapter::OnProp2Changed);
+	BackendSignals->OnProp3ChangedBP.AddDynamic(this, &UTbEnumEnumInterfaceOLinkAdapter::OnProp3Changed);
+	BackendSignals->OnSig0SignalBP.AddDynamic(this, &UTbEnumEnumInterfaceOLinkAdapter::OnSig0);
+	BackendSignals->OnSig1SignalBP.AddDynamic(this, &UTbEnumEnumInterfaceOLinkAdapter::OnSig1);
+	BackendSignals->OnSig2SignalBP.AddDynamic(this, &UTbEnumEnumInterfaceOLinkAdapter::OnSig2);
+	BackendSignals->OnSig3SignalBP.AddDynamic(this, &UTbEnumEnumInterfaceOLinkAdapter::OnSig3);
 
 	// update olink source with new backend
 	Source->setBackendService(InService);

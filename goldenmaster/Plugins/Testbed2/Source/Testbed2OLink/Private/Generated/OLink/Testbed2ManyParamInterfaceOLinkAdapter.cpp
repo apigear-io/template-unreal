@@ -58,14 +58,14 @@ void UTestbed2ManyParamInterfaceOLinkAdapter::setBackendService(TScriptInterface
 	{
 		UTestbed2ManyParamInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service Testbed2ManyParamInterface"));
-		BackendSignals->OnProp1Changed.RemoveDynamic(this, &UTestbed2ManyParamInterfaceOLinkAdapter::OnProp1Changed);
-		BackendSignals->OnProp2Changed.RemoveDynamic(this, &UTestbed2ManyParamInterfaceOLinkAdapter::OnProp2Changed);
-		BackendSignals->OnProp3Changed.RemoveDynamic(this, &UTestbed2ManyParamInterfaceOLinkAdapter::OnProp3Changed);
-		BackendSignals->OnProp4Changed.RemoveDynamic(this, &UTestbed2ManyParamInterfaceOLinkAdapter::OnProp4Changed);
-		BackendSignals->OnSig1Signal.RemoveDynamic(this, &UTestbed2ManyParamInterfaceOLinkAdapter::OnSig1);
-		BackendSignals->OnSig2Signal.RemoveDynamic(this, &UTestbed2ManyParamInterfaceOLinkAdapter::OnSig2);
-		BackendSignals->OnSig3Signal.RemoveDynamic(this, &UTestbed2ManyParamInterfaceOLinkAdapter::OnSig3);
-		BackendSignals->OnSig4Signal.RemoveDynamic(this, &UTestbed2ManyParamInterfaceOLinkAdapter::OnSig4);
+		BackendSignals->OnProp1ChangedBP.RemoveDynamic(this, &UTestbed2ManyParamInterfaceOLinkAdapter::OnProp1Changed);
+		BackendSignals->OnProp2ChangedBP.RemoveDynamic(this, &UTestbed2ManyParamInterfaceOLinkAdapter::OnProp2Changed);
+		BackendSignals->OnProp3ChangedBP.RemoveDynamic(this, &UTestbed2ManyParamInterfaceOLinkAdapter::OnProp3Changed);
+		BackendSignals->OnProp4ChangedBP.RemoveDynamic(this, &UTestbed2ManyParamInterfaceOLinkAdapter::OnProp4Changed);
+		BackendSignals->OnSig1SignalBP.RemoveDynamic(this, &UTestbed2ManyParamInterfaceOLinkAdapter::OnSig1);
+		BackendSignals->OnSig2SignalBP.RemoveDynamic(this, &UTestbed2ManyParamInterfaceOLinkAdapter::OnSig2);
+		BackendSignals->OnSig3SignalBP.RemoveDynamic(this, &UTestbed2ManyParamInterfaceOLinkAdapter::OnSig3);
+		BackendSignals->OnSig4SignalBP.RemoveDynamic(this, &UTestbed2ManyParamInterfaceOLinkAdapter::OnSig4);
 	}
 
 	// only set if interface is implemented
@@ -76,14 +76,14 @@ void UTestbed2ManyParamInterfaceOLinkAdapter::setBackendService(TScriptInterface
 	UTestbed2ManyParamInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service Testbed2ManyParamInterface"));
 	// connect property changed signals or simple events
-	BackendSignals->OnProp1Changed.AddDynamic(this, &UTestbed2ManyParamInterfaceOLinkAdapter::OnProp1Changed);
-	BackendSignals->OnProp2Changed.AddDynamic(this, &UTestbed2ManyParamInterfaceOLinkAdapter::OnProp2Changed);
-	BackendSignals->OnProp3Changed.AddDynamic(this, &UTestbed2ManyParamInterfaceOLinkAdapter::OnProp3Changed);
-	BackendSignals->OnProp4Changed.AddDynamic(this, &UTestbed2ManyParamInterfaceOLinkAdapter::OnProp4Changed);
-	BackendSignals->OnSig1Signal.AddDynamic(this, &UTestbed2ManyParamInterfaceOLinkAdapter::OnSig1);
-	BackendSignals->OnSig2Signal.AddDynamic(this, &UTestbed2ManyParamInterfaceOLinkAdapter::OnSig2);
-	BackendSignals->OnSig3Signal.AddDynamic(this, &UTestbed2ManyParamInterfaceOLinkAdapter::OnSig3);
-	BackendSignals->OnSig4Signal.AddDynamic(this, &UTestbed2ManyParamInterfaceOLinkAdapter::OnSig4);
+	BackendSignals->OnProp1ChangedBP.AddDynamic(this, &UTestbed2ManyParamInterfaceOLinkAdapter::OnProp1Changed);
+	BackendSignals->OnProp2ChangedBP.AddDynamic(this, &UTestbed2ManyParamInterfaceOLinkAdapter::OnProp2Changed);
+	BackendSignals->OnProp3ChangedBP.AddDynamic(this, &UTestbed2ManyParamInterfaceOLinkAdapter::OnProp3Changed);
+	BackendSignals->OnProp4ChangedBP.AddDynamic(this, &UTestbed2ManyParamInterfaceOLinkAdapter::OnProp4Changed);
+	BackendSignals->OnSig1SignalBP.AddDynamic(this, &UTestbed2ManyParamInterfaceOLinkAdapter::OnSig1);
+	BackendSignals->OnSig2SignalBP.AddDynamic(this, &UTestbed2ManyParamInterfaceOLinkAdapter::OnSig2);
+	BackendSignals->OnSig3SignalBP.AddDynamic(this, &UTestbed2ManyParamInterfaceOLinkAdapter::OnSig3);
+	BackendSignals->OnSig4SignalBP.AddDynamic(this, &UTestbed2ManyParamInterfaceOLinkAdapter::OnSig4);
 
 	// update olink source with new backend
 	Source->setBackendService(InService);

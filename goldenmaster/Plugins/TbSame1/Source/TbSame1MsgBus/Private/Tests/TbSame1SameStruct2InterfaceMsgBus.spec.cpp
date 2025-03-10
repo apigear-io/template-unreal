@@ -83,7 +83,7 @@ void UTbSame1SameStruct2InterfaceMsgBusSpec::Define()
 
 		testDoneDelegate = TestDone;
 		UTbSame1SameStruct2InterfaceSignals* TbSame1SameStruct2InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSame1SameStruct2InterfaceSignals->OnProp1Changed.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame1SameStruct2InterfaceMsgBusHelper::Prop1PropertyCb);
+		TbSame1SameStruct2InterfaceSignals->OnProp1ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame1SameStruct2InterfaceMsgBusHelper::Prop1PropertyCb);
 		// use different test value
 		TestValue = createTestFTbSame1Struct2();
 		ImplFixture->GetImplementation()->SetProp1(TestValue);
@@ -104,7 +104,7 @@ void UTbSame1SameStruct2InterfaceMsgBusSpec::Define()
 
 		testDoneDelegate = TestDone;
 		UTbSame1SameStruct2InterfaceSignals* TbSame1SameStruct2InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSame1SameStruct2InterfaceSignals->OnProp2Changed.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame1SameStruct2InterfaceMsgBusHelper::Prop2PropertyCb);
+		TbSame1SameStruct2InterfaceSignals->OnProp2ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame1SameStruct2InterfaceMsgBusHelper::Prop2PropertyCb);
 		// use different test value
 		TestValue = createTestFTbSame1Struct2();
 		ImplFixture->GetImplementation()->SetProp2(TestValue);
@@ -134,7 +134,7 @@ void UTbSame1SameStruct2InterfaceMsgBusSpec::Define()
 		{
 		testDoneDelegate = TestDone;
 		UTbSame1SameStruct2InterfaceSignals* TbSame1SameStruct2InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSame1SameStruct2InterfaceSignals->OnSig1Signal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame1SameStruct2InterfaceMsgBusHelper::Sig1SignalCb);
+		TbSame1SameStruct2InterfaceSignals->OnSig1SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame1SameStruct2InterfaceMsgBusHelper::Sig1SignalCb);
 
 		// use different test value
 		FTbSame1Struct1 Param1TestValue = createTestFTbSame1Struct1();
@@ -145,7 +145,7 @@ void UTbSame1SameStruct2InterfaceMsgBusSpec::Define()
 		{
 		testDoneDelegate = TestDone;
 		UTbSame1SameStruct2InterfaceSignals* TbSame1SameStruct2InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSame1SameStruct2InterfaceSignals->OnSig2Signal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame1SameStruct2InterfaceMsgBusHelper::Sig2SignalCb);
+		TbSame1SameStruct2InterfaceSignals->OnSig2SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame1SameStruct2InterfaceMsgBusHelper::Sig2SignalCb);
 
 		// use different test value
 		FTbSame1Struct1 Param1TestValue = createTestFTbSame1Struct1();

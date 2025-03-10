@@ -82,7 +82,7 @@ void UTbSimpleVoidInterfaceMsgBusSpec::Define()
 		{
 		testDoneDelegate = TestDone;
 		UTbSimpleVoidInterfaceSignals* TbSimpleVoidInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleVoidInterfaceSignals->OnSigVoidSignal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleVoidInterfaceMsgBusHelper::SigVoidSignalCb);
+		TbSimpleVoidInterfaceSignals->OnSigVoidSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleVoidInterfaceMsgBusHelper::SigVoidSignalCb);
 
 		// use different test value
 		TbSimpleVoidInterfaceSignals->BroadcastSigVoidSignal();

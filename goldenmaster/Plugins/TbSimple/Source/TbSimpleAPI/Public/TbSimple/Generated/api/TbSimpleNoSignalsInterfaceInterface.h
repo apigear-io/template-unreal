@@ -25,8 +25,10 @@ limitations under the License.
  */
 // signal delegates
 // property delegates
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleNoSignalsInterfacePropBoolChangedDelegate, bool, bPropBool);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleNoSignalsInterfacePropIntChangedDelegate, int32, PropInt);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTbSimpleNoSignalsInterfacePropBoolChangedDelegate, bool /* bPropBool */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleNoSignalsInterfacePropBoolChangedDelegateBP, bool, bPropBool);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTbSimpleNoSignalsInterfacePropIntChangedDelegate, int32 /* PropInt */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleNoSignalsInterfacePropIntChangedDelegateBP, int32, PropInt);
 
 /**
  * Class UTbSimpleNoSignalsInterfaceInterfaceSignals
@@ -39,22 +41,26 @@ class TBSIMPLEAPI_API UTbSimpleNoSignalsInterfaceSignals : public UObject
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoSignalsInterface|Signals", DisplayName = "Property PropBool Changed")
 	FTbSimpleNoSignalsInterfacePropBoolChangedDelegate OnPropBoolChanged;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoSignalsInterface|Signals", DisplayName = "Property PropBool Changed")
+	FTbSimpleNoSignalsInterfacePropBoolChangedDelegateBP OnPropBoolChangedBP;
 	/// C++ wrapper for BP functions to safely call OnPropBoolChanged.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoSignalsInterface|Signals", DisplayName = "Broadcast Property PropBool Changed")
 	void BroadcastPropBoolChanged(UPARAM(DisplayName = "bPropBool") bool bInPropBool)
 	{
 		OnPropBoolChanged.Broadcast(bInPropBool);
+		OnPropBoolChangedBP.Broadcast(bInPropBool);
 	}
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoSignalsInterface|Signals", DisplayName = "Property PropInt Changed")
 	FTbSimpleNoSignalsInterfacePropIntChangedDelegate OnPropIntChanged;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoSignalsInterface|Signals", DisplayName = "Property PropInt Changed")
+	FTbSimpleNoSignalsInterfacePropIntChangedDelegateBP OnPropIntChangedBP;
 	/// C++ wrapper for BP functions to safely call OnPropIntChanged.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoSignalsInterface|Signals", DisplayName = "Broadcast Property PropInt Changed")
 	void BroadcastPropIntChanged(UPARAM(DisplayName = "PropInt") int32 InPropInt)
 	{
 		OnPropIntChanged.Broadcast(InPropInt);
+		OnPropIntChangedBP.Broadcast(InPropInt);
 	}
 };
 

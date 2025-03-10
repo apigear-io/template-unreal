@@ -181,10 +181,14 @@ void UAbstractTbSame2SameStruct2Interface::Deinitialize()
 	if (TbSame2SameStruct2InterfaceSignals)
 	{
 		TbSame2SameStruct2InterfaceSignals->OnSig1Signal.RemoveAll(TbSame2SameStruct2InterfaceSignals);
+		TbSame2SameStruct2InterfaceSignals->OnSig1SignalBP.RemoveAll(TbSame2SameStruct2InterfaceSignals);
 		TbSame2SameStruct2InterfaceSignals->OnSig2Signal.RemoveAll(TbSame2SameStruct2InterfaceSignals);
+		TbSame2SameStruct2InterfaceSignals->OnSig2SignalBP.RemoveAll(TbSame2SameStruct2InterfaceSignals);
 
 		TbSame2SameStruct2InterfaceSignals->OnProp1Changed.RemoveAll(TbSame2SameStruct2InterfaceSignals);
+		TbSame2SameStruct2InterfaceSignals->OnProp1ChangedBP.RemoveAll(TbSame2SameStruct2InterfaceSignals);
 		TbSame2SameStruct2InterfaceSignals->OnProp2Changed.RemoveAll(TbSame2SameStruct2InterfaceSignals);
+		TbSame2SameStruct2InterfaceSignals->OnProp2ChangedBP.RemoveAll(TbSame2SameStruct2InterfaceSignals);
 	}
 
 	Super::Deinitialize();

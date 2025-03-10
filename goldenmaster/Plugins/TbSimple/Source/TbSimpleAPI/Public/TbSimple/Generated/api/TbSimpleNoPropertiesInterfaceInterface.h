@@ -24,9 +24,11 @@ limitations under the License.
  * Declaration for NoPropertiesInterface
  */
 // signal delegates
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTbSimpleNoPropertiesInterfaceSigVoidDelegate);
+DECLARE_MULTICAST_DELEGATE(FTbSimpleNoPropertiesInterfaceSigVoidDelegate);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTbSimpleNoPropertiesInterfaceSigVoidDelegateBP);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleNoPropertiesInterfaceSigBoolDelegate, bool, bParamBool);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTbSimpleNoPropertiesInterfaceSigBoolDelegate, bool /* bParamBool */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleNoPropertiesInterfaceSigBoolDelegateBP, bool, bParamBool);
 
 // property delegates
 
@@ -41,22 +43,26 @@ class TBSIMPLEAPI_API UTbSimpleNoPropertiesInterfaceSignals : public UObject
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoPropertiesInterface|Signals", DisplayName = "SigVoid Signal")
 	FTbSimpleNoPropertiesInterfaceSigVoidDelegate OnSigVoidSignal;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoPropertiesInterface|Signals", DisplayName = "SigVoid Signal")
+	FTbSimpleNoPropertiesInterfaceSigVoidDelegateBP OnSigVoidSignalBP;
 	/// C++ wrapper for BP functions to safely call SigVoidSignal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoPropertiesInterface|Signals", DisplayName = "Broadcast SigVoid Signal")
 	void BroadcastSigVoidSignal()
 	{
 		OnSigVoidSignal.Broadcast();
+		OnSigVoidSignalBP.Broadcast();
 	}
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoPropertiesInterface|Signals", DisplayName = "SigBool Signal")
 	FTbSimpleNoPropertiesInterfaceSigBoolDelegate OnSigBoolSignal;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoPropertiesInterface|Signals", DisplayName = "SigBool Signal")
+	FTbSimpleNoPropertiesInterfaceSigBoolDelegateBP OnSigBoolSignalBP;
 	/// C++ wrapper for BP functions to safely call SigBoolSignal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoPropertiesInterface|Signals", DisplayName = "Broadcast SigBool Signal")
 	void BroadcastSigBoolSignal(bool bParamBool)
 	{
 		OnSigBoolSignal.Broadcast(bParamBool);
+		OnSigBoolSignalBP.Broadcast(bParamBool);
 	}
 };
 

@@ -91,6 +91,7 @@ void UAbstractTbSimpleVoidInterface::Deinitialize()
 	if (TbSimpleVoidInterfaceSignals)
 	{
 		TbSimpleVoidInterfaceSignals->OnSigVoidSignal.RemoveAll(TbSimpleVoidInterfaceSignals);
+		TbSimpleVoidInterfaceSignals->OnSigVoidSignalBP.RemoveAll(TbSimpleVoidInterfaceSignals);
 	}
 
 	Super::Deinitialize();

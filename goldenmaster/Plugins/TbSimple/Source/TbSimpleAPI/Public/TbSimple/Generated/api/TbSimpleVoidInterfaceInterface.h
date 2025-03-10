@@ -24,7 +24,8 @@ limitations under the License.
  * Declaration for VoidInterface
  */
 // signal delegates
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTbSimpleVoidInterfaceSigVoidDelegate);
+DECLARE_MULTICAST_DELEGATE(FTbSimpleVoidInterfaceSigVoidDelegate);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTbSimpleVoidInterfaceSigVoidDelegateBP);
 
 // property delegates
 
@@ -39,13 +40,15 @@ class TBSIMPLEAPI_API UTbSimpleVoidInterfaceSignals : public UObject
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|VoidInterface|Signals", DisplayName = "SigVoid Signal")
 	FTbSimpleVoidInterfaceSigVoidDelegate OnSigVoidSignal;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|VoidInterface|Signals", DisplayName = "SigVoid Signal")
+	FTbSimpleVoidInterfaceSigVoidDelegateBP OnSigVoidSignalBP;
 	/// C++ wrapper for BP functions to safely call SigVoidSignal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|VoidInterface|Signals", DisplayName = "Broadcast SigVoid Signal")
 	void BroadcastSigVoidSignal()
 	{
 		OnSigVoidSignal.Broadcast();
+		OnSigVoidSignalBP.Broadcast();
 	}
 };
 

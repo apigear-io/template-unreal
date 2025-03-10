@@ -56,7 +56,7 @@ void UTestbed2NestedStruct3InterfaceImplSpec::Define()
 
 		testDoneDelegate = TestDone;
 		UTestbed2NestedStruct3InterfaceSignals* Testbed2NestedStruct3InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2NestedStruct3InterfaceSignals->OnProp1Changed.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2NestedStruct3InterfaceImplHelper::Prop1PropertyCb);
+		Testbed2NestedStruct3InterfaceSignals->OnProp1ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2NestedStruct3InterfaceImplHelper::Prop1PropertyCb);
 		// use different test value
 		TestValue = createTestFTestbed2NestedStruct1();
 		ImplFixture->GetImplementation()->SetProp1(TestValue);
@@ -77,7 +77,7 @@ void UTestbed2NestedStruct3InterfaceImplSpec::Define()
 
 		testDoneDelegate = TestDone;
 		UTestbed2NestedStruct3InterfaceSignals* Testbed2NestedStruct3InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2NestedStruct3InterfaceSignals->OnProp2Changed.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2NestedStruct3InterfaceImplHelper::Prop2PropertyCb);
+		Testbed2NestedStruct3InterfaceSignals->OnProp2ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2NestedStruct3InterfaceImplHelper::Prop2PropertyCb);
 		// use different test value
 		TestValue = createTestFTestbed2NestedStruct2();
 		ImplFixture->GetImplementation()->SetProp2(TestValue);
@@ -98,7 +98,7 @@ void UTestbed2NestedStruct3InterfaceImplSpec::Define()
 
 		testDoneDelegate = TestDone;
 		UTestbed2NestedStruct3InterfaceSignals* Testbed2NestedStruct3InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2NestedStruct3InterfaceSignals->OnProp3Changed.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2NestedStruct3InterfaceImplHelper::Prop3PropertyCb);
+		Testbed2NestedStruct3InterfaceSignals->OnProp3ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2NestedStruct3InterfaceImplHelper::Prop3PropertyCb);
 		// use different test value
 		TestValue = createTestFTestbed2NestedStruct3();
 		ImplFixture->GetImplementation()->SetProp3(TestValue);
@@ -126,7 +126,7 @@ void UTestbed2NestedStruct3InterfaceImplSpec::Define()
 		{
 		testDoneDelegate = TestDone;
 		UTestbed2NestedStruct3InterfaceSignals* Testbed2NestedStruct3InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2NestedStruct3InterfaceSignals->OnSig1Signal.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2NestedStruct3InterfaceImplHelper::Sig1SignalCb);
+		Testbed2NestedStruct3InterfaceSignals->OnSig1SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2NestedStruct3InterfaceImplHelper::Sig1SignalCb);
 
 		// use different test value
 		FTestbed2NestedStruct1 Param1TestValue = createTestFTestbed2NestedStruct1();
@@ -137,7 +137,7 @@ void UTestbed2NestedStruct3InterfaceImplSpec::Define()
 		{
 		testDoneDelegate = TestDone;
 		UTestbed2NestedStruct3InterfaceSignals* Testbed2NestedStruct3InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2NestedStruct3InterfaceSignals->OnSig2Signal.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2NestedStruct3InterfaceImplHelper::Sig2SignalCb);
+		Testbed2NestedStruct3InterfaceSignals->OnSig2SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2NestedStruct3InterfaceImplHelper::Sig2SignalCb);
 
 		// use different test value
 		FTestbed2NestedStruct1 Param1TestValue = createTestFTestbed2NestedStruct1();
@@ -149,7 +149,7 @@ void UTestbed2NestedStruct3InterfaceImplSpec::Define()
 		{
 		testDoneDelegate = TestDone;
 		UTestbed2NestedStruct3InterfaceSignals* Testbed2NestedStruct3InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2NestedStruct3InterfaceSignals->OnSig3Signal.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2NestedStruct3InterfaceImplHelper::Sig3SignalCb);
+		Testbed2NestedStruct3InterfaceSignals->OnSig3SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2NestedStruct3InterfaceImplHelper::Sig3SignalCb);
 
 		// use different test value
 		FTestbed2NestedStruct1 Param1TestValue = createTestFTestbed2NestedStruct1();

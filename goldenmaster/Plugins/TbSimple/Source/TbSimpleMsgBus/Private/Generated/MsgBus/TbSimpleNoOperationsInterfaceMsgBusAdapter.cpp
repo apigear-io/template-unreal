@@ -110,10 +110,10 @@ void UTbSimpleNoOperationsInterfaceMsgBusAdapter::_setBackendService(TScriptInte
 	{
 		UTbSimpleNoOperationsInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleNoOperationsInterface"));
-		BackendSignals->OnPropBoolChanged.RemoveDynamic(this, &UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnPropBoolChanged);
-		BackendSignals->OnPropIntChanged.RemoveDynamic(this, &UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnPropIntChanged);
-		BackendSignals->OnSigVoidSignal.RemoveDynamic(this, &UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnSigVoid);
-		BackendSignals->OnSigBoolSignal.RemoveDynamic(this, &UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnSigBool);
+		BackendSignals->OnPropBoolChangedBP.RemoveDynamic(this, &UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnPropBoolChanged);
+		BackendSignals->OnPropIntChangedBP.RemoveDynamic(this, &UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnPropIntChanged);
+		BackendSignals->OnSigVoidSignalBP.RemoveDynamic(this, &UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnSigVoid);
+		BackendSignals->OnSigBoolSignalBP.RemoveDynamic(this, &UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnSigBool);
 	}
 
 	// only set if interface is implemented
@@ -124,10 +124,10 @@ void UTbSimpleNoOperationsInterfaceMsgBusAdapter::_setBackendService(TScriptInte
 	UTbSimpleNoOperationsInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service TbSimpleNoOperationsInterface"));
 	// connect property changed signals or simple events
-	BackendSignals->OnPropBoolChanged.AddDynamic(this, &UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnPropBoolChanged);
-	BackendSignals->OnPropIntChanged.AddDynamic(this, &UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnPropIntChanged);
-	BackendSignals->OnSigVoidSignal.AddDynamic(this, &UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnSigVoid);
-	BackendSignals->OnSigBoolSignal.AddDynamic(this, &UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnSigBool);
+	BackendSignals->OnPropBoolChangedBP.AddDynamic(this, &UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnPropBoolChanged);
+	BackendSignals->OnPropIntChangedBP.AddDynamic(this, &UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnPropIntChanged);
+	BackendSignals->OnSigVoidSignalBP.AddDynamic(this, &UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnSigVoid);
+	BackendSignals->OnSigBoolSignalBP.AddDynamic(this, &UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnSigBool);
 }
 
 void UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnNewClientDiscovered(const FTbSimpleNoOperationsInterfaceDiscoveryMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)

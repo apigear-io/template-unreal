@@ -619,7 +619,7 @@ void UTbEnumEnumInterfaceMsgBusClient::OnProp0Changed(const FTbEnumEnumInterface
 	if (bProp0Changed)
 	{
 		Prop0 = InMessage.Prop0;
-		_GetSignals()->BroadcastProp0ChangedProp0);
+		_GetSignals()->BroadcastProp0Changed(Prop0);
 	}
 }
 
@@ -635,7 +635,7 @@ void UTbEnumEnumInterfaceMsgBusClient::OnProp1Changed(const FTbEnumEnumInterface
 	if (bProp1Changed)
 	{
 		Prop1 = InMessage.Prop1;
-		_GetSignals()->BroadcastProp1ChangedProp1);
+		_GetSignals()->BroadcastProp1Changed(Prop1);
 	}
 }
 
@@ -651,7 +651,7 @@ void UTbEnumEnumInterfaceMsgBusClient::OnProp2Changed(const FTbEnumEnumInterface
 	if (bProp2Changed)
 	{
 		Prop2 = InMessage.Prop2;
-		_GetSignals()->BroadcastProp2ChangedProp2);
+		_GetSignals()->BroadcastProp2Changed(Prop2);
 	}
 }
 
@@ -667,7 +667,7 @@ void UTbEnumEnumInterfaceMsgBusClient::OnProp3Changed(const FTbEnumEnumInterface
 	if (bProp3Changed)
 	{
 		Prop3 = InMessage.Prop3;
-		_GetSignals()->BroadcastProp3ChangedProp3);
+		_GetSignals()->BroadcastProp3Changed(Prop3);
 	}
 }
 

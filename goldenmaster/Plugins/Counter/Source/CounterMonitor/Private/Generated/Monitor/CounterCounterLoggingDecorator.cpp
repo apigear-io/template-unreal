@@ -49,11 +49,11 @@ void UCounterCounterLoggingDecorator::setBackendService(TScriptInterface<ICounte
 	{
 		UCounterCounterSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service CounterCounter"));
-		BackendSignals->OnVectorChanged.RemoveDynamic(this, &UCounterCounterLoggingDecorator::OnVectorChanged);
-		BackendSignals->OnExternVectorChanged.RemoveDynamic(this, &UCounterCounterLoggingDecorator::OnExternVectorChanged);
-		BackendSignals->OnVectorArrayChanged.RemoveDynamic(this, &UCounterCounterLoggingDecorator::OnVectorArrayChanged);
-		BackendSignals->OnExternVectorArrayChanged.RemoveDynamic(this, &UCounterCounterLoggingDecorator::OnExternVectorArrayChanged);
-		BackendSignals->OnValueChangedSignal.RemoveDynamic(this, &UCounterCounterLoggingDecorator::OnValueChanged);
+		BackendSignals->OnVectorChangedBP.RemoveDynamic(this, &UCounterCounterLoggingDecorator::OnVectorChanged);
+		BackendSignals->OnExternVectorChangedBP.RemoveDynamic(this, &UCounterCounterLoggingDecorator::OnExternVectorChanged);
+		BackendSignals->OnVectorArrayChangedBP.RemoveDynamic(this, &UCounterCounterLoggingDecorator::OnVectorArrayChanged);
+		BackendSignals->OnExternVectorArrayChangedBP.RemoveDynamic(this, &UCounterCounterLoggingDecorator::OnExternVectorArrayChanged);
+		BackendSignals->OnValueChangedSignalBP.RemoveDynamic(this, &UCounterCounterLoggingDecorator::OnValueChanged);
 	}
 
 	// only set if interface is implemented
@@ -64,11 +64,11 @@ void UCounterCounterLoggingDecorator::setBackendService(TScriptInterface<ICounte
 	UCounterCounterSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service CounterCounter"));
 	// connect property changed signals or simple events
-	BackendSignals->OnVectorChanged.AddDynamic(this, &UCounterCounterLoggingDecorator::OnVectorChanged);
-	BackendSignals->OnExternVectorChanged.AddDynamic(this, &UCounterCounterLoggingDecorator::OnExternVectorChanged);
-	BackendSignals->OnVectorArrayChanged.AddDynamic(this, &UCounterCounterLoggingDecorator::OnVectorArrayChanged);
-	BackendSignals->OnExternVectorArrayChanged.AddDynamic(this, &UCounterCounterLoggingDecorator::OnExternVectorArrayChanged);
-	BackendSignals->OnValueChangedSignal.AddDynamic(this, &UCounterCounterLoggingDecorator::OnValueChanged);
+	BackendSignals->OnVectorChangedBP.AddDynamic(this, &UCounterCounterLoggingDecorator::OnVectorChanged);
+	BackendSignals->OnExternVectorChangedBP.AddDynamic(this, &UCounterCounterLoggingDecorator::OnExternVectorChanged);
+	BackendSignals->OnVectorArrayChangedBP.AddDynamic(this, &UCounterCounterLoggingDecorator::OnVectorArrayChanged);
+	BackendSignals->OnExternVectorArrayChangedBP.AddDynamic(this, &UCounterCounterLoggingDecorator::OnExternVectorArrayChanged);
+	BackendSignals->OnValueChangedSignalBP.AddDynamic(this, &UCounterCounterLoggingDecorator::OnValueChanged);
 	// populate service state to proxy
 	Vector = BackendService->GetVector();
 	ExternVector = BackendService->GetExternVector();

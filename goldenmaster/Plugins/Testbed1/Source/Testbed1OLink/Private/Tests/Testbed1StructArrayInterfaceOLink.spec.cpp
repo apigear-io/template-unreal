@@ -95,7 +95,7 @@ void UTestbed1StructArrayInterfaceOLinkSpec::Define()
 
 		testDoneDelegate = TestDone;
 		UTestbed1StructArrayInterfaceSignals* Testbed1StructArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructArrayInterfaceSignals->OnPropBoolChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructArrayInterfaceOLinkHelper::PropBoolPropertyCb);
+		Testbed1StructArrayInterfaceSignals->OnPropBoolChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructArrayInterfaceOLinkHelper::PropBoolPropertyCb);
 		// use different test value
 		TestValue = createTestFTestbed1StructBoolArray();
 		ImplFixture->GetImplementation()->SetPropBool(TestValue);
@@ -116,7 +116,7 @@ void UTestbed1StructArrayInterfaceOLinkSpec::Define()
 
 		testDoneDelegate = TestDone;
 		UTestbed1StructArrayInterfaceSignals* Testbed1StructArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructArrayInterfaceSignals->OnPropIntChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructArrayInterfaceOLinkHelper::PropIntPropertyCb);
+		Testbed1StructArrayInterfaceSignals->OnPropIntChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructArrayInterfaceOLinkHelper::PropIntPropertyCb);
 		// use different test value
 		TestValue = createTestFTestbed1StructIntArray();
 		ImplFixture->GetImplementation()->SetPropInt(TestValue);
@@ -137,7 +137,7 @@ void UTestbed1StructArrayInterfaceOLinkSpec::Define()
 
 		testDoneDelegate = TestDone;
 		UTestbed1StructArrayInterfaceSignals* Testbed1StructArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructArrayInterfaceSignals->OnPropFloatChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructArrayInterfaceOLinkHelper::PropFloatPropertyCb);
+		Testbed1StructArrayInterfaceSignals->OnPropFloatChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructArrayInterfaceOLinkHelper::PropFloatPropertyCb);
 		// use different test value
 		TestValue = createTestFTestbed1StructFloatArray();
 		ImplFixture->GetImplementation()->SetPropFloat(TestValue);
@@ -158,7 +158,7 @@ void UTestbed1StructArrayInterfaceOLinkSpec::Define()
 
 		testDoneDelegate = TestDone;
 		UTestbed1StructArrayInterfaceSignals* Testbed1StructArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructArrayInterfaceSignals->OnPropStringChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructArrayInterfaceOLinkHelper::PropStringPropertyCb);
+		Testbed1StructArrayInterfaceSignals->OnPropStringChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructArrayInterfaceOLinkHelper::PropStringPropertyCb);
 		// use different test value
 		TestValue = createTestFTestbed1StructStringArray();
 		ImplFixture->GetImplementation()->SetPropString(TestValue);
@@ -208,7 +208,7 @@ void UTestbed1StructArrayInterfaceOLinkSpec::Define()
 		{
 		testDoneDelegate = TestDone;
 		UTestbed1StructArrayInterfaceSignals* Testbed1StructArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructArrayInterfaceSignals->OnSigBoolSignal.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructArrayInterfaceOLinkHelper::SigBoolSignalCb);
+		Testbed1StructArrayInterfaceSignals->OnSigBoolSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructArrayInterfaceOLinkHelper::SigBoolSignalCb);
 
 		// use different test value
 		TArray<FTestbed1StructBool> ParamBoolTestValue = createTestFTestbed1StructBoolArray();
@@ -219,7 +219,7 @@ void UTestbed1StructArrayInterfaceOLinkSpec::Define()
 		{
 		testDoneDelegate = TestDone;
 		UTestbed1StructArrayInterfaceSignals* Testbed1StructArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructArrayInterfaceSignals->OnSigIntSignal.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructArrayInterfaceOLinkHelper::SigIntSignalCb);
+		Testbed1StructArrayInterfaceSignals->OnSigIntSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructArrayInterfaceOLinkHelper::SigIntSignalCb);
 
 		// use different test value
 		TArray<FTestbed1StructInt> ParamIntTestValue = createTestFTestbed1StructIntArray();
@@ -230,7 +230,7 @@ void UTestbed1StructArrayInterfaceOLinkSpec::Define()
 		{
 		testDoneDelegate = TestDone;
 		UTestbed1StructArrayInterfaceSignals* Testbed1StructArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructArrayInterfaceSignals->OnSigFloatSignal.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructArrayInterfaceOLinkHelper::SigFloatSignalCb);
+		Testbed1StructArrayInterfaceSignals->OnSigFloatSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructArrayInterfaceOLinkHelper::SigFloatSignalCb);
 
 		// use different test value
 		TArray<FTestbed1StructFloat> ParamFloatTestValue = createTestFTestbed1StructFloatArray();
@@ -241,7 +241,7 @@ void UTestbed1StructArrayInterfaceOLinkSpec::Define()
 		{
 		testDoneDelegate = TestDone;
 		UTestbed1StructArrayInterfaceSignals* Testbed1StructArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructArrayInterfaceSignals->OnSigStringSignal.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructArrayInterfaceOLinkHelper::SigStringSignalCb);
+		Testbed1StructArrayInterfaceSignals->OnSigStringSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructArrayInterfaceOLinkHelper::SigStringSignalCb);
 
 		// use different test value
 		TArray<FTestbed1StructString> ParamStringTestValue = createTestFTestbed1StructStringArray();

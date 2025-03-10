@@ -95,7 +95,7 @@ void UTbEnumEnumInterfaceOLinkSpec::Define()
 
 		testDoneDelegate = TestDone;
 		UTbEnumEnumInterfaceSignals* TbEnumEnumInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbEnumEnumInterfaceSignals->OnProp0Changed.AddDynamic(ImplFixture->GetHelper().Get(), &UTbEnumEnumInterfaceOLinkHelper::Prop0PropertyCb);
+		TbEnumEnumInterfaceSignals->OnProp0ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbEnumEnumInterfaceOLinkHelper::Prop0PropertyCb);
 		// use different test value
 		TestValue = ETbEnumEnum0::TEE0_VALUE1;
 		ImplFixture->GetImplementation()->SetProp0(TestValue);
@@ -116,7 +116,7 @@ void UTbEnumEnumInterfaceOLinkSpec::Define()
 
 		testDoneDelegate = TestDone;
 		UTbEnumEnumInterfaceSignals* TbEnumEnumInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbEnumEnumInterfaceSignals->OnProp1Changed.AddDynamic(ImplFixture->GetHelper().Get(), &UTbEnumEnumInterfaceOLinkHelper::Prop1PropertyCb);
+		TbEnumEnumInterfaceSignals->OnProp1ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbEnumEnumInterfaceOLinkHelper::Prop1PropertyCb);
 		// use different test value
 		TestValue = ETbEnumEnum1::TEE1_VALUE2;
 		ImplFixture->GetImplementation()->SetProp1(TestValue);
@@ -137,7 +137,7 @@ void UTbEnumEnumInterfaceOLinkSpec::Define()
 
 		testDoneDelegate = TestDone;
 		UTbEnumEnumInterfaceSignals* TbEnumEnumInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbEnumEnumInterfaceSignals->OnProp2Changed.AddDynamic(ImplFixture->GetHelper().Get(), &UTbEnumEnumInterfaceOLinkHelper::Prop2PropertyCb);
+		TbEnumEnumInterfaceSignals->OnProp2ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbEnumEnumInterfaceOLinkHelper::Prop2PropertyCb);
 		// use different test value
 		TestValue = ETbEnumEnum2::TEE2_VALUE1;
 		ImplFixture->GetImplementation()->SetProp2(TestValue);
@@ -158,7 +158,7 @@ void UTbEnumEnumInterfaceOLinkSpec::Define()
 
 		testDoneDelegate = TestDone;
 		UTbEnumEnumInterfaceSignals* TbEnumEnumInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbEnumEnumInterfaceSignals->OnProp3Changed.AddDynamic(ImplFixture->GetHelper().Get(), &UTbEnumEnumInterfaceOLinkHelper::Prop3PropertyCb);
+		TbEnumEnumInterfaceSignals->OnProp3ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbEnumEnumInterfaceOLinkHelper::Prop3PropertyCb);
 		// use different test value
 		TestValue = ETbEnumEnum3::TEE3_VALUE2;
 		ImplFixture->GetImplementation()->SetProp3(TestValue);
@@ -208,7 +208,7 @@ void UTbEnumEnumInterfaceOLinkSpec::Define()
 		{
 		testDoneDelegate = TestDone;
 		UTbEnumEnumInterfaceSignals* TbEnumEnumInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbEnumEnumInterfaceSignals->OnSig0Signal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbEnumEnumInterfaceOLinkHelper::Sig0SignalCb);
+		TbEnumEnumInterfaceSignals->OnSig0SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbEnumEnumInterfaceOLinkHelper::Sig0SignalCb);
 
 		// use different test value
 		ETbEnumEnum0 Param0TestValue = ETbEnumEnum0::TEE0_VALUE1;
@@ -219,7 +219,7 @@ void UTbEnumEnumInterfaceOLinkSpec::Define()
 		{
 		testDoneDelegate = TestDone;
 		UTbEnumEnumInterfaceSignals* TbEnumEnumInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbEnumEnumInterfaceSignals->OnSig1Signal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbEnumEnumInterfaceOLinkHelper::Sig1SignalCb);
+		TbEnumEnumInterfaceSignals->OnSig1SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbEnumEnumInterfaceOLinkHelper::Sig1SignalCb);
 
 		// use different test value
 		ETbEnumEnum1 Param1TestValue = ETbEnumEnum1::TEE1_VALUE2;
@@ -230,7 +230,7 @@ void UTbEnumEnumInterfaceOLinkSpec::Define()
 		{
 		testDoneDelegate = TestDone;
 		UTbEnumEnumInterfaceSignals* TbEnumEnumInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbEnumEnumInterfaceSignals->OnSig2Signal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbEnumEnumInterfaceOLinkHelper::Sig2SignalCb);
+		TbEnumEnumInterfaceSignals->OnSig2SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbEnumEnumInterfaceOLinkHelper::Sig2SignalCb);
 
 		// use different test value
 		ETbEnumEnum2 Param2TestValue = ETbEnumEnum2::TEE2_VALUE1;
@@ -241,7 +241,7 @@ void UTbEnumEnumInterfaceOLinkSpec::Define()
 		{
 		testDoneDelegate = TestDone;
 		UTbEnumEnumInterfaceSignals* TbEnumEnumInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbEnumEnumInterfaceSignals->OnSig3Signal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbEnumEnumInterfaceOLinkHelper::Sig3SignalCb);
+		TbEnumEnumInterfaceSignals->OnSig3SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbEnumEnumInterfaceOLinkHelper::Sig3SignalCb);
 
 		// use different test value
 		ETbEnumEnum3 Param3TestValue = ETbEnumEnum3::TEE3_VALUE2;

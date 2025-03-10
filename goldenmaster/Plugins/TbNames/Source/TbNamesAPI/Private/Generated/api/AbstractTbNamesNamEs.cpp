@@ -121,11 +121,16 @@ void UAbstractTbNamesNamEs::Deinitialize()
 	if (TbNamesNamEsSignals)
 	{
 		TbNamesNamEsSignals->OnSomeSignalSignal.RemoveAll(TbNamesNamEsSignals);
+		TbNamesNamEsSignals->OnSomeSignalSignalBP.RemoveAll(TbNamesNamEsSignals);
 		TbNamesNamEsSignals->OnSomeSignal2Signal.RemoveAll(TbNamesNamEsSignals);
+		TbNamesNamEsSignals->OnSomeSignal2SignalBP.RemoveAll(TbNamesNamEsSignals);
 
 		TbNamesNamEsSignals->OnSwitchChanged.RemoveAll(TbNamesNamEsSignals);
+		TbNamesNamEsSignals->OnSwitchChangedBP.RemoveAll(TbNamesNamEsSignals);
 		TbNamesNamEsSignals->OnSomePropertyChanged.RemoveAll(TbNamesNamEsSignals);
+		TbNamesNamEsSignals->OnSomePropertyChangedBP.RemoveAll(TbNamesNamEsSignals);
 		TbNamesNamEsSignals->OnSomePoperty2Changed.RemoveAll(TbNamesNamEsSignals);
+		TbNamesNamEsSignals->OnSomePoperty2ChangedBP.RemoveAll(TbNamesNamEsSignals);
 	}
 
 	Super::Deinitialize();

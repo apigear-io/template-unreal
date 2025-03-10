@@ -94,7 +94,7 @@ void UTbSimpleVoidInterfaceOLinkSpec::Define()
 		{
 		testDoneDelegate = TestDone;
 		UTbSimpleVoidInterfaceSignals* TbSimpleVoidInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleVoidInterfaceSignals->OnSigVoidSignal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleVoidInterfaceOLinkHelper::SigVoidSignalCb);
+		TbSimpleVoidInterfaceSignals->OnSigVoidSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleVoidInterfaceOLinkHelper::SigVoidSignalCb);
 
 		// use different test value
 		TbSimpleVoidInterfaceSignals->BroadcastSigVoidSignal();

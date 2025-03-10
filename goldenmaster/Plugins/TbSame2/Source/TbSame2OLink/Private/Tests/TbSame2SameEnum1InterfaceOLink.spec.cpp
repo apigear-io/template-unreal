@@ -95,7 +95,7 @@ void UTbSame2SameEnum1InterfaceOLinkSpec::Define()
 
 		testDoneDelegate = TestDone;
 		UTbSame2SameEnum1InterfaceSignals* TbSame2SameEnum1InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSame2SameEnum1InterfaceSignals->OnProp1Changed.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame2SameEnum1InterfaceOLinkHelper::Prop1PropertyCb);
+		TbSame2SameEnum1InterfaceSignals->OnProp1ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame2SameEnum1InterfaceOLinkHelper::Prop1PropertyCb);
 		// use different test value
 		TestValue = ETbSame2Enum1::TS2E1_VALUE2;
 		ImplFixture->GetImplementation()->SetProp1(TestValue);
@@ -115,7 +115,7 @@ void UTbSame2SameEnum1InterfaceOLinkSpec::Define()
 		{
 		testDoneDelegate = TestDone;
 		UTbSame2SameEnum1InterfaceSignals* TbSame2SameEnum1InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSame2SameEnum1InterfaceSignals->OnSig1Signal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame2SameEnum1InterfaceOLinkHelper::Sig1SignalCb);
+		TbSame2SameEnum1InterfaceSignals->OnSig1SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame2SameEnum1InterfaceOLinkHelper::Sig1SignalCb);
 
 		// use different test value
 		ETbSame2Enum1 Param1TestValue = ETbSame2Enum1::TS2E1_VALUE2;

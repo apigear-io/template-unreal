@@ -24,10 +24,12 @@ limitations under the License.
  * Declaration for SameStruct1Interface
  */
 // signal delegates
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSame1SameStruct1InterfaceSig1Delegate, const FTbSame1Struct1&, Param1);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTbSame1SameStruct1InterfaceSig1Delegate, const FTbSame1Struct1& /* Param1 */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSame1SameStruct1InterfaceSig1DelegateBP, const FTbSame1Struct1&, Param1);
 
 // property delegates
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSame1SameStruct1InterfaceProp1ChangedDelegate, const FTbSame1Struct1&, Prop1);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTbSame1SameStruct1InterfaceProp1ChangedDelegate, const FTbSame1Struct1& /* Prop1 */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSame1SameStruct1InterfaceProp1ChangedDelegateBP, const FTbSame1Struct1&, Prop1);
 
 /**
  * Class UTbSame1SameStruct1InterfaceInterfaceSignals
@@ -40,22 +42,26 @@ class TBSAME1API_API UTbSame1SameStruct1InterfaceSignals : public UObject
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame1|SameStruct1Interface|Signals", DisplayName = "Sig1 Signal")
 	FTbSame1SameStruct1InterfaceSig1Delegate OnSig1Signal;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame1|SameStruct1Interface|Signals", DisplayName = "Sig1 Signal")
+	FTbSame1SameStruct1InterfaceSig1DelegateBP OnSig1SignalBP;
 	/// C++ wrapper for BP functions to safely call Sig1Signal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1|SameStruct1Interface|Signals", DisplayName = "Broadcast Sig1 Signal")
 	void BroadcastSig1Signal(const FTbSame1Struct1& Param1)
 	{
 		OnSig1Signal.Broadcast(Param1);
+		OnSig1SignalBP.Broadcast(Param1);
 	}
 
-	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame1|SameStruct1Interface|Signals", DisplayName = "Property Prop1 Changed")
 	FTbSame1SameStruct1InterfaceProp1ChangedDelegate OnProp1Changed;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame1|SameStruct1Interface|Signals", DisplayName = "Property Prop1 Changed")
+	FTbSame1SameStruct1InterfaceProp1ChangedDelegateBP OnProp1ChangedBP;
 	/// C++ wrapper for BP functions to safely call OnProp1Changed.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1|SameStruct1Interface|Signals", DisplayName = "Broadcast Property Prop1 Changed")
 	void BroadcastProp1Changed(UPARAM(DisplayName = "Prop1") const FTbSame1Struct1& InProp1)
 	{
 		OnProp1Changed.Broadcast(InProp1);
+		OnProp1ChangedBP.Broadcast(InProp1);
 	}
 };
 

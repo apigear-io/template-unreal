@@ -58,8 +58,8 @@ void UTestbed2NestedStruct1InterfaceOLinkAdapter::setBackendService(TScriptInter
 	{
 		UTestbed2NestedStruct1InterfaceSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service Testbed2NestedStruct1Interface"));
-		BackendSignals->OnProp1Changed.RemoveDynamic(this, &UTestbed2NestedStruct1InterfaceOLinkAdapter::OnProp1Changed);
-		BackendSignals->OnSig1Signal.RemoveDynamic(this, &UTestbed2NestedStruct1InterfaceOLinkAdapter::OnSig1);
+		BackendSignals->OnProp1ChangedBP.RemoveDynamic(this, &UTestbed2NestedStruct1InterfaceOLinkAdapter::OnProp1Changed);
+		BackendSignals->OnSig1SignalBP.RemoveDynamic(this, &UTestbed2NestedStruct1InterfaceOLinkAdapter::OnSig1);
 	}
 
 	// only set if interface is implemented
@@ -70,8 +70,8 @@ void UTestbed2NestedStruct1InterfaceOLinkAdapter::setBackendService(TScriptInter
 	UTestbed2NestedStruct1InterfaceSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service Testbed2NestedStruct1Interface"));
 	// connect property changed signals or simple events
-	BackendSignals->OnProp1Changed.AddDynamic(this, &UTestbed2NestedStruct1InterfaceOLinkAdapter::OnProp1Changed);
-	BackendSignals->OnSig1Signal.AddDynamic(this, &UTestbed2NestedStruct1InterfaceOLinkAdapter::OnSig1);
+	BackendSignals->OnProp1ChangedBP.AddDynamic(this, &UTestbed2NestedStruct1InterfaceOLinkAdapter::OnProp1Changed);
+	BackendSignals->OnSig1SignalBP.AddDynamic(this, &UTestbed2NestedStruct1InterfaceOLinkAdapter::OnSig1);
 
 	// update olink source with new backend
 	Source->setBackendService(InService);
