@@ -108,56 +108,56 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::setBackendService(TScriptInt
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigBool(const TArray<bool>& InParamBool)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigBool(InParamBool);
-	_GetSignals()->OnSigBoolSignal.Broadcast(InParamBool);
+	_GetSignals()->BroadcastSigBoolSignal(InParamBool);
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigInt(const TArray<int32>& InParamInt)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigInt(InParamInt);
-	_GetSignals()->OnSigIntSignal.Broadcast(InParamInt);
+	_GetSignals()->BroadcastSigIntSignal(InParamInt);
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigInt32(const TArray<int32>& InParamInt32)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigInt32(InParamInt32);
-	_GetSignals()->OnSigInt32Signal.Broadcast(InParamInt32);
+	_GetSignals()->BroadcastSigInt32Signal(InParamInt32);
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigInt64(const TArray<int64>& InParamInt64)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigInt64(InParamInt64);
-	_GetSignals()->OnSigInt64Signal.Broadcast(InParamInt64);
+	_GetSignals()->BroadcastSigInt64Signal(InParamInt64);
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigFloat(const TArray<float>& InParamFloat)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigFloat(InParamFloat);
-	_GetSignals()->OnSigFloatSignal.Broadcast(InParamFloat);
+	_GetSignals()->BroadcastSigFloatSignal(InParamFloat);
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigFloat32(const TArray<float>& InParamFloa32)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigFloat32(InParamFloa32);
-	_GetSignals()->OnSigFloat32Signal.Broadcast(InParamFloa32);
+	_GetSignals()->BroadcastSigFloat32Signal(InParamFloa32);
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigFloat64(const TArray<double>& InParamFloat64)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigFloat64(InParamFloat64);
-	_GetSignals()->OnSigFloat64Signal.Broadcast(InParamFloat64);
+	_GetSignals()->BroadcastSigFloat64Signal(InParamFloat64);
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigString(const TArray<FString>& InParamString)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigString(InParamString);
-	_GetSignals()->OnSigStringSignal.Broadcast(InParamString);
+	_GetSignals()->BroadcastSigStringSignal(InParamString);
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropBoolChanged(const TArray<bool>& InPropBool)
 {
 	TbSimpleSimpleArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropBool = InPropBool;
-	_GetSignals()->OnPropBoolChanged.Broadcast(InPropBool);
+	_GetSignals()->BroadcastPropBoolChanged(InPropBool);
 }
 
 TArray<bool> UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropBool() const
@@ -175,7 +175,7 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropIntChanged(const TArra
 {
 	TbSimpleSimpleArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropInt = InPropInt;
-	_GetSignals()->OnPropIntChanged.Broadcast(InPropInt);
+	_GetSignals()->BroadcastPropIntChanged(InPropInt);
 }
 
 TArray<int32> UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropInt() const
@@ -193,7 +193,7 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropInt32Changed(const TAr
 {
 	TbSimpleSimpleArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropInt32 = InPropInt32;
-	_GetSignals()->OnPropInt32Changed.Broadcast(InPropInt32);
+	_GetSignals()->BroadcastPropInt32Changed(InPropInt32);
 }
 
 TArray<int32> UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropInt32() const
@@ -211,7 +211,7 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropInt64Changed(const TAr
 {
 	TbSimpleSimpleArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropInt64 = InPropInt64;
-	_GetSignals()->OnPropInt64Changed.Broadcast(InPropInt64);
+	_GetSignals()->BroadcastPropInt64Changed(InPropInt64);
 }
 
 TArray<int64> UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropInt64() const
@@ -229,7 +229,7 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropFloatChanged(const TAr
 {
 	TbSimpleSimpleArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropFloat = InPropFloat;
-	_GetSignals()->OnPropFloatChanged.Broadcast(InPropFloat);
+	_GetSignals()->BroadcastPropFloatChanged(InPropFloat);
 }
 
 TArray<float> UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropFloat() const
@@ -247,7 +247,7 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropFloat32Changed(const T
 {
 	TbSimpleSimpleArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropFloat32 = InPropFloat32;
-	_GetSignals()->OnPropFloat32Changed.Broadcast(InPropFloat32);
+	_GetSignals()->BroadcastPropFloat32Changed(InPropFloat32);
 }
 
 TArray<float> UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropFloat32() const
@@ -265,7 +265,7 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropFloat64Changed(const T
 {
 	TbSimpleSimpleArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropFloat64 = InPropFloat64;
-	_GetSignals()->OnPropFloat64Changed.Broadcast(InPropFloat64);
+	_GetSignals()->BroadcastPropFloat64Changed(InPropFloat64);
 }
 
 TArray<double> UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropFloat64() const
@@ -283,7 +283,7 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropStringChanged(const TA
 {
 	TbSimpleSimpleArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropString = InPropString;
-	_GetSignals()->OnPropStringChanged.Broadcast(InPropString);
+	_GetSignals()->BroadcastPropStringChanged(InPropString);
 }
 
 TArray<FString> UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropString() const
@@ -301,7 +301,7 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropReadOnlyStringChanged(
 {
 	TbSimpleSimpleArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropReadOnlyString = InPropReadOnlyString;
-	_GetSignals()->OnPropReadOnlyStringChanged.Broadcast(InPropReadOnlyString);
+	_GetSignals()->BroadcastPropReadOnlyStringChanged(InPropReadOnlyString);
 }
 
 FString UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropReadOnlyString() const

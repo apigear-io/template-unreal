@@ -70,14 +70,14 @@ void UTbSame2SameStruct1InterfaceLoggingDecorator::setBackendService(TScriptInte
 void UTbSame2SameStruct1InterfaceLoggingDecorator::OnSig1(const FTbSame2Struct1& InParam1)
 {
 	TbSame2SameStruct1InterfaceTracer::trace_signalSig1(InParam1);
-	_GetSignals()->OnSig1Signal.Broadcast(InParam1);
+	_GetSignals()->BroadcastSig1Signal(InParam1);
 }
 
 void UTbSame2SameStruct1InterfaceLoggingDecorator::OnProp1Changed(const FTbSame2Struct1& InProp1)
 {
 	TbSame2SameStruct1InterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop1 = InProp1;
-	_GetSignals()->OnProp1Changed.Broadcast(InProp1);
+	_GetSignals()->BroadcastProp1Changed(InProp1);
 }
 
 FTbSame2Struct1 UTbSame2SameStruct1InterfaceLoggingDecorator::GetProp1() const

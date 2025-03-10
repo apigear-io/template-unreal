@@ -28,7 +28,7 @@ void UTestbed2NestedStruct3Interface::SetProp1(const FTestbed2NestedStruct1& InP
 	if (Prop1 != InProp1)
 	{
 		Prop1 = InProp1;
-		_GetSignals()->OnProp1Changed.Broadcast(Prop1);
+		_GetSignals()->BroadcastProp1Changed(Prop1);
 	}
 }
 FTestbed2NestedStruct2 UTestbed2NestedStruct3Interface::GetProp2() const
@@ -41,7 +41,7 @@ void UTestbed2NestedStruct3Interface::SetProp2(const FTestbed2NestedStruct2& InP
 	if (Prop2 != InProp2)
 	{
 		Prop2 = InProp2;
-		_GetSignals()->OnProp2Changed.Broadcast(Prop2);
+		_GetSignals()->BroadcastProp2Changed(Prop2);
 	}
 }
 FTestbed2NestedStruct3 UTestbed2NestedStruct3Interface::GetProp3() const
@@ -54,7 +54,7 @@ void UTestbed2NestedStruct3Interface::SetProp3(const FTestbed2NestedStruct3& InP
 	if (Prop3 != InProp3)
 	{
 		Prop3 = InProp3;
-		_GetSignals()->OnProp3Changed.Broadcast(Prop3);
+		_GetSignals()->BroadcastProp3Changed(Prop3);
 	}
 }
 

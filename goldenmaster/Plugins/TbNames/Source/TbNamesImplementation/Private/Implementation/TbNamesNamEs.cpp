@@ -28,7 +28,7 @@ void UTbNamesNamEs::SetSwitch(bool bInSwitch)
 	if (bSwitch != bInSwitch)
 	{
 		bSwitch = bInSwitch;
-		_GetSignals()->OnSwitchChanged.Broadcast(bSwitch);
+		_GetSignals()->BroadcastSwitchChanged(bSwitch);
 	}
 }
 int32 UTbNamesNamEs::GetSomeProperty() const
@@ -41,7 +41,7 @@ void UTbNamesNamEs::SetSomeProperty(int32 InSomeProperty)
 	if (SomeProperty != InSomeProperty)
 	{
 		SomeProperty = InSomeProperty;
-		_GetSignals()->OnSomePropertyChanged.Broadcast(SomeProperty);
+		_GetSignals()->BroadcastSomePropertyChanged(SomeProperty);
 	}
 }
 int32 UTbNamesNamEs::GetSomePoperty2() const
@@ -54,7 +54,7 @@ void UTbNamesNamEs::SetSomePoperty2(int32 InSomePoperty2)
 	if (SomePoperty2 != InSomePoperty2)
 	{
 		SomePoperty2 = InSomePoperty2;
-		_GetSignals()->OnSomePoperty2Changed.Broadcast(SomePoperty2);
+		_GetSignals()->BroadcastSomePoperty2Changed(SomePoperty2);
 	}
 }
 

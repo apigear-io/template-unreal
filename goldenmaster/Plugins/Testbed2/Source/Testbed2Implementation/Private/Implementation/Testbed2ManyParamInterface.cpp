@@ -28,7 +28,7 @@ void UTestbed2ManyParamInterface::SetProp1(int32 InProp1)
 	if (Prop1 != InProp1)
 	{
 		Prop1 = InProp1;
-		_GetSignals()->OnProp1Changed.Broadcast(Prop1);
+		_GetSignals()->BroadcastProp1Changed(Prop1);
 	}
 }
 int32 UTestbed2ManyParamInterface::GetProp2() const
@@ -41,7 +41,7 @@ void UTestbed2ManyParamInterface::SetProp2(int32 InProp2)
 	if (Prop2 != InProp2)
 	{
 		Prop2 = InProp2;
-		_GetSignals()->OnProp2Changed.Broadcast(Prop2);
+		_GetSignals()->BroadcastProp2Changed(Prop2);
 	}
 }
 int32 UTestbed2ManyParamInterface::GetProp3() const
@@ -54,7 +54,7 @@ void UTestbed2ManyParamInterface::SetProp3(int32 InProp3)
 	if (Prop3 != InProp3)
 	{
 		Prop3 = InProp3;
-		_GetSignals()->OnProp3Changed.Broadcast(Prop3);
+		_GetSignals()->BroadcastProp3Changed(Prop3);
 	}
 }
 int32 UTestbed2ManyParamInterface::GetProp4() const
@@ -67,7 +67,7 @@ void UTestbed2ManyParamInterface::SetProp4(int32 InProp4)
 	if (Prop4 != InProp4)
 	{
 		Prop4 = InProp4;
-		_GetSignals()->OnProp4Changed.Broadcast(Prop4);
+		_GetSignals()->BroadcastProp4Changed(Prop4);
 	}
 }
 

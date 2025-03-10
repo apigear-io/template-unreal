@@ -28,7 +28,7 @@ void UCounterCounter::SetVector(const FCustomTypesVector3D& InVector)
 	if (Vector != InVector)
 	{
 		Vector = InVector;
-		_GetSignals()->OnVectorChanged.Broadcast(Vector);
+		_GetSignals()->BroadcastVectorChanged(Vector);
 	}
 }
 FVector UCounterCounter::GetExternVector() const
@@ -41,7 +41,7 @@ void UCounterCounter::SetExternVector(const FVector& InExternVector)
 	if (ExternVector != InExternVector)
 	{
 		ExternVector = InExternVector;
-		_GetSignals()->OnExternVectorChanged.Broadcast(ExternVector);
+		_GetSignals()->BroadcastExternVectorChanged(ExternVector);
 	}
 }
 TArray<FCustomTypesVector3D> UCounterCounter::GetVectorArray() const
@@ -54,7 +54,7 @@ void UCounterCounter::SetVectorArray(const TArray<FCustomTypesVector3D>& InVecto
 	if (VectorArray != InVectorArray)
 	{
 		VectorArray = InVectorArray;
-		_GetSignals()->OnVectorArrayChanged.Broadcast(VectorArray);
+		_GetSignals()->BroadcastVectorArrayChanged(VectorArray);
 	}
 }
 TArray<FVector> UCounterCounter::GetExternVectorArray() const
@@ -67,7 +67,7 @@ void UCounterCounter::SetExternVectorArray(const TArray<FVector>& InExternVector
 	if (ExternVectorArray != InExternVectorArray)
 	{
 		ExternVectorArray = InExternVectorArray;
-		_GetSignals()->OnExternVectorArrayChanged.Broadcast(ExternVectorArray);
+		_GetSignals()->BroadcastExternVectorArrayChanged(ExternVectorArray);
 	}
 }
 

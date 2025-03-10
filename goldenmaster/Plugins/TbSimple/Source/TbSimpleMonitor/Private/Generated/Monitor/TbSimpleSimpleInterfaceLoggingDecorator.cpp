@@ -105,56 +105,56 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::setBackendService(TScriptInterfac
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigBool(bool bInParamBool)
 {
 	TbSimpleSimpleInterfaceTracer::trace_signalSigBool(bInParamBool);
-	_GetSignals()->OnSigBoolSignal.Broadcast(bInParamBool);
+	_GetSignals()->BroadcastSigBoolSignal(bInParamBool);
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt(int32 InParamInt)
 {
 	TbSimpleSimpleInterfaceTracer::trace_signalSigInt(InParamInt);
-	_GetSignals()->OnSigIntSignal.Broadcast(InParamInt);
+	_GetSignals()->BroadcastSigIntSignal(InParamInt);
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt32(int32 InParamInt32)
 {
 	TbSimpleSimpleInterfaceTracer::trace_signalSigInt32(InParamInt32);
-	_GetSignals()->OnSigInt32Signal.Broadcast(InParamInt32);
+	_GetSignals()->BroadcastSigInt32Signal(InParamInt32);
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt64(int64 InParamInt64)
 {
 	TbSimpleSimpleInterfaceTracer::trace_signalSigInt64(InParamInt64);
-	_GetSignals()->OnSigInt64Signal.Broadcast(InParamInt64);
+	_GetSignals()->BroadcastSigInt64Signal(InParamInt64);
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat(float InParamFloat)
 {
 	TbSimpleSimpleInterfaceTracer::trace_signalSigFloat(InParamFloat);
-	_GetSignals()->OnSigFloatSignal.Broadcast(InParamFloat);
+	_GetSignals()->BroadcastSigFloatSignal(InParamFloat);
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat32(float InParamFloat32)
 {
 	TbSimpleSimpleInterfaceTracer::trace_signalSigFloat32(InParamFloat32);
-	_GetSignals()->OnSigFloat32Signal.Broadcast(InParamFloat32);
+	_GetSignals()->BroadcastSigFloat32Signal(InParamFloat32);
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat64(double InParamFloat64)
 {
 	TbSimpleSimpleInterfaceTracer::trace_signalSigFloat64(InParamFloat64);
-	_GetSignals()->OnSigFloat64Signal.Broadcast(InParamFloat64);
+	_GetSignals()->BroadcastSigFloat64Signal(InParamFloat64);
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigString(const FString& InParamString)
 {
 	TbSimpleSimpleInterfaceTracer::trace_signalSigString(InParamString);
-	_GetSignals()->OnSigStringSignal.Broadcast(InParamString);
+	_GetSignals()->BroadcastSigStringSignal(InParamString);
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnPropBoolChanged(bool bInPropBool)
 {
 	TbSimpleSimpleInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	bPropBool = bInPropBool;
-	_GetSignals()->OnPropBoolChanged.Broadcast(bInPropBool);
+	_GetSignals()->BroadcastPropBoolChanged(bInPropBool);
 }
 
 bool UTbSimpleSimpleInterfaceLoggingDecorator::GetPropBool() const
@@ -172,7 +172,7 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::OnPropIntChanged(int32 InPropInt)
 {
 	TbSimpleSimpleInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropInt = InPropInt;
-	_GetSignals()->OnPropIntChanged.Broadcast(InPropInt);
+	_GetSignals()->BroadcastPropIntChanged(InPropInt);
 }
 
 int32 UTbSimpleSimpleInterfaceLoggingDecorator::GetPropInt() const
@@ -190,7 +190,7 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::OnPropInt32Changed(int32 InPropIn
 {
 	TbSimpleSimpleInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropInt32 = InPropInt32;
-	_GetSignals()->OnPropInt32Changed.Broadcast(InPropInt32);
+	_GetSignals()->BroadcastPropInt32Changed(InPropInt32);
 }
 
 int32 UTbSimpleSimpleInterfaceLoggingDecorator::GetPropInt32() const
@@ -208,7 +208,7 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::OnPropInt64Changed(int64 InPropIn
 {
 	TbSimpleSimpleInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropInt64 = InPropInt64;
-	_GetSignals()->OnPropInt64Changed.Broadcast(InPropInt64);
+	_GetSignals()->BroadcastPropInt64Changed(InPropInt64);
 }
 
 int64 UTbSimpleSimpleInterfaceLoggingDecorator::GetPropInt64() const
@@ -226,7 +226,7 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloatChanged(float InPropFl
 {
 	TbSimpleSimpleInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropFloat = InPropFloat;
-	_GetSignals()->OnPropFloatChanged.Broadcast(InPropFloat);
+	_GetSignals()->BroadcastPropFloatChanged(InPropFloat);
 }
 
 float UTbSimpleSimpleInterfaceLoggingDecorator::GetPropFloat() const
@@ -244,7 +244,7 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloat32Changed(float InProp
 {
 	TbSimpleSimpleInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropFloat32 = InPropFloat32;
-	_GetSignals()->OnPropFloat32Changed.Broadcast(InPropFloat32);
+	_GetSignals()->BroadcastPropFloat32Changed(InPropFloat32);
 }
 
 float UTbSimpleSimpleInterfaceLoggingDecorator::GetPropFloat32() const
@@ -262,7 +262,7 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloat64Changed(double InPro
 {
 	TbSimpleSimpleInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropFloat64 = InPropFloat64;
-	_GetSignals()->OnPropFloat64Changed.Broadcast(InPropFloat64);
+	_GetSignals()->BroadcastPropFloat64Changed(InPropFloat64);
 }
 
 double UTbSimpleSimpleInterfaceLoggingDecorator::GetPropFloat64() const
@@ -280,7 +280,7 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::OnPropStringChanged(const FString
 {
 	TbSimpleSimpleInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropString = InPropString;
-	_GetSignals()->OnPropStringChanged.Broadcast(InPropString);
+	_GetSignals()->BroadcastPropStringChanged(InPropString);
 }
 
 FString UTbSimpleSimpleInterfaceLoggingDecorator::GetPropString() const

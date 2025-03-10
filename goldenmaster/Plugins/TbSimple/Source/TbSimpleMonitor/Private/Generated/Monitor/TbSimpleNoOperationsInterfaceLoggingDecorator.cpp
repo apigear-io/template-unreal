@@ -75,20 +75,20 @@ void UTbSimpleNoOperationsInterfaceLoggingDecorator::setBackendService(TScriptIn
 void UTbSimpleNoOperationsInterfaceLoggingDecorator::OnSigVoid()
 {
 	TbSimpleNoOperationsInterfaceTracer::trace_signalSigVoid();
-	_GetSignals()->OnSigVoidSignal.Broadcast();
+	_GetSignals()->BroadcastSigVoidSignal();
 }
 
 void UTbSimpleNoOperationsInterfaceLoggingDecorator::OnSigBool(bool bInParamBool)
 {
 	TbSimpleNoOperationsInterfaceTracer::trace_signalSigBool(bInParamBool);
-	_GetSignals()->OnSigBoolSignal.Broadcast(bInParamBool);
+	_GetSignals()->BroadcastSigBoolSignal(bInParamBool);
 }
 
 void UTbSimpleNoOperationsInterfaceLoggingDecorator::OnPropBoolChanged(bool bInPropBool)
 {
 	TbSimpleNoOperationsInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	bPropBool = bInPropBool;
-	_GetSignals()->OnPropBoolChanged.Broadcast(bInPropBool);
+	_GetSignals()->BroadcastPropBoolChanged(bInPropBool);
 }
 
 bool UTbSimpleNoOperationsInterfaceLoggingDecorator::GetPropBool() const
@@ -106,7 +106,7 @@ void UTbSimpleNoOperationsInterfaceLoggingDecorator::OnPropIntChanged(int32 InPr
 {
 	TbSimpleNoOperationsInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropInt = InPropInt;
-	_GetSignals()->OnPropIntChanged.Broadcast(InPropInt);
+	_GetSignals()->BroadcastPropIntChanged(InPropInt);
 }
 
 int32 UTbSimpleNoOperationsInterfaceLoggingDecorator::GetPropInt() const

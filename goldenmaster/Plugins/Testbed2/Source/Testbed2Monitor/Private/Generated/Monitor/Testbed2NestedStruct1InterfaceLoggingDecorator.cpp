@@ -70,14 +70,14 @@ void UTestbed2NestedStruct1InterfaceLoggingDecorator::setBackendService(TScriptI
 void UTestbed2NestedStruct1InterfaceLoggingDecorator::OnSig1(const FTestbed2NestedStruct1& InParam1)
 {
 	Testbed2NestedStruct1InterfaceTracer::trace_signalSig1(InParam1);
-	_GetSignals()->OnSig1Signal.Broadcast(InParam1);
+	_GetSignals()->BroadcastSig1Signal(InParam1);
 }
 
 void UTestbed2NestedStruct1InterfaceLoggingDecorator::OnProp1Changed(const FTestbed2NestedStruct1& InProp1)
 {
 	Testbed2NestedStruct1InterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop1 = InProp1;
-	_GetSignals()->OnProp1Changed.Broadcast(InProp1);
+	_GetSignals()->BroadcastProp1Changed(InProp1);
 }
 
 FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceLoggingDecorator::GetProp1() const

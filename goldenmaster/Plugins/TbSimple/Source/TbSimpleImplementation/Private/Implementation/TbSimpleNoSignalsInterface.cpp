@@ -28,7 +28,7 @@ void UTbSimpleNoSignalsInterface::SetPropBool(bool bInPropBool)
 	if (bPropBool != bInPropBool)
 	{
 		bPropBool = bInPropBool;
-		_GetSignals()->OnPropBoolChanged.Broadcast(bPropBool);
+		_GetSignals()->BroadcastPropBoolChanged(bPropBool);
 	}
 }
 int32 UTbSimpleNoSignalsInterface::GetPropInt() const
@@ -41,7 +41,7 @@ void UTbSimpleNoSignalsInterface::SetPropInt(int32 InPropInt)
 	if (PropInt != InPropInt)
 	{
 		PropInt = InPropInt;
-		_GetSignals()->OnPropIntChanged.Broadcast(PropInt);
+		_GetSignals()->BroadcastPropIntChanged(PropInt);
 	}
 }
 

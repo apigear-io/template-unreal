@@ -627,63 +627,63 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::applyState(const nlohmann::json& 
 	if (bPropBoolChanged)
 	{
 		PropBool = fields["propBool"].get<TArray<bool>>();
-		_GetSignals()->OnPropBoolChanged.Broadcast(PropBool);
+		_GetSignals()->BroadcastPropBoolChanged(PropBool);
 	}
 
 	const bool bPropIntChanged = fields.contains("propInt") && (PropInt != fields["propInt"].get<TArray<int32>>());
 	if (bPropIntChanged)
 	{
 		PropInt = fields["propInt"].get<TArray<int32>>();
-		_GetSignals()->OnPropIntChanged.Broadcast(PropInt);
+		_GetSignals()->BroadcastPropIntChanged(PropInt);
 	}
 
 	const bool bPropInt32Changed = fields.contains("propInt32") && (PropInt32 != fields["propInt32"].get<TArray<int32>>());
 	if (bPropInt32Changed)
 	{
 		PropInt32 = fields["propInt32"].get<TArray<int32>>();
-		_GetSignals()->OnPropInt32Changed.Broadcast(PropInt32);
+		_GetSignals()->BroadcastPropInt32Changed(PropInt32);
 	}
 
 	const bool bPropInt64Changed = fields.contains("propInt64") && (PropInt64 != fields["propInt64"].get<TArray<int64>>());
 	if (bPropInt64Changed)
 	{
 		PropInt64 = fields["propInt64"].get<TArray<int64>>();
-		_GetSignals()->OnPropInt64Changed.Broadcast(PropInt64);
+		_GetSignals()->BroadcastPropInt64Changed(PropInt64);
 	}
 
 	const bool bPropFloatChanged = fields.contains("propFloat") && (PropFloat != fields["propFloat"].get<TArray<float>>());
 	if (bPropFloatChanged)
 	{
 		PropFloat = fields["propFloat"].get<TArray<float>>();
-		_GetSignals()->OnPropFloatChanged.Broadcast(PropFloat);
+		_GetSignals()->BroadcastPropFloatChanged(PropFloat);
 	}
 
 	const bool bPropFloat32Changed = fields.contains("propFloat32") && (PropFloat32 != fields["propFloat32"].get<TArray<float>>());
 	if (bPropFloat32Changed)
 	{
 		PropFloat32 = fields["propFloat32"].get<TArray<float>>();
-		_GetSignals()->OnPropFloat32Changed.Broadcast(PropFloat32);
+		_GetSignals()->BroadcastPropFloat32Changed(PropFloat32);
 	}
 
 	const bool bPropFloat64Changed = fields.contains("propFloat64") && (PropFloat64 != fields["propFloat64"].get<TArray<double>>());
 	if (bPropFloat64Changed)
 	{
 		PropFloat64 = fields["propFloat64"].get<TArray<double>>();
-		_GetSignals()->OnPropFloat64Changed.Broadcast(PropFloat64);
+		_GetSignals()->BroadcastPropFloat64Changed(PropFloat64);
 	}
 
 	const bool bPropStringChanged = fields.contains("propString") && (PropString != fields["propString"].get<TArray<FString>>());
 	if (bPropStringChanged)
 	{
 		PropString = fields["propString"].get<TArray<FString>>();
-		_GetSignals()->OnPropStringChanged.Broadcast(PropString);
+		_GetSignals()->BroadcastPropStringChanged(PropString);
 	}
 
 	const bool bPropReadOnlyStringChanged = fields.contains("propReadOnlyString") && (PropReadOnlyString != fields["propReadOnlyString"].get<FString>());
 	if (bPropReadOnlyStringChanged)
 	{
 		PropReadOnlyString = fields["propReadOnlyString"].get<FString>();
-		_GetSignals()->OnPropReadOnlyStringChanged.Broadcast(PropReadOnlyString);
+		_GetSignals()->BroadcastPropReadOnlyStringChanged(PropReadOnlyString);
 	}
 }
 
@@ -692,56 +692,56 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::emitSignal(const std::string& sig
 	if (signalName == "sigBool")
 	{
 		const TArray<bool>& outParamBool = args[0].get<TArray<bool>>();
-		_GetSignals()->OnSigBoolSignal.Broadcast(outParamBool);
+		_GetSignals()->BroadcastSigBoolSignal(outParamBool);
 		return;
 	}
 
 	if (signalName == "sigInt")
 	{
 		const TArray<int32>& outParamInt = args[0].get<TArray<int32>>();
-		_GetSignals()->OnSigIntSignal.Broadcast(outParamInt);
+		_GetSignals()->BroadcastSigIntSignal(outParamInt);
 		return;
 	}
 
 	if (signalName == "sigInt32")
 	{
 		const TArray<int32>& outParamInt32 = args[0].get<TArray<int32>>();
-		_GetSignals()->OnSigInt32Signal.Broadcast(outParamInt32);
+		_GetSignals()->BroadcastSigInt32Signal(outParamInt32);
 		return;
 	}
 
 	if (signalName == "sigInt64")
 	{
 		const TArray<int64>& outParamInt64 = args[0].get<TArray<int64>>();
-		_GetSignals()->OnSigInt64Signal.Broadcast(outParamInt64);
+		_GetSignals()->BroadcastSigInt64Signal(outParamInt64);
 		return;
 	}
 
 	if (signalName == "sigFloat")
 	{
 		const TArray<float>& outParamFloat = args[0].get<TArray<float>>();
-		_GetSignals()->OnSigFloatSignal.Broadcast(outParamFloat);
+		_GetSignals()->BroadcastSigFloatSignal(outParamFloat);
 		return;
 	}
 
 	if (signalName == "sigFloat32")
 	{
 		const TArray<float>& outParamFloa32 = args[0].get<TArray<float>>();
-		_GetSignals()->OnSigFloat32Signal.Broadcast(outParamFloa32);
+		_GetSignals()->BroadcastSigFloat32Signal(outParamFloa32);
 		return;
 	}
 
 	if (signalName == "sigFloat64")
 	{
 		const TArray<double>& outParamFloat64 = args[0].get<TArray<double>>();
-		_GetSignals()->OnSigFloat64Signal.Broadcast(outParamFloat64);
+		_GetSignals()->BroadcastSigFloat64Signal(outParamFloat64);
 		return;
 	}
 
 	if (signalName == "sigString")
 	{
 		const TArray<FString>& outParamString = args[0].get<TArray<FString>>();
-		_GetSignals()->OnSigStringSignal.Broadcast(outParamString);
+		_GetSignals()->BroadcastSigStringSignal(outParamString);
 		return;
 	}
 }

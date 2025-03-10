@@ -69,13 +69,13 @@ void UTbSimpleNoPropertiesInterfaceLoggingDecorator::setBackendService(TScriptIn
 void UTbSimpleNoPropertiesInterfaceLoggingDecorator::OnSigVoid()
 {
 	TbSimpleNoPropertiesInterfaceTracer::trace_signalSigVoid();
-	_GetSignals()->OnSigVoidSignal.Broadcast();
+	_GetSignals()->BroadcastSigVoidSignal();
 }
 
 void UTbSimpleNoPropertiesInterfaceLoggingDecorator::OnSigBool(bool bInParamBool)
 {
 	TbSimpleNoPropertiesInterfaceTracer::trace_signalSigBool(bInParamBool);
-	_GetSignals()->OnSigBoolSignal.Broadcast(bInParamBool);
+	_GetSignals()->BroadcastSigBoolSignal(bInParamBool);
 }
 
 void UTbSimpleNoPropertiesInterfaceLoggingDecorator::FuncVoid()

@@ -406,28 +406,28 @@ void UCounterCounterOLinkClient::applyState(const nlohmann::json& fields)
 	if (bVectorChanged)
 	{
 		Vector = fields["vector"].get<FCustomTypesVector3D>();
-		_GetSignals()->OnVectorChanged.Broadcast(Vector);
+		_GetSignals()->BroadcastVectorChanged(Vector);
 	}
 
 	const bool bExternVectorChanged = fields.contains("extern_vector") && (ExternVector != fields["extern_vector"].get<FVector>());
 	if (bExternVectorChanged)
 	{
 		ExternVector = fields["extern_vector"].get<FVector>();
-		_GetSignals()->OnExternVectorChanged.Broadcast(ExternVector);
+		_GetSignals()->BroadcastExternVectorChanged(ExternVector);
 	}
 
 	const bool bVectorArrayChanged = fields.contains("vectorArray") && (VectorArray != fields["vectorArray"].get<TArray<FCustomTypesVector3D>>());
 	if (bVectorArrayChanged)
 	{
 		VectorArray = fields["vectorArray"].get<TArray<FCustomTypesVector3D>>();
-		_GetSignals()->OnVectorArrayChanged.Broadcast(VectorArray);
+		_GetSignals()->BroadcastVectorArrayChanged(VectorArray);
 	}
 
 	const bool bExternVectorArrayChanged = fields.contains("extern_vectorArray") && (ExternVectorArray != fields["extern_vectorArray"].get<TArray<FVector>>());
 	if (bExternVectorArrayChanged)
 	{
 		ExternVectorArray = fields["extern_vectorArray"].get<TArray<FVector>>();
-		_GetSignals()->OnExternVectorArrayChanged.Broadcast(ExternVectorArray);
+		_GetSignals()->BroadcastExternVectorArrayChanged(ExternVectorArray);
 	}
 }
 
@@ -439,7 +439,7 @@ void UCounterCounterOLinkClient::emitSignal(const std::string& signalName, const
 		const FVector& outExternVector = args[1].get<FVector>();
 		const TArray<FCustomTypesVector3D>& outVectorArray = args[2].get<TArray<FCustomTypesVector3D>>();
 		const TArray<FVector>& outExternVectorArray = args[3].get<TArray<FVector>>();
-		_GetSignals()->OnValueChangedSignal.Broadcast(outVector, outExternVector, outVectorArray, outExternVectorArray);
+		_GetSignals()->BroadcastValueChangedSignal(outVector, outExternVector, outVectorArray, outExternVectorArray);
 		return;
 	}
 }

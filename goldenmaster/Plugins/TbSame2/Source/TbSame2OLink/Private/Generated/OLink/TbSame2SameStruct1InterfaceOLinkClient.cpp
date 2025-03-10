@@ -222,7 +222,7 @@ void UTbSame2SameStruct1InterfaceOLinkClient::applyState(const nlohmann::json& f
 	if (bProp1Changed)
 	{
 		Prop1 = fields["prop1"].get<FTbSame2Struct1>();
-		_GetSignals()->OnProp1Changed.Broadcast(Prop1);
+		_GetSignals()->BroadcastProp1Changed(Prop1);
 	}
 }
 
@@ -231,7 +231,7 @@ void UTbSame2SameStruct1InterfaceOLinkClient::emitSignal(const std::string& sign
 	if (signalName == "sig1")
 	{
 		const FTbSame2Struct1& outParam1 = args[0].get<FTbSame2Struct1>();
-		_GetSignals()->OnSig1Signal.Broadcast(outParam1);
+		_GetSignals()->BroadcastSig1Signal(outParam1);
 		return;
 	}
 }

@@ -78,20 +78,20 @@ void UTbNamesNamEsLoggingDecorator::setBackendService(TScriptInterface<ITbNamesN
 void UTbNamesNamEsLoggingDecorator::OnSomeSignal(bool bInSomeParam)
 {
 	TbNamesNamEsTracer::trace_signalSomeSignal(bInSomeParam);
-	_GetSignals()->OnSomeSignalSignal.Broadcast(bInSomeParam);
+	_GetSignals()->BroadcastSomeSignalSignal(bInSomeParam);
 }
 
 void UTbNamesNamEsLoggingDecorator::OnSomeSignal2(bool bInSomeParam)
 {
 	TbNamesNamEsTracer::trace_signalSomeSignal2(bInSomeParam);
-	_GetSignals()->OnSomeSignal2Signal.Broadcast(bInSomeParam);
+	_GetSignals()->BroadcastSomeSignal2Signal(bInSomeParam);
 }
 
 void UTbNamesNamEsLoggingDecorator::OnSwitchChanged(bool bInSwitch)
 {
 	TbNamesNamEsTracer::capture_state(BackendService.GetObject(), this);
 	bSwitch = bInSwitch;
-	_GetSignals()->OnSwitchChanged.Broadcast(bInSwitch);
+	_GetSignals()->BroadcastSwitchChanged(bInSwitch);
 }
 
 bool UTbNamesNamEsLoggingDecorator::GetSwitch() const
@@ -109,7 +109,7 @@ void UTbNamesNamEsLoggingDecorator::OnSomePropertyChanged(int32 InSomeProperty)
 {
 	TbNamesNamEsTracer::capture_state(BackendService.GetObject(), this);
 	SomeProperty = InSomeProperty;
-	_GetSignals()->OnSomePropertyChanged.Broadcast(InSomeProperty);
+	_GetSignals()->BroadcastSomePropertyChanged(InSomeProperty);
 }
 
 int32 UTbNamesNamEsLoggingDecorator::GetSomeProperty() const
@@ -127,7 +127,7 @@ void UTbNamesNamEsLoggingDecorator::OnSomePoperty2Changed(int32 InSomePoperty2)
 {
 	TbNamesNamEsTracer::capture_state(BackendService.GetObject(), this);
 	SomePoperty2 = InSomePoperty2;
-	_GetSignals()->OnSomePoperty2Changed.Broadcast(InSomePoperty2);
+	_GetSignals()->BroadcastSomePoperty2Changed(InSomePoperty2);
 }
 
 int32 UTbNamesNamEsLoggingDecorator::GetSomePoperty2() const

@@ -176,14 +176,14 @@ void UTbSimpleNoOperationsInterfaceMsgBusClient::OnConnectionInit(const FTbSimpl
 	if (bbPropBoolChanged)
 	{
 		bPropBool = InMessage.bPropBool;
-		_GetSignals()->OnPropBoolChanged.Broadcast(bPropBool);
+		_GetSignals()->BroadcastPropBoolChanged(bPropBool);
 	}
 
 	const bool bPropIntChanged = InMessage.PropInt != PropInt;
 	if (bPropIntChanged)
 	{
 		PropInt = InMessage.PropInt;
-		_GetSignals()->OnPropIntChanged.Broadcast(PropInt);
+		_GetSignals()->BroadcastPropIntChanged(PropInt);
 	}
 
 	_ConnectionStatusChanged.Broadcast(true);
@@ -355,7 +355,7 @@ void UTbSimpleNoOperationsInterfaceMsgBusClient::OnSigVoid(const FTbSimpleNoOper
 		return;
 	}
 
-	_GetSignals()->OnSigVoidSignal.Broadcast();
+	_GetSignals()->BroadcastSigVoidSignal();
 	return;
 }
 
@@ -367,7 +367,7 @@ void UTbSimpleNoOperationsInterfaceMsgBusClient::OnSigBool(const FTbSimpleNoOper
 		return;
 	}
 
-	_GetSignals()->OnSigBoolSignal.Broadcast(InMessage.bParamBool);
+	_GetSignals()->BroadcastSigBoolSignal(InMessage.bParamBool);
 	return;
 }
 
@@ -383,7 +383,7 @@ void UTbSimpleNoOperationsInterfaceMsgBusClient::OnPropBoolChanged(const FTbSimp
 	if (bbPropBoolChanged)
 	{
 		bPropBool = InMessage.bPropBool;
-		_GetSignals()->OnPropBoolChanged.Broadcast(bPropBool);
+		_GetSignals()->BroadcastPropBoolChangedbPropBool);
 	}
 }
 
@@ -399,6 +399,6 @@ void UTbSimpleNoOperationsInterfaceMsgBusClient::OnPropIntChanged(const FTbSimpl
 	if (bPropIntChanged)
 	{
 		PropInt = InMessage.PropInt;
-		_GetSignals()->OnPropIntChanged.Broadcast(PropInt);
+		_GetSignals()->BroadcastPropIntChangedPropInt);
 	}
 }

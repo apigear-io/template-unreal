@@ -28,7 +28,7 @@ void UTbEnumEnumInterface::SetProp0(ETbEnumEnum0 InProp0)
 	if (Prop0 != InProp0)
 	{
 		Prop0 = InProp0;
-		_GetSignals()->OnProp0Changed.Broadcast(Prop0);
+		_GetSignals()->BroadcastProp0Changed(Prop0);
 	}
 }
 ETbEnumEnum1 UTbEnumEnumInterface::GetProp1() const
@@ -41,7 +41,7 @@ void UTbEnumEnumInterface::SetProp1(ETbEnumEnum1 InProp1)
 	if (Prop1 != InProp1)
 	{
 		Prop1 = InProp1;
-		_GetSignals()->OnProp1Changed.Broadcast(Prop1);
+		_GetSignals()->BroadcastProp1Changed(Prop1);
 	}
 }
 ETbEnumEnum2 UTbEnumEnumInterface::GetProp2() const
@@ -54,7 +54,7 @@ void UTbEnumEnumInterface::SetProp2(ETbEnumEnum2 InProp2)
 	if (Prop2 != InProp2)
 	{
 		Prop2 = InProp2;
-		_GetSignals()->OnProp2Changed.Broadcast(Prop2);
+		_GetSignals()->BroadcastProp2Changed(Prop2);
 	}
 }
 ETbEnumEnum3 UTbEnumEnumInterface::GetProp3() const
@@ -67,7 +67,7 @@ void UTbEnumEnumInterface::SetProp3(ETbEnumEnum3 InProp3)
 	if (Prop3 != InProp3)
 	{
 		Prop3 = InProp3;
-		_GetSignals()->OnProp3Changed.Broadcast(Prop3);
+		_GetSignals()->BroadcastProp3Changed(Prop3);
 	}
 }
 

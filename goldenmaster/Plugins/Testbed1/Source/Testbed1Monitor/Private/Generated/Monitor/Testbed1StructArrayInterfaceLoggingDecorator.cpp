@@ -85,32 +85,32 @@ void UTestbed1StructArrayInterfaceLoggingDecorator::setBackendService(TScriptInt
 void UTestbed1StructArrayInterfaceLoggingDecorator::OnSigBool(const TArray<FTestbed1StructBool>& InParamBool)
 {
 	Testbed1StructArrayInterfaceTracer::trace_signalSigBool(InParamBool);
-	_GetSignals()->OnSigBoolSignal.Broadcast(InParamBool);
+	_GetSignals()->BroadcastSigBoolSignal(InParamBool);
 }
 
 void UTestbed1StructArrayInterfaceLoggingDecorator::OnSigInt(const TArray<FTestbed1StructInt>& InParamInt)
 {
 	Testbed1StructArrayInterfaceTracer::trace_signalSigInt(InParamInt);
-	_GetSignals()->OnSigIntSignal.Broadcast(InParamInt);
+	_GetSignals()->BroadcastSigIntSignal(InParamInt);
 }
 
 void UTestbed1StructArrayInterfaceLoggingDecorator::OnSigFloat(const TArray<FTestbed1StructFloat>& InParamFloat)
 {
 	Testbed1StructArrayInterfaceTracer::trace_signalSigFloat(InParamFloat);
-	_GetSignals()->OnSigFloatSignal.Broadcast(InParamFloat);
+	_GetSignals()->BroadcastSigFloatSignal(InParamFloat);
 }
 
 void UTestbed1StructArrayInterfaceLoggingDecorator::OnSigString(const TArray<FTestbed1StructString>& InParamString)
 {
 	Testbed1StructArrayInterfaceTracer::trace_signalSigString(InParamString);
-	_GetSignals()->OnSigStringSignal.Broadcast(InParamString);
+	_GetSignals()->BroadcastSigStringSignal(InParamString);
 }
 
 void UTestbed1StructArrayInterfaceLoggingDecorator::OnPropBoolChanged(const TArray<FTestbed1StructBool>& InPropBool)
 {
 	Testbed1StructArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropBool = InPropBool;
-	_GetSignals()->OnPropBoolChanged.Broadcast(InPropBool);
+	_GetSignals()->BroadcastPropBoolChanged(InPropBool);
 }
 
 TArray<FTestbed1StructBool> UTestbed1StructArrayInterfaceLoggingDecorator::GetPropBool() const
@@ -128,7 +128,7 @@ void UTestbed1StructArrayInterfaceLoggingDecorator::OnPropIntChanged(const TArra
 {
 	Testbed1StructArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropInt = InPropInt;
-	_GetSignals()->OnPropIntChanged.Broadcast(InPropInt);
+	_GetSignals()->BroadcastPropIntChanged(InPropInt);
 }
 
 TArray<FTestbed1StructInt> UTestbed1StructArrayInterfaceLoggingDecorator::GetPropInt() const
@@ -146,7 +146,7 @@ void UTestbed1StructArrayInterfaceLoggingDecorator::OnPropFloatChanged(const TAr
 {
 	Testbed1StructArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropFloat = InPropFloat;
-	_GetSignals()->OnPropFloatChanged.Broadcast(InPropFloat);
+	_GetSignals()->BroadcastPropFloatChanged(InPropFloat);
 }
 
 TArray<FTestbed1StructFloat> UTestbed1StructArrayInterfaceLoggingDecorator::GetPropFloat() const
@@ -164,7 +164,7 @@ void UTestbed1StructArrayInterfaceLoggingDecorator::OnPropStringChanged(const TA
 {
 	Testbed1StructArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropString = InPropString;
-	_GetSignals()->OnPropStringChanged.Broadcast(InPropString);
+	_GetSignals()->BroadcastPropStringChanged(InPropString);
 }
 
 TArray<FTestbed1StructString> UTestbed1StructArrayInterfaceLoggingDecorator::GetPropString() const

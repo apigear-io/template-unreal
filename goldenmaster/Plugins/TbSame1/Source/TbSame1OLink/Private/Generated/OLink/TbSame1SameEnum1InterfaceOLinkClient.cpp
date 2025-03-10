@@ -217,7 +217,7 @@ void UTbSame1SameEnum1InterfaceOLinkClient::applyState(const nlohmann::json& fie
 	if (bProp1Changed)
 	{
 		Prop1 = fields["prop1"].get<ETbSame1Enum1>();
-		_GetSignals()->OnProp1Changed.Broadcast(Prop1);
+		_GetSignals()->BroadcastProp1Changed(Prop1);
 	}
 }
 
@@ -226,7 +226,7 @@ void UTbSame1SameEnum1InterfaceOLinkClient::emitSignal(const std::string& signal
 	if (signalName == "sig1")
 	{
 		ETbSame1Enum1 outParam1 = args[0].get<ETbSame1Enum1>();
-		_GetSignals()->OnSig1Signal.Broadcast(outParam1);
+		_GetSignals()->BroadcastSig1Signal(outParam1);
 		return;
 	}
 }

@@ -28,7 +28,7 @@ void UTbSimpleSimpleArrayInterface::SetPropBool(const TArray<bool>& InPropBool)
 	if (PropBool != InPropBool)
 	{
 		PropBool = InPropBool;
-		_GetSignals()->OnPropBoolChanged.Broadcast(PropBool);
+		_GetSignals()->BroadcastPropBoolChanged(PropBool);
 	}
 }
 TArray<int32> UTbSimpleSimpleArrayInterface::GetPropInt() const
@@ -41,7 +41,7 @@ void UTbSimpleSimpleArrayInterface::SetPropInt(const TArray<int32>& InPropInt)
 	if (PropInt != InPropInt)
 	{
 		PropInt = InPropInt;
-		_GetSignals()->OnPropIntChanged.Broadcast(PropInt);
+		_GetSignals()->BroadcastPropIntChanged(PropInt);
 	}
 }
 TArray<int32> UTbSimpleSimpleArrayInterface::GetPropInt32() const
@@ -54,7 +54,7 @@ void UTbSimpleSimpleArrayInterface::SetPropInt32(const TArray<int32>& InPropInt3
 	if (PropInt32 != InPropInt32)
 	{
 		PropInt32 = InPropInt32;
-		_GetSignals()->OnPropInt32Changed.Broadcast(PropInt32);
+		_GetSignals()->BroadcastPropInt32Changed(PropInt32);
 	}
 }
 TArray<int64> UTbSimpleSimpleArrayInterface::GetPropInt64() const
@@ -67,7 +67,7 @@ void UTbSimpleSimpleArrayInterface::SetPropInt64(const TArray<int64>& InPropInt6
 	if (PropInt64 != InPropInt64)
 	{
 		PropInt64 = InPropInt64;
-		_GetSignals()->OnPropInt64Changed.Broadcast(PropInt64);
+		_GetSignals()->BroadcastPropInt64Changed(PropInt64);
 	}
 }
 TArray<float> UTbSimpleSimpleArrayInterface::GetPropFloat() const
@@ -80,7 +80,7 @@ void UTbSimpleSimpleArrayInterface::SetPropFloat(const TArray<float>& InPropFloa
 	if (PropFloat != InPropFloat)
 	{
 		PropFloat = InPropFloat;
-		_GetSignals()->OnPropFloatChanged.Broadcast(PropFloat);
+		_GetSignals()->BroadcastPropFloatChanged(PropFloat);
 	}
 }
 TArray<float> UTbSimpleSimpleArrayInterface::GetPropFloat32() const
@@ -93,7 +93,7 @@ void UTbSimpleSimpleArrayInterface::SetPropFloat32(const TArray<float>& InPropFl
 	if (PropFloat32 != InPropFloat32)
 	{
 		PropFloat32 = InPropFloat32;
-		_GetSignals()->OnPropFloat32Changed.Broadcast(PropFloat32);
+		_GetSignals()->BroadcastPropFloat32Changed(PropFloat32);
 	}
 }
 TArray<double> UTbSimpleSimpleArrayInterface::GetPropFloat64() const
@@ -106,7 +106,7 @@ void UTbSimpleSimpleArrayInterface::SetPropFloat64(const TArray<double>& InPropF
 	if (PropFloat64 != InPropFloat64)
 	{
 		PropFloat64 = InPropFloat64;
-		_GetSignals()->OnPropFloat64Changed.Broadcast(PropFloat64);
+		_GetSignals()->BroadcastPropFloat64Changed(PropFloat64);
 	}
 }
 TArray<FString> UTbSimpleSimpleArrayInterface::GetPropString() const
@@ -119,7 +119,7 @@ void UTbSimpleSimpleArrayInterface::SetPropString(const TArray<FString>& InPropS
 	if (PropString != InPropString)
 	{
 		PropString = InPropString;
-		_GetSignals()->OnPropStringChanged.Broadcast(PropString);
+		_GetSignals()->BroadcastPropStringChanged(PropString);
 	}
 }
 FString UTbSimpleSimpleArrayInterface::GetPropReadOnlyString() const

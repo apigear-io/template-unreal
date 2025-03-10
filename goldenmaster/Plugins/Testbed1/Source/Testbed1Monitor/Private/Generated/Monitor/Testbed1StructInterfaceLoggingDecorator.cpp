@@ -85,32 +85,32 @@ void UTestbed1StructInterfaceLoggingDecorator::setBackendService(TScriptInterfac
 void UTestbed1StructInterfaceLoggingDecorator::OnSigBool(const FTestbed1StructBool& InParamBool)
 {
 	Testbed1StructInterfaceTracer::trace_signalSigBool(InParamBool);
-	_GetSignals()->OnSigBoolSignal.Broadcast(InParamBool);
+	_GetSignals()->BroadcastSigBoolSignal(InParamBool);
 }
 
 void UTestbed1StructInterfaceLoggingDecorator::OnSigInt(const FTestbed1StructInt& InParamInt)
 {
 	Testbed1StructInterfaceTracer::trace_signalSigInt(InParamInt);
-	_GetSignals()->OnSigIntSignal.Broadcast(InParamInt);
+	_GetSignals()->BroadcastSigIntSignal(InParamInt);
 }
 
 void UTestbed1StructInterfaceLoggingDecorator::OnSigFloat(const FTestbed1StructFloat& InParamFloat)
 {
 	Testbed1StructInterfaceTracer::trace_signalSigFloat(InParamFloat);
-	_GetSignals()->OnSigFloatSignal.Broadcast(InParamFloat);
+	_GetSignals()->BroadcastSigFloatSignal(InParamFloat);
 }
 
 void UTestbed1StructInterfaceLoggingDecorator::OnSigString(const FTestbed1StructString& InParamString)
 {
 	Testbed1StructInterfaceTracer::trace_signalSigString(InParamString);
-	_GetSignals()->OnSigStringSignal.Broadcast(InParamString);
+	_GetSignals()->BroadcastSigStringSignal(InParamString);
 }
 
 void UTestbed1StructInterfaceLoggingDecorator::OnPropBoolChanged(const FTestbed1StructBool& InPropBool)
 {
 	Testbed1StructInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropBool = InPropBool;
-	_GetSignals()->OnPropBoolChanged.Broadcast(InPropBool);
+	_GetSignals()->BroadcastPropBoolChanged(InPropBool);
 }
 
 FTestbed1StructBool UTestbed1StructInterfaceLoggingDecorator::GetPropBool() const
@@ -128,7 +128,7 @@ void UTestbed1StructInterfaceLoggingDecorator::OnPropIntChanged(const FTestbed1S
 {
 	Testbed1StructInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropInt = InPropInt;
-	_GetSignals()->OnPropIntChanged.Broadcast(InPropInt);
+	_GetSignals()->BroadcastPropIntChanged(InPropInt);
 }
 
 FTestbed1StructInt UTestbed1StructInterfaceLoggingDecorator::GetPropInt() const
@@ -146,7 +146,7 @@ void UTestbed1StructInterfaceLoggingDecorator::OnPropFloatChanged(const FTestbed
 {
 	Testbed1StructInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropFloat = InPropFloat;
-	_GetSignals()->OnPropFloatChanged.Broadcast(InPropFloat);
+	_GetSignals()->BroadcastPropFloatChanged(InPropFloat);
 }
 
 FTestbed1StructFloat UTestbed1StructInterfaceLoggingDecorator::GetPropFloat() const
@@ -164,7 +164,7 @@ void UTestbed1StructInterfaceLoggingDecorator::OnPropStringChanged(const FTestbe
 {
 	Testbed1StructInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropString = InPropString;
-	_GetSignals()->OnPropStringChanged.Broadcast(InPropString);
+	_GetSignals()->BroadcastPropStringChanged(InPropString);
 }
 
 FTestbed1StructString UTestbed1StructInterfaceLoggingDecorator::GetPropString() const

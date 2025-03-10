@@ -175,7 +175,7 @@ void UTestbed2NestedStruct1InterfaceMsgBusClient::OnConnectionInit(const FTestbe
 	if (bProp1Changed)
 	{
 		Prop1 = InMessage.Prop1;
-		_GetSignals()->OnProp1Changed.Broadcast(Prop1);
+		_GetSignals()->BroadcastProp1Changed(Prop1);
 	}
 
 	_ConnectionStatusChanged.Broadcast(true);
@@ -344,7 +344,7 @@ void UTestbed2NestedStruct1InterfaceMsgBusClient::OnSig1(const FTestbed2NestedSt
 		return;
 	}
 
-	_GetSignals()->OnSig1Signal.Broadcast(InMessage.Param1);
+	_GetSignals()->BroadcastSig1Signal(InMessage.Param1);
 	return;
 }
 
@@ -360,7 +360,7 @@ void UTestbed2NestedStruct1InterfaceMsgBusClient::OnProp1Changed(const FTestbed2
 	if (bProp1Changed)
 	{
 		Prop1 = InMessage.Prop1;
-		_GetSignals()->OnProp1Changed.Broadcast(Prop1);
+		_GetSignals()->BroadcastProp1ChangedProp1);
 	}
 }
 

@@ -28,7 +28,7 @@ void UTbSame2SameEnum1Interface::SetProp1(ETbSame2Enum1 InProp1)
 	if (Prop1 != InProp1)
 	{
 		Prop1 = InProp1;
-		_GetSignals()->OnProp1Changed.Broadcast(Prop1);
+		_GetSignals()->BroadcastProp1Changed(Prop1);
 	}
 }
 

@@ -102,7 +102,7 @@ void {{$Class}}::setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{Cam
 void {{$Class}}::On{{Camel .Name}}({{ueParams "In" .Params}})
 {
 	{{$Iface}}Tracer::trace_signal{{Camel .Name}}({{ueVars "In" .Params}});
-	_GetSignals()->On{{Camel .Name}}Signal.Broadcast({{ueVars "In" .Params }});
+	_GetSignals()->Broadcast{{Camel .Name}}Signal({{ueVars "In" .Params }});
 }
 {{- end }}
 {{- if .Interface.Properties }}{{nl}}{{ end }}
@@ -112,7 +112,7 @@ void {{$Class}}::On{{Camel .Name}}Changed({{ueParam "In" .}})
 {
 	{{$Iface}}Tracer::capture_state(BackendService.GetObject(), this);
 	{{ueVar "" .}} = {{ueVar "In" .}};
-	_GetSignals()->On{{Camel .Name}}Changed.Broadcast({{ueVar "In" .}});
+	_GetSignals()->Broadcast{{Camel .Name}}Changed({{ueVar "In" .}});
 }
 
 {{ueReturn "" .}} {{$Class}}::Get{{Camel .Name}}() const

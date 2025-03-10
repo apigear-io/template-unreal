@@ -28,7 +28,7 @@ void UTestbed2NestedStruct1Interface::SetProp1(const FTestbed2NestedStruct1& InP
 	if (Prop1 != InProp1)
 	{
 		Prop1 = InProp1;
-		_GetSignals()->OnProp1Changed.Broadcast(Prop1);
+		_GetSignals()->BroadcastProp1Changed(Prop1);
 	}
 }
 

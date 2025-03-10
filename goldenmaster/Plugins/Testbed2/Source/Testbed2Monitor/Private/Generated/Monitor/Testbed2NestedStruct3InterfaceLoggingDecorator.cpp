@@ -80,26 +80,26 @@ void UTestbed2NestedStruct3InterfaceLoggingDecorator::setBackendService(TScriptI
 void UTestbed2NestedStruct3InterfaceLoggingDecorator::OnSig1(const FTestbed2NestedStruct1& InParam1)
 {
 	Testbed2NestedStruct3InterfaceTracer::trace_signalSig1(InParam1);
-	_GetSignals()->OnSig1Signal.Broadcast(InParam1);
+	_GetSignals()->BroadcastSig1Signal(InParam1);
 }
 
 void UTestbed2NestedStruct3InterfaceLoggingDecorator::OnSig2(const FTestbed2NestedStruct1& InParam1, const FTestbed2NestedStruct2& InParam2)
 {
 	Testbed2NestedStruct3InterfaceTracer::trace_signalSig2(InParam1, InParam2);
-	_GetSignals()->OnSig2Signal.Broadcast(InParam1, InParam2);
+	_GetSignals()->BroadcastSig2Signal(InParam1, InParam2);
 }
 
 void UTestbed2NestedStruct3InterfaceLoggingDecorator::OnSig3(const FTestbed2NestedStruct1& InParam1, const FTestbed2NestedStruct2& InParam2, const FTestbed2NestedStruct3& InParam3)
 {
 	Testbed2NestedStruct3InterfaceTracer::trace_signalSig3(InParam1, InParam2, InParam3);
-	_GetSignals()->OnSig3Signal.Broadcast(InParam1, InParam2, InParam3);
+	_GetSignals()->BroadcastSig3Signal(InParam1, InParam2, InParam3);
 }
 
 void UTestbed2NestedStruct3InterfaceLoggingDecorator::OnProp1Changed(const FTestbed2NestedStruct1& InProp1)
 {
 	Testbed2NestedStruct3InterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop1 = InProp1;
-	_GetSignals()->OnProp1Changed.Broadcast(InProp1);
+	_GetSignals()->BroadcastProp1Changed(InProp1);
 }
 
 FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceLoggingDecorator::GetProp1() const
@@ -117,7 +117,7 @@ void UTestbed2NestedStruct3InterfaceLoggingDecorator::OnProp2Changed(const FTest
 {
 	Testbed2NestedStruct3InterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop2 = InProp2;
-	_GetSignals()->OnProp2Changed.Broadcast(InProp2);
+	_GetSignals()->BroadcastProp2Changed(InProp2);
 }
 
 FTestbed2NestedStruct2 UTestbed2NestedStruct3InterfaceLoggingDecorator::GetProp2() const
@@ -135,7 +135,7 @@ void UTestbed2NestedStruct3InterfaceLoggingDecorator::OnProp3Changed(const FTest
 {
 	Testbed2NestedStruct3InterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop3 = InProp3;
-	_GetSignals()->OnProp3Changed.Broadcast(InProp3);
+	_GetSignals()->BroadcastProp3Changed(InProp3);
 }
 
 FTestbed2NestedStruct3 UTestbed2NestedStruct3InterfaceLoggingDecorator::GetProp3() const

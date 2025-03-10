@@ -400,28 +400,28 @@ void UTbEnumEnumInterfaceOLinkClient::applyState(const nlohmann::json& fields)
 	if (bProp0Changed)
 	{
 		Prop0 = fields["prop0"].get<ETbEnumEnum0>();
-		_GetSignals()->OnProp0Changed.Broadcast(Prop0);
+		_GetSignals()->BroadcastProp0Changed(Prop0);
 	}
 
 	const bool bProp1Changed = fields.contains("prop1") && (Prop1 != fields["prop1"].get<ETbEnumEnum1>());
 	if (bProp1Changed)
 	{
 		Prop1 = fields["prop1"].get<ETbEnumEnum1>();
-		_GetSignals()->OnProp1Changed.Broadcast(Prop1);
+		_GetSignals()->BroadcastProp1Changed(Prop1);
 	}
 
 	const bool bProp2Changed = fields.contains("prop2") && (Prop2 != fields["prop2"].get<ETbEnumEnum2>());
 	if (bProp2Changed)
 	{
 		Prop2 = fields["prop2"].get<ETbEnumEnum2>();
-		_GetSignals()->OnProp2Changed.Broadcast(Prop2);
+		_GetSignals()->BroadcastProp2Changed(Prop2);
 	}
 
 	const bool bProp3Changed = fields.contains("prop3") && (Prop3 != fields["prop3"].get<ETbEnumEnum3>());
 	if (bProp3Changed)
 	{
 		Prop3 = fields["prop3"].get<ETbEnumEnum3>();
-		_GetSignals()->OnProp3Changed.Broadcast(Prop3);
+		_GetSignals()->BroadcastProp3Changed(Prop3);
 	}
 }
 
@@ -430,28 +430,28 @@ void UTbEnumEnumInterfaceOLinkClient::emitSignal(const std::string& signalName, 
 	if (signalName == "sig0")
 	{
 		ETbEnumEnum0 outParam0 = args[0].get<ETbEnumEnum0>();
-		_GetSignals()->OnSig0Signal.Broadcast(outParam0);
+		_GetSignals()->BroadcastSig0Signal(outParam0);
 		return;
 	}
 
 	if (signalName == "sig1")
 	{
 		ETbEnumEnum1 outParam1 = args[0].get<ETbEnumEnum1>();
-		_GetSignals()->OnSig1Signal.Broadcast(outParam1);
+		_GetSignals()->BroadcastSig1Signal(outParam1);
 		return;
 	}
 
 	if (signalName == "sig2")
 	{
 		ETbEnumEnum2 outParam2 = args[0].get<ETbEnumEnum2>();
-		_GetSignals()->OnSig2Signal.Broadcast(outParam2);
+		_GetSignals()->BroadcastSig2Signal(outParam2);
 		return;
 	}
 
 	if (signalName == "sig3")
 	{
 		ETbEnumEnum3 outParam3 = args[0].get<ETbEnumEnum3>();
-		_GetSignals()->OnSig3Signal.Broadcast(outParam3);
+		_GetSignals()->BroadcastSig3Signal(outParam3);
 		return;
 	}
 }

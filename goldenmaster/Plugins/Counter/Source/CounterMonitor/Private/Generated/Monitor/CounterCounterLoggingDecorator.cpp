@@ -79,14 +79,14 @@ void UCounterCounterLoggingDecorator::setBackendService(TScriptInterface<ICounte
 void UCounterCounterLoggingDecorator::OnValueChanged(const FCustomTypesVector3D& InVector, const FVector& InExternVector, const TArray<FCustomTypesVector3D>& InVectorArray, const TArray<FVector>& InExternVectorArray)
 {
 	CounterCounterTracer::trace_signalValueChanged(InVector, InExternVector, InVectorArray, InExternVectorArray);
-	_GetSignals()->OnValueChangedSignal.Broadcast(InVector, InExternVector, InVectorArray, InExternVectorArray);
+	_GetSignals()->BroadcastValueChangedSignal(InVector, InExternVector, InVectorArray, InExternVectorArray);
 }
 
 void UCounterCounterLoggingDecorator::OnVectorChanged(const FCustomTypesVector3D& InVector)
 {
 	CounterCounterTracer::capture_state(BackendService.GetObject(), this);
 	Vector = InVector;
-	_GetSignals()->OnVectorChanged.Broadcast(InVector);
+	_GetSignals()->BroadcastVectorChanged(InVector);
 }
 
 FCustomTypesVector3D UCounterCounterLoggingDecorator::GetVector() const
@@ -104,7 +104,7 @@ void UCounterCounterLoggingDecorator::OnExternVectorChanged(const FVector& InExt
 {
 	CounterCounterTracer::capture_state(BackendService.GetObject(), this);
 	ExternVector = InExternVector;
-	_GetSignals()->OnExternVectorChanged.Broadcast(InExternVector);
+	_GetSignals()->BroadcastExternVectorChanged(InExternVector);
 }
 
 FVector UCounterCounterLoggingDecorator::GetExternVector() const
@@ -122,7 +122,7 @@ void UCounterCounterLoggingDecorator::OnVectorArrayChanged(const TArray<FCustomT
 {
 	CounterCounterTracer::capture_state(BackendService.GetObject(), this);
 	VectorArray = InVectorArray;
-	_GetSignals()->OnVectorArrayChanged.Broadcast(InVectorArray);
+	_GetSignals()->BroadcastVectorArrayChanged(InVectorArray);
 }
 
 TArray<FCustomTypesVector3D> UCounterCounterLoggingDecorator::GetVectorArray() const
@@ -140,7 +140,7 @@ void UCounterCounterLoggingDecorator::OnExternVectorArrayChanged(const TArray<FV
 {
 	CounterCounterTracer::capture_state(BackendService.GetObject(), this);
 	ExternVectorArray = InExternVectorArray;
-	_GetSignals()->OnExternVectorArrayChanged.Broadcast(InExternVectorArray);
+	_GetSignals()->BroadcastExternVectorArrayChanged(InExternVectorArray);
 }
 
 TArray<FVector> UCounterCounterLoggingDecorator::GetExternVectorArray() const

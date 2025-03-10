@@ -213,63 +213,63 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnConnectionInit(const FTbSimple
 	if (bPropBoolChanged)
 	{
 		PropBool = InMessage.PropBool;
-		_GetSignals()->OnPropBoolChanged.Broadcast(PropBool);
+		_GetSignals()->BroadcastPropBoolChanged(PropBool);
 	}
 
 	const bool bPropIntChanged = InMessage.PropInt != PropInt;
 	if (bPropIntChanged)
 	{
 		PropInt = InMessage.PropInt;
-		_GetSignals()->OnPropIntChanged.Broadcast(PropInt);
+		_GetSignals()->BroadcastPropIntChanged(PropInt);
 	}
 
 	const bool bPropInt32Changed = InMessage.PropInt32 != PropInt32;
 	if (bPropInt32Changed)
 	{
 		PropInt32 = InMessage.PropInt32;
-		_GetSignals()->OnPropInt32Changed.Broadcast(PropInt32);
+		_GetSignals()->BroadcastPropInt32Changed(PropInt32);
 	}
 
 	const bool bPropInt64Changed = InMessage.PropInt64 != PropInt64;
 	if (bPropInt64Changed)
 	{
 		PropInt64 = InMessage.PropInt64;
-		_GetSignals()->OnPropInt64Changed.Broadcast(PropInt64);
+		_GetSignals()->BroadcastPropInt64Changed(PropInt64);
 	}
 
 	const bool bPropFloatChanged = InMessage.PropFloat != PropFloat;
 	if (bPropFloatChanged)
 	{
 		PropFloat = InMessage.PropFloat;
-		_GetSignals()->OnPropFloatChanged.Broadcast(PropFloat);
+		_GetSignals()->BroadcastPropFloatChanged(PropFloat);
 	}
 
 	const bool bPropFloat32Changed = InMessage.PropFloat32 != PropFloat32;
 	if (bPropFloat32Changed)
 	{
 		PropFloat32 = InMessage.PropFloat32;
-		_GetSignals()->OnPropFloat32Changed.Broadcast(PropFloat32);
+		_GetSignals()->BroadcastPropFloat32Changed(PropFloat32);
 	}
 
 	const bool bPropFloat64Changed = InMessage.PropFloat64 != PropFloat64;
 	if (bPropFloat64Changed)
 	{
 		PropFloat64 = InMessage.PropFloat64;
-		_GetSignals()->OnPropFloat64Changed.Broadcast(PropFloat64);
+		_GetSignals()->BroadcastPropFloat64Changed(PropFloat64);
 	}
 
 	const bool bPropStringChanged = InMessage.PropString != PropString;
 	if (bPropStringChanged)
 	{
 		PropString = InMessage.PropString;
-		_GetSignals()->OnPropStringChanged.Broadcast(PropString);
+		_GetSignals()->BroadcastPropStringChanged(PropString);
 	}
 
 	const bool bPropReadOnlyStringChanged = InMessage.PropReadOnlyString != PropReadOnlyString;
 	if (bPropReadOnlyStringChanged)
 	{
 		PropReadOnlyString = InMessage.PropReadOnlyString;
-		_GetSignals()->OnPropReadOnlyStringChanged.Broadcast(PropReadOnlyString);
+		_GetSignals()->BroadcastPropReadOnlyStringChanged(PropReadOnlyString);
 	}
 
 	_ConnectionStatusChanged.Broadcast(true);
@@ -926,7 +926,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnSigBool(const FTbSimpleSimpleA
 		return;
 	}
 
-	_GetSignals()->OnSigBoolSignal.Broadcast(InMessage.ParamBool);
+	_GetSignals()->BroadcastSigBoolSignal(InMessage.ParamBool);
 	return;
 }
 
@@ -938,7 +938,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnSigInt(const FTbSimpleSimpleAr
 		return;
 	}
 
-	_GetSignals()->OnSigIntSignal.Broadcast(InMessage.ParamInt);
+	_GetSignals()->BroadcastSigIntSignal(InMessage.ParamInt);
 	return;
 }
 
@@ -950,7 +950,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnSigInt32(const FTbSimpleSimple
 		return;
 	}
 
-	_GetSignals()->OnSigInt32Signal.Broadcast(InMessage.ParamInt32);
+	_GetSignals()->BroadcastSigInt32Signal(InMessage.ParamInt32);
 	return;
 }
 
@@ -962,7 +962,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnSigInt64(const FTbSimpleSimple
 		return;
 	}
 
-	_GetSignals()->OnSigInt64Signal.Broadcast(InMessage.ParamInt64);
+	_GetSignals()->BroadcastSigInt64Signal(InMessage.ParamInt64);
 	return;
 }
 
@@ -974,7 +974,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnSigFloat(const FTbSimpleSimple
 		return;
 	}
 
-	_GetSignals()->OnSigFloatSignal.Broadcast(InMessage.ParamFloat);
+	_GetSignals()->BroadcastSigFloatSignal(InMessage.ParamFloat);
 	return;
 }
 
@@ -986,7 +986,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnSigFloat32(const FTbSimpleSimp
 		return;
 	}
 
-	_GetSignals()->OnSigFloat32Signal.Broadcast(InMessage.ParamFloa32);
+	_GetSignals()->BroadcastSigFloat32Signal(InMessage.ParamFloa32);
 	return;
 }
 
@@ -998,7 +998,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnSigFloat64(const FTbSimpleSimp
 		return;
 	}
 
-	_GetSignals()->OnSigFloat64Signal.Broadcast(InMessage.ParamFloat64);
+	_GetSignals()->BroadcastSigFloat64Signal(InMessage.ParamFloat64);
 	return;
 }
 
@@ -1010,7 +1010,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnSigString(const FTbSimpleSimpl
 		return;
 	}
 
-	_GetSignals()->OnSigStringSignal.Broadcast(InMessage.ParamString);
+	_GetSignals()->BroadcastSigStringSignal(InMessage.ParamString);
 	return;
 }
 
@@ -1026,7 +1026,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnPropBoolChanged(const FTbSimpl
 	if (bPropBoolChanged)
 	{
 		PropBool = InMessage.PropBool;
-		_GetSignals()->OnPropBoolChanged.Broadcast(PropBool);
+		_GetSignals()->BroadcastPropBoolChangedPropBool);
 	}
 }
 
@@ -1042,7 +1042,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnPropIntChanged(const FTbSimple
 	if (bPropIntChanged)
 	{
 		PropInt = InMessage.PropInt;
-		_GetSignals()->OnPropIntChanged.Broadcast(PropInt);
+		_GetSignals()->BroadcastPropIntChangedPropInt);
 	}
 }
 
@@ -1058,7 +1058,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnPropInt32Changed(const FTbSimp
 	if (bPropInt32Changed)
 	{
 		PropInt32 = InMessage.PropInt32;
-		_GetSignals()->OnPropInt32Changed.Broadcast(PropInt32);
+		_GetSignals()->BroadcastPropInt32ChangedPropInt32);
 	}
 }
 
@@ -1074,7 +1074,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnPropInt64Changed(const FTbSimp
 	if (bPropInt64Changed)
 	{
 		PropInt64 = InMessage.PropInt64;
-		_GetSignals()->OnPropInt64Changed.Broadcast(PropInt64);
+		_GetSignals()->BroadcastPropInt64ChangedPropInt64);
 	}
 }
 
@@ -1090,7 +1090,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnPropFloatChanged(const FTbSimp
 	if (bPropFloatChanged)
 	{
 		PropFloat = InMessage.PropFloat;
-		_GetSignals()->OnPropFloatChanged.Broadcast(PropFloat);
+		_GetSignals()->BroadcastPropFloatChangedPropFloat);
 	}
 }
 
@@ -1106,7 +1106,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnPropFloat32Changed(const FTbSi
 	if (bPropFloat32Changed)
 	{
 		PropFloat32 = InMessage.PropFloat32;
-		_GetSignals()->OnPropFloat32Changed.Broadcast(PropFloat32);
+		_GetSignals()->BroadcastPropFloat32ChangedPropFloat32);
 	}
 }
 
@@ -1122,7 +1122,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnPropFloat64Changed(const FTbSi
 	if (bPropFloat64Changed)
 	{
 		PropFloat64 = InMessage.PropFloat64;
-		_GetSignals()->OnPropFloat64Changed.Broadcast(PropFloat64);
+		_GetSignals()->BroadcastPropFloat64ChangedPropFloat64);
 	}
 }
 
@@ -1138,7 +1138,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnPropStringChanged(const FTbSim
 	if (bPropStringChanged)
 	{
 		PropString = InMessage.PropString;
-		_GetSignals()->OnPropStringChanged.Broadcast(PropString);
+		_GetSignals()->BroadcastPropStringChangedPropString);
 	}
 }
 
@@ -1154,7 +1154,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnPropReadOnlyStringChanged(cons
 	if (bPropReadOnlyStringChanged)
 	{
 		PropReadOnlyString = InMessage.PropReadOnlyString;
-		_GetSignals()->OnPropReadOnlyStringChanged.Broadcast(PropReadOnlyString);
+		_GetSignals()->BroadcastPropReadOnlyStringChangedPropReadOnlyString);
 	}
 }
 

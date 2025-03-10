@@ -175,14 +175,14 @@ void UTbSimpleNoSignalsInterfaceMsgBusClient::OnConnectionInit(const FTbSimpleNo
 	if (bbPropBoolChanged)
 	{
 		bPropBool = InMessage.bPropBool;
-		_GetSignals()->OnPropBoolChanged.Broadcast(bPropBool);
+		_GetSignals()->BroadcastPropBoolChanged(bPropBool);
 	}
 
 	const bool bPropIntChanged = InMessage.PropInt != PropInt;
 	if (bPropIntChanged)
 	{
 		PropInt = InMessage.PropInt;
-		_GetSignals()->OnPropIntChanged.Broadcast(PropInt);
+		_GetSignals()->BroadcastPropIntChanged(PropInt);
 	}
 
 	_ConnectionStatusChanged.Broadcast(true);
@@ -407,7 +407,7 @@ void UTbSimpleNoSignalsInterfaceMsgBusClient::OnPropBoolChanged(const FTbSimpleN
 	if (bbPropBoolChanged)
 	{
 		bPropBool = InMessage.bPropBool;
-		_GetSignals()->OnPropBoolChanged.Broadcast(bPropBool);
+		_GetSignals()->BroadcastPropBoolChangedbPropBool);
 	}
 }
 
@@ -423,7 +423,7 @@ void UTbSimpleNoSignalsInterfaceMsgBusClient::OnPropIntChanged(const FTbSimpleNo
 	if (bPropIntChanged)
 	{
 		PropInt = InMessage.PropInt;
-		_GetSignals()->OnPropIntChanged.Broadcast(PropInt);
+		_GetSignals()->BroadcastPropIntChangedPropInt);
 	}
 }
 

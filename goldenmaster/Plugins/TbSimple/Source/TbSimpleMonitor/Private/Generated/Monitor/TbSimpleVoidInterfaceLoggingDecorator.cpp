@@ -67,7 +67,7 @@ void UTbSimpleVoidInterfaceLoggingDecorator::setBackendService(TScriptInterface<
 void UTbSimpleVoidInterfaceLoggingDecorator::OnSigVoid()
 {
 	TbSimpleVoidInterfaceTracer::trace_signalSigVoid();
-	_GetSignals()->OnSigVoidSignal.Broadcast();
+	_GetSignals()->BroadcastSigVoidSignal();
 }
 
 void UTbSimpleVoidInterfaceLoggingDecorator::FuncVoid()

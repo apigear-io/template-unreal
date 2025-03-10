@@ -388,28 +388,28 @@ void UTestbed1StructArrayInterfaceOLinkClient::applyState(const nlohmann::json& 
 	if (bPropBoolChanged)
 	{
 		PropBool = fields["propBool"].get<TArray<FTestbed1StructBool>>();
-		_GetSignals()->OnPropBoolChanged.Broadcast(PropBool);
+		_GetSignals()->BroadcastPropBoolChanged(PropBool);
 	}
 
 	const bool bPropIntChanged = fields.contains("propInt") && (PropInt != fields["propInt"].get<TArray<FTestbed1StructInt>>());
 	if (bPropIntChanged)
 	{
 		PropInt = fields["propInt"].get<TArray<FTestbed1StructInt>>();
-		_GetSignals()->OnPropIntChanged.Broadcast(PropInt);
+		_GetSignals()->BroadcastPropIntChanged(PropInt);
 	}
 
 	const bool bPropFloatChanged = fields.contains("propFloat") && (PropFloat != fields["propFloat"].get<TArray<FTestbed1StructFloat>>());
 	if (bPropFloatChanged)
 	{
 		PropFloat = fields["propFloat"].get<TArray<FTestbed1StructFloat>>();
-		_GetSignals()->OnPropFloatChanged.Broadcast(PropFloat);
+		_GetSignals()->BroadcastPropFloatChanged(PropFloat);
 	}
 
 	const bool bPropStringChanged = fields.contains("propString") && (PropString != fields["propString"].get<TArray<FTestbed1StructString>>());
 	if (bPropStringChanged)
 	{
 		PropString = fields["propString"].get<TArray<FTestbed1StructString>>();
-		_GetSignals()->OnPropStringChanged.Broadcast(PropString);
+		_GetSignals()->BroadcastPropStringChanged(PropString);
 	}
 }
 
@@ -418,28 +418,28 @@ void UTestbed1StructArrayInterfaceOLinkClient::emitSignal(const std::string& sig
 	if (signalName == "sigBool")
 	{
 		const TArray<FTestbed1StructBool>& outParamBool = args[0].get<TArray<FTestbed1StructBool>>();
-		_GetSignals()->OnSigBoolSignal.Broadcast(outParamBool);
+		_GetSignals()->BroadcastSigBoolSignal(outParamBool);
 		return;
 	}
 
 	if (signalName == "sigInt")
 	{
 		const TArray<FTestbed1StructInt>& outParamInt = args[0].get<TArray<FTestbed1StructInt>>();
-		_GetSignals()->OnSigIntSignal.Broadcast(outParamInt);
+		_GetSignals()->BroadcastSigIntSignal(outParamInt);
 		return;
 	}
 
 	if (signalName == "sigFloat")
 	{
 		const TArray<FTestbed1StructFloat>& outParamFloat = args[0].get<TArray<FTestbed1StructFloat>>();
-		_GetSignals()->OnSigFloatSignal.Broadcast(outParamFloat);
+		_GetSignals()->BroadcastSigFloatSignal(outParamFloat);
 		return;
 	}
 
 	if (signalName == "sigString")
 	{
 		const TArray<FTestbed1StructString>& outParamString = args[0].get<TArray<FTestbed1StructString>>();
-		_GetSignals()->OnSigStringSignal.Broadcast(outParamString);
+		_GetSignals()->BroadcastSigStringSignal(outParamString);
 		return;
 	}
 }

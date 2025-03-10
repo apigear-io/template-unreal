@@ -178,21 +178,21 @@ void UTbNamesNamEsMsgBusClient::OnConnectionInit(const FTbNamesNamEsInitMessage&
 	if (bbSwitchChanged)
 	{
 		bSwitch = InMessage.bSwitch;
-		_GetSignals()->OnSwitchChanged.Broadcast(bSwitch);
+		_GetSignals()->BroadcastSwitchChanged(bSwitch);
 	}
 
 	const bool bSomePropertyChanged = InMessage.SomeProperty != SomeProperty;
 	if (bSomePropertyChanged)
 	{
 		SomeProperty = InMessage.SomeProperty;
-		_GetSignals()->OnSomePropertyChanged.Broadcast(SomeProperty);
+		_GetSignals()->BroadcastSomePropertyChanged(SomeProperty);
 	}
 
 	const bool bSomePoperty2Changed = InMessage.SomePoperty2 != SomePoperty2;
 	if (bSomePoperty2Changed)
 	{
 		SomePoperty2 = InMessage.SomePoperty2;
-		_GetSignals()->OnSomePoperty2Changed.Broadcast(SomePoperty2);
+		_GetSignals()->BroadcastSomePoperty2Changed(SomePoperty2);
 	}
 
 	_ConnectionStatusChanged.Broadcast(true);
@@ -442,7 +442,7 @@ void UTbNamesNamEsMsgBusClient::OnSomeSignal(const FTbNamesNamEsSomeSignalSignal
 		return;
 	}
 
-	_GetSignals()->OnSomeSignalSignal.Broadcast(InMessage.bSomeParam);
+	_GetSignals()->BroadcastSomeSignalSignal(InMessage.bSomeParam);
 	return;
 }
 
@@ -454,7 +454,7 @@ void UTbNamesNamEsMsgBusClient::OnSomeSignal2(const FTbNamesNamEsSomeSignal2Sign
 		return;
 	}
 
-	_GetSignals()->OnSomeSignal2Signal.Broadcast(InMessage.bSomeParam);
+	_GetSignals()->BroadcastSomeSignal2Signal(InMessage.bSomeParam);
 	return;
 }
 
@@ -470,7 +470,7 @@ void UTbNamesNamEsMsgBusClient::OnSwitchChanged(const FTbNamesNamEsSwitchChanged
 	if (bbSwitchChanged)
 	{
 		bSwitch = InMessage.bSwitch;
-		_GetSignals()->OnSwitchChanged.Broadcast(bSwitch);
+		_GetSignals()->BroadcastSwitchChangedbSwitch);
 	}
 }
 
@@ -486,7 +486,7 @@ void UTbNamesNamEsMsgBusClient::OnSomePropertyChanged(const FTbNamesNamEsSomePro
 	if (bSomePropertyChanged)
 	{
 		SomeProperty = InMessage.SomeProperty;
-		_GetSignals()->OnSomePropertyChanged.Broadcast(SomeProperty);
+		_GetSignals()->BroadcastSomePropertyChangedSomeProperty);
 	}
 }
 
@@ -502,7 +502,7 @@ void UTbNamesNamEsMsgBusClient::OnSomePoperty2Changed(const FTbNamesNamEsSomePop
 	if (bSomePoperty2Changed)
 	{
 		SomePoperty2 = InMessage.SomePoperty2;
-		_GetSignals()->OnSomePoperty2Changed.Broadcast(SomePoperty2);
+		_GetSignals()->BroadcastSomePoperty2ChangedSomePoperty2);
 	}
 }
 

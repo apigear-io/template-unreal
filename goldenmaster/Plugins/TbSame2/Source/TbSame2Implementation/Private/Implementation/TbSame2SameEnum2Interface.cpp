@@ -28,7 +28,7 @@ void UTbSame2SameEnum2Interface::SetProp1(ETbSame2Enum1 InProp1)
 	if (Prop1 != InProp1)
 	{
 		Prop1 = InProp1;
-		_GetSignals()->OnProp1Changed.Broadcast(Prop1);
+		_GetSignals()->BroadcastProp1Changed(Prop1);
 	}
 }
 ETbSame2Enum2 UTbSame2SameEnum2Interface::GetProp2() const
@@ -41,7 +41,7 @@ void UTbSame2SameEnum2Interface::SetProp2(ETbSame2Enum2 InProp2)
 	if (Prop2 != InProp2)
 	{
 		Prop2 = InProp2;
-		_GetSignals()->OnProp2Changed.Broadcast(Prop2);
+		_GetSignals()->BroadcastProp2Changed(Prop2);
 	}
 }
 

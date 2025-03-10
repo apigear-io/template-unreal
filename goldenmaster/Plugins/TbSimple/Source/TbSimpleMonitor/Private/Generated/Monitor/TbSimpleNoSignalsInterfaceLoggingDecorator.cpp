@@ -72,7 +72,7 @@ void UTbSimpleNoSignalsInterfaceLoggingDecorator::OnPropBoolChanged(bool bInProp
 {
 	TbSimpleNoSignalsInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	bPropBool = bInPropBool;
-	_GetSignals()->OnPropBoolChanged.Broadcast(bInPropBool);
+	_GetSignals()->BroadcastPropBoolChanged(bInPropBool);
 }
 
 bool UTbSimpleNoSignalsInterfaceLoggingDecorator::GetPropBool() const
@@ -90,7 +90,7 @@ void UTbSimpleNoSignalsInterfaceLoggingDecorator::OnPropIntChanged(int32 InPropI
 {
 	TbSimpleNoSignalsInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropInt = InPropInt;
-	_GetSignals()->OnPropIntChanged.Broadcast(InPropInt);
+	_GetSignals()->BroadcastPropIntChanged(InPropInt);
 }
 
 int32 UTbSimpleNoSignalsInterfaceLoggingDecorator::GetPropInt() const

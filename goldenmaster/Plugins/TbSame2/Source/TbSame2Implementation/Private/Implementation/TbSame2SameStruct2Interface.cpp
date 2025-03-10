@@ -28,7 +28,7 @@ void UTbSame2SameStruct2Interface::SetProp1(const FTbSame2Struct2& InProp1)
 	if (Prop1 != InProp1)
 	{
 		Prop1 = InProp1;
-		_GetSignals()->OnProp1Changed.Broadcast(Prop1);
+		_GetSignals()->BroadcastProp1Changed(Prop1);
 	}
 }
 FTbSame2Struct2 UTbSame2SameStruct2Interface::GetProp2() const
@@ -41,7 +41,7 @@ void UTbSame2SameStruct2Interface::SetProp2(const FTbSame2Struct2& InProp2)
 	if (Prop2 != InProp2)
 	{
 		Prop2 = InProp2;
-		_GetSignals()->OnProp2Changed.Broadcast(Prop2);
+		_GetSignals()->BroadcastProp2Changed(Prop2);
 	}
 }
 

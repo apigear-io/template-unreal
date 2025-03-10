@@ -209,7 +209,7 @@ void {{$Class}}::OnConnectionInit(const F{{$Iface}}InitMessage& InMessage, const
 	if (b{{ueVar "" .}}Changed)
 	{
 		{{ueVar "" .}} = InMessage.{{ueVar "" .}};
-		_GetSignals()->On{{ Camel .Name }}Changed.Broadcast({{ueVar "" .}});
+		_GetSignals()->Broadcast{{Camel .Name}}Changed({{ueVar "" .}});
 	}
 {{- end }}
 
@@ -429,7 +429,7 @@ void {{$Class}}::On{{Camel .Name}}(const F{{$DisplayName}}{{Camel .Name}}SignalM
 
 {{- $sigName := Camel .Name}}
 
-	_GetSignals()->On{{Camel .Name}}Signal.Broadcast(
+	_GetSignals()->Broadcast{{Camel .Name}}Signal(
 {{- range $i, $e := .Params -}}
 	{{ if $i }}, {{end}}InMessage.{{ueVar "" .}}
 {{- end -}}
@@ -452,7 +452,7 @@ void {{$Class}}::On{{Camel .Name}}Changed(const F{{$DisplayName}}{{Camel .Name}}
 	if (b{{ueVar "" .}}Changed)
 	{
 		{{ueVar "" .}} = InMessage.{{ueVar "" .}};
-		_GetSignals()->On{{Camel .Name}}Changed.Broadcast({{ueVar "" .}});
+		_GetSignals()->Broadcast{{Camel .Name}}Changed{{ueVar "" .}});
 	}
 }
 {{- end }}
