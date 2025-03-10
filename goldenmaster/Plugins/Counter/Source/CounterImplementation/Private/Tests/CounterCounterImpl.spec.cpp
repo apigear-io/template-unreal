@@ -56,6 +56,28 @@ void UCounterCounterImplSpec::Define()
 		FCustomTypesVector3D TestValue = FCustomTypesVector3D(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetVector(), TestValue);
 
+		UCounterCounterSignals* CounterCounterSignals = ImplFixture->GetImplementation()->_GetSignals();
+		CounterCounterSignals->OnVectorChanged.AddLambda([this, TestDone](const FCustomTypesVector3D& InVector)
+			{
+			FCustomTypesVector3D TestValue = FCustomTypesVector3D();
+			// use different test value
+			TestValue = createTestFCustomTypesVector3D();
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InVector, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetVector(), TestValue);
+			TestDone.Execute();
+		});
+
+		// use different test value
+		TestValue = createTestFCustomTypesVector3D();
+		ImplFixture->GetImplementation()->SetVector(TestValue);
+	});
+
+	LatentIt("Property.Vector.ChangeBP", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		FCustomTypesVector3D TestValue = FCustomTypesVector3D(); // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetVector(), TestValue);
+
 		testDoneDelegate = TestDone;
 		UCounterCounterSignals* CounterCounterSignals = ImplFixture->GetImplementation()->_GetSignals();
 		CounterCounterSignals->OnVectorChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UCounterCounterImplHelper::VectorPropertyCb);
@@ -79,6 +101,28 @@ void UCounterCounterImplSpec::Define()
 	});
 
 	LatentIt("Property.VectorArray.Change", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		TArray<FCustomTypesVector3D> TestValue = TArray<FCustomTypesVector3D>(); // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetVectorArray(), TestValue);
+
+		UCounterCounterSignals* CounterCounterSignals = ImplFixture->GetImplementation()->_GetSignals();
+		CounterCounterSignals->OnVectorArrayChanged.AddLambda([this, TestDone](const TArray<FCustomTypesVector3D>& InVectorArray)
+			{
+			TArray<FCustomTypesVector3D> TestValue = TArray<FCustomTypesVector3D>();
+			// use different test value
+			TestValue = createTestFCustomTypesVector3DArray();
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InVectorArray, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetVectorArray(), TestValue);
+			TestDone.Execute();
+		});
+
+		// use different test value
+		TestValue = createTestFCustomTypesVector3DArray();
+		ImplFixture->GetImplementation()->SetVectorArray(TestValue);
+	});
+
+	LatentIt("Property.VectorArray.ChangeBP", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		// Do implement test here
 		TArray<FCustomTypesVector3D> TestValue = TArray<FCustomTypesVector3D>(); // default value
@@ -124,6 +168,27 @@ void UCounterCounterImplSpec::Define()
 	});
 
 	LatentIt("Signal.ValueChanged", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		UCounterCounterSignals* CounterCounterSignals = ImplFixture->GetImplementation()->_GetSignals();
+		CounterCounterSignals->OnValueChangedSignal.AddLambda([this, TestDone](const FCustomTypesVector3D& InVector, const FVector& InExternVector, const TArray<FCustomTypesVector3D>& InVectorArray, const TArray<FVector>& InExternVectorArray)
+			{
+			// known test value
+			FCustomTypesVector3D VectorTestValue = createTestFCustomTypesVector3D();
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InVector, VectorTestValue);
+			TArray<FCustomTypesVector3D> VectorArrayTestValue = createTestFCustomTypesVector3DArray();
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InVectorArray, VectorArrayTestValue);
+			TestDone.Execute();
+		});
+
+		// use different test value
+		FCustomTypesVector3D VectorTestValue = createTestFCustomTypesVector3D();
+		FVector ExternVectorTestValue = FVector(0.f, 0.f, 0.f);
+		TArray<FCustomTypesVector3D> VectorArrayTestValue = createTestFCustomTypesVector3DArray();
+		TArray<FVector> ExternVectorArrayTestValue = TArray<FVector>();
+		CounterCounterSignals->BroadcastValueChangedSignal(VectorTestValue, ExternVectorTestValue, VectorArrayTestValue, ExternVectorArrayTestValue);
+	});
+
+	LatentIt("Signal.ValueChangedBP", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		testDoneDelegate = TestDone;
 		UCounterCounterSignals* CounterCounterSignals = ImplFixture->GetImplementation()->_GetSignals();

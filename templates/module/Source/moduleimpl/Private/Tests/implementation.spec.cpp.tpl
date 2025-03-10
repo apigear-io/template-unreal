@@ -55,6 +55,60 @@ void {{$Class}}ImplSpec::Define()
 		{{ueType "" .}} TestValue = {{ueDefault "" .}}; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Get{{Camel .Name}}(), TestValue);
 
+		{{$Class}}Signals* {{$Iface}}Signals = ImplFixture->GetImplementation()->_GetSignals();
+		{{$Iface}}Signals->On{{Camel .Name}}Changed.AddLambda([this, TestDone]({{ueParam "In" .}})
+			{
+			{{ueType "" .}} TestValue = {{ueDefault "" .}};
+			// use different test value
+			{{- if .IsArray }}
+			{{- if .IsPrimitive }}
+			TestValue.Add({{ ueTestValue "" .}});
+			{{- else }}
+			{{- $type := ""}}
+			{{- if not (eq .Import "") }}
+			{{- $type = printf "F%s%s" (Camel .Import) .Type }}
+			{{- else }}
+			{{- $type = printf "F%s%s" $ModuleName .Type }}
+			{{- end }}
+			TestValue = createTest{{ $type }}Array();
+			{{- end }}
+			{{- else if and (not .IsPrimitive) (not (eq .KindType "enum"))}}
+			TestValue = createTest{{ ueType "" . }}();
+			{{- else }}
+			TestValue = {{ ueTestValue "" . }};
+			{{- end }}
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), {{ueVar "In" .}}, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Get{{Camel .Name}}(), TestValue);
+			TestDone.Execute();
+		});
+
+		// use different test value
+		{{- if .IsArray }}
+		{{- if .IsPrimitive }}
+		TestValue.Add({{ ueTestValue "" .}});
+		{{- else }}
+		{{- $type := ""}}
+		{{- if not (eq .Import "") }}
+		{{- $type = printf "F%s%s" (Camel .Import) .Type }}
+		{{- else }}
+		{{- $type = printf "F%s%s" $ModuleName .Type }}
+		{{- end }}
+		TestValue = createTest{{ $type }}Array();
+		{{- end }}
+		{{- else if and (not .IsPrimitive) (not (eq .KindType "enum"))}}
+		TestValue = createTest{{ ueType "" . }}();
+		{{- else }}
+		TestValue = {{ ueTestValue "" . }};
+		{{- end }}
+		ImplFixture->GetImplementation()->Set{{Camel .Name}}(TestValue);
+	});
+
+	LatentIt("Property.{{ Camel .Name }}.ChangeBP", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		{{ueType "" .}} TestValue = {{ueDefault "" .}}; // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Get{{Camel .Name}}(), TestValue);
+
 		testDoneDelegate = TestDone;
 		{{$Class}}Signals* {{$Iface}}Signals = ImplFixture->GetImplementation()->_GetSignals();
 		{{$Iface}}Signals->On{{Camel .Name}}ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &{{$Class}}ImplHelper::{{ Camel .Name }}PropertyCb);
@@ -99,6 +153,69 @@ void {{$Class}}ImplSpec::Define()
 {{- range .Interface.Signals }}
 
 	LatentIt("Signal.{{ Camel .Name }}", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		{{$Class}}Signals* {{$Iface}}Signals = ImplFixture->GetImplementation()->_GetSignals();
+		{{$Iface}}Signals->On{{Camel .Name}}Signal.AddLambda([this, TestDone]({{ueParams "In" .Params}})
+			{
+			// known test value
+			{{- range $i, $e := .Params -}}
+			{{- if not (eq .KindType "extern") }}
+			{{- if .IsArray }}
+			{{- if .IsPrimitive }}
+			{{ueType "" .}} {{ueVar "" .}}TestValue = {{ueDefault "" .}}; // default value
+			{{ueVar "" .}}TestValue.Add({{ ueTestValue "" .}});
+			{{- else }}
+			{{- $type := ""}}
+			{{- if not (eq .Import "") }}
+			{{- $type = printf "F%s%s" (Camel .Import) .Type }}
+			{{- else }}
+			{{- $type = printf "F%s%s" $ModuleName .Type }}
+			{{- end }}
+			{{ueType "" .}} {{ueVar "" .}}TestValue = createTest{{ $type }}Array();
+			{{- end }}
+			{{- else if and (not .IsPrimitive) (not (eq .KindType "enum"))}}
+			{{ueType "" .}} {{ueVar "" .}}TestValue = createTest{{ ueType "" . }}();
+			{{- else }}
+			{{ueType "" .}} {{ueVar "" .}}TestValue = {{ ueTestValue "" . }};
+			{{- end }}
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), {{ueVar "In" .}}, {{ueVar "" .}}TestValue);
+			{{- end }}
+			{{- end }}
+			TestDone.Execute();
+		});
+
+		// use different test value
+		{{- range $i, $e := .Params -}}
+		{{- if not (eq .KindType "extern") }}
+		{{- if .IsArray }}
+		{{- if .IsPrimitive }}
+		{{ueType "" .}} {{ueVar "" .}}TestValue = {{ueDefault "" .}}; // default value
+		{{ueVar "" .}}TestValue.Add({{ ueTestValue "" .}});
+		{{- else }}
+		{{- $type := ""}}
+		{{- if not (eq .Import "") }}
+		{{- $type = printf "F%s%s" (Camel .Import) .Type }}
+		{{- else }}
+		{{- $type = printf "F%s%s" $ModuleName .Type }}
+		{{- end }}
+		{{ ueType "" . }} {{ueVar "" .}}TestValue = createTest{{ $type }}Array();
+		{{- end }}
+		{{- else if and (not .IsPrimitive) (not (eq .KindType "enum"))}}
+		{{ ueType "" . }} {{ueVar "" .}}TestValue = createTest{{ ueType "" . }}();
+		{{- else }}
+		{{ ueType "" . }} {{ueVar "" .}}TestValue = {{ ueTestValue "" . }};
+		{{- end }}
+		{{- else }}
+		{{ ueType "" . }} {{ueVar "" .}}TestValue = {{ ueDefault "" . }};
+		{{- end }}
+		{{- end }}
+		{{$Iface}}Signals->Broadcast{{Camel .Name}}Signal(
+			{{- range $i, $e := .Params -}}
+			{{- if $i }}, {{ end }}{{ueVar "" .}}TestValue
+			{{- end -}});
+	});
+
+	LatentIt("Signal.{{ Camel .Name }}BP", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		testDoneDelegate = TestDone;
 		{{$Class}}Signals* {{$Iface}}Signals = ImplFixture->GetImplementation()->_GetSignals();
