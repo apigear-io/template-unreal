@@ -15,25 +15,23 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include "TbNamesNamEsMsgBus.spec.h"
+#include "Misc/AutomationTest.h"
+#include "HAL/Platform.h"
+
+#if !(PLATFORM_IOS || PLATFORM_ANDROID)
+#if WITH_DEV_AUTOMATION_TESTS
+
+#include "TbNames/Tests/TbNamesTestsCommon.h"
 #include "TbNames/Implementation/TbNamesNamEs.h"
 #include "TbNamesNamEsMsgBusFixture.h"
 #include "TbNames/Generated/MsgBus/TbNamesNamEsMsgBusClient.h"
 #include "TbNames/Generated/MsgBus/TbNamesNamEsMsgBusAdapter.h"
-#include "HAL/Platform.h"
 
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
-#include "Misc/AutomationTest.h"
+BEGIN_DEFINE_SPEC(UTbNamesNamEsMsgBusSpec, "TbNames.NamEs.MsgBus", TbNamesTestFilterMask);
 
-#if WITH_DEV_AUTOMATION_TESTS
+TUniquePtr<FTbNamesNamEsMsgBusFixture> ImplFixture;
 
-void UTbNamesNamEsMsgBusSpec::_ConnectionStatusChangedCb(bool bConnected)
-{
-	if (bConnected)
-	{
-		testDoneDelegate.Execute();
-	}
-}
+END_DEFINE_SPEC(UTbNamesNamEsMsgBusSpec);
 
 void UTbNamesNamEsMsgBusSpec::Define()
 {
@@ -44,21 +42,22 @@ void UTbNamesNamEsMsgBusSpec::Define()
 
 		TestTrue("Check for valid testImplementation", ImplFixture->GetImplementation().GetInterface() != nullptr);
 
-		TestTrue("Check for valid Helper", ImplFixture->GetHelper().IsValid());
-		// needed for callbacks
-		ImplFixture->GetHelper()->SetSpec(this);
-
 		// set up service and adapter
 		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbNamesNamEs>();
 		ImplFixture->GetAdapter()->_setBackendService(service);
 		ImplFixture->GetAdapter()->_StartListening();
 
 		// setup client
-		testDoneDelegate = TestDone;
 		UTbNamesNamEsMsgBusClient* MsgBusClient = Cast<UTbNamesNamEsMsgBusClient>(ImplFixture->GetImplementation().GetObject());
 		TestTrue("Check for valid MsgBus client", MsgBusClient != nullptr);
 
-		MsgBusClient->_ConnectionStatusChanged.AddUObject(ImplFixture->GetHelper().Get(), &UTbNamesNamEsMsgBusHelper::_ConnectionStatusChangedCb);
+		MsgBusClient->_ConnectionStatusChanged.AddLambda([this, TestDone](bool bConnected)
+			{
+			if (bConnected)
+			{
+				TestDone.Execute();
+			}
+		});
 
 		MsgBusClient->_Connect();
 	});
@@ -81,9 +80,17 @@ void UTbNamesNamEsMsgBusSpec::Define()
 		bool TestValue = false; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetSwitch(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbNamesNamEsSignals->OnSwitchChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbNamesNamEsMsgBusHelper::SwitchPropertyCb);
+		TbNamesNamEsSignals->OnSwitchChanged.AddLambda([this, TestDone](bool bInSwitch)
+			{
+			bool TestValue = false;
+			// use different test value
+			TestValue = true;
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), bInSwitch, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetSwitch(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue = true;
 		ImplFixture->GetImplementation()->SetSwitch(TestValue);
@@ -102,9 +109,17 @@ void UTbNamesNamEsMsgBusSpec::Define()
 		int32 TestValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetSomeProperty(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbNamesNamEsSignals->OnSomePropertyChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbNamesNamEsMsgBusHelper::SomePropertyPropertyCb);
+		TbNamesNamEsSignals->OnSomePropertyChanged.AddLambda([this, TestDone](int32 InSomeProperty)
+			{
+			int32 TestValue = 0;
+			// use different test value
+			TestValue = 1;
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InSomeProperty, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetSomeProperty(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue = 1;
 		ImplFixture->GetImplementation()->SetSomeProperty(TestValue);
@@ -123,9 +138,17 @@ void UTbNamesNamEsMsgBusSpec::Define()
 		int32 TestValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetSomePoperty2(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbNamesNamEsSignals->OnSomePoperty2ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbNamesNamEsMsgBusHelper::SomePoperty2PropertyCb);
+		TbNamesNamEsSignals->OnSomePoperty2Changed.AddLambda([this, TestDone](int32 InSomePoperty2)
+			{
+			int32 TestValue = 0;
+			// use different test value
+			TestValue = 1;
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InSomePoperty2, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetSomePoperty2(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue = 1;
 		ImplFixture->GetImplementation()->SetSomePoperty2(TestValue);
@@ -153,9 +176,14 @@ void UTbNamesNamEsMsgBusSpec::Define()
 
 	LatentIt("Signal.SomeSignal", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbNamesNamEsSignals->OnSomeSignalSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbNamesNamEsMsgBusHelper::SomeSignalSignalCb);
+		TbNamesNamEsSignals->OnSomeSignalSignal.AddLambda([this, TestDone](bool bInSomeParam)
+			{
+			// known test value
+			bool bSomeParamTestValue = true;
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), bInSomeParam, bSomeParamTestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		bool bSomeParamTestValue = true;
@@ -164,9 +192,14 @@ void UTbNamesNamEsMsgBusSpec::Define()
 
 	LatentIt("Signal.SomeSignal2", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbNamesNamEsSignals->OnSomeSignal2SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbNamesNamEsMsgBusHelper::SomeSignal2SignalCb);
+		TbNamesNamEsSignals->OnSomeSignal2Signal.AddLambda([this, TestDone](bool bInSomeParam)
+			{
+			// known test value
+			bool bSomeParamTestValue = true;
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), bInSomeParam, bSomeParamTestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		bool bSomeParamTestValue = true;
@@ -174,50 +207,5 @@ void UTbNamesNamEsMsgBusSpec::Define()
 	});
 }
 
-void UTbNamesNamEsMsgBusSpec::SwitchPropertyCb(bool bInSwitch)
-{
-	bool TestValue = false;
-	// use different test value
-	TestValue = true;
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), bInSwitch, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetSwitch(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbNamesNamEsMsgBusSpec::SomePropertyPropertyCb(int32 InSomeProperty)
-{
-	int32 TestValue = 0;
-	// use different test value
-	TestValue = 1;
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InSomeProperty, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetSomeProperty(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbNamesNamEsMsgBusSpec::SomePoperty2PropertyCb(int32 InSomePoperty2)
-{
-	int32 TestValue = 0;
-	// use different test value
-	TestValue = 1;
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InSomePoperty2, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetSomePoperty2(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbNamesNamEsMsgBusSpec::SomeSignalSignalCb(bool bInSomeParam)
-{
-	// known test value
-	bool bSomeParamTestValue = true;
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), bInSomeParam, bSomeParamTestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbNamesNamEsMsgBusSpec::SomeSignal2SignalCb(bool bInSomeParam)
-{
-	// known test value
-	bool bSomeParamTestValue = true;
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), bInSomeParam, bSomeParamTestValue);
-	testDoneDelegate.Execute();
-}
 #endif // WITH_DEV_AUTOMATION_TESTS
 #endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

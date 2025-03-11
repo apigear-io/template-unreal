@@ -15,99 +15,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "Testbed1StructInterfaceMsgBusFixture.h"
-#include "Testbed1StructInterfaceMsgBus.spec.h"
-#include "Testbed1/Generated/MsgBus/Testbed1StructInterfaceMsgBusClient.h"
-#include "Testbed1/Generated/MsgBus/Testbed1StructInterfaceMsgBusAdapter.h"
-#include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
+#include "HAL/Platform.h"
 
 #if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
 
-UTestbed1StructInterfaceMsgBusHelper::~UTestbed1StructInterfaceMsgBusHelper()
-{
-	Spec = nullptr;
-}
-
-void UTestbed1StructInterfaceMsgBusHelper::SetSpec(UTestbed1StructInterfaceMsgBusSpec* InSpec)
-{
-	Spec = InSpec;
-}
-
-void UTestbed1StructInterfaceMsgBusHelper::PropBoolPropertyCb(const FTestbed1StructBool& PropBool)
-{
-	if (Spec)
-	{
-		Spec->PropBoolPropertyCb(PropBool);
-	}
-}
-
-void UTestbed1StructInterfaceMsgBusHelper::PropIntPropertyCb(const FTestbed1StructInt& PropInt)
-{
-	if (Spec)
-	{
-		Spec->PropIntPropertyCb(PropInt);
-	}
-}
-
-void UTestbed1StructInterfaceMsgBusHelper::PropFloatPropertyCb(const FTestbed1StructFloat& PropFloat)
-{
-	if (Spec)
-	{
-		Spec->PropFloatPropertyCb(PropFloat);
-	}
-}
-
-void UTestbed1StructInterfaceMsgBusHelper::PropStringPropertyCb(const FTestbed1StructString& PropString)
-{
-	if (Spec)
-	{
-		Spec->PropStringPropertyCb(PropString);
-	}
-}
-
-void UTestbed1StructInterfaceMsgBusHelper::SigBoolSignalCb(const FTestbed1StructBool& ParamBool)
-{
-	if (Spec)
-	{
-		Spec->SigBoolSignalCb(ParamBool);
-	}
-}
-
-void UTestbed1StructInterfaceMsgBusHelper::SigIntSignalCb(const FTestbed1StructInt& ParamInt)
-{
-	if (Spec)
-	{
-		Spec->SigIntSignalCb(ParamInt);
-	}
-}
-
-void UTestbed1StructInterfaceMsgBusHelper::SigFloatSignalCb(const FTestbed1StructFloat& ParamFloat)
-{
-	if (Spec)
-	{
-		Spec->SigFloatSignalCb(ParamFloat);
-	}
-}
-
-void UTestbed1StructInterfaceMsgBusHelper::SigStringSignalCb(const FTestbed1StructString& ParamString)
-{
-	if (Spec)
-	{
-		Spec->SigStringSignalCb(ParamString);
-	}
-}
-
-void UTestbed1StructInterfaceMsgBusHelper::_ConnectionStatusChangedCb(bool bConnected)
-{
-	if (Spec)
-	{
-		Spec->_ConnectionStatusChangedCb(bConnected);
-	}
-}
+#include "Testbed1/Generated/MsgBus/Testbed1StructInterfaceMsgBusClient.h"
+#include "Testbed1/Generated/MsgBus/Testbed1StructInterfaceMsgBusAdapter.h"
+#include "Engine/GameInstance.h"
 
 FTestbed1StructInterfaceMsgBusFixture::FTestbed1StructInterfaceMsgBusFixture()
 {
-	Helper = NewObject<UTestbed1StructInterfaceMsgBusHelper>();
 	testImplementation = GetGameInstance()->GetSubsystem<UTestbed1StructInterfaceMsgBusClient>();
 }
 
@@ -124,11 +42,6 @@ TScriptInterface<ITestbed1StructInterfaceInterface> FTestbed1StructInterfaceMsgB
 UTestbed1StructInterfaceMsgBusAdapter* FTestbed1StructInterfaceMsgBusFixture::GetAdapter()
 {
 	return GetGameInstance()->GetSubsystem<UTestbed1StructInterfaceMsgBusAdapter>();
-}
-
-TSoftObjectPtr<UTestbed1StructInterfaceMsgBusHelper> FTestbed1StructInterfaceMsgBusFixture::GetHelper()
-{
-	return Helper;
 }
 
 UGameInstance* FTestbed1StructInterfaceMsgBusFixture::GetGameInstance()
@@ -148,59 +61,5 @@ void FTestbed1StructInterfaceMsgBusFixture::CleanUp()
 	{
 		GameInstance->Shutdown();
 	}
-}
-#else  // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
-// create empty implementation in case we do not want to do automated testing
-UTestbed1StructInterfaceMsgBusHelper::~UTestbed1StructInterfaceMsgBusHelper()
-{
-}
-
-void UTestbed1StructInterfaceMsgBusHelper::SetSpec(UTestbed1StructInterfaceMsgBusSpec* /* InSpec */)
-{
-}
-
-void UTestbed1StructInterfaceMsgBusHelper::PropBoolPropertyCb(const FTestbed1StructBool& PropBool)
-{
-	(void)PropBool;
-}
-
-void UTestbed1StructInterfaceMsgBusHelper::PropIntPropertyCb(const FTestbed1StructInt& PropInt)
-{
-	(void)PropInt;
-}
-
-void UTestbed1StructInterfaceMsgBusHelper::PropFloatPropertyCb(const FTestbed1StructFloat& PropFloat)
-{
-	(void)PropFloat;
-}
-
-void UTestbed1StructInterfaceMsgBusHelper::PropStringPropertyCb(const FTestbed1StructString& PropString)
-{
-	(void)PropString;
-}
-
-void UTestbed1StructInterfaceMsgBusHelper::SigBoolSignalCb(const FTestbed1StructBool& ParamBool)
-{
-	(void)ParamBool;
-}
-
-void UTestbed1StructInterfaceMsgBusHelper::SigIntSignalCb(const FTestbed1StructInt& ParamInt)
-{
-	(void)ParamInt;
-}
-
-void UTestbed1StructInterfaceMsgBusHelper::SigFloatSignalCb(const FTestbed1StructFloat& ParamFloat)
-{
-	(void)ParamFloat;
-}
-
-void UTestbed1StructInterfaceMsgBusHelper::SigStringSignalCb(const FTestbed1StructString& ParamString)
-{
-	(void)ParamString;
-}
-
-void UTestbed1StructInterfaceMsgBusHelper::_ConnectionStatusChangedCb(bool bConnected)
-{
-	(void)bConnected;
 }
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

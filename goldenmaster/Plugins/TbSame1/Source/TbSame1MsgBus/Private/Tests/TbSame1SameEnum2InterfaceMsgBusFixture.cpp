@@ -15,67 +15,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbSame1SameEnum2InterfaceMsgBusFixture.h"
-#include "TbSame1SameEnum2InterfaceMsgBus.spec.h"
-#include "TbSame1/Generated/MsgBus/TbSame1SameEnum2InterfaceMsgBusClient.h"
-#include "TbSame1/Generated/MsgBus/TbSame1SameEnum2InterfaceMsgBusAdapter.h"
-#include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
+#include "HAL/Platform.h"
 
 #if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
 
-UTbSame1SameEnum2InterfaceMsgBusHelper::~UTbSame1SameEnum2InterfaceMsgBusHelper()
-{
-	Spec = nullptr;
-}
-
-void UTbSame1SameEnum2InterfaceMsgBusHelper::SetSpec(UTbSame1SameEnum2InterfaceMsgBusSpec* InSpec)
-{
-	Spec = InSpec;
-}
-
-void UTbSame1SameEnum2InterfaceMsgBusHelper::Prop1PropertyCb(ETbSame1Enum1 Prop1)
-{
-	if (Spec)
-	{
-		Spec->Prop1PropertyCb(Prop1);
-	}
-}
-
-void UTbSame1SameEnum2InterfaceMsgBusHelper::Prop2PropertyCb(ETbSame1Enum2 Prop2)
-{
-	if (Spec)
-	{
-		Spec->Prop2PropertyCb(Prop2);
-	}
-}
-
-void UTbSame1SameEnum2InterfaceMsgBusHelper::Sig1SignalCb(ETbSame1Enum1 Param1)
-{
-	if (Spec)
-	{
-		Spec->Sig1SignalCb(Param1);
-	}
-}
-
-void UTbSame1SameEnum2InterfaceMsgBusHelper::Sig2SignalCb(ETbSame1Enum1 Param1, ETbSame1Enum2 Param2)
-{
-	if (Spec)
-	{
-		Spec->Sig2SignalCb(Param1, Param2);
-	}
-}
-
-void UTbSame1SameEnum2InterfaceMsgBusHelper::_ConnectionStatusChangedCb(bool bConnected)
-{
-	if (Spec)
-	{
-		Spec->_ConnectionStatusChangedCb(bConnected);
-	}
-}
+#include "TbSame1/Generated/MsgBus/TbSame1SameEnum2InterfaceMsgBusClient.h"
+#include "TbSame1/Generated/MsgBus/TbSame1SameEnum2InterfaceMsgBusAdapter.h"
+#include "Engine/GameInstance.h"
 
 FTbSame1SameEnum2InterfaceMsgBusFixture::FTbSame1SameEnum2InterfaceMsgBusFixture()
 {
-	Helper = NewObject<UTbSame1SameEnum2InterfaceMsgBusHelper>();
 	testImplementation = GetGameInstance()->GetSubsystem<UTbSame1SameEnum2InterfaceMsgBusClient>();
 }
 
@@ -92,11 +42,6 @@ TScriptInterface<ITbSame1SameEnum2InterfaceInterface> FTbSame1SameEnum2Interface
 UTbSame1SameEnum2InterfaceMsgBusAdapter* FTbSame1SameEnum2InterfaceMsgBusFixture::GetAdapter()
 {
 	return GetGameInstance()->GetSubsystem<UTbSame1SameEnum2InterfaceMsgBusAdapter>();
-}
-
-TSoftObjectPtr<UTbSame1SameEnum2InterfaceMsgBusHelper> FTbSame1SameEnum2InterfaceMsgBusFixture::GetHelper()
-{
-	return Helper;
 }
 
 UGameInstance* FTbSame1SameEnum2InterfaceMsgBusFixture::GetGameInstance()
@@ -116,40 +61,5 @@ void FTbSame1SameEnum2InterfaceMsgBusFixture::CleanUp()
 	{
 		GameInstance->Shutdown();
 	}
-}
-#else  // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
-// create empty implementation in case we do not want to do automated testing
-UTbSame1SameEnum2InterfaceMsgBusHelper::~UTbSame1SameEnum2InterfaceMsgBusHelper()
-{
-}
-
-void UTbSame1SameEnum2InterfaceMsgBusHelper::SetSpec(UTbSame1SameEnum2InterfaceMsgBusSpec* /* InSpec */)
-{
-}
-
-void UTbSame1SameEnum2InterfaceMsgBusHelper::Prop1PropertyCb(ETbSame1Enum1 Prop1)
-{
-	(void)Prop1;
-}
-
-void UTbSame1SameEnum2InterfaceMsgBusHelper::Prop2PropertyCb(ETbSame1Enum2 Prop2)
-{
-	(void)Prop2;
-}
-
-void UTbSame1SameEnum2InterfaceMsgBusHelper::Sig1SignalCb(ETbSame1Enum1 Param1)
-{
-	(void)Param1;
-}
-
-void UTbSame1SameEnum2InterfaceMsgBusHelper::Sig2SignalCb(ETbSame1Enum1 Param1, ETbSame1Enum2 Param2)
-{
-	(void)Param1;
-	(void)Param2;
-}
-
-void UTbSame1SameEnum2InterfaceMsgBusHelper::_ConnectionStatusChangedCb(bool bConnected)
-{
-	(void)bConnected;
 }
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

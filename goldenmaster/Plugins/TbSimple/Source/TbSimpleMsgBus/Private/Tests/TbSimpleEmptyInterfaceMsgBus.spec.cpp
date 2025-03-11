@@ -15,25 +15,23 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include "TbSimpleEmptyInterfaceMsgBus.spec.h"
+#include "Misc/AutomationTest.h"
+#include "HAL/Platform.h"
+
+#if !(PLATFORM_IOS || PLATFORM_ANDROID)
+#if WITH_DEV_AUTOMATION_TESTS
+
+#include "TbSimple/Tests/TbSimpleTestsCommon.h"
 #include "TbSimple/Implementation/TbSimpleEmptyInterface.h"
 #include "TbSimpleEmptyInterfaceMsgBusFixture.h"
 #include "TbSimple/Generated/MsgBus/TbSimpleEmptyInterfaceMsgBusClient.h"
 #include "TbSimple/Generated/MsgBus/TbSimpleEmptyInterfaceMsgBusAdapter.h"
-#include "HAL/Platform.h"
 
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
-#include "Misc/AutomationTest.h"
+BEGIN_DEFINE_SPEC(UTbSimpleEmptyInterfaceMsgBusSpec, "TbSimple.EmptyInterface.MsgBus", TbSimpleTestFilterMask);
 
-#if WITH_DEV_AUTOMATION_TESTS
+TUniquePtr<FTbSimpleEmptyInterfaceMsgBusFixture> ImplFixture;
 
-void UTbSimpleEmptyInterfaceMsgBusSpec::_ConnectionStatusChangedCb(bool bConnected)
-{
-	if (bConnected)
-	{
-		testDoneDelegate.Execute();
-	}
-}
+END_DEFINE_SPEC(UTbSimpleEmptyInterfaceMsgBusSpec);
 
 void UTbSimpleEmptyInterfaceMsgBusSpec::Define()
 {
@@ -44,21 +42,22 @@ void UTbSimpleEmptyInterfaceMsgBusSpec::Define()
 
 		TestTrue("Check for valid testImplementation", ImplFixture->GetImplementation().GetInterface() != nullptr);
 
-		TestTrue("Check for valid Helper", ImplFixture->GetHelper().IsValid());
-		// needed for callbacks
-		ImplFixture->GetHelper()->SetSpec(this);
-
 		// set up service and adapter
 		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleEmptyInterface>();
 		ImplFixture->GetAdapter()->_setBackendService(service);
 		ImplFixture->GetAdapter()->_StartListening();
 
 		// setup client
-		testDoneDelegate = TestDone;
 		UTbSimpleEmptyInterfaceMsgBusClient* MsgBusClient = Cast<UTbSimpleEmptyInterfaceMsgBusClient>(ImplFixture->GetImplementation().GetObject());
 		TestTrue("Check for valid MsgBus client", MsgBusClient != nullptr);
 
-		MsgBusClient->_ConnectionStatusChanged.AddUObject(ImplFixture->GetHelper().Get(), &UTbSimpleEmptyInterfaceMsgBusHelper::_ConnectionStatusChangedCb);
+		MsgBusClient->_ConnectionStatusChanged.AddLambda([this, TestDone](bool bConnected)
+			{
+			if (bConnected)
+			{
+				TestDone.Execute();
+			}
+		});
 
 		MsgBusClient->_Connect();
 	});
@@ -68,5 +67,6 @@ void UTbSimpleEmptyInterfaceMsgBusSpec::Define()
 		ImplFixture.Reset();
 	});
 }
+
 #endif // WITH_DEV_AUTOMATION_TESTS
 #endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

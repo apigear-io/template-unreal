@@ -15,51 +15,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbSimpleNoSignalsInterfaceMsgBusFixture.h"
-#include "TbSimpleNoSignalsInterfaceMsgBus.spec.h"
-#include "TbSimple/Generated/MsgBus/TbSimpleNoSignalsInterfaceMsgBusClient.h"
-#include "TbSimple/Generated/MsgBus/TbSimpleNoSignalsInterfaceMsgBusAdapter.h"
-#include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
+#include "HAL/Platform.h"
 
 #if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
 
-UTbSimpleNoSignalsInterfaceMsgBusHelper::~UTbSimpleNoSignalsInterfaceMsgBusHelper()
-{
-	Spec = nullptr;
-}
-
-void UTbSimpleNoSignalsInterfaceMsgBusHelper::SetSpec(UTbSimpleNoSignalsInterfaceMsgBusSpec* InSpec)
-{
-	Spec = InSpec;
-}
-
-void UTbSimpleNoSignalsInterfaceMsgBusHelper::PropBoolPropertyCb(bool bPropBool)
-{
-	if (Spec)
-	{
-		Spec->PropBoolPropertyCb(bPropBool);
-	}
-}
-
-void UTbSimpleNoSignalsInterfaceMsgBusHelper::PropIntPropertyCb(int32 PropInt)
-{
-	if (Spec)
-	{
-		Spec->PropIntPropertyCb(PropInt);
-	}
-}
-
-void UTbSimpleNoSignalsInterfaceMsgBusHelper::_ConnectionStatusChangedCb(bool bConnected)
-{
-	if (Spec)
-	{
-		Spec->_ConnectionStatusChangedCb(bConnected);
-	}
-}
+#include "TbSimple/Generated/MsgBus/TbSimpleNoSignalsInterfaceMsgBusClient.h"
+#include "TbSimple/Generated/MsgBus/TbSimpleNoSignalsInterfaceMsgBusAdapter.h"
+#include "Engine/GameInstance.h"
 
 FTbSimpleNoSignalsInterfaceMsgBusFixture::FTbSimpleNoSignalsInterfaceMsgBusFixture()
 {
-	Helper = NewObject<UTbSimpleNoSignalsInterfaceMsgBusHelper>();
 	testImplementation = GetGameInstance()->GetSubsystem<UTbSimpleNoSignalsInterfaceMsgBusClient>();
 }
 
@@ -76,11 +42,6 @@ TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> FTbSimpleNoSignalsInterfa
 UTbSimpleNoSignalsInterfaceMsgBusAdapter* FTbSimpleNoSignalsInterfaceMsgBusFixture::GetAdapter()
 {
 	return GetGameInstance()->GetSubsystem<UTbSimpleNoSignalsInterfaceMsgBusAdapter>();
-}
-
-TSoftObjectPtr<UTbSimpleNoSignalsInterfaceMsgBusHelper> FTbSimpleNoSignalsInterfaceMsgBusFixture::GetHelper()
-{
-	return Helper;
 }
 
 UGameInstance* FTbSimpleNoSignalsInterfaceMsgBusFixture::GetGameInstance()
@@ -100,29 +61,5 @@ void FTbSimpleNoSignalsInterfaceMsgBusFixture::CleanUp()
 	{
 		GameInstance->Shutdown();
 	}
-}
-#else  // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
-// create empty implementation in case we do not want to do automated testing
-UTbSimpleNoSignalsInterfaceMsgBusHelper::~UTbSimpleNoSignalsInterfaceMsgBusHelper()
-{
-}
-
-void UTbSimpleNoSignalsInterfaceMsgBusHelper::SetSpec(UTbSimpleNoSignalsInterfaceMsgBusSpec* /* InSpec */)
-{
-}
-
-void UTbSimpleNoSignalsInterfaceMsgBusHelper::PropBoolPropertyCb(bool bPropBool)
-{
-	(void)bPropBool;
-}
-
-void UTbSimpleNoSignalsInterfaceMsgBusHelper::PropIntPropertyCb(int32 PropInt)
-{
-	(void)PropInt;
-}
-
-void UTbSimpleNoSignalsInterfaceMsgBusHelper::_ConnectionStatusChangedCb(bool bConnected)
-{
-	(void)bConnected;
 }
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

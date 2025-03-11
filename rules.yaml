@@ -456,9 +456,6 @@ features:
       - match: interface
         prefix: "Plugins/{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}MsgBus/"
         documents:
-          - source: "module/Source/modulemsgbus/Private/Tests/msgbus.spec.h.tpl"
-            target: "Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}MsgBus.spec.h"
-            preserve: true
           - source: "module/Source/modulemsgbus/Private/Tests/msgbus.spec.cpp.tpl"
             target: "Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}MsgBus.spec.cpp"
             preserve: true

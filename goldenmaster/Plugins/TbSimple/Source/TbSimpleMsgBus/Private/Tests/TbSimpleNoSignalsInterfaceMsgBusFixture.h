@@ -1,45 +1,21 @@
 
 #pragma once
 
-#include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
+#include "HAL/Platform.h"
+
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
 
 #include "CoreMinimal.h"
+#include "Engine/GameInstance.h"
 #include "UObject/Object.h"
 #include "UObject/NoExportTypes.h"
 #include "TbSimple/Generated/api/TbSimple_data.h"
-#include "HAL/Platform.h"
-#include "TbSimpleNoSignalsInterfaceMsgBusFixture.generated.h"
 
 class UTbSimpleNoSignalsInterfaceMsgBusSpec;
 class ITbSimpleNoSignalsInterfaceInterface;
 class UTbSimpleNoSignalsInterfaceMsgBusAdapter;
 class IApiGearConnection;
-
-UCLASS()
-class UTbSimpleNoSignalsInterfaceMsgBusHelper : public UObject
-{
-	GENERATED_BODY()
-public:
-	~UTbSimpleNoSignalsInterfaceMsgBusHelper();
-
-	void SetSpec(UTbSimpleNoSignalsInterfaceMsgBusSpec* InSpec);
-
-	UFUNCTION()
-	void PropBoolPropertyCb(bool bPropBool);
-
-	UFUNCTION()
-	void PropIntPropertyCb(int32 PropInt);
-
-	UFUNCTION()
-	void _ConnectionStatusChangedCb(bool bConnected);
-
-protected:
-	const FDoneDelegate* testDoneDelegate;
-	UTbSimpleNoSignalsInterfaceMsgBusSpec* Spec;
-};
-
-#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
 
 class FTbSimpleNoSignalsInterfaceMsgBusFixture
 {
@@ -49,7 +25,6 @@ public:
 
 	UGameInstance* GetGameInstance();
 	TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> GetImplementation();
-	TSoftObjectPtr<UTbSimpleNoSignalsInterfaceMsgBusHelper> GetHelper();
 	UTbSimpleNoSignalsInterfaceMsgBusAdapter* GetAdapter();
 
 private:
@@ -57,7 +32,6 @@ private:
 
 	TSoftObjectPtr<UGameInstance> GameInstance;
 	TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> testImplementation;
-	TSoftObjectPtr<UTbSimpleNoSignalsInterfaceMsgBusHelper> Helper;
 };
 
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

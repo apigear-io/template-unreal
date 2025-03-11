@@ -15,43 +15,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbSimpleVoidInterfaceMsgBusFixture.h"
-#include "TbSimpleVoidInterfaceMsgBus.spec.h"
-#include "TbSimple/Generated/MsgBus/TbSimpleVoidInterfaceMsgBusClient.h"
-#include "TbSimple/Generated/MsgBus/TbSimpleVoidInterfaceMsgBusAdapter.h"
-#include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
+#include "HAL/Platform.h"
 
 #if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
 
-UTbSimpleVoidInterfaceMsgBusHelper::~UTbSimpleVoidInterfaceMsgBusHelper()
-{
-	Spec = nullptr;
-}
-
-void UTbSimpleVoidInterfaceMsgBusHelper::SetSpec(UTbSimpleVoidInterfaceMsgBusSpec* InSpec)
-{
-	Spec = InSpec;
-}
-
-void UTbSimpleVoidInterfaceMsgBusHelper::SigVoidSignalCb()
-{
-	if (Spec)
-	{
-		Spec->SigVoidSignalCb();
-	}
-}
-
-void UTbSimpleVoidInterfaceMsgBusHelper::_ConnectionStatusChangedCb(bool bConnected)
-{
-	if (Spec)
-	{
-		Spec->_ConnectionStatusChangedCb(bConnected);
-	}
-}
+#include "TbSimple/Generated/MsgBus/TbSimpleVoidInterfaceMsgBusClient.h"
+#include "TbSimple/Generated/MsgBus/TbSimpleVoidInterfaceMsgBusAdapter.h"
+#include "Engine/GameInstance.h"
 
 FTbSimpleVoidInterfaceMsgBusFixture::FTbSimpleVoidInterfaceMsgBusFixture()
 {
-	Helper = NewObject<UTbSimpleVoidInterfaceMsgBusHelper>();
 	testImplementation = GetGameInstance()->GetSubsystem<UTbSimpleVoidInterfaceMsgBusClient>();
 }
 
@@ -68,11 +42,6 @@ TScriptInterface<ITbSimpleVoidInterfaceInterface> FTbSimpleVoidInterfaceMsgBusFi
 UTbSimpleVoidInterfaceMsgBusAdapter* FTbSimpleVoidInterfaceMsgBusFixture::GetAdapter()
 {
 	return GetGameInstance()->GetSubsystem<UTbSimpleVoidInterfaceMsgBusAdapter>();
-}
-
-TSoftObjectPtr<UTbSimpleVoidInterfaceMsgBusHelper> FTbSimpleVoidInterfaceMsgBusFixture::GetHelper()
-{
-	return Helper;
 }
 
 UGameInstance* FTbSimpleVoidInterfaceMsgBusFixture::GetGameInstance()
@@ -92,23 +61,5 @@ void FTbSimpleVoidInterfaceMsgBusFixture::CleanUp()
 	{
 		GameInstance->Shutdown();
 	}
-}
-#else  // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
-// create empty implementation in case we do not want to do automated testing
-UTbSimpleVoidInterfaceMsgBusHelper::~UTbSimpleVoidInterfaceMsgBusHelper()
-{
-}
-
-void UTbSimpleVoidInterfaceMsgBusHelper::SetSpec(UTbSimpleVoidInterfaceMsgBusSpec* /* InSpec */)
-{
-}
-
-void UTbSimpleVoidInterfaceMsgBusHelper::SigVoidSignalCb()
-{
-}
-
-void UTbSimpleVoidInterfaceMsgBusHelper::_ConnectionStatusChangedCb(bool bConnected)
-{
-	(void)bConnected;
 }
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

@@ -15,25 +15,23 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include "TbSame1SameStruct1InterfaceMsgBus.spec.h"
+#include "Misc/AutomationTest.h"
+#include "HAL/Platform.h"
+
+#if !(PLATFORM_IOS || PLATFORM_ANDROID)
+#if WITH_DEV_AUTOMATION_TESTS
+
+#include "TbSame1/Tests/TbSame1TestsCommon.h"
 #include "TbSame1/Implementation/TbSame1SameStruct1Interface.h"
 #include "TbSame1SameStruct1InterfaceMsgBusFixture.h"
 #include "TbSame1/Generated/MsgBus/TbSame1SameStruct1InterfaceMsgBusClient.h"
 #include "TbSame1/Generated/MsgBus/TbSame1SameStruct1InterfaceMsgBusAdapter.h"
-#include "HAL/Platform.h"
 
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
-#include "Misc/AutomationTest.h"
+BEGIN_DEFINE_SPEC(UTbSame1SameStruct1InterfaceMsgBusSpec, "TbSame1.SameStruct1Interface.MsgBus", TbSame1TestFilterMask);
 
-#if WITH_DEV_AUTOMATION_TESTS
+TUniquePtr<FTbSame1SameStruct1InterfaceMsgBusFixture> ImplFixture;
 
-void UTbSame1SameStruct1InterfaceMsgBusSpec::_ConnectionStatusChangedCb(bool bConnected)
-{
-	if (bConnected)
-	{
-		testDoneDelegate.Execute();
-	}
-}
+END_DEFINE_SPEC(UTbSame1SameStruct1InterfaceMsgBusSpec);
 
 void UTbSame1SameStruct1InterfaceMsgBusSpec::Define()
 {
@@ -44,21 +42,22 @@ void UTbSame1SameStruct1InterfaceMsgBusSpec::Define()
 
 		TestTrue("Check for valid testImplementation", ImplFixture->GetImplementation().GetInterface() != nullptr);
 
-		TestTrue("Check for valid Helper", ImplFixture->GetHelper().IsValid());
-		// needed for callbacks
-		ImplFixture->GetHelper()->SetSpec(this);
-
 		// set up service and adapter
 		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSame1SameStruct1Interface>();
 		ImplFixture->GetAdapter()->_setBackendService(service);
 		ImplFixture->GetAdapter()->_StartListening();
 
 		// setup client
-		testDoneDelegate = TestDone;
 		UTbSame1SameStruct1InterfaceMsgBusClient* MsgBusClient = Cast<UTbSame1SameStruct1InterfaceMsgBusClient>(ImplFixture->GetImplementation().GetObject());
 		TestTrue("Check for valid MsgBus client", MsgBusClient != nullptr);
 
-		MsgBusClient->_ConnectionStatusChanged.AddUObject(ImplFixture->GetHelper().Get(), &UTbSame1SameStruct1InterfaceMsgBusHelper::_ConnectionStatusChangedCb);
+		MsgBusClient->_ConnectionStatusChanged.AddLambda([this, TestDone](bool bConnected)
+			{
+			if (bConnected)
+			{
+				TestDone.Execute();
+			}
+		});
 
 		MsgBusClient->_Connect();
 	});
@@ -81,9 +80,17 @@ void UTbSame1SameStruct1InterfaceMsgBusSpec::Define()
 		FTbSame1Struct1 TestValue = FTbSame1Struct1(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp1(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTbSame1SameStruct1InterfaceSignals* TbSame1SameStruct1InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSame1SameStruct1InterfaceSignals->OnProp1ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame1SameStruct1InterfaceMsgBusHelper::Prop1PropertyCb);
+		TbSame1SameStruct1InterfaceSignals->OnProp1Changed.AddLambda([this, TestDone](const FTbSame1Struct1& InProp1)
+			{
+			FTbSame1Struct1 TestValue = FTbSame1Struct1();
+			// use different test value
+			TestValue = createTestFTbSame1Struct1();
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetProp1(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue = createTestFTbSame1Struct1();
 		ImplFixture->GetImplementation()->SetProp1(TestValue);
@@ -101,9 +108,14 @@ void UTbSame1SameStruct1InterfaceMsgBusSpec::Define()
 
 	LatentIt("Signal.Sig1", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTbSame1SameStruct1InterfaceSignals* TbSame1SameStruct1InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSame1SameStruct1InterfaceSignals->OnSig1SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame1SameStruct1InterfaceMsgBusHelper::Sig1SignalCb);
+		TbSame1SameStruct1InterfaceSignals->OnSig1Signal.AddLambda([this, TestDone](const FTbSame1Struct1& InParam1)
+			{
+			// known test value
+			FTbSame1Struct1 Param1TestValue = createTestFTbSame1Struct1();
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		FTbSame1Struct1 Param1TestValue = createTestFTbSame1Struct1();
@@ -111,22 +123,5 @@ void UTbSame1SameStruct1InterfaceMsgBusSpec::Define()
 	});
 }
 
-void UTbSame1SameStruct1InterfaceMsgBusSpec::Prop1PropertyCb(const FTbSame1Struct1& InProp1)
-{
-	FTbSame1Struct1 TestValue = FTbSame1Struct1();
-	// use different test value
-	TestValue = createTestFTbSame1Struct1();
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetProp1(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSame1SameStruct1InterfaceMsgBusSpec::Sig1SignalCb(const FTbSame1Struct1& InParam1)
-{
-	// known test value
-	FTbSame1Struct1 Param1TestValue = createTestFTbSame1Struct1();
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
-	testDoneDelegate.Execute();
-}
 #endif // WITH_DEV_AUTOMATION_TESTS
 #endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

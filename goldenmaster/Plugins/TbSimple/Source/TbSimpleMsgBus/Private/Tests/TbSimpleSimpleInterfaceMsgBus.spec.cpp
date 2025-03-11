@@ -15,25 +15,23 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include "TbSimpleSimpleInterfaceMsgBus.spec.h"
+#include "Misc/AutomationTest.h"
+#include "HAL/Platform.h"
+
+#if !(PLATFORM_IOS || PLATFORM_ANDROID)
+#if WITH_DEV_AUTOMATION_TESTS
+
+#include "TbSimple/Tests/TbSimpleTestsCommon.h"
 #include "TbSimple/Implementation/TbSimpleSimpleInterface.h"
 #include "TbSimpleSimpleInterfaceMsgBusFixture.h"
 #include "TbSimple/Generated/MsgBus/TbSimpleSimpleInterfaceMsgBusClient.h"
 #include "TbSimple/Generated/MsgBus/TbSimpleSimpleInterfaceMsgBusAdapter.h"
-#include "HAL/Platform.h"
 
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
-#include "Misc/AutomationTest.h"
+BEGIN_DEFINE_SPEC(UTbSimpleSimpleInterfaceMsgBusSpec, "TbSimple.SimpleInterface.MsgBus", TbSimpleTestFilterMask);
 
-#if WITH_DEV_AUTOMATION_TESTS
+TUniquePtr<FTbSimpleSimpleInterfaceMsgBusFixture> ImplFixture;
 
-void UTbSimpleSimpleInterfaceMsgBusSpec::_ConnectionStatusChangedCb(bool bConnected)
-{
-	if (bConnected)
-	{
-		testDoneDelegate.Execute();
-	}
-}
+END_DEFINE_SPEC(UTbSimpleSimpleInterfaceMsgBusSpec);
 
 void UTbSimpleSimpleInterfaceMsgBusSpec::Define()
 {
@@ -44,21 +42,22 @@ void UTbSimpleSimpleInterfaceMsgBusSpec::Define()
 
 		TestTrue("Check for valid testImplementation", ImplFixture->GetImplementation().GetInterface() != nullptr);
 
-		TestTrue("Check for valid Helper", ImplFixture->GetHelper().IsValid());
-		// needed for callbacks
-		ImplFixture->GetHelper()->SetSpec(this);
-
 		// set up service and adapter
 		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterface>();
 		ImplFixture->GetAdapter()->_setBackendService(service);
 		ImplFixture->GetAdapter()->_StartListening();
 
 		// setup client
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceMsgBusClient* MsgBusClient = Cast<UTbSimpleSimpleInterfaceMsgBusClient>(ImplFixture->GetImplementation().GetObject());
 		TestTrue("Check for valid MsgBus client", MsgBusClient != nullptr);
 
-		MsgBusClient->_ConnectionStatusChanged.AddUObject(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceMsgBusHelper::_ConnectionStatusChangedCb);
+		MsgBusClient->_ConnectionStatusChanged.AddLambda([this, TestDone](bool bConnected)
+			{
+			if (bConnected)
+			{
+				TestDone.Execute();
+			}
+		});
 
 		MsgBusClient->_Connect();
 	});
@@ -81,9 +80,17 @@ void UTbSimpleSimpleInterfaceMsgBusSpec::Define()
 		bool TestValue = false; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnPropBoolChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceMsgBusHelper::PropBoolPropertyCb);
+		TbSimpleSimpleInterfaceSignals->OnPropBoolChanged.AddLambda([this, TestDone](bool bInPropBool)
+			{
+			bool TestValue = false;
+			// use different test value
+			TestValue = true;
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), bInPropBool, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue = true;
 		ImplFixture->GetImplementation()->SetPropBool(TestValue);
@@ -102,9 +109,17 @@ void UTbSimpleSimpleInterfaceMsgBusSpec::Define()
 		int32 TestValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnPropIntChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceMsgBusHelper::PropIntPropertyCb);
+		TbSimpleSimpleInterfaceSignals->OnPropIntChanged.AddLambda([this, TestDone](int32 InPropInt)
+			{
+			int32 TestValue = 0;
+			// use different test value
+			TestValue = 1;
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue = 1;
 		ImplFixture->GetImplementation()->SetPropInt(TestValue);
@@ -123,9 +138,17 @@ void UTbSimpleSimpleInterfaceMsgBusSpec::Define()
 		int32 TestValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt32(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnPropInt32ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceMsgBusHelper::PropInt32PropertyCb);
+		TbSimpleSimpleInterfaceSignals->OnPropInt32Changed.AddLambda([this, TestDone](int32 InPropInt32)
+			{
+			int32 TestValue = 0;
+			// use different test value
+			TestValue = 1;
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt32, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropInt32(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue = 1;
 		ImplFixture->GetImplementation()->SetPropInt32(TestValue);
@@ -144,9 +167,17 @@ void UTbSimpleSimpleInterfaceMsgBusSpec::Define()
 		int64 TestValue = 0LL; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt64(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnPropInt64ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceMsgBusHelper::PropInt64PropertyCb);
+		TbSimpleSimpleInterfaceSignals->OnPropInt64Changed.AddLambda([this, TestDone](int64 InPropInt64)
+			{
+			int64 TestValue = 0LL;
+			// use different test value
+			TestValue = 1LL;
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt64, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropInt64(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue = 1LL;
 		ImplFixture->GetImplementation()->SetPropInt64(TestValue);
@@ -165,9 +196,17 @@ void UTbSimpleSimpleInterfaceMsgBusSpec::Define()
 		float TestValue = 0.0f; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropFloat(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnPropFloatChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceMsgBusHelper::PropFloatPropertyCb);
+		TbSimpleSimpleInterfaceSignals->OnPropFloatChanged.AddLambda([this, TestDone](float InPropFloat)
+			{
+			float TestValue = 0.0f;
+			// use different test value
+			TestValue = 1.0f;
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropFloat(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue = 1.0f;
 		ImplFixture->GetImplementation()->SetPropFloat(TestValue);
@@ -186,9 +225,17 @@ void UTbSimpleSimpleInterfaceMsgBusSpec::Define()
 		float TestValue = 0.0f; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropFloat32(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnPropFloat32ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceMsgBusHelper::PropFloat32PropertyCb);
+		TbSimpleSimpleInterfaceSignals->OnPropFloat32Changed.AddLambda([this, TestDone](float InPropFloat32)
+			{
+			float TestValue = 0.0f;
+			// use different test value
+			TestValue = 1.0f;
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat32, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropFloat32(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue = 1.0f;
 		ImplFixture->GetImplementation()->SetPropFloat32(TestValue);
@@ -207,9 +254,17 @@ void UTbSimpleSimpleInterfaceMsgBusSpec::Define()
 		double TestValue = 0.0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropFloat64(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnPropFloat64ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceMsgBusHelper::PropFloat64PropertyCb);
+		TbSimpleSimpleInterfaceSignals->OnPropFloat64Changed.AddLambda([this, TestDone](double InPropFloat64)
+			{
+			double TestValue = 0.0;
+			// use different test value
+			TestValue = 1.0;
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat64, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropFloat64(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue = 1.0;
 		ImplFixture->GetImplementation()->SetPropFloat64(TestValue);
@@ -228,9 +283,17 @@ void UTbSimpleSimpleInterfaceMsgBusSpec::Define()
 		FString TestValue = FString(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropString(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnPropStringChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceMsgBusHelper::PropStringPropertyCb);
+		TbSimpleSimpleInterfaceSignals->OnPropStringChanged.AddLambda([this, TestDone](const FString& InPropString)
+			{
+			FString TestValue = FString();
+			// use different test value
+			TestValue = FString("xyz");
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropString, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropString(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue = FString("xyz");
 		ImplFixture->GetImplementation()->SetPropString(TestValue);
@@ -328,9 +391,14 @@ void UTbSimpleSimpleInterfaceMsgBusSpec::Define()
 
 	LatentIt("Signal.SigBool", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnSigBoolSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceMsgBusHelper::SigBoolSignalCb);
+		TbSimpleSimpleInterfaceSignals->OnSigBoolSignal.AddLambda([this, TestDone](bool bInParamBool)
+			{
+			// known test value
+			bool bParamBoolTestValue = true;
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), bInParamBool, bParamBoolTestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		bool bParamBoolTestValue = true;
@@ -339,9 +407,14 @@ void UTbSimpleSimpleInterfaceMsgBusSpec::Define()
 
 	LatentIt("Signal.SigInt", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnSigIntSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceMsgBusHelper::SigIntSignalCb);
+		TbSimpleSimpleInterfaceSignals->OnSigIntSignal.AddLambda([this, TestDone](int32 InParamInt)
+			{
+			// known test value
+			int32 ParamIntTestValue = 1;
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamInt, ParamIntTestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		int32 ParamIntTestValue = 1;
@@ -350,9 +423,14 @@ void UTbSimpleSimpleInterfaceMsgBusSpec::Define()
 
 	LatentIt("Signal.SigInt32", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnSigInt32SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceMsgBusHelper::SigInt32SignalCb);
+		TbSimpleSimpleInterfaceSignals->OnSigInt32Signal.AddLambda([this, TestDone](int32 InParamInt32)
+			{
+			// known test value
+			int32 ParamInt32TestValue = 1;
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamInt32, ParamInt32TestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		int32 ParamInt32TestValue = 1;
@@ -361,9 +439,14 @@ void UTbSimpleSimpleInterfaceMsgBusSpec::Define()
 
 	LatentIt("Signal.SigInt64", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnSigInt64SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceMsgBusHelper::SigInt64SignalCb);
+		TbSimpleSimpleInterfaceSignals->OnSigInt64Signal.AddLambda([this, TestDone](int64 InParamInt64)
+			{
+			// known test value
+			int64 ParamInt64TestValue = 1LL;
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamInt64, ParamInt64TestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		int64 ParamInt64TestValue = 1LL;
@@ -372,9 +455,14 @@ void UTbSimpleSimpleInterfaceMsgBusSpec::Define()
 
 	LatentIt("Signal.SigFloat", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnSigFloatSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceMsgBusHelper::SigFloatSignalCb);
+		TbSimpleSimpleInterfaceSignals->OnSigFloatSignal.AddLambda([this, TestDone](float InParamFloat)
+			{
+			// known test value
+			float ParamFloatTestValue = 1.0f;
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamFloat, ParamFloatTestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		float ParamFloatTestValue = 1.0f;
@@ -383,9 +471,14 @@ void UTbSimpleSimpleInterfaceMsgBusSpec::Define()
 
 	LatentIt("Signal.SigFloat32", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnSigFloat32SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceMsgBusHelper::SigFloat32SignalCb);
+		TbSimpleSimpleInterfaceSignals->OnSigFloat32Signal.AddLambda([this, TestDone](float InParamFloat32)
+			{
+			// known test value
+			float ParamFloat32TestValue = 1.0f;
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamFloat32, ParamFloat32TestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		float ParamFloat32TestValue = 1.0f;
@@ -394,9 +487,14 @@ void UTbSimpleSimpleInterfaceMsgBusSpec::Define()
 
 	LatentIt("Signal.SigFloat64", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnSigFloat64SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceMsgBusHelper::SigFloat64SignalCb);
+		TbSimpleSimpleInterfaceSignals->OnSigFloat64Signal.AddLambda([this, TestDone](double InParamFloat64)
+			{
+			// known test value
+			double ParamFloat64TestValue = 1.0;
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamFloat64, ParamFloat64TestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		double ParamFloat64TestValue = 1.0;
@@ -405,9 +503,14 @@ void UTbSimpleSimpleInterfaceMsgBusSpec::Define()
 
 	LatentIt("Signal.SigString", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnSigStringSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceMsgBusHelper::SigStringSignalCb);
+		TbSimpleSimpleInterfaceSignals->OnSigStringSignal.AddLambda([this, TestDone](const FString& InParamString)
+			{
+			// known test value
+			FString ParamStringTestValue = FString("xyz");
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamString, ParamStringTestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		FString ParamStringTestValue = FString("xyz");
@@ -415,148 +518,5 @@ void UTbSimpleSimpleInterfaceMsgBusSpec::Define()
 	});
 }
 
-void UTbSimpleSimpleInterfaceMsgBusSpec::PropBoolPropertyCb(bool bInPropBool)
-{
-	bool TestValue = false;
-	// use different test value
-	TestValue = true;
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), bInPropBool, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleSimpleInterfaceMsgBusSpec::PropIntPropertyCb(int32 InPropInt)
-{
-	int32 TestValue = 0;
-	// use different test value
-	TestValue = 1;
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleSimpleInterfaceMsgBusSpec::PropInt32PropertyCb(int32 InPropInt32)
-{
-	int32 TestValue = 0;
-	// use different test value
-	TestValue = 1;
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt32, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropInt32(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleSimpleInterfaceMsgBusSpec::PropInt64PropertyCb(int64 InPropInt64)
-{
-	int64 TestValue = 0LL;
-	// use different test value
-	TestValue = 1LL;
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt64, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropInt64(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleSimpleInterfaceMsgBusSpec::PropFloatPropertyCb(float InPropFloat)
-{
-	float TestValue = 0.0f;
-	// use different test value
-	TestValue = 1.0f;
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropFloat(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleSimpleInterfaceMsgBusSpec::PropFloat32PropertyCb(float InPropFloat32)
-{
-	float TestValue = 0.0f;
-	// use different test value
-	TestValue = 1.0f;
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat32, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropFloat32(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleSimpleInterfaceMsgBusSpec::PropFloat64PropertyCb(double InPropFloat64)
-{
-	double TestValue = 0.0;
-	// use different test value
-	TestValue = 1.0;
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat64, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropFloat64(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleSimpleInterfaceMsgBusSpec::PropStringPropertyCb(const FString& InPropString)
-{
-	FString TestValue = FString();
-	// use different test value
-	TestValue = FString("xyz");
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropString, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropString(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleSimpleInterfaceMsgBusSpec::SigBoolSignalCb(bool bInParamBool)
-{
-	// known test value
-	bool bParamBoolTestValue = true;
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), bInParamBool, bParamBoolTestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleSimpleInterfaceMsgBusSpec::SigIntSignalCb(int32 InParamInt)
-{
-	// known test value
-	int32 ParamIntTestValue = 1;
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamInt, ParamIntTestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleSimpleInterfaceMsgBusSpec::SigInt32SignalCb(int32 InParamInt32)
-{
-	// known test value
-	int32 ParamInt32TestValue = 1;
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamInt32, ParamInt32TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleSimpleInterfaceMsgBusSpec::SigInt64SignalCb(int64 InParamInt64)
-{
-	// known test value
-	int64 ParamInt64TestValue = 1LL;
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamInt64, ParamInt64TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleSimpleInterfaceMsgBusSpec::SigFloatSignalCb(float InParamFloat)
-{
-	// known test value
-	float ParamFloatTestValue = 1.0f;
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamFloat, ParamFloatTestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleSimpleInterfaceMsgBusSpec::SigFloat32SignalCb(float InParamFloat32)
-{
-	// known test value
-	float ParamFloat32TestValue = 1.0f;
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamFloat32, ParamFloat32TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleSimpleInterfaceMsgBusSpec::SigFloat64SignalCb(double InParamFloat64)
-{
-	// known test value
-	double ParamFloat64TestValue = 1.0;
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamFloat64, ParamFloat64TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleSimpleInterfaceMsgBusSpec::SigStringSignalCb(const FString& InParamString)
-{
-	// known test value
-	FString ParamStringTestValue = FString("xyz");
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamString, ParamStringTestValue);
-	testDoneDelegate.Execute();
-}
 #endif // WITH_DEV_AUTOMATION_TESTS
 #endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

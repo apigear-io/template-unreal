@@ -15,27 +15,25 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include "CounterCounterMsgBus.spec.h"
+#include "Misc/AutomationTest.h"
+#include "HAL/Platform.h"
+
+#if !(PLATFORM_IOS || PLATFORM_ANDROID)
+#if WITH_DEV_AUTOMATION_TESTS
+
+#include "Counter/Tests/CounterTestsCommon.h"
 #include "Counter/Implementation/CounterCounter.h"
 #include "CounterCounterMsgBusFixture.h"
 #include "Counter/Generated/MsgBus/CounterCounterMsgBusClient.h"
 #include "Counter/Generated/MsgBus/CounterCounterMsgBusAdapter.h"
-#include "HAL/Platform.h"
-
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #include "CustomTypes/Tests/CustomTypesTestsCommon.h"
 #include "ExternTypes/Tests/ExternTypesTestsCommon.h"
-#include "Misc/AutomationTest.h"
 
-#if WITH_DEV_AUTOMATION_TESTS
+BEGIN_DEFINE_SPEC(UCounterCounterMsgBusSpec, "Counter.Counter.MsgBus", CounterTestFilterMask);
 
-void UCounterCounterMsgBusSpec::_ConnectionStatusChangedCb(bool bConnected)
-{
-	if (bConnected)
-	{
-		testDoneDelegate.Execute();
-	}
-}
+TUniquePtr<FCounterCounterMsgBusFixture> ImplFixture;
+
+END_DEFINE_SPEC(UCounterCounterMsgBusSpec);
 
 void UCounterCounterMsgBusSpec::Define()
 {
@@ -46,21 +44,22 @@ void UCounterCounterMsgBusSpec::Define()
 
 		TestTrue("Check for valid testImplementation", ImplFixture->GetImplementation().GetInterface() != nullptr);
 
-		TestTrue("Check for valid Helper", ImplFixture->GetHelper().IsValid());
-		// needed for callbacks
-		ImplFixture->GetHelper()->SetSpec(this);
-
 		// set up service and adapter
 		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UCounterCounter>();
 		ImplFixture->GetAdapter()->_setBackendService(service);
 		ImplFixture->GetAdapter()->_StartListening();
 
 		// setup client
-		testDoneDelegate = TestDone;
 		UCounterCounterMsgBusClient* MsgBusClient = Cast<UCounterCounterMsgBusClient>(ImplFixture->GetImplementation().GetObject());
 		TestTrue("Check for valid MsgBus client", MsgBusClient != nullptr);
 
-		MsgBusClient->_ConnectionStatusChanged.AddUObject(ImplFixture->GetHelper().Get(), &UCounterCounterMsgBusHelper::_ConnectionStatusChangedCb);
+		MsgBusClient->_ConnectionStatusChanged.AddLambda([this, TestDone](bool bConnected)
+			{
+			if (bConnected)
+			{
+				TestDone.Execute();
+			}
+		});
 
 		MsgBusClient->_Connect();
 	});
@@ -83,9 +82,17 @@ void UCounterCounterMsgBusSpec::Define()
 		FCustomTypesVector3D TestValue = FCustomTypesVector3D(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetVector(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UCounterCounterSignals* CounterCounterSignals = ImplFixture->GetImplementation()->_GetSignals();
-		CounterCounterSignals->OnVectorChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UCounterCounterMsgBusHelper::VectorPropertyCb);
+		CounterCounterSignals->OnVectorChanged.AddLambda([this, TestDone](const FCustomTypesVector3D& InVector)
+			{
+			FCustomTypesVector3D TestValue = FCustomTypesVector3D();
+			// use different test value
+			TestValue = createTestFCustomTypesVector3D();
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InVector, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetVector(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue = createTestFCustomTypesVector3D();
 		ImplFixture->GetImplementation()->SetVector(TestValue);
@@ -111,9 +118,17 @@ void UCounterCounterMsgBusSpec::Define()
 		TArray<FCustomTypesVector3D> TestValue = TArray<FCustomTypesVector3D>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetVectorArray(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UCounterCounterSignals* CounterCounterSignals = ImplFixture->GetImplementation()->_GetSignals();
-		CounterCounterSignals->OnVectorArrayChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UCounterCounterMsgBusHelper::VectorArrayPropertyCb);
+		CounterCounterSignals->OnVectorArrayChanged.AddLambda([this, TestDone](const TArray<FCustomTypesVector3D>& InVectorArray)
+			{
+			TArray<FCustomTypesVector3D> TestValue = TArray<FCustomTypesVector3D>();
+			// use different test value
+			TestValue = createTestFCustomTypesVector3DArray();
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InVectorArray, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetVectorArray(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue = createTestFCustomTypesVector3DArray();
 		ImplFixture->GetImplementation()->SetVectorArray(TestValue);
@@ -172,9 +187,16 @@ void UCounterCounterMsgBusSpec::Define()
 
 	LatentIt("Signal.ValueChanged", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UCounterCounterSignals* CounterCounterSignals = ImplFixture->GetImplementation()->_GetSignals();
-		CounterCounterSignals->OnValueChangedSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UCounterCounterMsgBusHelper::ValueChangedSignalCb);
+		CounterCounterSignals->OnValueChangedSignal.AddLambda([this, TestDone](const FCustomTypesVector3D& InVector, const FVector& InExternVector, const TArray<FCustomTypesVector3D>& InVectorArray, const TArray<FVector>& InExternVectorArray)
+			{
+			// known test value
+			FCustomTypesVector3D VectorTestValue = createTestFCustomTypesVector3D();
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InVector, VectorTestValue);
+			TArray<FCustomTypesVector3D> VectorArrayTestValue = createTestFCustomTypesVector3DArray();
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InVectorArray, VectorArrayTestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		FCustomTypesVector3D VectorTestValue = createTestFCustomTypesVector3D();
@@ -185,34 +207,5 @@ void UCounterCounterMsgBusSpec::Define()
 	});
 }
 
-void UCounterCounterMsgBusSpec::VectorPropertyCb(const FCustomTypesVector3D& InVector)
-{
-	FCustomTypesVector3D TestValue = FCustomTypesVector3D();
-	// use different test value
-	TestValue = createTestFCustomTypesVector3D();
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InVector, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetVector(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UCounterCounterMsgBusSpec::VectorArrayPropertyCb(const TArray<FCustomTypesVector3D>& InVectorArray)
-{
-	TArray<FCustomTypesVector3D> TestValue = TArray<FCustomTypesVector3D>();
-	// use different test value
-	TestValue = createTestFCustomTypesVector3DArray();
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InVectorArray, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetVectorArray(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UCounterCounterMsgBusSpec::ValueChangedSignalCb(const FCustomTypesVector3D& InVector, const FVector& InExternVector, const TArray<FCustomTypesVector3D>& InVectorArray, const TArray<FVector>& InExternVectorArray)
-{
-	// known test value
-	FCustomTypesVector3D VectorTestValue = createTestFCustomTypesVector3D();
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InVector, VectorTestValue);
-	TArray<FCustomTypesVector3D> VectorArrayTestValue = createTestFCustomTypesVector3DArray();
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InVectorArray, VectorArrayTestValue);
-	testDoneDelegate.Execute();
-}
 #endif // WITH_DEV_AUTOMATION_TESTS
 #endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

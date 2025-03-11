@@ -15,83 +15,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "Testbed2NestedStruct3InterfaceMsgBusFixture.h"
-#include "Testbed2NestedStruct3InterfaceMsgBus.spec.h"
-#include "Testbed2/Generated/MsgBus/Testbed2NestedStruct3InterfaceMsgBusClient.h"
-#include "Testbed2/Generated/MsgBus/Testbed2NestedStruct3InterfaceMsgBusAdapter.h"
-#include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
+#include "HAL/Platform.h"
 
 #if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
 
-UTestbed2NestedStruct3InterfaceMsgBusHelper::~UTestbed2NestedStruct3InterfaceMsgBusHelper()
-{
-	Spec = nullptr;
-}
-
-void UTestbed2NestedStruct3InterfaceMsgBusHelper::SetSpec(UTestbed2NestedStruct3InterfaceMsgBusSpec* InSpec)
-{
-	Spec = InSpec;
-}
-
-void UTestbed2NestedStruct3InterfaceMsgBusHelper::Prop1PropertyCb(const FTestbed2NestedStruct1& Prop1)
-{
-	if (Spec)
-	{
-		Spec->Prop1PropertyCb(Prop1);
-	}
-}
-
-void UTestbed2NestedStruct3InterfaceMsgBusHelper::Prop2PropertyCb(const FTestbed2NestedStruct2& Prop2)
-{
-	if (Spec)
-	{
-		Spec->Prop2PropertyCb(Prop2);
-	}
-}
-
-void UTestbed2NestedStruct3InterfaceMsgBusHelper::Prop3PropertyCb(const FTestbed2NestedStruct3& Prop3)
-{
-	if (Spec)
-	{
-		Spec->Prop3PropertyCb(Prop3);
-	}
-}
-
-void UTestbed2NestedStruct3InterfaceMsgBusHelper::Sig1SignalCb(const FTestbed2NestedStruct1& Param1)
-{
-	if (Spec)
-	{
-		Spec->Sig1SignalCb(Param1);
-	}
-}
-
-void UTestbed2NestedStruct3InterfaceMsgBusHelper::Sig2SignalCb(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
-{
-	if (Spec)
-	{
-		Spec->Sig2SignalCb(Param1, Param2);
-	}
-}
-
-void UTestbed2NestedStruct3InterfaceMsgBusHelper::Sig3SignalCb(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3)
-{
-	if (Spec)
-	{
-		Spec->Sig3SignalCb(Param1, Param2, Param3);
-	}
-}
-
-void UTestbed2NestedStruct3InterfaceMsgBusHelper::_ConnectionStatusChangedCb(bool bConnected)
-{
-	if (Spec)
-	{
-		Spec->_ConnectionStatusChangedCb(bConnected);
-	}
-}
+#include "Testbed2/Generated/MsgBus/Testbed2NestedStruct3InterfaceMsgBusClient.h"
+#include "Testbed2/Generated/MsgBus/Testbed2NestedStruct3InterfaceMsgBusAdapter.h"
+#include "Engine/GameInstance.h"
 
 FTestbed2NestedStruct3InterfaceMsgBusFixture::FTestbed2NestedStruct3InterfaceMsgBusFixture()
 {
-	Helper = NewObject<UTestbed2NestedStruct3InterfaceMsgBusHelper>();
 	testImplementation = GetGameInstance()->GetSubsystem<UTestbed2NestedStruct3InterfaceMsgBusClient>();
 }
 
@@ -108,11 +42,6 @@ TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> FTestbed2NestedStruct
 UTestbed2NestedStruct3InterfaceMsgBusAdapter* FTestbed2NestedStruct3InterfaceMsgBusFixture::GetAdapter()
 {
 	return GetGameInstance()->GetSubsystem<UTestbed2NestedStruct3InterfaceMsgBusAdapter>();
-}
-
-TSoftObjectPtr<UTestbed2NestedStruct3InterfaceMsgBusHelper> FTestbed2NestedStruct3InterfaceMsgBusFixture::GetHelper()
-{
-	return Helper;
 }
 
 UGameInstance* FTestbed2NestedStruct3InterfaceMsgBusFixture::GetGameInstance()
@@ -132,52 +61,5 @@ void FTestbed2NestedStruct3InterfaceMsgBusFixture::CleanUp()
 	{
 		GameInstance->Shutdown();
 	}
-}
-#else  // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
-// create empty implementation in case we do not want to do automated testing
-UTestbed2NestedStruct3InterfaceMsgBusHelper::~UTestbed2NestedStruct3InterfaceMsgBusHelper()
-{
-}
-
-void UTestbed2NestedStruct3InterfaceMsgBusHelper::SetSpec(UTestbed2NestedStruct3InterfaceMsgBusSpec* /* InSpec */)
-{
-}
-
-void UTestbed2NestedStruct3InterfaceMsgBusHelper::Prop1PropertyCb(const FTestbed2NestedStruct1& Prop1)
-{
-	(void)Prop1;
-}
-
-void UTestbed2NestedStruct3InterfaceMsgBusHelper::Prop2PropertyCb(const FTestbed2NestedStruct2& Prop2)
-{
-	(void)Prop2;
-}
-
-void UTestbed2NestedStruct3InterfaceMsgBusHelper::Prop3PropertyCb(const FTestbed2NestedStruct3& Prop3)
-{
-	(void)Prop3;
-}
-
-void UTestbed2NestedStruct3InterfaceMsgBusHelper::Sig1SignalCb(const FTestbed2NestedStruct1& Param1)
-{
-	(void)Param1;
-}
-
-void UTestbed2NestedStruct3InterfaceMsgBusHelper::Sig2SignalCb(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
-{
-	(void)Param1;
-	(void)Param2;
-}
-
-void UTestbed2NestedStruct3InterfaceMsgBusHelper::Sig3SignalCb(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3)
-{
-	(void)Param1;
-	(void)Param2;
-	(void)Param3;
-}
-
-void UTestbed2NestedStruct3InterfaceMsgBusHelper::_ConnectionStatusChangedCb(bool bConnected)
-{
-	(void)bConnected;
 }
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

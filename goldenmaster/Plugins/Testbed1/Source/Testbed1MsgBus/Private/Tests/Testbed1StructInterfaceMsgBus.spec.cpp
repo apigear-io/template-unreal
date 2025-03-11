@@ -15,25 +15,23 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include "Testbed1StructInterfaceMsgBus.spec.h"
+#include "Misc/AutomationTest.h"
+#include "HAL/Platform.h"
+
+#if !(PLATFORM_IOS || PLATFORM_ANDROID)
+#if WITH_DEV_AUTOMATION_TESTS
+
+#include "Testbed1/Tests/Testbed1TestsCommon.h"
 #include "Testbed1/Implementation/Testbed1StructInterface.h"
 #include "Testbed1StructInterfaceMsgBusFixture.h"
 #include "Testbed1/Generated/MsgBus/Testbed1StructInterfaceMsgBusClient.h"
 #include "Testbed1/Generated/MsgBus/Testbed1StructInterfaceMsgBusAdapter.h"
-#include "HAL/Platform.h"
 
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
-#include "Misc/AutomationTest.h"
+BEGIN_DEFINE_SPEC(UTestbed1StructInterfaceMsgBusSpec, "Testbed1.StructInterface.MsgBus", Testbed1TestFilterMask);
 
-#if WITH_DEV_AUTOMATION_TESTS
+TUniquePtr<FTestbed1StructInterfaceMsgBusFixture> ImplFixture;
 
-void UTestbed1StructInterfaceMsgBusSpec::_ConnectionStatusChangedCb(bool bConnected)
-{
-	if (bConnected)
-	{
-		testDoneDelegate.Execute();
-	}
-}
+END_DEFINE_SPEC(UTestbed1StructInterfaceMsgBusSpec);
 
 void UTestbed1StructInterfaceMsgBusSpec::Define()
 {
@@ -44,21 +42,22 @@ void UTestbed1StructInterfaceMsgBusSpec::Define()
 
 		TestTrue("Check for valid testImplementation", ImplFixture->GetImplementation().GetInterface() != nullptr);
 
-		TestTrue("Check for valid Helper", ImplFixture->GetHelper().IsValid());
-		// needed for callbacks
-		ImplFixture->GetHelper()->SetSpec(this);
-
 		// set up service and adapter
 		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed1StructInterface>();
 		ImplFixture->GetAdapter()->_setBackendService(service);
 		ImplFixture->GetAdapter()->_StartListening();
 
 		// setup client
-		testDoneDelegate = TestDone;
 		UTestbed1StructInterfaceMsgBusClient* MsgBusClient = Cast<UTestbed1StructInterfaceMsgBusClient>(ImplFixture->GetImplementation().GetObject());
 		TestTrue("Check for valid MsgBus client", MsgBusClient != nullptr);
 
-		MsgBusClient->_ConnectionStatusChanged.AddUObject(ImplFixture->GetHelper().Get(), &UTestbed1StructInterfaceMsgBusHelper::_ConnectionStatusChangedCb);
+		MsgBusClient->_ConnectionStatusChanged.AddLambda([this, TestDone](bool bConnected)
+			{
+			if (bConnected)
+			{
+				TestDone.Execute();
+			}
+		});
 
 		MsgBusClient->_Connect();
 	});
@@ -81,9 +80,17 @@ void UTestbed1StructInterfaceMsgBusSpec::Define()
 		FTestbed1StructBool TestValue = FTestbed1StructBool(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTestbed1StructInterfaceSignals* Testbed1StructInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructInterfaceSignals->OnPropBoolChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructInterfaceMsgBusHelper::PropBoolPropertyCb);
+		Testbed1StructInterfaceSignals->OnPropBoolChanged.AddLambda([this, TestDone](const FTestbed1StructBool& InPropBool)
+			{
+			FTestbed1StructBool TestValue = FTestbed1StructBool();
+			// use different test value
+			TestValue = createTestFTestbed1StructBool();
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropBool, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue = createTestFTestbed1StructBool();
 		ImplFixture->GetImplementation()->SetPropBool(TestValue);
@@ -102,9 +109,17 @@ void UTestbed1StructInterfaceMsgBusSpec::Define()
 		FTestbed1StructInt TestValue = FTestbed1StructInt(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTestbed1StructInterfaceSignals* Testbed1StructInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructInterfaceSignals->OnPropIntChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructInterfaceMsgBusHelper::PropIntPropertyCb);
+		Testbed1StructInterfaceSignals->OnPropIntChanged.AddLambda([this, TestDone](const FTestbed1StructInt& InPropInt)
+			{
+			FTestbed1StructInt TestValue = FTestbed1StructInt();
+			// use different test value
+			TestValue = createTestFTestbed1StructInt();
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue = createTestFTestbed1StructInt();
 		ImplFixture->GetImplementation()->SetPropInt(TestValue);
@@ -123,9 +138,17 @@ void UTestbed1StructInterfaceMsgBusSpec::Define()
 		FTestbed1StructFloat TestValue = FTestbed1StructFloat(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropFloat(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTestbed1StructInterfaceSignals* Testbed1StructInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructInterfaceSignals->OnPropFloatChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructInterfaceMsgBusHelper::PropFloatPropertyCb);
+		Testbed1StructInterfaceSignals->OnPropFloatChanged.AddLambda([this, TestDone](const FTestbed1StructFloat& InPropFloat)
+			{
+			FTestbed1StructFloat TestValue = FTestbed1StructFloat();
+			// use different test value
+			TestValue = createTestFTestbed1StructFloat();
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropFloat(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue = createTestFTestbed1StructFloat();
 		ImplFixture->GetImplementation()->SetPropFloat(TestValue);
@@ -144,9 +167,17 @@ void UTestbed1StructInterfaceMsgBusSpec::Define()
 		FTestbed1StructString TestValue = FTestbed1StructString(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropString(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTestbed1StructInterfaceSignals* Testbed1StructInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructInterfaceSignals->OnPropStringChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructInterfaceMsgBusHelper::PropStringPropertyCb);
+		Testbed1StructInterfaceSignals->OnPropStringChanged.AddLambda([this, TestDone](const FTestbed1StructString& InPropString)
+			{
+			FTestbed1StructString TestValue = FTestbed1StructString();
+			// use different test value
+			TestValue = createTestFTestbed1StructString();
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropString, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropString(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue = createTestFTestbed1StructString();
 		ImplFixture->GetImplementation()->SetPropString(TestValue);
@@ -194,9 +225,14 @@ void UTestbed1StructInterfaceMsgBusSpec::Define()
 
 	LatentIt("Signal.SigBool", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTestbed1StructInterfaceSignals* Testbed1StructInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructInterfaceSignals->OnSigBoolSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructInterfaceMsgBusHelper::SigBoolSignalCb);
+		Testbed1StructInterfaceSignals->OnSigBoolSignal.AddLambda([this, TestDone](const FTestbed1StructBool& InParamBool)
+			{
+			// known test value
+			FTestbed1StructBool ParamBoolTestValue = createTestFTestbed1StructBool();
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamBool, ParamBoolTestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		FTestbed1StructBool ParamBoolTestValue = createTestFTestbed1StructBool();
@@ -205,9 +241,14 @@ void UTestbed1StructInterfaceMsgBusSpec::Define()
 
 	LatentIt("Signal.SigInt", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTestbed1StructInterfaceSignals* Testbed1StructInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructInterfaceSignals->OnSigIntSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructInterfaceMsgBusHelper::SigIntSignalCb);
+		Testbed1StructInterfaceSignals->OnSigIntSignal.AddLambda([this, TestDone](const FTestbed1StructInt& InParamInt)
+			{
+			// known test value
+			FTestbed1StructInt ParamIntTestValue = createTestFTestbed1StructInt();
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamInt, ParamIntTestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		FTestbed1StructInt ParamIntTestValue = createTestFTestbed1StructInt();
@@ -216,9 +257,14 @@ void UTestbed1StructInterfaceMsgBusSpec::Define()
 
 	LatentIt("Signal.SigFloat", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTestbed1StructInterfaceSignals* Testbed1StructInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructInterfaceSignals->OnSigFloatSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructInterfaceMsgBusHelper::SigFloatSignalCb);
+		Testbed1StructInterfaceSignals->OnSigFloatSignal.AddLambda([this, TestDone](const FTestbed1StructFloat& InParamFloat)
+			{
+			// known test value
+			FTestbed1StructFloat ParamFloatTestValue = createTestFTestbed1StructFloat();
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamFloat, ParamFloatTestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		FTestbed1StructFloat ParamFloatTestValue = createTestFTestbed1StructFloat();
@@ -227,9 +273,14 @@ void UTestbed1StructInterfaceMsgBusSpec::Define()
 
 	LatentIt("Signal.SigString", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTestbed1StructInterfaceSignals* Testbed1StructInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructInterfaceSignals->OnSigStringSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructInterfaceMsgBusHelper::SigStringSignalCb);
+		Testbed1StructInterfaceSignals->OnSigStringSignal.AddLambda([this, TestDone](const FTestbed1StructString& InParamString)
+			{
+			// known test value
+			FTestbed1StructString ParamStringTestValue = createTestFTestbed1StructString();
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamString, ParamStringTestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		FTestbed1StructString ParamStringTestValue = createTestFTestbed1StructString();
@@ -237,76 +288,5 @@ void UTestbed1StructInterfaceMsgBusSpec::Define()
 	});
 }
 
-void UTestbed1StructInterfaceMsgBusSpec::PropBoolPropertyCb(const FTestbed1StructBool& InPropBool)
-{
-	FTestbed1StructBool TestValue = FTestbed1StructBool();
-	// use different test value
-	TestValue = createTestFTestbed1StructBool();
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropBool, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTestbed1StructInterfaceMsgBusSpec::PropIntPropertyCb(const FTestbed1StructInt& InPropInt)
-{
-	FTestbed1StructInt TestValue = FTestbed1StructInt();
-	// use different test value
-	TestValue = createTestFTestbed1StructInt();
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTestbed1StructInterfaceMsgBusSpec::PropFloatPropertyCb(const FTestbed1StructFloat& InPropFloat)
-{
-	FTestbed1StructFloat TestValue = FTestbed1StructFloat();
-	// use different test value
-	TestValue = createTestFTestbed1StructFloat();
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropFloat(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTestbed1StructInterfaceMsgBusSpec::PropStringPropertyCb(const FTestbed1StructString& InPropString)
-{
-	FTestbed1StructString TestValue = FTestbed1StructString();
-	// use different test value
-	TestValue = createTestFTestbed1StructString();
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropString, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropString(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTestbed1StructInterfaceMsgBusSpec::SigBoolSignalCb(const FTestbed1StructBool& InParamBool)
-{
-	// known test value
-	FTestbed1StructBool ParamBoolTestValue = createTestFTestbed1StructBool();
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamBool, ParamBoolTestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTestbed1StructInterfaceMsgBusSpec::SigIntSignalCb(const FTestbed1StructInt& InParamInt)
-{
-	// known test value
-	FTestbed1StructInt ParamIntTestValue = createTestFTestbed1StructInt();
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamInt, ParamIntTestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTestbed1StructInterfaceMsgBusSpec::SigFloatSignalCb(const FTestbed1StructFloat& InParamFloat)
-{
-	// known test value
-	FTestbed1StructFloat ParamFloatTestValue = createTestFTestbed1StructFloat();
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamFloat, ParamFloatTestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTestbed1StructInterfaceMsgBusSpec::SigStringSignalCb(const FTestbed1StructString& InParamString)
-{
-	// known test value
-	FTestbed1StructString ParamStringTestValue = createTestFTestbed1StructString();
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamString, ParamStringTestValue);
-	testDoneDelegate.Execute();
-}
 #endif // WITH_DEV_AUTOMATION_TESTS
 #endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

@@ -15,25 +15,23 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include "Testbed2NestedStruct3InterfaceMsgBus.spec.h"
+#include "Misc/AutomationTest.h"
+#include "HAL/Platform.h"
+
+#if !(PLATFORM_IOS || PLATFORM_ANDROID)
+#if WITH_DEV_AUTOMATION_TESTS
+
+#include "Testbed2/Tests/Testbed2TestsCommon.h"
 #include "Testbed2/Implementation/Testbed2NestedStruct3Interface.h"
 #include "Testbed2NestedStruct3InterfaceMsgBusFixture.h"
 #include "Testbed2/Generated/MsgBus/Testbed2NestedStruct3InterfaceMsgBusClient.h"
 #include "Testbed2/Generated/MsgBus/Testbed2NestedStruct3InterfaceMsgBusAdapter.h"
-#include "HAL/Platform.h"
 
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
-#include "Misc/AutomationTest.h"
+BEGIN_DEFINE_SPEC(UTestbed2NestedStruct3InterfaceMsgBusSpec, "Testbed2.NestedStruct3Interface.MsgBus", Testbed2TestFilterMask);
 
-#if WITH_DEV_AUTOMATION_TESTS
+TUniquePtr<FTestbed2NestedStruct3InterfaceMsgBusFixture> ImplFixture;
 
-void UTestbed2NestedStruct3InterfaceMsgBusSpec::_ConnectionStatusChangedCb(bool bConnected)
-{
-	if (bConnected)
-	{
-		testDoneDelegate.Execute();
-	}
-}
+END_DEFINE_SPEC(UTestbed2NestedStruct3InterfaceMsgBusSpec);
 
 void UTestbed2NestedStruct3InterfaceMsgBusSpec::Define()
 {
@@ -44,21 +42,22 @@ void UTestbed2NestedStruct3InterfaceMsgBusSpec::Define()
 
 		TestTrue("Check for valid testImplementation", ImplFixture->GetImplementation().GetInterface() != nullptr);
 
-		TestTrue("Check for valid Helper", ImplFixture->GetHelper().IsValid());
-		// needed for callbacks
-		ImplFixture->GetHelper()->SetSpec(this);
-
 		// set up service and adapter
 		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed2NestedStruct3Interface>();
 		ImplFixture->GetAdapter()->_setBackendService(service);
 		ImplFixture->GetAdapter()->_StartListening();
 
 		// setup client
-		testDoneDelegate = TestDone;
 		UTestbed2NestedStruct3InterfaceMsgBusClient* MsgBusClient = Cast<UTestbed2NestedStruct3InterfaceMsgBusClient>(ImplFixture->GetImplementation().GetObject());
 		TestTrue("Check for valid MsgBus client", MsgBusClient != nullptr);
 
-		MsgBusClient->_ConnectionStatusChanged.AddUObject(ImplFixture->GetHelper().Get(), &UTestbed2NestedStruct3InterfaceMsgBusHelper::_ConnectionStatusChangedCb);
+		MsgBusClient->_ConnectionStatusChanged.AddLambda([this, TestDone](bool bConnected)
+			{
+			if (bConnected)
+			{
+				TestDone.Execute();
+			}
+		});
 
 		MsgBusClient->_Connect();
 	});
@@ -81,9 +80,17 @@ void UTestbed2NestedStruct3InterfaceMsgBusSpec::Define()
 		FTestbed2NestedStruct1 TestValue = FTestbed2NestedStruct1(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp1(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTestbed2NestedStruct3InterfaceSignals* Testbed2NestedStruct3InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2NestedStruct3InterfaceSignals->OnProp1ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2NestedStruct3InterfaceMsgBusHelper::Prop1PropertyCb);
+		Testbed2NestedStruct3InterfaceSignals->OnProp1Changed.AddLambda([this, TestDone](const FTestbed2NestedStruct1& InProp1)
+			{
+			FTestbed2NestedStruct1 TestValue = FTestbed2NestedStruct1();
+			// use different test value
+			TestValue = createTestFTestbed2NestedStruct1();
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetProp1(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue = createTestFTestbed2NestedStruct1();
 		ImplFixture->GetImplementation()->SetProp1(TestValue);
@@ -102,9 +109,17 @@ void UTestbed2NestedStruct3InterfaceMsgBusSpec::Define()
 		FTestbed2NestedStruct2 TestValue = FTestbed2NestedStruct2(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp2(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTestbed2NestedStruct3InterfaceSignals* Testbed2NestedStruct3InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2NestedStruct3InterfaceSignals->OnProp2ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2NestedStruct3InterfaceMsgBusHelper::Prop2PropertyCb);
+		Testbed2NestedStruct3InterfaceSignals->OnProp2Changed.AddLambda([this, TestDone](const FTestbed2NestedStruct2& InProp2)
+			{
+			FTestbed2NestedStruct2 TestValue = FTestbed2NestedStruct2();
+			// use different test value
+			TestValue = createTestFTestbed2NestedStruct2();
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp2, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetProp2(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue = createTestFTestbed2NestedStruct2();
 		ImplFixture->GetImplementation()->SetProp2(TestValue);
@@ -123,9 +138,17 @@ void UTestbed2NestedStruct3InterfaceMsgBusSpec::Define()
 		FTestbed2NestedStruct3 TestValue = FTestbed2NestedStruct3(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp3(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTestbed2NestedStruct3InterfaceSignals* Testbed2NestedStruct3InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2NestedStruct3InterfaceSignals->OnProp3ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2NestedStruct3InterfaceMsgBusHelper::Prop3PropertyCb);
+		Testbed2NestedStruct3InterfaceSignals->OnProp3Changed.AddLambda([this, TestDone](const FTestbed2NestedStruct3& InProp3)
+			{
+			FTestbed2NestedStruct3 TestValue = FTestbed2NestedStruct3();
+			// use different test value
+			TestValue = createTestFTestbed2NestedStruct3();
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp3, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetProp3(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue = createTestFTestbed2NestedStruct3();
 		ImplFixture->GetImplementation()->SetProp3(TestValue);
@@ -163,9 +186,14 @@ void UTestbed2NestedStruct3InterfaceMsgBusSpec::Define()
 
 	LatentIt("Signal.Sig1", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTestbed2NestedStruct3InterfaceSignals* Testbed2NestedStruct3InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2NestedStruct3InterfaceSignals->OnSig1SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2NestedStruct3InterfaceMsgBusHelper::Sig1SignalCb);
+		Testbed2NestedStruct3InterfaceSignals->OnSig1Signal.AddLambda([this, TestDone](const FTestbed2NestedStruct1& InParam1)
+			{
+			// known test value
+			FTestbed2NestedStruct1 Param1TestValue = createTestFTestbed2NestedStruct1();
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		FTestbed2NestedStruct1 Param1TestValue = createTestFTestbed2NestedStruct1();
@@ -174,9 +202,16 @@ void UTestbed2NestedStruct3InterfaceMsgBusSpec::Define()
 
 	LatentIt("Signal.Sig2", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTestbed2NestedStruct3InterfaceSignals* Testbed2NestedStruct3InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2NestedStruct3InterfaceSignals->OnSig2SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2NestedStruct3InterfaceMsgBusHelper::Sig2SignalCb);
+		Testbed2NestedStruct3InterfaceSignals->OnSig2Signal.AddLambda([this, TestDone](const FTestbed2NestedStruct1& InParam1, const FTestbed2NestedStruct2& InParam2)
+			{
+			// known test value
+			FTestbed2NestedStruct1 Param1TestValue = createTestFTestbed2NestedStruct1();
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
+			FTestbed2NestedStruct2 Param2TestValue = createTestFTestbed2NestedStruct2();
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam2, Param2TestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		FTestbed2NestedStruct1 Param1TestValue = createTestFTestbed2NestedStruct1();
@@ -186,9 +221,18 @@ void UTestbed2NestedStruct3InterfaceMsgBusSpec::Define()
 
 	LatentIt("Signal.Sig3", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTestbed2NestedStruct3InterfaceSignals* Testbed2NestedStruct3InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2NestedStruct3InterfaceSignals->OnSig3SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2NestedStruct3InterfaceMsgBusHelper::Sig3SignalCb);
+		Testbed2NestedStruct3InterfaceSignals->OnSig3Signal.AddLambda([this, TestDone](const FTestbed2NestedStruct1& InParam1, const FTestbed2NestedStruct2& InParam2, const FTestbed2NestedStruct3& InParam3)
+			{
+			// known test value
+			FTestbed2NestedStruct1 Param1TestValue = createTestFTestbed2NestedStruct1();
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
+			FTestbed2NestedStruct2 Param2TestValue = createTestFTestbed2NestedStruct2();
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam2, Param2TestValue);
+			FTestbed2NestedStruct3 Param3TestValue = createTestFTestbed2NestedStruct3();
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam3, Param3TestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		FTestbed2NestedStruct1 Param1TestValue = createTestFTestbed2NestedStruct1();
@@ -198,64 +242,5 @@ void UTestbed2NestedStruct3InterfaceMsgBusSpec::Define()
 	});
 }
 
-void UTestbed2NestedStruct3InterfaceMsgBusSpec::Prop1PropertyCb(const FTestbed2NestedStruct1& InProp1)
-{
-	FTestbed2NestedStruct1 TestValue = FTestbed2NestedStruct1();
-	// use different test value
-	TestValue = createTestFTestbed2NestedStruct1();
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetProp1(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTestbed2NestedStruct3InterfaceMsgBusSpec::Prop2PropertyCb(const FTestbed2NestedStruct2& InProp2)
-{
-	FTestbed2NestedStruct2 TestValue = FTestbed2NestedStruct2();
-	// use different test value
-	TestValue = createTestFTestbed2NestedStruct2();
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp2, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetProp2(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTestbed2NestedStruct3InterfaceMsgBusSpec::Prop3PropertyCb(const FTestbed2NestedStruct3& InProp3)
-{
-	FTestbed2NestedStruct3 TestValue = FTestbed2NestedStruct3();
-	// use different test value
-	TestValue = createTestFTestbed2NestedStruct3();
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp3, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetProp3(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTestbed2NestedStruct3InterfaceMsgBusSpec::Sig1SignalCb(const FTestbed2NestedStruct1& InParam1)
-{
-	// known test value
-	FTestbed2NestedStruct1 Param1TestValue = createTestFTestbed2NestedStruct1();
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTestbed2NestedStruct3InterfaceMsgBusSpec::Sig2SignalCb(const FTestbed2NestedStruct1& InParam1, const FTestbed2NestedStruct2& InParam2)
-{
-	// known test value
-	FTestbed2NestedStruct1 Param1TestValue = createTestFTestbed2NestedStruct1();
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
-	FTestbed2NestedStruct2 Param2TestValue = createTestFTestbed2NestedStruct2();
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam2, Param2TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTestbed2NestedStruct3InterfaceMsgBusSpec::Sig3SignalCb(const FTestbed2NestedStruct1& InParam1, const FTestbed2NestedStruct2& InParam2, const FTestbed2NestedStruct3& InParam3)
-{
-	// known test value
-	FTestbed2NestedStruct1 Param1TestValue = createTestFTestbed2NestedStruct1();
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
-	FTestbed2NestedStruct2 Param2TestValue = createTestFTestbed2NestedStruct2();
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam2, Param2TestValue);
-	FTestbed2NestedStruct3 Param3TestValue = createTestFTestbed2NestedStruct3();
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam3, Param3TestValue);
-	testDoneDelegate.Execute();
-}
 #endif // WITH_DEV_AUTOMATION_TESTS
 #endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

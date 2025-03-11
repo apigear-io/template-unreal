@@ -15,59 +15,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "CounterCounterMsgBusFixture.h"
-#include "CounterCounterMsgBus.spec.h"
-#include "Counter/Generated/MsgBus/CounterCounterMsgBusClient.h"
-#include "Counter/Generated/MsgBus/CounterCounterMsgBusAdapter.h"
-#include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
+#include "HAL/Platform.h"
 
 #if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
 
-UCounterCounterMsgBusHelper::~UCounterCounterMsgBusHelper()
-{
-	Spec = nullptr;
-}
-
-void UCounterCounterMsgBusHelper::SetSpec(UCounterCounterMsgBusSpec* InSpec)
-{
-	Spec = InSpec;
-}
-
-void UCounterCounterMsgBusHelper::VectorPropertyCb(const FCustomTypesVector3D& Vector)
-{
-	if (Spec)
-	{
-		Spec->VectorPropertyCb(Vector);
-	}
-}
-
-void UCounterCounterMsgBusHelper::VectorArrayPropertyCb(const TArray<FCustomTypesVector3D>& VectorArray)
-{
-	if (Spec)
-	{
-		Spec->VectorArrayPropertyCb(VectorArray);
-	}
-}
-
-void UCounterCounterMsgBusHelper::ValueChangedSignalCb(const FCustomTypesVector3D& Vector, const FVector& ExternVector, const TArray<FCustomTypesVector3D>& VectorArray, const TArray<FVector>& ExternVectorArray)
-{
-	if (Spec)
-	{
-		Spec->ValueChangedSignalCb(Vector, ExternVector, VectorArray, ExternVectorArray);
-	}
-}
-
-void UCounterCounterMsgBusHelper::_ConnectionStatusChangedCb(bool bConnected)
-{
-	if (Spec)
-	{
-		Spec->_ConnectionStatusChangedCb(bConnected);
-	}
-}
+#include "Counter/Generated/MsgBus/CounterCounterMsgBusClient.h"
+#include "Counter/Generated/MsgBus/CounterCounterMsgBusAdapter.h"
+#include "Engine/GameInstance.h"
 
 FCounterCounterMsgBusFixture::FCounterCounterMsgBusFixture()
 {
-	Helper = NewObject<UCounterCounterMsgBusHelper>();
 	testImplementation = GetGameInstance()->GetSubsystem<UCounterCounterMsgBusClient>();
 }
 
@@ -84,11 +42,6 @@ TScriptInterface<ICounterCounterInterface> FCounterCounterMsgBusFixture::GetImpl
 UCounterCounterMsgBusAdapter* FCounterCounterMsgBusFixture::GetAdapter()
 {
 	return GetGameInstance()->GetSubsystem<UCounterCounterMsgBusAdapter>();
-}
-
-TSoftObjectPtr<UCounterCounterMsgBusHelper> FCounterCounterMsgBusFixture::GetHelper()
-{
-	return Helper;
 }
 
 UGameInstance* FCounterCounterMsgBusFixture::GetGameInstance()
@@ -108,37 +61,5 @@ void FCounterCounterMsgBusFixture::CleanUp()
 	{
 		GameInstance->Shutdown();
 	}
-}
-#else  // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
-// create empty implementation in case we do not want to do automated testing
-UCounterCounterMsgBusHelper::~UCounterCounterMsgBusHelper()
-{
-}
-
-void UCounterCounterMsgBusHelper::SetSpec(UCounterCounterMsgBusSpec* /* InSpec */)
-{
-}
-
-void UCounterCounterMsgBusHelper::VectorPropertyCb(const FCustomTypesVector3D& Vector)
-{
-	(void)Vector;
-}
-
-void UCounterCounterMsgBusHelper::VectorArrayPropertyCb(const TArray<FCustomTypesVector3D>& VectorArray)
-{
-	(void)VectorArray;
-}
-
-void UCounterCounterMsgBusHelper::ValueChangedSignalCb(const FCustomTypesVector3D& Vector, const FVector& ExternVector, const TArray<FCustomTypesVector3D>& VectorArray, const TArray<FVector>& ExternVectorArray)
-{
-	(void)Vector;
-	(void)ExternVector;
-	(void)VectorArray;
-	(void)ExternVectorArray;
-}
-
-void UCounterCounterMsgBusHelper::_ConnectionStatusChangedCb(bool bConnected)
-{
-	(void)bConnected;
 }
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

@@ -15,67 +15,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbSimpleNoOperationsInterfaceMsgBusFixture.h"
-#include "TbSimpleNoOperationsInterfaceMsgBus.spec.h"
-#include "TbSimple/Generated/MsgBus/TbSimpleNoOperationsInterfaceMsgBusClient.h"
-#include "TbSimple/Generated/MsgBus/TbSimpleNoOperationsInterfaceMsgBusAdapter.h"
-#include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
+#include "HAL/Platform.h"
 
 #if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
 
-UTbSimpleNoOperationsInterfaceMsgBusHelper::~UTbSimpleNoOperationsInterfaceMsgBusHelper()
-{
-	Spec = nullptr;
-}
-
-void UTbSimpleNoOperationsInterfaceMsgBusHelper::SetSpec(UTbSimpleNoOperationsInterfaceMsgBusSpec* InSpec)
-{
-	Spec = InSpec;
-}
-
-void UTbSimpleNoOperationsInterfaceMsgBusHelper::PropBoolPropertyCb(bool bPropBool)
-{
-	if (Spec)
-	{
-		Spec->PropBoolPropertyCb(bPropBool);
-	}
-}
-
-void UTbSimpleNoOperationsInterfaceMsgBusHelper::PropIntPropertyCb(int32 PropInt)
-{
-	if (Spec)
-	{
-		Spec->PropIntPropertyCb(PropInt);
-	}
-}
-
-void UTbSimpleNoOperationsInterfaceMsgBusHelper::SigVoidSignalCb()
-{
-	if (Spec)
-	{
-		Spec->SigVoidSignalCb();
-	}
-}
-
-void UTbSimpleNoOperationsInterfaceMsgBusHelper::SigBoolSignalCb(bool bParamBool)
-{
-	if (Spec)
-	{
-		Spec->SigBoolSignalCb(bParamBool);
-	}
-}
-
-void UTbSimpleNoOperationsInterfaceMsgBusHelper::_ConnectionStatusChangedCb(bool bConnected)
-{
-	if (Spec)
-	{
-		Spec->_ConnectionStatusChangedCb(bConnected);
-	}
-}
+#include "TbSimple/Generated/MsgBus/TbSimpleNoOperationsInterfaceMsgBusClient.h"
+#include "TbSimple/Generated/MsgBus/TbSimpleNoOperationsInterfaceMsgBusAdapter.h"
+#include "Engine/GameInstance.h"
 
 FTbSimpleNoOperationsInterfaceMsgBusFixture::FTbSimpleNoOperationsInterfaceMsgBusFixture()
 {
-	Helper = NewObject<UTbSimpleNoOperationsInterfaceMsgBusHelper>();
 	testImplementation = GetGameInstance()->GetSubsystem<UTbSimpleNoOperationsInterfaceMsgBusClient>();
 }
 
@@ -92,11 +42,6 @@ TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> FTbSimpleNoOperationsI
 UTbSimpleNoOperationsInterfaceMsgBusAdapter* FTbSimpleNoOperationsInterfaceMsgBusFixture::GetAdapter()
 {
 	return GetGameInstance()->GetSubsystem<UTbSimpleNoOperationsInterfaceMsgBusAdapter>();
-}
-
-TSoftObjectPtr<UTbSimpleNoOperationsInterfaceMsgBusHelper> FTbSimpleNoOperationsInterfaceMsgBusFixture::GetHelper()
-{
-	return Helper;
 }
 
 UGameInstance* FTbSimpleNoOperationsInterfaceMsgBusFixture::GetGameInstance()
@@ -116,38 +61,5 @@ void FTbSimpleNoOperationsInterfaceMsgBusFixture::CleanUp()
 	{
 		GameInstance->Shutdown();
 	}
-}
-#else  // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
-// create empty implementation in case we do not want to do automated testing
-UTbSimpleNoOperationsInterfaceMsgBusHelper::~UTbSimpleNoOperationsInterfaceMsgBusHelper()
-{
-}
-
-void UTbSimpleNoOperationsInterfaceMsgBusHelper::SetSpec(UTbSimpleNoOperationsInterfaceMsgBusSpec* /* InSpec */)
-{
-}
-
-void UTbSimpleNoOperationsInterfaceMsgBusHelper::PropBoolPropertyCb(bool bPropBool)
-{
-	(void)bPropBool;
-}
-
-void UTbSimpleNoOperationsInterfaceMsgBusHelper::PropIntPropertyCb(int32 PropInt)
-{
-	(void)PropInt;
-}
-
-void UTbSimpleNoOperationsInterfaceMsgBusHelper::SigVoidSignalCb()
-{
-}
-
-void UTbSimpleNoOperationsInterfaceMsgBusHelper::SigBoolSignalCb(bool bParamBool)
-{
-	(void)bParamBool;
-}
-
-void UTbSimpleNoOperationsInterfaceMsgBusHelper::_ConnectionStatusChangedCb(bool bConnected)
-{
-	(void)bConnected;
 }
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

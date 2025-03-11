@@ -15,67 +15,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbSame2SameStruct2InterfaceMsgBusFixture.h"
-#include "TbSame2SameStruct2InterfaceMsgBus.spec.h"
-#include "TbSame2/Generated/MsgBus/TbSame2SameStruct2InterfaceMsgBusClient.h"
-#include "TbSame2/Generated/MsgBus/TbSame2SameStruct2InterfaceMsgBusAdapter.h"
-#include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
+#include "HAL/Platform.h"
 
 #if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
 
-UTbSame2SameStruct2InterfaceMsgBusHelper::~UTbSame2SameStruct2InterfaceMsgBusHelper()
-{
-	Spec = nullptr;
-}
-
-void UTbSame2SameStruct2InterfaceMsgBusHelper::SetSpec(UTbSame2SameStruct2InterfaceMsgBusSpec* InSpec)
-{
-	Spec = InSpec;
-}
-
-void UTbSame2SameStruct2InterfaceMsgBusHelper::Prop1PropertyCb(const FTbSame2Struct2& Prop1)
-{
-	if (Spec)
-	{
-		Spec->Prop1PropertyCb(Prop1);
-	}
-}
-
-void UTbSame2SameStruct2InterfaceMsgBusHelper::Prop2PropertyCb(const FTbSame2Struct2& Prop2)
-{
-	if (Spec)
-	{
-		Spec->Prop2PropertyCb(Prop2);
-	}
-}
-
-void UTbSame2SameStruct2InterfaceMsgBusHelper::Sig1SignalCb(const FTbSame2Struct1& Param1)
-{
-	if (Spec)
-	{
-		Spec->Sig1SignalCb(Param1);
-	}
-}
-
-void UTbSame2SameStruct2InterfaceMsgBusHelper::Sig2SignalCb(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2)
-{
-	if (Spec)
-	{
-		Spec->Sig2SignalCb(Param1, Param2);
-	}
-}
-
-void UTbSame2SameStruct2InterfaceMsgBusHelper::_ConnectionStatusChangedCb(bool bConnected)
-{
-	if (Spec)
-	{
-		Spec->_ConnectionStatusChangedCb(bConnected);
-	}
-}
+#include "TbSame2/Generated/MsgBus/TbSame2SameStruct2InterfaceMsgBusClient.h"
+#include "TbSame2/Generated/MsgBus/TbSame2SameStruct2InterfaceMsgBusAdapter.h"
+#include "Engine/GameInstance.h"
 
 FTbSame2SameStruct2InterfaceMsgBusFixture::FTbSame2SameStruct2InterfaceMsgBusFixture()
 {
-	Helper = NewObject<UTbSame2SameStruct2InterfaceMsgBusHelper>();
 	testImplementation = GetGameInstance()->GetSubsystem<UTbSame2SameStruct2InterfaceMsgBusClient>();
 }
 
@@ -92,11 +42,6 @@ TScriptInterface<ITbSame2SameStruct2InterfaceInterface> FTbSame2SameStruct2Inter
 UTbSame2SameStruct2InterfaceMsgBusAdapter* FTbSame2SameStruct2InterfaceMsgBusFixture::GetAdapter()
 {
 	return GetGameInstance()->GetSubsystem<UTbSame2SameStruct2InterfaceMsgBusAdapter>();
-}
-
-TSoftObjectPtr<UTbSame2SameStruct2InterfaceMsgBusHelper> FTbSame2SameStruct2InterfaceMsgBusFixture::GetHelper()
-{
-	return Helper;
 }
 
 UGameInstance* FTbSame2SameStruct2InterfaceMsgBusFixture::GetGameInstance()
@@ -116,40 +61,5 @@ void FTbSame2SameStruct2InterfaceMsgBusFixture::CleanUp()
 	{
 		GameInstance->Shutdown();
 	}
-}
-#else  // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
-// create empty implementation in case we do not want to do automated testing
-UTbSame2SameStruct2InterfaceMsgBusHelper::~UTbSame2SameStruct2InterfaceMsgBusHelper()
-{
-}
-
-void UTbSame2SameStruct2InterfaceMsgBusHelper::SetSpec(UTbSame2SameStruct2InterfaceMsgBusSpec* /* InSpec */)
-{
-}
-
-void UTbSame2SameStruct2InterfaceMsgBusHelper::Prop1PropertyCb(const FTbSame2Struct2& Prop1)
-{
-	(void)Prop1;
-}
-
-void UTbSame2SameStruct2InterfaceMsgBusHelper::Prop2PropertyCb(const FTbSame2Struct2& Prop2)
-{
-	(void)Prop2;
-}
-
-void UTbSame2SameStruct2InterfaceMsgBusHelper::Sig1SignalCb(const FTbSame2Struct1& Param1)
-{
-	(void)Param1;
-}
-
-void UTbSame2SameStruct2InterfaceMsgBusHelper::Sig2SignalCb(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2)
-{
-	(void)Param1;
-	(void)Param2;
-}
-
-void UTbSame2SameStruct2InterfaceMsgBusHelper::_ConnectionStatusChangedCb(bool bConnected)
-{
-	(void)bConnected;
 }
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

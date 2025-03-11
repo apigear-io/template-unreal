@@ -15,25 +15,23 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include "TbEnumEnumInterfaceMsgBus.spec.h"
+#include "Misc/AutomationTest.h"
+#include "HAL/Platform.h"
+
+#if !(PLATFORM_IOS || PLATFORM_ANDROID)
+#if WITH_DEV_AUTOMATION_TESTS
+
+#include "TbEnum/Tests/TbEnumTestsCommon.h"
 #include "TbEnum/Implementation/TbEnumEnumInterface.h"
 #include "TbEnumEnumInterfaceMsgBusFixture.h"
 #include "TbEnum/Generated/MsgBus/TbEnumEnumInterfaceMsgBusClient.h"
 #include "TbEnum/Generated/MsgBus/TbEnumEnumInterfaceMsgBusAdapter.h"
-#include "HAL/Platform.h"
 
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
-#include "Misc/AutomationTest.h"
+BEGIN_DEFINE_SPEC(UTbEnumEnumInterfaceMsgBusSpec, "TbEnum.EnumInterface.MsgBus", TbEnumTestFilterMask);
 
-#if WITH_DEV_AUTOMATION_TESTS
+TUniquePtr<FTbEnumEnumInterfaceMsgBusFixture> ImplFixture;
 
-void UTbEnumEnumInterfaceMsgBusSpec::_ConnectionStatusChangedCb(bool bConnected)
-{
-	if (bConnected)
-	{
-		testDoneDelegate.Execute();
-	}
-}
+END_DEFINE_SPEC(UTbEnumEnumInterfaceMsgBusSpec);
 
 void UTbEnumEnumInterfaceMsgBusSpec::Define()
 {
@@ -44,21 +42,22 @@ void UTbEnumEnumInterfaceMsgBusSpec::Define()
 
 		TestTrue("Check for valid testImplementation", ImplFixture->GetImplementation().GetInterface() != nullptr);
 
-		TestTrue("Check for valid Helper", ImplFixture->GetHelper().IsValid());
-		// needed for callbacks
-		ImplFixture->GetHelper()->SetSpec(this);
-
 		// set up service and adapter
 		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbEnumEnumInterface>();
 		ImplFixture->GetAdapter()->_setBackendService(service);
 		ImplFixture->GetAdapter()->_StartListening();
 
 		// setup client
-		testDoneDelegate = TestDone;
 		UTbEnumEnumInterfaceMsgBusClient* MsgBusClient = Cast<UTbEnumEnumInterfaceMsgBusClient>(ImplFixture->GetImplementation().GetObject());
 		TestTrue("Check for valid MsgBus client", MsgBusClient != nullptr);
 
-		MsgBusClient->_ConnectionStatusChanged.AddUObject(ImplFixture->GetHelper().Get(), &UTbEnumEnumInterfaceMsgBusHelper::_ConnectionStatusChangedCb);
+		MsgBusClient->_ConnectionStatusChanged.AddLambda([this, TestDone](bool bConnected)
+			{
+			if (bConnected)
+			{
+				TestDone.Execute();
+			}
+		});
 
 		MsgBusClient->_Connect();
 	});
@@ -81,9 +80,17 @@ void UTbEnumEnumInterfaceMsgBusSpec::Define()
 		ETbEnumEnum0 TestValue = ETbEnumEnum0::TEE0_VALUE0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp0(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTbEnumEnumInterfaceSignals* TbEnumEnumInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbEnumEnumInterfaceSignals->OnProp0ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbEnumEnumInterfaceMsgBusHelper::Prop0PropertyCb);
+		TbEnumEnumInterfaceSignals->OnProp0Changed.AddLambda([this, TestDone](ETbEnumEnum0 InProp0)
+			{
+			ETbEnumEnum0 TestValue = ETbEnumEnum0::TEE0_VALUE0;
+			// use different test value
+			TestValue = ETbEnumEnum0::TEE0_VALUE1;
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp0, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetProp0(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue = ETbEnumEnum0::TEE0_VALUE1;
 		ImplFixture->GetImplementation()->SetProp0(TestValue);
@@ -102,9 +109,17 @@ void UTbEnumEnumInterfaceMsgBusSpec::Define()
 		ETbEnumEnum1 TestValue = ETbEnumEnum1::TEE1_VALUE1; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp1(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTbEnumEnumInterfaceSignals* TbEnumEnumInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbEnumEnumInterfaceSignals->OnProp1ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbEnumEnumInterfaceMsgBusHelper::Prop1PropertyCb);
+		TbEnumEnumInterfaceSignals->OnProp1Changed.AddLambda([this, TestDone](ETbEnumEnum1 InProp1)
+			{
+			ETbEnumEnum1 TestValue = ETbEnumEnum1::TEE1_VALUE1;
+			// use different test value
+			TestValue = ETbEnumEnum1::TEE1_VALUE2;
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetProp1(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue = ETbEnumEnum1::TEE1_VALUE2;
 		ImplFixture->GetImplementation()->SetProp1(TestValue);
@@ -123,9 +138,17 @@ void UTbEnumEnumInterfaceMsgBusSpec::Define()
 		ETbEnumEnum2 TestValue = ETbEnumEnum2::TEE2_VALUE2; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp2(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTbEnumEnumInterfaceSignals* TbEnumEnumInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbEnumEnumInterfaceSignals->OnProp2ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbEnumEnumInterfaceMsgBusHelper::Prop2PropertyCb);
+		TbEnumEnumInterfaceSignals->OnProp2Changed.AddLambda([this, TestDone](ETbEnumEnum2 InProp2)
+			{
+			ETbEnumEnum2 TestValue = ETbEnumEnum2::TEE2_VALUE2;
+			// use different test value
+			TestValue = ETbEnumEnum2::TEE2_VALUE1;
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp2, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetProp2(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue = ETbEnumEnum2::TEE2_VALUE1;
 		ImplFixture->GetImplementation()->SetProp2(TestValue);
@@ -144,9 +167,17 @@ void UTbEnumEnumInterfaceMsgBusSpec::Define()
 		ETbEnumEnum3 TestValue = ETbEnumEnum3::TEE3_VALUE3; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp3(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTbEnumEnumInterfaceSignals* TbEnumEnumInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbEnumEnumInterfaceSignals->OnProp3ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbEnumEnumInterfaceMsgBusHelper::Prop3PropertyCb);
+		TbEnumEnumInterfaceSignals->OnProp3Changed.AddLambda([this, TestDone](ETbEnumEnum3 InProp3)
+			{
+			ETbEnumEnum3 TestValue = ETbEnumEnum3::TEE3_VALUE3;
+			// use different test value
+			TestValue = ETbEnumEnum3::TEE3_VALUE2;
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp3, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetProp3(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue = ETbEnumEnum3::TEE3_VALUE2;
 		ImplFixture->GetImplementation()->SetProp3(TestValue);
@@ -194,9 +225,14 @@ void UTbEnumEnumInterfaceMsgBusSpec::Define()
 
 	LatentIt("Signal.Sig0", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTbEnumEnumInterfaceSignals* TbEnumEnumInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbEnumEnumInterfaceSignals->OnSig0SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbEnumEnumInterfaceMsgBusHelper::Sig0SignalCb);
+		TbEnumEnumInterfaceSignals->OnSig0Signal.AddLambda([this, TestDone](ETbEnumEnum0 InParam0)
+			{
+			// known test value
+			ETbEnumEnum0 Param0TestValue = ETbEnumEnum0::TEE0_VALUE1;
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam0, Param0TestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		ETbEnumEnum0 Param0TestValue = ETbEnumEnum0::TEE0_VALUE1;
@@ -205,9 +241,14 @@ void UTbEnumEnumInterfaceMsgBusSpec::Define()
 
 	LatentIt("Signal.Sig1", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTbEnumEnumInterfaceSignals* TbEnumEnumInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbEnumEnumInterfaceSignals->OnSig1SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbEnumEnumInterfaceMsgBusHelper::Sig1SignalCb);
+		TbEnumEnumInterfaceSignals->OnSig1Signal.AddLambda([this, TestDone](ETbEnumEnum1 InParam1)
+			{
+			// known test value
+			ETbEnumEnum1 Param1TestValue = ETbEnumEnum1::TEE1_VALUE2;
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		ETbEnumEnum1 Param1TestValue = ETbEnumEnum1::TEE1_VALUE2;
@@ -216,9 +257,14 @@ void UTbEnumEnumInterfaceMsgBusSpec::Define()
 
 	LatentIt("Signal.Sig2", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTbEnumEnumInterfaceSignals* TbEnumEnumInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbEnumEnumInterfaceSignals->OnSig2SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbEnumEnumInterfaceMsgBusHelper::Sig2SignalCb);
+		TbEnumEnumInterfaceSignals->OnSig2Signal.AddLambda([this, TestDone](ETbEnumEnum2 InParam2)
+			{
+			// known test value
+			ETbEnumEnum2 Param2TestValue = ETbEnumEnum2::TEE2_VALUE1;
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam2, Param2TestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		ETbEnumEnum2 Param2TestValue = ETbEnumEnum2::TEE2_VALUE1;
@@ -227,9 +273,14 @@ void UTbEnumEnumInterfaceMsgBusSpec::Define()
 
 	LatentIt("Signal.Sig3", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTbEnumEnumInterfaceSignals* TbEnumEnumInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbEnumEnumInterfaceSignals->OnSig3SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbEnumEnumInterfaceMsgBusHelper::Sig3SignalCb);
+		TbEnumEnumInterfaceSignals->OnSig3Signal.AddLambda([this, TestDone](ETbEnumEnum3 InParam3)
+			{
+			// known test value
+			ETbEnumEnum3 Param3TestValue = ETbEnumEnum3::TEE3_VALUE2;
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam3, Param3TestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		ETbEnumEnum3 Param3TestValue = ETbEnumEnum3::TEE3_VALUE2;
@@ -237,76 +288,5 @@ void UTbEnumEnumInterfaceMsgBusSpec::Define()
 	});
 }
 
-void UTbEnumEnumInterfaceMsgBusSpec::Prop0PropertyCb(ETbEnumEnum0 InProp0)
-{
-	ETbEnumEnum0 TestValue = ETbEnumEnum0::TEE0_VALUE0;
-	// use different test value
-	TestValue = ETbEnumEnum0::TEE0_VALUE1;
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp0, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetProp0(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbEnumEnumInterfaceMsgBusSpec::Prop1PropertyCb(ETbEnumEnum1 InProp1)
-{
-	ETbEnumEnum1 TestValue = ETbEnumEnum1::TEE1_VALUE1;
-	// use different test value
-	TestValue = ETbEnumEnum1::TEE1_VALUE2;
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetProp1(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbEnumEnumInterfaceMsgBusSpec::Prop2PropertyCb(ETbEnumEnum2 InProp2)
-{
-	ETbEnumEnum2 TestValue = ETbEnumEnum2::TEE2_VALUE2;
-	// use different test value
-	TestValue = ETbEnumEnum2::TEE2_VALUE1;
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp2, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetProp2(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbEnumEnumInterfaceMsgBusSpec::Prop3PropertyCb(ETbEnumEnum3 InProp3)
-{
-	ETbEnumEnum3 TestValue = ETbEnumEnum3::TEE3_VALUE3;
-	// use different test value
-	TestValue = ETbEnumEnum3::TEE3_VALUE2;
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp3, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetProp3(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbEnumEnumInterfaceMsgBusSpec::Sig0SignalCb(ETbEnumEnum0 InParam0)
-{
-	// known test value
-	ETbEnumEnum0 Param0TestValue = ETbEnumEnum0::TEE0_VALUE1;
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam0, Param0TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbEnumEnumInterfaceMsgBusSpec::Sig1SignalCb(ETbEnumEnum1 InParam1)
-{
-	// known test value
-	ETbEnumEnum1 Param1TestValue = ETbEnumEnum1::TEE1_VALUE2;
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbEnumEnumInterfaceMsgBusSpec::Sig2SignalCb(ETbEnumEnum2 InParam2)
-{
-	// known test value
-	ETbEnumEnum2 Param2TestValue = ETbEnumEnum2::TEE2_VALUE1;
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam2, Param2TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbEnumEnumInterfaceMsgBusSpec::Sig3SignalCb(ETbEnumEnum3 InParam3)
-{
-	// known test value
-	ETbEnumEnum3 Param3TestValue = ETbEnumEnum3::TEE3_VALUE2;
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam3, Param3TestValue);
-	testDoneDelegate.Execute();
-}
 #endif // WITH_DEV_AUTOMATION_TESTS
 #endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

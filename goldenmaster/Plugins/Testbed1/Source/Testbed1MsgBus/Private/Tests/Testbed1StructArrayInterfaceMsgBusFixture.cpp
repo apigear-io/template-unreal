@@ -15,99 +15,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "Testbed1StructArrayInterfaceMsgBusFixture.h"
-#include "Testbed1StructArrayInterfaceMsgBus.spec.h"
-#include "Testbed1/Generated/MsgBus/Testbed1StructArrayInterfaceMsgBusClient.h"
-#include "Testbed1/Generated/MsgBus/Testbed1StructArrayInterfaceMsgBusAdapter.h"
-#include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
+#include "HAL/Platform.h"
 
 #if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
 
-UTestbed1StructArrayInterfaceMsgBusHelper::~UTestbed1StructArrayInterfaceMsgBusHelper()
-{
-	Spec = nullptr;
-}
-
-void UTestbed1StructArrayInterfaceMsgBusHelper::SetSpec(UTestbed1StructArrayInterfaceMsgBusSpec* InSpec)
-{
-	Spec = InSpec;
-}
-
-void UTestbed1StructArrayInterfaceMsgBusHelper::PropBoolPropertyCb(const TArray<FTestbed1StructBool>& PropBool)
-{
-	if (Spec)
-	{
-		Spec->PropBoolPropertyCb(PropBool);
-	}
-}
-
-void UTestbed1StructArrayInterfaceMsgBusHelper::PropIntPropertyCb(const TArray<FTestbed1StructInt>& PropInt)
-{
-	if (Spec)
-	{
-		Spec->PropIntPropertyCb(PropInt);
-	}
-}
-
-void UTestbed1StructArrayInterfaceMsgBusHelper::PropFloatPropertyCb(const TArray<FTestbed1StructFloat>& PropFloat)
-{
-	if (Spec)
-	{
-		Spec->PropFloatPropertyCb(PropFloat);
-	}
-}
-
-void UTestbed1StructArrayInterfaceMsgBusHelper::PropStringPropertyCb(const TArray<FTestbed1StructString>& PropString)
-{
-	if (Spec)
-	{
-		Spec->PropStringPropertyCb(PropString);
-	}
-}
-
-void UTestbed1StructArrayInterfaceMsgBusHelper::SigBoolSignalCb(const TArray<FTestbed1StructBool>& ParamBool)
-{
-	if (Spec)
-	{
-		Spec->SigBoolSignalCb(ParamBool);
-	}
-}
-
-void UTestbed1StructArrayInterfaceMsgBusHelper::SigIntSignalCb(const TArray<FTestbed1StructInt>& ParamInt)
-{
-	if (Spec)
-	{
-		Spec->SigIntSignalCb(ParamInt);
-	}
-}
-
-void UTestbed1StructArrayInterfaceMsgBusHelper::SigFloatSignalCb(const TArray<FTestbed1StructFloat>& ParamFloat)
-{
-	if (Spec)
-	{
-		Spec->SigFloatSignalCb(ParamFloat);
-	}
-}
-
-void UTestbed1StructArrayInterfaceMsgBusHelper::SigStringSignalCb(const TArray<FTestbed1StructString>& ParamString)
-{
-	if (Spec)
-	{
-		Spec->SigStringSignalCb(ParamString);
-	}
-}
-
-void UTestbed1StructArrayInterfaceMsgBusHelper::_ConnectionStatusChangedCb(bool bConnected)
-{
-	if (Spec)
-	{
-		Spec->_ConnectionStatusChangedCb(bConnected);
-	}
-}
+#include "Testbed1/Generated/MsgBus/Testbed1StructArrayInterfaceMsgBusClient.h"
+#include "Testbed1/Generated/MsgBus/Testbed1StructArrayInterfaceMsgBusAdapter.h"
+#include "Engine/GameInstance.h"
 
 FTestbed1StructArrayInterfaceMsgBusFixture::FTestbed1StructArrayInterfaceMsgBusFixture()
 {
-	Helper = NewObject<UTestbed1StructArrayInterfaceMsgBusHelper>();
 	testImplementation = GetGameInstance()->GetSubsystem<UTestbed1StructArrayInterfaceMsgBusClient>();
 }
 
@@ -124,11 +42,6 @@ TScriptInterface<ITestbed1StructArrayInterfaceInterface> FTestbed1StructArrayInt
 UTestbed1StructArrayInterfaceMsgBusAdapter* FTestbed1StructArrayInterfaceMsgBusFixture::GetAdapter()
 {
 	return GetGameInstance()->GetSubsystem<UTestbed1StructArrayInterfaceMsgBusAdapter>();
-}
-
-TSoftObjectPtr<UTestbed1StructArrayInterfaceMsgBusHelper> FTestbed1StructArrayInterfaceMsgBusFixture::GetHelper()
-{
-	return Helper;
 }
 
 UGameInstance* FTestbed1StructArrayInterfaceMsgBusFixture::GetGameInstance()
@@ -148,59 +61,5 @@ void FTestbed1StructArrayInterfaceMsgBusFixture::CleanUp()
 	{
 		GameInstance->Shutdown();
 	}
-}
-#else  // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
-// create empty implementation in case we do not want to do automated testing
-UTestbed1StructArrayInterfaceMsgBusHelper::~UTestbed1StructArrayInterfaceMsgBusHelper()
-{
-}
-
-void UTestbed1StructArrayInterfaceMsgBusHelper::SetSpec(UTestbed1StructArrayInterfaceMsgBusSpec* /* InSpec */)
-{
-}
-
-void UTestbed1StructArrayInterfaceMsgBusHelper::PropBoolPropertyCb(const TArray<FTestbed1StructBool>& PropBool)
-{
-	(void)PropBool;
-}
-
-void UTestbed1StructArrayInterfaceMsgBusHelper::PropIntPropertyCb(const TArray<FTestbed1StructInt>& PropInt)
-{
-	(void)PropInt;
-}
-
-void UTestbed1StructArrayInterfaceMsgBusHelper::PropFloatPropertyCb(const TArray<FTestbed1StructFloat>& PropFloat)
-{
-	(void)PropFloat;
-}
-
-void UTestbed1StructArrayInterfaceMsgBusHelper::PropStringPropertyCb(const TArray<FTestbed1StructString>& PropString)
-{
-	(void)PropString;
-}
-
-void UTestbed1StructArrayInterfaceMsgBusHelper::SigBoolSignalCb(const TArray<FTestbed1StructBool>& ParamBool)
-{
-	(void)ParamBool;
-}
-
-void UTestbed1StructArrayInterfaceMsgBusHelper::SigIntSignalCb(const TArray<FTestbed1StructInt>& ParamInt)
-{
-	(void)ParamInt;
-}
-
-void UTestbed1StructArrayInterfaceMsgBusHelper::SigFloatSignalCb(const TArray<FTestbed1StructFloat>& ParamFloat)
-{
-	(void)ParamFloat;
-}
-
-void UTestbed1StructArrayInterfaceMsgBusHelper::SigStringSignalCb(const TArray<FTestbed1StructString>& ParamString)
-{
-	(void)ParamString;
-}
-
-void UTestbed1StructArrayInterfaceMsgBusHelper::_ConnectionStatusChangedCb(bool bConnected)
-{
-	(void)bConnected;
 }
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

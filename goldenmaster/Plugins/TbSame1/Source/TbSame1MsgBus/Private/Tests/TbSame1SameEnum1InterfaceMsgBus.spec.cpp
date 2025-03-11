@@ -15,25 +15,23 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include "TbSame1SameEnum1InterfaceMsgBus.spec.h"
+#include "Misc/AutomationTest.h"
+#include "HAL/Platform.h"
+
+#if !(PLATFORM_IOS || PLATFORM_ANDROID)
+#if WITH_DEV_AUTOMATION_TESTS
+
+#include "TbSame1/Tests/TbSame1TestsCommon.h"
 #include "TbSame1/Implementation/TbSame1SameEnum1Interface.h"
 #include "TbSame1SameEnum1InterfaceMsgBusFixture.h"
 #include "TbSame1/Generated/MsgBus/TbSame1SameEnum1InterfaceMsgBusClient.h"
 #include "TbSame1/Generated/MsgBus/TbSame1SameEnum1InterfaceMsgBusAdapter.h"
-#include "HAL/Platform.h"
 
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
-#include "Misc/AutomationTest.h"
+BEGIN_DEFINE_SPEC(UTbSame1SameEnum1InterfaceMsgBusSpec, "TbSame1.SameEnum1Interface.MsgBus", TbSame1TestFilterMask);
 
-#if WITH_DEV_AUTOMATION_TESTS
+TUniquePtr<FTbSame1SameEnum1InterfaceMsgBusFixture> ImplFixture;
 
-void UTbSame1SameEnum1InterfaceMsgBusSpec::_ConnectionStatusChangedCb(bool bConnected)
-{
-	if (bConnected)
-	{
-		testDoneDelegate.Execute();
-	}
-}
+END_DEFINE_SPEC(UTbSame1SameEnum1InterfaceMsgBusSpec);
 
 void UTbSame1SameEnum1InterfaceMsgBusSpec::Define()
 {
@@ -44,21 +42,22 @@ void UTbSame1SameEnum1InterfaceMsgBusSpec::Define()
 
 		TestTrue("Check for valid testImplementation", ImplFixture->GetImplementation().GetInterface() != nullptr);
 
-		TestTrue("Check for valid Helper", ImplFixture->GetHelper().IsValid());
-		// needed for callbacks
-		ImplFixture->GetHelper()->SetSpec(this);
-
 		// set up service and adapter
 		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSame1SameEnum1Interface>();
 		ImplFixture->GetAdapter()->_setBackendService(service);
 		ImplFixture->GetAdapter()->_StartListening();
 
 		// setup client
-		testDoneDelegate = TestDone;
 		UTbSame1SameEnum1InterfaceMsgBusClient* MsgBusClient = Cast<UTbSame1SameEnum1InterfaceMsgBusClient>(ImplFixture->GetImplementation().GetObject());
 		TestTrue("Check for valid MsgBus client", MsgBusClient != nullptr);
 
-		MsgBusClient->_ConnectionStatusChanged.AddUObject(ImplFixture->GetHelper().Get(), &UTbSame1SameEnum1InterfaceMsgBusHelper::_ConnectionStatusChangedCb);
+		MsgBusClient->_ConnectionStatusChanged.AddLambda([this, TestDone](bool bConnected)
+			{
+			if (bConnected)
+			{
+				TestDone.Execute();
+			}
+		});
 
 		MsgBusClient->_Connect();
 	});
@@ -81,9 +80,17 @@ void UTbSame1SameEnum1InterfaceMsgBusSpec::Define()
 		ETbSame1Enum1 TestValue = ETbSame1Enum1::TS1E1_VALUE1; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp1(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTbSame1SameEnum1InterfaceSignals* TbSame1SameEnum1InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSame1SameEnum1InterfaceSignals->OnProp1ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame1SameEnum1InterfaceMsgBusHelper::Prop1PropertyCb);
+		TbSame1SameEnum1InterfaceSignals->OnProp1Changed.AddLambda([this, TestDone](ETbSame1Enum1 InProp1)
+			{
+			ETbSame1Enum1 TestValue = ETbSame1Enum1::TS1E1_VALUE1;
+			// use different test value
+			TestValue = ETbSame1Enum1::TS1E1_VALUE2;
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetProp1(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue = ETbSame1Enum1::TS1E1_VALUE2;
 		ImplFixture->GetImplementation()->SetProp1(TestValue);
@@ -101,9 +108,14 @@ void UTbSame1SameEnum1InterfaceMsgBusSpec::Define()
 
 	LatentIt("Signal.Sig1", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTbSame1SameEnum1InterfaceSignals* TbSame1SameEnum1InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSame1SameEnum1InterfaceSignals->OnSig1SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame1SameEnum1InterfaceMsgBusHelper::Sig1SignalCb);
+		TbSame1SameEnum1InterfaceSignals->OnSig1Signal.AddLambda([this, TestDone](ETbSame1Enum1 InParam1)
+			{
+			// known test value
+			ETbSame1Enum1 Param1TestValue = ETbSame1Enum1::TS1E1_VALUE2;
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		ETbSame1Enum1 Param1TestValue = ETbSame1Enum1::TS1E1_VALUE2;
@@ -111,22 +123,5 @@ void UTbSame1SameEnum1InterfaceMsgBusSpec::Define()
 	});
 }
 
-void UTbSame1SameEnum1InterfaceMsgBusSpec::Prop1PropertyCb(ETbSame1Enum1 InProp1)
-{
-	ETbSame1Enum1 TestValue = ETbSame1Enum1::TS1E1_VALUE1;
-	// use different test value
-	TestValue = ETbSame1Enum1::TS1E1_VALUE2;
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetProp1(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSame1SameEnum1InterfaceMsgBusSpec::Sig1SignalCb(ETbSame1Enum1 InParam1)
-{
-	// known test value
-	ETbSame1Enum1 Param1TestValue = ETbSame1Enum1::TS1E1_VALUE2;
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
-	testDoneDelegate.Execute();
-}
 #endif // WITH_DEV_AUTOMATION_TESTS
 #endif // !(PLATFORM_IOS || PLATFORM_ANDROID)
