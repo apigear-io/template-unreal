@@ -141,6 +141,16 @@ private:
 	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
 	void OnProp4Changed(int32 Prop4);
 
+	// delegate handles
+	FDelegateHandle OnProp1ChangedHandle;
+	FDelegateHandle OnProp2ChangedHandle;
+	FDelegateHandle OnProp3ChangedHandle;
+	FDelegateHandle OnProp4ChangedHandle;
+	FDelegateHandle OnSig1SignalHandle;
+	FDelegateHandle OnSig2SignalHandle;
+	FDelegateHandle OnSig3SignalHandle;
+	FDelegateHandle OnSig4SignalHandle;
+
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|Testbed2|ManyParamInterface")
 	TScriptInterface<ITestbed2ManyParamInterfaceInterface> BackendService;

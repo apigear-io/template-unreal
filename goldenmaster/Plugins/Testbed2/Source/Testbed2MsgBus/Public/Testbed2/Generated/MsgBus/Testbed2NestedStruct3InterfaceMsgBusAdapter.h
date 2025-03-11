@@ -129,6 +129,14 @@ private:
 	UFUNCTION(Category = "ApiGear|Testbed2|NestedStruct3Interface", BlueprintInternalUseOnly)
 	void OnProp3Changed(const FTestbed2NestedStruct3& Prop3);
 
+	// delegate handles
+	FDelegateHandle OnProp1ChangedHandle;
+	FDelegateHandle OnProp2ChangedHandle;
+	FDelegateHandle OnProp3ChangedHandle;
+	FDelegateHandle OnSig1SignalHandle;
+	FDelegateHandle OnSig2SignalHandle;
+	FDelegateHandle OnSig3SignalHandle;
+
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|Testbed2|NestedStruct3Interface")
 	TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> BackendService;

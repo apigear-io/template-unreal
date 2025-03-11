@@ -116,14 +116,46 @@ void UTestbed2ManyParamInterfaceMsgBusAdapter::_setBackendService(TScriptInterfa
 	{
 		UTestbed2ManyParamInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service Testbed2ManyParamInterface"));
-		BackendSignals->OnProp1ChangedBP.RemoveDynamic(this, &UTestbed2ManyParamInterfaceMsgBusAdapter::OnProp1Changed);
-		BackendSignals->OnProp2ChangedBP.RemoveDynamic(this, &UTestbed2ManyParamInterfaceMsgBusAdapter::OnProp2Changed);
-		BackendSignals->OnProp3ChangedBP.RemoveDynamic(this, &UTestbed2ManyParamInterfaceMsgBusAdapter::OnProp3Changed);
-		BackendSignals->OnProp4ChangedBP.RemoveDynamic(this, &UTestbed2ManyParamInterfaceMsgBusAdapter::OnProp4Changed);
-		BackendSignals->OnSig1SignalBP.RemoveDynamic(this, &UTestbed2ManyParamInterfaceMsgBusAdapter::OnSig1);
-		BackendSignals->OnSig2SignalBP.RemoveDynamic(this, &UTestbed2ManyParamInterfaceMsgBusAdapter::OnSig2);
-		BackendSignals->OnSig3SignalBP.RemoveDynamic(this, &UTestbed2ManyParamInterfaceMsgBusAdapter::OnSig3);
-		BackendSignals->OnSig4SignalBP.RemoveDynamic(this, &UTestbed2ManyParamInterfaceMsgBusAdapter::OnSig4);
+		if (OnProp1ChangedHandle.IsValid())
+		{
+			BackendSignals->OnProp1Changed.Remove(OnProp1ChangedHandle);
+			OnProp1ChangedHandle.Reset();
+		}
+		if (OnProp2ChangedHandle.IsValid())
+		{
+			BackendSignals->OnProp2Changed.Remove(OnProp2ChangedHandle);
+			OnProp2ChangedHandle.Reset();
+		}
+		if (OnProp3ChangedHandle.IsValid())
+		{
+			BackendSignals->OnProp3Changed.Remove(OnProp3ChangedHandle);
+			OnProp3ChangedHandle.Reset();
+		}
+		if (OnProp4ChangedHandle.IsValid())
+		{
+			BackendSignals->OnProp4Changed.Remove(OnProp4ChangedHandle);
+			OnProp4ChangedHandle.Reset();
+		}
+		if (OnSig1SignalHandle.IsValid())
+		{
+			BackendSignals->OnSig1Signal.Remove(OnSig1SignalHandle);
+			OnSig1SignalHandle.Reset();
+		}
+		if (OnSig2SignalHandle.IsValid())
+		{
+			BackendSignals->OnSig2Signal.Remove(OnSig2SignalHandle);
+			OnSig2SignalHandle.Reset();
+		}
+		if (OnSig3SignalHandle.IsValid())
+		{
+			BackendSignals->OnSig3Signal.Remove(OnSig3SignalHandle);
+			OnSig3SignalHandle.Reset();
+		}
+		if (OnSig4SignalHandle.IsValid())
+		{
+			BackendSignals->OnSig4Signal.Remove(OnSig4SignalHandle);
+			OnSig4SignalHandle.Reset();
+		}
 	}
 
 	// only set if interface is implemented
@@ -134,14 +166,14 @@ void UTestbed2ManyParamInterfaceMsgBusAdapter::_setBackendService(TScriptInterfa
 	UTestbed2ManyParamInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service Testbed2ManyParamInterface"));
 	// connect property changed signals or simple events
-	BackendSignals->OnProp1ChangedBP.AddDynamic(this, &UTestbed2ManyParamInterfaceMsgBusAdapter::OnProp1Changed);
-	BackendSignals->OnProp2ChangedBP.AddDynamic(this, &UTestbed2ManyParamInterfaceMsgBusAdapter::OnProp2Changed);
-	BackendSignals->OnProp3ChangedBP.AddDynamic(this, &UTestbed2ManyParamInterfaceMsgBusAdapter::OnProp3Changed);
-	BackendSignals->OnProp4ChangedBP.AddDynamic(this, &UTestbed2ManyParamInterfaceMsgBusAdapter::OnProp4Changed);
-	BackendSignals->OnSig1SignalBP.AddDynamic(this, &UTestbed2ManyParamInterfaceMsgBusAdapter::OnSig1);
-	BackendSignals->OnSig2SignalBP.AddDynamic(this, &UTestbed2ManyParamInterfaceMsgBusAdapter::OnSig2);
-	BackendSignals->OnSig3SignalBP.AddDynamic(this, &UTestbed2ManyParamInterfaceMsgBusAdapter::OnSig3);
-	BackendSignals->OnSig4SignalBP.AddDynamic(this, &UTestbed2ManyParamInterfaceMsgBusAdapter::OnSig4);
+	OnProp1ChangedHandle = BackendSignals->OnProp1Changed.AddUObject(this, &UTestbed2ManyParamInterfaceMsgBusAdapter::OnProp1Changed);
+	OnProp2ChangedHandle = BackendSignals->OnProp2Changed.AddUObject(this, &UTestbed2ManyParamInterfaceMsgBusAdapter::OnProp2Changed);
+	OnProp3ChangedHandle = BackendSignals->OnProp3Changed.AddUObject(this, &UTestbed2ManyParamInterfaceMsgBusAdapter::OnProp3Changed);
+	OnProp4ChangedHandle = BackendSignals->OnProp4Changed.AddUObject(this, &UTestbed2ManyParamInterfaceMsgBusAdapter::OnProp4Changed);
+	OnSig1SignalHandle = BackendSignals->OnSig1Signal.AddUObject(this, &UTestbed2ManyParamInterfaceMsgBusAdapter::OnSig1);
+	OnSig2SignalHandle = BackendSignals->OnSig2Signal.AddUObject(this, &UTestbed2ManyParamInterfaceMsgBusAdapter::OnSig2);
+	OnSig3SignalHandle = BackendSignals->OnSig3Signal.AddUObject(this, &UTestbed2ManyParamInterfaceMsgBusAdapter::OnSig3);
+	OnSig4SignalHandle = BackendSignals->OnSig4Signal.AddUObject(this, &UTestbed2ManyParamInterfaceMsgBusAdapter::OnSig4);
 }
 
 void UTestbed2ManyParamInterfaceMsgBusAdapter::OnNewClientDiscovered(const FTestbed2ManyParamInterfaceDiscoveryMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)

@@ -129,6 +129,13 @@ private:
 	UFUNCTION(Category = "ApiGear|Counter|Counter", BlueprintInternalUseOnly)
 	void OnExternVectorArrayChanged(const TArray<FVector>& ExternVectorArray);
 
+	// delegate handles
+	FDelegateHandle OnVectorChangedHandle;
+	FDelegateHandle OnExternVectorChangedHandle;
+	FDelegateHandle OnVectorArrayChangedHandle;
+	FDelegateHandle OnExternVectorArrayChangedHandle;
+	FDelegateHandle OnValueChangedSignalHandle;
+
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|Counter|Counter")
 	TScriptInterface<ICounterCounterInterface> BackendService;

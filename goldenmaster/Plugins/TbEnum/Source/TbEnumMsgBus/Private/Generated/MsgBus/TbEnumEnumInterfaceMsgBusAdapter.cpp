@@ -116,14 +116,46 @@ void UTbEnumEnumInterfaceMsgBusAdapter::_setBackendService(TScriptInterface<ITbE
 	{
 		UTbEnumEnumInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbEnumEnumInterface"));
-		BackendSignals->OnProp0ChangedBP.RemoveDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnProp0Changed);
-		BackendSignals->OnProp1ChangedBP.RemoveDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnProp1Changed);
-		BackendSignals->OnProp2ChangedBP.RemoveDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnProp2Changed);
-		BackendSignals->OnProp3ChangedBP.RemoveDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnProp3Changed);
-		BackendSignals->OnSig0SignalBP.RemoveDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnSig0);
-		BackendSignals->OnSig1SignalBP.RemoveDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnSig1);
-		BackendSignals->OnSig2SignalBP.RemoveDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnSig2);
-		BackendSignals->OnSig3SignalBP.RemoveDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnSig3);
+		if (OnProp0ChangedHandle.IsValid())
+		{
+			BackendSignals->OnProp0Changed.Remove(OnProp0ChangedHandle);
+			OnProp0ChangedHandle.Reset();
+		}
+		if (OnProp1ChangedHandle.IsValid())
+		{
+			BackendSignals->OnProp1Changed.Remove(OnProp1ChangedHandle);
+			OnProp1ChangedHandle.Reset();
+		}
+		if (OnProp2ChangedHandle.IsValid())
+		{
+			BackendSignals->OnProp2Changed.Remove(OnProp2ChangedHandle);
+			OnProp2ChangedHandle.Reset();
+		}
+		if (OnProp3ChangedHandle.IsValid())
+		{
+			BackendSignals->OnProp3Changed.Remove(OnProp3ChangedHandle);
+			OnProp3ChangedHandle.Reset();
+		}
+		if (OnSig0SignalHandle.IsValid())
+		{
+			BackendSignals->OnSig0Signal.Remove(OnSig0SignalHandle);
+			OnSig0SignalHandle.Reset();
+		}
+		if (OnSig1SignalHandle.IsValid())
+		{
+			BackendSignals->OnSig1Signal.Remove(OnSig1SignalHandle);
+			OnSig1SignalHandle.Reset();
+		}
+		if (OnSig2SignalHandle.IsValid())
+		{
+			BackendSignals->OnSig2Signal.Remove(OnSig2SignalHandle);
+			OnSig2SignalHandle.Reset();
+		}
+		if (OnSig3SignalHandle.IsValid())
+		{
+			BackendSignals->OnSig3Signal.Remove(OnSig3SignalHandle);
+			OnSig3SignalHandle.Reset();
+		}
 	}
 
 	// only set if interface is implemented
@@ -134,14 +166,14 @@ void UTbEnumEnumInterfaceMsgBusAdapter::_setBackendService(TScriptInterface<ITbE
 	UTbEnumEnumInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service TbEnumEnumInterface"));
 	// connect property changed signals or simple events
-	BackendSignals->OnProp0ChangedBP.AddDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnProp0Changed);
-	BackendSignals->OnProp1ChangedBP.AddDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnProp1Changed);
-	BackendSignals->OnProp2ChangedBP.AddDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnProp2Changed);
-	BackendSignals->OnProp3ChangedBP.AddDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnProp3Changed);
-	BackendSignals->OnSig0SignalBP.AddDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnSig0);
-	BackendSignals->OnSig1SignalBP.AddDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnSig1);
-	BackendSignals->OnSig2SignalBP.AddDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnSig2);
-	BackendSignals->OnSig3SignalBP.AddDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnSig3);
+	OnProp0ChangedHandle = BackendSignals->OnProp0Changed.AddUObject(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnProp0Changed);
+	OnProp1ChangedHandle = BackendSignals->OnProp1Changed.AddUObject(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnProp1Changed);
+	OnProp2ChangedHandle = BackendSignals->OnProp2Changed.AddUObject(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnProp2Changed);
+	OnProp3ChangedHandle = BackendSignals->OnProp3Changed.AddUObject(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnProp3Changed);
+	OnSig0SignalHandle = BackendSignals->OnSig0Signal.AddUObject(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnSig0);
+	OnSig1SignalHandle = BackendSignals->OnSig1Signal.AddUObject(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnSig1);
+	OnSig2SignalHandle = BackendSignals->OnSig2Signal.AddUObject(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnSig2);
+	OnSig3SignalHandle = BackendSignals->OnSig3Signal.AddUObject(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnSig3);
 }
 
 void UTbEnumEnumInterfaceMsgBusAdapter::OnNewClientDiscovered(const FTbEnumEnumInterfaceDiscoveryMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)

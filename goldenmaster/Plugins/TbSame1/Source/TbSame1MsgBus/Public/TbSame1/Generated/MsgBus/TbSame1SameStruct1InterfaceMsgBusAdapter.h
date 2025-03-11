@@ -105,6 +105,10 @@ private:
 	UFUNCTION(Category = "ApiGear|TbSame1|SameStruct1Interface", BlueprintInternalUseOnly)
 	void OnProp1Changed(const FTbSame1Struct1& Prop1);
 
+	// delegate handles
+	FDelegateHandle OnProp1ChangedHandle;
+	FDelegateHandle OnSig1SignalHandle;
+
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSame1|SameStruct1Interface")
 	TScriptInterface<ITbSame1SameStruct1InterfaceInterface> BackendService;

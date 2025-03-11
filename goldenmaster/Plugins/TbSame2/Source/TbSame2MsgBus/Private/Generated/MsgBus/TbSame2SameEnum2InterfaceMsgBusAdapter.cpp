@@ -112,10 +112,26 @@ void UTbSame2SameEnum2InterfaceMsgBusAdapter::_setBackendService(TScriptInterfac
 	{
 		UTbSame2SameEnum2InterfaceSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSame2SameEnum2Interface"));
-		BackendSignals->OnProp1ChangedBP.RemoveDynamic(this, &UTbSame2SameEnum2InterfaceMsgBusAdapter::OnProp1Changed);
-		BackendSignals->OnProp2ChangedBP.RemoveDynamic(this, &UTbSame2SameEnum2InterfaceMsgBusAdapter::OnProp2Changed);
-		BackendSignals->OnSig1SignalBP.RemoveDynamic(this, &UTbSame2SameEnum2InterfaceMsgBusAdapter::OnSig1);
-		BackendSignals->OnSig2SignalBP.RemoveDynamic(this, &UTbSame2SameEnum2InterfaceMsgBusAdapter::OnSig2);
+		if (OnProp1ChangedHandle.IsValid())
+		{
+			BackendSignals->OnProp1Changed.Remove(OnProp1ChangedHandle);
+			OnProp1ChangedHandle.Reset();
+		}
+		if (OnProp2ChangedHandle.IsValid())
+		{
+			BackendSignals->OnProp2Changed.Remove(OnProp2ChangedHandle);
+			OnProp2ChangedHandle.Reset();
+		}
+		if (OnSig1SignalHandle.IsValid())
+		{
+			BackendSignals->OnSig1Signal.Remove(OnSig1SignalHandle);
+			OnSig1SignalHandle.Reset();
+		}
+		if (OnSig2SignalHandle.IsValid())
+		{
+			BackendSignals->OnSig2Signal.Remove(OnSig2SignalHandle);
+			OnSig2SignalHandle.Reset();
+		}
 	}
 
 	// only set if interface is implemented
@@ -126,10 +142,10 @@ void UTbSame2SameEnum2InterfaceMsgBusAdapter::_setBackendService(TScriptInterfac
 	UTbSame2SameEnum2InterfaceSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service TbSame2SameEnum2Interface"));
 	// connect property changed signals or simple events
-	BackendSignals->OnProp1ChangedBP.AddDynamic(this, &UTbSame2SameEnum2InterfaceMsgBusAdapter::OnProp1Changed);
-	BackendSignals->OnProp2ChangedBP.AddDynamic(this, &UTbSame2SameEnum2InterfaceMsgBusAdapter::OnProp2Changed);
-	BackendSignals->OnSig1SignalBP.AddDynamic(this, &UTbSame2SameEnum2InterfaceMsgBusAdapter::OnSig1);
-	BackendSignals->OnSig2SignalBP.AddDynamic(this, &UTbSame2SameEnum2InterfaceMsgBusAdapter::OnSig2);
+	OnProp1ChangedHandle = BackendSignals->OnProp1Changed.AddUObject(this, &UTbSame2SameEnum2InterfaceMsgBusAdapter::OnProp1Changed);
+	OnProp2ChangedHandle = BackendSignals->OnProp2Changed.AddUObject(this, &UTbSame2SameEnum2InterfaceMsgBusAdapter::OnProp2Changed);
+	OnSig1SignalHandle = BackendSignals->OnSig1Signal.AddUObject(this, &UTbSame2SameEnum2InterfaceMsgBusAdapter::OnSig1);
+	OnSig2SignalHandle = BackendSignals->OnSig2Signal.AddUObject(this, &UTbSame2SameEnum2InterfaceMsgBusAdapter::OnSig2);
 }
 
 void UTbSame2SameEnum2InterfaceMsgBusAdapter::OnNewClientDiscovered(const FTbSame2SameEnum2InterfaceDiscoveryMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)

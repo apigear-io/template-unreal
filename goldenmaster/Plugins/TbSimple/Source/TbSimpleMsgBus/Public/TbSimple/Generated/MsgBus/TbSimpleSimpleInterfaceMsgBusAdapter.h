@@ -191,6 +191,24 @@ private:
 	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
 	void OnPropStringChanged(const FString& PropString);
 
+	// delegate handles
+	FDelegateHandle OnPropBoolChangedHandle;
+	FDelegateHandle OnPropIntChangedHandle;
+	FDelegateHandle OnPropInt32ChangedHandle;
+	FDelegateHandle OnPropInt64ChangedHandle;
+	FDelegateHandle OnPropFloatChangedHandle;
+	FDelegateHandle OnPropFloat32ChangedHandle;
+	FDelegateHandle OnPropFloat64ChangedHandle;
+	FDelegateHandle OnPropStringChangedHandle;
+	FDelegateHandle OnSigBoolSignalHandle;
+	FDelegateHandle OnSigIntSignalHandle;
+	FDelegateHandle OnSigInt32SignalHandle;
+	FDelegateHandle OnSigInt64SignalHandle;
+	FDelegateHandle OnSigFloatSignalHandle;
+	FDelegateHandle OnSigFloat32SignalHandle;
+	FDelegateHandle OnSigFloat64SignalHandle;
+	FDelegateHandle OnSigStringSignalHandle;
+
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSimple|SimpleInterface")
 	TScriptInterface<ITbSimpleSimpleInterfaceInterface> BackendService;

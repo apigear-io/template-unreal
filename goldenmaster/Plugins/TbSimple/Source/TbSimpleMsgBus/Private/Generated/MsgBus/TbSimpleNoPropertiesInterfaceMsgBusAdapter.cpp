@@ -110,8 +110,16 @@ void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::_setBackendService(TScriptInte
 	{
 		UTbSimpleNoPropertiesInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleNoPropertiesInterface"));
-		BackendSignals->OnSigVoidSignalBP.RemoveDynamic(this, &UTbSimpleNoPropertiesInterfaceMsgBusAdapter::OnSigVoid);
-		BackendSignals->OnSigBoolSignalBP.RemoveDynamic(this, &UTbSimpleNoPropertiesInterfaceMsgBusAdapter::OnSigBool);
+		if (OnSigVoidSignalHandle.IsValid())
+		{
+			BackendSignals->OnSigVoidSignal.Remove(OnSigVoidSignalHandle);
+			OnSigVoidSignalHandle.Reset();
+		}
+		if (OnSigBoolSignalHandle.IsValid())
+		{
+			BackendSignals->OnSigBoolSignal.Remove(OnSigBoolSignalHandle);
+			OnSigBoolSignalHandle.Reset();
+		}
 	}
 
 	// only set if interface is implemented
@@ -122,8 +130,8 @@ void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::_setBackendService(TScriptInte
 	UTbSimpleNoPropertiesInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service TbSimpleNoPropertiesInterface"));
 	// connect property changed signals or simple events
-	BackendSignals->OnSigVoidSignalBP.AddDynamic(this, &UTbSimpleNoPropertiesInterfaceMsgBusAdapter::OnSigVoid);
-	BackendSignals->OnSigBoolSignalBP.AddDynamic(this, &UTbSimpleNoPropertiesInterfaceMsgBusAdapter::OnSigBool);
+	OnSigVoidSignalHandle = BackendSignals->OnSigVoidSignal.AddUObject(this, &UTbSimpleNoPropertiesInterfaceMsgBusAdapter::OnSigVoid);
+	OnSigBoolSignalHandle = BackendSignals->OnSigBoolSignal.AddUObject(this, &UTbSimpleNoPropertiesInterfaceMsgBusAdapter::OnSigBool);
 }
 
 void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::OnNewClientDiscovered(const FTbSimpleNoPropertiesInterfaceDiscoveryMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)

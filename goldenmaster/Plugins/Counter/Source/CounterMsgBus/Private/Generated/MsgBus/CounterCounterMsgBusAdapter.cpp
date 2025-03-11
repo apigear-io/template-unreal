@@ -116,11 +116,31 @@ void UCounterCounterMsgBusAdapter::_setBackendService(TScriptInterface<ICounterC
 	{
 		UCounterCounterSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service CounterCounter"));
-		BackendSignals->OnVectorChangedBP.RemoveDynamic(this, &UCounterCounterMsgBusAdapter::OnVectorChanged);
-		BackendSignals->OnExternVectorChangedBP.RemoveDynamic(this, &UCounterCounterMsgBusAdapter::OnExternVectorChanged);
-		BackendSignals->OnVectorArrayChangedBP.RemoveDynamic(this, &UCounterCounterMsgBusAdapter::OnVectorArrayChanged);
-		BackendSignals->OnExternVectorArrayChangedBP.RemoveDynamic(this, &UCounterCounterMsgBusAdapter::OnExternVectorArrayChanged);
-		BackendSignals->OnValueChangedSignalBP.RemoveDynamic(this, &UCounterCounterMsgBusAdapter::OnValueChanged);
+		if (OnVectorChangedHandle.IsValid())
+		{
+			BackendSignals->OnVectorChanged.Remove(OnVectorChangedHandle);
+			OnVectorChangedHandle.Reset();
+		}
+		if (OnExternVectorChangedHandle.IsValid())
+		{
+			BackendSignals->OnExternVectorChanged.Remove(OnExternVectorChangedHandle);
+			OnExternVectorChangedHandle.Reset();
+		}
+		if (OnVectorArrayChangedHandle.IsValid())
+		{
+			BackendSignals->OnVectorArrayChanged.Remove(OnVectorArrayChangedHandle);
+			OnVectorArrayChangedHandle.Reset();
+		}
+		if (OnExternVectorArrayChangedHandle.IsValid())
+		{
+			BackendSignals->OnExternVectorArrayChanged.Remove(OnExternVectorArrayChangedHandle);
+			OnExternVectorArrayChangedHandle.Reset();
+		}
+		if (OnValueChangedSignalHandle.IsValid())
+		{
+			BackendSignals->OnValueChangedSignal.Remove(OnValueChangedSignalHandle);
+			OnValueChangedSignalHandle.Reset();
+		}
 	}
 
 	// only set if interface is implemented
@@ -131,11 +151,11 @@ void UCounterCounterMsgBusAdapter::_setBackendService(TScriptInterface<ICounterC
 	UCounterCounterSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service CounterCounter"));
 	// connect property changed signals or simple events
-	BackendSignals->OnVectorChangedBP.AddDynamic(this, &UCounterCounterMsgBusAdapter::OnVectorChanged);
-	BackendSignals->OnExternVectorChangedBP.AddDynamic(this, &UCounterCounterMsgBusAdapter::OnExternVectorChanged);
-	BackendSignals->OnVectorArrayChangedBP.AddDynamic(this, &UCounterCounterMsgBusAdapter::OnVectorArrayChanged);
-	BackendSignals->OnExternVectorArrayChangedBP.AddDynamic(this, &UCounterCounterMsgBusAdapter::OnExternVectorArrayChanged);
-	BackendSignals->OnValueChangedSignalBP.AddDynamic(this, &UCounterCounterMsgBusAdapter::OnValueChanged);
+	OnVectorChangedHandle = BackendSignals->OnVectorChanged.AddUObject(this, &UCounterCounterMsgBusAdapter::OnVectorChanged);
+	OnExternVectorChangedHandle = BackendSignals->OnExternVectorChanged.AddUObject(this, &UCounterCounterMsgBusAdapter::OnExternVectorChanged);
+	OnVectorArrayChangedHandle = BackendSignals->OnVectorArrayChanged.AddUObject(this, &UCounterCounterMsgBusAdapter::OnVectorArrayChanged);
+	OnExternVectorArrayChangedHandle = BackendSignals->OnExternVectorArrayChanged.AddUObject(this, &UCounterCounterMsgBusAdapter::OnExternVectorArrayChanged);
+	OnValueChangedSignalHandle = BackendSignals->OnValueChangedSignal.AddUObject(this, &UCounterCounterMsgBusAdapter::OnValueChanged);
 }
 
 void UCounterCounterMsgBusAdapter::OnNewClientDiscovered(const FCounterCounterDiscoveryMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)

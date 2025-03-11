@@ -124,23 +124,91 @@ void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::_setBackendService(TScriptInter
 	{
 		UTbSimpleSimpleArrayInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleSimpleArrayInterface"));
-		BackendSignals->OnPropBoolChangedBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropBoolChanged);
-		BackendSignals->OnPropIntChangedBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropIntChanged);
-		BackendSignals->OnPropInt32ChangedBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropInt32Changed);
-		BackendSignals->OnPropInt64ChangedBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropInt64Changed);
-		BackendSignals->OnPropFloatChangedBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropFloatChanged);
-		BackendSignals->OnPropFloat32ChangedBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropFloat32Changed);
-		BackendSignals->OnPropFloat64ChangedBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropFloat64Changed);
-		BackendSignals->OnPropStringChangedBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropStringChanged);
-		BackendSignals->OnPropReadOnlyStringChangedBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropReadOnlyStringChanged);
-		BackendSignals->OnSigBoolSignalBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSigBool);
-		BackendSignals->OnSigIntSignalBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSigInt);
-		BackendSignals->OnSigInt32SignalBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSigInt32);
-		BackendSignals->OnSigInt64SignalBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSigInt64);
-		BackendSignals->OnSigFloatSignalBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSigFloat);
-		BackendSignals->OnSigFloat32SignalBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSigFloat32);
-		BackendSignals->OnSigFloat64SignalBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSigFloat64);
-		BackendSignals->OnSigStringSignalBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSigString);
+		if (OnPropBoolChangedHandle.IsValid())
+		{
+			BackendSignals->OnPropBoolChanged.Remove(OnPropBoolChangedHandle);
+			OnPropBoolChangedHandle.Reset();
+		}
+		if (OnPropIntChangedHandle.IsValid())
+		{
+			BackendSignals->OnPropIntChanged.Remove(OnPropIntChangedHandle);
+			OnPropIntChangedHandle.Reset();
+		}
+		if (OnPropInt32ChangedHandle.IsValid())
+		{
+			BackendSignals->OnPropInt32Changed.Remove(OnPropInt32ChangedHandle);
+			OnPropInt32ChangedHandle.Reset();
+		}
+		if (OnPropInt64ChangedHandle.IsValid())
+		{
+			BackendSignals->OnPropInt64Changed.Remove(OnPropInt64ChangedHandle);
+			OnPropInt64ChangedHandle.Reset();
+		}
+		if (OnPropFloatChangedHandle.IsValid())
+		{
+			BackendSignals->OnPropFloatChanged.Remove(OnPropFloatChangedHandle);
+			OnPropFloatChangedHandle.Reset();
+		}
+		if (OnPropFloat32ChangedHandle.IsValid())
+		{
+			BackendSignals->OnPropFloat32Changed.Remove(OnPropFloat32ChangedHandle);
+			OnPropFloat32ChangedHandle.Reset();
+		}
+		if (OnPropFloat64ChangedHandle.IsValid())
+		{
+			BackendSignals->OnPropFloat64Changed.Remove(OnPropFloat64ChangedHandle);
+			OnPropFloat64ChangedHandle.Reset();
+		}
+		if (OnPropStringChangedHandle.IsValid())
+		{
+			BackendSignals->OnPropStringChanged.Remove(OnPropStringChangedHandle);
+			OnPropStringChangedHandle.Reset();
+		}
+		if (OnPropReadOnlyStringChangedHandle.IsValid())
+		{
+			BackendSignals->OnPropReadOnlyStringChanged.Remove(OnPropReadOnlyStringChangedHandle);
+			OnPropReadOnlyStringChangedHandle.Reset();
+		}
+		if (OnSigBoolSignalHandle.IsValid())
+		{
+			BackendSignals->OnSigBoolSignal.Remove(OnSigBoolSignalHandle);
+			OnSigBoolSignalHandle.Reset();
+		}
+		if (OnSigIntSignalHandle.IsValid())
+		{
+			BackendSignals->OnSigIntSignal.Remove(OnSigIntSignalHandle);
+			OnSigIntSignalHandle.Reset();
+		}
+		if (OnSigInt32SignalHandle.IsValid())
+		{
+			BackendSignals->OnSigInt32Signal.Remove(OnSigInt32SignalHandle);
+			OnSigInt32SignalHandle.Reset();
+		}
+		if (OnSigInt64SignalHandle.IsValid())
+		{
+			BackendSignals->OnSigInt64Signal.Remove(OnSigInt64SignalHandle);
+			OnSigInt64SignalHandle.Reset();
+		}
+		if (OnSigFloatSignalHandle.IsValid())
+		{
+			BackendSignals->OnSigFloatSignal.Remove(OnSigFloatSignalHandle);
+			OnSigFloatSignalHandle.Reset();
+		}
+		if (OnSigFloat32SignalHandle.IsValid())
+		{
+			BackendSignals->OnSigFloat32Signal.Remove(OnSigFloat32SignalHandle);
+			OnSigFloat32SignalHandle.Reset();
+		}
+		if (OnSigFloat64SignalHandle.IsValid())
+		{
+			BackendSignals->OnSigFloat64Signal.Remove(OnSigFloat64SignalHandle);
+			OnSigFloat64SignalHandle.Reset();
+		}
+		if (OnSigStringSignalHandle.IsValid())
+		{
+			BackendSignals->OnSigStringSignal.Remove(OnSigStringSignalHandle);
+			OnSigStringSignalHandle.Reset();
+		}
 	}
 
 	// only set if interface is implemented
@@ -151,23 +219,23 @@ void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::_setBackendService(TScriptInter
 	UTbSimpleSimpleArrayInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service TbSimpleSimpleArrayInterface"));
 	// connect property changed signals or simple events
-	BackendSignals->OnPropBoolChangedBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropBoolChanged);
-	BackendSignals->OnPropIntChangedBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropIntChanged);
-	BackendSignals->OnPropInt32ChangedBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropInt32Changed);
-	BackendSignals->OnPropInt64ChangedBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropInt64Changed);
-	BackendSignals->OnPropFloatChangedBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropFloatChanged);
-	BackendSignals->OnPropFloat32ChangedBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropFloat32Changed);
-	BackendSignals->OnPropFloat64ChangedBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropFloat64Changed);
-	BackendSignals->OnPropStringChangedBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropStringChanged);
-	BackendSignals->OnPropReadOnlyStringChangedBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropReadOnlyStringChanged);
-	BackendSignals->OnSigBoolSignalBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSigBool);
-	BackendSignals->OnSigIntSignalBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSigInt);
-	BackendSignals->OnSigInt32SignalBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSigInt32);
-	BackendSignals->OnSigInt64SignalBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSigInt64);
-	BackendSignals->OnSigFloatSignalBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSigFloat);
-	BackendSignals->OnSigFloat32SignalBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSigFloat32);
-	BackendSignals->OnSigFloat64SignalBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSigFloat64);
-	BackendSignals->OnSigStringSignalBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSigString);
+	OnPropBoolChangedHandle = BackendSignals->OnPropBoolChanged.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropBoolChanged);
+	OnPropIntChangedHandle = BackendSignals->OnPropIntChanged.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropIntChanged);
+	OnPropInt32ChangedHandle = BackendSignals->OnPropInt32Changed.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropInt32Changed);
+	OnPropInt64ChangedHandle = BackendSignals->OnPropInt64Changed.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropInt64Changed);
+	OnPropFloatChangedHandle = BackendSignals->OnPropFloatChanged.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropFloatChanged);
+	OnPropFloat32ChangedHandle = BackendSignals->OnPropFloat32Changed.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropFloat32Changed);
+	OnPropFloat64ChangedHandle = BackendSignals->OnPropFloat64Changed.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropFloat64Changed);
+	OnPropStringChangedHandle = BackendSignals->OnPropStringChanged.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropStringChanged);
+	OnPropReadOnlyStringChangedHandle = BackendSignals->OnPropReadOnlyStringChanged.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropReadOnlyStringChanged);
+	OnSigBoolSignalHandle = BackendSignals->OnSigBoolSignal.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSigBool);
+	OnSigIntSignalHandle = BackendSignals->OnSigIntSignal.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSigInt);
+	OnSigInt32SignalHandle = BackendSignals->OnSigInt32Signal.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSigInt32);
+	OnSigInt64SignalHandle = BackendSignals->OnSigInt64Signal.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSigInt64);
+	OnSigFloatSignalHandle = BackendSignals->OnSigFloatSignal.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSigFloat);
+	OnSigFloat32SignalHandle = BackendSignals->OnSigFloat32Signal.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSigFloat32);
+	OnSigFloat64SignalHandle = BackendSignals->OnSigFloat64Signal.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSigFloat64);
+	OnSigStringSignalHandle = BackendSignals->OnSigStringSignal.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSigString);
 }
 
 void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnNewClientDiscovered(const FTbSimpleSimpleArrayInterfaceDiscoveryMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
