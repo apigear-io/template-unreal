@@ -71,7 +71,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbEnumEnumInterfaceStatsUpdatedDele
 struct TbEnumEnumInterfacePropertiesMsgBusData;
 DECLARE_LOG_CATEGORY_EXTERN(LogTbEnumEnumInterfaceMsgBusClient, Log, All);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbEnumEnumInterfaceConnectionStatusChangedDelegate, bool, IsConnected);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTbEnumEnumInterfaceConnectionStatusChangedDelegate, bool /* IsConnected */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbEnumEnumInterfaceConnectionStatusChangedDelegateBP, bool, IsConnected);
 
 UCLASS(NotBlueprintable, BlueprintType)
 class TBENUMMSGBUS_API UTbEnumEnumInterfaceMsgBusClient : public UAbstractTbEnumEnumInterface
@@ -105,6 +106,7 @@ public:
 	 * Used when the interface client changes connection status:
 	 */
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface|Remote", DisplayName = "Connection Status Changed")
+	FTbEnumEnumInterfaceConnectionStatusChangedDelegateBP _ConnectionStatusChangedBP;
 	FTbEnumEnumInterfaceConnectionStatusChangedDelegate _ConnectionStatusChanged;
 
 	// properties

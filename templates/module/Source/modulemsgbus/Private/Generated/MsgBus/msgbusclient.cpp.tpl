@@ -151,6 +151,7 @@ void {{$Class}}::_Disconnect()
 	{{$Iface}}MsgBusEndpoint.Reset();
 	ServiceAddress.Invalidate();
 	_ConnectionStatusChanged.Broadcast(false);
+	_ConnectionStatusChangedBP.Broadcast(false);
 }
 
 void {{$Class}}::_DiscoverService()
@@ -214,6 +215,7 @@ void {{$Class}}::OnConnectionInit(const F{{$Iface}}InitMessage& InMessage, const
 {{- end }}
 
 	_ConnectionStatusChanged.Broadcast(true);
+	_ConnectionStatusChangedBP.Broadcast(true);
 }
 
 void {{$Class}}::_OnHeartbeat()
@@ -300,6 +302,7 @@ void {{$Class}}::OnServiceClosedConnection(const F{{$Iface}}ServiceDisconnectMes
 
 	ServiceAddress.Invalidate();
 	_ConnectionStatusChanged.Broadcast(false);
+	_ConnectionStatusChangedBP.Broadcast(false);
 }
 
 {{- if len .Interface.Properties }}{{ nl }}{{ end }}

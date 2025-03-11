@@ -58,7 +58,7 @@ void UTbSimpleSimpleInterfaceMsgBusSpec::Define()
 		UTbSimpleSimpleInterfaceMsgBusClient* MsgBusClient = Cast<UTbSimpleSimpleInterfaceMsgBusClient>(ImplFixture->GetImplementation().GetObject());
 		TestTrue("Check for valid MsgBus client", MsgBusClient != nullptr);
 
-		MsgBusClient->_ConnectionStatusChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceMsgBusHelper::_ConnectionStatusChangedCb);
+		MsgBusClient->_ConnectionStatusChanged.AddUObject(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceMsgBusHelper::_ConnectionStatusChangedCb);
 
 		MsgBusClient->_Connect();
 	});

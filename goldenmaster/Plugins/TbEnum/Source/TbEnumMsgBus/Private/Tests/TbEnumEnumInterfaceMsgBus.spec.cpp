@@ -58,7 +58,7 @@ void UTbEnumEnumInterfaceMsgBusSpec::Define()
 		UTbEnumEnumInterfaceMsgBusClient* MsgBusClient = Cast<UTbEnumEnumInterfaceMsgBusClient>(ImplFixture->GetImplementation().GetObject());
 		TestTrue("Check for valid MsgBus client", MsgBusClient != nullptr);
 
-		MsgBusClient->_ConnectionStatusChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTbEnumEnumInterfaceMsgBusHelper::_ConnectionStatusChangedCb);
+		MsgBusClient->_ConnectionStatusChanged.AddUObject(ImplFixture->GetHelper().Get(), &UTbEnumEnumInterfaceMsgBusHelper::_ConnectionStatusChangedCb);
 
 		MsgBusClient->_Connect();
 	});

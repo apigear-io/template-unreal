@@ -68,7 +68,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCounterCounterStatsUpdatedDelegate,
 struct CounterCounterPropertiesMsgBusData;
 DECLARE_LOG_CATEGORY_EXTERN(LogCounterCounterMsgBusClient, Log, All);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCounterCounterConnectionStatusChangedDelegate, bool, IsConnected);
+DECLARE_MULTICAST_DELEGATE_OneParam(FCounterCounterConnectionStatusChangedDelegate, bool /* IsConnected */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCounterCounterConnectionStatusChangedDelegateBP, bool, IsConnected);
 
 UCLASS(NotBlueprintable, BlueprintType)
 class COUNTERMSGBUS_API UCounterCounterMsgBusClient : public UAbstractCounterCounter
@@ -102,6 +103,7 @@ public:
 	 * Used when the interface client changes connection status:
 	 */
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Counter|Counter|Remote", DisplayName = "Connection Status Changed")
+	FCounterCounterConnectionStatusChangedDelegateBP _ConnectionStatusChangedBP;
 	FCounterCounterConnectionStatusChangedDelegate _ConnectionStatusChanged;
 
 	// properties

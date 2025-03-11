@@ -52,7 +52,7 @@ void {{$Class}}MsgBusSpec::Define()
 		U{{$DisplayName}}MsgBusClient* MsgBusClient = Cast<U{{$DisplayName}}MsgBusClient>(ImplFixture->GetImplementation().GetObject());
 		TestTrue("Check for valid MsgBus client", MsgBusClient != nullptr);
 
-		MsgBusClient->_ConnectionStatusChanged.AddDynamic(ImplFixture->GetHelper().Get(), &U{{$DisplayName}}MsgBusHelper::_ConnectionStatusChangedCb);
+		MsgBusClient->_ConnectionStatusChanged.AddUObject(ImplFixture->GetHelper().Get(), &U{{$DisplayName}}MsgBusHelper::_ConnectionStatusChangedCb);
 
 		MsgBusClient->_Connect();
 	});

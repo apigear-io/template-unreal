@@ -65,7 +65,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed2NestedStruct2InterfaceStats
 struct Testbed2NestedStruct2InterfacePropertiesMsgBusData;
 DECLARE_LOG_CATEGORY_EXTERN(LogTestbed2NestedStruct2InterfaceMsgBusClient, Log, All);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed2NestedStruct2InterfaceConnectionStatusChangedDelegate, bool, IsConnected);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTestbed2NestedStruct2InterfaceConnectionStatusChangedDelegate, bool /* IsConnected */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed2NestedStruct2InterfaceConnectionStatusChangedDelegateBP, bool, IsConnected);
 
 UCLASS(NotBlueprintable, BlueprintType)
 class TESTBED2MSGBUS_API UTestbed2NestedStruct2InterfaceMsgBusClient : public UAbstractTestbed2NestedStruct2Interface
@@ -99,6 +100,7 @@ public:
 	 * Used when the interface client changes connection status:
 	 */
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct2Interface|Remote", DisplayName = "Connection Status Changed")
+	FTestbed2NestedStruct2InterfaceConnectionStatusChangedDelegateBP _ConnectionStatusChangedBP;
 	FTestbed2NestedStruct2InterfaceConnectionStatusChangedDelegate _ConnectionStatusChanged;
 
 	// properties

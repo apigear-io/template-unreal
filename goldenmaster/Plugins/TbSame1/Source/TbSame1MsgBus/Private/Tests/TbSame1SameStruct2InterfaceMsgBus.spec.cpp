@@ -58,7 +58,7 @@ void UTbSame1SameStruct2InterfaceMsgBusSpec::Define()
 		UTbSame1SameStruct2InterfaceMsgBusClient* MsgBusClient = Cast<UTbSame1SameStruct2InterfaceMsgBusClient>(ImplFixture->GetImplementation().GetObject());
 		TestTrue("Check for valid MsgBus client", MsgBusClient != nullptr);
 
-		MsgBusClient->_ConnectionStatusChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame1SameStruct2InterfaceMsgBusHelper::_ConnectionStatusChangedCb);
+		MsgBusClient->_ConnectionStatusChanged.AddUObject(ImplFixture->GetHelper().Get(), &UTbSame1SameStruct2InterfaceMsgBusHelper::_ConnectionStatusChangedCb);
 
 		MsgBusClient->_Connect();
 	});

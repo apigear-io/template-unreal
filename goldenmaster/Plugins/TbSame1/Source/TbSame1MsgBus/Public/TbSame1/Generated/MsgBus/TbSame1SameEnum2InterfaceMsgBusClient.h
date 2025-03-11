@@ -65,7 +65,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSame1SameEnum2InterfaceStatsUpdat
 struct TbSame1SameEnum2InterfacePropertiesMsgBusData;
 DECLARE_LOG_CATEGORY_EXTERN(LogTbSame1SameEnum2InterfaceMsgBusClient, Log, All);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSame1SameEnum2InterfaceConnectionStatusChangedDelegate, bool, IsConnected);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTbSame1SameEnum2InterfaceConnectionStatusChangedDelegate, bool /* IsConnected */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSame1SameEnum2InterfaceConnectionStatusChangedDelegateBP, bool, IsConnected);
 
 UCLASS(NotBlueprintable, BlueprintType)
 class TBSAME1MSGBUS_API UTbSame1SameEnum2InterfaceMsgBusClient : public UAbstractTbSame1SameEnum2Interface
@@ -99,6 +100,7 @@ public:
 	 * Used when the interface client changes connection status:
 	 */
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame1|SameEnum2Interface|Remote", DisplayName = "Connection Status Changed")
+	FTbSame1SameEnum2InterfaceConnectionStatusChangedDelegateBP _ConnectionStatusChangedBP;
 	FTbSame1SameEnum2InterfaceConnectionStatusChangedDelegate _ConnectionStatusChanged;
 
 	// properties

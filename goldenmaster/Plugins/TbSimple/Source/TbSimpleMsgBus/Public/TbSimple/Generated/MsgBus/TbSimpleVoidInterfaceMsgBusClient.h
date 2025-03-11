@@ -58,7 +58,8 @@ struct FTbSimpleVoidInterfaceStats
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleVoidInterfaceStatsUpdatedDelegate, FTbSimpleVoidInterfaceStats, Stats);
 DECLARE_LOG_CATEGORY_EXTERN(LogTbSimpleVoidInterfaceMsgBusClient, Log, All);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleVoidInterfaceConnectionStatusChangedDelegate, bool, IsConnected);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTbSimpleVoidInterfaceConnectionStatusChangedDelegate, bool /* IsConnected */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleVoidInterfaceConnectionStatusChangedDelegateBP, bool, IsConnected);
 
 UCLASS(NotBlueprintable, BlueprintType)
 class TBSIMPLEMSGBUS_API UTbSimpleVoidInterfaceMsgBusClient : public UAbstractTbSimpleVoidInterface
@@ -92,6 +93,7 @@ public:
 	 * Used when the interface client changes connection status:
 	 */
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|VoidInterface|Remote", DisplayName = "Connection Status Changed")
+	FTbSimpleVoidInterfaceConnectionStatusChangedDelegateBP _ConnectionStatusChangedBP;
 	FTbSimpleVoidInterfaceConnectionStatusChangedDelegate _ConnectionStatusChanged;
 
 	// properties

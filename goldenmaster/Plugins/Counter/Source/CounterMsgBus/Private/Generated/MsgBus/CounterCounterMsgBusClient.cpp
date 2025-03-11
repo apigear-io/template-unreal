@@ -132,6 +132,7 @@ void UCounterCounterMsgBusClient::_Disconnect()
 	CounterCounterMsgBusEndpoint.Reset();
 	ServiceAddress.Invalidate();
 	_ConnectionStatusChanged.Broadcast(false);
+	_ConnectionStatusChangedBP.Broadcast(false);
 }
 
 void UCounterCounterMsgBusClient::_DiscoverService()
@@ -212,6 +213,7 @@ void UCounterCounterMsgBusClient::OnConnectionInit(const FCounterCounterInitMess
 	}
 
 	_ConnectionStatusChanged.Broadcast(true);
+	_ConnectionStatusChangedBP.Broadcast(true);
 }
 
 void UCounterCounterMsgBusClient::_OnHeartbeat()
@@ -298,6 +300,7 @@ void UCounterCounterMsgBusClient::OnServiceClosedConnection(const FCounterCounte
 
 	ServiceAddress.Invalidate();
 	_ConnectionStatusChanged.Broadcast(false);
+	_ConnectionStatusChangedBP.Broadcast(false);
 }
 
 FCustomTypesVector3D UCounterCounterMsgBusClient::GetVector() const

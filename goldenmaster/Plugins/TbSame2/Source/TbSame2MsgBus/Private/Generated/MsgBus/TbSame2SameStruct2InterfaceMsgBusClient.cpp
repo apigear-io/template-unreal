@@ -125,6 +125,7 @@ void UTbSame2SameStruct2InterfaceMsgBusClient::_Disconnect()
 	TbSame2SameStruct2InterfaceMsgBusEndpoint.Reset();
 	ServiceAddress.Invalidate();
 	_ConnectionStatusChanged.Broadcast(false);
+	_ConnectionStatusChangedBP.Broadcast(false);
 }
 
 void UTbSame2SameStruct2InterfaceMsgBusClient::_DiscoverService()
@@ -191,6 +192,7 @@ void UTbSame2SameStruct2InterfaceMsgBusClient::OnConnectionInit(const FTbSame2Sa
 	}
 
 	_ConnectionStatusChanged.Broadcast(true);
+	_ConnectionStatusChangedBP.Broadcast(true);
 }
 
 void UTbSame2SameStruct2InterfaceMsgBusClient::_OnHeartbeat()
@@ -277,6 +279,7 @@ void UTbSame2SameStruct2InterfaceMsgBusClient::OnServiceClosedConnection(const F
 
 	ServiceAddress.Invalidate();
 	_ConnectionStatusChanged.Broadcast(false);
+	_ConnectionStatusChangedBP.Broadcast(false);
 }
 
 FTbSame2Struct2 UTbSame2SameStruct2InterfaceMsgBusClient::GetProp1() const

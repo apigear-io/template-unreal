@@ -64,7 +64,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbNamesNamEsStatsUpdatedDelegate, F
 struct TbNamesNamEsPropertiesMsgBusData;
 DECLARE_LOG_CATEGORY_EXTERN(LogTbNamesNamEsMsgBusClient, Log, All);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbNamesNamEsConnectionStatusChangedDelegate, bool, IsConnected);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTbNamesNamEsConnectionStatusChangedDelegate, bool /* IsConnected */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbNamesNamEsConnectionStatusChangedDelegateBP, bool, IsConnected);
 
 UCLASS(NotBlueprintable, BlueprintType)
 class TBNAMESMSGBUS_API UTbNamesNamEsMsgBusClient : public UAbstractTbNamesNamEs
@@ -98,6 +99,7 @@ public:
 	 * Used when the interface client changes connection status:
 	 */
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbNames|NamEs|Remote", DisplayName = "Connection Status Changed")
+	FTbNamesNamEsConnectionStatusChangedDelegateBP _ConnectionStatusChangedBP;
 	FTbNamesNamEsConnectionStatusChangedDelegate _ConnectionStatusChanged;
 
 	// properties

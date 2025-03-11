@@ -131,6 +131,7 @@ void UTbEnumEnumInterfaceMsgBusClient::_Disconnect()
 	TbEnumEnumInterfaceMsgBusEndpoint.Reset();
 	ServiceAddress.Invalidate();
 	_ConnectionStatusChanged.Broadcast(false);
+	_ConnectionStatusChangedBP.Broadcast(false);
 }
 
 void UTbEnumEnumInterfaceMsgBusClient::_DiscoverService()
@@ -211,6 +212,7 @@ void UTbEnumEnumInterfaceMsgBusClient::OnConnectionInit(const FTbEnumEnumInterfa
 	}
 
 	_ConnectionStatusChanged.Broadcast(true);
+	_ConnectionStatusChangedBP.Broadcast(true);
 }
 
 void UTbEnumEnumInterfaceMsgBusClient::_OnHeartbeat()
@@ -297,6 +299,7 @@ void UTbEnumEnumInterfaceMsgBusClient::OnServiceClosedConnection(const FTbEnumEn
 
 	ServiceAddress.Invalidate();
 	_ConnectionStatusChanged.Broadcast(false);
+	_ConnectionStatusChangedBP.Broadcast(false);
 }
 
 ETbEnumEnum0 UTbEnumEnumInterfaceMsgBusClient::GetProp0() const

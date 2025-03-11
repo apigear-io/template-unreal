@@ -131,6 +131,7 @@ void UTestbed2ManyParamInterfaceMsgBusClient::_Disconnect()
 	Testbed2ManyParamInterfaceMsgBusEndpoint.Reset();
 	ServiceAddress.Invalidate();
 	_ConnectionStatusChanged.Broadcast(false);
+	_ConnectionStatusChangedBP.Broadcast(false);
 }
 
 void UTestbed2ManyParamInterfaceMsgBusClient::_DiscoverService()
@@ -211,6 +212,7 @@ void UTestbed2ManyParamInterfaceMsgBusClient::OnConnectionInit(const FTestbed2Ma
 	}
 
 	_ConnectionStatusChanged.Broadcast(true);
+	_ConnectionStatusChangedBP.Broadcast(true);
 }
 
 void UTestbed2ManyParamInterfaceMsgBusClient::_OnHeartbeat()
@@ -297,6 +299,7 @@ void UTestbed2ManyParamInterfaceMsgBusClient::OnServiceClosedConnection(const FT
 
 	ServiceAddress.Invalidate();
 	_ConnectionStatusChanged.Broadcast(false);
+	_ConnectionStatusChangedBP.Broadcast(false);
 }
 
 int32 UTestbed2ManyParamInterfaceMsgBusClient::GetProp1() const

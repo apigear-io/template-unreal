@@ -123,6 +123,7 @@ void UTbNamesNamEsMsgBusClient::_Disconnect()
 	TbNamesNamEsMsgBusEndpoint.Reset();
 	ServiceAddress.Invalidate();
 	_ConnectionStatusChanged.Broadcast(false);
+	_ConnectionStatusChangedBP.Broadcast(false);
 }
 
 void UTbNamesNamEsMsgBusClient::_DiscoverService()
@@ -196,6 +197,7 @@ void UTbNamesNamEsMsgBusClient::OnConnectionInit(const FTbNamesNamEsInitMessage&
 	}
 
 	_ConnectionStatusChanged.Broadcast(true);
+	_ConnectionStatusChangedBP.Broadcast(true);
 }
 
 void UTbNamesNamEsMsgBusClient::_OnHeartbeat()
@@ -282,6 +284,7 @@ void UTbNamesNamEsMsgBusClient::OnServiceClosedConnection(const FTbNamesNamEsSer
 
 	ServiceAddress.Invalidate();
 	_ConnectionStatusChanged.Broadcast(false);
+	_ConnectionStatusChangedBP.Broadcast(false);
 }
 
 bool UTbNamesNamEsMsgBusClient::GetSwitch() const

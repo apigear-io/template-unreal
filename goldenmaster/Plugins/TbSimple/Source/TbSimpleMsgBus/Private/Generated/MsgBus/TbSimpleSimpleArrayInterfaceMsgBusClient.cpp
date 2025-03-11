@@ -158,6 +158,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::_Disconnect()
 	TbSimpleSimpleArrayInterfaceMsgBusEndpoint.Reset();
 	ServiceAddress.Invalidate();
 	_ConnectionStatusChanged.Broadcast(false);
+	_ConnectionStatusChangedBP.Broadcast(false);
 }
 
 void UTbSimpleSimpleArrayInterfaceMsgBusClient::_DiscoverService()
@@ -273,6 +274,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnConnectionInit(const FTbSimple
 	}
 
 	_ConnectionStatusChanged.Broadcast(true);
+	_ConnectionStatusChangedBP.Broadcast(true);
 }
 
 void UTbSimpleSimpleArrayInterfaceMsgBusClient::_OnHeartbeat()
@@ -359,6 +361,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnServiceClosedConnection(const 
 
 	ServiceAddress.Invalidate();
 	_ConnectionStatusChanged.Broadcast(false);
+	_ConnectionStatusChangedBP.Broadcast(false);
 }
 
 TArray<bool> UTbSimpleSimpleArrayInterfaceMsgBusClient::GetPropBool() const

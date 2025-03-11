@@ -68,7 +68,8 @@ struct {{$Iface}}PropertiesMsgBusData;
 {{- end}}
 DECLARE_LOG_CATEGORY_EXTERN(Log{{$Iface}}MsgBusClient, Log, All);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(F{{$Iface}}ConnectionStatusChangedDelegate, bool, IsConnected);
+DECLARE_MULTICAST_DELEGATE_OneParam(F{{$Iface}}ConnectionStatusChangedDelegate, bool /* IsConnected */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(F{{$Iface}}ConnectionStatusChangedDelegateBP, bool, IsConnected);
 
 UCLASS(NotBlueprintable, BlueprintType)
 class {{ $API_MACRO }} {{$Class}} : public {{$abstractclass}}
@@ -102,6 +103,7 @@ public:
 	 * Used when the interface client changes connection status:
 	 */
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|{{$ModuleName}}|{{$IfaceName}}|Remote", DisplayName = "Connection Status Changed")
+	F{{$Iface}}ConnectionStatusChangedDelegateBP _ConnectionStatusChangedBP;
 	F{{$Iface}}ConnectionStatusChangedDelegate _ConnectionStatusChanged;
 
 	// properties

@@ -135,6 +135,7 @@ void UTestbed1StructInterfaceMsgBusClient::_Disconnect()
 	Testbed1StructInterfaceMsgBusEndpoint.Reset();
 	ServiceAddress.Invalidate();
 	_ConnectionStatusChanged.Broadcast(false);
+	_ConnectionStatusChangedBP.Broadcast(false);
 }
 
 void UTestbed1StructInterfaceMsgBusClient::_DiscoverService()
@@ -215,6 +216,7 @@ void UTestbed1StructInterfaceMsgBusClient::OnConnectionInit(const FTestbed1Struc
 	}
 
 	_ConnectionStatusChanged.Broadcast(true);
+	_ConnectionStatusChangedBP.Broadcast(true);
 }
 
 void UTestbed1StructInterfaceMsgBusClient::_OnHeartbeat()
@@ -301,6 +303,7 @@ void UTestbed1StructInterfaceMsgBusClient::OnServiceClosedConnection(const FTest
 
 	ServiceAddress.Invalidate();
 	_ConnectionStatusChanged.Broadcast(false);
+	_ConnectionStatusChangedBP.Broadcast(false);
 }
 
 FTestbed1StructBool UTestbed1StructInterfaceMsgBusClient::GetPropBool() const
