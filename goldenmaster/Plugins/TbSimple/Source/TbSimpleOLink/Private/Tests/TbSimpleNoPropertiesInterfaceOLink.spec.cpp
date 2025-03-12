@@ -97,7 +97,8 @@ void UTbSimpleNoPropertiesInterfaceOLinkSpec::Define()
 	LatentIt("Signal.SigVoid", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		UTbSimpleNoPropertiesInterfaceSignals* TbSimpleNoPropertiesInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleNoPropertiesInterfaceSignals->OnSigVoidSignal.AddLambda([this, TestDone](){
+		TbSimpleNoPropertiesInterfaceSignals->OnSigVoidSignal.AddLambda([this, TestDone]()
+			{
 			// known test value
 			TestDone.Execute();
 		});
@@ -109,7 +110,8 @@ void UTbSimpleNoPropertiesInterfaceOLinkSpec::Define()
 	LatentIt("Signal.SigBool", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		UTbSimpleNoPropertiesInterfaceSignals* TbSimpleNoPropertiesInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleNoPropertiesInterfaceSignals->OnSigBoolSignal.AddLambda([this, TestDone](bool bInParamBool){
+		TbSimpleNoPropertiesInterfaceSignals->OnSigBoolSignal.AddLambda([this, TestDone](bool bInParamBool)
+			{
 			// known test value
 			bool bParamBoolTestValue = true;
 			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), bInParamBool, bParamBoolTestValue);

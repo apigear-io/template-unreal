@@ -87,7 +87,8 @@ void UTbSimpleVoidInterfaceOLinkSpec::Define()
 	LatentIt("Signal.SigVoid", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		UTbSimpleVoidInterfaceSignals* TbSimpleVoidInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleVoidInterfaceSignals->OnSigVoidSignal.AddLambda([this, TestDone](){
+		TbSimpleVoidInterfaceSignals->OnSigVoidSignal.AddLambda([this, TestDone]()
+			{
 			// known test value
 			TestDone.Execute();
 		});

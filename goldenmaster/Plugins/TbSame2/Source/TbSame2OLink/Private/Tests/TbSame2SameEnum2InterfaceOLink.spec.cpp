@@ -88,7 +88,8 @@ void UTbSame2SameEnum2InterfaceOLinkSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp1(), TestValue);
 
 		UTbSame2SameEnum2InterfaceSignals* TbSame2SameEnum2InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSame2SameEnum2InterfaceSignals->OnProp1Changed.AddLambda([this, TestDone](ETbSame2Enum1 InProp1){
+		TbSame2SameEnum2InterfaceSignals->OnProp1Changed.AddLambda([this, TestDone](ETbSame2Enum1 InProp1)
+			{
 			ETbSame2Enum1 TestValue = ETbSame2Enum1::TS2E1_VALUE1;
 			// use different test value
 			TestValue = ETbSame2Enum1::TS2E1_VALUE2;
@@ -116,7 +117,8 @@ void UTbSame2SameEnum2InterfaceOLinkSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp2(), TestValue);
 
 		UTbSame2SameEnum2InterfaceSignals* TbSame2SameEnum2InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSame2SameEnum2InterfaceSignals->OnProp2Changed.AddLambda([this, TestDone](ETbSame2Enum2 InProp2){
+		TbSame2SameEnum2InterfaceSignals->OnProp2Changed.AddLambda([this, TestDone](ETbSame2Enum2 InProp2)
+			{
 			ETbSame2Enum2 TestValue = ETbSame2Enum2::TS2E2_VALUE1;
 			// use different test value
 			TestValue = ETbSame2Enum2::TS2E2_VALUE2;
@@ -153,7 +155,8 @@ void UTbSame2SameEnum2InterfaceOLinkSpec::Define()
 	LatentIt("Signal.Sig1", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		UTbSame2SameEnum2InterfaceSignals* TbSame2SameEnum2InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSame2SameEnum2InterfaceSignals->OnSig1Signal.AddLambda([this, TestDone](ETbSame2Enum1 InParam1){
+		TbSame2SameEnum2InterfaceSignals->OnSig1Signal.AddLambda([this, TestDone](ETbSame2Enum1 InParam1)
+			{
 			// known test value
 			ETbSame2Enum1 Param1TestValue = ETbSame2Enum1::TS2E1_VALUE2;
 			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
@@ -168,7 +171,8 @@ void UTbSame2SameEnum2InterfaceOLinkSpec::Define()
 	LatentIt("Signal.Sig2", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		UTbSame2SameEnum2InterfaceSignals* TbSame2SameEnum2InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSame2SameEnum2InterfaceSignals->OnSig2Signal.AddLambda([this, TestDone](ETbSame2Enum1 InParam1, ETbSame2Enum2 InParam2){
+		TbSame2SameEnum2InterfaceSignals->OnSig2Signal.AddLambda([this, TestDone](ETbSame2Enum1 InParam1, ETbSame2Enum2 InParam2)
+			{
 			// known test value
 			ETbSame2Enum1 Param1TestValue = ETbSame2Enum1::TS2E1_VALUE2;
 			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);

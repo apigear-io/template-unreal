@@ -88,7 +88,8 @@ void UTbSame1SameStruct1InterfaceOLinkSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp1(), TestValue);
 
 		UTbSame1SameStruct1InterfaceSignals* TbSame1SameStruct1InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSame1SameStruct1InterfaceSignals->OnProp1Changed.AddLambda([this, TestDone](const FTbSame1Struct1& InProp1){
+		TbSame1SameStruct1InterfaceSignals->OnProp1Changed.AddLambda([this, TestDone](const FTbSame1Struct1& InProp1)
+			{
 			FTbSame1Struct1 TestValue = FTbSame1Struct1();
 			// use different test value
 			TestValue = createTestFTbSame1Struct1();
@@ -115,7 +116,8 @@ void UTbSame1SameStruct1InterfaceOLinkSpec::Define()
 	LatentIt("Signal.Sig1", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		UTbSame1SameStruct1InterfaceSignals* TbSame1SameStruct1InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSame1SameStruct1InterfaceSignals->OnSig1Signal.AddLambda([this, TestDone](const FTbSame1Struct1& InParam1){
+		TbSame1SameStruct1InterfaceSignals->OnSig1Signal.AddLambda([this, TestDone](const FTbSame1Struct1& InParam1)
+			{
 			// known test value
 			FTbSame1Struct1 Param1TestValue = createTestFTbSame1Struct1();
 			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);

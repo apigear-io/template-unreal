@@ -88,7 +88,8 @@ void UTbSimpleNoOperationsInterfaceOLinkSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
 
 		UTbSimpleNoOperationsInterfaceSignals* TbSimpleNoOperationsInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleNoOperationsInterfaceSignals->OnPropBoolChanged.AddLambda([this, TestDone](bool bInPropBool){
+		TbSimpleNoOperationsInterfaceSignals->OnPropBoolChanged.AddLambda([this, TestDone](bool bInPropBool)
+			{
 			bool TestValue = false;
 			// use different test value
 			TestValue = true;
@@ -116,7 +117,8 @@ void UTbSimpleNoOperationsInterfaceOLinkSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
 
 		UTbSimpleNoOperationsInterfaceSignals* TbSimpleNoOperationsInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleNoOperationsInterfaceSignals->OnPropIntChanged.AddLambda([this, TestDone](int32 InPropInt){
+		TbSimpleNoOperationsInterfaceSignals->OnPropIntChanged.AddLambda([this, TestDone](int32 InPropInt)
+			{
 			int32 TestValue = 0;
 			// use different test value
 			TestValue = 1;
@@ -133,7 +135,8 @@ void UTbSimpleNoOperationsInterfaceOLinkSpec::Define()
 	LatentIt("Signal.SigVoid", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		UTbSimpleNoOperationsInterfaceSignals* TbSimpleNoOperationsInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleNoOperationsInterfaceSignals->OnSigVoidSignal.AddLambda([this, TestDone](){
+		TbSimpleNoOperationsInterfaceSignals->OnSigVoidSignal.AddLambda([this, TestDone]()
+			{
 			// known test value
 			TestDone.Execute();
 		});
@@ -145,7 +148,8 @@ void UTbSimpleNoOperationsInterfaceOLinkSpec::Define()
 	LatentIt("Signal.SigBool", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		UTbSimpleNoOperationsInterfaceSignals* TbSimpleNoOperationsInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleNoOperationsInterfaceSignals->OnSigBoolSignal.AddLambda([this, TestDone](bool bInParamBool){
+		TbSimpleNoOperationsInterfaceSignals->OnSigBoolSignal.AddLambda([this, TestDone](bool bInParamBool)
+			{
 			// known test value
 			bool bParamBoolTestValue = true;
 			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), bInParamBool, bParamBoolTestValue);

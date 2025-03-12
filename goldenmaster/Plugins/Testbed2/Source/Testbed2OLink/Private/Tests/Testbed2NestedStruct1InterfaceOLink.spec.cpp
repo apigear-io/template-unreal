@@ -88,7 +88,8 @@ void UTestbed2NestedStruct1InterfaceOLinkSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp1(), TestValue);
 
 		UTestbed2NestedStruct1InterfaceSignals* Testbed2NestedStruct1InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2NestedStruct1InterfaceSignals->OnProp1Changed.AddLambda([this, TestDone](const FTestbed2NestedStruct1& InProp1){
+		Testbed2NestedStruct1InterfaceSignals->OnProp1Changed.AddLambda([this, TestDone](const FTestbed2NestedStruct1& InProp1)
+			{
 			FTestbed2NestedStruct1 TestValue = FTestbed2NestedStruct1();
 			// use different test value
 			TestValue = createTestFTestbed2NestedStruct1();
@@ -115,7 +116,8 @@ void UTestbed2NestedStruct1InterfaceOLinkSpec::Define()
 	LatentIt("Signal.Sig1", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		UTestbed2NestedStruct1InterfaceSignals* Testbed2NestedStruct1InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2NestedStruct1InterfaceSignals->OnSig1Signal.AddLambda([this, TestDone](const FTestbed2NestedStruct1& InParam1){
+		Testbed2NestedStruct1InterfaceSignals->OnSig1Signal.AddLambda([this, TestDone](const FTestbed2NestedStruct1& InParam1)
+			{
 			// known test value
 			FTestbed2NestedStruct1 Param1TestValue = createTestFTestbed2NestedStruct1();
 			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);

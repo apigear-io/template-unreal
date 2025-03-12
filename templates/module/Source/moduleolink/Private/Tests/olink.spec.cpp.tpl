@@ -89,7 +89,8 @@ void {{$Class}}OLinkSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Get{{Camel .Name}}(), TestValue);
 
 		{{$Class}}Signals* {{$Iface}}Signals = ImplFixture->GetImplementation()->_GetSignals();
-		{{$Iface}}Signals->On{{Camel .Name}}Changed.AddLambda([this, TestDone]({{ueParam "In" .}}){
+		{{$Iface}}Signals->On{{Camel .Name}}Changed.AddLambda([this, TestDone]({{ueParam "In" .}})
+			{
 			{{ueType "" .}} TestValue = {{ueDefault "" .}};
 			// use different test value
 			{{- if .IsArray }}
@@ -168,7 +169,8 @@ void {{$Class}}OLinkSpec::Define()
 	LatentIt("Signal.{{ Camel .Name }}", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		{{$Class}}Signals* {{$Iface}}Signals = ImplFixture->GetImplementation()->_GetSignals();
-		{{$Iface}}Signals->On{{Camel .Name}}Signal.AddLambda([this, TestDone]({{ueParams "In" .Params}}){
+		{{$Iface}}Signals->On{{Camel .Name}}Signal.AddLambda([this, TestDone]({{ueParams "In" .Params}})
+			{
 			// known test value
 			{{- range $i, $e := .Params -}}
 			{{- if not (eq .KindType "extern") }}

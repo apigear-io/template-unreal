@@ -88,7 +88,8 @@ void UTbNamesNamEsOLinkSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetSwitch(), TestValue);
 
 		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbNamesNamEsSignals->OnSwitchChanged.AddLambda([this, TestDone](bool bInSwitch){
+		TbNamesNamEsSignals->OnSwitchChanged.AddLambda([this, TestDone](bool bInSwitch)
+			{
 			bool TestValue = false;
 			// use different test value
 			TestValue = true;
@@ -116,7 +117,8 @@ void UTbNamesNamEsOLinkSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetSomeProperty(), TestValue);
 
 		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbNamesNamEsSignals->OnSomePropertyChanged.AddLambda([this, TestDone](int32 InSomeProperty){
+		TbNamesNamEsSignals->OnSomePropertyChanged.AddLambda([this, TestDone](int32 InSomeProperty)
+			{
 			int32 TestValue = 0;
 			// use different test value
 			TestValue = 1;
@@ -144,7 +146,8 @@ void UTbNamesNamEsOLinkSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetSomePoperty2(), TestValue);
 
 		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbNamesNamEsSignals->OnSomePoperty2Changed.AddLambda([this, TestDone](int32 InSomePoperty2){
+		TbNamesNamEsSignals->OnSomePoperty2Changed.AddLambda([this, TestDone](int32 InSomePoperty2)
+			{
 			int32 TestValue = 0;
 			// use different test value
 			TestValue = 1;
@@ -181,7 +184,8 @@ void UTbNamesNamEsOLinkSpec::Define()
 	LatentIt("Signal.SomeSignal", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbNamesNamEsSignals->OnSomeSignalSignal.AddLambda([this, TestDone](bool bInSomeParam){
+		TbNamesNamEsSignals->OnSomeSignalSignal.AddLambda([this, TestDone](bool bInSomeParam)
+			{
 			// known test value
 			bool bSomeParamTestValue = true;
 			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), bInSomeParam, bSomeParamTestValue);
@@ -196,7 +200,8 @@ void UTbNamesNamEsOLinkSpec::Define()
 	LatentIt("Signal.SomeSignal2", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbNamesNamEsSignals->OnSomeSignal2Signal.AddLambda([this, TestDone](bool bInSomeParam){
+		TbNamesNamEsSignals->OnSomeSignal2Signal.AddLambda([this, TestDone](bool bInSomeParam)
+			{
 			// known test value
 			bool bSomeParamTestValue = true;
 			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), bInSomeParam, bSomeParamTestValue);

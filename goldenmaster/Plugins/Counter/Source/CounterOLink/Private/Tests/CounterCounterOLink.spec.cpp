@@ -90,7 +90,8 @@ void UCounterCounterOLinkSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetVector(), TestValue);
 
 		UCounterCounterSignals* CounterCounterSignals = ImplFixture->GetImplementation()->_GetSignals();
-		CounterCounterSignals->OnVectorChanged.AddLambda([this, TestDone](const FCustomTypesVector3D& InVector){
+		CounterCounterSignals->OnVectorChanged.AddLambda([this, TestDone](const FCustomTypesVector3D& InVector)
+			{
 			FCustomTypesVector3D TestValue = FCustomTypesVector3D();
 			// use different test value
 			TestValue = createTestFCustomTypesVector3D();
@@ -125,7 +126,8 @@ void UCounterCounterOLinkSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetVectorArray(), TestValue);
 
 		UCounterCounterSignals* CounterCounterSignals = ImplFixture->GetImplementation()->_GetSignals();
-		CounterCounterSignals->OnVectorArrayChanged.AddLambda([this, TestDone](const TArray<FCustomTypesVector3D>& InVectorArray){
+		CounterCounterSignals->OnVectorArrayChanged.AddLambda([this, TestDone](const TArray<FCustomTypesVector3D>& InVectorArray)
+			{
 			TArray<FCustomTypesVector3D> TestValue = TArray<FCustomTypesVector3D>();
 			// use different test value
 			TestValue = createTestFCustomTypesVector3DArray();
@@ -193,7 +195,8 @@ void UCounterCounterOLinkSpec::Define()
 	LatentIt("Signal.ValueChanged", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		UCounterCounterSignals* CounterCounterSignals = ImplFixture->GetImplementation()->_GetSignals();
-		CounterCounterSignals->OnValueChangedSignal.AddLambda([this, TestDone](const FCustomTypesVector3D& InVector, const FVector& InExternVector, const TArray<FCustomTypesVector3D>& InVectorArray, const TArray<FVector>& InExternVectorArray){
+		CounterCounterSignals->OnValueChangedSignal.AddLambda([this, TestDone](const FCustomTypesVector3D& InVector, const FVector& InExternVector, const TArray<FCustomTypesVector3D>& InVectorArray, const TArray<FVector>& InExternVectorArray)
+			{
 			// known test value
 			FCustomTypesVector3D VectorTestValue = createTestFCustomTypesVector3D();
 			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InVector, VectorTestValue);

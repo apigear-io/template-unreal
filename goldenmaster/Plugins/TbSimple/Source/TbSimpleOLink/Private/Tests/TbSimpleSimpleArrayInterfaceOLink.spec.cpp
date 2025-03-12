@@ -88,7 +88,8 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
 
 		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnPropBoolChanged.AddLambda([this, TestDone](const TArray<bool>& InPropBool){
+		TbSimpleSimpleArrayInterfaceSignals->OnPropBoolChanged.AddLambda([this, TestDone](const TArray<bool>& InPropBool)
+			{
 			TArray<bool> TestValue = TArray<bool>();
 			// use different test value
 			TestValue.Add(true);
@@ -116,7 +117,8 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
 
 		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnPropIntChanged.AddLambda([this, TestDone](const TArray<int32>& InPropInt){
+		TbSimpleSimpleArrayInterfaceSignals->OnPropIntChanged.AddLambda([this, TestDone](const TArray<int32>& InPropInt)
+			{
 			TArray<int32> TestValue = TArray<int32>();
 			// use different test value
 			TestValue.Add(1);
@@ -144,7 +146,8 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt32(), TestValue);
 
 		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnPropInt32Changed.AddLambda([this, TestDone](const TArray<int32>& InPropInt32){
+		TbSimpleSimpleArrayInterfaceSignals->OnPropInt32Changed.AddLambda([this, TestDone](const TArray<int32>& InPropInt32)
+			{
 			TArray<int32> TestValue = TArray<int32>();
 			// use different test value
 			TestValue.Add(1);
@@ -172,7 +175,8 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt64(), TestValue);
 
 		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnPropInt64Changed.AddLambda([this, TestDone](const TArray<int64>& InPropInt64){
+		TbSimpleSimpleArrayInterfaceSignals->OnPropInt64Changed.AddLambda([this, TestDone](const TArray<int64>& InPropInt64)
+			{
 			TArray<int64> TestValue = TArray<int64>();
 			// use different test value
 			TestValue.Add(1LL);
@@ -200,7 +204,8 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropFloat(), TestValue);
 
 		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnPropFloatChanged.AddLambda([this, TestDone](const TArray<float>& InPropFloat){
+		TbSimpleSimpleArrayInterfaceSignals->OnPropFloatChanged.AddLambda([this, TestDone](const TArray<float>& InPropFloat)
+			{
 			TArray<float> TestValue = TArray<float>();
 			// use different test value
 			TestValue.Add(1.0f);
@@ -228,7 +233,8 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropFloat32(), TestValue);
 
 		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnPropFloat32Changed.AddLambda([this, TestDone](const TArray<float>& InPropFloat32){
+		TbSimpleSimpleArrayInterfaceSignals->OnPropFloat32Changed.AddLambda([this, TestDone](const TArray<float>& InPropFloat32)
+			{
 			TArray<float> TestValue = TArray<float>();
 			// use different test value
 			TestValue.Add(1.0f);
@@ -256,7 +262,8 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropFloat64(), TestValue);
 
 		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnPropFloat64Changed.AddLambda([this, TestDone](const TArray<double>& InPropFloat64){
+		TbSimpleSimpleArrayInterfaceSignals->OnPropFloat64Changed.AddLambda([this, TestDone](const TArray<double>& InPropFloat64)
+			{
 			TArray<double> TestValue = TArray<double>();
 			// use different test value
 			TestValue.Add(1.0);
@@ -284,7 +291,8 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropString(), TestValue);
 
 		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnPropStringChanged.AddLambda([this, TestDone](const TArray<FString>& InPropString){
+		TbSimpleSimpleArrayInterfaceSignals->OnPropStringChanged.AddLambda([this, TestDone](const TArray<FString>& InPropString)
+			{
 			TArray<FString> TestValue = TArray<FString>();
 			// use different test value
 			TestValue.Add(FString("xyz"));
@@ -388,7 +396,8 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 	LatentIt("Signal.SigBool", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnSigBoolSignal.AddLambda([this, TestDone](const TArray<bool>& InParamBool){
+		TbSimpleSimpleArrayInterfaceSignals->OnSigBoolSignal.AddLambda([this, TestDone](const TArray<bool>& InParamBool)
+			{
 			// known test value
 			TArray<bool> ParamBoolTestValue = TArray<bool>(); // default value
 			ParamBoolTestValue.Add(true);
@@ -405,7 +414,8 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 	LatentIt("Signal.SigInt", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnSigIntSignal.AddLambda([this, TestDone](const TArray<int32>& InParamInt){
+		TbSimpleSimpleArrayInterfaceSignals->OnSigIntSignal.AddLambda([this, TestDone](const TArray<int32>& InParamInt)
+			{
 			// known test value
 			TArray<int32> ParamIntTestValue = TArray<int32>(); // default value
 			ParamIntTestValue.Add(1);
@@ -422,7 +432,8 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 	LatentIt("Signal.SigInt32", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnSigInt32Signal.AddLambda([this, TestDone](const TArray<int32>& InParamInt32){
+		TbSimpleSimpleArrayInterfaceSignals->OnSigInt32Signal.AddLambda([this, TestDone](const TArray<int32>& InParamInt32)
+			{
 			// known test value
 			TArray<int32> ParamInt32TestValue = TArray<int32>(); // default value
 			ParamInt32TestValue.Add(1);
@@ -439,7 +450,8 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 	LatentIt("Signal.SigInt64", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnSigInt64Signal.AddLambda([this, TestDone](const TArray<int64>& InParamInt64){
+		TbSimpleSimpleArrayInterfaceSignals->OnSigInt64Signal.AddLambda([this, TestDone](const TArray<int64>& InParamInt64)
+			{
 			// known test value
 			TArray<int64> ParamInt64TestValue = TArray<int64>(); // default value
 			ParamInt64TestValue.Add(1LL);
@@ -456,7 +468,8 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 	LatentIt("Signal.SigFloat", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnSigFloatSignal.AddLambda([this, TestDone](const TArray<float>& InParamFloat){
+		TbSimpleSimpleArrayInterfaceSignals->OnSigFloatSignal.AddLambda([this, TestDone](const TArray<float>& InParamFloat)
+			{
 			// known test value
 			TArray<float> ParamFloatTestValue = TArray<float>(); // default value
 			ParamFloatTestValue.Add(1.0f);
@@ -473,7 +486,8 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 	LatentIt("Signal.SigFloat32", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnSigFloat32Signal.AddLambda([this, TestDone](const TArray<float>& InParamFloa32){
+		TbSimpleSimpleArrayInterfaceSignals->OnSigFloat32Signal.AddLambda([this, TestDone](const TArray<float>& InParamFloa32)
+			{
 			// known test value
 			TArray<float> ParamFloa32TestValue = TArray<float>(); // default value
 			ParamFloa32TestValue.Add(1.0f);
@@ -490,7 +504,8 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 	LatentIt("Signal.SigFloat64", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnSigFloat64Signal.AddLambda([this, TestDone](const TArray<double>& InParamFloat64){
+		TbSimpleSimpleArrayInterfaceSignals->OnSigFloat64Signal.AddLambda([this, TestDone](const TArray<double>& InParamFloat64)
+			{
 			// known test value
 			TArray<double> ParamFloat64TestValue = TArray<double>(); // default value
 			ParamFloat64TestValue.Add(1.0);
@@ -507,7 +522,8 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 	LatentIt("Signal.SigString", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnSigStringSignal.AddLambda([this, TestDone](const TArray<FString>& InParamString){
+		TbSimpleSimpleArrayInterfaceSignals->OnSigStringSignal.AddLambda([this, TestDone](const TArray<FString>& InParamString)
+			{
 			// known test value
 			TArray<FString> ParamStringTestValue = TArray<FString>(); // default value
 			ParamStringTestValue.Add(FString("xyz"));

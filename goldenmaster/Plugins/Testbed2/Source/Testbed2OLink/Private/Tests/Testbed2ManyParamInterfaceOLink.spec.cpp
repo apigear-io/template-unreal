@@ -88,7 +88,8 @@ void UTestbed2ManyParamInterfaceOLinkSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp1(), TestValue);
 
 		UTestbed2ManyParamInterfaceSignals* Testbed2ManyParamInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2ManyParamInterfaceSignals->OnProp1Changed.AddLambda([this, TestDone](int32 InProp1){
+		Testbed2ManyParamInterfaceSignals->OnProp1Changed.AddLambda([this, TestDone](int32 InProp1)
+			{
 			int32 TestValue = 0;
 			// use different test value
 			TestValue = 1;
@@ -116,7 +117,8 @@ void UTestbed2ManyParamInterfaceOLinkSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp2(), TestValue);
 
 		UTestbed2ManyParamInterfaceSignals* Testbed2ManyParamInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2ManyParamInterfaceSignals->OnProp2Changed.AddLambda([this, TestDone](int32 InProp2){
+		Testbed2ManyParamInterfaceSignals->OnProp2Changed.AddLambda([this, TestDone](int32 InProp2)
+			{
 			int32 TestValue = 0;
 			// use different test value
 			TestValue = 1;
@@ -144,7 +146,8 @@ void UTestbed2ManyParamInterfaceOLinkSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp3(), TestValue);
 
 		UTestbed2ManyParamInterfaceSignals* Testbed2ManyParamInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2ManyParamInterfaceSignals->OnProp3Changed.AddLambda([this, TestDone](int32 InProp3){
+		Testbed2ManyParamInterfaceSignals->OnProp3Changed.AddLambda([this, TestDone](int32 InProp3)
+			{
 			int32 TestValue = 0;
 			// use different test value
 			TestValue = 1;
@@ -172,7 +175,8 @@ void UTestbed2ManyParamInterfaceOLinkSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp4(), TestValue);
 
 		UTestbed2ManyParamInterfaceSignals* Testbed2ManyParamInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2ManyParamInterfaceSignals->OnProp4Changed.AddLambda([this, TestDone](int32 InProp4){
+		Testbed2ManyParamInterfaceSignals->OnProp4Changed.AddLambda([this, TestDone](int32 InProp4)
+			{
 			int32 TestValue = 0;
 			// use different test value
 			TestValue = 1;
@@ -229,7 +233,8 @@ void UTestbed2ManyParamInterfaceOLinkSpec::Define()
 	LatentIt("Signal.Sig1", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		UTestbed2ManyParamInterfaceSignals* Testbed2ManyParamInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2ManyParamInterfaceSignals->OnSig1Signal.AddLambda([this, TestDone](int32 InParam1){
+		Testbed2ManyParamInterfaceSignals->OnSig1Signal.AddLambda([this, TestDone](int32 InParam1)
+			{
 			// known test value
 			int32 Param1TestValue = 1;
 			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
@@ -244,7 +249,8 @@ void UTestbed2ManyParamInterfaceOLinkSpec::Define()
 	LatentIt("Signal.Sig2", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		UTestbed2ManyParamInterfaceSignals* Testbed2ManyParamInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2ManyParamInterfaceSignals->OnSig2Signal.AddLambda([this, TestDone](int32 InParam1, int32 InParam2){
+		Testbed2ManyParamInterfaceSignals->OnSig2Signal.AddLambda([this, TestDone](int32 InParam1, int32 InParam2)
+			{
 			// known test value
 			int32 Param1TestValue = 1;
 			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
@@ -262,7 +268,8 @@ void UTestbed2ManyParamInterfaceOLinkSpec::Define()
 	LatentIt("Signal.Sig3", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		UTestbed2ManyParamInterfaceSignals* Testbed2ManyParamInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2ManyParamInterfaceSignals->OnSig3Signal.AddLambda([this, TestDone](int32 InParam1, int32 InParam2, int32 InParam3){
+		Testbed2ManyParamInterfaceSignals->OnSig3Signal.AddLambda([this, TestDone](int32 InParam1, int32 InParam2, int32 InParam3)
+			{
 			// known test value
 			int32 Param1TestValue = 1;
 			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
@@ -283,7 +290,8 @@ void UTestbed2ManyParamInterfaceOLinkSpec::Define()
 	LatentIt("Signal.Sig4", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		UTestbed2ManyParamInterfaceSignals* Testbed2ManyParamInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2ManyParamInterfaceSignals->OnSig4Signal.AddLambda([this, TestDone](int32 InParam1, int32 InParam2, int32 InParam3, int32 InParam4){
+		Testbed2ManyParamInterfaceSignals->OnSig4Signal.AddLambda([this, TestDone](int32 InParam1, int32 InParam2, int32 InParam3, int32 InParam4)
+			{
 			// known test value
 			int32 Param1TestValue = 1;
 			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);

@@ -88,7 +88,8 @@ void UTestbed1StructArrayInterfaceOLinkSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
 
 		UTestbed1StructArrayInterfaceSignals* Testbed1StructArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructArrayInterfaceSignals->OnPropBoolChanged.AddLambda([this, TestDone](const TArray<FTestbed1StructBool>& InPropBool){
+		Testbed1StructArrayInterfaceSignals->OnPropBoolChanged.AddLambda([this, TestDone](const TArray<FTestbed1StructBool>& InPropBool)
+			{
 			TArray<FTestbed1StructBool> TestValue = TArray<FTestbed1StructBool>();
 			// use different test value
 			TestValue = createTestFTestbed1StructBoolArray();
@@ -116,7 +117,8 @@ void UTestbed1StructArrayInterfaceOLinkSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
 
 		UTestbed1StructArrayInterfaceSignals* Testbed1StructArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructArrayInterfaceSignals->OnPropIntChanged.AddLambda([this, TestDone](const TArray<FTestbed1StructInt>& InPropInt){
+		Testbed1StructArrayInterfaceSignals->OnPropIntChanged.AddLambda([this, TestDone](const TArray<FTestbed1StructInt>& InPropInt)
+			{
 			TArray<FTestbed1StructInt> TestValue = TArray<FTestbed1StructInt>();
 			// use different test value
 			TestValue = createTestFTestbed1StructIntArray();
@@ -144,7 +146,8 @@ void UTestbed1StructArrayInterfaceOLinkSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropFloat(), TestValue);
 
 		UTestbed1StructArrayInterfaceSignals* Testbed1StructArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructArrayInterfaceSignals->OnPropFloatChanged.AddLambda([this, TestDone](const TArray<FTestbed1StructFloat>& InPropFloat){
+		Testbed1StructArrayInterfaceSignals->OnPropFloatChanged.AddLambda([this, TestDone](const TArray<FTestbed1StructFloat>& InPropFloat)
+			{
 			TArray<FTestbed1StructFloat> TestValue = TArray<FTestbed1StructFloat>();
 			// use different test value
 			TestValue = createTestFTestbed1StructFloatArray();
@@ -172,7 +175,8 @@ void UTestbed1StructArrayInterfaceOLinkSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropString(), TestValue);
 
 		UTestbed1StructArrayInterfaceSignals* Testbed1StructArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructArrayInterfaceSignals->OnPropStringChanged.AddLambda([this, TestDone](const TArray<FTestbed1StructString>& InPropString){
+		Testbed1StructArrayInterfaceSignals->OnPropStringChanged.AddLambda([this, TestDone](const TArray<FTestbed1StructString>& InPropString)
+			{
 			TArray<FTestbed1StructString> TestValue = TArray<FTestbed1StructString>();
 			// use different test value
 			TestValue = createTestFTestbed1StructStringArray();
@@ -229,7 +233,8 @@ void UTestbed1StructArrayInterfaceOLinkSpec::Define()
 	LatentIt("Signal.SigBool", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		UTestbed1StructArrayInterfaceSignals* Testbed1StructArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructArrayInterfaceSignals->OnSigBoolSignal.AddLambda([this, TestDone](const TArray<FTestbed1StructBool>& InParamBool){
+		Testbed1StructArrayInterfaceSignals->OnSigBoolSignal.AddLambda([this, TestDone](const TArray<FTestbed1StructBool>& InParamBool)
+			{
 			// known test value
 			TArray<FTestbed1StructBool> ParamBoolTestValue = createTestFTestbed1StructBoolArray();
 			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamBool, ParamBoolTestValue);
@@ -244,7 +249,8 @@ void UTestbed1StructArrayInterfaceOLinkSpec::Define()
 	LatentIt("Signal.SigInt", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		UTestbed1StructArrayInterfaceSignals* Testbed1StructArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructArrayInterfaceSignals->OnSigIntSignal.AddLambda([this, TestDone](const TArray<FTestbed1StructInt>& InParamInt){
+		Testbed1StructArrayInterfaceSignals->OnSigIntSignal.AddLambda([this, TestDone](const TArray<FTestbed1StructInt>& InParamInt)
+			{
 			// known test value
 			TArray<FTestbed1StructInt> ParamIntTestValue = createTestFTestbed1StructIntArray();
 			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamInt, ParamIntTestValue);
@@ -259,7 +265,8 @@ void UTestbed1StructArrayInterfaceOLinkSpec::Define()
 	LatentIt("Signal.SigFloat", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		UTestbed1StructArrayInterfaceSignals* Testbed1StructArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructArrayInterfaceSignals->OnSigFloatSignal.AddLambda([this, TestDone](const TArray<FTestbed1StructFloat>& InParamFloat){
+		Testbed1StructArrayInterfaceSignals->OnSigFloatSignal.AddLambda([this, TestDone](const TArray<FTestbed1StructFloat>& InParamFloat)
+			{
 			// known test value
 			TArray<FTestbed1StructFloat> ParamFloatTestValue = createTestFTestbed1StructFloatArray();
 			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamFloat, ParamFloatTestValue);
@@ -274,7 +281,8 @@ void UTestbed1StructArrayInterfaceOLinkSpec::Define()
 	LatentIt("Signal.SigString", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		UTestbed1StructArrayInterfaceSignals* Testbed1StructArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructArrayInterfaceSignals->OnSigStringSignal.AddLambda([this, TestDone](const TArray<FTestbed1StructString>& InParamString){
+		Testbed1StructArrayInterfaceSignals->OnSigStringSignal.AddLambda([this, TestDone](const TArray<FTestbed1StructString>& InParamString)
+			{
 			// known test value
 			TArray<FTestbed1StructString> ParamStringTestValue = createTestFTestbed1StructStringArray();
 			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamString, ParamStringTestValue);

@@ -88,7 +88,8 @@ void UTestbed1StructInterfaceOLinkSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
 
 		UTestbed1StructInterfaceSignals* Testbed1StructInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructInterfaceSignals->OnPropBoolChanged.AddLambda([this, TestDone](const FTestbed1StructBool& InPropBool){
+		Testbed1StructInterfaceSignals->OnPropBoolChanged.AddLambda([this, TestDone](const FTestbed1StructBool& InPropBool)
+			{
 			FTestbed1StructBool TestValue = FTestbed1StructBool();
 			// use different test value
 			TestValue = createTestFTestbed1StructBool();
@@ -116,7 +117,8 @@ void UTestbed1StructInterfaceOLinkSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
 
 		UTestbed1StructInterfaceSignals* Testbed1StructInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructInterfaceSignals->OnPropIntChanged.AddLambda([this, TestDone](const FTestbed1StructInt& InPropInt){
+		Testbed1StructInterfaceSignals->OnPropIntChanged.AddLambda([this, TestDone](const FTestbed1StructInt& InPropInt)
+			{
 			FTestbed1StructInt TestValue = FTestbed1StructInt();
 			// use different test value
 			TestValue = createTestFTestbed1StructInt();
@@ -144,7 +146,8 @@ void UTestbed1StructInterfaceOLinkSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropFloat(), TestValue);
 
 		UTestbed1StructInterfaceSignals* Testbed1StructInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructInterfaceSignals->OnPropFloatChanged.AddLambda([this, TestDone](const FTestbed1StructFloat& InPropFloat){
+		Testbed1StructInterfaceSignals->OnPropFloatChanged.AddLambda([this, TestDone](const FTestbed1StructFloat& InPropFloat)
+			{
 			FTestbed1StructFloat TestValue = FTestbed1StructFloat();
 			// use different test value
 			TestValue = createTestFTestbed1StructFloat();
@@ -172,7 +175,8 @@ void UTestbed1StructInterfaceOLinkSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropString(), TestValue);
 
 		UTestbed1StructInterfaceSignals* Testbed1StructInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructInterfaceSignals->OnPropStringChanged.AddLambda([this, TestDone](const FTestbed1StructString& InPropString){
+		Testbed1StructInterfaceSignals->OnPropStringChanged.AddLambda([this, TestDone](const FTestbed1StructString& InPropString)
+			{
 			FTestbed1StructString TestValue = FTestbed1StructString();
 			// use different test value
 			TestValue = createTestFTestbed1StructString();
@@ -229,7 +233,8 @@ void UTestbed1StructInterfaceOLinkSpec::Define()
 	LatentIt("Signal.SigBool", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		UTestbed1StructInterfaceSignals* Testbed1StructInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructInterfaceSignals->OnSigBoolSignal.AddLambda([this, TestDone](const FTestbed1StructBool& InParamBool){
+		Testbed1StructInterfaceSignals->OnSigBoolSignal.AddLambda([this, TestDone](const FTestbed1StructBool& InParamBool)
+			{
 			// known test value
 			FTestbed1StructBool ParamBoolTestValue = createTestFTestbed1StructBool();
 			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamBool, ParamBoolTestValue);
@@ -244,7 +249,8 @@ void UTestbed1StructInterfaceOLinkSpec::Define()
 	LatentIt("Signal.SigInt", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		UTestbed1StructInterfaceSignals* Testbed1StructInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructInterfaceSignals->OnSigIntSignal.AddLambda([this, TestDone](const FTestbed1StructInt& InParamInt){
+		Testbed1StructInterfaceSignals->OnSigIntSignal.AddLambda([this, TestDone](const FTestbed1StructInt& InParamInt)
+			{
 			// known test value
 			FTestbed1StructInt ParamIntTestValue = createTestFTestbed1StructInt();
 			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamInt, ParamIntTestValue);
@@ -259,7 +265,8 @@ void UTestbed1StructInterfaceOLinkSpec::Define()
 	LatentIt("Signal.SigFloat", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		UTestbed1StructInterfaceSignals* Testbed1StructInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructInterfaceSignals->OnSigFloatSignal.AddLambda([this, TestDone](const FTestbed1StructFloat& InParamFloat){
+		Testbed1StructInterfaceSignals->OnSigFloatSignal.AddLambda([this, TestDone](const FTestbed1StructFloat& InParamFloat)
+			{
 			// known test value
 			FTestbed1StructFloat ParamFloatTestValue = createTestFTestbed1StructFloat();
 			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamFloat, ParamFloatTestValue);
@@ -274,7 +281,8 @@ void UTestbed1StructInterfaceOLinkSpec::Define()
 	LatentIt("Signal.SigString", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		UTestbed1StructInterfaceSignals* Testbed1StructInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructInterfaceSignals->OnSigStringSignal.AddLambda([this, TestDone](const FTestbed1StructString& InParamString){
+		Testbed1StructInterfaceSignals->OnSigStringSignal.AddLambda([this, TestDone](const FTestbed1StructString& InParamString)
+			{
 			// known test value
 			FTestbed1StructString ParamStringTestValue = createTestFTestbed1StructString();
 			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamString, ParamStringTestValue);

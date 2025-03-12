@@ -88,7 +88,8 @@ void UTbSimpleNoSignalsInterfaceOLinkSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
 
 		UTbSimpleNoSignalsInterfaceSignals* TbSimpleNoSignalsInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleNoSignalsInterfaceSignals->OnPropBoolChanged.AddLambda([this, TestDone](bool bInPropBool){
+		TbSimpleNoSignalsInterfaceSignals->OnPropBoolChanged.AddLambda([this, TestDone](bool bInPropBool)
+			{
 			bool TestValue = false;
 			// use different test value
 			TestValue = true;
@@ -116,7 +117,8 @@ void UTbSimpleNoSignalsInterfaceOLinkSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
 
 		UTbSimpleNoSignalsInterfaceSignals* TbSimpleNoSignalsInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleNoSignalsInterfaceSignals->OnPropIntChanged.AddLambda([this, TestDone](int32 InPropInt){
+		TbSimpleNoSignalsInterfaceSignals->OnPropIntChanged.AddLambda([this, TestDone](int32 InPropInt)
+			{
 			int32 TestValue = 0;
 			// use different test value
 			TestValue = 1;
