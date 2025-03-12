@@ -17,6 +17,15 @@ class ITestbed2ManyParamInterfaceInterface;
 class UTestbed2ManyParamInterfaceMsgBusAdapter;
 class IApiGearConnection;
 
+// nested namespaces do not work with UE4.27 MSVC due to old C++ standard
+namespace Testbed2
+{
+namespace ManyParamInterface
+{
+namespace MsgBus
+{
+namespace Tests
+{
 class FTestbed2ManyParamInterfaceMsgBusFixture
 {
 public:
@@ -33,5 +42,9 @@ private:
 	TSoftObjectPtr<UGameInstance> GameInstance;
 	TScriptInterface<ITestbed2ManyParamInterfaceInterface> testImplementation;
 };
+} // namespace Tests
+} // namespace MsgBus
+} // namespace ManyParamInterface
+} // namespace Testbed2
 
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

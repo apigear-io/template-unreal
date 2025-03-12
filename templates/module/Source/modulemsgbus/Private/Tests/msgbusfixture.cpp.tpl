@@ -14,6 +14,15 @@
 #include "{{$ModuleName}}/Generated/MsgBus/{{$DisplayName}}MsgBusAdapter.h"
 #include "Engine/GameInstance.h"
 
+// nested namespaces do not work with UE4.27 MSVC due to old C++ standard
+namespace {{$ModuleName}}
+{
+namespace {{$IfaceName}}
+{
+namespace MsgBus
+{
+namespace Tests
+{
 F{{ $DisplayName }}MsgBusFixture::F{{ $DisplayName }}MsgBusFixture()
 {
 	testImplementation = GetGameInstance()->GetSubsystem<{{ $Class }}MsgBusClient>();
@@ -52,4 +61,8 @@ void F{{ $DisplayName }}MsgBusFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
+} // namespace Tests
+} // namespace MsgBus
+} // namespace {{$IfaceName}}
+} // namespace {{$ModuleName}}
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

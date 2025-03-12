@@ -27,6 +27,15 @@ limitations under the License.
 #include "Testbed2/Generated/MsgBus/Testbed2NestedStruct3InterfaceMsgBusClient.h"
 #include "Testbed2/Generated/MsgBus/Testbed2NestedStruct3InterfaceMsgBusAdapter.h"
 
+// nested namespaces do not work with UE4.27 MSVC due to old C++ standard
+namespace Testbed2
+{
+namespace NestedStruct3Interface
+{
+namespace MsgBus
+{
+namespace Tests
+{
 BEGIN_DEFINE_SPEC(UTestbed2NestedStruct3InterfaceMsgBusSpec, "Testbed2.NestedStruct3Interface.MsgBus", Testbed2TestFilterMask);
 
 TUniquePtr<FTestbed2NestedStruct3InterfaceMsgBusFixture> ImplFixture;
@@ -241,6 +250,10 @@ void UTestbed2NestedStruct3InterfaceMsgBusSpec::Define()
 		Testbed2NestedStruct3InterfaceSignals->BroadcastSig3Signal(Param1TestValue, Param2TestValue, Param3TestValue);
 	});
 }
+} // namespace Tests
+} // namespace MsgBus
+} // namespace NestedStruct3Interface
+} // namespace Testbed2
 
 #endif // WITH_DEV_AUTOMATION_TESTS
 #endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

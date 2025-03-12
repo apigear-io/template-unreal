@@ -17,6 +17,15 @@ class ITbEnumEnumInterfaceInterface;
 class UTbEnumEnumInterfaceMsgBusAdapter;
 class IApiGearConnection;
 
+// nested namespaces do not work with UE4.27 MSVC due to old C++ standard
+namespace TbEnum
+{
+namespace EnumInterface
+{
+namespace MsgBus
+{
+namespace Tests
+{
 class FTbEnumEnumInterfaceMsgBusFixture
 {
 public:
@@ -33,5 +42,9 @@ private:
 	TSoftObjectPtr<UGameInstance> GameInstance;
 	TScriptInterface<ITbEnumEnumInterfaceInterface> testImplementation;
 };
+} // namespace Tests
+} // namespace MsgBus
+} // namespace EnumInterface
+} // namespace TbEnum
 
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

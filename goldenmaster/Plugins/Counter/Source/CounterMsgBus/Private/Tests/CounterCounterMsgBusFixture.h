@@ -17,6 +17,15 @@ class ICounterCounterInterface;
 class UCounterCounterMsgBusAdapter;
 class IApiGearConnection;
 
+// nested namespaces do not work with UE4.27 MSVC due to old C++ standard
+namespace Counter
+{
+namespace Counter
+{
+namespace MsgBus
+{
+namespace Tests
+{
 class FCounterCounterMsgBusFixture
 {
 public:
@@ -33,5 +42,9 @@ private:
 	TSoftObjectPtr<UGameInstance> GameInstance;
 	TScriptInterface<ICounterCounterInterface> testImplementation;
 };
+} // namespace Tests
+} // namespace MsgBus
+} // namespace Counter
+} // namespace Counter
 
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

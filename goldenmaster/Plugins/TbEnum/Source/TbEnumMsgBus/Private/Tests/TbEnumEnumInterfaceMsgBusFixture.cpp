@@ -24,6 +24,15 @@ limitations under the License.
 #include "TbEnum/Generated/MsgBus/TbEnumEnumInterfaceMsgBusAdapter.h"
 #include "Engine/GameInstance.h"
 
+// nested namespaces do not work with UE4.27 MSVC due to old C++ standard
+namespace TbEnum
+{
+namespace EnumInterface
+{
+namespace MsgBus
+{
+namespace Tests
+{
 FTbEnumEnumInterfaceMsgBusFixture::FTbEnumEnumInterfaceMsgBusFixture()
 {
 	testImplementation = GetGameInstance()->GetSubsystem<UTbEnumEnumInterfaceMsgBusClient>();
@@ -62,4 +71,8 @@ void FTbEnumEnumInterfaceMsgBusFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
+} // namespace Tests
+} // namespace MsgBus
+} // namespace EnumInterface
+} // namespace TbEnum
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

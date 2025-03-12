@@ -24,6 +24,15 @@ limitations under the License.
 #include "Counter/Generated/MsgBus/CounterCounterMsgBusAdapter.h"
 #include "Engine/GameInstance.h"
 
+// nested namespaces do not work with UE4.27 MSVC due to old C++ standard
+namespace Counter
+{
+namespace Counter
+{
+namespace MsgBus
+{
+namespace Tests
+{
 FCounterCounterMsgBusFixture::FCounterCounterMsgBusFixture()
 {
 	testImplementation = GetGameInstance()->GetSubsystem<UCounterCounterMsgBusClient>();
@@ -62,4 +71,8 @@ void FCounterCounterMsgBusFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
+} // namespace Tests
+} // namespace MsgBus
+} // namespace Counter
+} // namespace Counter
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

@@ -17,6 +17,15 @@ class ITbSame2SameEnum1InterfaceInterface;
 class UTbSame2SameEnum1InterfaceMsgBusAdapter;
 class IApiGearConnection;
 
+// nested namespaces do not work with UE4.27 MSVC due to old C++ standard
+namespace TbSame2
+{
+namespace SameEnum1Interface
+{
+namespace MsgBus
+{
+namespace Tests
+{
 class FTbSame2SameEnum1InterfaceMsgBusFixture
 {
 public:
@@ -33,5 +42,9 @@ private:
 	TSoftObjectPtr<UGameInstance> GameInstance;
 	TScriptInterface<ITbSame2SameEnum1InterfaceInterface> testImplementation;
 };
+} // namespace Tests
+} // namespace MsgBus
+} // namespace SameEnum1Interface
+} // namespace TbSame2
 
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

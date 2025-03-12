@@ -27,6 +27,15 @@ limitations under the License.
 #include "TbNames/Generated/MsgBus/TbNamesNamEsMsgBusClient.h"
 #include "TbNames/Generated/MsgBus/TbNamesNamEsMsgBusAdapter.h"
 
+// nested namespaces do not work with UE4.27 MSVC due to old C++ standard
+namespace TbNames
+{
+namespace NamEs
+{
+namespace MsgBus
+{
+namespace Tests
+{
 BEGIN_DEFINE_SPEC(UTbNamesNamEsMsgBusSpec, "TbNames.NamEs.MsgBus", TbNamesTestFilterMask);
 
 TUniquePtr<FTbNamesNamEsMsgBusFixture> ImplFixture;
@@ -206,6 +215,10 @@ void UTbNamesNamEsMsgBusSpec::Define()
 		TbNamesNamEsSignals->BroadcastSomeSignal2Signal(bSomeParamTestValue);
 	});
 }
+} // namespace Tests
+} // namespace MsgBus
+} // namespace NamEs
+} // namespace TbNames
 
 #endif // WITH_DEV_AUTOMATION_TESTS
 #endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

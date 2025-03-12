@@ -24,6 +24,15 @@ limitations under the License.
 #include "Testbed1/Generated/MsgBus/Testbed1StructInterfaceMsgBusAdapter.h"
 #include "Engine/GameInstance.h"
 
+// nested namespaces do not work with UE4.27 MSVC due to old C++ standard
+namespace Testbed1
+{
+namespace StructInterface
+{
+namespace MsgBus
+{
+namespace Tests
+{
 FTestbed1StructInterfaceMsgBusFixture::FTestbed1StructInterfaceMsgBusFixture()
 {
 	testImplementation = GetGameInstance()->GetSubsystem<UTestbed1StructInterfaceMsgBusClient>();
@@ -62,4 +71,8 @@ void FTestbed1StructInterfaceMsgBusFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
+} // namespace Tests
+} // namespace MsgBus
+} // namespace StructInterface
+} // namespace Testbed1
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

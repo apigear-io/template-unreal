@@ -27,6 +27,15 @@ limitations under the License.
 #include "TbSimple/Generated/MsgBus/TbSimpleNoSignalsInterfaceMsgBusClient.h"
 #include "TbSimple/Generated/MsgBus/TbSimpleNoSignalsInterfaceMsgBusAdapter.h"
 
+// nested namespaces do not work with UE4.27 MSVC due to old C++ standard
+namespace TbSimple
+{
+namespace NoSignalsInterface
+{
+namespace MsgBus
+{
+namespace Tests
+{
 BEGIN_DEFINE_SPEC(UTbSimpleNoSignalsInterfaceMsgBusSpec, "TbSimple.NoSignalsInterface.MsgBus", TbSimpleTestFilterMask);
 
 TUniquePtr<FTbSimpleNoSignalsInterfaceMsgBusFixture> ImplFixture;
@@ -145,6 +154,10 @@ void UTbSimpleNoSignalsInterfaceMsgBusSpec::Define()
 		});
 	});
 }
+} // namespace Tests
+} // namespace MsgBus
+} // namespace NoSignalsInterface
+} // namespace TbSimple
 
 #endif // WITH_DEV_AUTOMATION_TESTS
 #endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

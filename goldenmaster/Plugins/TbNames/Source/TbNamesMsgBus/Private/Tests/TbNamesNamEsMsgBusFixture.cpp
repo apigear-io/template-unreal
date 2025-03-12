@@ -24,6 +24,15 @@ limitations under the License.
 #include "TbNames/Generated/MsgBus/TbNamesNamEsMsgBusAdapter.h"
 #include "Engine/GameInstance.h"
 
+// nested namespaces do not work with UE4.27 MSVC due to old C++ standard
+namespace TbNames
+{
+namespace NamEs
+{
+namespace MsgBus
+{
+namespace Tests
+{
 FTbNamesNamEsMsgBusFixture::FTbNamesNamEsMsgBusFixture()
 {
 	testImplementation = GetGameInstance()->GetSubsystem<UTbNamesNamEsMsgBusClient>();
@@ -62,4 +71,8 @@ void FTbNamesNamEsMsgBusFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
+} // namespace Tests
+} // namespace MsgBus
+} // namespace NamEs
+} // namespace TbNames
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

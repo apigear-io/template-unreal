@@ -27,6 +27,15 @@ limitations under the License.
 #include "Testbed2/Generated/MsgBus/Testbed2ManyParamInterfaceMsgBusClient.h"
 #include "Testbed2/Generated/MsgBus/Testbed2ManyParamInterfaceMsgBusAdapter.h"
 
+// nested namespaces do not work with UE4.27 MSVC due to old C++ standard
+namespace Testbed2
+{
+namespace ManyParamInterface
+{
+namespace MsgBus
+{
+namespace Tests
+{
 BEGIN_DEFINE_SPEC(UTestbed2ManyParamInterfaceMsgBusSpec, "Testbed2.ManyParamInterface.MsgBus", Testbed2TestFilterMask);
 
 TUniquePtr<FTestbed2ManyParamInterfaceMsgBusFixture> ImplFixture;
@@ -305,6 +314,10 @@ void UTestbed2ManyParamInterfaceMsgBusSpec::Define()
 		Testbed2ManyParamInterfaceSignals->BroadcastSig4Signal(Param1TestValue, Param2TestValue, Param3TestValue, Param4TestValue);
 	});
 }
+} // namespace Tests
+} // namespace MsgBus
+} // namespace ManyParamInterface
+} // namespace Testbed2
 
 #endif // WITH_DEV_AUTOMATION_TESTS
 #endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

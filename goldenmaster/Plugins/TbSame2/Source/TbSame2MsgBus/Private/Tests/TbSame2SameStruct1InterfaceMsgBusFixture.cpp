@@ -24,6 +24,15 @@ limitations under the License.
 #include "TbSame2/Generated/MsgBus/TbSame2SameStruct1InterfaceMsgBusAdapter.h"
 #include "Engine/GameInstance.h"
 
+// nested namespaces do not work with UE4.27 MSVC due to old C++ standard
+namespace TbSame2
+{
+namespace SameStruct1Interface
+{
+namespace MsgBus
+{
+namespace Tests
+{
 FTbSame2SameStruct1InterfaceMsgBusFixture::FTbSame2SameStruct1InterfaceMsgBusFixture()
 {
 	testImplementation = GetGameInstance()->GetSubsystem<UTbSame2SameStruct1InterfaceMsgBusClient>();
@@ -62,4 +71,8 @@ void FTbSame2SameStruct1InterfaceMsgBusFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
+} // namespace Tests
+} // namespace MsgBus
+} // namespace SameStruct1Interface
+} // namespace TbSame2
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

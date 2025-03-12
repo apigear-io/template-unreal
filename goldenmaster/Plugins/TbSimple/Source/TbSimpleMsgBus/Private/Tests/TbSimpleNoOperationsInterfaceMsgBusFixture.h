@@ -17,6 +17,15 @@ class ITbSimpleNoOperationsInterfaceInterface;
 class UTbSimpleNoOperationsInterfaceMsgBusAdapter;
 class IApiGearConnection;
 
+// nested namespaces do not work with UE4.27 MSVC due to old C++ standard
+namespace TbSimple
+{
+namespace NoOperationsInterface
+{
+namespace MsgBus
+{
+namespace Tests
+{
 class FTbSimpleNoOperationsInterfaceMsgBusFixture
 {
 public:
@@ -33,5 +42,9 @@ private:
 	TSoftObjectPtr<UGameInstance> GameInstance;
 	TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> testImplementation;
 };
+} // namespace Tests
+} // namespace MsgBus
+} // namespace NoOperationsInterface
+} // namespace TbSimple
 
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

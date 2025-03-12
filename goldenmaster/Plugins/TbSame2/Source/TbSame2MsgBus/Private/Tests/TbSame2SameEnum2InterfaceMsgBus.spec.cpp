@@ -27,6 +27,15 @@ limitations under the License.
 #include "TbSame2/Generated/MsgBus/TbSame2SameEnum2InterfaceMsgBusClient.h"
 #include "TbSame2/Generated/MsgBus/TbSame2SameEnum2InterfaceMsgBusAdapter.h"
 
+// nested namespaces do not work with UE4.27 MSVC due to old C++ standard
+namespace TbSame2
+{
+namespace SameEnum2Interface
+{
+namespace MsgBus
+{
+namespace Tests
+{
 BEGIN_DEFINE_SPEC(UTbSame2SameEnum2InterfaceMsgBusSpec, "TbSame2.SameEnum2Interface.MsgBus", TbSame2TestFilterMask);
 
 TUniquePtr<FTbSame2SameEnum2InterfaceMsgBusFixture> ImplFixture;
@@ -180,6 +189,10 @@ void UTbSame2SameEnum2InterfaceMsgBusSpec::Define()
 		TbSame2SameEnum2InterfaceSignals->BroadcastSig2Signal(Param1TestValue, Param2TestValue);
 	});
 }
+} // namespace Tests
+} // namespace MsgBus
+} // namespace SameEnum2Interface
+} // namespace TbSame2
 
 #endif // WITH_DEV_AUTOMATION_TESTS
 #endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

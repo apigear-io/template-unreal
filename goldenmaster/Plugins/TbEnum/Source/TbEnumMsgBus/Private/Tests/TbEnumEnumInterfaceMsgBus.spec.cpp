@@ -27,6 +27,15 @@ limitations under the License.
 #include "TbEnum/Generated/MsgBus/TbEnumEnumInterfaceMsgBusClient.h"
 #include "TbEnum/Generated/MsgBus/TbEnumEnumInterfaceMsgBusAdapter.h"
 
+// nested namespaces do not work with UE4.27 MSVC due to old C++ standard
+namespace TbEnum
+{
+namespace EnumInterface
+{
+namespace MsgBus
+{
+namespace Tests
+{
 BEGIN_DEFINE_SPEC(UTbEnumEnumInterfaceMsgBusSpec, "TbEnum.EnumInterface.MsgBus", TbEnumTestFilterMask);
 
 TUniquePtr<FTbEnumEnumInterfaceMsgBusFixture> ImplFixture;
@@ -287,6 +296,10 @@ void UTbEnumEnumInterfaceMsgBusSpec::Define()
 		TbEnumEnumInterfaceSignals->BroadcastSig3Signal(Param3TestValue);
 	});
 }
+} // namespace Tests
+} // namespace MsgBus
+} // namespace EnumInterface
+} // namespace TbEnum
 
 #endif // WITH_DEV_AUTOMATION_TESTS
 #endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

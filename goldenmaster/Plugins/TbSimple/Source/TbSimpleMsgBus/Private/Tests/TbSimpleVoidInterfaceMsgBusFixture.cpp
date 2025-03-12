@@ -24,6 +24,15 @@ limitations under the License.
 #include "TbSimple/Generated/MsgBus/TbSimpleVoidInterfaceMsgBusAdapter.h"
 #include "Engine/GameInstance.h"
 
+// nested namespaces do not work with UE4.27 MSVC due to old C++ standard
+namespace TbSimple
+{
+namespace VoidInterface
+{
+namespace MsgBus
+{
+namespace Tests
+{
 FTbSimpleVoidInterfaceMsgBusFixture::FTbSimpleVoidInterfaceMsgBusFixture()
 {
 	testImplementation = GetGameInstance()->GetSubsystem<UTbSimpleVoidInterfaceMsgBusClient>();
@@ -62,4 +71,8 @@ void FTbSimpleVoidInterfaceMsgBusFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
+} // namespace Tests
+} // namespace MsgBus
+} // namespace VoidInterface
+} // namespace TbSimple
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

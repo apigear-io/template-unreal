@@ -21,6 +21,15 @@
 #include "{{Camel .Name}}/Tests/{{Camel .Name}}TestsCommon.h"
 {{- end }}
 
+// nested namespaces do not work with UE4.27 MSVC due to old C++ standard
+namespace {{$ModuleName}}
+{
+namespace {{$IfaceName}}
+{
+namespace MsgBus
+{
+namespace Tests
+{
 BEGIN_DEFINE_SPEC({{$Class}}MsgBusSpec, "{{$ModuleName}}.{{$IfaceName}}.MsgBus", {{$ModuleName}}TestFilterMask);
 
 TUniquePtr<F{{$DisplayName}}MsgBusFixture> ImplFixture;
@@ -224,6 +233,10 @@ void {{$Class}}MsgBusSpec::Define()
 
 {{- end }}
 }
+} // namespace Tests
+} // namespace MsgBus
+} // namespace {{$IfaceName}}
+} // namespace {{$ModuleName}}
 
 #endif // WITH_DEV_AUTOMATION_TESTS
 #endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

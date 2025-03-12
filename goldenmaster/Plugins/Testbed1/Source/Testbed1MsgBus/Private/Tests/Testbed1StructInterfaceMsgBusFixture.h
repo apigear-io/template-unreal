@@ -17,6 +17,15 @@ class ITestbed1StructInterfaceInterface;
 class UTestbed1StructInterfaceMsgBusAdapter;
 class IApiGearConnection;
 
+// nested namespaces do not work with UE4.27 MSVC due to old C++ standard
+namespace Testbed1
+{
+namespace StructInterface
+{
+namespace MsgBus
+{
+namespace Tests
+{
 class FTestbed1StructInterfaceMsgBusFixture
 {
 public:
@@ -33,5 +42,9 @@ private:
 	TSoftObjectPtr<UGameInstance> GameInstance;
 	TScriptInterface<ITestbed1StructInterfaceInterface> testImplementation;
 };
+} // namespace Tests
+} // namespace MsgBus
+} // namespace StructInterface
+} // namespace Testbed1
 
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

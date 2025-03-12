@@ -21,6 +21,15 @@ class I{{$DisplayName}}Interface;
 class U{{$DisplayName}}MsgBusAdapter;
 class IApiGearConnection;
 
+// nested namespaces do not work with UE4.27 MSVC due to old C++ standard
+namespace {{$ModuleName}}
+{
+namespace {{$IfaceName}}
+{
+namespace MsgBus
+{
+namespace Tests
+{
 class F{{ $DisplayName }}MsgBusFixture
 {
 public:
@@ -37,5 +46,9 @@ private:
 	TSoftObjectPtr<UGameInstance> GameInstance;
 	TScriptInterface<I{{$DisplayName}}Interface> testImplementation;
 };
+} // namespace Tests
+} // namespace MsgBus
+} // namespace {{$IfaceName}}
+} // namespace {{$ModuleName}}
 
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
