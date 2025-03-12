@@ -14,31 +14,24 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+#include "Misc/AutomationTest.h"
+#include "HAL/Platform.h"
 
-#include "TbSimpleEmptyInterfaceOLink.spec.h"
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
 #include "TbSimpleEmptyInterfaceOLinkFixture.h"
 #include "TbSimple/Implementation/TbSimpleEmptyInterface.h"
 #include "TbSimple/Generated/OLink/TbSimpleEmptyInterfaceOLinkClient.h"
 #include "TbSimple/Generated/OLink/TbSimpleEmptyInterfaceOLinkAdapter.h"
-#include "HAL/Platform.h"
 
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #include "OLinkHost.h"
 #include "OLinkClientConnection.h" // for olink factory
 #include "TbSimple/Tests/TbSimpleTestsCommon.h"
-#include "Misc/AutomationTest.h"
 
-#if WITH_DEV_AUTOMATION_TESTS
+BEGIN_DEFINE_SPEC(UTbSimpleEmptyInterfaceOLinkSpec, "TbSimple.EmptyInterface.OLink", TbSimpleTestFilterMask);
 
-void UTbSimpleEmptyInterfaceOLinkSpec::_SubscriptionStatusChangedCb(bool bSubscribed)
-{
-	// ImplFixture->testDoneDelegate.Execute();
-	// InTestDoneDelegate.Execute();
-	if (bSubscribed)
-	{
-		testDoneDelegate.Execute();
-	}
-}
+TUniquePtr<FTbSimpleEmptyInterfaceOLinkFixture> ImplFixture;
+
+END_DEFINE_SPEC(UTbSimpleEmptyInterfaceOLinkSpec);
 
 void UTbSimpleEmptyInterfaceOLinkSpec::Define()
 {
@@ -49,10 +42,6 @@ void UTbSimpleEmptyInterfaceOLinkSpec::Define()
 
 		TestTrue("Check for valid testImplementation", ImplFixture->GetImplementation().GetInterface() != nullptr);
 
-		TestTrue("Check for valid Helper", ImplFixture->GetHelper().IsValid());
-		// needed for callbacks
-		ImplFixture->GetHelper()->SetSpec(this);
-
 		// set up service and adapter
 		ImplFixture->GetHost()->Stop();
 		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleEmptyInterface>();
@@ -61,11 +50,16 @@ void UTbSimpleEmptyInterfaceOLinkSpec::Define()
 		ImplFixture->GetHost()->Start(8666);
 
 		// setup client
-		testDoneDelegate = TestDone;
 		UTbSimpleEmptyInterfaceOLinkClient* OLinkClient = Cast<UTbSimpleEmptyInterfaceOLinkClient>(ImplFixture->GetImplementation().GetObject());
 		TestTrue("Check for valid OLink client", OLinkClient != nullptr);
 
-		OLinkClient->_SubscriptionStatusChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleEmptyInterfaceOLinkHelper::_SubscriptionStatusChangedCb);
+		OLinkClient->_SubscriptionStatusChanged.AddLambda([this, TestDone](bool bSubscribed)
+			{
+			if (bSubscribed)
+			{
+				TestDone.Execute();
+			}
+		});
 
 		ImplFixture->Connection = OLinkFactory::Create(OLinkClient, "TestingConnection");
 		ImplFixture->Connection->Configure("ws://127.0.0.1:8666/ws", false);
@@ -80,5 +74,5 @@ void UTbSimpleEmptyInterfaceOLinkSpec::Define()
 		ImplFixture.Reset();
 	});
 }
-#endif // WITH_DEV_AUTOMATION_TESTS
-#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)
+
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

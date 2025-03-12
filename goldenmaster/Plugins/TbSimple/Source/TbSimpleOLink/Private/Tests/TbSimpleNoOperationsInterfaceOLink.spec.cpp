@@ -14,31 +14,24 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+#include "Misc/AutomationTest.h"
+#include "HAL/Platform.h"
 
-#include "TbSimpleNoOperationsInterfaceOLink.spec.h"
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
 #include "TbSimpleNoOperationsInterfaceOLinkFixture.h"
 #include "TbSimple/Implementation/TbSimpleNoOperationsInterface.h"
 #include "TbSimple/Generated/OLink/TbSimpleNoOperationsInterfaceOLinkClient.h"
 #include "TbSimple/Generated/OLink/TbSimpleNoOperationsInterfaceOLinkAdapter.h"
-#include "HAL/Platform.h"
 
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #include "OLinkHost.h"
 #include "OLinkClientConnection.h" // for olink factory
 #include "TbSimple/Tests/TbSimpleTestsCommon.h"
-#include "Misc/AutomationTest.h"
 
-#if WITH_DEV_AUTOMATION_TESTS
+BEGIN_DEFINE_SPEC(UTbSimpleNoOperationsInterfaceOLinkSpec, "TbSimple.NoOperationsInterface.OLink", TbSimpleTestFilterMask);
 
-void UTbSimpleNoOperationsInterfaceOLinkSpec::_SubscriptionStatusChangedCb(bool bSubscribed)
-{
-	// ImplFixture->testDoneDelegate.Execute();
-	// InTestDoneDelegate.Execute();
-	if (bSubscribed)
-	{
-		testDoneDelegate.Execute();
-	}
-}
+TUniquePtr<FTbSimpleNoOperationsInterfaceOLinkFixture> ImplFixture;
+
+END_DEFINE_SPEC(UTbSimpleNoOperationsInterfaceOLinkSpec);
 
 void UTbSimpleNoOperationsInterfaceOLinkSpec::Define()
 {
@@ -49,10 +42,6 @@ void UTbSimpleNoOperationsInterfaceOLinkSpec::Define()
 
 		TestTrue("Check for valid testImplementation", ImplFixture->GetImplementation().GetInterface() != nullptr);
 
-		TestTrue("Check for valid Helper", ImplFixture->GetHelper().IsValid());
-		// needed for callbacks
-		ImplFixture->GetHelper()->SetSpec(this);
-
 		// set up service and adapter
 		ImplFixture->GetHost()->Stop();
 		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleNoOperationsInterface>();
@@ -61,11 +50,16 @@ void UTbSimpleNoOperationsInterfaceOLinkSpec::Define()
 		ImplFixture->GetHost()->Start(8666);
 
 		// setup client
-		testDoneDelegate = TestDone;
 		UTbSimpleNoOperationsInterfaceOLinkClient* OLinkClient = Cast<UTbSimpleNoOperationsInterfaceOLinkClient>(ImplFixture->GetImplementation().GetObject());
 		TestTrue("Check for valid OLink client", OLinkClient != nullptr);
 
-		OLinkClient->_SubscriptionStatusChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleNoOperationsInterfaceOLinkHelper::_SubscriptionStatusChangedCb);
+		OLinkClient->_SubscriptionStatusChanged.AddLambda([this, TestDone](bool bSubscribed)
+			{
+			if (bSubscribed)
+			{
+				TestDone.Execute();
+			}
+		});
 
 		ImplFixture->Connection = OLinkFactory::Create(OLinkClient, "TestingConnection");
 		ImplFixture->Connection->Configure("ws://127.0.0.1:8666/ws", false);
@@ -93,9 +87,16 @@ void UTbSimpleNoOperationsInterfaceOLinkSpec::Define()
 		bool TestValue = false; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTbSimpleNoOperationsInterfaceSignals* TbSimpleNoOperationsInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleNoOperationsInterfaceSignals->OnPropBoolChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleNoOperationsInterfaceOLinkHelper::PropBoolPropertyCb);
+		TbSimpleNoOperationsInterfaceSignals->OnPropBoolChanged.AddLambda([this, TestDone](bool bInPropBool){
+			bool TestValue = false;
+			// use different test value
+			TestValue = true;
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), bInPropBool, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue = true;
 		ImplFixture->GetImplementation()->SetPropBool(TestValue);
@@ -114,9 +115,16 @@ void UTbSimpleNoOperationsInterfaceOLinkSpec::Define()
 		int32 TestValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTbSimpleNoOperationsInterfaceSignals* TbSimpleNoOperationsInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleNoOperationsInterfaceSignals->OnPropIntChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleNoOperationsInterfaceOLinkHelper::PropIntPropertyCb);
+		TbSimpleNoOperationsInterfaceSignals->OnPropIntChanged.AddLambda([this, TestDone](int32 InPropInt){
+			int32 TestValue = 0;
+			// use different test value
+			TestValue = 1;
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue = 1;
 		ImplFixture->GetImplementation()->SetPropInt(TestValue);
@@ -124,9 +132,11 @@ void UTbSimpleNoOperationsInterfaceOLinkSpec::Define()
 
 	LatentIt("Signal.SigVoid", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTbSimpleNoOperationsInterfaceSignals* TbSimpleNoOperationsInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleNoOperationsInterfaceSignals->OnSigVoidSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleNoOperationsInterfaceOLinkHelper::SigVoidSignalCb);
+		TbSimpleNoOperationsInterfaceSignals->OnSigVoidSignal.AddLambda([this, TestDone](){
+			// known test value
+			TestDone.Execute();
+		});
 
 		// use different test value
 		TbSimpleNoOperationsInterfaceSignals->BroadcastSigVoidSignal();
@@ -134,9 +144,13 @@ void UTbSimpleNoOperationsInterfaceOLinkSpec::Define()
 
 	LatentIt("Signal.SigBool", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTbSimpleNoOperationsInterfaceSignals* TbSimpleNoOperationsInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleNoOperationsInterfaceSignals->OnSigBoolSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleNoOperationsInterfaceOLinkHelper::SigBoolSignalCb);
+		TbSimpleNoOperationsInterfaceSignals->OnSigBoolSignal.AddLambda([this, TestDone](bool bInParamBool){
+			// known test value
+			bool bParamBoolTestValue = true;
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), bInParamBool, bParamBoolTestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		bool bParamBoolTestValue = true;
@@ -144,38 +158,4 @@ void UTbSimpleNoOperationsInterfaceOLinkSpec::Define()
 	});
 }
 
-void UTbSimpleNoOperationsInterfaceOLinkSpec::PropBoolPropertyCb(bool bInPropBool)
-{
-	bool TestValue = false;
-	// use different test value
-	TestValue = true;
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), bInPropBool, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleNoOperationsInterfaceOLinkSpec::PropIntPropertyCb(int32 InPropInt)
-{
-	int32 TestValue = 0;
-	// use different test value
-	TestValue = 1;
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleNoOperationsInterfaceOLinkSpec::SigVoidSignalCb()
-{
-	// known test value
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleNoOperationsInterfaceOLinkSpec::SigBoolSignalCb(bool bInParamBool)
-{
-	// known test value
-	bool bParamBoolTestValue = true;
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), bInParamBool, bParamBoolTestValue);
-	testDoneDelegate.Execute();
-}
-#endif // WITH_DEV_AUTOMATION_TESTS
-#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

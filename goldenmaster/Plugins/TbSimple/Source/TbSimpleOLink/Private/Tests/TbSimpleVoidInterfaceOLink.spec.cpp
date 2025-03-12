@@ -14,31 +14,24 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+#include "Misc/AutomationTest.h"
+#include "HAL/Platform.h"
 
-#include "TbSimpleVoidInterfaceOLink.spec.h"
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
 #include "TbSimpleVoidInterfaceOLinkFixture.h"
 #include "TbSimple/Implementation/TbSimpleVoidInterface.h"
 #include "TbSimple/Generated/OLink/TbSimpleVoidInterfaceOLinkClient.h"
 #include "TbSimple/Generated/OLink/TbSimpleVoidInterfaceOLinkAdapter.h"
-#include "HAL/Platform.h"
 
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #include "OLinkHost.h"
 #include "OLinkClientConnection.h" // for olink factory
 #include "TbSimple/Tests/TbSimpleTestsCommon.h"
-#include "Misc/AutomationTest.h"
 
-#if WITH_DEV_AUTOMATION_TESTS
+BEGIN_DEFINE_SPEC(UTbSimpleVoidInterfaceOLinkSpec, "TbSimple.VoidInterface.OLink", TbSimpleTestFilterMask);
 
-void UTbSimpleVoidInterfaceOLinkSpec::_SubscriptionStatusChangedCb(bool bSubscribed)
-{
-	// ImplFixture->testDoneDelegate.Execute();
-	// InTestDoneDelegate.Execute();
-	if (bSubscribed)
-	{
-		testDoneDelegate.Execute();
-	}
-}
+TUniquePtr<FTbSimpleVoidInterfaceOLinkFixture> ImplFixture;
+
+END_DEFINE_SPEC(UTbSimpleVoidInterfaceOLinkSpec);
 
 void UTbSimpleVoidInterfaceOLinkSpec::Define()
 {
@@ -49,10 +42,6 @@ void UTbSimpleVoidInterfaceOLinkSpec::Define()
 
 		TestTrue("Check for valid testImplementation", ImplFixture->GetImplementation().GetInterface() != nullptr);
 
-		TestTrue("Check for valid Helper", ImplFixture->GetHelper().IsValid());
-		// needed for callbacks
-		ImplFixture->GetHelper()->SetSpec(this);
-
 		// set up service and adapter
 		ImplFixture->GetHost()->Stop();
 		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleVoidInterface>();
@@ -61,11 +50,16 @@ void UTbSimpleVoidInterfaceOLinkSpec::Define()
 		ImplFixture->GetHost()->Start(8666);
 
 		// setup client
-		testDoneDelegate = TestDone;
 		UTbSimpleVoidInterfaceOLinkClient* OLinkClient = Cast<UTbSimpleVoidInterfaceOLinkClient>(ImplFixture->GetImplementation().GetObject());
 		TestTrue("Check for valid OLink client", OLinkClient != nullptr);
 
-		OLinkClient->_SubscriptionStatusChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleVoidInterfaceOLinkHelper::_SubscriptionStatusChangedCb);
+		OLinkClient->_SubscriptionStatusChanged.AddLambda([this, TestDone](bool bSubscribed)
+			{
+			if (bSubscribed)
+			{
+				TestDone.Execute();
+			}
+		});
 
 		ImplFixture->Connection = OLinkFactory::Create(OLinkClient, "TestingConnection");
 		ImplFixture->Connection->Configure("ws://127.0.0.1:8666/ws", false);
@@ -92,19 +86,15 @@ void UTbSimpleVoidInterfaceOLinkSpec::Define()
 
 	LatentIt("Signal.SigVoid", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTbSimpleVoidInterfaceSignals* TbSimpleVoidInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleVoidInterfaceSignals->OnSigVoidSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleVoidInterfaceOLinkHelper::SigVoidSignalCb);
+		TbSimpleVoidInterfaceSignals->OnSigVoidSignal.AddLambda([this, TestDone](){
+			// known test value
+			TestDone.Execute();
+		});
 
 		// use different test value
 		TbSimpleVoidInterfaceSignals->BroadcastSigVoidSignal();
 	});
 }
 
-void UTbSimpleVoidInterfaceOLinkSpec::SigVoidSignalCb()
-{
-	// known test value
-	testDoneDelegate.Execute();
-}
-#endif // WITH_DEV_AUTOMATION_TESTS
-#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

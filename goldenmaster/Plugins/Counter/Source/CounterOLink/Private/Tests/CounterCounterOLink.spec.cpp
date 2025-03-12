@@ -14,33 +14,26 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+#include "Misc/AutomationTest.h"
+#include "HAL/Platform.h"
 
-#include "CounterCounterOLink.spec.h"
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
 #include "CounterCounterOLinkFixture.h"
 #include "Counter/Implementation/CounterCounter.h"
 #include "Counter/Generated/OLink/CounterCounterOLinkClient.h"
 #include "Counter/Generated/OLink/CounterCounterOLinkAdapter.h"
-#include "HAL/Platform.h"
 
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #include "OLinkHost.h"
 #include "OLinkClientConnection.h" // for olink factory
 #include "Counter/Tests/CounterTestsCommon.h"
 #include "CustomTypes/Tests/CustomTypesTestsCommon.h"
 #include "ExternTypes/Tests/ExternTypesTestsCommon.h"
-#include "Misc/AutomationTest.h"
 
-#if WITH_DEV_AUTOMATION_TESTS
+BEGIN_DEFINE_SPEC(UCounterCounterOLinkSpec, "Counter.Counter.OLink", CounterTestFilterMask);
 
-void UCounterCounterOLinkSpec::_SubscriptionStatusChangedCb(bool bSubscribed)
-{
-	// ImplFixture->testDoneDelegate.Execute();
-	// InTestDoneDelegate.Execute();
-	if (bSubscribed)
-	{
-		testDoneDelegate.Execute();
-	}
-}
+TUniquePtr<FCounterCounterOLinkFixture> ImplFixture;
+
+END_DEFINE_SPEC(UCounterCounterOLinkSpec);
 
 void UCounterCounterOLinkSpec::Define()
 {
@@ -51,10 +44,6 @@ void UCounterCounterOLinkSpec::Define()
 
 		TestTrue("Check for valid testImplementation", ImplFixture->GetImplementation().GetInterface() != nullptr);
 
-		TestTrue("Check for valid Helper", ImplFixture->GetHelper().IsValid());
-		// needed for callbacks
-		ImplFixture->GetHelper()->SetSpec(this);
-
 		// set up service and adapter
 		ImplFixture->GetHost()->Stop();
 		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UCounterCounter>();
@@ -63,11 +52,16 @@ void UCounterCounterOLinkSpec::Define()
 		ImplFixture->GetHost()->Start(8666);
 
 		// setup client
-		testDoneDelegate = TestDone;
 		UCounterCounterOLinkClient* OLinkClient = Cast<UCounterCounterOLinkClient>(ImplFixture->GetImplementation().GetObject());
 		TestTrue("Check for valid OLink client", OLinkClient != nullptr);
 
-		OLinkClient->_SubscriptionStatusChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UCounterCounterOLinkHelper::_SubscriptionStatusChangedCb);
+		OLinkClient->_SubscriptionStatusChanged.AddLambda([this, TestDone](bool bSubscribed)
+			{
+			if (bSubscribed)
+			{
+				TestDone.Execute();
+			}
+		});
 
 		ImplFixture->Connection = OLinkFactory::Create(OLinkClient, "TestingConnection");
 		ImplFixture->Connection->Configure("ws://127.0.0.1:8666/ws", false);
@@ -95,9 +89,16 @@ void UCounterCounterOLinkSpec::Define()
 		FCustomTypesVector3D TestValue = FCustomTypesVector3D(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetVector(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UCounterCounterSignals* CounterCounterSignals = ImplFixture->GetImplementation()->_GetSignals();
-		CounterCounterSignals->OnVectorChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UCounterCounterOLinkHelper::VectorPropertyCb);
+		CounterCounterSignals->OnVectorChanged.AddLambda([this, TestDone](const FCustomTypesVector3D& InVector){
+			FCustomTypesVector3D TestValue = FCustomTypesVector3D();
+			// use different test value
+			TestValue = createTestFCustomTypesVector3D();
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InVector, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetVector(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue = createTestFCustomTypesVector3D();
 		ImplFixture->GetImplementation()->SetVector(TestValue);
@@ -123,9 +124,16 @@ void UCounterCounterOLinkSpec::Define()
 		TArray<FCustomTypesVector3D> TestValue = TArray<FCustomTypesVector3D>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetVectorArray(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UCounterCounterSignals* CounterCounterSignals = ImplFixture->GetImplementation()->_GetSignals();
-		CounterCounterSignals->OnVectorArrayChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UCounterCounterOLinkHelper::VectorArrayPropertyCb);
+		CounterCounterSignals->OnVectorArrayChanged.AddLambda([this, TestDone](const TArray<FCustomTypesVector3D>& InVectorArray){
+			TArray<FCustomTypesVector3D> TestValue = TArray<FCustomTypesVector3D>();
+			// use different test value
+			TestValue = createTestFCustomTypesVector3DArray();
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InVectorArray, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetVectorArray(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue = createTestFCustomTypesVector3DArray();
 		ImplFixture->GetImplementation()->SetVectorArray(TestValue);
@@ -184,9 +192,15 @@ void UCounterCounterOLinkSpec::Define()
 
 	LatentIt("Signal.ValueChanged", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UCounterCounterSignals* CounterCounterSignals = ImplFixture->GetImplementation()->_GetSignals();
-		CounterCounterSignals->OnValueChangedSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UCounterCounterOLinkHelper::ValueChangedSignalCb);
+		CounterCounterSignals->OnValueChangedSignal.AddLambda([this, TestDone](const FCustomTypesVector3D& InVector, const FVector& InExternVector, const TArray<FCustomTypesVector3D>& InVectorArray, const TArray<FVector>& InExternVectorArray){
+			// known test value
+			FCustomTypesVector3D VectorTestValue = createTestFCustomTypesVector3D();
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InVector, VectorTestValue);
+			TArray<FCustomTypesVector3D> VectorArrayTestValue = createTestFCustomTypesVector3DArray();
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InVectorArray, VectorArrayTestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		FCustomTypesVector3D VectorTestValue = createTestFCustomTypesVector3D();
@@ -197,34 +211,4 @@ void UCounterCounterOLinkSpec::Define()
 	});
 }
 
-void UCounterCounterOLinkSpec::VectorPropertyCb(const FCustomTypesVector3D& InVector)
-{
-	FCustomTypesVector3D TestValue = FCustomTypesVector3D();
-	// use different test value
-	TestValue = createTestFCustomTypesVector3D();
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InVector, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetVector(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UCounterCounterOLinkSpec::VectorArrayPropertyCb(const TArray<FCustomTypesVector3D>& InVectorArray)
-{
-	TArray<FCustomTypesVector3D> TestValue = TArray<FCustomTypesVector3D>();
-	// use different test value
-	TestValue = createTestFCustomTypesVector3DArray();
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InVectorArray, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetVectorArray(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UCounterCounterOLinkSpec::ValueChangedSignalCb(const FCustomTypesVector3D& InVector, const FVector& InExternVector, const TArray<FCustomTypesVector3D>& InVectorArray, const TArray<FVector>& InExternVectorArray)
-{
-	// known test value
-	FCustomTypesVector3D VectorTestValue = createTestFCustomTypesVector3D();
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InVector, VectorTestValue);
-	TArray<FCustomTypesVector3D> VectorArrayTestValue = createTestFCustomTypesVector3DArray();
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InVectorArray, VectorArrayTestValue);
-	testDoneDelegate.Execute();
-}
-#endif // WITH_DEV_AUTOMATION_TESTS
-#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

@@ -14,31 +14,24 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+#include "Misc/AutomationTest.h"
+#include "HAL/Platform.h"
 
-#include "TbSimpleSimpleInterfaceOLink.spec.h"
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
 #include "TbSimpleSimpleInterfaceOLinkFixture.h"
 #include "TbSimple/Implementation/TbSimpleSimpleInterface.h"
 #include "TbSimple/Generated/OLink/TbSimpleSimpleInterfaceOLinkClient.h"
 #include "TbSimple/Generated/OLink/TbSimpleSimpleInterfaceOLinkAdapter.h"
-#include "HAL/Platform.h"
 
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #include "OLinkHost.h"
 #include "OLinkClientConnection.h" // for olink factory
 #include "TbSimple/Tests/TbSimpleTestsCommon.h"
-#include "Misc/AutomationTest.h"
 
-#if WITH_DEV_AUTOMATION_TESTS
+BEGIN_DEFINE_SPEC(UTbSimpleSimpleInterfaceOLinkSpec, "TbSimple.SimpleInterface.OLink", TbSimpleTestFilterMask);
 
-void UTbSimpleSimpleInterfaceOLinkSpec::_SubscriptionStatusChangedCb(bool bSubscribed)
-{
-	// ImplFixture->testDoneDelegate.Execute();
-	// InTestDoneDelegate.Execute();
-	if (bSubscribed)
-	{
-		testDoneDelegate.Execute();
-	}
-}
+TUniquePtr<FTbSimpleSimpleInterfaceOLinkFixture> ImplFixture;
+
+END_DEFINE_SPEC(UTbSimpleSimpleInterfaceOLinkSpec);
 
 void UTbSimpleSimpleInterfaceOLinkSpec::Define()
 {
@@ -49,10 +42,6 @@ void UTbSimpleSimpleInterfaceOLinkSpec::Define()
 
 		TestTrue("Check for valid testImplementation", ImplFixture->GetImplementation().GetInterface() != nullptr);
 
-		TestTrue("Check for valid Helper", ImplFixture->GetHelper().IsValid());
-		// needed for callbacks
-		ImplFixture->GetHelper()->SetSpec(this);
-
 		// set up service and adapter
 		ImplFixture->GetHost()->Stop();
 		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterface>();
@@ -61,11 +50,16 @@ void UTbSimpleSimpleInterfaceOLinkSpec::Define()
 		ImplFixture->GetHost()->Start(8666);
 
 		// setup client
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceOLinkClient* OLinkClient = Cast<UTbSimpleSimpleInterfaceOLinkClient>(ImplFixture->GetImplementation().GetObject());
 		TestTrue("Check for valid OLink client", OLinkClient != nullptr);
 
-		OLinkClient->_SubscriptionStatusChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceOLinkHelper::_SubscriptionStatusChangedCb);
+		OLinkClient->_SubscriptionStatusChanged.AddLambda([this, TestDone](bool bSubscribed)
+			{
+			if (bSubscribed)
+			{
+				TestDone.Execute();
+			}
+		});
 
 		ImplFixture->Connection = OLinkFactory::Create(OLinkClient, "TestingConnection");
 		ImplFixture->Connection->Configure("ws://127.0.0.1:8666/ws", false);
@@ -93,9 +87,16 @@ void UTbSimpleSimpleInterfaceOLinkSpec::Define()
 		bool TestValue = false; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnPropBoolChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceOLinkHelper::PropBoolPropertyCb);
+		TbSimpleSimpleInterfaceSignals->OnPropBoolChanged.AddLambda([this, TestDone](bool bInPropBool){
+			bool TestValue = false;
+			// use different test value
+			TestValue = true;
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), bInPropBool, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue = true;
 		ImplFixture->GetImplementation()->SetPropBool(TestValue);
@@ -114,9 +115,16 @@ void UTbSimpleSimpleInterfaceOLinkSpec::Define()
 		int32 TestValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnPropIntChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceOLinkHelper::PropIntPropertyCb);
+		TbSimpleSimpleInterfaceSignals->OnPropIntChanged.AddLambda([this, TestDone](int32 InPropInt){
+			int32 TestValue = 0;
+			// use different test value
+			TestValue = 1;
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue = 1;
 		ImplFixture->GetImplementation()->SetPropInt(TestValue);
@@ -135,9 +143,16 @@ void UTbSimpleSimpleInterfaceOLinkSpec::Define()
 		int32 TestValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt32(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnPropInt32ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceOLinkHelper::PropInt32PropertyCb);
+		TbSimpleSimpleInterfaceSignals->OnPropInt32Changed.AddLambda([this, TestDone](int32 InPropInt32){
+			int32 TestValue = 0;
+			// use different test value
+			TestValue = 1;
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt32, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropInt32(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue = 1;
 		ImplFixture->GetImplementation()->SetPropInt32(TestValue);
@@ -156,9 +171,16 @@ void UTbSimpleSimpleInterfaceOLinkSpec::Define()
 		int64 TestValue = 0LL; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt64(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnPropInt64ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceOLinkHelper::PropInt64PropertyCb);
+		TbSimpleSimpleInterfaceSignals->OnPropInt64Changed.AddLambda([this, TestDone](int64 InPropInt64){
+			int64 TestValue = 0LL;
+			// use different test value
+			TestValue = 1LL;
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt64, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropInt64(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue = 1LL;
 		ImplFixture->GetImplementation()->SetPropInt64(TestValue);
@@ -177,9 +199,16 @@ void UTbSimpleSimpleInterfaceOLinkSpec::Define()
 		float TestValue = 0.0f; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropFloat(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnPropFloatChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceOLinkHelper::PropFloatPropertyCb);
+		TbSimpleSimpleInterfaceSignals->OnPropFloatChanged.AddLambda([this, TestDone](float InPropFloat){
+			float TestValue = 0.0f;
+			// use different test value
+			TestValue = 1.0f;
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropFloat(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue = 1.0f;
 		ImplFixture->GetImplementation()->SetPropFloat(TestValue);
@@ -198,9 +227,16 @@ void UTbSimpleSimpleInterfaceOLinkSpec::Define()
 		float TestValue = 0.0f; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropFloat32(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnPropFloat32ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceOLinkHelper::PropFloat32PropertyCb);
+		TbSimpleSimpleInterfaceSignals->OnPropFloat32Changed.AddLambda([this, TestDone](float InPropFloat32){
+			float TestValue = 0.0f;
+			// use different test value
+			TestValue = 1.0f;
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat32, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropFloat32(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue = 1.0f;
 		ImplFixture->GetImplementation()->SetPropFloat32(TestValue);
@@ -219,9 +255,16 @@ void UTbSimpleSimpleInterfaceOLinkSpec::Define()
 		double TestValue = 0.0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropFloat64(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnPropFloat64ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceOLinkHelper::PropFloat64PropertyCb);
+		TbSimpleSimpleInterfaceSignals->OnPropFloat64Changed.AddLambda([this, TestDone](double InPropFloat64){
+			double TestValue = 0.0;
+			// use different test value
+			TestValue = 1.0;
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat64, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropFloat64(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue = 1.0;
 		ImplFixture->GetImplementation()->SetPropFloat64(TestValue);
@@ -240,9 +283,16 @@ void UTbSimpleSimpleInterfaceOLinkSpec::Define()
 		FString TestValue = FString(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropString(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnPropStringChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceOLinkHelper::PropStringPropertyCb);
+		TbSimpleSimpleInterfaceSignals->OnPropStringChanged.AddLambda([this, TestDone](const FString& InPropString){
+			FString TestValue = FString();
+			// use different test value
+			TestValue = FString("xyz");
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropString, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropString(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue = FString("xyz");
 		ImplFixture->GetImplementation()->SetPropString(TestValue);
@@ -340,9 +390,13 @@ void UTbSimpleSimpleInterfaceOLinkSpec::Define()
 
 	LatentIt("Signal.SigBool", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnSigBoolSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceOLinkHelper::SigBoolSignalCb);
+		TbSimpleSimpleInterfaceSignals->OnSigBoolSignal.AddLambda([this, TestDone](bool bInParamBool){
+			// known test value
+			bool bParamBoolTestValue = true;
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), bInParamBool, bParamBoolTestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		bool bParamBoolTestValue = true;
@@ -351,9 +405,13 @@ void UTbSimpleSimpleInterfaceOLinkSpec::Define()
 
 	LatentIt("Signal.SigInt", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnSigIntSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceOLinkHelper::SigIntSignalCb);
+		TbSimpleSimpleInterfaceSignals->OnSigIntSignal.AddLambda([this, TestDone](int32 InParamInt){
+			// known test value
+			int32 ParamIntTestValue = 1;
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamInt, ParamIntTestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		int32 ParamIntTestValue = 1;
@@ -362,9 +420,13 @@ void UTbSimpleSimpleInterfaceOLinkSpec::Define()
 
 	LatentIt("Signal.SigInt32", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnSigInt32SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceOLinkHelper::SigInt32SignalCb);
+		TbSimpleSimpleInterfaceSignals->OnSigInt32Signal.AddLambda([this, TestDone](int32 InParamInt32){
+			// known test value
+			int32 ParamInt32TestValue = 1;
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamInt32, ParamInt32TestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		int32 ParamInt32TestValue = 1;
@@ -373,9 +435,13 @@ void UTbSimpleSimpleInterfaceOLinkSpec::Define()
 
 	LatentIt("Signal.SigInt64", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnSigInt64SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceOLinkHelper::SigInt64SignalCb);
+		TbSimpleSimpleInterfaceSignals->OnSigInt64Signal.AddLambda([this, TestDone](int64 InParamInt64){
+			// known test value
+			int64 ParamInt64TestValue = 1LL;
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamInt64, ParamInt64TestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		int64 ParamInt64TestValue = 1LL;
@@ -384,9 +450,13 @@ void UTbSimpleSimpleInterfaceOLinkSpec::Define()
 
 	LatentIt("Signal.SigFloat", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnSigFloatSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceOLinkHelper::SigFloatSignalCb);
+		TbSimpleSimpleInterfaceSignals->OnSigFloatSignal.AddLambda([this, TestDone](float InParamFloat){
+			// known test value
+			float ParamFloatTestValue = 1.0f;
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamFloat, ParamFloatTestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		float ParamFloatTestValue = 1.0f;
@@ -395,9 +465,13 @@ void UTbSimpleSimpleInterfaceOLinkSpec::Define()
 
 	LatentIt("Signal.SigFloat32", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnSigFloat32SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceOLinkHelper::SigFloat32SignalCb);
+		TbSimpleSimpleInterfaceSignals->OnSigFloat32Signal.AddLambda([this, TestDone](float InParamFloat32){
+			// known test value
+			float ParamFloat32TestValue = 1.0f;
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamFloat32, ParamFloat32TestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		float ParamFloat32TestValue = 1.0f;
@@ -406,9 +480,13 @@ void UTbSimpleSimpleInterfaceOLinkSpec::Define()
 
 	LatentIt("Signal.SigFloat64", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnSigFloat64SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceOLinkHelper::SigFloat64SignalCb);
+		TbSimpleSimpleInterfaceSignals->OnSigFloat64Signal.AddLambda([this, TestDone](double InParamFloat64){
+			// known test value
+			double ParamFloat64TestValue = 1.0;
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamFloat64, ParamFloat64TestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		double ParamFloat64TestValue = 1.0;
@@ -417,9 +495,13 @@ void UTbSimpleSimpleInterfaceOLinkSpec::Define()
 
 	LatentIt("Signal.SigString", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnSigStringSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceOLinkHelper::SigStringSignalCb);
+		TbSimpleSimpleInterfaceSignals->OnSigStringSignal.AddLambda([this, TestDone](const FString& InParamString){
+			// known test value
+			FString ParamStringTestValue = FString("xyz");
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamString, ParamStringTestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		FString ParamStringTestValue = FString("xyz");
@@ -427,148 +509,4 @@ void UTbSimpleSimpleInterfaceOLinkSpec::Define()
 	});
 }
 
-void UTbSimpleSimpleInterfaceOLinkSpec::PropBoolPropertyCb(bool bInPropBool)
-{
-	bool TestValue = false;
-	// use different test value
-	TestValue = true;
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), bInPropBool, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleSimpleInterfaceOLinkSpec::PropIntPropertyCb(int32 InPropInt)
-{
-	int32 TestValue = 0;
-	// use different test value
-	TestValue = 1;
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleSimpleInterfaceOLinkSpec::PropInt32PropertyCb(int32 InPropInt32)
-{
-	int32 TestValue = 0;
-	// use different test value
-	TestValue = 1;
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt32, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropInt32(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleSimpleInterfaceOLinkSpec::PropInt64PropertyCb(int64 InPropInt64)
-{
-	int64 TestValue = 0LL;
-	// use different test value
-	TestValue = 1LL;
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt64, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropInt64(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleSimpleInterfaceOLinkSpec::PropFloatPropertyCb(float InPropFloat)
-{
-	float TestValue = 0.0f;
-	// use different test value
-	TestValue = 1.0f;
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropFloat(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleSimpleInterfaceOLinkSpec::PropFloat32PropertyCb(float InPropFloat32)
-{
-	float TestValue = 0.0f;
-	// use different test value
-	TestValue = 1.0f;
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat32, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropFloat32(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleSimpleInterfaceOLinkSpec::PropFloat64PropertyCb(double InPropFloat64)
-{
-	double TestValue = 0.0;
-	// use different test value
-	TestValue = 1.0;
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat64, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropFloat64(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleSimpleInterfaceOLinkSpec::PropStringPropertyCb(const FString& InPropString)
-{
-	FString TestValue = FString();
-	// use different test value
-	TestValue = FString("xyz");
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropString, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropString(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleSimpleInterfaceOLinkSpec::SigBoolSignalCb(bool bInParamBool)
-{
-	// known test value
-	bool bParamBoolTestValue = true;
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), bInParamBool, bParamBoolTestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleSimpleInterfaceOLinkSpec::SigIntSignalCb(int32 InParamInt)
-{
-	// known test value
-	int32 ParamIntTestValue = 1;
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamInt, ParamIntTestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleSimpleInterfaceOLinkSpec::SigInt32SignalCb(int32 InParamInt32)
-{
-	// known test value
-	int32 ParamInt32TestValue = 1;
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamInt32, ParamInt32TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleSimpleInterfaceOLinkSpec::SigInt64SignalCb(int64 InParamInt64)
-{
-	// known test value
-	int64 ParamInt64TestValue = 1LL;
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamInt64, ParamInt64TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleSimpleInterfaceOLinkSpec::SigFloatSignalCb(float InParamFloat)
-{
-	// known test value
-	float ParamFloatTestValue = 1.0f;
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamFloat, ParamFloatTestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleSimpleInterfaceOLinkSpec::SigFloat32SignalCb(float InParamFloat32)
-{
-	// known test value
-	float ParamFloat32TestValue = 1.0f;
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamFloat32, ParamFloat32TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleSimpleInterfaceOLinkSpec::SigFloat64SignalCb(double InParamFloat64)
-{
-	// known test value
-	double ParamFloat64TestValue = 1.0;
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamFloat64, ParamFloat64TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleSimpleInterfaceOLinkSpec::SigStringSignalCb(const FString& InParamString)
-{
-	// known test value
-	FString ParamStringTestValue = FString("xyz");
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamString, ParamStringTestValue);
-	testDoneDelegate.Execute();
-}
-#endif // WITH_DEV_AUTOMATION_TESTS
-#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

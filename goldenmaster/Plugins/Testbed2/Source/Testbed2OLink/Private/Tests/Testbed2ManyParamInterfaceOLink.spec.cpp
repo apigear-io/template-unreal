@@ -14,31 +14,24 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+#include "Misc/AutomationTest.h"
+#include "HAL/Platform.h"
 
-#include "Testbed2ManyParamInterfaceOLink.spec.h"
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
 #include "Testbed2ManyParamInterfaceOLinkFixture.h"
 #include "Testbed2/Implementation/Testbed2ManyParamInterface.h"
 #include "Testbed2/Generated/OLink/Testbed2ManyParamInterfaceOLinkClient.h"
 #include "Testbed2/Generated/OLink/Testbed2ManyParamInterfaceOLinkAdapter.h"
-#include "HAL/Platform.h"
 
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #include "OLinkHost.h"
 #include "OLinkClientConnection.h" // for olink factory
 #include "Testbed2/Tests/Testbed2TestsCommon.h"
-#include "Misc/AutomationTest.h"
 
-#if WITH_DEV_AUTOMATION_TESTS
+BEGIN_DEFINE_SPEC(UTestbed2ManyParamInterfaceOLinkSpec, "Testbed2.ManyParamInterface.OLink", Testbed2TestFilterMask);
 
-void UTestbed2ManyParamInterfaceOLinkSpec::_SubscriptionStatusChangedCb(bool bSubscribed)
-{
-	// ImplFixture->testDoneDelegate.Execute();
-	// InTestDoneDelegate.Execute();
-	if (bSubscribed)
-	{
-		testDoneDelegate.Execute();
-	}
-}
+TUniquePtr<FTestbed2ManyParamInterfaceOLinkFixture> ImplFixture;
+
+END_DEFINE_SPEC(UTestbed2ManyParamInterfaceOLinkSpec);
 
 void UTestbed2ManyParamInterfaceOLinkSpec::Define()
 {
@@ -49,10 +42,6 @@ void UTestbed2ManyParamInterfaceOLinkSpec::Define()
 
 		TestTrue("Check for valid testImplementation", ImplFixture->GetImplementation().GetInterface() != nullptr);
 
-		TestTrue("Check for valid Helper", ImplFixture->GetHelper().IsValid());
-		// needed for callbacks
-		ImplFixture->GetHelper()->SetSpec(this);
-
 		// set up service and adapter
 		ImplFixture->GetHost()->Stop();
 		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed2ManyParamInterface>();
@@ -61,11 +50,16 @@ void UTestbed2ManyParamInterfaceOLinkSpec::Define()
 		ImplFixture->GetHost()->Start(8666);
 
 		// setup client
-		testDoneDelegate = TestDone;
 		UTestbed2ManyParamInterfaceOLinkClient* OLinkClient = Cast<UTestbed2ManyParamInterfaceOLinkClient>(ImplFixture->GetImplementation().GetObject());
 		TestTrue("Check for valid OLink client", OLinkClient != nullptr);
 
-		OLinkClient->_SubscriptionStatusChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2ManyParamInterfaceOLinkHelper::_SubscriptionStatusChangedCb);
+		OLinkClient->_SubscriptionStatusChanged.AddLambda([this, TestDone](bool bSubscribed)
+			{
+			if (bSubscribed)
+			{
+				TestDone.Execute();
+			}
+		});
 
 		ImplFixture->Connection = OLinkFactory::Create(OLinkClient, "TestingConnection");
 		ImplFixture->Connection->Configure("ws://127.0.0.1:8666/ws", false);
@@ -93,9 +87,16 @@ void UTestbed2ManyParamInterfaceOLinkSpec::Define()
 		int32 TestValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp1(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTestbed2ManyParamInterfaceSignals* Testbed2ManyParamInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2ManyParamInterfaceSignals->OnProp1ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2ManyParamInterfaceOLinkHelper::Prop1PropertyCb);
+		Testbed2ManyParamInterfaceSignals->OnProp1Changed.AddLambda([this, TestDone](int32 InProp1){
+			int32 TestValue = 0;
+			// use different test value
+			TestValue = 1;
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetProp1(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue = 1;
 		ImplFixture->GetImplementation()->SetProp1(TestValue);
@@ -114,9 +115,16 @@ void UTestbed2ManyParamInterfaceOLinkSpec::Define()
 		int32 TestValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp2(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTestbed2ManyParamInterfaceSignals* Testbed2ManyParamInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2ManyParamInterfaceSignals->OnProp2ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2ManyParamInterfaceOLinkHelper::Prop2PropertyCb);
+		Testbed2ManyParamInterfaceSignals->OnProp2Changed.AddLambda([this, TestDone](int32 InProp2){
+			int32 TestValue = 0;
+			// use different test value
+			TestValue = 1;
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp2, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetProp2(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue = 1;
 		ImplFixture->GetImplementation()->SetProp2(TestValue);
@@ -135,9 +143,16 @@ void UTestbed2ManyParamInterfaceOLinkSpec::Define()
 		int32 TestValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp3(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTestbed2ManyParamInterfaceSignals* Testbed2ManyParamInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2ManyParamInterfaceSignals->OnProp3ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2ManyParamInterfaceOLinkHelper::Prop3PropertyCb);
+		Testbed2ManyParamInterfaceSignals->OnProp3Changed.AddLambda([this, TestDone](int32 InProp3){
+			int32 TestValue = 0;
+			// use different test value
+			TestValue = 1;
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp3, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetProp3(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue = 1;
 		ImplFixture->GetImplementation()->SetProp3(TestValue);
@@ -156,9 +171,16 @@ void UTestbed2ManyParamInterfaceOLinkSpec::Define()
 		int32 TestValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp4(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTestbed2ManyParamInterfaceSignals* Testbed2ManyParamInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2ManyParamInterfaceSignals->OnProp4ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2ManyParamInterfaceOLinkHelper::Prop4PropertyCb);
+		Testbed2ManyParamInterfaceSignals->OnProp4Changed.AddLambda([this, TestDone](int32 InProp4){
+			int32 TestValue = 0;
+			// use different test value
+			TestValue = 1;
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp4, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetProp4(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue = 1;
 		ImplFixture->GetImplementation()->SetProp4(TestValue);
@@ -206,9 +228,13 @@ void UTestbed2ManyParamInterfaceOLinkSpec::Define()
 
 	LatentIt("Signal.Sig1", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTestbed2ManyParamInterfaceSignals* Testbed2ManyParamInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2ManyParamInterfaceSignals->OnSig1SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2ManyParamInterfaceOLinkHelper::Sig1SignalCb);
+		Testbed2ManyParamInterfaceSignals->OnSig1Signal.AddLambda([this, TestDone](int32 InParam1){
+			// known test value
+			int32 Param1TestValue = 1;
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		int32 Param1TestValue = 1;
@@ -217,9 +243,15 @@ void UTestbed2ManyParamInterfaceOLinkSpec::Define()
 
 	LatentIt("Signal.Sig2", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTestbed2ManyParamInterfaceSignals* Testbed2ManyParamInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2ManyParamInterfaceSignals->OnSig2SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2ManyParamInterfaceOLinkHelper::Sig2SignalCb);
+		Testbed2ManyParamInterfaceSignals->OnSig2Signal.AddLambda([this, TestDone](int32 InParam1, int32 InParam2){
+			// known test value
+			int32 Param1TestValue = 1;
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
+			int32 Param2TestValue = 1;
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam2, Param2TestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		int32 Param1TestValue = 1;
@@ -229,9 +261,17 @@ void UTestbed2ManyParamInterfaceOLinkSpec::Define()
 
 	LatentIt("Signal.Sig3", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTestbed2ManyParamInterfaceSignals* Testbed2ManyParamInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2ManyParamInterfaceSignals->OnSig3SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2ManyParamInterfaceOLinkHelper::Sig3SignalCb);
+		Testbed2ManyParamInterfaceSignals->OnSig3Signal.AddLambda([this, TestDone](int32 InParam1, int32 InParam2, int32 InParam3){
+			// known test value
+			int32 Param1TestValue = 1;
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
+			int32 Param2TestValue = 1;
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam2, Param2TestValue);
+			int32 Param3TestValue = 1;
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam3, Param3TestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		int32 Param1TestValue = 1;
@@ -242,9 +282,19 @@ void UTestbed2ManyParamInterfaceOLinkSpec::Define()
 
 	LatentIt("Signal.Sig4", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTestbed2ManyParamInterfaceSignals* Testbed2ManyParamInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2ManyParamInterfaceSignals->OnSig4SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2ManyParamInterfaceOLinkHelper::Sig4SignalCb);
+		Testbed2ManyParamInterfaceSignals->OnSig4Signal.AddLambda([this, TestDone](int32 InParam1, int32 InParam2, int32 InParam3, int32 InParam4){
+			// known test value
+			int32 Param1TestValue = 1;
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
+			int32 Param2TestValue = 1;
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam2, Param2TestValue);
+			int32 Param3TestValue = 1;
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam3, Param3TestValue);
+			int32 Param4TestValue = 1;
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam4, Param4TestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		int32 Param1TestValue = 1;
@@ -255,88 +305,4 @@ void UTestbed2ManyParamInterfaceOLinkSpec::Define()
 	});
 }
 
-void UTestbed2ManyParamInterfaceOLinkSpec::Prop1PropertyCb(int32 InProp1)
-{
-	int32 TestValue = 0;
-	// use different test value
-	TestValue = 1;
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetProp1(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTestbed2ManyParamInterfaceOLinkSpec::Prop2PropertyCb(int32 InProp2)
-{
-	int32 TestValue = 0;
-	// use different test value
-	TestValue = 1;
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp2, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetProp2(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTestbed2ManyParamInterfaceOLinkSpec::Prop3PropertyCb(int32 InProp3)
-{
-	int32 TestValue = 0;
-	// use different test value
-	TestValue = 1;
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp3, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetProp3(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTestbed2ManyParamInterfaceOLinkSpec::Prop4PropertyCb(int32 InProp4)
-{
-	int32 TestValue = 0;
-	// use different test value
-	TestValue = 1;
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp4, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetProp4(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTestbed2ManyParamInterfaceOLinkSpec::Sig1SignalCb(int32 InParam1)
-{
-	// known test value
-	int32 Param1TestValue = 1;
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTestbed2ManyParamInterfaceOLinkSpec::Sig2SignalCb(int32 InParam1, int32 InParam2)
-{
-	// known test value
-	int32 Param1TestValue = 1;
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
-	int32 Param2TestValue = 1;
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam2, Param2TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTestbed2ManyParamInterfaceOLinkSpec::Sig3SignalCb(int32 InParam1, int32 InParam2, int32 InParam3)
-{
-	// known test value
-	int32 Param1TestValue = 1;
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
-	int32 Param2TestValue = 1;
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam2, Param2TestValue);
-	int32 Param3TestValue = 1;
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam3, Param3TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTestbed2ManyParamInterfaceOLinkSpec::Sig4SignalCb(int32 InParam1, int32 InParam2, int32 InParam3, int32 InParam4)
-{
-	// known test value
-	int32 Param1TestValue = 1;
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
-	int32 Param2TestValue = 1;
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam2, Param2TestValue);
-	int32 Param3TestValue = 1;
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam3, Param3TestValue);
-	int32 Param4TestValue = 1;
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam4, Param4TestValue);
-	testDoneDelegate.Execute();
-}
-#endif // WITH_DEV_AUTOMATION_TESTS
-#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

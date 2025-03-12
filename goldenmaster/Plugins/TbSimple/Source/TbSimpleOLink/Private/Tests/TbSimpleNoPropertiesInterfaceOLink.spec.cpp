@@ -14,31 +14,24 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+#include "Misc/AutomationTest.h"
+#include "HAL/Platform.h"
 
-#include "TbSimpleNoPropertiesInterfaceOLink.spec.h"
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
 #include "TbSimpleNoPropertiesInterfaceOLinkFixture.h"
 #include "TbSimple/Implementation/TbSimpleNoPropertiesInterface.h"
 #include "TbSimple/Generated/OLink/TbSimpleNoPropertiesInterfaceOLinkClient.h"
 #include "TbSimple/Generated/OLink/TbSimpleNoPropertiesInterfaceOLinkAdapter.h"
-#include "HAL/Platform.h"
 
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #include "OLinkHost.h"
 #include "OLinkClientConnection.h" // for olink factory
 #include "TbSimple/Tests/TbSimpleTestsCommon.h"
-#include "Misc/AutomationTest.h"
 
-#if WITH_DEV_AUTOMATION_TESTS
+BEGIN_DEFINE_SPEC(UTbSimpleNoPropertiesInterfaceOLinkSpec, "TbSimple.NoPropertiesInterface.OLink", TbSimpleTestFilterMask);
 
-void UTbSimpleNoPropertiesInterfaceOLinkSpec::_SubscriptionStatusChangedCb(bool bSubscribed)
-{
-	// ImplFixture->testDoneDelegate.Execute();
-	// InTestDoneDelegate.Execute();
-	if (bSubscribed)
-	{
-		testDoneDelegate.Execute();
-	}
-}
+TUniquePtr<FTbSimpleNoPropertiesInterfaceOLinkFixture> ImplFixture;
+
+END_DEFINE_SPEC(UTbSimpleNoPropertiesInterfaceOLinkSpec);
 
 void UTbSimpleNoPropertiesInterfaceOLinkSpec::Define()
 {
@@ -49,10 +42,6 @@ void UTbSimpleNoPropertiesInterfaceOLinkSpec::Define()
 
 		TestTrue("Check for valid testImplementation", ImplFixture->GetImplementation().GetInterface() != nullptr);
 
-		TestTrue("Check for valid Helper", ImplFixture->GetHelper().IsValid());
-		// needed for callbacks
-		ImplFixture->GetHelper()->SetSpec(this);
-
 		// set up service and adapter
 		ImplFixture->GetHost()->Stop();
 		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleNoPropertiesInterface>();
@@ -61,11 +50,16 @@ void UTbSimpleNoPropertiesInterfaceOLinkSpec::Define()
 		ImplFixture->GetHost()->Start(8666);
 
 		// setup client
-		testDoneDelegate = TestDone;
 		UTbSimpleNoPropertiesInterfaceOLinkClient* OLinkClient = Cast<UTbSimpleNoPropertiesInterfaceOLinkClient>(ImplFixture->GetImplementation().GetObject());
 		TestTrue("Check for valid OLink client", OLinkClient != nullptr);
 
-		OLinkClient->_SubscriptionStatusChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleNoPropertiesInterfaceOLinkHelper::_SubscriptionStatusChangedCb);
+		OLinkClient->_SubscriptionStatusChanged.AddLambda([this, TestDone](bool bSubscribed)
+			{
+			if (bSubscribed)
+			{
+				TestDone.Execute();
+			}
+		});
 
 		ImplFixture->Connection = OLinkFactory::Create(OLinkClient, "TestingConnection");
 		ImplFixture->Connection->Configure("ws://127.0.0.1:8666/ws", false);
@@ -102,9 +96,11 @@ void UTbSimpleNoPropertiesInterfaceOLinkSpec::Define()
 
 	LatentIt("Signal.SigVoid", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTbSimpleNoPropertiesInterfaceSignals* TbSimpleNoPropertiesInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleNoPropertiesInterfaceSignals->OnSigVoidSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleNoPropertiesInterfaceOLinkHelper::SigVoidSignalCb);
+		TbSimpleNoPropertiesInterfaceSignals->OnSigVoidSignal.AddLambda([this, TestDone](){
+			// known test value
+			TestDone.Execute();
+		});
 
 		// use different test value
 		TbSimpleNoPropertiesInterfaceSignals->BroadcastSigVoidSignal();
@@ -112,9 +108,13 @@ void UTbSimpleNoPropertiesInterfaceOLinkSpec::Define()
 
 	LatentIt("Signal.SigBool", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTbSimpleNoPropertiesInterfaceSignals* TbSimpleNoPropertiesInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleNoPropertiesInterfaceSignals->OnSigBoolSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleNoPropertiesInterfaceOLinkHelper::SigBoolSignalCb);
+		TbSimpleNoPropertiesInterfaceSignals->OnSigBoolSignal.AddLambda([this, TestDone](bool bInParamBool){
+			// known test value
+			bool bParamBoolTestValue = true;
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), bInParamBool, bParamBoolTestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		bool bParamBoolTestValue = true;
@@ -122,18 +122,4 @@ void UTbSimpleNoPropertiesInterfaceOLinkSpec::Define()
 	});
 }
 
-void UTbSimpleNoPropertiesInterfaceOLinkSpec::SigVoidSignalCb()
-{
-	// known test value
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleNoPropertiesInterfaceOLinkSpec::SigBoolSignalCb(bool bInParamBool)
-{
-	// known test value
-	bool bParamBoolTestValue = true;
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), bInParamBool, bParamBoolTestValue);
-	testDoneDelegate.Execute();
-}
-#endif // WITH_DEV_AUTOMATION_TESTS
-#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

@@ -5,34 +5,27 @@
 {{- $IfaceName := Camel .Interface.Name }}
 {{- $Class := printf "U%s" $DisplayName}}
 {{- $Iface := printf "%s%s" $ModuleName $IfaceName }}
+#include "Misc/AutomationTest.h"
+#include "HAL/Platform.h"
 
-#include "{{$DisplayName}}OLink.spec.h"
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
 #include "{{$DisplayName}}OLinkFixture.h"
 #include "{{$ModuleName}}/Implementation/{{$DisplayName}}.h"
 #include "{{$ModuleName}}/Generated/OLink/{{$DisplayName}}OLinkClient.h"
 #include "{{$ModuleName}}/Generated/OLink/{{$DisplayName}}OLinkAdapter.h"
-#include "HAL/Platform.h"
 
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #include "OLinkHost.h"
 #include "OLinkClientConnection.h" // for olink factory
 #include "{{$ModuleName}}/Tests/{{$ModuleName}}TestsCommon.h"
 {{- range .Module.Imports }}
 #include "{{Camel .Name}}/Tests/{{Camel .Name}}TestsCommon.h"
 {{- end }}
-#include "Misc/AutomationTest.h"
 
-#if WITH_DEV_AUTOMATION_TESTS
+BEGIN_DEFINE_SPEC({{$Class}}OLinkSpec, "{{$ModuleName}}.{{$IfaceName}}.OLink", {{$ModuleName}}TestFilterMask);
 
-void {{$Class}}OLinkSpec::_SubscriptionStatusChangedCb(bool bSubscribed)
-{
-	// ImplFixture->testDoneDelegate.Execute();
-	// InTestDoneDelegate.Execute();
-	if (bSubscribed)
-	{
-		testDoneDelegate.Execute();
-	}
-}
+TUniquePtr<F{{$DisplayName}}OLinkFixture> ImplFixture;
+
+END_DEFINE_SPEC({{$Class}}OLinkSpec);
 
 void {{$Class}}OLinkSpec::Define()
 {
@@ -43,10 +36,6 @@ void {{$Class}}OLinkSpec::Define()
 
 		TestTrue("Check for valid testImplementation", ImplFixture->GetImplementation().GetInterface() != nullptr);
 
-		TestTrue("Check for valid Helper", ImplFixture->GetHelper().IsValid());
-		// needed for callbacks
-		ImplFixture->GetHelper()->SetSpec(this);
-
 		// set up service and adapter
 		ImplFixture->GetHost()->Stop();
 		auto service = ImplFixture->GetGameInstance()->GetSubsystem<U{{$DisplayName}}>();
@@ -55,11 +44,16 @@ void {{$Class}}OLinkSpec::Define()
 		ImplFixture->GetHost()->Start(8666);
 
 		// setup client
-		testDoneDelegate = TestDone;
 		U{{$DisplayName}}OLinkClient* OLinkClient = Cast<U{{$DisplayName}}OLinkClient>(ImplFixture->GetImplementation().GetObject());
 		TestTrue("Check for valid OLink client", OLinkClient != nullptr);
 
-		OLinkClient->_SubscriptionStatusChanged.AddDynamic(ImplFixture->GetHelper().Get(), &U{{$DisplayName}}OLinkHelper::_SubscriptionStatusChangedCb);
+		OLinkClient->_SubscriptionStatusChanged.AddLambda([this, TestDone](bool bSubscribed)
+			{
+			if (bSubscribed)
+			{
+				TestDone.Execute();
+			}
+		});
 
 		ImplFixture->Connection = OLinkFactory::Create(OLinkClient, "TestingConnection");
 		ImplFixture->Connection->Configure("ws://127.0.0.1:8666/ws", false);
@@ -94,9 +88,32 @@ void {{$Class}}OLinkSpec::Define()
 		{{ueType "" .}} TestValue = {{ueDefault "" .}}; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Get{{Camel .Name}}(), TestValue);
 
-		testDoneDelegate = TestDone;
 		{{$Class}}Signals* {{$Iface}}Signals = ImplFixture->GetImplementation()->_GetSignals();
-		{{$Iface}}Signals->On{{Camel .Name}}ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &{{$Class}}OLinkHelper::{{ Camel .Name }}PropertyCb);
+		{{$Iface}}Signals->On{{Camel .Name}}Changed.AddLambda([this, TestDone]({{ueParam "In" .}}){
+			{{ueType "" .}} TestValue = {{ueDefault "" .}};
+			// use different test value
+			{{- if .IsArray }}
+			{{- if .IsPrimitive }}
+			TestValue.Add({{ ueTestValue "" .}});
+			{{- else }}
+			{{- $type := ""}}
+			{{- if not (eq .Import "") }}
+			{{- $type = printf "F%s%s" (Camel .Import) .Type }}
+			{{- else }}
+			{{- $type = printf "F%s%s" $ModuleName .Type }}
+			{{- end }}
+			TestValue = createTest{{ $type }}Array();
+			{{- end }}
+			{{- else if and (not .IsPrimitive) (not (eq .KindType "enum"))}}
+			TestValue = createTest{{ ueType "" . }}();
+			{{- else }}
+			TestValue = {{ ueTestValue "" . }};
+			{{- end }}
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), {{ueVar "In" .}}, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Get{{Camel .Name}}(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		{{- if .IsArray }}
 		{{- if .IsPrimitive }}
@@ -150,9 +167,34 @@ void {{$Class}}OLinkSpec::Define()
 
 	LatentIt("Signal.{{ Camel .Name }}", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		{{$Class}}Signals* {{$Iface}}Signals = ImplFixture->GetImplementation()->_GetSignals();
-		{{$Iface}}Signals->On{{Camel .Name}}SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &{{$Class}}OLinkHelper::{{ Camel .Name }}SignalCb);
+		{{$Iface}}Signals->On{{Camel .Name}}Signal.AddLambda([this, TestDone]({{ueParams "In" .Params}}){
+			// known test value
+			{{- range $i, $e := .Params -}}
+			{{- if not (eq .KindType "extern") }}
+			{{- if .IsArray }}
+			{{- if .IsPrimitive }}
+			{{ueType "" .}} {{ueVar "" .}}TestValue = {{ueDefault "" .}}; // default value
+			{{ueVar "" .}}TestValue.Add({{ ueTestValue "" .}});
+			{{- else }}
+			{{- $type := ""}}
+			{{- if not (eq .Import "") }}
+			{{- $type = printf "F%s%s" (Camel .Import) .Type }}
+			{{- else }}
+			{{- $type = printf "F%s%s" $ModuleName .Type }}
+			{{- end }}
+			{{ueType "" .}} {{ueVar "" .}}TestValue = createTest{{ $type }}Array();
+			{{- end }}
+			{{- else if and (not .IsPrimitive) (not (eq .KindType "enum"))}}
+			{{ueType "" .}} {{ueVar "" .}}TestValue = createTest{{ ueType "" . }}();
+			{{- else }}
+			{{ueType "" .}} {{ueVar "" .}}TestValue = {{ ueTestValue "" . }};
+			{{- end }}
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), {{ueVar "In" .}}, {{ueVar "" .}}TestValue);
+			{{- end }}
+			{{- end }}
+			TestDone.Execute();
+		});
 
 		// use different test value
 		{{- range $i, $e := .Params -}}
@@ -188,68 +230,4 @@ void {{$Class}}OLinkSpec::Define()
 {{- end }}
 }
 
-{{- range .Interface.Properties }}
-{{- if and (not .IsReadOnly) (not (eq .KindType "extern")) }}
-{{- $type := printf "F%s%s" $ModuleName .Type }}
-
-void {{$Class}}OLinkSpec::{{ Camel .Name }}PropertyCb({{ueParam "In" .}})
-{
-	{{ueType "" .}} TestValue = {{ueDefault "" .}};
-	// use different test value
-	{{- if .IsArray }}
-	{{- if .IsPrimitive }}
-	TestValue.Add({{ ueTestValue "" .}});
-	{{- else }}
-	{{- $type := ""}}
-	{{- if not (eq .Import "") }}
-	{{- $type = printf "F%s%s" (Camel .Import) .Type }}
-	{{- else }}
-	{{- $type = printf "F%s%s" $ModuleName .Type }}
-	{{- end }}
-	TestValue = createTest{{ $type }}Array();
-	{{- end }}
-	{{- else if and (not .IsPrimitive) (not (eq .KindType "enum"))}}
-	TestValue = createTest{{ ueType "" . }}();
-	{{- else }}
-	TestValue = {{ ueTestValue "" . }};
-	{{- end }}
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), {{ueVar "In" .}}, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Get{{Camel .Name}}(), TestValue);
-	testDoneDelegate.Execute();
-}
-{{- end }}
-{{- end }}
-
-{{- range .Interface.Signals }}
-
-void {{$Class}}OLinkSpec::{{ Camel .Name }}SignalCb({{ueParams "In" .Params}})
-{
-	// known test value
-	{{- range $i, $e := .Params -}}
-	{{- if not (eq .KindType "extern") }}
-	{{- if .IsArray }}
-	{{- if .IsPrimitive }}
-	{{ueType "" .}} {{ueVar "" .}}TestValue = {{ueDefault "" .}}; // default value
-	{{ueVar "" .}}TestValue.Add({{ ueTestValue "" .}});
-	{{- else }}
-	{{- $type := ""}}
-	{{- if not (eq .Import "") }}
-	{{- $type = printf "F%s%s" (Camel .Import) .Type }}
-	{{- else }}
-	{{- $type = printf "F%s%s" $ModuleName .Type }}
-	{{- end }}
-	{{ueType "" .}} {{ueVar "" .}}TestValue = createTest{{ $type }}Array();
-	{{- end }}
-	{{- else if and (not .IsPrimitive) (not (eq .KindType "enum"))}}
-	{{ueType "" .}} {{ueVar "" .}}TestValue = createTest{{ ueType "" . }}();
-	{{- else }}
-	{{ueType "" .}} {{ueVar "" .}}TestValue = {{ ueTestValue "" . }};
-	{{- end }}
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), {{ueVar "In" .}}, {{ueVar "" .}}TestValue);
-	{{- end }}
-	{{- end }}
-	testDoneDelegate.Execute();
-}
-{{- end }}
-#endif // WITH_DEV_AUTOMATION_TESTS
-#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

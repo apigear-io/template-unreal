@@ -15,38 +15,16 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbSame1SameStruct1InterfaceOLinkFixture.h"
-#include "TbSame1SameStruct1InterfaceOLink.spec.h"
-#include "TbSame1/Generated/OLink/TbSame1SameStruct1InterfaceOLinkClient.h"
-#include "TbSame1/Generated/OLink/TbSame1SameStruct1InterfaceOLinkAdapter.h"
-#include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#include "Engine/GameInstance.h"
+#include "TbSame1/Generated/OLink/TbSame1SameStruct1InterfaceOLinkClient.h"
+#include "TbSame1/Generated/OLink/TbSame1SameStruct1InterfaceOLinkAdapter.h"
 #include "OLinkHost.h"
-
-void UTbSame1SameStruct1InterfaceOLinkHelper::SetSpec(UTbSame1SameStruct1InterfaceOLinkSpec* InSpec)
-{
-	Spec = InSpec;
-}
-
-void UTbSame1SameStruct1InterfaceOLinkHelper::Prop1PropertyCb(const FTbSame1Struct1& Prop1)
-{
-	Spec->Prop1PropertyCb(Prop1);
-}
-
-void UTbSame1SameStruct1InterfaceOLinkHelper::Sig1SignalCb(const FTbSame1Struct1& Param1)
-{
-	Spec->Sig1SignalCb(Param1);
-}
-
-void UTbSame1SameStruct1InterfaceOLinkHelper::_SubscriptionStatusChangedCb(bool bSubscribed)
-{
-	Spec->_SubscriptionStatusChangedCb(bSubscribed);
-}
 
 FTbSame1SameStruct1InterfaceOLinkFixture::FTbSame1SameStruct1InterfaceOLinkFixture()
 {
-	Helper = NewObject<UTbSame1SameStruct1InterfaceOLinkHelper>();
 	testImplementation = GetGameInstance()->GetSubsystem<UTbSame1SameStruct1InterfaceOLinkClient>();
 }
 
@@ -70,11 +48,6 @@ UTbSame1SameStruct1InterfaceOLinkAdapter* FTbSame1SameStruct1InterfaceOLinkFixtu
 	return GetGameInstance()->GetSubsystem<UTbSame1SameStruct1InterfaceOLinkAdapter>();
 }
 
-TSoftObjectPtr<UTbSame1SameStruct1InterfaceOLinkHelper> FTbSame1SameStruct1InterfaceOLinkFixture::GetHelper()
-{
-	return Helper;
-}
-
 UGameInstance* FTbSame1SameStruct1InterfaceOLinkFixture::GetGameInstance()
 {
 	if (!GameInstance.IsValid())
@@ -93,24 +66,5 @@ void FTbSame1SameStruct1InterfaceOLinkFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
-#else  // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
-// create empty implementation in case we do not want to do automated testing
-void UTbSame1SameStruct1InterfaceOLinkHelper::SetSpec(UTbSame1SameStruct1InterfaceOLinkSpec* /* InSpec */)
-{
-}
 
-void UTbSame1SameStruct1InterfaceOLinkHelper::Prop1PropertyCb(const FTbSame1Struct1& Prop1)
-{
-	(void)Prop1;
-}
-
-void UTbSame1SameStruct1InterfaceOLinkHelper::Sig1SignalCb(const FTbSame1Struct1& Param1)
-{
-	(void)Param1;
-}
-
-void UTbSame1SameStruct1InterfaceOLinkHelper::_SubscriptionStatusChangedCb(bool bSubscribed)
-{
-	(void)bSubscribed;
-}
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

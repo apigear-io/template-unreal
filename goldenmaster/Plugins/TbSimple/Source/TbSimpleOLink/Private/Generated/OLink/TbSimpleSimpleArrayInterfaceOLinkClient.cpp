@@ -83,10 +83,12 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::Initialize(FSubsystemCollectionBa
 	m_sink->setOnInitCallback([this]()
 		{
 		_SubscriptionStatusChanged.Broadcast(true);
+		_SubscriptionStatusChangedBP.Broadcast(true);
 	});
 	m_sink->setOnReleaseCallback([this]()
 		{
 		_SubscriptionStatusChanged.Broadcast(false);
+		_SubscriptionStatusChangedBP.Broadcast(false);
 	});
 
 	FOLinkSink::FPropertyChangedFunc PropertyChangedFunc = [this](const nlohmann::json& props)

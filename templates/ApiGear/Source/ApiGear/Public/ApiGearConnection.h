@@ -29,7 +29,8 @@ DECLARE_MULTICAST_DELEGATE_OneParam(FApiGearConnectionStateChangedDelegate, EApi
  * An established network connection (ConnectionIsConnectedDelegate with true parameter) is often necessary, but not sufficient (depending on your setup and used protocol)
  * for the Api client implementation to be used.
  */
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FApiGearRemoteApiSubscriptionStatusChangedDelegate, bool, IsSubscribed);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FApiGearRemoteApiSubscriptionStatusChangedDelegateBP, bool, IsSubscribed);
+DECLARE_MULTICAST_DELEGATE_OneParam(FApiGearRemoteApiSubscriptionStatusChangedDelegate, bool /* IsSubscribed */);
 
 /**
  * @brief An interface for all connections meant to be used by ApiGear

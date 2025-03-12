@@ -54,6 +54,7 @@ public:
 	 * either is linked(ready to use) with server side (true) or it is in unlinked state (false).
 	 */
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|EmptyInterface|Remote", DisplayName = "Subscription Status Changed")
+	FApiGearRemoteApiSubscriptionStatusChangedDelegateBP _SubscriptionStatusChangedBP;
 	FApiGearRemoteApiSubscriptionStatusChangedDelegate _SubscriptionStatusChanged;
 
 	/**

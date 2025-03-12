@@ -418,9 +418,6 @@ features:
       - match: interface
         prefix: "Plugins/{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}OLink/"
         documents:
-          - source: "module/Source/moduleolink/Private/Tests/olink.spec.h.tpl"
-            target: "Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLink.spec.h"
-            preserve: true
           - source: "module/Source/moduleolink/Private/Tests/olink.spec.cpp.tpl"
             target: "Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLink.spec.cpp"
             preserve: true

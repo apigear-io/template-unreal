@@ -15,53 +15,16 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbNamesNamEsOLinkFixture.h"
-#include "TbNamesNamEsOLink.spec.h"
-#include "TbNames/Generated/OLink/TbNamesNamEsOLinkClient.h"
-#include "TbNames/Generated/OLink/TbNamesNamEsOLinkAdapter.h"
-#include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#include "Engine/GameInstance.h"
+#include "TbNames/Generated/OLink/TbNamesNamEsOLinkClient.h"
+#include "TbNames/Generated/OLink/TbNamesNamEsOLinkAdapter.h"
 #include "OLinkHost.h"
-
-void UTbNamesNamEsOLinkHelper::SetSpec(UTbNamesNamEsOLinkSpec* InSpec)
-{
-	Spec = InSpec;
-}
-
-void UTbNamesNamEsOLinkHelper::SwitchPropertyCb(bool bSwitch)
-{
-	Spec->SwitchPropertyCb(bSwitch);
-}
-
-void UTbNamesNamEsOLinkHelper::SomePropertyPropertyCb(int32 SomeProperty)
-{
-	Spec->SomePropertyPropertyCb(SomeProperty);
-}
-
-void UTbNamesNamEsOLinkHelper::SomePoperty2PropertyCb(int32 SomePoperty2)
-{
-	Spec->SomePoperty2PropertyCb(SomePoperty2);
-}
-
-void UTbNamesNamEsOLinkHelper::SomeSignalSignalCb(bool bSomeParam)
-{
-	Spec->SomeSignalSignalCb(bSomeParam);
-}
-
-void UTbNamesNamEsOLinkHelper::SomeSignal2SignalCb(bool bSomeParam)
-{
-	Spec->SomeSignal2SignalCb(bSomeParam);
-}
-
-void UTbNamesNamEsOLinkHelper::_SubscriptionStatusChangedCb(bool bSubscribed)
-{
-	Spec->_SubscriptionStatusChangedCb(bSubscribed);
-}
 
 FTbNamesNamEsOLinkFixture::FTbNamesNamEsOLinkFixture()
 {
-	Helper = NewObject<UTbNamesNamEsOLinkHelper>();
 	testImplementation = GetGameInstance()->GetSubsystem<UTbNamesNamEsOLinkClient>();
 }
 
@@ -85,11 +48,6 @@ UTbNamesNamEsOLinkAdapter* FTbNamesNamEsOLinkFixture::GetAdapter()
 	return GetGameInstance()->GetSubsystem<UTbNamesNamEsOLinkAdapter>();
 }
 
-TSoftObjectPtr<UTbNamesNamEsOLinkHelper> FTbNamesNamEsOLinkFixture::GetHelper()
-{
-	return Helper;
-}
-
 UGameInstance* FTbNamesNamEsOLinkFixture::GetGameInstance()
 {
 	if (!GameInstance.IsValid())
@@ -108,39 +66,5 @@ void FTbNamesNamEsOLinkFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
-#else  // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
-// create empty implementation in case we do not want to do automated testing
-void UTbNamesNamEsOLinkHelper::SetSpec(UTbNamesNamEsOLinkSpec* /* InSpec */)
-{
-}
 
-void UTbNamesNamEsOLinkHelper::SwitchPropertyCb(bool bSwitch)
-{
-	(void)bSwitch;
-}
-
-void UTbNamesNamEsOLinkHelper::SomePropertyPropertyCb(int32 SomeProperty)
-{
-	(void)SomeProperty;
-}
-
-void UTbNamesNamEsOLinkHelper::SomePoperty2PropertyCb(int32 SomePoperty2)
-{
-	(void)SomePoperty2;
-}
-
-void UTbNamesNamEsOLinkHelper::SomeSignalSignalCb(bool bSomeParam)
-{
-	(void)bSomeParam;
-}
-
-void UTbNamesNamEsOLinkHelper::SomeSignal2SignalCb(bool bSomeParam)
-{
-	(void)bSomeParam;
-}
-
-void UTbNamesNamEsOLinkHelper::_SubscriptionStatusChangedCb(bool bSubscribed)
-{
-	(void)bSubscribed;
-}
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

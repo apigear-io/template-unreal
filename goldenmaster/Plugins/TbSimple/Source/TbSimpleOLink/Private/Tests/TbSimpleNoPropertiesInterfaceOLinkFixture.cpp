@@ -15,38 +15,16 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbSimpleNoPropertiesInterfaceOLinkFixture.h"
-#include "TbSimpleNoPropertiesInterfaceOLink.spec.h"
-#include "TbSimple/Generated/OLink/TbSimpleNoPropertiesInterfaceOLinkClient.h"
-#include "TbSimple/Generated/OLink/TbSimpleNoPropertiesInterfaceOLinkAdapter.h"
-#include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#include "Engine/GameInstance.h"
+#include "TbSimple/Generated/OLink/TbSimpleNoPropertiesInterfaceOLinkClient.h"
+#include "TbSimple/Generated/OLink/TbSimpleNoPropertiesInterfaceOLinkAdapter.h"
 #include "OLinkHost.h"
-
-void UTbSimpleNoPropertiesInterfaceOLinkHelper::SetSpec(UTbSimpleNoPropertiesInterfaceOLinkSpec* InSpec)
-{
-	Spec = InSpec;
-}
-
-void UTbSimpleNoPropertiesInterfaceOLinkHelper::SigVoidSignalCb()
-{
-	Spec->SigVoidSignalCb();
-}
-
-void UTbSimpleNoPropertiesInterfaceOLinkHelper::SigBoolSignalCb(bool bParamBool)
-{
-	Spec->SigBoolSignalCb(bParamBool);
-}
-
-void UTbSimpleNoPropertiesInterfaceOLinkHelper::_SubscriptionStatusChangedCb(bool bSubscribed)
-{
-	Spec->_SubscriptionStatusChangedCb(bSubscribed);
-}
 
 FTbSimpleNoPropertiesInterfaceOLinkFixture::FTbSimpleNoPropertiesInterfaceOLinkFixture()
 {
-	Helper = NewObject<UTbSimpleNoPropertiesInterfaceOLinkHelper>();
 	testImplementation = GetGameInstance()->GetSubsystem<UTbSimpleNoPropertiesInterfaceOLinkClient>();
 }
 
@@ -70,11 +48,6 @@ UTbSimpleNoPropertiesInterfaceOLinkAdapter* FTbSimpleNoPropertiesInterfaceOLinkF
 	return GetGameInstance()->GetSubsystem<UTbSimpleNoPropertiesInterfaceOLinkAdapter>();
 }
 
-TSoftObjectPtr<UTbSimpleNoPropertiesInterfaceOLinkHelper> FTbSimpleNoPropertiesInterfaceOLinkFixture::GetHelper()
-{
-	return Helper;
-}
-
 UGameInstance* FTbSimpleNoPropertiesInterfaceOLinkFixture::GetGameInstance()
 {
 	if (!GameInstance.IsValid())
@@ -93,23 +66,5 @@ void FTbSimpleNoPropertiesInterfaceOLinkFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
-#else  // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
-// create empty implementation in case we do not want to do automated testing
-void UTbSimpleNoPropertiesInterfaceOLinkHelper::SetSpec(UTbSimpleNoPropertiesInterfaceOLinkSpec* /* InSpec */)
-{
-}
 
-void UTbSimpleNoPropertiesInterfaceOLinkHelper::SigVoidSignalCb()
-{
-}
-
-void UTbSimpleNoPropertiesInterfaceOLinkHelper::SigBoolSignalCb(bool bParamBool)
-{
-	(void)bParamBool;
-}
-
-void UTbSimpleNoPropertiesInterfaceOLinkHelper::_SubscriptionStatusChangedCb(bool bSubscribed)
-{
-	(void)bSubscribed;
-}
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

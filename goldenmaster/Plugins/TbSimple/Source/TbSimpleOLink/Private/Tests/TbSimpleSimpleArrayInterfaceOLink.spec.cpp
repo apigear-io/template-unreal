@@ -14,31 +14,24 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+#include "Misc/AutomationTest.h"
+#include "HAL/Platform.h"
 
-#include "TbSimpleSimpleArrayInterfaceOLink.spec.h"
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
 #include "TbSimpleSimpleArrayInterfaceOLinkFixture.h"
 #include "TbSimple/Implementation/TbSimpleSimpleArrayInterface.h"
 #include "TbSimple/Generated/OLink/TbSimpleSimpleArrayInterfaceOLinkClient.h"
 #include "TbSimple/Generated/OLink/TbSimpleSimpleArrayInterfaceOLinkAdapter.h"
-#include "HAL/Platform.h"
 
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #include "OLinkHost.h"
 #include "OLinkClientConnection.h" // for olink factory
 #include "TbSimple/Tests/TbSimpleTestsCommon.h"
-#include "Misc/AutomationTest.h"
 
-#if WITH_DEV_AUTOMATION_TESTS
+BEGIN_DEFINE_SPEC(UTbSimpleSimpleArrayInterfaceOLinkSpec, "TbSimple.SimpleArrayInterface.OLink", TbSimpleTestFilterMask);
 
-void UTbSimpleSimpleArrayInterfaceOLinkSpec::_SubscriptionStatusChangedCb(bool bSubscribed)
-{
-	// ImplFixture->testDoneDelegate.Execute();
-	// InTestDoneDelegate.Execute();
-	if (bSubscribed)
-	{
-		testDoneDelegate.Execute();
-	}
-}
+TUniquePtr<FTbSimpleSimpleArrayInterfaceOLinkFixture> ImplFixture;
+
+END_DEFINE_SPEC(UTbSimpleSimpleArrayInterfaceOLinkSpec);
 
 void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 {
@@ -49,10 +42,6 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 
 		TestTrue("Check for valid testImplementation", ImplFixture->GetImplementation().GetInterface() != nullptr);
 
-		TestTrue("Check for valid Helper", ImplFixture->GetHelper().IsValid());
-		// needed for callbacks
-		ImplFixture->GetHelper()->SetSpec(this);
-
 		// set up service and adapter
 		ImplFixture->GetHost()->Stop();
 		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleArrayInterface>();
@@ -61,11 +50,16 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 		ImplFixture->GetHost()->Start(8666);
 
 		// setup client
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleArrayInterfaceOLinkClient* OLinkClient = Cast<UTbSimpleSimpleArrayInterfaceOLinkClient>(ImplFixture->GetImplementation().GetObject());
 		TestTrue("Check for valid OLink client", OLinkClient != nullptr);
 
-		OLinkClient->_SubscriptionStatusChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleArrayInterfaceOLinkHelper::_SubscriptionStatusChangedCb);
+		OLinkClient->_SubscriptionStatusChanged.AddLambda([this, TestDone](bool bSubscribed)
+			{
+			if (bSubscribed)
+			{
+				TestDone.Execute();
+			}
+		});
 
 		ImplFixture->Connection = OLinkFactory::Create(OLinkClient, "TestingConnection");
 		ImplFixture->Connection->Configure("ws://127.0.0.1:8666/ws", false);
@@ -93,9 +87,16 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 		TArray<bool> TestValue = TArray<bool>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnPropBoolChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleArrayInterfaceOLinkHelper::PropBoolPropertyCb);
+		TbSimpleSimpleArrayInterfaceSignals->OnPropBoolChanged.AddLambda([this, TestDone](const TArray<bool>& InPropBool){
+			TArray<bool> TestValue = TArray<bool>();
+			// use different test value
+			TestValue.Add(true);
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropBool, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue.Add(true);
 		ImplFixture->GetImplementation()->SetPropBool(TestValue);
@@ -114,9 +115,16 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 		TArray<int32> TestValue = TArray<int32>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnPropIntChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleArrayInterfaceOLinkHelper::PropIntPropertyCb);
+		TbSimpleSimpleArrayInterfaceSignals->OnPropIntChanged.AddLambda([this, TestDone](const TArray<int32>& InPropInt){
+			TArray<int32> TestValue = TArray<int32>();
+			// use different test value
+			TestValue.Add(1);
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue.Add(1);
 		ImplFixture->GetImplementation()->SetPropInt(TestValue);
@@ -135,9 +143,16 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 		TArray<int32> TestValue = TArray<int32>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt32(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnPropInt32ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleArrayInterfaceOLinkHelper::PropInt32PropertyCb);
+		TbSimpleSimpleArrayInterfaceSignals->OnPropInt32Changed.AddLambda([this, TestDone](const TArray<int32>& InPropInt32){
+			TArray<int32> TestValue = TArray<int32>();
+			// use different test value
+			TestValue.Add(1);
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt32, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropInt32(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue.Add(1);
 		ImplFixture->GetImplementation()->SetPropInt32(TestValue);
@@ -156,9 +171,16 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 		TArray<int64> TestValue = TArray<int64>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt64(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnPropInt64ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleArrayInterfaceOLinkHelper::PropInt64PropertyCb);
+		TbSimpleSimpleArrayInterfaceSignals->OnPropInt64Changed.AddLambda([this, TestDone](const TArray<int64>& InPropInt64){
+			TArray<int64> TestValue = TArray<int64>();
+			// use different test value
+			TestValue.Add(1LL);
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt64, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropInt64(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue.Add(1LL);
 		ImplFixture->GetImplementation()->SetPropInt64(TestValue);
@@ -177,9 +199,16 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 		TArray<float> TestValue = TArray<float>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropFloat(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnPropFloatChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleArrayInterfaceOLinkHelper::PropFloatPropertyCb);
+		TbSimpleSimpleArrayInterfaceSignals->OnPropFloatChanged.AddLambda([this, TestDone](const TArray<float>& InPropFloat){
+			TArray<float> TestValue = TArray<float>();
+			// use different test value
+			TestValue.Add(1.0f);
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropFloat(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue.Add(1.0f);
 		ImplFixture->GetImplementation()->SetPropFloat(TestValue);
@@ -198,9 +227,16 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 		TArray<float> TestValue = TArray<float>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropFloat32(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnPropFloat32ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleArrayInterfaceOLinkHelper::PropFloat32PropertyCb);
+		TbSimpleSimpleArrayInterfaceSignals->OnPropFloat32Changed.AddLambda([this, TestDone](const TArray<float>& InPropFloat32){
+			TArray<float> TestValue = TArray<float>();
+			// use different test value
+			TestValue.Add(1.0f);
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat32, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropFloat32(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue.Add(1.0f);
 		ImplFixture->GetImplementation()->SetPropFloat32(TestValue);
@@ -219,9 +255,16 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 		TArray<double> TestValue = TArray<double>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropFloat64(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnPropFloat64ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleArrayInterfaceOLinkHelper::PropFloat64PropertyCb);
+		TbSimpleSimpleArrayInterfaceSignals->OnPropFloat64Changed.AddLambda([this, TestDone](const TArray<double>& InPropFloat64){
+			TArray<double> TestValue = TArray<double>();
+			// use different test value
+			TestValue.Add(1.0);
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat64, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropFloat64(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue.Add(1.0);
 		ImplFixture->GetImplementation()->SetPropFloat64(TestValue);
@@ -240,9 +283,16 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 		TArray<FString> TestValue = TArray<FString>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropString(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnPropStringChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleArrayInterfaceOLinkHelper::PropStringPropertyCb);
+		TbSimpleSimpleArrayInterfaceSignals->OnPropStringChanged.AddLambda([this, TestDone](const TArray<FString>& InPropString){
+			TArray<FString> TestValue = TArray<FString>();
+			// use different test value
+			TestValue.Add(FString("xyz"));
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropString, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropString(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue.Add(FString("xyz"));
 		ImplFixture->GetImplementation()->SetPropString(TestValue);
@@ -337,9 +387,14 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 
 	LatentIt("Signal.SigBool", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnSigBoolSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleArrayInterfaceOLinkHelper::SigBoolSignalCb);
+		TbSimpleSimpleArrayInterfaceSignals->OnSigBoolSignal.AddLambda([this, TestDone](const TArray<bool>& InParamBool){
+			// known test value
+			TArray<bool> ParamBoolTestValue = TArray<bool>(); // default value
+			ParamBoolTestValue.Add(true);
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamBool, ParamBoolTestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		TArray<bool> ParamBoolTestValue = TArray<bool>(); // default value
@@ -349,9 +404,14 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 
 	LatentIt("Signal.SigInt", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnSigIntSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleArrayInterfaceOLinkHelper::SigIntSignalCb);
+		TbSimpleSimpleArrayInterfaceSignals->OnSigIntSignal.AddLambda([this, TestDone](const TArray<int32>& InParamInt){
+			// known test value
+			TArray<int32> ParamIntTestValue = TArray<int32>(); // default value
+			ParamIntTestValue.Add(1);
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamInt, ParamIntTestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		TArray<int32> ParamIntTestValue = TArray<int32>(); // default value
@@ -361,9 +421,14 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 
 	LatentIt("Signal.SigInt32", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnSigInt32SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleArrayInterfaceOLinkHelper::SigInt32SignalCb);
+		TbSimpleSimpleArrayInterfaceSignals->OnSigInt32Signal.AddLambda([this, TestDone](const TArray<int32>& InParamInt32){
+			// known test value
+			TArray<int32> ParamInt32TestValue = TArray<int32>(); // default value
+			ParamInt32TestValue.Add(1);
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamInt32, ParamInt32TestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		TArray<int32> ParamInt32TestValue = TArray<int32>(); // default value
@@ -373,9 +438,14 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 
 	LatentIt("Signal.SigInt64", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnSigInt64SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleArrayInterfaceOLinkHelper::SigInt64SignalCb);
+		TbSimpleSimpleArrayInterfaceSignals->OnSigInt64Signal.AddLambda([this, TestDone](const TArray<int64>& InParamInt64){
+			// known test value
+			TArray<int64> ParamInt64TestValue = TArray<int64>(); // default value
+			ParamInt64TestValue.Add(1LL);
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamInt64, ParamInt64TestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		TArray<int64> ParamInt64TestValue = TArray<int64>(); // default value
@@ -385,9 +455,14 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 
 	LatentIt("Signal.SigFloat", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnSigFloatSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleArrayInterfaceOLinkHelper::SigFloatSignalCb);
+		TbSimpleSimpleArrayInterfaceSignals->OnSigFloatSignal.AddLambda([this, TestDone](const TArray<float>& InParamFloat){
+			// known test value
+			TArray<float> ParamFloatTestValue = TArray<float>(); // default value
+			ParamFloatTestValue.Add(1.0f);
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamFloat, ParamFloatTestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		TArray<float> ParamFloatTestValue = TArray<float>(); // default value
@@ -397,9 +472,14 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 
 	LatentIt("Signal.SigFloat32", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnSigFloat32SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleArrayInterfaceOLinkHelper::SigFloat32SignalCb);
+		TbSimpleSimpleArrayInterfaceSignals->OnSigFloat32Signal.AddLambda([this, TestDone](const TArray<float>& InParamFloa32){
+			// known test value
+			TArray<float> ParamFloa32TestValue = TArray<float>(); // default value
+			ParamFloa32TestValue.Add(1.0f);
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamFloa32, ParamFloa32TestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		TArray<float> ParamFloa32TestValue = TArray<float>(); // default value
@@ -409,9 +489,14 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 
 	LatentIt("Signal.SigFloat64", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnSigFloat64SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleArrayInterfaceOLinkHelper::SigFloat64SignalCb);
+		TbSimpleSimpleArrayInterfaceSignals->OnSigFloat64Signal.AddLambda([this, TestDone](const TArray<double>& InParamFloat64){
+			// known test value
+			TArray<double> ParamFloat64TestValue = TArray<double>(); // default value
+			ParamFloat64TestValue.Add(1.0);
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamFloat64, ParamFloat64TestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		TArray<double> ParamFloat64TestValue = TArray<double>(); // default value
@@ -421,9 +506,14 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 
 	LatentIt("Signal.SigString", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnSigStringSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleArrayInterfaceOLinkHelper::SigStringSignalCb);
+		TbSimpleSimpleArrayInterfaceSignals->OnSigStringSignal.AddLambda([this, TestDone](const TArray<FString>& InParamString){
+			// known test value
+			TArray<FString> ParamStringTestValue = TArray<FString>(); // default value
+			ParamStringTestValue.Add(FString("xyz"));
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamString, ParamStringTestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		TArray<FString> ParamStringTestValue = TArray<FString>(); // default value
@@ -432,156 +522,4 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 	});
 }
 
-void UTbSimpleSimpleArrayInterfaceOLinkSpec::PropBoolPropertyCb(const TArray<bool>& InPropBool)
-{
-	TArray<bool> TestValue = TArray<bool>();
-	// use different test value
-	TestValue.Add(true);
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropBool, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleSimpleArrayInterfaceOLinkSpec::PropIntPropertyCb(const TArray<int32>& InPropInt)
-{
-	TArray<int32> TestValue = TArray<int32>();
-	// use different test value
-	TestValue.Add(1);
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleSimpleArrayInterfaceOLinkSpec::PropInt32PropertyCb(const TArray<int32>& InPropInt32)
-{
-	TArray<int32> TestValue = TArray<int32>();
-	// use different test value
-	TestValue.Add(1);
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt32, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropInt32(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleSimpleArrayInterfaceOLinkSpec::PropInt64PropertyCb(const TArray<int64>& InPropInt64)
-{
-	TArray<int64> TestValue = TArray<int64>();
-	// use different test value
-	TestValue.Add(1LL);
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt64, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropInt64(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleSimpleArrayInterfaceOLinkSpec::PropFloatPropertyCb(const TArray<float>& InPropFloat)
-{
-	TArray<float> TestValue = TArray<float>();
-	// use different test value
-	TestValue.Add(1.0f);
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropFloat(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleSimpleArrayInterfaceOLinkSpec::PropFloat32PropertyCb(const TArray<float>& InPropFloat32)
-{
-	TArray<float> TestValue = TArray<float>();
-	// use different test value
-	TestValue.Add(1.0f);
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat32, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropFloat32(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleSimpleArrayInterfaceOLinkSpec::PropFloat64PropertyCb(const TArray<double>& InPropFloat64)
-{
-	TArray<double> TestValue = TArray<double>();
-	// use different test value
-	TestValue.Add(1.0);
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat64, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropFloat64(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleSimpleArrayInterfaceOLinkSpec::PropStringPropertyCb(const TArray<FString>& InPropString)
-{
-	TArray<FString> TestValue = TArray<FString>();
-	// use different test value
-	TestValue.Add(FString("xyz"));
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropString, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropString(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleSimpleArrayInterfaceOLinkSpec::SigBoolSignalCb(const TArray<bool>& InParamBool)
-{
-	// known test value
-	TArray<bool> ParamBoolTestValue = TArray<bool>(); // default value
-	ParamBoolTestValue.Add(true);
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamBool, ParamBoolTestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleSimpleArrayInterfaceOLinkSpec::SigIntSignalCb(const TArray<int32>& InParamInt)
-{
-	// known test value
-	TArray<int32> ParamIntTestValue = TArray<int32>(); // default value
-	ParamIntTestValue.Add(1);
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamInt, ParamIntTestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleSimpleArrayInterfaceOLinkSpec::SigInt32SignalCb(const TArray<int32>& InParamInt32)
-{
-	// known test value
-	TArray<int32> ParamInt32TestValue = TArray<int32>(); // default value
-	ParamInt32TestValue.Add(1);
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamInt32, ParamInt32TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleSimpleArrayInterfaceOLinkSpec::SigInt64SignalCb(const TArray<int64>& InParamInt64)
-{
-	// known test value
-	TArray<int64> ParamInt64TestValue = TArray<int64>(); // default value
-	ParamInt64TestValue.Add(1LL);
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamInt64, ParamInt64TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleSimpleArrayInterfaceOLinkSpec::SigFloatSignalCb(const TArray<float>& InParamFloat)
-{
-	// known test value
-	TArray<float> ParamFloatTestValue = TArray<float>(); // default value
-	ParamFloatTestValue.Add(1.0f);
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamFloat, ParamFloatTestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleSimpleArrayInterfaceOLinkSpec::SigFloat32SignalCb(const TArray<float>& InParamFloa32)
-{
-	// known test value
-	TArray<float> ParamFloa32TestValue = TArray<float>(); // default value
-	ParamFloa32TestValue.Add(1.0f);
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamFloa32, ParamFloa32TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleSimpleArrayInterfaceOLinkSpec::SigFloat64SignalCb(const TArray<double>& InParamFloat64)
-{
-	// known test value
-	TArray<double> ParamFloat64TestValue = TArray<double>(); // default value
-	ParamFloat64TestValue.Add(1.0);
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamFloat64, ParamFloat64TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleSimpleArrayInterfaceOLinkSpec::SigStringSignalCb(const TArray<FString>& InParamString)
-{
-	// known test value
-	TArray<FString> ParamStringTestValue = TArray<FString>(); // default value
-	ParamStringTestValue.Add(FString("xyz"));
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamString, ParamStringTestValue);
-	testDoneDelegate.Execute();
-}
-#endif // WITH_DEV_AUTOMATION_TESTS
-#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

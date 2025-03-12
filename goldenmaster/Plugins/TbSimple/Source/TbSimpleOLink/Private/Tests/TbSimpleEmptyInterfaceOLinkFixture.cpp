@@ -15,28 +15,16 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbSimpleEmptyInterfaceOLinkFixture.h"
-#include "TbSimpleEmptyInterfaceOLink.spec.h"
-#include "TbSimple/Generated/OLink/TbSimpleEmptyInterfaceOLinkClient.h"
-#include "TbSimple/Generated/OLink/TbSimpleEmptyInterfaceOLinkAdapter.h"
-#include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#include "Engine/GameInstance.h"
+#include "TbSimple/Generated/OLink/TbSimpleEmptyInterfaceOLinkClient.h"
+#include "TbSimple/Generated/OLink/TbSimpleEmptyInterfaceOLinkAdapter.h"
 #include "OLinkHost.h"
-
-void UTbSimpleEmptyInterfaceOLinkHelper::SetSpec(UTbSimpleEmptyInterfaceOLinkSpec* InSpec)
-{
-	Spec = InSpec;
-}
-
-void UTbSimpleEmptyInterfaceOLinkHelper::_SubscriptionStatusChangedCb(bool bSubscribed)
-{
-	Spec->_SubscriptionStatusChangedCb(bSubscribed);
-}
 
 FTbSimpleEmptyInterfaceOLinkFixture::FTbSimpleEmptyInterfaceOLinkFixture()
 {
-	Helper = NewObject<UTbSimpleEmptyInterfaceOLinkHelper>();
 	testImplementation = GetGameInstance()->GetSubsystem<UTbSimpleEmptyInterfaceOLinkClient>();
 }
 
@@ -60,11 +48,6 @@ UTbSimpleEmptyInterfaceOLinkAdapter* FTbSimpleEmptyInterfaceOLinkFixture::GetAda
 	return GetGameInstance()->GetSubsystem<UTbSimpleEmptyInterfaceOLinkAdapter>();
 }
 
-TSoftObjectPtr<UTbSimpleEmptyInterfaceOLinkHelper> FTbSimpleEmptyInterfaceOLinkFixture::GetHelper()
-{
-	return Helper;
-}
-
 UGameInstance* FTbSimpleEmptyInterfaceOLinkFixture::GetGameInstance()
 {
 	if (!GameInstance.IsValid())
@@ -83,14 +66,5 @@ void FTbSimpleEmptyInterfaceOLinkFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
-#else  // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
-// create empty implementation in case we do not want to do automated testing
-void UTbSimpleEmptyInterfaceOLinkHelper::SetSpec(UTbSimpleEmptyInterfaceOLinkSpec* /* InSpec */)
-{
-}
 
-void UTbSimpleEmptyInterfaceOLinkHelper::_SubscriptionStatusChangedCb(bool bSubscribed)
-{
-	(void)bSubscribed;
-}
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

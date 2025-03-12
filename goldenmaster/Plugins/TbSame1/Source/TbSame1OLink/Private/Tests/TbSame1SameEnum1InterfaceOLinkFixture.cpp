@@ -15,38 +15,16 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbSame1SameEnum1InterfaceOLinkFixture.h"
-#include "TbSame1SameEnum1InterfaceOLink.spec.h"
-#include "TbSame1/Generated/OLink/TbSame1SameEnum1InterfaceOLinkClient.h"
-#include "TbSame1/Generated/OLink/TbSame1SameEnum1InterfaceOLinkAdapter.h"
-#include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#include "Engine/GameInstance.h"
+#include "TbSame1/Generated/OLink/TbSame1SameEnum1InterfaceOLinkClient.h"
+#include "TbSame1/Generated/OLink/TbSame1SameEnum1InterfaceOLinkAdapter.h"
 #include "OLinkHost.h"
-
-void UTbSame1SameEnum1InterfaceOLinkHelper::SetSpec(UTbSame1SameEnum1InterfaceOLinkSpec* InSpec)
-{
-	Spec = InSpec;
-}
-
-void UTbSame1SameEnum1InterfaceOLinkHelper::Prop1PropertyCb(ETbSame1Enum1 Prop1)
-{
-	Spec->Prop1PropertyCb(Prop1);
-}
-
-void UTbSame1SameEnum1InterfaceOLinkHelper::Sig1SignalCb(ETbSame1Enum1 Param1)
-{
-	Spec->Sig1SignalCb(Param1);
-}
-
-void UTbSame1SameEnum1InterfaceOLinkHelper::_SubscriptionStatusChangedCb(bool bSubscribed)
-{
-	Spec->_SubscriptionStatusChangedCb(bSubscribed);
-}
 
 FTbSame1SameEnum1InterfaceOLinkFixture::FTbSame1SameEnum1InterfaceOLinkFixture()
 {
-	Helper = NewObject<UTbSame1SameEnum1InterfaceOLinkHelper>();
 	testImplementation = GetGameInstance()->GetSubsystem<UTbSame1SameEnum1InterfaceOLinkClient>();
 }
 
@@ -70,11 +48,6 @@ UTbSame1SameEnum1InterfaceOLinkAdapter* FTbSame1SameEnum1InterfaceOLinkFixture::
 	return GetGameInstance()->GetSubsystem<UTbSame1SameEnum1InterfaceOLinkAdapter>();
 }
 
-TSoftObjectPtr<UTbSame1SameEnum1InterfaceOLinkHelper> FTbSame1SameEnum1InterfaceOLinkFixture::GetHelper()
-{
-	return Helper;
-}
-
 UGameInstance* FTbSame1SameEnum1InterfaceOLinkFixture::GetGameInstance()
 {
 	if (!GameInstance.IsValid())
@@ -93,24 +66,5 @@ void FTbSame1SameEnum1InterfaceOLinkFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
-#else  // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
-// create empty implementation in case we do not want to do automated testing
-void UTbSame1SameEnum1InterfaceOLinkHelper::SetSpec(UTbSame1SameEnum1InterfaceOLinkSpec* /* InSpec */)
-{
-}
 
-void UTbSame1SameEnum1InterfaceOLinkHelper::Prop1PropertyCb(ETbSame1Enum1 Prop1)
-{
-	(void)Prop1;
-}
-
-void UTbSame1SameEnum1InterfaceOLinkHelper::Sig1SignalCb(ETbSame1Enum1 Param1)
-{
-	(void)Param1;
-}
-
-void UTbSame1SameEnum1InterfaceOLinkHelper::_SubscriptionStatusChangedCb(bool bSubscribed)
-{
-	(void)bSubscribed;
-}
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

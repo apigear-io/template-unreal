@@ -14,31 +14,24 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+#include "Misc/AutomationTest.h"
+#include "HAL/Platform.h"
 
-#include "Testbed1StructInterfaceOLink.spec.h"
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
 #include "Testbed1StructInterfaceOLinkFixture.h"
 #include "Testbed1/Implementation/Testbed1StructInterface.h"
 #include "Testbed1/Generated/OLink/Testbed1StructInterfaceOLinkClient.h"
 #include "Testbed1/Generated/OLink/Testbed1StructInterfaceOLinkAdapter.h"
-#include "HAL/Platform.h"
 
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #include "OLinkHost.h"
 #include "OLinkClientConnection.h" // for olink factory
 #include "Testbed1/Tests/Testbed1TestsCommon.h"
-#include "Misc/AutomationTest.h"
 
-#if WITH_DEV_AUTOMATION_TESTS
+BEGIN_DEFINE_SPEC(UTestbed1StructInterfaceOLinkSpec, "Testbed1.StructInterface.OLink", Testbed1TestFilterMask);
 
-void UTestbed1StructInterfaceOLinkSpec::_SubscriptionStatusChangedCb(bool bSubscribed)
-{
-	// ImplFixture->testDoneDelegate.Execute();
-	// InTestDoneDelegate.Execute();
-	if (bSubscribed)
-	{
-		testDoneDelegate.Execute();
-	}
-}
+TUniquePtr<FTestbed1StructInterfaceOLinkFixture> ImplFixture;
+
+END_DEFINE_SPEC(UTestbed1StructInterfaceOLinkSpec);
 
 void UTestbed1StructInterfaceOLinkSpec::Define()
 {
@@ -49,10 +42,6 @@ void UTestbed1StructInterfaceOLinkSpec::Define()
 
 		TestTrue("Check for valid testImplementation", ImplFixture->GetImplementation().GetInterface() != nullptr);
 
-		TestTrue("Check for valid Helper", ImplFixture->GetHelper().IsValid());
-		// needed for callbacks
-		ImplFixture->GetHelper()->SetSpec(this);
-
 		// set up service and adapter
 		ImplFixture->GetHost()->Stop();
 		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed1StructInterface>();
@@ -61,11 +50,16 @@ void UTestbed1StructInterfaceOLinkSpec::Define()
 		ImplFixture->GetHost()->Start(8666);
 
 		// setup client
-		testDoneDelegate = TestDone;
 		UTestbed1StructInterfaceOLinkClient* OLinkClient = Cast<UTestbed1StructInterfaceOLinkClient>(ImplFixture->GetImplementation().GetObject());
 		TestTrue("Check for valid OLink client", OLinkClient != nullptr);
 
-		OLinkClient->_SubscriptionStatusChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructInterfaceOLinkHelper::_SubscriptionStatusChangedCb);
+		OLinkClient->_SubscriptionStatusChanged.AddLambda([this, TestDone](bool bSubscribed)
+			{
+			if (bSubscribed)
+			{
+				TestDone.Execute();
+			}
+		});
 
 		ImplFixture->Connection = OLinkFactory::Create(OLinkClient, "TestingConnection");
 		ImplFixture->Connection->Configure("ws://127.0.0.1:8666/ws", false);
@@ -93,9 +87,16 @@ void UTestbed1StructInterfaceOLinkSpec::Define()
 		FTestbed1StructBool TestValue = FTestbed1StructBool(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTestbed1StructInterfaceSignals* Testbed1StructInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructInterfaceSignals->OnPropBoolChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructInterfaceOLinkHelper::PropBoolPropertyCb);
+		Testbed1StructInterfaceSignals->OnPropBoolChanged.AddLambda([this, TestDone](const FTestbed1StructBool& InPropBool){
+			FTestbed1StructBool TestValue = FTestbed1StructBool();
+			// use different test value
+			TestValue = createTestFTestbed1StructBool();
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropBool, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue = createTestFTestbed1StructBool();
 		ImplFixture->GetImplementation()->SetPropBool(TestValue);
@@ -114,9 +115,16 @@ void UTestbed1StructInterfaceOLinkSpec::Define()
 		FTestbed1StructInt TestValue = FTestbed1StructInt(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTestbed1StructInterfaceSignals* Testbed1StructInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructInterfaceSignals->OnPropIntChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructInterfaceOLinkHelper::PropIntPropertyCb);
+		Testbed1StructInterfaceSignals->OnPropIntChanged.AddLambda([this, TestDone](const FTestbed1StructInt& InPropInt){
+			FTestbed1StructInt TestValue = FTestbed1StructInt();
+			// use different test value
+			TestValue = createTestFTestbed1StructInt();
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue = createTestFTestbed1StructInt();
 		ImplFixture->GetImplementation()->SetPropInt(TestValue);
@@ -135,9 +143,16 @@ void UTestbed1StructInterfaceOLinkSpec::Define()
 		FTestbed1StructFloat TestValue = FTestbed1StructFloat(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropFloat(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTestbed1StructInterfaceSignals* Testbed1StructInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructInterfaceSignals->OnPropFloatChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructInterfaceOLinkHelper::PropFloatPropertyCb);
+		Testbed1StructInterfaceSignals->OnPropFloatChanged.AddLambda([this, TestDone](const FTestbed1StructFloat& InPropFloat){
+			FTestbed1StructFloat TestValue = FTestbed1StructFloat();
+			// use different test value
+			TestValue = createTestFTestbed1StructFloat();
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropFloat(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue = createTestFTestbed1StructFloat();
 		ImplFixture->GetImplementation()->SetPropFloat(TestValue);
@@ -156,9 +171,16 @@ void UTestbed1StructInterfaceOLinkSpec::Define()
 		FTestbed1StructString TestValue = FTestbed1StructString(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropString(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTestbed1StructInterfaceSignals* Testbed1StructInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructInterfaceSignals->OnPropStringChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructInterfaceOLinkHelper::PropStringPropertyCb);
+		Testbed1StructInterfaceSignals->OnPropStringChanged.AddLambda([this, TestDone](const FTestbed1StructString& InPropString){
+			FTestbed1StructString TestValue = FTestbed1StructString();
+			// use different test value
+			TestValue = createTestFTestbed1StructString();
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropString, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropString(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue = createTestFTestbed1StructString();
 		ImplFixture->GetImplementation()->SetPropString(TestValue);
@@ -206,9 +228,13 @@ void UTestbed1StructInterfaceOLinkSpec::Define()
 
 	LatentIt("Signal.SigBool", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTestbed1StructInterfaceSignals* Testbed1StructInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructInterfaceSignals->OnSigBoolSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructInterfaceOLinkHelper::SigBoolSignalCb);
+		Testbed1StructInterfaceSignals->OnSigBoolSignal.AddLambda([this, TestDone](const FTestbed1StructBool& InParamBool){
+			// known test value
+			FTestbed1StructBool ParamBoolTestValue = createTestFTestbed1StructBool();
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamBool, ParamBoolTestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		FTestbed1StructBool ParamBoolTestValue = createTestFTestbed1StructBool();
@@ -217,9 +243,13 @@ void UTestbed1StructInterfaceOLinkSpec::Define()
 
 	LatentIt("Signal.SigInt", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTestbed1StructInterfaceSignals* Testbed1StructInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructInterfaceSignals->OnSigIntSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructInterfaceOLinkHelper::SigIntSignalCb);
+		Testbed1StructInterfaceSignals->OnSigIntSignal.AddLambda([this, TestDone](const FTestbed1StructInt& InParamInt){
+			// known test value
+			FTestbed1StructInt ParamIntTestValue = createTestFTestbed1StructInt();
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamInt, ParamIntTestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		FTestbed1StructInt ParamIntTestValue = createTestFTestbed1StructInt();
@@ -228,9 +258,13 @@ void UTestbed1StructInterfaceOLinkSpec::Define()
 
 	LatentIt("Signal.SigFloat", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTestbed1StructInterfaceSignals* Testbed1StructInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructInterfaceSignals->OnSigFloatSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructInterfaceOLinkHelper::SigFloatSignalCb);
+		Testbed1StructInterfaceSignals->OnSigFloatSignal.AddLambda([this, TestDone](const FTestbed1StructFloat& InParamFloat){
+			// known test value
+			FTestbed1StructFloat ParamFloatTestValue = createTestFTestbed1StructFloat();
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamFloat, ParamFloatTestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		FTestbed1StructFloat ParamFloatTestValue = createTestFTestbed1StructFloat();
@@ -239,9 +273,13 @@ void UTestbed1StructInterfaceOLinkSpec::Define()
 
 	LatentIt("Signal.SigString", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTestbed1StructInterfaceSignals* Testbed1StructInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructInterfaceSignals->OnSigStringSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructInterfaceOLinkHelper::SigStringSignalCb);
+		Testbed1StructInterfaceSignals->OnSigStringSignal.AddLambda([this, TestDone](const FTestbed1StructString& InParamString){
+			// known test value
+			FTestbed1StructString ParamStringTestValue = createTestFTestbed1StructString();
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamString, ParamStringTestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		FTestbed1StructString ParamStringTestValue = createTestFTestbed1StructString();
@@ -249,76 +287,4 @@ void UTestbed1StructInterfaceOLinkSpec::Define()
 	});
 }
 
-void UTestbed1StructInterfaceOLinkSpec::PropBoolPropertyCb(const FTestbed1StructBool& InPropBool)
-{
-	FTestbed1StructBool TestValue = FTestbed1StructBool();
-	// use different test value
-	TestValue = createTestFTestbed1StructBool();
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropBool, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTestbed1StructInterfaceOLinkSpec::PropIntPropertyCb(const FTestbed1StructInt& InPropInt)
-{
-	FTestbed1StructInt TestValue = FTestbed1StructInt();
-	// use different test value
-	TestValue = createTestFTestbed1StructInt();
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTestbed1StructInterfaceOLinkSpec::PropFloatPropertyCb(const FTestbed1StructFloat& InPropFloat)
-{
-	FTestbed1StructFloat TestValue = FTestbed1StructFloat();
-	// use different test value
-	TestValue = createTestFTestbed1StructFloat();
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropFloat(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTestbed1StructInterfaceOLinkSpec::PropStringPropertyCb(const FTestbed1StructString& InPropString)
-{
-	FTestbed1StructString TestValue = FTestbed1StructString();
-	// use different test value
-	TestValue = createTestFTestbed1StructString();
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropString, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropString(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTestbed1StructInterfaceOLinkSpec::SigBoolSignalCb(const FTestbed1StructBool& InParamBool)
-{
-	// known test value
-	FTestbed1StructBool ParamBoolTestValue = createTestFTestbed1StructBool();
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamBool, ParamBoolTestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTestbed1StructInterfaceOLinkSpec::SigIntSignalCb(const FTestbed1StructInt& InParamInt)
-{
-	// known test value
-	FTestbed1StructInt ParamIntTestValue = createTestFTestbed1StructInt();
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamInt, ParamIntTestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTestbed1StructInterfaceOLinkSpec::SigFloatSignalCb(const FTestbed1StructFloat& InParamFloat)
-{
-	// known test value
-	FTestbed1StructFloat ParamFloatTestValue = createTestFTestbed1StructFloat();
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamFloat, ParamFloatTestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTestbed1StructInterfaceOLinkSpec::SigStringSignalCb(const FTestbed1StructString& InParamString)
-{
-	// known test value
-	FTestbed1StructString ParamStringTestValue = createTestFTestbed1StructString();
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamString, ParamStringTestValue);
-	testDoneDelegate.Execute();
-}
-#endif // WITH_DEV_AUTOMATION_TESTS
-#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

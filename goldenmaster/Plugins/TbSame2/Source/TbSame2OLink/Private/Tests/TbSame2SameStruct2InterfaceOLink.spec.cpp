@@ -14,31 +14,24 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+#include "Misc/AutomationTest.h"
+#include "HAL/Platform.h"
 
-#include "TbSame2SameStruct2InterfaceOLink.spec.h"
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
 #include "TbSame2SameStruct2InterfaceOLinkFixture.h"
 #include "TbSame2/Implementation/TbSame2SameStruct2Interface.h"
 #include "TbSame2/Generated/OLink/TbSame2SameStruct2InterfaceOLinkClient.h"
 #include "TbSame2/Generated/OLink/TbSame2SameStruct2InterfaceOLinkAdapter.h"
-#include "HAL/Platform.h"
 
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #include "OLinkHost.h"
 #include "OLinkClientConnection.h" // for olink factory
 #include "TbSame2/Tests/TbSame2TestsCommon.h"
-#include "Misc/AutomationTest.h"
 
-#if WITH_DEV_AUTOMATION_TESTS
+BEGIN_DEFINE_SPEC(UTbSame2SameStruct2InterfaceOLinkSpec, "TbSame2.SameStruct2Interface.OLink", TbSame2TestFilterMask);
 
-void UTbSame2SameStruct2InterfaceOLinkSpec::_SubscriptionStatusChangedCb(bool bSubscribed)
-{
-	// ImplFixture->testDoneDelegate.Execute();
-	// InTestDoneDelegate.Execute();
-	if (bSubscribed)
-	{
-		testDoneDelegate.Execute();
-	}
-}
+TUniquePtr<FTbSame2SameStruct2InterfaceOLinkFixture> ImplFixture;
+
+END_DEFINE_SPEC(UTbSame2SameStruct2InterfaceOLinkSpec);
 
 void UTbSame2SameStruct2InterfaceOLinkSpec::Define()
 {
@@ -49,10 +42,6 @@ void UTbSame2SameStruct2InterfaceOLinkSpec::Define()
 
 		TestTrue("Check for valid testImplementation", ImplFixture->GetImplementation().GetInterface() != nullptr);
 
-		TestTrue("Check for valid Helper", ImplFixture->GetHelper().IsValid());
-		// needed for callbacks
-		ImplFixture->GetHelper()->SetSpec(this);
-
 		// set up service and adapter
 		ImplFixture->GetHost()->Stop();
 		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSame2SameStruct2Interface>();
@@ -61,11 +50,16 @@ void UTbSame2SameStruct2InterfaceOLinkSpec::Define()
 		ImplFixture->GetHost()->Start(8666);
 
 		// setup client
-		testDoneDelegate = TestDone;
 		UTbSame2SameStruct2InterfaceOLinkClient* OLinkClient = Cast<UTbSame2SameStruct2InterfaceOLinkClient>(ImplFixture->GetImplementation().GetObject());
 		TestTrue("Check for valid OLink client", OLinkClient != nullptr);
 
-		OLinkClient->_SubscriptionStatusChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame2SameStruct2InterfaceOLinkHelper::_SubscriptionStatusChangedCb);
+		OLinkClient->_SubscriptionStatusChanged.AddLambda([this, TestDone](bool bSubscribed)
+			{
+			if (bSubscribed)
+			{
+				TestDone.Execute();
+			}
+		});
 
 		ImplFixture->Connection = OLinkFactory::Create(OLinkClient, "TestingConnection");
 		ImplFixture->Connection->Configure("ws://127.0.0.1:8666/ws", false);
@@ -93,9 +87,16 @@ void UTbSame2SameStruct2InterfaceOLinkSpec::Define()
 		FTbSame2Struct2 TestValue = FTbSame2Struct2(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp1(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTbSame2SameStruct2InterfaceSignals* TbSame2SameStruct2InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSame2SameStruct2InterfaceSignals->OnProp1ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame2SameStruct2InterfaceOLinkHelper::Prop1PropertyCb);
+		TbSame2SameStruct2InterfaceSignals->OnProp1Changed.AddLambda([this, TestDone](const FTbSame2Struct2& InProp1){
+			FTbSame2Struct2 TestValue = FTbSame2Struct2();
+			// use different test value
+			TestValue = createTestFTbSame2Struct2();
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetProp1(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue = createTestFTbSame2Struct2();
 		ImplFixture->GetImplementation()->SetProp1(TestValue);
@@ -114,9 +115,16 @@ void UTbSame2SameStruct2InterfaceOLinkSpec::Define()
 		FTbSame2Struct2 TestValue = FTbSame2Struct2(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp2(), TestValue);
 
-		testDoneDelegate = TestDone;
 		UTbSame2SameStruct2InterfaceSignals* TbSame2SameStruct2InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSame2SameStruct2InterfaceSignals->OnProp2ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame2SameStruct2InterfaceOLinkHelper::Prop2PropertyCb);
+		TbSame2SameStruct2InterfaceSignals->OnProp2Changed.AddLambda([this, TestDone](const FTbSame2Struct2& InProp2){
+			FTbSame2Struct2 TestValue = FTbSame2Struct2();
+			// use different test value
+			TestValue = createTestFTbSame2Struct2();
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp2, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetProp2(), TestValue);
+			TestDone.Execute();
+		});
+
 		// use different test value
 		TestValue = createTestFTbSame2Struct2();
 		ImplFixture->GetImplementation()->SetProp2(TestValue);
@@ -144,9 +152,13 @@ void UTbSame2SameStruct2InterfaceOLinkSpec::Define()
 
 	LatentIt("Signal.Sig1", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTbSame2SameStruct2InterfaceSignals* TbSame2SameStruct2InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSame2SameStruct2InterfaceSignals->OnSig1SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame2SameStruct2InterfaceOLinkHelper::Sig1SignalCb);
+		TbSame2SameStruct2InterfaceSignals->OnSig1Signal.AddLambda([this, TestDone](const FTbSame2Struct1& InParam1){
+			// known test value
+			FTbSame2Struct1 Param1TestValue = createTestFTbSame2Struct1();
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		FTbSame2Struct1 Param1TestValue = createTestFTbSame2Struct1();
@@ -155,9 +167,15 @@ void UTbSame2SameStruct2InterfaceOLinkSpec::Define()
 
 	LatentIt("Signal.Sig2", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
 		UTbSame2SameStruct2InterfaceSignals* TbSame2SameStruct2InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSame2SameStruct2InterfaceSignals->OnSig2SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame2SameStruct2InterfaceOLinkHelper::Sig2SignalCb);
+		TbSame2SameStruct2InterfaceSignals->OnSig2Signal.AddLambda([this, TestDone](const FTbSame2Struct1& InParam1, const FTbSame2Struct2& InParam2){
+			// known test value
+			FTbSame2Struct1 Param1TestValue = createTestFTbSame2Struct1();
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
+			FTbSame2Struct2 Param2TestValue = createTestFTbSame2Struct2();
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam2, Param2TestValue);
+			TestDone.Execute();
+		});
 
 		// use different test value
 		FTbSame2Struct1 Param1TestValue = createTestFTbSame2Struct1();
@@ -166,42 +184,4 @@ void UTbSame2SameStruct2InterfaceOLinkSpec::Define()
 	});
 }
 
-void UTbSame2SameStruct2InterfaceOLinkSpec::Prop1PropertyCb(const FTbSame2Struct2& InProp1)
-{
-	FTbSame2Struct2 TestValue = FTbSame2Struct2();
-	// use different test value
-	TestValue = createTestFTbSame2Struct2();
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetProp1(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSame2SameStruct2InterfaceOLinkSpec::Prop2PropertyCb(const FTbSame2Struct2& InProp2)
-{
-	FTbSame2Struct2 TestValue = FTbSame2Struct2();
-	// use different test value
-	TestValue = createTestFTbSame2Struct2();
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp2, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetProp2(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSame2SameStruct2InterfaceOLinkSpec::Sig1SignalCb(const FTbSame2Struct1& InParam1)
-{
-	// known test value
-	FTbSame2Struct1 Param1TestValue = createTestFTbSame2Struct1();
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSame2SameStruct2InterfaceOLinkSpec::Sig2SignalCb(const FTbSame2Struct1& InParam1, const FTbSame2Struct2& InParam2)
-{
-	// known test value
-	FTbSame2Struct1 Param1TestValue = createTestFTbSame2Struct1();
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
-	FTbSame2Struct2 Param2TestValue = createTestFTbSame2Struct2();
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam2, Param2TestValue);
-	testDoneDelegate.Execute();
-}
-#endif // WITH_DEV_AUTOMATION_TESTS
-#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

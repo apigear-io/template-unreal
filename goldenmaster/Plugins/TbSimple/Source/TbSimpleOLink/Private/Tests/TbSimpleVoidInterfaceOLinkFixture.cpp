@@ -15,33 +15,16 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbSimpleVoidInterfaceOLinkFixture.h"
-#include "TbSimpleVoidInterfaceOLink.spec.h"
-#include "TbSimple/Generated/OLink/TbSimpleVoidInterfaceOLinkClient.h"
-#include "TbSimple/Generated/OLink/TbSimpleVoidInterfaceOLinkAdapter.h"
-#include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#include "Engine/GameInstance.h"
+#include "TbSimple/Generated/OLink/TbSimpleVoidInterfaceOLinkClient.h"
+#include "TbSimple/Generated/OLink/TbSimpleVoidInterfaceOLinkAdapter.h"
 #include "OLinkHost.h"
-
-void UTbSimpleVoidInterfaceOLinkHelper::SetSpec(UTbSimpleVoidInterfaceOLinkSpec* InSpec)
-{
-	Spec = InSpec;
-}
-
-void UTbSimpleVoidInterfaceOLinkHelper::SigVoidSignalCb()
-{
-	Spec->SigVoidSignalCb();
-}
-
-void UTbSimpleVoidInterfaceOLinkHelper::_SubscriptionStatusChangedCb(bool bSubscribed)
-{
-	Spec->_SubscriptionStatusChangedCb(bSubscribed);
-}
 
 FTbSimpleVoidInterfaceOLinkFixture::FTbSimpleVoidInterfaceOLinkFixture()
 {
-	Helper = NewObject<UTbSimpleVoidInterfaceOLinkHelper>();
 	testImplementation = GetGameInstance()->GetSubsystem<UTbSimpleVoidInterfaceOLinkClient>();
 }
 
@@ -65,11 +48,6 @@ UTbSimpleVoidInterfaceOLinkAdapter* FTbSimpleVoidInterfaceOLinkFixture::GetAdapt
 	return GetGameInstance()->GetSubsystem<UTbSimpleVoidInterfaceOLinkAdapter>();
 }
 
-TSoftObjectPtr<UTbSimpleVoidInterfaceOLinkHelper> FTbSimpleVoidInterfaceOLinkFixture::GetHelper()
-{
-	return Helper;
-}
-
 UGameInstance* FTbSimpleVoidInterfaceOLinkFixture::GetGameInstance()
 {
 	if (!GameInstance.IsValid())
@@ -88,18 +66,5 @@ void FTbSimpleVoidInterfaceOLinkFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
-#else  // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
-// create empty implementation in case we do not want to do automated testing
-void UTbSimpleVoidInterfaceOLinkHelper::SetSpec(UTbSimpleVoidInterfaceOLinkSpec* /* InSpec */)
-{
-}
 
-void UTbSimpleVoidInterfaceOLinkHelper::SigVoidSignalCb()
-{
-}
-
-void UTbSimpleVoidInterfaceOLinkHelper::_SubscriptionStatusChangedCb(bool bSubscribed)
-{
-	(void)bSubscribed;
-}
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

@@ -15,48 +15,16 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbSimpleNoOperationsInterfaceOLinkFixture.h"
-#include "TbSimpleNoOperationsInterfaceOLink.spec.h"
-#include "TbSimple/Generated/OLink/TbSimpleNoOperationsInterfaceOLinkClient.h"
-#include "TbSimple/Generated/OLink/TbSimpleNoOperationsInterfaceOLinkAdapter.h"
-#include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#include "Engine/GameInstance.h"
+#include "TbSimple/Generated/OLink/TbSimpleNoOperationsInterfaceOLinkClient.h"
+#include "TbSimple/Generated/OLink/TbSimpleNoOperationsInterfaceOLinkAdapter.h"
 #include "OLinkHost.h"
-
-void UTbSimpleNoOperationsInterfaceOLinkHelper::SetSpec(UTbSimpleNoOperationsInterfaceOLinkSpec* InSpec)
-{
-	Spec = InSpec;
-}
-
-void UTbSimpleNoOperationsInterfaceOLinkHelper::PropBoolPropertyCb(bool bPropBool)
-{
-	Spec->PropBoolPropertyCb(bPropBool);
-}
-
-void UTbSimpleNoOperationsInterfaceOLinkHelper::PropIntPropertyCb(int32 PropInt)
-{
-	Spec->PropIntPropertyCb(PropInt);
-}
-
-void UTbSimpleNoOperationsInterfaceOLinkHelper::SigVoidSignalCb()
-{
-	Spec->SigVoidSignalCb();
-}
-
-void UTbSimpleNoOperationsInterfaceOLinkHelper::SigBoolSignalCb(bool bParamBool)
-{
-	Spec->SigBoolSignalCb(bParamBool);
-}
-
-void UTbSimpleNoOperationsInterfaceOLinkHelper::_SubscriptionStatusChangedCb(bool bSubscribed)
-{
-	Spec->_SubscriptionStatusChangedCb(bSubscribed);
-}
 
 FTbSimpleNoOperationsInterfaceOLinkFixture::FTbSimpleNoOperationsInterfaceOLinkFixture()
 {
-	Helper = NewObject<UTbSimpleNoOperationsInterfaceOLinkHelper>();
 	testImplementation = GetGameInstance()->GetSubsystem<UTbSimpleNoOperationsInterfaceOLinkClient>();
 }
 
@@ -80,11 +48,6 @@ UTbSimpleNoOperationsInterfaceOLinkAdapter* FTbSimpleNoOperationsInterfaceOLinkF
 	return GetGameInstance()->GetSubsystem<UTbSimpleNoOperationsInterfaceOLinkAdapter>();
 }
 
-TSoftObjectPtr<UTbSimpleNoOperationsInterfaceOLinkHelper> FTbSimpleNoOperationsInterfaceOLinkFixture::GetHelper()
-{
-	return Helper;
-}
-
 UGameInstance* FTbSimpleNoOperationsInterfaceOLinkFixture::GetGameInstance()
 {
 	if (!GameInstance.IsValid())
@@ -103,33 +66,5 @@ void FTbSimpleNoOperationsInterfaceOLinkFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
-#else  // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
-// create empty implementation in case we do not want to do automated testing
-void UTbSimpleNoOperationsInterfaceOLinkHelper::SetSpec(UTbSimpleNoOperationsInterfaceOLinkSpec* /* InSpec */)
-{
-}
 
-void UTbSimpleNoOperationsInterfaceOLinkHelper::PropBoolPropertyCb(bool bPropBool)
-{
-	(void)bPropBool;
-}
-
-void UTbSimpleNoOperationsInterfaceOLinkHelper::PropIntPropertyCb(int32 PropInt)
-{
-	(void)PropInt;
-}
-
-void UTbSimpleNoOperationsInterfaceOLinkHelper::SigVoidSignalCb()
-{
-}
-
-void UTbSimpleNoOperationsInterfaceOLinkHelper::SigBoolSignalCb(bool bParamBool)
-{
-	(void)bParamBool;
-}
-
-void UTbSimpleNoOperationsInterfaceOLinkHelper::_SubscriptionStatusChangedCb(bool bSubscribed)
-{
-	(void)bSubscribed;
-}
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
