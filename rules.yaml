@@ -206,6 +206,7 @@ features:
             raw: true
   - name: apigear_olink
     requires:
+      - apigear
       - apigear_olinkproto
     scopes:
       - match: system
