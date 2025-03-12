@@ -16,6 +16,15 @@ class UTbEnumEnumInterfaceOLinkAdapter;
 class IApiGearConnection;
 class UOLinkHost;
 
+// nested namespaces do not work with UE4.27 MSVC due to old C++ standard
+namespace TbEnum
+{
+namespace EnumInterface
+{
+namespace OLink
+{
+namespace Tests
+{
 class FTbEnumEnumInterfaceOLinkFixture
 {
 public:
@@ -34,5 +43,9 @@ private:
 	TSoftObjectPtr<UGameInstance> GameInstance;
 	TScriptInterface<ITbEnumEnumInterfaceInterface> testImplementation;
 };
+} // namespace Tests
+} // namespace OLink
+} // namespace EnumInterface
+} // namespace TbEnum
 
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

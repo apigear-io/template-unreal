@@ -27,6 +27,15 @@ limitations under the License.
 #include "OLinkClientConnection.h" // for olink factory
 #include "TbSimple/Tests/TbSimpleTestsCommon.h"
 
+// nested namespaces do not work with UE4.27 MSVC due to old C++ standard
+namespace TbSimple
+{
+namespace NoSignalsInterface
+{
+namespace OLink
+{
+namespace Tests
+{
 BEGIN_DEFINE_SPEC(UTbSimpleNoSignalsInterfaceOLinkSpec, "TbSimple.NoSignalsInterface.OLink", TbSimpleTestFilterMask);
 
 TUniquePtr<FTbSimpleNoSignalsInterfaceOLinkFixture> ImplFixture;
@@ -152,5 +161,9 @@ void UTbSimpleNoSignalsInterfaceOLinkSpec::Define()
 		});
 	});
 }
+} // namespace Tests
+} // namespace OLink
+} // namespace NoSignalsInterface
+} // namespace TbSimple
 
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

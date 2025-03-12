@@ -23,6 +23,15 @@ limitations under the License.
 #include "Counter/Generated/OLink/CounterCounterOLinkAdapter.h"
 #include "OLinkHost.h"
 
+// nested namespaces do not work with UE4.27 MSVC due to old C++ standard
+namespace Counter
+{
+namespace Counter
+{
+namespace OLink
+{
+namespace Tests
+{
 FCounterCounterOLinkFixture::FCounterCounterOLinkFixture()
 {
 	testImplementation = GetGameInstance()->GetSubsystem<UCounterCounterOLinkClient>();
@@ -66,5 +75,9 @@ void FCounterCounterOLinkFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
+} // namespace Tests
+} // namespace OLink
+} // namespace Counter
+} // namespace Counter
 
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

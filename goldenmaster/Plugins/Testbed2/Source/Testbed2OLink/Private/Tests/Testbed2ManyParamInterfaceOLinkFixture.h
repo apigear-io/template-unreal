@@ -16,6 +16,15 @@ class UTestbed2ManyParamInterfaceOLinkAdapter;
 class IApiGearConnection;
 class UOLinkHost;
 
+// nested namespaces do not work with UE4.27 MSVC due to old C++ standard
+namespace Testbed2
+{
+namespace ManyParamInterface
+{
+namespace OLink
+{
+namespace Tests
+{
 class FTestbed2ManyParamInterfaceOLinkFixture
 {
 public:
@@ -34,5 +43,9 @@ private:
 	TSoftObjectPtr<UGameInstance> GameInstance;
 	TScriptInterface<ITestbed2ManyParamInterfaceInterface> testImplementation;
 };
+} // namespace Tests
+} // namespace OLink
+} // namespace ManyParamInterface
+} // namespace Testbed2
 
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

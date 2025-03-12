@@ -27,6 +27,15 @@ limitations under the License.
 #include "OLinkClientConnection.h" // for olink factory
 #include "TbSame1/Tests/TbSame1TestsCommon.h"
 
+// nested namespaces do not work with UE4.27 MSVC due to old C++ standard
+namespace TbSame1
+{
+namespace SameEnum1Interface
+{
+namespace OLink
+{
+namespace Tests
+{
 BEGIN_DEFINE_SPEC(UTbSame1SameEnum1InterfaceOLinkSpec, "TbSame1.SameEnum1Interface.OLink", TbSame1TestFilterMask);
 
 TUniquePtr<FTbSame1SameEnum1InterfaceOLinkFixture> ImplFixture;
@@ -129,5 +138,9 @@ void UTbSame1SameEnum1InterfaceOLinkSpec::Define()
 		TbSame1SameEnum1InterfaceSignals->BroadcastSig1Signal(Param1TestValue);
 	});
 }
+} // namespace Tests
+} // namespace OLink
+} // namespace SameEnum1Interface
+} // namespace TbSame1
 
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

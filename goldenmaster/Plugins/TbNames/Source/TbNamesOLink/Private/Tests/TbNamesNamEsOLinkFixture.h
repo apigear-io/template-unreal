@@ -16,6 +16,15 @@ class UTbNamesNamEsOLinkAdapter;
 class IApiGearConnection;
 class UOLinkHost;
 
+// nested namespaces do not work with UE4.27 MSVC due to old C++ standard
+namespace TbNames
+{
+namespace NamEs
+{
+namespace OLink
+{
+namespace Tests
+{
 class FTbNamesNamEsOLinkFixture
 {
 public:
@@ -34,5 +43,9 @@ private:
 	TSoftObjectPtr<UGameInstance> GameInstance;
 	TScriptInterface<ITbNamesNamEsInterface> testImplementation;
 };
+} // namespace Tests
+} // namespace OLink
+} // namespace NamEs
+} // namespace TbNames
 
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

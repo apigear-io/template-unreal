@@ -27,6 +27,15 @@ limitations under the License.
 #include "OLinkClientConnection.h" // for olink factory
 #include "Testbed2/Tests/Testbed2TestsCommon.h"
 
+// nested namespaces do not work with UE4.27 MSVC due to old C++ standard
+namespace Testbed2
+{
+namespace NestedStruct3Interface
+{
+namespace OLink
+{
+namespace Tests
+{
 BEGIN_DEFINE_SPEC(UTestbed2NestedStruct3InterfaceOLinkSpec, "Testbed2.NestedStruct3Interface.OLink", Testbed2TestFilterMask);
 
 TUniquePtr<FTestbed2NestedStruct3InterfaceOLinkFixture> ImplFixture;
@@ -248,5 +257,9 @@ void UTestbed2NestedStruct3InterfaceOLinkSpec::Define()
 		Testbed2NestedStruct3InterfaceSignals->BroadcastSig3Signal(Param1TestValue, Param2TestValue, Param3TestValue);
 	});
 }
+} // namespace Tests
+} // namespace OLink
+} // namespace NestedStruct3Interface
+} // namespace Testbed2
 
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

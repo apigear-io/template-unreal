@@ -29,6 +29,15 @@ limitations under the License.
 #include "CustomTypes/Tests/CustomTypesTestsCommon.h"
 #include "ExternTypes/Tests/ExternTypesTestsCommon.h"
 
+// nested namespaces do not work with UE4.27 MSVC due to old C++ standard
+namespace Counter
+{
+namespace Counter
+{
+namespace OLink
+{
+namespace Tests
+{
 BEGIN_DEFINE_SPEC(UCounterCounterOLinkSpec, "Counter.Counter.OLink", CounterTestFilterMask);
 
 TUniquePtr<FCounterCounterOLinkFixture> ImplFixture;
@@ -213,5 +222,9 @@ void UCounterCounterOLinkSpec::Define()
 		CounterCounterSignals->BroadcastValueChangedSignal(VectorTestValue, ExternVectorTestValue, VectorArrayTestValue, ExternVectorArrayTestValue);
 	});
 }
+} // namespace Tests
+} // namespace OLink
+} // namespace Counter
+} // namespace Counter
 
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

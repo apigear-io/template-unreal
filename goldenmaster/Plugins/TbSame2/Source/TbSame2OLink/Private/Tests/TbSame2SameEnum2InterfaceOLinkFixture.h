@@ -16,6 +16,15 @@ class UTbSame2SameEnum2InterfaceOLinkAdapter;
 class IApiGearConnection;
 class UOLinkHost;
 
+// nested namespaces do not work with UE4.27 MSVC due to old C++ standard
+namespace TbSame2
+{
+namespace SameEnum2Interface
+{
+namespace OLink
+{
+namespace Tests
+{
 class FTbSame2SameEnum2InterfaceOLinkFixture
 {
 public:
@@ -34,5 +43,9 @@ private:
 	TSoftObjectPtr<UGameInstance> GameInstance;
 	TScriptInterface<ITbSame2SameEnum2InterfaceInterface> testImplementation;
 };
+} // namespace Tests
+} // namespace OLink
+} // namespace SameEnum2Interface
+} // namespace TbSame2
 
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

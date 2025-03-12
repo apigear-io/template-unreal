@@ -20,6 +20,15 @@ class U{{$DisplayName}}OLinkAdapter;
 class IApiGearConnection;
 class UOLinkHost;
 
+// nested namespaces do not work with UE4.27 MSVC due to old C++ standard
+namespace {{$ModuleName}}
+{
+namespace {{$IfaceName}}
+{
+namespace OLink
+{
+namespace Tests
+{
 class F{{ $DisplayName }}OLinkFixture
 {
 public:
@@ -38,5 +47,9 @@ private:
 	TSoftObjectPtr<UGameInstance> GameInstance;
 	TScriptInterface<I{{$DisplayName}}Interface> testImplementation;
 };
+} // namespace Tests
+} // namespace OLink
+} // namespace {{$IfaceName}}
+} // namespace {{$ModuleName}}
 
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

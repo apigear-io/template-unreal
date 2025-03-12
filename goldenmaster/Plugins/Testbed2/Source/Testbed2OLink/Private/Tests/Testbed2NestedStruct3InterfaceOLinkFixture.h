@@ -16,6 +16,15 @@ class UTestbed2NestedStruct3InterfaceOLinkAdapter;
 class IApiGearConnection;
 class UOLinkHost;
 
+// nested namespaces do not work with UE4.27 MSVC due to old C++ standard
+namespace Testbed2
+{
+namespace NestedStruct3Interface
+{
+namespace OLink
+{
+namespace Tests
+{
 class FTestbed2NestedStruct3InterfaceOLinkFixture
 {
 public:
@@ -34,5 +43,9 @@ private:
 	TSoftObjectPtr<UGameInstance> GameInstance;
 	TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> testImplementation;
 };
+} // namespace Tests
+} // namespace OLink
+} // namespace NestedStruct3Interface
+} // namespace Testbed2
 
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

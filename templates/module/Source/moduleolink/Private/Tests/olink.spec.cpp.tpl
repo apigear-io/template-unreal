@@ -21,6 +21,15 @@
 #include "{{Camel .Name}}/Tests/{{Camel .Name}}TestsCommon.h"
 {{- end }}
 
+// nested namespaces do not work with UE4.27 MSVC due to old C++ standard
+namespace {{$ModuleName}}
+{
+namespace {{$IfaceName}}
+{
+namespace OLink
+{
+namespace Tests
+{
 BEGIN_DEFINE_SPEC({{$Class}}OLinkSpec, "{{$ModuleName}}.{{$IfaceName}}.OLink", {{$ModuleName}}TestFilterMask);
 
 TUniquePtr<F{{$DisplayName}}OLinkFixture> ImplFixture;
@@ -231,5 +240,9 @@ void {{$Class}}OLinkSpec::Define()
 
 {{- end }}
 }
+} // namespace Tests
+} // namespace OLink
+} // namespace {{$IfaceName}}
+} // namespace {{$ModuleName}}
 
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

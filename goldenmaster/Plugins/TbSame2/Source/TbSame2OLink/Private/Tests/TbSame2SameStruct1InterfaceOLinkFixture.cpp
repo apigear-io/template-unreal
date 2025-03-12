@@ -23,6 +23,15 @@ limitations under the License.
 #include "TbSame2/Generated/OLink/TbSame2SameStruct1InterfaceOLinkAdapter.h"
 #include "OLinkHost.h"
 
+// nested namespaces do not work with UE4.27 MSVC due to old C++ standard
+namespace TbSame2
+{
+namespace SameStruct1Interface
+{
+namespace OLink
+{
+namespace Tests
+{
 FTbSame2SameStruct1InterfaceOLinkFixture::FTbSame2SameStruct1InterfaceOLinkFixture()
 {
 	testImplementation = GetGameInstance()->GetSubsystem<UTbSame2SameStruct1InterfaceOLinkClient>();
@@ -66,5 +75,9 @@ void FTbSame2SameStruct1InterfaceOLinkFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
+} // namespace Tests
+} // namespace OLink
+} // namespace SameStruct1Interface
+} // namespace TbSame2
 
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

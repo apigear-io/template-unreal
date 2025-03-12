@@ -16,6 +16,15 @@ class UTbSimpleNoPropertiesInterfaceOLinkAdapter;
 class IApiGearConnection;
 class UOLinkHost;
 
+// nested namespaces do not work with UE4.27 MSVC due to old C++ standard
+namespace TbSimple
+{
+namespace NoPropertiesInterface
+{
+namespace OLink
+{
+namespace Tests
+{
 class FTbSimpleNoPropertiesInterfaceOLinkFixture
 {
 public:
@@ -34,5 +43,9 @@ private:
 	TSoftObjectPtr<UGameInstance> GameInstance;
 	TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> testImplementation;
 };
+} // namespace Tests
+} // namespace OLink
+} // namespace NoPropertiesInterface
+} // namespace TbSimple
 
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

@@ -23,6 +23,15 @@ limitations under the License.
 #include "TbSimple/Generated/OLink/TbSimpleNoPropertiesInterfaceOLinkAdapter.h"
 #include "OLinkHost.h"
 
+// nested namespaces do not work with UE4.27 MSVC due to old C++ standard
+namespace TbSimple
+{
+namespace NoPropertiesInterface
+{
+namespace OLink
+{
+namespace Tests
+{
 FTbSimpleNoPropertiesInterfaceOLinkFixture::FTbSimpleNoPropertiesInterfaceOLinkFixture()
 {
 	testImplementation = GetGameInstance()->GetSubsystem<UTbSimpleNoPropertiesInterfaceOLinkClient>();
@@ -66,5 +75,9 @@ void FTbSimpleNoPropertiesInterfaceOLinkFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
+} // namespace Tests
+} // namespace OLink
+} // namespace NoPropertiesInterface
+} // namespace TbSimple
 
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

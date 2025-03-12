@@ -23,6 +23,15 @@ limitations under the License.
 #include "TbEnum/Generated/OLink/TbEnumEnumInterfaceOLinkAdapter.h"
 #include "OLinkHost.h"
 
+// nested namespaces do not work with UE4.27 MSVC due to old C++ standard
+namespace TbEnum
+{
+namespace EnumInterface
+{
+namespace OLink
+{
+namespace Tests
+{
 FTbEnumEnumInterfaceOLinkFixture::FTbEnumEnumInterfaceOLinkFixture()
 {
 	testImplementation = GetGameInstance()->GetSubsystem<UTbEnumEnumInterfaceOLinkClient>();
@@ -66,5 +75,9 @@ void FTbEnumEnumInterfaceOLinkFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
+} // namespace Tests
+} // namespace OLink
+} // namespace EnumInterface
+} // namespace TbEnum
 
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

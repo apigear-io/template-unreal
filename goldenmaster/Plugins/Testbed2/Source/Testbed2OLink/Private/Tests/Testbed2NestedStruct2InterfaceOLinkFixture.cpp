@@ -23,6 +23,15 @@ limitations under the License.
 #include "Testbed2/Generated/OLink/Testbed2NestedStruct2InterfaceOLinkAdapter.h"
 #include "OLinkHost.h"
 
+// nested namespaces do not work with UE4.27 MSVC due to old C++ standard
+namespace Testbed2
+{
+namespace NestedStruct2Interface
+{
+namespace OLink
+{
+namespace Tests
+{
 FTestbed2NestedStruct2InterfaceOLinkFixture::FTestbed2NestedStruct2InterfaceOLinkFixture()
 {
 	testImplementation = GetGameInstance()->GetSubsystem<UTestbed2NestedStruct2InterfaceOLinkClient>();
@@ -66,5 +75,9 @@ void FTestbed2NestedStruct2InterfaceOLinkFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
+} // namespace Tests
+} // namespace OLink
+} // namespace NestedStruct2Interface
+} // namespace Testbed2
 
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

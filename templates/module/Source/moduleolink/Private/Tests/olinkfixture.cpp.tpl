@@ -13,6 +13,15 @@
 #include "{{$ModuleName}}/Generated/OLink/{{$DisplayName}}OLinkAdapter.h"
 #include "OLinkHost.h"
 
+// nested namespaces do not work with UE4.27 MSVC due to old C++ standard
+namespace {{$ModuleName}}
+{
+namespace {{$IfaceName}}
+{
+namespace OLink
+{
+namespace Tests
+{
 F{{ $DisplayName }}OLinkFixture::F{{ $DisplayName }}OLinkFixture()
 {
 	testImplementation = GetGameInstance()->GetSubsystem<{{ $Class }}OLinkClient>();
@@ -56,5 +65,9 @@ void F{{ $DisplayName }}OLinkFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
+} // namespace Tests
+} // namespace OLink
+} // namespace {{$IfaceName}}
+} // namespace {{$ModuleName}}
 
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

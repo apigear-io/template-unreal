@@ -23,6 +23,15 @@ limitations under the License.
 #include "Testbed1/Generated/OLink/Testbed1StructArrayInterfaceOLinkAdapter.h"
 #include "OLinkHost.h"
 
+// nested namespaces do not work with UE4.27 MSVC due to old C++ standard
+namespace Testbed1
+{
+namespace StructArrayInterface
+{
+namespace OLink
+{
+namespace Tests
+{
 FTestbed1StructArrayInterfaceOLinkFixture::FTestbed1StructArrayInterfaceOLinkFixture()
 {
 	testImplementation = GetGameInstance()->GetSubsystem<UTestbed1StructArrayInterfaceOLinkClient>();
@@ -66,5 +75,9 @@ void FTestbed1StructArrayInterfaceOLinkFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
+} // namespace Tests
+} // namespace OLink
+} // namespace StructArrayInterface
+} // namespace Testbed1
 
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

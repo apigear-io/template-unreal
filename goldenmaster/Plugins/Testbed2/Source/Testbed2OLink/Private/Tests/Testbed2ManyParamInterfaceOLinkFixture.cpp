@@ -23,6 +23,15 @@ limitations under the License.
 #include "Testbed2/Generated/OLink/Testbed2ManyParamInterfaceOLinkAdapter.h"
 #include "OLinkHost.h"
 
+// nested namespaces do not work with UE4.27 MSVC due to old C++ standard
+namespace Testbed2
+{
+namespace ManyParamInterface
+{
+namespace OLink
+{
+namespace Tests
+{
 FTestbed2ManyParamInterfaceOLinkFixture::FTestbed2ManyParamInterfaceOLinkFixture()
 {
 	testImplementation = GetGameInstance()->GetSubsystem<UTestbed2ManyParamInterfaceOLinkClient>();
@@ -66,5 +75,9 @@ void FTestbed2ManyParamInterfaceOLinkFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
+} // namespace Tests
+} // namespace OLink
+} // namespace ManyParamInterface
+} // namespace Testbed2
 
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

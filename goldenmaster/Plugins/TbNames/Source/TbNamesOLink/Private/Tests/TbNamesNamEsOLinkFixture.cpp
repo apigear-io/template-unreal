@@ -23,6 +23,15 @@ limitations under the License.
 #include "TbNames/Generated/OLink/TbNamesNamEsOLinkAdapter.h"
 #include "OLinkHost.h"
 
+// nested namespaces do not work with UE4.27 MSVC due to old C++ standard
+namespace TbNames
+{
+namespace NamEs
+{
+namespace OLink
+{
+namespace Tests
+{
 FTbNamesNamEsOLinkFixture::FTbNamesNamEsOLinkFixture()
 {
 	testImplementation = GetGameInstance()->GetSubsystem<UTbNamesNamEsOLinkClient>();
@@ -66,5 +75,9 @@ void FTbNamesNamEsOLinkFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
+} // namespace Tests
+} // namespace OLink
+} // namespace NamEs
+} // namespace TbNames
 
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID

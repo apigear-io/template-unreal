@@ -27,6 +27,15 @@ limitations under the License.
 #include "OLinkClientConnection.h" // for olink factory
 #include "TbNames/Tests/TbNamesTestsCommon.h"
 
+// nested namespaces do not work with UE4.27 MSVC due to old C++ standard
+namespace TbNames
+{
+namespace NamEs
+{
+namespace OLink
+{
+namespace Tests
+{
 BEGIN_DEFINE_SPEC(UTbNamesNamEsOLinkSpec, "TbNames.NamEs.OLink", TbNamesTestFilterMask);
 
 TUniquePtr<FTbNamesNamEsOLinkFixture> ImplFixture;
@@ -213,5 +222,9 @@ void UTbNamesNamEsOLinkSpec::Define()
 		TbNamesNamEsSignals->BroadcastSomeSignal2Signal(bSomeParamTestValue);
 	});
 }
+} // namespace Tests
+} // namespace OLink
+} // namespace NamEs
+} // namespace TbNames
 
 #endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
