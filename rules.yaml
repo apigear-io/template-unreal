@@ -410,6 +410,14 @@ features:
             target: "Private/Generated/OLink/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLinkSource.h"
           - source: "module/Source/moduleolink/Private/Generated/OLink/olinksource.cpp.tpl"
             target: "Private/Generated/OLink/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLinkSource.cpp"
+  - name: olink_tests
+    requires:
+      - olink
+      - stubs
+    scopes:
+      - match: interface
+        prefix: "Plugins/{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}OLink/"
+        documents:
           - source: "module/Source/moduleolink/Private/Tests/olink.spec.h.tpl"
             target: "Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLink.spec.h"
             preserve: true
