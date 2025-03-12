@@ -60,6 +60,10 @@ private:
 	UFUNCTION(Category = "ApiGear|TbSame1|SameEnum1Interface", BlueprintInternalUseOnly)
 	void OnProp1Changed(ETbSame1Enum1 Prop1);
 
+	// delegate handles
+	FDelegateHandle OnProp1ChangedHandle;
+	FDelegateHandle OnSig1SignalHandle;
+
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSame1|SameEnum1Interface")
 	TScriptInterface<ITbSame1SameEnum1InterfaceInterface> BackendService;

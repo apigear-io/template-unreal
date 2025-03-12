@@ -58,11 +58,31 @@ void UTbNamesNamEsOLinkAdapter::setBackendService(TScriptInterface<ITbNamesNamEs
 	{
 		UTbNamesNamEsSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbNamesNamEs"));
-		BackendSignals->OnSwitchChangedBP.RemoveDynamic(this, &UTbNamesNamEsOLinkAdapter::OnSwitchChanged);
-		BackendSignals->OnSomePropertyChangedBP.RemoveDynamic(this, &UTbNamesNamEsOLinkAdapter::OnSomePropertyChanged);
-		BackendSignals->OnSomePoperty2ChangedBP.RemoveDynamic(this, &UTbNamesNamEsOLinkAdapter::OnSomePoperty2Changed);
-		BackendSignals->OnSomeSignalSignalBP.RemoveDynamic(this, &UTbNamesNamEsOLinkAdapter::OnSomeSignal);
-		BackendSignals->OnSomeSignal2SignalBP.RemoveDynamic(this, &UTbNamesNamEsOLinkAdapter::OnSomeSignal2);
+		if (OnSwitchChangedHandle.IsValid())
+		{
+			BackendSignals->OnSwitchChanged.Remove(OnSwitchChangedHandle);
+			OnSwitchChangedHandle.Reset();
+		}
+		if (OnSomePropertyChangedHandle.IsValid())
+		{
+			BackendSignals->OnSomePropertyChanged.Remove(OnSomePropertyChangedHandle);
+			OnSomePropertyChangedHandle.Reset();
+		}
+		if (OnSomePoperty2ChangedHandle.IsValid())
+		{
+			BackendSignals->OnSomePoperty2Changed.Remove(OnSomePoperty2ChangedHandle);
+			OnSomePoperty2ChangedHandle.Reset();
+		}
+		if (OnSomeSignalSignalHandle.IsValid())
+		{
+			BackendSignals->OnSomeSignalSignal.Remove(OnSomeSignalSignalHandle);
+			OnSomeSignalSignalHandle.Reset();
+		}
+		if (OnSomeSignal2SignalHandle.IsValid())
+		{
+			BackendSignals->OnSomeSignal2Signal.Remove(OnSomeSignal2SignalHandle);
+			OnSomeSignal2SignalHandle.Reset();
+		}
 	}
 
 	// only set if interface is implemented
@@ -73,11 +93,11 @@ void UTbNamesNamEsOLinkAdapter::setBackendService(TScriptInterface<ITbNamesNamEs
 	UTbNamesNamEsSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service TbNamesNamEs"));
 	// connect property changed signals or simple events
-	BackendSignals->OnSwitchChangedBP.AddDynamic(this, &UTbNamesNamEsOLinkAdapter::OnSwitchChanged);
-	BackendSignals->OnSomePropertyChangedBP.AddDynamic(this, &UTbNamesNamEsOLinkAdapter::OnSomePropertyChanged);
-	BackendSignals->OnSomePoperty2ChangedBP.AddDynamic(this, &UTbNamesNamEsOLinkAdapter::OnSomePoperty2Changed);
-	BackendSignals->OnSomeSignalSignalBP.AddDynamic(this, &UTbNamesNamEsOLinkAdapter::OnSomeSignal);
-	BackendSignals->OnSomeSignal2SignalBP.AddDynamic(this, &UTbNamesNamEsOLinkAdapter::OnSomeSignal2);
+	OnSwitchChangedHandle = BackendSignals->OnSwitchChanged.AddUObject(this, &UTbNamesNamEsOLinkAdapter::OnSwitchChanged);
+	OnSomePropertyChangedHandle = BackendSignals->OnSomePropertyChanged.AddUObject(this, &UTbNamesNamEsOLinkAdapter::OnSomePropertyChanged);
+	OnSomePoperty2ChangedHandle = BackendSignals->OnSomePoperty2Changed.AddUObject(this, &UTbNamesNamEsOLinkAdapter::OnSomePoperty2Changed);
+	OnSomeSignalSignalHandle = BackendSignals->OnSomeSignalSignal.AddUObject(this, &UTbNamesNamEsOLinkAdapter::OnSomeSignal);
+	OnSomeSignal2SignalHandle = BackendSignals->OnSomeSignal2Signal.AddUObject(this, &UTbNamesNamEsOLinkAdapter::OnSomeSignal2);
 
 	// update olink source with new backend
 	Source->setBackendService(InService);

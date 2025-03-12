@@ -58,11 +58,31 @@ void UCounterCounterOLinkAdapter::setBackendService(TScriptInterface<ICounterCou
 	{
 		UCounterCounterSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service CounterCounter"));
-		BackendSignals->OnVectorChangedBP.RemoveDynamic(this, &UCounterCounterOLinkAdapter::OnVectorChanged);
-		BackendSignals->OnExternVectorChangedBP.RemoveDynamic(this, &UCounterCounterOLinkAdapter::OnExternVectorChanged);
-		BackendSignals->OnVectorArrayChangedBP.RemoveDynamic(this, &UCounterCounterOLinkAdapter::OnVectorArrayChanged);
-		BackendSignals->OnExternVectorArrayChangedBP.RemoveDynamic(this, &UCounterCounterOLinkAdapter::OnExternVectorArrayChanged);
-		BackendSignals->OnValueChangedSignalBP.RemoveDynamic(this, &UCounterCounterOLinkAdapter::OnValueChanged);
+		if (OnVectorChangedHandle.IsValid())
+		{
+			BackendSignals->OnVectorChanged.Remove(OnVectorChangedHandle);
+			OnVectorChangedHandle.Reset();
+		}
+		if (OnExternVectorChangedHandle.IsValid())
+		{
+			BackendSignals->OnExternVectorChanged.Remove(OnExternVectorChangedHandle);
+			OnExternVectorChangedHandle.Reset();
+		}
+		if (OnVectorArrayChangedHandle.IsValid())
+		{
+			BackendSignals->OnVectorArrayChanged.Remove(OnVectorArrayChangedHandle);
+			OnVectorArrayChangedHandle.Reset();
+		}
+		if (OnExternVectorArrayChangedHandle.IsValid())
+		{
+			BackendSignals->OnExternVectorArrayChanged.Remove(OnExternVectorArrayChangedHandle);
+			OnExternVectorArrayChangedHandle.Reset();
+		}
+		if (OnValueChangedSignalHandle.IsValid())
+		{
+			BackendSignals->OnValueChangedSignal.Remove(OnValueChangedSignalHandle);
+			OnValueChangedSignalHandle.Reset();
+		}
 	}
 
 	// only set if interface is implemented
@@ -73,11 +93,11 @@ void UCounterCounterOLinkAdapter::setBackendService(TScriptInterface<ICounterCou
 	UCounterCounterSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service CounterCounter"));
 	// connect property changed signals or simple events
-	BackendSignals->OnVectorChangedBP.AddDynamic(this, &UCounterCounterOLinkAdapter::OnVectorChanged);
-	BackendSignals->OnExternVectorChangedBP.AddDynamic(this, &UCounterCounterOLinkAdapter::OnExternVectorChanged);
-	BackendSignals->OnVectorArrayChangedBP.AddDynamic(this, &UCounterCounterOLinkAdapter::OnVectorArrayChanged);
-	BackendSignals->OnExternVectorArrayChangedBP.AddDynamic(this, &UCounterCounterOLinkAdapter::OnExternVectorArrayChanged);
-	BackendSignals->OnValueChangedSignalBP.AddDynamic(this, &UCounterCounterOLinkAdapter::OnValueChanged);
+	OnVectorChangedHandle = BackendSignals->OnVectorChanged.AddUObject(this, &UCounterCounterOLinkAdapter::OnVectorChanged);
+	OnExternVectorChangedHandle = BackendSignals->OnExternVectorChanged.AddUObject(this, &UCounterCounterOLinkAdapter::OnExternVectorChanged);
+	OnVectorArrayChangedHandle = BackendSignals->OnVectorArrayChanged.AddUObject(this, &UCounterCounterOLinkAdapter::OnVectorArrayChanged);
+	OnExternVectorArrayChangedHandle = BackendSignals->OnExternVectorArrayChanged.AddUObject(this, &UCounterCounterOLinkAdapter::OnExternVectorArrayChanged);
+	OnValueChangedSignalHandle = BackendSignals->OnValueChangedSignal.AddUObject(this, &UCounterCounterOLinkAdapter::OnValueChanged);
 
 	// update olink source with new backend
 	Source->setBackendService(InService);

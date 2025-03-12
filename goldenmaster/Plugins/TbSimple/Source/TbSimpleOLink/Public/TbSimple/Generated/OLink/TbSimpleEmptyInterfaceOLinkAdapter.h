@@ -55,6 +55,8 @@ public:
 private:
 	// signals
 
+	// delegate handles
+
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSimple|EmptyInterface")
 	TScriptInterface<ITbSimpleEmptyInterfaceInterface> BackendService;

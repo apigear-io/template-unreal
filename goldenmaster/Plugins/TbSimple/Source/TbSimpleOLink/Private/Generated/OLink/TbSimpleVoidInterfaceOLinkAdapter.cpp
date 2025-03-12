@@ -58,7 +58,11 @@ void UTbSimpleVoidInterfaceOLinkAdapter::setBackendService(TScriptInterface<ITbS
 	{
 		UTbSimpleVoidInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleVoidInterface"));
-		BackendSignals->OnSigVoidSignalBP.RemoveDynamic(this, &UTbSimpleVoidInterfaceOLinkAdapter::OnSigVoid);
+		if (OnSigVoidSignalHandle.IsValid())
+		{
+			BackendSignals->OnSigVoidSignal.Remove(OnSigVoidSignalHandle);
+			OnSigVoidSignalHandle.Reset();
+		}
 	}
 
 	// only set if interface is implemented
@@ -69,7 +73,7 @@ void UTbSimpleVoidInterfaceOLinkAdapter::setBackendService(TScriptInterface<ITbS
 	UTbSimpleVoidInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service TbSimpleVoidInterface"));
 	// connect property changed signals or simple events
-	BackendSignals->OnSigVoidSignalBP.AddDynamic(this, &UTbSimpleVoidInterfaceOLinkAdapter::OnSigVoid);
+	OnSigVoidSignalHandle = BackendSignals->OnSigVoidSignal.AddUObject(this, &UTbSimpleVoidInterfaceOLinkAdapter::OnSigVoid);
 
 	// update olink source with new backend
 	Source->setBackendService(InService);

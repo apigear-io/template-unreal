@@ -78,6 +78,16 @@ private:
 	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
 	void OnProp3Changed(ETbEnumEnum3 Prop3);
 
+	// delegate handles
+	FDelegateHandle OnProp0ChangedHandle;
+	FDelegateHandle OnProp1ChangedHandle;
+	FDelegateHandle OnProp2ChangedHandle;
+	FDelegateHandle OnProp3ChangedHandle;
+	FDelegateHandle OnSig0SignalHandle;
+	FDelegateHandle OnSig1SignalHandle;
+	FDelegateHandle OnSig2SignalHandle;
+	FDelegateHandle OnSig3SignalHandle;
+
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbEnum|EnumInterface")
 	TScriptInterface<ITbEnumEnumInterfaceInterface> BackendService;

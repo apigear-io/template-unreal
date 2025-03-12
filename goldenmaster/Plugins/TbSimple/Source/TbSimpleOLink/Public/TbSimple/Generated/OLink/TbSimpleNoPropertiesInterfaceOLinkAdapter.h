@@ -60,6 +60,10 @@ private:
 	UFUNCTION(Category = "ApiGear|TbSimple|NoPropertiesInterface", BlueprintInternalUseOnly)
 	void OnSigBool(bool bParamBool);
 
+	// delegate handles
+	FDelegateHandle OnSigVoidSignalHandle;
+	FDelegateHandle OnSigBoolSignalHandle;
+
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSimple|NoPropertiesInterface")
 	TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> BackendService;

@@ -78,6 +78,16 @@ private:
 	UFUNCTION(Category = "ApiGear|Testbed1|StructArrayInterface", BlueprintInternalUseOnly)
 	void OnPropStringChanged(const TArray<FTestbed1StructString>& PropString);
 
+	// delegate handles
+	FDelegateHandle OnPropBoolChangedHandle;
+	FDelegateHandle OnPropIntChangedHandle;
+	FDelegateHandle OnPropFloatChangedHandle;
+	FDelegateHandle OnPropStringChangedHandle;
+	FDelegateHandle OnSigBoolSignalHandle;
+	FDelegateHandle OnSigIntSignalHandle;
+	FDelegateHandle OnSigFloatSignalHandle;
+	FDelegateHandle OnSigStringSignalHandle;
+
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|Testbed1|StructArrayInterface")
 	TScriptInterface<ITestbed1StructArrayInterfaceInterface> BackendService;

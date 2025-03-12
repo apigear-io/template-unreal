@@ -57,6 +57,9 @@ private:
 	UFUNCTION(Category = "ApiGear|TbSimple|VoidInterface", BlueprintInternalUseOnly)
 	void OnSigVoid();
 
+	// delegate handles
+	FDelegateHandle OnSigVoidSignalHandle;
+
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSimple|VoidInterface")
 	TScriptInterface<ITbSimpleVoidInterfaceInterface> BackendService;

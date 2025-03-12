@@ -60,6 +60,14 @@ private:
 	void On{{Camel .Name}}Changed({{ueParam "" .}});
 {{- end }}
 
+	// delegate handles
+{{- range .Interface.Properties }}
+	FDelegateHandle On{{Camel .Name}}ChangedHandle;
+{{- end }}
+{{- range .Interface.Signals }}
+	FDelegateHandle On{{Camel .Name}}SignalHandle;
+{{- end }}
+
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "{{$Category}}")
 	TScriptInterface<I{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface> BackendService;
