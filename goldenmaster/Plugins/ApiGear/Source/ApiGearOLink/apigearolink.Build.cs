@@ -16,7 +16,6 @@ public class ApiGearOLink : ModuleRules
 
 		// Disable nlohmann::json exception handling
 		PublicDefinitions.Add("JSON_NOEXCEPTION=1");
-		PublicDefinitions.Add("OLINK_EXPORT=DLLIMPORT");
 
 		PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "Public"));
 		PrivateIncludePaths.Add(Path.Combine(ModuleDirectory, "Private"));
