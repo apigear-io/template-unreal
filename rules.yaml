@@ -352,8 +352,10 @@ features:
       - match: module
         prefix: "Plugins/{{Camel .Module.Name}}/"
         documents:
-          - source: "module/Source/moduleapi/Private/Generated/api/json.adapter.h.tpl"
+          - source: "module/Source/moduleapi/Public/module/Generated/api/json.adapter.h.tpl"
             target: "Source/{{Camel .Module.Name}}API/Public/{{Camel .Module.Name}}/Generated/api/{{Camel .Module.Name}}.json.adapter.h"
+          - source: "module/Source/moduleapi/Private/Generated/api/json.adapter.cpp.tpl"
+            target: "Source/{{Camel .Module.Name}}API/Private/{{Camel .Module.Name}}/Generated/api/{{Camel .Module.Name}}.json.adapter.cpp"
           - source: "module/Source/modulemonitor/Private/modulemonitor.cpp.tpl"
             target: "Source/{{Camel .Module.Name}}Monitor/Private/Generated/{{Camel .Module.Name}}Monitor.cpp"
           - source: "module/Source/modulemonitor/Public/modulemonitor.h.tpl"
@@ -380,8 +382,10 @@ features:
       - match: module
         prefix: "Plugins/{{Camel .Module.Name}}/"
         documents:
-          - source: "module/Source/moduleapi/Private/Generated/api/json.adapter.h.tpl"
+          - source: "module/Source/moduleapi/Public/module/Generated/api/json.adapter.h.tpl"
             target: "Source/{{Camel .Module.Name}}API/Public/{{Camel .Module.Name}}/Generated/api/{{Camel .Module.Name}}.json.adapter.h"
+          - source: "module/Source/moduleapi/Private/Generated/api/json.adapter.cpp.tpl"
+            target: "Source/{{Camel .Module.Name}}API/Private/{{Camel .Module.Name}}/Generated/api/{{Camel .Module.Name}}.json.adapter.cpp"
           - source: "module/Source/moduleolink/Private/moduleolink.cpp.tpl"
             target: "Source/{{Camel .Module.Name}}OLink/Private/Generated/{{Camel .Module.Name}}OLink.cpp"
           - source: "module/Source/moduleolink/Public/moduleolink.h.tpl"

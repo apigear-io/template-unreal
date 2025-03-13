@@ -10,23 +10,11 @@ namespace nlohmann
 {
 
 template <>
-struct EXTERNTYPESAPI_API adl_serializer<::FVector>
+struct EXTERNTYPESAPI_API adl_serializer<FVector>
 {
-	static ::FVector from_json(const json& j)
-	{
-		(void)j;
-		// Do deserialization here, e.g.
-		// return { j.at("xyz").get<Int>() };
-		return {};
-	}
+	static FVector from_json(const json& j);
 
-	static void to_json(json& j, ::FVector t)
-	{
-		(void)j;
-		(void)t;
-		// Do serialization here, e.g.
-		// j = t.xyz;
-	}
+	static void to_json(json& j, FVector t);
 };
 
 } // namespace nlohmann

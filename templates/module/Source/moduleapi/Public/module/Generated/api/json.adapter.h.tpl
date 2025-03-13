@@ -47,23 +47,11 @@ namespace nlohmann
 {{- $class:= $ext.Name }}
 
 template <>
-struct {{$API_MACRO}} adl_serializer<{{ $ext.NameSpace }}::{{$class}}>
+struct {{$API_MACRO}} adl_serializer<{{if $ext.NameSpace }}{{ $ext.NameSpace }}::{{end}}{{$class}}>
 {
-	static {{ $ext.NameSpace }}::{{$class}} from_json(const json& j)
-	{
-		(void)j;
-		// Do deserialization here, e.g.
-		// return { j.at("xyz").get<Int>() };
-		return {};
-	}
+	static {{if $ext.NameSpace }}{{ $ext.NameSpace }}::{{end}}{{$class}} from_json(const json& j);
 
-	static void to_json(json& j, {{ $ext.NameSpace }}::{{$class}} t)
-	{
-		(void)j;
-		(void)t;
-		// Do serialization here, e.g.
-		// j = t.xyz;
-	}
+	static void to_json(json& j, {{if $ext.NameSpace }}{{ $ext.NameSpace }}::{{end}}{{$class}} t);
 };
 {{- nl}}
 {{- end }}
