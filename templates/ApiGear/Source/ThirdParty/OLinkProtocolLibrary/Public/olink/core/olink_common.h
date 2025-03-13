@@ -24,18 +24,28 @@
 */
 #pragma once
 
-#ifndef OLINK_EXPORT
-#if defined _WIN32 || defined __CYGWIN__
-#ifdef __GNUC__
-#define OLINK_EXPORT __attribute__ ((dllexport))
-#else
-#define OLINK_EXPORT __declspec(dllexport)
-#endif
-#else
-#if __GNUC__ >= 4
-    #define OLINK_EXPORT __attribute__ ((visibility ("default")))
+#ifdef OLINK_LIBRARY_BUILD
+  #if defined _WIN32 || defined __CYGWIN__
+    #ifdef __GNUC__
+      #define OLINK_EXPORT __attribute__ ((dllexport))
+    #else
+      #define OLINK_EXPORT __declspec(dllexport)
+    #endif
+  #else
+    #if __GNUC__ >= 4
+      #define OLINK_EXPORT __attribute__ ((visibility ("default")))
+    #else
+      #define OLINK_EXPORT
+    #endif
+  #endif
+#else // OLINK_LIBRARY_BUILD
+  #if defined _WIN32 || defined __CYGWIN__
+    #ifdef __GNUC__
+      #define OLINK_EXPORT __attribute__ ((dllimport))
+    #else
+      #define OLINK_EXPORT __declspec(dllimport)
+    #endif
   #else
     #define OLINK_EXPORT
   #endif
-#endif
-#endif // OLINK_EXPORT
+#endif // OLINK_LIBRARY_BUILD
