@@ -45,7 +45,7 @@ public:
 
 	// properties
 	// operations
-	void FuncVoid_Implementation() override;
+	void FuncVoid() override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|VoidInterface")
 	void UseConnection(TScriptInterface<class IApiGearConnection> InConnection);

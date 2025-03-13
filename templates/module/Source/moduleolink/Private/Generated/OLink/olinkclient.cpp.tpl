@@ -176,13 +176,13 @@ void {{$Class}}::UseConnection(TScriptInterface<IApiGearConnection> InConnection
 {{- if len .Interface.Properties }}{{ nl }}{{ end }}
 {{- range $i, $e := .Interface.Properties }}
 {{- if $i }}{{nl}}{{ end }}
-{{ueReturn "" .}} {{$Class}}::Get{{Camel .Name}}_Implementation() const
+{{ueReturn "" .}} {{$Class}}::Get{{Camel .Name}}() const
 {
 	return {{ueVar "" .}};
 }
 
 {{- if not .IsReadOnly }}{{nl}}
-void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
+void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
 {
 	if (!m_sink->IsReady())
 	{
@@ -191,7 +191,7 @@ void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (Get{{Camel .Name}}_Implementation() == {{ueVar "In" .}})
+	if (Get{{Camel .Name}}() == {{ueVar "In" .}})
 	{
 		return;
 	}
@@ -229,7 +229,7 @@ void {{$Class}}::Set{{Camel .Name}}_Implementation({{ueParam "In" .}})
 */
 {{- end }}
 {{- $returnVal := (ueReturn "" .Return)}}
-{{$returnVal}} {{$Class}}::{{Camel .Name}}_Implementation({{ueParams "" .Params}})
+{{$returnVal}} {{$Class}}::{{Camel .Name}}({{ueParams "" .Params}})
 {
 	{{- if .Return.IsVoid }}
 	if (!m_sink->IsReady())
@@ -290,7 +290,7 @@ void {{$Class}}::applyState(const nlohmann::json& fields)
 	if (b{{Camel .Name}}Changed)
 	{
 		{{ueVar "" .}} = fields["{{.Name}}"].get<{{ueReturn "" .}}>();
-		Execute__GetSignals(this)->On{{Camel .Name}}Changed.Broadcast({{ueVar "" .}});
+		_GetSignals()->On{{Camel .Name}}Changed.Broadcast({{ueVar "" .}});
 	}
 {{- end }}
 }
@@ -304,7 +304,7 @@ void {{$Class}}::emitSignal(const std::string& signalName, const nlohmann::json&
 		{{- range $idx, $elem := .Params }}
 		{{ueParam "out" .}} = args[{{$idx}}].get<{{ueReturn "" .}}>();
 		{{- end }}
-		Execute__GetSignals(this)->On{{Camel .Name}}Signal.Broadcast({{ueVars "out" .Params}});
+		_GetSignals()->On{{Camel .Name}}Signal.Broadcast({{ueVars "out" .Params}});
 		return;
 	}
 {{- end }}

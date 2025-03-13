@@ -19,6 +19,7 @@ public class OLinkProtocolLibrary : ModuleRules
 
 		// Disable nlohmann::json exception handling
 		PublicDefinitions.Add("JSON_NOEXCEPTION=1");
+		PublicDefinitions.Add("OLINK_EXPORT=OLINKPROTOCOLLIBRARY_API");
 
 		PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "Public"));
 		PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "Public", "olink", "core"));

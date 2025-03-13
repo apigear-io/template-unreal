@@ -66,7 +66,7 @@ UAbstractTestbed2NestedStruct3Interface::UAbstractTestbed2NestedStruct3Interface
 	Testbed2NestedStruct3InterfaceSignals = NewObject<UTestbed2NestedStruct3InterfaceSignals>();
 }
 
-UTestbed2NestedStruct3InterfaceSignals* UAbstractTestbed2NestedStruct3Interface::_GetSignals_Implementation()
+UTestbed2NestedStruct3InterfaceSignals* UAbstractTestbed2NestedStruct3Interface::_GetSignals()
 {
 	if (!Testbed2NestedStruct3InterfaceSignals)
 	{
@@ -77,35 +77,35 @@ UTestbed2NestedStruct3InterfaceSignals* UAbstractTestbed2NestedStruct3Interface:
 
 FTestbed2NestedStruct1 UAbstractTestbed2NestedStruct3Interface::GetProp1_Private() const
 {
-	return Execute_GetProp1(this);
+	return GetProp1();
 };
 
 void UAbstractTestbed2NestedStruct3Interface::SetProp1_Private(const FTestbed2NestedStruct1& InProp1)
 {
-	Execute_SetProp1(this, InProp1);
+	SetProp1(InProp1);
 };
 
 FTestbed2NestedStruct2 UAbstractTestbed2NestedStruct3Interface::GetProp2_Private() const
 {
-	return Execute_GetProp2(this);
+	return GetProp2();
 };
 
 void UAbstractTestbed2NestedStruct3Interface::SetProp2_Private(const FTestbed2NestedStruct2& InProp2)
 {
-	Execute_SetProp2(this, InProp2);
+	SetProp2(InProp2);
 };
 
 FTestbed2NestedStruct3 UAbstractTestbed2NestedStruct3Interface::GetProp3_Private() const
 {
-	return Execute_GetProp3(this);
+	return GetProp3();
 };
 
 void UAbstractTestbed2NestedStruct3Interface::SetProp3_Private(const FTestbed2NestedStruct3& InProp3)
 {
-	Execute_SetProp3(this, InProp3);
+	SetProp3(InProp3);
 };
 
-void UAbstractTestbed2NestedStruct3Interface::Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1)
+void UAbstractTestbed2NestedStruct3Interface::Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
@@ -125,7 +125,7 @@ void UAbstractTestbed2NestedStruct3Interface::Func1Async_Implementation(UObject*
 		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
 		if (this->GetClass()->IsInBlueprint())
 		{
-			Result = Execute_Func1(this, Param1);
+			Result = Func1(Param1);
 			CompletionAction->Cancel();
 		}
 		else
@@ -133,14 +133,14 @@ void UAbstractTestbed2NestedStruct3Interface::Func1Async_Implementation(UObject*
 			Async(EAsyncExecution::ThreadPool,
 				[Param1, this, &Result, CompletionAction]()
 				{
-				Result = Execute_Func1(this, Param1);
+				Result = Func1(Param1);
 				CompletionAction->Cancel();
 			});
 		}
 	}
 }
 
-void UAbstractTestbed2NestedStruct3Interface::Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
+void UAbstractTestbed2NestedStruct3Interface::Func2Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
@@ -160,7 +160,7 @@ void UAbstractTestbed2NestedStruct3Interface::Func2Async_Implementation(UObject*
 		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
 		if (this->GetClass()->IsInBlueprint())
 		{
-			Result = Execute_Func2(this, Param1, Param2);
+			Result = Func2(Param1, Param2);
 			CompletionAction->Cancel();
 		}
 		else
@@ -168,14 +168,14 @@ void UAbstractTestbed2NestedStruct3Interface::Func2Async_Implementation(UObject*
 			Async(EAsyncExecution::ThreadPool,
 				[Param1, Param2, this, &Result, CompletionAction]()
 				{
-				Result = Execute_Func2(this, Param1, Param2);
+				Result = Func2(Param1, Param2);
 				CompletionAction->Cancel();
 			});
 		}
 	}
 }
 
-void UAbstractTestbed2NestedStruct3Interface::Func3Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3)
+void UAbstractTestbed2NestedStruct3Interface::Func3Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
@@ -195,7 +195,7 @@ void UAbstractTestbed2NestedStruct3Interface::Func3Async_Implementation(UObject*
 		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
 		if (this->GetClass()->IsInBlueprint())
 		{
-			Result = Execute_Func3(this, Param1, Param2, Param3);
+			Result = Func3(Param1, Param2, Param3);
 			CompletionAction->Cancel();
 		}
 		else
@@ -203,7 +203,7 @@ void UAbstractTestbed2NestedStruct3Interface::Func3Async_Implementation(UObject*
 			Async(EAsyncExecution::ThreadPool,
 				[Param1, Param2, Param3, this, &Result, CompletionAction]()
 				{
-				Result = Execute_Func3(this, Param1, Param2, Param3);
+				Result = Func3(Param1, Param2, Param3);
 				CompletionAction->Cancel();
 			});
 		}

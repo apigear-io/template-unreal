@@ -42,18 +42,18 @@ public:
 	void Deinitialize() override;
 
 	// properties
-	FTbSame2Struct2 GetProp1_Implementation() const override;
+	FTbSame2Struct2 GetProp1() const override;
 
-	void SetProp1_Implementation(const FTbSame2Struct2& InProp1) override;
+	void SetProp1(const FTbSame2Struct2& InProp1) override;
 
-	FTbSame2Struct2 GetProp2_Implementation() const override;
+	FTbSame2Struct2 GetProp2() const override;
 
-	void SetProp2_Implementation(const FTbSame2Struct2& InProp2) override;
+	void SetProp2(const FTbSame2Struct2& InProp2) override;
 
 	// operations
-	FTbSame2Struct1 Func1_Implementation(const FTbSame2Struct1& Param1) override;
+	FTbSame2Struct1 Func1(const FTbSame2Struct1& Param1) override;
 
-	FTbSame2Struct1 Func2_Implementation(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2) override;
+	FTbSame2Struct1 Func2(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2) override;
 
 private:
 	/** The connection to the service backend. */

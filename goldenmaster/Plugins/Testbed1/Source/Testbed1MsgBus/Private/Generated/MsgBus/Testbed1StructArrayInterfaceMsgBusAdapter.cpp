@@ -114,7 +114,7 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::_setBackendService(TScriptInter
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		UTestbed1StructArrayInterfaceSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+		UTestbed1StructArrayInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service Testbed1StructArrayInterface"));
 		BackendSignals->OnPropBoolChanged.RemoveDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropBoolChanged);
 		BackendSignals->OnPropIntChanged.RemoveDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropIntChanged);
@@ -131,7 +131,7 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::_setBackendService(TScriptInter
 
 	// subscribe to new backend
 	BackendService = InService;
-	UTestbed1StructArrayInterfaceSignals* BackendSignals = BackendService->Execute__GetSignals(BackendService.GetObject());
+	UTestbed1StructArrayInterfaceSignals* BackendSignals = BackendService->_GetSignals();
 	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service Testbed1StructArrayInterface"));
 	// connect property changed signals or simple events
 	BackendSignals->OnPropBoolChanged.AddDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropBoolChanged);
@@ -150,10 +150,10 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::OnNewClientDiscovered(const FTe
 
 	auto msg = new FTestbed1StructArrayInterfaceInitMessage();
 	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
-	msg->PropBool = BackendService->Execute_GetPropBool(BackendService.GetObject());
-	msg->PropInt = BackendService->Execute_GetPropInt(BackendService.GetObject());
-	msg->PropFloat = BackendService->Execute_GetPropFloat(BackendService.GetObject());
-	msg->PropString = BackendService->Execute_GetPropString(BackendService.GetObject());
+	msg->PropBool = BackendService->GetPropBool();
+	msg->PropInt = BackendService->GetPropInt();
+	msg->PropFloat = BackendService->GetPropFloat();
+	msg->PropString = BackendService->GetPropString();
 
 	if (Testbed1StructArrayInterfaceMsgBusEndpoint.IsValid())
 	{
@@ -234,7 +234,7 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::OnFuncBoolRequest(const FTestbe
 {
 	auto msg = new FTestbed1StructArrayInterfaceFuncBoolReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
-	msg->Result = BackendService->Execute_FuncBool(BackendService.GetObject(), InMessage.ParamBool);
+	msg->Result = BackendService->FuncBool(InMessage.ParamBool);
 
 	if (Testbed1StructArrayInterfaceMsgBusEndpoint.IsValid())
 	{
@@ -250,7 +250,7 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::OnFuncIntRequest(const FTestbed
 {
 	auto msg = new FTestbed1StructArrayInterfaceFuncIntReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
-	msg->Result = BackendService->Execute_FuncInt(BackendService.GetObject(), InMessage.ParamInt);
+	msg->Result = BackendService->FuncInt(InMessage.ParamInt);
 
 	if (Testbed1StructArrayInterfaceMsgBusEndpoint.IsValid())
 	{
@@ -266,7 +266,7 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::OnFuncFloatRequest(const FTestb
 {
 	auto msg = new FTestbed1StructArrayInterfaceFuncFloatReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
-	msg->Result = BackendService->Execute_FuncFloat(BackendService.GetObject(), InMessage.ParamFloat);
+	msg->Result = BackendService->FuncFloat(InMessage.ParamFloat);
 
 	if (Testbed1StructArrayInterfaceMsgBusEndpoint.IsValid())
 	{
@@ -282,7 +282,7 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::OnFuncStringRequest(const FTest
 {
 	auto msg = new FTestbed1StructArrayInterfaceFuncStringReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
-	msg->Result = BackendService->Execute_FuncString(BackendService.GetObject(), InMessage.ParamString);
+	msg->Result = BackendService->FuncString(InMessage.ParamString);
 
 	if (Testbed1StructArrayInterfaceMsgBusEndpoint.IsValid())
 	{
@@ -364,7 +364,7 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigString(const TArray<FTestb
 
 void UTestbed1StructArrayInterfaceMsgBusAdapter::OnSetPropBoolRequest(const FTestbed1StructArrayInterfaceSetPropBoolRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
-	BackendService->Execute_SetPropBool(BackendService.GetObject(), InMessage.PropBool);
+	BackendService->SetPropBool(InMessage.PropBool);
 }
 
 void UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropBoolChanged(const TArray<FTestbed1StructBool>& InPropBool)
@@ -387,7 +387,7 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropBoolChanged(const TArray<
 
 void UTestbed1StructArrayInterfaceMsgBusAdapter::OnSetPropIntRequest(const FTestbed1StructArrayInterfaceSetPropIntRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
-	BackendService->Execute_SetPropInt(BackendService.GetObject(), InMessage.PropInt);
+	BackendService->SetPropInt(InMessage.PropInt);
 }
 
 void UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropIntChanged(const TArray<FTestbed1StructInt>& InPropInt)
@@ -410,7 +410,7 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropIntChanged(const TArray<F
 
 void UTestbed1StructArrayInterfaceMsgBusAdapter::OnSetPropFloatRequest(const FTestbed1StructArrayInterfaceSetPropFloatRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
-	BackendService->Execute_SetPropFloat(BackendService.GetObject(), InMessage.PropFloat);
+	BackendService->SetPropFloat(InMessage.PropFloat);
 }
 
 void UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropFloatChanged(const TArray<FTestbed1StructFloat>& InPropFloat)
@@ -433,7 +433,7 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropFloatChanged(const TArray
 
 void UTestbed1StructArrayInterfaceMsgBusAdapter::OnSetPropStringRequest(const FTestbed1StructArrayInterfaceSetPropStringRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
-	BackendService->Execute_SetPropString(BackendService.GetObject(), InMessage.PropString);
+	BackendService->SetPropString(InMessage.PropString);
 }
 
 void UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropStringChanged(const TArray<FTestbed1StructString>& InPropString)

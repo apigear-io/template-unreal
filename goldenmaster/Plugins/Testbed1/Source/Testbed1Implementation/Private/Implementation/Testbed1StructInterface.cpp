@@ -18,81 +18,81 @@ limitations under the License.
 #include "Testbed1/Implementation/Testbed1StructInterface.h"
 
 UTestbed1StructInterface::~UTestbed1StructInterface() = default;
-FTestbed1StructBool UTestbed1StructInterface::GetPropBool_Implementation() const
+FTestbed1StructBool UTestbed1StructInterface::GetPropBool() const
 {
 	return PropBool;
 }
 
-void UTestbed1StructInterface::SetPropBool_Implementation(const FTestbed1StructBool& InPropBool)
+void UTestbed1StructInterface::SetPropBool(const FTestbed1StructBool& InPropBool)
 {
 	if (PropBool != InPropBool)
 	{
 		PropBool = InPropBool;
-		Execute__GetSignals(this)->OnPropBoolChanged.Broadcast(PropBool);
+		_GetSignals()->OnPropBoolChanged.Broadcast(PropBool);
 	}
 }
-FTestbed1StructInt UTestbed1StructInterface::GetPropInt_Implementation() const
+FTestbed1StructInt UTestbed1StructInterface::GetPropInt() const
 {
 	return PropInt;
 }
 
-void UTestbed1StructInterface::SetPropInt_Implementation(const FTestbed1StructInt& InPropInt)
+void UTestbed1StructInterface::SetPropInt(const FTestbed1StructInt& InPropInt)
 {
 	if (PropInt != InPropInt)
 	{
 		PropInt = InPropInt;
-		Execute__GetSignals(this)->OnPropIntChanged.Broadcast(PropInt);
+		_GetSignals()->OnPropIntChanged.Broadcast(PropInt);
 	}
 }
-FTestbed1StructFloat UTestbed1StructInterface::GetPropFloat_Implementation() const
+FTestbed1StructFloat UTestbed1StructInterface::GetPropFloat() const
 {
 	return PropFloat;
 }
 
-void UTestbed1StructInterface::SetPropFloat_Implementation(const FTestbed1StructFloat& InPropFloat)
+void UTestbed1StructInterface::SetPropFloat(const FTestbed1StructFloat& InPropFloat)
 {
 	if (PropFloat != InPropFloat)
 	{
 		PropFloat = InPropFloat;
-		Execute__GetSignals(this)->OnPropFloatChanged.Broadcast(PropFloat);
+		_GetSignals()->OnPropFloatChanged.Broadcast(PropFloat);
 	}
 }
-FTestbed1StructString UTestbed1StructInterface::GetPropString_Implementation() const
+FTestbed1StructString UTestbed1StructInterface::GetPropString() const
 {
 	return PropString;
 }
 
-void UTestbed1StructInterface::SetPropString_Implementation(const FTestbed1StructString& InPropString)
+void UTestbed1StructInterface::SetPropString(const FTestbed1StructString& InPropString)
 {
 	if (PropString != InPropString)
 	{
 		PropString = InPropString;
-		Execute__GetSignals(this)->OnPropStringChanged.Broadcast(PropString);
+		_GetSignals()->OnPropStringChanged.Broadcast(PropString);
 	}
 }
 
-FTestbed1StructBool UTestbed1StructInterface::FuncBool_Implementation(const FTestbed1StructBool& ParamBool)
+FTestbed1StructBool UTestbed1StructInterface::FuncBool(const FTestbed1StructBool& ParamBool)
 {
 	(void)ParamBool;
 	// do business logic here
 	return FTestbed1StructBool();
 }
 
-FTestbed1StructInt UTestbed1StructInterface::FuncInt_Implementation(const FTestbed1StructInt& ParamInt)
+FTestbed1StructInt UTestbed1StructInterface::FuncInt(const FTestbed1StructInt& ParamInt)
 {
 	(void)ParamInt;
 	// do business logic here
 	return FTestbed1StructInt();
 }
 
-FTestbed1StructFloat UTestbed1StructInterface::FuncFloat_Implementation(const FTestbed1StructFloat& ParamFloat)
+FTestbed1StructFloat UTestbed1StructInterface::FuncFloat(const FTestbed1StructFloat& ParamFloat)
 {
 	(void)ParamFloat;
 	// do business logic here
 	return FTestbed1StructFloat();
 }
 
-FTestbed1StructString UTestbed1StructInterface::FuncString_Implementation(const FTestbed1StructString& ParamString)
+FTestbed1StructString UTestbed1StructInterface::FuncString(const FTestbed1StructString& ParamString)
 {
 	(void)ParamString;
 	// do business logic here

@@ -66,7 +66,7 @@ UAbstractTbEnumEnumInterface::UAbstractTbEnumEnumInterface()
 	TbEnumEnumInterfaceSignals = NewObject<UTbEnumEnumInterfaceSignals>();
 }
 
-UTbEnumEnumInterfaceSignals* UAbstractTbEnumEnumInterface::_GetSignals_Implementation()
+UTbEnumEnumInterfaceSignals* UAbstractTbEnumEnumInterface::_GetSignals()
 {
 	if (!TbEnumEnumInterfaceSignals)
 	{
@@ -77,45 +77,45 @@ UTbEnumEnumInterfaceSignals* UAbstractTbEnumEnumInterface::_GetSignals_Implement
 
 ETbEnumEnum0 UAbstractTbEnumEnumInterface::GetProp0_Private() const
 {
-	return Execute_GetProp0(this);
+	return GetProp0();
 };
 
 void UAbstractTbEnumEnumInterface::SetProp0_Private(ETbEnumEnum0 InProp0)
 {
-	Execute_SetProp0(this, InProp0);
+	SetProp0(InProp0);
 };
 
 ETbEnumEnum1 UAbstractTbEnumEnumInterface::GetProp1_Private() const
 {
-	return Execute_GetProp1(this);
+	return GetProp1();
 };
 
 void UAbstractTbEnumEnumInterface::SetProp1_Private(ETbEnumEnum1 InProp1)
 {
-	Execute_SetProp1(this, InProp1);
+	SetProp1(InProp1);
 };
 
 ETbEnumEnum2 UAbstractTbEnumEnumInterface::GetProp2_Private() const
 {
-	return Execute_GetProp2(this);
+	return GetProp2();
 };
 
 void UAbstractTbEnumEnumInterface::SetProp2_Private(ETbEnumEnum2 InProp2)
 {
-	Execute_SetProp2(this, InProp2);
+	SetProp2(InProp2);
 };
 
 ETbEnumEnum3 UAbstractTbEnumEnumInterface::GetProp3_Private() const
 {
-	return Execute_GetProp3(this);
+	return GetProp3();
 };
 
 void UAbstractTbEnumEnumInterface::SetProp3_Private(ETbEnumEnum3 InProp3)
 {
-	Execute_SetProp3(this, InProp3);
+	SetProp3(InProp3);
 };
 
-void UAbstractTbEnumEnumInterface::Func0Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum0& Result, ETbEnumEnum0 Param0)
+void UAbstractTbEnumEnumInterface::Func0Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum0& Result, ETbEnumEnum0 Param0)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
@@ -135,7 +135,7 @@ void UAbstractTbEnumEnumInterface::Func0Async_Implementation(UObject* WorldConte
 		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
 		if (this->GetClass()->IsInBlueprint())
 		{
-			Result = Execute_Func0(this, Param0);
+			Result = Func0(Param0);
 			CompletionAction->Cancel();
 		}
 		else
@@ -143,14 +143,14 @@ void UAbstractTbEnumEnumInterface::Func0Async_Implementation(UObject* WorldConte
 			Async(EAsyncExecution::ThreadPool,
 				[Param0, this, &Result, CompletionAction]()
 				{
-				Result = Execute_Func0(this, Param0);
+				Result = Func0(Param0);
 				CompletionAction->Cancel();
 			});
 		}
 	}
 }
 
-void UAbstractTbEnumEnumInterface::Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum1& Result, ETbEnumEnum1 Param1)
+void UAbstractTbEnumEnumInterface::Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum1& Result, ETbEnumEnum1 Param1)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
@@ -170,7 +170,7 @@ void UAbstractTbEnumEnumInterface::Func1Async_Implementation(UObject* WorldConte
 		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
 		if (this->GetClass()->IsInBlueprint())
 		{
-			Result = Execute_Func1(this, Param1);
+			Result = Func1(Param1);
 			CompletionAction->Cancel();
 		}
 		else
@@ -178,14 +178,14 @@ void UAbstractTbEnumEnumInterface::Func1Async_Implementation(UObject* WorldConte
 			Async(EAsyncExecution::ThreadPool,
 				[Param1, this, &Result, CompletionAction]()
 				{
-				Result = Execute_Func1(this, Param1);
+				Result = Func1(Param1);
 				CompletionAction->Cancel();
 			});
 		}
 	}
 }
 
-void UAbstractTbEnumEnumInterface::Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum2& Result, ETbEnumEnum2 Param2)
+void UAbstractTbEnumEnumInterface::Func2Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum2& Result, ETbEnumEnum2 Param2)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
@@ -205,7 +205,7 @@ void UAbstractTbEnumEnumInterface::Func2Async_Implementation(UObject* WorldConte
 		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
 		if (this->GetClass()->IsInBlueprint())
 		{
-			Result = Execute_Func2(this, Param2);
+			Result = Func2(Param2);
 			CompletionAction->Cancel();
 		}
 		else
@@ -213,14 +213,14 @@ void UAbstractTbEnumEnumInterface::Func2Async_Implementation(UObject* WorldConte
 			Async(EAsyncExecution::ThreadPool,
 				[Param2, this, &Result, CompletionAction]()
 				{
-				Result = Execute_Func2(this, Param2);
+				Result = Func2(Param2);
 				CompletionAction->Cancel();
 			});
 		}
 	}
 }
 
-void UAbstractTbEnumEnumInterface::Func3Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum3& Result, ETbEnumEnum3 Param3)
+void UAbstractTbEnumEnumInterface::Func3Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum3& Result, ETbEnumEnum3 Param3)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
@@ -240,7 +240,7 @@ void UAbstractTbEnumEnumInterface::Func3Async_Implementation(UObject* WorldConte
 		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
 		if (this->GetClass()->IsInBlueprint())
 		{
-			Result = Execute_Func3(this, Param3);
+			Result = Func3(Param3);
 			CompletionAction->Cancel();
 		}
 		else
@@ -248,7 +248,7 @@ void UAbstractTbEnumEnumInterface::Func3Async_Implementation(UObject* WorldConte
 			Async(EAsyncExecution::ThreadPool,
 				[Param3, this, &Result, CompletionAction]()
 				{
-				Result = Execute_Func3(this, Param3);
+				Result = Func3(Param3);
 				CompletionAction->Cancel();
 			});
 		}

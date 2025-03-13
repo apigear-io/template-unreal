@@ -185,21 +185,21 @@ void UTestbed2NestedStruct3InterfaceMsgBusClient::OnConnectionInit(const FTestbe
 	if (bProp1Changed)
 	{
 		Prop1 = InMessage.Prop1;
-		Execute__GetSignals(this)->OnProp1Changed.Broadcast(Prop1);
+		_GetSignals()->OnProp1Changed.Broadcast(Prop1);
 	}
 
 	const bool bProp2Changed = InMessage.Prop2 != Prop2;
 	if (bProp2Changed)
 	{
 		Prop2 = InMessage.Prop2;
-		Execute__GetSignals(this)->OnProp2Changed.Broadcast(Prop2);
+		_GetSignals()->OnProp2Changed.Broadcast(Prop2);
 	}
 
 	const bool bProp3Changed = InMessage.Prop3 != Prop3;
 	if (bProp3Changed)
 	{
 		Prop3 = InMessage.Prop3;
-		Execute__GetSignals(this)->OnProp3Changed.Broadcast(Prop3);
+		_GetSignals()->OnProp3Changed.Broadcast(Prop3);
 	}
 
 	_ConnectionStatusChanged.Broadcast(true);
@@ -291,12 +291,12 @@ void UTestbed2NestedStruct3InterfaceMsgBusClient::OnServiceClosedConnection(cons
 	_ConnectionStatusChanged.Broadcast(false);
 }
 
-FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceMsgBusClient::GetProp1_Implementation() const
+FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceMsgBusClient::GetProp1() const
 {
 	return Prop1;
 }
 
-void UTestbed2NestedStruct3InterfaceMsgBusClient::SetProp1_Implementation(const FTestbed2NestedStruct1& InProp1)
+void UTestbed2NestedStruct3InterfaceMsgBusClient::SetProp1(const FTestbed2NestedStruct1& InProp1)
 {
 	if (!_IsConnected())
 	{
@@ -305,7 +305,7 @@ void UTestbed2NestedStruct3InterfaceMsgBusClient::SetProp1_Implementation(const 
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetProp1_Implementation() == InProp1)
+	if (GetProp1() == InProp1)
 	{
 		return;
 	}
@@ -331,12 +331,12 @@ void UTestbed2NestedStruct3InterfaceMsgBusClient::SetProp1_Implementation(const 
 	_SentData->Prop1 = InProp1;
 }
 
-FTestbed2NestedStruct2 UTestbed2NestedStruct3InterfaceMsgBusClient::GetProp2_Implementation() const
+FTestbed2NestedStruct2 UTestbed2NestedStruct3InterfaceMsgBusClient::GetProp2() const
 {
 	return Prop2;
 }
 
-void UTestbed2NestedStruct3InterfaceMsgBusClient::SetProp2_Implementation(const FTestbed2NestedStruct2& InProp2)
+void UTestbed2NestedStruct3InterfaceMsgBusClient::SetProp2(const FTestbed2NestedStruct2& InProp2)
 {
 	if (!_IsConnected())
 	{
@@ -345,7 +345,7 @@ void UTestbed2NestedStruct3InterfaceMsgBusClient::SetProp2_Implementation(const 
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetProp2_Implementation() == InProp2)
+	if (GetProp2() == InProp2)
 	{
 		return;
 	}
@@ -371,12 +371,12 @@ void UTestbed2NestedStruct3InterfaceMsgBusClient::SetProp2_Implementation(const 
 	_SentData->Prop2 = InProp2;
 }
 
-FTestbed2NestedStruct3 UTestbed2NestedStruct3InterfaceMsgBusClient::GetProp3_Implementation() const
+FTestbed2NestedStruct3 UTestbed2NestedStruct3InterfaceMsgBusClient::GetProp3() const
 {
 	return Prop3;
 }
 
-void UTestbed2NestedStruct3InterfaceMsgBusClient::SetProp3_Implementation(const FTestbed2NestedStruct3& InProp3)
+void UTestbed2NestedStruct3InterfaceMsgBusClient::SetProp3(const FTestbed2NestedStruct3& InProp3)
 {
 	if (!_IsConnected())
 	{
@@ -385,7 +385,7 @@ void UTestbed2NestedStruct3InterfaceMsgBusClient::SetProp3_Implementation(const 
 	}
 
 	// only send change requests if the value changed -> reduce network load
-	if (GetProp3_Implementation() == InProp3)
+	if (GetProp3() == InProp3)
 	{
 		return;
 	}
@@ -411,7 +411,7 @@ void UTestbed2NestedStruct3InterfaceMsgBusClient::SetProp3_Implementation(const 
 	_SentData->Prop3 = InProp3;
 }
 
-FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceMsgBusClient::Func1_Implementation(const FTestbed2NestedStruct1& InParam1)
+FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceMsgBusClient::Func1(const FTestbed2NestedStruct1& InParam1)
 {
 	if (!_IsConnected())
 	{
@@ -440,7 +440,7 @@ void UTestbed2NestedStruct3InterfaceMsgBusClient::OnFunc1Reply(const FTestbed2Ne
 	FulfillPromise(InMessage.ResponseId, InMessage.Result);
 }
 
-FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceMsgBusClient::Func2_Implementation(const FTestbed2NestedStruct1& InParam1, const FTestbed2NestedStruct2& InParam2)
+FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceMsgBusClient::Func2(const FTestbed2NestedStruct1& InParam1, const FTestbed2NestedStruct2& InParam2)
 {
 	if (!_IsConnected())
 	{
@@ -470,7 +470,7 @@ void UTestbed2NestedStruct3InterfaceMsgBusClient::OnFunc2Reply(const FTestbed2Ne
 	FulfillPromise(InMessage.ResponseId, InMessage.Result);
 }
 
-FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceMsgBusClient::Func3_Implementation(const FTestbed2NestedStruct1& InParam1, const FTestbed2NestedStruct2& InParam2, const FTestbed2NestedStruct3& InParam3)
+FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceMsgBusClient::Func3(const FTestbed2NestedStruct1& InParam1, const FTestbed2NestedStruct2& InParam2, const FTestbed2NestedStruct3& InParam3)
 {
 	if (!_IsConnected())
 	{
@@ -509,7 +509,7 @@ void UTestbed2NestedStruct3InterfaceMsgBusClient::OnSig1(const FTestbed2NestedSt
 		return;
 	}
 
-	Execute__GetSignals(this)->OnSig1Signal.Broadcast(InMessage.Param1);
+	_GetSignals()->OnSig1Signal.Broadcast(InMessage.Param1);
 	return;
 }
 
@@ -521,7 +521,7 @@ void UTestbed2NestedStruct3InterfaceMsgBusClient::OnSig2(const FTestbed2NestedSt
 		return;
 	}
 
-	Execute__GetSignals(this)->OnSig2Signal.Broadcast(InMessage.Param1, InMessage.Param2);
+	_GetSignals()->OnSig2Signal.Broadcast(InMessage.Param1, InMessage.Param2);
 	return;
 }
 
@@ -533,7 +533,7 @@ void UTestbed2NestedStruct3InterfaceMsgBusClient::OnSig3(const FTestbed2NestedSt
 		return;
 	}
 
-	Execute__GetSignals(this)->OnSig3Signal.Broadcast(InMessage.Param1, InMessage.Param2, InMessage.Param3);
+	_GetSignals()->OnSig3Signal.Broadcast(InMessage.Param1, InMessage.Param2, InMessage.Param3);
 	return;
 }
 
@@ -549,7 +549,7 @@ void UTestbed2NestedStruct3InterfaceMsgBusClient::OnProp1Changed(const FTestbed2
 	if (bProp1Changed)
 	{
 		Prop1 = InMessage.Prop1;
-		Execute__GetSignals(this)->OnProp1Changed.Broadcast(Prop1);
+		_GetSignals()->OnProp1Changed.Broadcast(Prop1);
 	}
 }
 
@@ -565,7 +565,7 @@ void UTestbed2NestedStruct3InterfaceMsgBusClient::OnProp2Changed(const FTestbed2
 	if (bProp2Changed)
 	{
 		Prop2 = InMessage.Prop2;
-		Execute__GetSignals(this)->OnProp2Changed.Broadcast(Prop2);
+		_GetSignals()->OnProp2Changed.Broadcast(Prop2);
 	}
 }
 
@@ -581,7 +581,7 @@ void UTestbed2NestedStruct3InterfaceMsgBusClient::OnProp3Changed(const FTestbed2
 	if (bProp3Changed)
 	{
 		Prop3 = InMessage.Prop3;
-		Execute__GetSignals(this)->OnProp3Changed.Broadcast(Prop3);
+		_GetSignals()->OnProp3Changed.Broadcast(Prop3);
 	}
 }
 

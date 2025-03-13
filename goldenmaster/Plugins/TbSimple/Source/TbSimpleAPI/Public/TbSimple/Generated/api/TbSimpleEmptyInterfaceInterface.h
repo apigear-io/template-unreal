@@ -23,7 +23,8 @@ limitations under the License.
 /**
  * Interface UTbSimpleEmptyInterfaceInterface only for Unreal Engine's reflection system
  */
-UINTERFACE(Blueprintable, MinimalAPI)
+// Note: meta=(CannotImplementInterfaceInBlueprint) is equal to NotBlueprintable and is only needed for UE 4.27
+UINTERFACE(NotBlueprintable, MinimalAPI, meta = (CannotImplementInterfaceInBlueprint))
 class UTbSimpleEmptyInterfaceInterface : public UInterface
 {
 	GENERATED_BODY()
