@@ -170,7 +170,7 @@ void UTestbed1StructInterfaceMsgBusClient::OnConnectionInit(const FTestbed1Struc
 	Stats.CurrentRTT_MS = 0.0f;
 	Stats.AverageRTT_MS = 0.0f;
 	Stats.MaxRTT_MS = 0.0f;
-	Stats.MinRTT_MS = 0.0f;
+	Stats.MinRTT_MS = 10000.0f;
 
 	const bool b_ClientPingIntervalMSChanged = InMessage._ClientPingIntervalMS != _HeartbeatIntervalMS;
 	if (b_ClientPingIntervalMSChanged)
