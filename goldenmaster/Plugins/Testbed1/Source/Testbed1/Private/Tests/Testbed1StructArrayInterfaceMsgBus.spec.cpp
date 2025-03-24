@@ -20,9 +20,6 @@ limitations under the License.
 #include "Testbed1StructArrayInterfaceMsgBusFixture.h"
 #include "Generated/MsgBus/Testbed1StructArrayInterfaceMsgBusClient.h"
 #include "Generated/MsgBus/Testbed1StructArrayInterfaceMsgBusAdapter.h"
-#include "HAL/Platform.h"
-
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
@@ -309,4 +306,3 @@ void UTestbed1StructArrayInterfaceMsgBusSpec::SigStringSignalCb(const TArray<FTe
 	testDoneDelegate.Execute();
 }
 #endif // WITH_DEV_AUTOMATION_TESTS
-#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

@@ -20,9 +20,6 @@ limitations under the License.
 #include "TbSimpleEmptyInterfaceMsgBusFixture.h"
 #include "Generated/MsgBus/TbSimpleEmptyInterfaceMsgBusClient.h"
 #include "Generated/MsgBus/TbSimpleEmptyInterfaceMsgBusAdapter.h"
-#include "HAL/Platform.h"
-
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
@@ -69,4 +66,3 @@ void UTbSimpleEmptyInterfaceMsgBusSpec::Define()
 	});
 }
 #endif // WITH_DEV_AUTOMATION_TESTS
-#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

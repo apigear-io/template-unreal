@@ -20,7 +20,7 @@ limitations under the License.
 #include "CounterTestsCommon.h"
 #include "CounterCounterMsgBusFixture.h"
 
-#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#if WITH_DEV_AUTOMATION_TESTS
 
 BEGIN_DEFINE_SPEC(UCounterCounterMsgBusSpec, "Counter.Counter.MsgBus", CounterTestFilterMask);
 
@@ -36,4 +36,4 @@ FDoneDelegate testDoneDelegate;
 friend class UCounterCounterMsgBusHelper;
 END_DEFINE_SPEC(UCounterCounterMsgBusSpec);
 
-#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#endif // WITH_DEV_AUTOMATION_TESTS

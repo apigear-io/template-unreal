@@ -57,7 +57,7 @@ protected:
 	UTestbed2ManyParamInterfaceMsgBusSpec* Spec;
 };
 
-#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#if WITH_DEV_AUTOMATION_TESTS
 
 class FTestbed2ManyParamInterfaceMsgBusFixture
 {
@@ -78,4 +78,4 @@ private:
 	TSoftObjectPtr<UTestbed2ManyParamInterfaceMsgBusHelper> Helper;
 };
 
-#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#endif // WITH_DEV_AUTOMATION_TESTS

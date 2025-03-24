@@ -20,7 +20,7 @@ limitations under the License.
 #include "TbSimpleTestsCommon.h"
 #include "TbSimpleNoOperationsInterfaceMsgBusFixture.h"
 
-#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#if WITH_DEV_AUTOMATION_TESTS
 
 BEGIN_DEFINE_SPEC(UTbSimpleNoOperationsInterfaceMsgBusSpec, "TbSimple.NoOperationsInterface.MsgBus", TbSimpleTestFilterMask);
 
@@ -37,4 +37,4 @@ FDoneDelegate testDoneDelegate;
 friend class UTbSimpleNoOperationsInterfaceMsgBusHelper;
 END_DEFINE_SPEC(UTbSimpleNoOperationsInterfaceMsgBusSpec);
 
-#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#endif // WITH_DEV_AUTOMATION_TESTS

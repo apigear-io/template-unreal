@@ -21,7 +21,7 @@ limitations under the License.
 #include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
 
-#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#if WITH_DEV_AUTOMATION_TESTS
 
 UTbSame1SameEnum2InterfaceMsgBusHelper::~UTbSame1SameEnum2InterfaceMsgBusHelper()
 {
@@ -117,7 +117,7 @@ void FTbSame1SameEnum2InterfaceMsgBusFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
-#else  // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#else  // WITH_DEV_AUTOMATION_TESTS
 // create empty implementation in case we do not want to do automated testing
 UTbSame1SameEnum2InterfaceMsgBusHelper::~UTbSame1SameEnum2InterfaceMsgBusHelper()
 {
@@ -152,4 +152,4 @@ void UTbSame1SameEnum2InterfaceMsgBusHelper::_ConnectionStatusChangedCb(bool bCo
 {
 	(void)bConnected;
 }
-#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#endif // WITH_DEV_AUTOMATION_TESTS

@@ -21,7 +21,7 @@ limitations under the License.
 #include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
 
-#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#if WITH_DEV_AUTOMATION_TESTS
 
 UTbSimpleNoOperationsInterfaceMsgBusHelper::~UTbSimpleNoOperationsInterfaceMsgBusHelper()
 {
@@ -117,7 +117,7 @@ void FTbSimpleNoOperationsInterfaceMsgBusFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
-#else  // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#else  // WITH_DEV_AUTOMATION_TESTS
 // create empty implementation in case we do not want to do automated testing
 UTbSimpleNoOperationsInterfaceMsgBusHelper::~UTbSimpleNoOperationsInterfaceMsgBusHelper()
 {
@@ -150,4 +150,4 @@ void UTbSimpleNoOperationsInterfaceMsgBusHelper::_ConnectionStatusChangedCb(bool
 {
 	(void)bConnected;
 }
-#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#endif // WITH_DEV_AUTOMATION_TESTS

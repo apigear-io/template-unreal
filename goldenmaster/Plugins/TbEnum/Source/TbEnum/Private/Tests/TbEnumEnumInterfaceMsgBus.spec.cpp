@@ -20,9 +20,6 @@ limitations under the License.
 #include "TbEnumEnumInterfaceMsgBusFixture.h"
 #include "Generated/MsgBus/TbEnumEnumInterfaceMsgBusClient.h"
 #include "Generated/MsgBus/TbEnumEnumInterfaceMsgBusAdapter.h"
-#include "HAL/Platform.h"
-
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
@@ -309,4 +306,3 @@ void UTbEnumEnumInterfaceMsgBusSpec::Sig3SignalCb(ETbEnumEnum3 InParam3)
 	testDoneDelegate.Execute();
 }
 #endif // WITH_DEV_AUTOMATION_TESTS
-#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

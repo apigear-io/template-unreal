@@ -20,9 +20,6 @@ limitations under the License.
 #include "TbSame1SameEnum2InterfaceMsgBusFixture.h"
 #include "Generated/MsgBus/TbSame1SameEnum2InterfaceMsgBusClient.h"
 #include "Generated/MsgBus/TbSame1SameEnum2InterfaceMsgBusAdapter.h"
-#include "HAL/Platform.h"
-
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
@@ -192,4 +189,3 @@ void UTbSame1SameEnum2InterfaceMsgBusSpec::Sig2SignalCb(ETbSame1Enum1 InParam1, 
 	testDoneDelegate.Execute();
 }
 #endif // WITH_DEV_AUTOMATION_TESTS
-#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

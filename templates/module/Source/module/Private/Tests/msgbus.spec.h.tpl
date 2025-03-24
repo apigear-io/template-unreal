@@ -11,7 +11,7 @@
 #include "{{$ModuleName}}TestsCommon.h"
 #include "{{$DisplayName}}MsgBusFixture.h"
 
-#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#if WITH_DEV_AUTOMATION_TESTS
 
 BEGIN_DEFINE_SPEC({{$Class}}MsgBusSpec, "{{$ModuleName}}.{{$IfaceName}}.MsgBus", {{$ModuleName}}TestFilterMask);
 
@@ -32,4 +32,4 @@ FDoneDelegate testDoneDelegate;
 friend class {{$Class}}MsgBusHelper;
 END_DEFINE_SPEC({{$Class}}MsgBusSpec);
 
-#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#endif // WITH_DEV_AUTOMATION_TESTS

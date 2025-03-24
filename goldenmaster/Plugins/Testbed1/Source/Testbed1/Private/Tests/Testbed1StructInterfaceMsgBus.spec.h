@@ -20,7 +20,7 @@ limitations under the License.
 #include "Testbed1TestsCommon.h"
 #include "Testbed1StructInterfaceMsgBusFixture.h"
 
-#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#if WITH_DEV_AUTOMATION_TESTS
 
 BEGIN_DEFINE_SPEC(UTestbed1StructInterfaceMsgBusSpec, "Testbed1.StructInterface.MsgBus", Testbed1TestFilterMask);
 
@@ -41,4 +41,4 @@ FDoneDelegate testDoneDelegate;
 friend class UTestbed1StructInterfaceMsgBusHelper;
 END_DEFINE_SPEC(UTestbed1StructInterfaceMsgBusSpec);
 
-#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#endif // WITH_DEV_AUTOMATION_TESTS

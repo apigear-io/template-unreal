@@ -20,9 +20,6 @@ limitations under the License.
 #include "TbSimpleSimpleInterfaceMsgBusFixture.h"
 #include "Generated/MsgBus/TbSimpleSimpleInterfaceMsgBusClient.h"
 #include "Generated/MsgBus/TbSimpleSimpleInterfaceMsgBusAdapter.h"
-#include "HAL/Platform.h"
-
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
@@ -559,4 +556,3 @@ void UTbSimpleSimpleInterfaceMsgBusSpec::SigStringSignalCb(const FString& InPara
 	testDoneDelegate.Execute();
 }
 #endif // WITH_DEV_AUTOMATION_TESTS
-#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

@@ -20,9 +20,6 @@ limitations under the License.
 #include "TbNamesNamEsMsgBusFixture.h"
 #include "Generated/MsgBus/TbNamesNamEsMsgBusClient.h"
 #include "Generated/MsgBus/TbNamesNamEsMsgBusAdapter.h"
-#include "HAL/Platform.h"
-
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
@@ -220,4 +217,3 @@ void UTbNamesNamEsMsgBusSpec::SomeSignal2SignalCb(bool bInSomeParam)
 	testDoneDelegate.Execute();
 }
 #endif // WITH_DEV_AUTOMATION_TESTS
-#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

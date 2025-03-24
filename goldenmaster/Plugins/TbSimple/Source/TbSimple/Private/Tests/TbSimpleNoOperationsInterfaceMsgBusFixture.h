@@ -45,7 +45,7 @@ protected:
 	UTbSimpleNoOperationsInterfaceMsgBusSpec* Spec;
 };
 
-#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#if WITH_DEV_AUTOMATION_TESTS
 
 class FTbSimpleNoOperationsInterfaceMsgBusFixture
 {
@@ -66,4 +66,4 @@ private:
 	TSoftObjectPtr<UTbSimpleNoOperationsInterfaceMsgBusHelper> Helper;
 };
 
-#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#endif // WITH_DEV_AUTOMATION_TESTS

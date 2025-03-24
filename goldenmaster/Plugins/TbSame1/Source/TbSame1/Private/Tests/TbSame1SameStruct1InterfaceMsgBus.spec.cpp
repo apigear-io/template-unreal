@@ -20,9 +20,6 @@ limitations under the License.
 #include "TbSame1SameStruct1InterfaceMsgBusFixture.h"
 #include "Generated/MsgBus/TbSame1SameStruct1InterfaceMsgBusClient.h"
 #include "Generated/MsgBus/TbSame1SameStruct1InterfaceMsgBusAdapter.h"
-#include "HAL/Platform.h"
-
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
@@ -129,4 +126,3 @@ void UTbSame1SameStruct1InterfaceMsgBusSpec::Sig1SignalCb(const FTbSame1Struct1&
 	testDoneDelegate.Execute();
 }
 #endif // WITH_DEV_AUTOMATION_TESTS
-#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

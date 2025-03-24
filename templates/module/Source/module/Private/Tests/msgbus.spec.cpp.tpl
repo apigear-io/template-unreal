@@ -11,9 +11,7 @@
 #include "{{$DisplayName}}MsgBusFixture.h"
 #include "Generated/MsgBus/{{$DisplayName}}MsgBusClient.h"
 #include "Generated/MsgBus/{{$DisplayName}}MsgBusAdapter.h"
-#include "HAL/Platform.h"
 
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 {{- range .Module.Imports }}
 #include "{{Camel .Name}}/Private/Tests/{{Camel .Name}}TestsCommon.h"
 {{- end }}
@@ -240,4 +238,3 @@ void {{$Class}}MsgBusSpec::{{ Camel .Name }}SignalCb({{ueParams "In" .Params}})
 }
 {{- end }}
 #endif // WITH_DEV_AUTOMATION_TESTS
-#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

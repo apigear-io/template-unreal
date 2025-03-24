@@ -39,7 +39,7 @@ protected:
 	UTbSame2SameStruct1InterfaceMsgBusSpec* Spec;
 };
 
-#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#if WITH_DEV_AUTOMATION_TESTS
 
 class FTbSame2SameStruct1InterfaceMsgBusFixture
 {
@@ -60,4 +60,4 @@ private:
 	TSoftObjectPtr<UTbSame2SameStruct1InterfaceMsgBusHelper> Helper;
 };
 
-#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#endif // WITH_DEV_AUTOMATION_TESTS

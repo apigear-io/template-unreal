@@ -20,7 +20,7 @@ limitations under the License.
 #include "TbNamesTestsCommon.h"
 #include "TbNamesNamEsMsgBusFixture.h"
 
-#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#if WITH_DEV_AUTOMATION_TESTS
 
 BEGIN_DEFINE_SPEC(UTbNamesNamEsMsgBusSpec, "TbNames.NamEs.MsgBus", TbNamesTestFilterMask);
 
@@ -38,4 +38,4 @@ FDoneDelegate testDoneDelegate;
 friend class UTbNamesNamEsMsgBusHelper;
 END_DEFINE_SPEC(UTbNamesNamEsMsgBusSpec);
 
-#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#endif // WITH_DEV_AUTOMATION_TESTS

@@ -20,7 +20,7 @@ limitations under the License.
 #include "Testbed2TestsCommon.h"
 #include "Testbed2NestedStruct3InterfaceMsgBusFixture.h"
 
-#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#if WITH_DEV_AUTOMATION_TESTS
 
 BEGIN_DEFINE_SPEC(UTestbed2NestedStruct3InterfaceMsgBusSpec, "Testbed2.NestedStruct3Interface.MsgBus", Testbed2TestFilterMask);
 
@@ -39,4 +39,4 @@ FDoneDelegate testDoneDelegate;
 friend class UTestbed2NestedStruct3InterfaceMsgBusHelper;
 END_DEFINE_SPEC(UTestbed2NestedStruct3InterfaceMsgBusSpec);
 
-#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#endif // WITH_DEV_AUTOMATION_TESTS

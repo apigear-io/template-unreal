@@ -20,7 +20,7 @@ limitations under the License.
 #include "TbSame2TestsCommon.h"
 #include "TbSame2SameStruct1InterfaceMsgBusFixture.h"
 
-#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#if WITH_DEV_AUTOMATION_TESTS
 
 BEGIN_DEFINE_SPEC(UTbSame2SameStruct1InterfaceMsgBusSpec, "TbSame2.SameStruct1Interface.MsgBus", TbSame2TestFilterMask);
 
@@ -35,4 +35,4 @@ FDoneDelegate testDoneDelegate;
 friend class UTbSame2SameStruct1InterfaceMsgBusHelper;
 END_DEFINE_SPEC(UTbSame2SameStruct1InterfaceMsgBusSpec);
 
-#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#endif // WITH_DEV_AUTOMATION_TESTS

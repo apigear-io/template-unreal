@@ -20,9 +20,6 @@ limitations under the License.
 #include "CounterCounterMsgBusFixture.h"
 #include "Generated/MsgBus/CounterCounterMsgBusClient.h"
 #include "Generated/MsgBus/CounterCounterMsgBusAdapter.h"
-#include "HAL/Platform.h"
-
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #include "CustomTypes/Private/Tests/CustomTypesTestsCommon.h"
 #include "ExternTypes/Private/Tests/ExternTypesTestsCommon.h"
 #include "Misc/AutomationTest.h"
@@ -215,4 +212,3 @@ void UCounterCounterMsgBusSpec::ValueChangedSignalCb(const FCustomTypesVector3D&
 	testDoneDelegate.Execute();
 }
 #endif // WITH_DEV_AUTOMATION_TESTS
-#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

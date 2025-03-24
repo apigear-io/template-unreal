@@ -20,9 +20,6 @@ limitations under the License.
 #include "TbSimpleSimpleArrayInterfaceMsgBusFixture.h"
 #include "Generated/MsgBus/TbSimpleSimpleArrayInterfaceMsgBusClient.h"
 #include "Generated/MsgBus/TbSimpleSimpleArrayInterfaceMsgBusAdapter.h"
-#include "HAL/Platform.h"
-
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
@@ -572,4 +569,3 @@ void UTbSimpleSimpleArrayInterfaceMsgBusSpec::SigStringSignalCb(const TArray<FSt
 	testDoneDelegate.Execute();
 }
 #endif // WITH_DEV_AUTOMATION_TESTS
-#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

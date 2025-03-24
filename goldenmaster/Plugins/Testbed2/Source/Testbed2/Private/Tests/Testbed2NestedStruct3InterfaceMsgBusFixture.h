@@ -51,7 +51,7 @@ protected:
 	UTestbed2NestedStruct3InterfaceMsgBusSpec* Spec;
 };
 
-#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#if WITH_DEV_AUTOMATION_TESTS
 
 class FTestbed2NestedStruct3InterfaceMsgBusFixture
 {
@@ -72,4 +72,4 @@ private:
 	TSoftObjectPtr<UTestbed2NestedStruct3InterfaceMsgBusHelper> Helper;
 };
 
-#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#endif // WITH_DEV_AUTOMATION_TESTS

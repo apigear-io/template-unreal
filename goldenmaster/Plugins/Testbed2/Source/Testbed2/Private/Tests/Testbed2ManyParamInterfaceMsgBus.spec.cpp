@@ -20,9 +20,6 @@ limitations under the License.
 #include "Testbed2ManyParamInterfaceMsgBusFixture.h"
 #include "Generated/MsgBus/Testbed2ManyParamInterfaceMsgBusClient.h"
 #include "Generated/MsgBus/Testbed2ManyParamInterfaceMsgBusAdapter.h"
-#include "HAL/Platform.h"
-
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
@@ -327,4 +324,3 @@ void UTestbed2ManyParamInterfaceMsgBusSpec::Sig4SignalCb(int32 InParam1, int32 I
 	testDoneDelegate.Execute();
 }
 #endif // WITH_DEV_AUTOMATION_TESTS
-#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

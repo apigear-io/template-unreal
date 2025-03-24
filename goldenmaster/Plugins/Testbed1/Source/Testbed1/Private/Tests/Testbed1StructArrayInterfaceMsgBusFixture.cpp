@@ -21,7 +21,7 @@ limitations under the License.
 #include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
 
-#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#if WITH_DEV_AUTOMATION_TESTS
 
 UTestbed1StructArrayInterfaceMsgBusHelper::~UTestbed1StructArrayInterfaceMsgBusHelper()
 {
@@ -149,7 +149,7 @@ void FTestbed1StructArrayInterfaceMsgBusFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
-#else  // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#else  // WITH_DEV_AUTOMATION_TESTS
 // create empty implementation in case we do not want to do automated testing
 UTestbed1StructArrayInterfaceMsgBusHelper::~UTestbed1StructArrayInterfaceMsgBusHelper()
 {
@@ -203,4 +203,4 @@ void UTestbed1StructArrayInterfaceMsgBusHelper::_ConnectionStatusChangedCb(bool 
 {
 	(void)bConnected;
 }
-#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#endif // WITH_DEV_AUTOMATION_TESTS

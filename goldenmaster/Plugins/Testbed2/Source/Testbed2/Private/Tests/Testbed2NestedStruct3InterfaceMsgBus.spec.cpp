@@ -20,9 +20,6 @@ limitations under the License.
 #include "Testbed2NestedStruct3InterfaceMsgBusFixture.h"
 #include "Generated/MsgBus/Testbed2NestedStruct3InterfaceMsgBusClient.h"
 #include "Generated/MsgBus/Testbed2NestedStruct3InterfaceMsgBusAdapter.h"
-#include "HAL/Platform.h"
-
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
@@ -258,4 +255,3 @@ void UTestbed2NestedStruct3InterfaceMsgBusSpec::Sig3SignalCb(const FTestbed2Nest
 	testDoneDelegate.Execute();
 }
 #endif // WITH_DEV_AUTOMATION_TESTS
-#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

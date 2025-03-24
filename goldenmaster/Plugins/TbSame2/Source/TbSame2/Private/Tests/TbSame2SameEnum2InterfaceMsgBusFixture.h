@@ -45,7 +45,7 @@ protected:
 	UTbSame2SameEnum2InterfaceMsgBusSpec* Spec;
 };
 
-#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#if WITH_DEV_AUTOMATION_TESTS
 
 class FTbSame2SameEnum2InterfaceMsgBusFixture
 {
@@ -66,4 +66,4 @@ private:
 	TSoftObjectPtr<UTbSame2SameEnum2InterfaceMsgBusHelper> Helper;
 };
 
-#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#endif // WITH_DEV_AUTOMATION_TESTS

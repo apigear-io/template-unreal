@@ -20,9 +20,6 @@ limitations under the License.
 #include "TbSimpleNoOperationsInterfaceMsgBusFixture.h"
 #include "Generated/MsgBus/TbSimpleNoOperationsInterfaceMsgBusClient.h"
 #include "Generated/MsgBus/TbSimpleNoOperationsInterfaceMsgBusAdapter.h"
-#include "HAL/Platform.h"
-
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
@@ -166,4 +163,3 @@ void UTbSimpleNoOperationsInterfaceMsgBusSpec::SigBoolSignalCb(bool bInParamBool
 	testDoneDelegate.Execute();
 }
 #endif // WITH_DEV_AUTOMATION_TESTS
-#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)
