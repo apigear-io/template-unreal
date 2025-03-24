@@ -4,11 +4,12 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/remotenode.h"
 THIRD_PARTY_INCLUDES_END
 #include "OLinkHostConnectionFixture.h"
+#include "OLinkCommon.h"
 #include <UObject/Object.h>
 #include "ApiGearLogCategories.h"
 #include "HAL/Platform.h"
 
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
+#if !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)
 #include "INetworkingWebSocket.h"
 #include "Misc/AutomationTest.h"
 #include "Runtime/Launch/Resources/Version.h"
@@ -231,4 +232,4 @@ void UOLinkHostConnectionSpec::Define()
 };
 
 #endif // WITH_DEV_AUTOMATION_TESTS
-#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)
+#endif // !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)

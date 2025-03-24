@@ -16,12 +16,13 @@ limitations under the License.
 */
 #include "TbSame2SameStruct1InterfaceOLinkFixture.h"
 #include "TbSame2SameStruct1InterfaceOLink.spec.h"
+#include "OLinkCommon.h"
 #include "Generated/OLink/TbSame2SameStruct1InterfaceOLinkClient.h"
 #include "Generated/OLink/TbSame2SameStruct1InterfaceOLinkAdapter.h"
 #include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
 
-#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX
 #include "OLinkHost.h"
 
 void UTbSame2SameStruct1InterfaceOLinkHelper::SetSpec(UTbSame2SameStruct1InterfaceOLinkSpec* InSpec)
@@ -93,7 +94,7 @@ void FTbSame2SameStruct1InterfaceOLinkFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
-#else  // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#else  // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX
 // create empty implementation in case we do not want to do automated testing
 void UTbSame2SameStruct1InterfaceOLinkHelper::SetSpec(UTbSame2SameStruct1InterfaceOLinkSpec* /* InSpec */)
 {
@@ -113,4 +114,4 @@ void UTbSame2SameStruct1InterfaceOLinkHelper::_SubscriptionStatusChangedCb(bool 
 {
 	(void)bSubscribed;
 }
-#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX

@@ -16,12 +16,13 @@ limitations under the License.
 */
 #include "TbEnumEnumInterfaceOLinkFixture.h"
 #include "TbEnumEnumInterfaceOLink.spec.h"
+#include "OLinkCommon.h"
 #include "Generated/OLink/TbEnumEnumInterfaceOLinkClient.h"
 #include "Generated/OLink/TbEnumEnumInterfaceOLinkAdapter.h"
 #include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
 
-#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX
 #include "OLinkHost.h"
 
 void UTbEnumEnumInterfaceOLinkHelper::SetSpec(UTbEnumEnumInterfaceOLinkSpec* InSpec)
@@ -123,7 +124,7 @@ void FTbEnumEnumInterfaceOLinkFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
-#else  // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#else  // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX
 // create empty implementation in case we do not want to do automated testing
 void UTbEnumEnumInterfaceOLinkHelper::SetSpec(UTbEnumEnumInterfaceOLinkSpec* /* InSpec */)
 {
@@ -173,4 +174,4 @@ void UTbEnumEnumInterfaceOLinkHelper::_SubscriptionStatusChangedCb(bool bSubscri
 {
 	(void)bSubscribed;
 }
-#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX

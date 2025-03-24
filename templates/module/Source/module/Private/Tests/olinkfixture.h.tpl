@@ -7,6 +7,7 @@
 
 #include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
+#include "OLinkCommon.h"
 
 #include "CoreMinimal.h"
 #include "UObject/Object.h"
@@ -48,7 +49,7 @@ protected:
 	{{$Class}}OLinkSpec* Spec;
 };
 
-#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX
 
 class F{{ $DisplayName }}OLinkFixture
 {
@@ -71,4 +72,4 @@ private:
 	TSoftObjectPtr<{{$Class}}OLinkHelper> Helper;
 };
 
-#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX

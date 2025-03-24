@@ -16,13 +16,14 @@ limitations under the License.
 */
 
 #include "Testbed1StructArrayInterfaceOLink.spec.h"
+#include "OLinkCommon.h"
 #include "Implementation/Testbed1StructArrayInterface.h"
 #include "Testbed1StructArrayInterfaceOLinkFixture.h"
 #include "Generated/OLink/Testbed1StructArrayInterfaceOLinkClient.h"
 #include "Generated/OLink/Testbed1StructArrayInterfaceOLinkAdapter.h"
 #include "HAL/Platform.h"
 
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
+#if !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)
 #include "OLinkHost.h"
 #include "OLinkClientConnection.h" // for olink factory
 #include "Misc/AutomationTest.h"
@@ -320,4 +321,4 @@ void UTestbed1StructArrayInterfaceOLinkSpec::SigStringSignalCb(const TArray<FTes
 	testDoneDelegate.Execute();
 }
 #endif // WITH_DEV_AUTOMATION_TESTS
-#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)
+#endif // !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)

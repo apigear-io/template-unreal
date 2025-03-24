@@ -3,6 +3,7 @@
 
 #include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
+#include "OLinkCommon.h"
 
 #include "CoreMinimal.h"
 #include "UObject/Object.h"
@@ -38,7 +39,7 @@ protected:
 	UTestbed2NestedStruct1InterfaceOLinkSpec* Spec;
 };
 
-#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX
 
 class FTestbed2NestedStruct1InterfaceOLinkFixture
 {
@@ -61,4 +62,4 @@ private:
 	TSoftObjectPtr<UTestbed2NestedStruct1InterfaceOLinkHelper> Helper;
 };
 
-#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX

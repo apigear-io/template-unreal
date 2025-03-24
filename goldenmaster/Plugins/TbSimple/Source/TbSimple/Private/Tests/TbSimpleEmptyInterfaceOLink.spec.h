@@ -17,10 +17,11 @@ limitations under the License.
 #pragma once
 
 #include "Generated/OLink/TbSimpleEmptyInterfaceOLinkClient.h"
+#include "OLinkCommon.h"
 #include "TbSimpleTestsCommon.h"
 #include "TbSimpleEmptyInterfaceOLinkFixture.h"
 
-#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX
 
 BEGIN_DEFINE_SPEC(UTbSimpleEmptyInterfaceOLinkSpec, "TbSimple.EmptyInterface.OLink", TbSimpleTestFilterMask);
 
@@ -33,4 +34,4 @@ FDoneDelegate testDoneDelegate;
 friend class UTbSimpleEmptyInterfaceOLinkHelper;
 END_DEFINE_SPEC(UTbSimpleEmptyInterfaceOLinkSpec);
 
-#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX

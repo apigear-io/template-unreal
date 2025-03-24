@@ -32,8 +32,9 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/iobjectsource.h"
 THIRD_PARTY_INCLUDES_END
 #include "TbSame2SameStruct1InterfaceOLinkSource.h"
+#include "OLinkCommon.h"
 #include "HAL/Platform.h"
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
+#if !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)
 
 using namespace ApiGear::ObjectLink;
 UTbSame2SameStruct1InterfaceOLinkAdapter::UTbSame2SameStruct1InterfaceOLinkAdapter()
@@ -100,7 +101,7 @@ void UTbSame2SameStruct1InterfaceOLinkAdapter::setOLinkHost(TSoftObjectPtr<UOLin
 	// register source to host registry
 	Registry->addSource(Source);
 }
-#else  // !(PLATFORM_IOS || PLATFORM_ANDROID)
+#else  // !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)
 
 UTbSame2SameStruct1InterfaceOLinkAdapter::UTbSame2SameStruct1InterfaceOLinkAdapter()
 	: Source(std::make_shared<TbSame2SameStruct1InterfaceOLinkSource>())
@@ -132,4 +133,4 @@ void UTbSame2SameStruct1InterfaceOLinkAdapter::OnProp1Changed(const FTbSame2Stru
 void UTbSame2SameStruct1InterfaceOLinkAdapter::setOLinkHost(TSoftObjectPtr<UOLinkHost> InHost)
 {
 }
-#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)
+#endif // !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)

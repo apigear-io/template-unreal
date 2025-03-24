@@ -16,13 +16,14 @@ limitations under the License.
 */
 
 #include "TbEnumEnumInterfaceOLink.spec.h"
+#include "OLinkCommon.h"
 #include "Implementation/TbEnumEnumInterface.h"
 #include "TbEnumEnumInterfaceOLinkFixture.h"
 #include "Generated/OLink/TbEnumEnumInterfaceOLinkClient.h"
 #include "Generated/OLink/TbEnumEnumInterfaceOLinkAdapter.h"
 #include "HAL/Platform.h"
 
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
+#if !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)
 #include "OLinkHost.h"
 #include "OLinkClientConnection.h" // for olink factory
 #include "Misc/AutomationTest.h"
@@ -320,4 +321,4 @@ void UTbEnumEnumInterfaceOLinkSpec::Sig3SignalCb(ETbEnumEnum3 InParam3)
 	testDoneDelegate.Execute();
 }
 #endif // WITH_DEV_AUTOMATION_TESTS
-#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)
+#endif // !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)

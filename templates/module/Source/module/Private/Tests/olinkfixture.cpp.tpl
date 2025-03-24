@@ -6,12 +6,13 @@
 {{- $Class := printf "U%s" $DisplayName}}
 #include "{{$DisplayName}}OLinkFixture.h"
 #include "{{$DisplayName}}OLink.spec.h"
+#include "OLinkCommon.h"
 #include "Generated/OLink/{{$DisplayName}}OLinkClient.h"
 #include "Generated/OLink/{{$DisplayName}}OLinkAdapter.h"
 #include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
 
-#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX
 #include "OLinkHost.h"
 
 void {{$Class}}OLinkHelper::SetSpec({{$Class}}OLinkSpec* InSpec)
@@ -91,7 +92,7 @@ void F{{ $DisplayName }}OLinkFixture::CleanUp()
 		GameInstance->Shutdown();
 	}
 }
-#else  // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#else  // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX
 // create empty implementation in case we do not want to do automated testing
 void {{$Class}}OLinkHelper::SetSpec({{$Class}}OLinkSpec* /* InSpec */)
 {
@@ -121,4 +122,4 @@ void {{$Class}}OLinkHelper::_SubscriptionStatusChangedCb(bool bSubscribed)
 {
 	(void)bSubscribed;
 }
-#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX

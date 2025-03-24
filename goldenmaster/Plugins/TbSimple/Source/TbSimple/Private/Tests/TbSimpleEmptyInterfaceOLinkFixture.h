@@ -3,6 +3,7 @@
 
 #include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
+#include "OLinkCommon.h"
 
 #include "CoreMinimal.h"
 #include "UObject/Object.h"
@@ -32,7 +33,7 @@ protected:
 	UTbSimpleEmptyInterfaceOLinkSpec* Spec;
 };
 
-#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX
 
 class FTbSimpleEmptyInterfaceOLinkFixture
 {
@@ -55,4 +56,4 @@ private:
 	TSoftObjectPtr<UTbSimpleEmptyInterfaceOLinkHelper> Helper;
 };
 
-#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX

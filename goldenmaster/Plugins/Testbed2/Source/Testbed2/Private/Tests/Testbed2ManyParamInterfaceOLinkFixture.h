@@ -3,6 +3,7 @@
 
 #include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
+#include "OLinkCommon.h"
 
 #include "CoreMinimal.h"
 #include "UObject/Object.h"
@@ -56,7 +57,7 @@ protected:
 	UTestbed2ManyParamInterfaceOLinkSpec* Spec;
 };
 
-#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX
 
 class FTestbed2ManyParamInterfaceOLinkFixture
 {
@@ -79,4 +80,4 @@ private:
 	TSoftObjectPtr<UTestbed2ManyParamInterfaceOLinkHelper> Helper;
 };
 
-#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX

@@ -17,10 +17,11 @@ limitations under the License.
 #pragma once
 
 #include "Generated/OLink/TbNamesNamEsOLinkClient.h"
+#include "OLinkCommon.h"
 #include "TbNamesTestsCommon.h"
 #include "TbNamesNamEsOLinkFixture.h"
 
-#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX
 
 BEGIN_DEFINE_SPEC(UTbNamesNamEsOLinkSpec, "TbNames.NamEs.OLink", TbNamesTestFilterMask);
 
@@ -38,4 +39,4 @@ FDoneDelegate testDoneDelegate;
 friend class UTbNamesNamEsOLinkHelper;
 END_DEFINE_SPEC(UTbNamesNamEsOLinkSpec);
 
-#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX

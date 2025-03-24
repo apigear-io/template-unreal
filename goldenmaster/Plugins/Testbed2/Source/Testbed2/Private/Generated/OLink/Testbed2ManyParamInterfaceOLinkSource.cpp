@@ -22,7 +22,8 @@ limitations under the License.
 
 #include "Testbed2ManyParamInterfaceOLinkSource.h"
 #include "HAL/Platform.h"
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
+#include "OLinkCommon.h"
+#if !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)
 #include "Async/Future.h"
 #include "Async/Async.h"
 #include "Generated/api/Testbed2.json.adapter.h"
@@ -276,4 +277,4 @@ nlohmann::json Testbed2ManyParamInterfaceOLinkSource::olinkCollectProperties()
 		{"prop3", BackendService->Execute_GetProp3(BackendService.GetObject())},
 		{"prop4", BackendService->Execute_GetProp4(BackendService.GetObject())}});
 }
-#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)
+#endif // !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)

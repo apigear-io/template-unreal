@@ -17,10 +17,11 @@ limitations under the License.
 #pragma once
 
 #include "Generated/OLink/Testbed1StructArrayInterfaceOLinkClient.h"
+#include "OLinkCommon.h"
 #include "Testbed1TestsCommon.h"
 #include "Testbed1StructArrayInterfaceOLinkFixture.h"
 
-#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX
 
 BEGIN_DEFINE_SPEC(UTestbed1StructArrayInterfaceOLinkSpec, "Testbed1.StructArrayInterface.OLink", Testbed1TestFilterMask);
 
@@ -41,4 +42,4 @@ FDoneDelegate testDoneDelegate;
 friend class UTestbed1StructArrayInterfaceOLinkHelper;
 END_DEFINE_SPEC(UTestbed1StructArrayInterfaceOLinkSpec);
 
-#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX

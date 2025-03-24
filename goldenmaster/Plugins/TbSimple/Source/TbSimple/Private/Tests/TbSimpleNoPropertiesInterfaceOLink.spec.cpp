@@ -16,13 +16,14 @@ limitations under the License.
 */
 
 #include "TbSimpleNoPropertiesInterfaceOLink.spec.h"
+#include "OLinkCommon.h"
 #include "Implementation/TbSimpleNoPropertiesInterface.h"
 #include "TbSimpleNoPropertiesInterfaceOLinkFixture.h"
 #include "Generated/OLink/TbSimpleNoPropertiesInterfaceOLinkClient.h"
 #include "Generated/OLink/TbSimpleNoPropertiesInterfaceOLinkAdapter.h"
 #include "HAL/Platform.h"
 
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
+#if !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)
 #include "OLinkHost.h"
 #include "OLinkClientConnection.h" // for olink factory
 #include "Misc/AutomationTest.h"
@@ -135,4 +136,4 @@ void UTbSimpleNoPropertiesInterfaceOLinkSpec::SigBoolSignalCb(bool bInParamBool)
 	testDoneDelegate.Execute();
 }
 #endif // WITH_DEV_AUTOMATION_TESTS
-#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)
+#endif // !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)

@@ -17,10 +17,11 @@ limitations under the License.
 #pragma once
 
 #include "Generated/OLink/TbEnumEnumInterfaceOLinkClient.h"
+#include "OLinkCommon.h"
 #include "TbEnumTestsCommon.h"
 #include "TbEnumEnumInterfaceOLinkFixture.h"
 
-#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX
 
 BEGIN_DEFINE_SPEC(UTbEnumEnumInterfaceOLinkSpec, "TbEnum.EnumInterface.OLink", TbEnumTestFilterMask);
 
@@ -41,4 +42,4 @@ FDoneDelegate testDoneDelegate;
 friend class UTbEnumEnumInterfaceOLinkHelper;
 END_DEFINE_SPEC(UTbEnumEnumInterfaceOLinkSpec);
 
-#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX

@@ -16,13 +16,14 @@ limitations under the License.
 */
 
 #include "Testbed2ManyParamInterfaceOLink.spec.h"
+#include "OLinkCommon.h"
 #include "Implementation/Testbed2ManyParamInterface.h"
 #include "Testbed2ManyParamInterfaceOLinkFixture.h"
 #include "Generated/OLink/Testbed2ManyParamInterfaceOLinkClient.h"
 #include "Generated/OLink/Testbed2ManyParamInterfaceOLinkAdapter.h"
 #include "HAL/Platform.h"
 
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
+#if !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)
 #include "OLinkHost.h"
 #include "OLinkClientConnection.h" // for olink factory
 #include "Misc/AutomationTest.h"
@@ -338,4 +339,4 @@ void UTestbed2ManyParamInterfaceOLinkSpec::Sig4SignalCb(int32 InParam1, int32 In
 	testDoneDelegate.Execute();
 }
 #endif // WITH_DEV_AUTOMATION_TESTS
-#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)
+#endif // !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)

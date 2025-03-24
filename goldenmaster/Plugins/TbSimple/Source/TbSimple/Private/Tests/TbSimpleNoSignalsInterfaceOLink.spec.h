@@ -17,10 +17,11 @@ limitations under the License.
 #pragma once
 
 #include "Generated/OLink/TbSimpleNoSignalsInterfaceOLinkClient.h"
+#include "OLinkCommon.h"
 #include "TbSimpleTestsCommon.h"
 #include "TbSimpleNoSignalsInterfaceOLinkFixture.h"
 
-#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX
 
 BEGIN_DEFINE_SPEC(UTbSimpleNoSignalsInterfaceOLinkSpec, "TbSimple.NoSignalsInterface.OLink", TbSimpleTestFilterMask);
 
@@ -35,4 +36,4 @@ FDoneDelegate testDoneDelegate;
 friend class UTbSimpleNoSignalsInterfaceOLinkHelper;
 END_DEFINE_SPEC(UTbSimpleNoSignalsInterfaceOLinkSpec);
 
-#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX

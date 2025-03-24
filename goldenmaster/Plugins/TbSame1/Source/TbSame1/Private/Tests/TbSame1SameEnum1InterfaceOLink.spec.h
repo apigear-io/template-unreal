@@ -17,10 +17,11 @@ limitations under the License.
 #pragma once
 
 #include "Generated/OLink/TbSame1SameEnum1InterfaceOLinkClient.h"
+#include "OLinkCommon.h"
 #include "TbSame1TestsCommon.h"
 #include "TbSame1SameEnum1InterfaceOLinkFixture.h"
 
-#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX
 
 BEGIN_DEFINE_SPEC(UTbSame1SameEnum1InterfaceOLinkSpec, "TbSame1.SameEnum1Interface.OLink", TbSame1TestFilterMask);
 
@@ -35,4 +36,4 @@ FDoneDelegate testDoneDelegate;
 friend class UTbSame1SameEnum1InterfaceOLinkHelper;
 END_DEFINE_SPEC(UTbSame1SameEnum1InterfaceOLinkSpec);
 
-#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX

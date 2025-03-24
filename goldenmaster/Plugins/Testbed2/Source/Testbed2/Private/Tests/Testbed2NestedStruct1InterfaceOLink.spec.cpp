@@ -16,13 +16,14 @@ limitations under the License.
 */
 
 #include "Testbed2NestedStruct1InterfaceOLink.spec.h"
+#include "OLinkCommon.h"
 #include "Implementation/Testbed2NestedStruct1Interface.h"
 #include "Testbed2NestedStruct1InterfaceOLinkFixture.h"
 #include "Generated/OLink/Testbed2NestedStruct1InterfaceOLinkClient.h"
 #include "Generated/OLink/Testbed2NestedStruct1InterfaceOLinkAdapter.h"
 #include "HAL/Platform.h"
 
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
+#if !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)
 #include "OLinkHost.h"
 #include "OLinkClientConnection.h" // for olink factory
 #include "Misc/AutomationTest.h"
@@ -140,4 +141,4 @@ void UTestbed2NestedStruct1InterfaceOLinkSpec::Sig1SignalCb(const FTestbed2Neste
 	testDoneDelegate.Execute();
 }
 #endif // WITH_DEV_AUTOMATION_TESTS
-#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)
+#endif // !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)
