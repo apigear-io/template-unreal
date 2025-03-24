@@ -32,8 +32,9 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/iobjectsource.h"
 THIRD_PARTY_INCLUDES_END
 #include "TbNamesNamEsOLinkSource.h"
+#include "OLinkCommon.h"
 #include "HAL/Platform.h"
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
+#if !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)
 
 using namespace ApiGear::ObjectLink;
 UTbNamesNamEsOLinkAdapter::UTbNamesNamEsOLinkAdapter()
@@ -141,7 +142,7 @@ void UTbNamesNamEsOLinkAdapter::setOLinkHost(TSoftObjectPtr<UOLinkHost> InHost)
 	// register source to host registry
 	Registry->addSource(Source);
 }
-#else  // !(PLATFORM_IOS || PLATFORM_ANDROID)
+#else  // !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)
 
 UTbNamesNamEsOLinkAdapter::UTbNamesNamEsOLinkAdapter()
 	: Source(std::make_shared<TbNamesNamEsOLinkSource>())
@@ -185,4 +186,4 @@ void UTbNamesNamEsOLinkAdapter::OnSomePoperty2Changed(int32 InSomePoperty2)
 void UTbNamesNamEsOLinkAdapter::setOLinkHost(TSoftObjectPtr<UOLinkHost> InHost)
 {
 }
-#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)
+#endif // !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)

@@ -14,10 +14,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-#include "Misc/AutomationTest.h"
+
+#include "OLinkCommon.h"
 #include "HAL/Platform.h"
 
-#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#if !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)
 #include "TbEnumEnumInterfaceOLinkFixture.h"
 #include "TbEnum/Implementation/TbEnumEnumInterface.h"
 #include "TbEnum/Generated/OLink/TbEnumEnumInterfaceOLinkClient.h"
@@ -26,6 +27,9 @@ limitations under the License.
 #include "OLinkHost.h"
 #include "OLinkClientConnection.h" // for olink factory
 #include "TbEnum/Tests/TbEnumTestsCommon.h"
+#include "Misc/AutomationTest.h"
+
+#if WITH_DEV_AUTOMATION_TESTS
 
 // nested namespaces do not work with UE4.27 MSVC due to old C++ standard
 namespace TbEnum
@@ -308,4 +312,5 @@ void UTbEnumEnumInterfaceOLinkSpec::Define()
 } // namespace EnumInterface
 } // namespace TbEnum
 
-#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#endif // WITH_DEV_AUTOMATION_TESTS
+#endif // !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)

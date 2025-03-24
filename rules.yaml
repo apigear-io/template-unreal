@@ -239,6 +239,9 @@ features:
           - source: "ApiGear/Source/ApiGearOLink/Public/OLinkHost.h"
             target: "Source/ApiGearOLink/Public/OLinkHost.h"
             raw: true
+          - source: "ApiGear/Source/ApiGearOLink/Public/OLinkCommon.h"
+            target: "Source/ApiGearOLink/Public/OLinkCommon.h"
+            raw: true
           - source: "ApiGear/Source/ApiGearOLink/Private/OLinkHostConnection.h"
             target: "Source/ApiGearOLink/Private/OLinkHostConnection.h"
             raw: true

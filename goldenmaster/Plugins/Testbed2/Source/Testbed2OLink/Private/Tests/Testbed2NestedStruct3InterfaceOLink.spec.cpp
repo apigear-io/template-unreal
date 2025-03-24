@@ -14,10 +14,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-#include "Misc/AutomationTest.h"
+
+#include "OLinkCommon.h"
 #include "HAL/Platform.h"
 
-#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#if !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)
 #include "Testbed2NestedStruct3InterfaceOLinkFixture.h"
 #include "Testbed2/Implementation/Testbed2NestedStruct3Interface.h"
 #include "Testbed2/Generated/OLink/Testbed2NestedStruct3InterfaceOLinkClient.h"
@@ -26,6 +27,9 @@ limitations under the License.
 #include "OLinkHost.h"
 #include "OLinkClientConnection.h" // for olink factory
 #include "Testbed2/Tests/Testbed2TestsCommon.h"
+#include "Misc/AutomationTest.h"
+
+#if WITH_DEV_AUTOMATION_TESTS
 
 // nested namespaces do not work with UE4.27 MSVC due to old C++ standard
 namespace Testbed2
@@ -262,4 +266,5 @@ void UTestbed2NestedStruct3InterfaceOLinkSpec::Define()
 } // namespace NestedStruct3Interface
 } // namespace Testbed2
 
-#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#endif // WITH_DEV_AUTOMATION_TESTS
+#endif // !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)

@@ -1,12 +1,13 @@
 // Copyright Epic Games, Inc. All Rights Reserved
 #include "ApiGearOLink.h"
+#include "OLinkCommon.h"
 #include "Modules/ModuleManager.h"
 #include "WebSocketsModule.h"
 #include "ApiGearConnectionsStore.h"
 #include "OLinkClientConnection.h"
 #include "HAL/Platform.h"
 
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
+#if !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)
 #include "IWebSocketNetworkingModule.h"
 #endif
 
@@ -20,7 +21,7 @@ void FApiGearOLinkModule::StartupModule()
 	// register olink factory function
 	UApiGearConnectionsStore::RegisterConnectionFactory(ApiGearOLinkProtocolIdentifier, &OLinkFactory::Create);
 
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
+#if !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)
 	// used by the olink websocket server host
 	FModuleManager::LoadModuleChecked<IWebSocketNetworkingModule>(TEXT("WebSocketNetworking"));
 #endif

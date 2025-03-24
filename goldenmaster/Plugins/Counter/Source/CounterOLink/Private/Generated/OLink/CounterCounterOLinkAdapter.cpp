@@ -32,8 +32,9 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/iobjectsource.h"
 THIRD_PARTY_INCLUDES_END
 #include "CounterCounterOLinkSource.h"
+#include "OLinkCommon.h"
 #include "HAL/Platform.h"
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
+#if !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)
 
 using namespace ApiGear::ObjectLink;
 UCounterCounterOLinkAdapter::UCounterCounterOLinkAdapter()
@@ -141,7 +142,7 @@ void UCounterCounterOLinkAdapter::setOLinkHost(TSoftObjectPtr<UOLinkHost> InHost
 	// register source to host registry
 	Registry->addSource(Source);
 }
-#else  // !(PLATFORM_IOS || PLATFORM_ANDROID)
+#else  // !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)
 
 UCounterCounterOLinkAdapter::UCounterCounterOLinkAdapter()
 	: Source(std::make_shared<CounterCounterOLinkSource>())
@@ -185,4 +186,4 @@ void UCounterCounterOLinkAdapter::OnExternVectorArrayChanged(const TArray<FVecto
 void UCounterCounterOLinkAdapter::setOLinkHost(TSoftObjectPtr<UOLinkHost> InHost)
 {
 }
-#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)
+#endif // !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)

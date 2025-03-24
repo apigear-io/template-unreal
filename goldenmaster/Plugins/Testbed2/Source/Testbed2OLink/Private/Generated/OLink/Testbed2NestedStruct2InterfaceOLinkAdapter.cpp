@@ -32,8 +32,9 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/iobjectsource.h"
 THIRD_PARTY_INCLUDES_END
 #include "Testbed2NestedStruct2InterfaceOLinkSource.h"
+#include "OLinkCommon.h"
 #include "HAL/Platform.h"
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
+#if !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)
 
 using namespace ApiGear::ObjectLink;
 UTestbed2NestedStruct2InterfaceOLinkAdapter::UTestbed2NestedStruct2InterfaceOLinkAdapter()
@@ -130,7 +131,7 @@ void UTestbed2NestedStruct2InterfaceOLinkAdapter::setOLinkHost(TSoftObjectPtr<UO
 	// register source to host registry
 	Registry->addSource(Source);
 }
-#else  // !(PLATFORM_IOS || PLATFORM_ANDROID)
+#else  // !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)
 
 UTestbed2NestedStruct2InterfaceOLinkAdapter::UTestbed2NestedStruct2InterfaceOLinkAdapter()
 	: Source(std::make_shared<Testbed2NestedStruct2InterfaceOLinkSource>())
@@ -170,4 +171,4 @@ void UTestbed2NestedStruct2InterfaceOLinkAdapter::OnProp2Changed(const FTestbed2
 void UTestbed2NestedStruct2InterfaceOLinkAdapter::setOLinkHost(TSoftObjectPtr<UOLinkHost> InHost)
 {
 }
-#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)
+#endif // !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)

@@ -22,7 +22,8 @@ limitations under the License.
 
 #include "TbSame2SameStruct1InterfaceOLinkSource.h"
 #include "HAL/Platform.h"
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
+#include "OLinkCommon.h"
+#if !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)
 #include "Async/Future.h"
 #include "Async/Async.h"
 #include "TbSame2/Generated/api/TbSame2.json.adapter.h"
@@ -147,4 +148,4 @@ nlohmann::json TbSame2SameStruct1InterfaceOLinkSource::olinkCollectProperties()
 
 		{"prop1", BackendService->GetProp1()}});
 }
-#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)
+#endif // !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)

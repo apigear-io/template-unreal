@@ -1,4 +1,5 @@
 #include "OLinkHostPrivate.h"
+#include "OLinkCommon.h"
 #include "OLinkHostConnection.h"
 #include "ApiGearLogCategories.h"
 #include "ApiGearSettings.h"
@@ -9,7 +10,7 @@ THIRD_PARTY_INCLUDES_START
 THIRD_PARTY_INCLUDES_END
 #include "SocketSubsystem.h"
 #include "HAL/Platform.h"
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
+#if !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)
 #include "INetworkingWebSocket.h"
 #include "IWebSocketServer.h"
 #include "IWebSocketNetworkingModule.h"
@@ -129,4 +130,4 @@ uint32 OLinkHostPrivate::NumberOfConnections() const
 	return ClientConnections.Num();
 }
 
-#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)
+#endif // !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)

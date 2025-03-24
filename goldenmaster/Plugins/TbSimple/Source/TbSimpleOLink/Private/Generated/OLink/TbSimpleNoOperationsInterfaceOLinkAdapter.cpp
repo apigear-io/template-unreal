@@ -32,8 +32,9 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/iobjectsource.h"
 THIRD_PARTY_INCLUDES_END
 #include "TbSimpleNoOperationsInterfaceOLinkSource.h"
+#include "OLinkCommon.h"
 #include "HAL/Platform.h"
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
+#if !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)
 
 using namespace ApiGear::ObjectLink;
 UTbSimpleNoOperationsInterfaceOLinkAdapter::UTbSimpleNoOperationsInterfaceOLinkAdapter()
@@ -130,7 +131,7 @@ void UTbSimpleNoOperationsInterfaceOLinkAdapter::setOLinkHost(TSoftObjectPtr<UOL
 	// register source to host registry
 	Registry->addSource(Source);
 }
-#else  // !(PLATFORM_IOS || PLATFORM_ANDROID)
+#else  // !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)
 
 UTbSimpleNoOperationsInterfaceOLinkAdapter::UTbSimpleNoOperationsInterfaceOLinkAdapter()
 	: Source(std::make_shared<TbSimpleNoOperationsInterfaceOLinkSource>())
@@ -170,4 +171,4 @@ void UTbSimpleNoOperationsInterfaceOLinkAdapter::OnPropIntChanged(int32 InPropIn
 void UTbSimpleNoOperationsInterfaceOLinkAdapter::setOLinkHost(TSoftObjectPtr<UOLinkHost> InHost)
 {
 }
-#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)
+#endif // !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)

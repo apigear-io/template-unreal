@@ -7,7 +7,8 @@
 
 #include "Misc/AutomationTest.h"
 #include "HAL/Platform.h"
-#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#include "OLinkCommon.h"
+#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX
 #include "Engine/GameInstance.h"
 #include "CoreMinimal.h"
 #include "UObject/Object.h"
@@ -52,4 +53,4 @@ private:
 } // namespace {{$IfaceName}}
 } // namespace {{$ModuleName}}
 
-#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX

@@ -14,10 +14,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-#include "Misc/AutomationTest.h"
+
+#include "OLinkCommon.h"
 #include "HAL/Platform.h"
 
-#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#if !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)
 #include "TbSimpleNoPropertiesInterfaceOLinkFixture.h"
 #include "TbSimple/Implementation/TbSimpleNoPropertiesInterface.h"
 #include "TbSimple/Generated/OLink/TbSimpleNoPropertiesInterfaceOLinkClient.h"
@@ -26,6 +27,9 @@ limitations under the License.
 #include "OLinkHost.h"
 #include "OLinkClientConnection.h" // for olink factory
 #include "TbSimple/Tests/TbSimpleTestsCommon.h"
+#include "Misc/AutomationTest.h"
+
+#if WITH_DEV_AUTOMATION_TESTS
 
 // nested namespaces do not work with UE4.27 MSVC due to old C++ standard
 namespace TbSimple
@@ -137,4 +141,5 @@ void UTbSimpleNoPropertiesInterfaceOLinkSpec::Define()
 } // namespace NoPropertiesInterface
 } // namespace TbSimple
 
-#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#endif // WITH_DEV_AUTOMATION_TESTS
+#endif // !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)

@@ -5,10 +5,11 @@
 {{- $IfaceName := Camel .Interface.Name }}
 {{- $Class := printf "U%s" $DisplayName}}
 {{- $Iface := printf "%s%s" $ModuleName $IfaceName }}
-#include "Misc/AutomationTest.h"
+
+#include "OLinkCommon.h"
 #include "HAL/Platform.h"
 
-#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#if !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)
 #include "{{$DisplayName}}OLinkFixture.h"
 #include "{{$ModuleName}}/Implementation/{{$DisplayName}}.h"
 #include "{{$ModuleName}}/Generated/OLink/{{$DisplayName}}OLinkClient.h"
@@ -20,6 +21,9 @@
 {{- range .Module.Imports }}
 #include "{{Camel .Name}}/Tests/{{Camel .Name}}TestsCommon.h"
 {{- end }}
+#include "Misc/AutomationTest.h"
+
+#if WITH_DEV_AUTOMATION_TESTS
 
 // nested namespaces do not work with UE4.27 MSVC due to old C++ standard
 namespace {{$ModuleName}}
@@ -245,4 +249,5 @@ void {{$Class}}OLinkSpec::Define()
 } // namespace {{$IfaceName}}
 } // namespace {{$ModuleName}}
 
-#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#endif // WITH_DEV_AUTOMATION_TESTS
+#endif // !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)

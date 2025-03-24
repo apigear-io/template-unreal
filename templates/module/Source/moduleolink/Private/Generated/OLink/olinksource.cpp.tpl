@@ -15,7 +15,8 @@
 
 #include "{{$Iface}}OLinkSource.h"
 #include "HAL/Platform.h"
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
+#include "OLinkCommon.h"
+#if !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)
 #include "Async/Future.h"
 #include "Async/Async.h"
 #include "{{$ModuleName}}/Generated/api/{{$ModuleName}}.json.adapter.h"
@@ -167,4 +168,4 @@ nlohmann::json {{$Class}}::olinkCollectProperties()
 		{"{{.Name}}", BackendService->Get{{Camel .Name}}()}
 {{- end }}});
 }
-#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)
+#endif // !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)

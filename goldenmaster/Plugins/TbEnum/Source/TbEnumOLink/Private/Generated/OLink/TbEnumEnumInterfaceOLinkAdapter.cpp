@@ -32,8 +32,9 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/iobjectsource.h"
 THIRD_PARTY_INCLUDES_END
 #include "TbEnumEnumInterfaceOLinkSource.h"
+#include "OLinkCommon.h"
 #include "HAL/Platform.h"
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
+#if !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)
 
 using namespace ApiGear::ObjectLink;
 UTbEnumEnumInterfaceOLinkAdapter::UTbEnumEnumInterfaceOLinkAdapter()
@@ -174,7 +175,7 @@ void UTbEnumEnumInterfaceOLinkAdapter::setOLinkHost(TSoftObjectPtr<UOLinkHost> I
 	// register source to host registry
 	Registry->addSource(Source);
 }
-#else  // !(PLATFORM_IOS || PLATFORM_ANDROID)
+#else  // !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)
 
 UTbEnumEnumInterfaceOLinkAdapter::UTbEnumEnumInterfaceOLinkAdapter()
 	: Source(std::make_shared<TbEnumEnumInterfaceOLinkSource>())
@@ -230,4 +231,4 @@ void UTbEnumEnumInterfaceOLinkAdapter::OnProp3Changed(ETbEnumEnum3 InProp3)
 void UTbEnumEnumInterfaceOLinkAdapter::setOLinkHost(TSoftObjectPtr<UOLinkHost> InHost)
 {
 }
-#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)
+#endif // !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)
