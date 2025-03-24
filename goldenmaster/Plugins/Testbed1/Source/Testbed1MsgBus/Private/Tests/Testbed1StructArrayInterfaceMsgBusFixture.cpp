@@ -16,9 +16,8 @@ limitations under the License.
 */
 #include "Testbed1StructArrayInterfaceMsgBusFixture.h"
 #include "Misc/AutomationTest.h"
-#include "HAL/Platform.h"
 
-#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#if WITH_DEV_AUTOMATION_TESTS
 
 #include "Testbed1/Generated/MsgBus/Testbed1StructArrayInterfaceMsgBusClient.h"
 #include "Testbed1/Generated/MsgBus/Testbed1StructArrayInterfaceMsgBusAdapter.h"
@@ -75,4 +74,4 @@ void FTestbed1StructArrayInterfaceMsgBusFixture::CleanUp()
 } // namespace MsgBus
 } // namespace StructArrayInterface
 } // namespace Testbed1
-#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#endif // WITH_DEV_AUTOMATION_TESTS

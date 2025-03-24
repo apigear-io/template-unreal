@@ -6,9 +6,7 @@
 #pragma once
 
 #include "Misc/AutomationTest.h"
-#include "HAL/Platform.h"
-
-#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#if WITH_DEV_AUTOMATION_TESTS
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
@@ -51,4 +49,4 @@ private:
 } // namespace {{$IfaceName}}
 } // namespace {{$ModuleName}}
 
-#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#endif // WITH_DEV_AUTOMATION_TESTS

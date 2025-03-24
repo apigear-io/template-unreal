@@ -16,9 +16,8 @@ limitations under the License.
 */
 #include "Testbed2ManyParamInterfaceMsgBusFixture.h"
 #include "Misc/AutomationTest.h"
-#include "HAL/Platform.h"
 
-#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#if WITH_DEV_AUTOMATION_TESTS
 
 #include "Testbed2/Generated/MsgBus/Testbed2ManyParamInterfaceMsgBusClient.h"
 #include "Testbed2/Generated/MsgBus/Testbed2ManyParamInterfaceMsgBusAdapter.h"
@@ -75,4 +74,4 @@ void FTestbed2ManyParamInterfaceMsgBusFixture::CleanUp()
 } // namespace MsgBus
 } // namespace ManyParamInterface
 } // namespace Testbed2
-#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#endif // WITH_DEV_AUTOMATION_TESTS

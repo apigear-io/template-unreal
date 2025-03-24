@@ -16,9 +16,8 @@ limitations under the License.
 */
 #include "TbSame2SameEnum2InterfaceMsgBusFixture.h"
 #include "Misc/AutomationTest.h"
-#include "HAL/Platform.h"
 
-#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#if WITH_DEV_AUTOMATION_TESTS
 
 #include "TbSame2/Generated/MsgBus/TbSame2SameEnum2InterfaceMsgBusClient.h"
 #include "TbSame2/Generated/MsgBus/TbSame2SameEnum2InterfaceMsgBusAdapter.h"
@@ -75,4 +74,4 @@ void FTbSame2SameEnum2InterfaceMsgBusFixture::CleanUp()
 } // namespace MsgBus
 } // namespace SameEnum2Interface
 } // namespace TbSame2
-#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#endif // WITH_DEV_AUTOMATION_TESTS

@@ -16,9 +16,8 @@ limitations under the License.
 */
 #include "Testbed2NestedStruct2InterfaceMsgBusFixture.h"
 #include "Misc/AutomationTest.h"
-#include "HAL/Platform.h"
 
-#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#if WITH_DEV_AUTOMATION_TESTS
 
 #include "Testbed2/Generated/MsgBus/Testbed2NestedStruct2InterfaceMsgBusClient.h"
 #include "Testbed2/Generated/MsgBus/Testbed2NestedStruct2InterfaceMsgBusAdapter.h"
@@ -75,4 +74,4 @@ void FTestbed2NestedStruct2InterfaceMsgBusFixture::CleanUp()
 } // namespace MsgBus
 } // namespace NestedStruct2Interface
 } // namespace Testbed2
-#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#endif // WITH_DEV_AUTOMATION_TESTS

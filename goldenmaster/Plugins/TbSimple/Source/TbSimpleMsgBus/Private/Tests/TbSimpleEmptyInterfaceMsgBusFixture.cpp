@@ -16,9 +16,8 @@ limitations under the License.
 */
 #include "TbSimpleEmptyInterfaceMsgBusFixture.h"
 #include "Misc/AutomationTest.h"
-#include "HAL/Platform.h"
 
-#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#if WITH_DEV_AUTOMATION_TESTS
 
 #include "TbSimple/Generated/MsgBus/TbSimpleEmptyInterfaceMsgBusClient.h"
 #include "TbSimple/Generated/MsgBus/TbSimpleEmptyInterfaceMsgBusAdapter.h"
@@ -75,4 +74,4 @@ void FTbSimpleEmptyInterfaceMsgBusFixture::CleanUp()
 } // namespace MsgBus
 } // namespace EmptyInterface
 } // namespace TbSimple
-#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#endif // WITH_DEV_AUTOMATION_TESTS

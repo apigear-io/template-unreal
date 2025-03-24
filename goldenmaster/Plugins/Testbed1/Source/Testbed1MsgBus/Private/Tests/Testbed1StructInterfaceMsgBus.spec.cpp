@@ -16,9 +16,6 @@ limitations under the License.
 */
 
 #include "Misc/AutomationTest.h"
-#include "HAL/Platform.h"
-
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "Testbed1/Tests/Testbed1TestsCommon.h"
@@ -302,4 +299,3 @@ void UTestbed1StructInterfaceMsgBusSpec::Define()
 } // namespace Testbed1
 
 #endif // WITH_DEV_AUTOMATION_TESTS
-#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

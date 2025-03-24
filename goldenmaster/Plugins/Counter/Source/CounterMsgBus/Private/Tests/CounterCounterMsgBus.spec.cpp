@@ -16,9 +16,6 @@ limitations under the License.
 */
 
 #include "Misc/AutomationTest.h"
-#include "HAL/Platform.h"
-
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "Counter/Tests/CounterTestsCommon.h"
@@ -221,4 +218,3 @@ void UCounterCounterMsgBusSpec::Define()
 } // namespace Counter
 
 #endif // WITH_DEV_AUTOMATION_TESTS
-#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

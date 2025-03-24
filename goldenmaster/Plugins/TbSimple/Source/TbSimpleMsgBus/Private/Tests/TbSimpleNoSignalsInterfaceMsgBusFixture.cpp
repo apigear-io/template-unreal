@@ -16,9 +16,8 @@ limitations under the License.
 */
 #include "TbSimpleNoSignalsInterfaceMsgBusFixture.h"
 #include "Misc/AutomationTest.h"
-#include "HAL/Platform.h"
 
-#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#if WITH_DEV_AUTOMATION_TESTS
 
 #include "TbSimple/Generated/MsgBus/TbSimpleNoSignalsInterfaceMsgBusClient.h"
 #include "TbSimple/Generated/MsgBus/TbSimpleNoSignalsInterfaceMsgBusAdapter.h"
@@ -75,4 +74,4 @@ void FTbSimpleNoSignalsInterfaceMsgBusFixture::CleanUp()
 } // namespace MsgBus
 } // namespace NoSignalsInterface
 } // namespace TbSimple
-#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#endif // WITH_DEV_AUTOMATION_TESTS

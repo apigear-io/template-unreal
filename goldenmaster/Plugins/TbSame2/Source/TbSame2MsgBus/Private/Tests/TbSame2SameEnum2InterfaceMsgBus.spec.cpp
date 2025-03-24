@@ -16,9 +16,6 @@ limitations under the License.
 */
 
 #include "Misc/AutomationTest.h"
-#include "HAL/Platform.h"
-
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "TbSame2/Tests/TbSame2TestsCommon.h"
@@ -195,4 +192,3 @@ void UTbSame2SameEnum2InterfaceMsgBusSpec::Define()
 } // namespace TbSame2
 
 #endif // WITH_DEV_AUTOMATION_TESTS
-#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

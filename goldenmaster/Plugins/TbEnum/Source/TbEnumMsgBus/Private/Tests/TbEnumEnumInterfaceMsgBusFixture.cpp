@@ -16,9 +16,8 @@ limitations under the License.
 */
 #include "TbEnumEnumInterfaceMsgBusFixture.h"
 #include "Misc/AutomationTest.h"
-#include "HAL/Platform.h"
 
-#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#if WITH_DEV_AUTOMATION_TESTS
 
 #include "TbEnum/Generated/MsgBus/TbEnumEnumInterfaceMsgBusClient.h"
 #include "TbEnum/Generated/MsgBus/TbEnumEnumInterfaceMsgBusAdapter.h"
@@ -75,4 +74,4 @@ void FTbEnumEnumInterfaceMsgBusFixture::CleanUp()
 } // namespace MsgBus
 } // namespace EnumInterface
 } // namespace TbEnum
-#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#endif // WITH_DEV_AUTOMATION_TESTS

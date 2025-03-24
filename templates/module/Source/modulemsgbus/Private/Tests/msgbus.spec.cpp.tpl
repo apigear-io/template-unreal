@@ -7,9 +7,6 @@
 {{- $Iface := printf "%s%s" $ModuleName $IfaceName }}
 
 #include "Misc/AutomationTest.h"
-#include "HAL/Platform.h"
-
-#if !(PLATFORM_IOS || PLATFORM_ANDROID)
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "{{$ModuleName}}/Tests/{{$ModuleName}}TestsCommon.h"
@@ -239,4 +236,3 @@ void {{$Class}}MsgBusSpec::Define()
 } // namespace {{$ModuleName}}
 
 #endif // WITH_DEV_AUTOMATION_TESTS
-#endif // !(PLATFORM_IOS || PLATFORM_ANDROID)

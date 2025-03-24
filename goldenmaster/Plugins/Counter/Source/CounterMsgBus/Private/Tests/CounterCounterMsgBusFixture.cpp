@@ -16,9 +16,8 @@ limitations under the License.
 */
 #include "CounterCounterMsgBusFixture.h"
 #include "Misc/AutomationTest.h"
-#include "HAL/Platform.h"
 
-#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#if WITH_DEV_AUTOMATION_TESTS
 
 #include "Counter/Generated/MsgBus/CounterCounterMsgBusClient.h"
 #include "Counter/Generated/MsgBus/CounterCounterMsgBusAdapter.h"
@@ -75,4 +74,4 @@ void FCounterCounterMsgBusFixture::CleanUp()
 } // namespace MsgBus
 } // namespace Counter
 } // namespace Counter
-#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#endif // WITH_DEV_AUTOMATION_TESTS

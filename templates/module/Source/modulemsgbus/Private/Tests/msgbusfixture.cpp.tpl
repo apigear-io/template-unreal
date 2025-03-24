@@ -6,9 +6,8 @@
 {{- $Class := printf "U%s" $DisplayName}}
 #include "{{$DisplayName}}MsgBusFixture.h"
 #include "Misc/AutomationTest.h"
-#include "HAL/Platform.h"
 
-#if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#if WITH_DEV_AUTOMATION_TESTS
 
 #include "{{$ModuleName}}/Generated/MsgBus/{{$DisplayName}}MsgBusClient.h"
 #include "{{$ModuleName}}/Generated/MsgBus/{{$DisplayName}}MsgBusAdapter.h"
@@ -65,4 +64,4 @@ void F{{ $DisplayName }}MsgBusFixture::CleanUp()
 } // namespace MsgBus
 } // namespace {{$IfaceName}}
 } // namespace {{$ModuleName}}
-#endif // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID
+#endif // WITH_DEV_AUTOMATION_TESTS
