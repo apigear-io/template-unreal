@@ -99,4 +99,13 @@ if %RestoreApiGearPlugins% equ 1 (
 	@RD /S /Q "%ApiGearTarget_path%"
 	if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
 )
+{{- range .System.Modules}}
+{{- if contains $exports .Name }}
+
+@REM remove {{ Camel .Name}} plugin from UE installation
+set {{ Camel .Name}}PluginTarget_path=%ApiGearTarget_path%\{{ Camel .Name}}
+@RD /S /Q "%{{ Camel .Name}}PluginTarget_path%\"
+if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
+{{- end }}
+{{- end }}
 exit /b %~1

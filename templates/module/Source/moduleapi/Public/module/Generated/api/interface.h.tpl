@@ -19,19 +19,17 @@ limitations under the License.
 */
 #pragma once
 
-{{- with .Interface }}
-{{- $Class := printf "%s%s" $ModuleName (Camel .Name) }}
-{{- $Category := printf "ApiGear|%s|%s" $ModuleName (Camel .Name) }}
+{{- $Class := printf "%s%s" $ModuleName (Camel .Interface.Name) }}
+{{- $Category := printf "ApiGear|%s|%s" $ModuleName (Camel .Interface.Name) }}
 {{- $class := printf "U%sInterface" $Class }}
-{{- $Iface := printf "%s%s" $ModuleName (Camel .Name) }}
+{{- $Iface := printf "%s%s" $ModuleName (Camel .Interface.Name) }}
 #include "Engine/LatentActionManager.h"
 #include "UObject/Interface.h"
+{{- template "get_referenced_interfaces_includes" . }}
 #include "{{$ModuleName}}_data.h"
-{{- range .Module.Imports }}
-#include "{{Camel .Name}}/Generated/api/{{Camel .Name}}_data.h"
-{{- end }}
 #include "{{$Class}}Interface.generated.h"
 
+{{- with .Interface }}
 {{- if or (len .Properties) (len .Signals) }}
 {{- nl }}
 /**

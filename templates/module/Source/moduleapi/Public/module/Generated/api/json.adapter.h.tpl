@@ -5,6 +5,13 @@
 
 #include "apigear.json.adapter.h"
 #include "{{$ModuleName}}/Generated/api/{{$ModuleName}}_data.h"
+{{- range .Module.Interfaces }}
+#include "{{$ModuleName}}/Generated/api/{{$ModuleName}}{{Camel .Name}}Interface.h"
+{{- end }}
+{{- range .Module.Imports }}
+{{- $ImportModuleName := Camel .Name }}
+#include "{{$ImportModuleName}}/Generated/api/{{$ImportModuleName}}.json.adapter.h"
+{{- end }}
 {{- range .Module.Externs }}
 {{- $class := ueExtern . }}
 {{- if $class.Include }}
@@ -26,8 +33,44 @@ static void to_json(nlohmann::json& j, const {{$class}}& p)
 {
 	j = nlohmann::json{
 {{- range $idx, $elem := .Fields }}
-	{{- if $idx}}, {{ end -}}        
+	{{- if $idx}}, {{ end -}}
 	{"{{.Name}}", p.{{.Name}}}
+{{- end -}}
+	};
+}
+{{- end }}
+
+{{- range .Module.Interfaces }}
+{{- $class := printf "I%s%sInterface" $ModuleName (Camel .Name) }}
+
+static void from_json(const nlohmann::json& j, TScriptInterface<{{$class}}>& p)
+{
+	if (!p)
+	{
+		return;
+	}
+
+{{- if len .Properties}}{{nl}}{{- end}}
+{{- range .Properties}}
+{{- if not .IsReadOnly }}
+	Cast<{{$class}}>(p.GetObject())->Set{{Camel .Name}}(j.at("{{.Name}}").get<{{ueType "" .}}>());
+{{- end }}
+{{- end }}
+}
+
+static void to_json(nlohmann::json& j, const TScriptInterface<{{$class}}>& p)
+{
+	if (!p)
+	{
+		return;
+	}
+
+	j = nlohmann::json{
+{{- range $idx, $elem := .Properties }}
+{{- if not .IsReadOnly }}
+	{{- if $idx}}, {{ end -}}
+	{"{{.Name}}", Cast<{{$class}}>(p.GetObject())->Get{{Camel .Name}}()}
+{{- end }}
 {{- end -}}
 	};
 }

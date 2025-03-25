@@ -53,7 +53,7 @@ void {{$Class}}ImplSpec::Define()
 	{{- end }}
 	});
 
-	{{- if and (not .IsReadOnly) (not (eq .KindType "extern")) }}
+	{{- if and (not .IsReadOnly) (not (eq .KindType "extern")) (not (eq .KindType "interface")) }}
 
 	LatentIt("Property.{{ Camel .Name }}.Change", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
@@ -61,7 +61,7 @@ void {{$Class}}ImplSpec::Define()
 		{{ueType "" .}} TestValue = {{ueDefault "" .}}; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Get{{Camel .Name}}(), TestValue);
 
-		{{$Class}}Signals* {{$Iface}}Signals = ImplFixture->GetImplementation()->_GetSignals();
+		U{{$Iface}}Signals* {{$Iface}}Signals = ImplFixture->GetImplementation()->_GetSignals();
 		{{$Iface}}Signals->On{{Camel .Name}}Changed.AddLambda([this, TestDone]({{ueParam "In" .}})
 			{
 			{{ueType "" .}} TestValue = {{ueDefault "" .}};
@@ -78,7 +78,7 @@ void {{$Class}}ImplSpec::Define()
 			{{- end }}
 			TestValue = createTest{{ $type }}Array();
 			{{- end }}
-			{{- else if and (not .IsPrimitive) (not (eq .KindType "enum"))}}
+			{{- else if and (not .IsPrimitive) (not (eq .KindType "enum")) (not (eq .KindType "interface"))}}
 			TestValue = createTest{{ ueType "" . }}();
 			{{- else }}
 			TestValue = {{ ueTestValue "" . }};
@@ -101,7 +101,7 @@ void {{$Class}}ImplSpec::Define()
 		{{- end }}
 		TestValue = createTest{{ $type }}Array();
 		{{- end }}
-		{{- else if and (not .IsPrimitive) (not (eq .KindType "enum"))}}
+		{{- else if and (not .IsPrimitive) (not (eq .KindType "enum")) (not (eq .KindType "interface"))}}
 		TestValue = createTest{{ ueType "" . }}();
 		{{- else }}
 		TestValue = {{ ueTestValue "" . }};
@@ -116,7 +116,7 @@ void {{$Class}}ImplSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Get{{Camel .Name}}(), TestValue);
 
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
-		{{$Class}}Signals* {{$Iface}}Signals = ImplFixture->GetImplementation()->_GetSignals();
+		U{{$Iface}}Signals* {{$Iface}}Signals = ImplFixture->GetImplementation()->_GetSignals();
 		{{$Iface}}Signals->On{{Camel .Name}}ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &{{$Class}}ImplHelper::{{ Camel .Name }}PropertyCb);
 		// use different test value
 		{{- if .IsArray }}
@@ -131,7 +131,7 @@ void {{$Class}}ImplSpec::Define()
 		{{- end }}
 		TestValue = createTest{{ $type }}Array();
 		{{- end }}
-		{{- else if and (not .IsPrimitive) (not (eq .KindType "enum"))}}
+		{{- else if and (not .IsPrimitive) (not (eq .KindType "enum")) (not (eq .KindType "interface"))}}
 		TestValue = createTest{{ ueType "" . }}();
 		{{- else }}
 		TestValue = {{ ueTestValue "" . }};
@@ -160,7 +160,7 @@ void {{$Class}}ImplSpec::Define()
 
 	LatentIt("Signal.{{ Camel .Name }}", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		{{$Class}}Signals* {{$Iface}}Signals = ImplFixture->GetImplementation()->_GetSignals();
+		U{{$Iface}}Signals* {{$Iface}}Signals = ImplFixture->GetImplementation()->_GetSignals();
 		{{$Iface}}Signals->On{{Camel .Name}}Signal.AddLambda([this, TestDone]({{ueParams "In" .Params}})
 			{
 			// known test value
@@ -179,7 +179,7 @@ void {{$Class}}ImplSpec::Define()
 			{{- end }}
 			{{ueType "" .}} {{ueVar "" .}}TestValue = createTest{{ $type }}Array();
 			{{- end }}
-			{{- else if and (not .IsPrimitive) (not (eq .KindType "enum"))}}
+			{{- else if and (not .IsPrimitive) (not (eq .KindType "enum")) (not (eq .KindType "interface"))}}
 			{{ueType "" .}} {{ueVar "" .}}TestValue = createTest{{ ueType "" . }}();
 			{{- else }}
 			{{ueType "" .}} {{ueVar "" .}}TestValue = {{ ueTestValue "" . }};
@@ -206,7 +206,7 @@ void {{$Class}}ImplSpec::Define()
 		{{- end }}
 		{{ ueType "" . }} {{ueVar "" .}}TestValue = createTest{{ $type }}Array();
 		{{- end }}
-		{{- else if and (not .IsPrimitive) (not (eq .KindType "enum"))}}
+		{{- else if and (not .IsPrimitive) (not (eq .KindType "enum")) (not (eq .KindType "interface"))}}
 		{{ ueType "" . }} {{ueVar "" .}}TestValue = createTest{{ ueType "" . }}();
 		{{- else }}
 		{{ ueType "" . }} {{ueVar "" .}}TestValue = {{ ueTestValue "" . }};
@@ -224,7 +224,7 @@ void {{$Class}}ImplSpec::Define()
 	LatentIt("Signal.{{ Camel .Name }}BP", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
-		{{$Class}}Signals* {{$Iface}}Signals = ImplFixture->GetImplementation()->_GetSignals();
+		U{{$Iface}}Signals* {{$Iface}}Signals = ImplFixture->GetImplementation()->_GetSignals();
 		{{$Iface}}Signals->On{{Camel .Name}}SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &{{$Class}}ImplHelper::{{ Camel .Name }}SignalCb);
 
 		// use different test value
@@ -243,7 +243,7 @@ void {{$Class}}ImplSpec::Define()
 		{{- end }}
 		{{ ueType "" . }} {{ueVar "" .}}TestValue = createTest{{ $type }}Array();
 		{{- end }}
-		{{- else if and (not .IsPrimitive) (not (eq .KindType "enum"))}}
+		{{- else if and (not .IsPrimitive) (not (eq .KindType "enum")) (not (eq .KindType "interface"))}}
 		{{ ueType "" . }} {{ueVar "" .}}TestValue = createTest{{ ueType "" . }}();
 		{{- else }}
 		{{ ueType "" . }} {{ueVar "" .}}TestValue = {{ ueTestValue "" . }};

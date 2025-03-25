@@ -146,6 +146,24 @@ xcopy /E /Y "%script_path%\Plugins\Counter" "%CounterPluginTarget_path%\"  >nul
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
 
 
+@REM copy TbIfaceimport plugin to blank project for build and functional testing
+set TbIfaceimportPluginTarget_path=%ProjectTarget_path%\Plugins\TbIfaceimport
+echo TbIfaceimport plugin from "%script_path%\Plugins\TbIfaceimport" to "%TbIfaceimportPluginTarget_path%\"
+mkdir %TbIfaceimportPluginTarget_path%
+if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
+xcopy /E /Y "%script_path%\Plugins\TbIfaceimport" "%TbIfaceimportPluginTarget_path%\"  >nul
+if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
+
+
+@REM copy TbRefIfaces plugin to blank project for build and functional testing
+set TbRefIfacesPluginTarget_path=%ProjectTarget_path%\Plugins\TbRefIfaces
+echo TbRefIfaces plugin from "%script_path%\Plugins\TbRefIfaces" to "%TbRefIfacesPluginTarget_path%\"
+mkdir %TbRefIfacesPluginTarget_path%
+if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
+xcopy /E /Y "%script_path%\Plugins\TbRefIfaces" "%TbRefIfacesPluginTarget_path%\"  >nul
+if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
+
+
 @REM run build and tests
 call :buildTestPlugins "%ProjectTarget_path%/TP_Blank.uproject" %script_path% ".Impl.+.OLink.+.MsgBus."
 exit /b 0

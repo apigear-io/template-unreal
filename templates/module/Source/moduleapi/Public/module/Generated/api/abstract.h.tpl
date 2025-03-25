@@ -22,9 +22,9 @@ limitations under the License.
 #include "Runtime/Launch/Resources/Version.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "{{$ModuleName}}_data.h"
-{{- with .Interface }}
-{{- $Class := printf "%s%s" $ModuleName (Camel .Name) }}
+{{- $Class := printf "%s%s" $ModuleName (Camel .Interface.Name) }}
 #include "{{$ModuleName}}/Generated/api/{{$Class}}Interface.h"
+{{- with .Interface }}
 {{- $Category := printf "ApiGear|%s|%s" $ModuleName (Camel .Name) }}
 {{- $class := printf "I%sInterface" $Class }}
 {{- $Iface := printf "%s%s" $ModuleName (Camel .Name) }}
