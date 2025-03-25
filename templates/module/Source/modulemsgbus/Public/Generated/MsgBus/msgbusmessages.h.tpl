@@ -11,6 +11,7 @@
 {{- $Iface := printf "%s%s" $ModuleName $IfaceName }}
 #pragma once
 
+{{- template "get_referenced_interfaces_includes" . }}
 {{- $includes := getEmptyStringList}}
 {{- $includeName :=  printf "\"%s/Generated/api/%s_data.h\"" $ModuleName $ModuleName }}
 {{- $includes = (appendList $includes $includeName) }}

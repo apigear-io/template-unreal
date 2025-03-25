@@ -111,5 +111,15 @@ mkdir -p "$ProjectTarget_path/Plugins/Counter" && cp -rf "$script_path/Plugins/C
 if [ $? -ne 0 ]; then exit 1; fi;
 
 
+# copy TbIfaceimport plugin to blank project for build and functional testing
+mkdir -p "$ProjectTarget_path/Plugins/TbIfaceimport" && cp -rf "$script_path/Plugins/TbIfaceimport" "$ProjectTarget_path/Plugins/" 1>&-
+if [ $? -ne 0 ]; then exit 1; fi;
+
+
+# copy TbRefIfaces plugin to blank project for build and functional testing
+mkdir -p "$ProjectTarget_path/Plugins/TbRefIfaces" && cp -rf "$script_path/Plugins/TbRefIfaces" "$ProjectTarget_path/Plugins/" 1>&-
+if [ $? -ne 0 ]; then exit 1; fi;
+
+
 buildTestPlugins "$ProjectTarget_path/TP_Blank.uproject" "$script_path" ".Impl.+.OLink.+.MsgBus."
 if [ $buildresult -ne 0 ]; then exit 1; fi;

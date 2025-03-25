@@ -79,7 +79,7 @@ void {{$Class}}MsgBusSpec::Define()
 	{{- end }}
 	});
 
-	{{- if and (not .IsReadOnly) (not (eq .KindType "extern")) }}
+	{{- if and (not .IsReadOnly) (not (eq .KindType "extern")) (not (eq .KindType "interface"))}}
 
 	LatentIt("Property.{{ Camel .Name }}.Change", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
@@ -104,7 +104,7 @@ void {{$Class}}MsgBusSpec::Define()
 			{{- end }}
 			TestValue = createTest{{ $type }}Array();
 			{{- end }}
-			{{- else if and (not .IsPrimitive) (not (eq .KindType "enum"))}}
+			{{- else if and (not .IsPrimitive) (not (eq .KindType "enum")) (not (eq .KindType "interface"))}}
 			TestValue = createTest{{ ueType "" . }}();
 			{{- else }}
 			TestValue = {{ ueTestValue "" . }};
@@ -127,7 +127,7 @@ void {{$Class}}MsgBusSpec::Define()
 		{{- end }}
 		TestValue = createTest{{ $type }}Array();
 		{{- end }}
-		{{- else if and (not .IsPrimitive) (not (eq .KindType "enum"))}}
+		{{- else if and (not .IsPrimitive) (not (eq .KindType "enum")) (not (eq .KindType "interface"))}}
 		TestValue = createTest{{ ueType "" . }}();
 		{{- else }}
 		TestValue = {{ ueTestValue "" . }};
@@ -158,7 +158,7 @@ void {{$Class}}MsgBusSpec::Define()
 			{{- end }}
 			TestValue = createTest{{ $type }}Array();
 			{{- end }}
-			{{- else if and (not .IsPrimitive) (not (eq .KindType "enum"))}}
+			{{- else if and (not .IsPrimitive) (not (eq .KindType "enum")) (not (eq .KindType "interface"))}}
 			TestValue = createTest{{ ueType "" . }}();
 			{{- else }}
 			TestValue = {{ ueTestValue "" . }};
@@ -180,7 +180,7 @@ void {{$Class}}MsgBusSpec::Define()
 		{{- end }}
 		TestValue = createTest{{ $type }}Array();
 		{{- end }}
-		{{- else if and (not .IsPrimitive) (not (eq .KindType "enum"))}}
+		{{- else if and (not .IsPrimitive) (not (eq .KindType "enum")) (not (eq .KindType "interface"))}}
 		TestValue = createTest{{ ueType "" . }}();
 		{{- else }}
 		TestValue = {{ ueTestValue "" . }};
@@ -220,7 +220,7 @@ void {{$Class}}MsgBusSpec::Define()
 				{{- end }}
 				TestValue = createTest{{ $type }}Array();
 				{{- end }}
-				{{- else if and (not .IsPrimitive) (not (eq .KindType "enum"))}}
+				{{- else if and (not .IsPrimitive) (not (eq .KindType "enum")) (not (eq .KindType "interface"))}}
 				TestValue = createTest{{ ueType "" . }}();
 				{{- else }}
 				TestValue = {{ ueTestValue "" . }};
@@ -253,7 +253,7 @@ void {{$Class}}MsgBusSpec::Define()
 		{{- end }}
 		TestValue = createTest{{ $type }}Array();
 		{{- end }}
-		{{- else if and (not .IsPrimitive) (not (eq .KindType "enum"))}}
+		{{- else if and (not .IsPrimitive) (not (eq .KindType "enum")) (not (eq .KindType "interface"))}}
 		TestValue = createTest{{ ueType "" . }}();
 		{{- else }}
 		TestValue = {{ ueTestValue "" . }};
@@ -313,7 +313,7 @@ void {{$Class}}MsgBusSpec::Define()
 			{{- end }}
 			{{ueType "" .}} {{ueVar "" .}}TestValue = createTest{{ $type }}Array();
 			{{- end }}
-			{{- else if and (not .IsPrimitive) (not (eq .KindType "enum"))}}
+			{{- else if and (not .IsPrimitive) (not (eq .KindType "enum")) (not (eq .KindType "interface"))}}
 			{{ueType "" .}} {{ueVar "" .}}TestValue = createTest{{ ueType "" . }}();
 			{{- else }}
 			{{ueType "" .}} {{ueVar "" .}}TestValue = {{ ueTestValue "" . }};
@@ -340,7 +340,7 @@ void {{$Class}}MsgBusSpec::Define()
 		{{- end }}
 		{{ ueType "" . }} {{ueVar "" .}}TestValue = createTest{{ $type }}Array();
 		{{- end }}
-		{{- else if and (not .IsPrimitive) (not (eq .KindType "enum"))}}
+		{{- else if and (not .IsPrimitive) (not (eq .KindType "enum")) (not (eq .KindType "interface"))}}
 		{{ ueType "" . }} {{ueVar "" .}}TestValue = createTest{{ ueType "" . }}();
 		{{- else }}
 		{{ ueType "" . }} {{ueVar "" .}}TestValue = {{ ueTestValue "" . }};

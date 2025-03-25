@@ -113,6 +113,22 @@ call :buildUEplugin "%script_path%\Plugins\Counter\Counter.uplugin" , "%script_p
 if !buildresult! GEQ 1 call :cleanup !buildresult!
 if !buildresult! GEQ 1 exit /b !buildresult!
 
+@REM Building and testing TbIfaceimport module
+call :buildUEplugin "%script_path%\Plugins\TbIfaceimport\TbIfaceimport.uplugin" , "%script_path%build\Plugins\TbIfaceimport"
+if !buildresult! GEQ 1 call :cleanup !buildresult!
+if !buildresult! GEQ 1 exit /b !buildresult!
+
+@REM copy TbIfaceimport plugin to UE installation for use by other plugins
+set TbIfaceimportPluginTarget_path=%ApiGearTarget_path%\TbIfaceimport
+xcopy /E /Y "%script_path%build\Plugins\TbIfaceimport" "%TbIfaceimportPluginTarget_path%\"  >nul
+if %ERRORLEVEL% GEQ 1 call :cleanup %ERRORLEVEL%
+if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
+
+@REM Building and testing TbRefIfaces module
+call :buildUEplugin "%script_path%\Plugins\TbRefIfaces\TbRefIfaces.uplugin" , "%script_path%build\Plugins\TbRefIfaces"
+if !buildresult! GEQ 1 call :cleanup !buildresult!
+if !buildresult! GEQ 1 exit /b !buildresult!
+
 
 call :cleanup 0
 exit /b 0
@@ -139,4 +155,19 @@ if %RestoreApiGearPlugins% equ 1 (
 	@RD /S /Q "%ApiGearTarget_path%"
 	if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
 )
+
+@REM remove CustomTypes plugin from UE installation
+set CustomTypesPluginTarget_path=%ApiGearTarget_path%\CustomTypes
+@RD /S /Q "%CustomTypesPluginTarget_path%\"
+if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
+
+@REM remove ExternTypes plugin from UE installation
+set ExternTypesPluginTarget_path=%ApiGearTarget_path%\ExternTypes
+@RD /S /Q "%ExternTypesPluginTarget_path%\"
+if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
+
+@REM remove TbIfaceimport plugin from UE installation
+set TbIfaceimportPluginTarget_path=%ApiGearTarget_path%\TbIfaceimport
+@RD /S /Q "%TbIfaceimportPluginTarget_path%\"
+if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
 exit /b %~1

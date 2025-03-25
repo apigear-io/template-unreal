@@ -67,6 +67,21 @@ cleanup()
 		echo "Deleting temporary ApiGear plugin installation from UE"
 		rm -rf "$ApiGearTarget_path"
 	fi
+
+	# remove CustomTypes plugin from UE installation
+	CustomTypesPluginTarget_path=$ApiGearTarget_path/CustomTypes
+	rm -rf "$CustomTypesPluginTarget_path" 1>&-
+	if [ $? -ne 0 ]; then exit 1; fi;
+
+	# remove ExternTypes plugin from UE installation
+	ExternTypesPluginTarget_path=$ApiGearTarget_path/ExternTypes
+	rm -rf "$ExternTypesPluginTarget_path" 1>&-
+	if [ $? -ne 0 ]; then exit 1; fi;
+
+	# remove TbIfaceimport plugin from UE installation
+	TbIfaceimportPluginTarget_path=$ApiGearTarget_path/TbIfaceimport
+	rm -rf "$TbIfaceimportPluginTarget_path" 1>&-
+	if [ $? -ne 0 ]; then exit 1; fi;
 }
 
 
@@ -131,6 +146,19 @@ if [ $? -ne 0 ]; then cleanup && exit 1; fi;
 
 # Building and testing Counter module
 buildUEplugin "$script_path/Plugins/Counter/Counter.uplugin" "$script_path/build/Plugins/Counter"
+if [ $buildresult -ne 0 ]; then cleanup && exit 1; fi;
+
+# Building and testing TbIfaceimport module
+buildUEplugin "$script_path/Plugins/TbIfaceimport/TbIfaceimport.uplugin" "$script_path/build/Plugins/TbIfaceimport"
+if [ $buildresult -ne 0 ]; then cleanup && exit 1; fi;
+
+# copy TbIfaceimport plugin to UE installation for use by other plugins
+TbIfaceimportPluginTarget_path=$ApiGearTarget_path/TbIfaceimport
+mkdir -p "$TbIfaceimportPluginTarget_path" && cp -rf "$script_path/build/Plugins/TbIfaceimport" "$TbIfaceimportPluginTarget_path" 1>&-
+if [ $? -ne 0 ]; then cleanup && exit 1; fi;
+
+# Building and testing TbRefIfaces module
+buildUEplugin "$script_path/Plugins/TbRefIfaces/TbRefIfaces.uplugin" "$script_path/build/Plugins/TbRefIfaces"
 if [ $buildresult -ne 0 ]; then cleanup && exit 1; fi;
 
 

@@ -4,7 +4,6 @@
 {{- $DisplayName := printf "%s%s" $ModuleName (Camel .Interface.Name) }}
 {{- $IfaceName := Camel .Interface.Name }}
 {{- $Class := printf "U%s" $DisplayName}}
-{{- $Iface := printf "%s%s" $ModuleName $IfaceName }}
 #include "{{$DisplayName}}ImplFixture.h"
 #include "{{$ModuleName}}/Implementation/{{$DisplayName}}.h"
 #include "{{$ModuleName}}/Tests/{{$ModuleName}}TestsCommon.h"
@@ -50,7 +49,7 @@ void {{$Class}}ImplHelper::{{ Camel .Name }}PropertyCb({{ueParam "In" .}})
 	{{- end }}
 	TestValue = createTest{{ $type }}Array();
 	{{- end }}
-	{{- else if and (not .IsPrimitive) (not (eq .KindType "enum"))}}
+	{{- else if and (not .IsPrimitive) (not (eq .KindType "enum")) (not (eq .KindType "interface"))}}
 	TestValue = createTest{{ ueType "" . }}();
 	{{- else }}
 	TestValue = {{ ueTestValue "" . }};
@@ -85,7 +84,7 @@ void {{$Class}}ImplHelper::{{ Camel .Name }}SignalCb({{ueParams "In" .Params}})
 	{{- end }}
 	{{ueType "" .}} {{ueVar "" .}}TestValue = createTest{{ $type }}Array();
 	{{- end }}
-	{{- else if and (not .IsPrimitive) (not (eq .KindType "enum"))}}
+	{{- else if and (not .IsPrimitive) (not (eq .KindType "enum")) (not (eq .KindType "interface"))}}
 	{{ueType "" .}} {{ueVar "" .}}TestValue = createTest{{ ueType "" . }}();
 	{{- else }}
 	{{ueType "" .}} {{ueVar "" .}}TestValue = {{ ueTestValue "" . }};

@@ -76,6 +76,15 @@ cleanup()
 		echo "Deleting temporary ApiGear plugin installation from UE"
 		rm -rf "$ApiGearTarget_path"
 	fi
+	{{- range .System.Modules }}
+	{{- if contains $exports .Name }}
+
+	# remove {{ Camel .Name}} plugin from UE installation
+	{{Camel .Name}}PluginTarget_path=$ApiGearTarget_path/{{ Camel .Name}}
+	rm -rf "${{Camel .Name}}PluginTarget_path" 1>&-
+	if [ $? -ne 0 ]; then exit 1; fi;
+	{{- end }}
+	{{- end }}
 }
 
 

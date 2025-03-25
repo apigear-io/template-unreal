@@ -98,7 +98,7 @@ void {{$Class}}OLinkSpec::Define()
 	{{- end }}
 	});
 
-	{{- if and (not .IsReadOnly) (not (eq .KindType "extern")) }}
+	{{- if and (not .IsReadOnly) (not (eq .KindType "extern")) (not (eq .KindType "interface"))}}
 
 	LatentIt("Property.{{ Camel .Name }}.Change", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
@@ -332,7 +332,7 @@ void {{$Class}}OLinkSpec::Define()
 			{{- end }}
 			{{ueType "" .}} {{ueVar "" .}}TestValue = createTest{{ $type }}Array();
 			{{- end }}
-			{{- else if and (not .IsPrimitive) (not (eq .KindType "enum"))}}
+			{{- else if and (not .IsPrimitive) (not (eq .KindType "enum")) (not (eq .KindType "interface"))}}
 			{{ueType "" .}} {{ueVar "" .}}TestValue = createTest{{ ueType "" . }}();
 			{{- else }}
 			{{ueType "" .}} {{ueVar "" .}}TestValue = {{ ueTestValue "" . }};
@@ -359,7 +359,7 @@ void {{$Class}}OLinkSpec::Define()
 		{{- end }}
 		{{ ueType "" . }} {{ueVar "" .}}TestValue = createTest{{ $type }}Array();
 		{{- end }}
-		{{- else if and (not .IsPrimitive) (not (eq .KindType "enum"))}}
+		{{- else if and (not .IsPrimitive) (not (eq .KindType "enum")) (not (eq .KindType "interface"))}}
 		{{ ueType "" . }} {{ueVar "" .}}TestValue = createTest{{ ueType "" . }}();
 		{{- else }}
 		{{ ueType "" . }} {{ueVar "" .}}TestValue = {{ ueTestValue "" . }};
