@@ -123,6 +123,7 @@ private:
 
 	// connection health
 	double _LastHbTimestamp = 0.0;
+	double _LastConnectionWarningTimestamp = 0.0;
 	TArray<float> PingRTTBuffer;
 	static const size_t PING_RTT_BUFFER_SIZE = 60;
 	size_t CurrentPingCounter = 0;

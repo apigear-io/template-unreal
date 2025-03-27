@@ -236,7 +236,12 @@ void UTestbed1StructArrayInterfaceMsgBusClient::_OnHeartbeat()
 
 	if (!_IsConnected())
 	{
-		UE_LOG(LogTestbed1StructArrayInterfaceMsgBusClient, Warning, TEXT("Heartbeat failed. Client has no connection to service. Reconnecting ..."));
+		// only log warning message once a second
+		if (FPlatformTime::Seconds() - _LastConnectionWarningTimestamp > 1.0)
+		{
+			UE_LOG(LogTestbed1StructArrayInterfaceMsgBusClient, Warning, TEXT("Heartbeat failed. Client has no connection to service. Reconnecting ..."));
+			_LastConnectionWarningTimestamp = FPlatformTime::Seconds();
+		}
 
 		_Connect();
 		return;
