@@ -191,7 +191,8 @@ void UTestbed2NestedStruct1InterfaceMsgBusClient::_OnHeartbeat()
 		{
 			// service seems to be dead or not responding - reset connection
 			ServiceAddress.Invalidate();
-			_LastHbTimestamp = 0.0f;
+			_LastHbTimestamp = 0.0;
+			_ConnectionStatusChanged.Broadcast(false);
 		}
 	}
 
@@ -263,6 +264,7 @@ void UTestbed2NestedStruct1InterfaceMsgBusClient::OnServiceClosedConnection(cons
 		return;
 	}
 
+	_LastHbTimestamp = 0.0;
 	ServiceAddress.Invalidate();
 	_ConnectionStatusChanged.Broadcast(false);
 }
