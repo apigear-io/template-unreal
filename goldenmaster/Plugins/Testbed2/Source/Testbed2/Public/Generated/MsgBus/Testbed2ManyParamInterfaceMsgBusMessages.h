@@ -31,7 +31,7 @@ struct FTestbed2ManyParamInterfaceInitMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	int32 _ClientPingIntervalMS = 1000;
+	int32 _ClientPingIntervalMS = 100;
 
 	UPROPERTY()
 	int32 Prop1 = 0;

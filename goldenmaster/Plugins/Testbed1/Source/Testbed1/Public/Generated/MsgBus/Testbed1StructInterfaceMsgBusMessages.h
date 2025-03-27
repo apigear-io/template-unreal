@@ -31,7 +31,7 @@ struct FTestbed1StructInterfaceInitMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	int32 _ClientPingIntervalMS = 1000;
+	int32 _ClientPingIntervalMS = 100;
 
 	UPROPERTY()
 	FTestbed1StructBool PropBool = FTestbed1StructBool();

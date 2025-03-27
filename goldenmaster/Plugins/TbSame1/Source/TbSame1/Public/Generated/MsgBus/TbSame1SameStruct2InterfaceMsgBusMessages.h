@@ -31,7 +31,7 @@ struct FTbSame1SameStruct2InterfaceInitMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	int32 _ClientPingIntervalMS = 1000;
+	int32 _ClientPingIntervalMS = 100;
 
 	UPROPERTY()
 	FTbSame1Struct2 Prop1 = FTbSame1Struct2();

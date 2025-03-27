@@ -31,7 +31,7 @@ struct FTbSimpleSimpleInterfaceInitMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	int32 _ClientPingIntervalMS = 1000;
+	int32 _ClientPingIntervalMS = 100;
 
 	UPROPERTY()
 	bool bPropBool = false;

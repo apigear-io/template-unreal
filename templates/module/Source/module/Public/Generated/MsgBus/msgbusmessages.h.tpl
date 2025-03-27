@@ -43,7 +43,7 @@ struct F{{$DisplayName}}InitMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	int32 _ClientPingIntervalMS = 1000;
+	int32 _ClientPingIntervalMS = 100;
 
 {{- if len .Interface.Properties }}{{ nl }}{{ end }}
 {{- range $i, $e := .Interface.Properties }}
