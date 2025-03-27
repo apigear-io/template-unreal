@@ -198,7 +198,12 @@ void UTbSame1SameStruct1InterfaceMsgBusClient::_OnHeartbeat()
 
 	if (!_IsConnected())
 	{
-		UE_LOG(LogTbSame1SameStruct1InterfaceMsgBusClient, Warning, TEXT("Heartbeat failed. Client has no connection to service. Reconnecting ..."));
+		// only log warning message once a second
+		if (FPlatformTime::Seconds() - _LastConnectionWarningTimestamp > 1.0)
+		{
+			UE_LOG(LogTbSame1SameStruct1InterfaceMsgBusClient, Warning, TEXT("Heartbeat failed. Client has no connection to service. Reconnecting ..."));
+			_LastConnectionWarningTimestamp = FPlatformTime::Seconds();
+		}
 
 		_Connect();
 		return;
