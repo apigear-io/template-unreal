@@ -165,11 +165,11 @@ void UTbSimpleEmptyInterfaceMsgBusClient::OnConnectionInit(const FTbSimpleEmptyI
 
 void UTbSimpleEmptyInterfaceMsgBusClient::_OnHeartbeat()
 {
-	if (_LastHbTimestamp > 0.1f)
+	if (_LastHbTimestamp > 0.1)
 	{
-		double Delta = (FPlatformTime::Seconds() - _LastHbTimestamp) * 1000;
+		const double DeltaMS = (FPlatformTime::Seconds() - _LastHbTimestamp) * 1000.0;
 
-		if (Delta > 2 * _HeartbeatIntervalMS)
+		if (DeltaMS > 2 * _HeartbeatIntervalMS)
 		{
 			// service seems to be dead or not responding - reset connection
 			ServiceAddress.Invalidate();

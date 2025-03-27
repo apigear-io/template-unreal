@@ -154,6 +154,11 @@ void {{$Class}}::_setBackendService(TScriptInterface<I{{$Iface}}Interface> InSer
 
 void {{$Class}}::OnNewClientDiscovered(const F{{$Iface}}DiscoveryMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (ConnectedClientsTimestamps.Contains(Context->GetSender()))
+	{
+		return;
+	}
+
 	const FMessageAddress& ClientAddress = Context->GetSender();
 
 	auto msg = new F{{$Iface}}InitMessage();
@@ -208,14 +213,14 @@ void {{$Class}}::OnClientDisconnected(const F{{$Iface}}ClientDisconnectMessage& 
 
 void {{$Class}}::_CheckClientTimeouts()
 {
-	float CurrentTime = FPlatformTime::Seconds();
+	const double CurrentTime = FPlatformTime::Seconds();
 	TArray<FMessageAddress> TimedOutClients;
 
 	for (const auto& ClientPair : ConnectedClientsTimestamps)
 	{
-		const double Delta = (CurrentTime - ClientPair.Value) * 1000;
+		const double DeltaMS = (CurrentTime - ClientPair.Value) * 1000.0;
 
-		if (Delta > 2 * _HeartbeatIntervalMS)
+		if (DeltaMS > 2 * _HeartbeatIntervalMS)
 		{
 			// service seems to be dead or not responding - reset connection
 			TimedOutClients.Add(ClientPair.Key);
