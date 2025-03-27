@@ -31,7 +31,7 @@ struct FTbSimpleSimpleArrayInterfaceInitMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	int32 _ClientPingIntervalMS = 1000;
+	int32 _ClientPingIntervalMS = 100;
 
 	UPROPERTY()
 	TArray<bool> PropBool = TArray<bool>();

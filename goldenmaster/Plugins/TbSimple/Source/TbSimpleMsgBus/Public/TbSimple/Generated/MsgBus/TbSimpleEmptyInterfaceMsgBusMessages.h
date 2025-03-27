@@ -31,7 +31,7 @@ struct FTbSimpleEmptyInterfaceInitMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	int32 _ClientPingIntervalMS = 1000;
+	int32 _ClientPingIntervalMS = 100;
 };
 
 USTRUCT()

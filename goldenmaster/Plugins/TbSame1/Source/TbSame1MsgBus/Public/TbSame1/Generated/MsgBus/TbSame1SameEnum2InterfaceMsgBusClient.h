@@ -130,7 +130,7 @@ private:
 	FTbSame1SameEnum2InterfaceStats Stats;
 	FTimerHandle _HeartbeatTimerHandle;
 	void _OnHeartbeat();
-	uint32 _HeartbeatIntervalMS = 1000;
+	uint32 _HeartbeatIntervalMS = 100;
 
 	// connection handling
 	void OnConnectionInit(const FTbSame1SameEnum2InterfaceInitMessage& InInitMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);

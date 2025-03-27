@@ -31,7 +31,7 @@ struct FTbEnumEnumInterfaceInitMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	int32 _ClientPingIntervalMS = 1000;
+	int32 _ClientPingIntervalMS = 100;
 
 	UPROPERTY()
 	ETbEnumEnum0 Prop0 = ETbEnumEnum0::TEE0_VALUE0;

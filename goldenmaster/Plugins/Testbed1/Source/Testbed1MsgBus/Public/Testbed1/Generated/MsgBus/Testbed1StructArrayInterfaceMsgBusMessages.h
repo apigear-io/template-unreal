@@ -31,7 +31,7 @@ struct FTestbed1StructArrayInterfaceInitMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	int32 _ClientPingIntervalMS = 1000;
+	int32 _ClientPingIntervalMS = 100;
 
 	UPROPERTY()
 	TArray<FTestbed1StructBool> PropBool = TArray<FTestbed1StructBool>();

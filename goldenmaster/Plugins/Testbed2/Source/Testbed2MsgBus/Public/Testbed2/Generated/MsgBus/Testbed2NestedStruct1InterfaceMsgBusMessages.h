@@ -31,7 +31,7 @@ struct FTestbed2NestedStruct1InterfaceInitMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	int32 _ClientPingIntervalMS = 1000;
+	int32 _ClientPingIntervalMS = 100;
 
 	UPROPERTY()
 	FTestbed2NestedStruct1 Prop1 = FTestbed2NestedStruct1();

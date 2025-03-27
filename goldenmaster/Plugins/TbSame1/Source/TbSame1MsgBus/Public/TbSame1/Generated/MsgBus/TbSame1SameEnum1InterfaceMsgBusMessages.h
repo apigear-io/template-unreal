@@ -31,7 +31,7 @@ struct FTbSame1SameEnum1InterfaceInitMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	int32 _ClientPingIntervalMS = 1000;
+	int32 _ClientPingIntervalMS = 100;
 
 	UPROPERTY()
 	ETbSame1Enum1 Prop1 = ETbSame1Enum1::TS1E1_VALUE1;

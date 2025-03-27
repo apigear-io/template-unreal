@@ -122,7 +122,7 @@ private:
 	FTestbed2NestedStruct1InterfaceStats Stats;
 	FTimerHandle _HeartbeatTimerHandle;
 	void _OnHeartbeat();
-	uint32 _HeartbeatIntervalMS = 1000;
+	uint32 _HeartbeatIntervalMS = 100;
 
 	// connection handling
 	void OnConnectionInit(const FTestbed2NestedStruct1InterfaceInitMessage& InInitMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);

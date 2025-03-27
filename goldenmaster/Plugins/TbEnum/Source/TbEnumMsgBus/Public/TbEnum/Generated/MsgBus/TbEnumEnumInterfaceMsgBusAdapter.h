@@ -161,5 +161,5 @@ private:
 	TMap<FMessageAddress, double> ConnectedClientsTimestamps;
 	FTimerHandle _HeartbeatTimerHandle;
 	int32 _ClientsConnected = 0;
-	uint32 _HeartbeatIntervalMS = 1000;
+	uint32 _HeartbeatIntervalMS = 100;
 };
