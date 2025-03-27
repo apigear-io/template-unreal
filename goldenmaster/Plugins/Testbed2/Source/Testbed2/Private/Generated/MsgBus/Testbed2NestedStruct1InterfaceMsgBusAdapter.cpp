@@ -129,6 +129,11 @@ void UTestbed2NestedStruct1InterfaceMsgBusAdapter::_setBackendService(TScriptInt
 
 void UTestbed2NestedStruct1InterfaceMsgBusAdapter::OnNewClientDiscovered(const FTestbed2NestedStruct1InterfaceDiscoveryMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (ConnectedClientsTimestamps.Contains(Context->GetSender()))
+	{
+		return;
+	}
+
 	const FMessageAddress& ClientAddress = Context->GetSender();
 
 	auto msg = new FTestbed2NestedStruct1InterfaceInitMessage();
@@ -180,14 +185,14 @@ void UTestbed2NestedStruct1InterfaceMsgBusAdapter::OnClientDisconnected(const FT
 
 void UTestbed2NestedStruct1InterfaceMsgBusAdapter::_CheckClientTimeouts()
 {
-	float CurrentTime = FPlatformTime::Seconds();
+	const double CurrentTime = FPlatformTime::Seconds();
 	TArray<FMessageAddress> TimedOutClients;
 
 	for (const auto& ClientPair : ConnectedClientsTimestamps)
 	{
-		const double Delta = (CurrentTime - ClientPair.Value) * 1000;
+		const double DeltaMS = (CurrentTime - ClientPair.Value) * 1000.0;
 
-		if (Delta > 2 * _HeartbeatIntervalMS)
+		if (DeltaMS > 2 * _HeartbeatIntervalMS)
 		{
 			// service seems to be dead or not responding - reset connection
 			TimedOutClients.Add(ClientPair.Key);
