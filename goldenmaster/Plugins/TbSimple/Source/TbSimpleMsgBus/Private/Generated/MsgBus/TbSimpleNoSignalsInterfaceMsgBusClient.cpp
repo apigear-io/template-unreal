@@ -200,7 +200,8 @@ void UTbSimpleNoSignalsInterfaceMsgBusClient::_OnHeartbeat()
 		{
 			// service seems to be dead or not responding - reset connection
 			ServiceAddress.Invalidate();
-			_LastHbTimestamp = 0.0f;
+			_LastHbTimestamp = 0.0;
+			_ConnectionStatusChanged.Broadcast(false);
 		}
 	}
 
@@ -272,6 +273,7 @@ void UTbSimpleNoSignalsInterfaceMsgBusClient::OnServiceClosedConnection(const FT
 		return;
 	}
 
+	_LastHbTimestamp = 0.0;
 	ServiceAddress.Invalidate();
 	_ConnectionStatusChanged.Broadcast(false);
 	_ConnectionStatusChangedBP.Broadcast(false);
