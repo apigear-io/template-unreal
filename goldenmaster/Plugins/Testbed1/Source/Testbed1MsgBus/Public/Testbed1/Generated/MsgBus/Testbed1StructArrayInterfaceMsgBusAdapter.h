@@ -31,6 +31,7 @@ limitations under the License.
 class FMessageEndpoint;
 // messages
 struct FTestbed1StructArrayInterfaceDiscoveryMessage;
+struct FTestbed1StructArrayInterfaceServiceAnnouncementReplyMessage;
 struct FTestbed1StructArrayInterfacePingMessage;
 struct FTestbed1StructArrayInterfaceClientDisconnectMessage;
 struct FTestbed1StructArrayInterfaceSigBoolSignalMessage;
@@ -54,6 +55,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed1StructArrayInterfaceClientC
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed1StructArrayInterfaceClientDisconnectedDelegate, const FString&, ClientAddress);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed1StructArrayInterfaceClientTimeoutDelegate, const FString&, ClientAddress);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed1StructArrayInterfaceClientCountDelegate, int32, Count);
+
+DECLARE_LOG_CATEGORY_EXTERN(LogTestbed1StructArrayInterfaceMsgBusAdapter, Log, All);
 
 /// @brief handles the adaption between the service implementation and the OLink protocol
 /// takes an object of the type ITestbed1StructArrayInterfaceInterface
@@ -104,7 +107,11 @@ public:
 private:
 	TSharedPtr<FMessageEndpoint, ESPMode::ThreadSafe> Testbed1StructArrayInterfaceMsgBusEndpoint;
 
-	void OnNewClientDiscovered(const FTestbed1StructArrayInterfaceDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void _AnnounceService();
+	void OnDiscoveryMessage(const FTestbed1StructArrayInterfaceDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void HandleClientConnectionRequest(const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void HandleServiceAnnouncement(const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnServiceAnnouncementMessage(const FTestbed1StructArrayInterfaceServiceAnnouncementReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnPing(const FTestbed1StructArrayInterfacePingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnClientDisconnected(const FTestbed1StructArrayInterfaceClientDisconnectMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnFuncBoolRequest(const FTestbed1StructArrayInterfaceFuncBoolRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);

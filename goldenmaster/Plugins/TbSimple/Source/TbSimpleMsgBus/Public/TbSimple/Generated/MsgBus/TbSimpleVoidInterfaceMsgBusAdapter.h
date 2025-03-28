@@ -31,6 +31,7 @@ limitations under the License.
 class FMessageEndpoint;
 // messages
 struct FTbSimpleVoidInterfaceDiscoveryMessage;
+struct FTbSimpleVoidInterfaceServiceAnnouncementReplyMessage;
 struct FTbSimpleVoidInterfacePingMessage;
 struct FTbSimpleVoidInterfaceClientDisconnectMessage;
 struct FTbSimpleVoidInterfaceSigVoidSignalMessage;
@@ -40,6 +41,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleVoidInterfaceClientConnecte
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleVoidInterfaceClientDisconnectedDelegate, const FString&, ClientAddress);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleVoidInterfaceClientTimeoutDelegate, const FString&, ClientAddress);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleVoidInterfaceClientCountDelegate, int32, Count);
+
+DECLARE_LOG_CATEGORY_EXTERN(LogTbSimpleVoidInterfaceMsgBusAdapter, Log, All);
 
 /// @brief handles the adaption between the service implementation and the OLink protocol
 /// takes an object of the type ITbSimpleVoidInterfaceInterface
@@ -90,7 +93,11 @@ public:
 private:
 	TSharedPtr<FMessageEndpoint, ESPMode::ThreadSafe> TbSimpleVoidInterfaceMsgBusEndpoint;
 
-	void OnNewClientDiscovered(const FTbSimpleVoidInterfaceDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void _AnnounceService();
+	void OnDiscoveryMessage(const FTbSimpleVoidInterfaceDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void HandleClientConnectionRequest(const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void HandleServiceAnnouncement(const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnServiceAnnouncementMessage(const FTbSimpleVoidInterfaceServiceAnnouncementReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnPing(const FTbSimpleVoidInterfacePingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnClientDisconnected(const FTbSimpleVoidInterfaceClientDisconnectMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnFuncVoidRequest(const FTbSimpleVoidInterfaceFuncVoidRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);

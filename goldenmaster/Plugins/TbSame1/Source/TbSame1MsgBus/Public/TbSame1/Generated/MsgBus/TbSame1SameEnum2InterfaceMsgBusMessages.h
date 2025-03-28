@@ -19,8 +19,26 @@ limitations under the License.
 #include "TbSame1/Generated/api/TbSame1_data.h"
 #include "TbSame1SameEnum2InterfaceMsgBusMessages.generated.h"
 
+UENUM(BlueprintType)
+enum class ETbSame1SameEnum2InterfaceDiscoveryMessageType : uint8
+{
+	// send by other services to make sure they are unique
+	ServiceAnnouncement UMETA(Displayname = "Service Announcement"),
+	// send by clients to start an actual connection
+	ConnectionRequest UMETA(Displayname = "Connection Request")
+};
+
 USTRUCT()
 struct FTbSame1SameEnum2InterfaceDiscoveryMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	ETbSame1SameEnum2InterfaceDiscoveryMessageType Type = ETbSame1SameEnum2InterfaceDiscoveryMessageType::ConnectionRequest;
+};
+
+USTRUCT()
+struct FTbSame1SameEnum2InterfaceServiceAnnouncementReplyMessage
 {
 	GENERATED_BODY()
 };

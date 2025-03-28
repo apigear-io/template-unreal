@@ -25,6 +25,7 @@
 class FMessageEndpoint;
 // messages
 struct F{{$Iface}}DiscoveryMessage;
+struct F{{$DisplayName}}ServiceAnnouncementReplyMessage;
 struct F{{$Iface}}PingMessage;
 struct F{{$Iface}}ClientDisconnectMessage;
 {{- range $i, $e := .Interface.Signals }}
@@ -42,6 +43,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(F{{$Iface}}ClientConnectedDelegate, 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(F{{$Iface}}ClientDisconnectedDelegate, const FString&, ClientAddress);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(F{{$Iface}}ClientTimeoutDelegate, const FString&, ClientAddress);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(F{{$Iface}}ClientCountDelegate, int32, Count);
+
+DECLARE_LOG_CATEGORY_EXTERN(Log{{$Iface}}MsgBusAdapter, Log, All);
 
 /// @brief handles the adaption between the service implementation and the OLink protocol
 /// takes an object of the type I{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface
@@ -92,7 +95,11 @@ public:
 private:
 	TSharedPtr<FMessageEndpoint, ESPMode::ThreadSafe> {{Camel .Module.Name}}{{Camel .Interface.Name}}MsgBusEndpoint;
 
-	void OnNewClientDiscovered(const F{{$Iface}}DiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void _AnnounceService();
+	void OnDiscoveryMessage(const F{{$Iface}}DiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void HandleClientConnectionRequest(const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void HandleServiceAnnouncement(const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnServiceAnnouncementMessage(const F{{$Iface}}ServiceAnnouncementReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnPing(const F{{$Iface}}PingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnClientDisconnected(const F{{$Iface}}ClientDisconnectMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 {{- range $i, $e := .Interface.Operations }}

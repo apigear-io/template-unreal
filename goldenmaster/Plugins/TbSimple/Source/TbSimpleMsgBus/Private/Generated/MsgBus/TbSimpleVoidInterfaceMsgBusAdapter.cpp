@@ -29,6 +29,8 @@ limitations under the License.
 #include "MessageEndpoint.h"
 #include "MessageEndpointBuilder.h"
 #include "Misc/DateTime.h"
+
+DEFINE_LOG_CATEGORY(LogTbSimpleVoidInterfaceMsgBusAdapter);
 UTbSimpleVoidInterfaceMsgBusAdapter::UTbSimpleVoidInterfaceMsgBusAdapter()
 {
 }
@@ -58,7 +60,8 @@ void UTbSimpleVoidInterfaceMsgBusAdapter::_StartListening()
 
 	// clang-format off
 	TbSimpleVoidInterfaceMsgBusEndpoint = FMessageEndpoint::Builder("ApiGear/TbSimple/VoidInterface/Service")
-		.Handling<FTbSimpleVoidInterfaceDiscoveryMessage>(this, &UTbSimpleVoidInterfaceMsgBusAdapter::OnNewClientDiscovered)
+		.Handling<FTbSimpleVoidInterfaceDiscoveryMessage>(this, &UTbSimpleVoidInterfaceMsgBusAdapter::OnDiscoveryMessage)
+		.Handling<FTbSimpleVoidInterfaceServiceAnnouncementReplyMessage>(this, &UTbSimpleVoidInterfaceMsgBusAdapter::OnServiceAnnouncementMessage)
 		.Handling<FTbSimpleVoidInterfacePingMessage>(this, &UTbSimpleVoidInterfaceMsgBusAdapter::OnPing)
 		.Handling<FTbSimpleVoidInterfaceClientDisconnectMessage>(this, &UTbSimpleVoidInterfaceMsgBusAdapter::OnClientDisconnected)
 		.Handling<FTbSimpleVoidInterfaceFuncVoidRequestMessage>(this, &UTbSimpleVoidInterfaceMsgBusAdapter::OnFuncVoidRequest)
@@ -68,7 +71,22 @@ void UTbSimpleVoidInterfaceMsgBusAdapter::_StartListening()
 	if (TbSimpleVoidInterfaceMsgBusEndpoint.IsValid())
 	{
 		TbSimpleVoidInterfaceMsgBusEndpoint->Subscribe<FTbSimpleVoidInterfaceDiscoveryMessage>();
+		TbSimpleVoidInterfaceMsgBusEndpoint->Subscribe<FTbSimpleVoidInterfaceServiceAnnouncementReplyMessage>();
 	}
+
+	_AnnounceService();
+}
+
+void UTbSimpleVoidInterfaceMsgBusAdapter::_AnnounceService()
+{
+	if (!TbSimpleVoidInterfaceMsgBusEndpoint.IsValid())
+	{
+		return;
+	}
+
+	auto msg = new FTbSimpleVoidInterfaceDiscoveryMessage();
+	msg->Type = ETbSimpleVoidInterfaceDiscoveryMessageType::ServiceAnnouncement;
+	TbSimpleVoidInterfaceMsgBusEndpoint->Publish<FTbSimpleVoidInterfaceDiscoveryMessage>(msg);
 }
 
 void UTbSimpleVoidInterfaceMsgBusAdapter::_StopListening()
@@ -127,7 +145,21 @@ void UTbSimpleVoidInterfaceMsgBusAdapter::_setBackendService(TScriptInterface<IT
 	OnSigVoidSignalHandle = BackendSignals->OnSigVoidSignal.AddUObject(this, &UTbSimpleVoidInterfaceMsgBusAdapter::OnSigVoid);
 }
 
-void UTbSimpleVoidInterfaceMsgBusAdapter::OnNewClientDiscovered(const FTbSimpleVoidInterfaceDiscoveryMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTbSimpleVoidInterfaceMsgBusAdapter::OnDiscoveryMessage(const FTbSimpleVoidInterfaceDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	switch (InMessage.Type)
+	{
+	case ETbSimpleVoidInterfaceDiscoveryMessageType::ServiceAnnouncement:
+		HandleServiceAnnouncement(Context);
+		break;
+	case ETbSimpleVoidInterfaceDiscoveryMessageType::ConnectionRequest:
+	default:
+		HandleClientConnectionRequest(Context);
+		break;
+	}
+}
+
+void UTbSimpleVoidInterfaceMsgBusAdapter::HandleClientConnectionRequest(const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ConnectedClientsTimestamps.Contains(Context->GetSender()))
 	{
@@ -151,6 +183,30 @@ void UTbSimpleVoidInterfaceMsgBusAdapter::OnNewClientDiscovered(const FTbSimpleV
 	_OnClientConnected.Broadcast(ClientAddress.ToString());
 	ConnectedClientsTimestamps.Add(ClientAddress, FPlatformTime::Seconds());
 	_UpdateClientsConnected();
+}
+
+void UTbSimpleVoidInterfaceMsgBusAdapter::HandleServiceAnnouncement(const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	// send service announcement
+	auto msg = new FTbSimpleVoidInterfaceServiceAnnouncementReplyMessage();
+
+	if (TbSimpleVoidInterfaceMsgBusEndpoint.IsValid())
+	{
+		TbSimpleVoidInterfaceMsgBusEndpoint->Send<FTbSimpleVoidInterfaceServiceAnnouncementReplyMessage>(msg, EMessageFlags::Reliable,
+			nullptr,
+			TArrayBuilder<FMessageAddress>().Add(Context->GetSender()),
+			FTimespan::Zero(),
+			FDateTime::MaxValue());
+	}
+}
+
+void UTbSimpleVoidInterfaceMsgBusAdapter::OnServiceAnnouncementMessage(const FTbSimpleVoidInterfaceServiceAnnouncementReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	if (TbSimpleVoidInterfaceMsgBusEndpoint->GetAddress() == Context->GetSender())
+	{
+		return;
+	}
+	UE_LOG(LogTbSimpleVoidInterfaceMsgBusAdapter, Error, TEXT("Service announcement from existing endpoint(%s) received, we should stop listening."), *Context->GetSender().ToString());
 }
 
 void UTbSimpleVoidInterfaceMsgBusAdapter::OnPing(const FTbSimpleVoidInterfacePingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)

@@ -19,8 +19,26 @@ limitations under the License.
 #include "Testbed2/Generated/api/Testbed2_data.h"
 #include "Testbed2NestedStruct3InterfaceMsgBusMessages.generated.h"
 
+UENUM(BlueprintType)
+enum class ETestbed2NestedStruct3InterfaceDiscoveryMessageType : uint8
+{
+	// send by other services to make sure they are unique
+	ServiceAnnouncement UMETA(Displayname = "Service Announcement"),
+	// send by clients to start an actual connection
+	ConnectionRequest UMETA(Displayname = "Connection Request")
+};
+
 USTRUCT()
 struct FTestbed2NestedStruct3InterfaceDiscoveryMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	ETestbed2NestedStruct3InterfaceDiscoveryMessageType Type = ETestbed2NestedStruct3InterfaceDiscoveryMessageType::ConnectionRequest;
+};
+
+USTRUCT()
+struct FTestbed2NestedStruct3InterfaceServiceAnnouncementReplyMessage
 {
 	GENERATED_BODY()
 };

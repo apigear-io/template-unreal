@@ -31,6 +31,7 @@ limitations under the License.
 class FMessageEndpoint;
 // messages
 struct FTbSimpleEmptyInterfaceDiscoveryMessage;
+struct FTbSimpleEmptyInterfaceServiceAnnouncementReplyMessage;
 struct FTbSimpleEmptyInterfacePingMessage;
 struct FTbSimpleEmptyInterfaceClientDisconnectMessage;
 
@@ -38,6 +39,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleEmptyInterfaceClientConnect
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleEmptyInterfaceClientDisconnectedDelegate, const FString&, ClientAddress);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleEmptyInterfaceClientTimeoutDelegate, const FString&, ClientAddress);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleEmptyInterfaceClientCountDelegate, int32, Count);
+
+DECLARE_LOG_CATEGORY_EXTERN(LogTbSimpleEmptyInterfaceMsgBusAdapter, Log, All);
 
 /// @brief handles the adaption between the service implementation and the OLink protocol
 /// takes an object of the type ITbSimpleEmptyInterfaceInterface
@@ -88,7 +91,11 @@ public:
 private:
 	TSharedPtr<FMessageEndpoint, ESPMode::ThreadSafe> TbSimpleEmptyInterfaceMsgBusEndpoint;
 
-	void OnNewClientDiscovered(const FTbSimpleEmptyInterfaceDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void _AnnounceService();
+	void OnDiscoveryMessage(const FTbSimpleEmptyInterfaceDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void HandleClientConnectionRequest(const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void HandleServiceAnnouncement(const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnServiceAnnouncementMessage(const FTbSimpleEmptyInterfaceServiceAnnouncementReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnPing(const FTbSimpleEmptyInterfacePingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnClientDisconnected(const FTbSimpleEmptyInterfaceClientDisconnectMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 

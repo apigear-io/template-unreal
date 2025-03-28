@@ -31,6 +31,7 @@ limitations under the License.
 class FMessageEndpoint;
 // messages
 struct FCounterCounterDiscoveryMessage;
+struct FCounterCounterServiceAnnouncementReplyMessage;
 struct FCounterCounterPingMessage;
 struct FCounterCounterClientDisconnectMessage;
 struct FCounterCounterValueChangedSignalMessage;
@@ -51,6 +52,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCounterCounterClientConnectedDelega
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCounterCounterClientDisconnectedDelegate, const FString&, ClientAddress);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCounterCounterClientTimeoutDelegate, const FString&, ClientAddress);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCounterCounterClientCountDelegate, int32, Count);
+
+DECLARE_LOG_CATEGORY_EXTERN(LogCounterCounterMsgBusAdapter, Log, All);
 
 /// @brief handles the adaption between the service implementation and the OLink protocol
 /// takes an object of the type ICounterCounterInterface
@@ -101,7 +104,11 @@ public:
 private:
 	TSharedPtr<FMessageEndpoint, ESPMode::ThreadSafe> CounterCounterMsgBusEndpoint;
 
-	void OnNewClientDiscovered(const FCounterCounterDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void _AnnounceService();
+	void OnDiscoveryMessage(const FCounterCounterDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void HandleClientConnectionRequest(const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void HandleServiceAnnouncement(const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnServiceAnnouncementMessage(const FCounterCounterServiceAnnouncementReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnPing(const FCounterCounterPingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnClientDisconnected(const FCounterCounterClientDisconnectMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnIncrementRequest(const FCounterCounterIncrementRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);

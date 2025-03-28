@@ -21,8 +21,26 @@ limitations under the License.
 #include "ExternTypes/Generated/api/ExternTypes_data.h"
 #include "CounterCounterMsgBusMessages.generated.h"
 
+UENUM(BlueprintType)
+enum class ECounterCounterDiscoveryMessageType : uint8
+{
+	// send by other services to make sure they are unique
+	ServiceAnnouncement UMETA(Displayname = "Service Announcement"),
+	// send by clients to start an actual connection
+	ConnectionRequest UMETA(Displayname = "Connection Request")
+};
+
 USTRUCT()
 struct FCounterCounterDiscoveryMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	ECounterCounterDiscoveryMessageType Type = ECounterCounterDiscoveryMessageType::ConnectionRequest;
+};
+
+USTRUCT()
+struct FCounterCounterServiceAnnouncementReplyMessage
 {
 	GENERATED_BODY()
 };

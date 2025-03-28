@@ -29,6 +29,8 @@ limitations under the License.
 #include "MessageEndpoint.h"
 #include "MessageEndpointBuilder.h"
 #include "Misc/DateTime.h"
+
+DEFINE_LOG_CATEGORY(LogTbSame1SameStruct1InterfaceMsgBusAdapter);
 UTbSame1SameStruct1InterfaceMsgBusAdapter::UTbSame1SameStruct1InterfaceMsgBusAdapter()
 {
 }
@@ -58,7 +60,8 @@ void UTbSame1SameStruct1InterfaceMsgBusAdapter::_StartListening()
 
 	// clang-format off
 	TbSame1SameStruct1InterfaceMsgBusEndpoint = FMessageEndpoint::Builder("ApiGear/TbSame1/SameStruct1Interface/Service")
-		.Handling<FTbSame1SameStruct1InterfaceDiscoveryMessage>(this, &UTbSame1SameStruct1InterfaceMsgBusAdapter::OnNewClientDiscovered)
+		.Handling<FTbSame1SameStruct1InterfaceDiscoveryMessage>(this, &UTbSame1SameStruct1InterfaceMsgBusAdapter::OnDiscoveryMessage)
+		.Handling<FTbSame1SameStruct1InterfaceServiceAnnouncementReplyMessage>(this, &UTbSame1SameStruct1InterfaceMsgBusAdapter::OnServiceAnnouncementMessage)
 		.Handling<FTbSame1SameStruct1InterfacePingMessage>(this, &UTbSame1SameStruct1InterfaceMsgBusAdapter::OnPing)
 		.Handling<FTbSame1SameStruct1InterfaceClientDisconnectMessage>(this, &UTbSame1SameStruct1InterfaceMsgBusAdapter::OnClientDisconnected)
 		.Handling<FTbSame1SameStruct1InterfaceSetProp1RequestMessage>(this, &UTbSame1SameStruct1InterfaceMsgBusAdapter::OnSetProp1Request)
@@ -69,7 +72,22 @@ void UTbSame1SameStruct1InterfaceMsgBusAdapter::_StartListening()
 	if (TbSame1SameStruct1InterfaceMsgBusEndpoint.IsValid())
 	{
 		TbSame1SameStruct1InterfaceMsgBusEndpoint->Subscribe<FTbSame1SameStruct1InterfaceDiscoveryMessage>();
+		TbSame1SameStruct1InterfaceMsgBusEndpoint->Subscribe<FTbSame1SameStruct1InterfaceServiceAnnouncementReplyMessage>();
 	}
+
+	_AnnounceService();
+}
+
+void UTbSame1SameStruct1InterfaceMsgBusAdapter::_AnnounceService()
+{
+	if (!TbSame1SameStruct1InterfaceMsgBusEndpoint.IsValid())
+	{
+		return;
+	}
+
+	auto msg = new FTbSame1SameStruct1InterfaceDiscoveryMessage();
+	msg->Type = ETbSame1SameStruct1InterfaceDiscoveryMessageType::ServiceAnnouncement;
+	TbSame1SameStruct1InterfaceMsgBusEndpoint->Publish<FTbSame1SameStruct1InterfaceDiscoveryMessage>(msg);
 }
 
 void UTbSame1SameStruct1InterfaceMsgBusAdapter::_StopListening()
@@ -134,7 +152,21 @@ void UTbSame1SameStruct1InterfaceMsgBusAdapter::_setBackendService(TScriptInterf
 	OnSig1SignalHandle = BackendSignals->OnSig1Signal.AddUObject(this, &UTbSame1SameStruct1InterfaceMsgBusAdapter::OnSig1);
 }
 
-void UTbSame1SameStruct1InterfaceMsgBusAdapter::OnNewClientDiscovered(const FTbSame1SameStruct1InterfaceDiscoveryMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTbSame1SameStruct1InterfaceMsgBusAdapter::OnDiscoveryMessage(const FTbSame1SameStruct1InterfaceDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	switch (InMessage.Type)
+	{
+	case ETbSame1SameStruct1InterfaceDiscoveryMessageType::ServiceAnnouncement:
+		HandleServiceAnnouncement(Context);
+		break;
+	case ETbSame1SameStruct1InterfaceDiscoveryMessageType::ConnectionRequest:
+	default:
+		HandleClientConnectionRequest(Context);
+		break;
+	}
+}
+
+void UTbSame1SameStruct1InterfaceMsgBusAdapter::HandleClientConnectionRequest(const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ConnectedClientsTimestamps.Contains(Context->GetSender()))
 	{
@@ -159,6 +191,30 @@ void UTbSame1SameStruct1InterfaceMsgBusAdapter::OnNewClientDiscovered(const FTbS
 	_OnClientConnected.Broadcast(ClientAddress.ToString());
 	ConnectedClientsTimestamps.Add(ClientAddress, FPlatformTime::Seconds());
 	_UpdateClientsConnected();
+}
+
+void UTbSame1SameStruct1InterfaceMsgBusAdapter::HandleServiceAnnouncement(const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	// send service announcement
+	auto msg = new FTbSame1SameStruct1InterfaceServiceAnnouncementReplyMessage();
+
+	if (TbSame1SameStruct1InterfaceMsgBusEndpoint.IsValid())
+	{
+		TbSame1SameStruct1InterfaceMsgBusEndpoint->Send<FTbSame1SameStruct1InterfaceServiceAnnouncementReplyMessage>(msg, EMessageFlags::Reliable,
+			nullptr,
+			TArrayBuilder<FMessageAddress>().Add(Context->GetSender()),
+			FTimespan::Zero(),
+			FDateTime::MaxValue());
+	}
+}
+
+void UTbSame1SameStruct1InterfaceMsgBusAdapter::OnServiceAnnouncementMessage(const FTbSame1SameStruct1InterfaceServiceAnnouncementReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	if (TbSame1SameStruct1InterfaceMsgBusEndpoint->GetAddress() == Context->GetSender())
+	{
+		return;
+	}
+	UE_LOG(LogTbSame1SameStruct1InterfaceMsgBusAdapter, Error, TEXT("Service announcement from existing endpoint(%s) received, we should stop listening."), *Context->GetSender().ToString());
 }
 
 void UTbSame1SameStruct1InterfaceMsgBusAdapter::OnPing(const FTbSame1SameStruct1InterfacePingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)

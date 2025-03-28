@@ -19,8 +19,26 @@ limitations under the License.
 #include "Testbed2/Generated/api/Testbed2_data.h"
 #include "Testbed2ManyParamInterfaceMsgBusMessages.generated.h"
 
+UENUM(BlueprintType)
+enum class ETestbed2ManyParamInterfaceDiscoveryMessageType : uint8
+{
+	// send by other services to make sure they are unique
+	ServiceAnnouncement UMETA(Displayname = "Service Announcement"),
+	// send by clients to start an actual connection
+	ConnectionRequest UMETA(Displayname = "Connection Request")
+};
+
 USTRUCT()
 struct FTestbed2ManyParamInterfaceDiscoveryMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	ETestbed2ManyParamInterfaceDiscoveryMessageType Type = ETestbed2ManyParamInterfaceDiscoveryMessageType::ConnectionRequest;
+};
+
+USTRUCT()
+struct FTestbed2ManyParamInterfaceServiceAnnouncementReplyMessage
 {
 	GENERATED_BODY()
 };

@@ -29,6 +29,8 @@ limitations under the License.
 #include "MessageEndpoint.h"
 #include "MessageEndpointBuilder.h"
 #include "Misc/DateTime.h"
+
+DEFINE_LOG_CATEGORY(LogTbNamesNamEsMsgBusAdapter);
 UTbNamesNamEsMsgBusAdapter::UTbNamesNamEsMsgBusAdapter()
 {
 }
@@ -58,7 +60,8 @@ void UTbNamesNamEsMsgBusAdapter::_StartListening()
 
 	// clang-format off
 	TbNamesNamEsMsgBusEndpoint = FMessageEndpoint::Builder("ApiGear/TbNames/NamEs/Service")
-		.Handling<FTbNamesNamEsDiscoveryMessage>(this, &UTbNamesNamEsMsgBusAdapter::OnNewClientDiscovered)
+		.Handling<FTbNamesNamEsDiscoveryMessage>(this, &UTbNamesNamEsMsgBusAdapter::OnDiscoveryMessage)
+		.Handling<FTbNamesNamEsServiceAnnouncementReplyMessage>(this, &UTbNamesNamEsMsgBusAdapter::OnServiceAnnouncementMessage)
 		.Handling<FTbNamesNamEsPingMessage>(this, &UTbNamesNamEsMsgBusAdapter::OnPing)
 		.Handling<FTbNamesNamEsClientDisconnectMessage>(this, &UTbNamesNamEsMsgBusAdapter::OnClientDisconnected)
 		.Handling<FTbNamesNamEsSetSwitchRequestMessage>(this, &UTbNamesNamEsMsgBusAdapter::OnSetSwitchRequest)
@@ -72,7 +75,22 @@ void UTbNamesNamEsMsgBusAdapter::_StartListening()
 	if (TbNamesNamEsMsgBusEndpoint.IsValid())
 	{
 		TbNamesNamEsMsgBusEndpoint->Subscribe<FTbNamesNamEsDiscoveryMessage>();
+		TbNamesNamEsMsgBusEndpoint->Subscribe<FTbNamesNamEsServiceAnnouncementReplyMessage>();
 	}
+
+	_AnnounceService();
+}
+
+void UTbNamesNamEsMsgBusAdapter::_AnnounceService()
+{
+	if (!TbNamesNamEsMsgBusEndpoint.IsValid())
+	{
+		return;
+	}
+
+	auto msg = new FTbNamesNamEsDiscoveryMessage();
+	msg->Type = ETbNamesNamEsDiscoveryMessageType::ServiceAnnouncement;
+	TbNamesNamEsMsgBusEndpoint->Publish<FTbNamesNamEsDiscoveryMessage>(msg);
 }
 
 void UTbNamesNamEsMsgBusAdapter::_StopListening()
@@ -155,7 +173,21 @@ void UTbNamesNamEsMsgBusAdapter::_setBackendService(TScriptInterface<ITbNamesNam
 	OnSomeSignal2SignalHandle = BackendSignals->OnSomeSignal2Signal.AddUObject(this, &UTbNamesNamEsMsgBusAdapter::OnSomeSignal2);
 }
 
-void UTbNamesNamEsMsgBusAdapter::OnNewClientDiscovered(const FTbNamesNamEsDiscoveryMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTbNamesNamEsMsgBusAdapter::OnDiscoveryMessage(const FTbNamesNamEsDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	switch (InMessage.Type)
+	{
+	case ETbNamesNamEsDiscoveryMessageType::ServiceAnnouncement:
+		HandleServiceAnnouncement(Context);
+		break;
+	case ETbNamesNamEsDiscoveryMessageType::ConnectionRequest:
+	default:
+		HandleClientConnectionRequest(Context);
+		break;
+	}
+}
+
+void UTbNamesNamEsMsgBusAdapter::HandleClientConnectionRequest(const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ConnectedClientsTimestamps.Contains(Context->GetSender()))
 	{
@@ -182,6 +214,30 @@ void UTbNamesNamEsMsgBusAdapter::OnNewClientDiscovered(const FTbNamesNamEsDiscov
 	_OnClientConnected.Broadcast(ClientAddress.ToString());
 	ConnectedClientsTimestamps.Add(ClientAddress, FPlatformTime::Seconds());
 	_UpdateClientsConnected();
+}
+
+void UTbNamesNamEsMsgBusAdapter::HandleServiceAnnouncement(const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	// send service announcement
+	auto msg = new FTbNamesNamEsServiceAnnouncementReplyMessage();
+
+	if (TbNamesNamEsMsgBusEndpoint.IsValid())
+	{
+		TbNamesNamEsMsgBusEndpoint->Send<FTbNamesNamEsServiceAnnouncementReplyMessage>(msg, EMessageFlags::Reliable,
+			nullptr,
+			TArrayBuilder<FMessageAddress>().Add(Context->GetSender()),
+			FTimespan::Zero(),
+			FDateTime::MaxValue());
+	}
+}
+
+void UTbNamesNamEsMsgBusAdapter::OnServiceAnnouncementMessage(const FTbNamesNamEsServiceAnnouncementReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	if (TbNamesNamEsMsgBusEndpoint->GetAddress() == Context->GetSender())
+	{
+		return;
+	}
+	UE_LOG(LogTbNamesNamEsMsgBusAdapter, Error, TEXT("Service announcement from existing endpoint(%s) received, we should stop listening."), *Context->GetSender().ToString());
 }
 
 void UTbNamesNamEsMsgBusAdapter::OnPing(const FTbNamesNamEsPingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)

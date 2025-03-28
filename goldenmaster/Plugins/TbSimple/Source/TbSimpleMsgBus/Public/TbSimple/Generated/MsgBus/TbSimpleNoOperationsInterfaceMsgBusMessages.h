@@ -19,8 +19,26 @@ limitations under the License.
 #include "TbSimple/Generated/api/TbSimple_data.h"
 #include "TbSimpleNoOperationsInterfaceMsgBusMessages.generated.h"
 
+UENUM(BlueprintType)
+enum class ETbSimpleNoOperationsInterfaceDiscoveryMessageType : uint8
+{
+	// send by other services to make sure they are unique
+	ServiceAnnouncement UMETA(Displayname = "Service Announcement"),
+	// send by clients to start an actual connection
+	ConnectionRequest UMETA(Displayname = "Connection Request")
+};
+
 USTRUCT()
 struct FTbSimpleNoOperationsInterfaceDiscoveryMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	ETbSimpleNoOperationsInterfaceDiscoveryMessageType Type = ETbSimpleNoOperationsInterfaceDiscoveryMessageType::ConnectionRequest;
+};
+
+USTRUCT()
+struct FTbSimpleNoOperationsInterfaceServiceAnnouncementReplyMessage
 {
 	GENERATED_BODY()
 };

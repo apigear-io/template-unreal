@@ -158,7 +158,9 @@ void UTestbed1StructInterfaceMsgBusClient::OnConnectionInit(const FTestbed1Struc
 {
 	if (ServiceAddress.IsValid())
 	{
-		UE_LOG(LogTestbed1StructInterfaceMsgBusClient, Warning, TEXT("Got a second init message - should not happen"));
+		UE_LOG(LogTestbed1StructInterfaceMsgBusClient, Warning,
+			TEXT("Got a second init message. It usually means that there are several instances of the same service on the network.")
+				TEXT(" This can cause connection mixups. Please make sure that there is only one instance of the service running on the network."));
 		return;
 	}
 

@@ -19,8 +19,26 @@ limitations under the License.
 #include "TbEnum/Generated/api/TbEnum_data.h"
 #include "TbEnumEnumInterfaceMsgBusMessages.generated.h"
 
+UENUM(BlueprintType)
+enum class ETbEnumEnumInterfaceDiscoveryMessageType : uint8
+{
+	// send by other services to make sure they are unique
+	ServiceAnnouncement UMETA(Displayname = "Service Announcement"),
+	// send by clients to start an actual connection
+	ConnectionRequest UMETA(Displayname = "Connection Request")
+};
+
 USTRUCT()
 struct FTbEnumEnumInterfaceDiscoveryMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	ETbEnumEnumInterfaceDiscoveryMessageType Type = ETbEnumEnumInterfaceDiscoveryMessageType::ConnectionRequest;
+};
+
+USTRUCT()
+struct FTbEnumEnumInterfaceServiceAnnouncementReplyMessage
 {
 	GENERATED_BODY()
 };

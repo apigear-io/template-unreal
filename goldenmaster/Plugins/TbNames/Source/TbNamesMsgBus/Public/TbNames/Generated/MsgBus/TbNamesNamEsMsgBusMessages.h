@@ -19,8 +19,26 @@ limitations under the License.
 #include "TbNames/Generated/api/TbNames_data.h"
 #include "TbNamesNamEsMsgBusMessages.generated.h"
 
+UENUM(BlueprintType)
+enum class ETbNamesNamEsDiscoveryMessageType : uint8
+{
+	// send by other services to make sure they are unique
+	ServiceAnnouncement UMETA(Displayname = "Service Announcement"),
+	// send by clients to start an actual connection
+	ConnectionRequest UMETA(Displayname = "Connection Request")
+};
+
 USTRUCT()
 struct FTbNamesNamEsDiscoveryMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	ETbNamesNamEsDiscoveryMessageType Type = ETbNamesNamEsDiscoveryMessageType::ConnectionRequest;
+};
+
+USTRUCT()
+struct FTbNamesNamEsServiceAnnouncementReplyMessage
 {
 	GENERATED_BODY()
 };

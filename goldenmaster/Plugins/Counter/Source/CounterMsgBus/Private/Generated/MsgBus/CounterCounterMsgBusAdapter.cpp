@@ -29,6 +29,8 @@ limitations under the License.
 #include "MessageEndpoint.h"
 #include "MessageEndpointBuilder.h"
 #include "Misc/DateTime.h"
+
+DEFINE_LOG_CATEGORY(LogCounterCounterMsgBusAdapter);
 UCounterCounterMsgBusAdapter::UCounterCounterMsgBusAdapter()
 {
 }
@@ -58,7 +60,8 @@ void UCounterCounterMsgBusAdapter::_StartListening()
 
 	// clang-format off
 	CounterCounterMsgBusEndpoint = FMessageEndpoint::Builder("ApiGear/Counter/Counter/Service")
-		.Handling<FCounterCounterDiscoveryMessage>(this, &UCounterCounterMsgBusAdapter::OnNewClientDiscovered)
+		.Handling<FCounterCounterDiscoveryMessage>(this, &UCounterCounterMsgBusAdapter::OnDiscoveryMessage)
+		.Handling<FCounterCounterServiceAnnouncementReplyMessage>(this, &UCounterCounterMsgBusAdapter::OnServiceAnnouncementMessage)
 		.Handling<FCounterCounterPingMessage>(this, &UCounterCounterMsgBusAdapter::OnPing)
 		.Handling<FCounterCounterClientDisconnectMessage>(this, &UCounterCounterMsgBusAdapter::OnClientDisconnected)
 		.Handling<FCounterCounterSetVectorRequestMessage>(this, &UCounterCounterMsgBusAdapter::OnSetVectorRequest)
@@ -75,7 +78,22 @@ void UCounterCounterMsgBusAdapter::_StartListening()
 	if (CounterCounterMsgBusEndpoint.IsValid())
 	{
 		CounterCounterMsgBusEndpoint->Subscribe<FCounterCounterDiscoveryMessage>();
+		CounterCounterMsgBusEndpoint->Subscribe<FCounterCounterServiceAnnouncementReplyMessage>();
 	}
+
+	_AnnounceService();
+}
+
+void UCounterCounterMsgBusAdapter::_AnnounceService()
+{
+	if (!CounterCounterMsgBusEndpoint.IsValid())
+	{
+		return;
+	}
+
+	auto msg = new FCounterCounterDiscoveryMessage();
+	msg->Type = ECounterCounterDiscoveryMessageType::ServiceAnnouncement;
+	CounterCounterMsgBusEndpoint->Publish<FCounterCounterDiscoveryMessage>(msg);
 }
 
 void UCounterCounterMsgBusAdapter::_StopListening()
@@ -158,7 +176,21 @@ void UCounterCounterMsgBusAdapter::_setBackendService(TScriptInterface<ICounterC
 	OnValueChangedSignalHandle = BackendSignals->OnValueChangedSignal.AddUObject(this, &UCounterCounterMsgBusAdapter::OnValueChanged);
 }
 
-void UCounterCounterMsgBusAdapter::OnNewClientDiscovered(const FCounterCounterDiscoveryMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UCounterCounterMsgBusAdapter::OnDiscoveryMessage(const FCounterCounterDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	switch (InMessage.Type)
+	{
+	case ECounterCounterDiscoveryMessageType::ServiceAnnouncement:
+		HandleServiceAnnouncement(Context);
+		break;
+	case ECounterCounterDiscoveryMessageType::ConnectionRequest:
+	default:
+		HandleClientConnectionRequest(Context);
+		break;
+	}
+}
+
+void UCounterCounterMsgBusAdapter::HandleClientConnectionRequest(const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ConnectedClientsTimestamps.Contains(Context->GetSender()))
 	{
@@ -186,6 +218,30 @@ void UCounterCounterMsgBusAdapter::OnNewClientDiscovered(const FCounterCounterDi
 	_OnClientConnected.Broadcast(ClientAddress.ToString());
 	ConnectedClientsTimestamps.Add(ClientAddress, FPlatformTime::Seconds());
 	_UpdateClientsConnected();
+}
+
+void UCounterCounterMsgBusAdapter::HandleServiceAnnouncement(const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	// send service announcement
+	auto msg = new FCounterCounterServiceAnnouncementReplyMessage();
+
+	if (CounterCounterMsgBusEndpoint.IsValid())
+	{
+		CounterCounterMsgBusEndpoint->Send<FCounterCounterServiceAnnouncementReplyMessage>(msg, EMessageFlags::Reliable,
+			nullptr,
+			TArrayBuilder<FMessageAddress>().Add(Context->GetSender()),
+			FTimespan::Zero(),
+			FDateTime::MaxValue());
+	}
+}
+
+void UCounterCounterMsgBusAdapter::OnServiceAnnouncementMessage(const FCounterCounterServiceAnnouncementReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	if (CounterCounterMsgBusEndpoint->GetAddress() == Context->GetSender())
+	{
+		return;
+	}
+	UE_LOG(LogCounterCounterMsgBusAdapter, Error, TEXT("Service announcement from existing endpoint(%s) received, we should stop listening."), *Context->GetSender().ToString());
 }
 
 void UCounterCounterMsgBusAdapter::OnPing(const FCounterCounterPingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)

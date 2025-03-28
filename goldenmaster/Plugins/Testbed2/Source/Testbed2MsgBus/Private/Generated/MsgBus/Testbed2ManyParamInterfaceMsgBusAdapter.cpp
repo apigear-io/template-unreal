@@ -29,6 +29,8 @@ limitations under the License.
 #include "MessageEndpoint.h"
 #include "MessageEndpointBuilder.h"
 #include "Misc/DateTime.h"
+
+DEFINE_LOG_CATEGORY(LogTestbed2ManyParamInterfaceMsgBusAdapter);
 UTestbed2ManyParamInterfaceMsgBusAdapter::UTestbed2ManyParamInterfaceMsgBusAdapter()
 {
 }
@@ -58,7 +60,8 @@ void UTestbed2ManyParamInterfaceMsgBusAdapter::_StartListening()
 
 	// clang-format off
 	Testbed2ManyParamInterfaceMsgBusEndpoint = FMessageEndpoint::Builder("ApiGear/Testbed2/ManyParamInterface/Service")
-		.Handling<FTestbed2ManyParamInterfaceDiscoveryMessage>(this, &UTestbed2ManyParamInterfaceMsgBusAdapter::OnNewClientDiscovered)
+		.Handling<FTestbed2ManyParamInterfaceDiscoveryMessage>(this, &UTestbed2ManyParamInterfaceMsgBusAdapter::OnDiscoveryMessage)
+		.Handling<FTestbed2ManyParamInterfaceServiceAnnouncementReplyMessage>(this, &UTestbed2ManyParamInterfaceMsgBusAdapter::OnServiceAnnouncementMessage)
 		.Handling<FTestbed2ManyParamInterfacePingMessage>(this, &UTestbed2ManyParamInterfaceMsgBusAdapter::OnPing)
 		.Handling<FTestbed2ManyParamInterfaceClientDisconnectMessage>(this, &UTestbed2ManyParamInterfaceMsgBusAdapter::OnClientDisconnected)
 		.Handling<FTestbed2ManyParamInterfaceSetProp1RequestMessage>(this, &UTestbed2ManyParamInterfaceMsgBusAdapter::OnSetProp1Request)
@@ -75,7 +78,22 @@ void UTestbed2ManyParamInterfaceMsgBusAdapter::_StartListening()
 	if (Testbed2ManyParamInterfaceMsgBusEndpoint.IsValid())
 	{
 		Testbed2ManyParamInterfaceMsgBusEndpoint->Subscribe<FTestbed2ManyParamInterfaceDiscoveryMessage>();
+		Testbed2ManyParamInterfaceMsgBusEndpoint->Subscribe<FTestbed2ManyParamInterfaceServiceAnnouncementReplyMessage>();
 	}
+
+	_AnnounceService();
+}
+
+void UTestbed2ManyParamInterfaceMsgBusAdapter::_AnnounceService()
+{
+	if (!Testbed2ManyParamInterfaceMsgBusEndpoint.IsValid())
+	{
+		return;
+	}
+
+	auto msg = new FTestbed2ManyParamInterfaceDiscoveryMessage();
+	msg->Type = ETestbed2ManyParamInterfaceDiscoveryMessageType::ServiceAnnouncement;
+	Testbed2ManyParamInterfaceMsgBusEndpoint->Publish<FTestbed2ManyParamInterfaceDiscoveryMessage>(msg);
 }
 
 void UTestbed2ManyParamInterfaceMsgBusAdapter::_StopListening()
@@ -176,7 +194,21 @@ void UTestbed2ManyParamInterfaceMsgBusAdapter::_setBackendService(TScriptInterfa
 	OnSig4SignalHandle = BackendSignals->OnSig4Signal.AddUObject(this, &UTestbed2ManyParamInterfaceMsgBusAdapter::OnSig4);
 }
 
-void UTestbed2ManyParamInterfaceMsgBusAdapter::OnNewClientDiscovered(const FTestbed2ManyParamInterfaceDiscoveryMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTestbed2ManyParamInterfaceMsgBusAdapter::OnDiscoveryMessage(const FTestbed2ManyParamInterfaceDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	switch (InMessage.Type)
+	{
+	case ETestbed2ManyParamInterfaceDiscoveryMessageType::ServiceAnnouncement:
+		HandleServiceAnnouncement(Context);
+		break;
+	case ETestbed2ManyParamInterfaceDiscoveryMessageType::ConnectionRequest:
+	default:
+		HandleClientConnectionRequest(Context);
+		break;
+	}
+}
+
+void UTestbed2ManyParamInterfaceMsgBusAdapter::HandleClientConnectionRequest(const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ConnectedClientsTimestamps.Contains(Context->GetSender()))
 	{
@@ -204,6 +236,30 @@ void UTestbed2ManyParamInterfaceMsgBusAdapter::OnNewClientDiscovered(const FTest
 	_OnClientConnected.Broadcast(ClientAddress.ToString());
 	ConnectedClientsTimestamps.Add(ClientAddress, FPlatformTime::Seconds());
 	_UpdateClientsConnected();
+}
+
+void UTestbed2ManyParamInterfaceMsgBusAdapter::HandleServiceAnnouncement(const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	// send service announcement
+	auto msg = new FTestbed2ManyParamInterfaceServiceAnnouncementReplyMessage();
+
+	if (Testbed2ManyParamInterfaceMsgBusEndpoint.IsValid())
+	{
+		Testbed2ManyParamInterfaceMsgBusEndpoint->Send<FTestbed2ManyParamInterfaceServiceAnnouncementReplyMessage>(msg, EMessageFlags::Reliable,
+			nullptr,
+			TArrayBuilder<FMessageAddress>().Add(Context->GetSender()),
+			FTimespan::Zero(),
+			FDateTime::MaxValue());
+	}
+}
+
+void UTestbed2ManyParamInterfaceMsgBusAdapter::OnServiceAnnouncementMessage(const FTestbed2ManyParamInterfaceServiceAnnouncementReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	if (Testbed2ManyParamInterfaceMsgBusEndpoint->GetAddress() == Context->GetSender())
+	{
+		return;
+	}
+	UE_LOG(LogTestbed2ManyParamInterfaceMsgBusAdapter, Error, TEXT("Service announcement from existing endpoint(%s) received, we should stop listening."), *Context->GetSender().ToString());
 }
 
 void UTestbed2ManyParamInterfaceMsgBusAdapter::OnPing(const FTestbed2ManyParamInterfacePingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
