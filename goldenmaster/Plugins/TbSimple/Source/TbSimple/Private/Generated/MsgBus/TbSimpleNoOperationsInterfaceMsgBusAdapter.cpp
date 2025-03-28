@@ -30,6 +30,8 @@ limitations under the License.
 #include "MessageEndpoint.h"
 #include "MessageEndpointBuilder.h"
 #include "Misc/DateTime.h"
+
+DEFINE_LOG_CATEGORY(LogTbSimpleNoOperationsInterfaceMsgBusAdapter);
 UTbSimpleNoOperationsInterfaceMsgBusAdapter::UTbSimpleNoOperationsInterfaceMsgBusAdapter()
 {
 }
@@ -59,7 +61,8 @@ void UTbSimpleNoOperationsInterfaceMsgBusAdapter::_StartListening()
 
 	// clang-format off
 	TbSimpleNoOperationsInterfaceMsgBusEndpoint = FMessageEndpoint::Builder("ApiGear/TbSimple/NoOperationsInterface/Service")
-		.Handling<FTbSimpleNoOperationsInterfaceDiscoveryMessage>(this, &UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnNewClientDiscovered)
+		.Handling<FTbSimpleNoOperationsInterfaceDiscoveryMessage>(this, &UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnDiscoveryMessage)
+		.Handling<FTbSimpleNoOperationsInterfaceServiceAnnouncementReplyMessage>(this, &UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnServiceAnnouncementMessage)
 		.Handling<FTbSimpleNoOperationsInterfacePingMessage>(this, &UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnPing)
 		.Handling<FTbSimpleNoOperationsInterfaceClientDisconnectMessage>(this, &UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnClientDisconnected)
 		.Handling<FTbSimpleNoOperationsInterfaceSetPropBoolRequestMessage>(this, &UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnSetPropBoolRequest)
@@ -70,7 +73,22 @@ void UTbSimpleNoOperationsInterfaceMsgBusAdapter::_StartListening()
 	if (TbSimpleNoOperationsInterfaceMsgBusEndpoint.IsValid())
 	{
 		TbSimpleNoOperationsInterfaceMsgBusEndpoint->Subscribe<FTbSimpleNoOperationsInterfaceDiscoveryMessage>();
+		TbSimpleNoOperationsInterfaceMsgBusEndpoint->Subscribe<FTbSimpleNoOperationsInterfaceServiceAnnouncementReplyMessage>();
 	}
+
+	_AnnounceService();
+}
+
+void UTbSimpleNoOperationsInterfaceMsgBusAdapter::_AnnounceService()
+{
+	if (!TbSimpleNoOperationsInterfaceMsgBusEndpoint.IsValid())
+	{
+		return;
+	}
+
+	auto msg = new FTbSimpleNoOperationsInterfaceDiscoveryMessage();
+	msg->Type = ETbSimpleNoOperationsInterfaceDiscoveryMessageType::ServiceAnnouncement;
+	TbSimpleNoOperationsInterfaceMsgBusEndpoint->Publish<FTbSimpleNoOperationsInterfaceDiscoveryMessage>(msg);
 }
 
 void UTbSimpleNoOperationsInterfaceMsgBusAdapter::_StopListening()
@@ -131,7 +149,21 @@ void UTbSimpleNoOperationsInterfaceMsgBusAdapter::_setBackendService(TScriptInte
 	BackendSignals->OnSigBoolSignal.AddDynamic(this, &UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnSigBool);
 }
 
-void UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnNewClientDiscovered(const FTbSimpleNoOperationsInterfaceDiscoveryMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnDiscoveryMessage(const FTbSimpleNoOperationsInterfaceDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	switch (InMessage.Type)
+	{
+	case ETbSimpleNoOperationsInterfaceDiscoveryMessageType::ServiceAnnouncement:
+		HandleServiceAnnouncement(Context);
+		break;
+	case ETbSimpleNoOperationsInterfaceDiscoveryMessageType::ConnectionRequest:
+	default:
+		HandleClientConnectionRequest(Context);
+		break;
+	}
+}
+
+void UTbSimpleNoOperationsInterfaceMsgBusAdapter::HandleClientConnectionRequest(const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ConnectedClientsTimestamps.Contains(Context->GetSender()))
 	{
@@ -157,6 +189,30 @@ void UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnNewClientDiscovered(const FT
 	_OnClientConnected.Broadcast(ClientAddress.ToString());
 	ConnectedClientsTimestamps.Add(ClientAddress, FPlatformTime::Seconds());
 	_UpdateClientsConnected();
+}
+
+void UTbSimpleNoOperationsInterfaceMsgBusAdapter::HandleServiceAnnouncement(const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	// send service announcement
+	auto msg = new FTbSimpleNoOperationsInterfaceServiceAnnouncementReplyMessage();
+
+	if (TbSimpleNoOperationsInterfaceMsgBusEndpoint.IsValid())
+	{
+		TbSimpleNoOperationsInterfaceMsgBusEndpoint->Send<FTbSimpleNoOperationsInterfaceServiceAnnouncementReplyMessage>(msg, EMessageFlags::Reliable,
+			nullptr,
+			TArrayBuilder<FMessageAddress>().Add(Context->GetSender()),
+			FTimespan::Zero(),
+			FDateTime::MaxValue());
+	}
+}
+
+void UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnServiceAnnouncementMessage(const FTbSimpleNoOperationsInterfaceServiceAnnouncementReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	if (TbSimpleNoOperationsInterfaceMsgBusEndpoint->GetAddress() == Context->GetSender())
+	{
+		return;
+	}
+	UE_LOG(LogTbSimpleNoOperationsInterfaceMsgBusAdapter, Error, TEXT("Service announcement from existing endpoint(%s) received, we should stop listening."), *Context->GetSender().ToString());
 }
 
 void UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnPing(const FTbSimpleNoOperationsInterfacePingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)

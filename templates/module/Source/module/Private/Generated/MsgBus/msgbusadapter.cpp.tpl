@@ -24,6 +24,8 @@
 #include "MessageEndpointBuilder.h"
 #include "Misc/DateTime.h"
 
+DEFINE_LOG_CATEGORY(Log{{$Iface}}MsgBusAdapter);
+
 {{- if .Interface.Description }}
 /**
    \brief {{.Interface.Description}}
@@ -58,7 +60,8 @@ void {{$Class}}::_StartListening()
 
 	// clang-format off
 	{{$Iface}}MsgBusEndpoint = FMessageEndpoint::Builder("ApiGear/{{$ModuleName}}/{{$IfaceName}}/Service")
-		.Handling<F{{$Iface}}DiscoveryMessage>(this, &{{$Class}}::OnNewClientDiscovered)
+		.Handling<F{{$Iface}}DiscoveryMessage>(this, &{{$Class}}::OnDiscoveryMessage)
+		.Handling<F{{$Iface}}ServiceAnnouncementReplyMessage>(this, &{{$Class}}::OnServiceAnnouncementMessage)
 		.Handling<F{{$Iface}}PingMessage>(this, &{{$Class}}::OnPing)
 		.Handling<F{{$Iface}}ClientDisconnectMessage>(this, &{{$Class}}::OnClientDisconnected)
 {{- range $i, $e := .Interface.Properties }}
@@ -75,7 +78,22 @@ void {{$Class}}::_StartListening()
 	if ({{$Iface}}MsgBusEndpoint.IsValid())
 	{
 		{{$Iface}}MsgBusEndpoint->Subscribe<F{{$Iface}}DiscoveryMessage>();
+		{{$Iface}}MsgBusEndpoint->Subscribe<F{{$Iface}}ServiceAnnouncementReplyMessage>();
 	}
+
+	_AnnounceService();
+}
+
+void {{$Class}}::_AnnounceService()
+{
+	if (!{{$Iface}}MsgBusEndpoint.IsValid())
+	{
+		return;
+	}
+
+	auto msg = new F{{$Iface}}DiscoveryMessage();
+	msg->Type = E{{$Iface}}DiscoveryMessageType::ServiceAnnouncement;
+	{{$Iface}}MsgBusEndpoint->Publish<F{{$Iface}}DiscoveryMessage>(msg);
 }
 
 void {{$Class}}::_StopListening()
@@ -145,7 +163,21 @@ void {{$Class}}::_setBackendService(TScriptInterface<I{{$Iface}}Interface> InSer
 {{- end }}
 }
 
-void {{$Class}}::OnNewClientDiscovered(const F{{$Iface}}DiscoveryMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void {{$Class}}::OnDiscoveryMessage(const F{{$Iface}}DiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	switch (InMessage.Type)
+	{
+	case E{{$Iface}}DiscoveryMessageType::ServiceAnnouncement:
+		HandleServiceAnnouncement(Context);
+		break;
+	case E{{$Iface}}DiscoveryMessageType::ConnectionRequest:
+	default:
+		HandleClientConnectionRequest(Context);
+		break;
+	}
+}
+
+void {{$Class}}::HandleClientConnectionRequest(const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ConnectedClientsTimestamps.Contains(Context->GetSender()))
 	{
@@ -173,6 +205,30 @@ void {{$Class}}::OnNewClientDiscovered(const F{{$Iface}}DiscoveryMessage& /*InMe
 	_OnClientConnected.Broadcast(ClientAddress.ToString());
 	ConnectedClientsTimestamps.Add(ClientAddress, FPlatformTime::Seconds());
 	_UpdateClientsConnected();
+}
+
+void {{$Class}}::HandleServiceAnnouncement(const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	// send service announcement
+	auto msg = new F{{$Iface}}ServiceAnnouncementReplyMessage();
+
+	if ({{$Iface}}MsgBusEndpoint.IsValid())
+	{
+		{{$Iface}}MsgBusEndpoint->Send<F{{$Iface}}ServiceAnnouncementReplyMessage>(msg, EMessageFlags::Reliable,
+			nullptr,
+			TArrayBuilder<FMessageAddress>().Add(Context->GetSender()),
+			FTimespan::Zero(),
+			FDateTime::MaxValue());
+	}
+}
+
+void {{$Class}}::OnServiceAnnouncementMessage(const F{{$Iface}}ServiceAnnouncementReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	if ({{$Iface}}MsgBusEndpoint->GetAddress() == Context->GetSender())
+	{
+		return;
+	}
+	UE_LOG(Log{{$Iface}}MsgBusAdapter, Error, TEXT("Service announcement from existing endpoint(%s) received, we should stop listening."), *Context->GetSender().ToString());
 }
 
 void {{$Class}}::OnPing(const F{{$Iface}}PingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)

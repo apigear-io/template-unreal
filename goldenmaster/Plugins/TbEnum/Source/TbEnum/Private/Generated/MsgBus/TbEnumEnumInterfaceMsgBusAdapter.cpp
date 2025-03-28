@@ -30,6 +30,8 @@ limitations under the License.
 #include "MessageEndpoint.h"
 #include "MessageEndpointBuilder.h"
 #include "Misc/DateTime.h"
+
+DEFINE_LOG_CATEGORY(LogTbEnumEnumInterfaceMsgBusAdapter);
 UTbEnumEnumInterfaceMsgBusAdapter::UTbEnumEnumInterfaceMsgBusAdapter()
 {
 }
@@ -59,7 +61,8 @@ void UTbEnumEnumInterfaceMsgBusAdapter::_StartListening()
 
 	// clang-format off
 	TbEnumEnumInterfaceMsgBusEndpoint = FMessageEndpoint::Builder("ApiGear/TbEnum/EnumInterface/Service")
-		.Handling<FTbEnumEnumInterfaceDiscoveryMessage>(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnNewClientDiscovered)
+		.Handling<FTbEnumEnumInterfaceDiscoveryMessage>(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnDiscoveryMessage)
+		.Handling<FTbEnumEnumInterfaceServiceAnnouncementReplyMessage>(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnServiceAnnouncementMessage)
 		.Handling<FTbEnumEnumInterfacePingMessage>(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnPing)
 		.Handling<FTbEnumEnumInterfaceClientDisconnectMessage>(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnClientDisconnected)
 		.Handling<FTbEnumEnumInterfaceSetProp0RequestMessage>(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnSetProp0Request)
@@ -76,7 +79,22 @@ void UTbEnumEnumInterfaceMsgBusAdapter::_StartListening()
 	if (TbEnumEnumInterfaceMsgBusEndpoint.IsValid())
 	{
 		TbEnumEnumInterfaceMsgBusEndpoint->Subscribe<FTbEnumEnumInterfaceDiscoveryMessage>();
+		TbEnumEnumInterfaceMsgBusEndpoint->Subscribe<FTbEnumEnumInterfaceServiceAnnouncementReplyMessage>();
 	}
+
+	_AnnounceService();
+}
+
+void UTbEnumEnumInterfaceMsgBusAdapter::_AnnounceService()
+{
+	if (!TbEnumEnumInterfaceMsgBusEndpoint.IsValid())
+	{
+		return;
+	}
+
+	auto msg = new FTbEnumEnumInterfaceDiscoveryMessage();
+	msg->Type = ETbEnumEnumInterfaceDiscoveryMessageType::ServiceAnnouncement;
+	TbEnumEnumInterfaceMsgBusEndpoint->Publish<FTbEnumEnumInterfaceDiscoveryMessage>(msg);
 }
 
 void UTbEnumEnumInterfaceMsgBusAdapter::_StopListening()
@@ -145,7 +163,21 @@ void UTbEnumEnumInterfaceMsgBusAdapter::_setBackendService(TScriptInterface<ITbE
 	BackendSignals->OnSig3Signal.AddDynamic(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnSig3);
 }
 
-void UTbEnumEnumInterfaceMsgBusAdapter::OnNewClientDiscovered(const FTbEnumEnumInterfaceDiscoveryMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTbEnumEnumInterfaceMsgBusAdapter::OnDiscoveryMessage(const FTbEnumEnumInterfaceDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	switch (InMessage.Type)
+	{
+	case ETbEnumEnumInterfaceDiscoveryMessageType::ServiceAnnouncement:
+		HandleServiceAnnouncement(Context);
+		break;
+	case ETbEnumEnumInterfaceDiscoveryMessageType::ConnectionRequest:
+	default:
+		HandleClientConnectionRequest(Context);
+		break;
+	}
+}
+
+void UTbEnumEnumInterfaceMsgBusAdapter::HandleClientConnectionRequest(const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ConnectedClientsTimestamps.Contains(Context->GetSender()))
 	{
@@ -173,6 +205,30 @@ void UTbEnumEnumInterfaceMsgBusAdapter::OnNewClientDiscovered(const FTbEnumEnumI
 	_OnClientConnected.Broadcast(ClientAddress.ToString());
 	ConnectedClientsTimestamps.Add(ClientAddress, FPlatformTime::Seconds());
 	_UpdateClientsConnected();
+}
+
+void UTbEnumEnumInterfaceMsgBusAdapter::HandleServiceAnnouncement(const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	// send service announcement
+	auto msg = new FTbEnumEnumInterfaceServiceAnnouncementReplyMessage();
+
+	if (TbEnumEnumInterfaceMsgBusEndpoint.IsValid())
+	{
+		TbEnumEnumInterfaceMsgBusEndpoint->Send<FTbEnumEnumInterfaceServiceAnnouncementReplyMessage>(msg, EMessageFlags::Reliable,
+			nullptr,
+			TArrayBuilder<FMessageAddress>().Add(Context->GetSender()),
+			FTimespan::Zero(),
+			FDateTime::MaxValue());
+	}
+}
+
+void UTbEnumEnumInterfaceMsgBusAdapter::OnServiceAnnouncementMessage(const FTbEnumEnumInterfaceServiceAnnouncementReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	if (TbEnumEnumInterfaceMsgBusEndpoint->GetAddress() == Context->GetSender())
+	{
+		return;
+	}
+	UE_LOG(LogTbEnumEnumInterfaceMsgBusAdapter, Error, TEXT("Service announcement from existing endpoint(%s) received, we should stop listening."), *Context->GetSender().ToString());
 }
 
 void UTbEnumEnumInterfaceMsgBusAdapter::OnPing(const FTbEnumEnumInterfacePingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)

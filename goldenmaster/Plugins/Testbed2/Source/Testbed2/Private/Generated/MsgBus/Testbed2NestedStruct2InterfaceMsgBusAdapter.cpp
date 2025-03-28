@@ -30,6 +30,8 @@ limitations under the License.
 #include "MessageEndpoint.h"
 #include "MessageEndpointBuilder.h"
 #include "Misc/DateTime.h"
+
+DEFINE_LOG_CATEGORY(LogTestbed2NestedStruct2InterfaceMsgBusAdapter);
 UTestbed2NestedStruct2InterfaceMsgBusAdapter::UTestbed2NestedStruct2InterfaceMsgBusAdapter()
 {
 }
@@ -59,7 +61,8 @@ void UTestbed2NestedStruct2InterfaceMsgBusAdapter::_StartListening()
 
 	// clang-format off
 	Testbed2NestedStruct2InterfaceMsgBusEndpoint = FMessageEndpoint::Builder("ApiGear/Testbed2/NestedStruct2Interface/Service")
-		.Handling<FTestbed2NestedStruct2InterfaceDiscoveryMessage>(this, &UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnNewClientDiscovered)
+		.Handling<FTestbed2NestedStruct2InterfaceDiscoveryMessage>(this, &UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnDiscoveryMessage)
+		.Handling<FTestbed2NestedStruct2InterfaceServiceAnnouncementReplyMessage>(this, &UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnServiceAnnouncementMessage)
 		.Handling<FTestbed2NestedStruct2InterfacePingMessage>(this, &UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnPing)
 		.Handling<FTestbed2NestedStruct2InterfaceClientDisconnectMessage>(this, &UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnClientDisconnected)
 		.Handling<FTestbed2NestedStruct2InterfaceSetProp1RequestMessage>(this, &UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnSetProp1Request)
@@ -72,7 +75,22 @@ void UTestbed2NestedStruct2InterfaceMsgBusAdapter::_StartListening()
 	if (Testbed2NestedStruct2InterfaceMsgBusEndpoint.IsValid())
 	{
 		Testbed2NestedStruct2InterfaceMsgBusEndpoint->Subscribe<FTestbed2NestedStruct2InterfaceDiscoveryMessage>();
+		Testbed2NestedStruct2InterfaceMsgBusEndpoint->Subscribe<FTestbed2NestedStruct2InterfaceServiceAnnouncementReplyMessage>();
 	}
+
+	_AnnounceService();
+}
+
+void UTestbed2NestedStruct2InterfaceMsgBusAdapter::_AnnounceService()
+{
+	if (!Testbed2NestedStruct2InterfaceMsgBusEndpoint.IsValid())
+	{
+		return;
+	}
+
+	auto msg = new FTestbed2NestedStruct2InterfaceDiscoveryMessage();
+	msg->Type = ETestbed2NestedStruct2InterfaceDiscoveryMessageType::ServiceAnnouncement;
+	Testbed2NestedStruct2InterfaceMsgBusEndpoint->Publish<FTestbed2NestedStruct2InterfaceDiscoveryMessage>(msg);
 }
 
 void UTestbed2NestedStruct2InterfaceMsgBusAdapter::_StopListening()
@@ -133,7 +151,21 @@ void UTestbed2NestedStruct2InterfaceMsgBusAdapter::_setBackendService(TScriptInt
 	BackendSignals->OnSig2Signal.AddDynamic(this, &UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnSig2);
 }
 
-void UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnNewClientDiscovered(const FTestbed2NestedStruct2InterfaceDiscoveryMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnDiscoveryMessage(const FTestbed2NestedStruct2InterfaceDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	switch (InMessage.Type)
+	{
+	case ETestbed2NestedStruct2InterfaceDiscoveryMessageType::ServiceAnnouncement:
+		HandleServiceAnnouncement(Context);
+		break;
+	case ETestbed2NestedStruct2InterfaceDiscoveryMessageType::ConnectionRequest:
+	default:
+		HandleClientConnectionRequest(Context);
+		break;
+	}
+}
+
+void UTestbed2NestedStruct2InterfaceMsgBusAdapter::HandleClientConnectionRequest(const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ConnectedClientsTimestamps.Contains(Context->GetSender()))
 	{
@@ -159,6 +191,30 @@ void UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnNewClientDiscovered(const F
 	_OnClientConnected.Broadcast(ClientAddress.ToString());
 	ConnectedClientsTimestamps.Add(ClientAddress, FPlatformTime::Seconds());
 	_UpdateClientsConnected();
+}
+
+void UTestbed2NestedStruct2InterfaceMsgBusAdapter::HandleServiceAnnouncement(const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	// send service announcement
+	auto msg = new FTestbed2NestedStruct2InterfaceServiceAnnouncementReplyMessage();
+
+	if (Testbed2NestedStruct2InterfaceMsgBusEndpoint.IsValid())
+	{
+		Testbed2NestedStruct2InterfaceMsgBusEndpoint->Send<FTestbed2NestedStruct2InterfaceServiceAnnouncementReplyMessage>(msg, EMessageFlags::Reliable,
+			nullptr,
+			TArrayBuilder<FMessageAddress>().Add(Context->GetSender()),
+			FTimespan::Zero(),
+			FDateTime::MaxValue());
+	}
+}
+
+void UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnServiceAnnouncementMessage(const FTestbed2NestedStruct2InterfaceServiceAnnouncementReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	if (Testbed2NestedStruct2InterfaceMsgBusEndpoint->GetAddress() == Context->GetSender())
+	{
+		return;
+	}
+	UE_LOG(LogTestbed2NestedStruct2InterfaceMsgBusAdapter, Error, TEXT("Service announcement from existing endpoint(%s) received, we should stop listening."), *Context->GetSender().ToString());
 }
 
 void UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnPing(const FTestbed2NestedStruct2InterfacePingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)

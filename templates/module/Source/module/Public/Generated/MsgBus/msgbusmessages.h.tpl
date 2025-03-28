@@ -31,8 +31,26 @@
 {{- end }}
 #include "{{$Iface}}MsgBusMessages.generated.h"
 
+UENUM(BlueprintType)
+enum class E{{$DisplayName}}DiscoveryMessageType : uint8
+{
+	// send by other services to make sure they are unique
+	ServiceAnnouncement UMETA(Displayname = "Service Announcement"),
+	// send by clients to start an actual connection
+	ConnectionRequest UMETA(Displayname = "Connection Request")
+};
+
 USTRUCT()
 struct F{{$DisplayName}}DiscoveryMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	E{{$DisplayName}}DiscoveryMessageType Type = E{{$DisplayName}}DiscoveryMessageType::ConnectionRequest;
+};
+
+USTRUCT()
+struct F{{$DisplayName}}ServiceAnnouncementReplyMessage
 {
 	GENERATED_BODY()
 };

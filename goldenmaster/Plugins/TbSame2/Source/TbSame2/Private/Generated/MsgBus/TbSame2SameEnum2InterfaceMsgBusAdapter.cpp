@@ -30,6 +30,8 @@ limitations under the License.
 #include "MessageEndpoint.h"
 #include "MessageEndpointBuilder.h"
 #include "Misc/DateTime.h"
+
+DEFINE_LOG_CATEGORY(LogTbSame2SameEnum2InterfaceMsgBusAdapter);
 UTbSame2SameEnum2InterfaceMsgBusAdapter::UTbSame2SameEnum2InterfaceMsgBusAdapter()
 {
 }
@@ -59,7 +61,8 @@ void UTbSame2SameEnum2InterfaceMsgBusAdapter::_StartListening()
 
 	// clang-format off
 	TbSame2SameEnum2InterfaceMsgBusEndpoint = FMessageEndpoint::Builder("ApiGear/TbSame2/SameEnum2Interface/Service")
-		.Handling<FTbSame2SameEnum2InterfaceDiscoveryMessage>(this, &UTbSame2SameEnum2InterfaceMsgBusAdapter::OnNewClientDiscovered)
+		.Handling<FTbSame2SameEnum2InterfaceDiscoveryMessage>(this, &UTbSame2SameEnum2InterfaceMsgBusAdapter::OnDiscoveryMessage)
+		.Handling<FTbSame2SameEnum2InterfaceServiceAnnouncementReplyMessage>(this, &UTbSame2SameEnum2InterfaceMsgBusAdapter::OnServiceAnnouncementMessage)
 		.Handling<FTbSame2SameEnum2InterfacePingMessage>(this, &UTbSame2SameEnum2InterfaceMsgBusAdapter::OnPing)
 		.Handling<FTbSame2SameEnum2InterfaceClientDisconnectMessage>(this, &UTbSame2SameEnum2InterfaceMsgBusAdapter::OnClientDisconnected)
 		.Handling<FTbSame2SameEnum2InterfaceSetProp1RequestMessage>(this, &UTbSame2SameEnum2InterfaceMsgBusAdapter::OnSetProp1Request)
@@ -72,7 +75,22 @@ void UTbSame2SameEnum2InterfaceMsgBusAdapter::_StartListening()
 	if (TbSame2SameEnum2InterfaceMsgBusEndpoint.IsValid())
 	{
 		TbSame2SameEnum2InterfaceMsgBusEndpoint->Subscribe<FTbSame2SameEnum2InterfaceDiscoveryMessage>();
+		TbSame2SameEnum2InterfaceMsgBusEndpoint->Subscribe<FTbSame2SameEnum2InterfaceServiceAnnouncementReplyMessage>();
 	}
+
+	_AnnounceService();
+}
+
+void UTbSame2SameEnum2InterfaceMsgBusAdapter::_AnnounceService()
+{
+	if (!TbSame2SameEnum2InterfaceMsgBusEndpoint.IsValid())
+	{
+		return;
+	}
+
+	auto msg = new FTbSame2SameEnum2InterfaceDiscoveryMessage();
+	msg->Type = ETbSame2SameEnum2InterfaceDiscoveryMessageType::ServiceAnnouncement;
+	TbSame2SameEnum2InterfaceMsgBusEndpoint->Publish<FTbSame2SameEnum2InterfaceDiscoveryMessage>(msg);
 }
 
 void UTbSame2SameEnum2InterfaceMsgBusAdapter::_StopListening()
@@ -133,7 +151,21 @@ void UTbSame2SameEnum2InterfaceMsgBusAdapter::_setBackendService(TScriptInterfac
 	BackendSignals->OnSig2Signal.AddDynamic(this, &UTbSame2SameEnum2InterfaceMsgBusAdapter::OnSig2);
 }
 
-void UTbSame2SameEnum2InterfaceMsgBusAdapter::OnNewClientDiscovered(const FTbSame2SameEnum2InterfaceDiscoveryMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTbSame2SameEnum2InterfaceMsgBusAdapter::OnDiscoveryMessage(const FTbSame2SameEnum2InterfaceDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	switch (InMessage.Type)
+	{
+	case ETbSame2SameEnum2InterfaceDiscoveryMessageType::ServiceAnnouncement:
+		HandleServiceAnnouncement(Context);
+		break;
+	case ETbSame2SameEnum2InterfaceDiscoveryMessageType::ConnectionRequest:
+	default:
+		HandleClientConnectionRequest(Context);
+		break;
+	}
+}
+
+void UTbSame2SameEnum2InterfaceMsgBusAdapter::HandleClientConnectionRequest(const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ConnectedClientsTimestamps.Contains(Context->GetSender()))
 	{
@@ -159,6 +191,30 @@ void UTbSame2SameEnum2InterfaceMsgBusAdapter::OnNewClientDiscovered(const FTbSam
 	_OnClientConnected.Broadcast(ClientAddress.ToString());
 	ConnectedClientsTimestamps.Add(ClientAddress, FPlatformTime::Seconds());
 	_UpdateClientsConnected();
+}
+
+void UTbSame2SameEnum2InterfaceMsgBusAdapter::HandleServiceAnnouncement(const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	// send service announcement
+	auto msg = new FTbSame2SameEnum2InterfaceServiceAnnouncementReplyMessage();
+
+	if (TbSame2SameEnum2InterfaceMsgBusEndpoint.IsValid())
+	{
+		TbSame2SameEnum2InterfaceMsgBusEndpoint->Send<FTbSame2SameEnum2InterfaceServiceAnnouncementReplyMessage>(msg, EMessageFlags::Reliable,
+			nullptr,
+			TArrayBuilder<FMessageAddress>().Add(Context->GetSender()),
+			FTimespan::Zero(),
+			FDateTime::MaxValue());
+	}
+}
+
+void UTbSame2SameEnum2InterfaceMsgBusAdapter::OnServiceAnnouncementMessage(const FTbSame2SameEnum2InterfaceServiceAnnouncementReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	if (TbSame2SameEnum2InterfaceMsgBusEndpoint->GetAddress() == Context->GetSender())
+	{
+		return;
+	}
+	UE_LOG(LogTbSame2SameEnum2InterfaceMsgBusAdapter, Error, TEXT("Service announcement from existing endpoint(%s) received, we should stop listening."), *Context->GetSender().ToString());
 }
 
 void UTbSame2SameEnum2InterfaceMsgBusAdapter::OnPing(const FTbSame2SameEnum2InterfacePingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)

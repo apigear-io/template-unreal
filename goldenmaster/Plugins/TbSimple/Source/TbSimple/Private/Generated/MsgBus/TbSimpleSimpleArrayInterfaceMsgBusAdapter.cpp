@@ -30,6 +30,8 @@ limitations under the License.
 #include "MessageEndpoint.h"
 #include "MessageEndpointBuilder.h"
 #include "Misc/DateTime.h"
+
+DEFINE_LOG_CATEGORY(LogTbSimpleSimpleArrayInterfaceMsgBusAdapter);
 UTbSimpleSimpleArrayInterfaceMsgBusAdapter::UTbSimpleSimpleArrayInterfaceMsgBusAdapter()
 {
 }
@@ -59,7 +61,8 @@ void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::_StartListening()
 
 	// clang-format off
 	TbSimpleSimpleArrayInterfaceMsgBusEndpoint = FMessageEndpoint::Builder("ApiGear/TbSimple/SimpleArrayInterface/Service")
-		.Handling<FTbSimpleSimpleArrayInterfaceDiscoveryMessage>(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnNewClientDiscovered)
+		.Handling<FTbSimpleSimpleArrayInterfaceDiscoveryMessage>(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnDiscoveryMessage)
+		.Handling<FTbSimpleSimpleArrayInterfaceServiceAnnouncementReplyMessage>(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnServiceAnnouncementMessage)
 		.Handling<FTbSimpleSimpleArrayInterfacePingMessage>(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPing)
 		.Handling<FTbSimpleSimpleArrayInterfaceClientDisconnectMessage>(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnClientDisconnected)
 		.Handling<FTbSimpleSimpleArrayInterfaceSetPropBoolRequestMessage>(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSetPropBoolRequest)
@@ -84,7 +87,22 @@ void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::_StartListening()
 	if (TbSimpleSimpleArrayInterfaceMsgBusEndpoint.IsValid())
 	{
 		TbSimpleSimpleArrayInterfaceMsgBusEndpoint->Subscribe<FTbSimpleSimpleArrayInterfaceDiscoveryMessage>();
+		TbSimpleSimpleArrayInterfaceMsgBusEndpoint->Subscribe<FTbSimpleSimpleArrayInterfaceServiceAnnouncementReplyMessage>();
 	}
+
+	_AnnounceService();
+}
+
+void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::_AnnounceService()
+{
+	if (!TbSimpleSimpleArrayInterfaceMsgBusEndpoint.IsValid())
+	{
+		return;
+	}
+
+	auto msg = new FTbSimpleSimpleArrayInterfaceDiscoveryMessage();
+	msg->Type = ETbSimpleSimpleArrayInterfaceDiscoveryMessageType::ServiceAnnouncement;
+	TbSimpleSimpleArrayInterfaceMsgBusEndpoint->Publish<FTbSimpleSimpleArrayInterfaceDiscoveryMessage>(msg);
 }
 
 void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::_StopListening()
@@ -171,7 +189,21 @@ void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::_setBackendService(TScriptInter
 	BackendSignals->OnSigStringSignal.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSigString);
 }
 
-void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnNewClientDiscovered(const FTbSimpleSimpleArrayInterfaceDiscoveryMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnDiscoveryMessage(const FTbSimpleSimpleArrayInterfaceDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	switch (InMessage.Type)
+	{
+	case ETbSimpleSimpleArrayInterfaceDiscoveryMessageType::ServiceAnnouncement:
+		HandleServiceAnnouncement(Context);
+		break;
+	case ETbSimpleSimpleArrayInterfaceDiscoveryMessageType::ConnectionRequest:
+	default:
+		HandleClientConnectionRequest(Context);
+		break;
+	}
+}
+
+void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::HandleClientConnectionRequest(const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ConnectedClientsTimestamps.Contains(Context->GetSender()))
 	{
@@ -204,6 +236,30 @@ void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnNewClientDiscovered(const FTb
 	_OnClientConnected.Broadcast(ClientAddress.ToString());
 	ConnectedClientsTimestamps.Add(ClientAddress, FPlatformTime::Seconds());
 	_UpdateClientsConnected();
+}
+
+void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::HandleServiceAnnouncement(const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	// send service announcement
+	auto msg = new FTbSimpleSimpleArrayInterfaceServiceAnnouncementReplyMessage();
+
+	if (TbSimpleSimpleArrayInterfaceMsgBusEndpoint.IsValid())
+	{
+		TbSimpleSimpleArrayInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleArrayInterfaceServiceAnnouncementReplyMessage>(msg, EMessageFlags::Reliable,
+			nullptr,
+			TArrayBuilder<FMessageAddress>().Add(Context->GetSender()),
+			FTimespan::Zero(),
+			FDateTime::MaxValue());
+	}
+}
+
+void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnServiceAnnouncementMessage(const FTbSimpleSimpleArrayInterfaceServiceAnnouncementReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	if (TbSimpleSimpleArrayInterfaceMsgBusEndpoint->GetAddress() == Context->GetSender())
+	{
+		return;
+	}
+	UE_LOG(LogTbSimpleSimpleArrayInterfaceMsgBusAdapter, Error, TEXT("Service announcement from existing endpoint(%s) received, we should stop listening."), *Context->GetSender().ToString());
 }
 
 void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPing(const FTbSimpleSimpleArrayInterfacePingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
