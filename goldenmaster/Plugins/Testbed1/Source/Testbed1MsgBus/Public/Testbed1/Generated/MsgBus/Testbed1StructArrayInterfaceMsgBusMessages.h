@@ -62,6 +62,9 @@ struct FTestbed1StructArrayInterfaceInitMessage
 
 	UPROPERTY()
 	TArray<FTestbed1StructString> PropString = TArray<FTestbed1StructString>();
+
+	UPROPERTY()
+	TArray<ETestbed1Enum0> PropEnum = TArray<ETestbed1Enum0>();
 };
 
 USTRUCT()
@@ -128,6 +131,15 @@ struct FTestbed1StructArrayInterfaceSigStringSignalMessage
 
 	UPROPERTY()
 	TArray<FTestbed1StructString> ParamString = TArray<FTestbed1StructString>();
+};
+
+USTRUCT()
+struct FTestbed1StructArrayInterfaceSigEnumSignalMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	TArray<ETestbed1Enum0> ParamEnum = TArray<ETestbed1Enum0>();
 };
 
 USTRUCT()
@@ -200,6 +212,24 @@ struct FTestbed1StructArrayInterfacePropStringChangedMessage
 
 	UPROPERTY()
 	TArray<FTestbed1StructString> PropString = TArray<FTestbed1StructString>();
+};
+
+USTRUCT()
+struct FTestbed1StructArrayInterfaceSetPropEnumRequestMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	TArray<ETestbed1Enum0> PropEnum = TArray<ETestbed1Enum0>();
+};
+
+USTRUCT()
+struct FTestbed1StructArrayInterfacePropEnumChangedMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	TArray<ETestbed1Enum0> PropEnum = TArray<ETestbed1Enum0>();
 };
 
 USTRUCT()
@@ -296,4 +326,28 @@ struct FTestbed1StructArrayInterfaceFuncStringReplyMessage
 
 	UPROPERTY()
 	TArray<FTestbed1StructString> Result = TArray<FTestbed1StructString>();
+};
+
+USTRUCT()
+struct FTestbed1StructArrayInterfaceFuncEnumRequestMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	FGuid ResponseId;
+
+	UPROPERTY()
+	TArray<ETestbed1Enum0> ParamEnum = TArray<ETestbed1Enum0>();
+};
+
+USTRUCT()
+struct FTestbed1StructArrayInterfaceFuncEnumReplyMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	FGuid ResponseId;
+
+	UPROPERTY()
+	TArray<ETestbed1Enum0> Result = TArray<ETestbed1Enum0>();
 };

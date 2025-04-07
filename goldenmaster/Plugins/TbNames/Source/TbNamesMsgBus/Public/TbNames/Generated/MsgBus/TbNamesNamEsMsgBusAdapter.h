@@ -42,6 +42,8 @@ struct FTbNamesNamEsSetSomePropertyRequestMessage;
 struct FTbNamesNamEsSomePropertyChangedMessage;
 struct FTbNamesNamEsSetSomePoperty2RequestMessage;
 struct FTbNamesNamEsSomePoperty2ChangedMessage;
+struct FTbNamesNamEsSetEnumPropertyRequestMessage;
+struct FTbNamesNamEsEnumPropertyChangedMessage;
 struct FTbNamesNamEsSomeFunctionRequestMessage;
 struct FTbNamesNamEsSomeFunction2RequestMessage;
 
@@ -113,6 +115,7 @@ private:
 	void OnSetSwitchRequest(const FTbNamesNamEsSetSwitchRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnSetSomePropertyRequest(const FTbNamesNamEsSetSomePropertyRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnSetSomePoperty2Request(const FTbNamesNamEsSetSomePoperty2RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnSetEnumPropertyRequest(const FTbNamesNamEsSetEnumPropertyRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 
 	// signals
 	UFUNCTION(Category = "ApiGear|TbNames|NamEs", BlueprintInternalUseOnly)
@@ -130,10 +133,14 @@ private:
 	UFUNCTION(Category = "ApiGear|TbNames|NamEs", BlueprintInternalUseOnly)
 	void OnSomePoperty2Changed(int32 SomePoperty2);
 
+	UFUNCTION(Category = "ApiGear|TbNames|NamEs", BlueprintInternalUseOnly)
+	void OnEnumPropertyChanged(ETbNamesEnum_With_Under_scores EnumProperty);
+
 	// delegate handles
 	FDelegateHandle OnSwitchChangedHandle;
 	FDelegateHandle OnSomePropertyChangedHandle;
 	FDelegateHandle OnSomePoperty2ChangedHandle;
+	FDelegateHandle OnEnumPropertyChangedHandle;
 	FDelegateHandle OnSomeSignalSignalHandle;
 	FDelegateHandle OnSomeSignal2SignalHandle;
 

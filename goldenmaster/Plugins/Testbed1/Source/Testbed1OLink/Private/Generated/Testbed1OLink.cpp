@@ -19,6 +19,7 @@ limitations under the License.
 #include "Testbed1/Generated/Testbed1Factory.h"
 #include "Testbed1/Generated/OLink/Testbed1StructInterfaceOLinkClient.h"
 #include "Testbed1/Generated/OLink/Testbed1StructArrayInterfaceOLinkClient.h"
+#include "Testbed1/Generated/OLink/Testbed1StructArray2InterfaceOLinkClient.h"
 #include "Engine/Engine.h"
 #include "Testbed1Settings.h"
 #include "Modules/ModuleManager.h"
@@ -34,6 +35,10 @@ void FTestbed1OLinkModule::StartupModule()
 	FTestbed1ModuleFactory::RegisterFactory(TEXT("olink"), [](FSubsystemCollectionBase& Collection) -> TScriptInterface<ITestbed1StructArrayInterfaceInterface>
 		{
 		return Cast<UTestbed1StructArrayInterfaceOLinkClient>(Collection.InitializeDependency(UTestbed1StructArrayInterfaceOLinkClient::StaticClass()));
+	});
+	FTestbed1ModuleFactory::RegisterFactory(TEXT("olink"), [](FSubsystemCollectionBase& Collection) -> TScriptInterface<ITestbed1StructArray2InterfaceInterface>
+		{
+		return Cast<UTestbed1StructArray2InterfaceOLinkClient>(Collection.InitializeDependency(UTestbed1StructArray2InterfaceOLinkClient::StaticClass()));
 	});
 }
 

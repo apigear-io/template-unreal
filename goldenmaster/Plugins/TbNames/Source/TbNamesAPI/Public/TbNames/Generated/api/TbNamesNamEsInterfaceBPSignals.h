@@ -51,6 +51,9 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear Helper|TbNames|NamEs|Signals", DisplayName = "On Property SomePoperty2 Changed")
 	void OnSomePoperty2Changed(UPARAM(DisplayName = "SomePoperty2") int32 InSomePoperty2);
 
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear Helper|TbNames|NamEs|Signals", DisplayName = "On Property EnumProperty Changed")
+	void OnEnumPropertyChanged(UPARAM(DisplayName = "EnumProperty") ETbNamesEnum_With_Under_scores InEnumProperty);
+
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear Helper|TbNames|NamEs|Signals", DisplayName = "Do SomeFunction")
 	void SomeFunction(bool bSomeParam);
 

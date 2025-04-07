@@ -17,3 +17,29 @@ limitations under the License.
 
 #include "TbNames/Generated/api/TbNames_data.h"
 #include "Runtime/JsonUtilities/Public/JsonObjectConverter.h"
+
+/**
+ * Enumeration ETbNamesEnum_With_Under_scores
+ */
+bool UTbNamesLibrary::toTbNamesEnum_With_Under_scores(ETbNamesEnum_With_Under_scores& ConvertedEnum, uint8 InValue)
+{
+	bool bSuccessful = false;
+	switch (InValue)
+	{
+	case 0:
+		ConvertedEnum = ETbNamesEnum_With_Under_scores::TNEWUS_FIRSTVALUE;
+		bSuccessful = true;
+		break;
+	case 1:
+		ConvertedEnum = ETbNamesEnum_With_Under_scores::TNEWUS_SECONDVALUE;
+		bSuccessful = true;
+		break;
+	case 2:
+		ConvertedEnum = ETbNamesEnum_With_Under_scores::TNEWUS_THIRDVALUE;
+		bSuccessful = true;
+		break;
+	default:
+		ConvertedEnum = ETbNamesEnum_With_Under_scores::TNEWUS_FIRSTVALUE;
+	}
+	return bSuccessful;
+}

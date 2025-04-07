@@ -12,6 +12,7 @@ void TbNamesNamEsTracer::capture_state(UObject* Object, ITbNamesNamEsInterface* 
 	fields_["Switch"] = obj->GetSwitch();
 	fields_["SOME_PROPERTY"] = obj->GetSomeProperty();
 	fields_["Some_Poperty2"] = obj->GetSomePoperty2();
+	fields_["enum_property"] = obj->GetEnumProperty();
 	Tracer::instance()->state("tb.names/Nam_Es", fields_);
 }
 void TbNamesNamEsTracer::trace_callSetSwitch(bool bInSwitch)
@@ -30,6 +31,12 @@ void TbNamesNamEsTracer::trace_callSetSomePoperty2(int32 InSomePoperty2)
 {
 	nlohmann::json fields_;
 	fields_["Some_Poperty2"] = InSomePoperty2;
+	Tracer::instance()->call("tb.names/Nam_Es#_set", fields_);
+}
+void TbNamesNamEsTracer::trace_callSetEnumProperty(ETbNamesEnum_With_Under_scores InEnumProperty)
+{
+	nlohmann::json fields_;
+	fields_["enum_property"] = InEnumProperty;
 	Tracer::instance()->call("tb.names/Nam_Es#_set", fields_);
 }
 

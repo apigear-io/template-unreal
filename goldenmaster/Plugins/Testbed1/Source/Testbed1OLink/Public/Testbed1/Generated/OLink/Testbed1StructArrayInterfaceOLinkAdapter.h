@@ -67,6 +67,9 @@ private:
 	void OnSigString(const TArray<FTestbed1StructString>& ParamString);
 
 	UFUNCTION(Category = "ApiGear|Testbed1|StructArrayInterface", BlueprintInternalUseOnly)
+	void OnSigEnum(const TArray<ETestbed1Enum0>& ParamEnum);
+
+	UFUNCTION(Category = "ApiGear|Testbed1|StructArrayInterface", BlueprintInternalUseOnly)
 	void OnPropBoolChanged(const TArray<FTestbed1StructBool>& PropBool);
 
 	UFUNCTION(Category = "ApiGear|Testbed1|StructArrayInterface", BlueprintInternalUseOnly)
@@ -78,15 +81,20 @@ private:
 	UFUNCTION(Category = "ApiGear|Testbed1|StructArrayInterface", BlueprintInternalUseOnly)
 	void OnPropStringChanged(const TArray<FTestbed1StructString>& PropString);
 
+	UFUNCTION(Category = "ApiGear|Testbed1|StructArrayInterface", BlueprintInternalUseOnly)
+	void OnPropEnumChanged(const TArray<ETestbed1Enum0>& PropEnum);
+
 	// delegate handles
 	FDelegateHandle OnPropBoolChangedHandle;
 	FDelegateHandle OnPropIntChangedHandle;
 	FDelegateHandle OnPropFloatChangedHandle;
 	FDelegateHandle OnPropStringChangedHandle;
+	FDelegateHandle OnPropEnumChangedHandle;
 	FDelegateHandle OnSigBoolSignalHandle;
 	FDelegateHandle OnSigIntSignalHandle;
 	FDelegateHandle OnSigFloatSignalHandle;
 	FDelegateHandle OnSigStringSignalHandle;
+	FDelegateHandle OnSigEnumSignalHandle;
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|Testbed1|StructArrayInterface")

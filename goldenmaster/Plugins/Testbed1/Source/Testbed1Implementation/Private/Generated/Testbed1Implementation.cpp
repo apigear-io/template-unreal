@@ -19,6 +19,7 @@ limitations under the License.
 #include "Testbed1/Generated/Testbed1Factory.h"
 #include "Testbed1/Implementation/Testbed1StructInterface.h"
 #include "Testbed1/Implementation/Testbed1StructArrayInterface.h"
+#include "Testbed1/Implementation/Testbed1StructArray2Interface.h"
 #include "Engine/Engine.h"
 #include "Testbed1Settings.h"
 #include "Modules/ModuleManager.h"
@@ -34,6 +35,10 @@ void FTestbed1ImplementationModule::StartupModule()
 	FTestbed1ModuleFactory::RegisterFactory(Testbed1LocalBackendIdentifier, [](FSubsystemCollectionBase& Collection) -> TScriptInterface<ITestbed1StructArrayInterfaceInterface>
 		{
 		return Cast<UTestbed1StructArrayInterface>(Collection.InitializeDependency(UTestbed1StructArrayInterface::StaticClass()));
+	});
+	FTestbed1ModuleFactory::RegisterFactory(Testbed1LocalBackendIdentifier, [](FSubsystemCollectionBase& Collection) -> TScriptInterface<ITestbed1StructArray2InterfaceInterface>
+		{
+		return Cast<UTestbed1StructArray2Interface>(Collection.InitializeDependency(UTestbed1StructArray2Interface::StaticClass()));
 	});
 }
 

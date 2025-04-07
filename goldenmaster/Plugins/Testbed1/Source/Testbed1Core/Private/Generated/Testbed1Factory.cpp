@@ -22,6 +22,7 @@ limitations under the License.
 
 TMap<FString, FTestbed1ModuleFactory::FTestbed1StructInterfaceFactoryFunction> FTestbed1ModuleFactory::Testbed1StructInterfaceFactories{};
 TMap<FString, FTestbed1ModuleFactory::FTestbed1StructArrayInterfaceFactoryFunction> FTestbed1ModuleFactory::Testbed1StructArrayInterfaceFactories{};
+TMap<FString, FTestbed1ModuleFactory::FTestbed1StructArray2InterfaceFactoryFunction> FTestbed1ModuleFactory::Testbed1StructArray2InterfaceFactories{};
 
 // General Log
 DEFINE_LOG_CATEGORY(LogFTestbed1ModuleFactory);
@@ -67,6 +68,29 @@ TScriptInterface<ITestbed1StructArrayInterfaceInterface> FTestbed1ModuleFactory:
 	if (Testbed1StructArrayInterfaceFactories.Contains(UniqueImplementationIdentifier))
 	{
 		return Testbed1StructArrayInterfaceFactories[UniqueImplementationIdentifier](Collection);
+	}
+
+	return nullptr;
+}
+
+bool FTestbed1ModuleFactory::RegisterFactory(FString TypeIdentifier, FTestbed1StructArray2InterfaceFactoryFunction FactoryFunction)
+{
+	if (Testbed1StructArray2InterfaceFactories.Contains(TypeIdentifier))
+	{
+		UE_LOG(LogFTestbed1ModuleFactory, Warning, TEXT("Register connection factory: %s - already registered"), *TypeIdentifier);
+		return false;
+	}
+
+	Testbed1StructArray2InterfaceFactories.Add(TypeIdentifier, FactoryFunction);
+
+	return true;
+}
+
+TScriptInterface<ITestbed1StructArray2InterfaceInterface> FTestbed1ModuleFactory::GetTestbed1StructArray2InterfaceImplementation(FString UniqueImplementationIdentifier, FSubsystemCollectionBase& Collection)
+{
+	if (Testbed1StructArray2InterfaceFactories.Contains(UniqueImplementationIdentifier))
+	{
+		return Testbed1StructArray2InterfaceFactories[UniqueImplementationIdentifier](Collection);
 	}
 
 	return nullptr;

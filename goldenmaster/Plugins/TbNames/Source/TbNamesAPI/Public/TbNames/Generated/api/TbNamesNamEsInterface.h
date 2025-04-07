@@ -37,6 +37,8 @@ DECLARE_MULTICAST_DELEGATE_OneParam(FTbNamesNamEsSomePropertyChangedDelegate, in
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbNamesNamEsSomePropertyChangedDelegateBP, int32, SomeProperty);
 DECLARE_MULTICAST_DELEGATE_OneParam(FTbNamesNamEsSomePoperty2ChangedDelegate, int32 /* SomePoperty2 */);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbNamesNamEsSomePoperty2ChangedDelegateBP, int32, SomePoperty2);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTbNamesNamEsEnumPropertyChangedDelegate, ETbNamesEnum_With_Under_scores /* EnumProperty */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbNamesNamEsEnumPropertyChangedDelegateBP, ETbNamesEnum_With_Under_scores, EnumProperty);
 
 /**
  * Class UTbNamesNamEsInterfaceSignals
@@ -103,6 +105,17 @@ public:
 		OnSomePoperty2Changed.Broadcast(InSomePoperty2);
 		OnSomePoperty2ChangedBP.Broadcast(InSomePoperty2);
 	}
+
+	FTbNamesNamEsEnumPropertyChangedDelegate OnEnumPropertyChanged;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbNames|NamEs|Signals", DisplayName = "Property EnumProperty Changed")
+	FTbNamesNamEsEnumPropertyChangedDelegateBP OnEnumPropertyChangedBP;
+	/// C++ wrapper for BP functions to safely call OnEnumPropertyChanged.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Signals", DisplayName = "Broadcast Property EnumProperty Changed")
+	void BroadcastEnumPropertyChanged(UPARAM(DisplayName = "EnumProperty") ETbNamesEnum_With_Under_scores InEnumProperty)
+	{
+		OnEnumPropertyChanged.Broadcast(InEnumProperty);
+		OnEnumPropertyChangedBP.Broadcast(InEnumProperty);
+	}
 };
 
 /**
@@ -149,4 +162,8 @@ public:
 	virtual int32 GetSomePoperty2() const = 0;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Properties")
 	virtual void SetSomePoperty2(UPARAM(DisplayName = "SomePoperty2") int32 InSomePoperty2) = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Properties")
+	virtual ETbNamesEnum_With_Under_scores GetEnumProperty() const = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Properties")
+	virtual void SetEnumProperty(UPARAM(DisplayName = "EnumProperty") ETbNamesEnum_With_Under_scores InEnumProperty) = 0;
 };

@@ -18,3 +18,4 @@ limitations under the License.
 
 #include "Testbed1StructInterfaceInterface.h"
 #include "Testbed1StructArrayInterfaceInterface.h"
+#include "Testbed1StructArray2InterfaceInterface.h"

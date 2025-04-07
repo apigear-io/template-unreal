@@ -27,6 +27,7 @@ const FString Testbed1LocalBackendIdentifier = "Local";
 class FSubsystemCollectionBase;
 class ITestbed1StructInterfaceInterface;
 class ITestbed1StructArrayInterfaceInterface;
+class ITestbed1StructArray2InterfaceInterface;
 
 /**
  * Implements the settings for the Testbed1 plugin.
@@ -51,4 +52,5 @@ public:
 	FString OLinkConnectionIdentifier;
 	static TScriptInterface<ITestbed1StructInterfaceInterface> GetITestbed1StructInterfaceInterfaceForLogging(FSubsystemCollectionBase& Collection);
 	static TScriptInterface<ITestbed1StructArrayInterfaceInterface> GetITestbed1StructArrayInterfaceInterfaceForLogging(FSubsystemCollectionBase& Collection);
+	static TScriptInterface<ITestbed1StructArray2InterfaceInterface> GetITestbed1StructArray2InterfaceInterfaceForLogging(FSubsystemCollectionBase& Collection);
 };

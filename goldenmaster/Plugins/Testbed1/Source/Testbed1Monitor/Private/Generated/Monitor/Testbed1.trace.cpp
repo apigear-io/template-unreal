@@ -107,6 +107,7 @@ void Testbed1StructArrayInterfaceTracer::capture_state(UObject* Object, ITestbed
 	fields_["propInt"] = obj->GetPropInt();
 	fields_["propFloat"] = obj->GetPropFloat();
 	fields_["propString"] = obj->GetPropString();
+	fields_["propEnum"] = obj->GetPropEnum();
 	Tracer::instance()->state("testbed1/StructArrayInterface", fields_);
 }
 void Testbed1StructArrayInterfaceTracer::trace_callSetPropBool(const TArray<FTestbed1StructBool>& InPropBool)
@@ -131,6 +132,12 @@ void Testbed1StructArrayInterfaceTracer::trace_callSetPropString(const TArray<FT
 {
 	nlohmann::json fields_;
 	fields_["propString"] = InPropString;
+	Tracer::instance()->call("testbed1/StructArrayInterface#_set", fields_);
+}
+void Testbed1StructArrayInterfaceTracer::trace_callSetPropEnum(const TArray<ETestbed1Enum0>& InPropEnum)
+{
+	nlohmann::json fields_;
+	fields_["propEnum"] = InPropEnum;
 	Tracer::instance()->call("testbed1/StructArrayInterface#_set", fields_);
 }
 
@@ -162,6 +169,13 @@ void Testbed1StructArrayInterfaceTracer::trace_signalSigString(const TArray<FTes
 	Tracer::instance()->signal("testbed1/StructArrayInterface#sigString", fields_);
 }
 
+void Testbed1StructArrayInterfaceTracer::trace_signalSigEnum(const TArray<ETestbed1Enum0>& ParamEnum)
+{
+	nlohmann::json fields_;
+	fields_["paramEnum"] = ParamEnum;
+	Tracer::instance()->signal("testbed1/StructArrayInterface#sigEnum", fields_);
+}
+
 void Testbed1StructArrayInterfaceTracer::trace_callFuncBool(const TArray<FTestbed1StructBool>& ParamBool)
 {
 	nlohmann::json fields_;
@@ -188,4 +202,119 @@ void Testbed1StructArrayInterfaceTracer::trace_callFuncString(const TArray<FTest
 	nlohmann::json fields_;
 	fields_["paramString"] = ParamString;
 	Tracer::instance()->call("testbed1/StructArrayInterface#funcString", fields_);
+}
+
+void Testbed1StructArrayInterfaceTracer::trace_callFuncEnum(const TArray<ETestbed1Enum0>& ParamEnum)
+{
+	nlohmann::json fields_;
+	fields_["paramEnum"] = ParamEnum;
+	Tracer::instance()->call("testbed1/StructArrayInterface#funcEnum", fields_);
+}
+
+Testbed1StructArray2InterfaceTracer::Testbed1StructArray2InterfaceTracer()
+{
+}
+
+void Testbed1StructArray2InterfaceTracer::capture_state(UObject* Object, ITestbed1StructArray2InterfaceInterface* obj)
+{
+	nlohmann::json fields_;
+	fields_["propBool"] = obj->GetPropBool();
+	fields_["propInt"] = obj->GetPropInt();
+	fields_["propFloat"] = obj->GetPropFloat();
+	fields_["propString"] = obj->GetPropString();
+	fields_["propEnum"] = obj->GetPropEnum();
+	Tracer::instance()->state("testbed1/StructArray2Interface", fields_);
+}
+void Testbed1StructArray2InterfaceTracer::trace_callSetPropBool(const FTestbed1StructBoolWithArray& InPropBool)
+{
+	nlohmann::json fields_;
+	fields_["propBool"] = InPropBool;
+	Tracer::instance()->call("testbed1/StructArray2Interface#_set", fields_);
+}
+void Testbed1StructArray2InterfaceTracer::trace_callSetPropInt(const FTestbed1StructIntWithArray& InPropInt)
+{
+	nlohmann::json fields_;
+	fields_["propInt"] = InPropInt;
+	Tracer::instance()->call("testbed1/StructArray2Interface#_set", fields_);
+}
+void Testbed1StructArray2InterfaceTracer::trace_callSetPropFloat(const FTestbed1StructFloatWithArray& InPropFloat)
+{
+	nlohmann::json fields_;
+	fields_["propFloat"] = InPropFloat;
+	Tracer::instance()->call("testbed1/StructArray2Interface#_set", fields_);
+}
+void Testbed1StructArray2InterfaceTracer::trace_callSetPropString(const FTestbed1StructStringWithArray& InPropString)
+{
+	nlohmann::json fields_;
+	fields_["propString"] = InPropString;
+	Tracer::instance()->call("testbed1/StructArray2Interface#_set", fields_);
+}
+void Testbed1StructArray2InterfaceTracer::trace_callSetPropEnum(const FTestbed1StructEnumWithArray& InPropEnum)
+{
+	nlohmann::json fields_;
+	fields_["propEnum"] = InPropEnum;
+	Tracer::instance()->call("testbed1/StructArray2Interface#_set", fields_);
+}
+
+void Testbed1StructArray2InterfaceTracer::trace_signalSigBool(const FTestbed1StructBoolWithArray& ParamBool)
+{
+	nlohmann::json fields_;
+	fields_["paramBool"] = ParamBool;
+	Tracer::instance()->signal("testbed1/StructArray2Interface#sigBool", fields_);
+}
+
+void Testbed1StructArray2InterfaceTracer::trace_signalSigInt(const FTestbed1StructIntWithArray& ParamInt)
+{
+	nlohmann::json fields_;
+	fields_["paramInt"] = ParamInt;
+	Tracer::instance()->signal("testbed1/StructArray2Interface#sigInt", fields_);
+}
+
+void Testbed1StructArray2InterfaceTracer::trace_signalSigFloat(const FTestbed1StructFloatWithArray& ParamFloat)
+{
+	nlohmann::json fields_;
+	fields_["paramFloat"] = ParamFloat;
+	Tracer::instance()->signal("testbed1/StructArray2Interface#sigFloat", fields_);
+}
+
+void Testbed1StructArray2InterfaceTracer::trace_signalSigString(const FTestbed1StructStringWithArray& ParamString)
+{
+	nlohmann::json fields_;
+	fields_["paramString"] = ParamString;
+	Tracer::instance()->signal("testbed1/StructArray2Interface#sigString", fields_);
+}
+
+void Testbed1StructArray2InterfaceTracer::trace_callFuncBool(const FTestbed1StructBoolWithArray& ParamBool)
+{
+	nlohmann::json fields_;
+	fields_["paramBool"] = ParamBool;
+	Tracer::instance()->call("testbed1/StructArray2Interface#funcBool", fields_);
+}
+
+void Testbed1StructArray2InterfaceTracer::trace_callFuncInt(const FTestbed1StructIntWithArray& ParamInt)
+{
+	nlohmann::json fields_;
+	fields_["paramInt"] = ParamInt;
+	Tracer::instance()->call("testbed1/StructArray2Interface#funcInt", fields_);
+}
+
+void Testbed1StructArray2InterfaceTracer::trace_callFuncFloat(const FTestbed1StructFloatWithArray& ParamFloat)
+{
+	nlohmann::json fields_;
+	fields_["paramFloat"] = ParamFloat;
+	Tracer::instance()->call("testbed1/StructArray2Interface#funcFloat", fields_);
+}
+
+void Testbed1StructArray2InterfaceTracer::trace_callFuncString(const FTestbed1StructStringWithArray& ParamString)
+{
+	nlohmann::json fields_;
+	fields_["paramString"] = ParamString;
+	Tracer::instance()->call("testbed1/StructArray2Interface#funcString", fields_);
+}
+
+void Testbed1StructArray2InterfaceTracer::trace_callFuncEnum(const FTestbed1StructEnumWithArray& ParamEnum)
+{
+	nlohmann::json fields_;
+	fields_["paramEnum"] = ParamEnum;
+	Tracer::instance()->call("testbed1/StructArray2Interface#funcEnum", fields_);
 }

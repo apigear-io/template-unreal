@@ -74,6 +74,13 @@ public:
 	TArray<FTestbed1StructString> FuncString(const TArray<FTestbed1StructString>& ParamString);
 	virtual TArray<FTestbed1StructString> FuncString_Implementation(const TArray<FTestbed1StructString>& ParamString) = 0;
 
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	void FuncEnumAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<ETestbed1Enum0>& Result, const TArray<ETestbed1Enum0>& ParamEnum);
+	virtual void FuncEnumAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<ETestbed1Enum0>& Result, const TArray<ETestbed1Enum0>& ParamEnum) = 0;
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Operations")
+	TArray<ETestbed1Enum0> FuncEnum(const TArray<ETestbed1Enum0>& ParamEnum);
+	virtual TArray<ETestbed1Enum0> FuncEnum_Implementation(const TArray<ETestbed1Enum0>& ParamEnum) = 0;
+
 	// properties
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Properties")
 	TArray<FTestbed1StructBool> GetPropBool() const;
@@ -99,4 +106,10 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Properties")
 	void SetPropString(const TArray<FTestbed1StructString>& InPropString);
 	virtual void SetPropString_Implementation(UPARAM(DisplayName = "PropString") const TArray<FTestbed1StructString>& InPropString) = 0;
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Properties")
+	TArray<ETestbed1Enum0> GetPropEnum() const;
+	virtual TArray<ETestbed1Enum0> GetPropEnum_Implementation() const = 0;
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Properties")
+	void SetPropEnum(const TArray<ETestbed1Enum0>& InPropEnum);
+	virtual void SetPropEnum_Implementation(UPARAM(DisplayName = "PropEnum") const TArray<ETestbed1Enum0>& InPropEnum) = 0;
 };

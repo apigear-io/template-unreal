@@ -40,6 +40,7 @@ struct TbNamesNamEsPropertiesMsgBusData
 	std::atomic<bool> bSwitch{false};
 	std::atomic<int32> SomeProperty{0};
 	std::atomic<int32> SomePoperty2{0};
+	std::atomic<ETbNamesEnum_With_Under_scores> EnumProperty{ETbNamesEnum_With_Under_scores::TNEWUS_FIRSTVALUE};
 };
 DEFINE_LOG_CATEGORY(LogTbNamesNamEsMsgBusClient);
 
@@ -93,6 +94,7 @@ void UTbNamesNamEsMsgBusClient::_Connect()
 		.Handling<FTbNamesNamEsSwitchChangedMessage>(this, &UTbNamesNamEsMsgBusClient::OnSwitchChanged)
 		.Handling<FTbNamesNamEsSomePropertyChangedMessage>(this, &UTbNamesNamEsMsgBusClient::OnSomePropertyChanged)
 		.Handling<FTbNamesNamEsSomePoperty2ChangedMessage>(this, &UTbNamesNamEsMsgBusClient::OnSomePoperty2Changed)
+		.Handling<FTbNamesNamEsEnumPropertyChangedMessage>(this, &UTbNamesNamEsMsgBusClient::OnEnumPropertyChanged)
 		.Build();
 	// clang-format on
 
@@ -196,6 +198,13 @@ void UTbNamesNamEsMsgBusClient::OnConnectionInit(const FTbNamesNamEsInitMessage&
 	{
 		SomePoperty2 = InMessage.SomePoperty2;
 		_GetSignals()->BroadcastSomePoperty2Changed(SomePoperty2);
+	}
+
+	const bool bEnumPropertyChanged = InMessage.EnumProperty != EnumProperty;
+	if (bEnumPropertyChanged)
+	{
+		EnumProperty = InMessage.EnumProperty;
+		_GetSignals()->BroadcastEnumPropertyChanged(EnumProperty);
 	}
 
 	_ConnectionStatusChanged.Broadcast(true);
@@ -404,6 +413,42 @@ void UTbNamesNamEsMsgBusClient::SetSomePoperty2(int32 InSomePoperty2)
 	_SentData->SomePoperty2 = InSomePoperty2;
 }
 
+ETbNamesEnum_With_Under_scores UTbNamesNamEsMsgBusClient::GetEnumProperty() const
+{
+	return EnumProperty;
+}
+
+void UTbNamesNamEsMsgBusClient::SetEnumProperty(ETbNamesEnum_With_Under_scores InEnumProperty)
+{
+	if (!_IsConnected())
+	{
+		UE_LOG(LogTbNamesNamEsMsgBusClient, Error, TEXT("Client has no connection to service."));
+		return;
+	}
+
+	// only send change requests if the value changed -> reduce network load
+	if (GetEnumProperty() == InEnumProperty)
+	{
+		return;
+	}
+
+	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->EnumProperty == InEnumProperty)
+	{
+		return;
+	}
+
+	auto msg = new FTbNamesNamEsSetEnumPropertyRequestMessage();
+	msg->EnumProperty = InEnumProperty;
+
+	TbNamesNamEsMsgBusEndpoint->Send<FTbNamesNamEsSetEnumPropertyRequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
+	_SentData->EnumProperty = InEnumProperty;
+}
+
 void UTbNamesNamEsMsgBusClient::SomeFunction(bool bInSomeParam)
 {
 	if (!_IsConnected())
@@ -515,6 +560,22 @@ void UTbNamesNamEsMsgBusClient::OnSomePoperty2Changed(const FTbNamesNamEsSomePop
 	{
 		SomePoperty2 = InMessage.SomePoperty2;
 		_GetSignals()->BroadcastSomePoperty2Changed(SomePoperty2);
+	}
+}
+
+void UTbNamesNamEsMsgBusClient::OnEnumPropertyChanged(const FTbNamesNamEsEnumPropertyChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	if (ServiceAddress != Context->GetSender())
+	{
+		UE_LOG(LogTbNamesNamEsMsgBusClient, Error, TEXT("Got a message from wrong service(%s) instead of %s"), *Context->GetSender().ToString(), *ServiceAddress.ToString());
+		return;
+	}
+
+	const bool bEnumPropertyChanged = InMessage.EnumProperty != EnumProperty;
+	if (bEnumPropertyChanged)
+	{
+		EnumProperty = InMessage.EnumProperty;
+		_GetSignals()->BroadcastEnumPropertyChanged(EnumProperty);
 	}
 }
 

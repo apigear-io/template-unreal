@@ -45,6 +45,7 @@ struct TbNamesNamEsPropertiesData
 	std::atomic<bool> bSwitch{false};
 	std::atomic<int32> SomeProperty{0};
 	std::atomic<int32> SomePoperty2{0};
+	std::atomic<ETbNamesEnum_With_Under_scores> EnumProperty{ETbNamesEnum_With_Under_scores::TNEWUS_FIRSTVALUE};
 };
 DEFINE_LOG_CATEGORY(LogTbNamesNamEsOLinkClient);
 
@@ -237,6 +238,35 @@ void UTbNamesNamEsOLinkClient::SetSomePoperty2(int32 InSomePoperty2)
 	_SentData->SomePoperty2 = InSomePoperty2;
 }
 
+ETbNamesEnum_With_Under_scores UTbNamesNamEsOLinkClient::GetEnumProperty() const
+{
+	return EnumProperty;
+}
+
+void UTbNamesNamEsOLinkClient::SetEnumProperty(ETbNamesEnum_With_Under_scores InEnumProperty)
+{
+	if (!m_sink->IsReady())
+	{
+		UE_LOG(LogTbNamesNamEsOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbNames plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		return;
+	}
+
+	// only send change requests if the value changed -> reduce network load
+	if (GetEnumProperty() == InEnumProperty)
+	{
+		return;
+	}
+
+	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->EnumProperty == InEnumProperty)
+	{
+		return;
+	}
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "enum_property");
+	m_sink->GetNode()->setRemoteProperty(memberId, InEnumProperty);
+	_SentData->EnumProperty = InEnumProperty;
+}
+
 void UTbNamesNamEsOLinkClient::SomeFunction(bool bSomeParam)
 {
 	if (!m_sink->IsReady())
@@ -289,6 +319,13 @@ void UTbNamesNamEsOLinkClient::applyState(const nlohmann::json& fields)
 	{
 		SomePoperty2 = fields["Some_Poperty2"].get<int32>();
 		_GetSignals()->BroadcastSomePoperty2Changed(SomePoperty2);
+	}
+
+	const bool bEnumPropertyChanged = fields.contains("enum_property") && (EnumProperty != fields["enum_property"].get<ETbNamesEnum_With_Under_scores>());
+	if (bEnumPropertyChanged)
+	{
+		EnumProperty = fields["enum_property"].get<ETbNamesEnum_With_Under_scores>();
+		_GetSignals()->BroadcastEnumPropertyChanged(EnumProperty);
 	}
 }
 

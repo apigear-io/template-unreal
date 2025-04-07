@@ -50,6 +50,8 @@ struct Testbed1StructArrayInterfacePropertiesData
 	TArray<FTestbed1StructFloat> PropFloat{TArray<FTestbed1StructFloat>()};
 	FCriticalSection PropStringMutex;
 	TArray<FTestbed1StructString> PropString{TArray<FTestbed1StructString>()};
+	FCriticalSection PropEnumMutex;
+	TArray<ETestbed1Enum0> PropEnum{TArray<ETestbed1Enum0>()};
 };
 DEFINE_LOG_CATEGORY(LogTestbed1StructArrayInterfaceOLinkClient);
 
@@ -287,6 +289,39 @@ void UTestbed1StructArrayInterfaceOLinkClient::SetPropString(const TArray<FTestb
 	_SentData->PropString = InPropString;
 }
 
+TArray<ETestbed1Enum0> UTestbed1StructArrayInterfaceOLinkClient::GetPropEnum() const
+{
+	return PropEnum;
+}
+
+void UTestbed1StructArrayInterfaceOLinkClient::SetPropEnum(const TArray<ETestbed1Enum0>& InPropEnum)
+{
+	if (!m_sink->IsReady())
+	{
+		UE_LOG(LogTestbed1StructArrayInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed1 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		return;
+	}
+
+	// only send change requests if the value changed -> reduce network load
+	if (GetPropEnum() == InPropEnum)
+	{
+		return;
+	}
+
+	// only send change requests if the value wasn't already sent -> reduce network load
+	{
+		FScopeLock Lock(&(_SentData->PropEnumMutex));
+		if (_SentData->PropEnum == InPropEnum)
+		{
+			return;
+		}
+	}
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propEnum");
+	m_sink->GetNode()->setRemoteProperty(memberId, InPropEnum);
+	FScopeLock Lock(&(_SentData->PropEnumMutex));
+	_SentData->PropEnum = InPropEnum;
+}
+
 TArray<FTestbed1StructBool> UTestbed1StructArrayInterfaceOLinkClient::FuncBool(const TArray<FTestbed1StructBool>& ParamBool)
 {
 	if (!m_sink->IsReady())
@@ -379,6 +414,29 @@ TArray<FTestbed1StructString> UTestbed1StructArrayInterfaceOLinkClient::FuncStri
 	return Promise.GetFuture().Get();
 }
 
+TArray<ETestbed1Enum0> UTestbed1StructArrayInterfaceOLinkClient::FuncEnum(const TArray<ETestbed1Enum0>& ParamEnum)
+{
+	if (!m_sink->IsReady())
+	{
+		UE_LOG(LogTestbed1StructArrayInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed1 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+
+		return TArray<ETestbed1Enum0>();
+	}
+	TPromise<TArray<ETestbed1Enum0>> Promise;
+	Async(EAsyncExecution::ThreadPool,
+		[ParamEnum, &Promise, this]()
+		{
+		ApiGear::ObjectLink::InvokeReplyFunc GetStructArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+			Promise.SetValue(arg.value.get<TArray<ETestbed1Enum0>>());
+		};
+		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcEnum");
+		m_sink->GetNode()->invokeRemote(memberId, {ParamEnum}, GetStructArrayInterfaceStateFunc);
+	});
+
+	return Promise.GetFuture().Get();
+}
+
 bool UTestbed1StructArrayInterfaceOLinkClient::_IsSubscribed() const
 {
 	return m_sink->IsReady();
@@ -413,6 +471,13 @@ void UTestbed1StructArrayInterfaceOLinkClient::applyState(const nlohmann::json& 
 		PropString = fields["propString"].get<TArray<FTestbed1StructString>>();
 		_GetSignals()->BroadcastPropStringChanged(PropString);
 	}
+
+	const bool bPropEnumChanged = fields.contains("propEnum") && (PropEnum != fields["propEnum"].get<TArray<ETestbed1Enum0>>());
+	if (bPropEnumChanged)
+	{
+		PropEnum = fields["propEnum"].get<TArray<ETestbed1Enum0>>();
+		_GetSignals()->BroadcastPropEnumChanged(PropEnum);
+	}
 }
 
 void UTestbed1StructArrayInterfaceOLinkClient::emitSignal(const std::string& signalName, const nlohmann::json& args)
@@ -442,6 +507,13 @@ void UTestbed1StructArrayInterfaceOLinkClient::emitSignal(const std::string& sig
 	{
 		const TArray<FTestbed1StructString>& outParamString = args[0].get<TArray<FTestbed1StructString>>();
 		_GetSignals()->BroadcastSigStringSignal(outParamString);
+		return;
+	}
+
+	if (signalName == "sigEnum")
+	{
+		const TArray<ETestbed1Enum0>& outParamEnum = args[0].get<TArray<ETestbed1Enum0>>();
+		_GetSignals()->BroadcastSigEnumSignal(outParamEnum);
 		return;
 	}
 }

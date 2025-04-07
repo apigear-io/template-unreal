@@ -24,6 +24,7 @@ class UGameInstance;
 class FSubsystemCollectionBase;
 class ITestbed1StructInterfaceInterface;
 class ITestbed1StructArrayInterfaceInterface;
+class ITestbed1StructArray2InterfaceInterface;
 
 // General Log
 DECLARE_LOG_CATEGORY_EXTERN(LogFTestbed1ModuleFactory, Log, All);
@@ -34,14 +35,18 @@ public:
 	/** type of function for creating implementations*/
 	using FTestbed1StructInterfaceFactoryFunction = TFunction<TScriptInterface<ITestbed1StructInterfaceInterface>(FSubsystemCollectionBase& Collection)>;
 	using FTestbed1StructArrayInterfaceFactoryFunction = TFunction<TScriptInterface<ITestbed1StructArrayInterfaceInterface>(FSubsystemCollectionBase& Collection)>;
+	using FTestbed1StructArray2InterfaceFactoryFunction = TFunction<TScriptInterface<ITestbed1StructArray2InterfaceInterface>(FSubsystemCollectionBase& Collection)>;
 
 	/** register factories for different types of implementations and interfaces */
 	static bool RegisterFactory(FString TypeIdentifier, FTestbed1StructInterfaceFactoryFunction FactoryFunction);
 	static bool RegisterFactory(FString TypeIdentifier, FTestbed1StructArrayInterfaceFactoryFunction FactoryFunction);
+	static bool RegisterFactory(FString TypeIdentifier, FTestbed1StructArray2InterfaceFactoryFunction FactoryFunction);
 	static TScriptInterface<ITestbed1StructInterfaceInterface> GetTestbed1StructInterfaceImplementation(FString UniqueImplementationIdentifier, FSubsystemCollectionBase& Collection);
 	static TScriptInterface<ITestbed1StructArrayInterfaceInterface> GetTestbed1StructArrayInterfaceImplementation(FString UniqueImplementationIdentifier, FSubsystemCollectionBase& Collection);
+	static TScriptInterface<ITestbed1StructArray2InterfaceInterface> GetTestbed1StructArray2InterfaceImplementation(FString UniqueImplementationIdentifier, FSubsystemCollectionBase& Collection);
 
 private:
 	static TMap<FString, FTestbed1ModuleFactory::FTestbed1StructInterfaceFactoryFunction> Testbed1StructInterfaceFactories;
 	static TMap<FString, FTestbed1ModuleFactory::FTestbed1StructArrayInterfaceFactoryFunction> Testbed1StructArrayInterfaceFactories;
+	static TMap<FString, FTestbed1ModuleFactory::FTestbed1StructArray2InterfaceFactoryFunction> Testbed1StructArray2InterfaceFactories;
 };

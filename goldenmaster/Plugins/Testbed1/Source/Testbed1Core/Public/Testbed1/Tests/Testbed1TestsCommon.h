@@ -48,4 +48,36 @@ FTestbed1StructString TESTBED1CORE_API createTestFTestbed1StructString();
 
 TArray<FTestbed1StructString> TESTBED1CORE_API createTestFTestbed1StructStringArray();
 
+FTestbed1StructStruct TESTBED1CORE_API createTestFTestbed1StructStruct();
+
+TArray<FTestbed1StructStruct> TESTBED1CORE_API createTestFTestbed1StructStructArray();
+
+FTestbed1StructEnum TESTBED1CORE_API createTestFTestbed1StructEnum();
+
+TArray<FTestbed1StructEnum> TESTBED1CORE_API createTestFTestbed1StructEnumArray();
+
+FTestbed1StructBoolWithArray TESTBED1CORE_API createTestFTestbed1StructBoolWithArray();
+
+TArray<FTestbed1StructBoolWithArray> TESTBED1CORE_API createTestFTestbed1StructBoolWithArrayArray();
+
+FTestbed1StructIntWithArray TESTBED1CORE_API createTestFTestbed1StructIntWithArray();
+
+TArray<FTestbed1StructIntWithArray> TESTBED1CORE_API createTestFTestbed1StructIntWithArrayArray();
+
+FTestbed1StructFloatWithArray TESTBED1CORE_API createTestFTestbed1StructFloatWithArray();
+
+TArray<FTestbed1StructFloatWithArray> TESTBED1CORE_API createTestFTestbed1StructFloatWithArrayArray();
+
+FTestbed1StructStringWithArray TESTBED1CORE_API createTestFTestbed1StructStringWithArray();
+
+TArray<FTestbed1StructStringWithArray> TESTBED1CORE_API createTestFTestbed1StructStringWithArrayArray();
+
+FTestbed1StructStructWithArray TESTBED1CORE_API createTestFTestbed1StructStructWithArray();
+
+TArray<FTestbed1StructStructWithArray> TESTBED1CORE_API createTestFTestbed1StructStructWithArrayArray();
+
+FTestbed1StructEnumWithArray TESTBED1CORE_API createTestFTestbed1StructEnumWithArray();
+
+TArray<FTestbed1StructEnumWithArray> TESTBED1CORE_API createTestFTestbed1StructEnumWithArrayArray();
+
 #endif // WITH_DEV_AUTOMATION_TESTS

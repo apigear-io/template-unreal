@@ -40,14 +40,17 @@ struct FTestbed1StructArrayInterfaceSigBoolSignalMessage;
 struct FTestbed1StructArrayInterfaceSigIntSignalMessage;
 struct FTestbed1StructArrayInterfaceSigFloatSignalMessage;
 struct FTestbed1StructArrayInterfaceSigStringSignalMessage;
+struct FTestbed1StructArrayInterfaceSigEnumSignalMessage;
 struct FTestbed1StructArrayInterfacePropBoolChangedMessage;
 struct FTestbed1StructArrayInterfacePropIntChangedMessage;
 struct FTestbed1StructArrayInterfacePropFloatChangedMessage;
 struct FTestbed1StructArrayInterfacePropStringChangedMessage;
+struct FTestbed1StructArrayInterfacePropEnumChangedMessage;
 struct FTestbed1StructArrayInterfaceFuncBoolReplyMessage;
 struct FTestbed1StructArrayInterfaceFuncIntReplyMessage;
 struct FTestbed1StructArrayInterfaceFuncFloatReplyMessage;
 struct FTestbed1StructArrayInterfaceFuncStringReplyMessage;
+struct FTestbed1StructArrayInterfaceFuncEnumReplyMessage;
 
 USTRUCT(BlueprintType)
 struct FTestbed1StructArrayInterfaceStats
@@ -122,6 +125,9 @@ public:
 	TArray<FTestbed1StructString> GetPropString() const override;
 	void SetPropString(const TArray<FTestbed1StructString>& PropString) override;
 
+	TArray<ETestbed1Enum0> GetPropEnum() const override;
+	void SetPropEnum(const TArray<ETestbed1Enum0>& PropEnum) override;
+
 	// operations
 	TArray<FTestbed1StructBool> FuncBool(const TArray<FTestbed1StructBool>& ParamBool) override;
 
@@ -130,6 +136,8 @@ public:
 	TArray<FTestbed1StructFloat> FuncFloat(const TArray<FTestbed1StructFloat>& ParamFloat) override;
 
 	TArray<FTestbed1StructString> FuncString(const TArray<FTestbed1StructString>& ParamString) override;
+
+	TArray<ETestbed1Enum0> FuncEnum(const TArray<ETestbed1Enum0>& ParamEnum) override;
 
 private:
 	TSharedPtr<FMessageEndpoint, ESPMode::ThreadSafe> Testbed1StructArrayInterfaceMsgBusEndpoint;
@@ -157,14 +165,17 @@ private:
 	void OnSigInt(const FTestbed1StructArrayInterfaceSigIntSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnSigFloat(const FTestbed1StructArrayInterfaceSigFloatSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnSigString(const FTestbed1StructArrayInterfaceSigStringSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnSigEnum(const FTestbed1StructArrayInterfaceSigEnumSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnPropBoolChanged(const FTestbed1StructArrayInterfacePropBoolChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnPropIntChanged(const FTestbed1StructArrayInterfacePropIntChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnPropFloatChanged(const FTestbed1StructArrayInterfacePropFloatChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnPropStringChanged(const FTestbed1StructArrayInterfacePropStringChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnPropEnumChanged(const FTestbed1StructArrayInterfacePropEnumChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnFuncBoolReply(const FTestbed1StructArrayInterfaceFuncBoolReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnFuncIntReply(const FTestbed1StructArrayInterfaceFuncIntReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnFuncFloatReply(const FTestbed1StructArrayInterfaceFuncFloatReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnFuncStringReply(const FTestbed1StructArrayInterfaceFuncStringReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnFuncEnumReply(const FTestbed1StructArrayInterfaceFuncEnumReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 
 	// member variable to store the last sent data
 	TPimplPtr<Testbed1StructArrayInterfacePropertiesMsgBusData> _SentData;

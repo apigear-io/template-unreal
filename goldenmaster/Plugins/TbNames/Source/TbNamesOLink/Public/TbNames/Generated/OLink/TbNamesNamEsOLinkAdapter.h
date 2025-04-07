@@ -69,10 +69,14 @@ private:
 	UFUNCTION(Category = "ApiGear|TbNames|NamEs", BlueprintInternalUseOnly)
 	void OnSomePoperty2Changed(int32 SomePoperty2);
 
+	UFUNCTION(Category = "ApiGear|TbNames|NamEs", BlueprintInternalUseOnly)
+	void OnEnumPropertyChanged(ETbNamesEnum_With_Under_scores EnumProperty);
+
 	// delegate handles
 	FDelegateHandle OnSwitchChangedHandle;
 	FDelegateHandle OnSomePropertyChangedHandle;
 	FDelegateHandle OnSomePoperty2ChangedHandle;
+	FDelegateHandle OnEnumPropertyChangedHandle;
 	FDelegateHandle OnSomeSignalSignalHandle;
 	FDelegateHandle OnSomeSignal2SignalHandle;
 

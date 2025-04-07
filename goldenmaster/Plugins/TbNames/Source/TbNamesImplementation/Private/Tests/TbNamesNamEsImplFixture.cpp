@@ -42,6 +42,11 @@ void UTbNamesNamEsImplHelper::SomePoperty2PropertyCb(int32 SomePoperty2)
 	Spec->SomePoperty2PropertyCb(SomePoperty2);
 }
 
+void UTbNamesNamEsImplHelper::EnumPropertyPropertyCb(ETbNamesEnum_With_Under_scores EnumProperty)
+{
+	Spec->EnumPropertyPropertyCb(EnumProperty);
+}
+
 void UTbNamesNamEsImplHelper::SomeSignalSignalCb(bool bSomeParam)
 {
 	Spec->SomeSignalSignalCb(bSomeParam);
@@ -110,6 +115,11 @@ void UTbNamesNamEsImplHelper::SomePropertyPropertyCb(int32 SomeProperty)
 void UTbNamesNamEsImplHelper::SomePoperty2PropertyCb(int32 SomePoperty2)
 {
 	(void)SomePoperty2;
+}
+
+void UTbNamesNamEsImplHelper::EnumPropertyPropertyCb(ETbNamesEnum_With_Under_scores EnumProperty)
+{
+	(void)EnumProperty;
 }
 
 void UTbNamesNamEsImplHelper::SomeSignalSignalCb(bool bSomeParam)

@@ -213,6 +213,49 @@ void UTestbed1StructArrayInterfaceImplSpec::Define()
 		ImplFixture->GetImplementation()->SetPropString(TestValue);
 	});
 
+	It("Property.PropEnum.Default", [this]()
+		{
+		// Do implement test here
+		TArray<ETestbed1Enum0> TestValue = TArray<ETestbed1Enum0>(); // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropEnum(), TestValue);
+	});
+
+	LatentIt("Property.PropEnum.Change", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		TArray<ETestbed1Enum0> TestValue = TArray<ETestbed1Enum0>(); // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropEnum(), TestValue);
+
+		UTestbed1StructArrayInterfaceSignals* Testbed1StructArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
+		Testbed1StructArrayInterfaceSignals->OnPropEnumChanged.AddLambda([this, TestDone](const TArray<ETestbed1Enum0>& InPropEnum)
+			{
+			TArray<ETestbed1Enum0> TestValue = TArray<ETestbed1Enum0>();
+			// use different test value
+			TestValue.Add(ETestbed1Enum0::T1E0_VALUE1);
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropEnum, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropEnum(), TestValue);
+			TestDone.Execute();
+		});
+
+		// use different test value
+		TestValue.Add(ETestbed1Enum0::T1E0_VALUE1);
+		ImplFixture->GetImplementation()->SetPropEnum(TestValue);
+	});
+
+	LatentIt("Property.PropEnum.ChangeBP", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		TArray<ETestbed1Enum0> TestValue = TArray<ETestbed1Enum0>(); // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropEnum(), TestValue);
+
+		testDoneDelegate = TestDone;
+		UTestbed1StructArrayInterfaceSignals* Testbed1StructArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
+		Testbed1StructArrayInterfaceSignals->OnPropEnumChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructArrayInterfaceImplHelper::PropEnumPropertyCb);
+		// use different test value
+		TestValue.Add(ETestbed1Enum0::T1E0_VALUE1);
+		ImplFixture->GetImplementation()->SetPropEnum(TestValue);
+	});
+
 	It("Operation.FuncBool", [this]()
 		{
 		// Do implement test here
@@ -235,6 +278,12 @@ void UTestbed1StructArrayInterfaceImplSpec::Define()
 		{
 		// Do implement test here
 		ImplFixture->GetImplementation()->FuncString(TArray<FTestbed1StructString>());
+	});
+
+	It("Operation.FuncEnum", [this]()
+		{
+		// Do implement test here
+		ImplFixture->GetImplementation()->FuncEnum(TArray<ETestbed1Enum0>());
 	});
 
 	LatentIt("Signal.SigBool", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
@@ -344,6 +393,36 @@ void UTestbed1StructArrayInterfaceImplSpec::Define()
 		TArray<FTestbed1StructString> ParamStringTestValue = createTestFTestbed1StructStringArray();
 		Testbed1StructArrayInterfaceSignals->BroadcastSigStringSignal(ParamStringTestValue);
 	});
+
+	LatentIt("Signal.SigEnum", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		UTestbed1StructArrayInterfaceSignals* Testbed1StructArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
+		Testbed1StructArrayInterfaceSignals->OnSigEnumSignal.AddLambda([this, TestDone](const TArray<ETestbed1Enum0>& InParamEnum)
+			{
+			// known test value
+			TArray<ETestbed1Enum0> ParamEnumTestValue = TArray<ETestbed1Enum0>(); // default value
+			ParamEnumTestValue.Add(ETestbed1Enum0::T1E0_VALUE1);
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamEnum, ParamEnumTestValue);
+			TestDone.Execute();
+		});
+
+		// use different test value
+		TArray<ETestbed1Enum0> ParamEnumTestValue = TArray<ETestbed1Enum0>(); // default value
+		ParamEnumTestValue.Add(ETestbed1Enum0::T1E0_VALUE1);
+		Testbed1StructArrayInterfaceSignals->BroadcastSigEnumSignal(ParamEnumTestValue);
+	});
+
+	LatentIt("Signal.SigEnumBP", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		testDoneDelegate = TestDone;
+		UTestbed1StructArrayInterfaceSignals* Testbed1StructArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
+		Testbed1StructArrayInterfaceSignals->OnSigEnumSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructArrayInterfaceImplHelper::SigEnumSignalCb);
+
+		// use different test value
+		TArray<ETestbed1Enum0> ParamEnumTestValue = TArray<ETestbed1Enum0>(); // default value
+		ParamEnumTestValue.Add(ETestbed1Enum0::T1E0_VALUE1);
+		Testbed1StructArrayInterfaceSignals->BroadcastSigEnumSignal(ParamEnumTestValue);
+	});
 }
 
 void UTestbed1StructArrayInterfaceImplSpec::PropBoolPropertyCb(const TArray<FTestbed1StructBool>& InPropBool)
@@ -386,6 +465,16 @@ void UTestbed1StructArrayInterfaceImplSpec::PropStringPropertyCb(const TArray<FT
 	testDoneDelegate.Execute();
 }
 
+void UTestbed1StructArrayInterfaceImplSpec::PropEnumPropertyCb(const TArray<ETestbed1Enum0>& InPropEnum)
+{
+	TArray<ETestbed1Enum0> TestValue = TArray<ETestbed1Enum0>();
+	// use different test value
+	TestValue.Add(ETestbed1Enum0::T1E0_VALUE1);
+	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropEnum, TestValue);
+	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropEnum(), TestValue);
+	testDoneDelegate.Execute();
+}
+
 void UTestbed1StructArrayInterfaceImplSpec::SigBoolSignalCb(const TArray<FTestbed1StructBool>& InParamBool)
 {
 	// known test value
@@ -415,6 +504,15 @@ void UTestbed1StructArrayInterfaceImplSpec::SigStringSignalCb(const TArray<FTest
 	// known test value
 	TArray<FTestbed1StructString> ParamStringTestValue = createTestFTestbed1StructStringArray();
 	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamString, ParamStringTestValue);
+	testDoneDelegate.Execute();
+}
+
+void UTestbed1StructArrayInterfaceImplSpec::SigEnumSignalCb(const TArray<ETestbed1Enum0>& InParamEnum)
+{
+	// known test value
+	TArray<ETestbed1Enum0> ParamEnumTestValue = TArray<ETestbed1Enum0>(); // default value
+	ParamEnumTestValue.Add(ETestbed1Enum0::T1E0_VALUE1);
+	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamEnum, ParamEnumTestValue);
 	testDoneDelegate.Execute();
 }
 #endif // WITH_DEV_AUTOMATION_TESTS

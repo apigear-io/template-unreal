@@ -47,6 +47,11 @@ void UTestbed1StructArrayInterfaceImplHelper::PropStringPropertyCb(const TArray<
 	Spec->PropStringPropertyCb(PropString);
 }
 
+void UTestbed1StructArrayInterfaceImplHelper::PropEnumPropertyCb(const TArray<ETestbed1Enum0>& PropEnum)
+{
+	Spec->PropEnumPropertyCb(PropEnum);
+}
+
 void UTestbed1StructArrayInterfaceImplHelper::SigBoolSignalCb(const TArray<FTestbed1StructBool>& ParamBool)
 {
 	Spec->SigBoolSignalCb(ParamBool);
@@ -65,6 +70,11 @@ void UTestbed1StructArrayInterfaceImplHelper::SigFloatSignalCb(const TArray<FTes
 void UTestbed1StructArrayInterfaceImplHelper::SigStringSignalCb(const TArray<FTestbed1StructString>& ParamString)
 {
 	Spec->SigStringSignalCb(ParamString);
+}
+
+void UTestbed1StructArrayInterfaceImplHelper::SigEnumSignalCb(const TArray<ETestbed1Enum0>& ParamEnum)
+{
+	Spec->SigEnumSignalCb(ParamEnum);
 }
 
 FTestbed1StructArrayInterfaceImplFixture::FTestbed1StructArrayInterfaceImplFixture()
@@ -132,6 +142,11 @@ void UTestbed1StructArrayInterfaceImplHelper::PropStringPropertyCb(const TArray<
 	(void)PropString;
 }
 
+void UTestbed1StructArrayInterfaceImplHelper::PropEnumPropertyCb(const TArray<ETestbed1Enum0>& PropEnum)
+{
+	(void)PropEnum;
+}
+
 void UTestbed1StructArrayInterfaceImplHelper::SigBoolSignalCb(const TArray<FTestbed1StructBool>& ParamBool)
 {
 	(void)ParamBool;
@@ -150,5 +165,10 @@ void UTestbed1StructArrayInterfaceImplHelper::SigFloatSignalCb(const TArray<FTes
 void UTestbed1StructArrayInterfaceImplHelper::SigStringSignalCb(const TArray<FTestbed1StructString>& ParamString)
 {
 	(void)ParamString;
+}
+
+void UTestbed1StructArrayInterfaceImplHelper::SigEnumSignalCb(const TArray<ETestbed1Enum0>& ParamEnum)
+{
+	(void)ParamEnum;
 }
 #endif // WITH_DEV_AUTOMATION_TESTS

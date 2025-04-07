@@ -93,7 +93,7 @@ void {{$Class}}MsgBusSpec::Define()
 			{{ueType "" .}} TestValue = {{ueDefault "" .}};
 			// use different test value
 			{{- if .IsArray }}
-			{{- if .IsPrimitive }}
+			{{- if or .IsPrimitive (eq .KindType "enum") }}
 			TestValue.Add({{ ueTestValue "" .}});
 			{{- else }}
 			{{- $type := ""}}
@@ -116,7 +116,7 @@ void {{$Class}}MsgBusSpec::Define()
 
 		// use different test value
 		{{- if .IsArray }}
-		{{- if .IsPrimitive }}
+		{{- if or .IsPrimitive (eq .KindType "enum") }}
 		TestValue.Add({{ ueTestValue "" .}});
 		{{- else }}
 		{{- $type := ""}}
@@ -174,7 +174,7 @@ void {{$Class}}MsgBusSpec::Define()
 			{{- range $i, $e := .Params -}}
 			{{- if not (eq .KindType "extern") }}
 			{{- if .IsArray }}
-			{{- if .IsPrimitive }}
+			{{- if or .IsPrimitive (eq .KindType "enum") }}
 			{{ueType "" .}} {{ueVar "" .}}TestValue = {{ueDefault "" .}}; // default value
 			{{ueVar "" .}}TestValue.Add({{ ueTestValue "" .}});
 			{{- else }}
@@ -201,7 +201,7 @@ void {{$Class}}MsgBusSpec::Define()
 		{{- range $i, $e := .Params -}}
 		{{- if not (eq .KindType "extern") }}
 		{{- if .IsArray }}
-		{{- if .IsPrimitive }}
+		{{- if or .IsPrimitive (eq .KindType "enum") }}
 		{{ueType "" .}} {{ueVar "" .}}TestValue = {{ueDefault "" .}}; // default value
 		{{ueVar "" .}}TestValue.Add({{ ueTestValue "" .}});
 		{{- else }}

@@ -174,6 +174,35 @@ void UTbNamesNamEsOLinkSpec::Define()
 		ImplFixture->GetImplementation()->SetSomePoperty2(TestValue);
 	});
 
+	It("Property.EnumProperty.Default", [this]()
+		{
+		// Do implement test here
+		ETbNamesEnum_With_Under_scores TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_FIRSTVALUE; // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetEnumProperty(), TestValue);
+	});
+
+	LatentIt("Property.EnumProperty.Change", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		ETbNamesEnum_With_Under_scores TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_FIRSTVALUE; // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetEnumProperty(), TestValue);
+
+		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->_GetSignals();
+		TbNamesNamEsSignals->OnEnumPropertyChanged.AddLambda([this, TestDone](ETbNamesEnum_With_Under_scores InEnumProperty)
+			{
+			ETbNamesEnum_With_Under_scores TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_FIRSTVALUE;
+			// use different test value
+			TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_SECONDVALUE;
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InEnumProperty, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetEnumProperty(), TestValue);
+			TestDone.Execute();
+		});
+
+		// use different test value
+		TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_SECONDVALUE;
+		ImplFixture->GetImplementation()->SetEnumProperty(TestValue);
+	});
+
 	LatentIt("Operation.SomeFunction", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		// Do implement test here

@@ -73,4 +73,10 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Properties")
 	void SetSomePoperty2(int32 InSomePoperty2);
 	virtual void SetSomePoperty2_Implementation(UPARAM(DisplayName = "SomePoperty2") int32 InSomePoperty2) = 0;
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Properties")
+	ETbNamesEnum_With_Under_scores GetEnumProperty() const;
+	virtual ETbNamesEnum_With_Under_scores GetEnumProperty_Implementation() const = 0;
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Properties")
+	void SetEnumProperty(ETbNamesEnum_With_Under_scores InEnumProperty);
+	virtual void SetEnumProperty_Implementation(UPARAM(DisplayName = "EnumProperty") ETbNamesEnum_With_Under_scores InEnumProperty) = 0;
 };

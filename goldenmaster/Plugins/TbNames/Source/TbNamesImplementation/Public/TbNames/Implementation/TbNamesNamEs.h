@@ -38,6 +38,9 @@ public:
 	int32 GetSomePoperty2() const override;
 	void SetSomePoperty2(int32 SomePoperty2) override;
 
+	ETbNamesEnum_With_Under_scores GetEnumProperty() const override;
+	void SetEnumProperty(ETbNamesEnum_With_Under_scores EnumProperty) override;
+
 	// operations
 	void SomeFunction(bool bSomeParam) override;
 

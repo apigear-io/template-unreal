@@ -88,3 +88,22 @@ TScriptInterface<ITestbed1StructArrayInterfaceInterface> UTestbed1Settings::GetI
 
 	return nullptr;
 }
+
+TScriptInterface<ITestbed1StructArray2InterfaceInterface> UTestbed1Settings::GetITestbed1StructArray2InterfaceInterfaceForLogging(FSubsystemCollectionBase& Collection)
+{
+	UTestbed1Settings* Testbed1Settings = GetMutableDefault<UTestbed1Settings>();
+
+	FString BackendIdentifier = Testbed1Settings->TracerServiceIdentifier;
+
+	if (Testbed1Settings->TracerServiceIdentifier == Testbed1LocalBackendIdentifier)
+	{
+		return FTestbed1ModuleFactory::GetTestbed1StructArray2InterfaceImplementation(Testbed1LocalBackendIdentifier, Collection);
+	}
+
+	if (Testbed1Settings->TracerServiceIdentifier != Testbed1LocalBackendIdentifier)
+	{
+		return FTestbed1ModuleFactory::GetTestbed1StructArray2InterfaceImplementation("olink", Collection);
+	}
+
+	return nullptr;
+}

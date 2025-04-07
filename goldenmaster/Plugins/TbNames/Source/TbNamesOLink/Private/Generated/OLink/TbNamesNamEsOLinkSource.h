@@ -61,6 +61,7 @@ public:
 	void OnSwitchChanged(bool bSwitch);
 	void OnSomePropertyChanged(int32 SomeProperty);
 	void OnSomePoperty2Changed(int32 SomePoperty2);
+	void OnEnumPropertyChanged(ETbNamesEnum_With_Under_scores EnumProperty);
 
 private:
 	/** Holds the service backend, can be exchanged with different implementation during runtime */

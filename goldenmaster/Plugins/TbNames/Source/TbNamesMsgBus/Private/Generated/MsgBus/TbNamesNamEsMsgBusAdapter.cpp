@@ -67,6 +67,7 @@ void UTbNamesNamEsMsgBusAdapter::_StartListening()
 		.Handling<FTbNamesNamEsSetSwitchRequestMessage>(this, &UTbNamesNamEsMsgBusAdapter::OnSetSwitchRequest)
 		.Handling<FTbNamesNamEsSetSomePropertyRequestMessage>(this, &UTbNamesNamEsMsgBusAdapter::OnSetSomePropertyRequest)
 		.Handling<FTbNamesNamEsSetSomePoperty2RequestMessage>(this, &UTbNamesNamEsMsgBusAdapter::OnSetSomePoperty2Request)
+		.Handling<FTbNamesNamEsSetEnumPropertyRequestMessage>(this, &UTbNamesNamEsMsgBusAdapter::OnSetEnumPropertyRequest)
 		.Handling<FTbNamesNamEsSomeFunctionRequestMessage>(this, &UTbNamesNamEsMsgBusAdapter::OnSomeFunctionRequest)
 		.Handling<FTbNamesNamEsSomeFunction2RequestMessage>(this, &UTbNamesNamEsMsgBusAdapter::OnSomeFunction2Request)
 		.Build();
@@ -146,6 +147,11 @@ void UTbNamesNamEsMsgBusAdapter::_setBackendService(TScriptInterface<ITbNamesNam
 			BackendSignals->OnSomePoperty2Changed.Remove(OnSomePoperty2ChangedHandle);
 			OnSomePoperty2ChangedHandle.Reset();
 		}
+		if (OnEnumPropertyChangedHandle.IsValid())
+		{
+			BackendSignals->OnEnumPropertyChanged.Remove(OnEnumPropertyChangedHandle);
+			OnEnumPropertyChangedHandle.Reset();
+		}
 		if (OnSomeSignalSignalHandle.IsValid())
 		{
 			BackendSignals->OnSomeSignalSignal.Remove(OnSomeSignalSignalHandle);
@@ -169,6 +175,7 @@ void UTbNamesNamEsMsgBusAdapter::_setBackendService(TScriptInterface<ITbNamesNam
 	OnSwitchChangedHandle = BackendSignals->OnSwitchChanged.AddUObject(this, &UTbNamesNamEsMsgBusAdapter::OnSwitchChanged);
 	OnSomePropertyChangedHandle = BackendSignals->OnSomePropertyChanged.AddUObject(this, &UTbNamesNamEsMsgBusAdapter::OnSomePropertyChanged);
 	OnSomePoperty2ChangedHandle = BackendSignals->OnSomePoperty2Changed.AddUObject(this, &UTbNamesNamEsMsgBusAdapter::OnSomePoperty2Changed);
+	OnEnumPropertyChangedHandle = BackendSignals->OnEnumPropertyChanged.AddUObject(this, &UTbNamesNamEsMsgBusAdapter::OnEnumPropertyChanged);
 	OnSomeSignalSignalHandle = BackendSignals->OnSomeSignalSignal.AddUObject(this, &UTbNamesNamEsMsgBusAdapter::OnSomeSignal);
 	OnSomeSignal2SignalHandle = BackendSignals->OnSomeSignal2Signal.AddUObject(this, &UTbNamesNamEsMsgBusAdapter::OnSomeSignal2);
 }
@@ -201,6 +208,7 @@ void UTbNamesNamEsMsgBusAdapter::HandleClientConnectionRequest(const TSharedRef<
 	msg->bSwitch = BackendService->GetSwitch();
 	msg->SomeProperty = BackendService->GetSomeProperty();
 	msg->SomePoperty2 = BackendService->GetSomePoperty2();
+	msg->EnumProperty = BackendService->GetEnumProperty();
 
 	if (TbNamesNamEsMsgBusEndpoint.IsValid())
 	{
@@ -407,6 +415,29 @@ void UTbNamesNamEsMsgBusAdapter::OnSomePoperty2Changed(int32 InSomePoperty2)
 	if (TbNamesNamEsMsgBusEndpoint.IsValid() && NumberOfClients > 0)
 	{
 		TbNamesNamEsMsgBusEndpoint->Send<FTbNamesNamEsSomePoperty2ChangedMessage>(msg, EMessageFlags::Reliable,
+			nullptr,
+			ConnectedClients,
+			FTimespan::Zero(),
+			FDateTime::MaxValue());
+	}
+}
+
+void UTbNamesNamEsMsgBusAdapter::OnSetEnumPropertyRequest(const FTbNamesNamEsSetEnumPropertyRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
+{
+	BackendService->SetEnumProperty(InMessage.EnumProperty);
+}
+
+void UTbNamesNamEsMsgBusAdapter::OnEnumPropertyChanged(ETbNamesEnum_With_Under_scores InEnumProperty)
+{
+	TArray<FMessageAddress> ConnectedClients;
+	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+
+	auto msg = new FTbNamesNamEsEnumPropertyChangedMessage();
+	msg->EnumProperty = InEnumProperty;
+
+	if (TbNamesNamEsMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	{
+		TbNamesNamEsMsgBusEndpoint->Send<FTbNamesNamEsEnumPropertyChangedMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
 			ConnectedClients,
 			FTimespan::Zero(),

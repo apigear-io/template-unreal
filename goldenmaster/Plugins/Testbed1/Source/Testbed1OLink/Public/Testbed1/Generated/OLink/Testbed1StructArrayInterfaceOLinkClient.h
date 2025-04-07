@@ -58,6 +58,9 @@ public:
 	TArray<FTestbed1StructString> GetPropString() const override;
 	void SetPropString(const TArray<FTestbed1StructString>& PropString) override;
 
+	TArray<ETestbed1Enum0> GetPropEnum() const override;
+	void SetPropEnum(const TArray<ETestbed1Enum0>& PropEnum) override;
+
 	// operations
 	TArray<FTestbed1StructBool> FuncBool(const TArray<FTestbed1StructBool>& ParamBool) override;
 
@@ -66,6 +69,8 @@ public:
 	TArray<FTestbed1StructFloat> FuncFloat(const TArray<FTestbed1StructFloat>& ParamFloat) override;
 
 	TArray<FTestbed1StructString> FuncString(const TArray<FTestbed1StructString>& ParamString) override;
+
+	TArray<ETestbed1Enum0> FuncEnum(const TArray<ETestbed1Enum0>& ParamEnum) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface")
 	void UseConnection(TScriptInterface<class IApiGearConnection> InConnection);
