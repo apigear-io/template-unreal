@@ -65,6 +65,14 @@ void UTestbed1StructArrayInterfaceMsgBusHelper::PropStringPropertyCb(const TArra
 	}
 }
 
+void UTestbed1StructArrayInterfaceMsgBusHelper::PropEnumPropertyCb(const TArray<ETestbed1Enum0>& PropEnum)
+{
+	if (Spec)
+	{
+		Spec->PropEnumPropertyCb(PropEnum);
+	}
+}
+
 void UTestbed1StructArrayInterfaceMsgBusHelper::SigBoolSignalCb(const TArray<FTestbed1StructBool>& ParamBool)
 {
 	if (Spec)
@@ -94,6 +102,14 @@ void UTestbed1StructArrayInterfaceMsgBusHelper::SigStringSignalCb(const TArray<F
 	if (Spec)
 	{
 		Spec->SigStringSignalCb(ParamString);
+	}
+}
+
+void UTestbed1StructArrayInterfaceMsgBusHelper::SigEnumSignalCb(const TArray<ETestbed1Enum0>& ParamEnum)
+{
+	if (Spec)
+	{
+		Spec->SigEnumSignalCb(ParamEnum);
 	}
 }
 
@@ -179,6 +195,11 @@ void UTestbed1StructArrayInterfaceMsgBusHelper::PropStringPropertyCb(const TArra
 	(void)PropString;
 }
 
+void UTestbed1StructArrayInterfaceMsgBusHelper::PropEnumPropertyCb(const TArray<ETestbed1Enum0>& PropEnum)
+{
+	(void)PropEnum;
+}
+
 void UTestbed1StructArrayInterfaceMsgBusHelper::SigBoolSignalCb(const TArray<FTestbed1StructBool>& ParamBool)
 {
 	(void)ParamBool;
@@ -197,6 +218,11 @@ void UTestbed1StructArrayInterfaceMsgBusHelper::SigFloatSignalCb(const TArray<FT
 void UTestbed1StructArrayInterfaceMsgBusHelper::SigStringSignalCb(const TArray<FTestbed1StructString>& ParamString)
 {
 	(void)ParamString;
+}
+
+void UTestbed1StructArrayInterfaceMsgBusHelper::SigEnumSignalCb(const TArray<ETestbed1Enum0>& ParamEnum)
+{
+	(void)ParamEnum;
 }
 
 void UTestbed1StructArrayInterfaceMsgBusHelper::_ConnectionStatusChangedCb(bool bConnected)

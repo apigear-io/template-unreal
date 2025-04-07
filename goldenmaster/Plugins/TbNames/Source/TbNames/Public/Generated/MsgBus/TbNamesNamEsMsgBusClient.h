@@ -41,6 +41,7 @@ struct FTbNamesNamEsSomeSignal2SignalMessage;
 struct FTbNamesNamEsSwitchChangedMessage;
 struct FTbNamesNamEsSomePropertyChangedMessage;
 struct FTbNamesNamEsSomePoperty2ChangedMessage;
+struct FTbNamesNamEsEnumPropertyChangedMessage;
 
 USTRUCT(BlueprintType)
 struct FTbNamesNamEsStats
@@ -110,6 +111,9 @@ public:
 	int32 GetSomePoperty2_Implementation() const override;
 	void SetSomePoperty2_Implementation(int32 SomePoperty2) override;
 
+	ETbNamesEnum_With_Under_scores GetEnumProperty_Implementation() const override;
+	void SetEnumProperty_Implementation(ETbNamesEnum_With_Under_scores EnumProperty) override;
+
 	// operations
 	void SomeFunction_Implementation(bool bSomeParam) override;
 
@@ -142,6 +146,7 @@ private:
 	void OnSwitchChanged(const FTbNamesNamEsSwitchChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnSomePropertyChanged(const FTbNamesNamEsSomePropertyChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnSomePoperty2Changed(const FTbNamesNamEsSomePoperty2ChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnEnumPropertyChanged(const FTbNamesNamEsEnumPropertyChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 
 	// member variable to store the last sent data
 	TPimplPtr<TbNamesNamEsPropertiesMsgBusData> _SentData;

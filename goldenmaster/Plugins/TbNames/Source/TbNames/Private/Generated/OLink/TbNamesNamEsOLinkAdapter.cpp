@@ -62,6 +62,7 @@ void UTbNamesNamEsOLinkAdapter::setBackendService(TScriptInterface<ITbNamesNamEs
 		BackendSignals->OnSwitchChanged.RemoveDynamic(this, &UTbNamesNamEsOLinkAdapter::OnSwitchChanged);
 		BackendSignals->OnSomePropertyChanged.RemoveDynamic(this, &UTbNamesNamEsOLinkAdapter::OnSomePropertyChanged);
 		BackendSignals->OnSomePoperty2Changed.RemoveDynamic(this, &UTbNamesNamEsOLinkAdapter::OnSomePoperty2Changed);
+		BackendSignals->OnEnumPropertyChanged.RemoveDynamic(this, &UTbNamesNamEsOLinkAdapter::OnEnumPropertyChanged);
 		BackendSignals->OnSomeSignalSignal.RemoveDynamic(this, &UTbNamesNamEsOLinkAdapter::OnSomeSignal);
 		BackendSignals->OnSomeSignal2Signal.RemoveDynamic(this, &UTbNamesNamEsOLinkAdapter::OnSomeSignal2);
 	}
@@ -77,6 +78,7 @@ void UTbNamesNamEsOLinkAdapter::setBackendService(TScriptInterface<ITbNamesNamEs
 	BackendSignals->OnSwitchChanged.AddDynamic(this, &UTbNamesNamEsOLinkAdapter::OnSwitchChanged);
 	BackendSignals->OnSomePropertyChanged.AddDynamic(this, &UTbNamesNamEsOLinkAdapter::OnSomePropertyChanged);
 	BackendSignals->OnSomePoperty2Changed.AddDynamic(this, &UTbNamesNamEsOLinkAdapter::OnSomePoperty2Changed);
+	BackendSignals->OnEnumPropertyChanged.AddDynamic(this, &UTbNamesNamEsOLinkAdapter::OnEnumPropertyChanged);
 	BackendSignals->OnSomeSignalSignal.AddDynamic(this, &UTbNamesNamEsOLinkAdapter::OnSomeSignal);
 	BackendSignals->OnSomeSignal2Signal.AddDynamic(this, &UTbNamesNamEsOLinkAdapter::OnSomeSignal2);
 
@@ -107,6 +109,11 @@ void UTbNamesNamEsOLinkAdapter::OnSomePropertyChanged(int32 InSomeProperty)
 void UTbNamesNamEsOLinkAdapter::OnSomePoperty2Changed(int32 InSomePoperty2)
 {
 	Source->OnSomePoperty2Changed(InSomePoperty2);
+}
+
+void UTbNamesNamEsOLinkAdapter::OnEnumPropertyChanged(ETbNamesEnum_With_Under_scores InEnumProperty)
+{
+	Source->OnEnumPropertyChanged(InEnumProperty);
 }
 
 void UTbNamesNamEsOLinkAdapter::setOLinkHost(TSoftObjectPtr<UOLinkHost> InHost)
@@ -160,6 +167,10 @@ void UTbNamesNamEsOLinkAdapter::OnSomePropertyChanged(int32 InSomeProperty)
 }
 
 void UTbNamesNamEsOLinkAdapter::OnSomePoperty2Changed(int32 InSomePoperty2)
+{
+}
+
+void UTbNamesNamEsOLinkAdapter::OnEnumPropertyChanged(ETbNamesEnum_With_Under_scores InEnumProperty)
 {
 }
 

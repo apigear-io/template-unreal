@@ -131,6 +131,20 @@ void TbNamesNamEsOLinkSource::OnSomePoperty2Changed(int32 InSomePoperty2)
 	}
 }
 
+void TbNamesNamEsOLinkSource::OnEnumPropertyChanged(ETbNamesEnum_With_Under_scores InEnumProperty)
+{
+	static const auto& propertyId = ApiGear::ObjectLink::Name::createMemberId(olinkObjectName(), "enum_property");
+	static const auto& objectId = ApiGear::ObjectLink::Name::getObjectId(propertyId);
+	for (auto node : Host->GetOLinkRegistry()->getNodes(objectId))
+	{
+		auto lockedNode = node.lock();
+		if (lockedNode)
+		{
+			lockedNode->notifyPropertyChange(propertyId, InEnumProperty);
+		}
+	}
+}
+
 void TbNamesNamEsOLinkSource::setOLinkHost(TSoftObjectPtr<UOLinkHost> InHost)
 {
 	Host = InHost.Get();
@@ -193,6 +207,11 @@ void TbNamesNamEsOLinkSource::olinkSetProperty(const std::string& propertyId, co
 		int32 SomePoperty2 = value.get<int32>();
 		BackendService->Execute_SetSomePoperty2(BackendService.GetObject(), SomePoperty2);
 	}
+	if (path == "enum_property")
+	{
+		ETbNamesEnum_With_Under_scores EnumProperty = value.get<ETbNamesEnum_With_Under_scores>();
+		BackendService->Execute_SetEnumProperty(BackendService.GetObject(), EnumProperty);
+	}
 }
 
 nlohmann::json TbNamesNamEsOLinkSource::olinkCollectProperties()
@@ -207,6 +226,7 @@ nlohmann::json TbNamesNamEsOLinkSource::olinkCollectProperties()
 
 		{"Switch", BackendService->Execute_GetSwitch(BackendService.GetObject())},
 		{"SOME_PROPERTY", BackendService->Execute_GetSomeProperty(BackendService.GetObject())},
-		{"Some_Poperty2", BackendService->Execute_GetSomePoperty2(BackendService.GetObject())}});
+		{"Some_Poperty2", BackendService->Execute_GetSomePoperty2(BackendService.GetObject())},
+		{"enum_property", BackendService->Execute_GetEnumProperty(BackendService.GetObject())}});
 }
 #endif // !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)

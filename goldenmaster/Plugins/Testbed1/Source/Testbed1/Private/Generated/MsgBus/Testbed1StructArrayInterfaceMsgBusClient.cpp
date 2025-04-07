@@ -45,6 +45,8 @@ struct Testbed1StructArrayInterfacePropertiesMsgBusData
 	TArray<FTestbed1StructFloat> PropFloat{TArray<FTestbed1StructFloat>()};
 	FCriticalSection PropStringMutex;
 	TArray<FTestbed1StructString> PropString{TArray<FTestbed1StructString>()};
+	FCriticalSection PropEnumMutex;
+	TArray<ETestbed1Enum0> PropEnum{TArray<ETestbed1Enum0>()};
 };
 DEFINE_LOG_CATEGORY(LogTestbed1StructArrayInterfaceMsgBusClient);
 
@@ -97,14 +99,17 @@ void UTestbed1StructArrayInterfaceMsgBusClient::_Connect()
 		.Handling<FTestbed1StructArrayInterfaceSigIntSignalMessage>(this, &UTestbed1StructArrayInterfaceMsgBusClient::OnSigInt)
 		.Handling<FTestbed1StructArrayInterfaceSigFloatSignalMessage>(this, &UTestbed1StructArrayInterfaceMsgBusClient::OnSigFloat)
 		.Handling<FTestbed1StructArrayInterfaceSigStringSignalMessage>(this, &UTestbed1StructArrayInterfaceMsgBusClient::OnSigString)
+		.Handling<FTestbed1StructArrayInterfaceSigEnumSignalMessage>(this, &UTestbed1StructArrayInterfaceMsgBusClient::OnSigEnum)
 		.Handling<FTestbed1StructArrayInterfacePropBoolChangedMessage>(this, &UTestbed1StructArrayInterfaceMsgBusClient::OnPropBoolChanged)
 		.Handling<FTestbed1StructArrayInterfacePropIntChangedMessage>(this, &UTestbed1StructArrayInterfaceMsgBusClient::OnPropIntChanged)
 		.Handling<FTestbed1StructArrayInterfacePropFloatChangedMessage>(this, &UTestbed1StructArrayInterfaceMsgBusClient::OnPropFloatChanged)
 		.Handling<FTestbed1StructArrayInterfacePropStringChangedMessage>(this, &UTestbed1StructArrayInterfaceMsgBusClient::OnPropStringChanged)
+		.Handling<FTestbed1StructArrayInterfacePropEnumChangedMessage>(this, &UTestbed1StructArrayInterfaceMsgBusClient::OnPropEnumChanged)
 		.Handling<FTestbed1StructArrayInterfaceFuncBoolReplyMessage>(this, &UTestbed1StructArrayInterfaceMsgBusClient::OnFuncBoolReply)
 		.Handling<FTestbed1StructArrayInterfaceFuncIntReplyMessage>(this, &UTestbed1StructArrayInterfaceMsgBusClient::OnFuncIntReply)
 		.Handling<FTestbed1StructArrayInterfaceFuncFloatReplyMessage>(this, &UTestbed1StructArrayInterfaceMsgBusClient::OnFuncFloatReply)
 		.Handling<FTestbed1StructArrayInterfaceFuncStringReplyMessage>(this, &UTestbed1StructArrayInterfaceMsgBusClient::OnFuncStringReply)
+		.Handling<FTestbed1StructArrayInterfaceFuncEnumReplyMessage>(this, &UTestbed1StructArrayInterfaceMsgBusClient::OnFuncEnumReply)
 		.Build();
 	// clang-format on
 
@@ -214,6 +219,13 @@ void UTestbed1StructArrayInterfaceMsgBusClient::OnConnectionInit(const FTestbed1
 	{
 		PropString = InMessage.PropString;
 		Execute__GetSignals(this)->OnPropStringChanged.Broadcast(PropString);
+	}
+
+	const bool bPropEnumChanged = InMessage.PropEnum != PropEnum;
+	if (bPropEnumChanged)
+	{
+		PropEnum = InMessage.PropEnum;
+		Execute__GetSignals(this)->OnPropEnumChanged.Broadcast(PropEnum);
 	}
 
 	_ConnectionStatusChanged.Broadcast(true);
@@ -472,6 +484,46 @@ void UTestbed1StructArrayInterfaceMsgBusClient::SetPropString_Implementation(con
 	_SentData->PropString = InPropString;
 }
 
+TArray<ETestbed1Enum0> UTestbed1StructArrayInterfaceMsgBusClient::GetPropEnum_Implementation() const
+{
+	return PropEnum;
+}
+
+void UTestbed1StructArrayInterfaceMsgBusClient::SetPropEnum_Implementation(const TArray<ETestbed1Enum0>& InPropEnum)
+{
+	if (!_IsConnected())
+	{
+		UE_LOG(LogTestbed1StructArrayInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
+		return;
+	}
+
+	// only send change requests if the value changed -> reduce network load
+	if (GetPropEnum_Implementation() == InPropEnum)
+	{
+		return;
+	}
+
+	// only send change requests if the value wasn't already sent -> reduce network load
+	{
+		FScopeLock Lock(&(_SentData->PropEnumMutex));
+		if (_SentData->PropEnum == InPropEnum)
+		{
+			return;
+		}
+	}
+
+	auto msg = new FTestbed1StructArrayInterfaceSetPropEnumRequestMessage();
+	msg->PropEnum = InPropEnum;
+
+	Testbed1StructArrayInterfaceMsgBusEndpoint->Send<FTestbed1StructArrayInterfaceSetPropEnumRequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
+	FScopeLock Lock(&(_SentData->PropEnumMutex));
+	_SentData->PropEnum = InPropEnum;
+}
+
 TArray<FTestbed1StructBool> UTestbed1StructArrayInterfaceMsgBusClient::FuncBool_Implementation(const TArray<FTestbed1StructBool>& InParamBool)
 {
 	if (!_IsConnected())
@@ -588,6 +640,35 @@ void UTestbed1StructArrayInterfaceMsgBusClient::OnFuncStringReply(const FTestbed
 	FulfillPromise(InMessage.ResponseId, InMessage.Result);
 }
 
+TArray<ETestbed1Enum0> UTestbed1StructArrayInterfaceMsgBusClient::FuncEnum_Implementation(const TArray<ETestbed1Enum0>& InParamEnum)
+{
+	if (!_IsConnected())
+	{
+		UE_LOG(LogTestbed1StructArrayInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
+
+		return TArray<ETestbed1Enum0>();
+	}
+
+	auto msg = new FTestbed1StructArrayInterfaceFuncEnumRequestMessage();
+	msg->ResponseId = FGuid::NewGuid();
+	msg->ParamEnum = InParamEnum;
+	TPromise<TArray<ETestbed1Enum0>> Promise;
+	StorePromise(msg->ResponseId, Promise);
+
+	Testbed1StructArrayInterfaceMsgBusEndpoint->Send<FTestbed1StructArrayInterfaceFuncEnumRequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
+
+	return Promise.GetFuture().Get();
+}
+
+void UTestbed1StructArrayInterfaceMsgBusClient::OnFuncEnumReply(const FTestbed1StructArrayInterfaceFuncEnumReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	FulfillPromise(InMessage.ResponseId, InMessage.Result);
+}
+
 void UTestbed1StructArrayInterfaceMsgBusClient::OnSigBool(const FTestbed1StructArrayInterfaceSigBoolSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ServiceAddress != Context->GetSender())
@@ -633,6 +714,18 @@ void UTestbed1StructArrayInterfaceMsgBusClient::OnSigString(const FTestbed1Struc
 	}
 
 	Execute__GetSignals(this)->OnSigStringSignal.Broadcast(InMessage.ParamString);
+	return;
+}
+
+void UTestbed1StructArrayInterfaceMsgBusClient::OnSigEnum(const FTestbed1StructArrayInterfaceSigEnumSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	if (ServiceAddress != Context->GetSender())
+	{
+		UE_LOG(LogTestbed1StructArrayInterfaceMsgBusClient, Error, TEXT("Got a message from wrong service(%s) instead of %s"), *Context->GetSender().ToString(), *ServiceAddress.ToString());
+		return;
+	}
+
+	Execute__GetSignals(this)->OnSigEnumSignal.Broadcast(InMessage.ParamEnum);
 	return;
 }
 
@@ -700,6 +793,22 @@ void UTestbed1StructArrayInterfaceMsgBusClient::OnPropStringChanged(const FTestb
 	}
 }
 
+void UTestbed1StructArrayInterfaceMsgBusClient::OnPropEnumChanged(const FTestbed1StructArrayInterfacePropEnumChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	if (ServiceAddress != Context->GetSender())
+	{
+		UE_LOG(LogTestbed1StructArrayInterfaceMsgBusClient, Error, TEXT("Got a message from wrong service(%s) instead of %s"), *Context->GetSender().ToString(), *ServiceAddress.ToString());
+		return;
+	}
+
+	const bool bPropEnumChanged = InMessage.PropEnum != PropEnum;
+	if (bPropEnumChanged)
+	{
+		PropEnum = InMessage.PropEnum;
+		Execute__GetSignals(this)->OnPropEnumChanged.Broadcast(PropEnum);
+	}
+}
+
 template <typename ResultType>
 bool UTestbed1StructArrayInterfaceMsgBusClient::StorePromise(const FGuid& Id, TPromise<ResultType>& Promise)
 {
@@ -729,6 +838,8 @@ bool UTestbed1StructArrayInterfaceMsgBusClient::FulfillPromise(const FGuid& Id, 
 	return false;
 }
 
+template bool UTestbed1StructArrayInterfaceMsgBusClient::StorePromise<TArray<ETestbed1Enum0>>(const FGuid& Id, TPromise<TArray<ETestbed1Enum0>>& Promise);
+template bool UTestbed1StructArrayInterfaceMsgBusClient::FulfillPromise<TArray<ETestbed1Enum0>>(const FGuid& Id, const TArray<ETestbed1Enum0>& Value);
 template bool UTestbed1StructArrayInterfaceMsgBusClient::StorePromise<TArray<FTestbed1StructBool>>(const FGuid& Id, TPromise<TArray<FTestbed1StructBool>>& Promise);
 template bool UTestbed1StructArrayInterfaceMsgBusClient::FulfillPromise<TArray<FTestbed1StructBool>>(const FGuid& Id, const TArray<FTestbed1StructBool>& Value);
 template bool UTestbed1StructArrayInterfaceMsgBusClient::StorePromise<TArray<FTestbed1StructFloat>>(const FGuid& Id, TPromise<TArray<FTestbed1StructFloat>>& Promise);

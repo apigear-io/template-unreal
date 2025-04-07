@@ -5,8 +5,7 @@
 #include "Generated/api/{{$ModuleName}}_data.h"
 #include "Misc/AutomationTest.h"
 
-#if WITH_DEV_AUTOMATION_TESTS 
-
+#if WITH_DEV_AUTOMATION_TESTS
 {{- range .Module.Structs }}
 {{- $class := printf "F%s%s" $ModuleName .Name }}
 {{$class }} createTest{{$class }}()
@@ -15,8 +14,12 @@
 {{- nl}}
 {{- range .Fields }}
 	{{- if .IsArray }}
-	{{- $type := printf "F%s%s" $ModuleName .Type }}
+	{{- if and (not .IsPrimitive) (not (eq .KindType "enum")) }}
+	{{- $type := printf "F%s%s" $ModuleName (Camel .Type) }}
 	TestValue.{{.Name}} = createTest{{$type}}Array();
+	{{- else }}
+	TestValue.{{.Name}}.Add({{ ueTestValue "" . }});
+	{{- end }}
 	{{- else if and (not .IsPrimitive) (not (eq .KindType "enum"))}}
 	TestValue.{{.Name}} = createTest{{ueType "" .}}();
 	{{- else }}

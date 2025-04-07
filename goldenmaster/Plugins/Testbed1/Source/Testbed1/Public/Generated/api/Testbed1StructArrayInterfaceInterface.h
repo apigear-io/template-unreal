@@ -33,11 +33,14 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed1StructArrayInterfaceSigFloa
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed1StructArrayInterfaceSigStringDelegate, const TArray<FTestbed1StructString>&, ParamString);
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed1StructArrayInterfaceSigEnumDelegate, const TArray<ETestbed1Enum0>&, ParamEnum);
+
 // property delegates
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed1StructArrayInterfacePropBoolChangedDelegate, const TArray<FTestbed1StructBool>&, PropBool);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed1StructArrayInterfacePropIntChangedDelegate, const TArray<FTestbed1StructInt>&, PropInt);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed1StructArrayInterfacePropFloatChangedDelegate, const TArray<FTestbed1StructFloat>&, PropFloat);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed1StructArrayInterfacePropStringChangedDelegate, const TArray<FTestbed1StructString>&, PropString);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed1StructArrayInterfacePropEnumChangedDelegate, const TArray<ETestbed1Enum0>&, PropEnum);
 
 /**
  * Class UTestbed1StructArrayInterfaceInterfaceSignals
@@ -86,6 +89,15 @@ public:
 		OnSigStringSignal.Broadcast(ParamString);
 	}
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "SigEnum Signal")
+	FTestbed1StructArrayInterfaceSigEnumDelegate OnSigEnumSignal;
+	/// C++ wrapper for BP functions to safely call SigEnumSignal.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "Broadcast SigEnum Signal")
+	void BroadcastSigEnumSignal(const TArray<ETestbed1Enum0>& ParamEnum)
+	{
+		OnSigEnumSignal.Broadcast(ParamEnum);
+	}
+
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "Property PropBool Changed")
 	FTestbed1StructArrayInterfacePropBoolChangedDelegate OnPropBoolChanged;
 	/// C++ wrapper for BP functions to safely call OnPropBoolChanged.Broadcast
@@ -120,6 +132,15 @@ public:
 	void BroadcastPropStringChanged(UPARAM(DisplayName = "PropString") const TArray<FTestbed1StructString>& InPropString)
 	{
 		OnPropStringChanged.Broadcast(InPropString);
+	}
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "Property PropEnum Changed")
+	FTestbed1StructArrayInterfacePropEnumChangedDelegate OnPropEnumChanged;
+	/// C++ wrapper for BP functions to safely call OnPropEnumChanged.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "Broadcast Property PropEnum Changed")
+	void BroadcastPropEnumChanged(UPARAM(DisplayName = "PropEnum") const TArray<ETestbed1Enum0>& InPropEnum)
+	{
+		OnPropEnumChanged.Broadcast(InPropEnum);
 	}
 };
 
@@ -176,6 +197,13 @@ public:
 	TArray<FTestbed1StructString> FuncString(const TArray<FTestbed1StructString>& ParamString);
 	virtual TArray<FTestbed1StructString> FuncString_Implementation(const TArray<FTestbed1StructString>& ParamString) = 0;
 
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	void FuncEnumAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<ETestbed1Enum0>& Result, const TArray<ETestbed1Enum0>& ParamEnum);
+	virtual void FuncEnumAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<ETestbed1Enum0>& Result, const TArray<ETestbed1Enum0>& ParamEnum) = 0;
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Operations")
+	TArray<ETestbed1Enum0> FuncEnum(const TArray<ETestbed1Enum0>& ParamEnum);
+	virtual TArray<ETestbed1Enum0> FuncEnum_Implementation(const TArray<ETestbed1Enum0>& ParamEnum) = 0;
+
 	// properties
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Properties")
 	TArray<FTestbed1StructBool> GetPropBool() const;
@@ -201,4 +229,10 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Properties")
 	void SetPropString(const TArray<FTestbed1StructString>& InPropString);
 	virtual void SetPropString_Implementation(UPARAM(DisplayName = "PropString") const TArray<FTestbed1StructString>& InPropString) = 0;
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Properties")
+	TArray<ETestbed1Enum0> GetPropEnum() const;
+	virtual TArray<ETestbed1Enum0> GetPropEnum_Implementation() const = 0;
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Properties")
+	void SetPropEnum(const TArray<ETestbed1Enum0>& InPropEnum);
+	virtual void SetPropEnum_Implementation(UPARAM(DisplayName = "PropEnum") const TArray<ETestbed1Enum0>& InPropEnum) = 0;
 };

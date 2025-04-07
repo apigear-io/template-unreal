@@ -58,6 +58,10 @@ public:
 
 	void SetPropString_Implementation(const TArray<FTestbed1StructString>& InPropString) override;
 
+	TArray<ETestbed1Enum0> GetPropEnum_Implementation() const override;
+
+	void SetPropEnum_Implementation(const TArray<ETestbed1Enum0>& InPropEnum) override;
+
 	// operations
 	TArray<FTestbed1StructBool> FuncBool_Implementation(const TArray<FTestbed1StructBool>& ParamBool) override;
 
@@ -66,6 +70,8 @@ public:
 	TArray<FTestbed1StructFloat> FuncFloat_Implementation(const TArray<FTestbed1StructFloat>& ParamFloat) override;
 
 	TArray<FTestbed1StructString> FuncString_Implementation(const TArray<FTestbed1StructString>& ParamString) override;
+
+	TArray<ETestbed1Enum0> FuncEnum_Implementation(const TArray<ETestbed1Enum0>& ParamEnum) override;
 
 private:
 	/** The connection to the service backend. */
@@ -86,6 +92,9 @@ private:
 	void OnSigString(const TArray<FTestbed1StructString>& InParamString);
 
 	UFUNCTION(Category = "ApiGear|Testbed1|StructArrayInterface", BlueprintInternalUseOnly)
+	void OnSigEnum(const TArray<ETestbed1Enum0>& InParamEnum);
+
+	UFUNCTION(Category = "ApiGear|Testbed1|StructArrayInterface", BlueprintInternalUseOnly)
 	void OnPropBoolChanged(const TArray<FTestbed1StructBool>& InPropBool);
 
 	UFUNCTION(Category = "ApiGear|Testbed1|StructArrayInterface", BlueprintInternalUseOnly)
@@ -96,4 +105,7 @@ private:
 
 	UFUNCTION(Category = "ApiGear|Testbed1|StructArrayInterface", BlueprintInternalUseOnly)
 	void OnPropStringChanged(const TArray<FTestbed1StructString>& InPropString);
+
+	UFUNCTION(Category = "ApiGear|Testbed1|StructArrayInterface", BlueprintInternalUseOnly)
+	void OnPropEnumChanged(const TArray<ETestbed1Enum0>& InPropEnum);
 };

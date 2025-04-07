@@ -85,7 +85,7 @@ void {{$Class}}MsgBusSpec::Define()
 		{{$Iface}}Signals->On{{Camel .Name}}Changed.AddDynamic(ImplFixture->GetHelper().Get(), &{{$Class}}MsgBusHelper::{{ Camel .Name }}PropertyCb);
 		// use different test value
 		{{- if .IsArray }}
-		{{- if .IsPrimitive }}
+		{{- if or .IsPrimitive (eq .KindType "enum") }}
 		TestValue.Add({{ ueTestValue "" .}});
 		{{- else }}
 		{{- $type := ""}}
@@ -144,7 +144,7 @@ void {{$Class}}MsgBusSpec::Define()
 		{{- range $i, $e := .Params -}}
 		{{- if not (eq .KindType "extern") }}
 		{{- if .IsArray }}
-		{{- if .IsPrimitive }}
+		{{- if or .IsPrimitive (eq .KindType "enum") }}
 		{{ueType "" .}} {{ueVar "" .}}TestValue = {{ueDefault "" .}}; // default value
 		{{ueVar "" .}}TestValue.Add({{ ueTestValue "" .}});
 		{{- else }}
@@ -183,7 +183,7 @@ void {{$Class}}MsgBusSpec::{{ Camel .Name }}PropertyCb({{ueParam "In" .}})
 	{{ueType "" .}} TestValue = {{ueDefault "" .}};
 	// use different test value
 	{{- if .IsArray }}
-	{{- if .IsPrimitive }}
+	{{- if or .IsPrimitive (eq .KindType "enum") }}
 	TestValue.Add({{ ueTestValue "" .}});
 	{{- else }}
 	{{- $type := ""}}
@@ -214,7 +214,7 @@ void {{$Class}}MsgBusSpec::{{ Camel .Name }}SignalCb({{ueParams "In" .Params}})
 	{{- range $i, $e := .Params -}}
 	{{- if not (eq .KindType "extern") }}
 	{{- if .IsArray }}
-	{{- if .IsPrimitive }}
+	{{- if or .IsPrimitive (eq .KindType "enum") }}
 	{{ueType "" .}} {{ueVar "" .}}TestValue = {{ueDefault "" .}}; // default value
 	{{ueVar "" .}}TestValue.Add({{ ueTestValue "" .}});
 	{{- else }}

@@ -38,6 +38,9 @@ public:
 	void PropStringPropertyCb(const TArray<FTestbed1StructString>& PropString);
 
 	UFUNCTION()
+	void PropEnumPropertyCb(const TArray<ETestbed1Enum0>& PropEnum);
+
+	UFUNCTION()
 	void SigBoolSignalCb(const TArray<FTestbed1StructBool>& ParamBool);
 
 	UFUNCTION()
@@ -48,6 +51,9 @@ public:
 
 	UFUNCTION()
 	void SigStringSignalCb(const TArray<FTestbed1StructString>& ParamString);
+
+	UFUNCTION()
+	void SigEnumSignalCb(const TArray<ETestbed1Enum0>& ParamEnum);
 
 	UFUNCTION()
 	void _SubscriptionStatusChangedCb(bool bSubscribed);

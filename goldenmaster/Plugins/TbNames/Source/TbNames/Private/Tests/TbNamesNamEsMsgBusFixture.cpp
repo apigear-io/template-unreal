@@ -57,6 +57,14 @@ void UTbNamesNamEsMsgBusHelper::SomePoperty2PropertyCb(int32 SomePoperty2)
 	}
 }
 
+void UTbNamesNamEsMsgBusHelper::EnumPropertyPropertyCb(ETbNamesEnum_With_Under_scores EnumProperty)
+{
+	if (Spec)
+	{
+		Spec->EnumPropertyPropertyCb(EnumProperty);
+	}
+}
+
 void UTbNamesNamEsMsgBusHelper::SomeSignalSignalCb(bool bSomeParam)
 {
 	if (Spec)
@@ -148,6 +156,11 @@ void UTbNamesNamEsMsgBusHelper::SomePropertyPropertyCb(int32 SomeProperty)
 void UTbNamesNamEsMsgBusHelper::SomePoperty2PropertyCb(int32 SomePoperty2)
 {
 	(void)SomePoperty2;
+}
+
+void UTbNamesNamEsMsgBusHelper::EnumPropertyPropertyCb(ETbNamesEnum_With_Under_scores EnumProperty)
+{
+	(void)EnumProperty;
 }
 
 void UTbNamesNamEsMsgBusHelper::SomeSignalSignalCb(bool bSomeParam)

@@ -53,6 +53,9 @@ public:
 	virtual void FuncStringAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FTestbed1StructString>& Result, const TArray<FTestbed1StructString>& ParamString) override;
 	virtual TArray<FTestbed1StructString> FuncString_Implementation(const TArray<FTestbed1StructString>& ParamString) override PURE_VIRTUAL(UAbstractTestbed1StructArrayInterface::FuncString_Implementation, return TArray<FTestbed1StructString>(););
 
+	virtual void FuncEnumAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<ETestbed1Enum0>& Result, const TArray<ETestbed1Enum0>& ParamEnum) override;
+	virtual TArray<ETestbed1Enum0> FuncEnum_Implementation(const TArray<ETestbed1Enum0>& ParamEnum) override PURE_VIRTUAL(UAbstractTestbed1StructArrayInterface::FuncEnum_Implementation, return TArray<ETestbed1Enum0>(););
+
 	// properties
 	virtual TArray<FTestbed1StructBool> GetPropBool_Implementation() const override PURE_VIRTUAL(UAbstractTestbed1StructArrayInterface::GetPropBool_Implementation, return TArray<FTestbed1StructBool>(););
 	virtual void SetPropBool_Implementation(const TArray<FTestbed1StructBool>& InPropBool) override PURE_VIRTUAL(UAbstractTestbed1StructArrayInterface::SetPropBool_Implementation, return;);
@@ -65,6 +68,9 @@ public:
 
 	virtual TArray<FTestbed1StructString> GetPropString_Implementation() const override PURE_VIRTUAL(UAbstractTestbed1StructArrayInterface::GetPropString_Implementation, return TArray<FTestbed1StructString>(););
 	virtual void SetPropString_Implementation(const TArray<FTestbed1StructString>& InPropString) override PURE_VIRTUAL(UAbstractTestbed1StructArrayInterface::SetPropString_Implementation, return;);
+
+	virtual TArray<ETestbed1Enum0> GetPropEnum_Implementation() const override PURE_VIRTUAL(UAbstractTestbed1StructArrayInterface::GetPropEnum_Implementation, return TArray<ETestbed1Enum0>(););
+	virtual void SetPropEnum_Implementation(const TArray<ETestbed1Enum0>& InPropEnum) override PURE_VIRTUAL(UAbstractTestbed1StructArrayInterface::SetPropEnum_Implementation, return;);
 
 	virtual bool IsInitialized() const;
 
@@ -107,6 +113,15 @@ protected:
 
 	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed1|StructArrayInterface|Properties", BlueprintInternalUseOnly)
 	void SetPropString_Private(const TArray<FTestbed1StructString>& InPropString);
+
+	UPROPERTY(EditAnywhere, BlueprintGetter = GetPropEnum_Private, BlueprintSetter = SetPropEnum_Private, Category = "ApiGear|Testbed1|StructArrayInterface")
+	TArray<ETestbed1Enum0> PropEnum{TArray<ETestbed1Enum0>()};
+
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|Testbed1|StructArrayInterface|Properties", BlueprintInternalUseOnly)
+	TArray<ETestbed1Enum0> GetPropEnum_Private() const;
+
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|Testbed1|StructArrayInterface|Properties", BlueprintInternalUseOnly)
+	void SetPropEnum_Private(const TArray<ETestbed1Enum0>& InPropEnum);
 
 private:
 	// signals

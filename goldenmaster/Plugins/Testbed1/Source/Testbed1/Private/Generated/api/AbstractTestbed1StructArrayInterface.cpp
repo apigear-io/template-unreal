@@ -115,6 +115,16 @@ void UAbstractTestbed1StructArrayInterface::SetPropString_Private(const TArray<F
 	Execute_SetPropString(this, InPropString);
 };
 
+TArray<ETestbed1Enum0> UAbstractTestbed1StructArrayInterface::GetPropEnum_Private() const
+{
+	return Execute_GetPropEnum(this);
+};
+
+void UAbstractTestbed1StructArrayInterface::SetPropEnum_Private(const TArray<ETestbed1Enum0>& InPropEnum)
+{
+	Execute_SetPropEnum(this, InPropEnum);
+};
+
 void UAbstractTestbed1StructArrayInterface::FuncBoolAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FTestbed1StructBool>& Result, const TArray<FTestbed1StructBool>& ParamBool)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
@@ -255,6 +265,41 @@ void UAbstractTestbed1StructArrayInterface::FuncStringAsync_Implementation(UObje
 	}
 }
 
+void UAbstractTestbed1StructArrayInterface::FuncEnumAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<ETestbed1Enum0>& Result, const TArray<ETestbed1Enum0>& ParamEnum)
+{
+	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
+	{
+		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
+		FTestbed1StructArrayInterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTestbed1StructArrayInterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+
+		if (oldRequest != nullptr)
+		{
+			// cancel old request
+			oldRequest->Cancel();
+			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
+		}
+
+		FTestbed1StructArrayInterfaceLatentAction* CompletionAction = new FTestbed1StructArrayInterfaceLatentAction(LatentInfo);
+		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
+
+		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
+		if (this->GetClass()->IsInBlueprint())
+		{
+			Result = Execute_FuncEnum(this, ParamEnum);
+			CompletionAction->Cancel();
+		}
+		else
+		{
+			Async(EAsyncExecution::ThreadPool,
+				[ParamEnum, this, &Result, CompletionAction]()
+				{
+				Result = Execute_FuncEnum(this, ParamEnum);
+				CompletionAction->Cancel();
+			});
+		}
+	}
+}
+
 void UAbstractTestbed1StructArrayInterface::Initialize(FSubsystemCollectionBase& Collection)
 {
 	check(!bInitialized);
@@ -274,11 +319,13 @@ void UAbstractTestbed1StructArrayInterface::Deinitialize()
 		Testbed1StructArrayInterfaceSignals->OnSigIntSignal.RemoveAll(Testbed1StructArrayInterfaceSignals);
 		Testbed1StructArrayInterfaceSignals->OnSigFloatSignal.RemoveAll(Testbed1StructArrayInterfaceSignals);
 		Testbed1StructArrayInterfaceSignals->OnSigStringSignal.RemoveAll(Testbed1StructArrayInterfaceSignals);
+		Testbed1StructArrayInterfaceSignals->OnSigEnumSignal.RemoveAll(Testbed1StructArrayInterfaceSignals);
 
 		Testbed1StructArrayInterfaceSignals->OnPropBoolChanged.RemoveAll(Testbed1StructArrayInterfaceSignals);
 		Testbed1StructArrayInterfaceSignals->OnPropIntChanged.RemoveAll(Testbed1StructArrayInterfaceSignals);
 		Testbed1StructArrayInterfaceSignals->OnPropFloatChanged.RemoveAll(Testbed1StructArrayInterfaceSignals);
 		Testbed1StructArrayInterfaceSignals->OnPropStringChanged.RemoveAll(Testbed1StructArrayInterfaceSignals);
+		Testbed1StructArrayInterfaceSignals->OnPropEnumChanged.RemoveAll(Testbed1StructArrayInterfaceSignals);
 	}
 
 	Super::Deinitialize();

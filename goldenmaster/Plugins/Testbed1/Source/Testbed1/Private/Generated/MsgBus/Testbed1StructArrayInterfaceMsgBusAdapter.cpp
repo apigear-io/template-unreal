@@ -69,10 +69,12 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::_StartListening()
 		.Handling<FTestbed1StructArrayInterfaceSetPropIntRequestMessage>(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnSetPropIntRequest)
 		.Handling<FTestbed1StructArrayInterfaceSetPropFloatRequestMessage>(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnSetPropFloatRequest)
 		.Handling<FTestbed1StructArrayInterfaceSetPropStringRequestMessage>(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnSetPropStringRequest)
+		.Handling<FTestbed1StructArrayInterfaceSetPropEnumRequestMessage>(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnSetPropEnumRequest)
 		.Handling<FTestbed1StructArrayInterfaceFuncBoolRequestMessage>(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnFuncBoolRequest)
 		.Handling<FTestbed1StructArrayInterfaceFuncIntRequestMessage>(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnFuncIntRequest)
 		.Handling<FTestbed1StructArrayInterfaceFuncFloatRequestMessage>(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnFuncFloatRequest)
 		.Handling<FTestbed1StructArrayInterfaceFuncStringRequestMessage>(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnFuncStringRequest)
+		.Handling<FTestbed1StructArrayInterfaceFuncEnumRequestMessage>(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnFuncEnumRequest)
 		.Build();
 	// clang-format on
 
@@ -139,10 +141,12 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::_setBackendService(TScriptInter
 		BackendSignals->OnPropIntChanged.RemoveDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropIntChanged);
 		BackendSignals->OnPropFloatChanged.RemoveDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropFloatChanged);
 		BackendSignals->OnPropStringChanged.RemoveDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropStringChanged);
+		BackendSignals->OnPropEnumChanged.RemoveDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropEnumChanged);
 		BackendSignals->OnSigBoolSignal.RemoveDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigBool);
 		BackendSignals->OnSigIntSignal.RemoveDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigInt);
 		BackendSignals->OnSigFloatSignal.RemoveDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigFloat);
 		BackendSignals->OnSigStringSignal.RemoveDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigString);
+		BackendSignals->OnSigEnumSignal.RemoveDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigEnum);
 	}
 
 	// only set if interface is implemented
@@ -157,10 +161,12 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::_setBackendService(TScriptInter
 	BackendSignals->OnPropIntChanged.AddDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropIntChanged);
 	BackendSignals->OnPropFloatChanged.AddDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropFloatChanged);
 	BackendSignals->OnPropStringChanged.AddDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropStringChanged);
+	BackendSignals->OnPropEnumChanged.AddDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropEnumChanged);
 	BackendSignals->OnSigBoolSignal.AddDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigBool);
 	BackendSignals->OnSigIntSignal.AddDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigInt);
 	BackendSignals->OnSigFloatSignal.AddDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigFloat);
 	BackendSignals->OnSigStringSignal.AddDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigString);
+	BackendSignals->OnSigEnumSignal.AddDynamic(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigEnum);
 }
 
 void UTestbed1StructArrayInterfaceMsgBusAdapter::OnDiscoveryMessage(const FTestbed1StructArrayInterfaceDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -192,6 +198,7 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::HandleClientConnectionRequest(c
 	msg->PropInt = BackendService->Execute_GetPropInt(BackendService.GetObject());
 	msg->PropFloat = BackendService->Execute_GetPropFloat(BackendService.GetObject());
 	msg->PropString = BackendService->Execute_GetPropString(BackendService.GetObject());
+	msg->PropEnum = BackendService->Execute_GetPropEnum(BackendService.GetObject());
 
 	if (Testbed1StructArrayInterfaceMsgBusEndpoint.IsValid())
 	{
@@ -356,6 +363,22 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::OnFuncStringRequest(const FTest
 	}
 }
 
+void UTestbed1StructArrayInterfaceMsgBusAdapter::OnFuncEnumRequest(const FTestbed1StructArrayInterfaceFuncEnumRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	auto msg = new FTestbed1StructArrayInterfaceFuncEnumReplyMessage();
+	msg->ResponseId = InMessage.ResponseId;
+	msg->Result = BackendService->Execute_FuncEnum(BackendService.GetObject(), InMessage.ParamEnum);
+
+	if (Testbed1StructArrayInterfaceMsgBusEndpoint.IsValid())
+	{
+		Testbed1StructArrayInterfaceMsgBusEndpoint->Send<FTestbed1StructArrayInterfaceFuncEnumReplyMessage>(msg, EMessageFlags::Reliable,
+			nullptr,
+			TArrayBuilder<FMessageAddress>().Add(Context->GetSender()),
+			FTimespan::Zero(),
+			FDateTime::MaxValue());
+	}
+}
+
 void UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigBool(const TArray<FTestbed1StructBool>& InParamBool)
 {
 	TArray<FMessageAddress> ConnectedClients;
@@ -417,6 +440,23 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigString(const TArray<FTestb
 	if (Testbed1StructArrayInterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
 	{
 		Testbed1StructArrayInterfaceMsgBusEndpoint->Send<FTestbed1StructArrayInterfaceSigStringSignalMessage>(msg, EMessageFlags::Reliable,
+			nullptr,
+			ConnectedClients,
+			FTimespan::Zero(),
+			FDateTime::MaxValue());
+	}
+}
+
+void UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigEnum(const TArray<ETestbed1Enum0>& InParamEnum)
+{
+	TArray<FMessageAddress> ConnectedClients;
+	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+
+	auto msg = new FTestbed1StructArrayInterfaceSigEnumSignalMessage();
+	msg->ParamEnum = InParamEnum;
+	if (Testbed1StructArrayInterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	{
+		Testbed1StructArrayInterfaceMsgBusEndpoint->Send<FTestbed1StructArrayInterfaceSigEnumSignalMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
 			ConnectedClients,
 			FTimespan::Zero(),
@@ -509,6 +549,29 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropStringChanged(const TArra
 	if (Testbed1StructArrayInterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
 	{
 		Testbed1StructArrayInterfaceMsgBusEndpoint->Send<FTestbed1StructArrayInterfacePropStringChangedMessage>(msg, EMessageFlags::Reliable,
+			nullptr,
+			ConnectedClients,
+			FTimespan::Zero(),
+			FDateTime::MaxValue());
+	}
+}
+
+void UTestbed1StructArrayInterfaceMsgBusAdapter::OnSetPropEnumRequest(const FTestbed1StructArrayInterfaceSetPropEnumRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
+{
+	BackendService->Execute_SetPropEnum(BackendService.GetObject(), InMessage.PropEnum);
+}
+
+void UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropEnumChanged(const TArray<ETestbed1Enum0>& InPropEnum)
+{
+	TArray<FMessageAddress> ConnectedClients;
+	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+
+	auto msg = new FTestbed1StructArrayInterfacePropEnumChangedMessage();
+	msg->PropEnum = InPropEnum;
+
+	if (Testbed1StructArrayInterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	{
+		Testbed1StructArrayInterfaceMsgBusEndpoint->Send<FTestbed1StructArrayInterfacePropEnumChangedMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
 			ConnectedClients,
 			FTimespan::Zero(),

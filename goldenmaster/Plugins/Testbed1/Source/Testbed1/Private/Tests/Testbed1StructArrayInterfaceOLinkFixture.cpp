@@ -50,6 +50,11 @@ void UTestbed1StructArrayInterfaceOLinkHelper::PropStringPropertyCb(const TArray
 	Spec->PropStringPropertyCb(PropString);
 }
 
+void UTestbed1StructArrayInterfaceOLinkHelper::PropEnumPropertyCb(const TArray<ETestbed1Enum0>& PropEnum)
+{
+	Spec->PropEnumPropertyCb(PropEnum);
+}
+
 void UTestbed1StructArrayInterfaceOLinkHelper::SigBoolSignalCb(const TArray<FTestbed1StructBool>& ParamBool)
 {
 	Spec->SigBoolSignalCb(ParamBool);
@@ -68,6 +73,11 @@ void UTestbed1StructArrayInterfaceOLinkHelper::SigFloatSignalCb(const TArray<FTe
 void UTestbed1StructArrayInterfaceOLinkHelper::SigStringSignalCb(const TArray<FTestbed1StructString>& ParamString)
 {
 	Spec->SigStringSignalCb(ParamString);
+}
+
+void UTestbed1StructArrayInterfaceOLinkHelper::SigEnumSignalCb(const TArray<ETestbed1Enum0>& ParamEnum)
+{
+	Spec->SigEnumSignalCb(ParamEnum);
 }
 
 void UTestbed1StructArrayInterfaceOLinkHelper::_SubscriptionStatusChangedCb(bool bSubscribed)
@@ -150,6 +160,11 @@ void UTestbed1StructArrayInterfaceOLinkHelper::PropStringPropertyCb(const TArray
 	(void)PropString;
 }
 
+void UTestbed1StructArrayInterfaceOLinkHelper::PropEnumPropertyCb(const TArray<ETestbed1Enum0>& PropEnum)
+{
+	(void)PropEnum;
+}
+
 void UTestbed1StructArrayInterfaceOLinkHelper::SigBoolSignalCb(const TArray<FTestbed1StructBool>& ParamBool)
 {
 	(void)ParamBool;
@@ -168,6 +183,11 @@ void UTestbed1StructArrayInterfaceOLinkHelper::SigFloatSignalCb(const TArray<FTe
 void UTestbed1StructArrayInterfaceOLinkHelper::SigStringSignalCb(const TArray<FTestbed1StructString>& ParamString)
 {
 	(void)ParamString;
+}
+
+void UTestbed1StructArrayInterfaceOLinkHelper::SigEnumSignalCb(const TArray<ETestbed1Enum0>& ParamEnum)
+{
+	(void)ParamEnum;
 }
 
 void UTestbed1StructArrayInterfaceOLinkHelper::_SubscriptionStatusChangedCb(bool bSubscribed)

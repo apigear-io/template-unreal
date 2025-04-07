@@ -59,6 +59,9 @@ struct FTbNamesNamEsInitMessage
 
 	UPROPERTY()
 	int32 SomePoperty2 = 0;
+
+	UPROPERTY()
+	ETbNamesEnum_With_Under_scores EnumProperty = ETbNamesEnum_With_Under_scores::TNEWUS_FIRSTVALUE;
 };
 
 USTRUCT()
@@ -161,6 +164,24 @@ struct FTbNamesNamEsSomePoperty2ChangedMessage
 
 	UPROPERTY()
 	int32 SomePoperty2 = 0;
+};
+
+USTRUCT()
+struct FTbNamesNamEsSetEnumPropertyRequestMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	ETbNamesEnum_With_Under_scores EnumProperty = ETbNamesEnum_With_Under_scores::TNEWUS_FIRSTVALUE;
+};
+
+USTRUCT()
+struct FTbNamesNamEsEnumPropertyChangedMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	ETbNamesEnum_With_Under_scores EnumProperty = ETbNamesEnum_With_Under_scores::TNEWUS_FIRSTVALUE;
 };
 
 USTRUCT()

@@ -48,6 +48,9 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear Helper|Testbed1|StructArrayInterface|Signals", DisplayName = "On SigString Signal")
 	void OnSigStringSignal(const TArray<FTestbed1StructString>& ParamString);
 
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear Helper|Testbed1|StructArrayInterface|Signals", DisplayName = "On SigEnum Signal")
+	void OnSigEnumSignal(const TArray<ETestbed1Enum0>& ParamEnum);
+
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear Helper|Testbed1|StructArrayInterface|Signals", DisplayName = "On Property PropBool Changed")
 	void OnPropBoolChanged(UPARAM(DisplayName = "PropBool") const TArray<FTestbed1StructBool>& InPropBool);
 
@@ -59,4 +62,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear Helper|Testbed1|StructArrayInterface|Signals", DisplayName = "On Property PropString Changed")
 	void OnPropStringChanged(UPARAM(DisplayName = "PropString") const TArray<FTestbed1StructString>& InPropString);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear Helper|Testbed1|StructArrayInterface|Signals", DisplayName = "On Property PropEnum Changed")
+	void OnPropEnumChanged(UPARAM(DisplayName = "PropEnum") const TArray<ETestbed1Enum0>& InPropEnum);
 };

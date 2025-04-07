@@ -54,6 +54,7 @@ void UTbNamesNamEsLoggingDecorator::setBackendService(TScriptInterface<ITbNamesN
 		BackendSignals->OnSwitchChanged.RemoveDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSwitchChanged);
 		BackendSignals->OnSomePropertyChanged.RemoveDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomePropertyChanged);
 		BackendSignals->OnSomePoperty2Changed.RemoveDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomePoperty2Changed);
+		BackendSignals->OnEnumPropertyChanged.RemoveDynamic(this, &UTbNamesNamEsLoggingDecorator::OnEnumPropertyChanged);
 		BackendSignals->OnSomeSignalSignal.RemoveDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomeSignal);
 		BackendSignals->OnSomeSignal2Signal.RemoveDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomeSignal2);
 	}
@@ -69,12 +70,14 @@ void UTbNamesNamEsLoggingDecorator::setBackendService(TScriptInterface<ITbNamesN
 	BackendSignals->OnSwitchChanged.AddDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSwitchChanged);
 	BackendSignals->OnSomePropertyChanged.AddDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomePropertyChanged);
 	BackendSignals->OnSomePoperty2Changed.AddDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomePoperty2Changed);
+	BackendSignals->OnEnumPropertyChanged.AddDynamic(this, &UTbNamesNamEsLoggingDecorator::OnEnumPropertyChanged);
 	BackendSignals->OnSomeSignalSignal.AddDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomeSignal);
 	BackendSignals->OnSomeSignal2Signal.AddDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomeSignal2);
 	// populate service state to proxy
 	bSwitch = BackendService->Execute_GetSwitch(BackendService.GetObject());
 	SomeProperty = BackendService->Execute_GetSomeProperty(BackendService.GetObject());
 	SomePoperty2 = BackendService->Execute_GetSomePoperty2(BackendService.GetObject());
+	EnumProperty = BackendService->Execute_GetEnumProperty(BackendService.GetObject());
 }
 
 void UTbNamesNamEsLoggingDecorator::OnSomeSignal(bool bInSomeParam)
@@ -141,6 +144,24 @@ void UTbNamesNamEsLoggingDecorator::SetSomePoperty2_Implementation(int32 InSomeP
 {
 	TbNamesNamEsTracer::trace_callSetSomePoperty2(InSomePoperty2);
 	BackendService->Execute_SetSomePoperty2(BackendService.GetObject(), InSomePoperty2);
+}
+
+void UTbNamesNamEsLoggingDecorator::OnEnumPropertyChanged(ETbNamesEnum_With_Under_scores InEnumProperty)
+{
+	TbNamesNamEsTracer::capture_state(BackendService.GetObject(), this);
+	EnumProperty = InEnumProperty;
+	Execute__GetSignals(this)->OnEnumPropertyChanged.Broadcast(InEnumProperty);
+}
+
+ETbNamesEnum_With_Under_scores UTbNamesNamEsLoggingDecorator::GetEnumProperty_Implementation() const
+{
+	return BackendService->Execute_GetEnumProperty(BackendService.GetObject());
+}
+
+void UTbNamesNamEsLoggingDecorator::SetEnumProperty_Implementation(ETbNamesEnum_With_Under_scores InEnumProperty)
+{
+	TbNamesNamEsTracer::trace_callSetEnumProperty(InEnumProperty);
+	BackendService->Execute_SetEnumProperty(BackendService.GetObject(), InEnumProperty);
 }
 
 void UTbNamesNamEsLoggingDecorator::SomeFunction_Implementation(bool bSomeParam)

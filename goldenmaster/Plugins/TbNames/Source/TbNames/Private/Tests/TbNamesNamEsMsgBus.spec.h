@@ -30,6 +30,7 @@ TUniquePtr<FTbNamesNamEsMsgBusFixture> ImplFixture;
 void SwitchPropertyCb(bool bSwitch);
 void SomePropertyPropertyCb(int32 SomeProperty);
 void SomePoperty2PropertyCb(int32 SomePoperty2);
+void EnumPropertyPropertyCb(ETbNamesEnum_With_Under_scores EnumProperty);
 void SomeSignalSignalCb(bool bSomeParam);
 void SomeSignal2SignalCb(bool bSomeParam);
 void _ConnectionStatusChangedCb(bool bConnected);

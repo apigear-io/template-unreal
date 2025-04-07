@@ -57,6 +57,19 @@ void UTbNamesNamEs::SetSomePoperty2_Implementation(int32 InSomePoperty2)
 		Execute__GetSignals(this)->OnSomePoperty2Changed.Broadcast(SomePoperty2);
 	}
 }
+ETbNamesEnum_With_Under_scores UTbNamesNamEs::GetEnumProperty_Implementation() const
+{
+	return EnumProperty;
+}
+
+void UTbNamesNamEs::SetEnumProperty_Implementation(ETbNamesEnum_With_Under_scores InEnumProperty)
+{
+	if (EnumProperty != InEnumProperty)
+	{
+		EnumProperty = InEnumProperty;
+		Execute__GetSignals(this)->OnEnumPropertyChanged.Broadcast(EnumProperty);
+	}
+}
 
 void UTbNamesNamEs::SomeFunction_Implementation(bool bSomeParam)
 {

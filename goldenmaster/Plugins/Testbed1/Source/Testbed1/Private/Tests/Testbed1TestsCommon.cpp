@@ -91,4 +91,148 @@ TArray<FTestbed1StructString> createTestFTestbed1StructStringArray()
 	return TestValueArray;
 }
 
+FTestbed1StructStruct createTestFTestbed1StructStruct()
+{
+	FTestbed1StructStruct TestValue;
+
+	TestValue.fieldString = createTestFTestbed1StructString();
+
+	return TestValue;
+}
+
+TArray<FTestbed1StructStruct> createTestFTestbed1StructStructArray()
+{
+	TArray<FTestbed1StructStruct> TestValueArray;
+
+	TestValueArray.Add(createTestFTestbed1StructStruct());
+
+	return TestValueArray;
+}
+
+FTestbed1StructEnum createTestFTestbed1StructEnum()
+{
+	FTestbed1StructEnum TestValue;
+
+	TestValue.fieldEnum = ETestbed1Enum0::T1E0_VALUE1;
+
+	return TestValue;
+}
+
+TArray<FTestbed1StructEnum> createTestFTestbed1StructEnumArray()
+{
+	TArray<FTestbed1StructEnum> TestValueArray;
+
+	TestValueArray.Add(createTestFTestbed1StructEnum());
+
+	return TestValueArray;
+}
+
+FTestbed1StructBoolWithArray createTestFTestbed1StructBoolWithArray()
+{
+	FTestbed1StructBoolWithArray TestValue;
+
+	TestValue.fieldBool.Add(true);
+
+	return TestValue;
+}
+
+TArray<FTestbed1StructBoolWithArray> createTestFTestbed1StructBoolWithArrayArray()
+{
+	TArray<FTestbed1StructBoolWithArray> TestValueArray;
+
+	TestValueArray.Add(createTestFTestbed1StructBoolWithArray());
+
+	return TestValueArray;
+}
+
+FTestbed1StructIntWithArray createTestFTestbed1StructIntWithArray()
+{
+	FTestbed1StructIntWithArray TestValue;
+
+	TestValue.fieldInt.Add(1);
+
+	return TestValue;
+}
+
+TArray<FTestbed1StructIntWithArray> createTestFTestbed1StructIntWithArrayArray()
+{
+	TArray<FTestbed1StructIntWithArray> TestValueArray;
+
+	TestValueArray.Add(createTestFTestbed1StructIntWithArray());
+
+	return TestValueArray;
+}
+
+FTestbed1StructFloatWithArray createTestFTestbed1StructFloatWithArray()
+{
+	FTestbed1StructFloatWithArray TestValue;
+
+	TestValue.fieldFloat.Add(1.0f);
+
+	return TestValue;
+}
+
+TArray<FTestbed1StructFloatWithArray> createTestFTestbed1StructFloatWithArrayArray()
+{
+	TArray<FTestbed1StructFloatWithArray> TestValueArray;
+
+	TestValueArray.Add(createTestFTestbed1StructFloatWithArray());
+
+	return TestValueArray;
+}
+
+FTestbed1StructStringWithArray createTestFTestbed1StructStringWithArray()
+{
+	FTestbed1StructStringWithArray TestValue;
+
+	TestValue.fieldString.Add(FString("xyz"));
+
+	return TestValue;
+}
+
+TArray<FTestbed1StructStringWithArray> createTestFTestbed1StructStringWithArrayArray()
+{
+	TArray<FTestbed1StructStringWithArray> TestValueArray;
+
+	TestValueArray.Add(createTestFTestbed1StructStringWithArray());
+
+	return TestValueArray;
+}
+
+FTestbed1StructStructWithArray createTestFTestbed1StructStructWithArray()
+{
+	FTestbed1StructStructWithArray TestValue;
+
+	TestValue.fieldStruct = createTestFTestbed1StructStringWithArrayArray();
+
+	return TestValue;
+}
+
+TArray<FTestbed1StructStructWithArray> createTestFTestbed1StructStructWithArrayArray()
+{
+	TArray<FTestbed1StructStructWithArray> TestValueArray;
+
+	TestValueArray.Add(createTestFTestbed1StructStructWithArray());
+
+	return TestValueArray;
+}
+
+FTestbed1StructEnumWithArray createTestFTestbed1StructEnumWithArray()
+{
+	FTestbed1StructEnumWithArray TestValue;
+
+	TestValue.fieldEnum.Add(ETestbed1Enum0::T1E0_VALUE1);
+
+	return TestValue;
+}
+
+TArray<FTestbed1StructEnumWithArray> createTestFTestbed1StructEnumWithArrayArray()
+{
+	TArray<FTestbed1StructEnumWithArray> TestValueArray;
+
+	TestValueArray.Add(createTestFTestbed1StructEnumWithArray());
+
+	return TestValueArray;
+}
+
 #endif // WITH_DEV_AUTOMATION_TESTS
