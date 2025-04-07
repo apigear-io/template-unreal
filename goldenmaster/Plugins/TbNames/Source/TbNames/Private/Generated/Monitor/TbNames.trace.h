@@ -10,6 +10,7 @@ public:
 	static void trace_callSetSwitch(bool bInSwitch);
 	static void trace_callSetSomeProperty(int32 InSomeProperty);
 	static void trace_callSetSomePoperty2(int32 InSomePoperty2);
+	static void trace_callSetEnumProperty(ETbNamesEnum_With_Under_scores InEnumProperty);
 	static void trace_signalSomeSignal(bool bSomeParam);
 	static void trace_signalSomeSignal2(bool bSomeParam);
 	static void trace_callSomeFunction(bool bSomeParam);

@@ -70,6 +70,19 @@ void UTestbed1StructArrayInterface::SetPropString_Implementation(const TArray<FT
 		Execute__GetSignals(this)->OnPropStringChanged.Broadcast(PropString);
 	}
 }
+TArray<ETestbed1Enum0> UTestbed1StructArrayInterface::GetPropEnum_Implementation() const
+{
+	return PropEnum;
+}
+
+void UTestbed1StructArrayInterface::SetPropEnum_Implementation(const TArray<ETestbed1Enum0>& InPropEnum)
+{
+	if (PropEnum != InPropEnum)
+	{
+		PropEnum = InPropEnum;
+		Execute__GetSignals(this)->OnPropEnumChanged.Broadcast(PropEnum);
+	}
+}
 
 TArray<FTestbed1StructBool> UTestbed1StructArrayInterface::FuncBool_Implementation(const TArray<FTestbed1StructBool>& ParamBool)
 {
@@ -97,4 +110,11 @@ TArray<FTestbed1StructString> UTestbed1StructArrayInterface::FuncString_Implemen
 	(void)ParamString;
 	// do business logic here
 	return TArray<FTestbed1StructString>();
+}
+
+TArray<ETestbed1Enum0> UTestbed1StructArrayInterface::FuncEnum_Implementation(const TArray<ETestbed1Enum0>& ParamEnum)
+{
+	(void)ParamEnum;
+	// do business logic here
+	return TArray<ETestbed1Enum0>();
 }

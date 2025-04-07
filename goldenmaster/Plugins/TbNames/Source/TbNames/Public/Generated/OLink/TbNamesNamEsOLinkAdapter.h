@@ -69,6 +69,9 @@ private:
 	UFUNCTION(Category = "ApiGear|TbNames|NamEs", BlueprintInternalUseOnly)
 	void OnSomePoperty2Changed(int32 SomePoperty2);
 
+	UFUNCTION(Category = "ApiGear|TbNames|NamEs", BlueprintInternalUseOnly)
+	void OnEnumPropertyChanged(ETbNamesEnum_With_Under_scores EnumProperty);
+
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbNames|NamEs")
 	TScriptInterface<ITbNamesNamEsInterface> BackendService;

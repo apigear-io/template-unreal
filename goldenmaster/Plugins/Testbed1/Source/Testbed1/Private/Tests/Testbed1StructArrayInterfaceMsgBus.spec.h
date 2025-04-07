@@ -31,10 +31,12 @@ void PropBoolPropertyCb(const TArray<FTestbed1StructBool>& PropBool);
 void PropIntPropertyCb(const TArray<FTestbed1StructInt>& PropInt);
 void PropFloatPropertyCb(const TArray<FTestbed1StructFloat>& PropFloat);
 void PropStringPropertyCb(const TArray<FTestbed1StructString>& PropString);
+void PropEnumPropertyCb(const TArray<ETestbed1Enum0>& PropEnum);
 void SigBoolSignalCb(const TArray<FTestbed1StructBool>& ParamBool);
 void SigIntSignalCb(const TArray<FTestbed1StructInt>& ParamInt);
 void SigFloatSignalCb(const TArray<FTestbed1StructFloat>& ParamFloat);
 void SigStringSignalCb(const TArray<FTestbed1StructString>& ParamString);
+void SigEnumSignalCb(const TArray<ETestbed1Enum0>& ParamEnum);
 void _ConnectionStatusChangedCb(bool bConnected);
 FDoneDelegate testDoneDelegate;
 

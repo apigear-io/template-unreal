@@ -99,7 +99,7 @@ void {{$Class}}OLinkSpec::Define()
 		{{$Iface}}Signals->On{{Camel .Name}}Changed.AddDynamic(ImplFixture->GetHelper().Get(), &{{$Class}}OLinkHelper::{{ Camel .Name }}PropertyCb);
 		// use different test value
 		{{- if .IsArray }}
-		{{- if .IsPrimitive }}
+		{{- if or .IsPrimitive (eq .KindType "enum") }}
 		TestValue.Add({{ ueTestValue "" .}});
 		{{- else }}
 		{{- $type := ""}}
@@ -158,7 +158,7 @@ void {{$Class}}OLinkSpec::Define()
 		{{- range $i, $e := .Params -}}
 		{{- if not (eq .KindType "extern") }}
 		{{- if .IsArray }}
-		{{- if .IsPrimitive }}
+		{{- if or .IsPrimitive (eq .KindType "enum") }}
 		{{ueType "" .}} {{ueVar "" .}}TestValue = {{ueDefault "" .}}; // default value
 		{{ueVar "" .}}TestValue.Add({{ ueTestValue "" .}});
 		{{- else }}
@@ -197,7 +197,7 @@ void {{$Class}}OLinkSpec::{{ Camel .Name }}PropertyCb({{ueParam "In" .}})
 	{{ueType "" .}} TestValue = {{ueDefault "" .}};
 	// use different test value
 	{{- if .IsArray }}
-	{{- if .IsPrimitive }}
+	{{- if or .IsPrimitive (eq .KindType "enum") }}
 	TestValue.Add({{ ueTestValue "" .}});
 	{{- else }}
 	{{- $type := ""}}
@@ -228,7 +228,7 @@ void {{$Class}}OLinkSpec::{{ Camel .Name }}SignalCb({{ueParams "In" .Params}})
 	{{- range $i, $e := .Params -}}
 	{{- if not (eq .KindType "extern") }}
 	{{- if .IsArray }}
-	{{- if .IsPrimitive }}
+	{{- if or .IsPrimitive (eq .KindType "enum") }}
 	{{ueType "" .}} {{ueVar "" .}}TestValue = {{ueDefault "" .}}; // default value
 	{{ueVar "" .}}TestValue.Add({{ ueTestValue "" .}});
 	{{- else }}

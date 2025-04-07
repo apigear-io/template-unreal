@@ -45,6 +45,11 @@ void UTbNamesNamEsOLinkHelper::SomePoperty2PropertyCb(int32 SomePoperty2)
 	Spec->SomePoperty2PropertyCb(SomePoperty2);
 }
 
+void UTbNamesNamEsOLinkHelper::EnumPropertyPropertyCb(ETbNamesEnum_With_Under_scores EnumProperty)
+{
+	Spec->EnumPropertyPropertyCb(EnumProperty);
+}
+
 void UTbNamesNamEsOLinkHelper::SomeSignalSignalCb(bool bSomeParam)
 {
 	Spec->SomeSignalSignalCb(bSomeParam);
@@ -128,6 +133,11 @@ void UTbNamesNamEsOLinkHelper::SomePropertyPropertyCb(int32 SomeProperty)
 void UTbNamesNamEsOLinkHelper::SomePoperty2PropertyCb(int32 SomePoperty2)
 {
 	(void)SomePoperty2;
+}
+
+void UTbNamesNamEsOLinkHelper::EnumPropertyPropertyCb(ETbNamesEnum_With_Under_scores EnumProperty)
+{
+	(void)EnumProperty;
 }
 
 void UTbNamesNamEsOLinkHelper::SomeSignalSignalCb(bool bSomeParam)

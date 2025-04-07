@@ -23,6 +23,8 @@ limitations under the License.
 #include "Generated/OLink/Testbed1StructInterfaceOLinkClient.h"
 #include "Implementation/Testbed1StructArrayInterface.h"
 #include "Generated/OLink/Testbed1StructArrayInterfaceOLinkClient.h"
+#include "Implementation/Testbed1StructArray2Interface.h"
+#include "Generated/OLink/Testbed1StructArray2InterfaceOLinkClient.h"
 #include "Testbed1Settings.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Engine/GameInstance.h"
@@ -252,5 +254,113 @@ TScriptInterface<ITestbed1StructArrayInterfaceInterface> FTestbed1ModuleFactory:
 
 	// fallback to local implementation
 	return createTestbed1StructArrayInterface(Collection);
+}
+#endif
+
+#if (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION < 27)
+TScriptInterface<ITestbed1StructArray2InterfaceInterface> createTestbed1StructArray2InterfaceOLink(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+{
+	if (IsTestbed1LogEnabled())
+	{
+		UE_LOG(LogFTestbed1ModuleFactory, Log, TEXT("createITestbed1StructArray2InterfaceInterface: Using OLink service backend"));
+	}
+
+	UTestbed1StructArray2InterfaceOLinkClient* Instance = GameInstance->GetSubsystem<UTestbed1StructArray2InterfaceOLinkClient>(GameInstance);
+	if (!Instance)
+	{
+		Collection.InitializeDependency(UTestbed1StructArray2InterfaceOLinkClient::StaticClass());
+		Instance = GameInstance->GetSubsystem<UTestbed1StructArray2InterfaceOLinkClient>(GameInstance);
+	}
+
+	return Instance;
+}
+
+TScriptInterface<ITestbed1StructArray2InterfaceInterface> createTestbed1StructArray2Interface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+{
+	if (IsTestbed1LogEnabled())
+	{
+		UE_LOG(LogFTestbed1ModuleFactory, Log, TEXT("createITestbed1StructArray2InterfaceInterface: Using local service backend"));
+	}
+
+	UTestbed1StructArray2Interface* Instance = GameInstance->GetSubsystem<UTestbed1StructArray2Interface>(GameInstance);
+	if (!Instance)
+	{
+		Collection.InitializeDependency(UTestbed1StructArray2Interface::StaticClass());
+		Instance = GameInstance->GetSubsystem<UTestbed1StructArray2Interface>(GameInstance);
+	}
+
+	return Instance;
+}
+
+TScriptInterface<ITestbed1StructArray2InterfaceInterface> FTestbed1ModuleFactory::createITestbed1StructArray2InterfaceInterface(UGameInstance* GameInstance, FSubsystemCollectionBase& Collection)
+{
+	UTestbed1Settings* Testbed1Settings = GetMutableDefault<UTestbed1Settings>();
+
+	if (Testbed1Settings->TracerServiceIdentifier == Testbed1LocalBackendIdentifier)
+	{
+		return createTestbed1StructArray2Interface(GameInstance, Collection);
+	}
+
+	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(Testbed1Settings->TracerServiceIdentifier);
+
+	// Other protocols not supported. To support it edit templates:
+	// add protocol handler class for this interface like createTestbed1StructArray2InterfaceOLink and other necessary infrastructure
+	// extend this function in templates to handle protocol of your choice
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
+	{
+		return createTestbed1StructArray2InterfaceOLink(GameInstance, Collection);
+	}
+
+	// fallback to local implementation
+	return createTestbed1StructArray2Interface(GameInstance, Collection);
+}
+
+#else
+
+TScriptInterface<ITestbed1StructArray2InterfaceInterface> createTestbed1StructArray2InterfaceOLink(FSubsystemCollectionBase& Collection)
+{
+	if (IsTestbed1LogEnabled())
+	{
+		UE_LOG(LogFTestbed1ModuleFactory, Log, TEXT("createITestbed1StructArray2InterfaceInterface: Using OLink service backend"));
+	}
+
+	UTestbed1StructArray2InterfaceOLinkClient* Instance = Cast<UTestbed1StructArray2InterfaceOLinkClient>(Collection.InitializeDependency(UTestbed1StructArray2InterfaceOLinkClient::StaticClass()));
+	return Instance;
+}
+
+TScriptInterface<ITestbed1StructArray2InterfaceInterface> createTestbed1StructArray2Interface(FSubsystemCollectionBase& Collection)
+{
+	if (IsTestbed1LogEnabled())
+	{
+		UE_LOG(LogFTestbed1ModuleFactory, Log, TEXT("createITestbed1StructArray2InterfaceInterface: Using local service backend"));
+	}
+
+	UTestbed1StructArray2Interface* Instance = Cast<UTestbed1StructArray2Interface>(Collection.InitializeDependency(UTestbed1StructArray2Interface::StaticClass()));
+	return Instance;
+}
+
+TScriptInterface<ITestbed1StructArray2InterfaceInterface> FTestbed1ModuleFactory::createITestbed1StructArray2InterfaceInterface(FSubsystemCollectionBase& Collection)
+{
+	UTestbed1Settings* Testbed1Settings = GetMutableDefault<UTestbed1Settings>();
+
+	if (Testbed1Settings->TracerServiceIdentifier == Testbed1LocalBackendIdentifier)
+	{
+		return createTestbed1StructArray2Interface(Collection);
+	}
+
+	UApiGearSettings* ApiGearSettings = GetMutableDefault<UApiGearSettings>();
+	FApiGearConnectionSetting* ConnectionSetting = ApiGearSettings->Connections.Find(Testbed1Settings->TracerServiceIdentifier);
+
+	// Other protocols not supported. To support it edit templates:
+	// add protocol handler class for this interface like createTestbed1StructArray2InterfaceOLink and other necessary infrastructure
+	// extend this function in templates to handle protocol of your choice
+	if (ConnectionSetting && ConnectionSetting->ProtocolIdentifier == ApiGearOLinkProtocolIdentifier)
+	{
+		return createTestbed1StructArray2InterfaceOLink(Collection);
+	}
+
+	// fallback to local implementation
+	return createTestbed1StructArray2Interface(Collection);
 }
 #endif

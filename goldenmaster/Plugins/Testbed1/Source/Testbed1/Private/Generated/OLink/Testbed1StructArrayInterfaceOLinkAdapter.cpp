@@ -63,10 +63,12 @@ void UTestbed1StructArrayInterfaceOLinkAdapter::setBackendService(TScriptInterfa
 		BackendSignals->OnPropIntChanged.RemoveDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnPropIntChanged);
 		BackendSignals->OnPropFloatChanged.RemoveDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnPropFloatChanged);
 		BackendSignals->OnPropStringChanged.RemoveDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnPropStringChanged);
+		BackendSignals->OnPropEnumChanged.RemoveDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnPropEnumChanged);
 		BackendSignals->OnSigBoolSignal.RemoveDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnSigBool);
 		BackendSignals->OnSigIntSignal.RemoveDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnSigInt);
 		BackendSignals->OnSigFloatSignal.RemoveDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnSigFloat);
 		BackendSignals->OnSigStringSignal.RemoveDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnSigString);
+		BackendSignals->OnSigEnumSignal.RemoveDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnSigEnum);
 	}
 
 	// only set if interface is implemented
@@ -81,10 +83,12 @@ void UTestbed1StructArrayInterfaceOLinkAdapter::setBackendService(TScriptInterfa
 	BackendSignals->OnPropIntChanged.AddDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnPropIntChanged);
 	BackendSignals->OnPropFloatChanged.AddDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnPropFloatChanged);
 	BackendSignals->OnPropStringChanged.AddDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnPropStringChanged);
+	BackendSignals->OnPropEnumChanged.AddDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnPropEnumChanged);
 	BackendSignals->OnSigBoolSignal.AddDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnSigBool);
 	BackendSignals->OnSigIntSignal.AddDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnSigInt);
 	BackendSignals->OnSigFloatSignal.AddDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnSigFloat);
 	BackendSignals->OnSigStringSignal.AddDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnSigString);
+	BackendSignals->OnSigEnumSignal.AddDynamic(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnSigEnum);
 
 	// update olink source with new backend
 	Source->setBackendService(InService);
@@ -110,6 +114,11 @@ void UTestbed1StructArrayInterfaceOLinkAdapter::OnSigString(const TArray<FTestbe
 	Source->OnSigString(ParamString);
 }
 
+void UTestbed1StructArrayInterfaceOLinkAdapter::OnSigEnum(const TArray<ETestbed1Enum0>& ParamEnum)
+{
+	Source->OnSigEnum(ParamEnum);
+}
+
 void UTestbed1StructArrayInterfaceOLinkAdapter::OnPropBoolChanged(const TArray<FTestbed1StructBool>& InPropBool)
 {
 	Source->OnPropBoolChanged(InPropBool);
@@ -128,6 +137,11 @@ void UTestbed1StructArrayInterfaceOLinkAdapter::OnPropFloatChanged(const TArray<
 void UTestbed1StructArrayInterfaceOLinkAdapter::OnPropStringChanged(const TArray<FTestbed1StructString>& InPropString)
 {
 	Source->OnPropStringChanged(InPropString);
+}
+
+void UTestbed1StructArrayInterfaceOLinkAdapter::OnPropEnumChanged(const TArray<ETestbed1Enum0>& InPropEnum)
+{
+	Source->OnPropEnumChanged(InPropEnum);
 }
 
 void UTestbed1StructArrayInterfaceOLinkAdapter::setOLinkHost(TSoftObjectPtr<UOLinkHost> InHost)
@@ -180,6 +194,10 @@ void UTestbed1StructArrayInterfaceOLinkAdapter::OnSigString(const TArray<FTestbe
 {
 }
 
+void UTestbed1StructArrayInterfaceOLinkAdapter::OnSigEnum(const TArray<ETestbed1Enum0>& ParamEnum)
+{
+}
+
 void UTestbed1StructArrayInterfaceOLinkAdapter::OnPropBoolChanged(const TArray<FTestbed1StructBool>& InPropBool)
 {
 }
@@ -193,6 +211,10 @@ void UTestbed1StructArrayInterfaceOLinkAdapter::OnPropFloatChanged(const TArray<
 }
 
 void UTestbed1StructArrayInterfaceOLinkAdapter::OnPropStringChanged(const TArray<FTestbed1StructString>& InPropString)
+{
+}
+
+void UTestbed1StructArrayInterfaceOLinkAdapter::OnPropEnumChanged(const TArray<ETestbed1Enum0>& InPropEnum)
 {
 }
 

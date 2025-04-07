@@ -38,6 +38,7 @@ struct FTestbed1StructArrayInterfaceSigBoolSignalMessage;
 struct FTestbed1StructArrayInterfaceSigIntSignalMessage;
 struct FTestbed1StructArrayInterfaceSigFloatSignalMessage;
 struct FTestbed1StructArrayInterfaceSigStringSignalMessage;
+struct FTestbed1StructArrayInterfaceSigEnumSignalMessage;
 struct FTestbed1StructArrayInterfaceSetPropBoolRequestMessage;
 struct FTestbed1StructArrayInterfacePropBoolChangedMessage;
 struct FTestbed1StructArrayInterfaceSetPropIntRequestMessage;
@@ -46,10 +47,13 @@ struct FTestbed1StructArrayInterfaceSetPropFloatRequestMessage;
 struct FTestbed1StructArrayInterfacePropFloatChangedMessage;
 struct FTestbed1StructArrayInterfaceSetPropStringRequestMessage;
 struct FTestbed1StructArrayInterfacePropStringChangedMessage;
+struct FTestbed1StructArrayInterfaceSetPropEnumRequestMessage;
+struct FTestbed1StructArrayInterfacePropEnumChangedMessage;
 struct FTestbed1StructArrayInterfaceFuncBoolRequestMessage;
 struct FTestbed1StructArrayInterfaceFuncIntRequestMessage;
 struct FTestbed1StructArrayInterfaceFuncFloatRequestMessage;
 struct FTestbed1StructArrayInterfaceFuncStringRequestMessage;
+struct FTestbed1StructArrayInterfaceFuncEnumRequestMessage;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed1StructArrayInterfaceClientConnectedDelegate, const FString&, ClientAddress);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed1StructArrayInterfaceClientDisconnectedDelegate, const FString&, ClientAddress);
@@ -118,10 +122,12 @@ private:
 	void OnFuncIntRequest(const FTestbed1StructArrayInterfaceFuncIntRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnFuncFloatRequest(const FTestbed1StructArrayInterfaceFuncFloatRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnFuncStringRequest(const FTestbed1StructArrayInterfaceFuncStringRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnFuncEnumRequest(const FTestbed1StructArrayInterfaceFuncEnumRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnSetPropBoolRequest(const FTestbed1StructArrayInterfaceSetPropBoolRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnSetPropIntRequest(const FTestbed1StructArrayInterfaceSetPropIntRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnSetPropFloatRequest(const FTestbed1StructArrayInterfaceSetPropFloatRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnSetPropStringRequest(const FTestbed1StructArrayInterfaceSetPropStringRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnSetPropEnumRequest(const FTestbed1StructArrayInterfaceSetPropEnumRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 
 	// signals
 	UFUNCTION(Category = "ApiGear|Testbed1|StructArrayInterface", BlueprintInternalUseOnly)
@@ -137,6 +143,9 @@ private:
 	void OnSigString(const TArray<FTestbed1StructString>& ParamString);
 
 	UFUNCTION(Category = "ApiGear|Testbed1|StructArrayInterface", BlueprintInternalUseOnly)
+	void OnSigEnum(const TArray<ETestbed1Enum0>& ParamEnum);
+
+	UFUNCTION(Category = "ApiGear|Testbed1|StructArrayInterface", BlueprintInternalUseOnly)
 	void OnPropBoolChanged(const TArray<FTestbed1StructBool>& PropBool);
 
 	UFUNCTION(Category = "ApiGear|Testbed1|StructArrayInterface", BlueprintInternalUseOnly)
@@ -147,6 +156,9 @@ private:
 
 	UFUNCTION(Category = "ApiGear|Testbed1|StructArrayInterface", BlueprintInternalUseOnly)
 	void OnPropStringChanged(const TArray<FTestbed1StructString>& PropString);
+
+	UFUNCTION(Category = "ApiGear|Testbed1|StructArrayInterface", BlueprintInternalUseOnly)
+	void OnPropEnumChanged(const TArray<ETestbed1Enum0>& PropEnum);
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|Testbed1|StructArrayInterface")

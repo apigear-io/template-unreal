@@ -54,6 +54,10 @@ public:
 
 	void SetSomePoperty2_Implementation(int32 InSomePoperty2) override;
 
+	ETbNamesEnum_With_Under_scores GetEnumProperty_Implementation() const override;
+
+	void SetEnumProperty_Implementation(ETbNamesEnum_With_Under_scores InEnumProperty) override;
+
 	// operations
 	void SomeFunction_Implementation(bool bSomeParam) override;
 
@@ -79,4 +83,7 @@ private:
 
 	UFUNCTION(Category = "ApiGear|TbNames|NamEs", BlueprintInternalUseOnly)
 	void OnSomePoperty2Changed(int32 InSomePoperty2);
+
+	UFUNCTION(Category = "ApiGear|TbNames|NamEs", BlueprintInternalUseOnly)
+	void OnEnumPropertyChanged(ETbNamesEnum_With_Under_scores InEnumProperty);
 };

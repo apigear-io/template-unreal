@@ -59,11 +59,13 @@ public:
 	void OnSigInt(const TArray<FTestbed1StructInt>& ParamInt);
 	void OnSigFloat(const TArray<FTestbed1StructFloat>& ParamFloat);
 	void OnSigString(const TArray<FTestbed1StructString>& ParamString);
+	void OnSigEnum(const TArray<ETestbed1Enum0>& ParamEnum);
 
 	void OnPropBoolChanged(const TArray<FTestbed1StructBool>& PropBool);
 	void OnPropIntChanged(const TArray<FTestbed1StructInt>& PropInt);
 	void OnPropFloatChanged(const TArray<FTestbed1StructFloat>& PropFloat);
 	void OnPropStringChanged(const TArray<FTestbed1StructString>& PropString);
+	void OnPropEnumChanged(const TArray<ETestbed1Enum0>& PropEnum);
 
 private:
 	/** Holds the service backend, can be exchanged with different implementation during runtime */

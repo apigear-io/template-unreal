@@ -105,6 +105,16 @@ void UAbstractTbNamesNamEs::SetSomePoperty2_Private(int32 InSomePoperty2)
 	Execute_SetSomePoperty2(this, InSomePoperty2);
 };
 
+ETbNamesEnum_With_Under_scores UAbstractTbNamesNamEs::GetEnumProperty_Private() const
+{
+	return Execute_GetEnumProperty(this);
+};
+
+void UAbstractTbNamesNamEs::SetEnumProperty_Private(ETbNamesEnum_With_Under_scores InEnumProperty)
+{
+	Execute_SetEnumProperty(this, InEnumProperty);
+};
+
 void UAbstractTbNamesNamEs::Initialize(FSubsystemCollectionBase& Collection)
 {
 	check(!bInitialized);
@@ -126,6 +136,7 @@ void UAbstractTbNamesNamEs::Deinitialize()
 		TbNamesNamEsSignals->OnSwitchChanged.RemoveAll(TbNamesNamEsSignals);
 		TbNamesNamEsSignals->OnSomePropertyChanged.RemoveAll(TbNamesNamEsSignals);
 		TbNamesNamEsSignals->OnSomePoperty2Changed.RemoveAll(TbNamesNamEsSignals);
+		TbNamesNamEsSignals->OnEnumPropertyChanged.RemoveAll(TbNamesNamEsSignals);
 	}
 
 	Super::Deinitialize();

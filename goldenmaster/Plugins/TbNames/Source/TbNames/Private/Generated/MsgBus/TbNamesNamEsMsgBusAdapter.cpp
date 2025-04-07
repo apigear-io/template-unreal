@@ -68,6 +68,7 @@ void UTbNamesNamEsMsgBusAdapter::_StartListening()
 		.Handling<FTbNamesNamEsSetSwitchRequestMessage>(this, &UTbNamesNamEsMsgBusAdapter::OnSetSwitchRequest)
 		.Handling<FTbNamesNamEsSetSomePropertyRequestMessage>(this, &UTbNamesNamEsMsgBusAdapter::OnSetSomePropertyRequest)
 		.Handling<FTbNamesNamEsSetSomePoperty2RequestMessage>(this, &UTbNamesNamEsMsgBusAdapter::OnSetSomePoperty2Request)
+		.Handling<FTbNamesNamEsSetEnumPropertyRequestMessage>(this, &UTbNamesNamEsMsgBusAdapter::OnSetEnumPropertyRequest)
 		.Handling<FTbNamesNamEsSomeFunctionRequestMessage>(this, &UTbNamesNamEsMsgBusAdapter::OnSomeFunctionRequest)
 		.Handling<FTbNamesNamEsSomeFunction2RequestMessage>(this, &UTbNamesNamEsMsgBusAdapter::OnSomeFunction2Request)
 		.Build();
@@ -135,6 +136,7 @@ void UTbNamesNamEsMsgBusAdapter::_setBackendService(TScriptInterface<ITbNamesNam
 		BackendSignals->OnSwitchChanged.RemoveDynamic(this, &UTbNamesNamEsMsgBusAdapter::OnSwitchChanged);
 		BackendSignals->OnSomePropertyChanged.RemoveDynamic(this, &UTbNamesNamEsMsgBusAdapter::OnSomePropertyChanged);
 		BackendSignals->OnSomePoperty2Changed.RemoveDynamic(this, &UTbNamesNamEsMsgBusAdapter::OnSomePoperty2Changed);
+		BackendSignals->OnEnumPropertyChanged.RemoveDynamic(this, &UTbNamesNamEsMsgBusAdapter::OnEnumPropertyChanged);
 		BackendSignals->OnSomeSignalSignal.RemoveDynamic(this, &UTbNamesNamEsMsgBusAdapter::OnSomeSignal);
 		BackendSignals->OnSomeSignal2Signal.RemoveDynamic(this, &UTbNamesNamEsMsgBusAdapter::OnSomeSignal2);
 	}
@@ -150,6 +152,7 @@ void UTbNamesNamEsMsgBusAdapter::_setBackendService(TScriptInterface<ITbNamesNam
 	BackendSignals->OnSwitchChanged.AddDynamic(this, &UTbNamesNamEsMsgBusAdapter::OnSwitchChanged);
 	BackendSignals->OnSomePropertyChanged.AddDynamic(this, &UTbNamesNamEsMsgBusAdapter::OnSomePropertyChanged);
 	BackendSignals->OnSomePoperty2Changed.AddDynamic(this, &UTbNamesNamEsMsgBusAdapter::OnSomePoperty2Changed);
+	BackendSignals->OnEnumPropertyChanged.AddDynamic(this, &UTbNamesNamEsMsgBusAdapter::OnEnumPropertyChanged);
 	BackendSignals->OnSomeSignalSignal.AddDynamic(this, &UTbNamesNamEsMsgBusAdapter::OnSomeSignal);
 	BackendSignals->OnSomeSignal2Signal.AddDynamic(this, &UTbNamesNamEsMsgBusAdapter::OnSomeSignal2);
 }
@@ -182,6 +185,7 @@ void UTbNamesNamEsMsgBusAdapter::HandleClientConnectionRequest(const TSharedRef<
 	msg->bSwitch = BackendService->Execute_GetSwitch(BackendService.GetObject());
 	msg->SomeProperty = BackendService->Execute_GetSomeProperty(BackendService.GetObject());
 	msg->SomePoperty2 = BackendService->Execute_GetSomePoperty2(BackendService.GetObject());
+	msg->EnumProperty = BackendService->Execute_GetEnumProperty(BackendService.GetObject());
 
 	if (TbNamesNamEsMsgBusEndpoint.IsValid())
 	{
@@ -388,6 +392,29 @@ void UTbNamesNamEsMsgBusAdapter::OnSomePoperty2Changed(int32 InSomePoperty2)
 	if (TbNamesNamEsMsgBusEndpoint.IsValid() && NumberOfClients > 0)
 	{
 		TbNamesNamEsMsgBusEndpoint->Send<FTbNamesNamEsSomePoperty2ChangedMessage>(msg, EMessageFlags::Reliable,
+			nullptr,
+			ConnectedClients,
+			FTimespan::Zero(),
+			FDateTime::MaxValue());
+	}
+}
+
+void UTbNamesNamEsMsgBusAdapter::OnSetEnumPropertyRequest(const FTbNamesNamEsSetEnumPropertyRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
+{
+	BackendService->Execute_SetEnumProperty(BackendService.GetObject(), InMessage.EnumProperty);
+}
+
+void UTbNamesNamEsMsgBusAdapter::OnEnumPropertyChanged(ETbNamesEnum_With_Under_scores InEnumProperty)
+{
+	TArray<FMessageAddress> ConnectedClients;
+	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+
+	auto msg = new FTbNamesNamEsEnumPropertyChangedMessage();
+	msg->EnumProperty = InEnumProperty;
+
+	if (TbNamesNamEsMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	{
+		TbNamesNamEsMsgBusEndpoint->Send<FTbNamesNamEsEnumPropertyChangedMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
 			ConnectedClients,
 			FTimespan::Zero(),

@@ -30,6 +30,9 @@ public:
 	void SomePoperty2PropertyCb(int32 SomePoperty2);
 
 	UFUNCTION()
+	void EnumPropertyPropertyCb(ETbNamesEnum_With_Under_scores EnumProperty);
+
+	UFUNCTION()
 	void SomeSignalSignalCb(bool bSomeParam);
 
 	UFUNCTION()

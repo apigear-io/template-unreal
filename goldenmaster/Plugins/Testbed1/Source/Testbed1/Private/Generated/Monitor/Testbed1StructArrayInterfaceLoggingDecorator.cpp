@@ -55,10 +55,12 @@ void UTestbed1StructArrayInterfaceLoggingDecorator::setBackendService(TScriptInt
 		BackendSignals->OnPropIntChanged.RemoveDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnPropIntChanged);
 		BackendSignals->OnPropFloatChanged.RemoveDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnPropFloatChanged);
 		BackendSignals->OnPropStringChanged.RemoveDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnPropStringChanged);
+		BackendSignals->OnPropEnumChanged.RemoveDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnPropEnumChanged);
 		BackendSignals->OnSigBoolSignal.RemoveDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnSigBool);
 		BackendSignals->OnSigIntSignal.RemoveDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnSigInt);
 		BackendSignals->OnSigFloatSignal.RemoveDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnSigFloat);
 		BackendSignals->OnSigStringSignal.RemoveDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnSigString);
+		BackendSignals->OnSigEnumSignal.RemoveDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnSigEnum);
 	}
 
 	// only set if interface is implemented
@@ -73,15 +75,18 @@ void UTestbed1StructArrayInterfaceLoggingDecorator::setBackendService(TScriptInt
 	BackendSignals->OnPropIntChanged.AddDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnPropIntChanged);
 	BackendSignals->OnPropFloatChanged.AddDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnPropFloatChanged);
 	BackendSignals->OnPropStringChanged.AddDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnPropStringChanged);
+	BackendSignals->OnPropEnumChanged.AddDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnPropEnumChanged);
 	BackendSignals->OnSigBoolSignal.AddDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnSigBool);
 	BackendSignals->OnSigIntSignal.AddDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnSigInt);
 	BackendSignals->OnSigFloatSignal.AddDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnSigFloat);
 	BackendSignals->OnSigStringSignal.AddDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnSigString);
+	BackendSignals->OnSigEnumSignal.AddDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnSigEnum);
 	// populate service state to proxy
 	PropBool = BackendService->Execute_GetPropBool(BackendService.GetObject());
 	PropInt = BackendService->Execute_GetPropInt(BackendService.GetObject());
 	PropFloat = BackendService->Execute_GetPropFloat(BackendService.GetObject());
 	PropString = BackendService->Execute_GetPropString(BackendService.GetObject());
+	PropEnum = BackendService->Execute_GetPropEnum(BackendService.GetObject());
 }
 
 void UTestbed1StructArrayInterfaceLoggingDecorator::OnSigBool(const TArray<FTestbed1StructBool>& InParamBool)
@@ -106,6 +111,12 @@ void UTestbed1StructArrayInterfaceLoggingDecorator::OnSigString(const TArray<FTe
 {
 	Testbed1StructArrayInterfaceTracer::trace_signalSigString(InParamString);
 	Execute__GetSignals(this)->OnSigStringSignal.Broadcast(InParamString);
+}
+
+void UTestbed1StructArrayInterfaceLoggingDecorator::OnSigEnum(const TArray<ETestbed1Enum0>& InParamEnum)
+{
+	Testbed1StructArrayInterfaceTracer::trace_signalSigEnum(InParamEnum);
+	Execute__GetSignals(this)->OnSigEnumSignal.Broadcast(InParamEnum);
 }
 
 void UTestbed1StructArrayInterfaceLoggingDecorator::OnPropBoolChanged(const TArray<FTestbed1StructBool>& InPropBool)
@@ -180,6 +191,24 @@ void UTestbed1StructArrayInterfaceLoggingDecorator::SetPropString_Implementation
 	BackendService->Execute_SetPropString(BackendService.GetObject(), InPropString);
 }
 
+void UTestbed1StructArrayInterfaceLoggingDecorator::OnPropEnumChanged(const TArray<ETestbed1Enum0>& InPropEnum)
+{
+	Testbed1StructArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
+	PropEnum = InPropEnum;
+	Execute__GetSignals(this)->OnPropEnumChanged.Broadcast(InPropEnum);
+}
+
+TArray<ETestbed1Enum0> UTestbed1StructArrayInterfaceLoggingDecorator::GetPropEnum_Implementation() const
+{
+	return BackendService->Execute_GetPropEnum(BackendService.GetObject());
+}
+
+void UTestbed1StructArrayInterfaceLoggingDecorator::SetPropEnum_Implementation(const TArray<ETestbed1Enum0>& InPropEnum)
+{
+	Testbed1StructArrayInterfaceTracer::trace_callSetPropEnum(InPropEnum);
+	BackendService->Execute_SetPropEnum(BackendService.GetObject(), InPropEnum);
+}
+
 TArray<FTestbed1StructBool> UTestbed1StructArrayInterfaceLoggingDecorator::FuncBool_Implementation(const TArray<FTestbed1StructBool>& ParamBool)
 {
 	Testbed1StructArrayInterfaceTracer::trace_callFuncBool(ParamBool);
@@ -202,4 +231,10 @@ TArray<FTestbed1StructString> UTestbed1StructArrayInterfaceLoggingDecorator::Fun
 {
 	Testbed1StructArrayInterfaceTracer::trace_callFuncString(ParamString);
 	return BackendService->Execute_FuncString(BackendService.GetObject(), ParamString);
+}
+
+TArray<ETestbed1Enum0> UTestbed1StructArrayInterfaceLoggingDecorator::FuncEnum_Implementation(const TArray<ETestbed1Enum0>& ParamEnum)
+{
+	Testbed1StructArrayInterfaceTracer::trace_callFuncEnum(ParamEnum);
+	return BackendService->Execute_FuncEnum(BackendService.GetObject(), ParamEnum);
 }

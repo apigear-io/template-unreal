@@ -119,6 +119,21 @@ void Testbed1StructArrayInterfaceOLinkSource::OnSigString(const TArray<FTestbed1
 	}
 }
 
+void Testbed1StructArrayInterfaceOLinkSource::OnSigEnum(const TArray<ETestbed1Enum0>& ParamEnum)
+{
+	static const auto& signalId = ApiGear::ObjectLink::Name::createMemberId(olinkObjectName(), "sigEnum");
+	static const auto& objectId = ApiGear::ObjectLink::Name::getObjectId(signalId);
+	const nlohmann::json& args = {ParamEnum};
+	for (auto node : Host->GetOLinkRegistry()->getNodes(objectId))
+	{
+		auto lockedNode = node.lock();
+		if (lockedNode)
+		{
+			lockedNode->notifySignal(signalId, args);
+		}
+	}
+}
+
 void Testbed1StructArrayInterfaceOLinkSource::OnPropBoolChanged(const TArray<FTestbed1StructBool>& InPropBool)
 {
 	static const auto& propertyId = ApiGear::ObjectLink::Name::createMemberId(olinkObjectName(), "propBool");
@@ -175,6 +190,20 @@ void Testbed1StructArrayInterfaceOLinkSource::OnPropStringChanged(const TArray<F
 	}
 }
 
+void Testbed1StructArrayInterfaceOLinkSource::OnPropEnumChanged(const TArray<ETestbed1Enum0>& InPropEnum)
+{
+	static const auto& propertyId = ApiGear::ObjectLink::Name::createMemberId(olinkObjectName(), "propEnum");
+	static const auto& objectId = ApiGear::ObjectLink::Name::getObjectId(propertyId);
+	for (auto node : Host->GetOLinkRegistry()->getNodes(objectId))
+	{
+		auto lockedNode = node.lock();
+		if (lockedNode)
+		{
+			lockedNode->notifyPropertyChange(propertyId, InPropEnum);
+		}
+	}
+}
+
 void Testbed1StructArrayInterfaceOLinkSource::setOLinkHost(TSoftObjectPtr<UOLinkHost> InHost)
 {
 	Host = InHost.Get();
@@ -222,6 +251,12 @@ nlohmann::json Testbed1StructArrayInterfaceOLinkSource::olinkInvoke(const std::s
 		TArray<FTestbed1StructString> result = BackendService->Execute_FuncString(BackendService.GetObject(), ParamString);
 		return result;
 	}
+	if (path == "funcEnum")
+	{
+		TArray<ETestbed1Enum0> ParamEnum = args.at(0).get<TArray<ETestbed1Enum0>>();
+		TArray<ETestbed1Enum0> result = BackendService->Execute_FuncEnum(BackendService.GetObject(), ParamEnum);
+		return result;
+	}
 	return nlohmann::json();
 }
 
@@ -254,6 +289,11 @@ void Testbed1StructArrayInterfaceOLinkSource::olinkSetProperty(const std::string
 		TArray<FTestbed1StructString> PropString = value.get<TArray<FTestbed1StructString>>();
 		BackendService->Execute_SetPropString(BackendService.GetObject(), PropString);
 	}
+	if (path == "propEnum")
+	{
+		TArray<ETestbed1Enum0> PropEnum = value.get<TArray<ETestbed1Enum0>>();
+		BackendService->Execute_SetPropEnum(BackendService.GetObject(), PropEnum);
+	}
 }
 
 nlohmann::json Testbed1StructArrayInterfaceOLinkSource::olinkCollectProperties()
@@ -269,6 +309,7 @@ nlohmann::json Testbed1StructArrayInterfaceOLinkSource::olinkCollectProperties()
 		{"propBool", BackendService->Execute_GetPropBool(BackendService.GetObject())},
 		{"propInt", BackendService->Execute_GetPropInt(BackendService.GetObject())},
 		{"propFloat", BackendService->Execute_GetPropFloat(BackendService.GetObject())},
-		{"propString", BackendService->Execute_GetPropString(BackendService.GetObject())}});
+		{"propString", BackendService->Execute_GetPropString(BackendService.GetObject())},
+		{"propEnum", BackendService->Execute_GetPropEnum(BackendService.GetObject())}});
 }
 #endif // !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)

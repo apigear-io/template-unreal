@@ -20,3 +20,29 @@ limitations under the License.
 #include "CoreMinimal.h"
 #include "Engine/DataTable.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
+#include "TbNames_data.generated.h"
+
+/**
+ * Enumeration ETbNamesEnum_With_Under_scores
+ */
+UENUM(BlueprintType)
+enum class ETbNamesEnum_With_Under_scores : uint8
+{
+	TNEWUS_FIRSTVALUE = 0 UMETA(Displayname = "First_Value"),
+	TNEWUS_SECONDVALUE = 1 UMETA(Displayname = "second_value"),
+	TNEWUS_THIRDVALUE = 2 UMETA(Displayname = "third_Value")
+};
+
+/**
+ * @brief BP Function library for data types
+ */
+UCLASS(meta = (BlueprintThreadSafe))
+class TBNAMES_API UTbNamesLibrary : public UBlueprintFunctionLibrary
+{
+	GENERATED_BODY()
+
+public:
+	/* Convert from uint8 to ETbNamesEnum_With_Under_scores @return true if successful */
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbNames")
+	static bool toTbNamesEnum_With_Under_scores(ETbNamesEnum_With_Under_scores& ConvertedEnum, UPARAM(DisplayName = "Value") uint8 InValue);
+};
