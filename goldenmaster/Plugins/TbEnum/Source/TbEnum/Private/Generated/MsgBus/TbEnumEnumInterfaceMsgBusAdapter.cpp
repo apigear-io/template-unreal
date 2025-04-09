@@ -24,12 +24,12 @@ limitations under the License.
 #include "Generated/MsgBus/TbEnumEnumInterfaceMsgBusMessages.h"
 #include "Async/Future.h"
 #include "Async/Async.h"
-#include "Async/Async.h"
-#include "Engine/Engine.h"
+#include "Engine/World.h"
 #include "TimerManager.h"
 #include "MessageEndpoint.h"
 #include "MessageEndpointBuilder.h"
 #include "Misc/DateTime.h"
+#include "TbEnumSettings.h"
 
 DEFINE_LOG_CATEGORY(LogTbEnumEnumInterfaceMsgBusAdapter);
 UTbEnumEnumInterfaceMsgBusAdapter::UTbEnumEnumInterfaceMsgBusAdapter()
@@ -53,6 +53,10 @@ void UTbEnumEnumInterfaceMsgBusAdapter::_StartListening()
 
 	if (!_HeartbeatTimerHandle.IsValid() && GetWorld())
 	{
+		UTbEnumSettings* settings = GetMutableDefault<UTbEnumSettings>();
+		check(settings);
+		_HeartbeatIntervalMS = settings->MsgBusHeartbeatIntervalMS;
+
 		GetWorld()->GetTimerManager().SetTimer(_HeartbeatTimerHandle, this, &UTbEnumEnumInterfaceMsgBusAdapter::_CheckClientTimeouts, _HeartbeatIntervalMS / 1000.0f, true);
 	}
 

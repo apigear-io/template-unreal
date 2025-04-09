@@ -24,12 +24,12 @@ limitations under the License.
 #include "Generated/MsgBus/CounterCounterMsgBusMessages.h"
 #include "Async/Future.h"
 #include "Async/Async.h"
-#include "Async/Async.h"
-#include "Engine/Engine.h"
+#include "Engine/World.h"
 #include "TimerManager.h"
 #include "MessageEndpoint.h"
 #include "MessageEndpointBuilder.h"
 #include "Misc/DateTime.h"
+#include "CounterSettings.h"
 
 DEFINE_LOG_CATEGORY(LogCounterCounterMsgBusAdapter);
 UCounterCounterMsgBusAdapter::UCounterCounterMsgBusAdapter()
@@ -53,6 +53,10 @@ void UCounterCounterMsgBusAdapter::_StartListening()
 
 	if (!_HeartbeatTimerHandle.IsValid() && GetWorld())
 	{
+		UCounterSettings* settings = GetMutableDefault<UCounterSettings>();
+		check(settings);
+		_HeartbeatIntervalMS = settings->MsgBusHeartbeatIntervalMS;
+
 		GetWorld()->GetTimerManager().SetTimer(_HeartbeatTimerHandle, this, &UCounterCounterMsgBusAdapter::_CheckClientTimeouts, _HeartbeatIntervalMS / 1000.0f, true);
 	}
 
