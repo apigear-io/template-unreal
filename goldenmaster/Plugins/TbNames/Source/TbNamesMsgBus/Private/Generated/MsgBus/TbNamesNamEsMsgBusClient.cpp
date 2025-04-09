@@ -23,13 +23,14 @@ limitations under the License.
 #include "TbNames/Generated/MsgBus/TbNamesNamEsMsgBusClient.h"
 #include "TbNames/Generated/MsgBus/TbNamesNamEsMsgBusMessages.h"
 #include "Async/Async.h"
-#include "Engine/Engine.h"
+#include "Engine/World.h"
 #include "TimerManager.h"
 #include "Misc/DateTime.h"
 #include "GenericPlatform/GenericPlatformMath.h"
 #include "GenericPlatform/GenericPlatformTime.h"
 #include "MessageEndpointBuilder.h"
 #include "MessageEndpoint.h"
+#include "TbNamesSettings.h"
 #include <atomic>
 
 /**
@@ -69,6 +70,10 @@ void UTbNamesNamEsMsgBusClient::_Connect()
 {
 	if (!_HeartbeatTimerHandle.IsValid() && GetWorld())
 	{
+		UTbNamesSettings* settings = GetMutableDefault<UTbNamesSettings>();
+		check(settings);
+		_HeartbeatIntervalMS = settings->MsgBusHeartbeatIntervalMS;
+
 		GetWorld()->GetTimerManager().SetTimer(_HeartbeatTimerHandle, this, &UTbNamesNamEsMsgBusClient::_OnHeartbeat, _HeartbeatIntervalMS / 1000.0f, true);
 	}
 

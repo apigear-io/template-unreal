@@ -68,4 +68,14 @@ public:
 	static TScriptInterface<I{{$class}}Interface> GetI{{$class}}InterfaceForLogging(FSubsystemCollectionBase& Collection);
 {{- end }}
 {{- end }}
+
+{{- if $.Features.msgbus }}
+
+	/** Choose the heartbeat interval in milliseconds for the msgbus connection on the service side.
+	 * On the service side this adjusts the heartbeat between client and service. The clients will receive the value from service.
+	 * On the client side this adjusts how often discovery messages are sent until a service is connected.
+	 */
+	UPROPERTY(EditAnywhere, config, Category = MsgBusConnectionSetup, meta = (DisplayName = "Heartbeat interval (in milliseconds)"))
+	uint32 MsgBusHeartbeatIntervalMS = 200;
+{{- end }}
 };

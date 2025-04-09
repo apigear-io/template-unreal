@@ -23,13 +23,14 @@ limitations under the License.
 #include "Testbed1/Generated/MsgBus/Testbed1StructArray2InterfaceMsgBusClient.h"
 #include "Testbed1/Generated/MsgBus/Testbed1StructArray2InterfaceMsgBusMessages.h"
 #include "Async/Async.h"
-#include "Engine/Engine.h"
+#include "Engine/World.h"
 #include "TimerManager.h"
 #include "Misc/DateTime.h"
 #include "GenericPlatform/GenericPlatformMath.h"
 #include "GenericPlatform/GenericPlatformTime.h"
 #include "MessageEndpointBuilder.h"
 #include "MessageEndpoint.h"
+#include "Testbed1Settings.h"
 #include "HAL/CriticalSection.h"
 
 /**
@@ -75,6 +76,10 @@ void UTestbed1StructArray2InterfaceMsgBusClient::_Connect()
 {
 	if (!_HeartbeatTimerHandle.IsValid() && GetWorld())
 	{
+		UTestbed1Settings* settings = GetMutableDefault<UTestbed1Settings>();
+		check(settings);
+		_HeartbeatIntervalMS = settings->MsgBusHeartbeatIntervalMS;
+
 		GetWorld()->GetTimerManager().SetTimer(_HeartbeatTimerHandle, this, &UTestbed1StructArray2InterfaceMsgBusClient::_OnHeartbeat, _HeartbeatIntervalMS / 1000.0f, true);
 	}
 

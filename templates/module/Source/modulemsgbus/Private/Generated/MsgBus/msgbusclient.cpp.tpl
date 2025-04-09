@@ -17,13 +17,14 @@
 #include "{{$ModuleName}}/Generated/MsgBus/{{$Iface}}MsgBusClient.h"
 #include "{{$ModuleName}}/Generated/MsgBus/{{$Iface}}MsgBusMessages.h"
 #include "Async/Async.h"
-#include "Engine/Engine.h"
+#include "Engine/World.h"
 #include "TimerManager.h"
 #include "Misc/DateTime.h"
 #include "GenericPlatform/GenericPlatformMath.h"
 #include "GenericPlatform/GenericPlatformTime.h"
 #include "MessageEndpointBuilder.h"
 #include "MessageEndpoint.h"
+#include "{{$ModuleName}}Settings.h"
 
 {{- if len .Interface.Properties }}
     {{- $shouldIncludeAtomic := 0 -}}
@@ -90,6 +91,10 @@ void {{$Class}}::_Connect()
 {
 	if (!_HeartbeatTimerHandle.IsValid() && GetWorld())
 	{
+		U{{$ModuleName}}Settings* settings = GetMutableDefault<U{{$ModuleName}}Settings>();
+		check(settings);
+		_HeartbeatIntervalMS = settings->MsgBusHeartbeatIntervalMS;
+
 		GetWorld()->GetTimerManager().SetTimer(_HeartbeatTimerHandle, this, &{{$Class}}::_OnHeartbeat, _HeartbeatIntervalMS / 1000.0f, true);
 	}
 

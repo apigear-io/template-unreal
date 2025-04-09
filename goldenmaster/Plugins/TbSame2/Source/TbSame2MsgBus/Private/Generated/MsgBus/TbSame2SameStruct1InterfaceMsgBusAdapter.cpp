@@ -24,11 +24,12 @@ limitations under the License.
 #include "TbSame2/Generated/MsgBus/TbSame2SameStruct1InterfaceMsgBusMessages.h"
 #include "Async/Future.h"
 #include "Async/Async.h"
-#include "Engine/Engine.h"
+#include "Engine/World.h"
 #include "TimerManager.h"
 #include "MessageEndpoint.h"
 #include "MessageEndpointBuilder.h"
 #include "Misc/DateTime.h"
+#include "TbSame2Settings.h"
 
 DEFINE_LOG_CATEGORY(LogTbSame2SameStruct1InterfaceMsgBusAdapter);
 UTbSame2SameStruct1InterfaceMsgBusAdapter::UTbSame2SameStruct1InterfaceMsgBusAdapter()
@@ -52,6 +53,10 @@ void UTbSame2SameStruct1InterfaceMsgBusAdapter::_StartListening()
 
 	if (!_HeartbeatTimerHandle.IsValid() && GetWorld())
 	{
+		UTbSame2Settings* settings = GetMutableDefault<UTbSame2Settings>();
+		check(settings);
+		_HeartbeatIntervalMS = settings->MsgBusHeartbeatIntervalMS;
+
 		GetWorld()->GetTimerManager().SetTimer(_HeartbeatTimerHandle, this, &UTbSame2SameStruct1InterfaceMsgBusAdapter::_CheckClientTimeouts, _HeartbeatIntervalMS / 1000.0f, true);
 	}
 

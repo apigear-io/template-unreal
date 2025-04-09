@@ -24,11 +24,12 @@ limitations under the License.
 #include "TbNames/Generated/MsgBus/TbNamesNamEsMsgBusMessages.h"
 #include "Async/Future.h"
 #include "Async/Async.h"
-#include "Engine/Engine.h"
+#include "Engine/World.h"
 #include "TimerManager.h"
 #include "MessageEndpoint.h"
 #include "MessageEndpointBuilder.h"
 #include "Misc/DateTime.h"
+#include "TbNamesSettings.h"
 
 DEFINE_LOG_CATEGORY(LogTbNamesNamEsMsgBusAdapter);
 UTbNamesNamEsMsgBusAdapter::UTbNamesNamEsMsgBusAdapter()
@@ -52,6 +53,10 @@ void UTbNamesNamEsMsgBusAdapter::_StartListening()
 
 	if (!_HeartbeatTimerHandle.IsValid() && GetWorld())
 	{
+		UTbNamesSettings* settings = GetMutableDefault<UTbNamesSettings>();
+		check(settings);
+		_HeartbeatIntervalMS = settings->MsgBusHeartbeatIntervalMS;
+
 		GetWorld()->GetTimerManager().SetTimer(_HeartbeatTimerHandle, this, &UTbNamesNamEsMsgBusAdapter::_CheckClientTimeouts, _HeartbeatIntervalMS / 1000.0f, true);
 	}
 

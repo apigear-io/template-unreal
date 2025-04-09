@@ -24,11 +24,12 @@ limitations under the License.
 #include "Testbed2/Generated/MsgBus/Testbed2NestedStruct2InterfaceMsgBusMessages.h"
 #include "Async/Future.h"
 #include "Async/Async.h"
-#include "Engine/Engine.h"
+#include "Engine/World.h"
 #include "TimerManager.h"
 #include "MessageEndpoint.h"
 #include "MessageEndpointBuilder.h"
 #include "Misc/DateTime.h"
+#include "Testbed2Settings.h"
 
 DEFINE_LOG_CATEGORY(LogTestbed2NestedStruct2InterfaceMsgBusAdapter);
 UTestbed2NestedStruct2InterfaceMsgBusAdapter::UTestbed2NestedStruct2InterfaceMsgBusAdapter()
@@ -52,6 +53,10 @@ void UTestbed2NestedStruct2InterfaceMsgBusAdapter::_StartListening()
 
 	if (!_HeartbeatTimerHandle.IsValid() && GetWorld())
 	{
+		UTestbed2Settings* settings = GetMutableDefault<UTestbed2Settings>();
+		check(settings);
+		_HeartbeatIntervalMS = settings->MsgBusHeartbeatIntervalMS;
+
 		GetWorld()->GetTimerManager().SetTimer(_HeartbeatTimerHandle, this, &UTestbed2NestedStruct2InterfaceMsgBusAdapter::_CheckClientTimeouts, _HeartbeatIntervalMS / 1000.0f, true);
 	}
 

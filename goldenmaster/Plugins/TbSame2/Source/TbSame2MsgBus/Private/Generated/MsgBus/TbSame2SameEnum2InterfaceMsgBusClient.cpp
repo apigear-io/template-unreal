@@ -23,13 +23,14 @@ limitations under the License.
 #include "TbSame2/Generated/MsgBus/TbSame2SameEnum2InterfaceMsgBusClient.h"
 #include "TbSame2/Generated/MsgBus/TbSame2SameEnum2InterfaceMsgBusMessages.h"
 #include "Async/Async.h"
-#include "Engine/Engine.h"
+#include "Engine/World.h"
 #include "TimerManager.h"
 #include "Misc/DateTime.h"
 #include "GenericPlatform/GenericPlatformMath.h"
 #include "GenericPlatform/GenericPlatformTime.h"
 #include "MessageEndpointBuilder.h"
 #include "MessageEndpoint.h"
+#include "TbSame2Settings.h"
 #include <atomic>
 
 /**
@@ -67,6 +68,10 @@ void UTbSame2SameEnum2InterfaceMsgBusClient::_Connect()
 {
 	if (!_HeartbeatTimerHandle.IsValid() && GetWorld())
 	{
+		UTbSame2Settings* settings = GetMutableDefault<UTbSame2Settings>();
+		check(settings);
+		_HeartbeatIntervalMS = settings->MsgBusHeartbeatIntervalMS;
+
 		GetWorld()->GetTimerManager().SetTimer(_HeartbeatTimerHandle, this, &UTbSame2SameEnum2InterfaceMsgBusClient::_OnHeartbeat, _HeartbeatIntervalMS / 1000.0f, true);
 	}
 

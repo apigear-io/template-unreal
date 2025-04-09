@@ -23,13 +23,14 @@ limitations under the License.
 #include "TbSimple/Generated/MsgBus/TbSimpleVoidInterfaceMsgBusClient.h"
 #include "TbSimple/Generated/MsgBus/TbSimpleVoidInterfaceMsgBusMessages.h"
 #include "Async/Async.h"
-#include "Engine/Engine.h"
+#include "Engine/World.h"
 #include "TimerManager.h"
 #include "Misc/DateTime.h"
 #include "GenericPlatform/GenericPlatformMath.h"
 #include "GenericPlatform/GenericPlatformTime.h"
 #include "MessageEndpointBuilder.h"
 #include "MessageEndpoint.h"
+#include "TbSimpleSettings.h"
 DEFINE_LOG_CATEGORY(LogTbSimpleVoidInterfaceMsgBusClient);
 
 UTbSimpleVoidInterfaceMsgBusClient::UTbSimpleVoidInterfaceMsgBusClient()
@@ -56,6 +57,10 @@ void UTbSimpleVoidInterfaceMsgBusClient::_Connect()
 {
 	if (!_HeartbeatTimerHandle.IsValid() && GetWorld())
 	{
+		UTbSimpleSettings* settings = GetMutableDefault<UTbSimpleSettings>();
+		check(settings);
+		_HeartbeatIntervalMS = settings->MsgBusHeartbeatIntervalMS;
+
 		GetWorld()->GetTimerManager().SetTimer(_HeartbeatTimerHandle, this, &UTbSimpleVoidInterfaceMsgBusClient::_OnHeartbeat, _HeartbeatIntervalMS / 1000.0f, true);
 	}
 

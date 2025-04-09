@@ -47,4 +47,11 @@ public:
 	/** Choose the olink connection to use */
 	UPROPERTY(EditAnywhere, config, Category = OLinkConnectionSetup)
 	FString OLinkConnectionIdentifier;
+
+	/** Choose the heartbeat interval in milliseconds for the msgbus connection on the service side.
+	 * On the service side this adjusts the heartbeat between client and service. The clients will receive the value from service.
+	 * On the client side this adjusts how often discovery messages are sent until a service is connected.
+	 */
+	UPROPERTY(EditAnywhere, config, Category = MsgBusConnectionSetup, meta = (DisplayName = "Heartbeat interval (in milliseconds)"))
+	uint32 MsgBusHeartbeatIntervalMS = 200;
 };

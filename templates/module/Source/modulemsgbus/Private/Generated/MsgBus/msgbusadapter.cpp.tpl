@@ -17,11 +17,12 @@
 #include "{{$ModuleName}}/Generated/MsgBus/{{$Iface}}MsgBusMessages.h"
 #include "Async/Future.h"
 #include "Async/Async.h"
-#include "Engine/Engine.h"
+#include "Engine/World.h"
 #include "TimerManager.h"
 #include "MessageEndpoint.h"
 #include "MessageEndpointBuilder.h"
 #include "Misc/DateTime.h"
+#include "{{$ModuleName}}Settings.h"
 
 DEFINE_LOG_CATEGORY(Log{{$Iface}}MsgBusAdapter);
 
@@ -51,6 +52,10 @@ void {{$Class}}::_StartListening()
 
 	if (!_HeartbeatTimerHandle.IsValid() && GetWorld())
 	{
+		U{{$ModuleName}}Settings* settings = GetMutableDefault<U{{$ModuleName}}Settings>();
+		check(settings);
+		_HeartbeatIntervalMS = settings->MsgBusHeartbeatIntervalMS;
+
 		GetWorld()->GetTimerManager().SetTimer(_HeartbeatTimerHandle, this, &{{$Class}}::_CheckClientTimeouts, _HeartbeatIntervalMS / 1000.0f, true);
 	}
 
