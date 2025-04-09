@@ -41,7 +41,8 @@ public class ApiGearOLink : ModuleRules
 			);
 
 		// the WebSocketNetworking lib does not work on mobile
-		if (Target.Platform != UnrealTargetPlatform.Android && Target.Platform != UnrealTargetPlatform.IOS)
+		// QNX is only defined in certain UE versions so we use this workaround
+		if (Target.Platform != UnrealTargetPlatform.Android && Target.Platform != UnrealTargetPlatform.IOS && !Target.Platform.ToString().Equals("QNX", System.StringComparison.Ordinal))
 		{
 			PrivateDependencyModuleNames.Add("WebSocketNetworking");
 		}
