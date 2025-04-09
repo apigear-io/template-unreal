@@ -5,7 +5,7 @@
 {
 	"FileVersion": 3,
 	"Version": 1,
-	"VersionName": "{{.Module.Version}}",
+	"VersionName": "{{.Module.Version}}+tpl.{{ template "templateversion" }}",
 	"FriendlyName": "{{$ModuleName}}",
 	"Description": "",
 	"Category": "Other",
