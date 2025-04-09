@@ -1,7 +1,7 @@
 {
 	"FileVersion": 3,
 	"Version": 1,
-	"VersionName": "3.5.0",
+	"VersionName": "{{ template "templateversion" }}",
 	"FriendlyName": "ApiGear",
 	"Description": "ApiGear ThirdParty libraries for tracing, simulation and IPC support",
 	"Category": "Other",

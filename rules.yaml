@@ -124,9 +124,8 @@ features:
           - source: "ApiGear/Source/ApiGear/apigear.Build.cs"
             target: "Source/ApiGear/apigear.Build.cs"
             raw: true
-          - source: "ApiGear/apigear.uplugin"
+          - source: "ApiGear/apigear.uplugin.tpl"
             target: "apigear.uplugin"
-            raw: true
           - source: "ApiGear/Config/FilterPlugin.ini"
             target: "Config/FilterPlugin.ini"
             raw: true
