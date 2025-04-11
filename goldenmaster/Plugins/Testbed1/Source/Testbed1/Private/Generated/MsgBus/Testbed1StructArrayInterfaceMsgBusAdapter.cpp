@@ -25,7 +25,6 @@ limitations under the License.
 #include "Async/Future.h"
 #include "Async/Async.h"
 #include "Engine/World.h"
-#include "TimerManager.h"
 #include "MessageEndpoint.h"
 #include "MessageEndpointBuilder.h"
 #include "Misc/DateTime.h"
@@ -51,13 +50,17 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::Deinitialize()
 void UTestbed1StructArrayInterfaceMsgBusAdapter::_StartListening()
 {
 
-	if (!_HeartbeatTimerHandle.IsValid() && GetWorld())
+	if (!_HeartbeatTickerHandle.IsValid())
 	{
 		UTestbed1Settings* settings = GetMutableDefault<UTestbed1Settings>();
 		check(settings);
 		_HeartbeatIntervalMS = settings->MsgBusHeartbeatIntervalMS;
 
-		GetWorld()->GetTimerManager().SetTimer(_HeartbeatTimerHandle, this, &UTestbed1StructArrayInterfaceMsgBusAdapter::_CheckClientTimeouts, _HeartbeatIntervalMS / 1000.0f, true);
+#if (ENGINE_MAJOR_VERSION < 5)
+		_HeartbeatTickerHandle = FTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateUObject(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::_CheckClientTimeoutsTick), _HeartbeatIntervalMS / 1000.0f);
+#else
+		_HeartbeatTickerHandle = FTSTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateUObject(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::_CheckClientTimeoutsTick), _HeartbeatIntervalMS / 1000.0f);
+#endif
 	}
 
 	if (Testbed1StructArrayInterfaceMsgBusEndpoint.IsValid())
@@ -105,9 +108,13 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::_AnnounceService()
 
 void UTestbed1StructArrayInterfaceMsgBusAdapter::_StopListening()
 {
-	if (_HeartbeatTimerHandle.IsValid() && GetWorld())
+	if (_HeartbeatTickerHandle.IsValid())
 	{
-		GetWorld()->GetTimerManager().ClearTimer(_HeartbeatTimerHandle);
+#if (ENGINE_MAJOR_VERSION < 5)
+		FTicker::GetCoreTicker().RemoveTicker(_HeartbeatTickerHandle);
+#else
+		FTSTicker::GetCoreTicker().RemoveTicker(_HeartbeatTickerHandle);
+#endif
 	}
 
 	auto msg = new FTestbed1StructArrayInterfaceServiceDisconnectMessage();
@@ -269,6 +276,12 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::OnClientDisconnected(const FTes
 	ConnectedClientsTimestamps.Remove(Context->GetSender());
 	_OnClientDisconnected.Broadcast(Context->GetSender().ToString());
 	_UpdateClientsConnected();
+}
+
+bool UTestbed1StructArrayInterfaceMsgBusAdapter::_CheckClientTimeoutsTick(float /*DeltaTime*/)
+{
+	_CheckClientTimeouts();
+	return true;
 }
 
 void UTestbed1StructArrayInterfaceMsgBusAdapter::_CheckClientTimeouts()

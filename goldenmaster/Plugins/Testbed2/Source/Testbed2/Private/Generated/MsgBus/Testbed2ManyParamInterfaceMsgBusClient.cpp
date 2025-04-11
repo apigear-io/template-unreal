@@ -24,7 +24,6 @@ limitations under the License.
 #include "Generated/MsgBus/Testbed2ManyParamInterfaceMsgBusMessages.h"
 #include "Async/Async.h"
 #include "Engine/World.h"
-#include "TimerManager.h"
 #include "Misc/DateTime.h"
 #include "GenericPlatform/GenericPlatformMath.h"
 #include "GenericPlatform/GenericPlatformTime.h"
@@ -68,19 +67,25 @@ void UTestbed2ManyParamInterfaceMsgBusClient::Deinitialize()
 
 void UTestbed2ManyParamInterfaceMsgBusClient::_Connect()
 {
-	if (!_HeartbeatTimerHandle.IsValid() && GetWorld())
+	if (_IsConnected())
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceMsgBusClient, Log, TEXT("Already connected, cannot connect again."));
+		return;
+	}
+
+	if (!_HeartbeatTickerHandle.IsValid())
 	{
 		UTestbed2Settings* settings = GetMutableDefault<UTestbed2Settings>();
 		check(settings);
 		_HeartbeatIntervalMS = settings->MsgBusHeartbeatIntervalMS;
 
-		GetWorld()->GetTimerManager().SetTimer(_HeartbeatTimerHandle, this, &UTestbed2ManyParamInterfaceMsgBusClient::_OnHeartbeat, _HeartbeatIntervalMS / 1000.0f, true);
-	}
-
-	if (_IsConnected())
-	{
-		UE_LOG(LogTestbed2ManyParamInterfaceMsgBusClient, Log, TEXT("Already connected, cannot connect again."));
-		return;
+#if (ENGINE_MAJOR_VERSION < 5)
+		FTicker::GetCoreTicker().RemoveTicker(_HeartbeatTickerHandle);
+		_HeartbeatTickerHandle = FTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateUObject(this, &UTestbed2ManyParamInterfaceMsgBusClient::_OnHeartbeatTick), _HeartbeatIntervalMS / 1000.0f);
+#else
+		FTSTicker::GetCoreTicker().RemoveTicker(_HeartbeatTickerHandle);
+		_HeartbeatTickerHandle = FTSTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateUObject(this, &UTestbed2ManyParamInterfaceMsgBusClient::_OnHeartbeatTick), _HeartbeatIntervalMS / 1000.0f);
+#endif
 	}
 
 	if (Testbed2ManyParamInterfaceMsgBusEndpoint.IsValid() && !ServiceAddress.IsValid())
@@ -115,10 +120,12 @@ void UTestbed2ManyParamInterfaceMsgBusClient::_Connect()
 void UTestbed2ManyParamInterfaceMsgBusClient::_Disconnect()
 {
 	_LastHbTimestamp = 0.0f;
-	if (_HeartbeatTimerHandle.IsValid() && GetWorld())
-	{
-		GetWorld()->GetTimerManager().ClearTimer(_HeartbeatTimerHandle);
-	}
+
+#if (ENGINE_MAJOR_VERSION < 5)
+	FTicker::GetCoreTicker().RemoveTicker(_HeartbeatTickerHandle);
+#else
+	FTSTicker::GetCoreTicker().RemoveTicker(_HeartbeatTickerHandle);
+#endif
 
 	if (!_IsConnected())
 	{
@@ -179,15 +186,13 @@ void UTestbed2ManyParamInterfaceMsgBusClient::OnConnectionInit(const FTestbed2Ma
 	{
 		_HeartbeatIntervalMS = InMessage._ClientPingIntervalMS;
 
-		if (_HeartbeatTimerHandle.IsValid() && GetWorld())
-		{
-			GetWorld()->GetTimerManager().ClearTimer(_HeartbeatTimerHandle);
-		}
-
-		if (!_HeartbeatTimerHandle.IsValid() && GetWorld())
-		{
-			GetWorld()->GetTimerManager().SetTimer(_HeartbeatTimerHandle, this, &UTestbed2ManyParamInterfaceMsgBusClient::_OnHeartbeat, _HeartbeatIntervalMS / 1000.0f, true);
-		}
+#if (ENGINE_MAJOR_VERSION < 5)
+		FTicker::GetCoreTicker().RemoveTicker(_HeartbeatTickerHandle);
+		_HeartbeatTickerHandle = FTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateUObject(this, &UTestbed2ManyParamInterfaceMsgBusClient::_OnHeartbeatTick), _HeartbeatIntervalMS / 1000.0f);
+#else
+		FTSTicker::GetCoreTicker().RemoveTicker(_HeartbeatTickerHandle);
+		_HeartbeatTickerHandle = FTSTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateUObject(this, &UTestbed2ManyParamInterfaceMsgBusClient::_OnHeartbeatTick), _HeartbeatIntervalMS / 1000.0f);
+#endif
 	}
 	const bool bProp1Changed = InMessage.Prop1 != Prop1;
 	if (bProp1Changed)
@@ -218,6 +223,12 @@ void UTestbed2ManyParamInterfaceMsgBusClient::OnConnectionInit(const FTestbed2Ma
 	}
 
 	_ConnectionStatusChanged.Broadcast(true);
+}
+
+bool UTestbed2ManyParamInterfaceMsgBusClient::_OnHeartbeatTick(float /*DeltaTime*/)
+{
+	_OnHeartbeat();
+	return true;
 }
 
 void UTestbed2ManyParamInterfaceMsgBusClient::_OnHeartbeat()

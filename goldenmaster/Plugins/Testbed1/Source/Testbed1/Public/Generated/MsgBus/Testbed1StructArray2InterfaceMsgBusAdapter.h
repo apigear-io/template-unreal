@@ -21,11 +21,7 @@ limitations under the License.
 #include "IMessageContext.h"
 #include "Templates/SharedPointer.h"
 #include "Runtime/Launch/Resources/Version.h"
-#if (ENGINE_MAJOR_VERSION < 5)
-#include "Engine/EngineTypes.h"
-#else
-#include "Engine/TimerHandle.h"
-#endif
+#include "Containers/Ticker.h"
 #include "Testbed1StructArray2InterfaceMsgBusAdapter.generated.h"
 
 class FMessageEndpoint;
@@ -162,9 +158,14 @@ private:
 
 	// Heartbeat handling
 	void _CheckClientTimeouts();
+	bool _CheckClientTimeoutsTick(float DeltaTime);
 	void _UpdateClientsConnected();
 	TMap<FMessageAddress, double> ConnectedClientsTimestamps;
-	FTimerHandle _HeartbeatTimerHandle;
+#if (ENGINE_MAJOR_VERSION < 5)
+	::FDelegateHandle _HeartbeatTickerHandle;
+#else
+	FTSTicker::FDelegateHandle _HeartbeatTickerHandle;
+#endif
 	int32 _ClientsConnected = 0;
 	uint32 _HeartbeatIntervalMS = 100;
 };

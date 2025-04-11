@@ -18,7 +18,6 @@
 #include "Generated/MsgBus/{{$Iface}}MsgBusMessages.h"
 #include "Async/Async.h"
 #include "Engine/World.h"
-#include "TimerManager.h"
 #include "Misc/DateTime.h"
 #include "GenericPlatform/GenericPlatformMath.h"
 #include "GenericPlatform/GenericPlatformTime.h"
@@ -89,19 +88,25 @@ void {{$Class}}::Deinitialize()
 
 void {{$Class}}::_Connect()
 {
-	if (!_HeartbeatTimerHandle.IsValid() && GetWorld())
+	if (_IsConnected())
+	{
+		UE_LOG(Log{{$Iface}}MsgBusClient, Log, TEXT("Already connected, cannot connect again."));
+		return;
+	}
+
+	if (!_HeartbeatTickerHandle.IsValid())
 	{
 		U{{$ModuleName}}Settings* settings = GetMutableDefault<U{{$ModuleName}}Settings>();
 		check(settings);
 		_HeartbeatIntervalMS = settings->MsgBusHeartbeatIntervalMS;
 
-		GetWorld()->GetTimerManager().SetTimer(_HeartbeatTimerHandle, this, &{{$Class}}::_OnHeartbeat, _HeartbeatIntervalMS / 1000.0f, true);
-	}
-
-	if (_IsConnected())
-	{
-		UE_LOG(Log{{$Iface}}MsgBusClient, Log, TEXT("Already connected, cannot connect again."));
-		return;
+#if (ENGINE_MAJOR_VERSION < 5)
+		FTicker::GetCoreTicker().RemoveTicker(_HeartbeatTickerHandle);
+		_HeartbeatTickerHandle = FTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateUObject(this, &{{$Class}}::_OnHeartbeatTick), _HeartbeatIntervalMS / 1000.0f);
+#else
+		FTSTicker::GetCoreTicker().RemoveTicker(_HeartbeatTickerHandle);
+		_HeartbeatTickerHandle = FTSTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateUObject(this, &{{$Class}}::_OnHeartbeatTick), _HeartbeatIntervalMS / 1000.0f);
+#endif
 	}
 
 	if ({{$Iface}}MsgBusEndpoint.IsValid() && !ServiceAddress.IsValid())
@@ -135,10 +140,12 @@ void {{$Class}}::_Connect()
 void {{$Class}}::_Disconnect()
 {
 	_LastHbTimestamp = 0.0f;
-	if (_HeartbeatTimerHandle.IsValid() && GetWorld())
-	{
-		GetWorld()->GetTimerManager().ClearTimer(_HeartbeatTimerHandle);
-	}
+
+#if (ENGINE_MAJOR_VERSION < 5)
+	FTicker::GetCoreTicker().RemoveTicker(_HeartbeatTickerHandle);
+#else
+	FTSTicker::GetCoreTicker().RemoveTicker(_HeartbeatTickerHandle);
+#endif
 
 	if (!_IsConnected())
 	{
@@ -199,15 +206,13 @@ void {{$Class}}::OnConnectionInit(const F{{$Iface}}InitMessage& InMessage, const
 	{
 		_HeartbeatIntervalMS = InMessage._ClientPingIntervalMS;
 
-		if (_HeartbeatTimerHandle.IsValid() && GetWorld())
-		{
-			GetWorld()->GetTimerManager().ClearTimer(_HeartbeatTimerHandle);
-		}
-
-		if (!_HeartbeatTimerHandle.IsValid() && GetWorld())
-		{
-			GetWorld()->GetTimerManager().SetTimer(_HeartbeatTimerHandle, this, &{{$Class}}::_OnHeartbeat, _HeartbeatIntervalMS / 1000.0f, true);
-		}
+#if (ENGINE_MAJOR_VERSION < 5)
+		FTicker::GetCoreTicker().RemoveTicker(_HeartbeatTickerHandle);
+		_HeartbeatTickerHandle = FTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateUObject(this, &{{$Class}}::_OnHeartbeatTick), _HeartbeatIntervalMS / 1000.0f);
+#else
+		FTSTicker::GetCoreTicker().RemoveTicker(_HeartbeatTickerHandle);
+		_HeartbeatTickerHandle = FTSTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateUObject(this, &{{$Class}}::_OnHeartbeatTick), _HeartbeatIntervalMS / 1000.0f);
+#endif
 	}
 
 {{- range $i, $e := .Interface.Properties }}
@@ -221,6 +226,12 @@ void {{$Class}}::OnConnectionInit(const F{{$Iface}}InitMessage& InMessage, const
 {{- end }}
 
 	_ConnectionStatusChanged.Broadcast(true);
+}
+
+bool {{$Class}}::_OnHeartbeatTick(float /*DeltaTime*/)
+{
+	_OnHeartbeat();
+	return true;
 }
 
 void {{$Class}}::_OnHeartbeat()

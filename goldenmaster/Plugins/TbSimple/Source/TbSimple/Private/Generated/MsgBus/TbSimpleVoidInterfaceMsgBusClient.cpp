@@ -24,7 +24,6 @@ limitations under the License.
 #include "Generated/MsgBus/TbSimpleVoidInterfaceMsgBusMessages.h"
 #include "Async/Async.h"
 #include "Engine/World.h"
-#include "TimerManager.h"
 #include "Misc/DateTime.h"
 #include "GenericPlatform/GenericPlatformMath.h"
 #include "GenericPlatform/GenericPlatformTime.h"
@@ -55,19 +54,25 @@ void UTbSimpleVoidInterfaceMsgBusClient::Deinitialize()
 
 void UTbSimpleVoidInterfaceMsgBusClient::_Connect()
 {
-	if (!_HeartbeatTimerHandle.IsValid() && GetWorld())
+	if (_IsConnected())
+	{
+		UE_LOG(LogTbSimpleVoidInterfaceMsgBusClient, Log, TEXT("Already connected, cannot connect again."));
+		return;
+	}
+
+	if (!_HeartbeatTickerHandle.IsValid())
 	{
 		UTbSimpleSettings* settings = GetMutableDefault<UTbSimpleSettings>();
 		check(settings);
 		_HeartbeatIntervalMS = settings->MsgBusHeartbeatIntervalMS;
 
-		GetWorld()->GetTimerManager().SetTimer(_HeartbeatTimerHandle, this, &UTbSimpleVoidInterfaceMsgBusClient::_OnHeartbeat, _HeartbeatIntervalMS / 1000.0f, true);
-	}
-
-	if (_IsConnected())
-	{
-		UE_LOG(LogTbSimpleVoidInterfaceMsgBusClient, Log, TEXT("Already connected, cannot connect again."));
-		return;
+#if (ENGINE_MAJOR_VERSION < 5)
+		FTicker::GetCoreTicker().RemoveTicker(_HeartbeatTickerHandle);
+		_HeartbeatTickerHandle = FTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateUObject(this, &UTbSimpleVoidInterfaceMsgBusClient::_OnHeartbeatTick), _HeartbeatIntervalMS / 1000.0f);
+#else
+		FTSTicker::GetCoreTicker().RemoveTicker(_HeartbeatTickerHandle);
+		_HeartbeatTickerHandle = FTSTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateUObject(this, &UTbSimpleVoidInterfaceMsgBusClient::_OnHeartbeatTick), _HeartbeatIntervalMS / 1000.0f);
+#endif
 	}
 
 	if (TbSimpleVoidInterfaceMsgBusEndpoint.IsValid() && !ServiceAddress.IsValid())
@@ -91,10 +96,12 @@ void UTbSimpleVoidInterfaceMsgBusClient::_Connect()
 void UTbSimpleVoidInterfaceMsgBusClient::_Disconnect()
 {
 	_LastHbTimestamp = 0.0f;
-	if (_HeartbeatTimerHandle.IsValid() && GetWorld())
-	{
-		GetWorld()->GetTimerManager().ClearTimer(_HeartbeatTimerHandle);
-	}
+
+#if (ENGINE_MAJOR_VERSION < 5)
+	FTicker::GetCoreTicker().RemoveTicker(_HeartbeatTickerHandle);
+#else
+	FTSTicker::GetCoreTicker().RemoveTicker(_HeartbeatTickerHandle);
+#endif
 
 	if (!_IsConnected())
 	{
@@ -155,18 +162,22 @@ void UTbSimpleVoidInterfaceMsgBusClient::OnConnectionInit(const FTbSimpleVoidInt
 	{
 		_HeartbeatIntervalMS = InMessage._ClientPingIntervalMS;
 
-		if (_HeartbeatTimerHandle.IsValid() && GetWorld())
-		{
-			GetWorld()->GetTimerManager().ClearTimer(_HeartbeatTimerHandle);
-		}
-
-		if (!_HeartbeatTimerHandle.IsValid() && GetWorld())
-		{
-			GetWorld()->GetTimerManager().SetTimer(_HeartbeatTimerHandle, this, &UTbSimpleVoidInterfaceMsgBusClient::_OnHeartbeat, _HeartbeatIntervalMS / 1000.0f, true);
-		}
+#if (ENGINE_MAJOR_VERSION < 5)
+		FTicker::GetCoreTicker().RemoveTicker(_HeartbeatTickerHandle);
+		_HeartbeatTickerHandle = FTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateUObject(this, &UTbSimpleVoidInterfaceMsgBusClient::_OnHeartbeatTick), _HeartbeatIntervalMS / 1000.0f);
+#else
+		FTSTicker::GetCoreTicker().RemoveTicker(_HeartbeatTickerHandle);
+		_HeartbeatTickerHandle = FTSTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateUObject(this, &UTbSimpleVoidInterfaceMsgBusClient::_OnHeartbeatTick), _HeartbeatIntervalMS / 1000.0f);
+#endif
 	}
 
 	_ConnectionStatusChanged.Broadcast(true);
+}
+
+bool UTbSimpleVoidInterfaceMsgBusClient::_OnHeartbeatTick(float /*DeltaTime*/)
+{
+	_OnHeartbeat();
+	return true;
 }
 
 void UTbSimpleVoidInterfaceMsgBusClient::_OnHeartbeat()
