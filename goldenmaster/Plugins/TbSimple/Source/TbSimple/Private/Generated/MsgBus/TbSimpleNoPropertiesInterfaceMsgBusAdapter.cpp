@@ -25,7 +25,6 @@ limitations under the License.
 #include "Async/Future.h"
 #include "Async/Async.h"
 #include "Engine/World.h"
-#include "TimerManager.h"
 #include "MessageEndpoint.h"
 #include "MessageEndpointBuilder.h"
 #include "Misc/DateTime.h"
@@ -51,13 +50,17 @@ void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::Deinitialize()
 void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::_StartListening()
 {
 
-	if (!_HeartbeatTimerHandle.IsValid() && GetWorld())
+	if (!_HeartbeatTickerHandle.IsValid())
 	{
 		UTbSimpleSettings* settings = GetMutableDefault<UTbSimpleSettings>();
 		check(settings);
 		_HeartbeatIntervalMS = settings->MsgBusHeartbeatIntervalMS;
 
-		GetWorld()->GetTimerManager().SetTimer(_HeartbeatTimerHandle, this, &UTbSimpleNoPropertiesInterfaceMsgBusAdapter::_CheckClientTimeouts, _HeartbeatIntervalMS / 1000.0f, true);
+#if (ENGINE_MAJOR_VERSION < 5)
+		_HeartbeatTickerHandle = FTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateUObject(this, &UTbSimpleNoPropertiesInterfaceMsgBusAdapter::_CheckClientTimeoutsTick), _HeartbeatIntervalMS / 1000.0f);
+#else
+		_HeartbeatTickerHandle = FTSTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateUObject(this, &UTbSimpleNoPropertiesInterfaceMsgBusAdapter::_CheckClientTimeoutsTick), _HeartbeatIntervalMS / 1000.0f);
+#endif
 	}
 
 	if (TbSimpleNoPropertiesInterfaceMsgBusEndpoint.IsValid())
@@ -97,9 +100,13 @@ void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::_AnnounceService()
 
 void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::_StopListening()
 {
-	if (_HeartbeatTimerHandle.IsValid() && GetWorld())
+	if (_HeartbeatTickerHandle.IsValid())
 	{
-		GetWorld()->GetTimerManager().ClearTimer(_HeartbeatTimerHandle);
+#if (ENGINE_MAJOR_VERSION < 5)
+		FTicker::GetCoreTicker().RemoveTicker(_HeartbeatTickerHandle);
+#else
+		FTSTicker::GetCoreTicker().RemoveTicker(_HeartbeatTickerHandle);
+#endif
 	}
 
 	auto msg = new FTbSimpleNoPropertiesInterfaceServiceDisconnectMessage();
@@ -240,6 +247,12 @@ void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::OnClientDisconnected(const FTb
 	ConnectedClientsTimestamps.Remove(Context->GetSender());
 	_OnClientDisconnected.Broadcast(Context->GetSender().ToString());
 	_UpdateClientsConnected();
+}
+
+bool UTbSimpleNoPropertiesInterfaceMsgBusAdapter::_CheckClientTimeoutsTick(float /*DeltaTime*/)
+{
+	_CheckClientTimeouts();
+	return true;
 }
 
 void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::_CheckClientTimeouts()
