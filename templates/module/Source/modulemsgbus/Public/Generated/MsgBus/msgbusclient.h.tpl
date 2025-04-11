@@ -17,11 +17,7 @@
 #include "HAL/CriticalSection.h"
 #include "Async/Future.h"
 #include "Runtime/Launch/Resources/Version.h"
-#if (ENGINE_MAJOR_VERSION < 5)
-#include "Engine/EngineTypes.h"
-#else
-#include "Engine/TimerHandle.h"
-#endif
+#include "Containers/Ticker.h"
 #include "Templates/PimplPtr.h"
 #include "IMessageContext.h"
 #include "{{$Iface}}MsgBusClient.generated.h"
@@ -133,8 +129,13 @@ private:
 	size_t CurrentPingCounter = 0;
 	float _CalculateAverageRTT() const;
 	F{{$DisplayName}}Stats Stats;
-	FTimerHandle _HeartbeatTimerHandle;
+#if (ENGINE_MAJOR_VERSION < 5)
+	::FDelegateHandle _HeartbeatTickerHandle;
+#else
+	FTSTicker::FDelegateHandle _HeartbeatTickerHandle;
+#endif
 	void _OnHeartbeat();
+	bool _OnHeartbeatTick(float DeltaTime);
 	uint32 _HeartbeatIntervalMS = 100;
 
 	// connection handling
