@@ -98,3 +98,27 @@ ETbEnumEnum3 UTbEnumEnumInterface::Func3_Implementation(ETbEnumEnum3 Param3)
 	// do business logic here
 	return ETbEnumEnum3::TEE3_VALUE3;
 }
+
+void UTbEnumEnumInterface::_ResetProperties()
+{
+	if (Prop0 != ETbEnumEnum0::TEE0_VALUE0)
+	{
+		Prop0 = ETbEnumEnum0::TEE0_VALUE0;
+		Execute__GetSignals(this)->OnProp0Changed.Broadcast(Prop0);
+	}
+	if (Prop1 != ETbEnumEnum1::TEE1_VALUE1)
+	{
+		Prop1 = ETbEnumEnum1::TEE1_VALUE1;
+		Execute__GetSignals(this)->OnProp1Changed.Broadcast(Prop1);
+	}
+	if (Prop2 != ETbEnumEnum2::TEE2_VALUE2)
+	{
+		Prop2 = ETbEnumEnum2::TEE2_VALUE2;
+		Execute__GetSignals(this)->OnProp2Changed.Broadcast(Prop2);
+	}
+	if (Prop3 != ETbEnumEnum3::TEE3_VALUE3)
+	{
+		Prop3 = ETbEnumEnum3::TEE3_VALUE3;
+		Execute__GetSignals(this)->OnProp3Changed.Broadcast(Prop3);
+	}
+}

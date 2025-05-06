@@ -56,3 +56,17 @@ bool UTbSimpleNoSignalsInterface::FuncBool_Implementation(bool bParamBool)
 	// do business logic here
 	return false;
 }
+
+void UTbSimpleNoSignalsInterface::_ResetProperties()
+{
+	if (bPropBool != false)
+	{
+		bPropBool = false;
+		Execute__GetSignals(this)->OnPropBoolChanged.Broadcast(bPropBool);
+	}
+	if (PropInt != 0)
+	{
+		PropInt = 0;
+		Execute__GetSignals(this)->OnPropIntChanged.Broadcast(PropInt);
+	}
+}

@@ -98,3 +98,27 @@ TArray<FCustomTypesVector3D> UCounterCounter::DecrementArray_Implementation(cons
 	// do business logic here
 	return TArray<FCustomTypesVector3D>();
 }
+
+void UCounterCounter::_ResetProperties()
+{
+	if (Vector != FCustomTypesVector3D())
+	{
+		Vector = FCustomTypesVector3D();
+		Execute__GetSignals(this)->OnVectorChanged.Broadcast(Vector);
+	}
+	if (ExternVector != FVector(0.f, 0.f, 0.f))
+	{
+		ExternVector = FVector(0.f, 0.f, 0.f);
+		Execute__GetSignals(this)->OnExternVectorChanged.Broadcast(ExternVector);
+	}
+	if (VectorArray != TArray<FCustomTypesVector3D>())
+	{
+		VectorArray = TArray<FCustomTypesVector3D>();
+		Execute__GetSignals(this)->OnVectorArrayChanged.Broadcast(VectorArray);
+	}
+	if (ExternVectorArray != TArray<FVector>())
+	{
+		ExternVectorArray = TArray<FVector>();
+		Execute__GetSignals(this)->OnExternVectorArrayChanged.Broadcast(ExternVectorArray);
+	}
+}

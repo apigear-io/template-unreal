@@ -55,6 +55,13 @@ public:
 
 	FString GetPropReadOnlyString_Implementation() const override;
 
+	/**
+	 * Resets all properties to the default values.
+	 * Broadcasts property changed delegates if property value change.
+	 */
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Properties")
+	void _ResetProperties();
+
 	// operations
 	TArray<bool> FuncBool_Implementation(const TArray<bool>& ParamBool) override;
 

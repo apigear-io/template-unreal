@@ -38,3 +38,12 @@ FTbSame1Struct1 UTbSame1SameStruct1Interface::Func1_Implementation(const FTbSame
 	// do business logic here
 	return FTbSame1Struct1();
 }
+
+void UTbSame1SameStruct1Interface::_ResetProperties()
+{
+	if (Prop1 != FTbSame1Struct1())
+	{
+		Prop1 = FTbSame1Struct1();
+		Execute__GetSignals(this)->OnProp1Changed.Broadcast(Prop1);
+	}
+}

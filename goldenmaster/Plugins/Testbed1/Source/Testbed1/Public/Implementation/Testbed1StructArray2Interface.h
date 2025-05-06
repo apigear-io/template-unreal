@@ -44,6 +44,13 @@ public:
 	FTestbed1StructEnumWithArray GetPropEnum_Implementation() const override;
 	void SetPropEnum_Implementation(const FTestbed1StructEnumWithArray& PropEnum) override;
 
+	/**
+	 * Resets all properties to the default values.
+	 * Broadcasts property changed delegates if property value change.
+	 */
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArray2Interface|Properties")
+	void _ResetProperties();
+
 	// operations
 	TArray<FTestbed1StructBool> FuncBool_Implementation(const FTestbed1StructBoolWithArray& ParamBool) override;
 

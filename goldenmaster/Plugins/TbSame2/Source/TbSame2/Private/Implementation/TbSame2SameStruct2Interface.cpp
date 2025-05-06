@@ -59,3 +59,17 @@ FTbSame2Struct1 UTbSame2SameStruct2Interface::Func2_Implementation(const FTbSame
 	// do business logic here
 	return FTbSame2Struct1();
 }
+
+void UTbSame2SameStruct2Interface::_ResetProperties()
+{
+	if (Prop1 != FTbSame2Struct2())
+	{
+		Prop1 = FTbSame2Struct2();
+		Execute__GetSignals(this)->OnProp1Changed.Broadcast(Prop1);
+	}
+	if (Prop2 != FTbSame2Struct2())
+	{
+		Prop2 = FTbSame2Struct2();
+		Execute__GetSignals(this)->OnProp2Changed.Broadcast(Prop2);
+	}
+}

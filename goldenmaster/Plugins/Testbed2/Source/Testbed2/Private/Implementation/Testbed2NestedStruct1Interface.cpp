@@ -38,3 +38,12 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct1Interface::Func1_Implementation(con
 	// do business logic here
 	return FTestbed2NestedStruct1();
 }
+
+void UTestbed2NestedStruct1Interface::_ResetProperties()
+{
+	if (Prop1 != FTestbed2NestedStruct1())
+	{
+		Prop1 = FTestbed2NestedStruct1();
+		Execute__GetSignals(this)->OnProp1Changed.Broadcast(Prop1);
+	}
+}

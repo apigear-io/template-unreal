@@ -81,3 +81,22 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct3Interface::Func3_Implementation(con
 	// do business logic here
 	return FTestbed2NestedStruct1();
 }
+
+void UTestbed2NestedStruct3Interface::_ResetProperties()
+{
+	if (Prop1 != FTestbed2NestedStruct1())
+	{
+		Prop1 = FTestbed2NestedStruct1();
+		Execute__GetSignals(this)->OnProp1Changed.Broadcast(Prop1);
+	}
+	if (Prop2 != FTestbed2NestedStruct2())
+	{
+		Prop2 = FTestbed2NestedStruct2();
+		Execute__GetSignals(this)->OnProp2Changed.Broadcast(Prop2);
+	}
+	if (Prop3 != FTestbed2NestedStruct3())
+	{
+		Prop3 = FTestbed2NestedStruct3();
+		Execute__GetSignals(this)->OnProp3Changed.Broadcast(Prop3);
+	}
+}

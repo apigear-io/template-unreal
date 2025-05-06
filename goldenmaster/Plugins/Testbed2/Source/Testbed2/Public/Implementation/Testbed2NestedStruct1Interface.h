@@ -32,6 +32,13 @@ public:
 	FTestbed2NestedStruct1 GetProp1_Implementation() const override;
 	void SetProp1_Implementation(const FTestbed2NestedStruct1& Prop1) override;
 
+	/**
+	 * Resets all properties to the default values.
+	 * Broadcasts property changed delegates if property value change.
+	 */
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct1Interface|Properties")
+	void _ResetProperties();
+
 	// operations
 	FTestbed2NestedStruct1 Func1_Implementation(const FTestbed2NestedStruct1& Param1) override;
 };
