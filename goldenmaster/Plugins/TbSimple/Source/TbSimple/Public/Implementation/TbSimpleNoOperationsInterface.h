@@ -35,5 +35,12 @@ public:
 	int32 GetPropInt_Implementation() const override;
 	void SetPropInt_Implementation(int32 PropInt) override;
 
+	/**
+	 * Resets all properties to the default values.
+	 * Broadcasts property changed delegates if property value change.
+	 */
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoOperationsInterface|Properties")
+	void _ResetProperties();
+
 	// operations
 };

@@ -41,6 +41,13 @@ public:
 	int32 GetProp4_Implementation() const override;
 	void SetProp4_Implementation(int32 Prop4) override;
 
+	/**
+	 * Resets all properties to the default values.
+	 * Broadcasts property changed delegates if property value change.
+	 */
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Properties")
+	void _ResetProperties();
+
 	// operations
 	int32 Func1_Implementation(int32 Param1) override;
 

@@ -53,6 +53,13 @@ public:
 	FString GetPropString_Implementation() const override;
 	void SetPropString_Implementation(const FString& PropString) override;
 
+	/**
+	 * Resets all properties to the default values.
+	 * Broadcasts property changed delegates if property value change.
+	 */
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Properties")
+	void _ResetProperties();
+
 	// operations
 	void FuncNoReturnValue_Implementation(bool bParamBool) override;
 

@@ -82,3 +82,27 @@ void UTbNamesNamEs::SomeFunction2_Implementation(bool bSomeParam)
 	(void)bSomeParam;
 	// do business logic here
 }
+
+void UTbNamesNamEs::_ResetProperties()
+{
+	if (bSwitch != false)
+	{
+		bSwitch = false;
+		Execute__GetSignals(this)->OnSwitchChanged.Broadcast(bSwitch);
+	}
+	if (SomeProperty != 0)
+	{
+		SomeProperty = 0;
+		Execute__GetSignals(this)->OnSomePropertyChanged.Broadcast(SomeProperty);
+	}
+	if (SomePoperty2 != 0)
+	{
+		SomePoperty2 = 0;
+		Execute__GetSignals(this)->OnSomePoperty2Changed.Broadcast(SomePoperty2);
+	}
+	if (EnumProperty != ETbNamesEnum_With_Under_scores::TNEWUS_FIRSTVALUE)
+	{
+		EnumProperty = ETbNamesEnum_With_Under_scores::TNEWUS_FIRSTVALUE;
+		Execute__GetSignals(this)->OnEnumPropertyChanged.Broadcast(EnumProperty);
+	}
+}

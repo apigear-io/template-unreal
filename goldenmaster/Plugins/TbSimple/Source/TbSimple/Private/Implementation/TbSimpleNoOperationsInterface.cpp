@@ -44,3 +44,17 @@ void UTbSimpleNoOperationsInterface::SetPropInt_Implementation(int32 InPropInt)
 		Execute__GetSignals(this)->OnPropIntChanged.Broadcast(PropInt);
 	}
 }
+
+void UTbSimpleNoOperationsInterface::_ResetProperties()
+{
+	if (bPropBool != false)
+	{
+		bPropBool = false;
+		Execute__GetSignals(this)->OnPropBoolChanged.Broadcast(bPropBool);
+	}
+	if (PropInt != 0)
+	{
+		PropInt = 0;
+		Execute__GetSignals(this)->OnPropIntChanged.Broadcast(PropInt);
+	}
+}

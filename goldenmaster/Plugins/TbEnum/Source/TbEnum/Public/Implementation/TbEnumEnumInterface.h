@@ -41,6 +41,13 @@ public:
 	ETbEnumEnum3 GetProp3_Implementation() const override;
 	void SetProp3_Implementation(ETbEnumEnum3 Prop3) override;
 
+	/**
+	 * Resets all properties to the default values.
+	 * Broadcasts property changed delegates if property value change.
+	 */
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface|Properties")
+	void _ResetProperties();
+
 	// operations
 	ETbEnumEnum0 Func0_Implementation(ETbEnumEnum0 Param0) override;
 

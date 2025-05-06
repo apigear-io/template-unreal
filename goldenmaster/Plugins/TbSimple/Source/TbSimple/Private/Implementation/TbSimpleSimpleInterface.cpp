@@ -184,3 +184,47 @@ FString UTbSimpleSimpleInterface::FuncString_Implementation(const FString& Param
 	// do business logic here
 	return FString();
 }
+
+void UTbSimpleSimpleInterface::_ResetProperties()
+{
+	if (bPropBool != false)
+	{
+		bPropBool = false;
+		Execute__GetSignals(this)->OnPropBoolChanged.Broadcast(bPropBool);
+	}
+	if (PropInt != 0)
+	{
+		PropInt = 0;
+		Execute__GetSignals(this)->OnPropIntChanged.Broadcast(PropInt);
+	}
+	if (PropInt32 != 0)
+	{
+		PropInt32 = 0;
+		Execute__GetSignals(this)->OnPropInt32Changed.Broadcast(PropInt32);
+	}
+	if (PropInt64 != 0LL)
+	{
+		PropInt64 = 0LL;
+		Execute__GetSignals(this)->OnPropInt64Changed.Broadcast(PropInt64);
+	}
+	if (PropFloat != 0.0f)
+	{
+		PropFloat = 0.0f;
+		Execute__GetSignals(this)->OnPropFloatChanged.Broadcast(PropFloat);
+	}
+	if (PropFloat32 != 0.0f)
+	{
+		PropFloat32 = 0.0f;
+		Execute__GetSignals(this)->OnPropFloat32Changed.Broadcast(PropFloat32);
+	}
+	if (PropFloat64 != 0.0)
+	{
+		PropFloat64 = 0.0;
+		Execute__GetSignals(this)->OnPropFloat64Changed.Broadcast(PropFloat64);
+	}
+	if (PropString != FString())
+	{
+		PropString = FString();
+		Execute__GetSignals(this)->OnPropStringChanged.Broadcast(PropString);
+	}
+}

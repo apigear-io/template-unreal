@@ -118,3 +118,32 @@ TArray<ETestbed1Enum0> UTestbed1StructArrayInterface::FuncEnum_Implementation(co
 	// do business logic here
 	return TArray<ETestbed1Enum0>();
 }
+
+void UTestbed1StructArrayInterface::_ResetProperties()
+{
+	if (PropBool != TArray<FTestbed1StructBool>())
+	{
+		PropBool = TArray<FTestbed1StructBool>();
+		Execute__GetSignals(this)->OnPropBoolChanged.Broadcast(PropBool);
+	}
+	if (PropInt != TArray<FTestbed1StructInt>())
+	{
+		PropInt = TArray<FTestbed1StructInt>();
+		Execute__GetSignals(this)->OnPropIntChanged.Broadcast(PropInt);
+	}
+	if (PropFloat != TArray<FTestbed1StructFloat>())
+	{
+		PropFloat = TArray<FTestbed1StructFloat>();
+		Execute__GetSignals(this)->OnPropFloatChanged.Broadcast(PropFloat);
+	}
+	if (PropString != TArray<FTestbed1StructString>())
+	{
+		PropString = TArray<FTestbed1StructString>();
+		Execute__GetSignals(this)->OnPropStringChanged.Broadcast(PropString);
+	}
+	if (PropEnum != TArray<ETestbed1Enum0>())
+	{
+		PropEnum = TArray<ETestbed1Enum0>();
+		Execute__GetSignals(this)->OnPropEnumChanged.Broadcast(PropEnum);
+	}
+}

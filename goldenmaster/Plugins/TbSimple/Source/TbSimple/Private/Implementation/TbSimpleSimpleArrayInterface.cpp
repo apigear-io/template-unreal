@@ -182,3 +182,52 @@ TArray<FString> UTbSimpleSimpleArrayInterface::FuncString_Implementation(const T
 	// do business logic here
 	return TArray<FString>();
 }
+
+void UTbSimpleSimpleArrayInterface::_ResetProperties()
+{
+	if (PropBool != TArray<bool>())
+	{
+		PropBool = TArray<bool>();
+		Execute__GetSignals(this)->OnPropBoolChanged.Broadcast(PropBool);
+	}
+	if (PropInt != TArray<int32>())
+	{
+		PropInt = TArray<int32>();
+		Execute__GetSignals(this)->OnPropIntChanged.Broadcast(PropInt);
+	}
+	if (PropInt32 != TArray<int32>())
+	{
+		PropInt32 = TArray<int32>();
+		Execute__GetSignals(this)->OnPropInt32Changed.Broadcast(PropInt32);
+	}
+	if (PropInt64 != TArray<int64>())
+	{
+		PropInt64 = TArray<int64>();
+		Execute__GetSignals(this)->OnPropInt64Changed.Broadcast(PropInt64);
+	}
+	if (PropFloat != TArray<float>())
+	{
+		PropFloat = TArray<float>();
+		Execute__GetSignals(this)->OnPropFloatChanged.Broadcast(PropFloat);
+	}
+	if (PropFloat32 != TArray<float>())
+	{
+		PropFloat32 = TArray<float>();
+		Execute__GetSignals(this)->OnPropFloat32Changed.Broadcast(PropFloat32);
+	}
+	if (PropFloat64 != TArray<double>())
+	{
+		PropFloat64 = TArray<double>();
+		Execute__GetSignals(this)->OnPropFloat64Changed.Broadcast(PropFloat64);
+	}
+	if (PropString != TArray<FString>())
+	{
+		PropString = TArray<FString>();
+		Execute__GetSignals(this)->OnPropStringChanged.Broadcast(PropString);
+	}
+	if (PropReadOnlyString != FString())
+	{
+		PropReadOnlyString = FString();
+		Execute__GetSignals(this)->OnPropReadOnlyStringChanged.Broadcast(PropReadOnlyString);
+	}
+}

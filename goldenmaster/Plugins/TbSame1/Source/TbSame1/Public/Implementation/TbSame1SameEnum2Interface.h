@@ -35,6 +35,13 @@ public:
 	ETbSame1Enum2 GetProp2_Implementation() const override;
 	void SetProp2_Implementation(ETbSame1Enum2 Prop2) override;
 
+	/**
+	 * Resets all properties to the default values.
+	 * Broadcasts property changed delegates if property value change.
+	 */
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1|SameEnum2Interface|Properties")
+	void _ResetProperties();
+
 	// operations
 	ETbSame1Enum1 Func1_Implementation(ETbSame1Enum1 Param1) override;
 
