@@ -98,3 +98,27 @@ FTestbed1StructString UTestbed1StructInterface::FuncString(const FTestbed1Struct
 	// do business logic here
 	return FTestbed1StructString();
 }
+
+void UTestbed1StructInterface::_ResetProperties()
+{
+	if (PropBool != FTestbed1StructBool())
+	{
+		PropBool = FTestbed1StructBool();
+		_GetSignals()->BroadcastPropBoolChanged(PropBool);
+	}
+	if (PropInt != FTestbed1StructInt())
+	{
+		PropInt = FTestbed1StructInt();
+		_GetSignals()->BroadcastPropIntChanged(PropInt);
+	}
+	if (PropFloat != FTestbed1StructFloat())
+	{
+		PropFloat = FTestbed1StructFloat();
+		_GetSignals()->BroadcastPropFloatChanged(PropFloat);
+	}
+	if (PropString != FTestbed1StructString())
+	{
+		PropString = FTestbed1StructString();
+		_GetSignals()->BroadcastPropStringChanged(PropString);
+	}
+}

@@ -41,6 +41,13 @@ public:
 	FTestbed1StructString GetPropString() const override;
 	void SetPropString(const FTestbed1StructString& PropString) override;
 
+	/**
+	 * Resets all properties to the default values.
+	 * Broadcasts property changed delegates if property value change.
+	 */
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface|Properties")
+	void _ResetProperties();
+
 	// operations
 	FTestbed1StructBool FuncBool(const FTestbed1StructBool& ParamBool) override;
 

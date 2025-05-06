@@ -184,3 +184,47 @@ FString UTbSimpleSimpleInterface::FuncString(const FString& ParamString)
 	// do business logic here
 	return FString();
 }
+
+void UTbSimpleSimpleInterface::_ResetProperties()
+{
+	if (bPropBool != false)
+	{
+		bPropBool = false;
+		_GetSignals()->BroadcastPropBoolChanged(bPropBool);
+	}
+	if (PropInt != 0)
+	{
+		PropInt = 0;
+		_GetSignals()->BroadcastPropIntChanged(PropInt);
+	}
+	if (PropInt32 != 0)
+	{
+		PropInt32 = 0;
+		_GetSignals()->BroadcastPropInt32Changed(PropInt32);
+	}
+	if (PropInt64 != 0LL)
+	{
+		PropInt64 = 0LL;
+		_GetSignals()->BroadcastPropInt64Changed(PropInt64);
+	}
+	if (PropFloat != 0.0f)
+	{
+		PropFloat = 0.0f;
+		_GetSignals()->BroadcastPropFloatChanged(PropFloat);
+	}
+	if (PropFloat32 != 0.0f)
+	{
+		PropFloat32 = 0.0f;
+		_GetSignals()->BroadcastPropFloat32Changed(PropFloat32);
+	}
+	if (PropFloat64 != 0.0)
+	{
+		PropFloat64 = 0.0;
+		_GetSignals()->BroadcastPropFloat64Changed(PropFloat64);
+	}
+	if (PropString != FString())
+	{
+		PropString = FString();
+		_GetSignals()->BroadcastPropStringChanged(PropString);
+	}
+}

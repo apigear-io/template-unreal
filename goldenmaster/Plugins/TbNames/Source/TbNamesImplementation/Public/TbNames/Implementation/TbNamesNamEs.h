@@ -41,6 +41,13 @@ public:
 	ETbNamesEnum_With_Under_scores GetEnumProperty() const override;
 	void SetEnumProperty(ETbNamesEnum_With_Under_scores EnumProperty) override;
 
+	/**
+	 * Resets all properties to the default values.
+	 * Broadcasts property changed delegates if property value change.
+	 */
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Properties")
+	void _ResetProperties();
+
 	// operations
 	void SomeFunction(bool bSomeParam) override;
 

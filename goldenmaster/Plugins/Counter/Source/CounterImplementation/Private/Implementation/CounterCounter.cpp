@@ -98,3 +98,27 @@ TArray<FCustomTypesVector3D> UCounterCounter::DecrementArray(const TArray<FCusto
 	// do business logic here
 	return TArray<FCustomTypesVector3D>();
 }
+
+void UCounterCounter::_ResetProperties()
+{
+	if (Vector != FCustomTypesVector3D())
+	{
+		Vector = FCustomTypesVector3D();
+		_GetSignals()->BroadcastVectorChanged(Vector);
+	}
+	if (ExternVector != FVector(0.f, 0.f, 0.f))
+	{
+		ExternVector = FVector(0.f, 0.f, 0.f);
+		_GetSignals()->BroadcastExternVectorChanged(ExternVector);
+	}
+	if (VectorArray != TArray<FCustomTypesVector3D>())
+	{
+		VectorArray = TArray<FCustomTypesVector3D>();
+		_GetSignals()->BroadcastVectorArrayChanged(VectorArray);
+	}
+	if (ExternVectorArray != TArray<FVector>())
+	{
+		ExternVectorArray = TArray<FVector>();
+		_GetSignals()->BroadcastExternVectorArrayChanged(ExternVectorArray);
+	}
+}

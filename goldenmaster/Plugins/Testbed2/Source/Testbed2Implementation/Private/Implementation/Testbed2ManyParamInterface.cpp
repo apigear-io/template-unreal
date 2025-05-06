@@ -104,3 +104,27 @@ int32 UTestbed2ManyParamInterface::Func4(int32 Param1, int32 Param2, int32 Param
 	// do business logic here
 	return 0;
 }
+
+void UTestbed2ManyParamInterface::_ResetProperties()
+{
+	if (Prop1 != 0)
+	{
+		Prop1 = 0;
+		_GetSignals()->BroadcastProp1Changed(Prop1);
+	}
+	if (Prop2 != 0)
+	{
+		Prop2 = 0;
+		_GetSignals()->BroadcastProp2Changed(Prop2);
+	}
+	if (Prop3 != 0)
+	{
+		Prop3 = 0;
+		_GetSignals()->BroadcastProp3Changed(Prop3);
+	}
+	if (Prop4 != 0)
+	{
+		Prop4 = 0;
+		_GetSignals()->BroadcastProp4Changed(Prop4);
+	}
+}

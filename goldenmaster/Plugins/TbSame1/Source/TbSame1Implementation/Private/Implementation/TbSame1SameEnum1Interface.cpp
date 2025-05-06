@@ -38,3 +38,12 @@ ETbSame1Enum1 UTbSame1SameEnum1Interface::Func1(ETbSame1Enum1 Param1)
 	// do business logic here
 	return ETbSame1Enum1::TS1E1_VALUE1;
 }
+
+void UTbSame1SameEnum1Interface::_ResetProperties()
+{
+	if (Prop1 != ETbSame1Enum1::TS1E1_VALUE1)
+	{
+		Prop1 = ETbSame1Enum1::TS1E1_VALUE1;
+		_GetSignals()->BroadcastProp1Changed(Prop1);
+	}
+}

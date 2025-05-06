@@ -43,6 +43,14 @@ public:
 	void Set{{Camel .Name}}({{ueParam "" .}}) override;
 {{- end}}
 {{ end }}
+{{- if len .Interface.Properties }}
+	/**
+	 * Resets all properties to the default values.
+	 * Broadcasts property changed delegates if property value change.
+	 */
+	UFUNCTION(BlueprintCallable, Category = "{{$Category}}|Properties")
+	void _ResetProperties();
+{{ end }}
 	// operations
 {{- range $i, $e := .Interface.Operations }}
 {{- if ne $i 0 }}{{nl}}{{ end }}

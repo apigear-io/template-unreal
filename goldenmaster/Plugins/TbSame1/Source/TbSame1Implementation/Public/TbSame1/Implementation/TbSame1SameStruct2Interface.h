@@ -35,6 +35,13 @@ public:
 	FTbSame1Struct2 GetProp2() const override;
 	void SetProp2(const FTbSame1Struct2& Prop2) override;
 
+	/**
+	 * Resets all properties to the default values.
+	 * Broadcasts property changed delegates if property value change.
+	 */
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1|SameStruct2Interface|Properties")
+	void _ResetProperties();
+
 	// operations
 	FTbSame1Struct1 Func1(const FTbSame1Struct1& Param1) override;
 

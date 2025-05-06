@@ -38,3 +38,12 @@ FTbSame2Struct1 UTbSame2SameStruct1Interface::Func1(const FTbSame2Struct1& Param
 	// do business logic here
 	return FTbSame2Struct1();
 }
+
+void UTbSame2SameStruct1Interface::_ResetProperties()
+{
+	if (Prop1 != FTbSame2Struct1())
+	{
+		Prop1 = FTbSame2Struct1();
+		_GetSignals()->BroadcastProp1Changed(Prop1);
+	}
+}

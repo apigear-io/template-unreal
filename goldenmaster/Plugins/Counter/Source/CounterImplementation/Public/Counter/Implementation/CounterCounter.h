@@ -41,6 +41,13 @@ public:
 	TArray<FVector> GetExternVectorArray() const override;
 	void SetExternVectorArray(const TArray<FVector>& ExternVectorArray) override;
 
+	/**
+	 * Resets all properties to the default values.
+	 * Broadcasts property changed delegates if property value change.
+	 */
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Properties")
+	void _ResetProperties();
+
 	// operations
 	FVector Increment(const FVector& Vec) override;
 

@@ -46,3 +46,17 @@ void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
 }
 {{- else }}
 {{- end }}
+
+{{- if len .Interface.Properties }}
+
+void {{$Class}}::_ResetProperties()
+{
+	{{- range .Interface.Properties }}
+	if ({{ueVar "" .}} != {{ueDefault "" .}})
+	{
+		{{ueVar "" .}} = {{ueDefault "" .}};
+		_GetSignals()->Broadcast{{Camel .Name}}Changed({{ueVar "" .}});
+	}
+	{{- end }}
+}
+{{- end }}
