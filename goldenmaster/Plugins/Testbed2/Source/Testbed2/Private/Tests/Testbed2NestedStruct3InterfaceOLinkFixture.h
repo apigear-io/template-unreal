@@ -27,12 +27,24 @@ public:
 
 	UFUNCTION()
 	void Prop1PropertyCb(const FTestbed2NestedStruct1& Prop1);
+	UFUNCTION()
+	void Prop1PropertyChangeLocalCheckRemoteCb(const FTestbed2NestedStruct1& Prop1);
+	UFUNCTION()
+	void Prop1PropertyChangeLocalChangeRemoteCb(const FTestbed2NestedStruct1& Prop1);
 
 	UFUNCTION()
 	void Prop2PropertyCb(const FTestbed2NestedStruct2& Prop2);
+	UFUNCTION()
+	void Prop2PropertyChangeLocalCheckRemoteCb(const FTestbed2NestedStruct2& Prop2);
+	UFUNCTION()
+	void Prop2PropertyChangeLocalChangeRemoteCb(const FTestbed2NestedStruct2& Prop2);
 
 	UFUNCTION()
 	void Prop3PropertyCb(const FTestbed2NestedStruct3& Prop3);
+	UFUNCTION()
+	void Prop3PropertyChangeLocalCheckRemoteCb(const FTestbed2NestedStruct3& Prop3);
+	UFUNCTION()
+	void Prop3PropertyChangeLocalChangeRemoteCb(const FTestbed2NestedStruct3& Prop3);
 
 	UFUNCTION()
 	void Sig1SignalCb(const FTestbed2NestedStruct1& Param1);

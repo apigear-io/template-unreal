@@ -424,6 +424,11 @@ void UTestbed1StructInterfaceOLinkClient::applyState(const nlohmann::json& field
 	if (bPropBoolChanged)
 	{
 		PropBool = fields["propBool"].get<FTestbed1StructBool>();
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->PropBoolMutex));
+			_SentData->PropBool = PropBool;
+		}
 		Execute__GetSignals(this)->OnPropBoolChanged.Broadcast(PropBool);
 	}
 
@@ -431,6 +436,11 @@ void UTestbed1StructInterfaceOLinkClient::applyState(const nlohmann::json& field
 	if (bPropIntChanged)
 	{
 		PropInt = fields["propInt"].get<FTestbed1StructInt>();
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->PropIntMutex));
+			_SentData->PropInt = PropInt;
+		}
 		Execute__GetSignals(this)->OnPropIntChanged.Broadcast(PropInt);
 	}
 
@@ -438,6 +448,11 @@ void UTestbed1StructInterfaceOLinkClient::applyState(const nlohmann::json& field
 	if (bPropFloatChanged)
 	{
 		PropFloat = fields["propFloat"].get<FTestbed1StructFloat>();
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->PropFloatMutex));
+			_SentData->PropFloat = PropFloat;
+		}
 		Execute__GetSignals(this)->OnPropFloatChanged.Broadcast(PropFloat);
 	}
 
@@ -445,6 +460,11 @@ void UTestbed1StructInterfaceOLinkClient::applyState(const nlohmann::json& field
 	if (bPropStringChanged)
 	{
 		PropString = fields["propString"].get<FTestbed1StructString>();
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->PropStringMutex));
+			_SentData->PropString = PropString;
+		}
 		Execute__GetSignals(this)->OnPropStringChanged.Broadcast(PropString);
 	}
 }

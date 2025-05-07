@@ -306,6 +306,8 @@ void UTbNamesNamEsOLinkClient::applyState(const nlohmann::json& fields)
 	if (bSwitchChanged)
 	{
 		bSwitch = fields["Switch"].get<bool>();
+		// reset sent data to the current state
+		_SentData->bSwitch = bSwitch;
 		Execute__GetSignals(this)->OnSwitchChanged.Broadcast(bSwitch);
 	}
 
@@ -313,6 +315,8 @@ void UTbNamesNamEsOLinkClient::applyState(const nlohmann::json& fields)
 	if (bSomePropertyChanged)
 	{
 		SomeProperty = fields["SOME_PROPERTY"].get<int32>();
+		// reset sent data to the current state
+		_SentData->SomeProperty = SomeProperty;
 		Execute__GetSignals(this)->OnSomePropertyChanged.Broadcast(SomeProperty);
 	}
 
@@ -320,6 +324,8 @@ void UTbNamesNamEsOLinkClient::applyState(const nlohmann::json& fields)
 	if (bSomePoperty2Changed)
 	{
 		SomePoperty2 = fields["Some_Poperty2"].get<int32>();
+		// reset sent data to the current state
+		_SentData->SomePoperty2 = SomePoperty2;
 		Execute__GetSignals(this)->OnSomePoperty2Changed.Broadcast(SomePoperty2);
 	}
 
@@ -327,6 +333,8 @@ void UTbNamesNamEsOLinkClient::applyState(const nlohmann::json& fields)
 	if (bEnumPropertyChanged)
 	{
 		EnumProperty = fields["enum_property"].get<ETbNamesEnum_With_Under_scores>();
+		// reset sent data to the current state
+		_SentData->EnumProperty = EnumProperty;
 		Execute__GetSignals(this)->OnEnumPropertyChanged.Broadcast(EnumProperty);
 	}
 }

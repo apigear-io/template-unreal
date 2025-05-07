@@ -35,9 +35,41 @@ void UTestbed2NestedStruct2InterfaceOLinkHelper::Prop1PropertyCb(const FTestbed2
 	Spec->Prop1PropertyCb(Prop1);
 }
 
+void UTestbed2NestedStruct2InterfaceOLinkHelper::Prop1PropertyChangeLocalCheckRemoteCb(const FTestbed2NestedStruct1& Prop1)
+{
+	if (Spec)
+	{
+		Spec->Prop1PropertyChangeLocalCheckRemoteCb(Prop1);
+	}
+}
+
+void UTestbed2NestedStruct2InterfaceOLinkHelper::Prop1PropertyChangeLocalChangeRemoteCb(const FTestbed2NestedStruct1& Prop1)
+{
+	if (Spec)
+	{
+		Spec->Prop1PropertyChangeLocalChangeRemoteCb(Prop1);
+	}
+}
+
 void UTestbed2NestedStruct2InterfaceOLinkHelper::Prop2PropertyCb(const FTestbed2NestedStruct2& Prop2)
 {
 	Spec->Prop2PropertyCb(Prop2);
+}
+
+void UTestbed2NestedStruct2InterfaceOLinkHelper::Prop2PropertyChangeLocalCheckRemoteCb(const FTestbed2NestedStruct2& Prop2)
+{
+	if (Spec)
+	{
+		Spec->Prop2PropertyChangeLocalCheckRemoteCb(Prop2);
+	}
+}
+
+void UTestbed2NestedStruct2InterfaceOLinkHelper::Prop2PropertyChangeLocalChangeRemoteCb(const FTestbed2NestedStruct2& Prop2)
+{
+	if (Spec)
+	{
+		Spec->Prop2PropertyChangeLocalChangeRemoteCb(Prop2);
+	}
 }
 
 void UTestbed2NestedStruct2InterfaceOLinkHelper::Sig1SignalCb(const FTestbed2NestedStruct1& Param1)

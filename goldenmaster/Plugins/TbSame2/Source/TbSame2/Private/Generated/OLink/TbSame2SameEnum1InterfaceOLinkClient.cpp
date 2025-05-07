@@ -221,6 +221,8 @@ void UTbSame2SameEnum1InterfaceOLinkClient::applyState(const nlohmann::json& fie
 	if (bProp1Changed)
 	{
 		Prop1 = fields["prop1"].get<ETbSame2Enum1>();
+		// reset sent data to the current state
+		_SentData->Prop1 = Prop1;
 		Execute__GetSignals(this)->OnProp1Changed.Broadcast(Prop1);
 	}
 }

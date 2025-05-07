@@ -27,6 +27,10 @@ public:
 
 	UFUNCTION()
 	void Prop1PropertyCb(const FTbSame1Struct1& Prop1);
+	UFUNCTION()
+	void Prop1PropertyChangeLocalCheckRemoteCb(const FTbSame1Struct1& Prop1);
+	UFUNCTION()
+	void Prop1PropertyChangeLocalChangeRemoteCb(const FTbSame1Struct1& Prop1);
 
 	UFUNCTION()
 	void Sig1SignalCb(const FTbSame1Struct1& Param1);

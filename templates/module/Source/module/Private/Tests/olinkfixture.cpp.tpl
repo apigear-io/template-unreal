@@ -27,6 +27,22 @@ void {{$Class}}OLinkHelper::{{ Camel .Name }}PropertyCb({{ueParam "" .}})
 {
 	Spec->{{ Camel .Name }}PropertyCb({{ueVar "" .}});
 }
+
+void {{$Class}}OLinkHelper::{{ Camel .Name }}PropertyChangeLocalCheckRemoteCb({{ueParam "" .}})
+{
+	if (Spec)
+	{
+		Spec->{{ Camel .Name }}PropertyChangeLocalCheckRemoteCb({{ueVar "" .}});
+	}
+}
+
+void {{$Class}}OLinkHelper::{{ Camel .Name }}PropertyChangeLocalChangeRemoteCb({{ueParam "" .}})
+{
+	if (Spec)
+	{
+		Spec->{{ Camel .Name }}PropertyChangeLocalChangeRemoteCb({{ueVar "" .}});
+	}
+}
 {{- end }}
 {{- end }}
 

@@ -35,9 +35,41 @@ void UCounterCounterOLinkHelper::VectorPropertyCb(const FCustomTypesVector3D& Ve
 	Spec->VectorPropertyCb(Vector);
 }
 
+void UCounterCounterOLinkHelper::VectorPropertyChangeLocalCheckRemoteCb(const FCustomTypesVector3D& Vector)
+{
+	if (Spec)
+	{
+		Spec->VectorPropertyChangeLocalCheckRemoteCb(Vector);
+	}
+}
+
+void UCounterCounterOLinkHelper::VectorPropertyChangeLocalChangeRemoteCb(const FCustomTypesVector3D& Vector)
+{
+	if (Spec)
+	{
+		Spec->VectorPropertyChangeLocalChangeRemoteCb(Vector);
+	}
+}
+
 void UCounterCounterOLinkHelper::VectorArrayPropertyCb(const TArray<FCustomTypesVector3D>& VectorArray)
 {
 	Spec->VectorArrayPropertyCb(VectorArray);
+}
+
+void UCounterCounterOLinkHelper::VectorArrayPropertyChangeLocalCheckRemoteCb(const TArray<FCustomTypesVector3D>& VectorArray)
+{
+	if (Spec)
+	{
+		Spec->VectorArrayPropertyChangeLocalCheckRemoteCb(VectorArray);
+	}
+}
+
+void UCounterCounterOLinkHelper::VectorArrayPropertyChangeLocalChangeRemoteCb(const TArray<FCustomTypesVector3D>& VectorArray)
+{
+	if (Spec)
+	{
+		Spec->VectorArrayPropertyChangeLocalChangeRemoteCb(VectorArray);
+	}
 }
 
 void UCounterCounterOLinkHelper::ValueChangedSignalCb(const FCustomTypesVector3D& Vector, const FVector& ExternVector, const TArray<FCustomTypesVector3D>& VectorArray, const TArray<FVector>& ExternVectorArray)

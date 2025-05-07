@@ -450,6 +450,11 @@ void UTestbed1StructArrayInterfaceOLinkClient::applyState(const nlohmann::json& 
 	if (bPropBoolChanged)
 	{
 		PropBool = fields["propBool"].get<TArray<FTestbed1StructBool>>();
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->PropBoolMutex));
+			_SentData->PropBool = PropBool;
+		}
 		Execute__GetSignals(this)->OnPropBoolChanged.Broadcast(PropBool);
 	}
 
@@ -457,6 +462,11 @@ void UTestbed1StructArrayInterfaceOLinkClient::applyState(const nlohmann::json& 
 	if (bPropIntChanged)
 	{
 		PropInt = fields["propInt"].get<TArray<FTestbed1StructInt>>();
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->PropIntMutex));
+			_SentData->PropInt = PropInt;
+		}
 		Execute__GetSignals(this)->OnPropIntChanged.Broadcast(PropInt);
 	}
 
@@ -464,6 +474,11 @@ void UTestbed1StructArrayInterfaceOLinkClient::applyState(const nlohmann::json& 
 	if (bPropFloatChanged)
 	{
 		PropFloat = fields["propFloat"].get<TArray<FTestbed1StructFloat>>();
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->PropFloatMutex));
+			_SentData->PropFloat = PropFloat;
+		}
 		Execute__GetSignals(this)->OnPropFloatChanged.Broadcast(PropFloat);
 	}
 
@@ -471,6 +486,11 @@ void UTestbed1StructArrayInterfaceOLinkClient::applyState(const nlohmann::json& 
 	if (bPropStringChanged)
 	{
 		PropString = fields["propString"].get<TArray<FTestbed1StructString>>();
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->PropStringMutex));
+			_SentData->PropString = PropString;
+		}
 		Execute__GetSignals(this)->OnPropStringChanged.Broadcast(PropString);
 	}
 
@@ -478,6 +498,11 @@ void UTestbed1StructArrayInterfaceOLinkClient::applyState(const nlohmann::json& 
 	if (bPropEnumChanged)
 	{
 		PropEnum = fields["propEnum"].get<TArray<ETestbed1Enum0>>();
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->PropEnumMutex));
+			_SentData->PropEnum = PropEnum;
+		}
 		Execute__GetSignals(this)->OnPropEnumChanged.Broadcast(PropEnum);
 	}
 }

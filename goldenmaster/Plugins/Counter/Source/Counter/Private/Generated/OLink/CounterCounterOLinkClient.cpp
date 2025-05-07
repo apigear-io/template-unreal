@@ -410,6 +410,11 @@ void UCounterCounterOLinkClient::applyState(const nlohmann::json& fields)
 	if (bVectorChanged)
 	{
 		Vector = fields["vector"].get<FCustomTypesVector3D>();
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->VectorMutex));
+			_SentData->Vector = Vector;
+		}
 		Execute__GetSignals(this)->OnVectorChanged.Broadcast(Vector);
 	}
 
@@ -417,6 +422,11 @@ void UCounterCounterOLinkClient::applyState(const nlohmann::json& fields)
 	if (bExternVectorChanged)
 	{
 		ExternVector = fields["extern_vector"].get<FVector>();
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->ExternVectorMutex));
+			_SentData->ExternVector = ExternVector;
+		}
 		Execute__GetSignals(this)->OnExternVectorChanged.Broadcast(ExternVector);
 	}
 
@@ -424,6 +434,11 @@ void UCounterCounterOLinkClient::applyState(const nlohmann::json& fields)
 	if (bVectorArrayChanged)
 	{
 		VectorArray = fields["vectorArray"].get<TArray<FCustomTypesVector3D>>();
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->VectorArrayMutex));
+			_SentData->VectorArray = VectorArray;
+		}
 		Execute__GetSignals(this)->OnVectorArrayChanged.Broadcast(VectorArray);
 	}
 
@@ -431,6 +446,11 @@ void UCounterCounterOLinkClient::applyState(const nlohmann::json& fields)
 	if (bExternVectorArrayChanged)
 	{
 		ExternVectorArray = fields["extern_vectorArray"].get<TArray<FVector>>();
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->ExternVectorArrayMutex));
+			_SentData->ExternVectorArray = ExternVectorArray;
+		}
 		Execute__GetSignals(this)->OnExternVectorArrayChanged.Broadcast(ExternVectorArray);
 	}
 }

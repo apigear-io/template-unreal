@@ -35,9 +35,41 @@ void UTbNamesNamEsOLinkHelper::SwitchPropertyCb(bool bSwitch)
 	Spec->SwitchPropertyCb(bSwitch);
 }
 
+void UTbNamesNamEsOLinkHelper::SwitchPropertyChangeLocalCheckRemoteCb(bool bSwitch)
+{
+	if (Spec)
+	{
+		Spec->SwitchPropertyChangeLocalCheckRemoteCb(bSwitch);
+	}
+}
+
+void UTbNamesNamEsOLinkHelper::SwitchPropertyChangeLocalChangeRemoteCb(bool bSwitch)
+{
+	if (Spec)
+	{
+		Spec->SwitchPropertyChangeLocalChangeRemoteCb(bSwitch);
+	}
+}
+
 void UTbNamesNamEsOLinkHelper::SomePropertyPropertyCb(int32 SomeProperty)
 {
 	Spec->SomePropertyPropertyCb(SomeProperty);
+}
+
+void UTbNamesNamEsOLinkHelper::SomePropertyPropertyChangeLocalCheckRemoteCb(int32 SomeProperty)
+{
+	if (Spec)
+	{
+		Spec->SomePropertyPropertyChangeLocalCheckRemoteCb(SomeProperty);
+	}
+}
+
+void UTbNamesNamEsOLinkHelper::SomePropertyPropertyChangeLocalChangeRemoteCb(int32 SomeProperty)
+{
+	if (Spec)
+	{
+		Spec->SomePropertyPropertyChangeLocalChangeRemoteCb(SomeProperty);
+	}
 }
 
 void UTbNamesNamEsOLinkHelper::SomePoperty2PropertyCb(int32 SomePoperty2)
@@ -45,9 +77,41 @@ void UTbNamesNamEsOLinkHelper::SomePoperty2PropertyCb(int32 SomePoperty2)
 	Spec->SomePoperty2PropertyCb(SomePoperty2);
 }
 
+void UTbNamesNamEsOLinkHelper::SomePoperty2PropertyChangeLocalCheckRemoteCb(int32 SomePoperty2)
+{
+	if (Spec)
+	{
+		Spec->SomePoperty2PropertyChangeLocalCheckRemoteCb(SomePoperty2);
+	}
+}
+
+void UTbNamesNamEsOLinkHelper::SomePoperty2PropertyChangeLocalChangeRemoteCb(int32 SomePoperty2)
+{
+	if (Spec)
+	{
+		Spec->SomePoperty2PropertyChangeLocalChangeRemoteCb(SomePoperty2);
+	}
+}
+
 void UTbNamesNamEsOLinkHelper::EnumPropertyPropertyCb(ETbNamesEnum_With_Under_scores EnumProperty)
 {
 	Spec->EnumPropertyPropertyCb(EnumProperty);
+}
+
+void UTbNamesNamEsOLinkHelper::EnumPropertyPropertyChangeLocalCheckRemoteCb(ETbNamesEnum_With_Under_scores EnumProperty)
+{
+	if (Spec)
+	{
+		Spec->EnumPropertyPropertyChangeLocalCheckRemoteCb(EnumProperty);
+	}
+}
+
+void UTbNamesNamEsOLinkHelper::EnumPropertyPropertyChangeLocalChangeRemoteCb(ETbNamesEnum_With_Under_scores EnumProperty)
+{
+	if (Spec)
+	{
+		Spec->EnumPropertyPropertyChangeLocalChangeRemoteCb(EnumProperty);
+	}
 }
 
 void UTbNamesNamEsOLinkHelper::SomeSignalSignalCb(bool bSomeParam)

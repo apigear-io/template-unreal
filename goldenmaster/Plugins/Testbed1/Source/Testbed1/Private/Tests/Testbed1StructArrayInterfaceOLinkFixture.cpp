@@ -35,9 +35,41 @@ void UTestbed1StructArrayInterfaceOLinkHelper::PropBoolPropertyCb(const TArray<F
 	Spec->PropBoolPropertyCb(PropBool);
 }
 
+void UTestbed1StructArrayInterfaceOLinkHelper::PropBoolPropertyChangeLocalCheckRemoteCb(const TArray<FTestbed1StructBool>& PropBool)
+{
+	if (Spec)
+	{
+		Spec->PropBoolPropertyChangeLocalCheckRemoteCb(PropBool);
+	}
+}
+
+void UTestbed1StructArrayInterfaceOLinkHelper::PropBoolPropertyChangeLocalChangeRemoteCb(const TArray<FTestbed1StructBool>& PropBool)
+{
+	if (Spec)
+	{
+		Spec->PropBoolPropertyChangeLocalChangeRemoteCb(PropBool);
+	}
+}
+
 void UTestbed1StructArrayInterfaceOLinkHelper::PropIntPropertyCb(const TArray<FTestbed1StructInt>& PropInt)
 {
 	Spec->PropIntPropertyCb(PropInt);
+}
+
+void UTestbed1StructArrayInterfaceOLinkHelper::PropIntPropertyChangeLocalCheckRemoteCb(const TArray<FTestbed1StructInt>& PropInt)
+{
+	if (Spec)
+	{
+		Spec->PropIntPropertyChangeLocalCheckRemoteCb(PropInt);
+	}
+}
+
+void UTestbed1StructArrayInterfaceOLinkHelper::PropIntPropertyChangeLocalChangeRemoteCb(const TArray<FTestbed1StructInt>& PropInt)
+{
+	if (Spec)
+	{
+		Spec->PropIntPropertyChangeLocalChangeRemoteCb(PropInt);
+	}
 }
 
 void UTestbed1StructArrayInterfaceOLinkHelper::PropFloatPropertyCb(const TArray<FTestbed1StructFloat>& PropFloat)
@@ -45,14 +77,62 @@ void UTestbed1StructArrayInterfaceOLinkHelper::PropFloatPropertyCb(const TArray<
 	Spec->PropFloatPropertyCb(PropFloat);
 }
 
+void UTestbed1StructArrayInterfaceOLinkHelper::PropFloatPropertyChangeLocalCheckRemoteCb(const TArray<FTestbed1StructFloat>& PropFloat)
+{
+	if (Spec)
+	{
+		Spec->PropFloatPropertyChangeLocalCheckRemoteCb(PropFloat);
+	}
+}
+
+void UTestbed1StructArrayInterfaceOLinkHelper::PropFloatPropertyChangeLocalChangeRemoteCb(const TArray<FTestbed1StructFloat>& PropFloat)
+{
+	if (Spec)
+	{
+		Spec->PropFloatPropertyChangeLocalChangeRemoteCb(PropFloat);
+	}
+}
+
 void UTestbed1StructArrayInterfaceOLinkHelper::PropStringPropertyCb(const TArray<FTestbed1StructString>& PropString)
 {
 	Spec->PropStringPropertyCb(PropString);
 }
 
+void UTestbed1StructArrayInterfaceOLinkHelper::PropStringPropertyChangeLocalCheckRemoteCb(const TArray<FTestbed1StructString>& PropString)
+{
+	if (Spec)
+	{
+		Spec->PropStringPropertyChangeLocalCheckRemoteCb(PropString);
+	}
+}
+
+void UTestbed1StructArrayInterfaceOLinkHelper::PropStringPropertyChangeLocalChangeRemoteCb(const TArray<FTestbed1StructString>& PropString)
+{
+	if (Spec)
+	{
+		Spec->PropStringPropertyChangeLocalChangeRemoteCb(PropString);
+	}
+}
+
 void UTestbed1StructArrayInterfaceOLinkHelper::PropEnumPropertyCb(const TArray<ETestbed1Enum0>& PropEnum)
 {
 	Spec->PropEnumPropertyCb(PropEnum);
+}
+
+void UTestbed1StructArrayInterfaceOLinkHelper::PropEnumPropertyChangeLocalCheckRemoteCb(const TArray<ETestbed1Enum0>& PropEnum)
+{
+	if (Spec)
+	{
+		Spec->PropEnumPropertyChangeLocalCheckRemoteCb(PropEnum);
+	}
+}
+
+void UTestbed1StructArrayInterfaceOLinkHelper::PropEnumPropertyChangeLocalChangeRemoteCb(const TArray<ETestbed1Enum0>& PropEnum)
+{
+	if (Spec)
+	{
+		Spec->PropEnumPropertyChangeLocalChangeRemoteCb(PropEnum);
+	}
 }
 
 void UTestbed1StructArrayInterfaceOLinkHelper::SigBoolSignalCb(const TArray<FTestbed1StructBool>& ParamBool)

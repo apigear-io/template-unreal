@@ -35,9 +35,41 @@ void UTbSimpleNoSignalsInterfaceOLinkHelper::PropBoolPropertyCb(bool bPropBool)
 	Spec->PropBoolPropertyCb(bPropBool);
 }
 
+void UTbSimpleNoSignalsInterfaceOLinkHelper::PropBoolPropertyChangeLocalCheckRemoteCb(bool bPropBool)
+{
+	if (Spec)
+	{
+		Spec->PropBoolPropertyChangeLocalCheckRemoteCb(bPropBool);
+	}
+}
+
+void UTbSimpleNoSignalsInterfaceOLinkHelper::PropBoolPropertyChangeLocalChangeRemoteCb(bool bPropBool)
+{
+	if (Spec)
+	{
+		Spec->PropBoolPropertyChangeLocalChangeRemoteCb(bPropBool);
+	}
+}
+
 void UTbSimpleNoSignalsInterfaceOLinkHelper::PropIntPropertyCb(int32 PropInt)
 {
 	Spec->PropIntPropertyCb(PropInt);
+}
+
+void UTbSimpleNoSignalsInterfaceOLinkHelper::PropIntPropertyChangeLocalCheckRemoteCb(int32 PropInt)
+{
+	if (Spec)
+	{
+		Spec->PropIntPropertyChangeLocalCheckRemoteCb(PropInt);
+	}
+}
+
+void UTbSimpleNoSignalsInterfaceOLinkHelper::PropIntPropertyChangeLocalChangeRemoteCb(int32 PropInt)
+{
+	if (Spec)
+	{
+		Spec->PropIntPropertyChangeLocalChangeRemoteCb(PropInt);
+	}
 }
 
 void UTbSimpleNoSignalsInterfaceOLinkHelper::_SubscriptionStatusChangedCb(bool bSubscribed)

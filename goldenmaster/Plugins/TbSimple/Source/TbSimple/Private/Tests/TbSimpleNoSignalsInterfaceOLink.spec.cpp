@@ -101,6 +101,36 @@ void UTbSimpleNoSignalsInterfaceOLinkSpec::Define()
 		ImplFixture->GetImplementation()->Execute_SetPropBool(ImplFixture->GetImplementation().GetObject(), TestValue);
 	});
 
+	LatentIt("Property.PropBool.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		bool TestValue = false; // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetPropBool(ImplFixture->GetImplementation().GetObject()), TestValue);
+
+		testDoneDelegate = TestDone;
+		UTbSimpleNoSignalsInterfaceSignals* TbSimpleNoSignalsInterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
+		TbSimpleNoSignalsInterfaceSignals->OnPropBoolChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleNoSignalsInterfaceOLinkHelper::PropBoolPropertyChangeLocalCheckRemoteCb);
+		// use different test value
+		TestValue = true;
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleNoSignalsInterface>();
+		service->Execute_SetPropBool(service, TestValue);
+	});
+
+	LatentIt("Property.PropBool.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		bool TestValue = false; // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetPropBool(ImplFixture->GetImplementation().GetObject()), TestValue);
+
+		testDoneDelegate = TestDone;
+		UTbSimpleNoSignalsInterfaceSignals* TbSimpleNoSignalsInterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
+		TbSimpleNoSignalsInterfaceSignals->OnPropBoolChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleNoSignalsInterfaceOLinkHelper::PropBoolPropertyChangeLocalChangeRemoteCb);
+		// use different test value
+		TestValue = true;
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleNoSignalsInterface>();
+		service->Execute_SetPropBool(service, TestValue);
+	});
+
 	It("Property.PropInt.Default", [this]()
 		{
 		// Do implement test here
@@ -120,6 +150,36 @@ void UTbSimpleNoSignalsInterfaceOLinkSpec::Define()
 		// use different test value
 		TestValue = 1;
 		ImplFixture->GetImplementation()->Execute_SetPropInt(ImplFixture->GetImplementation().GetObject(), TestValue);
+	});
+
+	LatentIt("Property.PropInt.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		int32 TestValue = 0; // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetPropInt(ImplFixture->GetImplementation().GetObject()), TestValue);
+
+		testDoneDelegate = TestDone;
+		UTbSimpleNoSignalsInterfaceSignals* TbSimpleNoSignalsInterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
+		TbSimpleNoSignalsInterfaceSignals->OnPropIntChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleNoSignalsInterfaceOLinkHelper::PropIntPropertyChangeLocalCheckRemoteCb);
+		// use different test value
+		TestValue = 1;
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleNoSignalsInterface>();
+		service->Execute_SetPropInt(service, TestValue);
+	});
+
+	LatentIt("Property.PropInt.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		int32 TestValue = 0; // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetPropInt(ImplFixture->GetImplementation().GetObject()), TestValue);
+
+		testDoneDelegate = TestDone;
+		UTbSimpleNoSignalsInterfaceSignals* TbSimpleNoSignalsInterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
+		TbSimpleNoSignalsInterfaceSignals->OnPropIntChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleNoSignalsInterfaceOLinkHelper::PropIntPropertyChangeLocalChangeRemoteCb);
+		// use different test value
+		TestValue = 1;
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleNoSignalsInterface>();
+		service->Execute_SetPropInt(service, TestValue);
 	});
 
 	LatentIt("Operation.FuncVoid", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
@@ -153,6 +213,45 @@ void UTbSimpleNoSignalsInterfaceOLinkSpec::PropBoolPropertyCb(bool bInPropBool)
 	testDoneDelegate.Execute();
 }
 
+void UTbSimpleNoSignalsInterfaceOLinkSpec::PropBoolPropertyChangeLocalCheckRemoteCb(bool bInPropBool)
+{
+	bool TestValue = false;
+	// use different test value
+	TestValue = true;
+	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), bInPropBool, TestValue);
+	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetPropBool(ImplFixture->GetImplementation().GetObject()), TestValue);
+	testDoneDelegate.Execute();
+}
+
+void UTbSimpleNoSignalsInterfaceOLinkSpec::PropBoolPropertyChangeLocalChangeRemoteCb(bool bInPropBool)
+{
+	// this function must be called twice before we can successfully pass this test.
+	// first call it should have the test value of the parameter
+	// second call it should have the default value of the parameter again
+	static int count = 0;
+	count++;
+
+	if (count % 2 != 0)
+	{
+		bool TestValue = false;
+		// use different test value
+		TestValue = true;
+		TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), bInPropBool, TestValue);
+		TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetPropBool(ImplFixture->GetImplementation().GetObject()), TestValue);
+
+		// now set it to the default value
+		TestValue = false; // default value
+		ImplFixture->GetImplementation()->Execute_SetPropBool(ImplFixture->GetImplementation().GetObject(), TestValue);
+	}
+	else
+	{
+		bool TestValue = false; // default value
+		TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), bInPropBool, TestValue);
+		TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetPropBool(ImplFixture->GetImplementation().GetObject()), TestValue);
+		testDoneDelegate.Execute();
+	}
+}
+
 void UTbSimpleNoSignalsInterfaceOLinkSpec::PropIntPropertyCb(int32 InPropInt)
 {
 	int32 TestValue = 0;
@@ -161,6 +260,45 @@ void UTbSimpleNoSignalsInterfaceOLinkSpec::PropIntPropertyCb(int32 InPropInt)
 	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
 	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetPropInt(ImplFixture->GetImplementation().GetObject()), TestValue);
 	testDoneDelegate.Execute();
+}
+
+void UTbSimpleNoSignalsInterfaceOLinkSpec::PropIntPropertyChangeLocalCheckRemoteCb(int32 InPropInt)
+{
+	int32 TestValue = 0;
+	// use different test value
+	TestValue = 1;
+	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
+	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetPropInt(ImplFixture->GetImplementation().GetObject()), TestValue);
+	testDoneDelegate.Execute();
+}
+
+void UTbSimpleNoSignalsInterfaceOLinkSpec::PropIntPropertyChangeLocalChangeRemoteCb(int32 InPropInt)
+{
+	// this function must be called twice before we can successfully pass this test.
+	// first call it should have the test value of the parameter
+	// second call it should have the default value of the parameter again
+	static int count = 0;
+	count++;
+
+	if (count % 2 != 0)
+	{
+		int32 TestValue = 0;
+		// use different test value
+		TestValue = 1;
+		TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
+		TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetPropInt(ImplFixture->GetImplementation().GetObject()), TestValue);
+
+		// now set it to the default value
+		TestValue = 0; // default value
+		ImplFixture->GetImplementation()->Execute_SetPropInt(ImplFixture->GetImplementation().GetObject(), TestValue);
+	}
+	else
+	{
+		int32 TestValue = 0; // default value
+		TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
+		TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetPropInt(ImplFixture->GetImplementation().GetObject()), TestValue);
+		testDoneDelegate.Execute();
+	}
 }
 #endif // WITH_DEV_AUTOMATION_TESTS
 #endif // !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)

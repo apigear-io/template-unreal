@@ -292,6 +292,11 @@ void UTestbed2NestedStruct2InterfaceOLinkClient::applyState(const nlohmann::json
 	if (bProp1Changed)
 	{
 		Prop1 = fields["prop1"].get<FTestbed2NestedStruct1>();
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->Prop1Mutex));
+			_SentData->Prop1 = Prop1;
+		}
 		Execute__GetSignals(this)->OnProp1Changed.Broadcast(Prop1);
 	}
 
@@ -299,6 +304,11 @@ void UTestbed2NestedStruct2InterfaceOLinkClient::applyState(const nlohmann::json
 	if (bProp2Changed)
 	{
 		Prop2 = fields["prop2"].get<FTestbed2NestedStruct2>();
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->Prop2Mutex));
+			_SentData->Prop2 = Prop2;
+		}
 		Execute__GetSignals(this)->OnProp2Changed.Broadcast(Prop2);
 	}
 }
