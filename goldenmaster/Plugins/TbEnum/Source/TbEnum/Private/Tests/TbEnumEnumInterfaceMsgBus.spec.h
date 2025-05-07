@@ -28,9 +28,17 @@ TUniquePtr<FTbEnumEnumInterfaceMsgBusFixture> ImplFixture;
 
 // signal callbacks for testing
 void Prop0PropertyCb(ETbEnumEnum0 Prop0);
+void Prop0PropertyChangeLocalCheckRemoteCb(ETbEnumEnum0 Prop0);
+void Prop0PropertyChangeLocalChangeRemoteCb(ETbEnumEnum0 Prop0);
 void Prop1PropertyCb(ETbEnumEnum1 Prop1);
+void Prop1PropertyChangeLocalCheckRemoteCb(ETbEnumEnum1 Prop1);
+void Prop1PropertyChangeLocalChangeRemoteCb(ETbEnumEnum1 Prop1);
 void Prop2PropertyCb(ETbEnumEnum2 Prop2);
+void Prop2PropertyChangeLocalCheckRemoteCb(ETbEnumEnum2 Prop2);
+void Prop2PropertyChangeLocalChangeRemoteCb(ETbEnumEnum2 Prop2);
 void Prop3PropertyCb(ETbEnumEnum3 Prop3);
+void Prop3PropertyChangeLocalCheckRemoteCb(ETbEnumEnum3 Prop3);
+void Prop3PropertyChangeLocalChangeRemoteCb(ETbEnumEnum3 Prop3);
 void Sig0SignalCb(ETbEnumEnum0 Param0);
 void Sig1SignalCb(ETbEnumEnum1 Param1);
 void Sig2SignalCb(ETbEnumEnum2 Param2);

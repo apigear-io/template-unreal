@@ -27,27 +27,59 @@ public:
 
 	UFUNCTION()
 	void PropBoolPropertyCb(bool bPropBool);
+	UFUNCTION()
+	void PropBoolPropertyChangeLocalCheckRemoteCb(bool bPropBool);
+	UFUNCTION()
+	void PropBoolPropertyChangeLocalChangeRemoteCb(bool bPropBool);
 
 	UFUNCTION()
 	void PropIntPropertyCb(int32 PropInt);
+	UFUNCTION()
+	void PropIntPropertyChangeLocalCheckRemoteCb(int32 PropInt);
+	UFUNCTION()
+	void PropIntPropertyChangeLocalChangeRemoteCb(int32 PropInt);
 
 	UFUNCTION()
 	void PropInt32PropertyCb(int32 PropInt32);
+	UFUNCTION()
+	void PropInt32PropertyChangeLocalCheckRemoteCb(int32 PropInt32);
+	UFUNCTION()
+	void PropInt32PropertyChangeLocalChangeRemoteCb(int32 PropInt32);
 
 	UFUNCTION()
 	void PropInt64PropertyCb(int64 PropInt64);
+	UFUNCTION()
+	void PropInt64PropertyChangeLocalCheckRemoteCb(int64 PropInt64);
+	UFUNCTION()
+	void PropInt64PropertyChangeLocalChangeRemoteCb(int64 PropInt64);
 
 	UFUNCTION()
 	void PropFloatPropertyCb(float PropFloat);
+	UFUNCTION()
+	void PropFloatPropertyChangeLocalCheckRemoteCb(float PropFloat);
+	UFUNCTION()
+	void PropFloatPropertyChangeLocalChangeRemoteCb(float PropFloat);
 
 	UFUNCTION()
 	void PropFloat32PropertyCb(float PropFloat32);
+	UFUNCTION()
+	void PropFloat32PropertyChangeLocalCheckRemoteCb(float PropFloat32);
+	UFUNCTION()
+	void PropFloat32PropertyChangeLocalChangeRemoteCb(float PropFloat32);
 
 	UFUNCTION()
 	void PropFloat64PropertyCb(double PropFloat64);
+	UFUNCTION()
+	void PropFloat64PropertyChangeLocalCheckRemoteCb(double PropFloat64);
+	UFUNCTION()
+	void PropFloat64PropertyChangeLocalChangeRemoteCb(double PropFloat64);
 
 	UFUNCTION()
 	void PropStringPropertyCb(const FString& PropString);
+	UFUNCTION()
+	void PropStringPropertyChangeLocalCheckRemoteCb(const FString& PropString);
+	UFUNCTION()
+	void PropStringPropertyChangeLocalChangeRemoteCb(const FString& PropString);
 
 	UFUNCTION()
 	void SigBoolSignalCb(bool bParamBool);

@@ -41,6 +41,22 @@ void UTbSame1SameEnum1InterfaceMsgBusHelper::Prop1PropertyCb(ETbSame1Enum1 Prop1
 	}
 }
 
+void UTbSame1SameEnum1InterfaceMsgBusHelper::Prop1PropertyChangeLocalCheckRemoteCb(ETbSame1Enum1 Prop1)
+{
+	if (Spec)
+	{
+		Spec->Prop1PropertyChangeLocalCheckRemoteCb(Prop1);
+	}
+}
+
+void UTbSame1SameEnum1InterfaceMsgBusHelper::Prop1PropertyChangeLocalChangeRemoteCb(ETbSame1Enum1 Prop1)
+{
+	if (Spec)
+	{
+		Spec->Prop1PropertyChangeLocalChangeRemoteCb(Prop1);
+	}
+}
+
 void UTbSame1SameEnum1InterfaceMsgBusHelper::Sig1SignalCb(ETbSame1Enum1 Param1)
 {
 	if (Spec)

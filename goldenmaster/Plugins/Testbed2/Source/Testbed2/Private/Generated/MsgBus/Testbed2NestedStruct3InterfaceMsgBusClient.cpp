@@ -197,6 +197,11 @@ void UTestbed2NestedStruct3InterfaceMsgBusClient::OnConnectionInit(const FTestbe
 	if (bProp1Changed)
 	{
 		Prop1 = InMessage.Prop1;
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->Prop1Mutex));
+			_SentData->Prop1 = Prop1;
+		}
 		Execute__GetSignals(this)->OnProp1Changed.Broadcast(Prop1);
 	}
 
@@ -204,6 +209,11 @@ void UTestbed2NestedStruct3InterfaceMsgBusClient::OnConnectionInit(const FTestbe
 	if (bProp2Changed)
 	{
 		Prop2 = InMessage.Prop2;
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->Prop2Mutex));
+			_SentData->Prop2 = Prop2;
+		}
 		Execute__GetSignals(this)->OnProp2Changed.Broadcast(Prop2);
 	}
 
@@ -211,6 +221,11 @@ void UTestbed2NestedStruct3InterfaceMsgBusClient::OnConnectionInit(const FTestbe
 	if (bProp3Changed)
 	{
 		Prop3 = InMessage.Prop3;
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->Prop3Mutex));
+			_SentData->Prop3 = Prop3;
+		}
 		Execute__GetSignals(this)->OnProp3Changed.Broadcast(Prop3);
 	}
 
@@ -574,6 +589,11 @@ void UTestbed2NestedStruct3InterfaceMsgBusClient::OnProp1Changed(const FTestbed2
 	if (bProp1Changed)
 	{
 		Prop1 = InMessage.Prop1;
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->Prop1Mutex));
+			_SentData->Prop1 = Prop1;
+		}
 		Execute__GetSignals(this)->OnProp1Changed.Broadcast(Prop1);
 	}
 }
@@ -590,6 +610,11 @@ void UTestbed2NestedStruct3InterfaceMsgBusClient::OnProp2Changed(const FTestbed2
 	if (bProp2Changed)
 	{
 		Prop2 = InMessage.Prop2;
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->Prop2Mutex));
+			_SentData->Prop2 = Prop2;
+		}
 		Execute__GetSignals(this)->OnProp2Changed.Broadcast(Prop2);
 	}
 }
@@ -606,6 +631,11 @@ void UTestbed2NestedStruct3InterfaceMsgBusClient::OnProp3Changed(const FTestbed2
 	if (bProp3Changed)
 	{
 		Prop3 = InMessage.Prop3;
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->Prop3Mutex));
+			_SentData->Prop3 = Prop3;
+		}
 		Execute__GetSignals(this)->OnProp3Changed.Broadcast(Prop3);
 	}
 }

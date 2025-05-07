@@ -41,6 +41,22 @@ void UTbSame1SameStruct1InterfaceMsgBusHelper::Prop1PropertyCb(const FTbSame1Str
 	}
 }
 
+void UTbSame1SameStruct1InterfaceMsgBusHelper::Prop1PropertyChangeLocalCheckRemoteCb(const FTbSame1Struct1& Prop1)
+{
+	if (Spec)
+	{
+		Spec->Prop1PropertyChangeLocalCheckRemoteCb(Prop1);
+	}
+}
+
+void UTbSame1SameStruct1InterfaceMsgBusHelper::Prop1PropertyChangeLocalChangeRemoteCb(const FTbSame1Struct1& Prop1)
+{
+	if (Spec)
+	{
+		Spec->Prop1PropertyChangeLocalChangeRemoteCb(Prop1);
+	}
+}
+
 void UTbSame1SameStruct1InterfaceMsgBusHelper::Sig1SignalCb(const FTbSame1Struct1& Param1)
 {
 	if (Spec)

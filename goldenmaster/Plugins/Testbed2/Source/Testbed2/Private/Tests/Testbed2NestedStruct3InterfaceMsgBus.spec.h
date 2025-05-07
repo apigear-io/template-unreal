@@ -28,8 +28,14 @@ TUniquePtr<FTestbed2NestedStruct3InterfaceMsgBusFixture> ImplFixture;
 
 // signal callbacks for testing
 void Prop1PropertyCb(const FTestbed2NestedStruct1& Prop1);
+void Prop1PropertyChangeLocalCheckRemoteCb(const FTestbed2NestedStruct1& Prop1);
+void Prop1PropertyChangeLocalChangeRemoteCb(const FTestbed2NestedStruct1& Prop1);
 void Prop2PropertyCb(const FTestbed2NestedStruct2& Prop2);
+void Prop2PropertyChangeLocalCheckRemoteCb(const FTestbed2NestedStruct2& Prop2);
+void Prop2PropertyChangeLocalChangeRemoteCb(const FTestbed2NestedStruct2& Prop2);
 void Prop3PropertyCb(const FTestbed2NestedStruct3& Prop3);
+void Prop3PropertyChangeLocalCheckRemoteCb(const FTestbed2NestedStruct3& Prop3);
+void Prop3PropertyChangeLocalChangeRemoteCb(const FTestbed2NestedStruct3& Prop3);
 void Sig1SignalCb(const FTestbed2NestedStruct1& Param1);
 void Sig2SignalCb(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2);
 void Sig3SignalCb(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3);

@@ -27,9 +27,17 @@ public:
 
 	UFUNCTION()
 	void VectorPropertyCb(const FCustomTypesVector3D& Vector);
+	UFUNCTION()
+	void VectorPropertyChangeLocalCheckRemoteCb(const FCustomTypesVector3D& Vector);
+	UFUNCTION()
+	void VectorPropertyChangeLocalChangeRemoteCb(const FCustomTypesVector3D& Vector);
 
 	UFUNCTION()
 	void VectorArrayPropertyCb(const TArray<FCustomTypesVector3D>& VectorArray);
+	UFUNCTION()
+	void VectorArrayPropertyChangeLocalCheckRemoteCb(const TArray<FCustomTypesVector3D>& VectorArray);
+	UFUNCTION()
+	void VectorArrayPropertyChangeLocalChangeRemoteCb(const TArray<FCustomTypesVector3D>& VectorArray);
 
 	UFUNCTION()
 	void ValueChangedSignalCb(const FCustomTypesVector3D& Vector, const FVector& ExternVector, const TArray<FCustomTypesVector3D>& VectorArray, const TArray<FVector>& ExternVectorArray);

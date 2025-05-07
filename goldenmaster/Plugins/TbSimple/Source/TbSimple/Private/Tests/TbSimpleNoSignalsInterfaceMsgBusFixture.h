@@ -27,9 +27,17 @@ public:
 
 	UFUNCTION()
 	void PropBoolPropertyCb(bool bPropBool);
+	UFUNCTION()
+	void PropBoolPropertyChangeLocalCheckRemoteCb(bool bPropBool);
+	UFUNCTION()
+	void PropBoolPropertyChangeLocalChangeRemoteCb(bool bPropBool);
 
 	UFUNCTION()
 	void PropIntPropertyCb(int32 PropInt);
+	UFUNCTION()
+	void PropIntPropertyChangeLocalCheckRemoteCb(int32 PropInt);
+	UFUNCTION()
+	void PropIntPropertyChangeLocalChangeRemoteCb(int32 PropInt);
 
 	UFUNCTION()
 	void _ConnectionStatusChangedCb(bool bConnected);

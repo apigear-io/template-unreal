@@ -188,6 +188,8 @@ void UTbSimpleNoOperationsInterfaceMsgBusClient::OnConnectionInit(const FTbSimpl
 	if (bbPropBoolChanged)
 	{
 		bPropBool = InMessage.bPropBool;
+		// reset sent data to the current state
+		_SentData->bPropBool = bPropBool;
 		Execute__GetSignals(this)->OnPropBoolChanged.Broadcast(bPropBool);
 	}
 
@@ -195,6 +197,8 @@ void UTbSimpleNoOperationsInterfaceMsgBusClient::OnConnectionInit(const FTbSimpl
 	if (bPropIntChanged)
 	{
 		PropInt = InMessage.PropInt;
+		// reset sent data to the current state
+		_SentData->PropInt = PropInt;
 		Execute__GetSignals(this)->OnPropIntChanged.Broadcast(PropInt);
 	}
 
@@ -408,6 +412,8 @@ void UTbSimpleNoOperationsInterfaceMsgBusClient::OnPropBoolChanged(const FTbSimp
 	if (bbPropBoolChanged)
 	{
 		bPropBool = InMessage.bPropBool;
+		// reset sent data to the current state
+		_SentData->bPropBool = bPropBool;
 		Execute__GetSignals(this)->OnPropBoolChanged.Broadcast(bPropBool);
 	}
 }
@@ -424,6 +430,8 @@ void UTbSimpleNoOperationsInterfaceMsgBusClient::OnPropIntChanged(const FTbSimpl
 	if (bPropIntChanged)
 	{
 		PropInt = InMessage.PropInt;
+		// reset sent data to the current state
+		_SentData->PropInt = PropInt;
 		Execute__GetSignals(this)->OnPropIntChanged.Broadcast(PropInt);
 	}
 }

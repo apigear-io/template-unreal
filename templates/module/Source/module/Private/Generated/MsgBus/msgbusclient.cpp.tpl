@@ -221,6 +221,15 @@ void {{$Class}}::OnConnectionInit(const F{{$Iface}}InitMessage& InMessage, const
 	if (b{{ueVar "" .}}Changed)
 	{
 		{{ueVar "" .}} = InMessage.{{ueVar "" .}};
+		// reset sent data to the current state
+		{{- if not ( ueIsStdSimpleType . )}}
+		{
+			FScopeLock Lock(&(_SentData->{{ueVar "" .}}Mutex));
+			_SentData->{{ueVar "" .}} = {{ueVar "" .}};
+		}
+		{{- else}}
+		_SentData->{{ueVar "" .}} = {{ueVar "" .}};
+		{{- end }}
 		Execute__GetSignals(this)->On{{ Camel .Name }}Changed.Broadcast({{ueVar "" .}});
 	}
 {{- end }}
@@ -477,6 +486,15 @@ void {{$Class}}::On{{Camel .Name}}Changed(const F{{$DisplayName}}{{Camel .Name}}
 	if (b{{ueVar "" .}}Changed)
 	{
 		{{ueVar "" .}} = InMessage.{{ueVar "" .}};
+		// reset sent data to the current state
+		{{- if not ( ueIsStdSimpleType . )}}
+		{
+			FScopeLock Lock(&(_SentData->{{ueVar "" .}}Mutex));
+			_SentData->{{ueVar "" .}} = {{ueVar "" .}};
+		}
+		{{- else}}
+		_SentData->{{ueVar "" .}} = {{ueVar "" .}};
+		{{- end }}
 		Execute__GetSignals(this)->On{{Camel .Name}}Changed.Broadcast({{ueVar "" .}});
 	}
 }

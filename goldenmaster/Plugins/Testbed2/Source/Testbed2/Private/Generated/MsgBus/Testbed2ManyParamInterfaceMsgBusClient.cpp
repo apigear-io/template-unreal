@@ -198,6 +198,8 @@ void UTestbed2ManyParamInterfaceMsgBusClient::OnConnectionInit(const FTestbed2Ma
 	if (bProp1Changed)
 	{
 		Prop1 = InMessage.Prop1;
+		// reset sent data to the current state
+		_SentData->Prop1 = Prop1;
 		Execute__GetSignals(this)->OnProp1Changed.Broadcast(Prop1);
 	}
 
@@ -205,6 +207,8 @@ void UTestbed2ManyParamInterfaceMsgBusClient::OnConnectionInit(const FTestbed2Ma
 	if (bProp2Changed)
 	{
 		Prop2 = InMessage.Prop2;
+		// reset sent data to the current state
+		_SentData->Prop2 = Prop2;
 		Execute__GetSignals(this)->OnProp2Changed.Broadcast(Prop2);
 	}
 
@@ -212,6 +216,8 @@ void UTestbed2ManyParamInterfaceMsgBusClient::OnConnectionInit(const FTestbed2Ma
 	if (bProp3Changed)
 	{
 		Prop3 = InMessage.Prop3;
+		// reset sent data to the current state
+		_SentData->Prop3 = Prop3;
 		Execute__GetSignals(this)->OnProp3Changed.Broadcast(Prop3);
 	}
 
@@ -219,6 +225,8 @@ void UTestbed2ManyParamInterfaceMsgBusClient::OnConnectionInit(const FTestbed2Ma
 	if (bProp4Changed)
 	{
 		Prop4 = InMessage.Prop4;
+		// reset sent data to the current state
+		_SentData->Prop4 = Prop4;
 		Execute__GetSignals(this)->OnProp4Changed.Broadcast(Prop4);
 	}
 
@@ -650,6 +658,8 @@ void UTestbed2ManyParamInterfaceMsgBusClient::OnProp1Changed(const FTestbed2Many
 	if (bProp1Changed)
 	{
 		Prop1 = InMessage.Prop1;
+		// reset sent data to the current state
+		_SentData->Prop1 = Prop1;
 		Execute__GetSignals(this)->OnProp1Changed.Broadcast(Prop1);
 	}
 }
@@ -666,6 +676,8 @@ void UTestbed2ManyParamInterfaceMsgBusClient::OnProp2Changed(const FTestbed2Many
 	if (bProp2Changed)
 	{
 		Prop2 = InMessage.Prop2;
+		// reset sent data to the current state
+		_SentData->Prop2 = Prop2;
 		Execute__GetSignals(this)->OnProp2Changed.Broadcast(Prop2);
 	}
 }
@@ -682,6 +694,8 @@ void UTestbed2ManyParamInterfaceMsgBusClient::OnProp3Changed(const FTestbed2Many
 	if (bProp3Changed)
 	{
 		Prop3 = InMessage.Prop3;
+		// reset sent data to the current state
+		_SentData->Prop3 = Prop3;
 		Execute__GetSignals(this)->OnProp3Changed.Broadcast(Prop3);
 	}
 }
@@ -698,6 +712,8 @@ void UTestbed2ManyParamInterfaceMsgBusClient::OnProp4Changed(const FTestbed2Many
 	if (bProp4Changed)
 	{
 		Prop4 = InMessage.Prop4;
+		// reset sent data to the current state
+		_SentData->Prop4 = Prop4;
 		Execute__GetSignals(this)->OnProp4Changed.Broadcast(Prop4);
 	}
 }

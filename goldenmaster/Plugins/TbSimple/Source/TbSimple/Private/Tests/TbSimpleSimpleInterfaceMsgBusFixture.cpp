@@ -41,11 +41,43 @@ void UTbSimpleSimpleInterfaceMsgBusHelper::PropBoolPropertyCb(bool bPropBool)
 	}
 }
 
+void UTbSimpleSimpleInterfaceMsgBusHelper::PropBoolPropertyChangeLocalCheckRemoteCb(bool bPropBool)
+{
+	if (Spec)
+	{
+		Spec->PropBoolPropertyChangeLocalCheckRemoteCb(bPropBool);
+	}
+}
+
+void UTbSimpleSimpleInterfaceMsgBusHelper::PropBoolPropertyChangeLocalChangeRemoteCb(bool bPropBool)
+{
+	if (Spec)
+	{
+		Spec->PropBoolPropertyChangeLocalChangeRemoteCb(bPropBool);
+	}
+}
+
 void UTbSimpleSimpleInterfaceMsgBusHelper::PropIntPropertyCb(int32 PropInt)
 {
 	if (Spec)
 	{
 		Spec->PropIntPropertyCb(PropInt);
+	}
+}
+
+void UTbSimpleSimpleInterfaceMsgBusHelper::PropIntPropertyChangeLocalCheckRemoteCb(int32 PropInt)
+{
+	if (Spec)
+	{
+		Spec->PropIntPropertyChangeLocalCheckRemoteCb(PropInt);
+	}
+}
+
+void UTbSimpleSimpleInterfaceMsgBusHelper::PropIntPropertyChangeLocalChangeRemoteCb(int32 PropInt)
+{
+	if (Spec)
+	{
+		Spec->PropIntPropertyChangeLocalChangeRemoteCb(PropInt);
 	}
 }
 
@@ -57,11 +89,43 @@ void UTbSimpleSimpleInterfaceMsgBusHelper::PropInt32PropertyCb(int32 PropInt32)
 	}
 }
 
+void UTbSimpleSimpleInterfaceMsgBusHelper::PropInt32PropertyChangeLocalCheckRemoteCb(int32 PropInt32)
+{
+	if (Spec)
+	{
+		Spec->PropInt32PropertyChangeLocalCheckRemoteCb(PropInt32);
+	}
+}
+
+void UTbSimpleSimpleInterfaceMsgBusHelper::PropInt32PropertyChangeLocalChangeRemoteCb(int32 PropInt32)
+{
+	if (Spec)
+	{
+		Spec->PropInt32PropertyChangeLocalChangeRemoteCb(PropInt32);
+	}
+}
+
 void UTbSimpleSimpleInterfaceMsgBusHelper::PropInt64PropertyCb(int64 PropInt64)
 {
 	if (Spec)
 	{
 		Spec->PropInt64PropertyCb(PropInt64);
+	}
+}
+
+void UTbSimpleSimpleInterfaceMsgBusHelper::PropInt64PropertyChangeLocalCheckRemoteCb(int64 PropInt64)
+{
+	if (Spec)
+	{
+		Spec->PropInt64PropertyChangeLocalCheckRemoteCb(PropInt64);
+	}
+}
+
+void UTbSimpleSimpleInterfaceMsgBusHelper::PropInt64PropertyChangeLocalChangeRemoteCb(int64 PropInt64)
+{
+	if (Spec)
+	{
+		Spec->PropInt64PropertyChangeLocalChangeRemoteCb(PropInt64);
 	}
 }
 
@@ -73,11 +137,43 @@ void UTbSimpleSimpleInterfaceMsgBusHelper::PropFloatPropertyCb(float PropFloat)
 	}
 }
 
+void UTbSimpleSimpleInterfaceMsgBusHelper::PropFloatPropertyChangeLocalCheckRemoteCb(float PropFloat)
+{
+	if (Spec)
+	{
+		Spec->PropFloatPropertyChangeLocalCheckRemoteCb(PropFloat);
+	}
+}
+
+void UTbSimpleSimpleInterfaceMsgBusHelper::PropFloatPropertyChangeLocalChangeRemoteCb(float PropFloat)
+{
+	if (Spec)
+	{
+		Spec->PropFloatPropertyChangeLocalChangeRemoteCb(PropFloat);
+	}
+}
+
 void UTbSimpleSimpleInterfaceMsgBusHelper::PropFloat32PropertyCb(float PropFloat32)
 {
 	if (Spec)
 	{
 		Spec->PropFloat32PropertyCb(PropFloat32);
+	}
+}
+
+void UTbSimpleSimpleInterfaceMsgBusHelper::PropFloat32PropertyChangeLocalCheckRemoteCb(float PropFloat32)
+{
+	if (Spec)
+	{
+		Spec->PropFloat32PropertyChangeLocalCheckRemoteCb(PropFloat32);
+	}
+}
+
+void UTbSimpleSimpleInterfaceMsgBusHelper::PropFloat32PropertyChangeLocalChangeRemoteCb(float PropFloat32)
+{
+	if (Spec)
+	{
+		Spec->PropFloat32PropertyChangeLocalChangeRemoteCb(PropFloat32);
 	}
 }
 
@@ -89,11 +185,43 @@ void UTbSimpleSimpleInterfaceMsgBusHelper::PropFloat64PropertyCb(double PropFloa
 	}
 }
 
+void UTbSimpleSimpleInterfaceMsgBusHelper::PropFloat64PropertyChangeLocalCheckRemoteCb(double PropFloat64)
+{
+	if (Spec)
+	{
+		Spec->PropFloat64PropertyChangeLocalCheckRemoteCb(PropFloat64);
+	}
+}
+
+void UTbSimpleSimpleInterfaceMsgBusHelper::PropFloat64PropertyChangeLocalChangeRemoteCb(double PropFloat64)
+{
+	if (Spec)
+	{
+		Spec->PropFloat64PropertyChangeLocalChangeRemoteCb(PropFloat64);
+	}
+}
+
 void UTbSimpleSimpleInterfaceMsgBusHelper::PropStringPropertyCb(const FString& PropString)
 {
 	if (Spec)
 	{
 		Spec->PropStringPropertyCb(PropString);
+	}
+}
+
+void UTbSimpleSimpleInterfaceMsgBusHelper::PropStringPropertyChangeLocalCheckRemoteCb(const FString& PropString)
+{
+	if (Spec)
+	{
+		Spec->PropStringPropertyChangeLocalCheckRemoteCb(PropString);
+	}
+}
+
+void UTbSimpleSimpleInterfaceMsgBusHelper::PropStringPropertyChangeLocalChangeRemoteCb(const FString& PropString)
+{
+	if (Spec)
+	{
+		Spec->PropStringPropertyChangeLocalChangeRemoteCb(PropString);
 	}
 }
 

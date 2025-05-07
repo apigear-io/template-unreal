@@ -198,6 +198,8 @@ void UTbEnumEnumInterfaceMsgBusClient::OnConnectionInit(const FTbEnumEnumInterfa
 	if (bProp0Changed)
 	{
 		Prop0 = InMessage.Prop0;
+		// reset sent data to the current state
+		_SentData->Prop0 = Prop0;
 		Execute__GetSignals(this)->OnProp0Changed.Broadcast(Prop0);
 	}
 
@@ -205,6 +207,8 @@ void UTbEnumEnumInterfaceMsgBusClient::OnConnectionInit(const FTbEnumEnumInterfa
 	if (bProp1Changed)
 	{
 		Prop1 = InMessage.Prop1;
+		// reset sent data to the current state
+		_SentData->Prop1 = Prop1;
 		Execute__GetSignals(this)->OnProp1Changed.Broadcast(Prop1);
 	}
 
@@ -212,6 +216,8 @@ void UTbEnumEnumInterfaceMsgBusClient::OnConnectionInit(const FTbEnumEnumInterfa
 	if (bProp2Changed)
 	{
 		Prop2 = InMessage.Prop2;
+		// reset sent data to the current state
+		_SentData->Prop2 = Prop2;
 		Execute__GetSignals(this)->OnProp2Changed.Broadcast(Prop2);
 	}
 
@@ -219,6 +225,8 @@ void UTbEnumEnumInterfaceMsgBusClient::OnConnectionInit(const FTbEnumEnumInterfa
 	if (bProp3Changed)
 	{
 		Prop3 = InMessage.Prop3;
+		// reset sent data to the current state
+		_SentData->Prop3 = Prop3;
 		Execute__GetSignals(this)->OnProp3Changed.Broadcast(Prop3);
 	}
 
@@ -644,6 +652,8 @@ void UTbEnumEnumInterfaceMsgBusClient::OnProp0Changed(const FTbEnumEnumInterface
 	if (bProp0Changed)
 	{
 		Prop0 = InMessage.Prop0;
+		// reset sent data to the current state
+		_SentData->Prop0 = Prop0;
 		Execute__GetSignals(this)->OnProp0Changed.Broadcast(Prop0);
 	}
 }
@@ -660,6 +670,8 @@ void UTbEnumEnumInterfaceMsgBusClient::OnProp1Changed(const FTbEnumEnumInterface
 	if (bProp1Changed)
 	{
 		Prop1 = InMessage.Prop1;
+		// reset sent data to the current state
+		_SentData->Prop1 = Prop1;
 		Execute__GetSignals(this)->OnProp1Changed.Broadcast(Prop1);
 	}
 }
@@ -676,6 +688,8 @@ void UTbEnumEnumInterfaceMsgBusClient::OnProp2Changed(const FTbEnumEnumInterface
 	if (bProp2Changed)
 	{
 		Prop2 = InMessage.Prop2;
+		// reset sent data to the current state
+		_SentData->Prop2 = Prop2;
 		Execute__GetSignals(this)->OnProp2Changed.Broadcast(Prop2);
 	}
 }
@@ -692,6 +706,8 @@ void UTbEnumEnumInterfaceMsgBusClient::OnProp3Changed(const FTbEnumEnumInterface
 	if (bProp3Changed)
 	{
 		Prop3 = InMessage.Prop3;
+		// reset sent data to the current state
+		_SentData->Prop3 = Prop3;
 		Execute__GetSignals(this)->OnProp3Changed.Broadcast(Prop3);
 	}
 }

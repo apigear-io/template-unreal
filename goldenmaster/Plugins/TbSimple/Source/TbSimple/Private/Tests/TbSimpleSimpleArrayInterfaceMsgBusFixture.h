@@ -27,27 +27,59 @@ public:
 
 	UFUNCTION()
 	void PropBoolPropertyCb(const TArray<bool>& PropBool);
+	UFUNCTION()
+	void PropBoolPropertyChangeLocalCheckRemoteCb(const TArray<bool>& PropBool);
+	UFUNCTION()
+	void PropBoolPropertyChangeLocalChangeRemoteCb(const TArray<bool>& PropBool);
 
 	UFUNCTION()
 	void PropIntPropertyCb(const TArray<int32>& PropInt);
+	UFUNCTION()
+	void PropIntPropertyChangeLocalCheckRemoteCb(const TArray<int32>& PropInt);
+	UFUNCTION()
+	void PropIntPropertyChangeLocalChangeRemoteCb(const TArray<int32>& PropInt);
 
 	UFUNCTION()
 	void PropInt32PropertyCb(const TArray<int32>& PropInt32);
+	UFUNCTION()
+	void PropInt32PropertyChangeLocalCheckRemoteCb(const TArray<int32>& PropInt32);
+	UFUNCTION()
+	void PropInt32PropertyChangeLocalChangeRemoteCb(const TArray<int32>& PropInt32);
 
 	UFUNCTION()
 	void PropInt64PropertyCb(const TArray<int64>& PropInt64);
+	UFUNCTION()
+	void PropInt64PropertyChangeLocalCheckRemoteCb(const TArray<int64>& PropInt64);
+	UFUNCTION()
+	void PropInt64PropertyChangeLocalChangeRemoteCb(const TArray<int64>& PropInt64);
 
 	UFUNCTION()
 	void PropFloatPropertyCb(const TArray<float>& PropFloat);
+	UFUNCTION()
+	void PropFloatPropertyChangeLocalCheckRemoteCb(const TArray<float>& PropFloat);
+	UFUNCTION()
+	void PropFloatPropertyChangeLocalChangeRemoteCb(const TArray<float>& PropFloat);
 
 	UFUNCTION()
 	void PropFloat32PropertyCb(const TArray<float>& PropFloat32);
+	UFUNCTION()
+	void PropFloat32PropertyChangeLocalCheckRemoteCb(const TArray<float>& PropFloat32);
+	UFUNCTION()
+	void PropFloat32PropertyChangeLocalChangeRemoteCb(const TArray<float>& PropFloat32);
 
 	UFUNCTION()
 	void PropFloat64PropertyCb(const TArray<double>& PropFloat64);
+	UFUNCTION()
+	void PropFloat64PropertyChangeLocalCheckRemoteCb(const TArray<double>& PropFloat64);
+	UFUNCTION()
+	void PropFloat64PropertyChangeLocalChangeRemoteCb(const TArray<double>& PropFloat64);
 
 	UFUNCTION()
 	void PropStringPropertyCb(const TArray<FString>& PropString);
+	UFUNCTION()
+	void PropStringPropertyChangeLocalCheckRemoteCb(const TArray<FString>& PropString);
+	UFUNCTION()
+	void PropStringPropertyChangeLocalChangeRemoteCb(const TArray<FString>& PropString);
 
 	UFUNCTION()
 	void SigBoolSignalCb(const TArray<bool>& ParamBool);

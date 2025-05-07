@@ -216,6 +216,8 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnConnectionInit(const FTbSimpleSimpl
 	if (bbPropBoolChanged)
 	{
 		bPropBool = InMessage.bPropBool;
+		// reset sent data to the current state
+		_SentData->bPropBool = bPropBool;
 		Execute__GetSignals(this)->OnPropBoolChanged.Broadcast(bPropBool);
 	}
 
@@ -223,6 +225,8 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnConnectionInit(const FTbSimpleSimpl
 	if (bPropIntChanged)
 	{
 		PropInt = InMessage.PropInt;
+		// reset sent data to the current state
+		_SentData->PropInt = PropInt;
 		Execute__GetSignals(this)->OnPropIntChanged.Broadcast(PropInt);
 	}
 
@@ -230,6 +234,8 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnConnectionInit(const FTbSimpleSimpl
 	if (bPropInt32Changed)
 	{
 		PropInt32 = InMessage.PropInt32;
+		// reset sent data to the current state
+		_SentData->PropInt32 = PropInt32;
 		Execute__GetSignals(this)->OnPropInt32Changed.Broadcast(PropInt32);
 	}
 
@@ -237,6 +243,8 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnConnectionInit(const FTbSimpleSimpl
 	if (bPropInt64Changed)
 	{
 		PropInt64 = InMessage.PropInt64;
+		// reset sent data to the current state
+		_SentData->PropInt64 = PropInt64;
 		Execute__GetSignals(this)->OnPropInt64Changed.Broadcast(PropInt64);
 	}
 
@@ -244,6 +252,8 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnConnectionInit(const FTbSimpleSimpl
 	if (bPropFloatChanged)
 	{
 		PropFloat = InMessage.PropFloat;
+		// reset sent data to the current state
+		_SentData->PropFloat = PropFloat;
 		Execute__GetSignals(this)->OnPropFloatChanged.Broadcast(PropFloat);
 	}
 
@@ -251,6 +261,8 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnConnectionInit(const FTbSimpleSimpl
 	if (bPropFloat32Changed)
 	{
 		PropFloat32 = InMessage.PropFloat32;
+		// reset sent data to the current state
+		_SentData->PropFloat32 = PropFloat32;
 		Execute__GetSignals(this)->OnPropFloat32Changed.Broadcast(PropFloat32);
 	}
 
@@ -258,6 +270,8 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnConnectionInit(const FTbSimpleSimpl
 	if (bPropFloat64Changed)
 	{
 		PropFloat64 = InMessage.PropFloat64;
+		// reset sent data to the current state
+		_SentData->PropFloat64 = PropFloat64;
 		Execute__GetSignals(this)->OnPropFloat64Changed.Broadcast(PropFloat64);
 	}
 
@@ -265,6 +279,11 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnConnectionInit(const FTbSimpleSimpl
 	if (bPropStringChanged)
 	{
 		PropString = InMessage.PropString;
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->PropStringMutex));
+			_SentData->PropString = PropString;
+		}
 		Execute__GetSignals(this)->OnPropStringChanged.Broadcast(PropString);
 	}
 
@@ -1023,6 +1042,8 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnPropBoolChanged(const FTbSimpleSimp
 	if (bbPropBoolChanged)
 	{
 		bPropBool = InMessage.bPropBool;
+		// reset sent data to the current state
+		_SentData->bPropBool = bPropBool;
 		Execute__GetSignals(this)->OnPropBoolChanged.Broadcast(bPropBool);
 	}
 }
@@ -1039,6 +1060,8 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnPropIntChanged(const FTbSimpleSimpl
 	if (bPropIntChanged)
 	{
 		PropInt = InMessage.PropInt;
+		// reset sent data to the current state
+		_SentData->PropInt = PropInt;
 		Execute__GetSignals(this)->OnPropIntChanged.Broadcast(PropInt);
 	}
 }
@@ -1055,6 +1078,8 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnPropInt32Changed(const FTbSimpleSim
 	if (bPropInt32Changed)
 	{
 		PropInt32 = InMessage.PropInt32;
+		// reset sent data to the current state
+		_SentData->PropInt32 = PropInt32;
 		Execute__GetSignals(this)->OnPropInt32Changed.Broadcast(PropInt32);
 	}
 }
@@ -1071,6 +1096,8 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnPropInt64Changed(const FTbSimpleSim
 	if (bPropInt64Changed)
 	{
 		PropInt64 = InMessage.PropInt64;
+		// reset sent data to the current state
+		_SentData->PropInt64 = PropInt64;
 		Execute__GetSignals(this)->OnPropInt64Changed.Broadcast(PropInt64);
 	}
 }
@@ -1087,6 +1114,8 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnPropFloatChanged(const FTbSimpleSim
 	if (bPropFloatChanged)
 	{
 		PropFloat = InMessage.PropFloat;
+		// reset sent data to the current state
+		_SentData->PropFloat = PropFloat;
 		Execute__GetSignals(this)->OnPropFloatChanged.Broadcast(PropFloat);
 	}
 }
@@ -1103,6 +1132,8 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnPropFloat32Changed(const FTbSimpleS
 	if (bPropFloat32Changed)
 	{
 		PropFloat32 = InMessage.PropFloat32;
+		// reset sent data to the current state
+		_SentData->PropFloat32 = PropFloat32;
 		Execute__GetSignals(this)->OnPropFloat32Changed.Broadcast(PropFloat32);
 	}
 }
@@ -1119,6 +1150,8 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnPropFloat64Changed(const FTbSimpleS
 	if (bPropFloat64Changed)
 	{
 		PropFloat64 = InMessage.PropFloat64;
+		// reset sent data to the current state
+		_SentData->PropFloat64 = PropFloat64;
 		Execute__GetSignals(this)->OnPropFloat64Changed.Broadcast(PropFloat64);
 	}
 }
@@ -1135,6 +1168,11 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnPropStringChanged(const FTbSimpleSi
 	if (bPropStringChanged)
 	{
 		PropString = InMessage.PropString;
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->PropStringMutex));
+			_SentData->PropString = PropString;
+		}
 		Execute__GetSignals(this)->OnPropStringChanged.Broadcast(PropString);
 	}
 }

@@ -41,6 +41,22 @@ void UTestbed2NestedStruct3InterfaceMsgBusHelper::Prop1PropertyCb(const FTestbed
 	}
 }
 
+void UTestbed2NestedStruct3InterfaceMsgBusHelper::Prop1PropertyChangeLocalCheckRemoteCb(const FTestbed2NestedStruct1& Prop1)
+{
+	if (Spec)
+	{
+		Spec->Prop1PropertyChangeLocalCheckRemoteCb(Prop1);
+	}
+}
+
+void UTestbed2NestedStruct3InterfaceMsgBusHelper::Prop1PropertyChangeLocalChangeRemoteCb(const FTestbed2NestedStruct1& Prop1)
+{
+	if (Spec)
+	{
+		Spec->Prop1PropertyChangeLocalChangeRemoteCb(Prop1);
+	}
+}
+
 void UTestbed2NestedStruct3InterfaceMsgBusHelper::Prop2PropertyCb(const FTestbed2NestedStruct2& Prop2)
 {
 	if (Spec)
@@ -49,11 +65,43 @@ void UTestbed2NestedStruct3InterfaceMsgBusHelper::Prop2PropertyCb(const FTestbed
 	}
 }
 
+void UTestbed2NestedStruct3InterfaceMsgBusHelper::Prop2PropertyChangeLocalCheckRemoteCb(const FTestbed2NestedStruct2& Prop2)
+{
+	if (Spec)
+	{
+		Spec->Prop2PropertyChangeLocalCheckRemoteCb(Prop2);
+	}
+}
+
+void UTestbed2NestedStruct3InterfaceMsgBusHelper::Prop2PropertyChangeLocalChangeRemoteCb(const FTestbed2NestedStruct2& Prop2)
+{
+	if (Spec)
+	{
+		Spec->Prop2PropertyChangeLocalChangeRemoteCb(Prop2);
+	}
+}
+
 void UTestbed2NestedStruct3InterfaceMsgBusHelper::Prop3PropertyCb(const FTestbed2NestedStruct3& Prop3)
 {
 	if (Spec)
 	{
 		Spec->Prop3PropertyCb(Prop3);
+	}
+}
+
+void UTestbed2NestedStruct3InterfaceMsgBusHelper::Prop3PropertyChangeLocalCheckRemoteCb(const FTestbed2NestedStruct3& Prop3)
+{
+	if (Spec)
+	{
+		Spec->Prop3PropertyChangeLocalCheckRemoteCb(Prop3);
+	}
+}
+
+void UTestbed2NestedStruct3InterfaceMsgBusHelper::Prop3PropertyChangeLocalChangeRemoteCb(const FTestbed2NestedStruct3& Prop3)
+{
+	if (Spec)
+	{
+		Spec->Prop3PropertyChangeLocalChangeRemoteCb(Prop3);
 	}
 }
 

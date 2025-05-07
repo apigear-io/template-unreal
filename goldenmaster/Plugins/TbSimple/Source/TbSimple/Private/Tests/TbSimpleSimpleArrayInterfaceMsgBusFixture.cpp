@@ -41,11 +41,43 @@ void UTbSimpleSimpleArrayInterfaceMsgBusHelper::PropBoolPropertyCb(const TArray<
 	}
 }
 
+void UTbSimpleSimpleArrayInterfaceMsgBusHelper::PropBoolPropertyChangeLocalCheckRemoteCb(const TArray<bool>& PropBool)
+{
+	if (Spec)
+	{
+		Spec->PropBoolPropertyChangeLocalCheckRemoteCb(PropBool);
+	}
+}
+
+void UTbSimpleSimpleArrayInterfaceMsgBusHelper::PropBoolPropertyChangeLocalChangeRemoteCb(const TArray<bool>& PropBool)
+{
+	if (Spec)
+	{
+		Spec->PropBoolPropertyChangeLocalChangeRemoteCb(PropBool);
+	}
+}
+
 void UTbSimpleSimpleArrayInterfaceMsgBusHelper::PropIntPropertyCb(const TArray<int32>& PropInt)
 {
 	if (Spec)
 	{
 		Spec->PropIntPropertyCb(PropInt);
+	}
+}
+
+void UTbSimpleSimpleArrayInterfaceMsgBusHelper::PropIntPropertyChangeLocalCheckRemoteCb(const TArray<int32>& PropInt)
+{
+	if (Spec)
+	{
+		Spec->PropIntPropertyChangeLocalCheckRemoteCb(PropInt);
+	}
+}
+
+void UTbSimpleSimpleArrayInterfaceMsgBusHelper::PropIntPropertyChangeLocalChangeRemoteCb(const TArray<int32>& PropInt)
+{
+	if (Spec)
+	{
+		Spec->PropIntPropertyChangeLocalChangeRemoteCb(PropInt);
 	}
 }
 
@@ -57,11 +89,43 @@ void UTbSimpleSimpleArrayInterfaceMsgBusHelper::PropInt32PropertyCb(const TArray
 	}
 }
 
+void UTbSimpleSimpleArrayInterfaceMsgBusHelper::PropInt32PropertyChangeLocalCheckRemoteCb(const TArray<int32>& PropInt32)
+{
+	if (Spec)
+	{
+		Spec->PropInt32PropertyChangeLocalCheckRemoteCb(PropInt32);
+	}
+}
+
+void UTbSimpleSimpleArrayInterfaceMsgBusHelper::PropInt32PropertyChangeLocalChangeRemoteCb(const TArray<int32>& PropInt32)
+{
+	if (Spec)
+	{
+		Spec->PropInt32PropertyChangeLocalChangeRemoteCb(PropInt32);
+	}
+}
+
 void UTbSimpleSimpleArrayInterfaceMsgBusHelper::PropInt64PropertyCb(const TArray<int64>& PropInt64)
 {
 	if (Spec)
 	{
 		Spec->PropInt64PropertyCb(PropInt64);
+	}
+}
+
+void UTbSimpleSimpleArrayInterfaceMsgBusHelper::PropInt64PropertyChangeLocalCheckRemoteCb(const TArray<int64>& PropInt64)
+{
+	if (Spec)
+	{
+		Spec->PropInt64PropertyChangeLocalCheckRemoteCb(PropInt64);
+	}
+}
+
+void UTbSimpleSimpleArrayInterfaceMsgBusHelper::PropInt64PropertyChangeLocalChangeRemoteCb(const TArray<int64>& PropInt64)
+{
+	if (Spec)
+	{
+		Spec->PropInt64PropertyChangeLocalChangeRemoteCb(PropInt64);
 	}
 }
 
@@ -73,11 +137,43 @@ void UTbSimpleSimpleArrayInterfaceMsgBusHelper::PropFloatPropertyCb(const TArray
 	}
 }
 
+void UTbSimpleSimpleArrayInterfaceMsgBusHelper::PropFloatPropertyChangeLocalCheckRemoteCb(const TArray<float>& PropFloat)
+{
+	if (Spec)
+	{
+		Spec->PropFloatPropertyChangeLocalCheckRemoteCb(PropFloat);
+	}
+}
+
+void UTbSimpleSimpleArrayInterfaceMsgBusHelper::PropFloatPropertyChangeLocalChangeRemoteCb(const TArray<float>& PropFloat)
+{
+	if (Spec)
+	{
+		Spec->PropFloatPropertyChangeLocalChangeRemoteCb(PropFloat);
+	}
+}
+
 void UTbSimpleSimpleArrayInterfaceMsgBusHelper::PropFloat32PropertyCb(const TArray<float>& PropFloat32)
 {
 	if (Spec)
 	{
 		Spec->PropFloat32PropertyCb(PropFloat32);
+	}
+}
+
+void UTbSimpleSimpleArrayInterfaceMsgBusHelper::PropFloat32PropertyChangeLocalCheckRemoteCb(const TArray<float>& PropFloat32)
+{
+	if (Spec)
+	{
+		Spec->PropFloat32PropertyChangeLocalCheckRemoteCb(PropFloat32);
+	}
+}
+
+void UTbSimpleSimpleArrayInterfaceMsgBusHelper::PropFloat32PropertyChangeLocalChangeRemoteCb(const TArray<float>& PropFloat32)
+{
+	if (Spec)
+	{
+		Spec->PropFloat32PropertyChangeLocalChangeRemoteCb(PropFloat32);
 	}
 }
 
@@ -89,11 +185,43 @@ void UTbSimpleSimpleArrayInterfaceMsgBusHelper::PropFloat64PropertyCb(const TArr
 	}
 }
 
+void UTbSimpleSimpleArrayInterfaceMsgBusHelper::PropFloat64PropertyChangeLocalCheckRemoteCb(const TArray<double>& PropFloat64)
+{
+	if (Spec)
+	{
+		Spec->PropFloat64PropertyChangeLocalCheckRemoteCb(PropFloat64);
+	}
+}
+
+void UTbSimpleSimpleArrayInterfaceMsgBusHelper::PropFloat64PropertyChangeLocalChangeRemoteCb(const TArray<double>& PropFloat64)
+{
+	if (Spec)
+	{
+		Spec->PropFloat64PropertyChangeLocalChangeRemoteCb(PropFloat64);
+	}
+}
+
 void UTbSimpleSimpleArrayInterfaceMsgBusHelper::PropStringPropertyCb(const TArray<FString>& PropString)
 {
 	if (Spec)
 	{
 		Spec->PropStringPropertyCb(PropString);
+	}
+}
+
+void UTbSimpleSimpleArrayInterfaceMsgBusHelper::PropStringPropertyChangeLocalCheckRemoteCb(const TArray<FString>& PropString)
+{
+	if (Spec)
+	{
+		Spec->PropStringPropertyChangeLocalCheckRemoteCb(PropString);
+	}
+}
+
+void UTbSimpleSimpleArrayInterfaceMsgBusHelper::PropStringPropertyChangeLocalChangeRemoteCb(const TArray<FString>& PropString)
+{
+	if (Spec)
+	{
+		Spec->PropStringPropertyChangeLocalChangeRemoteCb(PropString);
 	}
 }
 
