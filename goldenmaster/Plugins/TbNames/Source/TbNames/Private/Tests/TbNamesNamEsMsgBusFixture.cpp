@@ -41,11 +41,43 @@ void UTbNamesNamEsMsgBusHelper::SwitchPropertyCb(bool bSwitch)
 	}
 }
 
+void UTbNamesNamEsMsgBusHelper::SwitchPropertyChangeLocalCheckRemoteCb(bool bSwitch)
+{
+	if (Spec)
+	{
+		Spec->SwitchPropertyChangeLocalCheckRemoteCb(bSwitch);
+	}
+}
+
+void UTbNamesNamEsMsgBusHelper::SwitchPropertyChangeLocalChangeRemoteCb(bool bSwitch)
+{
+	if (Spec)
+	{
+		Spec->SwitchPropertyChangeLocalChangeRemoteCb(bSwitch);
+	}
+}
+
 void UTbNamesNamEsMsgBusHelper::SomePropertyPropertyCb(int32 SomeProperty)
 {
 	if (Spec)
 	{
 		Spec->SomePropertyPropertyCb(SomeProperty);
+	}
+}
+
+void UTbNamesNamEsMsgBusHelper::SomePropertyPropertyChangeLocalCheckRemoteCb(int32 SomeProperty)
+{
+	if (Spec)
+	{
+		Spec->SomePropertyPropertyChangeLocalCheckRemoteCb(SomeProperty);
+	}
+}
+
+void UTbNamesNamEsMsgBusHelper::SomePropertyPropertyChangeLocalChangeRemoteCb(int32 SomeProperty)
+{
+	if (Spec)
+	{
+		Spec->SomePropertyPropertyChangeLocalChangeRemoteCb(SomeProperty);
 	}
 }
 
@@ -57,11 +89,43 @@ void UTbNamesNamEsMsgBusHelper::SomePoperty2PropertyCb(int32 SomePoperty2)
 	}
 }
 
+void UTbNamesNamEsMsgBusHelper::SomePoperty2PropertyChangeLocalCheckRemoteCb(int32 SomePoperty2)
+{
+	if (Spec)
+	{
+		Spec->SomePoperty2PropertyChangeLocalCheckRemoteCb(SomePoperty2);
+	}
+}
+
+void UTbNamesNamEsMsgBusHelper::SomePoperty2PropertyChangeLocalChangeRemoteCb(int32 SomePoperty2)
+{
+	if (Spec)
+	{
+		Spec->SomePoperty2PropertyChangeLocalChangeRemoteCb(SomePoperty2);
+	}
+}
+
 void UTbNamesNamEsMsgBusHelper::EnumPropertyPropertyCb(ETbNamesEnum_With_Under_scores EnumProperty)
 {
 	if (Spec)
 	{
 		Spec->EnumPropertyPropertyCb(EnumProperty);
+	}
+}
+
+void UTbNamesNamEsMsgBusHelper::EnumPropertyPropertyChangeLocalCheckRemoteCb(ETbNamesEnum_With_Under_scores EnumProperty)
+{
+	if (Spec)
+	{
+		Spec->EnumPropertyPropertyChangeLocalCheckRemoteCb(EnumProperty);
+	}
+}
+
+void UTbNamesNamEsMsgBusHelper::EnumPropertyPropertyChangeLocalChangeRemoteCb(ETbNamesEnum_With_Under_scores EnumProperty)
+{
+	if (Spec)
+	{
+		Spec->EnumPropertyPropertyChangeLocalChangeRemoteCb(EnumProperty);
 	}
 }
 

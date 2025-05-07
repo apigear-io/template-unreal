@@ -28,7 +28,11 @@ TUniquePtr<FTbSame1SameStruct2InterfaceMsgBusFixture> ImplFixture;
 
 // signal callbacks for testing
 void Prop1PropertyCb(const FTbSame1Struct2& Prop1);
+void Prop1PropertyChangeLocalCheckRemoteCb(const FTbSame1Struct2& Prop1);
+void Prop1PropertyChangeLocalChangeRemoteCb(const FTbSame1Struct2& Prop1);
 void Prop2PropertyCb(const FTbSame1Struct2& Prop2);
+void Prop2PropertyChangeLocalCheckRemoteCb(const FTbSame1Struct2& Prop2);
+void Prop2PropertyChangeLocalChangeRemoteCb(const FTbSame1Struct2& Prop2);
 void Sig1SignalCb(const FTbSame1Struct1& Param1);
 void Sig2SignalCb(const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2);
 void _ConnectionStatusChangedCb(bool bConnected);

@@ -192,6 +192,8 @@ void UTbNamesNamEsMsgBusClient::OnConnectionInit(const FTbNamesNamEsInitMessage&
 	if (bbSwitchChanged)
 	{
 		bSwitch = InMessage.bSwitch;
+		// reset sent data to the current state
+		_SentData->bSwitch = bSwitch;
 		Execute__GetSignals(this)->OnSwitchChanged.Broadcast(bSwitch);
 	}
 
@@ -199,6 +201,8 @@ void UTbNamesNamEsMsgBusClient::OnConnectionInit(const FTbNamesNamEsInitMessage&
 	if (bSomePropertyChanged)
 	{
 		SomeProperty = InMessage.SomeProperty;
+		// reset sent data to the current state
+		_SentData->SomeProperty = SomeProperty;
 		Execute__GetSignals(this)->OnSomePropertyChanged.Broadcast(SomeProperty);
 	}
 
@@ -206,6 +210,8 @@ void UTbNamesNamEsMsgBusClient::OnConnectionInit(const FTbNamesNamEsInitMessage&
 	if (bSomePoperty2Changed)
 	{
 		SomePoperty2 = InMessage.SomePoperty2;
+		// reset sent data to the current state
+		_SentData->SomePoperty2 = SomePoperty2;
 		Execute__GetSignals(this)->OnSomePoperty2Changed.Broadcast(SomePoperty2);
 	}
 
@@ -213,6 +219,8 @@ void UTbNamesNamEsMsgBusClient::OnConnectionInit(const FTbNamesNamEsInitMessage&
 	if (bEnumPropertyChanged)
 	{
 		EnumProperty = InMessage.EnumProperty;
+		// reset sent data to the current state
+		_SentData->EnumProperty = EnumProperty;
 		Execute__GetSignals(this)->OnEnumPropertyChanged.Broadcast(EnumProperty);
 	}
 
@@ -540,6 +548,8 @@ void UTbNamesNamEsMsgBusClient::OnSwitchChanged(const FTbNamesNamEsSwitchChanged
 	if (bbSwitchChanged)
 	{
 		bSwitch = InMessage.bSwitch;
+		// reset sent data to the current state
+		_SentData->bSwitch = bSwitch;
 		Execute__GetSignals(this)->OnSwitchChanged.Broadcast(bSwitch);
 	}
 }
@@ -556,6 +566,8 @@ void UTbNamesNamEsMsgBusClient::OnSomePropertyChanged(const FTbNamesNamEsSomePro
 	if (bSomePropertyChanged)
 	{
 		SomeProperty = InMessage.SomeProperty;
+		// reset sent data to the current state
+		_SentData->SomeProperty = SomeProperty;
 		Execute__GetSignals(this)->OnSomePropertyChanged.Broadcast(SomeProperty);
 	}
 }
@@ -572,6 +584,8 @@ void UTbNamesNamEsMsgBusClient::OnSomePoperty2Changed(const FTbNamesNamEsSomePop
 	if (bSomePoperty2Changed)
 	{
 		SomePoperty2 = InMessage.SomePoperty2;
+		// reset sent data to the current state
+		_SentData->SomePoperty2 = SomePoperty2;
 		Execute__GetSignals(this)->OnSomePoperty2Changed.Broadcast(SomePoperty2);
 	}
 }
@@ -588,6 +602,8 @@ void UTbNamesNamEsMsgBusClient::OnEnumPropertyChanged(const FTbNamesNamEsEnumPro
 	if (bEnumPropertyChanged)
 	{
 		EnumProperty = InMessage.EnumProperty;
+		// reset sent data to the current state
+		_SentData->EnumProperty = EnumProperty;
 		Execute__GetSignals(this)->OnEnumPropertyChanged.Broadcast(EnumProperty);
 	}
 }

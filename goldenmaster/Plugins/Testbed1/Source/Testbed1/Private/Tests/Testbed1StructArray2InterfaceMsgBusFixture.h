@@ -27,18 +27,38 @@ public:
 
 	UFUNCTION()
 	void PropBoolPropertyCb(const FTestbed1StructBoolWithArray& PropBool);
+	UFUNCTION()
+	void PropBoolPropertyChangeLocalCheckRemoteCb(const FTestbed1StructBoolWithArray& PropBool);
+	UFUNCTION()
+	void PropBoolPropertyChangeLocalChangeRemoteCb(const FTestbed1StructBoolWithArray& PropBool);
 
 	UFUNCTION()
 	void PropIntPropertyCb(const FTestbed1StructIntWithArray& PropInt);
+	UFUNCTION()
+	void PropIntPropertyChangeLocalCheckRemoteCb(const FTestbed1StructIntWithArray& PropInt);
+	UFUNCTION()
+	void PropIntPropertyChangeLocalChangeRemoteCb(const FTestbed1StructIntWithArray& PropInt);
 
 	UFUNCTION()
 	void PropFloatPropertyCb(const FTestbed1StructFloatWithArray& PropFloat);
+	UFUNCTION()
+	void PropFloatPropertyChangeLocalCheckRemoteCb(const FTestbed1StructFloatWithArray& PropFloat);
+	UFUNCTION()
+	void PropFloatPropertyChangeLocalChangeRemoteCb(const FTestbed1StructFloatWithArray& PropFloat);
 
 	UFUNCTION()
 	void PropStringPropertyCb(const FTestbed1StructStringWithArray& PropString);
+	UFUNCTION()
+	void PropStringPropertyChangeLocalCheckRemoteCb(const FTestbed1StructStringWithArray& PropString);
+	UFUNCTION()
+	void PropStringPropertyChangeLocalChangeRemoteCb(const FTestbed1StructStringWithArray& PropString);
 
 	UFUNCTION()
 	void PropEnumPropertyCb(const FTestbed1StructEnumWithArray& PropEnum);
+	UFUNCTION()
+	void PropEnumPropertyChangeLocalCheckRemoteCb(const FTestbed1StructEnumWithArray& PropEnum);
+	UFUNCTION()
+	void PropEnumPropertyChangeLocalChangeRemoteCb(const FTestbed1StructEnumWithArray& PropEnum);
 
 	UFUNCTION()
 	void SigBoolSignalCb(const FTestbed1StructBoolWithArray& ParamBool);

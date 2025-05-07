@@ -28,7 +28,11 @@ TUniquePtr<FTbSimpleNoOperationsInterfaceMsgBusFixture> ImplFixture;
 
 // signal callbacks for testing
 void PropBoolPropertyCb(bool bPropBool);
+void PropBoolPropertyChangeLocalCheckRemoteCb(bool bPropBool);
+void PropBoolPropertyChangeLocalChangeRemoteCb(bool bPropBool);
 void PropIntPropertyCb(int32 PropInt);
+void PropIntPropertyChangeLocalCheckRemoteCb(int32 PropInt);
+void PropIntPropertyChangeLocalChangeRemoteCb(int32 PropInt);
 void SigVoidSignalCb();
 void SigBoolSignalCb(bool bParamBool);
 void _ConnectionStatusChangedCb(bool bConnected);

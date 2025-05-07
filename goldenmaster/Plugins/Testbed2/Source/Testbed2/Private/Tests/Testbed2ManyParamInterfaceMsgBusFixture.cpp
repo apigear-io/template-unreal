@@ -41,11 +41,43 @@ void UTestbed2ManyParamInterfaceMsgBusHelper::Prop1PropertyCb(int32 Prop1)
 	}
 }
 
+void UTestbed2ManyParamInterfaceMsgBusHelper::Prop1PropertyChangeLocalCheckRemoteCb(int32 Prop1)
+{
+	if (Spec)
+	{
+		Spec->Prop1PropertyChangeLocalCheckRemoteCb(Prop1);
+	}
+}
+
+void UTestbed2ManyParamInterfaceMsgBusHelper::Prop1PropertyChangeLocalChangeRemoteCb(int32 Prop1)
+{
+	if (Spec)
+	{
+		Spec->Prop1PropertyChangeLocalChangeRemoteCb(Prop1);
+	}
+}
+
 void UTestbed2ManyParamInterfaceMsgBusHelper::Prop2PropertyCb(int32 Prop2)
 {
 	if (Spec)
 	{
 		Spec->Prop2PropertyCb(Prop2);
+	}
+}
+
+void UTestbed2ManyParamInterfaceMsgBusHelper::Prop2PropertyChangeLocalCheckRemoteCb(int32 Prop2)
+{
+	if (Spec)
+	{
+		Spec->Prop2PropertyChangeLocalCheckRemoteCb(Prop2);
+	}
+}
+
+void UTestbed2ManyParamInterfaceMsgBusHelper::Prop2PropertyChangeLocalChangeRemoteCb(int32 Prop2)
+{
+	if (Spec)
+	{
+		Spec->Prop2PropertyChangeLocalChangeRemoteCb(Prop2);
 	}
 }
 
@@ -57,11 +89,43 @@ void UTestbed2ManyParamInterfaceMsgBusHelper::Prop3PropertyCb(int32 Prop3)
 	}
 }
 
+void UTestbed2ManyParamInterfaceMsgBusHelper::Prop3PropertyChangeLocalCheckRemoteCb(int32 Prop3)
+{
+	if (Spec)
+	{
+		Spec->Prop3PropertyChangeLocalCheckRemoteCb(Prop3);
+	}
+}
+
+void UTestbed2ManyParamInterfaceMsgBusHelper::Prop3PropertyChangeLocalChangeRemoteCb(int32 Prop3)
+{
+	if (Spec)
+	{
+		Spec->Prop3PropertyChangeLocalChangeRemoteCb(Prop3);
+	}
+}
+
 void UTestbed2ManyParamInterfaceMsgBusHelper::Prop4PropertyCb(int32 Prop4)
 {
 	if (Spec)
 	{
 		Spec->Prop4PropertyCb(Prop4);
+	}
+}
+
+void UTestbed2ManyParamInterfaceMsgBusHelper::Prop4PropertyChangeLocalCheckRemoteCb(int32 Prop4)
+{
+	if (Spec)
+	{
+		Spec->Prop4PropertyChangeLocalCheckRemoteCb(Prop4);
+	}
+}
+
+void UTestbed2ManyParamInterfaceMsgBusHelper::Prop4PropertyChangeLocalChangeRemoteCb(int32 Prop4)
+{
+	if (Spec)
+	{
+		Spec->Prop4PropertyChangeLocalChangeRemoteCb(Prop4);
 	}
 }
 

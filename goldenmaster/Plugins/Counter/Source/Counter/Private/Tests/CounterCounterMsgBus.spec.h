@@ -28,7 +28,11 @@ TUniquePtr<FCounterCounterMsgBusFixture> ImplFixture;
 
 // signal callbacks for testing
 void VectorPropertyCb(const FCustomTypesVector3D& Vector);
+void VectorPropertyChangeLocalCheckRemoteCb(const FCustomTypesVector3D& Vector);
+void VectorPropertyChangeLocalChangeRemoteCb(const FCustomTypesVector3D& Vector);
 void VectorArrayPropertyCb(const TArray<FCustomTypesVector3D>& VectorArray);
+void VectorArrayPropertyChangeLocalCheckRemoteCb(const TArray<FCustomTypesVector3D>& VectorArray);
+void VectorArrayPropertyChangeLocalChangeRemoteCb(const TArray<FCustomTypesVector3D>& VectorArray);
 void ValueChangedSignalCb(const FCustomTypesVector3D& Vector, const FVector& ExternVector, const TArray<FCustomTypesVector3D>& VectorArray, const TArray<FVector>& ExternVectorArray);
 void _ConnectionStatusChangedCb(bool bConnected);
 FDoneDelegate testDoneDelegate;

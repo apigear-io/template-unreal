@@ -41,11 +41,43 @@ void UTbEnumEnumInterfaceMsgBusHelper::Prop0PropertyCb(ETbEnumEnum0 Prop0)
 	}
 }
 
+void UTbEnumEnumInterfaceMsgBusHelper::Prop0PropertyChangeLocalCheckRemoteCb(ETbEnumEnum0 Prop0)
+{
+	if (Spec)
+	{
+		Spec->Prop0PropertyChangeLocalCheckRemoteCb(Prop0);
+	}
+}
+
+void UTbEnumEnumInterfaceMsgBusHelper::Prop0PropertyChangeLocalChangeRemoteCb(ETbEnumEnum0 Prop0)
+{
+	if (Spec)
+	{
+		Spec->Prop0PropertyChangeLocalChangeRemoteCb(Prop0);
+	}
+}
+
 void UTbEnumEnumInterfaceMsgBusHelper::Prop1PropertyCb(ETbEnumEnum1 Prop1)
 {
 	if (Spec)
 	{
 		Spec->Prop1PropertyCb(Prop1);
+	}
+}
+
+void UTbEnumEnumInterfaceMsgBusHelper::Prop1PropertyChangeLocalCheckRemoteCb(ETbEnumEnum1 Prop1)
+{
+	if (Spec)
+	{
+		Spec->Prop1PropertyChangeLocalCheckRemoteCb(Prop1);
+	}
+}
+
+void UTbEnumEnumInterfaceMsgBusHelper::Prop1PropertyChangeLocalChangeRemoteCb(ETbEnumEnum1 Prop1)
+{
+	if (Spec)
+	{
+		Spec->Prop1PropertyChangeLocalChangeRemoteCb(Prop1);
 	}
 }
 
@@ -57,11 +89,43 @@ void UTbEnumEnumInterfaceMsgBusHelper::Prop2PropertyCb(ETbEnumEnum2 Prop2)
 	}
 }
 
+void UTbEnumEnumInterfaceMsgBusHelper::Prop2PropertyChangeLocalCheckRemoteCb(ETbEnumEnum2 Prop2)
+{
+	if (Spec)
+	{
+		Spec->Prop2PropertyChangeLocalCheckRemoteCb(Prop2);
+	}
+}
+
+void UTbEnumEnumInterfaceMsgBusHelper::Prop2PropertyChangeLocalChangeRemoteCb(ETbEnumEnum2 Prop2)
+{
+	if (Spec)
+	{
+		Spec->Prop2PropertyChangeLocalChangeRemoteCb(Prop2);
+	}
+}
+
 void UTbEnumEnumInterfaceMsgBusHelper::Prop3PropertyCb(ETbEnumEnum3 Prop3)
 {
 	if (Spec)
 	{
 		Spec->Prop3PropertyCb(Prop3);
+	}
+}
+
+void UTbEnumEnumInterfaceMsgBusHelper::Prop3PropertyChangeLocalCheckRemoteCb(ETbEnumEnum3 Prop3)
+{
+	if (Spec)
+	{
+		Spec->Prop3PropertyChangeLocalCheckRemoteCb(Prop3);
+	}
+}
+
+void UTbEnumEnumInterfaceMsgBusHelper::Prop3PropertyChangeLocalChangeRemoteCb(ETbEnumEnum3 Prop3)
+{
+	if (Spec)
+	{
+		Spec->Prop3PropertyChangeLocalChangeRemoteCb(Prop3);
 	}
 }
 

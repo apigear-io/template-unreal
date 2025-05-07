@@ -41,11 +41,43 @@ void UTbSimpleNoOperationsInterfaceMsgBusHelper::PropBoolPropertyCb(bool bPropBo
 	}
 }
 
+void UTbSimpleNoOperationsInterfaceMsgBusHelper::PropBoolPropertyChangeLocalCheckRemoteCb(bool bPropBool)
+{
+	if (Spec)
+	{
+		Spec->PropBoolPropertyChangeLocalCheckRemoteCb(bPropBool);
+	}
+}
+
+void UTbSimpleNoOperationsInterfaceMsgBusHelper::PropBoolPropertyChangeLocalChangeRemoteCb(bool bPropBool)
+{
+	if (Spec)
+	{
+		Spec->PropBoolPropertyChangeLocalChangeRemoteCb(bPropBool);
+	}
+}
+
 void UTbSimpleNoOperationsInterfaceMsgBusHelper::PropIntPropertyCb(int32 PropInt)
 {
 	if (Spec)
 	{
 		Spec->PropIntPropertyCb(PropInt);
+	}
+}
+
+void UTbSimpleNoOperationsInterfaceMsgBusHelper::PropIntPropertyChangeLocalCheckRemoteCb(int32 PropInt)
+{
+	if (Spec)
+	{
+		Spec->PropIntPropertyChangeLocalCheckRemoteCb(PropInt);
+	}
+}
+
+void UTbSimpleNoOperationsInterfaceMsgBusHelper::PropIntPropertyChangeLocalChangeRemoteCb(int32 PropInt)
+{
+	if (Spec)
+	{
+		Spec->PropIntPropertyChangeLocalChangeRemoteCb(PropInt);
 	}
 }
 

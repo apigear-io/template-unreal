@@ -199,6 +199,11 @@ void UCounterCounterMsgBusClient::OnConnectionInit(const FCounterCounterInitMess
 	if (bVectorChanged)
 	{
 		Vector = InMessage.Vector;
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->VectorMutex));
+			_SentData->Vector = Vector;
+		}
 		Execute__GetSignals(this)->OnVectorChanged.Broadcast(Vector);
 	}
 
@@ -206,6 +211,11 @@ void UCounterCounterMsgBusClient::OnConnectionInit(const FCounterCounterInitMess
 	if (bExternVectorChanged)
 	{
 		ExternVector = InMessage.ExternVector;
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->ExternVectorMutex));
+			_SentData->ExternVector = ExternVector;
+		}
 		Execute__GetSignals(this)->OnExternVectorChanged.Broadcast(ExternVector);
 	}
 
@@ -213,6 +223,11 @@ void UCounterCounterMsgBusClient::OnConnectionInit(const FCounterCounterInitMess
 	if (bVectorArrayChanged)
 	{
 		VectorArray = InMessage.VectorArray;
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->VectorArrayMutex));
+			_SentData->VectorArray = VectorArray;
+		}
 		Execute__GetSignals(this)->OnVectorArrayChanged.Broadcast(VectorArray);
 	}
 
@@ -220,6 +235,11 @@ void UCounterCounterMsgBusClient::OnConnectionInit(const FCounterCounterInitMess
 	if (bExternVectorArrayChanged)
 	{
 		ExternVectorArray = InMessage.ExternVectorArray;
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->ExternVectorArrayMutex));
+			_SentData->ExternVectorArray = ExternVectorArray;
+		}
 		Execute__GetSignals(this)->OnExternVectorArrayChanged.Broadcast(ExternVectorArray);
 	}
 
@@ -625,6 +645,11 @@ void UCounterCounterMsgBusClient::OnVectorChanged(const FCounterCounterVectorCha
 	if (bVectorChanged)
 	{
 		Vector = InMessage.Vector;
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->VectorMutex));
+			_SentData->Vector = Vector;
+		}
 		Execute__GetSignals(this)->OnVectorChanged.Broadcast(Vector);
 	}
 }
@@ -641,6 +666,11 @@ void UCounterCounterMsgBusClient::OnExternVectorChanged(const FCounterCounterExt
 	if (bExternVectorChanged)
 	{
 		ExternVector = InMessage.ExternVector;
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->ExternVectorMutex));
+			_SentData->ExternVector = ExternVector;
+		}
 		Execute__GetSignals(this)->OnExternVectorChanged.Broadcast(ExternVector);
 	}
 }
@@ -657,6 +687,11 @@ void UCounterCounterMsgBusClient::OnVectorArrayChanged(const FCounterCounterVect
 	if (bVectorArrayChanged)
 	{
 		VectorArray = InMessage.VectorArray;
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->VectorArrayMutex));
+			_SentData->VectorArray = VectorArray;
+		}
 		Execute__GetSignals(this)->OnVectorArrayChanged.Broadcast(VectorArray);
 	}
 }
@@ -673,6 +708,11 @@ void UCounterCounterMsgBusClient::OnExternVectorArrayChanged(const FCounterCount
 	if (bExternVectorArrayChanged)
 	{
 		ExternVectorArray = InMessage.ExternVectorArray;
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->ExternVectorArrayMutex));
+			_SentData->ExternVectorArray = ExternVectorArray;
+		}
 		Execute__GetSignals(this)->OnExternVectorArrayChanged.Broadcast(ExternVectorArray);
 	}
 }

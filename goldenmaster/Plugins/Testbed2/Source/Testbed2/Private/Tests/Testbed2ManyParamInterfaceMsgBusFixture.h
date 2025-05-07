@@ -27,15 +27,31 @@ public:
 
 	UFUNCTION()
 	void Prop1PropertyCb(int32 Prop1);
+	UFUNCTION()
+	void Prop1PropertyChangeLocalCheckRemoteCb(int32 Prop1);
+	UFUNCTION()
+	void Prop1PropertyChangeLocalChangeRemoteCb(int32 Prop1);
 
 	UFUNCTION()
 	void Prop2PropertyCb(int32 Prop2);
+	UFUNCTION()
+	void Prop2PropertyChangeLocalCheckRemoteCb(int32 Prop2);
+	UFUNCTION()
+	void Prop2PropertyChangeLocalChangeRemoteCb(int32 Prop2);
 
 	UFUNCTION()
 	void Prop3PropertyCb(int32 Prop3);
+	UFUNCTION()
+	void Prop3PropertyChangeLocalCheckRemoteCb(int32 Prop3);
+	UFUNCTION()
+	void Prop3PropertyChangeLocalChangeRemoteCb(int32 Prop3);
 
 	UFUNCTION()
 	void Prop4PropertyCb(int32 Prop4);
+	UFUNCTION()
+	void Prop4PropertyChangeLocalCheckRemoteCb(int32 Prop4);
+	UFUNCTION()
+	void Prop4PropertyChangeLocalChangeRemoteCb(int32 Prop4);
 
 	UFUNCTION()
 	void Sig1SignalCb(int32 Param1);

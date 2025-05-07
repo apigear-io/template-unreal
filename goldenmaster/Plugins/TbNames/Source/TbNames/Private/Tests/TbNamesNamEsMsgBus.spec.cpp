@@ -86,6 +86,36 @@ void UTbNamesNamEsMsgBusSpec::Define()
 		ImplFixture->GetImplementation()->Execute_SetSwitch(ImplFixture->GetImplementation().GetObject(), TestValue);
 	});
 
+	LatentIt("Property.Switch.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		bool TestValue = false; // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetSwitch(ImplFixture->GetImplementation().GetObject()), TestValue);
+
+		testDoneDelegate = TestDone;
+		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
+		TbNamesNamEsSignals->OnSwitchChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTbNamesNamEsMsgBusHelper::SwitchPropertyChangeLocalCheckRemoteCb);
+		// use different test value
+		TestValue = true;
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbNamesNamEs>();
+		service->Execute_SetSwitch(service, TestValue);
+	});
+
+	LatentIt("Property.Switch.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		bool TestValue = false; // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetSwitch(ImplFixture->GetImplementation().GetObject()), TestValue);
+
+		testDoneDelegate = TestDone;
+		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
+		TbNamesNamEsSignals->OnSwitchChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTbNamesNamEsMsgBusHelper::SwitchPropertyChangeLocalChangeRemoteCb);
+		// use different test value
+		TestValue = true;
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbNamesNamEs>();
+		service->Execute_SetSwitch(service, TestValue);
+	});
+
 	It("Property.SomeProperty.Default", [this]()
 		{
 		// Do implement test here
@@ -105,6 +135,36 @@ void UTbNamesNamEsMsgBusSpec::Define()
 		// use different test value
 		TestValue = 1;
 		ImplFixture->GetImplementation()->Execute_SetSomeProperty(ImplFixture->GetImplementation().GetObject(), TestValue);
+	});
+
+	LatentIt("Property.SomeProperty.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		int32 TestValue = 0; // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetSomeProperty(ImplFixture->GetImplementation().GetObject()), TestValue);
+
+		testDoneDelegate = TestDone;
+		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
+		TbNamesNamEsSignals->OnSomePropertyChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTbNamesNamEsMsgBusHelper::SomePropertyPropertyChangeLocalCheckRemoteCb);
+		// use different test value
+		TestValue = 1;
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbNamesNamEs>();
+		service->Execute_SetSomeProperty(service, TestValue);
+	});
+
+	LatentIt("Property.SomeProperty.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		int32 TestValue = 0; // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetSomeProperty(ImplFixture->GetImplementation().GetObject()), TestValue);
+
+		testDoneDelegate = TestDone;
+		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
+		TbNamesNamEsSignals->OnSomePropertyChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTbNamesNamEsMsgBusHelper::SomePropertyPropertyChangeLocalChangeRemoteCb);
+		// use different test value
+		TestValue = 1;
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbNamesNamEs>();
+		service->Execute_SetSomeProperty(service, TestValue);
 	});
 
 	It("Property.SomePoperty2.Default", [this]()
@@ -128,6 +188,36 @@ void UTbNamesNamEsMsgBusSpec::Define()
 		ImplFixture->GetImplementation()->Execute_SetSomePoperty2(ImplFixture->GetImplementation().GetObject(), TestValue);
 	});
 
+	LatentIt("Property.SomePoperty2.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		int32 TestValue = 0; // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetSomePoperty2(ImplFixture->GetImplementation().GetObject()), TestValue);
+
+		testDoneDelegate = TestDone;
+		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
+		TbNamesNamEsSignals->OnSomePoperty2Changed.AddDynamic(ImplFixture->GetHelper().Get(), &UTbNamesNamEsMsgBusHelper::SomePoperty2PropertyChangeLocalCheckRemoteCb);
+		// use different test value
+		TestValue = 1;
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbNamesNamEs>();
+		service->Execute_SetSomePoperty2(service, TestValue);
+	});
+
+	LatentIt("Property.SomePoperty2.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		int32 TestValue = 0; // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetSomePoperty2(ImplFixture->GetImplementation().GetObject()), TestValue);
+
+		testDoneDelegate = TestDone;
+		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
+		TbNamesNamEsSignals->OnSomePoperty2Changed.AddDynamic(ImplFixture->GetHelper().Get(), &UTbNamesNamEsMsgBusHelper::SomePoperty2PropertyChangeLocalChangeRemoteCb);
+		// use different test value
+		TestValue = 1;
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbNamesNamEs>();
+		service->Execute_SetSomePoperty2(service, TestValue);
+	});
+
 	It("Property.EnumProperty.Default", [this]()
 		{
 		// Do implement test here
@@ -147,6 +237,36 @@ void UTbNamesNamEsMsgBusSpec::Define()
 		// use different test value
 		TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_SECONDVALUE;
 		ImplFixture->GetImplementation()->Execute_SetEnumProperty(ImplFixture->GetImplementation().GetObject(), TestValue);
+	});
+
+	LatentIt("Property.EnumProperty.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		ETbNamesEnum_With_Under_scores TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_FIRSTVALUE; // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetEnumProperty(ImplFixture->GetImplementation().GetObject()), TestValue);
+
+		testDoneDelegate = TestDone;
+		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
+		TbNamesNamEsSignals->OnEnumPropertyChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTbNamesNamEsMsgBusHelper::EnumPropertyPropertyChangeLocalCheckRemoteCb);
+		// use different test value
+		TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_SECONDVALUE;
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbNamesNamEs>();
+		service->Execute_SetEnumProperty(service, TestValue);
+	});
+
+	LatentIt("Property.EnumProperty.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		ETbNamesEnum_With_Under_scores TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_FIRSTVALUE; // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetEnumProperty(ImplFixture->GetImplementation().GetObject()), TestValue);
+
+		testDoneDelegate = TestDone;
+		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
+		TbNamesNamEsSignals->OnEnumPropertyChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTbNamesNamEsMsgBusHelper::EnumPropertyPropertyChangeLocalChangeRemoteCb);
+		// use different test value
+		TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_SECONDVALUE;
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbNamesNamEs>();
+		service->Execute_SetEnumProperty(service, TestValue);
 	});
 
 	LatentIt("Operation.SomeFunction", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
@@ -202,6 +322,45 @@ void UTbNamesNamEsMsgBusSpec::SwitchPropertyCb(bool bInSwitch)
 	testDoneDelegate.Execute();
 }
 
+void UTbNamesNamEsMsgBusSpec::SwitchPropertyChangeLocalCheckRemoteCb(bool bInSwitch)
+{
+	bool TestValue = false;
+	// use different test value
+	TestValue = true;
+	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), bInSwitch, TestValue);
+	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetSwitch(ImplFixture->GetImplementation().GetObject()), TestValue);
+	testDoneDelegate.Execute();
+}
+
+void UTbNamesNamEsMsgBusSpec::SwitchPropertyChangeLocalChangeRemoteCb(bool bInSwitch)
+{
+	// this function must be called twice before we can successfully pass this test.
+	// first call it should have the test value of the parameter
+	// second call it should have the default value of the parameter again
+	static int count = 0;
+	count++;
+
+	if (count % 2 != 0)
+	{
+		bool TestValue = false;
+		// use different test value
+		TestValue = true;
+		TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), bInSwitch, TestValue);
+		TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetSwitch(ImplFixture->GetImplementation().GetObject()), TestValue);
+
+		// now set it to the default value
+		TestValue = false; // default value
+		ImplFixture->GetImplementation()->Execute_SetSwitch(ImplFixture->GetImplementation().GetObject(), TestValue);
+	}
+	else
+	{
+		bool TestValue = false; // default value
+		TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), bInSwitch, TestValue);
+		TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetSwitch(ImplFixture->GetImplementation().GetObject()), TestValue);
+		testDoneDelegate.Execute();
+	}
+}
+
 void UTbNamesNamEsMsgBusSpec::SomePropertyPropertyCb(int32 InSomeProperty)
 {
 	int32 TestValue = 0;
@@ -210,6 +369,45 @@ void UTbNamesNamEsMsgBusSpec::SomePropertyPropertyCb(int32 InSomeProperty)
 	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InSomeProperty, TestValue);
 	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetSomeProperty(ImplFixture->GetImplementation().GetObject()), TestValue);
 	testDoneDelegate.Execute();
+}
+
+void UTbNamesNamEsMsgBusSpec::SomePropertyPropertyChangeLocalCheckRemoteCb(int32 InSomeProperty)
+{
+	int32 TestValue = 0;
+	// use different test value
+	TestValue = 1;
+	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InSomeProperty, TestValue);
+	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetSomeProperty(ImplFixture->GetImplementation().GetObject()), TestValue);
+	testDoneDelegate.Execute();
+}
+
+void UTbNamesNamEsMsgBusSpec::SomePropertyPropertyChangeLocalChangeRemoteCb(int32 InSomeProperty)
+{
+	// this function must be called twice before we can successfully pass this test.
+	// first call it should have the test value of the parameter
+	// second call it should have the default value of the parameter again
+	static int count = 0;
+	count++;
+
+	if (count % 2 != 0)
+	{
+		int32 TestValue = 0;
+		// use different test value
+		TestValue = 1;
+		TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InSomeProperty, TestValue);
+		TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetSomeProperty(ImplFixture->GetImplementation().GetObject()), TestValue);
+
+		// now set it to the default value
+		TestValue = 0; // default value
+		ImplFixture->GetImplementation()->Execute_SetSomeProperty(ImplFixture->GetImplementation().GetObject(), TestValue);
+	}
+	else
+	{
+		int32 TestValue = 0; // default value
+		TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InSomeProperty, TestValue);
+		TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetSomeProperty(ImplFixture->GetImplementation().GetObject()), TestValue);
+		testDoneDelegate.Execute();
+	}
 }
 
 void UTbNamesNamEsMsgBusSpec::SomePoperty2PropertyCb(int32 InSomePoperty2)
@@ -222,6 +420,45 @@ void UTbNamesNamEsMsgBusSpec::SomePoperty2PropertyCb(int32 InSomePoperty2)
 	testDoneDelegate.Execute();
 }
 
+void UTbNamesNamEsMsgBusSpec::SomePoperty2PropertyChangeLocalCheckRemoteCb(int32 InSomePoperty2)
+{
+	int32 TestValue = 0;
+	// use different test value
+	TestValue = 1;
+	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InSomePoperty2, TestValue);
+	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetSomePoperty2(ImplFixture->GetImplementation().GetObject()), TestValue);
+	testDoneDelegate.Execute();
+}
+
+void UTbNamesNamEsMsgBusSpec::SomePoperty2PropertyChangeLocalChangeRemoteCb(int32 InSomePoperty2)
+{
+	// this function must be called twice before we can successfully pass this test.
+	// first call it should have the test value of the parameter
+	// second call it should have the default value of the parameter again
+	static int count = 0;
+	count++;
+
+	if (count % 2 != 0)
+	{
+		int32 TestValue = 0;
+		// use different test value
+		TestValue = 1;
+		TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InSomePoperty2, TestValue);
+		TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetSomePoperty2(ImplFixture->GetImplementation().GetObject()), TestValue);
+
+		// now set it to the default value
+		TestValue = 0; // default value
+		ImplFixture->GetImplementation()->Execute_SetSomePoperty2(ImplFixture->GetImplementation().GetObject(), TestValue);
+	}
+	else
+	{
+		int32 TestValue = 0; // default value
+		TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InSomePoperty2, TestValue);
+		TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetSomePoperty2(ImplFixture->GetImplementation().GetObject()), TestValue);
+		testDoneDelegate.Execute();
+	}
+}
+
 void UTbNamesNamEsMsgBusSpec::EnumPropertyPropertyCb(ETbNamesEnum_With_Under_scores InEnumProperty)
 {
 	ETbNamesEnum_With_Under_scores TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_FIRSTVALUE;
@@ -230,6 +467,45 @@ void UTbNamesNamEsMsgBusSpec::EnumPropertyPropertyCb(ETbNamesEnum_With_Under_sco
 	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InEnumProperty, TestValue);
 	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetEnumProperty(ImplFixture->GetImplementation().GetObject()), TestValue);
 	testDoneDelegate.Execute();
+}
+
+void UTbNamesNamEsMsgBusSpec::EnumPropertyPropertyChangeLocalCheckRemoteCb(ETbNamesEnum_With_Under_scores InEnumProperty)
+{
+	ETbNamesEnum_With_Under_scores TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_FIRSTVALUE;
+	// use different test value
+	TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_SECONDVALUE;
+	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InEnumProperty, TestValue);
+	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetEnumProperty(ImplFixture->GetImplementation().GetObject()), TestValue);
+	testDoneDelegate.Execute();
+}
+
+void UTbNamesNamEsMsgBusSpec::EnumPropertyPropertyChangeLocalChangeRemoteCb(ETbNamesEnum_With_Under_scores InEnumProperty)
+{
+	// this function must be called twice before we can successfully pass this test.
+	// first call it should have the test value of the parameter
+	// second call it should have the default value of the parameter again
+	static int count = 0;
+	count++;
+
+	if (count % 2 != 0)
+	{
+		ETbNamesEnum_With_Under_scores TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_FIRSTVALUE;
+		// use different test value
+		TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_SECONDVALUE;
+		TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InEnumProperty, TestValue);
+		TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetEnumProperty(ImplFixture->GetImplementation().GetObject()), TestValue);
+
+		// now set it to the default value
+		TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_FIRSTVALUE; // default value
+		ImplFixture->GetImplementation()->Execute_SetEnumProperty(ImplFixture->GetImplementation().GetObject(), TestValue);
+	}
+	else
+	{
+		ETbNamesEnum_With_Under_scores TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_FIRSTVALUE; // default value
+		TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InEnumProperty, TestValue);
+		TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetEnumProperty(ImplFixture->GetImplementation().GetObject()), TestValue);
+		testDoneDelegate.Execute();
+	}
 }
 
 void UTbNamesNamEsMsgBusSpec::SomeSignalSignalCb(bool bInSomeParam)

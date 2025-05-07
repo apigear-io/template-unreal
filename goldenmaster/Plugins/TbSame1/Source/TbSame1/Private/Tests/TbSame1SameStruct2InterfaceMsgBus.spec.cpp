@@ -86,6 +86,36 @@ void UTbSame1SameStruct2InterfaceMsgBusSpec::Define()
 		ImplFixture->GetImplementation()->Execute_SetProp1(ImplFixture->GetImplementation().GetObject(), TestValue);
 	});
 
+	LatentIt("Property.Prop1.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		FTbSame1Struct2 TestValue = FTbSame1Struct2(); // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetProp1(ImplFixture->GetImplementation().GetObject()), TestValue);
+
+		testDoneDelegate = TestDone;
+		UTbSame1SameStruct2InterfaceSignals* TbSame1SameStruct2InterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
+		TbSame1SameStruct2InterfaceSignals->OnProp1Changed.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame1SameStruct2InterfaceMsgBusHelper::Prop1PropertyChangeLocalCheckRemoteCb);
+		// use different test value
+		TestValue = createTestFTbSame1Struct2();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSame1SameStruct2Interface>();
+		service->Execute_SetProp1(service, TestValue);
+	});
+
+	LatentIt("Property.Prop1.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		FTbSame1Struct2 TestValue = FTbSame1Struct2(); // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetProp1(ImplFixture->GetImplementation().GetObject()), TestValue);
+
+		testDoneDelegate = TestDone;
+		UTbSame1SameStruct2InterfaceSignals* TbSame1SameStruct2InterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
+		TbSame1SameStruct2InterfaceSignals->OnProp1Changed.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame1SameStruct2InterfaceMsgBusHelper::Prop1PropertyChangeLocalChangeRemoteCb);
+		// use different test value
+		TestValue = createTestFTbSame1Struct2();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSame1SameStruct2Interface>();
+		service->Execute_SetProp1(service, TestValue);
+	});
+
 	It("Property.Prop2.Default", [this]()
 		{
 		// Do implement test here
@@ -105,6 +135,36 @@ void UTbSame1SameStruct2InterfaceMsgBusSpec::Define()
 		// use different test value
 		TestValue = createTestFTbSame1Struct2();
 		ImplFixture->GetImplementation()->Execute_SetProp2(ImplFixture->GetImplementation().GetObject(), TestValue);
+	});
+
+	LatentIt("Property.Prop2.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		FTbSame1Struct2 TestValue = FTbSame1Struct2(); // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetProp2(ImplFixture->GetImplementation().GetObject()), TestValue);
+
+		testDoneDelegate = TestDone;
+		UTbSame1SameStruct2InterfaceSignals* TbSame1SameStruct2InterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
+		TbSame1SameStruct2InterfaceSignals->OnProp2Changed.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame1SameStruct2InterfaceMsgBusHelper::Prop2PropertyChangeLocalCheckRemoteCb);
+		// use different test value
+		TestValue = createTestFTbSame1Struct2();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSame1SameStruct2Interface>();
+		service->Execute_SetProp2(service, TestValue);
+	});
+
+	LatentIt("Property.Prop2.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		FTbSame1Struct2 TestValue = FTbSame1Struct2(); // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetProp2(ImplFixture->GetImplementation().GetObject()), TestValue);
+
+		testDoneDelegate = TestDone;
+		UTbSame1SameStruct2InterfaceSignals* TbSame1SameStruct2InterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
+		TbSame1SameStruct2InterfaceSignals->OnProp2Changed.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame1SameStruct2InterfaceMsgBusHelper::Prop2PropertyChangeLocalChangeRemoteCb);
+		// use different test value
+		TestValue = createTestFTbSame1Struct2();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSame1SameStruct2Interface>();
+		service->Execute_SetProp2(service, TestValue);
 	});
 
 	LatentIt("Operation.Func1", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
@@ -161,6 +221,45 @@ void UTbSame1SameStruct2InterfaceMsgBusSpec::Prop1PropertyCb(const FTbSame1Struc
 	testDoneDelegate.Execute();
 }
 
+void UTbSame1SameStruct2InterfaceMsgBusSpec::Prop1PropertyChangeLocalCheckRemoteCb(const FTbSame1Struct2& InProp1)
+{
+	FTbSame1Struct2 TestValue = FTbSame1Struct2();
+	// use different test value
+	TestValue = createTestFTbSame1Struct2();
+	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
+	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetProp1(ImplFixture->GetImplementation().GetObject()), TestValue);
+	testDoneDelegate.Execute();
+}
+
+void UTbSame1SameStruct2InterfaceMsgBusSpec::Prop1PropertyChangeLocalChangeRemoteCb(const FTbSame1Struct2& InProp1)
+{
+	// this function must be called twice before we can successfully pass this test.
+	// first call it should have the test value of the parameter
+	// second call it should have the default value of the parameter again
+	static int count = 0;
+	count++;
+
+	if (count % 2 != 0)
+	{
+		FTbSame1Struct2 TestValue = FTbSame1Struct2();
+		// use different test value
+		TestValue = createTestFTbSame1Struct2();
+		TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
+		TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetProp1(ImplFixture->GetImplementation().GetObject()), TestValue);
+
+		// now set it to the default value
+		TestValue = FTbSame1Struct2(); // default value
+		ImplFixture->GetImplementation()->Execute_SetProp1(ImplFixture->GetImplementation().GetObject(), TestValue);
+	}
+	else
+	{
+		FTbSame1Struct2 TestValue = FTbSame1Struct2(); // default value
+		TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
+		TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetProp1(ImplFixture->GetImplementation().GetObject()), TestValue);
+		testDoneDelegate.Execute();
+	}
+}
+
 void UTbSame1SameStruct2InterfaceMsgBusSpec::Prop2PropertyCb(const FTbSame1Struct2& InProp2)
 {
 	FTbSame1Struct2 TestValue = FTbSame1Struct2();
@@ -169,6 +268,45 @@ void UTbSame1SameStruct2InterfaceMsgBusSpec::Prop2PropertyCb(const FTbSame1Struc
 	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp2, TestValue);
 	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetProp2(ImplFixture->GetImplementation().GetObject()), TestValue);
 	testDoneDelegate.Execute();
+}
+
+void UTbSame1SameStruct2InterfaceMsgBusSpec::Prop2PropertyChangeLocalCheckRemoteCb(const FTbSame1Struct2& InProp2)
+{
+	FTbSame1Struct2 TestValue = FTbSame1Struct2();
+	// use different test value
+	TestValue = createTestFTbSame1Struct2();
+	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp2, TestValue);
+	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetProp2(ImplFixture->GetImplementation().GetObject()), TestValue);
+	testDoneDelegate.Execute();
+}
+
+void UTbSame1SameStruct2InterfaceMsgBusSpec::Prop2PropertyChangeLocalChangeRemoteCb(const FTbSame1Struct2& InProp2)
+{
+	// this function must be called twice before we can successfully pass this test.
+	// first call it should have the test value of the parameter
+	// second call it should have the default value of the parameter again
+	static int count = 0;
+	count++;
+
+	if (count % 2 != 0)
+	{
+		FTbSame1Struct2 TestValue = FTbSame1Struct2();
+		// use different test value
+		TestValue = createTestFTbSame1Struct2();
+		TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp2, TestValue);
+		TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetProp2(ImplFixture->GetImplementation().GetObject()), TestValue);
+
+		// now set it to the default value
+		TestValue = FTbSame1Struct2(); // default value
+		ImplFixture->GetImplementation()->Execute_SetProp2(ImplFixture->GetImplementation().GetObject(), TestValue);
+	}
+	else
+	{
+		FTbSame1Struct2 TestValue = FTbSame1Struct2(); // default value
+		TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp2, TestValue);
+		TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetProp2(ImplFixture->GetImplementation().GetObject()), TestValue);
+		testDoneDelegate.Execute();
+	}
 }
 
 void UTbSame1SameStruct2InterfaceMsgBusSpec::Sig1SignalCb(const FTbSame1Struct1& InParam1)

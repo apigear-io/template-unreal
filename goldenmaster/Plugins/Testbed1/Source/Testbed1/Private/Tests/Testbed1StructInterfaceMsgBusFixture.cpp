@@ -41,11 +41,43 @@ void UTestbed1StructInterfaceMsgBusHelper::PropBoolPropertyCb(const FTestbed1Str
 	}
 }
 
+void UTestbed1StructInterfaceMsgBusHelper::PropBoolPropertyChangeLocalCheckRemoteCb(const FTestbed1StructBool& PropBool)
+{
+	if (Spec)
+	{
+		Spec->PropBoolPropertyChangeLocalCheckRemoteCb(PropBool);
+	}
+}
+
+void UTestbed1StructInterfaceMsgBusHelper::PropBoolPropertyChangeLocalChangeRemoteCb(const FTestbed1StructBool& PropBool)
+{
+	if (Spec)
+	{
+		Spec->PropBoolPropertyChangeLocalChangeRemoteCb(PropBool);
+	}
+}
+
 void UTestbed1StructInterfaceMsgBusHelper::PropIntPropertyCb(const FTestbed1StructInt& PropInt)
 {
 	if (Spec)
 	{
 		Spec->PropIntPropertyCb(PropInt);
+	}
+}
+
+void UTestbed1StructInterfaceMsgBusHelper::PropIntPropertyChangeLocalCheckRemoteCb(const FTestbed1StructInt& PropInt)
+{
+	if (Spec)
+	{
+		Spec->PropIntPropertyChangeLocalCheckRemoteCb(PropInt);
+	}
+}
+
+void UTestbed1StructInterfaceMsgBusHelper::PropIntPropertyChangeLocalChangeRemoteCb(const FTestbed1StructInt& PropInt)
+{
+	if (Spec)
+	{
+		Spec->PropIntPropertyChangeLocalChangeRemoteCb(PropInt);
 	}
 }
 
@@ -57,11 +89,43 @@ void UTestbed1StructInterfaceMsgBusHelper::PropFloatPropertyCb(const FTestbed1St
 	}
 }
 
+void UTestbed1StructInterfaceMsgBusHelper::PropFloatPropertyChangeLocalCheckRemoteCb(const FTestbed1StructFloat& PropFloat)
+{
+	if (Spec)
+	{
+		Spec->PropFloatPropertyChangeLocalCheckRemoteCb(PropFloat);
+	}
+}
+
+void UTestbed1StructInterfaceMsgBusHelper::PropFloatPropertyChangeLocalChangeRemoteCb(const FTestbed1StructFloat& PropFloat)
+{
+	if (Spec)
+	{
+		Spec->PropFloatPropertyChangeLocalChangeRemoteCb(PropFloat);
+	}
+}
+
 void UTestbed1StructInterfaceMsgBusHelper::PropStringPropertyCb(const FTestbed1StructString& PropString)
 {
 	if (Spec)
 	{
 		Spec->PropStringPropertyCb(PropString);
+	}
+}
+
+void UTestbed1StructInterfaceMsgBusHelper::PropStringPropertyChangeLocalCheckRemoteCb(const FTestbed1StructString& PropString)
+{
+	if (Spec)
+	{
+		Spec->PropStringPropertyChangeLocalCheckRemoteCb(PropString);
+	}
+}
+
+void UTestbed1StructInterfaceMsgBusHelper::PropStringPropertyChangeLocalChangeRemoteCb(const FTestbed1StructString& PropString)
+{
+	if (Spec)
+	{
+		Spec->PropStringPropertyChangeLocalChangeRemoteCb(PropString);
 	}
 }
 

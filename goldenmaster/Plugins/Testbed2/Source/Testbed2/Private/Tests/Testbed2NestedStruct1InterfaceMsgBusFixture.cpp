@@ -41,6 +41,22 @@ void UTestbed2NestedStruct1InterfaceMsgBusHelper::Prop1PropertyCb(const FTestbed
 	}
 }
 
+void UTestbed2NestedStruct1InterfaceMsgBusHelper::Prop1PropertyChangeLocalCheckRemoteCb(const FTestbed2NestedStruct1& Prop1)
+{
+	if (Spec)
+	{
+		Spec->Prop1PropertyChangeLocalCheckRemoteCb(Prop1);
+	}
+}
+
+void UTestbed2NestedStruct1InterfaceMsgBusHelper::Prop1PropertyChangeLocalChangeRemoteCb(const FTestbed2NestedStruct1& Prop1)
+{
+	if (Spec)
+	{
+		Spec->Prop1PropertyChangeLocalChangeRemoteCb(Prop1);
+	}
+}
+
 void UTestbed2NestedStruct1InterfaceMsgBusHelper::Sig1SignalCb(const FTestbed2NestedStruct1& Param1)
 {
 	if (Spec)

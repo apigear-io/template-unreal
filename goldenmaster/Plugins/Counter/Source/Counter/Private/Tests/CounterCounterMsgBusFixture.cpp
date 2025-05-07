@@ -41,11 +41,43 @@ void UCounterCounterMsgBusHelper::VectorPropertyCb(const FCustomTypesVector3D& V
 	}
 }
 
+void UCounterCounterMsgBusHelper::VectorPropertyChangeLocalCheckRemoteCb(const FCustomTypesVector3D& Vector)
+{
+	if (Spec)
+	{
+		Spec->VectorPropertyChangeLocalCheckRemoteCb(Vector);
+	}
+}
+
+void UCounterCounterMsgBusHelper::VectorPropertyChangeLocalChangeRemoteCb(const FCustomTypesVector3D& Vector)
+{
+	if (Spec)
+	{
+		Spec->VectorPropertyChangeLocalChangeRemoteCb(Vector);
+	}
+}
+
 void UCounterCounterMsgBusHelper::VectorArrayPropertyCb(const TArray<FCustomTypesVector3D>& VectorArray)
 {
 	if (Spec)
 	{
 		Spec->VectorArrayPropertyCb(VectorArray);
+	}
+}
+
+void UCounterCounterMsgBusHelper::VectorArrayPropertyChangeLocalCheckRemoteCb(const TArray<FCustomTypesVector3D>& VectorArray)
+{
+	if (Spec)
+	{
+		Spec->VectorArrayPropertyChangeLocalCheckRemoteCb(VectorArray);
+	}
+}
+
+void UCounterCounterMsgBusHelper::VectorArrayPropertyChangeLocalChangeRemoteCb(const TArray<FCustomTypesVector3D>& VectorArray)
+{
+	if (Spec)
+	{
+		Spec->VectorArrayPropertyChangeLocalChangeRemoteCb(VectorArray);
 	}
 }
 

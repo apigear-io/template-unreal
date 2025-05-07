@@ -33,6 +33,22 @@ void {{$Class}}MsgBusHelper::{{ Camel .Name }}PropertyCb({{ueParam "" .}})
 		Spec->{{ Camel .Name }}PropertyCb({{ueVar "" .}});
 	}
 }
+
+void {{$Class}}MsgBusHelper::{{ Camel .Name }}PropertyChangeLocalCheckRemoteCb({{ueParam "" .}})
+{
+	if (Spec)
+	{
+		Spec->{{ Camel .Name }}PropertyChangeLocalCheckRemoteCb({{ueVar "" .}});
+	}
+}
+
+void {{$Class}}MsgBusHelper::{{ Camel .Name }}PropertyChangeLocalChangeRemoteCb({{ueParam "" .}})
+{
+	if (Spec)
+	{
+		Spec->{{ Camel .Name }}PropertyChangeLocalChangeRemoteCb({{ueVar "" .}});
+	}
+}
 {{- end }}
 {{- end }}
 
