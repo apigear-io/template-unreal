@@ -35,9 +35,41 @@ void UTestbed1StructInterfaceOLinkHelper::PropBoolPropertyCb(const FTestbed1Stru
 	Spec->PropBoolPropertyCb(PropBool);
 }
 
+void UTestbed1StructInterfaceOLinkHelper::PropBoolPropertyChangeLocalCheckRemoteCb(const FTestbed1StructBool& PropBool)
+{
+	if (Spec)
+	{
+		Spec->PropBoolPropertyChangeLocalCheckRemoteCb(PropBool);
+	}
+}
+
+void UTestbed1StructInterfaceOLinkHelper::PropBoolPropertyChangeLocalChangeRemoteCb(const FTestbed1StructBool& PropBool)
+{
+	if (Spec)
+	{
+		Spec->PropBoolPropertyChangeLocalChangeRemoteCb(PropBool);
+	}
+}
+
 void UTestbed1StructInterfaceOLinkHelper::PropIntPropertyCb(const FTestbed1StructInt& PropInt)
 {
 	Spec->PropIntPropertyCb(PropInt);
+}
+
+void UTestbed1StructInterfaceOLinkHelper::PropIntPropertyChangeLocalCheckRemoteCb(const FTestbed1StructInt& PropInt)
+{
+	if (Spec)
+	{
+		Spec->PropIntPropertyChangeLocalCheckRemoteCb(PropInt);
+	}
+}
+
+void UTestbed1StructInterfaceOLinkHelper::PropIntPropertyChangeLocalChangeRemoteCb(const FTestbed1StructInt& PropInt)
+{
+	if (Spec)
+	{
+		Spec->PropIntPropertyChangeLocalChangeRemoteCb(PropInt);
+	}
 }
 
 void UTestbed1StructInterfaceOLinkHelper::PropFloatPropertyCb(const FTestbed1StructFloat& PropFloat)
@@ -45,9 +77,41 @@ void UTestbed1StructInterfaceOLinkHelper::PropFloatPropertyCb(const FTestbed1Str
 	Spec->PropFloatPropertyCb(PropFloat);
 }
 
+void UTestbed1StructInterfaceOLinkHelper::PropFloatPropertyChangeLocalCheckRemoteCb(const FTestbed1StructFloat& PropFloat)
+{
+	if (Spec)
+	{
+		Spec->PropFloatPropertyChangeLocalCheckRemoteCb(PropFloat);
+	}
+}
+
+void UTestbed1StructInterfaceOLinkHelper::PropFloatPropertyChangeLocalChangeRemoteCb(const FTestbed1StructFloat& PropFloat)
+{
+	if (Spec)
+	{
+		Spec->PropFloatPropertyChangeLocalChangeRemoteCb(PropFloat);
+	}
+}
+
 void UTestbed1StructInterfaceOLinkHelper::PropStringPropertyCb(const FTestbed1StructString& PropString)
 {
 	Spec->PropStringPropertyCb(PropString);
+}
+
+void UTestbed1StructInterfaceOLinkHelper::PropStringPropertyChangeLocalCheckRemoteCb(const FTestbed1StructString& PropString)
+{
+	if (Spec)
+	{
+		Spec->PropStringPropertyChangeLocalCheckRemoteCb(PropString);
+	}
+}
+
+void UTestbed1StructInterfaceOLinkHelper::PropStringPropertyChangeLocalChangeRemoteCb(const FTestbed1StructString& PropString)
+{
+	if (Spec)
+	{
+		Spec->PropStringPropertyChangeLocalChangeRemoteCb(PropString);
+	}
 }
 
 void UTestbed1StructInterfaceOLinkHelper::SigBoolSignalCb(const FTestbed1StructBool& ParamBool)

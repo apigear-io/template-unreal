@@ -27,15 +27,31 @@ public:
 
 	UFUNCTION()
 	void Prop0PropertyCb(ETbEnumEnum0 Prop0);
+	UFUNCTION()
+	void Prop0PropertyChangeLocalCheckRemoteCb(ETbEnumEnum0 Prop0);
+	UFUNCTION()
+	void Prop0PropertyChangeLocalChangeRemoteCb(ETbEnumEnum0 Prop0);
 
 	UFUNCTION()
 	void Prop1PropertyCb(ETbEnumEnum1 Prop1);
+	UFUNCTION()
+	void Prop1PropertyChangeLocalCheckRemoteCb(ETbEnumEnum1 Prop1);
+	UFUNCTION()
+	void Prop1PropertyChangeLocalChangeRemoteCb(ETbEnumEnum1 Prop1);
 
 	UFUNCTION()
 	void Prop2PropertyCb(ETbEnumEnum2 Prop2);
+	UFUNCTION()
+	void Prop2PropertyChangeLocalCheckRemoteCb(ETbEnumEnum2 Prop2);
+	UFUNCTION()
+	void Prop2PropertyChangeLocalChangeRemoteCb(ETbEnumEnum2 Prop2);
 
 	UFUNCTION()
 	void Prop3PropertyCb(ETbEnumEnum3 Prop3);
+	UFUNCTION()
+	void Prop3PropertyChangeLocalCheckRemoteCb(ETbEnumEnum3 Prop3);
+	UFUNCTION()
+	void Prop3PropertyChangeLocalChangeRemoteCb(ETbEnumEnum3 Prop3);
 
 	UFUNCTION()
 	void Sig0SignalCb(ETbEnumEnum0 Param0);

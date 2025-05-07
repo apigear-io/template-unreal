@@ -27,15 +27,31 @@ public:
 
 	UFUNCTION()
 	void SwitchPropertyCb(bool bSwitch);
+	UFUNCTION()
+	void SwitchPropertyChangeLocalCheckRemoteCb(bool bSwitch);
+	UFUNCTION()
+	void SwitchPropertyChangeLocalChangeRemoteCb(bool bSwitch);
 
 	UFUNCTION()
 	void SomePropertyPropertyCb(int32 SomeProperty);
+	UFUNCTION()
+	void SomePropertyPropertyChangeLocalCheckRemoteCb(int32 SomeProperty);
+	UFUNCTION()
+	void SomePropertyPropertyChangeLocalChangeRemoteCb(int32 SomeProperty);
 
 	UFUNCTION()
 	void SomePoperty2PropertyCb(int32 SomePoperty2);
+	UFUNCTION()
+	void SomePoperty2PropertyChangeLocalCheckRemoteCb(int32 SomePoperty2);
+	UFUNCTION()
+	void SomePoperty2PropertyChangeLocalChangeRemoteCb(int32 SomePoperty2);
 
 	UFUNCTION()
 	void EnumPropertyPropertyCb(ETbNamesEnum_With_Under_scores EnumProperty);
+	UFUNCTION()
+	void EnumPropertyPropertyChangeLocalCheckRemoteCb(ETbNamesEnum_With_Under_scores EnumProperty);
+	UFUNCTION()
+	void EnumPropertyPropertyChangeLocalChangeRemoteCb(ETbNamesEnum_With_Under_scores EnumProperty);
 
 	UFUNCTION()
 	void SomeSignalSignalCb(bool bSomeParam);

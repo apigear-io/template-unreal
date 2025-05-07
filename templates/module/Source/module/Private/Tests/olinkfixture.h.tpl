@@ -33,6 +33,10 @@ public:
 
 	UFUNCTION()
 	void {{ Camel .Name }}PropertyCb({{ueParam "" .}});
+	UFUNCTION()
+	void {{ Camel .Name }}PropertyChangeLocalCheckRemoteCb({{ueParam "" .}});
+	UFUNCTION()
+	void {{ Camel .Name }}PropertyChangeLocalChangeRemoteCb({{ueParam "" .}});
 {{- end }}
 {{- end }}
 {{- range .Interface.Signals }}

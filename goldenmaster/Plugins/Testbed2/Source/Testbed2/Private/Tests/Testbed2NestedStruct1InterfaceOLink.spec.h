@@ -29,6 +29,8 @@ TUniquePtr<FTestbed2NestedStruct1InterfaceOLinkFixture> ImplFixture;
 
 // signal callbacks for testing
 void Prop1PropertyCb(const FTestbed2NestedStruct1& Prop1);
+void Prop1PropertyChangeLocalCheckRemoteCb(const FTestbed2NestedStruct1& Prop1);
+void Prop1PropertyChangeLocalChangeRemoteCb(const FTestbed2NestedStruct1& Prop1);
 void Sig1SignalCb(const FTestbed2NestedStruct1& Param1);
 void _SubscriptionStatusChangedCb(bool bSubscribed);
 FDoneDelegate testDoneDelegate;

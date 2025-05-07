@@ -35,9 +35,41 @@ void UTbSimpleSimpleInterfaceOLinkHelper::PropBoolPropertyCb(bool bPropBool)
 	Spec->PropBoolPropertyCb(bPropBool);
 }
 
+void UTbSimpleSimpleInterfaceOLinkHelper::PropBoolPropertyChangeLocalCheckRemoteCb(bool bPropBool)
+{
+	if (Spec)
+	{
+		Spec->PropBoolPropertyChangeLocalCheckRemoteCb(bPropBool);
+	}
+}
+
+void UTbSimpleSimpleInterfaceOLinkHelper::PropBoolPropertyChangeLocalChangeRemoteCb(bool bPropBool)
+{
+	if (Spec)
+	{
+		Spec->PropBoolPropertyChangeLocalChangeRemoteCb(bPropBool);
+	}
+}
+
 void UTbSimpleSimpleInterfaceOLinkHelper::PropIntPropertyCb(int32 PropInt)
 {
 	Spec->PropIntPropertyCb(PropInt);
+}
+
+void UTbSimpleSimpleInterfaceOLinkHelper::PropIntPropertyChangeLocalCheckRemoteCb(int32 PropInt)
+{
+	if (Spec)
+	{
+		Spec->PropIntPropertyChangeLocalCheckRemoteCb(PropInt);
+	}
+}
+
+void UTbSimpleSimpleInterfaceOLinkHelper::PropIntPropertyChangeLocalChangeRemoteCb(int32 PropInt)
+{
+	if (Spec)
+	{
+		Spec->PropIntPropertyChangeLocalChangeRemoteCb(PropInt);
+	}
 }
 
 void UTbSimpleSimpleInterfaceOLinkHelper::PropInt32PropertyCb(int32 PropInt32)
@@ -45,9 +77,41 @@ void UTbSimpleSimpleInterfaceOLinkHelper::PropInt32PropertyCb(int32 PropInt32)
 	Spec->PropInt32PropertyCb(PropInt32);
 }
 
+void UTbSimpleSimpleInterfaceOLinkHelper::PropInt32PropertyChangeLocalCheckRemoteCb(int32 PropInt32)
+{
+	if (Spec)
+	{
+		Spec->PropInt32PropertyChangeLocalCheckRemoteCb(PropInt32);
+	}
+}
+
+void UTbSimpleSimpleInterfaceOLinkHelper::PropInt32PropertyChangeLocalChangeRemoteCb(int32 PropInt32)
+{
+	if (Spec)
+	{
+		Spec->PropInt32PropertyChangeLocalChangeRemoteCb(PropInt32);
+	}
+}
+
 void UTbSimpleSimpleInterfaceOLinkHelper::PropInt64PropertyCb(int64 PropInt64)
 {
 	Spec->PropInt64PropertyCb(PropInt64);
+}
+
+void UTbSimpleSimpleInterfaceOLinkHelper::PropInt64PropertyChangeLocalCheckRemoteCb(int64 PropInt64)
+{
+	if (Spec)
+	{
+		Spec->PropInt64PropertyChangeLocalCheckRemoteCb(PropInt64);
+	}
+}
+
+void UTbSimpleSimpleInterfaceOLinkHelper::PropInt64PropertyChangeLocalChangeRemoteCb(int64 PropInt64)
+{
+	if (Spec)
+	{
+		Spec->PropInt64PropertyChangeLocalChangeRemoteCb(PropInt64);
+	}
 }
 
 void UTbSimpleSimpleInterfaceOLinkHelper::PropFloatPropertyCb(float PropFloat)
@@ -55,9 +119,41 @@ void UTbSimpleSimpleInterfaceOLinkHelper::PropFloatPropertyCb(float PropFloat)
 	Spec->PropFloatPropertyCb(PropFloat);
 }
 
+void UTbSimpleSimpleInterfaceOLinkHelper::PropFloatPropertyChangeLocalCheckRemoteCb(float PropFloat)
+{
+	if (Spec)
+	{
+		Spec->PropFloatPropertyChangeLocalCheckRemoteCb(PropFloat);
+	}
+}
+
+void UTbSimpleSimpleInterfaceOLinkHelper::PropFloatPropertyChangeLocalChangeRemoteCb(float PropFloat)
+{
+	if (Spec)
+	{
+		Spec->PropFloatPropertyChangeLocalChangeRemoteCb(PropFloat);
+	}
+}
+
 void UTbSimpleSimpleInterfaceOLinkHelper::PropFloat32PropertyCb(float PropFloat32)
 {
 	Spec->PropFloat32PropertyCb(PropFloat32);
+}
+
+void UTbSimpleSimpleInterfaceOLinkHelper::PropFloat32PropertyChangeLocalCheckRemoteCb(float PropFloat32)
+{
+	if (Spec)
+	{
+		Spec->PropFloat32PropertyChangeLocalCheckRemoteCb(PropFloat32);
+	}
+}
+
+void UTbSimpleSimpleInterfaceOLinkHelper::PropFloat32PropertyChangeLocalChangeRemoteCb(float PropFloat32)
+{
+	if (Spec)
+	{
+		Spec->PropFloat32PropertyChangeLocalChangeRemoteCb(PropFloat32);
+	}
 }
 
 void UTbSimpleSimpleInterfaceOLinkHelper::PropFloat64PropertyCb(double PropFloat64)
@@ -65,9 +161,41 @@ void UTbSimpleSimpleInterfaceOLinkHelper::PropFloat64PropertyCb(double PropFloat
 	Spec->PropFloat64PropertyCb(PropFloat64);
 }
 
+void UTbSimpleSimpleInterfaceOLinkHelper::PropFloat64PropertyChangeLocalCheckRemoteCb(double PropFloat64)
+{
+	if (Spec)
+	{
+		Spec->PropFloat64PropertyChangeLocalCheckRemoteCb(PropFloat64);
+	}
+}
+
+void UTbSimpleSimpleInterfaceOLinkHelper::PropFloat64PropertyChangeLocalChangeRemoteCb(double PropFloat64)
+{
+	if (Spec)
+	{
+		Spec->PropFloat64PropertyChangeLocalChangeRemoteCb(PropFloat64);
+	}
+}
+
 void UTbSimpleSimpleInterfaceOLinkHelper::PropStringPropertyCb(const FString& PropString)
 {
 	Spec->PropStringPropertyCb(PropString);
+}
+
+void UTbSimpleSimpleInterfaceOLinkHelper::PropStringPropertyChangeLocalCheckRemoteCb(const FString& PropString)
+{
+	if (Spec)
+	{
+		Spec->PropStringPropertyChangeLocalCheckRemoteCb(PropString);
+	}
+}
+
+void UTbSimpleSimpleInterfaceOLinkHelper::PropStringPropertyChangeLocalChangeRemoteCb(const FString& PropString)
+{
+	if (Spec)
+	{
+		Spec->PropStringPropertyChangeLocalChangeRemoteCb(PropString);
+	}
 }
 
 void UTbSimpleSimpleInterfaceOLinkHelper::SigBoolSignalCb(bool bParamBool)

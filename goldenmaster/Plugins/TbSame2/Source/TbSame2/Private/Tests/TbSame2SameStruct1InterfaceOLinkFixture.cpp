@@ -35,6 +35,22 @@ void UTbSame2SameStruct1InterfaceOLinkHelper::Prop1PropertyCb(const FTbSame2Stru
 	Spec->Prop1PropertyCb(Prop1);
 }
 
+void UTbSame2SameStruct1InterfaceOLinkHelper::Prop1PropertyChangeLocalCheckRemoteCb(const FTbSame2Struct1& Prop1)
+{
+	if (Spec)
+	{
+		Spec->Prop1PropertyChangeLocalCheckRemoteCb(Prop1);
+	}
+}
+
+void UTbSame2SameStruct1InterfaceOLinkHelper::Prop1PropertyChangeLocalChangeRemoteCb(const FTbSame2Struct1& Prop1)
+{
+	if (Spec)
+	{
+		Spec->Prop1PropertyChangeLocalChangeRemoteCb(Prop1);
+	}
+}
+
 void UTbSame2SameStruct1InterfaceOLinkHelper::Sig1SignalCb(const FTbSame2Struct1& Param1)
 {
 	Spec->Sig1SignalCb(Param1);

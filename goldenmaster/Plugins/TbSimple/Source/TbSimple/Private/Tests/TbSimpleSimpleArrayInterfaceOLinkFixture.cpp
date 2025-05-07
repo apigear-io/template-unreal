@@ -35,9 +35,41 @@ void UTbSimpleSimpleArrayInterfaceOLinkHelper::PropBoolPropertyCb(const TArray<b
 	Spec->PropBoolPropertyCb(PropBool);
 }
 
+void UTbSimpleSimpleArrayInterfaceOLinkHelper::PropBoolPropertyChangeLocalCheckRemoteCb(const TArray<bool>& PropBool)
+{
+	if (Spec)
+	{
+		Spec->PropBoolPropertyChangeLocalCheckRemoteCb(PropBool);
+	}
+}
+
+void UTbSimpleSimpleArrayInterfaceOLinkHelper::PropBoolPropertyChangeLocalChangeRemoteCb(const TArray<bool>& PropBool)
+{
+	if (Spec)
+	{
+		Spec->PropBoolPropertyChangeLocalChangeRemoteCb(PropBool);
+	}
+}
+
 void UTbSimpleSimpleArrayInterfaceOLinkHelper::PropIntPropertyCb(const TArray<int32>& PropInt)
 {
 	Spec->PropIntPropertyCb(PropInt);
+}
+
+void UTbSimpleSimpleArrayInterfaceOLinkHelper::PropIntPropertyChangeLocalCheckRemoteCb(const TArray<int32>& PropInt)
+{
+	if (Spec)
+	{
+		Spec->PropIntPropertyChangeLocalCheckRemoteCb(PropInt);
+	}
+}
+
+void UTbSimpleSimpleArrayInterfaceOLinkHelper::PropIntPropertyChangeLocalChangeRemoteCb(const TArray<int32>& PropInt)
+{
+	if (Spec)
+	{
+		Spec->PropIntPropertyChangeLocalChangeRemoteCb(PropInt);
+	}
 }
 
 void UTbSimpleSimpleArrayInterfaceOLinkHelper::PropInt32PropertyCb(const TArray<int32>& PropInt32)
@@ -45,9 +77,41 @@ void UTbSimpleSimpleArrayInterfaceOLinkHelper::PropInt32PropertyCb(const TArray<
 	Spec->PropInt32PropertyCb(PropInt32);
 }
 
+void UTbSimpleSimpleArrayInterfaceOLinkHelper::PropInt32PropertyChangeLocalCheckRemoteCb(const TArray<int32>& PropInt32)
+{
+	if (Spec)
+	{
+		Spec->PropInt32PropertyChangeLocalCheckRemoteCb(PropInt32);
+	}
+}
+
+void UTbSimpleSimpleArrayInterfaceOLinkHelper::PropInt32PropertyChangeLocalChangeRemoteCb(const TArray<int32>& PropInt32)
+{
+	if (Spec)
+	{
+		Spec->PropInt32PropertyChangeLocalChangeRemoteCb(PropInt32);
+	}
+}
+
 void UTbSimpleSimpleArrayInterfaceOLinkHelper::PropInt64PropertyCb(const TArray<int64>& PropInt64)
 {
 	Spec->PropInt64PropertyCb(PropInt64);
+}
+
+void UTbSimpleSimpleArrayInterfaceOLinkHelper::PropInt64PropertyChangeLocalCheckRemoteCb(const TArray<int64>& PropInt64)
+{
+	if (Spec)
+	{
+		Spec->PropInt64PropertyChangeLocalCheckRemoteCb(PropInt64);
+	}
+}
+
+void UTbSimpleSimpleArrayInterfaceOLinkHelper::PropInt64PropertyChangeLocalChangeRemoteCb(const TArray<int64>& PropInt64)
+{
+	if (Spec)
+	{
+		Spec->PropInt64PropertyChangeLocalChangeRemoteCb(PropInt64);
+	}
 }
 
 void UTbSimpleSimpleArrayInterfaceOLinkHelper::PropFloatPropertyCb(const TArray<float>& PropFloat)
@@ -55,9 +119,41 @@ void UTbSimpleSimpleArrayInterfaceOLinkHelper::PropFloatPropertyCb(const TArray<
 	Spec->PropFloatPropertyCb(PropFloat);
 }
 
+void UTbSimpleSimpleArrayInterfaceOLinkHelper::PropFloatPropertyChangeLocalCheckRemoteCb(const TArray<float>& PropFloat)
+{
+	if (Spec)
+	{
+		Spec->PropFloatPropertyChangeLocalCheckRemoteCb(PropFloat);
+	}
+}
+
+void UTbSimpleSimpleArrayInterfaceOLinkHelper::PropFloatPropertyChangeLocalChangeRemoteCb(const TArray<float>& PropFloat)
+{
+	if (Spec)
+	{
+		Spec->PropFloatPropertyChangeLocalChangeRemoteCb(PropFloat);
+	}
+}
+
 void UTbSimpleSimpleArrayInterfaceOLinkHelper::PropFloat32PropertyCb(const TArray<float>& PropFloat32)
 {
 	Spec->PropFloat32PropertyCb(PropFloat32);
+}
+
+void UTbSimpleSimpleArrayInterfaceOLinkHelper::PropFloat32PropertyChangeLocalCheckRemoteCb(const TArray<float>& PropFloat32)
+{
+	if (Spec)
+	{
+		Spec->PropFloat32PropertyChangeLocalCheckRemoteCb(PropFloat32);
+	}
+}
+
+void UTbSimpleSimpleArrayInterfaceOLinkHelper::PropFloat32PropertyChangeLocalChangeRemoteCb(const TArray<float>& PropFloat32)
+{
+	if (Spec)
+	{
+		Spec->PropFloat32PropertyChangeLocalChangeRemoteCb(PropFloat32);
+	}
 }
 
 void UTbSimpleSimpleArrayInterfaceOLinkHelper::PropFloat64PropertyCb(const TArray<double>& PropFloat64)
@@ -65,9 +161,41 @@ void UTbSimpleSimpleArrayInterfaceOLinkHelper::PropFloat64PropertyCb(const TArra
 	Spec->PropFloat64PropertyCb(PropFloat64);
 }
 
+void UTbSimpleSimpleArrayInterfaceOLinkHelper::PropFloat64PropertyChangeLocalCheckRemoteCb(const TArray<double>& PropFloat64)
+{
+	if (Spec)
+	{
+		Spec->PropFloat64PropertyChangeLocalCheckRemoteCb(PropFloat64);
+	}
+}
+
+void UTbSimpleSimpleArrayInterfaceOLinkHelper::PropFloat64PropertyChangeLocalChangeRemoteCb(const TArray<double>& PropFloat64)
+{
+	if (Spec)
+	{
+		Spec->PropFloat64PropertyChangeLocalChangeRemoteCb(PropFloat64);
+	}
+}
+
 void UTbSimpleSimpleArrayInterfaceOLinkHelper::PropStringPropertyCb(const TArray<FString>& PropString)
 {
 	Spec->PropStringPropertyCb(PropString);
+}
+
+void UTbSimpleSimpleArrayInterfaceOLinkHelper::PropStringPropertyChangeLocalCheckRemoteCb(const TArray<FString>& PropString)
+{
+	if (Spec)
+	{
+		Spec->PropStringPropertyChangeLocalCheckRemoteCb(PropString);
+	}
+}
+
+void UTbSimpleSimpleArrayInterfaceOLinkHelper::PropStringPropertyChangeLocalChangeRemoteCb(const TArray<FString>& PropString)
+{
+	if (Spec)
+	{
+		Spec->PropStringPropertyChangeLocalChangeRemoteCb(PropString);
+	}
 }
 
 void UTbSimpleSimpleArrayInterfaceOLinkHelper::SigBoolSignalCb(const TArray<bool>& ParamBool)

@@ -27,6 +27,10 @@ public:
 
 	UFUNCTION()
 	void Prop1PropertyCb(ETbSame2Enum1 Prop1);
+	UFUNCTION()
+	void Prop1PropertyChangeLocalCheckRemoteCb(ETbSame2Enum1 Prop1);
+	UFUNCTION()
+	void Prop1PropertyChangeLocalChangeRemoteCb(ETbSame2Enum1 Prop1);
 
 	UFUNCTION()
 	void Sig1SignalCb(ETbSame2Enum1 Param1);

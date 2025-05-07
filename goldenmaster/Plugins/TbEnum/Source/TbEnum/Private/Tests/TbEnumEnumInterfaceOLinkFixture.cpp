@@ -35,9 +35,41 @@ void UTbEnumEnumInterfaceOLinkHelper::Prop0PropertyCb(ETbEnumEnum0 Prop0)
 	Spec->Prop0PropertyCb(Prop0);
 }
 
+void UTbEnumEnumInterfaceOLinkHelper::Prop0PropertyChangeLocalCheckRemoteCb(ETbEnumEnum0 Prop0)
+{
+	if (Spec)
+	{
+		Spec->Prop0PropertyChangeLocalCheckRemoteCb(Prop0);
+	}
+}
+
+void UTbEnumEnumInterfaceOLinkHelper::Prop0PropertyChangeLocalChangeRemoteCb(ETbEnumEnum0 Prop0)
+{
+	if (Spec)
+	{
+		Spec->Prop0PropertyChangeLocalChangeRemoteCb(Prop0);
+	}
+}
+
 void UTbEnumEnumInterfaceOLinkHelper::Prop1PropertyCb(ETbEnumEnum1 Prop1)
 {
 	Spec->Prop1PropertyCb(Prop1);
+}
+
+void UTbEnumEnumInterfaceOLinkHelper::Prop1PropertyChangeLocalCheckRemoteCb(ETbEnumEnum1 Prop1)
+{
+	if (Spec)
+	{
+		Spec->Prop1PropertyChangeLocalCheckRemoteCb(Prop1);
+	}
+}
+
+void UTbEnumEnumInterfaceOLinkHelper::Prop1PropertyChangeLocalChangeRemoteCb(ETbEnumEnum1 Prop1)
+{
+	if (Spec)
+	{
+		Spec->Prop1PropertyChangeLocalChangeRemoteCb(Prop1);
+	}
 }
 
 void UTbEnumEnumInterfaceOLinkHelper::Prop2PropertyCb(ETbEnumEnum2 Prop2)
@@ -45,9 +77,41 @@ void UTbEnumEnumInterfaceOLinkHelper::Prop2PropertyCb(ETbEnumEnum2 Prop2)
 	Spec->Prop2PropertyCb(Prop2);
 }
 
+void UTbEnumEnumInterfaceOLinkHelper::Prop2PropertyChangeLocalCheckRemoteCb(ETbEnumEnum2 Prop2)
+{
+	if (Spec)
+	{
+		Spec->Prop2PropertyChangeLocalCheckRemoteCb(Prop2);
+	}
+}
+
+void UTbEnumEnumInterfaceOLinkHelper::Prop2PropertyChangeLocalChangeRemoteCb(ETbEnumEnum2 Prop2)
+{
+	if (Spec)
+	{
+		Spec->Prop2PropertyChangeLocalChangeRemoteCb(Prop2);
+	}
+}
+
 void UTbEnumEnumInterfaceOLinkHelper::Prop3PropertyCb(ETbEnumEnum3 Prop3)
 {
 	Spec->Prop3PropertyCb(Prop3);
+}
+
+void UTbEnumEnumInterfaceOLinkHelper::Prop3PropertyChangeLocalCheckRemoteCb(ETbEnumEnum3 Prop3)
+{
+	if (Spec)
+	{
+		Spec->Prop3PropertyChangeLocalCheckRemoteCb(Prop3);
+	}
+}
+
+void UTbEnumEnumInterfaceOLinkHelper::Prop3PropertyChangeLocalChangeRemoteCb(ETbEnumEnum3 Prop3)
+{
+	if (Spec)
+	{
+		Spec->Prop3PropertyChangeLocalChangeRemoteCb(Prop3);
+	}
 }
 
 void UTbEnumEnumInterfaceOLinkHelper::Sig0SignalCb(ETbEnumEnum0 Param0)

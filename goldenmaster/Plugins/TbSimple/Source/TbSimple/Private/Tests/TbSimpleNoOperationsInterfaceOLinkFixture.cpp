@@ -35,9 +35,41 @@ void UTbSimpleNoOperationsInterfaceOLinkHelper::PropBoolPropertyCb(bool bPropBoo
 	Spec->PropBoolPropertyCb(bPropBool);
 }
 
+void UTbSimpleNoOperationsInterfaceOLinkHelper::PropBoolPropertyChangeLocalCheckRemoteCb(bool bPropBool)
+{
+	if (Spec)
+	{
+		Spec->PropBoolPropertyChangeLocalCheckRemoteCb(bPropBool);
+	}
+}
+
+void UTbSimpleNoOperationsInterfaceOLinkHelper::PropBoolPropertyChangeLocalChangeRemoteCb(bool bPropBool)
+{
+	if (Spec)
+	{
+		Spec->PropBoolPropertyChangeLocalChangeRemoteCb(bPropBool);
+	}
+}
+
 void UTbSimpleNoOperationsInterfaceOLinkHelper::PropIntPropertyCb(int32 PropInt)
 {
 	Spec->PropIntPropertyCb(PropInt);
+}
+
+void UTbSimpleNoOperationsInterfaceOLinkHelper::PropIntPropertyChangeLocalCheckRemoteCb(int32 PropInt)
+{
+	if (Spec)
+	{
+		Spec->PropIntPropertyChangeLocalCheckRemoteCb(PropInt);
+	}
+}
+
+void UTbSimpleNoOperationsInterfaceOLinkHelper::PropIntPropertyChangeLocalChangeRemoteCb(int32 PropInt)
+{
+	if (Spec)
+	{
+		Spec->PropIntPropertyChangeLocalChangeRemoteCb(PropInt);
+	}
 }
 
 void UTbSimpleNoOperationsInterfaceOLinkHelper::SigVoidSignalCb()

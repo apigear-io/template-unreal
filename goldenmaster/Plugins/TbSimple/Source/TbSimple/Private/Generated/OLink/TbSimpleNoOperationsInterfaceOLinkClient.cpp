@@ -220,6 +220,8 @@ void UTbSimpleNoOperationsInterfaceOLinkClient::applyState(const nlohmann::json&
 	if (bPropBoolChanged)
 	{
 		bPropBool = fields["propBool"].get<bool>();
+		// reset sent data to the current state
+		_SentData->bPropBool = bPropBool;
 		Execute__GetSignals(this)->OnPropBoolChanged.Broadcast(bPropBool);
 	}
 
@@ -227,6 +229,8 @@ void UTbSimpleNoOperationsInterfaceOLinkClient::applyState(const nlohmann::json&
 	if (bPropIntChanged)
 	{
 		PropInt = fields["propInt"].get<int32>();
+		// reset sent data to the current state
+		_SentData->PropInt = PropInt;
 		Execute__GetSignals(this)->OnPropIntChanged.Broadcast(PropInt);
 	}
 }

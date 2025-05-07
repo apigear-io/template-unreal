@@ -404,6 +404,8 @@ void UTestbed2ManyParamInterfaceOLinkClient::applyState(const nlohmann::json& fi
 	if (bProp1Changed)
 	{
 		Prop1 = fields["prop1"].get<int32>();
+		// reset sent data to the current state
+		_SentData->Prop1 = Prop1;
 		Execute__GetSignals(this)->OnProp1Changed.Broadcast(Prop1);
 	}
 
@@ -411,6 +413,8 @@ void UTestbed2ManyParamInterfaceOLinkClient::applyState(const nlohmann::json& fi
 	if (bProp2Changed)
 	{
 		Prop2 = fields["prop2"].get<int32>();
+		// reset sent data to the current state
+		_SentData->Prop2 = Prop2;
 		Execute__GetSignals(this)->OnProp2Changed.Broadcast(Prop2);
 	}
 
@@ -418,6 +422,8 @@ void UTestbed2ManyParamInterfaceOLinkClient::applyState(const nlohmann::json& fi
 	if (bProp3Changed)
 	{
 		Prop3 = fields["prop3"].get<int32>();
+		// reset sent data to the current state
+		_SentData->Prop3 = Prop3;
 		Execute__GetSignals(this)->OnProp3Changed.Broadcast(Prop3);
 	}
 
@@ -425,6 +431,8 @@ void UTestbed2ManyParamInterfaceOLinkClient::applyState(const nlohmann::json& fi
 	if (bProp4Changed)
 	{
 		Prop4 = fields["prop4"].get<int32>();
+		// reset sent data to the current state
+		_SentData->Prop4 = Prop4;
 		Execute__GetSignals(this)->OnProp4Changed.Broadcast(Prop4);
 	}
 }

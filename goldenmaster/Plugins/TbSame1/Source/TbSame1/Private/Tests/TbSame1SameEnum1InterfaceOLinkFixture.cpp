@@ -35,6 +35,22 @@ void UTbSame1SameEnum1InterfaceOLinkHelper::Prop1PropertyCb(ETbSame1Enum1 Prop1)
 	Spec->Prop1PropertyCb(Prop1);
 }
 
+void UTbSame1SameEnum1InterfaceOLinkHelper::Prop1PropertyChangeLocalCheckRemoteCb(ETbSame1Enum1 Prop1)
+{
+	if (Spec)
+	{
+		Spec->Prop1PropertyChangeLocalCheckRemoteCb(Prop1);
+	}
+}
+
+void UTbSame1SameEnum1InterfaceOLinkHelper::Prop1PropertyChangeLocalChangeRemoteCb(ETbSame1Enum1 Prop1)
+{
+	if (Spec)
+	{
+		Spec->Prop1PropertyChangeLocalChangeRemoteCb(Prop1);
+	}
+}
+
 void UTbSame1SameEnum1InterfaceOLinkHelper::Sig1SignalCb(ETbSame1Enum1 Param1)
 {
 	Spec->Sig1SignalCb(Param1);

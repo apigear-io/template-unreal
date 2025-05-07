@@ -29,9 +29,17 @@ TUniquePtr<FTestbed2ManyParamInterfaceOLinkFixture> ImplFixture;
 
 // signal callbacks for testing
 void Prop1PropertyCb(int32 Prop1);
+void Prop1PropertyChangeLocalCheckRemoteCb(int32 Prop1);
+void Prop1PropertyChangeLocalChangeRemoteCb(int32 Prop1);
 void Prop2PropertyCb(int32 Prop2);
+void Prop2PropertyChangeLocalCheckRemoteCb(int32 Prop2);
+void Prop2PropertyChangeLocalChangeRemoteCb(int32 Prop2);
 void Prop3PropertyCb(int32 Prop3);
+void Prop3PropertyChangeLocalCheckRemoteCb(int32 Prop3);
+void Prop3PropertyChangeLocalChangeRemoteCb(int32 Prop3);
 void Prop4PropertyCb(int32 Prop4);
+void Prop4PropertyChangeLocalCheckRemoteCb(int32 Prop4);
+void Prop4PropertyChangeLocalChangeRemoteCb(int32 Prop4);
 void Sig1SignalCb(int32 Param1);
 void Sig2SignalCb(int32 Param1, int32 Param2);
 void Sig3SignalCb(int32 Param1, int32 Param2, int32 Param3);
