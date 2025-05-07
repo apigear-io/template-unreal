@@ -118,6 +118,69 @@ void UCounterCounterOLinkSpec::Define()
 		ImplFixture->GetImplementation()->SetVector(TestValue);
 	});
 
+	LatentIt("Property.Vector.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		FCustomTypesVector3D TestValue = FCustomTypesVector3D(); // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetVector(), TestValue);
+
+		UCounterCounterSignals* CounterCounterSignals = ImplFixture->GetImplementation()->_GetSignals();
+		CounterCounterSignals->OnVectorChanged.AddLambda([this, TestDone](const FCustomTypesVector3D& InVector)
+			{
+			FCustomTypesVector3D TestValue = FCustomTypesVector3D();
+			// use different test value
+			TestValue = createTestFCustomTypesVector3D();
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InVector, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetVector(), TestValue);
+			TestDone.Execute();
+		});
+		// use different test value
+		TestValue = createTestFCustomTypesVector3D();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UCounterCounter>();
+		service->SetVector(TestValue);
+	});
+
+	LatentIt("Property.Vector.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		FCustomTypesVector3D TestValue = FCustomTypesVector3D(); // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetVector(), TestValue);
+
+		UCounterCounterSignals* CounterCounterSignals = ImplFixture->GetImplementation()->_GetSignals();
+		CounterCounterSignals->OnVectorChanged.AddLambda([this, TestDone](const FCustomTypesVector3D& InVector)
+			{
+			// this function must be called twice before we can successfully pass this test.
+			// first call it should have the test value of the parameter
+			// second call it should have the default value of the parameter again
+			static int count = 0;
+			count++;
+
+			if (count % 2 != 0)
+			{
+				FCustomTypesVector3D TestValue = FCustomTypesVector3D();
+				// use different test value
+				TestValue = createTestFCustomTypesVector3D();
+				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InVector, TestValue);
+				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetVector(), TestValue);
+
+				// now set it to the default value
+				TestValue = FCustomTypesVector3D(); // default value
+				ImplFixture->GetImplementation()->SetVector(TestValue);
+			}
+			else
+			{
+				FCustomTypesVector3D TestValue = FCustomTypesVector3D(); // default value
+				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InVector, TestValue);
+				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetVector(), TestValue);
+				TestDone.Execute();
+			}
+		});
+		// use different test value
+		TestValue = createTestFCustomTypesVector3D();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UCounterCounter>();
+		service->SetVector(TestValue);
+	});
+
 	It("Property.ExternVector.Default", [this]()
 		{
 		// Do implement test here
@@ -152,6 +215,69 @@ void UCounterCounterOLinkSpec::Define()
 		// use different test value
 		TestValue = createTestFCustomTypesVector3DArray();
 		ImplFixture->GetImplementation()->SetVectorArray(TestValue);
+	});
+
+	LatentIt("Property.VectorArray.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		TArray<FCustomTypesVector3D> TestValue = TArray<FCustomTypesVector3D>(); // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetVectorArray(), TestValue);
+
+		UCounterCounterSignals* CounterCounterSignals = ImplFixture->GetImplementation()->_GetSignals();
+		CounterCounterSignals->OnVectorArrayChanged.AddLambda([this, TestDone](const TArray<FCustomTypesVector3D>& InVectorArray)
+			{
+			TArray<FCustomTypesVector3D> TestValue = TArray<FCustomTypesVector3D>();
+			// use different test value
+			TestValue = createTestFCustomTypesVector3DArray();
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InVectorArray, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetVectorArray(), TestValue);
+			TestDone.Execute();
+		});
+		// use different test value
+		TestValue = createTestFCustomTypesVector3DArray();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UCounterCounter>();
+		service->SetVectorArray(TestValue);
+	});
+
+	LatentIt("Property.VectorArray.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		TArray<FCustomTypesVector3D> TestValue = TArray<FCustomTypesVector3D>(); // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetVectorArray(), TestValue);
+
+		UCounterCounterSignals* CounterCounterSignals = ImplFixture->GetImplementation()->_GetSignals();
+		CounterCounterSignals->OnVectorArrayChanged.AddLambda([this, TestDone](const TArray<FCustomTypesVector3D>& InVectorArray)
+			{
+			// this function must be called twice before we can successfully pass this test.
+			// first call it should have the test value of the parameter
+			// second call it should have the default value of the parameter again
+			static int count = 0;
+			count++;
+
+			if (count % 2 != 0)
+			{
+				TArray<FCustomTypesVector3D> TestValue = TArray<FCustomTypesVector3D>();
+				// use different test value
+				TestValue = createTestFCustomTypesVector3DArray();
+				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InVectorArray, TestValue);
+				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetVectorArray(), TestValue);
+
+				// now set it to the default value
+				TestValue = TArray<FCustomTypesVector3D>(); // default value
+				ImplFixture->GetImplementation()->SetVectorArray(TestValue);
+			}
+			else
+			{
+				TArray<FCustomTypesVector3D> TestValue = TArray<FCustomTypesVector3D>(); // default value
+				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InVectorArray, TestValue);
+				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetVectorArray(), TestValue);
+				TestDone.Execute();
+			}
+		});
+		// use different test value
+		TestValue = createTestFCustomTypesVector3DArray();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UCounterCounter>();
+		service->SetVectorArray(TestValue);
 	});
 
 	It("Property.ExternVectorArray.Default", [this]()

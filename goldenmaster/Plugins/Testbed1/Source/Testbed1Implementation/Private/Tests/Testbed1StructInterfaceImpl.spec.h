@@ -27,9 +27,17 @@ TUniquePtr<FTestbed1StructInterfaceImplFixture> ImplFixture;
 
 // signal callbacks for testing
 void PropBoolPropertyCb(const FTestbed1StructBool& PropBool);
+void PropBoolPropertyChangeLocalCheckRemoteCb(const FTestbed1StructBool& PropBool);
+void PropBoolPropertyChangeLocalChangeRemoteCb(const FTestbed1StructBool& PropBool);
 void PropIntPropertyCb(const FTestbed1StructInt& PropInt);
+void PropIntPropertyChangeLocalCheckRemoteCb(const FTestbed1StructInt& PropInt);
+void PropIntPropertyChangeLocalChangeRemoteCb(const FTestbed1StructInt& PropInt);
 void PropFloatPropertyCb(const FTestbed1StructFloat& PropFloat);
+void PropFloatPropertyChangeLocalCheckRemoteCb(const FTestbed1StructFloat& PropFloat);
+void PropFloatPropertyChangeLocalChangeRemoteCb(const FTestbed1StructFloat& PropFloat);
 void PropStringPropertyCb(const FTestbed1StructString& PropString);
+void PropStringPropertyChangeLocalCheckRemoteCb(const FTestbed1StructString& PropString);
+void PropStringPropertyChangeLocalChangeRemoteCb(const FTestbed1StructString& PropString);
 void SigBoolSignalCb(const FTestbed1StructBool& ParamBool);
 void SigIntSignalCb(const FTestbed1StructInt& ParamInt);
 void SigFloatSignalCb(const FTestbed1StructFloat& ParamFloat);

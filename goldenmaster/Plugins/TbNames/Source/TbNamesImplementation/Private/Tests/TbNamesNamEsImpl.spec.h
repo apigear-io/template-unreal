@@ -27,9 +27,17 @@ TUniquePtr<FTbNamesNamEsImplFixture> ImplFixture;
 
 // signal callbacks for testing
 void SwitchPropertyCb(bool bSwitch);
+void SwitchPropertyChangeLocalCheckRemoteCb(bool bSwitch);
+void SwitchPropertyChangeLocalChangeRemoteCb(bool bSwitch);
 void SomePropertyPropertyCb(int32 SomeProperty);
+void SomePropertyPropertyChangeLocalCheckRemoteCb(int32 SomeProperty);
+void SomePropertyPropertyChangeLocalChangeRemoteCb(int32 SomeProperty);
 void SomePoperty2PropertyCb(int32 SomePoperty2);
+void SomePoperty2PropertyChangeLocalCheckRemoteCb(int32 SomePoperty2);
+void SomePoperty2PropertyChangeLocalChangeRemoteCb(int32 SomePoperty2);
 void EnumPropertyPropertyCb(ETbNamesEnum_With_Under_scores EnumProperty);
+void EnumPropertyPropertyChangeLocalCheckRemoteCb(ETbNamesEnum_With_Under_scores EnumProperty);
+void EnumPropertyPropertyChangeLocalChangeRemoteCb(ETbNamesEnum_With_Under_scores EnumProperty);
 void SomeSignalSignalCb(bool bSomeParam);
 void SomeSignal2SignalCb(bool bSomeParam);
 FDoneDelegate testDoneDelegate;

@@ -402,6 +402,8 @@ void UTbEnumEnumInterfaceOLinkClient::applyState(const nlohmann::json& fields)
 	if (bProp0Changed)
 	{
 		Prop0 = fields["prop0"].get<ETbEnumEnum0>();
+		// reset sent data to the current state
+		_SentData->Prop0 = Prop0;
 		_GetSignals()->BroadcastProp0Changed(Prop0);
 	}
 
@@ -409,6 +411,8 @@ void UTbEnumEnumInterfaceOLinkClient::applyState(const nlohmann::json& fields)
 	if (bProp1Changed)
 	{
 		Prop1 = fields["prop1"].get<ETbEnumEnum1>();
+		// reset sent data to the current state
+		_SentData->Prop1 = Prop1;
 		_GetSignals()->BroadcastProp1Changed(Prop1);
 	}
 
@@ -416,6 +420,8 @@ void UTbEnumEnumInterfaceOLinkClient::applyState(const nlohmann::json& fields)
 	if (bProp2Changed)
 	{
 		Prop2 = fields["prop2"].get<ETbEnumEnum2>();
+		// reset sent data to the current state
+		_SentData->Prop2 = Prop2;
 		_GetSignals()->BroadcastProp2Changed(Prop2);
 	}
 
@@ -423,6 +429,8 @@ void UTbEnumEnumInterfaceOLinkClient::applyState(const nlohmann::json& fields)
 	if (bProp3Changed)
 	{
 		Prop3 = fields["prop3"].get<ETbEnumEnum3>();
+		// reset sent data to the current state
+		_SentData->Prop3 = Prop3;
 		_GetSignals()->BroadcastProp3Changed(Prop3);
 	}
 }

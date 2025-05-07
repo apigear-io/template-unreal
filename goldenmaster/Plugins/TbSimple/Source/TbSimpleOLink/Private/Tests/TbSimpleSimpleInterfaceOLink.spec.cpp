@@ -116,6 +116,69 @@ void UTbSimpleSimpleInterfaceOLinkSpec::Define()
 		ImplFixture->GetImplementation()->SetPropBool(TestValue);
 	});
 
+	LatentIt("Property.PropBool.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		bool TestValue = false; // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
+
+		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
+		TbSimpleSimpleInterfaceSignals->OnPropBoolChanged.AddLambda([this, TestDone](bool bInPropBool)
+			{
+			bool TestValue = false;
+			// use different test value
+			TestValue = true;
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), bInPropBool, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
+			TestDone.Execute();
+		});
+		// use different test value
+		TestValue = true;
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterface>();
+		service->SetPropBool(TestValue);
+	});
+
+	LatentIt("Property.PropBool.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		bool TestValue = false; // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
+
+		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
+		TbSimpleSimpleInterfaceSignals->OnPropBoolChanged.AddLambda([this, TestDone](bool bInPropBool)
+			{
+			// this function must be called twice before we can successfully pass this test.
+			// first call it should have the test value of the parameter
+			// second call it should have the default value of the parameter again
+			static int count = 0;
+			count++;
+
+			if (count % 2 != 0)
+			{
+				bool TestValue = false;
+				// use different test value
+				TestValue = true;
+				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), bInPropBool, TestValue);
+				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
+
+				// now set it to the default value
+				TestValue = false; // default value
+				ImplFixture->GetImplementation()->SetPropBool(TestValue);
+			}
+			else
+			{
+				bool TestValue = false; // default value
+				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), bInPropBool, TestValue);
+				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
+				TestDone.Execute();
+			}
+		});
+		// use different test value
+		TestValue = true;
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterface>();
+		service->SetPropBool(TestValue);
+	});
+
 	It("Property.PropInt.Default", [this]()
 		{
 		// Do implement test here
@@ -143,6 +206,69 @@ void UTbSimpleSimpleInterfaceOLinkSpec::Define()
 		// use different test value
 		TestValue = 1;
 		ImplFixture->GetImplementation()->SetPropInt(TestValue);
+	});
+
+	LatentIt("Property.PropInt.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		int32 TestValue = 0; // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
+
+		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
+		TbSimpleSimpleInterfaceSignals->OnPropIntChanged.AddLambda([this, TestDone](int32 InPropInt)
+			{
+			int32 TestValue = 0;
+			// use different test value
+			TestValue = 1;
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
+			TestDone.Execute();
+		});
+		// use different test value
+		TestValue = 1;
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterface>();
+		service->SetPropInt(TestValue);
+	});
+
+	LatentIt("Property.PropInt.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		int32 TestValue = 0; // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
+
+		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
+		TbSimpleSimpleInterfaceSignals->OnPropIntChanged.AddLambda([this, TestDone](int32 InPropInt)
+			{
+			// this function must be called twice before we can successfully pass this test.
+			// first call it should have the test value of the parameter
+			// second call it should have the default value of the parameter again
+			static int count = 0;
+			count++;
+
+			if (count % 2 != 0)
+			{
+				int32 TestValue = 0;
+				// use different test value
+				TestValue = 1;
+				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
+				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
+
+				// now set it to the default value
+				TestValue = 0; // default value
+				ImplFixture->GetImplementation()->SetPropInt(TestValue);
+			}
+			else
+			{
+				int32 TestValue = 0; // default value
+				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
+				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
+				TestDone.Execute();
+			}
+		});
+		// use different test value
+		TestValue = 1;
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterface>();
+		service->SetPropInt(TestValue);
 	});
 
 	It("Property.PropInt32.Default", [this]()
@@ -174,6 +300,69 @@ void UTbSimpleSimpleInterfaceOLinkSpec::Define()
 		ImplFixture->GetImplementation()->SetPropInt32(TestValue);
 	});
 
+	LatentIt("Property.PropInt32.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		int32 TestValue = 0; // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt32(), TestValue);
+
+		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
+		TbSimpleSimpleInterfaceSignals->OnPropInt32Changed.AddLambda([this, TestDone](int32 InPropInt32)
+			{
+			int32 TestValue = 0;
+			// use different test value
+			TestValue = 1;
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt32, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropInt32(), TestValue);
+			TestDone.Execute();
+		});
+		// use different test value
+		TestValue = 1;
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterface>();
+		service->SetPropInt32(TestValue);
+	});
+
+	LatentIt("Property.PropInt32.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		int32 TestValue = 0; // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt32(), TestValue);
+
+		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
+		TbSimpleSimpleInterfaceSignals->OnPropInt32Changed.AddLambda([this, TestDone](int32 InPropInt32)
+			{
+			// this function must be called twice before we can successfully pass this test.
+			// first call it should have the test value of the parameter
+			// second call it should have the default value of the parameter again
+			static int count = 0;
+			count++;
+
+			if (count % 2 != 0)
+			{
+				int32 TestValue = 0;
+				// use different test value
+				TestValue = 1;
+				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt32, TestValue);
+				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropInt32(), TestValue);
+
+				// now set it to the default value
+				TestValue = 0; // default value
+				ImplFixture->GetImplementation()->SetPropInt32(TestValue);
+			}
+			else
+			{
+				int32 TestValue = 0; // default value
+				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt32, TestValue);
+				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropInt32(), TestValue);
+				TestDone.Execute();
+			}
+		});
+		// use different test value
+		TestValue = 1;
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterface>();
+		service->SetPropInt32(TestValue);
+	});
+
 	It("Property.PropInt64.Default", [this]()
 		{
 		// Do implement test here
@@ -201,6 +390,69 @@ void UTbSimpleSimpleInterfaceOLinkSpec::Define()
 		// use different test value
 		TestValue = 1LL;
 		ImplFixture->GetImplementation()->SetPropInt64(TestValue);
+	});
+
+	LatentIt("Property.PropInt64.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		int64 TestValue = 0LL; // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt64(), TestValue);
+
+		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
+		TbSimpleSimpleInterfaceSignals->OnPropInt64Changed.AddLambda([this, TestDone](int64 InPropInt64)
+			{
+			int64 TestValue = 0LL;
+			// use different test value
+			TestValue = 1LL;
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt64, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropInt64(), TestValue);
+			TestDone.Execute();
+		});
+		// use different test value
+		TestValue = 1LL;
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterface>();
+		service->SetPropInt64(TestValue);
+	});
+
+	LatentIt("Property.PropInt64.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		int64 TestValue = 0LL; // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt64(), TestValue);
+
+		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
+		TbSimpleSimpleInterfaceSignals->OnPropInt64Changed.AddLambda([this, TestDone](int64 InPropInt64)
+			{
+			// this function must be called twice before we can successfully pass this test.
+			// first call it should have the test value of the parameter
+			// second call it should have the default value of the parameter again
+			static int count = 0;
+			count++;
+
+			if (count % 2 != 0)
+			{
+				int64 TestValue = 0LL;
+				// use different test value
+				TestValue = 1LL;
+				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt64, TestValue);
+				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropInt64(), TestValue);
+
+				// now set it to the default value
+				TestValue = 0LL; // default value
+				ImplFixture->GetImplementation()->SetPropInt64(TestValue);
+			}
+			else
+			{
+				int64 TestValue = 0LL; // default value
+				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt64, TestValue);
+				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropInt64(), TestValue);
+				TestDone.Execute();
+			}
+		});
+		// use different test value
+		TestValue = 1LL;
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterface>();
+		service->SetPropInt64(TestValue);
 	});
 
 	It("Property.PropFloat.Default", [this]()
@@ -232,6 +484,69 @@ void UTbSimpleSimpleInterfaceOLinkSpec::Define()
 		ImplFixture->GetImplementation()->SetPropFloat(TestValue);
 	});
 
+	LatentIt("Property.PropFloat.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		float TestValue = 0.0f; // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropFloat(), TestValue);
+
+		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
+		TbSimpleSimpleInterfaceSignals->OnPropFloatChanged.AddLambda([this, TestDone](float InPropFloat)
+			{
+			float TestValue = 0.0f;
+			// use different test value
+			TestValue = 1.0f;
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropFloat(), TestValue);
+			TestDone.Execute();
+		});
+		// use different test value
+		TestValue = 1.0f;
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterface>();
+		service->SetPropFloat(TestValue);
+	});
+
+	LatentIt("Property.PropFloat.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		float TestValue = 0.0f; // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropFloat(), TestValue);
+
+		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
+		TbSimpleSimpleInterfaceSignals->OnPropFloatChanged.AddLambda([this, TestDone](float InPropFloat)
+			{
+			// this function must be called twice before we can successfully pass this test.
+			// first call it should have the test value of the parameter
+			// second call it should have the default value of the parameter again
+			static int count = 0;
+			count++;
+
+			if (count % 2 != 0)
+			{
+				float TestValue = 0.0f;
+				// use different test value
+				TestValue = 1.0f;
+				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat, TestValue);
+				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropFloat(), TestValue);
+
+				// now set it to the default value
+				TestValue = 0.0f; // default value
+				ImplFixture->GetImplementation()->SetPropFloat(TestValue);
+			}
+			else
+			{
+				float TestValue = 0.0f; // default value
+				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat, TestValue);
+				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropFloat(), TestValue);
+				TestDone.Execute();
+			}
+		});
+		// use different test value
+		TestValue = 1.0f;
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterface>();
+		service->SetPropFloat(TestValue);
+	});
+
 	It("Property.PropFloat32.Default", [this]()
 		{
 		// Do implement test here
@@ -259,6 +574,69 @@ void UTbSimpleSimpleInterfaceOLinkSpec::Define()
 		// use different test value
 		TestValue = 1.0f;
 		ImplFixture->GetImplementation()->SetPropFloat32(TestValue);
+	});
+
+	LatentIt("Property.PropFloat32.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		float TestValue = 0.0f; // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropFloat32(), TestValue);
+
+		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
+		TbSimpleSimpleInterfaceSignals->OnPropFloat32Changed.AddLambda([this, TestDone](float InPropFloat32)
+			{
+			float TestValue = 0.0f;
+			// use different test value
+			TestValue = 1.0f;
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat32, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropFloat32(), TestValue);
+			TestDone.Execute();
+		});
+		// use different test value
+		TestValue = 1.0f;
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterface>();
+		service->SetPropFloat32(TestValue);
+	});
+
+	LatentIt("Property.PropFloat32.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		float TestValue = 0.0f; // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropFloat32(), TestValue);
+
+		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
+		TbSimpleSimpleInterfaceSignals->OnPropFloat32Changed.AddLambda([this, TestDone](float InPropFloat32)
+			{
+			// this function must be called twice before we can successfully pass this test.
+			// first call it should have the test value of the parameter
+			// second call it should have the default value of the parameter again
+			static int count = 0;
+			count++;
+
+			if (count % 2 != 0)
+			{
+				float TestValue = 0.0f;
+				// use different test value
+				TestValue = 1.0f;
+				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat32, TestValue);
+				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropFloat32(), TestValue);
+
+				// now set it to the default value
+				TestValue = 0.0f; // default value
+				ImplFixture->GetImplementation()->SetPropFloat32(TestValue);
+			}
+			else
+			{
+				float TestValue = 0.0f; // default value
+				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat32, TestValue);
+				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropFloat32(), TestValue);
+				TestDone.Execute();
+			}
+		});
+		// use different test value
+		TestValue = 1.0f;
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterface>();
+		service->SetPropFloat32(TestValue);
 	});
 
 	It("Property.PropFloat64.Default", [this]()
@@ -290,6 +668,69 @@ void UTbSimpleSimpleInterfaceOLinkSpec::Define()
 		ImplFixture->GetImplementation()->SetPropFloat64(TestValue);
 	});
 
+	LatentIt("Property.PropFloat64.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		double TestValue = 0.0; // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropFloat64(), TestValue);
+
+		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
+		TbSimpleSimpleInterfaceSignals->OnPropFloat64Changed.AddLambda([this, TestDone](double InPropFloat64)
+			{
+			double TestValue = 0.0;
+			// use different test value
+			TestValue = 1.0;
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat64, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropFloat64(), TestValue);
+			TestDone.Execute();
+		});
+		// use different test value
+		TestValue = 1.0;
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterface>();
+		service->SetPropFloat64(TestValue);
+	});
+
+	LatentIt("Property.PropFloat64.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		double TestValue = 0.0; // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropFloat64(), TestValue);
+
+		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
+		TbSimpleSimpleInterfaceSignals->OnPropFloat64Changed.AddLambda([this, TestDone](double InPropFloat64)
+			{
+			// this function must be called twice before we can successfully pass this test.
+			// first call it should have the test value of the parameter
+			// second call it should have the default value of the parameter again
+			static int count = 0;
+			count++;
+
+			if (count % 2 != 0)
+			{
+				double TestValue = 0.0;
+				// use different test value
+				TestValue = 1.0;
+				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat64, TestValue);
+				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropFloat64(), TestValue);
+
+				// now set it to the default value
+				TestValue = 0.0; // default value
+				ImplFixture->GetImplementation()->SetPropFloat64(TestValue);
+			}
+			else
+			{
+				double TestValue = 0.0; // default value
+				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat64, TestValue);
+				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropFloat64(), TestValue);
+				TestDone.Execute();
+			}
+		});
+		// use different test value
+		TestValue = 1.0;
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterface>();
+		service->SetPropFloat64(TestValue);
+	});
+
 	It("Property.PropString.Default", [this]()
 		{
 		// Do implement test here
@@ -317,6 +758,69 @@ void UTbSimpleSimpleInterfaceOLinkSpec::Define()
 		// use different test value
 		TestValue = FString("xyz");
 		ImplFixture->GetImplementation()->SetPropString(TestValue);
+	});
+
+	LatentIt("Property.PropString.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		FString TestValue = FString(); // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropString(), TestValue);
+
+		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
+		TbSimpleSimpleInterfaceSignals->OnPropStringChanged.AddLambda([this, TestDone](const FString& InPropString)
+			{
+			FString TestValue = FString();
+			// use different test value
+			TestValue = FString("xyz");
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropString, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropString(), TestValue);
+			TestDone.Execute();
+		});
+		// use different test value
+		TestValue = FString("xyz");
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterface>();
+		service->SetPropString(TestValue);
+	});
+
+	LatentIt("Property.PropString.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		FString TestValue = FString(); // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropString(), TestValue);
+
+		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
+		TbSimpleSimpleInterfaceSignals->OnPropStringChanged.AddLambda([this, TestDone](const FString& InPropString)
+			{
+			// this function must be called twice before we can successfully pass this test.
+			// first call it should have the test value of the parameter
+			// second call it should have the default value of the parameter again
+			static int count = 0;
+			count++;
+
+			if (count % 2 != 0)
+			{
+				FString TestValue = FString();
+				// use different test value
+				TestValue = FString("xyz");
+				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropString, TestValue);
+				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropString(), TestValue);
+
+				// now set it to the default value
+				TestValue = FString(); // default value
+				ImplFixture->GetImplementation()->SetPropString(TestValue);
+			}
+			else
+			{
+				FString TestValue = FString(); // default value
+				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropString, TestValue);
+				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropString(), TestValue);
+				TestDone.Execute();
+			}
+		});
+		// use different test value
+		TestValue = FString("xyz");
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterface>();
+		service->SetPropString(TestValue);
 	});
 
 	LatentIt("Operation.FuncNoReturnValue", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)

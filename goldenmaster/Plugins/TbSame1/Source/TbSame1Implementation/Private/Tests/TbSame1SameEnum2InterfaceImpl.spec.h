@@ -27,7 +27,11 @@ TUniquePtr<FTbSame1SameEnum2InterfaceImplFixture> ImplFixture;
 
 // signal callbacks for testing
 void Prop1PropertyCb(ETbSame1Enum1 Prop1);
+void Prop1PropertyChangeLocalCheckRemoteCb(ETbSame1Enum1 Prop1);
+void Prop1PropertyChangeLocalChangeRemoteCb(ETbSame1Enum1 Prop1);
 void Prop2PropertyCb(ETbSame1Enum2 Prop2);
+void Prop2PropertyChangeLocalCheckRemoteCb(ETbSame1Enum2 Prop2);
+void Prop2PropertyChangeLocalChangeRemoteCb(ETbSame1Enum2 Prop2);
 void Sig1SignalCb(ETbSame1Enum1 Param1);
 void Sig2SignalCb(ETbSame1Enum1 Param1, ETbSame1Enum2 Param2);
 FDoneDelegate testDoneDelegate;

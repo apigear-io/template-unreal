@@ -292,6 +292,15 @@ void {{$Class}}::applyState(const nlohmann::json& fields)
 	if (b{{Camel .Name}}Changed)
 	{
 		{{ueVar "" .}} = fields["{{.Name}}"].get<{{ueReturn "" .}}>();
+		// reset sent data to the current state
+		{{- if not ( ueIsStdSimpleType . )}}
+		{
+			FScopeLock Lock(&(_SentData->{{ueVar "" .}}Mutex));
+			_SentData->{{ueVar "" .}} = {{ueVar "" .}};
+		}
+		{{- else}}
+		_SentData->{{ueVar "" .}} = {{ueVar "" .}};
+		{{- end }}
 		_GetSignals()->Broadcast{{Camel .Name}}Changed({{ueVar "" .}});
 	}
 {{- end }}

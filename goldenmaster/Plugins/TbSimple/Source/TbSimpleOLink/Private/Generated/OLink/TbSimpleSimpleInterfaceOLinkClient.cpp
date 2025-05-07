@@ -665,6 +665,8 @@ void UTbSimpleSimpleInterfaceOLinkClient::applyState(const nlohmann::json& field
 	if (bPropBoolChanged)
 	{
 		bPropBool = fields["propBool"].get<bool>();
+		// reset sent data to the current state
+		_SentData->bPropBool = bPropBool;
 		_GetSignals()->BroadcastPropBoolChanged(bPropBool);
 	}
 
@@ -672,6 +674,8 @@ void UTbSimpleSimpleInterfaceOLinkClient::applyState(const nlohmann::json& field
 	if (bPropIntChanged)
 	{
 		PropInt = fields["propInt"].get<int32>();
+		// reset sent data to the current state
+		_SentData->PropInt = PropInt;
 		_GetSignals()->BroadcastPropIntChanged(PropInt);
 	}
 
@@ -679,6 +683,8 @@ void UTbSimpleSimpleInterfaceOLinkClient::applyState(const nlohmann::json& field
 	if (bPropInt32Changed)
 	{
 		PropInt32 = fields["propInt32"].get<int32>();
+		// reset sent data to the current state
+		_SentData->PropInt32 = PropInt32;
 		_GetSignals()->BroadcastPropInt32Changed(PropInt32);
 	}
 
@@ -686,6 +692,8 @@ void UTbSimpleSimpleInterfaceOLinkClient::applyState(const nlohmann::json& field
 	if (bPropInt64Changed)
 	{
 		PropInt64 = fields["propInt64"].get<int64>();
+		// reset sent data to the current state
+		_SentData->PropInt64 = PropInt64;
 		_GetSignals()->BroadcastPropInt64Changed(PropInt64);
 	}
 
@@ -693,6 +701,8 @@ void UTbSimpleSimpleInterfaceOLinkClient::applyState(const nlohmann::json& field
 	if (bPropFloatChanged)
 	{
 		PropFloat = fields["propFloat"].get<float>();
+		// reset sent data to the current state
+		_SentData->PropFloat = PropFloat;
 		_GetSignals()->BroadcastPropFloatChanged(PropFloat);
 	}
 
@@ -700,6 +710,8 @@ void UTbSimpleSimpleInterfaceOLinkClient::applyState(const nlohmann::json& field
 	if (bPropFloat32Changed)
 	{
 		PropFloat32 = fields["propFloat32"].get<float>();
+		// reset sent data to the current state
+		_SentData->PropFloat32 = PropFloat32;
 		_GetSignals()->BroadcastPropFloat32Changed(PropFloat32);
 	}
 
@@ -707,6 +719,8 @@ void UTbSimpleSimpleInterfaceOLinkClient::applyState(const nlohmann::json& field
 	if (bPropFloat64Changed)
 	{
 		PropFloat64 = fields["propFloat64"].get<double>();
+		// reset sent data to the current state
+		_SentData->PropFloat64 = PropFloat64;
 		_GetSignals()->BroadcastPropFloat64Changed(PropFloat64);
 	}
 
@@ -714,6 +728,11 @@ void UTbSimpleSimpleInterfaceOLinkClient::applyState(const nlohmann::json& field
 	if (bPropStringChanged)
 	{
 		PropString = fields["propString"].get<FString>();
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->PropStringMutex));
+			_SentData->PropString = PropString;
+		}
 		_GetSignals()->BroadcastPropStringChanged(PropString);
 	}
 }

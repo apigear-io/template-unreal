@@ -116,6 +116,69 @@ void UTestbed1StructInterfaceOLinkSpec::Define()
 		ImplFixture->GetImplementation()->SetPropBool(TestValue);
 	});
 
+	LatentIt("Property.PropBool.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		FTestbed1StructBool TestValue = FTestbed1StructBool(); // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
+
+		UTestbed1StructInterfaceSignals* Testbed1StructInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
+		Testbed1StructInterfaceSignals->OnPropBoolChanged.AddLambda([this, TestDone](const FTestbed1StructBool& InPropBool)
+			{
+			FTestbed1StructBool TestValue = FTestbed1StructBool();
+			// use different test value
+			TestValue = createTestFTestbed1StructBool();
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropBool, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
+			TestDone.Execute();
+		});
+		// use different test value
+		TestValue = createTestFTestbed1StructBool();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed1StructInterface>();
+		service->SetPropBool(TestValue);
+	});
+
+	LatentIt("Property.PropBool.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		FTestbed1StructBool TestValue = FTestbed1StructBool(); // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
+
+		UTestbed1StructInterfaceSignals* Testbed1StructInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
+		Testbed1StructInterfaceSignals->OnPropBoolChanged.AddLambda([this, TestDone](const FTestbed1StructBool& InPropBool)
+			{
+			// this function must be called twice before we can successfully pass this test.
+			// first call it should have the test value of the parameter
+			// second call it should have the default value of the parameter again
+			static int count = 0;
+			count++;
+
+			if (count % 2 != 0)
+			{
+				FTestbed1StructBool TestValue = FTestbed1StructBool();
+				// use different test value
+				TestValue = createTestFTestbed1StructBool();
+				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropBool, TestValue);
+				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
+
+				// now set it to the default value
+				TestValue = FTestbed1StructBool(); // default value
+				ImplFixture->GetImplementation()->SetPropBool(TestValue);
+			}
+			else
+			{
+				FTestbed1StructBool TestValue = FTestbed1StructBool(); // default value
+				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropBool, TestValue);
+				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
+				TestDone.Execute();
+			}
+		});
+		// use different test value
+		TestValue = createTestFTestbed1StructBool();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed1StructInterface>();
+		service->SetPropBool(TestValue);
+	});
+
 	It("Property.PropInt.Default", [this]()
 		{
 		// Do implement test here
@@ -143,6 +206,69 @@ void UTestbed1StructInterfaceOLinkSpec::Define()
 		// use different test value
 		TestValue = createTestFTestbed1StructInt();
 		ImplFixture->GetImplementation()->SetPropInt(TestValue);
+	});
+
+	LatentIt("Property.PropInt.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		FTestbed1StructInt TestValue = FTestbed1StructInt(); // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
+
+		UTestbed1StructInterfaceSignals* Testbed1StructInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
+		Testbed1StructInterfaceSignals->OnPropIntChanged.AddLambda([this, TestDone](const FTestbed1StructInt& InPropInt)
+			{
+			FTestbed1StructInt TestValue = FTestbed1StructInt();
+			// use different test value
+			TestValue = createTestFTestbed1StructInt();
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
+			TestDone.Execute();
+		});
+		// use different test value
+		TestValue = createTestFTestbed1StructInt();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed1StructInterface>();
+		service->SetPropInt(TestValue);
+	});
+
+	LatentIt("Property.PropInt.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		FTestbed1StructInt TestValue = FTestbed1StructInt(); // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
+
+		UTestbed1StructInterfaceSignals* Testbed1StructInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
+		Testbed1StructInterfaceSignals->OnPropIntChanged.AddLambda([this, TestDone](const FTestbed1StructInt& InPropInt)
+			{
+			// this function must be called twice before we can successfully pass this test.
+			// first call it should have the test value of the parameter
+			// second call it should have the default value of the parameter again
+			static int count = 0;
+			count++;
+
+			if (count % 2 != 0)
+			{
+				FTestbed1StructInt TestValue = FTestbed1StructInt();
+				// use different test value
+				TestValue = createTestFTestbed1StructInt();
+				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
+				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
+
+				// now set it to the default value
+				TestValue = FTestbed1StructInt(); // default value
+				ImplFixture->GetImplementation()->SetPropInt(TestValue);
+			}
+			else
+			{
+				FTestbed1StructInt TestValue = FTestbed1StructInt(); // default value
+				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
+				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
+				TestDone.Execute();
+			}
+		});
+		// use different test value
+		TestValue = createTestFTestbed1StructInt();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed1StructInterface>();
+		service->SetPropInt(TestValue);
 	});
 
 	It("Property.PropFloat.Default", [this]()
@@ -174,6 +300,69 @@ void UTestbed1StructInterfaceOLinkSpec::Define()
 		ImplFixture->GetImplementation()->SetPropFloat(TestValue);
 	});
 
+	LatentIt("Property.PropFloat.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		FTestbed1StructFloat TestValue = FTestbed1StructFloat(); // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropFloat(), TestValue);
+
+		UTestbed1StructInterfaceSignals* Testbed1StructInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
+		Testbed1StructInterfaceSignals->OnPropFloatChanged.AddLambda([this, TestDone](const FTestbed1StructFloat& InPropFloat)
+			{
+			FTestbed1StructFloat TestValue = FTestbed1StructFloat();
+			// use different test value
+			TestValue = createTestFTestbed1StructFloat();
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropFloat(), TestValue);
+			TestDone.Execute();
+		});
+		// use different test value
+		TestValue = createTestFTestbed1StructFloat();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed1StructInterface>();
+		service->SetPropFloat(TestValue);
+	});
+
+	LatentIt("Property.PropFloat.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		FTestbed1StructFloat TestValue = FTestbed1StructFloat(); // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropFloat(), TestValue);
+
+		UTestbed1StructInterfaceSignals* Testbed1StructInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
+		Testbed1StructInterfaceSignals->OnPropFloatChanged.AddLambda([this, TestDone](const FTestbed1StructFloat& InPropFloat)
+			{
+			// this function must be called twice before we can successfully pass this test.
+			// first call it should have the test value of the parameter
+			// second call it should have the default value of the parameter again
+			static int count = 0;
+			count++;
+
+			if (count % 2 != 0)
+			{
+				FTestbed1StructFloat TestValue = FTestbed1StructFloat();
+				// use different test value
+				TestValue = createTestFTestbed1StructFloat();
+				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat, TestValue);
+				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropFloat(), TestValue);
+
+				// now set it to the default value
+				TestValue = FTestbed1StructFloat(); // default value
+				ImplFixture->GetImplementation()->SetPropFloat(TestValue);
+			}
+			else
+			{
+				FTestbed1StructFloat TestValue = FTestbed1StructFloat(); // default value
+				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat, TestValue);
+				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropFloat(), TestValue);
+				TestDone.Execute();
+			}
+		});
+		// use different test value
+		TestValue = createTestFTestbed1StructFloat();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed1StructInterface>();
+		service->SetPropFloat(TestValue);
+	});
+
 	It("Property.PropString.Default", [this]()
 		{
 		// Do implement test here
@@ -201,6 +390,69 @@ void UTestbed1StructInterfaceOLinkSpec::Define()
 		// use different test value
 		TestValue = createTestFTestbed1StructString();
 		ImplFixture->GetImplementation()->SetPropString(TestValue);
+	});
+
+	LatentIt("Property.PropString.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		FTestbed1StructString TestValue = FTestbed1StructString(); // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropString(), TestValue);
+
+		UTestbed1StructInterfaceSignals* Testbed1StructInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
+		Testbed1StructInterfaceSignals->OnPropStringChanged.AddLambda([this, TestDone](const FTestbed1StructString& InPropString)
+			{
+			FTestbed1StructString TestValue = FTestbed1StructString();
+			// use different test value
+			TestValue = createTestFTestbed1StructString();
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropString, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropString(), TestValue);
+			TestDone.Execute();
+		});
+		// use different test value
+		TestValue = createTestFTestbed1StructString();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed1StructInterface>();
+		service->SetPropString(TestValue);
+	});
+
+	LatentIt("Property.PropString.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		FTestbed1StructString TestValue = FTestbed1StructString(); // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropString(), TestValue);
+
+		UTestbed1StructInterfaceSignals* Testbed1StructInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
+		Testbed1StructInterfaceSignals->OnPropStringChanged.AddLambda([this, TestDone](const FTestbed1StructString& InPropString)
+			{
+			// this function must be called twice before we can successfully pass this test.
+			// first call it should have the test value of the parameter
+			// second call it should have the default value of the parameter again
+			static int count = 0;
+			count++;
+
+			if (count % 2 != 0)
+			{
+				FTestbed1StructString TestValue = FTestbed1StructString();
+				// use different test value
+				TestValue = createTestFTestbed1StructString();
+				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropString, TestValue);
+				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropString(), TestValue);
+
+				// now set it to the default value
+				TestValue = FTestbed1StructString(); // default value
+				ImplFixture->GetImplementation()->SetPropString(TestValue);
+			}
+			else
+			{
+				FTestbed1StructString TestValue = FTestbed1StructString(); // default value
+				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropString, TestValue);
+				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropString(), TestValue);
+				TestDone.Execute();
+			}
+		});
+		// use different test value
+		TestValue = createTestFTestbed1StructString();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed1StructInterface>();
+		service->SetPropString(TestValue);
 	});
 
 	LatentIt("Operation.FuncBool", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)

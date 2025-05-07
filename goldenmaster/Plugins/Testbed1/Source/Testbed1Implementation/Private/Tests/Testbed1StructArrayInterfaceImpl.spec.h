@@ -27,10 +27,20 @@ TUniquePtr<FTestbed1StructArrayInterfaceImplFixture> ImplFixture;
 
 // signal callbacks for testing
 void PropBoolPropertyCb(const TArray<FTestbed1StructBool>& PropBool);
+void PropBoolPropertyChangeLocalCheckRemoteCb(const TArray<FTestbed1StructBool>& PropBool);
+void PropBoolPropertyChangeLocalChangeRemoteCb(const TArray<FTestbed1StructBool>& PropBool);
 void PropIntPropertyCb(const TArray<FTestbed1StructInt>& PropInt);
+void PropIntPropertyChangeLocalCheckRemoteCb(const TArray<FTestbed1StructInt>& PropInt);
+void PropIntPropertyChangeLocalChangeRemoteCb(const TArray<FTestbed1StructInt>& PropInt);
 void PropFloatPropertyCb(const TArray<FTestbed1StructFloat>& PropFloat);
+void PropFloatPropertyChangeLocalCheckRemoteCb(const TArray<FTestbed1StructFloat>& PropFloat);
+void PropFloatPropertyChangeLocalChangeRemoteCb(const TArray<FTestbed1StructFloat>& PropFloat);
 void PropStringPropertyCb(const TArray<FTestbed1StructString>& PropString);
+void PropStringPropertyChangeLocalCheckRemoteCb(const TArray<FTestbed1StructString>& PropString);
+void PropStringPropertyChangeLocalChangeRemoteCb(const TArray<FTestbed1StructString>& PropString);
 void PropEnumPropertyCb(const TArray<ETestbed1Enum0>& PropEnum);
+void PropEnumPropertyChangeLocalCheckRemoteCb(const TArray<ETestbed1Enum0>& PropEnum);
+void PropEnumPropertyChangeLocalChangeRemoteCb(const TArray<ETestbed1Enum0>& PropEnum);
 void SigBoolSignalCb(const TArray<FTestbed1StructBool>& ParamBool);
 void SigIntSignalCb(const TArray<FTestbed1StructInt>& ParamInt);
 void SigFloatSignalCb(const TArray<FTestbed1StructFloat>& ParamFloat);

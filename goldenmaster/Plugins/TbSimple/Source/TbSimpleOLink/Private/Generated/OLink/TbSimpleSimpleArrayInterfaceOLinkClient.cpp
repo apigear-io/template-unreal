@@ -629,6 +629,11 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::applyState(const nlohmann::json& 
 	if (bPropBoolChanged)
 	{
 		PropBool = fields["propBool"].get<TArray<bool>>();
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->PropBoolMutex));
+			_SentData->PropBool = PropBool;
+		}
 		_GetSignals()->BroadcastPropBoolChanged(PropBool);
 	}
 
@@ -636,6 +641,11 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::applyState(const nlohmann::json& 
 	if (bPropIntChanged)
 	{
 		PropInt = fields["propInt"].get<TArray<int32>>();
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->PropIntMutex));
+			_SentData->PropInt = PropInt;
+		}
 		_GetSignals()->BroadcastPropIntChanged(PropInt);
 	}
 
@@ -643,6 +653,11 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::applyState(const nlohmann::json& 
 	if (bPropInt32Changed)
 	{
 		PropInt32 = fields["propInt32"].get<TArray<int32>>();
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->PropInt32Mutex));
+			_SentData->PropInt32 = PropInt32;
+		}
 		_GetSignals()->BroadcastPropInt32Changed(PropInt32);
 	}
 
@@ -650,6 +665,11 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::applyState(const nlohmann::json& 
 	if (bPropInt64Changed)
 	{
 		PropInt64 = fields["propInt64"].get<TArray<int64>>();
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->PropInt64Mutex));
+			_SentData->PropInt64 = PropInt64;
+		}
 		_GetSignals()->BroadcastPropInt64Changed(PropInt64);
 	}
 
@@ -657,6 +677,11 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::applyState(const nlohmann::json& 
 	if (bPropFloatChanged)
 	{
 		PropFloat = fields["propFloat"].get<TArray<float>>();
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->PropFloatMutex));
+			_SentData->PropFloat = PropFloat;
+		}
 		_GetSignals()->BroadcastPropFloatChanged(PropFloat);
 	}
 
@@ -664,6 +689,11 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::applyState(const nlohmann::json& 
 	if (bPropFloat32Changed)
 	{
 		PropFloat32 = fields["propFloat32"].get<TArray<float>>();
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->PropFloat32Mutex));
+			_SentData->PropFloat32 = PropFloat32;
+		}
 		_GetSignals()->BroadcastPropFloat32Changed(PropFloat32);
 	}
 
@@ -671,6 +701,11 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::applyState(const nlohmann::json& 
 	if (bPropFloat64Changed)
 	{
 		PropFloat64 = fields["propFloat64"].get<TArray<double>>();
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->PropFloat64Mutex));
+			_SentData->PropFloat64 = PropFloat64;
+		}
 		_GetSignals()->BroadcastPropFloat64Changed(PropFloat64);
 	}
 
@@ -678,6 +713,11 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::applyState(const nlohmann::json& 
 	if (bPropStringChanged)
 	{
 		PropString = fields["propString"].get<TArray<FString>>();
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->PropStringMutex));
+			_SentData->PropString = PropString;
+		}
 		_GetSignals()->BroadcastPropStringChanged(PropString);
 	}
 
@@ -685,6 +725,11 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::applyState(const nlohmann::json& 
 	if (bPropReadOnlyStringChanged)
 	{
 		PropReadOnlyString = fields["propReadOnlyString"].get<FString>();
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->PropReadOnlyStringMutex));
+			_SentData->PropReadOnlyString = PropReadOnlyString;
+		}
 		_GetSignals()->BroadcastPropReadOnlyStringChanged(PropReadOnlyString);
 	}
 }

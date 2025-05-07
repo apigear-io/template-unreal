@@ -20,6 +20,8 @@ TUniquePtr<F{{$DisplayName}}ImplFixture> ImplFixture;
 {{- range .Interface.Properties }}
 {{- if and (not .IsReadOnly) (not (eq .KindType "extern")) }}
 void {{ Camel .Name }}PropertyCb({{ueParam "" .}});
+void {{ Camel .Name }}PropertyChangeLocalCheckRemoteCb({{ueParam "" .}});
+void {{ Camel .Name }}PropertyChangeLocalChangeRemoteCb({{ueParam "" .}});
 {{- end }}
 {{- end }}
 {{- range .Interface.Signals }}

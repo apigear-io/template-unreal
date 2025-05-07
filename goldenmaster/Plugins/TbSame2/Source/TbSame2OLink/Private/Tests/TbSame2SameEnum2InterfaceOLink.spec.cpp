@@ -116,6 +116,69 @@ void UTbSame2SameEnum2InterfaceOLinkSpec::Define()
 		ImplFixture->GetImplementation()->SetProp1(TestValue);
 	});
 
+	LatentIt("Property.Prop1.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		ETbSame2Enum1 TestValue = ETbSame2Enum1::TS2E1_VALUE1; // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp1(), TestValue);
+
+		UTbSame2SameEnum2InterfaceSignals* TbSame2SameEnum2InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
+		TbSame2SameEnum2InterfaceSignals->OnProp1Changed.AddLambda([this, TestDone](ETbSame2Enum1 InProp1)
+			{
+			ETbSame2Enum1 TestValue = ETbSame2Enum1::TS2E1_VALUE1;
+			// use different test value
+			TestValue = ETbSame2Enum1::TS2E1_VALUE2;
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetProp1(), TestValue);
+			TestDone.Execute();
+		});
+		// use different test value
+		TestValue = ETbSame2Enum1::TS2E1_VALUE2;
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSame2SameEnum2Interface>();
+		service->SetProp1(TestValue);
+	});
+
+	LatentIt("Property.Prop1.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		ETbSame2Enum1 TestValue = ETbSame2Enum1::TS2E1_VALUE1; // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp1(), TestValue);
+
+		UTbSame2SameEnum2InterfaceSignals* TbSame2SameEnum2InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
+		TbSame2SameEnum2InterfaceSignals->OnProp1Changed.AddLambda([this, TestDone](ETbSame2Enum1 InProp1)
+			{
+			// this function must be called twice before we can successfully pass this test.
+			// first call it should have the test value of the parameter
+			// second call it should have the default value of the parameter again
+			static int count = 0;
+			count++;
+
+			if (count % 2 != 0)
+			{
+				ETbSame2Enum1 TestValue = ETbSame2Enum1::TS2E1_VALUE1;
+				// use different test value
+				TestValue = ETbSame2Enum1::TS2E1_VALUE2;
+				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
+				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetProp1(), TestValue);
+
+				// now set it to the default value
+				TestValue = ETbSame2Enum1::TS2E1_VALUE1; // default value
+				ImplFixture->GetImplementation()->SetProp1(TestValue);
+			}
+			else
+			{
+				ETbSame2Enum1 TestValue = ETbSame2Enum1::TS2E1_VALUE1; // default value
+				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
+				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetProp1(), TestValue);
+				TestDone.Execute();
+			}
+		});
+		// use different test value
+		TestValue = ETbSame2Enum1::TS2E1_VALUE2;
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSame2SameEnum2Interface>();
+		service->SetProp1(TestValue);
+	});
+
 	It("Property.Prop2.Default", [this]()
 		{
 		// Do implement test here
@@ -143,6 +206,69 @@ void UTbSame2SameEnum2InterfaceOLinkSpec::Define()
 		// use different test value
 		TestValue = ETbSame2Enum2::TS2E2_VALUE2;
 		ImplFixture->GetImplementation()->SetProp2(TestValue);
+	});
+
+	LatentIt("Property.Prop2.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		ETbSame2Enum2 TestValue = ETbSame2Enum2::TS2E2_VALUE1; // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp2(), TestValue);
+
+		UTbSame2SameEnum2InterfaceSignals* TbSame2SameEnum2InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
+		TbSame2SameEnum2InterfaceSignals->OnProp2Changed.AddLambda([this, TestDone](ETbSame2Enum2 InProp2)
+			{
+			ETbSame2Enum2 TestValue = ETbSame2Enum2::TS2E2_VALUE1;
+			// use different test value
+			TestValue = ETbSame2Enum2::TS2E2_VALUE2;
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp2, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetProp2(), TestValue);
+			TestDone.Execute();
+		});
+		// use different test value
+		TestValue = ETbSame2Enum2::TS2E2_VALUE2;
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSame2SameEnum2Interface>();
+		service->SetProp2(TestValue);
+	});
+
+	LatentIt("Property.Prop2.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		ETbSame2Enum2 TestValue = ETbSame2Enum2::TS2E2_VALUE1; // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp2(), TestValue);
+
+		UTbSame2SameEnum2InterfaceSignals* TbSame2SameEnum2InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
+		TbSame2SameEnum2InterfaceSignals->OnProp2Changed.AddLambda([this, TestDone](ETbSame2Enum2 InProp2)
+			{
+			// this function must be called twice before we can successfully pass this test.
+			// first call it should have the test value of the parameter
+			// second call it should have the default value of the parameter again
+			static int count = 0;
+			count++;
+
+			if (count % 2 != 0)
+			{
+				ETbSame2Enum2 TestValue = ETbSame2Enum2::TS2E2_VALUE1;
+				// use different test value
+				TestValue = ETbSame2Enum2::TS2E2_VALUE2;
+				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp2, TestValue);
+				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetProp2(), TestValue);
+
+				// now set it to the default value
+				TestValue = ETbSame2Enum2::TS2E2_VALUE1; // default value
+				ImplFixture->GetImplementation()->SetProp2(TestValue);
+			}
+			else
+			{
+				ETbSame2Enum2 TestValue = ETbSame2Enum2::TS2E2_VALUE1; // default value
+				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp2, TestValue);
+				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetProp2(), TestValue);
+				TestDone.Execute();
+			}
+		});
+		// use different test value
+		TestValue = ETbSame2Enum2::TS2E2_VALUE2;
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSame2SameEnum2Interface>();
+		service->SetProp2(TestValue);
 	});
 
 	LatentIt("Operation.Func1", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
