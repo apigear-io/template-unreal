@@ -188,6 +188,11 @@ void UTbSame1SameStruct1InterfaceMsgBusClient::OnConnectionInit(const FTbSame1Sa
 	if (bProp1Changed)
 	{
 		Prop1 = InMessage.Prop1;
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->Prop1Mutex));
+			_SentData->Prop1 = Prop1;
+		}
 		_GetSignals()->BroadcastProp1Changed(Prop1);
 	}
 
@@ -388,6 +393,11 @@ void UTbSame1SameStruct1InterfaceMsgBusClient::OnProp1Changed(const FTbSame1Same
 	if (bProp1Changed)
 	{
 		Prop1 = InMessage.Prop1;
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->Prop1Mutex));
+			_SentData->Prop1 = Prop1;
+		}
 		_GetSignals()->BroadcastProp1Changed(Prop1);
 	}
 }

@@ -191,6 +191,8 @@ void UTbSame1SameEnum2InterfaceMsgBusClient::OnConnectionInit(const FTbSame1Same
 	if (bProp1Changed)
 	{
 		Prop1 = InMessage.Prop1;
+		// reset sent data to the current state
+		_SentData->Prop1 = Prop1;
 		_GetSignals()->BroadcastProp1Changed(Prop1);
 	}
 
@@ -198,6 +200,8 @@ void UTbSame1SameEnum2InterfaceMsgBusClient::OnConnectionInit(const FTbSame1Same
 	if (bProp2Changed)
 	{
 		Prop2 = InMessage.Prop2;
+		// reset sent data to the current state
+		_SentData->Prop2 = Prop2;
 		_GetSignals()->BroadcastProp2Changed(Prop2);
 	}
 
@@ -472,6 +476,8 @@ void UTbSame1SameEnum2InterfaceMsgBusClient::OnProp1Changed(const FTbSame1SameEn
 	if (bProp1Changed)
 	{
 		Prop1 = InMessage.Prop1;
+		// reset sent data to the current state
+		_SentData->Prop1 = Prop1;
 		_GetSignals()->BroadcastProp1Changed(Prop1);
 	}
 }
@@ -488,6 +494,8 @@ void UTbSame1SameEnum2InterfaceMsgBusClient::OnProp2Changed(const FTbSame1SameEn
 	if (bProp2Changed)
 	{
 		Prop2 = InMessage.Prop2;
+		// reset sent data to the current state
+		_SentData->Prop2 = Prop2;
 		_GetSignals()->BroadcastProp2Changed(Prop2);
 	}
 }

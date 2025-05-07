@@ -193,6 +193,11 @@ void UTestbed2NestedStruct2InterfaceMsgBusClient::OnConnectionInit(const FTestbe
 	if (bProp1Changed)
 	{
 		Prop1 = InMessage.Prop1;
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->Prop1Mutex));
+			_SentData->Prop1 = Prop1;
+		}
 		_GetSignals()->BroadcastProp1Changed(Prop1);
 	}
 
@@ -200,6 +205,11 @@ void UTestbed2NestedStruct2InterfaceMsgBusClient::OnConnectionInit(const FTestbe
 	if (bProp2Changed)
 	{
 		Prop2 = InMessage.Prop2;
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->Prop2Mutex));
+			_SentData->Prop2 = Prop2;
+		}
 		_GetSignals()->BroadcastProp2Changed(Prop2);
 	}
 
@@ -482,6 +492,11 @@ void UTestbed2NestedStruct2InterfaceMsgBusClient::OnProp1Changed(const FTestbed2
 	if (bProp1Changed)
 	{
 		Prop1 = InMessage.Prop1;
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->Prop1Mutex));
+			_SentData->Prop1 = Prop1;
+		}
 		_GetSignals()->BroadcastProp1Changed(Prop1);
 	}
 }
@@ -498,6 +513,11 @@ void UTestbed2NestedStruct2InterfaceMsgBusClient::OnProp2Changed(const FTestbed2
 	if (bProp2Changed)
 	{
 		Prop2 = InMessage.Prop2;
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->Prop2Mutex));
+			_SentData->Prop2 = Prop2;
+		}
 		_GetSignals()->BroadcastProp2Changed(Prop2);
 	}
 }

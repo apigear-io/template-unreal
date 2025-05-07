@@ -199,6 +199,8 @@ void UTestbed2ManyParamInterfaceMsgBusClient::OnConnectionInit(const FTestbed2Ma
 	if (bProp1Changed)
 	{
 		Prop1 = InMessage.Prop1;
+		// reset sent data to the current state
+		_SentData->Prop1 = Prop1;
 		_GetSignals()->BroadcastProp1Changed(Prop1);
 	}
 
@@ -206,6 +208,8 @@ void UTestbed2ManyParamInterfaceMsgBusClient::OnConnectionInit(const FTestbed2Ma
 	if (bProp2Changed)
 	{
 		Prop2 = InMessage.Prop2;
+		// reset sent data to the current state
+		_SentData->Prop2 = Prop2;
 		_GetSignals()->BroadcastProp2Changed(Prop2);
 	}
 
@@ -213,6 +217,8 @@ void UTestbed2ManyParamInterfaceMsgBusClient::OnConnectionInit(const FTestbed2Ma
 	if (bProp3Changed)
 	{
 		Prop3 = InMessage.Prop3;
+		// reset sent data to the current state
+		_SentData->Prop3 = Prop3;
 		_GetSignals()->BroadcastProp3Changed(Prop3);
 	}
 
@@ -220,6 +226,8 @@ void UTestbed2ManyParamInterfaceMsgBusClient::OnConnectionInit(const FTestbed2Ma
 	if (bProp4Changed)
 	{
 		Prop4 = InMessage.Prop4;
+		// reset sent data to the current state
+		_SentData->Prop4 = Prop4;
 		_GetSignals()->BroadcastProp4Changed(Prop4);
 	}
 
@@ -653,6 +661,8 @@ void UTestbed2ManyParamInterfaceMsgBusClient::OnProp1Changed(const FTestbed2Many
 	if (bProp1Changed)
 	{
 		Prop1 = InMessage.Prop1;
+		// reset sent data to the current state
+		_SentData->Prop1 = Prop1;
 		_GetSignals()->BroadcastProp1Changed(Prop1);
 	}
 }
@@ -669,6 +679,8 @@ void UTestbed2ManyParamInterfaceMsgBusClient::OnProp2Changed(const FTestbed2Many
 	if (bProp2Changed)
 	{
 		Prop2 = InMessage.Prop2;
+		// reset sent data to the current state
+		_SentData->Prop2 = Prop2;
 		_GetSignals()->BroadcastProp2Changed(Prop2);
 	}
 }
@@ -685,6 +697,8 @@ void UTestbed2ManyParamInterfaceMsgBusClient::OnProp3Changed(const FTestbed2Many
 	if (bProp3Changed)
 	{
 		Prop3 = InMessage.Prop3;
+		// reset sent data to the current state
+		_SentData->Prop3 = Prop3;
 		_GetSignals()->BroadcastProp3Changed(Prop3);
 	}
 }
@@ -701,6 +715,8 @@ void UTestbed2ManyParamInterfaceMsgBusClient::OnProp4Changed(const FTestbed2Many
 	if (bProp4Changed)
 	{
 		Prop4 = InMessage.Prop4;
+		// reset sent data to the current state
+		_SentData->Prop4 = Prop4;
 		_GetSignals()->BroadcastProp4Changed(Prop4);
 	}
 }
