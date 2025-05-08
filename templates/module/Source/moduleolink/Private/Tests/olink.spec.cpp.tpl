@@ -68,7 +68,8 @@ void {{$Class}}OLinkSpec::Define()
 			}
 		});
 
-		ImplFixture->Connection = OLinkFactory::Create(OLinkClient, "TestingConnection");
+		ImplFixture->Connection = OLinkFactory::Create(GetTransientPackage(), "TestingConnection");
+		ImplFixture->Connection.GetObject()->AddToRoot();
 		ImplFixture->Connection->Configure("ws://127.0.0.1:8666/ws", false);
 
 		OLinkClient->UseConnection(ImplFixture->Connection);
@@ -77,7 +78,11 @@ void {{$Class}}OLinkSpec::Define()
 
 	AfterEach([this]()
 		{
-		ImplFixture->Connection->Disconnect();
+		if (ImplFixture->Connection && IsValid(ImplFixture->Connection.GetObject()))
+		{
+			ImplFixture->Connection->Disconnect();
+			ImplFixture->Connection.GetObject()->RemoveFromRoot();
+		}
 		ImplFixture.Reset();
 	});
 {{- range .Interface.Properties }}

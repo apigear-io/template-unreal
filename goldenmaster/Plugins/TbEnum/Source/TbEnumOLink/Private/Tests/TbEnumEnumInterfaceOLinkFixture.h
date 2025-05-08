@@ -11,7 +11,7 @@
 #include "UObject/NoExportTypes.h"
 #include "TbEnum/Generated/api/TbEnum_data.h"
 
-class UTbEnumEnumInterfaceOLinkSpec;
+class FTbEnumEnumInterfaceOLinkFixture;
 class ITbEnumEnumInterfaceInterface;
 class UTbEnumEnumInterfaceOLinkAdapter;
 class IApiGearConnection;

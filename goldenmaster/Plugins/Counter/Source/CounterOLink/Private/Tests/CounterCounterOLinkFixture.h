@@ -11,7 +11,7 @@
 #include "UObject/NoExportTypes.h"
 #include "Counter/Generated/api/Counter_data.h"
 
-class UCounterCounterOLinkSpec;
+class FCounterCounterOLinkFixture;
 class ICounterCounterInterface;
 class UCounterCounterOLinkAdapter;
 class IApiGearConnection;

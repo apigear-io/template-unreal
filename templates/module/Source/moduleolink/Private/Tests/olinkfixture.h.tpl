@@ -15,7 +15,7 @@
 #include "UObject/NoExportTypes.h"
 #include "{{$ModuleName}}/Generated/api/{{$ModuleName}}_data.h"
 
-class {{$Class}}OLinkSpec;
+class F{{ $DisplayName }}OLinkFixture;
 class I{{$DisplayName}}Interface;
 class U{{$DisplayName}}OLinkAdapter;
 class IApiGearConnection;

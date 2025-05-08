@@ -11,7 +11,7 @@
 #include "UObject/NoExportTypes.h"
 #include "TbNames/Generated/api/TbNames_data.h"
 
-class UTbNamesNamEsOLinkSpec;
+class FTbNamesNamEsOLinkFixture;
 class ITbNamesNamEsInterface;
 class UTbNamesNamEsOLinkAdapter;
 class IApiGearConnection;

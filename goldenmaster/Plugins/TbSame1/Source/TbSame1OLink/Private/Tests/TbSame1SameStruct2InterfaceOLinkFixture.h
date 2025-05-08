@@ -11,7 +11,7 @@
 #include "UObject/NoExportTypes.h"
 #include "TbSame1/Generated/api/TbSame1_data.h"
 
-class UTbSame1SameStruct2InterfaceOLinkSpec;
+class FTbSame1SameStruct2InterfaceOLinkFixture;
 class ITbSame1SameStruct2InterfaceInterface;
 class UTbSame1SameStruct2InterfaceOLinkAdapter;
 class IApiGearConnection;

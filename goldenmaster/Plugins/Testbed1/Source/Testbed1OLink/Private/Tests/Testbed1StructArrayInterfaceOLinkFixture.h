@@ -11,7 +11,7 @@
 #include "UObject/NoExportTypes.h"
 #include "Testbed1/Generated/api/Testbed1_data.h"
 
-class UTestbed1StructArrayInterfaceOLinkSpec;
+class FTestbed1StructArrayInterfaceOLinkFixture;
 class ITestbed1StructArrayInterfaceInterface;
 class UTestbed1StructArrayInterfaceOLinkAdapter;
 class IApiGearConnection;

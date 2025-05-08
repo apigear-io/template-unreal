@@ -11,7 +11,7 @@
 #include "UObject/NoExportTypes.h"
 #include "TbSimple/Generated/api/TbSimple_data.h"
 
-class UTbSimpleSimpleArrayInterfaceOLinkSpec;
+class FTbSimpleSimpleArrayInterfaceOLinkFixture;
 class ITbSimpleSimpleArrayInterfaceInterface;
 class UTbSimpleSimpleArrayInterfaceOLinkAdapter;
 class IApiGearConnection;
