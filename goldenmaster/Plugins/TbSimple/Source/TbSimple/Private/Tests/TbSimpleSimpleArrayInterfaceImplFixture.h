@@ -10,7 +10,7 @@
 #include "Generated/api/TbSimple_data.h"
 #include "TbSimpleSimpleArrayInterfaceImplFixture.generated.h"
 
-class UTbSimpleSimpleArrayInterfaceImplSpec;
+class FTbSimpleSimpleArrayInterfaceImplFixture;
 class ITbSimpleSimpleArrayInterfaceInterface;
 
 UCLASS()
@@ -18,7 +18,9 @@ class UTbSimpleSimpleArrayInterfaceImplHelper : public UObject
 {
 	GENERATED_BODY()
 public:
-	void SetSpec(UTbSimpleSimpleArrayInterfaceImplSpec* InSpec);
+	void SetParentFixture(TWeakPtr<FTbSimpleSimpleArrayInterfaceImplFixture> InFixture);
+	void SetSpec(FAutomationTestBase* InSpec);
+	void SetTestDone(const FDoneDelegate& InDone);
 
 	UFUNCTION()
 	void PropBoolPropertyCb(const TArray<bool>& PropBool);
@@ -69,8 +71,9 @@ public:
 	void SigStringSignalCb(const TArray<FString>& ParamString);
 
 protected:
-	const FDoneDelegate* testDoneDelegate;
-	UTbSimpleSimpleArrayInterfaceImplSpec* Spec;
+	TWeakPtr<FTbSimpleSimpleArrayInterfaceImplFixture> ImplFixture;
+	FDoneDelegate testDoneDelegate;
+	FAutomationTestBase* Spec;
 };
 
 #if WITH_DEV_AUTOMATION_TESTS

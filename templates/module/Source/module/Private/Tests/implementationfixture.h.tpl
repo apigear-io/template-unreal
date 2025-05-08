@@ -14,7 +14,7 @@
 #include "Generated/api/{{$ModuleName}}_data.h"
 #include "{{$DisplayName}}ImplFixture.generated.h"
 
-class {{$Class}}ImplSpec;
+class F{{$DisplayName}}ImplFixture;
 class I{{$DisplayName}}Interface;
 
 UCLASS()
@@ -22,7 +22,9 @@ class {{$Class}}ImplHelper : public UObject
 {
 	GENERATED_BODY()
 public:
-	void SetSpec({{$Class}}ImplSpec* InSpec);
+	void SetParentFixture(TWeakPtr<F{{ $DisplayName }}ImplFixture> InFixture);
+	void SetSpec(FAutomationTestBase* InSpec);
+	void SetTestDone(const FDoneDelegate& InDone);
 {{- range .Interface.Properties }}
 {{- if and (not .IsReadOnly) (not (eq .KindType "extern")) }}
 
@@ -37,8 +39,9 @@ public:
 {{- end }}
 
 protected:
-	const FDoneDelegate* testDoneDelegate;
-	{{$Class}}ImplSpec* Spec;
+	TWeakPtr<F{{ $DisplayName }}ImplFixture> ImplFixture;
+	FDoneDelegate testDoneDelegate;
+	FAutomationTestBase* Spec;
 };
 
 #if WITH_DEV_AUTOMATION_TESTS

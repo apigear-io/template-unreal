@@ -15,24 +15,31 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include "TbNamesNamEsImpl.spec.h"
 #include "Implementation/TbNamesNamEs.h"
 #include "TbNamesNamEsImplFixture.h"
+#include "TbNamesTestsCommon.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
+
+BEGIN_DEFINE_SPEC(UTbNamesNamEsImplSpec, "TbNames.NamEs.Impl", TbNamesTestFilterMask);
+
+TSharedPtr<FTbNamesNamEsImplFixture> ImplFixture;
+
+END_DEFINE_SPEC(UTbNamesNamEsImplSpec);
 
 void UTbNamesNamEsImplSpec::Define()
 {
 	BeforeEach([this]()
 		{
-		ImplFixture = MakeUnique<FTbNamesNamEsImplFixture>();
+		ImplFixture = MakeShared<FTbNamesNamEsImplFixture>();
 		TestTrue("Check for valid ImplFixture", ImplFixture.IsValid());
 
 		TestTrue("Check for valid testImplementation", ImplFixture->GetImplementation().GetInterface() != nullptr);
 
 		TestTrue("Check for valid Helper", ImplFixture->GetHelper().IsValid());
 		ImplFixture->GetHelper()->SetSpec(this);
+		ImplFixture->GetHelper()->SetParentFixture(ImplFixture);
 	});
 
 	AfterEach([this]()
@@ -53,7 +60,7 @@ void UTbNamesNamEsImplSpec::Define()
 		bool TestValue = false; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetSwitch(ImplFixture->GetImplementation().GetObject()), TestValue);
 
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		TbNamesNamEsSignals->OnSwitchChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTbNamesNamEsImplHelper::SwitchPropertyCb);
 		// use different test value
@@ -74,7 +81,7 @@ void UTbNamesNamEsImplSpec::Define()
 		int32 TestValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetSomeProperty(ImplFixture->GetImplementation().GetObject()), TestValue);
 
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		TbNamesNamEsSignals->OnSomePropertyChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTbNamesNamEsImplHelper::SomePropertyPropertyCb);
 		// use different test value
@@ -95,7 +102,7 @@ void UTbNamesNamEsImplSpec::Define()
 		int32 TestValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetSomePoperty2(ImplFixture->GetImplementation().GetObject()), TestValue);
 
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		TbNamesNamEsSignals->OnSomePoperty2Changed.AddDynamic(ImplFixture->GetHelper().Get(), &UTbNamesNamEsImplHelper::SomePoperty2PropertyCb);
 		// use different test value
@@ -116,7 +123,7 @@ void UTbNamesNamEsImplSpec::Define()
 		ETbNamesEnum_With_Under_scores TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_FIRSTVALUE; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetEnumProperty(ImplFixture->GetImplementation().GetObject()), TestValue);
 
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		TbNamesNamEsSignals->OnEnumPropertyChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTbNamesNamEsImplHelper::EnumPropertyPropertyCb);
 		// use different test value
@@ -138,7 +145,7 @@ void UTbNamesNamEsImplSpec::Define()
 
 	LatentIt("Signal.SomeSignal", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		TbNamesNamEsSignals->OnSomeSignalSignal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbNamesNamEsImplHelper::SomeSignalSignalCb);
 
@@ -149,7 +156,7 @@ void UTbNamesNamEsImplSpec::Define()
 
 	LatentIt("Signal.SomeSignal2", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		TbNamesNamEsSignals->OnSomeSignal2Signal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbNamesNamEsImplHelper::SomeSignal2SignalCb);
 
@@ -159,59 +166,4 @@ void UTbNamesNamEsImplSpec::Define()
 	});
 }
 
-void UTbNamesNamEsImplSpec::SwitchPropertyCb(bool bInSwitch)
-{
-	bool TestValue = false;
-	// use different test value
-	TestValue = true;
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), bInSwitch, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetSwitch(ImplFixture->GetImplementation().GetObject()), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbNamesNamEsImplSpec::SomePropertyPropertyCb(int32 InSomeProperty)
-{
-	int32 TestValue = 0;
-	// use different test value
-	TestValue = 1;
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InSomeProperty, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetSomeProperty(ImplFixture->GetImplementation().GetObject()), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbNamesNamEsImplSpec::SomePoperty2PropertyCb(int32 InSomePoperty2)
-{
-	int32 TestValue = 0;
-	// use different test value
-	TestValue = 1;
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InSomePoperty2, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetSomePoperty2(ImplFixture->GetImplementation().GetObject()), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbNamesNamEsImplSpec::EnumPropertyPropertyCb(ETbNamesEnum_With_Under_scores InEnumProperty)
-{
-	ETbNamesEnum_With_Under_scores TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_FIRSTVALUE;
-	// use different test value
-	TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_SECONDVALUE;
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InEnumProperty, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetEnumProperty(ImplFixture->GetImplementation().GetObject()), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbNamesNamEsImplSpec::SomeSignalSignalCb(bool bInSomeParam)
-{
-	// known test value
-	bool bSomeParamTestValue = true;
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), bInSomeParam, bSomeParamTestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbNamesNamEsImplSpec::SomeSignal2SignalCb(bool bInSomeParam)
-{
-	// known test value
-	bool bSomeParamTestValue = true;
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), bInSomeParam, bSomeParamTestValue);
-	testDoneDelegate.Execute();
-}
 #endif // WITH_DEV_AUTOMATION_TESTS

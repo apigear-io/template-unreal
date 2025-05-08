@@ -15,15 +15,26 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbSimpleEmptyInterfaceImplFixture.h"
-#include "TbSimpleEmptyInterfaceImpl.spec.h"
+#include "Implementation/TbSimpleEmptyInterface.h"
+#include "TbSimpleTestsCommon.h"
 #include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-void UTbSimpleEmptyInterfaceImplHelper::SetSpec(UTbSimpleEmptyInterfaceImplSpec* InSpec)
+void UTbSimpleEmptyInterfaceImplHelper::SetParentFixture(TWeakPtr<FTbSimpleEmptyInterfaceImplFixture> InFixture)
+{
+	ImplFixture = InFixture;
+}
+
+void UTbSimpleEmptyInterfaceImplHelper::SetSpec(FAutomationTestBase* InSpec)
 {
 	Spec = InSpec;
+}
+
+void UTbSimpleEmptyInterfaceImplHelper::SetTestDone(const FDoneDelegate& InDone)
+{
+	testDoneDelegate = InDone;
 }
 
 FTbSimpleEmptyInterfaceImplFixture::FTbSimpleEmptyInterfaceImplFixture()
@@ -70,7 +81,15 @@ void FTbSimpleEmptyInterfaceImplFixture::CleanUp()
 }
 #else  // WITH_DEV_AUTOMATION_TESTS
 // create empty implementation in case we do not want to do automated testing
-void UTbSimpleEmptyInterfaceImplHelper::SetSpec(UTbSimpleEmptyInterfaceImplSpec* /* InSpec */)
+void UTbSimpleEmptyInterfaceImplHelper::SetParentFixture(TWeakPtr<FTbSimpleEmptyInterfaceImplFixture> /*InFixture*/)
+{
+}
+
+void UTbSimpleEmptyInterfaceImplHelper::SetSpec(FAutomationTestBase* /*InSpec*/)
+{
+}
+
+void UTbSimpleEmptyInterfaceImplHelper::SetTestDone(const FDoneDelegate& /*InDone*/)
 {
 }
 #endif // WITH_DEV_AUTOMATION_TESTS

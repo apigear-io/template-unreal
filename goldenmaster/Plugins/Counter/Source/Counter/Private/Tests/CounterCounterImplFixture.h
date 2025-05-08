@@ -10,7 +10,7 @@
 #include "Generated/api/Counter_data.h"
 #include "CounterCounterImplFixture.generated.h"
 
-class UCounterCounterImplSpec;
+class FCounterCounterImplFixture;
 class ICounterCounterInterface;
 
 UCLASS()
@@ -18,7 +18,9 @@ class UCounterCounterImplHelper : public UObject
 {
 	GENERATED_BODY()
 public:
-	void SetSpec(UCounterCounterImplSpec* InSpec);
+	void SetParentFixture(TWeakPtr<FCounterCounterImplFixture> InFixture);
+	void SetSpec(FAutomationTestBase* InSpec);
+	void SetTestDone(const FDoneDelegate& InDone);
 
 	UFUNCTION()
 	void VectorPropertyCb(const FCustomTypesVector3D& Vector);
@@ -30,8 +32,9 @@ public:
 	void ValueChangedSignalCb(const FCustomTypesVector3D& Vector, const FVector& ExternVector, const TArray<FCustomTypesVector3D>& VectorArray, const TArray<FVector>& ExternVectorArray);
 
 protected:
-	const FDoneDelegate* testDoneDelegate;
-	UCounterCounterImplSpec* Spec;
+	TWeakPtr<FCounterCounterImplFixture> ImplFixture;
+	FDoneDelegate testDoneDelegate;
+	FAutomationTestBase* Spec;
 };
 
 #if WITH_DEV_AUTOMATION_TESTS

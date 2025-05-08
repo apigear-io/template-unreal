@@ -15,25 +15,47 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbSame2SameEnum1InterfaceImplFixture.h"
-#include "TbSame2SameEnum1InterfaceImpl.spec.h"
+#include "Implementation/TbSame2SameEnum1Interface.h"
+#include "TbSame2TestsCommon.h"
 #include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-void UTbSame2SameEnum1InterfaceImplHelper::SetSpec(UTbSame2SameEnum1InterfaceImplSpec* InSpec)
+void UTbSame2SameEnum1InterfaceImplHelper::SetParentFixture(TWeakPtr<FTbSame2SameEnum1InterfaceImplFixture> InFixture)
+{
+	ImplFixture = InFixture;
+}
+
+void UTbSame2SameEnum1InterfaceImplHelper::SetSpec(FAutomationTestBase* InSpec)
 {
 	Spec = InSpec;
 }
 
-void UTbSame2SameEnum1InterfaceImplHelper::Prop1PropertyCb(ETbSame2Enum1 Prop1)
+void UTbSame2SameEnum1InterfaceImplHelper::SetTestDone(const FDoneDelegate& InDone)
 {
-	Spec->Prop1PropertyCb(Prop1);
+	testDoneDelegate = InDone;
 }
 
-void UTbSame2SameEnum1InterfaceImplHelper::Sig1SignalCb(ETbSame2Enum1 Param1)
+void UTbSame2SameEnum1InterfaceImplHelper::Prop1PropertyCb(ETbSame2Enum1 InProp1)
 {
-	Spec->Sig1SignalCb(Param1);
+	ETbSame2Enum1 TestValue = ETbSame2Enum1::TS2E1_VALUE1;
+	// use different test value
+	TestValue = ETbSame2Enum1::TS2E1_VALUE2;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
+	if (TSharedPtr<FTbSame2SameEnum1InterfaceImplFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetProp1(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTbSame2SameEnum1InterfaceImplHelper::Sig1SignalCb(ETbSame2Enum1 InParam1)
+{
+	// known test value
+	ETbSame2Enum1 Param1TestValue = ETbSame2Enum1::TS2E1_VALUE2;
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
+	testDoneDelegate.Execute();
 }
 
 FTbSame2SameEnum1InterfaceImplFixture::FTbSame2SameEnum1InterfaceImplFixture()
@@ -80,7 +102,15 @@ void FTbSame2SameEnum1InterfaceImplFixture::CleanUp()
 }
 #else  // WITH_DEV_AUTOMATION_TESTS
 // create empty implementation in case we do not want to do automated testing
-void UTbSame2SameEnum1InterfaceImplHelper::SetSpec(UTbSame2SameEnum1InterfaceImplSpec* /* InSpec */)
+void UTbSame2SameEnum1InterfaceImplHelper::SetParentFixture(TWeakPtr<FTbSame2SameEnum1InterfaceImplFixture> /*InFixture*/)
+{
+}
+
+void UTbSame2SameEnum1InterfaceImplHelper::SetSpec(FAutomationTestBase* /*InSpec*/)
+{
+}
+
+void UTbSame2SameEnum1InterfaceImplHelper::SetTestDone(const FDoneDelegate& /*InDone*/)
 {
 }
 

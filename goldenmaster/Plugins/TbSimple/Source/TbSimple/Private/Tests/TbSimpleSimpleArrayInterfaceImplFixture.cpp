@@ -15,95 +15,202 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbSimpleSimpleArrayInterfaceImplFixture.h"
-#include "TbSimpleSimpleArrayInterfaceImpl.spec.h"
+#include "Implementation/TbSimpleSimpleArrayInterface.h"
+#include "TbSimpleTestsCommon.h"
 #include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-void UTbSimpleSimpleArrayInterfaceImplHelper::SetSpec(UTbSimpleSimpleArrayInterfaceImplSpec* InSpec)
+void UTbSimpleSimpleArrayInterfaceImplHelper::SetParentFixture(TWeakPtr<FTbSimpleSimpleArrayInterfaceImplFixture> InFixture)
+{
+	ImplFixture = InFixture;
+}
+
+void UTbSimpleSimpleArrayInterfaceImplHelper::SetSpec(FAutomationTestBase* InSpec)
 {
 	Spec = InSpec;
 }
 
-void UTbSimpleSimpleArrayInterfaceImplHelper::PropBoolPropertyCb(const TArray<bool>& PropBool)
+void UTbSimpleSimpleArrayInterfaceImplHelper::SetTestDone(const FDoneDelegate& InDone)
 {
-	Spec->PropBoolPropertyCb(PropBool);
+	testDoneDelegate = InDone;
 }
 
-void UTbSimpleSimpleArrayInterfaceImplHelper::PropIntPropertyCb(const TArray<int32>& PropInt)
+void UTbSimpleSimpleArrayInterfaceImplHelper::PropBoolPropertyCb(const TArray<bool>& InPropBool)
 {
-	Spec->PropIntPropertyCb(PropInt);
+	TArray<bool> TestValue = TArray<bool>();
+	// use different test value
+	TestValue.Add(true);
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropBool, TestValue);
+	if (TSharedPtr<FTbSimpleSimpleArrayInterfaceImplFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropBool(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
 }
 
-void UTbSimpleSimpleArrayInterfaceImplHelper::PropInt32PropertyCb(const TArray<int32>& PropInt32)
+void UTbSimpleSimpleArrayInterfaceImplHelper::PropIntPropertyCb(const TArray<int32>& InPropInt)
 {
-	Spec->PropInt32PropertyCb(PropInt32);
+	TArray<int32> TestValue = TArray<int32>();
+	// use different test value
+	TestValue.Add(1);
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
+	if (TSharedPtr<FTbSimpleSimpleArrayInterfaceImplFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropInt(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
 }
 
-void UTbSimpleSimpleArrayInterfaceImplHelper::PropInt64PropertyCb(const TArray<int64>& PropInt64)
+void UTbSimpleSimpleArrayInterfaceImplHelper::PropInt32PropertyCb(const TArray<int32>& InPropInt32)
 {
-	Spec->PropInt64PropertyCb(PropInt64);
+	TArray<int32> TestValue = TArray<int32>();
+	// use different test value
+	TestValue.Add(1);
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt32, TestValue);
+	if (TSharedPtr<FTbSimpleSimpleArrayInterfaceImplFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropInt32(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
 }
 
-void UTbSimpleSimpleArrayInterfaceImplHelper::PropFloatPropertyCb(const TArray<float>& PropFloat)
+void UTbSimpleSimpleArrayInterfaceImplHelper::PropInt64PropertyCb(const TArray<int64>& InPropInt64)
 {
-	Spec->PropFloatPropertyCb(PropFloat);
+	TArray<int64> TestValue = TArray<int64>();
+	// use different test value
+	TestValue.Add(1LL);
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt64, TestValue);
+	if (TSharedPtr<FTbSimpleSimpleArrayInterfaceImplFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropInt64(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
 }
 
-void UTbSimpleSimpleArrayInterfaceImplHelper::PropFloat32PropertyCb(const TArray<float>& PropFloat32)
+void UTbSimpleSimpleArrayInterfaceImplHelper::PropFloatPropertyCb(const TArray<float>& InPropFloat)
 {
-	Spec->PropFloat32PropertyCb(PropFloat32);
+	TArray<float> TestValue = TArray<float>();
+	// use different test value
+	TestValue.Add(1.0f);
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat, TestValue);
+	if (TSharedPtr<FTbSimpleSimpleArrayInterfaceImplFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropFloat(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
 }
 
-void UTbSimpleSimpleArrayInterfaceImplHelper::PropFloat64PropertyCb(const TArray<double>& PropFloat64)
+void UTbSimpleSimpleArrayInterfaceImplHelper::PropFloat32PropertyCb(const TArray<float>& InPropFloat32)
 {
-	Spec->PropFloat64PropertyCb(PropFloat64);
+	TArray<float> TestValue = TArray<float>();
+	// use different test value
+	TestValue.Add(1.0f);
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat32, TestValue);
+	if (TSharedPtr<FTbSimpleSimpleArrayInterfaceImplFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropFloat32(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
 }
 
-void UTbSimpleSimpleArrayInterfaceImplHelper::PropStringPropertyCb(const TArray<FString>& PropString)
+void UTbSimpleSimpleArrayInterfaceImplHelper::PropFloat64PropertyCb(const TArray<double>& InPropFloat64)
 {
-	Spec->PropStringPropertyCb(PropString);
+	TArray<double> TestValue = TArray<double>();
+	// use different test value
+	TestValue.Add(1.0);
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat64, TestValue);
+	if (TSharedPtr<FTbSimpleSimpleArrayInterfaceImplFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropFloat64(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
 }
 
-void UTbSimpleSimpleArrayInterfaceImplHelper::SigBoolSignalCb(const TArray<bool>& ParamBool)
+void UTbSimpleSimpleArrayInterfaceImplHelper::PropStringPropertyCb(const TArray<FString>& InPropString)
 {
-	Spec->SigBoolSignalCb(ParamBool);
+	TArray<FString> TestValue = TArray<FString>();
+	// use different test value
+	TestValue.Add(FString("xyz"));
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropString, TestValue);
+	if (TSharedPtr<FTbSimpleSimpleArrayInterfaceImplFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropString(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
 }
 
-void UTbSimpleSimpleArrayInterfaceImplHelper::SigIntSignalCb(const TArray<int32>& ParamInt)
+void UTbSimpleSimpleArrayInterfaceImplHelper::SigBoolSignalCb(const TArray<bool>& InParamBool)
 {
-	Spec->SigIntSignalCb(ParamInt);
+	// known test value
+	TArray<bool> ParamBoolTestValue = TArray<bool>(); // default value
+	ParamBoolTestValue.Add(true);
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamBool, ParamBoolTestValue);
+	testDoneDelegate.Execute();
 }
 
-void UTbSimpleSimpleArrayInterfaceImplHelper::SigInt32SignalCb(const TArray<int32>& ParamInt32)
+void UTbSimpleSimpleArrayInterfaceImplHelper::SigIntSignalCb(const TArray<int32>& InParamInt)
 {
-	Spec->SigInt32SignalCb(ParamInt32);
+	// known test value
+	TArray<int32> ParamIntTestValue = TArray<int32>(); // default value
+	ParamIntTestValue.Add(1);
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamInt, ParamIntTestValue);
+	testDoneDelegate.Execute();
 }
 
-void UTbSimpleSimpleArrayInterfaceImplHelper::SigInt64SignalCb(const TArray<int64>& ParamInt64)
+void UTbSimpleSimpleArrayInterfaceImplHelper::SigInt32SignalCb(const TArray<int32>& InParamInt32)
 {
-	Spec->SigInt64SignalCb(ParamInt64);
+	// known test value
+	TArray<int32> ParamInt32TestValue = TArray<int32>(); // default value
+	ParamInt32TestValue.Add(1);
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamInt32, ParamInt32TestValue);
+	testDoneDelegate.Execute();
 }
 
-void UTbSimpleSimpleArrayInterfaceImplHelper::SigFloatSignalCb(const TArray<float>& ParamFloat)
+void UTbSimpleSimpleArrayInterfaceImplHelper::SigInt64SignalCb(const TArray<int64>& InParamInt64)
 {
-	Spec->SigFloatSignalCb(ParamFloat);
+	// known test value
+	TArray<int64> ParamInt64TestValue = TArray<int64>(); // default value
+	ParamInt64TestValue.Add(1LL);
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamInt64, ParamInt64TestValue);
+	testDoneDelegate.Execute();
 }
 
-void UTbSimpleSimpleArrayInterfaceImplHelper::SigFloat32SignalCb(const TArray<float>& ParamFloa32)
+void UTbSimpleSimpleArrayInterfaceImplHelper::SigFloatSignalCb(const TArray<float>& InParamFloat)
 {
-	Spec->SigFloat32SignalCb(ParamFloa32);
+	// known test value
+	TArray<float> ParamFloatTestValue = TArray<float>(); // default value
+	ParamFloatTestValue.Add(1.0f);
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamFloat, ParamFloatTestValue);
+	testDoneDelegate.Execute();
 }
 
-void UTbSimpleSimpleArrayInterfaceImplHelper::SigFloat64SignalCb(const TArray<double>& ParamFloat64)
+void UTbSimpleSimpleArrayInterfaceImplHelper::SigFloat32SignalCb(const TArray<float>& InParamFloa32)
 {
-	Spec->SigFloat64SignalCb(ParamFloat64);
+	// known test value
+	TArray<float> ParamFloa32TestValue = TArray<float>(); // default value
+	ParamFloa32TestValue.Add(1.0f);
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamFloa32, ParamFloa32TestValue);
+	testDoneDelegate.Execute();
 }
 
-void UTbSimpleSimpleArrayInterfaceImplHelper::SigStringSignalCb(const TArray<FString>& ParamString)
+void UTbSimpleSimpleArrayInterfaceImplHelper::SigFloat64SignalCb(const TArray<double>& InParamFloat64)
 {
-	Spec->SigStringSignalCb(ParamString);
+	// known test value
+	TArray<double> ParamFloat64TestValue = TArray<double>(); // default value
+	ParamFloat64TestValue.Add(1.0);
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamFloat64, ParamFloat64TestValue);
+	testDoneDelegate.Execute();
+}
+
+void UTbSimpleSimpleArrayInterfaceImplHelper::SigStringSignalCb(const TArray<FString>& InParamString)
+{
+	// known test value
+	TArray<FString> ParamStringTestValue = TArray<FString>(); // default value
+	ParamStringTestValue.Add(FString("xyz"));
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamString, ParamStringTestValue);
+	testDoneDelegate.Execute();
 }
 
 FTbSimpleSimpleArrayInterfaceImplFixture::FTbSimpleSimpleArrayInterfaceImplFixture()
@@ -150,7 +257,15 @@ void FTbSimpleSimpleArrayInterfaceImplFixture::CleanUp()
 }
 #else  // WITH_DEV_AUTOMATION_TESTS
 // create empty implementation in case we do not want to do automated testing
-void UTbSimpleSimpleArrayInterfaceImplHelper::SetSpec(UTbSimpleSimpleArrayInterfaceImplSpec* /* InSpec */)
+void UTbSimpleSimpleArrayInterfaceImplHelper::SetParentFixture(TWeakPtr<FTbSimpleSimpleArrayInterfaceImplFixture> /*InFixture*/)
+{
+}
+
+void UTbSimpleSimpleArrayInterfaceImplHelper::SetSpec(FAutomationTestBase* /*InSpec*/)
+{
+}
+
+void UTbSimpleSimpleArrayInterfaceImplHelper::SetTestDone(const FDoneDelegate& /*InDone*/)
 {
 }
 

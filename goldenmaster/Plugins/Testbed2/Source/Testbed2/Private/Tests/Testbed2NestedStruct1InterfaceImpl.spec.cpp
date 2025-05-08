@@ -15,24 +15,31 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include "Testbed2NestedStruct1InterfaceImpl.spec.h"
 #include "Implementation/Testbed2NestedStruct1Interface.h"
 #include "Testbed2NestedStruct1InterfaceImplFixture.h"
+#include "Testbed2TestsCommon.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
+
+BEGIN_DEFINE_SPEC(UTestbed2NestedStruct1InterfaceImplSpec, "Testbed2.NestedStruct1Interface.Impl", Testbed2TestFilterMask);
+
+TSharedPtr<FTestbed2NestedStruct1InterfaceImplFixture> ImplFixture;
+
+END_DEFINE_SPEC(UTestbed2NestedStruct1InterfaceImplSpec);
 
 void UTestbed2NestedStruct1InterfaceImplSpec::Define()
 {
 	BeforeEach([this]()
 		{
-		ImplFixture = MakeUnique<FTestbed2NestedStruct1InterfaceImplFixture>();
+		ImplFixture = MakeShared<FTestbed2NestedStruct1InterfaceImplFixture>();
 		TestTrue("Check for valid ImplFixture", ImplFixture.IsValid());
 
 		TestTrue("Check for valid testImplementation", ImplFixture->GetImplementation().GetInterface() != nullptr);
 
 		TestTrue("Check for valid Helper", ImplFixture->GetHelper().IsValid());
 		ImplFixture->GetHelper()->SetSpec(this);
+		ImplFixture->GetHelper()->SetParentFixture(ImplFixture);
 	});
 
 	AfterEach([this]()
@@ -53,7 +60,7 @@ void UTestbed2NestedStruct1InterfaceImplSpec::Define()
 		FTestbed2NestedStruct1 TestValue = FTestbed2NestedStruct1(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetProp1(ImplFixture->GetImplementation().GetObject()), TestValue);
 
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UTestbed2NestedStruct1InterfaceSignals* Testbed2NestedStruct1InterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		Testbed2NestedStruct1InterfaceSignals->OnProp1Changed.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2NestedStruct1InterfaceImplHelper::Prop1PropertyCb);
 		// use different test value
@@ -69,7 +76,7 @@ void UTestbed2NestedStruct1InterfaceImplSpec::Define()
 
 	LatentIt("Signal.Sig1", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UTestbed2NestedStruct1InterfaceSignals* Testbed2NestedStruct1InterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		Testbed2NestedStruct1InterfaceSignals->OnSig1Signal.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2NestedStruct1InterfaceImplHelper::Sig1SignalCb);
 
@@ -79,21 +86,4 @@ void UTestbed2NestedStruct1InterfaceImplSpec::Define()
 	});
 }
 
-void UTestbed2NestedStruct1InterfaceImplSpec::Prop1PropertyCb(const FTestbed2NestedStruct1& InProp1)
-{
-	FTestbed2NestedStruct1 TestValue = FTestbed2NestedStruct1();
-	// use different test value
-	TestValue = createTestFTestbed2NestedStruct1();
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetProp1(ImplFixture->GetImplementation().GetObject()), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTestbed2NestedStruct1InterfaceImplSpec::Sig1SignalCb(const FTestbed2NestedStruct1& InParam1)
-{
-	// known test value
-	FTestbed2NestedStruct1 Param1TestValue = createTestFTestbed2NestedStruct1();
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
-	testDoneDelegate.Execute();
-}
 #endif // WITH_DEV_AUTOMATION_TESTS

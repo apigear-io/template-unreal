@@ -15,35 +15,70 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "Testbed2NestedStruct2InterfaceImplFixture.h"
-#include "Testbed2NestedStruct2InterfaceImpl.spec.h"
+#include "Implementation/Testbed2NestedStruct2Interface.h"
+#include "Testbed2TestsCommon.h"
 #include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-void UTestbed2NestedStruct2InterfaceImplHelper::SetSpec(UTestbed2NestedStruct2InterfaceImplSpec* InSpec)
+void UTestbed2NestedStruct2InterfaceImplHelper::SetParentFixture(TWeakPtr<FTestbed2NestedStruct2InterfaceImplFixture> InFixture)
+{
+	ImplFixture = InFixture;
+}
+
+void UTestbed2NestedStruct2InterfaceImplHelper::SetSpec(FAutomationTestBase* InSpec)
 {
 	Spec = InSpec;
 }
 
-void UTestbed2NestedStruct2InterfaceImplHelper::Prop1PropertyCb(const FTestbed2NestedStruct1& Prop1)
+void UTestbed2NestedStruct2InterfaceImplHelper::SetTestDone(const FDoneDelegate& InDone)
 {
-	Spec->Prop1PropertyCb(Prop1);
+	testDoneDelegate = InDone;
 }
 
-void UTestbed2NestedStruct2InterfaceImplHelper::Prop2PropertyCb(const FTestbed2NestedStruct2& Prop2)
+void UTestbed2NestedStruct2InterfaceImplHelper::Prop1PropertyCb(const FTestbed2NestedStruct1& InProp1)
 {
-	Spec->Prop2PropertyCb(Prop2);
+	FTestbed2NestedStruct1 TestValue = FTestbed2NestedStruct1();
+	// use different test value
+	TestValue = createTestFTestbed2NestedStruct1();
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
+	if (TSharedPtr<FTestbed2NestedStruct2InterfaceImplFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetProp1(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
 }
 
-void UTestbed2NestedStruct2InterfaceImplHelper::Sig1SignalCb(const FTestbed2NestedStruct1& Param1)
+void UTestbed2NestedStruct2InterfaceImplHelper::Prop2PropertyCb(const FTestbed2NestedStruct2& InProp2)
 {
-	Spec->Sig1SignalCb(Param1);
+	FTestbed2NestedStruct2 TestValue = FTestbed2NestedStruct2();
+	// use different test value
+	TestValue = createTestFTestbed2NestedStruct2();
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp2, TestValue);
+	if (TSharedPtr<FTestbed2NestedStruct2InterfaceImplFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetProp2(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
 }
 
-void UTestbed2NestedStruct2InterfaceImplHelper::Sig2SignalCb(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
+void UTestbed2NestedStruct2InterfaceImplHelper::Sig1SignalCb(const FTestbed2NestedStruct1& InParam1)
 {
-	Spec->Sig2SignalCb(Param1, Param2);
+	// known test value
+	FTestbed2NestedStruct1 Param1TestValue = createTestFTestbed2NestedStruct1();
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
+	testDoneDelegate.Execute();
+}
+
+void UTestbed2NestedStruct2InterfaceImplHelper::Sig2SignalCb(const FTestbed2NestedStruct1& InParam1, const FTestbed2NestedStruct2& InParam2)
+{
+	// known test value
+	FTestbed2NestedStruct1 Param1TestValue = createTestFTestbed2NestedStruct1();
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
+	FTestbed2NestedStruct2 Param2TestValue = createTestFTestbed2NestedStruct2();
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam2, Param2TestValue);
+	testDoneDelegate.Execute();
 }
 
 FTestbed2NestedStruct2InterfaceImplFixture::FTestbed2NestedStruct2InterfaceImplFixture()
@@ -90,7 +125,15 @@ void FTestbed2NestedStruct2InterfaceImplFixture::CleanUp()
 }
 #else  // WITH_DEV_AUTOMATION_TESTS
 // create empty implementation in case we do not want to do automated testing
-void UTestbed2NestedStruct2InterfaceImplHelper::SetSpec(UTestbed2NestedStruct2InterfaceImplSpec* /* InSpec */)
+void UTestbed2NestedStruct2InterfaceImplHelper::SetParentFixture(TWeakPtr<FTestbed2NestedStruct2InterfaceImplFixture> /*InFixture*/)
+{
+}
+
+void UTestbed2NestedStruct2InterfaceImplHelper::SetSpec(FAutomationTestBase* /*InSpec*/)
+{
+}
+
+void UTestbed2NestedStruct2InterfaceImplHelper::SetTestDone(const FDoneDelegate& /*InDone*/)
 {
 }
 
