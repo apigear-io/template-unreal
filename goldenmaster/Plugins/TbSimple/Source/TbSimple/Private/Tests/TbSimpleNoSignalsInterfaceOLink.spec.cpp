@@ -15,8 +15,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include "TbSimpleNoSignalsInterfaceOLink.spec.h"
 #include "OLinkCommon.h"
+#include "TbSimpleTestsCommon.h"
 #include "Implementation/TbSimpleNoSignalsInterface.h"
 #include "TbSimpleNoSignalsInterfaceOLinkFixture.h"
 #include "Generated/OLink/TbSimpleNoSignalsInterfaceOLinkClient.h"
@@ -30,21 +30,17 @@ limitations under the License.
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-void UTbSimpleNoSignalsInterfaceOLinkSpec::_SubscriptionStatusChangedCb(bool bSubscribed)
-{
-	// ImplFixture->testDoneDelegate.Execute();
-	// InTestDoneDelegate.Execute();
-	if (bSubscribed)
-	{
-		testDoneDelegate.Execute();
-	}
-}
+BEGIN_DEFINE_SPEC(UTbSimpleNoSignalsInterfaceOLinkSpec, "TbSimple.NoSignalsInterface.OLink", TbSimpleTestFilterMask);
+
+TSharedPtr<FTbSimpleNoSignalsInterfaceOLinkFixture> ImplFixture;
+
+END_DEFINE_SPEC(UTbSimpleNoSignalsInterfaceOLinkSpec);
 
 void UTbSimpleNoSignalsInterfaceOLinkSpec::Define()
 {
 	LatentBeforeEach([this](const FDoneDelegate& TestDone)
 		{
-		ImplFixture = MakeUnique<FTbSimpleNoSignalsInterfaceOLinkFixture>();
+		ImplFixture = MakeShared<FTbSimpleNoSignalsInterfaceOLinkFixture>();
 		TestTrue("Check for valid ImplFixture", ImplFixture.IsValid());
 
 		TestTrue("Check for valid testImplementation", ImplFixture->GetImplementation().GetInterface() != nullptr);
@@ -52,6 +48,8 @@ void UTbSimpleNoSignalsInterfaceOLinkSpec::Define()
 		TestTrue("Check for valid Helper", ImplFixture->GetHelper().IsValid());
 		// needed for callbacks
 		ImplFixture->GetHelper()->SetSpec(this);
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
+		ImplFixture->GetHelper()->SetParentFixture(ImplFixture);
 
 		// set up service and adapter
 		ImplFixture->GetHost()->Stop();
@@ -61,13 +59,13 @@ void UTbSimpleNoSignalsInterfaceOLinkSpec::Define()
 		ImplFixture->GetHost()->Start(8666);
 
 		// setup client
-		testDoneDelegate = TestDone;
 		UTbSimpleNoSignalsInterfaceOLinkClient* OLinkClient = Cast<UTbSimpleNoSignalsInterfaceOLinkClient>(ImplFixture->GetImplementation().GetObject());
 		TestTrue("Check for valid OLink client", OLinkClient != nullptr);
 
 		OLinkClient->_SubscriptionStatusChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleNoSignalsInterfaceOLinkHelper::_SubscriptionStatusChangedCb);
 
-		ImplFixture->Connection = OLinkFactory::Create(OLinkClient, "TestingConnection");
+		ImplFixture->Connection = OLinkFactory::Create(GetTransientPackage(), "TestingConnection");
+		ImplFixture->Connection.GetObject()->AddToRoot();
 		ImplFixture->Connection->Configure("ws://127.0.0.1:8666/ws", false);
 
 		OLinkClient->UseConnection(ImplFixture->Connection);
@@ -76,7 +74,11 @@ void UTbSimpleNoSignalsInterfaceOLinkSpec::Define()
 
 	AfterEach([this]()
 		{
-		ImplFixture->Connection->Disconnect();
+		if (ImplFixture->Connection && IsValid(ImplFixture->Connection.GetObject()))
+		{
+			ImplFixture->Connection->Disconnect();
+			ImplFixture->Connection.GetObject()->RemoveFromRoot();
+		}
 		ImplFixture.Reset();
 	});
 
@@ -93,7 +95,7 @@ void UTbSimpleNoSignalsInterfaceOLinkSpec::Define()
 		bool TestValue = false; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetPropBool(ImplFixture->GetImplementation().GetObject()), TestValue);
 
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UTbSimpleNoSignalsInterfaceSignals* TbSimpleNoSignalsInterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		TbSimpleNoSignalsInterfaceSignals->OnPropBoolChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleNoSignalsInterfaceOLinkHelper::PropBoolPropertyCb);
 		// use different test value
@@ -107,7 +109,7 @@ void UTbSimpleNoSignalsInterfaceOLinkSpec::Define()
 		bool TestValue = false; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetPropBool(ImplFixture->GetImplementation().GetObject()), TestValue);
 
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UTbSimpleNoSignalsInterfaceSignals* TbSimpleNoSignalsInterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		TbSimpleNoSignalsInterfaceSignals->OnPropBoolChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleNoSignalsInterfaceOLinkHelper::PropBoolPropertyChangeLocalCheckRemoteCb);
 		// use different test value
@@ -122,7 +124,7 @@ void UTbSimpleNoSignalsInterfaceOLinkSpec::Define()
 		bool TestValue = false; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetPropBool(ImplFixture->GetImplementation().GetObject()), TestValue);
 
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UTbSimpleNoSignalsInterfaceSignals* TbSimpleNoSignalsInterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		TbSimpleNoSignalsInterfaceSignals->OnPropBoolChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleNoSignalsInterfaceOLinkHelper::PropBoolPropertyChangeLocalChangeRemoteCb);
 		// use different test value
@@ -144,7 +146,7 @@ void UTbSimpleNoSignalsInterfaceOLinkSpec::Define()
 		int32 TestValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetPropInt(ImplFixture->GetImplementation().GetObject()), TestValue);
 
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UTbSimpleNoSignalsInterfaceSignals* TbSimpleNoSignalsInterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		TbSimpleNoSignalsInterfaceSignals->OnPropIntChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleNoSignalsInterfaceOLinkHelper::PropIntPropertyCb);
 		// use different test value
@@ -158,7 +160,7 @@ void UTbSimpleNoSignalsInterfaceOLinkSpec::Define()
 		int32 TestValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetPropInt(ImplFixture->GetImplementation().GetObject()), TestValue);
 
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UTbSimpleNoSignalsInterfaceSignals* TbSimpleNoSignalsInterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		TbSimpleNoSignalsInterfaceSignals->OnPropIntChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleNoSignalsInterfaceOLinkHelper::PropIntPropertyChangeLocalCheckRemoteCb);
 		// use different test value
@@ -173,7 +175,7 @@ void UTbSimpleNoSignalsInterfaceOLinkSpec::Define()
 		int32 TestValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetPropInt(ImplFixture->GetImplementation().GetObject()), TestValue);
 
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UTbSimpleNoSignalsInterfaceSignals* TbSimpleNoSignalsInterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		TbSimpleNoSignalsInterfaceSignals->OnPropIntChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleNoSignalsInterfaceOLinkHelper::PropIntPropertyChangeLocalChangeRemoteCb);
 		// use different test value
@@ -201,104 +203,6 @@ void UTbSimpleNoSignalsInterfaceOLinkSpec::Define()
 			TestDone.Execute();
 		});
 	});
-}
-
-void UTbSimpleNoSignalsInterfaceOLinkSpec::PropBoolPropertyCb(bool bInPropBool)
-{
-	bool TestValue = false;
-	// use different test value
-	TestValue = true;
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), bInPropBool, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetPropBool(ImplFixture->GetImplementation().GetObject()), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleNoSignalsInterfaceOLinkSpec::PropBoolPropertyChangeLocalCheckRemoteCb(bool bInPropBool)
-{
-	bool TestValue = false;
-	// use different test value
-	TestValue = true;
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), bInPropBool, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetPropBool(ImplFixture->GetImplementation().GetObject()), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleNoSignalsInterfaceOLinkSpec::PropBoolPropertyChangeLocalChangeRemoteCb(bool bInPropBool)
-{
-	// this function must be called twice before we can successfully pass this test.
-	// first call it should have the test value of the parameter
-	// second call it should have the default value of the parameter again
-	static int count = 0;
-	count++;
-
-	if (count % 2 != 0)
-	{
-		bool TestValue = false;
-		// use different test value
-		TestValue = true;
-		TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), bInPropBool, TestValue);
-		TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetPropBool(ImplFixture->GetImplementation().GetObject()), TestValue);
-
-		// now set it to the default value
-		TestValue = false; // default value
-		ImplFixture->GetImplementation()->Execute_SetPropBool(ImplFixture->GetImplementation().GetObject(), TestValue);
-	}
-	else
-	{
-		bool TestValue = false; // default value
-		TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), bInPropBool, TestValue);
-		TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetPropBool(ImplFixture->GetImplementation().GetObject()), TestValue);
-		testDoneDelegate.Execute();
-	}
-}
-
-void UTbSimpleNoSignalsInterfaceOLinkSpec::PropIntPropertyCb(int32 InPropInt)
-{
-	int32 TestValue = 0;
-	// use different test value
-	TestValue = 1;
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetPropInt(ImplFixture->GetImplementation().GetObject()), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleNoSignalsInterfaceOLinkSpec::PropIntPropertyChangeLocalCheckRemoteCb(int32 InPropInt)
-{
-	int32 TestValue = 0;
-	// use different test value
-	TestValue = 1;
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetPropInt(ImplFixture->GetImplementation().GetObject()), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleNoSignalsInterfaceOLinkSpec::PropIntPropertyChangeLocalChangeRemoteCb(int32 InPropInt)
-{
-	// this function must be called twice before we can successfully pass this test.
-	// first call it should have the test value of the parameter
-	// second call it should have the default value of the parameter again
-	static int count = 0;
-	count++;
-
-	if (count % 2 != 0)
-	{
-		int32 TestValue = 0;
-		// use different test value
-		TestValue = 1;
-		TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
-		TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetPropInt(ImplFixture->GetImplementation().GetObject()), TestValue);
-
-		// now set it to the default value
-		TestValue = 0; // default value
-		ImplFixture->GetImplementation()->Execute_SetPropInt(ImplFixture->GetImplementation().GetObject(), TestValue);
-	}
-	else
-	{
-		int32 TestValue = 0; // default value
-		TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
-		TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetPropInt(ImplFixture->GetImplementation().GetObject()), TestValue);
-		testDoneDelegate.Execute();
-	}
 }
 #endif // WITH_DEV_AUTOMATION_TESTS
 #endif // !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)

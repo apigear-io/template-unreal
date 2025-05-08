@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbSimpleSimpleInterfaceOLinkFixture.h"
-#include "TbSimpleSimpleInterfaceOLink.spec.h"
+#include "TbSimpleTestsCommon.h"
 #include "OLinkCommon.h"
 #include "Generated/OLink/TbSimpleSimpleInterfaceOLinkClient.h"
 #include "Generated/OLink/TbSimpleSimpleInterfaceOLinkAdapter.h"
@@ -25,233 +25,616 @@ limitations under the License.
 #if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX
 #include "OLinkHost.h"
 
-void UTbSimpleSimpleInterfaceOLinkHelper::SetSpec(UTbSimpleSimpleInterfaceOLinkSpec* InSpec)
+void UTbSimpleSimpleInterfaceOLinkHelper::SetParentFixture(TWeakPtr<FTbSimpleSimpleInterfaceOLinkFixture> InFixture)
+{
+	ImplFixture = InFixture;
+}
+
+void UTbSimpleSimpleInterfaceOLinkHelper::SetSpec(FAutomationTestBase* InSpec)
 {
 	Spec = InSpec;
 }
 
-void UTbSimpleSimpleInterfaceOLinkHelper::PropBoolPropertyCb(bool bPropBool)
+void UTbSimpleSimpleInterfaceOLinkHelper::SetTestDone(const FDoneDelegate& InDone)
 {
-	Spec->PropBoolPropertyCb(bPropBool);
+	testDoneDelegate = InDone;
 }
 
-void UTbSimpleSimpleInterfaceOLinkHelper::PropBoolPropertyChangeLocalCheckRemoteCb(bool bPropBool)
+void UTbSimpleSimpleInterfaceOLinkHelper::PropBoolPropertyCb(bool bInPropBool)
 {
-	if (Spec)
+	bool TestValue = false;
+	// use different test value
+	TestValue = true;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), bInPropBool, TestValue);
+	if (TSharedPtr<FTbSimpleSimpleInterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
 	{
-		Spec->PropBoolPropertyChangeLocalCheckRemoteCb(bPropBool);
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropBool(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTbSimpleSimpleInterfaceOLinkHelper::PropBoolPropertyChangeLocalCheckRemoteCb(bool bInPropBool)
+{
+	bool TestValue = false;
+	// use different test value
+	TestValue = true;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), bInPropBool, TestValue);
+	if (TSharedPtr<FTbSimpleSimpleInterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropBool(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTbSimpleSimpleInterfaceOLinkHelper::PropBoolPropertyChangeLocalChangeRemoteCb(bool bInPropBool)
+{
+	// this function must be called twice before we can successfully pass this test.
+	// first call it should have the test value of the parameter
+	// second call it should have the default value of the parameter again
+	static int count = 0;
+	count++;
+
+	if (count % 2 != 0)
+	{
+		bool TestValue = false;
+		// use different test value
+		TestValue = true;
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), bInPropBool, TestValue);
+		if (TSharedPtr<FTbSimpleSimpleInterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropBool(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+
+		// now set it to the default value
+		TestValue = false; // default value
+		if (TSharedPtr<FTbSimpleSimpleInterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			PinnedImplFixture->GetImplementation()->Execute_SetPropBool(PinnedImplFixture->GetImplementation().GetObject(), TestValue);
+		}
+	}
+	else
+	{
+		bool TestValue = false; // default value
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), bInPropBool, TestValue);
+		if (TSharedPtr<FTbSimpleSimpleInterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropBool(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+		testDoneDelegate.Execute();
 	}
 }
 
-void UTbSimpleSimpleInterfaceOLinkHelper::PropBoolPropertyChangeLocalChangeRemoteCb(bool bPropBool)
+void UTbSimpleSimpleInterfaceOLinkHelper::PropIntPropertyCb(int32 InPropInt)
 {
-	if (Spec)
+	int32 TestValue = 0;
+	// use different test value
+	TestValue = 1;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
+	if (TSharedPtr<FTbSimpleSimpleInterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
 	{
-		Spec->PropBoolPropertyChangeLocalChangeRemoteCb(bPropBool);
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropInt(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTbSimpleSimpleInterfaceOLinkHelper::PropIntPropertyChangeLocalCheckRemoteCb(int32 InPropInt)
+{
+	int32 TestValue = 0;
+	// use different test value
+	TestValue = 1;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
+	if (TSharedPtr<FTbSimpleSimpleInterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropInt(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTbSimpleSimpleInterfaceOLinkHelper::PropIntPropertyChangeLocalChangeRemoteCb(int32 InPropInt)
+{
+	// this function must be called twice before we can successfully pass this test.
+	// first call it should have the test value of the parameter
+	// second call it should have the default value of the parameter again
+	static int count = 0;
+	count++;
+
+	if (count % 2 != 0)
+	{
+		int32 TestValue = 0;
+		// use different test value
+		TestValue = 1;
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
+		if (TSharedPtr<FTbSimpleSimpleInterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropInt(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+
+		// now set it to the default value
+		TestValue = 0; // default value
+		if (TSharedPtr<FTbSimpleSimpleInterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			PinnedImplFixture->GetImplementation()->Execute_SetPropInt(PinnedImplFixture->GetImplementation().GetObject(), TestValue);
+		}
+	}
+	else
+	{
+		int32 TestValue = 0; // default value
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
+		if (TSharedPtr<FTbSimpleSimpleInterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropInt(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+		testDoneDelegate.Execute();
 	}
 }
 
-void UTbSimpleSimpleInterfaceOLinkHelper::PropIntPropertyCb(int32 PropInt)
+void UTbSimpleSimpleInterfaceOLinkHelper::PropInt32PropertyCb(int32 InPropInt32)
 {
-	Spec->PropIntPropertyCb(PropInt);
+	int32 TestValue = 0;
+	// use different test value
+	TestValue = 1;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt32, TestValue);
+	if (TSharedPtr<FTbSimpleSimpleInterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropInt32(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
 }
 
-void UTbSimpleSimpleInterfaceOLinkHelper::PropIntPropertyChangeLocalCheckRemoteCb(int32 PropInt)
+void UTbSimpleSimpleInterfaceOLinkHelper::PropInt32PropertyChangeLocalCheckRemoteCb(int32 InPropInt32)
 {
-	if (Spec)
+	int32 TestValue = 0;
+	// use different test value
+	TestValue = 1;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt32, TestValue);
+	if (TSharedPtr<FTbSimpleSimpleInterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
 	{
-		Spec->PropIntPropertyChangeLocalCheckRemoteCb(PropInt);
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropInt32(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTbSimpleSimpleInterfaceOLinkHelper::PropInt32PropertyChangeLocalChangeRemoteCb(int32 InPropInt32)
+{
+	// this function must be called twice before we can successfully pass this test.
+	// first call it should have the test value of the parameter
+	// second call it should have the default value of the parameter again
+	static int count = 0;
+	count++;
+
+	if (count % 2 != 0)
+	{
+		int32 TestValue = 0;
+		// use different test value
+		TestValue = 1;
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt32, TestValue);
+		if (TSharedPtr<FTbSimpleSimpleInterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropInt32(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+
+		// now set it to the default value
+		TestValue = 0; // default value
+		if (TSharedPtr<FTbSimpleSimpleInterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			PinnedImplFixture->GetImplementation()->Execute_SetPropInt32(PinnedImplFixture->GetImplementation().GetObject(), TestValue);
+		}
+	}
+	else
+	{
+		int32 TestValue = 0; // default value
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt32, TestValue);
+		if (TSharedPtr<FTbSimpleSimpleInterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropInt32(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+		testDoneDelegate.Execute();
 	}
 }
 
-void UTbSimpleSimpleInterfaceOLinkHelper::PropIntPropertyChangeLocalChangeRemoteCb(int32 PropInt)
+void UTbSimpleSimpleInterfaceOLinkHelper::PropInt64PropertyCb(int64 InPropInt64)
 {
-	if (Spec)
+	int64 TestValue = 0LL;
+	// use different test value
+	TestValue = 1LL;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt64, TestValue);
+	if (TSharedPtr<FTbSimpleSimpleInterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
 	{
-		Spec->PropIntPropertyChangeLocalChangeRemoteCb(PropInt);
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropInt64(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTbSimpleSimpleInterfaceOLinkHelper::PropInt64PropertyChangeLocalCheckRemoteCb(int64 InPropInt64)
+{
+	int64 TestValue = 0LL;
+	// use different test value
+	TestValue = 1LL;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt64, TestValue);
+	if (TSharedPtr<FTbSimpleSimpleInterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropInt64(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTbSimpleSimpleInterfaceOLinkHelper::PropInt64PropertyChangeLocalChangeRemoteCb(int64 InPropInt64)
+{
+	// this function must be called twice before we can successfully pass this test.
+	// first call it should have the test value of the parameter
+	// second call it should have the default value of the parameter again
+	static int count = 0;
+	count++;
+
+	if (count % 2 != 0)
+	{
+		int64 TestValue = 0LL;
+		// use different test value
+		TestValue = 1LL;
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt64, TestValue);
+		if (TSharedPtr<FTbSimpleSimpleInterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropInt64(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+
+		// now set it to the default value
+		TestValue = 0LL; // default value
+		if (TSharedPtr<FTbSimpleSimpleInterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			PinnedImplFixture->GetImplementation()->Execute_SetPropInt64(PinnedImplFixture->GetImplementation().GetObject(), TestValue);
+		}
+	}
+	else
+	{
+		int64 TestValue = 0LL; // default value
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt64, TestValue);
+		if (TSharedPtr<FTbSimpleSimpleInterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropInt64(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+		testDoneDelegate.Execute();
 	}
 }
 
-void UTbSimpleSimpleInterfaceOLinkHelper::PropInt32PropertyCb(int32 PropInt32)
+void UTbSimpleSimpleInterfaceOLinkHelper::PropFloatPropertyCb(float InPropFloat)
 {
-	Spec->PropInt32PropertyCb(PropInt32);
+	float TestValue = 0.0f;
+	// use different test value
+	TestValue = 1.0f;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat, TestValue);
+	if (TSharedPtr<FTbSimpleSimpleInterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropFloat(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
 }
 
-void UTbSimpleSimpleInterfaceOLinkHelper::PropInt32PropertyChangeLocalCheckRemoteCb(int32 PropInt32)
+void UTbSimpleSimpleInterfaceOLinkHelper::PropFloatPropertyChangeLocalCheckRemoteCb(float InPropFloat)
 {
-	if (Spec)
+	float TestValue = 0.0f;
+	// use different test value
+	TestValue = 1.0f;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat, TestValue);
+	if (TSharedPtr<FTbSimpleSimpleInterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
 	{
-		Spec->PropInt32PropertyChangeLocalCheckRemoteCb(PropInt32);
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropFloat(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTbSimpleSimpleInterfaceOLinkHelper::PropFloatPropertyChangeLocalChangeRemoteCb(float InPropFloat)
+{
+	// this function must be called twice before we can successfully pass this test.
+	// first call it should have the test value of the parameter
+	// second call it should have the default value of the parameter again
+	static int count = 0;
+	count++;
+
+	if (count % 2 != 0)
+	{
+		float TestValue = 0.0f;
+		// use different test value
+		TestValue = 1.0f;
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat, TestValue);
+		if (TSharedPtr<FTbSimpleSimpleInterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropFloat(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+
+		// now set it to the default value
+		TestValue = 0.0f; // default value
+		if (TSharedPtr<FTbSimpleSimpleInterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			PinnedImplFixture->GetImplementation()->Execute_SetPropFloat(PinnedImplFixture->GetImplementation().GetObject(), TestValue);
+		}
+	}
+	else
+	{
+		float TestValue = 0.0f; // default value
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat, TestValue);
+		if (TSharedPtr<FTbSimpleSimpleInterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropFloat(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+		testDoneDelegate.Execute();
 	}
 }
 
-void UTbSimpleSimpleInterfaceOLinkHelper::PropInt32PropertyChangeLocalChangeRemoteCb(int32 PropInt32)
+void UTbSimpleSimpleInterfaceOLinkHelper::PropFloat32PropertyCb(float InPropFloat32)
 {
-	if (Spec)
+	float TestValue = 0.0f;
+	// use different test value
+	TestValue = 1.0f;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat32, TestValue);
+	if (TSharedPtr<FTbSimpleSimpleInterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
 	{
-		Spec->PropInt32PropertyChangeLocalChangeRemoteCb(PropInt32);
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropFloat32(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTbSimpleSimpleInterfaceOLinkHelper::PropFloat32PropertyChangeLocalCheckRemoteCb(float InPropFloat32)
+{
+	float TestValue = 0.0f;
+	// use different test value
+	TestValue = 1.0f;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat32, TestValue);
+	if (TSharedPtr<FTbSimpleSimpleInterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropFloat32(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTbSimpleSimpleInterfaceOLinkHelper::PropFloat32PropertyChangeLocalChangeRemoteCb(float InPropFloat32)
+{
+	// this function must be called twice before we can successfully pass this test.
+	// first call it should have the test value of the parameter
+	// second call it should have the default value of the parameter again
+	static int count = 0;
+	count++;
+
+	if (count % 2 != 0)
+	{
+		float TestValue = 0.0f;
+		// use different test value
+		TestValue = 1.0f;
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat32, TestValue);
+		if (TSharedPtr<FTbSimpleSimpleInterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropFloat32(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+
+		// now set it to the default value
+		TestValue = 0.0f; // default value
+		if (TSharedPtr<FTbSimpleSimpleInterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			PinnedImplFixture->GetImplementation()->Execute_SetPropFloat32(PinnedImplFixture->GetImplementation().GetObject(), TestValue);
+		}
+	}
+	else
+	{
+		float TestValue = 0.0f; // default value
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat32, TestValue);
+		if (TSharedPtr<FTbSimpleSimpleInterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropFloat32(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+		testDoneDelegate.Execute();
 	}
 }
 
-void UTbSimpleSimpleInterfaceOLinkHelper::PropInt64PropertyCb(int64 PropInt64)
+void UTbSimpleSimpleInterfaceOLinkHelper::PropFloat64PropertyCb(double InPropFloat64)
 {
-	Spec->PropInt64PropertyCb(PropInt64);
+	double TestValue = 0.0;
+	// use different test value
+	TestValue = 1.0;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat64, TestValue);
+	if (TSharedPtr<FTbSimpleSimpleInterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropFloat64(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
 }
 
-void UTbSimpleSimpleInterfaceOLinkHelper::PropInt64PropertyChangeLocalCheckRemoteCb(int64 PropInt64)
+void UTbSimpleSimpleInterfaceOLinkHelper::PropFloat64PropertyChangeLocalCheckRemoteCb(double InPropFloat64)
 {
-	if (Spec)
+	double TestValue = 0.0;
+	// use different test value
+	TestValue = 1.0;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat64, TestValue);
+	if (TSharedPtr<FTbSimpleSimpleInterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
 	{
-		Spec->PropInt64PropertyChangeLocalCheckRemoteCb(PropInt64);
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropFloat64(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTbSimpleSimpleInterfaceOLinkHelper::PropFloat64PropertyChangeLocalChangeRemoteCb(double InPropFloat64)
+{
+	// this function must be called twice before we can successfully pass this test.
+	// first call it should have the test value of the parameter
+	// second call it should have the default value of the parameter again
+	static int count = 0;
+	count++;
+
+	if (count % 2 != 0)
+	{
+		double TestValue = 0.0;
+		// use different test value
+		TestValue = 1.0;
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat64, TestValue);
+		if (TSharedPtr<FTbSimpleSimpleInterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropFloat64(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+
+		// now set it to the default value
+		TestValue = 0.0; // default value
+		if (TSharedPtr<FTbSimpleSimpleInterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			PinnedImplFixture->GetImplementation()->Execute_SetPropFloat64(PinnedImplFixture->GetImplementation().GetObject(), TestValue);
+		}
+	}
+	else
+	{
+		double TestValue = 0.0; // default value
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat64, TestValue);
+		if (TSharedPtr<FTbSimpleSimpleInterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropFloat64(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+		testDoneDelegate.Execute();
 	}
 }
 
-void UTbSimpleSimpleInterfaceOLinkHelper::PropInt64PropertyChangeLocalChangeRemoteCb(int64 PropInt64)
+void UTbSimpleSimpleInterfaceOLinkHelper::PropStringPropertyCb(const FString& InPropString)
 {
-	if (Spec)
+	FString TestValue = FString();
+	// use different test value
+	TestValue = FString("xyz");
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropString, TestValue);
+	if (TSharedPtr<FTbSimpleSimpleInterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
 	{
-		Spec->PropInt64PropertyChangeLocalChangeRemoteCb(PropInt64);
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropString(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTbSimpleSimpleInterfaceOLinkHelper::PropStringPropertyChangeLocalCheckRemoteCb(const FString& InPropString)
+{
+	FString TestValue = FString();
+	// use different test value
+	TestValue = FString("xyz");
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropString, TestValue);
+	if (TSharedPtr<FTbSimpleSimpleInterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropString(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTbSimpleSimpleInterfaceOLinkHelper::PropStringPropertyChangeLocalChangeRemoteCb(const FString& InPropString)
+{
+	// this function must be called twice before we can successfully pass this test.
+	// first call it should have the test value of the parameter
+	// second call it should have the default value of the parameter again
+	static int count = 0;
+	count++;
+
+	if (count % 2 != 0)
+	{
+		FString TestValue = FString();
+		// use different test value
+		TestValue = FString("xyz");
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropString, TestValue);
+		if (TSharedPtr<FTbSimpleSimpleInterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropString(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+
+		// now set it to the default value
+		TestValue = FString(); // default value
+		if (TSharedPtr<FTbSimpleSimpleInterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			PinnedImplFixture->GetImplementation()->Execute_SetPropString(PinnedImplFixture->GetImplementation().GetObject(), TestValue);
+		}
+	}
+	else
+	{
+		FString TestValue = FString(); // default value
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropString, TestValue);
+		if (TSharedPtr<FTbSimpleSimpleInterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropString(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+		testDoneDelegate.Execute();
 	}
 }
 
-void UTbSimpleSimpleInterfaceOLinkHelper::PropFloatPropertyCb(float PropFloat)
+void UTbSimpleSimpleInterfaceOLinkHelper::SigBoolSignalCb(bool bInParamBool)
 {
-	Spec->PropFloatPropertyCb(PropFloat);
+	// known test value
+	bool bParamBoolTestValue = true;
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), bInParamBool, bParamBoolTestValue);
+	testDoneDelegate.Execute();
 }
 
-void UTbSimpleSimpleInterfaceOLinkHelper::PropFloatPropertyChangeLocalCheckRemoteCb(float PropFloat)
+void UTbSimpleSimpleInterfaceOLinkHelper::SigIntSignalCb(int32 InParamInt)
 {
-	if (Spec)
-	{
-		Spec->PropFloatPropertyChangeLocalCheckRemoteCb(PropFloat);
-	}
+	// known test value
+	int32 ParamIntTestValue = 1;
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamInt, ParamIntTestValue);
+	testDoneDelegate.Execute();
 }
 
-void UTbSimpleSimpleInterfaceOLinkHelper::PropFloatPropertyChangeLocalChangeRemoteCb(float PropFloat)
+void UTbSimpleSimpleInterfaceOLinkHelper::SigInt32SignalCb(int32 InParamInt32)
 {
-	if (Spec)
-	{
-		Spec->PropFloatPropertyChangeLocalChangeRemoteCb(PropFloat);
-	}
+	// known test value
+	int32 ParamInt32TestValue = 1;
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamInt32, ParamInt32TestValue);
+	testDoneDelegate.Execute();
 }
 
-void UTbSimpleSimpleInterfaceOLinkHelper::PropFloat32PropertyCb(float PropFloat32)
+void UTbSimpleSimpleInterfaceOLinkHelper::SigInt64SignalCb(int64 InParamInt64)
 {
-	Spec->PropFloat32PropertyCb(PropFloat32);
+	// known test value
+	int64 ParamInt64TestValue = 1LL;
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamInt64, ParamInt64TestValue);
+	testDoneDelegate.Execute();
 }
 
-void UTbSimpleSimpleInterfaceOLinkHelper::PropFloat32PropertyChangeLocalCheckRemoteCb(float PropFloat32)
+void UTbSimpleSimpleInterfaceOLinkHelper::SigFloatSignalCb(float InParamFloat)
 {
-	if (Spec)
-	{
-		Spec->PropFloat32PropertyChangeLocalCheckRemoteCb(PropFloat32);
-	}
+	// known test value
+	float ParamFloatTestValue = 1.0f;
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamFloat, ParamFloatTestValue);
+	testDoneDelegate.Execute();
 }
 
-void UTbSimpleSimpleInterfaceOLinkHelper::PropFloat32PropertyChangeLocalChangeRemoteCb(float PropFloat32)
+void UTbSimpleSimpleInterfaceOLinkHelper::SigFloat32SignalCb(float InParamFloat32)
 {
-	if (Spec)
-	{
-		Spec->PropFloat32PropertyChangeLocalChangeRemoteCb(PropFloat32);
-	}
+	// known test value
+	float ParamFloat32TestValue = 1.0f;
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamFloat32, ParamFloat32TestValue);
+	testDoneDelegate.Execute();
 }
 
-void UTbSimpleSimpleInterfaceOLinkHelper::PropFloat64PropertyCb(double PropFloat64)
+void UTbSimpleSimpleInterfaceOLinkHelper::SigFloat64SignalCb(double InParamFloat64)
 {
-	Spec->PropFloat64PropertyCb(PropFloat64);
+	// known test value
+	double ParamFloat64TestValue = 1.0;
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamFloat64, ParamFloat64TestValue);
+	testDoneDelegate.Execute();
 }
 
-void UTbSimpleSimpleInterfaceOLinkHelper::PropFloat64PropertyChangeLocalCheckRemoteCb(double PropFloat64)
+void UTbSimpleSimpleInterfaceOLinkHelper::SigStringSignalCb(const FString& InParamString)
 {
-	if (Spec)
-	{
-		Spec->PropFloat64PropertyChangeLocalCheckRemoteCb(PropFloat64);
-	}
-}
-
-void UTbSimpleSimpleInterfaceOLinkHelper::PropFloat64PropertyChangeLocalChangeRemoteCb(double PropFloat64)
-{
-	if (Spec)
-	{
-		Spec->PropFloat64PropertyChangeLocalChangeRemoteCb(PropFloat64);
-	}
-}
-
-void UTbSimpleSimpleInterfaceOLinkHelper::PropStringPropertyCb(const FString& PropString)
-{
-	Spec->PropStringPropertyCb(PropString);
-}
-
-void UTbSimpleSimpleInterfaceOLinkHelper::PropStringPropertyChangeLocalCheckRemoteCb(const FString& PropString)
-{
-	if (Spec)
-	{
-		Spec->PropStringPropertyChangeLocalCheckRemoteCb(PropString);
-	}
-}
-
-void UTbSimpleSimpleInterfaceOLinkHelper::PropStringPropertyChangeLocalChangeRemoteCb(const FString& PropString)
-{
-	if (Spec)
-	{
-		Spec->PropStringPropertyChangeLocalChangeRemoteCb(PropString);
-	}
-}
-
-void UTbSimpleSimpleInterfaceOLinkHelper::SigBoolSignalCb(bool bParamBool)
-{
-	Spec->SigBoolSignalCb(bParamBool);
-}
-
-void UTbSimpleSimpleInterfaceOLinkHelper::SigIntSignalCb(int32 ParamInt)
-{
-	Spec->SigIntSignalCb(ParamInt);
-}
-
-void UTbSimpleSimpleInterfaceOLinkHelper::SigInt32SignalCb(int32 ParamInt32)
-{
-	Spec->SigInt32SignalCb(ParamInt32);
-}
-
-void UTbSimpleSimpleInterfaceOLinkHelper::SigInt64SignalCb(int64 ParamInt64)
-{
-	Spec->SigInt64SignalCb(ParamInt64);
-}
-
-void UTbSimpleSimpleInterfaceOLinkHelper::SigFloatSignalCb(float ParamFloat)
-{
-	Spec->SigFloatSignalCb(ParamFloat);
-}
-
-void UTbSimpleSimpleInterfaceOLinkHelper::SigFloat32SignalCb(float ParamFloat32)
-{
-	Spec->SigFloat32SignalCb(ParamFloat32);
-}
-
-void UTbSimpleSimpleInterfaceOLinkHelper::SigFloat64SignalCb(double ParamFloat64)
-{
-	Spec->SigFloat64SignalCb(ParamFloat64);
-}
-
-void UTbSimpleSimpleInterfaceOLinkHelper::SigStringSignalCb(const FString& ParamString)
-{
-	Spec->SigStringSignalCb(ParamString);
+	// known test value
+	FString ParamStringTestValue = FString("xyz");
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamString, ParamStringTestValue);
+	testDoneDelegate.Execute();
 }
 
 void UTbSimpleSimpleInterfaceOLinkHelper::_SubscriptionStatusChangedCb(bool bSubscribed)
 {
-	Spec->_SubscriptionStatusChangedCb(bSubscribed);
+	if (bSubscribed)
+	{
+		testDoneDelegate.Execute();
+	}
 }
 
 FTbSimpleSimpleInterfaceOLinkFixture::FTbSimpleSimpleInterfaceOLinkFixture()
 {
-	Helper = NewObject<UTbSimpleSimpleInterfaceOLinkHelper>();
+	Helper = NewObject<UTbSimpleSimpleInterfaceOLinkHelper>(GetTransientPackage());
+	Helper->AddToRoot();
 	testImplementation = GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterfaceOLinkClient>();
 }
 
 FTbSimpleSimpleInterfaceOLinkFixture::~FTbSimpleSimpleInterfaceOLinkFixture()
 {
 	CleanUp();
+	Helper->RemoveFromRoot();
 }
 
 TScriptInterface<ITbSimpleSimpleInterfaceInterface> FTbSimpleSimpleInterfaceOLinkFixture::GetImplementation()
@@ -297,48 +680,136 @@ void FTbSimpleSimpleInterfaceOLinkFixture::CleanUp()
 }
 #else  // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX
 // create empty implementation in case we do not want to do automated testing
-void UTbSimpleSimpleInterfaceOLinkHelper::SetSpec(UTbSimpleSimpleInterfaceOLinkSpec* /* InSpec */)
+void UTbSimpleSimpleInterfaceOLinkHelper::SetParentFixture(TWeakPtr<FTbSimpleSimpleInterfaceOLinkFixture> /*InFixture*/)
 {
 }
 
-void UTbSimpleSimpleInterfaceOLinkHelper::PropBoolPropertyCb(bool bPropBool)
+void UTbSimpleSimpleInterfaceOLinkHelper::SetSpec(FAutomationTestBase* /*InSpec*/)
 {
-	(void)bPropBool;
 }
 
-void UTbSimpleSimpleInterfaceOLinkHelper::PropIntPropertyCb(int32 PropInt)
+void UTbSimpleSimpleInterfaceOLinkHelper::SetTestDone(const FDoneDelegate& /*InDone*/)
 {
-	(void)PropInt;
 }
 
-void UTbSimpleSimpleInterfaceOLinkHelper::PropInt32PropertyCb(int32 PropInt32)
+void UTbSimpleSimpleInterfaceOLinkHelper::PropBoolPropertyCb(bool bInPropBool)
 {
-	(void)PropInt32;
+	(void)bInPropBool;
 }
 
-void UTbSimpleSimpleInterfaceOLinkHelper::PropInt64PropertyCb(int64 PropInt64)
+void UTbSimpleSimpleInterfaceOLinkHelper::PropBoolPropertyChangeLocalCheckRemoteCb(bool bInPropBool)
 {
-	(void)PropInt64;
+	(void)bInPropBool;
 }
 
-void UTbSimpleSimpleInterfaceOLinkHelper::PropFloatPropertyCb(float PropFloat)
+void UTbSimpleSimpleInterfaceOLinkHelper::PropBoolPropertyChangeLocalChangeRemoteCb(bool bInPropBool)
 {
-	(void)PropFloat;
+	(void)bInPropBool;
 }
 
-void UTbSimpleSimpleInterfaceOLinkHelper::PropFloat32PropertyCb(float PropFloat32)
+void UTbSimpleSimpleInterfaceOLinkHelper::PropIntPropertyCb(int32 InPropInt)
 {
-	(void)PropFloat32;
+	(void)InPropInt;
 }
 
-void UTbSimpleSimpleInterfaceOLinkHelper::PropFloat64PropertyCb(double PropFloat64)
+void UTbSimpleSimpleInterfaceOLinkHelper::PropIntPropertyChangeLocalCheckRemoteCb(int32 InPropInt)
 {
-	(void)PropFloat64;
+	(void)InPropInt;
 }
 
-void UTbSimpleSimpleInterfaceOLinkHelper::PropStringPropertyCb(const FString& PropString)
+void UTbSimpleSimpleInterfaceOLinkHelper::PropIntPropertyChangeLocalChangeRemoteCb(int32 InPropInt)
 {
-	(void)PropString;
+	(void)InPropInt;
+}
+
+void UTbSimpleSimpleInterfaceOLinkHelper::PropInt32PropertyCb(int32 InPropInt32)
+{
+	(void)InPropInt32;
+}
+
+void UTbSimpleSimpleInterfaceOLinkHelper::PropInt32PropertyChangeLocalCheckRemoteCb(int32 InPropInt32)
+{
+	(void)InPropInt32;
+}
+
+void UTbSimpleSimpleInterfaceOLinkHelper::PropInt32PropertyChangeLocalChangeRemoteCb(int32 InPropInt32)
+{
+	(void)InPropInt32;
+}
+
+void UTbSimpleSimpleInterfaceOLinkHelper::PropInt64PropertyCb(int64 InPropInt64)
+{
+	(void)InPropInt64;
+}
+
+void UTbSimpleSimpleInterfaceOLinkHelper::PropInt64PropertyChangeLocalCheckRemoteCb(int64 InPropInt64)
+{
+	(void)InPropInt64;
+}
+
+void UTbSimpleSimpleInterfaceOLinkHelper::PropInt64PropertyChangeLocalChangeRemoteCb(int64 InPropInt64)
+{
+	(void)InPropInt64;
+}
+
+void UTbSimpleSimpleInterfaceOLinkHelper::PropFloatPropertyCb(float InPropFloat)
+{
+	(void)InPropFloat;
+}
+
+void UTbSimpleSimpleInterfaceOLinkHelper::PropFloatPropertyChangeLocalCheckRemoteCb(float InPropFloat)
+{
+	(void)InPropFloat;
+}
+
+void UTbSimpleSimpleInterfaceOLinkHelper::PropFloatPropertyChangeLocalChangeRemoteCb(float InPropFloat)
+{
+	(void)InPropFloat;
+}
+
+void UTbSimpleSimpleInterfaceOLinkHelper::PropFloat32PropertyCb(float InPropFloat32)
+{
+	(void)InPropFloat32;
+}
+
+void UTbSimpleSimpleInterfaceOLinkHelper::PropFloat32PropertyChangeLocalCheckRemoteCb(float InPropFloat32)
+{
+	(void)InPropFloat32;
+}
+
+void UTbSimpleSimpleInterfaceOLinkHelper::PropFloat32PropertyChangeLocalChangeRemoteCb(float InPropFloat32)
+{
+	(void)InPropFloat32;
+}
+
+void UTbSimpleSimpleInterfaceOLinkHelper::PropFloat64PropertyCb(double InPropFloat64)
+{
+	(void)InPropFloat64;
+}
+
+void UTbSimpleSimpleInterfaceOLinkHelper::PropFloat64PropertyChangeLocalCheckRemoteCb(double InPropFloat64)
+{
+	(void)InPropFloat64;
+}
+
+void UTbSimpleSimpleInterfaceOLinkHelper::PropFloat64PropertyChangeLocalChangeRemoteCb(double InPropFloat64)
+{
+	(void)InPropFloat64;
+}
+
+void UTbSimpleSimpleInterfaceOLinkHelper::PropStringPropertyCb(const FString& InPropString)
+{
+	(void)InPropString;
+}
+
+void UTbSimpleSimpleInterfaceOLinkHelper::PropStringPropertyChangeLocalCheckRemoteCb(const FString& InPropString)
+{
+	(void)InPropString;
+}
+
+void UTbSimpleSimpleInterfaceOLinkHelper::PropStringPropertyChangeLocalChangeRemoteCb(const FString& InPropString)
+{
+	(void)InPropString;
 }
 
 void UTbSimpleSimpleInterfaceOLinkHelper::SigBoolSignalCb(bool bParamBool)

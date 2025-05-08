@@ -15,8 +15,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include "TbSame2SameEnum2InterfaceOLink.spec.h"
 #include "OLinkCommon.h"
+#include "TbSame2TestsCommon.h"
 #include "Implementation/TbSame2SameEnum2Interface.h"
 #include "TbSame2SameEnum2InterfaceOLinkFixture.h"
 #include "Generated/OLink/TbSame2SameEnum2InterfaceOLinkClient.h"
@@ -30,21 +30,17 @@ limitations under the License.
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-void UTbSame2SameEnum2InterfaceOLinkSpec::_SubscriptionStatusChangedCb(bool bSubscribed)
-{
-	// ImplFixture->testDoneDelegate.Execute();
-	// InTestDoneDelegate.Execute();
-	if (bSubscribed)
-	{
-		testDoneDelegate.Execute();
-	}
-}
+BEGIN_DEFINE_SPEC(UTbSame2SameEnum2InterfaceOLinkSpec, "TbSame2.SameEnum2Interface.OLink", TbSame2TestFilterMask);
+
+TSharedPtr<FTbSame2SameEnum2InterfaceOLinkFixture> ImplFixture;
+
+END_DEFINE_SPEC(UTbSame2SameEnum2InterfaceOLinkSpec);
 
 void UTbSame2SameEnum2InterfaceOLinkSpec::Define()
 {
 	LatentBeforeEach([this](const FDoneDelegate& TestDone)
 		{
-		ImplFixture = MakeUnique<FTbSame2SameEnum2InterfaceOLinkFixture>();
+		ImplFixture = MakeShared<FTbSame2SameEnum2InterfaceOLinkFixture>();
 		TestTrue("Check for valid ImplFixture", ImplFixture.IsValid());
 
 		TestTrue("Check for valid testImplementation", ImplFixture->GetImplementation().GetInterface() != nullptr);
@@ -52,6 +48,8 @@ void UTbSame2SameEnum2InterfaceOLinkSpec::Define()
 		TestTrue("Check for valid Helper", ImplFixture->GetHelper().IsValid());
 		// needed for callbacks
 		ImplFixture->GetHelper()->SetSpec(this);
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
+		ImplFixture->GetHelper()->SetParentFixture(ImplFixture);
 
 		// set up service and adapter
 		ImplFixture->GetHost()->Stop();
@@ -61,13 +59,13 @@ void UTbSame2SameEnum2InterfaceOLinkSpec::Define()
 		ImplFixture->GetHost()->Start(8666);
 
 		// setup client
-		testDoneDelegate = TestDone;
 		UTbSame2SameEnum2InterfaceOLinkClient* OLinkClient = Cast<UTbSame2SameEnum2InterfaceOLinkClient>(ImplFixture->GetImplementation().GetObject());
 		TestTrue("Check for valid OLink client", OLinkClient != nullptr);
 
 		OLinkClient->_SubscriptionStatusChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame2SameEnum2InterfaceOLinkHelper::_SubscriptionStatusChangedCb);
 
-		ImplFixture->Connection = OLinkFactory::Create(OLinkClient, "TestingConnection");
+		ImplFixture->Connection = OLinkFactory::Create(GetTransientPackage(), "TestingConnection");
+		ImplFixture->Connection.GetObject()->AddToRoot();
 		ImplFixture->Connection->Configure("ws://127.0.0.1:8666/ws", false);
 
 		OLinkClient->UseConnection(ImplFixture->Connection);
@@ -76,7 +74,11 @@ void UTbSame2SameEnum2InterfaceOLinkSpec::Define()
 
 	AfterEach([this]()
 		{
-		ImplFixture->Connection->Disconnect();
+		if (ImplFixture->Connection && IsValid(ImplFixture->Connection.GetObject()))
+		{
+			ImplFixture->Connection->Disconnect();
+			ImplFixture->Connection.GetObject()->RemoveFromRoot();
+		}
 		ImplFixture.Reset();
 	});
 
@@ -93,7 +95,7 @@ void UTbSame2SameEnum2InterfaceOLinkSpec::Define()
 		ETbSame2Enum1 TestValue = ETbSame2Enum1::TS2E1_VALUE1; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetProp1(ImplFixture->GetImplementation().GetObject()), TestValue);
 
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UTbSame2SameEnum2InterfaceSignals* TbSame2SameEnum2InterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		TbSame2SameEnum2InterfaceSignals->OnProp1Changed.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame2SameEnum2InterfaceOLinkHelper::Prop1PropertyCb);
 		// use different test value
@@ -107,7 +109,7 @@ void UTbSame2SameEnum2InterfaceOLinkSpec::Define()
 		ETbSame2Enum1 TestValue = ETbSame2Enum1::TS2E1_VALUE1; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetProp1(ImplFixture->GetImplementation().GetObject()), TestValue);
 
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UTbSame2SameEnum2InterfaceSignals* TbSame2SameEnum2InterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		TbSame2SameEnum2InterfaceSignals->OnProp1Changed.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame2SameEnum2InterfaceOLinkHelper::Prop1PropertyChangeLocalCheckRemoteCb);
 		// use different test value
@@ -122,7 +124,7 @@ void UTbSame2SameEnum2InterfaceOLinkSpec::Define()
 		ETbSame2Enum1 TestValue = ETbSame2Enum1::TS2E1_VALUE1; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetProp1(ImplFixture->GetImplementation().GetObject()), TestValue);
 
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UTbSame2SameEnum2InterfaceSignals* TbSame2SameEnum2InterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		TbSame2SameEnum2InterfaceSignals->OnProp1Changed.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame2SameEnum2InterfaceOLinkHelper::Prop1PropertyChangeLocalChangeRemoteCb);
 		// use different test value
@@ -144,7 +146,7 @@ void UTbSame2SameEnum2InterfaceOLinkSpec::Define()
 		ETbSame2Enum2 TestValue = ETbSame2Enum2::TS2E2_VALUE1; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetProp2(ImplFixture->GetImplementation().GetObject()), TestValue);
 
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UTbSame2SameEnum2InterfaceSignals* TbSame2SameEnum2InterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		TbSame2SameEnum2InterfaceSignals->OnProp2Changed.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame2SameEnum2InterfaceOLinkHelper::Prop2PropertyCb);
 		// use different test value
@@ -158,7 +160,7 @@ void UTbSame2SameEnum2InterfaceOLinkSpec::Define()
 		ETbSame2Enum2 TestValue = ETbSame2Enum2::TS2E2_VALUE1; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetProp2(ImplFixture->GetImplementation().GetObject()), TestValue);
 
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UTbSame2SameEnum2InterfaceSignals* TbSame2SameEnum2InterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		TbSame2SameEnum2InterfaceSignals->OnProp2Changed.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame2SameEnum2InterfaceOLinkHelper::Prop2PropertyChangeLocalCheckRemoteCb);
 		// use different test value
@@ -173,7 +175,7 @@ void UTbSame2SameEnum2InterfaceOLinkSpec::Define()
 		ETbSame2Enum2 TestValue = ETbSame2Enum2::TS2E2_VALUE1; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetProp2(ImplFixture->GetImplementation().GetObject()), TestValue);
 
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UTbSame2SameEnum2InterfaceSignals* TbSame2SameEnum2InterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		TbSame2SameEnum2InterfaceSignals->OnProp2Changed.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame2SameEnum2InterfaceOLinkHelper::Prop2PropertyChangeLocalChangeRemoteCb);
 		// use different test value
@@ -204,7 +206,7 @@ void UTbSame2SameEnum2InterfaceOLinkSpec::Define()
 
 	LatentIt("Signal.Sig1", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UTbSame2SameEnum2InterfaceSignals* TbSame2SameEnum2InterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		TbSame2SameEnum2InterfaceSignals->OnSig1Signal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame2SameEnum2InterfaceOLinkHelper::Sig1SignalCb);
 
@@ -215,7 +217,7 @@ void UTbSame2SameEnum2InterfaceOLinkSpec::Define()
 
 	LatentIt("Signal.Sig2", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UTbSame2SameEnum2InterfaceSignals* TbSame2SameEnum2InterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		TbSame2SameEnum2InterfaceSignals->OnSig2Signal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame2SameEnum2InterfaceOLinkHelper::Sig2SignalCb);
 
@@ -224,122 +226,6 @@ void UTbSame2SameEnum2InterfaceOLinkSpec::Define()
 		ETbSame2Enum2 Param2TestValue = ETbSame2Enum2::TS2E2_VALUE2;
 		TbSame2SameEnum2InterfaceSignals->BroadcastSig2Signal(Param1TestValue, Param2TestValue);
 	});
-}
-
-void UTbSame2SameEnum2InterfaceOLinkSpec::Prop1PropertyCb(ETbSame2Enum1 InProp1)
-{
-	ETbSame2Enum1 TestValue = ETbSame2Enum1::TS2E1_VALUE1;
-	// use different test value
-	TestValue = ETbSame2Enum1::TS2E1_VALUE2;
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetProp1(ImplFixture->GetImplementation().GetObject()), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSame2SameEnum2InterfaceOLinkSpec::Prop1PropertyChangeLocalCheckRemoteCb(ETbSame2Enum1 InProp1)
-{
-	ETbSame2Enum1 TestValue = ETbSame2Enum1::TS2E1_VALUE1;
-	// use different test value
-	TestValue = ETbSame2Enum1::TS2E1_VALUE2;
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetProp1(ImplFixture->GetImplementation().GetObject()), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSame2SameEnum2InterfaceOLinkSpec::Prop1PropertyChangeLocalChangeRemoteCb(ETbSame2Enum1 InProp1)
-{
-	// this function must be called twice before we can successfully pass this test.
-	// first call it should have the test value of the parameter
-	// second call it should have the default value of the parameter again
-	static int count = 0;
-	count++;
-
-	if (count % 2 != 0)
-	{
-		ETbSame2Enum1 TestValue = ETbSame2Enum1::TS2E1_VALUE1;
-		// use different test value
-		TestValue = ETbSame2Enum1::TS2E1_VALUE2;
-		TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
-		TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetProp1(ImplFixture->GetImplementation().GetObject()), TestValue);
-
-		// now set it to the default value
-		TestValue = ETbSame2Enum1::TS2E1_VALUE1; // default value
-		ImplFixture->GetImplementation()->Execute_SetProp1(ImplFixture->GetImplementation().GetObject(), TestValue);
-	}
-	else
-	{
-		ETbSame2Enum1 TestValue = ETbSame2Enum1::TS2E1_VALUE1; // default value
-		TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
-		TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetProp1(ImplFixture->GetImplementation().GetObject()), TestValue);
-		testDoneDelegate.Execute();
-	}
-}
-
-void UTbSame2SameEnum2InterfaceOLinkSpec::Prop2PropertyCb(ETbSame2Enum2 InProp2)
-{
-	ETbSame2Enum2 TestValue = ETbSame2Enum2::TS2E2_VALUE1;
-	// use different test value
-	TestValue = ETbSame2Enum2::TS2E2_VALUE2;
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp2, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetProp2(ImplFixture->GetImplementation().GetObject()), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSame2SameEnum2InterfaceOLinkSpec::Prop2PropertyChangeLocalCheckRemoteCb(ETbSame2Enum2 InProp2)
-{
-	ETbSame2Enum2 TestValue = ETbSame2Enum2::TS2E2_VALUE1;
-	// use different test value
-	TestValue = ETbSame2Enum2::TS2E2_VALUE2;
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp2, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetProp2(ImplFixture->GetImplementation().GetObject()), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSame2SameEnum2InterfaceOLinkSpec::Prop2PropertyChangeLocalChangeRemoteCb(ETbSame2Enum2 InProp2)
-{
-	// this function must be called twice before we can successfully pass this test.
-	// first call it should have the test value of the parameter
-	// second call it should have the default value of the parameter again
-	static int count = 0;
-	count++;
-
-	if (count % 2 != 0)
-	{
-		ETbSame2Enum2 TestValue = ETbSame2Enum2::TS2E2_VALUE1;
-		// use different test value
-		TestValue = ETbSame2Enum2::TS2E2_VALUE2;
-		TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp2, TestValue);
-		TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetProp2(ImplFixture->GetImplementation().GetObject()), TestValue);
-
-		// now set it to the default value
-		TestValue = ETbSame2Enum2::TS2E2_VALUE1; // default value
-		ImplFixture->GetImplementation()->Execute_SetProp2(ImplFixture->GetImplementation().GetObject(), TestValue);
-	}
-	else
-	{
-		ETbSame2Enum2 TestValue = ETbSame2Enum2::TS2E2_VALUE1; // default value
-		TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp2, TestValue);
-		TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetProp2(ImplFixture->GetImplementation().GetObject()), TestValue);
-		testDoneDelegate.Execute();
-	}
-}
-
-void UTbSame2SameEnum2InterfaceOLinkSpec::Sig1SignalCb(ETbSame2Enum1 InParam1)
-{
-	// known test value
-	ETbSame2Enum1 Param1TestValue = ETbSame2Enum1::TS2E1_VALUE2;
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSame2SameEnum2InterfaceOLinkSpec::Sig2SignalCb(ETbSame2Enum1 InParam1, ETbSame2Enum2 InParam2)
-{
-	// known test value
-	ETbSame2Enum1 Param1TestValue = ETbSame2Enum1::TS2E1_VALUE2;
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
-	ETbSame2Enum2 Param2TestValue = ETbSame2Enum2::TS2E2_VALUE2;
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam2, Param2TestValue);
-	testDoneDelegate.Execute();
 }
 #endif // WITH_DEV_AUTOMATION_TESTS
 #endif // !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)

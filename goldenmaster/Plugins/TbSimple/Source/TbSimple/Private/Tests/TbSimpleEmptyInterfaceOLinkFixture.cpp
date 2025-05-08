@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbSimpleEmptyInterfaceOLinkFixture.h"
-#include "TbSimpleEmptyInterfaceOLink.spec.h"
+#include "TbSimpleTestsCommon.h"
 #include "OLinkCommon.h"
 #include "Generated/OLink/TbSimpleEmptyInterfaceOLinkClient.h"
 #include "Generated/OLink/TbSimpleEmptyInterfaceOLinkAdapter.h"
@@ -25,25 +25,40 @@ limitations under the License.
 #if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX
 #include "OLinkHost.h"
 
-void UTbSimpleEmptyInterfaceOLinkHelper::SetSpec(UTbSimpleEmptyInterfaceOLinkSpec* InSpec)
+void UTbSimpleEmptyInterfaceOLinkHelper::SetParentFixture(TWeakPtr<FTbSimpleEmptyInterfaceOLinkFixture> InFixture)
+{
+	ImplFixture = InFixture;
+}
+
+void UTbSimpleEmptyInterfaceOLinkHelper::SetSpec(FAutomationTestBase* InSpec)
 {
 	Spec = InSpec;
 }
 
+void UTbSimpleEmptyInterfaceOLinkHelper::SetTestDone(const FDoneDelegate& InDone)
+{
+	testDoneDelegate = InDone;
+}
+
 void UTbSimpleEmptyInterfaceOLinkHelper::_SubscriptionStatusChangedCb(bool bSubscribed)
 {
-	Spec->_SubscriptionStatusChangedCb(bSubscribed);
+	if (bSubscribed)
+	{
+		testDoneDelegate.Execute();
+	}
 }
 
 FTbSimpleEmptyInterfaceOLinkFixture::FTbSimpleEmptyInterfaceOLinkFixture()
 {
-	Helper = NewObject<UTbSimpleEmptyInterfaceOLinkHelper>();
+	Helper = NewObject<UTbSimpleEmptyInterfaceOLinkHelper>(GetTransientPackage());
+	Helper->AddToRoot();
 	testImplementation = GetGameInstance()->GetSubsystem<UTbSimpleEmptyInterfaceOLinkClient>();
 }
 
 FTbSimpleEmptyInterfaceOLinkFixture::~FTbSimpleEmptyInterfaceOLinkFixture()
 {
 	CleanUp();
+	Helper->RemoveFromRoot();
 }
 
 TScriptInterface<ITbSimpleEmptyInterfaceInterface> FTbSimpleEmptyInterfaceOLinkFixture::GetImplementation()
@@ -89,7 +104,15 @@ void FTbSimpleEmptyInterfaceOLinkFixture::CleanUp()
 }
 #else  // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX
 // create empty implementation in case we do not want to do automated testing
-void UTbSimpleEmptyInterfaceOLinkHelper::SetSpec(UTbSimpleEmptyInterfaceOLinkSpec* /* InSpec */)
+void UTbSimpleEmptyInterfaceOLinkHelper::SetParentFixture(TWeakPtr<FTbSimpleEmptyInterfaceOLinkFixture> /*InFixture*/)
+{
+}
+
+void UTbSimpleEmptyInterfaceOLinkHelper::SetSpec(FAutomationTestBase* /*InSpec*/)
+{
+}
+
+void UTbSimpleEmptyInterfaceOLinkHelper::SetTestDone(const FDoneDelegate& /*InDone*/)
 {
 }
 

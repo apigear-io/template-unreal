@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbSimpleNoPropertiesInterfaceOLinkFixture.h"
-#include "TbSimpleNoPropertiesInterfaceOLink.spec.h"
+#include "TbSimpleTestsCommon.h"
 #include "OLinkCommon.h"
 #include "Generated/OLink/TbSimpleNoPropertiesInterfaceOLinkClient.h"
 #include "Generated/OLink/TbSimpleNoPropertiesInterfaceOLinkAdapter.h"
@@ -25,35 +25,54 @@ limitations under the License.
 #if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX
 #include "OLinkHost.h"
 
-void UTbSimpleNoPropertiesInterfaceOLinkHelper::SetSpec(UTbSimpleNoPropertiesInterfaceOLinkSpec* InSpec)
+void UTbSimpleNoPropertiesInterfaceOLinkHelper::SetParentFixture(TWeakPtr<FTbSimpleNoPropertiesInterfaceOLinkFixture> InFixture)
+{
+	ImplFixture = InFixture;
+}
+
+void UTbSimpleNoPropertiesInterfaceOLinkHelper::SetSpec(FAutomationTestBase* InSpec)
 {
 	Spec = InSpec;
 }
 
-void UTbSimpleNoPropertiesInterfaceOLinkHelper::SigVoidSignalCb()
+void UTbSimpleNoPropertiesInterfaceOLinkHelper::SetTestDone(const FDoneDelegate& InDone)
 {
-	Spec->SigVoidSignalCb();
+	testDoneDelegate = InDone;
 }
 
-void UTbSimpleNoPropertiesInterfaceOLinkHelper::SigBoolSignalCb(bool bParamBool)
+void UTbSimpleNoPropertiesInterfaceOLinkHelper::SigVoidSignalCb()
 {
-	Spec->SigBoolSignalCb(bParamBool);
+	// known test value
+	testDoneDelegate.Execute();
+}
+
+void UTbSimpleNoPropertiesInterfaceOLinkHelper::SigBoolSignalCb(bool bInParamBool)
+{
+	// known test value
+	bool bParamBoolTestValue = true;
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), bInParamBool, bParamBoolTestValue);
+	testDoneDelegate.Execute();
 }
 
 void UTbSimpleNoPropertiesInterfaceOLinkHelper::_SubscriptionStatusChangedCb(bool bSubscribed)
 {
-	Spec->_SubscriptionStatusChangedCb(bSubscribed);
+	if (bSubscribed)
+	{
+		testDoneDelegate.Execute();
+	}
 }
 
 FTbSimpleNoPropertiesInterfaceOLinkFixture::FTbSimpleNoPropertiesInterfaceOLinkFixture()
 {
-	Helper = NewObject<UTbSimpleNoPropertiesInterfaceOLinkHelper>();
+	Helper = NewObject<UTbSimpleNoPropertiesInterfaceOLinkHelper>(GetTransientPackage());
+	Helper->AddToRoot();
 	testImplementation = GetGameInstance()->GetSubsystem<UTbSimpleNoPropertiesInterfaceOLinkClient>();
 }
 
 FTbSimpleNoPropertiesInterfaceOLinkFixture::~FTbSimpleNoPropertiesInterfaceOLinkFixture()
 {
 	CleanUp();
+	Helper->RemoveFromRoot();
 }
 
 TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> FTbSimpleNoPropertiesInterfaceOLinkFixture::GetImplementation()
@@ -99,7 +118,15 @@ void FTbSimpleNoPropertiesInterfaceOLinkFixture::CleanUp()
 }
 #else  // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX
 // create empty implementation in case we do not want to do automated testing
-void UTbSimpleNoPropertiesInterfaceOLinkHelper::SetSpec(UTbSimpleNoPropertiesInterfaceOLinkSpec* /* InSpec */)
+void UTbSimpleNoPropertiesInterfaceOLinkHelper::SetParentFixture(TWeakPtr<FTbSimpleNoPropertiesInterfaceOLinkFixture> /*InFixture*/)
+{
+}
+
+void UTbSimpleNoPropertiesInterfaceOLinkHelper::SetSpec(FAutomationTestBase* /*InSpec*/)
+{
+}
+
+void UTbSimpleNoPropertiesInterfaceOLinkHelper::SetTestDone(const FDoneDelegate& /*InDone*/)
 {
 }
 

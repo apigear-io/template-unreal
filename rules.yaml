@@ -379,9 +379,6 @@ features:
             target: "Source/{{Camel .Module.Name}}/Private/Generated/OLink/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLinkSource.h"
           - source: "module/Source/module/Private/Generated/OLink/olinksource.cpp.tpl"
             target: "Source/{{Camel .Module.Name}}/Private/Generated/OLink/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLinkSource.cpp"
-          - source: "module/Source/module/Private/Tests/olink.spec.h.tpl"
-            target: "Source/{{Camel .Module.Name}}/Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLink.spec.h"
-            preserve: true
           - source: "module/Source/module/Private/Tests/olink.spec.cpp.tpl"
             target: "Source/{{Camel .Module.Name}}/Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLink.spec.cpp"
             preserve: true

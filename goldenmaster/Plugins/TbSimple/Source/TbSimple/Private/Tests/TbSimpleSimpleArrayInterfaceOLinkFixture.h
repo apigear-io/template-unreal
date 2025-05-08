@@ -12,7 +12,7 @@
 #include "HAL/Platform.h"
 #include "TbSimpleSimpleArrayInterfaceOLinkFixture.generated.h"
 
-class UTbSimpleSimpleArrayInterfaceOLinkSpec;
+class FTbSimpleSimpleArrayInterfaceOLinkFixture;
 class ITbSimpleSimpleArrayInterfaceInterface;
 class UTbSimpleSimpleArrayInterfaceOLinkAdapter;
 class IApiGearConnection;
@@ -23,7 +23,9 @@ class UTbSimpleSimpleArrayInterfaceOLinkHelper : public UObject
 {
 	GENERATED_BODY()
 public:
-	void SetSpec(UTbSimpleSimpleArrayInterfaceOLinkSpec* InSpec);
+	void SetParentFixture(TWeakPtr<FTbSimpleSimpleArrayInterfaceOLinkFixture> InFixture);
+	void SetSpec(FAutomationTestBase* InSpec);
+	void SetTestDone(const FDoneDelegate& InDone);
 
 	UFUNCTION()
 	void PropBoolPropertyCb(const TArray<bool>& PropBool);
@@ -109,8 +111,9 @@ public:
 	void _SubscriptionStatusChangedCb(bool bSubscribed);
 
 protected:
-	const FDoneDelegate* testDoneDelegate;
-	UTbSimpleSimpleArrayInterfaceOLinkSpec* Spec;
+	TWeakPtr<FTbSimpleSimpleArrayInterfaceOLinkFixture> ImplFixture;
+	FDoneDelegate testDoneDelegate;
+	FAutomationTestBase* Spec;
 };
 
 #if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX

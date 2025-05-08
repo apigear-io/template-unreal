@@ -12,7 +12,7 @@
 #include "HAL/Platform.h"
 #include "Testbed1StructArrayInterfaceOLinkFixture.generated.h"
 
-class UTestbed1StructArrayInterfaceOLinkSpec;
+class FTestbed1StructArrayInterfaceOLinkFixture;
 class ITestbed1StructArrayInterfaceInterface;
 class UTestbed1StructArrayInterfaceOLinkAdapter;
 class IApiGearConnection;
@@ -23,7 +23,9 @@ class UTestbed1StructArrayInterfaceOLinkHelper : public UObject
 {
 	GENERATED_BODY()
 public:
-	void SetSpec(UTestbed1StructArrayInterfaceOLinkSpec* InSpec);
+	void SetParentFixture(TWeakPtr<FTestbed1StructArrayInterfaceOLinkFixture> InFixture);
+	void SetSpec(FAutomationTestBase* InSpec);
+	void SetTestDone(const FDoneDelegate& InDone);
 
 	UFUNCTION()
 	void PropBoolPropertyCb(const TArray<FTestbed1StructBool>& PropBool);
@@ -79,8 +81,9 @@ public:
 	void _SubscriptionStatusChangedCb(bool bSubscribed);
 
 protected:
-	const FDoneDelegate* testDoneDelegate;
-	UTestbed1StructArrayInterfaceOLinkSpec* Spec;
+	TWeakPtr<FTestbed1StructArrayInterfaceOLinkFixture> ImplFixture;
+	FDoneDelegate testDoneDelegate;
+	FAutomationTestBase* Spec;
 };
 
 #if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX

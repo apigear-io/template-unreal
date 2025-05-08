@@ -12,7 +12,7 @@
 #include "HAL/Platform.h"
 #include "TbNamesNamEsOLinkFixture.generated.h"
 
-class UTbNamesNamEsOLinkSpec;
+class FTbNamesNamEsOLinkFixture;
 class ITbNamesNamEsInterface;
 class UTbNamesNamEsOLinkAdapter;
 class IApiGearConnection;
@@ -23,7 +23,9 @@ class UTbNamesNamEsOLinkHelper : public UObject
 {
 	GENERATED_BODY()
 public:
-	void SetSpec(UTbNamesNamEsOLinkSpec* InSpec);
+	void SetParentFixture(TWeakPtr<FTbNamesNamEsOLinkFixture> InFixture);
+	void SetSpec(FAutomationTestBase* InSpec);
+	void SetTestDone(const FDoneDelegate& InDone);
 
 	UFUNCTION()
 	void SwitchPropertyCb(bool bSwitch);
@@ -63,8 +65,9 @@ public:
 	void _SubscriptionStatusChangedCb(bool bSubscribed);
 
 protected:
-	const FDoneDelegate* testDoneDelegate;
-	UTbNamesNamEsOLinkSpec* Spec;
+	TWeakPtr<FTbNamesNamEsOLinkFixture> ImplFixture;
+	FDoneDelegate testDoneDelegate;
+	FAutomationTestBase* Spec;
 };
 
 #if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX
