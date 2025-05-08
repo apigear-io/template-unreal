@@ -11,7 +11,7 @@
 #include "HAL/Platform.h"
 #include "TbEnumEnumInterfaceMsgBusFixture.generated.h"
 
-class UTbEnumEnumInterfaceMsgBusSpec;
+class FTbEnumEnumInterfaceMsgBusFixture;
 class ITbEnumEnumInterfaceInterface;
 class UTbEnumEnumInterfaceMsgBusAdapter;
 class IApiGearConnection;
@@ -23,7 +23,9 @@ class UTbEnumEnumInterfaceMsgBusHelper : public UObject
 public:
 	~UTbEnumEnumInterfaceMsgBusHelper();
 
-	void SetSpec(UTbEnumEnumInterfaceMsgBusSpec* InSpec);
+	void SetParentFixture(TWeakPtr<FTbEnumEnumInterfaceMsgBusFixture> InFixture);
+	void SetSpec(FAutomationTestBase* InSpec);
+	void SetTestDone(const FDoneDelegate& InDone);
 
 	UFUNCTION()
 	void Prop0PropertyCb(ETbEnumEnum0 Prop0);
@@ -69,8 +71,9 @@ public:
 	void _ConnectionStatusChangedCb(bool bConnected);
 
 protected:
-	const FDoneDelegate* testDoneDelegate;
-	UTbEnumEnumInterfaceMsgBusSpec* Spec;
+	TWeakPtr<FTbEnumEnumInterfaceMsgBusFixture> ImplFixture;
+	FDoneDelegate testDoneDelegate;
+	FAutomationTestBase* Spec;
 };
 
 #if WITH_DEV_AUTOMATION_TESTS

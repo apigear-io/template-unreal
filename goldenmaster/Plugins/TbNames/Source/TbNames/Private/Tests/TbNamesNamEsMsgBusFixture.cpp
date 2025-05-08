@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbNamesNamEsMsgBusFixture.h"
-#include "TbNamesNamEsMsgBus.spec.h"
+#include "TbNamesTestsCommon.h"
 #include "Generated/MsgBus/TbNamesNamEsMsgBusClient.h"
 #include "Generated/MsgBus/TbNamesNamEsMsgBusAdapter.h"
 #include "Engine/GameInstance.h"
@@ -28,128 +28,298 @@ UTbNamesNamEsMsgBusHelper::~UTbNamesNamEsMsgBusHelper()
 	Spec = nullptr;
 }
 
-void UTbNamesNamEsMsgBusHelper::SetSpec(UTbNamesNamEsMsgBusSpec* InSpec)
+void UTbNamesNamEsMsgBusHelper::SetParentFixture(TWeakPtr<FTbNamesNamEsMsgBusFixture> InFixture)
+{
+	ImplFixture = InFixture;
+}
+
+void UTbNamesNamEsMsgBusHelper::SetSpec(FAutomationTestBase* InSpec)
 {
 	Spec = InSpec;
 }
 
-void UTbNamesNamEsMsgBusHelper::SwitchPropertyCb(bool bSwitch)
+void UTbNamesNamEsMsgBusHelper::SetTestDone(const FDoneDelegate& InDone)
 {
-	if (Spec)
+	testDoneDelegate = InDone;
+}
+
+void UTbNamesNamEsMsgBusHelper::SwitchPropertyCb(bool bInSwitch)
+{
+	bool TestValue = false;
+	// use different test value
+	TestValue = true;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), bInSwitch, TestValue);
+	if (TSharedPtr<FTbNamesNamEsMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
 	{
-		Spec->SwitchPropertyCb(bSwitch);
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetSwitch(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTbNamesNamEsMsgBusHelper::SwitchPropertyChangeLocalCheckRemoteCb(bool bInSwitch)
+{
+	bool TestValue = false;
+	// use different test value
+	TestValue = true;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), bInSwitch, TestValue);
+	if (TSharedPtr<FTbNamesNamEsMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetSwitch(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTbNamesNamEsMsgBusHelper::SwitchPropertyChangeLocalChangeRemoteCb(bool bInSwitch)
+{
+	// this function must be called twice before we can successfully pass this test.
+	// first call it should have the test value of the parameter
+	// second call it should have the default value of the parameter again
+	static int count = 0;
+	count++;
+
+	if (count % 2 != 0)
+	{
+		bool TestValue = false;
+		// use different test value
+		TestValue = true;
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), bInSwitch, TestValue);
+		if (TSharedPtr<FTbNamesNamEsMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetSwitch(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+
+		// now set it to the default value
+		TestValue = false; // default value
+		if (TSharedPtr<FTbNamesNamEsMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			PinnedImplFixture->GetImplementation()->Execute_SetSwitch(PinnedImplFixture->GetImplementation().GetObject(), TestValue);
+		}
+	}
+	else
+	{
+		bool TestValue = false; // default value
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), bInSwitch, TestValue);
+		if (TSharedPtr<FTbNamesNamEsMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetSwitch(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+		testDoneDelegate.Execute();
 	}
 }
 
-void UTbNamesNamEsMsgBusHelper::SwitchPropertyChangeLocalCheckRemoteCb(bool bSwitch)
+void UTbNamesNamEsMsgBusHelper::SomePropertyPropertyCb(int32 InSomeProperty)
 {
-	if (Spec)
+	int32 TestValue = 0;
+	// use different test value
+	TestValue = 1;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InSomeProperty, TestValue);
+	if (TSharedPtr<FTbNamesNamEsMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
 	{
-		Spec->SwitchPropertyChangeLocalCheckRemoteCb(bSwitch);
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetSomeProperty(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTbNamesNamEsMsgBusHelper::SomePropertyPropertyChangeLocalCheckRemoteCb(int32 InSomeProperty)
+{
+	int32 TestValue = 0;
+	// use different test value
+	TestValue = 1;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InSomeProperty, TestValue);
+	if (TSharedPtr<FTbNamesNamEsMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetSomeProperty(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTbNamesNamEsMsgBusHelper::SomePropertyPropertyChangeLocalChangeRemoteCb(int32 InSomeProperty)
+{
+	// this function must be called twice before we can successfully pass this test.
+	// first call it should have the test value of the parameter
+	// second call it should have the default value of the parameter again
+	static int count = 0;
+	count++;
+
+	if (count % 2 != 0)
+	{
+		int32 TestValue = 0;
+		// use different test value
+		TestValue = 1;
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InSomeProperty, TestValue);
+		if (TSharedPtr<FTbNamesNamEsMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetSomeProperty(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+
+		// now set it to the default value
+		TestValue = 0; // default value
+		if (TSharedPtr<FTbNamesNamEsMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			PinnedImplFixture->GetImplementation()->Execute_SetSomeProperty(PinnedImplFixture->GetImplementation().GetObject(), TestValue);
+		}
+	}
+	else
+	{
+		int32 TestValue = 0; // default value
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InSomeProperty, TestValue);
+		if (TSharedPtr<FTbNamesNamEsMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetSomeProperty(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+		testDoneDelegate.Execute();
 	}
 }
 
-void UTbNamesNamEsMsgBusHelper::SwitchPropertyChangeLocalChangeRemoteCb(bool bSwitch)
+void UTbNamesNamEsMsgBusHelper::SomePoperty2PropertyCb(int32 InSomePoperty2)
 {
-	if (Spec)
+	int32 TestValue = 0;
+	// use different test value
+	TestValue = 1;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InSomePoperty2, TestValue);
+	if (TSharedPtr<FTbNamesNamEsMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
 	{
-		Spec->SwitchPropertyChangeLocalChangeRemoteCb(bSwitch);
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetSomePoperty2(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTbNamesNamEsMsgBusHelper::SomePoperty2PropertyChangeLocalCheckRemoteCb(int32 InSomePoperty2)
+{
+	int32 TestValue = 0;
+	// use different test value
+	TestValue = 1;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InSomePoperty2, TestValue);
+	if (TSharedPtr<FTbNamesNamEsMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetSomePoperty2(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTbNamesNamEsMsgBusHelper::SomePoperty2PropertyChangeLocalChangeRemoteCb(int32 InSomePoperty2)
+{
+	// this function must be called twice before we can successfully pass this test.
+	// first call it should have the test value of the parameter
+	// second call it should have the default value of the parameter again
+	static int count = 0;
+	count++;
+
+	if (count % 2 != 0)
+	{
+		int32 TestValue = 0;
+		// use different test value
+		TestValue = 1;
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InSomePoperty2, TestValue);
+		if (TSharedPtr<FTbNamesNamEsMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetSomePoperty2(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+
+		// now set it to the default value
+		TestValue = 0; // default value
+		if (TSharedPtr<FTbNamesNamEsMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			PinnedImplFixture->GetImplementation()->Execute_SetSomePoperty2(PinnedImplFixture->GetImplementation().GetObject(), TestValue);
+		}
+	}
+	else
+	{
+		int32 TestValue = 0; // default value
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InSomePoperty2, TestValue);
+		if (TSharedPtr<FTbNamesNamEsMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetSomePoperty2(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+		testDoneDelegate.Execute();
 	}
 }
 
-void UTbNamesNamEsMsgBusHelper::SomePropertyPropertyCb(int32 SomeProperty)
+void UTbNamesNamEsMsgBusHelper::EnumPropertyPropertyCb(ETbNamesEnum_With_Under_scores InEnumProperty)
 {
-	if (Spec)
+	ETbNamesEnum_With_Under_scores TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_FIRSTVALUE;
+	// use different test value
+	TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_SECONDVALUE;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InEnumProperty, TestValue);
+	if (TSharedPtr<FTbNamesNamEsMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
 	{
-		Spec->SomePropertyPropertyCb(SomeProperty);
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetEnumProperty(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTbNamesNamEsMsgBusHelper::EnumPropertyPropertyChangeLocalCheckRemoteCb(ETbNamesEnum_With_Under_scores InEnumProperty)
+{
+	ETbNamesEnum_With_Under_scores TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_FIRSTVALUE;
+	// use different test value
+	TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_SECONDVALUE;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InEnumProperty, TestValue);
+	if (TSharedPtr<FTbNamesNamEsMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetEnumProperty(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTbNamesNamEsMsgBusHelper::EnumPropertyPropertyChangeLocalChangeRemoteCb(ETbNamesEnum_With_Under_scores InEnumProperty)
+{
+	// this function must be called twice before we can successfully pass this test.
+	// first call it should have the test value of the parameter
+	// second call it should have the default value of the parameter again
+	static int count = 0;
+	count++;
+
+	if (count % 2 != 0)
+	{
+		ETbNamesEnum_With_Under_scores TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_FIRSTVALUE;
+		// use different test value
+		TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_SECONDVALUE;
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InEnumProperty, TestValue);
+		if (TSharedPtr<FTbNamesNamEsMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetEnumProperty(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+
+		// now set it to the default value
+		TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_FIRSTVALUE; // default value
+		if (TSharedPtr<FTbNamesNamEsMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			PinnedImplFixture->GetImplementation()->Execute_SetEnumProperty(PinnedImplFixture->GetImplementation().GetObject(), TestValue);
+		}
+	}
+	else
+	{
+		ETbNamesEnum_With_Under_scores TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_FIRSTVALUE; // default value
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InEnumProperty, TestValue);
+		if (TSharedPtr<FTbNamesNamEsMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetEnumProperty(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+		testDoneDelegate.Execute();
 	}
 }
 
-void UTbNamesNamEsMsgBusHelper::SomePropertyPropertyChangeLocalCheckRemoteCb(int32 SomeProperty)
+void UTbNamesNamEsMsgBusHelper::SomeSignalSignalCb(bool bInSomeParam)
 {
-	if (Spec)
-	{
-		Spec->SomePropertyPropertyChangeLocalCheckRemoteCb(SomeProperty);
-	}
+	// known test value
+	bool bSomeParamTestValue = true;
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), bInSomeParam, bSomeParamTestValue);
+	testDoneDelegate.Execute();
 }
 
-void UTbNamesNamEsMsgBusHelper::SomePropertyPropertyChangeLocalChangeRemoteCb(int32 SomeProperty)
+void UTbNamesNamEsMsgBusHelper::SomeSignal2SignalCb(bool bInSomeParam)
 {
-	if (Spec)
-	{
-		Spec->SomePropertyPropertyChangeLocalChangeRemoteCb(SomeProperty);
-	}
-}
-
-void UTbNamesNamEsMsgBusHelper::SomePoperty2PropertyCb(int32 SomePoperty2)
-{
-	if (Spec)
-	{
-		Spec->SomePoperty2PropertyCb(SomePoperty2);
-	}
-}
-
-void UTbNamesNamEsMsgBusHelper::SomePoperty2PropertyChangeLocalCheckRemoteCb(int32 SomePoperty2)
-{
-	if (Spec)
-	{
-		Spec->SomePoperty2PropertyChangeLocalCheckRemoteCb(SomePoperty2);
-	}
-}
-
-void UTbNamesNamEsMsgBusHelper::SomePoperty2PropertyChangeLocalChangeRemoteCb(int32 SomePoperty2)
-{
-	if (Spec)
-	{
-		Spec->SomePoperty2PropertyChangeLocalChangeRemoteCb(SomePoperty2);
-	}
-}
-
-void UTbNamesNamEsMsgBusHelper::EnumPropertyPropertyCb(ETbNamesEnum_With_Under_scores EnumProperty)
-{
-	if (Spec)
-	{
-		Spec->EnumPropertyPropertyCb(EnumProperty);
-	}
-}
-
-void UTbNamesNamEsMsgBusHelper::EnumPropertyPropertyChangeLocalCheckRemoteCb(ETbNamesEnum_With_Under_scores EnumProperty)
-{
-	if (Spec)
-	{
-		Spec->EnumPropertyPropertyChangeLocalCheckRemoteCb(EnumProperty);
-	}
-}
-
-void UTbNamesNamEsMsgBusHelper::EnumPropertyPropertyChangeLocalChangeRemoteCb(ETbNamesEnum_With_Under_scores EnumProperty)
-{
-	if (Spec)
-	{
-		Spec->EnumPropertyPropertyChangeLocalChangeRemoteCb(EnumProperty);
-	}
-}
-
-void UTbNamesNamEsMsgBusHelper::SomeSignalSignalCb(bool bSomeParam)
-{
-	if (Spec)
-	{
-		Spec->SomeSignalSignalCb(bSomeParam);
-	}
-}
-
-void UTbNamesNamEsMsgBusHelper::SomeSignal2SignalCb(bool bSomeParam)
-{
-	if (Spec)
-	{
-		Spec->SomeSignal2SignalCb(bSomeParam);
-	}
+	// known test value
+	bool bSomeParamTestValue = true;
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), bInSomeParam, bSomeParamTestValue);
+	testDoneDelegate.Execute();
 }
 
 void UTbNamesNamEsMsgBusHelper::_ConnectionStatusChangedCb(bool bConnected)
 {
-	if (Spec)
+	if (bConnected)
 	{
-		Spec->_ConnectionStatusChangedCb(bConnected);
+		testDoneDelegate.Execute();
 	}
 }
 
@@ -206,28 +376,76 @@ UTbNamesNamEsMsgBusHelper::~UTbNamesNamEsMsgBusHelper()
 {
 }
 
-void UTbNamesNamEsMsgBusHelper::SetSpec(UTbNamesNamEsMsgBusSpec* /* InSpec */)
+void UTbNamesNamEsMsgBusHelper::SetParentFixture(TWeakPtr<FTbNamesNamEsMsgBusFixture> /*InFixture*/)
 {
 }
 
-void UTbNamesNamEsMsgBusHelper::SwitchPropertyCb(bool bSwitch)
+void UTbNamesNamEsMsgBusHelper::SetSpec(FAutomationTestBase* /*InSpec*/)
 {
-	(void)bSwitch;
 }
 
-void UTbNamesNamEsMsgBusHelper::SomePropertyPropertyCb(int32 SomeProperty)
+void UTbNamesNamEsMsgBusHelper::SetTestDone(const FDoneDelegate& /*InDone*/)
 {
-	(void)SomeProperty;
 }
 
-void UTbNamesNamEsMsgBusHelper::SomePoperty2PropertyCb(int32 SomePoperty2)
+void UTbNamesNamEsMsgBusHelper::SwitchPropertyCb(bool bInSwitch)
 {
-	(void)SomePoperty2;
+	(void)bInSwitch;
 }
 
-void UTbNamesNamEsMsgBusHelper::EnumPropertyPropertyCb(ETbNamesEnum_With_Under_scores EnumProperty)
+void UTbNamesNamEsMsgBusHelper::SwitchPropertyChangeLocalCheckRemoteCb(bool bInSwitch)
 {
-	(void)EnumProperty;
+	(void)bInSwitch;
+}
+
+void UTbNamesNamEsMsgBusHelper::SwitchPropertyChangeLocalChangeRemoteCb(bool bInSwitch)
+{
+	(void)bInSwitch;
+}
+
+void UTbNamesNamEsMsgBusHelper::SomePropertyPropertyCb(int32 InSomeProperty)
+{
+	(void)InSomeProperty;
+}
+
+void UTbNamesNamEsMsgBusHelper::SomePropertyPropertyChangeLocalCheckRemoteCb(int32 InSomeProperty)
+{
+	(void)InSomeProperty;
+}
+
+void UTbNamesNamEsMsgBusHelper::SomePropertyPropertyChangeLocalChangeRemoteCb(int32 InSomeProperty)
+{
+	(void)InSomeProperty;
+}
+
+void UTbNamesNamEsMsgBusHelper::SomePoperty2PropertyCb(int32 InSomePoperty2)
+{
+	(void)InSomePoperty2;
+}
+
+void UTbNamesNamEsMsgBusHelper::SomePoperty2PropertyChangeLocalCheckRemoteCb(int32 InSomePoperty2)
+{
+	(void)InSomePoperty2;
+}
+
+void UTbNamesNamEsMsgBusHelper::SomePoperty2PropertyChangeLocalChangeRemoteCb(int32 InSomePoperty2)
+{
+	(void)InSomePoperty2;
+}
+
+void UTbNamesNamEsMsgBusHelper::EnumPropertyPropertyCb(ETbNamesEnum_With_Under_scores InEnumProperty)
+{
+	(void)InEnumProperty;
+}
+
+void UTbNamesNamEsMsgBusHelper::EnumPropertyPropertyChangeLocalCheckRemoteCb(ETbNamesEnum_With_Under_scores InEnumProperty)
+{
+	(void)InEnumProperty;
+}
+
+void UTbNamesNamEsMsgBusHelper::EnumPropertyPropertyChangeLocalChangeRemoteCb(ETbNamesEnum_With_Under_scores InEnumProperty)
+{
+	(void)InEnumProperty;
 }
 
 void UTbNamesNamEsMsgBusHelper::SomeSignalSignalCb(bool bSomeParam)

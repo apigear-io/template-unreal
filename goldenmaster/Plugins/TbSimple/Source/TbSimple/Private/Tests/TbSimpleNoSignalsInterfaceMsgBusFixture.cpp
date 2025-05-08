@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbSimpleNoSignalsInterfaceMsgBusFixture.h"
-#include "TbSimpleNoSignalsInterfaceMsgBus.spec.h"
+#include "TbSimpleTestsCommon.h"
 #include "Generated/MsgBus/TbSimpleNoSignalsInterfaceMsgBusClient.h"
 #include "Generated/MsgBus/TbSimpleNoSignalsInterfaceMsgBusAdapter.h"
 #include "Engine/GameInstance.h"
@@ -28,64 +28,154 @@ UTbSimpleNoSignalsInterfaceMsgBusHelper::~UTbSimpleNoSignalsInterfaceMsgBusHelpe
 	Spec = nullptr;
 }
 
-void UTbSimpleNoSignalsInterfaceMsgBusHelper::SetSpec(UTbSimpleNoSignalsInterfaceMsgBusSpec* InSpec)
+void UTbSimpleNoSignalsInterfaceMsgBusHelper::SetParentFixture(TWeakPtr<FTbSimpleNoSignalsInterfaceMsgBusFixture> InFixture)
+{
+	ImplFixture = InFixture;
+}
+
+void UTbSimpleNoSignalsInterfaceMsgBusHelper::SetSpec(FAutomationTestBase* InSpec)
 {
 	Spec = InSpec;
 }
 
-void UTbSimpleNoSignalsInterfaceMsgBusHelper::PropBoolPropertyCb(bool bPropBool)
+void UTbSimpleNoSignalsInterfaceMsgBusHelper::SetTestDone(const FDoneDelegate& InDone)
 {
-	if (Spec)
+	testDoneDelegate = InDone;
+}
+
+void UTbSimpleNoSignalsInterfaceMsgBusHelper::PropBoolPropertyCb(bool bInPropBool)
+{
+	bool TestValue = false;
+	// use different test value
+	TestValue = true;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), bInPropBool, TestValue);
+	if (TSharedPtr<FTbSimpleNoSignalsInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
 	{
-		Spec->PropBoolPropertyCb(bPropBool);
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropBool(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTbSimpleNoSignalsInterfaceMsgBusHelper::PropBoolPropertyChangeLocalCheckRemoteCb(bool bInPropBool)
+{
+	bool TestValue = false;
+	// use different test value
+	TestValue = true;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), bInPropBool, TestValue);
+	if (TSharedPtr<FTbSimpleNoSignalsInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropBool(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTbSimpleNoSignalsInterfaceMsgBusHelper::PropBoolPropertyChangeLocalChangeRemoteCb(bool bInPropBool)
+{
+	// this function must be called twice before we can successfully pass this test.
+	// first call it should have the test value of the parameter
+	// second call it should have the default value of the parameter again
+	static int count = 0;
+	count++;
+
+	if (count % 2 != 0)
+	{
+		bool TestValue = false;
+		// use different test value
+		TestValue = true;
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), bInPropBool, TestValue);
+		if (TSharedPtr<FTbSimpleNoSignalsInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropBool(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+
+		// now set it to the default value
+		TestValue = false; // default value
+		if (TSharedPtr<FTbSimpleNoSignalsInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			PinnedImplFixture->GetImplementation()->Execute_SetPropBool(PinnedImplFixture->GetImplementation().GetObject(), TestValue);
+		}
+	}
+	else
+	{
+		bool TestValue = false; // default value
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), bInPropBool, TestValue);
+		if (TSharedPtr<FTbSimpleNoSignalsInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropBool(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+		testDoneDelegate.Execute();
 	}
 }
 
-void UTbSimpleNoSignalsInterfaceMsgBusHelper::PropBoolPropertyChangeLocalCheckRemoteCb(bool bPropBool)
+void UTbSimpleNoSignalsInterfaceMsgBusHelper::PropIntPropertyCb(int32 InPropInt)
 {
-	if (Spec)
+	int32 TestValue = 0;
+	// use different test value
+	TestValue = 1;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
+	if (TSharedPtr<FTbSimpleNoSignalsInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
 	{
-		Spec->PropBoolPropertyChangeLocalCheckRemoteCb(bPropBool);
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropInt(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
 	}
+	testDoneDelegate.Execute();
 }
 
-void UTbSimpleNoSignalsInterfaceMsgBusHelper::PropBoolPropertyChangeLocalChangeRemoteCb(bool bPropBool)
+void UTbSimpleNoSignalsInterfaceMsgBusHelper::PropIntPropertyChangeLocalCheckRemoteCb(int32 InPropInt)
 {
-	if (Spec)
+	int32 TestValue = 0;
+	// use different test value
+	TestValue = 1;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
+	if (TSharedPtr<FTbSimpleNoSignalsInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
 	{
-		Spec->PropBoolPropertyChangeLocalChangeRemoteCb(bPropBool);
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropInt(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
 	}
+	testDoneDelegate.Execute();
 }
 
-void UTbSimpleNoSignalsInterfaceMsgBusHelper::PropIntPropertyCb(int32 PropInt)
+void UTbSimpleNoSignalsInterfaceMsgBusHelper::PropIntPropertyChangeLocalChangeRemoteCb(int32 InPropInt)
 {
-	if (Spec)
-	{
-		Spec->PropIntPropertyCb(PropInt);
-	}
-}
+	// this function must be called twice before we can successfully pass this test.
+	// first call it should have the test value of the parameter
+	// second call it should have the default value of the parameter again
+	static int count = 0;
+	count++;
 
-void UTbSimpleNoSignalsInterfaceMsgBusHelper::PropIntPropertyChangeLocalCheckRemoteCb(int32 PropInt)
-{
-	if (Spec)
+	if (count % 2 != 0)
 	{
-		Spec->PropIntPropertyChangeLocalCheckRemoteCb(PropInt);
-	}
-}
+		int32 TestValue = 0;
+		// use different test value
+		TestValue = 1;
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
+		if (TSharedPtr<FTbSimpleNoSignalsInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropInt(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
 
-void UTbSimpleNoSignalsInterfaceMsgBusHelper::PropIntPropertyChangeLocalChangeRemoteCb(int32 PropInt)
-{
-	if (Spec)
+		// now set it to the default value
+		TestValue = 0; // default value
+		if (TSharedPtr<FTbSimpleNoSignalsInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			PinnedImplFixture->GetImplementation()->Execute_SetPropInt(PinnedImplFixture->GetImplementation().GetObject(), TestValue);
+		}
+	}
+	else
 	{
-		Spec->PropIntPropertyChangeLocalChangeRemoteCb(PropInt);
+		int32 TestValue = 0; // default value
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
+		if (TSharedPtr<FTbSimpleNoSignalsInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropInt(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+		testDoneDelegate.Execute();
 	}
 }
 
 void UTbSimpleNoSignalsInterfaceMsgBusHelper::_ConnectionStatusChangedCb(bool bConnected)
 {
-	if (Spec)
+	if (bConnected)
 	{
-		Spec->_ConnectionStatusChangedCb(bConnected);
+		testDoneDelegate.Execute();
 	}
 }
 
@@ -142,18 +232,46 @@ UTbSimpleNoSignalsInterfaceMsgBusHelper::~UTbSimpleNoSignalsInterfaceMsgBusHelpe
 {
 }
 
-void UTbSimpleNoSignalsInterfaceMsgBusHelper::SetSpec(UTbSimpleNoSignalsInterfaceMsgBusSpec* /* InSpec */)
+void UTbSimpleNoSignalsInterfaceMsgBusHelper::SetParentFixture(TWeakPtr<FTbSimpleNoSignalsInterfaceMsgBusFixture> /*InFixture*/)
 {
 }
 
-void UTbSimpleNoSignalsInterfaceMsgBusHelper::PropBoolPropertyCb(bool bPropBool)
+void UTbSimpleNoSignalsInterfaceMsgBusHelper::SetSpec(FAutomationTestBase* /*InSpec*/)
 {
-	(void)bPropBool;
 }
 
-void UTbSimpleNoSignalsInterfaceMsgBusHelper::PropIntPropertyCb(int32 PropInt)
+void UTbSimpleNoSignalsInterfaceMsgBusHelper::SetTestDone(const FDoneDelegate& /*InDone*/)
 {
-	(void)PropInt;
+}
+
+void UTbSimpleNoSignalsInterfaceMsgBusHelper::PropBoolPropertyCb(bool bInPropBool)
+{
+	(void)bInPropBool;
+}
+
+void UTbSimpleNoSignalsInterfaceMsgBusHelper::PropBoolPropertyChangeLocalCheckRemoteCb(bool bInPropBool)
+{
+	(void)bInPropBool;
+}
+
+void UTbSimpleNoSignalsInterfaceMsgBusHelper::PropBoolPropertyChangeLocalChangeRemoteCb(bool bInPropBool)
+{
+	(void)bInPropBool;
+}
+
+void UTbSimpleNoSignalsInterfaceMsgBusHelper::PropIntPropertyCb(int32 InPropInt)
+{
+	(void)InPropInt;
+}
+
+void UTbSimpleNoSignalsInterfaceMsgBusHelper::PropIntPropertyChangeLocalCheckRemoteCb(int32 InPropInt)
+{
+	(void)InPropInt;
+}
+
+void UTbSimpleNoSignalsInterfaceMsgBusHelper::PropIntPropertyChangeLocalChangeRemoteCb(int32 InPropInt)
+{
+	(void)InPropInt;
 }
 
 void UTbSimpleNoSignalsInterfaceMsgBusHelper::_ConnectionStatusChangedCb(bool bConnected)

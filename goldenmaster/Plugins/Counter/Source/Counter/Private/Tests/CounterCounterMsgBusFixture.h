@@ -11,7 +11,7 @@
 #include "HAL/Platform.h"
 #include "CounterCounterMsgBusFixture.generated.h"
 
-class UCounterCounterMsgBusSpec;
+class FCounterCounterMsgBusFixture;
 class ICounterCounterInterface;
 class UCounterCounterMsgBusAdapter;
 class IApiGearConnection;
@@ -23,7 +23,9 @@ class UCounterCounterMsgBusHelper : public UObject
 public:
 	~UCounterCounterMsgBusHelper();
 
-	void SetSpec(UCounterCounterMsgBusSpec* InSpec);
+	void SetParentFixture(TWeakPtr<FCounterCounterMsgBusFixture> InFixture);
+	void SetSpec(FAutomationTestBase* InSpec);
+	void SetTestDone(const FDoneDelegate& InDone);
 
 	UFUNCTION()
 	void VectorPropertyCb(const FCustomTypesVector3D& Vector);
@@ -46,8 +48,9 @@ public:
 	void _ConnectionStatusChangedCb(bool bConnected);
 
 protected:
-	const FDoneDelegate* testDoneDelegate;
-	UCounterCounterMsgBusSpec* Spec;
+	TWeakPtr<FCounterCounterMsgBusFixture> ImplFixture;
+	FDoneDelegate testDoneDelegate;
+	FAutomationTestBase* Spec;
 };
 
 #if WITH_DEV_AUTOMATION_TESTS

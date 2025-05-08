@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbSimpleVoidInterfaceMsgBusFixture.h"
-#include "TbSimpleVoidInterfaceMsgBus.spec.h"
+#include "TbSimpleTestsCommon.h"
 #include "Generated/MsgBus/TbSimpleVoidInterfaceMsgBusClient.h"
 #include "Generated/MsgBus/TbSimpleVoidInterfaceMsgBusAdapter.h"
 #include "Engine/GameInstance.h"
@@ -28,24 +28,32 @@ UTbSimpleVoidInterfaceMsgBusHelper::~UTbSimpleVoidInterfaceMsgBusHelper()
 	Spec = nullptr;
 }
 
-void UTbSimpleVoidInterfaceMsgBusHelper::SetSpec(UTbSimpleVoidInterfaceMsgBusSpec* InSpec)
+void UTbSimpleVoidInterfaceMsgBusHelper::SetParentFixture(TWeakPtr<FTbSimpleVoidInterfaceMsgBusFixture> InFixture)
+{
+	ImplFixture = InFixture;
+}
+
+void UTbSimpleVoidInterfaceMsgBusHelper::SetSpec(FAutomationTestBase* InSpec)
 {
 	Spec = InSpec;
 }
 
+void UTbSimpleVoidInterfaceMsgBusHelper::SetTestDone(const FDoneDelegate& InDone)
+{
+	testDoneDelegate = InDone;
+}
+
 void UTbSimpleVoidInterfaceMsgBusHelper::SigVoidSignalCb()
 {
-	if (Spec)
-	{
-		Spec->SigVoidSignalCb();
-	}
+	// known test value
+	testDoneDelegate.Execute();
 }
 
 void UTbSimpleVoidInterfaceMsgBusHelper::_ConnectionStatusChangedCb(bool bConnected)
 {
-	if (Spec)
+	if (bConnected)
 	{
-		Spec->_ConnectionStatusChangedCb(bConnected);
+		testDoneDelegate.Execute();
 	}
 }
 
@@ -102,7 +110,15 @@ UTbSimpleVoidInterfaceMsgBusHelper::~UTbSimpleVoidInterfaceMsgBusHelper()
 {
 }
 
-void UTbSimpleVoidInterfaceMsgBusHelper::SetSpec(UTbSimpleVoidInterfaceMsgBusSpec* /* InSpec */)
+void UTbSimpleVoidInterfaceMsgBusHelper::SetParentFixture(TWeakPtr<FTbSimpleVoidInterfaceMsgBusFixture> /*InFixture*/)
+{
+}
+
+void UTbSimpleVoidInterfaceMsgBusHelper::SetSpec(FAutomationTestBase* /*InSpec*/)
+{
+}
+
+void UTbSimpleVoidInterfaceMsgBusHelper::SetTestDone(const FDoneDelegate& /*InDone*/)
 {
 }
 

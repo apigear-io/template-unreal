@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include "TbSimpleEmptyInterfaceMsgBus.spec.h"
+#include "TbSimpleTestsCommon.h"
 #include "Implementation/TbSimpleEmptyInterface.h"
 #include "TbSimpleEmptyInterfaceMsgBusFixture.h"
 #include "Generated/MsgBus/TbSimpleEmptyInterfaceMsgBusClient.h"
@@ -24,19 +24,17 @@ limitations under the License.
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-void UTbSimpleEmptyInterfaceMsgBusSpec::_ConnectionStatusChangedCb(bool bConnected)
-{
-	if (bConnected)
-	{
-		testDoneDelegate.Execute();
-	}
-}
+BEGIN_DEFINE_SPEC(UTbSimpleEmptyInterfaceMsgBusSpec, "TbSimple.EmptyInterface.MsgBus", TbSimpleTestFilterMask);
+
+TSharedPtr<FTbSimpleEmptyInterfaceMsgBusFixture> ImplFixture;
+
+END_DEFINE_SPEC(UTbSimpleEmptyInterfaceMsgBusSpec);
 
 void UTbSimpleEmptyInterfaceMsgBusSpec::Define()
 {
 	LatentBeforeEach([this](const FDoneDelegate& TestDone)
 		{
-		ImplFixture = MakeUnique<FTbSimpleEmptyInterfaceMsgBusFixture>();
+		ImplFixture = MakeShared<FTbSimpleEmptyInterfaceMsgBusFixture>();
 		TestTrue("Check for valid ImplFixture", ImplFixture.IsValid());
 
 		TestTrue("Check for valid testImplementation", ImplFixture->GetImplementation().GetInterface() != nullptr);
@@ -44,6 +42,8 @@ void UTbSimpleEmptyInterfaceMsgBusSpec::Define()
 		TestTrue("Check for valid Helper", ImplFixture->GetHelper().IsValid());
 		// needed for callbacks
 		ImplFixture->GetHelper()->SetSpec(this);
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
+		ImplFixture->GetHelper()->SetParentFixture(ImplFixture);
 
 		// set up service and adapter
 		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleEmptyInterface>();
@@ -51,7 +51,6 @@ void UTbSimpleEmptyInterfaceMsgBusSpec::Define()
 		ImplFixture->GetAdapter()->_StartListening();
 
 		// setup client
-		testDoneDelegate = TestDone;
 		UTbSimpleEmptyInterfaceMsgBusClient* MsgBusClient = Cast<UTbSimpleEmptyInterfaceMsgBusClient>(ImplFixture->GetImplementation().GetObject());
 		TestTrue("Check for valid MsgBus client", MsgBusClient != nullptr);
 
@@ -65,4 +64,5 @@ void UTbSimpleEmptyInterfaceMsgBusSpec::Define()
 		ImplFixture.Reset();
 	});
 }
+
 #endif // WITH_DEV_AUTOMATION_TESTS

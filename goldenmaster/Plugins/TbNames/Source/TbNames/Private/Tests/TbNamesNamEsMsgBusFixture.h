@@ -11,7 +11,7 @@
 #include "HAL/Platform.h"
 #include "TbNamesNamEsMsgBusFixture.generated.h"
 
-class UTbNamesNamEsMsgBusSpec;
+class FTbNamesNamEsMsgBusFixture;
 class ITbNamesNamEsInterface;
 class UTbNamesNamEsMsgBusAdapter;
 class IApiGearConnection;
@@ -23,7 +23,9 @@ class UTbNamesNamEsMsgBusHelper : public UObject
 public:
 	~UTbNamesNamEsMsgBusHelper();
 
-	void SetSpec(UTbNamesNamEsMsgBusSpec* InSpec);
+	void SetParentFixture(TWeakPtr<FTbNamesNamEsMsgBusFixture> InFixture);
+	void SetSpec(FAutomationTestBase* InSpec);
+	void SetTestDone(const FDoneDelegate& InDone);
 
 	UFUNCTION()
 	void SwitchPropertyCb(bool bSwitch);
@@ -63,8 +65,9 @@ public:
 	void _ConnectionStatusChangedCb(bool bConnected);
 
 protected:
-	const FDoneDelegate* testDoneDelegate;
-	UTbNamesNamEsMsgBusSpec* Spec;
+	TWeakPtr<FTbNamesNamEsMsgBusFixture> ImplFixture;
+	FDoneDelegate testDoneDelegate;
+	FAutomationTestBase* Spec;
 };
 
 #if WITH_DEV_AUTOMATION_TESTS
