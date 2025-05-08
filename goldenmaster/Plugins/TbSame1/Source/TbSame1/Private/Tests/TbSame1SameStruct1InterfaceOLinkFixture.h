@@ -12,7 +12,7 @@
 #include "HAL/Platform.h"
 #include "TbSame1SameStruct1InterfaceOLinkFixture.generated.h"
 
-class UTbSame1SameStruct1InterfaceOLinkSpec;
+class FTbSame1SameStruct1InterfaceOLinkFixture;
 class ITbSame1SameStruct1InterfaceInterface;
 class UTbSame1SameStruct1InterfaceOLinkAdapter;
 class IApiGearConnection;
@@ -23,7 +23,9 @@ class UTbSame1SameStruct1InterfaceOLinkHelper : public UObject
 {
 	GENERATED_BODY()
 public:
-	void SetSpec(UTbSame1SameStruct1InterfaceOLinkSpec* InSpec);
+	void SetParentFixture(TWeakPtr<FTbSame1SameStruct1InterfaceOLinkFixture> InFixture);
+	void SetSpec(FAutomationTestBase* InSpec);
+	void SetTestDone(const FDoneDelegate& InDone);
 
 	UFUNCTION()
 	void Prop1PropertyCb(const FTbSame1Struct1& Prop1);
@@ -39,8 +41,9 @@ public:
 	void _SubscriptionStatusChangedCb(bool bSubscribed);
 
 protected:
-	const FDoneDelegate* testDoneDelegate;
-	UTbSame1SameStruct1InterfaceOLinkSpec* Spec;
+	TWeakPtr<FTbSame1SameStruct1InterfaceOLinkFixture> ImplFixture;
+	FDoneDelegate testDoneDelegate;
+	FAutomationTestBase* Spec;
 };
 
 #if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX

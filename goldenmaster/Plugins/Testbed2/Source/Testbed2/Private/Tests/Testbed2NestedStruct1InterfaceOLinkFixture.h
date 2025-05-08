@@ -12,7 +12,7 @@
 #include "HAL/Platform.h"
 #include "Testbed2NestedStruct1InterfaceOLinkFixture.generated.h"
 
-class UTestbed2NestedStruct1InterfaceOLinkSpec;
+class FTestbed2NestedStruct1InterfaceOLinkFixture;
 class ITestbed2NestedStruct1InterfaceInterface;
 class UTestbed2NestedStruct1InterfaceOLinkAdapter;
 class IApiGearConnection;
@@ -23,7 +23,9 @@ class UTestbed2NestedStruct1InterfaceOLinkHelper : public UObject
 {
 	GENERATED_BODY()
 public:
-	void SetSpec(UTestbed2NestedStruct1InterfaceOLinkSpec* InSpec);
+	void SetParentFixture(TWeakPtr<FTestbed2NestedStruct1InterfaceOLinkFixture> InFixture);
+	void SetSpec(FAutomationTestBase* InSpec);
+	void SetTestDone(const FDoneDelegate& InDone);
 
 	UFUNCTION()
 	void Prop1PropertyCb(const FTestbed2NestedStruct1& Prop1);
@@ -39,8 +41,9 @@ public:
 	void _SubscriptionStatusChangedCb(bool bSubscribed);
 
 protected:
-	const FDoneDelegate* testDoneDelegate;
-	UTestbed2NestedStruct1InterfaceOLinkSpec* Spec;
+	TWeakPtr<FTestbed2NestedStruct1InterfaceOLinkFixture> ImplFixture;
+	FDoneDelegate testDoneDelegate;
+	FAutomationTestBase* Spec;
 };
 
 #if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX

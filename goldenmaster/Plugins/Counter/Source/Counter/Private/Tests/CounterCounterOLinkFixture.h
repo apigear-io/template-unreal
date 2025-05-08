@@ -12,7 +12,7 @@
 #include "HAL/Platform.h"
 #include "CounterCounterOLinkFixture.generated.h"
 
-class UCounterCounterOLinkSpec;
+class FCounterCounterOLinkFixture;
 class ICounterCounterInterface;
 class UCounterCounterOLinkAdapter;
 class IApiGearConnection;
@@ -23,7 +23,9 @@ class UCounterCounterOLinkHelper : public UObject
 {
 	GENERATED_BODY()
 public:
-	void SetSpec(UCounterCounterOLinkSpec* InSpec);
+	void SetParentFixture(TWeakPtr<FCounterCounterOLinkFixture> InFixture);
+	void SetSpec(FAutomationTestBase* InSpec);
+	void SetTestDone(const FDoneDelegate& InDone);
 
 	UFUNCTION()
 	void VectorPropertyCb(const FCustomTypesVector3D& Vector);
@@ -46,8 +48,9 @@ public:
 	void _SubscriptionStatusChangedCb(bool bSubscribed);
 
 protected:
-	const FDoneDelegate* testDoneDelegate;
-	UCounterCounterOLinkSpec* Spec;
+	TWeakPtr<FCounterCounterOLinkFixture> ImplFixture;
+	FDoneDelegate testDoneDelegate;
+	FAutomationTestBase* Spec;
 };
 
 #if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX

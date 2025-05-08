@@ -15,7 +15,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "CounterCounterOLinkFixture.h"
-#include "CounterCounterOLink.spec.h"
+#include "CounterTestsCommon.h"
+#include "CustomTypes/Private/Tests/CustomTypesTestsCommon.h"
+#include "ExternTypes/Private/Tests/ExternTypesTestsCommon.h"
 #include "OLinkCommon.h"
 #include "Generated/OLink/CounterCounterOLinkClient.h"
 #include "Generated/OLink/CounterCounterOLinkAdapter.h"
@@ -25,72 +27,178 @@ limitations under the License.
 #if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX
 #include "OLinkHost.h"
 
-void UCounterCounterOLinkHelper::SetSpec(UCounterCounterOLinkSpec* InSpec)
+void UCounterCounterOLinkHelper::SetParentFixture(TWeakPtr<FCounterCounterOLinkFixture> InFixture)
+{
+	ImplFixture = InFixture;
+}
+
+void UCounterCounterOLinkHelper::SetSpec(FAutomationTestBase* InSpec)
 {
 	Spec = InSpec;
 }
 
-void UCounterCounterOLinkHelper::VectorPropertyCb(const FCustomTypesVector3D& Vector)
+void UCounterCounterOLinkHelper::SetTestDone(const FDoneDelegate& InDone)
 {
-	Spec->VectorPropertyCb(Vector);
+	testDoneDelegate = InDone;
 }
 
-void UCounterCounterOLinkHelper::VectorPropertyChangeLocalCheckRemoteCb(const FCustomTypesVector3D& Vector)
+void UCounterCounterOLinkHelper::VectorPropertyCb(const FCustomTypesVector3D& InVector)
 {
-	if (Spec)
+	FCustomTypesVector3D TestValue = FCustomTypesVector3D();
+	// use different test value
+	TestValue = createTestFCustomTypesVector3D();
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InVector, TestValue);
+	if (TSharedPtr<FCounterCounterOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
 	{
-		Spec->VectorPropertyChangeLocalCheckRemoteCb(Vector);
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetVector(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UCounterCounterOLinkHelper::VectorPropertyChangeLocalCheckRemoteCb(const FCustomTypesVector3D& InVector)
+{
+	FCustomTypesVector3D TestValue = FCustomTypesVector3D();
+	// use different test value
+	TestValue = createTestFCustomTypesVector3D();
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InVector, TestValue);
+	if (TSharedPtr<FCounterCounterOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetVector(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UCounterCounterOLinkHelper::VectorPropertyChangeLocalChangeRemoteCb(const FCustomTypesVector3D& InVector)
+{
+	// this function must be called twice before we can successfully pass this test.
+	// first call it should have the test value of the parameter
+	// second call it should have the default value of the parameter again
+	static int count = 0;
+	count++;
+
+	if (count % 2 != 0)
+	{
+		FCustomTypesVector3D TestValue = FCustomTypesVector3D();
+		// use different test value
+		TestValue = createTestFCustomTypesVector3D();
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InVector, TestValue);
+		if (TSharedPtr<FCounterCounterOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetVector(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+
+		// now set it to the default value
+		TestValue = FCustomTypesVector3D(); // default value
+		if (TSharedPtr<FCounterCounterOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			PinnedImplFixture->GetImplementation()->Execute_SetVector(PinnedImplFixture->GetImplementation().GetObject(), TestValue);
+		}
+	}
+	else
+	{
+		FCustomTypesVector3D TestValue = FCustomTypesVector3D(); // default value
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InVector, TestValue);
+		if (TSharedPtr<FCounterCounterOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetVector(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+		testDoneDelegate.Execute();
 	}
 }
 
-void UCounterCounterOLinkHelper::VectorPropertyChangeLocalChangeRemoteCb(const FCustomTypesVector3D& Vector)
+void UCounterCounterOLinkHelper::VectorArrayPropertyCb(const TArray<FCustomTypesVector3D>& InVectorArray)
 {
-	if (Spec)
+	TArray<FCustomTypesVector3D> TestValue = TArray<FCustomTypesVector3D>();
+	// use different test value
+	TestValue = createTestFCustomTypesVector3DArray();
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InVectorArray, TestValue);
+	if (TSharedPtr<FCounterCounterOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
 	{
-		Spec->VectorPropertyChangeLocalChangeRemoteCb(Vector);
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetVectorArray(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UCounterCounterOLinkHelper::VectorArrayPropertyChangeLocalCheckRemoteCb(const TArray<FCustomTypesVector3D>& InVectorArray)
+{
+	TArray<FCustomTypesVector3D> TestValue = TArray<FCustomTypesVector3D>();
+	// use different test value
+	TestValue = createTestFCustomTypesVector3DArray();
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InVectorArray, TestValue);
+	if (TSharedPtr<FCounterCounterOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetVectorArray(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UCounterCounterOLinkHelper::VectorArrayPropertyChangeLocalChangeRemoteCb(const TArray<FCustomTypesVector3D>& InVectorArray)
+{
+	// this function must be called twice before we can successfully pass this test.
+	// first call it should have the test value of the parameter
+	// second call it should have the default value of the parameter again
+	static int count = 0;
+	count++;
+
+	if (count % 2 != 0)
+	{
+		TArray<FCustomTypesVector3D> TestValue = TArray<FCustomTypesVector3D>();
+		// use different test value
+		TestValue = createTestFCustomTypesVector3DArray();
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InVectorArray, TestValue);
+		if (TSharedPtr<FCounterCounterOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetVectorArray(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+
+		// now set it to the default value
+		TestValue = TArray<FCustomTypesVector3D>(); // default value
+		if (TSharedPtr<FCounterCounterOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			PinnedImplFixture->GetImplementation()->Execute_SetVectorArray(PinnedImplFixture->GetImplementation().GetObject(), TestValue);
+		}
+	}
+	else
+	{
+		TArray<FCustomTypesVector3D> TestValue = TArray<FCustomTypesVector3D>(); // default value
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InVectorArray, TestValue);
+		if (TSharedPtr<FCounterCounterOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetVectorArray(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+		testDoneDelegate.Execute();
 	}
 }
 
-void UCounterCounterOLinkHelper::VectorArrayPropertyCb(const TArray<FCustomTypesVector3D>& VectorArray)
+void UCounterCounterOLinkHelper::ValueChangedSignalCb(const FCustomTypesVector3D& InVector, const FVector& InExternVector, const TArray<FCustomTypesVector3D>& InVectorArray, const TArray<FVector>& InExternVectorArray)
 {
-	Spec->VectorArrayPropertyCb(VectorArray);
-}
-
-void UCounterCounterOLinkHelper::VectorArrayPropertyChangeLocalCheckRemoteCb(const TArray<FCustomTypesVector3D>& VectorArray)
-{
-	if (Spec)
-	{
-		Spec->VectorArrayPropertyChangeLocalCheckRemoteCb(VectorArray);
-	}
-}
-
-void UCounterCounterOLinkHelper::VectorArrayPropertyChangeLocalChangeRemoteCb(const TArray<FCustomTypesVector3D>& VectorArray)
-{
-	if (Spec)
-	{
-		Spec->VectorArrayPropertyChangeLocalChangeRemoteCb(VectorArray);
-	}
-}
-
-void UCounterCounterOLinkHelper::ValueChangedSignalCb(const FCustomTypesVector3D& Vector, const FVector& ExternVector, const TArray<FCustomTypesVector3D>& VectorArray, const TArray<FVector>& ExternVectorArray)
-{
-	Spec->ValueChangedSignalCb(Vector, ExternVector, VectorArray, ExternVectorArray);
+	// known test value
+	FCustomTypesVector3D VectorTestValue = createTestFCustomTypesVector3D();
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InVector, VectorTestValue);
+	TArray<FCustomTypesVector3D> VectorArrayTestValue = createTestFCustomTypesVector3DArray();
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InVectorArray, VectorArrayTestValue);
+	testDoneDelegate.Execute();
 }
 
 void UCounterCounterOLinkHelper::_SubscriptionStatusChangedCb(bool bSubscribed)
 {
-	Spec->_SubscriptionStatusChangedCb(bSubscribed);
+	if (bSubscribed)
+	{
+		testDoneDelegate.Execute();
+	}
 }
 
 FCounterCounterOLinkFixture::FCounterCounterOLinkFixture()
 {
-	Helper = NewObject<UCounterCounterOLinkHelper>();
+	Helper = NewObject<UCounterCounterOLinkHelper>(GetTransientPackage());
+	Helper->AddToRoot();
 	testImplementation = GetGameInstance()->GetSubsystem<UCounterCounterOLinkClient>();
 }
 
 FCounterCounterOLinkFixture::~FCounterCounterOLinkFixture()
 {
 	CleanUp();
+	Helper->RemoveFromRoot();
 }
 
 TScriptInterface<ICounterCounterInterface> FCounterCounterOLinkFixture::GetImplementation()
@@ -136,18 +244,46 @@ void FCounterCounterOLinkFixture::CleanUp()
 }
 #else  // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX
 // create empty implementation in case we do not want to do automated testing
-void UCounterCounterOLinkHelper::SetSpec(UCounterCounterOLinkSpec* /* InSpec */)
+void UCounterCounterOLinkHelper::SetParentFixture(TWeakPtr<FCounterCounterOLinkFixture> /*InFixture*/)
 {
 }
 
-void UCounterCounterOLinkHelper::VectorPropertyCb(const FCustomTypesVector3D& Vector)
+void UCounterCounterOLinkHelper::SetSpec(FAutomationTestBase* /*InSpec*/)
 {
-	(void)Vector;
 }
 
-void UCounterCounterOLinkHelper::VectorArrayPropertyCb(const TArray<FCustomTypesVector3D>& VectorArray)
+void UCounterCounterOLinkHelper::SetTestDone(const FDoneDelegate& /*InDone*/)
 {
-	(void)VectorArray;
+}
+
+void UCounterCounterOLinkHelper::VectorPropertyCb(const FCustomTypesVector3D& InVector)
+{
+	(void)InVector;
+}
+
+void UCounterCounterOLinkHelper::VectorPropertyChangeLocalCheckRemoteCb(const FCustomTypesVector3D& InVector)
+{
+	(void)InVector;
+}
+
+void UCounterCounterOLinkHelper::VectorPropertyChangeLocalChangeRemoteCb(const FCustomTypesVector3D& InVector)
+{
+	(void)InVector;
+}
+
+void UCounterCounterOLinkHelper::VectorArrayPropertyCb(const TArray<FCustomTypesVector3D>& InVectorArray)
+{
+	(void)InVectorArray;
+}
+
+void UCounterCounterOLinkHelper::VectorArrayPropertyChangeLocalCheckRemoteCb(const TArray<FCustomTypesVector3D>& InVectorArray)
+{
+	(void)InVectorArray;
+}
+
+void UCounterCounterOLinkHelper::VectorArrayPropertyChangeLocalChangeRemoteCb(const TArray<FCustomTypesVector3D>& InVectorArray)
+{
+	(void)InVectorArray;
 }
 
 void UCounterCounterOLinkHelper::ValueChangedSignalCb(const FCustomTypesVector3D& Vector, const FVector& ExternVector, const TArray<FCustomTypesVector3D>& VectorArray, const TArray<FVector>& ExternVectorArray)

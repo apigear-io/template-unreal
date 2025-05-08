@@ -16,7 +16,7 @@
 #include "HAL/Platform.h"
 #include "{{$DisplayName}}OLinkFixture.generated.h"
 
-class {{$Class}}OLinkSpec;
+class F{{ $DisplayName }}OLinkFixture;
 class I{{$DisplayName}}Interface;
 class U{{$DisplayName}}OLinkAdapter;
 class IApiGearConnection;
@@ -27,7 +27,9 @@ class {{$Class}}OLinkHelper : public UObject
 {
 	GENERATED_BODY()
 public:
-	void SetSpec({{$Class}}OLinkSpec* InSpec);
+	void SetParentFixture(TWeakPtr<F{{ $DisplayName }}OLinkFixture> InFixture);
+	void SetSpec(FAutomationTestBase* InSpec);
+	void SetTestDone(const FDoneDelegate& InDone);
 {{- range .Interface.Properties }}
 {{- if and (not .IsReadOnly) (not (eq .KindType "extern")) }}
 
@@ -49,8 +51,9 @@ public:
 	void _SubscriptionStatusChangedCb(bool bSubscribed);
 
 protected:
-	const FDoneDelegate* testDoneDelegate;
-	{{$Class}}OLinkSpec* Spec;
+	TWeakPtr<F{{ $DisplayName }}OLinkFixture> ImplFixture;
+	FDoneDelegate testDoneDelegate;
+	FAutomationTestBase* Spec;
 };
 
 #if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX

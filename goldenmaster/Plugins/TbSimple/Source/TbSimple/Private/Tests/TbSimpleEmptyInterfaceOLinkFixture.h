@@ -12,7 +12,7 @@
 #include "HAL/Platform.h"
 #include "TbSimpleEmptyInterfaceOLinkFixture.generated.h"
 
-class UTbSimpleEmptyInterfaceOLinkSpec;
+class FTbSimpleEmptyInterfaceOLinkFixture;
 class ITbSimpleEmptyInterfaceInterface;
 class UTbSimpleEmptyInterfaceOLinkAdapter;
 class IApiGearConnection;
@@ -23,14 +23,17 @@ class UTbSimpleEmptyInterfaceOLinkHelper : public UObject
 {
 	GENERATED_BODY()
 public:
-	void SetSpec(UTbSimpleEmptyInterfaceOLinkSpec* InSpec);
+	void SetParentFixture(TWeakPtr<FTbSimpleEmptyInterfaceOLinkFixture> InFixture);
+	void SetSpec(FAutomationTestBase* InSpec);
+	void SetTestDone(const FDoneDelegate& InDone);
 
 	UFUNCTION()
 	void _SubscriptionStatusChangedCb(bool bSubscribed);
 
 protected:
-	const FDoneDelegate* testDoneDelegate;
-	UTbSimpleEmptyInterfaceOLinkSpec* Spec;
+	TWeakPtr<FTbSimpleEmptyInterfaceOLinkFixture> ImplFixture;
+	FDoneDelegate testDoneDelegate;
+	FAutomationTestBase* Spec;
 };
 
 #if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX

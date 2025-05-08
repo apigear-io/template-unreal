@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbSame2SameStruct2InterfaceOLinkFixture.h"
-#include "TbSame2SameStruct2InterfaceOLink.spec.h"
+#include "TbSame2TestsCommon.h"
 #include "OLinkCommon.h"
 #include "Generated/OLink/TbSame2SameStruct2InterfaceOLinkClient.h"
 #include "Generated/OLink/TbSame2SameStruct2InterfaceOLinkAdapter.h"
@@ -25,77 +25,186 @@ limitations under the License.
 #if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX
 #include "OLinkHost.h"
 
-void UTbSame2SameStruct2InterfaceOLinkHelper::SetSpec(UTbSame2SameStruct2InterfaceOLinkSpec* InSpec)
+void UTbSame2SameStruct2InterfaceOLinkHelper::SetParentFixture(TWeakPtr<FTbSame2SameStruct2InterfaceOLinkFixture> InFixture)
+{
+	ImplFixture = InFixture;
+}
+
+void UTbSame2SameStruct2InterfaceOLinkHelper::SetSpec(FAutomationTestBase* InSpec)
 {
 	Spec = InSpec;
 }
 
-void UTbSame2SameStruct2InterfaceOLinkHelper::Prop1PropertyCb(const FTbSame2Struct2& Prop1)
+void UTbSame2SameStruct2InterfaceOLinkHelper::SetTestDone(const FDoneDelegate& InDone)
 {
-	Spec->Prop1PropertyCb(Prop1);
+	testDoneDelegate = InDone;
 }
 
-void UTbSame2SameStruct2InterfaceOLinkHelper::Prop1PropertyChangeLocalCheckRemoteCb(const FTbSame2Struct2& Prop1)
+void UTbSame2SameStruct2InterfaceOLinkHelper::Prop1PropertyCb(const FTbSame2Struct2& InProp1)
 {
-	if (Spec)
+	FTbSame2Struct2 TestValue = FTbSame2Struct2();
+	// use different test value
+	TestValue = createTestFTbSame2Struct2();
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
+	if (TSharedPtr<FTbSame2SameStruct2InterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
 	{
-		Spec->Prop1PropertyChangeLocalCheckRemoteCb(Prop1);
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetProp1(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTbSame2SameStruct2InterfaceOLinkHelper::Prop1PropertyChangeLocalCheckRemoteCb(const FTbSame2Struct2& InProp1)
+{
+	FTbSame2Struct2 TestValue = FTbSame2Struct2();
+	// use different test value
+	TestValue = createTestFTbSame2Struct2();
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
+	if (TSharedPtr<FTbSame2SameStruct2InterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetProp1(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTbSame2SameStruct2InterfaceOLinkHelper::Prop1PropertyChangeLocalChangeRemoteCb(const FTbSame2Struct2& InProp1)
+{
+	// this function must be called twice before we can successfully pass this test.
+	// first call it should have the test value of the parameter
+	// second call it should have the default value of the parameter again
+	static int count = 0;
+	count++;
+
+	if (count % 2 != 0)
+	{
+		FTbSame2Struct2 TestValue = FTbSame2Struct2();
+		// use different test value
+		TestValue = createTestFTbSame2Struct2();
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
+		if (TSharedPtr<FTbSame2SameStruct2InterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetProp1(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+
+		// now set it to the default value
+		TestValue = FTbSame2Struct2(); // default value
+		if (TSharedPtr<FTbSame2SameStruct2InterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			PinnedImplFixture->GetImplementation()->Execute_SetProp1(PinnedImplFixture->GetImplementation().GetObject(), TestValue);
+		}
+	}
+	else
+	{
+		FTbSame2Struct2 TestValue = FTbSame2Struct2(); // default value
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
+		if (TSharedPtr<FTbSame2SameStruct2InterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetProp1(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+		testDoneDelegate.Execute();
 	}
 }
 
-void UTbSame2SameStruct2InterfaceOLinkHelper::Prop1PropertyChangeLocalChangeRemoteCb(const FTbSame2Struct2& Prop1)
+void UTbSame2SameStruct2InterfaceOLinkHelper::Prop2PropertyCb(const FTbSame2Struct2& InProp2)
 {
-	if (Spec)
+	FTbSame2Struct2 TestValue = FTbSame2Struct2();
+	// use different test value
+	TestValue = createTestFTbSame2Struct2();
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp2, TestValue);
+	if (TSharedPtr<FTbSame2SameStruct2InterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
 	{
-		Spec->Prop1PropertyChangeLocalChangeRemoteCb(Prop1);
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetProp2(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTbSame2SameStruct2InterfaceOLinkHelper::Prop2PropertyChangeLocalCheckRemoteCb(const FTbSame2Struct2& InProp2)
+{
+	FTbSame2Struct2 TestValue = FTbSame2Struct2();
+	// use different test value
+	TestValue = createTestFTbSame2Struct2();
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp2, TestValue);
+	if (TSharedPtr<FTbSame2SameStruct2InterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetProp2(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTbSame2SameStruct2InterfaceOLinkHelper::Prop2PropertyChangeLocalChangeRemoteCb(const FTbSame2Struct2& InProp2)
+{
+	// this function must be called twice before we can successfully pass this test.
+	// first call it should have the test value of the parameter
+	// second call it should have the default value of the parameter again
+	static int count = 0;
+	count++;
+
+	if (count % 2 != 0)
+	{
+		FTbSame2Struct2 TestValue = FTbSame2Struct2();
+		// use different test value
+		TestValue = createTestFTbSame2Struct2();
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp2, TestValue);
+		if (TSharedPtr<FTbSame2SameStruct2InterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetProp2(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+
+		// now set it to the default value
+		TestValue = FTbSame2Struct2(); // default value
+		if (TSharedPtr<FTbSame2SameStruct2InterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			PinnedImplFixture->GetImplementation()->Execute_SetProp2(PinnedImplFixture->GetImplementation().GetObject(), TestValue);
+		}
+	}
+	else
+	{
+		FTbSame2Struct2 TestValue = FTbSame2Struct2(); // default value
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp2, TestValue);
+		if (TSharedPtr<FTbSame2SameStruct2InterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetProp2(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+		testDoneDelegate.Execute();
 	}
 }
 
-void UTbSame2SameStruct2InterfaceOLinkHelper::Prop2PropertyCb(const FTbSame2Struct2& Prop2)
+void UTbSame2SameStruct2InterfaceOLinkHelper::Sig1SignalCb(const FTbSame2Struct1& InParam1)
 {
-	Spec->Prop2PropertyCb(Prop2);
+	// known test value
+	FTbSame2Struct1 Param1TestValue = createTestFTbSame2Struct1();
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
+	testDoneDelegate.Execute();
 }
 
-void UTbSame2SameStruct2InterfaceOLinkHelper::Prop2PropertyChangeLocalCheckRemoteCb(const FTbSame2Struct2& Prop2)
+void UTbSame2SameStruct2InterfaceOLinkHelper::Sig2SignalCb(const FTbSame2Struct1& InParam1, const FTbSame2Struct2& InParam2)
 {
-	if (Spec)
-	{
-		Spec->Prop2PropertyChangeLocalCheckRemoteCb(Prop2);
-	}
-}
-
-void UTbSame2SameStruct2InterfaceOLinkHelper::Prop2PropertyChangeLocalChangeRemoteCb(const FTbSame2Struct2& Prop2)
-{
-	if (Spec)
-	{
-		Spec->Prop2PropertyChangeLocalChangeRemoteCb(Prop2);
-	}
-}
-
-void UTbSame2SameStruct2InterfaceOLinkHelper::Sig1SignalCb(const FTbSame2Struct1& Param1)
-{
-	Spec->Sig1SignalCb(Param1);
-}
-
-void UTbSame2SameStruct2InterfaceOLinkHelper::Sig2SignalCb(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2)
-{
-	Spec->Sig2SignalCb(Param1, Param2);
+	// known test value
+	FTbSame2Struct1 Param1TestValue = createTestFTbSame2Struct1();
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
+	FTbSame2Struct2 Param2TestValue = createTestFTbSame2Struct2();
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam2, Param2TestValue);
+	testDoneDelegate.Execute();
 }
 
 void UTbSame2SameStruct2InterfaceOLinkHelper::_SubscriptionStatusChangedCb(bool bSubscribed)
 {
-	Spec->_SubscriptionStatusChangedCb(bSubscribed);
+	if (bSubscribed)
+	{
+		testDoneDelegate.Execute();
+	}
 }
 
 FTbSame2SameStruct2InterfaceOLinkFixture::FTbSame2SameStruct2InterfaceOLinkFixture()
 {
-	Helper = NewObject<UTbSame2SameStruct2InterfaceOLinkHelper>();
+	Helper = NewObject<UTbSame2SameStruct2InterfaceOLinkHelper>(GetTransientPackage());
+	Helper->AddToRoot();
 	testImplementation = GetGameInstance()->GetSubsystem<UTbSame2SameStruct2InterfaceOLinkClient>();
 }
 
 FTbSame2SameStruct2InterfaceOLinkFixture::~FTbSame2SameStruct2InterfaceOLinkFixture()
 {
 	CleanUp();
+	Helper->RemoveFromRoot();
 }
 
 TScriptInterface<ITbSame2SameStruct2InterfaceInterface> FTbSame2SameStruct2InterfaceOLinkFixture::GetImplementation()
@@ -141,18 +250,46 @@ void FTbSame2SameStruct2InterfaceOLinkFixture::CleanUp()
 }
 #else  // WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX
 // create empty implementation in case we do not want to do automated testing
-void UTbSame2SameStruct2InterfaceOLinkHelper::SetSpec(UTbSame2SameStruct2InterfaceOLinkSpec* /* InSpec */)
+void UTbSame2SameStruct2InterfaceOLinkHelper::SetParentFixture(TWeakPtr<FTbSame2SameStruct2InterfaceOLinkFixture> /*InFixture*/)
 {
 }
 
-void UTbSame2SameStruct2InterfaceOLinkHelper::Prop1PropertyCb(const FTbSame2Struct2& Prop1)
+void UTbSame2SameStruct2InterfaceOLinkHelper::SetSpec(FAutomationTestBase* /*InSpec*/)
 {
-	(void)Prop1;
 }
 
-void UTbSame2SameStruct2InterfaceOLinkHelper::Prop2PropertyCb(const FTbSame2Struct2& Prop2)
+void UTbSame2SameStruct2InterfaceOLinkHelper::SetTestDone(const FDoneDelegate& /*InDone*/)
 {
-	(void)Prop2;
+}
+
+void UTbSame2SameStruct2InterfaceOLinkHelper::Prop1PropertyCb(const FTbSame2Struct2& InProp1)
+{
+	(void)InProp1;
+}
+
+void UTbSame2SameStruct2InterfaceOLinkHelper::Prop1PropertyChangeLocalCheckRemoteCb(const FTbSame2Struct2& InProp1)
+{
+	(void)InProp1;
+}
+
+void UTbSame2SameStruct2InterfaceOLinkHelper::Prop1PropertyChangeLocalChangeRemoteCb(const FTbSame2Struct2& InProp1)
+{
+	(void)InProp1;
+}
+
+void UTbSame2SameStruct2InterfaceOLinkHelper::Prop2PropertyCb(const FTbSame2Struct2& InProp2)
+{
+	(void)InProp2;
+}
+
+void UTbSame2SameStruct2InterfaceOLinkHelper::Prop2PropertyChangeLocalCheckRemoteCb(const FTbSame2Struct2& InProp2)
+{
+	(void)InProp2;
+}
+
+void UTbSame2SameStruct2InterfaceOLinkHelper::Prop2PropertyChangeLocalChangeRemoteCb(const FTbSame2Struct2& InProp2)
+{
+	(void)InProp2;
 }
 
 void UTbSame2SameStruct2InterfaceOLinkHelper::Sig1SignalCb(const FTbSame2Struct1& Param1)

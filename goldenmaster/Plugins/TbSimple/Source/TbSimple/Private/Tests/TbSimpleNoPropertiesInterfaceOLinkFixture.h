@@ -12,7 +12,7 @@
 #include "HAL/Platform.h"
 #include "TbSimpleNoPropertiesInterfaceOLinkFixture.generated.h"
 
-class UTbSimpleNoPropertiesInterfaceOLinkSpec;
+class FTbSimpleNoPropertiesInterfaceOLinkFixture;
 class ITbSimpleNoPropertiesInterfaceInterface;
 class UTbSimpleNoPropertiesInterfaceOLinkAdapter;
 class IApiGearConnection;
@@ -23,7 +23,9 @@ class UTbSimpleNoPropertiesInterfaceOLinkHelper : public UObject
 {
 	GENERATED_BODY()
 public:
-	void SetSpec(UTbSimpleNoPropertiesInterfaceOLinkSpec* InSpec);
+	void SetParentFixture(TWeakPtr<FTbSimpleNoPropertiesInterfaceOLinkFixture> InFixture);
+	void SetSpec(FAutomationTestBase* InSpec);
+	void SetTestDone(const FDoneDelegate& InDone);
 
 	UFUNCTION()
 	void SigVoidSignalCb();
@@ -35,8 +37,9 @@ public:
 	void _SubscriptionStatusChangedCb(bool bSubscribed);
 
 protected:
-	const FDoneDelegate* testDoneDelegate;
-	UTbSimpleNoPropertiesInterfaceOLinkSpec* Spec;
+	TWeakPtr<FTbSimpleNoPropertiesInterfaceOLinkFixture> ImplFixture;
+	FDoneDelegate testDoneDelegate;
+	FAutomationTestBase* Spec;
 };
 
 #if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX

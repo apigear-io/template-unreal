@@ -12,7 +12,7 @@
 #include "HAL/Platform.h"
 #include "Testbed2ManyParamInterfaceOLinkFixture.generated.h"
 
-class UTestbed2ManyParamInterfaceOLinkSpec;
+class FTestbed2ManyParamInterfaceOLinkFixture;
 class ITestbed2ManyParamInterfaceInterface;
 class UTestbed2ManyParamInterfaceOLinkAdapter;
 class IApiGearConnection;
@@ -23,7 +23,9 @@ class UTestbed2ManyParamInterfaceOLinkHelper : public UObject
 {
 	GENERATED_BODY()
 public:
-	void SetSpec(UTestbed2ManyParamInterfaceOLinkSpec* InSpec);
+	void SetParentFixture(TWeakPtr<FTestbed2ManyParamInterfaceOLinkFixture> InFixture);
+	void SetSpec(FAutomationTestBase* InSpec);
+	void SetTestDone(const FDoneDelegate& InDone);
 
 	UFUNCTION()
 	void Prop1PropertyCb(int32 Prop1);
@@ -69,8 +71,9 @@ public:
 	void _SubscriptionStatusChangedCb(bool bSubscribed);
 
 protected:
-	const FDoneDelegate* testDoneDelegate;
-	UTestbed2ManyParamInterfaceOLinkSpec* Spec;
+	TWeakPtr<FTestbed2ManyParamInterfaceOLinkFixture> ImplFixture;
+	FDoneDelegate testDoneDelegate;
+	FAutomationTestBase* Spec;
 };
 
 #if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX

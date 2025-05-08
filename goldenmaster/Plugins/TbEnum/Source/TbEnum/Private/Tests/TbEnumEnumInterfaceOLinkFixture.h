@@ -12,7 +12,7 @@
 #include "HAL/Platform.h"
 #include "TbEnumEnumInterfaceOLinkFixture.generated.h"
 
-class UTbEnumEnumInterfaceOLinkSpec;
+class FTbEnumEnumInterfaceOLinkFixture;
 class ITbEnumEnumInterfaceInterface;
 class UTbEnumEnumInterfaceOLinkAdapter;
 class IApiGearConnection;
@@ -23,7 +23,9 @@ class UTbEnumEnumInterfaceOLinkHelper : public UObject
 {
 	GENERATED_BODY()
 public:
-	void SetSpec(UTbEnumEnumInterfaceOLinkSpec* InSpec);
+	void SetParentFixture(TWeakPtr<FTbEnumEnumInterfaceOLinkFixture> InFixture);
+	void SetSpec(FAutomationTestBase* InSpec);
+	void SetTestDone(const FDoneDelegate& InDone);
 
 	UFUNCTION()
 	void Prop0PropertyCb(ETbEnumEnum0 Prop0);
@@ -69,8 +71,9 @@ public:
 	void _SubscriptionStatusChangedCb(bool bSubscribed);
 
 protected:
-	const FDoneDelegate* testDoneDelegate;
-	UTbEnumEnumInterfaceOLinkSpec* Spec;
+	TWeakPtr<FTbEnumEnumInterfaceOLinkFixture> ImplFixture;
+	FDoneDelegate testDoneDelegate;
+	FAutomationTestBase* Spec;
 };
 
 #if WITH_DEV_AUTOMATION_TESTS && !PLATFORM_IOS && !PLATFORM_ANDROID && !PLATFORM_QNX
