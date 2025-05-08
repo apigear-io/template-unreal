@@ -62,7 +62,7 @@ TScriptInterface<ITbSame2SameEnum2InterfaceInterface> FTbSame2SameEnum2Interface
 	return testImplementation;
 }
 
-TWeakObjectPtr<UTbSame2SameEnum2InterfaceImplHelper> FTbSame2SameEnum2InterfaceImplFixture::GetHelper()
+TSoftObjectPtr<UTbSame2SameEnum2InterfaceImplHelper> FTbSame2SameEnum2InterfaceImplFixture::GetHelper()
 {
 	return Helper;
 }
@@ -71,8 +71,10 @@ UGameInstance* FTbSame2SameEnum2InterfaceImplFixture::GetGameInstance()
 {
 	if (!GameInstance.IsValid())
 	{
-		GameInstance = NewObject<UGameInstance>();
+		GameInstance = NewObject<UGameInstance>(GetTransientPackage());
 		GameInstance->Init();
+		// needed to prevent garbage collection and we can't use UPROPERTY on raw c++ objects
+		GameInstance->AddToRoot();
 	}
 
 	return GameInstance.Get();
@@ -83,6 +85,7 @@ void FTbSame2SameEnum2InterfaceImplFixture::CleanUp()
 	if (GameInstance.IsValid())
 	{
 		GameInstance->Shutdown();
+		GameInstance->RemoveFromRoot();
 	}
 }
 #else  // WITH_DEV_AUTOMATION_TESTS
