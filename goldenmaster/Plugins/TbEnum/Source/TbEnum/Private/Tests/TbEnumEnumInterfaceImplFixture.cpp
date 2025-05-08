@@ -15,55 +15,110 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbEnumEnumInterfaceImplFixture.h"
-#include "TbEnumEnumInterfaceImpl.spec.h"
+#include "Implementation/TbEnumEnumInterface.h"
+#include "TbEnumTestsCommon.h"
 #include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-void UTbEnumEnumInterfaceImplHelper::SetSpec(UTbEnumEnumInterfaceImplSpec* InSpec)
+void UTbEnumEnumInterfaceImplHelper::SetParentFixture(TWeakPtr<FTbEnumEnumInterfaceImplFixture> InFixture)
+{
+	ImplFixture = InFixture;
+}
+
+void UTbEnumEnumInterfaceImplHelper::SetSpec(FAutomationTestBase* InSpec)
 {
 	Spec = InSpec;
 }
 
-void UTbEnumEnumInterfaceImplHelper::Prop0PropertyCb(ETbEnumEnum0 Prop0)
+void UTbEnumEnumInterfaceImplHelper::SetTestDone(const FDoneDelegate& InDone)
 {
-	Spec->Prop0PropertyCb(Prop0);
+	testDoneDelegate = InDone;
 }
 
-void UTbEnumEnumInterfaceImplHelper::Prop1PropertyCb(ETbEnumEnum1 Prop1)
+void UTbEnumEnumInterfaceImplHelper::Prop0PropertyCb(ETbEnumEnum0 InProp0)
 {
-	Spec->Prop1PropertyCb(Prop1);
+	ETbEnumEnum0 TestValue = ETbEnumEnum0::TEE0_VALUE0;
+	// use different test value
+	TestValue = ETbEnumEnum0::TEE0_VALUE1;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp0, TestValue);
+	if (TSharedPtr<FTbEnumEnumInterfaceImplFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetProp0(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
 }
 
-void UTbEnumEnumInterfaceImplHelper::Prop2PropertyCb(ETbEnumEnum2 Prop2)
+void UTbEnumEnumInterfaceImplHelper::Prop1PropertyCb(ETbEnumEnum1 InProp1)
 {
-	Spec->Prop2PropertyCb(Prop2);
+	ETbEnumEnum1 TestValue = ETbEnumEnum1::TEE1_VALUE1;
+	// use different test value
+	TestValue = ETbEnumEnum1::TEE1_VALUE2;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
+	if (TSharedPtr<FTbEnumEnumInterfaceImplFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetProp1(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
 }
 
-void UTbEnumEnumInterfaceImplHelper::Prop3PropertyCb(ETbEnumEnum3 Prop3)
+void UTbEnumEnumInterfaceImplHelper::Prop2PropertyCb(ETbEnumEnum2 InProp2)
 {
-	Spec->Prop3PropertyCb(Prop3);
+	ETbEnumEnum2 TestValue = ETbEnumEnum2::TEE2_VALUE2;
+	// use different test value
+	TestValue = ETbEnumEnum2::TEE2_VALUE1;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp2, TestValue);
+	if (TSharedPtr<FTbEnumEnumInterfaceImplFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetProp2(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
 }
 
-void UTbEnumEnumInterfaceImplHelper::Sig0SignalCb(ETbEnumEnum0 Param0)
+void UTbEnumEnumInterfaceImplHelper::Prop3PropertyCb(ETbEnumEnum3 InProp3)
 {
-	Spec->Sig0SignalCb(Param0);
+	ETbEnumEnum3 TestValue = ETbEnumEnum3::TEE3_VALUE3;
+	// use different test value
+	TestValue = ETbEnumEnum3::TEE3_VALUE2;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp3, TestValue);
+	if (TSharedPtr<FTbEnumEnumInterfaceImplFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetProp3(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
 }
 
-void UTbEnumEnumInterfaceImplHelper::Sig1SignalCb(ETbEnumEnum1 Param1)
+void UTbEnumEnumInterfaceImplHelper::Sig0SignalCb(ETbEnumEnum0 InParam0)
 {
-	Spec->Sig1SignalCb(Param1);
+	// known test value
+	ETbEnumEnum0 Param0TestValue = ETbEnumEnum0::TEE0_VALUE1;
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam0, Param0TestValue);
+	testDoneDelegate.Execute();
 }
 
-void UTbEnumEnumInterfaceImplHelper::Sig2SignalCb(ETbEnumEnum2 Param2)
+void UTbEnumEnumInterfaceImplHelper::Sig1SignalCb(ETbEnumEnum1 InParam1)
 {
-	Spec->Sig2SignalCb(Param2);
+	// known test value
+	ETbEnumEnum1 Param1TestValue = ETbEnumEnum1::TEE1_VALUE2;
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
+	testDoneDelegate.Execute();
 }
 
-void UTbEnumEnumInterfaceImplHelper::Sig3SignalCb(ETbEnumEnum3 Param3)
+void UTbEnumEnumInterfaceImplHelper::Sig2SignalCb(ETbEnumEnum2 InParam2)
 {
-	Spec->Sig3SignalCb(Param3);
+	// known test value
+	ETbEnumEnum2 Param2TestValue = ETbEnumEnum2::TEE2_VALUE1;
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam2, Param2TestValue);
+	testDoneDelegate.Execute();
+}
+
+void UTbEnumEnumInterfaceImplHelper::Sig3SignalCb(ETbEnumEnum3 InParam3)
+{
+	// known test value
+	ETbEnumEnum3 Param3TestValue = ETbEnumEnum3::TEE3_VALUE2;
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam3, Param3TestValue);
+	testDoneDelegate.Execute();
 }
 
 FTbEnumEnumInterfaceImplFixture::FTbEnumEnumInterfaceImplFixture()
@@ -110,7 +165,15 @@ void FTbEnumEnumInterfaceImplFixture::CleanUp()
 }
 #else  // WITH_DEV_AUTOMATION_TESTS
 // create empty implementation in case we do not want to do automated testing
-void UTbEnumEnumInterfaceImplHelper::SetSpec(UTbEnumEnumInterfaceImplSpec* /* InSpec */)
+void UTbEnumEnumInterfaceImplHelper::SetParentFixture(TWeakPtr<FTbEnumEnumInterfaceImplFixture> /*InFixture*/)
+{
+}
+
+void UTbEnumEnumInterfaceImplHelper::SetSpec(FAutomationTestBase* /*InSpec*/)
+{
+}
+
+void UTbEnumEnumInterfaceImplHelper::SetTestDone(const FDoneDelegate& /*InDone*/)
 {
 }
 

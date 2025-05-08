@@ -10,7 +10,7 @@
 #include "Generated/api/TbEnum_data.h"
 #include "TbEnumEnumInterfaceImplFixture.generated.h"
 
-class UTbEnumEnumInterfaceImplSpec;
+class FTbEnumEnumInterfaceImplFixture;
 class ITbEnumEnumInterfaceInterface;
 
 UCLASS()
@@ -18,7 +18,9 @@ class UTbEnumEnumInterfaceImplHelper : public UObject
 {
 	GENERATED_BODY()
 public:
-	void SetSpec(UTbEnumEnumInterfaceImplSpec* InSpec);
+	void SetParentFixture(TWeakPtr<FTbEnumEnumInterfaceImplFixture> InFixture);
+	void SetSpec(FAutomationTestBase* InSpec);
+	void SetTestDone(const FDoneDelegate& InDone);
 
 	UFUNCTION()
 	void Prop0PropertyCb(ETbEnumEnum0 Prop0);
@@ -45,8 +47,9 @@ public:
 	void Sig3SignalCb(ETbEnumEnum3 Param3);
 
 protected:
-	const FDoneDelegate* testDoneDelegate;
-	UTbEnumEnumInterfaceImplSpec* Spec;
+	TWeakPtr<FTbEnumEnumInterfaceImplFixture> ImplFixture;
+	FDoneDelegate testDoneDelegate;
+	FAutomationTestBase* Spec;
 };
 
 #if WITH_DEV_AUTOMATION_TESTS

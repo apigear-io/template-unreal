@@ -10,7 +10,7 @@
 #include "Generated/api/TbSimple_data.h"
 #include "TbSimpleVoidInterfaceImplFixture.generated.h"
 
-class UTbSimpleVoidInterfaceImplSpec;
+class FTbSimpleVoidInterfaceImplFixture;
 class ITbSimpleVoidInterfaceInterface;
 
 UCLASS()
@@ -18,14 +18,17 @@ class UTbSimpleVoidInterfaceImplHelper : public UObject
 {
 	GENERATED_BODY()
 public:
-	void SetSpec(UTbSimpleVoidInterfaceImplSpec* InSpec);
+	void SetParentFixture(TWeakPtr<FTbSimpleVoidInterfaceImplFixture> InFixture);
+	void SetSpec(FAutomationTestBase* InSpec);
+	void SetTestDone(const FDoneDelegate& InDone);
 
 	UFUNCTION()
 	void SigVoidSignalCb();
 
 protected:
-	const FDoneDelegate* testDoneDelegate;
-	UTbSimpleVoidInterfaceImplSpec* Spec;
+	TWeakPtr<FTbSimpleVoidInterfaceImplFixture> ImplFixture;
+	FDoneDelegate testDoneDelegate;
+	FAutomationTestBase* Spec;
 };
 
 #if WITH_DEV_AUTOMATION_TESTS

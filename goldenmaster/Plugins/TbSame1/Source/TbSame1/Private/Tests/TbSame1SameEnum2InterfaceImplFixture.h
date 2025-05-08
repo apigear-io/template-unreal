@@ -10,7 +10,7 @@
 #include "Generated/api/TbSame1_data.h"
 #include "TbSame1SameEnum2InterfaceImplFixture.generated.h"
 
-class UTbSame1SameEnum2InterfaceImplSpec;
+class FTbSame1SameEnum2InterfaceImplFixture;
 class ITbSame1SameEnum2InterfaceInterface;
 
 UCLASS()
@@ -18,7 +18,9 @@ class UTbSame1SameEnum2InterfaceImplHelper : public UObject
 {
 	GENERATED_BODY()
 public:
-	void SetSpec(UTbSame1SameEnum2InterfaceImplSpec* InSpec);
+	void SetParentFixture(TWeakPtr<FTbSame1SameEnum2InterfaceImplFixture> InFixture);
+	void SetSpec(FAutomationTestBase* InSpec);
+	void SetTestDone(const FDoneDelegate& InDone);
 
 	UFUNCTION()
 	void Prop1PropertyCb(ETbSame1Enum1 Prop1);
@@ -33,8 +35,9 @@ public:
 	void Sig2SignalCb(ETbSame1Enum1 Param1, ETbSame1Enum2 Param2);
 
 protected:
-	const FDoneDelegate* testDoneDelegate;
-	UTbSame1SameEnum2InterfaceImplSpec* Spec;
+	TWeakPtr<FTbSame1SameEnum2InterfaceImplFixture> ImplFixture;
+	FDoneDelegate testDoneDelegate;
+	FAutomationTestBase* Spec;
 };
 
 #if WITH_DEV_AUTOMATION_TESTS

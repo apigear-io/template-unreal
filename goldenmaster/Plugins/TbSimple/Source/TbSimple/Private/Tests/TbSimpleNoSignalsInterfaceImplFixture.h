@@ -10,7 +10,7 @@
 #include "Generated/api/TbSimple_data.h"
 #include "TbSimpleNoSignalsInterfaceImplFixture.generated.h"
 
-class UTbSimpleNoSignalsInterfaceImplSpec;
+class FTbSimpleNoSignalsInterfaceImplFixture;
 class ITbSimpleNoSignalsInterfaceInterface;
 
 UCLASS()
@@ -18,7 +18,9 @@ class UTbSimpleNoSignalsInterfaceImplHelper : public UObject
 {
 	GENERATED_BODY()
 public:
-	void SetSpec(UTbSimpleNoSignalsInterfaceImplSpec* InSpec);
+	void SetParentFixture(TWeakPtr<FTbSimpleNoSignalsInterfaceImplFixture> InFixture);
+	void SetSpec(FAutomationTestBase* InSpec);
+	void SetTestDone(const FDoneDelegate& InDone);
 
 	UFUNCTION()
 	void PropBoolPropertyCb(bool bPropBool);
@@ -27,8 +29,9 @@ public:
 	void PropIntPropertyCb(int32 PropInt);
 
 protected:
-	const FDoneDelegate* testDoneDelegate;
-	UTbSimpleNoSignalsInterfaceImplSpec* Spec;
+	TWeakPtr<FTbSimpleNoSignalsInterfaceImplFixture> ImplFixture;
+	FDoneDelegate testDoneDelegate;
+	FAutomationTestBase* Spec;
 };
 
 #if WITH_DEV_AUTOMATION_TESTS

@@ -15,25 +15,40 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbSimpleNoPropertiesInterfaceImplFixture.h"
-#include "TbSimpleNoPropertiesInterfaceImpl.spec.h"
+#include "Implementation/TbSimpleNoPropertiesInterface.h"
+#include "TbSimpleTestsCommon.h"
 #include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-void UTbSimpleNoPropertiesInterfaceImplHelper::SetSpec(UTbSimpleNoPropertiesInterfaceImplSpec* InSpec)
+void UTbSimpleNoPropertiesInterfaceImplHelper::SetParentFixture(TWeakPtr<FTbSimpleNoPropertiesInterfaceImplFixture> InFixture)
+{
+	ImplFixture = InFixture;
+}
+
+void UTbSimpleNoPropertiesInterfaceImplHelper::SetSpec(FAutomationTestBase* InSpec)
 {
 	Spec = InSpec;
 }
 
-void UTbSimpleNoPropertiesInterfaceImplHelper::SigVoidSignalCb()
+void UTbSimpleNoPropertiesInterfaceImplHelper::SetTestDone(const FDoneDelegate& InDone)
 {
-	Spec->SigVoidSignalCb();
+	testDoneDelegate = InDone;
 }
 
-void UTbSimpleNoPropertiesInterfaceImplHelper::SigBoolSignalCb(bool bParamBool)
+void UTbSimpleNoPropertiesInterfaceImplHelper::SigVoidSignalCb()
 {
-	Spec->SigBoolSignalCb(bParamBool);
+	// known test value
+	testDoneDelegate.Execute();
+}
+
+void UTbSimpleNoPropertiesInterfaceImplHelper::SigBoolSignalCb(bool bInParamBool)
+{
+	// known test value
+	bool bParamBoolTestValue = true;
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), bInParamBool, bParamBoolTestValue);
+	testDoneDelegate.Execute();
 }
 
 FTbSimpleNoPropertiesInterfaceImplFixture::FTbSimpleNoPropertiesInterfaceImplFixture()
@@ -80,7 +95,15 @@ void FTbSimpleNoPropertiesInterfaceImplFixture::CleanUp()
 }
 #else  // WITH_DEV_AUTOMATION_TESTS
 // create empty implementation in case we do not want to do automated testing
-void UTbSimpleNoPropertiesInterfaceImplHelper::SetSpec(UTbSimpleNoPropertiesInterfaceImplSpec* /* InSpec */)
+void UTbSimpleNoPropertiesInterfaceImplHelper::SetParentFixture(TWeakPtr<FTbSimpleNoPropertiesInterfaceImplFixture> /*InFixture*/)
+{
+}
+
+void UTbSimpleNoPropertiesInterfaceImplHelper::SetSpec(FAutomationTestBase* /*InSpec*/)
+{
+}
+
+void UTbSimpleNoPropertiesInterfaceImplHelper::SetTestDone(const FDoneDelegate& /*InDone*/)
 {
 }
 

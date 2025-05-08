@@ -15,26 +15,33 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include "CounterCounterImpl.spec.h"
 #include "Implementation/CounterCounter.h"
 #include "CounterCounterImplFixture.h"
+#include "CounterTestsCommon.h"
 #include "CustomTypes/Private/Tests/CustomTypesTestsCommon.h"
 #include "ExternTypes/Private/Tests/ExternTypesTestsCommon.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
+BEGIN_DEFINE_SPEC(UCounterCounterImplSpec, "Counter.Counter.Impl", CounterTestFilterMask);
+
+TSharedPtr<FCounterCounterImplFixture> ImplFixture;
+
+END_DEFINE_SPEC(UCounterCounterImplSpec);
+
 void UCounterCounterImplSpec::Define()
 {
 	BeforeEach([this]()
 		{
-		ImplFixture = MakeUnique<FCounterCounterImplFixture>();
+		ImplFixture = MakeShared<FCounterCounterImplFixture>();
 		TestTrue("Check for valid ImplFixture", ImplFixture.IsValid());
 
 		TestTrue("Check for valid testImplementation", ImplFixture->GetImplementation().GetInterface() != nullptr);
 
 		TestTrue("Check for valid Helper", ImplFixture->GetHelper().IsValid());
 		ImplFixture->GetHelper()->SetSpec(this);
+		ImplFixture->GetHelper()->SetParentFixture(ImplFixture);
 	});
 
 	AfterEach([this]()
@@ -55,7 +62,7 @@ void UCounterCounterImplSpec::Define()
 		FCustomTypesVector3D TestValue = FCustomTypesVector3D(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetVector(ImplFixture->GetImplementation().GetObject()), TestValue);
 
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UCounterCounterSignals* CounterCounterSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		CounterCounterSignals->OnVectorChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UCounterCounterImplHelper::VectorPropertyCb);
 		// use different test value
@@ -83,7 +90,7 @@ void UCounterCounterImplSpec::Define()
 		TArray<FCustomTypesVector3D> TestValue = TArray<FCustomTypesVector3D>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetVectorArray(ImplFixture->GetImplementation().GetObject()), TestValue);
 
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UCounterCounterSignals* CounterCounterSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		CounterCounterSignals->OnVectorArrayChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UCounterCounterImplHelper::VectorArrayPropertyCb);
 		// use different test value
@@ -124,7 +131,7 @@ void UCounterCounterImplSpec::Define()
 
 	LatentIt("Signal.ValueChanged", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UCounterCounterSignals* CounterCounterSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		CounterCounterSignals->OnValueChangedSignal.AddDynamic(ImplFixture->GetHelper().Get(), &UCounterCounterImplHelper::ValueChangedSignalCb);
 
@@ -137,33 +144,4 @@ void UCounterCounterImplSpec::Define()
 	});
 }
 
-void UCounterCounterImplSpec::VectorPropertyCb(const FCustomTypesVector3D& InVector)
-{
-	FCustomTypesVector3D TestValue = FCustomTypesVector3D();
-	// use different test value
-	TestValue = createTestFCustomTypesVector3D();
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InVector, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetVector(ImplFixture->GetImplementation().GetObject()), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UCounterCounterImplSpec::VectorArrayPropertyCb(const TArray<FCustomTypesVector3D>& InVectorArray)
-{
-	TArray<FCustomTypesVector3D> TestValue = TArray<FCustomTypesVector3D>();
-	// use different test value
-	TestValue = createTestFCustomTypesVector3DArray();
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InVectorArray, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_GetVectorArray(ImplFixture->GetImplementation().GetObject()), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UCounterCounterImplSpec::ValueChangedSignalCb(const FCustomTypesVector3D& InVector, const FVector& InExternVector, const TArray<FCustomTypesVector3D>& InVectorArray, const TArray<FVector>& InExternVectorArray)
-{
-	// known test value
-	FCustomTypesVector3D VectorTestValue = createTestFCustomTypesVector3D();
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InVector, VectorTestValue);
-	TArray<FCustomTypesVector3D> VectorArrayTestValue = createTestFCustomTypesVector3DArray();
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InVectorArray, VectorArrayTestValue);
-	testDoneDelegate.Execute();
-}
 #endif // WITH_DEV_AUTOMATION_TESTS

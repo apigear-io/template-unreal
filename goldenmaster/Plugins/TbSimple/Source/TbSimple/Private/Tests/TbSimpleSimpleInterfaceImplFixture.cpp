@@ -15,95 +15,194 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbSimpleSimpleInterfaceImplFixture.h"
-#include "TbSimpleSimpleInterfaceImpl.spec.h"
+#include "Implementation/TbSimpleSimpleInterface.h"
+#include "TbSimpleTestsCommon.h"
 #include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-void UTbSimpleSimpleInterfaceImplHelper::SetSpec(UTbSimpleSimpleInterfaceImplSpec* InSpec)
+void UTbSimpleSimpleInterfaceImplHelper::SetParentFixture(TWeakPtr<FTbSimpleSimpleInterfaceImplFixture> InFixture)
+{
+	ImplFixture = InFixture;
+}
+
+void UTbSimpleSimpleInterfaceImplHelper::SetSpec(FAutomationTestBase* InSpec)
 {
 	Spec = InSpec;
 }
 
-void UTbSimpleSimpleInterfaceImplHelper::PropBoolPropertyCb(bool bPropBool)
+void UTbSimpleSimpleInterfaceImplHelper::SetTestDone(const FDoneDelegate& InDone)
 {
-	Spec->PropBoolPropertyCb(bPropBool);
+	testDoneDelegate = InDone;
 }
 
-void UTbSimpleSimpleInterfaceImplHelper::PropIntPropertyCb(int32 PropInt)
+void UTbSimpleSimpleInterfaceImplHelper::PropBoolPropertyCb(bool bInPropBool)
 {
-	Spec->PropIntPropertyCb(PropInt);
+	bool TestValue = false;
+	// use different test value
+	TestValue = true;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), bInPropBool, TestValue);
+	if (TSharedPtr<FTbSimpleSimpleInterfaceImplFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropBool(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
 }
 
-void UTbSimpleSimpleInterfaceImplHelper::PropInt32PropertyCb(int32 PropInt32)
+void UTbSimpleSimpleInterfaceImplHelper::PropIntPropertyCb(int32 InPropInt)
 {
-	Spec->PropInt32PropertyCb(PropInt32);
+	int32 TestValue = 0;
+	// use different test value
+	TestValue = 1;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
+	if (TSharedPtr<FTbSimpleSimpleInterfaceImplFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropInt(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
 }
 
-void UTbSimpleSimpleInterfaceImplHelper::PropInt64PropertyCb(int64 PropInt64)
+void UTbSimpleSimpleInterfaceImplHelper::PropInt32PropertyCb(int32 InPropInt32)
 {
-	Spec->PropInt64PropertyCb(PropInt64);
+	int32 TestValue = 0;
+	// use different test value
+	TestValue = 1;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt32, TestValue);
+	if (TSharedPtr<FTbSimpleSimpleInterfaceImplFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropInt32(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
 }
 
-void UTbSimpleSimpleInterfaceImplHelper::PropFloatPropertyCb(float PropFloat)
+void UTbSimpleSimpleInterfaceImplHelper::PropInt64PropertyCb(int64 InPropInt64)
 {
-	Spec->PropFloatPropertyCb(PropFloat);
+	int64 TestValue = 0LL;
+	// use different test value
+	TestValue = 1LL;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt64, TestValue);
+	if (TSharedPtr<FTbSimpleSimpleInterfaceImplFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropInt64(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
 }
 
-void UTbSimpleSimpleInterfaceImplHelper::PropFloat32PropertyCb(float PropFloat32)
+void UTbSimpleSimpleInterfaceImplHelper::PropFloatPropertyCb(float InPropFloat)
 {
-	Spec->PropFloat32PropertyCb(PropFloat32);
+	float TestValue = 0.0f;
+	// use different test value
+	TestValue = 1.0f;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat, TestValue);
+	if (TSharedPtr<FTbSimpleSimpleInterfaceImplFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropFloat(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
 }
 
-void UTbSimpleSimpleInterfaceImplHelper::PropFloat64PropertyCb(double PropFloat64)
+void UTbSimpleSimpleInterfaceImplHelper::PropFloat32PropertyCb(float InPropFloat32)
 {
-	Spec->PropFloat64PropertyCb(PropFloat64);
+	float TestValue = 0.0f;
+	// use different test value
+	TestValue = 1.0f;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat32, TestValue);
+	if (TSharedPtr<FTbSimpleSimpleInterfaceImplFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropFloat32(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
 }
 
-void UTbSimpleSimpleInterfaceImplHelper::PropStringPropertyCb(const FString& PropString)
+void UTbSimpleSimpleInterfaceImplHelper::PropFloat64PropertyCb(double InPropFloat64)
 {
-	Spec->PropStringPropertyCb(PropString);
+	double TestValue = 0.0;
+	// use different test value
+	TestValue = 1.0;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat64, TestValue);
+	if (TSharedPtr<FTbSimpleSimpleInterfaceImplFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropFloat64(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
 }
 
-void UTbSimpleSimpleInterfaceImplHelper::SigBoolSignalCb(bool bParamBool)
+void UTbSimpleSimpleInterfaceImplHelper::PropStringPropertyCb(const FString& InPropString)
 {
-	Spec->SigBoolSignalCb(bParamBool);
+	FString TestValue = FString();
+	// use different test value
+	TestValue = FString("xyz");
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropString, TestValue);
+	if (TSharedPtr<FTbSimpleSimpleInterfaceImplFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropString(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
 }
 
-void UTbSimpleSimpleInterfaceImplHelper::SigIntSignalCb(int32 ParamInt)
+void UTbSimpleSimpleInterfaceImplHelper::SigBoolSignalCb(bool bInParamBool)
 {
-	Spec->SigIntSignalCb(ParamInt);
+	// known test value
+	bool bParamBoolTestValue = true;
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), bInParamBool, bParamBoolTestValue);
+	testDoneDelegate.Execute();
 }
 
-void UTbSimpleSimpleInterfaceImplHelper::SigInt32SignalCb(int32 ParamInt32)
+void UTbSimpleSimpleInterfaceImplHelper::SigIntSignalCb(int32 InParamInt)
 {
-	Spec->SigInt32SignalCb(ParamInt32);
+	// known test value
+	int32 ParamIntTestValue = 1;
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamInt, ParamIntTestValue);
+	testDoneDelegate.Execute();
 }
 
-void UTbSimpleSimpleInterfaceImplHelper::SigInt64SignalCb(int64 ParamInt64)
+void UTbSimpleSimpleInterfaceImplHelper::SigInt32SignalCb(int32 InParamInt32)
 {
-	Spec->SigInt64SignalCb(ParamInt64);
+	// known test value
+	int32 ParamInt32TestValue = 1;
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamInt32, ParamInt32TestValue);
+	testDoneDelegate.Execute();
 }
 
-void UTbSimpleSimpleInterfaceImplHelper::SigFloatSignalCb(float ParamFloat)
+void UTbSimpleSimpleInterfaceImplHelper::SigInt64SignalCb(int64 InParamInt64)
 {
-	Spec->SigFloatSignalCb(ParamFloat);
+	// known test value
+	int64 ParamInt64TestValue = 1LL;
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamInt64, ParamInt64TestValue);
+	testDoneDelegate.Execute();
 }
 
-void UTbSimpleSimpleInterfaceImplHelper::SigFloat32SignalCb(float ParamFloat32)
+void UTbSimpleSimpleInterfaceImplHelper::SigFloatSignalCb(float InParamFloat)
 {
-	Spec->SigFloat32SignalCb(ParamFloat32);
+	// known test value
+	float ParamFloatTestValue = 1.0f;
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamFloat, ParamFloatTestValue);
+	testDoneDelegate.Execute();
 }
 
-void UTbSimpleSimpleInterfaceImplHelper::SigFloat64SignalCb(double ParamFloat64)
+void UTbSimpleSimpleInterfaceImplHelper::SigFloat32SignalCb(float InParamFloat32)
 {
-	Spec->SigFloat64SignalCb(ParamFloat64);
+	// known test value
+	float ParamFloat32TestValue = 1.0f;
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamFloat32, ParamFloat32TestValue);
+	testDoneDelegate.Execute();
 }
 
-void UTbSimpleSimpleInterfaceImplHelper::SigStringSignalCb(const FString& ParamString)
+void UTbSimpleSimpleInterfaceImplHelper::SigFloat64SignalCb(double InParamFloat64)
 {
-	Spec->SigStringSignalCb(ParamString);
+	// known test value
+	double ParamFloat64TestValue = 1.0;
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamFloat64, ParamFloat64TestValue);
+	testDoneDelegate.Execute();
+}
+
+void UTbSimpleSimpleInterfaceImplHelper::SigStringSignalCb(const FString& InParamString)
+{
+	// known test value
+	FString ParamStringTestValue = FString("xyz");
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamString, ParamStringTestValue);
+	testDoneDelegate.Execute();
 }
 
 FTbSimpleSimpleInterfaceImplFixture::FTbSimpleSimpleInterfaceImplFixture()
@@ -150,7 +249,15 @@ void FTbSimpleSimpleInterfaceImplFixture::CleanUp()
 }
 #else  // WITH_DEV_AUTOMATION_TESTS
 // create empty implementation in case we do not want to do automated testing
-void UTbSimpleSimpleInterfaceImplHelper::SetSpec(UTbSimpleSimpleInterfaceImplSpec* /* InSpec */)
+void UTbSimpleSimpleInterfaceImplHelper::SetParentFixture(TWeakPtr<FTbSimpleSimpleInterfaceImplFixture> /*InFixture*/)
+{
+}
+
+void UTbSimpleSimpleInterfaceImplHelper::SetSpec(FAutomationTestBase* /*InSpec*/)
+{
+}
+
+void UTbSimpleSimpleInterfaceImplHelper::SetTestDone(const FDoneDelegate& /*InDone*/)
 {
 }
 

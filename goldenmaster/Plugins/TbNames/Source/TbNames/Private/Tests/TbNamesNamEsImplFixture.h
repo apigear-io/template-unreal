@@ -10,7 +10,7 @@
 #include "Generated/api/TbNames_data.h"
 #include "TbNamesNamEsImplFixture.generated.h"
 
-class UTbNamesNamEsImplSpec;
+class FTbNamesNamEsImplFixture;
 class ITbNamesNamEsInterface;
 
 UCLASS()
@@ -18,7 +18,9 @@ class UTbNamesNamEsImplHelper : public UObject
 {
 	GENERATED_BODY()
 public:
-	void SetSpec(UTbNamesNamEsImplSpec* InSpec);
+	void SetParentFixture(TWeakPtr<FTbNamesNamEsImplFixture> InFixture);
+	void SetSpec(FAutomationTestBase* InSpec);
+	void SetTestDone(const FDoneDelegate& InDone);
 
 	UFUNCTION()
 	void SwitchPropertyCb(bool bSwitch);
@@ -39,8 +41,9 @@ public:
 	void SomeSignal2SignalCb(bool bSomeParam);
 
 protected:
-	const FDoneDelegate* testDoneDelegate;
-	UTbNamesNamEsImplSpec* Spec;
+	TWeakPtr<FTbNamesNamEsImplFixture> ImplFixture;
+	FDoneDelegate testDoneDelegate;
+	FAutomationTestBase* Spec;
 };
 
 #if WITH_DEV_AUTOMATION_TESTS

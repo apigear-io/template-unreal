@@ -15,20 +15,32 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbSimpleVoidInterfaceImplFixture.h"
-#include "TbSimpleVoidInterfaceImpl.spec.h"
+#include "Implementation/TbSimpleVoidInterface.h"
+#include "TbSimpleTestsCommon.h"
 #include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-void UTbSimpleVoidInterfaceImplHelper::SetSpec(UTbSimpleVoidInterfaceImplSpec* InSpec)
+void UTbSimpleVoidInterfaceImplHelper::SetParentFixture(TWeakPtr<FTbSimpleVoidInterfaceImplFixture> InFixture)
+{
+	ImplFixture = InFixture;
+}
+
+void UTbSimpleVoidInterfaceImplHelper::SetSpec(FAutomationTestBase* InSpec)
 {
 	Spec = InSpec;
 }
 
+void UTbSimpleVoidInterfaceImplHelper::SetTestDone(const FDoneDelegate& InDone)
+{
+	testDoneDelegate = InDone;
+}
+
 void UTbSimpleVoidInterfaceImplHelper::SigVoidSignalCb()
 {
-	Spec->SigVoidSignalCb();
+	// known test value
+	testDoneDelegate.Execute();
 }
 
 FTbSimpleVoidInterfaceImplFixture::FTbSimpleVoidInterfaceImplFixture()
@@ -75,7 +87,15 @@ void FTbSimpleVoidInterfaceImplFixture::CleanUp()
 }
 #else  // WITH_DEV_AUTOMATION_TESTS
 // create empty implementation in case we do not want to do automated testing
-void UTbSimpleVoidInterfaceImplHelper::SetSpec(UTbSimpleVoidInterfaceImplSpec* /* InSpec */)
+void UTbSimpleVoidInterfaceImplHelper::SetParentFixture(TWeakPtr<FTbSimpleVoidInterfaceImplFixture> /*InFixture*/)
+{
+}
+
+void UTbSimpleVoidInterfaceImplHelper::SetSpec(FAutomationTestBase* /*InSpec*/)
+{
+}
+
+void UTbSimpleVoidInterfaceImplHelper::SetTestDone(const FDoneDelegate& /*InDone*/)
 {
 }
 

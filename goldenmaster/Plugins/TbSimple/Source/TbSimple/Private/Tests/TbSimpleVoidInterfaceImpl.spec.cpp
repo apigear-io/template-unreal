@@ -15,24 +15,31 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include "TbSimpleVoidInterfaceImpl.spec.h"
 #include "Implementation/TbSimpleVoidInterface.h"
 #include "TbSimpleVoidInterfaceImplFixture.h"
+#include "TbSimpleTestsCommon.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
+
+BEGIN_DEFINE_SPEC(UTbSimpleVoidInterfaceImplSpec, "TbSimple.VoidInterface.Impl", TbSimpleTestFilterMask);
+
+TSharedPtr<FTbSimpleVoidInterfaceImplFixture> ImplFixture;
+
+END_DEFINE_SPEC(UTbSimpleVoidInterfaceImplSpec);
 
 void UTbSimpleVoidInterfaceImplSpec::Define()
 {
 	BeforeEach([this]()
 		{
-		ImplFixture = MakeUnique<FTbSimpleVoidInterfaceImplFixture>();
+		ImplFixture = MakeShared<FTbSimpleVoidInterfaceImplFixture>();
 		TestTrue("Check for valid ImplFixture", ImplFixture.IsValid());
 
 		TestTrue("Check for valid testImplementation", ImplFixture->GetImplementation().GetInterface() != nullptr);
 
 		TestTrue("Check for valid Helper", ImplFixture->GetHelper().IsValid());
 		ImplFixture->GetHelper()->SetSpec(this);
+		ImplFixture->GetHelper()->SetParentFixture(ImplFixture);
 	});
 
 	AfterEach([this]()
@@ -48,7 +55,7 @@ void UTbSimpleVoidInterfaceImplSpec::Define()
 
 	LatentIt("Signal.SigVoid", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UTbSimpleVoidInterfaceSignals* TbSimpleVoidInterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		TbSimpleVoidInterfaceSignals->OnSigVoidSignal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleVoidInterfaceImplHelper::SigVoidSignalCb);
 
@@ -57,9 +64,4 @@ void UTbSimpleVoidInterfaceImplSpec::Define()
 	});
 }
 
-void UTbSimpleVoidInterfaceImplSpec::SigVoidSignalCb()
-{
-	// known test value
-	testDoneDelegate.Execute();
-}
 #endif // WITH_DEV_AUTOMATION_TESTS
