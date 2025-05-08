@@ -15,7 +15,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include "TbSimpleNoPropertiesInterfaceImpl.spec.h"
 #include "TbSimple/Implementation/TbSimpleNoPropertiesInterface.h"
 #include "TbSimpleNoPropertiesInterfaceImplFixture.h"
 #include "TbSimple/Tests/TbSimpleTestsCommon.h"
@@ -23,17 +22,24 @@ limitations under the License.
 
 #if WITH_DEV_AUTOMATION_TESTS
 
+BEGIN_DEFINE_SPEC(UTbSimpleNoPropertiesInterfaceImplSpec, "TbSimple.NoPropertiesInterface.Impl", TbSimpleTestFilterMask);
+
+TSharedPtr<FTbSimpleNoPropertiesInterfaceImplFixture> ImplFixture;
+
+END_DEFINE_SPEC(UTbSimpleNoPropertiesInterfaceImplSpec);
+
 void UTbSimpleNoPropertiesInterfaceImplSpec::Define()
 {
 	BeforeEach([this]()
 		{
-		ImplFixture = MakeUnique<FTbSimpleNoPropertiesInterfaceImplFixture>();
+		ImplFixture = MakeShared<FTbSimpleNoPropertiesInterfaceImplFixture>();
 		TestTrue("Check for valid ImplFixture", ImplFixture.IsValid());
 
 		TestTrue("Check for valid testImplementation", ImplFixture->GetImplementation().GetInterface() != nullptr);
 
 		TestTrue("Check for valid Helper", ImplFixture->GetHelper().IsValid());
 		ImplFixture->GetHelper()->SetSpec(this);
+		ImplFixture->GetHelper()->SetParentFixture(ImplFixture);
 	});
 
 	AfterEach([this]()
@@ -68,7 +74,7 @@ void UTbSimpleNoPropertiesInterfaceImplSpec::Define()
 
 	LatentIt("Signal.SigVoidBP", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UTbSimpleNoPropertiesInterfaceSignals* TbSimpleNoPropertiesInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
 		TbSimpleNoPropertiesInterfaceSignals->OnSigVoidSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleNoPropertiesInterfaceImplHelper::SigVoidSignalCb);
 
@@ -94,7 +100,7 @@ void UTbSimpleNoPropertiesInterfaceImplSpec::Define()
 
 	LatentIt("Signal.SigBoolBP", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UTbSimpleNoPropertiesInterfaceSignals* TbSimpleNoPropertiesInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
 		TbSimpleNoPropertiesInterfaceSignals->OnSigBoolSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleNoPropertiesInterfaceImplHelper::SigBoolSignalCb);
 
@@ -104,17 +110,4 @@ void UTbSimpleNoPropertiesInterfaceImplSpec::Define()
 	});
 }
 
-void UTbSimpleNoPropertiesInterfaceImplSpec::SigVoidSignalCb()
-{
-	// known test value
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleNoPropertiesInterfaceImplSpec::SigBoolSignalCb(bool bInParamBool)
-{
-	// known test value
-	bool bParamBoolTestValue = true;
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), bInParamBool, bParamBoolTestValue);
-	testDoneDelegate.Execute();
-}
 #endif // WITH_DEV_AUTOMATION_TESTS

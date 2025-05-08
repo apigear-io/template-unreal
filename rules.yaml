@@ -291,9 +291,6 @@ features:
           - source: "module/Source/moduleimpl/Private/Implementation/implementation.cpp.tpl"
             target: "Private/Implementation/{{Camel .Module.Name}}{{Camel .Interface.Name}}.cpp"
             preserve: true
-          - source: "module/Source/moduleimpl/Private/Tests/implementation.spec.h.tpl"
-            target: "Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}Impl.spec.h"
-            preserve: true
           - source: "module/Source/moduleimpl/Private/Tests/implementation.spec.cpp.tpl"
             target: "Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}Impl.spec.cpp"
             preserve: true

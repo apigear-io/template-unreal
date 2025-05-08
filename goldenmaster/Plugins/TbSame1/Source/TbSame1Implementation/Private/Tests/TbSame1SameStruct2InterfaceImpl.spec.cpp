@@ -15,7 +15,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include "TbSame1SameStruct2InterfaceImpl.spec.h"
 #include "TbSame1/Implementation/TbSame1SameStruct2Interface.h"
 #include "TbSame1SameStruct2InterfaceImplFixture.h"
 #include "TbSame1/Tests/TbSame1TestsCommon.h"
@@ -23,17 +22,24 @@ limitations under the License.
 
 #if WITH_DEV_AUTOMATION_TESTS
 
+BEGIN_DEFINE_SPEC(UTbSame1SameStruct2InterfaceImplSpec, "TbSame1.SameStruct2Interface.Impl", TbSame1TestFilterMask);
+
+TSharedPtr<FTbSame1SameStruct2InterfaceImplFixture> ImplFixture;
+
+END_DEFINE_SPEC(UTbSame1SameStruct2InterfaceImplSpec);
+
 void UTbSame1SameStruct2InterfaceImplSpec::Define()
 {
 	BeforeEach([this]()
 		{
-		ImplFixture = MakeUnique<FTbSame1SameStruct2InterfaceImplFixture>();
+		ImplFixture = MakeShared<FTbSame1SameStruct2InterfaceImplFixture>();
 		TestTrue("Check for valid ImplFixture", ImplFixture.IsValid());
 
 		TestTrue("Check for valid testImplementation", ImplFixture->GetImplementation().GetInterface() != nullptr);
 
 		TestTrue("Check for valid Helper", ImplFixture->GetHelper().IsValid());
 		ImplFixture->GetHelper()->SetSpec(this);
+		ImplFixture->GetHelper()->SetParentFixture(ImplFixture);
 	});
 
 	AfterEach([this]()
@@ -76,7 +82,7 @@ void UTbSame1SameStruct2InterfaceImplSpec::Define()
 		FTbSame1Struct2 TestValue = FTbSame1Struct2(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp1(), TestValue);
 
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UTbSame1SameStruct2InterfaceSignals* TbSame1SameStruct2InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
 		TbSame1SameStruct2InterfaceSignals->OnProp1ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame1SameStruct2InterfaceImplHelper::Prop1PropertyCb);
 		// use different test value
@@ -119,7 +125,7 @@ void UTbSame1SameStruct2InterfaceImplSpec::Define()
 		FTbSame1Struct2 TestValue = FTbSame1Struct2(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp2(), TestValue);
 
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UTbSame1SameStruct2InterfaceSignals* TbSame1SameStruct2InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
 		TbSame1SameStruct2InterfaceSignals->OnProp2ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame1SameStruct2InterfaceImplHelper::Prop2PropertyCb);
 		// use different test value
@@ -157,7 +163,7 @@ void UTbSame1SameStruct2InterfaceImplSpec::Define()
 
 	LatentIt("Signal.Sig1BP", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UTbSame1SameStruct2InterfaceSignals* TbSame1SameStruct2InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
 		TbSame1SameStruct2InterfaceSignals->OnSig1SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame1SameStruct2InterfaceImplHelper::Sig1SignalCb);
 
@@ -187,7 +193,7 @@ void UTbSame1SameStruct2InterfaceImplSpec::Define()
 
 	LatentIt("Signal.Sig2BP", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UTbSame1SameStruct2InterfaceSignals* TbSame1SameStruct2InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
 		TbSame1SameStruct2InterfaceSignals->OnSig2SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame1SameStruct2InterfaceImplHelper::Sig2SignalCb);
 
@@ -198,41 +204,4 @@ void UTbSame1SameStruct2InterfaceImplSpec::Define()
 	});
 }
 
-void UTbSame1SameStruct2InterfaceImplSpec::Prop1PropertyCb(const FTbSame1Struct2& InProp1)
-{
-	FTbSame1Struct2 TestValue = FTbSame1Struct2();
-	// use different test value
-	TestValue = createTestFTbSame1Struct2();
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetProp1(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSame1SameStruct2InterfaceImplSpec::Prop2PropertyCb(const FTbSame1Struct2& InProp2)
-{
-	FTbSame1Struct2 TestValue = FTbSame1Struct2();
-	// use different test value
-	TestValue = createTestFTbSame1Struct2();
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp2, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetProp2(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSame1SameStruct2InterfaceImplSpec::Sig1SignalCb(const FTbSame1Struct1& InParam1)
-{
-	// known test value
-	FTbSame1Struct1 Param1TestValue = createTestFTbSame1Struct1();
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSame1SameStruct2InterfaceImplSpec::Sig2SignalCb(const FTbSame1Struct1& InParam1, const FTbSame1Struct2& InParam2)
-{
-	// known test value
-	FTbSame1Struct1 Param1TestValue = createTestFTbSame1Struct1();
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
-	FTbSame1Struct2 Param2TestValue = createTestFTbSame1Struct2();
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam2, Param2TestValue);
-	testDoneDelegate.Execute();
-}
 #endif // WITH_DEV_AUTOMATION_TESTS

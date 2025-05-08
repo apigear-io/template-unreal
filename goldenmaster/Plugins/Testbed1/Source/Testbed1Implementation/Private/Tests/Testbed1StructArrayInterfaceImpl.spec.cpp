@@ -15,7 +15,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include "Testbed1StructArrayInterfaceImpl.spec.h"
 #include "Testbed1/Implementation/Testbed1StructArrayInterface.h"
 #include "Testbed1StructArrayInterfaceImplFixture.h"
 #include "Testbed1/Tests/Testbed1TestsCommon.h"
@@ -23,17 +22,24 @@ limitations under the License.
 
 #if WITH_DEV_AUTOMATION_TESTS
 
+BEGIN_DEFINE_SPEC(UTestbed1StructArrayInterfaceImplSpec, "Testbed1.StructArrayInterface.Impl", Testbed1TestFilterMask);
+
+TSharedPtr<FTestbed1StructArrayInterfaceImplFixture> ImplFixture;
+
+END_DEFINE_SPEC(UTestbed1StructArrayInterfaceImplSpec);
+
 void UTestbed1StructArrayInterfaceImplSpec::Define()
 {
 	BeforeEach([this]()
 		{
-		ImplFixture = MakeUnique<FTestbed1StructArrayInterfaceImplFixture>();
+		ImplFixture = MakeShared<FTestbed1StructArrayInterfaceImplFixture>();
 		TestTrue("Check for valid ImplFixture", ImplFixture.IsValid());
 
 		TestTrue("Check for valid testImplementation", ImplFixture->GetImplementation().GetInterface() != nullptr);
 
 		TestTrue("Check for valid Helper", ImplFixture->GetHelper().IsValid());
 		ImplFixture->GetHelper()->SetSpec(this);
+		ImplFixture->GetHelper()->SetParentFixture(ImplFixture);
 	});
 
 	AfterEach([this]()
@@ -76,7 +82,7 @@ void UTestbed1StructArrayInterfaceImplSpec::Define()
 		TArray<FTestbed1StructBool> TestValue = TArray<FTestbed1StructBool>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
 
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UTestbed1StructArrayInterfaceSignals* Testbed1StructArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
 		Testbed1StructArrayInterfaceSignals->OnPropBoolChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructArrayInterfaceImplHelper::PropBoolPropertyCb);
 		// use different test value
@@ -119,7 +125,7 @@ void UTestbed1StructArrayInterfaceImplSpec::Define()
 		TArray<FTestbed1StructInt> TestValue = TArray<FTestbed1StructInt>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
 
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UTestbed1StructArrayInterfaceSignals* Testbed1StructArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
 		Testbed1StructArrayInterfaceSignals->OnPropIntChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructArrayInterfaceImplHelper::PropIntPropertyCb);
 		// use different test value
@@ -162,7 +168,7 @@ void UTestbed1StructArrayInterfaceImplSpec::Define()
 		TArray<FTestbed1StructFloat> TestValue = TArray<FTestbed1StructFloat>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropFloat(), TestValue);
 
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UTestbed1StructArrayInterfaceSignals* Testbed1StructArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
 		Testbed1StructArrayInterfaceSignals->OnPropFloatChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructArrayInterfaceImplHelper::PropFloatPropertyCb);
 		// use different test value
@@ -205,7 +211,7 @@ void UTestbed1StructArrayInterfaceImplSpec::Define()
 		TArray<FTestbed1StructString> TestValue = TArray<FTestbed1StructString>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropString(), TestValue);
 
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UTestbed1StructArrayInterfaceSignals* Testbed1StructArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
 		Testbed1StructArrayInterfaceSignals->OnPropStringChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructArrayInterfaceImplHelper::PropStringPropertyCb);
 		// use different test value
@@ -248,7 +254,7 @@ void UTestbed1StructArrayInterfaceImplSpec::Define()
 		TArray<ETestbed1Enum0> TestValue = TArray<ETestbed1Enum0>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropEnum(), TestValue);
 
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UTestbed1StructArrayInterfaceSignals* Testbed1StructArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
 		Testbed1StructArrayInterfaceSignals->OnPropEnumChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructArrayInterfaceImplHelper::PropEnumPropertyCb);
 		// use different test value
@@ -304,7 +310,7 @@ void UTestbed1StructArrayInterfaceImplSpec::Define()
 
 	LatentIt("Signal.SigBoolBP", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UTestbed1StructArrayInterfaceSignals* Testbed1StructArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
 		Testbed1StructArrayInterfaceSignals->OnSigBoolSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructArrayInterfaceImplHelper::SigBoolSignalCb);
 
@@ -331,7 +337,7 @@ void UTestbed1StructArrayInterfaceImplSpec::Define()
 
 	LatentIt("Signal.SigIntBP", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UTestbed1StructArrayInterfaceSignals* Testbed1StructArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
 		Testbed1StructArrayInterfaceSignals->OnSigIntSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructArrayInterfaceImplHelper::SigIntSignalCb);
 
@@ -358,7 +364,7 @@ void UTestbed1StructArrayInterfaceImplSpec::Define()
 
 	LatentIt("Signal.SigFloatBP", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UTestbed1StructArrayInterfaceSignals* Testbed1StructArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
 		Testbed1StructArrayInterfaceSignals->OnSigFloatSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructArrayInterfaceImplHelper::SigFloatSignalCb);
 
@@ -385,7 +391,7 @@ void UTestbed1StructArrayInterfaceImplSpec::Define()
 
 	LatentIt("Signal.SigStringBP", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UTestbed1StructArrayInterfaceSignals* Testbed1StructArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
 		Testbed1StructArrayInterfaceSignals->OnSigStringSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructArrayInterfaceImplHelper::SigStringSignalCb);
 
@@ -414,7 +420,7 @@ void UTestbed1StructArrayInterfaceImplSpec::Define()
 
 	LatentIt("Signal.SigEnumBP", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UTestbed1StructArrayInterfaceSignals* Testbed1StructArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
 		Testbed1StructArrayInterfaceSignals->OnSigEnumSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructArrayInterfaceImplHelper::SigEnumSignalCb);
 
@@ -425,94 +431,4 @@ void UTestbed1StructArrayInterfaceImplSpec::Define()
 	});
 }
 
-void UTestbed1StructArrayInterfaceImplSpec::PropBoolPropertyCb(const TArray<FTestbed1StructBool>& InPropBool)
-{
-	TArray<FTestbed1StructBool> TestValue = TArray<FTestbed1StructBool>();
-	// use different test value
-	TestValue = createTestFTestbed1StructBoolArray();
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropBool, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTestbed1StructArrayInterfaceImplSpec::PropIntPropertyCb(const TArray<FTestbed1StructInt>& InPropInt)
-{
-	TArray<FTestbed1StructInt> TestValue = TArray<FTestbed1StructInt>();
-	// use different test value
-	TestValue = createTestFTestbed1StructIntArray();
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTestbed1StructArrayInterfaceImplSpec::PropFloatPropertyCb(const TArray<FTestbed1StructFloat>& InPropFloat)
-{
-	TArray<FTestbed1StructFloat> TestValue = TArray<FTestbed1StructFloat>();
-	// use different test value
-	TestValue = createTestFTestbed1StructFloatArray();
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropFloat(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTestbed1StructArrayInterfaceImplSpec::PropStringPropertyCb(const TArray<FTestbed1StructString>& InPropString)
-{
-	TArray<FTestbed1StructString> TestValue = TArray<FTestbed1StructString>();
-	// use different test value
-	TestValue = createTestFTestbed1StructStringArray();
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropString, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropString(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTestbed1StructArrayInterfaceImplSpec::PropEnumPropertyCb(const TArray<ETestbed1Enum0>& InPropEnum)
-{
-	TArray<ETestbed1Enum0> TestValue = TArray<ETestbed1Enum0>();
-	// use different test value
-	TestValue.Add(ETestbed1Enum0::T1E0_VALUE1);
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropEnum, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropEnum(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTestbed1StructArrayInterfaceImplSpec::SigBoolSignalCb(const TArray<FTestbed1StructBool>& InParamBool)
-{
-	// known test value
-	TArray<FTestbed1StructBool> ParamBoolTestValue = createTestFTestbed1StructBoolArray();
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamBool, ParamBoolTestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTestbed1StructArrayInterfaceImplSpec::SigIntSignalCb(const TArray<FTestbed1StructInt>& InParamInt)
-{
-	// known test value
-	TArray<FTestbed1StructInt> ParamIntTestValue = createTestFTestbed1StructIntArray();
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamInt, ParamIntTestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTestbed1StructArrayInterfaceImplSpec::SigFloatSignalCb(const TArray<FTestbed1StructFloat>& InParamFloat)
-{
-	// known test value
-	TArray<FTestbed1StructFloat> ParamFloatTestValue = createTestFTestbed1StructFloatArray();
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamFloat, ParamFloatTestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTestbed1StructArrayInterfaceImplSpec::SigStringSignalCb(const TArray<FTestbed1StructString>& InParamString)
-{
-	// known test value
-	TArray<FTestbed1StructString> ParamStringTestValue = createTestFTestbed1StructStringArray();
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamString, ParamStringTestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTestbed1StructArrayInterfaceImplSpec::SigEnumSignalCb(const TArray<ETestbed1Enum0>& InParamEnum)
-{
-	// known test value
-	TArray<ETestbed1Enum0> ParamEnumTestValue = TArray<ETestbed1Enum0>(); // default value
-	ParamEnumTestValue.Add(ETestbed1Enum0::T1E0_VALUE1);
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamEnum, ParamEnumTestValue);
-	testDoneDelegate.Execute();
-}
 #endif // WITH_DEV_AUTOMATION_TESTS

@@ -10,7 +10,7 @@
 #include "Testbed2/Generated/api/Testbed2_data.h"
 #include "Testbed2NestedStruct3InterfaceImplFixture.generated.h"
 
-class UTestbed2NestedStruct3InterfaceImplSpec;
+class FTestbed2NestedStruct3InterfaceImplFixture;
 class ITestbed2NestedStruct3InterfaceInterface;
 
 UCLASS()
@@ -18,7 +18,9 @@ class UTestbed2NestedStruct3InterfaceImplHelper : public UObject
 {
 	GENERATED_BODY()
 public:
-	void SetSpec(UTestbed2NestedStruct3InterfaceImplSpec* InSpec);
+	void SetParentFixture(TWeakPtr<FTestbed2NestedStruct3InterfaceImplFixture> InFixture);
+	void SetSpec(FAutomationTestBase* InSpec);
+	void SetTestDone(const FDoneDelegate& InDone);
 
 	UFUNCTION()
 	void Prop1PropertyCb(const FTestbed2NestedStruct1& Prop1);
@@ -39,8 +41,9 @@ public:
 	void Sig3SignalCb(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3);
 
 protected:
-	const FDoneDelegate* testDoneDelegate;
-	UTestbed2NestedStruct3InterfaceImplSpec* Spec;
+	TWeakPtr<FTestbed2NestedStruct3InterfaceImplFixture> ImplFixture;
+	FDoneDelegate testDoneDelegate;
+	FAutomationTestBase* Spec;
 };
 
 #if WITH_DEV_AUTOMATION_TESTS

@@ -15,61 +15,123 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "Testbed1StructArray2InterfaceImplFixture.h"
-#include "Testbed1StructArray2InterfaceImpl.spec.h"
 #include "Testbed1/Implementation/Testbed1StructArray2Interface.h"
+#include "Testbed1/Tests/Testbed1TestsCommon.h"
 #include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-void UTestbed1StructArray2InterfaceImplHelper::SetSpec(UTestbed1StructArray2InterfaceImplSpec* InSpec)
+void UTestbed1StructArray2InterfaceImplHelper::SetParentFixture(TWeakPtr<FTestbed1StructArray2InterfaceImplFixture> InFixture)
+{
+	ImplFixture = InFixture;
+}
+
+void UTestbed1StructArray2InterfaceImplHelper::SetSpec(FAutomationTestBase* InSpec)
 {
 	Spec = InSpec;
 }
 
-void UTestbed1StructArray2InterfaceImplHelper::PropBoolPropertyCb(const FTestbed1StructBoolWithArray& PropBool)
+void UTestbed1StructArray2InterfaceImplHelper::SetTestDone(const FDoneDelegate& InDone)
 {
-	Spec->PropBoolPropertyCb(PropBool);
+	testDoneDelegate = InDone;
 }
 
-void UTestbed1StructArray2InterfaceImplHelper::PropIntPropertyCb(const FTestbed1StructIntWithArray& PropInt)
+void UTestbed1StructArray2InterfaceImplHelper::PropBoolPropertyCb(const FTestbed1StructBoolWithArray& InPropBool)
 {
-	Spec->PropIntPropertyCb(PropInt);
+	FTestbed1StructBoolWithArray TestValue = FTestbed1StructBoolWithArray();
+	// use different test value
+	TestValue = createTestFTestbed1StructBoolWithArray();
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropBool, TestValue);
+	if (TSharedPtr<FTestbed1StructArray2InterfaceImplFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->GetPropBool(), TestValue);
+	}
+	testDoneDelegate.Execute();
 }
 
-void UTestbed1StructArray2InterfaceImplHelper::PropFloatPropertyCb(const FTestbed1StructFloatWithArray& PropFloat)
+void UTestbed1StructArray2InterfaceImplHelper::PropIntPropertyCb(const FTestbed1StructIntWithArray& InPropInt)
 {
-	Spec->PropFloatPropertyCb(PropFloat);
+	FTestbed1StructIntWithArray TestValue = FTestbed1StructIntWithArray();
+	// use different test value
+	TestValue = createTestFTestbed1StructIntWithArray();
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
+	if (TSharedPtr<FTestbed1StructArray2InterfaceImplFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->GetPropInt(), TestValue);
+	}
+	testDoneDelegate.Execute();
 }
 
-void UTestbed1StructArray2InterfaceImplHelper::PropStringPropertyCb(const FTestbed1StructStringWithArray& PropString)
+void UTestbed1StructArray2InterfaceImplHelper::PropFloatPropertyCb(const FTestbed1StructFloatWithArray& InPropFloat)
 {
-	Spec->PropStringPropertyCb(PropString);
+	FTestbed1StructFloatWithArray TestValue = FTestbed1StructFloatWithArray();
+	// use different test value
+	TestValue = createTestFTestbed1StructFloatWithArray();
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat, TestValue);
+	if (TSharedPtr<FTestbed1StructArray2InterfaceImplFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->GetPropFloat(), TestValue);
+	}
+	testDoneDelegate.Execute();
 }
 
-void UTestbed1StructArray2InterfaceImplHelper::PropEnumPropertyCb(const FTestbed1StructEnumWithArray& PropEnum)
+void UTestbed1StructArray2InterfaceImplHelper::PropStringPropertyCb(const FTestbed1StructStringWithArray& InPropString)
 {
-	Spec->PropEnumPropertyCb(PropEnum);
+	FTestbed1StructStringWithArray TestValue = FTestbed1StructStringWithArray();
+	// use different test value
+	TestValue = createTestFTestbed1StructStringWithArray();
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropString, TestValue);
+	if (TSharedPtr<FTestbed1StructArray2InterfaceImplFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->GetPropString(), TestValue);
+	}
+	testDoneDelegate.Execute();
 }
 
-void UTestbed1StructArray2InterfaceImplHelper::SigBoolSignalCb(const FTestbed1StructBoolWithArray& ParamBool)
+void UTestbed1StructArray2InterfaceImplHelper::PropEnumPropertyCb(const FTestbed1StructEnumWithArray& InPropEnum)
 {
-	Spec->SigBoolSignalCb(ParamBool);
+	FTestbed1StructEnumWithArray TestValue = FTestbed1StructEnumWithArray();
+	// use different test value
+	TestValue = createTestFTestbed1StructEnumWithArray();
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropEnum, TestValue);
+	if (TSharedPtr<FTestbed1StructArray2InterfaceImplFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->GetPropEnum(), TestValue);
+	}
+	testDoneDelegate.Execute();
 }
 
-void UTestbed1StructArray2InterfaceImplHelper::SigIntSignalCb(const FTestbed1StructIntWithArray& ParamInt)
+void UTestbed1StructArray2InterfaceImplHelper::SigBoolSignalCb(const FTestbed1StructBoolWithArray& InParamBool)
 {
-	Spec->SigIntSignalCb(ParamInt);
+	// known test value
+	FTestbed1StructBoolWithArray ParamBoolTestValue = createTestFTestbed1StructBoolWithArray();
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamBool, ParamBoolTestValue);
+	testDoneDelegate.Execute();
 }
 
-void UTestbed1StructArray2InterfaceImplHelper::SigFloatSignalCb(const FTestbed1StructFloatWithArray& ParamFloat)
+void UTestbed1StructArray2InterfaceImplHelper::SigIntSignalCb(const FTestbed1StructIntWithArray& InParamInt)
 {
-	Spec->SigFloatSignalCb(ParamFloat);
+	// known test value
+	FTestbed1StructIntWithArray ParamIntTestValue = createTestFTestbed1StructIntWithArray();
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamInt, ParamIntTestValue);
+	testDoneDelegate.Execute();
 }
 
-void UTestbed1StructArray2InterfaceImplHelper::SigStringSignalCb(const FTestbed1StructStringWithArray& ParamString)
+void UTestbed1StructArray2InterfaceImplHelper::SigFloatSignalCb(const FTestbed1StructFloatWithArray& InParamFloat)
 {
-	Spec->SigStringSignalCb(ParamString);
+	// known test value
+	FTestbed1StructFloatWithArray ParamFloatTestValue = createTestFTestbed1StructFloatWithArray();
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamFloat, ParamFloatTestValue);
+	testDoneDelegate.Execute();
+}
+
+void UTestbed1StructArray2InterfaceImplHelper::SigStringSignalCb(const FTestbed1StructStringWithArray& InParamString)
+{
+	// known test value
+	FTestbed1StructStringWithArray ParamStringTestValue = createTestFTestbed1StructStringWithArray();
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamString, ParamStringTestValue);
+	testDoneDelegate.Execute();
 }
 
 FTestbed1StructArray2InterfaceImplFixture::FTestbed1StructArray2InterfaceImplFixture()
@@ -116,7 +178,15 @@ void FTestbed1StructArray2InterfaceImplFixture::CleanUp()
 }
 #else  // WITH_DEV_AUTOMATION_TESTS
 // create empty implementation in case we do not want to do automated testing
-void UTestbed1StructArray2InterfaceImplHelper::SetSpec(UTestbed1StructArray2InterfaceImplSpec* /* InSpec */)
+void UTestbed1StructArray2InterfaceImplHelper::SetParentFixture(TWeakPtr<FTestbed1StructArray2InterfaceImplFixture> /*InFixture*/)
+{
+}
+
+void UTestbed1StructArray2InterfaceImplHelper::SetSpec(FAutomationTestBase* /*InSpec*/)
+{
+}
+
+void UTestbed1StructArray2InterfaceImplHelper::SetTestDone(const FDoneDelegate& /*InDone*/)
 {
 }
 
