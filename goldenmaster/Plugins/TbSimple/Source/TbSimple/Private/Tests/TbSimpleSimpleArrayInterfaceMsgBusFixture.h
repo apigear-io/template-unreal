@@ -11,7 +11,7 @@
 #include "HAL/Platform.h"
 #include "TbSimpleSimpleArrayInterfaceMsgBusFixture.generated.h"
 
-class UTbSimpleSimpleArrayInterfaceMsgBusSpec;
+class FTbSimpleSimpleArrayInterfaceMsgBusFixture;
 class ITbSimpleSimpleArrayInterfaceInterface;
 class UTbSimpleSimpleArrayInterfaceMsgBusAdapter;
 class IApiGearConnection;
@@ -23,7 +23,9 @@ class UTbSimpleSimpleArrayInterfaceMsgBusHelper : public UObject
 public:
 	~UTbSimpleSimpleArrayInterfaceMsgBusHelper();
 
-	void SetSpec(UTbSimpleSimpleArrayInterfaceMsgBusSpec* InSpec);
+	void SetParentFixture(TWeakPtr<FTbSimpleSimpleArrayInterfaceMsgBusFixture> InFixture);
+	void SetSpec(FAutomationTestBase* InSpec);
+	void SetTestDone(const FDoneDelegate& InDone);
 
 	UFUNCTION()
 	void PropBoolPropertyCb(const TArray<bool>& PropBool);
@@ -109,8 +111,9 @@ public:
 	void _ConnectionStatusChangedCb(bool bConnected);
 
 protected:
-	const FDoneDelegate* testDoneDelegate;
-	UTbSimpleSimpleArrayInterfaceMsgBusSpec* Spec;
+	TWeakPtr<FTbSimpleSimpleArrayInterfaceMsgBusFixture> ImplFixture;
+	FDoneDelegate testDoneDelegate;
+	FAutomationTestBase* Spec;
 };
 
 #if WITH_DEV_AUTOMATION_TESTS

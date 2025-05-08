@@ -11,7 +11,7 @@
 #include "HAL/Platform.h"
 #include "Testbed2ManyParamInterfaceMsgBusFixture.generated.h"
 
-class UTestbed2ManyParamInterfaceMsgBusSpec;
+class FTestbed2ManyParamInterfaceMsgBusFixture;
 class ITestbed2ManyParamInterfaceInterface;
 class UTestbed2ManyParamInterfaceMsgBusAdapter;
 class IApiGearConnection;
@@ -23,7 +23,9 @@ class UTestbed2ManyParamInterfaceMsgBusHelper : public UObject
 public:
 	~UTestbed2ManyParamInterfaceMsgBusHelper();
 
-	void SetSpec(UTestbed2ManyParamInterfaceMsgBusSpec* InSpec);
+	void SetParentFixture(TWeakPtr<FTestbed2ManyParamInterfaceMsgBusFixture> InFixture);
+	void SetSpec(FAutomationTestBase* InSpec);
+	void SetTestDone(const FDoneDelegate& InDone);
 
 	UFUNCTION()
 	void Prop1PropertyCb(int32 Prop1);
@@ -69,8 +71,9 @@ public:
 	void _ConnectionStatusChangedCb(bool bConnected);
 
 protected:
-	const FDoneDelegate* testDoneDelegate;
-	UTestbed2ManyParamInterfaceMsgBusSpec* Spec;
+	TWeakPtr<FTestbed2ManyParamInterfaceMsgBusFixture> ImplFixture;
+	FDoneDelegate testDoneDelegate;
+	FAutomationTestBase* Spec;
 };
 
 #if WITH_DEV_AUTOMATION_TESTS

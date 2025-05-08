@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include "TbSimpleNoPropertiesInterfaceMsgBus.spec.h"
+#include "TbSimpleTestsCommon.h"
 #include "Implementation/TbSimpleNoPropertiesInterface.h"
 #include "TbSimpleNoPropertiesInterfaceMsgBusFixture.h"
 #include "Generated/MsgBus/TbSimpleNoPropertiesInterfaceMsgBusClient.h"
@@ -24,19 +24,17 @@ limitations under the License.
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-void UTbSimpleNoPropertiesInterfaceMsgBusSpec::_ConnectionStatusChangedCb(bool bConnected)
-{
-	if (bConnected)
-	{
-		testDoneDelegate.Execute();
-	}
-}
+BEGIN_DEFINE_SPEC(UTbSimpleNoPropertiesInterfaceMsgBusSpec, "TbSimple.NoPropertiesInterface.MsgBus", TbSimpleTestFilterMask);
+
+TSharedPtr<FTbSimpleNoPropertiesInterfaceMsgBusFixture> ImplFixture;
+
+END_DEFINE_SPEC(UTbSimpleNoPropertiesInterfaceMsgBusSpec);
 
 void UTbSimpleNoPropertiesInterfaceMsgBusSpec::Define()
 {
 	LatentBeforeEach([this](const FDoneDelegate& TestDone)
 		{
-		ImplFixture = MakeUnique<FTbSimpleNoPropertiesInterfaceMsgBusFixture>();
+		ImplFixture = MakeShared<FTbSimpleNoPropertiesInterfaceMsgBusFixture>();
 		TestTrue("Check for valid ImplFixture", ImplFixture.IsValid());
 
 		TestTrue("Check for valid testImplementation", ImplFixture->GetImplementation().GetInterface() != nullptr);
@@ -44,6 +42,8 @@ void UTbSimpleNoPropertiesInterfaceMsgBusSpec::Define()
 		TestTrue("Check for valid Helper", ImplFixture->GetHelper().IsValid());
 		// needed for callbacks
 		ImplFixture->GetHelper()->SetSpec(this);
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
+		ImplFixture->GetHelper()->SetParentFixture(ImplFixture);
 
 		// set up service and adapter
 		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleNoPropertiesInterface>();
@@ -51,7 +51,6 @@ void UTbSimpleNoPropertiesInterfaceMsgBusSpec::Define()
 		ImplFixture->GetAdapter()->_StartListening();
 
 		// setup client
-		testDoneDelegate = TestDone;
 		UTbSimpleNoPropertiesInterfaceMsgBusClient* MsgBusClient = Cast<UTbSimpleNoPropertiesInterfaceMsgBusClient>(ImplFixture->GetImplementation().GetObject());
 		TestTrue("Check for valid MsgBus client", MsgBusClient != nullptr);
 
@@ -87,7 +86,7 @@ void UTbSimpleNoPropertiesInterfaceMsgBusSpec::Define()
 
 	LatentIt("Signal.SigVoid", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UTbSimpleNoPropertiesInterfaceSignals* TbSimpleNoPropertiesInterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		TbSimpleNoPropertiesInterfaceSignals->OnSigVoidSignal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleNoPropertiesInterfaceMsgBusHelper::SigVoidSignalCb);
 
@@ -97,7 +96,7 @@ void UTbSimpleNoPropertiesInterfaceMsgBusSpec::Define()
 
 	LatentIt("Signal.SigBool", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UTbSimpleNoPropertiesInterfaceSignals* TbSimpleNoPropertiesInterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		TbSimpleNoPropertiesInterfaceSignals->OnSigBoolSignal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleNoPropertiesInterfaceMsgBusHelper::SigBoolSignalCb);
 
@@ -107,17 +106,4 @@ void UTbSimpleNoPropertiesInterfaceMsgBusSpec::Define()
 	});
 }
 
-void UTbSimpleNoPropertiesInterfaceMsgBusSpec::SigVoidSignalCb()
-{
-	// known test value
-	testDoneDelegate.Execute();
-}
-
-void UTbSimpleNoPropertiesInterfaceMsgBusSpec::SigBoolSignalCb(bool bInParamBool)
-{
-	// known test value
-	bool bParamBoolTestValue = true;
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), bInParamBool, bParamBoolTestValue);
-	testDoneDelegate.Execute();
-}
 #endif // WITH_DEV_AUTOMATION_TESTS

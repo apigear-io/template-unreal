@@ -6,7 +6,7 @@
 {{- $Class := printf "U%s" $DisplayName}}
 {{- $Iface := printf "%s%s" $ModuleName $IfaceName }}
 
-#include "{{$DisplayName}}MsgBus.spec.h"
+#include "{{$ModuleName}}TestsCommon.h"
 #include "Implementation/{{$Iface}}.h"
 #include "{{$DisplayName}}MsgBusFixture.h"
 #include "Generated/MsgBus/{{$DisplayName}}MsgBusClient.h"
@@ -19,19 +19,17 @@
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-void {{$Class}}MsgBusSpec::_ConnectionStatusChangedCb(bool bConnected)
-{
-	if (bConnected)
-	{
-		testDoneDelegate.Execute();
-	}
-}
+BEGIN_DEFINE_SPEC({{$Class}}MsgBusSpec, "{{$ModuleName}}.{{$IfaceName}}.MsgBus", {{$ModuleName}}TestFilterMask);
+
+TSharedPtr<F{{$DisplayName}}MsgBusFixture> ImplFixture;
+
+END_DEFINE_SPEC({{$Class}}MsgBusSpec);
 
 void {{$Class}}MsgBusSpec::Define()
 {
 	LatentBeforeEach([this](const FDoneDelegate& TestDone)
 		{
-		ImplFixture = MakeUnique<F{{$DisplayName}}MsgBusFixture>();
+		ImplFixture = MakeShared<F{{$DisplayName}}MsgBusFixture>();
 		TestTrue("Check for valid ImplFixture", ImplFixture.IsValid());
 
 		TestTrue("Check for valid testImplementation", ImplFixture->GetImplementation().GetInterface() != nullptr);
@@ -39,6 +37,8 @@ void {{$Class}}MsgBusSpec::Define()
 		TestTrue("Check for valid Helper", ImplFixture->GetHelper().IsValid());
 		// needed for callbacks
 		ImplFixture->GetHelper()->SetSpec(this);
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
+		ImplFixture->GetHelper()->SetParentFixture(ImplFixture);
 
 		// set up service and adapter
 		auto service = ImplFixture->GetGameInstance()->GetSubsystem<U{{$DisplayName}}>();
@@ -46,7 +46,6 @@ void {{$Class}}MsgBusSpec::Define()
 		ImplFixture->GetAdapter()->_StartListening();
 
 		// setup client
-		testDoneDelegate = TestDone;
 		U{{$DisplayName}}MsgBusClient* MsgBusClient = Cast<U{{$DisplayName}}MsgBusClient>(ImplFixture->GetImplementation().GetObject());
 		TestTrue("Check for valid MsgBus client", MsgBusClient != nullptr);
 
@@ -80,7 +79,7 @@ void {{$Class}}MsgBusSpec::Define()
 		{{ueType "" .}} TestValue = {{ueDefault "" .}}; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_Get{{Camel .Name}}(ImplFixture->GetImplementation().GetObject()), TestValue);
 
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		{{$Class}}Signals* {{$Iface}}Signals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		{{$Iface}}Signals->On{{Camel .Name}}Changed.AddDynamic(ImplFixture->GetHelper().Get(), &{{$Class}}MsgBusHelper::{{ Camel .Name }}PropertyCb);
 		// use different test value
@@ -110,7 +109,7 @@ void {{$Class}}MsgBusSpec::Define()
 		{{ueType "" .}} TestValue = {{ueDefault "" .}}; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_Get{{Camel .Name}}(ImplFixture->GetImplementation().GetObject()), TestValue);
 
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		{{$Class}}Signals* {{$Iface}}Signals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		{{$Iface}}Signals->On{{Camel .Name}}Changed.AddDynamic(ImplFixture->GetHelper().Get(), &{{$Class}}MsgBusHelper::{{ Camel .Name }}PropertyChangeLocalCheckRemoteCb);
 		// use different test value
@@ -141,7 +140,7 @@ void {{$Class}}MsgBusSpec::Define()
 		{{ueType "" .}} TestValue = {{ueDefault "" .}}; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_Get{{Camel .Name}}(ImplFixture->GetImplementation().GetObject()), TestValue);
 
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		{{$Class}}Signals* {{$Iface}}Signals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		{{$Iface}}Signals->On{{Camel .Name}}Changed.AddDynamic(ImplFixture->GetHelper().Get(), &{{$Class}}MsgBusHelper::{{ Camel .Name }}PropertyChangeLocalChangeRemoteCb);
 		// use different test value
@@ -198,7 +197,7 @@ void {{$Class}}MsgBusSpec::Define()
 
 	LatentIt("Signal.{{ Camel .Name }}", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		{{$Class}}Signals* {{$Iface}}Signals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		{{$Iface}}Signals->On{{Camel .Name}}Signal.AddDynamic(ImplFixture->GetHelper().Get(), &{{$Class}}MsgBusHelper::{{ Camel .Name }}SignalCb);
 
@@ -236,138 +235,4 @@ void {{$Class}}MsgBusSpec::Define()
 {{- end }}
 }
 
-{{- range .Interface.Properties }}
-{{- if and (not .IsReadOnly) (not (eq .KindType "extern")) }}
-{{- $type := printf "F%s%s" $ModuleName .Type }}
-
-void {{$Class}}MsgBusSpec::{{ Camel .Name }}PropertyCb({{ueParam "In" .}})
-{
-	{{ueType "" .}} TestValue = {{ueDefault "" .}};
-	// use different test value
-	{{- if .IsArray }}
-	{{- if or .IsPrimitive (eq .KindType "enum") }}
-	TestValue.Add({{ ueTestValue "" .}});
-	{{- else }}
-	{{- $type := ""}}
-	{{- if not (eq .Import "") }}
-	{{- $type = printf "F%s%s" (Camel .Import) .Type }}
-	{{- else }}
-	{{- $type = printf "F%s%s" $ModuleName .Type }}
-	{{- end }}
-	TestValue = createTest{{ $type }}Array();
-	{{- end }}
-	{{- else if and (not .IsPrimitive) (not (eq .KindType "enum"))}}
-	TestValue = createTest{{ ueType "" . }}();
-	{{- else }}
-	TestValue = {{ ueTestValue "" . }};
-	{{- end }}
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), {{ueVar "In" .}}, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_Get{{Camel .Name}}(ImplFixture->GetImplementation().GetObject()), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void {{$Class}}MsgBusSpec::{{ Camel .Name }}PropertyChangeLocalCheckRemoteCb({{ueParam "In" .}})
-{
-	{{ueType "" .}} TestValue = {{ueDefault "" .}};
-	// use different test value
-	{{- if .IsArray }}
-	{{- if or .IsPrimitive (eq .KindType "enum") }}
-	TestValue.Add({{ ueTestValue "" .}});
-	{{- else }}
-	{{- $type := ""}}
-	{{- if not (eq .Import "") }}
-	{{- $type = printf "F%s%s" (Camel .Import) .Type }}
-	{{- else }}
-	{{- $type = printf "F%s%s" $ModuleName .Type }}
-	{{- end }}
-	TestValue = createTest{{ $type }}Array();
-	{{- end }}
-	{{- else if and (not .IsPrimitive) (not (eq .KindType "enum"))}}
-	TestValue = createTest{{ ueType "" . }}();
-	{{- else }}
-	TestValue = {{ ueTestValue "" . }};
-	{{- end }}
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), {{ueVar "In" .}}, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_Get{{Camel .Name}}(ImplFixture->GetImplementation().GetObject()), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void {{$Class}}MsgBusSpec::{{ Camel .Name }}PropertyChangeLocalChangeRemoteCb({{ueParam "In" .}})
-{
-	// this function must be called twice before we can successfully pass this test.
-	// first call it should have the test value of the parameter
-	// second call it should have the default value of the parameter again
-	static int count = 0;
-	count++;
-
-	if (count % 2 != 0)
-	{
-		{{ueType "" .}} TestValue = {{ueDefault "" .}};
-		// use different test value
-		{{- if .IsArray }}
-		{{- if or .IsPrimitive (eq .KindType "enum") }}
-		TestValue.Add({{ ueTestValue "" .}});
-		{{- else }}
-		{{- $type := ""}}
-		{{- if not (eq .Import "") }}
-		{{- $type = printf "F%s%s" (Camel .Import) .Type }}
-		{{- else }}
-		{{- $type = printf "F%s%s" $ModuleName .Type }}
-		{{- end }}
-		TestValue = createTest{{ $type }}Array();
-		{{- end }}
-		{{- else if and (not .IsPrimitive) (not (eq .KindType "enum"))}}
-		TestValue = createTest{{ ueType "" . }}();
-		{{- else }}
-		TestValue = {{ ueTestValue "" . }};
-		{{- end }}
-		TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), {{ueVar "In" .}}, TestValue);
-		TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_Get{{Camel .Name}}(ImplFixture->GetImplementation().GetObject()), TestValue);
-
-		// now set it to the default value
-		TestValue = {{ueDefault "" .}}; // default value
-		ImplFixture->GetImplementation()->Execute_Set{{Camel .Name}}(ImplFixture->GetImplementation().GetObject(), TestValue);
-	}
-	else
-	{
-		{{ueType "" .}} TestValue = {{ueDefault "" .}}; // default value
-		TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), {{ueVar "In" .}}, TestValue);
-		TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->Execute_Get{{Camel .Name}}(ImplFixture->GetImplementation().GetObject()), TestValue);
-		testDoneDelegate.Execute();
-	}
-}
-{{- end }}
-{{- end }}
-
-{{- range .Interface.Signals }}
-
-void {{$Class}}MsgBusSpec::{{ Camel .Name }}SignalCb({{ueParams "In" .Params}})
-{
-	// known test value
-	{{- range $i, $e := .Params -}}
-	{{- if not (eq .KindType "extern") }}
-	{{- if .IsArray }}
-	{{- if or .IsPrimitive (eq .KindType "enum") }}
-	{{ueType "" .}} {{ueVar "" .}}TestValue = {{ueDefault "" .}}; // default value
-	{{ueVar "" .}}TestValue.Add({{ ueTestValue "" .}});
-	{{- else }}
-	{{- $type := ""}}
-	{{- if not (eq .Import "") }}
-	{{- $type = printf "F%s%s" (Camel .Import) .Type }}
-	{{- else }}
-	{{- $type = printf "F%s%s" $ModuleName .Type }}
-	{{- end }}
-	{{ueType "" .}} {{ueVar "" .}}TestValue = createTest{{ $type }}Array();
-	{{- end }}
-	{{- else if and (not .IsPrimitive) (not (eq .KindType "enum"))}}
-	{{ueType "" .}} {{ueVar "" .}}TestValue = createTest{{ ueType "" . }}();
-	{{- else }}
-	{{ueType "" .}} {{ueVar "" .}}TestValue = {{ ueTestValue "" . }};
-	{{- end }}
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), {{ueVar "In" .}}, {{ueVar "" .}}TestValue);
-	{{- end }}
-	{{- end }}
-	testDoneDelegate.Execute();
-}
-{{- end }}
 #endif // WITH_DEV_AUTOMATION_TESTS

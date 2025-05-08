@@ -11,7 +11,7 @@
 #include "HAL/Platform.h"
 #include "TbSimpleNoOperationsInterfaceMsgBusFixture.generated.h"
 
-class UTbSimpleNoOperationsInterfaceMsgBusSpec;
+class FTbSimpleNoOperationsInterfaceMsgBusFixture;
 class ITbSimpleNoOperationsInterfaceInterface;
 class UTbSimpleNoOperationsInterfaceMsgBusAdapter;
 class IApiGearConnection;
@@ -23,7 +23,9 @@ class UTbSimpleNoOperationsInterfaceMsgBusHelper : public UObject
 public:
 	~UTbSimpleNoOperationsInterfaceMsgBusHelper();
 
-	void SetSpec(UTbSimpleNoOperationsInterfaceMsgBusSpec* InSpec);
+	void SetParentFixture(TWeakPtr<FTbSimpleNoOperationsInterfaceMsgBusFixture> InFixture);
+	void SetSpec(FAutomationTestBase* InSpec);
+	void SetTestDone(const FDoneDelegate& InDone);
 
 	UFUNCTION()
 	void PropBoolPropertyCb(bool bPropBool);
@@ -49,8 +51,9 @@ public:
 	void _ConnectionStatusChangedCb(bool bConnected);
 
 protected:
-	const FDoneDelegate* testDoneDelegate;
-	UTbSimpleNoOperationsInterfaceMsgBusSpec* Spec;
+	TWeakPtr<FTbSimpleNoOperationsInterfaceMsgBusFixture> ImplFixture;
+	FDoneDelegate testDoneDelegate;
+	FAutomationTestBase* Spec;
 };
 
 #if WITH_DEV_AUTOMATION_TESTS

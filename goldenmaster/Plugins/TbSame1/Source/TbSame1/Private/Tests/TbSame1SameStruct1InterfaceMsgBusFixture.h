@@ -11,7 +11,7 @@
 #include "HAL/Platform.h"
 #include "TbSame1SameStruct1InterfaceMsgBusFixture.generated.h"
 
-class UTbSame1SameStruct1InterfaceMsgBusSpec;
+class FTbSame1SameStruct1InterfaceMsgBusFixture;
 class ITbSame1SameStruct1InterfaceInterface;
 class UTbSame1SameStruct1InterfaceMsgBusAdapter;
 class IApiGearConnection;
@@ -23,7 +23,9 @@ class UTbSame1SameStruct1InterfaceMsgBusHelper : public UObject
 public:
 	~UTbSame1SameStruct1InterfaceMsgBusHelper();
 
-	void SetSpec(UTbSame1SameStruct1InterfaceMsgBusSpec* InSpec);
+	void SetParentFixture(TWeakPtr<FTbSame1SameStruct1InterfaceMsgBusFixture> InFixture);
+	void SetSpec(FAutomationTestBase* InSpec);
+	void SetTestDone(const FDoneDelegate& InDone);
 
 	UFUNCTION()
 	void Prop1PropertyCb(const FTbSame1Struct1& Prop1);
@@ -39,8 +41,9 @@ public:
 	void _ConnectionStatusChangedCb(bool bConnected);
 
 protected:
-	const FDoneDelegate* testDoneDelegate;
-	UTbSame1SameStruct1InterfaceMsgBusSpec* Spec;
+	TWeakPtr<FTbSame1SameStruct1InterfaceMsgBusFixture> ImplFixture;
+	FDoneDelegate testDoneDelegate;
+	FAutomationTestBase* Spec;
 };
 
 #if WITH_DEV_AUTOMATION_TESTS

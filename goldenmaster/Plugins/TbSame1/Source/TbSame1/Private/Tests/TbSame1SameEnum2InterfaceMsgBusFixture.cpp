@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbSame1SameEnum2InterfaceMsgBusFixture.h"
-#include "TbSame1SameEnum2InterfaceMsgBus.spec.h"
+#include "TbSame1TestsCommon.h"
 #include "Generated/MsgBus/TbSame1SameEnum2InterfaceMsgBusClient.h"
 #include "Generated/MsgBus/TbSame1SameEnum2InterfaceMsgBusAdapter.h"
 #include "Engine/GameInstance.h"
@@ -28,80 +28,172 @@ UTbSame1SameEnum2InterfaceMsgBusHelper::~UTbSame1SameEnum2InterfaceMsgBusHelper(
 	Spec = nullptr;
 }
 
-void UTbSame1SameEnum2InterfaceMsgBusHelper::SetSpec(UTbSame1SameEnum2InterfaceMsgBusSpec* InSpec)
+void UTbSame1SameEnum2InterfaceMsgBusHelper::SetParentFixture(TWeakPtr<FTbSame1SameEnum2InterfaceMsgBusFixture> InFixture)
+{
+	ImplFixture = InFixture;
+}
+
+void UTbSame1SameEnum2InterfaceMsgBusHelper::SetSpec(FAutomationTestBase* InSpec)
 {
 	Spec = InSpec;
 }
 
-void UTbSame1SameEnum2InterfaceMsgBusHelper::Prop1PropertyCb(ETbSame1Enum1 Prop1)
+void UTbSame1SameEnum2InterfaceMsgBusHelper::SetTestDone(const FDoneDelegate& InDone)
 {
-	if (Spec)
+	testDoneDelegate = InDone;
+}
+
+void UTbSame1SameEnum2InterfaceMsgBusHelper::Prop1PropertyCb(ETbSame1Enum1 InProp1)
+{
+	ETbSame1Enum1 TestValue = ETbSame1Enum1::TS1E1_VALUE1;
+	// use different test value
+	TestValue = ETbSame1Enum1::TS1E1_VALUE2;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
+	if (TSharedPtr<FTbSame1SameEnum2InterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
 	{
-		Spec->Prop1PropertyCb(Prop1);
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetProp1(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTbSame1SameEnum2InterfaceMsgBusHelper::Prop1PropertyChangeLocalCheckRemoteCb(ETbSame1Enum1 InProp1)
+{
+	ETbSame1Enum1 TestValue = ETbSame1Enum1::TS1E1_VALUE1;
+	// use different test value
+	TestValue = ETbSame1Enum1::TS1E1_VALUE2;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
+	if (TSharedPtr<FTbSame1SameEnum2InterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetProp1(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTbSame1SameEnum2InterfaceMsgBusHelper::Prop1PropertyChangeLocalChangeRemoteCb(ETbSame1Enum1 InProp1)
+{
+	// this function must be called twice before we can successfully pass this test.
+	// first call it should have the test value of the parameter
+	// second call it should have the default value of the parameter again
+	static int count = 0;
+	count++;
+
+	if (count % 2 != 0)
+	{
+		ETbSame1Enum1 TestValue = ETbSame1Enum1::TS1E1_VALUE1;
+		// use different test value
+		TestValue = ETbSame1Enum1::TS1E1_VALUE2;
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
+		if (TSharedPtr<FTbSame1SameEnum2InterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetProp1(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+
+		// now set it to the default value
+		TestValue = ETbSame1Enum1::TS1E1_VALUE1; // default value
+		if (TSharedPtr<FTbSame1SameEnum2InterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			PinnedImplFixture->GetImplementation()->Execute_SetProp1(PinnedImplFixture->GetImplementation().GetObject(), TestValue);
+		}
+	}
+	else
+	{
+		ETbSame1Enum1 TestValue = ETbSame1Enum1::TS1E1_VALUE1; // default value
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
+		if (TSharedPtr<FTbSame1SameEnum2InterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetProp1(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+		testDoneDelegate.Execute();
 	}
 }
 
-void UTbSame1SameEnum2InterfaceMsgBusHelper::Prop1PropertyChangeLocalCheckRemoteCb(ETbSame1Enum1 Prop1)
+void UTbSame1SameEnum2InterfaceMsgBusHelper::Prop2PropertyCb(ETbSame1Enum2 InProp2)
 {
-	if (Spec)
+	ETbSame1Enum2 TestValue = ETbSame1Enum2::TS1E2_VALUE1;
+	// use different test value
+	TestValue = ETbSame1Enum2::TS1E2_VALUE2;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp2, TestValue);
+	if (TSharedPtr<FTbSame1SameEnum2InterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
 	{
-		Spec->Prop1PropertyChangeLocalCheckRemoteCb(Prop1);
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetProp2(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTbSame1SameEnum2InterfaceMsgBusHelper::Prop2PropertyChangeLocalCheckRemoteCb(ETbSame1Enum2 InProp2)
+{
+	ETbSame1Enum2 TestValue = ETbSame1Enum2::TS1E2_VALUE1;
+	// use different test value
+	TestValue = ETbSame1Enum2::TS1E2_VALUE2;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp2, TestValue);
+	if (TSharedPtr<FTbSame1SameEnum2InterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetProp2(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTbSame1SameEnum2InterfaceMsgBusHelper::Prop2PropertyChangeLocalChangeRemoteCb(ETbSame1Enum2 InProp2)
+{
+	// this function must be called twice before we can successfully pass this test.
+	// first call it should have the test value of the parameter
+	// second call it should have the default value of the parameter again
+	static int count = 0;
+	count++;
+
+	if (count % 2 != 0)
+	{
+		ETbSame1Enum2 TestValue = ETbSame1Enum2::TS1E2_VALUE1;
+		// use different test value
+		TestValue = ETbSame1Enum2::TS1E2_VALUE2;
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp2, TestValue);
+		if (TSharedPtr<FTbSame1SameEnum2InterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetProp2(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+
+		// now set it to the default value
+		TestValue = ETbSame1Enum2::TS1E2_VALUE1; // default value
+		if (TSharedPtr<FTbSame1SameEnum2InterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			PinnedImplFixture->GetImplementation()->Execute_SetProp2(PinnedImplFixture->GetImplementation().GetObject(), TestValue);
+		}
+	}
+	else
+	{
+		ETbSame1Enum2 TestValue = ETbSame1Enum2::TS1E2_VALUE1; // default value
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp2, TestValue);
+		if (TSharedPtr<FTbSame1SameEnum2InterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetProp2(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+		testDoneDelegate.Execute();
 	}
 }
 
-void UTbSame1SameEnum2InterfaceMsgBusHelper::Prop1PropertyChangeLocalChangeRemoteCb(ETbSame1Enum1 Prop1)
+void UTbSame1SameEnum2InterfaceMsgBusHelper::Sig1SignalCb(ETbSame1Enum1 InParam1)
 {
-	if (Spec)
-	{
-		Spec->Prop1PropertyChangeLocalChangeRemoteCb(Prop1);
-	}
+	// known test value
+	ETbSame1Enum1 Param1TestValue = ETbSame1Enum1::TS1E1_VALUE2;
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
+	testDoneDelegate.Execute();
 }
 
-void UTbSame1SameEnum2InterfaceMsgBusHelper::Prop2PropertyCb(ETbSame1Enum2 Prop2)
+void UTbSame1SameEnum2InterfaceMsgBusHelper::Sig2SignalCb(ETbSame1Enum1 InParam1, ETbSame1Enum2 InParam2)
 {
-	if (Spec)
-	{
-		Spec->Prop2PropertyCb(Prop2);
-	}
-}
-
-void UTbSame1SameEnum2InterfaceMsgBusHelper::Prop2PropertyChangeLocalCheckRemoteCb(ETbSame1Enum2 Prop2)
-{
-	if (Spec)
-	{
-		Spec->Prop2PropertyChangeLocalCheckRemoteCb(Prop2);
-	}
-}
-
-void UTbSame1SameEnum2InterfaceMsgBusHelper::Prop2PropertyChangeLocalChangeRemoteCb(ETbSame1Enum2 Prop2)
-{
-	if (Spec)
-	{
-		Spec->Prop2PropertyChangeLocalChangeRemoteCb(Prop2);
-	}
-}
-
-void UTbSame1SameEnum2InterfaceMsgBusHelper::Sig1SignalCb(ETbSame1Enum1 Param1)
-{
-	if (Spec)
-	{
-		Spec->Sig1SignalCb(Param1);
-	}
-}
-
-void UTbSame1SameEnum2InterfaceMsgBusHelper::Sig2SignalCb(ETbSame1Enum1 Param1, ETbSame1Enum2 Param2)
-{
-	if (Spec)
-	{
-		Spec->Sig2SignalCb(Param1, Param2);
-	}
+	// known test value
+	ETbSame1Enum1 Param1TestValue = ETbSame1Enum1::TS1E1_VALUE2;
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
+	ETbSame1Enum2 Param2TestValue = ETbSame1Enum2::TS1E2_VALUE2;
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam2, Param2TestValue);
+	testDoneDelegate.Execute();
 }
 
 void UTbSame1SameEnum2InterfaceMsgBusHelper::_ConnectionStatusChangedCb(bool bConnected)
 {
-	if (Spec)
+	if (bConnected)
 	{
-		Spec->_ConnectionStatusChangedCb(bConnected);
+		testDoneDelegate.Execute();
 	}
 }
 
@@ -158,18 +250,46 @@ UTbSame1SameEnum2InterfaceMsgBusHelper::~UTbSame1SameEnum2InterfaceMsgBusHelper(
 {
 }
 
-void UTbSame1SameEnum2InterfaceMsgBusHelper::SetSpec(UTbSame1SameEnum2InterfaceMsgBusSpec* /* InSpec */)
+void UTbSame1SameEnum2InterfaceMsgBusHelper::SetParentFixture(TWeakPtr<FTbSame1SameEnum2InterfaceMsgBusFixture> /*InFixture*/)
 {
 }
 
-void UTbSame1SameEnum2InterfaceMsgBusHelper::Prop1PropertyCb(ETbSame1Enum1 Prop1)
+void UTbSame1SameEnum2InterfaceMsgBusHelper::SetSpec(FAutomationTestBase* /*InSpec*/)
 {
-	(void)Prop1;
 }
 
-void UTbSame1SameEnum2InterfaceMsgBusHelper::Prop2PropertyCb(ETbSame1Enum2 Prop2)
+void UTbSame1SameEnum2InterfaceMsgBusHelper::SetTestDone(const FDoneDelegate& /*InDone*/)
 {
-	(void)Prop2;
+}
+
+void UTbSame1SameEnum2InterfaceMsgBusHelper::Prop1PropertyCb(ETbSame1Enum1 InProp1)
+{
+	(void)InProp1;
+}
+
+void UTbSame1SameEnum2InterfaceMsgBusHelper::Prop1PropertyChangeLocalCheckRemoteCb(ETbSame1Enum1 InProp1)
+{
+	(void)InProp1;
+}
+
+void UTbSame1SameEnum2InterfaceMsgBusHelper::Prop1PropertyChangeLocalChangeRemoteCb(ETbSame1Enum1 InProp1)
+{
+	(void)InProp1;
+}
+
+void UTbSame1SameEnum2InterfaceMsgBusHelper::Prop2PropertyCb(ETbSame1Enum2 InProp2)
+{
+	(void)InProp2;
+}
+
+void UTbSame1SameEnum2InterfaceMsgBusHelper::Prop2PropertyChangeLocalCheckRemoteCb(ETbSame1Enum2 InProp2)
+{
+	(void)InProp2;
+}
+
+void UTbSame1SameEnum2InterfaceMsgBusHelper::Prop2PropertyChangeLocalChangeRemoteCb(ETbSame1Enum2 InProp2)
+{
+	(void)InProp2;
 }
 
 void UTbSame1SameEnum2InterfaceMsgBusHelper::Sig1SignalCb(ETbSame1Enum1 Param1)

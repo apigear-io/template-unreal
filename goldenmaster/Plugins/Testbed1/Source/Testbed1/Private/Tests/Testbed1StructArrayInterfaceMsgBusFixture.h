@@ -11,7 +11,7 @@
 #include "HAL/Platform.h"
 #include "Testbed1StructArrayInterfaceMsgBusFixture.generated.h"
 
-class UTestbed1StructArrayInterfaceMsgBusSpec;
+class FTestbed1StructArrayInterfaceMsgBusFixture;
 class ITestbed1StructArrayInterfaceInterface;
 class UTestbed1StructArrayInterfaceMsgBusAdapter;
 class IApiGearConnection;
@@ -23,7 +23,9 @@ class UTestbed1StructArrayInterfaceMsgBusHelper : public UObject
 public:
 	~UTestbed1StructArrayInterfaceMsgBusHelper();
 
-	void SetSpec(UTestbed1StructArrayInterfaceMsgBusSpec* InSpec);
+	void SetParentFixture(TWeakPtr<FTestbed1StructArrayInterfaceMsgBusFixture> InFixture);
+	void SetSpec(FAutomationTestBase* InSpec);
+	void SetTestDone(const FDoneDelegate& InDone);
 
 	UFUNCTION()
 	void PropBoolPropertyCb(const TArray<FTestbed1StructBool>& PropBool);
@@ -79,8 +81,9 @@ public:
 	void _ConnectionStatusChangedCb(bool bConnected);
 
 protected:
-	const FDoneDelegate* testDoneDelegate;
-	UTestbed1StructArrayInterfaceMsgBusSpec* Spec;
+	TWeakPtr<FTestbed1StructArrayInterfaceMsgBusFixture> ImplFixture;
+	FDoneDelegate testDoneDelegate;
+	FAutomationTestBase* Spec;
 };
 
 #if WITH_DEV_AUTOMATION_TESTS

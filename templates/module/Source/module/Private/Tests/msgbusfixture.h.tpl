@@ -15,7 +15,7 @@
 #include "HAL/Platform.h"
 #include "{{$DisplayName}}MsgBusFixture.generated.h"
 
-class {{$Class}}MsgBusSpec;
+class F{{$DisplayName}}MsgBusFixture;
 class I{{$DisplayName}}Interface;
 class U{{$DisplayName}}MsgBusAdapter;
 class IApiGearConnection;
@@ -27,7 +27,10 @@ class {{$Class}}MsgBusHelper : public UObject
 public:
 	~{{$Class}}MsgBusHelper();
 
-	void SetSpec({{$Class}}MsgBusSpec* InSpec);
+	void SetParentFixture(TWeakPtr<F{{ $DisplayName }}MsgBusFixture> InFixture);
+	void SetSpec(FAutomationTestBase* InSpec);
+	void SetTestDone(const FDoneDelegate& InDone);
+
 {{- range .Interface.Properties }}
 {{- if and (not .IsReadOnly) (not (eq .KindType "extern")) }}
 
@@ -49,8 +52,9 @@ public:
 	void _ConnectionStatusChangedCb(bool bConnected);
 
 protected:
-	const FDoneDelegate* testDoneDelegate;
-	{{$Class}}MsgBusSpec* Spec;
+	TWeakPtr<F{{ $DisplayName }}MsgBusFixture> ImplFixture;
+	FDoneDelegate testDoneDelegate;
+	FAutomationTestBase* Spec;
 };
 
 #if WITH_DEV_AUTOMATION_TESTS

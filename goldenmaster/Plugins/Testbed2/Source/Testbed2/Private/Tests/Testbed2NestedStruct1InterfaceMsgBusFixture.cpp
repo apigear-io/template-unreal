@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "Testbed2NestedStruct1InterfaceMsgBusFixture.h"
-#include "Testbed2NestedStruct1InterfaceMsgBus.spec.h"
+#include "Testbed2TestsCommon.h"
 #include "Generated/MsgBus/Testbed2NestedStruct1InterfaceMsgBusClient.h"
 #include "Generated/MsgBus/Testbed2NestedStruct1InterfaceMsgBusAdapter.h"
 #include "Engine/GameInstance.h"
@@ -28,48 +28,98 @@ UTestbed2NestedStruct1InterfaceMsgBusHelper::~UTestbed2NestedStruct1InterfaceMsg
 	Spec = nullptr;
 }
 
-void UTestbed2NestedStruct1InterfaceMsgBusHelper::SetSpec(UTestbed2NestedStruct1InterfaceMsgBusSpec* InSpec)
+void UTestbed2NestedStruct1InterfaceMsgBusHelper::SetParentFixture(TWeakPtr<FTestbed2NestedStruct1InterfaceMsgBusFixture> InFixture)
+{
+	ImplFixture = InFixture;
+}
+
+void UTestbed2NestedStruct1InterfaceMsgBusHelper::SetSpec(FAutomationTestBase* InSpec)
 {
 	Spec = InSpec;
 }
 
-void UTestbed2NestedStruct1InterfaceMsgBusHelper::Prop1PropertyCb(const FTestbed2NestedStruct1& Prop1)
+void UTestbed2NestedStruct1InterfaceMsgBusHelper::SetTestDone(const FDoneDelegate& InDone)
 {
-	if (Spec)
+	testDoneDelegate = InDone;
+}
+
+void UTestbed2NestedStruct1InterfaceMsgBusHelper::Prop1PropertyCb(const FTestbed2NestedStruct1& InProp1)
+{
+	FTestbed2NestedStruct1 TestValue = FTestbed2NestedStruct1();
+	// use different test value
+	TestValue = createTestFTestbed2NestedStruct1();
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
+	if (TSharedPtr<FTestbed2NestedStruct1InterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
 	{
-		Spec->Prop1PropertyCb(Prop1);
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetProp1(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTestbed2NestedStruct1InterfaceMsgBusHelper::Prop1PropertyChangeLocalCheckRemoteCb(const FTestbed2NestedStruct1& InProp1)
+{
+	FTestbed2NestedStruct1 TestValue = FTestbed2NestedStruct1();
+	// use different test value
+	TestValue = createTestFTestbed2NestedStruct1();
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
+	if (TSharedPtr<FTestbed2NestedStruct1InterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetProp1(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTestbed2NestedStruct1InterfaceMsgBusHelper::Prop1PropertyChangeLocalChangeRemoteCb(const FTestbed2NestedStruct1& InProp1)
+{
+	// this function must be called twice before we can successfully pass this test.
+	// first call it should have the test value of the parameter
+	// second call it should have the default value of the parameter again
+	static int count = 0;
+	count++;
+
+	if (count % 2 != 0)
+	{
+		FTestbed2NestedStruct1 TestValue = FTestbed2NestedStruct1();
+		// use different test value
+		TestValue = createTestFTestbed2NestedStruct1();
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
+		if (TSharedPtr<FTestbed2NestedStruct1InterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetProp1(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+
+		// now set it to the default value
+		TestValue = FTestbed2NestedStruct1(); // default value
+		if (TSharedPtr<FTestbed2NestedStruct1InterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			PinnedImplFixture->GetImplementation()->Execute_SetProp1(PinnedImplFixture->GetImplementation().GetObject(), TestValue);
+		}
+	}
+	else
+	{
+		FTestbed2NestedStruct1 TestValue = FTestbed2NestedStruct1(); // default value
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
+		if (TSharedPtr<FTestbed2NestedStruct1InterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetProp1(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+		testDoneDelegate.Execute();
 	}
 }
 
-void UTestbed2NestedStruct1InterfaceMsgBusHelper::Prop1PropertyChangeLocalCheckRemoteCb(const FTestbed2NestedStruct1& Prop1)
+void UTestbed2NestedStruct1InterfaceMsgBusHelper::Sig1SignalCb(const FTestbed2NestedStruct1& InParam1)
 {
-	if (Spec)
-	{
-		Spec->Prop1PropertyChangeLocalCheckRemoteCb(Prop1);
-	}
-}
-
-void UTestbed2NestedStruct1InterfaceMsgBusHelper::Prop1PropertyChangeLocalChangeRemoteCb(const FTestbed2NestedStruct1& Prop1)
-{
-	if (Spec)
-	{
-		Spec->Prop1PropertyChangeLocalChangeRemoteCb(Prop1);
-	}
-}
-
-void UTestbed2NestedStruct1InterfaceMsgBusHelper::Sig1SignalCb(const FTestbed2NestedStruct1& Param1)
-{
-	if (Spec)
-	{
-		Spec->Sig1SignalCb(Param1);
-	}
+	// known test value
+	FTestbed2NestedStruct1 Param1TestValue = createTestFTestbed2NestedStruct1();
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
+	testDoneDelegate.Execute();
 }
 
 void UTestbed2NestedStruct1InterfaceMsgBusHelper::_ConnectionStatusChangedCb(bool bConnected)
 {
-	if (Spec)
+	if (bConnected)
 	{
-		Spec->_ConnectionStatusChangedCb(bConnected);
+		testDoneDelegate.Execute();
 	}
 }
 
@@ -126,13 +176,31 @@ UTestbed2NestedStruct1InterfaceMsgBusHelper::~UTestbed2NestedStruct1InterfaceMsg
 {
 }
 
-void UTestbed2NestedStruct1InterfaceMsgBusHelper::SetSpec(UTestbed2NestedStruct1InterfaceMsgBusSpec* /* InSpec */)
+void UTestbed2NestedStruct1InterfaceMsgBusHelper::SetParentFixture(TWeakPtr<FTestbed2NestedStruct1InterfaceMsgBusFixture> /*InFixture*/)
 {
 }
 
-void UTestbed2NestedStruct1InterfaceMsgBusHelper::Prop1PropertyCb(const FTestbed2NestedStruct1& Prop1)
+void UTestbed2NestedStruct1InterfaceMsgBusHelper::SetSpec(FAutomationTestBase* /*InSpec*/)
 {
-	(void)Prop1;
+}
+
+void UTestbed2NestedStruct1InterfaceMsgBusHelper::SetTestDone(const FDoneDelegate& /*InDone*/)
+{
+}
+
+void UTestbed2NestedStruct1InterfaceMsgBusHelper::Prop1PropertyCb(const FTestbed2NestedStruct1& InProp1)
+{
+	(void)InProp1;
+}
+
+void UTestbed2NestedStruct1InterfaceMsgBusHelper::Prop1PropertyChangeLocalCheckRemoteCb(const FTestbed2NestedStruct1& InProp1)
+{
+	(void)InProp1;
+}
+
+void UTestbed2NestedStruct1InterfaceMsgBusHelper::Prop1PropertyChangeLocalChangeRemoteCb(const FTestbed2NestedStruct1& InProp1)
+{
+	(void)InProp1;
 }
 
 void UTestbed2NestedStruct1InterfaceMsgBusHelper::Sig1SignalCb(const FTestbed2NestedStruct1& Param1)

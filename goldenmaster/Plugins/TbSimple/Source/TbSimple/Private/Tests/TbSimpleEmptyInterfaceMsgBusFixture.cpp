@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbSimpleEmptyInterfaceMsgBusFixture.h"
-#include "TbSimpleEmptyInterfaceMsgBus.spec.h"
+#include "TbSimpleTestsCommon.h"
 #include "Generated/MsgBus/TbSimpleEmptyInterfaceMsgBusClient.h"
 #include "Generated/MsgBus/TbSimpleEmptyInterfaceMsgBusAdapter.h"
 #include "Engine/GameInstance.h"
@@ -28,16 +28,26 @@ UTbSimpleEmptyInterfaceMsgBusHelper::~UTbSimpleEmptyInterfaceMsgBusHelper()
 	Spec = nullptr;
 }
 
-void UTbSimpleEmptyInterfaceMsgBusHelper::SetSpec(UTbSimpleEmptyInterfaceMsgBusSpec* InSpec)
+void UTbSimpleEmptyInterfaceMsgBusHelper::SetParentFixture(TWeakPtr<FTbSimpleEmptyInterfaceMsgBusFixture> InFixture)
+{
+	ImplFixture = InFixture;
+}
+
+void UTbSimpleEmptyInterfaceMsgBusHelper::SetSpec(FAutomationTestBase* InSpec)
 {
 	Spec = InSpec;
 }
 
+void UTbSimpleEmptyInterfaceMsgBusHelper::SetTestDone(const FDoneDelegate& InDone)
+{
+	testDoneDelegate = InDone;
+}
+
 void UTbSimpleEmptyInterfaceMsgBusHelper::_ConnectionStatusChangedCb(bool bConnected)
 {
-	if (Spec)
+	if (bConnected)
 	{
-		Spec->_ConnectionStatusChangedCb(bConnected);
+		testDoneDelegate.Execute();
 	}
 }
 
@@ -94,7 +104,15 @@ UTbSimpleEmptyInterfaceMsgBusHelper::~UTbSimpleEmptyInterfaceMsgBusHelper()
 {
 }
 
-void UTbSimpleEmptyInterfaceMsgBusHelper::SetSpec(UTbSimpleEmptyInterfaceMsgBusSpec* /* InSpec */)
+void UTbSimpleEmptyInterfaceMsgBusHelper::SetParentFixture(TWeakPtr<FTbSimpleEmptyInterfaceMsgBusFixture> /*InFixture*/)
+{
+}
+
+void UTbSimpleEmptyInterfaceMsgBusHelper::SetSpec(FAutomationTestBase* /*InSpec*/)
+{
+}
+
+void UTbSimpleEmptyInterfaceMsgBusHelper::SetTestDone(const FDoneDelegate& /*InDone*/)
 {
 }
 

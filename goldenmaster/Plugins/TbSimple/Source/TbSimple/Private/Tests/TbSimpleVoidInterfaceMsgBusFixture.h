@@ -11,7 +11,7 @@
 #include "HAL/Platform.h"
 #include "TbSimpleVoidInterfaceMsgBusFixture.generated.h"
 
-class UTbSimpleVoidInterfaceMsgBusSpec;
+class FTbSimpleVoidInterfaceMsgBusFixture;
 class ITbSimpleVoidInterfaceInterface;
 class UTbSimpleVoidInterfaceMsgBusAdapter;
 class IApiGearConnection;
@@ -23,7 +23,9 @@ class UTbSimpleVoidInterfaceMsgBusHelper : public UObject
 public:
 	~UTbSimpleVoidInterfaceMsgBusHelper();
 
-	void SetSpec(UTbSimpleVoidInterfaceMsgBusSpec* InSpec);
+	void SetParentFixture(TWeakPtr<FTbSimpleVoidInterfaceMsgBusFixture> InFixture);
+	void SetSpec(FAutomationTestBase* InSpec);
+	void SetTestDone(const FDoneDelegate& InDone);
 
 	UFUNCTION()
 	void SigVoidSignalCb();
@@ -32,8 +34,9 @@ public:
 	void _ConnectionStatusChangedCb(bool bConnected);
 
 protected:
-	const FDoneDelegate* testDoneDelegate;
-	UTbSimpleVoidInterfaceMsgBusSpec* Spec;
+	TWeakPtr<FTbSimpleVoidInterfaceMsgBusFixture> ImplFixture;
+	FDoneDelegate testDoneDelegate;
+	FAutomationTestBase* Spec;
 };
 
 #if WITH_DEV_AUTOMATION_TESTS

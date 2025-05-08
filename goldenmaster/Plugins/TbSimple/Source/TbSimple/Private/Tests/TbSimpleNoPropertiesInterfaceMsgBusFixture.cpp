@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbSimpleNoPropertiesInterfaceMsgBusFixture.h"
-#include "TbSimpleNoPropertiesInterfaceMsgBus.spec.h"
+#include "TbSimpleTestsCommon.h"
 #include "Generated/MsgBus/TbSimpleNoPropertiesInterfaceMsgBusClient.h"
 #include "Generated/MsgBus/TbSimpleNoPropertiesInterfaceMsgBusAdapter.h"
 #include "Engine/GameInstance.h"
@@ -28,32 +28,40 @@ UTbSimpleNoPropertiesInterfaceMsgBusHelper::~UTbSimpleNoPropertiesInterfaceMsgBu
 	Spec = nullptr;
 }
 
-void UTbSimpleNoPropertiesInterfaceMsgBusHelper::SetSpec(UTbSimpleNoPropertiesInterfaceMsgBusSpec* InSpec)
+void UTbSimpleNoPropertiesInterfaceMsgBusHelper::SetParentFixture(TWeakPtr<FTbSimpleNoPropertiesInterfaceMsgBusFixture> InFixture)
+{
+	ImplFixture = InFixture;
+}
+
+void UTbSimpleNoPropertiesInterfaceMsgBusHelper::SetSpec(FAutomationTestBase* InSpec)
 {
 	Spec = InSpec;
 }
 
-void UTbSimpleNoPropertiesInterfaceMsgBusHelper::SigVoidSignalCb()
+void UTbSimpleNoPropertiesInterfaceMsgBusHelper::SetTestDone(const FDoneDelegate& InDone)
 {
-	if (Spec)
-	{
-		Spec->SigVoidSignalCb();
-	}
+	testDoneDelegate = InDone;
 }
 
-void UTbSimpleNoPropertiesInterfaceMsgBusHelper::SigBoolSignalCb(bool bParamBool)
+void UTbSimpleNoPropertiesInterfaceMsgBusHelper::SigVoidSignalCb()
 {
-	if (Spec)
-	{
-		Spec->SigBoolSignalCb(bParamBool);
-	}
+	// known test value
+	testDoneDelegate.Execute();
+}
+
+void UTbSimpleNoPropertiesInterfaceMsgBusHelper::SigBoolSignalCb(bool bInParamBool)
+{
+	// known test value
+	bool bParamBoolTestValue = true;
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), bInParamBool, bParamBoolTestValue);
+	testDoneDelegate.Execute();
 }
 
 void UTbSimpleNoPropertiesInterfaceMsgBusHelper::_ConnectionStatusChangedCb(bool bConnected)
 {
-	if (Spec)
+	if (bConnected)
 	{
-		Spec->_ConnectionStatusChangedCb(bConnected);
+		testDoneDelegate.Execute();
 	}
 }
 
@@ -110,7 +118,15 @@ UTbSimpleNoPropertiesInterfaceMsgBusHelper::~UTbSimpleNoPropertiesInterfaceMsgBu
 {
 }
 
-void UTbSimpleNoPropertiesInterfaceMsgBusHelper::SetSpec(UTbSimpleNoPropertiesInterfaceMsgBusSpec* /* InSpec */)
+void UTbSimpleNoPropertiesInterfaceMsgBusHelper::SetParentFixture(TWeakPtr<FTbSimpleNoPropertiesInterfaceMsgBusFixture> /*InFixture*/)
+{
+}
+
+void UTbSimpleNoPropertiesInterfaceMsgBusHelper::SetSpec(FAutomationTestBase* /*InSpec*/)
+{
+}
+
+void UTbSimpleNoPropertiesInterfaceMsgBusHelper::SetTestDone(const FDoneDelegate& /*InDone*/)
 {
 }
 

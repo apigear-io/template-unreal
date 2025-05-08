@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "Testbed1StructArrayInterfaceMsgBusFixture.h"
-#include "Testbed1StructArrayInterfaceMsgBus.spec.h"
+#include "Testbed1TestsCommon.h"
 #include "Generated/MsgBus/Testbed1StructArrayInterfaceMsgBusClient.h"
 #include "Generated/MsgBus/Testbed1StructArrayInterfaceMsgBusAdapter.h"
 #include "Engine/GameInstance.h"
@@ -28,176 +28,387 @@ UTestbed1StructArrayInterfaceMsgBusHelper::~UTestbed1StructArrayInterfaceMsgBusH
 	Spec = nullptr;
 }
 
-void UTestbed1StructArrayInterfaceMsgBusHelper::SetSpec(UTestbed1StructArrayInterfaceMsgBusSpec* InSpec)
+void UTestbed1StructArrayInterfaceMsgBusHelper::SetParentFixture(TWeakPtr<FTestbed1StructArrayInterfaceMsgBusFixture> InFixture)
+{
+	ImplFixture = InFixture;
+}
+
+void UTestbed1StructArrayInterfaceMsgBusHelper::SetSpec(FAutomationTestBase* InSpec)
 {
 	Spec = InSpec;
 }
 
-void UTestbed1StructArrayInterfaceMsgBusHelper::PropBoolPropertyCb(const TArray<FTestbed1StructBool>& PropBool)
+void UTestbed1StructArrayInterfaceMsgBusHelper::SetTestDone(const FDoneDelegate& InDone)
 {
-	if (Spec)
+	testDoneDelegate = InDone;
+}
+
+void UTestbed1StructArrayInterfaceMsgBusHelper::PropBoolPropertyCb(const TArray<FTestbed1StructBool>& InPropBool)
+{
+	TArray<FTestbed1StructBool> TestValue = TArray<FTestbed1StructBool>();
+	// use different test value
+	TestValue = createTestFTestbed1StructBoolArray();
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropBool, TestValue);
+	if (TSharedPtr<FTestbed1StructArrayInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
 	{
-		Spec->PropBoolPropertyCb(PropBool);
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropBool(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTestbed1StructArrayInterfaceMsgBusHelper::PropBoolPropertyChangeLocalCheckRemoteCb(const TArray<FTestbed1StructBool>& InPropBool)
+{
+	TArray<FTestbed1StructBool> TestValue = TArray<FTestbed1StructBool>();
+	// use different test value
+	TestValue = createTestFTestbed1StructBoolArray();
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropBool, TestValue);
+	if (TSharedPtr<FTestbed1StructArrayInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropBool(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTestbed1StructArrayInterfaceMsgBusHelper::PropBoolPropertyChangeLocalChangeRemoteCb(const TArray<FTestbed1StructBool>& InPropBool)
+{
+	// this function must be called twice before we can successfully pass this test.
+	// first call it should have the test value of the parameter
+	// second call it should have the default value of the parameter again
+	static int count = 0;
+	count++;
+
+	if (count % 2 != 0)
+	{
+		TArray<FTestbed1StructBool> TestValue = TArray<FTestbed1StructBool>();
+		// use different test value
+		TestValue = createTestFTestbed1StructBoolArray();
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropBool, TestValue);
+		if (TSharedPtr<FTestbed1StructArrayInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropBool(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+
+		// now set it to the default value
+		TestValue = TArray<FTestbed1StructBool>(); // default value
+		if (TSharedPtr<FTestbed1StructArrayInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			PinnedImplFixture->GetImplementation()->Execute_SetPropBool(PinnedImplFixture->GetImplementation().GetObject(), TestValue);
+		}
+	}
+	else
+	{
+		TArray<FTestbed1StructBool> TestValue = TArray<FTestbed1StructBool>(); // default value
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropBool, TestValue);
+		if (TSharedPtr<FTestbed1StructArrayInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropBool(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+		testDoneDelegate.Execute();
 	}
 }
 
-void UTestbed1StructArrayInterfaceMsgBusHelper::PropBoolPropertyChangeLocalCheckRemoteCb(const TArray<FTestbed1StructBool>& PropBool)
+void UTestbed1StructArrayInterfaceMsgBusHelper::PropIntPropertyCb(const TArray<FTestbed1StructInt>& InPropInt)
 {
-	if (Spec)
+	TArray<FTestbed1StructInt> TestValue = TArray<FTestbed1StructInt>();
+	// use different test value
+	TestValue = createTestFTestbed1StructIntArray();
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
+	if (TSharedPtr<FTestbed1StructArrayInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
 	{
-		Spec->PropBoolPropertyChangeLocalCheckRemoteCb(PropBool);
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropInt(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTestbed1StructArrayInterfaceMsgBusHelper::PropIntPropertyChangeLocalCheckRemoteCb(const TArray<FTestbed1StructInt>& InPropInt)
+{
+	TArray<FTestbed1StructInt> TestValue = TArray<FTestbed1StructInt>();
+	// use different test value
+	TestValue = createTestFTestbed1StructIntArray();
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
+	if (TSharedPtr<FTestbed1StructArrayInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropInt(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTestbed1StructArrayInterfaceMsgBusHelper::PropIntPropertyChangeLocalChangeRemoteCb(const TArray<FTestbed1StructInt>& InPropInt)
+{
+	// this function must be called twice before we can successfully pass this test.
+	// first call it should have the test value of the parameter
+	// second call it should have the default value of the parameter again
+	static int count = 0;
+	count++;
+
+	if (count % 2 != 0)
+	{
+		TArray<FTestbed1StructInt> TestValue = TArray<FTestbed1StructInt>();
+		// use different test value
+		TestValue = createTestFTestbed1StructIntArray();
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
+		if (TSharedPtr<FTestbed1StructArrayInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropInt(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+
+		// now set it to the default value
+		TestValue = TArray<FTestbed1StructInt>(); // default value
+		if (TSharedPtr<FTestbed1StructArrayInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			PinnedImplFixture->GetImplementation()->Execute_SetPropInt(PinnedImplFixture->GetImplementation().GetObject(), TestValue);
+		}
+	}
+	else
+	{
+		TArray<FTestbed1StructInt> TestValue = TArray<FTestbed1StructInt>(); // default value
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
+		if (TSharedPtr<FTestbed1StructArrayInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropInt(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+		testDoneDelegate.Execute();
 	}
 }
 
-void UTestbed1StructArrayInterfaceMsgBusHelper::PropBoolPropertyChangeLocalChangeRemoteCb(const TArray<FTestbed1StructBool>& PropBool)
+void UTestbed1StructArrayInterfaceMsgBusHelper::PropFloatPropertyCb(const TArray<FTestbed1StructFloat>& InPropFloat)
 {
-	if (Spec)
+	TArray<FTestbed1StructFloat> TestValue = TArray<FTestbed1StructFloat>();
+	// use different test value
+	TestValue = createTestFTestbed1StructFloatArray();
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat, TestValue);
+	if (TSharedPtr<FTestbed1StructArrayInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
 	{
-		Spec->PropBoolPropertyChangeLocalChangeRemoteCb(PropBool);
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropFloat(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTestbed1StructArrayInterfaceMsgBusHelper::PropFloatPropertyChangeLocalCheckRemoteCb(const TArray<FTestbed1StructFloat>& InPropFloat)
+{
+	TArray<FTestbed1StructFloat> TestValue = TArray<FTestbed1StructFloat>();
+	// use different test value
+	TestValue = createTestFTestbed1StructFloatArray();
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat, TestValue);
+	if (TSharedPtr<FTestbed1StructArrayInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropFloat(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTestbed1StructArrayInterfaceMsgBusHelper::PropFloatPropertyChangeLocalChangeRemoteCb(const TArray<FTestbed1StructFloat>& InPropFloat)
+{
+	// this function must be called twice before we can successfully pass this test.
+	// first call it should have the test value of the parameter
+	// second call it should have the default value of the parameter again
+	static int count = 0;
+	count++;
+
+	if (count % 2 != 0)
+	{
+		TArray<FTestbed1StructFloat> TestValue = TArray<FTestbed1StructFloat>();
+		// use different test value
+		TestValue = createTestFTestbed1StructFloatArray();
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat, TestValue);
+		if (TSharedPtr<FTestbed1StructArrayInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropFloat(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+
+		// now set it to the default value
+		TestValue = TArray<FTestbed1StructFloat>(); // default value
+		if (TSharedPtr<FTestbed1StructArrayInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			PinnedImplFixture->GetImplementation()->Execute_SetPropFloat(PinnedImplFixture->GetImplementation().GetObject(), TestValue);
+		}
+	}
+	else
+	{
+		TArray<FTestbed1StructFloat> TestValue = TArray<FTestbed1StructFloat>(); // default value
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat, TestValue);
+		if (TSharedPtr<FTestbed1StructArrayInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropFloat(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+		testDoneDelegate.Execute();
 	}
 }
 
-void UTestbed1StructArrayInterfaceMsgBusHelper::PropIntPropertyCb(const TArray<FTestbed1StructInt>& PropInt)
+void UTestbed1StructArrayInterfaceMsgBusHelper::PropStringPropertyCb(const TArray<FTestbed1StructString>& InPropString)
 {
-	if (Spec)
+	TArray<FTestbed1StructString> TestValue = TArray<FTestbed1StructString>();
+	// use different test value
+	TestValue = createTestFTestbed1StructStringArray();
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropString, TestValue);
+	if (TSharedPtr<FTestbed1StructArrayInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
 	{
-		Spec->PropIntPropertyCb(PropInt);
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropString(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTestbed1StructArrayInterfaceMsgBusHelper::PropStringPropertyChangeLocalCheckRemoteCb(const TArray<FTestbed1StructString>& InPropString)
+{
+	TArray<FTestbed1StructString> TestValue = TArray<FTestbed1StructString>();
+	// use different test value
+	TestValue = createTestFTestbed1StructStringArray();
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropString, TestValue);
+	if (TSharedPtr<FTestbed1StructArrayInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropString(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTestbed1StructArrayInterfaceMsgBusHelper::PropStringPropertyChangeLocalChangeRemoteCb(const TArray<FTestbed1StructString>& InPropString)
+{
+	// this function must be called twice before we can successfully pass this test.
+	// first call it should have the test value of the parameter
+	// second call it should have the default value of the parameter again
+	static int count = 0;
+	count++;
+
+	if (count % 2 != 0)
+	{
+		TArray<FTestbed1StructString> TestValue = TArray<FTestbed1StructString>();
+		// use different test value
+		TestValue = createTestFTestbed1StructStringArray();
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropString, TestValue);
+		if (TSharedPtr<FTestbed1StructArrayInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropString(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+
+		// now set it to the default value
+		TestValue = TArray<FTestbed1StructString>(); // default value
+		if (TSharedPtr<FTestbed1StructArrayInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			PinnedImplFixture->GetImplementation()->Execute_SetPropString(PinnedImplFixture->GetImplementation().GetObject(), TestValue);
+		}
+	}
+	else
+	{
+		TArray<FTestbed1StructString> TestValue = TArray<FTestbed1StructString>(); // default value
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropString, TestValue);
+		if (TSharedPtr<FTestbed1StructArrayInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropString(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+		testDoneDelegate.Execute();
 	}
 }
 
-void UTestbed1StructArrayInterfaceMsgBusHelper::PropIntPropertyChangeLocalCheckRemoteCb(const TArray<FTestbed1StructInt>& PropInt)
+void UTestbed1StructArrayInterfaceMsgBusHelper::PropEnumPropertyCb(const TArray<ETestbed1Enum0>& InPropEnum)
 {
-	if (Spec)
+	TArray<ETestbed1Enum0> TestValue = TArray<ETestbed1Enum0>();
+	// use different test value
+	TestValue.Add(ETestbed1Enum0::T1E0_VALUE1);
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropEnum, TestValue);
+	if (TSharedPtr<FTestbed1StructArrayInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
 	{
-		Spec->PropIntPropertyChangeLocalCheckRemoteCb(PropInt);
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropEnum(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTestbed1StructArrayInterfaceMsgBusHelper::PropEnumPropertyChangeLocalCheckRemoteCb(const TArray<ETestbed1Enum0>& InPropEnum)
+{
+	TArray<ETestbed1Enum0> TestValue = TArray<ETestbed1Enum0>();
+	// use different test value
+	TestValue.Add(ETestbed1Enum0::T1E0_VALUE1);
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropEnum, TestValue);
+	if (TSharedPtr<FTestbed1StructArrayInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropEnum(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTestbed1StructArrayInterfaceMsgBusHelper::PropEnumPropertyChangeLocalChangeRemoteCb(const TArray<ETestbed1Enum0>& InPropEnum)
+{
+	// this function must be called twice before we can successfully pass this test.
+	// first call it should have the test value of the parameter
+	// second call it should have the default value of the parameter again
+	static int count = 0;
+	count++;
+
+	if (count % 2 != 0)
+	{
+		TArray<ETestbed1Enum0> TestValue = TArray<ETestbed1Enum0>();
+		// use different test value
+		TestValue.Add(ETestbed1Enum0::T1E0_VALUE1);
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropEnum, TestValue);
+		if (TSharedPtr<FTestbed1StructArrayInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropEnum(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+
+		// now set it to the default value
+		TestValue = TArray<ETestbed1Enum0>(); // default value
+		if (TSharedPtr<FTestbed1StructArrayInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			PinnedImplFixture->GetImplementation()->Execute_SetPropEnum(PinnedImplFixture->GetImplementation().GetObject(), TestValue);
+		}
+	}
+	else
+	{
+		TArray<ETestbed1Enum0> TestValue = TArray<ETestbed1Enum0>(); // default value
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropEnum, TestValue);
+		if (TSharedPtr<FTestbed1StructArrayInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetPropEnum(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+		testDoneDelegate.Execute();
 	}
 }
 
-void UTestbed1StructArrayInterfaceMsgBusHelper::PropIntPropertyChangeLocalChangeRemoteCb(const TArray<FTestbed1StructInt>& PropInt)
+void UTestbed1StructArrayInterfaceMsgBusHelper::SigBoolSignalCb(const TArray<FTestbed1StructBool>& InParamBool)
 {
-	if (Spec)
-	{
-		Spec->PropIntPropertyChangeLocalChangeRemoteCb(PropInt);
-	}
+	// known test value
+	TArray<FTestbed1StructBool> ParamBoolTestValue = createTestFTestbed1StructBoolArray();
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamBool, ParamBoolTestValue);
+	testDoneDelegate.Execute();
 }
 
-void UTestbed1StructArrayInterfaceMsgBusHelper::PropFloatPropertyCb(const TArray<FTestbed1StructFloat>& PropFloat)
+void UTestbed1StructArrayInterfaceMsgBusHelper::SigIntSignalCb(const TArray<FTestbed1StructInt>& InParamInt)
 {
-	if (Spec)
-	{
-		Spec->PropFloatPropertyCb(PropFloat);
-	}
+	// known test value
+	TArray<FTestbed1StructInt> ParamIntTestValue = createTestFTestbed1StructIntArray();
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamInt, ParamIntTestValue);
+	testDoneDelegate.Execute();
 }
 
-void UTestbed1StructArrayInterfaceMsgBusHelper::PropFloatPropertyChangeLocalCheckRemoteCb(const TArray<FTestbed1StructFloat>& PropFloat)
+void UTestbed1StructArrayInterfaceMsgBusHelper::SigFloatSignalCb(const TArray<FTestbed1StructFloat>& InParamFloat)
 {
-	if (Spec)
-	{
-		Spec->PropFloatPropertyChangeLocalCheckRemoteCb(PropFloat);
-	}
+	// known test value
+	TArray<FTestbed1StructFloat> ParamFloatTestValue = createTestFTestbed1StructFloatArray();
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamFloat, ParamFloatTestValue);
+	testDoneDelegate.Execute();
 }
 
-void UTestbed1StructArrayInterfaceMsgBusHelper::PropFloatPropertyChangeLocalChangeRemoteCb(const TArray<FTestbed1StructFloat>& PropFloat)
+void UTestbed1StructArrayInterfaceMsgBusHelper::SigStringSignalCb(const TArray<FTestbed1StructString>& InParamString)
 {
-	if (Spec)
-	{
-		Spec->PropFloatPropertyChangeLocalChangeRemoteCb(PropFloat);
-	}
+	// known test value
+	TArray<FTestbed1StructString> ParamStringTestValue = createTestFTestbed1StructStringArray();
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamString, ParamStringTestValue);
+	testDoneDelegate.Execute();
 }
 
-void UTestbed1StructArrayInterfaceMsgBusHelper::PropStringPropertyCb(const TArray<FTestbed1StructString>& PropString)
+void UTestbed1StructArrayInterfaceMsgBusHelper::SigEnumSignalCb(const TArray<ETestbed1Enum0>& InParamEnum)
 {
-	if (Spec)
-	{
-		Spec->PropStringPropertyCb(PropString);
-	}
-}
-
-void UTestbed1StructArrayInterfaceMsgBusHelper::PropStringPropertyChangeLocalCheckRemoteCb(const TArray<FTestbed1StructString>& PropString)
-{
-	if (Spec)
-	{
-		Spec->PropStringPropertyChangeLocalCheckRemoteCb(PropString);
-	}
-}
-
-void UTestbed1StructArrayInterfaceMsgBusHelper::PropStringPropertyChangeLocalChangeRemoteCb(const TArray<FTestbed1StructString>& PropString)
-{
-	if (Spec)
-	{
-		Spec->PropStringPropertyChangeLocalChangeRemoteCb(PropString);
-	}
-}
-
-void UTestbed1StructArrayInterfaceMsgBusHelper::PropEnumPropertyCb(const TArray<ETestbed1Enum0>& PropEnum)
-{
-	if (Spec)
-	{
-		Spec->PropEnumPropertyCb(PropEnum);
-	}
-}
-
-void UTestbed1StructArrayInterfaceMsgBusHelper::PropEnumPropertyChangeLocalCheckRemoteCb(const TArray<ETestbed1Enum0>& PropEnum)
-{
-	if (Spec)
-	{
-		Spec->PropEnumPropertyChangeLocalCheckRemoteCb(PropEnum);
-	}
-}
-
-void UTestbed1StructArrayInterfaceMsgBusHelper::PropEnumPropertyChangeLocalChangeRemoteCb(const TArray<ETestbed1Enum0>& PropEnum)
-{
-	if (Spec)
-	{
-		Spec->PropEnumPropertyChangeLocalChangeRemoteCb(PropEnum);
-	}
-}
-
-void UTestbed1StructArrayInterfaceMsgBusHelper::SigBoolSignalCb(const TArray<FTestbed1StructBool>& ParamBool)
-{
-	if (Spec)
-	{
-		Spec->SigBoolSignalCb(ParamBool);
-	}
-}
-
-void UTestbed1StructArrayInterfaceMsgBusHelper::SigIntSignalCb(const TArray<FTestbed1StructInt>& ParamInt)
-{
-	if (Spec)
-	{
-		Spec->SigIntSignalCb(ParamInt);
-	}
-}
-
-void UTestbed1StructArrayInterfaceMsgBusHelper::SigFloatSignalCb(const TArray<FTestbed1StructFloat>& ParamFloat)
-{
-	if (Spec)
-	{
-		Spec->SigFloatSignalCb(ParamFloat);
-	}
-}
-
-void UTestbed1StructArrayInterfaceMsgBusHelper::SigStringSignalCb(const TArray<FTestbed1StructString>& ParamString)
-{
-	if (Spec)
-	{
-		Spec->SigStringSignalCb(ParamString);
-	}
-}
-
-void UTestbed1StructArrayInterfaceMsgBusHelper::SigEnumSignalCb(const TArray<ETestbed1Enum0>& ParamEnum)
-{
-	if (Spec)
-	{
-		Spec->SigEnumSignalCb(ParamEnum);
-	}
+	// known test value
+	TArray<ETestbed1Enum0> ParamEnumTestValue = TArray<ETestbed1Enum0>(); // default value
+	ParamEnumTestValue.Add(ETestbed1Enum0::T1E0_VALUE1);
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamEnum, ParamEnumTestValue);
+	testDoneDelegate.Execute();
 }
 
 void UTestbed1StructArrayInterfaceMsgBusHelper::_ConnectionStatusChangedCb(bool bConnected)
 {
-	if (Spec)
+	if (bConnected)
 	{
-		Spec->_ConnectionStatusChangedCb(bConnected);
+		testDoneDelegate.Execute();
 	}
 }
 
@@ -254,33 +465,91 @@ UTestbed1StructArrayInterfaceMsgBusHelper::~UTestbed1StructArrayInterfaceMsgBusH
 {
 }
 
-void UTestbed1StructArrayInterfaceMsgBusHelper::SetSpec(UTestbed1StructArrayInterfaceMsgBusSpec* /* InSpec */)
+void UTestbed1StructArrayInterfaceMsgBusHelper::SetParentFixture(TWeakPtr<FTestbed1StructArrayInterfaceMsgBusFixture> /*InFixture*/)
 {
 }
 
-void UTestbed1StructArrayInterfaceMsgBusHelper::PropBoolPropertyCb(const TArray<FTestbed1StructBool>& PropBool)
+void UTestbed1StructArrayInterfaceMsgBusHelper::SetSpec(FAutomationTestBase* /*InSpec*/)
 {
-	(void)PropBool;
 }
 
-void UTestbed1StructArrayInterfaceMsgBusHelper::PropIntPropertyCb(const TArray<FTestbed1StructInt>& PropInt)
+void UTestbed1StructArrayInterfaceMsgBusHelper::SetTestDone(const FDoneDelegate& /*InDone*/)
 {
-	(void)PropInt;
 }
 
-void UTestbed1StructArrayInterfaceMsgBusHelper::PropFloatPropertyCb(const TArray<FTestbed1StructFloat>& PropFloat)
+void UTestbed1StructArrayInterfaceMsgBusHelper::PropBoolPropertyCb(const TArray<FTestbed1StructBool>& InPropBool)
 {
-	(void)PropFloat;
+	(void)InPropBool;
 }
 
-void UTestbed1StructArrayInterfaceMsgBusHelper::PropStringPropertyCb(const TArray<FTestbed1StructString>& PropString)
+void UTestbed1StructArrayInterfaceMsgBusHelper::PropBoolPropertyChangeLocalCheckRemoteCb(const TArray<FTestbed1StructBool>& InPropBool)
 {
-	(void)PropString;
+	(void)InPropBool;
 }
 
-void UTestbed1StructArrayInterfaceMsgBusHelper::PropEnumPropertyCb(const TArray<ETestbed1Enum0>& PropEnum)
+void UTestbed1StructArrayInterfaceMsgBusHelper::PropBoolPropertyChangeLocalChangeRemoteCb(const TArray<FTestbed1StructBool>& InPropBool)
 {
-	(void)PropEnum;
+	(void)InPropBool;
+}
+
+void UTestbed1StructArrayInterfaceMsgBusHelper::PropIntPropertyCb(const TArray<FTestbed1StructInt>& InPropInt)
+{
+	(void)InPropInt;
+}
+
+void UTestbed1StructArrayInterfaceMsgBusHelper::PropIntPropertyChangeLocalCheckRemoteCb(const TArray<FTestbed1StructInt>& InPropInt)
+{
+	(void)InPropInt;
+}
+
+void UTestbed1StructArrayInterfaceMsgBusHelper::PropIntPropertyChangeLocalChangeRemoteCb(const TArray<FTestbed1StructInt>& InPropInt)
+{
+	(void)InPropInt;
+}
+
+void UTestbed1StructArrayInterfaceMsgBusHelper::PropFloatPropertyCb(const TArray<FTestbed1StructFloat>& InPropFloat)
+{
+	(void)InPropFloat;
+}
+
+void UTestbed1StructArrayInterfaceMsgBusHelper::PropFloatPropertyChangeLocalCheckRemoteCb(const TArray<FTestbed1StructFloat>& InPropFloat)
+{
+	(void)InPropFloat;
+}
+
+void UTestbed1StructArrayInterfaceMsgBusHelper::PropFloatPropertyChangeLocalChangeRemoteCb(const TArray<FTestbed1StructFloat>& InPropFloat)
+{
+	(void)InPropFloat;
+}
+
+void UTestbed1StructArrayInterfaceMsgBusHelper::PropStringPropertyCb(const TArray<FTestbed1StructString>& InPropString)
+{
+	(void)InPropString;
+}
+
+void UTestbed1StructArrayInterfaceMsgBusHelper::PropStringPropertyChangeLocalCheckRemoteCb(const TArray<FTestbed1StructString>& InPropString)
+{
+	(void)InPropString;
+}
+
+void UTestbed1StructArrayInterfaceMsgBusHelper::PropStringPropertyChangeLocalChangeRemoteCb(const TArray<FTestbed1StructString>& InPropString)
+{
+	(void)InPropString;
+}
+
+void UTestbed1StructArrayInterfaceMsgBusHelper::PropEnumPropertyCb(const TArray<ETestbed1Enum0>& InPropEnum)
+{
+	(void)InPropEnum;
+}
+
+void UTestbed1StructArrayInterfaceMsgBusHelper::PropEnumPropertyChangeLocalCheckRemoteCb(const TArray<ETestbed1Enum0>& InPropEnum)
+{
+	(void)InPropEnum;
+}
+
+void UTestbed1StructArrayInterfaceMsgBusHelper::PropEnumPropertyChangeLocalChangeRemoteCb(const TArray<ETestbed1Enum0>& InPropEnum)
+{
+	(void)InPropEnum;
 }
 
 void UTestbed1StructArrayInterfaceMsgBusHelper::SigBoolSignalCb(const TArray<FTestbed1StructBool>& ParamBool)

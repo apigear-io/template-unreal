@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbEnumEnumInterfaceMsgBusFixture.h"
-#include "TbEnumEnumInterfaceMsgBus.spec.h"
+#include "TbEnumTestsCommon.h"
 #include "Generated/MsgBus/TbEnumEnumInterfaceMsgBusClient.h"
 #include "Generated/MsgBus/TbEnumEnumInterfaceMsgBusAdapter.h"
 #include "Engine/GameInstance.h"
@@ -28,144 +28,314 @@ UTbEnumEnumInterfaceMsgBusHelper::~UTbEnumEnumInterfaceMsgBusHelper()
 	Spec = nullptr;
 }
 
-void UTbEnumEnumInterfaceMsgBusHelper::SetSpec(UTbEnumEnumInterfaceMsgBusSpec* InSpec)
+void UTbEnumEnumInterfaceMsgBusHelper::SetParentFixture(TWeakPtr<FTbEnumEnumInterfaceMsgBusFixture> InFixture)
+{
+	ImplFixture = InFixture;
+}
+
+void UTbEnumEnumInterfaceMsgBusHelper::SetSpec(FAutomationTestBase* InSpec)
 {
 	Spec = InSpec;
 }
 
-void UTbEnumEnumInterfaceMsgBusHelper::Prop0PropertyCb(ETbEnumEnum0 Prop0)
+void UTbEnumEnumInterfaceMsgBusHelper::SetTestDone(const FDoneDelegate& InDone)
 {
-	if (Spec)
+	testDoneDelegate = InDone;
+}
+
+void UTbEnumEnumInterfaceMsgBusHelper::Prop0PropertyCb(ETbEnumEnum0 InProp0)
+{
+	ETbEnumEnum0 TestValue = ETbEnumEnum0::TEE0_VALUE0;
+	// use different test value
+	TestValue = ETbEnumEnum0::TEE0_VALUE1;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp0, TestValue);
+	if (TSharedPtr<FTbEnumEnumInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
 	{
-		Spec->Prop0PropertyCb(Prop0);
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetProp0(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTbEnumEnumInterfaceMsgBusHelper::Prop0PropertyChangeLocalCheckRemoteCb(ETbEnumEnum0 InProp0)
+{
+	ETbEnumEnum0 TestValue = ETbEnumEnum0::TEE0_VALUE0;
+	// use different test value
+	TestValue = ETbEnumEnum0::TEE0_VALUE1;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp0, TestValue);
+	if (TSharedPtr<FTbEnumEnumInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetProp0(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTbEnumEnumInterfaceMsgBusHelper::Prop0PropertyChangeLocalChangeRemoteCb(ETbEnumEnum0 InProp0)
+{
+	// this function must be called twice before we can successfully pass this test.
+	// first call it should have the test value of the parameter
+	// second call it should have the default value of the parameter again
+	static int count = 0;
+	count++;
+
+	if (count % 2 != 0)
+	{
+		ETbEnumEnum0 TestValue = ETbEnumEnum0::TEE0_VALUE0;
+		// use different test value
+		TestValue = ETbEnumEnum0::TEE0_VALUE1;
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp0, TestValue);
+		if (TSharedPtr<FTbEnumEnumInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetProp0(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+
+		// now set it to the default value
+		TestValue = ETbEnumEnum0::TEE0_VALUE0; // default value
+		if (TSharedPtr<FTbEnumEnumInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			PinnedImplFixture->GetImplementation()->Execute_SetProp0(PinnedImplFixture->GetImplementation().GetObject(), TestValue);
+		}
+	}
+	else
+	{
+		ETbEnumEnum0 TestValue = ETbEnumEnum0::TEE0_VALUE0; // default value
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp0, TestValue);
+		if (TSharedPtr<FTbEnumEnumInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetProp0(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+		testDoneDelegate.Execute();
 	}
 }
 
-void UTbEnumEnumInterfaceMsgBusHelper::Prop0PropertyChangeLocalCheckRemoteCb(ETbEnumEnum0 Prop0)
+void UTbEnumEnumInterfaceMsgBusHelper::Prop1PropertyCb(ETbEnumEnum1 InProp1)
 {
-	if (Spec)
+	ETbEnumEnum1 TestValue = ETbEnumEnum1::TEE1_VALUE1;
+	// use different test value
+	TestValue = ETbEnumEnum1::TEE1_VALUE2;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
+	if (TSharedPtr<FTbEnumEnumInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
 	{
-		Spec->Prop0PropertyChangeLocalCheckRemoteCb(Prop0);
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetProp1(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTbEnumEnumInterfaceMsgBusHelper::Prop1PropertyChangeLocalCheckRemoteCb(ETbEnumEnum1 InProp1)
+{
+	ETbEnumEnum1 TestValue = ETbEnumEnum1::TEE1_VALUE1;
+	// use different test value
+	TestValue = ETbEnumEnum1::TEE1_VALUE2;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
+	if (TSharedPtr<FTbEnumEnumInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetProp1(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTbEnumEnumInterfaceMsgBusHelper::Prop1PropertyChangeLocalChangeRemoteCb(ETbEnumEnum1 InProp1)
+{
+	// this function must be called twice before we can successfully pass this test.
+	// first call it should have the test value of the parameter
+	// second call it should have the default value of the parameter again
+	static int count = 0;
+	count++;
+
+	if (count % 2 != 0)
+	{
+		ETbEnumEnum1 TestValue = ETbEnumEnum1::TEE1_VALUE1;
+		// use different test value
+		TestValue = ETbEnumEnum1::TEE1_VALUE2;
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
+		if (TSharedPtr<FTbEnumEnumInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetProp1(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+
+		// now set it to the default value
+		TestValue = ETbEnumEnum1::TEE1_VALUE1; // default value
+		if (TSharedPtr<FTbEnumEnumInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			PinnedImplFixture->GetImplementation()->Execute_SetProp1(PinnedImplFixture->GetImplementation().GetObject(), TestValue);
+		}
+	}
+	else
+	{
+		ETbEnumEnum1 TestValue = ETbEnumEnum1::TEE1_VALUE1; // default value
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
+		if (TSharedPtr<FTbEnumEnumInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetProp1(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+		testDoneDelegate.Execute();
 	}
 }
 
-void UTbEnumEnumInterfaceMsgBusHelper::Prop0PropertyChangeLocalChangeRemoteCb(ETbEnumEnum0 Prop0)
+void UTbEnumEnumInterfaceMsgBusHelper::Prop2PropertyCb(ETbEnumEnum2 InProp2)
 {
-	if (Spec)
+	ETbEnumEnum2 TestValue = ETbEnumEnum2::TEE2_VALUE2;
+	// use different test value
+	TestValue = ETbEnumEnum2::TEE2_VALUE1;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp2, TestValue);
+	if (TSharedPtr<FTbEnumEnumInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
 	{
-		Spec->Prop0PropertyChangeLocalChangeRemoteCb(Prop0);
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetProp2(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTbEnumEnumInterfaceMsgBusHelper::Prop2PropertyChangeLocalCheckRemoteCb(ETbEnumEnum2 InProp2)
+{
+	ETbEnumEnum2 TestValue = ETbEnumEnum2::TEE2_VALUE2;
+	// use different test value
+	TestValue = ETbEnumEnum2::TEE2_VALUE1;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp2, TestValue);
+	if (TSharedPtr<FTbEnumEnumInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetProp2(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTbEnumEnumInterfaceMsgBusHelper::Prop2PropertyChangeLocalChangeRemoteCb(ETbEnumEnum2 InProp2)
+{
+	// this function must be called twice before we can successfully pass this test.
+	// first call it should have the test value of the parameter
+	// second call it should have the default value of the parameter again
+	static int count = 0;
+	count++;
+
+	if (count % 2 != 0)
+	{
+		ETbEnumEnum2 TestValue = ETbEnumEnum2::TEE2_VALUE2;
+		// use different test value
+		TestValue = ETbEnumEnum2::TEE2_VALUE1;
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp2, TestValue);
+		if (TSharedPtr<FTbEnumEnumInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetProp2(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+
+		// now set it to the default value
+		TestValue = ETbEnumEnum2::TEE2_VALUE2; // default value
+		if (TSharedPtr<FTbEnumEnumInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			PinnedImplFixture->GetImplementation()->Execute_SetProp2(PinnedImplFixture->GetImplementation().GetObject(), TestValue);
+		}
+	}
+	else
+	{
+		ETbEnumEnum2 TestValue = ETbEnumEnum2::TEE2_VALUE2; // default value
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp2, TestValue);
+		if (TSharedPtr<FTbEnumEnumInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetProp2(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+		testDoneDelegate.Execute();
 	}
 }
 
-void UTbEnumEnumInterfaceMsgBusHelper::Prop1PropertyCb(ETbEnumEnum1 Prop1)
+void UTbEnumEnumInterfaceMsgBusHelper::Prop3PropertyCb(ETbEnumEnum3 InProp3)
 {
-	if (Spec)
+	ETbEnumEnum3 TestValue = ETbEnumEnum3::TEE3_VALUE3;
+	// use different test value
+	TestValue = ETbEnumEnum3::TEE3_VALUE2;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp3, TestValue);
+	if (TSharedPtr<FTbEnumEnumInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
 	{
-		Spec->Prop1PropertyCb(Prop1);
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetProp3(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTbEnumEnumInterfaceMsgBusHelper::Prop3PropertyChangeLocalCheckRemoteCb(ETbEnumEnum3 InProp3)
+{
+	ETbEnumEnum3 TestValue = ETbEnumEnum3::TEE3_VALUE3;
+	// use different test value
+	TestValue = ETbEnumEnum3::TEE3_VALUE2;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp3, TestValue);
+	if (TSharedPtr<FTbEnumEnumInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetProp3(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTbEnumEnumInterfaceMsgBusHelper::Prop3PropertyChangeLocalChangeRemoteCb(ETbEnumEnum3 InProp3)
+{
+	// this function must be called twice before we can successfully pass this test.
+	// first call it should have the test value of the parameter
+	// second call it should have the default value of the parameter again
+	static int count = 0;
+	count++;
+
+	if (count % 2 != 0)
+	{
+		ETbEnumEnum3 TestValue = ETbEnumEnum3::TEE3_VALUE3;
+		// use different test value
+		TestValue = ETbEnumEnum3::TEE3_VALUE2;
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp3, TestValue);
+		if (TSharedPtr<FTbEnumEnumInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetProp3(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+
+		// now set it to the default value
+		TestValue = ETbEnumEnum3::TEE3_VALUE3; // default value
+		if (TSharedPtr<FTbEnumEnumInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			PinnedImplFixture->GetImplementation()->Execute_SetProp3(PinnedImplFixture->GetImplementation().GetObject(), TestValue);
+		}
+	}
+	else
+	{
+		ETbEnumEnum3 TestValue = ETbEnumEnum3::TEE3_VALUE3; // default value
+		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp3, TestValue);
+		if (TSharedPtr<FTbEnumEnumInterfaceMsgBusFixture> PinnedImplFixture = ImplFixture.Pin())
+		{
+			Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->Execute_GetProp3(PinnedImplFixture->GetImplementation().GetObject()), TestValue);
+		}
+		testDoneDelegate.Execute();
 	}
 }
 
-void UTbEnumEnumInterfaceMsgBusHelper::Prop1PropertyChangeLocalCheckRemoteCb(ETbEnumEnum1 Prop1)
+void UTbEnumEnumInterfaceMsgBusHelper::Sig0SignalCb(ETbEnumEnum0 InParam0)
 {
-	if (Spec)
-	{
-		Spec->Prop1PropertyChangeLocalCheckRemoteCb(Prop1);
-	}
+	// known test value
+	ETbEnumEnum0 Param0TestValue = ETbEnumEnum0::TEE0_VALUE1;
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam0, Param0TestValue);
+	testDoneDelegate.Execute();
 }
 
-void UTbEnumEnumInterfaceMsgBusHelper::Prop1PropertyChangeLocalChangeRemoteCb(ETbEnumEnum1 Prop1)
+void UTbEnumEnumInterfaceMsgBusHelper::Sig1SignalCb(ETbEnumEnum1 InParam1)
 {
-	if (Spec)
-	{
-		Spec->Prop1PropertyChangeLocalChangeRemoteCb(Prop1);
-	}
+	// known test value
+	ETbEnumEnum1 Param1TestValue = ETbEnumEnum1::TEE1_VALUE2;
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
+	testDoneDelegate.Execute();
 }
 
-void UTbEnumEnumInterfaceMsgBusHelper::Prop2PropertyCb(ETbEnumEnum2 Prop2)
+void UTbEnumEnumInterfaceMsgBusHelper::Sig2SignalCb(ETbEnumEnum2 InParam2)
 {
-	if (Spec)
-	{
-		Spec->Prop2PropertyCb(Prop2);
-	}
+	// known test value
+	ETbEnumEnum2 Param2TestValue = ETbEnumEnum2::TEE2_VALUE1;
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam2, Param2TestValue);
+	testDoneDelegate.Execute();
 }
 
-void UTbEnumEnumInterfaceMsgBusHelper::Prop2PropertyChangeLocalCheckRemoteCb(ETbEnumEnum2 Prop2)
+void UTbEnumEnumInterfaceMsgBusHelper::Sig3SignalCb(ETbEnumEnum3 InParam3)
 {
-	if (Spec)
-	{
-		Spec->Prop2PropertyChangeLocalCheckRemoteCb(Prop2);
-	}
-}
-
-void UTbEnumEnumInterfaceMsgBusHelper::Prop2PropertyChangeLocalChangeRemoteCb(ETbEnumEnum2 Prop2)
-{
-	if (Spec)
-	{
-		Spec->Prop2PropertyChangeLocalChangeRemoteCb(Prop2);
-	}
-}
-
-void UTbEnumEnumInterfaceMsgBusHelper::Prop3PropertyCb(ETbEnumEnum3 Prop3)
-{
-	if (Spec)
-	{
-		Spec->Prop3PropertyCb(Prop3);
-	}
-}
-
-void UTbEnumEnumInterfaceMsgBusHelper::Prop3PropertyChangeLocalCheckRemoteCb(ETbEnumEnum3 Prop3)
-{
-	if (Spec)
-	{
-		Spec->Prop3PropertyChangeLocalCheckRemoteCb(Prop3);
-	}
-}
-
-void UTbEnumEnumInterfaceMsgBusHelper::Prop3PropertyChangeLocalChangeRemoteCb(ETbEnumEnum3 Prop3)
-{
-	if (Spec)
-	{
-		Spec->Prop3PropertyChangeLocalChangeRemoteCb(Prop3);
-	}
-}
-
-void UTbEnumEnumInterfaceMsgBusHelper::Sig0SignalCb(ETbEnumEnum0 Param0)
-{
-	if (Spec)
-	{
-		Spec->Sig0SignalCb(Param0);
-	}
-}
-
-void UTbEnumEnumInterfaceMsgBusHelper::Sig1SignalCb(ETbEnumEnum1 Param1)
-{
-	if (Spec)
-	{
-		Spec->Sig1SignalCb(Param1);
-	}
-}
-
-void UTbEnumEnumInterfaceMsgBusHelper::Sig2SignalCb(ETbEnumEnum2 Param2)
-{
-	if (Spec)
-	{
-		Spec->Sig2SignalCb(Param2);
-	}
-}
-
-void UTbEnumEnumInterfaceMsgBusHelper::Sig3SignalCb(ETbEnumEnum3 Param3)
-{
-	if (Spec)
-	{
-		Spec->Sig3SignalCb(Param3);
-	}
+	// known test value
+	ETbEnumEnum3 Param3TestValue = ETbEnumEnum3::TEE3_VALUE2;
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam3, Param3TestValue);
+	testDoneDelegate.Execute();
 }
 
 void UTbEnumEnumInterfaceMsgBusHelper::_ConnectionStatusChangedCb(bool bConnected)
 {
-	if (Spec)
+	if (bConnected)
 	{
-		Spec->_ConnectionStatusChangedCb(bConnected);
+		testDoneDelegate.Execute();
 	}
 }
 
@@ -222,28 +392,76 @@ UTbEnumEnumInterfaceMsgBusHelper::~UTbEnumEnumInterfaceMsgBusHelper()
 {
 }
 
-void UTbEnumEnumInterfaceMsgBusHelper::SetSpec(UTbEnumEnumInterfaceMsgBusSpec* /* InSpec */)
+void UTbEnumEnumInterfaceMsgBusHelper::SetParentFixture(TWeakPtr<FTbEnumEnumInterfaceMsgBusFixture> /*InFixture*/)
 {
 }
 
-void UTbEnumEnumInterfaceMsgBusHelper::Prop0PropertyCb(ETbEnumEnum0 Prop0)
+void UTbEnumEnumInterfaceMsgBusHelper::SetSpec(FAutomationTestBase* /*InSpec*/)
 {
-	(void)Prop0;
 }
 
-void UTbEnumEnumInterfaceMsgBusHelper::Prop1PropertyCb(ETbEnumEnum1 Prop1)
+void UTbEnumEnumInterfaceMsgBusHelper::SetTestDone(const FDoneDelegate& /*InDone*/)
 {
-	(void)Prop1;
 }
 
-void UTbEnumEnumInterfaceMsgBusHelper::Prop2PropertyCb(ETbEnumEnum2 Prop2)
+void UTbEnumEnumInterfaceMsgBusHelper::Prop0PropertyCb(ETbEnumEnum0 InProp0)
 {
-	(void)Prop2;
+	(void)InProp0;
 }
 
-void UTbEnumEnumInterfaceMsgBusHelper::Prop3PropertyCb(ETbEnumEnum3 Prop3)
+void UTbEnumEnumInterfaceMsgBusHelper::Prop0PropertyChangeLocalCheckRemoteCb(ETbEnumEnum0 InProp0)
 {
-	(void)Prop3;
+	(void)InProp0;
+}
+
+void UTbEnumEnumInterfaceMsgBusHelper::Prop0PropertyChangeLocalChangeRemoteCb(ETbEnumEnum0 InProp0)
+{
+	(void)InProp0;
+}
+
+void UTbEnumEnumInterfaceMsgBusHelper::Prop1PropertyCb(ETbEnumEnum1 InProp1)
+{
+	(void)InProp1;
+}
+
+void UTbEnumEnumInterfaceMsgBusHelper::Prop1PropertyChangeLocalCheckRemoteCb(ETbEnumEnum1 InProp1)
+{
+	(void)InProp1;
+}
+
+void UTbEnumEnumInterfaceMsgBusHelper::Prop1PropertyChangeLocalChangeRemoteCb(ETbEnumEnum1 InProp1)
+{
+	(void)InProp1;
+}
+
+void UTbEnumEnumInterfaceMsgBusHelper::Prop2PropertyCb(ETbEnumEnum2 InProp2)
+{
+	(void)InProp2;
+}
+
+void UTbEnumEnumInterfaceMsgBusHelper::Prop2PropertyChangeLocalCheckRemoteCb(ETbEnumEnum2 InProp2)
+{
+	(void)InProp2;
+}
+
+void UTbEnumEnumInterfaceMsgBusHelper::Prop2PropertyChangeLocalChangeRemoteCb(ETbEnumEnum2 InProp2)
+{
+	(void)InProp2;
+}
+
+void UTbEnumEnumInterfaceMsgBusHelper::Prop3PropertyCb(ETbEnumEnum3 InProp3)
+{
+	(void)InProp3;
+}
+
+void UTbEnumEnumInterfaceMsgBusHelper::Prop3PropertyChangeLocalCheckRemoteCb(ETbEnumEnum3 InProp3)
+{
+	(void)InProp3;
+}
+
+void UTbEnumEnumInterfaceMsgBusHelper::Prop3PropertyChangeLocalChangeRemoteCb(ETbEnumEnum3 InProp3)
+{
+	(void)InProp3;
 }
 
 void UTbEnumEnumInterfaceMsgBusHelper::Sig0SignalCb(ETbEnumEnum0 Param0)
