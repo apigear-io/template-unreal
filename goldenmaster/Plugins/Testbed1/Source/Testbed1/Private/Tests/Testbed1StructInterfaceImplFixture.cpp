@@ -82,7 +82,7 @@ TScriptInterface<ITestbed1StructInterfaceInterface> FTestbed1StructInterfaceImpl
 	return testImplementation;
 }
 
-TWeakObjectPtr<UTestbed1StructInterfaceImplHelper> FTestbed1StructInterfaceImplFixture::GetHelper()
+TSoftObjectPtr<UTestbed1StructInterfaceImplHelper> FTestbed1StructInterfaceImplFixture::GetHelper()
 {
 	return Helper;
 }
@@ -91,8 +91,10 @@ UGameInstance* FTestbed1StructInterfaceImplFixture::GetGameInstance()
 {
 	if (!GameInstance.IsValid())
 	{
-		GameInstance = NewObject<UGameInstance>();
+		GameInstance = NewObject<UGameInstance>(GetTransientPackage());
 		GameInstance->Init();
+		// needed to prevent garbage collection and we can't use UPROPERTY on raw c++ objects
+		GameInstance->AddToRoot();
 	}
 
 	return GameInstance.Get();
@@ -103,6 +105,7 @@ void FTestbed1StructInterfaceImplFixture::CleanUp()
 	if (GameInstance.IsValid())
 	{
 		GameInstance->Shutdown();
+		GameInstance->RemoveFromRoot();
 	}
 }
 #else  // WITH_DEV_AUTOMATION_TESTS

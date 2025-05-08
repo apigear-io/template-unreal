@@ -41,14 +41,14 @@ public:
 
 	UGameInstance* GetGameInstance();
 	TScriptInterface<ITbSame1SameStruct1InterfaceInterface> GetImplementation();
-	TWeakObjectPtr<UTbSame1SameStruct1InterfaceImplHelper> GetHelper();
+	TSoftObjectPtr<UTbSame1SameStruct1InterfaceImplHelper> GetHelper();
 
 private:
 	void CleanUp();
 
-	TWeakObjectPtr<UGameInstance> GameInstance;
+	TSoftObjectPtr<UGameInstance> GameInstance;
 	TScriptInterface<ITbSame1SameStruct1InterfaceInterface> testImplementation;
-	TWeakObjectPtr<UTbSame1SameStruct1InterfaceImplHelper> Helper;
+	TSoftObjectPtr<UTbSame1SameStruct1InterfaceImplHelper> Helper;
 };
 
 #endif // WITH_DEV_AUTOMATION_TESTS

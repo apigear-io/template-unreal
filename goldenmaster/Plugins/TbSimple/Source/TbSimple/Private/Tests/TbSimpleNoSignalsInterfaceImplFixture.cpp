@@ -52,7 +52,7 @@ TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> FTbSimpleNoSignalsInterfa
 	return testImplementation;
 }
 
-TWeakObjectPtr<UTbSimpleNoSignalsInterfaceImplHelper> FTbSimpleNoSignalsInterfaceImplFixture::GetHelper()
+TSoftObjectPtr<UTbSimpleNoSignalsInterfaceImplHelper> FTbSimpleNoSignalsInterfaceImplFixture::GetHelper()
 {
 	return Helper;
 }
@@ -61,8 +61,10 @@ UGameInstance* FTbSimpleNoSignalsInterfaceImplFixture::GetGameInstance()
 {
 	if (!GameInstance.IsValid())
 	{
-		GameInstance = NewObject<UGameInstance>();
+		GameInstance = NewObject<UGameInstance>(GetTransientPackage());
 		GameInstance->Init();
+		// needed to prevent garbage collection and we can't use UPROPERTY on raw c++ objects
+		GameInstance->AddToRoot();
 	}
 
 	return GameInstance.Get();
@@ -73,6 +75,7 @@ void FTbSimpleNoSignalsInterfaceImplFixture::CleanUp()
 	if (GameInstance.IsValid())
 	{
 		GameInstance->Shutdown();
+		GameInstance->RemoveFromRoot();
 	}
 }
 #else  // WITH_DEV_AUTOMATION_TESTS
