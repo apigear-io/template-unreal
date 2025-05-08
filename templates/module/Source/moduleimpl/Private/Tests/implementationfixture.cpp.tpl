@@ -51,7 +51,7 @@ TScriptInterface<I{{$DisplayName}}Interface> F{{ $DisplayName }}ImplFixture::Get
 	return testImplementation;
 }
 
-TWeakObjectPtr<{{$Class}}ImplHelper> F{{ $DisplayName }}ImplFixture::GetHelper()
+TSoftObjectPtr<{{$Class}}ImplHelper> F{{ $DisplayName }}ImplFixture::GetHelper()
 {
 	return Helper;
 }
@@ -60,8 +60,10 @@ UGameInstance* F{{ $DisplayName }}ImplFixture::GetGameInstance()
 {
 	if (!GameInstance.IsValid())
 	{
-		GameInstance = NewObject<UGameInstance>();
+		GameInstance = NewObject<UGameInstance>(GetTransientPackage());
 		GameInstance->Init();
+		// needed to prevent garbage collection and we can't use UPROPERTY on raw c++ objects
+		GameInstance->AddToRoot();
 	}
 
 	return GameInstance.Get();
@@ -72,6 +74,7 @@ void F{{ $DisplayName }}ImplFixture::CleanUp()
 	if (GameInstance.IsValid())
 	{
 		GameInstance->Shutdown();
+		GameInstance->RemoveFromRoot();
 	}
 }
 #else  // WITH_DEV_AUTOMATION_TESTS

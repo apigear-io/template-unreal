@@ -51,14 +51,14 @@ public:
 
 	UGameInstance* GetGameInstance();
 	TScriptInterface<I{{$DisplayName}}Interface> GetImplementation();
-	TWeakObjectPtr<{{$Class}}ImplHelper> GetHelper();
+	TSoftObjectPtr<{{$Class}}ImplHelper> GetHelper();
 
 private:
 	void CleanUp();
 
-	TWeakObjectPtr<UGameInstance> GameInstance;
+	TSoftObjectPtr<UGameInstance> GameInstance;
 	TScriptInterface<I{{$DisplayName}}Interface> testImplementation;
-	TWeakObjectPtr<{{$Class}}ImplHelper> Helper;
+	TSoftObjectPtr<{{$Class}}ImplHelper> Helper;
 };
 
 #endif // WITH_DEV_AUTOMATION_TESTS

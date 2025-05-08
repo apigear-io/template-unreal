@@ -59,14 +59,14 @@ public:
 
 	UGameInstance* GetGameInstance();
 	TScriptInterface<ITbEnumEnumInterfaceInterface> GetImplementation();
-	TWeakObjectPtr<UTbEnumEnumInterfaceImplHelper> GetHelper();
+	TSoftObjectPtr<UTbEnumEnumInterfaceImplHelper> GetHelper();
 
 private:
 	void CleanUp();
 
-	TWeakObjectPtr<UGameInstance> GameInstance;
+	TSoftObjectPtr<UGameInstance> GameInstance;
 	TScriptInterface<ITbEnumEnumInterfaceInterface> testImplementation;
-	TWeakObjectPtr<UTbEnumEnumInterfaceImplHelper> Helper;
+	TSoftObjectPtr<UTbEnumEnumInterfaceImplHelper> Helper;
 };
 
 #endif // WITH_DEV_AUTOMATION_TESTS

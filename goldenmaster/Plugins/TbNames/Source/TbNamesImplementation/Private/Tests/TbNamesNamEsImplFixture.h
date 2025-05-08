@@ -53,14 +53,14 @@ public:
 
 	UGameInstance* GetGameInstance();
 	TScriptInterface<ITbNamesNamEsInterface> GetImplementation();
-	TWeakObjectPtr<UTbNamesNamEsImplHelper> GetHelper();
+	TSoftObjectPtr<UTbNamesNamEsImplHelper> GetHelper();
 
 private:
 	void CleanUp();
 
-	TWeakObjectPtr<UGameInstance> GameInstance;
+	TSoftObjectPtr<UGameInstance> GameInstance;
 	TScriptInterface<ITbNamesNamEsInterface> testImplementation;
-	TWeakObjectPtr<UTbNamesNamEsImplHelper> Helper;
+	TSoftObjectPtr<UTbNamesNamEsImplHelper> Helper;
 };
 
 #endif // WITH_DEV_AUTOMATION_TESTS

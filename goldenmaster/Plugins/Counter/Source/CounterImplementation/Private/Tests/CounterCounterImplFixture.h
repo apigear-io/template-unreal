@@ -44,14 +44,14 @@ public:
 
 	UGameInstance* GetGameInstance();
 	TScriptInterface<ICounterCounterInterface> GetImplementation();
-	TWeakObjectPtr<UCounterCounterImplHelper> GetHelper();
+	TSoftObjectPtr<UCounterCounterImplHelper> GetHelper();
 
 private:
 	void CleanUp();
 
-	TWeakObjectPtr<UGameInstance> GameInstance;
+	TSoftObjectPtr<UGameInstance> GameInstance;
 	TScriptInterface<ICounterCounterInterface> testImplementation;
-	TWeakObjectPtr<UCounterCounterImplHelper> Helper;
+	TSoftObjectPtr<UCounterCounterImplHelper> Helper;
 };
 
 #endif // WITH_DEV_AUTOMATION_TESTS
