@@ -99,8 +99,13 @@ void OLinkHostPrivate::Stop()
 
 bool OLinkHostPrivate::Tick(float DeltaTime)
 {
-	if (Server)
-		Server->Tick();
+	if (!Server)
+	{
+		writeLogHost(ApiGear::ObjectLink::LogLevel::Warning, "Apigear OLink Server Tick called after Server reset");
+		return false;
+	}
+
+	Server->Tick();
 	return true;
 }
 
