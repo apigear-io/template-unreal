@@ -15,7 +15,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include "TbSimpleEmptyInterfaceImpl.spec.h"
 #include "TbSimple/Implementation/TbSimpleEmptyInterface.h"
 #include "TbSimpleEmptyInterfaceImplFixture.h"
 #include "TbSimple/Tests/TbSimpleTestsCommon.h"
@@ -23,17 +22,24 @@ limitations under the License.
 
 #if WITH_DEV_AUTOMATION_TESTS
 
+BEGIN_DEFINE_SPEC(UTbSimpleEmptyInterfaceImplSpec, "TbSimple.EmptyInterface.Impl", TbSimpleTestFilterMask);
+
+TSharedPtr<FTbSimpleEmptyInterfaceImplFixture> ImplFixture;
+
+END_DEFINE_SPEC(UTbSimpleEmptyInterfaceImplSpec);
+
 void UTbSimpleEmptyInterfaceImplSpec::Define()
 {
 	BeforeEach([this]()
 		{
-		ImplFixture = MakeUnique<FTbSimpleEmptyInterfaceImplFixture>();
+		ImplFixture = MakeShared<FTbSimpleEmptyInterfaceImplFixture>();
 		TestTrue("Check for valid ImplFixture", ImplFixture.IsValid());
 
 		TestTrue("Check for valid testImplementation", ImplFixture->GetImplementation().GetInterface() != nullptr);
 
 		TestTrue("Check for valid Helper", ImplFixture->GetHelper().IsValid());
 		ImplFixture->GetHelper()->SetSpec(this);
+		ImplFixture->GetHelper()->SetParentFixture(ImplFixture);
 	});
 
 	AfterEach([this]()
@@ -41,4 +47,5 @@ void UTbSimpleEmptyInterfaceImplSpec::Define()
 		ImplFixture.Reset();
 	});
 }
+
 #endif // WITH_DEV_AUTOMATION_TESTS

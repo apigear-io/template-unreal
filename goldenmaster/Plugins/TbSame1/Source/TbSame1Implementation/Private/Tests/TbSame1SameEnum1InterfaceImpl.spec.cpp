@@ -15,7 +15,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include "TbSame1SameEnum1InterfaceImpl.spec.h"
 #include "TbSame1/Implementation/TbSame1SameEnum1Interface.h"
 #include "TbSame1SameEnum1InterfaceImplFixture.h"
 #include "TbSame1/Tests/TbSame1TestsCommon.h"
@@ -23,17 +22,24 @@ limitations under the License.
 
 #if WITH_DEV_AUTOMATION_TESTS
 
+BEGIN_DEFINE_SPEC(UTbSame1SameEnum1InterfaceImplSpec, "TbSame1.SameEnum1Interface.Impl", TbSame1TestFilterMask);
+
+TSharedPtr<FTbSame1SameEnum1InterfaceImplFixture> ImplFixture;
+
+END_DEFINE_SPEC(UTbSame1SameEnum1InterfaceImplSpec);
+
 void UTbSame1SameEnum1InterfaceImplSpec::Define()
 {
 	BeforeEach([this]()
 		{
-		ImplFixture = MakeUnique<FTbSame1SameEnum1InterfaceImplFixture>();
+		ImplFixture = MakeShared<FTbSame1SameEnum1InterfaceImplFixture>();
 		TestTrue("Check for valid ImplFixture", ImplFixture.IsValid());
 
 		TestTrue("Check for valid testImplementation", ImplFixture->GetImplementation().GetInterface() != nullptr);
 
 		TestTrue("Check for valid Helper", ImplFixture->GetHelper().IsValid());
 		ImplFixture->GetHelper()->SetSpec(this);
+		ImplFixture->GetHelper()->SetParentFixture(ImplFixture);
 	});
 
 	AfterEach([this]()
@@ -76,7 +82,7 @@ void UTbSame1SameEnum1InterfaceImplSpec::Define()
 		ETbSame1Enum1 TestValue = ETbSame1Enum1::TS1E1_VALUE1; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp1(), TestValue);
 
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UTbSame1SameEnum1InterfaceSignals* TbSame1SameEnum1InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
 		TbSame1SameEnum1InterfaceSignals->OnProp1ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame1SameEnum1InterfaceImplHelper::Prop1PropertyCb);
 		// use different test value
@@ -108,7 +114,7 @@ void UTbSame1SameEnum1InterfaceImplSpec::Define()
 
 	LatentIt("Signal.Sig1BP", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		testDoneDelegate = TestDone;
+		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UTbSame1SameEnum1InterfaceSignals* TbSame1SameEnum1InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
 		TbSame1SameEnum1InterfaceSignals->OnSig1SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame1SameEnum1InterfaceImplHelper::Sig1SignalCb);
 
@@ -118,21 +124,4 @@ void UTbSame1SameEnum1InterfaceImplSpec::Define()
 	});
 }
 
-void UTbSame1SameEnum1InterfaceImplSpec::Prop1PropertyCb(ETbSame1Enum1 InProp1)
-{
-	ETbSame1Enum1 TestValue = ETbSame1Enum1::TS1E1_VALUE1;
-	// use different test value
-	TestValue = ETbSame1Enum1::TS1E1_VALUE2;
-	TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
-	TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetProp1(), TestValue);
-	testDoneDelegate.Execute();
-}
-
-void UTbSame1SameEnum1InterfaceImplSpec::Sig1SignalCb(ETbSame1Enum1 InParam1)
-{
-	// known test value
-	ETbSame1Enum1 Param1TestValue = ETbSame1Enum1::TS1E1_VALUE2;
-	TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
-	testDoneDelegate.Execute();
-}
 #endif // WITH_DEV_AUTOMATION_TESTS

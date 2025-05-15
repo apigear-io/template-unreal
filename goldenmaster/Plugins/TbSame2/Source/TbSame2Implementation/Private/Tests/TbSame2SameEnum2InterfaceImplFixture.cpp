@@ -15,36 +15,70 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbSame2SameEnum2InterfaceImplFixture.h"
-#include "TbSame2SameEnum2InterfaceImpl.spec.h"
 #include "TbSame2/Implementation/TbSame2SameEnum2Interface.h"
+#include "TbSame2/Tests/TbSame2TestsCommon.h"
 #include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-void UTbSame2SameEnum2InterfaceImplHelper::SetSpec(UTbSame2SameEnum2InterfaceImplSpec* InSpec)
+void UTbSame2SameEnum2InterfaceImplHelper::SetParentFixture(TWeakPtr<FTbSame2SameEnum2InterfaceImplFixture> InFixture)
+{
+	ImplFixture = InFixture;
+}
+
+void UTbSame2SameEnum2InterfaceImplHelper::SetSpec(FAutomationTestBase* InSpec)
 {
 	Spec = InSpec;
 }
 
-void UTbSame2SameEnum2InterfaceImplHelper::Prop1PropertyCb(ETbSame2Enum1 Prop1)
+void UTbSame2SameEnum2InterfaceImplHelper::SetTestDone(const FDoneDelegate& InDone)
 {
-	Spec->Prop1PropertyCb(Prop1);
+	testDoneDelegate = InDone;
 }
 
-void UTbSame2SameEnum2InterfaceImplHelper::Prop2PropertyCb(ETbSame2Enum2 Prop2)
+void UTbSame2SameEnum2InterfaceImplHelper::Prop1PropertyCb(ETbSame2Enum1 InProp1)
 {
-	Spec->Prop2PropertyCb(Prop2);
+	ETbSame2Enum1 TestValue = ETbSame2Enum1::TS2E1_VALUE1;
+	// use different test value
+	TestValue = ETbSame2Enum1::TS2E1_VALUE2;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
+	if (TSharedPtr<FTbSame2SameEnum2InterfaceImplFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->GetProp1(), TestValue);
+	}
+	testDoneDelegate.Execute();
 }
 
-void UTbSame2SameEnum2InterfaceImplHelper::Sig1SignalCb(ETbSame2Enum1 Param1)
+void UTbSame2SameEnum2InterfaceImplHelper::Prop2PropertyCb(ETbSame2Enum2 InProp2)
 {
-	Spec->Sig1SignalCb(Param1);
+	ETbSame2Enum2 TestValue = ETbSame2Enum2::TS2E2_VALUE1;
+	// use different test value
+	TestValue = ETbSame2Enum2::TS2E2_VALUE2;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp2, TestValue);
+	if (TSharedPtr<FTbSame2SameEnum2InterfaceImplFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->GetProp2(), TestValue);
+	}
+	testDoneDelegate.Execute();
 }
 
-void UTbSame2SameEnum2InterfaceImplHelper::Sig2SignalCb(ETbSame2Enum1 Param1, ETbSame2Enum2 Param2)
+void UTbSame2SameEnum2InterfaceImplHelper::Sig1SignalCb(ETbSame2Enum1 InParam1)
 {
-	Spec->Sig2SignalCb(Param1, Param2);
+	// known test value
+	ETbSame2Enum1 Param1TestValue = ETbSame2Enum1::TS2E1_VALUE2;
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
+	testDoneDelegate.Execute();
+}
+
+void UTbSame2SameEnum2InterfaceImplHelper::Sig2SignalCb(ETbSame2Enum1 InParam1, ETbSame2Enum2 InParam2)
+{
+	// known test value
+	ETbSame2Enum1 Param1TestValue = ETbSame2Enum1::TS2E1_VALUE2;
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
+	ETbSame2Enum2 Param2TestValue = ETbSame2Enum2::TS2E2_VALUE2;
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam2, Param2TestValue);
+	testDoneDelegate.Execute();
 }
 
 FTbSame2SameEnum2InterfaceImplFixture::FTbSame2SameEnum2InterfaceImplFixture()
@@ -91,7 +125,15 @@ void FTbSame2SameEnum2InterfaceImplFixture::CleanUp()
 }
 #else  // WITH_DEV_AUTOMATION_TESTS
 // create empty implementation in case we do not want to do automated testing
-void UTbSame2SameEnum2InterfaceImplHelper::SetSpec(UTbSame2SameEnum2InterfaceImplSpec* /* InSpec */)
+void UTbSame2SameEnum2InterfaceImplHelper::SetParentFixture(TWeakPtr<FTbSame2SameEnum2InterfaceImplFixture> /*InFixture*/)
+{
+}
+
+void UTbSame2SameEnum2InterfaceImplHelper::SetSpec(FAutomationTestBase* /*InSpec*/)
+{
+}
+
+void UTbSame2SameEnum2InterfaceImplHelper::SetTestDone(const FDoneDelegate& /*InDone*/)
 {
 }
 

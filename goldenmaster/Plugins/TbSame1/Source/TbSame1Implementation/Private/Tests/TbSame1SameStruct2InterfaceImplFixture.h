@@ -10,7 +10,7 @@
 #include "TbSame1/Generated/api/TbSame1_data.h"
 #include "TbSame1SameStruct2InterfaceImplFixture.generated.h"
 
-class UTbSame1SameStruct2InterfaceImplSpec;
+class FTbSame1SameStruct2InterfaceImplFixture;
 class ITbSame1SameStruct2InterfaceInterface;
 
 UCLASS()
@@ -18,7 +18,9 @@ class UTbSame1SameStruct2InterfaceImplHelper : public UObject
 {
 	GENERATED_BODY()
 public:
-	void SetSpec(UTbSame1SameStruct2InterfaceImplSpec* InSpec);
+	void SetParentFixture(TWeakPtr<FTbSame1SameStruct2InterfaceImplFixture> InFixture);
+	void SetSpec(FAutomationTestBase* InSpec);
+	void SetTestDone(const FDoneDelegate& InDone);
 
 	UFUNCTION()
 	void Prop1PropertyCb(const FTbSame1Struct2& Prop1);
@@ -33,8 +35,9 @@ public:
 	void Sig2SignalCb(const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2);
 
 protected:
-	const FDoneDelegate* testDoneDelegate;
-	UTbSame1SameStruct2InterfaceImplSpec* Spec;
+	TWeakPtr<FTbSame1SameStruct2InterfaceImplFixture> ImplFixture;
+	FDoneDelegate testDoneDelegate;
+	FAutomationTestBase* Spec;
 };
 
 #if WITH_DEV_AUTOMATION_TESTS

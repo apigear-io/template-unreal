@@ -10,7 +10,7 @@
 #include "Testbed2/Generated/api/Testbed2_data.h"
 #include "Testbed2ManyParamInterfaceImplFixture.generated.h"
 
-class UTestbed2ManyParamInterfaceImplSpec;
+class FTestbed2ManyParamInterfaceImplFixture;
 class ITestbed2ManyParamInterfaceInterface;
 
 UCLASS()
@@ -18,7 +18,9 @@ class UTestbed2ManyParamInterfaceImplHelper : public UObject
 {
 	GENERATED_BODY()
 public:
-	void SetSpec(UTestbed2ManyParamInterfaceImplSpec* InSpec);
+	void SetParentFixture(TWeakPtr<FTestbed2ManyParamInterfaceImplFixture> InFixture);
+	void SetSpec(FAutomationTestBase* InSpec);
+	void SetTestDone(const FDoneDelegate& InDone);
 
 	UFUNCTION()
 	void Prop1PropertyCb(int32 Prop1);
@@ -45,8 +47,9 @@ public:
 	void Sig4SignalCb(int32 Param1, int32 Param2, int32 Param3, int32 Param4);
 
 protected:
-	const FDoneDelegate* testDoneDelegate;
-	UTestbed2ManyParamInterfaceImplSpec* Spec;
+	TWeakPtr<FTestbed2ManyParamInterfaceImplFixture> ImplFixture;
+	FDoneDelegate testDoneDelegate;
+	FAutomationTestBase* Spec;
 };
 
 #if WITH_DEV_AUTOMATION_TESTS

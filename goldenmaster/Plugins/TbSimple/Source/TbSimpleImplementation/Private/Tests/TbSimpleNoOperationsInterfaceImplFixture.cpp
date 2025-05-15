@@ -15,36 +15,66 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbSimpleNoOperationsInterfaceImplFixture.h"
-#include "TbSimpleNoOperationsInterfaceImpl.spec.h"
 #include "TbSimple/Implementation/TbSimpleNoOperationsInterface.h"
+#include "TbSimple/Tests/TbSimpleTestsCommon.h"
 #include "Engine/GameInstance.h"
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-void UTbSimpleNoOperationsInterfaceImplHelper::SetSpec(UTbSimpleNoOperationsInterfaceImplSpec* InSpec)
+void UTbSimpleNoOperationsInterfaceImplHelper::SetParentFixture(TWeakPtr<FTbSimpleNoOperationsInterfaceImplFixture> InFixture)
+{
+	ImplFixture = InFixture;
+}
+
+void UTbSimpleNoOperationsInterfaceImplHelper::SetSpec(FAutomationTestBase* InSpec)
 {
 	Spec = InSpec;
 }
 
-void UTbSimpleNoOperationsInterfaceImplHelper::PropBoolPropertyCb(bool bPropBool)
+void UTbSimpleNoOperationsInterfaceImplHelper::SetTestDone(const FDoneDelegate& InDone)
 {
-	Spec->PropBoolPropertyCb(bPropBool);
+	testDoneDelegate = InDone;
 }
 
-void UTbSimpleNoOperationsInterfaceImplHelper::PropIntPropertyCb(int32 PropInt)
+void UTbSimpleNoOperationsInterfaceImplHelper::PropBoolPropertyCb(bool bInPropBool)
 {
-	Spec->PropIntPropertyCb(PropInt);
+	bool TestValue = false;
+	// use different test value
+	TestValue = true;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), bInPropBool, TestValue);
+	if (TSharedPtr<FTbSimpleNoOperationsInterfaceImplFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->GetPropBool(), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
+void UTbSimpleNoOperationsInterfaceImplHelper::PropIntPropertyCb(int32 InPropInt)
+{
+	int32 TestValue = 0;
+	// use different test value
+	TestValue = 1;
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
+	if (TSharedPtr<FTbSimpleNoOperationsInterfaceImplFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->GetPropInt(), TestValue);
+	}
+	testDoneDelegate.Execute();
 }
 
 void UTbSimpleNoOperationsInterfaceImplHelper::SigVoidSignalCb()
 {
-	Spec->SigVoidSignalCb();
+	// known test value
+	testDoneDelegate.Execute();
 }
 
-void UTbSimpleNoOperationsInterfaceImplHelper::SigBoolSignalCb(bool bParamBool)
+void UTbSimpleNoOperationsInterfaceImplHelper::SigBoolSignalCb(bool bInParamBool)
 {
-	Spec->SigBoolSignalCb(bParamBool);
+	// known test value
+	bool bParamBoolTestValue = true;
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), bInParamBool, bParamBoolTestValue);
+	testDoneDelegate.Execute();
 }
 
 FTbSimpleNoOperationsInterfaceImplFixture::FTbSimpleNoOperationsInterfaceImplFixture()
@@ -91,7 +121,15 @@ void FTbSimpleNoOperationsInterfaceImplFixture::CleanUp()
 }
 #else  // WITH_DEV_AUTOMATION_TESTS
 // create empty implementation in case we do not want to do automated testing
-void UTbSimpleNoOperationsInterfaceImplHelper::SetSpec(UTbSimpleNoOperationsInterfaceImplSpec* /* InSpec */)
+void UTbSimpleNoOperationsInterfaceImplHelper::SetParentFixture(TWeakPtr<FTbSimpleNoOperationsInterfaceImplFixture> /*InFixture*/)
+{
+}
+
+void UTbSimpleNoOperationsInterfaceImplHelper::SetSpec(FAutomationTestBase* /*InSpec*/)
+{
+}
+
+void UTbSimpleNoOperationsInterfaceImplHelper::SetTestDone(const FDoneDelegate& /*InDone*/)
 {
 }
 
