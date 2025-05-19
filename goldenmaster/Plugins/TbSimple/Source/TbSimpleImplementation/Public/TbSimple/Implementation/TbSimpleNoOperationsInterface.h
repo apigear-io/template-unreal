@@ -22,11 +22,11 @@ limitations under the License.
 #include "TbSimpleNoOperationsInterface.generated.h"
 
 UCLASS(BlueprintType)
-class TBSIMPLEIMPLEMENTATION_API UTbSimpleNoOperationsInterface : public UAbstractTbSimpleNoOperationsInterface
+class TBSIMPLEIMPLEMENTATION_API UTbSimpleNoOperationsInterfaceImplementation : public UAbstractTbSimpleNoOperationsInterface
 {
 	GENERATED_BODY()
 public:
-	virtual ~UTbSimpleNoOperationsInterface();
+	virtual ~UTbSimpleNoOperationsInterfaceImplementation();
 
 	// properties
 	bool GetPropBool() const override;

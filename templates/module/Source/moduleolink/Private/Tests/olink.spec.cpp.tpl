@@ -51,7 +51,7 @@ void {{$Class}}OLinkSpec::Define()
 
 		// set up service and adapter
 		ImplFixture->GetHost()->Stop();
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<U{{$DisplayName}}>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<U{{$DisplayName}}Implementation>();
 		ImplFixture->GetAdapter()->setBackendService(service);
 		ImplFixture->GetAdapter()->setOLinkHost(ImplFixture->GetHost());
 		ImplFixture->GetHost()->Start(8666);
@@ -204,7 +204,7 @@ void {{$Class}}OLinkSpec::Define()
 		{{- else }}
 		TestValue = {{ ueTestValue "" . }};
 		{{- end }}
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<U{{$DisplayName}}>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<U{{$DisplayName}}Implementation>();
 		service->Set{{Camel .Name}}(TestValue);
 	});
 
@@ -277,7 +277,7 @@ void {{$Class}}OLinkSpec::Define()
 		{{- else }}
 		TestValue = {{ ueTestValue "" . }};
 		{{- end }}
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<U{{$DisplayName}}>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<U{{$DisplayName}}Implementation>();
 		service->Set{{Camel .Name}}(TestValue);
 	});
 	{{- end }}

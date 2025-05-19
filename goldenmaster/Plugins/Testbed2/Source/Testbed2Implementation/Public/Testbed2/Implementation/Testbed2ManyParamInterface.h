@@ -22,11 +22,11 @@ limitations under the License.
 #include "Testbed2ManyParamInterface.generated.h"
 
 UCLASS(BlueprintType)
-class TESTBED2IMPLEMENTATION_API UTestbed2ManyParamInterface : public UAbstractTestbed2ManyParamInterface
+class TESTBED2IMPLEMENTATION_API UTestbed2ManyParamInterfaceImplementation : public UAbstractTestbed2ManyParamInterface
 {
 	GENERATED_BODY()
 public:
-	virtual ~UTestbed2ManyParamInterface();
+	virtual ~UTestbed2ManyParamInterfaceImplementation();
 
 	// properties
 	int32 GetProp1() const override;

@@ -22,11 +22,11 @@ limitations under the License.
 #include "TbSame2SameEnum1Interface.generated.h"
 
 UCLASS(BlueprintType)
-class TBSAME2IMPLEMENTATION_API UTbSame2SameEnum1Interface : public UAbstractTbSame2SameEnum1Interface
+class TBSAME2IMPLEMENTATION_API UTbSame2SameEnum1InterfaceImplementation : public UAbstractTbSame2SameEnum1Interface
 {
 	GENERATED_BODY()
 public:
-	virtual ~UTbSame2SameEnum1Interface();
+	virtual ~UTbSame2SameEnum1InterfaceImplementation();
 
 	// properties
 	ETbSame2Enum1 GetProp1() const override;

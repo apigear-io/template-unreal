@@ -17,13 +17,13 @@ limitations under the License.
 
 #include "TbNames/Implementation/TbNamesNamEs.h"
 
-UTbNamesNamEs::~UTbNamesNamEs() = default;
-bool UTbNamesNamEs::GetSwitch() const
+UTbNamesNamEsImplementation::~UTbNamesNamEsImplementation() = default;
+bool UTbNamesNamEsImplementation::GetSwitch() const
 {
 	return bSwitch;
 }
 
-void UTbNamesNamEs::SetSwitch(bool bInSwitch)
+void UTbNamesNamEsImplementation::SetSwitch(bool bInSwitch)
 {
 	if (bSwitch != bInSwitch)
 	{
@@ -31,12 +31,12 @@ void UTbNamesNamEs::SetSwitch(bool bInSwitch)
 		_GetSignals()->BroadcastSwitchChanged(bSwitch);
 	}
 }
-int32 UTbNamesNamEs::GetSomeProperty() const
+int32 UTbNamesNamEsImplementation::GetSomeProperty() const
 {
 	return SomeProperty;
 }
 
-void UTbNamesNamEs::SetSomeProperty(int32 InSomeProperty)
+void UTbNamesNamEsImplementation::SetSomeProperty(int32 InSomeProperty)
 {
 	if (SomeProperty != InSomeProperty)
 	{
@@ -44,12 +44,12 @@ void UTbNamesNamEs::SetSomeProperty(int32 InSomeProperty)
 		_GetSignals()->BroadcastSomePropertyChanged(SomeProperty);
 	}
 }
-int32 UTbNamesNamEs::GetSomePoperty2() const
+int32 UTbNamesNamEsImplementation::GetSomePoperty2() const
 {
 	return SomePoperty2;
 }
 
-void UTbNamesNamEs::SetSomePoperty2(int32 InSomePoperty2)
+void UTbNamesNamEsImplementation::SetSomePoperty2(int32 InSomePoperty2)
 {
 	if (SomePoperty2 != InSomePoperty2)
 	{
@@ -57,12 +57,12 @@ void UTbNamesNamEs::SetSomePoperty2(int32 InSomePoperty2)
 		_GetSignals()->BroadcastSomePoperty2Changed(SomePoperty2);
 	}
 }
-ETbNamesEnum_With_Under_scores UTbNamesNamEs::GetEnumProperty() const
+ETbNamesEnum_With_Under_scores UTbNamesNamEsImplementation::GetEnumProperty() const
 {
 	return EnumProperty;
 }
 
-void UTbNamesNamEs::SetEnumProperty(ETbNamesEnum_With_Under_scores InEnumProperty)
+void UTbNamesNamEsImplementation::SetEnumProperty(ETbNamesEnum_With_Under_scores InEnumProperty)
 {
 	if (EnumProperty != InEnumProperty)
 	{
@@ -71,19 +71,19 @@ void UTbNamesNamEs::SetEnumProperty(ETbNamesEnum_With_Under_scores InEnumPropert
 	}
 }
 
-void UTbNamesNamEs::SomeFunction(bool bSomeParam)
+void UTbNamesNamEsImplementation::SomeFunction(bool bSomeParam)
 {
 	(void)bSomeParam;
 	// do business logic here
 }
 
-void UTbNamesNamEs::SomeFunction2(bool bSomeParam)
+void UTbNamesNamEsImplementation::SomeFunction2(bool bSomeParam)
 {
 	(void)bSomeParam;
 	// do business logic here
 }
 
-void UTbNamesNamEs::_ResetProperties()
+void UTbNamesNamEsImplementation::_ResetProperties()
 {
 	if (bSwitch != false)
 	{

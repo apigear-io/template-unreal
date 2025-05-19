@@ -49,7 +49,7 @@ void UTbSimpleVoidInterfaceMsgBusSpec::Define()
 		TestTrue("Check for valid testImplementation", ImplFixture->GetImplementation().GetInterface() != nullptr);
 
 		// set up service and adapter
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleVoidInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleVoidInterfaceImplementation>();
 		ImplFixture->GetAdapter()->_setBackendService(service);
 		ImplFixture->GetAdapter()->_StartListening();
 

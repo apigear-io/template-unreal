@@ -22,11 +22,11 @@ limitations under the License.
 #include "TbSame2SameStruct2Interface.generated.h"
 
 UCLASS(BlueprintType)
-class TBSAME2IMPLEMENTATION_API UTbSame2SameStruct2Interface : public UAbstractTbSame2SameStruct2Interface
+class TBSAME2IMPLEMENTATION_API UTbSame2SameStruct2InterfaceImplementation : public UAbstractTbSame2SameStruct2Interface
 {
 	GENERATED_BODY()
 public:
-	virtual ~UTbSame2SameStruct2Interface();
+	virtual ~UTbSame2SameStruct2InterfaceImplementation();
 
 	// properties
 	FTbSame2Struct2 GetProp1() const override;

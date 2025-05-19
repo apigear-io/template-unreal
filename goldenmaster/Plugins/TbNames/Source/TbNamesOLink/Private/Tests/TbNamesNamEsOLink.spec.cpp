@@ -57,7 +57,7 @@ void UTbNamesNamEsOLinkSpec::Define()
 
 		// set up service and adapter
 		ImplFixture->GetHost()->Stop();
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbNamesNamEs>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbNamesNamEsImplementation>();
 		ImplFixture->GetAdapter()->setBackendService(service);
 		ImplFixture->GetAdapter()->setOLinkHost(ImplFixture->GetHost());
 		ImplFixture->GetHost()->Start(8666);
@@ -139,7 +139,7 @@ void UTbNamesNamEsOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue = true;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbNamesNamEs>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbNamesNamEsImplementation>();
 		service->SetSwitch(TestValue);
 	});
 
@@ -180,7 +180,7 @@ void UTbNamesNamEsOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue = true;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbNamesNamEs>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbNamesNamEsImplementation>();
 		service->SetSwitch(TestValue);
 	});
 
@@ -231,7 +231,7 @@ void UTbNamesNamEsOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue = 1;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbNamesNamEs>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbNamesNamEsImplementation>();
 		service->SetSomeProperty(TestValue);
 	});
 
@@ -272,7 +272,7 @@ void UTbNamesNamEsOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue = 1;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbNamesNamEs>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbNamesNamEsImplementation>();
 		service->SetSomeProperty(TestValue);
 	});
 
@@ -323,7 +323,7 @@ void UTbNamesNamEsOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue = 1;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbNamesNamEs>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbNamesNamEsImplementation>();
 		service->SetSomePoperty2(TestValue);
 	});
 
@@ -364,7 +364,7 @@ void UTbNamesNamEsOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue = 1;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbNamesNamEs>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbNamesNamEsImplementation>();
 		service->SetSomePoperty2(TestValue);
 	});
 
@@ -415,7 +415,7 @@ void UTbNamesNamEsOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_SecondValue;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbNamesNamEs>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbNamesNamEsImplementation>();
 		service->SetEnumProperty(TestValue);
 	});
 
@@ -456,7 +456,7 @@ void UTbNamesNamEsOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_SecondValue;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbNamesNamEs>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbNamesNamEsImplementation>();
 		service->SetEnumProperty(TestValue);
 	});
 

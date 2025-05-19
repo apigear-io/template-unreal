@@ -49,7 +49,7 @@ void UTestbed1StructArrayInterfaceMsgBusSpec::Define()
 		TestTrue("Check for valid testImplementation", ImplFixture->GetImplementation().GetInterface() != nullptr);
 
 		// set up service and adapter
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed1StructArrayInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed1StructArrayInterfaceImplementation>();
 		ImplFixture->GetAdapter()->_setBackendService(service);
 		ImplFixture->GetAdapter()->_StartListening();
 
@@ -120,7 +120,7 @@ void UTestbed1StructArrayInterfaceMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = createTestFTestbed1StructBoolArray();
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed1StructArrayInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed1StructArrayInterfaceImplementation>();
 		service->SetPropBool(TestValue);
 	});
 
@@ -161,7 +161,7 @@ void UTestbed1StructArrayInterfaceMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = createTestFTestbed1StructBoolArray();
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed1StructArrayInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed1StructArrayInterfaceImplementation>();
 		service->SetPropBool(TestValue);
 	});
 
@@ -212,7 +212,7 @@ void UTestbed1StructArrayInterfaceMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = createTestFTestbed1StructIntArray();
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed1StructArrayInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed1StructArrayInterfaceImplementation>();
 		service->SetPropInt(TestValue);
 	});
 
@@ -253,7 +253,7 @@ void UTestbed1StructArrayInterfaceMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = createTestFTestbed1StructIntArray();
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed1StructArrayInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed1StructArrayInterfaceImplementation>();
 		service->SetPropInt(TestValue);
 	});
 
@@ -304,7 +304,7 @@ void UTestbed1StructArrayInterfaceMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = createTestFTestbed1StructFloatArray();
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed1StructArrayInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed1StructArrayInterfaceImplementation>();
 		service->SetPropFloat(TestValue);
 	});
 
@@ -345,7 +345,7 @@ void UTestbed1StructArrayInterfaceMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = createTestFTestbed1StructFloatArray();
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed1StructArrayInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed1StructArrayInterfaceImplementation>();
 		service->SetPropFloat(TestValue);
 	});
 
@@ -396,7 +396,7 @@ void UTestbed1StructArrayInterfaceMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = createTestFTestbed1StructStringArray();
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed1StructArrayInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed1StructArrayInterfaceImplementation>();
 		service->SetPropString(TestValue);
 	});
 
@@ -437,7 +437,7 @@ void UTestbed1StructArrayInterfaceMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = createTestFTestbed1StructStringArray();
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed1StructArrayInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed1StructArrayInterfaceImplementation>();
 		service->SetPropString(TestValue);
 	});
 
@@ -488,7 +488,7 @@ void UTestbed1StructArrayInterfaceMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue.Add(ETestbed1Enum0::T1E0_Value1);
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed1StructArrayInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed1StructArrayInterfaceImplementation>();
 		service->SetPropEnum(TestValue);
 	});
 
@@ -529,7 +529,7 @@ void UTestbed1StructArrayInterfaceMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue.Add(ETestbed1Enum0::T1E0_Value1);
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed1StructArrayInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed1StructArrayInterfaceImplementation>();
 		service->SetPropEnum(TestValue);
 	});
 

@@ -22,11 +22,11 @@ limitations under the License.
 #include "Testbed1StructArray2Interface.generated.h"
 
 UCLASS(BlueprintType)
-class TESTBED1IMPLEMENTATION_API UTestbed1StructArray2Interface : public UAbstractTestbed1StructArray2Interface
+class TESTBED1IMPLEMENTATION_API UTestbed1StructArray2InterfaceImplementation : public UAbstractTestbed1StructArray2Interface
 {
 	GENERATED_BODY()
 public:
-	virtual ~UTestbed1StructArray2Interface();
+	virtual ~UTestbed1StructArray2InterfaceImplementation();
 
 	// properties
 	FTestbed1StructBoolWithArray GetPropBool() const override;

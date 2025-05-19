@@ -28,7 +28,7 @@ void FTbNamesImplementationModule::StartupModule()
 {
 	FTbNamesModuleFactory::RegisterFactory(TbNamesLocalBackendIdentifier, [](FSubsystemCollectionBase& Collection) -> TScriptInterface<ITbNamesNamEsInterface>
 		{
-		return Cast<UTbNamesNamEs>(Collection.InitializeDependency(UTbNamesNamEs::StaticClass()));
+		return Cast<UTbNamesNamEsImplementation>(Collection.InitializeDependency(UTbNamesNamEsImplementation::StaticClass()));
 	});
 }
 

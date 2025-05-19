@@ -49,7 +49,7 @@ void UTbSame2SameEnum2InterfaceMsgBusSpec::Define()
 		TestTrue("Check for valid testImplementation", ImplFixture->GetImplementation().GetInterface() != nullptr);
 
 		// set up service and adapter
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSame2SameEnum2Interface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSame2SameEnum2InterfaceImplementation>();
 		ImplFixture->GetAdapter()->_setBackendService(service);
 		ImplFixture->GetAdapter()->_StartListening();
 
@@ -120,7 +120,7 @@ void UTbSame2SameEnum2InterfaceMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = ETbSame2Enum1::TS2E1_Value2;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSame2SameEnum2Interface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSame2SameEnum2InterfaceImplementation>();
 		service->SetProp1(TestValue);
 	});
 
@@ -161,7 +161,7 @@ void UTbSame2SameEnum2InterfaceMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = ETbSame2Enum1::TS2E1_Value2;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSame2SameEnum2Interface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSame2SameEnum2InterfaceImplementation>();
 		service->SetProp1(TestValue);
 	});
 
@@ -212,7 +212,7 @@ void UTbSame2SameEnum2InterfaceMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = ETbSame2Enum2::TS2E2_Value2;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSame2SameEnum2Interface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSame2SameEnum2InterfaceImplementation>();
 		service->SetProp2(TestValue);
 	});
 
@@ -253,7 +253,7 @@ void UTbSame2SameEnum2InterfaceMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = ETbSame2Enum2::TS2E2_Value2;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSame2SameEnum2Interface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSame2SameEnum2InterfaceImplementation>();
 		service->SetProp2(TestValue);
 	});
 

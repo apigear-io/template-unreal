@@ -83,7 +83,7 @@ void UTbSame2SameEnum2InterfaceImplHelper::Sig2SignalCb(ETbSame2Enum1 InParam1, 
 
 FTbSame2SameEnum2InterfaceImplFixture::FTbSame2SameEnum2InterfaceImplFixture()
 {
-	testImplementation = GetGameInstance()->GetSubsystem<UTbSame2SameEnum2Interface>();
+	testImplementation = GetGameInstance()->GetSubsystem<UTbSame2SameEnum2InterfaceImplementation>();
 	Helper = NewObject<UTbSame2SameEnum2InterfaceImplHelper>();
 }
 

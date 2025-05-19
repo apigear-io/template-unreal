@@ -49,7 +49,7 @@ void UTbSimpleNoSignalsInterfaceMsgBusSpec::Define()
 		TestTrue("Check for valid testImplementation", ImplFixture->GetImplementation().GetInterface() != nullptr);
 
 		// set up service and adapter
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleNoSignalsInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleNoSignalsInterfaceImplementation>();
 		ImplFixture->GetAdapter()->_setBackendService(service);
 		ImplFixture->GetAdapter()->_StartListening();
 
@@ -120,7 +120,7 @@ void UTbSimpleNoSignalsInterfaceMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = true;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleNoSignalsInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleNoSignalsInterfaceImplementation>();
 		service->SetPropBool(TestValue);
 	});
 
@@ -161,7 +161,7 @@ void UTbSimpleNoSignalsInterfaceMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = true;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleNoSignalsInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleNoSignalsInterfaceImplementation>();
 		service->SetPropBool(TestValue);
 	});
 
@@ -212,7 +212,7 @@ void UTbSimpleNoSignalsInterfaceMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = 1;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleNoSignalsInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleNoSignalsInterfaceImplementation>();
 		service->SetPropInt(TestValue);
 	});
 
@@ -253,7 +253,7 @@ void UTbSimpleNoSignalsInterfaceMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = 1;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleNoSignalsInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleNoSignalsInterfaceImplementation>();
 		service->SetPropInt(TestValue);
 	});
 

@@ -43,7 +43,7 @@ void {{$Class}}MsgBusSpec::Define()
 		TestTrue("Check for valid testImplementation", ImplFixture->GetImplementation().GetInterface() != nullptr);
 
 		// set up service and adapter
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<U{{$DisplayName}}>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<U{{$DisplayName}}Implementation>();
 		ImplFixture->GetAdapter()->_setBackendService(service);
 		ImplFixture->GetAdapter()->_StartListening();
 
@@ -185,7 +185,7 @@ void {{$Class}}MsgBusSpec::Define()
 		{{- else }}
 		TestValue = {{ ueTestValue "" . }};
 		{{- end }}
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<U{{$DisplayName}}>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<U{{$DisplayName}}Implementation>();
 		service->Set{{Camel .Name}}(TestValue);
 	});
 
@@ -258,7 +258,7 @@ void {{$Class}}MsgBusSpec::Define()
 		{{- else }}
 		TestValue = {{ ueTestValue "" . }};
 		{{- end }}
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<U{{$DisplayName}}>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<U{{$DisplayName}}Implementation>();
 		service->Set{{Camel .Name}}(TestValue);
 	});
 	{{- end }}

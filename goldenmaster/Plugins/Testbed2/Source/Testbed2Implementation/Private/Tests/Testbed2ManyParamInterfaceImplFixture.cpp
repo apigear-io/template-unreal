@@ -135,7 +135,7 @@ void UTestbed2ManyParamInterfaceImplHelper::Sig4SignalCb(int32 InParam1, int32 I
 
 FTestbed2ManyParamInterfaceImplFixture::FTestbed2ManyParamInterfaceImplFixture()
 {
-	testImplementation = GetGameInstance()->GetSubsystem<UTestbed2ManyParamInterface>();
+	testImplementation = GetGameInstance()->GetSubsystem<UTestbed2ManyParamInterfaceImplementation>();
 	Helper = NewObject<UTestbed2ManyParamInterfaceImplHelper>();
 }
 

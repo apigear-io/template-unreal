@@ -215,7 +215,7 @@ void UTbSimpleSimpleArrayInterfaceImplHelper::SigStringSignalCb(const TArray<FSt
 
 FTbSimpleSimpleArrayInterfaceImplFixture::FTbSimpleSimpleArrayInterfaceImplFixture()
 {
-	testImplementation = GetGameInstance()->GetSubsystem<UTbSimpleSimpleArrayInterface>();
+	testImplementation = GetGameInstance()->GetSubsystem<UTbSimpleSimpleArrayInterfaceImplementation>();
 	Helper = NewObject<UTbSimpleSimpleArrayInterfaceImplHelper>();
 }
 

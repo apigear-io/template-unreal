@@ -136,7 +136,7 @@ void UTestbed1StructArray2InterfaceImplHelper::SigStringSignalCb(const FTestbed1
 
 FTestbed1StructArray2InterfaceImplFixture::FTestbed1StructArray2InterfaceImplFixture()
 {
-	testImplementation = GetGameInstance()->GetSubsystem<UTestbed1StructArray2Interface>();
+	testImplementation = GetGameInstance()->GetSubsystem<UTestbed1StructArray2InterfaceImplementation>();
 	Helper = NewObject<UTestbed1StructArray2InterfaceImplHelper>();
 }
 

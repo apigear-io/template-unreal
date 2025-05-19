@@ -123,7 +123,7 @@ void UTbEnumEnumInterfaceImplHelper::Sig3SignalCb(ETbEnumEnum3 InParam3)
 
 FTbEnumEnumInterfaceImplFixture::FTbEnumEnumInterfaceImplFixture()
 {
-	testImplementation = GetGameInstance()->GetSubsystem<UTbEnumEnumInterface>();
+	testImplementation = GetGameInstance()->GetSubsystem<UTbEnumEnumInterfaceImplementation>();
 	Helper = NewObject<UTbEnumEnumInterfaceImplHelper>();
 }
 

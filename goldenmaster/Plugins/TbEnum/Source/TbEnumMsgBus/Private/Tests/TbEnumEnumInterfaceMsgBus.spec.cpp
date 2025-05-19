@@ -49,7 +49,7 @@ void UTbEnumEnumInterfaceMsgBusSpec::Define()
 		TestTrue("Check for valid testImplementation", ImplFixture->GetImplementation().GetInterface() != nullptr);
 
 		// set up service and adapter
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbEnumEnumInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbEnumEnumInterfaceImplementation>();
 		ImplFixture->GetAdapter()->_setBackendService(service);
 		ImplFixture->GetAdapter()->_StartListening();
 
@@ -120,7 +120,7 @@ void UTbEnumEnumInterfaceMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = ETbEnumEnum0::TEE0_Value1;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbEnumEnumInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbEnumEnumInterfaceImplementation>();
 		service->SetProp0(TestValue);
 	});
 
@@ -161,7 +161,7 @@ void UTbEnumEnumInterfaceMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = ETbEnumEnum0::TEE0_Value1;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbEnumEnumInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbEnumEnumInterfaceImplementation>();
 		service->SetProp0(TestValue);
 	});
 
@@ -212,7 +212,7 @@ void UTbEnumEnumInterfaceMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = ETbEnumEnum1::TEE1_Value2;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbEnumEnumInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbEnumEnumInterfaceImplementation>();
 		service->SetProp1(TestValue);
 	});
 
@@ -253,7 +253,7 @@ void UTbEnumEnumInterfaceMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = ETbEnumEnum1::TEE1_Value2;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbEnumEnumInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbEnumEnumInterfaceImplementation>();
 		service->SetProp1(TestValue);
 	});
 
@@ -304,7 +304,7 @@ void UTbEnumEnumInterfaceMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = ETbEnumEnum2::TEE2_Value1;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbEnumEnumInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbEnumEnumInterfaceImplementation>();
 		service->SetProp2(TestValue);
 	});
 
@@ -345,7 +345,7 @@ void UTbEnumEnumInterfaceMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = ETbEnumEnum2::TEE2_Value1;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbEnumEnumInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbEnumEnumInterfaceImplementation>();
 		service->SetProp2(TestValue);
 	});
 
@@ -396,7 +396,7 @@ void UTbEnumEnumInterfaceMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = ETbEnumEnum3::TEE3_Value2;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbEnumEnumInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbEnumEnumInterfaceImplementation>();
 		service->SetProp3(TestValue);
 	});
 
@@ -437,7 +437,7 @@ void UTbEnumEnumInterfaceMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = ETbEnumEnum3::TEE3_Value2;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbEnumEnumInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbEnumEnumInterfaceImplementation>();
 		service->SetProp3(TestValue);
 	});
 

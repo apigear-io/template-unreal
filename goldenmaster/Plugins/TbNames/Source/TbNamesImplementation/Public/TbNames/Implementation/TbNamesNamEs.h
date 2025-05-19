@@ -22,11 +22,11 @@ limitations under the License.
 #include "TbNamesNamEs.generated.h"
 
 UCLASS(BlueprintType)
-class TBNAMESIMPLEMENTATION_API UTbNamesNamEs : public UAbstractTbNamesNamEs
+class TBNAMESIMPLEMENTATION_API UTbNamesNamEsImplementation : public UAbstractTbNamesNamEs
 {
 	GENERATED_BODY()
 public:
-	virtual ~UTbNamesNamEs();
+	virtual ~UTbNamesNamEsImplementation();
 
 	// properties
 	bool GetSwitch() const override;

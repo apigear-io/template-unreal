@@ -57,7 +57,7 @@ void UTbSimpleNoOperationsInterfaceOLinkSpec::Define()
 
 		// set up service and adapter
 		ImplFixture->GetHost()->Stop();
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleNoOperationsInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleNoOperationsInterfaceImplementation>();
 		ImplFixture->GetAdapter()->setBackendService(service);
 		ImplFixture->GetAdapter()->setOLinkHost(ImplFixture->GetHost());
 		ImplFixture->GetHost()->Start(8666);
@@ -139,7 +139,7 @@ void UTbSimpleNoOperationsInterfaceOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue = true;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleNoOperationsInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleNoOperationsInterfaceImplementation>();
 		service->SetPropBool(TestValue);
 	});
 
@@ -180,7 +180,7 @@ void UTbSimpleNoOperationsInterfaceOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue = true;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleNoOperationsInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleNoOperationsInterfaceImplementation>();
 		service->SetPropBool(TestValue);
 	});
 
@@ -231,7 +231,7 @@ void UTbSimpleNoOperationsInterfaceOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue = 1;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleNoOperationsInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleNoOperationsInterfaceImplementation>();
 		service->SetPropInt(TestValue);
 	});
 
@@ -272,7 +272,7 @@ void UTbSimpleNoOperationsInterfaceOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue = 1;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleNoOperationsInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleNoOperationsInterfaceImplementation>();
 		service->SetPropInt(TestValue);
 	});
 

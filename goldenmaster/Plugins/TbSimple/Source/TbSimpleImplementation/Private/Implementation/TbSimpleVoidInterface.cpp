@@ -17,9 +17,9 @@ limitations under the License.
 
 #include "TbSimple/Implementation/TbSimpleVoidInterface.h"
 
-UTbSimpleVoidInterface::~UTbSimpleVoidInterface() = default;
+UTbSimpleVoidInterfaceImplementation::~UTbSimpleVoidInterfaceImplementation() = default;
 
-void UTbSimpleVoidInterface::FuncVoid()
+void UTbSimpleVoidInterfaceImplementation::FuncVoid()
 {
 	// do business logic here
 }

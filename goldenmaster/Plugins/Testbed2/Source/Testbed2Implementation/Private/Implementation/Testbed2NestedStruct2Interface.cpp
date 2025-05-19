@@ -17,13 +17,13 @@ limitations under the License.
 
 #include "Testbed2/Implementation/Testbed2NestedStruct2Interface.h"
 
-UTestbed2NestedStruct2Interface::~UTestbed2NestedStruct2Interface() = default;
-FTestbed2NestedStruct1 UTestbed2NestedStruct2Interface::GetProp1() const
+UTestbed2NestedStruct2InterfaceImplementation::~UTestbed2NestedStruct2InterfaceImplementation() = default;
+FTestbed2NestedStruct1 UTestbed2NestedStruct2InterfaceImplementation::GetProp1() const
 {
 	return Prop1;
 }
 
-void UTestbed2NestedStruct2Interface::SetProp1(const FTestbed2NestedStruct1& InProp1)
+void UTestbed2NestedStruct2InterfaceImplementation::SetProp1(const FTestbed2NestedStruct1& InProp1)
 {
 	if (Prop1 != InProp1)
 	{
@@ -31,12 +31,12 @@ void UTestbed2NestedStruct2Interface::SetProp1(const FTestbed2NestedStruct1& InP
 		_GetSignals()->BroadcastProp1Changed(Prop1);
 	}
 }
-FTestbed2NestedStruct2 UTestbed2NestedStruct2Interface::GetProp2() const
+FTestbed2NestedStruct2 UTestbed2NestedStruct2InterfaceImplementation::GetProp2() const
 {
 	return Prop2;
 }
 
-void UTestbed2NestedStruct2Interface::SetProp2(const FTestbed2NestedStruct2& InProp2)
+void UTestbed2NestedStruct2InterfaceImplementation::SetProp2(const FTestbed2NestedStruct2& InProp2)
 {
 	if (Prop2 != InProp2)
 	{
@@ -45,14 +45,14 @@ void UTestbed2NestedStruct2Interface::SetProp2(const FTestbed2NestedStruct2& InP
 	}
 }
 
-FTestbed2NestedStruct1 UTestbed2NestedStruct2Interface::Func1(const FTestbed2NestedStruct1& Param1)
+FTestbed2NestedStruct1 UTestbed2NestedStruct2InterfaceImplementation::Func1(const FTestbed2NestedStruct1& Param1)
 {
 	(void)Param1;
 	// do business logic here
 	return FTestbed2NestedStruct1();
 }
 
-FTestbed2NestedStruct1 UTestbed2NestedStruct2Interface::Func2(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
+FTestbed2NestedStruct1 UTestbed2NestedStruct2InterfaceImplementation::Func2(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
 {
 	(void)Param1;
 	(void)Param2;
@@ -60,7 +60,7 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct2Interface::Func2(const FTestbed2Nes
 	return FTestbed2NestedStruct1();
 }
 
-void UTestbed2NestedStruct2Interface::_ResetProperties()
+void UTestbed2NestedStruct2InterfaceImplementation::_ResetProperties()
 {
 	if (Prop1 != FTestbed2NestedStruct1())
 	{

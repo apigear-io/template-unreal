@@ -30,15 +30,15 @@ void FTestbed1ImplementationModule::StartupModule()
 {
 	FTestbed1ModuleFactory::RegisterFactory(Testbed1LocalBackendIdentifier, [](FSubsystemCollectionBase& Collection) -> TScriptInterface<ITestbed1StructInterfaceInterface>
 		{
-		return Cast<UTestbed1StructInterface>(Collection.InitializeDependency(UTestbed1StructInterface::StaticClass()));
+		return Cast<UTestbed1StructInterfaceImplementation>(Collection.InitializeDependency(UTestbed1StructInterfaceImplementation::StaticClass()));
 	});
 	FTestbed1ModuleFactory::RegisterFactory(Testbed1LocalBackendIdentifier, [](FSubsystemCollectionBase& Collection) -> TScriptInterface<ITestbed1StructArrayInterfaceInterface>
 		{
-		return Cast<UTestbed1StructArrayInterface>(Collection.InitializeDependency(UTestbed1StructArrayInterface::StaticClass()));
+		return Cast<UTestbed1StructArrayInterfaceImplementation>(Collection.InitializeDependency(UTestbed1StructArrayInterfaceImplementation::StaticClass()));
 	});
 	FTestbed1ModuleFactory::RegisterFactory(Testbed1LocalBackendIdentifier, [](FSubsystemCollectionBase& Collection) -> TScriptInterface<ITestbed1StructArray2InterfaceInterface>
 		{
-		return Cast<UTestbed1StructArray2Interface>(Collection.InitializeDependency(UTestbed1StructArray2Interface::StaticClass()));
+		return Cast<UTestbed1StructArray2InterfaceImplementation>(Collection.InitializeDependency(UTestbed1StructArray2InterfaceImplementation::StaticClass()));
 	});
 }
 

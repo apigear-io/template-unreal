@@ -77,7 +77,7 @@ void UCounterCounterImplHelper::ValueChangedSignalCb(const FCustomTypesVector3D&
 
 FCounterCounterImplFixture::FCounterCounterImplFixture()
 {
-	testImplementation = GetGameInstance()->GetSubsystem<UCounterCounter>();
+	testImplementation = GetGameInstance()->GetSubsystem<UCounterCounterImplementation>();
 	Helper = NewObject<UCounterCounterImplHelper>();
 }
 

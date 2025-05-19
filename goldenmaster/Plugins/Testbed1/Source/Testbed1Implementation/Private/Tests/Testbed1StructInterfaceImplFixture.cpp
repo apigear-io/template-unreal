@@ -123,7 +123,7 @@ void UTestbed1StructInterfaceImplHelper::SigStringSignalCb(const FTestbed1Struct
 
 FTestbed1StructInterfaceImplFixture::FTestbed1StructInterfaceImplFixture()
 {
-	testImplementation = GetGameInstance()->GetSubsystem<UTestbed1StructInterface>();
+	testImplementation = GetGameInstance()->GetSubsystem<UTestbed1StructInterfaceImplementation>();
 	Helper = NewObject<UTestbed1StructInterfaceImplHelper>();
 }
 

@@ -22,11 +22,11 @@ limitations under the License.
 #include "CounterCounter.generated.h"
 
 UCLASS(BlueprintType)
-class COUNTERIMPLEMENTATION_API UCounterCounter : public UAbstractCounterCounter
+class COUNTERIMPLEMENTATION_API UCounterCounterImplementation : public UAbstractCounterCounter
 {
 	GENERATED_BODY()
 public:
-	virtual ~UCounterCounter();
+	virtual ~UCounterCounterImplementation();
 
 	// properties
 	FCustomTypesVector3D GetVector() const override;

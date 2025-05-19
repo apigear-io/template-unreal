@@ -57,7 +57,7 @@ void UTbSame1SameStruct1InterfaceOLinkSpec::Define()
 
 		// set up service and adapter
 		ImplFixture->GetHost()->Stop();
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSame1SameStruct1Interface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSame1SameStruct1InterfaceImplementation>();
 		ImplFixture->GetAdapter()->setBackendService(service);
 		ImplFixture->GetAdapter()->setOLinkHost(ImplFixture->GetHost());
 		ImplFixture->GetHost()->Start(8666);
@@ -139,7 +139,7 @@ void UTbSame1SameStruct1InterfaceOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue = createTestFTbSame1Struct1();
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSame1SameStruct1Interface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSame1SameStruct1InterfaceImplementation>();
 		service->SetProp1(TestValue);
 	});
 
@@ -180,7 +180,7 @@ void UTbSame1SameStruct1InterfaceOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue = createTestFTbSame1Struct1();
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSame1SameStruct1Interface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSame1SameStruct1InterfaceImplementation>();
 		service->SetProp1(TestValue);
 	});
 

@@ -107,7 +107,7 @@ void UTbNamesNamEsImplHelper::SomeSignal2SignalCb(bool bInSomeParam)
 
 FTbNamesNamEsImplFixture::FTbNamesNamEsImplFixture()
 {
-	testImplementation = GetGameInstance()->GetSubsystem<UTbNamesNamEs>();
+	testImplementation = GetGameInstance()->GetSubsystem<UTbNamesNamEsImplementation>();
 	Helper = NewObject<UTbNamesNamEsImplHelper>();
 }
 

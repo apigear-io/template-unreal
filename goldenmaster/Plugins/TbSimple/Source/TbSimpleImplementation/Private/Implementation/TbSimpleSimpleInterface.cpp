@@ -17,13 +17,13 @@ limitations under the License.
 
 #include "TbSimple/Implementation/TbSimpleSimpleInterface.h"
 
-UTbSimpleSimpleInterface::~UTbSimpleSimpleInterface() = default;
-bool UTbSimpleSimpleInterface::GetPropBool() const
+UTbSimpleSimpleInterfaceImplementation::~UTbSimpleSimpleInterfaceImplementation() = default;
+bool UTbSimpleSimpleInterfaceImplementation::GetPropBool() const
 {
 	return bPropBool;
 }
 
-void UTbSimpleSimpleInterface::SetPropBool(bool bInPropBool)
+void UTbSimpleSimpleInterfaceImplementation::SetPropBool(bool bInPropBool)
 {
 	if (bPropBool != bInPropBool)
 	{
@@ -31,12 +31,12 @@ void UTbSimpleSimpleInterface::SetPropBool(bool bInPropBool)
 		_GetSignals()->BroadcastPropBoolChanged(bPropBool);
 	}
 }
-int32 UTbSimpleSimpleInterface::GetPropInt() const
+int32 UTbSimpleSimpleInterfaceImplementation::GetPropInt() const
 {
 	return PropInt;
 }
 
-void UTbSimpleSimpleInterface::SetPropInt(int32 InPropInt)
+void UTbSimpleSimpleInterfaceImplementation::SetPropInt(int32 InPropInt)
 {
 	if (PropInt != InPropInt)
 	{
@@ -44,12 +44,12 @@ void UTbSimpleSimpleInterface::SetPropInt(int32 InPropInt)
 		_GetSignals()->BroadcastPropIntChanged(PropInt);
 	}
 }
-int32 UTbSimpleSimpleInterface::GetPropInt32() const
+int32 UTbSimpleSimpleInterfaceImplementation::GetPropInt32() const
 {
 	return PropInt32;
 }
 
-void UTbSimpleSimpleInterface::SetPropInt32(int32 InPropInt32)
+void UTbSimpleSimpleInterfaceImplementation::SetPropInt32(int32 InPropInt32)
 {
 	if (PropInt32 != InPropInt32)
 	{
@@ -57,12 +57,12 @@ void UTbSimpleSimpleInterface::SetPropInt32(int32 InPropInt32)
 		_GetSignals()->BroadcastPropInt32Changed(PropInt32);
 	}
 }
-int64 UTbSimpleSimpleInterface::GetPropInt64() const
+int64 UTbSimpleSimpleInterfaceImplementation::GetPropInt64() const
 {
 	return PropInt64;
 }
 
-void UTbSimpleSimpleInterface::SetPropInt64(int64 InPropInt64)
+void UTbSimpleSimpleInterfaceImplementation::SetPropInt64(int64 InPropInt64)
 {
 	if (PropInt64 != InPropInt64)
 	{
@@ -70,12 +70,12 @@ void UTbSimpleSimpleInterface::SetPropInt64(int64 InPropInt64)
 		_GetSignals()->BroadcastPropInt64Changed(PropInt64);
 	}
 }
-float UTbSimpleSimpleInterface::GetPropFloat() const
+float UTbSimpleSimpleInterfaceImplementation::GetPropFloat() const
 {
 	return PropFloat;
 }
 
-void UTbSimpleSimpleInterface::SetPropFloat(float InPropFloat)
+void UTbSimpleSimpleInterfaceImplementation::SetPropFloat(float InPropFloat)
 {
 	if (PropFloat != InPropFloat)
 	{
@@ -83,12 +83,12 @@ void UTbSimpleSimpleInterface::SetPropFloat(float InPropFloat)
 		_GetSignals()->BroadcastPropFloatChanged(PropFloat);
 	}
 }
-float UTbSimpleSimpleInterface::GetPropFloat32() const
+float UTbSimpleSimpleInterfaceImplementation::GetPropFloat32() const
 {
 	return PropFloat32;
 }
 
-void UTbSimpleSimpleInterface::SetPropFloat32(float InPropFloat32)
+void UTbSimpleSimpleInterfaceImplementation::SetPropFloat32(float InPropFloat32)
 {
 	if (PropFloat32 != InPropFloat32)
 	{
@@ -96,12 +96,12 @@ void UTbSimpleSimpleInterface::SetPropFloat32(float InPropFloat32)
 		_GetSignals()->BroadcastPropFloat32Changed(PropFloat32);
 	}
 }
-double UTbSimpleSimpleInterface::GetPropFloat64() const
+double UTbSimpleSimpleInterfaceImplementation::GetPropFloat64() const
 {
 	return PropFloat64;
 }
 
-void UTbSimpleSimpleInterface::SetPropFloat64(double InPropFloat64)
+void UTbSimpleSimpleInterfaceImplementation::SetPropFloat64(double InPropFloat64)
 {
 	if (PropFloat64 != InPropFloat64)
 	{
@@ -109,12 +109,12 @@ void UTbSimpleSimpleInterface::SetPropFloat64(double InPropFloat64)
 		_GetSignals()->BroadcastPropFloat64Changed(PropFloat64);
 	}
 }
-FString UTbSimpleSimpleInterface::GetPropString() const
+FString UTbSimpleSimpleInterfaceImplementation::GetPropString() const
 {
 	return PropString;
 }
 
-void UTbSimpleSimpleInterface::SetPropString(const FString& InPropString)
+void UTbSimpleSimpleInterfaceImplementation::SetPropString(const FString& InPropString)
 {
 	if (PropString != InPropString)
 	{
@@ -123,69 +123,69 @@ void UTbSimpleSimpleInterface::SetPropString(const FString& InPropString)
 	}
 }
 
-void UTbSimpleSimpleInterface::FuncNoReturnValue(bool bParamBool)
+void UTbSimpleSimpleInterfaceImplementation::FuncNoReturnValue(bool bParamBool)
 {
 	(void)bParamBool;
 	// do business logic here
 }
 
-bool UTbSimpleSimpleInterface::FuncBool(bool bParamBool)
+bool UTbSimpleSimpleInterfaceImplementation::FuncBool(bool bParamBool)
 {
 	(void)bParamBool;
 	// do business logic here
 	return false;
 }
 
-int32 UTbSimpleSimpleInterface::FuncInt(int32 ParamInt)
+int32 UTbSimpleSimpleInterfaceImplementation::FuncInt(int32 ParamInt)
 {
 	(void)ParamInt;
 	// do business logic here
 	return 0;
 }
 
-int32 UTbSimpleSimpleInterface::FuncInt32(int32 ParamInt32)
+int32 UTbSimpleSimpleInterfaceImplementation::FuncInt32(int32 ParamInt32)
 {
 	(void)ParamInt32;
 	// do business logic here
 	return 0;
 }
 
-int64 UTbSimpleSimpleInterface::FuncInt64(int64 ParamInt64)
+int64 UTbSimpleSimpleInterfaceImplementation::FuncInt64(int64 ParamInt64)
 {
 	(void)ParamInt64;
 	// do business logic here
 	return 0LL;
 }
 
-float UTbSimpleSimpleInterface::FuncFloat(float ParamFloat)
+float UTbSimpleSimpleInterfaceImplementation::FuncFloat(float ParamFloat)
 {
 	(void)ParamFloat;
 	// do business logic here
 	return 0.0f;
 }
 
-float UTbSimpleSimpleInterface::FuncFloat32(float ParamFloat32)
+float UTbSimpleSimpleInterfaceImplementation::FuncFloat32(float ParamFloat32)
 {
 	(void)ParamFloat32;
 	// do business logic here
 	return 0.0f;
 }
 
-double UTbSimpleSimpleInterface::FuncFloat64(double ParamFloat)
+double UTbSimpleSimpleInterfaceImplementation::FuncFloat64(double ParamFloat)
 {
 	(void)ParamFloat;
 	// do business logic here
 	return 0.0;
 }
 
-FString UTbSimpleSimpleInterface::FuncString(const FString& ParamString)
+FString UTbSimpleSimpleInterfaceImplementation::FuncString(const FString& ParamString)
 {
 	(void)ParamString;
 	// do business logic here
 	return FString();
 }
 
-void UTbSimpleSimpleInterface::_ResetProperties()
+void UTbSimpleSimpleInterfaceImplementation::_ResetProperties()
 {
 	if (bPropBool != false)
 	{

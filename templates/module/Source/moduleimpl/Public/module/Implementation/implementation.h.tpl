@@ -4,7 +4,7 @@
 {{- $API_MACRO := printf "%sIMPLEMENTATION_API" (CAMEL .Module.Name) }}
 {{- $Category := printf "ApiGear|%s|%s" $ModuleName $IfaceName }}
 {{- $DisplayName := printf "%s%s" $ModuleName $IfaceName }}
-{{- $Class := printf "U%s" $DisplayName}}
+{{- $Class := printf "U%sImplementation" $DisplayName}}
 {{- $abstractclass := printf "UAbstract%s%s" (Camel .Module.Name) (Camel .Interface.Name) }}
 {{- $Iface := printf "%s%s" $ModuleName $IfaceName }}
 /**

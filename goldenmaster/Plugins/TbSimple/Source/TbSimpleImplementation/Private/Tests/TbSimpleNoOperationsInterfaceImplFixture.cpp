@@ -79,7 +79,7 @@ void UTbSimpleNoOperationsInterfaceImplHelper::SigBoolSignalCb(bool bInParamBool
 
 FTbSimpleNoOperationsInterfaceImplFixture::FTbSimpleNoOperationsInterfaceImplFixture()
 {
-	testImplementation = GetGameInstance()->GetSubsystem<UTbSimpleNoOperationsInterface>();
+	testImplementation = GetGameInstance()->GetSubsystem<UTbSimpleNoOperationsInterfaceImplementation>();
 	Helper = NewObject<UTbSimpleNoOperationsInterfaceImplHelper>();
 }
 

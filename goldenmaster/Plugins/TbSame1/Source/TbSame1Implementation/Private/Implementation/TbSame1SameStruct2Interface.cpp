@@ -17,13 +17,13 @@ limitations under the License.
 
 #include "TbSame1/Implementation/TbSame1SameStruct2Interface.h"
 
-UTbSame1SameStruct2Interface::~UTbSame1SameStruct2Interface() = default;
-FTbSame1Struct2 UTbSame1SameStruct2Interface::GetProp1() const
+UTbSame1SameStruct2InterfaceImplementation::~UTbSame1SameStruct2InterfaceImplementation() = default;
+FTbSame1Struct2 UTbSame1SameStruct2InterfaceImplementation::GetProp1() const
 {
 	return Prop1;
 }
 
-void UTbSame1SameStruct2Interface::SetProp1(const FTbSame1Struct2& InProp1)
+void UTbSame1SameStruct2InterfaceImplementation::SetProp1(const FTbSame1Struct2& InProp1)
 {
 	if (Prop1 != InProp1)
 	{
@@ -31,12 +31,12 @@ void UTbSame1SameStruct2Interface::SetProp1(const FTbSame1Struct2& InProp1)
 		_GetSignals()->BroadcastProp1Changed(Prop1);
 	}
 }
-FTbSame1Struct2 UTbSame1SameStruct2Interface::GetProp2() const
+FTbSame1Struct2 UTbSame1SameStruct2InterfaceImplementation::GetProp2() const
 {
 	return Prop2;
 }
 
-void UTbSame1SameStruct2Interface::SetProp2(const FTbSame1Struct2& InProp2)
+void UTbSame1SameStruct2InterfaceImplementation::SetProp2(const FTbSame1Struct2& InProp2)
 {
 	if (Prop2 != InProp2)
 	{
@@ -45,14 +45,14 @@ void UTbSame1SameStruct2Interface::SetProp2(const FTbSame1Struct2& InProp2)
 	}
 }
 
-FTbSame1Struct1 UTbSame1SameStruct2Interface::Func1(const FTbSame1Struct1& Param1)
+FTbSame1Struct1 UTbSame1SameStruct2InterfaceImplementation::Func1(const FTbSame1Struct1& Param1)
 {
 	(void)Param1;
 	// do business logic here
 	return FTbSame1Struct1();
 }
 
-FTbSame1Struct1 UTbSame1SameStruct2Interface::Func2(const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2)
+FTbSame1Struct1 UTbSame1SameStruct2InterfaceImplementation::Func2(const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2)
 {
 	(void)Param1;
 	(void)Param2;
@@ -60,7 +60,7 @@ FTbSame1Struct1 UTbSame1SameStruct2Interface::Func2(const FTbSame1Struct1& Param
 	return FTbSame1Struct1();
 }
 
-void UTbSame1SameStruct2Interface::_ResetProperties()
+void UTbSame1SameStruct2InterfaceImplementation::_ResetProperties()
 {
 	if (Prop1 != FTbSame1Struct2())
 	{

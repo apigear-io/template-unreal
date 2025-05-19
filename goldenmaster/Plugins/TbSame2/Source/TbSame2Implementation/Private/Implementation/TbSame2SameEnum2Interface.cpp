@@ -17,13 +17,13 @@ limitations under the License.
 
 #include "TbSame2/Implementation/TbSame2SameEnum2Interface.h"
 
-UTbSame2SameEnum2Interface::~UTbSame2SameEnum2Interface() = default;
-ETbSame2Enum1 UTbSame2SameEnum2Interface::GetProp1() const
+UTbSame2SameEnum2InterfaceImplementation::~UTbSame2SameEnum2InterfaceImplementation() = default;
+ETbSame2Enum1 UTbSame2SameEnum2InterfaceImplementation::GetProp1() const
 {
 	return Prop1;
 }
 
-void UTbSame2SameEnum2Interface::SetProp1(ETbSame2Enum1 InProp1)
+void UTbSame2SameEnum2InterfaceImplementation::SetProp1(ETbSame2Enum1 InProp1)
 {
 	if (Prop1 != InProp1)
 	{
@@ -31,12 +31,12 @@ void UTbSame2SameEnum2Interface::SetProp1(ETbSame2Enum1 InProp1)
 		_GetSignals()->BroadcastProp1Changed(Prop1);
 	}
 }
-ETbSame2Enum2 UTbSame2SameEnum2Interface::GetProp2() const
+ETbSame2Enum2 UTbSame2SameEnum2InterfaceImplementation::GetProp2() const
 {
 	return Prop2;
 }
 
-void UTbSame2SameEnum2Interface::SetProp2(ETbSame2Enum2 InProp2)
+void UTbSame2SameEnum2InterfaceImplementation::SetProp2(ETbSame2Enum2 InProp2)
 {
 	if (Prop2 != InProp2)
 	{
@@ -45,14 +45,14 @@ void UTbSame2SameEnum2Interface::SetProp2(ETbSame2Enum2 InProp2)
 	}
 }
 
-ETbSame2Enum1 UTbSame2SameEnum2Interface::Func1(ETbSame2Enum1 Param1)
+ETbSame2Enum1 UTbSame2SameEnum2InterfaceImplementation::Func1(ETbSame2Enum1 Param1)
 {
 	(void)Param1;
 	// do business logic here
 	return ETbSame2Enum1::TS2E1_Value1;
 }
 
-ETbSame2Enum1 UTbSame2SameEnum2Interface::Func2(ETbSame2Enum1 Param1, ETbSame2Enum2 Param2)
+ETbSame2Enum1 UTbSame2SameEnum2InterfaceImplementation::Func2(ETbSame2Enum1 Param1, ETbSame2Enum2 Param2)
 {
 	(void)Param1;
 	(void)Param2;
@@ -60,7 +60,7 @@ ETbSame2Enum1 UTbSame2SameEnum2Interface::Func2(ETbSame2Enum1 Param1, ETbSame2En
 	return ETbSame2Enum1::TS2E1_Value1;
 }
 
-void UTbSame2SameEnum2Interface::_ResetProperties()
+void UTbSame2SameEnum2InterfaceImplementation::_ResetProperties()
 {
 	if (Prop1 != ETbSame2Enum1::TS2E1_Value1)
 	{

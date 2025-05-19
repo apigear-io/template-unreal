@@ -17,4 +17,4 @@ limitations under the License.
 
 #include "TbSimple/Implementation/TbSimpleEmptyInterface.h"
 
-UTbSimpleEmptyInterface::~UTbSimpleEmptyInterface() = default;
+UTbSimpleEmptyInterfaceImplementation::~UTbSimpleEmptyInterfaceImplementation() = default;

@@ -17,13 +17,13 @@ limitations under the License.
 
 #include "TbEnum/Implementation/TbEnumEnumInterface.h"
 
-UTbEnumEnumInterface::~UTbEnumEnumInterface() = default;
-ETbEnumEnum0 UTbEnumEnumInterface::GetProp0() const
+UTbEnumEnumInterfaceImplementation::~UTbEnumEnumInterfaceImplementation() = default;
+ETbEnumEnum0 UTbEnumEnumInterfaceImplementation::GetProp0() const
 {
 	return Prop0;
 }
 
-void UTbEnumEnumInterface::SetProp0(ETbEnumEnum0 InProp0)
+void UTbEnumEnumInterfaceImplementation::SetProp0(ETbEnumEnum0 InProp0)
 {
 	if (Prop0 != InProp0)
 	{
@@ -31,12 +31,12 @@ void UTbEnumEnumInterface::SetProp0(ETbEnumEnum0 InProp0)
 		_GetSignals()->BroadcastProp0Changed(Prop0);
 	}
 }
-ETbEnumEnum1 UTbEnumEnumInterface::GetProp1() const
+ETbEnumEnum1 UTbEnumEnumInterfaceImplementation::GetProp1() const
 {
 	return Prop1;
 }
 
-void UTbEnumEnumInterface::SetProp1(ETbEnumEnum1 InProp1)
+void UTbEnumEnumInterfaceImplementation::SetProp1(ETbEnumEnum1 InProp1)
 {
 	if (Prop1 != InProp1)
 	{
@@ -44,12 +44,12 @@ void UTbEnumEnumInterface::SetProp1(ETbEnumEnum1 InProp1)
 		_GetSignals()->BroadcastProp1Changed(Prop1);
 	}
 }
-ETbEnumEnum2 UTbEnumEnumInterface::GetProp2() const
+ETbEnumEnum2 UTbEnumEnumInterfaceImplementation::GetProp2() const
 {
 	return Prop2;
 }
 
-void UTbEnumEnumInterface::SetProp2(ETbEnumEnum2 InProp2)
+void UTbEnumEnumInterfaceImplementation::SetProp2(ETbEnumEnum2 InProp2)
 {
 	if (Prop2 != InProp2)
 	{
@@ -57,12 +57,12 @@ void UTbEnumEnumInterface::SetProp2(ETbEnumEnum2 InProp2)
 		_GetSignals()->BroadcastProp2Changed(Prop2);
 	}
 }
-ETbEnumEnum3 UTbEnumEnumInterface::GetProp3() const
+ETbEnumEnum3 UTbEnumEnumInterfaceImplementation::GetProp3() const
 {
 	return Prop3;
 }
 
-void UTbEnumEnumInterface::SetProp3(ETbEnumEnum3 InProp3)
+void UTbEnumEnumInterfaceImplementation::SetProp3(ETbEnumEnum3 InProp3)
 {
 	if (Prop3 != InProp3)
 	{
@@ -71,35 +71,35 @@ void UTbEnumEnumInterface::SetProp3(ETbEnumEnum3 InProp3)
 	}
 }
 
-ETbEnumEnum0 UTbEnumEnumInterface::Func0(ETbEnumEnum0 Param0)
+ETbEnumEnum0 UTbEnumEnumInterfaceImplementation::Func0(ETbEnumEnum0 Param0)
 {
 	(void)Param0;
 	// do business logic here
 	return ETbEnumEnum0::TEE0_Value0;
 }
 
-ETbEnumEnum1 UTbEnumEnumInterface::Func1(ETbEnumEnum1 Param1)
+ETbEnumEnum1 UTbEnumEnumInterfaceImplementation::Func1(ETbEnumEnum1 Param1)
 {
 	(void)Param1;
 	// do business logic here
 	return ETbEnumEnum1::TEE1_Value1;
 }
 
-ETbEnumEnum2 UTbEnumEnumInterface::Func2(ETbEnumEnum2 Param2)
+ETbEnumEnum2 UTbEnumEnumInterfaceImplementation::Func2(ETbEnumEnum2 Param2)
 {
 	(void)Param2;
 	// do business logic here
 	return ETbEnumEnum2::TEE2_Value2;
 }
 
-ETbEnumEnum3 UTbEnumEnumInterface::Func3(ETbEnumEnum3 Param3)
+ETbEnumEnum3 UTbEnumEnumInterfaceImplementation::Func3(ETbEnumEnum3 Param3)
 {
 	(void)Param3;
 	// do business logic here
 	return ETbEnumEnum3::TEE3_Value3;
 }
 
-void UTbEnumEnumInterface::_ResetProperties()
+void UTbEnumEnumInterfaceImplementation::_ResetProperties()
 {
 	if (Prop0 != ETbEnumEnum0::TEE0_Value0)
 	{

@@ -51,7 +51,7 @@ void UCounterCounterMsgBusSpec::Define()
 		TestTrue("Check for valid testImplementation", ImplFixture->GetImplementation().GetInterface() != nullptr);
 
 		// set up service and adapter
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UCounterCounter>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UCounterCounterImplementation>();
 		ImplFixture->GetAdapter()->_setBackendService(service);
 		ImplFixture->GetAdapter()->_StartListening();
 
@@ -122,7 +122,7 @@ void UCounterCounterMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = createTestFCustomTypesVector3D();
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UCounterCounter>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UCounterCounterImplementation>();
 		service->SetVector(TestValue);
 	});
 
@@ -163,7 +163,7 @@ void UCounterCounterMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = createTestFCustomTypesVector3D();
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UCounterCounter>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UCounterCounterImplementation>();
 		service->SetVector(TestValue);
 	});
 
@@ -221,7 +221,7 @@ void UCounterCounterMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = createTestFCustomTypesVector3DArray();
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UCounterCounter>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UCounterCounterImplementation>();
 		service->SetVectorArray(TestValue);
 	});
 
@@ -262,7 +262,7 @@ void UCounterCounterMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = createTestFCustomTypesVector3DArray();
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UCounterCounter>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UCounterCounterImplementation>();
 		service->SetVectorArray(TestValue);
 	});
 

@@ -49,7 +49,7 @@ void UTbNamesNamEsMsgBusSpec::Define()
 		TestTrue("Check for valid testImplementation", ImplFixture->GetImplementation().GetInterface() != nullptr);
 
 		// set up service and adapter
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbNamesNamEs>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbNamesNamEsImplementation>();
 		ImplFixture->GetAdapter()->_setBackendService(service);
 		ImplFixture->GetAdapter()->_StartListening();
 
@@ -120,7 +120,7 @@ void UTbNamesNamEsMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = true;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbNamesNamEs>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbNamesNamEsImplementation>();
 		service->SetSwitch(TestValue);
 	});
 
@@ -161,7 +161,7 @@ void UTbNamesNamEsMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = true;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbNamesNamEs>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbNamesNamEsImplementation>();
 		service->SetSwitch(TestValue);
 	});
 
@@ -212,7 +212,7 @@ void UTbNamesNamEsMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = 1;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbNamesNamEs>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbNamesNamEsImplementation>();
 		service->SetSomeProperty(TestValue);
 	});
 
@@ -253,7 +253,7 @@ void UTbNamesNamEsMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = 1;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbNamesNamEs>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbNamesNamEsImplementation>();
 		service->SetSomeProperty(TestValue);
 	});
 
@@ -304,7 +304,7 @@ void UTbNamesNamEsMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = 1;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbNamesNamEs>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbNamesNamEsImplementation>();
 		service->SetSomePoperty2(TestValue);
 	});
 
@@ -345,7 +345,7 @@ void UTbNamesNamEsMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = 1;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbNamesNamEs>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbNamesNamEsImplementation>();
 		service->SetSomePoperty2(TestValue);
 	});
 
@@ -396,7 +396,7 @@ void UTbNamesNamEsMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_SecondValue;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbNamesNamEs>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbNamesNamEsImplementation>();
 		service->SetEnumProperty(TestValue);
 	});
 
@@ -437,7 +437,7 @@ void UTbNamesNamEsMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_SecondValue;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbNamesNamEs>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbNamesNamEsImplementation>();
 		service->SetEnumProperty(TestValue);
 	});
 

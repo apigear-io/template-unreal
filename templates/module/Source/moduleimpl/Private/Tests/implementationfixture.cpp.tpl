@@ -99,7 +99,7 @@ void {{$Class}}ImplHelper::{{ Camel .Name }}SignalCb({{ueParams "In" .Params}})
 
 F{{ $DisplayName }}ImplFixture::F{{ $DisplayName }}ImplFixture()
 {
-	testImplementation = GetGameInstance()->GetSubsystem<{{ $Class }}>();
+	testImplementation = GetGameInstance()->GetSubsystem<{{ $Class }}Implementation>();
 	Helper = NewObject<{{$Class}}ImplHelper>();
 }
 

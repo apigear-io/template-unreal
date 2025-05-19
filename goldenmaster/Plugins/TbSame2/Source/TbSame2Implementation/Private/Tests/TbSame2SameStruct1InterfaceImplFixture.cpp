@@ -60,7 +60,7 @@ void UTbSame2SameStruct1InterfaceImplHelper::Sig1SignalCb(const FTbSame2Struct1&
 
 FTbSame2SameStruct1InterfaceImplFixture::FTbSame2SameStruct1InterfaceImplFixture()
 {
-	testImplementation = GetGameInstance()->GetSubsystem<UTbSame2SameStruct1Interface>();
+	testImplementation = GetGameInstance()->GetSubsystem<UTbSame2SameStruct1InterfaceImplementation>();
 	Helper = NewObject<UTbSame2SameStruct1InterfaceImplHelper>();
 }
 

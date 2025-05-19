@@ -28,7 +28,7 @@ void FTbEnumImplementationModule::StartupModule()
 {
 	FTbEnumModuleFactory::RegisterFactory(TbEnumLocalBackendIdentifier, [](FSubsystemCollectionBase& Collection) -> TScriptInterface<ITbEnumEnumInterfaceInterface>
 		{
-		return Cast<UTbEnumEnumInterface>(Collection.InitializeDependency(UTbEnumEnumInterface::StaticClass()));
+		return Cast<UTbEnumEnumInterfaceImplementation>(Collection.InitializeDependency(UTbEnumEnumInterfaceImplementation::StaticClass()));
 	});
 }
 
