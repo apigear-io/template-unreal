@@ -17,13 +17,13 @@ limitations under the License.
 
 #include "Counter/Implementation/CounterCounter.h"
 
-UCounterCounter::~UCounterCounter() = default;
-FCustomTypesVector3D UCounterCounter::GetVector() const
+UCounterCounterImplementation::~UCounterCounterImplementation() = default;
+FCustomTypesVector3D UCounterCounterImplementation::GetVector() const
 {
 	return Vector;
 }
 
-void UCounterCounter::SetVector(const FCustomTypesVector3D& InVector)
+void UCounterCounterImplementation::SetVector(const FCustomTypesVector3D& InVector)
 {
 	if (Vector != InVector)
 	{
@@ -31,12 +31,12 @@ void UCounterCounter::SetVector(const FCustomTypesVector3D& InVector)
 		_GetSignals()->BroadcastVectorChanged(Vector);
 	}
 }
-FVector UCounterCounter::GetExternVector() const
+FVector UCounterCounterImplementation::GetExternVector() const
 {
 	return ExternVector;
 }
 
-void UCounterCounter::SetExternVector(const FVector& InExternVector)
+void UCounterCounterImplementation::SetExternVector(const FVector& InExternVector)
 {
 	if (ExternVector != InExternVector)
 	{
@@ -44,12 +44,12 @@ void UCounterCounter::SetExternVector(const FVector& InExternVector)
 		_GetSignals()->BroadcastExternVectorChanged(ExternVector);
 	}
 }
-TArray<FCustomTypesVector3D> UCounterCounter::GetVectorArray() const
+TArray<FCustomTypesVector3D> UCounterCounterImplementation::GetVectorArray() const
 {
 	return VectorArray;
 }
 
-void UCounterCounter::SetVectorArray(const TArray<FCustomTypesVector3D>& InVectorArray)
+void UCounterCounterImplementation::SetVectorArray(const TArray<FCustomTypesVector3D>& InVectorArray)
 {
 	if (VectorArray != InVectorArray)
 	{
@@ -57,12 +57,12 @@ void UCounterCounter::SetVectorArray(const TArray<FCustomTypesVector3D>& InVecto
 		_GetSignals()->BroadcastVectorArrayChanged(VectorArray);
 	}
 }
-TArray<FVector> UCounterCounter::GetExternVectorArray() const
+TArray<FVector> UCounterCounterImplementation::GetExternVectorArray() const
 {
 	return ExternVectorArray;
 }
 
-void UCounterCounter::SetExternVectorArray(const TArray<FVector>& InExternVectorArray)
+void UCounterCounterImplementation::SetExternVectorArray(const TArray<FVector>& InExternVectorArray)
 {
 	if (ExternVectorArray != InExternVectorArray)
 	{
@@ -71,35 +71,35 @@ void UCounterCounter::SetExternVectorArray(const TArray<FVector>& InExternVector
 	}
 }
 
-FVector UCounterCounter::Increment(const FVector& Vec)
+FVector UCounterCounterImplementation::Increment(const FVector& Vec)
 {
 	(void)Vec;
 	// do business logic here
 	return FVector(0.f, 0.f, 0.f);
 }
 
-TArray<FVector> UCounterCounter::IncrementArray(const TArray<FVector>& Vec)
+TArray<FVector> UCounterCounterImplementation::IncrementArray(const TArray<FVector>& Vec)
 {
 	(void)Vec;
 	// do business logic here
 	return TArray<FVector>();
 }
 
-FCustomTypesVector3D UCounterCounter::Decrement(const FCustomTypesVector3D& Vec)
+FCustomTypesVector3D UCounterCounterImplementation::Decrement(const FCustomTypesVector3D& Vec)
 {
 	(void)Vec;
 	// do business logic here
 	return FCustomTypesVector3D();
 }
 
-TArray<FCustomTypesVector3D> UCounterCounter::DecrementArray(const TArray<FCustomTypesVector3D>& Vec)
+TArray<FCustomTypesVector3D> UCounterCounterImplementation::DecrementArray(const TArray<FCustomTypesVector3D>& Vec)
 {
 	(void)Vec;
 	// do business logic here
 	return TArray<FCustomTypesVector3D>();
 }
 
-void UCounterCounter::_ResetProperties()
+void UCounterCounterImplementation::_ResetProperties()
 {
 	if (Vector != FCustomTypesVector3D())
 	{

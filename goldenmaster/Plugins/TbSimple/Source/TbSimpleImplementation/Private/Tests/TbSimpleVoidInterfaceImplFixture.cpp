@@ -45,7 +45,7 @@ void UTbSimpleVoidInterfaceImplHelper::SigVoidSignalCb()
 
 FTbSimpleVoidInterfaceImplFixture::FTbSimpleVoidInterfaceImplFixture()
 {
-	testImplementation = GetGameInstance()->GetSubsystem<UTbSimpleVoidInterface>();
+	testImplementation = GetGameInstance()->GetSubsystem<UTbSimpleVoidInterfaceImplementation>();
 	Helper = NewObject<UTbSimpleVoidInterfaceImplHelper>();
 }
 

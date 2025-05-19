@@ -34,31 +34,31 @@ void FTbSimpleImplementationModule::StartupModule()
 {
 	FTbSimpleModuleFactory::RegisterFactory(TbSimpleLocalBackendIdentifier, [](FSubsystemCollectionBase& Collection) -> TScriptInterface<ITbSimpleVoidInterfaceInterface>
 		{
-		return Cast<UTbSimpleVoidInterface>(Collection.InitializeDependency(UTbSimpleVoidInterface::StaticClass()));
+		return Cast<UTbSimpleVoidInterfaceImplementation>(Collection.InitializeDependency(UTbSimpleVoidInterfaceImplementation::StaticClass()));
 	});
 	FTbSimpleModuleFactory::RegisterFactory(TbSimpleLocalBackendIdentifier, [](FSubsystemCollectionBase& Collection) -> TScriptInterface<ITbSimpleSimpleInterfaceInterface>
 		{
-		return Cast<UTbSimpleSimpleInterface>(Collection.InitializeDependency(UTbSimpleSimpleInterface::StaticClass()));
+		return Cast<UTbSimpleSimpleInterfaceImplementation>(Collection.InitializeDependency(UTbSimpleSimpleInterfaceImplementation::StaticClass()));
 	});
 	FTbSimpleModuleFactory::RegisterFactory(TbSimpleLocalBackendIdentifier, [](FSubsystemCollectionBase& Collection) -> TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface>
 		{
-		return Cast<UTbSimpleSimpleArrayInterface>(Collection.InitializeDependency(UTbSimpleSimpleArrayInterface::StaticClass()));
+		return Cast<UTbSimpleSimpleArrayInterfaceImplementation>(Collection.InitializeDependency(UTbSimpleSimpleArrayInterfaceImplementation::StaticClass()));
 	});
 	FTbSimpleModuleFactory::RegisterFactory(TbSimpleLocalBackendIdentifier, [](FSubsystemCollectionBase& Collection) -> TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface>
 		{
-		return Cast<UTbSimpleNoPropertiesInterface>(Collection.InitializeDependency(UTbSimpleNoPropertiesInterface::StaticClass()));
+		return Cast<UTbSimpleNoPropertiesInterfaceImplementation>(Collection.InitializeDependency(UTbSimpleNoPropertiesInterfaceImplementation::StaticClass()));
 	});
 	FTbSimpleModuleFactory::RegisterFactory(TbSimpleLocalBackendIdentifier, [](FSubsystemCollectionBase& Collection) -> TScriptInterface<ITbSimpleNoOperationsInterfaceInterface>
 		{
-		return Cast<UTbSimpleNoOperationsInterface>(Collection.InitializeDependency(UTbSimpleNoOperationsInterface::StaticClass()));
+		return Cast<UTbSimpleNoOperationsInterfaceImplementation>(Collection.InitializeDependency(UTbSimpleNoOperationsInterfaceImplementation::StaticClass()));
 	});
 	FTbSimpleModuleFactory::RegisterFactory(TbSimpleLocalBackendIdentifier, [](FSubsystemCollectionBase& Collection) -> TScriptInterface<ITbSimpleNoSignalsInterfaceInterface>
 		{
-		return Cast<UTbSimpleNoSignalsInterface>(Collection.InitializeDependency(UTbSimpleNoSignalsInterface::StaticClass()));
+		return Cast<UTbSimpleNoSignalsInterfaceImplementation>(Collection.InitializeDependency(UTbSimpleNoSignalsInterfaceImplementation::StaticClass()));
 	});
 	FTbSimpleModuleFactory::RegisterFactory(TbSimpleLocalBackendIdentifier, [](FSubsystemCollectionBase& Collection) -> TScriptInterface<ITbSimpleEmptyInterfaceInterface>
 		{
-		return Cast<UTbSimpleEmptyInterface>(Collection.InitializeDependency(UTbSimpleEmptyInterface::StaticClass()));
+		return Cast<UTbSimpleEmptyInterfaceImplementation>(Collection.InitializeDependency(UTbSimpleEmptyInterfaceImplementation::StaticClass()));
 	});
 }
 

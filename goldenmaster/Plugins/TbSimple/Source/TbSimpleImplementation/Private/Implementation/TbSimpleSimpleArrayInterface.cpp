@@ -17,13 +17,13 @@ limitations under the License.
 
 #include "TbSimple/Implementation/TbSimpleSimpleArrayInterface.h"
 
-UTbSimpleSimpleArrayInterface::~UTbSimpleSimpleArrayInterface() = default;
-TArray<bool> UTbSimpleSimpleArrayInterface::GetPropBool() const
+UTbSimpleSimpleArrayInterfaceImplementation::~UTbSimpleSimpleArrayInterfaceImplementation() = default;
+TArray<bool> UTbSimpleSimpleArrayInterfaceImplementation::GetPropBool() const
 {
 	return PropBool;
 }
 
-void UTbSimpleSimpleArrayInterface::SetPropBool(const TArray<bool>& InPropBool)
+void UTbSimpleSimpleArrayInterfaceImplementation::SetPropBool(const TArray<bool>& InPropBool)
 {
 	if (PropBool != InPropBool)
 	{
@@ -31,12 +31,12 @@ void UTbSimpleSimpleArrayInterface::SetPropBool(const TArray<bool>& InPropBool)
 		_GetSignals()->BroadcastPropBoolChanged(PropBool);
 	}
 }
-TArray<int32> UTbSimpleSimpleArrayInterface::GetPropInt() const
+TArray<int32> UTbSimpleSimpleArrayInterfaceImplementation::GetPropInt() const
 {
 	return PropInt;
 }
 
-void UTbSimpleSimpleArrayInterface::SetPropInt(const TArray<int32>& InPropInt)
+void UTbSimpleSimpleArrayInterfaceImplementation::SetPropInt(const TArray<int32>& InPropInt)
 {
 	if (PropInt != InPropInt)
 	{
@@ -44,12 +44,12 @@ void UTbSimpleSimpleArrayInterface::SetPropInt(const TArray<int32>& InPropInt)
 		_GetSignals()->BroadcastPropIntChanged(PropInt);
 	}
 }
-TArray<int32> UTbSimpleSimpleArrayInterface::GetPropInt32() const
+TArray<int32> UTbSimpleSimpleArrayInterfaceImplementation::GetPropInt32() const
 {
 	return PropInt32;
 }
 
-void UTbSimpleSimpleArrayInterface::SetPropInt32(const TArray<int32>& InPropInt32)
+void UTbSimpleSimpleArrayInterfaceImplementation::SetPropInt32(const TArray<int32>& InPropInt32)
 {
 	if (PropInt32 != InPropInt32)
 	{
@@ -57,12 +57,12 @@ void UTbSimpleSimpleArrayInterface::SetPropInt32(const TArray<int32>& InPropInt3
 		_GetSignals()->BroadcastPropInt32Changed(PropInt32);
 	}
 }
-TArray<int64> UTbSimpleSimpleArrayInterface::GetPropInt64() const
+TArray<int64> UTbSimpleSimpleArrayInterfaceImplementation::GetPropInt64() const
 {
 	return PropInt64;
 }
 
-void UTbSimpleSimpleArrayInterface::SetPropInt64(const TArray<int64>& InPropInt64)
+void UTbSimpleSimpleArrayInterfaceImplementation::SetPropInt64(const TArray<int64>& InPropInt64)
 {
 	if (PropInt64 != InPropInt64)
 	{
@@ -70,12 +70,12 @@ void UTbSimpleSimpleArrayInterface::SetPropInt64(const TArray<int64>& InPropInt6
 		_GetSignals()->BroadcastPropInt64Changed(PropInt64);
 	}
 }
-TArray<float> UTbSimpleSimpleArrayInterface::GetPropFloat() const
+TArray<float> UTbSimpleSimpleArrayInterfaceImplementation::GetPropFloat() const
 {
 	return PropFloat;
 }
 
-void UTbSimpleSimpleArrayInterface::SetPropFloat(const TArray<float>& InPropFloat)
+void UTbSimpleSimpleArrayInterfaceImplementation::SetPropFloat(const TArray<float>& InPropFloat)
 {
 	if (PropFloat != InPropFloat)
 	{
@@ -83,12 +83,12 @@ void UTbSimpleSimpleArrayInterface::SetPropFloat(const TArray<float>& InPropFloa
 		_GetSignals()->BroadcastPropFloatChanged(PropFloat);
 	}
 }
-TArray<float> UTbSimpleSimpleArrayInterface::GetPropFloat32() const
+TArray<float> UTbSimpleSimpleArrayInterfaceImplementation::GetPropFloat32() const
 {
 	return PropFloat32;
 }
 
-void UTbSimpleSimpleArrayInterface::SetPropFloat32(const TArray<float>& InPropFloat32)
+void UTbSimpleSimpleArrayInterfaceImplementation::SetPropFloat32(const TArray<float>& InPropFloat32)
 {
 	if (PropFloat32 != InPropFloat32)
 	{
@@ -96,12 +96,12 @@ void UTbSimpleSimpleArrayInterface::SetPropFloat32(const TArray<float>& InPropFl
 		_GetSignals()->BroadcastPropFloat32Changed(PropFloat32);
 	}
 }
-TArray<double> UTbSimpleSimpleArrayInterface::GetPropFloat64() const
+TArray<double> UTbSimpleSimpleArrayInterfaceImplementation::GetPropFloat64() const
 {
 	return PropFloat64;
 }
 
-void UTbSimpleSimpleArrayInterface::SetPropFloat64(const TArray<double>& InPropFloat64)
+void UTbSimpleSimpleArrayInterfaceImplementation::SetPropFloat64(const TArray<double>& InPropFloat64)
 {
 	if (PropFloat64 != InPropFloat64)
 	{
@@ -109,12 +109,12 @@ void UTbSimpleSimpleArrayInterface::SetPropFloat64(const TArray<double>& InPropF
 		_GetSignals()->BroadcastPropFloat64Changed(PropFloat64);
 	}
 }
-TArray<FString> UTbSimpleSimpleArrayInterface::GetPropString() const
+TArray<FString> UTbSimpleSimpleArrayInterfaceImplementation::GetPropString() const
 {
 	return PropString;
 }
 
-void UTbSimpleSimpleArrayInterface::SetPropString(const TArray<FString>& InPropString)
+void UTbSimpleSimpleArrayInterfaceImplementation::SetPropString(const TArray<FString>& InPropString)
 {
 	if (PropString != InPropString)
 	{
@@ -122,68 +122,68 @@ void UTbSimpleSimpleArrayInterface::SetPropString(const TArray<FString>& InPropS
 		_GetSignals()->BroadcastPropStringChanged(PropString);
 	}
 }
-FString UTbSimpleSimpleArrayInterface::GetPropReadOnlyString() const
+FString UTbSimpleSimpleArrayInterfaceImplementation::GetPropReadOnlyString() const
 {
 	return PropReadOnlyString;
 }
 
-TArray<bool> UTbSimpleSimpleArrayInterface::FuncBool(const TArray<bool>& ParamBool)
+TArray<bool> UTbSimpleSimpleArrayInterfaceImplementation::FuncBool(const TArray<bool>& ParamBool)
 {
 	(void)ParamBool;
 	// do business logic here
 	return TArray<bool>();
 }
 
-TArray<int32> UTbSimpleSimpleArrayInterface::FuncInt(const TArray<int32>& ParamInt)
+TArray<int32> UTbSimpleSimpleArrayInterfaceImplementation::FuncInt(const TArray<int32>& ParamInt)
 {
 	(void)ParamInt;
 	// do business logic here
 	return TArray<int32>();
 }
 
-TArray<int32> UTbSimpleSimpleArrayInterface::FuncInt32(const TArray<int32>& ParamInt32)
+TArray<int32> UTbSimpleSimpleArrayInterfaceImplementation::FuncInt32(const TArray<int32>& ParamInt32)
 {
 	(void)ParamInt32;
 	// do business logic here
 	return TArray<int32>();
 }
 
-TArray<int64> UTbSimpleSimpleArrayInterface::FuncInt64(const TArray<int64>& ParamInt64)
+TArray<int64> UTbSimpleSimpleArrayInterfaceImplementation::FuncInt64(const TArray<int64>& ParamInt64)
 {
 	(void)ParamInt64;
 	// do business logic here
 	return TArray<int64>();
 }
 
-TArray<float> UTbSimpleSimpleArrayInterface::FuncFloat(const TArray<float>& ParamFloat)
+TArray<float> UTbSimpleSimpleArrayInterfaceImplementation::FuncFloat(const TArray<float>& ParamFloat)
 {
 	(void)ParamFloat;
 	// do business logic here
 	return TArray<float>();
 }
 
-TArray<float> UTbSimpleSimpleArrayInterface::FuncFloat32(const TArray<float>& ParamFloat32)
+TArray<float> UTbSimpleSimpleArrayInterfaceImplementation::FuncFloat32(const TArray<float>& ParamFloat32)
 {
 	(void)ParamFloat32;
 	// do business logic here
 	return TArray<float>();
 }
 
-TArray<double> UTbSimpleSimpleArrayInterface::FuncFloat64(const TArray<double>& ParamFloat)
+TArray<double> UTbSimpleSimpleArrayInterfaceImplementation::FuncFloat64(const TArray<double>& ParamFloat)
 {
 	(void)ParamFloat;
 	// do business logic here
 	return TArray<double>();
 }
 
-TArray<FString> UTbSimpleSimpleArrayInterface::FuncString(const TArray<FString>& ParamString)
+TArray<FString> UTbSimpleSimpleArrayInterfaceImplementation::FuncString(const TArray<FString>& ParamString)
 {
 	(void)ParamString;
 	// do business logic here
 	return TArray<FString>();
 }
 
-void UTbSimpleSimpleArrayInterface::_ResetProperties()
+void UTbSimpleSimpleArrayInterfaceImplementation::_ResetProperties()
 {
 	if (PropBool != TArray<bool>())
 	{

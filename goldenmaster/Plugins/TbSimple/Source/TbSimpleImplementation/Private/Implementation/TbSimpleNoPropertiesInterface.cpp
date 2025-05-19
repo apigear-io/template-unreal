@@ -17,14 +17,14 @@ limitations under the License.
 
 #include "TbSimple/Implementation/TbSimpleNoPropertiesInterface.h"
 
-UTbSimpleNoPropertiesInterface::~UTbSimpleNoPropertiesInterface() = default;
+UTbSimpleNoPropertiesInterfaceImplementation::~UTbSimpleNoPropertiesInterfaceImplementation() = default;
 
-void UTbSimpleNoPropertiesInterface::FuncVoid()
+void UTbSimpleNoPropertiesInterfaceImplementation::FuncVoid()
 {
 	// do business logic here
 }
 
-bool UTbSimpleNoPropertiesInterface::FuncBool(bool bParamBool)
+bool UTbSimpleNoPropertiesInterfaceImplementation::FuncBool(bool bParamBool)
 {
 	(void)bParamBool;
 	// do business logic here

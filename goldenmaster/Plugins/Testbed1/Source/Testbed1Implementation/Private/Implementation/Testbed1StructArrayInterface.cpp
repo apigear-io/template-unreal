@@ -17,13 +17,13 @@ limitations under the License.
 
 #include "Testbed1/Implementation/Testbed1StructArrayInterface.h"
 
-UTestbed1StructArrayInterface::~UTestbed1StructArrayInterface() = default;
-TArray<FTestbed1StructBool> UTestbed1StructArrayInterface::GetPropBool() const
+UTestbed1StructArrayInterfaceImplementation::~UTestbed1StructArrayInterfaceImplementation() = default;
+TArray<FTestbed1StructBool> UTestbed1StructArrayInterfaceImplementation::GetPropBool() const
 {
 	return PropBool;
 }
 
-void UTestbed1StructArrayInterface::SetPropBool(const TArray<FTestbed1StructBool>& InPropBool)
+void UTestbed1StructArrayInterfaceImplementation::SetPropBool(const TArray<FTestbed1StructBool>& InPropBool)
 {
 	if (PropBool != InPropBool)
 	{
@@ -31,12 +31,12 @@ void UTestbed1StructArrayInterface::SetPropBool(const TArray<FTestbed1StructBool
 		_GetSignals()->BroadcastPropBoolChanged(PropBool);
 	}
 }
-TArray<FTestbed1StructInt> UTestbed1StructArrayInterface::GetPropInt() const
+TArray<FTestbed1StructInt> UTestbed1StructArrayInterfaceImplementation::GetPropInt() const
 {
 	return PropInt;
 }
 
-void UTestbed1StructArrayInterface::SetPropInt(const TArray<FTestbed1StructInt>& InPropInt)
+void UTestbed1StructArrayInterfaceImplementation::SetPropInt(const TArray<FTestbed1StructInt>& InPropInt)
 {
 	if (PropInt != InPropInt)
 	{
@@ -44,12 +44,12 @@ void UTestbed1StructArrayInterface::SetPropInt(const TArray<FTestbed1StructInt>&
 		_GetSignals()->BroadcastPropIntChanged(PropInt);
 	}
 }
-TArray<FTestbed1StructFloat> UTestbed1StructArrayInterface::GetPropFloat() const
+TArray<FTestbed1StructFloat> UTestbed1StructArrayInterfaceImplementation::GetPropFloat() const
 {
 	return PropFloat;
 }
 
-void UTestbed1StructArrayInterface::SetPropFloat(const TArray<FTestbed1StructFloat>& InPropFloat)
+void UTestbed1StructArrayInterfaceImplementation::SetPropFloat(const TArray<FTestbed1StructFloat>& InPropFloat)
 {
 	if (PropFloat != InPropFloat)
 	{
@@ -57,12 +57,12 @@ void UTestbed1StructArrayInterface::SetPropFloat(const TArray<FTestbed1StructFlo
 		_GetSignals()->BroadcastPropFloatChanged(PropFloat);
 	}
 }
-TArray<FTestbed1StructString> UTestbed1StructArrayInterface::GetPropString() const
+TArray<FTestbed1StructString> UTestbed1StructArrayInterfaceImplementation::GetPropString() const
 {
 	return PropString;
 }
 
-void UTestbed1StructArrayInterface::SetPropString(const TArray<FTestbed1StructString>& InPropString)
+void UTestbed1StructArrayInterfaceImplementation::SetPropString(const TArray<FTestbed1StructString>& InPropString)
 {
 	if (PropString != InPropString)
 	{
@@ -70,12 +70,12 @@ void UTestbed1StructArrayInterface::SetPropString(const TArray<FTestbed1StructSt
 		_GetSignals()->BroadcastPropStringChanged(PropString);
 	}
 }
-TArray<ETestbed1Enum0> UTestbed1StructArrayInterface::GetPropEnum() const
+TArray<ETestbed1Enum0> UTestbed1StructArrayInterfaceImplementation::GetPropEnum() const
 {
 	return PropEnum;
 }
 
-void UTestbed1StructArrayInterface::SetPropEnum(const TArray<ETestbed1Enum0>& InPropEnum)
+void UTestbed1StructArrayInterfaceImplementation::SetPropEnum(const TArray<ETestbed1Enum0>& InPropEnum)
 {
 	if (PropEnum != InPropEnum)
 	{
@@ -84,42 +84,42 @@ void UTestbed1StructArrayInterface::SetPropEnum(const TArray<ETestbed1Enum0>& In
 	}
 }
 
-TArray<FTestbed1StructBool> UTestbed1StructArrayInterface::FuncBool(const TArray<FTestbed1StructBool>& ParamBool)
+TArray<FTestbed1StructBool> UTestbed1StructArrayInterfaceImplementation::FuncBool(const TArray<FTestbed1StructBool>& ParamBool)
 {
 	(void)ParamBool;
 	// do business logic here
 	return TArray<FTestbed1StructBool>();
 }
 
-TArray<FTestbed1StructInt> UTestbed1StructArrayInterface::FuncInt(const TArray<FTestbed1StructInt>& ParamInt)
+TArray<FTestbed1StructInt> UTestbed1StructArrayInterfaceImplementation::FuncInt(const TArray<FTestbed1StructInt>& ParamInt)
 {
 	(void)ParamInt;
 	// do business logic here
 	return TArray<FTestbed1StructInt>();
 }
 
-TArray<FTestbed1StructFloat> UTestbed1StructArrayInterface::FuncFloat(const TArray<FTestbed1StructFloat>& ParamFloat)
+TArray<FTestbed1StructFloat> UTestbed1StructArrayInterfaceImplementation::FuncFloat(const TArray<FTestbed1StructFloat>& ParamFloat)
 {
 	(void)ParamFloat;
 	// do business logic here
 	return TArray<FTestbed1StructFloat>();
 }
 
-TArray<FTestbed1StructString> UTestbed1StructArrayInterface::FuncString(const TArray<FTestbed1StructString>& ParamString)
+TArray<FTestbed1StructString> UTestbed1StructArrayInterfaceImplementation::FuncString(const TArray<FTestbed1StructString>& ParamString)
 {
 	(void)ParamString;
 	// do business logic here
 	return TArray<FTestbed1StructString>();
 }
 
-TArray<ETestbed1Enum0> UTestbed1StructArrayInterface::FuncEnum(const TArray<ETestbed1Enum0>& ParamEnum)
+TArray<ETestbed1Enum0> UTestbed1StructArrayInterfaceImplementation::FuncEnum(const TArray<ETestbed1Enum0>& ParamEnum)
 {
 	(void)ParamEnum;
 	// do business logic here
 	return TArray<ETestbed1Enum0>();
 }
 
-void UTestbed1StructArrayInterface::_ResetProperties()
+void UTestbed1StructArrayInterfaceImplementation::_ResetProperties()
 {
 	if (PropBool != TArray<FTestbed1StructBool>())
 	{

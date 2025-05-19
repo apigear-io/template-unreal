@@ -57,7 +57,7 @@ void UTestbed2NestedStruct3InterfaceOLinkSpec::Define()
 
 		// set up service and adapter
 		ImplFixture->GetHost()->Stop();
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed2NestedStruct3Interface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed2NestedStruct3InterfaceImplementation>();
 		ImplFixture->GetAdapter()->setBackendService(service);
 		ImplFixture->GetAdapter()->setOLinkHost(ImplFixture->GetHost());
 		ImplFixture->GetHost()->Start(8666);
@@ -139,7 +139,7 @@ void UTestbed2NestedStruct3InterfaceOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue = createTestFTestbed2NestedStruct1();
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed2NestedStruct3Interface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed2NestedStruct3InterfaceImplementation>();
 		service->SetProp1(TestValue);
 	});
 
@@ -180,7 +180,7 @@ void UTestbed2NestedStruct3InterfaceOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue = createTestFTestbed2NestedStruct1();
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed2NestedStruct3Interface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed2NestedStruct3InterfaceImplementation>();
 		service->SetProp1(TestValue);
 	});
 
@@ -231,7 +231,7 @@ void UTestbed2NestedStruct3InterfaceOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue = createTestFTestbed2NestedStruct2();
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed2NestedStruct3Interface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed2NestedStruct3InterfaceImplementation>();
 		service->SetProp2(TestValue);
 	});
 
@@ -272,7 +272,7 @@ void UTestbed2NestedStruct3InterfaceOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue = createTestFTestbed2NestedStruct2();
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed2NestedStruct3Interface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed2NestedStruct3InterfaceImplementation>();
 		service->SetProp2(TestValue);
 	});
 
@@ -323,7 +323,7 @@ void UTestbed2NestedStruct3InterfaceOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue = createTestFTestbed2NestedStruct3();
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed2NestedStruct3Interface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed2NestedStruct3InterfaceImplementation>();
 		service->SetProp3(TestValue);
 	});
 
@@ -364,7 +364,7 @@ void UTestbed2NestedStruct3InterfaceOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue = createTestFTestbed2NestedStruct3();
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed2NestedStruct3Interface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed2NestedStruct3InterfaceImplementation>();
 		service->SetProp3(TestValue);
 	});
 

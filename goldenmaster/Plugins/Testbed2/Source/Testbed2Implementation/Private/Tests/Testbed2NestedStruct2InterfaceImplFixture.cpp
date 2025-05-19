@@ -83,7 +83,7 @@ void UTestbed2NestedStruct2InterfaceImplHelper::Sig2SignalCb(const FTestbed2Nest
 
 FTestbed2NestedStruct2InterfaceImplFixture::FTestbed2NestedStruct2InterfaceImplFixture()
 {
-	testImplementation = GetGameInstance()->GetSubsystem<UTestbed2NestedStruct2Interface>();
+	testImplementation = GetGameInstance()->GetSubsystem<UTestbed2NestedStruct2InterfaceImplementation>();
 	Helper = NewObject<UTestbed2NestedStruct2InterfaceImplHelper>();
 }
 

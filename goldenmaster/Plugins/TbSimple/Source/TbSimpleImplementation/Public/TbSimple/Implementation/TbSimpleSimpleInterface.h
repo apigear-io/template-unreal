@@ -22,11 +22,11 @@ limitations under the License.
 #include "TbSimpleSimpleInterface.generated.h"
 
 UCLASS(BlueprintType)
-class TBSIMPLEIMPLEMENTATION_API UTbSimpleSimpleInterface : public UAbstractTbSimpleSimpleInterface
+class TBSIMPLEIMPLEMENTATION_API UTbSimpleSimpleInterfaceImplementation : public UAbstractTbSimpleSimpleInterface
 {
 	GENERATED_BODY()
 public:
-	virtual ~UTbSimpleSimpleInterface();
+	virtual ~UTbSimpleSimpleInterfaceImplementation();
 
 	// properties
 	bool GetPropBool() const override;

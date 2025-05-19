@@ -3,7 +3,7 @@
 {{- $ModuleName := Camel .Module.Name}}
 {{- $DisplayName := printf "%s%s" $ModuleName (Camel .Interface.Name) }}
 {{- $IfaceName := Camel .Interface.Name }}
-{{- $Class := printf "U%s" $DisplayName}}
+{{- $Class := printf "U%sImplementation" $DisplayName}}
 {{- $Iface := printf "%s%s" $ModuleName $IfaceName }}
 
 #include "{{$ModuleName}}/Implementation/{{$Iface}}.h"

@@ -57,7 +57,7 @@ void UTbSimpleNoPropertiesInterfaceOLinkSpec::Define()
 
 		// set up service and adapter
 		ImplFixture->GetHost()->Stop();
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleNoPropertiesInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleNoPropertiesInterfaceImplementation>();
 		ImplFixture->GetAdapter()->setBackendService(service);
 		ImplFixture->GetAdapter()->setOLinkHost(ImplFixture->GetHost());
 		ImplFixture->GetHost()->Start(8666);

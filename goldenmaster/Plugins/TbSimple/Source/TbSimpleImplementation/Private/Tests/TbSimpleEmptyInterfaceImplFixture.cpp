@@ -39,7 +39,7 @@ void UTbSimpleEmptyInterfaceImplHelper::SetTestDone(const FDoneDelegate& InDone)
 
 FTbSimpleEmptyInterfaceImplFixture::FTbSimpleEmptyInterfaceImplFixture()
 {
-	testImplementation = GetGameInstance()->GetSubsystem<UTbSimpleEmptyInterface>();
+	testImplementation = GetGameInstance()->GetSubsystem<UTbSimpleEmptyInterfaceImplementation>();
 	Helper = NewObject<UTbSimpleEmptyInterfaceImplHelper>();
 }
 

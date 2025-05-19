@@ -17,13 +17,13 @@ limitations under the License.
 
 #include "Testbed2/Implementation/Testbed2NestedStruct1Interface.h"
 
-UTestbed2NestedStruct1Interface::~UTestbed2NestedStruct1Interface() = default;
-FTestbed2NestedStruct1 UTestbed2NestedStruct1Interface::GetProp1() const
+UTestbed2NestedStruct1InterfaceImplementation::~UTestbed2NestedStruct1InterfaceImplementation() = default;
+FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceImplementation::GetProp1() const
 {
 	return Prop1;
 }
 
-void UTestbed2NestedStruct1Interface::SetProp1(const FTestbed2NestedStruct1& InProp1)
+void UTestbed2NestedStruct1InterfaceImplementation::SetProp1(const FTestbed2NestedStruct1& InProp1)
 {
 	if (Prop1 != InProp1)
 	{
@@ -32,14 +32,14 @@ void UTestbed2NestedStruct1Interface::SetProp1(const FTestbed2NestedStruct1& InP
 	}
 }
 
-FTestbed2NestedStruct1 UTestbed2NestedStruct1Interface::Func1(const FTestbed2NestedStruct1& Param1)
+FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceImplementation::Func1(const FTestbed2NestedStruct1& Param1)
 {
 	(void)Param1;
 	// do business logic here
 	return FTestbed2NestedStruct1();
 }
 
-void UTestbed2NestedStruct1Interface::_ResetProperties()
+void UTestbed2NestedStruct1InterfaceImplementation::_ResetProperties()
 {
 	if (Prop1 != FTestbed2NestedStruct1())
 	{

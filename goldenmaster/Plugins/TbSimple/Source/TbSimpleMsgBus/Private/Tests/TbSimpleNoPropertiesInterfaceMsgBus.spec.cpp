@@ -49,7 +49,7 @@ void UTbSimpleNoPropertiesInterfaceMsgBusSpec::Define()
 		TestTrue("Check for valid testImplementation", ImplFixture->GetImplementation().GetInterface() != nullptr);
 
 		// set up service and adapter
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleNoPropertiesInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleNoPropertiesInterfaceImplementation>();
 		ImplFixture->GetAdapter()->_setBackendService(service);
 		ImplFixture->GetAdapter()->_StartListening();
 

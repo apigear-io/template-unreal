@@ -57,7 +57,7 @@ void UTbSimpleNoSignalsInterfaceOLinkSpec::Define()
 
 		// set up service and adapter
 		ImplFixture->GetHost()->Stop();
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleNoSignalsInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleNoSignalsInterfaceImplementation>();
 		ImplFixture->GetAdapter()->setBackendService(service);
 		ImplFixture->GetAdapter()->setOLinkHost(ImplFixture->GetHost());
 		ImplFixture->GetHost()->Start(8666);
@@ -139,7 +139,7 @@ void UTbSimpleNoSignalsInterfaceOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue = true;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleNoSignalsInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleNoSignalsInterfaceImplementation>();
 		service->SetPropBool(TestValue);
 	});
 
@@ -180,7 +180,7 @@ void UTbSimpleNoSignalsInterfaceOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue = true;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleNoSignalsInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleNoSignalsInterfaceImplementation>();
 		service->SetPropBool(TestValue);
 	});
 
@@ -231,7 +231,7 @@ void UTbSimpleNoSignalsInterfaceOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue = 1;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleNoSignalsInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleNoSignalsInterfaceImplementation>();
 		service->SetPropInt(TestValue);
 	});
 
@@ -272,7 +272,7 @@ void UTbSimpleNoSignalsInterfaceOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue = 1;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleNoSignalsInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleNoSignalsInterfaceImplementation>();
 		service->SetPropInt(TestValue);
 	});
 

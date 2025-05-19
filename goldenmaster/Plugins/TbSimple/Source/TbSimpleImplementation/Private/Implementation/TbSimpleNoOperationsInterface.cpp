@@ -17,13 +17,13 @@ limitations under the License.
 
 #include "TbSimple/Implementation/TbSimpleNoOperationsInterface.h"
 
-UTbSimpleNoOperationsInterface::~UTbSimpleNoOperationsInterface() = default;
-bool UTbSimpleNoOperationsInterface::GetPropBool() const
+UTbSimpleNoOperationsInterfaceImplementation::~UTbSimpleNoOperationsInterfaceImplementation() = default;
+bool UTbSimpleNoOperationsInterfaceImplementation::GetPropBool() const
 {
 	return bPropBool;
 }
 
-void UTbSimpleNoOperationsInterface::SetPropBool(bool bInPropBool)
+void UTbSimpleNoOperationsInterfaceImplementation::SetPropBool(bool bInPropBool)
 {
 	if (bPropBool != bInPropBool)
 	{
@@ -31,12 +31,12 @@ void UTbSimpleNoOperationsInterface::SetPropBool(bool bInPropBool)
 		_GetSignals()->BroadcastPropBoolChanged(bPropBool);
 	}
 }
-int32 UTbSimpleNoOperationsInterface::GetPropInt() const
+int32 UTbSimpleNoOperationsInterfaceImplementation::GetPropInt() const
 {
 	return PropInt;
 }
 
-void UTbSimpleNoOperationsInterface::SetPropInt(int32 InPropInt)
+void UTbSimpleNoOperationsInterfaceImplementation::SetPropInt(int32 InPropInt)
 {
 	if (PropInt != InPropInt)
 	{
@@ -45,7 +45,7 @@ void UTbSimpleNoOperationsInterface::SetPropInt(int32 InPropInt)
 	}
 }
 
-void UTbSimpleNoOperationsInterface::_ResetProperties()
+void UTbSimpleNoOperationsInterfaceImplementation::_ResetProperties()
 {
 	if (bPropBool != false)
 	{

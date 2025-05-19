@@ -57,7 +57,7 @@ void UTestbed2ManyParamInterfaceOLinkSpec::Define()
 
 		// set up service and adapter
 		ImplFixture->GetHost()->Stop();
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed2ManyParamInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed2ManyParamInterfaceImplementation>();
 		ImplFixture->GetAdapter()->setBackendService(service);
 		ImplFixture->GetAdapter()->setOLinkHost(ImplFixture->GetHost());
 		ImplFixture->GetHost()->Start(8666);
@@ -139,7 +139,7 @@ void UTestbed2ManyParamInterfaceOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue = 1;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed2ManyParamInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed2ManyParamInterfaceImplementation>();
 		service->SetProp1(TestValue);
 	});
 
@@ -180,7 +180,7 @@ void UTestbed2ManyParamInterfaceOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue = 1;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed2ManyParamInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed2ManyParamInterfaceImplementation>();
 		service->SetProp1(TestValue);
 	});
 
@@ -231,7 +231,7 @@ void UTestbed2ManyParamInterfaceOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue = 1;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed2ManyParamInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed2ManyParamInterfaceImplementation>();
 		service->SetProp2(TestValue);
 	});
 
@@ -272,7 +272,7 @@ void UTestbed2ManyParamInterfaceOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue = 1;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed2ManyParamInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed2ManyParamInterfaceImplementation>();
 		service->SetProp2(TestValue);
 	});
 
@@ -323,7 +323,7 @@ void UTestbed2ManyParamInterfaceOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue = 1;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed2ManyParamInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed2ManyParamInterfaceImplementation>();
 		service->SetProp3(TestValue);
 	});
 
@@ -364,7 +364,7 @@ void UTestbed2ManyParamInterfaceOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue = 1;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed2ManyParamInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed2ManyParamInterfaceImplementation>();
 		service->SetProp3(TestValue);
 	});
 
@@ -415,7 +415,7 @@ void UTestbed2ManyParamInterfaceOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue = 1;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed2ManyParamInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed2ManyParamInterfaceImplementation>();
 		service->SetProp4(TestValue);
 	});
 
@@ -456,7 +456,7 @@ void UTestbed2ManyParamInterfaceOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue = 1;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed2ManyParamInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed2ManyParamInterfaceImplementation>();
 		service->SetProp4(TestValue);
 	});
 

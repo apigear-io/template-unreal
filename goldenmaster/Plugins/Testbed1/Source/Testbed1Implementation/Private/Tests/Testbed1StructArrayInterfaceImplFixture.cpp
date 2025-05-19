@@ -145,7 +145,7 @@ void UTestbed1StructArrayInterfaceImplHelper::SigEnumSignalCb(const TArray<ETest
 
 FTestbed1StructArrayInterfaceImplFixture::FTestbed1StructArrayInterfaceImplFixture()
 {
-	testImplementation = GetGameInstance()->GetSubsystem<UTestbed1StructArrayInterface>();
+	testImplementation = GetGameInstance()->GetSubsystem<UTestbed1StructArrayInterfaceImplementation>();
 	Helper = NewObject<UTestbed1StructArrayInterfaceImplHelper>();
 }
 

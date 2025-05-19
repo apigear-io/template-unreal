@@ -22,11 +22,11 @@ limitations under the License.
 #include "TbSimpleNoPropertiesInterface.generated.h"
 
 UCLASS(BlueprintType)
-class TBSIMPLEIMPLEMENTATION_API UTbSimpleNoPropertiesInterface : public UAbstractTbSimpleNoPropertiesInterface
+class TBSIMPLEIMPLEMENTATION_API UTbSimpleNoPropertiesInterfaceImplementation : public UAbstractTbSimpleNoPropertiesInterface
 {
 	GENERATED_BODY()
 public:
-	virtual ~UTbSimpleNoPropertiesInterface();
+	virtual ~UTbSimpleNoPropertiesInterfaceImplementation();
 
 	// properties
 	// operations

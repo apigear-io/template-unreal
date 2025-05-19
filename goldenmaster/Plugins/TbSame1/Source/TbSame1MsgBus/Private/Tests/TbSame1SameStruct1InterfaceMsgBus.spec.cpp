@@ -49,7 +49,7 @@ void UTbSame1SameStruct1InterfaceMsgBusSpec::Define()
 		TestTrue("Check for valid testImplementation", ImplFixture->GetImplementation().GetInterface() != nullptr);
 
 		// set up service and adapter
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSame1SameStruct1Interface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSame1SameStruct1InterfaceImplementation>();
 		ImplFixture->GetAdapter()->_setBackendService(service);
 		ImplFixture->GetAdapter()->_StartListening();
 
@@ -120,7 +120,7 @@ void UTbSame1SameStruct1InterfaceMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = createTestFTbSame1Struct1();
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSame1SameStruct1Interface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSame1SameStruct1InterfaceImplementation>();
 		service->SetProp1(TestValue);
 	});
 
@@ -161,7 +161,7 @@ void UTbSame1SameStruct1InterfaceMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = createTestFTbSame1Struct1();
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSame1SameStruct1Interface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSame1SameStruct1InterfaceImplementation>();
 		service->SetProp1(TestValue);
 	});
 

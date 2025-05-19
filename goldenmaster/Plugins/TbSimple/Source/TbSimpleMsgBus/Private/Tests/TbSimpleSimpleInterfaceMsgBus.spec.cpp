@@ -49,7 +49,7 @@ void UTbSimpleSimpleInterfaceMsgBusSpec::Define()
 		TestTrue("Check for valid testImplementation", ImplFixture->GetImplementation().GetInterface() != nullptr);
 
 		// set up service and adapter
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterfaceImplementation>();
 		ImplFixture->GetAdapter()->_setBackendService(service);
 		ImplFixture->GetAdapter()->_StartListening();
 
@@ -120,7 +120,7 @@ void UTbSimpleSimpleInterfaceMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = true;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterfaceImplementation>();
 		service->SetPropBool(TestValue);
 	});
 
@@ -161,7 +161,7 @@ void UTbSimpleSimpleInterfaceMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = true;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterfaceImplementation>();
 		service->SetPropBool(TestValue);
 	});
 
@@ -212,7 +212,7 @@ void UTbSimpleSimpleInterfaceMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = 1;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterfaceImplementation>();
 		service->SetPropInt(TestValue);
 	});
 
@@ -253,7 +253,7 @@ void UTbSimpleSimpleInterfaceMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = 1;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterfaceImplementation>();
 		service->SetPropInt(TestValue);
 	});
 
@@ -304,7 +304,7 @@ void UTbSimpleSimpleInterfaceMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = 1;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterfaceImplementation>();
 		service->SetPropInt32(TestValue);
 	});
 
@@ -345,7 +345,7 @@ void UTbSimpleSimpleInterfaceMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = 1;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterfaceImplementation>();
 		service->SetPropInt32(TestValue);
 	});
 
@@ -396,7 +396,7 @@ void UTbSimpleSimpleInterfaceMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = 1LL;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterfaceImplementation>();
 		service->SetPropInt64(TestValue);
 	});
 
@@ -437,7 +437,7 @@ void UTbSimpleSimpleInterfaceMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = 1LL;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterfaceImplementation>();
 		service->SetPropInt64(TestValue);
 	});
 
@@ -488,7 +488,7 @@ void UTbSimpleSimpleInterfaceMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = 1.0f;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterfaceImplementation>();
 		service->SetPropFloat(TestValue);
 	});
 
@@ -529,7 +529,7 @@ void UTbSimpleSimpleInterfaceMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = 1.0f;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterfaceImplementation>();
 		service->SetPropFloat(TestValue);
 	});
 
@@ -580,7 +580,7 @@ void UTbSimpleSimpleInterfaceMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = 1.0f;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterfaceImplementation>();
 		service->SetPropFloat32(TestValue);
 	});
 
@@ -621,7 +621,7 @@ void UTbSimpleSimpleInterfaceMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = 1.0f;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterfaceImplementation>();
 		service->SetPropFloat32(TestValue);
 	});
 
@@ -672,7 +672,7 @@ void UTbSimpleSimpleInterfaceMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = 1.0;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterfaceImplementation>();
 		service->SetPropFloat64(TestValue);
 	});
 
@@ -713,7 +713,7 @@ void UTbSimpleSimpleInterfaceMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = 1.0;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterfaceImplementation>();
 		service->SetPropFloat64(TestValue);
 	});
 
@@ -764,7 +764,7 @@ void UTbSimpleSimpleInterfaceMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = FString("xyz");
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterfaceImplementation>();
 		service->SetPropString(TestValue);
 	});
 
@@ -805,7 +805,7 @@ void UTbSimpleSimpleInterfaceMsgBusSpec::Define()
 		});
 		// use different test value
 		TestValue = FString("xyz");
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterfaceImplementation>();
 		service->SetPropString(TestValue);
 	});
 

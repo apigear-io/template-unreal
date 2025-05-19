@@ -22,11 +22,11 @@ limitations under the License.
 #include "TbEnumEnumInterface.generated.h"
 
 UCLASS(BlueprintType)
-class TBENUMIMPLEMENTATION_API UTbEnumEnumInterface : public UAbstractTbEnumEnumInterface
+class TBENUMIMPLEMENTATION_API UTbEnumEnumInterfaceImplementation : public UAbstractTbEnumEnumInterface
 {
 	GENERATED_BODY()
 public:
-	virtual ~UTbEnumEnumInterface();
+	virtual ~UTbEnumEnumInterfaceImplementation();
 
 	// properties
 	ETbEnumEnum0 GetProp0() const override;

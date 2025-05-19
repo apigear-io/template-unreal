@@ -42,7 +42,7 @@ void {{$class}}::StartupModule()
 {{- if $.Features.stubs }}
 	{{$classFactory}}::RegisterFactory({{$ModuleName}}LocalBackendIdentifier, [](FSubsystemCollectionBase& Collection) -> TScriptInterface<I{{$class}}Interface>
 		{
-		return Cast<U{{$class}}>(Collection.InitializeDependency(U{{$class}}::StaticClass()));
+		return Cast<U{{$class}}Implementation>(Collection.InitializeDependency(U{{$class}}Implementation::StaticClass()));
 	});
 {{- end }}
 {{- end }}

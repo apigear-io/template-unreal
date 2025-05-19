@@ -31,19 +31,19 @@ void FTbSame1ImplementationModule::StartupModule()
 {
 	FTbSame1ModuleFactory::RegisterFactory(TbSame1LocalBackendIdentifier, [](FSubsystemCollectionBase& Collection) -> TScriptInterface<ITbSame1SameStruct1InterfaceInterface>
 		{
-		return Cast<UTbSame1SameStruct1Interface>(Collection.InitializeDependency(UTbSame1SameStruct1Interface::StaticClass()));
+		return Cast<UTbSame1SameStruct1InterfaceImplementation>(Collection.InitializeDependency(UTbSame1SameStruct1InterfaceImplementation::StaticClass()));
 	});
 	FTbSame1ModuleFactory::RegisterFactory(TbSame1LocalBackendIdentifier, [](FSubsystemCollectionBase& Collection) -> TScriptInterface<ITbSame1SameStruct2InterfaceInterface>
 		{
-		return Cast<UTbSame1SameStruct2Interface>(Collection.InitializeDependency(UTbSame1SameStruct2Interface::StaticClass()));
+		return Cast<UTbSame1SameStruct2InterfaceImplementation>(Collection.InitializeDependency(UTbSame1SameStruct2InterfaceImplementation::StaticClass()));
 	});
 	FTbSame1ModuleFactory::RegisterFactory(TbSame1LocalBackendIdentifier, [](FSubsystemCollectionBase& Collection) -> TScriptInterface<ITbSame1SameEnum1InterfaceInterface>
 		{
-		return Cast<UTbSame1SameEnum1Interface>(Collection.InitializeDependency(UTbSame1SameEnum1Interface::StaticClass()));
+		return Cast<UTbSame1SameEnum1InterfaceImplementation>(Collection.InitializeDependency(UTbSame1SameEnum1InterfaceImplementation::StaticClass()));
 	});
 	FTbSame1ModuleFactory::RegisterFactory(TbSame1LocalBackendIdentifier, [](FSubsystemCollectionBase& Collection) -> TScriptInterface<ITbSame1SameEnum2InterfaceInterface>
 		{
-		return Cast<UTbSame1SameEnum2Interface>(Collection.InitializeDependency(UTbSame1SameEnum2Interface::StaticClass()));
+		return Cast<UTbSame1SameEnum2InterfaceImplementation>(Collection.InitializeDependency(UTbSame1SameEnum2InterfaceImplementation::StaticClass()));
 	});
 }
 

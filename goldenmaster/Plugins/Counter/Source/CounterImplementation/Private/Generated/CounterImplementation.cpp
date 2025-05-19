@@ -28,7 +28,7 @@ void FCounterImplementationModule::StartupModule()
 {
 	FCounterModuleFactory::RegisterFactory(CounterLocalBackendIdentifier, [](FSubsystemCollectionBase& Collection) -> TScriptInterface<ICounterCounterInterface>
 		{
-		return Cast<UCounterCounter>(Collection.InitializeDependency(UCounterCounter::StaticClass()));
+		return Cast<UCounterCounterImplementation>(Collection.InitializeDependency(UCounterCounterImplementation::StaticClass()));
 	});
 }
 

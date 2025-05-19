@@ -57,7 +57,7 @@ void UTbEnumEnumInterfaceOLinkSpec::Define()
 
 		// set up service and adapter
 		ImplFixture->GetHost()->Stop();
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbEnumEnumInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbEnumEnumInterfaceImplementation>();
 		ImplFixture->GetAdapter()->setBackendService(service);
 		ImplFixture->GetAdapter()->setOLinkHost(ImplFixture->GetHost());
 		ImplFixture->GetHost()->Start(8666);
@@ -139,7 +139,7 @@ void UTbEnumEnumInterfaceOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue = ETbEnumEnum0::TEE0_Value1;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbEnumEnumInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbEnumEnumInterfaceImplementation>();
 		service->SetProp0(TestValue);
 	});
 
@@ -180,7 +180,7 @@ void UTbEnumEnumInterfaceOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue = ETbEnumEnum0::TEE0_Value1;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbEnumEnumInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbEnumEnumInterfaceImplementation>();
 		service->SetProp0(TestValue);
 	});
 
@@ -231,7 +231,7 @@ void UTbEnumEnumInterfaceOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue = ETbEnumEnum1::TEE1_Value2;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbEnumEnumInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbEnumEnumInterfaceImplementation>();
 		service->SetProp1(TestValue);
 	});
 
@@ -272,7 +272,7 @@ void UTbEnumEnumInterfaceOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue = ETbEnumEnum1::TEE1_Value2;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbEnumEnumInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbEnumEnumInterfaceImplementation>();
 		service->SetProp1(TestValue);
 	});
 
@@ -323,7 +323,7 @@ void UTbEnumEnumInterfaceOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue = ETbEnumEnum2::TEE2_Value1;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbEnumEnumInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbEnumEnumInterfaceImplementation>();
 		service->SetProp2(TestValue);
 	});
 
@@ -364,7 +364,7 @@ void UTbEnumEnumInterfaceOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue = ETbEnumEnum2::TEE2_Value1;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbEnumEnumInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbEnumEnumInterfaceImplementation>();
 		service->SetProp2(TestValue);
 	});
 
@@ -415,7 +415,7 @@ void UTbEnumEnumInterfaceOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue = ETbEnumEnum3::TEE3_Value2;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbEnumEnumInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbEnumEnumInterfaceImplementation>();
 		service->SetProp3(TestValue);
 	});
 
@@ -456,7 +456,7 @@ void UTbEnumEnumInterfaceOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue = ETbEnumEnum3::TEE3_Value2;
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbEnumEnumInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbEnumEnumInterfaceImplementation>();
 		service->SetProp3(TestValue);
 	});
 

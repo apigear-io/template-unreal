@@ -22,11 +22,11 @@ limitations under the License.
 #include "Testbed2NestedStruct3Interface.generated.h"
 
 UCLASS(BlueprintType)
-class TESTBED2IMPLEMENTATION_API UTestbed2NestedStruct3Interface : public UAbstractTestbed2NestedStruct3Interface
+class TESTBED2IMPLEMENTATION_API UTestbed2NestedStruct3InterfaceImplementation : public UAbstractTestbed2NestedStruct3Interface
 {
 	GENERATED_BODY()
 public:
-	virtual ~UTestbed2NestedStruct3Interface();
+	virtual ~UTestbed2NestedStruct3InterfaceImplementation();
 
 	// properties
 	FTestbed2NestedStruct1 GetProp1() const override;

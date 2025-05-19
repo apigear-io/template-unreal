@@ -53,7 +53,7 @@ void UTbSimpleNoPropertiesInterfaceImplHelper::SigBoolSignalCb(bool bInParamBool
 
 FTbSimpleNoPropertiesInterfaceImplFixture::FTbSimpleNoPropertiesInterfaceImplFixture()
 {
-	testImplementation = GetGameInstance()->GetSubsystem<UTbSimpleNoPropertiesInterface>();
+	testImplementation = GetGameInstance()->GetSubsystem<UTbSimpleNoPropertiesInterfaceImplementation>();
 	Helper = NewObject<UTbSimpleNoPropertiesInterfaceImplHelper>();
 }
 

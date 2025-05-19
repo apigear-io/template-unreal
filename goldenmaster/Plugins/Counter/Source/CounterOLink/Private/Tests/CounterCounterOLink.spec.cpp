@@ -59,7 +59,7 @@ void UCounterCounterOLinkSpec::Define()
 
 		// set up service and adapter
 		ImplFixture->GetHost()->Stop();
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UCounterCounter>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UCounterCounterImplementation>();
 		ImplFixture->GetAdapter()->setBackendService(service);
 		ImplFixture->GetAdapter()->setOLinkHost(ImplFixture->GetHost());
 		ImplFixture->GetHost()->Start(8666);
@@ -141,7 +141,7 @@ void UCounterCounterOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue = createTestFCustomTypesVector3D();
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UCounterCounter>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UCounterCounterImplementation>();
 		service->SetVector(TestValue);
 	});
 
@@ -182,7 +182,7 @@ void UCounterCounterOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue = createTestFCustomTypesVector3D();
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UCounterCounter>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UCounterCounterImplementation>();
 		service->SetVector(TestValue);
 	});
 
@@ -240,7 +240,7 @@ void UCounterCounterOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue = createTestFCustomTypesVector3DArray();
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UCounterCounter>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UCounterCounterImplementation>();
 		service->SetVectorArray(TestValue);
 	});
 
@@ -281,7 +281,7 @@ void UCounterCounterOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue = createTestFCustomTypesVector3DArray();
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UCounterCounter>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UCounterCounterImplementation>();
 		service->SetVectorArray(TestValue);
 	});
 

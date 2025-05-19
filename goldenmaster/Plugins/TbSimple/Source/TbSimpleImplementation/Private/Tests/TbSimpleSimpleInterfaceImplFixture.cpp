@@ -207,7 +207,7 @@ void UTbSimpleSimpleInterfaceImplHelper::SigStringSignalCb(const FString& InPara
 
 FTbSimpleSimpleInterfaceImplFixture::FTbSimpleSimpleInterfaceImplFixture()
 {
-	testImplementation = GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterface>();
+	testImplementation = GetGameInstance()->GetSubsystem<UTbSimpleSimpleInterfaceImplementation>();
 	Helper = NewObject<UTbSimpleSimpleInterfaceImplHelper>();
 }
 

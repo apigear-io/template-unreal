@@ -57,7 +57,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 
 		// set up service and adapter
 		ImplFixture->GetHost()->Stop();
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleArrayInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleArrayInterfaceImplementation>();
 		ImplFixture->GetAdapter()->setBackendService(service);
 		ImplFixture->GetAdapter()->setOLinkHost(ImplFixture->GetHost());
 		ImplFixture->GetHost()->Start(8666);
@@ -139,7 +139,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue.Add(true);
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleArrayInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleArrayInterfaceImplementation>();
 		service->SetPropBool(TestValue);
 	});
 
@@ -180,7 +180,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue.Add(true);
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleArrayInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleArrayInterfaceImplementation>();
 		service->SetPropBool(TestValue);
 	});
 
@@ -231,7 +231,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue.Add(1);
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleArrayInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleArrayInterfaceImplementation>();
 		service->SetPropInt(TestValue);
 	});
 
@@ -272,7 +272,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue.Add(1);
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleArrayInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleArrayInterfaceImplementation>();
 		service->SetPropInt(TestValue);
 	});
 
@@ -323,7 +323,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue.Add(1);
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleArrayInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleArrayInterfaceImplementation>();
 		service->SetPropInt32(TestValue);
 	});
 
@@ -364,7 +364,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue.Add(1);
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleArrayInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleArrayInterfaceImplementation>();
 		service->SetPropInt32(TestValue);
 	});
 
@@ -415,7 +415,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue.Add(1LL);
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleArrayInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleArrayInterfaceImplementation>();
 		service->SetPropInt64(TestValue);
 	});
 
@@ -456,7 +456,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue.Add(1LL);
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleArrayInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleArrayInterfaceImplementation>();
 		service->SetPropInt64(TestValue);
 	});
 
@@ -507,7 +507,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue.Add(1.0f);
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleArrayInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleArrayInterfaceImplementation>();
 		service->SetPropFloat(TestValue);
 	});
 
@@ -548,7 +548,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue.Add(1.0f);
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleArrayInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleArrayInterfaceImplementation>();
 		service->SetPropFloat(TestValue);
 	});
 
@@ -599,7 +599,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue.Add(1.0f);
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleArrayInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleArrayInterfaceImplementation>();
 		service->SetPropFloat32(TestValue);
 	});
 
@@ -640,7 +640,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue.Add(1.0f);
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleArrayInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleArrayInterfaceImplementation>();
 		service->SetPropFloat32(TestValue);
 	});
 
@@ -691,7 +691,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue.Add(1.0);
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleArrayInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleArrayInterfaceImplementation>();
 		service->SetPropFloat64(TestValue);
 	});
 
@@ -732,7 +732,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue.Add(1.0);
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleArrayInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleArrayInterfaceImplementation>();
 		service->SetPropFloat64(TestValue);
 	});
 
@@ -783,7 +783,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue.Add(FString("xyz"));
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleArrayInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleArrayInterfaceImplementation>();
 		service->SetPropString(TestValue);
 	});
 
@@ -824,7 +824,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 		});
 		// use different test value
 		TestValue.Add(FString("xyz"));
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleArrayInterface>();
+		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSimpleSimpleArrayInterfaceImplementation>();
 		service->SetPropString(TestValue);
 	});
 

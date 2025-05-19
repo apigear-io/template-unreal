@@ -17,13 +17,13 @@ limitations under the License.
 
 #include "TbSame2/Implementation/TbSame2SameStruct1Interface.h"
 
-UTbSame2SameStruct1Interface::~UTbSame2SameStruct1Interface() = default;
-FTbSame2Struct1 UTbSame2SameStruct1Interface::GetProp1() const
+UTbSame2SameStruct1InterfaceImplementation::~UTbSame2SameStruct1InterfaceImplementation() = default;
+FTbSame2Struct1 UTbSame2SameStruct1InterfaceImplementation::GetProp1() const
 {
 	return Prop1;
 }
 
-void UTbSame2SameStruct1Interface::SetProp1(const FTbSame2Struct1& InProp1)
+void UTbSame2SameStruct1InterfaceImplementation::SetProp1(const FTbSame2Struct1& InProp1)
 {
 	if (Prop1 != InProp1)
 	{
@@ -32,14 +32,14 @@ void UTbSame2SameStruct1Interface::SetProp1(const FTbSame2Struct1& InProp1)
 	}
 }
 
-FTbSame2Struct1 UTbSame2SameStruct1Interface::Func1(const FTbSame2Struct1& Param1)
+FTbSame2Struct1 UTbSame2SameStruct1InterfaceImplementation::Func1(const FTbSame2Struct1& Param1)
 {
 	(void)Param1;
 	// do business logic here
 	return FTbSame2Struct1();
 }
 
-void UTbSame2SameStruct1Interface::_ResetProperties()
+void UTbSame2SameStruct1InterfaceImplementation::_ResetProperties()
 {
 	if (Prop1 != FTbSame2Struct1())
 	{

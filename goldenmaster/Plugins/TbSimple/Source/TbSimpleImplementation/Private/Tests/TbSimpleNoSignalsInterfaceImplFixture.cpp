@@ -65,7 +65,7 @@ void UTbSimpleNoSignalsInterfaceImplHelper::PropIntPropertyCb(int32 InPropInt)
 
 FTbSimpleNoSignalsInterfaceImplFixture::FTbSimpleNoSignalsInterfaceImplFixture()
 {
-	testImplementation = GetGameInstance()->GetSubsystem<UTbSimpleNoSignalsInterface>();
+	testImplementation = GetGameInstance()->GetSubsystem<UTbSimpleNoSignalsInterfaceImplementation>();
 	Helper = NewObject<UTbSimpleNoSignalsInterfaceImplHelper>();
 }
 

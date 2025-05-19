@@ -17,13 +17,13 @@ limitations under the License.
 
 #include "TbSimple/Implementation/TbSimpleNoSignalsInterface.h"
 
-UTbSimpleNoSignalsInterface::~UTbSimpleNoSignalsInterface() = default;
-bool UTbSimpleNoSignalsInterface::GetPropBool() const
+UTbSimpleNoSignalsInterfaceImplementation::~UTbSimpleNoSignalsInterfaceImplementation() = default;
+bool UTbSimpleNoSignalsInterfaceImplementation::GetPropBool() const
 {
 	return bPropBool;
 }
 
-void UTbSimpleNoSignalsInterface::SetPropBool(bool bInPropBool)
+void UTbSimpleNoSignalsInterfaceImplementation::SetPropBool(bool bInPropBool)
 {
 	if (bPropBool != bInPropBool)
 	{
@@ -31,12 +31,12 @@ void UTbSimpleNoSignalsInterface::SetPropBool(bool bInPropBool)
 		_GetSignals()->BroadcastPropBoolChanged(bPropBool);
 	}
 }
-int32 UTbSimpleNoSignalsInterface::GetPropInt() const
+int32 UTbSimpleNoSignalsInterfaceImplementation::GetPropInt() const
 {
 	return PropInt;
 }
 
-void UTbSimpleNoSignalsInterface::SetPropInt(int32 InPropInt)
+void UTbSimpleNoSignalsInterfaceImplementation::SetPropInt(int32 InPropInt)
 {
 	if (PropInt != InPropInt)
 	{
@@ -45,19 +45,19 @@ void UTbSimpleNoSignalsInterface::SetPropInt(int32 InPropInt)
 	}
 }
 
-void UTbSimpleNoSignalsInterface::FuncVoid()
+void UTbSimpleNoSignalsInterfaceImplementation::FuncVoid()
 {
 	// do business logic here
 }
 
-bool UTbSimpleNoSignalsInterface::FuncBool(bool bParamBool)
+bool UTbSimpleNoSignalsInterfaceImplementation::FuncBool(bool bParamBool)
 {
 	(void)bParamBool;
 	// do business logic here
 	return false;
 }
 
-void UTbSimpleNoSignalsInterface::_ResetProperties()
+void UTbSimpleNoSignalsInterfaceImplementation::_ResetProperties()
 {
 	if (bPropBool != false)
 	{
