@@ -237,14 +237,14 @@ void UTestbed1StructArrayInterfaceImplSpec::Define()
 			{
 			TArray<ETestbed1Enum0> TestValue = TArray<ETestbed1Enum0>();
 			// use different test value
-			TestValue.Add(ETestbed1Enum0::T1E0_VALUE1);
+			TestValue.Add(ETestbed1Enum0::T1E0_Value1);
 			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropEnum, TestValue);
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropEnum(), TestValue);
 			TestDone.Execute();
 		});
 
 		// use different test value
-		TestValue.Add(ETestbed1Enum0::T1E0_VALUE1);
+		TestValue.Add(ETestbed1Enum0::T1E0_Value1);
 		ImplFixture->GetImplementation()->SetPropEnum(TestValue);
 	});
 
@@ -258,7 +258,7 @@ void UTestbed1StructArrayInterfaceImplSpec::Define()
 		UTestbed1StructArrayInterfaceSignals* Testbed1StructArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
 		Testbed1StructArrayInterfaceSignals->OnPropEnumChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructArrayInterfaceImplHelper::PropEnumPropertyCb);
 		// use different test value
-		TestValue.Add(ETestbed1Enum0::T1E0_VALUE1);
+		TestValue.Add(ETestbed1Enum0::T1E0_Value1);
 		ImplFixture->GetImplementation()->SetPropEnum(TestValue);
 	});
 
@@ -407,14 +407,14 @@ void UTestbed1StructArrayInterfaceImplSpec::Define()
 			{
 			// known test value
 			TArray<ETestbed1Enum0> ParamEnumTestValue = TArray<ETestbed1Enum0>(); // default value
-			ParamEnumTestValue.Add(ETestbed1Enum0::T1E0_VALUE1);
+			ParamEnumTestValue.Add(ETestbed1Enum0::T1E0_Value1);
 			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamEnum, ParamEnumTestValue);
 			TestDone.Execute();
 		});
 
 		// use different test value
 		TArray<ETestbed1Enum0> ParamEnumTestValue = TArray<ETestbed1Enum0>(); // default value
-		ParamEnumTestValue.Add(ETestbed1Enum0::T1E0_VALUE1);
+		ParamEnumTestValue.Add(ETestbed1Enum0::T1E0_Value1);
 		Testbed1StructArrayInterfaceSignals->BroadcastSigEnumSignal(ParamEnumTestValue);
 	});
 
@@ -426,7 +426,7 @@ void UTestbed1StructArrayInterfaceImplSpec::Define()
 
 		// use different test value
 		TArray<ETestbed1Enum0> ParamEnumTestValue = TArray<ETestbed1Enum0>(); // default value
-		ParamEnumTestValue.Add(ETestbed1Enum0::T1E0_VALUE1);
+		ParamEnumTestValue.Add(ETestbed1Enum0::T1E0_Value1);
 		Testbed1StructArrayInterfaceSignals->BroadcastSigEnumSignal(ParamEnumTestValue);
 	});
 }

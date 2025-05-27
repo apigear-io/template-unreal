@@ -78,9 +78,9 @@ void UTbNamesNamEsImplHelper::SomePoperty2PropertyCb(int32 InSomePoperty2)
 
 void UTbNamesNamEsImplHelper::EnumPropertyPropertyCb(ETbNamesEnum_With_Under_scores InEnumProperty)
 {
-	ETbNamesEnum_With_Under_scores TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_FIRSTVALUE;
+	ETbNamesEnum_With_Under_scores TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_FirstValue;
 	// use different test value
-	TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_SECONDVALUE;
+	TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_SecondValue;
 	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InEnumProperty, TestValue);
 	if (TSharedPtr<FTbNamesNamEsImplFixture> PinnedImplFixture = ImplFixture.Pin())
 	{

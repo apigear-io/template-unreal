@@ -28,9 +28,9 @@ limitations under the License.
 UENUM(BlueprintType)
 enum class ETestbed1Enum0 : uint8
 {
-	T1E0_VALUE0 = 0 UMETA(Displayname = "value0"),
-	T1E0_VALUE1 = 1 UMETA(Displayname = "value1"),
-	T1E0_VALUE2 = 2 UMETA(Displayname = "value2")
+	T1E0_Value0 = 0 UMETA(Displayname = "value0"),
+	T1E0_Value1 = 1 UMETA(Displayname = "value1"),
+	T1E0_Value2 = 2 UMETA(Displayname = "value2")
 };
 
 /**
@@ -227,7 +227,7 @@ struct TESTBED1API_API FTestbed1StructEnum : public FTableRowBase
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ApiGear|Testbed1")
-	ETestbed1Enum0 fieldEnum{ETestbed1Enum0::T1E0_VALUE0};
+	ETestbed1Enum0 fieldEnum{ETestbed1Enum0::T1E0_Value0};
 
 	/**
 	 * FTestbed1StructEnum to JSON formatted FString

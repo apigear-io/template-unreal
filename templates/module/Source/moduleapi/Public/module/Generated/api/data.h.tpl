@@ -55,9 +55,9 @@ enum class {{$class}} : uint8
 {{- $hasZeroDefaultVal := false}}
 {{- range $idx, $elem := .Members }}
 	{{- if $idx}},{{end}}
-	{{ abbreviate $moduleEnumName }}_{{ CAMEL .Name }} = {{.Value}} UMETA(Displayname = "{{.Name}}"){{if eq .Value 0}}{{$hasZeroDefaultVal = true}}{{end}}
+	{{ abbreviate $moduleEnumName }}_{{ Camel .Name }} = {{.Value}} UMETA(Displayname = "{{.Name}}"){{if eq .Value 0}}{{$hasZeroDefaultVal = true}}{{end}}
 {{- end }}
-{{- if not $hasZeroDefaultVal}},{{nl}}	UNSPECIFIED = 0 UMETA(Hidden){{end}}
+{{- if not $hasZeroDefaultVal}},{{nl}}	Unspecified = 0 UMETA(Hidden){{end}}
 };
 {{ end }}
 {{- range .Module.Structs }}

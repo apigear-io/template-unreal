@@ -52,16 +52,16 @@ struct FTbEnumEnumInterfaceInitMessage
 	int32 _ClientPingIntervalMS = 100;
 
 	UPROPERTY()
-	ETbEnumEnum0 Prop0 = ETbEnumEnum0::TEE0_VALUE0;
+	ETbEnumEnum0 Prop0 = ETbEnumEnum0::TEE0_Value0;
 
 	UPROPERTY()
-	ETbEnumEnum1 Prop1 = ETbEnumEnum1::TEE1_VALUE1;
+	ETbEnumEnum1 Prop1 = ETbEnumEnum1::TEE1_Value1;
 
 	UPROPERTY()
-	ETbEnumEnum2 Prop2 = ETbEnumEnum2::TEE2_VALUE2;
+	ETbEnumEnum2 Prop2 = ETbEnumEnum2::TEE2_Value2;
 
 	UPROPERTY()
-	ETbEnumEnum3 Prop3 = ETbEnumEnum3::TEE3_VALUE3;
+	ETbEnumEnum3 Prop3 = ETbEnumEnum3::TEE3_Value3;
 };
 
 USTRUCT()
@@ -100,7 +100,7 @@ struct FTbEnumEnumInterfaceSig0SignalMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	ETbEnumEnum0 Param0 = ETbEnumEnum0::TEE0_VALUE0;
+	ETbEnumEnum0 Param0 = ETbEnumEnum0::TEE0_Value0;
 };
 
 USTRUCT()
@@ -109,7 +109,7 @@ struct FTbEnumEnumInterfaceSig1SignalMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	ETbEnumEnum1 Param1 = ETbEnumEnum1::TEE1_VALUE1;
+	ETbEnumEnum1 Param1 = ETbEnumEnum1::TEE1_Value1;
 };
 
 USTRUCT()
@@ -118,7 +118,7 @@ struct FTbEnumEnumInterfaceSig2SignalMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	ETbEnumEnum2 Param2 = ETbEnumEnum2::TEE2_VALUE2;
+	ETbEnumEnum2 Param2 = ETbEnumEnum2::TEE2_Value2;
 };
 
 USTRUCT()
@@ -127,7 +127,7 @@ struct FTbEnumEnumInterfaceSig3SignalMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	ETbEnumEnum3 Param3 = ETbEnumEnum3::TEE3_VALUE3;
+	ETbEnumEnum3 Param3 = ETbEnumEnum3::TEE3_Value3;
 };
 
 USTRUCT()
@@ -136,7 +136,7 @@ struct FTbEnumEnumInterfaceSetProp0RequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	ETbEnumEnum0 Prop0 = ETbEnumEnum0::TEE0_VALUE0;
+	ETbEnumEnum0 Prop0 = ETbEnumEnum0::TEE0_Value0;
 };
 
 USTRUCT()
@@ -145,7 +145,7 @@ struct FTbEnumEnumInterfaceProp0ChangedMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	ETbEnumEnum0 Prop0 = ETbEnumEnum0::TEE0_VALUE0;
+	ETbEnumEnum0 Prop0 = ETbEnumEnum0::TEE0_Value0;
 };
 
 USTRUCT()
@@ -154,7 +154,7 @@ struct FTbEnumEnumInterfaceSetProp1RequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	ETbEnumEnum1 Prop1 = ETbEnumEnum1::TEE1_VALUE1;
+	ETbEnumEnum1 Prop1 = ETbEnumEnum1::TEE1_Value1;
 };
 
 USTRUCT()
@@ -163,7 +163,7 @@ struct FTbEnumEnumInterfaceProp1ChangedMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	ETbEnumEnum1 Prop1 = ETbEnumEnum1::TEE1_VALUE1;
+	ETbEnumEnum1 Prop1 = ETbEnumEnum1::TEE1_Value1;
 };
 
 USTRUCT()
@@ -172,7 +172,7 @@ struct FTbEnumEnumInterfaceSetProp2RequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	ETbEnumEnum2 Prop2 = ETbEnumEnum2::TEE2_VALUE2;
+	ETbEnumEnum2 Prop2 = ETbEnumEnum2::TEE2_Value2;
 };
 
 USTRUCT()
@@ -181,7 +181,7 @@ struct FTbEnumEnumInterfaceProp2ChangedMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	ETbEnumEnum2 Prop2 = ETbEnumEnum2::TEE2_VALUE2;
+	ETbEnumEnum2 Prop2 = ETbEnumEnum2::TEE2_Value2;
 };
 
 USTRUCT()
@@ -190,7 +190,7 @@ struct FTbEnumEnumInterfaceSetProp3RequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	ETbEnumEnum3 Prop3 = ETbEnumEnum3::TEE3_VALUE3;
+	ETbEnumEnum3 Prop3 = ETbEnumEnum3::TEE3_Value3;
 };
 
 USTRUCT()
@@ -199,7 +199,7 @@ struct FTbEnumEnumInterfaceProp3ChangedMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	ETbEnumEnum3 Prop3 = ETbEnumEnum3::TEE3_VALUE3;
+	ETbEnumEnum3 Prop3 = ETbEnumEnum3::TEE3_Value3;
 };
 
 USTRUCT()
@@ -211,7 +211,7 @@ struct FTbEnumEnumInterfaceFunc0RequestMessage
 	FGuid ResponseId;
 
 	UPROPERTY()
-	ETbEnumEnum0 Param0 = ETbEnumEnum0::TEE0_VALUE0;
+	ETbEnumEnum0 Param0 = ETbEnumEnum0::TEE0_Value0;
 };
 
 USTRUCT()
@@ -223,7 +223,7 @@ struct FTbEnumEnumInterfaceFunc0ReplyMessage
 	FGuid ResponseId;
 
 	UPROPERTY()
-	ETbEnumEnum0 Result = ETbEnumEnum0::TEE0_VALUE0;
+	ETbEnumEnum0 Result = ETbEnumEnum0::TEE0_Value0;
 };
 
 USTRUCT()
@@ -235,7 +235,7 @@ struct FTbEnumEnumInterfaceFunc1RequestMessage
 	FGuid ResponseId;
 
 	UPROPERTY()
-	ETbEnumEnum1 Param1 = ETbEnumEnum1::TEE1_VALUE1;
+	ETbEnumEnum1 Param1 = ETbEnumEnum1::TEE1_Value1;
 };
 
 USTRUCT()
@@ -247,7 +247,7 @@ struct FTbEnumEnumInterfaceFunc1ReplyMessage
 	FGuid ResponseId;
 
 	UPROPERTY()
-	ETbEnumEnum1 Result = ETbEnumEnum1::TEE1_VALUE1;
+	ETbEnumEnum1 Result = ETbEnumEnum1::TEE1_Value1;
 };
 
 USTRUCT()
@@ -259,7 +259,7 @@ struct FTbEnumEnumInterfaceFunc2RequestMessage
 	FGuid ResponseId;
 
 	UPROPERTY()
-	ETbEnumEnum2 Param2 = ETbEnumEnum2::TEE2_VALUE2;
+	ETbEnumEnum2 Param2 = ETbEnumEnum2::TEE2_Value2;
 };
 
 USTRUCT()
@@ -271,7 +271,7 @@ struct FTbEnumEnumInterfaceFunc2ReplyMessage
 	FGuid ResponseId;
 
 	UPROPERTY()
-	ETbEnumEnum2 Result = ETbEnumEnum2::TEE2_VALUE2;
+	ETbEnumEnum2 Result = ETbEnumEnum2::TEE2_Value2;
 };
 
 USTRUCT()
@@ -283,7 +283,7 @@ struct FTbEnumEnumInterfaceFunc3RequestMessage
 	FGuid ResponseId;
 
 	UPROPERTY()
-	ETbEnumEnum3 Param3 = ETbEnumEnum3::TEE3_VALUE3;
+	ETbEnumEnum3 Param3 = ETbEnumEnum3::TEE3_Value3;
 };
 
 USTRUCT()
@@ -295,5 +295,5 @@ struct FTbEnumEnumInterfaceFunc3ReplyMessage
 	FGuid ResponseId;
 
 	UPROPERTY()
-	ETbEnumEnum3 Result = ETbEnumEnum3::TEE3_VALUE3;
+	ETbEnumEnum3 Result = ETbEnumEnum3::TEE3_Value3;
 };

@@ -75,50 +75,50 @@ ETbEnumEnum0 UTbEnumEnumInterface::Func0(ETbEnumEnum0 Param0)
 {
 	(void)Param0;
 	// do business logic here
-	return ETbEnumEnum0::TEE0_VALUE0;
+	return ETbEnumEnum0::TEE0_Value0;
 }
 
 ETbEnumEnum1 UTbEnumEnumInterface::Func1(ETbEnumEnum1 Param1)
 {
 	(void)Param1;
 	// do business logic here
-	return ETbEnumEnum1::TEE1_VALUE1;
+	return ETbEnumEnum1::TEE1_Value1;
 }
 
 ETbEnumEnum2 UTbEnumEnumInterface::Func2(ETbEnumEnum2 Param2)
 {
 	(void)Param2;
 	// do business logic here
-	return ETbEnumEnum2::TEE2_VALUE2;
+	return ETbEnumEnum2::TEE2_Value2;
 }
 
 ETbEnumEnum3 UTbEnumEnumInterface::Func3(ETbEnumEnum3 Param3)
 {
 	(void)Param3;
 	// do business logic here
-	return ETbEnumEnum3::TEE3_VALUE3;
+	return ETbEnumEnum3::TEE3_Value3;
 }
 
 void UTbEnumEnumInterface::_ResetProperties()
 {
-	if (Prop0 != ETbEnumEnum0::TEE0_VALUE0)
+	if (Prop0 != ETbEnumEnum0::TEE0_Value0)
 	{
-		Prop0 = ETbEnumEnum0::TEE0_VALUE0;
+		Prop0 = ETbEnumEnum0::TEE0_Value0;
 		_GetSignals()->BroadcastProp0Changed(Prop0);
 	}
-	if (Prop1 != ETbEnumEnum1::TEE1_VALUE1)
+	if (Prop1 != ETbEnumEnum1::TEE1_Value1)
 	{
-		Prop1 = ETbEnumEnum1::TEE1_VALUE1;
+		Prop1 = ETbEnumEnum1::TEE1_Value1;
 		_GetSignals()->BroadcastProp1Changed(Prop1);
 	}
-	if (Prop2 != ETbEnumEnum2::TEE2_VALUE2)
+	if (Prop2 != ETbEnumEnum2::TEE2_Value2)
 	{
-		Prop2 = ETbEnumEnum2::TEE2_VALUE2;
+		Prop2 = ETbEnumEnum2::TEE2_Value2;
 		_GetSignals()->BroadcastProp2Changed(Prop2);
 	}
-	if (Prop3 != ETbEnumEnum3::TEE3_VALUE3)
+	if (Prop3 != ETbEnumEnum3::TEE3_Value3)
 	{
-		Prop3 = ETbEnumEnum3::TEE3_VALUE3;
+		Prop3 = ETbEnumEnum3::TEE3_Value3;
 		_GetSignals()->BroadcastProp3Changed(Prop3);
 	}
 }

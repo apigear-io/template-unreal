@@ -50,99 +50,99 @@ void UTbSame2SameEnum2InterfaceImplSpec::Define()
 	It("Property.Prop1.Default", [this]()
 		{
 		// Do implement test here
-		ETbSame2Enum1 TestValue = ETbSame2Enum1::TS2E1_VALUE1; // default value
+		ETbSame2Enum1 TestValue = ETbSame2Enum1::TS2E1_Value1; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp1(), TestValue);
 	});
 
 	LatentIt("Property.Prop1.Change", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		// Do implement test here
-		ETbSame2Enum1 TestValue = ETbSame2Enum1::TS2E1_VALUE1; // default value
+		ETbSame2Enum1 TestValue = ETbSame2Enum1::TS2E1_Value1; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp1(), TestValue);
 
 		UTbSame2SameEnum2InterfaceSignals* TbSame2SameEnum2InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
 		TbSame2SameEnum2InterfaceSignals->OnProp1Changed.AddLambda([this, TestDone](ETbSame2Enum1 InProp1)
 			{
-			ETbSame2Enum1 TestValue = ETbSame2Enum1::TS2E1_VALUE1;
+			ETbSame2Enum1 TestValue = ETbSame2Enum1::TS2E1_Value1;
 			// use different test value
-			TestValue = ETbSame2Enum1::TS2E1_VALUE2;
+			TestValue = ETbSame2Enum1::TS2E1_Value2;
 			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetProp1(), TestValue);
 			TestDone.Execute();
 		});
 
 		// use different test value
-		TestValue = ETbSame2Enum1::TS2E1_VALUE2;
+		TestValue = ETbSame2Enum1::TS2E1_Value2;
 		ImplFixture->GetImplementation()->SetProp1(TestValue);
 	});
 
 	LatentIt("Property.Prop1.ChangeBP", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		// Do implement test here
-		ETbSame2Enum1 TestValue = ETbSame2Enum1::TS2E1_VALUE1; // default value
+		ETbSame2Enum1 TestValue = ETbSame2Enum1::TS2E1_Value1; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp1(), TestValue);
 
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UTbSame2SameEnum2InterfaceSignals* TbSame2SameEnum2InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
 		TbSame2SameEnum2InterfaceSignals->OnProp1ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame2SameEnum2InterfaceImplHelper::Prop1PropertyCb);
 		// use different test value
-		TestValue = ETbSame2Enum1::TS2E1_VALUE2;
+		TestValue = ETbSame2Enum1::TS2E1_Value2;
 		ImplFixture->GetImplementation()->SetProp1(TestValue);
 	});
 
 	It("Property.Prop2.Default", [this]()
 		{
 		// Do implement test here
-		ETbSame2Enum2 TestValue = ETbSame2Enum2::TS2E2_VALUE1; // default value
+		ETbSame2Enum2 TestValue = ETbSame2Enum2::TS2E2_Value1; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp2(), TestValue);
 	});
 
 	LatentIt("Property.Prop2.Change", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		// Do implement test here
-		ETbSame2Enum2 TestValue = ETbSame2Enum2::TS2E2_VALUE1; // default value
+		ETbSame2Enum2 TestValue = ETbSame2Enum2::TS2E2_Value1; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp2(), TestValue);
 
 		UTbSame2SameEnum2InterfaceSignals* TbSame2SameEnum2InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
 		TbSame2SameEnum2InterfaceSignals->OnProp2Changed.AddLambda([this, TestDone](ETbSame2Enum2 InProp2)
 			{
-			ETbSame2Enum2 TestValue = ETbSame2Enum2::TS2E2_VALUE1;
+			ETbSame2Enum2 TestValue = ETbSame2Enum2::TS2E2_Value1;
 			// use different test value
-			TestValue = ETbSame2Enum2::TS2E2_VALUE2;
+			TestValue = ETbSame2Enum2::TS2E2_Value2;
 			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp2, TestValue);
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetProp2(), TestValue);
 			TestDone.Execute();
 		});
 
 		// use different test value
-		TestValue = ETbSame2Enum2::TS2E2_VALUE2;
+		TestValue = ETbSame2Enum2::TS2E2_Value2;
 		ImplFixture->GetImplementation()->SetProp2(TestValue);
 	});
 
 	LatentIt("Property.Prop2.ChangeBP", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		// Do implement test here
-		ETbSame2Enum2 TestValue = ETbSame2Enum2::TS2E2_VALUE1; // default value
+		ETbSame2Enum2 TestValue = ETbSame2Enum2::TS2E2_Value1; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp2(), TestValue);
 
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UTbSame2SameEnum2InterfaceSignals* TbSame2SameEnum2InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
 		TbSame2SameEnum2InterfaceSignals->OnProp2ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame2SameEnum2InterfaceImplHelper::Prop2PropertyCb);
 		// use different test value
-		TestValue = ETbSame2Enum2::TS2E2_VALUE2;
+		TestValue = ETbSame2Enum2::TS2E2_Value2;
 		ImplFixture->GetImplementation()->SetProp2(TestValue);
 	});
 
 	It("Operation.Func1", [this]()
 		{
 		// Do implement test here
-		ImplFixture->GetImplementation()->Func1(ETbSame2Enum1::TS2E1_VALUE1);
+		ImplFixture->GetImplementation()->Func1(ETbSame2Enum1::TS2E1_Value1);
 	});
 
 	It("Operation.Func2", [this]()
 		{
 		// Do implement test here
-		ImplFixture->GetImplementation()->Func2(ETbSame2Enum1::TS2E1_VALUE1, ETbSame2Enum2::TS2E2_VALUE1);
+		ImplFixture->GetImplementation()->Func2(ETbSame2Enum1::TS2E1_Value1, ETbSame2Enum2::TS2E2_Value1);
 	});
 
 	LatentIt("Signal.Sig1", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
@@ -151,13 +151,13 @@ void UTbSame2SameEnum2InterfaceImplSpec::Define()
 		TbSame2SameEnum2InterfaceSignals->OnSig1Signal.AddLambda([this, TestDone](ETbSame2Enum1 InParam1)
 			{
 			// known test value
-			ETbSame2Enum1 Param1TestValue = ETbSame2Enum1::TS2E1_VALUE2;
+			ETbSame2Enum1 Param1TestValue = ETbSame2Enum1::TS2E1_Value2;
 			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
 			TestDone.Execute();
 		});
 
 		// use different test value
-		ETbSame2Enum1 Param1TestValue = ETbSame2Enum1::TS2E1_VALUE2;
+		ETbSame2Enum1 Param1TestValue = ETbSame2Enum1::TS2E1_Value2;
 		TbSame2SameEnum2InterfaceSignals->BroadcastSig1Signal(Param1TestValue);
 	});
 
@@ -168,7 +168,7 @@ void UTbSame2SameEnum2InterfaceImplSpec::Define()
 		TbSame2SameEnum2InterfaceSignals->OnSig1SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame2SameEnum2InterfaceImplHelper::Sig1SignalCb);
 
 		// use different test value
-		ETbSame2Enum1 Param1TestValue = ETbSame2Enum1::TS2E1_VALUE2;
+		ETbSame2Enum1 Param1TestValue = ETbSame2Enum1::TS2E1_Value2;
 		TbSame2SameEnum2InterfaceSignals->BroadcastSig1Signal(Param1TestValue);
 	});
 
@@ -178,16 +178,16 @@ void UTbSame2SameEnum2InterfaceImplSpec::Define()
 		TbSame2SameEnum2InterfaceSignals->OnSig2Signal.AddLambda([this, TestDone](ETbSame2Enum1 InParam1, ETbSame2Enum2 InParam2)
 			{
 			// known test value
-			ETbSame2Enum1 Param1TestValue = ETbSame2Enum1::TS2E1_VALUE2;
+			ETbSame2Enum1 Param1TestValue = ETbSame2Enum1::TS2E1_Value2;
 			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
-			ETbSame2Enum2 Param2TestValue = ETbSame2Enum2::TS2E2_VALUE2;
+			ETbSame2Enum2 Param2TestValue = ETbSame2Enum2::TS2E2_Value2;
 			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam2, Param2TestValue);
 			TestDone.Execute();
 		});
 
 		// use different test value
-		ETbSame2Enum1 Param1TestValue = ETbSame2Enum1::TS2E1_VALUE2;
-		ETbSame2Enum2 Param2TestValue = ETbSame2Enum2::TS2E2_VALUE2;
+		ETbSame2Enum1 Param1TestValue = ETbSame2Enum1::TS2E1_Value2;
+		ETbSame2Enum2 Param2TestValue = ETbSame2Enum2::TS2E2_Value2;
 		TbSame2SameEnum2InterfaceSignals->BroadcastSig2Signal(Param1TestValue, Param2TestValue);
 	});
 
@@ -198,8 +198,8 @@ void UTbSame2SameEnum2InterfaceImplSpec::Define()
 		TbSame2SameEnum2InterfaceSignals->OnSig2SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame2SameEnum2InterfaceImplHelper::Sig2SignalCb);
 
 		// use different test value
-		ETbSame2Enum1 Param1TestValue = ETbSame2Enum1::TS2E1_VALUE2;
-		ETbSame2Enum2 Param2TestValue = ETbSame2Enum2::TS2E2_VALUE2;
+		ETbSame2Enum1 Param1TestValue = ETbSame2Enum1::TS2E1_Value2;
+		ETbSame2Enum2 Param2TestValue = ETbSame2Enum2::TS2E2_Value2;
 		TbSame2SameEnum2InterfaceSignals->BroadcastSig2Signal(Param1TestValue, Param2TestValue);
 	});
 }

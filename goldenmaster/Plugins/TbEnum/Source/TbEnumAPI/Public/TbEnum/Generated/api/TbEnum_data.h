@@ -28,9 +28,9 @@ limitations under the License.
 UENUM(BlueprintType)
 enum class ETbEnumEnum0 : uint8
 {
-	TEE0_VALUE0 = 0 UMETA(Displayname = "value0"),
-	TEE0_VALUE1 = 1 UMETA(Displayname = "value1"),
-	TEE0_VALUE2 = 2 UMETA(Displayname = "value2")
+	TEE0_Value0 = 0 UMETA(Displayname = "value0"),
+	TEE0_Value1 = 1 UMETA(Displayname = "value1"),
+	TEE0_Value2 = 2 UMETA(Displayname = "value2")
 };
 
 /**
@@ -39,10 +39,10 @@ enum class ETbEnumEnum0 : uint8
 UENUM(BlueprintType)
 enum class ETbEnumEnum1 : uint8
 {
-	TEE1_VALUE1 = 1 UMETA(Displayname = "value1"),
-	TEE1_VALUE2 = 2 UMETA(Displayname = "value2"),
-	TEE1_VALUE3 = 3 UMETA(Displayname = "value3"),
-	UNSPECIFIED = 0 UMETA(Hidden)
+	TEE1_Value1 = 1 UMETA(Displayname = "value1"),
+	TEE1_Value2 = 2 UMETA(Displayname = "value2"),
+	TEE1_Value3 = 3 UMETA(Displayname = "value3"),
+	Unspecified = 0 UMETA(Hidden)
 };
 
 /**
@@ -51,9 +51,9 @@ enum class ETbEnumEnum1 : uint8
 UENUM(BlueprintType)
 enum class ETbEnumEnum2 : uint8
 {
-	TEE2_VALUE2 = 2 UMETA(Displayname = "value2"),
-	TEE2_VALUE1 = 1 UMETA(Displayname = "value1"),
-	TEE2_VALUE0 = 0 UMETA(Displayname = "value0")
+	TEE2_Value2 = 2 UMETA(Displayname = "value2"),
+	TEE2_Value1 = 1 UMETA(Displayname = "value1"),
+	TEE2_Value0 = 0 UMETA(Displayname = "value0")
 };
 
 /**
@@ -62,10 +62,10 @@ enum class ETbEnumEnum2 : uint8
 UENUM(BlueprintType)
 enum class ETbEnumEnum3 : uint8
 {
-	TEE3_VALUE3 = 3 UMETA(Displayname = "value3"),
-	TEE3_VALUE2 = 2 UMETA(Displayname = "value2"),
-	TEE3_VALUE1 = 1 UMETA(Displayname = "value1"),
-	UNSPECIFIED = 0 UMETA(Hidden)
+	TEE3_Value3 = 3 UMETA(Displayname = "value3"),
+	TEE3_Value2 = 2 UMETA(Displayname = "value2"),
+	TEE3_Value1 = 1 UMETA(Displayname = "value1"),
+	Unspecified = 0 UMETA(Hidden)
 };
 
 /**

@@ -37,8 +37,8 @@ limitations under the License.
 */
 struct TbSame2SameEnum2InterfacePropertiesMsgBusData
 {
-	std::atomic<ETbSame2Enum1> Prop1{ETbSame2Enum1::TS2E1_VALUE1};
-	std::atomic<ETbSame2Enum2> Prop2{ETbSame2Enum2::TS2E2_VALUE1};
+	std::atomic<ETbSame2Enum1> Prop1{ETbSame2Enum1::TS2E1_Value1};
+	std::atomic<ETbSame2Enum2> Prop2{ETbSame2Enum2::TS2E2_Value1};
 };
 DEFINE_LOG_CATEGORY(LogTbSame2SameEnum2InterfaceMsgBusClient);
 
@@ -387,7 +387,7 @@ ETbSame2Enum1 UTbSame2SameEnum2InterfaceMsgBusClient::Func1(ETbSame2Enum1 InPara
 	{
 		UE_LOG(LogTbSame2SameEnum2InterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
 
-		return ETbSame2Enum1::TS2E1_VALUE1;
+		return ETbSame2Enum1::TS2E1_Value1;
 	}
 
 	auto msg = new FTbSame2SameEnum2InterfaceFunc1RequestMessage();
@@ -416,7 +416,7 @@ ETbSame2Enum1 UTbSame2SameEnum2InterfaceMsgBusClient::Func2(ETbSame2Enum1 InPara
 	{
 		UE_LOG(LogTbSame2SameEnum2InterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
 
-		return ETbSame2Enum1::TS2E1_VALUE1;
+		return ETbSame2Enum1::TS2E1_Value1;
 	}
 
 	auto msg = new FTbSame2SameEnum2InterfaceFunc2RequestMessage();
