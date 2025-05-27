@@ -234,9 +234,9 @@ void UTbNamesNamEsOLinkHelper::SomePoperty2PropertyChangeLocalChangeRemoteCb(int
 
 void UTbNamesNamEsOLinkHelper::EnumPropertyPropertyCb(ETbNamesEnum_With_Under_scores InEnumProperty)
 {
-	ETbNamesEnum_With_Under_scores TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_FIRSTVALUE;
+	ETbNamesEnum_With_Under_scores TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_FirstValue;
 	// use different test value
-	TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_SECONDVALUE;
+	TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_SecondValue;
 	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InEnumProperty, TestValue);
 	if (TSharedPtr<FTbNamesNamEsOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
 	{
@@ -247,9 +247,9 @@ void UTbNamesNamEsOLinkHelper::EnumPropertyPropertyCb(ETbNamesEnum_With_Under_sc
 
 void UTbNamesNamEsOLinkHelper::EnumPropertyPropertyChangeLocalCheckRemoteCb(ETbNamesEnum_With_Under_scores InEnumProperty)
 {
-	ETbNamesEnum_With_Under_scores TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_FIRSTVALUE;
+	ETbNamesEnum_With_Under_scores TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_FirstValue;
 	// use different test value
-	TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_SECONDVALUE;
+	TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_SecondValue;
 	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InEnumProperty, TestValue);
 	if (TSharedPtr<FTbNamesNamEsOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
 	{
@@ -268,9 +268,9 @@ void UTbNamesNamEsOLinkHelper::EnumPropertyPropertyChangeLocalChangeRemoteCb(ETb
 
 	if (count % 2 != 0)
 	{
-		ETbNamesEnum_With_Under_scores TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_FIRSTVALUE;
+		ETbNamesEnum_With_Under_scores TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_FirstValue;
 		// use different test value
-		TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_SECONDVALUE;
+		TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_SecondValue;
 		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InEnumProperty, TestValue);
 		if (TSharedPtr<FTbNamesNamEsOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
 		{
@@ -278,7 +278,7 @@ void UTbNamesNamEsOLinkHelper::EnumPropertyPropertyChangeLocalChangeRemoteCb(ETb
 		}
 
 		// now set it to the default value
-		TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_FIRSTVALUE; // default value
+		TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_FirstValue; // default value
 		if (TSharedPtr<FTbNamesNamEsOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
 		{
 			PinnedImplFixture->GetImplementation()->Execute_SetEnumProperty(PinnedImplFixture->GetImplementation().GetObject(), TestValue);
@@ -286,7 +286,7 @@ void UTbNamesNamEsOLinkHelper::EnumPropertyPropertyChangeLocalChangeRemoteCb(ETb
 	}
 	else
 	{
-		ETbNamesEnum_With_Under_scores TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_FIRSTVALUE; // default value
+		ETbNamesEnum_With_Under_scores TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_FirstValue; // default value
 		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InEnumProperty, TestValue);
 		if (TSharedPtr<FTbNamesNamEsOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
 		{

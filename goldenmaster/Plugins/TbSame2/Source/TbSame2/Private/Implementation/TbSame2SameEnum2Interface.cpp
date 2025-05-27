@@ -49,7 +49,7 @@ ETbSame2Enum1 UTbSame2SameEnum2Interface::Func1_Implementation(ETbSame2Enum1 Par
 {
 	(void)Param1;
 	// do business logic here
-	return ETbSame2Enum1::TS2E1_VALUE1;
+	return ETbSame2Enum1::TS2E1_Value1;
 }
 
 ETbSame2Enum1 UTbSame2SameEnum2Interface::Func2_Implementation(ETbSame2Enum1 Param1, ETbSame2Enum2 Param2)
@@ -57,19 +57,19 @@ ETbSame2Enum1 UTbSame2SameEnum2Interface::Func2_Implementation(ETbSame2Enum1 Par
 	(void)Param1;
 	(void)Param2;
 	// do business logic here
-	return ETbSame2Enum1::TS2E1_VALUE1;
+	return ETbSame2Enum1::TS2E1_Value1;
 }
 
 void UTbSame2SameEnum2Interface::_ResetProperties()
 {
-	if (Prop1 != ETbSame2Enum1::TS2E1_VALUE1)
+	if (Prop1 != ETbSame2Enum1::TS2E1_Value1)
 	{
-		Prop1 = ETbSame2Enum1::TS2E1_VALUE1;
+		Prop1 = ETbSame2Enum1::TS2E1_Value1;
 		Execute__GetSignals(this)->OnProp1Changed.Broadcast(Prop1);
 	}
-	if (Prop2 != ETbSame2Enum2::TS2E2_VALUE1)
+	if (Prop2 != ETbSame2Enum2::TS2E2_Value1)
 	{
-		Prop2 = ETbSame2Enum2::TS2E2_VALUE1;
+		Prop2 = ETbSame2Enum2::TS2E2_Value1;
 		Execute__GetSignals(this)->OnProp2Changed.Broadcast(Prop2);
 	}
 }

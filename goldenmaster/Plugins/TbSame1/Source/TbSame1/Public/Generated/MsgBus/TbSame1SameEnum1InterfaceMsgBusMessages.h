@@ -52,7 +52,7 @@ struct FTbSame1SameEnum1InterfaceInitMessage
 	int32 _ClientPingIntervalMS = 100;
 
 	UPROPERTY()
-	ETbSame1Enum1 Prop1 = ETbSame1Enum1::TS1E1_VALUE1;
+	ETbSame1Enum1 Prop1 = ETbSame1Enum1::TS1E1_Value1;
 };
 
 USTRUCT()
@@ -91,7 +91,7 @@ struct FTbSame1SameEnum1InterfaceSig1SignalMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	ETbSame1Enum1 Param1 = ETbSame1Enum1::TS1E1_VALUE1;
+	ETbSame1Enum1 Param1 = ETbSame1Enum1::TS1E1_Value1;
 };
 
 USTRUCT()
@@ -100,7 +100,7 @@ struct FTbSame1SameEnum1InterfaceSetProp1RequestMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	ETbSame1Enum1 Prop1 = ETbSame1Enum1::TS1E1_VALUE1;
+	ETbSame1Enum1 Prop1 = ETbSame1Enum1::TS1E1_Value1;
 };
 
 USTRUCT()
@@ -109,7 +109,7 @@ struct FTbSame1SameEnum1InterfaceProp1ChangedMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	ETbSame1Enum1 Prop1 = ETbSame1Enum1::TS1E1_VALUE1;
+	ETbSame1Enum1 Prop1 = ETbSame1Enum1::TS1E1_Value1;
 };
 
 USTRUCT()
@@ -121,7 +121,7 @@ struct FTbSame1SameEnum1InterfaceFunc1RequestMessage
 	FGuid ResponseId;
 
 	UPROPERTY()
-	ETbSame1Enum1 Param1 = ETbSame1Enum1::TS1E1_VALUE1;
+	ETbSame1Enum1 Param1 = ETbSame1Enum1::TS1E1_Value1;
 };
 
 USTRUCT()
@@ -133,5 +133,5 @@ struct FTbSame1SameEnum1InterfaceFunc1ReplyMessage
 	FGuid ResponseId;
 
 	UPROPERTY()
-	ETbSame1Enum1 Result = ETbSame1Enum1::TS1E1_VALUE1;
+	ETbSame1Enum1 Result = ETbSame1Enum1::TS1E1_Value1;
 };

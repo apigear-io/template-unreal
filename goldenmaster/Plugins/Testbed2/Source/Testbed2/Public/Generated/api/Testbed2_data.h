@@ -28,11 +28,11 @@ limitations under the License.
 UENUM(BlueprintType)
 enum class ETestbed2Enum1 : uint8
 {
-	T2E1_VALUE1 = 1 UMETA(Displayname = "value1"),
-	T2E1_VALUE2 = 2 UMETA(Displayname = "value2"),
-	T2E1_VALUE3 = 3 UMETA(Displayname = "value3"),
-	T2E1_VALUE4 = 4 UMETA(Displayname = "value4"),
-	UNSPECIFIED = 0 UMETA(Hidden)
+	T2E1_Value1 = 1 UMETA(Displayname = "value1"),
+	T2E1_Value2 = 2 UMETA(Displayname = "value2"),
+	T2E1_Value3 = 3 UMETA(Displayname = "value3"),
+	T2E1_Value4 = 4 UMETA(Displayname = "value4"),
+	Unspecified = 0 UMETA(Hidden)
 };
 
 /**
@@ -41,11 +41,11 @@ enum class ETestbed2Enum1 : uint8
 UENUM(BlueprintType)
 enum class ETestbed2Enum2 : uint8
 {
-	T2E2_VALUE1 = 1 UMETA(Displayname = "value1"),
-	T2E2_VALUE2 = 2 UMETA(Displayname = "value2"),
-	T2E2_VALUE3 = 3 UMETA(Displayname = "value3"),
-	T2E2_VALUE4 = 4 UMETA(Displayname = "value4"),
-	UNSPECIFIED = 0 UMETA(Hidden)
+	T2E2_Value1 = 1 UMETA(Displayname = "value1"),
+	T2E2_Value2 = 2 UMETA(Displayname = "value2"),
+	T2E2_Value3 = 3 UMETA(Displayname = "value3"),
+	T2E2_Value4 = 4 UMETA(Displayname = "value4"),
+	Unspecified = 0 UMETA(Hidden)
 };
 
 /**
@@ -54,11 +54,11 @@ enum class ETestbed2Enum2 : uint8
 UENUM(BlueprintType)
 enum class ETestbed2Enum3 : uint8
 {
-	T2E3_VALUE1 = 1 UMETA(Displayname = "value1"),
-	T2E3_VALUE2 = 2 UMETA(Displayname = "value2"),
-	T2E3_VALUE3 = 3 UMETA(Displayname = "value3"),
-	T2E3_VALUE4 = 4 UMETA(Displayname = "value4"),
-	UNSPECIFIED = 0 UMETA(Hidden)
+	T2E3_Value1 = 1 UMETA(Displayname = "value1"),
+	T2E3_Value2 = 2 UMETA(Displayname = "value2"),
+	T2E3_Value3 = 3 UMETA(Displayname = "value3"),
+	T2E3_Value4 = 4 UMETA(Displayname = "value4"),
+	Unspecified = 0 UMETA(Hidden)
 };
 
 /**

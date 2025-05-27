@@ -28,9 +28,9 @@ limitations under the License.
 UENUM(BlueprintType)
 enum class ETbNamesEnum_With_Under_scores : uint8
 {
-	TNEWUS_FIRSTVALUE = 0 UMETA(Displayname = "First_Value"),
-	TNEWUS_SECONDVALUE = 1 UMETA(Displayname = "second_value"),
-	TNEWUS_THIRDVALUE = 2 UMETA(Displayname = "third_Value")
+	TNEWUS_FirstValue = 0 UMETA(Displayname = "First_Value"),
+	TNEWUS_SecondValue = 1 UMETA(Displayname = "second_value"),
+	TNEWUS_ThirdValue = 2 UMETA(Displayname = "third_Value")
 };
 
 /**

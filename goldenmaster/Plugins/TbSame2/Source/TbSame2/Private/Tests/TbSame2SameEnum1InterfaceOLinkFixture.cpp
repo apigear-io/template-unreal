@@ -42,9 +42,9 @@ void UTbSame2SameEnum1InterfaceOLinkHelper::SetTestDone(const FDoneDelegate& InD
 
 void UTbSame2SameEnum1InterfaceOLinkHelper::Prop1PropertyCb(ETbSame2Enum1 InProp1)
 {
-	ETbSame2Enum1 TestValue = ETbSame2Enum1::TS2E1_VALUE1;
+	ETbSame2Enum1 TestValue = ETbSame2Enum1::TS2E1_Value1;
 	// use different test value
-	TestValue = ETbSame2Enum1::TS2E1_VALUE2;
+	TestValue = ETbSame2Enum1::TS2E1_Value2;
 	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
 	if (TSharedPtr<FTbSame2SameEnum1InterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
 	{
@@ -55,9 +55,9 @@ void UTbSame2SameEnum1InterfaceOLinkHelper::Prop1PropertyCb(ETbSame2Enum1 InProp
 
 void UTbSame2SameEnum1InterfaceOLinkHelper::Prop1PropertyChangeLocalCheckRemoteCb(ETbSame2Enum1 InProp1)
 {
-	ETbSame2Enum1 TestValue = ETbSame2Enum1::TS2E1_VALUE1;
+	ETbSame2Enum1 TestValue = ETbSame2Enum1::TS2E1_Value1;
 	// use different test value
-	TestValue = ETbSame2Enum1::TS2E1_VALUE2;
+	TestValue = ETbSame2Enum1::TS2E1_Value2;
 	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
 	if (TSharedPtr<FTbSame2SameEnum1InterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
 	{
@@ -76,9 +76,9 @@ void UTbSame2SameEnum1InterfaceOLinkHelper::Prop1PropertyChangeLocalChangeRemote
 
 	if (count % 2 != 0)
 	{
-		ETbSame2Enum1 TestValue = ETbSame2Enum1::TS2E1_VALUE1;
+		ETbSame2Enum1 TestValue = ETbSame2Enum1::TS2E1_Value1;
 		// use different test value
-		TestValue = ETbSame2Enum1::TS2E1_VALUE2;
+		TestValue = ETbSame2Enum1::TS2E1_Value2;
 		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
 		if (TSharedPtr<FTbSame2SameEnum1InterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
 		{
@@ -86,7 +86,7 @@ void UTbSame2SameEnum1InterfaceOLinkHelper::Prop1PropertyChangeLocalChangeRemote
 		}
 
 		// now set it to the default value
-		TestValue = ETbSame2Enum1::TS2E1_VALUE1; // default value
+		TestValue = ETbSame2Enum1::TS2E1_Value1; // default value
 		if (TSharedPtr<FTbSame2SameEnum1InterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
 		{
 			PinnedImplFixture->GetImplementation()->Execute_SetProp1(PinnedImplFixture->GetImplementation().GetObject(), TestValue);
@@ -94,7 +94,7 @@ void UTbSame2SameEnum1InterfaceOLinkHelper::Prop1PropertyChangeLocalChangeRemote
 	}
 	else
 	{
-		ETbSame2Enum1 TestValue = ETbSame2Enum1::TS2E1_VALUE1; // default value
+		ETbSame2Enum1 TestValue = ETbSame2Enum1::TS2E1_Value1; // default value
 		Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
 		if (TSharedPtr<FTbSame2SameEnum1InterfaceOLinkFixture> PinnedImplFixture = ImplFixture.Pin())
 		{
@@ -107,7 +107,7 @@ void UTbSame2SameEnum1InterfaceOLinkHelper::Prop1PropertyChangeLocalChangeRemote
 void UTbSame2SameEnum1InterfaceOLinkHelper::Sig1SignalCb(ETbSame2Enum1 InParam1)
 {
 	// known test value
-	ETbSame2Enum1 Param1TestValue = ETbSame2Enum1::TS2E1_VALUE2;
+	ETbSame2Enum1 Param1TestValue = ETbSame2Enum1::TS2E1_Value2;
 	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
 	testDoneDelegate.Execute();
 }
