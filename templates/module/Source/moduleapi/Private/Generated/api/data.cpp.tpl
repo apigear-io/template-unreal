@@ -35,12 +35,12 @@ bool U{{ $ModuleName }}Library::to{{$moduleEnumName}}({{$class}}& ConvertedEnum,
 	{
 {{- range .Members }}
 	case {{.Value}}:
-		ConvertedEnum = {{$class}}::{{ abbreviate $moduleEnumName }}_{{CAMEL .Name}};
+		ConvertedEnum = {{$class}}::{{ abbreviate $moduleEnumName }}_{{Camel .Name}};
 		bSuccessful = true;
 		break;
 {{- end }}
 	default:
-		ConvertedEnum = {{$class}}::{{ abbreviate $moduleEnumName }}_{{CAMEL .Default.Name}};
+		ConvertedEnum = {{$class}}::{{ abbreviate $moduleEnumName }}_{{Camel .Default.Name}};
 	}
 	return bSuccessful;
 }

@@ -42,8 +42,8 @@ THIRD_PARTY_INCLUDES_END
 */
 struct TbSame2SameEnum2InterfacePropertiesData
 {
-	std::atomic<ETbSame2Enum1> Prop1{ETbSame2Enum1::TS2E1_VALUE1};
-	std::atomic<ETbSame2Enum2> Prop2{ETbSame2Enum2::TS2E2_VALUE1};
+	std::atomic<ETbSame2Enum1> Prop1{ETbSame2Enum1::TS2E1_Value1};
+	std::atomic<ETbSame2Enum2> Prop2{ETbSame2Enum2::TS2E2_Value1};
 };
 DEFINE_LOG_CATEGORY(LogTbSame2SameEnum2InterfaceOLinkClient);
 
@@ -213,7 +213,7 @@ ETbSame2Enum1 UTbSame2SameEnum2InterfaceOLinkClient::Func1(ETbSame2Enum1 Param1)
 	{
 		UE_LOG(LogTbSame2SameEnum2InterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSame2 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
-		return ETbSame2Enum1::TS2E1_VALUE1;
+		return ETbSame2Enum1::TS2E1_Value1;
 	}
 	TPromise<ETbSame2Enum1> Promise;
 	Async(EAsyncExecution::ThreadPool,
@@ -244,7 +244,7 @@ ETbSame2Enum1 UTbSame2SameEnum2InterfaceOLinkClient::Func2(ETbSame2Enum1 Param1,
 	{
 		UE_LOG(LogTbSame2SameEnum2InterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSame2 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
-		return ETbSame2Enum1::TS2E1_VALUE1;
+		return ETbSame2Enum1::TS2E1_Value1;
 	}
 	TPromise<ETbSame2Enum1> Promise;
 	Async(EAsyncExecution::ThreadPool,

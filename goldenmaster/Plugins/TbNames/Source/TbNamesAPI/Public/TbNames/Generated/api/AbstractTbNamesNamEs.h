@@ -55,7 +55,7 @@ public:
 	virtual int32 GetSomePoperty2() const override PURE_VIRTUAL(UAbstractTbNamesNamEs::GetSomePoperty2, return 0;);
 	virtual void SetSomePoperty2(int32 InSomePoperty2) override PURE_VIRTUAL(UAbstractTbNamesNamEs::SetSomePoperty2, return;);
 
-	virtual ETbNamesEnum_With_Under_scores GetEnumProperty() const override PURE_VIRTUAL(UAbstractTbNamesNamEs::GetEnumProperty, return ETbNamesEnum_With_Under_scores::TNEWUS_FIRSTVALUE;);
+	virtual ETbNamesEnum_With_Under_scores GetEnumProperty() const override PURE_VIRTUAL(UAbstractTbNamesNamEs::GetEnumProperty, return ETbNamesEnum_With_Under_scores::TNEWUS_FirstValue;);
 	virtual void SetEnumProperty(ETbNamesEnum_With_Under_scores InEnumProperty) override PURE_VIRTUAL(UAbstractTbNamesNamEs::SetEnumProperty, return;);
 
 	virtual bool IsInitialized() const;
@@ -92,7 +92,7 @@ protected:
 	void SetSomePoperty2_Private(int32 InSomePoperty2);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetEnumProperty_Private, BlueprintSetter = SetEnumProperty_Private, Category = "ApiGear|TbNames|NamEs")
-	ETbNamesEnum_With_Under_scores EnumProperty{ETbNamesEnum_With_Under_scores::TNEWUS_FIRSTVALUE};
+	ETbNamesEnum_With_Under_scores EnumProperty{ETbNamesEnum_With_Under_scores::TNEWUS_FirstValue};
 
 	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbNames|NamEs|Properties", BlueprintInternalUseOnly)
 	ETbNamesEnum_With_Under_scores GetEnumProperty_Private() const;

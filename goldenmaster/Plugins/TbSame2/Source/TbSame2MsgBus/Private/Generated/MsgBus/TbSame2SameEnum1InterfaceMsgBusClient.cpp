@@ -37,7 +37,7 @@ limitations under the License.
 */
 struct TbSame2SameEnum1InterfacePropertiesMsgBusData
 {
-	std::atomic<ETbSame2Enum1> Prop1{ETbSame2Enum1::TS2E1_VALUE1};
+	std::atomic<ETbSame2Enum1> Prop1{ETbSame2Enum1::TS2E1_Value1};
 };
 DEFINE_LOG_CATEGORY(LogTbSame2SameEnum1InterfaceMsgBusClient);
 
@@ -338,7 +338,7 @@ ETbSame2Enum1 UTbSame2SameEnum1InterfaceMsgBusClient::Func1(ETbSame2Enum1 InPara
 	{
 		UE_LOG(LogTbSame2SameEnum1InterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
 
-		return ETbSame2Enum1::TS2E1_VALUE1;
+		return ETbSame2Enum1::TS2E1_Value1;
 	}
 
 	auto msg = new FTbSame2SameEnum1InterfaceFunc1RequestMessage();

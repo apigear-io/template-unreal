@@ -45,7 +45,7 @@ struct TbNamesNamEsPropertiesData
 	std::atomic<bool> bSwitch{false};
 	std::atomic<int32> SomeProperty{0};
 	std::atomic<int32> SomePoperty2{0};
-	std::atomic<ETbNamesEnum_With_Under_scores> EnumProperty{ETbNamesEnum_With_Under_scores::TNEWUS_FIRSTVALUE};
+	std::atomic<ETbNamesEnum_With_Under_scores> EnumProperty{ETbNamesEnum_With_Under_scores::TNEWUS_FirstValue};
 };
 DEFINE_LOG_CATEGORY(LogTbNamesNamEsOLinkClient);
 

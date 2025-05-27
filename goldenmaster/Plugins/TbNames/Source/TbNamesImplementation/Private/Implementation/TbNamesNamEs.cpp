@@ -100,9 +100,9 @@ void UTbNamesNamEs::_ResetProperties()
 		SomePoperty2 = 0;
 		_GetSignals()->BroadcastSomePoperty2Changed(SomePoperty2);
 	}
-	if (EnumProperty != ETbNamesEnum_With_Under_scores::TNEWUS_FIRSTVALUE)
+	if (EnumProperty != ETbNamesEnum_With_Under_scores::TNEWUS_FirstValue)
 	{
-		EnumProperty = ETbNamesEnum_With_Under_scores::TNEWUS_FIRSTVALUE;
+		EnumProperty = ETbNamesEnum_With_Under_scores::TNEWUS_FirstValue;
 		_GetSignals()->BroadcastEnumPropertyChanged(EnumProperty);
 	}
 }

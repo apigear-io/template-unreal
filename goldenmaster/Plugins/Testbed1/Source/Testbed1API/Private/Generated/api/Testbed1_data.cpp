@@ -27,19 +27,19 @@ bool UTestbed1Library::toTestbed1Enum0(ETestbed1Enum0& ConvertedEnum, uint8 InVa
 	switch (InValue)
 	{
 	case 0:
-		ConvertedEnum = ETestbed1Enum0::T1E0_VALUE0;
+		ConvertedEnum = ETestbed1Enum0::T1E0_Value0;
 		bSuccessful = true;
 		break;
 	case 1:
-		ConvertedEnum = ETestbed1Enum0::T1E0_VALUE1;
+		ConvertedEnum = ETestbed1Enum0::T1E0_Value1;
 		bSuccessful = true;
 		break;
 	case 2:
-		ConvertedEnum = ETestbed1Enum0::T1E0_VALUE2;
+		ConvertedEnum = ETestbed1Enum0::T1E0_Value2;
 		bSuccessful = true;
 		break;
 	default:
-		ConvertedEnum = ETestbed1Enum0::T1E0_VALUE0;
+		ConvertedEnum = ETestbed1Enum0::T1E0_Value0;
 	}
 	return bSuccessful;
 }

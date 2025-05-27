@@ -42,16 +42,16 @@ public:
 
 	// methods
 	virtual void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, ETbSame2Enum1 Param1) override;
-	virtual ETbSame2Enum1 Func1(ETbSame2Enum1 Param1) override PURE_VIRTUAL(UAbstractTbSame2SameEnum2Interface::Func1, return ETbSame2Enum1::TS2E1_VALUE1;);
+	virtual ETbSame2Enum1 Func1(ETbSame2Enum1 Param1) override PURE_VIRTUAL(UAbstractTbSame2SameEnum2Interface::Func1, return ETbSame2Enum1::TS2E1_Value1;);
 
 	virtual void Func2Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, ETbSame2Enum1 Param1, ETbSame2Enum2 Param2) override;
-	virtual ETbSame2Enum1 Func2(ETbSame2Enum1 Param1, ETbSame2Enum2 Param2) override PURE_VIRTUAL(UAbstractTbSame2SameEnum2Interface::Func2, return ETbSame2Enum1::TS2E1_VALUE1;);
+	virtual ETbSame2Enum1 Func2(ETbSame2Enum1 Param1, ETbSame2Enum2 Param2) override PURE_VIRTUAL(UAbstractTbSame2SameEnum2Interface::Func2, return ETbSame2Enum1::TS2E1_Value1;);
 
 	// properties
-	virtual ETbSame2Enum1 GetProp1() const override PURE_VIRTUAL(UAbstractTbSame2SameEnum2Interface::GetProp1, return ETbSame2Enum1::TS2E1_VALUE1;);
+	virtual ETbSame2Enum1 GetProp1() const override PURE_VIRTUAL(UAbstractTbSame2SameEnum2Interface::GetProp1, return ETbSame2Enum1::TS2E1_Value1;);
 	virtual void SetProp1(ETbSame2Enum1 InProp1) override PURE_VIRTUAL(UAbstractTbSame2SameEnum2Interface::SetProp1, return;);
 
-	virtual ETbSame2Enum2 GetProp2() const override PURE_VIRTUAL(UAbstractTbSame2SameEnum2Interface::GetProp2, return ETbSame2Enum2::TS2E2_VALUE1;);
+	virtual ETbSame2Enum2 GetProp2() const override PURE_VIRTUAL(UAbstractTbSame2SameEnum2Interface::GetProp2, return ETbSame2Enum2::TS2E2_Value1;);
 	virtual void SetProp2(ETbSame2Enum2 InProp2) override PURE_VIRTUAL(UAbstractTbSame2SameEnum2Interface::SetProp2, return;);
 
 	virtual bool IsInitialized() const;
@@ -61,7 +61,7 @@ protected:
 
 	// properties - local copy
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1_Private, BlueprintSetter = SetProp1_Private, Category = "ApiGear|TbSame2|SameEnum2Interface")
-	ETbSame2Enum1 Prop1{ETbSame2Enum1::TS2E1_VALUE1};
+	ETbSame2Enum1 Prop1{ETbSame2Enum1::TS2E1_Value1};
 
 	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSame2|SameEnum2Interface|Properties", BlueprintInternalUseOnly)
 	ETbSame2Enum1 GetProp1_Private() const;
@@ -70,7 +70,7 @@ protected:
 	void SetProp1_Private(ETbSame2Enum1 InProp1);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp2_Private, BlueprintSetter = SetProp2_Private, Category = "ApiGear|TbSame2|SameEnum2Interface")
-	ETbSame2Enum2 Prop2{ETbSame2Enum2::TS2E2_VALUE1};
+	ETbSame2Enum2 Prop2{ETbSame2Enum2::TS2E2_Value1};
 
 	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSame2|SameEnum2Interface|Properties", BlueprintInternalUseOnly)
 	ETbSame2Enum2 GetProp2_Private() const;
