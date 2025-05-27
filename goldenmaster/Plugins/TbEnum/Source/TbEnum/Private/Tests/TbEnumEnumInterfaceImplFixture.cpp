@@ -39,9 +39,9 @@ void UTbEnumEnumInterfaceImplHelper::SetTestDone(const FDoneDelegate& InDone)
 
 void UTbEnumEnumInterfaceImplHelper::Prop0PropertyCb(ETbEnumEnum0 InProp0)
 {
-	ETbEnumEnum0 TestValue = ETbEnumEnum0::TEE0_VALUE0;
+	ETbEnumEnum0 TestValue = ETbEnumEnum0::TEE0_Value0;
 	// use different test value
-	TestValue = ETbEnumEnum0::TEE0_VALUE1;
+	TestValue = ETbEnumEnum0::TEE0_Value1;
 	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp0, TestValue);
 	if (TSharedPtr<FTbEnumEnumInterfaceImplFixture> PinnedImplFixture = ImplFixture.Pin())
 	{
@@ -52,9 +52,9 @@ void UTbEnumEnumInterfaceImplHelper::Prop0PropertyCb(ETbEnumEnum0 InProp0)
 
 void UTbEnumEnumInterfaceImplHelper::Prop1PropertyCb(ETbEnumEnum1 InProp1)
 {
-	ETbEnumEnum1 TestValue = ETbEnumEnum1::TEE1_VALUE1;
+	ETbEnumEnum1 TestValue = ETbEnumEnum1::TEE1_Value1;
 	// use different test value
-	TestValue = ETbEnumEnum1::TEE1_VALUE2;
+	TestValue = ETbEnumEnum1::TEE1_Value2;
 	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
 	if (TSharedPtr<FTbEnumEnumInterfaceImplFixture> PinnedImplFixture = ImplFixture.Pin())
 	{
@@ -65,9 +65,9 @@ void UTbEnumEnumInterfaceImplHelper::Prop1PropertyCb(ETbEnumEnum1 InProp1)
 
 void UTbEnumEnumInterfaceImplHelper::Prop2PropertyCb(ETbEnumEnum2 InProp2)
 {
-	ETbEnumEnum2 TestValue = ETbEnumEnum2::TEE2_VALUE2;
+	ETbEnumEnum2 TestValue = ETbEnumEnum2::TEE2_Value2;
 	// use different test value
-	TestValue = ETbEnumEnum2::TEE2_VALUE1;
+	TestValue = ETbEnumEnum2::TEE2_Value1;
 	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp2, TestValue);
 	if (TSharedPtr<FTbEnumEnumInterfaceImplFixture> PinnedImplFixture = ImplFixture.Pin())
 	{
@@ -78,9 +78,9 @@ void UTbEnumEnumInterfaceImplHelper::Prop2PropertyCb(ETbEnumEnum2 InProp2)
 
 void UTbEnumEnumInterfaceImplHelper::Prop3PropertyCb(ETbEnumEnum3 InProp3)
 {
-	ETbEnumEnum3 TestValue = ETbEnumEnum3::TEE3_VALUE3;
+	ETbEnumEnum3 TestValue = ETbEnumEnum3::TEE3_Value3;
 	// use different test value
-	TestValue = ETbEnumEnum3::TEE3_VALUE2;
+	TestValue = ETbEnumEnum3::TEE3_Value2;
 	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp3, TestValue);
 	if (TSharedPtr<FTbEnumEnumInterfaceImplFixture> PinnedImplFixture = ImplFixture.Pin())
 	{
@@ -92,7 +92,7 @@ void UTbEnumEnumInterfaceImplHelper::Prop3PropertyCb(ETbEnumEnum3 InProp3)
 void UTbEnumEnumInterfaceImplHelper::Sig0SignalCb(ETbEnumEnum0 InParam0)
 {
 	// known test value
-	ETbEnumEnum0 Param0TestValue = ETbEnumEnum0::TEE0_VALUE1;
+	ETbEnumEnum0 Param0TestValue = ETbEnumEnum0::TEE0_Value1;
 	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam0, Param0TestValue);
 	testDoneDelegate.Execute();
 }
@@ -100,7 +100,7 @@ void UTbEnumEnumInterfaceImplHelper::Sig0SignalCb(ETbEnumEnum0 InParam0)
 void UTbEnumEnumInterfaceImplHelper::Sig1SignalCb(ETbEnumEnum1 InParam1)
 {
 	// known test value
-	ETbEnumEnum1 Param1TestValue = ETbEnumEnum1::TEE1_VALUE2;
+	ETbEnumEnum1 Param1TestValue = ETbEnumEnum1::TEE1_Value2;
 	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam1, Param1TestValue);
 	testDoneDelegate.Execute();
 }
@@ -108,7 +108,7 @@ void UTbEnumEnumInterfaceImplHelper::Sig1SignalCb(ETbEnumEnum1 InParam1)
 void UTbEnumEnumInterfaceImplHelper::Sig2SignalCb(ETbEnumEnum2 InParam2)
 {
 	// known test value
-	ETbEnumEnum2 Param2TestValue = ETbEnumEnum2::TEE2_VALUE1;
+	ETbEnumEnum2 Param2TestValue = ETbEnumEnum2::TEE2_Value1;
 	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam2, Param2TestValue);
 	testDoneDelegate.Execute();
 }
@@ -116,7 +116,7 @@ void UTbEnumEnumInterfaceImplHelper::Sig2SignalCb(ETbEnumEnum2 InParam2)
 void UTbEnumEnumInterfaceImplHelper::Sig3SignalCb(ETbEnumEnum3 InParam3)
 {
 	// known test value
-	ETbEnumEnum3 Param3TestValue = ETbEnumEnum3::TEE3_VALUE2;
+	ETbEnumEnum3 Param3TestValue = ETbEnumEnum3::TEE3_Value2;
 	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam3, Param3TestValue);
 	testDoneDelegate.Execute();
 }

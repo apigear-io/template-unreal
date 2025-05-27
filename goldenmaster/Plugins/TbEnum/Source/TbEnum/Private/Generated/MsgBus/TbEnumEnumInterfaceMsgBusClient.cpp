@@ -37,10 +37,10 @@ limitations under the License.
 */
 struct TbEnumEnumInterfacePropertiesMsgBusData
 {
-	std::atomic<ETbEnumEnum0> Prop0{ETbEnumEnum0::TEE0_VALUE0};
-	std::atomic<ETbEnumEnum1> Prop1{ETbEnumEnum1::TEE1_VALUE1};
-	std::atomic<ETbEnumEnum2> Prop2{ETbEnumEnum2::TEE2_VALUE2};
-	std::atomic<ETbEnumEnum3> Prop3{ETbEnumEnum3::TEE3_VALUE3};
+	std::atomic<ETbEnumEnum0> Prop0{ETbEnumEnum0::TEE0_Value0};
+	std::atomic<ETbEnumEnum1> Prop1{ETbEnumEnum1::TEE1_Value1};
+	std::atomic<ETbEnumEnum2> Prop2{ETbEnumEnum2::TEE2_Value2};
+	std::atomic<ETbEnumEnum3> Prop3{ETbEnumEnum3::TEE3_Value3};
 };
 DEFINE_LOG_CATEGORY(LogTbEnumEnumInterfaceMsgBusClient);
 
@@ -482,7 +482,7 @@ ETbEnumEnum0 UTbEnumEnumInterfaceMsgBusClient::Func0_Implementation(ETbEnumEnum0
 	{
 		UE_LOG(LogTbEnumEnumInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
 
-		return ETbEnumEnum0::TEE0_VALUE0;
+		return ETbEnumEnum0::TEE0_Value0;
 	}
 
 	auto msg = new FTbEnumEnumInterfaceFunc0RequestMessage();
@@ -511,7 +511,7 @@ ETbEnumEnum1 UTbEnumEnumInterfaceMsgBusClient::Func1_Implementation(ETbEnumEnum1
 	{
 		UE_LOG(LogTbEnumEnumInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
 
-		return ETbEnumEnum1::TEE1_VALUE1;
+		return ETbEnumEnum1::TEE1_Value1;
 	}
 
 	auto msg = new FTbEnumEnumInterfaceFunc1RequestMessage();
@@ -540,7 +540,7 @@ ETbEnumEnum2 UTbEnumEnumInterfaceMsgBusClient::Func2_Implementation(ETbEnumEnum2
 	{
 		UE_LOG(LogTbEnumEnumInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
 
-		return ETbEnumEnum2::TEE2_VALUE2;
+		return ETbEnumEnum2::TEE2_Value2;
 	}
 
 	auto msg = new FTbEnumEnumInterfaceFunc2RequestMessage();
@@ -569,7 +569,7 @@ ETbEnumEnum3 UTbEnumEnumInterfaceMsgBusClient::Func3_Implementation(ETbEnumEnum3
 	{
 		UE_LOG(LogTbEnumEnumInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
 
-		return ETbEnumEnum3::TEE3_VALUE3;
+		return ETbEnumEnum3::TEE3_Value3;
 	}
 
 	auto msg = new FTbEnumEnumInterfaceFunc3RequestMessage();

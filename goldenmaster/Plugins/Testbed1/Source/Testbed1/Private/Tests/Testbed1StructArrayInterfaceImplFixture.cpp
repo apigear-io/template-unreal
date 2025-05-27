@@ -93,7 +93,7 @@ void UTestbed1StructArrayInterfaceImplHelper::PropEnumPropertyCb(const TArray<ET
 {
 	TArray<ETestbed1Enum0> TestValue = TArray<ETestbed1Enum0>();
 	// use different test value
-	TestValue.Add(ETestbed1Enum0::T1E0_VALUE1);
+	TestValue.Add(ETestbed1Enum0::T1E0_Value1);
 	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropEnum, TestValue);
 	if (TSharedPtr<FTestbed1StructArrayInterfaceImplFixture> PinnedImplFixture = ImplFixture.Pin())
 	{
@@ -138,7 +138,7 @@ void UTestbed1StructArrayInterfaceImplHelper::SigEnumSignalCb(const TArray<ETest
 {
 	// known test value
 	TArray<ETestbed1Enum0> ParamEnumTestValue = TArray<ETestbed1Enum0>(); // default value
-	ParamEnumTestValue.Add(ETestbed1Enum0::T1E0_VALUE1);
+	ParamEnumTestValue.Add(ETestbed1Enum0::T1E0_Value1);
 	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamEnum, ParamEnumTestValue);
 	testDoneDelegate.Execute();
 }

@@ -303,7 +303,7 @@ void UTestbed1StructArrayInterfaceOLinkSpec::Define()
 		UTestbed1StructArrayInterfaceSignals* Testbed1StructArrayInterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		Testbed1StructArrayInterfaceSignals->OnPropEnumChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructArrayInterfaceOLinkHelper::PropEnumPropertyCb);
 		// use different test value
-		TestValue.Add(ETestbed1Enum0::T1E0_VALUE1);
+		TestValue.Add(ETestbed1Enum0::T1E0_Value1);
 		ImplFixture->GetImplementation()->Execute_SetPropEnum(ImplFixture->GetImplementation().GetObject(), TestValue);
 	});
 
@@ -317,7 +317,7 @@ void UTestbed1StructArrayInterfaceOLinkSpec::Define()
 		UTestbed1StructArrayInterfaceSignals* Testbed1StructArrayInterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		Testbed1StructArrayInterfaceSignals->OnPropEnumChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructArrayInterfaceOLinkHelper::PropEnumPropertyChangeLocalCheckRemoteCb);
 		// use different test value
-		TestValue.Add(ETestbed1Enum0::T1E0_VALUE1);
+		TestValue.Add(ETestbed1Enum0::T1E0_Value1);
 		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed1StructArrayInterface>();
 		service->Execute_SetPropEnum(service, TestValue);
 	});
@@ -332,7 +332,7 @@ void UTestbed1StructArrayInterfaceOLinkSpec::Define()
 		UTestbed1StructArrayInterfaceSignals* Testbed1StructArrayInterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		Testbed1StructArrayInterfaceSignals->OnPropEnumChanged.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed1StructArrayInterfaceOLinkHelper::PropEnumPropertyChangeLocalChangeRemoteCb);
 		// use different test value
-		TestValue.Add(ETestbed1Enum0::T1E0_VALUE1);
+		TestValue.Add(ETestbed1Enum0::T1E0_Value1);
 		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTestbed1StructArrayInterface>();
 		service->Execute_SetPropEnum(service, TestValue);
 	});
@@ -439,7 +439,7 @@ void UTestbed1StructArrayInterfaceOLinkSpec::Define()
 
 		// use different test value
 		TArray<ETestbed1Enum0> ParamEnumTestValue = TArray<ETestbed1Enum0>(); // default value
-		ParamEnumTestValue.Add(ETestbed1Enum0::T1E0_VALUE1);
+		ParamEnumTestValue.Add(ETestbed1Enum0::T1E0_Value1);
 		Testbed1StructArrayInterfaceSignals->BroadcastSigEnumSignal(ParamEnumTestValue);
 	});
 }

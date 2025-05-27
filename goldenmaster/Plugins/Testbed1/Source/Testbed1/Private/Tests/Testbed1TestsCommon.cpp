@@ -113,7 +113,7 @@ FTestbed1StructEnum createTestFTestbed1StructEnum()
 {
 	FTestbed1StructEnum TestValue;
 
-	TestValue.fieldEnum = ETestbed1Enum0::T1E0_VALUE1;
+	TestValue.fieldEnum = ETestbed1Enum0::T1E0_Value1;
 
 	return TestValue;
 }
@@ -221,7 +221,7 @@ FTestbed1StructEnumWithArray createTestFTestbed1StructEnumWithArray()
 {
 	FTestbed1StructEnumWithArray TestValue;
 
-	TestValue.fieldEnum.Add(ETestbed1Enum0::T1E0_VALUE1);
+	TestValue.fieldEnum.Add(ETestbed1Enum0::T1E0_Value1);
 
 	return TestValue;
 }

@@ -42,16 +42,16 @@ public:
 
 	// methods
 	virtual void Func1Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame1Enum1& Result, ETbSame1Enum1 Param1) override;
-	virtual ETbSame1Enum1 Func1_Implementation(ETbSame1Enum1 Param1) override PURE_VIRTUAL(UAbstractTbSame1SameEnum2Interface::Func1_Implementation, return ETbSame1Enum1::TS1E1_VALUE1;);
+	virtual ETbSame1Enum1 Func1_Implementation(ETbSame1Enum1 Param1) override PURE_VIRTUAL(UAbstractTbSame1SameEnum2Interface::Func1_Implementation, return ETbSame1Enum1::TS1E1_Value1;);
 
 	virtual void Func2Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame1Enum1& Result, ETbSame1Enum1 Param1, ETbSame1Enum2 Param2) override;
-	virtual ETbSame1Enum1 Func2_Implementation(ETbSame1Enum1 Param1, ETbSame1Enum2 Param2) override PURE_VIRTUAL(UAbstractTbSame1SameEnum2Interface::Func2_Implementation, return ETbSame1Enum1::TS1E1_VALUE1;);
+	virtual ETbSame1Enum1 Func2_Implementation(ETbSame1Enum1 Param1, ETbSame1Enum2 Param2) override PURE_VIRTUAL(UAbstractTbSame1SameEnum2Interface::Func2_Implementation, return ETbSame1Enum1::TS1E1_Value1;);
 
 	// properties
-	virtual ETbSame1Enum1 GetProp1_Implementation() const override PURE_VIRTUAL(UAbstractTbSame1SameEnum2Interface::GetProp1_Implementation, return ETbSame1Enum1::TS1E1_VALUE1;);
+	virtual ETbSame1Enum1 GetProp1_Implementation() const override PURE_VIRTUAL(UAbstractTbSame1SameEnum2Interface::GetProp1_Implementation, return ETbSame1Enum1::TS1E1_Value1;);
 	virtual void SetProp1_Implementation(ETbSame1Enum1 InProp1) override PURE_VIRTUAL(UAbstractTbSame1SameEnum2Interface::SetProp1_Implementation, return;);
 
-	virtual ETbSame1Enum2 GetProp2_Implementation() const override PURE_VIRTUAL(UAbstractTbSame1SameEnum2Interface::GetProp2_Implementation, return ETbSame1Enum2::TS1E2_VALUE1;);
+	virtual ETbSame1Enum2 GetProp2_Implementation() const override PURE_VIRTUAL(UAbstractTbSame1SameEnum2Interface::GetProp2_Implementation, return ETbSame1Enum2::TS1E2_Value1;);
 	virtual void SetProp2_Implementation(ETbSame1Enum2 InProp2) override PURE_VIRTUAL(UAbstractTbSame1SameEnum2Interface::SetProp2_Implementation, return;);
 
 	virtual bool IsInitialized() const;
@@ -61,7 +61,7 @@ protected:
 
 	// properties - local copy
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp1_Private, BlueprintSetter = SetProp1_Private, Category = "ApiGear|TbSame1|SameEnum2Interface")
-	ETbSame1Enum1 Prop1{ETbSame1Enum1::TS1E1_VALUE1};
+	ETbSame1Enum1 Prop1{ETbSame1Enum1::TS1E1_Value1};
 
 	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSame1|SameEnum2Interface|Properties", BlueprintInternalUseOnly)
 	ETbSame1Enum1 GetProp1_Private() const;
@@ -70,7 +70,7 @@ protected:
 	void SetProp1_Private(ETbSame1Enum1 InProp1);
 
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetProp2_Private, BlueprintSetter = SetProp2_Private, Category = "ApiGear|TbSame1|SameEnum2Interface")
-	ETbSame1Enum2 Prop2{ETbSame1Enum2::TS1E2_VALUE1};
+	ETbSame1Enum2 Prop2{ETbSame1Enum2::TS1E2_Value1};
 
 	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbSame1|SameEnum2Interface|Properties", BlueprintInternalUseOnly)
 	ETbSame1Enum2 GetProp2_Private() const;

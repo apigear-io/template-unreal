@@ -27,19 +27,19 @@ bool UTbEnumLibrary::toTbEnumEnum0(ETbEnumEnum0& ConvertedEnum, uint8 InValue)
 	switch (InValue)
 	{
 	case 0:
-		ConvertedEnum = ETbEnumEnum0::TEE0_VALUE0;
+		ConvertedEnum = ETbEnumEnum0::TEE0_Value0;
 		bSuccessful = true;
 		break;
 	case 1:
-		ConvertedEnum = ETbEnumEnum0::TEE0_VALUE1;
+		ConvertedEnum = ETbEnumEnum0::TEE0_Value1;
 		bSuccessful = true;
 		break;
 	case 2:
-		ConvertedEnum = ETbEnumEnum0::TEE0_VALUE2;
+		ConvertedEnum = ETbEnumEnum0::TEE0_Value2;
 		bSuccessful = true;
 		break;
 	default:
-		ConvertedEnum = ETbEnumEnum0::TEE0_VALUE0;
+		ConvertedEnum = ETbEnumEnum0::TEE0_Value0;
 	}
 	return bSuccessful;
 }
@@ -52,19 +52,19 @@ bool UTbEnumLibrary::toTbEnumEnum1(ETbEnumEnum1& ConvertedEnum, uint8 InValue)
 	switch (InValue)
 	{
 	case 1:
-		ConvertedEnum = ETbEnumEnum1::TEE1_VALUE1;
+		ConvertedEnum = ETbEnumEnum1::TEE1_Value1;
 		bSuccessful = true;
 		break;
 	case 2:
-		ConvertedEnum = ETbEnumEnum1::TEE1_VALUE2;
+		ConvertedEnum = ETbEnumEnum1::TEE1_Value2;
 		bSuccessful = true;
 		break;
 	case 3:
-		ConvertedEnum = ETbEnumEnum1::TEE1_VALUE3;
+		ConvertedEnum = ETbEnumEnum1::TEE1_Value3;
 		bSuccessful = true;
 		break;
 	default:
-		ConvertedEnum = ETbEnumEnum1::TEE1_VALUE1;
+		ConvertedEnum = ETbEnumEnum1::TEE1_Value1;
 	}
 	return bSuccessful;
 }
@@ -77,19 +77,19 @@ bool UTbEnumLibrary::toTbEnumEnum2(ETbEnumEnum2& ConvertedEnum, uint8 InValue)
 	switch (InValue)
 	{
 	case 2:
-		ConvertedEnum = ETbEnumEnum2::TEE2_VALUE2;
+		ConvertedEnum = ETbEnumEnum2::TEE2_Value2;
 		bSuccessful = true;
 		break;
 	case 1:
-		ConvertedEnum = ETbEnumEnum2::TEE2_VALUE1;
+		ConvertedEnum = ETbEnumEnum2::TEE2_Value1;
 		bSuccessful = true;
 		break;
 	case 0:
-		ConvertedEnum = ETbEnumEnum2::TEE2_VALUE0;
+		ConvertedEnum = ETbEnumEnum2::TEE2_Value0;
 		bSuccessful = true;
 		break;
 	default:
-		ConvertedEnum = ETbEnumEnum2::TEE2_VALUE2;
+		ConvertedEnum = ETbEnumEnum2::TEE2_Value2;
 	}
 	return bSuccessful;
 }
@@ -102,19 +102,19 @@ bool UTbEnumLibrary::toTbEnumEnum3(ETbEnumEnum3& ConvertedEnum, uint8 InValue)
 	switch (InValue)
 	{
 	case 3:
-		ConvertedEnum = ETbEnumEnum3::TEE3_VALUE3;
+		ConvertedEnum = ETbEnumEnum3::TEE3_Value3;
 		bSuccessful = true;
 		break;
 	case 2:
-		ConvertedEnum = ETbEnumEnum3::TEE3_VALUE2;
+		ConvertedEnum = ETbEnumEnum3::TEE3_Value2;
 		bSuccessful = true;
 		break;
 	case 1:
-		ConvertedEnum = ETbEnumEnum3::TEE3_VALUE1;
+		ConvertedEnum = ETbEnumEnum3::TEE3_Value1;
 		bSuccessful = true;
 		break;
 	default:
-		ConvertedEnum = ETbEnumEnum3::TEE3_VALUE3;
+		ConvertedEnum = ETbEnumEnum3::TEE3_Value3;
 	}
 	return bSuccessful;
 }

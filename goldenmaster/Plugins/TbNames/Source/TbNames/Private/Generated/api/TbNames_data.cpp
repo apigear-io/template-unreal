@@ -27,19 +27,19 @@ bool UTbNamesLibrary::toTbNamesEnum_With_Under_scores(ETbNamesEnum_With_Under_sc
 	switch (InValue)
 	{
 	case 0:
-		ConvertedEnum = ETbNamesEnum_With_Under_scores::TNEWUS_FIRSTVALUE;
+		ConvertedEnum = ETbNamesEnum_With_Under_scores::TNEWUS_FirstValue;
 		bSuccessful = true;
 		break;
 	case 1:
-		ConvertedEnum = ETbNamesEnum_With_Under_scores::TNEWUS_SECONDVALUE;
+		ConvertedEnum = ETbNamesEnum_With_Under_scores::TNEWUS_SecondValue;
 		bSuccessful = true;
 		break;
 	case 2:
-		ConvertedEnum = ETbNamesEnum_With_Under_scores::TNEWUS_THIRDVALUE;
+		ConvertedEnum = ETbNamesEnum_With_Under_scores::TNEWUS_ThirdValue;
 		bSuccessful = true;
 		break;
 	default:
-		ConvertedEnum = ETbNamesEnum_With_Under_scores::TNEWUS_FIRSTVALUE;
+		ConvertedEnum = ETbNamesEnum_With_Under_scores::TNEWUS_FirstValue;
 	}
 	return bSuccessful;
 }

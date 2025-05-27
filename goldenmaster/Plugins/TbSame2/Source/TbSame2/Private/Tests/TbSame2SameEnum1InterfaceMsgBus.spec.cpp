@@ -67,35 +67,35 @@ void UTbSame2SameEnum1InterfaceMsgBusSpec::Define()
 	It("Property.Prop1.Default", [this]()
 		{
 		// Do implement test here
-		ETbSame2Enum1 TestValue = ETbSame2Enum1::TS2E1_VALUE1; // default value
+		ETbSame2Enum1 TestValue = ETbSame2Enum1::TS2E1_Value1; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetProp1(ImplFixture->GetImplementation().GetObject()), TestValue);
 	});
 
 	LatentIt("Property.Prop1.Change", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		// Do implement test here
-		ETbSame2Enum1 TestValue = ETbSame2Enum1::TS2E1_VALUE1; // default value
+		ETbSame2Enum1 TestValue = ETbSame2Enum1::TS2E1_Value1; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetProp1(ImplFixture->GetImplementation().GetObject()), TestValue);
 
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UTbSame2SameEnum1InterfaceSignals* TbSame2SameEnum1InterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		TbSame2SameEnum1InterfaceSignals->OnProp1Changed.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame2SameEnum1InterfaceMsgBusHelper::Prop1PropertyCb);
 		// use different test value
-		TestValue = ETbSame2Enum1::TS2E1_VALUE2;
+		TestValue = ETbSame2Enum1::TS2E1_Value2;
 		ImplFixture->GetImplementation()->Execute_SetProp1(ImplFixture->GetImplementation().GetObject(), TestValue);
 	});
 
 	LatentIt("Property.Prop1.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		// Do implement test here
-		ETbSame2Enum1 TestValue = ETbSame2Enum1::TS2E1_VALUE1; // default value
+		ETbSame2Enum1 TestValue = ETbSame2Enum1::TS2E1_Value1; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetProp1(ImplFixture->GetImplementation().GetObject()), TestValue);
 
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UTbSame2SameEnum1InterfaceSignals* TbSame2SameEnum1InterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		TbSame2SameEnum1InterfaceSignals->OnProp1Changed.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame2SameEnum1InterfaceMsgBusHelper::Prop1PropertyChangeLocalCheckRemoteCb);
 		// use different test value
-		TestValue = ETbSame2Enum1::TS2E1_VALUE2;
+		TestValue = ETbSame2Enum1::TS2E1_Value2;
 		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSame2SameEnum1Interface>();
 		service->Execute_SetProp1(service, TestValue);
 	});
@@ -103,14 +103,14 @@ void UTbSame2SameEnum1InterfaceMsgBusSpec::Define()
 	LatentIt("Property.Prop1.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		// Do implement test here
-		ETbSame2Enum1 TestValue = ETbSame2Enum1::TS2E1_VALUE1; // default value
+		ETbSame2Enum1 TestValue = ETbSame2Enum1::TS2E1_Value1; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Execute_GetProp1(ImplFixture->GetImplementation().GetObject()), TestValue);
 
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
 		UTbSame2SameEnum1InterfaceSignals* TbSame2SameEnum1InterfaceSignals = ImplFixture->GetImplementation()->Execute__GetSignals(ImplFixture->GetImplementation().GetObject());
 		TbSame2SameEnum1InterfaceSignals->OnProp1Changed.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame2SameEnum1InterfaceMsgBusHelper::Prop1PropertyChangeLocalChangeRemoteCb);
 		// use different test value
-		TestValue = ETbSame2Enum1::TS2E1_VALUE2;
+		TestValue = ETbSame2Enum1::TS2E1_Value2;
 		auto service = ImplFixture->GetGameInstance()->GetSubsystem<UTbSame2SameEnum1Interface>();
 		service->Execute_SetProp1(service, TestValue);
 	});
@@ -120,7 +120,7 @@ void UTbSame2SameEnum1InterfaceMsgBusSpec::Define()
 		// Do implement test here
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
-			ImplFixture->GetImplementation()->Execute_Func1(ImplFixture->GetImplementation().GetObject(), ETbSame2Enum1::TS2E1_VALUE1);
+			ImplFixture->GetImplementation()->Execute_Func1(ImplFixture->GetImplementation().GetObject(), ETbSame2Enum1::TS2E1_Value1);
 			TestDone.Execute();
 		});
 	});
@@ -132,7 +132,7 @@ void UTbSame2SameEnum1InterfaceMsgBusSpec::Define()
 		TbSame2SameEnum1InterfaceSignals->OnSig1Signal.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame2SameEnum1InterfaceMsgBusHelper::Sig1SignalCb);
 
 		// use different test value
-		ETbSame2Enum1 Param1TestValue = ETbSame2Enum1::TS2E1_VALUE2;
+		ETbSame2Enum1 Param1TestValue = ETbSame2Enum1::TS2E1_Value2;
 		TbSame2SameEnum1InterfaceSignals->BroadcastSig1Signal(Param1TestValue);
 	});
 }
