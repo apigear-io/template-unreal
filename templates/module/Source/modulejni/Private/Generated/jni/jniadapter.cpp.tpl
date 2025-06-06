@@ -5,13 +5,36 @@
 {{- $IfaceName := Camel .Interface.Name }}
 {{- $Category := printf "ApiGear|%s|%s" $ModuleName $IfaceName }}
 {{- $DisplayName := printf "%s%s" $ModuleName $IfaceName }}
-{{- $Class := printf "U%sJnidapter" $DisplayName}}
+{{- $Class := printf "U%sJniAdapter" $DisplayName}}
 {{- $Iface := printf "%s%s" $ModuleName $IfaceName }}
 {{- $ifaceId := printf "%s.%s" .Module.Name .Interface.Name}}
-{{- $javaClassPath = ueJavaPath $ModuleNameRaw $ModuleNameRaw "unrealservice" }}
-{{- $jniPackagePrefix =ueJniClassPathPrefix  $ModuleNameRaw $ModuleNameRaw "unrealservice" }}
-{{- $javaClassName =  "Unreal%sService" $IfaceName }}
-{{- $jniFullFuncPrefix =  "%s_%s" $jniPackagePrefix $jniClassName }}
+{{- $javaClassPath := ueJavaPath $ModuleNameRaw $ModuleNameRaw "unrealservice" }}
+{{- $javaClassName :=  printf "Unreal%sService" $IfaceName }}
+{{- $jniFullFuncPrefix := ueJniClassPathPrefix  $ModuleNameRaw $ModuleNameRaw "unrealservice" $javaClassName }}
+
+
+{{- define "convert_to_java_type"}}
+            {{- $localName := printf "jlocal_%s" (Camel .Name) }}
+            {{- $cppropName := ueVar "" .}}
+            {{- $javaClassConverter := printf "%sJavaConverter" ( Camel .Schema.Import ) }}
+		    {{- if (eq $javaClassConverter  "JavaConverter" )}}{{- $javaClassConverter = printf "%sJavaConverter" .Schema.Module.Name }}{{ end }}
+        {{- if .IsArray }}
+	        {{-  if and (ueIsStdSimpleType . ) (not (eq .KindType "enum")) }}
+            	auto len = {{$cppropName}}.size();
+		        {{ueJniToReturnType .}} {{$localName}} = Env->New{{ueToEnvNameType .}}Array(Env, len);
+			    if ({{$localName}}  == NULL){/*Log error, skip?*/};
+			    Env->Set{{ueToEnvNameType .}}ArrayRegion(Env, {{$localName}}, 0, len, {{$cppropName}});
+	        {{- else if (eq .KindType "string")}}
+		        auto {{$localName}} = FJavaHelper::ToJavaStringArray(Env,{{$cppropName}});
+	        {{- else if not (eq .KindType "extern")}}
+                {{ueJniToReturnType .}} {{$localName}} = {{$javaClassConverter}}::makeJava{{Camel .Type }}Array(Env, {{$cppropName}});
+	        {{- end }}
+        {{- else if (eq .KindType "string")}}
+		    jobject {{$localName}} = FJavaHelper::ToJavaString(Env, {{$cppropName}});
+        {{- else if ( or (not (ueIsStdSimpleType .)) (eq .KindType "enum" ) ) }}
+            {{ueJniToReturnType .}} {{$localName}} = {{$javaClassConverter}}::makeJava{{Camel .Type }}(Env, {{$cppropName}});
+        {{- end }}
+{{- end}}
 
 
 ////////////////////////////////
@@ -20,65 +43,41 @@
 ///////////////////////////////
 
 #include "{{$ModuleName}}/Generated/Jni/{{$Iface}}JniAdapter.h"
+#include "JavaServiceStarter.h"
 #include "Async/Future.h"
 #include "Async/Async.h"
 #include "Engine/Engine.h"
 #include "Misc/DateTime.h"
 #include "HAL/Platform.h"
+{{- $includes := getEmptyStringList}}
+{{- range .Module.Externs }}
+{{- $class := ueExtern . }}
+{{- if $class.Include }}
+{{- $includeName :=  printf "\"%s\"" $class.Include }}
+{{- $includes = (appendList $includes $includeName) }}
+{{- end }}
+{{- end }}
+{{- range .Module.Imports }}
+{{- $importModuleName := Camel .Name }}
+{{- $includeName :=  printf "\"%s/Generated/api/%s_data.h\"" $importModuleName $importModuleName }}
+{{- $includeName :=  printf "\"%s/Generated/Jni/%sFromJavaConverter.h\"" $importModuleName $importModuleName }}
+{{- $includes = (appendList $includes $includeName) }}
+{{- end }}
+{{- $includes = unique $includes }}
+{{ range $includes }}
+#include {{ .}}
+{{- end }}
+{{ if or (len .Module.Enums) (len .Module.Structs) -}}
+#include "{{ $ModuleName }}_data.generated.h"
+{{ end }}
 
-DEFINE_LOG_CATEGORY(Log{{$Iface}_JNI);
+DEFINE_LOG_CATEGORY(Log{{$Iface}}_JNI);
 
 
 
 namespace 
 {
-	{$Class}}* adapterHandle = nullptr;
-
-	
-    void startAndroidServer()
-    {
-#if PLATFORM_ANDROID && USE_ANDROID_JNI
-        JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-        
-		
-        static jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("{{$javaClassPath}}.{{$javaClassName}}Starter");
-        if (BridgeClass == nullptr)
-        {
-            UE_LOG(Log{{$Iface}_JNI, Warning, TEXT(" {{$javaClassPath}}.{{$javaClassName}}Starter:start; CLASS not found"));
-            return;
-        }
-        jmethodID StartMethod = Env->GetStaticMethodID(BridgeClass, "start", "(Landroid/content/Context;)V");
-        if (StartMethod == nullptr)
-        {
-            UE_LOG(Log{{$Iface}_JNI, Warning, TEXT("{{$javaClassPath}}.{{$javaClassName}}Starter:start; method not found"));
-            return;
-        }
-        jobject Activity = FJavaWrapper::GameActivityThis; // Unreal’s activity
-        FJavaWrapper::CallStaticVoidMethod(Env, BridgeClass, StartMethod, Activity);
-#endif
-    }
-
-    void stopAdnroidServer()
-    {
-#if PLATFORM_ANDROID && USE_ANDROID_JNI
-        JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-
-        static jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("{{$javaClassPath}}.{{$javaClassName}}Starter");
-        if (BridgeClass == nullptr)
-        {
-            UE_LOG(Log{{$Iface}_JNI, Warning, TEXT("{{$javaClassPath}}.{{$javaClassName}}Starter:stop; CLASS not found"));
-            return;
-        }
-        jmethodID StartMethod = Env->GetStaticMethodID(BridgeClass, "stop", "(Landroid/content/Context;)V");
-        if (StartMethod == nullptr)
-        {
-            UE_LOG(Log{{$Iface}_JNI, Warning, TEXT("{{$javaClassPath}}.{{$javaClassName}}Starter:stop; method not found"));
-            return;
-        }
-        jobject Activity = FJavaWrapper::GameActivityThis; // Unreal’s activity
-        FJavaWrapper::CallStaticVoidMethod(Env, BridgeClass, StartMethod, Activity);
-#endif
-    }
+	{$Class}}* g{$Class}}Handle = nullptr;
 }
 
 {{- if .Interface.Description }}
@@ -94,13 +93,13 @@ void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
 	adapterHandle = this;
-    m_javaUnrealServiceClass =  FAndroidApplication::FindJavaClassGlobalRef("{{$javaClassPath}}.{{$javaClassName}}");
-	startAndroidServer();
+    m_javaUnrealServiceClass =  FAndroidApplication::FindJavaClassGlobalRef("{{$javaClassPath}}/{{$javaClassName}}");
+	JavaServiceStarter::startAndroidServer("{{$javaClassPath}}/{{$javaClassName}}Starter");
 }
 
 void {{$Class}}::Deinitialize()
 {
-	stopAdnroidServer();
+	JavaServiceStarter::stopAdnroidServer({"{{$javaClassPath}}/{{$javaClassName}}Starter");
 	adapterHandle = nullptr;
     m_javaUnrealServiceClass = nullptr;
 	Super::Deinitialize();
@@ -168,7 +167,7 @@ void {{$Class}}::callJNIunrealServiceReady(bool isServiceReady)
     {
         if (JavaClass == nullptr)
         {
-            UE_LOG(Log{{$Iface}_JNI, Warning, TEXT("{{$javaClassPath}}.{{$javaClassName}}:unrealServiceReady(Z)V CLASS not found"));
+            UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:unrealServiceReady(Z)V CLASS not found"));
             return;
         }
         static const jmethodID MethodID = Env->GetStaticMethodID(JavaClass, "unrealServiceReady", "(Z)V");
@@ -179,7 +178,7 @@ void {{$Class}}::callJNIunrealServiceReady(bool isServiceReady)
         }
         else
         {
-            UE_LOG(Log{{$Iface}_JNI, Warning, TEXT("{{$javaClassPath}}.{{$javaClassName}}:unrealServiceReady(Z)V not found "));
+            UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:unrealServiceReady(Z)V not found "));
         }
     }
 #endif 
@@ -190,23 +189,48 @@ void {{$Class}}::callJNIunrealServiceReady(bool isServiceReady)
 void {{$Class}}::On{{Camel .Name}}({{ueParams "" .Params}})
 {
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    UE_LOG(Log{{$Iface}_JNI, Debug, TEXT("Notify java jni part {{$Class}}::{{javaOnSingalStyle .Name}} "));
+    UE_LOG(Log{{$Iface}}_JNI, Debug, TEXT("Notify java jni part {{$Class}}::{{javaOnSingalStyle .Name}} "));
     if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
     {
+       {{- $signatureParams:= ueJniJavaSignatureParams .Params}}
         if (m_javaUnrealServiceClass == nullptr)
         {
-            UE_LOG(Log{{$Iface}_JNI, Warning, TEXT("{{$javaClassPath}}.{{$javaClassName}}:{{javaOnSingalStyle .Name}} (II)V CLASS not found"));
+            UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:{{javaOnSingalStyle .Name}} ({{$signatureParams}})V CLASS not found"));
             return;
         }
-        //DOROTA TODO javaSignature!!!
-        static const jmethodID MethodID = Env->GetStaticMethodID(m_javaUnrealServiceClass, "{{javaOnSingalStyle .Name}}", "(II)V");
+        static const jmethodID MethodID = Env->GetStaticMethodID(m_javaUnrealServiceClass, "{{javaOnSingalStyle .Name}}", "({{$signatureParams}})V");
         if (MethodID != nullptr)
         {
-		    FJavaWrapper::CallStaticVoidMethod(Env, m_javaUnrealServiceClass, MethodID, {{ueVars "" .Params}});
+
+        {{- range .Params -}}
+            {{template "convert_to_java_type" .}}
+        {{- end }}
+
+		    FJavaWrapper::CallStaticVoidMethod(Env, m_javaUnrealServiceClass, MethodID, 
+        {{- range $idx, $p := .Params -}} {{- if $idx}}, {{ end -}}
+            {{- $javaPropName := Camel .Name}}
+            {{- $cppropName := ueVar "" .}}
+            {{- $localName := printf "jlocal_%s" $javaPropName }}
+            {{- if .IsArray }} {{$localName}}
+        {{- else if or (eq .KindType "enum")  (not ( ueIsStdSimpleType .)) }} {{$localName}}
+        {{- else }} {{$cppropName}}
+        {{- end -}}
+        {{- end -}});
+
+        {{- range $idx, $p := .Params -}} {{- if $idx}}, {{ end -}}
+            {{- $javaPropName := Camel .Name}}
+            {{- $localName := printf "jlocal_%s" $javaPropName }}
+        {{- if or .IsArray  (eq .KindType "enum" ) }}
+            Env->DeleteLocalRef({{$localName}});
+        {{- else if not ( or (eq .KindType "extern")  (ueIsStdSimpleType .)  ) }}
+         Env->DeleteLocalRef({{$localName}});
+        {{- end }}
+        {{- end }}
+
         }
         else
         {
-            UE_LOG(Log{{$Iface}_JNI, Warning, TEXT("{{$javaClassPath}}.{{$javaClassName}}:{{javaOnSingalStyle .Name}} (II)V not found"));
+            UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:{{javaOnSingalStyle .Name}} ({{$signatureParams}})V not found"));
         }
     }
 }
@@ -216,30 +240,38 @@ void {{$Class}}::On{{Camel .Name}}({{ueParams "" .Params}})
 
 {{- range .Interface.Properties }}
 
-void {{$Class}}::On{{Camel .Name}}Changed({{ueParam "In" .}})
+void {{$Class}}::On{{Camel .Name}}Changed({{ueParam "" .}})
 {
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    UE_LOG(Log{{$Iface}_JNI, Debug, TEXT("Notify java jni part {{$Class}}::On{{Camel .Name}} "));
+    UE_LOG(Log{{$Iface}}_JNI, Debug, TEXT("Notify java jni part {{$Class}}::On{{Camel .Name}} "));
+    {{- $signature := printf "(%s)V" (ueJniJavaSignatureParam .)}}
 if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
     {
         if (m_javaUnrealServiceClass == nullptr)
         {
-            UE_LOG(Log{{$Iface}_JNI, Warning, TEXT("{{$javaClassPath}}.{{$javaClassName}}::{{javaOnPropertyChangedStyle .Name}}(I)V CLASS not found"));
+            UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}::{{javaOnPropertyChangedStyle .Name}}{{$signature}} CLASS not found"));
             return;
         }
 
-        //TODO SIGNATURE (and data translation)
-        {{- if ( ueIsStdSimpleType . ) }} //or is not enum then no translation
-        {{- end }}
-        static const jmethodID MethodID = Env->GetStaticMethodID(m_javaUnrealServiceClass, "{{javaOnPropertyChangedStyle .Name}}", "(I)V");
+        
+         
+        static const jmethodID MethodID = Env->GetStaticMethodID(m_javaUnrealServiceClass, "{{javaOnPropertyChangedStyle .Name}}",{{$signature}});
         if (MethodID != nullptr)
         {
-            //If non simple type make conversion and then send.
-		    FJavaWrapper::CallStaticVoidMethod(Env, m_javaUnrealServiceClass, MethodID, ({{ueVar "In" .}});
+            {{- $cppropName := ueVar "" .}}
+            {{template "convert_to_java_type" .}}
+
+            {{- $javaLocalName := printf "jlocal_%s"  (Camel .Name) }}
+            {{- if or  .IsArray ( or (eq .KindType "enum") (not (ueIsStdSimpleType .))  ) }}
+            FJavaWrapper::CallStaticVoidMethod(Env, m_javaUnrealServiceClass, MethodID, ({{$javaLocalName}});
+            Env->DeleteLocalRef({{$javaLocalName}});
+            {{- else }} 
+            FJavaWrapper::CallStaticVoidMethod(Env, m_javaUnrealServiceClass, MethodID, ({{$cppropName}});
+            {{- end }}
         }
         else
         {
-            UE_LOG(Log{{$Iface}_JNI, Warning, TEXT("{{$javaClassPath}}.{{$javaClassName}}:{{javaOnPropertyChangedStyle .Name}} (I)V not found"));
+            UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:{{javaOnPropertyChangedStyle .Name}}{{$signature}} not found"));
         }
     }
 #endif
@@ -248,27 +280,92 @@ if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 {{- end }}
 
 
+
+
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 
 {{- range .Interface.Operations }}
-JNI_METHOD {{ ueJniToReturnType .Return}} {{$jniFullFuncPrefix}}_{{ jniNameOperation   .Name }}(JNIEnv* Env, jclass Clazz, {{ueJniJavaParams .Params }})
+JNI_METHOD {{ ueJniToReturnType .Return}} {{$jniFullFuncPrefix}}_{{ jniNameOperation   .Name }}(JNIEnv* Env, jclass Clazz, {{ueJniJavaParams "" .Params }})
 {
     if (adapterHandle == nullptr)
     {
-        UE_LOG(Log{{$Iface}_JNI, Warningg, TEXT("{{$jniPackagePrefix}}_{{ jniNameOperation   .Name }}: JNI SERVICE ADAPTER NOT FOUND "));
-        //TODO RETURN DEFAULT
-        return 0;
+        UE_LOG(Log{{$Iface}}_JNI, Warningg, TEXT("{{$jniFullFuncPrefix}}_{{ jniNameOperation   .Name }}: JNI SERVICE ADAPTER NOT FOUND "));
+        return {{ ueJniEmptyReturn .Return }};
     }
     service = adapterHandle->getBackendService();
     if (service != nullptr)
     {
-        // TODO DOROTA if not simple type make conversion PARAMS AND RETURN VALUE
-        return service->(/*TODO range params convert*/);
+        {{- range .Params -}}
+            {{- $javaPropName := Camel .Name}}
+            {{- $javaClassConverter := printf "%sJavaConverter" ( Camel .Schema.Import ) }}
+            {{- $local_value :=  printf "local_%s" (snake .Name) }}
+		    {{- if (eq $javaClassConverter  "JavaConverter" )}}{{- $javaClassConverter = printf "%sJavaConverter" $ModuleName}}{{ end }}
+        {{- if .IsArray }}
+            {{ueReturn "" .}} {{$local_value}} = {{ ueDefault "" . }};
+	        {{- if and  (ueIsStdSimpleType . )  (not (eq .KindType "enum")) }}
+                jobjectArray l_Java{{Camel .Name}}Array = (jobjectArray){{$javaPropName}};
+        	    jsize len{{snake .Name}} = Env->GetArrayLength(l_Java{{Camel .Name}}Array);
+	            {{$local_value}}.Reserve(len{{snake .Name}});
+		        Env->Get{{ueToEnvNameType .}}ArrayRegion({{$javaPropName}}, 0,  len{{snake .Name}}, {{$local_value}}.data());
+                Env->DeleteLocalRef(l_Java{{Camel .Name}}Array);
+	        {{- else if (eq .KindType "string")}}
+		        {{$local_value}} = FJavaHelper::ObjectArrayToFStringTArray(Env, {{$javaPropName}});
+	        {{- else if not (eq .KindType "extern")}}
+            	{{$javaClassConverter}}::fill{{Camel .Type }}Array(Env, {{$javaPropName}}, {{$local_value}});
+	        {{- end }}
+        {{-  else if eq .KindType "enum" }}
+			    {{ueReturn "" .}} {{$local_value}} = {{$javaClassConverter}}::get{{Camel .Type }}Value(Env, {{$javaPropName}});
+        {{- else if (eq .KindType "string")}}
+		        FString {{$local_value}} = FJavaHelper::FStringFromParam(Env, {{$javaPropName}});
+        {{- else if not (ueIsStdSimpleType . )}}
+                {{ueReturn "" .}} {{$local_value}} = {{ ueDefault "" . }};
+                {{$javaClassConverter}}::fill{{Camel .Type }}(Env, {{$javaPropName}}, {{$local_value}});
+        {{- end }}
+        {{- end }}
+
+        {{- $cppropName := "result"}}
+        {{ if not .Return.IsVoid }}auto {{$cppropName}} = {{ end -}}
+        service->{{Camel .Name}}(
+        {{- range $idx, $p := .Params -}}
+            {{- if $idx}}, {{ end -}}
+            {{- $local_value :=  printf "local_%s" (snake .Name) -}}
+            {{- if or  .IsArray ( or (eq .KindType "enum") (not (ueIsStdSimpleType .))  ) }} {{$local_value -}}
+            {{- else }} {{ ueVar "" .}}
+            {{- end -}}
+        {{- end -}}
+        );
+
+        {{- if .Return.IsVoid }}
+        return;
+        {{- else if or  .Return.IsArray ( or (eq .Return.KindType "enum") (not (ueIsStdSimpleType .Return))  ) }}
+            {{- $localName := "jresult" }}
+            {{- $javaClassConverter := printf "%sJavaConverter" ( Camel .Return.Schema.Import ) }}
+		    {{- if (eq $javaClassConverter  "JavaConverter" )}}{{- $javaClassConverter = printf "%sJavaConverter" .Return.Schema.Module.Name }}{{ end }}
+        {{- if .Return.IsArray }}
+	        {{-  if and (ueIsStdSimpleType .Return ) (not (eq .Return.KindType "enum")) }}
+            	auto len = {{$cppropName}}.size();
+		        {{ueJniToReturnType .Return}} {{$localName}} = Env->New{{ueToEnvNameType .Return}}Array(Env, len);
+			    if ({{$localName}}  == NULL){/*Log error, skip?*/};
+			    Env->Set{{ueToEnvNameType .Return}}ArrayRegion(Env, {{$localName}}, 0, len, {{$cppropName}});
+	        {{- else if (eq .Return.KindType "string")}}
+		        auto {{$localName}} = FJavaHelper::ToJavaStringArray(Env,{{$cppropName}});
+	        {{- else if not (eq .Return.KindType "extern")}}
+                {{ueJniToReturnType .Return}} {{$localName}} = {{$javaClassConverter}}::makeJava{{Camel .Return.Type }}Array(Env, {{$cppropName}});
+	        {{- end }}
+        {{- else if (eq .Return.KindType "string")}}
+		    jobject {{$localName}} = FJavaHelper::ToJavaString(Env, {{$cppropName}});
+        {{- else if ( or (not (ueIsStdSimpleType .Return)) (eq .Return.KindType "enum" ) ) }}
+            {{ueJniToReturnType .Return}} {{$localName}} = {{$javaClassConverter}}::makeJava{{Camel .Return.Type }}(Env, {{$cppropName}});
+        {{- end }}
+        return {{$localName}};
+        {{- else }} 
+        return {{$cppropName}};
+        {{- end }}
     }
     else
     {
-        UE_LOG(Log{{$Iface}_JNI, Warning, Warning, TEXT("service not valid"));
-        //TODO RETURN DEFAULT
+        UE_LOG(Log{{$Iface}}_JNI, Warning, Warning, TEXT("service not valid"));
+        return {{ ueJniEmptyReturn .Return }};
     }
 }
 {{- end}}
@@ -277,22 +374,51 @@ JNI_METHOD {{ ueJniToReturnType .Return}} {{$jniFullFuncPrefix}}_{{ jniNameOpera
 
 {{- range .Interface.Properties }}
 {{- if not .IsReadOnly }}
-JNI_METHOD void {{$jniFullFuncPrefix}_{{ jniNameSetProperty .Name }}(JNIEnv* Env, jclass Clazz, {{ueJniJavaParam . }})
+{{- $javaPropName := Camel .Name}}
+JNI_METHOD void {{$jniFullFuncPrefix}}_{{ jniNameSetProperty .Name }}(JNIEnv* Env, jclass Clazz, {{ueJniJavaParam "" . }})
 {
     if (adapterHandle == nullptr)
     {
-        UE_LOG(Log{{$Iface}_JNI, Warning, TEXT("{{$jniFullFuncPrefix}}_{{ jniNameSetProperty .Name }}: JNI SERVICE ADAPTER NOT FOUND "));
+        UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$jniFullFuncPrefix}}_{{ jniNameSetProperty .Name }}: JNI SERVICE ADAPTER NOT FOUND "));
         return;
     }
     service = adapterHandle->getBackendService();
     if (service != nullptr)
-    {
-        // TODO DOROTA if not simple type make conversion
-         service.Set{{Camel .Name}}(value);
+        {{- $javaClassConverter := printf "%sJavaConverter" ( Camel .Schema.Import ) }}
+		{{- if (eq $javaClassConverter  "JavaConverter" )}}{{- $javaClassConverter = printf "%sJavaConverter" $ModuleName}}{{ end }}
+        {{- if .IsArray }}
+            {{ueReturn "" .}} cpp_value = {{ ueDefault "" . }};
+	        {{- if and (ueIsStdSimpleType . ) (not (eq .KindType "enum")) }}
+                jobjectArray localArray = (jobjectArray){{$javaPropName}};
+        	    jsize len{{snake .Name}} = Env->GetArrayLength(localArray);
+	            cpp_value.reserve(len{{snake .Name}});
+		        Env->Get{{ueToEnvNameType .}}ArrayRegion({{$javaPropName}}, 0,  len{{snake .Name}}, cpp_value.data());
+                Env->DeleteLocalRef(localArray);
+	        {{- else if (eq .KindType "string")}}
+		        cpp_value = FJavaHelper::ObjectArrayToFStringTArray(Env, {{$javaPropName}});
+	        {{- else if not (eq .KindType "extern")}}
+            	{{$javaClassConverter}}::fill{{Camel .Type }}Array(Env, {{$javaPropName}}, cpp_value);
+	        {{- end }}
+            service->Set{{Camel .Name}}(cpp_value);
+        {{-  else if eq .KindType "enum" }}
+                {{- $otherModuleClassName := printf "%sJavaConverter" ( Camel .Schema.Import ) }}
+			    {{ueReturn "" .}} cpp_value = {{if not (eq $otherModuleClassName  "JavaConverter" )}}{{$otherModuleClassName}}::{{end -}}
+                get{{Camel .Type }}Value(Env, {{$javaPropName}});
+                service->Set{{Camel .Name}}(cpp_value);
+        {{- else if (eq .KindType "string")}}
+		        FString cpp_value = FJavaHelper::FStringFromParam(Env, {{$javaPropName}});
+                service->Set{{Camel .Name}}(cpp_value);
+        {{- else if not (ueIsStdSimpleType . )}}
+                {{ueReturn "" .}} cpp_value = {{ ueDefault "" . }};
+                {{$javaClassConverter}}::fill{{Camel .Type }}(Env, {{$javaPropName}},cpp_value);
+                service->Set{{Camel .Name}}(cpp_value);
+        {{- else }}
+            service->Set{{Camel .Name}}({{$javaPropName}});
+        {{- end}}
     }
     else
     {
-        UE_LOG(Log{{$Iface}_JNI, Warning, Warning, TEXT("service not valid, cannot set value for" + {{.Name}}));
+        UE_LOG(Log{{$Iface}}_JNI, Warning, Warning, TEXT("service not valid, cannot set value for" + {{.Name}}));
     }
 }
 {{- end}}
@@ -302,17 +428,25 @@ JNI_METHOD {{ueJniToReturnType .}} {{$jniFullFuncPrefix}}_{{ jniNameGetProperty 
     if (adapterHandle == nullptr)
     {
         UE_LOG(LogPocHelloIfUE_JNI, Warning, TEXT("{{$jniFullFuncPrefix}}_{{ jniNameGetProperty .Name }}: JNI SERVICE ADAPTER NOT FOUND "));
-        return 0;
+        return {{ ueJniEmptyReturn . }};
     }
     service = adapterHandle->getBackendService();
     if (service != nullptr)
     {
-        // TODO DOROTA if not simple type make conversion of return type
-        return service.Get{{Camel .Name}}();
+        {{- $cppropName := ueVar "" .}}
+        auto {{$cppropName}} = service->Get{{Camel .Name}}();
+        {{- if or  .IsArray ( or (eq .KindType "enum") (not (ueIsStdSimpleType .))  ) }}
+        {{template "convert_to_java_type" .}}
+        {{- $localName := printf "jlocal_%s" (Camel .Name) }}
+        return {{$localName}};
+        {{- else }} 
+        return {{$cppropName}};
+        {{- end }}
     }
     else
     {
-        // TODO DOROTA return default
+        UE_LOG(LogPocHelloIfUE_JNI, Warning, TEXT("service not available, try setting a backend service "));
+        return {{ ueJniEmptyReturn . }};
     }
     
 }

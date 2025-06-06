@@ -16,7 +16,7 @@
 #include <memory>
 #include "{{$Iface}}JniAdapter.generated.h"
 
-DECLARE_LOG_CATEGORY_EXTERN(Log{{$Iface}_JNI, Log, All);
+DECLARE_LOG_CATEGORY_EXTERN(Log{{$Iface}}_JNI, Log, All);
 
 
 /** @brief handles the adaption between the service implementation and the java android Service Backend

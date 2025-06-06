@@ -35,7 +35,7 @@
 	{{- range .Module.Interfaces -}}
 		<copyDir src="$S(PluginDir)/buildsystem" dst="$S(BuildDir)/gradle/buildsystem" />
 		<copyDir src="$S(PluginDir)/{{ueJavaPath $moduleName $moduleName "service" }}" dst="$S(BuildDir)/JavaLibs/{{ueGetModuleName $moduleName "service" }}" />
-		<copyDir src="$S(PluginDir)/{{ueJavaPath $moduleName $moduleName "common" }}" dst="$S(BuildDir)/JavaLibs/{{ueGetModuleName $moduleName "common" }}" />
+		<copyDir src="$S(PluginDir)/{{ueJavaPath $moduleName $moduleName "api" }}" dst="$S(BuildDir)/JavaLibs/{{ueGetModuleName $moduleName "api" }}" />
 		<copyDir src="$S(PluginDir)/{{ueJavaPath $moduleName $moduleName "unrealservice" }}" dst="$S(BuildDir)/src/" />
 	{{- end }}
 	</resourceCopies>
@@ -51,7 +51,7 @@
 	<settingsGradleAdditions>
 		<insert>
 			<![CDATA[
-      include ':common'
+      include ':api'
       include ':service'
     ]]>
 		</insert>
@@ -63,7 +63,7 @@
             <![CDATA[
                 dependencies {
 					{{- range .Module.Interfaces -}}
-                    implementation project(':{{ueGetModuleName $moduleName "common" }}')
+                    implementation project(':{{ueGetModuleName $moduleName "api" }}')
                     implementation project(':{{ueGetModuleName $moduleName "service" }}')
 					{{- end }}
                 }
@@ -74,13 +74,13 @@
 tasks.configureEach { task ->
 	if (task.name == 'assembleDebug') {
 		{{- range .Module.Interfaces -}}
-		task.dependsOn ':{{ueGetModuleName $moduleName "common" }}:assembleDebug'
+		task.dependsOn ':{{ueGetModuleName $moduleName "api" }}:assembleDebug'
 		task.dependsOn ':{{ueGetModuleName $moduleName "service" }}:assembleDebug'
 		{{- end}}
 	}
 	if (task.name == 'assembleRelease') {
 		{{- range .Module.Interfaces -}}
-		task.dependsOn ':{{ueGetModuleName $moduleName "common" }}:assembleRelease'
+		task.dependsOn ':{{ueGetModuleName $moduleName "api" }}:assembleRelease'
 		task.dependsOn ':{{ueGetModuleName $moduleName "service" }}:assembleRelease'
 		{{- end}}
 	}
