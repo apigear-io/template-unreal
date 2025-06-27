@@ -38,7 +38,7 @@ limitations under the License.
 #include {{ .}}
 {{- end }}
 {{ if or (len .Module.Enums) (len .Module.Structs) -}}
-#include "{{ $ModuleName }}_data.generated.h"
+#include "Poc/Generated/api/{{ $ModuleName }}_data.h"
 {{ end }}
 
 #if PLATFORM_ANDROID
@@ -58,30 +58,30 @@ limitations under the License.
 {{$className := printf "%sJavaConverter" $ModuleName}}
 
 class  {{ $API_MACRO }} {{$className }}{
-
+public:
 {{- range .Module.Structs }}
 
 {{- $structType := printf "F%s%s" $ModuleName .Name }}
 {{- $structName := printf "out_%s" (snake .Name)}}
 
-void fill{{Camel .Name }}(JNIEnv* env, jobject input, {{$structType}}& {{$structName}})
+	static void fill{{Camel .Name }}(JNIEnv* env, jobject input, {{$structType}}& {{$structName}});
 
-void fill{{Camel .Name }}Array(JNIEnv* env, jobjectArray input, TArray<{{$structType}}>& out_array);
+	static void fill{{Camel .Name }}Array(JNIEnv* env, jobjectArray input, TArray<{{$structType}}>& out_array);
 
 {{- $in_cppStructName := printf "out_%s" (snake .Name)}}
-jobject makeJava{{Camel .Name }}(JNIEnv* env, {{$structType}}& {{$in_cppStructName}})
-jobjectArray makeJava{{Camel .Name }}Array(JNIEnv* env, TArray<{{$structType}}>& cppArray);
+	static jobject makeJava{{Camel .Name }}(JNIEnv* env, const {{$structType}}& {{$in_cppStructName}});
+	static jobjectArray makeJava{{Camel .Name }}Array(JNIEnv* env, const TArray<{{$structType}}>& cppArray);
 {{- end }}
 
 {{- range .Module.Enums }}
 {{- $cpp_class := printf "E%s%s" $ModuleName .Name }}
 
-void fill{{Camel .Name }}Array(JNIEnv* env, jobjectArray input, TArray<{{$cpp_class}}>& out_array)
-{{$cpp_class}} get{{Camel .Name }}Value(JNIEnv* env, jobject input)
-jobjectArray makeJava{{Camel .Name }}Array(JNIEnv* env, TArray<{{$cpp_class}}>& cppArray);
-jobject makeJava{{Camel .Name }}(JNIEnv* env,  int value);
+	static void fill{{Camel .Name }}Array(JNIEnv* env, jobjectArray input, TArray<{{$cpp_class}}>& out_array)
+	static {{$cpp_class}} get{{Camel .Name }}Value(JNIEnv* env, jobject input)
+	static jobjectArray makeJava{{Camel .Name }}Array(JNIEnv* env, const TArray<{{$cpp_class}}>& cppArray);
+	static jobject makeJava{{Camel .Name }}(JNIEnv* env,  int value);
 {{- end }}
 
 
-}
+};
 #endif

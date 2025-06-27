@@ -5,9 +5,9 @@
 using UnrealBuildTool;
 using System.IO;
 
-public class {{$ModuleName}}OLink : ModuleRules
+public class {{$ModuleName}}Jni : ModuleRules
 {
-	public {{$ModuleName}}OLink(ReadOnlyTargetRules Target) : base(Target)
+	public {{$ModuleName}}Jni(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
 		#if UE_5_2_OR_LATER 
@@ -40,9 +40,6 @@ public class {{$ModuleName}}OLink : ModuleRules
 				"{{Camel .Module.Name}}API",
 {{- end }}
 				"{{Camel .Module.Name}}Core",
-{{- if .Features.apigear }}
-				"ApiGear",
-{{- end }}
 				"Projects",
 				"Engine",
 				"JsonUtilities"
@@ -67,10 +64,6 @@ public class {{$ModuleName}}OLink : ModuleRules
 {{- end }}
 {{- range $idx, $elem := .Module.Imports }}
 				"{{Camel .Name}}API",
-{{- end }}
-{{- if .Features.olink }}
-				"ApiGearOLink",
-				"OLinkProtocolLibrary"
 {{- end }}
 			}
 			);

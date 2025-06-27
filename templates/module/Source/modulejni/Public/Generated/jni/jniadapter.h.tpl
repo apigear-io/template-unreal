@@ -14,6 +14,18 @@
 #include "{{$ModuleName}}/Generated/api/{{$Iface}}Interface.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include <memory>
+
+#if PLATFORM_ANDROID
+
+#include "Engine/Engine.h"
+#include "Android/AndroidJNI.h"
+#include "Android/AndroidApplication.h"
+
+#if USE_ANDROID_JNI
+#include <jni.h>
+#endif
+#endif
+
 #include "{{$Iface}}JniAdapter.generated.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(Log{{$Iface}}_JNI, Log, All);
@@ -32,6 +44,7 @@ public:
 
 	// subsystem
 	void Initialize(FSubsystemCollectionBase& Collection) override;
+	void Deinitialize() override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Poc|HelloIf")
     void setBackendService(TScriptInterface<IPocHelloIfInterface> InService);
@@ -44,7 +57,11 @@ private:
     void callJNIunrealServiceReady(bool isServiceReady);
 
 	// helper member;
+#if PLATFORM_ANDROID
+#if USE_ANDROID_JNI
 	jclass m_javaUnrealServiceClass;
+#endif
+#endif
 
 	// signals
 {{- range $i, $e := .Interface.Signals }}

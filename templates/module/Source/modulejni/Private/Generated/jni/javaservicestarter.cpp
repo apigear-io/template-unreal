@@ -11,22 +11,22 @@
 #endif
 
 
-void JavaServiceStarter::startAndroidServer(std::string fullJavaClassName)
+void ApiGear::JavaServiceStarter::startAndroidServer(std::string fullJavaClassName)
 {
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
     JNIEnv* Env = FAndroidApplication::GetJavaEnv();
         
 		
-    static jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef(fullJavaClassName);
+    static jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef(fullJavaClassName.c_str());
     if (BridgeClass == nullptr)
     {
-        UE_LOG(Log{{$Iface}_JNI, Warning, TEXT(fullJavaClassName+ ":start; CLASS not found"));
+		UE_LOG(LogTemp, Warning, TEXT("JavaServiceStarter:start; CLASS not found"));
         return;
     }
     jmethodID StartMethod = Env->GetStaticMethodID(BridgeClass, "start", "(Landroid/content/Context;)V");
     if (StartMethod == nullptr)
     {
-        UE_LOG(Log{{$Iface}_JNI, Warning, TEXT(fullJavaClassName+ ":start; method not found"));
+		UE_LOG(LogTemp, Warning, TEXT( "JavaServiceStarter:start; method not found"));
         return;
     }
     jobject Activity = FJavaWrapper::GameActivityThis;
@@ -34,21 +34,21 @@ void JavaServiceStarter::startAndroidServer(std::string fullJavaClassName)
 #endif
 }
 
-void JavaServiceStarter::stopAdnroidServer(std::string fullJavaClassName)
+void ApiGear::JavaServiceStarter::stopAdnroidServer(std::string fullJavaClassName)
 {
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
     JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 
-    static jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef(fullJavaClassName);
+    static jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef(fullJavaClassName.c_str());
     if (BridgeClass == nullptr)
     {
-        UE_LOG(Log{{$Iface}_JNI, Warning, TEXT(fullJavaClassName+ ":stop; CLASS not found"));
+		UE_LOG(LogTemp, Warning, TEXT( "JavaServiceStarter:stop; CLASS not found"));
         return;
     }
     jmethodID StartMethod = Env->GetStaticMethodID(BridgeClass, "stop", "(Landroid/content/Context;)V");
     if (StartMethod == nullptr)
     {
-        UE_LOG(Log{{$Iface}_JNI, Warning, TEXT(fullJavaClassName+ ":stop; method not found"));
+		UE_LOG(LogTemp, Warning, TEXT("JavaServiceStarter:stop; method not found"));
         return;
     }
     jobject Activity = FJavaWrapper::GameActivityThis; // Unreal’s activity

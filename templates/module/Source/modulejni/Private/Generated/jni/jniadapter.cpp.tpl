@@ -8,19 +8,20 @@
 {{- $Class := printf "U%sJniAdapter" $DisplayName}}
 {{- $Iface := printf "%s%s" $ModuleName $IfaceName }}
 {{- $ifaceId := printf "%s.%s" .Module.Name .Interface.Name}}
-{{- $javaClassPath := ueJavaPath $ModuleNameRaw $ModuleNameRaw "unrealservice" }}
+{{- $unreal_service_name:= printf "%sservice" $ModuleNameRaw }}
+{{- $javaClassPath := ueJavaPath $ModuleNameRaw $unreal_service_name "" }}
 {{- $javaClassName :=  printf "Unreal%sService" $IfaceName }}
-{{- $jniFullFuncPrefix := ueJniClassPathPrefix  $ModuleNameRaw $ModuleNameRaw "unrealservice" $javaClassName }}
+{{- $jniFullFuncPrefix := ueJniClassPathPrefix  $ModuleNameRaw $unreal_service_name "" $javaClassName }}
 
 
 {{- define "convert_to_java_type"}}
             {{- $localName := printf "jlocal_%s" (Camel .Name) }}
             {{- $cppropName := ueVar "" .}}
             {{- $javaClassConverter := printf "%sJavaConverter" ( Camel .Schema.Import ) }}
-		    {{- if (eq $javaClassConverter  "JavaConverter" )}}{{- $javaClassConverter = printf "%sJavaConverter" .Schema.Module.Name }}{{ end }}
+		    {{- if (eq $javaClassConverter  "JavaConverter" )}}{{- $javaClassConverter = printf "%sJavaConverter" (Camel .Schema.Module.Name) }}{{ end }}
         {{- if .IsArray }}
 	        {{-  if and (ueIsStdSimpleType . ) (not (eq .KindType "enum")) }}
-            	auto len = {{$cppropName}}.size();
+            	auto len = {{$cppropName}}.Num();
 		        {{ueJniToReturnType .}} {{$localName}} = Env->New{{ueToEnvNameType .}}Array(Env, len);
 			    if ({{$localName}}  == NULL){/*Log error, skip?*/};
 			    Env->Set{{ueToEnvNameType .}}ArrayRegion(Env, {{$localName}}, 0, len, {{$cppropName}});
@@ -43,6 +44,7 @@
 ///////////////////////////////
 
 #include "{{$ModuleName}}/Generated/Jni/{{$Iface}}JniAdapter.h"
+#include "{{$ModuleName}}/Generated/Jni/PocFromJavaConverter.h"
 #include "JavaServiceStarter.h"
 #include "Async/Future.h"
 #include "Async/Async.h"
@@ -68,8 +70,21 @@
 #include {{ .}}
 {{- end }}
 {{ if or (len .Module.Enums) (len .Module.Structs) -}}
-#include "{{ $ModuleName }}_data.generated.h"
+#include "{{$ModuleName}}/Generated/api/{{ $ModuleName }}_data.h"
 {{ end }}
+
+
+#if PLATFORM_ANDROID
+
+#include "Engine/Engine.h"
+#include "Android/AndroidJNI.h"
+#include "Android/AndroidApplication.h"
+
+#if USE_ANDROID_JNI
+#include <jni.h>
+#endif
+#endif
+
 
 DEFINE_LOG_CATEGORY(Log{{$Iface}}_JNI);
 
@@ -77,7 +92,7 @@ DEFINE_LOG_CATEGORY(Log{{$Iface}}_JNI);
 
 namespace 
 {
-	{$Class}}* g{$Class}}Handle = nullptr;
+	{{$Class}}* g{{$Class}}Handle = nullptr;
 }
 
 {{- if .Interface.Description }}
@@ -92,16 +107,24 @@ namespace
 void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-	adapterHandle = this;
+	g{{$Class}}Handle = this;
+#if PLATFORM_ANDROID
+#if USE_ANDROID_JNI
     m_javaUnrealServiceClass =  FAndroidApplication::FindJavaClassGlobalRef("{{$javaClassPath}}/{{$javaClassName}}");
-	JavaServiceStarter::startAndroidServer("{{$javaClassPath}}/{{$javaClassName}}Starter");
+#endif
+#endif
+	ApiGear::JavaServiceStarter::startAndroidServer("{{$javaClassPath}}/{{$javaClassName}}Starter");
 }
 
 void {{$Class}}::Deinitialize()
 {
-	JavaServiceStarter::stopAdnroidServer({"{{$javaClassPath}}/{{$javaClassName}}Starter");
-	adapterHandle = nullptr;
+	ApiGear::JavaServiceStarter::stopAdnroidServer("{{$javaClassPath}}/{{$javaClassName}}Starter");
+	g{{$Class}}Handle = nullptr;
+#if PLATFORM_ANDROID
+#if USE_ANDROID_JNI
     m_javaUnrealServiceClass = nullptr;
+#endif
+#endif
 	Super::Deinitialize();
 }
 
@@ -148,8 +171,6 @@ void {{$Class}}::setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{$If
 	On{{Camel .Name}}SignalHandle = BackendSignals->On{{Camel .Name}}Signal.AddUObject(this, &{{$Class}}::On{{Camel .Name}});
 {{- end }}
 
-	// update olink source with new backend
-	Source->setBackendService(InService);
 	callJNIunrealServiceReady(true);
 }
 
@@ -165,16 +186,16 @@ void {{$Class}}::callJNIunrealServiceReady(bool isServiceReady)
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
     if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
     {
-        if (JavaClass == nullptr)
+        if (m_javaUnrealServiceClass == nullptr)
         {
             UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:unrealServiceReady(Z)V CLASS not found"));
             return;
         }
-        static const jmethodID MethodID = Env->GetStaticMethodID(JavaClass, "unrealServiceReady", "(Z)V");
+        static const jmethodID MethodID = Env->GetStaticMethodID(m_javaUnrealServiceClass, "unrealServiceReady", "(Z)V");
 
         if (MethodID != nullptr)
         {
-		    FJavaWrapper::CallStaticVoidMethod(Env, JavaClass, MethodID, isServiceReady);
+		    FJavaWrapper::CallStaticVoidMethod(Env, m_javaUnrealServiceClass, MethodID, isServiceReady);
         }
         else
         {
@@ -189,7 +210,7 @@ void {{$Class}}::callJNIunrealServiceReady(bool isServiceReady)
 void {{$Class}}::On{{Camel .Name}}({{ueParams "" .Params}})
 {
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    UE_LOG(Log{{$Iface}}_JNI, Debug, TEXT("Notify java jni part {{$Class}}::{{javaOnSingalStyle .Name}} "));
+    UE_LOG(Log{{$Iface}}_JNI, Verbose, TEXT("Notify java jni part {{$Class}}::{{javaOnSingalStyle .Name}} "));
     if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
     {
        {{- $signatureParams:= ueJniJavaSignatureParams .Params}}
@@ -217,7 +238,7 @@ void {{$Class}}::On{{Camel .Name}}({{ueParams "" .Params}})
         {{- end -}}
         {{- end -}});
 
-        {{- range $idx, $p := .Params -}} {{- if $idx}}, {{ end -}}
+        {{- range $idx, $p := .Params -}}
             {{- $javaPropName := Camel .Name}}
             {{- $localName := printf "jlocal_%s" $javaPropName }}
         {{- if or .IsArray  (eq .KindType "enum" ) }}
@@ -233,8 +254,8 @@ void {{$Class}}::On{{Camel .Name}}({{ueParams "" .Params}})
             UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:{{javaOnSingalStyle .Name}} ({{$signatureParams}})V not found"));
         }
     }
-}
 #endif
+}
 {{- end }}
 
 
@@ -243,7 +264,7 @@ void {{$Class}}::On{{Camel .Name}}({{ueParams "" .Params}})
 void {{$Class}}::On{{Camel .Name}}Changed({{ueParam "" .}})
 {
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    UE_LOG(Log{{$Iface}}_JNI, Debug, TEXT("Notify java jni part {{$Class}}::On{{Camel .Name}} "));
+    UE_LOG(Log{{$Iface}}_JNI, Verbose, TEXT("Notify java jni part {{$Class}}::On{{Camel .Name}} "));
     {{- $signature := printf "(%s)V" (ueJniJavaSignatureParam .)}}
 if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
     {
@@ -255,7 +276,7 @@ if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 
         
          
-        static const jmethodID MethodID = Env->GetStaticMethodID(m_javaUnrealServiceClass, "{{javaOnPropertyChangedStyle .Name}}",{{$signature}});
+        static const jmethodID MethodID = Env->GetStaticMethodID(m_javaUnrealServiceClass, "{{javaOnPropertyChangedStyle .Name}}","{{$signature}}");
         if (MethodID != nullptr)
         {
             {{- $cppropName := ueVar "" .}}
@@ -263,10 +284,10 @@ if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 
             {{- $javaLocalName := printf "jlocal_%s"  (Camel .Name) }}
             {{- if or  .IsArray ( or (eq .KindType "enum") (not (ueIsStdSimpleType .))  ) }}
-            FJavaWrapper::CallStaticVoidMethod(Env, m_javaUnrealServiceClass, MethodID, ({{$javaLocalName}});
+            FJavaWrapper::CallStaticVoidMethod(Env, m_javaUnrealServiceClass, MethodID, {{$javaLocalName}});
             Env->DeleteLocalRef({{$javaLocalName}});
             {{- else }} 
-            FJavaWrapper::CallStaticVoidMethod(Env, m_javaUnrealServiceClass, MethodID, ({{$cppropName}});
+            FJavaWrapper::CallStaticVoidMethod(Env, m_javaUnrealServiceClass, MethodID, {{$cppropName}});
             {{- end }}
         }
         else
@@ -275,7 +296,6 @@ if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
         }
     }
 #endif
-	Source->On{{Camel .Name}}Changed({{ueVar "In" .}});
 }
 {{- end }}
 
@@ -287,12 +307,12 @@ if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 {{- range .Interface.Operations }}
 JNI_METHOD {{ ueJniToReturnType .Return}} {{$jniFullFuncPrefix}}_{{ jniNameOperation   .Name }}(JNIEnv* Env, jclass Clazz, {{ueJniJavaParams "" .Params }})
 {
-    if (adapterHandle == nullptr)
+    if (g{{$Class}}Handle == nullptr)
     {
-        UE_LOG(Log{{$Iface}}_JNI, Warningg, TEXT("{{$jniFullFuncPrefix}}_{{ jniNameOperation   .Name }}: JNI SERVICE ADAPTER NOT FOUND "));
+        UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$jniFullFuncPrefix}}_{{ jniNameOperation   .Name }}: JNI SERVICE ADAPTER NOT FOUND "));
         return {{ ueJniEmptyReturn .Return }};
     }
-    service = adapterHandle->getBackendService();
+    auto service = g{{$Class}}Handle->getBackendService();
     if (service != nullptr)
     {
         {{- range .Params -}}
@@ -340,10 +360,10 @@ JNI_METHOD {{ ueJniToReturnType .Return}} {{$jniFullFuncPrefix}}_{{ jniNameOpera
         {{- else if or  .Return.IsArray ( or (eq .Return.KindType "enum") (not (ueIsStdSimpleType .Return))  ) }}
             {{- $localName := "jresult" }}
             {{- $javaClassConverter := printf "%sJavaConverter" ( Camel .Return.Schema.Import ) }}
-		    {{- if (eq $javaClassConverter  "JavaConverter" )}}{{- $javaClassConverter = printf "%sJavaConverter" .Return.Schema.Module.Name }}{{ end }}
+		    {{- if (eq $javaClassConverter  "JavaConverter" )}}{{- $javaClassConverter = printf "%sJavaConverter" $ModuleName }}{{ end }}
         {{- if .Return.IsArray }}
 	        {{-  if and (ueIsStdSimpleType .Return ) (not (eq .Return.KindType "enum")) }}
-            	auto len = {{$cppropName}}.size();
+            	auto len = {{$cppropName}}.Num();
 		        {{ueJniToReturnType .Return}} {{$localName}} = Env->New{{ueToEnvNameType .Return}}Array(Env, len);
 			    if ({{$localName}}  == NULL){/*Log error, skip?*/};
 			    Env->Set{{ueToEnvNameType .Return}}ArrayRegion(Env, {{$localName}}, 0, len, {{$cppropName}});
@@ -364,7 +384,7 @@ JNI_METHOD {{ ueJniToReturnType .Return}} {{$jniFullFuncPrefix}}_{{ jniNameOpera
     }
     else
     {
-        UE_LOG(Log{{$Iface}}_JNI, Warning, Warning, TEXT("service not valid"));
+        UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("service not valid"));
         return {{ ueJniEmptyReturn .Return }};
     }
 }
@@ -377,13 +397,14 @@ JNI_METHOD {{ ueJniToReturnType .Return}} {{$jniFullFuncPrefix}}_{{ jniNameOpera
 {{- $javaPropName := Camel .Name}}
 JNI_METHOD void {{$jniFullFuncPrefix}}_{{ jniNameSetProperty .Name }}(JNIEnv* Env, jclass Clazz, {{ueJniJavaParam "" . }})
 {
-    if (adapterHandle == nullptr)
+    if (g{{$Class}}Handle == nullptr)
     {
         UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$jniFullFuncPrefix}}_{{ jniNameSetProperty .Name }}: JNI SERVICE ADAPTER NOT FOUND "));
         return;
     }
-    service = adapterHandle->getBackendService();
+    auto service = g{{$Class}}Handle->getBackendService();
     if (service != nullptr)
+    {
         {{- $javaClassConverter := printf "%sJavaConverter" ( Camel .Schema.Import ) }}
 		{{- if (eq $javaClassConverter  "JavaConverter" )}}{{- $javaClassConverter = printf "%sJavaConverter" $ModuleName}}{{ end }}
         {{- if .IsArray }}
@@ -418,19 +439,19 @@ JNI_METHOD void {{$jniFullFuncPrefix}}_{{ jniNameSetProperty .Name }}(JNIEnv* En
     }
     else
     {
-        UE_LOG(Log{{$Iface}}_JNI, Warning, Warning, TEXT("service not valid, cannot set value for" + {{.Name}}));
+        UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("service not valid, cannot set value for {{.Name}}"));
     }
 }
 {{- end}}
 
 JNI_METHOD {{ueJniToReturnType .}} {{$jniFullFuncPrefix}}_{{ jniNameGetProperty .Name }}(JNIEnv* Env, jclass Clazz)
 {
-    if (adapterHandle == nullptr)
+    if (g{{$Class}}Handle == nullptr)
     {
-        UE_LOG(LogPocHelloIfUE_JNI, Warning, TEXT("{{$jniFullFuncPrefix}}_{{ jniNameGetProperty .Name }}: JNI SERVICE ADAPTER NOT FOUND "));
+        UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$jniFullFuncPrefix}}_{{ jniNameGetProperty .Name }}: JNI SERVICE ADAPTER NOT FOUND "));
         return {{ ueJniEmptyReturn . }};
     }
-    service = adapterHandle->getBackendService();
+    auto service = g{{$Class}}Handle->getBackendService();
     if (service != nullptr)
     {
         {{- $cppropName := ueVar "" .}}
@@ -445,7 +466,7 @@ JNI_METHOD {{ueJniToReturnType .}} {{$jniFullFuncPrefix}}_{{ jniNameGetProperty 
     }
     else
     {
-        UE_LOG(LogPocHelloIfUE_JNI, Warning, TEXT("service not available, try setting a backend service "));
+        UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("service not available, try setting a backend service "));
         return {{ ueJniEmptyReturn . }};
     }
     

@@ -13,7 +13,7 @@
 		{{- $moduleName := .Module.Name }}
 		{{- range .Module.Interfaces }}
 		<addElements tag="queries">
-				<package android:name="{{ueJavaPckgName $moduleName $moduleName "service" }}" />
+				<package android:name="{{ueJavaPckgName $moduleName "android" "service" }}" />
 		</addElements>
 		{{- end }}
 		
@@ -21,7 +21,7 @@
 		
 		{{- range .Module.Interfaces -}}
 		<service
-			android:name="{{ueJavaPckgName $moduleName $moduleName "service" }}.{{Camel .Name}}ServiceAdapter"
+			android:name="{{ueJavaPckgName $moduleName "android" "service" }}.{{Camel .Name}}ServiceAdapter"
 			android:enabled="true"
 			android:exported="true">
 		</service>
@@ -34,9 +34,10 @@
 	<resourceCopies>
 	{{- range .Module.Interfaces -}}
 		<copyDir src="$S(PluginDir)/buildsystem" dst="$S(BuildDir)/gradle/buildsystem" />
-		<copyDir src="$S(PluginDir)/{{ueJavaPath $moduleName $moduleName "service" }}" dst="$S(BuildDir)/JavaLibs/{{ueGetModuleName $moduleName "service" }}" />
-		<copyDir src="$S(PluginDir)/{{ueJavaPath $moduleName $moduleName "api" }}" dst="$S(BuildDir)/JavaLibs/{{ueGetModuleName $moduleName "api" }}" />
-		<copyDir src="$S(PluginDir)/{{ueJavaPath $moduleName $moduleName "unrealservice" }}" dst="$S(BuildDir)/src/" />
+		<copyDir src="$S(PluginDir)/{{ueJavaPath $moduleName "android" "service" }}" dst="$S(BuildDir)/JavaLibs/{{ueJavaPath $moduleName "android" "service" }}" />
+		<copyDir src="$S(PluginDir)/{{ueJavaPath $moduleName "api" "" }}" dst="$S(BuildDir)/JavaLibs/{{ueJavaPath $moduleName "api" "" }}" />
+		{{- $unreal_service_name:= printf "%sservice" $moduleName }}
+		<copyDir src="$S(PluginDir)/{{ueJavaPath $moduleName "unreal" $unreal_service_name }}" dst="$S(BuildDir)/src/$unreal_service_name" />
 	{{- end }}
 	</resourceCopies>
 
@@ -52,7 +53,7 @@
 		<insert>
 			<![CDATA[
       include ':api'
-      include ':service'
+      include ':android:service'
     ]]>
 		</insert>
 	
@@ -62,9 +63,9 @@
 		<insert>
             <![CDATA[
                 dependencies {
-					{{- range .Module.Interfaces -}}
-                    implementation project(':{{ueGetModuleName $moduleName "api" }}')
-                    implementation project(':{{ueGetModuleName $moduleName "service" }}')
+					{{- range .Module.Interfaces }}
+                    implementation project(':api')
+                    implementation project(':android:service')
 					{{- end }}
                 }
             ]]>
@@ -73,15 +74,15 @@
 			<![CDATA[
 tasks.configureEach { task ->
 	if (task.name == 'assembleDebug') {
-		{{- range .Module.Interfaces -}}
-		task.dependsOn ':{{ueGetModuleName $moduleName "api" }}:assembleDebug'
-		task.dependsOn ':{{ueGetModuleName $moduleName "service" }}:assembleDebug'
+		{{- range .Module.Interfaces }}
+		task.dependsOn ':api:assembleDebug'
+		task.dependsOn ':android:service:assembleDebug'
 		{{- end}}
 	}
 	if (task.name == 'assembleRelease') {
-		{{- range .Module.Interfaces -}}
-		task.dependsOn ':{{ueGetModuleName $moduleName "api" }}:assembleRelease'
-		task.dependsOn ':{{ueGetModuleName $moduleName "service" }}:assembleRelease'
+		{{- range .Module.Interfaces }}
+		task.dependsOn ':api:assembleRelease'
+		task.dependsOn ':android:service:assembleRelease'
 		{{- end}}
 	}
 }
@@ -94,10 +95,11 @@ tasks.configureEach { task ->
 	<proguardAdditions>
 		<insert>
 		{{- range .Module.Interfaces -}}
-			-keep class {{ueJavaPckgName $moduleName $moduleName "unrealservice" }}.Unreal{{Camel .Name}}Service {
+			{{- $unreal_service_name:= printf "%sservice" $moduleName }}
+			-keep class {{ueJavaPckgName $moduleName "unreal" $unreal_service_name }}.Unreal{{Camel .Name}}Service {
 			public *;
 			}
-			-keep class {{ueJavaPckgName $moduleName $moduleName "unrealservice" }}.Unreal{{Camel .Name}}ServiceStarter {
+			-keep class {{ueJavaPckgName $moduleName "unreal" $unreal_service_name}}.Unreal{{Camel .Name}}ServiceStarter {
 			public *;
 			}
 		{{- end }}

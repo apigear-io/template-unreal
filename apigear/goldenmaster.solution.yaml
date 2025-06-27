@@ -13,7 +13,6 @@ targets:
       - test-apis/testbed.struct.module.yaml
       - test-apis/testbed.names.module.yaml
       - test-apis/custom_types.module.yaml
-      - test-apis/extern_types.module.yaml
       - test-apis/counter.module.yaml
     output: ../test
     template: ..
