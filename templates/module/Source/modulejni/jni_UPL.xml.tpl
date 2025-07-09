@@ -13,7 +13,8 @@
 		{{- $moduleName := .Module.Name }}
 		{{- range .Module.Interfaces }}
 		<addElements tag="queries">
-				<package android:name="{{ueJavaPckgName $moduleName "android" "service" }}" />
+		{{- $service_package_name := printf "%s_android_service" (camel $moduleName) }} 
+				<package android:name="{{ueJavaPckgName $moduleName $service_package_name "" }}" />
 		</addElements>
 		{{- end }}
 		
@@ -21,7 +22,8 @@
 		
 		{{- range .Module.Interfaces -}}
 		<service
-			android:name="{{ueJavaPckgName $moduleName "android" "service" }}.{{Camel .Name}}ServiceAdapter"
+			{{- $service_package_name := printf "%s_android_service" (camel $moduleName) }} 
+			android:name="{{ueJavaPckgName $moduleName $service_package_name "" }}.{{Camel .Name}}ServiceAdapter"
 			android:enabled="true"
 			android:exported="true">
 		</service>
@@ -34,10 +36,16 @@
 	<resourceCopies>
 	{{- range .Module.Interfaces -}}
 		<copyDir src="$S(PluginDir)/buildsystem" dst="$S(BuildDir)/gradle/buildsystem" />
-		<copyDir src="$S(PluginDir)/{{ueJavaPath $moduleName "android" "service" }}" dst="$S(BuildDir)/JavaLibs/{{ueJavaPath $moduleName "android" "service" }}" />
-		<copyDir src="$S(PluginDir)/{{ueJavaPath $moduleName "api" "" }}" dst="$S(BuildDir)/JavaLibs/{{ueJavaPath $moduleName "api" "" }}" />
-		{{- $unreal_service_name:= printf "%sservice" $moduleName }}
-		<copyDir src="$S(PluginDir)/{{ueJavaPath $moduleName "unreal" $unreal_service_name }}" dst="$S(BuildDir)/src/$unreal_service_name" />
+		{{- $service_package_name := printf "%s_android_service" (camel $moduleName) }}
+		{{- $impl_package_name := printf "%s_impl" (camel $moduleName) }}
+		{{- $messenger_package_name := printf "%s_android_messenger" (camel $moduleName) }}
+		{{- $api_package_name := printf "%s_api" (camel $moduleName) }}
+		<copyDir src="$S(PluginDir)/android/{{camel $moduleName}}/{{$service_package_name}}" dst="$S(BuildDir)/JavaLibs/{{$service_package_name}}" />
+		<copyDir src="$S(PluginDir)/android/{{camel $moduleName}}/{{$api_package_name}}" dst="$S(BuildDir)/JavaLibs/{{$api_package_name}}" />
+		<copyDir src="$S(PluginDir)/android/{{camel $moduleName}}/{{$messenger_package_name}}" dst="$S(BuildDir)/JavaLibs/{{$messenger_package_name}}" />
+		<copyDir src="$S(PluginDir)/android/{{camel $moduleName}}/{{$impl_package_name}}" dst="$S(BuildDir)/JavaLibs/{{$impl_package_name}}" />
+		{{- $unreal_service_name:= printf "unreal_%sservice" $moduleName }}
+		<copyDir src="$S(PluginDir)/android/{{camel $moduleName}}/{{$unreal_service_name}}" dst="$S(BuildDir)/src/{{$unreal_service_name}}" />
 	{{- end }}
 	</resourceCopies>
 
@@ -52,8 +60,10 @@
 	<settingsGradleAdditions>
 		<insert>
 			<![CDATA[
-      include ':api'
-      include ':android:service'
+      include ':{{camel $moduleName}}_api'
+      include ':{{camel $moduleName}}_impl'
+      include ':{{camel $moduleName}}_android_service'
+      include ':{{camel $moduleName}}_android_messenger'
     ]]>
 		</insert>
 	
@@ -63,10 +73,12 @@
 		<insert>
             <![CDATA[
                 dependencies {
-					{{- range .Module.Interfaces }}
-                    implementation project(':api')
-                    implementation project(':android:service')
-					{{- end }}
+				{{- range .Module.Interfaces }}
+                implementation project(':{{camel $moduleName}}_api')
+                implementation project(':{{camel $moduleName}}_impl')
+                implementation project(':{{camel $moduleName}}_android_service')
+                implementation project(':{{camel $moduleName}}_android_messenger')
+				{{- end }}
                 }
             ]]>
         </insert>
@@ -75,14 +87,18 @@
 tasks.configureEach { task ->
 	if (task.name == 'assembleDebug') {
 		{{- range .Module.Interfaces }}
-		task.dependsOn ':api:assembleDebug'
-		task.dependsOn ':android:service:assembleDebug'
+		task.dependsOn ':{{camel $moduleName}}_api:assembleDebug'
+		task.dependsOn ':{{camel $moduleName}}_impl:assembleDebug'
+		task.dependsOn ':{{camel $moduleName}}_android_service:assembleDebug'
+		task.dependsOn ':{{camel $moduleName}}_android_messenger:assembleDebug'
 		{{- end}}
 	}
 	if (task.name == 'assembleRelease') {
 		{{- range .Module.Interfaces }}
-		task.dependsOn ':api:assembleRelease'
-		task.dependsOn ':android:service:assembleRelease'
+		task.dependsOn ':{{camel $moduleName}}_api:assembleRelease'
+		task.dependsOn ':{{camel $moduleName}}_impl:assembleRelease'
+		task.dependsOn ':{{camel $moduleName}}_android_service:assembleRelease'
+		task.dependsOn ':{{camel $moduleName}}_android_messenger:assembleRelease'
 		{{- end}}
 	}
 }
@@ -95,11 +111,11 @@ tasks.configureEach { task ->
 	<proguardAdditions>
 		<insert>
 		{{- range .Module.Interfaces -}}
-			{{- $unreal_service_name:= printf "%sservice" $moduleName }}
-			-keep class {{ueJavaPckgName $moduleName "unreal" $unreal_service_name }}.Unreal{{Camel .Name}}Service {
+			{{- $unreal_service_name:= printf "unreal_%sservice" $moduleName }}
+			-keep class {{ueJavaPckgName $moduleName $unreal_service_name ""}}.Unreal{{Camel .Name}}Service {
 			public *;
 			}
-			-keep class {{ueJavaPckgName $moduleName "unreal" $unreal_service_name}}.Unreal{{Camel .Name}}ServiceStarter {
+			-keep class {{ueJavaPckgName $moduleName $unreal_service_name ""}}.Unreal{{Camel .Name}}ServiceStarter {
 			public *;
 			}
 		{{- end }}

@@ -59,7 +59,8 @@ private:
 	// helper member;
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
-	jclass m_javaUnrealServiceClass;
+	jclass m_javaUnrealServiceClass = nullptr;
+	jobject m_javaUnrealServiceInstance = nullptr;
 #endif
 #endif
 

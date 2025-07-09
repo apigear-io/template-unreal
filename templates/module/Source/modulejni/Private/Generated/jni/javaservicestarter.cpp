@@ -11,9 +11,9 @@
 #endif
 
 
-void ApiGear::JavaServiceStarter::startAndroidServer(std::string fullJavaClassName)
-{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
+jobject ApiGear::JavaServiceStarter::startAndroidServer(std::string fullJavaClassName, std::string fullJavaUnrealServiceTypeString)
+{
     JNIEnv* Env = FAndroidApplication::GetJavaEnv();
         
 		
@@ -21,18 +21,19 @@ void ApiGear::JavaServiceStarter::startAndroidServer(std::string fullJavaClassNa
     if (BridgeClass == nullptr)
     {
 		UE_LOG(LogTemp, Warning, TEXT("JavaServiceStarter:start; CLASS not found"));
-        return;
+        return nullptr;
     }
-    jmethodID StartMethod = Env->GetStaticMethodID(BridgeClass, "start", "(Landroid/content/Context;)V");
+	auto functionSignature = "(Landroid/content/Context;)L" + fullJavaUnrealServiceTypeString + ";";
+	jmethodID StartMethod = Env->GetStaticMethodID(BridgeClass, "start", functionSignature.c_str());
     if (StartMethod == nullptr)
     {
 		UE_LOG(LogTemp, Warning, TEXT( "JavaServiceStarter:start; method not found"));
-        return;
+		return nullptr;
     }
     jobject Activity = FJavaWrapper::GameActivityThis;
-    FJavaWrapper::CallStaticVoidMethod(Env, BridgeClass, StartMethod, Activity);
-#endif
+	return FJavaWrapper::CallStaticObjectMethod(Env, BridgeClass, StartMethod, Activity);
 }
+#endif
 
 void ApiGear::JavaServiceStarter::stopAdnroidServer(std::string fullJavaClassName)
 {
