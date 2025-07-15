@@ -8,10 +8,10 @@
 {{- $Class := printf "U%sJniAdapter" $DisplayName}}
 {{- $Iface := printf "%s%s" $ModuleName $IfaceName }}
 {{- $ifaceId := printf "%s.%s" .Module.Name .Interface.Name}}
-{{- $unreal_service_name:= printf "unreal_%sservice" ( camel $ModuleNameRaw) }}
-{{- $javaClassPath := ueJavaPath ( camel $ModuleNameRaw) $unreal_service_name "" }}
+{{- $unrealservice_name:= printf "unreal%sservice" ( camel $ModuleNameRaw) }}
+{{- $javaClassPath := ueJavaPath ( camel $ModuleNameRaw) $unrealservice_name "" }}
 {{- $javaClassName :=  printf "Unreal%sService" $IfaceName }}
-{{- $jniFullFuncPrefix := ueJniClassPathPrefix  ( camel $ModuleNameRaw) $unreal_service_name "" $javaClassName }}
+{{- $jniFullFuncPrefix := ueJniClassPathPrefix  ( camel $ModuleNameRaw) $unrealservice_name "" $javaClassName }}
 {{- $api_module_name:= printf "%s_api" ( camel $ModuleNameRaw) }}
 {{- $javaIfClassName :=  printf "I%s" $IfaceName }}
 {{- $javaIfClassFull := printf "%s/%s" (ueJavaPath (camel $ModuleNameRaw) $api_module_name "") $javaIfClassName }}
@@ -323,37 +323,37 @@ JNI_METHOD {{ ueJniToReturnType .Return}} {{$jniFullFuncPrefix}}_{{ jniNameOpera
         UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$jniFullFuncPrefix}}_{{ jniNameOperation   .Name }}: JNI SERVICE ADAPTER NOT FOUND "));
         return {{ ueJniEmptyReturn .Return }};
     }
-    auto service = g{{$Class}}Handle->getBackendService();
-    if (service != nullptr)
-    {
         {{- range .Params -}}
             {{- $javaPropName := Camel .Name}}
             {{- $javaClassConverter := printf "%sJavaConverter" ( Camel .Schema.Import ) }}
             {{- $local_value :=  printf "local_%s" (snake .Name) }}
 		    {{- if (eq $javaClassConverter  "JavaConverter" )}}{{- $javaClassConverter = printf "%sJavaConverter" $ModuleName}}{{ end }}
         {{- if .IsArray }}
-            {{ueReturn "" .}} {{$local_value}} = {{ ueDefault "" . }};
-	        {{- if and  (ueIsStdSimpleType . )  (not (eq .KindType "enum")) }}
-                jobjectArray l_Java{{Camel .Name}}Array = (jobjectArray){{$javaPropName}};
-        	    jsize len{{snake .Name}} = Env->GetArrayLength(l_Java{{Camel .Name}}Array);
-	            {{$local_value}}.Reserve(len{{snake .Name}});
-		        Env->Get{{ueToEnvNameType .}}ArrayRegion({{$javaPropName}}, 0,  len{{snake .Name}}, {{$local_value}}.data());
-                Env->DeleteLocalRef(l_Java{{Camel .Name}}Array);
-	        {{- else if (eq .KindType "string")}}
-		        {{$local_value}} = FJavaHelper::ObjectArrayToFStringTArray(Env, {{$javaPropName}});
-	        {{- else if not (eq .KindType "extern")}}
-            	{{$javaClassConverter}}::fill{{Camel .Type }}Array(Env, {{$javaPropName}}, {{$local_value}});
-	        {{- end }}
+        {{ueReturn "" .}} {{$local_value}} = {{ ueDefault "" . }};
+	    {{- if and  (ueIsStdSimpleType . )  (not (eq .KindType "enum")) }}
+            jobjectArray l_Java{{Camel .Name}}Array = (jobjectArray){{$javaPropName}};
+        	jsize len{{snake .Name}} = Env->GetArrayLength(l_Java{{Camel .Name}}Array);
+	        {{$local_value}}.Reserve(len{{snake .Name}});
+		    Env->Get{{ueToEnvNameType .}}ArrayRegion({{$javaPropName}}, 0,  len{{snake .Name}}, {{$local_value}}.data());
+            Env->DeleteLocalRef(l_Java{{Camel .Name}}Array);
+	    {{- else if (eq .KindType "string")}}
+		    {{$local_value}} = FJavaHelper::ObjectArrayToFStringTArray(Env, {{$javaPropName}});
+	    {{- else if not (eq .KindType "extern")}}
+            {{$javaClassConverter}}::fill{{Camel .Type }}Array(Env, {{$javaPropName}}, {{$local_value}});
+	    {{- end }}
         {{-  else if eq .KindType "enum" }}
-			    {{ueReturn "" .}} {{$local_value}} = {{$javaClassConverter}}::get{{Camel .Type }}Value(Env, {{$javaPropName}});
+			{{ueReturn "" .}} {{$local_value}} = {{$javaClassConverter}}::get{{Camel .Type }}Value(Env, {{$javaPropName}});
         {{- else if (eq .KindType "string")}}
-		        FString {{$local_value}} = FJavaHelper::FStringFromParam(Env, {{$javaPropName}});
+		    FString {{$local_value}} = FJavaHelper::FStringFromParam(Env, {{$javaPropName}});
         {{- else if not (ueIsStdSimpleType . )}}
-                {{ueReturn "" .}} {{$local_value}} = {{ ueDefault "" . }};
-                {{$javaClassConverter}}::fill{{Camel .Type }}(Env, {{$javaPropName}}, {{$local_value}});
+            {{ueReturn "" .}} {{$local_value}} = {{ ueDefault "" . }};
+            {{$javaClassConverter}}::fill{{Camel .Type }}(Env, {{$javaPropName}}, {{$local_value}});
         {{- end }}
         {{- end }}
 
+        auto service = g{{$Class}}Handle->getBackendService();
+        if (service != nullptr)
+        {
         {{- $cppropName := "result"}}
         {{ if not .Return.IsVoid }}auto {{$cppropName}} = {{ end -}}
         service->{{Camel .Name}}(
@@ -367,37 +367,37 @@ JNI_METHOD {{ ueJniToReturnType .Return}} {{$jniFullFuncPrefix}}_{{ jniNameOpera
         );
 
         {{- if .Return.IsVoid }}
-        return;
+            return;
         {{- else if or  .Return.IsArray ( or (eq .Return.KindType "enum") (not (ueIsStdSimpleType .Return))  ) }}
             {{- $localName := "jresult" }}
             {{- $javaClassConverter := printf "%sJavaConverter" ( Camel .Return.Schema.Import ) }}
 		    {{- if (eq $javaClassConverter  "JavaConverter" )}}{{- $javaClassConverter = printf "%sJavaConverter" $ModuleName }}{{ end }}
         {{- if .Return.IsArray }}
-	        {{-  if and (ueIsStdSimpleType .Return ) (not (eq .Return.KindType "enum")) }}
-            	auto len = {{$cppropName}}.Num();
-		        {{ueJniToReturnType .Return}} {{$localName}} = Env->New{{ueToEnvNameType .Return}}Array(Env, len);
-			    if ({{$localName}}  == NULL){/*Log error, skip?*/};
-			    Env->Set{{ueToEnvNameType .Return}}ArrayRegion(Env, {{$localName}}, 0, len, {{$cppropName}});
-	        {{- else if (eq .Return.KindType "string")}}
-		        auto {{$localName}} = FJavaHelper::ToJavaStringArray(Env,{{$cppropName}});
-	        {{- else if not (eq .Return.KindType "extern")}}
-                {{ueJniToReturnType .Return}} {{$localName}} = {{$javaClassConverter}}::makeJava{{Camel .Return.Type }}Array(Env, {{$cppropName}});
-	        {{- end }}
-        {{- else if (eq .Return.KindType "string")}}
+	    {{-  if and (ueIsStdSimpleType .Return ) (not (eq .Return.KindType "enum")) }}
+            auto len = {{$cppropName}}.Num();
+		    {{ueJniToReturnType .Return}} {{$localName}} = Env->New{{ueToEnvNameType .Return}}Array(Env, len);
+		    if ({{$localName}}  == NULL){/*Log error, skip?*/};
+		    Env->Set{{ueToEnvNameType .Return}}ArrayRegion(Env, {{$localName}}, 0, len, {{$cppropName}});
+	    {{- else if (eq .Return.KindType "string")}}
+		    auto {{$localName}} = FJavaHelper::ToJavaStringArray(Env,{{$cppropName}});
+	    {{- else if not (eq .Return.KindType "extern")}}
+            {{ueJniToReturnType .Return}} {{$localName}} = {{$javaClassConverter}}::makeJava{{Camel .Return.Type }}Array(Env, {{$cppropName}});
+	    {{- end }}
+            {{- else if (eq .Return.KindType "string")}}
 		    jobject {{$localName}} = FJavaHelper::ToJavaString(Env, {{$cppropName}});
-        {{- else if ( or (not (ueIsStdSimpleType .Return)) (eq .Return.KindType "enum" ) ) }}
+            {{- else if ( or (not (ueIsStdSimpleType .Return)) (eq .Return.KindType "enum" ) ) }}
             {{ueJniToReturnType .Return}} {{$localName}} = {{$javaClassConverter}}::makeJava{{Camel .Return.Type }}(Env, {{$cppropName}});
-        {{- end }}
-        return {{$localName}};
-        {{- else }} 
-        return {{$cppropName}};
-        {{- end }}
-    }
-    else
-    {
-        UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("service not valid"));
-        return {{ ueJniEmptyReturn .Return }};
-    }
+            {{- end }}
+            return {{$localName}};
+            {{- else }} 
+            return {{$cppropName}};
+            {{- end }}
+        }
+        else
+        {
+            UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("service not valid"));
+            return {{ ueJniEmptyReturn .Return }};
+        }
 }
 {{- end}}
 
@@ -408,50 +408,58 @@ JNI_METHOD {{ ueJniToReturnType .Return}} {{$jniFullFuncPrefix}}_{{ jniNameOpera
 {{- $javaPropName := Camel .Name}}
 JNI_METHOD void {{$jniFullFuncPrefix}}_{{ jniNameSetProperty .Name }}(JNIEnv* Env, jclass Clazz, {{ueJniJavaParam "" . }})
 {
-    if (g{{$Class}}Handle == nullptr)
-    {
-        UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$jniFullFuncPrefix}}_{{ jniNameSetProperty .Name }}: JNI SERVICE ADAPTER NOT FOUND "));
-        return;
-    }
-    auto service = g{{$Class}}Handle->getBackendService();
-    if (service != nullptr)
-    {
+
+        if (g{{$Class}}Handle == nullptr)
+        {
+            UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$jniFullFuncPrefix}}_{{ jniNameSetProperty .Name }}: JNI SERVICE ADAPTER NOT FOUND "));
+            return;
+        }
+
         {{- $javaClassConverter := printf "%sJavaConverter" ( Camel .Schema.Import ) }}
+        {{- $hasLocalVar := 1 }}
 		{{- if (eq $javaClassConverter  "JavaConverter" )}}{{- $javaClassConverter = printf "%sJavaConverter" $ModuleName}}{{ end }}
         {{- if .IsArray }}
             {{ueReturn "" .}} cpp_value = {{ ueDefault "" . }};
-	        {{- if and (ueIsStdSimpleType . ) (not (eq .KindType "enum")) }}
-                jobjectArray localArray = (jobjectArray){{$javaPropName}};
-        	    jsize len{{snake .Name}} = Env->GetArrayLength(localArray);
-	            cpp_value.reserve(len{{snake .Name}});
-		        Env->Get{{ueToEnvNameType .}}ArrayRegion({{$javaPropName}}, 0,  len{{snake .Name}}, cpp_value.data());
-                Env->DeleteLocalRef(localArray);
+	    {{- if and (ueIsStdSimpleType . ) (not (eq .KindType "enum")) }}
+            jobjectArray localArray = (jobjectArray){{$javaPropName}};
+        	jsize len{{snake .Name}} = Env->GetArrayLength(localArray);
+	        cpp_value.reserve(len{{snake .Name}});
+		    Env->Get{{ueToEnvNameType .}}ArrayRegion({{$javaPropName}}, 0,  len{{snake .Name}}, cpp_value.data());
+            Env->DeleteLocalRef(localArray);
 	        {{- else if (eq .KindType "string")}}
-		        cpp_value = FJavaHelper::ObjectArrayToFStringTArray(Env, {{$javaPropName}});
+		    cpp_value = FJavaHelper::ObjectArrayToFStringTArray(Env, {{$javaPropName}});
 	        {{- else if not (eq .KindType "extern")}}
-            	{{$javaClassConverter}}::fill{{Camel .Type }}Array(Env, {{$javaPropName}}, cpp_value);
-	        {{- end }}
-            service->Set{{Camel .Name}}(cpp_value);
+            {{$javaClassConverter}}::fill{{Camel .Type }}Array(Env, {{$javaPropName}}, cpp_value);
+	    {{- end }}
         {{-  else if eq .KindType "enum" }}
-                {{- $otherModuleClassName := printf "%sJavaConverter" ( Camel .Schema.Import ) }}
-			    {{ueReturn "" .}} cpp_value = {{if not (eq $otherModuleClassName  "JavaConverter" )}}{{$otherModuleClassName}}::{{end -}}
-                get{{Camel .Type }}Value(Env, {{$javaPropName}});
-                service->Set{{Camel .Name}}(cpp_value);
+            {{- $otherModuleClassName := printf "%sJavaConverter" ( Camel .Schema.Import ) }}
+			{{ueReturn "" .}} cpp_value = {{if not (eq $otherModuleClassName  "JavaConverter" )}}{{$otherModuleClassName}}::{{end -}}
+            get{{Camel .Type }}Value(Env, {{$javaPropName}});;
         {{- else if (eq .KindType "string")}}
-		        FString cpp_value = FJavaHelper::FStringFromParam(Env, {{$javaPropName}});
-                service->Set{{Camel .Name}}(cpp_value);
+		    FString cpp_value = FJavaHelper::FStringFromParam(Env, {{$javaPropName}});
         {{- else if not (ueIsStdSimpleType . )}}
-                {{ueReturn "" .}} cpp_value = {{ ueDefault "" . }};
-                {{$javaClassConverter}}::fill{{Camel .Type }}(Env, {{$javaPropName}},cpp_value);
-                service->Set{{Camel .Name}}(cpp_value);
+            {{ueReturn "" .}} cpp_value = {{ ueDefault "" . }};
+            {{$javaClassConverter}}::fill{{Camel .Type }}(Env, {{$javaPropName}},cpp_value);
         {{- else }}
-            service->Set{{Camel .Name}}({{$javaPropName}});
-        {{- end}}
-    }
-    else
-    {
-        UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("service not valid, cannot set value for {{.Name}}"));
-    }
+        {{- $hasLocalVar = 0 }}
+        {{- end }}
+
+        AsyncTask(ENamedThreads::GameThread, [{{- if $hasLocalVar }}cpp_value{{- else}}{{$javaPropName}}{{- end}}]()
+        {
+            auto service = g{{$Class}}Handle->getBackendService();
+            if (service != nullptr)
+            {
+            {{- if $hasLocalVar }}
+                service->Set{{Camel .Name}}(cpp_value);
+            {{- else}}
+                service->Set{{Camel .Name}}({{$javaPropName}});
+            {{- end}}
+            }
+            else
+            {
+                UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("service not valid, cannot set value for {{.Name}}"));
+            }
+        });
 }
 {{- end}}
 
@@ -465,15 +473,15 @@ JNI_METHOD {{ueJniToReturnType .}} {{$jniFullFuncPrefix}}_{{ jniNameGetProperty 
     auto service = g{{$Class}}Handle->getBackendService();
     if (service != nullptr)
     {
-        {{- $cppropName := ueVar "" .}}
+    {{- $cppropName := ueVar "" .}}
         auto {{$cppropName}} = service->Get{{Camel .Name}}();
-        {{- if or  .IsArray ( or (eq .KindType "enum") (not (ueIsStdSimpleType .))  ) }}
-        {{template "convert_to_java_type" .}}
+    {{- if or  .IsArray ( or (eq .KindType "enum") (not (ueIsStdSimpleType .))  ) }}
+    {{template "convert_to_java_type" .}}
         {{- $localName := printf "jlocal_%s" (Camel .Name) }}
         return {{$localName}};
-        {{- else }} 
+    {{- else }} 
         return {{$cppropName}};
-        {{- end }}
+    {{- end }}
     }
     else
     {

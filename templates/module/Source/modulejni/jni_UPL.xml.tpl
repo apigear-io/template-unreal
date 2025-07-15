@@ -44,8 +44,8 @@
 		<copyDir src="$S(PluginDir)/android/{{camel $moduleName}}/{{$api_package_name}}" dst="$S(BuildDir)/JavaLibs/{{$api_package_name}}" />
 		<copyDir src="$S(PluginDir)/android/{{camel $moduleName}}/{{$messenger_package_name}}" dst="$S(BuildDir)/JavaLibs/{{$messenger_package_name}}" />
 		<copyDir src="$S(PluginDir)/android/{{camel $moduleName}}/{{$impl_package_name}}" dst="$S(BuildDir)/JavaLibs/{{$impl_package_name}}" />
-		{{- $unreal_service_name:= printf "unreal_%sservice" $moduleName }}
-		<copyDir src="$S(PluginDir)/android/{{camel $moduleName}}/{{$unreal_service_name}}" dst="$S(BuildDir)/src/{{$unreal_service_name}}" />
+		{{- $unrealservice_name:= printf "unreal%sservice" $moduleName }}
+		<copyDir src="$S(PluginDir)/android/{{camel $moduleName}}/{{$unrealservice_name}}" dst="$S(BuildDir)/src/{{$unrealservice_name}}" />
 	{{- end }}
 	</resourceCopies>
 
@@ -111,11 +111,11 @@ tasks.configureEach { task ->
 	<proguardAdditions>
 		<insert>
 		{{- range .Module.Interfaces -}}
-			{{- $unreal_service_name:= printf "unreal_%sservice" $moduleName }}
-			-keep class {{ueJavaPckgName $moduleName $unreal_service_name ""}}.Unreal{{Camel .Name}}Service {
+			{{- $unrealservice_name:= printf "unreal%sservice" $moduleName }}
+			-keep class {{ueJavaPckgName $moduleName $unrealservice_name ""}}.Unreal{{Camel .Name}}Service {
 			public *;
 			}
-			-keep class {{ueJavaPckgName $moduleName $unreal_service_name ""}}.Unreal{{Camel .Name}}ServiceStarter {
+			-keep class {{ueJavaPckgName $moduleName $unrealservice_name ""}}.Unreal{{Camel .Name}}ServiceStarter {
 			public *;
 			}
 		{{- end }}
