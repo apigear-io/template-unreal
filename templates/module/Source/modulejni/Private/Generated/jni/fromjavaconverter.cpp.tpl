@@ -78,22 +78,22 @@ void {{$className }}::fill{{Camel .Name }}(JNIEnv* env, jobject input, {{$struct
 	jfieldID jFieldId_{{snake .Name}} = env->GetFieldID(cls, "{{$javaFieldName}}", "{{ueJniSignatureType . }}");
 
 	{{- if .IsArray }}
-		{{ ueJniToReturnType . }} {{snake .Name}}_value = (jobjectArray)env->GetObjectField(input,jFieldId_{{snake .Name}});		
-		{{- if (eq .KindType "enum") }}
-			{{- $otherModuleClassName := printf "%sJavaConverter" ( Camel .Schema.Import ) }}
-			{{if not (eq $otherModuleClassName  "JavaConverter" )}}{{$otherModuleClassName}}::{{end -}}
-			fill{{Camel .Type }}Array(env, {{snake .Name}}_value, {{$structName}}.{{$cppFieldName}});
-		{{- else if (ueIsStdSimpleType . ) }}
-			jsize len{{snake .Name}} = env->GetArrayLength({{snake .Name}}_value);
-			{{$structName}}.{{$cppFieldName}}.Reserve(len{{snake .Name}});
-			env->Get{{ueToEnvNameType .}}ArrayRegion({{snake .Name}}_value, 0,  len{{snake .Name}}, {{$structName}}.{{$cppFieldName}}.data());
-		{{- else if (eq .KindType "string")}}
-			{{$structName}}.{{$cppFieldName}} = FJavaHelper::ObjectArrayToFStringTArray(env, {{snake .Name}}_value);
-		{{- else if not (eq .KindType "extern")}}
-			{{- $otherModuleClassName := printf "%sJavaConverter" ( Camel .Schema.Import ) }}
-			{{if not (eq $otherModuleClassName  "JavaConverter" )}}{{$otherModuleClassName}}::{{end -}}
-			fill{{Camel .Name }}Array(env, {{snake .Name}}_value, {{$structName}}.{{$cppFieldName}});
-		{{- end }}
+	{{ ueJniToReturnType . }} {{snake .Name}}_value = (jobjectArray)env->GetObjectField(input,jFieldId_{{snake .Name}});		
+	{{- if (eq .KindType "enum") }}
+		{{- $otherModuleClassName := printf "%sJavaConverter" ( Camel .Schema.Import ) }}
+		{{if not (eq $otherModuleClassName  "JavaConverter" )}}{{$otherModuleClassName}}::{{end -}}
+		fill{{Camel .Type }}Array(env, {{snake .Name}}_value, {{$structName}}.{{$cppFieldName}});
+	{{- else if (ueIsStdSimpleType . ) }}
+		jsize len{{snake .Name}} = env->GetArrayLength({{snake .Name}}_value);
+		{{$structName}}.{{$cppFieldName}}.Reserve(len{{snake .Name}});
+		env->Get{{ueToEnvNameType .}}ArrayRegion({{snake .Name}}_value, 0,  len{{snake .Name}}, {{$structName}}.{{$cppFieldName}}.data());
+	{{- else if (eq .KindType "string")}}
+		{{$structName}}.{{$cppFieldName}} = FJavaHelper::ObjectArrayToFStringTArray(env, {{snake .Name}}_value);
+	{{- else if not (eq .KindType "extern")}}
+		{{- $otherModuleClassName := printf "%sJavaConverter" ( Camel .Schema.Import ) }}
+		{{if not (eq $otherModuleClassName  "JavaConverter" )}}{{$otherModuleClassName}}::{{end -}}
+		fill{{Camel .Name }}Array(env, {{snake .Name}}_value, {{$structName}}.{{$cppFieldName}});
+	{{- end }}
 		env->DeleteLocalRef({{snake .Name}}_value);
 	{{- else if eq .KindType "enum"}}
 		{{- $otherModuleClassName := printf "%sJavaConverter" ( Camel .Schema.Import ) }}
@@ -151,45 +151,45 @@ jobject {{$className }}::makeJava{{Camel .Name }}(JNIEnv* env, const {{$structTy
 
 	jfieldID jFieldId_{{snake .Name}} = env->GetFieldID(javaClass, "{{$javaFieldName}}", "{{ueJniSignatureType . }}");
 
-	{{- if .IsArray }}
-		{{ ueJniToReturnType . }} {{snake .Name}}_value = (jobjectArray)env->GetObjectField(input,jFieldId_{{snake .Name}});		
-		{{- if (eq .KindType "enum") }}
-			{{- $otherModuleClassName := printf "%sJavaConverter" ( Camel .Schema.Import ) }}
-			jobjectArray {{$tmpObjName}} = s{{if not (eq $otherModuleClassName  "JavaConverter" )}}{{$otherModuleClassName}}::{{end -}}
-			makeJava{{Camel .Name }}Array(env, {{$structName}}.{{$cppFieldName}});
-		{{- else if (ueIsStdSimpleType . ) }}
-			auto len = {{$structName}}.{{$cppFieldName}}.Num();
-		    jFieldId_{{snake .Name}} = (*env)->New{{ueToEnvNameType .}}Array(env, len);
-			if (jFieldId_{{snake .Name}}  == NULL){/*Log error, skip?*/};
-			env->Set{{ueToEnvNameType .}}ArrayRegion(env, jFieldId_{{snake .Name}}, 0, len, {{$structName}}.{{$cppFieldName}});
-		{{- else if (eq .KindType "string")}}
-			jobjectArray {{$tmpObjName}} = FJavaHelper::ToJavaStringArray(env,{{$structName}}.{{$cppFieldName}});
-		{{- else if not (eq .KindType "extern")}}
-			{{- $otherModuleClassName := printf "%sJavaConverter" ( Camel .Schema.Import ) }}
-			jobjectArray {{$tmpObjName}} = {{if not (eq $otherModuleClassName  "JavaConverter" )}}{{$otherModuleClassName}}::{{end -}}
-			makeJava{{Camel .Name }}Array(env, {{$structName}}.{{$cppFieldName}});
-		{{- end }}
-		env->SetObjectField(javaObjInstance, jFieldId_{{snake .Name}}, {{$tmpObjName}});
-		env->DeleteLocalRef({{$tmpObjName}});
-	{{- else if eq .KindType "enum"}}
-			{{- $otherModuleClassName := printf "%sJavaConverter" ( Camel .Schema.Import ) }}
-			jobject {{$tmpObjName}} = {{if not (eq $otherModuleClassName  "JavaConverter" )}}{{$otherModuleClassName}}::{{end -}}
-			makeJava{{Camel .Name }}(env, {{$structName}}.{{$cppFieldName}});
-			env->SetObjectField(javaObjInstance, jFieldId_{{snake .Name}}, {{$tmpObjName}});
-			env->DeleteLocalRef({{$tmpObjName}});
-	{{- else if ( ueIsStdSimpleType . ) }}
-		env->Set{{ueToEnvNameType .}}Field(javaObjInstance, jFieldId_{{snake .Name}}, {{$in_cppStructName}}.{{$cppFieldName}});
-    {{- else if eq .KindType "string"}}
-		jobject {{$tmpObjName}} = (jstring)env->GetObjectField(input, jFieldId_{{snake .Name}});
-		{{$structName}}.{{$cppFieldName}} = FJavaHelper::ToJavaString(env,{{$in_cppStructName}}.{{$cppFieldName}});
-		env->DeleteLocalRef({{$tmpObjName}});
-    {{- else if not (eq .KindType "extern")}}
-		{{- $otherModuleClassName := printf "%sJavaConverter" ( Camel .Schema.Import ) }}
-		jobject {{$tmpObjName}} = {{if not (eq $otherModuleClassName  "JavaConverter" )}}{{$otherModuleClassName}}::{{end -}}
-		makeJava{{Camel .Type }}(env,{{$structName}}.{{$cppFieldName }});
-		env->SetObjectField(javaObjInstance, jFieldId_{{snake .Name}}, {{$tmpObjName}});
-		env->DeleteLocalRef({{$tmpObjName}});
-	{{- end }}
+{{- if .IsArray }}
+{{ ueJniToReturnType . }} {{snake .Name}}_value = (jobjectArray)env->GetObjectField(input,jFieldId_{{snake .Name}});		
+{{- if (eq .KindType "enum") }}
+	{{- $otherModuleClassName := printf "%sJavaConverter" ( Camel .Schema.Import ) }}
+	jobjectArray {{$tmpObjName}} = s{{if not (eq $otherModuleClassName  "JavaConverter" )}}{{$otherModuleClassName}}::{{end -}}
+	makeJava{{Camel .Name }}Array(env, {{$structName}}.{{$cppFieldName}});
+{{- else if (ueIsStdSimpleType . ) }}
+	auto len = {{$structName}}.{{$cppFieldName}}.Num();
+	jFieldId_{{snake .Name}} = (*env)->New{{ueToEnvNameType .}}Array(env, len);
+	if (jFieldId_{{snake .Name}}  == NULL){/*Log error, skip?*/};
+	env->Set{{ueToEnvNameType .}}ArrayRegion(env, jFieldId_{{snake .Name}}, 0, len, {{$structName}}.{{$cppFieldName}});
+{{- else if (eq .KindType "string")}}
+	jobjectArray {{$tmpObjName}} = FJavaHelper::ToJavaStringArray(env,{{$structName}}.{{$cppFieldName}});
+{{- else if not (eq .KindType "extern")}}
+	{{- $otherModuleClassName := printf "%sJavaConverter" ( Camel .Schema.Import ) }}
+	jobjectArray {{$tmpObjName}} = {{if not (eq $otherModuleClassName  "JavaConverter" )}}{{$otherModuleClassName}}::{{end -}}
+	makeJava{{Camel .Name }}Array(env, {{$structName}}.{{$cppFieldName}});
+{{- end }}
+	env->SetObjectField(javaObjInstance, jFieldId_{{snake .Name}}, {{$tmpObjName}});
+	env->DeleteLocalRef({{$tmpObjName}});
+{{- else if eq .KindType "enum"}}
+	{{- $otherModuleClassName := printf "%sJavaConverter" ( Camel .Schema.Import ) }}
+	jobject {{$tmpObjName}} = {{if not (eq $otherModuleClassName  "JavaConverter" )}}{{$otherModuleClassName}}::{{end -}}
+	makeJava{{Camel .Name }}(env, {{$structName}}.{{$cppFieldName}});
+	env->SetObjectField(javaObjInstance, jFieldId_{{snake .Name}}, {{$tmpObjName}});
+	env->DeleteLocalRef({{$tmpObjName}});
+{{- else if ( ueIsStdSimpleType . ) }}
+	env->Set{{ueToEnvNameType .}}Field(javaObjInstance, jFieldId_{{snake .Name}}, {{$in_cppStructName}}.{{$cppFieldName}});
+{{- else if eq .KindType "string"}}
+	jobject {{$tmpObjName}} = (jstring)env->GetObjectField(input, jFieldId_{{snake .Name}});
+	{{$structName}}.{{$cppFieldName}} = FJavaHelper::ToJavaString(env,{{$in_cppStructName}}.{{$cppFieldName}});
+	env->DeleteLocalRef({{$tmpObjName}});
+{{- else if not (eq .KindType "extern")}}
+	{{- $otherModuleClassName := printf "%sJavaConverter" ( Camel .Schema.Import ) }}
+	jobject {{$tmpObjName}} = {{if not (eq $otherModuleClassName  "JavaConverter" )}}{{$otherModuleClassName}}::{{end -}}
+	makeJava{{Camel .Type }}(env,{{$structName}}.{{$cppFieldName }});
+	env->SetObjectField(javaObjInstance, jFieldId_{{snake .Name}}, {{$tmpObjName}});
+	env->DeleteLocalRef({{$tmpObjName}});
+{{- end }}
 
 {{- end }}
 	return javaObjInstance;
@@ -224,8 +224,8 @@ jobjectArray {{$className }}::makeJava{{Camel .Name }}Array(JNIEnv* env, const T
 void {{$className }}::fill{{Camel .Name }}Array(JNIEnv* env, jobjectArray input, TArray<{{$cpp_class}}>& out_array)
 {
 	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("{{$packageName}}/{{$javaClassTypeName}}");
-	jmethodID toValueMethod = env->GetStaticMethodID(javaStruct, "toValue", "(L{{$packageName}}/{{$javaClassTypeName}};)I");
 	out_array.Empty();
+	jsize len = env->GetArrayLength(input);
 	for (jsize i = 0; i < len; ++i)
 	{
 		jobject element = env->GetObjectArrayElement(input, i);
@@ -238,11 +238,11 @@ void {{$className }}::fill{{Camel .Name }}Array(JNIEnv* env, jobjectArray input,
 {
 	{{$cpp_class}} cppEnumValue;
 	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("{{$packageName}}/{{$javaClassTypeName}}");
-	jmethodID toValueMethod = env->GetStaticMethodID(javaStruct, "toValue", "(L{{$packageName}}/{{$javaClassTypeName}};)I");
-
-	int_value = env->CallStaticObjectMethod(javaStruct, toValueMethod, element);
-	return {{- $toEnumFuncName := printf "U%sLibrary::to%s%s" $ModuleName $ModuleName .Name }}
+	jmethodID getValueMethod = env->GetMethodID(javaStruct, "getValue", "()I");
+	int int_value = env->CallIntMethod(input, getValueMethod);
+	{{- $toEnumFuncName := printf "U%sLibrary::to%s%s" $ModuleName $ModuleName .Name }}
 	{{$toEnumFuncName}}(cppEnumValue, int_value);
+	return cppEnumValue;
 }
 
 
@@ -260,12 +260,13 @@ jobjectArray {{$className }}::makeJava{{Camel .Name }}Array(JNIEnv* env, const T
 	return javaArray;
 }
 
-jobject {{$className }}::makeJava{{Camel .Name }}(JNIEnv* env,  int value)
+jobject {{$className }}::makeJava{{Camel .Name }}(JNIEnv* env, {{$cpp_class}} value)
 {
 	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("{{$packageName}}/{{$javaClassTypeName}}");
-	jmethodID fromValueMethod = env->GetStaticMethodID(javaStruct, "fromValue", "(I)L"{{$packageName}}/{{$javaClassTypeName}}";");
+	jmethodID fromValueMethod = env->GetStaticMethodID(javaStruct, "fromValue", "(I)L{{$packageName}}/{{$javaClassTypeName}};");
     if (!fromValueMethod) return nullptr;
-	jobject javaObj = env->CallStaticObjectMethod(javaStruct, fromValueMethod, intCode);
+	int int_value = (uint8)value;
+	jobject javaObj = env->CallStaticObjectMethod(javaStruct, fromValueMethod, int_value);
 	return javaObj;
 }
 

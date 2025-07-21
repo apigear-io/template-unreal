@@ -432,9 +432,7 @@ JNI_METHOD void {{$jniFullFuncPrefix}}_{{ jniNameSetProperty .Name }}(JNIEnv* En
             {{$javaClassConverter}}::fill{{Camel .Type }}Array(Env, {{$javaPropName}}, cpp_value);
 	    {{- end }}
         {{-  else if eq .KindType "enum" }}
-            {{- $otherModuleClassName := printf "%sJavaConverter" ( Camel .Schema.Import ) }}
-			{{ueReturn "" .}} cpp_value = {{if not (eq $otherModuleClassName  "JavaConverter" )}}{{$otherModuleClassName}}::{{end -}}
-            get{{Camel .Type }}Value(Env, {{$javaPropName}});;
+			{{ueReturn "" .}} cpp_value = {{$javaClassConverter}}::get{{Camel .Type }}Value(Env, {{$javaPropName}});
         {{- else if (eq .KindType "string")}}
 		    FString cpp_value = FJavaHelper::FStringFromParam(Env, {{$javaPropName}});
         {{- else if not (ueIsStdSimpleType . )}}

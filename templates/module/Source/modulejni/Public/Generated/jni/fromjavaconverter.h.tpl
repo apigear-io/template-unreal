@@ -76,10 +76,10 @@ public:
 {{- range .Module.Enums }}
 {{- $cpp_class := printf "E%s%s" $ModuleName .Name }}
 
-	static void fill{{Camel .Name }}Array(JNIEnv* env, jobjectArray input, TArray<{{$cpp_class}}>& out_array)
-	static {{$cpp_class}} get{{Camel .Name }}Value(JNIEnv* env, jobject input)
+	static void fill{{Camel .Name }}Array(JNIEnv* env, jobjectArray input, TArray<{{$cpp_class}}>& out_array);
+	static {{$cpp_class}} get{{Camel .Name }}Value(JNIEnv* env, jobject input);
 	static jobjectArray makeJava{{Camel .Name }}Array(JNIEnv* env, const TArray<{{$cpp_class}}>& cppArray);
-	static jobject makeJava{{Camel .Name }}(JNIEnv* env,  int value);
+	static jobject makeJava{{Camel .Name }}(JNIEnv* env, {{$cpp_class}} value);
 {{- end }}
 
 
