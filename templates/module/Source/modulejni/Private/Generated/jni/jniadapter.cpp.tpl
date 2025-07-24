@@ -23,19 +23,19 @@
             {{- $javaClassConverter := printf "%sJavaConverter" ( Camel .Schema.Import ) }}
 		    {{- if (eq $javaClassConverter  "JavaConverter" )}}{{- $javaClassConverter = printf "%sJavaConverter" (Camel .Schema.Module.Name) }}{{ end }}
         {{- if .IsArray }}
-	        {{-  if and (ueIsStdSimpleType . ) (not (eq .KindType "enum")) }}
-            	auto len = {{$cppropName}}.Num();
-		        {{ueJniToReturnType .}} {{$localName}} = Env->New{{ueToEnvNameType .}}Array(Env, len);
-			    if ({{$localName}}  == NULL){/*Log error, skip?*/};
-			    Env->Set{{ueToEnvNameType .}}ArrayRegion(Env, {{$localName}}, 0, len, {{$cppropName}});
-	        {{- else if (eq .KindType "string")}}
+	        {{- if (eq .KindType "string")}}
 		        auto {{$localName}} = FJavaHelper::ToJavaStringArray(Env,{{$cppropName}});
+	        {{- else if and (.IsPrimitive ) (not (eq .KindType "enum")) }}
+            	auto len{{snake .Name}} = {{$cppropName}}.Num();
+		        {{ueJniToReturnType .}} {{$localName}} = Env->New{{ueToEnvNameType .}}Array(len{{snake .Name}});
+			    if ({{$localName}}  == NULL){/*Log error, skip?*/};
+			    Env->Set{{ueToEnvNameType .}}ArrayRegion({{$localName}}, 0, len{{snake .Name}}, {{$cppropName}}.GetData());
 	        {{- else if not (eq .KindType "extern")}}
                 {{ueJniToReturnType .}} {{$localName}} = {{$javaClassConverter}}::makeJava{{Camel .Type }}Array(Env, {{$cppropName}});
 	        {{- end }}
         {{- else if (eq .KindType "string")}}
 		    jobject {{$localName}} = FJavaHelper::ToJavaString(Env, {{$cppropName}});
-        {{- else if ( or (not (ueIsStdSimpleType .)) (eq .KindType "enum" ) ) }}
+        {{- else if ( or (not .IsPrimitive ) (eq .KindType "enum" ) ) }}
             {{ueJniToReturnType .}} {{$localName}} = {{$javaClassConverter}}::makeJava{{Camel .Type }}(Env, {{$cppropName}});
         {{- end }}
 {{- end}}
@@ -235,7 +235,7 @@ void {{$Class}}::On{{Camel .Name}}({{ueParams "" .Params}})
         {
 
         {{- range .Params -}}
-            {{template "convert_to_java_type" .}}
+        {{template "convert_to_java_type" .}}
         {{- end }}
 
 		    FJavaWrapper::CallVoidMethod(Env, m_javaUnrealServiceInstance, MethodID, 
@@ -244,7 +244,7 @@ void {{$Class}}::On{{Camel .Name}}({{ueParams "" .Params}})
             {{- $cppropName := ueVar "" .}}
             {{- $localName := printf "jlocal_%s" $javaPropName }}
             {{- if .IsArray }} {{$localName}}
-        {{- else if or (eq .KindType "enum")  (not ( ueIsStdSimpleType .)) }} {{$localName}}
+        {{- else if or ( or (eq .KindType "enum") (eq .KindType "string") ) (not  .IsPrimitive ) }} {{$localName}}
         {{- else }} {{$cppropName}}
         {{- end -}}
         {{- end -}});
@@ -252,7 +252,7 @@ void {{$Class}}::On{{Camel .Name}}({{ueParams "" .Params}})
         {{- range $idx, $p := .Params -}}
             {{- $javaPropName := Camel .Name}}
             {{- $localName := printf "jlocal_%s" $javaPropName }}
-        {{- if or .IsArray  (eq .KindType "enum" ) }}
+        {{- if or ( or .IsArray  (eq .KindType "enum" ) ) (eq .KindType "string")}}
             Env->DeleteLocalRef({{$localName}});
         {{- else if not ( or (eq .KindType "extern")  (ueIsStdSimpleType .)  ) }}
          Env->DeleteLocalRef({{$localName}});
@@ -294,7 +294,7 @@ if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
             {{template "convert_to_java_type" .}}
 
             {{- $javaLocalName := printf "jlocal_%s"  (Camel .Name) }}
-            {{- if or  .IsArray ( or (eq .KindType "enum") (not (ueIsStdSimpleType .))  ) }}
+            {{- if or ( or .IsArray  (eq .KindType "string")) ( or (eq .KindType "enum") (not (ueIsStdSimpleType .))  ) }}
             FJavaWrapper::CallVoidMethod(Env, m_javaUnrealServiceInstance, MethodID, {{$javaLocalName}});
             Env->DeleteLocalRef({{$javaLocalName}});
             {{- else }} 
@@ -330,14 +330,14 @@ JNI_METHOD {{ ueJniToReturnType .Return}} {{$jniFullFuncPrefix}}_{{ jniNameOpera
 		    {{- if (eq $javaClassConverter  "JavaConverter" )}}{{- $javaClassConverter = printf "%sJavaConverter" $ModuleName}}{{ end }}
         {{- if .IsArray }}
         {{ueReturn "" .}} {{$local_value}} = {{ ueDefault "" . }};
-	    {{- if and  (ueIsStdSimpleType . )  (not (eq .KindType "enum")) }}
+	    {{- if (eq .KindType "string")}}
+		    {{$local_value}} = FJavaHelper::ObjectArrayToFStringTArray(Env, {{$javaPropName}});
+	    {{- else if and  ( .IsPrimitive )  (not (eq .KindType "enum")) }}
             jobjectArray l_Java{{Camel .Name}}Array = (jobjectArray){{$javaPropName}};
         	jsize len{{snake .Name}} = Env->GetArrayLength(l_Java{{Camel .Name}}Array);
 	        {{$local_value}}.Reserve(len{{snake .Name}});
-		    Env->Get{{ueToEnvNameType .}}ArrayRegion({{$javaPropName}}, 0,  len{{snake .Name}}, {{$local_value}}.data());
+		    Env->Get{{ueToEnvNameType .}}ArrayRegion({{$javaPropName}}, 0,  len{{snake .Name}}, {{$local_value}}.GetData());
             Env->DeleteLocalRef(l_Java{{Camel .Name}}Array);
-	    {{- else if (eq .KindType "string")}}
-		    {{$local_value}} = FJavaHelper::ObjectArrayToFStringTArray(Env, {{$javaPropName}});
 	    {{- else if not (eq .KindType "extern")}}
             {{$javaClassConverter}}::fill{{Camel .Type }}Array(Env, {{$javaPropName}}, {{$local_value}});
 	    {{- end }}
@@ -373,13 +373,13 @@ JNI_METHOD {{ ueJniToReturnType .Return}} {{$jniFullFuncPrefix}}_{{ jniNameOpera
             {{- $javaClassConverter := printf "%sJavaConverter" ( Camel .Return.Schema.Import ) }}
 		    {{- if (eq $javaClassConverter  "JavaConverter" )}}{{- $javaClassConverter = printf "%sJavaConverter" $ModuleName }}{{ end }}
         {{- if .Return.IsArray }}
-	    {{-  if and (ueIsStdSimpleType .Return ) (not (eq .Return.KindType "enum")) }}
-            auto len = {{$cppropName}}.Num();
-		    {{ueJniToReturnType .Return}} {{$localName}} = Env->New{{ueToEnvNameType .Return}}Array(Env, len);
-		    if ({{$localName}}  == NULL){/*Log error, skip?*/};
-		    Env->Set{{ueToEnvNameType .Return}}ArrayRegion(Env, {{$localName}}, 0, len, {{$cppropName}});
-	    {{- else if (eq .Return.KindType "string")}}
+	    {{- if (eq .Return.KindType "string")}}
 		    auto {{$localName}} = FJavaHelper::ToJavaStringArray(Env,{{$cppropName}});
+	    {{- else if and (.Return.IsPrimitive ) (not (eq .Return.KindType "enum")) }}
+            auto len = {{$cppropName}}.Num();
+		    {{ueJniToReturnType .Return}} {{$localName}} = Env->New{{ueToEnvNameType .Return}}Array(len);
+		    if ({{$localName}}  == NULL){/*Log error, skip?*/};
+		    Env->Set{{ueToEnvNameType .Return}}ArrayRegion({{$localName}}, 0, len, {{$cppropName}}.GetData());
 	    {{- else if not (eq .Return.KindType "extern")}}
             {{ueJniToReturnType .Return}} {{$localName}} = {{$javaClassConverter}}::makeJava{{Camel .Return.Type }}Array(Env, {{$cppropName}});
 	    {{- end }}
@@ -420,18 +420,18 @@ JNI_METHOD void {{$jniFullFuncPrefix}}_{{ jniNameSetProperty .Name }}(JNIEnv* En
 		{{- if (eq $javaClassConverter  "JavaConverter" )}}{{- $javaClassConverter = printf "%sJavaConverter" $ModuleName}}{{ end }}
         {{- if .IsArray }}
             {{ueReturn "" .}} cpp_value = {{ ueDefault "" . }};
-	    {{- if and (ueIsStdSimpleType . ) (not (eq .KindType "enum")) }}
+	        {{- if (eq .KindType "string")}}
+		    cpp_value = FJavaHelper::ObjectArrayToFStringTArray(Env, {{$javaPropName}});
+	        {{- else if .IsPrimitive }}
             jobjectArray localArray = (jobjectArray){{$javaPropName}};
         	jsize len{{snake .Name}} = Env->GetArrayLength(localArray);
-	        cpp_value.reserve(len{{snake .Name}});
-		    Env->Get{{ueToEnvNameType .}}ArrayRegion({{$javaPropName}}, 0,  len{{snake .Name}}, cpp_value.data());
+	        cpp_value.Reserve(len{{snake .Name}});
+		    Env->Get{{ueToEnvNameType .}}ArrayRegion({{$javaPropName}}, 0,  len{{snake .Name}}, cpp_value.GetData());
             Env->DeleteLocalRef(localArray);
-	        {{- else if (eq .KindType "string")}}
-		    cpp_value = FJavaHelper::ObjectArrayToFStringTArray(Env, {{$javaPropName}});
 	        {{- else if not (eq .KindType "extern")}}
             {{$javaClassConverter}}::fill{{Camel .Type }}Array(Env, {{$javaPropName}}, cpp_value);
-	    {{- end }}
-        {{-  else if eq .KindType "enum" }}
+	        {{- end }}
+        {{- else if eq .KindType "enum" }}
 			{{ueReturn "" .}} cpp_value = {{$javaClassConverter}}::get{{Camel .Type }}Value(Env, {{$javaPropName}});
         {{- else if (eq .KindType "string")}}
 		    FString cpp_value = FJavaHelper::FStringFromParam(Env, {{$javaPropName}});
@@ -474,7 +474,7 @@ JNI_METHOD {{ueJniToReturnType .}} {{$jniFullFuncPrefix}}_{{ jniNameGetProperty 
     {{- $cppropName := ueVar "" .}}
         auto {{$cppropName}} = service->Get{{Camel .Name}}();
     {{- if or  .IsArray ( or (eq .KindType "enum") (not (ueIsStdSimpleType .))  ) }}
-    {{template "convert_to_java_type" .}}
+        {{template "convert_to_java_type" .}}
         {{- $localName := printf "jlocal_%s" (Camel .Name) }}
         return {{$localName}};
     {{- else }} 
