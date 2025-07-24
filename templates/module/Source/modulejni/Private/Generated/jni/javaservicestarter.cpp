@@ -17,7 +17,7 @@ jobject ApiGear::JavaServiceStarter::startAndroidServer(std::string fullJavaClas
     JNIEnv* Env = FAndroidApplication::GetJavaEnv();
         
 		
-    static jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef(fullJavaClassName.c_str());
+    jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef(fullJavaClassName.c_str());
     if (BridgeClass == nullptr)
     {
 		UE_LOG(LogTemp, Warning, TEXT("JavaServiceStarter:start; CLASS not found"));
@@ -40,7 +40,7 @@ void ApiGear::JavaServiceStarter::stopAdnroidServer(std::string fullJavaClassNam
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
     JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 
-    static jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef(fullJavaClassName.c_str());
+    jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef(fullJavaClassName.c_str());
     if (BridgeClass == nullptr)
     {
 		UE_LOG(LogTemp, Warning, TEXT( "JavaServiceStarter:stop; CLASS not found"));
