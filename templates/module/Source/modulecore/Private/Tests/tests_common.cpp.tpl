@@ -39,4 +39,22 @@ TArray<{{$class}}> createTest{{$class }}Array()
 	return TestValueArray;
 }
 {{ end }}
+
+{{- range .Module.Enums }}
+{{- $class := printf "E%s%s" $ModuleName .Name }}
+{{- $quickFixclass := printf "F%s%s" $ModuleName .Name }}
+TArray<{{$class}}> createTest{{$quickFixclass }}Array()
+{
+	TArray<{{$class}}> TestValueArray;
+	{{- $moduleEnumName := printf "%s%s" $ModuleName .Name }}
+{{if len  .Members }}
+	{{- $member:= (index .Members 0) }}
+	{{$class}} val = {{$class}}::{{ abbreviate $moduleEnumName }}_{{ Camel $member.Name }};
+	TestValueArray.Add(val);
+{{- end }}
+	return TestValueArray;
+}
+
+{{ end }}
+
 #endif // WITH_DEV_AUTOMATION_TESTS
