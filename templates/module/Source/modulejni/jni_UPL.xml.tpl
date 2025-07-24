@@ -11,12 +11,10 @@
 		<addPermission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
 
 		{{- $moduleName := .Module.Name }}
-		{{- range .Module.Interfaces }}
 		<addElements tag="queries">
 		{{- $service_package_name := printf "%s_android_service" (camel $moduleName) }} 
 				<package android:name="{{ueJavaPckgName $moduleName $service_package_name "" }}" />
 		</addElements>
-		{{- end }}
 		
 		<addElements tag="application">
 		

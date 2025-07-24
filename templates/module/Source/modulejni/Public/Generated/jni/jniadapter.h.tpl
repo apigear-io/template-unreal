@@ -46,10 +46,10 @@ public:
 	void Initialize(FSubsystemCollectionBase& Collection) override;
 	void Deinitialize() override;
 
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Poc|HelloIf")
-    void setBackendService(TScriptInterface<IPocHelloIfInterface> InService);
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Poc|{{Camel .Interface.Name}}")
+    void setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface> InService);
 
-	UFUNCTION(BlueprintCallable, Category = "ApiGear|Poc|HelloIf")
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Poc|{{Camel .Interface.Name}}")
 	TScriptInterface<I{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface> getBackendService();
 
 private:
