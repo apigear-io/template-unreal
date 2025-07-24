@@ -26,4 +26,10 @@ constexpr int {{$ModuleName}}TestFilterMask = EAutomationTestFlags::ApplicationC
 
 TArray<{{$class}}> {{$API_MACRO}} createTest{{$class }}Array();
 {{ end }}
+
+{{- range .Module.Enums }}
+{{- $class := printf "E%s%s" $ModuleName .Name }}
+{{- $quickFixclass := printf "F%s%s" $ModuleName .Name }}
+TArray<{{$class}}> {{$API_MACRO}} createTest{{$quickFixclass }}Array();
+{{ end }}
 #endif // WITH_DEV_AUTOMATION_TESTS
