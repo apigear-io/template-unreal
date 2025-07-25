@@ -107,12 +107,12 @@ BEGIN_DEFINE_SPEC(UOLinkHostConnectionSpec, "ApiGear.OLink.HostConnection", ApiG
 
 TUniquePtr<FOLinkHostConnectionFixture> Fixture;
 
+END_DEFINE_SPEC(UOLinkHostConnectionSpec);
+
 ApiGear::ObjectLink::WriteLogFunc logFunc = [](ApiGear::ObjectLink::LogLevel level, const std::string& msg)
 {
 	UE_LOG(LogTemp, Log, TEXT("%s"), UTF8_TO_TCHAR(msg.c_str()));
 };
-
-END_DEFINE_SPEC(UOLinkHostConnectionSpec);
 
 void UOLinkHostConnectionSpec::Define()
 {
@@ -124,7 +124,7 @@ void UOLinkHostConnectionSpec::Define()
 		TestFalse(TEXT("The host connection should yet be valid"), Fixture->HostConnection.IsValid());
 
 		Fixture->Socket = new MockNetworkingWebSocket();
-		Fixture->HostConnection = MakeShared<FOLinkHostConnection>(Fixture->Socket, Fixture->GetRegistry(), UOLinkHostConnectionSpec::logFunc);
+		Fixture->HostConnection = MakeShared<FOLinkHostConnection>(Fixture->Socket, Fixture->GetRegistry(), logFunc);
 		Fixture->Node = std::make_shared<MockNode>(Fixture->GetRegistry());
 		Fixture->HostConnection->Node.reset();
 		Fixture->HostConnection->Node = Fixture->Node;
