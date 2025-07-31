@@ -21,7 +21,7 @@ limitations under the License.
 */
 
 #include "{{$ModuleName}}/Generated/Jni/PocFromJavaConverter.h"
-#pragma once
+
 {{- $includes := getEmptyStringList}}
 {{- range .Module.Externs }}
 {{- $class := ueExtern . }}

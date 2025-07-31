@@ -7,7 +7,6 @@
 {{- $DisplayName := printf "%s%s" $ModuleName $IfaceName }}
 {{- $Class := printf "U%sJniAdapter" $DisplayName}}
 {{- $Iface := printf "%s%s" $ModuleName $IfaceName }}
-{{- $ifaceId := printf "%s.%s" .Module.Name .Interface.Name}}
 {{- $unrealservice_name:= printf "unreal%sservice" ( camel $ModuleNameRaw) }}
 {{- $javaClassPath := ueJavaPath ( camel $ModuleNameRaw) $unrealservice_name "" }}
 {{- $javaClassName :=  printf "Unreal%sService" $IfaceName }}
@@ -47,7 +46,7 @@
 ///////////////////////////////
 
 #include "{{$ModuleName}}/Generated/Jni/{{$Iface}}JniAdapter.h"
-#include "{{$ModuleName}}/Generated/Jni/PocFromJavaConverter.h"
+#include "{{$ModuleName}}/Generated/Jni/{{$ModuleName}}FromJavaConverter.h"
 #include "JavaServiceStarter.h"
 #include "Async/Future.h"
 #include "Async/Async.h"
@@ -292,7 +291,6 @@ if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
         {
             {{- $cppropName := ueVar "" .}}
             {{template "convert_to_java_type" .}}
-
             {{- $javaLocalName := printf "jlocal_%s"  (Camel .Name) }}
             {{- if or ( or .IsArray  (eq .KindType "string")) ( or (eq .KindType "enum") (not (ueIsStdSimpleType .))  ) }}
             FJavaWrapper::CallVoidMethod(Env, m_javaUnrealServiceInstance, MethodID, {{$javaLocalName}});
