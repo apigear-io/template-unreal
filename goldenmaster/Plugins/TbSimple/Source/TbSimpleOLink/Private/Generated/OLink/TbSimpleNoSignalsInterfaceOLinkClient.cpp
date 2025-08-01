@@ -234,15 +234,7 @@ bool UTbSimpleNoSignalsInterfaceOLinkClient::FuncBool(bool bParamBool)
 		{
 		ApiGear::ObjectLink::InvokeReplyFunc GetNoSignalsInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			if (!arg.value.empty())
-			{
-				Promise.SetValue(arg.value.get<bool>());
-			}
-			else
-			{
-				UE_LOG(LogTbSimpleNoSignalsInterfaceOLinkClient, Error, TEXT("FuncBool: OLink service returned empty value - should have returned type of bool"));
-				Promise.SetValue(bool());
-			}
+			Promise.SetValue(arg.value.get<bool>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcBool");
 		m_sink->GetNode()->invokeRemote(memberId, {bParamBool}, GetNoSignalsInterfaceStateFunc);

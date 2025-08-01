@@ -257,15 +257,7 @@ void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
 		ApiGear::ObjectLink::InvokeReplyFunc Get{{$IfaceName}}StateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
 			{{- if not .Return.IsArray}}
-			if (!arg.value.empty())
-			{
-				Promise.SetValue(arg.value.get<{{$returnVal}}>());
-			}
-			else
-			{
-				UE_LOG(Log{{$Iface}}OLinkClient, Error, TEXT("{{Camel .Name}}: OLink service returned empty value - should have returned type of {{$returnVal}}"));
-				Promise.SetValue({{$returnVal}}());
-			}
+			Promise.SetValue(arg.value.get<{{$returnVal}}>());
 			{{- else}}
 			Promise.SetValue(arg.value.get<{{$returnVal}}>());
 			{{- end }}
