@@ -192,15 +192,7 @@ int32 UTbRefIfacesSimpleLocalIfOLinkClient::IntMethod(int32 Param)
 		{
 		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleLocalIfStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			if (!arg.value.empty())
-			{
-				Promise.SetValue(arg.value.get<int32>());
-			}
-			else
-			{
-				UE_LOG(LogTbRefIfacesSimpleLocalIfOLinkClient, Error, TEXT("IntMethod: OLink service returned empty value - should have returned type of int32"));
-				Promise.SetValue(int32());
-			}
+			Promise.SetValue(arg.value.get<int32>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "intMethod");
 		m_sink->GetNode()->invokeRemote(memberId, {Param}, GetSimpleLocalIfStateFunc);

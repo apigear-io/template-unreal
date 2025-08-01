@@ -281,15 +281,7 @@ int32 UTestbed2ManyParamInterfaceOLinkClient::Func1(int32 Param1)
 		{
 		ApiGear::ObjectLink::InvokeReplyFunc GetManyParamInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			if (!arg.value.empty())
-			{
-				Promise.SetValue(arg.value.get<int32>());
-			}
-			else
-			{
-				UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Error, TEXT("Func1: OLink service returned empty value - should have returned type of int32"));
-				Promise.SetValue(int32());
-			}
+			Promise.SetValue(arg.value.get<int32>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func1");
 		m_sink->GetNode()->invokeRemote(memberId, {Param1}, GetManyParamInterfaceStateFunc);
@@ -312,15 +304,7 @@ int32 UTestbed2ManyParamInterfaceOLinkClient::Func2(int32 Param1, int32 Param2)
 		{
 		ApiGear::ObjectLink::InvokeReplyFunc GetManyParamInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			if (!arg.value.empty())
-			{
-				Promise.SetValue(arg.value.get<int32>());
-			}
-			else
-			{
-				UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Error, TEXT("Func2: OLink service returned empty value - should have returned type of int32"));
-				Promise.SetValue(int32());
-			}
+			Promise.SetValue(arg.value.get<int32>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func2");
 		m_sink->GetNode()->invokeRemote(memberId, {Param1, Param2}, GetManyParamInterfaceStateFunc);
@@ -343,15 +327,7 @@ int32 UTestbed2ManyParamInterfaceOLinkClient::Func3(int32 Param1, int32 Param2, 
 		{
 		ApiGear::ObjectLink::InvokeReplyFunc GetManyParamInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			if (!arg.value.empty())
-			{
-				Promise.SetValue(arg.value.get<int32>());
-			}
-			else
-			{
-				UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Error, TEXT("Func3: OLink service returned empty value - should have returned type of int32"));
-				Promise.SetValue(int32());
-			}
+			Promise.SetValue(arg.value.get<int32>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func3");
 		m_sink->GetNode()->invokeRemote(memberId, {Param1, Param2, Param3}, GetManyParamInterfaceStateFunc);
@@ -374,15 +350,7 @@ int32 UTestbed2ManyParamInterfaceOLinkClient::Func4(int32 Param1, int32 Param2, 
 		{
 		ApiGear::ObjectLink::InvokeReplyFunc GetManyParamInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			if (!arg.value.empty())
-			{
-				Promise.SetValue(arg.value.get<int32>());
-			}
-			else
-			{
-				UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Error, TEXT("Func4: OLink service returned empty value - should have returned type of int32"));
-				Promise.SetValue(int32());
-			}
+			Promise.SetValue(arg.value.get<int32>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func4");
 		m_sink->GetNode()->invokeRemote(memberId, {Param1, Param2, Param3, Param4}, GetManyParamInterfaceStateFunc);

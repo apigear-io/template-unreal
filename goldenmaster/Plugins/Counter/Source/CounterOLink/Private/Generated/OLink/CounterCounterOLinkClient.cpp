@@ -303,15 +303,7 @@ FVector UCounterCounterOLinkClient::Increment(const FVector& Vec)
 		{
 		ApiGear::ObjectLink::InvokeReplyFunc GetCounterStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			if (!arg.value.empty())
-			{
-				Promise.SetValue(arg.value.get<FVector>());
-			}
-			else
-			{
-				UE_LOG(LogCounterCounterOLinkClient, Error, TEXT("Increment: OLink service returned empty value - should have returned type of FVector"));
-				Promise.SetValue(FVector());
-			}
+			Promise.SetValue(arg.value.get<FVector>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "increment");
 		m_sink->GetNode()->invokeRemote(memberId, {Vec}, GetCounterStateFunc);
@@ -357,15 +349,7 @@ FCustomTypesVector3D UCounterCounterOLinkClient::Decrement(const FCustomTypesVec
 		{
 		ApiGear::ObjectLink::InvokeReplyFunc GetCounterStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			if (!arg.value.empty())
-			{
-				Promise.SetValue(arg.value.get<FCustomTypesVector3D>());
-			}
-			else
-			{
-				UE_LOG(LogCounterCounterOLinkClient, Error, TEXT("Decrement: OLink service returned empty value - should have returned type of FCustomTypesVector3D"));
-				Promise.SetValue(FCustomTypesVector3D());
-			}
+			Promise.SetValue(arg.value.get<FCustomTypesVector3D>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "decrement");
 		m_sink->GetNode()->invokeRemote(memberId, {Vec}, GetCounterStateFunc);

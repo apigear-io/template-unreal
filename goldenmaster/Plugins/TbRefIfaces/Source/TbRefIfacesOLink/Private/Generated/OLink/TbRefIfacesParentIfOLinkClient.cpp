@@ -232,15 +232,7 @@ TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> UTbRefIfacesParentIfOLinkCl
 		{
 		ApiGear::ObjectLink::InvokeReplyFunc GetParentIfStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			if (!arg.value.empty())
-			{
-				Promise.SetValue(arg.value.get<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>());
-			}
-			else
-			{
-				UE_LOG(LogTbRefIfacesParentIfOLinkClient, Error, TEXT("LocalIfMethod: OLink service returned empty value - should have returned type of TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>"));
-				Promise.SetValue(TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>());
-			}
+			Promise.SetValue(arg.value.get<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "localIfMethod");
 		m_sink->GetNode()->invokeRemote(memberId, {Param}, GetParentIfStateFunc);
@@ -263,15 +255,7 @@ TScriptInterface<ITbIfaceimportEmptyIfInterface> UTbRefIfacesParentIfOLinkClient
 		{
 		ApiGear::ObjectLink::InvokeReplyFunc GetParentIfStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			if (!arg.value.empty())
-			{
-				Promise.SetValue(arg.value.get<TScriptInterface<ITbIfaceimportEmptyIfInterface>>());
-			}
-			else
-			{
-				UE_LOG(LogTbRefIfacesParentIfOLinkClient, Error, TEXT("ImportedIfMethod: OLink service returned empty value - should have returned type of TScriptInterface<ITbIfaceimportEmptyIfInterface>"));
-				Promise.SetValue(TScriptInterface<ITbIfaceimportEmptyIfInterface>());
-			}
+			Promise.SetValue(arg.value.get<TScriptInterface<ITbIfaceimportEmptyIfInterface>>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "importedIfMethod");
 		m_sink->GetNode()->invokeRemote(memberId, {Param}, GetParentIfStateFunc);

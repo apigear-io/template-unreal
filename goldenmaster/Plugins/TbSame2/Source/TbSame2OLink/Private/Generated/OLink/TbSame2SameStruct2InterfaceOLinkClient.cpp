@@ -231,15 +231,7 @@ FTbSame2Struct1 UTbSame2SameStruct2InterfaceOLinkClient::Func1(const FTbSame2Str
 		{
 		ApiGear::ObjectLink::InvokeReplyFunc GetSameStruct2InterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			if (!arg.value.empty())
-			{
-				Promise.SetValue(arg.value.get<FTbSame2Struct1>());
-			}
-			else
-			{
-				UE_LOG(LogTbSame2SameStruct2InterfaceOLinkClient, Error, TEXT("Func1: OLink service returned empty value - should have returned type of FTbSame2Struct1"));
-				Promise.SetValue(FTbSame2Struct1());
-			}
+			Promise.SetValue(arg.value.get<FTbSame2Struct1>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func1");
 		m_sink->GetNode()->invokeRemote(memberId, {Param1}, GetSameStruct2InterfaceStateFunc);
@@ -262,15 +254,7 @@ FTbSame2Struct1 UTbSame2SameStruct2InterfaceOLinkClient::Func2(const FTbSame2Str
 		{
 		ApiGear::ObjectLink::InvokeReplyFunc GetSameStruct2InterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			if (!arg.value.empty())
-			{
-				Promise.SetValue(arg.value.get<FTbSame2Struct1>());
-			}
-			else
-			{
-				UE_LOG(LogTbSame2SameStruct2InterfaceOLinkClient, Error, TEXT("Func2: OLink service returned empty value - should have returned type of FTbSame2Struct1"));
-				Promise.SetValue(FTbSame2Struct1());
-			}
+			Promise.SetValue(arg.value.get<FTbSame2Struct1>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func2");
 		m_sink->GetNode()->invokeRemote(memberId, {Param1, Param2}, GetSameStruct2InterfaceStateFunc);
