@@ -44,10 +44,10 @@
 		<copyDir src="$S(PluginDir)/android/{{camel $moduleName}}/{{$api_package_name}}" dst="$S(BuildDir)/JavaLibs/{{$api_package_name}}" />
 		<copyDir src="$S(PluginDir)/android/{{camel $moduleName}}/{{$messenger_package_name}}" dst="$S(BuildDir)/JavaLibs/{{$messenger_package_name}}" />
 		<copyDir src="$S(PluginDir)/android/{{camel $moduleName}}/{{$impl_package_name}}" dst="$S(BuildDir)/JavaLibs/{{$impl_package_name}}" />
-		{{- $unrealservice_name:= printf "unreal%sservice" $moduleName }}
-		{{- $unrealclient_name:= printf "unreal%sclient" $moduleName }}
-		<copyDir src="$S(PluginDir)/android/{{camel $moduleName}}/{{$unrealservice_name}}" dst="$S(BuildDir)/src/{{$unrealservice_name}}" />
-		<copyDir src="$S(PluginDir)/android/{{camel $moduleName}}/{{$unrealclient_name}}" dst="$S(BuildDir)/src/{{$unrealclient_name}}" />
+		{{- $jniservice_name:= printf "%sjniservice" $moduleName }}
+		{{- $jniclient_name:= printf "%sjniclient" $moduleName }}
+		<copyDir src="$S(PluginDir)/android/{{camel $moduleName}}/{{$jniservice_name}}" dst="$S(BuildDir)/src/{{$jniservice_name}}" />
+		<copyDir src="$S(PluginDir)/android/{{camel $moduleName}}/{{$jniclient_name}}" dst="$S(BuildDir)/src/{{$jniclient_name}}" />
 	{{- end }}
 	</resourceCopies>
 
@@ -117,16 +117,15 @@ tasks.configureEach { task ->
 	<proguardAdditions>
 		<insert>
 		{{- range .Module.Interfaces -}}
-			{{- $unrealservice_name:= printf "unreal%sservice" $moduleName }}
-			{{- $unrealclient_name:= printf "unreal%sclient" $moduleName }}
-			-keep class {{ueJavaPckgName $moduleName $unrealservice_name ""}}.Unreal{{Camel .Name}}Service {
+			{{- $jniservice_name:= printf "%sjniservice" $moduleName }}
+			{{- $jniclient_name:= printf "%sjniclient" $moduleName }}
+			-keep class {{ueJavaPckgName $moduleName $jniservice_name ""}}.{{Camel .Name}}JniService {
 			public *;
 			}
-			-keep class {{ueJavaPckgName $moduleName $unrealservice_name ""}}.Unreal{{Camel .Name}}ServiceStarter {
+			-keep class {{ueJavaPckgName $moduleName $jniservice_name ""}}.{{Camel .Name}}JniServiceStarter {
 			public *;
 			}
-			{{- $unrealservice_name:= printf "unreal%sservice" $moduleName }}
-			-keep class {{ueJavaPckgName $moduleName $unrealclient_name ""}}.Unreal{{Camel .Name}}Client {
+			-keep class {{ueJavaPckgName $moduleName $jniclient_name ""}}.{{Camel .Name}}JniClient {
 			public *;
 			}
 		{{- end }}

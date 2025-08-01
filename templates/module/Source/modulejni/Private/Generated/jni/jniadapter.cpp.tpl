@@ -7,10 +7,10 @@
 {{- $DisplayName := printf "%s%s" $ModuleName $IfaceName }}
 {{- $Class := printf "U%sJniAdapter" $DisplayName}}
 {{- $Iface := printf "%s%s" $ModuleName $IfaceName }}
-{{- $unrealservice_name:= printf "unreal%sservice" ( camel $ModuleNameRaw) }}
-{{- $javaClassPath := ueJavaPath ( camel $ModuleNameRaw) $unrealservice_name "" }}
-{{- $javaClassName :=  printf "Unreal%sService" $IfaceName }}
-{{- $jniFullFuncPrefix := ueJniClassPathPrefix  ( camel $ModuleNameRaw) $unrealservice_name "" $javaClassName }}
+{{- $jniservice_name:= printf "%sjniservice" ( camel $ModuleNameRaw) }}
+{{- $javaClassPath := ueJavaPath ( camel $ModuleNameRaw) $jniservice_name "" }}
+{{- $javaClassName :=  printf "%sJniService" $IfaceName }}
+{{- $jniFullFuncPrefix := ueJniClassPathPrefix  ( camel $ModuleNameRaw) $jniservice_name "" $javaClassName }}
 {{- $api_module_name:= printf "%s_api" ( camel $ModuleNameRaw) }}
 {{- $javaIfClassName :=  printf "I%s" $IfaceName }}
 {{- $javaIfClassFull := printf "%s/%s" (ueJavaPath (camel $ModuleNameRaw) $api_module_name "") $javaIfClassName }}
@@ -112,9 +112,9 @@ void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
 	g{{$Class}}Handle = this;
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
-    m_javaUnrealServiceClass =  FAndroidApplication::FindJavaClassGlobalRef("{{$javaClassPath}}/{{$javaClassName}}");
+    m_javaJniServiceClass =  FAndroidApplication::FindJavaClassGlobalRef("{{$javaClassPath}}/{{$javaClassName}}");
 	jobject localRef = ApiGear::JavaServiceStarter::startAndroidServer("{{$javaClassPath}}/{{$javaClassName}}Starter", "{{$javaIfClassFull}}");
-    m_javaUnrealServiceInstance = FAndroidApplication::GetJavaEnv()->NewGlobalRef(localRef);
+    m_javaJniServiceInstance = FAndroidApplication::GetJavaEnv()->NewGlobalRef(localRef);
     FAndroidApplication::GetJavaEnv()->DeleteLocalRef(localRef);
 #endif
 #endif
@@ -126,11 +126,11 @@ void {{$Class}}::Deinitialize()
 	g{{$Class}}Handle = nullptr;
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
-    m_javaUnrealServiceClass = nullptr;
-    if (m_javaUnrealServiceInstance)
+    m_javaJniServiceClass = nullptr;
+    if (m_javaJniServiceInstance)
     {
-        FAndroidApplication::GetJavaEnv()->DeleteGlobalRef(m_javaUnrealServiceInstance);
-        m_javaUnrealServiceInstance = nullptr;
+        FAndroidApplication::GetJavaEnv()->DeleteGlobalRef(m_javaJniServiceInstance);
+        m_javaJniServiceInstance = nullptr;
     }
 #endif
 #endif
@@ -180,7 +180,7 @@ void {{$Class}}::setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{$If
 	On{{Camel .Name}}SignalHandle = BackendSignals->On{{Camel .Name}}Signal.AddUObject(this, &{{$Class}}::On{{Camel .Name}});
 {{- end }}
 
-	callJNIunrealServiceReady(true);
+	callJniServiceReady(true);
 }
 
 TScriptInterface<I{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface> {{$Class}}::getBackendService()
@@ -188,28 +188,28 @@ TScriptInterface<I{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface> {{$C
 	return BackendService;
 }
 
-void {{$Class}}::callJNIunrealServiceReady(bool isServiceReady)
+void {{$Class}}::callJniServiceReady(bool isServiceReady)
 {
     UE_LOG(LogTemp, Warning, TEXT("{{$Class}} will call the service function "));
     
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
     if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
     {
-        if (!m_javaUnrealServiceClass || !m_javaUnrealServiceInstance )
+        if (!m_javaJniServiceClass || !m_javaJniServiceInstance )
         {
-            UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:unrealServiceReady(Z)V CLASS not found"));
+            UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:nativeServiceReady(Z)V CLASS not found"));
             return;
         }
 
-        static const jmethodID MethodID = Env->GetMethodID(m_javaUnrealServiceClass, "unrealServiceReady", "(Z)V");
+        static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "nativeServiceReady", "(Z)V");
 
         if (MethodID != nullptr)
         {
-		    FJavaWrapper::CallVoidMethod(Env, m_javaUnrealServiceInstance, MethodID, isServiceReady);
+		    FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, isServiceReady);
         }
         else
         {
-            UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:unrealServiceReady(Z)V not found "));
+            UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:nativeServiceReady(Z)V not found "));
         }
     }
 #endif 
@@ -224,12 +224,12 @@ void {{$Class}}::On{{Camel .Name}}({{ueParams "" .Params}})
     if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
     {
        {{- $signatureParams:= ueJniJavaSignatureParams .Params}}
-        if (m_javaUnrealServiceClass == nullptr || m_javaUnrealServiceInstance == nullptr)
+        if (m_javaJniServiceClass == nullptr || m_javaJniServiceInstance == nullptr)
         {
             UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:{{javaOnSingalStyle .Name}} ({{$signatureParams}})V CLASS not found"));
             return;
         }
-        static const jmethodID MethodID = Env->GetMethodID(m_javaUnrealServiceClass, "{{javaOnSingalStyle .Name}}", "({{$signatureParams}})V");
+        static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "{{javaOnSingalStyle .Name}}", "({{$signatureParams}})V");
         if (MethodID != nullptr)
         {
 
@@ -237,7 +237,7 @@ void {{$Class}}::On{{Camel .Name}}({{ueParams "" .Params}})
         {{template "convert_to_java_type" .}}
         {{- end }}
 
-		    FJavaWrapper::CallVoidMethod(Env, m_javaUnrealServiceInstance, MethodID, 
+		    FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, 
         {{- range $idx, $p := .Params -}} {{- if $idx}}, {{ end -}}
             {{- $javaPropName := Camel .Name}}
             {{- $cppropName := ueVar "" .}}
@@ -278,7 +278,7 @@ void {{$Class}}::On{{Camel .Name}}Changed({{ueParam "" .}})
     {{- $signature := printf "(%s)V" (ueJniJavaSignatureParam .)}}
 if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
     {
-        if (m_javaUnrealServiceClass == nullptr)
+        if (m_javaJniServiceClass == nullptr)
         {
             UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}::{{javaOnPropertyChangedStyle .Name}}{{$signature}} CLASS not found"));
             return;
@@ -286,17 +286,17 @@ if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 
         
          
-        static const jmethodID MethodID = Env->GetMethodID(m_javaUnrealServiceClass, "{{javaOnPropertyChangedStyle .Name}}","{{$signature}}");
+        static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "{{javaOnPropertyChangedStyle .Name}}","{{$signature}}");
         if (MethodID != nullptr)
         {
             {{- $cppropName := ueVar "" .}}
             {{template "convert_to_java_type" .}}
             {{- $javaLocalName := printf "jlocal_%s"  (Camel .Name) }}
             {{- if or ( or .IsArray  (eq .KindType "string")) ( or (eq .KindType "enum") (not (ueIsStdSimpleType .))  ) }}
-            FJavaWrapper::CallVoidMethod(Env, m_javaUnrealServiceInstance, MethodID, {{$javaLocalName}});
+            FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, {{$javaLocalName}});
             Env->DeleteLocalRef({{$javaLocalName}});
             {{- else }} 
-            FJavaWrapper::CallVoidMethod(Env, m_javaUnrealServiceInstance, MethodID, {{$cppropName}});
+            FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, {{$cppropName}});
             {{- end }}
         }
         else

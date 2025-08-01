@@ -33,11 +33,11 @@ limitations under the License.
 {{- $Class := printf "U%sJniClient" $DisplayName}}
 {{- $Iface := printf "%s%s" $ModuleName $IfaceName }}
 {{- $ModuleNameRaw :=  .Module.Name}}
-{{- $unrealjavaclient_name:= printf "unreal%sclient" ( camel $ModuleNameRaw) }}//TODO 
-{{- $javaClassPath := ueJavaPath ( camel $ModuleNameRaw) $unrealjavaclient_name "" }}
-{{- $javaClassName :=  printf "Unreal%sClient" $IfaceName }}
-{{- $jniFullFuncPrefix := ueJniClassPathPrefix  ( camel $ModuleNameRaw) $unrealjavaclient_name "" $javaClassName }}
-{{- $javaClassFull := printf "%s/%s" (ueJavaPath (camel $ModuleNameRaw) $unrealjavaclient_name "") $javaClassName }}
+{{- $jniclient_name:= printf "%sjniclient" ( camel $ModuleNameRaw) }}//TODO 
+{{- $javaClassPath := ueJavaPath ( camel $ModuleNameRaw) $jniclient_name "" }}
+{{- $javaClassName :=  printf "%sJniClient" $IfaceName }}
+{{- $jniFullFuncPrefix := ueJniClassPathPrefix  ( camel $ModuleNameRaw) $jniclient_name "" $javaClassName }}
+{{- $javaClassFull := printf "%s/%s" (ueJavaPath (camel $ModuleNameRaw) $jniclient_name "") $javaClassName }}
 
 {{- define "convert_to_java_type_in_param"}}
             {{- $localName := printf "jlocal_%s" (Camel .Name) }}
@@ -162,10 +162,10 @@ void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
     JNIEnv* Env = FAndroidApplication::GetJavaEnv();
     
-    m_javaUnrealClientClass = FAndroidApplication::FindJavaClassGlobalRef("{{$javaClassFull}}");
-    jmethodID constructor = Env->GetMethodID(m_javaUnrealClientClass, "<init>", "()V");
-    jobject localRef = Env->NewObject(m_javaUnrealClientClass, constructor);
-    m_javaUnrealClientInstance = Env->NewGlobalRef(localRef);
+    m_javaJniClientClass = FAndroidApplication::FindJavaClassGlobalRef("{{$javaClassFull}}");
+    jmethodID constructor = Env->GetMethodID(m_javaJniClientClass, "<init>", "()V");
+    jobject localRef = Env->NewObject(m_javaJniClientClass, constructor);
+    m_javaJniClientInstance = Env->NewGlobalRef(localRef);
     FAndroidApplication::GetJavaEnv()->DeleteLocalRef(localRef);
 #endif
 }
@@ -176,9 +176,9 @@ void {{$Class}}::Deinitialize()
     _unbind();
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
     JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-    Env->DeleteGlobalRef(m_javaUnrealClientInstance);
-    m_javaUnrealClientClass = nullptr;
-    m_javaUnrealClientInstance = nullptr;
+    Env->DeleteGlobalRef(m_javaJniClientInstance);
+    m_javaJniClientClass = nullptr;
+    m_javaJniClientInstance = nullptr;
 #endif
     notifyIsReady = [](bool value){(void)value; UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("notifyIsReady used but not set "));};
     {{- range .Interface.Properties}}
@@ -214,22 +214,22 @@ void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
     if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
     {
         {{- $signatureParam := ueJniJavaSignatureParam . }}
-        if (m_javaUnrealClientClass == nullptr)
+        if (m_javaJniClientClass == nullptr)
         {
             UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:set{{Camel .Name}} ({{$signatureParam}})V CLASS not found"));
             return;
         }
-        static jmethodID MethodID = Env->GetMethodID(m_javaUnrealClientClass, "set{{Camel .Name}}", "({{$signatureParam}})V");
+        static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "set{{Camel .Name}}", "({{$signatureParam}})V");
         if (MethodID != nullptr)
         {
             {{- $cppropName := ueVar "In" .}}
             {{- if or ( or .IsArray  (eq .KindType "string")) ( or (eq .KindType "enum") (not (ueIsStdSimpleType .))  ) }}
             {{template "convert_to_java_type_in_param" .}}
             {{- $javaLocalName := printf "jlocal_%s"  (Camel .Name) }}
-            FJavaWrapper::CallVoidMethod(Env, m_javaUnrealClientInstance, MethodID, {{$javaLocalName}});
+            FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, {{$javaLocalName}});
             Env->DeleteLocalRef({{$javaLocalName}});
             {{- else }} 
-            FJavaWrapper::CallVoidMethod(Env, m_javaUnrealClientInstance, MethodID, {{$cppropName}});
+            FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, {{$cppropName}});
             {{- end }}
 
         }
@@ -256,14 +256,14 @@ void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
     UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:{{.Name}} "));
-    if (m_javaUnrealClientClass == nullptr)
+    if (m_javaJniClientClass == nullptr)
     {
         {{- $signatureParams:= ueJniJavaSignatureParams .Params}}
         UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:{{camel .Name}}Async:(Ljava/lang/String;{{$signatureParams}})V CLASS not found"));
         return {{ueDefault "" .Return }};
     }
     JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-    static jmethodID MethodID = Env->GetMethodID(m_javaUnrealClientClass, "{{camel .Name}}Async", "(Ljava/lang/String;{{$signatureParams}})V");
+    static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "{{camel .Name}}Async", "(Ljava/lang/String;{{$signatureParams}})V");
     if (MethodID != nullptr)
     {
         auto id = g{{$Class}}methodHelper.StorePromise(Promise);
@@ -273,7 +273,7 @@ void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
         {{template "convert_to_java_type_in_param" .}}
         {{- end }};
 
-        FJavaWrapper::CallVoidMethod(Env, m_javaUnrealClientInstance, MethodID, *idString, {{- range $idx, $p := .Params -}} {{- if $idx}}, {{ end -}}
+        FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, {{- range $idx, $p := .Params -}} {{- if $idx}}, {{ end -}}
             {{- $javaPropName := Camel .Name}}
             {{- $cppropName := ueVar "In" .}}
             {{- $localName := printf "jlocal_%s" $javaPropName }}
@@ -325,18 +325,18 @@ bool {{$Class}}::_bindToService(FString servicePackage, FString connectionId){
     m_lastConnectionId = connectionId;
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
     JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-    if (m_javaUnrealClientClass == nullptr)
+    if (m_javaJniClientClass == nullptr)
     {
         UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:bind:(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z CLASS not found"));
         return false;
     }
-    static jmethodID MethodID = Env->GetMethodID(m_javaUnrealClientClass, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
+    static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
     if (MethodID != nullptr)
     {
         jobject Activity = FJavaWrapper::GameActivityThis;
         auto jPackage = FJavaHelper::ToJavaString(Env, servicePackage);
         auto jConnId = FJavaHelper::ToJavaString(Env, connectionId);
-        auto res = FJavaWrapper::CallBooleanMethod(Env, m_javaUnrealClientInstance, MethodID, Activity, *jPackage, *jConnId);
+        auto res = FJavaWrapper::CallBooleanMethod(Env, m_javaJniClientInstance, MethodID, Activity, *jPackage, *jConnId);
         return res;
     }
     else
@@ -354,15 +354,15 @@ void {{$Class}}::_unbind()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
     JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-    if (m_javaUnrealClientClass == nullptr)
+    if (m_javaJniClientClass == nullptr)
     {
         UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:unbind:()V CLASS not found"));
         return;
     }
-    static jmethodID MethodID = Env->GetMethodID(m_javaUnrealClientClass, "unbind", "()V");
+    static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "unbind", "()V");
     if (MethodID != nullptr)
     {
-        FJavaWrapper::CallVoidMethod(Env, m_javaUnrealClientInstance, MethodID);
+        FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID);
     }
     else
     {

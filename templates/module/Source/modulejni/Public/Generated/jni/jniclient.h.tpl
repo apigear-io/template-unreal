@@ -86,7 +86,7 @@ private:
 	FString m_lastBoundServicePackage;
 	FString m_lastConnectionId;
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-	jclass m_javaUnrealClientClass = nullptr;
-	jobject m_javaUnrealClientInstance = nullptr;
+	jclass m_javaJniClientClass = nullptr;
+	jobject m_javaJniClientInstance = nullptr;
 #endif
 };

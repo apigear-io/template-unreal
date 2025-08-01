@@ -54,13 +54,13 @@ public:
 
 private:
     //helper function, wraps calling java service side
-    void callJNIunrealServiceReady(bool isServiceReady);
+    void callJniServiceReady(bool isServiceReady);
 
 	// helper member;
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
-	jclass m_javaUnrealServiceClass = nullptr;
-	jobject m_javaUnrealServiceInstance = nullptr;
+	jclass m_javaJniServiceClass = nullptr;
+	jobject m_javaJniServiceInstance = nullptr;
 #endif
 #endif
 
