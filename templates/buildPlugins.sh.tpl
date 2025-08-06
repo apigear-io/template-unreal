@@ -71,7 +71,7 @@ cleanup()
 	then
 		echo "Restoring old ApiGear plugins in UE installation"
 		rm -rf "$ApiGearTarget_path"
-		mv "$UEplugins_path/../ApiGearBackUp" "$ApiGearTarget_path" >nul
+		mv "$UEplugins_path/../ApiGearBackUp" "$ApiGearTarget_path" >/dev/null
 	else
 		echo "Deleting temporary ApiGear plugin installation from UE"
 		rm -rf "$ApiGearTarget_path"
