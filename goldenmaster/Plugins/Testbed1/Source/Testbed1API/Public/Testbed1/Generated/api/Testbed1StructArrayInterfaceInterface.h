@@ -176,8 +176,7 @@ public:
 /**
  * Interface UTestbed1StructArrayInterfaceInterface only for Unreal Engine's reflection system
  */
-// Note: meta=(CannotImplementInterfaceInBlueprint) is equal to NotBlueprintable and is only needed for UE 4.27
-UINTERFACE(NotBlueprintable, MinimalAPI, meta = (CannotImplementInterfaceInBlueprint))
+UINTERFACE(BlueprintType, MinimalAPI, meta = (CannotImplementInterfaceInBlueprint))
 class UTestbed1StructArrayInterfaceInterface : public UInterface
 {
 	GENERATED_BODY()
