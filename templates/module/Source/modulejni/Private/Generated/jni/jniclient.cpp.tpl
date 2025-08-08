@@ -33,11 +33,11 @@ limitations under the License.
 {{- $Class := printf "U%sJniClient" $DisplayName}}
 {{- $Iface := printf "%s%s" $ModuleName $IfaceName }}
 {{- $ModuleNameRaw :=  .Module.Name}}
-{{- $jniclient_name:= printf "%sjniclient" ( camel $ModuleNameRaw) }}//TODO 
-{{- $javaClassPath := ueJavaPath ( camel $ModuleNameRaw) $jniclient_name "" }}
+{{- $jniclient_name:= printf "%sjniclient" ( camel $ModuleNameRaw) }}
+{{- $javaClassPath :=  ( join "/" (strSlice (camel $ModuleNameRaw) $jniclient_name ) ) }}
 {{- $javaClassName :=  printf "%sJniClient" $IfaceName }}
-{{- $jniFullFuncPrefix := ueJniClassPathPrefix  ( camel $ModuleNameRaw) $jniclient_name "" $javaClassName }}
-{{- $javaClassFull := printf "%s/%s" (ueJavaPath (camel $ModuleNameRaw) $jniclient_name "") $javaClassName }}
+{{- $jniFullFuncPrefix := ( join "_" (strSlice "Java" ( camel $ModuleNameRaw) $jniclient_name $javaClassName ) ) }}
+{{- $javaClassFull :=  ( join "/" (strSlice (camel $ModuleNameRaw) $jniclient_name $javaClassName  ) ) }}
 
 {{- define "convert_to_java_type_in_param"}}
             {{- $localName := printf "jlocal_%s" (Camel .Name) }}
@@ -380,7 +380,7 @@ bool {{$Class}}::_IsReady() const
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 
 {{- range .Interface.Properties }}
-{{- $javaPropName := Camel .Name}}
+{{- $javaPropName := .Name}}
 JNI_METHOD void {{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}Changed(JNIEnv* Env, jclass Clazz,{{ueJniJavaParam "" . }})
 {
     if (g{{$Class}}Handle == nullptr)
@@ -439,7 +439,7 @@ JNI_METHOD void {{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}(JNIEnv* Env, jcla
     }
 
 {{- range .Params -}}
-    {{- $javaPropName := Camel .Name}}
+    {{- $javaPropName := .Name}}
     {{- $javaClassConverter := printf "%sJavaConverter" ( Camel .Schema.Import ) }}
     {{- $local_value :=  printf "local_%s" (snake .Name) }}
 	{{- if (eq $javaClassConverter  "JavaConverter" )}}{{- $javaClassConverter = printf "%sJavaConverter" $ModuleName}}{{ end }}
@@ -472,7 +472,7 @@ JNI_METHOD void {{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}(JNIEnv* Env, jcla
             {{- if $idx}}, {{ end -}}
             {{- $local_value :=  printf "local_%s" (snake .Name) -}}
             {{- if or  .IsArray ( or (eq .KindType "enum") (not (ueIsStdSimpleType .))  ) }} {{$local_value -}}
-            {{- else }} {{ ueVar "" .}}
+            {{- else }} {{.Name}}
             {{- end -}}
         {{- end -}}]()
         {
@@ -480,7 +480,7 @@ JNI_METHOD void {{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}(JNIEnv* Env, jcla
             {{- if $idx}}, {{ end -}}
             {{- $local_value :=  printf "local_%s" (snake .Name) -}}
             {{- if or  .IsArray ( or (eq .KindType "enum") (not (ueIsStdSimpleType .))  ) }} {{$local_value -}}
-            {{- else }} {{ ueVar "" .}}
+            {{- else }} {{ .Name}}
             {{- end -}}
         {{- end -}});
         });

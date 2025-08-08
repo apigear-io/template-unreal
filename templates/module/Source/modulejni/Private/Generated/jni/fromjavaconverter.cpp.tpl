@@ -1,7 +1,7 @@
 {{/* Copyright Epic Games, Inc. All Rights Reserved */}}
 {{- $API_MACRO := printf "%sAPI_API" (CAMEL .Module.Name) }}
 {{- $ModuleName := Camel .Module.Name -}}
-{{- $moduleName := Camel .Module.Name -}}
+{{- $moduleName := camel .Module.Name -}}
 {{- $Category := printf "ApiGear|%s" $ModuleName }}
 /**
 Copyright 2021 ApiGear UG
@@ -133,7 +133,7 @@ void {{$className }}::fill{{Camel .Name }}Array(JNIEnv* env, jobjectArray input,
 
 {{- $in_cppStructName := printf "out_%s" (snake .Name)}}
 {{- $api_package_name := printf "%s_api" (camel $moduleName) }}
-{{- $packageName := ueJavaPath $moduleName $api_package_name ""}}
+{{- $packageName := ( join "/" (strSlice $moduleName $api_package_name) ) }}
 {{- $javaClassTypeName := .Name}}
 
 jobject {{$className }}::makeJava{{Camel .Name }}(JNIEnv* env, const {{$structType}}& {{$in_cppStructName}})
@@ -218,7 +218,7 @@ jobjectArray {{$className }}::makeJava{{Camel .Name }}Array(JNIEnv* env, const T
 
 {{- $in_cppStructName := printf "out_%s" (snake .Name)}}
 {{- $api_package_name := printf "%s_api" (camel $moduleName) }}
-{{- $packageName := ueJavaPath $moduleName $api_package_name ""}}
+{{- $packageName := ( join "/" (strSlice $moduleName $api_package_name) ) }}
 {{- $javaClassTypeName := Camel .Name}}
 
 

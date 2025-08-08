@@ -8,12 +8,12 @@
 {{- $Class := printf "U%sJniAdapter" $DisplayName}}
 {{- $Iface := printf "%s%s" $ModuleName $IfaceName }}
 {{- $jniservice_name:= printf "%sjniservice" ( camel $ModuleNameRaw) }}
-{{- $javaClassPath := ueJavaPath ( camel $ModuleNameRaw) $jniservice_name "" }}
+{{- $javaClassPath := ( join "/" (strSlice ( camel $ModuleNameRaw) $jniservice_name) ) }}
 {{- $javaClassName :=  printf "%sJniService" $IfaceName }}
-{{- $jniFullFuncPrefix := ueJniClassPathPrefix  ( camel $ModuleNameRaw) $jniservice_name "" $javaClassName }}
+{{- $jniFullFuncPrefix := ( join "_" (strSlice "Java" ( camel $ModuleNameRaw) $jniservice_name $javaClassName ) ) }}
 {{- $api_module_name:= printf "%s_api" ( camel $ModuleNameRaw) }}
 {{- $javaIfClassName :=  printf "I%s" $IfaceName }}
-{{- $javaIfClassFull := printf "%s/%s" (ueJavaPath (camel $ModuleNameRaw) $api_module_name "") $javaIfClassName }}
+{{- $javaIfClassFull :=  ( join "/" (strSlice (camel $ModuleNameRaw) $api_module_name $javaIfClassName ) ) }}
 
 
 {{- define "convert_to_java_type"}}
@@ -220,16 +220,16 @@ void {{$Class}}::callJniServiceReady(bool isServiceReady)
 void {{$Class}}::On{{Camel .Name}}({{ueParams "" .Params}})
 {
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    UE_LOG(Log{{$Iface}}_JNI, Verbose, TEXT("Notify java jni part {{$Class}}::{{javaOnSingalStyle .Name}} "));
+    UE_LOG(Log{{$Iface}}_JNI, Verbose, TEXT("Notify java jni part {{$Class}}::on{{Camel .Name}} "));
     if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
     {
        {{- $signatureParams:= ueJniJavaSignatureParams .Params}}
         if (m_javaJniServiceClass == nullptr || m_javaJniServiceInstance == nullptr)
         {
-            UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:{{javaOnSingalStyle .Name}} ({{$signatureParams}})V CLASS not found"));
+            UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:on{{Camel .Name}} ({{$signatureParams}})V CLASS not found"));
             return;
         }
-        static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "{{javaOnSingalStyle .Name}}", "({{$signatureParams}})V");
+        static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "on{{Camel .Name}}", "({{$signatureParams}})V");
         if (MethodID != nullptr)
         {
 
@@ -261,7 +261,7 @@ void {{$Class}}::On{{Camel .Name}}({{ueParams "" .Params}})
         }
         else
         {
-            UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:{{javaOnSingalStyle .Name}} ({{$signatureParams}})V not found"));
+            UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:on{{Camel .Name}} ({{$signatureParams}})V not found"));
         }
     }
 #endif
@@ -280,13 +280,13 @@ if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
     {
         if (m_javaJniServiceClass == nullptr)
         {
-            UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}::{{javaOnPropertyChangedStyle .Name}}{{$signature}} CLASS not found"));
+            UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}::on{{Camel .Name}}Changed{{$signature}} CLASS not found"));
             return;
         }
 
         
          
-        static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "{{javaOnPropertyChangedStyle .Name}}","{{$signature}}");
+        static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "on{{Camel .Name}}Changed","{{$signature}}");
         if (MethodID != nullptr)
         {
             {{- $cppropName := ueVar "" .}}
@@ -301,7 +301,7 @@ if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
         }
         else
         {
-            UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:{{javaOnPropertyChangedStyle .Name}}{{$signature}} not found"));
+            UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:on{{Camel .Name}}Changed{{$signature}} not found"));
         }
     }
 #endif
@@ -314,15 +314,15 @@ if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 
 {{- range .Interface.Operations }}
-JNI_METHOD {{ ueJniToReturnType .Return}} {{$jniFullFuncPrefix}}_{{ jniNameOperation   .Name }}(JNIEnv* Env, jclass Clazz, {{ueJniJavaParams "" .Params }})
+JNI_METHOD {{ ueJniToReturnType .Return}} {{$jniFullFuncPrefix}}_native{{ Camel   .Name }}(JNIEnv* Env, jclass Clazz, {{ueJniJavaParams "" .Params }})
 {
     if (g{{$Class}}Handle == nullptr)
     {
-        UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$jniFullFuncPrefix}}_{{ jniNameOperation   .Name }}: JNI SERVICE ADAPTER NOT FOUND "));
+        UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$jniFullFuncPrefix}}_native{{ Camel   .Name }}: JNI SERVICE ADAPTER NOT FOUND "));
         return {{ ueJniEmptyReturn .Return }};
     }
         {{- range .Params -}}
-            {{- $javaPropName := Camel .Name}}
+            {{- $javaPropName := .Name}}
             {{- $javaClassConverter := printf "%sJavaConverter" ( Camel .Schema.Import ) }}
             {{- $local_value :=  printf "local_%s" (snake .Name) }}
 		    {{- if (eq $javaClassConverter  "JavaConverter" )}}{{- $javaClassConverter = printf "%sJavaConverter" $ModuleName}}{{ end }}
@@ -359,7 +359,7 @@ JNI_METHOD {{ ueJniToReturnType .Return}} {{$jniFullFuncPrefix}}_{{ jniNameOpera
             {{- if $idx}}, {{ end -}}
             {{- $local_value :=  printf "local_%s" (snake .Name) -}}
             {{- if or  .IsArray ( or (eq .KindType "enum") (not (ueIsStdSimpleType .))  ) }} {{$local_value -}}
-            {{- else }} {{ ueVar "" .}}
+            {{- else }} {{.Name}}
             {{- end -}}
         {{- end -}}
         );
@@ -403,13 +403,13 @@ JNI_METHOD {{ ueJniToReturnType .Return}} {{$jniFullFuncPrefix}}_{{ jniNameOpera
 
 {{- range .Interface.Properties }}
 {{- if not .IsReadOnly }}
-{{- $javaPropName := Camel .Name}}
-JNI_METHOD void {{$jniFullFuncPrefix}}_{{ jniNameSetProperty .Name }}(JNIEnv* Env, jclass Clazz, {{ueJniJavaParam "" . }})
+{{- $javaPropName := .Name}}
+JNI_METHOD void {{$jniFullFuncPrefix}}_nativeSet{{ Camel .Name }}(JNIEnv* Env, jclass Clazz, {{ueJniJavaParam "" . }})
 {
 
         if (g{{$Class}}Handle == nullptr)
         {
-            UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$jniFullFuncPrefix}}_{{ jniNameSetProperty .Name }}: JNI SERVICE ADAPTER NOT FOUND "));
+            UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$jniFullFuncPrefix}}_nativeSet{{ Camel .Name }}: JNI SERVICE ADAPTER NOT FOUND "));
             return;
         }
 
@@ -459,11 +459,11 @@ JNI_METHOD void {{$jniFullFuncPrefix}}_{{ jniNameSetProperty .Name }}(JNIEnv* En
 }
 {{- end}}
 
-JNI_METHOD {{ueJniToReturnType .}} {{$jniFullFuncPrefix}}_{{ jniNameGetProperty .Name }}(JNIEnv* Env, jclass Clazz)
+JNI_METHOD {{ueJniToReturnType .}} {{$jniFullFuncPrefix}}_nativeGet{{ Camel .Name }}(JNIEnv* Env, jclass Clazz)
 {
     if (g{{$Class}}Handle == nullptr)
     {
-        UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$jniFullFuncPrefix}}_{{ jniNameGetProperty .Name }}: JNI SERVICE ADAPTER NOT FOUND "));
+        UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$jniFullFuncPrefix}}_nativeGet{{Camel .Name }}: JNI SERVICE ADAPTER NOT FOUND "));
         return {{ ueJniEmptyReturn . }};
     }
     auto service = g{{$Class}}Handle->getBackendService();

@@ -12,9 +12,9 @@
 
 		{{- $moduleName := .Module.Name }}
 		{{- $service_package_name := printf "%s_android_service" (camel $moduleName) }} 
-		<addPermission android:name="{{ueJavaPckgName $moduleName $service_package_name "" }}.PERMISSION_BIND"/>
+		<addPermission android:name="{{$moduleName}}.{{$service_package_name}}.PERMISSION_BIND"/>
 		<addElements tag="queries">
-				<package android:name="{{ueJavaPckgName $moduleName $service_package_name "" }}" />
+				<package android:name="{{$moduleName}}.{{$service_package_name}}" />
 		</addElements>
 		
 		<addElements tag="application">
@@ -22,7 +22,7 @@
 		{{- range .Module.Interfaces -}}
 		<service
 			{{- $service_package_name := printf "%s_android_service" (camel $moduleName) }} 
-			android:name="{{ueJavaPckgName $moduleName $service_package_name "" }}.{{Camel .Name}}ServiceAdapter"
+			android:name="{{$moduleName}}.{{$service_package_name}}.{{Camel .Name}}ServiceAdapter"
 			android:enabled="true"
 			android:exported="true">
 		</service>
@@ -119,13 +119,13 @@ tasks.configureEach { task ->
 		{{- range .Module.Interfaces -}}
 			{{- $jniservice_name:= printf "%sjniservice" $moduleName }}
 			{{- $jniclient_name:= printf "%sjniclient" $moduleName }}
-			-keep class {{ueJavaPckgName $moduleName $jniservice_name ""}}.{{Camel .Name}}JniService {
+			-keep class {{$moduleName}}.{{$jniservice_name}}.{{Camel .Name}}JniService {
 			public *;
 			}
-			-keep class {{ueJavaPckgName $moduleName $jniservice_name ""}}.{{Camel .Name}}JniServiceStarter {
+			-keep class {{$moduleName}}.{{$jniservice_name}}.{{Camel .Name}}JniServiceStarter {
 			public *;
 			}
-			-keep class {{ueJavaPckgName $moduleName $jniclient_name ""}}.{{Camel .Name}}JniClient {
+			-keep class {{$moduleName}}.{{$jniservice_name}}.{{Camel .Name}}JniClient {
 			public *;
 			}
 		{{- end }}
