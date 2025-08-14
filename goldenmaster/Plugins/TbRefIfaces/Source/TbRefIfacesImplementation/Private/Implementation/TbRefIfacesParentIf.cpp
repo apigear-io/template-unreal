@@ -31,6 +31,19 @@ void UTbRefIfacesParentIfImplementation::SetLocalIf(const TScriptInterface<ITbRe
 		_GetSignals()->BroadcastLocalIfChanged(LocalIf);
 	}
 }
+TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> UTbRefIfacesParentIfImplementation::GetLocalIfList() const
+{
+	return LocalIfList;
+}
+
+void UTbRefIfacesParentIfImplementation::SetLocalIfList(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InLocalIfList)
+{
+	if (LocalIfList != InLocalIfList)
+	{
+		LocalIfList = InLocalIfList;
+		_GetSignals()->BroadcastLocalIfListChanged(LocalIfList);
+	}
+}
 TScriptInterface<ITbIfaceimportEmptyIfInterface> UTbRefIfacesParentIfImplementation::GetImportedIf() const
 {
 	return ImportedIf;
@@ -44,12 +57,32 @@ void UTbRefIfacesParentIfImplementation::SetImportedIf(const TScriptInterface<IT
 		_GetSignals()->BroadcastImportedIfChanged(ImportedIf);
 	}
 }
+TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> UTbRefIfacesParentIfImplementation::GetImportedIfList() const
+{
+	return ImportedIfList;
+}
+
+void UTbRefIfacesParentIfImplementation::SetImportedIfList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InImportedIfList)
+{
+	if (ImportedIfList != InImportedIfList)
+	{
+		ImportedIfList = InImportedIfList;
+		_GetSignals()->BroadcastImportedIfListChanged(ImportedIfList);
+	}
+}
 
 TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> UTbRefIfacesParentIfImplementation::LocalIfMethod(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Param)
 {
 	(void)Param;
 	// do business logic here
 	return TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>();
+}
+
+TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> UTbRefIfacesParentIfImplementation::LocalIfMethodList(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param)
+{
+	(void)Param;
+	// do business logic here
+	return TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>();
 }
 
 TScriptInterface<ITbIfaceimportEmptyIfInterface> UTbRefIfacesParentIfImplementation::ImportedIfMethod(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param)
@@ -59,6 +92,13 @@ TScriptInterface<ITbIfaceimportEmptyIfInterface> UTbRefIfacesParentIfImplementat
 	return TScriptInterface<ITbIfaceimportEmptyIfInterface>();
 }
 
+TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> UTbRefIfacesParentIfImplementation::ImportedIfMethodList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param)
+{
+	(void)Param;
+	// do business logic here
+	return TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>();
+}
+
 void UTbRefIfacesParentIfImplementation::_ResetProperties()
 {
 	if (LocalIf != TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>())
@@ -66,9 +106,19 @@ void UTbRefIfacesParentIfImplementation::_ResetProperties()
 		LocalIf = TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>();
 		_GetSignals()->BroadcastLocalIfChanged(LocalIf);
 	}
+	if (LocalIfList != TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>())
+	{
+		LocalIfList = TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>();
+		_GetSignals()->BroadcastLocalIfListChanged(LocalIfList);
+	}
 	if (ImportedIf != TScriptInterface<ITbIfaceimportEmptyIfInterface>())
 	{
 		ImportedIf = TScriptInterface<ITbIfaceimportEmptyIfInterface>();
 		_GetSignals()->BroadcastImportedIfChanged(ImportedIf);
+	}
+	if (ImportedIfList != TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>())
+	{
+		ImportedIfList = TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>();
+		_GetSignals()->BroadcastImportedIfListChanged(ImportedIfList);
 	}
 }

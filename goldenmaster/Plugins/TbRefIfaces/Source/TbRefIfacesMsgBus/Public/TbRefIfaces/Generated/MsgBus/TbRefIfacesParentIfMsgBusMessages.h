@@ -58,7 +58,13 @@ struct FTbRefIfacesParentIfInitMessage
 	TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> LocalIf = TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>();
 
 	UPROPERTY()
+	TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> LocalIfList = TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>();
+
+	UPROPERTY()
 	TScriptInterface<ITbIfaceimportEmptyIfInterface> ImportedIf = TScriptInterface<ITbIfaceimportEmptyIfInterface>();
+
+	UPROPERTY()
+	TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> ImportedIfList = TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>();
 };
 
 USTRUCT()
@@ -101,12 +107,30 @@ struct FTbRefIfacesParentIfLocalIfSignalSignalMessage
 };
 
 USTRUCT()
+struct FTbRefIfacesParentIfLocalIfSignalListSignalMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> Param = TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>();
+};
+
+USTRUCT()
 struct FTbRefIfacesParentIfImportedIfSignalSignalMessage
 {
 	GENERATED_BODY()
 
 	UPROPERTY()
 	TScriptInterface<ITbIfaceimportEmptyIfInterface> Param = TScriptInterface<ITbIfaceimportEmptyIfInterface>();
+};
+
+USTRUCT()
+struct FTbRefIfacesParentIfImportedIfSignalListSignalMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> Param = TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>();
 };
 
 USTRUCT()
@@ -128,6 +152,24 @@ struct FTbRefIfacesParentIfLocalIfChangedMessage
 };
 
 USTRUCT()
+struct FTbRefIfacesParentIfSetLocalIfListRequestMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> LocalIfList = TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>();
+};
+
+USTRUCT()
+struct FTbRefIfacesParentIfLocalIfListChangedMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> LocalIfList = TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>();
+};
+
+USTRUCT()
 struct FTbRefIfacesParentIfSetImportedIfRequestMessage
 {
 	GENERATED_BODY()
@@ -143,6 +185,24 @@ struct FTbRefIfacesParentIfImportedIfChangedMessage
 
 	UPROPERTY()
 	TScriptInterface<ITbIfaceimportEmptyIfInterface> ImportedIf = TScriptInterface<ITbIfaceimportEmptyIfInterface>();
+};
+
+USTRUCT()
+struct FTbRefIfacesParentIfSetImportedIfListRequestMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> ImportedIfList = TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>();
+};
+
+USTRUCT()
+struct FTbRefIfacesParentIfImportedIfListChangedMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> ImportedIfList = TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>();
 };
 
 USTRUCT()
@@ -170,6 +230,30 @@ struct FTbRefIfacesParentIfLocalIfMethodReplyMessage
 };
 
 USTRUCT()
+struct FTbRefIfacesParentIfLocalIfMethodListRequestMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	FGuid ResponseId;
+
+	UPROPERTY()
+	TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> Param = TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>();
+};
+
+USTRUCT()
+struct FTbRefIfacesParentIfLocalIfMethodListReplyMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	FGuid ResponseId;
+
+	UPROPERTY()
+	TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> Result = TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>();
+};
+
+USTRUCT()
 struct FTbRefIfacesParentIfImportedIfMethodRequestMessage
 {
 	GENERATED_BODY()
@@ -191,4 +275,28 @@ struct FTbRefIfacesParentIfImportedIfMethodReplyMessage
 
 	UPROPERTY()
 	TScriptInterface<ITbIfaceimportEmptyIfInterface> Result = TScriptInterface<ITbIfaceimportEmptyIfInterface>();
+};
+
+USTRUCT()
+struct FTbRefIfacesParentIfImportedIfMethodListRequestMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	FGuid ResponseId;
+
+	UPROPERTY()
+	TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> Param = TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>();
+};
+
+USTRUCT()
+struct FTbRefIfacesParentIfImportedIfMethodListReplyMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	FGuid ResponseId;
+
+	UPROPERTY()
+	TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> Result = TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>();
 };

@@ -44,15 +44,27 @@ public:
 	virtual void LocalIfMethodAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Result, const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Param) override;
 	virtual TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> LocalIfMethod(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Param) override PURE_VIRTUAL(UAbstractTbRefIfacesParentIf::LocalIfMethod, return TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>(););
 
+	virtual void LocalIfMethodListAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Result, const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param) override;
+	virtual TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> LocalIfMethodList(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param) override PURE_VIRTUAL(UAbstractTbRefIfacesParentIf::LocalIfMethodList, return TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>(););
+
 	virtual void ImportedIfMethodAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TScriptInterface<ITbIfaceimportEmptyIfInterface>& Result, const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param) override;
 	virtual TScriptInterface<ITbIfaceimportEmptyIfInterface> ImportedIfMethod(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param) override PURE_VIRTUAL(UAbstractTbRefIfacesParentIf::ImportedIfMethod, return TScriptInterface<ITbIfaceimportEmptyIfInterface>(););
+
+	virtual void ImportedIfMethodListAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Result, const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param) override;
+	virtual TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> ImportedIfMethodList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param) override PURE_VIRTUAL(UAbstractTbRefIfacesParentIf::ImportedIfMethodList, return TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>(););
 
 	// properties
 	virtual TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> GetLocalIf() const override PURE_VIRTUAL(UAbstractTbRefIfacesParentIf::GetLocalIf, return TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>(););
 	virtual void SetLocalIf(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& InLocalIf) override PURE_VIRTUAL(UAbstractTbRefIfacesParentIf::SetLocalIf, return;);
 
+	virtual TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> GetLocalIfList() const override PURE_VIRTUAL(UAbstractTbRefIfacesParentIf::GetLocalIfList, return TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>(););
+	virtual void SetLocalIfList(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InLocalIfList) override PURE_VIRTUAL(UAbstractTbRefIfacesParentIf::SetLocalIfList, return;);
+
 	virtual TScriptInterface<ITbIfaceimportEmptyIfInterface> GetImportedIf() const override PURE_VIRTUAL(UAbstractTbRefIfacesParentIf::GetImportedIf, return TScriptInterface<ITbIfaceimportEmptyIfInterface>(););
 	virtual void SetImportedIf(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& InImportedIf) override PURE_VIRTUAL(UAbstractTbRefIfacesParentIf::SetImportedIf, return;);
+
+	virtual TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> GetImportedIfList() const override PURE_VIRTUAL(UAbstractTbRefIfacesParentIf::GetImportedIfList, return TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>(););
+	virtual void SetImportedIfList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InImportedIfList) override PURE_VIRTUAL(UAbstractTbRefIfacesParentIf::SetImportedIfList, return;);
 
 	virtual bool IsInitialized() const;
 
@@ -69,6 +81,15 @@ protected:
 	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbRefIfaces|ParentIf|Properties", BlueprintInternalUseOnly)
 	void SetLocalIf_Private(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& InLocalIf);
 
+	UPROPERTY(EditAnywhere, BlueprintGetter = GetLocalIfList_Private, BlueprintSetter = SetLocalIfList_Private, Category = "ApiGear|TbRefIfaces|ParentIf")
+	TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> LocalIfList{TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>()};
+
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbRefIfaces|ParentIf|Properties", BlueprintInternalUseOnly)
+	TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> GetLocalIfList_Private() const;
+
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbRefIfaces|ParentIf|Properties", BlueprintInternalUseOnly)
+	void SetLocalIfList_Private(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InLocalIfList);
+
 	UPROPERTY(EditAnywhere, BlueprintGetter = GetImportedIf_Private, BlueprintSetter = SetImportedIf_Private, Category = "ApiGear|TbRefIfaces|ParentIf")
 	TScriptInterface<ITbIfaceimportEmptyIfInterface> ImportedIf{TScriptInterface<ITbIfaceimportEmptyIfInterface>()};
 
@@ -77,6 +98,15 @@ protected:
 
 	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbRefIfaces|ParentIf|Properties", BlueprintInternalUseOnly)
 	void SetImportedIf_Private(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& InImportedIf);
+
+	UPROPERTY(EditAnywhere, BlueprintGetter = GetImportedIfList_Private, BlueprintSetter = SetImportedIfList_Private, Category = "ApiGear|TbRefIfaces|ParentIf")
+	TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> ImportedIfList{TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>()};
+
+	UFUNCTION(BlueprintGetter, Category = "ApiGear|TbRefIfaces|ParentIf|Properties", BlueprintInternalUseOnly)
+	TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> GetImportedIfList_Private() const;
+
+	UFUNCTION(BlueprintSetter, Category = "ApiGear|TbRefIfaces|ParentIf|Properties", BlueprintInternalUseOnly)
+	void SetImportedIfList_Private(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InImportedIfList);
 
 private:
 	// signals

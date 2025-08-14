@@ -51,6 +51,19 @@ void UTbRefIfacesParentIfImplHelper::LocalIfPropertyCb(const TScriptInterface<IT
 	testDoneDelegate.Execute();
 }
 
+void UTbRefIfacesParentIfImplHelper::LocalIfListPropertyCb(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InLocalIfList)
+{
+	TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> TestValue = TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>();
+	// use different test value
+	TestValue.Add(TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>());
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InLocalIfList, TestValue);
+	if (TSharedPtr<FTbRefIfacesParentIfImplFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->GetLocalIfList(), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
 void UTbRefIfacesParentIfImplHelper::ImportedIfPropertyCb(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& InImportedIf)
 {
 	TScriptInterface<ITbIfaceimportEmptyIfInterface> TestValue = TScriptInterface<ITbIfaceimportEmptyIfInterface>();
@@ -64,6 +77,19 @@ void UTbRefIfacesParentIfImplHelper::ImportedIfPropertyCb(const TScriptInterface
 	testDoneDelegate.Execute();
 }
 
+void UTbRefIfacesParentIfImplHelper::ImportedIfListPropertyCb(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InImportedIfList)
+{
+	TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> TestValue = TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>();
+	// use different test value
+	TestValue.Add(TScriptInterface<ITbIfaceimportEmptyIfInterface>());
+	Spec->TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InImportedIfList, TestValue);
+	if (TSharedPtr<FTbRefIfacesParentIfImplFixture> PinnedImplFixture = ImplFixture.Pin())
+	{
+		Spec->TestEqual(TEXT("Getter should return the same value as set by the setter"), PinnedImplFixture->GetImplementation()->GetImportedIfList(), TestValue);
+	}
+	testDoneDelegate.Execute();
+}
+
 void UTbRefIfacesParentIfImplHelper::LocalIfSignalSignalCb(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& InParam)
 {
 	// known test value
@@ -72,10 +98,28 @@ void UTbRefIfacesParentIfImplHelper::LocalIfSignalSignalCb(const TScriptInterfac
 	testDoneDelegate.Execute();
 }
 
+void UTbRefIfacesParentIfImplHelper::LocalIfSignalListSignalCb(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InParam)
+{
+	// known test value
+	TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> ParamTestValue = TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>(); // default value
+	ParamTestValue.Add(TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>());
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam, ParamTestValue);
+	testDoneDelegate.Execute();
+}
+
 void UTbRefIfacesParentIfImplHelper::ImportedIfSignalSignalCb(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& InParam)
 {
 	// known test value
 	TScriptInterface<ITbIfaceimportEmptyIfInterface> ParamTestValue = TScriptInterface<ITbIfaceimportEmptyIfInterface>();
+	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam, ParamTestValue);
+	testDoneDelegate.Execute();
+}
+
+void UTbRefIfacesParentIfImplHelper::ImportedIfSignalListSignalCb(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InParam)
+{
+	// known test value
+	TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> ParamTestValue = TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>(); // default value
+	ParamTestValue.Add(TScriptInterface<ITbIfaceimportEmptyIfInterface>());
 	Spec->TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam, ParamTestValue);
 	testDoneDelegate.Execute();
 }
@@ -141,9 +185,19 @@ void UTbRefIfacesParentIfImplHelper::LocalIfPropertyCb(const TScriptInterface<IT
 	(void)LocalIf;
 }
 
+void UTbRefIfacesParentIfImplHelper::LocalIfListPropertyCb(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& LocalIfList)
+{
+	(void)LocalIfList;
+}
+
 void UTbRefIfacesParentIfImplHelper::ImportedIfPropertyCb(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& ImportedIf)
 {
 	(void)ImportedIf;
+}
+
+void UTbRefIfacesParentIfImplHelper::ImportedIfListPropertyCb(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& ImportedIfList)
+{
+	(void)ImportedIfList;
 }
 
 void UTbRefIfacesParentIfImplHelper::LocalIfSignalSignalCb(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Param)
@@ -151,7 +205,17 @@ void UTbRefIfacesParentIfImplHelper::LocalIfSignalSignalCb(const TScriptInterfac
 	(void)Param;
 }
 
+void UTbRefIfacesParentIfImplHelper::LocalIfSignalListSignalCb(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param)
+{
+	(void)Param;
+}
+
 void UTbRefIfacesParentIfImplHelper::ImportedIfSignalSignalCb(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param)
+{
+	(void)Param;
+}
+
+void UTbRefIfacesParentIfImplHelper::ImportedIfSignalListSignalCb(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param)
 {
 	(void)Param;
 }

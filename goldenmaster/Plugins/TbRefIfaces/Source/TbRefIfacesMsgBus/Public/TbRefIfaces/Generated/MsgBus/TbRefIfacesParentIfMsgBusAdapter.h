@@ -31,13 +31,21 @@ struct FTbRefIfacesParentIfServiceAnnouncementReplyMessage;
 struct FTbRefIfacesParentIfPingMessage;
 struct FTbRefIfacesParentIfClientDisconnectMessage;
 struct FTbRefIfacesParentIfLocalIfSignalSignalMessage;
+struct FTbRefIfacesParentIfLocalIfSignalListSignalMessage;
 struct FTbRefIfacesParentIfImportedIfSignalSignalMessage;
+struct FTbRefIfacesParentIfImportedIfSignalListSignalMessage;
 struct FTbRefIfacesParentIfSetLocalIfRequestMessage;
 struct FTbRefIfacesParentIfLocalIfChangedMessage;
+struct FTbRefIfacesParentIfSetLocalIfListRequestMessage;
+struct FTbRefIfacesParentIfLocalIfListChangedMessage;
 struct FTbRefIfacesParentIfSetImportedIfRequestMessage;
 struct FTbRefIfacesParentIfImportedIfChangedMessage;
+struct FTbRefIfacesParentIfSetImportedIfListRequestMessage;
+struct FTbRefIfacesParentIfImportedIfListChangedMessage;
 struct FTbRefIfacesParentIfLocalIfMethodRequestMessage;
+struct FTbRefIfacesParentIfLocalIfMethodListRequestMessage;
 struct FTbRefIfacesParentIfImportedIfMethodRequestMessage;
+struct FTbRefIfacesParentIfImportedIfMethodListRequestMessage;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbRefIfacesParentIfClientConnectedDelegate, const FString&, ClientAddress);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbRefIfacesParentIfClientDisconnectedDelegate, const FString&, ClientAddress);
@@ -103,28 +111,48 @@ private:
 	void OnPing(const FTbRefIfacesParentIfPingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnClientDisconnected(const FTbRefIfacesParentIfClientDisconnectMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnLocalIfMethodRequest(const FTbRefIfacesParentIfLocalIfMethodRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnLocalIfMethodListRequest(const FTbRefIfacesParentIfLocalIfMethodListRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnImportedIfMethodRequest(const FTbRefIfacesParentIfImportedIfMethodRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnImportedIfMethodListRequest(const FTbRefIfacesParentIfImportedIfMethodListRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnSetLocalIfRequest(const FTbRefIfacesParentIfSetLocalIfRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnSetLocalIfListRequest(const FTbRefIfacesParentIfSetLocalIfListRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnSetImportedIfRequest(const FTbRefIfacesParentIfSetImportedIfRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnSetImportedIfListRequest(const FTbRefIfacesParentIfSetImportedIfListRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 
 	// signals
 	UFUNCTION(Category = "ApiGear|TbRefIfaces|ParentIf", BlueprintInternalUseOnly)
 	void OnLocalIfSignal(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Param);
 
 	UFUNCTION(Category = "ApiGear|TbRefIfaces|ParentIf", BlueprintInternalUseOnly)
+	void OnLocalIfSignalList(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param);
+
+	UFUNCTION(Category = "ApiGear|TbRefIfaces|ParentIf", BlueprintInternalUseOnly)
 	void OnImportedIfSignal(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param);
+
+	UFUNCTION(Category = "ApiGear|TbRefIfaces|ParentIf", BlueprintInternalUseOnly)
+	void OnImportedIfSignalList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param);
 
 	UFUNCTION(Category = "ApiGear|TbRefIfaces|ParentIf", BlueprintInternalUseOnly)
 	void OnLocalIfChanged(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& LocalIf);
 
 	UFUNCTION(Category = "ApiGear|TbRefIfaces|ParentIf", BlueprintInternalUseOnly)
+	void OnLocalIfListChanged(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& LocalIfList);
+
+	UFUNCTION(Category = "ApiGear|TbRefIfaces|ParentIf", BlueprintInternalUseOnly)
 	void OnImportedIfChanged(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& ImportedIf);
+
+	UFUNCTION(Category = "ApiGear|TbRefIfaces|ParentIf", BlueprintInternalUseOnly)
+	void OnImportedIfListChanged(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& ImportedIfList);
 
 	// delegate handles
 	FDelegateHandle OnLocalIfChangedHandle;
+	FDelegateHandle OnLocalIfListChangedHandle;
 	FDelegateHandle OnImportedIfChangedHandle;
+	FDelegateHandle OnImportedIfListChangedHandle;
 	FDelegateHandle OnLocalIfSignalSignalHandle;
+	FDelegateHandle OnLocalIfSignalListSignalHandle;
 	FDelegateHandle OnImportedIfSignalSignalHandle;
+	FDelegateHandle OnImportedIfSignalListSignalHandle;
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbRefIfaces|ParentIf")

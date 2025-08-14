@@ -85,6 +85,16 @@ void UAbstractTbRefIfacesParentIf::SetLocalIf_Private(const TScriptInterface<ITb
 	SetLocalIf(InLocalIf);
 };
 
+TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> UAbstractTbRefIfacesParentIf::GetLocalIfList_Private() const
+{
+	return GetLocalIfList();
+};
+
+void UAbstractTbRefIfacesParentIf::SetLocalIfList_Private(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InLocalIfList)
+{
+	SetLocalIfList(InLocalIfList);
+};
+
 TScriptInterface<ITbIfaceimportEmptyIfInterface> UAbstractTbRefIfacesParentIf::GetImportedIf_Private() const
 {
 	return GetImportedIf();
@@ -93,6 +103,16 @@ TScriptInterface<ITbIfaceimportEmptyIfInterface> UAbstractTbRefIfacesParentIf::G
 void UAbstractTbRefIfacesParentIf::SetImportedIf_Private(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& InImportedIf)
 {
 	SetImportedIf(InImportedIf);
+};
+
+TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> UAbstractTbRefIfacesParentIf::GetImportedIfList_Private() const
+{
+	return GetImportedIfList();
+};
+
+void UAbstractTbRefIfacesParentIf::SetImportedIfList_Private(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InImportedIfList)
+{
+	SetImportedIfList(InImportedIfList);
 };
 
 void UAbstractTbRefIfacesParentIf::LocalIfMethodAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Result, const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Param)
@@ -124,6 +144,41 @@ void UAbstractTbRefIfacesParentIf::LocalIfMethodAsync(UObject* WorldContextObjec
 				[Param, this, &Result, CompletionAction]()
 				{
 				Result = LocalIfMethod(Param);
+				CompletionAction->Cancel();
+			});
+		}
+	}
+}
+
+void UAbstractTbRefIfacesParentIf::LocalIfMethodListAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Result, const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param)
+{
+	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
+	{
+		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
+		FTbRefIfacesParentIfLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbRefIfacesParentIfLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+
+		if (oldRequest != nullptr)
+		{
+			// cancel old request
+			oldRequest->Cancel();
+			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
+		}
+
+		FTbRefIfacesParentIfLatentAction* CompletionAction = new FTbRefIfacesParentIfLatentAction(LatentInfo);
+		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
+
+		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
+		if (this->GetClass()->IsInBlueprint())
+		{
+			Result = LocalIfMethodList(Param);
+			CompletionAction->Cancel();
+		}
+		else
+		{
+			Async(EAsyncExecution::ThreadPool,
+				[Param, this, &Result, CompletionAction]()
+				{
+				Result = LocalIfMethodList(Param);
 				CompletionAction->Cancel();
 			});
 		}
@@ -165,6 +220,41 @@ void UAbstractTbRefIfacesParentIf::ImportedIfMethodAsync(UObject* WorldContextOb
 	}
 }
 
+void UAbstractTbRefIfacesParentIf::ImportedIfMethodListAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Result, const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param)
+{
+	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
+	{
+		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
+		FTbRefIfacesParentIfLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbRefIfacesParentIfLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+
+		if (oldRequest != nullptr)
+		{
+			// cancel old request
+			oldRequest->Cancel();
+			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
+		}
+
+		FTbRefIfacesParentIfLatentAction* CompletionAction = new FTbRefIfacesParentIfLatentAction(LatentInfo);
+		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
+
+		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
+		if (this->GetClass()->IsInBlueprint())
+		{
+			Result = ImportedIfMethodList(Param);
+			CompletionAction->Cancel();
+		}
+		else
+		{
+			Async(EAsyncExecution::ThreadPool,
+				[Param, this, &Result, CompletionAction]()
+				{
+				Result = ImportedIfMethodList(Param);
+				CompletionAction->Cancel();
+			});
+		}
+	}
+}
+
 void UAbstractTbRefIfacesParentIf::Initialize(FSubsystemCollectionBase& Collection)
 {
 	check(!bInitialized);
@@ -182,13 +272,21 @@ void UAbstractTbRefIfacesParentIf::Deinitialize()
 	{
 		TbRefIfacesParentIfSignals->OnLocalIfSignalSignal.RemoveAll(TbRefIfacesParentIfSignals);
 		TbRefIfacesParentIfSignals->OnLocalIfSignalSignalBP.RemoveAll(TbRefIfacesParentIfSignals);
+		TbRefIfacesParentIfSignals->OnLocalIfSignalListSignal.RemoveAll(TbRefIfacesParentIfSignals);
+		TbRefIfacesParentIfSignals->OnLocalIfSignalListSignalBP.RemoveAll(TbRefIfacesParentIfSignals);
 		TbRefIfacesParentIfSignals->OnImportedIfSignalSignal.RemoveAll(TbRefIfacesParentIfSignals);
 		TbRefIfacesParentIfSignals->OnImportedIfSignalSignalBP.RemoveAll(TbRefIfacesParentIfSignals);
+		TbRefIfacesParentIfSignals->OnImportedIfSignalListSignal.RemoveAll(TbRefIfacesParentIfSignals);
+		TbRefIfacesParentIfSignals->OnImportedIfSignalListSignalBP.RemoveAll(TbRefIfacesParentIfSignals);
 
 		TbRefIfacesParentIfSignals->OnLocalIfChanged.RemoveAll(TbRefIfacesParentIfSignals);
 		TbRefIfacesParentIfSignals->OnLocalIfChangedBP.RemoveAll(TbRefIfacesParentIfSignals);
+		TbRefIfacesParentIfSignals->OnLocalIfListChanged.RemoveAll(TbRefIfacesParentIfSignals);
+		TbRefIfacesParentIfSignals->OnLocalIfListChangedBP.RemoveAll(TbRefIfacesParentIfSignals);
 		TbRefIfacesParentIfSignals->OnImportedIfChanged.RemoveAll(TbRefIfacesParentIfSignals);
 		TbRefIfacesParentIfSignals->OnImportedIfChangedBP.RemoveAll(TbRefIfacesParentIfSignals);
+		TbRefIfacesParentIfSignals->OnImportedIfListChanged.RemoveAll(TbRefIfacesParentIfSignals);
+		TbRefIfacesParentIfSignals->OnImportedIfListChangedBP.RemoveAll(TbRefIfacesParentIfSignals);
 	}
 
 	Super::Deinitialize();

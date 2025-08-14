@@ -26,13 +26,25 @@ public:
 	void LocalIfPropertyCb(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& LocalIf);
 
 	UFUNCTION()
+	void LocalIfListPropertyCb(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& LocalIfList);
+
+	UFUNCTION()
 	void ImportedIfPropertyCb(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& ImportedIf);
+
+	UFUNCTION()
+	void ImportedIfListPropertyCb(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& ImportedIfList);
 
 	UFUNCTION()
 	void LocalIfSignalSignalCb(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Param);
 
 	UFUNCTION()
+	void LocalIfSignalListSignalCb(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param);
+
+	UFUNCTION()
 	void ImportedIfSignalSignalCb(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param);
+
+	UFUNCTION()
+	void ImportedIfSignalListSignalCb(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param);
 
 protected:
 	TWeakPtr<FTbRefIfacesParentIfImplFixture> ImplFixture;

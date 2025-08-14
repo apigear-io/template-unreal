@@ -38,7 +38,7 @@ void {{$Class}}ImplHelper::{{ Camel .Name }}PropertyCb({{ueParam "In" .}})
 	{{ueType "" .}} TestValue = {{ueDefault "" .}};
 	// use different test value
 	{{- if .IsArray }}
-	{{- if or .IsPrimitive (eq .KindType "enum") }}
+	{{- if or .IsPrimitive (eq .KindType "enum") (eq .KindType "interface") }}
 	TestValue.Add({{ ueTestValue "" .}});
 	{{- else }}
 	{{- $type := ""}}
@@ -72,7 +72,7 @@ void {{$Class}}ImplHelper::{{ Camel .Name }}SignalCb({{ueParams "In" .Params}})
 	{{- range $i, $e := .Params -}}
 	{{- if not (eq .KindType "extern") }}
 	{{- if .IsArray }}
-	{{- if or .IsPrimitive (eq .KindType "enum") }}
+	{{- if or .IsPrimitive (eq .KindType "enum") (eq .KindType "interface") }}
 	{{ueType "" .}} {{ueVar "" .}}TestValue = {{ueDefault "" .}}; // default value
 	{{ueVar "" .}}TestValue.Add({{ ueTestValue "" .}});
 	{{- else }}

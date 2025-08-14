@@ -67,7 +67,7 @@ void {{$Class}}ImplSpec::Define()
 			{{ueType "" .}} TestValue = {{ueDefault "" .}};
 			// use different test value
 			{{- if .IsArray }}
-			{{- if or .IsPrimitive (eq .KindType "enum") }}
+			{{- if or .IsPrimitive (eq .KindType "enum") (eq .KindType "interface") }}
 			TestValue.Add({{ ueTestValue "" .}});
 			{{- else }}
 			{{- $type := ""}}
@@ -90,7 +90,7 @@ void {{$Class}}ImplSpec::Define()
 
 		// use different test value
 		{{- if .IsArray }}
-		{{- if or .IsPrimitive (eq .KindType "enum") }}
+		{{- if or .IsPrimitive (eq .KindType "enum") (eq .KindType "interface") }}
 		TestValue.Add({{ ueTestValue "" .}});
 		{{- else }}
 		{{- $type := ""}}
@@ -167,7 +167,7 @@ void {{$Class}}ImplSpec::Define()
 			{{- range $i, $e := .Params -}}
 			{{- if not (eq .KindType "extern") }}
 			{{- if .IsArray }}
-			{{- if or .IsPrimitive (eq .KindType "enum") }}
+			{{- if or .IsPrimitive (eq .KindType "enum") (eq .KindType "interface") }}
 			{{ueType "" .}} {{ueVar "" .}}TestValue = {{ueDefault "" .}}; // default value
 			{{ueVar "" .}}TestValue.Add({{ ueTestValue "" .}});
 			{{- else }}
@@ -194,7 +194,7 @@ void {{$Class}}ImplSpec::Define()
 		{{- range $i, $e := .Params -}}
 		{{- if not (eq .KindType "extern") }}
 		{{- if .IsArray }}
-		{{- if or .IsPrimitive (eq .KindType "enum") }}
+		{{- if or .IsPrimitive (eq .KindType "enum") (eq .KindType "interface") }}
 		{{ueType "" .}} {{ueVar "" .}}TestValue = {{ueDefault "" .}}; // default value
 		{{ueVar "" .}}TestValue.Add({{ ueTestValue "" .}});
 		{{- else }}
@@ -231,7 +231,7 @@ void {{$Class}}ImplSpec::Define()
 		{{- range $i, $e := .Params -}}
 		{{- if not (eq .KindType "extern") }}
 		{{- if .IsArray }}
-		{{- if or .IsPrimitive (eq .KindType "enum") }}
+		{{- if or .IsPrimitive (eq .KindType "enum") (eq .KindType "interface") }}
 		{{ueType "" .}} {{ueVar "" .}}TestValue = {{ueDefault "" .}}; // default value
 		{{ueVar "" .}}TestValue.Add({{ ueTestValue "" .}});
 		{{- else }}

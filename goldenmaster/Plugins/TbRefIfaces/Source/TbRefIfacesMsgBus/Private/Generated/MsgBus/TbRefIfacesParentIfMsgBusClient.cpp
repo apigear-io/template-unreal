@@ -39,8 +39,12 @@ struct TbRefIfacesParentIfPropertiesMsgBusData
 {
 	FCriticalSection LocalIfMutex;
 	TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> LocalIf{TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>()};
+	FCriticalSection LocalIfListMutex;
+	TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> LocalIfList{TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>()};
 	FCriticalSection ImportedIfMutex;
 	TScriptInterface<ITbIfaceimportEmptyIfInterface> ImportedIf{TScriptInterface<ITbIfaceimportEmptyIfInterface>()};
+	FCriticalSection ImportedIfListMutex;
+	TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> ImportedIfList{TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>()};
 };
 DEFINE_LOG_CATEGORY(LogTbRefIfacesParentIfMsgBusClient);
 
@@ -100,11 +104,17 @@ void UTbRefIfacesParentIfMsgBusClient::_Connect()
 		.Handling<FTbRefIfacesParentIfPongMessage>(this, &UTbRefIfacesParentIfMsgBusClient::OnPong)
 		.Handling<FTbRefIfacesParentIfServiceDisconnectMessage>(this, &UTbRefIfacesParentIfMsgBusClient::OnServiceClosedConnection)
 		.Handling<FTbRefIfacesParentIfLocalIfSignalSignalMessage>(this, &UTbRefIfacesParentIfMsgBusClient::OnLocalIfSignal)
+		.Handling<FTbRefIfacesParentIfLocalIfSignalListSignalMessage>(this, &UTbRefIfacesParentIfMsgBusClient::OnLocalIfSignalList)
 		.Handling<FTbRefIfacesParentIfImportedIfSignalSignalMessage>(this, &UTbRefIfacesParentIfMsgBusClient::OnImportedIfSignal)
+		.Handling<FTbRefIfacesParentIfImportedIfSignalListSignalMessage>(this, &UTbRefIfacesParentIfMsgBusClient::OnImportedIfSignalList)
 		.Handling<FTbRefIfacesParentIfLocalIfChangedMessage>(this, &UTbRefIfacesParentIfMsgBusClient::OnLocalIfChanged)
+		.Handling<FTbRefIfacesParentIfLocalIfListChangedMessage>(this, &UTbRefIfacesParentIfMsgBusClient::OnLocalIfListChanged)
 		.Handling<FTbRefIfacesParentIfImportedIfChangedMessage>(this, &UTbRefIfacesParentIfMsgBusClient::OnImportedIfChanged)
+		.Handling<FTbRefIfacesParentIfImportedIfListChangedMessage>(this, &UTbRefIfacesParentIfMsgBusClient::OnImportedIfListChanged)
 		.Handling<FTbRefIfacesParentIfLocalIfMethodReplyMessage>(this, &UTbRefIfacesParentIfMsgBusClient::OnLocalIfMethodReply)
+		.Handling<FTbRefIfacesParentIfLocalIfMethodListReplyMessage>(this, &UTbRefIfacesParentIfMsgBusClient::OnLocalIfMethodListReply)
 		.Handling<FTbRefIfacesParentIfImportedIfMethodReplyMessage>(this, &UTbRefIfacesParentIfMsgBusClient::OnImportedIfMethodReply)
+		.Handling<FTbRefIfacesParentIfImportedIfMethodListReplyMessage>(this, &UTbRefIfacesParentIfMsgBusClient::OnImportedIfMethodListReply)
 		.Build();
 	// clang-format on
 
@@ -201,6 +211,18 @@ void UTbRefIfacesParentIfMsgBusClient::OnConnectionInit(const FTbRefIfacesParent
 		_GetSignals()->BroadcastLocalIfChanged(LocalIf);
 	}
 
+	const bool bLocalIfListChanged = InMessage.LocalIfList != LocalIfList;
+	if (bLocalIfListChanged)
+	{
+		LocalIfList = InMessage.LocalIfList;
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->LocalIfListMutex));
+			_SentData->LocalIfList = LocalIfList;
+		}
+		_GetSignals()->BroadcastLocalIfListChanged(LocalIfList);
+	}
+
 	const bool bImportedIfChanged = InMessage.ImportedIf != ImportedIf;
 	if (bImportedIfChanged)
 	{
@@ -211,6 +233,18 @@ void UTbRefIfacesParentIfMsgBusClient::OnConnectionInit(const FTbRefIfacesParent
 			_SentData->ImportedIf = ImportedIf;
 		}
 		_GetSignals()->BroadcastImportedIfChanged(ImportedIf);
+	}
+
+	const bool bImportedIfListChanged = InMessage.ImportedIfList != ImportedIfList;
+	if (bImportedIfListChanged)
+	{
+		ImportedIfList = InMessage.ImportedIfList;
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->ImportedIfListMutex));
+			_SentData->ImportedIfList = ImportedIfList;
+		}
+		_GetSignals()->BroadcastImportedIfListChanged(ImportedIfList);
 	}
 
 	_ConnectionStatusChanged.Broadcast(true);
@@ -357,6 +391,46 @@ void UTbRefIfacesParentIfMsgBusClient::SetLocalIf(const TScriptInterface<ITbRefI
 	_SentData->LocalIf = InLocalIf;
 }
 
+TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> UTbRefIfacesParentIfMsgBusClient::GetLocalIfList() const
+{
+	return LocalIfList;
+}
+
+void UTbRefIfacesParentIfMsgBusClient::SetLocalIfList(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InLocalIfList)
+{
+	if (!_IsConnected())
+	{
+		UE_LOG(LogTbRefIfacesParentIfMsgBusClient, Error, TEXT("Client has no connection to service."));
+		return;
+	}
+
+	// only send change requests if the value changed -> reduce network load
+	if (GetLocalIfList() == InLocalIfList)
+	{
+		return;
+	}
+
+	// only send change requests if the value wasn't already sent -> reduce network load
+	{
+		FScopeLock Lock(&(_SentData->LocalIfListMutex));
+		if (_SentData->LocalIfList == InLocalIfList)
+		{
+			return;
+		}
+	}
+
+	auto msg = new FTbRefIfacesParentIfSetLocalIfListRequestMessage();
+	msg->LocalIfList = InLocalIfList;
+
+	TbRefIfacesParentIfMsgBusEndpoint->Send<FTbRefIfacesParentIfSetLocalIfListRequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
+	FScopeLock Lock(&(_SentData->LocalIfListMutex));
+	_SentData->LocalIfList = InLocalIfList;
+}
+
 TScriptInterface<ITbIfaceimportEmptyIfInterface> UTbRefIfacesParentIfMsgBusClient::GetImportedIf() const
 {
 	return ImportedIf;
@@ -397,6 +471,46 @@ void UTbRefIfacesParentIfMsgBusClient::SetImportedIf(const TScriptInterface<ITbI
 	_SentData->ImportedIf = InImportedIf;
 }
 
+TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> UTbRefIfacesParentIfMsgBusClient::GetImportedIfList() const
+{
+	return ImportedIfList;
+}
+
+void UTbRefIfacesParentIfMsgBusClient::SetImportedIfList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InImportedIfList)
+{
+	if (!_IsConnected())
+	{
+		UE_LOG(LogTbRefIfacesParentIfMsgBusClient, Error, TEXT("Client has no connection to service."));
+		return;
+	}
+
+	// only send change requests if the value changed -> reduce network load
+	if (GetImportedIfList() == InImportedIfList)
+	{
+		return;
+	}
+
+	// only send change requests if the value wasn't already sent -> reduce network load
+	{
+		FScopeLock Lock(&(_SentData->ImportedIfListMutex));
+		if (_SentData->ImportedIfList == InImportedIfList)
+		{
+			return;
+		}
+	}
+
+	auto msg = new FTbRefIfacesParentIfSetImportedIfListRequestMessage();
+	msg->ImportedIfList = InImportedIfList;
+
+	TbRefIfacesParentIfMsgBusEndpoint->Send<FTbRefIfacesParentIfSetImportedIfListRequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
+	FScopeLock Lock(&(_SentData->ImportedIfListMutex));
+	_SentData->ImportedIfList = InImportedIfList;
+}
+
 TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> UTbRefIfacesParentIfMsgBusClient::LocalIfMethod(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& InParam)
 {
 	if (!_IsConnected())
@@ -422,6 +536,35 @@ TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> UTbRefIfacesParentIfMsgBusC
 }
 
 void UTbRefIfacesParentIfMsgBusClient::OnLocalIfMethodReply(const FTbRefIfacesParentIfLocalIfMethodReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	FulfillPromise(InMessage.ResponseId, InMessage.Result);
+}
+
+TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> UTbRefIfacesParentIfMsgBusClient::LocalIfMethodList(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InParam)
+{
+	if (!_IsConnected())
+	{
+		UE_LOG(LogTbRefIfacesParentIfMsgBusClient, Error, TEXT("Client has no connection to service."));
+
+		return TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>();
+	}
+
+	auto msg = new FTbRefIfacesParentIfLocalIfMethodListRequestMessage();
+	msg->ResponseId = FGuid::NewGuid();
+	msg->Param = InParam;
+	TPromise<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>> Promise;
+	StorePromise(msg->ResponseId, Promise);
+
+	TbRefIfacesParentIfMsgBusEndpoint->Send<FTbRefIfacesParentIfLocalIfMethodListRequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
+
+	return Promise.GetFuture().Get();
+}
+
+void UTbRefIfacesParentIfMsgBusClient::OnLocalIfMethodListReply(const FTbRefIfacesParentIfLocalIfMethodListReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	FulfillPromise(InMessage.ResponseId, InMessage.Result);
 }
@@ -455,6 +598,35 @@ void UTbRefIfacesParentIfMsgBusClient::OnImportedIfMethodReply(const FTbRefIface
 	FulfillPromise(InMessage.ResponseId, InMessage.Result);
 }
 
+TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> UTbRefIfacesParentIfMsgBusClient::ImportedIfMethodList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InParam)
+{
+	if (!_IsConnected())
+	{
+		UE_LOG(LogTbRefIfacesParentIfMsgBusClient, Error, TEXT("Client has no connection to service."));
+
+		return TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>();
+	}
+
+	auto msg = new FTbRefIfacesParentIfImportedIfMethodListRequestMessage();
+	msg->ResponseId = FGuid::NewGuid();
+	msg->Param = InParam;
+	TPromise<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>> Promise;
+	StorePromise(msg->ResponseId, Promise);
+
+	TbRefIfacesParentIfMsgBusEndpoint->Send<FTbRefIfacesParentIfImportedIfMethodListRequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
+
+	return Promise.GetFuture().Get();
+}
+
+void UTbRefIfacesParentIfMsgBusClient::OnImportedIfMethodListReply(const FTbRefIfacesParentIfImportedIfMethodListReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	FulfillPromise(InMessage.ResponseId, InMessage.Result);
+}
+
 void UTbRefIfacesParentIfMsgBusClient::OnLocalIfSignal(const FTbRefIfacesParentIfLocalIfSignalSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ServiceAddress != Context->GetSender())
@@ -467,6 +639,18 @@ void UTbRefIfacesParentIfMsgBusClient::OnLocalIfSignal(const FTbRefIfacesParentI
 	return;
 }
 
+void UTbRefIfacesParentIfMsgBusClient::OnLocalIfSignalList(const FTbRefIfacesParentIfLocalIfSignalListSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	if (ServiceAddress != Context->GetSender())
+	{
+		UE_LOG(LogTbRefIfacesParentIfMsgBusClient, Error, TEXT("Got a message from wrong service(%s) instead of %s"), *Context->GetSender().ToString(), *ServiceAddress.ToString());
+		return;
+	}
+
+	_GetSignals()->BroadcastLocalIfSignalListSignal(InMessage.Param);
+	return;
+}
+
 void UTbRefIfacesParentIfMsgBusClient::OnImportedIfSignal(const FTbRefIfacesParentIfImportedIfSignalSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ServiceAddress != Context->GetSender())
@@ -476,6 +660,18 @@ void UTbRefIfacesParentIfMsgBusClient::OnImportedIfSignal(const FTbRefIfacesPare
 	}
 
 	_GetSignals()->BroadcastImportedIfSignalSignal(InMessage.Param);
+	return;
+}
+
+void UTbRefIfacesParentIfMsgBusClient::OnImportedIfSignalList(const FTbRefIfacesParentIfImportedIfSignalListSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	if (ServiceAddress != Context->GetSender())
+	{
+		UE_LOG(LogTbRefIfacesParentIfMsgBusClient, Error, TEXT("Got a message from wrong service(%s) instead of %s"), *Context->GetSender().ToString(), *ServiceAddress.ToString());
+		return;
+	}
+
+	_GetSignals()->BroadcastImportedIfSignalListSignal(InMessage.Param);
 	return;
 }
 
@@ -500,6 +696,27 @@ void UTbRefIfacesParentIfMsgBusClient::OnLocalIfChanged(const FTbRefIfacesParent
 	}
 }
 
+void UTbRefIfacesParentIfMsgBusClient::OnLocalIfListChanged(const FTbRefIfacesParentIfLocalIfListChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	if (ServiceAddress != Context->GetSender())
+	{
+		UE_LOG(LogTbRefIfacesParentIfMsgBusClient, Error, TEXT("Got a message from wrong service(%s) instead of %s"), *Context->GetSender().ToString(), *ServiceAddress.ToString());
+		return;
+	}
+
+	const bool bLocalIfListChanged = InMessage.LocalIfList != LocalIfList;
+	if (bLocalIfListChanged)
+	{
+		LocalIfList = InMessage.LocalIfList;
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->LocalIfListMutex));
+			_SentData->LocalIfList = LocalIfList;
+		}
+		_GetSignals()->BroadcastLocalIfListChanged(LocalIfList);
+	}
+}
+
 void UTbRefIfacesParentIfMsgBusClient::OnImportedIfChanged(const FTbRefIfacesParentIfImportedIfChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	if (ServiceAddress != Context->GetSender())
@@ -518,6 +735,27 @@ void UTbRefIfacesParentIfMsgBusClient::OnImportedIfChanged(const FTbRefIfacesPar
 			_SentData->ImportedIf = ImportedIf;
 		}
 		_GetSignals()->BroadcastImportedIfChanged(ImportedIf);
+	}
+}
+
+void UTbRefIfacesParentIfMsgBusClient::OnImportedIfListChanged(const FTbRefIfacesParentIfImportedIfListChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	if (ServiceAddress != Context->GetSender())
+	{
+		UE_LOG(LogTbRefIfacesParentIfMsgBusClient, Error, TEXT("Got a message from wrong service(%s) instead of %s"), *Context->GetSender().ToString(), *ServiceAddress.ToString());
+		return;
+	}
+
+	const bool bImportedIfListChanged = InMessage.ImportedIfList != ImportedIfList;
+	if (bImportedIfListChanged)
+	{
+		ImportedIfList = InMessage.ImportedIfList;
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->ImportedIfListMutex));
+			_SentData->ImportedIfList = ImportedIfList;
+		}
+		_GetSignals()->BroadcastImportedIfListChanged(ImportedIfList);
 	}
 }
 
@@ -550,6 +788,10 @@ bool UTbRefIfacesParentIfMsgBusClient::FulfillPromise(const FGuid& Id, const Res
 	return false;
 }
 
+template bool UTbRefIfacesParentIfMsgBusClient::StorePromise<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>(const FGuid& Id, TPromise<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>& Promise);
+template bool UTbRefIfacesParentIfMsgBusClient::FulfillPromise<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>(const FGuid& Id, const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Value);
+template bool UTbRefIfacesParentIfMsgBusClient::StorePromise<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>(const FGuid& Id, TPromise<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>& Promise);
+template bool UTbRefIfacesParentIfMsgBusClient::FulfillPromise<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>(const FGuid& Id, const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Value);
 template bool UTbRefIfacesParentIfMsgBusClient::StorePromise<TScriptInterface<ITbIfaceimportEmptyIfInterface>>(const FGuid& Id, TPromise<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Promise);
 template bool UTbRefIfacesParentIfMsgBusClient::FulfillPromise<TScriptInterface<ITbIfaceimportEmptyIfInterface>>(const FGuid& Id, const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Value);
 template bool UTbRefIfacesParentIfMsgBusClient::StorePromise<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>(const FGuid& Id, TPromise<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Promise);

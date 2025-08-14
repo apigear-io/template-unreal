@@ -34,7 +34,9 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITbRefIfacesPare
 	}
 
 	Cast<ITbRefIfacesParentIfInterface>(p.GetObject())->SetLocalIf(j.at("localIf").get<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>());
+	Cast<ITbRefIfacesParentIfInterface>(p.GetObject())->SetLocalIfList(j.at("localIfList").get<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>());
 	Cast<ITbRefIfacesParentIfInterface>(p.GetObject())->SetImportedIf(j.at("importedIf").get<TScriptInterface<ITbIfaceimportEmptyIfInterface>>());
+	Cast<ITbRefIfacesParentIfInterface>(p.GetObject())->SetImportedIfList(j.at("importedIfList").get<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>());
 }
 
 static void to_json(nlohmann::json& j, const TScriptInterface<ITbRefIfacesParentIfInterface>& p)
@@ -44,5 +46,5 @@ static void to_json(nlohmann::json& j, const TScriptInterface<ITbRefIfacesParent
 		return;
 	}
 
-	j = nlohmann::json{{"localIf", Cast<ITbRefIfacesParentIfInterface>(p.GetObject())->GetLocalIf()}, {"importedIf", Cast<ITbRefIfacesParentIfInterface>(p.GetObject())->GetImportedIf()}};
+	j = nlohmann::json{{"localIf", Cast<ITbRefIfacesParentIfInterface>(p.GetObject())->GetLocalIf()}, {"localIfList", Cast<ITbRefIfacesParentIfInterface>(p.GetObject())->GetLocalIfList()}, {"importedIf", Cast<ITbRefIfacesParentIfInterface>(p.GetObject())->GetImportedIf()}, {"importedIfList", Cast<ITbRefIfacesParentIfInterface>(p.GetObject())->GetImportedIfList()}};
 }
