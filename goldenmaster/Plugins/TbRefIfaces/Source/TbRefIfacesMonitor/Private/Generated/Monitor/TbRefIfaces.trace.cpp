@@ -42,7 +42,9 @@ void TbRefIfacesParentIfTracer::capture_state(UObject* Object, ITbRefIfacesParen
 {
 	nlohmann::json fields_;
 	fields_["localIf"] = obj->GetLocalIf();
+	fields_["localIfList"] = obj->GetLocalIfList();
 	fields_["importedIf"] = obj->GetImportedIf();
+	fields_["importedIfList"] = obj->GetImportedIfList();
 	Tracer::instance()->state("tb.ref_ifaces/ParentIf", fields_);
 }
 void TbRefIfacesParentIfTracer::trace_callSetLocalIf(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& InLocalIf)
@@ -51,10 +53,22 @@ void TbRefIfacesParentIfTracer::trace_callSetLocalIf(const TScriptInterface<ITbR
 	fields_["localIf"] = InLocalIf;
 	Tracer::instance()->call("tb.ref_ifaces/ParentIf#_set", fields_);
 }
+void TbRefIfacesParentIfTracer::trace_callSetLocalIfList(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InLocalIfList)
+{
+	nlohmann::json fields_;
+	fields_["localIfList"] = InLocalIfList;
+	Tracer::instance()->call("tb.ref_ifaces/ParentIf#_set", fields_);
+}
 void TbRefIfacesParentIfTracer::trace_callSetImportedIf(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& InImportedIf)
 {
 	nlohmann::json fields_;
 	fields_["importedIf"] = InImportedIf;
+	Tracer::instance()->call("tb.ref_ifaces/ParentIf#_set", fields_);
+}
+void TbRefIfacesParentIfTracer::trace_callSetImportedIfList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InImportedIfList)
+{
+	nlohmann::json fields_;
+	fields_["importedIfList"] = InImportedIfList;
 	Tracer::instance()->call("tb.ref_ifaces/ParentIf#_set", fields_);
 }
 
@@ -65,11 +79,25 @@ void TbRefIfacesParentIfTracer::trace_signalLocalIfSignal(const TScriptInterface
 	Tracer::instance()->signal("tb.ref_ifaces/ParentIf#localIfSignal", fields_);
 }
 
+void TbRefIfacesParentIfTracer::trace_signalLocalIfSignalList(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param)
+{
+	nlohmann::json fields_;
+	fields_["param"] = Param;
+	Tracer::instance()->signal("tb.ref_ifaces/ParentIf#localIfSignalList", fields_);
+}
+
 void TbRefIfacesParentIfTracer::trace_signalImportedIfSignal(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param)
 {
 	nlohmann::json fields_;
 	fields_["param"] = Param;
 	Tracer::instance()->signal("tb.ref_ifaces/ParentIf#importedIfSignal", fields_);
+}
+
+void TbRefIfacesParentIfTracer::trace_signalImportedIfSignalList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param)
+{
+	nlohmann::json fields_;
+	fields_["param"] = Param;
+	Tracer::instance()->signal("tb.ref_ifaces/ParentIf#importedIfSignalList", fields_);
 }
 
 void TbRefIfacesParentIfTracer::trace_callLocalIfMethod(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Param)
@@ -79,9 +107,23 @@ void TbRefIfacesParentIfTracer::trace_callLocalIfMethod(const TScriptInterface<I
 	Tracer::instance()->call("tb.ref_ifaces/ParentIf#localIfMethod", fields_);
 }
 
+void TbRefIfacesParentIfTracer::trace_callLocalIfMethodList(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param)
+{
+	nlohmann::json fields_;
+	fields_["param"] = Param;
+	Tracer::instance()->call("tb.ref_ifaces/ParentIf#localIfMethodList", fields_);
+}
+
 void TbRefIfacesParentIfTracer::trace_callImportedIfMethod(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param)
 {
 	nlohmann::json fields_;
 	fields_["param"] = Param;
 	Tracer::instance()->call("tb.ref_ifaces/ParentIf#importedIfMethod", fields_);
+}
+
+void TbRefIfacesParentIfTracer::trace_callImportedIfMethodList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param)
+{
+	nlohmann::json fields_;
+	fields_["param"] = Param;
+	Tracer::instance()->call("tb.ref_ifaces/ParentIf#importedIfMethodList", fields_);
 }

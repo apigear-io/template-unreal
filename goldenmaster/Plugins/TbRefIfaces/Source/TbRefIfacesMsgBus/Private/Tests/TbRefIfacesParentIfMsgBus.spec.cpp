@@ -81,11 +81,25 @@ void UTbRefIfacesParentIfMsgBusSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetLocalIf(), TestValue);
 	});
 
+	It("Property.LocalIfList.Default", [this]()
+		{
+		// Do implement test here
+		TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> TestValue = TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>(); // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetLocalIfList(), TestValue);
+	});
+
 	It("Property.ImportedIf.Default", [this]()
 		{
 		// Do implement test here
 		TScriptInterface<ITbIfaceimportEmptyIfInterface> TestValue = TScriptInterface<ITbIfaceimportEmptyIfInterface>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetImportedIf(), TestValue);
+	});
+
+	It("Property.ImportedIfList.Default", [this]()
+		{
+		// Do implement test here
+		TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> TestValue = TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>(); // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetImportedIfList(), TestValue);
 	});
 
 	LatentIt("Operation.LocalIfMethod", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
@@ -98,12 +112,32 @@ void UTbRefIfacesParentIfMsgBusSpec::Define()
 		});
 	});
 
+	LatentIt("Operation.LocalIfMethodList", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
+			{
+			ImplFixture->GetImplementation()->LocalIfMethodList(TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>());
+			TestDone.Execute();
+		});
+	});
+
 	LatentIt("Operation.ImportedIfMethod", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		// Do implement test here
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetImplementation()->ImportedIfMethod(TScriptInterface<ITbIfaceimportEmptyIfInterface>());
+			TestDone.Execute();
+		});
+	});
+
+	LatentIt("Operation.ImportedIfMethodList", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
+			{
+			ImplFixture->GetImplementation()->ImportedIfMethodList(TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>());
 			TestDone.Execute();
 		});
 	});
@@ -124,6 +158,24 @@ void UTbRefIfacesParentIfMsgBusSpec::Define()
 		TbRefIfacesParentIfSignals->BroadcastLocalIfSignalSignal(ParamTestValue);
 	});
 
+	LatentIt("Signal.LocalIfSignalList", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		UTbRefIfacesParentIfSignals* TbRefIfacesParentIfSignals = ImplFixture->GetImplementation()->_GetSignals();
+		TbRefIfacesParentIfSignals->OnLocalIfSignalListSignal.AddLambda([this, TestDone](const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InParam)
+			{
+			// known test value
+			TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> ParamTestValue = TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>(); // default value
+			ParamTestValue.Add(TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>());
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam, ParamTestValue);
+			TestDone.Execute();
+		});
+
+		// use different test value
+		TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> ParamTestValue = TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>(); // default value
+		ParamTestValue.Add(TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>());
+		TbRefIfacesParentIfSignals->BroadcastLocalIfSignalListSignal(ParamTestValue);
+	});
+
 	LatentIt("Signal.ImportedIfSignal", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		UTbRefIfacesParentIfSignals* TbRefIfacesParentIfSignals = ImplFixture->GetImplementation()->_GetSignals();
@@ -138,6 +190,24 @@ void UTbRefIfacesParentIfMsgBusSpec::Define()
 		// use different test value
 		TScriptInterface<ITbIfaceimportEmptyIfInterface> ParamTestValue = TScriptInterface<ITbIfaceimportEmptyIfInterface>();
 		TbRefIfacesParentIfSignals->BroadcastImportedIfSignalSignal(ParamTestValue);
+	});
+
+	LatentIt("Signal.ImportedIfSignalList", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		UTbRefIfacesParentIfSignals* TbRefIfacesParentIfSignals = ImplFixture->GetImplementation()->_GetSignals();
+		TbRefIfacesParentIfSignals->OnImportedIfSignalListSignal.AddLambda([this, TestDone](const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InParam)
+			{
+			// known test value
+			TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> ParamTestValue = TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>(); // default value
+			ParamTestValue.Add(TScriptInterface<ITbIfaceimportEmptyIfInterface>());
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParam, ParamTestValue);
+			TestDone.Execute();
+		});
+
+		// use different test value
+		TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> ParamTestValue = TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>(); // default value
+		ParamTestValue.Add(TScriptInterface<ITbIfaceimportEmptyIfInterface>());
+		TbRefIfacesParentIfSignals->BroadcastImportedIfSignalListSignal(ParamTestValue);
 	});
 }
 } // namespace Tests

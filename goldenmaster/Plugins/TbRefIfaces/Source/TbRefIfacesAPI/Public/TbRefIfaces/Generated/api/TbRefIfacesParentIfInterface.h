@@ -29,14 +29,24 @@ limitations under the License.
 DECLARE_MULTICAST_DELEGATE_OneParam(FTbRefIfacesParentIfLocalIfSignalDelegate, const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& /* Param */);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbRefIfacesParentIfLocalIfSignalDelegateBP, const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>&, Param);
 
+DECLARE_MULTICAST_DELEGATE_OneParam(FTbRefIfacesParentIfLocalIfSignalListDelegate, const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& /* Param */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbRefIfacesParentIfLocalIfSignalListDelegateBP, const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>&, Param);
+
 DECLARE_MULTICAST_DELEGATE_OneParam(FTbRefIfacesParentIfImportedIfSignalDelegate, const TScriptInterface<ITbIfaceimportEmptyIfInterface>& /* Param */);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbRefIfacesParentIfImportedIfSignalDelegateBP, const TScriptInterface<ITbIfaceimportEmptyIfInterface>&, Param);
+
+DECLARE_MULTICAST_DELEGATE_OneParam(FTbRefIfacesParentIfImportedIfSignalListDelegate, const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& /* Param */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbRefIfacesParentIfImportedIfSignalListDelegateBP, const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>&, Param);
 
 // property delegates
 DECLARE_MULTICAST_DELEGATE_OneParam(FTbRefIfacesParentIfLocalIfChangedDelegate, const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& /* LocalIf */);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbRefIfacesParentIfLocalIfChangedDelegateBP, const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>&, LocalIf);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTbRefIfacesParentIfLocalIfListChangedDelegate, const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& /* LocalIfList */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbRefIfacesParentIfLocalIfListChangedDelegateBP, const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>&, LocalIfList);
 DECLARE_MULTICAST_DELEGATE_OneParam(FTbRefIfacesParentIfImportedIfChangedDelegate, const TScriptInterface<ITbIfaceimportEmptyIfInterface>& /* ImportedIf */);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbRefIfacesParentIfImportedIfChangedDelegateBP, const TScriptInterface<ITbIfaceimportEmptyIfInterface>&, ImportedIf);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTbRefIfacesParentIfImportedIfListChangedDelegate, const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& /* ImportedIfList */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbRefIfacesParentIfImportedIfListChangedDelegateBP, const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>&, ImportedIfList);
 
 /**
  * Class UTbRefIfacesParentIfInterfaceSignals
@@ -60,6 +70,17 @@ public:
 		OnLocalIfSignalSignalBP.Broadcast(Param);
 	}
 
+	FTbRefIfacesParentIfLocalIfSignalListDelegate OnLocalIfSignalListSignal;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbRefIfaces|ParentIf|Signals", DisplayName = "LocalIfSignalList Signal")
+	FTbRefIfacesParentIfLocalIfSignalListDelegateBP OnLocalIfSignalListSignalBP;
+	/// C++ wrapper for BP functions to safely call LocalIfSignalListSignal.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|ParentIf|Signals", DisplayName = "Broadcast LocalIfSignalList Signal")
+	void BroadcastLocalIfSignalListSignal(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param)
+	{
+		OnLocalIfSignalListSignal.Broadcast(Param);
+		OnLocalIfSignalListSignalBP.Broadcast(Param);
+	}
+
 	FTbRefIfacesParentIfImportedIfSignalDelegate OnImportedIfSignalSignal;
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbRefIfaces|ParentIf|Signals", DisplayName = "ImportedIfSignal Signal")
 	FTbRefIfacesParentIfImportedIfSignalDelegateBP OnImportedIfSignalSignalBP;
@@ -69,6 +90,17 @@ public:
 	{
 		OnImportedIfSignalSignal.Broadcast(Param);
 		OnImportedIfSignalSignalBP.Broadcast(Param);
+	}
+
+	FTbRefIfacesParentIfImportedIfSignalListDelegate OnImportedIfSignalListSignal;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbRefIfaces|ParentIf|Signals", DisplayName = "ImportedIfSignalList Signal")
+	FTbRefIfacesParentIfImportedIfSignalListDelegateBP OnImportedIfSignalListSignalBP;
+	/// C++ wrapper for BP functions to safely call ImportedIfSignalListSignal.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|ParentIf|Signals", DisplayName = "Broadcast ImportedIfSignalList Signal")
+	void BroadcastImportedIfSignalListSignal(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param)
+	{
+		OnImportedIfSignalListSignal.Broadcast(Param);
+		OnImportedIfSignalListSignalBP.Broadcast(Param);
 	}
 
 	FTbRefIfacesParentIfLocalIfChangedDelegate OnLocalIfChanged;
@@ -82,6 +114,17 @@ public:
 		OnLocalIfChangedBP.Broadcast(InLocalIf);
 	}
 
+	FTbRefIfacesParentIfLocalIfListChangedDelegate OnLocalIfListChanged;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbRefIfaces|ParentIf|Signals", DisplayName = "Property LocalIfList Changed")
+	FTbRefIfacesParentIfLocalIfListChangedDelegateBP OnLocalIfListChangedBP;
+	/// C++ wrapper for BP functions to safely call OnLocalIfListChanged.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|ParentIf|Signals", DisplayName = "Broadcast Property LocalIfList Changed")
+	void BroadcastLocalIfListChanged(UPARAM(DisplayName = "LocalIfList") const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InLocalIfList)
+	{
+		OnLocalIfListChanged.Broadcast(InLocalIfList);
+		OnLocalIfListChangedBP.Broadcast(InLocalIfList);
+	}
+
 	FTbRefIfacesParentIfImportedIfChangedDelegate OnImportedIfChanged;
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbRefIfaces|ParentIf|Signals", DisplayName = "Property ImportedIf Changed")
 	FTbRefIfacesParentIfImportedIfChangedDelegateBP OnImportedIfChangedBP;
@@ -91,6 +134,17 @@ public:
 	{
 		OnImportedIfChanged.Broadcast(InImportedIf);
 		OnImportedIfChangedBP.Broadcast(InImportedIf);
+	}
+
+	FTbRefIfacesParentIfImportedIfListChangedDelegate OnImportedIfListChanged;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbRefIfaces|ParentIf|Signals", DisplayName = "Property ImportedIfList Changed")
+	FTbRefIfacesParentIfImportedIfListChangedDelegateBP OnImportedIfListChangedBP;
+	/// C++ wrapper for BP functions to safely call OnImportedIfListChanged.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|ParentIf|Signals", DisplayName = "Broadcast Property ImportedIfList Changed")
+	void BroadcastImportedIfListChanged(UPARAM(DisplayName = "ImportedIfList") const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InImportedIfList)
+	{
+		OnImportedIfListChanged.Broadcast(InImportedIfList);
+		OnImportedIfListChangedBP.Broadcast(InImportedIfList);
 	}
 };
 
@@ -124,9 +178,19 @@ public:
 	virtual TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> LocalIfMethod(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Param) = 0;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|ParentIf|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	virtual void LocalIfMethodListAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Result, const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param) = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|ParentIf|Operations")
+	virtual TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> LocalIfMethodList(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param) = 0;
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|ParentIf|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	virtual void ImportedIfMethodAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TScriptInterface<ITbIfaceimportEmptyIfInterface>& Result, const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param) = 0;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|ParentIf|Operations")
 	virtual TScriptInterface<ITbIfaceimportEmptyIfInterface> ImportedIfMethod(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param) = 0;
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|ParentIf|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	virtual void ImportedIfMethodListAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Result, const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param) = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|ParentIf|Operations")
+	virtual TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> ImportedIfMethodList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param) = 0;
 
 	// properties
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|ParentIf|Properties")
@@ -134,7 +198,15 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|ParentIf|Properties")
 	virtual void SetLocalIf(UPARAM(DisplayName = "LocalIf") const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& InLocalIf) = 0;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|ParentIf|Properties")
+	virtual TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> GetLocalIfList() const = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|ParentIf|Properties")
+	virtual void SetLocalIfList(UPARAM(DisplayName = "LocalIfList") const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InLocalIfList) = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|ParentIf|Properties")
 	virtual TScriptInterface<ITbIfaceimportEmptyIfInterface> GetImportedIf() const = 0;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|ParentIf|Properties")
 	virtual void SetImportedIf(UPARAM(DisplayName = "ImportedIf") const TScriptInterface<ITbIfaceimportEmptyIfInterface>& InImportedIf) = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|ParentIf|Properties")
+	virtual TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> GetImportedIfList() const = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|ParentIf|Properties")
+	virtual void SetImportedIfList(UPARAM(DisplayName = "ImportedIfList") const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InImportedIfList) = 0;
 };

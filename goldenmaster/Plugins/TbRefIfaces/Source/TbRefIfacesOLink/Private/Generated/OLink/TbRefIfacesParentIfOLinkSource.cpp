@@ -75,9 +75,39 @@ void TbRefIfacesParentIfOLinkSource::OnLocalIfSignal(const TScriptInterface<ITbR
 	}
 }
 
+void TbRefIfacesParentIfOLinkSource::OnLocalIfSignalList(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param)
+{
+	static const auto& signalId = ApiGear::ObjectLink::Name::createMemberId(olinkObjectName(), "localIfSignalList");
+	static const auto& objectId = ApiGear::ObjectLink::Name::getObjectId(signalId);
+	const nlohmann::json& args = {Param};
+	for (auto node : Host->GetOLinkRegistry()->getNodes(objectId))
+	{
+		auto lockedNode = node.lock();
+		if (lockedNode)
+		{
+			lockedNode->notifySignal(signalId, args);
+		}
+	}
+}
+
 void TbRefIfacesParentIfOLinkSource::OnImportedIfSignal(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param)
 {
 	static const auto& signalId = ApiGear::ObjectLink::Name::createMemberId(olinkObjectName(), "importedIfSignal");
+	static const auto& objectId = ApiGear::ObjectLink::Name::getObjectId(signalId);
+	const nlohmann::json& args = {Param};
+	for (auto node : Host->GetOLinkRegistry()->getNodes(objectId))
+	{
+		auto lockedNode = node.lock();
+		if (lockedNode)
+		{
+			lockedNode->notifySignal(signalId, args);
+		}
+	}
+}
+
+void TbRefIfacesParentIfOLinkSource::OnImportedIfSignalList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param)
+{
+	static const auto& signalId = ApiGear::ObjectLink::Name::createMemberId(olinkObjectName(), "importedIfSignalList");
 	static const auto& objectId = ApiGear::ObjectLink::Name::getObjectId(signalId);
 	const nlohmann::json& args = {Param};
 	for (auto node : Host->GetOLinkRegistry()->getNodes(objectId))
@@ -104,6 +134,20 @@ void TbRefIfacesParentIfOLinkSource::OnLocalIfChanged(const TScriptInterface<ITb
 	}
 }
 
+void TbRefIfacesParentIfOLinkSource::OnLocalIfListChanged(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InLocalIfList)
+{
+	static const auto& propertyId = ApiGear::ObjectLink::Name::createMemberId(olinkObjectName(), "localIfList");
+	static const auto& objectId = ApiGear::ObjectLink::Name::getObjectId(propertyId);
+	for (auto node : Host->GetOLinkRegistry()->getNodes(objectId))
+	{
+		auto lockedNode = node.lock();
+		if (lockedNode)
+		{
+			lockedNode->notifyPropertyChange(propertyId, InLocalIfList);
+		}
+	}
+}
+
 void TbRefIfacesParentIfOLinkSource::OnImportedIfChanged(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& InImportedIf)
 {
 	static const auto& propertyId = ApiGear::ObjectLink::Name::createMemberId(olinkObjectName(), "importedIf");
@@ -114,6 +158,20 @@ void TbRefIfacesParentIfOLinkSource::OnImportedIfChanged(const TScriptInterface<
 		if (lockedNode)
 		{
 			lockedNode->notifyPropertyChange(propertyId, InImportedIf);
+		}
+	}
+}
+
+void TbRefIfacesParentIfOLinkSource::OnImportedIfListChanged(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InImportedIfList)
+{
+	static const auto& propertyId = ApiGear::ObjectLink::Name::createMemberId(olinkObjectName(), "importedIfList");
+	static const auto& objectId = ApiGear::ObjectLink::Name::getObjectId(propertyId);
+	for (auto node : Host->GetOLinkRegistry()->getNodes(objectId))
+	{
+		auto lockedNode = node.lock();
+		if (lockedNode)
+		{
+			lockedNode->notifyPropertyChange(propertyId, InImportedIfList);
 		}
 	}
 }
@@ -147,10 +205,22 @@ nlohmann::json TbRefIfacesParentIfOLinkSource::olinkInvoke(const std::string& me
 		TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> result = BackendService->LocalIfMethod(Param);
 		return result;
 	}
+	if (path == "localIfMethodList")
+	{
+		TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> Param = args.at(0).get<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>();
+		TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> result = BackendService->LocalIfMethodList(Param);
+		return result;
+	}
 	if (path == "importedIfMethod")
 	{
 		TScriptInterface<ITbIfaceimportEmptyIfInterface> Param = args.at(0).get<TScriptInterface<ITbIfaceimportEmptyIfInterface>>();
 		TScriptInterface<ITbIfaceimportEmptyIfInterface> result = BackendService->ImportedIfMethod(Param);
+		return result;
+	}
+	if (path == "importedIfMethodList")
+	{
+		TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> Param = args.at(0).get<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>();
+		TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> result = BackendService->ImportedIfMethodList(Param);
 		return result;
 	}
 	return nlohmann::json();
@@ -170,10 +240,20 @@ void TbRefIfacesParentIfOLinkSource::olinkSetProperty(const std::string& propert
 		TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> LocalIf = value.get<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>();
 		BackendService->SetLocalIf(LocalIf);
 	}
+	if (path == "localIfList")
+	{
+		TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> LocalIfList = value.get<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>();
+		BackendService->SetLocalIfList(LocalIfList);
+	}
 	if (path == "importedIf")
 	{
 		TScriptInterface<ITbIfaceimportEmptyIfInterface> ImportedIf = value.get<TScriptInterface<ITbIfaceimportEmptyIfInterface>>();
 		BackendService->SetImportedIf(ImportedIf);
+	}
+	if (path == "importedIfList")
+	{
+		TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> ImportedIfList = value.get<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>();
+		BackendService->SetImportedIfList(ImportedIfList);
 	}
 }
 
@@ -188,6 +268,8 @@ nlohmann::json TbRefIfacesParentIfOLinkSource::olinkCollectProperties()
 	return nlohmann::json::object({
 
 		{"localIf", BackendService->GetLocalIf()},
-		{"importedIf", BackendService->GetImportedIf()}});
+		{"localIfList", BackendService->GetLocalIfList()},
+		{"importedIf", BackendService->GetImportedIf()},
+		{"importedIfList", BackendService->GetImportedIfList()}});
 }
 #endif // !(PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_QNX)

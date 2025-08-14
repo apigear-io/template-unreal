@@ -45,8 +45,12 @@ struct TbRefIfacesParentIfPropertiesData
 {
 	FCriticalSection LocalIfMutex;
 	TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> LocalIf{TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>()};
+	FCriticalSection LocalIfListMutex;
+	TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> LocalIfList{TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>()};
 	FCriticalSection ImportedIfMutex;
 	TScriptInterface<ITbIfaceimportEmptyIfInterface> ImportedIf{TScriptInterface<ITbIfaceimportEmptyIfInterface>()};
+	FCriticalSection ImportedIfListMutex;
+	TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> ImportedIfList{TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>()};
 };
 DEFINE_LOG_CATEGORY(LogTbRefIfacesParentIfOLinkClient);
 
@@ -185,6 +189,39 @@ void UTbRefIfacesParentIfOLinkClient::SetLocalIf(const TScriptInterface<ITbRefIf
 	_SentData->LocalIf = InLocalIf;
 }
 
+TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> UTbRefIfacesParentIfOLinkClient::GetLocalIfList() const
+{
+	return LocalIfList;
+}
+
+void UTbRefIfacesParentIfOLinkClient::SetLocalIfList(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InLocalIfList)
+{
+	if (!m_sink->IsReady())
+	{
+		UE_LOG(LogTbRefIfacesParentIfOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbRefIfaces plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		return;
+	}
+
+	// only send change requests if the value changed -> reduce network load
+	if (GetLocalIfList() == InLocalIfList)
+	{
+		return;
+	}
+
+	// only send change requests if the value wasn't already sent -> reduce network load
+	{
+		FScopeLock Lock(&(_SentData->LocalIfListMutex));
+		if (_SentData->LocalIfList == InLocalIfList)
+		{
+			return;
+		}
+	}
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "localIfList");
+	m_sink->GetNode()->setRemoteProperty(memberId, InLocalIfList);
+	FScopeLock Lock(&(_SentData->LocalIfListMutex));
+	_SentData->LocalIfList = InLocalIfList;
+}
+
 TScriptInterface<ITbIfaceimportEmptyIfInterface> UTbRefIfacesParentIfOLinkClient::GetImportedIf() const
 {
 	return ImportedIf;
@@ -218,6 +255,39 @@ void UTbRefIfacesParentIfOLinkClient::SetImportedIf(const TScriptInterface<ITbIf
 	_SentData->ImportedIf = InImportedIf;
 }
 
+TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> UTbRefIfacesParentIfOLinkClient::GetImportedIfList() const
+{
+	return ImportedIfList;
+}
+
+void UTbRefIfacesParentIfOLinkClient::SetImportedIfList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InImportedIfList)
+{
+	if (!m_sink->IsReady())
+	{
+		UE_LOG(LogTbRefIfacesParentIfOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbRefIfaces plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+		return;
+	}
+
+	// only send change requests if the value changed -> reduce network load
+	if (GetImportedIfList() == InImportedIfList)
+	{
+		return;
+	}
+
+	// only send change requests if the value wasn't already sent -> reduce network load
+	{
+		FScopeLock Lock(&(_SentData->ImportedIfListMutex));
+		if (_SentData->ImportedIfList == InImportedIfList)
+		{
+			return;
+		}
+	}
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "importedIfList");
+	m_sink->GetNode()->setRemoteProperty(memberId, InImportedIfList);
+	FScopeLock Lock(&(_SentData->ImportedIfListMutex));
+	_SentData->ImportedIfList = InImportedIfList;
+}
+
 TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> UTbRefIfacesParentIfOLinkClient::LocalIfMethod(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Param)
 {
 	if (!m_sink->IsReady())
@@ -235,6 +305,29 @@ TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> UTbRefIfacesParentIfOLinkCl
 			Promise.SetValue(arg.value.get<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "localIfMethod");
+		m_sink->GetNode()->invokeRemote(memberId, {Param}, GetParentIfStateFunc);
+	});
+
+	return Promise.GetFuture().Get();
+}
+
+TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> UTbRefIfacesParentIfOLinkClient::LocalIfMethodList(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param)
+{
+	if (!m_sink->IsReady())
+	{
+		UE_LOG(LogTbRefIfacesParentIfOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbRefIfaces plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+
+		return TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>();
+	}
+	TPromise<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>> Promise;
+	Async(EAsyncExecution::ThreadPool,
+		[Param, &Promise, this]()
+		{
+		ApiGear::ObjectLink::InvokeReplyFunc GetParentIfStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+			Promise.SetValue(arg.value.get<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>());
+		};
+		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "localIfMethodList");
 		m_sink->GetNode()->invokeRemote(memberId, {Param}, GetParentIfStateFunc);
 	});
 
@@ -264,6 +357,29 @@ TScriptInterface<ITbIfaceimportEmptyIfInterface> UTbRefIfacesParentIfOLinkClient
 	return Promise.GetFuture().Get();
 }
 
+TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> UTbRefIfacesParentIfOLinkClient::ImportedIfMethodList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param)
+{
+	if (!m_sink->IsReady())
+	{
+		UE_LOG(LogTbRefIfacesParentIfOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbRefIfaces plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+
+		return TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>();
+	}
+	TPromise<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>> Promise;
+	Async(EAsyncExecution::ThreadPool,
+		[Param, &Promise, this]()
+		{
+		ApiGear::ObjectLink::InvokeReplyFunc GetParentIfStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+			Promise.SetValue(arg.value.get<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>());
+		};
+		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "importedIfMethodList");
+		m_sink->GetNode()->invokeRemote(memberId, {Param}, GetParentIfStateFunc);
+	});
+
+	return Promise.GetFuture().Get();
+}
+
 bool UTbRefIfacesParentIfOLinkClient::_IsSubscribed() const
 {
 	return m_sink->IsReady();
@@ -283,6 +399,18 @@ void UTbRefIfacesParentIfOLinkClient::applyState(const nlohmann::json& fields)
 		_GetSignals()->BroadcastLocalIfChanged(LocalIf);
 	}
 
+	const bool bLocalIfListChanged = fields.contains("localIfList") && (LocalIfList != fields["localIfList"].get<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>());
+	if (bLocalIfListChanged)
+	{
+		LocalIfList = fields["localIfList"].get<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>();
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->LocalIfListMutex));
+			_SentData->LocalIfList = LocalIfList;
+		}
+		_GetSignals()->BroadcastLocalIfListChanged(LocalIfList);
+	}
+
 	const bool bImportedIfChanged = fields.contains("importedIf") && (ImportedIf != fields["importedIf"].get<TScriptInterface<ITbIfaceimportEmptyIfInterface>>());
 	if (bImportedIfChanged)
 	{
@@ -293,6 +421,18 @@ void UTbRefIfacesParentIfOLinkClient::applyState(const nlohmann::json& fields)
 			_SentData->ImportedIf = ImportedIf;
 		}
 		_GetSignals()->BroadcastImportedIfChanged(ImportedIf);
+	}
+
+	const bool bImportedIfListChanged = fields.contains("importedIfList") && (ImportedIfList != fields["importedIfList"].get<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>());
+	if (bImportedIfListChanged)
+	{
+		ImportedIfList = fields["importedIfList"].get<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>();
+		// reset sent data to the current state
+		{
+			FScopeLock Lock(&(_SentData->ImportedIfListMutex));
+			_SentData->ImportedIfList = ImportedIfList;
+		}
+		_GetSignals()->BroadcastImportedIfListChanged(ImportedIfList);
 	}
 }
 
@@ -305,10 +445,24 @@ void UTbRefIfacesParentIfOLinkClient::emitSignal(const std::string& signalName, 
 		return;
 	}
 
+	if (signalName == "localIfSignalList")
+	{
+		const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& outParam = args[0].get<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>();
+		_GetSignals()->BroadcastLocalIfSignalListSignal(outParam);
+		return;
+	}
+
 	if (signalName == "importedIfSignal")
 	{
 		const TScriptInterface<ITbIfaceimportEmptyIfInterface>& outParam = args[0].get<TScriptInterface<ITbIfaceimportEmptyIfInterface>>();
 		_GetSignals()->BroadcastImportedIfSignalSignal(outParam);
+		return;
+	}
+
+	if (signalName == "importedIfSignalList")
+	{
+		const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& outParam = args[0].get<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>();
+		_GetSignals()->BroadcastImportedIfSignalListSignal(outParam);
 		return;
 	}
 }

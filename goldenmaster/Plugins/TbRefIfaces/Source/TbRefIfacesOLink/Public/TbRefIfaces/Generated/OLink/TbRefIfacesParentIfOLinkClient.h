@@ -49,13 +49,23 @@ public:
 	TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> GetLocalIf() const override;
 	void SetLocalIf(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& LocalIf) override;
 
+	TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> GetLocalIfList() const override;
+	void SetLocalIfList(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& LocalIfList) override;
+
 	TScriptInterface<ITbIfaceimportEmptyIfInterface> GetImportedIf() const override;
 	void SetImportedIf(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& ImportedIf) override;
+
+	TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> GetImportedIfList() const override;
+	void SetImportedIfList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& ImportedIfList) override;
 
 	// operations
 	TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> LocalIfMethod(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Param) override;
 
+	TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> LocalIfMethodList(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param) override;
+
 	TScriptInterface<ITbIfaceimportEmptyIfInterface> ImportedIfMethod(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param) override;
+
+	TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> ImportedIfMethodList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|ParentIf")
 	void UseConnection(TScriptInterface<class IApiGearConnection> InConnection);

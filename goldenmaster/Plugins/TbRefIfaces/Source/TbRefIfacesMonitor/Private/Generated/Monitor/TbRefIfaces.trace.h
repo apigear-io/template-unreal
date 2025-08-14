@@ -18,9 +18,15 @@ public:
 	TbRefIfacesParentIfTracer();
 	static void capture_state(UObject* Object, ITbRefIfacesParentIfInterface* obj);
 	static void trace_callSetLocalIf(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& InLocalIf);
+	static void trace_callSetLocalIfList(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InLocalIfList);
 	static void trace_callSetImportedIf(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& InImportedIf);
+	static void trace_callSetImportedIfList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InImportedIfList);
 	static void trace_signalLocalIfSignal(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Param);
+	static void trace_signalLocalIfSignalList(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param);
 	static void trace_signalImportedIfSignal(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param);
+	static void trace_signalImportedIfSignalList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param);
 	static void trace_callLocalIfMethod(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Param);
+	static void trace_callLocalIfMethodList(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param);
 	static void trace_callImportedIfMethod(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param);
+	static void trace_callImportedIfMethodList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param);
 };

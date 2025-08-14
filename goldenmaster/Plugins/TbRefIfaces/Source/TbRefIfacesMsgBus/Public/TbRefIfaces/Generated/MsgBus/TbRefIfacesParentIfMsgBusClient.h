@@ -33,11 +33,17 @@ struct FTbRefIfacesParentIfInitMessage;
 struct FTbRefIfacesParentIfPongMessage;
 struct FTbRefIfacesParentIfServiceDisconnectMessage;
 struct FTbRefIfacesParentIfLocalIfSignalSignalMessage;
+struct FTbRefIfacesParentIfLocalIfSignalListSignalMessage;
 struct FTbRefIfacesParentIfImportedIfSignalSignalMessage;
+struct FTbRefIfacesParentIfImportedIfSignalListSignalMessage;
 struct FTbRefIfacesParentIfLocalIfChangedMessage;
+struct FTbRefIfacesParentIfLocalIfListChangedMessage;
 struct FTbRefIfacesParentIfImportedIfChangedMessage;
+struct FTbRefIfacesParentIfImportedIfListChangedMessage;
 struct FTbRefIfacesParentIfLocalIfMethodReplyMessage;
+struct FTbRefIfacesParentIfLocalIfMethodListReplyMessage;
 struct FTbRefIfacesParentIfImportedIfMethodReplyMessage;
+struct FTbRefIfacesParentIfImportedIfMethodListReplyMessage;
 
 USTRUCT(BlueprintType)
 struct FTbRefIfacesParentIfStats
@@ -103,13 +109,23 @@ public:
 	TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> GetLocalIf() const override;
 	void SetLocalIf(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& LocalIf) override;
 
+	TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> GetLocalIfList() const override;
+	void SetLocalIfList(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& LocalIfList) override;
+
 	TScriptInterface<ITbIfaceimportEmptyIfInterface> GetImportedIf() const override;
 	void SetImportedIf(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& ImportedIf) override;
+
+	TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> GetImportedIfList() const override;
+	void SetImportedIfList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& ImportedIfList) override;
 
 	// operations
 	TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> LocalIfMethod(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Param) override;
 
+	TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> LocalIfMethodList(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param) override;
+
 	TScriptInterface<ITbIfaceimportEmptyIfInterface> ImportedIfMethod(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param) override;
+
+	TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> ImportedIfMethodList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param) override;
 
 private:
 	TSharedPtr<FMessageEndpoint, ESPMode::ThreadSafe> TbRefIfacesParentIfMsgBusEndpoint;
@@ -139,11 +155,17 @@ private:
 	void OnPong(const FTbRefIfacesParentIfPongMessage& IntMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnServiceClosedConnection(const FTbRefIfacesParentIfServiceDisconnectMessage& InInitMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnLocalIfSignal(const FTbRefIfacesParentIfLocalIfSignalSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnLocalIfSignalList(const FTbRefIfacesParentIfLocalIfSignalListSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnImportedIfSignal(const FTbRefIfacesParentIfImportedIfSignalSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnImportedIfSignalList(const FTbRefIfacesParentIfImportedIfSignalListSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnLocalIfChanged(const FTbRefIfacesParentIfLocalIfChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnLocalIfListChanged(const FTbRefIfacesParentIfLocalIfListChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnImportedIfChanged(const FTbRefIfacesParentIfImportedIfChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnImportedIfListChanged(const FTbRefIfacesParentIfImportedIfListChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnLocalIfMethodReply(const FTbRefIfacesParentIfLocalIfMethodReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnLocalIfMethodListReply(const FTbRefIfacesParentIfLocalIfMethodListReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnImportedIfMethodReply(const FTbRefIfacesParentIfImportedIfMethodReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnImportedIfMethodListReply(const FTbRefIfacesParentIfImportedIfMethodListReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 
 	// member variable to store the last sent data
 	TPimplPtr<TbRefIfacesParentIfPropertiesMsgBusData> _SentData;

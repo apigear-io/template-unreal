@@ -320,7 +320,7 @@ void {{$Class}}OLinkSpec::Define()
 			{{- range $i, $e := .Params -}}
 			{{- if not (eq .KindType "extern") }}
 			{{- if .IsArray }}
-			{{- if or .IsPrimitive (eq .KindType "enum") }}
+			{{- if or .IsPrimitive (eq .KindType "enum") (eq .KindType "interface") }}
 			{{ueType "" .}} {{ueVar "" .}}TestValue = {{ueDefault "" .}}; // default value
 			{{ueVar "" .}}TestValue.Add({{ ueTestValue "" .}});
 			{{- else }}
@@ -347,7 +347,7 @@ void {{$Class}}OLinkSpec::Define()
 		{{- range $i, $e := .Params -}}
 		{{- if not (eq .KindType "extern") }}
 		{{- if .IsArray }}
-		{{- if or .IsPrimitive (eq .KindType "enum") }}
+		{{- if or .IsPrimitive (eq .KindType "enum") (eq .KindType "interface") }}
 		{{ueType "" .}} {{ueVar "" .}}TestValue = {{ueDefault "" .}}; // default value
 		{{ueVar "" .}}TestValue.Add({{ ueTestValue "" .}});
 		{{- else }}

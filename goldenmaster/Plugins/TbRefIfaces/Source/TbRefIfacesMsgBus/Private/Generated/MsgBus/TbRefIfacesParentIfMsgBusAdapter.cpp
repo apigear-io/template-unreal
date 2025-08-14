@@ -73,9 +73,13 @@ void UTbRefIfacesParentIfMsgBusAdapter::_StartListening()
 		.Handling<FTbRefIfacesParentIfPingMessage>(this, &UTbRefIfacesParentIfMsgBusAdapter::OnPing)
 		.Handling<FTbRefIfacesParentIfClientDisconnectMessage>(this, &UTbRefIfacesParentIfMsgBusAdapter::OnClientDisconnected)
 		.Handling<FTbRefIfacesParentIfSetLocalIfRequestMessage>(this, &UTbRefIfacesParentIfMsgBusAdapter::OnSetLocalIfRequest)
+		.Handling<FTbRefIfacesParentIfSetLocalIfListRequestMessage>(this, &UTbRefIfacesParentIfMsgBusAdapter::OnSetLocalIfListRequest)
 		.Handling<FTbRefIfacesParentIfSetImportedIfRequestMessage>(this, &UTbRefIfacesParentIfMsgBusAdapter::OnSetImportedIfRequest)
+		.Handling<FTbRefIfacesParentIfSetImportedIfListRequestMessage>(this, &UTbRefIfacesParentIfMsgBusAdapter::OnSetImportedIfListRequest)
 		.Handling<FTbRefIfacesParentIfLocalIfMethodRequestMessage>(this, &UTbRefIfacesParentIfMsgBusAdapter::OnLocalIfMethodRequest)
+		.Handling<FTbRefIfacesParentIfLocalIfMethodListRequestMessage>(this, &UTbRefIfacesParentIfMsgBusAdapter::OnLocalIfMethodListRequest)
 		.Handling<FTbRefIfacesParentIfImportedIfMethodRequestMessage>(this, &UTbRefIfacesParentIfMsgBusAdapter::OnImportedIfMethodRequest)
+		.Handling<FTbRefIfacesParentIfImportedIfMethodListRequestMessage>(this, &UTbRefIfacesParentIfMsgBusAdapter::OnImportedIfMethodListRequest)
 		.Build();
 	// clang-format on
 
@@ -147,20 +151,40 @@ void UTbRefIfacesParentIfMsgBusAdapter::_setBackendService(TScriptInterface<ITbR
 			BackendSignals->OnLocalIfChanged.Remove(OnLocalIfChangedHandle);
 			OnLocalIfChangedHandle.Reset();
 		}
+		if (OnLocalIfListChangedHandle.IsValid())
+		{
+			BackendSignals->OnLocalIfListChanged.Remove(OnLocalIfListChangedHandle);
+			OnLocalIfListChangedHandle.Reset();
+		}
 		if (OnImportedIfChangedHandle.IsValid())
 		{
 			BackendSignals->OnImportedIfChanged.Remove(OnImportedIfChangedHandle);
 			OnImportedIfChangedHandle.Reset();
+		}
+		if (OnImportedIfListChangedHandle.IsValid())
+		{
+			BackendSignals->OnImportedIfListChanged.Remove(OnImportedIfListChangedHandle);
+			OnImportedIfListChangedHandle.Reset();
 		}
 		if (OnLocalIfSignalSignalHandle.IsValid())
 		{
 			BackendSignals->OnLocalIfSignalSignal.Remove(OnLocalIfSignalSignalHandle);
 			OnLocalIfSignalSignalHandle.Reset();
 		}
+		if (OnLocalIfSignalListSignalHandle.IsValid())
+		{
+			BackendSignals->OnLocalIfSignalListSignal.Remove(OnLocalIfSignalListSignalHandle);
+			OnLocalIfSignalListSignalHandle.Reset();
+		}
 		if (OnImportedIfSignalSignalHandle.IsValid())
 		{
 			BackendSignals->OnImportedIfSignalSignal.Remove(OnImportedIfSignalSignalHandle);
 			OnImportedIfSignalSignalHandle.Reset();
+		}
+		if (OnImportedIfSignalListSignalHandle.IsValid())
+		{
+			BackendSignals->OnImportedIfSignalListSignal.Remove(OnImportedIfSignalListSignalHandle);
+			OnImportedIfSignalListSignalHandle.Reset();
 		}
 	}
 
@@ -173,9 +197,13 @@ void UTbRefIfacesParentIfMsgBusAdapter::_setBackendService(TScriptInterface<ITbR
 	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service TbRefIfacesParentIf"));
 	// connect property changed signals or simple events
 	OnLocalIfChangedHandle = BackendSignals->OnLocalIfChanged.AddUObject(this, &UTbRefIfacesParentIfMsgBusAdapter::OnLocalIfChanged);
+	OnLocalIfListChangedHandle = BackendSignals->OnLocalIfListChanged.AddUObject(this, &UTbRefIfacesParentIfMsgBusAdapter::OnLocalIfListChanged);
 	OnImportedIfChangedHandle = BackendSignals->OnImportedIfChanged.AddUObject(this, &UTbRefIfacesParentIfMsgBusAdapter::OnImportedIfChanged);
+	OnImportedIfListChangedHandle = BackendSignals->OnImportedIfListChanged.AddUObject(this, &UTbRefIfacesParentIfMsgBusAdapter::OnImportedIfListChanged);
 	OnLocalIfSignalSignalHandle = BackendSignals->OnLocalIfSignalSignal.AddUObject(this, &UTbRefIfacesParentIfMsgBusAdapter::OnLocalIfSignal);
+	OnLocalIfSignalListSignalHandle = BackendSignals->OnLocalIfSignalListSignal.AddUObject(this, &UTbRefIfacesParentIfMsgBusAdapter::OnLocalIfSignalList);
 	OnImportedIfSignalSignalHandle = BackendSignals->OnImportedIfSignalSignal.AddUObject(this, &UTbRefIfacesParentIfMsgBusAdapter::OnImportedIfSignal);
+	OnImportedIfSignalListSignalHandle = BackendSignals->OnImportedIfSignalListSignal.AddUObject(this, &UTbRefIfacesParentIfMsgBusAdapter::OnImportedIfSignalList);
 }
 
 void UTbRefIfacesParentIfMsgBusAdapter::OnDiscoveryMessage(const FTbRefIfacesParentIfDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -204,7 +232,9 @@ void UTbRefIfacesParentIfMsgBusAdapter::HandleClientConnectionRequest(const TSha
 	auto msg = new FTbRefIfacesParentIfInitMessage();
 	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
 	msg->LocalIf = BackendService->GetLocalIf();
+	msg->LocalIfList = BackendService->GetLocalIfList();
 	msg->ImportedIf = BackendService->GetImportedIf();
+	msg->ImportedIfList = BackendService->GetImportedIfList();
 
 	if (TbRefIfacesParentIfMsgBusEndpoint.IsValid())
 	{
@@ -327,6 +357,22 @@ void UTbRefIfacesParentIfMsgBusAdapter::OnLocalIfMethodRequest(const FTbRefIface
 	}
 }
 
+void UTbRefIfacesParentIfMsgBusAdapter::OnLocalIfMethodListRequest(const FTbRefIfacesParentIfLocalIfMethodListRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	auto msg = new FTbRefIfacesParentIfLocalIfMethodListReplyMessage();
+	msg->ResponseId = InMessage.ResponseId;
+	msg->Result = BackendService->LocalIfMethodList(InMessage.Param);
+
+	if (TbRefIfacesParentIfMsgBusEndpoint.IsValid())
+	{
+		TbRefIfacesParentIfMsgBusEndpoint->Send<FTbRefIfacesParentIfLocalIfMethodListReplyMessage>(msg, EMessageFlags::Reliable,
+			nullptr,
+			TArrayBuilder<FMessageAddress>().Add(Context->GetSender()),
+			FTimespan::Zero(),
+			FDateTime::MaxValue());
+	}
+}
+
 void UTbRefIfacesParentIfMsgBusAdapter::OnImportedIfMethodRequest(const FTbRefIfacesParentIfImportedIfMethodRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	auto msg = new FTbRefIfacesParentIfImportedIfMethodReplyMessage();
@@ -336,6 +382,22 @@ void UTbRefIfacesParentIfMsgBusAdapter::OnImportedIfMethodRequest(const FTbRefIf
 	if (TbRefIfacesParentIfMsgBusEndpoint.IsValid())
 	{
 		TbRefIfacesParentIfMsgBusEndpoint->Send<FTbRefIfacesParentIfImportedIfMethodReplyMessage>(msg, EMessageFlags::Reliable,
+			nullptr,
+			TArrayBuilder<FMessageAddress>().Add(Context->GetSender()),
+			FTimespan::Zero(),
+			FDateTime::MaxValue());
+	}
+}
+
+void UTbRefIfacesParentIfMsgBusAdapter::OnImportedIfMethodListRequest(const FTbRefIfacesParentIfImportedIfMethodListRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	auto msg = new FTbRefIfacesParentIfImportedIfMethodListReplyMessage();
+	msg->ResponseId = InMessage.ResponseId;
+	msg->Result = BackendService->ImportedIfMethodList(InMessage.Param);
+
+	if (TbRefIfacesParentIfMsgBusEndpoint.IsValid())
+	{
+		TbRefIfacesParentIfMsgBusEndpoint->Send<FTbRefIfacesParentIfImportedIfMethodListReplyMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
 			TArrayBuilder<FMessageAddress>().Add(Context->GetSender()),
 			FTimespan::Zero(),
@@ -360,6 +422,23 @@ void UTbRefIfacesParentIfMsgBusAdapter::OnLocalIfSignal(const TScriptInterface<I
 	}
 }
 
+void UTbRefIfacesParentIfMsgBusAdapter::OnLocalIfSignalList(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InParam)
+{
+	TArray<FMessageAddress> ConnectedClients;
+	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+
+	auto msg = new FTbRefIfacesParentIfLocalIfSignalListSignalMessage();
+	msg->Param = InParam;
+	if (TbRefIfacesParentIfMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	{
+		TbRefIfacesParentIfMsgBusEndpoint->Send<FTbRefIfacesParentIfLocalIfSignalListSignalMessage>(msg, EMessageFlags::Reliable,
+			nullptr,
+			ConnectedClients,
+			FTimespan::Zero(),
+			FDateTime::MaxValue());
+	}
+}
+
 void UTbRefIfacesParentIfMsgBusAdapter::OnImportedIfSignal(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& InParam)
 {
 	TArray<FMessageAddress> ConnectedClients;
@@ -370,6 +449,23 @@ void UTbRefIfacesParentIfMsgBusAdapter::OnImportedIfSignal(const TScriptInterfac
 	if (TbRefIfacesParentIfMsgBusEndpoint.IsValid() && NumberOfClients > 0)
 	{
 		TbRefIfacesParentIfMsgBusEndpoint->Send<FTbRefIfacesParentIfImportedIfSignalSignalMessage>(msg, EMessageFlags::Reliable,
+			nullptr,
+			ConnectedClients,
+			FTimespan::Zero(),
+			FDateTime::MaxValue());
+	}
+}
+
+void UTbRefIfacesParentIfMsgBusAdapter::OnImportedIfSignalList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InParam)
+{
+	TArray<FMessageAddress> ConnectedClients;
+	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+
+	auto msg = new FTbRefIfacesParentIfImportedIfSignalListSignalMessage();
+	msg->Param = InParam;
+	if (TbRefIfacesParentIfMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	{
+		TbRefIfacesParentIfMsgBusEndpoint->Send<FTbRefIfacesParentIfImportedIfSignalListSignalMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
 			ConnectedClients,
 			FTimespan::Zero(),
@@ -400,6 +496,29 @@ void UTbRefIfacesParentIfMsgBusAdapter::OnLocalIfChanged(const TScriptInterface<
 	}
 }
 
+void UTbRefIfacesParentIfMsgBusAdapter::OnSetLocalIfListRequest(const FTbRefIfacesParentIfSetLocalIfListRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
+{
+	BackendService->SetLocalIfList(InMessage.LocalIfList);
+}
+
+void UTbRefIfacesParentIfMsgBusAdapter::OnLocalIfListChanged(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InLocalIfList)
+{
+	TArray<FMessageAddress> ConnectedClients;
+	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+
+	auto msg = new FTbRefIfacesParentIfLocalIfListChangedMessage();
+	msg->LocalIfList = InLocalIfList;
+
+	if (TbRefIfacesParentIfMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	{
+		TbRefIfacesParentIfMsgBusEndpoint->Send<FTbRefIfacesParentIfLocalIfListChangedMessage>(msg, EMessageFlags::Reliable,
+			nullptr,
+			ConnectedClients,
+			FTimespan::Zero(),
+			FDateTime::MaxValue());
+	}
+}
+
 void UTbRefIfacesParentIfMsgBusAdapter::OnSetImportedIfRequest(const FTbRefIfacesParentIfSetImportedIfRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
 	BackendService->SetImportedIf(InMessage.ImportedIf);
@@ -416,6 +535,29 @@ void UTbRefIfacesParentIfMsgBusAdapter::OnImportedIfChanged(const TScriptInterfa
 	if (TbRefIfacesParentIfMsgBusEndpoint.IsValid() && NumberOfClients > 0)
 	{
 		TbRefIfacesParentIfMsgBusEndpoint->Send<FTbRefIfacesParentIfImportedIfChangedMessage>(msg, EMessageFlags::Reliable,
+			nullptr,
+			ConnectedClients,
+			FTimespan::Zero(),
+			FDateTime::MaxValue());
+	}
+}
+
+void UTbRefIfacesParentIfMsgBusAdapter::OnSetImportedIfListRequest(const FTbRefIfacesParentIfSetImportedIfListRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
+{
+	BackendService->SetImportedIfList(InMessage.ImportedIfList);
+}
+
+void UTbRefIfacesParentIfMsgBusAdapter::OnImportedIfListChanged(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InImportedIfList)
+{
+	TArray<FMessageAddress> ConnectedClients;
+	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+
+	auto msg = new FTbRefIfacesParentIfImportedIfListChangedMessage();
+	msg->ImportedIfList = InImportedIfList;
+
+	if (TbRefIfacesParentIfMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	{
+		TbRefIfacesParentIfMsgBusEndpoint->Send<FTbRefIfacesParentIfImportedIfListChangedMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
 			ConnectedClients,
 			FTimespan::Zero(),
