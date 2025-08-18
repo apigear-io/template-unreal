@@ -506,6 +506,12 @@ features:
           - source: "module/Source/modulejni/android/buildsystem/dependencies.gradle"
             target: "android/buildsystem/dependencies.gradle"
             raw: true
+          - source: "module/Source/modulejni/Private/Generated/jni/javaservicestarter.cpp"
+            target: "Source/{{Camel .Module.Name}}Jni/Private/Generated/Jni/JavaServiceStarter.cpp"
+            raw: true
+          - source: "module/Source/modulejni/Private/Generated/jni/javaservicestarter.h"
+            target: "Source/{{Camel .Module.Name}}Jni/Private/Generated/Jni/JavaServiceStarter.h"
+            raw: true
       - match: interface
         prefix: "Plugins/{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}Jni/"
         documents:
