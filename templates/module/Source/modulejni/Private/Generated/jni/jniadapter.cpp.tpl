@@ -8,8 +8,12 @@
 {{- $Class := printf "U%sJniAdapter" $DisplayName}}
 {{- $Iface := printf "%s%s" $ModuleName $IfaceName }}
 {{- $jniservice_name:= printf "%sjniservice" ( camel $ModuleNameRaw) }}
+{{- $javaClassPath := ( join "/" (strSlice ( camel $ModuleNameRaw) $jniservice_name) ) }}
 {{- $javaClassName :=  printf "%sJniService" $IfaceName }}
 {{- $jniFullFuncPrefix := ( join "_" (strSlice "Java" ( camel $ModuleNameRaw) $jniservice_name $javaClassName ) ) }}
+{{- $api_module_name:= printf "%s_api" ( camel $ModuleNameRaw) }}
+{{- $javaIfClassName :=  printf "I%s" $IfaceName }}
+{{- $javaIfClassFull :=  ( join "/" (strSlice (camel $ModuleNameRaw) $api_module_name $javaIfClassName ) ) }}
 
 
 ////////////////////////////////
@@ -18,6 +22,7 @@
 ///////////////////////////////
 
 #include "{{$ModuleName}}/Generated/Jni/{{$Iface}}JniAdapter.h"
+#include "JavaServiceStarter.h"
 #include "Async/Future.h"
 #include "Async/Async.h"
 #include "Engine/Engine.h"
@@ -49,10 +54,29 @@ DEFINE_LOG_CATEGORY(Log{{$Iface}}_JNI);
 void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
+#if PLATFORM_ANDROID
+#if USE_ANDROID_JNI
+    m_javaJniServiceClass =  FAndroidApplication::FindJavaClassGlobalRef("{{$javaClassPath}}/{{$javaClassName}}");
+	jobject localRef = ApiGear::JavaServiceStarter::startAndroidServer("{{$javaClassPath}}/{{$javaClassName}}Starter", "{{$javaIfClassFull}}");
+    m_javaJniServiceInstance = FAndroidApplication::GetJavaEnv()->NewGlobalRef(localRef);
+    FAndroidApplication::GetJavaEnv()->DeleteLocalRef(localRef);
+#endif
+#endif
 }
 
 void {{$Class}}::Deinitialize()
 {
+	ApiGear::JavaServiceStarter::stopAdnroidServer("{{$javaClassPath}}/{{$javaClassName}}Starter");
+#if PLATFORM_ANDROID
+#if USE_ANDROID_JNI
+    m_javaJniServiceClass = nullptr;
+    if (m_javaJniServiceInstance)
+    {
+        FAndroidApplication::GetJavaEnv()->DeleteGlobalRef(m_javaJniServiceInstance);
+        m_javaJniServiceInstance = nullptr;
+    }
+#endif
+#endif
 	Super::Deinitialize();
 }
 
