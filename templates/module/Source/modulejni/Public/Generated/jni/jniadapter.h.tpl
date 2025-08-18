@@ -14,6 +14,19 @@
 #include "{{$ModuleName}}/Generated/api/{{$Iface}}Interface.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include <memory>
+
+#if PLATFORM_ANDROID
+
+#include "Engine/Engine.h"
+#include "Android/AndroidJNI.h"
+#include "Android/AndroidApplication.h"
+
+#if USE_ANDROID_JNI
+#include <jni.h>
+#endif
+#endif
+
+
 #include "{{$Iface}}JniAdapter.generated.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(Log{{$Iface}}_JNI, Log, All);
@@ -41,6 +54,15 @@ public:
 	TScriptInterface<I{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface> getBackendService();
 
 private:
+
+// helper member;
+#if PLATFORM_ANDROID
+#if USE_ANDROID_JNI
+	jclass m_javaJniServiceClass = nullptr;
+	jobject m_javaJniServiceInstance = nullptr;
+#endif
+#endif
+
 	// signals
 {{- range $i, $e := .Interface.Signals }}
 {{- if $i }}{{nl}}{{ end }}
