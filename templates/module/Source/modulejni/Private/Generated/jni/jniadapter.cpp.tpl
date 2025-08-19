@@ -66,6 +66,7 @@ void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
 
 void {{$Class}}::Deinitialize()
 {
+	callJniServiceReady(false);
 	ApiGear::JavaServiceStarter::stopAdnroidServer("{{$javaClassPath}}/{{$javaClassName}}Starter");
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
@@ -122,11 +123,40 @@ void {{$Class}}::setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{$If
 {{- range .Interface.Signals }}
 	On{{Camel .Name}}SignalHandle = BackendSignals->On{{Camel .Name}}Signal.AddUObject(this, &{{$Class}}::On{{Camel .Name}});
 {{- end }}
+
+	callJniServiceReady(true);
 }
 
 TScriptInterface<I{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface> {{$Class}}::getBackendService()
 {
 	return BackendService;
+}
+
+void {{$Class}}::callJniServiceReady(bool isServiceReady)
+{
+    UE_LOG(Log{{$Iface}}_JNI, Verbose, TEXT("{{$Class}} call nativeServiceReady the service function "));
+    
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+    {
+        if (!m_javaJniServiceClass || !m_javaJniServiceInstance )
+        {
+            UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:nativeServiceReady(Z)V CLASS not found"));
+            return;
+        }
+
+        static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "nativeServiceReady", "(Z)V");
+
+        if (MethodID != nullptr)
+        {
+            FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, isServiceReady);
+        }
+        else
+        {
+            UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:nativeServiceReady(Z)V not found "));
+        }
+    }
+#endif 
 }
 
 {{- range .Interface.Signals }}
