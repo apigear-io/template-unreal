@@ -29,6 +29,27 @@
 #include "Misc/DateTime.h"
 #include "HAL/Platform.h"
 
+{{- $includes := getEmptyStringList}}
+{{- range .Module.Externs }}
+{{- $class := ueExtern . }}
+{{- if $class.Include }}
+{{- $includeName :=  printf "\"%s\"" $class.Include }}
+{{- $includes = (appendList $includes $includeName) }}
+{{- end }}
+{{- end }}
+{{- range .Module.Imports }}
+{{- $importModuleName := Camel .Name }}
+{{- $includeName :=  printf "\"%s/Generated/api/%s_data.h\"" $importModuleName $importModuleName }}
+{{- $includes = (appendList $includes $includeName) }}
+{{- end }}
+{{- $includes = unique $includes }}
+{{ range $includes }}
+#include {{ .}}
+{{- end }}
+{{ if or (len .Module.Enums) (len .Module.Structs) -}}
+#include "{{$ModuleName}}/Generated/api/{{ $ModuleName }}_data.h"
+{{ end }}
+
 #if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
