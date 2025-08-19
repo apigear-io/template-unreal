@@ -523,3 +523,7 @@ features:
             target: "Public/{{Camel .Module.Name}}/Generated/Jni/{{Camel .Module.Name}}{{Camel .Interface.Name}}JniAdapter.h"
           - source: "module/Source/modulejni/Private/Generated/jni/jniadapter.cpp.tpl"
             target: "Private/Generated/Jni/{{Camel .Module.Name}}{{Camel .Interface.Name}}JniAdapter.cpp"
+          - source: "module/Source/modulejni/Public/Generated/jni/jniclient.h.tpl"
+            target: "Public/{{Camel .Module.Name}}/Generated/Jni/{{Camel .Module.Name}}{{Camel .Interface.Name}}JniClient.h"
+          - source: "module/Source/modulejni/Private/Generated/jni/jniclient.cpp.tpl"
+            target: "Private/Generated/Jni/{{Camel .Module.Name}}{{Camel .Interface.Name}}JniClient.cpp"
