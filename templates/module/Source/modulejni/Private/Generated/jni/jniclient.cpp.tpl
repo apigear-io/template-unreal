@@ -38,13 +38,36 @@ limitations under the License.
 {{- $javaClassFull :=  ( join "/" (strSlice (camel $ModuleNameRaw) $jniclient_name $javaClassName  ) ) }}
 
 
+{{- define "convert_to_java_type_in_param"}}
+        {{- $localName := printf "jlocal_%s" (Camel .Name) }}
+        {{- $cppropName := ueVar "In" .}}
+        {{- $javaClassConverter := printf "%sDataJavaConverter" ( Camel .Schema.Import ) }}
+        {{- if (eq $javaClassConverter  "DataJavaConverter" )}}{{- $javaClassConverter = printf "%sDataJavaConverter" (Camel .Schema.Module.Name) }}{{ end }}
+    {{- if .IsArray }}
+        {{- if (eq .KindType "string")}}
+        auto {{$localName}} = FJavaHelper::ToJavaStringArray(Env,{{$cppropName}});
+        {{- else if and (.IsPrimitive ) (not (eq .KindType "enum")) }}
+        auto len{{snake .Name}} = {{$cppropName}}.Num();
+        {{jniToReturnType .}} {{$localName}} = Env->New{{jniToEnvNameType .}}Array(len{{snake .Name}});
+        if ({{$localName}}  == NULL){/*Log error, skip?*/};
+        Env->Set{{jniToEnvNameType .}}ArrayRegion({{$localName}}, 0, len{{snake .Name}}, {{$cppropName}}.GetData());
+        {{- else if not (eq .KindType "extern")}}
+        {{jniToReturnType .}} {{$localName}} = {{$javaClassConverter}}::makeJava{{Camel .Type }}Array(Env, {{$cppropName}});
+        {{- end }}
+    {{- else if (eq .KindType "string")}}
+        jobject {{$localName}} = FJavaHelper::ToJavaString(Env, {{$cppropName}});
+    {{- else if ( or (not .IsPrimitive ) (eq .KindType "enum" ) ) }}
+        {{jniToReturnType .}} {{$localName}} = {{$javaClassConverter}}::makeJava{{Camel .Type }}(Env, {{$cppropName}});
+    {{- end }}
+{{- end}}
+
 #include "{{$ModuleName}}/Generated/Jni/{{$Iface}}JniClient.h"
+#include "{{$ModuleName}}/Generated/Jni/{{$ModuleName}}DataJavaConverter.h"
 {{ if or (len .Module.Enums) (len .Module.Structs) -}}
 #include "{{$ModuleName}}/Generated/api/{{ $ModuleName }}_data.h"
 {{ end }}
 #include "Async/Async.h"
 #include "Engine/Engine.h"
-
 
 #if PLATFORM_ANDROID
 
@@ -127,22 +150,55 @@ void {{$Class}}::Deinitialize()
     return {{ueVar "" . }};
 }
 
+{{- if not .IsReadOnly }}
 void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
 {
-    // only send change requests if the value changed -> reduce network load
-    if (Get{{Camel .Name}}() == {{ueVar "In" . }} )
+    UE_LOG(Log{{$Iface}}Client_JNI, Verbose, TEXT("{{$javaClassPath}}/{{$javaClassName}}:set{{Camel .Name}}"));
+    if (!b_isReady)
     {
-        UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("Property {{.Name}} to set is same as current, new value won't be sent"));
+        UE_LOG(Log{{$Iface}}Client_JNI, Error, TEXT("No valid connection to service. Check that android service is set up correctly"));
         return;
     }
 
-// TODO request set property on java side
+    // only send change requests if the value changed -> reduce network load
+    if (Get{{Camel .Name}}() == {{ueVar "In" . }} )
+    {
+        UE_LOG(Log{{$Iface}}Client_JNI, Verbose, TEXT("Property {{.Name}} to set is same as current, new value won't be sent"));
+        return;
+    }
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+    {
+        {{- $signatureParam := jniJavaSignatureParam . }}
+        if (m_javaJniClientClass == nullptr)
+        {
+            UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:set{{Camel .Name}} ({{$signatureParam}})V CLASS not found"));
+            return;
+        }
+        static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "set{{Camel .Name}}", "({{$signatureParam}})V");
+        if (MethodID == nullptr)
+        {
+            UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:set{{Camel .Name}} ({{$signatureParam}})V not found"));
+            return;
+        }
+        {{- $cppropName := ueVar "In" .}}
+        {{- if or ( or .IsArray  (eq .KindType "string")) ( or (eq .KindType "enum") (not (ueIsStdSimpleType .))  ) }}
+        {{template "convert_to_java_type_in_param" .}}
+        {{- $javaLocalName := printf "jlocal_%s"  (Camel .Name) }}
+        FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, {{$javaLocalName}});
+        Env->DeleteLocalRef({{$javaLocalName}});
+        {{- else }}
+        FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, {{$cppropName}});
+        {{- end }}
+    }
 #endif
 
 }
 
 {{- end }}
 
+{{- end }}
 {{- range .Interface.Operations}}
 {{ueReturn "" .Return }} {{$Class}}::{{Camel .Name}}({{ueParams "In" .Params}})
 {
