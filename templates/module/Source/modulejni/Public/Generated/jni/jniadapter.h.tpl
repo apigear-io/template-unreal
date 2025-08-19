@@ -55,7 +55,10 @@ public:
 
 private:
 
-// helper member;
+    //helper function, wraps calling java service side
+    void callJniServiceReady(bool isServiceReady);
+
+	// helper member;
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
 	jclass m_javaJniServiceClass = nullptr;
