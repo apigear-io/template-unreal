@@ -219,7 +219,49 @@ void {{$Class}}::callJniServiceReady(bool isServiceReady)
 
 void {{$Class}}::On{{Camel .Name}}({{ueParams "" .Params}})
 {
-// Notify java side about singal
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+    UE_LOG(Log{{$Iface}}_JNI, Verbose, TEXT("Notify java jni {{$Class}}::on{{Camel .Name}} "));
+    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+    {
+        {{- $signatureParams:= jniJavaSignatureParams .Params}}
+        if (m_javaJniServiceClass == nullptr || m_javaJniServiceInstance == nullptr)
+        {
+            UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:on{{Camel .Name}} ({{$signatureParams}})V CLASS not found"));
+            return;
+        }
+        static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "on{{Camel .Name}}", "({{$signatureParams}})V");
+        if (MethodID == nullptr)
+        {
+            UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:on{{Camel .Name}} ({{$signatureParams}})V not found"));
+            return;
+        }
+
+        {{- range .Params -}}
+        {{template "convert_to_java_type" .}}
+        {{- end }}
+
+        FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID{{- if len (.Params) }},{{- end}} 
+        {{- range $idx, $p := .Params -}} {{- if $idx}}, {{ end -}}
+            {{- $javaPropName := Camel .Name}}
+            {{- $cppropName := ueVar "" .}}
+            {{- $localName := printf "jlocal_%s" $javaPropName }}
+            {{- if .IsArray }} {{$localName}}
+        {{- else if or ( or (eq .KindType "enum") (eq .KindType "string") ) (not  .IsPrimitive ) }} {{$localName}}
+        {{- else }} {{$cppropName}}
+        {{- end -}}
+        {{- end -}});
+
+        {{- range $idx, $p := .Params -}}
+            {{- $javaPropName := Camel .Name}}
+            {{- $localName := printf "jlocal_%s" $javaPropName }}
+        {{- if or ( or .IsArray  (eq .KindType "enum" ) ) (eq .KindType "string")}}
+        Env->DeleteLocalRef({{$localName}});
+        {{- else if not ( or (eq .KindType "extern")  (ueIsStdSimpleType .)  ) }}
+        Env->DeleteLocalRef({{$localName}});
+        {{- end }}
+        {{- end }}
+    }
+#endif
 }
 {{- end }}
 
