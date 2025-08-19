@@ -27,23 +27,26 @@
 			android:exported="true">
 		</service>
 		{{- end }}
-
-	</addElements>
+		</addElements>
 
 	</androidManifestUpdates>
 
 	<resourceCopies>
 		<copyDir src="$S(PluginDir)/buildsystem" dst="$S(BuildDir)/gradle/buildsystem" />
 		{{- $service_package_name := printf "%s_android_service" (camel $moduleName) }}
+		{{- $client_package_name := printf "%s_android_client" (camel $moduleName) }}
 		{{- $impl_package_name := printf "%s_impl" (camel $moduleName) }}
 		{{- $messenger_package_name := printf "%s_android_messenger" (camel $moduleName) }}
 		{{- $api_package_name := printf "%s_api" (camel $moduleName) }}
 		<copyDir src="$S(PluginDir)/android/{{camel $moduleName}}/{{$service_package_name}}" dst="$S(BuildDir)/JavaLibs/{{$service_package_name}}" />
+		<copyDir src="$S(PluginDir)/android/{{camel $moduleName}}/{{$client_package_name}}" dst="$S(BuildDir)/JavaLibs/{{$client_package_name}}" />
 		<copyDir src="$S(PluginDir)/android/{{camel $moduleName}}/{{$api_package_name}}" dst="$S(BuildDir)/JavaLibs/{{$api_package_name}}" />
 		<copyDir src="$S(PluginDir)/android/{{camel $moduleName}}/{{$messenger_package_name}}" dst="$S(BuildDir)/JavaLibs/{{$messenger_package_name}}" />
 		<copyDir src="$S(PluginDir)/android/{{camel $moduleName}}/{{$impl_package_name}}" dst="$S(BuildDir)/JavaLibs/{{$impl_package_name}}" />
 		{{- $jniservice_name:= printf "%sjniservice" $moduleName }}
 		<copyDir src="$S(PluginDir)/android/{{camel $moduleName}}/{{$jniservice_name}}" dst="$S(BuildDir)/src/{{$jniservice_name}}" />
+		{{- $jniclient_name:= printf "%sjniclient" $moduleName }}
+		<copyDir src="$S(PluginDir)/android/{{camel $moduleName}}/{{$jniclient_name}}" dst="$S(BuildDir)/src/{{$jniclient_name}}" />
 	</resourceCopies>
 
 	<baseBuildGradleAdditions>
@@ -60,6 +63,7 @@
       include ':{{camel $moduleName}}_api'
       include ':{{camel $moduleName}}_impl'
       include ':{{camel $moduleName}}_android_service'
+      include ':{{camel $moduleName}}_android_client'
       include ':{{camel $moduleName}}_android_messenger'
     ]]>
 		</insert>
@@ -73,6 +77,7 @@
                 implementation project(':{{camel $moduleName}}_api')
                 implementation project(':{{camel $moduleName}}_impl')
                 implementation project(':{{camel $moduleName}}_android_service')
+                implementation project(':{{camel $moduleName}}_android_client')
                 implementation project(':{{camel $moduleName}}_android_messenger')
                 }
             ]]>
@@ -84,12 +89,14 @@ tasks.configureEach { task ->
 		task.dependsOn ':{{camel $moduleName}}_api:assembleDebug'
 		task.dependsOn ':{{camel $moduleName}}_impl:assembleDebug'
 		task.dependsOn ':{{camel $moduleName}}_android_service:assembleDebug'
+		task.dependsOn ':{{camel $moduleName}}_android_client:assembleDebug'
 		task.dependsOn ':{{camel $moduleName}}_android_messenger:assembleDebug'
 	}
 	if (task.name == 'assembleRelease') {
 		task.dependsOn ':{{camel $moduleName}}_api:assembleRelease'
 		task.dependsOn ':{{camel $moduleName}}_impl:assembleRelease'
 		task.dependsOn ':{{camel $moduleName}}_android_service:assembleRelease'
+		task.dependsOn ':{{camel $moduleName}}_android_client:assembleRelease'
 		task.dependsOn ':{{camel $moduleName}}_android_messenger:assembleRelease'
 	}
 }
@@ -107,6 +114,10 @@ tasks.configureEach { task ->
 			public *;
 			}
 			-keep class {{$moduleName}}.{{$jniservice_name}}.{{Camel .Name}}JniServiceStarter {
+			public *;
+			}
+			{{- $jniclient_name:= printf "%sjniclient" $moduleName }}
+			-keep class {{$moduleName}}.{{$jniclient_name}}.{{Camel .Name}}JniClient {
 			public *;
 			}
 		{{- end }}
