@@ -42,6 +42,13 @@
 
 DEFINE_LOG_CATEGORY(Log{{$Iface}}_JNI);
 
+
+namespace 
+{
+	{{$Class}}* g{{$Class}}Handle = nullptr;
+}
+
+
 {{- if .Interface.Description }}
 /**
    \brief {{.Interface.Description}}
@@ -54,6 +61,7 @@ DEFINE_LOG_CATEGORY(Log{{$Iface}}_JNI);
 void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
+	g{{$Class}}Handle = this;
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
     m_javaJniServiceClass =  FAndroidApplication::FindJavaClassGlobalRef("{{$javaClassPath}}/{{$javaClassName}}");
@@ -68,6 +76,7 @@ void {{$Class}}::Deinitialize()
 {
 	callJniServiceReady(false);
 	ApiGear::JavaServiceStarter::stopAdnroidServer("{{$javaClassPath}}/{{$javaClassName}}Starter");
+	g{{$Class}}Handle = nullptr;
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
     m_javaJniServiceClass = nullptr;
@@ -192,12 +201,23 @@ JNI_METHOD {{ jniToReturnType .Return}} {{$jniFullFuncPrefix}}_native{{ Camel   
 {{- if not .IsReadOnly }}
 JNI_METHOD void {{$jniFullFuncPrefix}}_nativeSet{{ Camel .Name }}(JNIEnv* Env, jclass Clazz, {{jniJavaParam "" . }})
 {
+
+        if (g{{$Class}}Handle == nullptr)
+        {
+            UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$jniFullFuncPrefix}}_nativeSet{{ Camel .Name }}: JNI SERVICE ADAPTER NOT FOUND "));
+            return;
+        }
 // set property on backend
 }
 {{- end}}
 
 JNI_METHOD {{jniToReturnType .}} {{$jniFullFuncPrefix}}_nativeGet{{ Camel .Name }}(JNIEnv* Env, jclass Clazz)
 {
+    if (g{{$Class}}Handle == nullptr)
+    {
+        UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$jniFullFuncPrefix}}_nativeGet{{Camel .Name }}: JNI SERVICE ADAPTER NOT FOUND "));
+        return {{ jniEmptyReturn . }};
+    }
 // get property from backend 
     return {{ jniEmptyReturn . }};
 }
