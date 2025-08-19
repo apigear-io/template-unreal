@@ -90,6 +90,11 @@ limitations under the License.
 namespace {
 
     TFunction<void(bool)> g{{$Class}}notifyIsReady = [](bool value) { (void)value; UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("notifyIsReady used but not set ")); };
+    {{- range .Interface.Properties }}
+    TFunction<void({{ueReturn "" .}})> g{{$Class}}On{{Camel .Name}}ChangedEmpty = []({{ueReturn "" .}} value) { (void)value; UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("on{{Camel .Name}}Changed used but not set ")); };
+    TFunction<void({{ueReturn "" .}})> g{{$Class}}On{{Camel .Name}}Changed = g{{$Class}}On{{Camel .Name}}ChangedEmpty;
+    {{- end}}
+
 }
 DEFINE_LOG_CATEGORY(Log{{$Iface}}Client_JNI);
 
@@ -119,6 +124,14 @@ void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
                  _ConnectionStatusChanged.Broadcast(b_isReady);
              });
         };
+    {{- range .Interface.Properties }}
+	g{{$Class}}On{{Camel .Name}}Changed = [this]({{ueParam "In" . }})
+    {
+         {{ueVar "" .}} = {{ueVar "In" .}};
+         _GetSignals()->Broadcast{{Camel .Name}}Changed({{ueVar "" .}});
+    };
+	{{- end}}
+
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
     JNIEnv* Env = FAndroidApplication::GetJavaEnv();
     m_javaJniClientClass = FAndroidApplication::FindJavaClassGlobalRef("{{$javaClassFull}}");
@@ -141,6 +154,9 @@ void {{$Class}}::Deinitialize()
 #endif
 
     g{{$Class}}notifyIsReady = [](bool value){(void)value; UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("notifyIsReady used but not set "));};
+    {{- range .Interface.Properties}}
+    g{{$Class}}On{{Camel .Name}}Changed = g{{$Class}}On{{Camel .Name}}ChangedEmpty;
+    {{- end}}
     Super::Deinitialize();
 }
 
@@ -285,7 +301,24 @@ bool {{$Class}}::_IsReady() const
 {{- $javaPropName := .Name}}
 JNI_METHOD void {{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}Changed(JNIEnv* Env, jclass Clazz,{{jniJavaParam "" . }})
 {
-// TODO tarnslate data to cpp types and broadcast
+    if (g{{$Class}}Handle == nullptr)
+    {
+        UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("{{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}Changed: JNI SERVICE ADAPTER NOT FOUND "));
+        return;
+    }
+
+    {{- template "convert_to_local_cpp_value_java_param" . }}
+    {{- $hasLocalVar := or  .IsArray ( or (eq .KindType "enum") (not (ueIsStdSimpleType .))  ) }}
+    {{- $local_value :=  printf "local_%s" (snake .Name) }}
+
+    AsyncTask(ENamedThreads::GameThread, [{{- if $hasLocalVar }}{{$local_value}}{{- else}}{{$javaPropName}}{{- end}}]()
+    {
+    {{- if $hasLocalVar }}
+        g{{$Class}}On{{Camel .Name}}Changed({{$local_value}});
+    {{- else}}
+        g{{$Class}}On{{Camel .Name}}Changed({{$javaPropName}});
+    {{- end}}
+    });
 }
 {{- end}}
 
