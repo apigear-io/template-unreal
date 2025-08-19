@@ -226,9 +226,38 @@ void {{$Class}}::On{{Camel .Name}}({{ueParams "" .Params}})
 
 {{- range .Interface.Properties }}
 
-void {{$Class}}::On{{Camel .Name}}Changed({{ueParam "In" .}})
+void {{$Class}}::On{{Camel .Name}}Changed({{ueParam "" .}})
 {
-    // Notify java side about property changed
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+    UE_LOG(Log{{$Iface}}_JNI, Verbose, TEXT("Notify java jni {{$Class}}::On{{Camel .Name}} "));
+    {{- $signature := printf "(%s)V" (jniJavaSignatureParam .)}}
+    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+    {
+        if (m_javaJniServiceClass == nullptr)
+        {
+            UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}::on{{Camel .Name}}Changed{{$signature}} CLASS not found"));
+            return;
+        }
+
+        static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "on{{Camel .Name}}Changed","{{$signature}}");
+        if (MethodID == nullptr)
+        {
+            UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:on{{Camel .Name}}Changed{{$signature}} not found"));
+            return;
+        }
+
+        {{- $cppropName := ueVar "" .}}
+        {{template "convert_to_java_type" .}}
+        {{- $javaLocalName := printf "jlocal_%s"  (Camel .Name) }}
+        {{- if or ( or .IsArray  (eq .KindType "string")) ( or (eq .KindType "enum") (not (ueIsStdSimpleType .))  ) }}
+        FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, {{$javaLocalName}});
+        Env->DeleteLocalRef({{$javaLocalName}});
+        {{- else }}
+        FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, {{$cppropName}});
+        {{- end }}
+
+    }
+#endif
 }
 {{- end }}
 
