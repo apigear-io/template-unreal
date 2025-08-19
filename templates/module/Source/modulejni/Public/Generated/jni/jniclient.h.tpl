@@ -14,6 +14,7 @@
 #include "{{$ModuleName}}/Generated/api/{{$Iface}}Interface.h"
 #include "{{ $ModuleName }}/Generated/api/Abstract{{$Iface}}.h"
 #include "Subsystems/GameInstanceSubsystem.h"
+#include "{{$ModuleName}}/Generated/Jni/{{$ModuleName}}JniConnectionStatus.h"
 #include <memory>
 
 #if PLATFORM_ANDROID
@@ -56,6 +57,10 @@ public:
 {{- range $i, $e := .Interface.Operations }}
 	virtual {{ueReturn "" .Return}} {{Camel .Name}}({{ueParams "" .Params}}) override;
 {{- end }}
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|{{Camel .Module.Name}}|{{$IfaceName}}|Jni|Remote", DisplayName = "Connection Status Changed")
+	FApiGearJniConnectionStatusChangedDelegateBP _ConnectionStatusChangedBP;
+	FApiGearJniConnectionStatusChangedDelegate _ConnectionStatusChanged;
 
 	/**
 	 * Informs about the subscription state of the interface client.
