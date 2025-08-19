@@ -64,6 +64,10 @@ limitations under the License.
 */
 
 
+namespace {
+
+    TFunction<void(bool)> g{{$Class}}notifyIsReady = [](bool value) { (void)value; UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("notifyIsReady used but not set ")); };
+}
 DEFINE_LOG_CATEGORY(Log{{$Iface}}Client_JNI);
 
 {{$Class}}::{{$Class}}()
@@ -83,6 +87,15 @@ void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
 {
     UE_LOG(Log{{$Iface}}Client_JNI, Verbose, TEXT("Init"));
     Super::Initialize(Collection);
+
+    g{{$Class}}notifyIsReady = [this](bool value) {
+         b_isReady = value;
+         AsyncTask(ENamedThreads::GameThread, [this]()
+             {
+                 _ConnectionStatusChangedBP.Broadcast(b_isReady);
+                 _ConnectionStatusChanged.Broadcast(b_isReady);
+             });
+        };
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
     JNIEnv* Env = FAndroidApplication::GetJavaEnv();
     m_javaJniClientClass = FAndroidApplication::FindJavaClassGlobalRef("{{$javaClassFull}}");
@@ -103,6 +116,8 @@ void {{$Class}}::Deinitialize()
     m_javaJniClientClass = nullptr;
     m_javaJniClientInstance = nullptr;
 #endif
+
+    g{{$Class}}notifyIsReady = [](bool value){(void)value; UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("notifyIsReady used but not set "));};
     Super::Deinitialize();
 }
 
@@ -239,7 +254,10 @@ JNI_METHOD void {{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}Result(JNIEnv* Env
 
 JNI_METHOD void {{$jniFullFuncPrefix}}_nativeIsReady(JNIEnv* Env, jclass Clazz, jboolean value)
 {
-// TODO broadcast a connection change status
+    AsyncTask(ENamedThreads::GameThread, [value]()
+        {
+            g{{$Class}}notifyIsReady(value);
+        });
 }
 #endif
 
