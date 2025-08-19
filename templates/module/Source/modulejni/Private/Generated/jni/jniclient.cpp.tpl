@@ -35,6 +35,8 @@ limitations under the License.
 {{- $javaClassPath :=  ( join "/" (strSlice (camel $ModuleNameRaw) $jniclient_name ) ) }}
 {{- $javaClassName :=  printf "%sJniClient" $IfaceName }}
 {{- $jniFullFuncPrefix := ( join "_" (strSlice "Java" ( camel $ModuleNameRaw) $jniclient_name $javaClassName ) ) }}
+{{- $javaClassFull :=  ( join "/" (strSlice (camel $ModuleNameRaw) $jniclient_name $javaClassName  ) ) }}
+
 
 #include "{{$ModuleName}}/Generated/Jni/{{$Iface}}JniClient.h"
 {{ if or (len .Module.Enums) (len .Module.Structs) -}}
@@ -55,6 +57,7 @@ limitations under the License.
  #endif
 #endif
 
+#include "GenericPlatform/GenericPlatformMisc.h"
 
 /**
    \brief data structure to hold the last sent property values
@@ -80,12 +83,26 @@ void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
 {
     UE_LOG(Log{{$Iface}}Client_JNI, Verbose, TEXT("Init"));
     Super::Initialize(Collection);
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+    JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+    m_javaJniClientClass = FAndroidApplication::FindJavaClassGlobalRef("{{$javaClassFull}}");
+    jmethodID constructor = Env->GetMethodID(m_javaJniClientClass, "<init>", "()V");
+    jobject localRef = Env->NewObject(m_javaJniClientClass, constructor);
+    m_javaJniClientInstance = Env->NewGlobalRef(localRef);
+    FAndroidApplication::GetJavaEnv()->DeleteLocalRef(localRef);
+#endif
 }
 
 void {{$Class}}::Deinitialize()
 {
-
     UE_LOG(Log{{$Iface}}Client_JNI, Verbose, TEXT("deinit"));
+    _unbind();
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+    JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+    Env->DeleteGlobalRef(m_javaJniClientInstance);
+    m_javaJniClientClass = nullptr;
+    m_javaJniClientInstance = nullptr;
+#endif
     Super::Deinitialize();
 }
 
@@ -121,6 +138,75 @@ void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
 }
 
 {{- end }}
+
+bool {{$Class}}::_bindToService(FString servicePackage, FString connectionId)
+{
+    UE_LOG(LogPocHelloIfClient_JNI, Verbose, TEXT("Request JNI connection to %s"), *servicePackage);
+    if (b_isReady)
+    {
+        if (servicePackage == m_lastBoundServicePackage && connectionId == m_lastConnectionId)
+        {
+            UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("Already bound"));
+            return true;
+        }
+        else
+        {
+            _unbind();
+        }
+    }
+    m_lastBoundServicePackage = servicePackage;
+    m_lastConnectionId = connectionId;
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+    JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+    if (m_javaJniClientClass == nullptr)
+    {
+        UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:bind:(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z CLASS not found"));
+        return false;
+    }
+    static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
+    if (MethodID != nullptr)
+    {
+        jobject Activity = FJavaWrapper::GameActivityThis;
+        auto jPackage = FJavaHelper::ToJavaString(Env, servicePackage);
+        auto jConnId = FJavaHelper::ToJavaString(Env, connectionId);
+        auto res = FJavaWrapper::CallBooleanMethod(Env, m_javaJniClientInstance, MethodID, Activity, *jPackage, *jConnId);
+        return res;
+    }
+    else
+    {
+        UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:bind (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z not found"));
+    }
+#endif
+    return false;
+}
+void {{$Class}}::_unbind()
+{
+
+    UE_LOG(Log{{$Iface}}Client_JNI, Verbose, TEXT("Request JNI unbind"));
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+    JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+    if (m_javaJniClientClass == nullptr)
+    {
+        UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:unbind:()V CLASS not found"));
+        return;
+    }
+    static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "unbind", "()V");
+    if (MethodID != nullptr)
+    {
+        FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID);
+    }
+    else
+    {
+        UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:unbind ()V not found"));
+    }
+#endif
+}
+
+bool {{$Class}}::_IsReady() const
+{
+    return b_isReady;
+}
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 
