@@ -42,6 +42,8 @@
 		<copyDir src="$S(PluginDir)/android/{{camel $moduleName}}/{{$api_package_name}}" dst="$S(BuildDir)/JavaLibs/{{$api_package_name}}" />
 		<copyDir src="$S(PluginDir)/android/{{camel $moduleName}}/{{$messenger_package_name}}" dst="$S(BuildDir)/JavaLibs/{{$messenger_package_name}}" />
 		<copyDir src="$S(PluginDir)/android/{{camel $moduleName}}/{{$impl_package_name}}" dst="$S(BuildDir)/JavaLibs/{{$impl_package_name}}" />
+		{{- $jniservice_name:= printf "%sjniservice" $moduleName }}
+		<copyDir src="$S(PluginDir)/android/{{camel $moduleName}}/{{$jniservice_name}}" dst="$S(BuildDir)/src/{{$jniservice_name}}" />
 	</resourceCopies>
 
 	<baseBuildGradleAdditions>
@@ -99,6 +101,15 @@ tasks.configureEach { task ->
 
 	<proguardAdditions>
 		<insert>
+		{{- range .Module.Interfaces -}}
+			{{- $jniservice_name:= printf "%sjniservice" $moduleName }}
+			-keep class {{$moduleName}}.{{$jniservice_name}}.{{Camel .Name}}JniService {
+			public *;
+			}
+			-keep class {{$moduleName}}.{{$jniservice_name}}.{{Camel .Name}}JniServiceStarter {
+			public *;
+			}
+		{{- end }}
 		</insert>
 	</proguardAdditions>
 
