@@ -60,6 +60,13 @@
 			"LoadingPhase": "default"
 		},
 {{- end }}
+{{- if and .Features.jni (len .Module.Interfaces) }}
+		{
+			"Name": "{{$ModuleName}}Jni",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+{{- end }}
 		{
 			"Name" : "{{$ModuleName}}Editor",
 			"Type" : "Editor",
