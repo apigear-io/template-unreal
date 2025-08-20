@@ -80,12 +80,28 @@ limitations under the License.
  #endif
 #endif
 
+#include <atomic>
+#include "HAL/CriticalSection.h"
 #include "GenericPlatform/GenericPlatformMisc.h"
 
 /**
    \brief data structure to hold the last sent property values
 */
 
+
+class {{$Class}}MethodHelper
+{
+public:
+    template <typename ResultType>
+    FGuid StorePromise(TPromise<ResultType>& Promise);
+
+    template <typename ResultType>
+    bool FulfillPromise(const FGuid& Id, const ResultType& Value);
+private:
+    TMap<FGuid, void*> ReplyPromisesMap;
+    FCriticalSection ReplyPromisesMapCS;
+
+};
 
 namespace {
 
@@ -96,7 +112,11 @@ namespace {
     TFunction<void({{ueReturn "" .}})> g{{$Class}}On{{Camel .Name}}Changed = g{{$Class}}On{{Camel .Name}}ChangedEmpty;
     {{- end}}
 
+    {{$Class}}MethodHelper  g{{$Class}}methodHelper;
+
 }
+
+
 DEFINE_LOG_CATEGORY(Log{{$Iface}}Client_JNI);
 
 {{$Class}}::{{$Class}}()
@@ -379,4 +399,53 @@ JNI_METHOD void {{$jniFullFuncPrefix}}_nativeIsReady(JNIEnv* Env, jclass Clazz, 
 #endif
 
 
+template <typename ResultType>
+FGuid {{$Class}}MethodHelper::StorePromise(TPromise<ResultType>& Promise)
+{
+    FGuid Id = FGuid::NewGuid();
+    FScopeLock Lock(&ReplyPromisesMapCS);
+    ReplyPromisesMap.Add(Id, &Promise);
+    //TODO invalid id if sth goes wrong + log + checking
+    UE_LOG(Log{{$Iface}}Client_JNI, Verbose, TEXT(" method store id %s"), *(Id.ToString(EGuidFormats::Digits)));
+    return Id;
+}
+
+template <typename ResultType>
+bool {{$Class}}MethodHelper::FulfillPromise(const FGuid& Id, const ResultType& Value)
+{
+    UE_LOG(Log{{$Iface}}Client_JNI, Verbose, TEXT(" method resolving id %s"), *(Id.ToString(EGuidFormats::Digits)));
+    TPromise<ResultType>* PromisePtr = nullptr;
+
+    {
+        FScopeLock Lock(&ReplyPromisesMapCS);
+        if (auto** Found = ReplyPromisesMap.Find(Id))
+        {
+            PromisePtr = static_cast<TPromise<ResultType>*>(*Found);
+            ReplyPromisesMap.Remove(Id);
+        }
+    }
+
+    if (PromisePtr)
+    {
+        AsyncTask(ENamedThreads::GameThread, [Value, PromisePtr]()
+            {
+                PromisePtr->SetValue(Value);
+            });
+        return true;
+
+    }
+    return false;
+}
+{{- $returnTypes := getEmptyStringList}}
+{{- range .Interface.Operations }}
+{{- if not .Return.IsVoid }}
+{{- $type :=  ueReturn "" .Return }}
+{{- $returnTypes = (appendList $returnTypes $type) }}
+{{- end }}
+{{- end }}
+{{- $returnTypes = unique $returnTypes }}
+{{- range $returnTypes}}
+template FGuid {{$Class}}MethodHelper::StorePromise<{{.}}>(TPromise<{{.}}>& Promise);
+template bool {{$Class}}MethodHelper::FulfillPromise<{{.}}>(const FGuid& Id, const {{.}}& Value);
+{{- end}}
 
