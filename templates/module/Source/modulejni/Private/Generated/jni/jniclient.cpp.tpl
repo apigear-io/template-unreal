@@ -89,6 +89,7 @@ limitations under the License.
 
 namespace {
 
+    {{$Class}}* g{{$Class}}Handle = nullptr;
     TFunction<void(bool)> notifyIsReady = [](bool value) { (void)value; UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("notifyIsReady used but not set ")); };
     {{- range .Interface.Properties }}
     TFunction<void({{ueReturn "" .}})> on{{Camel .Name}}ChangedEmpty = []({{ueReturn "" .}} value) { (void)value; UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("on{{Camel .Name}}Changed used but not set ")); };
@@ -115,6 +116,7 @@ void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
 {
     UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("Init"));
     Super::Initialize(Collection);
+    g{{$Class}}Handle = this;
     notifyIsReady = [this](bool value) {
          b_isReady = value;
          AsyncTask(ENamedThreads::GameThread, [this]()
@@ -155,6 +157,7 @@ void {{$Class}}::Deinitialize()
     {{- range .Interface.Properties}}
     on{{Camel .Name}}Changed = on{{Camel .Name}}ChangedEmpty;
     {{- end}}
+    g{{$Class}}Handle = nullptr;
     Super::Deinitialize();
 }
 
@@ -321,9 +324,34 @@ JNI_METHOD void {{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}Changed(JNIEnv* En
 
 JNI_METHOD void {{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}(JNIEnv* Env, jclass Clazz, {{jniJavaParams "" .Params }})
 {
-// TODO tarnslate data to cpp types and broadcast
-}
+    UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("{{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}"));
+    if (g{{$Class}}Handle == nullptr)
+    {
+        UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("{{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}: JNI SERVICE ADAPTER NOT FOUND "));
+        return;
+    }
 
+{{- range .Params -}}
+   {{- template "convert_to_local_cpp_value_java_param" . }}
+{{- end }}
+
+    AsyncTask(ENamedThreads::GameThread, [{{- range $idx, $p := .Params -}}
+            {{- if $idx}}, {{ end -}}
+            {{- $local_value :=  printf "local_%s" (snake .Name) -}}
+            {{- if or  .IsArray ( or (eq .KindType "enum") (not (ueIsStdSimpleType .))  ) }} {{$local_value -}}
+            {{- else }} {{.Name}}
+            {{- end -}}
+        {{- end -}}]()
+        {
+            g{{$Class}}Handle->_GetSignals()->Broadcast{{Camel .Name}}Signal({{- range $idx, $p := .Params -}}
+            {{- if $idx}}, {{ end -}}
+            {{- $local_value :=  printf "local_%s" (snake .Name) -}}
+            {{- if or  .IsArray ( or (eq .KindType "enum") (not (ueIsStdSimpleType .))  ) }} {{$local_value -}}
+            {{- else }} {{ .Name}}
+            {{- end -}}
+        {{- end -}});
+        });
+}
 
 {{- end }}
 
