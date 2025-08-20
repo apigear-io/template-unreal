@@ -7,6 +7,9 @@
 {{- $DisplayName := printf "%s%s" $ModuleName $IfaceName }}
 {{- $Class := printf "U%sJniAdapter" $DisplayName}}
 {{- $Iface := printf "%s%s" $ModuleName $IfaceName }}
+{{- $jniservice_name:= printf "%sjniservice" ( camel $ModuleNameRaw) }}
+{{- $javaClassName :=  printf "%sJniService" $IfaceName }}
+{{- $jniFullFuncPrefix := ( join "_" (strSlice "Java" ( camel $ModuleNameRaw) $jniservice_name $javaClassName ) ) }}
 
 
 ////////////////////////////////
@@ -118,3 +121,31 @@ void {{$Class}}::On{{Camel .Name}}Changed({{ueParam "In" .}})
     // Notify java side about property changed
 }
 {{- end }}
+
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+
+{{- range .Interface.Operations }}
+JNI_METHOD {{ jniToReturnType .Return}} {{$jniFullFuncPrefix}}_native{{ Camel   .Name }}(JNIEnv* Env, jclass Clazz, {{jniJavaParams "" .Params }})
+{
+	return {{ jniEmptyReturn .Return }};
+}
+{{- end}}
+
+	
+
+{{- range .Interface.Properties }}
+{{- if not .IsReadOnly }}
+JNI_METHOD void {{$jniFullFuncPrefix}}_nativeSet{{ Camel .Name }}(JNIEnv* Env, jclass Clazz, {{jniJavaParam "" . }})
+{
+// set property on backend
+}
+{{- end}}
+
+JNI_METHOD {{jniToReturnType .}} {{$jniFullFuncPrefix}}_nativeGet{{ Camel .Name }}(JNIEnv* Env, jclass Clazz)
+{
+// get property from backend 
+    return {{ jniEmptyReturn . }};
+}
+{{- end }}
+#endif
