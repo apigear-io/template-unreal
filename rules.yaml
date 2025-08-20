@@ -484,3 +484,24 @@ features:
           - source: "module/Source/modulemsgbus/Private/Tests/msgbusfixture.cpp.tpl"
             target: "Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}MsgBusFixture.cpp"
             preserve: true
+  - name: jni
+    requires:
+      - api
+      - plugin
+    scopes:
+      - match: module
+        prefix: "Plugins/{{Camel .Module.Name}}/"
+        documents:
+          - source: "module/Source/modulejni/Private/modulejni.cpp.tpl"
+            target: "Source/{{Camel .Module.Name}}Jni/Private/Generated/{{Camel .Module.Name}}Jni.cpp"
+          - source: "module/Source/modulejni/Public/modulejni.h.tpl"
+            target: "Source/{{Camel .Module.Name}}Jni/Public/{{Camel .Module.Name}}/{{Camel .Module.Name}}Jni.h"
+          - source: "module/Source/modulejni/modulejni.Build.cs.tpl"
+            target: "Source/{{Camel .Module.Name}}Jni/{{Camel .Module.Name}}Jni.Build.cs"
+      - match: interface
+        prefix: "Plugins/{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}Jni/"
+        documents:
+          - source: "module/Source/modulejni/Public/Generated/jni/jniadapter.h.tpl"
+            target: "Public/{{Camel .Module.Name}}/Generated/Jni/{{Camel .Module.Name}}{{Camel .Interface.Name}}JniAdapter.h"
+          - source: "module/Source/modulejni/Private/Generated/jni/jniadapter.cpp.tpl"
+            target: "Private/Generated/Jni/{{Camel .Module.Name}}{{Camel .Interface.Name}}JniAdapter.cpp"
