@@ -512,6 +512,10 @@ features:
           - source: "module/Source/modulejni/Private/Generated/jni/javaservicestarter.h"
             target: "Source/{{Camel .Module.Name}}Jni/Private/Generated/Jni/JavaServiceStarter.h"
             raw: true
+          - source: "module/Source/modulejni/Private/Generated/jni/datajavaconverter.cpp.tpl"
+            target: "Source/{{Camel .Module.Name}}Jni/Private/Generated/Jni/{{Camel .Module.Name}}DataJavaConverter.cpp"
+          - source: "module/Source/modulejni/Public/Generated/jni/datajavaconverter.h.tpl"
+            target: "Source/{{Camel .Module.Name}}Jni/Public/{{Camel .Module.Name}}/Generated/Jni/{{Camel .Module.Name}}DataJavaConverter.h"
       - match: interface
         prefix: "Plugins/{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}Jni/"
         documents:
