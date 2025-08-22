@@ -18,7 +18,7 @@ limitations under the License.
 
 #include "UObject/Interface.h"
 #include "TbEnum/Generated/api/TbEnum_data.h"
-#include "TbEnumEnumInterfaceInterfaceBPSignals.generated.h"
+#include "TbEnumEnumInterfaceBPHelperInterface.generated.h"
 
 /**
  * Helper interface for TbEnumEnumInterface events.
@@ -26,12 +26,12 @@ limitations under the License.
  * Does contain signal events, property-changed events and void-function events only.
  */
 UINTERFACE(BlueprintType)
-class UTbEnumEnumInterfaceBPSignalsInterface : public UInterface
+class UTbEnumEnumInterfaceBPHelperInterface : public UInterface
 {
 	GENERATED_BODY()
 };
 
-class TBENUMAPI_API ITbEnumEnumInterfaceBPSignalsInterface
+class TBENUMAPI_API ITbEnumEnumInterfaceBPHelperInterface
 {
 	GENERATED_BODY()
 

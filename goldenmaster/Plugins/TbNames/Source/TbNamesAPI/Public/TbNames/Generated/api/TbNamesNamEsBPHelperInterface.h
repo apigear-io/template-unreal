@@ -18,7 +18,7 @@ limitations under the License.
 
 #include "UObject/Interface.h"
 #include "TbNames/Generated/api/TbNames_data.h"
-#include "TbNamesNamEsInterfaceBPSignals.generated.h"
+#include "TbNamesNamEsBPHelperInterface.generated.h"
 
 /**
  * Helper interface for TbNamesNamEs events.
@@ -26,12 +26,12 @@ limitations under the License.
  * Does contain signal events, property-changed events and void-function events only.
  */
 UINTERFACE(BlueprintType)
-class UTbNamesNamEsBPSignalsInterface : public UInterface
+class UTbNamesNamEsBPHelperInterface : public UInterface
 {
 	GENERATED_BODY()
 };
 
-class TBNAMESAPI_API ITbNamesNamEsBPSignalsInterface
+class TBNAMESAPI_API ITbNamesNamEsBPHelperInterface
 {
 	GENERATED_BODY()
 

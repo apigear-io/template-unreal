@@ -38,6 +38,38 @@ DECLARE_MULTICAST_DELEGATE_OneParam(FCounterCounterExternVectorArrayChangedDeleg
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCounterCounterExternVectorArrayChangedDelegateBP, const TArray<FVector>&, ExternVectorArray);
 
 /**
+ * Helper interface for CounterCounter events.
+ * Intended for Blueprint-only use. Functions are dispatched via message calls.
+ * Does contain signal events and property-changed events.
+ */
+UINTERFACE(BlueprintType)
+class UCounterCounterBPSubscriberInterface : public UInterface
+{
+	GENERATED_BODY()
+};
+
+class COUNTERAPI_API ICounterCounterBPSubscriberInterface
+{
+	GENERATED_BODY()
+
+public:
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|Counter|Counter|Signals", DisplayName = "On ValueChanged Signal")
+	void OnValueChangedSignal(const FCustomTypesVector3D& Vector, const FVector& ExternVector, const TArray<FCustomTypesVector3D>& VectorArray, const TArray<FVector>& ExternVectorArray);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|Counter|Counter|Signals", DisplayName = "On Property Vector Changed")
+	void OnVectorChanged(UPARAM(DisplayName = "Vector") const FCustomTypesVector3D& InVector);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|Counter|Counter|Signals", DisplayName = "On Property ExternVector Changed")
+	void OnExternVectorChanged(UPARAM(DisplayName = "ExternVector") const FVector& InExternVector);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|Counter|Counter|Signals", DisplayName = "On Property VectorArray Changed")
+	void OnVectorArrayChanged(UPARAM(DisplayName = "VectorArray") const TArray<FCustomTypesVector3D>& InVectorArray);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|Counter|Counter|Signals", DisplayName = "On Property ExternVectorArray Changed")
+	void OnExternVectorArrayChanged(UPARAM(DisplayName = "ExternVectorArray") const TArray<FVector>& InExternVectorArray);
+};
+
+/**
  * Class UCounterCounterInterfaceSignals
  * Contains delegates for properties and signals
  * this is needed since we cannot declare delegates on an UInterface
@@ -57,6 +89,15 @@ public:
 	{
 		OnValueChangedSignal.Broadcast(Vector, ExternVector, VectorArray, ExternVectorArray);
 		OnValueChangedSignalBP.Broadcast(Vector, ExternVector, VectorArray, ExternVectorArray);
+
+		TArray<TScriptInterface<ICounterCounterBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ICounterCounterBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ICounterCounterBPSubscriberInterface::Execute_OnValueChangedSignal(Obj, Vector, ExternVector, VectorArray, ExternVectorArray);
+			}
+		}
 	}
 
 	FCounterCounterVectorChangedDelegate OnVectorChanged;
@@ -68,6 +109,15 @@ public:
 	{
 		OnVectorChanged.Broadcast(InVector);
 		OnVectorChangedBP.Broadcast(InVector);
+
+		TArray<TScriptInterface<ICounterCounterBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ICounterCounterBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ICounterCounterBPSubscriberInterface::Execute_OnVectorChanged(Obj, InVector);
+			}
+		}
 	}
 
 	FCounterCounterExternVectorChangedDelegate OnExternVectorChanged;
@@ -79,6 +129,15 @@ public:
 	{
 		OnExternVectorChanged.Broadcast(InExternVector);
 		OnExternVectorChangedBP.Broadcast(InExternVector);
+
+		TArray<TScriptInterface<ICounterCounterBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ICounterCounterBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ICounterCounterBPSubscriberInterface::Execute_OnExternVectorChanged(Obj, InExternVector);
+			}
+		}
 	}
 
 	FCounterCounterVectorArrayChangedDelegate OnVectorArrayChanged;
@@ -90,6 +149,15 @@ public:
 	{
 		OnVectorArrayChanged.Broadcast(InVectorArray);
 		OnVectorArrayChangedBP.Broadcast(InVectorArray);
+
+		TArray<TScriptInterface<ICounterCounterBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ICounterCounterBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ICounterCounterBPSubscriberInterface::Execute_OnVectorArrayChanged(Obj, InVectorArray);
+			}
+		}
 	}
 
 	FCounterCounterExternVectorArrayChangedDelegate OnExternVectorArrayChanged;
@@ -101,7 +169,32 @@ public:
 	{
 		OnExternVectorArrayChanged.Broadcast(InExternVectorArray);
 		OnExternVectorArrayChangedBP.Broadcast(InExternVectorArray);
+
+		TArray<TScriptInterface<ICounterCounterBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ICounterCounterBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ICounterCounterBPSubscriberInterface::Execute_OnExternVectorArrayChanged(Obj, InExternVectorArray);
+			}
+		}
 	}
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Signals")
+	void Subscribe(const TScriptInterface<ICounterCounterBPSubscriberInterface>& Subscriber)
+	{
+		if (!Subscriber.GetObject()) return;
+		Subscribers.Remove(Subscriber);
+		Subscribers.Add(Subscriber);
+	}
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Signals")
+	void Unsubscribe(const TScriptInterface<ICounterCounterBPSubscriberInterface>& Subscriber)
+	{
+		Subscribers.Remove(Subscriber);
+	}
+private:
+	UPROPERTY()
+	TArray<TScriptInterface<ICounterCounterBPSubscriberInterface>> Subscribers;
 };
 
 /**

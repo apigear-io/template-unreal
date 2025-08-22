@@ -17,28 +17,28 @@ limitations under the License.
 #pragma once
 
 #include "UObject/Interface.h"
-#include "TbSame2/Generated/api/TbSame2_data.h"
-#include "TbSame2SameStruct1InterfaceInterfaceBPSignals.generated.h"
+#include "Testbed2/Generated/api/Testbed2_data.h"
+#include "Testbed2NestedStruct1InterfaceBPHelperInterface.generated.h"
 
 /**
- * Helper interface for TbSame2SameStruct1Interface events.
+ * Helper interface for Testbed2NestedStruct1Interface events.
  * Intended for Blueprint-only use. Functions are dispatched via message calls.
  * Does contain signal events, property-changed events and void-function events only.
  */
 UINTERFACE(BlueprintType)
-class UTbSame2SameStruct1InterfaceBPSignalsInterface : public UInterface
+class UTestbed2NestedStruct1InterfaceBPHelperInterface : public UInterface
 {
 	GENERATED_BODY()
 };
 
-class TBSAME2API_API ITbSame2SameStruct1InterfaceBPSignalsInterface
+class TESTBED2API_API ITestbed2NestedStruct1InterfaceBPHelperInterface
 {
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear Helper|TbSame2|SameStruct1Interface|Signals", DisplayName = "On Sig1 Signal")
-	void OnSig1Signal(const FTbSame2Struct1& Param1);
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear Helper|Testbed2|NestedStruct1Interface|Signals", DisplayName = "On Sig1 Signal")
+	void OnSig1Signal(const FTestbed2NestedStruct1& Param1);
 
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear Helper|TbSame2|SameStruct1Interface|Signals", DisplayName = "On Property Prop1 Changed")
-	void OnProp1Changed(UPARAM(DisplayName = "Prop1") const FTbSame2Struct1& InProp1);
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear Helper|Testbed2|NestedStruct1Interface|Signals", DisplayName = "On Property Prop1 Changed")
+	void OnProp1Changed(UPARAM(DisplayName = "Prop1") const FTestbed2NestedStruct1& InProp1);
 };

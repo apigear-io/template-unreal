@@ -37,6 +37,35 @@ DECLARE_MULTICAST_DELEGATE_OneParam(FTbSimpleNoOperationsInterfacePropIntChanged
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleNoOperationsInterfacePropIntChangedDelegateBP, int32, PropInt);
 
 /**
+ * Helper interface for TbSimpleNoOperationsInterface events.
+ * Intended for Blueprint-only use. Functions are dispatched via message calls.
+ * Does contain signal events and property-changed events.
+ */
+UINTERFACE(BlueprintType)
+class UTbSimpleNoOperationsInterfaceBPSubscriberInterface : public UInterface
+{
+	GENERATED_BODY()
+};
+
+class TBSIMPLEAPI_API ITbSimpleNoOperationsInterfaceBPSubscriberInterface
+{
+	GENERATED_BODY()
+
+public:
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbSimple|NoOperationsInterface|Signals", DisplayName = "On SigVoid Signal")
+	void OnSigVoidSignal();
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbSimple|NoOperationsInterface|Signals", DisplayName = "On SigBool Signal")
+	void OnSigBoolSignal(bool bParamBool);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbSimple|NoOperationsInterface|Signals", DisplayName = "On Property PropBool Changed")
+	void OnPropBoolChanged(UPARAM(DisplayName = "bPropBool") bool bInPropBool);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbSimple|NoOperationsInterface|Signals", DisplayName = "On Property PropInt Changed")
+	void OnPropIntChanged(UPARAM(DisplayName = "PropInt") int32 InPropInt);
+};
+
+/**
  * Class UTbSimpleNoOperationsInterfaceInterfaceSignals
  * Contains delegates for properties and signals
  * this is needed since we cannot declare delegates on an UInterface
@@ -56,6 +85,15 @@ public:
 	{
 		OnSigVoidSignal.Broadcast();
 		OnSigVoidSignalBP.Broadcast();
+
+		TArray<TScriptInterface<ITbSimpleNoOperationsInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITbSimpleNoOperationsInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbSimpleNoOperationsInterfaceBPSubscriberInterface::Execute_OnSigVoidSignal(Obj);
+			}
+		}
 	}
 
 	FTbSimpleNoOperationsInterfaceSigBoolDelegate OnSigBoolSignal;
@@ -67,6 +105,15 @@ public:
 	{
 		OnSigBoolSignal.Broadcast(bParamBool);
 		OnSigBoolSignalBP.Broadcast(bParamBool);
+
+		TArray<TScriptInterface<ITbSimpleNoOperationsInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITbSimpleNoOperationsInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbSimpleNoOperationsInterfaceBPSubscriberInterface::Execute_OnSigBoolSignal(Obj, bParamBool);
+			}
+		}
 	}
 
 	FTbSimpleNoOperationsInterfacePropBoolChangedDelegate OnPropBoolChanged;
@@ -78,6 +125,15 @@ public:
 	{
 		OnPropBoolChanged.Broadcast(bInPropBool);
 		OnPropBoolChangedBP.Broadcast(bInPropBool);
+
+		TArray<TScriptInterface<ITbSimpleNoOperationsInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITbSimpleNoOperationsInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbSimpleNoOperationsInterfaceBPSubscriberInterface::Execute_OnPropBoolChanged(Obj, bInPropBool);
+			}
+		}
 	}
 
 	FTbSimpleNoOperationsInterfacePropIntChangedDelegate OnPropIntChanged;
@@ -89,7 +145,32 @@ public:
 	{
 		OnPropIntChanged.Broadcast(InPropInt);
 		OnPropIntChangedBP.Broadcast(InPropInt);
+
+		TArray<TScriptInterface<ITbSimpleNoOperationsInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITbSimpleNoOperationsInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbSimpleNoOperationsInterfaceBPSubscriberInterface::Execute_OnPropIntChanged(Obj, InPropInt);
+			}
+		}
 	}
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoOperationsInterface|Signals")
+	void Subscribe(const TScriptInterface<ITbSimpleNoOperationsInterfaceBPSubscriberInterface>& Subscriber)
+	{
+		if (!Subscriber.GetObject()) return;
+		Subscribers.Remove(Subscriber);
+		Subscribers.Add(Subscriber);
+	}
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoOperationsInterface|Signals")
+	void Unsubscribe(const TScriptInterface<ITbSimpleNoOperationsInterfaceBPSubscriberInterface>& Subscriber)
+	{
+		Subscribers.Remove(Subscriber);
+	}
+private:
+	UPROPERTY()
+	TArray<TScriptInterface<ITbSimpleNoOperationsInterfaceBPSubscriberInterface>> Subscribers;
 };
 
 /**

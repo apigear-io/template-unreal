@@ -18,30 +18,33 @@ limitations under the License.
 
 #include "UObject/Interface.h"
 #include "TbSimple/Generated/api/TbSimple_data.h"
-#include "TbSimpleNoSignalsInterfaceInterfaceBPSignals.generated.h"
+#include "TbSimpleNoOperationsInterfaceBPHelperInterface.generated.h"
 
 /**
- * Helper interface for TbSimpleNoSignalsInterface events.
+ * Helper interface for TbSimpleNoOperationsInterface events.
  * Intended for Blueprint-only use. Functions are dispatched via message calls.
  * Does contain signal events, property-changed events and void-function events only.
  */
 UINTERFACE(BlueprintType)
-class UTbSimpleNoSignalsInterfaceBPSignalsInterface : public UInterface
+class UTbSimpleNoOperationsInterfaceBPHelperInterface : public UInterface
 {
 	GENERATED_BODY()
 };
 
-class TBSIMPLEAPI_API ITbSimpleNoSignalsInterfaceBPSignalsInterface
+class TBSIMPLEAPI_API ITbSimpleNoOperationsInterfaceBPHelperInterface
 {
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear Helper|TbSimple|NoSignalsInterface|Signals", DisplayName = "On Property PropBool Changed")
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear Helper|TbSimple|NoOperationsInterface|Signals", DisplayName = "On SigVoid Signal")
+	void OnSigVoidSignal();
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear Helper|TbSimple|NoOperationsInterface|Signals", DisplayName = "On SigBool Signal")
+	void OnSigBoolSignal(bool bParamBool);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear Helper|TbSimple|NoOperationsInterface|Signals", DisplayName = "On Property PropBool Changed")
 	void OnPropBoolChanged(UPARAM(DisplayName = "bPropBool") bool bInPropBool);
 
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear Helper|TbSimple|NoSignalsInterface|Signals", DisplayName = "On Property PropInt Changed")
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear Helper|TbSimple|NoOperationsInterface|Signals", DisplayName = "On Property PropInt Changed")
 	void OnPropIntChanged(UPARAM(DisplayName = "PropInt") int32 InPropInt);
-
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear Helper|TbSimple|NoSignalsInterface|Signals", DisplayName = "Do FuncVoid")
-	void FuncVoid();
 };

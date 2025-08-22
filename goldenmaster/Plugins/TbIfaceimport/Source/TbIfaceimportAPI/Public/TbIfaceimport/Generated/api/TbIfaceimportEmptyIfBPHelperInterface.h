@@ -18,4 +18,4 @@ limitations under the License.
 
 #include "UObject/Interface.h"
 #include "TbIfaceimport/Generated/api/TbIfaceimport_data.h"
-#include "TbIfaceimportEmptyIfInterfaceBPSignals.generated.h"
+#include "TbIfaceimportEmptyIfBPHelperInterface.generated.h"

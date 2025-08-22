@@ -69,6 +69,74 @@ DECLARE_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleArrayInterfacePropReadOnlyStr
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleArrayInterfacePropReadOnlyStringChangedDelegateBP, const FString&, PropReadOnlyString);
 
 /**
+ * Helper interface for TbSimpleSimpleArrayInterface events.
+ * Intended for Blueprint-only use. Functions are dispatched via message calls.
+ * Does contain signal events and property-changed events.
+ */
+UINTERFACE(BlueprintType)
+class UTbSimpleSimpleArrayInterfaceBPSubscriberInterface : public UInterface
+{
+	GENERATED_BODY()
+};
+
+class TBSIMPLEAPI_API ITbSimpleSimpleArrayInterfaceBPSubscriberInterface
+{
+	GENERATED_BODY()
+
+public:
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", DisplayName = "On SigBool Signal")
+	void OnSigBoolSignal(const TArray<bool>& ParamBool);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", DisplayName = "On SigInt Signal")
+	void OnSigIntSignal(const TArray<int32>& ParamInt);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", DisplayName = "On SigInt32 Signal")
+	void OnSigInt32Signal(const TArray<int32>& ParamInt32);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", DisplayName = "On SigInt64 Signal")
+	void OnSigInt64Signal(const TArray<int64>& ParamInt64);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", DisplayName = "On SigFloat Signal")
+	void OnSigFloatSignal(const TArray<float>& ParamFloat);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", DisplayName = "On SigFloat32 Signal")
+	void OnSigFloat32Signal(const TArray<float>& ParamFloa32);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", DisplayName = "On SigFloat64 Signal")
+	void OnSigFloat64Signal(const TArray<double>& ParamFloat64);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", DisplayName = "On SigString Signal")
+	void OnSigStringSignal(const TArray<FString>& ParamString);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", DisplayName = "On Property PropBool Changed")
+	void OnPropBoolChanged(UPARAM(DisplayName = "PropBool") const TArray<bool>& InPropBool);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", DisplayName = "On Property PropInt Changed")
+	void OnPropIntChanged(UPARAM(DisplayName = "PropInt") const TArray<int32>& InPropInt);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", DisplayName = "On Property PropInt32 Changed")
+	void OnPropInt32Changed(UPARAM(DisplayName = "PropInt32") const TArray<int32>& InPropInt32);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", DisplayName = "On Property PropInt64 Changed")
+	void OnPropInt64Changed(UPARAM(DisplayName = "PropInt64") const TArray<int64>& InPropInt64);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", DisplayName = "On Property PropFloat Changed")
+	void OnPropFloatChanged(UPARAM(DisplayName = "PropFloat") const TArray<float>& InPropFloat);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", DisplayName = "On Property PropFloat32 Changed")
+	void OnPropFloat32Changed(UPARAM(DisplayName = "PropFloat32") const TArray<float>& InPropFloat32);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", DisplayName = "On Property PropFloat64 Changed")
+	void OnPropFloat64Changed(UPARAM(DisplayName = "PropFloat64") const TArray<double>& InPropFloat64);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", DisplayName = "On Property PropString Changed")
+	void OnPropStringChanged(UPARAM(DisplayName = "PropString") const TArray<FString>& InPropString);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", DisplayName = "On Property PropReadOnlyString Changed")
+	void OnPropReadOnlyStringChanged(UPARAM(DisplayName = "PropReadOnlyString") const FString& InPropReadOnlyString);
+};
+
+/**
  * Class UTbSimpleSimpleArrayInterfaceInterfaceSignals
  * Contains delegates for properties and signals
  * this is needed since we cannot declare delegates on an UInterface
@@ -88,6 +156,15 @@ public:
 	{
 		OnSigBoolSignal.Broadcast(ParamBool);
 		OnSigBoolSignalBP.Broadcast(ParamBool);
+
+		TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnSigBoolSignal(Obj, ParamBool);
+			}
+		}
 	}
 
 	FTbSimpleSimpleArrayInterfaceSigIntDelegate OnSigIntSignal;
@@ -99,6 +176,15 @@ public:
 	{
 		OnSigIntSignal.Broadcast(ParamInt);
 		OnSigIntSignalBP.Broadcast(ParamInt);
+
+		TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnSigIntSignal(Obj, ParamInt);
+			}
+		}
 	}
 
 	FTbSimpleSimpleArrayInterfaceSigInt32Delegate OnSigInt32Signal;
@@ -110,6 +196,15 @@ public:
 	{
 		OnSigInt32Signal.Broadcast(ParamInt32);
 		OnSigInt32SignalBP.Broadcast(ParamInt32);
+
+		TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnSigInt32Signal(Obj, ParamInt32);
+			}
+		}
 	}
 
 	FTbSimpleSimpleArrayInterfaceSigInt64Delegate OnSigInt64Signal;
@@ -121,6 +216,15 @@ public:
 	{
 		OnSigInt64Signal.Broadcast(ParamInt64);
 		OnSigInt64SignalBP.Broadcast(ParamInt64);
+
+		TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnSigInt64Signal(Obj, ParamInt64);
+			}
+		}
 	}
 
 	FTbSimpleSimpleArrayInterfaceSigFloatDelegate OnSigFloatSignal;
@@ -132,6 +236,15 @@ public:
 	{
 		OnSigFloatSignal.Broadcast(ParamFloat);
 		OnSigFloatSignalBP.Broadcast(ParamFloat);
+
+		TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnSigFloatSignal(Obj, ParamFloat);
+			}
+		}
 	}
 
 	FTbSimpleSimpleArrayInterfaceSigFloat32Delegate OnSigFloat32Signal;
@@ -143,6 +256,15 @@ public:
 	{
 		OnSigFloat32Signal.Broadcast(ParamFloa32);
 		OnSigFloat32SignalBP.Broadcast(ParamFloa32);
+
+		TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnSigFloat32Signal(Obj, ParamFloa32);
+			}
+		}
 	}
 
 	FTbSimpleSimpleArrayInterfaceSigFloat64Delegate OnSigFloat64Signal;
@@ -154,6 +276,15 @@ public:
 	{
 		OnSigFloat64Signal.Broadcast(ParamFloat64);
 		OnSigFloat64SignalBP.Broadcast(ParamFloat64);
+
+		TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnSigFloat64Signal(Obj, ParamFloat64);
+			}
+		}
 	}
 
 	FTbSimpleSimpleArrayInterfaceSigStringDelegate OnSigStringSignal;
@@ -165,6 +296,15 @@ public:
 	{
 		OnSigStringSignal.Broadcast(ParamString);
 		OnSigStringSignalBP.Broadcast(ParamString);
+
+		TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnSigStringSignal(Obj, ParamString);
+			}
+		}
 	}
 
 	FTbSimpleSimpleArrayInterfacePropBoolChangedDelegate OnPropBoolChanged;
@@ -176,6 +316,15 @@ public:
 	{
 		OnPropBoolChanged.Broadcast(InPropBool);
 		OnPropBoolChangedBP.Broadcast(InPropBool);
+
+		TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnPropBoolChanged(Obj, InPropBool);
+			}
+		}
 	}
 
 	FTbSimpleSimpleArrayInterfacePropIntChangedDelegate OnPropIntChanged;
@@ -187,6 +336,15 @@ public:
 	{
 		OnPropIntChanged.Broadcast(InPropInt);
 		OnPropIntChangedBP.Broadcast(InPropInt);
+
+		TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnPropIntChanged(Obj, InPropInt);
+			}
+		}
 	}
 
 	FTbSimpleSimpleArrayInterfacePropInt32ChangedDelegate OnPropInt32Changed;
@@ -198,6 +356,15 @@ public:
 	{
 		OnPropInt32Changed.Broadcast(InPropInt32);
 		OnPropInt32ChangedBP.Broadcast(InPropInt32);
+
+		TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnPropInt32Changed(Obj, InPropInt32);
+			}
+		}
 	}
 
 	FTbSimpleSimpleArrayInterfacePropInt64ChangedDelegate OnPropInt64Changed;
@@ -209,6 +376,15 @@ public:
 	{
 		OnPropInt64Changed.Broadcast(InPropInt64);
 		OnPropInt64ChangedBP.Broadcast(InPropInt64);
+
+		TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnPropInt64Changed(Obj, InPropInt64);
+			}
+		}
 	}
 
 	FTbSimpleSimpleArrayInterfacePropFloatChangedDelegate OnPropFloatChanged;
@@ -220,6 +396,15 @@ public:
 	{
 		OnPropFloatChanged.Broadcast(InPropFloat);
 		OnPropFloatChangedBP.Broadcast(InPropFloat);
+
+		TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnPropFloatChanged(Obj, InPropFloat);
+			}
+		}
 	}
 
 	FTbSimpleSimpleArrayInterfacePropFloat32ChangedDelegate OnPropFloat32Changed;
@@ -231,6 +416,15 @@ public:
 	{
 		OnPropFloat32Changed.Broadcast(InPropFloat32);
 		OnPropFloat32ChangedBP.Broadcast(InPropFloat32);
+
+		TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnPropFloat32Changed(Obj, InPropFloat32);
+			}
+		}
 	}
 
 	FTbSimpleSimpleArrayInterfacePropFloat64ChangedDelegate OnPropFloat64Changed;
@@ -242,6 +436,15 @@ public:
 	{
 		OnPropFloat64Changed.Broadcast(InPropFloat64);
 		OnPropFloat64ChangedBP.Broadcast(InPropFloat64);
+
+		TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnPropFloat64Changed(Obj, InPropFloat64);
+			}
+		}
 	}
 
 	FTbSimpleSimpleArrayInterfacePropStringChangedDelegate OnPropStringChanged;
@@ -253,6 +456,15 @@ public:
 	{
 		OnPropStringChanged.Broadcast(InPropString);
 		OnPropStringChangedBP.Broadcast(InPropString);
+
+		TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnPropStringChanged(Obj, InPropString);
+			}
+		}
 	}
 
 	FTbSimpleSimpleArrayInterfacePropReadOnlyStringChangedDelegate OnPropReadOnlyStringChanged;
@@ -264,7 +476,32 @@ public:
 	{
 		OnPropReadOnlyStringChanged.Broadcast(InPropReadOnlyString);
 		OnPropReadOnlyStringChangedBP.Broadcast(InPropReadOnlyString);
+
+		TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnPropReadOnlyStringChanged(Obj, InPropReadOnlyString);
+			}
+		}
 	}
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals")
+	void Subscribe(const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber)
+	{
+		if (!Subscriber.GetObject()) return;
+		Subscribers.Remove(Subscriber);
+		Subscribers.Add(Subscriber);
+	}
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals")
+	void Unsubscribe(const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber)
+	{
+		Subscribers.Remove(Subscriber);
+	}
+private:
+	UPROPERTY()
+	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> Subscribers;
 };
 
 /**

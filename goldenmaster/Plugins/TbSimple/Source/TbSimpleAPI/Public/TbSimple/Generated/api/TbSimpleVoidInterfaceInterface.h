@@ -30,6 +30,26 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTbSimpleVoidInterfaceSigVoidDelegateBP);
 // property delegates
 
 /**
+ * Helper interface for TbSimpleVoidInterface events.
+ * Intended for Blueprint-only use. Functions are dispatched via message calls.
+ * Does contain signal events and property-changed events.
+ */
+UINTERFACE(BlueprintType)
+class UTbSimpleVoidInterfaceBPSubscriberInterface : public UInterface
+{
+	GENERATED_BODY()
+};
+
+class TBSIMPLEAPI_API ITbSimpleVoidInterfaceBPSubscriberInterface
+{
+	GENERATED_BODY()
+
+public:
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbSimple|VoidInterface|Signals", DisplayName = "On SigVoid Signal")
+	void OnSigVoidSignal();
+};
+
+/**
  * Class UTbSimpleVoidInterfaceInterfaceSignals
  * Contains delegates for properties and signals
  * this is needed since we cannot declare delegates on an UInterface
@@ -49,7 +69,32 @@ public:
 	{
 		OnSigVoidSignal.Broadcast();
 		OnSigVoidSignalBP.Broadcast();
+
+		TArray<TScriptInterface<ITbSimpleVoidInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITbSimpleVoidInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbSimpleVoidInterfaceBPSubscriberInterface::Execute_OnSigVoidSignal(Obj);
+			}
+		}
 	}
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|VoidInterface|Signals")
+	void Subscribe(const TScriptInterface<ITbSimpleVoidInterfaceBPSubscriberInterface>& Subscriber)
+	{
+		if (!Subscriber.GetObject()) return;
+		Subscribers.Remove(Subscriber);
+		Subscribers.Add(Subscriber);
+	}
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|VoidInterface|Signals")
+	void Unsubscribe(const TScriptInterface<ITbSimpleVoidInterfaceBPSubscriberInterface>& Subscriber)
+	{
+		Subscribers.Remove(Subscriber);
+	}
+private:
+	UPROPERTY()
+	TArray<TScriptInterface<ITbSimpleVoidInterfaceBPSubscriberInterface>> Subscribers;
 };
 
 /**

@@ -18,7 +18,7 @@ limitations under the License.
 
 #include "UObject/Interface.h"
 #include "Testbed2/Generated/api/Testbed2_data.h"
-#include "Testbed2NestedStruct2InterfaceInterfaceBPSignals.generated.h"
+#include "Testbed2NestedStruct2InterfaceBPHelperInterface.generated.h"
 
 /**
  * Helper interface for Testbed2NestedStruct2Interface events.
@@ -26,12 +26,12 @@ limitations under the License.
  * Does contain signal events, property-changed events and void-function events only.
  */
 UINTERFACE(BlueprintType)
-class UTestbed2NestedStruct2InterfaceBPSignalsInterface : public UInterface
+class UTestbed2NestedStruct2InterfaceBPHelperInterface : public UInterface
 {
 	GENERATED_BODY()
 };
 
-class TESTBED2API_API ITestbed2NestedStruct2InterfaceBPSignalsInterface
+class TESTBED2API_API ITestbed2NestedStruct2InterfaceBPHelperInterface
 {
 	GENERATED_BODY()
 

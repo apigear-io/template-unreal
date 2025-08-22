@@ -17,28 +17,28 @@ limitations under the License.
 #pragma once
 
 #include "UObject/Interface.h"
-#include "TbSame1/Generated/api/TbSame1_data.h"
-#include "TbSame1SameStruct1InterfaceInterfaceBPSignals.generated.h"
+#include "TbSimple/Generated/api/TbSimple_data.h"
+#include "TbSimpleVoidInterfaceBPHelperInterface.generated.h"
 
 /**
- * Helper interface for TbSame1SameStruct1Interface events.
+ * Helper interface for TbSimpleVoidInterface events.
  * Intended for Blueprint-only use. Functions are dispatched via message calls.
  * Does contain signal events, property-changed events and void-function events only.
  */
 UINTERFACE(BlueprintType)
-class UTbSame1SameStruct1InterfaceBPSignalsInterface : public UInterface
+class UTbSimpleVoidInterfaceBPHelperInterface : public UInterface
 {
 	GENERATED_BODY()
 };
 
-class TBSAME1API_API ITbSame1SameStruct1InterfaceBPSignalsInterface
+class TBSIMPLEAPI_API ITbSimpleVoidInterfaceBPHelperInterface
 {
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear Helper|TbSame1|SameStruct1Interface|Signals", DisplayName = "On Sig1 Signal")
-	void OnSig1Signal(const FTbSame1Struct1& Param1);
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear Helper|TbSimple|VoidInterface|Signals", DisplayName = "On SigVoid Signal")
+	void OnSigVoidSignal();
 
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear Helper|TbSame1|SameStruct1Interface|Signals", DisplayName = "On Property Prop1 Changed")
-	void OnProp1Changed(UPARAM(DisplayName = "Prop1") const FTbSame1Struct1& InProp1);
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear Helper|TbSimple|VoidInterface|Signals", DisplayName = "Do FuncVoid")
+	void FuncVoid();
 };

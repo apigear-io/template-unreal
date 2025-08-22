@@ -33,7 +33,7 @@ limitations under the License.
 {{- range .Module.Imports }}
 #include "{{Camel .Name}}/Generated/api/{{Camel .Name}}_data.h"
 {{- end }}
-#include "{{$Class}}InterfaceBPSignals.generated.h"
+#include "{{$Class}}BPHelperInterface.generated.h"
 
 {{- if or (len .Properties) (len .Signals) (len .Operations) }}
 {{- nl }}
@@ -43,12 +43,12 @@ limitations under the License.
  * Does contain signal events, property-changed events and void-function events only.
  */
 UINTERFACE(BlueprintType)
-class U{{$Class}}BPSignalsInterface : public UInterface
+class U{{$Class}}BPHelperInterface : public UInterface
 {
 	GENERATED_BODY()
 };
 
-class {{$API_MACRO}} I{{$Class}}BPSignalsInterface
+class {{$API_MACRO}} I{{$Class}}BPHelperInterface
 {
 	GENERATED_BODY()
 

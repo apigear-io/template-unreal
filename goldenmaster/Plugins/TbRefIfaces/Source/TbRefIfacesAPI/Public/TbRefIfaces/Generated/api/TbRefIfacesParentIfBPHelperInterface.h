@@ -19,7 +19,7 @@ limitations under the License.
 #include "UObject/Interface.h"
 #include "TbRefIfaces/Generated/api/TbRefIfaces_data.h"
 #include "TbIfaceimport/Generated/api/TbIfaceimport_data.h"
-#include "TbRefIfacesParentIfInterfaceBPSignals.generated.h"
+#include "TbRefIfacesParentIfBPHelperInterface.generated.h"
 
 /**
  * Helper interface for TbRefIfacesParentIf events.
@@ -27,12 +27,12 @@ limitations under the License.
  * Does contain signal events, property-changed events and void-function events only.
  */
 UINTERFACE(BlueprintType)
-class UTbRefIfacesParentIfBPSignalsInterface : public UInterface
+class UTbRefIfacesParentIfBPHelperInterface : public UInterface
 {
 	GENERATED_BODY()
 };
 
-class TBREFIFACESAPI_API ITbRefIfacesParentIfBPSignalsInterface
+class TBREFIFACESAPI_API ITbRefIfacesParentIfBPHelperInterface
 {
 	GENERATED_BODY()
 

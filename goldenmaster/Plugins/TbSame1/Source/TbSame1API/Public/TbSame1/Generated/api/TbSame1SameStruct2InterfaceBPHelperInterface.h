@@ -18,7 +18,7 @@ limitations under the License.
 
 #include "UObject/Interface.h"
 #include "TbSame1/Generated/api/TbSame1_data.h"
-#include "TbSame1SameStruct2InterfaceInterfaceBPSignals.generated.h"
+#include "TbSame1SameStruct2InterfaceBPHelperInterface.generated.h"
 
 /**
  * Helper interface for TbSame1SameStruct2Interface events.
@@ -26,12 +26,12 @@ limitations under the License.
  * Does contain signal events, property-changed events and void-function events only.
  */
 UINTERFACE(BlueprintType)
-class UTbSame1SameStruct2InterfaceBPSignalsInterface : public UInterface
+class UTbSame1SameStruct2InterfaceBPHelperInterface : public UInterface
 {
 	GENERATED_BODY()
 };
 
-class TBSAME1API_API ITbSame1SameStruct2InterfaceBPSignalsInterface
+class TBSAME1API_API ITbSame1SameStruct2InterfaceBPHelperInterface
 {
 	GENERATED_BODY()
 

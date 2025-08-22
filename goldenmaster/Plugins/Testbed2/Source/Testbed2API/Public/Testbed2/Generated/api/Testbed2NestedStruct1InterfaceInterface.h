@@ -32,6 +32,29 @@ DECLARE_MULTICAST_DELEGATE_OneParam(FTestbed2NestedStruct1InterfaceProp1ChangedD
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed2NestedStruct1InterfaceProp1ChangedDelegateBP, const FTestbed2NestedStruct1&, Prop1);
 
 /**
+ * Helper interface for Testbed2NestedStruct1Interface events.
+ * Intended for Blueprint-only use. Functions are dispatched via message calls.
+ * Does contain signal events and property-changed events.
+ */
+UINTERFACE(BlueprintType)
+class UTestbed2NestedStruct1InterfaceBPSubscriberInterface : public UInterface
+{
+	GENERATED_BODY()
+};
+
+class TESTBED2API_API ITestbed2NestedStruct1InterfaceBPSubscriberInterface
+{
+	GENERATED_BODY()
+
+public:
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|Testbed2|NestedStruct1Interface|Signals", DisplayName = "On Sig1 Signal")
+	void OnSig1Signal(const FTestbed2NestedStruct1& Param1);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|Testbed2|NestedStruct1Interface|Signals", DisplayName = "On Property Prop1 Changed")
+	void OnProp1Changed(UPARAM(DisplayName = "Prop1") const FTestbed2NestedStruct1& InProp1);
+};
+
+/**
  * Class UTestbed2NestedStruct1InterfaceInterfaceSignals
  * Contains delegates for properties and signals
  * this is needed since we cannot declare delegates on an UInterface
@@ -51,6 +74,15 @@ public:
 	{
 		OnSig1Signal.Broadcast(Param1);
 		OnSig1SignalBP.Broadcast(Param1);
+
+		TArray<TScriptInterface<ITestbed2NestedStruct1InterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITestbed2NestedStruct1InterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITestbed2NestedStruct1InterfaceBPSubscriberInterface::Execute_OnSig1Signal(Obj, Param1);
+			}
+		}
 	}
 
 	FTestbed2NestedStruct1InterfaceProp1ChangedDelegate OnProp1Changed;
@@ -62,7 +94,32 @@ public:
 	{
 		OnProp1Changed.Broadcast(InProp1);
 		OnProp1ChangedBP.Broadcast(InProp1);
+
+		TArray<TScriptInterface<ITestbed2NestedStruct1InterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITestbed2NestedStruct1InterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITestbed2NestedStruct1InterfaceBPSubscriberInterface::Execute_OnProp1Changed(Obj, InProp1);
+			}
+		}
 	}
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct1Interface|Signals")
+	void Subscribe(const TScriptInterface<ITestbed2NestedStruct1InterfaceBPSubscriberInterface>& Subscriber)
+	{
+		if (!Subscriber.GetObject()) return;
+		Subscribers.Remove(Subscriber);
+		Subscribers.Add(Subscriber);
+	}
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct1Interface|Signals")
+	void Unsubscribe(const TScriptInterface<ITestbed2NestedStruct1InterfaceBPSubscriberInterface>& Subscriber)
+	{
+		Subscribers.Remove(Subscriber);
+	}
+private:
+	UPROPERTY()
+	TArray<TScriptInterface<ITestbed2NestedStruct1InterfaceBPSubscriberInterface>> Subscribers;
 };
 
 /**

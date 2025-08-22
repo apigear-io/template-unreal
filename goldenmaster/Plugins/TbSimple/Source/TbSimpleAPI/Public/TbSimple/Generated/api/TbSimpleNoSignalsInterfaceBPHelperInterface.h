@@ -18,30 +18,30 @@ limitations under the License.
 
 #include "UObject/Interface.h"
 #include "TbSimple/Generated/api/TbSimple_data.h"
-#include "TbSimpleNoPropertiesInterfaceInterfaceBPSignals.generated.h"
+#include "TbSimpleNoSignalsInterfaceBPHelperInterface.generated.h"
 
 /**
- * Helper interface for TbSimpleNoPropertiesInterface events.
+ * Helper interface for TbSimpleNoSignalsInterface events.
  * Intended for Blueprint-only use. Functions are dispatched via message calls.
  * Does contain signal events, property-changed events and void-function events only.
  */
 UINTERFACE(BlueprintType)
-class UTbSimpleNoPropertiesInterfaceBPSignalsInterface : public UInterface
+class UTbSimpleNoSignalsInterfaceBPHelperInterface : public UInterface
 {
 	GENERATED_BODY()
 };
 
-class TBSIMPLEAPI_API ITbSimpleNoPropertiesInterfaceBPSignalsInterface
+class TBSIMPLEAPI_API ITbSimpleNoSignalsInterfaceBPHelperInterface
 {
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear Helper|TbSimple|NoPropertiesInterface|Signals", DisplayName = "On SigVoid Signal")
-	void OnSigVoidSignal();
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear Helper|TbSimple|NoSignalsInterface|Signals", DisplayName = "On Property PropBool Changed")
+	void OnPropBoolChanged(UPARAM(DisplayName = "bPropBool") bool bInPropBool);
 
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear Helper|TbSimple|NoPropertiesInterface|Signals", DisplayName = "On SigBool Signal")
-	void OnSigBoolSignal(bool bParamBool);
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear Helper|TbSimple|NoSignalsInterface|Signals", DisplayName = "On Property PropInt Changed")
+	void OnPropIntChanged(UPARAM(DisplayName = "PropInt") int32 InPropInt);
 
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear Helper|TbSimple|NoPropertiesInterface|Signals", DisplayName = "Do FuncVoid")
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear Helper|TbSimple|NoSignalsInterface|Signals", DisplayName = "Do FuncVoid")
 	void FuncVoid();
 };

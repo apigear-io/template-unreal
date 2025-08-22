@@ -33,6 +33,29 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleNoPropertiesInterfaceSigBoo
 // property delegates
 
 /**
+ * Helper interface for TbSimpleNoPropertiesInterface events.
+ * Intended for Blueprint-only use. Functions are dispatched via message calls.
+ * Does contain signal events and property-changed events.
+ */
+UINTERFACE(BlueprintType)
+class UTbSimpleNoPropertiesInterfaceBPSubscriberInterface : public UInterface
+{
+	GENERATED_BODY()
+};
+
+class TBSIMPLEAPI_API ITbSimpleNoPropertiesInterfaceBPSubscriberInterface
+{
+	GENERATED_BODY()
+
+public:
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbSimple|NoPropertiesInterface|Signals", DisplayName = "On SigVoid Signal")
+	void OnSigVoidSignal();
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbSimple|NoPropertiesInterface|Signals", DisplayName = "On SigBool Signal")
+	void OnSigBoolSignal(bool bParamBool);
+};
+
+/**
  * Class UTbSimpleNoPropertiesInterfaceInterfaceSignals
  * Contains delegates for properties and signals
  * this is needed since we cannot declare delegates on an UInterface
@@ -52,6 +75,15 @@ public:
 	{
 		OnSigVoidSignal.Broadcast();
 		OnSigVoidSignalBP.Broadcast();
+
+		TArray<TScriptInterface<ITbSimpleNoPropertiesInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITbSimpleNoPropertiesInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbSimpleNoPropertiesInterfaceBPSubscriberInterface::Execute_OnSigVoidSignal(Obj);
+			}
+		}
 	}
 
 	FTbSimpleNoPropertiesInterfaceSigBoolDelegate OnSigBoolSignal;
@@ -63,7 +95,32 @@ public:
 	{
 		OnSigBoolSignal.Broadcast(bParamBool);
 		OnSigBoolSignalBP.Broadcast(bParamBool);
+
+		TArray<TScriptInterface<ITbSimpleNoPropertiesInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITbSimpleNoPropertiesInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbSimpleNoPropertiesInterfaceBPSubscriberInterface::Execute_OnSigBoolSignal(Obj, bParamBool);
+			}
+		}
 	}
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoPropertiesInterface|Signals")
+	void Subscribe(const TScriptInterface<ITbSimpleNoPropertiesInterfaceBPSubscriberInterface>& Subscriber)
+	{
+		if (!Subscriber.GetObject()) return;
+		Subscribers.Remove(Subscriber);
+		Subscribers.Add(Subscriber);
+	}
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoPropertiesInterface|Signals")
+	void Unsubscribe(const TScriptInterface<ITbSimpleNoPropertiesInterfaceBPSubscriberInterface>& Subscriber)
+	{
+		Subscribers.Remove(Subscriber);
+	}
+private:
+	UPROPERTY()
+	TArray<TScriptInterface<ITbSimpleNoPropertiesInterfaceBPSubscriberInterface>> Subscribers;
 };
 
 /**

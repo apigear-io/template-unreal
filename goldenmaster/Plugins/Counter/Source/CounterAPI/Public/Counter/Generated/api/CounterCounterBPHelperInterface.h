@@ -20,7 +20,7 @@ limitations under the License.
 #include "Counter/Generated/api/Counter_data.h"
 #include "CustomTypes/Generated/api/CustomTypes_data.h"
 #include "ExternTypes/Generated/api/ExternTypes_data.h"
-#include "CounterCounterInterfaceBPSignals.generated.h"
+#include "CounterCounterBPHelperInterface.generated.h"
 
 /**
  * Helper interface for CounterCounter events.
@@ -28,12 +28,12 @@ limitations under the License.
  * Does contain signal events, property-changed events and void-function events only.
  */
 UINTERFACE(BlueprintType)
-class UCounterCounterBPSignalsInterface : public UInterface
+class UCounterCounterBPHelperInterface : public UInterface
 {
 	GENERATED_BODY()
 };
 
-class COUNTERAPI_API ICounterCounterBPSignalsInterface
+class COUNTERAPI_API ICounterCounterBPHelperInterface
 {
 	GENERATED_BODY()
 

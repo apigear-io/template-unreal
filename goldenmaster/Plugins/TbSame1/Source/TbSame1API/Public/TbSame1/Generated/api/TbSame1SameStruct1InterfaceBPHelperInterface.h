@@ -17,29 +17,28 @@ limitations under the License.
 #pragma once
 
 #include "UObject/Interface.h"
-#include "TbRefIfaces/Generated/api/TbRefIfaces_data.h"
-#include "TbIfaceimport/Generated/api/TbIfaceimport_data.h"
-#include "TbRefIfacesSimpleLocalIfInterfaceBPSignals.generated.h"
+#include "TbSame1/Generated/api/TbSame1_data.h"
+#include "TbSame1SameStruct1InterfaceBPHelperInterface.generated.h"
 
 /**
- * Helper interface for TbRefIfacesSimpleLocalIf events.
+ * Helper interface for TbSame1SameStruct1Interface events.
  * Intended for Blueprint-only use. Functions are dispatched via message calls.
  * Does contain signal events, property-changed events and void-function events only.
  */
 UINTERFACE(BlueprintType)
-class UTbRefIfacesSimpleLocalIfBPSignalsInterface : public UInterface
+class UTbSame1SameStruct1InterfaceBPHelperInterface : public UInterface
 {
 	GENERATED_BODY()
 };
 
-class TBREFIFACESAPI_API ITbRefIfacesSimpleLocalIfBPSignalsInterface
+class TBSAME1API_API ITbSame1SameStruct1InterfaceBPHelperInterface
 {
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear Helper|TbRefIfaces|SimpleLocalIf|Signals", DisplayName = "On IntSignal Signal")
-	void OnIntSignalSignal(int32 Param);
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear Helper|TbSame1|SameStruct1Interface|Signals", DisplayName = "On Sig1 Signal")
+	void OnSig1Signal(const FTbSame1Struct1& Param1);
 
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear Helper|TbRefIfaces|SimpleLocalIf|Signals", DisplayName = "On Property IntProperty Changed")
-	void OnIntPropertyChanged(UPARAM(DisplayName = "IntProperty") int32 InIntProperty);
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear Helper|TbSame1|SameStruct1Interface|Signals", DisplayName = "On Property Prop1 Changed")
+	void OnProp1Changed(UPARAM(DisplayName = "Prop1") const FTbSame1Struct1& InProp1);
 };
