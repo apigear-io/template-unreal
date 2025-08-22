@@ -39,3 +39,4 @@ The template offers the following feature switches which can be enabled during c
 * `monitor`: create a thin decorator class which can be used to log traffic going through API layer
 * `olink`: create the adaption layer for the [OLink](https://docs.apigear.io/docs/advanced/protocols/objectlink/intro) protocol. This can be used to connect to the simulation or other technologies like python, pure c++ etc..
 * `msgbus`: create the adaption layer for the [UE MsgBus](https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Messaging) protocol. This can be used for communication inside the same UE app or between different instances, including across network interfaces.
+* `jni`: create the jni adaption layer for the android messenger communication provided by apigear java template. Please read more on a separate document readme_jni.
