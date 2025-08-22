@@ -46,6 +46,36 @@ DECLARE_MULTICAST_DELEGATE{{Int2Word 1 "_" "Param"}}(F{{$Class}}{{Camel .Name}}C
 DECLARE_DYNAMIC_MULTICAST_DELEGATE{{Int2Word 1 "_" "Param"}}(F{{$Class}}{{Camel .Name}}ChangedDelegateBP, {{ueConstType "" .}}, {{ueVar "" .}});
 {{- end }}
 
+{{- nl }}
+/**
+ * Helper interface for {{$Class}} events.
+ * Intended for Blueprint-only use. Functions are dispatched via message calls.
+ * Does contain signal events and property-changed events.
+ */
+UINTERFACE(BlueprintType)
+class U{{$Class}}BPSubscriberInterface : public UInterface
+{
+	GENERATED_BODY()
+};
+
+class {{$API_MACRO}} I{{$Class}}BPSubscriberInterface
+{
+	GENERATED_BODY()
+
+public:
+{{- range $i, $e := .Signals }}
+	{{- if $i }}{{nl}}{{ end }}
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "{{$Category}}|Signals", DisplayName = "On {{Camel .Name}} Signal")
+	void On{{Camel .Name}}Signal({{ueParams "" .Params}});
+{{- end }}
+{{- if and (len .Properties) (len .Signals) }}{{ nl }}{{ end }}
+{{- range $i, $e := .Properties }}
+	{{- if $i }}{{nl}}{{ end }}
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "{{$Category}}|Signals", DisplayName = "On Property {{Camel .Name}} Changed")
+	void On{{Camel .Name}}Changed(UPARAM(DisplayName = "{{ueVar "" .}}") {{ueParam "In" .}});
+{{- end }}
+};
+
 /**
  * Class {{$class}}Signals
  * Contains delegates for properties and signals
@@ -68,6 +98,15 @@ public:
 	{
 		On{{Camel .Name}}Signal.Broadcast({{ueVars "" .Params}});
 		On{{Camel .Name}}SignalBP.Broadcast({{ueVars "" .Params}});
+
+		TArray<TScriptInterface<I{{$Class}}BPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<I{{$Class}}BPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				I{{$Class}}BPSubscriberInterface::Execute_On{{Camel .Name}}Signal(Obj{{- if (len .Params) }}, {{ end }}{{ueVars "" .Params}});
+			}
+		}
 	}
 {{- end }}
 {{- if and (len .Properties) (len .Signals) }}{{ nl }}{{ end }}
@@ -82,8 +121,33 @@ public:
 	{
 		On{{Camel .Name}}Changed.Broadcast({{ueVar "In" .}});
 		On{{Camel .Name}}ChangedBP.Broadcast({{ueVar "In" .}});
+
+		TArray<TScriptInterface<I{{$Class}}BPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<I{{$Class}}BPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				I{{$Class}}BPSubscriberInterface::Execute_On{{Camel .Name}}Changed(Obj, {{ueVar "In" .}});
+			}
+		}
 	}
 {{- end }}
+
+	UFUNCTION(BlueprintCallable, Category = "{{$Category}}|Signals")
+	void Subscribe(const TScriptInterface<I{{$Class}}BPSubscriberInterface>& Subscriber)
+	{
+		if (!Subscriber.GetObject()) return;
+		Subscribers.Remove(Subscriber);
+		Subscribers.Add(Subscriber);
+	}
+	UFUNCTION(BlueprintCallable, Category = "{{$Category}}|Signals")
+	void Unsubscribe(const TScriptInterface<I{{$Class}}BPSubscriberInterface>& Subscriber)
+	{
+		Subscribers.Remove(Subscriber);
+	}
+private:
+	UPROPERTY()
+	TArray<TScriptInterface<I{{$Class}}BPSubscriberInterface>> Subscribers;
 };
 {{- end}}
 

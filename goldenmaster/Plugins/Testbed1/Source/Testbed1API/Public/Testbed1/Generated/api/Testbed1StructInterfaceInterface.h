@@ -47,6 +47,47 @@ DECLARE_MULTICAST_DELEGATE_OneParam(FTestbed1StructInterfacePropStringChangedDel
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed1StructInterfacePropStringChangedDelegateBP, const FTestbed1StructString&, PropString);
 
 /**
+ * Helper interface for Testbed1StructInterface events.
+ * Intended for Blueprint-only use. Functions are dispatched via message calls.
+ * Does contain signal events and property-changed events.
+ */
+UINTERFACE(BlueprintType)
+class UTestbed1StructInterfaceBPSubscriberInterface : public UInterface
+{
+	GENERATED_BODY()
+};
+
+class TESTBED1API_API ITestbed1StructInterfaceBPSubscriberInterface
+{
+	GENERATED_BODY()
+
+public:
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|Testbed1|StructInterface|Signals", DisplayName = "On SigBool Signal")
+	void OnSigBoolSignal(const FTestbed1StructBool& ParamBool);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|Testbed1|StructInterface|Signals", DisplayName = "On SigInt Signal")
+	void OnSigIntSignal(const FTestbed1StructInt& ParamInt);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|Testbed1|StructInterface|Signals", DisplayName = "On SigFloat Signal")
+	void OnSigFloatSignal(const FTestbed1StructFloat& ParamFloat);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|Testbed1|StructInterface|Signals", DisplayName = "On SigString Signal")
+	void OnSigStringSignal(const FTestbed1StructString& ParamString);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|Testbed1|StructInterface|Signals", DisplayName = "On Property PropBool Changed")
+	void OnPropBoolChanged(UPARAM(DisplayName = "PropBool") const FTestbed1StructBool& InPropBool);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|Testbed1|StructInterface|Signals", DisplayName = "On Property PropInt Changed")
+	void OnPropIntChanged(UPARAM(DisplayName = "PropInt") const FTestbed1StructInt& InPropInt);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|Testbed1|StructInterface|Signals", DisplayName = "On Property PropFloat Changed")
+	void OnPropFloatChanged(UPARAM(DisplayName = "PropFloat") const FTestbed1StructFloat& InPropFloat);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|Testbed1|StructInterface|Signals", DisplayName = "On Property PropString Changed")
+	void OnPropStringChanged(UPARAM(DisplayName = "PropString") const FTestbed1StructString& InPropString);
+};
+
+/**
  * Class UTestbed1StructInterfaceInterfaceSignals
  * Contains delegates for properties and signals
  * this is needed since we cannot declare delegates on an UInterface
@@ -66,6 +107,15 @@ public:
 	{
 		OnSigBoolSignal.Broadcast(ParamBool);
 		OnSigBoolSignalBP.Broadcast(ParamBool);
+
+		TArray<TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITestbed1StructInterfaceBPSubscriberInterface::Execute_OnSigBoolSignal(Obj, ParamBool);
+			}
+		}
 	}
 
 	FTestbed1StructInterfaceSigIntDelegate OnSigIntSignal;
@@ -77,6 +127,15 @@ public:
 	{
 		OnSigIntSignal.Broadcast(ParamInt);
 		OnSigIntSignalBP.Broadcast(ParamInt);
+
+		TArray<TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITestbed1StructInterfaceBPSubscriberInterface::Execute_OnSigIntSignal(Obj, ParamInt);
+			}
+		}
 	}
 
 	FTestbed1StructInterfaceSigFloatDelegate OnSigFloatSignal;
@@ -88,6 +147,15 @@ public:
 	{
 		OnSigFloatSignal.Broadcast(ParamFloat);
 		OnSigFloatSignalBP.Broadcast(ParamFloat);
+
+		TArray<TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITestbed1StructInterfaceBPSubscriberInterface::Execute_OnSigFloatSignal(Obj, ParamFloat);
+			}
+		}
 	}
 
 	FTestbed1StructInterfaceSigStringDelegate OnSigStringSignal;
@@ -99,6 +167,15 @@ public:
 	{
 		OnSigStringSignal.Broadcast(ParamString);
 		OnSigStringSignalBP.Broadcast(ParamString);
+
+		TArray<TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITestbed1StructInterfaceBPSubscriberInterface::Execute_OnSigStringSignal(Obj, ParamString);
+			}
+		}
 	}
 
 	FTestbed1StructInterfacePropBoolChangedDelegate OnPropBoolChanged;
@@ -110,6 +187,15 @@ public:
 	{
 		OnPropBoolChanged.Broadcast(InPropBool);
 		OnPropBoolChangedBP.Broadcast(InPropBool);
+
+		TArray<TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITestbed1StructInterfaceBPSubscriberInterface::Execute_OnPropBoolChanged(Obj, InPropBool);
+			}
+		}
 	}
 
 	FTestbed1StructInterfacePropIntChangedDelegate OnPropIntChanged;
@@ -121,6 +207,15 @@ public:
 	{
 		OnPropIntChanged.Broadcast(InPropInt);
 		OnPropIntChangedBP.Broadcast(InPropInt);
+
+		TArray<TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITestbed1StructInterfaceBPSubscriberInterface::Execute_OnPropIntChanged(Obj, InPropInt);
+			}
+		}
 	}
 
 	FTestbed1StructInterfacePropFloatChangedDelegate OnPropFloatChanged;
@@ -132,6 +227,15 @@ public:
 	{
 		OnPropFloatChanged.Broadcast(InPropFloat);
 		OnPropFloatChangedBP.Broadcast(InPropFloat);
+
+		TArray<TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITestbed1StructInterfaceBPSubscriberInterface::Execute_OnPropFloatChanged(Obj, InPropFloat);
+			}
+		}
 	}
 
 	FTestbed1StructInterfacePropStringChangedDelegate OnPropStringChanged;
@@ -143,7 +247,32 @@ public:
 	{
 		OnPropStringChanged.Broadcast(InPropString);
 		OnPropStringChangedBP.Broadcast(InPropString);
+
+		TArray<TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITestbed1StructInterfaceBPSubscriberInterface::Execute_OnPropStringChanged(Obj, InPropString);
+			}
+		}
 	}
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface|Signals")
+	void Subscribe(const TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>& Subscriber)
+	{
+		if (!Subscriber.GetObject()) return;
+		Subscribers.Remove(Subscriber);
+		Subscribers.Add(Subscriber);
+	}
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface|Signals")
+	void Unsubscribe(const TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>& Subscriber)
+	{
+		Subscribers.Remove(Subscriber);
+	}
+private:
+	UPROPERTY()
+	TArray<TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>> Subscribers;
 };
 
 /**

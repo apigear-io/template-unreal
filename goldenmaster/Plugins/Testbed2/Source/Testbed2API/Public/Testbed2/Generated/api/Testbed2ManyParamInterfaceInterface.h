@@ -47,6 +47,47 @@ DECLARE_MULTICAST_DELEGATE_OneParam(FTestbed2ManyParamInterfaceProp4ChangedDeleg
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed2ManyParamInterfaceProp4ChangedDelegateBP, int32, Prop4);
 
 /**
+ * Helper interface for Testbed2ManyParamInterface events.
+ * Intended for Blueprint-only use. Functions are dispatched via message calls.
+ * Does contain signal events and property-changed events.
+ */
+UINTERFACE(BlueprintType)
+class UTestbed2ManyParamInterfaceBPSubscriberInterface : public UInterface
+{
+	GENERATED_BODY()
+};
+
+class TESTBED2API_API ITestbed2ManyParamInterfaceBPSubscriberInterface
+{
+	GENERATED_BODY()
+
+public:
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "On Sig1 Signal")
+	void OnSig1Signal(int32 Param1);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "On Sig2 Signal")
+	void OnSig2Signal(int32 Param1, int32 Param2);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "On Sig3 Signal")
+	void OnSig3Signal(int32 Param1, int32 Param2, int32 Param3);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "On Sig4 Signal")
+	void OnSig4Signal(int32 Param1, int32 Param2, int32 Param3, int32 Param4);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "On Property Prop1 Changed")
+	void OnProp1Changed(UPARAM(DisplayName = "Prop1") int32 InProp1);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "On Property Prop2 Changed")
+	void OnProp2Changed(UPARAM(DisplayName = "Prop2") int32 InProp2);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "On Property Prop3 Changed")
+	void OnProp3Changed(UPARAM(DisplayName = "Prop3") int32 InProp3);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "On Property Prop4 Changed")
+	void OnProp4Changed(UPARAM(DisplayName = "Prop4") int32 InProp4);
+};
+
+/**
  * Class UTestbed2ManyParamInterfaceInterfaceSignals
  * Contains delegates for properties and signals
  * this is needed since we cannot declare delegates on an UInterface
@@ -66,6 +107,15 @@ public:
 	{
 		OnSig1Signal.Broadcast(Param1);
 		OnSig1SignalBP.Broadcast(Param1);
+
+		TArray<TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITestbed2ManyParamInterfaceBPSubscriberInterface::Execute_OnSig1Signal(Obj, Param1);
+			}
+		}
 	}
 
 	FTestbed2ManyParamInterfaceSig2Delegate OnSig2Signal;
@@ -77,6 +127,15 @@ public:
 	{
 		OnSig2Signal.Broadcast(Param1, Param2);
 		OnSig2SignalBP.Broadcast(Param1, Param2);
+
+		TArray<TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITestbed2ManyParamInterfaceBPSubscriberInterface::Execute_OnSig2Signal(Obj, Param1, Param2);
+			}
+		}
 	}
 
 	FTestbed2ManyParamInterfaceSig3Delegate OnSig3Signal;
@@ -88,6 +147,15 @@ public:
 	{
 		OnSig3Signal.Broadcast(Param1, Param2, Param3);
 		OnSig3SignalBP.Broadcast(Param1, Param2, Param3);
+
+		TArray<TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITestbed2ManyParamInterfaceBPSubscriberInterface::Execute_OnSig3Signal(Obj, Param1, Param2, Param3);
+			}
+		}
 	}
 
 	FTestbed2ManyParamInterfaceSig4Delegate OnSig4Signal;
@@ -99,6 +167,15 @@ public:
 	{
 		OnSig4Signal.Broadcast(Param1, Param2, Param3, Param4);
 		OnSig4SignalBP.Broadcast(Param1, Param2, Param3, Param4);
+
+		TArray<TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITestbed2ManyParamInterfaceBPSubscriberInterface::Execute_OnSig4Signal(Obj, Param1, Param2, Param3, Param4);
+			}
+		}
 	}
 
 	FTestbed2ManyParamInterfaceProp1ChangedDelegate OnProp1Changed;
@@ -110,6 +187,15 @@ public:
 	{
 		OnProp1Changed.Broadcast(InProp1);
 		OnProp1ChangedBP.Broadcast(InProp1);
+
+		TArray<TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITestbed2ManyParamInterfaceBPSubscriberInterface::Execute_OnProp1Changed(Obj, InProp1);
+			}
+		}
 	}
 
 	FTestbed2ManyParamInterfaceProp2ChangedDelegate OnProp2Changed;
@@ -121,6 +207,15 @@ public:
 	{
 		OnProp2Changed.Broadcast(InProp2);
 		OnProp2ChangedBP.Broadcast(InProp2);
+
+		TArray<TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITestbed2ManyParamInterfaceBPSubscriberInterface::Execute_OnProp2Changed(Obj, InProp2);
+			}
+		}
 	}
 
 	FTestbed2ManyParamInterfaceProp3ChangedDelegate OnProp3Changed;
@@ -132,6 +227,15 @@ public:
 	{
 		OnProp3Changed.Broadcast(InProp3);
 		OnProp3ChangedBP.Broadcast(InProp3);
+
+		TArray<TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITestbed2ManyParamInterfaceBPSubscriberInterface::Execute_OnProp3Changed(Obj, InProp3);
+			}
+		}
 	}
 
 	FTestbed2ManyParamInterfaceProp4ChangedDelegate OnProp4Changed;
@@ -143,7 +247,32 @@ public:
 	{
 		OnProp4Changed.Broadcast(InProp4);
 		OnProp4ChangedBP.Broadcast(InProp4);
+
+		TArray<TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITestbed2ManyParamInterfaceBPSubscriberInterface::Execute_OnProp4Changed(Obj, InProp4);
+			}
+		}
 	}
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals")
+	void Subscribe(const TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>& Subscriber)
+	{
+		if (!Subscriber.GetObject()) return;
+		Subscribers.Remove(Subscriber);
+		Subscribers.Add(Subscriber);
+	}
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals")
+	void Unsubscribe(const TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>& Subscriber)
+	{
+		Subscribers.Remove(Subscriber);
+	}
+private:
+	UPROPERTY()
+	TArray<TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>> Subscribers;
 };
 
 /**

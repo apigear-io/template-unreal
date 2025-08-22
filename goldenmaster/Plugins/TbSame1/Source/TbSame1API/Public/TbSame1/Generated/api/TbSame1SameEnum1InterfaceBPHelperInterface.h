@@ -17,28 +17,28 @@ limitations under the License.
 #pragma once
 
 #include "UObject/Interface.h"
-#include "TbSimple/Generated/api/TbSimple_data.h"
-#include "TbSimpleVoidInterfaceInterfaceBPSignals.generated.h"
+#include "TbSame1/Generated/api/TbSame1_data.h"
+#include "TbSame1SameEnum1InterfaceBPHelperInterface.generated.h"
 
 /**
- * Helper interface for TbSimpleVoidInterface events.
+ * Helper interface for TbSame1SameEnum1Interface events.
  * Intended for Blueprint-only use. Functions are dispatched via message calls.
  * Does contain signal events, property-changed events and void-function events only.
  */
 UINTERFACE(BlueprintType)
-class UTbSimpleVoidInterfaceBPSignalsInterface : public UInterface
+class UTbSame1SameEnum1InterfaceBPHelperInterface : public UInterface
 {
 	GENERATED_BODY()
 };
 
-class TBSIMPLEAPI_API ITbSimpleVoidInterfaceBPSignalsInterface
+class TBSAME1API_API ITbSame1SameEnum1InterfaceBPHelperInterface
 {
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear Helper|TbSimple|VoidInterface|Signals", DisplayName = "On SigVoid Signal")
-	void OnSigVoidSignal();
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear Helper|TbSame1|SameEnum1Interface|Signals", DisplayName = "On Sig1 Signal")
+	void OnSig1Signal(ETbSame1Enum1 Param1);
 
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear Helper|TbSimple|VoidInterface|Signals", DisplayName = "Do FuncVoid")
-	void FuncVoid();
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear Helper|TbSame1|SameEnum1Interface|Signals", DisplayName = "On Property Prop1 Changed")
+	void OnProp1Changed(UPARAM(DisplayName = "Prop1") ETbSame1Enum1 InProp1);
 };

@@ -18,7 +18,7 @@ limitations under the License.
 
 #include "UObject/Interface.h"
 #include "TbSimple/Generated/api/TbSimple_data.h"
-#include "TbSimpleSimpleArrayInterfaceInterfaceBPSignals.generated.h"
+#include "TbSimpleSimpleArrayInterfaceBPHelperInterface.generated.h"
 
 /**
  * Helper interface for TbSimpleSimpleArrayInterface events.
@@ -26,12 +26,12 @@ limitations under the License.
  * Does contain signal events, property-changed events and void-function events only.
  */
 UINTERFACE(BlueprintType)
-class UTbSimpleSimpleArrayInterfaceBPSignalsInterface : public UInterface
+class UTbSimpleSimpleArrayInterfaceBPHelperInterface : public UInterface
 {
 	GENERATED_BODY()
 };
 
-class TBSIMPLEAPI_API ITbSimpleSimpleArrayInterfaceBPSignalsInterface
+class TBSIMPLEAPI_API ITbSimpleSimpleArrayInterfaceBPHelperInterface
 {
 	GENERATED_BODY()
 

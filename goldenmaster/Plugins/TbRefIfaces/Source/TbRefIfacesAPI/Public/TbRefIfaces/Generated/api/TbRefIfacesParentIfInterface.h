@@ -49,6 +49,47 @@ DECLARE_MULTICAST_DELEGATE_OneParam(FTbRefIfacesParentIfImportedIfListChangedDel
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbRefIfacesParentIfImportedIfListChangedDelegateBP, const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>&, ImportedIfList);
 
 /**
+ * Helper interface for TbRefIfacesParentIf events.
+ * Intended for Blueprint-only use. Functions are dispatched via message calls.
+ * Does contain signal events and property-changed events.
+ */
+UINTERFACE(BlueprintType)
+class UTbRefIfacesParentIfBPSubscriberInterface : public UInterface
+{
+	GENERATED_BODY()
+};
+
+class TBREFIFACESAPI_API ITbRefIfacesParentIfBPSubscriberInterface
+{
+	GENERATED_BODY()
+
+public:
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbRefIfaces|ParentIf|Signals", DisplayName = "On LocalIfSignal Signal")
+	void OnLocalIfSignalSignal(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Param);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbRefIfaces|ParentIf|Signals", DisplayName = "On LocalIfSignalList Signal")
+	void OnLocalIfSignalListSignal(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbRefIfaces|ParentIf|Signals", DisplayName = "On ImportedIfSignal Signal")
+	void OnImportedIfSignalSignal(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbRefIfaces|ParentIf|Signals", DisplayName = "On ImportedIfSignalList Signal")
+	void OnImportedIfSignalListSignal(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbRefIfaces|ParentIf|Signals", DisplayName = "On Property LocalIf Changed")
+	void OnLocalIfChanged(UPARAM(DisplayName = "LocalIf") const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& InLocalIf);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbRefIfaces|ParentIf|Signals", DisplayName = "On Property LocalIfList Changed")
+	void OnLocalIfListChanged(UPARAM(DisplayName = "LocalIfList") const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InLocalIfList);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbRefIfaces|ParentIf|Signals", DisplayName = "On Property ImportedIf Changed")
+	void OnImportedIfChanged(UPARAM(DisplayName = "ImportedIf") const TScriptInterface<ITbIfaceimportEmptyIfInterface>& InImportedIf);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbRefIfaces|ParentIf|Signals", DisplayName = "On Property ImportedIfList Changed")
+	void OnImportedIfListChanged(UPARAM(DisplayName = "ImportedIfList") const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InImportedIfList);
+};
+
+/**
  * Class UTbRefIfacesParentIfInterfaceSignals
  * Contains delegates for properties and signals
  * this is needed since we cannot declare delegates on an UInterface
@@ -68,6 +109,15 @@ public:
 	{
 		OnLocalIfSignalSignal.Broadcast(Param);
 		OnLocalIfSignalSignalBP.Broadcast(Param);
+
+		TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbRefIfacesParentIfBPSubscriberInterface::Execute_OnLocalIfSignalSignal(Obj, Param);
+			}
+		}
 	}
 
 	FTbRefIfacesParentIfLocalIfSignalListDelegate OnLocalIfSignalListSignal;
@@ -79,6 +129,15 @@ public:
 	{
 		OnLocalIfSignalListSignal.Broadcast(Param);
 		OnLocalIfSignalListSignalBP.Broadcast(Param);
+
+		TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbRefIfacesParentIfBPSubscriberInterface::Execute_OnLocalIfSignalListSignal(Obj, Param);
+			}
+		}
 	}
 
 	FTbRefIfacesParentIfImportedIfSignalDelegate OnImportedIfSignalSignal;
@@ -90,6 +149,15 @@ public:
 	{
 		OnImportedIfSignalSignal.Broadcast(Param);
 		OnImportedIfSignalSignalBP.Broadcast(Param);
+
+		TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbRefIfacesParentIfBPSubscriberInterface::Execute_OnImportedIfSignalSignal(Obj, Param);
+			}
+		}
 	}
 
 	FTbRefIfacesParentIfImportedIfSignalListDelegate OnImportedIfSignalListSignal;
@@ -101,6 +169,15 @@ public:
 	{
 		OnImportedIfSignalListSignal.Broadcast(Param);
 		OnImportedIfSignalListSignalBP.Broadcast(Param);
+
+		TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbRefIfacesParentIfBPSubscriberInterface::Execute_OnImportedIfSignalListSignal(Obj, Param);
+			}
+		}
 	}
 
 	FTbRefIfacesParentIfLocalIfChangedDelegate OnLocalIfChanged;
@@ -112,6 +189,15 @@ public:
 	{
 		OnLocalIfChanged.Broadcast(InLocalIf);
 		OnLocalIfChangedBP.Broadcast(InLocalIf);
+
+		TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbRefIfacesParentIfBPSubscriberInterface::Execute_OnLocalIfChanged(Obj, InLocalIf);
+			}
+		}
 	}
 
 	FTbRefIfacesParentIfLocalIfListChangedDelegate OnLocalIfListChanged;
@@ -123,6 +209,15 @@ public:
 	{
 		OnLocalIfListChanged.Broadcast(InLocalIfList);
 		OnLocalIfListChangedBP.Broadcast(InLocalIfList);
+
+		TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbRefIfacesParentIfBPSubscriberInterface::Execute_OnLocalIfListChanged(Obj, InLocalIfList);
+			}
+		}
 	}
 
 	FTbRefIfacesParentIfImportedIfChangedDelegate OnImportedIfChanged;
@@ -134,6 +229,15 @@ public:
 	{
 		OnImportedIfChanged.Broadcast(InImportedIf);
 		OnImportedIfChangedBP.Broadcast(InImportedIf);
+
+		TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbRefIfacesParentIfBPSubscriberInterface::Execute_OnImportedIfChanged(Obj, InImportedIf);
+			}
+		}
 	}
 
 	FTbRefIfacesParentIfImportedIfListChangedDelegate OnImportedIfListChanged;
@@ -145,7 +249,32 @@ public:
 	{
 		OnImportedIfListChanged.Broadcast(InImportedIfList);
 		OnImportedIfListChangedBP.Broadcast(InImportedIfList);
+
+		TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbRefIfacesParentIfBPSubscriberInterface::Execute_OnImportedIfListChanged(Obj, InImportedIfList);
+			}
+		}
 	}
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|ParentIf|Signals")
+	void Subscribe(const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber)
+	{
+		if (!Subscriber.GetObject()) return;
+		Subscribers.Remove(Subscriber);
+		Subscribers.Add(Subscriber);
+	}
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|ParentIf|Signals")
+	void Unsubscribe(const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber)
+	{
+		Subscribers.Remove(Subscriber);
+	}
+private:
+	UPROPERTY()
+	TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> Subscribers;
 };
 
 /**

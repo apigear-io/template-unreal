@@ -32,6 +32,29 @@ DECLARE_MULTICAST_DELEGATE_OneParam(FTbRefIfacesSimpleLocalIfIntPropertyChangedD
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbRefIfacesSimpleLocalIfIntPropertyChangedDelegateBP, int32, IntProperty);
 
 /**
+ * Helper interface for TbRefIfacesSimpleLocalIf events.
+ * Intended for Blueprint-only use. Functions are dispatched via message calls.
+ * Does contain signal events and property-changed events.
+ */
+UINTERFACE(BlueprintType)
+class UTbRefIfacesSimpleLocalIfBPSubscriberInterface : public UInterface
+{
+	GENERATED_BODY()
+};
+
+class TBREFIFACESAPI_API ITbRefIfacesSimpleLocalIfBPSubscriberInterface
+{
+	GENERATED_BODY()
+
+public:
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbRefIfaces|SimpleLocalIf|Signals", DisplayName = "On IntSignal Signal")
+	void OnIntSignalSignal(int32 Param);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbRefIfaces|SimpleLocalIf|Signals", DisplayName = "On Property IntProperty Changed")
+	void OnIntPropertyChanged(UPARAM(DisplayName = "IntProperty") int32 InIntProperty);
+};
+
+/**
  * Class UTbRefIfacesSimpleLocalIfInterfaceSignals
  * Contains delegates for properties and signals
  * this is needed since we cannot declare delegates on an UInterface
@@ -51,6 +74,15 @@ public:
 	{
 		OnIntSignalSignal.Broadcast(Param);
 		OnIntSignalSignalBP.Broadcast(Param);
+
+		TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITbRefIfacesSimpleLocalIfBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbRefIfacesSimpleLocalIfBPSubscriberInterface::Execute_OnIntSignalSignal(Obj, Param);
+			}
+		}
 	}
 
 	FTbRefIfacesSimpleLocalIfIntPropertyChangedDelegate OnIntPropertyChanged;
@@ -62,7 +94,32 @@ public:
 	{
 		OnIntPropertyChanged.Broadcast(InIntProperty);
 		OnIntPropertyChangedBP.Broadcast(InIntProperty);
+
+		TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITbRefIfacesSimpleLocalIfBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbRefIfacesSimpleLocalIfBPSubscriberInterface::Execute_OnIntPropertyChanged(Obj, InIntProperty);
+			}
+		}
 	}
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|SimpleLocalIf|Signals")
+	void Subscribe(const TScriptInterface<ITbRefIfacesSimpleLocalIfBPSubscriberInterface>& Subscriber)
+	{
+		if (!Subscriber.GetObject()) return;
+		Subscribers.Remove(Subscriber);
+		Subscribers.Add(Subscriber);
+	}
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|SimpleLocalIf|Signals")
+	void Unsubscribe(const TScriptInterface<ITbRefIfacesSimpleLocalIfBPSubscriberInterface>& Subscriber)
+	{
+		Subscribers.Remove(Subscriber);
+	}
+private:
+	UPROPERTY()
+	TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfBPSubscriberInterface>> Subscribers;
 };
 
 /**

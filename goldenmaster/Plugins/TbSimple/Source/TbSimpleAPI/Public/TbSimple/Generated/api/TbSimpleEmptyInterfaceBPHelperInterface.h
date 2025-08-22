@@ -18,4 +18,4 @@ limitations under the License.
 
 #include "UObject/Interface.h"
 #include "TbSimple/Generated/api/TbSimple_data.h"
-#include "TbSimpleEmptyInterfaceInterfaceBPSignals.generated.h"
+#include "TbSimpleEmptyInterfaceBPHelperInterface.generated.h"

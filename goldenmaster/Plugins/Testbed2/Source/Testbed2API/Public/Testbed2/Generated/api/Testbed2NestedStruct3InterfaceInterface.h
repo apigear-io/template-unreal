@@ -42,6 +42,41 @@ DECLARE_MULTICAST_DELEGATE_OneParam(FTestbed2NestedStruct3InterfaceProp3ChangedD
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed2NestedStruct3InterfaceProp3ChangedDelegateBP, const FTestbed2NestedStruct3&, Prop3);
 
 /**
+ * Helper interface for Testbed2NestedStruct3Interface events.
+ * Intended for Blueprint-only use. Functions are dispatched via message calls.
+ * Does contain signal events and property-changed events.
+ */
+UINTERFACE(BlueprintType)
+class UTestbed2NestedStruct3InterfaceBPSubscriberInterface : public UInterface
+{
+	GENERATED_BODY()
+};
+
+class TESTBED2API_API ITestbed2NestedStruct3InterfaceBPSubscriberInterface
+{
+	GENERATED_BODY()
+
+public:
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|Testbed2|NestedStruct3Interface|Signals", DisplayName = "On Sig1 Signal")
+	void OnSig1Signal(const FTestbed2NestedStruct1& Param1);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|Testbed2|NestedStruct3Interface|Signals", DisplayName = "On Sig2 Signal")
+	void OnSig2Signal(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|Testbed2|NestedStruct3Interface|Signals", DisplayName = "On Sig3 Signal")
+	void OnSig3Signal(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|Testbed2|NestedStruct3Interface|Signals", DisplayName = "On Property Prop1 Changed")
+	void OnProp1Changed(UPARAM(DisplayName = "Prop1") const FTestbed2NestedStruct1& InProp1);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|Testbed2|NestedStruct3Interface|Signals", DisplayName = "On Property Prop2 Changed")
+	void OnProp2Changed(UPARAM(DisplayName = "Prop2") const FTestbed2NestedStruct2& InProp2);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|Testbed2|NestedStruct3Interface|Signals", DisplayName = "On Property Prop3 Changed")
+	void OnProp3Changed(UPARAM(DisplayName = "Prop3") const FTestbed2NestedStruct3& InProp3);
+};
+
+/**
  * Class UTestbed2NestedStruct3InterfaceInterfaceSignals
  * Contains delegates for properties and signals
  * this is needed since we cannot declare delegates on an UInterface
@@ -61,6 +96,15 @@ public:
 	{
 		OnSig1Signal.Broadcast(Param1);
 		OnSig1SignalBP.Broadcast(Param1);
+
+		TArray<TScriptInterface<ITestbed2NestedStruct3InterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITestbed2NestedStruct3InterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITestbed2NestedStruct3InterfaceBPSubscriberInterface::Execute_OnSig1Signal(Obj, Param1);
+			}
+		}
 	}
 
 	FTestbed2NestedStruct3InterfaceSig2Delegate OnSig2Signal;
@@ -72,6 +116,15 @@ public:
 	{
 		OnSig2Signal.Broadcast(Param1, Param2);
 		OnSig2SignalBP.Broadcast(Param1, Param2);
+
+		TArray<TScriptInterface<ITestbed2NestedStruct3InterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITestbed2NestedStruct3InterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITestbed2NestedStruct3InterfaceBPSubscriberInterface::Execute_OnSig2Signal(Obj, Param1, Param2);
+			}
+		}
 	}
 
 	FTestbed2NestedStruct3InterfaceSig3Delegate OnSig3Signal;
@@ -83,6 +136,15 @@ public:
 	{
 		OnSig3Signal.Broadcast(Param1, Param2, Param3);
 		OnSig3SignalBP.Broadcast(Param1, Param2, Param3);
+
+		TArray<TScriptInterface<ITestbed2NestedStruct3InterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITestbed2NestedStruct3InterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITestbed2NestedStruct3InterfaceBPSubscriberInterface::Execute_OnSig3Signal(Obj, Param1, Param2, Param3);
+			}
+		}
 	}
 
 	FTestbed2NestedStruct3InterfaceProp1ChangedDelegate OnProp1Changed;
@@ -94,6 +156,15 @@ public:
 	{
 		OnProp1Changed.Broadcast(InProp1);
 		OnProp1ChangedBP.Broadcast(InProp1);
+
+		TArray<TScriptInterface<ITestbed2NestedStruct3InterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITestbed2NestedStruct3InterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITestbed2NestedStruct3InterfaceBPSubscriberInterface::Execute_OnProp1Changed(Obj, InProp1);
+			}
+		}
 	}
 
 	FTestbed2NestedStruct3InterfaceProp2ChangedDelegate OnProp2Changed;
@@ -105,6 +176,15 @@ public:
 	{
 		OnProp2Changed.Broadcast(InProp2);
 		OnProp2ChangedBP.Broadcast(InProp2);
+
+		TArray<TScriptInterface<ITestbed2NestedStruct3InterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITestbed2NestedStruct3InterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITestbed2NestedStruct3InterfaceBPSubscriberInterface::Execute_OnProp2Changed(Obj, InProp2);
+			}
+		}
 	}
 
 	FTestbed2NestedStruct3InterfaceProp3ChangedDelegate OnProp3Changed;
@@ -116,7 +196,32 @@ public:
 	{
 		OnProp3Changed.Broadcast(InProp3);
 		OnProp3ChangedBP.Broadcast(InProp3);
+
+		TArray<TScriptInterface<ITestbed2NestedStruct3InterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITestbed2NestedStruct3InterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITestbed2NestedStruct3InterfaceBPSubscriberInterface::Execute_OnProp3Changed(Obj, InProp3);
+			}
+		}
 	}
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface|Signals")
+	void Subscribe(const TScriptInterface<ITestbed2NestedStruct3InterfaceBPSubscriberInterface>& Subscriber)
+	{
+		if (!Subscriber.GetObject()) return;
+		Subscribers.Remove(Subscriber);
+		Subscribers.Add(Subscriber);
+	}
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface|Signals")
+	void Unsubscribe(const TScriptInterface<ITestbed2NestedStruct3InterfaceBPSubscriberInterface>& Subscriber)
+	{
+		Subscribers.Remove(Subscriber);
+	}
+private:
+	UPROPERTY()
+	TArray<TScriptInterface<ITestbed2NestedStruct3InterfaceBPSubscriberInterface>> Subscribers;
 };
 
 /**

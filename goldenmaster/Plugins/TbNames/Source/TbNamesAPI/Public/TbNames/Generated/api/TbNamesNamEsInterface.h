@@ -41,6 +41,41 @@ DECLARE_MULTICAST_DELEGATE_OneParam(FTbNamesNamEsEnumPropertyChangedDelegate, ET
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbNamesNamEsEnumPropertyChangedDelegateBP, ETbNamesEnum_With_Under_scores, EnumProperty);
 
 /**
+ * Helper interface for TbNamesNamEs events.
+ * Intended for Blueprint-only use. Functions are dispatched via message calls.
+ * Does contain signal events and property-changed events.
+ */
+UINTERFACE(BlueprintType)
+class UTbNamesNamEsBPSubscriberInterface : public UInterface
+{
+	GENERATED_BODY()
+};
+
+class TBNAMESAPI_API ITbNamesNamEsBPSubscriberInterface
+{
+	GENERATED_BODY()
+
+public:
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbNames|NamEs|Signals", DisplayName = "On SomeSignal Signal")
+	void OnSomeSignalSignal(bool bSomeParam);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbNames|NamEs|Signals", DisplayName = "On SomeSignal2 Signal")
+	void OnSomeSignal2Signal(bool bSomeParam);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbNames|NamEs|Signals", DisplayName = "On Property Switch Changed")
+	void OnSwitchChanged(UPARAM(DisplayName = "bSwitch") bool bInSwitch);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbNames|NamEs|Signals", DisplayName = "On Property SomeProperty Changed")
+	void OnSomePropertyChanged(UPARAM(DisplayName = "SomeProperty") int32 InSomeProperty);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbNames|NamEs|Signals", DisplayName = "On Property SomePoperty2 Changed")
+	void OnSomePoperty2Changed(UPARAM(DisplayName = "SomePoperty2") int32 InSomePoperty2);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbNames|NamEs|Signals", DisplayName = "On Property EnumProperty Changed")
+	void OnEnumPropertyChanged(UPARAM(DisplayName = "EnumProperty") ETbNamesEnum_With_Under_scores InEnumProperty);
+};
+
+/**
  * Class UTbNamesNamEsInterfaceSignals
  * Contains delegates for properties and signals
  * this is needed since we cannot declare delegates on an UInterface
@@ -60,6 +95,15 @@ public:
 	{
 		OnSomeSignalSignal.Broadcast(bSomeParam);
 		OnSomeSignalSignalBP.Broadcast(bSomeParam);
+
+		TArray<TScriptInterface<ITbNamesNamEsBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITbNamesNamEsBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbNamesNamEsBPSubscriberInterface::Execute_OnSomeSignalSignal(Obj, bSomeParam);
+			}
+		}
 	}
 
 	FTbNamesNamEsSomeSignal2Delegate OnSomeSignal2Signal;
@@ -71,6 +115,15 @@ public:
 	{
 		OnSomeSignal2Signal.Broadcast(bSomeParam);
 		OnSomeSignal2SignalBP.Broadcast(bSomeParam);
+
+		TArray<TScriptInterface<ITbNamesNamEsBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITbNamesNamEsBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbNamesNamEsBPSubscriberInterface::Execute_OnSomeSignal2Signal(Obj, bSomeParam);
+			}
+		}
 	}
 
 	FTbNamesNamEsSwitchChangedDelegate OnSwitchChanged;
@@ -82,6 +135,15 @@ public:
 	{
 		OnSwitchChanged.Broadcast(bInSwitch);
 		OnSwitchChangedBP.Broadcast(bInSwitch);
+
+		TArray<TScriptInterface<ITbNamesNamEsBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITbNamesNamEsBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbNamesNamEsBPSubscriberInterface::Execute_OnSwitchChanged(Obj, bInSwitch);
+			}
+		}
 	}
 
 	FTbNamesNamEsSomePropertyChangedDelegate OnSomePropertyChanged;
@@ -93,6 +155,15 @@ public:
 	{
 		OnSomePropertyChanged.Broadcast(InSomeProperty);
 		OnSomePropertyChangedBP.Broadcast(InSomeProperty);
+
+		TArray<TScriptInterface<ITbNamesNamEsBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITbNamesNamEsBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbNamesNamEsBPSubscriberInterface::Execute_OnSomePropertyChanged(Obj, InSomeProperty);
+			}
+		}
 	}
 
 	FTbNamesNamEsSomePoperty2ChangedDelegate OnSomePoperty2Changed;
@@ -104,6 +175,15 @@ public:
 	{
 		OnSomePoperty2Changed.Broadcast(InSomePoperty2);
 		OnSomePoperty2ChangedBP.Broadcast(InSomePoperty2);
+
+		TArray<TScriptInterface<ITbNamesNamEsBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITbNamesNamEsBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbNamesNamEsBPSubscriberInterface::Execute_OnSomePoperty2Changed(Obj, InSomePoperty2);
+			}
+		}
 	}
 
 	FTbNamesNamEsEnumPropertyChangedDelegate OnEnumPropertyChanged;
@@ -115,7 +195,32 @@ public:
 	{
 		OnEnumPropertyChanged.Broadcast(InEnumProperty);
 		OnEnumPropertyChangedBP.Broadcast(InEnumProperty);
+
+		TArray<TScriptInterface<ITbNamesNamEsBPSubscriberInterface>> SubscribersCopy = Subscribers;
+		for (const TScriptInterface<ITbNamesNamEsBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbNamesNamEsBPSubscriberInterface::Execute_OnEnumPropertyChanged(Obj, InEnumProperty);
+			}
+		}
 	}
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Signals")
+	void Subscribe(const TScriptInterface<ITbNamesNamEsBPSubscriberInterface>& Subscriber)
+	{
+		if (!Subscriber.GetObject()) return;
+		Subscribers.Remove(Subscriber);
+		Subscribers.Add(Subscriber);
+	}
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Signals")
+	void Unsubscribe(const TScriptInterface<ITbNamesNamEsBPSubscriberInterface>& Subscriber)
+	{
+		Subscribers.Remove(Subscriber);
+	}
+private:
+	UPROPERTY()
+	TArray<TScriptInterface<ITbNamesNamEsBPSubscriberInterface>> Subscribers;
 };
 
 /**
