@@ -153,7 +153,14 @@ jobject {{$className }}::makeJava{{Camel .Name }}(JNIEnv* env, const {{$structTy
     jobjectArray {{$tmpObjName}} = {{if not (eq $otherModuleClassName  "DataJavaConverter" )}}{{$otherModuleClassName}}::{{end -}}
     makeJava{{Camel .Type }}Array(env, {{$structName}}.{{$cppFieldName}});
 {{- else if (eq .KindType "string")}}
-    jobjectArray {{$tmpObjName}} = FJavaHelper::ToJavaStringArray(env,{{$structName}}.{{$cppFieldName}});
+    TArray<FStringView> {{$cppFieldName}}StringViews;
+    {{$cppFieldName}}StringViews.Reserve({{$structName}}.{{$cppFieldName}}.Num());
+    for (const FString& Str : {{$structName}}.{{$cppFieldName}})
+    {
+        {{$cppFieldName}}StringViews.Add(FStringView(Str));
+    }
+    auto {{$tmpObjName}}Wrapper = FJavaHelper::ToJavaStringArray(env,{{$cppFieldName}}StringViews);
+    jobjectArray {{$tmpObjName}} = static_cast<jobjectArray>(Env->NewLocalRef(*{{$tmpObjName}}Wrapper));
 {{- else if .IsPrimitive }}
     auto len{{snake .Name}} = {{$structName}}.{{$cppFieldName}}.Num();
     jFieldId_{{snake .Name}} = (*env)->New{{jniToEnvNameType .}}Array(len{{snake .Name}});
@@ -175,9 +182,10 @@ jobject {{$className }}::makeJava{{Camel .Name }}(JNIEnv* env, const {{$structTy
     env->SetObjectField(javaObjInstance, jFieldId_{{snake .Name}}, {{$tmpObjName}});
     env->DeleteLocalRef({{$tmpObjName}});
 {{- else if eq .KindType "string"}}
-    jobject {{$tmpObjName}} = (jstring)env->GetObjectField(javaObjInstance, jFieldId_{{snake .Name}});
-    {{$structName}}.{{$cppFieldName}} = FJavaHelper::ToJavaString(env,{{$in_cppStructName}}.{{$cppFieldName}});
-    env->DeleteLocalRef({{$tmpObjName}});
+    auto {{$tmpObjName}}Wrapper =  FJavaHelper::ToJavaString(env,{{$in_cppStructName}}.{{$cppFieldName}});
+    jstring {{$tmpObjName}} = static_cast<jstring>(Env->NewLocalRef(*{{$tmpObjName}}Wrapper));
+    env->SetObjectField(javaObjInstance, jFieldId_{{snake .Name}}, {{$tmpObjName}});
+    // in UE 5.6 no need for new local ref
 {{- else if .IsPrimitive }}
     env->Set{{jniToEnvNameType .}}Field(javaObjInstance, jFieldId_{{snake .Name}}, {{$in_cppStructName}}.{{$cppFieldName}});
 {{- else if not (eq .KindType "extern")}}
