@@ -30,7 +30,16 @@
             {{$cppropName}}StringViews.Add(FStringView(Str));
         }
         auto {{$localName}}Wrapped = FJavaHelper::ToJavaStringArray(Env,{{$cppropName}}StringViews);
-        jobjectArray {{$localName}} = static_cast<jobjectArray>(Env->NewLocalRef(*{{$localName}}Wrapped));
+        {{- else if (eq .KindType "bool")}}
+        auto len{{snake .Name}} = {{$cppropName}}.Num();
+        {{jniToReturnType .}} {{$localName}} = Env->New{{jniToEnvNameType .}}Array(len{{snake .Name}});
+        TArray<jboolean> Temp;
+        Temp.SetNumUninitialized(len{{snake .Name}});
+        for (int i = 0; i < len{{snake .Name}}; i++)
+        {
+            Temp[i] = {{$cppropName}}[i] ? JNI_TRUE : JNI_FALSE;
+        }
+        Env->SetBooleanArrayRegion({{$localName}}, 0, len{{snake .Name}}, Temp.GetData());
         {{- else if and (.IsPrimitive ) (not (eq .KindType "enum")) }}
         auto len{{snake .Name}} = {{$cppropName}}.Num();
         {{jniToReturnType .}} {{$localName}} = Env->New{{jniToEnvNameType .}}Array(len{{snake .Name}});
@@ -56,6 +65,18 @@
     {{ueReturn "" .}} {{$local_value}} = {{ ueDefault "" . }};
     {{- if (eq .KindType "string")}}
     {{$local_value}} = FJavaHelper::ObjectArrayToFStringTArray(Env, {{$javaPropName}});
+    {{- else if (eq .KindType "bool")}}
+    jbooleanArray l_java{{Camel .Name}}Array = (jbooleanArray){{$javaPropName}};
+    jsize len{{snake .Name}} = Env->GetArrayLength(l_java{{Camel .Name}}Array);
+    {{$local_value}}.Reserve(len{{snake .Name}});
+    TArray<jboolean> Temp;
+    Temp.SetNumUninitialized(len{{snake .Name}});
+    Env->GetBooleanArrayRegion(l_java{{Camel .Name}}Array, 0, len{{snake .Name}}, Temp.GetData());
+    for (int i = 0; i < len{{snake .Name}}; i++)
+    {
+        {{$local_value}}.Add(Temp[i] == JNI_TRUE);
+    }
+    Env->DeleteLocalRef(l_java{{Camel .Name}}Array);
     {{- else if .IsPrimitive }}
     {{ jniToReturnType . }} l_java{{Camel .Name}}Array = ({{ jniToReturnType . }}){{$javaPropName}};
     jsize len{{snake .Name}} = Env->GetArrayLength(l_java{{Camel .Name}}Array);
@@ -391,6 +412,16 @@ JNI_METHOD {{ jniToReturnType .Return}} {{$jniFullFuncPrefix}}_native{{ Camel   
         }
         auto {{$localName}}Wrapped = FJavaHelper::ToJavaStringArray(Env,{{$cppropName}}StringViews);
         auto {{$localName}} = static_cast<jobjectArray>(Env->NewLocalRef(*{{$localName}}Wrapped));
+    {{- else if (eq .Return.KindType "bool")}}
+        auto len = {{$cppropName}}.Num();
+        {{jniToReturnType .Return}} {{$localName}} = Env->New{{jniToEnvNameType .Return}}Array(len);
+        TArray<jboolean> Temp;
+        Temp.SetNumUninitialized(len);
+        for (int i = 0; i < len{; i++)
+        {
+            Temp[i] = {{$cppropName}}[i] ? JNI_TRUE : JNI_FALSE;
+        }
+        Env->SetBooleanArrayRegion({{$localName}}, 0, len, Temp.GetData());
 	{{- else if and (.Return.IsPrimitive ) (not (eq .Return.KindType "enum")) }}
         auto len = {{$cppropName}}.Num();
         {{jniToReturnType .Return}} {{$localName}} = Env->New{{jniToEnvNameType .Return}}Array(len);
