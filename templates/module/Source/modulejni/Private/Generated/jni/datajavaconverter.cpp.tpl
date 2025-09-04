@@ -83,6 +83,19 @@ void {{$className }}::fill{{Camel .Name }}(JNIEnv* env, jobject input, {{$struct
     fill{{Camel .Type }}Array(env, {{snake .Name}}_value, {{$structName}}.{{$cppFieldName}});
 {{- else if (eq .KindType "string")}}
     {{$structName}}.{{$cppFieldName}} = FJavaHelper::ObjectArrayToFStringTArray(env, {{snake .Name}}_value);
+
+    {{- else if (eq .KindType "bool")}}
+    jsize len{{snake .Name}} = env->GetArrayLength({{snake .Name}}_value);
+    {{$structName}}.{{$cppFieldName}}.Reserve(len{{snake .Name}});
+    TArray<jboolean> Temp;
+    Temp.SetNumUninitialized(len{{snake .Name}});
+    Env->GetBooleanArrayRegion({{snake .Name}}_value, 0, len{{snake .Name}}, Temp.GetData());
+    for (int i = 0; i < len{{snake .Name}}; i++)
+    {
+        {{$structName}}.{{$cppFieldName}}.Add(Temp[i] == JNI_TRUE);
+    }
+    Env->DeleteLocalRef({{snake .Name}}_value);
+
 {{- else if .IsPrimitive }}
     jsize len{{snake .Name}} = env->GetArrayLength({{snake .Name}}_value);
     {{$structName}}.{{$cppFieldName}}.Reserve(len{{snake .Name}});
@@ -161,6 +174,15 @@ jobject {{$className }}::makeJava{{Camel .Name }}(JNIEnv* env, const {{$structTy
     }
     auto {{$tmpObjName}}Wrapper = FJavaHelper::ToJavaStringArray(env,{{$cppFieldName}}StringViews);
     jobjectArray {{$tmpObjName}} = static_cast<jobjectArray>(Env->NewLocalRef(*{{$tmpObjName}}Wrapper));
+{{- else if (eq .KindType "bool")}}
+    auto len{{snake .Name}} = {{$structName}}.{{$cppFieldName}}.Num();
+    TArray<jboolean> Temp;
+    Temp.SetNumUninitialized(len{{snake .Name}});
+    for (int i = 0; i < len{{snake .Name}}; i++)
+    {
+        Temp[i] = {{$structName}}.{{$cppFieldName}}[i] ? JNI_TRUE : JNI_FALSE;
+    }
+    Env->SetBooleanArrayRegion({{snake .Name}}_value, 0, len{{snake .Name}}, Temp.GetData());
 {{- else if .IsPrimitive }}
     auto len{{snake .Name}} = {{$structName}}.{{$cppFieldName}}.Num();
     jFieldId_{{snake .Name}} = (*env)->New{{jniToEnvNameType .}}Array(len{{snake .Name}});
