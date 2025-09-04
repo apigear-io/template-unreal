@@ -45,7 +45,14 @@ limitations under the License.
         {{- if (eq $javaClassConverter  "DataJavaConverter" )}}{{- $javaClassConverter = printf "%sDataJavaConverter" (Camel .Schema.Module.Name) }}{{ end }}
     {{- if .IsArray }}
         {{- if (eq .KindType "string")}}
-        auto {{$localName}} = FJavaHelper::ToJavaStringArray(Env,{{$cppropName}});
+        TArray<FStringView> {{$cppropName}}StringViews;
+        {{$cppropName}}StringViews.Reserve({{$cppropName}}.Num());
+        for (const FString& Str : {{$cppropName}})
+        {
+            {{$cppropName}}StringViews.Add(FStringView(Str));
+        }
+        auto {{$localName}}Wrapped = FJavaHelper::ToJavaStringArray(Env,{{$cppropName}}StringViews);
+        jobjectArray {{$localName}} = static_cast<jobjectArray>(Env->NewLocalRef(*{{$localName}}Wrapped));
         {{- else if and (.IsPrimitive ) (not (eq .KindType "enum")) }}
         auto len{{snake .Name}} = {{$cppropName}}.Num();
         {{jniToReturnType .}} {{$localName}} = Env->New{{jniToEnvNameType .}}Array(len{{snake .Name}});
@@ -55,7 +62,8 @@ limitations under the License.
         {{jniToReturnType .}} {{$localName}} = {{$javaClassConverter}}::makeJava{{Camel .Type }}Array(Env, {{$cppropName}});
         {{- end }}
     {{- else if (eq .KindType "string")}}
-        jobject {{$localName}} = FJavaHelper::ToJavaString(Env, {{$cppropName}});
+        auto {{$localName}}Wrapped = FJavaHelper::ToJavaString(Env, {{$cppropName}});
+        jstring {{$localName}} = static_cast<jstring>(Env->NewLocalRef(*{{$localName}}Wrapped));
     {{- else if ( or (not .IsPrimitive ) (eq .KindType "enum" ) ) }}
         {{jniToReturnType .}} {{$localName}} = {{$javaClassConverter}}::makeJava{{Camel .Type }}(Env, {{$cppropName}});
     {{- end }}
@@ -287,7 +295,7 @@ void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
     {{- range $idx, $p := .Params -}}
         {{- $javaPropName := Camel .Name}}
         {{- $localName := printf "jlocal_%s" $javaPropName }}
-    {{- if or ( or .IsArray  (eq .KindType "enum" ) ) (eq .KindType "string")}}
+    {{- if or .IsArray  (eq .KindType "enum" ) }}
         Env->DeleteLocalRef({{$localName}});
     {{- else if not ( or (eq .KindType "extern")  (ueIsStdSimpleType .)  ) }}
         Env->DeleteLocalRef({{$localName}});
