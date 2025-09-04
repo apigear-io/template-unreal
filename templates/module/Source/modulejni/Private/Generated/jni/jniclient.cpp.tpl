@@ -53,6 +53,16 @@ limitations under the License.
         }
         auto {{$localName}}Wrapped = FJavaHelper::ToJavaStringArray(Env,{{$cppropName}}StringViews);
         jobjectArray {{$localName}} = static_cast<jobjectArray>(Env->NewLocalRef(*{{$localName}}Wrapped));
+        {{- else if (eq .KindType "bool")}}
+        auto len{{snake .Name}} = {{$cppropName}}.Num();
+        {{jniToReturnType .}} {{$localName}} = Env->New{{jniToEnvNameType .}}Array(len{{snake .Name}});
+        TArray<jboolean> Temp;
+        Temp.SetNumUninitialized(len{{snake .Name}});
+        for (int i = 0; i < len{{snake .Name}}; i++)
+        {
+            Temp[i] = {{$cppropName}}[i] ? JNI_TRUE : JNI_FALSE;
+        }
+        Env->SetBooleanArrayRegion({{$localName}}, 0, len{{snake .Name}}, Temp.GetData());
         {{- else if and (.IsPrimitive ) (not (eq .KindType "enum")) }}
         auto len{{snake .Name}} = {{$cppropName}}.Num();
         {{jniToReturnType .}} {{$localName}} = Env->New{{jniToEnvNameType .}}Array(len{{snake .Name}});
@@ -456,7 +466,6 @@ JNI_METHOD void {{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}Result(JNIEnv* Env
     FGuid guid;
 
 {{- if not .Return.IsVoid }}
-
 {{- $javaClassConverter := printf "%sDataJavaConverter" ( Camel .Return.Schema.Import ) }}
 {{- $hasLocalVar := 1 }}
 {{- if (eq $javaClassConverter  "DataJavaConverter" )}}{{- $javaClassConverter = printf "%sDataJavaConverter" $ModuleName}}{{ end }}
@@ -464,6 +473,18 @@ JNI_METHOD void {{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}Result(JNIEnv* Env
     {{ueReturn "" .Return}} cpp_result = {{ ueDefault "" .Return }};
     {{- if (eq .Return.KindType "string")}}
     cpp_result = FJavaHelper::ObjectArrayToFStringTArray(Env, result);
+    {{- else if (eq .Return.KindType "bool")}}
+    jbooleanArray localArray = (jbooleanArray)result;
+    jsize len = Env->GetArrayLength(localArray);
+    cpp_result.Reserve(len);
+    TArray<jboolean> Temp;
+    Temp.SetNumUninitialized(len);
+    Env->GetBooleanArrayRegion(localArray, 0, len, Temp.GetData());
+    for (int i = 0; i < len; i++)
+    {
+        cpp_result[i] = (Temp[i] == JNI_TRUE);
+    }
+    Env->DeleteLocalRef(localArray);
     {{- else if .Return.IsPrimitive }}
     {{ jniToReturnType .Return }} localArray = ({{ jniToReturnType .Return }})result;
     jsize len = Env->GetArrayLength(localArray);
