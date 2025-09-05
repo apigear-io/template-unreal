@@ -473,3 +473,49 @@ features:
           - source: "module/Source/modulemsgbus/Private/Tests/msgbusfixture.cpp.tpl"
             target: "Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}MsgBusFixture.cpp"
             preserve: true
+  - name: jni
+    requires:
+      - api
+      - plugin
+    scopes:
+      - match: module
+        prefix: "Plugins/{{Camel .Module.Name}}/"
+        documents:
+          - source: "module/Source/modulejni/Private/modulejni.cpp.tpl"
+            target: "Source/{{Camel .Module.Name}}Jni/Private/Generated/{{Camel .Module.Name}}Jni.cpp"
+          - source: "module/Source/modulejni/Public/modulejni.h.tpl"
+            target: "Source/{{Camel .Module.Name}}Jni/Public/{{Camel .Module.Name}}/{{Camel .Module.Name}}Jni.h"
+          - source: "module/Source/modulejni/modulejni.Build.cs.tpl"
+            target: "Source/{{Camel .Module.Name}}Jni/{{Camel .Module.Name}}Jni.Build.cs"
+          - source: "module/Source/modulejni/jni_UPL.xml.tpl"
+            target: "Source/{{Camel .Module.Name}}Jni/{{Camel .Module.Name}}_JNI_UPL.xml"
+          - source: "module/Source/modulejni/android/buildsystem/config.gradle"
+            target: "android/buildsystem/config.gradle"
+            raw: true
+          - source: "module/Source/modulejni/android/buildsystem/dependencies.gradle"
+            target: "android/buildsystem/dependencies.gradle"
+            raw: true
+          - source: "module/Source/modulejni/Private/Generated/jni/javaservicestarter.cpp"
+            target: "Source/{{Camel .Module.Name}}Jni/Private/Generated/Jni/JavaServiceStarter.cpp"
+            raw: true
+          - source: "module/Source/modulejni/Private/Generated/jni/javaservicestarter.h"
+            target: "Source/{{Camel .Module.Name}}Jni/Private/Generated/Jni/JavaServiceStarter.h"
+            raw: true
+          - source: "module/Source/modulejni/Private/Generated/jni/datajavaconverter.cpp.tpl"
+            target: "Source/{{Camel .Module.Name}}Jni/Private/Generated/Jni/{{Camel .Module.Name}}DataJavaConverter.cpp"
+          - source: "module/Source/modulejni/Public/Generated/jni/datajavaconverter.h.tpl"
+            target: "Source/{{Camel .Module.Name}}Jni/Public/{{Camel .Module.Name}}/Generated/Jni/{{Camel .Module.Name}}DataJavaConverter.h"
+          - source: "module/Source/modulejni/Public/Generated/jni/jniconnectionstatus.h"
+            target: "Source/{{Camel .Module.Name}}Jni/Public/{{Camel .Module.Name}}//Generated/Jni/JniConnectionStatus.h"
+            raw: true
+      - match: interface
+        prefix: "Plugins/{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}Jni/"
+        documents:
+          - source: "module/Source/modulejni/Public/Generated/jni/jniadapter.h.tpl"
+            target: "Public/{{Camel .Module.Name}}/Generated/Jni/{{Camel .Module.Name}}{{Camel .Interface.Name}}JniAdapter.h"
+          - source: "module/Source/modulejni/Private/Generated/jni/jniadapter.cpp.tpl"
+            target: "Private/Generated/Jni/{{Camel .Module.Name}}{{Camel .Interface.Name}}JniAdapter.cpp"
+          - source: "module/Source/modulejni/Public/Generated/jni/jniclient.h.tpl"
+            target: "Public/{{Camel .Module.Name}}/Generated/Jni/{{Camel .Module.Name}}{{Camel .Interface.Name}}JniClient.h"
+          - source: "module/Source/modulejni/Private/Generated/jni/jniclient.cpp.tpl"
+            target: "Private/Generated/Jni/{{Camel .Module.Name}}{{Camel .Interface.Name}}JniClient.cpp"
