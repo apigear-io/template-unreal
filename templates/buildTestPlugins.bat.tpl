@@ -28,7 +28,7 @@ if exist "%UE_path%\" (
 	echo Was not able to find UE installation at %UE_path%
 	exit /b 1
 )
-set ProjectTarget_path=%script_path%TP_Blank
+set ProjectTarget_path=%script_path%build\TP_Blank
 set UEtemplate_path=%UE_path:~0,-7%\Templates\TP_Blank
 if exist "%UEtemplate_path%\" (
 	echo UE blank project template found at %UEtemplate_path%
@@ -56,20 +56,20 @@ if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
 
 {{ if .Features.apigear -}}
 @REM copy ApiGear plugin to blank project for build and functional testing
-echo Copy ApiGear plugin from "%script_path%Plugins\ApiGear" to "%ProjectTarget_path%\Plugins\ApiGear"
+echo Copy ApiGear plugin from "%script_path%ApiGear" to "%ProjectTarget_path%\Plugins\ApiGear"
 mkdir %ProjectTarget_path%\Plugins\ApiGear
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
-xcopy /E /Y "%script_path%Plugins\ApiGear" "%ProjectTarget_path%\Plugins\ApiGear"  >nul
+xcopy /E /Y "%script_path%ApiGear" "%ProjectTarget_path%\Plugins\ApiGear"  >nul
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
 {{- end }}
 {{ range .System.Modules}}
 
 @REM copy {{ Camel .Name}} plugin to blank project for build and functional testing
 set {{ Camel .Name}}PluginTarget_path=%ProjectTarget_path%\Plugins\{{ Camel .Name}}
-echo {{ Camel .Name}} plugin from "%script_path%\Plugins\{{ Camel .Name}}" to "%{{ Camel .Name}}PluginTarget_path%\"
+echo {{ Camel .Name}} plugin from "%script_path%\{{ Camel .Name}}" to "%{{ Camel .Name}}PluginTarget_path%\"
 mkdir %{{ Camel .Name}}PluginTarget_path%
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
-xcopy /E /Y "%script_path%\Plugins\{{ Camel .Name}}" "%{{ Camel .Name}}PluginTarget_path%\"  >nul
+xcopy /E /Y "%script_path%\{{ Camel .Name}}" "%{{ Camel .Name}}PluginTarget_path%\"  >nul
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
 {{ end }}
 

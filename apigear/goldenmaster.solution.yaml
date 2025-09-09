@@ -17,7 +17,7 @@ targets:
       - test-apis/counter.module.yaml
       - test-apis/testbed.ifaceimport.module.yaml
       - test-apis/testbed.refifaces.module.yaml
-    output: ../test
+    output: ../test/Plugins
     template: ..
     force: true
     features: [ "all" ]

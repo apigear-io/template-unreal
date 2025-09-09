@@ -22,7 +22,7 @@ if exist "%UE_path%\" (
 	echo Was not able to find UE installation at %UE_path%
 	exit /b 1
 )
-set ProjectTarget_path=%script_path%TP_Blank
+set ProjectTarget_path=%script_path%build\TP_Blank
 set UEtemplate_path=%UE_path:~0,-7%\Templates\TP_Blank
 if exist "%UEtemplate_path%\" (
 	echo UE blank project template found at %UEtemplate_path%
@@ -49,118 +49,118 @@ mkdir %ProjectTarget_path%\Plugins
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
 
 @REM copy ApiGear plugin to blank project for build and functional testing
-echo Copy ApiGear plugin from "%script_path%Plugins\ApiGear" to "%ProjectTarget_path%\Plugins\ApiGear"
+echo Copy ApiGear plugin from "%script_path%ApiGear" to "%ProjectTarget_path%\Plugins\ApiGear"
 mkdir %ProjectTarget_path%\Plugins\ApiGear
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
-xcopy /E /Y "%script_path%Plugins\ApiGear" "%ProjectTarget_path%\Plugins\ApiGear"  >nul
+xcopy /E /Y "%script_path%ApiGear" "%ProjectTarget_path%\Plugins\ApiGear"  >nul
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
 
 
 @REM copy Testbed2 plugin to blank project for build and functional testing
 set Testbed2PluginTarget_path=%ProjectTarget_path%\Plugins\Testbed2
-echo Testbed2 plugin from "%script_path%\Plugins\Testbed2" to "%Testbed2PluginTarget_path%\"
+echo Testbed2 plugin from "%script_path%\Testbed2" to "%Testbed2PluginTarget_path%\"
 mkdir %Testbed2PluginTarget_path%
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
-xcopy /E /Y "%script_path%\Plugins\Testbed2" "%Testbed2PluginTarget_path%\"  >nul
+xcopy /E /Y "%script_path%\Testbed2" "%Testbed2PluginTarget_path%\"  >nul
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
 
 
 @REM copy TbEnum plugin to blank project for build and functional testing
 set TbEnumPluginTarget_path=%ProjectTarget_path%\Plugins\TbEnum
-echo TbEnum plugin from "%script_path%\Plugins\TbEnum" to "%TbEnumPluginTarget_path%\"
+echo TbEnum plugin from "%script_path%\TbEnum" to "%TbEnumPluginTarget_path%\"
 mkdir %TbEnumPluginTarget_path%
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
-xcopy /E /Y "%script_path%\Plugins\TbEnum" "%TbEnumPluginTarget_path%\"  >nul
+xcopy /E /Y "%script_path%\TbEnum" "%TbEnumPluginTarget_path%\"  >nul
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
 
 
 @REM copy TbSame1 plugin to blank project for build and functional testing
 set TbSame1PluginTarget_path=%ProjectTarget_path%\Plugins\TbSame1
-echo TbSame1 plugin from "%script_path%\Plugins\TbSame1" to "%TbSame1PluginTarget_path%\"
+echo TbSame1 plugin from "%script_path%\TbSame1" to "%TbSame1PluginTarget_path%\"
 mkdir %TbSame1PluginTarget_path%
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
-xcopy /E /Y "%script_path%\Plugins\TbSame1" "%TbSame1PluginTarget_path%\"  >nul
+xcopy /E /Y "%script_path%\TbSame1" "%TbSame1PluginTarget_path%\"  >nul
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
 
 
 @REM copy TbSame2 plugin to blank project for build and functional testing
 set TbSame2PluginTarget_path=%ProjectTarget_path%\Plugins\TbSame2
-echo TbSame2 plugin from "%script_path%\Plugins\TbSame2" to "%TbSame2PluginTarget_path%\"
+echo TbSame2 plugin from "%script_path%\TbSame2" to "%TbSame2PluginTarget_path%\"
 mkdir %TbSame2PluginTarget_path%
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
-xcopy /E /Y "%script_path%\Plugins\TbSame2" "%TbSame2PluginTarget_path%\"  >nul
+xcopy /E /Y "%script_path%\TbSame2" "%TbSame2PluginTarget_path%\"  >nul
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
 
 
 @REM copy TbSimple plugin to blank project for build and functional testing
 set TbSimplePluginTarget_path=%ProjectTarget_path%\Plugins\TbSimple
-echo TbSimple plugin from "%script_path%\Plugins\TbSimple" to "%TbSimplePluginTarget_path%\"
+echo TbSimple plugin from "%script_path%\TbSimple" to "%TbSimplePluginTarget_path%\"
 mkdir %TbSimplePluginTarget_path%
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
-xcopy /E /Y "%script_path%\Plugins\TbSimple" "%TbSimplePluginTarget_path%\"  >nul
+xcopy /E /Y "%script_path%\TbSimple" "%TbSimplePluginTarget_path%\"  >nul
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
 
 
 @REM copy Testbed1 plugin to blank project for build and functional testing
 set Testbed1PluginTarget_path=%ProjectTarget_path%\Plugins\Testbed1
-echo Testbed1 plugin from "%script_path%\Plugins\Testbed1" to "%Testbed1PluginTarget_path%\"
+echo Testbed1 plugin from "%script_path%\Testbed1" to "%Testbed1PluginTarget_path%\"
 mkdir %Testbed1PluginTarget_path%
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
-xcopy /E /Y "%script_path%\Plugins\Testbed1" "%Testbed1PluginTarget_path%\"  >nul
+xcopy /E /Y "%script_path%\Testbed1" "%Testbed1PluginTarget_path%\"  >nul
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
 
 
 @REM copy TbNames plugin to blank project for build and functional testing
 set TbNamesPluginTarget_path=%ProjectTarget_path%\Plugins\TbNames
-echo TbNames plugin from "%script_path%\Plugins\TbNames" to "%TbNamesPluginTarget_path%\"
+echo TbNames plugin from "%script_path%\TbNames" to "%TbNamesPluginTarget_path%\"
 mkdir %TbNamesPluginTarget_path%
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
-xcopy /E /Y "%script_path%\Plugins\TbNames" "%TbNamesPluginTarget_path%\"  >nul
+xcopy /E /Y "%script_path%\TbNames" "%TbNamesPluginTarget_path%\"  >nul
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
 
 
 @REM copy CustomTypes plugin to blank project for build and functional testing
 set CustomTypesPluginTarget_path=%ProjectTarget_path%\Plugins\CustomTypes
-echo CustomTypes plugin from "%script_path%\Plugins\CustomTypes" to "%CustomTypesPluginTarget_path%\"
+echo CustomTypes plugin from "%script_path%\CustomTypes" to "%CustomTypesPluginTarget_path%\"
 mkdir %CustomTypesPluginTarget_path%
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
-xcopy /E /Y "%script_path%\Plugins\CustomTypes" "%CustomTypesPluginTarget_path%\"  >nul
+xcopy /E /Y "%script_path%\CustomTypes" "%CustomTypesPluginTarget_path%\"  >nul
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
 
 
 @REM copy ExternTypes plugin to blank project for build and functional testing
 set ExternTypesPluginTarget_path=%ProjectTarget_path%\Plugins\ExternTypes
-echo ExternTypes plugin from "%script_path%\Plugins\ExternTypes" to "%ExternTypesPluginTarget_path%\"
+echo ExternTypes plugin from "%script_path%\ExternTypes" to "%ExternTypesPluginTarget_path%\"
 mkdir %ExternTypesPluginTarget_path%
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
-xcopy /E /Y "%script_path%\Plugins\ExternTypes" "%ExternTypesPluginTarget_path%\"  >nul
+xcopy /E /Y "%script_path%\ExternTypes" "%ExternTypesPluginTarget_path%\"  >nul
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
 
 
 @REM copy Counter plugin to blank project for build and functional testing
 set CounterPluginTarget_path=%ProjectTarget_path%\Plugins\Counter
-echo Counter plugin from "%script_path%\Plugins\Counter" to "%CounterPluginTarget_path%\"
+echo Counter plugin from "%script_path%\Counter" to "%CounterPluginTarget_path%\"
 mkdir %CounterPluginTarget_path%
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
-xcopy /E /Y "%script_path%\Plugins\Counter" "%CounterPluginTarget_path%\"  >nul
+xcopy /E /Y "%script_path%\Counter" "%CounterPluginTarget_path%\"  >nul
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
 
 
 @REM copy TbIfaceimport plugin to blank project for build and functional testing
 set TbIfaceimportPluginTarget_path=%ProjectTarget_path%\Plugins\TbIfaceimport
-echo TbIfaceimport plugin from "%script_path%\Plugins\TbIfaceimport" to "%TbIfaceimportPluginTarget_path%\"
+echo TbIfaceimport plugin from "%script_path%\TbIfaceimport" to "%TbIfaceimportPluginTarget_path%\"
 mkdir %TbIfaceimportPluginTarget_path%
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
-xcopy /E /Y "%script_path%\Plugins\TbIfaceimport" "%TbIfaceimportPluginTarget_path%\"  >nul
+xcopy /E /Y "%script_path%\TbIfaceimport" "%TbIfaceimportPluginTarget_path%\"  >nul
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
 
 
 @REM copy TbRefIfaces plugin to blank project for build and functional testing
 set TbRefIfacesPluginTarget_path=%ProjectTarget_path%\Plugins\TbRefIfaces
-echo TbRefIfaces plugin from "%script_path%\Plugins\TbRefIfaces" to "%TbRefIfacesPluginTarget_path%\"
+echo TbRefIfaces plugin from "%script_path%\TbRefIfaces" to "%TbRefIfacesPluginTarget_path%\"
 mkdir %TbRefIfacesPluginTarget_path%
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
-xcopy /E /Y "%script_path%\Plugins\TbRefIfaces" "%TbRefIfacesPluginTarget_path%\"  >nul
+xcopy /E /Y "%script_path%\TbRefIfaces" "%TbRefIfacesPluginTarget_path%\"  >nul
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
 
 
