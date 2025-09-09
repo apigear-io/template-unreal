@@ -90,75 +90,75 @@ cleanup()
 #
 
 # Build ApiGear plugin
-buildUEplugin "$script_path/Plugins/ApiGear/apigear.uplugin" "$script_path/build/Plugins/ApiGear"
+buildUEplugin "$script_path/ApiGear/apigear.uplugin" "$script_path/build/ApiGear"
 if [ $buildresult -ne 0 ]; then cleanup && exit 1; fi;
 
 # copy ApiGear plugin to UE installation for use by other plugins
 ApiGearPluginTarget_path=$ApiGearTarget_path/ApiGear
-mkdir -p "$ApiGearPluginTarget_path" && cp -rf "$script_path/build/Plugins/ApiGear" "$ApiGearPluginTarget_path" 1>&-
+mkdir -p "$ApiGearPluginTarget_path" && cp -rf "$script_path/build/ApiGear" "$ApiGearPluginTarget_path" 1>&-
 if [ $? -ne 0 ]; then cleanup && exit 1; fi;
 
 # Building and testing Testbed2 module
-buildUEplugin "$script_path/Plugins/Testbed2/Testbed2.uplugin" "$script_path/build/Plugins/Testbed2"
+buildUEplugin "$script_path/Testbed2/Testbed2.uplugin" "$script_path/build/Testbed2"
 if [ $buildresult -ne 0 ]; then cleanup && exit 1; fi;
 
 # Building and testing TbEnum module
-buildUEplugin "$script_path/Plugins/TbEnum/TbEnum.uplugin" "$script_path/build/Plugins/TbEnum"
+buildUEplugin "$script_path/TbEnum/TbEnum.uplugin" "$script_path/build/TbEnum"
 if [ $buildresult -ne 0 ]; then cleanup && exit 1; fi;
 
 # Building and testing TbSame1 module
-buildUEplugin "$script_path/Plugins/TbSame1/TbSame1.uplugin" "$script_path/build/Plugins/TbSame1"
+buildUEplugin "$script_path/TbSame1/TbSame1.uplugin" "$script_path/build/TbSame1"
 if [ $buildresult -ne 0 ]; then cleanup && exit 1; fi;
 
 # Building and testing TbSame2 module
-buildUEplugin "$script_path/Plugins/TbSame2/TbSame2.uplugin" "$script_path/build/Plugins/TbSame2"
+buildUEplugin "$script_path/TbSame2/TbSame2.uplugin" "$script_path/build/TbSame2"
 if [ $buildresult -ne 0 ]; then cleanup && exit 1; fi;
 
 # Building and testing TbSimple module
-buildUEplugin "$script_path/Plugins/TbSimple/TbSimple.uplugin" "$script_path/build/Plugins/TbSimple"
+buildUEplugin "$script_path/TbSimple/TbSimple.uplugin" "$script_path/build/TbSimple"
 if [ $buildresult -ne 0 ]; then cleanup && exit 1; fi;
 
 # Building and testing Testbed1 module
-buildUEplugin "$script_path/Plugins/Testbed1/Testbed1.uplugin" "$script_path/build/Plugins/Testbed1"
+buildUEplugin "$script_path/Testbed1/Testbed1.uplugin" "$script_path/build/Testbed1"
 if [ $buildresult -ne 0 ]; then cleanup && exit 1; fi;
 
 # Building and testing TbNames module
-buildUEplugin "$script_path/Plugins/TbNames/TbNames.uplugin" "$script_path/build/Plugins/TbNames"
+buildUEplugin "$script_path/TbNames/TbNames.uplugin" "$script_path/build/TbNames"
 if [ $buildresult -ne 0 ]; then cleanup && exit 1; fi;
 
 # Building and testing CustomTypes module
-buildUEplugin "$script_path/Plugins/CustomTypes/CustomTypes.uplugin" "$script_path/build/Plugins/CustomTypes"
+buildUEplugin "$script_path/CustomTypes/CustomTypes.uplugin" "$script_path/build/CustomTypes"
 if [ $buildresult -ne 0 ]; then cleanup && exit 1; fi;
 
 # copy CustomTypes plugin to UE installation for use by other plugins
 CustomTypesPluginTarget_path=$ApiGearTarget_path/CustomTypes
-mkdir -p "$CustomTypesPluginTarget_path" && cp -rf "$script_path/build/Plugins/CustomTypes" "$CustomTypesPluginTarget_path" 1>&-
+mkdir -p "$CustomTypesPluginTarget_path" && cp -rf "$script_path/build/CustomTypes" "$CustomTypesPluginTarget_path" 1>&-
 if [ $? -ne 0 ]; then cleanup && exit 1; fi;
 
 # Building and testing ExternTypes module
-buildUEplugin "$script_path/Plugins/ExternTypes/ExternTypes.uplugin" "$script_path/build/Plugins/ExternTypes"
+buildUEplugin "$script_path/ExternTypes/ExternTypes.uplugin" "$script_path/build/ExternTypes"
 if [ $buildresult -ne 0 ]; then cleanup && exit 1; fi;
 
 # copy ExternTypes plugin to UE installation for use by other plugins
 ExternTypesPluginTarget_path=$ApiGearTarget_path/ExternTypes
-mkdir -p "$ExternTypesPluginTarget_path" && cp -rf "$script_path/build/Plugins/ExternTypes" "$ExternTypesPluginTarget_path" 1>&-
+mkdir -p "$ExternTypesPluginTarget_path" && cp -rf "$script_path/build/ExternTypes" "$ExternTypesPluginTarget_path" 1>&-
 if [ $? -ne 0 ]; then cleanup && exit 1; fi;
 
 # Building and testing Counter module
-buildUEplugin "$script_path/Plugins/Counter/Counter.uplugin" "$script_path/build/Plugins/Counter"
+buildUEplugin "$script_path/Counter/Counter.uplugin" "$script_path/build/Counter"
 if [ $buildresult -ne 0 ]; then cleanup && exit 1; fi;
 
 # Building and testing TbIfaceimport module
-buildUEplugin "$script_path/Plugins/TbIfaceimport/TbIfaceimport.uplugin" "$script_path/build/Plugins/TbIfaceimport"
+buildUEplugin "$script_path/TbIfaceimport/TbIfaceimport.uplugin" "$script_path/build/TbIfaceimport"
 if [ $buildresult -ne 0 ]; then cleanup && exit 1; fi;
 
 # copy TbIfaceimport plugin to UE installation for use by other plugins
 TbIfaceimportPluginTarget_path=$ApiGearTarget_path/TbIfaceimport
-mkdir -p "$TbIfaceimportPluginTarget_path" && cp -rf "$script_path/build/Plugins/TbIfaceimport" "$TbIfaceimportPluginTarget_path" 1>&-
+mkdir -p "$TbIfaceimportPluginTarget_path" && cp -rf "$script_path/build/TbIfaceimport" "$TbIfaceimportPluginTarget_path" 1>&-
 if [ $? -ne 0 ]; then cleanup && exit 1; fi;
 
 # Building and testing TbRefIfaces module
-buildUEplugin "$script_path/Plugins/TbRefIfaces/TbRefIfaces.uplugin" "$script_path/build/Plugins/TbRefIfaces"
+buildUEplugin "$script_path/TbRefIfaces/TbRefIfaces.uplugin" "$script_path/build/TbRefIfaces"
 if [ $buildresult -ne 0 ]; then cleanup && exit 1; fi;
 
 

@@ -94,24 +94,24 @@ cleanup()
 
 {{ if .Features.apigear -}}
 # Build ApiGear plugin
-buildUEplugin "$script_path/Plugins/ApiGear/apigear.uplugin" "$script_path/build/Plugins/ApiGear"
+buildUEplugin "$script_path/ApiGear/apigear.uplugin" "$script_path/build/ApiGear"
 if [ $buildresult -ne 0 ]; then cleanup && exit 1; fi;
 
 # copy ApiGear plugin to UE installation for use by other plugins
 ApiGearPluginTarget_path=$ApiGearTarget_path/ApiGear
-mkdir -p "$ApiGearPluginTarget_path" && cp -rf "$script_path/build/Plugins/ApiGear" "$ApiGearPluginTarget_path" 1>&-
+mkdir -p "$ApiGearPluginTarget_path" && cp -rf "$script_path/build/ApiGear" "$ApiGearPluginTarget_path" 1>&-
 if [ $? -ne 0 ]; then cleanup && exit 1; fi;
 {{- end }}
 {{ range .System.Modules }}
 # Building and testing {{Camel .Name}} module
-buildUEplugin "$script_path/Plugins/{{Camel .Name}}/{{Camel .Name}}.uplugin" "$script_path/build/Plugins/{{Camel .Name}}"
+buildUEplugin "$script_path/{{Camel .Name}}/{{Camel .Name}}.uplugin" "$script_path/build/{{Camel .Name}}"
 if [ $buildresult -ne 0 ]; then cleanup && exit 1; fi;
 
 {{- if contains $exports .Name }}
 
 # copy {{ Camel .Name}} plugin to UE installation for use by other plugins
 {{Camel .Name}}PluginTarget_path=$ApiGearTarget_path/{{ Camel .Name}}
-mkdir -p "${{Camel .Name}}PluginTarget_path" && cp -rf "$script_path/build/Plugins/{{ Camel .Name}}" "${{Camel .Name}}PluginTarget_path" 1>&-
+mkdir -p "${{Camel .Name}}PluginTarget_path" && cp -rf "$script_path/build/{{ Camel .Name}}" "${{Camel .Name}}PluginTarget_path" 1>&-
 if [ $? -ne 0 ]; then cleanup && exit 1; fi;
 {{- end }}
 {{ end }}

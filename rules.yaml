@@ -4,7 +4,7 @@ features:
   - name: api
     scopes:
       - match: module
-        prefix: "Plugins/{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}API/"
+        prefix: "{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}API/"
         documents:
           - source: "module/Source/moduleapi/Public/module/Generated/api/module.h.tpl"
             target: "Public/{{Camel .Module.Name}}/Generated/api/{{Camel .Module.Name}}_apig.h"
@@ -23,7 +23,7 @@ features:
           - source: "module/Source/moduleapi/moduleapi.Build.cs.tpl"
             target: "{{Camel .Module.Name}}API.Build.cs"
       - match: interface
-        prefix: "Plugins/{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}API/"
+        prefix: "{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}API/"
         documents:
           - source: "module/Source/moduleapi/Public/module/Generated/api/interface.h.tpl"
             target: "Public/{{Camel .Module.Name}}/Generated/api/{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface.h"
@@ -38,7 +38,7 @@ features:
   - name: apigear_olinkproto
     scopes:
       - match: system
-        prefix: "Plugins/ApiGear/Source/ThirdParty/OLinkProtocolLibrary/"
+        prefix: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/"
         documents:
           - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/OLinkProtocolLibrary.Build.cs"
             target: "OLinkProtocolLibrary.Build.cs"
@@ -117,7 +117,7 @@ features:
       - apigear_olink
     scopes:
       - match: system
-        prefix: "Plugins/ApiGear/"
+        prefix: "ApiGear/"
         documents:
           - source: "ApiGear/Source/ApiGear/apigear.Build.cs"
             target: "Source/ApiGear/apigear.Build.cs"
@@ -212,7 +212,7 @@ features:
       - apigear_olinkproto
     scopes:
       - match: system
-        prefix: "Plugins/ApiGear/"
+        prefix: "ApiGear/"
         documents:
           - source: "ApiGear/Source/ApiGearOLink/apigearolink.Build.cs"
             target: "Source/ApiGearOLink/apigearolink.Build.cs"
@@ -273,14 +273,14 @@ features:
       - api
     scopes:
       - match: module
-        prefix: "Plugins/{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}Implementation/"
+        prefix: "{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}Implementation/"
         documents:
           - source: "module/Source/moduleimpl/Private/moduleimpl.cpp.tpl"
             target: "Private/Generated/{{Camel .Module.Name}}Implementation.cpp"
           - source: "module/Source/moduleimpl/Public/moduleimpl.h.tpl"
             target: "Public/{{Camel .Module.Name}}/{{Camel .Module.Name}}Implementation.h"
       - match: interface
-        prefix: "Plugins/{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}Implementation/"
+        prefix: "{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}Implementation/"
         documents:
           - source: "module/Source/moduleimpl/moduleimpl.Build.cs.tpl"
             target: "{{Camel .Module.Name}}Implementation.Build.cs"
@@ -313,7 +313,7 @@ features:
           - source: "buildTestPlugins.sh.tpl"
             target: "buildTestPlugins.sh"
       - match: module
-        prefix: "Plugins/{{Camel .Module.Name}}/"
+        prefix: "{{Camel .Module.Name}}/"
         documents:
           - source: "module/Config/FilterPlugin.ini"
             target: "Config/FilterPlugin.ini"
@@ -355,7 +355,7 @@ features:
       - apigear
     scopes:
       - match: module
-        prefix: "Plugins/{{Camel .Module.Name}}/"
+        prefix: "{{Camel .Module.Name}}/"
         documents:
           - source: "module/Source/moduleapi/Public/module/Generated/api/json.adapter.h.tpl"
             target: "Source/{{Camel .Module.Name}}API/Public/{{Camel .Module.Name}}/Generated/api/{{Camel .Module.Name}}.json.adapter.h"
@@ -370,7 +370,7 @@ features:
           - source: "module/Source/modulemonitor/Private/Generated/Monitor/trace.cpp.tpl"
             target: "Source/{{Camel .Module.Name}}Monitor/Private/Generated/Monitor/{{Camel .Module.Name}}.trace.cpp"
       - match: interface
-        prefix: "Plugins/{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}Monitor/"
+        prefix: "{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}Monitor/"
         documents:
           - source: "module/Source/modulemonitor/modulemonitor.Build.cs.tpl"
             target: "{{Camel .Module.Name}}Monitor.Build.cs"
@@ -385,7 +385,7 @@ features:
       - apigear_olink
     scopes:
       - match: module
-        prefix: "Plugins/{{Camel .Module.Name}}/"
+        prefix: "{{Camel .Module.Name}}/"
         documents:
           - source: "module/Source/moduleapi/Public/module/Generated/api/json.adapter.h.tpl"
             target: "Source/{{Camel .Module.Name}}API/Public/{{Camel .Module.Name}}/Generated/api/{{Camel .Module.Name}}.json.adapter.h"
@@ -396,7 +396,7 @@ features:
           - source: "module/Source/moduleolink/Public/moduleolink.h.tpl"
             target: "Source/{{Camel .Module.Name}}OLink/Public/{{Camel .Module.Name}}/{{Camel .Module.Name}}OLink.h"
       - match: interface
-        prefix: "Plugins/{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}OLink/"
+        prefix: "{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}OLink/"
         documents:
           - source: "module/Source/moduleolink/moduleolink.Build.cs.tpl"
             target: "{{Camel .Module.Name}}OLink.Build.cs"
@@ -418,7 +418,7 @@ features:
       - stubs
     scopes:
       - match: interface
-        prefix: "Plugins/{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}OLink/"
+        prefix: "{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}OLink/"
         documents:
           - source: "module/Source/moduleolink/Private/Tests/olink.spec.cpp.tpl"
             target: "Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLink.spec.cpp"
@@ -435,14 +435,14 @@ features:
       - plugin
     scopes:
       - match: module
-        prefix: "Plugins/{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}MsgBus/"
+        prefix: "{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}MsgBus/"
         documents:
           - source: "module/Source/modulemsgbus/Private/modulemsgbus.cpp.tpl"
             target: "Private/Generated/{{Camel .Module.Name}}MsgBus.cpp"
           - source: "module/Source/modulemsgbus/Public/modulemsgbus.h.tpl"
             target: "Public/{{Camel .Module.Name}}/{{Camel .Module.Name}}MsgBus.h"
       - match: interface
-        prefix: "Plugins/{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}MsgBus/"
+        prefix: "{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}MsgBus/"
         documents:
           - source: "module/Source/modulemsgbus/modulemsgbus.Build.cs.tpl"
             target: "{{Camel .Module.Name}}MsgBus.Build.cs"
@@ -462,7 +462,7 @@ features:
       - stubs
     scopes:
       - match: interface
-        prefix: "Plugins/{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}MsgBus/"
+        prefix: "{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}MsgBus/"
         documents:
           - source: "module/Source/modulemsgbus/Private/Tests/msgbus.spec.cpp.tpl"
             target: "Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}MsgBus.spec.cpp"

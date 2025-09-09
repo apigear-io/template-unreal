@@ -31,7 +31,7 @@ else
 	exit 1
 fi
 
-ProjectTarget_path=$script_path/TP_Blank
+ProjectTarget_path=$script_path/build/TP_Blank
 UEtemplate_path=${UE_path:0:-7}/Templates/TP_Blank
 if [ -d "$UEtemplate_path" ]
 then
@@ -45,7 +45,7 @@ mkdir -p $ProjectTarget_path
 if [ $? -ne 0 ]; then exit 1; fi;
 
 echo Copy blank project from $UEtemplate_path to $script_path
-cp -rf "$UEtemplate_path" "$script_path/" 1>&-
+cp -rf "$UEtemplate_path" "$script_path/build" 1>&-
 if [ $? -ne 0 ]; then exit 1; fi;
 #
 # function implementations
@@ -65,13 +65,13 @@ buildTestPlugins()
 
 {{ if .Features.apigear -}}
 # copy ApiGear plugin to blank project for build and functional testing
-mkdir -p "$ProjectTarget_path/Plugins/ApiGear" &&  cp -rf "$script_path/Plugins/ApiGear" "$ProjectTarget_path/Plugins/ApiGear" 1>&-
+mkdir -p "$ProjectTarget_path/Plugins/ApiGear" &&  cp -rf "$script_path/ApiGear" "$ProjectTarget_path/Plugins/ApiGear" 1>&-
 if [ $? -ne 0 ]; then exit 1; fi;
 {{- end }}
 {{ range .System.Modules }}
 
 # copy {{ Camel .Name}} plugin to blank project for build and functional testing
-mkdir -p "$ProjectTarget_path/Plugins/{{Camel .Name}}" && cp -rf "$script_path/Plugins/{{Camel .Name}}" "$ProjectTarget_path/Plugins/" 1>&-
+mkdir -p "$ProjectTarget_path/Plugins/{{Camel .Name}}" && cp -rf "$script_path/{{Camel .Name}}" "$ProjectTarget_path/Plugins/" 1>&-
 if [ $? -ne 0 ]; then exit 1; fi;
 {{ end }}
 
