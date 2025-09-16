@@ -141,7 +141,7 @@ DEFINE_LOG_CATEGORY(Log{{$Iface}}Client_JNI);
 {{$Class}}::{{$Class}}()
 {
 #if !(PLATFORM_ANDROID && USE_ANDROID_JNI)
-    UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("This is class that adapts the usage with android and jni, but seems to be used on different target. Make sure  you are using it with Android"));
+    UE_LOG(Log{{$Iface}}Client_JNI, Verbose, TEXT("This is class that adapts the usage with android and jni, but seems to be used on different target. Make sure  you are using it with Android"));
 #endif
 }
 
@@ -216,7 +216,11 @@ void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
     UE_LOG(Log{{$Iface}}Client_JNI, Verbose, TEXT("{{$javaClassPath}}/{{$javaClassName}}:set{{Camel .Name}}"));
     if (!b_isReady)
     {
-        UE_LOG(Log{{$Iface}}Client_JNI, Error, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+        UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#else
+        UE_LOG(Log{{$Iface}}Client_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#endif
         return;
     }
 
@@ -259,13 +263,18 @@ void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
 {{- end }}
 
 {{- end }}
+
 {{- range .Interface.Operations}}
 {{ueReturn "" .Return }} {{$Class}}::{{Camel .Name}}({{ueParams "In" .Params}})
 {
     UE_LOG(Log{{$Iface}}Client_JNI, Verbose, TEXT("{{$javaClassPath}}/{{$javaClassName}}:{{.Name}} "));
     if (!b_isReady)
     {
-        UE_LOG(Log{{$Iface}}Client_JNI, Error, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+        UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#else
+        UE_LOG(Log{{$Iface}}Client_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#endif
         return{{ if not .Return.IsVoid }} {{ueDefault "" .Return }}{{ end}};
     }
     TPromise<{{ueReturn "" .Return}}> Promise;
@@ -326,7 +335,7 @@ void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
 
 bool {{$Class}}::_bindToService(FString servicePackage, FString connectionId)
 {
-    UE_LOG(LogPocHelloIfClient_JNI, Verbose, TEXT("Request JNI connection to %s"), *servicePackage);
+    UE_LOG(Log{{$Iface}}Client_JNI, Verbose, TEXT("Request JNI connection to %s"), *servicePackage);
     if (b_isReady)
     {
         if (servicePackage == m_lastBoundServicePackage && connectionId == m_lastConnectionId)
