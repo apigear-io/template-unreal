@@ -30,6 +30,7 @@
             {{$cppropName}}StringViews.Add(FStringView(Str));
         }
         auto {{$localName}}Wrapped = FJavaHelper::ToJavaStringArray(Env,{{$cppropName}}StringViews);
+        jobjectArray {{$localName}} = static_cast<jobjectArray>(Env->NewLocalRef(*{{$localName}}Wrapped));
         {{- else if (eq .KindType "bool")}}
         auto len{{snake .Name}} = {{$cppropName}}.Num();
         {{jniToReturnType .}} {{$localName}} = Env->New{{jniToEnvNameType .}}Array(len{{snake .Name}});
