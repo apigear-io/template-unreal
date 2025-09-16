@@ -529,3 +529,20 @@ features:
             target: "Public/{{Camel .Module.Name}}/Generated/Jni/{{Camel .Module.Name}}{{Camel .Interface.Name}}JniClient.h"
           - source: "module/Source/modulejni/Private/Generated/jni/jniclient.cpp.tpl"
             target: "Private/Generated/Jni/{{Camel .Module.Name}}{{Camel .Interface.Name}}JniClient.cpp"
+  - name: jni_tests
+    requires:
+      - jni
+      - stubs
+    scopes:
+      - match: interface
+        prefix: "Plugins/{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}Jni/"
+        documents:
+          - source: "module/Source/modulejni/Private/Tests/jni.spec.cpp.tpl"
+            target: "Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}Jni.spec.cpp"
+            preserve: true
+          - source: "module/Source/modulejni/Private/Tests/jnifixture.h.tpl"
+            target: "Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}JniFixture.h"
+            preserve: true
+          - source: "module/Source/modulejni/Private/Tests/jnifixture.cpp.tpl"
+            target: "Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}JniFixture.cpp"
+            preserve: true
