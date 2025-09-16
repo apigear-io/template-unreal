@@ -74,7 +74,7 @@ if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
 {{ end }}
 
 @REM run build and tests
-call :buildTestPlugins "%ProjectTarget_path%/TP_Blank.uproject" %script_path% ".Impl.{{ if .Features.olink_tests -}}+.OLink.{{ end }}{{ if .Features.msgbus_tests -}}+.MsgBus.{{ end }}"
+call :buildTestPlugins "%ProjectTarget_path%/TP_Blank.uproject" %script_path% ".Impl.{{ if .Features.olink_tests -}}+.OLink.{{ end }}{{ if .Features.msgbus_tests -}}+.MsgBus.{{ end }}{{ if .Features.jni_tests -}}+.Jni.{{ end }}"
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
 if not exist %script_path%index.json (echo WARNING: no test results found) else findstr /C:"\"failed\": 0" %script_path%index.json >nul
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
