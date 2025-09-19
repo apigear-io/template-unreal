@@ -1,32 +1,79 @@
 
 #include "TbSimple/Generated/api/TbSimpleNoPropertiesInterfaceInterface.h"
+#include "Async/Async.h"
+#include "Async/TaskGraphInterfaces.h"
+
 void UTbSimpleNoPropertiesInterfacePublisher::BroadcastSigVoidSignal()
 {
 	OnSigVoidSignal.Broadcast();
-	OnSigVoidSignalBP.Broadcast();
 
 	TArray<TScriptInterface<ITbSimpleNoPropertiesInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
-	for (const TScriptInterface<ITbSimpleNoPropertiesInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+	if (IsInGameThread())
 	{
-		if (UObject* Obj = Subscriber.GetObject())
+		OnSigVoidSignalBP.Broadcast();
+
+		for (const TScriptInterface<ITbSimpleNoPropertiesInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
 		{
-			ITbSimpleNoPropertiesInterfaceBPSubscriberInterface::Execute_OnSigVoidSignal(Obj);
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbSimpleNoPropertiesInterfaceBPSubscriberInterface::Execute_OnSigVoidSignal(Obj);
+			}
 		}
+	}
+	else
+	{
+		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbSimpleNoPropertiesInterfacePublisher>(this), SubscribersCopy]()
+			{
+			if (WeakPtr.IsValid())
+			{
+				WeakPtr.Get()->OnSigVoidSignalBP.Broadcast();
+			}
+
+			for (const TScriptInterface<ITbSimpleNoPropertiesInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+			{
+				if (UObject* Obj = Subscriber.GetObject())
+				{
+					ITbSimpleNoPropertiesInterfaceBPSubscriberInterface::Execute_OnSigVoidSignal(Obj);
+				}
+			}
+		});
 	}
 }
 
 void UTbSimpleNoPropertiesInterfacePublisher::BroadcastSigBoolSignal(bool bParamBool)
 {
 	OnSigBoolSignal.Broadcast(bParamBool);
-	OnSigBoolSignalBP.Broadcast(bParamBool);
 
 	TArray<TScriptInterface<ITbSimpleNoPropertiesInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
-	for (const TScriptInterface<ITbSimpleNoPropertiesInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+	if (IsInGameThread())
 	{
-		if (UObject* Obj = Subscriber.GetObject())
+		OnSigBoolSignalBP.Broadcast(bParamBool);
+
+		for (const TScriptInterface<ITbSimpleNoPropertiesInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
 		{
-			ITbSimpleNoPropertiesInterfaceBPSubscriberInterface::Execute_OnSigBoolSignal(Obj, bParamBool);
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbSimpleNoPropertiesInterfaceBPSubscriberInterface::Execute_OnSigBoolSignal(Obj, bParamBool);
+			}
 		}
+	}
+	else
+	{
+		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbSimpleNoPropertiesInterfacePublisher>(this), SubscribersCopy, bParamBool]()
+			{
+			if (WeakPtr.IsValid())
+			{
+				WeakPtr.Get()->OnSigBoolSignalBP.Broadcast(bParamBool);
+			}
+
+			for (const TScriptInterface<ITbSimpleNoPropertiesInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+			{
+				if (UObject* Obj = Subscriber.GetObject())
+				{
+					ITbSimpleNoPropertiesInterfaceBPSubscriberInterface::Execute_OnSigBoolSignal(Obj, bParamBool);
+				}
+			}
+		});
 	}
 }
 

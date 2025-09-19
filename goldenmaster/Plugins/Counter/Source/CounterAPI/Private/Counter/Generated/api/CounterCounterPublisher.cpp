@@ -1,77 +1,190 @@
 
 #include "Counter/Generated/api/CounterCounterInterface.h"
+#include "Async/Async.h"
+#include "Async/TaskGraphInterfaces.h"
+
 void UCounterCounterPublisher::BroadcastValueChangedSignal(const FCustomTypesVector3D& Vector, const FVector& ExternVector, const TArray<FCustomTypesVector3D>& VectorArray, const TArray<FVector>& ExternVectorArray)
 {
 	OnValueChangedSignal.Broadcast(Vector, ExternVector, VectorArray, ExternVectorArray);
-	OnValueChangedSignalBP.Broadcast(Vector, ExternVector, VectorArray, ExternVectorArray);
 
 	TArray<TScriptInterface<ICounterCounterBPSubscriberInterface>> SubscribersCopy = Subscribers;
-	for (const TScriptInterface<ICounterCounterBPSubscriberInterface>& Subscriber : SubscribersCopy)
+	if (IsInGameThread())
 	{
-		if (UObject* Obj = Subscriber.GetObject())
+		OnValueChangedSignalBP.Broadcast(Vector, ExternVector, VectorArray, ExternVectorArray);
+
+		for (const TScriptInterface<ICounterCounterBPSubscriberInterface>& Subscriber : SubscribersCopy)
 		{
-			ICounterCounterBPSubscriberInterface::Execute_OnValueChangedSignal(Obj, Vector, ExternVector, VectorArray, ExternVectorArray);
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ICounterCounterBPSubscriberInterface::Execute_OnValueChangedSignal(Obj, Vector, ExternVector, VectorArray, ExternVectorArray);
+			}
 		}
+	}
+	else
+	{
+		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UCounterCounterPublisher>(this), SubscribersCopy, Vector, ExternVector, VectorArray, ExternVectorArray]()
+			{
+			if (WeakPtr.IsValid())
+			{
+				WeakPtr.Get()->OnValueChangedSignalBP.Broadcast(Vector, ExternVector, VectorArray, ExternVectorArray);
+			}
+
+			for (const TScriptInterface<ICounterCounterBPSubscriberInterface>& Subscriber : SubscribersCopy)
+			{
+				if (UObject* Obj = Subscriber.GetObject())
+				{
+					ICounterCounterBPSubscriberInterface::Execute_OnValueChangedSignal(Obj, Vector, ExternVector, VectorArray, ExternVectorArray);
+				}
+			}
+		});
 	}
 }
 
 void UCounterCounterPublisher::BroadcastVectorChanged(UPARAM(DisplayName = "Vector") const FCustomTypesVector3D& InVector)
 {
 	OnVectorChanged.Broadcast(InVector);
-	OnVectorChangedBP.Broadcast(InVector);
 
 	TArray<TScriptInterface<ICounterCounterBPSubscriberInterface>> SubscribersCopy = Subscribers;
-	for (const TScriptInterface<ICounterCounterBPSubscriberInterface>& Subscriber : SubscribersCopy)
+	if (IsInGameThread())
 	{
-		if (UObject* Obj = Subscriber.GetObject())
+		OnVectorChangedBP.Broadcast(InVector);
+
+		for (const TScriptInterface<ICounterCounterBPSubscriberInterface>& Subscriber : SubscribersCopy)
 		{
-			ICounterCounterBPSubscriberInterface::Execute_OnVectorChanged(Obj, InVector);
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ICounterCounterBPSubscriberInterface::Execute_OnVectorChanged(Obj, InVector);
+			}
 		}
+	}
+	else
+	{
+		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UCounterCounterPublisher>(this), SubscribersCopy, InVector]()
+			{
+			if (WeakPtr.IsValid())
+			{
+				WeakPtr.Get()->OnVectorChangedBP.Broadcast(InVector);
+			}
+
+			for (const TScriptInterface<ICounterCounterBPSubscriberInterface>& Subscriber : SubscribersCopy)
+			{
+				if (UObject* Obj = Subscriber.GetObject())
+				{
+					ICounterCounterBPSubscriberInterface::Execute_OnVectorChanged(Obj, InVector);
+				}
+			}
+		});
 	}
 }
 
 void UCounterCounterPublisher::BroadcastExternVectorChanged(UPARAM(DisplayName = "ExternVector") const FVector& InExternVector)
 {
 	OnExternVectorChanged.Broadcast(InExternVector);
-	OnExternVectorChangedBP.Broadcast(InExternVector);
 
 	TArray<TScriptInterface<ICounterCounterBPSubscriberInterface>> SubscribersCopy = Subscribers;
-	for (const TScriptInterface<ICounterCounterBPSubscriberInterface>& Subscriber : SubscribersCopy)
+	if (IsInGameThread())
 	{
-		if (UObject* Obj = Subscriber.GetObject())
+		OnExternVectorChangedBP.Broadcast(InExternVector);
+
+		for (const TScriptInterface<ICounterCounterBPSubscriberInterface>& Subscriber : SubscribersCopy)
 		{
-			ICounterCounterBPSubscriberInterface::Execute_OnExternVectorChanged(Obj, InExternVector);
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ICounterCounterBPSubscriberInterface::Execute_OnExternVectorChanged(Obj, InExternVector);
+			}
 		}
+	}
+	else
+	{
+		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UCounterCounterPublisher>(this), SubscribersCopy, InExternVector]()
+			{
+			if (WeakPtr.IsValid())
+			{
+				WeakPtr.Get()->OnExternVectorChangedBP.Broadcast(InExternVector);
+			}
+
+			for (const TScriptInterface<ICounterCounterBPSubscriberInterface>& Subscriber : SubscribersCopy)
+			{
+				if (UObject* Obj = Subscriber.GetObject())
+				{
+					ICounterCounterBPSubscriberInterface::Execute_OnExternVectorChanged(Obj, InExternVector);
+				}
+			}
+		});
 	}
 }
 
 void UCounterCounterPublisher::BroadcastVectorArrayChanged(UPARAM(DisplayName = "VectorArray") const TArray<FCustomTypesVector3D>& InVectorArray)
 {
 	OnVectorArrayChanged.Broadcast(InVectorArray);
-	OnVectorArrayChangedBP.Broadcast(InVectorArray);
 
 	TArray<TScriptInterface<ICounterCounterBPSubscriberInterface>> SubscribersCopy = Subscribers;
-	for (const TScriptInterface<ICounterCounterBPSubscriberInterface>& Subscriber : SubscribersCopy)
+	if (IsInGameThread())
 	{
-		if (UObject* Obj = Subscriber.GetObject())
+		OnVectorArrayChangedBP.Broadcast(InVectorArray);
+
+		for (const TScriptInterface<ICounterCounterBPSubscriberInterface>& Subscriber : SubscribersCopy)
 		{
-			ICounterCounterBPSubscriberInterface::Execute_OnVectorArrayChanged(Obj, InVectorArray);
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ICounterCounterBPSubscriberInterface::Execute_OnVectorArrayChanged(Obj, InVectorArray);
+			}
 		}
+	}
+	else
+	{
+		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UCounterCounterPublisher>(this), SubscribersCopy, InVectorArray]()
+			{
+			if (WeakPtr.IsValid())
+			{
+				WeakPtr.Get()->OnVectorArrayChangedBP.Broadcast(InVectorArray);
+			}
+
+			for (const TScriptInterface<ICounterCounterBPSubscriberInterface>& Subscriber : SubscribersCopy)
+			{
+				if (UObject* Obj = Subscriber.GetObject())
+				{
+					ICounterCounterBPSubscriberInterface::Execute_OnVectorArrayChanged(Obj, InVectorArray);
+				}
+			}
+		});
 	}
 }
 
 void UCounterCounterPublisher::BroadcastExternVectorArrayChanged(UPARAM(DisplayName = "ExternVectorArray") const TArray<FVector>& InExternVectorArray)
 {
 	OnExternVectorArrayChanged.Broadcast(InExternVectorArray);
-	OnExternVectorArrayChangedBP.Broadcast(InExternVectorArray);
 
 	TArray<TScriptInterface<ICounterCounterBPSubscriberInterface>> SubscribersCopy = Subscribers;
-	for (const TScriptInterface<ICounterCounterBPSubscriberInterface>& Subscriber : SubscribersCopy)
+	if (IsInGameThread())
 	{
-		if (UObject* Obj = Subscriber.GetObject())
+		OnExternVectorArrayChangedBP.Broadcast(InExternVectorArray);
+
+		for (const TScriptInterface<ICounterCounterBPSubscriberInterface>& Subscriber : SubscribersCopy)
 		{
-			ICounterCounterBPSubscriberInterface::Execute_OnExternVectorArrayChanged(Obj, InExternVectorArray);
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ICounterCounterBPSubscriberInterface::Execute_OnExternVectorArrayChanged(Obj, InExternVectorArray);
+			}
 		}
+	}
+	else
+	{
+		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UCounterCounterPublisher>(this), SubscribersCopy, InExternVectorArray]()
+			{
+			if (WeakPtr.IsValid())
+			{
+				WeakPtr.Get()->OnExternVectorArrayChangedBP.Broadcast(InExternVectorArray);
+			}
+
+			for (const TScriptInterface<ICounterCounterBPSubscriberInterface>& Subscriber : SubscribersCopy)
+			{
+				if (UObject* Obj = Subscriber.GetObject())
+				{
+					ICounterCounterBPSubscriberInterface::Execute_OnExternVectorArrayChanged(Obj, InExternVectorArray);
+				}
+			}
+		});
 	}
 }
 
