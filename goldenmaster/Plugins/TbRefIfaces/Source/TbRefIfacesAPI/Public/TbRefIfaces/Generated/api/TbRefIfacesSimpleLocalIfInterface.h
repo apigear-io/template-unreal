@@ -55,12 +55,12 @@ public:
 };
 
 /**
- * Class UTbRefIfacesSimpleLocalIfInterfaceSignals
+ * Class UTbRefIfacesSimpleLocalIfInterfacePublisher
  * Contains delegates for properties and signals
  * this is needed since we cannot declare delegates on an UInterface
  */
 UCLASS(BlueprintType)
-class TBREFIFACESAPI_API UTbRefIfacesSimpleLocalIfSignals : public UObject
+class TBREFIFACESAPI_API UTbRefIfacesSimpleLocalIfPublisher : public UObject
 {
 	GENERATED_BODY()
 
@@ -108,7 +108,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|SimpleLocalIf|Signals")
 	void Subscribe(const TScriptInterface<ITbRefIfacesSimpleLocalIfBPSubscriberInterface>& Subscriber)
 	{
-		if (!Subscriber.GetObject()) return;
+		if (!Subscriber.GetObject())
+		{
+			return;
+		}
 		Subscribers.Remove(Subscriber);
 		Subscribers.Add(Subscriber);
 	}
@@ -117,6 +120,7 @@ public:
 	{
 		Subscribers.Remove(Subscriber);
 	}
+
 private:
 	UPROPERTY()
 	TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfBPSubscriberInterface>> Subscribers;
@@ -143,7 +147,7 @@ public:
 	/// this is needed since we cannot declare delegates on an UInterface
 	/// @return object with signals for property state changes or standalone signals
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|SimpleLocalIf")
-	virtual UTbRefIfacesSimpleLocalIfSignals* _GetSignals() = 0;
+	virtual UTbRefIfacesSimpleLocalIfPublisher* _GetPublisher() = 0;
 
 	// methods
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|SimpleLocalIf|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))

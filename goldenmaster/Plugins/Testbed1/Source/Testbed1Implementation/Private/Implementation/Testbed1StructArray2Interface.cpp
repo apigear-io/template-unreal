@@ -28,7 +28,7 @@ void UTestbed1StructArray2InterfaceImplementation::SetPropBool(const FTestbed1St
 	if (PropBool != InPropBool)
 	{
 		PropBool = InPropBool;
-		_GetSignals()->BroadcastPropBoolChanged(PropBool);
+		_GetPublisher()->BroadcastPropBoolChanged(PropBool);
 	}
 }
 FTestbed1StructIntWithArray UTestbed1StructArray2InterfaceImplementation::GetPropInt() const
@@ -41,7 +41,7 @@ void UTestbed1StructArray2InterfaceImplementation::SetPropInt(const FTestbed1Str
 	if (PropInt != InPropInt)
 	{
 		PropInt = InPropInt;
-		_GetSignals()->BroadcastPropIntChanged(PropInt);
+		_GetPublisher()->BroadcastPropIntChanged(PropInt);
 	}
 }
 FTestbed1StructFloatWithArray UTestbed1StructArray2InterfaceImplementation::GetPropFloat() const
@@ -54,7 +54,7 @@ void UTestbed1StructArray2InterfaceImplementation::SetPropFloat(const FTestbed1S
 	if (PropFloat != InPropFloat)
 	{
 		PropFloat = InPropFloat;
-		_GetSignals()->BroadcastPropFloatChanged(PropFloat);
+		_GetPublisher()->BroadcastPropFloatChanged(PropFloat);
 	}
 }
 FTestbed1StructStringWithArray UTestbed1StructArray2InterfaceImplementation::GetPropString() const
@@ -67,7 +67,7 @@ void UTestbed1StructArray2InterfaceImplementation::SetPropString(const FTestbed1
 	if (PropString != InPropString)
 	{
 		PropString = InPropString;
-		_GetSignals()->BroadcastPropStringChanged(PropString);
+		_GetPublisher()->BroadcastPropStringChanged(PropString);
 	}
 }
 FTestbed1StructEnumWithArray UTestbed1StructArray2InterfaceImplementation::GetPropEnum() const
@@ -80,7 +80,7 @@ void UTestbed1StructArray2InterfaceImplementation::SetPropEnum(const FTestbed1St
 	if (PropEnum != InPropEnum)
 	{
 		PropEnum = InPropEnum;
-		_GetSignals()->BroadcastPropEnumChanged(PropEnum);
+		_GetPublisher()->BroadcastPropEnumChanged(PropEnum);
 	}
 }
 
@@ -124,26 +124,26 @@ void UTestbed1StructArray2InterfaceImplementation::_ResetProperties()
 	if (PropBool != FTestbed1StructBoolWithArray())
 	{
 		PropBool = FTestbed1StructBoolWithArray();
-		_GetSignals()->BroadcastPropBoolChanged(PropBool);
+		_GetPublisher()->BroadcastPropBoolChanged(PropBool);
 	}
 	if (PropInt != FTestbed1StructIntWithArray())
 	{
 		PropInt = FTestbed1StructIntWithArray();
-		_GetSignals()->BroadcastPropIntChanged(PropInt);
+		_GetPublisher()->BroadcastPropIntChanged(PropInt);
 	}
 	if (PropFloat != FTestbed1StructFloatWithArray())
 	{
 		PropFloat = FTestbed1StructFloatWithArray();
-		_GetSignals()->BroadcastPropFloatChanged(PropFloat);
+		_GetPublisher()->BroadcastPropFloatChanged(PropFloat);
 	}
 	if (PropString != FTestbed1StructStringWithArray())
 	{
 		PropString = FTestbed1StructStringWithArray();
-		_GetSignals()->BroadcastPropStringChanged(PropString);
+		_GetPublisher()->BroadcastPropStringChanged(PropString);
 	}
 	if (PropEnum != FTestbed1StructEnumWithArray())
 	{
 		PropEnum = FTestbed1StructEnumWithArray();
-		_GetSignals()->BroadcastPropEnumChanged(PropEnum);
+		_GetPublisher()->BroadcastPropEnumChanged(PropEnum);
 	}
 }

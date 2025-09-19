@@ -63,16 +63,16 @@ public:
 
 UAbstractTbNamesNamEs::UAbstractTbNamesNamEs()
 {
-	TbNamesNamEsSignals = NewObject<UTbNamesNamEsSignals>();
+	TbNamesNamEsPublisher = NewObject<UTbNamesNamEsPublisher>();
 }
 
-UTbNamesNamEsSignals* UAbstractTbNamesNamEs::_GetSignals()
+UTbNamesNamEsPublisher* UAbstractTbNamesNamEs::_GetPublisher()
 {
-	if (!TbNamesNamEsSignals)
+	if (!TbNamesNamEsPublisher)
 	{
-		TbNamesNamEsSignals = NewObject<UTbNamesNamEsSignals>();
+		TbNamesNamEsPublisher = NewObject<UTbNamesNamEsPublisher>();
 	}
-	return TbNamesNamEsSignals;
+	return TbNamesNamEsPublisher;
 }
 
 bool UAbstractTbNamesNamEs::GetSwitch_Private() const
@@ -128,21 +128,21 @@ void UAbstractTbNamesNamEs::Deinitialize()
 	check(bInitialized);
 	bInitialized = false;
 
-	if (TbNamesNamEsSignals)
+	if (TbNamesNamEsPublisher)
 	{
-		TbNamesNamEsSignals->OnSomeSignalSignal.RemoveAll(TbNamesNamEsSignals);
-		TbNamesNamEsSignals->OnSomeSignalSignalBP.RemoveAll(TbNamesNamEsSignals);
-		TbNamesNamEsSignals->OnSomeSignal2Signal.RemoveAll(TbNamesNamEsSignals);
-		TbNamesNamEsSignals->OnSomeSignal2SignalBP.RemoveAll(TbNamesNamEsSignals);
+		TbNamesNamEsPublisher->OnSomeSignalSignal.RemoveAll(TbNamesNamEsPublisher);
+		TbNamesNamEsPublisher->OnSomeSignalSignalBP.RemoveAll(TbNamesNamEsPublisher);
+		TbNamesNamEsPublisher->OnSomeSignal2Signal.RemoveAll(TbNamesNamEsPublisher);
+		TbNamesNamEsPublisher->OnSomeSignal2SignalBP.RemoveAll(TbNamesNamEsPublisher);
 
-		TbNamesNamEsSignals->OnSwitchChanged.RemoveAll(TbNamesNamEsSignals);
-		TbNamesNamEsSignals->OnSwitchChangedBP.RemoveAll(TbNamesNamEsSignals);
-		TbNamesNamEsSignals->OnSomePropertyChanged.RemoveAll(TbNamesNamEsSignals);
-		TbNamesNamEsSignals->OnSomePropertyChangedBP.RemoveAll(TbNamesNamEsSignals);
-		TbNamesNamEsSignals->OnSomePoperty2Changed.RemoveAll(TbNamesNamEsSignals);
-		TbNamesNamEsSignals->OnSomePoperty2ChangedBP.RemoveAll(TbNamesNamEsSignals);
-		TbNamesNamEsSignals->OnEnumPropertyChanged.RemoveAll(TbNamesNamEsSignals);
-		TbNamesNamEsSignals->OnEnumPropertyChangedBP.RemoveAll(TbNamesNamEsSignals);
+		TbNamesNamEsPublisher->OnSwitchChanged.RemoveAll(TbNamesNamEsPublisher);
+		TbNamesNamEsPublisher->OnSwitchChangedBP.RemoveAll(TbNamesNamEsPublisher);
+		TbNamesNamEsPublisher->OnSomePropertyChanged.RemoveAll(TbNamesNamEsPublisher);
+		TbNamesNamEsPublisher->OnSomePropertyChangedBP.RemoveAll(TbNamesNamEsPublisher);
+		TbNamesNamEsPublisher->OnSomePoperty2Changed.RemoveAll(TbNamesNamEsPublisher);
+		TbNamesNamEsPublisher->OnSomePoperty2ChangedBP.RemoveAll(TbNamesNamEsPublisher);
+		TbNamesNamEsPublisher->OnEnumPropertyChanged.RemoveAll(TbNamesNamEsPublisher);
+		TbNamesNamEsPublisher->OnEnumPropertyChangedBP.RemoveAll(TbNamesNamEsPublisher);
 	}
 
 	Super::Deinitialize();

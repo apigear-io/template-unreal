@@ -38,7 +38,7 @@ public:
 	virtual void Deinitialize() override;
 
 	// signals
-	virtual UTbSimpleSimpleInterfaceSignals* _GetSignals() override;
+	virtual UTbSimpleSimpleInterfacePublisher* _GetPublisher() override;
 
 	// methods
 	virtual void FuncNoReturnValue(bool bParamBool) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::FuncNoReturnValue, return;);
@@ -173,5 +173,5 @@ protected:
 private:
 	// signals
 	UPROPERTY()
-	UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals;
+	UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher;
 };

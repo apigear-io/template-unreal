@@ -163,8 +163,8 @@ void UTbRefIfacesParentIfOLinkSpec::Define()
 
 	LatentIt("Signal.LocalIfSignal", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		UTbRefIfacesParentIfSignals* TbRefIfacesParentIfSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbRefIfacesParentIfSignals->OnLocalIfSignalSignal.AddLambda([this, TestDone](const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& InParam)
+		UTbRefIfacesParentIfPublisher* TbRefIfacesParentIfPublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbRefIfacesParentIfPublisher->OnLocalIfSignalSignal.AddLambda([this, TestDone](const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& InParam)
 			{
 			// known test value
 			TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> ParamTestValue = TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>();
@@ -174,13 +174,13 @@ void UTbRefIfacesParentIfOLinkSpec::Define()
 
 		// use different test value
 		TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> ParamTestValue = TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>();
-		TbRefIfacesParentIfSignals->BroadcastLocalIfSignalSignal(ParamTestValue);
+		TbRefIfacesParentIfPublisher->BroadcastLocalIfSignalSignal(ParamTestValue);
 	});
 
 	LatentIt("Signal.LocalIfSignalList", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		UTbRefIfacesParentIfSignals* TbRefIfacesParentIfSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbRefIfacesParentIfSignals->OnLocalIfSignalListSignal.AddLambda([this, TestDone](const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InParam)
+		UTbRefIfacesParentIfPublisher* TbRefIfacesParentIfPublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbRefIfacesParentIfPublisher->OnLocalIfSignalListSignal.AddLambda([this, TestDone](const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InParam)
 			{
 			// known test value
 			TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> ParamTestValue = TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>(); // default value
@@ -192,13 +192,13 @@ void UTbRefIfacesParentIfOLinkSpec::Define()
 		// use different test value
 		TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> ParamTestValue = TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>(); // default value
 		ParamTestValue.Add(TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>());
-		TbRefIfacesParentIfSignals->BroadcastLocalIfSignalListSignal(ParamTestValue);
+		TbRefIfacesParentIfPublisher->BroadcastLocalIfSignalListSignal(ParamTestValue);
 	});
 
 	LatentIt("Signal.ImportedIfSignal", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		UTbRefIfacesParentIfSignals* TbRefIfacesParentIfSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbRefIfacesParentIfSignals->OnImportedIfSignalSignal.AddLambda([this, TestDone](const TScriptInterface<ITbIfaceimportEmptyIfInterface>& InParam)
+		UTbRefIfacesParentIfPublisher* TbRefIfacesParentIfPublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbRefIfacesParentIfPublisher->OnImportedIfSignalSignal.AddLambda([this, TestDone](const TScriptInterface<ITbIfaceimportEmptyIfInterface>& InParam)
 			{
 			// known test value
 			TScriptInterface<ITbIfaceimportEmptyIfInterface> ParamTestValue = TScriptInterface<ITbIfaceimportEmptyIfInterface>();
@@ -208,13 +208,13 @@ void UTbRefIfacesParentIfOLinkSpec::Define()
 
 		// use different test value
 		TScriptInterface<ITbIfaceimportEmptyIfInterface> ParamTestValue = TScriptInterface<ITbIfaceimportEmptyIfInterface>();
-		TbRefIfacesParentIfSignals->BroadcastImportedIfSignalSignal(ParamTestValue);
+		TbRefIfacesParentIfPublisher->BroadcastImportedIfSignalSignal(ParamTestValue);
 	});
 
 	LatentIt("Signal.ImportedIfSignalList", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		UTbRefIfacesParentIfSignals* TbRefIfacesParentIfSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbRefIfacesParentIfSignals->OnImportedIfSignalListSignal.AddLambda([this, TestDone](const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InParam)
+		UTbRefIfacesParentIfPublisher* TbRefIfacesParentIfPublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbRefIfacesParentIfPublisher->OnImportedIfSignalListSignal.AddLambda([this, TestDone](const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InParam)
 			{
 			// known test value
 			TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> ParamTestValue = TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>(); // default value
@@ -226,7 +226,7 @@ void UTbRefIfacesParentIfOLinkSpec::Define()
 		// use different test value
 		TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> ParamTestValue = TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>(); // default value
 		ParamTestValue.Add(TScriptInterface<ITbIfaceimportEmptyIfInterface>());
-		TbRefIfacesParentIfSignals->BroadcastImportedIfSignalListSignal(ParamTestValue);
+		TbRefIfacesParentIfPublisher->BroadcastImportedIfSignalListSignal(ParamTestValue);
 	});
 }
 } // namespace Tests

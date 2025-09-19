@@ -47,13 +47,13 @@ void UCounterCounterLoggingDecorator::setBackendService(TScriptInterface<ICounte
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		UCounterCounterSignals* BackendSignals = BackendService->_GetSignals();
-		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service CounterCounter"));
-		BackendSignals->OnVectorChangedBP.RemoveDynamic(this, &UCounterCounterLoggingDecorator::OnVectorChanged);
-		BackendSignals->OnExternVectorChangedBP.RemoveDynamic(this, &UCounterCounterLoggingDecorator::OnExternVectorChanged);
-		BackendSignals->OnVectorArrayChangedBP.RemoveDynamic(this, &UCounterCounterLoggingDecorator::OnVectorArrayChanged);
-		BackendSignals->OnExternVectorArrayChangedBP.RemoveDynamic(this, &UCounterCounterLoggingDecorator::OnExternVectorArrayChanged);
-		BackendSignals->OnValueChangedSignalBP.RemoveDynamic(this, &UCounterCounterLoggingDecorator::OnValueChanged);
+		UCounterCounterPublisher* BackendPublisher = BackendService->_GetPublisher();
+		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service CounterCounter"));
+		BackendPublisher->OnVectorChangedBP.RemoveDynamic(this, &UCounterCounterLoggingDecorator::OnVectorChanged);
+		BackendPublisher->OnExternVectorChangedBP.RemoveDynamic(this, &UCounterCounterLoggingDecorator::OnExternVectorChanged);
+		BackendPublisher->OnVectorArrayChangedBP.RemoveDynamic(this, &UCounterCounterLoggingDecorator::OnVectorArrayChanged);
+		BackendPublisher->OnExternVectorArrayChangedBP.RemoveDynamic(this, &UCounterCounterLoggingDecorator::OnExternVectorArrayChanged);
+		BackendPublisher->OnValueChangedSignalBP.RemoveDynamic(this, &UCounterCounterLoggingDecorator::OnValueChanged);
 	}
 
 	// only set if interface is implemented
@@ -61,14 +61,14 @@ void UCounterCounterLoggingDecorator::setBackendService(TScriptInterface<ICounte
 
 	// subscribe to new backend
 	BackendService = InService;
-	UCounterCounterSignals* BackendSignals = BackendService->_GetSignals();
-	checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service CounterCounter"));
+	UCounterCounterPublisher* BackendPublisher = BackendService->_GetPublisher();
+	checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service CounterCounter"));
 	// connect property changed signals or simple events
-	BackendSignals->OnVectorChangedBP.AddDynamic(this, &UCounterCounterLoggingDecorator::OnVectorChanged);
-	BackendSignals->OnExternVectorChangedBP.AddDynamic(this, &UCounterCounterLoggingDecorator::OnExternVectorChanged);
-	BackendSignals->OnVectorArrayChangedBP.AddDynamic(this, &UCounterCounterLoggingDecorator::OnVectorArrayChanged);
-	BackendSignals->OnExternVectorArrayChangedBP.AddDynamic(this, &UCounterCounterLoggingDecorator::OnExternVectorArrayChanged);
-	BackendSignals->OnValueChangedSignalBP.AddDynamic(this, &UCounterCounterLoggingDecorator::OnValueChanged);
+	BackendPublisher->OnVectorChangedBP.AddDynamic(this, &UCounterCounterLoggingDecorator::OnVectorChanged);
+	BackendPublisher->OnExternVectorChangedBP.AddDynamic(this, &UCounterCounterLoggingDecorator::OnExternVectorChanged);
+	BackendPublisher->OnVectorArrayChangedBP.AddDynamic(this, &UCounterCounterLoggingDecorator::OnVectorArrayChanged);
+	BackendPublisher->OnExternVectorArrayChangedBP.AddDynamic(this, &UCounterCounterLoggingDecorator::OnExternVectorArrayChanged);
+	BackendPublisher->OnValueChangedSignalBP.AddDynamic(this, &UCounterCounterLoggingDecorator::OnValueChanged);
 	// populate service state to proxy
 	Vector = BackendService->GetVector();
 	ExternVector = BackendService->GetExternVector();
@@ -79,14 +79,14 @@ void UCounterCounterLoggingDecorator::setBackendService(TScriptInterface<ICounte
 void UCounterCounterLoggingDecorator::OnValueChanged(const FCustomTypesVector3D& InVector, const FVector& InExternVector, const TArray<FCustomTypesVector3D>& InVectorArray, const TArray<FVector>& InExternVectorArray)
 {
 	CounterCounterTracer::trace_signalValueChanged(InVector, InExternVector, InVectorArray, InExternVectorArray);
-	_GetSignals()->BroadcastValueChangedSignal(InVector, InExternVector, InVectorArray, InExternVectorArray);
+	_GetPublisher()->BroadcastValueChangedSignal(InVector, InExternVector, InVectorArray, InExternVectorArray);
 }
 
 void UCounterCounterLoggingDecorator::OnVectorChanged(const FCustomTypesVector3D& InVector)
 {
 	CounterCounterTracer::capture_state(BackendService.GetObject(), this);
 	Vector = InVector;
-	_GetSignals()->BroadcastVectorChanged(InVector);
+	_GetPublisher()->BroadcastVectorChanged(InVector);
 }
 
 FCustomTypesVector3D UCounterCounterLoggingDecorator::GetVector() const
@@ -104,7 +104,7 @@ void UCounterCounterLoggingDecorator::OnExternVectorChanged(const FVector& InExt
 {
 	CounterCounterTracer::capture_state(BackendService.GetObject(), this);
 	ExternVector = InExternVector;
-	_GetSignals()->BroadcastExternVectorChanged(InExternVector);
+	_GetPublisher()->BroadcastExternVectorChanged(InExternVector);
 }
 
 FVector UCounterCounterLoggingDecorator::GetExternVector() const
@@ -122,7 +122,7 @@ void UCounterCounterLoggingDecorator::OnVectorArrayChanged(const TArray<FCustomT
 {
 	CounterCounterTracer::capture_state(BackendService.GetObject(), this);
 	VectorArray = InVectorArray;
-	_GetSignals()->BroadcastVectorArrayChanged(InVectorArray);
+	_GetPublisher()->BroadcastVectorArrayChanged(InVectorArray);
 }
 
 TArray<FCustomTypesVector3D> UCounterCounterLoggingDecorator::GetVectorArray() const
@@ -140,7 +140,7 @@ void UCounterCounterLoggingDecorator::OnExternVectorArrayChanged(const TArray<FV
 {
 	CounterCounterTracer::capture_state(BackendService.GetObject(), this);
 	ExternVectorArray = InExternVectorArray;
-	_GetSignals()->BroadcastExternVectorArrayChanged(InExternVectorArray);
+	_GetPublisher()->BroadcastExternVectorArrayChanged(InExternVectorArray);
 }
 
 TArray<FVector> UCounterCounterLoggingDecorator::GetExternVectorArray() const

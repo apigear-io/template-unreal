@@ -195,7 +195,7 @@ void UTbNamesNamEsMsgBusClient::OnConnectionInit(const FTbNamesNamEsInitMessage&
 		bSwitch = InMessage.bSwitch;
 		// reset sent data to the current state
 		_SentData->bSwitch = bSwitch;
-		_GetSignals()->BroadcastSwitchChanged(bSwitch);
+		_GetPublisher()->BroadcastSwitchChanged(bSwitch);
 	}
 
 	const bool bSomePropertyChanged = InMessage.SomeProperty != SomeProperty;
@@ -204,7 +204,7 @@ void UTbNamesNamEsMsgBusClient::OnConnectionInit(const FTbNamesNamEsInitMessage&
 		SomeProperty = InMessage.SomeProperty;
 		// reset sent data to the current state
 		_SentData->SomeProperty = SomeProperty;
-		_GetSignals()->BroadcastSomePropertyChanged(SomeProperty);
+		_GetPublisher()->BroadcastSomePropertyChanged(SomeProperty);
 	}
 
 	const bool bSomePoperty2Changed = InMessage.SomePoperty2 != SomePoperty2;
@@ -213,7 +213,7 @@ void UTbNamesNamEsMsgBusClient::OnConnectionInit(const FTbNamesNamEsInitMessage&
 		SomePoperty2 = InMessage.SomePoperty2;
 		// reset sent data to the current state
 		_SentData->SomePoperty2 = SomePoperty2;
-		_GetSignals()->BroadcastSomePoperty2Changed(SomePoperty2);
+		_GetPublisher()->BroadcastSomePoperty2Changed(SomePoperty2);
 	}
 
 	const bool bEnumPropertyChanged = InMessage.EnumProperty != EnumProperty;
@@ -222,7 +222,7 @@ void UTbNamesNamEsMsgBusClient::OnConnectionInit(const FTbNamesNamEsInitMessage&
 		EnumProperty = InMessage.EnumProperty;
 		// reset sent data to the current state
 		_SentData->EnumProperty = EnumProperty;
-		_GetSignals()->BroadcastEnumPropertyChanged(EnumProperty);
+		_GetPublisher()->BroadcastEnumPropertyChanged(EnumProperty);
 	}
 
 	_ConnectionStatusChanged.Broadcast(true);
@@ -523,7 +523,7 @@ void UTbNamesNamEsMsgBusClient::OnSomeSignal(const FTbNamesNamEsSomeSignalSignal
 		return;
 	}
 
-	_GetSignals()->BroadcastSomeSignalSignal(InMessage.bSomeParam);
+	_GetPublisher()->BroadcastSomeSignalSignal(InMessage.bSomeParam);
 	return;
 }
 
@@ -535,7 +535,7 @@ void UTbNamesNamEsMsgBusClient::OnSomeSignal2(const FTbNamesNamEsSomeSignal2Sign
 		return;
 	}
 
-	_GetSignals()->BroadcastSomeSignal2Signal(InMessage.bSomeParam);
+	_GetPublisher()->BroadcastSomeSignal2Signal(InMessage.bSomeParam);
 	return;
 }
 
@@ -553,7 +553,7 @@ void UTbNamesNamEsMsgBusClient::OnSwitchChanged(const FTbNamesNamEsSwitchChanged
 		bSwitch = InMessage.bSwitch;
 		// reset sent data to the current state
 		_SentData->bSwitch = bSwitch;
-		_GetSignals()->BroadcastSwitchChanged(bSwitch);
+		_GetPublisher()->BroadcastSwitchChanged(bSwitch);
 	}
 }
 
@@ -571,7 +571,7 @@ void UTbNamesNamEsMsgBusClient::OnSomePropertyChanged(const FTbNamesNamEsSomePro
 		SomeProperty = InMessage.SomeProperty;
 		// reset sent data to the current state
 		_SentData->SomeProperty = SomeProperty;
-		_GetSignals()->BroadcastSomePropertyChanged(SomeProperty);
+		_GetPublisher()->BroadcastSomePropertyChanged(SomeProperty);
 	}
 }
 
@@ -589,7 +589,7 @@ void UTbNamesNamEsMsgBusClient::OnSomePoperty2Changed(const FTbNamesNamEsSomePop
 		SomePoperty2 = InMessage.SomePoperty2;
 		// reset sent data to the current state
 		_SentData->SomePoperty2 = SomePoperty2;
-		_GetSignals()->BroadcastSomePoperty2Changed(SomePoperty2);
+		_GetPublisher()->BroadcastSomePoperty2Changed(SomePoperty2);
 	}
 }
 
@@ -607,7 +607,7 @@ void UTbNamesNamEsMsgBusClient::OnEnumPropertyChanged(const FTbNamesNamEsEnumPro
 		EnumProperty = InMessage.EnumProperty;
 		// reset sent data to the current state
 		_SentData->EnumProperty = EnumProperty;
-		_GetSignals()->BroadcastEnumPropertyChanged(EnumProperty);
+		_GetPublisher()->BroadcastEnumPropertyChanged(EnumProperty);
 	}
 }
 

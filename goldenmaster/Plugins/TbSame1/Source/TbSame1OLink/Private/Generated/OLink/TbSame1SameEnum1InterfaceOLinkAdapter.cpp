@@ -57,16 +57,16 @@ void UTbSame1SameEnum1InterfaceOLinkAdapter::setBackendService(TScriptInterface<
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		UTbSame1SameEnum1InterfaceSignals* BackendSignals = BackendService->_GetSignals();
-		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSame1SameEnum1Interface"));
+		UTbSame1SameEnum1InterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbSame1SameEnum1Interface"));
 		if (OnProp1ChangedHandle.IsValid())
 		{
-			BackendSignals->OnProp1Changed.Remove(OnProp1ChangedHandle);
+			BackendPublisher->OnProp1Changed.Remove(OnProp1ChangedHandle);
 			OnProp1ChangedHandle.Reset();
 		}
 		if (OnSig1SignalHandle.IsValid())
 		{
-			BackendSignals->OnSig1Signal.Remove(OnSig1SignalHandle);
+			BackendPublisher->OnSig1Signal.Remove(OnSig1SignalHandle);
 			OnSig1SignalHandle.Reset();
 		}
 	}
@@ -76,11 +76,11 @@ void UTbSame1SameEnum1InterfaceOLinkAdapter::setBackendService(TScriptInterface<
 
 	// subscribe to new backend
 	BackendService = InService;
-	UTbSame1SameEnum1InterfaceSignals* BackendSignals = BackendService->_GetSignals();
-	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service TbSame1SameEnum1Interface"));
+	UTbSame1SameEnum1InterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbSame1SameEnum1Interface"));
 	// connect property changed signals or simple events
-	OnProp1ChangedHandle = BackendSignals->OnProp1Changed.AddUObject(this, &UTbSame1SameEnum1InterfaceOLinkAdapter::OnProp1Changed);
-	OnSig1SignalHandle = BackendSignals->OnSig1Signal.AddUObject(this, &UTbSame1SameEnum1InterfaceOLinkAdapter::OnSig1);
+	OnProp1ChangedHandle = BackendPublisher->OnProp1Changed.AddUObject(this, &UTbSame1SameEnum1InterfaceOLinkAdapter::OnProp1Changed);
+	OnSig1SignalHandle = BackendPublisher->OnSig1Signal.AddUObject(this, &UTbSame1SameEnum1InterfaceOLinkAdapter::OnSig1);
 
 	// update olink source with new backend
 	Source->setBackendService(InService);

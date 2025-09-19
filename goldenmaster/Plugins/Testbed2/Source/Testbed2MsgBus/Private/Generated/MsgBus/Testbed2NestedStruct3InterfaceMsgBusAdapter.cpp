@@ -142,36 +142,36 @@ void UTestbed2NestedStruct3InterfaceMsgBusAdapter::_setBackendService(TScriptInt
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		UTestbed2NestedStruct3InterfaceSignals* BackendSignals = BackendService->_GetSignals();
-		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service Testbed2NestedStruct3Interface"));
+		UTestbed2NestedStruct3InterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service Testbed2NestedStruct3Interface"));
 		if (OnProp1ChangedHandle.IsValid())
 		{
-			BackendSignals->OnProp1Changed.Remove(OnProp1ChangedHandle);
+			BackendPublisher->OnProp1Changed.Remove(OnProp1ChangedHandle);
 			OnProp1ChangedHandle.Reset();
 		}
 		if (OnProp2ChangedHandle.IsValid())
 		{
-			BackendSignals->OnProp2Changed.Remove(OnProp2ChangedHandle);
+			BackendPublisher->OnProp2Changed.Remove(OnProp2ChangedHandle);
 			OnProp2ChangedHandle.Reset();
 		}
 		if (OnProp3ChangedHandle.IsValid())
 		{
-			BackendSignals->OnProp3Changed.Remove(OnProp3ChangedHandle);
+			BackendPublisher->OnProp3Changed.Remove(OnProp3ChangedHandle);
 			OnProp3ChangedHandle.Reset();
 		}
 		if (OnSig1SignalHandle.IsValid())
 		{
-			BackendSignals->OnSig1Signal.Remove(OnSig1SignalHandle);
+			BackendPublisher->OnSig1Signal.Remove(OnSig1SignalHandle);
 			OnSig1SignalHandle.Reset();
 		}
 		if (OnSig2SignalHandle.IsValid())
 		{
-			BackendSignals->OnSig2Signal.Remove(OnSig2SignalHandle);
+			BackendPublisher->OnSig2Signal.Remove(OnSig2SignalHandle);
 			OnSig2SignalHandle.Reset();
 		}
 		if (OnSig3SignalHandle.IsValid())
 		{
-			BackendSignals->OnSig3Signal.Remove(OnSig3SignalHandle);
+			BackendPublisher->OnSig3Signal.Remove(OnSig3SignalHandle);
 			OnSig3SignalHandle.Reset();
 		}
 	}
@@ -181,15 +181,15 @@ void UTestbed2NestedStruct3InterfaceMsgBusAdapter::_setBackendService(TScriptInt
 
 	// subscribe to new backend
 	BackendService = InService;
-	UTestbed2NestedStruct3InterfaceSignals* BackendSignals = BackendService->_GetSignals();
-	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service Testbed2NestedStruct3Interface"));
+	UTestbed2NestedStruct3InterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service Testbed2NestedStruct3Interface"));
 	// connect property changed signals or simple events
-	OnProp1ChangedHandle = BackendSignals->OnProp1Changed.AddUObject(this, &UTestbed2NestedStruct3InterfaceMsgBusAdapter::OnProp1Changed);
-	OnProp2ChangedHandle = BackendSignals->OnProp2Changed.AddUObject(this, &UTestbed2NestedStruct3InterfaceMsgBusAdapter::OnProp2Changed);
-	OnProp3ChangedHandle = BackendSignals->OnProp3Changed.AddUObject(this, &UTestbed2NestedStruct3InterfaceMsgBusAdapter::OnProp3Changed);
-	OnSig1SignalHandle = BackendSignals->OnSig1Signal.AddUObject(this, &UTestbed2NestedStruct3InterfaceMsgBusAdapter::OnSig1);
-	OnSig2SignalHandle = BackendSignals->OnSig2Signal.AddUObject(this, &UTestbed2NestedStruct3InterfaceMsgBusAdapter::OnSig2);
-	OnSig3SignalHandle = BackendSignals->OnSig3Signal.AddUObject(this, &UTestbed2NestedStruct3InterfaceMsgBusAdapter::OnSig3);
+	OnProp1ChangedHandle = BackendPublisher->OnProp1Changed.AddUObject(this, &UTestbed2NestedStruct3InterfaceMsgBusAdapter::OnProp1Changed);
+	OnProp2ChangedHandle = BackendPublisher->OnProp2Changed.AddUObject(this, &UTestbed2NestedStruct3InterfaceMsgBusAdapter::OnProp2Changed);
+	OnProp3ChangedHandle = BackendPublisher->OnProp3Changed.AddUObject(this, &UTestbed2NestedStruct3InterfaceMsgBusAdapter::OnProp3Changed);
+	OnSig1SignalHandle = BackendPublisher->OnSig1Signal.AddUObject(this, &UTestbed2NestedStruct3InterfaceMsgBusAdapter::OnSig1);
+	OnSig2SignalHandle = BackendPublisher->OnSig2Signal.AddUObject(this, &UTestbed2NestedStruct3InterfaceMsgBusAdapter::OnSig2);
+	OnSig3SignalHandle = BackendPublisher->OnSig3Signal.AddUObject(this, &UTestbed2NestedStruct3InterfaceMsgBusAdapter::OnSig3);
 }
 
 void UTestbed2NestedStruct3InterfaceMsgBusAdapter::OnDiscoveryMessage(const FTestbed2NestedStruct3InterfaceDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)

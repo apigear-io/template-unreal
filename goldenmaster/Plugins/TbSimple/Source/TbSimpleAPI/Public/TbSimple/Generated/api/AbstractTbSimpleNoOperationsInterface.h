@@ -38,7 +38,7 @@ public:
 	virtual void Deinitialize() override;
 
 	// signals
-	virtual UTbSimpleNoOperationsInterfaceSignals* _GetSignals() override;
+	virtual UTbSimpleNoOperationsInterfacePublisher* _GetPublisher() override;
 
 	// methods
 
@@ -76,5 +76,5 @@ protected:
 private:
 	// signals
 	UPROPERTY()
-	UTbSimpleNoOperationsInterfaceSignals* TbSimpleNoOperationsInterfaceSignals;
+	UTbSimpleNoOperationsInterfacePublisher* TbSimpleNoOperationsInterfacePublisher;
 };

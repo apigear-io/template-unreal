@@ -28,7 +28,7 @@ void UTestbed2ManyParamInterfaceImplementation::SetProp1(int32 InProp1)
 	if (Prop1 != InProp1)
 	{
 		Prop1 = InProp1;
-		_GetSignals()->BroadcastProp1Changed(Prop1);
+		_GetPublisher()->BroadcastProp1Changed(Prop1);
 	}
 }
 int32 UTestbed2ManyParamInterfaceImplementation::GetProp2() const
@@ -41,7 +41,7 @@ void UTestbed2ManyParamInterfaceImplementation::SetProp2(int32 InProp2)
 	if (Prop2 != InProp2)
 	{
 		Prop2 = InProp2;
-		_GetSignals()->BroadcastProp2Changed(Prop2);
+		_GetPublisher()->BroadcastProp2Changed(Prop2);
 	}
 }
 int32 UTestbed2ManyParamInterfaceImplementation::GetProp3() const
@@ -54,7 +54,7 @@ void UTestbed2ManyParamInterfaceImplementation::SetProp3(int32 InProp3)
 	if (Prop3 != InProp3)
 	{
 		Prop3 = InProp3;
-		_GetSignals()->BroadcastProp3Changed(Prop3);
+		_GetPublisher()->BroadcastProp3Changed(Prop3);
 	}
 }
 int32 UTestbed2ManyParamInterfaceImplementation::GetProp4() const
@@ -67,7 +67,7 @@ void UTestbed2ManyParamInterfaceImplementation::SetProp4(int32 InProp4)
 	if (Prop4 != InProp4)
 	{
 		Prop4 = InProp4;
-		_GetSignals()->BroadcastProp4Changed(Prop4);
+		_GetPublisher()->BroadcastProp4Changed(Prop4);
 	}
 }
 
@@ -110,21 +110,21 @@ void UTestbed2ManyParamInterfaceImplementation::_ResetProperties()
 	if (Prop1 != 0)
 	{
 		Prop1 = 0;
-		_GetSignals()->BroadcastProp1Changed(Prop1);
+		_GetPublisher()->BroadcastProp1Changed(Prop1);
 	}
 	if (Prop2 != 0)
 	{
 		Prop2 = 0;
-		_GetSignals()->BroadcastProp2Changed(Prop2);
+		_GetPublisher()->BroadcastProp2Changed(Prop2);
 	}
 	if (Prop3 != 0)
 	{
 		Prop3 = 0;
-		_GetSignals()->BroadcastProp3Changed(Prop3);
+		_GetPublisher()->BroadcastProp3Changed(Prop3);
 	}
 	if (Prop4 != 0)
 	{
 		Prop4 = 0;
-		_GetSignals()->BroadcastProp4Changed(Prop4);
+		_GetPublisher()->BroadcastProp4Changed(Prop4);
 	}
 }

@@ -63,16 +63,16 @@ public:
 
 UAbstractTbSimpleNoSignalsInterface::UAbstractTbSimpleNoSignalsInterface()
 {
-	TbSimpleNoSignalsInterfaceSignals = NewObject<UTbSimpleNoSignalsInterfaceSignals>();
+	TbSimpleNoSignalsInterfacePublisher = NewObject<UTbSimpleNoSignalsInterfacePublisher>();
 }
 
-UTbSimpleNoSignalsInterfaceSignals* UAbstractTbSimpleNoSignalsInterface::_GetSignals()
+UTbSimpleNoSignalsInterfacePublisher* UAbstractTbSimpleNoSignalsInterface::_GetPublisher()
 {
-	if (!TbSimpleNoSignalsInterfaceSignals)
+	if (!TbSimpleNoSignalsInterfacePublisher)
 	{
-		TbSimpleNoSignalsInterfaceSignals = NewObject<UTbSimpleNoSignalsInterfaceSignals>();
+		TbSimpleNoSignalsInterfacePublisher = NewObject<UTbSimpleNoSignalsInterfacePublisher>();
 	}
-	return TbSimpleNoSignalsInterfaceSignals;
+	return TbSimpleNoSignalsInterfacePublisher;
 }
 
 bool UAbstractTbSimpleNoSignalsInterface::GetPropBool_Private() const
@@ -143,12 +143,12 @@ void UAbstractTbSimpleNoSignalsInterface::Deinitialize()
 	check(bInitialized);
 	bInitialized = false;
 
-	if (TbSimpleNoSignalsInterfaceSignals)
+	if (TbSimpleNoSignalsInterfacePublisher)
 	{
-		TbSimpleNoSignalsInterfaceSignals->OnPropBoolChanged.RemoveAll(TbSimpleNoSignalsInterfaceSignals);
-		TbSimpleNoSignalsInterfaceSignals->OnPropBoolChangedBP.RemoveAll(TbSimpleNoSignalsInterfaceSignals);
-		TbSimpleNoSignalsInterfaceSignals->OnPropIntChanged.RemoveAll(TbSimpleNoSignalsInterfaceSignals);
-		TbSimpleNoSignalsInterfaceSignals->OnPropIntChangedBP.RemoveAll(TbSimpleNoSignalsInterfaceSignals);
+		TbSimpleNoSignalsInterfacePublisher->OnPropBoolChanged.RemoveAll(TbSimpleNoSignalsInterfacePublisher);
+		TbSimpleNoSignalsInterfacePublisher->OnPropBoolChangedBP.RemoveAll(TbSimpleNoSignalsInterfacePublisher);
+		TbSimpleNoSignalsInterfacePublisher->OnPropIntChanged.RemoveAll(TbSimpleNoSignalsInterfacePublisher);
+		TbSimpleNoSignalsInterfacePublisher->OnPropIntChangedBP.RemoveAll(TbSimpleNoSignalsInterfacePublisher);
 	}
 
 	Super::Deinitialize();

@@ -63,16 +63,16 @@ public:
 
 UAbstractTestbed2NestedStruct1Interface::UAbstractTestbed2NestedStruct1Interface()
 {
-	Testbed2NestedStruct1InterfaceSignals = NewObject<UTestbed2NestedStruct1InterfaceSignals>();
+	Testbed2NestedStruct1InterfacePublisher = NewObject<UTestbed2NestedStruct1InterfacePublisher>();
 }
 
-UTestbed2NestedStruct1InterfaceSignals* UAbstractTestbed2NestedStruct1Interface::_GetSignals()
+UTestbed2NestedStruct1InterfacePublisher* UAbstractTestbed2NestedStruct1Interface::_GetPublisher()
 {
-	if (!Testbed2NestedStruct1InterfaceSignals)
+	if (!Testbed2NestedStruct1InterfacePublisher)
 	{
-		Testbed2NestedStruct1InterfaceSignals = NewObject<UTestbed2NestedStruct1InterfaceSignals>();
+		Testbed2NestedStruct1InterfacePublisher = NewObject<UTestbed2NestedStruct1InterfacePublisher>();
 	}
-	return Testbed2NestedStruct1InterfaceSignals;
+	return Testbed2NestedStruct1InterfacePublisher;
 }
 
 FTestbed2NestedStruct1 UAbstractTestbed2NestedStruct1Interface::GetProp1_Private() const
@@ -133,13 +133,13 @@ void UAbstractTestbed2NestedStruct1Interface::Deinitialize()
 	check(bInitialized);
 	bInitialized = false;
 
-	if (Testbed2NestedStruct1InterfaceSignals)
+	if (Testbed2NestedStruct1InterfacePublisher)
 	{
-		Testbed2NestedStruct1InterfaceSignals->OnSig1Signal.RemoveAll(Testbed2NestedStruct1InterfaceSignals);
-		Testbed2NestedStruct1InterfaceSignals->OnSig1SignalBP.RemoveAll(Testbed2NestedStruct1InterfaceSignals);
+		Testbed2NestedStruct1InterfacePublisher->OnSig1Signal.RemoveAll(Testbed2NestedStruct1InterfacePublisher);
+		Testbed2NestedStruct1InterfacePublisher->OnSig1SignalBP.RemoveAll(Testbed2NestedStruct1InterfacePublisher);
 
-		Testbed2NestedStruct1InterfaceSignals->OnProp1Changed.RemoveAll(Testbed2NestedStruct1InterfaceSignals);
-		Testbed2NestedStruct1InterfaceSignals->OnProp1ChangedBP.RemoveAll(Testbed2NestedStruct1InterfaceSignals);
+		Testbed2NestedStruct1InterfacePublisher->OnProp1Changed.RemoveAll(Testbed2NestedStruct1InterfacePublisher);
+		Testbed2NestedStruct1InterfacePublisher->OnProp1ChangedBP.RemoveAll(Testbed2NestedStruct1InterfacePublisher);
 	}
 
 	Super::Deinitialize();

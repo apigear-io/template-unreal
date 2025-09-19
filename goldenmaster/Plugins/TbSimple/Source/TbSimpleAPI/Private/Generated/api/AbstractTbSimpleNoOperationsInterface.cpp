@@ -22,16 +22,16 @@ limitations under the License.
 
 UAbstractTbSimpleNoOperationsInterface::UAbstractTbSimpleNoOperationsInterface()
 {
-	TbSimpleNoOperationsInterfaceSignals = NewObject<UTbSimpleNoOperationsInterfaceSignals>();
+	TbSimpleNoOperationsInterfacePublisher = NewObject<UTbSimpleNoOperationsInterfacePublisher>();
 }
 
-UTbSimpleNoOperationsInterfaceSignals* UAbstractTbSimpleNoOperationsInterface::_GetSignals()
+UTbSimpleNoOperationsInterfacePublisher* UAbstractTbSimpleNoOperationsInterface::_GetPublisher()
 {
-	if (!TbSimpleNoOperationsInterfaceSignals)
+	if (!TbSimpleNoOperationsInterfacePublisher)
 	{
-		TbSimpleNoOperationsInterfaceSignals = NewObject<UTbSimpleNoOperationsInterfaceSignals>();
+		TbSimpleNoOperationsInterfacePublisher = NewObject<UTbSimpleNoOperationsInterfacePublisher>();
 	}
-	return TbSimpleNoOperationsInterfaceSignals;
+	return TbSimpleNoOperationsInterfacePublisher;
 }
 
 bool UAbstractTbSimpleNoOperationsInterface::GetPropBool_Private() const
@@ -67,17 +67,17 @@ void UAbstractTbSimpleNoOperationsInterface::Deinitialize()
 	check(bInitialized);
 	bInitialized = false;
 
-	if (TbSimpleNoOperationsInterfaceSignals)
+	if (TbSimpleNoOperationsInterfacePublisher)
 	{
-		TbSimpleNoOperationsInterfaceSignals->OnSigVoidSignal.RemoveAll(TbSimpleNoOperationsInterfaceSignals);
-		TbSimpleNoOperationsInterfaceSignals->OnSigVoidSignalBP.RemoveAll(TbSimpleNoOperationsInterfaceSignals);
-		TbSimpleNoOperationsInterfaceSignals->OnSigBoolSignal.RemoveAll(TbSimpleNoOperationsInterfaceSignals);
-		TbSimpleNoOperationsInterfaceSignals->OnSigBoolSignalBP.RemoveAll(TbSimpleNoOperationsInterfaceSignals);
+		TbSimpleNoOperationsInterfacePublisher->OnSigVoidSignal.RemoveAll(TbSimpleNoOperationsInterfacePublisher);
+		TbSimpleNoOperationsInterfacePublisher->OnSigVoidSignalBP.RemoveAll(TbSimpleNoOperationsInterfacePublisher);
+		TbSimpleNoOperationsInterfacePublisher->OnSigBoolSignal.RemoveAll(TbSimpleNoOperationsInterfacePublisher);
+		TbSimpleNoOperationsInterfacePublisher->OnSigBoolSignalBP.RemoveAll(TbSimpleNoOperationsInterfacePublisher);
 
-		TbSimpleNoOperationsInterfaceSignals->OnPropBoolChanged.RemoveAll(TbSimpleNoOperationsInterfaceSignals);
-		TbSimpleNoOperationsInterfaceSignals->OnPropBoolChangedBP.RemoveAll(TbSimpleNoOperationsInterfaceSignals);
-		TbSimpleNoOperationsInterfaceSignals->OnPropIntChanged.RemoveAll(TbSimpleNoOperationsInterfaceSignals);
-		TbSimpleNoOperationsInterfaceSignals->OnPropIntChangedBP.RemoveAll(TbSimpleNoOperationsInterfaceSignals);
+		TbSimpleNoOperationsInterfacePublisher->OnPropBoolChanged.RemoveAll(TbSimpleNoOperationsInterfacePublisher);
+		TbSimpleNoOperationsInterfacePublisher->OnPropBoolChangedBP.RemoveAll(TbSimpleNoOperationsInterfacePublisher);
+		TbSimpleNoOperationsInterfacePublisher->OnPropIntChanged.RemoveAll(TbSimpleNoOperationsInterfacePublisher);
+		TbSimpleNoOperationsInterfacePublisher->OnPropIntChangedBP.RemoveAll(TbSimpleNoOperationsInterfacePublisher);
 	}
 
 	Super::Deinitialize();

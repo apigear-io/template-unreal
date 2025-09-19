@@ -140,26 +140,26 @@ void UTbSame2SameStruct2InterfaceMsgBusAdapter::_setBackendService(TScriptInterf
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		UTbSame2SameStruct2InterfaceSignals* BackendSignals = BackendService->_GetSignals();
-		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSame2SameStruct2Interface"));
+		UTbSame2SameStruct2InterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbSame2SameStruct2Interface"));
 		if (OnProp1ChangedHandle.IsValid())
 		{
-			BackendSignals->OnProp1Changed.Remove(OnProp1ChangedHandle);
+			BackendPublisher->OnProp1Changed.Remove(OnProp1ChangedHandle);
 			OnProp1ChangedHandle.Reset();
 		}
 		if (OnProp2ChangedHandle.IsValid())
 		{
-			BackendSignals->OnProp2Changed.Remove(OnProp2ChangedHandle);
+			BackendPublisher->OnProp2Changed.Remove(OnProp2ChangedHandle);
 			OnProp2ChangedHandle.Reset();
 		}
 		if (OnSig1SignalHandle.IsValid())
 		{
-			BackendSignals->OnSig1Signal.Remove(OnSig1SignalHandle);
+			BackendPublisher->OnSig1Signal.Remove(OnSig1SignalHandle);
 			OnSig1SignalHandle.Reset();
 		}
 		if (OnSig2SignalHandle.IsValid())
 		{
-			BackendSignals->OnSig2Signal.Remove(OnSig2SignalHandle);
+			BackendPublisher->OnSig2Signal.Remove(OnSig2SignalHandle);
 			OnSig2SignalHandle.Reset();
 		}
 	}
@@ -169,13 +169,13 @@ void UTbSame2SameStruct2InterfaceMsgBusAdapter::_setBackendService(TScriptInterf
 
 	// subscribe to new backend
 	BackendService = InService;
-	UTbSame2SameStruct2InterfaceSignals* BackendSignals = BackendService->_GetSignals();
-	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service TbSame2SameStruct2Interface"));
+	UTbSame2SameStruct2InterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbSame2SameStruct2Interface"));
 	// connect property changed signals or simple events
-	OnProp1ChangedHandle = BackendSignals->OnProp1Changed.AddUObject(this, &UTbSame2SameStruct2InterfaceMsgBusAdapter::OnProp1Changed);
-	OnProp2ChangedHandle = BackendSignals->OnProp2Changed.AddUObject(this, &UTbSame2SameStruct2InterfaceMsgBusAdapter::OnProp2Changed);
-	OnSig1SignalHandle = BackendSignals->OnSig1Signal.AddUObject(this, &UTbSame2SameStruct2InterfaceMsgBusAdapter::OnSig1);
-	OnSig2SignalHandle = BackendSignals->OnSig2Signal.AddUObject(this, &UTbSame2SameStruct2InterfaceMsgBusAdapter::OnSig2);
+	OnProp1ChangedHandle = BackendPublisher->OnProp1Changed.AddUObject(this, &UTbSame2SameStruct2InterfaceMsgBusAdapter::OnProp1Changed);
+	OnProp2ChangedHandle = BackendPublisher->OnProp2Changed.AddUObject(this, &UTbSame2SameStruct2InterfaceMsgBusAdapter::OnProp2Changed);
+	OnSig1SignalHandle = BackendPublisher->OnSig1Signal.AddUObject(this, &UTbSame2SameStruct2InterfaceMsgBusAdapter::OnSig1);
+	OnSig2SignalHandle = BackendPublisher->OnSig2Signal.AddUObject(this, &UTbSame2SameStruct2InterfaceMsgBusAdapter::OnSig2);
 }
 
 void UTbSame2SameStruct2InterfaceMsgBusAdapter::OnDiscoveryMessage(const FTbSame2SameStruct2InterfaceDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)

@@ -214,7 +214,7 @@ void UTbRefIfacesSimpleLocalIfOLinkClient::applyState(const nlohmann::json& fiel
 		IntProperty = fields["intProperty"].get<int32>();
 		// reset sent data to the current state
 		_SentData->IntProperty = IntProperty;
-		_GetSignals()->BroadcastIntPropertyChanged(IntProperty);
+		_GetPublisher()->BroadcastIntPropertyChanged(IntProperty);
 	}
 }
 
@@ -223,7 +223,7 @@ void UTbRefIfacesSimpleLocalIfOLinkClient::emitSignal(const std::string& signalN
 	if (signalName == "intSignal")
 	{
 		int32 outParam = args[0].get<int32>();
-		_GetSignals()->BroadcastIntSignalSignal(outParam);
+		_GetPublisher()->BroadcastIntSignalSignal(outParam);
 		return;
 	}
 }

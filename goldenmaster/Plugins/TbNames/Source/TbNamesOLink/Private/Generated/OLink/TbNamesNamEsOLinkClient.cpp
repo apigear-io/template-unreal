@@ -306,7 +306,7 @@ void UTbNamesNamEsOLinkClient::applyState(const nlohmann::json& fields)
 		bSwitch = fields["Switch"].get<bool>();
 		// reset sent data to the current state
 		_SentData->bSwitch = bSwitch;
-		_GetSignals()->BroadcastSwitchChanged(bSwitch);
+		_GetPublisher()->BroadcastSwitchChanged(bSwitch);
 	}
 
 	const bool bSomePropertyChanged = fields.contains("SOME_PROPERTY") && (SomeProperty != fields["SOME_PROPERTY"].get<int32>());
@@ -315,7 +315,7 @@ void UTbNamesNamEsOLinkClient::applyState(const nlohmann::json& fields)
 		SomeProperty = fields["SOME_PROPERTY"].get<int32>();
 		// reset sent data to the current state
 		_SentData->SomeProperty = SomeProperty;
-		_GetSignals()->BroadcastSomePropertyChanged(SomeProperty);
+		_GetPublisher()->BroadcastSomePropertyChanged(SomeProperty);
 	}
 
 	const bool bSomePoperty2Changed = fields.contains("Some_Poperty2") && (SomePoperty2 != fields["Some_Poperty2"].get<int32>());
@@ -324,7 +324,7 @@ void UTbNamesNamEsOLinkClient::applyState(const nlohmann::json& fields)
 		SomePoperty2 = fields["Some_Poperty2"].get<int32>();
 		// reset sent data to the current state
 		_SentData->SomePoperty2 = SomePoperty2;
-		_GetSignals()->BroadcastSomePoperty2Changed(SomePoperty2);
+		_GetPublisher()->BroadcastSomePoperty2Changed(SomePoperty2);
 	}
 
 	const bool bEnumPropertyChanged = fields.contains("enum_property") && (EnumProperty != fields["enum_property"].get<ETbNamesEnum_With_Under_scores>());
@@ -333,7 +333,7 @@ void UTbNamesNamEsOLinkClient::applyState(const nlohmann::json& fields)
 		EnumProperty = fields["enum_property"].get<ETbNamesEnum_With_Under_scores>();
 		// reset sent data to the current state
 		_SentData->EnumProperty = EnumProperty;
-		_GetSignals()->BroadcastEnumPropertyChanged(EnumProperty);
+		_GetPublisher()->BroadcastEnumPropertyChanged(EnumProperty);
 	}
 }
 
@@ -342,14 +342,14 @@ void UTbNamesNamEsOLinkClient::emitSignal(const std::string& signalName, const n
 	if (signalName == "SOME_SIGNAL")
 	{
 		bool boutSomeParam = args[0].get<bool>();
-		_GetSignals()->BroadcastSomeSignalSignal(boutSomeParam);
+		_GetPublisher()->BroadcastSomeSignalSignal(boutSomeParam);
 		return;
 	}
 
 	if (signalName == "Some_Signal2")
 	{
 		bool boutSomeParam = args[0].get<bool>();
-		_GetSignals()->BroadcastSomeSignal2Signal(boutSomeParam);
+		_GetPublisher()->BroadcastSomeSignal2Signal(boutSomeParam);
 		return;
 	}
 }

@@ -634,7 +634,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::applyState(const nlohmann::json& 
 			FScopeLock Lock(&(_SentData->PropBoolMutex));
 			_SentData->PropBool = PropBool;
 		}
-		_GetSignals()->BroadcastPropBoolChanged(PropBool);
+		_GetPublisher()->BroadcastPropBoolChanged(PropBool);
 	}
 
 	const bool bPropIntChanged = fields.contains("propInt") && (PropInt != fields["propInt"].get<TArray<int32>>());
@@ -646,7 +646,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::applyState(const nlohmann::json& 
 			FScopeLock Lock(&(_SentData->PropIntMutex));
 			_SentData->PropInt = PropInt;
 		}
-		_GetSignals()->BroadcastPropIntChanged(PropInt);
+		_GetPublisher()->BroadcastPropIntChanged(PropInt);
 	}
 
 	const bool bPropInt32Changed = fields.contains("propInt32") && (PropInt32 != fields["propInt32"].get<TArray<int32>>());
@@ -658,7 +658,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::applyState(const nlohmann::json& 
 			FScopeLock Lock(&(_SentData->PropInt32Mutex));
 			_SentData->PropInt32 = PropInt32;
 		}
-		_GetSignals()->BroadcastPropInt32Changed(PropInt32);
+		_GetPublisher()->BroadcastPropInt32Changed(PropInt32);
 	}
 
 	const bool bPropInt64Changed = fields.contains("propInt64") && (PropInt64 != fields["propInt64"].get<TArray<int64>>());
@@ -670,7 +670,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::applyState(const nlohmann::json& 
 			FScopeLock Lock(&(_SentData->PropInt64Mutex));
 			_SentData->PropInt64 = PropInt64;
 		}
-		_GetSignals()->BroadcastPropInt64Changed(PropInt64);
+		_GetPublisher()->BroadcastPropInt64Changed(PropInt64);
 	}
 
 	const bool bPropFloatChanged = fields.contains("propFloat") && (PropFloat != fields["propFloat"].get<TArray<float>>());
@@ -682,7 +682,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::applyState(const nlohmann::json& 
 			FScopeLock Lock(&(_SentData->PropFloatMutex));
 			_SentData->PropFloat = PropFloat;
 		}
-		_GetSignals()->BroadcastPropFloatChanged(PropFloat);
+		_GetPublisher()->BroadcastPropFloatChanged(PropFloat);
 	}
 
 	const bool bPropFloat32Changed = fields.contains("propFloat32") && (PropFloat32 != fields["propFloat32"].get<TArray<float>>());
@@ -694,7 +694,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::applyState(const nlohmann::json& 
 			FScopeLock Lock(&(_SentData->PropFloat32Mutex));
 			_SentData->PropFloat32 = PropFloat32;
 		}
-		_GetSignals()->BroadcastPropFloat32Changed(PropFloat32);
+		_GetPublisher()->BroadcastPropFloat32Changed(PropFloat32);
 	}
 
 	const bool bPropFloat64Changed = fields.contains("propFloat64") && (PropFloat64 != fields["propFloat64"].get<TArray<double>>());
@@ -706,7 +706,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::applyState(const nlohmann::json& 
 			FScopeLock Lock(&(_SentData->PropFloat64Mutex));
 			_SentData->PropFloat64 = PropFloat64;
 		}
-		_GetSignals()->BroadcastPropFloat64Changed(PropFloat64);
+		_GetPublisher()->BroadcastPropFloat64Changed(PropFloat64);
 	}
 
 	const bool bPropStringChanged = fields.contains("propString") && (PropString != fields["propString"].get<TArray<FString>>());
@@ -718,7 +718,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::applyState(const nlohmann::json& 
 			FScopeLock Lock(&(_SentData->PropStringMutex));
 			_SentData->PropString = PropString;
 		}
-		_GetSignals()->BroadcastPropStringChanged(PropString);
+		_GetPublisher()->BroadcastPropStringChanged(PropString);
 	}
 
 	const bool bPropReadOnlyStringChanged = fields.contains("propReadOnlyString") && (PropReadOnlyString != fields["propReadOnlyString"].get<FString>());
@@ -730,7 +730,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::applyState(const nlohmann::json& 
 			FScopeLock Lock(&(_SentData->PropReadOnlyStringMutex));
 			_SentData->PropReadOnlyString = PropReadOnlyString;
 		}
-		_GetSignals()->BroadcastPropReadOnlyStringChanged(PropReadOnlyString);
+		_GetPublisher()->BroadcastPropReadOnlyStringChanged(PropReadOnlyString);
 	}
 }
 
@@ -739,56 +739,56 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::emitSignal(const std::string& sig
 	if (signalName == "sigBool")
 	{
 		const TArray<bool>& outParamBool = args[0].get<TArray<bool>>();
-		_GetSignals()->BroadcastSigBoolSignal(outParamBool);
+		_GetPublisher()->BroadcastSigBoolSignal(outParamBool);
 		return;
 	}
 
 	if (signalName == "sigInt")
 	{
 		const TArray<int32>& outParamInt = args[0].get<TArray<int32>>();
-		_GetSignals()->BroadcastSigIntSignal(outParamInt);
+		_GetPublisher()->BroadcastSigIntSignal(outParamInt);
 		return;
 	}
 
 	if (signalName == "sigInt32")
 	{
 		const TArray<int32>& outParamInt32 = args[0].get<TArray<int32>>();
-		_GetSignals()->BroadcastSigInt32Signal(outParamInt32);
+		_GetPublisher()->BroadcastSigInt32Signal(outParamInt32);
 		return;
 	}
 
 	if (signalName == "sigInt64")
 	{
 		const TArray<int64>& outParamInt64 = args[0].get<TArray<int64>>();
-		_GetSignals()->BroadcastSigInt64Signal(outParamInt64);
+		_GetPublisher()->BroadcastSigInt64Signal(outParamInt64);
 		return;
 	}
 
 	if (signalName == "sigFloat")
 	{
 		const TArray<float>& outParamFloat = args[0].get<TArray<float>>();
-		_GetSignals()->BroadcastSigFloatSignal(outParamFloat);
+		_GetPublisher()->BroadcastSigFloatSignal(outParamFloat);
 		return;
 	}
 
 	if (signalName == "sigFloat32")
 	{
 		const TArray<float>& outParamFloa32 = args[0].get<TArray<float>>();
-		_GetSignals()->BroadcastSigFloat32Signal(outParamFloa32);
+		_GetPublisher()->BroadcastSigFloat32Signal(outParamFloa32);
 		return;
 	}
 
 	if (signalName == "sigFloat64")
 	{
 		const TArray<double>& outParamFloat64 = args[0].get<TArray<double>>();
-		_GetSignals()->BroadcastSigFloat64Signal(outParamFloat64);
+		_GetPublisher()->BroadcastSigFloat64Signal(outParamFloat64);
 		return;
 	}
 
 	if (signalName == "sigString")
 	{
 		const TArray<FString>& outParamString = args[0].get<TArray<FString>>();
-		_GetSignals()->BroadcastSigStringSignal(outParamString);
+		_GetPublisher()->BroadcastSigStringSignal(outParamString);
 		return;
 	}
 }

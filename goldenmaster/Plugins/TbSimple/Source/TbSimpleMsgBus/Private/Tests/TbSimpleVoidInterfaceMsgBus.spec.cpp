@@ -85,15 +85,15 @@ void UTbSimpleVoidInterfaceMsgBusSpec::Define()
 
 	LatentIt("Signal.SigVoid", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		UTbSimpleVoidInterfaceSignals* TbSimpleVoidInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleVoidInterfaceSignals->OnSigVoidSignal.AddLambda([this, TestDone]()
+		UTbSimpleVoidInterfacePublisher* TbSimpleVoidInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleVoidInterfacePublisher->OnSigVoidSignal.AddLambda([this, TestDone]()
 			{
 			// known test value
 			TestDone.Execute();
 		});
 
 		// use different test value
-		TbSimpleVoidInterfaceSignals->BroadcastSigVoidSignal();
+		TbSimpleVoidInterfacePublisher->BroadcastSigVoidSignal();
 	});
 }
 } // namespace Tests

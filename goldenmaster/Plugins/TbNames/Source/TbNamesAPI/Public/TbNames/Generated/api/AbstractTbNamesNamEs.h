@@ -38,7 +38,7 @@ public:
 	virtual void Deinitialize() override;
 
 	// signals
-	virtual UTbNamesNamEsSignals* _GetSignals() override;
+	virtual UTbNamesNamEsPublisher* _GetPublisher() override;
 
 	// methods
 	virtual void SomeFunction(bool bSomeParam) override PURE_VIRTUAL(UAbstractTbNamesNamEs::SomeFunction, return;);
@@ -103,5 +103,5 @@ protected:
 private:
 	// signals
 	UPROPERTY()
-	UTbNamesNamEsSignals* TbNamesNamEsSignals;
+	UTbNamesNamEsPublisher* TbNamesNamEsPublisher;
 };

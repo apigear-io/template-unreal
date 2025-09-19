@@ -60,8 +60,8 @@ void UTestbed2NestedStruct3InterfaceImplSpec::Define()
 		FTestbed2NestedStruct1 TestValue = FTestbed2NestedStruct1(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp1(), TestValue);
 
-		UTestbed2NestedStruct3InterfaceSignals* Testbed2NestedStruct3InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2NestedStruct3InterfaceSignals->OnProp1Changed.AddLambda([this, TestDone](const FTestbed2NestedStruct1& InProp1)
+		UTestbed2NestedStruct3InterfacePublisher* Testbed2NestedStruct3InterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		Testbed2NestedStruct3InterfacePublisher->OnProp1Changed.AddLambda([this, TestDone](const FTestbed2NestedStruct1& InProp1)
 			{
 			FTestbed2NestedStruct1 TestValue = FTestbed2NestedStruct1();
 			// use different test value
@@ -83,8 +83,8 @@ void UTestbed2NestedStruct3InterfaceImplSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp1(), TestValue);
 
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
-		UTestbed2NestedStruct3InterfaceSignals* Testbed2NestedStruct3InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2NestedStruct3InterfaceSignals->OnProp1ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2NestedStruct3InterfaceImplHelper::Prop1PropertyCb);
+		UTestbed2NestedStruct3InterfacePublisher* Testbed2NestedStruct3InterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		Testbed2NestedStruct3InterfacePublisher->OnProp1ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2NestedStruct3InterfaceImplHelper::Prop1PropertyCb);
 		// use different test value
 		TestValue = createTestFTestbed2NestedStruct1();
 		ImplFixture->GetImplementation()->SetProp1(TestValue);
@@ -103,8 +103,8 @@ void UTestbed2NestedStruct3InterfaceImplSpec::Define()
 		FTestbed2NestedStruct2 TestValue = FTestbed2NestedStruct2(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp2(), TestValue);
 
-		UTestbed2NestedStruct3InterfaceSignals* Testbed2NestedStruct3InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2NestedStruct3InterfaceSignals->OnProp2Changed.AddLambda([this, TestDone](const FTestbed2NestedStruct2& InProp2)
+		UTestbed2NestedStruct3InterfacePublisher* Testbed2NestedStruct3InterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		Testbed2NestedStruct3InterfacePublisher->OnProp2Changed.AddLambda([this, TestDone](const FTestbed2NestedStruct2& InProp2)
 			{
 			FTestbed2NestedStruct2 TestValue = FTestbed2NestedStruct2();
 			// use different test value
@@ -126,8 +126,8 @@ void UTestbed2NestedStruct3InterfaceImplSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp2(), TestValue);
 
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
-		UTestbed2NestedStruct3InterfaceSignals* Testbed2NestedStruct3InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2NestedStruct3InterfaceSignals->OnProp2ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2NestedStruct3InterfaceImplHelper::Prop2PropertyCb);
+		UTestbed2NestedStruct3InterfacePublisher* Testbed2NestedStruct3InterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		Testbed2NestedStruct3InterfacePublisher->OnProp2ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2NestedStruct3InterfaceImplHelper::Prop2PropertyCb);
 		// use different test value
 		TestValue = createTestFTestbed2NestedStruct2();
 		ImplFixture->GetImplementation()->SetProp2(TestValue);
@@ -146,8 +146,8 @@ void UTestbed2NestedStruct3InterfaceImplSpec::Define()
 		FTestbed2NestedStruct3 TestValue = FTestbed2NestedStruct3(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp3(), TestValue);
 
-		UTestbed2NestedStruct3InterfaceSignals* Testbed2NestedStruct3InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2NestedStruct3InterfaceSignals->OnProp3Changed.AddLambda([this, TestDone](const FTestbed2NestedStruct3& InProp3)
+		UTestbed2NestedStruct3InterfacePublisher* Testbed2NestedStruct3InterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		Testbed2NestedStruct3InterfacePublisher->OnProp3Changed.AddLambda([this, TestDone](const FTestbed2NestedStruct3& InProp3)
 			{
 			FTestbed2NestedStruct3 TestValue = FTestbed2NestedStruct3();
 			// use different test value
@@ -169,8 +169,8 @@ void UTestbed2NestedStruct3InterfaceImplSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp3(), TestValue);
 
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
-		UTestbed2NestedStruct3InterfaceSignals* Testbed2NestedStruct3InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2NestedStruct3InterfaceSignals->OnProp3ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2NestedStruct3InterfaceImplHelper::Prop3PropertyCb);
+		UTestbed2NestedStruct3InterfacePublisher* Testbed2NestedStruct3InterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		Testbed2NestedStruct3InterfacePublisher->OnProp3ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2NestedStruct3InterfaceImplHelper::Prop3PropertyCb);
 		// use different test value
 		TestValue = createTestFTestbed2NestedStruct3();
 		ImplFixture->GetImplementation()->SetProp3(TestValue);
@@ -196,8 +196,8 @@ void UTestbed2NestedStruct3InterfaceImplSpec::Define()
 
 	LatentIt("Signal.Sig1", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		UTestbed2NestedStruct3InterfaceSignals* Testbed2NestedStruct3InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2NestedStruct3InterfaceSignals->OnSig1Signal.AddLambda([this, TestDone](const FTestbed2NestedStruct1& InParam1)
+		UTestbed2NestedStruct3InterfacePublisher* Testbed2NestedStruct3InterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		Testbed2NestedStruct3InterfacePublisher->OnSig1Signal.AddLambda([this, TestDone](const FTestbed2NestedStruct1& InParam1)
 			{
 			// known test value
 			FTestbed2NestedStruct1 Param1TestValue = createTestFTestbed2NestedStruct1();
@@ -207,24 +207,24 @@ void UTestbed2NestedStruct3InterfaceImplSpec::Define()
 
 		// use different test value
 		FTestbed2NestedStruct1 Param1TestValue = createTestFTestbed2NestedStruct1();
-		Testbed2NestedStruct3InterfaceSignals->BroadcastSig1Signal(Param1TestValue);
+		Testbed2NestedStruct3InterfacePublisher->BroadcastSig1Signal(Param1TestValue);
 	});
 
 	LatentIt("Signal.Sig1BP", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
-		UTestbed2NestedStruct3InterfaceSignals* Testbed2NestedStruct3InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2NestedStruct3InterfaceSignals->OnSig1SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2NestedStruct3InterfaceImplHelper::Sig1SignalCb);
+		UTestbed2NestedStruct3InterfacePublisher* Testbed2NestedStruct3InterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		Testbed2NestedStruct3InterfacePublisher->OnSig1SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2NestedStruct3InterfaceImplHelper::Sig1SignalCb);
 
 		// use different test value
 		FTestbed2NestedStruct1 Param1TestValue = createTestFTestbed2NestedStruct1();
-		Testbed2NestedStruct3InterfaceSignals->BroadcastSig1Signal(Param1TestValue);
+		Testbed2NestedStruct3InterfacePublisher->BroadcastSig1Signal(Param1TestValue);
 	});
 
 	LatentIt("Signal.Sig2", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		UTestbed2NestedStruct3InterfaceSignals* Testbed2NestedStruct3InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2NestedStruct3InterfaceSignals->OnSig2Signal.AddLambda([this, TestDone](const FTestbed2NestedStruct1& InParam1, const FTestbed2NestedStruct2& InParam2)
+		UTestbed2NestedStruct3InterfacePublisher* Testbed2NestedStruct3InterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		Testbed2NestedStruct3InterfacePublisher->OnSig2Signal.AddLambda([this, TestDone](const FTestbed2NestedStruct1& InParam1, const FTestbed2NestedStruct2& InParam2)
 			{
 			// known test value
 			FTestbed2NestedStruct1 Param1TestValue = createTestFTestbed2NestedStruct1();
@@ -237,25 +237,25 @@ void UTestbed2NestedStruct3InterfaceImplSpec::Define()
 		// use different test value
 		FTestbed2NestedStruct1 Param1TestValue = createTestFTestbed2NestedStruct1();
 		FTestbed2NestedStruct2 Param2TestValue = createTestFTestbed2NestedStruct2();
-		Testbed2NestedStruct3InterfaceSignals->BroadcastSig2Signal(Param1TestValue, Param2TestValue);
+		Testbed2NestedStruct3InterfacePublisher->BroadcastSig2Signal(Param1TestValue, Param2TestValue);
 	});
 
 	LatentIt("Signal.Sig2BP", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
-		UTestbed2NestedStruct3InterfaceSignals* Testbed2NestedStruct3InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2NestedStruct3InterfaceSignals->OnSig2SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2NestedStruct3InterfaceImplHelper::Sig2SignalCb);
+		UTestbed2NestedStruct3InterfacePublisher* Testbed2NestedStruct3InterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		Testbed2NestedStruct3InterfacePublisher->OnSig2SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2NestedStruct3InterfaceImplHelper::Sig2SignalCb);
 
 		// use different test value
 		FTestbed2NestedStruct1 Param1TestValue = createTestFTestbed2NestedStruct1();
 		FTestbed2NestedStruct2 Param2TestValue = createTestFTestbed2NestedStruct2();
-		Testbed2NestedStruct3InterfaceSignals->BroadcastSig2Signal(Param1TestValue, Param2TestValue);
+		Testbed2NestedStruct3InterfacePublisher->BroadcastSig2Signal(Param1TestValue, Param2TestValue);
 	});
 
 	LatentIt("Signal.Sig3", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		UTestbed2NestedStruct3InterfaceSignals* Testbed2NestedStruct3InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2NestedStruct3InterfaceSignals->OnSig3Signal.AddLambda([this, TestDone](const FTestbed2NestedStruct1& InParam1, const FTestbed2NestedStruct2& InParam2, const FTestbed2NestedStruct3& InParam3)
+		UTestbed2NestedStruct3InterfacePublisher* Testbed2NestedStruct3InterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		Testbed2NestedStruct3InterfacePublisher->OnSig3Signal.AddLambda([this, TestDone](const FTestbed2NestedStruct1& InParam1, const FTestbed2NestedStruct2& InParam2, const FTestbed2NestedStruct3& InParam3)
 			{
 			// known test value
 			FTestbed2NestedStruct1 Param1TestValue = createTestFTestbed2NestedStruct1();
@@ -271,20 +271,20 @@ void UTestbed2NestedStruct3InterfaceImplSpec::Define()
 		FTestbed2NestedStruct1 Param1TestValue = createTestFTestbed2NestedStruct1();
 		FTestbed2NestedStruct2 Param2TestValue = createTestFTestbed2NestedStruct2();
 		FTestbed2NestedStruct3 Param3TestValue = createTestFTestbed2NestedStruct3();
-		Testbed2NestedStruct3InterfaceSignals->BroadcastSig3Signal(Param1TestValue, Param2TestValue, Param3TestValue);
+		Testbed2NestedStruct3InterfacePublisher->BroadcastSig3Signal(Param1TestValue, Param2TestValue, Param3TestValue);
 	});
 
 	LatentIt("Signal.Sig3BP", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
-		UTestbed2NestedStruct3InterfaceSignals* Testbed2NestedStruct3InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2NestedStruct3InterfaceSignals->OnSig3SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2NestedStruct3InterfaceImplHelper::Sig3SignalCb);
+		UTestbed2NestedStruct3InterfacePublisher* Testbed2NestedStruct3InterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		Testbed2NestedStruct3InterfacePublisher->OnSig3SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTestbed2NestedStruct3InterfaceImplHelper::Sig3SignalCb);
 
 		// use different test value
 		FTestbed2NestedStruct1 Param1TestValue = createTestFTestbed2NestedStruct1();
 		FTestbed2NestedStruct2 Param2TestValue = createTestFTestbed2NestedStruct2();
 		FTestbed2NestedStruct3 Param3TestValue = createTestFTestbed2NestedStruct3();
-		Testbed2NestedStruct3InterfaceSignals->BroadcastSig3Signal(Param1TestValue, Param2TestValue, Param3TestValue);
+		Testbed2NestedStruct3InterfacePublisher->BroadcastSig3Signal(Param1TestValue, Param2TestValue, Param3TestValue);
 	});
 }
 

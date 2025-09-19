@@ -93,12 +93,12 @@ public:
 };
 
 /**
- * Class UTestbed1StructArray2InterfaceInterfaceSignals
+ * Class UTestbed1StructArray2InterfaceInterfacePublisher
  * Contains delegates for properties and signals
  * this is needed since we cannot declare delegates on an UInterface
  */
 UCLASS(BlueprintType)
-class TESTBED1API_API UTestbed1StructArray2InterfaceSignals : public UObject
+class TESTBED1API_API UTestbed1StructArray2InterfacePublisher : public UObject
 {
 	GENERATED_BODY()
 
@@ -286,7 +286,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArray2Interface|Signals")
 	void Subscribe(const TScriptInterface<ITestbed1StructArray2InterfaceBPSubscriberInterface>& Subscriber)
 	{
-		if (!Subscriber.GetObject()) return;
+		if (!Subscriber.GetObject())
+		{
+			return;
+		}
 		Subscribers.Remove(Subscriber);
 		Subscribers.Add(Subscriber);
 	}
@@ -295,6 +298,7 @@ public:
 	{
 		Subscribers.Remove(Subscriber);
 	}
+
 private:
 	UPROPERTY()
 	TArray<TScriptInterface<ITestbed1StructArray2InterfaceBPSubscriberInterface>> Subscribers;
@@ -321,7 +325,7 @@ public:
 	/// this is needed since we cannot declare delegates on an UInterface
 	/// @return object with signals for property state changes or standalone signals
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArray2Interface")
-	virtual UTestbed1StructArray2InterfaceSignals* _GetSignals() = 0;
+	virtual UTestbed1StructArray2InterfacePublisher* _GetPublisher() = 0;
 
 	// methods
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArray2Interface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))

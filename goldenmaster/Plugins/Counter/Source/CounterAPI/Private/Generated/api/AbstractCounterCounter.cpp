@@ -63,16 +63,16 @@ public:
 
 UAbstractCounterCounter::UAbstractCounterCounter()
 {
-	CounterCounterSignals = NewObject<UCounterCounterSignals>();
+	CounterCounterPublisher = NewObject<UCounterCounterPublisher>();
 }
 
-UCounterCounterSignals* UAbstractCounterCounter::_GetSignals()
+UCounterCounterPublisher* UAbstractCounterCounter::_GetPublisher()
 {
-	if (!CounterCounterSignals)
+	if (!CounterCounterPublisher)
 	{
-		CounterCounterSignals = NewObject<UCounterCounterSignals>();
+		CounterCounterPublisher = NewObject<UCounterCounterPublisher>();
 	}
-	return CounterCounterSignals;
+	return CounterCounterPublisher;
 }
 
 FCustomTypesVector3D UAbstractCounterCounter::GetVector_Private() const
@@ -268,19 +268,19 @@ void UAbstractCounterCounter::Deinitialize()
 	check(bInitialized);
 	bInitialized = false;
 
-	if (CounterCounterSignals)
+	if (CounterCounterPublisher)
 	{
-		CounterCounterSignals->OnValueChangedSignal.RemoveAll(CounterCounterSignals);
-		CounterCounterSignals->OnValueChangedSignalBP.RemoveAll(CounterCounterSignals);
+		CounterCounterPublisher->OnValueChangedSignal.RemoveAll(CounterCounterPublisher);
+		CounterCounterPublisher->OnValueChangedSignalBP.RemoveAll(CounterCounterPublisher);
 
-		CounterCounterSignals->OnVectorChanged.RemoveAll(CounterCounterSignals);
-		CounterCounterSignals->OnVectorChangedBP.RemoveAll(CounterCounterSignals);
-		CounterCounterSignals->OnExternVectorChanged.RemoveAll(CounterCounterSignals);
-		CounterCounterSignals->OnExternVectorChangedBP.RemoveAll(CounterCounterSignals);
-		CounterCounterSignals->OnVectorArrayChanged.RemoveAll(CounterCounterSignals);
-		CounterCounterSignals->OnVectorArrayChangedBP.RemoveAll(CounterCounterSignals);
-		CounterCounterSignals->OnExternVectorArrayChanged.RemoveAll(CounterCounterSignals);
-		CounterCounterSignals->OnExternVectorArrayChangedBP.RemoveAll(CounterCounterSignals);
+		CounterCounterPublisher->OnVectorChanged.RemoveAll(CounterCounterPublisher);
+		CounterCounterPublisher->OnVectorChangedBP.RemoveAll(CounterCounterPublisher);
+		CounterCounterPublisher->OnExternVectorChanged.RemoveAll(CounterCounterPublisher);
+		CounterCounterPublisher->OnExternVectorChangedBP.RemoveAll(CounterCounterPublisher);
+		CounterCounterPublisher->OnVectorArrayChanged.RemoveAll(CounterCounterPublisher);
+		CounterCounterPublisher->OnVectorArrayChangedBP.RemoveAll(CounterCounterPublisher);
+		CounterCounterPublisher->OnExternVectorArrayChanged.RemoveAll(CounterCounterPublisher);
+		CounterCounterPublisher->OnExternVectorArrayChangedBP.RemoveAll(CounterCounterPublisher);
 	}
 
 	Super::Deinitialize();

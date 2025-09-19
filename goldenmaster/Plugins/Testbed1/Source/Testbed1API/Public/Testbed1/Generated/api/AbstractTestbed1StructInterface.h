@@ -38,7 +38,7 @@ public:
 	virtual void Deinitialize() override;
 
 	// signals
-	virtual UTestbed1StructInterfaceSignals* _GetSignals() override;
+	virtual UTestbed1StructInterfacePublisher* _GetPublisher() override;
 
 	// methods
 	virtual void FuncBoolAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const FTestbed1StructBool& ParamBool) override;
@@ -111,5 +111,5 @@ protected:
 private:
 	// signals
 	UPROPERTY()
-	UTestbed1StructInterfaceSignals* Testbed1StructInterfaceSignals;
+	UTestbed1StructInterfacePublisher* Testbed1StructInterfacePublisher;
 };

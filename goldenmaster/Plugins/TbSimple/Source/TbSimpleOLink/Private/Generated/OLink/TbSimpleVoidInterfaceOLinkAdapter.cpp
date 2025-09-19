@@ -57,11 +57,11 @@ void UTbSimpleVoidInterfaceOLinkAdapter::setBackendService(TScriptInterface<ITbS
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		UTbSimpleVoidInterfaceSignals* BackendSignals = BackendService->_GetSignals();
-		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleVoidInterface"));
+		UTbSimpleVoidInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleVoidInterface"));
 		if (OnSigVoidSignalHandle.IsValid())
 		{
-			BackendSignals->OnSigVoidSignal.Remove(OnSigVoidSignalHandle);
+			BackendPublisher->OnSigVoidSignal.Remove(OnSigVoidSignalHandle);
 			OnSigVoidSignalHandle.Reset();
 		}
 	}
@@ -71,10 +71,10 @@ void UTbSimpleVoidInterfaceOLinkAdapter::setBackendService(TScriptInterface<ITbS
 
 	// subscribe to new backend
 	BackendService = InService;
-	UTbSimpleVoidInterfaceSignals* BackendSignals = BackendService->_GetSignals();
-	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service TbSimpleVoidInterface"));
+	UTbSimpleVoidInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbSimpleVoidInterface"));
 	// connect property changed signals or simple events
-	OnSigVoidSignalHandle = BackendSignals->OnSigVoidSignal.AddUObject(this, &UTbSimpleVoidInterfaceOLinkAdapter::OnSigVoid);
+	OnSigVoidSignalHandle = BackendPublisher->OnSigVoidSignal.AddUObject(this, &UTbSimpleVoidInterfaceOLinkAdapter::OnSigVoid);
 
 	// update olink source with new backend
 	Source->setBackendService(InService);

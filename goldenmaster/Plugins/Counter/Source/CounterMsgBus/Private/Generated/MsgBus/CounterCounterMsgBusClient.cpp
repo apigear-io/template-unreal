@@ -205,7 +205,7 @@ void UCounterCounterMsgBusClient::OnConnectionInit(const FCounterCounterInitMess
 			FScopeLock Lock(&(_SentData->VectorMutex));
 			_SentData->Vector = Vector;
 		}
-		_GetSignals()->BroadcastVectorChanged(Vector);
+		_GetPublisher()->BroadcastVectorChanged(Vector);
 	}
 
 	const bool bExternVectorChanged = InMessage.ExternVector != ExternVector;
@@ -217,7 +217,7 @@ void UCounterCounterMsgBusClient::OnConnectionInit(const FCounterCounterInitMess
 			FScopeLock Lock(&(_SentData->ExternVectorMutex));
 			_SentData->ExternVector = ExternVector;
 		}
-		_GetSignals()->BroadcastExternVectorChanged(ExternVector);
+		_GetPublisher()->BroadcastExternVectorChanged(ExternVector);
 	}
 
 	const bool bVectorArrayChanged = InMessage.VectorArray != VectorArray;
@@ -229,7 +229,7 @@ void UCounterCounterMsgBusClient::OnConnectionInit(const FCounterCounterInitMess
 			FScopeLock Lock(&(_SentData->VectorArrayMutex));
 			_SentData->VectorArray = VectorArray;
 		}
-		_GetSignals()->BroadcastVectorArrayChanged(VectorArray);
+		_GetPublisher()->BroadcastVectorArrayChanged(VectorArray);
 	}
 
 	const bool bExternVectorArrayChanged = InMessage.ExternVectorArray != ExternVectorArray;
@@ -241,7 +241,7 @@ void UCounterCounterMsgBusClient::OnConnectionInit(const FCounterCounterInitMess
 			FScopeLock Lock(&(_SentData->ExternVectorArrayMutex));
 			_SentData->ExternVectorArray = ExternVectorArray;
 		}
-		_GetSignals()->BroadcastExternVectorArrayChanged(ExternVectorArray);
+		_GetPublisher()->BroadcastExternVectorArrayChanged(ExternVectorArray);
 	}
 
 	_ConnectionStatusChanged.Broadcast(true);
@@ -632,7 +632,7 @@ void UCounterCounterMsgBusClient::OnValueChanged(const FCounterCounterValueChang
 		return;
 	}
 
-	_GetSignals()->BroadcastValueChangedSignal(InMessage.Vector, InMessage.ExternVector, InMessage.VectorArray, InMessage.ExternVectorArray);
+	_GetPublisher()->BroadcastValueChangedSignal(InMessage.Vector, InMessage.ExternVector, InMessage.VectorArray, InMessage.ExternVectorArray);
 	return;
 }
 
@@ -653,7 +653,7 @@ void UCounterCounterMsgBusClient::OnVectorChanged(const FCounterCounterVectorCha
 			FScopeLock Lock(&(_SentData->VectorMutex));
 			_SentData->Vector = Vector;
 		}
-		_GetSignals()->BroadcastVectorChanged(Vector);
+		_GetPublisher()->BroadcastVectorChanged(Vector);
 	}
 }
 
@@ -674,7 +674,7 @@ void UCounterCounterMsgBusClient::OnExternVectorChanged(const FCounterCounterExt
 			FScopeLock Lock(&(_SentData->ExternVectorMutex));
 			_SentData->ExternVector = ExternVector;
 		}
-		_GetSignals()->BroadcastExternVectorChanged(ExternVector);
+		_GetPublisher()->BroadcastExternVectorChanged(ExternVector);
 	}
 }
 
@@ -695,7 +695,7 @@ void UCounterCounterMsgBusClient::OnVectorArrayChanged(const FCounterCounterVect
 			FScopeLock Lock(&(_SentData->VectorArrayMutex));
 			_SentData->VectorArray = VectorArray;
 		}
-		_GetSignals()->BroadcastVectorArrayChanged(VectorArray);
+		_GetPublisher()->BroadcastVectorArrayChanged(VectorArray);
 	}
 }
 
@@ -716,7 +716,7 @@ void UCounterCounterMsgBusClient::OnExternVectorArrayChanged(const FCounterCount
 			FScopeLock Lock(&(_SentData->ExternVectorArrayMutex));
 			_SentData->ExternVectorArray = ExternVectorArray;
 		}
-		_GetSignals()->BroadcastExternVectorArrayChanged(ExternVectorArray);
+		_GetPublisher()->BroadcastExternVectorArrayChanged(ExternVectorArray);
 	}
 }
 

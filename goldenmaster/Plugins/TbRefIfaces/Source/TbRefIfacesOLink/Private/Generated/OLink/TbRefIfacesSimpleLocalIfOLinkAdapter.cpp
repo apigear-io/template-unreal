@@ -57,16 +57,16 @@ void UTbRefIfacesSimpleLocalIfOLinkAdapter::setBackendService(TScriptInterface<I
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		UTbRefIfacesSimpleLocalIfSignals* BackendSignals = BackendService->_GetSignals();
-		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbRefIfacesSimpleLocalIf"));
+		UTbRefIfacesSimpleLocalIfPublisher* BackendPublisher = BackendService->_GetPublisher();
+		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbRefIfacesSimpleLocalIf"));
 		if (OnIntPropertyChangedHandle.IsValid())
 		{
-			BackendSignals->OnIntPropertyChanged.Remove(OnIntPropertyChangedHandle);
+			BackendPublisher->OnIntPropertyChanged.Remove(OnIntPropertyChangedHandle);
 			OnIntPropertyChangedHandle.Reset();
 		}
 		if (OnIntSignalSignalHandle.IsValid())
 		{
-			BackendSignals->OnIntSignalSignal.Remove(OnIntSignalSignalHandle);
+			BackendPublisher->OnIntSignalSignal.Remove(OnIntSignalSignalHandle);
 			OnIntSignalSignalHandle.Reset();
 		}
 	}
@@ -76,11 +76,11 @@ void UTbRefIfacesSimpleLocalIfOLinkAdapter::setBackendService(TScriptInterface<I
 
 	// subscribe to new backend
 	BackendService = InService;
-	UTbRefIfacesSimpleLocalIfSignals* BackendSignals = BackendService->_GetSignals();
-	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service TbRefIfacesSimpleLocalIf"));
+	UTbRefIfacesSimpleLocalIfPublisher* BackendPublisher = BackendService->_GetPublisher();
+	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbRefIfacesSimpleLocalIf"));
 	// connect property changed signals or simple events
-	OnIntPropertyChangedHandle = BackendSignals->OnIntPropertyChanged.AddUObject(this, &UTbRefIfacesSimpleLocalIfOLinkAdapter::OnIntPropertyChanged);
-	OnIntSignalSignalHandle = BackendSignals->OnIntSignalSignal.AddUObject(this, &UTbRefIfacesSimpleLocalIfOLinkAdapter::OnIntSignal);
+	OnIntPropertyChangedHandle = BackendPublisher->OnIntPropertyChanged.AddUObject(this, &UTbRefIfacesSimpleLocalIfOLinkAdapter::OnIntPropertyChanged);
+	OnIntSignalSignalHandle = BackendPublisher->OnIntSignalSignal.AddUObject(this, &UTbRefIfacesSimpleLocalIfOLinkAdapter::OnIntSignal);
 
 	// update olink source with new backend
 	Source->setBackendService(InService);

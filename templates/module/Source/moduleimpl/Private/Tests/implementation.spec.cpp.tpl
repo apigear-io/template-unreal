@@ -61,8 +61,8 @@ void {{$Class}}ImplSpec::Define()
 		{{ueType "" .}} TestValue = {{ueDefault "" .}}; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Get{{Camel .Name}}(), TestValue);
 
-		U{{$Iface}}Signals* {{$Iface}}Signals = ImplFixture->GetImplementation()->_GetSignals();
-		{{$Iface}}Signals->On{{Camel .Name}}Changed.AddLambda([this, TestDone]({{ueParam "In" .}})
+		U{{$Iface}}Publisher* {{$Iface}}Publisher = ImplFixture->GetImplementation()->_GetPublisher();
+		{{$Iface}}Publisher->On{{Camel .Name}}Changed.AddLambda([this, TestDone]({{ueParam "In" .}})
 			{
 			{{ueType "" .}} TestValue = {{ueDefault "" .}};
 			// use different test value
@@ -116,8 +116,8 @@ void {{$Class}}ImplSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Get{{Camel .Name}}(), TestValue);
 
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
-		U{{$Iface}}Signals* {{$Iface}}Signals = ImplFixture->GetImplementation()->_GetSignals();
-		{{$Iface}}Signals->On{{Camel .Name}}ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &{{$Class}}ImplHelper::{{ Camel .Name }}PropertyCb);
+		U{{$Iface}}Publisher* {{$Iface}}Publisher = ImplFixture->GetImplementation()->_GetPublisher();
+		{{$Iface}}Publisher->On{{Camel .Name}}ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &{{$Class}}ImplHelper::{{ Camel .Name }}PropertyCb);
 		// use different test value
 		{{- if .IsArray }}
 		{{- if or .IsPrimitive (eq .KindType "enum") }}
@@ -160,8 +160,8 @@ void {{$Class}}ImplSpec::Define()
 
 	LatentIt("Signal.{{ Camel .Name }}", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		U{{$Iface}}Signals* {{$Iface}}Signals = ImplFixture->GetImplementation()->_GetSignals();
-		{{$Iface}}Signals->On{{Camel .Name}}Signal.AddLambda([this, TestDone]({{ueParams "In" .Params}})
+		U{{$Iface}}Publisher* {{$Iface}}Publisher = ImplFixture->GetImplementation()->_GetPublisher();
+		{{$Iface}}Publisher->On{{Camel .Name}}Signal.AddLambda([this, TestDone]({{ueParams "In" .Params}})
 			{
 			// known test value
 			{{- range $i, $e := .Params -}}
@@ -215,7 +215,7 @@ void {{$Class}}ImplSpec::Define()
 		{{ ueType "" . }} {{ueVar "" .}}TestValue = {{ ueDefault "" . }};
 		{{- end }}
 		{{- end }}
-		{{$Iface}}Signals->Broadcast{{Camel .Name}}Signal(
+		{{$Iface}}Publisher->Broadcast{{Camel .Name}}Signal(
 			{{- range $i, $e := .Params -}}
 			{{- if $i }}, {{ end }}{{ueVar "" .}}TestValue
 			{{- end -}});
@@ -224,8 +224,8 @@ void {{$Class}}ImplSpec::Define()
 	LatentIt("Signal.{{ Camel .Name }}BP", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
-		U{{$Iface}}Signals* {{$Iface}}Signals = ImplFixture->GetImplementation()->_GetSignals();
-		{{$Iface}}Signals->On{{Camel .Name}}SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &{{$Class}}ImplHelper::{{ Camel .Name }}SignalCb);
+		U{{$Iface}}Publisher* {{$Iface}}Publisher = ImplFixture->GetImplementation()->_GetPublisher();
+		{{$Iface}}Publisher->On{{Camel .Name}}SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &{{$Class}}ImplHelper::{{ Camel .Name }}SignalCb);
 
 		// use different test value
 		{{- range $i, $e := .Params -}}
@@ -252,7 +252,7 @@ void {{$Class}}ImplSpec::Define()
 		{{ ueType "" . }} {{ueVar "" .}}TestValue = {{ ueDefault "" . }};
 		{{- end }}
 		{{- end }}
-		{{$Iface}}Signals->Broadcast{{Camel .Name}}Signal(
+		{{$Iface}}Publisher->Broadcast{{Camel .Name}}Signal(
 			{{- range $i, $e := .Params -}}
 			{{- if $i }}, {{ end }}{{ueVar "" .}}TestValue
 			{{- end -}});

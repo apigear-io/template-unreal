@@ -86,8 +86,8 @@ void UTbSimpleNoOperationsInterfaceMsgBusSpec::Define()
 		bool TestValue = false; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
 
-		UTbSimpleNoOperationsInterfaceSignals* TbSimpleNoOperationsInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleNoOperationsInterfaceSignals->OnPropBoolChanged.AddLambda([this, TestDone](bool bInPropBool)
+		UTbSimpleNoOperationsInterfacePublisher* TbSimpleNoOperationsInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleNoOperationsInterfacePublisher->OnPropBoolChanged.AddLambda([this, TestDone](bool bInPropBool)
 			{
 			bool TestValue = false;
 			// use different test value
@@ -108,8 +108,8 @@ void UTbSimpleNoOperationsInterfaceMsgBusSpec::Define()
 		bool TestValue = false; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
 
-		UTbSimpleNoOperationsInterfaceSignals* TbSimpleNoOperationsInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleNoOperationsInterfaceSignals->OnPropBoolChanged.AddLambda([this, TestDone](bool bInPropBool)
+		UTbSimpleNoOperationsInterfacePublisher* TbSimpleNoOperationsInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleNoOperationsInterfacePublisher->OnPropBoolChanged.AddLambda([this, TestDone](bool bInPropBool)
 			{
 			bool TestValue = false;
 			// use different test value
@@ -130,8 +130,8 @@ void UTbSimpleNoOperationsInterfaceMsgBusSpec::Define()
 		bool TestValue = false; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
 
-		UTbSimpleNoOperationsInterfaceSignals* TbSimpleNoOperationsInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleNoOperationsInterfaceSignals->OnPropBoolChanged.AddLambda([this, TestDone](bool bInPropBool)
+		UTbSimpleNoOperationsInterfacePublisher* TbSimpleNoOperationsInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleNoOperationsInterfacePublisher->OnPropBoolChanged.AddLambda([this, TestDone](bool bInPropBool)
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -178,8 +178,8 @@ void UTbSimpleNoOperationsInterfaceMsgBusSpec::Define()
 		int32 TestValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
 
-		UTbSimpleNoOperationsInterfaceSignals* TbSimpleNoOperationsInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleNoOperationsInterfaceSignals->OnPropIntChanged.AddLambda([this, TestDone](int32 InPropInt)
+		UTbSimpleNoOperationsInterfacePublisher* TbSimpleNoOperationsInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleNoOperationsInterfacePublisher->OnPropIntChanged.AddLambda([this, TestDone](int32 InPropInt)
 			{
 			int32 TestValue = 0;
 			// use different test value
@@ -200,8 +200,8 @@ void UTbSimpleNoOperationsInterfaceMsgBusSpec::Define()
 		int32 TestValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
 
-		UTbSimpleNoOperationsInterfaceSignals* TbSimpleNoOperationsInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleNoOperationsInterfaceSignals->OnPropIntChanged.AddLambda([this, TestDone](int32 InPropInt)
+		UTbSimpleNoOperationsInterfacePublisher* TbSimpleNoOperationsInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleNoOperationsInterfacePublisher->OnPropIntChanged.AddLambda([this, TestDone](int32 InPropInt)
 			{
 			int32 TestValue = 0;
 			// use different test value
@@ -222,8 +222,8 @@ void UTbSimpleNoOperationsInterfaceMsgBusSpec::Define()
 		int32 TestValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
 
-		UTbSimpleNoOperationsInterfaceSignals* TbSimpleNoOperationsInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleNoOperationsInterfaceSignals->OnPropIntChanged.AddLambda([this, TestDone](int32 InPropInt)
+		UTbSimpleNoOperationsInterfacePublisher* TbSimpleNoOperationsInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleNoOperationsInterfacePublisher->OnPropIntChanged.AddLambda([this, TestDone](int32 InPropInt)
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -259,21 +259,21 @@ void UTbSimpleNoOperationsInterfaceMsgBusSpec::Define()
 
 	LatentIt("Signal.SigVoid", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		UTbSimpleNoOperationsInterfaceSignals* TbSimpleNoOperationsInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleNoOperationsInterfaceSignals->OnSigVoidSignal.AddLambda([this, TestDone]()
+		UTbSimpleNoOperationsInterfacePublisher* TbSimpleNoOperationsInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleNoOperationsInterfacePublisher->OnSigVoidSignal.AddLambda([this, TestDone]()
 			{
 			// known test value
 			TestDone.Execute();
 		});
 
 		// use different test value
-		TbSimpleNoOperationsInterfaceSignals->BroadcastSigVoidSignal();
+		TbSimpleNoOperationsInterfacePublisher->BroadcastSigVoidSignal();
 	});
 
 	LatentIt("Signal.SigBool", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		UTbSimpleNoOperationsInterfaceSignals* TbSimpleNoOperationsInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleNoOperationsInterfaceSignals->OnSigBoolSignal.AddLambda([this, TestDone](bool bInParamBool)
+		UTbSimpleNoOperationsInterfacePublisher* TbSimpleNoOperationsInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleNoOperationsInterfacePublisher->OnSigBoolSignal.AddLambda([this, TestDone](bool bInParamBool)
 			{
 			// known test value
 			bool bParamBoolTestValue = true;
@@ -283,7 +283,7 @@ void UTbSimpleNoOperationsInterfaceMsgBusSpec::Define()
 
 		// use different test value
 		bool bParamBoolTestValue = true;
-		TbSimpleNoOperationsInterfaceSignals->BroadcastSigBoolSignal(bParamBoolTestValue);
+		TbSimpleNoOperationsInterfacePublisher->BroadcastSigBoolSignal(bParamBoolTestValue);
 	});
 }
 } // namespace Tests

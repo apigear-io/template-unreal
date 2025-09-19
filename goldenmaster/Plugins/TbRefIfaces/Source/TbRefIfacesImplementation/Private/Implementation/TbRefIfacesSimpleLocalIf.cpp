@@ -28,7 +28,7 @@ void UTbRefIfacesSimpleLocalIfImplementation::SetIntProperty(int32 InIntProperty
 	if (IntProperty != InIntProperty)
 	{
 		IntProperty = InIntProperty;
-		_GetSignals()->BroadcastIntPropertyChanged(IntProperty);
+		_GetPublisher()->BroadcastIntPropertyChanged(IntProperty);
 	}
 }
 
@@ -44,6 +44,6 @@ void UTbRefIfacesSimpleLocalIfImplementation::_ResetProperties()
 	if (IntProperty != 0)
 	{
 		IntProperty = 0;
-		_GetSignals()->BroadcastIntPropertyChanged(IntProperty);
+		_GetPublisher()->BroadcastIntPropertyChanged(IntProperty);
 	}
 }

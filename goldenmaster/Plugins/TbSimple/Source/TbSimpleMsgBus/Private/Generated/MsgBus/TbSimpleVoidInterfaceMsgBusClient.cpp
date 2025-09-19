@@ -304,7 +304,7 @@ void UTbSimpleVoidInterfaceMsgBusClient::OnSigVoid(const FTbSimpleVoidInterfaceS
 		return;
 	}
 
-	_GetSignals()->BroadcastSigVoidSignal();
+	_GetPublisher()->BroadcastSigVoidSignal();
 	return;
 }
 

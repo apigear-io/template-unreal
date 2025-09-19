@@ -38,7 +38,7 @@ public:
 	virtual void Deinitialize() override;
 
 	// signals
-	virtual UTbRefIfacesSimpleLocalIfSignals* _GetSignals() override;
+	virtual UTbRefIfacesSimpleLocalIfPublisher* _GetPublisher() override;
 
 	// methods
 	virtual void IntMethodAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param) override;
@@ -66,5 +66,5 @@ protected:
 private:
 	// signals
 	UPROPERTY()
-	UTbRefIfacesSimpleLocalIfSignals* TbRefIfacesSimpleLocalIfSignals;
+	UTbRefIfacesSimpleLocalIfPublisher* TbRefIfacesSimpleLocalIfPublisher;
 };

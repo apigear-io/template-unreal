@@ -395,7 +395,7 @@ void UTestbed1StructInterfaceOLinkClient::applyState(const nlohmann::json& field
 			FScopeLock Lock(&(_SentData->PropBoolMutex));
 			_SentData->PropBool = PropBool;
 		}
-		_GetSignals()->BroadcastPropBoolChanged(PropBool);
+		_GetPublisher()->BroadcastPropBoolChanged(PropBool);
 	}
 
 	const bool bPropIntChanged = fields.contains("propInt") && (PropInt != fields["propInt"].get<FTestbed1StructInt>());
@@ -407,7 +407,7 @@ void UTestbed1StructInterfaceOLinkClient::applyState(const nlohmann::json& field
 			FScopeLock Lock(&(_SentData->PropIntMutex));
 			_SentData->PropInt = PropInt;
 		}
-		_GetSignals()->BroadcastPropIntChanged(PropInt);
+		_GetPublisher()->BroadcastPropIntChanged(PropInt);
 	}
 
 	const bool bPropFloatChanged = fields.contains("propFloat") && (PropFloat != fields["propFloat"].get<FTestbed1StructFloat>());
@@ -419,7 +419,7 @@ void UTestbed1StructInterfaceOLinkClient::applyState(const nlohmann::json& field
 			FScopeLock Lock(&(_SentData->PropFloatMutex));
 			_SentData->PropFloat = PropFloat;
 		}
-		_GetSignals()->BroadcastPropFloatChanged(PropFloat);
+		_GetPublisher()->BroadcastPropFloatChanged(PropFloat);
 	}
 
 	const bool bPropStringChanged = fields.contains("propString") && (PropString != fields["propString"].get<FTestbed1StructString>());
@@ -431,7 +431,7 @@ void UTestbed1StructInterfaceOLinkClient::applyState(const nlohmann::json& field
 			FScopeLock Lock(&(_SentData->PropStringMutex));
 			_SentData->PropString = PropString;
 		}
-		_GetSignals()->BroadcastPropStringChanged(PropString);
+		_GetPublisher()->BroadcastPropStringChanged(PropString);
 	}
 }
 
@@ -440,28 +440,28 @@ void UTestbed1StructInterfaceOLinkClient::emitSignal(const std::string& signalNa
 	if (signalName == "sigBool")
 	{
 		const FTestbed1StructBool& outParamBool = args[0].get<FTestbed1StructBool>();
-		_GetSignals()->BroadcastSigBoolSignal(outParamBool);
+		_GetPublisher()->BroadcastSigBoolSignal(outParamBool);
 		return;
 	}
 
 	if (signalName == "sigInt")
 	{
 		const FTestbed1StructInt& outParamInt = args[0].get<FTestbed1StructInt>();
-		_GetSignals()->BroadcastSigIntSignal(outParamInt);
+		_GetPublisher()->BroadcastSigIntSignal(outParamInt);
 		return;
 	}
 
 	if (signalName == "sigFloat")
 	{
 		const FTestbed1StructFloat& outParamFloat = args[0].get<FTestbed1StructFloat>();
-		_GetSignals()->BroadcastSigFloatSignal(outParamFloat);
+		_GetPublisher()->BroadcastSigFloatSignal(outParamFloat);
 		return;
 	}
 
 	if (signalName == "sigString")
 	{
 		const FTestbed1StructString& outParamString = args[0].get<FTestbed1StructString>();
-		_GetSignals()->BroadcastSigStringSignal(outParamString);
+		_GetPublisher()->BroadcastSigStringSignal(outParamString);
 		return;
 	}
 }

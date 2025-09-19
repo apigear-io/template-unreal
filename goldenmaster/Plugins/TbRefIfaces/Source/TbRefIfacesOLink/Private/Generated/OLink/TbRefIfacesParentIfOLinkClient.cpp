@@ -396,7 +396,7 @@ void UTbRefIfacesParentIfOLinkClient::applyState(const nlohmann::json& fields)
 			FScopeLock Lock(&(_SentData->LocalIfMutex));
 			_SentData->LocalIf = LocalIf;
 		}
-		_GetSignals()->BroadcastLocalIfChanged(LocalIf);
+		_GetPublisher()->BroadcastLocalIfChanged(LocalIf);
 	}
 
 	const bool bLocalIfListChanged = fields.contains("localIfList") && (LocalIfList != fields["localIfList"].get<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>());
@@ -408,7 +408,7 @@ void UTbRefIfacesParentIfOLinkClient::applyState(const nlohmann::json& fields)
 			FScopeLock Lock(&(_SentData->LocalIfListMutex));
 			_SentData->LocalIfList = LocalIfList;
 		}
-		_GetSignals()->BroadcastLocalIfListChanged(LocalIfList);
+		_GetPublisher()->BroadcastLocalIfListChanged(LocalIfList);
 	}
 
 	const bool bImportedIfChanged = fields.contains("importedIf") && (ImportedIf != fields["importedIf"].get<TScriptInterface<ITbIfaceimportEmptyIfInterface>>());
@@ -420,7 +420,7 @@ void UTbRefIfacesParentIfOLinkClient::applyState(const nlohmann::json& fields)
 			FScopeLock Lock(&(_SentData->ImportedIfMutex));
 			_SentData->ImportedIf = ImportedIf;
 		}
-		_GetSignals()->BroadcastImportedIfChanged(ImportedIf);
+		_GetPublisher()->BroadcastImportedIfChanged(ImportedIf);
 	}
 
 	const bool bImportedIfListChanged = fields.contains("importedIfList") && (ImportedIfList != fields["importedIfList"].get<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>());
@@ -432,7 +432,7 @@ void UTbRefIfacesParentIfOLinkClient::applyState(const nlohmann::json& fields)
 			FScopeLock Lock(&(_SentData->ImportedIfListMutex));
 			_SentData->ImportedIfList = ImportedIfList;
 		}
-		_GetSignals()->BroadcastImportedIfListChanged(ImportedIfList);
+		_GetPublisher()->BroadcastImportedIfListChanged(ImportedIfList);
 	}
 }
 
@@ -441,28 +441,28 @@ void UTbRefIfacesParentIfOLinkClient::emitSignal(const std::string& signalName, 
 	if (signalName == "localIfSignal")
 	{
 		const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& outParam = args[0].get<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>();
-		_GetSignals()->BroadcastLocalIfSignalSignal(outParam);
+		_GetPublisher()->BroadcastLocalIfSignalSignal(outParam);
 		return;
 	}
 
 	if (signalName == "localIfSignalList")
 	{
 		const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& outParam = args[0].get<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>();
-		_GetSignals()->BroadcastLocalIfSignalListSignal(outParam);
+		_GetPublisher()->BroadcastLocalIfSignalListSignal(outParam);
 		return;
 	}
 
 	if (signalName == "importedIfSignal")
 	{
 		const TScriptInterface<ITbIfaceimportEmptyIfInterface>& outParam = args[0].get<TScriptInterface<ITbIfaceimportEmptyIfInterface>>();
-		_GetSignals()->BroadcastImportedIfSignalSignal(outParam);
+		_GetPublisher()->BroadcastImportedIfSignalSignal(outParam);
 		return;
 	}
 
 	if (signalName == "importedIfSignalList")
 	{
 		const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& outParam = args[0].get<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>();
-		_GetSignals()->BroadcastImportedIfSignalListSignal(outParam);
+		_GetPublisher()->BroadcastImportedIfSignalListSignal(outParam);
 		return;
 	}
 }

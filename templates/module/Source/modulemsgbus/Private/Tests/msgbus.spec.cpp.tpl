@@ -87,8 +87,8 @@ void {{$Class}}MsgBusSpec::Define()
 		{{ueType "" .}} TestValue = {{ueDefault "" .}}; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Get{{Camel .Name}}(), TestValue);
 
-		{{$Class}}Signals* {{$Iface}}Signals = ImplFixture->GetImplementation()->_GetSignals();
-		{{$Iface}}Signals->On{{Camel .Name}}Changed.AddLambda([this, TestDone]({{ueParam "In" .}})
+		{{$Class}}Publisher* {{$Iface}}Publisher = ImplFixture->GetImplementation()->_GetPublisher();
+		{{$Iface}}Publisher->On{{Camel .Name}}Changed.AddLambda([this, TestDone]({{ueParam "In" .}})
 			{
 			{{ueType "" .}} TestValue = {{ueDefault "" .}};
 			// use different test value
@@ -141,8 +141,8 @@ void {{$Class}}MsgBusSpec::Define()
 		{{ueType "" .}} TestValue = {{ueDefault "" .}}; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Get{{Camel .Name}}(), TestValue);
 
-		{{$Class}}Signals* {{$Iface}}Signals = ImplFixture->GetImplementation()->_GetSignals();
-		{{$Iface}}Signals->On{{Camel .Name}}Changed.AddLambda([this, TestDone]({{ueParam "In" .}})
+		{{$Class}}Publisher* {{$Iface}}Publisher = ImplFixture->GetImplementation()->_GetPublisher();
+		{{$Iface}}Publisher->On{{Camel .Name}}Changed.AddLambda([this, TestDone]({{ueParam "In" .}})
 			{
 			{{ueType "" .}} TestValue = {{ueDefault "" .}};
 			// use different test value
@@ -195,8 +195,8 @@ void {{$Class}}MsgBusSpec::Define()
 		{{ueType "" .}} TestValue = {{ueDefault "" .}}; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->Get{{Camel .Name}}(), TestValue);
 
-		{{$Class}}Signals* {{$Iface}}Signals = ImplFixture->GetImplementation()->_GetSignals();
-		{{$Iface}}Signals->On{{Camel .Name}}Changed.AddLambda([this, TestDone]({{ueParam "In" .}})
+		{{$Class}}Publisher* {{$Iface}}Publisher = ImplFixture->GetImplementation()->_GetPublisher();
+		{{$Iface}}Publisher->On{{Camel .Name}}Changed.AddLambda([this, TestDone]({{ueParam "In" .}})
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -294,8 +294,8 @@ void {{$Class}}MsgBusSpec::Define()
 
 	LatentIt("Signal.{{ Camel .Name }}", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		{{$Class}}Signals* {{$Iface}}Signals = ImplFixture->GetImplementation()->_GetSignals();
-		{{$Iface}}Signals->On{{Camel .Name}}Signal.AddLambda([this, TestDone]({{ueParams "In" .Params}})
+		{{$Class}}Publisher* {{$Iface}}Publisher = ImplFixture->GetImplementation()->_GetPublisher();
+		{{$Iface}}Publisher->On{{Camel .Name}}Signal.AddLambda([this, TestDone]({{ueParams "In" .Params}})
 			{
 			// known test value
 			{{- range $i, $e := .Params -}}
@@ -349,7 +349,7 @@ void {{$Class}}MsgBusSpec::Define()
 		{{ ueType "" . }} {{ueVar "" .}}TestValue = {{ ueDefault "" . }};
 		{{- end }}
 		{{- end }}
-		{{$Iface}}Signals->Broadcast{{Camel .Name}}Signal(
+		{{$Iface}}Publisher->Broadcast{{Camel .Name}}Signal(
 			{{- range $i, $e := .Params -}}
 			{{- if $i }}, {{ end }}{{ueVar "" .}}TestValue
 			{{- end -}});

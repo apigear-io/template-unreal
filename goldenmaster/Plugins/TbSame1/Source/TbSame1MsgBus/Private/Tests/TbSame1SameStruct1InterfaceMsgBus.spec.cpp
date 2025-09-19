@@ -86,8 +86,8 @@ void UTbSame1SameStruct1InterfaceMsgBusSpec::Define()
 		FTbSame1Struct1 TestValue = FTbSame1Struct1(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp1(), TestValue);
 
-		UTbSame1SameStruct1InterfaceSignals* TbSame1SameStruct1InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSame1SameStruct1InterfaceSignals->OnProp1Changed.AddLambda([this, TestDone](const FTbSame1Struct1& InProp1)
+		UTbSame1SameStruct1InterfacePublisher* TbSame1SameStruct1InterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSame1SameStruct1InterfacePublisher->OnProp1Changed.AddLambda([this, TestDone](const FTbSame1Struct1& InProp1)
 			{
 			FTbSame1Struct1 TestValue = FTbSame1Struct1();
 			// use different test value
@@ -108,8 +108,8 @@ void UTbSame1SameStruct1InterfaceMsgBusSpec::Define()
 		FTbSame1Struct1 TestValue = FTbSame1Struct1(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp1(), TestValue);
 
-		UTbSame1SameStruct1InterfaceSignals* TbSame1SameStruct1InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSame1SameStruct1InterfaceSignals->OnProp1Changed.AddLambda([this, TestDone](const FTbSame1Struct1& InProp1)
+		UTbSame1SameStruct1InterfacePublisher* TbSame1SameStruct1InterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSame1SameStruct1InterfacePublisher->OnProp1Changed.AddLambda([this, TestDone](const FTbSame1Struct1& InProp1)
 			{
 			FTbSame1Struct1 TestValue = FTbSame1Struct1();
 			// use different test value
@@ -130,8 +130,8 @@ void UTbSame1SameStruct1InterfaceMsgBusSpec::Define()
 		FTbSame1Struct1 TestValue = FTbSame1Struct1(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp1(), TestValue);
 
-		UTbSame1SameStruct1InterfaceSignals* TbSame1SameStruct1InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSame1SameStruct1InterfaceSignals->OnProp1Changed.AddLambda([this, TestDone](const FTbSame1Struct1& InProp1)
+		UTbSame1SameStruct1InterfacePublisher* TbSame1SameStruct1InterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSame1SameStruct1InterfacePublisher->OnProp1Changed.AddLambda([this, TestDone](const FTbSame1Struct1& InProp1)
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -177,8 +177,8 @@ void UTbSame1SameStruct1InterfaceMsgBusSpec::Define()
 
 	LatentIt("Signal.Sig1", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		UTbSame1SameStruct1InterfaceSignals* TbSame1SameStruct1InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSame1SameStruct1InterfaceSignals->OnSig1Signal.AddLambda([this, TestDone](const FTbSame1Struct1& InParam1)
+		UTbSame1SameStruct1InterfacePublisher* TbSame1SameStruct1InterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSame1SameStruct1InterfacePublisher->OnSig1Signal.AddLambda([this, TestDone](const FTbSame1Struct1& InParam1)
 			{
 			// known test value
 			FTbSame1Struct1 Param1TestValue = createTestFTbSame1Struct1();
@@ -188,7 +188,7 @@ void UTbSame1SameStruct1InterfaceMsgBusSpec::Define()
 
 		// use different test value
 		FTbSame1Struct1 Param1TestValue = createTestFTbSame1Struct1();
-		TbSame1SameStruct1InterfaceSignals->BroadcastSig1Signal(Param1TestValue);
+		TbSame1SameStruct1InterfacePublisher->BroadcastSig1Signal(Param1TestValue);
 	});
 }
 } // namespace Tests

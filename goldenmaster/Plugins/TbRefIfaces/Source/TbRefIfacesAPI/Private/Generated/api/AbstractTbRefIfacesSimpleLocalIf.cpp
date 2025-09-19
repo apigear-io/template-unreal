@@ -63,16 +63,16 @@ public:
 
 UAbstractTbRefIfacesSimpleLocalIf::UAbstractTbRefIfacesSimpleLocalIf()
 {
-	TbRefIfacesSimpleLocalIfSignals = NewObject<UTbRefIfacesSimpleLocalIfSignals>();
+	TbRefIfacesSimpleLocalIfPublisher = NewObject<UTbRefIfacesSimpleLocalIfPublisher>();
 }
 
-UTbRefIfacesSimpleLocalIfSignals* UAbstractTbRefIfacesSimpleLocalIf::_GetSignals()
+UTbRefIfacesSimpleLocalIfPublisher* UAbstractTbRefIfacesSimpleLocalIf::_GetPublisher()
 {
-	if (!TbRefIfacesSimpleLocalIfSignals)
+	if (!TbRefIfacesSimpleLocalIfPublisher)
 	{
-		TbRefIfacesSimpleLocalIfSignals = NewObject<UTbRefIfacesSimpleLocalIfSignals>();
+		TbRefIfacesSimpleLocalIfPublisher = NewObject<UTbRefIfacesSimpleLocalIfPublisher>();
 	}
-	return TbRefIfacesSimpleLocalIfSignals;
+	return TbRefIfacesSimpleLocalIfPublisher;
 }
 
 int32 UAbstractTbRefIfacesSimpleLocalIf::GetIntProperty_Private() const
@@ -133,13 +133,13 @@ void UAbstractTbRefIfacesSimpleLocalIf::Deinitialize()
 	check(bInitialized);
 	bInitialized = false;
 
-	if (TbRefIfacesSimpleLocalIfSignals)
+	if (TbRefIfacesSimpleLocalIfPublisher)
 	{
-		TbRefIfacesSimpleLocalIfSignals->OnIntSignalSignal.RemoveAll(TbRefIfacesSimpleLocalIfSignals);
-		TbRefIfacesSimpleLocalIfSignals->OnIntSignalSignalBP.RemoveAll(TbRefIfacesSimpleLocalIfSignals);
+		TbRefIfacesSimpleLocalIfPublisher->OnIntSignalSignal.RemoveAll(TbRefIfacesSimpleLocalIfPublisher);
+		TbRefIfacesSimpleLocalIfPublisher->OnIntSignalSignalBP.RemoveAll(TbRefIfacesSimpleLocalIfPublisher);
 
-		TbRefIfacesSimpleLocalIfSignals->OnIntPropertyChanged.RemoveAll(TbRefIfacesSimpleLocalIfSignals);
-		TbRefIfacesSimpleLocalIfSignals->OnIntPropertyChangedBP.RemoveAll(TbRefIfacesSimpleLocalIfSignals);
+		TbRefIfacesSimpleLocalIfPublisher->OnIntPropertyChanged.RemoveAll(TbRefIfacesSimpleLocalIfPublisher);
+		TbRefIfacesSimpleLocalIfPublisher->OnIntPropertyChangedBP.RemoveAll(TbRefIfacesSimpleLocalIfPublisher);
 	}
 
 	Super::Deinitialize();

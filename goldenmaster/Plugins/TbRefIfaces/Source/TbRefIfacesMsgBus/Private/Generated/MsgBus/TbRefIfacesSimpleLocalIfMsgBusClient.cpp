@@ -189,7 +189,7 @@ void UTbRefIfacesSimpleLocalIfMsgBusClient::OnConnectionInit(const FTbRefIfacesS
 		IntProperty = InMessage.IntProperty;
 		// reset sent data to the current state
 		_SentData->IntProperty = IntProperty;
-		_GetSignals()->BroadcastIntPropertyChanged(IntProperty);
+		_GetPublisher()->BroadcastIntPropertyChanged(IntProperty);
 	}
 
 	_ConnectionStatusChanged.Broadcast(true);
@@ -369,7 +369,7 @@ void UTbRefIfacesSimpleLocalIfMsgBusClient::OnIntSignal(const FTbRefIfacesSimple
 		return;
 	}
 
-	_GetSignals()->BroadcastIntSignalSignal(InMessage.Param);
+	_GetPublisher()->BroadcastIntSignalSignal(InMessage.Param);
 	return;
 }
 
@@ -387,7 +387,7 @@ void UTbRefIfacesSimpleLocalIfMsgBusClient::OnIntPropertyChanged(const FTbRefIfa
 		IntProperty = InMessage.IntProperty;
 		// reset sent data to the current state
 		_SentData->IntProperty = IntProperty;
-		_GetSignals()->BroadcastIntPropertyChanged(IntProperty);
+		_GetPublisher()->BroadcastIntPropertyChanged(IntProperty);
 	}
 }
 

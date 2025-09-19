@@ -60,8 +60,8 @@ void UTbEnumEnumInterfaceImplSpec::Define()
 		ETbEnumEnum0 TestValue = ETbEnumEnum0::TEE0_Value0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp0(), TestValue);
 
-		UTbEnumEnumInterfaceSignals* TbEnumEnumInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbEnumEnumInterfaceSignals->OnProp0Changed.AddLambda([this, TestDone](ETbEnumEnum0 InProp0)
+		UTbEnumEnumInterfacePublisher* TbEnumEnumInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbEnumEnumInterfacePublisher->OnProp0Changed.AddLambda([this, TestDone](ETbEnumEnum0 InProp0)
 			{
 			ETbEnumEnum0 TestValue = ETbEnumEnum0::TEE0_Value0;
 			// use different test value
@@ -83,8 +83,8 @@ void UTbEnumEnumInterfaceImplSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp0(), TestValue);
 
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
-		UTbEnumEnumInterfaceSignals* TbEnumEnumInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbEnumEnumInterfaceSignals->OnProp0ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbEnumEnumInterfaceImplHelper::Prop0PropertyCb);
+		UTbEnumEnumInterfacePublisher* TbEnumEnumInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbEnumEnumInterfacePublisher->OnProp0ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbEnumEnumInterfaceImplHelper::Prop0PropertyCb);
 		// use different test value
 		TestValue = ETbEnumEnum0::TEE0_Value1;
 		ImplFixture->GetImplementation()->SetProp0(TestValue);
@@ -103,8 +103,8 @@ void UTbEnumEnumInterfaceImplSpec::Define()
 		ETbEnumEnum1 TestValue = ETbEnumEnum1::TEE1_Value1; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp1(), TestValue);
 
-		UTbEnumEnumInterfaceSignals* TbEnumEnumInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbEnumEnumInterfaceSignals->OnProp1Changed.AddLambda([this, TestDone](ETbEnumEnum1 InProp1)
+		UTbEnumEnumInterfacePublisher* TbEnumEnumInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbEnumEnumInterfacePublisher->OnProp1Changed.AddLambda([this, TestDone](ETbEnumEnum1 InProp1)
 			{
 			ETbEnumEnum1 TestValue = ETbEnumEnum1::TEE1_Value1;
 			// use different test value
@@ -126,8 +126,8 @@ void UTbEnumEnumInterfaceImplSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp1(), TestValue);
 
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
-		UTbEnumEnumInterfaceSignals* TbEnumEnumInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbEnumEnumInterfaceSignals->OnProp1ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbEnumEnumInterfaceImplHelper::Prop1PropertyCb);
+		UTbEnumEnumInterfacePublisher* TbEnumEnumInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbEnumEnumInterfacePublisher->OnProp1ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbEnumEnumInterfaceImplHelper::Prop1PropertyCb);
 		// use different test value
 		TestValue = ETbEnumEnum1::TEE1_Value2;
 		ImplFixture->GetImplementation()->SetProp1(TestValue);
@@ -146,8 +146,8 @@ void UTbEnumEnumInterfaceImplSpec::Define()
 		ETbEnumEnum2 TestValue = ETbEnumEnum2::TEE2_Value2; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp2(), TestValue);
 
-		UTbEnumEnumInterfaceSignals* TbEnumEnumInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbEnumEnumInterfaceSignals->OnProp2Changed.AddLambda([this, TestDone](ETbEnumEnum2 InProp2)
+		UTbEnumEnumInterfacePublisher* TbEnumEnumInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbEnumEnumInterfacePublisher->OnProp2Changed.AddLambda([this, TestDone](ETbEnumEnum2 InProp2)
 			{
 			ETbEnumEnum2 TestValue = ETbEnumEnum2::TEE2_Value2;
 			// use different test value
@@ -169,8 +169,8 @@ void UTbEnumEnumInterfaceImplSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp2(), TestValue);
 
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
-		UTbEnumEnumInterfaceSignals* TbEnumEnumInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbEnumEnumInterfaceSignals->OnProp2ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbEnumEnumInterfaceImplHelper::Prop2PropertyCb);
+		UTbEnumEnumInterfacePublisher* TbEnumEnumInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbEnumEnumInterfacePublisher->OnProp2ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbEnumEnumInterfaceImplHelper::Prop2PropertyCb);
 		// use different test value
 		TestValue = ETbEnumEnum2::TEE2_Value1;
 		ImplFixture->GetImplementation()->SetProp2(TestValue);
@@ -189,8 +189,8 @@ void UTbEnumEnumInterfaceImplSpec::Define()
 		ETbEnumEnum3 TestValue = ETbEnumEnum3::TEE3_Value3; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp3(), TestValue);
 
-		UTbEnumEnumInterfaceSignals* TbEnumEnumInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbEnumEnumInterfaceSignals->OnProp3Changed.AddLambda([this, TestDone](ETbEnumEnum3 InProp3)
+		UTbEnumEnumInterfacePublisher* TbEnumEnumInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbEnumEnumInterfacePublisher->OnProp3Changed.AddLambda([this, TestDone](ETbEnumEnum3 InProp3)
 			{
 			ETbEnumEnum3 TestValue = ETbEnumEnum3::TEE3_Value3;
 			// use different test value
@@ -212,8 +212,8 @@ void UTbEnumEnumInterfaceImplSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp3(), TestValue);
 
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
-		UTbEnumEnumInterfaceSignals* TbEnumEnumInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbEnumEnumInterfaceSignals->OnProp3ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbEnumEnumInterfaceImplHelper::Prop3PropertyCb);
+		UTbEnumEnumInterfacePublisher* TbEnumEnumInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbEnumEnumInterfacePublisher->OnProp3ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbEnumEnumInterfaceImplHelper::Prop3PropertyCb);
 		// use different test value
 		TestValue = ETbEnumEnum3::TEE3_Value2;
 		ImplFixture->GetImplementation()->SetProp3(TestValue);
@@ -245,8 +245,8 @@ void UTbEnumEnumInterfaceImplSpec::Define()
 
 	LatentIt("Signal.Sig0", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		UTbEnumEnumInterfaceSignals* TbEnumEnumInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbEnumEnumInterfaceSignals->OnSig0Signal.AddLambda([this, TestDone](ETbEnumEnum0 InParam0)
+		UTbEnumEnumInterfacePublisher* TbEnumEnumInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbEnumEnumInterfacePublisher->OnSig0Signal.AddLambda([this, TestDone](ETbEnumEnum0 InParam0)
 			{
 			// known test value
 			ETbEnumEnum0 Param0TestValue = ETbEnumEnum0::TEE0_Value1;
@@ -256,24 +256,24 @@ void UTbEnumEnumInterfaceImplSpec::Define()
 
 		// use different test value
 		ETbEnumEnum0 Param0TestValue = ETbEnumEnum0::TEE0_Value1;
-		TbEnumEnumInterfaceSignals->BroadcastSig0Signal(Param0TestValue);
+		TbEnumEnumInterfacePublisher->BroadcastSig0Signal(Param0TestValue);
 	});
 
 	LatentIt("Signal.Sig0BP", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
-		UTbEnumEnumInterfaceSignals* TbEnumEnumInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbEnumEnumInterfaceSignals->OnSig0SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbEnumEnumInterfaceImplHelper::Sig0SignalCb);
+		UTbEnumEnumInterfacePublisher* TbEnumEnumInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbEnumEnumInterfacePublisher->OnSig0SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbEnumEnumInterfaceImplHelper::Sig0SignalCb);
 
 		// use different test value
 		ETbEnumEnum0 Param0TestValue = ETbEnumEnum0::TEE0_Value1;
-		TbEnumEnumInterfaceSignals->BroadcastSig0Signal(Param0TestValue);
+		TbEnumEnumInterfacePublisher->BroadcastSig0Signal(Param0TestValue);
 	});
 
 	LatentIt("Signal.Sig1", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		UTbEnumEnumInterfaceSignals* TbEnumEnumInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbEnumEnumInterfaceSignals->OnSig1Signal.AddLambda([this, TestDone](ETbEnumEnum1 InParam1)
+		UTbEnumEnumInterfacePublisher* TbEnumEnumInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbEnumEnumInterfacePublisher->OnSig1Signal.AddLambda([this, TestDone](ETbEnumEnum1 InParam1)
 			{
 			// known test value
 			ETbEnumEnum1 Param1TestValue = ETbEnumEnum1::TEE1_Value2;
@@ -283,24 +283,24 @@ void UTbEnumEnumInterfaceImplSpec::Define()
 
 		// use different test value
 		ETbEnumEnum1 Param1TestValue = ETbEnumEnum1::TEE1_Value2;
-		TbEnumEnumInterfaceSignals->BroadcastSig1Signal(Param1TestValue);
+		TbEnumEnumInterfacePublisher->BroadcastSig1Signal(Param1TestValue);
 	});
 
 	LatentIt("Signal.Sig1BP", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
-		UTbEnumEnumInterfaceSignals* TbEnumEnumInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbEnumEnumInterfaceSignals->OnSig1SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbEnumEnumInterfaceImplHelper::Sig1SignalCb);
+		UTbEnumEnumInterfacePublisher* TbEnumEnumInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbEnumEnumInterfacePublisher->OnSig1SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbEnumEnumInterfaceImplHelper::Sig1SignalCb);
 
 		// use different test value
 		ETbEnumEnum1 Param1TestValue = ETbEnumEnum1::TEE1_Value2;
-		TbEnumEnumInterfaceSignals->BroadcastSig1Signal(Param1TestValue);
+		TbEnumEnumInterfacePublisher->BroadcastSig1Signal(Param1TestValue);
 	});
 
 	LatentIt("Signal.Sig2", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		UTbEnumEnumInterfaceSignals* TbEnumEnumInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbEnumEnumInterfaceSignals->OnSig2Signal.AddLambda([this, TestDone](ETbEnumEnum2 InParam2)
+		UTbEnumEnumInterfacePublisher* TbEnumEnumInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbEnumEnumInterfacePublisher->OnSig2Signal.AddLambda([this, TestDone](ETbEnumEnum2 InParam2)
 			{
 			// known test value
 			ETbEnumEnum2 Param2TestValue = ETbEnumEnum2::TEE2_Value1;
@@ -310,24 +310,24 @@ void UTbEnumEnumInterfaceImplSpec::Define()
 
 		// use different test value
 		ETbEnumEnum2 Param2TestValue = ETbEnumEnum2::TEE2_Value1;
-		TbEnumEnumInterfaceSignals->BroadcastSig2Signal(Param2TestValue);
+		TbEnumEnumInterfacePublisher->BroadcastSig2Signal(Param2TestValue);
 	});
 
 	LatentIt("Signal.Sig2BP", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
-		UTbEnumEnumInterfaceSignals* TbEnumEnumInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbEnumEnumInterfaceSignals->OnSig2SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbEnumEnumInterfaceImplHelper::Sig2SignalCb);
+		UTbEnumEnumInterfacePublisher* TbEnumEnumInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbEnumEnumInterfacePublisher->OnSig2SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbEnumEnumInterfaceImplHelper::Sig2SignalCb);
 
 		// use different test value
 		ETbEnumEnum2 Param2TestValue = ETbEnumEnum2::TEE2_Value1;
-		TbEnumEnumInterfaceSignals->BroadcastSig2Signal(Param2TestValue);
+		TbEnumEnumInterfacePublisher->BroadcastSig2Signal(Param2TestValue);
 	});
 
 	LatentIt("Signal.Sig3", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		UTbEnumEnumInterfaceSignals* TbEnumEnumInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbEnumEnumInterfaceSignals->OnSig3Signal.AddLambda([this, TestDone](ETbEnumEnum3 InParam3)
+		UTbEnumEnumInterfacePublisher* TbEnumEnumInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbEnumEnumInterfacePublisher->OnSig3Signal.AddLambda([this, TestDone](ETbEnumEnum3 InParam3)
 			{
 			// known test value
 			ETbEnumEnum3 Param3TestValue = ETbEnumEnum3::TEE3_Value2;
@@ -337,18 +337,18 @@ void UTbEnumEnumInterfaceImplSpec::Define()
 
 		// use different test value
 		ETbEnumEnum3 Param3TestValue = ETbEnumEnum3::TEE3_Value2;
-		TbEnumEnumInterfaceSignals->BroadcastSig3Signal(Param3TestValue);
+		TbEnumEnumInterfacePublisher->BroadcastSig3Signal(Param3TestValue);
 	});
 
 	LatentIt("Signal.Sig3BP", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
-		UTbEnumEnumInterfaceSignals* TbEnumEnumInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbEnumEnumInterfaceSignals->OnSig3SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbEnumEnumInterfaceImplHelper::Sig3SignalCb);
+		UTbEnumEnumInterfacePublisher* TbEnumEnumInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbEnumEnumInterfacePublisher->OnSig3SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbEnumEnumInterfaceImplHelper::Sig3SignalCb);
 
 		// use different test value
 		ETbEnumEnum3 Param3TestValue = ETbEnumEnum3::TEE3_Value2;
-		TbEnumEnumInterfaceSignals->BroadcastSig3Signal(Param3TestValue);
+		TbEnumEnumInterfacePublisher->BroadcastSig3Signal(Param3TestValue);
 	});
 }
 

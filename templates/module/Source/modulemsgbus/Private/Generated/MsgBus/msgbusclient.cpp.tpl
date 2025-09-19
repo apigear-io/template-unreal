@@ -231,7 +231,7 @@ void {{$Class}}::OnConnectionInit(const F{{$Iface}}InitMessage& InMessage, const
 		{{- else}}
 		_SentData->{{ueVar "" .}} = {{ueVar "" .}};
 		{{- end }}
-		_GetSignals()->Broadcast{{Camel .Name}}Changed({{ueVar "" .}});
+		_GetPublisher()->Broadcast{{Camel .Name}}Changed({{ueVar "" .}});
 	}
 {{- end }}
 
@@ -466,7 +466,7 @@ void {{$Class}}::On{{Camel .Name}}(const F{{$DisplayName}}{{Camel .Name}}SignalM
 
 {{- $sigName := Camel .Name}}
 
-	_GetSignals()->Broadcast{{Camel .Name}}Signal(
+	_GetPublisher()->Broadcast{{Camel .Name}}Signal(
 {{- range $i, $e := .Params -}}
 	{{ if $i }}, {{end}}InMessage.{{ueVar "" .}}
 {{- end -}}
@@ -498,7 +498,7 @@ void {{$Class}}::On{{Camel .Name}}Changed(const F{{$DisplayName}}{{Camel .Name}}
 		{{- else}}
 		_SentData->{{ueVar "" .}} = {{ueVar "" .}};
 		{{- end }}
-		_GetSignals()->Broadcast{{Camel .Name}}Changed({{ueVar "" .}});
+		_GetPublisher()->Broadcast{{Camel .Name}}Changed({{ueVar "" .}});
 	}
 }
 {{- end }}

@@ -63,16 +63,16 @@ public:
 
 UAbstractTbRefIfacesParentIf::UAbstractTbRefIfacesParentIf()
 {
-	TbRefIfacesParentIfSignals = NewObject<UTbRefIfacesParentIfSignals>();
+	TbRefIfacesParentIfPublisher = NewObject<UTbRefIfacesParentIfPublisher>();
 }
 
-UTbRefIfacesParentIfSignals* UAbstractTbRefIfacesParentIf::_GetSignals()
+UTbRefIfacesParentIfPublisher* UAbstractTbRefIfacesParentIf::_GetPublisher()
 {
-	if (!TbRefIfacesParentIfSignals)
+	if (!TbRefIfacesParentIfPublisher)
 	{
-		TbRefIfacesParentIfSignals = NewObject<UTbRefIfacesParentIfSignals>();
+		TbRefIfacesParentIfPublisher = NewObject<UTbRefIfacesParentIfPublisher>();
 	}
-	return TbRefIfacesParentIfSignals;
+	return TbRefIfacesParentIfPublisher;
 }
 
 TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> UAbstractTbRefIfacesParentIf::GetLocalIf_Private() const
@@ -268,25 +268,25 @@ void UAbstractTbRefIfacesParentIf::Deinitialize()
 	check(bInitialized);
 	bInitialized = false;
 
-	if (TbRefIfacesParentIfSignals)
+	if (TbRefIfacesParentIfPublisher)
 	{
-		TbRefIfacesParentIfSignals->OnLocalIfSignalSignal.RemoveAll(TbRefIfacesParentIfSignals);
-		TbRefIfacesParentIfSignals->OnLocalIfSignalSignalBP.RemoveAll(TbRefIfacesParentIfSignals);
-		TbRefIfacesParentIfSignals->OnLocalIfSignalListSignal.RemoveAll(TbRefIfacesParentIfSignals);
-		TbRefIfacesParentIfSignals->OnLocalIfSignalListSignalBP.RemoveAll(TbRefIfacesParentIfSignals);
-		TbRefIfacesParentIfSignals->OnImportedIfSignalSignal.RemoveAll(TbRefIfacesParentIfSignals);
-		TbRefIfacesParentIfSignals->OnImportedIfSignalSignalBP.RemoveAll(TbRefIfacesParentIfSignals);
-		TbRefIfacesParentIfSignals->OnImportedIfSignalListSignal.RemoveAll(TbRefIfacesParentIfSignals);
-		TbRefIfacesParentIfSignals->OnImportedIfSignalListSignalBP.RemoveAll(TbRefIfacesParentIfSignals);
+		TbRefIfacesParentIfPublisher->OnLocalIfSignalSignal.RemoveAll(TbRefIfacesParentIfPublisher);
+		TbRefIfacesParentIfPublisher->OnLocalIfSignalSignalBP.RemoveAll(TbRefIfacesParentIfPublisher);
+		TbRefIfacesParentIfPublisher->OnLocalIfSignalListSignal.RemoveAll(TbRefIfacesParentIfPublisher);
+		TbRefIfacesParentIfPublisher->OnLocalIfSignalListSignalBP.RemoveAll(TbRefIfacesParentIfPublisher);
+		TbRefIfacesParentIfPublisher->OnImportedIfSignalSignal.RemoveAll(TbRefIfacesParentIfPublisher);
+		TbRefIfacesParentIfPublisher->OnImportedIfSignalSignalBP.RemoveAll(TbRefIfacesParentIfPublisher);
+		TbRefIfacesParentIfPublisher->OnImportedIfSignalListSignal.RemoveAll(TbRefIfacesParentIfPublisher);
+		TbRefIfacesParentIfPublisher->OnImportedIfSignalListSignalBP.RemoveAll(TbRefIfacesParentIfPublisher);
 
-		TbRefIfacesParentIfSignals->OnLocalIfChanged.RemoveAll(TbRefIfacesParentIfSignals);
-		TbRefIfacesParentIfSignals->OnLocalIfChangedBP.RemoveAll(TbRefIfacesParentIfSignals);
-		TbRefIfacesParentIfSignals->OnLocalIfListChanged.RemoveAll(TbRefIfacesParentIfSignals);
-		TbRefIfacesParentIfSignals->OnLocalIfListChangedBP.RemoveAll(TbRefIfacesParentIfSignals);
-		TbRefIfacesParentIfSignals->OnImportedIfChanged.RemoveAll(TbRefIfacesParentIfSignals);
-		TbRefIfacesParentIfSignals->OnImportedIfChangedBP.RemoveAll(TbRefIfacesParentIfSignals);
-		TbRefIfacesParentIfSignals->OnImportedIfListChanged.RemoveAll(TbRefIfacesParentIfSignals);
-		TbRefIfacesParentIfSignals->OnImportedIfListChangedBP.RemoveAll(TbRefIfacesParentIfSignals);
+		TbRefIfacesParentIfPublisher->OnLocalIfChanged.RemoveAll(TbRefIfacesParentIfPublisher);
+		TbRefIfacesParentIfPublisher->OnLocalIfChangedBP.RemoveAll(TbRefIfacesParentIfPublisher);
+		TbRefIfacesParentIfPublisher->OnLocalIfListChanged.RemoveAll(TbRefIfacesParentIfPublisher);
+		TbRefIfacesParentIfPublisher->OnLocalIfListChangedBP.RemoveAll(TbRefIfacesParentIfPublisher);
+		TbRefIfacesParentIfPublisher->OnImportedIfChanged.RemoveAll(TbRefIfacesParentIfPublisher);
+		TbRefIfacesParentIfPublisher->OnImportedIfChangedBP.RemoveAll(TbRefIfacesParentIfPublisher);
+		TbRefIfacesParentIfPublisher->OnImportedIfListChanged.RemoveAll(TbRefIfacesParentIfPublisher);
+		TbRefIfacesParentIfPublisher->OnImportedIfListChangedBP.RemoveAll(TbRefIfacesParentIfPublisher);
 	}
 
 	Super::Deinitialize();

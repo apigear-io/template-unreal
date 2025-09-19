@@ -105,8 +105,8 @@ void UTestbed1StructArray2InterfaceOLinkSpec::Define()
 		FTestbed1StructBoolWithArray TestValue = FTestbed1StructBoolWithArray(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
 
-		UTestbed1StructArray2InterfaceSignals* Testbed1StructArray2InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructArray2InterfaceSignals->OnPropBoolChanged.AddLambda([this, TestDone](const FTestbed1StructBoolWithArray& InPropBool)
+		UTestbed1StructArray2InterfacePublisher* Testbed1StructArray2InterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		Testbed1StructArray2InterfacePublisher->OnPropBoolChanged.AddLambda([this, TestDone](const FTestbed1StructBoolWithArray& InPropBool)
 			{
 			FTestbed1StructBoolWithArray TestValue = FTestbed1StructBoolWithArray();
 			// use different test value
@@ -127,8 +127,8 @@ void UTestbed1StructArray2InterfaceOLinkSpec::Define()
 		FTestbed1StructBoolWithArray TestValue = FTestbed1StructBoolWithArray(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
 
-		UTestbed1StructArray2InterfaceSignals* Testbed1StructArray2InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructArray2InterfaceSignals->OnPropBoolChanged.AddLambda([this, TestDone](const FTestbed1StructBoolWithArray& InPropBool)
+		UTestbed1StructArray2InterfacePublisher* Testbed1StructArray2InterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		Testbed1StructArray2InterfacePublisher->OnPropBoolChanged.AddLambda([this, TestDone](const FTestbed1StructBoolWithArray& InPropBool)
 			{
 			FTestbed1StructBoolWithArray TestValue = FTestbed1StructBoolWithArray();
 			// use different test value
@@ -149,8 +149,8 @@ void UTestbed1StructArray2InterfaceOLinkSpec::Define()
 		FTestbed1StructBoolWithArray TestValue = FTestbed1StructBoolWithArray(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
 
-		UTestbed1StructArray2InterfaceSignals* Testbed1StructArray2InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructArray2InterfaceSignals->OnPropBoolChanged.AddLambda([this, TestDone](const FTestbed1StructBoolWithArray& InPropBool)
+		UTestbed1StructArray2InterfacePublisher* Testbed1StructArray2InterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		Testbed1StructArray2InterfacePublisher->OnPropBoolChanged.AddLambda([this, TestDone](const FTestbed1StructBoolWithArray& InPropBool)
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -197,8 +197,8 @@ void UTestbed1StructArray2InterfaceOLinkSpec::Define()
 		FTestbed1StructIntWithArray TestValue = FTestbed1StructIntWithArray(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
 
-		UTestbed1StructArray2InterfaceSignals* Testbed1StructArray2InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructArray2InterfaceSignals->OnPropIntChanged.AddLambda([this, TestDone](const FTestbed1StructIntWithArray& InPropInt)
+		UTestbed1StructArray2InterfacePublisher* Testbed1StructArray2InterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		Testbed1StructArray2InterfacePublisher->OnPropIntChanged.AddLambda([this, TestDone](const FTestbed1StructIntWithArray& InPropInt)
 			{
 			FTestbed1StructIntWithArray TestValue = FTestbed1StructIntWithArray();
 			// use different test value
@@ -219,8 +219,8 @@ void UTestbed1StructArray2InterfaceOLinkSpec::Define()
 		FTestbed1StructIntWithArray TestValue = FTestbed1StructIntWithArray(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
 
-		UTestbed1StructArray2InterfaceSignals* Testbed1StructArray2InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructArray2InterfaceSignals->OnPropIntChanged.AddLambda([this, TestDone](const FTestbed1StructIntWithArray& InPropInt)
+		UTestbed1StructArray2InterfacePublisher* Testbed1StructArray2InterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		Testbed1StructArray2InterfacePublisher->OnPropIntChanged.AddLambda([this, TestDone](const FTestbed1StructIntWithArray& InPropInt)
 			{
 			FTestbed1StructIntWithArray TestValue = FTestbed1StructIntWithArray();
 			// use different test value
@@ -241,8 +241,8 @@ void UTestbed1StructArray2InterfaceOLinkSpec::Define()
 		FTestbed1StructIntWithArray TestValue = FTestbed1StructIntWithArray(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
 
-		UTestbed1StructArray2InterfaceSignals* Testbed1StructArray2InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructArray2InterfaceSignals->OnPropIntChanged.AddLambda([this, TestDone](const FTestbed1StructIntWithArray& InPropInt)
+		UTestbed1StructArray2InterfacePublisher* Testbed1StructArray2InterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		Testbed1StructArray2InterfacePublisher->OnPropIntChanged.AddLambda([this, TestDone](const FTestbed1StructIntWithArray& InPropInt)
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -289,8 +289,8 @@ void UTestbed1StructArray2InterfaceOLinkSpec::Define()
 		FTestbed1StructFloatWithArray TestValue = FTestbed1StructFloatWithArray(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropFloat(), TestValue);
 
-		UTestbed1StructArray2InterfaceSignals* Testbed1StructArray2InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructArray2InterfaceSignals->OnPropFloatChanged.AddLambda([this, TestDone](const FTestbed1StructFloatWithArray& InPropFloat)
+		UTestbed1StructArray2InterfacePublisher* Testbed1StructArray2InterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		Testbed1StructArray2InterfacePublisher->OnPropFloatChanged.AddLambda([this, TestDone](const FTestbed1StructFloatWithArray& InPropFloat)
 			{
 			FTestbed1StructFloatWithArray TestValue = FTestbed1StructFloatWithArray();
 			// use different test value
@@ -311,8 +311,8 @@ void UTestbed1StructArray2InterfaceOLinkSpec::Define()
 		FTestbed1StructFloatWithArray TestValue = FTestbed1StructFloatWithArray(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropFloat(), TestValue);
 
-		UTestbed1StructArray2InterfaceSignals* Testbed1StructArray2InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructArray2InterfaceSignals->OnPropFloatChanged.AddLambda([this, TestDone](const FTestbed1StructFloatWithArray& InPropFloat)
+		UTestbed1StructArray2InterfacePublisher* Testbed1StructArray2InterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		Testbed1StructArray2InterfacePublisher->OnPropFloatChanged.AddLambda([this, TestDone](const FTestbed1StructFloatWithArray& InPropFloat)
 			{
 			FTestbed1StructFloatWithArray TestValue = FTestbed1StructFloatWithArray();
 			// use different test value
@@ -333,8 +333,8 @@ void UTestbed1StructArray2InterfaceOLinkSpec::Define()
 		FTestbed1StructFloatWithArray TestValue = FTestbed1StructFloatWithArray(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropFloat(), TestValue);
 
-		UTestbed1StructArray2InterfaceSignals* Testbed1StructArray2InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructArray2InterfaceSignals->OnPropFloatChanged.AddLambda([this, TestDone](const FTestbed1StructFloatWithArray& InPropFloat)
+		UTestbed1StructArray2InterfacePublisher* Testbed1StructArray2InterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		Testbed1StructArray2InterfacePublisher->OnPropFloatChanged.AddLambda([this, TestDone](const FTestbed1StructFloatWithArray& InPropFloat)
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -381,8 +381,8 @@ void UTestbed1StructArray2InterfaceOLinkSpec::Define()
 		FTestbed1StructStringWithArray TestValue = FTestbed1StructStringWithArray(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropString(), TestValue);
 
-		UTestbed1StructArray2InterfaceSignals* Testbed1StructArray2InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructArray2InterfaceSignals->OnPropStringChanged.AddLambda([this, TestDone](const FTestbed1StructStringWithArray& InPropString)
+		UTestbed1StructArray2InterfacePublisher* Testbed1StructArray2InterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		Testbed1StructArray2InterfacePublisher->OnPropStringChanged.AddLambda([this, TestDone](const FTestbed1StructStringWithArray& InPropString)
 			{
 			FTestbed1StructStringWithArray TestValue = FTestbed1StructStringWithArray();
 			// use different test value
@@ -403,8 +403,8 @@ void UTestbed1StructArray2InterfaceOLinkSpec::Define()
 		FTestbed1StructStringWithArray TestValue = FTestbed1StructStringWithArray(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropString(), TestValue);
 
-		UTestbed1StructArray2InterfaceSignals* Testbed1StructArray2InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructArray2InterfaceSignals->OnPropStringChanged.AddLambda([this, TestDone](const FTestbed1StructStringWithArray& InPropString)
+		UTestbed1StructArray2InterfacePublisher* Testbed1StructArray2InterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		Testbed1StructArray2InterfacePublisher->OnPropStringChanged.AddLambda([this, TestDone](const FTestbed1StructStringWithArray& InPropString)
 			{
 			FTestbed1StructStringWithArray TestValue = FTestbed1StructStringWithArray();
 			// use different test value
@@ -425,8 +425,8 @@ void UTestbed1StructArray2InterfaceOLinkSpec::Define()
 		FTestbed1StructStringWithArray TestValue = FTestbed1StructStringWithArray(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropString(), TestValue);
 
-		UTestbed1StructArray2InterfaceSignals* Testbed1StructArray2InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructArray2InterfaceSignals->OnPropStringChanged.AddLambda([this, TestDone](const FTestbed1StructStringWithArray& InPropString)
+		UTestbed1StructArray2InterfacePublisher* Testbed1StructArray2InterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		Testbed1StructArray2InterfacePublisher->OnPropStringChanged.AddLambda([this, TestDone](const FTestbed1StructStringWithArray& InPropString)
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -473,8 +473,8 @@ void UTestbed1StructArray2InterfaceOLinkSpec::Define()
 		FTestbed1StructEnumWithArray TestValue = FTestbed1StructEnumWithArray(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropEnum(), TestValue);
 
-		UTestbed1StructArray2InterfaceSignals* Testbed1StructArray2InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructArray2InterfaceSignals->OnPropEnumChanged.AddLambda([this, TestDone](const FTestbed1StructEnumWithArray& InPropEnum)
+		UTestbed1StructArray2InterfacePublisher* Testbed1StructArray2InterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		Testbed1StructArray2InterfacePublisher->OnPropEnumChanged.AddLambda([this, TestDone](const FTestbed1StructEnumWithArray& InPropEnum)
 			{
 			FTestbed1StructEnumWithArray TestValue = FTestbed1StructEnumWithArray();
 			// use different test value
@@ -495,8 +495,8 @@ void UTestbed1StructArray2InterfaceOLinkSpec::Define()
 		FTestbed1StructEnumWithArray TestValue = FTestbed1StructEnumWithArray(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropEnum(), TestValue);
 
-		UTestbed1StructArray2InterfaceSignals* Testbed1StructArray2InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructArray2InterfaceSignals->OnPropEnumChanged.AddLambda([this, TestDone](const FTestbed1StructEnumWithArray& InPropEnum)
+		UTestbed1StructArray2InterfacePublisher* Testbed1StructArray2InterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		Testbed1StructArray2InterfacePublisher->OnPropEnumChanged.AddLambda([this, TestDone](const FTestbed1StructEnumWithArray& InPropEnum)
 			{
 			FTestbed1StructEnumWithArray TestValue = FTestbed1StructEnumWithArray();
 			// use different test value
@@ -517,8 +517,8 @@ void UTestbed1StructArray2InterfaceOLinkSpec::Define()
 		FTestbed1StructEnumWithArray TestValue = FTestbed1StructEnumWithArray(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropEnum(), TestValue);
 
-		UTestbed1StructArray2InterfaceSignals* Testbed1StructArray2InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructArray2InterfaceSignals->OnPropEnumChanged.AddLambda([this, TestDone](const FTestbed1StructEnumWithArray& InPropEnum)
+		UTestbed1StructArray2InterfacePublisher* Testbed1StructArray2InterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		Testbed1StructArray2InterfacePublisher->OnPropEnumChanged.AddLambda([this, TestDone](const FTestbed1StructEnumWithArray& InPropEnum)
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -604,8 +604,8 @@ void UTestbed1StructArray2InterfaceOLinkSpec::Define()
 
 	LatentIt("Signal.SigBool", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		UTestbed1StructArray2InterfaceSignals* Testbed1StructArray2InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructArray2InterfaceSignals->OnSigBoolSignal.AddLambda([this, TestDone](const FTestbed1StructBoolWithArray& InParamBool)
+		UTestbed1StructArray2InterfacePublisher* Testbed1StructArray2InterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		Testbed1StructArray2InterfacePublisher->OnSigBoolSignal.AddLambda([this, TestDone](const FTestbed1StructBoolWithArray& InParamBool)
 			{
 			// known test value
 			FTestbed1StructBoolWithArray ParamBoolTestValue = createTestFTestbed1StructBoolWithArray();
@@ -615,13 +615,13 @@ void UTestbed1StructArray2InterfaceOLinkSpec::Define()
 
 		// use different test value
 		FTestbed1StructBoolWithArray ParamBoolTestValue = createTestFTestbed1StructBoolWithArray();
-		Testbed1StructArray2InterfaceSignals->BroadcastSigBoolSignal(ParamBoolTestValue);
+		Testbed1StructArray2InterfacePublisher->BroadcastSigBoolSignal(ParamBoolTestValue);
 	});
 
 	LatentIt("Signal.SigInt", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		UTestbed1StructArray2InterfaceSignals* Testbed1StructArray2InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructArray2InterfaceSignals->OnSigIntSignal.AddLambda([this, TestDone](const FTestbed1StructIntWithArray& InParamInt)
+		UTestbed1StructArray2InterfacePublisher* Testbed1StructArray2InterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		Testbed1StructArray2InterfacePublisher->OnSigIntSignal.AddLambda([this, TestDone](const FTestbed1StructIntWithArray& InParamInt)
 			{
 			// known test value
 			FTestbed1StructIntWithArray ParamIntTestValue = createTestFTestbed1StructIntWithArray();
@@ -631,13 +631,13 @@ void UTestbed1StructArray2InterfaceOLinkSpec::Define()
 
 		// use different test value
 		FTestbed1StructIntWithArray ParamIntTestValue = createTestFTestbed1StructIntWithArray();
-		Testbed1StructArray2InterfaceSignals->BroadcastSigIntSignal(ParamIntTestValue);
+		Testbed1StructArray2InterfacePublisher->BroadcastSigIntSignal(ParamIntTestValue);
 	});
 
 	LatentIt("Signal.SigFloat", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		UTestbed1StructArray2InterfaceSignals* Testbed1StructArray2InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructArray2InterfaceSignals->OnSigFloatSignal.AddLambda([this, TestDone](const FTestbed1StructFloatWithArray& InParamFloat)
+		UTestbed1StructArray2InterfacePublisher* Testbed1StructArray2InterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		Testbed1StructArray2InterfacePublisher->OnSigFloatSignal.AddLambda([this, TestDone](const FTestbed1StructFloatWithArray& InParamFloat)
 			{
 			// known test value
 			FTestbed1StructFloatWithArray ParamFloatTestValue = createTestFTestbed1StructFloatWithArray();
@@ -647,13 +647,13 @@ void UTestbed1StructArray2InterfaceOLinkSpec::Define()
 
 		// use different test value
 		FTestbed1StructFloatWithArray ParamFloatTestValue = createTestFTestbed1StructFloatWithArray();
-		Testbed1StructArray2InterfaceSignals->BroadcastSigFloatSignal(ParamFloatTestValue);
+		Testbed1StructArray2InterfacePublisher->BroadcastSigFloatSignal(ParamFloatTestValue);
 	});
 
 	LatentIt("Signal.SigString", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		UTestbed1StructArray2InterfaceSignals* Testbed1StructArray2InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed1StructArray2InterfaceSignals->OnSigStringSignal.AddLambda([this, TestDone](const FTestbed1StructStringWithArray& InParamString)
+		UTestbed1StructArray2InterfacePublisher* Testbed1StructArray2InterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		Testbed1StructArray2InterfacePublisher->OnSigStringSignal.AddLambda([this, TestDone](const FTestbed1StructStringWithArray& InParamString)
 			{
 			// known test value
 			FTestbed1StructStringWithArray ParamStringTestValue = createTestFTestbed1StructStringWithArray();
@@ -663,7 +663,7 @@ void UTestbed1StructArray2InterfaceOLinkSpec::Define()
 
 		// use different test value
 		FTestbed1StructStringWithArray ParamStringTestValue = createTestFTestbed1StructStringWithArray();
-		Testbed1StructArray2InterfaceSignals->BroadcastSigStringSignal(ParamStringTestValue);
+		Testbed1StructArray2InterfacePublisher->BroadcastSigStringSignal(ParamStringTestValue);
 	});
 }
 } // namespace Tests

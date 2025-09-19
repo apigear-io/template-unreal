@@ -28,7 +28,7 @@ void UTbSimpleSimpleInterfaceImplementation::SetPropBool(bool bInPropBool)
 	if (bPropBool != bInPropBool)
 	{
 		bPropBool = bInPropBool;
-		_GetSignals()->BroadcastPropBoolChanged(bPropBool);
+		_GetPublisher()->BroadcastPropBoolChanged(bPropBool);
 	}
 }
 int32 UTbSimpleSimpleInterfaceImplementation::GetPropInt() const
@@ -41,7 +41,7 @@ void UTbSimpleSimpleInterfaceImplementation::SetPropInt(int32 InPropInt)
 	if (PropInt != InPropInt)
 	{
 		PropInt = InPropInt;
-		_GetSignals()->BroadcastPropIntChanged(PropInt);
+		_GetPublisher()->BroadcastPropIntChanged(PropInt);
 	}
 }
 int32 UTbSimpleSimpleInterfaceImplementation::GetPropInt32() const
@@ -54,7 +54,7 @@ void UTbSimpleSimpleInterfaceImplementation::SetPropInt32(int32 InPropInt32)
 	if (PropInt32 != InPropInt32)
 	{
 		PropInt32 = InPropInt32;
-		_GetSignals()->BroadcastPropInt32Changed(PropInt32);
+		_GetPublisher()->BroadcastPropInt32Changed(PropInt32);
 	}
 }
 int64 UTbSimpleSimpleInterfaceImplementation::GetPropInt64() const
@@ -67,7 +67,7 @@ void UTbSimpleSimpleInterfaceImplementation::SetPropInt64(int64 InPropInt64)
 	if (PropInt64 != InPropInt64)
 	{
 		PropInt64 = InPropInt64;
-		_GetSignals()->BroadcastPropInt64Changed(PropInt64);
+		_GetPublisher()->BroadcastPropInt64Changed(PropInt64);
 	}
 }
 float UTbSimpleSimpleInterfaceImplementation::GetPropFloat() const
@@ -80,7 +80,7 @@ void UTbSimpleSimpleInterfaceImplementation::SetPropFloat(float InPropFloat)
 	if (PropFloat != InPropFloat)
 	{
 		PropFloat = InPropFloat;
-		_GetSignals()->BroadcastPropFloatChanged(PropFloat);
+		_GetPublisher()->BroadcastPropFloatChanged(PropFloat);
 	}
 }
 float UTbSimpleSimpleInterfaceImplementation::GetPropFloat32() const
@@ -93,7 +93,7 @@ void UTbSimpleSimpleInterfaceImplementation::SetPropFloat32(float InPropFloat32)
 	if (PropFloat32 != InPropFloat32)
 	{
 		PropFloat32 = InPropFloat32;
-		_GetSignals()->BroadcastPropFloat32Changed(PropFloat32);
+		_GetPublisher()->BroadcastPropFloat32Changed(PropFloat32);
 	}
 }
 double UTbSimpleSimpleInterfaceImplementation::GetPropFloat64() const
@@ -106,7 +106,7 @@ void UTbSimpleSimpleInterfaceImplementation::SetPropFloat64(double InPropFloat64
 	if (PropFloat64 != InPropFloat64)
 	{
 		PropFloat64 = InPropFloat64;
-		_GetSignals()->BroadcastPropFloat64Changed(PropFloat64);
+		_GetPublisher()->BroadcastPropFloat64Changed(PropFloat64);
 	}
 }
 FString UTbSimpleSimpleInterfaceImplementation::GetPropString() const
@@ -119,7 +119,7 @@ void UTbSimpleSimpleInterfaceImplementation::SetPropString(const FString& InProp
 	if (PropString != InPropString)
 	{
 		PropString = InPropString;
-		_GetSignals()->BroadcastPropStringChanged(PropString);
+		_GetPublisher()->BroadcastPropStringChanged(PropString);
 	}
 }
 
@@ -190,41 +190,41 @@ void UTbSimpleSimpleInterfaceImplementation::_ResetProperties()
 	if (bPropBool != false)
 	{
 		bPropBool = false;
-		_GetSignals()->BroadcastPropBoolChanged(bPropBool);
+		_GetPublisher()->BroadcastPropBoolChanged(bPropBool);
 	}
 	if (PropInt != 0)
 	{
 		PropInt = 0;
-		_GetSignals()->BroadcastPropIntChanged(PropInt);
+		_GetPublisher()->BroadcastPropIntChanged(PropInt);
 	}
 	if (PropInt32 != 0)
 	{
 		PropInt32 = 0;
-		_GetSignals()->BroadcastPropInt32Changed(PropInt32);
+		_GetPublisher()->BroadcastPropInt32Changed(PropInt32);
 	}
 	if (PropInt64 != 0LL)
 	{
 		PropInt64 = 0LL;
-		_GetSignals()->BroadcastPropInt64Changed(PropInt64);
+		_GetPublisher()->BroadcastPropInt64Changed(PropInt64);
 	}
 	if (PropFloat != 0.0f)
 	{
 		PropFloat = 0.0f;
-		_GetSignals()->BroadcastPropFloatChanged(PropFloat);
+		_GetPublisher()->BroadcastPropFloatChanged(PropFloat);
 	}
 	if (PropFloat32 != 0.0f)
 	{
 		PropFloat32 = 0.0f;
-		_GetSignals()->BroadcastPropFloat32Changed(PropFloat32);
+		_GetPublisher()->BroadcastPropFloat32Changed(PropFloat32);
 	}
 	if (PropFloat64 != 0.0)
 	{
 		PropFloat64 = 0.0;
-		_GetSignals()->BroadcastPropFloat64Changed(PropFloat64);
+		_GetPublisher()->BroadcastPropFloat64Changed(PropFloat64);
 	}
 	if (PropString != FString())
 	{
 		PropString = FString();
-		_GetSignals()->BroadcastPropStringChanged(PropString);
+		_GetPublisher()->BroadcastPropStringChanged(PropString);
 	}
 }

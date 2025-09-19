@@ -38,7 +38,7 @@ public:
 	virtual void Deinitialize() override;
 
 	// signals
-	virtual UCounterCounterSignals* _GetSignals() override;
+	virtual UCounterCounterPublisher* _GetPublisher() override;
 
 	// methods
 	virtual void IncrementAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FVector& Result, const FVector& Vec) override;
@@ -111,5 +111,5 @@ protected:
 private:
 	// signals
 	UPROPERTY()
-	UCounterCounterSignals* CounterCounterSignals;
+	UCounterCounterPublisher* CounterCounterPublisher;
 };

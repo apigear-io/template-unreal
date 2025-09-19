@@ -38,7 +38,7 @@ public:
 	virtual void Deinitialize() override;
 
 	// signals
-	virtual UTbRefIfacesParentIfSignals* _GetSignals() override;
+	virtual UTbRefIfacesParentIfPublisher* _GetPublisher() override;
 
 	// methods
 	virtual void LocalIfMethodAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Result, const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Param) override;
@@ -111,5 +111,5 @@ protected:
 private:
 	// signals
 	UPROPERTY()
-	UTbRefIfacesParentIfSignals* TbRefIfacesParentIfSignals;
+	UTbRefIfacesParentIfPublisher* TbRefIfacesParentIfPublisher;
 };

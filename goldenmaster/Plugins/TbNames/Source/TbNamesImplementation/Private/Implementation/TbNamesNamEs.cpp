@@ -28,7 +28,7 @@ void UTbNamesNamEsImplementation::SetSwitch(bool bInSwitch)
 	if (bSwitch != bInSwitch)
 	{
 		bSwitch = bInSwitch;
-		_GetSignals()->BroadcastSwitchChanged(bSwitch);
+		_GetPublisher()->BroadcastSwitchChanged(bSwitch);
 	}
 }
 int32 UTbNamesNamEsImplementation::GetSomeProperty() const
@@ -41,7 +41,7 @@ void UTbNamesNamEsImplementation::SetSomeProperty(int32 InSomeProperty)
 	if (SomeProperty != InSomeProperty)
 	{
 		SomeProperty = InSomeProperty;
-		_GetSignals()->BroadcastSomePropertyChanged(SomeProperty);
+		_GetPublisher()->BroadcastSomePropertyChanged(SomeProperty);
 	}
 }
 int32 UTbNamesNamEsImplementation::GetSomePoperty2() const
@@ -54,7 +54,7 @@ void UTbNamesNamEsImplementation::SetSomePoperty2(int32 InSomePoperty2)
 	if (SomePoperty2 != InSomePoperty2)
 	{
 		SomePoperty2 = InSomePoperty2;
-		_GetSignals()->BroadcastSomePoperty2Changed(SomePoperty2);
+		_GetPublisher()->BroadcastSomePoperty2Changed(SomePoperty2);
 	}
 }
 ETbNamesEnum_With_Under_scores UTbNamesNamEsImplementation::GetEnumProperty() const
@@ -67,7 +67,7 @@ void UTbNamesNamEsImplementation::SetEnumProperty(ETbNamesEnum_With_Under_scores
 	if (EnumProperty != InEnumProperty)
 	{
 		EnumProperty = InEnumProperty;
-		_GetSignals()->BroadcastEnumPropertyChanged(EnumProperty);
+		_GetPublisher()->BroadcastEnumPropertyChanged(EnumProperty);
 	}
 }
 
@@ -88,21 +88,21 @@ void UTbNamesNamEsImplementation::_ResetProperties()
 	if (bSwitch != false)
 	{
 		bSwitch = false;
-		_GetSignals()->BroadcastSwitchChanged(bSwitch);
+		_GetPublisher()->BroadcastSwitchChanged(bSwitch);
 	}
 	if (SomeProperty != 0)
 	{
 		SomeProperty = 0;
-		_GetSignals()->BroadcastSomePropertyChanged(SomeProperty);
+		_GetPublisher()->BroadcastSomePropertyChanged(SomeProperty);
 	}
 	if (SomePoperty2 != 0)
 	{
 		SomePoperty2 = 0;
-		_GetSignals()->BroadcastSomePoperty2Changed(SomePoperty2);
+		_GetPublisher()->BroadcastSomePoperty2Changed(SomePoperty2);
 	}
 	if (EnumProperty != ETbNamesEnum_With_Under_scores::TNEWUS_FirstValue)
 	{
 		EnumProperty = ETbNamesEnum_With_Under_scores::TNEWUS_FirstValue;
-		_GetSignals()->BroadcastEnumPropertyChanged(EnumProperty);
+		_GetPublisher()->BroadcastEnumPropertyChanged(EnumProperty);
 	}
 }

@@ -63,16 +63,16 @@ public:
 
 UAbstractTbSimpleSimpleInterface::UAbstractTbSimpleSimpleInterface()
 {
-	TbSimpleSimpleInterfaceSignals = NewObject<UTbSimpleSimpleInterfaceSignals>();
+	TbSimpleSimpleInterfacePublisher = NewObject<UTbSimpleSimpleInterfacePublisher>();
 }
 
-UTbSimpleSimpleInterfaceSignals* UAbstractTbSimpleSimpleInterface::_GetSignals()
+UTbSimpleSimpleInterfacePublisher* UAbstractTbSimpleSimpleInterface::_GetPublisher()
 {
-	if (!TbSimpleSimpleInterfaceSignals)
+	if (!TbSimpleSimpleInterfacePublisher)
 	{
-		TbSimpleSimpleInterfaceSignals = NewObject<UTbSimpleSimpleInterfaceSignals>();
+		TbSimpleSimpleInterfacePublisher = NewObject<UTbSimpleSimpleInterfacePublisher>();
 	}
-	return TbSimpleSimpleInterfaceSignals;
+	return TbSimpleSimpleInterfacePublisher;
 }
 
 bool UAbstractTbSimpleSimpleInterface::GetPropBool_Private() const
@@ -448,41 +448,41 @@ void UAbstractTbSimpleSimpleInterface::Deinitialize()
 	check(bInitialized);
 	bInitialized = false;
 
-	if (TbSimpleSimpleInterfaceSignals)
+	if (TbSimpleSimpleInterfacePublisher)
 	{
-		TbSimpleSimpleInterfaceSignals->OnSigBoolSignal.RemoveAll(TbSimpleSimpleInterfaceSignals);
-		TbSimpleSimpleInterfaceSignals->OnSigBoolSignalBP.RemoveAll(TbSimpleSimpleInterfaceSignals);
-		TbSimpleSimpleInterfaceSignals->OnSigIntSignal.RemoveAll(TbSimpleSimpleInterfaceSignals);
-		TbSimpleSimpleInterfaceSignals->OnSigIntSignalBP.RemoveAll(TbSimpleSimpleInterfaceSignals);
-		TbSimpleSimpleInterfaceSignals->OnSigInt32Signal.RemoveAll(TbSimpleSimpleInterfaceSignals);
-		TbSimpleSimpleInterfaceSignals->OnSigInt32SignalBP.RemoveAll(TbSimpleSimpleInterfaceSignals);
-		TbSimpleSimpleInterfaceSignals->OnSigInt64Signal.RemoveAll(TbSimpleSimpleInterfaceSignals);
-		TbSimpleSimpleInterfaceSignals->OnSigInt64SignalBP.RemoveAll(TbSimpleSimpleInterfaceSignals);
-		TbSimpleSimpleInterfaceSignals->OnSigFloatSignal.RemoveAll(TbSimpleSimpleInterfaceSignals);
-		TbSimpleSimpleInterfaceSignals->OnSigFloatSignalBP.RemoveAll(TbSimpleSimpleInterfaceSignals);
-		TbSimpleSimpleInterfaceSignals->OnSigFloat32Signal.RemoveAll(TbSimpleSimpleInterfaceSignals);
-		TbSimpleSimpleInterfaceSignals->OnSigFloat32SignalBP.RemoveAll(TbSimpleSimpleInterfaceSignals);
-		TbSimpleSimpleInterfaceSignals->OnSigFloat64Signal.RemoveAll(TbSimpleSimpleInterfaceSignals);
-		TbSimpleSimpleInterfaceSignals->OnSigFloat64SignalBP.RemoveAll(TbSimpleSimpleInterfaceSignals);
-		TbSimpleSimpleInterfaceSignals->OnSigStringSignal.RemoveAll(TbSimpleSimpleInterfaceSignals);
-		TbSimpleSimpleInterfaceSignals->OnSigStringSignalBP.RemoveAll(TbSimpleSimpleInterfaceSignals);
+		TbSimpleSimpleInterfacePublisher->OnSigBoolSignal.RemoveAll(TbSimpleSimpleInterfacePublisher);
+		TbSimpleSimpleInterfacePublisher->OnSigBoolSignalBP.RemoveAll(TbSimpleSimpleInterfacePublisher);
+		TbSimpleSimpleInterfacePublisher->OnSigIntSignal.RemoveAll(TbSimpleSimpleInterfacePublisher);
+		TbSimpleSimpleInterfacePublisher->OnSigIntSignalBP.RemoveAll(TbSimpleSimpleInterfacePublisher);
+		TbSimpleSimpleInterfacePublisher->OnSigInt32Signal.RemoveAll(TbSimpleSimpleInterfacePublisher);
+		TbSimpleSimpleInterfacePublisher->OnSigInt32SignalBP.RemoveAll(TbSimpleSimpleInterfacePublisher);
+		TbSimpleSimpleInterfacePublisher->OnSigInt64Signal.RemoveAll(TbSimpleSimpleInterfacePublisher);
+		TbSimpleSimpleInterfacePublisher->OnSigInt64SignalBP.RemoveAll(TbSimpleSimpleInterfacePublisher);
+		TbSimpleSimpleInterfacePublisher->OnSigFloatSignal.RemoveAll(TbSimpleSimpleInterfacePublisher);
+		TbSimpleSimpleInterfacePublisher->OnSigFloatSignalBP.RemoveAll(TbSimpleSimpleInterfacePublisher);
+		TbSimpleSimpleInterfacePublisher->OnSigFloat32Signal.RemoveAll(TbSimpleSimpleInterfacePublisher);
+		TbSimpleSimpleInterfacePublisher->OnSigFloat32SignalBP.RemoveAll(TbSimpleSimpleInterfacePublisher);
+		TbSimpleSimpleInterfacePublisher->OnSigFloat64Signal.RemoveAll(TbSimpleSimpleInterfacePublisher);
+		TbSimpleSimpleInterfacePublisher->OnSigFloat64SignalBP.RemoveAll(TbSimpleSimpleInterfacePublisher);
+		TbSimpleSimpleInterfacePublisher->OnSigStringSignal.RemoveAll(TbSimpleSimpleInterfacePublisher);
+		TbSimpleSimpleInterfacePublisher->OnSigStringSignalBP.RemoveAll(TbSimpleSimpleInterfacePublisher);
 
-		TbSimpleSimpleInterfaceSignals->OnPropBoolChanged.RemoveAll(TbSimpleSimpleInterfaceSignals);
-		TbSimpleSimpleInterfaceSignals->OnPropBoolChangedBP.RemoveAll(TbSimpleSimpleInterfaceSignals);
-		TbSimpleSimpleInterfaceSignals->OnPropIntChanged.RemoveAll(TbSimpleSimpleInterfaceSignals);
-		TbSimpleSimpleInterfaceSignals->OnPropIntChangedBP.RemoveAll(TbSimpleSimpleInterfaceSignals);
-		TbSimpleSimpleInterfaceSignals->OnPropInt32Changed.RemoveAll(TbSimpleSimpleInterfaceSignals);
-		TbSimpleSimpleInterfaceSignals->OnPropInt32ChangedBP.RemoveAll(TbSimpleSimpleInterfaceSignals);
-		TbSimpleSimpleInterfaceSignals->OnPropInt64Changed.RemoveAll(TbSimpleSimpleInterfaceSignals);
-		TbSimpleSimpleInterfaceSignals->OnPropInt64ChangedBP.RemoveAll(TbSimpleSimpleInterfaceSignals);
-		TbSimpleSimpleInterfaceSignals->OnPropFloatChanged.RemoveAll(TbSimpleSimpleInterfaceSignals);
-		TbSimpleSimpleInterfaceSignals->OnPropFloatChangedBP.RemoveAll(TbSimpleSimpleInterfaceSignals);
-		TbSimpleSimpleInterfaceSignals->OnPropFloat32Changed.RemoveAll(TbSimpleSimpleInterfaceSignals);
-		TbSimpleSimpleInterfaceSignals->OnPropFloat32ChangedBP.RemoveAll(TbSimpleSimpleInterfaceSignals);
-		TbSimpleSimpleInterfaceSignals->OnPropFloat64Changed.RemoveAll(TbSimpleSimpleInterfaceSignals);
-		TbSimpleSimpleInterfaceSignals->OnPropFloat64ChangedBP.RemoveAll(TbSimpleSimpleInterfaceSignals);
-		TbSimpleSimpleInterfaceSignals->OnPropStringChanged.RemoveAll(TbSimpleSimpleInterfaceSignals);
-		TbSimpleSimpleInterfaceSignals->OnPropStringChangedBP.RemoveAll(TbSimpleSimpleInterfaceSignals);
+		TbSimpleSimpleInterfacePublisher->OnPropBoolChanged.RemoveAll(TbSimpleSimpleInterfacePublisher);
+		TbSimpleSimpleInterfacePublisher->OnPropBoolChangedBP.RemoveAll(TbSimpleSimpleInterfacePublisher);
+		TbSimpleSimpleInterfacePublisher->OnPropIntChanged.RemoveAll(TbSimpleSimpleInterfacePublisher);
+		TbSimpleSimpleInterfacePublisher->OnPropIntChangedBP.RemoveAll(TbSimpleSimpleInterfacePublisher);
+		TbSimpleSimpleInterfacePublisher->OnPropInt32Changed.RemoveAll(TbSimpleSimpleInterfacePublisher);
+		TbSimpleSimpleInterfacePublisher->OnPropInt32ChangedBP.RemoveAll(TbSimpleSimpleInterfacePublisher);
+		TbSimpleSimpleInterfacePublisher->OnPropInt64Changed.RemoveAll(TbSimpleSimpleInterfacePublisher);
+		TbSimpleSimpleInterfacePublisher->OnPropInt64ChangedBP.RemoveAll(TbSimpleSimpleInterfacePublisher);
+		TbSimpleSimpleInterfacePublisher->OnPropFloatChanged.RemoveAll(TbSimpleSimpleInterfacePublisher);
+		TbSimpleSimpleInterfacePublisher->OnPropFloatChangedBP.RemoveAll(TbSimpleSimpleInterfacePublisher);
+		TbSimpleSimpleInterfacePublisher->OnPropFloat32Changed.RemoveAll(TbSimpleSimpleInterfacePublisher);
+		TbSimpleSimpleInterfacePublisher->OnPropFloat32ChangedBP.RemoveAll(TbSimpleSimpleInterfacePublisher);
+		TbSimpleSimpleInterfacePublisher->OnPropFloat64Changed.RemoveAll(TbSimpleSimpleInterfacePublisher);
+		TbSimpleSimpleInterfacePublisher->OnPropFloat64ChangedBP.RemoveAll(TbSimpleSimpleInterfacePublisher);
+		TbSimpleSimpleInterfacePublisher->OnPropStringChanged.RemoveAll(TbSimpleSimpleInterfacePublisher);
+		TbSimpleSimpleInterfacePublisher->OnPropStringChangedBP.RemoveAll(TbSimpleSimpleInterfacePublisher);
 	}
 
 	Super::Deinitialize();

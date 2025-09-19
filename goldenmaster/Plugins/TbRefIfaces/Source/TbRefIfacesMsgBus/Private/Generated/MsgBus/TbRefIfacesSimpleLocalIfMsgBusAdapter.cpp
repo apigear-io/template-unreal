@@ -138,16 +138,16 @@ void UTbRefIfacesSimpleLocalIfMsgBusAdapter::_setBackendService(TScriptInterface
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		UTbRefIfacesSimpleLocalIfSignals* BackendSignals = BackendService->_GetSignals();
-		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbRefIfacesSimpleLocalIf"));
+		UTbRefIfacesSimpleLocalIfPublisher* BackendPublisher = BackendService->_GetPublisher();
+		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbRefIfacesSimpleLocalIf"));
 		if (OnIntPropertyChangedHandle.IsValid())
 		{
-			BackendSignals->OnIntPropertyChanged.Remove(OnIntPropertyChangedHandle);
+			BackendPublisher->OnIntPropertyChanged.Remove(OnIntPropertyChangedHandle);
 			OnIntPropertyChangedHandle.Reset();
 		}
 		if (OnIntSignalSignalHandle.IsValid())
 		{
-			BackendSignals->OnIntSignalSignal.Remove(OnIntSignalSignalHandle);
+			BackendPublisher->OnIntSignalSignal.Remove(OnIntSignalSignalHandle);
 			OnIntSignalSignalHandle.Reset();
 		}
 	}
@@ -157,11 +157,11 @@ void UTbRefIfacesSimpleLocalIfMsgBusAdapter::_setBackendService(TScriptInterface
 
 	// subscribe to new backend
 	BackendService = InService;
-	UTbRefIfacesSimpleLocalIfSignals* BackendSignals = BackendService->_GetSignals();
-	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service TbRefIfacesSimpleLocalIf"));
+	UTbRefIfacesSimpleLocalIfPublisher* BackendPublisher = BackendService->_GetPublisher();
+	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbRefIfacesSimpleLocalIf"));
 	// connect property changed signals or simple events
-	OnIntPropertyChangedHandle = BackendSignals->OnIntPropertyChanged.AddUObject(this, &UTbRefIfacesSimpleLocalIfMsgBusAdapter::OnIntPropertyChanged);
-	OnIntSignalSignalHandle = BackendSignals->OnIntSignalSignal.AddUObject(this, &UTbRefIfacesSimpleLocalIfMsgBusAdapter::OnIntSignal);
+	OnIntPropertyChangedHandle = BackendPublisher->OnIntPropertyChanged.AddUObject(this, &UTbRefIfacesSimpleLocalIfMsgBusAdapter::OnIntPropertyChanged);
+	OnIntSignalSignalHandle = BackendPublisher->OnIntSignalSignal.AddUObject(this, &UTbRefIfacesSimpleLocalIfMsgBusAdapter::OnIntSignal);
 }
 
 void UTbRefIfacesSimpleLocalIfMsgBusAdapter::OnDiscoveryMessage(const FTbRefIfacesSimpleLocalIfDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)

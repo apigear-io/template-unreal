@@ -38,7 +38,7 @@ public:
 	virtual void Deinitialize() override;
 
 	// signals
-	virtual UTestbed2NestedStruct1InterfaceSignals* _GetSignals() override;
+	virtual UTestbed2NestedStruct1InterfacePublisher* _GetPublisher() override;
 
 	// methods
 	virtual void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1) override;
@@ -66,5 +66,5 @@ protected:
 private:
 	// signals
 	UPROPERTY()
-	UTestbed2NestedStruct1InterfaceSignals* Testbed2NestedStruct1InterfaceSignals;
+	UTestbed2NestedStruct1InterfacePublisher* Testbed2NestedStruct1InterfacePublisher;
 };

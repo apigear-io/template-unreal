@@ -38,7 +38,7 @@ public:
 	virtual void Deinitialize() override;
 
 	// signals
-	virtual UTbSame1SameEnum2InterfaceSignals* _GetSignals() override;
+	virtual UTbSame1SameEnum2InterfacePublisher* _GetPublisher() override;
 
 	// methods
 	virtual void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame1Enum1& Result, ETbSame1Enum1 Param1) override;
@@ -81,5 +81,5 @@ protected:
 private:
 	// signals
 	UPROPERTY()
-	UTbSame1SameEnum2InterfaceSignals* TbSame1SameEnum2InterfaceSignals;
+	UTbSame1SameEnum2InterfacePublisher* TbSame1SameEnum2InterfacePublisher;
 };

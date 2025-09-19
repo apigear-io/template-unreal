@@ -372,7 +372,7 @@ void UTbEnumEnumInterfaceOLinkClient::applyState(const nlohmann::json& fields)
 		Prop0 = fields["prop0"].get<ETbEnumEnum0>();
 		// reset sent data to the current state
 		_SentData->Prop0 = Prop0;
-		_GetSignals()->BroadcastProp0Changed(Prop0);
+		_GetPublisher()->BroadcastProp0Changed(Prop0);
 	}
 
 	const bool bProp1Changed = fields.contains("prop1") && (Prop1 != fields["prop1"].get<ETbEnumEnum1>());
@@ -381,7 +381,7 @@ void UTbEnumEnumInterfaceOLinkClient::applyState(const nlohmann::json& fields)
 		Prop1 = fields["prop1"].get<ETbEnumEnum1>();
 		// reset sent data to the current state
 		_SentData->Prop1 = Prop1;
-		_GetSignals()->BroadcastProp1Changed(Prop1);
+		_GetPublisher()->BroadcastProp1Changed(Prop1);
 	}
 
 	const bool bProp2Changed = fields.contains("prop2") && (Prop2 != fields["prop2"].get<ETbEnumEnum2>());
@@ -390,7 +390,7 @@ void UTbEnumEnumInterfaceOLinkClient::applyState(const nlohmann::json& fields)
 		Prop2 = fields["prop2"].get<ETbEnumEnum2>();
 		// reset sent data to the current state
 		_SentData->Prop2 = Prop2;
-		_GetSignals()->BroadcastProp2Changed(Prop2);
+		_GetPublisher()->BroadcastProp2Changed(Prop2);
 	}
 
 	const bool bProp3Changed = fields.contains("prop3") && (Prop3 != fields["prop3"].get<ETbEnumEnum3>());
@@ -399,7 +399,7 @@ void UTbEnumEnumInterfaceOLinkClient::applyState(const nlohmann::json& fields)
 		Prop3 = fields["prop3"].get<ETbEnumEnum3>();
 		// reset sent data to the current state
 		_SentData->Prop3 = Prop3;
-		_GetSignals()->BroadcastProp3Changed(Prop3);
+		_GetPublisher()->BroadcastProp3Changed(Prop3);
 	}
 }
 
@@ -408,28 +408,28 @@ void UTbEnumEnumInterfaceOLinkClient::emitSignal(const std::string& signalName, 
 	if (signalName == "sig0")
 	{
 		ETbEnumEnum0 outParam0 = args[0].get<ETbEnumEnum0>();
-		_GetSignals()->BroadcastSig0Signal(outParam0);
+		_GetPublisher()->BroadcastSig0Signal(outParam0);
 		return;
 	}
 
 	if (signalName == "sig1")
 	{
 		ETbEnumEnum1 outParam1 = args[0].get<ETbEnumEnum1>();
-		_GetSignals()->BroadcastSig1Signal(outParam1);
+		_GetPublisher()->BroadcastSig1Signal(outParam1);
 		return;
 	}
 
 	if (signalName == "sig2")
 	{
 		ETbEnumEnum2 outParam2 = args[0].get<ETbEnumEnum2>();
-		_GetSignals()->BroadcastSig2Signal(outParam2);
+		_GetPublisher()->BroadcastSig2Signal(outParam2);
 		return;
 	}
 
 	if (signalName == "sig3")
 	{
 		ETbEnumEnum3 outParam3 = args[0].get<ETbEnumEnum3>();
-		_GetSignals()->BroadcastSig3Signal(outParam3);
+		_GetPublisher()->BroadcastSig3Signal(outParam3);
 		return;
 	}
 }

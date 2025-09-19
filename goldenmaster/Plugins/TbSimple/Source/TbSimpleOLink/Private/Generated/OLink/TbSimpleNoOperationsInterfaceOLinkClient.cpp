@@ -220,7 +220,7 @@ void UTbSimpleNoOperationsInterfaceOLinkClient::applyState(const nlohmann::json&
 		bPropBool = fields["propBool"].get<bool>();
 		// reset sent data to the current state
 		_SentData->bPropBool = bPropBool;
-		_GetSignals()->BroadcastPropBoolChanged(bPropBool);
+		_GetPublisher()->BroadcastPropBoolChanged(bPropBool);
 	}
 
 	const bool bPropIntChanged = fields.contains("propInt") && (PropInt != fields["propInt"].get<int32>());
@@ -229,7 +229,7 @@ void UTbSimpleNoOperationsInterfaceOLinkClient::applyState(const nlohmann::json&
 		PropInt = fields["propInt"].get<int32>();
 		// reset sent data to the current state
 		_SentData->PropInt = PropInt;
-		_GetSignals()->BroadcastPropIntChanged(PropInt);
+		_GetPublisher()->BroadcastPropIntChanged(PropInt);
 	}
 }
 
@@ -237,14 +237,14 @@ void UTbSimpleNoOperationsInterfaceOLinkClient::emitSignal(const std::string& si
 {
 	if (signalName == "sigVoid")
 	{
-		_GetSignals()->BroadcastSigVoidSignal();
+		_GetPublisher()->BroadcastSigVoidSignal();
 		return;
 	}
 
 	if (signalName == "sigBool")
 	{
 		bool boutParamBool = args[0].get<bool>();
-		_GetSignals()->BroadcastSigBoolSignal(boutParamBool);
+		_GetPublisher()->BroadcastSigBoolSignal(boutParamBool);
 		return;
 	}
 }

@@ -142,36 +142,36 @@ void UTbNamesNamEsMsgBusAdapter::_setBackendService(TScriptInterface<ITbNamesNam
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		UTbNamesNamEsSignals* BackendSignals = BackendService->_GetSignals();
-		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbNamesNamEs"));
+		UTbNamesNamEsPublisher* BackendPublisher = BackendService->_GetPublisher();
+		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbNamesNamEs"));
 		if (OnSwitchChangedHandle.IsValid())
 		{
-			BackendSignals->OnSwitchChanged.Remove(OnSwitchChangedHandle);
+			BackendPublisher->OnSwitchChanged.Remove(OnSwitchChangedHandle);
 			OnSwitchChangedHandle.Reset();
 		}
 		if (OnSomePropertyChangedHandle.IsValid())
 		{
-			BackendSignals->OnSomePropertyChanged.Remove(OnSomePropertyChangedHandle);
+			BackendPublisher->OnSomePropertyChanged.Remove(OnSomePropertyChangedHandle);
 			OnSomePropertyChangedHandle.Reset();
 		}
 		if (OnSomePoperty2ChangedHandle.IsValid())
 		{
-			BackendSignals->OnSomePoperty2Changed.Remove(OnSomePoperty2ChangedHandle);
+			BackendPublisher->OnSomePoperty2Changed.Remove(OnSomePoperty2ChangedHandle);
 			OnSomePoperty2ChangedHandle.Reset();
 		}
 		if (OnEnumPropertyChangedHandle.IsValid())
 		{
-			BackendSignals->OnEnumPropertyChanged.Remove(OnEnumPropertyChangedHandle);
+			BackendPublisher->OnEnumPropertyChanged.Remove(OnEnumPropertyChangedHandle);
 			OnEnumPropertyChangedHandle.Reset();
 		}
 		if (OnSomeSignalSignalHandle.IsValid())
 		{
-			BackendSignals->OnSomeSignalSignal.Remove(OnSomeSignalSignalHandle);
+			BackendPublisher->OnSomeSignalSignal.Remove(OnSomeSignalSignalHandle);
 			OnSomeSignalSignalHandle.Reset();
 		}
 		if (OnSomeSignal2SignalHandle.IsValid())
 		{
-			BackendSignals->OnSomeSignal2Signal.Remove(OnSomeSignal2SignalHandle);
+			BackendPublisher->OnSomeSignal2Signal.Remove(OnSomeSignal2SignalHandle);
 			OnSomeSignal2SignalHandle.Reset();
 		}
 	}
@@ -181,15 +181,15 @@ void UTbNamesNamEsMsgBusAdapter::_setBackendService(TScriptInterface<ITbNamesNam
 
 	// subscribe to new backend
 	BackendService = InService;
-	UTbNamesNamEsSignals* BackendSignals = BackendService->_GetSignals();
-	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service TbNamesNamEs"));
+	UTbNamesNamEsPublisher* BackendPublisher = BackendService->_GetPublisher();
+	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbNamesNamEs"));
 	// connect property changed signals or simple events
-	OnSwitchChangedHandle = BackendSignals->OnSwitchChanged.AddUObject(this, &UTbNamesNamEsMsgBusAdapter::OnSwitchChanged);
-	OnSomePropertyChangedHandle = BackendSignals->OnSomePropertyChanged.AddUObject(this, &UTbNamesNamEsMsgBusAdapter::OnSomePropertyChanged);
-	OnSomePoperty2ChangedHandle = BackendSignals->OnSomePoperty2Changed.AddUObject(this, &UTbNamesNamEsMsgBusAdapter::OnSomePoperty2Changed);
-	OnEnumPropertyChangedHandle = BackendSignals->OnEnumPropertyChanged.AddUObject(this, &UTbNamesNamEsMsgBusAdapter::OnEnumPropertyChanged);
-	OnSomeSignalSignalHandle = BackendSignals->OnSomeSignalSignal.AddUObject(this, &UTbNamesNamEsMsgBusAdapter::OnSomeSignal);
-	OnSomeSignal2SignalHandle = BackendSignals->OnSomeSignal2Signal.AddUObject(this, &UTbNamesNamEsMsgBusAdapter::OnSomeSignal2);
+	OnSwitchChangedHandle = BackendPublisher->OnSwitchChanged.AddUObject(this, &UTbNamesNamEsMsgBusAdapter::OnSwitchChanged);
+	OnSomePropertyChangedHandle = BackendPublisher->OnSomePropertyChanged.AddUObject(this, &UTbNamesNamEsMsgBusAdapter::OnSomePropertyChanged);
+	OnSomePoperty2ChangedHandle = BackendPublisher->OnSomePoperty2Changed.AddUObject(this, &UTbNamesNamEsMsgBusAdapter::OnSomePoperty2Changed);
+	OnEnumPropertyChangedHandle = BackendPublisher->OnEnumPropertyChanged.AddUObject(this, &UTbNamesNamEsMsgBusAdapter::OnEnumPropertyChanged);
+	OnSomeSignalSignalHandle = BackendPublisher->OnSomeSignalSignal.AddUObject(this, &UTbNamesNamEsMsgBusAdapter::OnSomeSignal);
+	OnSomeSignal2SignalHandle = BackendPublisher->OnSomeSignal2Signal.AddUObject(this, &UTbNamesNamEsMsgBusAdapter::OnSomeSignal2);
 }
 
 void UTbNamesNamEsMsgBusAdapter::OnDiscoveryMessage(const FTbNamesNamEsDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)

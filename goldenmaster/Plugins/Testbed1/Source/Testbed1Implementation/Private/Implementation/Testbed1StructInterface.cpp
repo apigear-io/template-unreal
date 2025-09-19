@@ -28,7 +28,7 @@ void UTestbed1StructInterfaceImplementation::SetPropBool(const FTestbed1StructBo
 	if (PropBool != InPropBool)
 	{
 		PropBool = InPropBool;
-		_GetSignals()->BroadcastPropBoolChanged(PropBool);
+		_GetPublisher()->BroadcastPropBoolChanged(PropBool);
 	}
 }
 FTestbed1StructInt UTestbed1StructInterfaceImplementation::GetPropInt() const
@@ -41,7 +41,7 @@ void UTestbed1StructInterfaceImplementation::SetPropInt(const FTestbed1StructInt
 	if (PropInt != InPropInt)
 	{
 		PropInt = InPropInt;
-		_GetSignals()->BroadcastPropIntChanged(PropInt);
+		_GetPublisher()->BroadcastPropIntChanged(PropInt);
 	}
 }
 FTestbed1StructFloat UTestbed1StructInterfaceImplementation::GetPropFloat() const
@@ -54,7 +54,7 @@ void UTestbed1StructInterfaceImplementation::SetPropFloat(const FTestbed1StructF
 	if (PropFloat != InPropFloat)
 	{
 		PropFloat = InPropFloat;
-		_GetSignals()->BroadcastPropFloatChanged(PropFloat);
+		_GetPublisher()->BroadcastPropFloatChanged(PropFloat);
 	}
 }
 FTestbed1StructString UTestbed1StructInterfaceImplementation::GetPropString() const
@@ -67,7 +67,7 @@ void UTestbed1StructInterfaceImplementation::SetPropString(const FTestbed1Struct
 	if (PropString != InPropString)
 	{
 		PropString = InPropString;
-		_GetSignals()->BroadcastPropStringChanged(PropString);
+		_GetPublisher()->BroadcastPropStringChanged(PropString);
 	}
 }
 
@@ -104,21 +104,21 @@ void UTestbed1StructInterfaceImplementation::_ResetProperties()
 	if (PropBool != FTestbed1StructBool())
 	{
 		PropBool = FTestbed1StructBool();
-		_GetSignals()->BroadcastPropBoolChanged(PropBool);
+		_GetPublisher()->BroadcastPropBoolChanged(PropBool);
 	}
 	if (PropInt != FTestbed1StructInt())
 	{
 		PropInt = FTestbed1StructInt();
-		_GetSignals()->BroadcastPropIntChanged(PropInt);
+		_GetPublisher()->BroadcastPropIntChanged(PropInt);
 	}
 	if (PropFloat != FTestbed1StructFloat())
 	{
 		PropFloat = FTestbed1StructFloat();
-		_GetSignals()->BroadcastPropFloatChanged(PropFloat);
+		_GetPublisher()->BroadcastPropFloatChanged(PropFloat);
 	}
 	if (PropString != FTestbed1StructString())
 	{
 		PropString = FTestbed1StructString();
-		_GetSignals()->BroadcastPropStringChanged(PropString);
+		_GetPublisher()->BroadcastPropStringChanged(PropString);
 	}
 }

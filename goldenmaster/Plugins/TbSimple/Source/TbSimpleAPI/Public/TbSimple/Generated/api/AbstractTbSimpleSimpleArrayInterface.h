@@ -38,7 +38,7 @@ public:
 	virtual void Deinitialize() override;
 
 	// signals
-	virtual UTbSimpleSimpleArrayInterfaceSignals* _GetSignals() override;
+	virtual UTbSimpleSimpleArrayInterfacePublisher* _GetPublisher() override;
 
 	// methods
 	virtual void FuncBoolAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<bool>& Result, const TArray<bool>& ParamBool) override;
@@ -179,5 +179,5 @@ protected:
 private:
 	// signals
 	UPROPERTY()
-	UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals;
+	UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher;
 };

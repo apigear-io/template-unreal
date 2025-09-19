@@ -38,7 +38,7 @@ public:
 	virtual void Deinitialize() override;
 
 	// signals
-	virtual UTestbed2ManyParamInterfaceSignals* _GetSignals() override;
+	virtual UTestbed2ManyParamInterfacePublisher* _GetPublisher() override;
 
 	// methods
 	virtual void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1) override;
@@ -111,5 +111,5 @@ protected:
 private:
 	// signals
 	UPROPERTY()
-	UTestbed2ManyParamInterfaceSignals* Testbed2ManyParamInterfaceSignals;
+	UTestbed2ManyParamInterfacePublisher* Testbed2ManyParamInterfacePublisher;
 };

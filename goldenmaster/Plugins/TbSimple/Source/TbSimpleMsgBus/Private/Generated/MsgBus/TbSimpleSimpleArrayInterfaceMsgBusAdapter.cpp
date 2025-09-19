@@ -152,91 +152,91 @@ void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::_setBackendService(TScriptInter
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		UTbSimpleSimpleArrayInterfaceSignals* BackendSignals = BackendService->_GetSignals();
-		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleSimpleArrayInterface"));
+		UTbSimpleSimpleArrayInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleSimpleArrayInterface"));
 		if (OnPropBoolChangedHandle.IsValid())
 		{
-			BackendSignals->OnPropBoolChanged.Remove(OnPropBoolChangedHandle);
+			BackendPublisher->OnPropBoolChanged.Remove(OnPropBoolChangedHandle);
 			OnPropBoolChangedHandle.Reset();
 		}
 		if (OnPropIntChangedHandle.IsValid())
 		{
-			BackendSignals->OnPropIntChanged.Remove(OnPropIntChangedHandle);
+			BackendPublisher->OnPropIntChanged.Remove(OnPropIntChangedHandle);
 			OnPropIntChangedHandle.Reset();
 		}
 		if (OnPropInt32ChangedHandle.IsValid())
 		{
-			BackendSignals->OnPropInt32Changed.Remove(OnPropInt32ChangedHandle);
+			BackendPublisher->OnPropInt32Changed.Remove(OnPropInt32ChangedHandle);
 			OnPropInt32ChangedHandle.Reset();
 		}
 		if (OnPropInt64ChangedHandle.IsValid())
 		{
-			BackendSignals->OnPropInt64Changed.Remove(OnPropInt64ChangedHandle);
+			BackendPublisher->OnPropInt64Changed.Remove(OnPropInt64ChangedHandle);
 			OnPropInt64ChangedHandle.Reset();
 		}
 		if (OnPropFloatChangedHandle.IsValid())
 		{
-			BackendSignals->OnPropFloatChanged.Remove(OnPropFloatChangedHandle);
+			BackendPublisher->OnPropFloatChanged.Remove(OnPropFloatChangedHandle);
 			OnPropFloatChangedHandle.Reset();
 		}
 		if (OnPropFloat32ChangedHandle.IsValid())
 		{
-			BackendSignals->OnPropFloat32Changed.Remove(OnPropFloat32ChangedHandle);
+			BackendPublisher->OnPropFloat32Changed.Remove(OnPropFloat32ChangedHandle);
 			OnPropFloat32ChangedHandle.Reset();
 		}
 		if (OnPropFloat64ChangedHandle.IsValid())
 		{
-			BackendSignals->OnPropFloat64Changed.Remove(OnPropFloat64ChangedHandle);
+			BackendPublisher->OnPropFloat64Changed.Remove(OnPropFloat64ChangedHandle);
 			OnPropFloat64ChangedHandle.Reset();
 		}
 		if (OnPropStringChangedHandle.IsValid())
 		{
-			BackendSignals->OnPropStringChanged.Remove(OnPropStringChangedHandle);
+			BackendPublisher->OnPropStringChanged.Remove(OnPropStringChangedHandle);
 			OnPropStringChangedHandle.Reset();
 		}
 		if (OnPropReadOnlyStringChangedHandle.IsValid())
 		{
-			BackendSignals->OnPropReadOnlyStringChanged.Remove(OnPropReadOnlyStringChangedHandle);
+			BackendPublisher->OnPropReadOnlyStringChanged.Remove(OnPropReadOnlyStringChangedHandle);
 			OnPropReadOnlyStringChangedHandle.Reset();
 		}
 		if (OnSigBoolSignalHandle.IsValid())
 		{
-			BackendSignals->OnSigBoolSignal.Remove(OnSigBoolSignalHandle);
+			BackendPublisher->OnSigBoolSignal.Remove(OnSigBoolSignalHandle);
 			OnSigBoolSignalHandle.Reset();
 		}
 		if (OnSigIntSignalHandle.IsValid())
 		{
-			BackendSignals->OnSigIntSignal.Remove(OnSigIntSignalHandle);
+			BackendPublisher->OnSigIntSignal.Remove(OnSigIntSignalHandle);
 			OnSigIntSignalHandle.Reset();
 		}
 		if (OnSigInt32SignalHandle.IsValid())
 		{
-			BackendSignals->OnSigInt32Signal.Remove(OnSigInt32SignalHandle);
+			BackendPublisher->OnSigInt32Signal.Remove(OnSigInt32SignalHandle);
 			OnSigInt32SignalHandle.Reset();
 		}
 		if (OnSigInt64SignalHandle.IsValid())
 		{
-			BackendSignals->OnSigInt64Signal.Remove(OnSigInt64SignalHandle);
+			BackendPublisher->OnSigInt64Signal.Remove(OnSigInt64SignalHandle);
 			OnSigInt64SignalHandle.Reset();
 		}
 		if (OnSigFloatSignalHandle.IsValid())
 		{
-			BackendSignals->OnSigFloatSignal.Remove(OnSigFloatSignalHandle);
+			BackendPublisher->OnSigFloatSignal.Remove(OnSigFloatSignalHandle);
 			OnSigFloatSignalHandle.Reset();
 		}
 		if (OnSigFloat32SignalHandle.IsValid())
 		{
-			BackendSignals->OnSigFloat32Signal.Remove(OnSigFloat32SignalHandle);
+			BackendPublisher->OnSigFloat32Signal.Remove(OnSigFloat32SignalHandle);
 			OnSigFloat32SignalHandle.Reset();
 		}
 		if (OnSigFloat64SignalHandle.IsValid())
 		{
-			BackendSignals->OnSigFloat64Signal.Remove(OnSigFloat64SignalHandle);
+			BackendPublisher->OnSigFloat64Signal.Remove(OnSigFloat64SignalHandle);
 			OnSigFloat64SignalHandle.Reset();
 		}
 		if (OnSigStringSignalHandle.IsValid())
 		{
-			BackendSignals->OnSigStringSignal.Remove(OnSigStringSignalHandle);
+			BackendPublisher->OnSigStringSignal.Remove(OnSigStringSignalHandle);
 			OnSigStringSignalHandle.Reset();
 		}
 	}
@@ -246,26 +246,26 @@ void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::_setBackendService(TScriptInter
 
 	// subscribe to new backend
 	BackendService = InService;
-	UTbSimpleSimpleArrayInterfaceSignals* BackendSignals = BackendService->_GetSignals();
-	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service TbSimpleSimpleArrayInterface"));
+	UTbSimpleSimpleArrayInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbSimpleSimpleArrayInterface"));
 	// connect property changed signals or simple events
-	OnPropBoolChangedHandle = BackendSignals->OnPropBoolChanged.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropBoolChanged);
-	OnPropIntChangedHandle = BackendSignals->OnPropIntChanged.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropIntChanged);
-	OnPropInt32ChangedHandle = BackendSignals->OnPropInt32Changed.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropInt32Changed);
-	OnPropInt64ChangedHandle = BackendSignals->OnPropInt64Changed.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropInt64Changed);
-	OnPropFloatChangedHandle = BackendSignals->OnPropFloatChanged.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropFloatChanged);
-	OnPropFloat32ChangedHandle = BackendSignals->OnPropFloat32Changed.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropFloat32Changed);
-	OnPropFloat64ChangedHandle = BackendSignals->OnPropFloat64Changed.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropFloat64Changed);
-	OnPropStringChangedHandle = BackendSignals->OnPropStringChanged.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropStringChanged);
-	OnPropReadOnlyStringChangedHandle = BackendSignals->OnPropReadOnlyStringChanged.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropReadOnlyStringChanged);
-	OnSigBoolSignalHandle = BackendSignals->OnSigBoolSignal.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSigBool);
-	OnSigIntSignalHandle = BackendSignals->OnSigIntSignal.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSigInt);
-	OnSigInt32SignalHandle = BackendSignals->OnSigInt32Signal.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSigInt32);
-	OnSigInt64SignalHandle = BackendSignals->OnSigInt64Signal.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSigInt64);
-	OnSigFloatSignalHandle = BackendSignals->OnSigFloatSignal.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSigFloat);
-	OnSigFloat32SignalHandle = BackendSignals->OnSigFloat32Signal.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSigFloat32);
-	OnSigFloat64SignalHandle = BackendSignals->OnSigFloat64Signal.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSigFloat64);
-	OnSigStringSignalHandle = BackendSignals->OnSigStringSignal.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSigString);
+	OnPropBoolChangedHandle = BackendPublisher->OnPropBoolChanged.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropBoolChanged);
+	OnPropIntChangedHandle = BackendPublisher->OnPropIntChanged.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropIntChanged);
+	OnPropInt32ChangedHandle = BackendPublisher->OnPropInt32Changed.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropInt32Changed);
+	OnPropInt64ChangedHandle = BackendPublisher->OnPropInt64Changed.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropInt64Changed);
+	OnPropFloatChangedHandle = BackendPublisher->OnPropFloatChanged.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropFloatChanged);
+	OnPropFloat32ChangedHandle = BackendPublisher->OnPropFloat32Changed.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropFloat32Changed);
+	OnPropFloat64ChangedHandle = BackendPublisher->OnPropFloat64Changed.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropFloat64Changed);
+	OnPropStringChangedHandle = BackendPublisher->OnPropStringChanged.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropStringChanged);
+	OnPropReadOnlyStringChangedHandle = BackendPublisher->OnPropReadOnlyStringChanged.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropReadOnlyStringChanged);
+	OnSigBoolSignalHandle = BackendPublisher->OnSigBoolSignal.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSigBool);
+	OnSigIntSignalHandle = BackendPublisher->OnSigIntSignal.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSigInt);
+	OnSigInt32SignalHandle = BackendPublisher->OnSigInt32Signal.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSigInt32);
+	OnSigInt64SignalHandle = BackendPublisher->OnSigInt64Signal.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSigInt64);
+	OnSigFloatSignalHandle = BackendPublisher->OnSigFloatSignal.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSigFloat);
+	OnSigFloat32SignalHandle = BackendPublisher->OnSigFloat32Signal.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSigFloat32);
+	OnSigFloat64SignalHandle = BackendPublisher->OnSigFloat64Signal.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSigFloat64);
+	OnSigStringSignalHandle = BackendPublisher->OnSigStringSignal.AddUObject(this, &UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSigString);
 }
 
 void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnDiscoveryMessage(const FTbSimpleSimpleArrayInterfaceDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
