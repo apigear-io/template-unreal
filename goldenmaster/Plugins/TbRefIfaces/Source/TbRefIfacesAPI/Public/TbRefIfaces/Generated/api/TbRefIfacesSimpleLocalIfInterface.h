@@ -70,56 +70,19 @@ public:
 	FTbRefIfacesSimpleLocalIfIntSignalDelegateBP OnIntSignalSignalBP;
 	/// C++ wrapper for BP functions to safely call IntSignalSignal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|SimpleLocalIf|Signals", DisplayName = "Broadcast IntSignal Signal")
-	void BroadcastIntSignalSignal(int32 Param)
-	{
-		OnIntSignalSignal.Broadcast(Param);
-		OnIntSignalSignalBP.Broadcast(Param);
-
-		TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfBPSubscriberInterface>> SubscribersCopy = Subscribers;
-		for (const TScriptInterface<ITbRefIfacesSimpleLocalIfBPSubscriberInterface>& Subscriber : SubscribersCopy)
-		{
-			if (UObject* Obj = Subscriber.GetObject())
-			{
-				ITbRefIfacesSimpleLocalIfBPSubscriberInterface::Execute_OnIntSignalSignal(Obj, Param);
-			}
-		}
-	}
+	void BroadcastIntSignalSignal(int32 Param);
 
 	FTbRefIfacesSimpleLocalIfIntPropertyChangedDelegate OnIntPropertyChanged;
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbRefIfaces|SimpleLocalIf|Signals", DisplayName = "Property IntProperty Changed")
 	FTbRefIfacesSimpleLocalIfIntPropertyChangedDelegateBP OnIntPropertyChangedBP;
 	/// C++ wrapper for BP functions to safely call OnIntPropertyChanged.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|SimpleLocalIf|Signals", DisplayName = "Broadcast Property IntProperty Changed")
-	void BroadcastIntPropertyChanged(UPARAM(DisplayName = "IntProperty") int32 InIntProperty)
-	{
-		OnIntPropertyChanged.Broadcast(InIntProperty);
-		OnIntPropertyChangedBP.Broadcast(InIntProperty);
-
-		TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfBPSubscriberInterface>> SubscribersCopy = Subscribers;
-		for (const TScriptInterface<ITbRefIfacesSimpleLocalIfBPSubscriberInterface>& Subscriber : SubscribersCopy)
-		{
-			if (UObject* Obj = Subscriber.GetObject())
-			{
-				ITbRefIfacesSimpleLocalIfBPSubscriberInterface::Execute_OnIntPropertyChanged(Obj, InIntProperty);
-			}
-		}
-	}
+	void BroadcastIntPropertyChanged(UPARAM(DisplayName = "IntProperty") int32 InIntProperty);
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|SimpleLocalIf|Signals")
-	void Subscribe(const TScriptInterface<ITbRefIfacesSimpleLocalIfBPSubscriberInterface>& Subscriber)
-	{
-		if (!Subscriber.GetObject())
-		{
-			return;
-		}
-		Subscribers.Remove(Subscriber);
-		Subscribers.Add(Subscriber);
-	}
+	void Subscribe(const TScriptInterface<ITbRefIfacesSimpleLocalIfBPSubscriberInterface>& Subscriber);
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|SimpleLocalIf|Signals")
-	void Unsubscribe(const TScriptInterface<ITbRefIfacesSimpleLocalIfBPSubscriberInterface>& Subscriber)
-	{
-		Subscribers.Remove(Subscriber);
-	}
+	void Unsubscribe(const TScriptInterface<ITbRefIfacesSimpleLocalIfBPSubscriberInterface>& Subscriber);
 
 private:
 	UPROPERTY()

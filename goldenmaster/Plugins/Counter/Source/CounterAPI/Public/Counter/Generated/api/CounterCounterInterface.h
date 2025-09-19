@@ -85,116 +85,40 @@ public:
 	FCounterCounterValueChangedDelegateBP OnValueChangedSignalBP;
 	/// C++ wrapper for BP functions to safely call ValueChangedSignal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Signals", DisplayName = "Broadcast ValueChanged Signal")
-	void BroadcastValueChangedSignal(const FCustomTypesVector3D& Vector, const FVector& ExternVector, const TArray<FCustomTypesVector3D>& VectorArray, const TArray<FVector>& ExternVectorArray)
-	{
-		OnValueChangedSignal.Broadcast(Vector, ExternVector, VectorArray, ExternVectorArray);
-		OnValueChangedSignalBP.Broadcast(Vector, ExternVector, VectorArray, ExternVectorArray);
-
-		TArray<TScriptInterface<ICounterCounterBPSubscriberInterface>> SubscribersCopy = Subscribers;
-		for (const TScriptInterface<ICounterCounterBPSubscriberInterface>& Subscriber : SubscribersCopy)
-		{
-			if (UObject* Obj = Subscriber.GetObject())
-			{
-				ICounterCounterBPSubscriberInterface::Execute_OnValueChangedSignal(Obj, Vector, ExternVector, VectorArray, ExternVectorArray);
-			}
-		}
-	}
+	void BroadcastValueChangedSignal(const FCustomTypesVector3D& Vector, const FVector& ExternVector, const TArray<FCustomTypesVector3D>& VectorArray, const TArray<FVector>& ExternVectorArray);
 
 	FCounterCounterVectorChangedDelegate OnVectorChanged;
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Counter|Counter|Signals", DisplayName = "Property Vector Changed")
 	FCounterCounterVectorChangedDelegateBP OnVectorChangedBP;
 	/// C++ wrapper for BP functions to safely call OnVectorChanged.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Signals", DisplayName = "Broadcast Property Vector Changed")
-	void BroadcastVectorChanged(UPARAM(DisplayName = "Vector") const FCustomTypesVector3D& InVector)
-	{
-		OnVectorChanged.Broadcast(InVector);
-		OnVectorChangedBP.Broadcast(InVector);
-
-		TArray<TScriptInterface<ICounterCounterBPSubscriberInterface>> SubscribersCopy = Subscribers;
-		for (const TScriptInterface<ICounterCounterBPSubscriberInterface>& Subscriber : SubscribersCopy)
-		{
-			if (UObject* Obj = Subscriber.GetObject())
-			{
-				ICounterCounterBPSubscriberInterface::Execute_OnVectorChanged(Obj, InVector);
-			}
-		}
-	}
+	void BroadcastVectorChanged(UPARAM(DisplayName = "Vector") const FCustomTypesVector3D& InVector);
 
 	FCounterCounterExternVectorChangedDelegate OnExternVectorChanged;
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Counter|Counter|Signals", DisplayName = "Property ExternVector Changed")
 	FCounterCounterExternVectorChangedDelegateBP OnExternVectorChangedBP;
 	/// C++ wrapper for BP functions to safely call OnExternVectorChanged.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Signals", DisplayName = "Broadcast Property ExternVector Changed")
-	void BroadcastExternVectorChanged(UPARAM(DisplayName = "ExternVector") const FVector& InExternVector)
-	{
-		OnExternVectorChanged.Broadcast(InExternVector);
-		OnExternVectorChangedBP.Broadcast(InExternVector);
-
-		TArray<TScriptInterface<ICounterCounterBPSubscriberInterface>> SubscribersCopy = Subscribers;
-		for (const TScriptInterface<ICounterCounterBPSubscriberInterface>& Subscriber : SubscribersCopy)
-		{
-			if (UObject* Obj = Subscriber.GetObject())
-			{
-				ICounterCounterBPSubscriberInterface::Execute_OnExternVectorChanged(Obj, InExternVector);
-			}
-		}
-	}
+	void BroadcastExternVectorChanged(UPARAM(DisplayName = "ExternVector") const FVector& InExternVector);
 
 	FCounterCounterVectorArrayChangedDelegate OnVectorArrayChanged;
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Counter|Counter|Signals", DisplayName = "Property VectorArray Changed")
 	FCounterCounterVectorArrayChangedDelegateBP OnVectorArrayChangedBP;
 	/// C++ wrapper for BP functions to safely call OnVectorArrayChanged.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Signals", DisplayName = "Broadcast Property VectorArray Changed")
-	void BroadcastVectorArrayChanged(UPARAM(DisplayName = "VectorArray") const TArray<FCustomTypesVector3D>& InVectorArray)
-	{
-		OnVectorArrayChanged.Broadcast(InVectorArray);
-		OnVectorArrayChangedBP.Broadcast(InVectorArray);
-
-		TArray<TScriptInterface<ICounterCounterBPSubscriberInterface>> SubscribersCopy = Subscribers;
-		for (const TScriptInterface<ICounterCounterBPSubscriberInterface>& Subscriber : SubscribersCopy)
-		{
-			if (UObject* Obj = Subscriber.GetObject())
-			{
-				ICounterCounterBPSubscriberInterface::Execute_OnVectorArrayChanged(Obj, InVectorArray);
-			}
-		}
-	}
+	void BroadcastVectorArrayChanged(UPARAM(DisplayName = "VectorArray") const TArray<FCustomTypesVector3D>& InVectorArray);
 
 	FCounterCounterExternVectorArrayChangedDelegate OnExternVectorArrayChanged;
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Counter|Counter|Signals", DisplayName = "Property ExternVectorArray Changed")
 	FCounterCounterExternVectorArrayChangedDelegateBP OnExternVectorArrayChangedBP;
 	/// C++ wrapper for BP functions to safely call OnExternVectorArrayChanged.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Signals", DisplayName = "Broadcast Property ExternVectorArray Changed")
-	void BroadcastExternVectorArrayChanged(UPARAM(DisplayName = "ExternVectorArray") const TArray<FVector>& InExternVectorArray)
-	{
-		OnExternVectorArrayChanged.Broadcast(InExternVectorArray);
-		OnExternVectorArrayChangedBP.Broadcast(InExternVectorArray);
-
-		TArray<TScriptInterface<ICounterCounterBPSubscriberInterface>> SubscribersCopy = Subscribers;
-		for (const TScriptInterface<ICounterCounterBPSubscriberInterface>& Subscriber : SubscribersCopy)
-		{
-			if (UObject* Obj = Subscriber.GetObject())
-			{
-				ICounterCounterBPSubscriberInterface::Execute_OnExternVectorArrayChanged(Obj, InExternVectorArray);
-			}
-		}
-	}
+	void BroadcastExternVectorArrayChanged(UPARAM(DisplayName = "ExternVectorArray") const TArray<FVector>& InExternVectorArray);
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Signals")
-	void Subscribe(const TScriptInterface<ICounterCounterBPSubscriberInterface>& Subscriber)
-	{
-		if (!Subscriber.GetObject())
-		{
-			return;
-		}
-		Subscribers.Remove(Subscriber);
-		Subscribers.Add(Subscriber);
-	}
+	void Subscribe(const TScriptInterface<ICounterCounterBPSubscriberInterface>& Subscriber);
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Signals")
-	void Unsubscribe(const TScriptInterface<ICounterCounterBPSubscriberInterface>& Subscriber)
-	{
-		Subscribers.Remove(Subscriber);
-	}
+	void Unsubscribe(const TScriptInterface<ICounterCounterBPSubscriberInterface>& Subscriber);
 
 private:
 	UPROPERTY()

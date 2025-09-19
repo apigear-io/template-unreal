@@ -71,56 +71,19 @@ public:
 	FTbSimpleNoPropertiesInterfaceSigVoidDelegateBP OnSigVoidSignalBP;
 	/// C++ wrapper for BP functions to safely call SigVoidSignal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoPropertiesInterface|Signals", DisplayName = "Broadcast SigVoid Signal")
-	void BroadcastSigVoidSignal()
-	{
-		OnSigVoidSignal.Broadcast();
-		OnSigVoidSignalBP.Broadcast();
-
-		TArray<TScriptInterface<ITbSimpleNoPropertiesInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
-		for (const TScriptInterface<ITbSimpleNoPropertiesInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
-		{
-			if (UObject* Obj = Subscriber.GetObject())
-			{
-				ITbSimpleNoPropertiesInterfaceBPSubscriberInterface::Execute_OnSigVoidSignal(Obj);
-			}
-		}
-	}
+	void BroadcastSigVoidSignal();
 
 	FTbSimpleNoPropertiesInterfaceSigBoolDelegate OnSigBoolSignal;
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoPropertiesInterface|Signals", DisplayName = "SigBool Signal")
 	FTbSimpleNoPropertiesInterfaceSigBoolDelegateBP OnSigBoolSignalBP;
 	/// C++ wrapper for BP functions to safely call SigBoolSignal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoPropertiesInterface|Signals", DisplayName = "Broadcast SigBool Signal")
-	void BroadcastSigBoolSignal(bool bParamBool)
-	{
-		OnSigBoolSignal.Broadcast(bParamBool);
-		OnSigBoolSignalBP.Broadcast(bParamBool);
-
-		TArray<TScriptInterface<ITbSimpleNoPropertiesInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
-		for (const TScriptInterface<ITbSimpleNoPropertiesInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
-		{
-			if (UObject* Obj = Subscriber.GetObject())
-			{
-				ITbSimpleNoPropertiesInterfaceBPSubscriberInterface::Execute_OnSigBoolSignal(Obj, bParamBool);
-			}
-		}
-	}
+	void BroadcastSigBoolSignal(bool bParamBool);
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoPropertiesInterface|Signals")
-	void Subscribe(const TScriptInterface<ITbSimpleNoPropertiesInterfaceBPSubscriberInterface>& Subscriber)
-	{
-		if (!Subscriber.GetObject())
-		{
-			return;
-		}
-		Subscribers.Remove(Subscriber);
-		Subscribers.Add(Subscriber);
-	}
+	void Subscribe(const TScriptInterface<ITbSimpleNoPropertiesInterfaceBPSubscriberInterface>& Subscriber);
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoPropertiesInterface|Signals")
-	void Unsubscribe(const TScriptInterface<ITbSimpleNoPropertiesInterfaceBPSubscriberInterface>& Subscriber)
-	{
-		Subscribers.Remove(Subscriber);
-	}
+	void Unsubscribe(const TScriptInterface<ITbSimpleNoPropertiesInterfaceBPSubscriberInterface>& Subscriber);
 
 private:
 	UPROPERTY()

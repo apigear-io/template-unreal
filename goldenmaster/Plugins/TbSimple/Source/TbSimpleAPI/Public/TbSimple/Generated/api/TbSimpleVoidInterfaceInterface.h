@@ -65,36 +65,12 @@ public:
 	FTbSimpleVoidInterfaceSigVoidDelegateBP OnSigVoidSignalBP;
 	/// C++ wrapper for BP functions to safely call SigVoidSignal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|VoidInterface|Signals", DisplayName = "Broadcast SigVoid Signal")
-	void BroadcastSigVoidSignal()
-	{
-		OnSigVoidSignal.Broadcast();
-		OnSigVoidSignalBP.Broadcast();
-
-		TArray<TScriptInterface<ITbSimpleVoidInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
-		for (const TScriptInterface<ITbSimpleVoidInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
-		{
-			if (UObject* Obj = Subscriber.GetObject())
-			{
-				ITbSimpleVoidInterfaceBPSubscriberInterface::Execute_OnSigVoidSignal(Obj);
-			}
-		}
-	}
+	void BroadcastSigVoidSignal();
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|VoidInterface|Signals")
-	void Subscribe(const TScriptInterface<ITbSimpleVoidInterfaceBPSubscriberInterface>& Subscriber)
-	{
-		if (!Subscriber.GetObject())
-		{
-			return;
-		}
-		Subscribers.Remove(Subscriber);
-		Subscribers.Add(Subscriber);
-	}
+	void Subscribe(const TScriptInterface<ITbSimpleVoidInterfaceBPSubscriberInterface>& Subscriber);
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|VoidInterface|Signals")
-	void Unsubscribe(const TScriptInterface<ITbSimpleVoidInterfaceBPSubscriberInterface>& Subscriber)
-	{
-		Subscribers.Remove(Subscriber);
-	}
+	void Unsubscribe(const TScriptInterface<ITbSimpleVoidInterfaceBPSubscriberInterface>& Subscriber);
 
 private:
 	UPROPERTY()

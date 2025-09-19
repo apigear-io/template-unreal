@@ -27,6 +27,8 @@ features:
         documents:
           - source: "module/Source/moduleapi/Public/module/Generated/api/interface.h.tpl"
             target: "Public/{{Camel .Module.Name}}/Generated/api/{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface.h"
+          - source: "module/Source/moduleapi/Private/Generated/api/publisher.cpp.tpl"
+            target: "Private/{{Camel .Module.Name}}/Generated/api/{{Camel .Module.Name}}{{Camel .Interface.Name}}Publisher.cpp"
           - source: "module/Source/moduleapi/Public/module/Generated/api/bphelperinterface.h.tpl"
             target: "Public/{{Camel .Module.Name}}/Generated/api/{{Camel .Module.Name}}{{Camel .Interface.Name}}BPHelperInterface.h"
           - source: "module/Source/moduleapi/Public/module/Generated/api/interfacebp.h.tpl"

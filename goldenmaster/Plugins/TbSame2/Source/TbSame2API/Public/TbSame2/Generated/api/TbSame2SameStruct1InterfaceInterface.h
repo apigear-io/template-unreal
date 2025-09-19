@@ -70,56 +70,19 @@ public:
 	FTbSame2SameStruct1InterfaceSig1DelegateBP OnSig1SignalBP;
 	/// C++ wrapper for BP functions to safely call Sig1Signal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct1Interface|Signals", DisplayName = "Broadcast Sig1 Signal")
-	void BroadcastSig1Signal(const FTbSame2Struct1& Param1)
-	{
-		OnSig1Signal.Broadcast(Param1);
-		OnSig1SignalBP.Broadcast(Param1);
-
-		TArray<TScriptInterface<ITbSame2SameStruct1InterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
-		for (const TScriptInterface<ITbSame2SameStruct1InterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
-		{
-			if (UObject* Obj = Subscriber.GetObject())
-			{
-				ITbSame2SameStruct1InterfaceBPSubscriberInterface::Execute_OnSig1Signal(Obj, Param1);
-			}
-		}
-	}
+	void BroadcastSig1Signal(const FTbSame2Struct1& Param1);
 
 	FTbSame2SameStruct1InterfaceProp1ChangedDelegate OnProp1Changed;
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame2|SameStruct1Interface|Signals", DisplayName = "Property Prop1 Changed")
 	FTbSame2SameStruct1InterfaceProp1ChangedDelegateBP OnProp1ChangedBP;
 	/// C++ wrapper for BP functions to safely call OnProp1Changed.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct1Interface|Signals", DisplayName = "Broadcast Property Prop1 Changed")
-	void BroadcastProp1Changed(UPARAM(DisplayName = "Prop1") const FTbSame2Struct1& InProp1)
-	{
-		OnProp1Changed.Broadcast(InProp1);
-		OnProp1ChangedBP.Broadcast(InProp1);
-
-		TArray<TScriptInterface<ITbSame2SameStruct1InterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
-		for (const TScriptInterface<ITbSame2SameStruct1InterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
-		{
-			if (UObject* Obj = Subscriber.GetObject())
-			{
-				ITbSame2SameStruct1InterfaceBPSubscriberInterface::Execute_OnProp1Changed(Obj, InProp1);
-			}
-		}
-	}
+	void BroadcastProp1Changed(UPARAM(DisplayName = "Prop1") const FTbSame2Struct1& InProp1);
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct1Interface|Signals")
-	void Subscribe(const TScriptInterface<ITbSame2SameStruct1InterfaceBPSubscriberInterface>& Subscriber)
-	{
-		if (!Subscriber.GetObject())
-		{
-			return;
-		}
-		Subscribers.Remove(Subscriber);
-		Subscribers.Add(Subscriber);
-	}
+	void Subscribe(const TScriptInterface<ITbSame2SameStruct1InterfaceBPSubscriberInterface>& Subscriber);
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct1Interface|Signals")
-	void Unsubscribe(const TScriptInterface<ITbSame2SameStruct1InterfaceBPSubscriberInterface>& Subscriber)
-	{
-		Subscribers.Remove(Subscriber);
-	}
+	void Unsubscribe(const TScriptInterface<ITbSame2SameStruct1InterfaceBPSubscriberInterface>& Subscriber);
 
 private:
 	UPROPERTY()

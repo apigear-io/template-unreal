@@ -147,336 +147,117 @@ public:
 	FTbSimpleSimpleInterfaceSigBoolDelegateBP OnSigBoolSignalBP;
 	/// C++ wrapper for BP functions to safely call SigBoolSignal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast SigBool Signal")
-	void BroadcastSigBoolSignal(bool bParamBool)
-	{
-		OnSigBoolSignal.Broadcast(bParamBool);
-		OnSigBoolSignalBP.Broadcast(bParamBool);
-
-		TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
-		for (const TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
-		{
-			if (UObject* Obj = Subscriber.GetObject())
-			{
-				ITbSimpleSimpleInterfaceBPSubscriberInterface::Execute_OnSigBoolSignal(Obj, bParamBool);
-			}
-		}
-	}
+	void BroadcastSigBoolSignal(bool bParamBool);
 
 	FTbSimpleSimpleInterfaceSigIntDelegate OnSigIntSignal;
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "SigInt Signal")
 	FTbSimpleSimpleInterfaceSigIntDelegateBP OnSigIntSignalBP;
 	/// C++ wrapper for BP functions to safely call SigIntSignal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast SigInt Signal")
-	void BroadcastSigIntSignal(int32 ParamInt)
-	{
-		OnSigIntSignal.Broadcast(ParamInt);
-		OnSigIntSignalBP.Broadcast(ParamInt);
-
-		TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
-		for (const TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
-		{
-			if (UObject* Obj = Subscriber.GetObject())
-			{
-				ITbSimpleSimpleInterfaceBPSubscriberInterface::Execute_OnSigIntSignal(Obj, ParamInt);
-			}
-		}
-	}
+	void BroadcastSigIntSignal(int32 ParamInt);
 
 	FTbSimpleSimpleInterfaceSigInt32Delegate OnSigInt32Signal;
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "SigInt32 Signal")
 	FTbSimpleSimpleInterfaceSigInt32DelegateBP OnSigInt32SignalBP;
 	/// C++ wrapper for BP functions to safely call SigInt32Signal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast SigInt32 Signal")
-	void BroadcastSigInt32Signal(int32 ParamInt32)
-	{
-		OnSigInt32Signal.Broadcast(ParamInt32);
-		OnSigInt32SignalBP.Broadcast(ParamInt32);
-
-		TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
-		for (const TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
-		{
-			if (UObject* Obj = Subscriber.GetObject())
-			{
-				ITbSimpleSimpleInterfaceBPSubscriberInterface::Execute_OnSigInt32Signal(Obj, ParamInt32);
-			}
-		}
-	}
+	void BroadcastSigInt32Signal(int32 ParamInt32);
 
 	FTbSimpleSimpleInterfaceSigInt64Delegate OnSigInt64Signal;
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "SigInt64 Signal")
 	FTbSimpleSimpleInterfaceSigInt64DelegateBP OnSigInt64SignalBP;
 	/// C++ wrapper for BP functions to safely call SigInt64Signal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast SigInt64 Signal")
-	void BroadcastSigInt64Signal(int64 ParamInt64)
-	{
-		OnSigInt64Signal.Broadcast(ParamInt64);
-		OnSigInt64SignalBP.Broadcast(ParamInt64);
-
-		TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
-		for (const TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
-		{
-			if (UObject* Obj = Subscriber.GetObject())
-			{
-				ITbSimpleSimpleInterfaceBPSubscriberInterface::Execute_OnSigInt64Signal(Obj, ParamInt64);
-			}
-		}
-	}
+	void BroadcastSigInt64Signal(int64 ParamInt64);
 
 	FTbSimpleSimpleInterfaceSigFloatDelegate OnSigFloatSignal;
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "SigFloat Signal")
 	FTbSimpleSimpleInterfaceSigFloatDelegateBP OnSigFloatSignalBP;
 	/// C++ wrapper for BP functions to safely call SigFloatSignal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast SigFloat Signal")
-	void BroadcastSigFloatSignal(float ParamFloat)
-	{
-		OnSigFloatSignal.Broadcast(ParamFloat);
-		OnSigFloatSignalBP.Broadcast(ParamFloat);
-
-		TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
-		for (const TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
-		{
-			if (UObject* Obj = Subscriber.GetObject())
-			{
-				ITbSimpleSimpleInterfaceBPSubscriberInterface::Execute_OnSigFloatSignal(Obj, ParamFloat);
-			}
-		}
-	}
+	void BroadcastSigFloatSignal(float ParamFloat);
 
 	FTbSimpleSimpleInterfaceSigFloat32Delegate OnSigFloat32Signal;
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "SigFloat32 Signal")
 	FTbSimpleSimpleInterfaceSigFloat32DelegateBP OnSigFloat32SignalBP;
 	/// C++ wrapper for BP functions to safely call SigFloat32Signal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast SigFloat32 Signal")
-	void BroadcastSigFloat32Signal(float ParamFloat32)
-	{
-		OnSigFloat32Signal.Broadcast(ParamFloat32);
-		OnSigFloat32SignalBP.Broadcast(ParamFloat32);
-
-		TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
-		for (const TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
-		{
-			if (UObject* Obj = Subscriber.GetObject())
-			{
-				ITbSimpleSimpleInterfaceBPSubscriberInterface::Execute_OnSigFloat32Signal(Obj, ParamFloat32);
-			}
-		}
-	}
+	void BroadcastSigFloat32Signal(float ParamFloat32);
 
 	FTbSimpleSimpleInterfaceSigFloat64Delegate OnSigFloat64Signal;
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "SigFloat64 Signal")
 	FTbSimpleSimpleInterfaceSigFloat64DelegateBP OnSigFloat64SignalBP;
 	/// C++ wrapper for BP functions to safely call SigFloat64Signal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast SigFloat64 Signal")
-	void BroadcastSigFloat64Signal(double ParamFloat64)
-	{
-		OnSigFloat64Signal.Broadcast(ParamFloat64);
-		OnSigFloat64SignalBP.Broadcast(ParamFloat64);
-
-		TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
-		for (const TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
-		{
-			if (UObject* Obj = Subscriber.GetObject())
-			{
-				ITbSimpleSimpleInterfaceBPSubscriberInterface::Execute_OnSigFloat64Signal(Obj, ParamFloat64);
-			}
-		}
-	}
+	void BroadcastSigFloat64Signal(double ParamFloat64);
 
 	FTbSimpleSimpleInterfaceSigStringDelegate OnSigStringSignal;
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "SigString Signal")
 	FTbSimpleSimpleInterfaceSigStringDelegateBP OnSigStringSignalBP;
 	/// C++ wrapper for BP functions to safely call SigStringSignal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast SigString Signal")
-	void BroadcastSigStringSignal(const FString& ParamString)
-	{
-		OnSigStringSignal.Broadcast(ParamString);
-		OnSigStringSignalBP.Broadcast(ParamString);
-
-		TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
-		for (const TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
-		{
-			if (UObject* Obj = Subscriber.GetObject())
-			{
-				ITbSimpleSimpleInterfaceBPSubscriberInterface::Execute_OnSigStringSignal(Obj, ParamString);
-			}
-		}
-	}
+	void BroadcastSigStringSignal(const FString& ParamString);
 
 	FTbSimpleSimpleInterfacePropBoolChangedDelegate OnPropBoolChanged;
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Property PropBool Changed")
 	FTbSimpleSimpleInterfacePropBoolChangedDelegateBP OnPropBoolChangedBP;
 	/// C++ wrapper for BP functions to safely call OnPropBoolChanged.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast Property PropBool Changed")
-	void BroadcastPropBoolChanged(UPARAM(DisplayName = "bPropBool") bool bInPropBool)
-	{
-		OnPropBoolChanged.Broadcast(bInPropBool);
-		OnPropBoolChangedBP.Broadcast(bInPropBool);
-
-		TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
-		for (const TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
-		{
-			if (UObject* Obj = Subscriber.GetObject())
-			{
-				ITbSimpleSimpleInterfaceBPSubscriberInterface::Execute_OnPropBoolChanged(Obj, bInPropBool);
-			}
-		}
-	}
+	void BroadcastPropBoolChanged(UPARAM(DisplayName = "bPropBool") bool bInPropBool);
 
 	FTbSimpleSimpleInterfacePropIntChangedDelegate OnPropIntChanged;
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Property PropInt Changed")
 	FTbSimpleSimpleInterfacePropIntChangedDelegateBP OnPropIntChangedBP;
 	/// C++ wrapper for BP functions to safely call OnPropIntChanged.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast Property PropInt Changed")
-	void BroadcastPropIntChanged(UPARAM(DisplayName = "PropInt") int32 InPropInt)
-	{
-		OnPropIntChanged.Broadcast(InPropInt);
-		OnPropIntChangedBP.Broadcast(InPropInt);
-
-		TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
-		for (const TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
-		{
-			if (UObject* Obj = Subscriber.GetObject())
-			{
-				ITbSimpleSimpleInterfaceBPSubscriberInterface::Execute_OnPropIntChanged(Obj, InPropInt);
-			}
-		}
-	}
+	void BroadcastPropIntChanged(UPARAM(DisplayName = "PropInt") int32 InPropInt);
 
 	FTbSimpleSimpleInterfacePropInt32ChangedDelegate OnPropInt32Changed;
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Property PropInt32 Changed")
 	FTbSimpleSimpleInterfacePropInt32ChangedDelegateBP OnPropInt32ChangedBP;
 	/// C++ wrapper for BP functions to safely call OnPropInt32Changed.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast Property PropInt32 Changed")
-	void BroadcastPropInt32Changed(UPARAM(DisplayName = "PropInt32") int32 InPropInt32)
-	{
-		OnPropInt32Changed.Broadcast(InPropInt32);
-		OnPropInt32ChangedBP.Broadcast(InPropInt32);
-
-		TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
-		for (const TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
-		{
-			if (UObject* Obj = Subscriber.GetObject())
-			{
-				ITbSimpleSimpleInterfaceBPSubscriberInterface::Execute_OnPropInt32Changed(Obj, InPropInt32);
-			}
-		}
-	}
+	void BroadcastPropInt32Changed(UPARAM(DisplayName = "PropInt32") int32 InPropInt32);
 
 	FTbSimpleSimpleInterfacePropInt64ChangedDelegate OnPropInt64Changed;
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Property PropInt64 Changed")
 	FTbSimpleSimpleInterfacePropInt64ChangedDelegateBP OnPropInt64ChangedBP;
 	/// C++ wrapper for BP functions to safely call OnPropInt64Changed.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast Property PropInt64 Changed")
-	void BroadcastPropInt64Changed(UPARAM(DisplayName = "PropInt64") int64 InPropInt64)
-	{
-		OnPropInt64Changed.Broadcast(InPropInt64);
-		OnPropInt64ChangedBP.Broadcast(InPropInt64);
-
-		TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
-		for (const TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
-		{
-			if (UObject* Obj = Subscriber.GetObject())
-			{
-				ITbSimpleSimpleInterfaceBPSubscriberInterface::Execute_OnPropInt64Changed(Obj, InPropInt64);
-			}
-		}
-	}
+	void BroadcastPropInt64Changed(UPARAM(DisplayName = "PropInt64") int64 InPropInt64);
 
 	FTbSimpleSimpleInterfacePropFloatChangedDelegate OnPropFloatChanged;
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Property PropFloat Changed")
 	FTbSimpleSimpleInterfacePropFloatChangedDelegateBP OnPropFloatChangedBP;
 	/// C++ wrapper for BP functions to safely call OnPropFloatChanged.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast Property PropFloat Changed")
-	void BroadcastPropFloatChanged(UPARAM(DisplayName = "PropFloat") float InPropFloat)
-	{
-		OnPropFloatChanged.Broadcast(InPropFloat);
-		OnPropFloatChangedBP.Broadcast(InPropFloat);
-
-		TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
-		for (const TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
-		{
-			if (UObject* Obj = Subscriber.GetObject())
-			{
-				ITbSimpleSimpleInterfaceBPSubscriberInterface::Execute_OnPropFloatChanged(Obj, InPropFloat);
-			}
-		}
-	}
+	void BroadcastPropFloatChanged(UPARAM(DisplayName = "PropFloat") float InPropFloat);
 
 	FTbSimpleSimpleInterfacePropFloat32ChangedDelegate OnPropFloat32Changed;
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Property PropFloat32 Changed")
 	FTbSimpleSimpleInterfacePropFloat32ChangedDelegateBP OnPropFloat32ChangedBP;
 	/// C++ wrapper for BP functions to safely call OnPropFloat32Changed.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast Property PropFloat32 Changed")
-	void BroadcastPropFloat32Changed(UPARAM(DisplayName = "PropFloat32") float InPropFloat32)
-	{
-		OnPropFloat32Changed.Broadcast(InPropFloat32);
-		OnPropFloat32ChangedBP.Broadcast(InPropFloat32);
-
-		TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
-		for (const TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
-		{
-			if (UObject* Obj = Subscriber.GetObject())
-			{
-				ITbSimpleSimpleInterfaceBPSubscriberInterface::Execute_OnPropFloat32Changed(Obj, InPropFloat32);
-			}
-		}
-	}
+	void BroadcastPropFloat32Changed(UPARAM(DisplayName = "PropFloat32") float InPropFloat32);
 
 	FTbSimpleSimpleInterfacePropFloat64ChangedDelegate OnPropFloat64Changed;
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Property PropFloat64 Changed")
 	FTbSimpleSimpleInterfacePropFloat64ChangedDelegateBP OnPropFloat64ChangedBP;
 	/// C++ wrapper for BP functions to safely call OnPropFloat64Changed.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast Property PropFloat64 Changed")
-	void BroadcastPropFloat64Changed(UPARAM(DisplayName = "PropFloat64") double InPropFloat64)
-	{
-		OnPropFloat64Changed.Broadcast(InPropFloat64);
-		OnPropFloat64ChangedBP.Broadcast(InPropFloat64);
-
-		TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
-		for (const TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
-		{
-			if (UObject* Obj = Subscriber.GetObject())
-			{
-				ITbSimpleSimpleInterfaceBPSubscriberInterface::Execute_OnPropFloat64Changed(Obj, InPropFloat64);
-			}
-		}
-	}
+	void BroadcastPropFloat64Changed(UPARAM(DisplayName = "PropFloat64") double InPropFloat64);
 
 	FTbSimpleSimpleInterfacePropStringChangedDelegate OnPropStringChanged;
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Property PropString Changed")
 	FTbSimpleSimpleInterfacePropStringChangedDelegateBP OnPropStringChangedBP;
 	/// C++ wrapper for BP functions to safely call OnPropStringChanged.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "Broadcast Property PropString Changed")
-	void BroadcastPropStringChanged(UPARAM(DisplayName = "PropString") const FString& InPropString)
-	{
-		OnPropStringChanged.Broadcast(InPropString);
-		OnPropStringChangedBP.Broadcast(InPropString);
-
-		TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
-		for (const TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
-		{
-			if (UObject* Obj = Subscriber.GetObject())
-			{
-				ITbSimpleSimpleInterfaceBPSubscriberInterface::Execute_OnPropStringChanged(Obj, InPropString);
-			}
-		}
-	}
+	void BroadcastPropStringChanged(UPARAM(DisplayName = "PropString") const FString& InPropString);
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals")
-	void Subscribe(const TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>& Subscriber)
-	{
-		if (!Subscriber.GetObject())
-		{
-			return;
-		}
-		Subscribers.Remove(Subscriber);
-		Subscribers.Add(Subscriber);
-	}
+	void Subscribe(const TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>& Subscriber);
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals")
-	void Unsubscribe(const TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>& Subscriber)
-	{
-		Subscribers.Remove(Subscriber);
-	}
+	void Unsubscribe(const TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>& Subscriber);
 
 private:
 	UPROPERTY()
