@@ -94,20 +94,7 @@ public:
 	F{{$Iface}}{{Camel .Name}}DelegateBP On{{Camel .Name}}SignalBP;
 	/// C++ wrapper for BP functions to safely call {{Camel .Name}}Signal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "{{$Category}}|Signals", DisplayName = "Broadcast {{Camel .Name}} Signal")
-	void Broadcast{{Camel .Name}}Signal({{ueParams "" .Params}})
-	{
-		On{{Camel .Name}}Signal.Broadcast({{ueVars "" .Params}});
-		On{{Camel .Name}}SignalBP.Broadcast({{ueVars "" .Params}});
-
-		TArray<TScriptInterface<I{{$Class}}BPSubscriberInterface>> SubscribersCopy = Subscribers;
-		for (const TScriptInterface<I{{$Class}}BPSubscriberInterface>& Subscriber : SubscribersCopy)
-		{
-			if (UObject* Obj = Subscriber.GetObject())
-			{
-				I{{$Class}}BPSubscriberInterface::Execute_On{{Camel .Name}}Signal(Obj{{- if (len .Params) }}, {{ end }}{{ueVars "" .Params}});
-			}
-		}
-	}
+	void Broadcast{{Camel .Name}}Signal({{ueParams "" .Params}});
 {{- end }}
 {{- if and (len .Properties) (len .Signals) }}{{ nl }}{{ end }}
 {{- range $i, $e := .Properties }}
@@ -117,37 +104,13 @@ public:
 	F{{$Iface}}{{Camel .Name}}ChangedDelegateBP On{{Camel .Name}}ChangedBP;
 	/// C++ wrapper for BP functions to safely call On{{Camel .Name}}Changed.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "{{$Category}}|Signals", DisplayName = "Broadcast Property {{Camel .Name}} Changed")
-	void Broadcast{{Camel .Name}}Changed(UPARAM(DisplayName = "{{ueVar "" .}}") {{ueParam "In" .}})
-	{
-		On{{Camel .Name}}Changed.Broadcast({{ueVar "In" .}});
-		On{{Camel .Name}}ChangedBP.Broadcast({{ueVar "In" .}});
-
-		TArray<TScriptInterface<I{{$Class}}BPSubscriberInterface>> SubscribersCopy = Subscribers;
-		for (const TScriptInterface<I{{$Class}}BPSubscriberInterface>& Subscriber : SubscribersCopy)
-		{
-			if (UObject* Obj = Subscriber.GetObject())
-			{
-				I{{$Class}}BPSubscriberInterface::Execute_On{{Camel .Name}}Changed(Obj, {{ueVar "In" .}});
-			}
-		}
-	}
+	void Broadcast{{Camel .Name}}Changed(UPARAM(DisplayName = "{{ueVar "" .}}") {{ueParam "In" .}});
 {{- end }}
 
 	UFUNCTION(BlueprintCallable, Category = "{{$Category}}|Signals")
-	void Subscribe(const TScriptInterface<I{{$Class}}BPSubscriberInterface>& Subscriber)
-	{
-		if (!Subscriber.GetObject())
-		{
-			return;
-		}
-		Subscribers.Remove(Subscriber);
-		Subscribers.Add(Subscriber);
-	}
+	void Subscribe(const TScriptInterface<I{{$Class}}BPSubscriberInterface>& Subscriber);
 	UFUNCTION(BlueprintCallable, Category = "{{$Category}}|Signals")
-	void Unsubscribe(const TScriptInterface<I{{$Class}}BPSubscriberInterface>& Subscriber)
-	{
-		Subscribers.Remove(Subscriber);
-	}
+	void Unsubscribe(const TScriptInterface<I{{$Class}}BPSubscriberInterface>& Subscriber);
 
 private:
 	UPROPERTY()

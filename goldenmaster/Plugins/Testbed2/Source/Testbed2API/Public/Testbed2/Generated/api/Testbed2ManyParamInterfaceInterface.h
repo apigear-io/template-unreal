@@ -103,176 +103,61 @@ public:
 	FTestbed2ManyParamInterfaceSig1DelegateBP OnSig1SignalBP;
 	/// C++ wrapper for BP functions to safely call Sig1Signal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Broadcast Sig1 Signal")
-	void BroadcastSig1Signal(int32 Param1)
-	{
-		OnSig1Signal.Broadcast(Param1);
-		OnSig1SignalBP.Broadcast(Param1);
-
-		TArray<TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
-		for (const TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
-		{
-			if (UObject* Obj = Subscriber.GetObject())
-			{
-				ITestbed2ManyParamInterfaceBPSubscriberInterface::Execute_OnSig1Signal(Obj, Param1);
-			}
-		}
-	}
+	void BroadcastSig1Signal(int32 Param1);
 
 	FTestbed2ManyParamInterfaceSig2Delegate OnSig2Signal;
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Sig2 Signal")
 	FTestbed2ManyParamInterfaceSig2DelegateBP OnSig2SignalBP;
 	/// C++ wrapper for BP functions to safely call Sig2Signal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Broadcast Sig2 Signal")
-	void BroadcastSig2Signal(int32 Param1, int32 Param2)
-	{
-		OnSig2Signal.Broadcast(Param1, Param2);
-		OnSig2SignalBP.Broadcast(Param1, Param2);
-
-		TArray<TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
-		for (const TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
-		{
-			if (UObject* Obj = Subscriber.GetObject())
-			{
-				ITestbed2ManyParamInterfaceBPSubscriberInterface::Execute_OnSig2Signal(Obj, Param1, Param2);
-			}
-		}
-	}
+	void BroadcastSig2Signal(int32 Param1, int32 Param2);
 
 	FTestbed2ManyParamInterfaceSig3Delegate OnSig3Signal;
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Sig3 Signal")
 	FTestbed2ManyParamInterfaceSig3DelegateBP OnSig3SignalBP;
 	/// C++ wrapper for BP functions to safely call Sig3Signal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Broadcast Sig3 Signal")
-	void BroadcastSig3Signal(int32 Param1, int32 Param2, int32 Param3)
-	{
-		OnSig3Signal.Broadcast(Param1, Param2, Param3);
-		OnSig3SignalBP.Broadcast(Param1, Param2, Param3);
-
-		TArray<TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
-		for (const TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
-		{
-			if (UObject* Obj = Subscriber.GetObject())
-			{
-				ITestbed2ManyParamInterfaceBPSubscriberInterface::Execute_OnSig3Signal(Obj, Param1, Param2, Param3);
-			}
-		}
-	}
+	void BroadcastSig3Signal(int32 Param1, int32 Param2, int32 Param3);
 
 	FTestbed2ManyParamInterfaceSig4Delegate OnSig4Signal;
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Sig4 Signal")
 	FTestbed2ManyParamInterfaceSig4DelegateBP OnSig4SignalBP;
 	/// C++ wrapper for BP functions to safely call Sig4Signal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Broadcast Sig4 Signal")
-	void BroadcastSig4Signal(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
-	{
-		OnSig4Signal.Broadcast(Param1, Param2, Param3, Param4);
-		OnSig4SignalBP.Broadcast(Param1, Param2, Param3, Param4);
-
-		TArray<TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
-		for (const TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
-		{
-			if (UObject* Obj = Subscriber.GetObject())
-			{
-				ITestbed2ManyParamInterfaceBPSubscriberInterface::Execute_OnSig4Signal(Obj, Param1, Param2, Param3, Param4);
-			}
-		}
-	}
+	void BroadcastSig4Signal(int32 Param1, int32 Param2, int32 Param3, int32 Param4);
 
 	FTestbed2ManyParamInterfaceProp1ChangedDelegate OnProp1Changed;
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Property Prop1 Changed")
 	FTestbed2ManyParamInterfaceProp1ChangedDelegateBP OnProp1ChangedBP;
 	/// C++ wrapper for BP functions to safely call OnProp1Changed.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Broadcast Property Prop1 Changed")
-	void BroadcastProp1Changed(UPARAM(DisplayName = "Prop1") int32 InProp1)
-	{
-		OnProp1Changed.Broadcast(InProp1);
-		OnProp1ChangedBP.Broadcast(InProp1);
-
-		TArray<TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
-		for (const TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
-		{
-			if (UObject* Obj = Subscriber.GetObject())
-			{
-				ITestbed2ManyParamInterfaceBPSubscriberInterface::Execute_OnProp1Changed(Obj, InProp1);
-			}
-		}
-	}
+	void BroadcastProp1Changed(UPARAM(DisplayName = "Prop1") int32 InProp1);
 
 	FTestbed2ManyParamInterfaceProp2ChangedDelegate OnProp2Changed;
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Property Prop2 Changed")
 	FTestbed2ManyParamInterfaceProp2ChangedDelegateBP OnProp2ChangedBP;
 	/// C++ wrapper for BP functions to safely call OnProp2Changed.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Broadcast Property Prop2 Changed")
-	void BroadcastProp2Changed(UPARAM(DisplayName = "Prop2") int32 InProp2)
-	{
-		OnProp2Changed.Broadcast(InProp2);
-		OnProp2ChangedBP.Broadcast(InProp2);
-
-		TArray<TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
-		for (const TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
-		{
-			if (UObject* Obj = Subscriber.GetObject())
-			{
-				ITestbed2ManyParamInterfaceBPSubscriberInterface::Execute_OnProp2Changed(Obj, InProp2);
-			}
-		}
-	}
+	void BroadcastProp2Changed(UPARAM(DisplayName = "Prop2") int32 InProp2);
 
 	FTestbed2ManyParamInterfaceProp3ChangedDelegate OnProp3Changed;
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Property Prop3 Changed")
 	FTestbed2ManyParamInterfaceProp3ChangedDelegateBP OnProp3ChangedBP;
 	/// C++ wrapper for BP functions to safely call OnProp3Changed.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Broadcast Property Prop3 Changed")
-	void BroadcastProp3Changed(UPARAM(DisplayName = "Prop3") int32 InProp3)
-	{
-		OnProp3Changed.Broadcast(InProp3);
-		OnProp3ChangedBP.Broadcast(InProp3);
-
-		TArray<TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
-		for (const TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
-		{
-			if (UObject* Obj = Subscriber.GetObject())
-			{
-				ITestbed2ManyParamInterfaceBPSubscriberInterface::Execute_OnProp3Changed(Obj, InProp3);
-			}
-		}
-	}
+	void BroadcastProp3Changed(UPARAM(DisplayName = "Prop3") int32 InProp3);
 
 	FTestbed2ManyParamInterfaceProp4ChangedDelegate OnProp4Changed;
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Property Prop4 Changed")
 	FTestbed2ManyParamInterfaceProp4ChangedDelegateBP OnProp4ChangedBP;
 	/// C++ wrapper for BP functions to safely call OnProp4Changed.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "Broadcast Property Prop4 Changed")
-	void BroadcastProp4Changed(UPARAM(DisplayName = "Prop4") int32 InProp4)
-	{
-		OnProp4Changed.Broadcast(InProp4);
-		OnProp4ChangedBP.Broadcast(InProp4);
-
-		TArray<TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
-		for (const TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
-		{
-			if (UObject* Obj = Subscriber.GetObject())
-			{
-				ITestbed2ManyParamInterfaceBPSubscriberInterface::Execute_OnProp4Changed(Obj, InProp4);
-			}
-		}
-	}
+	void BroadcastProp4Changed(UPARAM(DisplayName = "Prop4") int32 InProp4);
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals")
-	void Subscribe(const TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>& Subscriber)
-	{
-		if (!Subscriber.GetObject())
-		{
-			return;
-		}
-		Subscribers.Remove(Subscriber);
-		Subscribers.Add(Subscriber);
-	}
+	void Subscribe(const TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>& Subscriber);
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals")
-	void Unsubscribe(const TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>& Subscriber)
-	{
-		Subscribers.Remove(Subscriber);
-	}
+	void Unsubscribe(const TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>& Subscriber);
 
 private:
 	UPROPERTY()

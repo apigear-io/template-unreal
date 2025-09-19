@@ -114,216 +114,75 @@ public:
 	FTestbed1StructArrayInterfaceSigBoolDelegateBP OnSigBoolSignalBP;
 	/// C++ wrapper for BP functions to safely call SigBoolSignal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "Broadcast SigBool Signal")
-	void BroadcastSigBoolSignal(const TArray<FTestbed1StructBool>& ParamBool)
-	{
-		OnSigBoolSignal.Broadcast(ParamBool);
-		OnSigBoolSignalBP.Broadcast(ParamBool);
-
-		TArray<TScriptInterface<ITestbed1StructArrayInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
-		for (const TScriptInterface<ITestbed1StructArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
-		{
-			if (UObject* Obj = Subscriber.GetObject())
-			{
-				ITestbed1StructArrayInterfaceBPSubscriberInterface::Execute_OnSigBoolSignal(Obj, ParamBool);
-			}
-		}
-	}
+	void BroadcastSigBoolSignal(const TArray<FTestbed1StructBool>& ParamBool);
 
 	FTestbed1StructArrayInterfaceSigIntDelegate OnSigIntSignal;
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "SigInt Signal")
 	FTestbed1StructArrayInterfaceSigIntDelegateBP OnSigIntSignalBP;
 	/// C++ wrapper for BP functions to safely call SigIntSignal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "Broadcast SigInt Signal")
-	void BroadcastSigIntSignal(const TArray<FTestbed1StructInt>& ParamInt)
-	{
-		OnSigIntSignal.Broadcast(ParamInt);
-		OnSigIntSignalBP.Broadcast(ParamInt);
-
-		TArray<TScriptInterface<ITestbed1StructArrayInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
-		for (const TScriptInterface<ITestbed1StructArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
-		{
-			if (UObject* Obj = Subscriber.GetObject())
-			{
-				ITestbed1StructArrayInterfaceBPSubscriberInterface::Execute_OnSigIntSignal(Obj, ParamInt);
-			}
-		}
-	}
+	void BroadcastSigIntSignal(const TArray<FTestbed1StructInt>& ParamInt);
 
 	FTestbed1StructArrayInterfaceSigFloatDelegate OnSigFloatSignal;
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "SigFloat Signal")
 	FTestbed1StructArrayInterfaceSigFloatDelegateBP OnSigFloatSignalBP;
 	/// C++ wrapper for BP functions to safely call SigFloatSignal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "Broadcast SigFloat Signal")
-	void BroadcastSigFloatSignal(const TArray<FTestbed1StructFloat>& ParamFloat)
-	{
-		OnSigFloatSignal.Broadcast(ParamFloat);
-		OnSigFloatSignalBP.Broadcast(ParamFloat);
-
-		TArray<TScriptInterface<ITestbed1StructArrayInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
-		for (const TScriptInterface<ITestbed1StructArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
-		{
-			if (UObject* Obj = Subscriber.GetObject())
-			{
-				ITestbed1StructArrayInterfaceBPSubscriberInterface::Execute_OnSigFloatSignal(Obj, ParamFloat);
-			}
-		}
-	}
+	void BroadcastSigFloatSignal(const TArray<FTestbed1StructFloat>& ParamFloat);
 
 	FTestbed1StructArrayInterfaceSigStringDelegate OnSigStringSignal;
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "SigString Signal")
 	FTestbed1StructArrayInterfaceSigStringDelegateBP OnSigStringSignalBP;
 	/// C++ wrapper for BP functions to safely call SigStringSignal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "Broadcast SigString Signal")
-	void BroadcastSigStringSignal(const TArray<FTestbed1StructString>& ParamString)
-	{
-		OnSigStringSignal.Broadcast(ParamString);
-		OnSigStringSignalBP.Broadcast(ParamString);
-
-		TArray<TScriptInterface<ITestbed1StructArrayInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
-		for (const TScriptInterface<ITestbed1StructArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
-		{
-			if (UObject* Obj = Subscriber.GetObject())
-			{
-				ITestbed1StructArrayInterfaceBPSubscriberInterface::Execute_OnSigStringSignal(Obj, ParamString);
-			}
-		}
-	}
+	void BroadcastSigStringSignal(const TArray<FTestbed1StructString>& ParamString);
 
 	FTestbed1StructArrayInterfaceSigEnumDelegate OnSigEnumSignal;
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "SigEnum Signal")
 	FTestbed1StructArrayInterfaceSigEnumDelegateBP OnSigEnumSignalBP;
 	/// C++ wrapper for BP functions to safely call SigEnumSignal.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "Broadcast SigEnum Signal")
-	void BroadcastSigEnumSignal(const TArray<ETestbed1Enum0>& ParamEnum)
-	{
-		OnSigEnumSignal.Broadcast(ParamEnum);
-		OnSigEnumSignalBP.Broadcast(ParamEnum);
-
-		TArray<TScriptInterface<ITestbed1StructArrayInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
-		for (const TScriptInterface<ITestbed1StructArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
-		{
-			if (UObject* Obj = Subscriber.GetObject())
-			{
-				ITestbed1StructArrayInterfaceBPSubscriberInterface::Execute_OnSigEnumSignal(Obj, ParamEnum);
-			}
-		}
-	}
+	void BroadcastSigEnumSignal(const TArray<ETestbed1Enum0>& ParamEnum);
 
 	FTestbed1StructArrayInterfacePropBoolChangedDelegate OnPropBoolChanged;
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "Property PropBool Changed")
 	FTestbed1StructArrayInterfacePropBoolChangedDelegateBP OnPropBoolChangedBP;
 	/// C++ wrapper for BP functions to safely call OnPropBoolChanged.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "Broadcast Property PropBool Changed")
-	void BroadcastPropBoolChanged(UPARAM(DisplayName = "PropBool") const TArray<FTestbed1StructBool>& InPropBool)
-	{
-		OnPropBoolChanged.Broadcast(InPropBool);
-		OnPropBoolChangedBP.Broadcast(InPropBool);
-
-		TArray<TScriptInterface<ITestbed1StructArrayInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
-		for (const TScriptInterface<ITestbed1StructArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
-		{
-			if (UObject* Obj = Subscriber.GetObject())
-			{
-				ITestbed1StructArrayInterfaceBPSubscriberInterface::Execute_OnPropBoolChanged(Obj, InPropBool);
-			}
-		}
-	}
+	void BroadcastPropBoolChanged(UPARAM(DisplayName = "PropBool") const TArray<FTestbed1StructBool>& InPropBool);
 
 	FTestbed1StructArrayInterfacePropIntChangedDelegate OnPropIntChanged;
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "Property PropInt Changed")
 	FTestbed1StructArrayInterfacePropIntChangedDelegateBP OnPropIntChangedBP;
 	/// C++ wrapper for BP functions to safely call OnPropIntChanged.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "Broadcast Property PropInt Changed")
-	void BroadcastPropIntChanged(UPARAM(DisplayName = "PropInt") const TArray<FTestbed1StructInt>& InPropInt)
-	{
-		OnPropIntChanged.Broadcast(InPropInt);
-		OnPropIntChangedBP.Broadcast(InPropInt);
-
-		TArray<TScriptInterface<ITestbed1StructArrayInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
-		for (const TScriptInterface<ITestbed1StructArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
-		{
-			if (UObject* Obj = Subscriber.GetObject())
-			{
-				ITestbed1StructArrayInterfaceBPSubscriberInterface::Execute_OnPropIntChanged(Obj, InPropInt);
-			}
-		}
-	}
+	void BroadcastPropIntChanged(UPARAM(DisplayName = "PropInt") const TArray<FTestbed1StructInt>& InPropInt);
 
 	FTestbed1StructArrayInterfacePropFloatChangedDelegate OnPropFloatChanged;
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "Property PropFloat Changed")
 	FTestbed1StructArrayInterfacePropFloatChangedDelegateBP OnPropFloatChangedBP;
 	/// C++ wrapper for BP functions to safely call OnPropFloatChanged.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "Broadcast Property PropFloat Changed")
-	void BroadcastPropFloatChanged(UPARAM(DisplayName = "PropFloat") const TArray<FTestbed1StructFloat>& InPropFloat)
-	{
-		OnPropFloatChanged.Broadcast(InPropFloat);
-		OnPropFloatChangedBP.Broadcast(InPropFloat);
-
-		TArray<TScriptInterface<ITestbed1StructArrayInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
-		for (const TScriptInterface<ITestbed1StructArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
-		{
-			if (UObject* Obj = Subscriber.GetObject())
-			{
-				ITestbed1StructArrayInterfaceBPSubscriberInterface::Execute_OnPropFloatChanged(Obj, InPropFloat);
-			}
-		}
-	}
+	void BroadcastPropFloatChanged(UPARAM(DisplayName = "PropFloat") const TArray<FTestbed1StructFloat>& InPropFloat);
 
 	FTestbed1StructArrayInterfacePropStringChangedDelegate OnPropStringChanged;
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "Property PropString Changed")
 	FTestbed1StructArrayInterfacePropStringChangedDelegateBP OnPropStringChangedBP;
 	/// C++ wrapper for BP functions to safely call OnPropStringChanged.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "Broadcast Property PropString Changed")
-	void BroadcastPropStringChanged(UPARAM(DisplayName = "PropString") const TArray<FTestbed1StructString>& InPropString)
-	{
-		OnPropStringChanged.Broadcast(InPropString);
-		OnPropStringChangedBP.Broadcast(InPropString);
-
-		TArray<TScriptInterface<ITestbed1StructArrayInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
-		for (const TScriptInterface<ITestbed1StructArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
-		{
-			if (UObject* Obj = Subscriber.GetObject())
-			{
-				ITestbed1StructArrayInterfaceBPSubscriberInterface::Execute_OnPropStringChanged(Obj, InPropString);
-			}
-		}
-	}
+	void BroadcastPropStringChanged(UPARAM(DisplayName = "PropString") const TArray<FTestbed1StructString>& InPropString);
 
 	FTestbed1StructArrayInterfacePropEnumChangedDelegate OnPropEnumChanged;
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "Property PropEnum Changed")
 	FTestbed1StructArrayInterfacePropEnumChangedDelegateBP OnPropEnumChangedBP;
 	/// C++ wrapper for BP functions to safely call OnPropEnumChanged.Broadcast
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals", DisplayName = "Broadcast Property PropEnum Changed")
-	void BroadcastPropEnumChanged(UPARAM(DisplayName = "PropEnum") const TArray<ETestbed1Enum0>& InPropEnum)
-	{
-		OnPropEnumChanged.Broadcast(InPropEnum);
-		OnPropEnumChangedBP.Broadcast(InPropEnum);
-
-		TArray<TScriptInterface<ITestbed1StructArrayInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
-		for (const TScriptInterface<ITestbed1StructArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
-		{
-			if (UObject* Obj = Subscriber.GetObject())
-			{
-				ITestbed1StructArrayInterfaceBPSubscriberInterface::Execute_OnPropEnumChanged(Obj, InPropEnum);
-			}
-		}
-	}
+	void BroadcastPropEnumChanged(UPARAM(DisplayName = "PropEnum") const TArray<ETestbed1Enum0>& InPropEnum);
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals")
-	void Subscribe(const TScriptInterface<ITestbed1StructArrayInterfaceBPSubscriberInterface>& Subscriber)
-	{
-		if (!Subscriber.GetObject())
-		{
-			return;
-		}
-		Subscribers.Remove(Subscriber);
-		Subscribers.Add(Subscriber);
-	}
+	void Subscribe(const TScriptInterface<ITestbed1StructArrayInterfaceBPSubscriberInterface>& Subscriber);
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Signals")
-	void Unsubscribe(const TScriptInterface<ITestbed1StructArrayInterfaceBPSubscriberInterface>& Subscriber)
-	{
-		Subscribers.Remove(Subscriber);
-	}
+	void Unsubscribe(const TScriptInterface<ITestbed1StructArrayInterfaceBPSubscriberInterface>& Subscriber);
 
 private:
 	UPROPERTY()
