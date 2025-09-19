@@ -63,16 +63,16 @@ public:
 
 UAbstractTbSimpleNoPropertiesInterface::UAbstractTbSimpleNoPropertiesInterface()
 {
-	TbSimpleNoPropertiesInterfaceSignals = NewObject<UTbSimpleNoPropertiesInterfaceSignals>();
+	TbSimpleNoPropertiesInterfacePublisher = NewObject<UTbSimpleNoPropertiesInterfacePublisher>();
 }
 
-UTbSimpleNoPropertiesInterfaceSignals* UAbstractTbSimpleNoPropertiesInterface::_GetSignals()
+UTbSimpleNoPropertiesInterfacePublisher* UAbstractTbSimpleNoPropertiesInterface::_GetPublisher()
 {
-	if (!TbSimpleNoPropertiesInterfaceSignals)
+	if (!TbSimpleNoPropertiesInterfacePublisher)
 	{
-		TbSimpleNoPropertiesInterfaceSignals = NewObject<UTbSimpleNoPropertiesInterfaceSignals>();
+		TbSimpleNoPropertiesInterfacePublisher = NewObject<UTbSimpleNoPropertiesInterfacePublisher>();
 	}
-	return TbSimpleNoPropertiesInterfaceSignals;
+	return TbSimpleNoPropertiesInterfacePublisher;
 }
 
 void UAbstractTbSimpleNoPropertiesInterface::FuncBoolAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool)
@@ -123,12 +123,12 @@ void UAbstractTbSimpleNoPropertiesInterface::Deinitialize()
 	check(bInitialized);
 	bInitialized = false;
 
-	if (TbSimpleNoPropertiesInterfaceSignals)
+	if (TbSimpleNoPropertiesInterfacePublisher)
 	{
-		TbSimpleNoPropertiesInterfaceSignals->OnSigVoidSignal.RemoveAll(TbSimpleNoPropertiesInterfaceSignals);
-		TbSimpleNoPropertiesInterfaceSignals->OnSigVoidSignalBP.RemoveAll(TbSimpleNoPropertiesInterfaceSignals);
-		TbSimpleNoPropertiesInterfaceSignals->OnSigBoolSignal.RemoveAll(TbSimpleNoPropertiesInterfaceSignals);
-		TbSimpleNoPropertiesInterfaceSignals->OnSigBoolSignalBP.RemoveAll(TbSimpleNoPropertiesInterfaceSignals);
+		TbSimpleNoPropertiesInterfacePublisher->OnSigVoidSignal.RemoveAll(TbSimpleNoPropertiesInterfacePublisher);
+		TbSimpleNoPropertiesInterfacePublisher->OnSigVoidSignalBP.RemoveAll(TbSimpleNoPropertiesInterfacePublisher);
+		TbSimpleNoPropertiesInterfacePublisher->OnSigBoolSignal.RemoveAll(TbSimpleNoPropertiesInterfacePublisher);
+		TbSimpleNoPropertiesInterfacePublisher->OnSigBoolSignalBP.RemoveAll(TbSimpleNoPropertiesInterfacePublisher);
 	}
 
 	Super::Deinitialize();

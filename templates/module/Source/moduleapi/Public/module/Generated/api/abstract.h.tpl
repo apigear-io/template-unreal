@@ -48,7 +48,7 @@ public:
 {{- if or (len .Properties) (len .Signals) }}
 {{- nl }}
 	// signals
-	virtual U{{$Class}}Signals* _GetSignals() override;
+	virtual U{{$Class}}Publisher* _GetPublisher() override;
 {{- end }}
 
 	// methods
@@ -96,7 +96,7 @@ private:
 {{- if or (len .Properties) (len .Signals) }}
 	// signals
 	UPROPERTY()
-	U{{$Class}}Signals* {{$Iface}}Signals;
+	U{{$Class}}Publisher* {{$Iface}}Publisher;
 {{- end }}
 };
 {{- end }}

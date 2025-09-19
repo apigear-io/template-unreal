@@ -56,8 +56,8 @@ public:
 	/// this is needed since we cannot declare delegates on an UInterface
 	/// @return object with signals for property state changes or standalone signals
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "{{$Category}}")
-	U{{$CppClass}}Signals* _GetSignals();
-	virtual U{{$CppClass}}Signals* _GetSignals_Implementation() = 0;
+	U{{$CppClass}}Publisher* _GetPublisher();
+	virtual U{{$CppClass}}Publisher* _GetPublisher_Implementation() = 0;
 	{{- nl }}
 {{- end}}
 	// methods

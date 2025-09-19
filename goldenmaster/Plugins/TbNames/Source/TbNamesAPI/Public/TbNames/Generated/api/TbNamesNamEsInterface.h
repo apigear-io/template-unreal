@@ -76,12 +76,12 @@ public:
 };
 
 /**
- * Class UTbNamesNamEsInterfaceSignals
+ * Class UTbNamesNamEsInterfacePublisher
  * Contains delegates for properties and signals
  * this is needed since we cannot declare delegates on an UInterface
  */
 UCLASS(BlueprintType)
-class TBNAMESAPI_API UTbNamesNamEsSignals : public UObject
+class TBNAMESAPI_API UTbNamesNamEsPublisher : public UObject
 {
 	GENERATED_BODY()
 
@@ -209,7 +209,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Signals")
 	void Subscribe(const TScriptInterface<ITbNamesNamEsBPSubscriberInterface>& Subscriber)
 	{
-		if (!Subscriber.GetObject()) return;
+		if (!Subscriber.GetObject())
+		{
+			return;
+		}
 		Subscribers.Remove(Subscriber);
 		Subscribers.Add(Subscriber);
 	}
@@ -218,6 +221,7 @@ public:
 	{
 		Subscribers.Remove(Subscriber);
 	}
+
 private:
 	UPROPERTY()
 	TArray<TScriptInterface<ITbNamesNamEsBPSubscriberInterface>> Subscribers;
@@ -244,7 +248,7 @@ public:
 	/// this is needed since we cannot declare delegates on an UInterface
 	/// @return object with signals for property state changes or standalone signals
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbNames|NamEs")
-	virtual UTbNamesNamEsSignals* _GetSignals() = 0;
+	virtual UTbNamesNamEsPublisher* _GetPublisher() = 0;
 
 	// methods
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Operations")

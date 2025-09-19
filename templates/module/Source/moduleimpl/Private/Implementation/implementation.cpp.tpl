@@ -22,7 +22,7 @@ void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
 	if ({{ueVar "" .}} != {{ueVar "In" .}})
 	{
 		{{ueVar "" .}} = {{ueVar "In" .}};
-		_GetSignals()->Broadcast{{Camel .Name}}Changed({{ueVar "" .}});
+		_GetPublisher()->Broadcast{{Camel .Name}}Changed({{ueVar "" .}});
 	}
 }
 {{- end }}
@@ -55,7 +55,7 @@ void {{$Class}}::_ResetProperties()
 	if ({{ueVar "" .}} != {{ueDefault "" .}})
 	{
 		{{ueVar "" .}} = {{ueDefault "" .}};
-		_GetSignals()->Broadcast{{Camel .Name}}Changed({{ueVar "" .}});
+		_GetPublisher()->Broadcast{{Camel .Name}}Changed({{ueVar "" .}});
 	}
 	{{- end }}
 }

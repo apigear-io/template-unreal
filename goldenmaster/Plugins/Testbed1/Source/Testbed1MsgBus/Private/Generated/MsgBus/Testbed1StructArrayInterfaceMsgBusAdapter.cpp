@@ -146,56 +146,56 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::_setBackendService(TScriptInter
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		UTestbed1StructArrayInterfaceSignals* BackendSignals = BackendService->_GetSignals();
-		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service Testbed1StructArrayInterface"));
+		UTestbed1StructArrayInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service Testbed1StructArrayInterface"));
 		if (OnPropBoolChangedHandle.IsValid())
 		{
-			BackendSignals->OnPropBoolChanged.Remove(OnPropBoolChangedHandle);
+			BackendPublisher->OnPropBoolChanged.Remove(OnPropBoolChangedHandle);
 			OnPropBoolChangedHandle.Reset();
 		}
 		if (OnPropIntChangedHandle.IsValid())
 		{
-			BackendSignals->OnPropIntChanged.Remove(OnPropIntChangedHandle);
+			BackendPublisher->OnPropIntChanged.Remove(OnPropIntChangedHandle);
 			OnPropIntChangedHandle.Reset();
 		}
 		if (OnPropFloatChangedHandle.IsValid())
 		{
-			BackendSignals->OnPropFloatChanged.Remove(OnPropFloatChangedHandle);
+			BackendPublisher->OnPropFloatChanged.Remove(OnPropFloatChangedHandle);
 			OnPropFloatChangedHandle.Reset();
 		}
 		if (OnPropStringChangedHandle.IsValid())
 		{
-			BackendSignals->OnPropStringChanged.Remove(OnPropStringChangedHandle);
+			BackendPublisher->OnPropStringChanged.Remove(OnPropStringChangedHandle);
 			OnPropStringChangedHandle.Reset();
 		}
 		if (OnPropEnumChangedHandle.IsValid())
 		{
-			BackendSignals->OnPropEnumChanged.Remove(OnPropEnumChangedHandle);
+			BackendPublisher->OnPropEnumChanged.Remove(OnPropEnumChangedHandle);
 			OnPropEnumChangedHandle.Reset();
 		}
 		if (OnSigBoolSignalHandle.IsValid())
 		{
-			BackendSignals->OnSigBoolSignal.Remove(OnSigBoolSignalHandle);
+			BackendPublisher->OnSigBoolSignal.Remove(OnSigBoolSignalHandle);
 			OnSigBoolSignalHandle.Reset();
 		}
 		if (OnSigIntSignalHandle.IsValid())
 		{
-			BackendSignals->OnSigIntSignal.Remove(OnSigIntSignalHandle);
+			BackendPublisher->OnSigIntSignal.Remove(OnSigIntSignalHandle);
 			OnSigIntSignalHandle.Reset();
 		}
 		if (OnSigFloatSignalHandle.IsValid())
 		{
-			BackendSignals->OnSigFloatSignal.Remove(OnSigFloatSignalHandle);
+			BackendPublisher->OnSigFloatSignal.Remove(OnSigFloatSignalHandle);
 			OnSigFloatSignalHandle.Reset();
 		}
 		if (OnSigStringSignalHandle.IsValid())
 		{
-			BackendSignals->OnSigStringSignal.Remove(OnSigStringSignalHandle);
+			BackendPublisher->OnSigStringSignal.Remove(OnSigStringSignalHandle);
 			OnSigStringSignalHandle.Reset();
 		}
 		if (OnSigEnumSignalHandle.IsValid())
 		{
-			BackendSignals->OnSigEnumSignal.Remove(OnSigEnumSignalHandle);
+			BackendPublisher->OnSigEnumSignal.Remove(OnSigEnumSignalHandle);
 			OnSigEnumSignalHandle.Reset();
 		}
 	}
@@ -205,19 +205,19 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::_setBackendService(TScriptInter
 
 	// subscribe to new backend
 	BackendService = InService;
-	UTestbed1StructArrayInterfaceSignals* BackendSignals = BackendService->_GetSignals();
-	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service Testbed1StructArrayInterface"));
+	UTestbed1StructArrayInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service Testbed1StructArrayInterface"));
 	// connect property changed signals or simple events
-	OnPropBoolChangedHandle = BackendSignals->OnPropBoolChanged.AddUObject(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropBoolChanged);
-	OnPropIntChangedHandle = BackendSignals->OnPropIntChanged.AddUObject(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropIntChanged);
-	OnPropFloatChangedHandle = BackendSignals->OnPropFloatChanged.AddUObject(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropFloatChanged);
-	OnPropStringChangedHandle = BackendSignals->OnPropStringChanged.AddUObject(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropStringChanged);
-	OnPropEnumChangedHandle = BackendSignals->OnPropEnumChanged.AddUObject(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropEnumChanged);
-	OnSigBoolSignalHandle = BackendSignals->OnSigBoolSignal.AddUObject(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigBool);
-	OnSigIntSignalHandle = BackendSignals->OnSigIntSignal.AddUObject(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigInt);
-	OnSigFloatSignalHandle = BackendSignals->OnSigFloatSignal.AddUObject(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigFloat);
-	OnSigStringSignalHandle = BackendSignals->OnSigStringSignal.AddUObject(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigString);
-	OnSigEnumSignalHandle = BackendSignals->OnSigEnumSignal.AddUObject(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigEnum);
+	OnPropBoolChangedHandle = BackendPublisher->OnPropBoolChanged.AddUObject(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropBoolChanged);
+	OnPropIntChangedHandle = BackendPublisher->OnPropIntChanged.AddUObject(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropIntChanged);
+	OnPropFloatChangedHandle = BackendPublisher->OnPropFloatChanged.AddUObject(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropFloatChanged);
+	OnPropStringChangedHandle = BackendPublisher->OnPropStringChanged.AddUObject(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropStringChanged);
+	OnPropEnumChangedHandle = BackendPublisher->OnPropEnumChanged.AddUObject(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropEnumChanged);
+	OnSigBoolSignalHandle = BackendPublisher->OnSigBoolSignal.AddUObject(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigBool);
+	OnSigIntSignalHandle = BackendPublisher->OnSigIntSignal.AddUObject(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigInt);
+	OnSigFloatSignalHandle = BackendPublisher->OnSigFloatSignal.AddUObject(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigFloat);
+	OnSigStringSignalHandle = BackendPublisher->OnSigStringSignal.AddUObject(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigString);
+	OnSigEnumSignalHandle = BackendPublisher->OnSigEnumSignal.AddUObject(this, &UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigEnum);
 }
 
 void UTestbed1StructArrayInterfaceMsgBusAdapter::OnDiscoveryMessage(const FTestbed1StructArrayInterfaceDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)

@@ -55,25 +55,25 @@ void UTbSimpleVoidInterfaceImplSpec::Define()
 
 	LatentIt("Signal.SigVoid", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		UTbSimpleVoidInterfaceSignals* TbSimpleVoidInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleVoidInterfaceSignals->OnSigVoidSignal.AddLambda([this, TestDone]()
+		UTbSimpleVoidInterfacePublisher* TbSimpleVoidInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleVoidInterfacePublisher->OnSigVoidSignal.AddLambda([this, TestDone]()
 			{
 			// known test value
 			TestDone.Execute();
 		});
 
 		// use different test value
-		TbSimpleVoidInterfaceSignals->BroadcastSigVoidSignal();
+		TbSimpleVoidInterfacePublisher->BroadcastSigVoidSignal();
 	});
 
 	LatentIt("Signal.SigVoidBP", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
-		UTbSimpleVoidInterfaceSignals* TbSimpleVoidInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleVoidInterfaceSignals->OnSigVoidSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleVoidInterfaceImplHelper::SigVoidSignalCb);
+		UTbSimpleVoidInterfacePublisher* TbSimpleVoidInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleVoidInterfacePublisher->OnSigVoidSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleVoidInterfaceImplHelper::SigVoidSignalCb);
 
 		// use different test value
-		TbSimpleVoidInterfaceSignals->BroadcastSigVoidSignal();
+		TbSimpleVoidInterfacePublisher->BroadcastSigVoidSignal();
 	});
 }
 

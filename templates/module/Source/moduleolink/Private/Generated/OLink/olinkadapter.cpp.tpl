@@ -57,20 +57,20 @@ void {{$Class}}::setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{Cam
 	if (BackendService != nullptr)
 	{
 {{- if or (len .Interface.Properties) (.Interface.Signals) }}
-		U{{$Iface}}Signals* BackendSignals = BackendService->_GetSignals();
-		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service {{$Iface}}"));
+		U{{$Iface}}Publisher* BackendPublisher = BackendService->_GetPublisher();
+		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service {{$Iface}}"));
 {{- end }}
 {{- range .Interface.Properties }}
 		if (On{{Camel .Name}}ChangedHandle.IsValid())
 		{
-			BackendSignals->On{{Camel .Name}}Changed.Remove(On{{Camel .Name}}ChangedHandle);
+			BackendPublisher->On{{Camel .Name}}Changed.Remove(On{{Camel .Name}}ChangedHandle);
 			On{{Camel .Name}}ChangedHandle.Reset();
 		}
 {{- end }}
 {{- range .Interface.Signals }}
 		if (On{{Camel .Name}}SignalHandle.IsValid())
 		{
-			BackendSignals->On{{Camel .Name}}Signal.Remove(On{{Camel .Name}}SignalHandle);
+			BackendPublisher->On{{Camel .Name}}Signal.Remove(On{{Camel .Name}}SignalHandle);
 			On{{Camel .Name}}SignalHandle.Reset();
 		}
 {{- end }}
@@ -83,15 +83,15 @@ void {{$Class}}::setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{Cam
 {{- $Service := printf "I%sInterface" $Iface }}
 	BackendService = InService;
 {{- if or (len .Interface.Properties) (.Interface.Signals) }}
-	U{{$Iface}}Signals* BackendSignals = BackendService->_GetSignals();
-	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service {{$Iface}}"));
+	U{{$Iface}}Publisher* BackendPublisher = BackendService->_GetPublisher();
+	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service {{$Iface}}"));
 {{- end }}
 	// connect property changed signals or simple events
 {{- range .Interface.Properties }}
-	On{{Camel .Name}}ChangedHandle = BackendSignals->On{{Camel .Name}}Changed.AddUObject(this, &{{$Class}}::On{{Camel .Name}}Changed);
+	On{{Camel .Name}}ChangedHandle = BackendPublisher->On{{Camel .Name}}Changed.AddUObject(this, &{{$Class}}::On{{Camel .Name}}Changed);
 {{- end }}
 {{- range .Interface.Signals }}
-	On{{Camel .Name}}SignalHandle = BackendSignals->On{{Camel .Name}}Signal.AddUObject(this, &{{$Class}}::On{{Camel .Name}});
+	On{{Camel .Name}}SignalHandle = BackendPublisher->On{{Camel .Name}}Signal.AddUObject(this, &{{$Class}}::On{{Camel .Name}});
 {{- end }}
 
 	// update olink source with new backend

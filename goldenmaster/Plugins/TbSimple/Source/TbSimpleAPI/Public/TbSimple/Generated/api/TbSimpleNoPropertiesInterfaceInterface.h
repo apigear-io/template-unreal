@@ -56,12 +56,12 @@ public:
 };
 
 /**
- * Class UTbSimpleNoPropertiesInterfaceInterfaceSignals
+ * Class UTbSimpleNoPropertiesInterfaceInterfacePublisher
  * Contains delegates for properties and signals
  * this is needed since we cannot declare delegates on an UInterface
  */
 UCLASS(BlueprintType)
-class TBSIMPLEAPI_API UTbSimpleNoPropertiesInterfaceSignals : public UObject
+class TBSIMPLEAPI_API UTbSimpleNoPropertiesInterfacePublisher : public UObject
 {
 	GENERATED_BODY()
 
@@ -109,7 +109,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoPropertiesInterface|Signals")
 	void Subscribe(const TScriptInterface<ITbSimpleNoPropertiesInterfaceBPSubscriberInterface>& Subscriber)
 	{
-		if (!Subscriber.GetObject()) return;
+		if (!Subscriber.GetObject())
+		{
+			return;
+		}
 		Subscribers.Remove(Subscriber);
 		Subscribers.Add(Subscriber);
 	}
@@ -118,6 +121,7 @@ public:
 	{
 		Subscribers.Remove(Subscriber);
 	}
+
 private:
 	UPROPERTY()
 	TArray<TScriptInterface<ITbSimpleNoPropertiesInterfaceBPSubscriberInterface>> Subscribers;
@@ -144,7 +148,7 @@ public:
 	/// this is needed since we cannot declare delegates on an UInterface
 	/// @return object with signals for property state changes or standalone signals
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoPropertiesInterface")
-	virtual UTbSimpleNoPropertiesInterfaceSignals* _GetSignals() = 0;
+	virtual UTbSimpleNoPropertiesInterfacePublisher* _GetPublisher() = 0;
 
 	// methods
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoPropertiesInterface|Operations")

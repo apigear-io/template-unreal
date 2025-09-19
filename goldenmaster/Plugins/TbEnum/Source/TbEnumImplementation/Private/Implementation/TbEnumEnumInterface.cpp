@@ -28,7 +28,7 @@ void UTbEnumEnumInterfaceImplementation::SetProp0(ETbEnumEnum0 InProp0)
 	if (Prop0 != InProp0)
 	{
 		Prop0 = InProp0;
-		_GetSignals()->BroadcastProp0Changed(Prop0);
+		_GetPublisher()->BroadcastProp0Changed(Prop0);
 	}
 }
 ETbEnumEnum1 UTbEnumEnumInterfaceImplementation::GetProp1() const
@@ -41,7 +41,7 @@ void UTbEnumEnumInterfaceImplementation::SetProp1(ETbEnumEnum1 InProp1)
 	if (Prop1 != InProp1)
 	{
 		Prop1 = InProp1;
-		_GetSignals()->BroadcastProp1Changed(Prop1);
+		_GetPublisher()->BroadcastProp1Changed(Prop1);
 	}
 }
 ETbEnumEnum2 UTbEnumEnumInterfaceImplementation::GetProp2() const
@@ -54,7 +54,7 @@ void UTbEnumEnumInterfaceImplementation::SetProp2(ETbEnumEnum2 InProp2)
 	if (Prop2 != InProp2)
 	{
 		Prop2 = InProp2;
-		_GetSignals()->BroadcastProp2Changed(Prop2);
+		_GetPublisher()->BroadcastProp2Changed(Prop2);
 	}
 }
 ETbEnumEnum3 UTbEnumEnumInterfaceImplementation::GetProp3() const
@@ -67,7 +67,7 @@ void UTbEnumEnumInterfaceImplementation::SetProp3(ETbEnumEnum3 InProp3)
 	if (Prop3 != InProp3)
 	{
 		Prop3 = InProp3;
-		_GetSignals()->BroadcastProp3Changed(Prop3);
+		_GetPublisher()->BroadcastProp3Changed(Prop3);
 	}
 }
 
@@ -104,21 +104,21 @@ void UTbEnumEnumInterfaceImplementation::_ResetProperties()
 	if (Prop0 != ETbEnumEnum0::TEE0_Value0)
 	{
 		Prop0 = ETbEnumEnum0::TEE0_Value0;
-		_GetSignals()->BroadcastProp0Changed(Prop0);
+		_GetPublisher()->BroadcastProp0Changed(Prop0);
 	}
 	if (Prop1 != ETbEnumEnum1::TEE1_Value1)
 	{
 		Prop1 = ETbEnumEnum1::TEE1_Value1;
-		_GetSignals()->BroadcastProp1Changed(Prop1);
+		_GetPublisher()->BroadcastProp1Changed(Prop1);
 	}
 	if (Prop2 != ETbEnumEnum2::TEE2_Value2)
 	{
 		Prop2 = ETbEnumEnum2::TEE2_Value2;
-		_GetSignals()->BroadcastProp2Changed(Prop2);
+		_GetPublisher()->BroadcastProp2Changed(Prop2);
 	}
 	if (Prop3 != ETbEnumEnum3::TEE3_Value3)
 	{
 		Prop3 = ETbEnumEnum3::TEE3_Value3;
-		_GetSignals()->BroadcastProp3Changed(Prop3);
+		_GetPublisher()->BroadcastProp3Changed(Prop3);
 	}
 }

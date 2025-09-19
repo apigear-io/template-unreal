@@ -28,7 +28,7 @@ void UTbSimpleSimpleArrayInterfaceImplementation::SetPropBool(const TArray<bool>
 	if (PropBool != InPropBool)
 	{
 		PropBool = InPropBool;
-		_GetSignals()->BroadcastPropBoolChanged(PropBool);
+		_GetPublisher()->BroadcastPropBoolChanged(PropBool);
 	}
 }
 TArray<int32> UTbSimpleSimpleArrayInterfaceImplementation::GetPropInt() const
@@ -41,7 +41,7 @@ void UTbSimpleSimpleArrayInterfaceImplementation::SetPropInt(const TArray<int32>
 	if (PropInt != InPropInt)
 	{
 		PropInt = InPropInt;
-		_GetSignals()->BroadcastPropIntChanged(PropInt);
+		_GetPublisher()->BroadcastPropIntChanged(PropInt);
 	}
 }
 TArray<int32> UTbSimpleSimpleArrayInterfaceImplementation::GetPropInt32() const
@@ -54,7 +54,7 @@ void UTbSimpleSimpleArrayInterfaceImplementation::SetPropInt32(const TArray<int3
 	if (PropInt32 != InPropInt32)
 	{
 		PropInt32 = InPropInt32;
-		_GetSignals()->BroadcastPropInt32Changed(PropInt32);
+		_GetPublisher()->BroadcastPropInt32Changed(PropInt32);
 	}
 }
 TArray<int64> UTbSimpleSimpleArrayInterfaceImplementation::GetPropInt64() const
@@ -67,7 +67,7 @@ void UTbSimpleSimpleArrayInterfaceImplementation::SetPropInt64(const TArray<int6
 	if (PropInt64 != InPropInt64)
 	{
 		PropInt64 = InPropInt64;
-		_GetSignals()->BroadcastPropInt64Changed(PropInt64);
+		_GetPublisher()->BroadcastPropInt64Changed(PropInt64);
 	}
 }
 TArray<float> UTbSimpleSimpleArrayInterfaceImplementation::GetPropFloat() const
@@ -80,7 +80,7 @@ void UTbSimpleSimpleArrayInterfaceImplementation::SetPropFloat(const TArray<floa
 	if (PropFloat != InPropFloat)
 	{
 		PropFloat = InPropFloat;
-		_GetSignals()->BroadcastPropFloatChanged(PropFloat);
+		_GetPublisher()->BroadcastPropFloatChanged(PropFloat);
 	}
 }
 TArray<float> UTbSimpleSimpleArrayInterfaceImplementation::GetPropFloat32() const
@@ -93,7 +93,7 @@ void UTbSimpleSimpleArrayInterfaceImplementation::SetPropFloat32(const TArray<fl
 	if (PropFloat32 != InPropFloat32)
 	{
 		PropFloat32 = InPropFloat32;
-		_GetSignals()->BroadcastPropFloat32Changed(PropFloat32);
+		_GetPublisher()->BroadcastPropFloat32Changed(PropFloat32);
 	}
 }
 TArray<double> UTbSimpleSimpleArrayInterfaceImplementation::GetPropFloat64() const
@@ -106,7 +106,7 @@ void UTbSimpleSimpleArrayInterfaceImplementation::SetPropFloat64(const TArray<do
 	if (PropFloat64 != InPropFloat64)
 	{
 		PropFloat64 = InPropFloat64;
-		_GetSignals()->BroadcastPropFloat64Changed(PropFloat64);
+		_GetPublisher()->BroadcastPropFloat64Changed(PropFloat64);
 	}
 }
 TArray<FString> UTbSimpleSimpleArrayInterfaceImplementation::GetPropString() const
@@ -119,7 +119,7 @@ void UTbSimpleSimpleArrayInterfaceImplementation::SetPropString(const TArray<FSt
 	if (PropString != InPropString)
 	{
 		PropString = InPropString;
-		_GetSignals()->BroadcastPropStringChanged(PropString);
+		_GetPublisher()->BroadcastPropStringChanged(PropString);
 	}
 }
 FString UTbSimpleSimpleArrayInterfaceImplementation::GetPropReadOnlyString() const
@@ -188,46 +188,46 @@ void UTbSimpleSimpleArrayInterfaceImplementation::_ResetProperties()
 	if (PropBool != TArray<bool>())
 	{
 		PropBool = TArray<bool>();
-		_GetSignals()->BroadcastPropBoolChanged(PropBool);
+		_GetPublisher()->BroadcastPropBoolChanged(PropBool);
 	}
 	if (PropInt != TArray<int32>())
 	{
 		PropInt = TArray<int32>();
-		_GetSignals()->BroadcastPropIntChanged(PropInt);
+		_GetPublisher()->BroadcastPropIntChanged(PropInt);
 	}
 	if (PropInt32 != TArray<int32>())
 	{
 		PropInt32 = TArray<int32>();
-		_GetSignals()->BroadcastPropInt32Changed(PropInt32);
+		_GetPublisher()->BroadcastPropInt32Changed(PropInt32);
 	}
 	if (PropInt64 != TArray<int64>())
 	{
 		PropInt64 = TArray<int64>();
-		_GetSignals()->BroadcastPropInt64Changed(PropInt64);
+		_GetPublisher()->BroadcastPropInt64Changed(PropInt64);
 	}
 	if (PropFloat != TArray<float>())
 	{
 		PropFloat = TArray<float>();
-		_GetSignals()->BroadcastPropFloatChanged(PropFloat);
+		_GetPublisher()->BroadcastPropFloatChanged(PropFloat);
 	}
 	if (PropFloat32 != TArray<float>())
 	{
 		PropFloat32 = TArray<float>();
-		_GetSignals()->BroadcastPropFloat32Changed(PropFloat32);
+		_GetPublisher()->BroadcastPropFloat32Changed(PropFloat32);
 	}
 	if (PropFloat64 != TArray<double>())
 	{
 		PropFloat64 = TArray<double>();
-		_GetSignals()->BroadcastPropFloat64Changed(PropFloat64);
+		_GetPublisher()->BroadcastPropFloat64Changed(PropFloat64);
 	}
 	if (PropString != TArray<FString>())
 	{
 		PropString = TArray<FString>();
-		_GetSignals()->BroadcastPropStringChanged(PropString);
+		_GetPublisher()->BroadcastPropStringChanged(PropString);
 	}
 	if (PropReadOnlyString != FString())
 	{
 		PropReadOnlyString = FString();
-		_GetSignals()->BroadcastPropReadOnlyStringChanged(PropReadOnlyString);
+		_GetPublisher()->BroadcastPropReadOnlyStringChanged(PropReadOnlyString);
 	}
 }

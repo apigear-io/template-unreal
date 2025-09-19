@@ -60,8 +60,8 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 		bool TestValue = false; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
 
-		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnPropBoolChanged.AddLambda([this, TestDone](bool bInPropBool)
+		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleInterfacePublisher->OnPropBoolChanged.AddLambda([this, TestDone](bool bInPropBool)
 			{
 			bool TestValue = false;
 			// use different test value
@@ -83,8 +83,8 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
 
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
-		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnPropBoolChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::PropBoolPropertyCb);
+		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleInterfacePublisher->OnPropBoolChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::PropBoolPropertyCb);
 		// use different test value
 		TestValue = true;
 		ImplFixture->GetImplementation()->SetPropBool(TestValue);
@@ -103,8 +103,8 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 		int32 TestValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
 
-		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnPropIntChanged.AddLambda([this, TestDone](int32 InPropInt)
+		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleInterfacePublisher->OnPropIntChanged.AddLambda([this, TestDone](int32 InPropInt)
 			{
 			int32 TestValue = 0;
 			// use different test value
@@ -126,8 +126,8 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
 
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
-		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnPropIntChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::PropIntPropertyCb);
+		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleInterfacePublisher->OnPropIntChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::PropIntPropertyCb);
 		// use different test value
 		TestValue = 1;
 		ImplFixture->GetImplementation()->SetPropInt(TestValue);
@@ -146,8 +146,8 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 		int32 TestValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt32(), TestValue);
 
-		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnPropInt32Changed.AddLambda([this, TestDone](int32 InPropInt32)
+		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleInterfacePublisher->OnPropInt32Changed.AddLambda([this, TestDone](int32 InPropInt32)
 			{
 			int32 TestValue = 0;
 			// use different test value
@@ -169,8 +169,8 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt32(), TestValue);
 
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
-		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnPropInt32ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::PropInt32PropertyCb);
+		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleInterfacePublisher->OnPropInt32ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::PropInt32PropertyCb);
 		// use different test value
 		TestValue = 1;
 		ImplFixture->GetImplementation()->SetPropInt32(TestValue);
@@ -189,8 +189,8 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 		int64 TestValue = 0LL; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt64(), TestValue);
 
-		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnPropInt64Changed.AddLambda([this, TestDone](int64 InPropInt64)
+		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleInterfacePublisher->OnPropInt64Changed.AddLambda([this, TestDone](int64 InPropInt64)
 			{
 			int64 TestValue = 0LL;
 			// use different test value
@@ -212,8 +212,8 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt64(), TestValue);
 
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
-		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnPropInt64ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::PropInt64PropertyCb);
+		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleInterfacePublisher->OnPropInt64ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::PropInt64PropertyCb);
 		// use different test value
 		TestValue = 1LL;
 		ImplFixture->GetImplementation()->SetPropInt64(TestValue);
@@ -232,8 +232,8 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 		float TestValue = 0.0f; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropFloat(), TestValue);
 
-		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnPropFloatChanged.AddLambda([this, TestDone](float InPropFloat)
+		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleInterfacePublisher->OnPropFloatChanged.AddLambda([this, TestDone](float InPropFloat)
 			{
 			float TestValue = 0.0f;
 			// use different test value
@@ -255,8 +255,8 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropFloat(), TestValue);
 
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
-		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnPropFloatChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::PropFloatPropertyCb);
+		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleInterfacePublisher->OnPropFloatChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::PropFloatPropertyCb);
 		// use different test value
 		TestValue = 1.0f;
 		ImplFixture->GetImplementation()->SetPropFloat(TestValue);
@@ -275,8 +275,8 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 		float TestValue = 0.0f; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropFloat32(), TestValue);
 
-		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnPropFloat32Changed.AddLambda([this, TestDone](float InPropFloat32)
+		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleInterfacePublisher->OnPropFloat32Changed.AddLambda([this, TestDone](float InPropFloat32)
 			{
 			float TestValue = 0.0f;
 			// use different test value
@@ -298,8 +298,8 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropFloat32(), TestValue);
 
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
-		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnPropFloat32ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::PropFloat32PropertyCb);
+		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleInterfacePublisher->OnPropFloat32ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::PropFloat32PropertyCb);
 		// use different test value
 		TestValue = 1.0f;
 		ImplFixture->GetImplementation()->SetPropFloat32(TestValue);
@@ -318,8 +318,8 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 		double TestValue = 0.0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropFloat64(), TestValue);
 
-		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnPropFloat64Changed.AddLambda([this, TestDone](double InPropFloat64)
+		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleInterfacePublisher->OnPropFloat64Changed.AddLambda([this, TestDone](double InPropFloat64)
 			{
 			double TestValue = 0.0;
 			// use different test value
@@ -341,8 +341,8 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropFloat64(), TestValue);
 
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
-		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnPropFloat64ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::PropFloat64PropertyCb);
+		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleInterfacePublisher->OnPropFloat64ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::PropFloat64PropertyCb);
 		// use different test value
 		TestValue = 1.0;
 		ImplFixture->GetImplementation()->SetPropFloat64(TestValue);
@@ -361,8 +361,8 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 		FString TestValue = FString(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropString(), TestValue);
 
-		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnPropStringChanged.AddLambda([this, TestDone](const FString& InPropString)
+		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleInterfacePublisher->OnPropStringChanged.AddLambda([this, TestDone](const FString& InPropString)
 			{
 			FString TestValue = FString();
 			// use different test value
@@ -384,8 +384,8 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropString(), TestValue);
 
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
-		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnPropStringChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::PropStringPropertyCb);
+		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleInterfacePublisher->OnPropStringChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::PropStringPropertyCb);
 		// use different test value
 		TestValue = FString("xyz");
 		ImplFixture->GetImplementation()->SetPropString(TestValue);
@@ -447,8 +447,8 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 
 	LatentIt("Signal.SigBool", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnSigBoolSignal.AddLambda([this, TestDone](bool bInParamBool)
+		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleInterfacePublisher->OnSigBoolSignal.AddLambda([this, TestDone](bool bInParamBool)
 			{
 			// known test value
 			bool bParamBoolTestValue = true;
@@ -458,24 +458,24 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 
 		// use different test value
 		bool bParamBoolTestValue = true;
-		TbSimpleSimpleInterfaceSignals->BroadcastSigBoolSignal(bParamBoolTestValue);
+		TbSimpleSimpleInterfacePublisher->BroadcastSigBoolSignal(bParamBoolTestValue);
 	});
 
 	LatentIt("Signal.SigBoolBP", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
-		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnSigBoolSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::SigBoolSignalCb);
+		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleInterfacePublisher->OnSigBoolSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::SigBoolSignalCb);
 
 		// use different test value
 		bool bParamBoolTestValue = true;
-		TbSimpleSimpleInterfaceSignals->BroadcastSigBoolSignal(bParamBoolTestValue);
+		TbSimpleSimpleInterfacePublisher->BroadcastSigBoolSignal(bParamBoolTestValue);
 	});
 
 	LatentIt("Signal.SigInt", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnSigIntSignal.AddLambda([this, TestDone](int32 InParamInt)
+		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleInterfacePublisher->OnSigIntSignal.AddLambda([this, TestDone](int32 InParamInt)
 			{
 			// known test value
 			int32 ParamIntTestValue = 1;
@@ -485,24 +485,24 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 
 		// use different test value
 		int32 ParamIntTestValue = 1;
-		TbSimpleSimpleInterfaceSignals->BroadcastSigIntSignal(ParamIntTestValue);
+		TbSimpleSimpleInterfacePublisher->BroadcastSigIntSignal(ParamIntTestValue);
 	});
 
 	LatentIt("Signal.SigIntBP", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
-		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnSigIntSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::SigIntSignalCb);
+		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleInterfacePublisher->OnSigIntSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::SigIntSignalCb);
 
 		// use different test value
 		int32 ParamIntTestValue = 1;
-		TbSimpleSimpleInterfaceSignals->BroadcastSigIntSignal(ParamIntTestValue);
+		TbSimpleSimpleInterfacePublisher->BroadcastSigIntSignal(ParamIntTestValue);
 	});
 
 	LatentIt("Signal.SigInt32", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnSigInt32Signal.AddLambda([this, TestDone](int32 InParamInt32)
+		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleInterfacePublisher->OnSigInt32Signal.AddLambda([this, TestDone](int32 InParamInt32)
 			{
 			// known test value
 			int32 ParamInt32TestValue = 1;
@@ -512,24 +512,24 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 
 		// use different test value
 		int32 ParamInt32TestValue = 1;
-		TbSimpleSimpleInterfaceSignals->BroadcastSigInt32Signal(ParamInt32TestValue);
+		TbSimpleSimpleInterfacePublisher->BroadcastSigInt32Signal(ParamInt32TestValue);
 	});
 
 	LatentIt("Signal.SigInt32BP", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
-		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnSigInt32SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::SigInt32SignalCb);
+		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleInterfacePublisher->OnSigInt32SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::SigInt32SignalCb);
 
 		// use different test value
 		int32 ParamInt32TestValue = 1;
-		TbSimpleSimpleInterfaceSignals->BroadcastSigInt32Signal(ParamInt32TestValue);
+		TbSimpleSimpleInterfacePublisher->BroadcastSigInt32Signal(ParamInt32TestValue);
 	});
 
 	LatentIt("Signal.SigInt64", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnSigInt64Signal.AddLambda([this, TestDone](int64 InParamInt64)
+		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleInterfacePublisher->OnSigInt64Signal.AddLambda([this, TestDone](int64 InParamInt64)
 			{
 			// known test value
 			int64 ParamInt64TestValue = 1LL;
@@ -539,24 +539,24 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 
 		// use different test value
 		int64 ParamInt64TestValue = 1LL;
-		TbSimpleSimpleInterfaceSignals->BroadcastSigInt64Signal(ParamInt64TestValue);
+		TbSimpleSimpleInterfacePublisher->BroadcastSigInt64Signal(ParamInt64TestValue);
 	});
 
 	LatentIt("Signal.SigInt64BP", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
-		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnSigInt64SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::SigInt64SignalCb);
+		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleInterfacePublisher->OnSigInt64SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::SigInt64SignalCb);
 
 		// use different test value
 		int64 ParamInt64TestValue = 1LL;
-		TbSimpleSimpleInterfaceSignals->BroadcastSigInt64Signal(ParamInt64TestValue);
+		TbSimpleSimpleInterfacePublisher->BroadcastSigInt64Signal(ParamInt64TestValue);
 	});
 
 	LatentIt("Signal.SigFloat", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnSigFloatSignal.AddLambda([this, TestDone](float InParamFloat)
+		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleInterfacePublisher->OnSigFloatSignal.AddLambda([this, TestDone](float InParamFloat)
 			{
 			// known test value
 			float ParamFloatTestValue = 1.0f;
@@ -566,24 +566,24 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 
 		// use different test value
 		float ParamFloatTestValue = 1.0f;
-		TbSimpleSimpleInterfaceSignals->BroadcastSigFloatSignal(ParamFloatTestValue);
+		TbSimpleSimpleInterfacePublisher->BroadcastSigFloatSignal(ParamFloatTestValue);
 	});
 
 	LatentIt("Signal.SigFloatBP", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
-		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnSigFloatSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::SigFloatSignalCb);
+		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleInterfacePublisher->OnSigFloatSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::SigFloatSignalCb);
 
 		// use different test value
 		float ParamFloatTestValue = 1.0f;
-		TbSimpleSimpleInterfaceSignals->BroadcastSigFloatSignal(ParamFloatTestValue);
+		TbSimpleSimpleInterfacePublisher->BroadcastSigFloatSignal(ParamFloatTestValue);
 	});
 
 	LatentIt("Signal.SigFloat32", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnSigFloat32Signal.AddLambda([this, TestDone](float InParamFloat32)
+		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleInterfacePublisher->OnSigFloat32Signal.AddLambda([this, TestDone](float InParamFloat32)
 			{
 			// known test value
 			float ParamFloat32TestValue = 1.0f;
@@ -593,24 +593,24 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 
 		// use different test value
 		float ParamFloat32TestValue = 1.0f;
-		TbSimpleSimpleInterfaceSignals->BroadcastSigFloat32Signal(ParamFloat32TestValue);
+		TbSimpleSimpleInterfacePublisher->BroadcastSigFloat32Signal(ParamFloat32TestValue);
 	});
 
 	LatentIt("Signal.SigFloat32BP", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
-		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnSigFloat32SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::SigFloat32SignalCb);
+		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleInterfacePublisher->OnSigFloat32SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::SigFloat32SignalCb);
 
 		// use different test value
 		float ParamFloat32TestValue = 1.0f;
-		TbSimpleSimpleInterfaceSignals->BroadcastSigFloat32Signal(ParamFloat32TestValue);
+		TbSimpleSimpleInterfacePublisher->BroadcastSigFloat32Signal(ParamFloat32TestValue);
 	});
 
 	LatentIt("Signal.SigFloat64", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnSigFloat64Signal.AddLambda([this, TestDone](double InParamFloat64)
+		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleInterfacePublisher->OnSigFloat64Signal.AddLambda([this, TestDone](double InParamFloat64)
 			{
 			// known test value
 			double ParamFloat64TestValue = 1.0;
@@ -620,24 +620,24 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 
 		// use different test value
 		double ParamFloat64TestValue = 1.0;
-		TbSimpleSimpleInterfaceSignals->BroadcastSigFloat64Signal(ParamFloat64TestValue);
+		TbSimpleSimpleInterfacePublisher->BroadcastSigFloat64Signal(ParamFloat64TestValue);
 	});
 
 	LatentIt("Signal.SigFloat64BP", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
-		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnSigFloat64SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::SigFloat64SignalCb);
+		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleInterfacePublisher->OnSigFloat64SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::SigFloat64SignalCb);
 
 		// use different test value
 		double ParamFloat64TestValue = 1.0;
-		TbSimpleSimpleInterfaceSignals->BroadcastSigFloat64Signal(ParamFloat64TestValue);
+		TbSimpleSimpleInterfacePublisher->BroadcastSigFloat64Signal(ParamFloat64TestValue);
 	});
 
 	LatentIt("Signal.SigString", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnSigStringSignal.AddLambda([this, TestDone](const FString& InParamString)
+		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleInterfacePublisher->OnSigStringSignal.AddLambda([this, TestDone](const FString& InParamString)
 			{
 			// known test value
 			FString ParamStringTestValue = FString("xyz");
@@ -647,18 +647,18 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 
 		// use different test value
 		FString ParamStringTestValue = FString("xyz");
-		TbSimpleSimpleInterfaceSignals->BroadcastSigStringSignal(ParamStringTestValue);
+		TbSimpleSimpleInterfacePublisher->BroadcastSigStringSignal(ParamStringTestValue);
 	});
 
 	LatentIt("Signal.SigStringBP", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
-		UTbSimpleSimpleInterfaceSignals* TbSimpleSimpleInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleInterfaceSignals->OnSigStringSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::SigStringSignalCb);
+		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleInterfacePublisher->OnSigStringSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleSimpleInterfaceImplHelper::SigStringSignalCb);
 
 		// use different test value
 		FString ParamStringTestValue = FString("xyz");
-		TbSimpleSimpleInterfaceSignals->BroadcastSigStringSignal(ParamStringTestValue);
+		TbSimpleSimpleInterfacePublisher->BroadcastSigStringSignal(ParamStringTestValue);
 	});
 }
 

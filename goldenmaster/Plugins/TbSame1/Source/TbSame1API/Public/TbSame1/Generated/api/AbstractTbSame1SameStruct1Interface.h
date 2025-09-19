@@ -38,7 +38,7 @@ public:
 	virtual void Deinitialize() override;
 
 	// signals
-	virtual UTbSame1SameStruct1InterfaceSignals* _GetSignals() override;
+	virtual UTbSame1SameStruct1InterfacePublisher* _GetPublisher() override;
 
 	// methods
 	virtual void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame1Struct1& Result, const FTbSame1Struct1& Param1) override;
@@ -66,5 +66,5 @@ protected:
 private:
 	// signals
 	UPROPERTY()
-	UTbSame1SameStruct1InterfaceSignals* TbSame1SameStruct1InterfaceSignals;
+	UTbSame1SameStruct1InterfacePublisher* TbSame1SameStruct1InterfacePublisher;
 };

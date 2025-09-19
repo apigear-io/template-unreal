@@ -28,7 +28,7 @@ void UCounterCounterImplementation::SetVector(const FCustomTypesVector3D& InVect
 	if (Vector != InVector)
 	{
 		Vector = InVector;
-		_GetSignals()->BroadcastVectorChanged(Vector);
+		_GetPublisher()->BroadcastVectorChanged(Vector);
 	}
 }
 FVector UCounterCounterImplementation::GetExternVector() const
@@ -41,7 +41,7 @@ void UCounterCounterImplementation::SetExternVector(const FVector& InExternVecto
 	if (ExternVector != InExternVector)
 	{
 		ExternVector = InExternVector;
-		_GetSignals()->BroadcastExternVectorChanged(ExternVector);
+		_GetPublisher()->BroadcastExternVectorChanged(ExternVector);
 	}
 }
 TArray<FCustomTypesVector3D> UCounterCounterImplementation::GetVectorArray() const
@@ -54,7 +54,7 @@ void UCounterCounterImplementation::SetVectorArray(const TArray<FCustomTypesVect
 	if (VectorArray != InVectorArray)
 	{
 		VectorArray = InVectorArray;
-		_GetSignals()->BroadcastVectorArrayChanged(VectorArray);
+		_GetPublisher()->BroadcastVectorArrayChanged(VectorArray);
 	}
 }
 TArray<FVector> UCounterCounterImplementation::GetExternVectorArray() const
@@ -67,7 +67,7 @@ void UCounterCounterImplementation::SetExternVectorArray(const TArray<FVector>& 
 	if (ExternVectorArray != InExternVectorArray)
 	{
 		ExternVectorArray = InExternVectorArray;
-		_GetSignals()->BroadcastExternVectorArrayChanged(ExternVectorArray);
+		_GetPublisher()->BroadcastExternVectorArrayChanged(ExternVectorArray);
 	}
 }
 
@@ -104,21 +104,21 @@ void UCounterCounterImplementation::_ResetProperties()
 	if (Vector != FCustomTypesVector3D())
 	{
 		Vector = FCustomTypesVector3D();
-		_GetSignals()->BroadcastVectorChanged(Vector);
+		_GetPublisher()->BroadcastVectorChanged(Vector);
 	}
 	if (ExternVector != FVector(0.f, 0.f, 0.f))
 	{
 		ExternVector = FVector(0.f, 0.f, 0.f);
-		_GetSignals()->BroadcastExternVectorChanged(ExternVector);
+		_GetPublisher()->BroadcastExternVectorChanged(ExternVector);
 	}
 	if (VectorArray != TArray<FCustomTypesVector3D>())
 	{
 		VectorArray = TArray<FCustomTypesVector3D>();
-		_GetSignals()->BroadcastVectorArrayChanged(VectorArray);
+		_GetPublisher()->BroadcastVectorArrayChanged(VectorArray);
 	}
 	if (ExternVectorArray != TArray<FVector>())
 	{
 		ExternVectorArray = TArray<FVector>();
-		_GetSignals()->BroadcastExternVectorArrayChanged(ExternVectorArray);
+		_GetPublisher()->BroadcastExternVectorArrayChanged(ExternVectorArray);
 	}
 }

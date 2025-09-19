@@ -47,12 +47,12 @@ void UTestbed2NestedStruct2InterfaceLoggingDecorator::setBackendService(TScriptI
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		UTestbed2NestedStruct2InterfaceSignals* BackendSignals = BackendService->_GetSignals();
-		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service Testbed2NestedStruct2Interface"));
-		BackendSignals->OnProp1ChangedBP.RemoveDynamic(this, &UTestbed2NestedStruct2InterfaceLoggingDecorator::OnProp1Changed);
-		BackendSignals->OnProp2ChangedBP.RemoveDynamic(this, &UTestbed2NestedStruct2InterfaceLoggingDecorator::OnProp2Changed);
-		BackendSignals->OnSig1SignalBP.RemoveDynamic(this, &UTestbed2NestedStruct2InterfaceLoggingDecorator::OnSig1);
-		BackendSignals->OnSig2SignalBP.RemoveDynamic(this, &UTestbed2NestedStruct2InterfaceLoggingDecorator::OnSig2);
+		UTestbed2NestedStruct2InterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service Testbed2NestedStruct2Interface"));
+		BackendPublisher->OnProp1ChangedBP.RemoveDynamic(this, &UTestbed2NestedStruct2InterfaceLoggingDecorator::OnProp1Changed);
+		BackendPublisher->OnProp2ChangedBP.RemoveDynamic(this, &UTestbed2NestedStruct2InterfaceLoggingDecorator::OnProp2Changed);
+		BackendPublisher->OnSig1SignalBP.RemoveDynamic(this, &UTestbed2NestedStruct2InterfaceLoggingDecorator::OnSig1);
+		BackendPublisher->OnSig2SignalBP.RemoveDynamic(this, &UTestbed2NestedStruct2InterfaceLoggingDecorator::OnSig2);
 	}
 
 	// only set if interface is implemented
@@ -60,13 +60,13 @@ void UTestbed2NestedStruct2InterfaceLoggingDecorator::setBackendService(TScriptI
 
 	// subscribe to new backend
 	BackendService = InService;
-	UTestbed2NestedStruct2InterfaceSignals* BackendSignals = BackendService->_GetSignals();
-	checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service Testbed2NestedStruct2Interface"));
+	UTestbed2NestedStruct2InterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+	checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service Testbed2NestedStruct2Interface"));
 	// connect property changed signals or simple events
-	BackendSignals->OnProp1ChangedBP.AddDynamic(this, &UTestbed2NestedStruct2InterfaceLoggingDecorator::OnProp1Changed);
-	BackendSignals->OnProp2ChangedBP.AddDynamic(this, &UTestbed2NestedStruct2InterfaceLoggingDecorator::OnProp2Changed);
-	BackendSignals->OnSig1SignalBP.AddDynamic(this, &UTestbed2NestedStruct2InterfaceLoggingDecorator::OnSig1);
-	BackendSignals->OnSig2SignalBP.AddDynamic(this, &UTestbed2NestedStruct2InterfaceLoggingDecorator::OnSig2);
+	BackendPublisher->OnProp1ChangedBP.AddDynamic(this, &UTestbed2NestedStruct2InterfaceLoggingDecorator::OnProp1Changed);
+	BackendPublisher->OnProp2ChangedBP.AddDynamic(this, &UTestbed2NestedStruct2InterfaceLoggingDecorator::OnProp2Changed);
+	BackendPublisher->OnSig1SignalBP.AddDynamic(this, &UTestbed2NestedStruct2InterfaceLoggingDecorator::OnSig1);
+	BackendPublisher->OnSig2SignalBP.AddDynamic(this, &UTestbed2NestedStruct2InterfaceLoggingDecorator::OnSig2);
 	// populate service state to proxy
 	Prop1 = BackendService->GetProp1();
 	Prop2 = BackendService->GetProp2();
@@ -75,20 +75,20 @@ void UTestbed2NestedStruct2InterfaceLoggingDecorator::setBackendService(TScriptI
 void UTestbed2NestedStruct2InterfaceLoggingDecorator::OnSig1(const FTestbed2NestedStruct1& InParam1)
 {
 	Testbed2NestedStruct2InterfaceTracer::trace_signalSig1(InParam1);
-	_GetSignals()->BroadcastSig1Signal(InParam1);
+	_GetPublisher()->BroadcastSig1Signal(InParam1);
 }
 
 void UTestbed2NestedStruct2InterfaceLoggingDecorator::OnSig2(const FTestbed2NestedStruct1& InParam1, const FTestbed2NestedStruct2& InParam2)
 {
 	Testbed2NestedStruct2InterfaceTracer::trace_signalSig2(InParam1, InParam2);
-	_GetSignals()->BroadcastSig2Signal(InParam1, InParam2);
+	_GetPublisher()->BroadcastSig2Signal(InParam1, InParam2);
 }
 
 void UTestbed2NestedStruct2InterfaceLoggingDecorator::OnProp1Changed(const FTestbed2NestedStruct1& InProp1)
 {
 	Testbed2NestedStruct2InterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop1 = InProp1;
-	_GetSignals()->BroadcastProp1Changed(InProp1);
+	_GetPublisher()->BroadcastProp1Changed(InProp1);
 }
 
 FTestbed2NestedStruct1 UTestbed2NestedStruct2InterfaceLoggingDecorator::GetProp1() const
@@ -106,7 +106,7 @@ void UTestbed2NestedStruct2InterfaceLoggingDecorator::OnProp2Changed(const FTest
 {
 	Testbed2NestedStruct2InterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop2 = InProp2;
-	_GetSignals()->BroadcastProp2Changed(InProp2);
+	_GetPublisher()->BroadcastProp2Changed(InProp2);
 }
 
 FTestbed2NestedStruct2 UTestbed2NestedStruct2InterfaceLoggingDecorator::GetProp2() const

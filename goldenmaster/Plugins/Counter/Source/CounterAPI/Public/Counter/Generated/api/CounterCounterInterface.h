@@ -70,12 +70,12 @@ public:
 };
 
 /**
- * Class UCounterCounterInterfaceSignals
+ * Class UCounterCounterInterfacePublisher
  * Contains delegates for properties and signals
  * this is needed since we cannot declare delegates on an UInterface
  */
 UCLASS(BlueprintType)
-class COUNTERAPI_API UCounterCounterSignals : public UObject
+class COUNTERAPI_API UCounterCounterPublisher : public UObject
 {
 	GENERATED_BODY()
 
@@ -183,7 +183,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Signals")
 	void Subscribe(const TScriptInterface<ICounterCounterBPSubscriberInterface>& Subscriber)
 	{
-		if (!Subscriber.GetObject()) return;
+		if (!Subscriber.GetObject())
+		{
+			return;
+		}
 		Subscribers.Remove(Subscriber);
 		Subscribers.Add(Subscriber);
 	}
@@ -192,6 +195,7 @@ public:
 	{
 		Subscribers.Remove(Subscriber);
 	}
+
 private:
 	UPROPERTY()
 	TArray<TScriptInterface<ICounterCounterBPSubscriberInterface>> Subscribers;
@@ -218,7 +222,7 @@ public:
 	/// this is needed since we cannot declare delegates on an UInterface
 	/// @return object with signals for property state changes or standalone signals
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter")
-	virtual UCounterCounterSignals* _GetSignals() = 0;
+	virtual UCounterCounterPublisher* _GetPublisher() = 0;
 
 	// methods
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))

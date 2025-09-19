@@ -42,8 +42,8 @@ public:
 	/// this is needed since we cannot declare delegates on an UInterface
 	/// @return object with signals for property state changes or standalone signals
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface")
-	UTestbed2NestedStruct2InterfaceSignals* _GetSignals();
-	virtual UTestbed2NestedStruct2InterfaceSignals* _GetSignals_Implementation() = 0;
+	UTestbed2NestedStruct2InterfacePublisher* _GetPublisher();
+	virtual UTestbed2NestedStruct2InterfacePublisher* _GetPublisher_Implementation() = 0;
 
 	// methods
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))

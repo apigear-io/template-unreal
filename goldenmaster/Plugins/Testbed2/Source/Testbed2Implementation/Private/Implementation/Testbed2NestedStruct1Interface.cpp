@@ -28,7 +28,7 @@ void UTestbed2NestedStruct1InterfaceImplementation::SetProp1(const FTestbed2Nest
 	if (Prop1 != InProp1)
 	{
 		Prop1 = InProp1;
-		_GetSignals()->BroadcastProp1Changed(Prop1);
+		_GetPublisher()->BroadcastProp1Changed(Prop1);
 	}
 }
 
@@ -44,6 +44,6 @@ void UTestbed2NestedStruct1InterfaceImplementation::_ResetProperties()
 	if (Prop1 != FTestbed2NestedStruct1())
 	{
 		Prop1 = FTestbed2NestedStruct1();
-		_GetSignals()->BroadcastProp1Changed(Prop1);
+		_GetPublisher()->BroadcastProp1Changed(Prop1);
 	}
 }

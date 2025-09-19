@@ -38,7 +38,7 @@ public:
 	virtual void Deinitialize() override;
 
 	// signals
-	virtual UTbEnumEnumInterfaceSignals* _GetSignals() override;
+	virtual UTbEnumEnumInterfacePublisher* _GetPublisher() override;
 
 	// methods
 	virtual void Func0Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum0& Result, ETbEnumEnum0 Param0) override;
@@ -111,5 +111,5 @@ protected:
 private:
 	// signals
 	UPROPERTY()
-	UTbEnumEnumInterfaceSignals* TbEnumEnumInterfaceSignals;
+	UTbEnumEnumInterfacePublisher* TbEnumEnumInterfacePublisher;
 };

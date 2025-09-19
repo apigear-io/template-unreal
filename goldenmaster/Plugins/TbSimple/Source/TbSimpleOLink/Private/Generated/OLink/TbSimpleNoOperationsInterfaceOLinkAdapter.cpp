@@ -57,26 +57,26 @@ void UTbSimpleNoOperationsInterfaceOLinkAdapter::setBackendService(TScriptInterf
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		UTbSimpleNoOperationsInterfaceSignals* BackendSignals = BackendService->_GetSignals();
-		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleNoOperationsInterface"));
+		UTbSimpleNoOperationsInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleNoOperationsInterface"));
 		if (OnPropBoolChangedHandle.IsValid())
 		{
-			BackendSignals->OnPropBoolChanged.Remove(OnPropBoolChangedHandle);
+			BackendPublisher->OnPropBoolChanged.Remove(OnPropBoolChangedHandle);
 			OnPropBoolChangedHandle.Reset();
 		}
 		if (OnPropIntChangedHandle.IsValid())
 		{
-			BackendSignals->OnPropIntChanged.Remove(OnPropIntChangedHandle);
+			BackendPublisher->OnPropIntChanged.Remove(OnPropIntChangedHandle);
 			OnPropIntChangedHandle.Reset();
 		}
 		if (OnSigVoidSignalHandle.IsValid())
 		{
-			BackendSignals->OnSigVoidSignal.Remove(OnSigVoidSignalHandle);
+			BackendPublisher->OnSigVoidSignal.Remove(OnSigVoidSignalHandle);
 			OnSigVoidSignalHandle.Reset();
 		}
 		if (OnSigBoolSignalHandle.IsValid())
 		{
-			BackendSignals->OnSigBoolSignal.Remove(OnSigBoolSignalHandle);
+			BackendPublisher->OnSigBoolSignal.Remove(OnSigBoolSignalHandle);
 			OnSigBoolSignalHandle.Reset();
 		}
 	}
@@ -86,13 +86,13 @@ void UTbSimpleNoOperationsInterfaceOLinkAdapter::setBackendService(TScriptInterf
 
 	// subscribe to new backend
 	BackendService = InService;
-	UTbSimpleNoOperationsInterfaceSignals* BackendSignals = BackendService->_GetSignals();
-	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service TbSimpleNoOperationsInterface"));
+	UTbSimpleNoOperationsInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbSimpleNoOperationsInterface"));
 	// connect property changed signals or simple events
-	OnPropBoolChangedHandle = BackendSignals->OnPropBoolChanged.AddUObject(this, &UTbSimpleNoOperationsInterfaceOLinkAdapter::OnPropBoolChanged);
-	OnPropIntChangedHandle = BackendSignals->OnPropIntChanged.AddUObject(this, &UTbSimpleNoOperationsInterfaceOLinkAdapter::OnPropIntChanged);
-	OnSigVoidSignalHandle = BackendSignals->OnSigVoidSignal.AddUObject(this, &UTbSimpleNoOperationsInterfaceOLinkAdapter::OnSigVoid);
-	OnSigBoolSignalHandle = BackendSignals->OnSigBoolSignal.AddUObject(this, &UTbSimpleNoOperationsInterfaceOLinkAdapter::OnSigBool);
+	OnPropBoolChangedHandle = BackendPublisher->OnPropBoolChanged.AddUObject(this, &UTbSimpleNoOperationsInterfaceOLinkAdapter::OnPropBoolChanged);
+	OnPropIntChangedHandle = BackendPublisher->OnPropIntChanged.AddUObject(this, &UTbSimpleNoOperationsInterfaceOLinkAdapter::OnPropIntChanged);
+	OnSigVoidSignalHandle = BackendPublisher->OnSigVoidSignal.AddUObject(this, &UTbSimpleNoOperationsInterfaceOLinkAdapter::OnSigVoid);
+	OnSigBoolSignalHandle = BackendPublisher->OnSigBoolSignal.AddUObject(this, &UTbSimpleNoOperationsInterfaceOLinkAdapter::OnSigBool);
 
 	// update olink source with new backend
 	Source->setBackendService(InService);

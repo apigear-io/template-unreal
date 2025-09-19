@@ -63,16 +63,16 @@ public:
 
 UAbstractTestbed1StructInterface::UAbstractTestbed1StructInterface()
 {
-	Testbed1StructInterfaceSignals = NewObject<UTestbed1StructInterfaceSignals>();
+	Testbed1StructInterfacePublisher = NewObject<UTestbed1StructInterfacePublisher>();
 }
 
-UTestbed1StructInterfaceSignals* UAbstractTestbed1StructInterface::_GetSignals()
+UTestbed1StructInterfacePublisher* UAbstractTestbed1StructInterface::_GetPublisher()
 {
-	if (!Testbed1StructInterfaceSignals)
+	if (!Testbed1StructInterfacePublisher)
 	{
-		Testbed1StructInterfaceSignals = NewObject<UTestbed1StructInterfaceSignals>();
+		Testbed1StructInterfacePublisher = NewObject<UTestbed1StructInterfacePublisher>();
 	}
-	return Testbed1StructInterfaceSignals;
+	return Testbed1StructInterfacePublisher;
 }
 
 FTestbed1StructBool UAbstractTestbed1StructInterface::GetPropBool_Private() const
@@ -268,25 +268,25 @@ void UAbstractTestbed1StructInterface::Deinitialize()
 	check(bInitialized);
 	bInitialized = false;
 
-	if (Testbed1StructInterfaceSignals)
+	if (Testbed1StructInterfacePublisher)
 	{
-		Testbed1StructInterfaceSignals->OnSigBoolSignal.RemoveAll(Testbed1StructInterfaceSignals);
-		Testbed1StructInterfaceSignals->OnSigBoolSignalBP.RemoveAll(Testbed1StructInterfaceSignals);
-		Testbed1StructInterfaceSignals->OnSigIntSignal.RemoveAll(Testbed1StructInterfaceSignals);
-		Testbed1StructInterfaceSignals->OnSigIntSignalBP.RemoveAll(Testbed1StructInterfaceSignals);
-		Testbed1StructInterfaceSignals->OnSigFloatSignal.RemoveAll(Testbed1StructInterfaceSignals);
-		Testbed1StructInterfaceSignals->OnSigFloatSignalBP.RemoveAll(Testbed1StructInterfaceSignals);
-		Testbed1StructInterfaceSignals->OnSigStringSignal.RemoveAll(Testbed1StructInterfaceSignals);
-		Testbed1StructInterfaceSignals->OnSigStringSignalBP.RemoveAll(Testbed1StructInterfaceSignals);
+		Testbed1StructInterfacePublisher->OnSigBoolSignal.RemoveAll(Testbed1StructInterfacePublisher);
+		Testbed1StructInterfacePublisher->OnSigBoolSignalBP.RemoveAll(Testbed1StructInterfacePublisher);
+		Testbed1StructInterfacePublisher->OnSigIntSignal.RemoveAll(Testbed1StructInterfacePublisher);
+		Testbed1StructInterfacePublisher->OnSigIntSignalBP.RemoveAll(Testbed1StructInterfacePublisher);
+		Testbed1StructInterfacePublisher->OnSigFloatSignal.RemoveAll(Testbed1StructInterfacePublisher);
+		Testbed1StructInterfacePublisher->OnSigFloatSignalBP.RemoveAll(Testbed1StructInterfacePublisher);
+		Testbed1StructInterfacePublisher->OnSigStringSignal.RemoveAll(Testbed1StructInterfacePublisher);
+		Testbed1StructInterfacePublisher->OnSigStringSignalBP.RemoveAll(Testbed1StructInterfacePublisher);
 
-		Testbed1StructInterfaceSignals->OnPropBoolChanged.RemoveAll(Testbed1StructInterfaceSignals);
-		Testbed1StructInterfaceSignals->OnPropBoolChangedBP.RemoveAll(Testbed1StructInterfaceSignals);
-		Testbed1StructInterfaceSignals->OnPropIntChanged.RemoveAll(Testbed1StructInterfaceSignals);
-		Testbed1StructInterfaceSignals->OnPropIntChangedBP.RemoveAll(Testbed1StructInterfaceSignals);
-		Testbed1StructInterfaceSignals->OnPropFloatChanged.RemoveAll(Testbed1StructInterfaceSignals);
-		Testbed1StructInterfaceSignals->OnPropFloatChangedBP.RemoveAll(Testbed1StructInterfaceSignals);
-		Testbed1StructInterfaceSignals->OnPropStringChanged.RemoveAll(Testbed1StructInterfaceSignals);
-		Testbed1StructInterfaceSignals->OnPropStringChangedBP.RemoveAll(Testbed1StructInterfaceSignals);
+		Testbed1StructInterfacePublisher->OnPropBoolChanged.RemoveAll(Testbed1StructInterfacePublisher);
+		Testbed1StructInterfacePublisher->OnPropBoolChangedBP.RemoveAll(Testbed1StructInterfacePublisher);
+		Testbed1StructInterfacePublisher->OnPropIntChanged.RemoveAll(Testbed1StructInterfacePublisher);
+		Testbed1StructInterfacePublisher->OnPropIntChangedBP.RemoveAll(Testbed1StructInterfacePublisher);
+		Testbed1StructInterfacePublisher->OnPropFloatChanged.RemoveAll(Testbed1StructInterfacePublisher);
+		Testbed1StructInterfacePublisher->OnPropFloatChangedBP.RemoveAll(Testbed1StructInterfacePublisher);
+		Testbed1StructInterfacePublisher->OnPropStringChanged.RemoveAll(Testbed1StructInterfacePublisher);
+		Testbed1StructInterfacePublisher->OnPropStringChangedBP.RemoveAll(Testbed1StructInterfacePublisher);
 	}
 
 	Super::Deinitialize();

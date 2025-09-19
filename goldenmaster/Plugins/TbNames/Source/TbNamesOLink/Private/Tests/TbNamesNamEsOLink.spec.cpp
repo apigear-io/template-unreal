@@ -105,8 +105,8 @@ void UTbNamesNamEsOLinkSpec::Define()
 		bool TestValue = false; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetSwitch(), TestValue);
 
-		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbNamesNamEsSignals->OnSwitchChanged.AddLambda([this, TestDone](bool bInSwitch)
+		UTbNamesNamEsPublisher* TbNamesNamEsPublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbNamesNamEsPublisher->OnSwitchChanged.AddLambda([this, TestDone](bool bInSwitch)
 			{
 			bool TestValue = false;
 			// use different test value
@@ -127,8 +127,8 @@ void UTbNamesNamEsOLinkSpec::Define()
 		bool TestValue = false; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetSwitch(), TestValue);
 
-		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbNamesNamEsSignals->OnSwitchChanged.AddLambda([this, TestDone](bool bInSwitch)
+		UTbNamesNamEsPublisher* TbNamesNamEsPublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbNamesNamEsPublisher->OnSwitchChanged.AddLambda([this, TestDone](bool bInSwitch)
 			{
 			bool TestValue = false;
 			// use different test value
@@ -149,8 +149,8 @@ void UTbNamesNamEsOLinkSpec::Define()
 		bool TestValue = false; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetSwitch(), TestValue);
 
-		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbNamesNamEsSignals->OnSwitchChanged.AddLambda([this, TestDone](bool bInSwitch)
+		UTbNamesNamEsPublisher* TbNamesNamEsPublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbNamesNamEsPublisher->OnSwitchChanged.AddLambda([this, TestDone](bool bInSwitch)
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -197,8 +197,8 @@ void UTbNamesNamEsOLinkSpec::Define()
 		int32 TestValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetSomeProperty(), TestValue);
 
-		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbNamesNamEsSignals->OnSomePropertyChanged.AddLambda([this, TestDone](int32 InSomeProperty)
+		UTbNamesNamEsPublisher* TbNamesNamEsPublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbNamesNamEsPublisher->OnSomePropertyChanged.AddLambda([this, TestDone](int32 InSomeProperty)
 			{
 			int32 TestValue = 0;
 			// use different test value
@@ -219,8 +219,8 @@ void UTbNamesNamEsOLinkSpec::Define()
 		int32 TestValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetSomeProperty(), TestValue);
 
-		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbNamesNamEsSignals->OnSomePropertyChanged.AddLambda([this, TestDone](int32 InSomeProperty)
+		UTbNamesNamEsPublisher* TbNamesNamEsPublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbNamesNamEsPublisher->OnSomePropertyChanged.AddLambda([this, TestDone](int32 InSomeProperty)
 			{
 			int32 TestValue = 0;
 			// use different test value
@@ -241,8 +241,8 @@ void UTbNamesNamEsOLinkSpec::Define()
 		int32 TestValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetSomeProperty(), TestValue);
 
-		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbNamesNamEsSignals->OnSomePropertyChanged.AddLambda([this, TestDone](int32 InSomeProperty)
+		UTbNamesNamEsPublisher* TbNamesNamEsPublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbNamesNamEsPublisher->OnSomePropertyChanged.AddLambda([this, TestDone](int32 InSomeProperty)
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -289,8 +289,8 @@ void UTbNamesNamEsOLinkSpec::Define()
 		int32 TestValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetSomePoperty2(), TestValue);
 
-		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbNamesNamEsSignals->OnSomePoperty2Changed.AddLambda([this, TestDone](int32 InSomePoperty2)
+		UTbNamesNamEsPublisher* TbNamesNamEsPublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbNamesNamEsPublisher->OnSomePoperty2Changed.AddLambda([this, TestDone](int32 InSomePoperty2)
 			{
 			int32 TestValue = 0;
 			// use different test value
@@ -311,8 +311,8 @@ void UTbNamesNamEsOLinkSpec::Define()
 		int32 TestValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetSomePoperty2(), TestValue);
 
-		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbNamesNamEsSignals->OnSomePoperty2Changed.AddLambda([this, TestDone](int32 InSomePoperty2)
+		UTbNamesNamEsPublisher* TbNamesNamEsPublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbNamesNamEsPublisher->OnSomePoperty2Changed.AddLambda([this, TestDone](int32 InSomePoperty2)
 			{
 			int32 TestValue = 0;
 			// use different test value
@@ -333,8 +333,8 @@ void UTbNamesNamEsOLinkSpec::Define()
 		int32 TestValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetSomePoperty2(), TestValue);
 
-		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbNamesNamEsSignals->OnSomePoperty2Changed.AddLambda([this, TestDone](int32 InSomePoperty2)
+		UTbNamesNamEsPublisher* TbNamesNamEsPublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbNamesNamEsPublisher->OnSomePoperty2Changed.AddLambda([this, TestDone](int32 InSomePoperty2)
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -381,8 +381,8 @@ void UTbNamesNamEsOLinkSpec::Define()
 		ETbNamesEnum_With_Under_scores TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_FirstValue; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetEnumProperty(), TestValue);
 
-		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbNamesNamEsSignals->OnEnumPropertyChanged.AddLambda([this, TestDone](ETbNamesEnum_With_Under_scores InEnumProperty)
+		UTbNamesNamEsPublisher* TbNamesNamEsPublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbNamesNamEsPublisher->OnEnumPropertyChanged.AddLambda([this, TestDone](ETbNamesEnum_With_Under_scores InEnumProperty)
 			{
 			ETbNamesEnum_With_Under_scores TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_FirstValue;
 			// use different test value
@@ -403,8 +403,8 @@ void UTbNamesNamEsOLinkSpec::Define()
 		ETbNamesEnum_With_Under_scores TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_FirstValue; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetEnumProperty(), TestValue);
 
-		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbNamesNamEsSignals->OnEnumPropertyChanged.AddLambda([this, TestDone](ETbNamesEnum_With_Under_scores InEnumProperty)
+		UTbNamesNamEsPublisher* TbNamesNamEsPublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbNamesNamEsPublisher->OnEnumPropertyChanged.AddLambda([this, TestDone](ETbNamesEnum_With_Under_scores InEnumProperty)
 			{
 			ETbNamesEnum_With_Under_scores TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_FirstValue;
 			// use different test value
@@ -425,8 +425,8 @@ void UTbNamesNamEsOLinkSpec::Define()
 		ETbNamesEnum_With_Under_scores TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_FirstValue; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetEnumProperty(), TestValue);
 
-		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbNamesNamEsSignals->OnEnumPropertyChanged.AddLambda([this, TestDone](ETbNamesEnum_With_Under_scores InEnumProperty)
+		UTbNamesNamEsPublisher* TbNamesNamEsPublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbNamesNamEsPublisher->OnEnumPropertyChanged.AddLambda([this, TestDone](ETbNamesEnum_With_Under_scores InEnumProperty)
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -482,8 +482,8 @@ void UTbNamesNamEsOLinkSpec::Define()
 
 	LatentIt("Signal.SomeSignal", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbNamesNamEsSignals->OnSomeSignalSignal.AddLambda([this, TestDone](bool bInSomeParam)
+		UTbNamesNamEsPublisher* TbNamesNamEsPublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbNamesNamEsPublisher->OnSomeSignalSignal.AddLambda([this, TestDone](bool bInSomeParam)
 			{
 			// known test value
 			bool bSomeParamTestValue = true;
@@ -493,13 +493,13 @@ void UTbNamesNamEsOLinkSpec::Define()
 
 		// use different test value
 		bool bSomeParamTestValue = true;
-		TbNamesNamEsSignals->BroadcastSomeSignalSignal(bSomeParamTestValue);
+		TbNamesNamEsPublisher->BroadcastSomeSignalSignal(bSomeParamTestValue);
 	});
 
 	LatentIt("Signal.SomeSignal2", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		UTbNamesNamEsSignals* TbNamesNamEsSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbNamesNamEsSignals->OnSomeSignal2Signal.AddLambda([this, TestDone](bool bInSomeParam)
+		UTbNamesNamEsPublisher* TbNamesNamEsPublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbNamesNamEsPublisher->OnSomeSignal2Signal.AddLambda([this, TestDone](bool bInSomeParam)
 			{
 			// known test value
 			bool bSomeParamTestValue = true;
@@ -509,7 +509,7 @@ void UTbNamesNamEsOLinkSpec::Define()
 
 		// use different test value
 		bool bSomeParamTestValue = true;
-		TbNamesNamEsSignals->BroadcastSomeSignal2Signal(bSomeParamTestValue);
+		TbNamesNamEsPublisher->BroadcastSomeSignal2Signal(bSomeParamTestValue);
 	});
 }
 } // namespace Tests

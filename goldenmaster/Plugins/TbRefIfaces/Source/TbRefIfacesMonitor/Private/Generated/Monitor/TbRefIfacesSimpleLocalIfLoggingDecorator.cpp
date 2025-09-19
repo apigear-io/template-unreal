@@ -47,10 +47,10 @@ void UTbRefIfacesSimpleLocalIfLoggingDecorator::setBackendService(TScriptInterfa
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		UTbRefIfacesSimpleLocalIfSignals* BackendSignals = BackendService->_GetSignals();
-		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbRefIfacesSimpleLocalIf"));
-		BackendSignals->OnIntPropertyChangedBP.RemoveDynamic(this, &UTbRefIfacesSimpleLocalIfLoggingDecorator::OnIntPropertyChanged);
-		BackendSignals->OnIntSignalSignalBP.RemoveDynamic(this, &UTbRefIfacesSimpleLocalIfLoggingDecorator::OnIntSignal);
+		UTbRefIfacesSimpleLocalIfPublisher* BackendPublisher = BackendService->_GetPublisher();
+		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbRefIfacesSimpleLocalIf"));
+		BackendPublisher->OnIntPropertyChangedBP.RemoveDynamic(this, &UTbRefIfacesSimpleLocalIfLoggingDecorator::OnIntPropertyChanged);
+		BackendPublisher->OnIntSignalSignalBP.RemoveDynamic(this, &UTbRefIfacesSimpleLocalIfLoggingDecorator::OnIntSignal);
 	}
 
 	// only set if interface is implemented
@@ -58,11 +58,11 @@ void UTbRefIfacesSimpleLocalIfLoggingDecorator::setBackendService(TScriptInterfa
 
 	// subscribe to new backend
 	BackendService = InService;
-	UTbRefIfacesSimpleLocalIfSignals* BackendSignals = BackendService->_GetSignals();
-	checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbRefIfacesSimpleLocalIf"));
+	UTbRefIfacesSimpleLocalIfPublisher* BackendPublisher = BackendService->_GetPublisher();
+	checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbRefIfacesSimpleLocalIf"));
 	// connect property changed signals or simple events
-	BackendSignals->OnIntPropertyChangedBP.AddDynamic(this, &UTbRefIfacesSimpleLocalIfLoggingDecorator::OnIntPropertyChanged);
-	BackendSignals->OnIntSignalSignalBP.AddDynamic(this, &UTbRefIfacesSimpleLocalIfLoggingDecorator::OnIntSignal);
+	BackendPublisher->OnIntPropertyChangedBP.AddDynamic(this, &UTbRefIfacesSimpleLocalIfLoggingDecorator::OnIntPropertyChanged);
+	BackendPublisher->OnIntSignalSignalBP.AddDynamic(this, &UTbRefIfacesSimpleLocalIfLoggingDecorator::OnIntSignal);
 	// populate service state to proxy
 	IntProperty = BackendService->GetIntProperty();
 }
@@ -70,14 +70,14 @@ void UTbRefIfacesSimpleLocalIfLoggingDecorator::setBackendService(TScriptInterfa
 void UTbRefIfacesSimpleLocalIfLoggingDecorator::OnIntSignal(int32 InParam)
 {
 	TbRefIfacesSimpleLocalIfTracer::trace_signalIntSignal(InParam);
-	_GetSignals()->BroadcastIntSignalSignal(InParam);
+	_GetPublisher()->BroadcastIntSignalSignal(InParam);
 }
 
 void UTbRefIfacesSimpleLocalIfLoggingDecorator::OnIntPropertyChanged(int32 InIntProperty)
 {
 	TbRefIfacesSimpleLocalIfTracer::capture_state(BackendService.GetObject(), this);
 	IntProperty = InIntProperty;
-	_GetSignals()->BroadcastIntPropertyChanged(InIntProperty);
+	_GetPublisher()->BroadcastIntPropertyChanged(InIntProperty);
 }
 
 int32 UTbRefIfacesSimpleLocalIfLoggingDecorator::GetIntProperty() const

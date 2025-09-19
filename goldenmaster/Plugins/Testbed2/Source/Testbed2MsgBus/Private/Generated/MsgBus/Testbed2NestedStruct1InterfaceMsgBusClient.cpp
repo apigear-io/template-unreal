@@ -193,7 +193,7 @@ void UTestbed2NestedStruct1InterfaceMsgBusClient::OnConnectionInit(const FTestbe
 			FScopeLock Lock(&(_SentData->Prop1Mutex));
 			_SentData->Prop1 = Prop1;
 		}
-		_GetSignals()->BroadcastProp1Changed(Prop1);
+		_GetPublisher()->BroadcastProp1Changed(Prop1);
 	}
 
 	_ConnectionStatusChanged.Broadcast(true);
@@ -377,7 +377,7 @@ void UTestbed2NestedStruct1InterfaceMsgBusClient::OnSig1(const FTestbed2NestedSt
 		return;
 	}
 
-	_GetSignals()->BroadcastSig1Signal(InMessage.Param1);
+	_GetPublisher()->BroadcastSig1Signal(InMessage.Param1);
 	return;
 }
 
@@ -398,7 +398,7 @@ void UTestbed2NestedStruct1InterfaceMsgBusClient::OnProp1Changed(const FTestbed2
 			FScopeLock Lock(&(_SentData->Prop1Mutex));
 			_SentData->Prop1 = Prop1;
 		}
-		_GetSignals()->BroadcastProp1Changed(Prop1);
+		_GetPublisher()->BroadcastProp1Changed(Prop1);
 	}
 }
 

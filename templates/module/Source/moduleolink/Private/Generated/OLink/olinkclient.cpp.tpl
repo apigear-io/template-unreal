@@ -293,7 +293,7 @@ void {{$Class}}::applyState(const nlohmann::json& fields)
 		{{- else}}
 		_SentData->{{ueVar "" .}} = {{ueVar "" .}};
 		{{- end }}
-		_GetSignals()->Broadcast{{Camel .Name}}Changed({{ueVar "" .}});
+		_GetPublisher()->Broadcast{{Camel .Name}}Changed({{ueVar "" .}});
 	}
 {{- end }}
 }
@@ -307,7 +307,7 @@ void {{$Class}}::emitSignal(const std::string& signalName, const nlohmann::json&
 		{{- range $idx, $elem := .Params }}
 		{{ueParam "out" .}} = args[{{$idx}}].get<{{ueReturn "" .}}>();
 		{{- end }}
-		_GetSignals()->Broadcast{{Camel .Name}}Signal({{ueVars "out" .Params}});
+		_GetPublisher()->Broadcast{{Camel .Name}}Signal({{ueVars "out" .Params}});
 		return;
 	}
 {{- end }}

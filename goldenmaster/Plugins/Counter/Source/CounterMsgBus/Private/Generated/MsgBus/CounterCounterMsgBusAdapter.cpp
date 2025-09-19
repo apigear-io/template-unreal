@@ -144,31 +144,31 @@ void UCounterCounterMsgBusAdapter::_setBackendService(TScriptInterface<ICounterC
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		UCounterCounterSignals* BackendSignals = BackendService->_GetSignals();
-		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service CounterCounter"));
+		UCounterCounterPublisher* BackendPublisher = BackendService->_GetPublisher();
+		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service CounterCounter"));
 		if (OnVectorChangedHandle.IsValid())
 		{
-			BackendSignals->OnVectorChanged.Remove(OnVectorChangedHandle);
+			BackendPublisher->OnVectorChanged.Remove(OnVectorChangedHandle);
 			OnVectorChangedHandle.Reset();
 		}
 		if (OnExternVectorChangedHandle.IsValid())
 		{
-			BackendSignals->OnExternVectorChanged.Remove(OnExternVectorChangedHandle);
+			BackendPublisher->OnExternVectorChanged.Remove(OnExternVectorChangedHandle);
 			OnExternVectorChangedHandle.Reset();
 		}
 		if (OnVectorArrayChangedHandle.IsValid())
 		{
-			BackendSignals->OnVectorArrayChanged.Remove(OnVectorArrayChangedHandle);
+			BackendPublisher->OnVectorArrayChanged.Remove(OnVectorArrayChangedHandle);
 			OnVectorArrayChangedHandle.Reset();
 		}
 		if (OnExternVectorArrayChangedHandle.IsValid())
 		{
-			BackendSignals->OnExternVectorArrayChanged.Remove(OnExternVectorArrayChangedHandle);
+			BackendPublisher->OnExternVectorArrayChanged.Remove(OnExternVectorArrayChangedHandle);
 			OnExternVectorArrayChangedHandle.Reset();
 		}
 		if (OnValueChangedSignalHandle.IsValid())
 		{
-			BackendSignals->OnValueChangedSignal.Remove(OnValueChangedSignalHandle);
+			BackendPublisher->OnValueChangedSignal.Remove(OnValueChangedSignalHandle);
 			OnValueChangedSignalHandle.Reset();
 		}
 	}
@@ -178,14 +178,14 @@ void UCounterCounterMsgBusAdapter::_setBackendService(TScriptInterface<ICounterC
 
 	// subscribe to new backend
 	BackendService = InService;
-	UCounterCounterSignals* BackendSignals = BackendService->_GetSignals();
-	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service CounterCounter"));
+	UCounterCounterPublisher* BackendPublisher = BackendService->_GetPublisher();
+	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service CounterCounter"));
 	// connect property changed signals or simple events
-	OnVectorChangedHandle = BackendSignals->OnVectorChanged.AddUObject(this, &UCounterCounterMsgBusAdapter::OnVectorChanged);
-	OnExternVectorChangedHandle = BackendSignals->OnExternVectorChanged.AddUObject(this, &UCounterCounterMsgBusAdapter::OnExternVectorChanged);
-	OnVectorArrayChangedHandle = BackendSignals->OnVectorArrayChanged.AddUObject(this, &UCounterCounterMsgBusAdapter::OnVectorArrayChanged);
-	OnExternVectorArrayChangedHandle = BackendSignals->OnExternVectorArrayChanged.AddUObject(this, &UCounterCounterMsgBusAdapter::OnExternVectorArrayChanged);
-	OnValueChangedSignalHandle = BackendSignals->OnValueChangedSignal.AddUObject(this, &UCounterCounterMsgBusAdapter::OnValueChanged);
+	OnVectorChangedHandle = BackendPublisher->OnVectorChanged.AddUObject(this, &UCounterCounterMsgBusAdapter::OnVectorChanged);
+	OnExternVectorChangedHandle = BackendPublisher->OnExternVectorChanged.AddUObject(this, &UCounterCounterMsgBusAdapter::OnExternVectorChanged);
+	OnVectorArrayChangedHandle = BackendPublisher->OnVectorArrayChanged.AddUObject(this, &UCounterCounterMsgBusAdapter::OnVectorArrayChanged);
+	OnExternVectorArrayChangedHandle = BackendPublisher->OnExternVectorArrayChanged.AddUObject(this, &UCounterCounterMsgBusAdapter::OnExternVectorArrayChanged);
+	OnValueChangedSignalHandle = BackendPublisher->OnValueChangedSignal.AddUObject(this, &UCounterCounterMsgBusAdapter::OnValueChanged);
 }
 
 void UCounterCounterMsgBusAdapter::OnDiscoveryMessage(const FCounterCounterDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)

@@ -47,12 +47,12 @@ void UTbSimpleNoOperationsInterfaceLoggingDecorator::setBackendService(TScriptIn
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		UTbSimpleNoOperationsInterfaceSignals* BackendSignals = BackendService->_GetSignals();
-		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleNoOperationsInterface"));
-		BackendSignals->OnPropBoolChangedBP.RemoveDynamic(this, &UTbSimpleNoOperationsInterfaceLoggingDecorator::OnPropBoolChanged);
-		BackendSignals->OnPropIntChangedBP.RemoveDynamic(this, &UTbSimpleNoOperationsInterfaceLoggingDecorator::OnPropIntChanged);
-		BackendSignals->OnSigVoidSignalBP.RemoveDynamic(this, &UTbSimpleNoOperationsInterfaceLoggingDecorator::OnSigVoid);
-		BackendSignals->OnSigBoolSignalBP.RemoveDynamic(this, &UTbSimpleNoOperationsInterfaceLoggingDecorator::OnSigBool);
+		UTbSimpleNoOperationsInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleNoOperationsInterface"));
+		BackendPublisher->OnPropBoolChangedBP.RemoveDynamic(this, &UTbSimpleNoOperationsInterfaceLoggingDecorator::OnPropBoolChanged);
+		BackendPublisher->OnPropIntChangedBP.RemoveDynamic(this, &UTbSimpleNoOperationsInterfaceLoggingDecorator::OnPropIntChanged);
+		BackendPublisher->OnSigVoidSignalBP.RemoveDynamic(this, &UTbSimpleNoOperationsInterfaceLoggingDecorator::OnSigVoid);
+		BackendPublisher->OnSigBoolSignalBP.RemoveDynamic(this, &UTbSimpleNoOperationsInterfaceLoggingDecorator::OnSigBool);
 	}
 
 	// only set if interface is implemented
@@ -60,13 +60,13 @@ void UTbSimpleNoOperationsInterfaceLoggingDecorator::setBackendService(TScriptIn
 
 	// subscribe to new backend
 	BackendService = InService;
-	UTbSimpleNoOperationsInterfaceSignals* BackendSignals = BackendService->_GetSignals();
-	checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleNoOperationsInterface"));
+	UTbSimpleNoOperationsInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+	checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleNoOperationsInterface"));
 	// connect property changed signals or simple events
-	BackendSignals->OnPropBoolChangedBP.AddDynamic(this, &UTbSimpleNoOperationsInterfaceLoggingDecorator::OnPropBoolChanged);
-	BackendSignals->OnPropIntChangedBP.AddDynamic(this, &UTbSimpleNoOperationsInterfaceLoggingDecorator::OnPropIntChanged);
-	BackendSignals->OnSigVoidSignalBP.AddDynamic(this, &UTbSimpleNoOperationsInterfaceLoggingDecorator::OnSigVoid);
-	BackendSignals->OnSigBoolSignalBP.AddDynamic(this, &UTbSimpleNoOperationsInterfaceLoggingDecorator::OnSigBool);
+	BackendPublisher->OnPropBoolChangedBP.AddDynamic(this, &UTbSimpleNoOperationsInterfaceLoggingDecorator::OnPropBoolChanged);
+	BackendPublisher->OnPropIntChangedBP.AddDynamic(this, &UTbSimpleNoOperationsInterfaceLoggingDecorator::OnPropIntChanged);
+	BackendPublisher->OnSigVoidSignalBP.AddDynamic(this, &UTbSimpleNoOperationsInterfaceLoggingDecorator::OnSigVoid);
+	BackendPublisher->OnSigBoolSignalBP.AddDynamic(this, &UTbSimpleNoOperationsInterfaceLoggingDecorator::OnSigBool);
 	// populate service state to proxy
 	bPropBool = BackendService->GetPropBool();
 	PropInt = BackendService->GetPropInt();
@@ -75,20 +75,20 @@ void UTbSimpleNoOperationsInterfaceLoggingDecorator::setBackendService(TScriptIn
 void UTbSimpleNoOperationsInterfaceLoggingDecorator::OnSigVoid()
 {
 	TbSimpleNoOperationsInterfaceTracer::trace_signalSigVoid();
-	_GetSignals()->BroadcastSigVoidSignal();
+	_GetPublisher()->BroadcastSigVoidSignal();
 }
 
 void UTbSimpleNoOperationsInterfaceLoggingDecorator::OnSigBool(bool bInParamBool)
 {
 	TbSimpleNoOperationsInterfaceTracer::trace_signalSigBool(bInParamBool);
-	_GetSignals()->BroadcastSigBoolSignal(bInParamBool);
+	_GetPublisher()->BroadcastSigBoolSignal(bInParamBool);
 }
 
 void UTbSimpleNoOperationsInterfaceLoggingDecorator::OnPropBoolChanged(bool bInPropBool)
 {
 	TbSimpleNoOperationsInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	bPropBool = bInPropBool;
-	_GetSignals()->BroadcastPropBoolChanged(bInPropBool);
+	_GetPublisher()->BroadcastPropBoolChanged(bInPropBool);
 }
 
 bool UTbSimpleNoOperationsInterfaceLoggingDecorator::GetPropBool() const
@@ -106,7 +106,7 @@ void UTbSimpleNoOperationsInterfaceLoggingDecorator::OnPropIntChanged(int32 InPr
 {
 	TbSimpleNoOperationsInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropInt = InPropInt;
-	_GetSignals()->BroadcastPropIntChanged(InPropInt);
+	_GetPublisher()->BroadcastPropIntChanged(InPropInt);
 }
 
 int32 UTbSimpleNoOperationsInterfaceLoggingDecorator::GetPropInt() const

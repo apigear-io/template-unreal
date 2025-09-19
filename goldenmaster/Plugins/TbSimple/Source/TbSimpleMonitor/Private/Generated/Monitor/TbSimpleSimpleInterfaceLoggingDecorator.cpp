@@ -47,24 +47,24 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::setBackendService(TScriptInterfac
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		UTbSimpleSimpleInterfaceSignals* BackendSignals = BackendService->_GetSignals();
-		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleSimpleInterface"));
-		BackendSignals->OnPropBoolChangedBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropBoolChanged);
-		BackendSignals->OnPropIntChangedBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropIntChanged);
-		BackendSignals->OnPropInt32ChangedBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropInt32Changed);
-		BackendSignals->OnPropInt64ChangedBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropInt64Changed);
-		BackendSignals->OnPropFloatChangedBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloatChanged);
-		BackendSignals->OnPropFloat32ChangedBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloat32Changed);
-		BackendSignals->OnPropFloat64ChangedBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloat64Changed);
-		BackendSignals->OnPropStringChangedBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropStringChanged);
-		BackendSignals->OnSigBoolSignalBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigBool);
-		BackendSignals->OnSigIntSignalBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt);
-		BackendSignals->OnSigInt32SignalBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt32);
-		BackendSignals->OnSigInt64SignalBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt64);
-		BackendSignals->OnSigFloatSignalBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat);
-		BackendSignals->OnSigFloat32SignalBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat32);
-		BackendSignals->OnSigFloat64SignalBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat64);
-		BackendSignals->OnSigStringSignalBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigString);
+		UTbSimpleSimpleInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleSimpleInterface"));
+		BackendPublisher->OnPropBoolChangedBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropBoolChanged);
+		BackendPublisher->OnPropIntChangedBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropIntChanged);
+		BackendPublisher->OnPropInt32ChangedBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropInt32Changed);
+		BackendPublisher->OnPropInt64ChangedBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropInt64Changed);
+		BackendPublisher->OnPropFloatChangedBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloatChanged);
+		BackendPublisher->OnPropFloat32ChangedBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloat32Changed);
+		BackendPublisher->OnPropFloat64ChangedBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloat64Changed);
+		BackendPublisher->OnPropStringChangedBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropStringChanged);
+		BackendPublisher->OnSigBoolSignalBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigBool);
+		BackendPublisher->OnSigIntSignalBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt);
+		BackendPublisher->OnSigInt32SignalBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt32);
+		BackendPublisher->OnSigInt64SignalBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt64);
+		BackendPublisher->OnSigFloatSignalBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat);
+		BackendPublisher->OnSigFloat32SignalBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat32);
+		BackendPublisher->OnSigFloat64SignalBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat64);
+		BackendPublisher->OnSigStringSignalBP.RemoveDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigString);
 	}
 
 	// only set if interface is implemented
@@ -72,25 +72,25 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::setBackendService(TScriptInterfac
 
 	// subscribe to new backend
 	BackendService = InService;
-	UTbSimpleSimpleInterfaceSignals* BackendSignals = BackendService->_GetSignals();
-	checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleSimpleInterface"));
+	UTbSimpleSimpleInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+	checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleSimpleInterface"));
 	// connect property changed signals or simple events
-	BackendSignals->OnPropBoolChangedBP.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropBoolChanged);
-	BackendSignals->OnPropIntChangedBP.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropIntChanged);
-	BackendSignals->OnPropInt32ChangedBP.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropInt32Changed);
-	BackendSignals->OnPropInt64ChangedBP.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropInt64Changed);
-	BackendSignals->OnPropFloatChangedBP.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloatChanged);
-	BackendSignals->OnPropFloat32ChangedBP.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloat32Changed);
-	BackendSignals->OnPropFloat64ChangedBP.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloat64Changed);
-	BackendSignals->OnPropStringChangedBP.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropStringChanged);
-	BackendSignals->OnSigBoolSignalBP.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigBool);
-	BackendSignals->OnSigIntSignalBP.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt);
-	BackendSignals->OnSigInt32SignalBP.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt32);
-	BackendSignals->OnSigInt64SignalBP.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt64);
-	BackendSignals->OnSigFloatSignalBP.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat);
-	BackendSignals->OnSigFloat32SignalBP.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat32);
-	BackendSignals->OnSigFloat64SignalBP.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat64);
-	BackendSignals->OnSigStringSignalBP.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigString);
+	BackendPublisher->OnPropBoolChangedBP.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropBoolChanged);
+	BackendPublisher->OnPropIntChangedBP.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropIntChanged);
+	BackendPublisher->OnPropInt32ChangedBP.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropInt32Changed);
+	BackendPublisher->OnPropInt64ChangedBP.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropInt64Changed);
+	BackendPublisher->OnPropFloatChangedBP.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloatChanged);
+	BackendPublisher->OnPropFloat32ChangedBP.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloat32Changed);
+	BackendPublisher->OnPropFloat64ChangedBP.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloat64Changed);
+	BackendPublisher->OnPropStringChangedBP.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnPropStringChanged);
+	BackendPublisher->OnSigBoolSignalBP.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigBool);
+	BackendPublisher->OnSigIntSignalBP.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt);
+	BackendPublisher->OnSigInt32SignalBP.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt32);
+	BackendPublisher->OnSigInt64SignalBP.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt64);
+	BackendPublisher->OnSigFloatSignalBP.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat);
+	BackendPublisher->OnSigFloat32SignalBP.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat32);
+	BackendPublisher->OnSigFloat64SignalBP.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat64);
+	BackendPublisher->OnSigStringSignalBP.AddDynamic(this, &UTbSimpleSimpleInterfaceLoggingDecorator::OnSigString);
 	// populate service state to proxy
 	bPropBool = BackendService->GetPropBool();
 	PropInt = BackendService->GetPropInt();
@@ -105,56 +105,56 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::setBackendService(TScriptInterfac
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigBool(bool bInParamBool)
 {
 	TbSimpleSimpleInterfaceTracer::trace_signalSigBool(bInParamBool);
-	_GetSignals()->BroadcastSigBoolSignal(bInParamBool);
+	_GetPublisher()->BroadcastSigBoolSignal(bInParamBool);
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt(int32 InParamInt)
 {
 	TbSimpleSimpleInterfaceTracer::trace_signalSigInt(InParamInt);
-	_GetSignals()->BroadcastSigIntSignal(InParamInt);
+	_GetPublisher()->BroadcastSigIntSignal(InParamInt);
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt32(int32 InParamInt32)
 {
 	TbSimpleSimpleInterfaceTracer::trace_signalSigInt32(InParamInt32);
-	_GetSignals()->BroadcastSigInt32Signal(InParamInt32);
+	_GetPublisher()->BroadcastSigInt32Signal(InParamInt32);
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt64(int64 InParamInt64)
 {
 	TbSimpleSimpleInterfaceTracer::trace_signalSigInt64(InParamInt64);
-	_GetSignals()->BroadcastSigInt64Signal(InParamInt64);
+	_GetPublisher()->BroadcastSigInt64Signal(InParamInt64);
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat(float InParamFloat)
 {
 	TbSimpleSimpleInterfaceTracer::trace_signalSigFloat(InParamFloat);
-	_GetSignals()->BroadcastSigFloatSignal(InParamFloat);
+	_GetPublisher()->BroadcastSigFloatSignal(InParamFloat);
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat32(float InParamFloat32)
 {
 	TbSimpleSimpleInterfaceTracer::trace_signalSigFloat32(InParamFloat32);
-	_GetSignals()->BroadcastSigFloat32Signal(InParamFloat32);
+	_GetPublisher()->BroadcastSigFloat32Signal(InParamFloat32);
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat64(double InParamFloat64)
 {
 	TbSimpleSimpleInterfaceTracer::trace_signalSigFloat64(InParamFloat64);
-	_GetSignals()->BroadcastSigFloat64Signal(InParamFloat64);
+	_GetPublisher()->BroadcastSigFloat64Signal(InParamFloat64);
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigString(const FString& InParamString)
 {
 	TbSimpleSimpleInterfaceTracer::trace_signalSigString(InParamString);
-	_GetSignals()->BroadcastSigStringSignal(InParamString);
+	_GetPublisher()->BroadcastSigStringSignal(InParamString);
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnPropBoolChanged(bool bInPropBool)
 {
 	TbSimpleSimpleInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	bPropBool = bInPropBool;
-	_GetSignals()->BroadcastPropBoolChanged(bInPropBool);
+	_GetPublisher()->BroadcastPropBoolChanged(bInPropBool);
 }
 
 bool UTbSimpleSimpleInterfaceLoggingDecorator::GetPropBool() const
@@ -172,7 +172,7 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::OnPropIntChanged(int32 InPropInt)
 {
 	TbSimpleSimpleInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropInt = InPropInt;
-	_GetSignals()->BroadcastPropIntChanged(InPropInt);
+	_GetPublisher()->BroadcastPropIntChanged(InPropInt);
 }
 
 int32 UTbSimpleSimpleInterfaceLoggingDecorator::GetPropInt() const
@@ -190,7 +190,7 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::OnPropInt32Changed(int32 InPropIn
 {
 	TbSimpleSimpleInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropInt32 = InPropInt32;
-	_GetSignals()->BroadcastPropInt32Changed(InPropInt32);
+	_GetPublisher()->BroadcastPropInt32Changed(InPropInt32);
 }
 
 int32 UTbSimpleSimpleInterfaceLoggingDecorator::GetPropInt32() const
@@ -208,7 +208,7 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::OnPropInt64Changed(int64 InPropIn
 {
 	TbSimpleSimpleInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropInt64 = InPropInt64;
-	_GetSignals()->BroadcastPropInt64Changed(InPropInt64);
+	_GetPublisher()->BroadcastPropInt64Changed(InPropInt64);
 }
 
 int64 UTbSimpleSimpleInterfaceLoggingDecorator::GetPropInt64() const
@@ -226,7 +226,7 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloatChanged(float InPropFl
 {
 	TbSimpleSimpleInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropFloat = InPropFloat;
-	_GetSignals()->BroadcastPropFloatChanged(InPropFloat);
+	_GetPublisher()->BroadcastPropFloatChanged(InPropFloat);
 }
 
 float UTbSimpleSimpleInterfaceLoggingDecorator::GetPropFloat() const
@@ -244,7 +244,7 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloat32Changed(float InProp
 {
 	TbSimpleSimpleInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropFloat32 = InPropFloat32;
-	_GetSignals()->BroadcastPropFloat32Changed(InPropFloat32);
+	_GetPublisher()->BroadcastPropFloat32Changed(InPropFloat32);
 }
 
 float UTbSimpleSimpleInterfaceLoggingDecorator::GetPropFloat32() const
@@ -262,7 +262,7 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloat64Changed(double InPro
 {
 	TbSimpleSimpleInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropFloat64 = InPropFloat64;
-	_GetSignals()->BroadcastPropFloat64Changed(InPropFloat64);
+	_GetPublisher()->BroadcastPropFloat64Changed(InPropFloat64);
 }
 
 double UTbSimpleSimpleInterfaceLoggingDecorator::GetPropFloat64() const
@@ -280,7 +280,7 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::OnPropStringChanged(const FString
 {
 	TbSimpleSimpleInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropString = InPropString;
-	_GetSignals()->BroadcastPropStringChanged(InPropString);
+	_GetPublisher()->BroadcastPropStringChanged(InPropString);
 }
 
 FString UTbSimpleSimpleInterfaceLoggingDecorator::GetPropString() const

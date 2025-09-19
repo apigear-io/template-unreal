@@ -74,19 +74,19 @@ public:
 {{$abstractclass}}::{{$abstractclass}}()
 {
 {{- if or (len .Properties) (len .Signals) }}
-	{{$Iface}}Signals = NewObject<U{{$Class}}Signals>();
+	{{$Iface}}Publisher = NewObject<U{{$Class}}Publisher>();
 {{- end }}
 }
 
 {{- if or (len .Properties) (len .Signals) }}
 {{- nl }}
-U{{$Class}}Signals* {{$abstractclass}}::_GetSignals()
+U{{$Class}}Publisher* {{$abstractclass}}::_GetPublisher()
 {
-	if (!{{$Iface}}Signals)
+	if (!{{$Iface}}Publisher)
 	{
-		{{$Iface}}Signals = NewObject<U{{$Class}}Signals>();
+		{{$Iface}}Publisher = NewObject<U{{$Class}}Publisher>();
 	}
-	return {{$Class}}Signals;
+	return {{$Class}}Publisher;
 }
 {{- nl }}
 {{- end }}
@@ -166,16 +166,16 @@ void {{$abstractclass}}::Deinitialize()
 	bInitialized = false;
 
 {{- if or (len .Properties) (len .Signals) }}{{nl}}
-	if ({{$Iface}}Signals)
+	if ({{$Iface}}Publisher)
 	{
 {{- range $i, $e := .Signals }}
-		{{$Iface}}Signals->On{{Camel .Name}}Signal.RemoveAll({{$Iface}}Signals);
-		{{$Iface}}Signals->On{{Camel .Name}}SignalBP.RemoveAll({{$Iface}}Signals);
+		{{$Iface}}Publisher->On{{Camel .Name}}Signal.RemoveAll({{$Iface}}Publisher);
+		{{$Iface}}Publisher->On{{Camel .Name}}SignalBP.RemoveAll({{$Iface}}Publisher);
 {{- end }}
 {{- if and (len .Properties) (len .Signals) }}{{ nl }}{{ end }}
 {{- range $i, $e := .Properties }}
-		{{$Iface}}Signals->On{{Camel .Name}}Changed.RemoveAll({{$Iface}}Signals);
-		{{$Iface}}Signals->On{{Camel .Name}}ChangedBP.RemoveAll({{$Iface}}Signals);
+		{{$Iface}}Publisher->On{{Camel .Name}}Changed.RemoveAll({{$Iface}}Publisher);
+		{{$Iface}}Publisher->On{{Camel .Name}}ChangedBP.RemoveAll({{$Iface}}Publisher);
 {{- end }}
 	}
 {{- end }}

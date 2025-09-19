@@ -219,7 +219,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnConnectionInit(const FTbSimpleSimpl
 		bPropBool = InMessage.bPropBool;
 		// reset sent data to the current state
 		_SentData->bPropBool = bPropBool;
-		_GetSignals()->BroadcastPropBoolChanged(bPropBool);
+		_GetPublisher()->BroadcastPropBoolChanged(bPropBool);
 	}
 
 	const bool bPropIntChanged = InMessage.PropInt != PropInt;
@@ -228,7 +228,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnConnectionInit(const FTbSimpleSimpl
 		PropInt = InMessage.PropInt;
 		// reset sent data to the current state
 		_SentData->PropInt = PropInt;
-		_GetSignals()->BroadcastPropIntChanged(PropInt);
+		_GetPublisher()->BroadcastPropIntChanged(PropInt);
 	}
 
 	const bool bPropInt32Changed = InMessage.PropInt32 != PropInt32;
@@ -237,7 +237,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnConnectionInit(const FTbSimpleSimpl
 		PropInt32 = InMessage.PropInt32;
 		// reset sent data to the current state
 		_SentData->PropInt32 = PropInt32;
-		_GetSignals()->BroadcastPropInt32Changed(PropInt32);
+		_GetPublisher()->BroadcastPropInt32Changed(PropInt32);
 	}
 
 	const bool bPropInt64Changed = InMessage.PropInt64 != PropInt64;
@@ -246,7 +246,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnConnectionInit(const FTbSimpleSimpl
 		PropInt64 = InMessage.PropInt64;
 		// reset sent data to the current state
 		_SentData->PropInt64 = PropInt64;
-		_GetSignals()->BroadcastPropInt64Changed(PropInt64);
+		_GetPublisher()->BroadcastPropInt64Changed(PropInt64);
 	}
 
 	const bool bPropFloatChanged = InMessage.PropFloat != PropFloat;
@@ -255,7 +255,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnConnectionInit(const FTbSimpleSimpl
 		PropFloat = InMessage.PropFloat;
 		// reset sent data to the current state
 		_SentData->PropFloat = PropFloat;
-		_GetSignals()->BroadcastPropFloatChanged(PropFloat);
+		_GetPublisher()->BroadcastPropFloatChanged(PropFloat);
 	}
 
 	const bool bPropFloat32Changed = InMessage.PropFloat32 != PropFloat32;
@@ -264,7 +264,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnConnectionInit(const FTbSimpleSimpl
 		PropFloat32 = InMessage.PropFloat32;
 		// reset sent data to the current state
 		_SentData->PropFloat32 = PropFloat32;
-		_GetSignals()->BroadcastPropFloat32Changed(PropFloat32);
+		_GetPublisher()->BroadcastPropFloat32Changed(PropFloat32);
 	}
 
 	const bool bPropFloat64Changed = InMessage.PropFloat64 != PropFloat64;
@@ -273,7 +273,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnConnectionInit(const FTbSimpleSimpl
 		PropFloat64 = InMessage.PropFloat64;
 		// reset sent data to the current state
 		_SentData->PropFloat64 = PropFloat64;
-		_GetSignals()->BroadcastPropFloat64Changed(PropFloat64);
+		_GetPublisher()->BroadcastPropFloat64Changed(PropFloat64);
 	}
 
 	const bool bPropStringChanged = InMessage.PropString != PropString;
@@ -285,7 +285,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnConnectionInit(const FTbSimpleSimpl
 			FScopeLock Lock(&(_SentData->PropStringMutex));
 			_SentData->PropString = PropString;
 		}
-		_GetSignals()->BroadcastPropStringChanged(PropString);
+		_GetPublisher()->BroadcastPropStringChanged(PropString);
 	}
 
 	_ConnectionStatusChanged.Broadcast(true);
@@ -945,7 +945,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnSigBool(const FTbSimpleSimpleInterf
 		return;
 	}
 
-	_GetSignals()->BroadcastSigBoolSignal(InMessage.bParamBool);
+	_GetPublisher()->BroadcastSigBoolSignal(InMessage.bParamBool);
 	return;
 }
 
@@ -957,7 +957,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnSigInt(const FTbSimpleSimpleInterfa
 		return;
 	}
 
-	_GetSignals()->BroadcastSigIntSignal(InMessage.ParamInt);
+	_GetPublisher()->BroadcastSigIntSignal(InMessage.ParamInt);
 	return;
 }
 
@@ -969,7 +969,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnSigInt32(const FTbSimpleSimpleInter
 		return;
 	}
 
-	_GetSignals()->BroadcastSigInt32Signal(InMessage.ParamInt32);
+	_GetPublisher()->BroadcastSigInt32Signal(InMessage.ParamInt32);
 	return;
 }
 
@@ -981,7 +981,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnSigInt64(const FTbSimpleSimpleInter
 		return;
 	}
 
-	_GetSignals()->BroadcastSigInt64Signal(InMessage.ParamInt64);
+	_GetPublisher()->BroadcastSigInt64Signal(InMessage.ParamInt64);
 	return;
 }
 
@@ -993,7 +993,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnSigFloat(const FTbSimpleSimpleInter
 		return;
 	}
 
-	_GetSignals()->BroadcastSigFloatSignal(InMessage.ParamFloat);
+	_GetPublisher()->BroadcastSigFloatSignal(InMessage.ParamFloat);
 	return;
 }
 
@@ -1005,7 +1005,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnSigFloat32(const FTbSimpleSimpleInt
 		return;
 	}
 
-	_GetSignals()->BroadcastSigFloat32Signal(InMessage.ParamFloat32);
+	_GetPublisher()->BroadcastSigFloat32Signal(InMessage.ParamFloat32);
 	return;
 }
 
@@ -1017,7 +1017,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnSigFloat64(const FTbSimpleSimpleInt
 		return;
 	}
 
-	_GetSignals()->BroadcastSigFloat64Signal(InMessage.ParamFloat64);
+	_GetPublisher()->BroadcastSigFloat64Signal(InMessage.ParamFloat64);
 	return;
 }
 
@@ -1029,7 +1029,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnSigString(const FTbSimpleSimpleInte
 		return;
 	}
 
-	_GetSignals()->BroadcastSigStringSignal(InMessage.ParamString);
+	_GetPublisher()->BroadcastSigStringSignal(InMessage.ParamString);
 	return;
 }
 
@@ -1047,7 +1047,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnPropBoolChanged(const FTbSimpleSimp
 		bPropBool = InMessage.bPropBool;
 		// reset sent data to the current state
 		_SentData->bPropBool = bPropBool;
-		_GetSignals()->BroadcastPropBoolChanged(bPropBool);
+		_GetPublisher()->BroadcastPropBoolChanged(bPropBool);
 	}
 }
 
@@ -1065,7 +1065,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnPropIntChanged(const FTbSimpleSimpl
 		PropInt = InMessage.PropInt;
 		// reset sent data to the current state
 		_SentData->PropInt = PropInt;
-		_GetSignals()->BroadcastPropIntChanged(PropInt);
+		_GetPublisher()->BroadcastPropIntChanged(PropInt);
 	}
 }
 
@@ -1083,7 +1083,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnPropInt32Changed(const FTbSimpleSim
 		PropInt32 = InMessage.PropInt32;
 		// reset sent data to the current state
 		_SentData->PropInt32 = PropInt32;
-		_GetSignals()->BroadcastPropInt32Changed(PropInt32);
+		_GetPublisher()->BroadcastPropInt32Changed(PropInt32);
 	}
 }
 
@@ -1101,7 +1101,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnPropInt64Changed(const FTbSimpleSim
 		PropInt64 = InMessage.PropInt64;
 		// reset sent data to the current state
 		_SentData->PropInt64 = PropInt64;
-		_GetSignals()->BroadcastPropInt64Changed(PropInt64);
+		_GetPublisher()->BroadcastPropInt64Changed(PropInt64);
 	}
 }
 
@@ -1119,7 +1119,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnPropFloatChanged(const FTbSimpleSim
 		PropFloat = InMessage.PropFloat;
 		// reset sent data to the current state
 		_SentData->PropFloat = PropFloat;
-		_GetSignals()->BroadcastPropFloatChanged(PropFloat);
+		_GetPublisher()->BroadcastPropFloatChanged(PropFloat);
 	}
 }
 
@@ -1137,7 +1137,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnPropFloat32Changed(const FTbSimpleS
 		PropFloat32 = InMessage.PropFloat32;
 		// reset sent data to the current state
 		_SentData->PropFloat32 = PropFloat32;
-		_GetSignals()->BroadcastPropFloat32Changed(PropFloat32);
+		_GetPublisher()->BroadcastPropFloat32Changed(PropFloat32);
 	}
 }
 
@@ -1155,7 +1155,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnPropFloat64Changed(const FTbSimpleS
 		PropFloat64 = InMessage.PropFloat64;
 		// reset sent data to the current state
 		_SentData->PropFloat64 = PropFloat64;
-		_GetSignals()->BroadcastPropFloat64Changed(PropFloat64);
+		_GetPublisher()->BroadcastPropFloat64Changed(PropFloat64);
 	}
 }
 
@@ -1176,7 +1176,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnPropStringChanged(const FTbSimpleSi
 			FScopeLock Lock(&(_SentData->PropStringMutex));
 			_SentData->PropString = PropString;
 		}
-		_GetSignals()->BroadcastPropStringChanged(PropString);
+		_GetPublisher()->BroadcastPropStringChanged(PropString);
 	}
 }
 

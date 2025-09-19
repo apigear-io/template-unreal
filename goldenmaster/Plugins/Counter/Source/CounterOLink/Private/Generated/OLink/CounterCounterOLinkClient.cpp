@@ -397,7 +397,7 @@ void UCounterCounterOLinkClient::applyState(const nlohmann::json& fields)
 			FScopeLock Lock(&(_SentData->VectorMutex));
 			_SentData->Vector = Vector;
 		}
-		_GetSignals()->BroadcastVectorChanged(Vector);
+		_GetPublisher()->BroadcastVectorChanged(Vector);
 	}
 
 	const bool bExternVectorChanged = fields.contains("extern_vector") && (ExternVector != fields["extern_vector"].get<FVector>());
@@ -409,7 +409,7 @@ void UCounterCounterOLinkClient::applyState(const nlohmann::json& fields)
 			FScopeLock Lock(&(_SentData->ExternVectorMutex));
 			_SentData->ExternVector = ExternVector;
 		}
-		_GetSignals()->BroadcastExternVectorChanged(ExternVector);
+		_GetPublisher()->BroadcastExternVectorChanged(ExternVector);
 	}
 
 	const bool bVectorArrayChanged = fields.contains("vectorArray") && (VectorArray != fields["vectorArray"].get<TArray<FCustomTypesVector3D>>());
@@ -421,7 +421,7 @@ void UCounterCounterOLinkClient::applyState(const nlohmann::json& fields)
 			FScopeLock Lock(&(_SentData->VectorArrayMutex));
 			_SentData->VectorArray = VectorArray;
 		}
-		_GetSignals()->BroadcastVectorArrayChanged(VectorArray);
+		_GetPublisher()->BroadcastVectorArrayChanged(VectorArray);
 	}
 
 	const bool bExternVectorArrayChanged = fields.contains("extern_vectorArray") && (ExternVectorArray != fields["extern_vectorArray"].get<TArray<FVector>>());
@@ -433,7 +433,7 @@ void UCounterCounterOLinkClient::applyState(const nlohmann::json& fields)
 			FScopeLock Lock(&(_SentData->ExternVectorArrayMutex));
 			_SentData->ExternVectorArray = ExternVectorArray;
 		}
-		_GetSignals()->BroadcastExternVectorArrayChanged(ExternVectorArray);
+		_GetPublisher()->BroadcastExternVectorArrayChanged(ExternVectorArray);
 	}
 }
 
@@ -445,7 +445,7 @@ void UCounterCounterOLinkClient::emitSignal(const std::string& signalName, const
 		const FVector& outExternVector = args[1].get<FVector>();
 		const TArray<FCustomTypesVector3D>& outVectorArray = args[2].get<TArray<FCustomTypesVector3D>>();
 		const TArray<FVector>& outExternVectorArray = args[3].get<TArray<FVector>>();
-		_GetSignals()->BroadcastValueChangedSignal(outVector, outExternVector, outVectorArray, outExternVectorArray);
+		_GetPublisher()->BroadcastValueChangedSignal(outVector, outExternVector, outVectorArray, outExternVectorArray);
 		return;
 	}
 }

@@ -138,16 +138,16 @@ void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::_setBackendService(TScriptInte
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		UTbSimpleNoPropertiesInterfaceSignals* BackendSignals = BackendService->_GetSignals();
-		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleNoPropertiesInterface"));
+		UTbSimpleNoPropertiesInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleNoPropertiesInterface"));
 		if (OnSigVoidSignalHandle.IsValid())
 		{
-			BackendSignals->OnSigVoidSignal.Remove(OnSigVoidSignalHandle);
+			BackendPublisher->OnSigVoidSignal.Remove(OnSigVoidSignalHandle);
 			OnSigVoidSignalHandle.Reset();
 		}
 		if (OnSigBoolSignalHandle.IsValid())
 		{
-			BackendSignals->OnSigBoolSignal.Remove(OnSigBoolSignalHandle);
+			BackendPublisher->OnSigBoolSignal.Remove(OnSigBoolSignalHandle);
 			OnSigBoolSignalHandle.Reset();
 		}
 	}
@@ -157,11 +157,11 @@ void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::_setBackendService(TScriptInte
 
 	// subscribe to new backend
 	BackendService = InService;
-	UTbSimpleNoPropertiesInterfaceSignals* BackendSignals = BackendService->_GetSignals();
-	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service TbSimpleNoPropertiesInterface"));
+	UTbSimpleNoPropertiesInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbSimpleNoPropertiesInterface"));
 	// connect property changed signals or simple events
-	OnSigVoidSignalHandle = BackendSignals->OnSigVoidSignal.AddUObject(this, &UTbSimpleNoPropertiesInterfaceMsgBusAdapter::OnSigVoid);
-	OnSigBoolSignalHandle = BackendSignals->OnSigBoolSignal.AddUObject(this, &UTbSimpleNoPropertiesInterfaceMsgBusAdapter::OnSigBool);
+	OnSigVoidSignalHandle = BackendPublisher->OnSigVoidSignal.AddUObject(this, &UTbSimpleNoPropertiesInterfaceMsgBusAdapter::OnSigVoid);
+	OnSigBoolSignalHandle = BackendPublisher->OnSigBoolSignal.AddUObject(this, &UTbSimpleNoPropertiesInterfaceMsgBusAdapter::OnSigBool);
 }
 
 void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::OnDiscoveryMessage(const FTbSimpleNoPropertiesInterfaceDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)

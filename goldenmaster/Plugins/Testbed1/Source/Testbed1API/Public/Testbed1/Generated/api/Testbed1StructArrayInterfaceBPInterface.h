@@ -42,8 +42,8 @@ public:
 	/// this is needed since we cannot declare delegates on an UInterface
 	/// @return object with signals for property state changes or standalone signals
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface")
-	UTestbed1StructArrayInterfaceSignals* _GetSignals();
-	virtual UTestbed1StructArrayInterfaceSignals* _GetSignals_Implementation() = 0;
+	UTestbed1StructArrayInterfacePublisher* _GetPublisher();
+	virtual UTestbed1StructArrayInterfacePublisher* _GetPublisher_Implementation() = 0;
 
 	// methods
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))

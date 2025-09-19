@@ -603,7 +603,7 @@ void UTbSimpleSimpleInterfaceOLinkClient::applyState(const nlohmann::json& field
 		bPropBool = fields["propBool"].get<bool>();
 		// reset sent data to the current state
 		_SentData->bPropBool = bPropBool;
-		_GetSignals()->BroadcastPropBoolChanged(bPropBool);
+		_GetPublisher()->BroadcastPropBoolChanged(bPropBool);
 	}
 
 	const bool bPropIntChanged = fields.contains("propInt") && (PropInt != fields["propInt"].get<int32>());
@@ -612,7 +612,7 @@ void UTbSimpleSimpleInterfaceOLinkClient::applyState(const nlohmann::json& field
 		PropInt = fields["propInt"].get<int32>();
 		// reset sent data to the current state
 		_SentData->PropInt = PropInt;
-		_GetSignals()->BroadcastPropIntChanged(PropInt);
+		_GetPublisher()->BroadcastPropIntChanged(PropInt);
 	}
 
 	const bool bPropInt32Changed = fields.contains("propInt32") && (PropInt32 != fields["propInt32"].get<int32>());
@@ -621,7 +621,7 @@ void UTbSimpleSimpleInterfaceOLinkClient::applyState(const nlohmann::json& field
 		PropInt32 = fields["propInt32"].get<int32>();
 		// reset sent data to the current state
 		_SentData->PropInt32 = PropInt32;
-		_GetSignals()->BroadcastPropInt32Changed(PropInt32);
+		_GetPublisher()->BroadcastPropInt32Changed(PropInt32);
 	}
 
 	const bool bPropInt64Changed = fields.contains("propInt64") && (PropInt64 != fields["propInt64"].get<int64>());
@@ -630,7 +630,7 @@ void UTbSimpleSimpleInterfaceOLinkClient::applyState(const nlohmann::json& field
 		PropInt64 = fields["propInt64"].get<int64>();
 		// reset sent data to the current state
 		_SentData->PropInt64 = PropInt64;
-		_GetSignals()->BroadcastPropInt64Changed(PropInt64);
+		_GetPublisher()->BroadcastPropInt64Changed(PropInt64);
 	}
 
 	const bool bPropFloatChanged = fields.contains("propFloat") && (PropFloat != fields["propFloat"].get<float>());
@@ -639,7 +639,7 @@ void UTbSimpleSimpleInterfaceOLinkClient::applyState(const nlohmann::json& field
 		PropFloat = fields["propFloat"].get<float>();
 		// reset sent data to the current state
 		_SentData->PropFloat = PropFloat;
-		_GetSignals()->BroadcastPropFloatChanged(PropFloat);
+		_GetPublisher()->BroadcastPropFloatChanged(PropFloat);
 	}
 
 	const bool bPropFloat32Changed = fields.contains("propFloat32") && (PropFloat32 != fields["propFloat32"].get<float>());
@@ -648,7 +648,7 @@ void UTbSimpleSimpleInterfaceOLinkClient::applyState(const nlohmann::json& field
 		PropFloat32 = fields["propFloat32"].get<float>();
 		// reset sent data to the current state
 		_SentData->PropFloat32 = PropFloat32;
-		_GetSignals()->BroadcastPropFloat32Changed(PropFloat32);
+		_GetPublisher()->BroadcastPropFloat32Changed(PropFloat32);
 	}
 
 	const bool bPropFloat64Changed = fields.contains("propFloat64") && (PropFloat64 != fields["propFloat64"].get<double>());
@@ -657,7 +657,7 @@ void UTbSimpleSimpleInterfaceOLinkClient::applyState(const nlohmann::json& field
 		PropFloat64 = fields["propFloat64"].get<double>();
 		// reset sent data to the current state
 		_SentData->PropFloat64 = PropFloat64;
-		_GetSignals()->BroadcastPropFloat64Changed(PropFloat64);
+		_GetPublisher()->BroadcastPropFloat64Changed(PropFloat64);
 	}
 
 	const bool bPropStringChanged = fields.contains("propString") && (PropString != fields["propString"].get<FString>());
@@ -669,7 +669,7 @@ void UTbSimpleSimpleInterfaceOLinkClient::applyState(const nlohmann::json& field
 			FScopeLock Lock(&(_SentData->PropStringMutex));
 			_SentData->PropString = PropString;
 		}
-		_GetSignals()->BroadcastPropStringChanged(PropString);
+		_GetPublisher()->BroadcastPropStringChanged(PropString);
 	}
 }
 
@@ -678,56 +678,56 @@ void UTbSimpleSimpleInterfaceOLinkClient::emitSignal(const std::string& signalNa
 	if (signalName == "sigBool")
 	{
 		bool boutParamBool = args[0].get<bool>();
-		_GetSignals()->BroadcastSigBoolSignal(boutParamBool);
+		_GetPublisher()->BroadcastSigBoolSignal(boutParamBool);
 		return;
 	}
 
 	if (signalName == "sigInt")
 	{
 		int32 outParamInt = args[0].get<int32>();
-		_GetSignals()->BroadcastSigIntSignal(outParamInt);
+		_GetPublisher()->BroadcastSigIntSignal(outParamInt);
 		return;
 	}
 
 	if (signalName == "sigInt32")
 	{
 		int32 outParamInt32 = args[0].get<int32>();
-		_GetSignals()->BroadcastSigInt32Signal(outParamInt32);
+		_GetPublisher()->BroadcastSigInt32Signal(outParamInt32);
 		return;
 	}
 
 	if (signalName == "sigInt64")
 	{
 		int64 outParamInt64 = args[0].get<int64>();
-		_GetSignals()->BroadcastSigInt64Signal(outParamInt64);
+		_GetPublisher()->BroadcastSigInt64Signal(outParamInt64);
 		return;
 	}
 
 	if (signalName == "sigFloat")
 	{
 		float outParamFloat = args[0].get<float>();
-		_GetSignals()->BroadcastSigFloatSignal(outParamFloat);
+		_GetPublisher()->BroadcastSigFloatSignal(outParamFloat);
 		return;
 	}
 
 	if (signalName == "sigFloat32")
 	{
 		float outParamFloat32 = args[0].get<float>();
-		_GetSignals()->BroadcastSigFloat32Signal(outParamFloat32);
+		_GetPublisher()->BroadcastSigFloat32Signal(outParamFloat32);
 		return;
 	}
 
 	if (signalName == "sigFloat64")
 	{
 		double outParamFloat64 = args[0].get<double>();
-		_GetSignals()->BroadcastSigFloat64Signal(outParamFloat64);
+		_GetPublisher()->BroadcastSigFloat64Signal(outParamFloat64);
 		return;
 	}
 
 	if (signalName == "sigString")
 	{
 		const FString& outParamString = args[0].get<FString>();
-		_GetSignals()->BroadcastSigStringSignal(outParamString);
+		_GetPublisher()->BroadcastSigStringSignal(outParamString);
 		return;
 	}
 }

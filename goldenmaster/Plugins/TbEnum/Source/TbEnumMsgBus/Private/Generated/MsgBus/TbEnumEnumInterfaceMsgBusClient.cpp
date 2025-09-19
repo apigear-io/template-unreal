@@ -201,7 +201,7 @@ void UTbEnumEnumInterfaceMsgBusClient::OnConnectionInit(const FTbEnumEnumInterfa
 		Prop0 = InMessage.Prop0;
 		// reset sent data to the current state
 		_SentData->Prop0 = Prop0;
-		_GetSignals()->BroadcastProp0Changed(Prop0);
+		_GetPublisher()->BroadcastProp0Changed(Prop0);
 	}
 
 	const bool bProp1Changed = InMessage.Prop1 != Prop1;
@@ -210,7 +210,7 @@ void UTbEnumEnumInterfaceMsgBusClient::OnConnectionInit(const FTbEnumEnumInterfa
 		Prop1 = InMessage.Prop1;
 		// reset sent data to the current state
 		_SentData->Prop1 = Prop1;
-		_GetSignals()->BroadcastProp1Changed(Prop1);
+		_GetPublisher()->BroadcastProp1Changed(Prop1);
 	}
 
 	const bool bProp2Changed = InMessage.Prop2 != Prop2;
@@ -219,7 +219,7 @@ void UTbEnumEnumInterfaceMsgBusClient::OnConnectionInit(const FTbEnumEnumInterfa
 		Prop2 = InMessage.Prop2;
 		// reset sent data to the current state
 		_SentData->Prop2 = Prop2;
-		_GetSignals()->BroadcastProp2Changed(Prop2);
+		_GetPublisher()->BroadcastProp2Changed(Prop2);
 	}
 
 	const bool bProp3Changed = InMessage.Prop3 != Prop3;
@@ -228,7 +228,7 @@ void UTbEnumEnumInterfaceMsgBusClient::OnConnectionInit(const FTbEnumEnumInterfa
 		Prop3 = InMessage.Prop3;
 		// reset sent data to the current state
 		_SentData->Prop3 = Prop3;
-		_GetSignals()->BroadcastProp3Changed(Prop3);
+		_GetPublisher()->BroadcastProp3Changed(Prop3);
 	}
 
 	_ConnectionStatusChanged.Broadcast(true);
@@ -603,7 +603,7 @@ void UTbEnumEnumInterfaceMsgBusClient::OnSig0(const FTbEnumEnumInterfaceSig0Sign
 		return;
 	}
 
-	_GetSignals()->BroadcastSig0Signal(InMessage.Param0);
+	_GetPublisher()->BroadcastSig0Signal(InMessage.Param0);
 	return;
 }
 
@@ -615,7 +615,7 @@ void UTbEnumEnumInterfaceMsgBusClient::OnSig1(const FTbEnumEnumInterfaceSig1Sign
 		return;
 	}
 
-	_GetSignals()->BroadcastSig1Signal(InMessage.Param1);
+	_GetPublisher()->BroadcastSig1Signal(InMessage.Param1);
 	return;
 }
 
@@ -627,7 +627,7 @@ void UTbEnumEnumInterfaceMsgBusClient::OnSig2(const FTbEnumEnumInterfaceSig2Sign
 		return;
 	}
 
-	_GetSignals()->BroadcastSig2Signal(InMessage.Param2);
+	_GetPublisher()->BroadcastSig2Signal(InMessage.Param2);
 	return;
 }
 
@@ -639,7 +639,7 @@ void UTbEnumEnumInterfaceMsgBusClient::OnSig3(const FTbEnumEnumInterfaceSig3Sign
 		return;
 	}
 
-	_GetSignals()->BroadcastSig3Signal(InMessage.Param3);
+	_GetPublisher()->BroadcastSig3Signal(InMessage.Param3);
 	return;
 }
 
@@ -657,7 +657,7 @@ void UTbEnumEnumInterfaceMsgBusClient::OnProp0Changed(const FTbEnumEnumInterface
 		Prop0 = InMessage.Prop0;
 		// reset sent data to the current state
 		_SentData->Prop0 = Prop0;
-		_GetSignals()->BroadcastProp0Changed(Prop0);
+		_GetPublisher()->BroadcastProp0Changed(Prop0);
 	}
 }
 
@@ -675,7 +675,7 @@ void UTbEnumEnumInterfaceMsgBusClient::OnProp1Changed(const FTbEnumEnumInterface
 		Prop1 = InMessage.Prop1;
 		// reset sent data to the current state
 		_SentData->Prop1 = Prop1;
-		_GetSignals()->BroadcastProp1Changed(Prop1);
+		_GetPublisher()->BroadcastProp1Changed(Prop1);
 	}
 }
 
@@ -693,7 +693,7 @@ void UTbEnumEnumInterfaceMsgBusClient::OnProp2Changed(const FTbEnumEnumInterface
 		Prop2 = InMessage.Prop2;
 		// reset sent data to the current state
 		_SentData->Prop2 = Prop2;
-		_GetSignals()->BroadcastProp2Changed(Prop2);
+		_GetPublisher()->BroadcastProp2Changed(Prop2);
 	}
 }
 
@@ -711,7 +711,7 @@ void UTbEnumEnumInterfaceMsgBusClient::OnProp3Changed(const FTbEnumEnumInterface
 		Prop3 = InMessage.Prop3;
 		// reset sent data to the current state
 		_SentData->Prop3 = Prop3;
-		_GetSignals()->BroadcastProp3Changed(Prop3);
+		_GetPublisher()->BroadcastProp3Changed(Prop3);
 	}
 }
 

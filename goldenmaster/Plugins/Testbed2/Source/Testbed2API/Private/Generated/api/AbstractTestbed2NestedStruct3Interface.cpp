@@ -63,16 +63,16 @@ public:
 
 UAbstractTestbed2NestedStruct3Interface::UAbstractTestbed2NestedStruct3Interface()
 {
-	Testbed2NestedStruct3InterfaceSignals = NewObject<UTestbed2NestedStruct3InterfaceSignals>();
+	Testbed2NestedStruct3InterfacePublisher = NewObject<UTestbed2NestedStruct3InterfacePublisher>();
 }
 
-UTestbed2NestedStruct3InterfaceSignals* UAbstractTestbed2NestedStruct3Interface::_GetSignals()
+UTestbed2NestedStruct3InterfacePublisher* UAbstractTestbed2NestedStruct3Interface::_GetPublisher()
 {
-	if (!Testbed2NestedStruct3InterfaceSignals)
+	if (!Testbed2NestedStruct3InterfacePublisher)
 	{
-		Testbed2NestedStruct3InterfaceSignals = NewObject<UTestbed2NestedStruct3InterfaceSignals>();
+		Testbed2NestedStruct3InterfacePublisher = NewObject<UTestbed2NestedStruct3InterfacePublisher>();
 	}
-	return Testbed2NestedStruct3InterfaceSignals;
+	return Testbed2NestedStruct3InterfacePublisher;
 }
 
 FTestbed2NestedStruct1 UAbstractTestbed2NestedStruct3Interface::GetProp1_Private() const
@@ -223,21 +223,21 @@ void UAbstractTestbed2NestedStruct3Interface::Deinitialize()
 	check(bInitialized);
 	bInitialized = false;
 
-	if (Testbed2NestedStruct3InterfaceSignals)
+	if (Testbed2NestedStruct3InterfacePublisher)
 	{
-		Testbed2NestedStruct3InterfaceSignals->OnSig1Signal.RemoveAll(Testbed2NestedStruct3InterfaceSignals);
-		Testbed2NestedStruct3InterfaceSignals->OnSig1SignalBP.RemoveAll(Testbed2NestedStruct3InterfaceSignals);
-		Testbed2NestedStruct3InterfaceSignals->OnSig2Signal.RemoveAll(Testbed2NestedStruct3InterfaceSignals);
-		Testbed2NestedStruct3InterfaceSignals->OnSig2SignalBP.RemoveAll(Testbed2NestedStruct3InterfaceSignals);
-		Testbed2NestedStruct3InterfaceSignals->OnSig3Signal.RemoveAll(Testbed2NestedStruct3InterfaceSignals);
-		Testbed2NestedStruct3InterfaceSignals->OnSig3SignalBP.RemoveAll(Testbed2NestedStruct3InterfaceSignals);
+		Testbed2NestedStruct3InterfacePublisher->OnSig1Signal.RemoveAll(Testbed2NestedStruct3InterfacePublisher);
+		Testbed2NestedStruct3InterfacePublisher->OnSig1SignalBP.RemoveAll(Testbed2NestedStruct3InterfacePublisher);
+		Testbed2NestedStruct3InterfacePublisher->OnSig2Signal.RemoveAll(Testbed2NestedStruct3InterfacePublisher);
+		Testbed2NestedStruct3InterfacePublisher->OnSig2SignalBP.RemoveAll(Testbed2NestedStruct3InterfacePublisher);
+		Testbed2NestedStruct3InterfacePublisher->OnSig3Signal.RemoveAll(Testbed2NestedStruct3InterfacePublisher);
+		Testbed2NestedStruct3InterfacePublisher->OnSig3SignalBP.RemoveAll(Testbed2NestedStruct3InterfacePublisher);
 
-		Testbed2NestedStruct3InterfaceSignals->OnProp1Changed.RemoveAll(Testbed2NestedStruct3InterfaceSignals);
-		Testbed2NestedStruct3InterfaceSignals->OnProp1ChangedBP.RemoveAll(Testbed2NestedStruct3InterfaceSignals);
-		Testbed2NestedStruct3InterfaceSignals->OnProp2Changed.RemoveAll(Testbed2NestedStruct3InterfaceSignals);
-		Testbed2NestedStruct3InterfaceSignals->OnProp2ChangedBP.RemoveAll(Testbed2NestedStruct3InterfaceSignals);
-		Testbed2NestedStruct3InterfaceSignals->OnProp3Changed.RemoveAll(Testbed2NestedStruct3InterfaceSignals);
-		Testbed2NestedStruct3InterfaceSignals->OnProp3ChangedBP.RemoveAll(Testbed2NestedStruct3InterfaceSignals);
+		Testbed2NestedStruct3InterfacePublisher->OnProp1Changed.RemoveAll(Testbed2NestedStruct3InterfacePublisher);
+		Testbed2NestedStruct3InterfacePublisher->OnProp1ChangedBP.RemoveAll(Testbed2NestedStruct3InterfacePublisher);
+		Testbed2NestedStruct3InterfacePublisher->OnProp2Changed.RemoveAll(Testbed2NestedStruct3InterfacePublisher);
+		Testbed2NestedStruct3InterfacePublisher->OnProp2ChangedBP.RemoveAll(Testbed2NestedStruct3InterfacePublisher);
+		Testbed2NestedStruct3InterfacePublisher->OnProp3Changed.RemoveAll(Testbed2NestedStruct3InterfacePublisher);
+		Testbed2NestedStruct3InterfacePublisher->OnProp3ChangedBP.RemoveAll(Testbed2NestedStruct3InterfacePublisher);
 	}
 
 	Super::Deinitialize();

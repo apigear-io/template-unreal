@@ -335,7 +335,7 @@ void UTbSimpleNoPropertiesInterfaceMsgBusClient::OnSigVoid(const FTbSimpleNoProp
 		return;
 	}
 
-	_GetSignals()->BroadcastSigVoidSignal();
+	_GetPublisher()->BroadcastSigVoidSignal();
 	return;
 }
 
@@ -347,7 +347,7 @@ void UTbSimpleNoPropertiesInterfaceMsgBusClient::OnSigBool(const FTbSimpleNoProp
 		return;
 	}
 
-	_GetSignals()->BroadcastSigBoolSignal(InMessage.bParamBool);
+	_GetPublisher()->BroadcastSigBoolSignal(InMessage.bParamBool);
 	return;
 }
 

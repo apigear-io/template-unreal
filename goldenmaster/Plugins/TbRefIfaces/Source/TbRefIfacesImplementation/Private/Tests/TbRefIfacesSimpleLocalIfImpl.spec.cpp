@@ -61,8 +61,8 @@ void UTbRefIfacesSimpleLocalIfImplSpec::Define()
 		int32 TestValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetIntProperty(), TestValue);
 
-		UTbRefIfacesSimpleLocalIfSignals* TbRefIfacesSimpleLocalIfSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbRefIfacesSimpleLocalIfSignals->OnIntPropertyChanged.AddLambda([this, TestDone](int32 InIntProperty)
+		UTbRefIfacesSimpleLocalIfPublisher* TbRefIfacesSimpleLocalIfPublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbRefIfacesSimpleLocalIfPublisher->OnIntPropertyChanged.AddLambda([this, TestDone](int32 InIntProperty)
 			{
 			int32 TestValue = 0;
 			// use different test value
@@ -84,8 +84,8 @@ void UTbRefIfacesSimpleLocalIfImplSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetIntProperty(), TestValue);
 
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
-		UTbRefIfacesSimpleLocalIfSignals* TbRefIfacesSimpleLocalIfSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbRefIfacesSimpleLocalIfSignals->OnIntPropertyChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbRefIfacesSimpleLocalIfImplHelper::IntPropertyPropertyCb);
+		UTbRefIfacesSimpleLocalIfPublisher* TbRefIfacesSimpleLocalIfPublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbRefIfacesSimpleLocalIfPublisher->OnIntPropertyChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbRefIfacesSimpleLocalIfImplHelper::IntPropertyPropertyCb);
 		// use different test value
 		TestValue = 1;
 		ImplFixture->GetImplementation()->SetIntProperty(TestValue);
@@ -99,8 +99,8 @@ void UTbRefIfacesSimpleLocalIfImplSpec::Define()
 
 	LatentIt("Signal.IntSignal", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		UTbRefIfacesSimpleLocalIfSignals* TbRefIfacesSimpleLocalIfSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbRefIfacesSimpleLocalIfSignals->OnIntSignalSignal.AddLambda([this, TestDone](int32 InParam)
+		UTbRefIfacesSimpleLocalIfPublisher* TbRefIfacesSimpleLocalIfPublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbRefIfacesSimpleLocalIfPublisher->OnIntSignalSignal.AddLambda([this, TestDone](int32 InParam)
 			{
 			// known test value
 			int32 ParamTestValue = 1;
@@ -110,18 +110,18 @@ void UTbRefIfacesSimpleLocalIfImplSpec::Define()
 
 		// use different test value
 		int32 ParamTestValue = 1;
-		TbRefIfacesSimpleLocalIfSignals->BroadcastIntSignalSignal(ParamTestValue);
+		TbRefIfacesSimpleLocalIfPublisher->BroadcastIntSignalSignal(ParamTestValue);
 	});
 
 	LatentIt("Signal.IntSignalBP", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
-		UTbRefIfacesSimpleLocalIfSignals* TbRefIfacesSimpleLocalIfSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbRefIfacesSimpleLocalIfSignals->OnIntSignalSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbRefIfacesSimpleLocalIfImplHelper::IntSignalSignalCb);
+		UTbRefIfacesSimpleLocalIfPublisher* TbRefIfacesSimpleLocalIfPublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbRefIfacesSimpleLocalIfPublisher->OnIntSignalSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbRefIfacesSimpleLocalIfImplHelper::IntSignalSignalCb);
 
 		// use different test value
 		int32 ParamTestValue = 1;
-		TbRefIfacesSimpleLocalIfSignals->BroadcastIntSignalSignal(ParamTestValue);
+		TbRefIfacesSimpleLocalIfPublisher->BroadcastIntSignalSignal(ParamTestValue);
 	});
 }
 

@@ -42,8 +42,8 @@ public:
 	/// this is needed since we cannot declare delegates on an UInterface
 	/// @return object with signals for property state changes or standalone signals
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
-	UTestbed2ManyParamInterfaceSignals* _GetSignals();
-	virtual UTestbed2ManyParamInterfaceSignals* _GetSignals_Implementation() = 0;
+	UTestbed2ManyParamInterfacePublisher* _GetPublisher();
+	virtual UTestbed2ManyParamInterfacePublisher* _GetPublisher_Implementation() = 0;
 
 	// methods
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))

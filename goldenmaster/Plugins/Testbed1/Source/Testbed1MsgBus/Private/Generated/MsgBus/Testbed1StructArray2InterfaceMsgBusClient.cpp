@@ -212,7 +212,7 @@ void UTestbed1StructArray2InterfaceMsgBusClient::OnConnectionInit(const FTestbed
 			FScopeLock Lock(&(_SentData->PropBoolMutex));
 			_SentData->PropBool = PropBool;
 		}
-		_GetSignals()->BroadcastPropBoolChanged(PropBool);
+		_GetPublisher()->BroadcastPropBoolChanged(PropBool);
 	}
 
 	const bool bPropIntChanged = InMessage.PropInt != PropInt;
@@ -224,7 +224,7 @@ void UTestbed1StructArray2InterfaceMsgBusClient::OnConnectionInit(const FTestbed
 			FScopeLock Lock(&(_SentData->PropIntMutex));
 			_SentData->PropInt = PropInt;
 		}
-		_GetSignals()->BroadcastPropIntChanged(PropInt);
+		_GetPublisher()->BroadcastPropIntChanged(PropInt);
 	}
 
 	const bool bPropFloatChanged = InMessage.PropFloat != PropFloat;
@@ -236,7 +236,7 @@ void UTestbed1StructArray2InterfaceMsgBusClient::OnConnectionInit(const FTestbed
 			FScopeLock Lock(&(_SentData->PropFloatMutex));
 			_SentData->PropFloat = PropFloat;
 		}
-		_GetSignals()->BroadcastPropFloatChanged(PropFloat);
+		_GetPublisher()->BroadcastPropFloatChanged(PropFloat);
 	}
 
 	const bool bPropStringChanged = InMessage.PropString != PropString;
@@ -248,7 +248,7 @@ void UTestbed1StructArray2InterfaceMsgBusClient::OnConnectionInit(const FTestbed
 			FScopeLock Lock(&(_SentData->PropStringMutex));
 			_SentData->PropString = PropString;
 		}
-		_GetSignals()->BroadcastPropStringChanged(PropString);
+		_GetPublisher()->BroadcastPropStringChanged(PropString);
 	}
 
 	const bool bPropEnumChanged = InMessage.PropEnum != PropEnum;
@@ -260,7 +260,7 @@ void UTestbed1StructArray2InterfaceMsgBusClient::OnConnectionInit(const FTestbed
 			FScopeLock Lock(&(_SentData->PropEnumMutex));
 			_SentData->PropEnum = PropEnum;
 		}
-		_GetSignals()->BroadcastPropEnumChanged(PropEnum);
+		_GetPublisher()->BroadcastPropEnumChanged(PropEnum);
 	}
 
 	_ConnectionStatusChanged.Broadcast(true);
@@ -720,7 +720,7 @@ void UTestbed1StructArray2InterfaceMsgBusClient::OnSigBool(const FTestbed1Struct
 		return;
 	}
 
-	_GetSignals()->BroadcastSigBoolSignal(InMessage.ParamBool);
+	_GetPublisher()->BroadcastSigBoolSignal(InMessage.ParamBool);
 	return;
 }
 
@@ -732,7 +732,7 @@ void UTestbed1StructArray2InterfaceMsgBusClient::OnSigInt(const FTestbed1StructA
 		return;
 	}
 
-	_GetSignals()->BroadcastSigIntSignal(InMessage.ParamInt);
+	_GetPublisher()->BroadcastSigIntSignal(InMessage.ParamInt);
 	return;
 }
 
@@ -744,7 +744,7 @@ void UTestbed1StructArray2InterfaceMsgBusClient::OnSigFloat(const FTestbed1Struc
 		return;
 	}
 
-	_GetSignals()->BroadcastSigFloatSignal(InMessage.ParamFloat);
+	_GetPublisher()->BroadcastSigFloatSignal(InMessage.ParamFloat);
 	return;
 }
 
@@ -756,7 +756,7 @@ void UTestbed1StructArray2InterfaceMsgBusClient::OnSigString(const FTestbed1Stru
 		return;
 	}
 
-	_GetSignals()->BroadcastSigStringSignal(InMessage.ParamString);
+	_GetPublisher()->BroadcastSigStringSignal(InMessage.ParamString);
 	return;
 }
 
@@ -777,7 +777,7 @@ void UTestbed1StructArray2InterfaceMsgBusClient::OnPropBoolChanged(const FTestbe
 			FScopeLock Lock(&(_SentData->PropBoolMutex));
 			_SentData->PropBool = PropBool;
 		}
-		_GetSignals()->BroadcastPropBoolChanged(PropBool);
+		_GetPublisher()->BroadcastPropBoolChanged(PropBool);
 	}
 }
 
@@ -798,7 +798,7 @@ void UTestbed1StructArray2InterfaceMsgBusClient::OnPropIntChanged(const FTestbed
 			FScopeLock Lock(&(_SentData->PropIntMutex));
 			_SentData->PropInt = PropInt;
 		}
-		_GetSignals()->BroadcastPropIntChanged(PropInt);
+		_GetPublisher()->BroadcastPropIntChanged(PropInt);
 	}
 }
 
@@ -819,7 +819,7 @@ void UTestbed1StructArray2InterfaceMsgBusClient::OnPropFloatChanged(const FTestb
 			FScopeLock Lock(&(_SentData->PropFloatMutex));
 			_SentData->PropFloat = PropFloat;
 		}
-		_GetSignals()->BroadcastPropFloatChanged(PropFloat);
+		_GetPublisher()->BroadcastPropFloatChanged(PropFloat);
 	}
 }
 
@@ -840,7 +840,7 @@ void UTestbed1StructArray2InterfaceMsgBusClient::OnPropStringChanged(const FTest
 			FScopeLock Lock(&(_SentData->PropStringMutex));
 			_SentData->PropString = PropString;
 		}
-		_GetSignals()->BroadcastPropStringChanged(PropString);
+		_GetPublisher()->BroadcastPropStringChanged(PropString);
 	}
 }
 
@@ -861,7 +861,7 @@ void UTestbed1StructArray2InterfaceMsgBusClient::OnPropEnumChanged(const FTestbe
 			FScopeLock Lock(&(_SentData->PropEnumMutex));
 			_SentData->PropEnum = PropEnum;
 		}
-		_GetSignals()->BroadcastPropEnumChanged(PropEnum);
+		_GetPublisher()->BroadcastPropEnumChanged(PropEnum);
 	}
 }
 

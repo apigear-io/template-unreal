@@ -164,7 +164,7 @@ void UTbSimpleVoidInterfaceOLinkClient::emitSignal(const std::string& signalName
 {
 	if (signalName == "sigVoid")
 	{
-		_GetSignals()->BroadcastSigVoidSignal();
+		_GetPublisher()->BroadcastSigVoidSignal();
 		return;
 	}
 }

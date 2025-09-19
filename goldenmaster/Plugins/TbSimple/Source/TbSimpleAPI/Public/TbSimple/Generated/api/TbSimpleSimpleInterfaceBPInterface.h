@@ -42,8 +42,8 @@ public:
 	/// this is needed since we cannot declare delegates on an UInterface
 	/// @return object with signals for property state changes or standalone signals
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface")
-	UTbSimpleSimpleInterfaceSignals* _GetSignals();
-	virtual UTbSimpleSimpleInterfaceSignals* _GetSignals_Implementation() = 0;
+	UTbSimpleSimpleInterfacePublisher* _GetPublisher();
+	virtual UTbSimpleSimpleInterfacePublisher* _GetPublisher_Implementation() = 0;
 
 	// methods
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Operations")

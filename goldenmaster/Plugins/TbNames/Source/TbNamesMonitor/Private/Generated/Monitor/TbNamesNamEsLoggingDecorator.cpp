@@ -47,14 +47,14 @@ void UTbNamesNamEsLoggingDecorator::setBackendService(TScriptInterface<ITbNamesN
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		UTbNamesNamEsSignals* BackendSignals = BackendService->_GetSignals();
-		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbNamesNamEs"));
-		BackendSignals->OnSwitchChangedBP.RemoveDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSwitchChanged);
-		BackendSignals->OnSomePropertyChangedBP.RemoveDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomePropertyChanged);
-		BackendSignals->OnSomePoperty2ChangedBP.RemoveDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomePoperty2Changed);
-		BackendSignals->OnEnumPropertyChangedBP.RemoveDynamic(this, &UTbNamesNamEsLoggingDecorator::OnEnumPropertyChanged);
-		BackendSignals->OnSomeSignalSignalBP.RemoveDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomeSignal);
-		BackendSignals->OnSomeSignal2SignalBP.RemoveDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomeSignal2);
+		UTbNamesNamEsPublisher* BackendPublisher = BackendService->_GetPublisher();
+		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbNamesNamEs"));
+		BackendPublisher->OnSwitchChangedBP.RemoveDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSwitchChanged);
+		BackendPublisher->OnSomePropertyChangedBP.RemoveDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomePropertyChanged);
+		BackendPublisher->OnSomePoperty2ChangedBP.RemoveDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomePoperty2Changed);
+		BackendPublisher->OnEnumPropertyChangedBP.RemoveDynamic(this, &UTbNamesNamEsLoggingDecorator::OnEnumPropertyChanged);
+		BackendPublisher->OnSomeSignalSignalBP.RemoveDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomeSignal);
+		BackendPublisher->OnSomeSignal2SignalBP.RemoveDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomeSignal2);
 	}
 
 	// only set if interface is implemented
@@ -62,15 +62,15 @@ void UTbNamesNamEsLoggingDecorator::setBackendService(TScriptInterface<ITbNamesN
 
 	// subscribe to new backend
 	BackendService = InService;
-	UTbNamesNamEsSignals* BackendSignals = BackendService->_GetSignals();
-	checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbNamesNamEs"));
+	UTbNamesNamEsPublisher* BackendPublisher = BackendService->_GetPublisher();
+	checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbNamesNamEs"));
 	// connect property changed signals or simple events
-	BackendSignals->OnSwitchChangedBP.AddDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSwitchChanged);
-	BackendSignals->OnSomePropertyChangedBP.AddDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomePropertyChanged);
-	BackendSignals->OnSomePoperty2ChangedBP.AddDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomePoperty2Changed);
-	BackendSignals->OnEnumPropertyChangedBP.AddDynamic(this, &UTbNamesNamEsLoggingDecorator::OnEnumPropertyChanged);
-	BackendSignals->OnSomeSignalSignalBP.AddDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomeSignal);
-	BackendSignals->OnSomeSignal2SignalBP.AddDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomeSignal2);
+	BackendPublisher->OnSwitchChangedBP.AddDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSwitchChanged);
+	BackendPublisher->OnSomePropertyChangedBP.AddDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomePropertyChanged);
+	BackendPublisher->OnSomePoperty2ChangedBP.AddDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomePoperty2Changed);
+	BackendPublisher->OnEnumPropertyChangedBP.AddDynamic(this, &UTbNamesNamEsLoggingDecorator::OnEnumPropertyChanged);
+	BackendPublisher->OnSomeSignalSignalBP.AddDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomeSignal);
+	BackendPublisher->OnSomeSignal2SignalBP.AddDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomeSignal2);
 	// populate service state to proxy
 	bSwitch = BackendService->GetSwitch();
 	SomeProperty = BackendService->GetSomeProperty();
@@ -81,20 +81,20 @@ void UTbNamesNamEsLoggingDecorator::setBackendService(TScriptInterface<ITbNamesN
 void UTbNamesNamEsLoggingDecorator::OnSomeSignal(bool bInSomeParam)
 {
 	TbNamesNamEsTracer::trace_signalSomeSignal(bInSomeParam);
-	_GetSignals()->BroadcastSomeSignalSignal(bInSomeParam);
+	_GetPublisher()->BroadcastSomeSignalSignal(bInSomeParam);
 }
 
 void UTbNamesNamEsLoggingDecorator::OnSomeSignal2(bool bInSomeParam)
 {
 	TbNamesNamEsTracer::trace_signalSomeSignal2(bInSomeParam);
-	_GetSignals()->BroadcastSomeSignal2Signal(bInSomeParam);
+	_GetPublisher()->BroadcastSomeSignal2Signal(bInSomeParam);
 }
 
 void UTbNamesNamEsLoggingDecorator::OnSwitchChanged(bool bInSwitch)
 {
 	TbNamesNamEsTracer::capture_state(BackendService.GetObject(), this);
 	bSwitch = bInSwitch;
-	_GetSignals()->BroadcastSwitchChanged(bInSwitch);
+	_GetPublisher()->BroadcastSwitchChanged(bInSwitch);
 }
 
 bool UTbNamesNamEsLoggingDecorator::GetSwitch() const
@@ -112,7 +112,7 @@ void UTbNamesNamEsLoggingDecorator::OnSomePropertyChanged(int32 InSomeProperty)
 {
 	TbNamesNamEsTracer::capture_state(BackendService.GetObject(), this);
 	SomeProperty = InSomeProperty;
-	_GetSignals()->BroadcastSomePropertyChanged(InSomeProperty);
+	_GetPublisher()->BroadcastSomePropertyChanged(InSomeProperty);
 }
 
 int32 UTbNamesNamEsLoggingDecorator::GetSomeProperty() const
@@ -130,7 +130,7 @@ void UTbNamesNamEsLoggingDecorator::OnSomePoperty2Changed(int32 InSomePoperty2)
 {
 	TbNamesNamEsTracer::capture_state(BackendService.GetObject(), this);
 	SomePoperty2 = InSomePoperty2;
-	_GetSignals()->BroadcastSomePoperty2Changed(InSomePoperty2);
+	_GetPublisher()->BroadcastSomePoperty2Changed(InSomePoperty2);
 }
 
 int32 UTbNamesNamEsLoggingDecorator::GetSomePoperty2() const
@@ -148,7 +148,7 @@ void UTbNamesNamEsLoggingDecorator::OnEnumPropertyChanged(ETbNamesEnum_With_Unde
 {
 	TbNamesNamEsTracer::capture_state(BackendService.GetObject(), this);
 	EnumProperty = InEnumProperty;
-	_GetSignals()->BroadcastEnumPropertyChanged(InEnumProperty);
+	_GetPublisher()->BroadcastEnumPropertyChanged(InEnumProperty);
 }
 
 ETbNamesEnum_With_Under_scores UTbNamesNamEsLoggingDecorator::GetEnumProperty() const

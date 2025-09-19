@@ -28,7 +28,7 @@ void UTbRefIfacesParentIfImplementation::SetLocalIf(const TScriptInterface<ITbRe
 	if (LocalIf != InLocalIf)
 	{
 		LocalIf = InLocalIf;
-		_GetSignals()->BroadcastLocalIfChanged(LocalIf);
+		_GetPublisher()->BroadcastLocalIfChanged(LocalIf);
 	}
 }
 TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> UTbRefIfacesParentIfImplementation::GetLocalIfList() const
@@ -41,7 +41,7 @@ void UTbRefIfacesParentIfImplementation::SetLocalIfList(const TArray<TScriptInte
 	if (LocalIfList != InLocalIfList)
 	{
 		LocalIfList = InLocalIfList;
-		_GetSignals()->BroadcastLocalIfListChanged(LocalIfList);
+		_GetPublisher()->BroadcastLocalIfListChanged(LocalIfList);
 	}
 }
 TScriptInterface<ITbIfaceimportEmptyIfInterface> UTbRefIfacesParentIfImplementation::GetImportedIf() const
@@ -54,7 +54,7 @@ void UTbRefIfacesParentIfImplementation::SetImportedIf(const TScriptInterface<IT
 	if (ImportedIf != InImportedIf)
 	{
 		ImportedIf = InImportedIf;
-		_GetSignals()->BroadcastImportedIfChanged(ImportedIf);
+		_GetPublisher()->BroadcastImportedIfChanged(ImportedIf);
 	}
 }
 TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> UTbRefIfacesParentIfImplementation::GetImportedIfList() const
@@ -67,7 +67,7 @@ void UTbRefIfacesParentIfImplementation::SetImportedIfList(const TArray<TScriptI
 	if (ImportedIfList != InImportedIfList)
 	{
 		ImportedIfList = InImportedIfList;
-		_GetSignals()->BroadcastImportedIfListChanged(ImportedIfList);
+		_GetPublisher()->BroadcastImportedIfListChanged(ImportedIfList);
 	}
 }
 
@@ -104,21 +104,21 @@ void UTbRefIfacesParentIfImplementation::_ResetProperties()
 	if (LocalIf != TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>())
 	{
 		LocalIf = TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>();
-		_GetSignals()->BroadcastLocalIfChanged(LocalIf);
+		_GetPublisher()->BroadcastLocalIfChanged(LocalIf);
 	}
 	if (LocalIfList != TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>())
 	{
 		LocalIfList = TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>();
-		_GetSignals()->BroadcastLocalIfListChanged(LocalIfList);
+		_GetPublisher()->BroadcastLocalIfListChanged(LocalIfList);
 	}
 	if (ImportedIf != TScriptInterface<ITbIfaceimportEmptyIfInterface>())
 	{
 		ImportedIf = TScriptInterface<ITbIfaceimportEmptyIfInterface>();
-		_GetSignals()->BroadcastImportedIfChanged(ImportedIf);
+		_GetPublisher()->BroadcastImportedIfChanged(ImportedIf);
 	}
 	if (ImportedIfList != TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>())
 	{
 		ImportedIfList = TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>();
-		_GetSignals()->BroadcastImportedIfListChanged(ImportedIfList);
+		_GetPublisher()->BroadcastImportedIfListChanged(ImportedIfList);
 	}
 }

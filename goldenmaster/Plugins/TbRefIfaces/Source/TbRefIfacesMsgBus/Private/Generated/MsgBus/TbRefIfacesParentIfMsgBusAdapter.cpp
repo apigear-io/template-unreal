@@ -144,46 +144,46 @@ void UTbRefIfacesParentIfMsgBusAdapter::_setBackendService(TScriptInterface<ITbR
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		UTbRefIfacesParentIfSignals* BackendSignals = BackendService->_GetSignals();
-		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbRefIfacesParentIf"));
+		UTbRefIfacesParentIfPublisher* BackendPublisher = BackendService->_GetPublisher();
+		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbRefIfacesParentIf"));
 		if (OnLocalIfChangedHandle.IsValid())
 		{
-			BackendSignals->OnLocalIfChanged.Remove(OnLocalIfChangedHandle);
+			BackendPublisher->OnLocalIfChanged.Remove(OnLocalIfChangedHandle);
 			OnLocalIfChangedHandle.Reset();
 		}
 		if (OnLocalIfListChangedHandle.IsValid())
 		{
-			BackendSignals->OnLocalIfListChanged.Remove(OnLocalIfListChangedHandle);
+			BackendPublisher->OnLocalIfListChanged.Remove(OnLocalIfListChangedHandle);
 			OnLocalIfListChangedHandle.Reset();
 		}
 		if (OnImportedIfChangedHandle.IsValid())
 		{
-			BackendSignals->OnImportedIfChanged.Remove(OnImportedIfChangedHandle);
+			BackendPublisher->OnImportedIfChanged.Remove(OnImportedIfChangedHandle);
 			OnImportedIfChangedHandle.Reset();
 		}
 		if (OnImportedIfListChangedHandle.IsValid())
 		{
-			BackendSignals->OnImportedIfListChanged.Remove(OnImportedIfListChangedHandle);
+			BackendPublisher->OnImportedIfListChanged.Remove(OnImportedIfListChangedHandle);
 			OnImportedIfListChangedHandle.Reset();
 		}
 		if (OnLocalIfSignalSignalHandle.IsValid())
 		{
-			BackendSignals->OnLocalIfSignalSignal.Remove(OnLocalIfSignalSignalHandle);
+			BackendPublisher->OnLocalIfSignalSignal.Remove(OnLocalIfSignalSignalHandle);
 			OnLocalIfSignalSignalHandle.Reset();
 		}
 		if (OnLocalIfSignalListSignalHandle.IsValid())
 		{
-			BackendSignals->OnLocalIfSignalListSignal.Remove(OnLocalIfSignalListSignalHandle);
+			BackendPublisher->OnLocalIfSignalListSignal.Remove(OnLocalIfSignalListSignalHandle);
 			OnLocalIfSignalListSignalHandle.Reset();
 		}
 		if (OnImportedIfSignalSignalHandle.IsValid())
 		{
-			BackendSignals->OnImportedIfSignalSignal.Remove(OnImportedIfSignalSignalHandle);
+			BackendPublisher->OnImportedIfSignalSignal.Remove(OnImportedIfSignalSignalHandle);
 			OnImportedIfSignalSignalHandle.Reset();
 		}
 		if (OnImportedIfSignalListSignalHandle.IsValid())
 		{
-			BackendSignals->OnImportedIfSignalListSignal.Remove(OnImportedIfSignalListSignalHandle);
+			BackendPublisher->OnImportedIfSignalListSignal.Remove(OnImportedIfSignalListSignalHandle);
 			OnImportedIfSignalListSignalHandle.Reset();
 		}
 	}
@@ -193,17 +193,17 @@ void UTbRefIfacesParentIfMsgBusAdapter::_setBackendService(TScriptInterface<ITbR
 
 	// subscribe to new backend
 	BackendService = InService;
-	UTbRefIfacesParentIfSignals* BackendSignals = BackendService->_GetSignals();
-	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service TbRefIfacesParentIf"));
+	UTbRefIfacesParentIfPublisher* BackendPublisher = BackendService->_GetPublisher();
+	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbRefIfacesParentIf"));
 	// connect property changed signals or simple events
-	OnLocalIfChangedHandle = BackendSignals->OnLocalIfChanged.AddUObject(this, &UTbRefIfacesParentIfMsgBusAdapter::OnLocalIfChanged);
-	OnLocalIfListChangedHandle = BackendSignals->OnLocalIfListChanged.AddUObject(this, &UTbRefIfacesParentIfMsgBusAdapter::OnLocalIfListChanged);
-	OnImportedIfChangedHandle = BackendSignals->OnImportedIfChanged.AddUObject(this, &UTbRefIfacesParentIfMsgBusAdapter::OnImportedIfChanged);
-	OnImportedIfListChangedHandle = BackendSignals->OnImportedIfListChanged.AddUObject(this, &UTbRefIfacesParentIfMsgBusAdapter::OnImportedIfListChanged);
-	OnLocalIfSignalSignalHandle = BackendSignals->OnLocalIfSignalSignal.AddUObject(this, &UTbRefIfacesParentIfMsgBusAdapter::OnLocalIfSignal);
-	OnLocalIfSignalListSignalHandle = BackendSignals->OnLocalIfSignalListSignal.AddUObject(this, &UTbRefIfacesParentIfMsgBusAdapter::OnLocalIfSignalList);
-	OnImportedIfSignalSignalHandle = BackendSignals->OnImportedIfSignalSignal.AddUObject(this, &UTbRefIfacesParentIfMsgBusAdapter::OnImportedIfSignal);
-	OnImportedIfSignalListSignalHandle = BackendSignals->OnImportedIfSignalListSignal.AddUObject(this, &UTbRefIfacesParentIfMsgBusAdapter::OnImportedIfSignalList);
+	OnLocalIfChangedHandle = BackendPublisher->OnLocalIfChanged.AddUObject(this, &UTbRefIfacesParentIfMsgBusAdapter::OnLocalIfChanged);
+	OnLocalIfListChangedHandle = BackendPublisher->OnLocalIfListChanged.AddUObject(this, &UTbRefIfacesParentIfMsgBusAdapter::OnLocalIfListChanged);
+	OnImportedIfChangedHandle = BackendPublisher->OnImportedIfChanged.AddUObject(this, &UTbRefIfacesParentIfMsgBusAdapter::OnImportedIfChanged);
+	OnImportedIfListChangedHandle = BackendPublisher->OnImportedIfListChanged.AddUObject(this, &UTbRefIfacesParentIfMsgBusAdapter::OnImportedIfListChanged);
+	OnLocalIfSignalSignalHandle = BackendPublisher->OnLocalIfSignalSignal.AddUObject(this, &UTbRefIfacesParentIfMsgBusAdapter::OnLocalIfSignal);
+	OnLocalIfSignalListSignalHandle = BackendPublisher->OnLocalIfSignalListSignal.AddUObject(this, &UTbRefIfacesParentIfMsgBusAdapter::OnLocalIfSignalList);
+	OnImportedIfSignalSignalHandle = BackendPublisher->OnImportedIfSignalSignal.AddUObject(this, &UTbRefIfacesParentIfMsgBusAdapter::OnImportedIfSignal);
+	OnImportedIfSignalListSignalHandle = BackendPublisher->OnImportedIfSignalListSignal.AddUObject(this, &UTbRefIfacesParentIfMsgBusAdapter::OnImportedIfSignalList);
 }
 
 void UTbRefIfacesParentIfMsgBusAdapter::OnDiscoveryMessage(const FTbRefIfacesParentIfDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)

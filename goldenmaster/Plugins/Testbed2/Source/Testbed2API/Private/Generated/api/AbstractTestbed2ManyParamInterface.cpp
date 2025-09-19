@@ -63,16 +63,16 @@ public:
 
 UAbstractTestbed2ManyParamInterface::UAbstractTestbed2ManyParamInterface()
 {
-	Testbed2ManyParamInterfaceSignals = NewObject<UTestbed2ManyParamInterfaceSignals>();
+	Testbed2ManyParamInterfacePublisher = NewObject<UTestbed2ManyParamInterfacePublisher>();
 }
 
-UTestbed2ManyParamInterfaceSignals* UAbstractTestbed2ManyParamInterface::_GetSignals()
+UTestbed2ManyParamInterfacePublisher* UAbstractTestbed2ManyParamInterface::_GetPublisher()
 {
-	if (!Testbed2ManyParamInterfaceSignals)
+	if (!Testbed2ManyParamInterfacePublisher)
 	{
-		Testbed2ManyParamInterfaceSignals = NewObject<UTestbed2ManyParamInterfaceSignals>();
+		Testbed2ManyParamInterfacePublisher = NewObject<UTestbed2ManyParamInterfacePublisher>();
 	}
-	return Testbed2ManyParamInterfaceSignals;
+	return Testbed2ManyParamInterfacePublisher;
 }
 
 int32 UAbstractTestbed2ManyParamInterface::GetProp1_Private() const
@@ -268,25 +268,25 @@ void UAbstractTestbed2ManyParamInterface::Deinitialize()
 	check(bInitialized);
 	bInitialized = false;
 
-	if (Testbed2ManyParamInterfaceSignals)
+	if (Testbed2ManyParamInterfacePublisher)
 	{
-		Testbed2ManyParamInterfaceSignals->OnSig1Signal.RemoveAll(Testbed2ManyParamInterfaceSignals);
-		Testbed2ManyParamInterfaceSignals->OnSig1SignalBP.RemoveAll(Testbed2ManyParamInterfaceSignals);
-		Testbed2ManyParamInterfaceSignals->OnSig2Signal.RemoveAll(Testbed2ManyParamInterfaceSignals);
-		Testbed2ManyParamInterfaceSignals->OnSig2SignalBP.RemoveAll(Testbed2ManyParamInterfaceSignals);
-		Testbed2ManyParamInterfaceSignals->OnSig3Signal.RemoveAll(Testbed2ManyParamInterfaceSignals);
-		Testbed2ManyParamInterfaceSignals->OnSig3SignalBP.RemoveAll(Testbed2ManyParamInterfaceSignals);
-		Testbed2ManyParamInterfaceSignals->OnSig4Signal.RemoveAll(Testbed2ManyParamInterfaceSignals);
-		Testbed2ManyParamInterfaceSignals->OnSig4SignalBP.RemoveAll(Testbed2ManyParamInterfaceSignals);
+		Testbed2ManyParamInterfacePublisher->OnSig1Signal.RemoveAll(Testbed2ManyParamInterfacePublisher);
+		Testbed2ManyParamInterfacePublisher->OnSig1SignalBP.RemoveAll(Testbed2ManyParamInterfacePublisher);
+		Testbed2ManyParamInterfacePublisher->OnSig2Signal.RemoveAll(Testbed2ManyParamInterfacePublisher);
+		Testbed2ManyParamInterfacePublisher->OnSig2SignalBP.RemoveAll(Testbed2ManyParamInterfacePublisher);
+		Testbed2ManyParamInterfacePublisher->OnSig3Signal.RemoveAll(Testbed2ManyParamInterfacePublisher);
+		Testbed2ManyParamInterfacePublisher->OnSig3SignalBP.RemoveAll(Testbed2ManyParamInterfacePublisher);
+		Testbed2ManyParamInterfacePublisher->OnSig4Signal.RemoveAll(Testbed2ManyParamInterfacePublisher);
+		Testbed2ManyParamInterfacePublisher->OnSig4SignalBP.RemoveAll(Testbed2ManyParamInterfacePublisher);
 
-		Testbed2ManyParamInterfaceSignals->OnProp1Changed.RemoveAll(Testbed2ManyParamInterfaceSignals);
-		Testbed2ManyParamInterfaceSignals->OnProp1ChangedBP.RemoveAll(Testbed2ManyParamInterfaceSignals);
-		Testbed2ManyParamInterfaceSignals->OnProp2Changed.RemoveAll(Testbed2ManyParamInterfaceSignals);
-		Testbed2ManyParamInterfaceSignals->OnProp2ChangedBP.RemoveAll(Testbed2ManyParamInterfaceSignals);
-		Testbed2ManyParamInterfaceSignals->OnProp3Changed.RemoveAll(Testbed2ManyParamInterfaceSignals);
-		Testbed2ManyParamInterfaceSignals->OnProp3ChangedBP.RemoveAll(Testbed2ManyParamInterfaceSignals);
-		Testbed2ManyParamInterfaceSignals->OnProp4Changed.RemoveAll(Testbed2ManyParamInterfaceSignals);
-		Testbed2ManyParamInterfaceSignals->OnProp4ChangedBP.RemoveAll(Testbed2ManyParamInterfaceSignals);
+		Testbed2ManyParamInterfacePublisher->OnProp1Changed.RemoveAll(Testbed2ManyParamInterfacePublisher);
+		Testbed2ManyParamInterfacePublisher->OnProp1ChangedBP.RemoveAll(Testbed2ManyParamInterfacePublisher);
+		Testbed2ManyParamInterfacePublisher->OnProp2Changed.RemoveAll(Testbed2ManyParamInterfacePublisher);
+		Testbed2ManyParamInterfacePublisher->OnProp2ChangedBP.RemoveAll(Testbed2ManyParamInterfacePublisher);
+		Testbed2ManyParamInterfacePublisher->OnProp3Changed.RemoveAll(Testbed2ManyParamInterfacePublisher);
+		Testbed2ManyParamInterfacePublisher->OnProp3ChangedBP.RemoveAll(Testbed2ManyParamInterfacePublisher);
+		Testbed2ManyParamInterfacePublisher->OnProp4Changed.RemoveAll(Testbed2ManyParamInterfacePublisher);
+		Testbed2ManyParamInterfacePublisher->OnProp4ChangedBP.RemoveAll(Testbed2ManyParamInterfacePublisher);
 	}
 
 	Super::Deinitialize();

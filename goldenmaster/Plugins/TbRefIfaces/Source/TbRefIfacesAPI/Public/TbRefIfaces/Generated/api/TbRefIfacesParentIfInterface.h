@@ -90,12 +90,12 @@ public:
 };
 
 /**
- * Class UTbRefIfacesParentIfInterfaceSignals
+ * Class UTbRefIfacesParentIfInterfacePublisher
  * Contains delegates for properties and signals
  * this is needed since we cannot declare delegates on an UInterface
  */
 UCLASS(BlueprintType)
-class TBREFIFACESAPI_API UTbRefIfacesParentIfSignals : public UObject
+class TBREFIFACESAPI_API UTbRefIfacesParentIfPublisher : public UObject
 {
 	GENERATED_BODY()
 
@@ -263,7 +263,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|ParentIf|Signals")
 	void Subscribe(const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber)
 	{
-		if (!Subscriber.GetObject()) return;
+		if (!Subscriber.GetObject())
+		{
+			return;
+		}
 		Subscribers.Remove(Subscriber);
 		Subscribers.Add(Subscriber);
 	}
@@ -272,6 +275,7 @@ public:
 	{
 		Subscribers.Remove(Subscriber);
 	}
+
 private:
 	UPROPERTY()
 	TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> Subscribers;
@@ -298,7 +302,7 @@ public:
 	/// this is needed since we cannot declare delegates on an UInterface
 	/// @return object with signals for property state changes or standalone signals
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|ParentIf")
-	virtual UTbRefIfacesParentIfSignals* _GetSignals() = 0;
+	virtual UTbRefIfacesParentIfPublisher* _GetPublisher() = 0;
 
 	// methods
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|ParentIf|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))

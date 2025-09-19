@@ -28,7 +28,7 @@ void UTbSimpleNoSignalsInterfaceImplementation::SetPropBool(bool bInPropBool)
 	if (bPropBool != bInPropBool)
 	{
 		bPropBool = bInPropBool;
-		_GetSignals()->BroadcastPropBoolChanged(bPropBool);
+		_GetPublisher()->BroadcastPropBoolChanged(bPropBool);
 	}
 }
 int32 UTbSimpleNoSignalsInterfaceImplementation::GetPropInt() const
@@ -41,7 +41,7 @@ void UTbSimpleNoSignalsInterfaceImplementation::SetPropInt(int32 InPropInt)
 	if (PropInt != InPropInt)
 	{
 		PropInt = InPropInt;
-		_GetSignals()->BroadcastPropIntChanged(PropInt);
+		_GetPublisher()->BroadcastPropIntChanged(PropInt);
 	}
 }
 
@@ -62,11 +62,11 @@ void UTbSimpleNoSignalsInterfaceImplementation::_ResetProperties()
 	if (bPropBool != false)
 	{
 		bPropBool = false;
-		_GetSignals()->BroadcastPropBoolChanged(bPropBool);
+		_GetPublisher()->BroadcastPropBoolChanged(bPropBool);
 	}
 	if (PropInt != 0)
 	{
 		PropInt = 0;
-		_GetSignals()->BroadcastPropIntChanged(PropInt);
+		_GetPublisher()->BroadcastPropIntChanged(PropInt);
 	}
 }

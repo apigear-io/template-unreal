@@ -279,7 +279,7 @@ void UTestbed2NestedStruct2InterfaceOLinkClient::applyState(const nlohmann::json
 			FScopeLock Lock(&(_SentData->Prop1Mutex));
 			_SentData->Prop1 = Prop1;
 		}
-		_GetSignals()->BroadcastProp1Changed(Prop1);
+		_GetPublisher()->BroadcastProp1Changed(Prop1);
 	}
 
 	const bool bProp2Changed = fields.contains("prop2") && (Prop2 != fields["prop2"].get<FTestbed2NestedStruct2>());
@@ -291,7 +291,7 @@ void UTestbed2NestedStruct2InterfaceOLinkClient::applyState(const nlohmann::json
 			FScopeLock Lock(&(_SentData->Prop2Mutex));
 			_SentData->Prop2 = Prop2;
 		}
-		_GetSignals()->BroadcastProp2Changed(Prop2);
+		_GetPublisher()->BroadcastProp2Changed(Prop2);
 	}
 }
 
@@ -300,7 +300,7 @@ void UTestbed2NestedStruct2InterfaceOLinkClient::emitSignal(const std::string& s
 	if (signalName == "sig1")
 	{
 		const FTestbed2NestedStruct1& outParam1 = args[0].get<FTestbed2NestedStruct1>();
-		_GetSignals()->BroadcastSig1Signal(outParam1);
+		_GetPublisher()->BroadcastSig1Signal(outParam1);
 		return;
 	}
 
@@ -308,7 +308,7 @@ void UTestbed2NestedStruct2InterfaceOLinkClient::emitSignal(const std::string& s
 	{
 		const FTestbed2NestedStruct1& outParam1 = args[0].get<FTestbed2NestedStruct1>();
 		const FTestbed2NestedStruct2& outParam2 = args[1].get<FTestbed2NestedStruct2>();
-		_GetSignals()->BroadcastSig2Signal(outParam1, outParam2);
+		_GetPublisher()->BroadcastSig2Signal(outParam1, outParam2);
 		return;
 	}
 }

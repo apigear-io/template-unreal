@@ -63,16 +63,16 @@ public:
 
 UAbstractTbSimpleVoidInterface::UAbstractTbSimpleVoidInterface()
 {
-	TbSimpleVoidInterfaceSignals = NewObject<UTbSimpleVoidInterfaceSignals>();
+	TbSimpleVoidInterfacePublisher = NewObject<UTbSimpleVoidInterfacePublisher>();
 }
 
-UTbSimpleVoidInterfaceSignals* UAbstractTbSimpleVoidInterface::_GetSignals()
+UTbSimpleVoidInterfacePublisher* UAbstractTbSimpleVoidInterface::_GetPublisher()
 {
-	if (!TbSimpleVoidInterfaceSignals)
+	if (!TbSimpleVoidInterfacePublisher)
 	{
-		TbSimpleVoidInterfaceSignals = NewObject<UTbSimpleVoidInterfaceSignals>();
+		TbSimpleVoidInterfacePublisher = NewObject<UTbSimpleVoidInterfacePublisher>();
 	}
-	return TbSimpleVoidInterfaceSignals;
+	return TbSimpleVoidInterfacePublisher;
 }
 
 void UAbstractTbSimpleVoidInterface::Initialize(FSubsystemCollectionBase& Collection)
@@ -88,10 +88,10 @@ void UAbstractTbSimpleVoidInterface::Deinitialize()
 	check(bInitialized);
 	bInitialized = false;
 
-	if (TbSimpleVoidInterfaceSignals)
+	if (TbSimpleVoidInterfacePublisher)
 	{
-		TbSimpleVoidInterfaceSignals->OnSigVoidSignal.RemoveAll(TbSimpleVoidInterfaceSignals);
-		TbSimpleVoidInterfaceSignals->OnSigVoidSignalBP.RemoveAll(TbSimpleVoidInterfaceSignals);
+		TbSimpleVoidInterfacePublisher->OnSigVoidSignal.RemoveAll(TbSimpleVoidInterfacePublisher);
+		TbSimpleVoidInterfacePublisher->OnSigVoidSignalBP.RemoveAll(TbSimpleVoidInterfacePublisher);
 	}
 
 	Super::Deinitialize();

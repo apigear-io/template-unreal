@@ -47,18 +47,18 @@ void UTestbed1StructArrayInterfaceLoggingDecorator::setBackendService(TScriptInt
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		UTestbed1StructArrayInterfaceSignals* BackendSignals = BackendService->_GetSignals();
-		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service Testbed1StructArrayInterface"));
-		BackendSignals->OnPropBoolChangedBP.RemoveDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnPropBoolChanged);
-		BackendSignals->OnPropIntChangedBP.RemoveDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnPropIntChanged);
-		BackendSignals->OnPropFloatChangedBP.RemoveDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnPropFloatChanged);
-		BackendSignals->OnPropStringChangedBP.RemoveDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnPropStringChanged);
-		BackendSignals->OnPropEnumChangedBP.RemoveDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnPropEnumChanged);
-		BackendSignals->OnSigBoolSignalBP.RemoveDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnSigBool);
-		BackendSignals->OnSigIntSignalBP.RemoveDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnSigInt);
-		BackendSignals->OnSigFloatSignalBP.RemoveDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnSigFloat);
-		BackendSignals->OnSigStringSignalBP.RemoveDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnSigString);
-		BackendSignals->OnSigEnumSignalBP.RemoveDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnSigEnum);
+		UTestbed1StructArrayInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service Testbed1StructArrayInterface"));
+		BackendPublisher->OnPropBoolChangedBP.RemoveDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnPropBoolChanged);
+		BackendPublisher->OnPropIntChangedBP.RemoveDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnPropIntChanged);
+		BackendPublisher->OnPropFloatChangedBP.RemoveDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnPropFloatChanged);
+		BackendPublisher->OnPropStringChangedBP.RemoveDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnPropStringChanged);
+		BackendPublisher->OnPropEnumChangedBP.RemoveDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnPropEnumChanged);
+		BackendPublisher->OnSigBoolSignalBP.RemoveDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnSigBool);
+		BackendPublisher->OnSigIntSignalBP.RemoveDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnSigInt);
+		BackendPublisher->OnSigFloatSignalBP.RemoveDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnSigFloat);
+		BackendPublisher->OnSigStringSignalBP.RemoveDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnSigString);
+		BackendPublisher->OnSigEnumSignalBP.RemoveDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnSigEnum);
 	}
 
 	// only set if interface is implemented
@@ -66,19 +66,19 @@ void UTestbed1StructArrayInterfaceLoggingDecorator::setBackendService(TScriptInt
 
 	// subscribe to new backend
 	BackendService = InService;
-	UTestbed1StructArrayInterfaceSignals* BackendSignals = BackendService->_GetSignals();
-	checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service Testbed1StructArrayInterface"));
+	UTestbed1StructArrayInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+	checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service Testbed1StructArrayInterface"));
 	// connect property changed signals or simple events
-	BackendSignals->OnPropBoolChangedBP.AddDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnPropBoolChanged);
-	BackendSignals->OnPropIntChangedBP.AddDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnPropIntChanged);
-	BackendSignals->OnPropFloatChangedBP.AddDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnPropFloatChanged);
-	BackendSignals->OnPropStringChangedBP.AddDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnPropStringChanged);
-	BackendSignals->OnPropEnumChangedBP.AddDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnPropEnumChanged);
-	BackendSignals->OnSigBoolSignalBP.AddDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnSigBool);
-	BackendSignals->OnSigIntSignalBP.AddDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnSigInt);
-	BackendSignals->OnSigFloatSignalBP.AddDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnSigFloat);
-	BackendSignals->OnSigStringSignalBP.AddDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnSigString);
-	BackendSignals->OnSigEnumSignalBP.AddDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnSigEnum);
+	BackendPublisher->OnPropBoolChangedBP.AddDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnPropBoolChanged);
+	BackendPublisher->OnPropIntChangedBP.AddDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnPropIntChanged);
+	BackendPublisher->OnPropFloatChangedBP.AddDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnPropFloatChanged);
+	BackendPublisher->OnPropStringChangedBP.AddDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnPropStringChanged);
+	BackendPublisher->OnPropEnumChangedBP.AddDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnPropEnumChanged);
+	BackendPublisher->OnSigBoolSignalBP.AddDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnSigBool);
+	BackendPublisher->OnSigIntSignalBP.AddDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnSigInt);
+	BackendPublisher->OnSigFloatSignalBP.AddDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnSigFloat);
+	BackendPublisher->OnSigStringSignalBP.AddDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnSigString);
+	BackendPublisher->OnSigEnumSignalBP.AddDynamic(this, &UTestbed1StructArrayInterfaceLoggingDecorator::OnSigEnum);
 	// populate service state to proxy
 	PropBool = BackendService->GetPropBool();
 	PropInt = BackendService->GetPropInt();
@@ -90,38 +90,38 @@ void UTestbed1StructArrayInterfaceLoggingDecorator::setBackendService(TScriptInt
 void UTestbed1StructArrayInterfaceLoggingDecorator::OnSigBool(const TArray<FTestbed1StructBool>& InParamBool)
 {
 	Testbed1StructArrayInterfaceTracer::trace_signalSigBool(InParamBool);
-	_GetSignals()->BroadcastSigBoolSignal(InParamBool);
+	_GetPublisher()->BroadcastSigBoolSignal(InParamBool);
 }
 
 void UTestbed1StructArrayInterfaceLoggingDecorator::OnSigInt(const TArray<FTestbed1StructInt>& InParamInt)
 {
 	Testbed1StructArrayInterfaceTracer::trace_signalSigInt(InParamInt);
-	_GetSignals()->BroadcastSigIntSignal(InParamInt);
+	_GetPublisher()->BroadcastSigIntSignal(InParamInt);
 }
 
 void UTestbed1StructArrayInterfaceLoggingDecorator::OnSigFloat(const TArray<FTestbed1StructFloat>& InParamFloat)
 {
 	Testbed1StructArrayInterfaceTracer::trace_signalSigFloat(InParamFloat);
-	_GetSignals()->BroadcastSigFloatSignal(InParamFloat);
+	_GetPublisher()->BroadcastSigFloatSignal(InParamFloat);
 }
 
 void UTestbed1StructArrayInterfaceLoggingDecorator::OnSigString(const TArray<FTestbed1StructString>& InParamString)
 {
 	Testbed1StructArrayInterfaceTracer::trace_signalSigString(InParamString);
-	_GetSignals()->BroadcastSigStringSignal(InParamString);
+	_GetPublisher()->BroadcastSigStringSignal(InParamString);
 }
 
 void UTestbed1StructArrayInterfaceLoggingDecorator::OnSigEnum(const TArray<ETestbed1Enum0>& InParamEnum)
 {
 	Testbed1StructArrayInterfaceTracer::trace_signalSigEnum(InParamEnum);
-	_GetSignals()->BroadcastSigEnumSignal(InParamEnum);
+	_GetPublisher()->BroadcastSigEnumSignal(InParamEnum);
 }
 
 void UTestbed1StructArrayInterfaceLoggingDecorator::OnPropBoolChanged(const TArray<FTestbed1StructBool>& InPropBool)
 {
 	Testbed1StructArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropBool = InPropBool;
-	_GetSignals()->BroadcastPropBoolChanged(InPropBool);
+	_GetPublisher()->BroadcastPropBoolChanged(InPropBool);
 }
 
 TArray<FTestbed1StructBool> UTestbed1StructArrayInterfaceLoggingDecorator::GetPropBool() const
@@ -139,7 +139,7 @@ void UTestbed1StructArrayInterfaceLoggingDecorator::OnPropIntChanged(const TArra
 {
 	Testbed1StructArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropInt = InPropInt;
-	_GetSignals()->BroadcastPropIntChanged(InPropInt);
+	_GetPublisher()->BroadcastPropIntChanged(InPropInt);
 }
 
 TArray<FTestbed1StructInt> UTestbed1StructArrayInterfaceLoggingDecorator::GetPropInt() const
@@ -157,7 +157,7 @@ void UTestbed1StructArrayInterfaceLoggingDecorator::OnPropFloatChanged(const TAr
 {
 	Testbed1StructArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropFloat = InPropFloat;
-	_GetSignals()->BroadcastPropFloatChanged(InPropFloat);
+	_GetPublisher()->BroadcastPropFloatChanged(InPropFloat);
 }
 
 TArray<FTestbed1StructFloat> UTestbed1StructArrayInterfaceLoggingDecorator::GetPropFloat() const
@@ -175,7 +175,7 @@ void UTestbed1StructArrayInterfaceLoggingDecorator::OnPropStringChanged(const TA
 {
 	Testbed1StructArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropString = InPropString;
-	_GetSignals()->BroadcastPropStringChanged(InPropString);
+	_GetPublisher()->BroadcastPropStringChanged(InPropString);
 }
 
 TArray<FTestbed1StructString> UTestbed1StructArrayInterfaceLoggingDecorator::GetPropString() const
@@ -193,7 +193,7 @@ void UTestbed1StructArrayInterfaceLoggingDecorator::OnPropEnumChanged(const TArr
 {
 	Testbed1StructArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropEnum = InPropEnum;
-	_GetSignals()->BroadcastPropEnumChanged(InPropEnum);
+	_GetPublisher()->BroadcastPropEnumChanged(InPropEnum);
 }
 
 TArray<ETestbed1Enum0> UTestbed1StructArrayInterfaceLoggingDecorator::GetPropEnum() const

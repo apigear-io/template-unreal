@@ -193,7 +193,7 @@ void UTbSame1SameEnum2InterfaceMsgBusClient::OnConnectionInit(const FTbSame1Same
 		Prop1 = InMessage.Prop1;
 		// reset sent data to the current state
 		_SentData->Prop1 = Prop1;
-		_GetSignals()->BroadcastProp1Changed(Prop1);
+		_GetPublisher()->BroadcastProp1Changed(Prop1);
 	}
 
 	const bool bProp2Changed = InMessage.Prop2 != Prop2;
@@ -202,7 +202,7 @@ void UTbSame1SameEnum2InterfaceMsgBusClient::OnConnectionInit(const FTbSame1Same
 		Prop2 = InMessage.Prop2;
 		// reset sent data to the current state
 		_SentData->Prop2 = Prop2;
-		_GetSignals()->BroadcastProp2Changed(Prop2);
+		_GetPublisher()->BroadcastProp2Changed(Prop2);
 	}
 
 	_ConnectionStatusChanged.Broadcast(true);
@@ -448,7 +448,7 @@ void UTbSame1SameEnum2InterfaceMsgBusClient::OnSig1(const FTbSame1SameEnum2Inter
 		return;
 	}
 
-	_GetSignals()->BroadcastSig1Signal(InMessage.Param1);
+	_GetPublisher()->BroadcastSig1Signal(InMessage.Param1);
 	return;
 }
 
@@ -460,7 +460,7 @@ void UTbSame1SameEnum2InterfaceMsgBusClient::OnSig2(const FTbSame1SameEnum2Inter
 		return;
 	}
 
-	_GetSignals()->BroadcastSig2Signal(InMessage.Param1, InMessage.Param2);
+	_GetPublisher()->BroadcastSig2Signal(InMessage.Param1, InMessage.Param2);
 	return;
 }
 
@@ -478,7 +478,7 @@ void UTbSame1SameEnum2InterfaceMsgBusClient::OnProp1Changed(const FTbSame1SameEn
 		Prop1 = InMessage.Prop1;
 		// reset sent data to the current state
 		_SentData->Prop1 = Prop1;
-		_GetSignals()->BroadcastProp1Changed(Prop1);
+		_GetPublisher()->BroadcastProp1Changed(Prop1);
 	}
 }
 
@@ -496,7 +496,7 @@ void UTbSame1SameEnum2InterfaceMsgBusClient::OnProp2Changed(const FTbSame1SameEn
 		Prop2 = InMessage.Prop2;
 		// reset sent data to the current state
 		_SentData->Prop2 = Prop2;
-		_GetSignals()->BroadcastProp2Changed(Prop2);
+		_GetPublisher()->BroadcastProp2Changed(Prop2);
 	}
 }
 

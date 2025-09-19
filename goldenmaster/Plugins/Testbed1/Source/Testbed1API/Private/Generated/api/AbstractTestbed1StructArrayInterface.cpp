@@ -63,16 +63,16 @@ public:
 
 UAbstractTestbed1StructArrayInterface::UAbstractTestbed1StructArrayInterface()
 {
-	Testbed1StructArrayInterfaceSignals = NewObject<UTestbed1StructArrayInterfaceSignals>();
+	Testbed1StructArrayInterfacePublisher = NewObject<UTestbed1StructArrayInterfacePublisher>();
 }
 
-UTestbed1StructArrayInterfaceSignals* UAbstractTestbed1StructArrayInterface::_GetSignals()
+UTestbed1StructArrayInterfacePublisher* UAbstractTestbed1StructArrayInterface::_GetPublisher()
 {
-	if (!Testbed1StructArrayInterfaceSignals)
+	if (!Testbed1StructArrayInterfacePublisher)
 	{
-		Testbed1StructArrayInterfaceSignals = NewObject<UTestbed1StructArrayInterfaceSignals>();
+		Testbed1StructArrayInterfacePublisher = NewObject<UTestbed1StructArrayInterfacePublisher>();
 	}
-	return Testbed1StructArrayInterfaceSignals;
+	return Testbed1StructArrayInterfacePublisher;
 }
 
 TArray<FTestbed1StructBool> UAbstractTestbed1StructArrayInterface::GetPropBool_Private() const
@@ -313,29 +313,29 @@ void UAbstractTestbed1StructArrayInterface::Deinitialize()
 	check(bInitialized);
 	bInitialized = false;
 
-	if (Testbed1StructArrayInterfaceSignals)
+	if (Testbed1StructArrayInterfacePublisher)
 	{
-		Testbed1StructArrayInterfaceSignals->OnSigBoolSignal.RemoveAll(Testbed1StructArrayInterfaceSignals);
-		Testbed1StructArrayInterfaceSignals->OnSigBoolSignalBP.RemoveAll(Testbed1StructArrayInterfaceSignals);
-		Testbed1StructArrayInterfaceSignals->OnSigIntSignal.RemoveAll(Testbed1StructArrayInterfaceSignals);
-		Testbed1StructArrayInterfaceSignals->OnSigIntSignalBP.RemoveAll(Testbed1StructArrayInterfaceSignals);
-		Testbed1StructArrayInterfaceSignals->OnSigFloatSignal.RemoveAll(Testbed1StructArrayInterfaceSignals);
-		Testbed1StructArrayInterfaceSignals->OnSigFloatSignalBP.RemoveAll(Testbed1StructArrayInterfaceSignals);
-		Testbed1StructArrayInterfaceSignals->OnSigStringSignal.RemoveAll(Testbed1StructArrayInterfaceSignals);
-		Testbed1StructArrayInterfaceSignals->OnSigStringSignalBP.RemoveAll(Testbed1StructArrayInterfaceSignals);
-		Testbed1StructArrayInterfaceSignals->OnSigEnumSignal.RemoveAll(Testbed1StructArrayInterfaceSignals);
-		Testbed1StructArrayInterfaceSignals->OnSigEnumSignalBP.RemoveAll(Testbed1StructArrayInterfaceSignals);
+		Testbed1StructArrayInterfacePublisher->OnSigBoolSignal.RemoveAll(Testbed1StructArrayInterfacePublisher);
+		Testbed1StructArrayInterfacePublisher->OnSigBoolSignalBP.RemoveAll(Testbed1StructArrayInterfacePublisher);
+		Testbed1StructArrayInterfacePublisher->OnSigIntSignal.RemoveAll(Testbed1StructArrayInterfacePublisher);
+		Testbed1StructArrayInterfacePublisher->OnSigIntSignalBP.RemoveAll(Testbed1StructArrayInterfacePublisher);
+		Testbed1StructArrayInterfacePublisher->OnSigFloatSignal.RemoveAll(Testbed1StructArrayInterfacePublisher);
+		Testbed1StructArrayInterfacePublisher->OnSigFloatSignalBP.RemoveAll(Testbed1StructArrayInterfacePublisher);
+		Testbed1StructArrayInterfacePublisher->OnSigStringSignal.RemoveAll(Testbed1StructArrayInterfacePublisher);
+		Testbed1StructArrayInterfacePublisher->OnSigStringSignalBP.RemoveAll(Testbed1StructArrayInterfacePublisher);
+		Testbed1StructArrayInterfacePublisher->OnSigEnumSignal.RemoveAll(Testbed1StructArrayInterfacePublisher);
+		Testbed1StructArrayInterfacePublisher->OnSigEnumSignalBP.RemoveAll(Testbed1StructArrayInterfacePublisher);
 
-		Testbed1StructArrayInterfaceSignals->OnPropBoolChanged.RemoveAll(Testbed1StructArrayInterfaceSignals);
-		Testbed1StructArrayInterfaceSignals->OnPropBoolChangedBP.RemoveAll(Testbed1StructArrayInterfaceSignals);
-		Testbed1StructArrayInterfaceSignals->OnPropIntChanged.RemoveAll(Testbed1StructArrayInterfaceSignals);
-		Testbed1StructArrayInterfaceSignals->OnPropIntChangedBP.RemoveAll(Testbed1StructArrayInterfaceSignals);
-		Testbed1StructArrayInterfaceSignals->OnPropFloatChanged.RemoveAll(Testbed1StructArrayInterfaceSignals);
-		Testbed1StructArrayInterfaceSignals->OnPropFloatChangedBP.RemoveAll(Testbed1StructArrayInterfaceSignals);
-		Testbed1StructArrayInterfaceSignals->OnPropStringChanged.RemoveAll(Testbed1StructArrayInterfaceSignals);
-		Testbed1StructArrayInterfaceSignals->OnPropStringChangedBP.RemoveAll(Testbed1StructArrayInterfaceSignals);
-		Testbed1StructArrayInterfaceSignals->OnPropEnumChanged.RemoveAll(Testbed1StructArrayInterfaceSignals);
-		Testbed1StructArrayInterfaceSignals->OnPropEnumChangedBP.RemoveAll(Testbed1StructArrayInterfaceSignals);
+		Testbed1StructArrayInterfacePublisher->OnPropBoolChanged.RemoveAll(Testbed1StructArrayInterfacePublisher);
+		Testbed1StructArrayInterfacePublisher->OnPropBoolChangedBP.RemoveAll(Testbed1StructArrayInterfacePublisher);
+		Testbed1StructArrayInterfacePublisher->OnPropIntChanged.RemoveAll(Testbed1StructArrayInterfacePublisher);
+		Testbed1StructArrayInterfacePublisher->OnPropIntChangedBP.RemoveAll(Testbed1StructArrayInterfacePublisher);
+		Testbed1StructArrayInterfacePublisher->OnPropFloatChanged.RemoveAll(Testbed1StructArrayInterfacePublisher);
+		Testbed1StructArrayInterfacePublisher->OnPropFloatChangedBP.RemoveAll(Testbed1StructArrayInterfacePublisher);
+		Testbed1StructArrayInterfacePublisher->OnPropStringChanged.RemoveAll(Testbed1StructArrayInterfacePublisher);
+		Testbed1StructArrayInterfacePublisher->OnPropStringChangedBP.RemoveAll(Testbed1StructArrayInterfacePublisher);
+		Testbed1StructArrayInterfacePublisher->OnPropEnumChanged.RemoveAll(Testbed1StructArrayInterfacePublisher);
+		Testbed1StructArrayInterfacePublisher->OnPropEnumChangedBP.RemoveAll(Testbed1StructArrayInterfacePublisher);
 	}
 
 	Super::Deinitialize();

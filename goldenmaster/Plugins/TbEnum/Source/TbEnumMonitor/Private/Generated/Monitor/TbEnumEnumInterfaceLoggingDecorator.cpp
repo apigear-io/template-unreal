@@ -47,16 +47,16 @@ void UTbEnumEnumInterfaceLoggingDecorator::setBackendService(TScriptInterface<IT
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		UTbEnumEnumInterfaceSignals* BackendSignals = BackendService->_GetSignals();
-		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbEnumEnumInterface"));
-		BackendSignals->OnProp0ChangedBP.RemoveDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnProp0Changed);
-		BackendSignals->OnProp1ChangedBP.RemoveDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnProp1Changed);
-		BackendSignals->OnProp2ChangedBP.RemoveDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnProp2Changed);
-		BackendSignals->OnProp3ChangedBP.RemoveDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnProp3Changed);
-		BackendSignals->OnSig0SignalBP.RemoveDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnSig0);
-		BackendSignals->OnSig1SignalBP.RemoveDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnSig1);
-		BackendSignals->OnSig2SignalBP.RemoveDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnSig2);
-		BackendSignals->OnSig3SignalBP.RemoveDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnSig3);
+		UTbEnumEnumInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbEnumEnumInterface"));
+		BackendPublisher->OnProp0ChangedBP.RemoveDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnProp0Changed);
+		BackendPublisher->OnProp1ChangedBP.RemoveDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnProp1Changed);
+		BackendPublisher->OnProp2ChangedBP.RemoveDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnProp2Changed);
+		BackendPublisher->OnProp3ChangedBP.RemoveDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnProp3Changed);
+		BackendPublisher->OnSig0SignalBP.RemoveDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnSig0);
+		BackendPublisher->OnSig1SignalBP.RemoveDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnSig1);
+		BackendPublisher->OnSig2SignalBP.RemoveDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnSig2);
+		BackendPublisher->OnSig3SignalBP.RemoveDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnSig3);
 	}
 
 	// only set if interface is implemented
@@ -64,17 +64,17 @@ void UTbEnumEnumInterfaceLoggingDecorator::setBackendService(TScriptInterface<IT
 
 	// subscribe to new backend
 	BackendService = InService;
-	UTbEnumEnumInterfaceSignals* BackendSignals = BackendService->_GetSignals();
-	checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbEnumEnumInterface"));
+	UTbEnumEnumInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+	checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbEnumEnumInterface"));
 	// connect property changed signals or simple events
-	BackendSignals->OnProp0ChangedBP.AddDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnProp0Changed);
-	BackendSignals->OnProp1ChangedBP.AddDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnProp1Changed);
-	BackendSignals->OnProp2ChangedBP.AddDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnProp2Changed);
-	BackendSignals->OnProp3ChangedBP.AddDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnProp3Changed);
-	BackendSignals->OnSig0SignalBP.AddDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnSig0);
-	BackendSignals->OnSig1SignalBP.AddDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnSig1);
-	BackendSignals->OnSig2SignalBP.AddDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnSig2);
-	BackendSignals->OnSig3SignalBP.AddDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnSig3);
+	BackendPublisher->OnProp0ChangedBP.AddDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnProp0Changed);
+	BackendPublisher->OnProp1ChangedBP.AddDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnProp1Changed);
+	BackendPublisher->OnProp2ChangedBP.AddDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnProp2Changed);
+	BackendPublisher->OnProp3ChangedBP.AddDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnProp3Changed);
+	BackendPublisher->OnSig0SignalBP.AddDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnSig0);
+	BackendPublisher->OnSig1SignalBP.AddDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnSig1);
+	BackendPublisher->OnSig2SignalBP.AddDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnSig2);
+	BackendPublisher->OnSig3SignalBP.AddDynamic(this, &UTbEnumEnumInterfaceLoggingDecorator::OnSig3);
 	// populate service state to proxy
 	Prop0 = BackendService->GetProp0();
 	Prop1 = BackendService->GetProp1();
@@ -85,32 +85,32 @@ void UTbEnumEnumInterfaceLoggingDecorator::setBackendService(TScriptInterface<IT
 void UTbEnumEnumInterfaceLoggingDecorator::OnSig0(ETbEnumEnum0 InParam0)
 {
 	TbEnumEnumInterfaceTracer::trace_signalSig0(InParam0);
-	_GetSignals()->BroadcastSig0Signal(InParam0);
+	_GetPublisher()->BroadcastSig0Signal(InParam0);
 }
 
 void UTbEnumEnumInterfaceLoggingDecorator::OnSig1(ETbEnumEnum1 InParam1)
 {
 	TbEnumEnumInterfaceTracer::trace_signalSig1(InParam1);
-	_GetSignals()->BroadcastSig1Signal(InParam1);
+	_GetPublisher()->BroadcastSig1Signal(InParam1);
 }
 
 void UTbEnumEnumInterfaceLoggingDecorator::OnSig2(ETbEnumEnum2 InParam2)
 {
 	TbEnumEnumInterfaceTracer::trace_signalSig2(InParam2);
-	_GetSignals()->BroadcastSig2Signal(InParam2);
+	_GetPublisher()->BroadcastSig2Signal(InParam2);
 }
 
 void UTbEnumEnumInterfaceLoggingDecorator::OnSig3(ETbEnumEnum3 InParam3)
 {
 	TbEnumEnumInterfaceTracer::trace_signalSig3(InParam3);
-	_GetSignals()->BroadcastSig3Signal(InParam3);
+	_GetPublisher()->BroadcastSig3Signal(InParam3);
 }
 
 void UTbEnumEnumInterfaceLoggingDecorator::OnProp0Changed(ETbEnumEnum0 InProp0)
 {
 	TbEnumEnumInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop0 = InProp0;
-	_GetSignals()->BroadcastProp0Changed(InProp0);
+	_GetPublisher()->BroadcastProp0Changed(InProp0);
 }
 
 ETbEnumEnum0 UTbEnumEnumInterfaceLoggingDecorator::GetProp0() const
@@ -128,7 +128,7 @@ void UTbEnumEnumInterfaceLoggingDecorator::OnProp1Changed(ETbEnumEnum1 InProp1)
 {
 	TbEnumEnumInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop1 = InProp1;
-	_GetSignals()->BroadcastProp1Changed(InProp1);
+	_GetPublisher()->BroadcastProp1Changed(InProp1);
 }
 
 ETbEnumEnum1 UTbEnumEnumInterfaceLoggingDecorator::GetProp1() const
@@ -146,7 +146,7 @@ void UTbEnumEnumInterfaceLoggingDecorator::OnProp2Changed(ETbEnumEnum2 InProp2)
 {
 	TbEnumEnumInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop2 = InProp2;
-	_GetSignals()->BroadcastProp2Changed(InProp2);
+	_GetPublisher()->BroadcastProp2Changed(InProp2);
 }
 
 ETbEnumEnum2 UTbEnumEnumInterfaceLoggingDecorator::GetProp2() const
@@ -164,7 +164,7 @@ void UTbEnumEnumInterfaceLoggingDecorator::OnProp3Changed(ETbEnumEnum3 InProp3)
 {
 	TbEnumEnumInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop3 = InProp3;
-	_GetSignals()->BroadcastProp3Changed(InProp3);
+	_GetPublisher()->BroadcastProp3Changed(InProp3);
 }
 
 ETbEnumEnum3 UTbEnumEnumInterfaceLoggingDecorator::GetProp3() const

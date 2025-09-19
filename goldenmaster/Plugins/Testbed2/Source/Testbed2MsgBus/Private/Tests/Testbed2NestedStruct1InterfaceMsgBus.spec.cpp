@@ -86,8 +86,8 @@ void UTestbed2NestedStruct1InterfaceMsgBusSpec::Define()
 		FTestbed2NestedStruct1 TestValue = FTestbed2NestedStruct1(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp1(), TestValue);
 
-		UTestbed2NestedStruct1InterfaceSignals* Testbed2NestedStruct1InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2NestedStruct1InterfaceSignals->OnProp1Changed.AddLambda([this, TestDone](const FTestbed2NestedStruct1& InProp1)
+		UTestbed2NestedStruct1InterfacePublisher* Testbed2NestedStruct1InterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		Testbed2NestedStruct1InterfacePublisher->OnProp1Changed.AddLambda([this, TestDone](const FTestbed2NestedStruct1& InProp1)
 			{
 			FTestbed2NestedStruct1 TestValue = FTestbed2NestedStruct1();
 			// use different test value
@@ -108,8 +108,8 @@ void UTestbed2NestedStruct1InterfaceMsgBusSpec::Define()
 		FTestbed2NestedStruct1 TestValue = FTestbed2NestedStruct1(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp1(), TestValue);
 
-		UTestbed2NestedStruct1InterfaceSignals* Testbed2NestedStruct1InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2NestedStruct1InterfaceSignals->OnProp1Changed.AddLambda([this, TestDone](const FTestbed2NestedStruct1& InProp1)
+		UTestbed2NestedStruct1InterfacePublisher* Testbed2NestedStruct1InterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		Testbed2NestedStruct1InterfacePublisher->OnProp1Changed.AddLambda([this, TestDone](const FTestbed2NestedStruct1& InProp1)
 			{
 			FTestbed2NestedStruct1 TestValue = FTestbed2NestedStruct1();
 			// use different test value
@@ -130,8 +130,8 @@ void UTestbed2NestedStruct1InterfaceMsgBusSpec::Define()
 		FTestbed2NestedStruct1 TestValue = FTestbed2NestedStruct1(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp1(), TestValue);
 
-		UTestbed2NestedStruct1InterfaceSignals* Testbed2NestedStruct1InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2NestedStruct1InterfaceSignals->OnProp1Changed.AddLambda([this, TestDone](const FTestbed2NestedStruct1& InProp1)
+		UTestbed2NestedStruct1InterfacePublisher* Testbed2NestedStruct1InterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		Testbed2NestedStruct1InterfacePublisher->OnProp1Changed.AddLambda([this, TestDone](const FTestbed2NestedStruct1& InProp1)
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -177,8 +177,8 @@ void UTestbed2NestedStruct1InterfaceMsgBusSpec::Define()
 
 	LatentIt("Signal.Sig1", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		UTestbed2NestedStruct1InterfaceSignals* Testbed2NestedStruct1InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		Testbed2NestedStruct1InterfaceSignals->OnSig1Signal.AddLambda([this, TestDone](const FTestbed2NestedStruct1& InParam1)
+		UTestbed2NestedStruct1InterfacePublisher* Testbed2NestedStruct1InterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		Testbed2NestedStruct1InterfacePublisher->OnSig1Signal.AddLambda([this, TestDone](const FTestbed2NestedStruct1& InParam1)
 			{
 			// known test value
 			FTestbed2NestedStruct1 Param1TestValue = createTestFTestbed2NestedStruct1();
@@ -188,7 +188,7 @@ void UTestbed2NestedStruct1InterfaceMsgBusSpec::Define()
 
 		// use different test value
 		FTestbed2NestedStruct1 Param1TestValue = createTestFTestbed2NestedStruct1();
-		Testbed2NestedStruct1InterfaceSignals->BroadcastSig1Signal(Param1TestValue);
+		Testbed2NestedStruct1InterfacePublisher->BroadcastSig1Signal(Param1TestValue);
 	});
 }
 } // namespace Tests

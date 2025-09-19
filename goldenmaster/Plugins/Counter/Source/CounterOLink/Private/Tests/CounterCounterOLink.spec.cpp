@@ -107,8 +107,8 @@ void UCounterCounterOLinkSpec::Define()
 		FCustomTypesVector3D TestValue = FCustomTypesVector3D(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetVector(), TestValue);
 
-		UCounterCounterSignals* CounterCounterSignals = ImplFixture->GetImplementation()->_GetSignals();
-		CounterCounterSignals->OnVectorChanged.AddLambda([this, TestDone](const FCustomTypesVector3D& InVector)
+		UCounterCounterPublisher* CounterCounterPublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		CounterCounterPublisher->OnVectorChanged.AddLambda([this, TestDone](const FCustomTypesVector3D& InVector)
 			{
 			FCustomTypesVector3D TestValue = FCustomTypesVector3D();
 			// use different test value
@@ -129,8 +129,8 @@ void UCounterCounterOLinkSpec::Define()
 		FCustomTypesVector3D TestValue = FCustomTypesVector3D(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetVector(), TestValue);
 
-		UCounterCounterSignals* CounterCounterSignals = ImplFixture->GetImplementation()->_GetSignals();
-		CounterCounterSignals->OnVectorChanged.AddLambda([this, TestDone](const FCustomTypesVector3D& InVector)
+		UCounterCounterPublisher* CounterCounterPublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		CounterCounterPublisher->OnVectorChanged.AddLambda([this, TestDone](const FCustomTypesVector3D& InVector)
 			{
 			FCustomTypesVector3D TestValue = FCustomTypesVector3D();
 			// use different test value
@@ -151,8 +151,8 @@ void UCounterCounterOLinkSpec::Define()
 		FCustomTypesVector3D TestValue = FCustomTypesVector3D(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetVector(), TestValue);
 
-		UCounterCounterSignals* CounterCounterSignals = ImplFixture->GetImplementation()->_GetSignals();
-		CounterCounterSignals->OnVectorChanged.AddLambda([this, TestDone](const FCustomTypesVector3D& InVector)
+		UCounterCounterPublisher* CounterCounterPublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		CounterCounterPublisher->OnVectorChanged.AddLambda([this, TestDone](const FCustomTypesVector3D& InVector)
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -206,8 +206,8 @@ void UCounterCounterOLinkSpec::Define()
 		TArray<FCustomTypesVector3D> TestValue = TArray<FCustomTypesVector3D>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetVectorArray(), TestValue);
 
-		UCounterCounterSignals* CounterCounterSignals = ImplFixture->GetImplementation()->_GetSignals();
-		CounterCounterSignals->OnVectorArrayChanged.AddLambda([this, TestDone](const TArray<FCustomTypesVector3D>& InVectorArray)
+		UCounterCounterPublisher* CounterCounterPublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		CounterCounterPublisher->OnVectorArrayChanged.AddLambda([this, TestDone](const TArray<FCustomTypesVector3D>& InVectorArray)
 			{
 			TArray<FCustomTypesVector3D> TestValue = TArray<FCustomTypesVector3D>();
 			// use different test value
@@ -228,8 +228,8 @@ void UCounterCounterOLinkSpec::Define()
 		TArray<FCustomTypesVector3D> TestValue = TArray<FCustomTypesVector3D>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetVectorArray(), TestValue);
 
-		UCounterCounterSignals* CounterCounterSignals = ImplFixture->GetImplementation()->_GetSignals();
-		CounterCounterSignals->OnVectorArrayChanged.AddLambda([this, TestDone](const TArray<FCustomTypesVector3D>& InVectorArray)
+		UCounterCounterPublisher* CounterCounterPublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		CounterCounterPublisher->OnVectorArrayChanged.AddLambda([this, TestDone](const TArray<FCustomTypesVector3D>& InVectorArray)
 			{
 			TArray<FCustomTypesVector3D> TestValue = TArray<FCustomTypesVector3D>();
 			// use different test value
@@ -250,8 +250,8 @@ void UCounterCounterOLinkSpec::Define()
 		TArray<FCustomTypesVector3D> TestValue = TArray<FCustomTypesVector3D>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetVectorArray(), TestValue);
 
-		UCounterCounterSignals* CounterCounterSignals = ImplFixture->GetImplementation()->_GetSignals();
-		CounterCounterSignals->OnVectorArrayChanged.AddLambda([this, TestDone](const TArray<FCustomTypesVector3D>& InVectorArray)
+		UCounterCounterPublisher* CounterCounterPublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		CounterCounterPublisher->OnVectorArrayChanged.AddLambda([this, TestDone](const TArray<FCustomTypesVector3D>& InVectorArray)
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -338,8 +338,8 @@ void UCounterCounterOLinkSpec::Define()
 
 	LatentIt("Signal.ValueChanged", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		UCounterCounterSignals* CounterCounterSignals = ImplFixture->GetImplementation()->_GetSignals();
-		CounterCounterSignals->OnValueChangedSignal.AddLambda([this, TestDone](const FCustomTypesVector3D& InVector, const FVector& InExternVector, const TArray<FCustomTypesVector3D>& InVectorArray, const TArray<FVector>& InExternVectorArray)
+		UCounterCounterPublisher* CounterCounterPublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		CounterCounterPublisher->OnValueChangedSignal.AddLambda([this, TestDone](const FCustomTypesVector3D& InVector, const FVector& InExternVector, const TArray<FCustomTypesVector3D>& InVectorArray, const TArray<FVector>& InExternVectorArray)
 			{
 			// known test value
 			FCustomTypesVector3D VectorTestValue = createTestFCustomTypesVector3D();
@@ -354,7 +354,7 @@ void UCounterCounterOLinkSpec::Define()
 		FVector ExternVectorTestValue = FVector(0.f, 0.f, 0.f);
 		TArray<FCustomTypesVector3D> VectorArrayTestValue = createTestFCustomTypesVector3DArray();
 		TArray<FVector> ExternVectorArrayTestValue = TArray<FVector>();
-		CounterCounterSignals->BroadcastValueChangedSignal(VectorTestValue, ExternVectorTestValue, VectorArrayTestValue, ExternVectorArrayTestValue);
+		CounterCounterPublisher->BroadcastValueChangedSignal(VectorTestValue, ExternVectorTestValue, VectorArrayTestValue, ExternVectorArrayTestValue);
 	});
 }
 } // namespace Tests

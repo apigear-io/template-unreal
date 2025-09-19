@@ -77,12 +77,12 @@ public:
 };
 
 /**
- * Class {{$class}}Signals
+ * Class {{$class}}Publisher
  * Contains delegates for properties and signals
  * this is needed since we cannot declare delegates on an UInterface
  */
 UCLASS(BlueprintType)
-class {{$API_MACRO}} U{{$Class}}Signals : public UObject
+class {{$API_MACRO}} U{{$Class}}Publisher : public UObject
 {
 	GENERATED_BODY()
 
@@ -136,7 +136,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "{{$Category}}|Signals")
 	void Subscribe(const TScriptInterface<I{{$Class}}BPSubscriberInterface>& Subscriber)
 	{
-		if (!Subscriber.GetObject()) return;
+		if (!Subscriber.GetObject())
+		{
+			return;
+		}
 		Subscribers.Remove(Subscriber);
 		Subscribers.Add(Subscriber);
 	}
@@ -145,6 +148,7 @@ public:
 	{
 		Subscribers.Remove(Subscriber);
 	}
+
 private:
 	UPROPERTY()
 	TArray<TScriptInterface<I{{$Class}}BPSubscriberInterface>> Subscribers;
@@ -173,7 +177,7 @@ public:
 	/// this is needed since we cannot declare delegates on an UInterface
 	/// @return object with signals for property state changes or standalone signals
 	UFUNCTION(BlueprintCallable, Category = "{{$Category}}")
-	virtual U{{$Class}}Signals* _GetSignals() = 0;
+	virtual U{{$Class}}Publisher* _GetPublisher() = 0;
 	{{- nl }}
 {{- end}}
 	// methods

@@ -60,8 +60,8 @@ void UTbSimpleNoOperationsInterfaceImplSpec::Define()
 		bool TestValue = false; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
 
-		UTbSimpleNoOperationsInterfaceSignals* TbSimpleNoOperationsInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleNoOperationsInterfaceSignals->OnPropBoolChanged.AddLambda([this, TestDone](bool bInPropBool)
+		UTbSimpleNoOperationsInterfacePublisher* TbSimpleNoOperationsInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleNoOperationsInterfacePublisher->OnPropBoolChanged.AddLambda([this, TestDone](bool bInPropBool)
 			{
 			bool TestValue = false;
 			// use different test value
@@ -83,8 +83,8 @@ void UTbSimpleNoOperationsInterfaceImplSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
 
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
-		UTbSimpleNoOperationsInterfaceSignals* TbSimpleNoOperationsInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleNoOperationsInterfaceSignals->OnPropBoolChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleNoOperationsInterfaceImplHelper::PropBoolPropertyCb);
+		UTbSimpleNoOperationsInterfacePublisher* TbSimpleNoOperationsInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleNoOperationsInterfacePublisher->OnPropBoolChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleNoOperationsInterfaceImplHelper::PropBoolPropertyCb);
 		// use different test value
 		TestValue = true;
 		ImplFixture->GetImplementation()->SetPropBool(TestValue);
@@ -103,8 +103,8 @@ void UTbSimpleNoOperationsInterfaceImplSpec::Define()
 		int32 TestValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
 
-		UTbSimpleNoOperationsInterfaceSignals* TbSimpleNoOperationsInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleNoOperationsInterfaceSignals->OnPropIntChanged.AddLambda([this, TestDone](int32 InPropInt)
+		UTbSimpleNoOperationsInterfacePublisher* TbSimpleNoOperationsInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleNoOperationsInterfacePublisher->OnPropIntChanged.AddLambda([this, TestDone](int32 InPropInt)
 			{
 			int32 TestValue = 0;
 			// use different test value
@@ -126,8 +126,8 @@ void UTbSimpleNoOperationsInterfaceImplSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
 
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
-		UTbSimpleNoOperationsInterfaceSignals* TbSimpleNoOperationsInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleNoOperationsInterfaceSignals->OnPropIntChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleNoOperationsInterfaceImplHelper::PropIntPropertyCb);
+		UTbSimpleNoOperationsInterfacePublisher* TbSimpleNoOperationsInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleNoOperationsInterfacePublisher->OnPropIntChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleNoOperationsInterfaceImplHelper::PropIntPropertyCb);
 		// use different test value
 		TestValue = 1;
 		ImplFixture->GetImplementation()->SetPropInt(TestValue);
@@ -135,31 +135,31 @@ void UTbSimpleNoOperationsInterfaceImplSpec::Define()
 
 	LatentIt("Signal.SigVoid", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		UTbSimpleNoOperationsInterfaceSignals* TbSimpleNoOperationsInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleNoOperationsInterfaceSignals->OnSigVoidSignal.AddLambda([this, TestDone]()
+		UTbSimpleNoOperationsInterfacePublisher* TbSimpleNoOperationsInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleNoOperationsInterfacePublisher->OnSigVoidSignal.AddLambda([this, TestDone]()
 			{
 			// known test value
 			TestDone.Execute();
 		});
 
 		// use different test value
-		TbSimpleNoOperationsInterfaceSignals->BroadcastSigVoidSignal();
+		TbSimpleNoOperationsInterfacePublisher->BroadcastSigVoidSignal();
 	});
 
 	LatentIt("Signal.SigVoidBP", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
-		UTbSimpleNoOperationsInterfaceSignals* TbSimpleNoOperationsInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleNoOperationsInterfaceSignals->OnSigVoidSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleNoOperationsInterfaceImplHelper::SigVoidSignalCb);
+		UTbSimpleNoOperationsInterfacePublisher* TbSimpleNoOperationsInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleNoOperationsInterfacePublisher->OnSigVoidSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleNoOperationsInterfaceImplHelper::SigVoidSignalCb);
 
 		// use different test value
-		TbSimpleNoOperationsInterfaceSignals->BroadcastSigVoidSignal();
+		TbSimpleNoOperationsInterfacePublisher->BroadcastSigVoidSignal();
 	});
 
 	LatentIt("Signal.SigBool", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		UTbSimpleNoOperationsInterfaceSignals* TbSimpleNoOperationsInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleNoOperationsInterfaceSignals->OnSigBoolSignal.AddLambda([this, TestDone](bool bInParamBool)
+		UTbSimpleNoOperationsInterfacePublisher* TbSimpleNoOperationsInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleNoOperationsInterfacePublisher->OnSigBoolSignal.AddLambda([this, TestDone](bool bInParamBool)
 			{
 			// known test value
 			bool bParamBoolTestValue = true;
@@ -169,18 +169,18 @@ void UTbSimpleNoOperationsInterfaceImplSpec::Define()
 
 		// use different test value
 		bool bParamBoolTestValue = true;
-		TbSimpleNoOperationsInterfaceSignals->BroadcastSigBoolSignal(bParamBoolTestValue);
+		TbSimpleNoOperationsInterfacePublisher->BroadcastSigBoolSignal(bParamBoolTestValue);
 	});
 
 	LatentIt("Signal.SigBoolBP", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
-		UTbSimpleNoOperationsInterfaceSignals* TbSimpleNoOperationsInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleNoOperationsInterfaceSignals->OnSigBoolSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleNoOperationsInterfaceImplHelper::SigBoolSignalCb);
+		UTbSimpleNoOperationsInterfacePublisher* TbSimpleNoOperationsInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleNoOperationsInterfacePublisher->OnSigBoolSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSimpleNoOperationsInterfaceImplHelper::SigBoolSignalCb);
 
 		// use different test value
 		bool bParamBoolTestValue = true;
-		TbSimpleNoOperationsInterfaceSignals->BroadcastSigBoolSignal(bParamBoolTestValue);
+		TbSimpleNoOperationsInterfacePublisher->BroadcastSigBoolSignal(bParamBoolTestValue);
 	});
 }
 

@@ -86,8 +86,8 @@ void UTbSimpleSimpleArrayInterfaceMsgBusSpec::Define()
 		TArray<bool> TestValue = TArray<bool>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
 
-		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnPropBoolChanged.AddLambda([this, TestDone](const TArray<bool>& InPropBool)
+		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleArrayInterfacePublisher->OnPropBoolChanged.AddLambda([this, TestDone](const TArray<bool>& InPropBool)
 			{
 			TArray<bool> TestValue = TArray<bool>();
 			// use different test value
@@ -108,8 +108,8 @@ void UTbSimpleSimpleArrayInterfaceMsgBusSpec::Define()
 		TArray<bool> TestValue = TArray<bool>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
 
-		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnPropBoolChanged.AddLambda([this, TestDone](const TArray<bool>& InPropBool)
+		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleArrayInterfacePublisher->OnPropBoolChanged.AddLambda([this, TestDone](const TArray<bool>& InPropBool)
 			{
 			TArray<bool> TestValue = TArray<bool>();
 			// use different test value
@@ -130,8 +130,8 @@ void UTbSimpleSimpleArrayInterfaceMsgBusSpec::Define()
 		TArray<bool> TestValue = TArray<bool>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
 
-		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnPropBoolChanged.AddLambda([this, TestDone](const TArray<bool>& InPropBool)
+		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleArrayInterfacePublisher->OnPropBoolChanged.AddLambda([this, TestDone](const TArray<bool>& InPropBool)
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -178,8 +178,8 @@ void UTbSimpleSimpleArrayInterfaceMsgBusSpec::Define()
 		TArray<int32> TestValue = TArray<int32>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
 
-		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnPropIntChanged.AddLambda([this, TestDone](const TArray<int32>& InPropInt)
+		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleArrayInterfacePublisher->OnPropIntChanged.AddLambda([this, TestDone](const TArray<int32>& InPropInt)
 			{
 			TArray<int32> TestValue = TArray<int32>();
 			// use different test value
@@ -200,8 +200,8 @@ void UTbSimpleSimpleArrayInterfaceMsgBusSpec::Define()
 		TArray<int32> TestValue = TArray<int32>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
 
-		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnPropIntChanged.AddLambda([this, TestDone](const TArray<int32>& InPropInt)
+		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleArrayInterfacePublisher->OnPropIntChanged.AddLambda([this, TestDone](const TArray<int32>& InPropInt)
 			{
 			TArray<int32> TestValue = TArray<int32>();
 			// use different test value
@@ -222,8 +222,8 @@ void UTbSimpleSimpleArrayInterfaceMsgBusSpec::Define()
 		TArray<int32> TestValue = TArray<int32>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
 
-		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnPropIntChanged.AddLambda([this, TestDone](const TArray<int32>& InPropInt)
+		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleArrayInterfacePublisher->OnPropIntChanged.AddLambda([this, TestDone](const TArray<int32>& InPropInt)
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -270,8 +270,8 @@ void UTbSimpleSimpleArrayInterfaceMsgBusSpec::Define()
 		TArray<int32> TestValue = TArray<int32>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt32(), TestValue);
 
-		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnPropInt32Changed.AddLambda([this, TestDone](const TArray<int32>& InPropInt32)
+		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleArrayInterfacePublisher->OnPropInt32Changed.AddLambda([this, TestDone](const TArray<int32>& InPropInt32)
 			{
 			TArray<int32> TestValue = TArray<int32>();
 			// use different test value
@@ -292,8 +292,8 @@ void UTbSimpleSimpleArrayInterfaceMsgBusSpec::Define()
 		TArray<int32> TestValue = TArray<int32>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt32(), TestValue);
 
-		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnPropInt32Changed.AddLambda([this, TestDone](const TArray<int32>& InPropInt32)
+		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleArrayInterfacePublisher->OnPropInt32Changed.AddLambda([this, TestDone](const TArray<int32>& InPropInt32)
 			{
 			TArray<int32> TestValue = TArray<int32>();
 			// use different test value
@@ -314,8 +314,8 @@ void UTbSimpleSimpleArrayInterfaceMsgBusSpec::Define()
 		TArray<int32> TestValue = TArray<int32>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt32(), TestValue);
 
-		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnPropInt32Changed.AddLambda([this, TestDone](const TArray<int32>& InPropInt32)
+		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleArrayInterfacePublisher->OnPropInt32Changed.AddLambda([this, TestDone](const TArray<int32>& InPropInt32)
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -362,8 +362,8 @@ void UTbSimpleSimpleArrayInterfaceMsgBusSpec::Define()
 		TArray<int64> TestValue = TArray<int64>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt64(), TestValue);
 
-		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnPropInt64Changed.AddLambda([this, TestDone](const TArray<int64>& InPropInt64)
+		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleArrayInterfacePublisher->OnPropInt64Changed.AddLambda([this, TestDone](const TArray<int64>& InPropInt64)
 			{
 			TArray<int64> TestValue = TArray<int64>();
 			// use different test value
@@ -384,8 +384,8 @@ void UTbSimpleSimpleArrayInterfaceMsgBusSpec::Define()
 		TArray<int64> TestValue = TArray<int64>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt64(), TestValue);
 
-		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnPropInt64Changed.AddLambda([this, TestDone](const TArray<int64>& InPropInt64)
+		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleArrayInterfacePublisher->OnPropInt64Changed.AddLambda([this, TestDone](const TArray<int64>& InPropInt64)
 			{
 			TArray<int64> TestValue = TArray<int64>();
 			// use different test value
@@ -406,8 +406,8 @@ void UTbSimpleSimpleArrayInterfaceMsgBusSpec::Define()
 		TArray<int64> TestValue = TArray<int64>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt64(), TestValue);
 
-		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnPropInt64Changed.AddLambda([this, TestDone](const TArray<int64>& InPropInt64)
+		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleArrayInterfacePublisher->OnPropInt64Changed.AddLambda([this, TestDone](const TArray<int64>& InPropInt64)
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -454,8 +454,8 @@ void UTbSimpleSimpleArrayInterfaceMsgBusSpec::Define()
 		TArray<float> TestValue = TArray<float>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropFloat(), TestValue);
 
-		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnPropFloatChanged.AddLambda([this, TestDone](const TArray<float>& InPropFloat)
+		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleArrayInterfacePublisher->OnPropFloatChanged.AddLambda([this, TestDone](const TArray<float>& InPropFloat)
 			{
 			TArray<float> TestValue = TArray<float>();
 			// use different test value
@@ -476,8 +476,8 @@ void UTbSimpleSimpleArrayInterfaceMsgBusSpec::Define()
 		TArray<float> TestValue = TArray<float>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropFloat(), TestValue);
 
-		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnPropFloatChanged.AddLambda([this, TestDone](const TArray<float>& InPropFloat)
+		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleArrayInterfacePublisher->OnPropFloatChanged.AddLambda([this, TestDone](const TArray<float>& InPropFloat)
 			{
 			TArray<float> TestValue = TArray<float>();
 			// use different test value
@@ -498,8 +498,8 @@ void UTbSimpleSimpleArrayInterfaceMsgBusSpec::Define()
 		TArray<float> TestValue = TArray<float>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropFloat(), TestValue);
 
-		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnPropFloatChanged.AddLambda([this, TestDone](const TArray<float>& InPropFloat)
+		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleArrayInterfacePublisher->OnPropFloatChanged.AddLambda([this, TestDone](const TArray<float>& InPropFloat)
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -546,8 +546,8 @@ void UTbSimpleSimpleArrayInterfaceMsgBusSpec::Define()
 		TArray<float> TestValue = TArray<float>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropFloat32(), TestValue);
 
-		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnPropFloat32Changed.AddLambda([this, TestDone](const TArray<float>& InPropFloat32)
+		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleArrayInterfacePublisher->OnPropFloat32Changed.AddLambda([this, TestDone](const TArray<float>& InPropFloat32)
 			{
 			TArray<float> TestValue = TArray<float>();
 			// use different test value
@@ -568,8 +568,8 @@ void UTbSimpleSimpleArrayInterfaceMsgBusSpec::Define()
 		TArray<float> TestValue = TArray<float>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropFloat32(), TestValue);
 
-		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnPropFloat32Changed.AddLambda([this, TestDone](const TArray<float>& InPropFloat32)
+		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleArrayInterfacePublisher->OnPropFloat32Changed.AddLambda([this, TestDone](const TArray<float>& InPropFloat32)
 			{
 			TArray<float> TestValue = TArray<float>();
 			// use different test value
@@ -590,8 +590,8 @@ void UTbSimpleSimpleArrayInterfaceMsgBusSpec::Define()
 		TArray<float> TestValue = TArray<float>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropFloat32(), TestValue);
 
-		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnPropFloat32Changed.AddLambda([this, TestDone](const TArray<float>& InPropFloat32)
+		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleArrayInterfacePublisher->OnPropFloat32Changed.AddLambda([this, TestDone](const TArray<float>& InPropFloat32)
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -638,8 +638,8 @@ void UTbSimpleSimpleArrayInterfaceMsgBusSpec::Define()
 		TArray<double> TestValue = TArray<double>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropFloat64(), TestValue);
 
-		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnPropFloat64Changed.AddLambda([this, TestDone](const TArray<double>& InPropFloat64)
+		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleArrayInterfacePublisher->OnPropFloat64Changed.AddLambda([this, TestDone](const TArray<double>& InPropFloat64)
 			{
 			TArray<double> TestValue = TArray<double>();
 			// use different test value
@@ -660,8 +660,8 @@ void UTbSimpleSimpleArrayInterfaceMsgBusSpec::Define()
 		TArray<double> TestValue = TArray<double>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropFloat64(), TestValue);
 
-		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnPropFloat64Changed.AddLambda([this, TestDone](const TArray<double>& InPropFloat64)
+		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleArrayInterfacePublisher->OnPropFloat64Changed.AddLambda([this, TestDone](const TArray<double>& InPropFloat64)
 			{
 			TArray<double> TestValue = TArray<double>();
 			// use different test value
@@ -682,8 +682,8 @@ void UTbSimpleSimpleArrayInterfaceMsgBusSpec::Define()
 		TArray<double> TestValue = TArray<double>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropFloat64(), TestValue);
 
-		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnPropFloat64Changed.AddLambda([this, TestDone](const TArray<double>& InPropFloat64)
+		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleArrayInterfacePublisher->OnPropFloat64Changed.AddLambda([this, TestDone](const TArray<double>& InPropFloat64)
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -730,8 +730,8 @@ void UTbSimpleSimpleArrayInterfaceMsgBusSpec::Define()
 		TArray<FString> TestValue = TArray<FString>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropString(), TestValue);
 
-		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnPropStringChanged.AddLambda([this, TestDone](const TArray<FString>& InPropString)
+		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleArrayInterfacePublisher->OnPropStringChanged.AddLambda([this, TestDone](const TArray<FString>& InPropString)
 			{
 			TArray<FString> TestValue = TArray<FString>();
 			// use different test value
@@ -752,8 +752,8 @@ void UTbSimpleSimpleArrayInterfaceMsgBusSpec::Define()
 		TArray<FString> TestValue = TArray<FString>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropString(), TestValue);
 
-		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnPropStringChanged.AddLambda([this, TestDone](const TArray<FString>& InPropString)
+		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleArrayInterfacePublisher->OnPropStringChanged.AddLambda([this, TestDone](const TArray<FString>& InPropString)
 			{
 			TArray<FString> TestValue = TArray<FString>();
 			// use different test value
@@ -774,8 +774,8 @@ void UTbSimpleSimpleArrayInterfaceMsgBusSpec::Define()
 		TArray<FString> TestValue = TArray<FString>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropString(), TestValue);
 
-		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnPropStringChanged.AddLambda([this, TestDone](const TArray<FString>& InPropString)
+		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleArrayInterfacePublisher->OnPropStringChanged.AddLambda([this, TestDone](const TArray<FString>& InPropString)
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -898,8 +898,8 @@ void UTbSimpleSimpleArrayInterfaceMsgBusSpec::Define()
 
 	LatentIt("Signal.SigBool", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnSigBoolSignal.AddLambda([this, TestDone](const TArray<bool>& InParamBool)
+		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleArrayInterfacePublisher->OnSigBoolSignal.AddLambda([this, TestDone](const TArray<bool>& InParamBool)
 			{
 			// known test value
 			TArray<bool> ParamBoolTestValue = TArray<bool>(); // default value
@@ -911,13 +911,13 @@ void UTbSimpleSimpleArrayInterfaceMsgBusSpec::Define()
 		// use different test value
 		TArray<bool> ParamBoolTestValue = TArray<bool>(); // default value
 		ParamBoolTestValue.Add(true);
-		TbSimpleSimpleArrayInterfaceSignals->BroadcastSigBoolSignal(ParamBoolTestValue);
+		TbSimpleSimpleArrayInterfacePublisher->BroadcastSigBoolSignal(ParamBoolTestValue);
 	});
 
 	LatentIt("Signal.SigInt", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnSigIntSignal.AddLambda([this, TestDone](const TArray<int32>& InParamInt)
+		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleArrayInterfacePublisher->OnSigIntSignal.AddLambda([this, TestDone](const TArray<int32>& InParamInt)
 			{
 			// known test value
 			TArray<int32> ParamIntTestValue = TArray<int32>(); // default value
@@ -929,13 +929,13 @@ void UTbSimpleSimpleArrayInterfaceMsgBusSpec::Define()
 		// use different test value
 		TArray<int32> ParamIntTestValue = TArray<int32>(); // default value
 		ParamIntTestValue.Add(1);
-		TbSimpleSimpleArrayInterfaceSignals->BroadcastSigIntSignal(ParamIntTestValue);
+		TbSimpleSimpleArrayInterfacePublisher->BroadcastSigIntSignal(ParamIntTestValue);
 	});
 
 	LatentIt("Signal.SigInt32", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnSigInt32Signal.AddLambda([this, TestDone](const TArray<int32>& InParamInt32)
+		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleArrayInterfacePublisher->OnSigInt32Signal.AddLambda([this, TestDone](const TArray<int32>& InParamInt32)
 			{
 			// known test value
 			TArray<int32> ParamInt32TestValue = TArray<int32>(); // default value
@@ -947,13 +947,13 @@ void UTbSimpleSimpleArrayInterfaceMsgBusSpec::Define()
 		// use different test value
 		TArray<int32> ParamInt32TestValue = TArray<int32>(); // default value
 		ParamInt32TestValue.Add(1);
-		TbSimpleSimpleArrayInterfaceSignals->BroadcastSigInt32Signal(ParamInt32TestValue);
+		TbSimpleSimpleArrayInterfacePublisher->BroadcastSigInt32Signal(ParamInt32TestValue);
 	});
 
 	LatentIt("Signal.SigInt64", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnSigInt64Signal.AddLambda([this, TestDone](const TArray<int64>& InParamInt64)
+		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleArrayInterfacePublisher->OnSigInt64Signal.AddLambda([this, TestDone](const TArray<int64>& InParamInt64)
 			{
 			// known test value
 			TArray<int64> ParamInt64TestValue = TArray<int64>(); // default value
@@ -965,13 +965,13 @@ void UTbSimpleSimpleArrayInterfaceMsgBusSpec::Define()
 		// use different test value
 		TArray<int64> ParamInt64TestValue = TArray<int64>(); // default value
 		ParamInt64TestValue.Add(1LL);
-		TbSimpleSimpleArrayInterfaceSignals->BroadcastSigInt64Signal(ParamInt64TestValue);
+		TbSimpleSimpleArrayInterfacePublisher->BroadcastSigInt64Signal(ParamInt64TestValue);
 	});
 
 	LatentIt("Signal.SigFloat", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnSigFloatSignal.AddLambda([this, TestDone](const TArray<float>& InParamFloat)
+		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleArrayInterfacePublisher->OnSigFloatSignal.AddLambda([this, TestDone](const TArray<float>& InParamFloat)
 			{
 			// known test value
 			TArray<float> ParamFloatTestValue = TArray<float>(); // default value
@@ -983,13 +983,13 @@ void UTbSimpleSimpleArrayInterfaceMsgBusSpec::Define()
 		// use different test value
 		TArray<float> ParamFloatTestValue = TArray<float>(); // default value
 		ParamFloatTestValue.Add(1.0f);
-		TbSimpleSimpleArrayInterfaceSignals->BroadcastSigFloatSignal(ParamFloatTestValue);
+		TbSimpleSimpleArrayInterfacePublisher->BroadcastSigFloatSignal(ParamFloatTestValue);
 	});
 
 	LatentIt("Signal.SigFloat32", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnSigFloat32Signal.AddLambda([this, TestDone](const TArray<float>& InParamFloa32)
+		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleArrayInterfacePublisher->OnSigFloat32Signal.AddLambda([this, TestDone](const TArray<float>& InParamFloa32)
 			{
 			// known test value
 			TArray<float> ParamFloa32TestValue = TArray<float>(); // default value
@@ -1001,13 +1001,13 @@ void UTbSimpleSimpleArrayInterfaceMsgBusSpec::Define()
 		// use different test value
 		TArray<float> ParamFloa32TestValue = TArray<float>(); // default value
 		ParamFloa32TestValue.Add(1.0f);
-		TbSimpleSimpleArrayInterfaceSignals->BroadcastSigFloat32Signal(ParamFloa32TestValue);
+		TbSimpleSimpleArrayInterfacePublisher->BroadcastSigFloat32Signal(ParamFloa32TestValue);
 	});
 
 	LatentIt("Signal.SigFloat64", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnSigFloat64Signal.AddLambda([this, TestDone](const TArray<double>& InParamFloat64)
+		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleArrayInterfacePublisher->OnSigFloat64Signal.AddLambda([this, TestDone](const TArray<double>& InParamFloat64)
 			{
 			// known test value
 			TArray<double> ParamFloat64TestValue = TArray<double>(); // default value
@@ -1019,13 +1019,13 @@ void UTbSimpleSimpleArrayInterfaceMsgBusSpec::Define()
 		// use different test value
 		TArray<double> ParamFloat64TestValue = TArray<double>(); // default value
 		ParamFloat64TestValue.Add(1.0);
-		TbSimpleSimpleArrayInterfaceSignals->BroadcastSigFloat64Signal(ParamFloat64TestValue);
+		TbSimpleSimpleArrayInterfacePublisher->BroadcastSigFloat64Signal(ParamFloat64TestValue);
 	});
 
 	LatentIt("Signal.SigString", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		UTbSimpleSimpleArrayInterfaceSignals* TbSimpleSimpleArrayInterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSimpleSimpleArrayInterfaceSignals->OnSigStringSignal.AddLambda([this, TestDone](const TArray<FString>& InParamString)
+		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSimpleSimpleArrayInterfacePublisher->OnSigStringSignal.AddLambda([this, TestDone](const TArray<FString>& InParamString)
 			{
 			// known test value
 			TArray<FString> ParamStringTestValue = TArray<FString>(); // default value
@@ -1037,7 +1037,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusSpec::Define()
 		// use different test value
 		TArray<FString> ParamStringTestValue = TArray<FString>(); // default value
 		ParamStringTestValue.Add(FString("xyz"));
-		TbSimpleSimpleArrayInterfaceSignals->BroadcastSigStringSignal(ParamStringTestValue);
+		TbSimpleSimpleArrayInterfacePublisher->BroadcastSigStringSignal(ParamStringTestValue);
 	});
 }
 } // namespace Tests

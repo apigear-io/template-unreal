@@ -63,16 +63,16 @@ public:
 
 UAbstractTbEnumEnumInterface::UAbstractTbEnumEnumInterface()
 {
-	TbEnumEnumInterfaceSignals = NewObject<UTbEnumEnumInterfaceSignals>();
+	TbEnumEnumInterfacePublisher = NewObject<UTbEnumEnumInterfacePublisher>();
 }
 
-UTbEnumEnumInterfaceSignals* UAbstractTbEnumEnumInterface::_GetSignals()
+UTbEnumEnumInterfacePublisher* UAbstractTbEnumEnumInterface::_GetPublisher()
 {
-	if (!TbEnumEnumInterfaceSignals)
+	if (!TbEnumEnumInterfacePublisher)
 	{
-		TbEnumEnumInterfaceSignals = NewObject<UTbEnumEnumInterfaceSignals>();
+		TbEnumEnumInterfacePublisher = NewObject<UTbEnumEnumInterfacePublisher>();
 	}
-	return TbEnumEnumInterfaceSignals;
+	return TbEnumEnumInterfacePublisher;
 }
 
 ETbEnumEnum0 UAbstractTbEnumEnumInterface::GetProp0_Private() const
@@ -268,25 +268,25 @@ void UAbstractTbEnumEnumInterface::Deinitialize()
 	check(bInitialized);
 	bInitialized = false;
 
-	if (TbEnumEnumInterfaceSignals)
+	if (TbEnumEnumInterfacePublisher)
 	{
-		TbEnumEnumInterfaceSignals->OnSig0Signal.RemoveAll(TbEnumEnumInterfaceSignals);
-		TbEnumEnumInterfaceSignals->OnSig0SignalBP.RemoveAll(TbEnumEnumInterfaceSignals);
-		TbEnumEnumInterfaceSignals->OnSig1Signal.RemoveAll(TbEnumEnumInterfaceSignals);
-		TbEnumEnumInterfaceSignals->OnSig1SignalBP.RemoveAll(TbEnumEnumInterfaceSignals);
-		TbEnumEnumInterfaceSignals->OnSig2Signal.RemoveAll(TbEnumEnumInterfaceSignals);
-		TbEnumEnumInterfaceSignals->OnSig2SignalBP.RemoveAll(TbEnumEnumInterfaceSignals);
-		TbEnumEnumInterfaceSignals->OnSig3Signal.RemoveAll(TbEnumEnumInterfaceSignals);
-		TbEnumEnumInterfaceSignals->OnSig3SignalBP.RemoveAll(TbEnumEnumInterfaceSignals);
+		TbEnumEnumInterfacePublisher->OnSig0Signal.RemoveAll(TbEnumEnumInterfacePublisher);
+		TbEnumEnumInterfacePublisher->OnSig0SignalBP.RemoveAll(TbEnumEnumInterfacePublisher);
+		TbEnumEnumInterfacePublisher->OnSig1Signal.RemoveAll(TbEnumEnumInterfacePublisher);
+		TbEnumEnumInterfacePublisher->OnSig1SignalBP.RemoveAll(TbEnumEnumInterfacePublisher);
+		TbEnumEnumInterfacePublisher->OnSig2Signal.RemoveAll(TbEnumEnumInterfacePublisher);
+		TbEnumEnumInterfacePublisher->OnSig2SignalBP.RemoveAll(TbEnumEnumInterfacePublisher);
+		TbEnumEnumInterfacePublisher->OnSig3Signal.RemoveAll(TbEnumEnumInterfacePublisher);
+		TbEnumEnumInterfacePublisher->OnSig3SignalBP.RemoveAll(TbEnumEnumInterfacePublisher);
 
-		TbEnumEnumInterfaceSignals->OnProp0Changed.RemoveAll(TbEnumEnumInterfaceSignals);
-		TbEnumEnumInterfaceSignals->OnProp0ChangedBP.RemoveAll(TbEnumEnumInterfaceSignals);
-		TbEnumEnumInterfaceSignals->OnProp1Changed.RemoveAll(TbEnumEnumInterfaceSignals);
-		TbEnumEnumInterfaceSignals->OnProp1ChangedBP.RemoveAll(TbEnumEnumInterfaceSignals);
-		TbEnumEnumInterfaceSignals->OnProp2Changed.RemoveAll(TbEnumEnumInterfaceSignals);
-		TbEnumEnumInterfaceSignals->OnProp2ChangedBP.RemoveAll(TbEnumEnumInterfaceSignals);
-		TbEnumEnumInterfaceSignals->OnProp3Changed.RemoveAll(TbEnumEnumInterfaceSignals);
-		TbEnumEnumInterfaceSignals->OnProp3ChangedBP.RemoveAll(TbEnumEnumInterfaceSignals);
+		TbEnumEnumInterfacePublisher->OnProp0Changed.RemoveAll(TbEnumEnumInterfacePublisher);
+		TbEnumEnumInterfacePublisher->OnProp0ChangedBP.RemoveAll(TbEnumEnumInterfacePublisher);
+		TbEnumEnumInterfacePublisher->OnProp1Changed.RemoveAll(TbEnumEnumInterfacePublisher);
+		TbEnumEnumInterfacePublisher->OnProp1ChangedBP.RemoveAll(TbEnumEnumInterfacePublisher);
+		TbEnumEnumInterfacePublisher->OnProp2Changed.RemoveAll(TbEnumEnumInterfacePublisher);
+		TbEnumEnumInterfacePublisher->OnProp2ChangedBP.RemoveAll(TbEnumEnumInterfacePublisher);
+		TbEnumEnumInterfacePublisher->OnProp3Changed.RemoveAll(TbEnumEnumInterfacePublisher);
+		TbEnumEnumInterfacePublisher->OnProp3ChangedBP.RemoveAll(TbEnumEnumInterfacePublisher);
 	}
 
 	Super::Deinitialize();

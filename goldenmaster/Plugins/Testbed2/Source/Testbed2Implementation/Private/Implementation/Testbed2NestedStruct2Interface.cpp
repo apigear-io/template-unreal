@@ -28,7 +28,7 @@ void UTestbed2NestedStruct2InterfaceImplementation::SetProp1(const FTestbed2Nest
 	if (Prop1 != InProp1)
 	{
 		Prop1 = InProp1;
-		_GetSignals()->BroadcastProp1Changed(Prop1);
+		_GetPublisher()->BroadcastProp1Changed(Prop1);
 	}
 }
 FTestbed2NestedStruct2 UTestbed2NestedStruct2InterfaceImplementation::GetProp2() const
@@ -41,7 +41,7 @@ void UTestbed2NestedStruct2InterfaceImplementation::SetProp2(const FTestbed2Nest
 	if (Prop2 != InProp2)
 	{
 		Prop2 = InProp2;
-		_GetSignals()->BroadcastProp2Changed(Prop2);
+		_GetPublisher()->BroadcastProp2Changed(Prop2);
 	}
 }
 
@@ -65,11 +65,11 @@ void UTestbed2NestedStruct2InterfaceImplementation::_ResetProperties()
 	if (Prop1 != FTestbed2NestedStruct1())
 	{
 		Prop1 = FTestbed2NestedStruct1();
-		_GetSignals()->BroadcastProp1Changed(Prop1);
+		_GetPublisher()->BroadcastProp1Changed(Prop1);
 	}
 	if (Prop2 != FTestbed2NestedStruct2())
 	{
 		Prop2 = FTestbed2NestedStruct2();
-		_GetSignals()->BroadcastProp2Changed(Prop2);
+		_GetPublisher()->BroadcastProp2Changed(Prop2);
 	}
 }

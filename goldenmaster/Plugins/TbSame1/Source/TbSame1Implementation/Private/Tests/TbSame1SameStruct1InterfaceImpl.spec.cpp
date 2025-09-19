@@ -60,8 +60,8 @@ void UTbSame1SameStruct1InterfaceImplSpec::Define()
 		FTbSame1Struct1 TestValue = FTbSame1Struct1(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp1(), TestValue);
 
-		UTbSame1SameStruct1InterfaceSignals* TbSame1SameStruct1InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSame1SameStruct1InterfaceSignals->OnProp1Changed.AddLambda([this, TestDone](const FTbSame1Struct1& InProp1)
+		UTbSame1SameStruct1InterfacePublisher* TbSame1SameStruct1InterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSame1SameStruct1InterfacePublisher->OnProp1Changed.AddLambda([this, TestDone](const FTbSame1Struct1& InProp1)
 			{
 			FTbSame1Struct1 TestValue = FTbSame1Struct1();
 			// use different test value
@@ -83,8 +83,8 @@ void UTbSame1SameStruct1InterfaceImplSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetProp1(), TestValue);
 
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
-		UTbSame1SameStruct1InterfaceSignals* TbSame1SameStruct1InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSame1SameStruct1InterfaceSignals->OnProp1ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame1SameStruct1InterfaceImplHelper::Prop1PropertyCb);
+		UTbSame1SameStruct1InterfacePublisher* TbSame1SameStruct1InterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSame1SameStruct1InterfacePublisher->OnProp1ChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame1SameStruct1InterfaceImplHelper::Prop1PropertyCb);
 		// use different test value
 		TestValue = createTestFTbSame1Struct1();
 		ImplFixture->GetImplementation()->SetProp1(TestValue);
@@ -98,8 +98,8 @@ void UTbSame1SameStruct1InterfaceImplSpec::Define()
 
 	LatentIt("Signal.Sig1", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		UTbSame1SameStruct1InterfaceSignals* TbSame1SameStruct1InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSame1SameStruct1InterfaceSignals->OnSig1Signal.AddLambda([this, TestDone](const FTbSame1Struct1& InParam1)
+		UTbSame1SameStruct1InterfacePublisher* TbSame1SameStruct1InterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSame1SameStruct1InterfacePublisher->OnSig1Signal.AddLambda([this, TestDone](const FTbSame1Struct1& InParam1)
 			{
 			// known test value
 			FTbSame1Struct1 Param1TestValue = createTestFTbSame1Struct1();
@@ -109,18 +109,18 @@ void UTbSame1SameStruct1InterfaceImplSpec::Define()
 
 		// use different test value
 		FTbSame1Struct1 Param1TestValue = createTestFTbSame1Struct1();
-		TbSame1SameStruct1InterfaceSignals->BroadcastSig1Signal(Param1TestValue);
+		TbSame1SameStruct1InterfacePublisher->BroadcastSig1Signal(Param1TestValue);
 	});
 
 	LatentIt("Signal.Sig1BP", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
-		UTbSame1SameStruct1InterfaceSignals* TbSame1SameStruct1InterfaceSignals = ImplFixture->GetImplementation()->_GetSignals();
-		TbSame1SameStruct1InterfaceSignals->OnSig1SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame1SameStruct1InterfaceImplHelper::Sig1SignalCb);
+		UTbSame1SameStruct1InterfacePublisher* TbSame1SameStruct1InterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		TbSame1SameStruct1InterfacePublisher->OnSig1SignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UTbSame1SameStruct1InterfaceImplHelper::Sig1SignalCb);
 
 		// use different test value
 		FTbSame1Struct1 Param1TestValue = createTestFTbSame1Struct1();
-		TbSame1SameStruct1InterfaceSignals->BroadcastSig1Signal(Param1TestValue);
+		TbSame1SameStruct1InterfacePublisher->BroadcastSig1Signal(Param1TestValue);
 	});
 }
 

@@ -62,8 +62,8 @@ void UCounterCounterImplSpec::Define()
 		FCustomTypesVector3D TestValue = FCustomTypesVector3D(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetVector(), TestValue);
 
-		UCounterCounterSignals* CounterCounterSignals = ImplFixture->GetImplementation()->_GetSignals();
-		CounterCounterSignals->OnVectorChanged.AddLambda([this, TestDone](const FCustomTypesVector3D& InVector)
+		UCounterCounterPublisher* CounterCounterPublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		CounterCounterPublisher->OnVectorChanged.AddLambda([this, TestDone](const FCustomTypesVector3D& InVector)
 			{
 			FCustomTypesVector3D TestValue = FCustomTypesVector3D();
 			// use different test value
@@ -85,8 +85,8 @@ void UCounterCounterImplSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetVector(), TestValue);
 
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
-		UCounterCounterSignals* CounterCounterSignals = ImplFixture->GetImplementation()->_GetSignals();
-		CounterCounterSignals->OnVectorChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UCounterCounterImplHelper::VectorPropertyCb);
+		UCounterCounterPublisher* CounterCounterPublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		CounterCounterPublisher->OnVectorChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UCounterCounterImplHelper::VectorPropertyCb);
 		// use different test value
 		TestValue = createTestFCustomTypesVector3D();
 		ImplFixture->GetImplementation()->SetVector(TestValue);
@@ -112,8 +112,8 @@ void UCounterCounterImplSpec::Define()
 		TArray<FCustomTypesVector3D> TestValue = TArray<FCustomTypesVector3D>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetVectorArray(), TestValue);
 
-		UCounterCounterSignals* CounterCounterSignals = ImplFixture->GetImplementation()->_GetSignals();
-		CounterCounterSignals->OnVectorArrayChanged.AddLambda([this, TestDone](const TArray<FCustomTypesVector3D>& InVectorArray)
+		UCounterCounterPublisher* CounterCounterPublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		CounterCounterPublisher->OnVectorArrayChanged.AddLambda([this, TestDone](const TArray<FCustomTypesVector3D>& InVectorArray)
 			{
 			TArray<FCustomTypesVector3D> TestValue = TArray<FCustomTypesVector3D>();
 			// use different test value
@@ -135,8 +135,8 @@ void UCounterCounterImplSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetVectorArray(), TestValue);
 
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
-		UCounterCounterSignals* CounterCounterSignals = ImplFixture->GetImplementation()->_GetSignals();
-		CounterCounterSignals->OnVectorArrayChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UCounterCounterImplHelper::VectorArrayPropertyCb);
+		UCounterCounterPublisher* CounterCounterPublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		CounterCounterPublisher->OnVectorArrayChangedBP.AddDynamic(ImplFixture->GetHelper().Get(), &UCounterCounterImplHelper::VectorArrayPropertyCb);
 		// use different test value
 		TestValue = createTestFCustomTypesVector3DArray();
 		ImplFixture->GetImplementation()->SetVectorArray(TestValue);
@@ -175,8 +175,8 @@ void UCounterCounterImplSpec::Define()
 
 	LatentIt("Signal.ValueChanged", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-		UCounterCounterSignals* CounterCounterSignals = ImplFixture->GetImplementation()->_GetSignals();
-		CounterCounterSignals->OnValueChangedSignal.AddLambda([this, TestDone](const FCustomTypesVector3D& InVector, const FVector& InExternVector, const TArray<FCustomTypesVector3D>& InVectorArray, const TArray<FVector>& InExternVectorArray)
+		UCounterCounterPublisher* CounterCounterPublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		CounterCounterPublisher->OnValueChangedSignal.AddLambda([this, TestDone](const FCustomTypesVector3D& InVector, const FVector& InExternVector, const TArray<FCustomTypesVector3D>& InVectorArray, const TArray<FVector>& InExternVectorArray)
 			{
 			// known test value
 			FCustomTypesVector3D VectorTestValue = createTestFCustomTypesVector3D();
@@ -191,21 +191,21 @@ void UCounterCounterImplSpec::Define()
 		FVector ExternVectorTestValue = FVector(0.f, 0.f, 0.f);
 		TArray<FCustomTypesVector3D> VectorArrayTestValue = createTestFCustomTypesVector3DArray();
 		TArray<FVector> ExternVectorArrayTestValue = TArray<FVector>();
-		CounterCounterSignals->BroadcastValueChangedSignal(VectorTestValue, ExternVectorTestValue, VectorArrayTestValue, ExternVectorArrayTestValue);
+		CounterCounterPublisher->BroadcastValueChangedSignal(VectorTestValue, ExternVectorTestValue, VectorArrayTestValue, ExternVectorArrayTestValue);
 	});
 
 	LatentIt("Signal.ValueChangedBP", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		ImplFixture->GetHelper()->SetTestDone(TestDone);
-		UCounterCounterSignals* CounterCounterSignals = ImplFixture->GetImplementation()->_GetSignals();
-		CounterCounterSignals->OnValueChangedSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UCounterCounterImplHelper::ValueChangedSignalCb);
+		UCounterCounterPublisher* CounterCounterPublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		CounterCounterPublisher->OnValueChangedSignalBP.AddDynamic(ImplFixture->GetHelper().Get(), &UCounterCounterImplHelper::ValueChangedSignalCb);
 
 		// use different test value
 		FCustomTypesVector3D VectorTestValue = createTestFCustomTypesVector3D();
 		FVector ExternVectorTestValue = FVector(0.f, 0.f, 0.f);
 		TArray<FCustomTypesVector3D> VectorArrayTestValue = createTestFCustomTypesVector3DArray();
 		TArray<FVector> ExternVectorArrayTestValue = TArray<FVector>();
-		CounterCounterSignals->BroadcastValueChangedSignal(VectorTestValue, ExternVectorTestValue, VectorArrayTestValue, ExternVectorArrayTestValue);
+		CounterCounterPublisher->BroadcastValueChangedSignal(VectorTestValue, ExternVectorTestValue, VectorArrayTestValue, ExternVectorArrayTestValue);
 	});
 }
 

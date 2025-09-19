@@ -57,31 +57,31 @@ void UCounterCounterOLinkAdapter::setBackendService(TScriptInterface<ICounterCou
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		UCounterCounterSignals* BackendSignals = BackendService->_GetSignals();
-		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service CounterCounter"));
+		UCounterCounterPublisher* BackendPublisher = BackendService->_GetPublisher();
+		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service CounterCounter"));
 		if (OnVectorChangedHandle.IsValid())
 		{
-			BackendSignals->OnVectorChanged.Remove(OnVectorChangedHandle);
+			BackendPublisher->OnVectorChanged.Remove(OnVectorChangedHandle);
 			OnVectorChangedHandle.Reset();
 		}
 		if (OnExternVectorChangedHandle.IsValid())
 		{
-			BackendSignals->OnExternVectorChanged.Remove(OnExternVectorChangedHandle);
+			BackendPublisher->OnExternVectorChanged.Remove(OnExternVectorChangedHandle);
 			OnExternVectorChangedHandle.Reset();
 		}
 		if (OnVectorArrayChangedHandle.IsValid())
 		{
-			BackendSignals->OnVectorArrayChanged.Remove(OnVectorArrayChangedHandle);
+			BackendPublisher->OnVectorArrayChanged.Remove(OnVectorArrayChangedHandle);
 			OnVectorArrayChangedHandle.Reset();
 		}
 		if (OnExternVectorArrayChangedHandle.IsValid())
 		{
-			BackendSignals->OnExternVectorArrayChanged.Remove(OnExternVectorArrayChangedHandle);
+			BackendPublisher->OnExternVectorArrayChanged.Remove(OnExternVectorArrayChangedHandle);
 			OnExternVectorArrayChangedHandle.Reset();
 		}
 		if (OnValueChangedSignalHandle.IsValid())
 		{
-			BackendSignals->OnValueChangedSignal.Remove(OnValueChangedSignalHandle);
+			BackendPublisher->OnValueChangedSignal.Remove(OnValueChangedSignalHandle);
 			OnValueChangedSignalHandle.Reset();
 		}
 	}
@@ -91,14 +91,14 @@ void UCounterCounterOLinkAdapter::setBackendService(TScriptInterface<ICounterCou
 
 	// subscribe to new backend
 	BackendService = InService;
-	UCounterCounterSignals* BackendSignals = BackendService->_GetSignals();
-	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service CounterCounter"));
+	UCounterCounterPublisher* BackendPublisher = BackendService->_GetPublisher();
+	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service CounterCounter"));
 	// connect property changed signals or simple events
-	OnVectorChangedHandle = BackendSignals->OnVectorChanged.AddUObject(this, &UCounterCounterOLinkAdapter::OnVectorChanged);
-	OnExternVectorChangedHandle = BackendSignals->OnExternVectorChanged.AddUObject(this, &UCounterCounterOLinkAdapter::OnExternVectorChanged);
-	OnVectorArrayChangedHandle = BackendSignals->OnVectorArrayChanged.AddUObject(this, &UCounterCounterOLinkAdapter::OnVectorArrayChanged);
-	OnExternVectorArrayChangedHandle = BackendSignals->OnExternVectorArrayChanged.AddUObject(this, &UCounterCounterOLinkAdapter::OnExternVectorArrayChanged);
-	OnValueChangedSignalHandle = BackendSignals->OnValueChangedSignal.AddUObject(this, &UCounterCounterOLinkAdapter::OnValueChanged);
+	OnVectorChangedHandle = BackendPublisher->OnVectorChanged.AddUObject(this, &UCounterCounterOLinkAdapter::OnVectorChanged);
+	OnExternVectorChangedHandle = BackendPublisher->OnExternVectorChanged.AddUObject(this, &UCounterCounterOLinkAdapter::OnExternVectorChanged);
+	OnVectorArrayChangedHandle = BackendPublisher->OnVectorArrayChanged.AddUObject(this, &UCounterCounterOLinkAdapter::OnVectorArrayChanged);
+	OnExternVectorArrayChangedHandle = BackendPublisher->OnExternVectorArrayChanged.AddUObject(this, &UCounterCounterOLinkAdapter::OnExternVectorArrayChanged);
+	OnValueChangedSignalHandle = BackendPublisher->OnValueChangedSignal.AddUObject(this, &UCounterCounterOLinkAdapter::OnValueChanged);
 
 	// update olink source with new backend
 	Source->setBackendService(InService);

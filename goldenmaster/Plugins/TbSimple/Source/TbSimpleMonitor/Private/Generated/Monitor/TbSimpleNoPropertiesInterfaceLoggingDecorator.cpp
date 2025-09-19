@@ -47,10 +47,10 @@ void UTbSimpleNoPropertiesInterfaceLoggingDecorator::setBackendService(TScriptIn
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-		UTbSimpleNoPropertiesInterfaceSignals* BackendSignals = BackendService->_GetSignals();
-		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleNoPropertiesInterface"));
-		BackendSignals->OnSigVoidSignalBP.RemoveDynamic(this, &UTbSimpleNoPropertiesInterfaceLoggingDecorator::OnSigVoid);
-		BackendSignals->OnSigBoolSignalBP.RemoveDynamic(this, &UTbSimpleNoPropertiesInterfaceLoggingDecorator::OnSigBool);
+		UTbSimpleNoPropertiesInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleNoPropertiesInterface"));
+		BackendPublisher->OnSigVoidSignalBP.RemoveDynamic(this, &UTbSimpleNoPropertiesInterfaceLoggingDecorator::OnSigVoid);
+		BackendPublisher->OnSigBoolSignalBP.RemoveDynamic(this, &UTbSimpleNoPropertiesInterfaceLoggingDecorator::OnSigBool);
 	}
 
 	// only set if interface is implemented
@@ -58,24 +58,24 @@ void UTbSimpleNoPropertiesInterfaceLoggingDecorator::setBackendService(TScriptIn
 
 	// subscribe to new backend
 	BackendService = InService;
-	UTbSimpleNoPropertiesInterfaceSignals* BackendSignals = BackendService->_GetSignals();
-	checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleNoPropertiesInterface"));
+	UTbSimpleNoPropertiesInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+	checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleNoPropertiesInterface"));
 	// connect property changed signals or simple events
-	BackendSignals->OnSigVoidSignalBP.AddDynamic(this, &UTbSimpleNoPropertiesInterfaceLoggingDecorator::OnSigVoid);
-	BackendSignals->OnSigBoolSignalBP.AddDynamic(this, &UTbSimpleNoPropertiesInterfaceLoggingDecorator::OnSigBool);
+	BackendPublisher->OnSigVoidSignalBP.AddDynamic(this, &UTbSimpleNoPropertiesInterfaceLoggingDecorator::OnSigVoid);
+	BackendPublisher->OnSigBoolSignalBP.AddDynamic(this, &UTbSimpleNoPropertiesInterfaceLoggingDecorator::OnSigBool);
 	// populate service state to proxy
 }
 
 void UTbSimpleNoPropertiesInterfaceLoggingDecorator::OnSigVoid()
 {
 	TbSimpleNoPropertiesInterfaceTracer::trace_signalSigVoid();
-	_GetSignals()->BroadcastSigVoidSignal();
+	_GetPublisher()->BroadcastSigVoidSignal();
 }
 
 void UTbSimpleNoPropertiesInterfaceLoggingDecorator::OnSigBool(bool bInParamBool)
 {
 	TbSimpleNoPropertiesInterfaceTracer::trace_signalSigBool(bInParamBool);
-	_GetSignals()->BroadcastSigBoolSignal(bInParamBool);
+	_GetPublisher()->BroadcastSigBoolSignal(bInParamBool);
 }
 
 void UTbSimpleNoPropertiesInterfaceLoggingDecorator::FuncVoid()

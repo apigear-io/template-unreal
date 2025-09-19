@@ -372,7 +372,7 @@ void UTestbed2ManyParamInterfaceOLinkClient::applyState(const nlohmann::json& fi
 		Prop1 = fields["prop1"].get<int32>();
 		// reset sent data to the current state
 		_SentData->Prop1 = Prop1;
-		_GetSignals()->BroadcastProp1Changed(Prop1);
+		_GetPublisher()->BroadcastProp1Changed(Prop1);
 	}
 
 	const bool bProp2Changed = fields.contains("prop2") && (Prop2 != fields["prop2"].get<int32>());
@@ -381,7 +381,7 @@ void UTestbed2ManyParamInterfaceOLinkClient::applyState(const nlohmann::json& fi
 		Prop2 = fields["prop2"].get<int32>();
 		// reset sent data to the current state
 		_SentData->Prop2 = Prop2;
-		_GetSignals()->BroadcastProp2Changed(Prop2);
+		_GetPublisher()->BroadcastProp2Changed(Prop2);
 	}
 
 	const bool bProp3Changed = fields.contains("prop3") && (Prop3 != fields["prop3"].get<int32>());
@@ -390,7 +390,7 @@ void UTestbed2ManyParamInterfaceOLinkClient::applyState(const nlohmann::json& fi
 		Prop3 = fields["prop3"].get<int32>();
 		// reset sent data to the current state
 		_SentData->Prop3 = Prop3;
-		_GetSignals()->BroadcastProp3Changed(Prop3);
+		_GetPublisher()->BroadcastProp3Changed(Prop3);
 	}
 
 	const bool bProp4Changed = fields.contains("prop4") && (Prop4 != fields["prop4"].get<int32>());
@@ -399,7 +399,7 @@ void UTestbed2ManyParamInterfaceOLinkClient::applyState(const nlohmann::json& fi
 		Prop4 = fields["prop4"].get<int32>();
 		// reset sent data to the current state
 		_SentData->Prop4 = Prop4;
-		_GetSignals()->BroadcastProp4Changed(Prop4);
+		_GetPublisher()->BroadcastProp4Changed(Prop4);
 	}
 }
 
@@ -408,7 +408,7 @@ void UTestbed2ManyParamInterfaceOLinkClient::emitSignal(const std::string& signa
 	if (signalName == "sig1")
 	{
 		int32 outParam1 = args[0].get<int32>();
-		_GetSignals()->BroadcastSig1Signal(outParam1);
+		_GetPublisher()->BroadcastSig1Signal(outParam1);
 		return;
 	}
 
@@ -416,7 +416,7 @@ void UTestbed2ManyParamInterfaceOLinkClient::emitSignal(const std::string& signa
 	{
 		int32 outParam1 = args[0].get<int32>();
 		int32 outParam2 = args[1].get<int32>();
-		_GetSignals()->BroadcastSig2Signal(outParam1, outParam2);
+		_GetPublisher()->BroadcastSig2Signal(outParam1, outParam2);
 		return;
 	}
 
@@ -425,7 +425,7 @@ void UTestbed2ManyParamInterfaceOLinkClient::emitSignal(const std::string& signa
 		int32 outParam1 = args[0].get<int32>();
 		int32 outParam2 = args[1].get<int32>();
 		int32 outParam3 = args[2].get<int32>();
-		_GetSignals()->BroadcastSig3Signal(outParam1, outParam2, outParam3);
+		_GetPublisher()->BroadcastSig3Signal(outParam1, outParam2, outParam3);
 		return;
 	}
 
@@ -435,7 +435,7 @@ void UTestbed2ManyParamInterfaceOLinkClient::emitSignal(const std::string& signa
 		int32 outParam2 = args[1].get<int32>();
 		int32 outParam3 = args[2].get<int32>();
 		int32 outParam4 = args[3].get<int32>();
-		_GetSignals()->BroadcastSig4Signal(outParam1, outParam2, outParam3, outParam4);
+		_GetPublisher()->BroadcastSig4Signal(outParam1, outParam2, outParam3, outParam4);
 		return;
 	}
 }

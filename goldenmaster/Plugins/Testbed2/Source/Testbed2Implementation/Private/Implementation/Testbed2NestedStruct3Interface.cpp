@@ -28,7 +28,7 @@ void UTestbed2NestedStruct3InterfaceImplementation::SetProp1(const FTestbed2Nest
 	if (Prop1 != InProp1)
 	{
 		Prop1 = InProp1;
-		_GetSignals()->BroadcastProp1Changed(Prop1);
+		_GetPublisher()->BroadcastProp1Changed(Prop1);
 	}
 }
 FTestbed2NestedStruct2 UTestbed2NestedStruct3InterfaceImplementation::GetProp2() const
@@ -41,7 +41,7 @@ void UTestbed2NestedStruct3InterfaceImplementation::SetProp2(const FTestbed2Nest
 	if (Prop2 != InProp2)
 	{
 		Prop2 = InProp2;
-		_GetSignals()->BroadcastProp2Changed(Prop2);
+		_GetPublisher()->BroadcastProp2Changed(Prop2);
 	}
 }
 FTestbed2NestedStruct3 UTestbed2NestedStruct3InterfaceImplementation::GetProp3() const
@@ -54,7 +54,7 @@ void UTestbed2NestedStruct3InterfaceImplementation::SetProp3(const FTestbed2Nest
 	if (Prop3 != InProp3)
 	{
 		Prop3 = InProp3;
-		_GetSignals()->BroadcastProp3Changed(Prop3);
+		_GetPublisher()->BroadcastProp3Changed(Prop3);
 	}
 }
 
@@ -87,16 +87,16 @@ void UTestbed2NestedStruct3InterfaceImplementation::_ResetProperties()
 	if (Prop1 != FTestbed2NestedStruct1())
 	{
 		Prop1 = FTestbed2NestedStruct1();
-		_GetSignals()->BroadcastProp1Changed(Prop1);
+		_GetPublisher()->BroadcastProp1Changed(Prop1);
 	}
 	if (Prop2 != FTestbed2NestedStruct2())
 	{
 		Prop2 = FTestbed2NestedStruct2();
-		_GetSignals()->BroadcastProp2Changed(Prop2);
+		_GetPublisher()->BroadcastProp2Changed(Prop2);
 	}
 	if (Prop3 != FTestbed2NestedStruct3())
 	{
 		Prop3 = FTestbed2NestedStruct3();
-		_GetSignals()->BroadcastProp3Changed(Prop3);
+		_GetPublisher()->BroadcastProp3Changed(Prop3);
 	}
 }

@@ -55,12 +55,12 @@ public:
 };
 
 /**
- * Class UTbSame1SameEnum1InterfaceInterfaceSignals
+ * Class UTbSame1SameEnum1InterfaceInterfacePublisher
  * Contains delegates for properties and signals
  * this is needed since we cannot declare delegates on an UInterface
  */
 UCLASS(BlueprintType)
-class TBSAME1API_API UTbSame1SameEnum1InterfaceSignals : public UObject
+class TBSAME1API_API UTbSame1SameEnum1InterfacePublisher : public UObject
 {
 	GENERATED_BODY()
 
@@ -108,7 +108,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1|SameEnum1Interface|Signals")
 	void Subscribe(const TScriptInterface<ITbSame1SameEnum1InterfaceBPSubscriberInterface>& Subscriber)
 	{
-		if (!Subscriber.GetObject()) return;
+		if (!Subscriber.GetObject())
+		{
+			return;
+		}
 		Subscribers.Remove(Subscriber);
 		Subscribers.Add(Subscriber);
 	}
@@ -117,6 +120,7 @@ public:
 	{
 		Subscribers.Remove(Subscriber);
 	}
+
 private:
 	UPROPERTY()
 	TArray<TScriptInterface<ITbSame1SameEnum1InterfaceBPSubscriberInterface>> Subscribers;
@@ -143,7 +147,7 @@ public:
 	/// this is needed since we cannot declare delegates on an UInterface
 	/// @return object with signals for property state changes or standalone signals
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1|SameEnum1Interface")
-	virtual UTbSame1SameEnum1InterfaceSignals* _GetSignals() = 0;
+	virtual UTbSame1SameEnum1InterfacePublisher* _GetPublisher() = 0;
 
 	// methods
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1|SameEnum1Interface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))

@@ -28,7 +28,7 @@ void UTbSame2SameEnum2InterfaceImplementation::SetProp1(ETbSame2Enum1 InProp1)
 	if (Prop1 != InProp1)
 	{
 		Prop1 = InProp1;
-		_GetSignals()->BroadcastProp1Changed(Prop1);
+		_GetPublisher()->BroadcastProp1Changed(Prop1);
 	}
 }
 ETbSame2Enum2 UTbSame2SameEnum2InterfaceImplementation::GetProp2() const
@@ -41,7 +41,7 @@ void UTbSame2SameEnum2InterfaceImplementation::SetProp2(ETbSame2Enum2 InProp2)
 	if (Prop2 != InProp2)
 	{
 		Prop2 = InProp2;
-		_GetSignals()->BroadcastProp2Changed(Prop2);
+		_GetPublisher()->BroadcastProp2Changed(Prop2);
 	}
 }
 
@@ -65,11 +65,11 @@ void UTbSame2SameEnum2InterfaceImplementation::_ResetProperties()
 	if (Prop1 != ETbSame2Enum1::TS2E1_Value1)
 	{
 		Prop1 = ETbSame2Enum1::TS2E1_Value1;
-		_GetSignals()->BroadcastProp1Changed(Prop1);
+		_GetPublisher()->BroadcastProp1Changed(Prop1);
 	}
 	if (Prop2 != ETbSame2Enum2::TS2E2_Value1)
 	{
 		Prop2 = ETbSame2Enum2::TS2E2_Value1;
-		_GetSignals()->BroadcastProp2Changed(Prop2);
+		_GetPublisher()->BroadcastProp2Changed(Prop2);
 	}
 }

@@ -88,12 +88,12 @@ public:
 };
 
 /**
- * Class UTestbed2ManyParamInterfaceInterfaceSignals
+ * Class UTestbed2ManyParamInterfaceInterfacePublisher
  * Contains delegates for properties and signals
  * this is needed since we cannot declare delegates on an UInterface
  */
 UCLASS(BlueprintType)
-class TESTBED2API_API UTestbed2ManyParamInterfaceSignals : public UObject
+class TESTBED2API_API UTestbed2ManyParamInterfacePublisher : public UObject
 {
 	GENERATED_BODY()
 
@@ -261,7 +261,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals")
 	void Subscribe(const TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>& Subscriber)
 	{
-		if (!Subscriber.GetObject()) return;
+		if (!Subscriber.GetObject())
+		{
+			return;
+		}
 		Subscribers.Remove(Subscriber);
 		Subscribers.Add(Subscriber);
 	}
@@ -270,6 +273,7 @@ public:
 	{
 		Subscribers.Remove(Subscriber);
 	}
+
 private:
 	UPROPERTY()
 	TArray<TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>> Subscribers;
@@ -296,7 +300,7 @@ public:
 	/// this is needed since we cannot declare delegates on an UInterface
 	/// @return object with signals for property state changes or standalone signals
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
-	virtual UTestbed2ManyParamInterfaceSignals* _GetSignals() = 0;
+	virtual UTestbed2ManyParamInterfacePublisher* _GetPublisher() = 0;
 
 	// methods
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))

@@ -213,7 +213,7 @@ void UTbSame2SameEnum1InterfaceOLinkClient::applyState(const nlohmann::json& fie
 		Prop1 = fields["prop1"].get<ETbSame2Enum1>();
 		// reset sent data to the current state
 		_SentData->Prop1 = Prop1;
-		_GetSignals()->BroadcastProp1Changed(Prop1);
+		_GetPublisher()->BroadcastProp1Changed(Prop1);
 	}
 }
 
@@ -222,7 +222,7 @@ void UTbSame2SameEnum1InterfaceOLinkClient::emitSignal(const std::string& signal
 	if (signalName == "sig1")
 	{
 		ETbSame2Enum1 outParam1 = args[0].get<ETbSame2Enum1>();
-		_GetSignals()->BroadcastSig1Signal(outParam1);
+		_GetPublisher()->BroadcastSig1Signal(outParam1);
 		return;
 	}
 }

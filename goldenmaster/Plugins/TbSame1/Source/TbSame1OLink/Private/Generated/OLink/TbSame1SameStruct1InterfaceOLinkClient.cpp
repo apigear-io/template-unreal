@@ -221,7 +221,7 @@ void UTbSame1SameStruct1InterfaceOLinkClient::applyState(const nlohmann::json& f
 			FScopeLock Lock(&(_SentData->Prop1Mutex));
 			_SentData->Prop1 = Prop1;
 		}
-		_GetSignals()->BroadcastProp1Changed(Prop1);
+		_GetPublisher()->BroadcastProp1Changed(Prop1);
 	}
 }
 
@@ -230,7 +230,7 @@ void UTbSame1SameStruct1InterfaceOLinkClient::emitSignal(const std::string& sign
 	if (signalName == "sig1")
 	{
 		const FTbSame1Struct1& outParam1 = args[0].get<FTbSame1Struct1>();
-		_GetSignals()->BroadcastSig1Signal(outParam1);
+		_GetPublisher()->BroadcastSig1Signal(outParam1);
 		return;
 	}
 }

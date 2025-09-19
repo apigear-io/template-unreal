@@ -208,7 +208,7 @@ void UTbRefIfacesParentIfMsgBusClient::OnConnectionInit(const FTbRefIfacesParent
 			FScopeLock Lock(&(_SentData->LocalIfMutex));
 			_SentData->LocalIf = LocalIf;
 		}
-		_GetSignals()->BroadcastLocalIfChanged(LocalIf);
+		_GetPublisher()->BroadcastLocalIfChanged(LocalIf);
 	}
 
 	const bool bLocalIfListChanged = InMessage.LocalIfList != LocalIfList;
@@ -220,7 +220,7 @@ void UTbRefIfacesParentIfMsgBusClient::OnConnectionInit(const FTbRefIfacesParent
 			FScopeLock Lock(&(_SentData->LocalIfListMutex));
 			_SentData->LocalIfList = LocalIfList;
 		}
-		_GetSignals()->BroadcastLocalIfListChanged(LocalIfList);
+		_GetPublisher()->BroadcastLocalIfListChanged(LocalIfList);
 	}
 
 	const bool bImportedIfChanged = InMessage.ImportedIf != ImportedIf;
@@ -232,7 +232,7 @@ void UTbRefIfacesParentIfMsgBusClient::OnConnectionInit(const FTbRefIfacesParent
 			FScopeLock Lock(&(_SentData->ImportedIfMutex));
 			_SentData->ImportedIf = ImportedIf;
 		}
-		_GetSignals()->BroadcastImportedIfChanged(ImportedIf);
+		_GetPublisher()->BroadcastImportedIfChanged(ImportedIf);
 	}
 
 	const bool bImportedIfListChanged = InMessage.ImportedIfList != ImportedIfList;
@@ -244,7 +244,7 @@ void UTbRefIfacesParentIfMsgBusClient::OnConnectionInit(const FTbRefIfacesParent
 			FScopeLock Lock(&(_SentData->ImportedIfListMutex));
 			_SentData->ImportedIfList = ImportedIfList;
 		}
-		_GetSignals()->BroadcastImportedIfListChanged(ImportedIfList);
+		_GetPublisher()->BroadcastImportedIfListChanged(ImportedIfList);
 	}
 
 	_ConnectionStatusChanged.Broadcast(true);
@@ -635,7 +635,7 @@ void UTbRefIfacesParentIfMsgBusClient::OnLocalIfSignal(const FTbRefIfacesParentI
 		return;
 	}
 
-	_GetSignals()->BroadcastLocalIfSignalSignal(InMessage.Param);
+	_GetPublisher()->BroadcastLocalIfSignalSignal(InMessage.Param);
 	return;
 }
 
@@ -647,7 +647,7 @@ void UTbRefIfacesParentIfMsgBusClient::OnLocalIfSignalList(const FTbRefIfacesPar
 		return;
 	}
 
-	_GetSignals()->BroadcastLocalIfSignalListSignal(InMessage.Param);
+	_GetPublisher()->BroadcastLocalIfSignalListSignal(InMessage.Param);
 	return;
 }
 
@@ -659,7 +659,7 @@ void UTbRefIfacesParentIfMsgBusClient::OnImportedIfSignal(const FTbRefIfacesPare
 		return;
 	}
 
-	_GetSignals()->BroadcastImportedIfSignalSignal(InMessage.Param);
+	_GetPublisher()->BroadcastImportedIfSignalSignal(InMessage.Param);
 	return;
 }
 
@@ -671,7 +671,7 @@ void UTbRefIfacesParentIfMsgBusClient::OnImportedIfSignalList(const FTbRefIfaces
 		return;
 	}
 
-	_GetSignals()->BroadcastImportedIfSignalListSignal(InMessage.Param);
+	_GetPublisher()->BroadcastImportedIfSignalListSignal(InMessage.Param);
 	return;
 }
 
@@ -692,7 +692,7 @@ void UTbRefIfacesParentIfMsgBusClient::OnLocalIfChanged(const FTbRefIfacesParent
 			FScopeLock Lock(&(_SentData->LocalIfMutex));
 			_SentData->LocalIf = LocalIf;
 		}
-		_GetSignals()->BroadcastLocalIfChanged(LocalIf);
+		_GetPublisher()->BroadcastLocalIfChanged(LocalIf);
 	}
 }
 
@@ -713,7 +713,7 @@ void UTbRefIfacesParentIfMsgBusClient::OnLocalIfListChanged(const FTbRefIfacesPa
 			FScopeLock Lock(&(_SentData->LocalIfListMutex));
 			_SentData->LocalIfList = LocalIfList;
 		}
-		_GetSignals()->BroadcastLocalIfListChanged(LocalIfList);
+		_GetPublisher()->BroadcastLocalIfListChanged(LocalIfList);
 	}
 }
 
@@ -734,7 +734,7 @@ void UTbRefIfacesParentIfMsgBusClient::OnImportedIfChanged(const FTbRefIfacesPar
 			FScopeLock Lock(&(_SentData->ImportedIfMutex));
 			_SentData->ImportedIf = ImportedIf;
 		}
-		_GetSignals()->BroadcastImportedIfChanged(ImportedIf);
+		_GetPublisher()->BroadcastImportedIfChanged(ImportedIf);
 	}
 }
 
@@ -755,7 +755,7 @@ void UTbRefIfacesParentIfMsgBusClient::OnImportedIfListChanged(const FTbRefIface
 			FScopeLock Lock(&(_SentData->ImportedIfListMutex));
 			_SentData->ImportedIfList = ImportedIfList;
 		}
-		_GetSignals()->BroadcastImportedIfListChanged(ImportedIfList);
+		_GetPublisher()->BroadcastImportedIfListChanged(ImportedIfList);
 	}
 }
 

@@ -63,16 +63,16 @@ public:
 
 UAbstractTbSame2SameStruct1Interface::UAbstractTbSame2SameStruct1Interface()
 {
-	TbSame2SameStruct1InterfaceSignals = NewObject<UTbSame2SameStruct1InterfaceSignals>();
+	TbSame2SameStruct1InterfacePublisher = NewObject<UTbSame2SameStruct1InterfacePublisher>();
 }
 
-UTbSame2SameStruct1InterfaceSignals* UAbstractTbSame2SameStruct1Interface::_GetSignals()
+UTbSame2SameStruct1InterfacePublisher* UAbstractTbSame2SameStruct1Interface::_GetPublisher()
 {
-	if (!TbSame2SameStruct1InterfaceSignals)
+	if (!TbSame2SameStruct1InterfacePublisher)
 	{
-		TbSame2SameStruct1InterfaceSignals = NewObject<UTbSame2SameStruct1InterfaceSignals>();
+		TbSame2SameStruct1InterfacePublisher = NewObject<UTbSame2SameStruct1InterfacePublisher>();
 	}
-	return TbSame2SameStruct1InterfaceSignals;
+	return TbSame2SameStruct1InterfacePublisher;
 }
 
 FTbSame2Struct1 UAbstractTbSame2SameStruct1Interface::GetProp1_Private() const
@@ -133,13 +133,13 @@ void UAbstractTbSame2SameStruct1Interface::Deinitialize()
 	check(bInitialized);
 	bInitialized = false;
 
-	if (TbSame2SameStruct1InterfaceSignals)
+	if (TbSame2SameStruct1InterfacePublisher)
 	{
-		TbSame2SameStruct1InterfaceSignals->OnSig1Signal.RemoveAll(TbSame2SameStruct1InterfaceSignals);
-		TbSame2SameStruct1InterfaceSignals->OnSig1SignalBP.RemoveAll(TbSame2SameStruct1InterfaceSignals);
+		TbSame2SameStruct1InterfacePublisher->OnSig1Signal.RemoveAll(TbSame2SameStruct1InterfacePublisher);
+		TbSame2SameStruct1InterfacePublisher->OnSig1SignalBP.RemoveAll(TbSame2SameStruct1InterfacePublisher);
 
-		TbSame2SameStruct1InterfaceSignals->OnProp1Changed.RemoveAll(TbSame2SameStruct1InterfaceSignals);
-		TbSame2SameStruct1InterfaceSignals->OnProp1ChangedBP.RemoveAll(TbSame2SameStruct1InterfaceSignals);
+		TbSame2SameStruct1InterfacePublisher->OnProp1Changed.RemoveAll(TbSame2SameStruct1InterfacePublisher);
+		TbSame2SameStruct1InterfacePublisher->OnProp1ChangedBP.RemoveAll(TbSame2SameStruct1InterfacePublisher);
 	}
 
 	Super::Deinitialize();

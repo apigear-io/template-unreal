@@ -201,7 +201,7 @@ void UTestbed2ManyParamInterfaceMsgBusClient::OnConnectionInit(const FTestbed2Ma
 		Prop1 = InMessage.Prop1;
 		// reset sent data to the current state
 		_SentData->Prop1 = Prop1;
-		_GetSignals()->BroadcastProp1Changed(Prop1);
+		_GetPublisher()->BroadcastProp1Changed(Prop1);
 	}
 
 	const bool bProp2Changed = InMessage.Prop2 != Prop2;
@@ -210,7 +210,7 @@ void UTestbed2ManyParamInterfaceMsgBusClient::OnConnectionInit(const FTestbed2Ma
 		Prop2 = InMessage.Prop2;
 		// reset sent data to the current state
 		_SentData->Prop2 = Prop2;
-		_GetSignals()->BroadcastProp2Changed(Prop2);
+		_GetPublisher()->BroadcastProp2Changed(Prop2);
 	}
 
 	const bool bProp3Changed = InMessage.Prop3 != Prop3;
@@ -219,7 +219,7 @@ void UTestbed2ManyParamInterfaceMsgBusClient::OnConnectionInit(const FTestbed2Ma
 		Prop3 = InMessage.Prop3;
 		// reset sent data to the current state
 		_SentData->Prop3 = Prop3;
-		_GetSignals()->BroadcastProp3Changed(Prop3);
+		_GetPublisher()->BroadcastProp3Changed(Prop3);
 	}
 
 	const bool bProp4Changed = InMessage.Prop4 != Prop4;
@@ -228,7 +228,7 @@ void UTestbed2ManyParamInterfaceMsgBusClient::OnConnectionInit(const FTestbed2Ma
 		Prop4 = InMessage.Prop4;
 		// reset sent data to the current state
 		_SentData->Prop4 = Prop4;
-		_GetSignals()->BroadcastProp4Changed(Prop4);
+		_GetPublisher()->BroadcastProp4Changed(Prop4);
 	}
 
 	_ConnectionStatusChanged.Broadcast(true);
@@ -609,7 +609,7 @@ void UTestbed2ManyParamInterfaceMsgBusClient::OnSig1(const FTestbed2ManyParamInt
 		return;
 	}
 
-	_GetSignals()->BroadcastSig1Signal(InMessage.Param1);
+	_GetPublisher()->BroadcastSig1Signal(InMessage.Param1);
 	return;
 }
 
@@ -621,7 +621,7 @@ void UTestbed2ManyParamInterfaceMsgBusClient::OnSig2(const FTestbed2ManyParamInt
 		return;
 	}
 
-	_GetSignals()->BroadcastSig2Signal(InMessage.Param1, InMessage.Param2);
+	_GetPublisher()->BroadcastSig2Signal(InMessage.Param1, InMessage.Param2);
 	return;
 }
 
@@ -633,7 +633,7 @@ void UTestbed2ManyParamInterfaceMsgBusClient::OnSig3(const FTestbed2ManyParamInt
 		return;
 	}
 
-	_GetSignals()->BroadcastSig3Signal(InMessage.Param1, InMessage.Param2, InMessage.Param3);
+	_GetPublisher()->BroadcastSig3Signal(InMessage.Param1, InMessage.Param2, InMessage.Param3);
 	return;
 }
 
@@ -645,7 +645,7 @@ void UTestbed2ManyParamInterfaceMsgBusClient::OnSig4(const FTestbed2ManyParamInt
 		return;
 	}
 
-	_GetSignals()->BroadcastSig4Signal(InMessage.Param1, InMessage.Param2, InMessage.Param3, InMessage.Param4);
+	_GetPublisher()->BroadcastSig4Signal(InMessage.Param1, InMessage.Param2, InMessage.Param3, InMessage.Param4);
 	return;
 }
 
@@ -663,7 +663,7 @@ void UTestbed2ManyParamInterfaceMsgBusClient::OnProp1Changed(const FTestbed2Many
 		Prop1 = InMessage.Prop1;
 		// reset sent data to the current state
 		_SentData->Prop1 = Prop1;
-		_GetSignals()->BroadcastProp1Changed(Prop1);
+		_GetPublisher()->BroadcastProp1Changed(Prop1);
 	}
 }
 
@@ -681,7 +681,7 @@ void UTestbed2ManyParamInterfaceMsgBusClient::OnProp2Changed(const FTestbed2Many
 		Prop2 = InMessage.Prop2;
 		// reset sent data to the current state
 		_SentData->Prop2 = Prop2;
-		_GetSignals()->BroadcastProp2Changed(Prop2);
+		_GetPublisher()->BroadcastProp2Changed(Prop2);
 	}
 }
 
@@ -699,7 +699,7 @@ void UTestbed2ManyParamInterfaceMsgBusClient::OnProp3Changed(const FTestbed2Many
 		Prop3 = InMessage.Prop3;
 		// reset sent data to the current state
 		_SentData->Prop3 = Prop3;
-		_GetSignals()->BroadcastProp3Changed(Prop3);
+		_GetPublisher()->BroadcastProp3Changed(Prop3);
 	}
 }
 
@@ -717,7 +717,7 @@ void UTestbed2ManyParamInterfaceMsgBusClient::OnProp4Changed(const FTestbed2Many
 		Prop4 = InMessage.Prop4;
 		// reset sent data to the current state
 		_SentData->Prop4 = Prop4;
-		_GetSignals()->BroadcastProp4Changed(Prop4);
+		_GetPublisher()->BroadcastProp4Changed(Prop4);
 	}
 }
 

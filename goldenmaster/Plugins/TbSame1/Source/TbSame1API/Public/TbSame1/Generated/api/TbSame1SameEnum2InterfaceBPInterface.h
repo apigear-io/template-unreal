@@ -42,8 +42,8 @@ public:
 	/// this is needed since we cannot declare delegates on an UInterface
 	/// @return object with signals for property state changes or standalone signals
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame1|SameEnum2Interface")
-	UTbSame1SameEnum2InterfaceSignals* _GetSignals();
-	virtual UTbSame1SameEnum2InterfaceSignals* _GetSignals_Implementation() = 0;
+	UTbSame1SameEnum2InterfacePublisher* _GetPublisher();
+	virtual UTbSame1SameEnum2InterfacePublisher* _GetPublisher_Implementation() = 0;
 
 	// methods
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSame1|SameEnum2Interface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
