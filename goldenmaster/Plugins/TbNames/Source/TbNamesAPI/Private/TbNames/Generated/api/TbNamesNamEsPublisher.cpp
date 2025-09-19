@@ -1,92 +1,227 @@
 
 #include "TbNames/Generated/api/TbNamesNamEsInterface.h"
+#include "Async/Async.h"
+#include "Async/TaskGraphInterfaces.h"
+
 void UTbNamesNamEsPublisher::BroadcastSomeSignalSignal(bool bSomeParam)
 {
 	OnSomeSignalSignal.Broadcast(bSomeParam);
-	OnSomeSignalSignalBP.Broadcast(bSomeParam);
 
 	TArray<TScriptInterface<ITbNamesNamEsBPSubscriberInterface>> SubscribersCopy = Subscribers;
-	for (const TScriptInterface<ITbNamesNamEsBPSubscriberInterface>& Subscriber : SubscribersCopy)
+	if (IsInGameThread())
 	{
-		if (UObject* Obj = Subscriber.GetObject())
+		OnSomeSignalSignalBP.Broadcast(bSomeParam);
+
+		for (const TScriptInterface<ITbNamesNamEsBPSubscriberInterface>& Subscriber : SubscribersCopy)
 		{
-			ITbNamesNamEsBPSubscriberInterface::Execute_OnSomeSignalSignal(Obj, bSomeParam);
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbNamesNamEsBPSubscriberInterface::Execute_OnSomeSignalSignal(Obj, bSomeParam);
+			}
 		}
+	}
+	else
+	{
+		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbNamesNamEsPublisher>(this), SubscribersCopy, bSomeParam]()
+			{
+			if (WeakPtr.IsValid())
+			{
+				WeakPtr.Get()->OnSomeSignalSignalBP.Broadcast(bSomeParam);
+			}
+
+			for (const TScriptInterface<ITbNamesNamEsBPSubscriberInterface>& Subscriber : SubscribersCopy)
+			{
+				if (UObject* Obj = Subscriber.GetObject())
+				{
+					ITbNamesNamEsBPSubscriberInterface::Execute_OnSomeSignalSignal(Obj, bSomeParam);
+				}
+			}
+		});
 	}
 }
 
 void UTbNamesNamEsPublisher::BroadcastSomeSignal2Signal(bool bSomeParam)
 {
 	OnSomeSignal2Signal.Broadcast(bSomeParam);
-	OnSomeSignal2SignalBP.Broadcast(bSomeParam);
 
 	TArray<TScriptInterface<ITbNamesNamEsBPSubscriberInterface>> SubscribersCopy = Subscribers;
-	for (const TScriptInterface<ITbNamesNamEsBPSubscriberInterface>& Subscriber : SubscribersCopy)
+	if (IsInGameThread())
 	{
-		if (UObject* Obj = Subscriber.GetObject())
+		OnSomeSignal2SignalBP.Broadcast(bSomeParam);
+
+		for (const TScriptInterface<ITbNamesNamEsBPSubscriberInterface>& Subscriber : SubscribersCopy)
 		{
-			ITbNamesNamEsBPSubscriberInterface::Execute_OnSomeSignal2Signal(Obj, bSomeParam);
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbNamesNamEsBPSubscriberInterface::Execute_OnSomeSignal2Signal(Obj, bSomeParam);
+			}
 		}
+	}
+	else
+	{
+		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbNamesNamEsPublisher>(this), SubscribersCopy, bSomeParam]()
+			{
+			if (WeakPtr.IsValid())
+			{
+				WeakPtr.Get()->OnSomeSignal2SignalBP.Broadcast(bSomeParam);
+			}
+
+			for (const TScriptInterface<ITbNamesNamEsBPSubscriberInterface>& Subscriber : SubscribersCopy)
+			{
+				if (UObject* Obj = Subscriber.GetObject())
+				{
+					ITbNamesNamEsBPSubscriberInterface::Execute_OnSomeSignal2Signal(Obj, bSomeParam);
+				}
+			}
+		});
 	}
 }
 
 void UTbNamesNamEsPublisher::BroadcastSwitchChanged(UPARAM(DisplayName = "bSwitch") bool bInSwitch)
 {
 	OnSwitchChanged.Broadcast(bInSwitch);
-	OnSwitchChangedBP.Broadcast(bInSwitch);
 
 	TArray<TScriptInterface<ITbNamesNamEsBPSubscriberInterface>> SubscribersCopy = Subscribers;
-	for (const TScriptInterface<ITbNamesNamEsBPSubscriberInterface>& Subscriber : SubscribersCopy)
+	if (IsInGameThread())
 	{
-		if (UObject* Obj = Subscriber.GetObject())
+		OnSwitchChangedBP.Broadcast(bInSwitch);
+
+		for (const TScriptInterface<ITbNamesNamEsBPSubscriberInterface>& Subscriber : SubscribersCopy)
 		{
-			ITbNamesNamEsBPSubscriberInterface::Execute_OnSwitchChanged(Obj, bInSwitch);
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbNamesNamEsBPSubscriberInterface::Execute_OnSwitchChanged(Obj, bInSwitch);
+			}
 		}
+	}
+	else
+	{
+		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbNamesNamEsPublisher>(this), SubscribersCopy, bInSwitch]()
+			{
+			if (WeakPtr.IsValid())
+			{
+				WeakPtr.Get()->OnSwitchChangedBP.Broadcast(bInSwitch);
+			}
+
+			for (const TScriptInterface<ITbNamesNamEsBPSubscriberInterface>& Subscriber : SubscribersCopy)
+			{
+				if (UObject* Obj = Subscriber.GetObject())
+				{
+					ITbNamesNamEsBPSubscriberInterface::Execute_OnSwitchChanged(Obj, bInSwitch);
+				}
+			}
+		});
 	}
 }
 
 void UTbNamesNamEsPublisher::BroadcastSomePropertyChanged(UPARAM(DisplayName = "SomeProperty") int32 InSomeProperty)
 {
 	OnSomePropertyChanged.Broadcast(InSomeProperty);
-	OnSomePropertyChangedBP.Broadcast(InSomeProperty);
 
 	TArray<TScriptInterface<ITbNamesNamEsBPSubscriberInterface>> SubscribersCopy = Subscribers;
-	for (const TScriptInterface<ITbNamesNamEsBPSubscriberInterface>& Subscriber : SubscribersCopy)
+	if (IsInGameThread())
 	{
-		if (UObject* Obj = Subscriber.GetObject())
+		OnSomePropertyChangedBP.Broadcast(InSomeProperty);
+
+		for (const TScriptInterface<ITbNamesNamEsBPSubscriberInterface>& Subscriber : SubscribersCopy)
 		{
-			ITbNamesNamEsBPSubscriberInterface::Execute_OnSomePropertyChanged(Obj, InSomeProperty);
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbNamesNamEsBPSubscriberInterface::Execute_OnSomePropertyChanged(Obj, InSomeProperty);
+			}
 		}
+	}
+	else
+	{
+		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbNamesNamEsPublisher>(this), SubscribersCopy, InSomeProperty]()
+			{
+			if (WeakPtr.IsValid())
+			{
+				WeakPtr.Get()->OnSomePropertyChangedBP.Broadcast(InSomeProperty);
+			}
+
+			for (const TScriptInterface<ITbNamesNamEsBPSubscriberInterface>& Subscriber : SubscribersCopy)
+			{
+				if (UObject* Obj = Subscriber.GetObject())
+				{
+					ITbNamesNamEsBPSubscriberInterface::Execute_OnSomePropertyChanged(Obj, InSomeProperty);
+				}
+			}
+		});
 	}
 }
 
 void UTbNamesNamEsPublisher::BroadcastSomePoperty2Changed(UPARAM(DisplayName = "SomePoperty2") int32 InSomePoperty2)
 {
 	OnSomePoperty2Changed.Broadcast(InSomePoperty2);
-	OnSomePoperty2ChangedBP.Broadcast(InSomePoperty2);
 
 	TArray<TScriptInterface<ITbNamesNamEsBPSubscriberInterface>> SubscribersCopy = Subscribers;
-	for (const TScriptInterface<ITbNamesNamEsBPSubscriberInterface>& Subscriber : SubscribersCopy)
+	if (IsInGameThread())
 	{
-		if (UObject* Obj = Subscriber.GetObject())
+		OnSomePoperty2ChangedBP.Broadcast(InSomePoperty2);
+
+		for (const TScriptInterface<ITbNamesNamEsBPSubscriberInterface>& Subscriber : SubscribersCopy)
 		{
-			ITbNamesNamEsBPSubscriberInterface::Execute_OnSomePoperty2Changed(Obj, InSomePoperty2);
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbNamesNamEsBPSubscriberInterface::Execute_OnSomePoperty2Changed(Obj, InSomePoperty2);
+			}
 		}
+	}
+	else
+	{
+		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbNamesNamEsPublisher>(this), SubscribersCopy, InSomePoperty2]()
+			{
+			if (WeakPtr.IsValid())
+			{
+				WeakPtr.Get()->OnSomePoperty2ChangedBP.Broadcast(InSomePoperty2);
+			}
+
+			for (const TScriptInterface<ITbNamesNamEsBPSubscriberInterface>& Subscriber : SubscribersCopy)
+			{
+				if (UObject* Obj = Subscriber.GetObject())
+				{
+					ITbNamesNamEsBPSubscriberInterface::Execute_OnSomePoperty2Changed(Obj, InSomePoperty2);
+				}
+			}
+		});
 	}
 }
 
 void UTbNamesNamEsPublisher::BroadcastEnumPropertyChanged(UPARAM(DisplayName = "EnumProperty") ETbNamesEnum_With_Under_scores InEnumProperty)
 {
 	OnEnumPropertyChanged.Broadcast(InEnumProperty);
-	OnEnumPropertyChangedBP.Broadcast(InEnumProperty);
 
 	TArray<TScriptInterface<ITbNamesNamEsBPSubscriberInterface>> SubscribersCopy = Subscribers;
-	for (const TScriptInterface<ITbNamesNamEsBPSubscriberInterface>& Subscriber : SubscribersCopy)
+	if (IsInGameThread())
 	{
-		if (UObject* Obj = Subscriber.GetObject())
+		OnEnumPropertyChangedBP.Broadcast(InEnumProperty);
+
+		for (const TScriptInterface<ITbNamesNamEsBPSubscriberInterface>& Subscriber : SubscribersCopy)
 		{
-			ITbNamesNamEsBPSubscriberInterface::Execute_OnEnumPropertyChanged(Obj, InEnumProperty);
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbNamesNamEsBPSubscriberInterface::Execute_OnEnumPropertyChanged(Obj, InEnumProperty);
+			}
 		}
+	}
+	else
+	{
+		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbNamesNamEsPublisher>(this), SubscribersCopy, InEnumProperty]()
+			{
+			if (WeakPtr.IsValid())
+			{
+				WeakPtr.Get()->OnEnumPropertyChangedBP.Broadcast(InEnumProperty);
+			}
+
+			for (const TScriptInterface<ITbNamesNamEsBPSubscriberInterface>& Subscriber : SubscribersCopy)
+			{
+				if (UObject* Obj = Subscriber.GetObject())
+				{
+					ITbNamesNamEsBPSubscriberInterface::Execute_OnEnumPropertyChanged(Obj, InEnumProperty);
+				}
+			}
+		});
 	}
 }
 

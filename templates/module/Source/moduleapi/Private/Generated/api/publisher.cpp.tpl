@@ -8,24 +8,48 @@
 {{- $Iface := printf "%s%s" $ModuleName (Camel .Interface.Name) }}
 {{- template "get_referenced_interfaces_includes" . }}
 #include "{{$ModuleName}}/Generated/api/{{$Class}}Interface.h"
-
+#include "Async/Async.h"
+#include "Async/TaskGraphInterfaces.h"
 {{- with .Interface }}
 {{- if or (len .Properties) (len .Signals) }}
+{{- nl }}
 
 {{- range $i, $e := .Signals }}
 	{{- if $i }}{{nl}}{{ end }}
 void U{{$Class}}Publisher::Broadcast{{Camel .Name}}Signal({{ueParams "" .Params}})
 {
 	On{{Camel .Name}}Signal.Broadcast({{ueVars "" .Params}});
-	On{{Camel .Name}}SignalBP.Broadcast({{ueVars "" .Params}});
 
 	TArray<TScriptInterface<I{{$Class}}BPSubscriberInterface>> SubscribersCopy = Subscribers;
-	for (const TScriptInterface<I{{$Class}}BPSubscriberInterface>& Subscriber : SubscribersCopy)
+	if (IsInGameThread())
 	{
-		if (UObject* Obj = Subscriber.GetObject())
+		On{{Camel .Name}}SignalBP.Broadcast({{ueVars "" .Params}});
+
+		for (const TScriptInterface<I{{$Class}}BPSubscriberInterface>& Subscriber : SubscribersCopy)
 		{
-			I{{$Class}}BPSubscriberInterface::Execute_On{{Camel .Name}}Signal(Obj{{- if (len .Params) }}, {{ end }}{{ueVars "" .Params}});
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				I{{$Class}}BPSubscriberInterface::Execute_On{{Camel .Name}}Signal(Obj{{- if (len .Params) }}, {{ end }}{{ueVars "" .Params}});
+			}
 		}
+	}
+	else
+	{
+		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<U{{$Class}}Publisher>(this), SubscribersCopy{{- if (len .Params) }}, {{ end }}{{ueVars "" .Params}}]()
+			{
+			if (WeakPtr.IsValid())
+			{
+				WeakPtr.Get()->On{{Camel .Name}}SignalBP.Broadcast({{ueVars "" .Params}});
+			}
+
+			for (const TScriptInterface<I{{$Class}}BPSubscriberInterface>& Subscriber : SubscribersCopy)
+			{
+				if (UObject* Obj = Subscriber.GetObject())
+				{
+					I{{$Class}}BPSubscriberInterface::Execute_On{{Camel .Name}}Signal(Obj{{- if (len .Params) }}, {{ end }}{{ueVars "" .Params}});
+				}
+			}
+		});
 	}
 }
 {{- end }}
@@ -35,15 +59,37 @@ void U{{$Class}}Publisher::Broadcast{{Camel .Name}}Signal({{ueParams "" .Params}
 void U{{$Class}}Publisher::Broadcast{{Camel .Name}}Changed(UPARAM(DisplayName = "{{ueVar "" .}}") {{ueParam "In" .}})
 {
 	On{{Camel .Name}}Changed.Broadcast({{ueVar "In" .}});
-	On{{Camel .Name}}ChangedBP.Broadcast({{ueVar "In" .}});
 
 	TArray<TScriptInterface<I{{$Class}}BPSubscriberInterface>> SubscribersCopy = Subscribers;
-	for (const TScriptInterface<I{{$Class}}BPSubscriberInterface>& Subscriber : SubscribersCopy)
+	if (IsInGameThread())
 	{
-		if (UObject* Obj = Subscriber.GetObject())
+		On{{Camel .Name}}ChangedBP.Broadcast({{ueVar "In" .}});
+
+		for (const TScriptInterface<I{{$Class}}BPSubscriberInterface>& Subscriber : SubscribersCopy)
 		{
-			I{{$Class}}BPSubscriberInterface::Execute_On{{Camel .Name}}Changed(Obj, {{ueVar "In" .}});
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				I{{$Class}}BPSubscriberInterface::Execute_On{{Camel .Name}}Changed(Obj, {{ueVar "In" .}});
+			}
 		}
+	}
+	else
+	{
+		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<U{{$Class}}Publisher>(this), SubscribersCopy, {{ueVar "In" .}}]()
+			{
+			if (WeakPtr.IsValid())
+			{
+				WeakPtr.Get()->On{{Camel .Name}}ChangedBP.Broadcast({{ueVar "In" .}});
+			}
+
+			for (const TScriptInterface<I{{$Class}}BPSubscriberInterface>& Subscriber : SubscribersCopy)
+			{
+				if (UObject* Obj = Subscriber.GetObject())
+				{
+					I{{$Class}}BPSubscriberInterface::Execute_On{{Camel .Name}}Changed(Obj, {{ueVar "In" .}});
+				}
+			}
+		});
 	}
 }
 {{- end }}

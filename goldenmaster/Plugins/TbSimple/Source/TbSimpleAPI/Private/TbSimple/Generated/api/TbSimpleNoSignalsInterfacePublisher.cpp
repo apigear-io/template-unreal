@@ -1,32 +1,79 @@
 
 #include "TbSimple/Generated/api/TbSimpleNoSignalsInterfaceInterface.h"
+#include "Async/Async.h"
+#include "Async/TaskGraphInterfaces.h"
+
 void UTbSimpleNoSignalsInterfacePublisher::BroadcastPropBoolChanged(UPARAM(DisplayName = "bPropBool") bool bInPropBool)
 {
 	OnPropBoolChanged.Broadcast(bInPropBool);
-	OnPropBoolChangedBP.Broadcast(bInPropBool);
 
 	TArray<TScriptInterface<ITbSimpleNoSignalsInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
-	for (const TScriptInterface<ITbSimpleNoSignalsInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+	if (IsInGameThread())
 	{
-		if (UObject* Obj = Subscriber.GetObject())
+		OnPropBoolChangedBP.Broadcast(bInPropBool);
+
+		for (const TScriptInterface<ITbSimpleNoSignalsInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
 		{
-			ITbSimpleNoSignalsInterfaceBPSubscriberInterface::Execute_OnPropBoolChanged(Obj, bInPropBool);
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbSimpleNoSignalsInterfaceBPSubscriberInterface::Execute_OnPropBoolChanged(Obj, bInPropBool);
+			}
 		}
+	}
+	else
+	{
+		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbSimpleNoSignalsInterfacePublisher>(this), SubscribersCopy, bInPropBool]()
+			{
+			if (WeakPtr.IsValid())
+			{
+				WeakPtr.Get()->OnPropBoolChangedBP.Broadcast(bInPropBool);
+			}
+
+			for (const TScriptInterface<ITbSimpleNoSignalsInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+			{
+				if (UObject* Obj = Subscriber.GetObject())
+				{
+					ITbSimpleNoSignalsInterfaceBPSubscriberInterface::Execute_OnPropBoolChanged(Obj, bInPropBool);
+				}
+			}
+		});
 	}
 }
 
 void UTbSimpleNoSignalsInterfacePublisher::BroadcastPropIntChanged(UPARAM(DisplayName = "PropInt") int32 InPropInt)
 {
 	OnPropIntChanged.Broadcast(InPropInt);
-	OnPropIntChangedBP.Broadcast(InPropInt);
 
 	TArray<TScriptInterface<ITbSimpleNoSignalsInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
-	for (const TScriptInterface<ITbSimpleNoSignalsInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+	if (IsInGameThread())
 	{
-		if (UObject* Obj = Subscriber.GetObject())
+		OnPropIntChangedBP.Broadcast(InPropInt);
+
+		for (const TScriptInterface<ITbSimpleNoSignalsInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
 		{
-			ITbSimpleNoSignalsInterfaceBPSubscriberInterface::Execute_OnPropIntChanged(Obj, InPropInt);
+			if (UObject* Obj = Subscriber.GetObject())
+			{
+				ITbSimpleNoSignalsInterfaceBPSubscriberInterface::Execute_OnPropIntChanged(Obj, InPropInt);
+			}
 		}
+	}
+	else
+	{
+		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbSimpleNoSignalsInterfacePublisher>(this), SubscribersCopy, InPropInt]()
+			{
+			if (WeakPtr.IsValid())
+			{
+				WeakPtr.Get()->OnPropIntChangedBP.Broadcast(InPropInt);
+			}
+
+			for (const TScriptInterface<ITbSimpleNoSignalsInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+			{
+				if (UObject* Obj = Subscriber.GetObject())
+				{
+					ITbSimpleNoSignalsInterfaceBPSubscriberInterface::Execute_OnPropIntChanged(Obj, InPropInt);
+				}
+			}
+		});
 	}
 }
 
