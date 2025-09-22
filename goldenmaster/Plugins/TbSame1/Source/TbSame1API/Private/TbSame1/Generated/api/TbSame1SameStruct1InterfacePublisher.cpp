@@ -7,7 +7,11 @@ void UTbSame1SameStruct1InterfacePublisher::BroadcastSig1Signal(const FTbSame1St
 {
 	OnSig1Signal.Broadcast(Param1);
 
-	TArray<TScriptInterface<ITbSame1SameStruct1InterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITbSame1SameStruct1InterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnSig1SignalBP.Broadcast(Param1);
@@ -44,7 +48,11 @@ void UTbSame1SameStruct1InterfacePublisher::BroadcastProp1Changed(UPARAM(Display
 {
 	OnProp1Changed.Broadcast(InProp1);
 
-	TArray<TScriptInterface<ITbSame1SameStruct1InterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITbSame1SameStruct1InterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnProp1ChangedBP.Broadcast(InProp1);
@@ -84,11 +92,13 @@ void UTbSame1SameStruct1InterfacePublisher::Subscribe(const TScriptInterface<ITb
 		return;
 	}
 
+	FWriteScopeLock WriteLock(SubscribersLock);
 	Subscribers.Remove(Subscriber);
 	Subscribers.Add(Subscriber);
 }
 
 void UTbSame1SameStruct1InterfacePublisher::Unsubscribe(const TScriptInterface<ITbSame1SameStruct1InterfaceBPSubscriberInterface>& Subscriber)
 {
+	FWriteScopeLock WriteLock(SubscribersLock);
 	Subscribers.Remove(Subscriber);
 }

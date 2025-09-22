@@ -17,6 +17,7 @@ limitations under the License.
 #pragma once
 #include "Engine/LatentActionManager.h"
 #include "UObject/Interface.h"
+#include "Misc/ScopeRWLock.h"
 #include "Testbed2_data.h"
 #include "Testbed2NestedStruct2InterfaceInterface.generated.h"
 
@@ -112,6 +113,7 @@ public:
 private:
 	UPROPERTY()
 	TArray<TScriptInterface<ITestbed2NestedStruct2InterfaceBPSubscriberInterface>> Subscribers;
+	FRWLock SubscribersLock;
 };
 
 /**

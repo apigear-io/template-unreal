@@ -17,6 +17,7 @@ limitations under the License.
 #pragma once
 #include "Engine/LatentActionManager.h"
 #include "UObject/Interface.h"
+#include "Misc/ScopeRWLock.h"
 #include "Counter_data.h"
 #include "CounterCounterInterface.generated.h"
 
@@ -123,6 +124,7 @@ public:
 private:
 	UPROPERTY()
 	TArray<TScriptInterface<ICounterCounterBPSubscriberInterface>> Subscribers;
+	FRWLock SubscribersLock;
 };
 
 /**

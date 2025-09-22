@@ -7,7 +7,11 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastSig1Signal(int32 Param1)
 {
 	OnSig1Signal.Broadcast(Param1);
 
-	TArray<TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnSig1SignalBP.Broadcast(Param1);
@@ -44,7 +48,11 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastSig2Signal(int32 Param1, int
 {
 	OnSig2Signal.Broadcast(Param1, Param2);
 
-	TArray<TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnSig2SignalBP.Broadcast(Param1, Param2);
@@ -81,7 +89,11 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastSig3Signal(int32 Param1, int
 {
 	OnSig3Signal.Broadcast(Param1, Param2, Param3);
 
-	TArray<TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnSig3SignalBP.Broadcast(Param1, Param2, Param3);
@@ -118,7 +130,11 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastSig4Signal(int32 Param1, int
 {
 	OnSig4Signal.Broadcast(Param1, Param2, Param3, Param4);
 
-	TArray<TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnSig4SignalBP.Broadcast(Param1, Param2, Param3, Param4);
@@ -155,7 +171,11 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastProp1Changed(UPARAM(DisplayN
 {
 	OnProp1Changed.Broadcast(InProp1);
 
-	TArray<TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnProp1ChangedBP.Broadcast(InProp1);
@@ -192,7 +212,11 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastProp2Changed(UPARAM(DisplayN
 {
 	OnProp2Changed.Broadcast(InProp2);
 
-	TArray<TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnProp2ChangedBP.Broadcast(InProp2);
@@ -229,7 +253,11 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastProp3Changed(UPARAM(DisplayN
 {
 	OnProp3Changed.Broadcast(InProp3);
 
-	TArray<TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnProp3ChangedBP.Broadcast(InProp3);
@@ -266,7 +294,11 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastProp4Changed(UPARAM(DisplayN
 {
 	OnProp4Changed.Broadcast(InProp4);
 
-	TArray<TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnProp4ChangedBP.Broadcast(InProp4);
@@ -306,11 +338,13 @@ void UTestbed2ManyParamInterfacePublisher::Subscribe(const TScriptInterface<ITes
 		return;
 	}
 
+	FWriteScopeLock WriteLock(SubscribersLock);
 	Subscribers.Remove(Subscriber);
 	Subscribers.Add(Subscriber);
 }
 
 void UTestbed2ManyParamInterfacePublisher::Unsubscribe(const TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>& Subscriber)
 {
+	FWriteScopeLock WriteLock(SubscribersLock);
 	Subscribers.Remove(Subscriber);
 }

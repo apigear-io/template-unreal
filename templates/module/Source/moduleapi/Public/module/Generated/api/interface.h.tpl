@@ -25,6 +25,7 @@ limitations under the License.
 {{- $Iface := printf "%s%s" $ModuleName (Camel .Interface.Name) }}
 #include "Engine/LatentActionManager.h"
 #include "UObject/Interface.h"
+#include "Misc/ScopeRWLock.h"
 {{- template "get_referenced_interfaces_includes" . }}
 #include "{{$ModuleName}}_data.h"
 #include "{{$Class}}Interface.generated.h"
@@ -115,6 +116,7 @@ public:
 private:
 	UPROPERTY()
 	TArray<TScriptInterface<I{{$Class}}BPSubscriberInterface>> Subscribers;
+	FRWLock SubscribersLock;
 };
 {{- end}}
 

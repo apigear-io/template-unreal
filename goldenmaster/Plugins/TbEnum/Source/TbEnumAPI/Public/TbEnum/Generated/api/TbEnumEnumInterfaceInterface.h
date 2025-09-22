@@ -17,6 +17,7 @@ limitations under the License.
 #pragma once
 #include "Engine/LatentActionManager.h"
 #include "UObject/Interface.h"
+#include "Misc/ScopeRWLock.h"
 #include "TbEnum_data.h"
 #include "TbEnumEnumInterfaceInterface.generated.h"
 
@@ -162,6 +163,7 @@ public:
 private:
 	UPROPERTY()
 	TArray<TScriptInterface<ITbEnumEnumInterfaceBPSubscriberInterface>> Subscribers;
+	FRWLock SubscribersLock;
 };
 
 /**

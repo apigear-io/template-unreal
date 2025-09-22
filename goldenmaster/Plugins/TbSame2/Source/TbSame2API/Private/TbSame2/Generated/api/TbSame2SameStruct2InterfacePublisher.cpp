@@ -7,7 +7,11 @@ void UTbSame2SameStruct2InterfacePublisher::BroadcastSig1Signal(const FTbSame2St
 {
 	OnSig1Signal.Broadcast(Param1);
 
-	TArray<TScriptInterface<ITbSame2SameStruct2InterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITbSame2SameStruct2InterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnSig1SignalBP.Broadcast(Param1);
@@ -44,7 +48,11 @@ void UTbSame2SameStruct2InterfacePublisher::BroadcastSig2Signal(const FTbSame2St
 {
 	OnSig2Signal.Broadcast(Param1, Param2);
 
-	TArray<TScriptInterface<ITbSame2SameStruct2InterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITbSame2SameStruct2InterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnSig2SignalBP.Broadcast(Param1, Param2);
@@ -81,7 +89,11 @@ void UTbSame2SameStruct2InterfacePublisher::BroadcastProp1Changed(UPARAM(Display
 {
 	OnProp1Changed.Broadcast(InProp1);
 
-	TArray<TScriptInterface<ITbSame2SameStruct2InterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITbSame2SameStruct2InterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnProp1ChangedBP.Broadcast(InProp1);
@@ -118,7 +130,11 @@ void UTbSame2SameStruct2InterfacePublisher::BroadcastProp2Changed(UPARAM(Display
 {
 	OnProp2Changed.Broadcast(InProp2);
 
-	TArray<TScriptInterface<ITbSame2SameStruct2InterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITbSame2SameStruct2InterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnProp2ChangedBP.Broadcast(InProp2);
@@ -158,11 +174,13 @@ void UTbSame2SameStruct2InterfacePublisher::Subscribe(const TScriptInterface<ITb
 		return;
 	}
 
+	FWriteScopeLock WriteLock(SubscribersLock);
 	Subscribers.Remove(Subscriber);
 	Subscribers.Add(Subscriber);
 }
 
 void UTbSame2SameStruct2InterfacePublisher::Unsubscribe(const TScriptInterface<ITbSame2SameStruct2InterfaceBPSubscriberInterface>& Subscriber)
 {
+	FWriteScopeLock WriteLock(SubscribersLock);
 	Subscribers.Remove(Subscriber);
 }

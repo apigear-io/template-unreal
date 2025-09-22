@@ -7,7 +7,11 @@ void UCounterCounterPublisher::BroadcastValueChangedSignal(const FCustomTypesVec
 {
 	OnValueChangedSignal.Broadcast(Vector, ExternVector, VectorArray, ExternVectorArray);
 
-	TArray<TScriptInterface<ICounterCounterBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ICounterCounterBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnValueChangedSignalBP.Broadcast(Vector, ExternVector, VectorArray, ExternVectorArray);
@@ -44,7 +48,11 @@ void UCounterCounterPublisher::BroadcastVectorChanged(UPARAM(DisplayName = "Vect
 {
 	OnVectorChanged.Broadcast(InVector);
 
-	TArray<TScriptInterface<ICounterCounterBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ICounterCounterBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnVectorChangedBP.Broadcast(InVector);
@@ -81,7 +89,11 @@ void UCounterCounterPublisher::BroadcastExternVectorChanged(UPARAM(DisplayName =
 {
 	OnExternVectorChanged.Broadcast(InExternVector);
 
-	TArray<TScriptInterface<ICounterCounterBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ICounterCounterBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnExternVectorChangedBP.Broadcast(InExternVector);
@@ -118,7 +130,11 @@ void UCounterCounterPublisher::BroadcastVectorArrayChanged(UPARAM(DisplayName = 
 {
 	OnVectorArrayChanged.Broadcast(InVectorArray);
 
-	TArray<TScriptInterface<ICounterCounterBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ICounterCounterBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnVectorArrayChangedBP.Broadcast(InVectorArray);
@@ -155,7 +171,11 @@ void UCounterCounterPublisher::BroadcastExternVectorArrayChanged(UPARAM(DisplayN
 {
 	OnExternVectorArrayChanged.Broadcast(InExternVectorArray);
 
-	TArray<TScriptInterface<ICounterCounterBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ICounterCounterBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnExternVectorArrayChangedBP.Broadcast(InExternVectorArray);
@@ -195,11 +215,13 @@ void UCounterCounterPublisher::Subscribe(const TScriptInterface<ICounterCounterB
 		return;
 	}
 
+	FWriteScopeLock WriteLock(SubscribersLock);
 	Subscribers.Remove(Subscriber);
 	Subscribers.Add(Subscriber);
 }
 
 void UCounterCounterPublisher::Unsubscribe(const TScriptInterface<ICounterCounterBPSubscriberInterface>& Subscriber)
 {
+	FWriteScopeLock WriteLock(SubscribersLock);
 	Subscribers.Remove(Subscriber);
 }
