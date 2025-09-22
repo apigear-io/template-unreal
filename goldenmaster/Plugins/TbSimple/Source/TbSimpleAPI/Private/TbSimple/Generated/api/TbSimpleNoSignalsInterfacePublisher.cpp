@@ -22,6 +22,10 @@ void UTbSimpleNoSignalsInterfacePublisher::BroadcastPropBoolChanged(UPARAM(Displ
 			{
 				ITbSimpleNoSignalsInterfaceBPSubscriberInterface::Execute_OnPropBoolChanged(Obj, bInPropBool);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -38,6 +42,13 @@ void UTbSimpleNoSignalsInterfacePublisher::BroadcastPropBoolChanged(UPARAM(Displ
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITbSimpleNoSignalsInterfaceBPSubscriberInterface::Execute_OnPropBoolChanged(Obj, bInPropBool);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});
@@ -63,6 +74,10 @@ void UTbSimpleNoSignalsInterfacePublisher::BroadcastPropIntChanged(UPARAM(Displa
 			{
 				ITbSimpleNoSignalsInterfaceBPSubscriberInterface::Execute_OnPropIntChanged(Obj, InPropInt);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -79,6 +94,13 @@ void UTbSimpleNoSignalsInterfacePublisher::BroadcastPropIntChanged(UPARAM(Displa
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITbSimpleNoSignalsInterfaceBPSubscriberInterface::Execute_OnPropIntChanged(Obj, InPropInt);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});

@@ -22,6 +22,10 @@ void UCounterCounterPublisher::BroadcastValueChangedSignal(const FCustomTypesVec
 			{
 				ICounterCounterBPSubscriberInterface::Execute_OnValueChangedSignal(Obj, Vector, ExternVector, VectorArray, ExternVectorArray);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -38,6 +42,13 @@ void UCounterCounterPublisher::BroadcastValueChangedSignal(const FCustomTypesVec
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ICounterCounterBPSubscriberInterface::Execute_OnValueChangedSignal(Obj, Vector, ExternVector, VectorArray, ExternVectorArray);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});
@@ -63,6 +74,10 @@ void UCounterCounterPublisher::BroadcastVectorChanged(UPARAM(DisplayName = "Vect
 			{
 				ICounterCounterBPSubscriberInterface::Execute_OnVectorChanged(Obj, InVector);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -79,6 +94,13 @@ void UCounterCounterPublisher::BroadcastVectorChanged(UPARAM(DisplayName = "Vect
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ICounterCounterBPSubscriberInterface::Execute_OnVectorChanged(Obj, InVector);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});
@@ -104,6 +126,10 @@ void UCounterCounterPublisher::BroadcastExternVectorChanged(UPARAM(DisplayName =
 			{
 				ICounterCounterBPSubscriberInterface::Execute_OnExternVectorChanged(Obj, InExternVector);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -120,6 +146,13 @@ void UCounterCounterPublisher::BroadcastExternVectorChanged(UPARAM(DisplayName =
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ICounterCounterBPSubscriberInterface::Execute_OnExternVectorChanged(Obj, InExternVector);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});
@@ -145,6 +178,10 @@ void UCounterCounterPublisher::BroadcastVectorArrayChanged(UPARAM(DisplayName = 
 			{
 				ICounterCounterBPSubscriberInterface::Execute_OnVectorArrayChanged(Obj, InVectorArray);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -161,6 +198,13 @@ void UCounterCounterPublisher::BroadcastVectorArrayChanged(UPARAM(DisplayName = 
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ICounterCounterBPSubscriberInterface::Execute_OnVectorArrayChanged(Obj, InVectorArray);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});
@@ -186,6 +230,10 @@ void UCounterCounterPublisher::BroadcastExternVectorArrayChanged(UPARAM(DisplayN
 			{
 				ICounterCounterBPSubscriberInterface::Execute_OnExternVectorArrayChanged(Obj, InExternVectorArray);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -202,6 +250,13 @@ void UCounterCounterPublisher::BroadcastExternVectorArrayChanged(UPARAM(DisplayN
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ICounterCounterBPSubscriberInterface::Execute_OnExternVectorArrayChanged(Obj, InExternVectorArray);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});

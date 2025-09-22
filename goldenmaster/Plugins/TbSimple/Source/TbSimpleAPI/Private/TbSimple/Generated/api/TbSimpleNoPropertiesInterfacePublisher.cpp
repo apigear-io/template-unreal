@@ -22,6 +22,10 @@ void UTbSimpleNoPropertiesInterfacePublisher::BroadcastSigVoidSignal()
 			{
 				ITbSimpleNoPropertiesInterfaceBPSubscriberInterface::Execute_OnSigVoidSignal(Obj);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -38,6 +42,13 @@ void UTbSimpleNoPropertiesInterfacePublisher::BroadcastSigVoidSignal()
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITbSimpleNoPropertiesInterfaceBPSubscriberInterface::Execute_OnSigVoidSignal(Obj);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});
@@ -63,6 +74,10 @@ void UTbSimpleNoPropertiesInterfacePublisher::BroadcastSigBoolSignal(bool bParam
 			{
 				ITbSimpleNoPropertiesInterfaceBPSubscriberInterface::Execute_OnSigBoolSignal(Obj, bParamBool);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -79,6 +94,13 @@ void UTbSimpleNoPropertiesInterfacePublisher::BroadcastSigBoolSignal(bool bParam
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITbSimpleNoPropertiesInterfaceBPSubscriberInterface::Execute_OnSigBoolSignal(Obj, bParamBool);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});

@@ -22,6 +22,10 @@ void UTbSimpleVoidInterfacePublisher::BroadcastSigVoidSignal()
 			{
 				ITbSimpleVoidInterfaceBPSubscriberInterface::Execute_OnSigVoidSignal(Obj);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -38,6 +42,13 @@ void UTbSimpleVoidInterfacePublisher::BroadcastSigVoidSignal()
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITbSimpleVoidInterfaceBPSubscriberInterface::Execute_OnSigVoidSignal(Obj);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});

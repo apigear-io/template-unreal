@@ -22,6 +22,10 @@ void UTbEnumEnumInterfacePublisher::BroadcastSig0Signal(ETbEnumEnum0 Param0)
 			{
 				ITbEnumEnumInterfaceBPSubscriberInterface::Execute_OnSig0Signal(Obj, Param0);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -38,6 +42,13 @@ void UTbEnumEnumInterfacePublisher::BroadcastSig0Signal(ETbEnumEnum0 Param0)
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITbEnumEnumInterfaceBPSubscriberInterface::Execute_OnSig0Signal(Obj, Param0);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});
@@ -63,6 +74,10 @@ void UTbEnumEnumInterfacePublisher::BroadcastSig1Signal(ETbEnumEnum1 Param1)
 			{
 				ITbEnumEnumInterfaceBPSubscriberInterface::Execute_OnSig1Signal(Obj, Param1);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -79,6 +94,13 @@ void UTbEnumEnumInterfacePublisher::BroadcastSig1Signal(ETbEnumEnum1 Param1)
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITbEnumEnumInterfaceBPSubscriberInterface::Execute_OnSig1Signal(Obj, Param1);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});
@@ -104,6 +126,10 @@ void UTbEnumEnumInterfacePublisher::BroadcastSig2Signal(ETbEnumEnum2 Param2)
 			{
 				ITbEnumEnumInterfaceBPSubscriberInterface::Execute_OnSig2Signal(Obj, Param2);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -120,6 +146,13 @@ void UTbEnumEnumInterfacePublisher::BroadcastSig2Signal(ETbEnumEnum2 Param2)
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITbEnumEnumInterfaceBPSubscriberInterface::Execute_OnSig2Signal(Obj, Param2);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});
@@ -145,6 +178,10 @@ void UTbEnumEnumInterfacePublisher::BroadcastSig3Signal(ETbEnumEnum3 Param3)
 			{
 				ITbEnumEnumInterfaceBPSubscriberInterface::Execute_OnSig3Signal(Obj, Param3);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -161,6 +198,13 @@ void UTbEnumEnumInterfacePublisher::BroadcastSig3Signal(ETbEnumEnum3 Param3)
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITbEnumEnumInterfaceBPSubscriberInterface::Execute_OnSig3Signal(Obj, Param3);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});
@@ -186,6 +230,10 @@ void UTbEnumEnumInterfacePublisher::BroadcastProp0Changed(UPARAM(DisplayName = "
 			{
 				ITbEnumEnumInterfaceBPSubscriberInterface::Execute_OnProp0Changed(Obj, InProp0);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -202,6 +250,13 @@ void UTbEnumEnumInterfacePublisher::BroadcastProp0Changed(UPARAM(DisplayName = "
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITbEnumEnumInterfaceBPSubscriberInterface::Execute_OnProp0Changed(Obj, InProp0);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});
@@ -227,6 +282,10 @@ void UTbEnumEnumInterfacePublisher::BroadcastProp1Changed(UPARAM(DisplayName = "
 			{
 				ITbEnumEnumInterfaceBPSubscriberInterface::Execute_OnProp1Changed(Obj, InProp1);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -243,6 +302,13 @@ void UTbEnumEnumInterfacePublisher::BroadcastProp1Changed(UPARAM(DisplayName = "
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITbEnumEnumInterfaceBPSubscriberInterface::Execute_OnProp1Changed(Obj, InProp1);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});
@@ -268,6 +334,10 @@ void UTbEnumEnumInterfacePublisher::BroadcastProp2Changed(UPARAM(DisplayName = "
 			{
 				ITbEnumEnumInterfaceBPSubscriberInterface::Execute_OnProp2Changed(Obj, InProp2);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -284,6 +354,13 @@ void UTbEnumEnumInterfacePublisher::BroadcastProp2Changed(UPARAM(DisplayName = "
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITbEnumEnumInterfaceBPSubscriberInterface::Execute_OnProp2Changed(Obj, InProp2);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});
@@ -309,6 +386,10 @@ void UTbEnumEnumInterfacePublisher::BroadcastProp3Changed(UPARAM(DisplayName = "
 			{
 				ITbEnumEnumInterfaceBPSubscriberInterface::Execute_OnProp3Changed(Obj, InProp3);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -325,6 +406,13 @@ void UTbEnumEnumInterfacePublisher::BroadcastProp3Changed(UPARAM(DisplayName = "
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITbEnumEnumInterfaceBPSubscriberInterface::Execute_OnProp3Changed(Obj, InProp3);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});

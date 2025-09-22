@@ -22,6 +22,10 @@ void UTbSimpleSimpleInterfacePublisher::BroadcastSigBoolSignal(bool bParamBool)
 			{
 				ITbSimpleSimpleInterfaceBPSubscriberInterface::Execute_OnSigBoolSignal(Obj, bParamBool);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -38,6 +42,13 @@ void UTbSimpleSimpleInterfacePublisher::BroadcastSigBoolSignal(bool bParamBool)
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITbSimpleSimpleInterfaceBPSubscriberInterface::Execute_OnSigBoolSignal(Obj, bParamBool);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});
@@ -63,6 +74,10 @@ void UTbSimpleSimpleInterfacePublisher::BroadcastSigIntSignal(int32 ParamInt)
 			{
 				ITbSimpleSimpleInterfaceBPSubscriberInterface::Execute_OnSigIntSignal(Obj, ParamInt);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -79,6 +94,13 @@ void UTbSimpleSimpleInterfacePublisher::BroadcastSigIntSignal(int32 ParamInt)
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITbSimpleSimpleInterfaceBPSubscriberInterface::Execute_OnSigIntSignal(Obj, ParamInt);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});
@@ -104,6 +126,10 @@ void UTbSimpleSimpleInterfacePublisher::BroadcastSigInt32Signal(int32 ParamInt32
 			{
 				ITbSimpleSimpleInterfaceBPSubscriberInterface::Execute_OnSigInt32Signal(Obj, ParamInt32);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -120,6 +146,13 @@ void UTbSimpleSimpleInterfacePublisher::BroadcastSigInt32Signal(int32 ParamInt32
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITbSimpleSimpleInterfaceBPSubscriberInterface::Execute_OnSigInt32Signal(Obj, ParamInt32);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});
@@ -145,6 +178,10 @@ void UTbSimpleSimpleInterfacePublisher::BroadcastSigInt64Signal(int64 ParamInt64
 			{
 				ITbSimpleSimpleInterfaceBPSubscriberInterface::Execute_OnSigInt64Signal(Obj, ParamInt64);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -161,6 +198,13 @@ void UTbSimpleSimpleInterfacePublisher::BroadcastSigInt64Signal(int64 ParamInt64
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITbSimpleSimpleInterfaceBPSubscriberInterface::Execute_OnSigInt64Signal(Obj, ParamInt64);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});
@@ -186,6 +230,10 @@ void UTbSimpleSimpleInterfacePublisher::BroadcastSigFloatSignal(float ParamFloat
 			{
 				ITbSimpleSimpleInterfaceBPSubscriberInterface::Execute_OnSigFloatSignal(Obj, ParamFloat);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -202,6 +250,13 @@ void UTbSimpleSimpleInterfacePublisher::BroadcastSigFloatSignal(float ParamFloat
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITbSimpleSimpleInterfaceBPSubscriberInterface::Execute_OnSigFloatSignal(Obj, ParamFloat);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});
@@ -227,6 +282,10 @@ void UTbSimpleSimpleInterfacePublisher::BroadcastSigFloat32Signal(float ParamFlo
 			{
 				ITbSimpleSimpleInterfaceBPSubscriberInterface::Execute_OnSigFloat32Signal(Obj, ParamFloat32);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -243,6 +302,13 @@ void UTbSimpleSimpleInterfacePublisher::BroadcastSigFloat32Signal(float ParamFlo
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITbSimpleSimpleInterfaceBPSubscriberInterface::Execute_OnSigFloat32Signal(Obj, ParamFloat32);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});
@@ -268,6 +334,10 @@ void UTbSimpleSimpleInterfacePublisher::BroadcastSigFloat64Signal(double ParamFl
 			{
 				ITbSimpleSimpleInterfaceBPSubscriberInterface::Execute_OnSigFloat64Signal(Obj, ParamFloat64);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -284,6 +354,13 @@ void UTbSimpleSimpleInterfacePublisher::BroadcastSigFloat64Signal(double ParamFl
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITbSimpleSimpleInterfaceBPSubscriberInterface::Execute_OnSigFloat64Signal(Obj, ParamFloat64);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});
@@ -309,6 +386,10 @@ void UTbSimpleSimpleInterfacePublisher::BroadcastSigStringSignal(const FString& 
 			{
 				ITbSimpleSimpleInterfaceBPSubscriberInterface::Execute_OnSigStringSignal(Obj, ParamString);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -325,6 +406,13 @@ void UTbSimpleSimpleInterfacePublisher::BroadcastSigStringSignal(const FString& 
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITbSimpleSimpleInterfaceBPSubscriberInterface::Execute_OnSigStringSignal(Obj, ParamString);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});
@@ -350,6 +438,10 @@ void UTbSimpleSimpleInterfacePublisher::BroadcastPropBoolChanged(UPARAM(DisplayN
 			{
 				ITbSimpleSimpleInterfaceBPSubscriberInterface::Execute_OnPropBoolChanged(Obj, bInPropBool);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -366,6 +458,13 @@ void UTbSimpleSimpleInterfacePublisher::BroadcastPropBoolChanged(UPARAM(DisplayN
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITbSimpleSimpleInterfaceBPSubscriberInterface::Execute_OnPropBoolChanged(Obj, bInPropBool);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});
@@ -391,6 +490,10 @@ void UTbSimpleSimpleInterfacePublisher::BroadcastPropIntChanged(UPARAM(DisplayNa
 			{
 				ITbSimpleSimpleInterfaceBPSubscriberInterface::Execute_OnPropIntChanged(Obj, InPropInt);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -407,6 +510,13 @@ void UTbSimpleSimpleInterfacePublisher::BroadcastPropIntChanged(UPARAM(DisplayNa
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITbSimpleSimpleInterfaceBPSubscriberInterface::Execute_OnPropIntChanged(Obj, InPropInt);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});
@@ -432,6 +542,10 @@ void UTbSimpleSimpleInterfacePublisher::BroadcastPropInt32Changed(UPARAM(Display
 			{
 				ITbSimpleSimpleInterfaceBPSubscriberInterface::Execute_OnPropInt32Changed(Obj, InPropInt32);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -448,6 +562,13 @@ void UTbSimpleSimpleInterfacePublisher::BroadcastPropInt32Changed(UPARAM(Display
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITbSimpleSimpleInterfaceBPSubscriberInterface::Execute_OnPropInt32Changed(Obj, InPropInt32);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});
@@ -473,6 +594,10 @@ void UTbSimpleSimpleInterfacePublisher::BroadcastPropInt64Changed(UPARAM(Display
 			{
 				ITbSimpleSimpleInterfaceBPSubscriberInterface::Execute_OnPropInt64Changed(Obj, InPropInt64);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -489,6 +614,13 @@ void UTbSimpleSimpleInterfacePublisher::BroadcastPropInt64Changed(UPARAM(Display
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITbSimpleSimpleInterfaceBPSubscriberInterface::Execute_OnPropInt64Changed(Obj, InPropInt64);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});
@@ -514,6 +646,10 @@ void UTbSimpleSimpleInterfacePublisher::BroadcastPropFloatChanged(UPARAM(Display
 			{
 				ITbSimpleSimpleInterfaceBPSubscriberInterface::Execute_OnPropFloatChanged(Obj, InPropFloat);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -530,6 +666,13 @@ void UTbSimpleSimpleInterfacePublisher::BroadcastPropFloatChanged(UPARAM(Display
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITbSimpleSimpleInterfaceBPSubscriberInterface::Execute_OnPropFloatChanged(Obj, InPropFloat);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});
@@ -555,6 +698,10 @@ void UTbSimpleSimpleInterfacePublisher::BroadcastPropFloat32Changed(UPARAM(Displ
 			{
 				ITbSimpleSimpleInterfaceBPSubscriberInterface::Execute_OnPropFloat32Changed(Obj, InPropFloat32);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -571,6 +718,13 @@ void UTbSimpleSimpleInterfacePublisher::BroadcastPropFloat32Changed(UPARAM(Displ
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITbSimpleSimpleInterfaceBPSubscriberInterface::Execute_OnPropFloat32Changed(Obj, InPropFloat32);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});
@@ -596,6 +750,10 @@ void UTbSimpleSimpleInterfacePublisher::BroadcastPropFloat64Changed(UPARAM(Displ
 			{
 				ITbSimpleSimpleInterfaceBPSubscriberInterface::Execute_OnPropFloat64Changed(Obj, InPropFloat64);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -612,6 +770,13 @@ void UTbSimpleSimpleInterfacePublisher::BroadcastPropFloat64Changed(UPARAM(Displ
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITbSimpleSimpleInterfaceBPSubscriberInterface::Execute_OnPropFloat64Changed(Obj, InPropFloat64);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});
@@ -637,6 +802,10 @@ void UTbSimpleSimpleInterfacePublisher::BroadcastPropStringChanged(UPARAM(Displa
 			{
 				ITbSimpleSimpleInterfaceBPSubscriberInterface::Execute_OnPropStringChanged(Obj, InPropString);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -653,6 +822,13 @@ void UTbSimpleSimpleInterfacePublisher::BroadcastPropStringChanged(UPARAM(Displa
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITbSimpleSimpleInterfaceBPSubscriberInterface::Execute_OnPropStringChanged(Obj, InPropString);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});

@@ -22,6 +22,10 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastSig1Signal(int32 Param1)
 			{
 				ITestbed2ManyParamInterfaceBPSubscriberInterface::Execute_OnSig1Signal(Obj, Param1);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -38,6 +42,13 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastSig1Signal(int32 Param1)
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITestbed2ManyParamInterfaceBPSubscriberInterface::Execute_OnSig1Signal(Obj, Param1);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});
@@ -63,6 +74,10 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastSig2Signal(int32 Param1, int
 			{
 				ITestbed2ManyParamInterfaceBPSubscriberInterface::Execute_OnSig2Signal(Obj, Param1, Param2);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -79,6 +94,13 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastSig2Signal(int32 Param1, int
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITestbed2ManyParamInterfaceBPSubscriberInterface::Execute_OnSig2Signal(Obj, Param1, Param2);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});
@@ -104,6 +126,10 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastSig3Signal(int32 Param1, int
 			{
 				ITestbed2ManyParamInterfaceBPSubscriberInterface::Execute_OnSig3Signal(Obj, Param1, Param2, Param3);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -120,6 +146,13 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastSig3Signal(int32 Param1, int
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITestbed2ManyParamInterfaceBPSubscriberInterface::Execute_OnSig3Signal(Obj, Param1, Param2, Param3);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});
@@ -145,6 +178,10 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastSig4Signal(int32 Param1, int
 			{
 				ITestbed2ManyParamInterfaceBPSubscriberInterface::Execute_OnSig4Signal(Obj, Param1, Param2, Param3, Param4);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -161,6 +198,13 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastSig4Signal(int32 Param1, int
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITestbed2ManyParamInterfaceBPSubscriberInterface::Execute_OnSig4Signal(Obj, Param1, Param2, Param3, Param4);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});
@@ -186,6 +230,10 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastProp1Changed(UPARAM(DisplayN
 			{
 				ITestbed2ManyParamInterfaceBPSubscriberInterface::Execute_OnProp1Changed(Obj, InProp1);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -202,6 +250,13 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastProp1Changed(UPARAM(DisplayN
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITestbed2ManyParamInterfaceBPSubscriberInterface::Execute_OnProp1Changed(Obj, InProp1);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});
@@ -227,6 +282,10 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastProp2Changed(UPARAM(DisplayN
 			{
 				ITestbed2ManyParamInterfaceBPSubscriberInterface::Execute_OnProp2Changed(Obj, InProp2);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -243,6 +302,13 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastProp2Changed(UPARAM(DisplayN
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITestbed2ManyParamInterfaceBPSubscriberInterface::Execute_OnProp2Changed(Obj, InProp2);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});
@@ -268,6 +334,10 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastProp3Changed(UPARAM(DisplayN
 			{
 				ITestbed2ManyParamInterfaceBPSubscriberInterface::Execute_OnProp3Changed(Obj, InProp3);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -284,6 +354,13 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastProp3Changed(UPARAM(DisplayN
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITestbed2ManyParamInterfaceBPSubscriberInterface::Execute_OnProp3Changed(Obj, InProp3);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});
@@ -309,6 +386,10 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastProp4Changed(UPARAM(DisplayN
 			{
 				ITestbed2ManyParamInterfaceBPSubscriberInterface::Execute_OnProp4Changed(Obj, InProp4);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -325,6 +406,13 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastProp4Changed(UPARAM(DisplayN
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITestbed2ManyParamInterfaceBPSubscriberInterface::Execute_OnProp4Changed(Obj, InProp4);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});

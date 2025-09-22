@@ -22,6 +22,10 @@ void UTbSame2SameStruct1InterfacePublisher::BroadcastSig1Signal(const FTbSame2St
 			{
 				ITbSame2SameStruct1InterfaceBPSubscriberInterface::Execute_OnSig1Signal(Obj, Param1);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -38,6 +42,13 @@ void UTbSame2SameStruct1InterfacePublisher::BroadcastSig1Signal(const FTbSame2St
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITbSame2SameStruct1InterfaceBPSubscriberInterface::Execute_OnSig1Signal(Obj, Param1);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});
@@ -63,6 +74,10 @@ void UTbSame2SameStruct1InterfacePublisher::BroadcastProp1Changed(UPARAM(Display
 			{
 				ITbSame2SameStruct1InterfaceBPSubscriberInterface::Execute_OnProp1Changed(Obj, InProp1);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -79,6 +94,13 @@ void UTbSame2SameStruct1InterfacePublisher::BroadcastProp1Changed(UPARAM(Display
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITbSame2SameStruct1InterfaceBPSubscriberInterface::Execute_OnProp1Changed(Obj, InProp1);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});
