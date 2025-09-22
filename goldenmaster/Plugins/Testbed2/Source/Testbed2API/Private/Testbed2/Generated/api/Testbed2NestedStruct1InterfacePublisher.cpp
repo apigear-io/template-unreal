@@ -22,6 +22,10 @@ void UTestbed2NestedStruct1InterfacePublisher::BroadcastSig1Signal(const FTestbe
 			{
 				ITestbed2NestedStruct1InterfaceBPSubscriberInterface::Execute_OnSig1Signal(Obj, Param1);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -38,6 +42,13 @@ void UTestbed2NestedStruct1InterfacePublisher::BroadcastSig1Signal(const FTestbe
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITestbed2NestedStruct1InterfaceBPSubscriberInterface::Execute_OnSig1Signal(Obj, Param1);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});
@@ -63,6 +74,10 @@ void UTestbed2NestedStruct1InterfacePublisher::BroadcastProp1Changed(UPARAM(Disp
 			{
 				ITestbed2NestedStruct1InterfaceBPSubscriberInterface::Execute_OnProp1Changed(Obj, InProp1);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -79,6 +94,13 @@ void UTestbed2NestedStruct1InterfacePublisher::BroadcastProp1Changed(UPARAM(Disp
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITestbed2NestedStruct1InterfaceBPSubscriberInterface::Execute_OnProp1Changed(Obj, InProp1);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});

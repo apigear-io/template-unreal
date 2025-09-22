@@ -22,6 +22,10 @@ void UTestbed1StructInterfacePublisher::BroadcastSigBoolSignal(const FTestbed1St
 			{
 				ITestbed1StructInterfaceBPSubscriberInterface::Execute_OnSigBoolSignal(Obj, ParamBool);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -38,6 +42,13 @@ void UTestbed1StructInterfacePublisher::BroadcastSigBoolSignal(const FTestbed1St
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITestbed1StructInterfaceBPSubscriberInterface::Execute_OnSigBoolSignal(Obj, ParamBool);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});
@@ -63,6 +74,10 @@ void UTestbed1StructInterfacePublisher::BroadcastSigIntSignal(const FTestbed1Str
 			{
 				ITestbed1StructInterfaceBPSubscriberInterface::Execute_OnSigIntSignal(Obj, ParamInt);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -79,6 +94,13 @@ void UTestbed1StructInterfacePublisher::BroadcastSigIntSignal(const FTestbed1Str
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITestbed1StructInterfaceBPSubscriberInterface::Execute_OnSigIntSignal(Obj, ParamInt);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});
@@ -104,6 +126,10 @@ void UTestbed1StructInterfacePublisher::BroadcastSigFloatSignal(const FTestbed1S
 			{
 				ITestbed1StructInterfaceBPSubscriberInterface::Execute_OnSigFloatSignal(Obj, ParamFloat);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -120,6 +146,13 @@ void UTestbed1StructInterfacePublisher::BroadcastSigFloatSignal(const FTestbed1S
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITestbed1StructInterfaceBPSubscriberInterface::Execute_OnSigFloatSignal(Obj, ParamFloat);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});
@@ -145,6 +178,10 @@ void UTestbed1StructInterfacePublisher::BroadcastSigStringSignal(const FTestbed1
 			{
 				ITestbed1StructInterfaceBPSubscriberInterface::Execute_OnSigStringSignal(Obj, ParamString);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -161,6 +198,13 @@ void UTestbed1StructInterfacePublisher::BroadcastSigStringSignal(const FTestbed1
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITestbed1StructInterfaceBPSubscriberInterface::Execute_OnSigStringSignal(Obj, ParamString);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});
@@ -186,6 +230,10 @@ void UTestbed1StructInterfacePublisher::BroadcastPropBoolChanged(UPARAM(DisplayN
 			{
 				ITestbed1StructInterfaceBPSubscriberInterface::Execute_OnPropBoolChanged(Obj, InPropBool);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -202,6 +250,13 @@ void UTestbed1StructInterfacePublisher::BroadcastPropBoolChanged(UPARAM(DisplayN
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITestbed1StructInterfaceBPSubscriberInterface::Execute_OnPropBoolChanged(Obj, InPropBool);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});
@@ -227,6 +282,10 @@ void UTestbed1StructInterfacePublisher::BroadcastPropIntChanged(UPARAM(DisplayNa
 			{
 				ITestbed1StructInterfaceBPSubscriberInterface::Execute_OnPropIntChanged(Obj, InPropInt);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -243,6 +302,13 @@ void UTestbed1StructInterfacePublisher::BroadcastPropIntChanged(UPARAM(DisplayNa
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITestbed1StructInterfaceBPSubscriberInterface::Execute_OnPropIntChanged(Obj, InPropInt);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});
@@ -268,6 +334,10 @@ void UTestbed1StructInterfacePublisher::BroadcastPropFloatChanged(UPARAM(Display
 			{
 				ITestbed1StructInterfaceBPSubscriberInterface::Execute_OnPropFloatChanged(Obj, InPropFloat);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -284,6 +354,13 @@ void UTestbed1StructInterfacePublisher::BroadcastPropFloatChanged(UPARAM(Display
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITestbed1StructInterfaceBPSubscriberInterface::Execute_OnPropFloatChanged(Obj, InPropFloat);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});
@@ -309,6 +386,10 @@ void UTestbed1StructInterfacePublisher::BroadcastPropStringChanged(UPARAM(Displa
 			{
 				ITestbed1StructInterfaceBPSubscriberInterface::Execute_OnPropStringChanged(Obj, InPropString);
 			}
+			else
+			{
+				Unsubscribe(Subscriber);
+			}
 		}
 	}
 	else
@@ -325,6 +406,13 @@ void UTestbed1StructInterfacePublisher::BroadcastPropStringChanged(UPARAM(Displa
 				if (UObject* Obj = Subscriber.GetObject())
 				{
 					ITestbed1StructInterfaceBPSubscriberInterface::Execute_OnPropStringChanged(Obj, InPropString);
+				}
+				else
+				{
+					if (WeakPtr.IsValid())
+					{
+						WeakPtr.Get()->Unsubscribe(Subscriber);
+					}
 				}
 			}
 		});
