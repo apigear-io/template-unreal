@@ -17,6 +17,7 @@ limitations under the License.
 #pragma once
 #include "Engine/LatentActionManager.h"
 #include "UObject/Interface.h"
+#include "Misc/ScopeRWLock.h"
 #include "TbIfaceimport_data.h"
 #include "TbIfaceimportEmptyIfInterface.generated.h"
 

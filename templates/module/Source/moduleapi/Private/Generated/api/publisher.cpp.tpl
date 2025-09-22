@@ -20,7 +20,11 @@ void U{{$Class}}Publisher::Broadcast{{Camel .Name}}Signal({{ueParams "" .Params}
 {
 	On{{Camel .Name}}Signal.Broadcast({{ueVars "" .Params}});
 
-	TArray<TScriptInterface<I{{$Class}}BPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<I{{$Class}}BPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		On{{Camel .Name}}SignalBP.Broadcast({{ueVars "" .Params}});
@@ -60,7 +64,11 @@ void U{{$Class}}Publisher::Broadcast{{Camel .Name}}Changed(UPARAM(DisplayName = 
 {
 	On{{Camel .Name}}Changed.Broadcast({{ueVar "In" .}});
 
-	TArray<TScriptInterface<I{{$Class}}BPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<I{{$Class}}BPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		On{{Camel .Name}}ChangedBP.Broadcast({{ueVar "In" .}});
@@ -101,12 +109,14 @@ void U{{$Class}}Publisher::Subscribe(const TScriptInterface<I{{$Class}}BPSubscri
 		return;
 	}
 
+	FWriteScopeLock WriteLock(SubscribersLock);
 	Subscribers.Remove(Subscriber);
 	Subscribers.Add(Subscriber);
 }
 
 void U{{$Class}}Publisher::Unsubscribe(const TScriptInterface<I{{$Class}}BPSubscriberInterface>& Subscriber)
 {
+	FWriteScopeLock WriteLock(SubscribersLock);
 	Subscribers.Remove(Subscriber);
 }
 {{- end }}

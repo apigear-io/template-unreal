@@ -9,7 +9,11 @@ void UTbRefIfacesParentIfPublisher::BroadcastLocalIfSignalSignal(const TScriptIn
 {
 	OnLocalIfSignalSignal.Broadcast(Param);
 
-	TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnLocalIfSignalSignalBP.Broadcast(Param);
@@ -46,7 +50,11 @@ void UTbRefIfacesParentIfPublisher::BroadcastLocalIfSignalListSignal(const TArra
 {
 	OnLocalIfSignalListSignal.Broadcast(Param);
 
-	TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnLocalIfSignalListSignalBP.Broadcast(Param);
@@ -83,7 +91,11 @@ void UTbRefIfacesParentIfPublisher::BroadcastImportedIfSignalSignal(const TScrip
 {
 	OnImportedIfSignalSignal.Broadcast(Param);
 
-	TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnImportedIfSignalSignalBP.Broadcast(Param);
@@ -120,7 +132,11 @@ void UTbRefIfacesParentIfPublisher::BroadcastImportedIfSignalListSignal(const TA
 {
 	OnImportedIfSignalListSignal.Broadcast(Param);
 
-	TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnImportedIfSignalListSignalBP.Broadcast(Param);
@@ -157,7 +173,11 @@ void UTbRefIfacesParentIfPublisher::BroadcastLocalIfChanged(UPARAM(DisplayName =
 {
 	OnLocalIfChanged.Broadcast(InLocalIf);
 
-	TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnLocalIfChangedBP.Broadcast(InLocalIf);
@@ -194,7 +214,11 @@ void UTbRefIfacesParentIfPublisher::BroadcastLocalIfListChanged(UPARAM(DisplayNa
 {
 	OnLocalIfListChanged.Broadcast(InLocalIfList);
 
-	TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnLocalIfListChangedBP.Broadcast(InLocalIfList);
@@ -231,7 +255,11 @@ void UTbRefIfacesParentIfPublisher::BroadcastImportedIfChanged(UPARAM(DisplayNam
 {
 	OnImportedIfChanged.Broadcast(InImportedIf);
 
-	TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnImportedIfChangedBP.Broadcast(InImportedIf);
@@ -268,7 +296,11 @@ void UTbRefIfacesParentIfPublisher::BroadcastImportedIfListChanged(UPARAM(Displa
 {
 	OnImportedIfListChanged.Broadcast(InImportedIfList);
 
-	TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnImportedIfListChangedBP.Broadcast(InImportedIfList);
@@ -308,11 +340,13 @@ void UTbRefIfacesParentIfPublisher::Subscribe(const TScriptInterface<ITbRefIface
 		return;
 	}
 
+	FWriteScopeLock WriteLock(SubscribersLock);
 	Subscribers.Remove(Subscriber);
 	Subscribers.Add(Subscriber);
 }
 
 void UTbRefIfacesParentIfPublisher::Unsubscribe(const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber)
 {
+	FWriteScopeLock WriteLock(SubscribersLock);
 	Subscribers.Remove(Subscriber);
 }

@@ -7,7 +7,11 @@ void UTestbed1StructInterfacePublisher::BroadcastSigBoolSignal(const FTestbed1St
 {
 	OnSigBoolSignal.Broadcast(ParamBool);
 
-	TArray<TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnSigBoolSignalBP.Broadcast(ParamBool);
@@ -44,7 +48,11 @@ void UTestbed1StructInterfacePublisher::BroadcastSigIntSignal(const FTestbed1Str
 {
 	OnSigIntSignal.Broadcast(ParamInt);
 
-	TArray<TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnSigIntSignalBP.Broadcast(ParamInt);
@@ -81,7 +89,11 @@ void UTestbed1StructInterfacePublisher::BroadcastSigFloatSignal(const FTestbed1S
 {
 	OnSigFloatSignal.Broadcast(ParamFloat);
 
-	TArray<TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnSigFloatSignalBP.Broadcast(ParamFloat);
@@ -118,7 +130,11 @@ void UTestbed1StructInterfacePublisher::BroadcastSigStringSignal(const FTestbed1
 {
 	OnSigStringSignal.Broadcast(ParamString);
 
-	TArray<TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnSigStringSignalBP.Broadcast(ParamString);
@@ -155,7 +171,11 @@ void UTestbed1StructInterfacePublisher::BroadcastPropBoolChanged(UPARAM(DisplayN
 {
 	OnPropBoolChanged.Broadcast(InPropBool);
 
-	TArray<TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnPropBoolChangedBP.Broadcast(InPropBool);
@@ -192,7 +212,11 @@ void UTestbed1StructInterfacePublisher::BroadcastPropIntChanged(UPARAM(DisplayNa
 {
 	OnPropIntChanged.Broadcast(InPropInt);
 
-	TArray<TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnPropIntChangedBP.Broadcast(InPropInt);
@@ -229,7 +253,11 @@ void UTestbed1StructInterfacePublisher::BroadcastPropFloatChanged(UPARAM(Display
 {
 	OnPropFloatChanged.Broadcast(InPropFloat);
 
-	TArray<TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnPropFloatChangedBP.Broadcast(InPropFloat);
@@ -266,7 +294,11 @@ void UTestbed1StructInterfacePublisher::BroadcastPropStringChanged(UPARAM(Displa
 {
 	OnPropStringChanged.Broadcast(InPropString);
 
-	TArray<TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnPropStringChangedBP.Broadcast(InPropString);
@@ -306,11 +338,13 @@ void UTestbed1StructInterfacePublisher::Subscribe(const TScriptInterface<ITestbe
 		return;
 	}
 
+	FWriteScopeLock WriteLock(SubscribersLock);
 	Subscribers.Remove(Subscriber);
 	Subscribers.Add(Subscriber);
 }
 
 void UTestbed1StructInterfacePublisher::Unsubscribe(const TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>& Subscriber)
 {
+	FWriteScopeLock WriteLock(SubscribersLock);
 	Subscribers.Remove(Subscriber);
 }

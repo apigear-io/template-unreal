@@ -7,7 +7,11 @@ void UTbSimpleNoSignalsInterfacePublisher::BroadcastPropBoolChanged(UPARAM(Displ
 {
 	OnPropBoolChanged.Broadcast(bInPropBool);
 
-	TArray<TScriptInterface<ITbSimpleNoSignalsInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITbSimpleNoSignalsInterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnPropBoolChangedBP.Broadcast(bInPropBool);
@@ -44,7 +48,11 @@ void UTbSimpleNoSignalsInterfacePublisher::BroadcastPropIntChanged(UPARAM(Displa
 {
 	OnPropIntChanged.Broadcast(InPropInt);
 
-	TArray<TScriptInterface<ITbSimpleNoSignalsInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITbSimpleNoSignalsInterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnPropIntChangedBP.Broadcast(InPropInt);
@@ -84,11 +92,13 @@ void UTbSimpleNoSignalsInterfacePublisher::Subscribe(const TScriptInterface<ITbS
 		return;
 	}
 
+	FWriteScopeLock WriteLock(SubscribersLock);
 	Subscribers.Remove(Subscriber);
 	Subscribers.Add(Subscriber);
 }
 
 void UTbSimpleNoSignalsInterfacePublisher::Unsubscribe(const TScriptInterface<ITbSimpleNoSignalsInterfaceBPSubscriberInterface>& Subscriber)
 {
+	FWriteScopeLock WriteLock(SubscribersLock);
 	Subscribers.Remove(Subscriber);
 }

@@ -17,6 +17,7 @@ limitations under the License.
 #pragma once
 #include "Engine/LatentActionManager.h"
 #include "UObject/Interface.h"
+#include "Misc/ScopeRWLock.h"
 #include "TbSimple_data.h"
 #include "TbSimpleSimpleArrayInterfaceInterface.generated.h"
 
@@ -274,6 +275,7 @@ public:
 private:
 	UPROPERTY()
 	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> Subscribers;
+	FRWLock SubscribersLock;
 };
 
 /**

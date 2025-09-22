@@ -7,7 +7,11 @@ void UTbSimpleNoOperationsInterfacePublisher::BroadcastSigVoidSignal()
 {
 	OnSigVoidSignal.Broadcast();
 
-	TArray<TScriptInterface<ITbSimpleNoOperationsInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITbSimpleNoOperationsInterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnSigVoidSignalBP.Broadcast();
@@ -44,7 +48,11 @@ void UTbSimpleNoOperationsInterfacePublisher::BroadcastSigBoolSignal(bool bParam
 {
 	OnSigBoolSignal.Broadcast(bParamBool);
 
-	TArray<TScriptInterface<ITbSimpleNoOperationsInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITbSimpleNoOperationsInterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnSigBoolSignalBP.Broadcast(bParamBool);
@@ -81,7 +89,11 @@ void UTbSimpleNoOperationsInterfacePublisher::BroadcastPropBoolChanged(UPARAM(Di
 {
 	OnPropBoolChanged.Broadcast(bInPropBool);
 
-	TArray<TScriptInterface<ITbSimpleNoOperationsInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITbSimpleNoOperationsInterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnPropBoolChangedBP.Broadcast(bInPropBool);
@@ -118,7 +130,11 @@ void UTbSimpleNoOperationsInterfacePublisher::BroadcastPropIntChanged(UPARAM(Dis
 {
 	OnPropIntChanged.Broadcast(InPropInt);
 
-	TArray<TScriptInterface<ITbSimpleNoOperationsInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITbSimpleNoOperationsInterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnPropIntChangedBP.Broadcast(InPropInt);
@@ -158,11 +174,13 @@ void UTbSimpleNoOperationsInterfacePublisher::Subscribe(const TScriptInterface<I
 		return;
 	}
 
+	FWriteScopeLock WriteLock(SubscribersLock);
 	Subscribers.Remove(Subscriber);
 	Subscribers.Add(Subscriber);
 }
 
 void UTbSimpleNoOperationsInterfacePublisher::Unsubscribe(const TScriptInterface<ITbSimpleNoOperationsInterfaceBPSubscriberInterface>& Subscriber)
 {
+	FWriteScopeLock WriteLock(SubscribersLock);
 	Subscribers.Remove(Subscriber);
 }

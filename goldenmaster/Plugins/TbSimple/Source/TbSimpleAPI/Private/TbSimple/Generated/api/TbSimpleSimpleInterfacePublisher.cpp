@@ -7,7 +7,11 @@ void UTbSimpleSimpleInterfacePublisher::BroadcastSigBoolSignal(bool bParamBool)
 {
 	OnSigBoolSignal.Broadcast(bParamBool);
 
-	TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnSigBoolSignalBP.Broadcast(bParamBool);
@@ -44,7 +48,11 @@ void UTbSimpleSimpleInterfacePublisher::BroadcastSigIntSignal(int32 ParamInt)
 {
 	OnSigIntSignal.Broadcast(ParamInt);
 
-	TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnSigIntSignalBP.Broadcast(ParamInt);
@@ -81,7 +89,11 @@ void UTbSimpleSimpleInterfacePublisher::BroadcastSigInt32Signal(int32 ParamInt32
 {
 	OnSigInt32Signal.Broadcast(ParamInt32);
 
-	TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnSigInt32SignalBP.Broadcast(ParamInt32);
@@ -118,7 +130,11 @@ void UTbSimpleSimpleInterfacePublisher::BroadcastSigInt64Signal(int64 ParamInt64
 {
 	OnSigInt64Signal.Broadcast(ParamInt64);
 
-	TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnSigInt64SignalBP.Broadcast(ParamInt64);
@@ -155,7 +171,11 @@ void UTbSimpleSimpleInterfacePublisher::BroadcastSigFloatSignal(float ParamFloat
 {
 	OnSigFloatSignal.Broadcast(ParamFloat);
 
-	TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnSigFloatSignalBP.Broadcast(ParamFloat);
@@ -192,7 +212,11 @@ void UTbSimpleSimpleInterfacePublisher::BroadcastSigFloat32Signal(float ParamFlo
 {
 	OnSigFloat32Signal.Broadcast(ParamFloat32);
 
-	TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnSigFloat32SignalBP.Broadcast(ParamFloat32);
@@ -229,7 +253,11 @@ void UTbSimpleSimpleInterfacePublisher::BroadcastSigFloat64Signal(double ParamFl
 {
 	OnSigFloat64Signal.Broadcast(ParamFloat64);
 
-	TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnSigFloat64SignalBP.Broadcast(ParamFloat64);
@@ -266,7 +294,11 @@ void UTbSimpleSimpleInterfacePublisher::BroadcastSigStringSignal(const FString& 
 {
 	OnSigStringSignal.Broadcast(ParamString);
 
-	TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnSigStringSignalBP.Broadcast(ParamString);
@@ -303,7 +335,11 @@ void UTbSimpleSimpleInterfacePublisher::BroadcastPropBoolChanged(UPARAM(DisplayN
 {
 	OnPropBoolChanged.Broadcast(bInPropBool);
 
-	TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnPropBoolChangedBP.Broadcast(bInPropBool);
@@ -340,7 +376,11 @@ void UTbSimpleSimpleInterfacePublisher::BroadcastPropIntChanged(UPARAM(DisplayNa
 {
 	OnPropIntChanged.Broadcast(InPropInt);
 
-	TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnPropIntChangedBP.Broadcast(InPropInt);
@@ -377,7 +417,11 @@ void UTbSimpleSimpleInterfacePublisher::BroadcastPropInt32Changed(UPARAM(Display
 {
 	OnPropInt32Changed.Broadcast(InPropInt32);
 
-	TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnPropInt32ChangedBP.Broadcast(InPropInt32);
@@ -414,7 +458,11 @@ void UTbSimpleSimpleInterfacePublisher::BroadcastPropInt64Changed(UPARAM(Display
 {
 	OnPropInt64Changed.Broadcast(InPropInt64);
 
-	TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnPropInt64ChangedBP.Broadcast(InPropInt64);
@@ -451,7 +499,11 @@ void UTbSimpleSimpleInterfacePublisher::BroadcastPropFloatChanged(UPARAM(Display
 {
 	OnPropFloatChanged.Broadcast(InPropFloat);
 
-	TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnPropFloatChangedBP.Broadcast(InPropFloat);
@@ -488,7 +540,11 @@ void UTbSimpleSimpleInterfacePublisher::BroadcastPropFloat32Changed(UPARAM(Displ
 {
 	OnPropFloat32Changed.Broadcast(InPropFloat32);
 
-	TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnPropFloat32ChangedBP.Broadcast(InPropFloat32);
@@ -525,7 +581,11 @@ void UTbSimpleSimpleInterfacePublisher::BroadcastPropFloat64Changed(UPARAM(Displ
 {
 	OnPropFloat64Changed.Broadcast(InPropFloat64);
 
-	TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnPropFloat64ChangedBP.Broadcast(InPropFloat64);
@@ -562,7 +622,11 @@ void UTbSimpleSimpleInterfacePublisher::BroadcastPropStringChanged(UPARAM(Displa
 {
 	OnPropStringChanged.Broadcast(InPropString);
 
-	TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnPropStringChangedBP.Broadcast(InPropString);
@@ -602,11 +666,13 @@ void UTbSimpleSimpleInterfacePublisher::Subscribe(const TScriptInterface<ITbSimp
 		return;
 	}
 
+	FWriteScopeLock WriteLock(SubscribersLock);
 	Subscribers.Remove(Subscriber);
 	Subscribers.Add(Subscriber);
 }
 
 void UTbSimpleSimpleInterfacePublisher::Unsubscribe(const TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>& Subscriber)
 {
+	FWriteScopeLock WriteLock(SubscribersLock);
 	Subscribers.Remove(Subscriber);
 }

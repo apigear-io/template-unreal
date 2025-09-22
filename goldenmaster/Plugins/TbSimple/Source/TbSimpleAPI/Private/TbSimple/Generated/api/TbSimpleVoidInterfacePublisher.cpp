@@ -7,7 +7,11 @@ void UTbSimpleVoidInterfacePublisher::BroadcastSigVoidSignal()
 {
 	OnSigVoidSignal.Broadcast();
 
-	TArray<TScriptInterface<ITbSimpleVoidInterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITbSimpleVoidInterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnSigVoidSignalBP.Broadcast();
@@ -47,11 +51,13 @@ void UTbSimpleVoidInterfacePublisher::Subscribe(const TScriptInterface<ITbSimple
 		return;
 	}
 
+	FWriteScopeLock WriteLock(SubscribersLock);
 	Subscribers.Remove(Subscriber);
 	Subscribers.Add(Subscriber);
 }
 
 void UTbSimpleVoidInterfacePublisher::Unsubscribe(const TScriptInterface<ITbSimpleVoidInterfaceBPSubscriberInterface>& Subscriber)
 {
+	FWriteScopeLock WriteLock(SubscribersLock);
 	Subscribers.Remove(Subscriber);
 }

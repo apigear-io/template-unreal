@@ -17,6 +17,7 @@ limitations under the License.
 #pragma once
 #include "Engine/LatentActionManager.h"
 #include "UObject/Interface.h"
+#include "Misc/ScopeRWLock.h"
 #include "TbRefIfaces_data.h"
 #include "TbRefIfacesSimpleLocalIfInterface.generated.h"
 
@@ -87,6 +88,7 @@ public:
 private:
 	UPROPERTY()
 	TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfBPSubscriberInterface>> Subscribers;
+	FRWLock SubscribersLock;
 };
 
 /**

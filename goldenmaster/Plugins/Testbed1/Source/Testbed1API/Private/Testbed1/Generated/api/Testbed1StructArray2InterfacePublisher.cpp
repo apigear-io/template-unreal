@@ -7,7 +7,11 @@ void UTestbed1StructArray2InterfacePublisher::BroadcastSigBoolSignal(const FTest
 {
 	OnSigBoolSignal.Broadcast(ParamBool);
 
-	TArray<TScriptInterface<ITestbed1StructArray2InterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITestbed1StructArray2InterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnSigBoolSignalBP.Broadcast(ParamBool);
@@ -44,7 +48,11 @@ void UTestbed1StructArray2InterfacePublisher::BroadcastSigIntSignal(const FTestb
 {
 	OnSigIntSignal.Broadcast(ParamInt);
 
-	TArray<TScriptInterface<ITestbed1StructArray2InterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITestbed1StructArray2InterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnSigIntSignalBP.Broadcast(ParamInt);
@@ -81,7 +89,11 @@ void UTestbed1StructArray2InterfacePublisher::BroadcastSigFloatSignal(const FTes
 {
 	OnSigFloatSignal.Broadcast(ParamFloat);
 
-	TArray<TScriptInterface<ITestbed1StructArray2InterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITestbed1StructArray2InterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnSigFloatSignalBP.Broadcast(ParamFloat);
@@ -118,7 +130,11 @@ void UTestbed1StructArray2InterfacePublisher::BroadcastSigStringSignal(const FTe
 {
 	OnSigStringSignal.Broadcast(ParamString);
 
-	TArray<TScriptInterface<ITestbed1StructArray2InterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITestbed1StructArray2InterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnSigStringSignalBP.Broadcast(ParamString);
@@ -155,7 +171,11 @@ void UTestbed1StructArray2InterfacePublisher::BroadcastPropBoolChanged(UPARAM(Di
 {
 	OnPropBoolChanged.Broadcast(InPropBool);
 
-	TArray<TScriptInterface<ITestbed1StructArray2InterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITestbed1StructArray2InterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnPropBoolChangedBP.Broadcast(InPropBool);
@@ -192,7 +212,11 @@ void UTestbed1StructArray2InterfacePublisher::BroadcastPropIntChanged(UPARAM(Dis
 {
 	OnPropIntChanged.Broadcast(InPropInt);
 
-	TArray<TScriptInterface<ITestbed1StructArray2InterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITestbed1StructArray2InterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnPropIntChangedBP.Broadcast(InPropInt);
@@ -229,7 +253,11 @@ void UTestbed1StructArray2InterfacePublisher::BroadcastPropFloatChanged(UPARAM(D
 {
 	OnPropFloatChanged.Broadcast(InPropFloat);
 
-	TArray<TScriptInterface<ITestbed1StructArray2InterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITestbed1StructArray2InterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnPropFloatChangedBP.Broadcast(InPropFloat);
@@ -266,7 +294,11 @@ void UTestbed1StructArray2InterfacePublisher::BroadcastPropStringChanged(UPARAM(
 {
 	OnPropStringChanged.Broadcast(InPropString);
 
-	TArray<TScriptInterface<ITestbed1StructArray2InterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITestbed1StructArray2InterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnPropStringChangedBP.Broadcast(InPropString);
@@ -303,7 +335,11 @@ void UTestbed1StructArray2InterfacePublisher::BroadcastPropEnumChanged(UPARAM(Di
 {
 	OnPropEnumChanged.Broadcast(InPropEnum);
 
-	TArray<TScriptInterface<ITestbed1StructArray2InterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITestbed1StructArray2InterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnPropEnumChangedBP.Broadcast(InPropEnum);
@@ -343,11 +379,13 @@ void UTestbed1StructArray2InterfacePublisher::Subscribe(const TScriptInterface<I
 		return;
 	}
 
+	FWriteScopeLock WriteLock(SubscribersLock);
 	Subscribers.Remove(Subscriber);
 	Subscribers.Add(Subscriber);
 }
 
 void UTestbed1StructArray2InterfacePublisher::Unsubscribe(const TScriptInterface<ITestbed1StructArray2InterfaceBPSubscriberInterface>& Subscriber)
 {
+	FWriteScopeLock WriteLock(SubscribersLock);
 	Subscribers.Remove(Subscriber);
 }

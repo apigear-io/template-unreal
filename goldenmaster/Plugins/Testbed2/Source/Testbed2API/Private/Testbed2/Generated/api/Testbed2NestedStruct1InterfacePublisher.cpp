@@ -7,7 +7,11 @@ void UTestbed2NestedStruct1InterfacePublisher::BroadcastSig1Signal(const FTestbe
 {
 	OnSig1Signal.Broadcast(Param1);
 
-	TArray<TScriptInterface<ITestbed2NestedStruct1InterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITestbed2NestedStruct1InterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnSig1SignalBP.Broadcast(Param1);
@@ -44,7 +48,11 @@ void UTestbed2NestedStruct1InterfacePublisher::BroadcastProp1Changed(UPARAM(Disp
 {
 	OnProp1Changed.Broadcast(InProp1);
 
-	TArray<TScriptInterface<ITestbed2NestedStruct1InterfaceBPSubscriberInterface>> SubscribersCopy = Subscribers;
+	TArray<TScriptInterface<ITestbed2NestedStruct1InterfaceBPSubscriberInterface>> SubscribersCopy;
+	{
+		FReadScopeLock ReadLock(SubscribersLock);
+		SubscribersCopy = Subscribers;
+	}
 	if (IsInGameThread())
 	{
 		OnProp1ChangedBP.Broadcast(InProp1);
@@ -84,11 +92,13 @@ void UTestbed2NestedStruct1InterfacePublisher::Subscribe(const TScriptInterface<
 		return;
 	}
 
+	FWriteScopeLock WriteLock(SubscribersLock);
 	Subscribers.Remove(Subscriber);
 	Subscribers.Add(Subscriber);
 }
 
 void UTestbed2NestedStruct1InterfacePublisher::Unsubscribe(const TScriptInterface<ITestbed2NestedStruct1InterfaceBPSubscriberInterface>& Subscriber)
 {
+	FWriteScopeLock WriteLock(SubscribersLock);
 	Subscribers.Remove(Subscriber);
 }
