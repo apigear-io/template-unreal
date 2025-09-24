@@ -35,7 +35,7 @@ class RemoteRegistry;
  * and holds the corresponding Testbed2NestedStruct1InterfaceOLinkSource OLink source object
  */
 UCLASS(BlueprintType)
-class TESTBED2OLINK_API UTestbed2NestedStruct1InterfaceOLinkAdapter : public UGameInstanceSubsystem
+class TESTBED2OLINK_API UTestbed2NestedStruct1InterfaceOLinkAdapter : public UGameInstanceSubsystem, public ITestbed2NestedStruct1InterfaceSubscriberInterface
 {
 	GENERATED_BODY()
 public:
@@ -54,15 +54,9 @@ public:
 
 private:
 	// signals
-	UFUNCTION(Category = "ApiGear|Testbed2|NestedStruct1Interface", BlueprintInternalUseOnly)
-	void OnSig1(const FTestbed2NestedStruct1& Param1);
+	void OnSig1Signal(const FTestbed2NestedStruct1& Param1);
 
-	UFUNCTION(Category = "ApiGear|Testbed2|NestedStruct1Interface", BlueprintInternalUseOnly)
 	void OnProp1Changed(const FTestbed2NestedStruct1& Prop1);
-
-	// delegate handles
-	FDelegateHandle OnProp1ChangedHandle;
-	FDelegateHandle OnSig1SignalHandle;
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|Testbed2|NestedStruct1Interface")

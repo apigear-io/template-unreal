@@ -59,16 +59,7 @@ void UTestbed2NestedStruct1InterfaceOLinkAdapter::setBackendService(TScriptInter
 	{
 		UTestbed2NestedStruct1InterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service Testbed2NestedStruct1Interface"));
-		if (OnProp1ChangedHandle.IsValid())
-		{
-			BackendPublisher->OnProp1Changed.Remove(OnProp1ChangedHandle);
-			OnProp1ChangedHandle.Reset();
-		}
-		if (OnSig1SignalHandle.IsValid())
-		{
-			BackendPublisher->OnSig1Signal.Remove(OnSig1SignalHandle);
-			OnSig1SignalHandle.Reset();
-		}
+		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITestbed2NestedStruct1InterfaceSubscriberInterface>(this));
 	}
 
 	// only set if interface is implemented
@@ -79,14 +70,13 @@ void UTestbed2NestedStruct1InterfaceOLinkAdapter::setBackendService(TScriptInter
 	UTestbed2NestedStruct1InterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service Testbed2NestedStruct1Interface"));
 	// connect property changed signals or simple events
-	OnProp1ChangedHandle = BackendPublisher->OnProp1Changed.AddUObject(this, &UTestbed2NestedStruct1InterfaceOLinkAdapter::OnProp1Changed);
-	OnSig1SignalHandle = BackendPublisher->OnSig1Signal.AddUObject(this, &UTestbed2NestedStruct1InterfaceOLinkAdapter::OnSig1);
+	BackendPublisher->Subscribe(TWeakInterfacePtr<ITestbed2NestedStruct1InterfaceSubscriberInterface>(this));
 
 	// update olink source with new backend
 	Source->setBackendService(InService);
 }
 
-void UTestbed2NestedStruct1InterfaceOLinkAdapter::OnSig1(const FTestbed2NestedStruct1& Param1)
+void UTestbed2NestedStruct1InterfaceOLinkAdapter::OnSig1Signal(const FTestbed2NestedStruct1& Param1)
 {
 	Source->OnSig1(Param1);
 }

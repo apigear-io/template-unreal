@@ -59,31 +59,7 @@ void UCounterCounterOLinkAdapter::setBackendService(TScriptInterface<ICounterCou
 	{
 		UCounterCounterPublisher* BackendPublisher = BackendService->_GetPublisher();
 		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service CounterCounter"));
-		if (OnVectorChangedHandle.IsValid())
-		{
-			BackendPublisher->OnVectorChanged.Remove(OnVectorChangedHandle);
-			OnVectorChangedHandle.Reset();
-		}
-		if (OnExternVectorChangedHandle.IsValid())
-		{
-			BackendPublisher->OnExternVectorChanged.Remove(OnExternVectorChangedHandle);
-			OnExternVectorChangedHandle.Reset();
-		}
-		if (OnVectorArrayChangedHandle.IsValid())
-		{
-			BackendPublisher->OnVectorArrayChanged.Remove(OnVectorArrayChangedHandle);
-			OnVectorArrayChangedHandle.Reset();
-		}
-		if (OnExternVectorArrayChangedHandle.IsValid())
-		{
-			BackendPublisher->OnExternVectorArrayChanged.Remove(OnExternVectorArrayChangedHandle);
-			OnExternVectorArrayChangedHandle.Reset();
-		}
-		if (OnValueChangedSignalHandle.IsValid())
-		{
-			BackendPublisher->OnValueChangedSignal.Remove(OnValueChangedSignalHandle);
-			OnValueChangedSignalHandle.Reset();
-		}
+		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ICounterCounterSubscriberInterface>(this));
 	}
 
 	// only set if interface is implemented
@@ -94,17 +70,13 @@ void UCounterCounterOLinkAdapter::setBackendService(TScriptInterface<ICounterCou
 	UCounterCounterPublisher* BackendPublisher = BackendService->_GetPublisher();
 	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service CounterCounter"));
 	// connect property changed signals or simple events
-	OnVectorChangedHandle = BackendPublisher->OnVectorChanged.AddUObject(this, &UCounterCounterOLinkAdapter::OnVectorChanged);
-	OnExternVectorChangedHandle = BackendPublisher->OnExternVectorChanged.AddUObject(this, &UCounterCounterOLinkAdapter::OnExternVectorChanged);
-	OnVectorArrayChangedHandle = BackendPublisher->OnVectorArrayChanged.AddUObject(this, &UCounterCounterOLinkAdapter::OnVectorArrayChanged);
-	OnExternVectorArrayChangedHandle = BackendPublisher->OnExternVectorArrayChanged.AddUObject(this, &UCounterCounterOLinkAdapter::OnExternVectorArrayChanged);
-	OnValueChangedSignalHandle = BackendPublisher->OnValueChangedSignal.AddUObject(this, &UCounterCounterOLinkAdapter::OnValueChanged);
+	BackendPublisher->Subscribe(TWeakInterfacePtr<ICounterCounterSubscriberInterface>(this));
 
 	// update olink source with new backend
 	Source->setBackendService(InService);
 }
 
-void UCounterCounterOLinkAdapter::OnValueChanged(const FCustomTypesVector3D& Vector, const FVector& ExternVector, const TArray<FCustomTypesVector3D>& VectorArray, const TArray<FVector>& ExternVectorArray)
+void UCounterCounterOLinkAdapter::OnValueChangedSignal(const FCustomTypesVector3D& Vector, const FVector& ExternVector, const TArray<FCustomTypesVector3D>& VectorArray, const TArray<FVector>& ExternVectorArray)
 {
 	Source->OnValueChanged(Vector, ExternVector, VectorArray, ExternVectorArray);
 }

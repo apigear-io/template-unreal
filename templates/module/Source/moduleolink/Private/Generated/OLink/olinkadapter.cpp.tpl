@@ -56,24 +56,9 @@ void {{$Class}}::setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{Cam
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-{{- if or (len .Interface.Properties) (.Interface.Signals) }}
 		U{{$Iface}}Publisher* BackendPublisher = BackendService->_GetPublisher();
 		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service {{$Iface}}"));
-{{- end }}
-{{- range .Interface.Properties }}
-		if (On{{Camel .Name}}ChangedHandle.IsValid())
-		{
-			BackendPublisher->On{{Camel .Name}}Changed.Remove(On{{Camel .Name}}ChangedHandle);
-			On{{Camel .Name}}ChangedHandle.Reset();
-		}
-{{- end }}
-{{- range .Interface.Signals }}
-		if (On{{Camel .Name}}SignalHandle.IsValid())
-		{
-			BackendPublisher->On{{Camel .Name}}Signal.Remove(On{{Camel .Name}}SignalHandle);
-			On{{Camel .Name}}SignalHandle.Reset();
-		}
-{{- end }}
+		BackendPublisher->Unsubscribe(TWeakInterfacePtr<I{{$Iface}}SubscriberInterface>(this));
 	}
 
 	// only set if interface is implemented
@@ -82,24 +67,17 @@ void {{$Class}}::setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{Cam
 	// subscribe to new backend
 {{- $Service := printf "I%sInterface" $Iface }}
 	BackendService = InService;
-{{- if or (len .Interface.Properties) (.Interface.Signals) }}
 	U{{$Iface}}Publisher* BackendPublisher = BackendService->_GetPublisher();
 	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service {{$Iface}}"));
-{{- end }}
 	// connect property changed signals or simple events
-{{- range .Interface.Properties }}
-	On{{Camel .Name}}ChangedHandle = BackendPublisher->On{{Camel .Name}}Changed.AddUObject(this, &{{$Class}}::On{{Camel .Name}}Changed);
-{{- end }}
-{{- range .Interface.Signals }}
-	On{{Camel .Name}}SignalHandle = BackendPublisher->On{{Camel .Name}}Signal.AddUObject(this, &{{$Class}}::On{{Camel .Name}});
-{{- end }}
+	BackendPublisher->Subscribe(TWeakInterfacePtr<I{{$Iface}}SubscriberInterface>(this));
 
 	// update olink source with new backend
 	Source->setBackendService(InService);
 }
 {{- range .Interface.Signals }}
 
-void {{$Class}}::On{{Camel .Name}}({{ueParams "" .Params}})
+void {{$Class}}::On{{Camel .Name}}Signal({{ueParams "" .Params}})
 {
 	Source->On{{Camel .Name}}({{ueVars "" .Params}});
 }

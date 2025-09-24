@@ -35,7 +35,7 @@ class RemoteRegistry;
  * and holds the corresponding TbEnumEnumInterfaceOLinkSource OLink source object
  */
 UCLASS(BlueprintType)
-class TBENUMOLINK_API UTbEnumEnumInterfaceOLinkAdapter : public UGameInstanceSubsystem
+class TBENUMOLINK_API UTbEnumEnumInterfaceOLinkAdapter : public UGameInstanceSubsystem, public ITbEnumEnumInterfaceSubscriberInterface
 {
 	GENERATED_BODY()
 public:
@@ -54,39 +54,21 @@ public:
 
 private:
 	// signals
-	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
-	void OnSig0(ETbEnumEnum0 Param0);
+	void OnSig0Signal(ETbEnumEnum0 Param0);
 
-	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
-	void OnSig1(ETbEnumEnum1 Param1);
+	void OnSig1Signal(ETbEnumEnum1 Param1);
 
-	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
-	void OnSig2(ETbEnumEnum2 Param2);
+	void OnSig2Signal(ETbEnumEnum2 Param2);
 
-	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
-	void OnSig3(ETbEnumEnum3 Param3);
+	void OnSig3Signal(ETbEnumEnum3 Param3);
 
-	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
 	void OnProp0Changed(ETbEnumEnum0 Prop0);
 
-	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
 	void OnProp1Changed(ETbEnumEnum1 Prop1);
 
-	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
 	void OnProp2Changed(ETbEnumEnum2 Prop2);
 
-	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
 	void OnProp3Changed(ETbEnumEnum3 Prop3);
-
-	// delegate handles
-	FDelegateHandle OnProp0ChangedHandle;
-	FDelegateHandle OnProp1ChangedHandle;
-	FDelegateHandle OnProp2ChangedHandle;
-	FDelegateHandle OnProp3ChangedHandle;
-	FDelegateHandle OnSig0SignalHandle;
-	FDelegateHandle OnSig1SignalHandle;
-	FDelegateHandle OnSig2SignalHandle;
-	FDelegateHandle OnSig3SignalHandle;
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbEnum|EnumInterface")

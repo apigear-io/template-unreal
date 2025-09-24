@@ -59,36 +59,7 @@ void UTbNamesNamEsOLinkAdapter::setBackendService(TScriptInterface<ITbNamesNamEs
 	{
 		UTbNamesNamEsPublisher* BackendPublisher = BackendService->_GetPublisher();
 		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbNamesNamEs"));
-		if (OnSwitchChangedHandle.IsValid())
-		{
-			BackendPublisher->OnSwitchChanged.Remove(OnSwitchChangedHandle);
-			OnSwitchChangedHandle.Reset();
-		}
-		if (OnSomePropertyChangedHandle.IsValid())
-		{
-			BackendPublisher->OnSomePropertyChanged.Remove(OnSomePropertyChangedHandle);
-			OnSomePropertyChangedHandle.Reset();
-		}
-		if (OnSomePoperty2ChangedHandle.IsValid())
-		{
-			BackendPublisher->OnSomePoperty2Changed.Remove(OnSomePoperty2ChangedHandle);
-			OnSomePoperty2ChangedHandle.Reset();
-		}
-		if (OnEnumPropertyChangedHandle.IsValid())
-		{
-			BackendPublisher->OnEnumPropertyChanged.Remove(OnEnumPropertyChangedHandle);
-			OnEnumPropertyChangedHandle.Reset();
-		}
-		if (OnSomeSignalSignalHandle.IsValid())
-		{
-			BackendPublisher->OnSomeSignalSignal.Remove(OnSomeSignalSignalHandle);
-			OnSomeSignalSignalHandle.Reset();
-		}
-		if (OnSomeSignal2SignalHandle.IsValid())
-		{
-			BackendPublisher->OnSomeSignal2Signal.Remove(OnSomeSignal2SignalHandle);
-			OnSomeSignal2SignalHandle.Reset();
-		}
+		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbNamesNamEsSubscriberInterface>(this));
 	}
 
 	// only set if interface is implemented
@@ -99,23 +70,18 @@ void UTbNamesNamEsOLinkAdapter::setBackendService(TScriptInterface<ITbNamesNamEs
 	UTbNamesNamEsPublisher* BackendPublisher = BackendService->_GetPublisher();
 	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbNamesNamEs"));
 	// connect property changed signals or simple events
-	OnSwitchChangedHandle = BackendPublisher->OnSwitchChanged.AddUObject(this, &UTbNamesNamEsOLinkAdapter::OnSwitchChanged);
-	OnSomePropertyChangedHandle = BackendPublisher->OnSomePropertyChanged.AddUObject(this, &UTbNamesNamEsOLinkAdapter::OnSomePropertyChanged);
-	OnSomePoperty2ChangedHandle = BackendPublisher->OnSomePoperty2Changed.AddUObject(this, &UTbNamesNamEsOLinkAdapter::OnSomePoperty2Changed);
-	OnEnumPropertyChangedHandle = BackendPublisher->OnEnumPropertyChanged.AddUObject(this, &UTbNamesNamEsOLinkAdapter::OnEnumPropertyChanged);
-	OnSomeSignalSignalHandle = BackendPublisher->OnSomeSignalSignal.AddUObject(this, &UTbNamesNamEsOLinkAdapter::OnSomeSignal);
-	OnSomeSignal2SignalHandle = BackendPublisher->OnSomeSignal2Signal.AddUObject(this, &UTbNamesNamEsOLinkAdapter::OnSomeSignal2);
+	BackendPublisher->Subscribe(TWeakInterfacePtr<ITbNamesNamEsSubscriberInterface>(this));
 
 	// update olink source with new backend
 	Source->setBackendService(InService);
 }
 
-void UTbNamesNamEsOLinkAdapter::OnSomeSignal(bool bSomeParam)
+void UTbNamesNamEsOLinkAdapter::OnSomeSignalSignal(bool bSomeParam)
 {
 	Source->OnSomeSignal(bSomeParam);
 }
 
-void UTbNamesNamEsOLinkAdapter::OnSomeSignal2(bool bSomeParam)
+void UTbNamesNamEsOLinkAdapter::OnSomeSignal2Signal(bool bSomeParam)
 {
 	Source->OnSomeSignal2(bSomeParam);
 }

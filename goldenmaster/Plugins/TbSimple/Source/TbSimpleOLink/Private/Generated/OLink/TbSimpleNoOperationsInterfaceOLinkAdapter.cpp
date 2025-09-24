@@ -59,26 +59,7 @@ void UTbSimpleNoOperationsInterfaceOLinkAdapter::setBackendService(TScriptInterf
 	{
 		UTbSimpleNoOperationsInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleNoOperationsInterface"));
-		if (OnPropBoolChangedHandle.IsValid())
-		{
-			BackendPublisher->OnPropBoolChanged.Remove(OnPropBoolChangedHandle);
-			OnPropBoolChangedHandle.Reset();
-		}
-		if (OnPropIntChangedHandle.IsValid())
-		{
-			BackendPublisher->OnPropIntChanged.Remove(OnPropIntChangedHandle);
-			OnPropIntChangedHandle.Reset();
-		}
-		if (OnSigVoidSignalHandle.IsValid())
-		{
-			BackendPublisher->OnSigVoidSignal.Remove(OnSigVoidSignalHandle);
-			OnSigVoidSignalHandle.Reset();
-		}
-		if (OnSigBoolSignalHandle.IsValid())
-		{
-			BackendPublisher->OnSigBoolSignal.Remove(OnSigBoolSignalHandle);
-			OnSigBoolSignalHandle.Reset();
-		}
+		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbSimpleNoOperationsInterfaceSubscriberInterface>(this));
 	}
 
 	// only set if interface is implemented
@@ -89,21 +70,18 @@ void UTbSimpleNoOperationsInterfaceOLinkAdapter::setBackendService(TScriptInterf
 	UTbSimpleNoOperationsInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbSimpleNoOperationsInterface"));
 	// connect property changed signals or simple events
-	OnPropBoolChangedHandle = BackendPublisher->OnPropBoolChanged.AddUObject(this, &UTbSimpleNoOperationsInterfaceOLinkAdapter::OnPropBoolChanged);
-	OnPropIntChangedHandle = BackendPublisher->OnPropIntChanged.AddUObject(this, &UTbSimpleNoOperationsInterfaceOLinkAdapter::OnPropIntChanged);
-	OnSigVoidSignalHandle = BackendPublisher->OnSigVoidSignal.AddUObject(this, &UTbSimpleNoOperationsInterfaceOLinkAdapter::OnSigVoid);
-	OnSigBoolSignalHandle = BackendPublisher->OnSigBoolSignal.AddUObject(this, &UTbSimpleNoOperationsInterfaceOLinkAdapter::OnSigBool);
+	BackendPublisher->Subscribe(TWeakInterfacePtr<ITbSimpleNoOperationsInterfaceSubscriberInterface>(this));
 
 	// update olink source with new backend
 	Source->setBackendService(InService);
 }
 
-void UTbSimpleNoOperationsInterfaceOLinkAdapter::OnSigVoid()
+void UTbSimpleNoOperationsInterfaceOLinkAdapter::OnSigVoidSignal()
 {
 	Source->OnSigVoid();
 }
 
-void UTbSimpleNoOperationsInterfaceOLinkAdapter::OnSigBool(bool bParamBool)
+void UTbSimpleNoOperationsInterfaceOLinkAdapter::OnSigBoolSignal(bool bParamBool)
 {
 	Source->OnSigBool(bParamBool);
 }

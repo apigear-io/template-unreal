@@ -59,26 +59,7 @@ void UTbSame1SameStruct2InterfaceOLinkAdapter::setBackendService(TScriptInterfac
 	{
 		UTbSame1SameStruct2InterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbSame1SameStruct2Interface"));
-		if (OnProp1ChangedHandle.IsValid())
-		{
-			BackendPublisher->OnProp1Changed.Remove(OnProp1ChangedHandle);
-			OnProp1ChangedHandle.Reset();
-		}
-		if (OnProp2ChangedHandle.IsValid())
-		{
-			BackendPublisher->OnProp2Changed.Remove(OnProp2ChangedHandle);
-			OnProp2ChangedHandle.Reset();
-		}
-		if (OnSig1SignalHandle.IsValid())
-		{
-			BackendPublisher->OnSig1Signal.Remove(OnSig1SignalHandle);
-			OnSig1SignalHandle.Reset();
-		}
-		if (OnSig2SignalHandle.IsValid())
-		{
-			BackendPublisher->OnSig2Signal.Remove(OnSig2SignalHandle);
-			OnSig2SignalHandle.Reset();
-		}
+		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbSame1SameStruct2InterfaceSubscriberInterface>(this));
 	}
 
 	// only set if interface is implemented
@@ -89,21 +70,18 @@ void UTbSame1SameStruct2InterfaceOLinkAdapter::setBackendService(TScriptInterfac
 	UTbSame1SameStruct2InterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbSame1SameStruct2Interface"));
 	// connect property changed signals or simple events
-	OnProp1ChangedHandle = BackendPublisher->OnProp1Changed.AddUObject(this, &UTbSame1SameStruct2InterfaceOLinkAdapter::OnProp1Changed);
-	OnProp2ChangedHandle = BackendPublisher->OnProp2Changed.AddUObject(this, &UTbSame1SameStruct2InterfaceOLinkAdapter::OnProp2Changed);
-	OnSig1SignalHandle = BackendPublisher->OnSig1Signal.AddUObject(this, &UTbSame1SameStruct2InterfaceOLinkAdapter::OnSig1);
-	OnSig2SignalHandle = BackendPublisher->OnSig2Signal.AddUObject(this, &UTbSame1SameStruct2InterfaceOLinkAdapter::OnSig2);
+	BackendPublisher->Subscribe(TWeakInterfacePtr<ITbSame1SameStruct2InterfaceSubscriberInterface>(this));
 
 	// update olink source with new backend
 	Source->setBackendService(InService);
 }
 
-void UTbSame1SameStruct2InterfaceOLinkAdapter::OnSig1(const FTbSame1Struct1& Param1)
+void UTbSame1SameStruct2InterfaceOLinkAdapter::OnSig1Signal(const FTbSame1Struct1& Param1)
 {
 	Source->OnSig1(Param1);
 }
 
-void UTbSame1SameStruct2InterfaceOLinkAdapter::OnSig2(const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2)
+void UTbSame1SameStruct2InterfaceOLinkAdapter::OnSig2Signal(const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2)
 {
 	Source->OnSig2(Param1, Param2);
 }

@@ -59,16 +59,7 @@ void UTbSame2SameStruct1InterfaceOLinkAdapter::setBackendService(TScriptInterfac
 	{
 		UTbSame2SameStruct1InterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbSame2SameStruct1Interface"));
-		if (OnProp1ChangedHandle.IsValid())
-		{
-			BackendPublisher->OnProp1Changed.Remove(OnProp1ChangedHandle);
-			OnProp1ChangedHandle.Reset();
-		}
-		if (OnSig1SignalHandle.IsValid())
-		{
-			BackendPublisher->OnSig1Signal.Remove(OnSig1SignalHandle);
-			OnSig1SignalHandle.Reset();
-		}
+		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbSame2SameStruct1InterfaceSubscriberInterface>(this));
 	}
 
 	// only set if interface is implemented
@@ -79,14 +70,13 @@ void UTbSame2SameStruct1InterfaceOLinkAdapter::setBackendService(TScriptInterfac
 	UTbSame2SameStruct1InterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbSame2SameStruct1Interface"));
 	// connect property changed signals or simple events
-	OnProp1ChangedHandle = BackendPublisher->OnProp1Changed.AddUObject(this, &UTbSame2SameStruct1InterfaceOLinkAdapter::OnProp1Changed);
-	OnSig1SignalHandle = BackendPublisher->OnSig1Signal.AddUObject(this, &UTbSame2SameStruct1InterfaceOLinkAdapter::OnSig1);
+	BackendPublisher->Subscribe(TWeakInterfacePtr<ITbSame2SameStruct1InterfaceSubscriberInterface>(this));
 
 	// update olink source with new backend
 	Source->setBackendService(InService);
 }
 
-void UTbSame2SameStruct1InterfaceOLinkAdapter::OnSig1(const FTbSame2Struct1& Param1)
+void UTbSame2SameStruct1InterfaceOLinkAdapter::OnSig1Signal(const FTbSame2Struct1& Param1)
 {
 	Source->OnSig1(Param1);
 }

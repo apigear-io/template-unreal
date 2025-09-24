@@ -35,7 +35,7 @@ class RemoteRegistry;
  * and holds the corresponding Testbed1StructInterfaceOLinkSource OLink source object
  */
 UCLASS(BlueprintType)
-class TESTBED1OLINK_API UTestbed1StructInterfaceOLinkAdapter : public UGameInstanceSubsystem
+class TESTBED1OLINK_API UTestbed1StructInterfaceOLinkAdapter : public UGameInstanceSubsystem, public ITestbed1StructInterfaceSubscriberInterface
 {
 	GENERATED_BODY()
 public:
@@ -54,39 +54,21 @@ public:
 
 private:
 	// signals
-	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
-	void OnSigBool(const FTestbed1StructBool& ParamBool);
+	void OnSigBoolSignal(const FTestbed1StructBool& ParamBool);
 
-	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
-	void OnSigInt(const FTestbed1StructInt& ParamInt);
+	void OnSigIntSignal(const FTestbed1StructInt& ParamInt);
 
-	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
-	void OnSigFloat(const FTestbed1StructFloat& ParamFloat);
+	void OnSigFloatSignal(const FTestbed1StructFloat& ParamFloat);
 
-	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
-	void OnSigString(const FTestbed1StructString& ParamString);
+	void OnSigStringSignal(const FTestbed1StructString& ParamString);
 
-	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
 	void OnPropBoolChanged(const FTestbed1StructBool& PropBool);
 
-	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
 	void OnPropIntChanged(const FTestbed1StructInt& PropInt);
 
-	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
 	void OnPropFloatChanged(const FTestbed1StructFloat& PropFloat);
 
-	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
 	void OnPropStringChanged(const FTestbed1StructString& PropString);
-
-	// delegate handles
-	FDelegateHandle OnPropBoolChangedHandle;
-	FDelegateHandle OnPropIntChangedHandle;
-	FDelegateHandle OnPropFloatChangedHandle;
-	FDelegateHandle OnPropStringChangedHandle;
-	FDelegateHandle OnSigBoolSignalHandle;
-	FDelegateHandle OnSigIntSignalHandle;
-	FDelegateHandle OnSigFloatSignalHandle;
-	FDelegateHandle OnSigStringSignalHandle;
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|Testbed1|StructInterface")

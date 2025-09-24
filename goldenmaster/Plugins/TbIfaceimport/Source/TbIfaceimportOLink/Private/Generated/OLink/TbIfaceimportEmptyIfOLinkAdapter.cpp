@@ -57,6 +57,9 @@ void UTbIfaceimportEmptyIfOLinkAdapter::setBackendService(TScriptInterface<ITbIf
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
+		UTbIfaceimportEmptyIfPublisher* BackendPublisher = BackendService->_GetPublisher();
+		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbIfaceimportEmptyIf"));
+		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbIfaceimportEmptyIfSubscriberInterface>(this));
 	}
 
 	// only set if interface is implemented
@@ -64,7 +67,10 @@ void UTbIfaceimportEmptyIfOLinkAdapter::setBackendService(TScriptInterface<ITbIf
 
 	// subscribe to new backend
 	BackendService = InService;
+	UTbIfaceimportEmptyIfPublisher* BackendPublisher = BackendService->_GetPublisher();
+	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbIfaceimportEmptyIf"));
 	// connect property changed signals or simple events
+	BackendPublisher->Subscribe(TWeakInterfacePtr<ITbIfaceimportEmptyIfSubscriberInterface>(this));
 
 	// update olink source with new backend
 	Source->setBackendService(InService);

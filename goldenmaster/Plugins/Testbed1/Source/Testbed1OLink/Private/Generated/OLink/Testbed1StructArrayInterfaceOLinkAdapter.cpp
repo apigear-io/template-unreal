@@ -59,56 +59,7 @@ void UTestbed1StructArrayInterfaceOLinkAdapter::setBackendService(TScriptInterfa
 	{
 		UTestbed1StructArrayInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service Testbed1StructArrayInterface"));
-		if (OnPropBoolChangedHandle.IsValid())
-		{
-			BackendPublisher->OnPropBoolChanged.Remove(OnPropBoolChangedHandle);
-			OnPropBoolChangedHandle.Reset();
-		}
-		if (OnPropIntChangedHandle.IsValid())
-		{
-			BackendPublisher->OnPropIntChanged.Remove(OnPropIntChangedHandle);
-			OnPropIntChangedHandle.Reset();
-		}
-		if (OnPropFloatChangedHandle.IsValid())
-		{
-			BackendPublisher->OnPropFloatChanged.Remove(OnPropFloatChangedHandle);
-			OnPropFloatChangedHandle.Reset();
-		}
-		if (OnPropStringChangedHandle.IsValid())
-		{
-			BackendPublisher->OnPropStringChanged.Remove(OnPropStringChangedHandle);
-			OnPropStringChangedHandle.Reset();
-		}
-		if (OnPropEnumChangedHandle.IsValid())
-		{
-			BackendPublisher->OnPropEnumChanged.Remove(OnPropEnumChangedHandle);
-			OnPropEnumChangedHandle.Reset();
-		}
-		if (OnSigBoolSignalHandle.IsValid())
-		{
-			BackendPublisher->OnSigBoolSignal.Remove(OnSigBoolSignalHandle);
-			OnSigBoolSignalHandle.Reset();
-		}
-		if (OnSigIntSignalHandle.IsValid())
-		{
-			BackendPublisher->OnSigIntSignal.Remove(OnSigIntSignalHandle);
-			OnSigIntSignalHandle.Reset();
-		}
-		if (OnSigFloatSignalHandle.IsValid())
-		{
-			BackendPublisher->OnSigFloatSignal.Remove(OnSigFloatSignalHandle);
-			OnSigFloatSignalHandle.Reset();
-		}
-		if (OnSigStringSignalHandle.IsValid())
-		{
-			BackendPublisher->OnSigStringSignal.Remove(OnSigStringSignalHandle);
-			OnSigStringSignalHandle.Reset();
-		}
-		if (OnSigEnumSignalHandle.IsValid())
-		{
-			BackendPublisher->OnSigEnumSignal.Remove(OnSigEnumSignalHandle);
-			OnSigEnumSignalHandle.Reset();
-		}
+		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITestbed1StructArrayInterfaceSubscriberInterface>(this));
 	}
 
 	// only set if interface is implemented
@@ -119,42 +70,33 @@ void UTestbed1StructArrayInterfaceOLinkAdapter::setBackendService(TScriptInterfa
 	UTestbed1StructArrayInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service Testbed1StructArrayInterface"));
 	// connect property changed signals or simple events
-	OnPropBoolChangedHandle = BackendPublisher->OnPropBoolChanged.AddUObject(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnPropBoolChanged);
-	OnPropIntChangedHandle = BackendPublisher->OnPropIntChanged.AddUObject(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnPropIntChanged);
-	OnPropFloatChangedHandle = BackendPublisher->OnPropFloatChanged.AddUObject(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnPropFloatChanged);
-	OnPropStringChangedHandle = BackendPublisher->OnPropStringChanged.AddUObject(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnPropStringChanged);
-	OnPropEnumChangedHandle = BackendPublisher->OnPropEnumChanged.AddUObject(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnPropEnumChanged);
-	OnSigBoolSignalHandle = BackendPublisher->OnSigBoolSignal.AddUObject(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnSigBool);
-	OnSigIntSignalHandle = BackendPublisher->OnSigIntSignal.AddUObject(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnSigInt);
-	OnSigFloatSignalHandle = BackendPublisher->OnSigFloatSignal.AddUObject(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnSigFloat);
-	OnSigStringSignalHandle = BackendPublisher->OnSigStringSignal.AddUObject(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnSigString);
-	OnSigEnumSignalHandle = BackendPublisher->OnSigEnumSignal.AddUObject(this, &UTestbed1StructArrayInterfaceOLinkAdapter::OnSigEnum);
+	BackendPublisher->Subscribe(TWeakInterfacePtr<ITestbed1StructArrayInterfaceSubscriberInterface>(this));
 
 	// update olink source with new backend
 	Source->setBackendService(InService);
 }
 
-void UTestbed1StructArrayInterfaceOLinkAdapter::OnSigBool(const TArray<FTestbed1StructBool>& ParamBool)
+void UTestbed1StructArrayInterfaceOLinkAdapter::OnSigBoolSignal(const TArray<FTestbed1StructBool>& ParamBool)
 {
 	Source->OnSigBool(ParamBool);
 }
 
-void UTestbed1StructArrayInterfaceOLinkAdapter::OnSigInt(const TArray<FTestbed1StructInt>& ParamInt)
+void UTestbed1StructArrayInterfaceOLinkAdapter::OnSigIntSignal(const TArray<FTestbed1StructInt>& ParamInt)
 {
 	Source->OnSigInt(ParamInt);
 }
 
-void UTestbed1StructArrayInterfaceOLinkAdapter::OnSigFloat(const TArray<FTestbed1StructFloat>& ParamFloat)
+void UTestbed1StructArrayInterfaceOLinkAdapter::OnSigFloatSignal(const TArray<FTestbed1StructFloat>& ParamFloat)
 {
 	Source->OnSigFloat(ParamFloat);
 }
 
-void UTestbed1StructArrayInterfaceOLinkAdapter::OnSigString(const TArray<FTestbed1StructString>& ParamString)
+void UTestbed1StructArrayInterfaceOLinkAdapter::OnSigStringSignal(const TArray<FTestbed1StructString>& ParamString)
 {
 	Source->OnSigString(ParamString);
 }
 
-void UTestbed1StructArrayInterfaceOLinkAdapter::OnSigEnum(const TArray<ETestbed1Enum0>& ParamEnum)
+void UTestbed1StructArrayInterfaceOLinkAdapter::OnSigEnumSignal(const TArray<ETestbed1Enum0>& ParamEnum)
 {
 	Source->OnSigEnum(ParamEnum);
 }

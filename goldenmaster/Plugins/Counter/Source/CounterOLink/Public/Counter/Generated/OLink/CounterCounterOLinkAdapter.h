@@ -35,7 +35,7 @@ class RemoteRegistry;
  * and holds the corresponding CounterCounterOLinkSource OLink source object
  */
 UCLASS(BlueprintType)
-class COUNTEROLINK_API UCounterCounterOLinkAdapter : public UGameInstanceSubsystem
+class COUNTEROLINK_API UCounterCounterOLinkAdapter : public UGameInstanceSubsystem, public ICounterCounterSubscriberInterface
 {
 	GENERATED_BODY()
 public:
@@ -54,27 +54,15 @@ public:
 
 private:
 	// signals
-	UFUNCTION(Category = "ApiGear|Counter|Counter", BlueprintInternalUseOnly)
-	void OnValueChanged(const FCustomTypesVector3D& Vector, const FVector& ExternVector, const TArray<FCustomTypesVector3D>& VectorArray, const TArray<FVector>& ExternVectorArray);
+	void OnValueChangedSignal(const FCustomTypesVector3D& Vector, const FVector& ExternVector, const TArray<FCustomTypesVector3D>& VectorArray, const TArray<FVector>& ExternVectorArray);
 
-	UFUNCTION(Category = "ApiGear|Counter|Counter", BlueprintInternalUseOnly)
 	void OnVectorChanged(const FCustomTypesVector3D& Vector);
 
-	UFUNCTION(Category = "ApiGear|Counter|Counter", BlueprintInternalUseOnly)
 	void OnExternVectorChanged(const FVector& ExternVector);
 
-	UFUNCTION(Category = "ApiGear|Counter|Counter", BlueprintInternalUseOnly)
 	void OnVectorArrayChanged(const TArray<FCustomTypesVector3D>& VectorArray);
 
-	UFUNCTION(Category = "ApiGear|Counter|Counter", BlueprintInternalUseOnly)
 	void OnExternVectorArrayChanged(const TArray<FVector>& ExternVectorArray);
-
-	// delegate handles
-	FDelegateHandle OnVectorChangedHandle;
-	FDelegateHandle OnExternVectorChangedHandle;
-	FDelegateHandle OnVectorArrayChangedHandle;
-	FDelegateHandle OnExternVectorArrayChangedHandle;
-	FDelegateHandle OnValueChangedSignalHandle;
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|Counter|Counter")

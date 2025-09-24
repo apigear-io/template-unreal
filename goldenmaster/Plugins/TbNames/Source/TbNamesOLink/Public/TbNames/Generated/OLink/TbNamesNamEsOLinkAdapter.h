@@ -35,7 +35,7 @@ class RemoteRegistry;
  * and holds the corresponding TbNamesNamEsOLinkSource OLink source object
  */
 UCLASS(BlueprintType)
-class TBNAMESOLINK_API UTbNamesNamEsOLinkAdapter : public UGameInstanceSubsystem
+class TBNAMESOLINK_API UTbNamesNamEsOLinkAdapter : public UGameInstanceSubsystem, public ITbNamesNamEsSubscriberInterface
 {
 	GENERATED_BODY()
 public:
@@ -54,31 +54,17 @@ public:
 
 private:
 	// signals
-	UFUNCTION(Category = "ApiGear|TbNames|NamEs", BlueprintInternalUseOnly)
-	void OnSomeSignal(bool bSomeParam);
+	void OnSomeSignalSignal(bool bSomeParam);
 
-	UFUNCTION(Category = "ApiGear|TbNames|NamEs", BlueprintInternalUseOnly)
-	void OnSomeSignal2(bool bSomeParam);
+	void OnSomeSignal2Signal(bool bSomeParam);
 
-	UFUNCTION(Category = "ApiGear|TbNames|NamEs", BlueprintInternalUseOnly)
 	void OnSwitchChanged(bool bSwitch);
 
-	UFUNCTION(Category = "ApiGear|TbNames|NamEs", BlueprintInternalUseOnly)
 	void OnSomePropertyChanged(int32 SomeProperty);
 
-	UFUNCTION(Category = "ApiGear|TbNames|NamEs", BlueprintInternalUseOnly)
 	void OnSomePoperty2Changed(int32 SomePoperty2);
 
-	UFUNCTION(Category = "ApiGear|TbNames|NamEs", BlueprintInternalUseOnly)
 	void OnEnumPropertyChanged(ETbNamesEnum_With_Under_scores EnumProperty);
-
-	// delegate handles
-	FDelegateHandle OnSwitchChangedHandle;
-	FDelegateHandle OnSomePropertyChangedHandle;
-	FDelegateHandle OnSomePoperty2ChangedHandle;
-	FDelegateHandle OnEnumPropertyChangedHandle;
-	FDelegateHandle OnSomeSignalSignalHandle;
-	FDelegateHandle OnSomeSignal2SignalHandle;
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbNames|NamEs")

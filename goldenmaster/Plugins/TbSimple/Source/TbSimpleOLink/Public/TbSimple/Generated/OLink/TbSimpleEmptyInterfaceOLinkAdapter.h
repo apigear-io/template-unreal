@@ -35,7 +35,7 @@ class RemoteRegistry;
  * and holds the corresponding TbSimpleEmptyInterfaceOLinkSource OLink source object
  */
 UCLASS(BlueprintType)
-class TBSIMPLEOLINK_API UTbSimpleEmptyInterfaceOLinkAdapter : public UGameInstanceSubsystem
+class TBSIMPLEOLINK_API UTbSimpleEmptyInterfaceOLinkAdapter : public UGameInstanceSubsystem, public ITbSimpleEmptyInterfaceSubscriberInterface
 {
 	GENERATED_BODY()
 public:
@@ -54,8 +54,6 @@ public:
 
 private:
 	// signals
-
-	// delegate handles
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSimple|EmptyInterface")

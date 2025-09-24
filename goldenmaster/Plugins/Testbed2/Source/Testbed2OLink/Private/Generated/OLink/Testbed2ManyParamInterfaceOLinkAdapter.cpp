@@ -59,46 +59,7 @@ void UTestbed2ManyParamInterfaceOLinkAdapter::setBackendService(TScriptInterface
 	{
 		UTestbed2ManyParamInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service Testbed2ManyParamInterface"));
-		if (OnProp1ChangedHandle.IsValid())
-		{
-			BackendPublisher->OnProp1Changed.Remove(OnProp1ChangedHandle);
-			OnProp1ChangedHandle.Reset();
-		}
-		if (OnProp2ChangedHandle.IsValid())
-		{
-			BackendPublisher->OnProp2Changed.Remove(OnProp2ChangedHandle);
-			OnProp2ChangedHandle.Reset();
-		}
-		if (OnProp3ChangedHandle.IsValid())
-		{
-			BackendPublisher->OnProp3Changed.Remove(OnProp3ChangedHandle);
-			OnProp3ChangedHandle.Reset();
-		}
-		if (OnProp4ChangedHandle.IsValid())
-		{
-			BackendPublisher->OnProp4Changed.Remove(OnProp4ChangedHandle);
-			OnProp4ChangedHandle.Reset();
-		}
-		if (OnSig1SignalHandle.IsValid())
-		{
-			BackendPublisher->OnSig1Signal.Remove(OnSig1SignalHandle);
-			OnSig1SignalHandle.Reset();
-		}
-		if (OnSig2SignalHandle.IsValid())
-		{
-			BackendPublisher->OnSig2Signal.Remove(OnSig2SignalHandle);
-			OnSig2SignalHandle.Reset();
-		}
-		if (OnSig3SignalHandle.IsValid())
-		{
-			BackendPublisher->OnSig3Signal.Remove(OnSig3SignalHandle);
-			OnSig3SignalHandle.Reset();
-		}
-		if (OnSig4SignalHandle.IsValid())
-		{
-			BackendPublisher->OnSig4Signal.Remove(OnSig4SignalHandle);
-			OnSig4SignalHandle.Reset();
-		}
+		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITestbed2ManyParamInterfaceSubscriberInterface>(this));
 	}
 
 	// only set if interface is implemented
@@ -109,35 +70,28 @@ void UTestbed2ManyParamInterfaceOLinkAdapter::setBackendService(TScriptInterface
 	UTestbed2ManyParamInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service Testbed2ManyParamInterface"));
 	// connect property changed signals or simple events
-	OnProp1ChangedHandle = BackendPublisher->OnProp1Changed.AddUObject(this, &UTestbed2ManyParamInterfaceOLinkAdapter::OnProp1Changed);
-	OnProp2ChangedHandle = BackendPublisher->OnProp2Changed.AddUObject(this, &UTestbed2ManyParamInterfaceOLinkAdapter::OnProp2Changed);
-	OnProp3ChangedHandle = BackendPublisher->OnProp3Changed.AddUObject(this, &UTestbed2ManyParamInterfaceOLinkAdapter::OnProp3Changed);
-	OnProp4ChangedHandle = BackendPublisher->OnProp4Changed.AddUObject(this, &UTestbed2ManyParamInterfaceOLinkAdapter::OnProp4Changed);
-	OnSig1SignalHandle = BackendPublisher->OnSig1Signal.AddUObject(this, &UTestbed2ManyParamInterfaceOLinkAdapter::OnSig1);
-	OnSig2SignalHandle = BackendPublisher->OnSig2Signal.AddUObject(this, &UTestbed2ManyParamInterfaceOLinkAdapter::OnSig2);
-	OnSig3SignalHandle = BackendPublisher->OnSig3Signal.AddUObject(this, &UTestbed2ManyParamInterfaceOLinkAdapter::OnSig3);
-	OnSig4SignalHandle = BackendPublisher->OnSig4Signal.AddUObject(this, &UTestbed2ManyParamInterfaceOLinkAdapter::OnSig4);
+	BackendPublisher->Subscribe(TWeakInterfacePtr<ITestbed2ManyParamInterfaceSubscriberInterface>(this));
 
 	// update olink source with new backend
 	Source->setBackendService(InService);
 }
 
-void UTestbed2ManyParamInterfaceOLinkAdapter::OnSig1(int32 Param1)
+void UTestbed2ManyParamInterfaceOLinkAdapter::OnSig1Signal(int32 Param1)
 {
 	Source->OnSig1(Param1);
 }
 
-void UTestbed2ManyParamInterfaceOLinkAdapter::OnSig2(int32 Param1, int32 Param2)
+void UTestbed2ManyParamInterfaceOLinkAdapter::OnSig2Signal(int32 Param1, int32 Param2)
 {
 	Source->OnSig2(Param1, Param2);
 }
 
-void UTestbed2ManyParamInterfaceOLinkAdapter::OnSig3(int32 Param1, int32 Param2, int32 Param3)
+void UTestbed2ManyParamInterfaceOLinkAdapter::OnSig3Signal(int32 Param1, int32 Param2, int32 Param3)
 {
 	Source->OnSig3(Param1, Param2, Param3);
 }
 
-void UTestbed2ManyParamInterfaceOLinkAdapter::OnSig4(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
+void UTestbed2ManyParamInterfaceOLinkAdapter::OnSig4Signal(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
 {
 	Source->OnSig4(Param1, Param2, Param3, Param4);
 }
