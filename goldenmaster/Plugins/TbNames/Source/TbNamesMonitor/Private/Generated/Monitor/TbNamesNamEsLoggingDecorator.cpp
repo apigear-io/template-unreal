@@ -49,12 +49,7 @@ void UTbNamesNamEsLoggingDecorator::setBackendService(TScriptInterface<ITbNamesN
 	{
 		UTbNamesNamEsPublisher* BackendPublisher = BackendService->_GetPublisher();
 		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbNamesNamEs"));
-		BackendPublisher->OnSwitchChangedBP.RemoveDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSwitchChanged);
-		BackendPublisher->OnSomePropertyChangedBP.RemoveDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomePropertyChanged);
-		BackendPublisher->OnSomePoperty2ChangedBP.RemoveDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomePoperty2Changed);
-		BackendPublisher->OnEnumPropertyChangedBP.RemoveDynamic(this, &UTbNamesNamEsLoggingDecorator::OnEnumPropertyChanged);
-		BackendPublisher->OnSomeSignalSignalBP.RemoveDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomeSignal);
-		BackendPublisher->OnSomeSignal2SignalBP.RemoveDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomeSignal2);
+		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbNamesNamEsSubscriberInterface>(this));
 	}
 
 	// only set if interface is implemented
@@ -65,12 +60,7 @@ void UTbNamesNamEsLoggingDecorator::setBackendService(TScriptInterface<ITbNamesN
 	UTbNamesNamEsPublisher* BackendPublisher = BackendService->_GetPublisher();
 	checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbNamesNamEs"));
 	// connect property changed signals or simple events
-	BackendPublisher->OnSwitchChangedBP.AddDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSwitchChanged);
-	BackendPublisher->OnSomePropertyChangedBP.AddDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomePropertyChanged);
-	BackendPublisher->OnSomePoperty2ChangedBP.AddDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomePoperty2Changed);
-	BackendPublisher->OnEnumPropertyChangedBP.AddDynamic(this, &UTbNamesNamEsLoggingDecorator::OnEnumPropertyChanged);
-	BackendPublisher->OnSomeSignalSignalBP.AddDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomeSignal);
-	BackendPublisher->OnSomeSignal2SignalBP.AddDynamic(this, &UTbNamesNamEsLoggingDecorator::OnSomeSignal2);
+	BackendPublisher->Subscribe(TWeakInterfacePtr<ITbNamesNamEsSubscriberInterface>(this));
 	// populate service state to proxy
 	bSwitch = BackendService->GetSwitch();
 	SomeProperty = BackendService->GetSomeProperty();
@@ -78,13 +68,13 @@ void UTbNamesNamEsLoggingDecorator::setBackendService(TScriptInterface<ITbNamesN
 	EnumProperty = BackendService->GetEnumProperty();
 }
 
-void UTbNamesNamEsLoggingDecorator::OnSomeSignal(bool bInSomeParam)
+void UTbNamesNamEsLoggingDecorator::OnSomeSignalSignal(bool bInSomeParam)
 {
 	TbNamesNamEsTracer::trace_signalSomeSignal(bInSomeParam);
 	_GetPublisher()->BroadcastSomeSignalSignal(bInSomeParam);
 }
 
-void UTbNamesNamEsLoggingDecorator::OnSomeSignal2(bool bInSomeParam)
+void UTbNamesNamEsLoggingDecorator::OnSomeSignal2Signal(bool bInSomeParam)
 {
 	TbNamesNamEsTracer::trace_signalSomeSignal2(bInSomeParam);
 	_GetPublisher()->BroadcastSomeSignal2Signal(bInSomeParam);

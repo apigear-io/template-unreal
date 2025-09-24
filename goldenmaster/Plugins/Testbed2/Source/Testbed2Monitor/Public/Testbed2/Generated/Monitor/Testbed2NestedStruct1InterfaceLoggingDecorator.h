@@ -26,7 +26,7 @@ limitations under the License.
 DECLARE_LOG_CATEGORY_EXTERN(LogTestbed2NestedStruct1InterfaceLoggingDecorator, Log, All);
 
 UCLASS(NotBlueprintable, BlueprintType)
-class TESTBED2MONITOR_API UTestbed2NestedStruct1InterfaceLoggingDecorator : public UAbstractTestbed2NestedStruct1Interface
+class TESTBED2MONITOR_API UTestbed2NestedStruct1InterfaceLoggingDecorator : public UAbstractTestbed2NestedStruct1Interface, public ITestbed2NestedStruct1InterfaceSubscriberInterface
 {
 	GENERATED_BODY()
 
@@ -55,9 +55,7 @@ private:
 	TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> BackendService;
 
 	// signals
-	UFUNCTION(Category = "ApiGear|Testbed2|NestedStruct1Interface", BlueprintInternalUseOnly)
-	void OnSig1(const FTestbed2NestedStruct1& InParam1);
+	void OnSig1Signal(const FTestbed2NestedStruct1& InParam1);
 
-	UFUNCTION(Category = "ApiGear|Testbed2|NestedStruct1Interface", BlueprintInternalUseOnly)
 	void OnProp1Changed(const FTestbed2NestedStruct1& InProp1);
 };

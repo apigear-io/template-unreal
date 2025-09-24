@@ -26,7 +26,7 @@ limitations under the License.
 DECLARE_LOG_CATEGORY_EXTERN(LogTbRefIfacesSimpleLocalIfLoggingDecorator, Log, All);
 
 UCLASS(NotBlueprintable, BlueprintType)
-class TBREFIFACESMONITOR_API UTbRefIfacesSimpleLocalIfLoggingDecorator : public UAbstractTbRefIfacesSimpleLocalIf
+class TBREFIFACESMONITOR_API UTbRefIfacesSimpleLocalIfLoggingDecorator : public UAbstractTbRefIfacesSimpleLocalIf, public ITbRefIfacesSimpleLocalIfSubscriberInterface
 {
 	GENERATED_BODY()
 
@@ -55,9 +55,7 @@ private:
 	TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> BackendService;
 
 	// signals
-	UFUNCTION(Category = "ApiGear|TbRefIfaces|SimpleLocalIf", BlueprintInternalUseOnly)
-	void OnIntSignal(int32 InParam);
+	void OnIntSignalSignal(int32 InParam);
 
-	UFUNCTION(Category = "ApiGear|TbRefIfaces|SimpleLocalIf", BlueprintInternalUseOnly)
 	void OnIntPropertyChanged(int32 InIntProperty);
 };

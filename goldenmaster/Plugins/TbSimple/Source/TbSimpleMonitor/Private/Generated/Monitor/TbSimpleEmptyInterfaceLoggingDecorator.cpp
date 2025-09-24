@@ -47,6 +47,9 @@ void UTbSimpleEmptyInterfaceLoggingDecorator::setBackendService(TScriptInterface
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
+		UTbSimpleEmptyInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleEmptyInterface"));
+		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbSimpleEmptyInterfaceSubscriberInterface>(this));
 	}
 
 	// only set if interface is implemented
@@ -54,6 +57,9 @@ void UTbSimpleEmptyInterfaceLoggingDecorator::setBackendService(TScriptInterface
 
 	// subscribe to new backend
 	BackendService = InService;
+	UTbSimpleEmptyInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+	checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleEmptyInterface"));
 	// connect property changed signals or simple events
+	BackendPublisher->Subscribe(TWeakInterfacePtr<ITbSimpleEmptyInterfaceSubscriberInterface>(this));
 	// populate service state to proxy
 }

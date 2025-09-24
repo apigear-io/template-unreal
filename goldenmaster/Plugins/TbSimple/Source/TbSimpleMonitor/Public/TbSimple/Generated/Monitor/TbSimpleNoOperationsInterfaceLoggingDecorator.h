@@ -26,7 +26,7 @@ limitations under the License.
 DECLARE_LOG_CATEGORY_EXTERN(LogTbSimpleNoOperationsInterfaceLoggingDecorator, Log, All);
 
 UCLASS(NotBlueprintable, BlueprintType)
-class TBSIMPLEMONITOR_API UTbSimpleNoOperationsInterfaceLoggingDecorator : public UAbstractTbSimpleNoOperationsInterface
+class TBSIMPLEMONITOR_API UTbSimpleNoOperationsInterfaceLoggingDecorator : public UAbstractTbSimpleNoOperationsInterface, public ITbSimpleNoOperationsInterfaceSubscriberInterface
 {
 	GENERATED_BODY()
 
@@ -57,15 +57,11 @@ private:
 	TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> BackendService;
 
 	// signals
-	UFUNCTION(Category = "ApiGear|TbSimple|NoOperationsInterface", BlueprintInternalUseOnly)
-	void OnSigVoid();
+	void OnSigVoidSignal();
 
-	UFUNCTION(Category = "ApiGear|TbSimple|NoOperationsInterface", BlueprintInternalUseOnly)
-	void OnSigBool(bool bInParamBool);
+	void OnSigBoolSignal(bool bInParamBool);
 
-	UFUNCTION(Category = "ApiGear|TbSimple|NoOperationsInterface", BlueprintInternalUseOnly)
 	void OnPropBoolChanged(bool bInPropBool);
 
-	UFUNCTION(Category = "ApiGear|TbSimple|NoOperationsInterface", BlueprintInternalUseOnly)
 	void OnPropIntChanged(int32 InPropInt);
 };

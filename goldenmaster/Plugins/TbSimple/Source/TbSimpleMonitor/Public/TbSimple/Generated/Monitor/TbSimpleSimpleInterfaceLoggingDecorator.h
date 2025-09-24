@@ -26,7 +26,7 @@ limitations under the License.
 DECLARE_LOG_CATEGORY_EXTERN(LogTbSimpleSimpleInterfaceLoggingDecorator, Log, All);
 
 UCLASS(NotBlueprintable, BlueprintType)
-class TBSIMPLEMONITOR_API UTbSimpleSimpleInterfaceLoggingDecorator : public UAbstractTbSimpleSimpleInterface
+class TBSIMPLEMONITOR_API UTbSimpleSimpleInterfaceLoggingDecorator : public UAbstractTbSimpleSimpleInterface, public ITbSimpleSimpleInterfaceSubscriberInterface
 {
 	GENERATED_BODY()
 
@@ -99,51 +99,35 @@ private:
 	TScriptInterface<ITbSimpleSimpleInterfaceInterface> BackendService;
 
 	// signals
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	void OnSigBool(bool bInParamBool);
+	void OnSigBoolSignal(bool bInParamBool);
 
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	void OnSigInt(int32 InParamInt);
+	void OnSigIntSignal(int32 InParamInt);
 
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	void OnSigInt32(int32 InParamInt32);
+	void OnSigInt32Signal(int32 InParamInt32);
 
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	void OnSigInt64(int64 InParamInt64);
+	void OnSigInt64Signal(int64 InParamInt64);
 
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	void OnSigFloat(float InParamFloat);
+	void OnSigFloatSignal(float InParamFloat);
 
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	void OnSigFloat32(float InParamFloat32);
+	void OnSigFloat32Signal(float InParamFloat32);
 
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	void OnSigFloat64(double InParamFloat64);
+	void OnSigFloat64Signal(double InParamFloat64);
 
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	void OnSigString(const FString& InParamString);
+	void OnSigStringSignal(const FString& InParamString);
 
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
 	void OnPropBoolChanged(bool bInPropBool);
 
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
 	void OnPropIntChanged(int32 InPropInt);
 
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
 	void OnPropInt32Changed(int32 InPropInt32);
 
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
 	void OnPropInt64Changed(int64 InPropInt64);
 
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
 	void OnPropFloatChanged(float InPropFloat);
 
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
 	void OnPropFloat32Changed(float InPropFloat32);
 
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
 	void OnPropFloat64Changed(double InPropFloat64);
 
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
 	void OnPropStringChanged(const FString& InPropString);
 };

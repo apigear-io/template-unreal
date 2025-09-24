@@ -26,7 +26,7 @@ limitations under the License.
 DECLARE_LOG_CATEGORY_EXTERN(LogTbRefIfacesParentIfLoggingDecorator, Log, All);
 
 UCLASS(NotBlueprintable, BlueprintType)
-class TBREFIFACESMONITOR_API UTbRefIfacesParentIfLoggingDecorator : public UAbstractTbRefIfacesParentIf
+class TBREFIFACESMONITOR_API UTbRefIfacesParentIfLoggingDecorator : public UAbstractTbRefIfacesParentIf, public ITbRefIfacesParentIfSubscriberInterface
 {
 	GENERATED_BODY()
 
@@ -73,27 +73,19 @@ private:
 	TScriptInterface<ITbRefIfacesParentIfInterface> BackendService;
 
 	// signals
-	UFUNCTION(Category = "ApiGear|TbRefIfaces|ParentIf", BlueprintInternalUseOnly)
-	void OnLocalIfSignal(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& InParam);
+	void OnLocalIfSignalSignal(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& InParam);
 
-	UFUNCTION(Category = "ApiGear|TbRefIfaces|ParentIf", BlueprintInternalUseOnly)
-	void OnLocalIfSignalList(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InParam);
+	void OnLocalIfSignalListSignal(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InParam);
 
-	UFUNCTION(Category = "ApiGear|TbRefIfaces|ParentIf", BlueprintInternalUseOnly)
-	void OnImportedIfSignal(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& InParam);
+	void OnImportedIfSignalSignal(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& InParam);
 
-	UFUNCTION(Category = "ApiGear|TbRefIfaces|ParentIf", BlueprintInternalUseOnly)
-	void OnImportedIfSignalList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InParam);
+	void OnImportedIfSignalListSignal(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InParam);
 
-	UFUNCTION(Category = "ApiGear|TbRefIfaces|ParentIf", BlueprintInternalUseOnly)
 	void OnLocalIfChanged(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& InLocalIf);
 
-	UFUNCTION(Category = "ApiGear|TbRefIfaces|ParentIf", BlueprintInternalUseOnly)
 	void OnLocalIfListChanged(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InLocalIfList);
 
-	UFUNCTION(Category = "ApiGear|TbRefIfaces|ParentIf", BlueprintInternalUseOnly)
 	void OnImportedIfChanged(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& InImportedIf);
 
-	UFUNCTION(Category = "ApiGear|TbRefIfaces|ParentIf", BlueprintInternalUseOnly)
 	void OnImportedIfListChanged(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InImportedIfList);
 };

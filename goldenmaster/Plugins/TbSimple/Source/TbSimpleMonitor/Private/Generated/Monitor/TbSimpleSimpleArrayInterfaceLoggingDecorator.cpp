@@ -49,23 +49,7 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::setBackendService(TScriptInt
 	{
 		UTbSimpleSimpleArrayInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleSimpleArrayInterface"));
-		BackendPublisher->OnPropBoolChangedBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropBoolChanged);
-		BackendPublisher->OnPropIntChangedBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropIntChanged);
-		BackendPublisher->OnPropInt32ChangedBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropInt32Changed);
-		BackendPublisher->OnPropInt64ChangedBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropInt64Changed);
-		BackendPublisher->OnPropFloatChangedBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropFloatChanged);
-		BackendPublisher->OnPropFloat32ChangedBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropFloat32Changed);
-		BackendPublisher->OnPropFloat64ChangedBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropFloat64Changed);
-		BackendPublisher->OnPropStringChangedBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropStringChanged);
-		BackendPublisher->OnPropReadOnlyStringChangedBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropReadOnlyStringChanged);
-		BackendPublisher->OnSigBoolSignalBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigBool);
-		BackendPublisher->OnSigIntSignalBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigInt);
-		BackendPublisher->OnSigInt32SignalBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigInt32);
-		BackendPublisher->OnSigInt64SignalBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigInt64);
-		BackendPublisher->OnSigFloatSignalBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigFloat);
-		BackendPublisher->OnSigFloat32SignalBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigFloat32);
-		BackendPublisher->OnSigFloat64SignalBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigFloat64);
-		BackendPublisher->OnSigStringSignalBP.RemoveDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigString);
+		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbSimpleSimpleArrayInterfaceSubscriberInterface>(this));
 	}
 
 	// only set if interface is implemented
@@ -76,23 +60,7 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::setBackendService(TScriptInt
 	UTbSimpleSimpleArrayInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 	checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleSimpleArrayInterface"));
 	// connect property changed signals or simple events
-	BackendPublisher->OnPropBoolChangedBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropBoolChanged);
-	BackendPublisher->OnPropIntChangedBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropIntChanged);
-	BackendPublisher->OnPropInt32ChangedBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropInt32Changed);
-	BackendPublisher->OnPropInt64ChangedBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropInt64Changed);
-	BackendPublisher->OnPropFloatChangedBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropFloatChanged);
-	BackendPublisher->OnPropFloat32ChangedBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropFloat32Changed);
-	BackendPublisher->OnPropFloat64ChangedBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropFloat64Changed);
-	BackendPublisher->OnPropStringChangedBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropStringChanged);
-	BackendPublisher->OnPropReadOnlyStringChangedBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropReadOnlyStringChanged);
-	BackendPublisher->OnSigBoolSignalBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigBool);
-	BackendPublisher->OnSigIntSignalBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigInt);
-	BackendPublisher->OnSigInt32SignalBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigInt32);
-	BackendPublisher->OnSigInt64SignalBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigInt64);
-	BackendPublisher->OnSigFloatSignalBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigFloat);
-	BackendPublisher->OnSigFloat32SignalBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigFloat32);
-	BackendPublisher->OnSigFloat64SignalBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigFloat64);
-	BackendPublisher->OnSigStringSignalBP.AddDynamic(this, &UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigString);
+	BackendPublisher->Subscribe(TWeakInterfacePtr<ITbSimpleSimpleArrayInterfaceSubscriberInterface>(this));
 	// populate service state to proxy
 	PropBool = BackendService->GetPropBool();
 	PropInt = BackendService->GetPropInt();
@@ -105,49 +73,49 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::setBackendService(TScriptInt
 	PropReadOnlyString = BackendService->GetPropReadOnlyString();
 }
 
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigBool(const TArray<bool>& InParamBool)
+void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigBoolSignal(const TArray<bool>& InParamBool)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigBool(InParamBool);
 	_GetPublisher()->BroadcastSigBoolSignal(InParamBool);
 }
 
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigInt(const TArray<int32>& InParamInt)
+void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigIntSignal(const TArray<int32>& InParamInt)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigInt(InParamInt);
 	_GetPublisher()->BroadcastSigIntSignal(InParamInt);
 }
 
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigInt32(const TArray<int32>& InParamInt32)
+void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigInt32Signal(const TArray<int32>& InParamInt32)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigInt32(InParamInt32);
 	_GetPublisher()->BroadcastSigInt32Signal(InParamInt32);
 }
 
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigInt64(const TArray<int64>& InParamInt64)
+void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigInt64Signal(const TArray<int64>& InParamInt64)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigInt64(InParamInt64);
 	_GetPublisher()->BroadcastSigInt64Signal(InParamInt64);
 }
 
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigFloat(const TArray<float>& InParamFloat)
+void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigFloatSignal(const TArray<float>& InParamFloat)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigFloat(InParamFloat);
 	_GetPublisher()->BroadcastSigFloatSignal(InParamFloat);
 }
 
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigFloat32(const TArray<float>& InParamFloa32)
+void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigFloat32Signal(const TArray<float>& InParamFloa32)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigFloat32(InParamFloa32);
 	_GetPublisher()->BroadcastSigFloat32Signal(InParamFloa32);
 }
 
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigFloat64(const TArray<double>& InParamFloat64)
+void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigFloat64Signal(const TArray<double>& InParamFloat64)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigFloat64(InParamFloat64);
 	_GetPublisher()->BroadcastSigFloat64Signal(InParamFloat64);
 }
 
-void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigString(const TArray<FString>& InParamString)
+void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigStringSignal(const TArray<FString>& InParamString)
 {
 	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigString(InParamString);
 	_GetPublisher()->BroadcastSigStringSignal(InParamString);

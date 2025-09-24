@@ -26,7 +26,7 @@ limitations under the License.
 DECLARE_LOG_CATEGORY_EXTERN(LogTestbed1StructInterfaceLoggingDecorator, Log, All);
 
 UCLASS(NotBlueprintable, BlueprintType)
-class TESTBED1MONITOR_API UTestbed1StructInterfaceLoggingDecorator : public UAbstractTestbed1StructInterface
+class TESTBED1MONITOR_API UTestbed1StructInterfaceLoggingDecorator : public UAbstractTestbed1StructInterface, public ITestbed1StructInterfaceSubscriberInterface
 {
 	GENERATED_BODY()
 
@@ -73,27 +73,19 @@ private:
 	TScriptInterface<ITestbed1StructInterfaceInterface> BackendService;
 
 	// signals
-	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
-	void OnSigBool(const FTestbed1StructBool& InParamBool);
+	void OnSigBoolSignal(const FTestbed1StructBool& InParamBool);
 
-	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
-	void OnSigInt(const FTestbed1StructInt& InParamInt);
+	void OnSigIntSignal(const FTestbed1StructInt& InParamInt);
 
-	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
-	void OnSigFloat(const FTestbed1StructFloat& InParamFloat);
+	void OnSigFloatSignal(const FTestbed1StructFloat& InParamFloat);
 
-	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
-	void OnSigString(const FTestbed1StructString& InParamString);
+	void OnSigStringSignal(const FTestbed1StructString& InParamString);
 
-	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
 	void OnPropBoolChanged(const FTestbed1StructBool& InPropBool);
 
-	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
 	void OnPropIntChanged(const FTestbed1StructInt& InPropInt);
 
-	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
 	void OnPropFloatChanged(const FTestbed1StructFloat& InPropFloat);
 
-	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
 	void OnPropStringChanged(const FTestbed1StructString& InPropString);
 };

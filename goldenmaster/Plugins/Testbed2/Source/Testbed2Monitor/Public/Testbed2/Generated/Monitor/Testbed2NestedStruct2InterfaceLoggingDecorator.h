@@ -26,7 +26,7 @@ limitations under the License.
 DECLARE_LOG_CATEGORY_EXTERN(LogTestbed2NestedStruct2InterfaceLoggingDecorator, Log, All);
 
 UCLASS(NotBlueprintable, BlueprintType)
-class TESTBED2MONITOR_API UTestbed2NestedStruct2InterfaceLoggingDecorator : public UAbstractTestbed2NestedStruct2Interface
+class TESTBED2MONITOR_API UTestbed2NestedStruct2InterfaceLoggingDecorator : public UAbstractTestbed2NestedStruct2Interface, public ITestbed2NestedStruct2InterfaceSubscriberInterface
 {
 	GENERATED_BODY()
 
@@ -61,15 +61,11 @@ private:
 	TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> BackendService;
 
 	// signals
-	UFUNCTION(Category = "ApiGear|Testbed2|NestedStruct2Interface", BlueprintInternalUseOnly)
-	void OnSig1(const FTestbed2NestedStruct1& InParam1);
+	void OnSig1Signal(const FTestbed2NestedStruct1& InParam1);
 
-	UFUNCTION(Category = "ApiGear|Testbed2|NestedStruct2Interface", BlueprintInternalUseOnly)
-	void OnSig2(const FTestbed2NestedStruct1& InParam1, const FTestbed2NestedStruct2& InParam2);
+	void OnSig2Signal(const FTestbed2NestedStruct1& InParam1, const FTestbed2NestedStruct2& InParam2);
 
-	UFUNCTION(Category = "ApiGear|Testbed2|NestedStruct2Interface", BlueprintInternalUseOnly)
 	void OnProp1Changed(const FTestbed2NestedStruct1& InProp1);
 
-	UFUNCTION(Category = "ApiGear|Testbed2|NestedStruct2Interface", BlueprintInternalUseOnly)
 	void OnProp2Changed(const FTestbed2NestedStruct2& InProp2);
 };
