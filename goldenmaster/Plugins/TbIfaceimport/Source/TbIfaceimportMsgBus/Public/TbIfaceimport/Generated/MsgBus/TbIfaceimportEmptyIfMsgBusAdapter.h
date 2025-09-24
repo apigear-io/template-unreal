@@ -42,7 +42,7 @@ DECLARE_LOG_CATEGORY_EXTERN(LogTbIfaceimportEmptyIfMsgBusAdapter, Log, All);
 /// takes an object of the type ITbIfaceimportEmptyIfInterface
 /// and holds the corresponding TbIfaceimportEmptyIfOLinkSource OLink source object
 UCLASS(BlueprintType)
-class TBIFACEIMPORTMSGBUS_API UTbIfaceimportEmptyIfMsgBusAdapter : public UGameInstanceSubsystem
+class TBIFACEIMPORTMSGBUS_API UTbIfaceimportEmptyIfMsgBusAdapter : public UGameInstanceSubsystem, public ITbIfaceimportEmptyIfSubscriberInterface
 {
 	GENERATED_BODY()
 public:
@@ -96,8 +96,6 @@ private:
 	void OnClientDisconnected(const FTbIfaceimportEmptyIfClientDisconnectMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 
 	// signals
-
-	// delegate handles
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbIfaceimport|EmptyIf")

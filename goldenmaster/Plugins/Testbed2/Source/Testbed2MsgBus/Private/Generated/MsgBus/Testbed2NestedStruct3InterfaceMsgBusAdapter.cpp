@@ -144,36 +144,7 @@ void UTestbed2NestedStruct3InterfaceMsgBusAdapter::_setBackendService(TScriptInt
 	{
 		UTestbed2NestedStruct3InterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service Testbed2NestedStruct3Interface"));
-		if (OnProp1ChangedHandle.IsValid())
-		{
-			BackendPublisher->OnProp1Changed.Remove(OnProp1ChangedHandle);
-			OnProp1ChangedHandle.Reset();
-		}
-		if (OnProp2ChangedHandle.IsValid())
-		{
-			BackendPublisher->OnProp2Changed.Remove(OnProp2ChangedHandle);
-			OnProp2ChangedHandle.Reset();
-		}
-		if (OnProp3ChangedHandle.IsValid())
-		{
-			BackendPublisher->OnProp3Changed.Remove(OnProp3ChangedHandle);
-			OnProp3ChangedHandle.Reset();
-		}
-		if (OnSig1SignalHandle.IsValid())
-		{
-			BackendPublisher->OnSig1Signal.Remove(OnSig1SignalHandle);
-			OnSig1SignalHandle.Reset();
-		}
-		if (OnSig2SignalHandle.IsValid())
-		{
-			BackendPublisher->OnSig2Signal.Remove(OnSig2SignalHandle);
-			OnSig2SignalHandle.Reset();
-		}
-		if (OnSig3SignalHandle.IsValid())
-		{
-			BackendPublisher->OnSig3Signal.Remove(OnSig3SignalHandle);
-			OnSig3SignalHandle.Reset();
-		}
+		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITestbed2NestedStruct3InterfaceSubscriberInterface>(this));
 	}
 
 	// only set if interface is implemented
@@ -183,13 +154,7 @@ void UTestbed2NestedStruct3InterfaceMsgBusAdapter::_setBackendService(TScriptInt
 	BackendService = InService;
 	UTestbed2NestedStruct3InterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service Testbed2NestedStruct3Interface"));
-	// connect property changed signals or simple events
-	OnProp1ChangedHandle = BackendPublisher->OnProp1Changed.AddUObject(this, &UTestbed2NestedStruct3InterfaceMsgBusAdapter::OnProp1Changed);
-	OnProp2ChangedHandle = BackendPublisher->OnProp2Changed.AddUObject(this, &UTestbed2NestedStruct3InterfaceMsgBusAdapter::OnProp2Changed);
-	OnProp3ChangedHandle = BackendPublisher->OnProp3Changed.AddUObject(this, &UTestbed2NestedStruct3InterfaceMsgBusAdapter::OnProp3Changed);
-	OnSig1SignalHandle = BackendPublisher->OnSig1Signal.AddUObject(this, &UTestbed2NestedStruct3InterfaceMsgBusAdapter::OnSig1);
-	OnSig2SignalHandle = BackendPublisher->OnSig2Signal.AddUObject(this, &UTestbed2NestedStruct3InterfaceMsgBusAdapter::OnSig2);
-	OnSig3SignalHandle = BackendPublisher->OnSig3Signal.AddUObject(this, &UTestbed2NestedStruct3InterfaceMsgBusAdapter::OnSig3);
+	BackendPublisher->Subscribe(TWeakInterfacePtr<ITestbed2NestedStruct3InterfaceSubscriberInterface>(this));
 }
 
 void UTestbed2NestedStruct3InterfaceMsgBusAdapter::OnDiscoveryMessage(const FTestbed2NestedStruct3InterfaceDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -374,7 +339,7 @@ void UTestbed2NestedStruct3InterfaceMsgBusAdapter::OnFunc3Request(const FTestbed
 	}
 }
 
-void UTestbed2NestedStruct3InterfaceMsgBusAdapter::OnSig1(const FTestbed2NestedStruct1& InParam1)
+void UTestbed2NestedStruct3InterfaceMsgBusAdapter::OnSig1Signal(const FTestbed2NestedStruct1& InParam1)
 {
 	TArray<FMessageAddress> ConnectedClients;
 	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
@@ -391,7 +356,7 @@ void UTestbed2NestedStruct3InterfaceMsgBusAdapter::OnSig1(const FTestbed2NestedS
 	}
 }
 
-void UTestbed2NestedStruct3InterfaceMsgBusAdapter::OnSig2(const FTestbed2NestedStruct1& InParam1, const FTestbed2NestedStruct2& InParam2)
+void UTestbed2NestedStruct3InterfaceMsgBusAdapter::OnSig2Signal(const FTestbed2NestedStruct1& InParam1, const FTestbed2NestedStruct2& InParam2)
 {
 	TArray<FMessageAddress> ConnectedClients;
 	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
@@ -409,7 +374,7 @@ void UTestbed2NestedStruct3InterfaceMsgBusAdapter::OnSig2(const FTestbed2NestedS
 	}
 }
 
-void UTestbed2NestedStruct3InterfaceMsgBusAdapter::OnSig3(const FTestbed2NestedStruct1& InParam1, const FTestbed2NestedStruct2& InParam2, const FTestbed2NestedStruct3& InParam3)
+void UTestbed2NestedStruct3InterfaceMsgBusAdapter::OnSig3Signal(const FTestbed2NestedStruct1& InParam1, const FTestbed2NestedStruct2& InParam2, const FTestbed2NestedStruct3& InParam3)
 {
 	TArray<FMessageAddress> ConnectedClients;
 	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);

@@ -58,7 +58,7 @@ DECLARE_LOG_CATEGORY_EXTERN(LogTestbed2ManyParamInterfaceMsgBusAdapter, Log, All
 /// takes an object of the type ITestbed2ManyParamInterfaceInterface
 /// and holds the corresponding Testbed2ManyParamInterfaceOLinkSource OLink source object
 UCLASS(BlueprintType)
-class TESTBED2MSGBUS_API UTestbed2ManyParamInterfaceMsgBusAdapter : public UGameInstanceSubsystem
+class TESTBED2MSGBUS_API UTestbed2ManyParamInterfaceMsgBusAdapter : public UGameInstanceSubsystem, public ITestbed2ManyParamInterfaceSubscriberInterface
 {
 	GENERATED_BODY()
 public:
@@ -120,39 +120,21 @@ private:
 	void OnSetProp4Request(const FTestbed2ManyParamInterfaceSetProp4RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 
 	// signals
-	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
-	void OnSig1(int32 Param1);
+	void OnSig1Signal(int32 Param1) override;
 
-	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
-	void OnSig2(int32 Param1, int32 Param2);
+	void OnSig2Signal(int32 Param1, int32 Param2) override;
 
-	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
-	void OnSig3(int32 Param1, int32 Param2, int32 Param3);
+	void OnSig3Signal(int32 Param1, int32 Param2, int32 Param3) override;
 
-	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
-	void OnSig4(int32 Param1, int32 Param2, int32 Param3, int32 Param4);
+	void OnSig4Signal(int32 Param1, int32 Param2, int32 Param3, int32 Param4) override;
 
-	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
-	void OnProp1Changed(int32 Prop1);
+	void OnProp1Changed(int32 Prop1) override;
 
-	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
-	void OnProp2Changed(int32 Prop2);
+	void OnProp2Changed(int32 Prop2) override;
 
-	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
-	void OnProp3Changed(int32 Prop3);
+	void OnProp3Changed(int32 Prop3) override;
 
-	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
-	void OnProp4Changed(int32 Prop4);
-
-	// delegate handles
-	FDelegateHandle OnProp1ChangedHandle;
-	FDelegateHandle OnProp2ChangedHandle;
-	FDelegateHandle OnProp3ChangedHandle;
-	FDelegateHandle OnProp4ChangedHandle;
-	FDelegateHandle OnSig1SignalHandle;
-	FDelegateHandle OnSig2SignalHandle;
-	FDelegateHandle OnSig3SignalHandle;
-	FDelegateHandle OnSig4SignalHandle;
+	void OnProp4Changed(int32 Prop4) override;
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|Testbed2|ManyParamInterface")

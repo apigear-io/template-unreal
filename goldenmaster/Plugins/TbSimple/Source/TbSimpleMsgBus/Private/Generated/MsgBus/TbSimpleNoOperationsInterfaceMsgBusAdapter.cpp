@@ -140,26 +140,7 @@ void UTbSimpleNoOperationsInterfaceMsgBusAdapter::_setBackendService(TScriptInte
 	{
 		UTbSimpleNoOperationsInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleNoOperationsInterface"));
-		if (OnPropBoolChangedHandle.IsValid())
-		{
-			BackendPublisher->OnPropBoolChanged.Remove(OnPropBoolChangedHandle);
-			OnPropBoolChangedHandle.Reset();
-		}
-		if (OnPropIntChangedHandle.IsValid())
-		{
-			BackendPublisher->OnPropIntChanged.Remove(OnPropIntChangedHandle);
-			OnPropIntChangedHandle.Reset();
-		}
-		if (OnSigVoidSignalHandle.IsValid())
-		{
-			BackendPublisher->OnSigVoidSignal.Remove(OnSigVoidSignalHandle);
-			OnSigVoidSignalHandle.Reset();
-		}
-		if (OnSigBoolSignalHandle.IsValid())
-		{
-			BackendPublisher->OnSigBoolSignal.Remove(OnSigBoolSignalHandle);
-			OnSigBoolSignalHandle.Reset();
-		}
+		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbSimpleNoOperationsInterfaceSubscriberInterface>(this));
 	}
 
 	// only set if interface is implemented
@@ -169,11 +150,7 @@ void UTbSimpleNoOperationsInterfaceMsgBusAdapter::_setBackendService(TScriptInte
 	BackendService = InService;
 	UTbSimpleNoOperationsInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbSimpleNoOperationsInterface"));
-	// connect property changed signals or simple events
-	OnPropBoolChangedHandle = BackendPublisher->OnPropBoolChanged.AddUObject(this, &UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnPropBoolChanged);
-	OnPropIntChangedHandle = BackendPublisher->OnPropIntChanged.AddUObject(this, &UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnPropIntChanged);
-	OnSigVoidSignalHandle = BackendPublisher->OnSigVoidSignal.AddUObject(this, &UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnSigVoid);
-	OnSigBoolSignalHandle = BackendPublisher->OnSigBoolSignal.AddUObject(this, &UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnSigBool);
+	BackendPublisher->Subscribe(TWeakInterfacePtr<ITbSimpleNoOperationsInterfaceSubscriberInterface>(this));
 }
 
 void UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnDiscoveryMessage(const FTbSimpleNoOperationsInterfaceDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -309,7 +286,7 @@ void UTbSimpleNoOperationsInterfaceMsgBusAdapter::_UpdateClientsConnected()
 	_OnClientsConnectedCountChanged.Broadcast(_ClientsConnected);
 }
 
-void UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnSigVoid()
+void UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnSigVoidSignal()
 {
 	TArray<FMessageAddress> ConnectedClients;
 	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
@@ -325,7 +302,7 @@ void UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnSigVoid()
 	}
 }
 
-void UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnSigBool(bool bInParamBool)
+void UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnSigBoolSignal(bool bInParamBool)
 {
 	TArray<FMessageAddress> ConnectedClients;
 	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);

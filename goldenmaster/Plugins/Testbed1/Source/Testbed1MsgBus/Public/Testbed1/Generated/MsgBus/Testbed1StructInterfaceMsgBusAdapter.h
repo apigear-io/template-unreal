@@ -58,7 +58,7 @@ DECLARE_LOG_CATEGORY_EXTERN(LogTestbed1StructInterfaceMsgBusAdapter, Log, All);
 /// takes an object of the type ITestbed1StructInterfaceInterface
 /// and holds the corresponding Testbed1StructInterfaceOLinkSource OLink source object
 UCLASS(BlueprintType)
-class TESTBED1MSGBUS_API UTestbed1StructInterfaceMsgBusAdapter : public UGameInstanceSubsystem
+class TESTBED1MSGBUS_API UTestbed1StructInterfaceMsgBusAdapter : public UGameInstanceSubsystem, public ITestbed1StructInterfaceSubscriberInterface
 {
 	GENERATED_BODY()
 public:
@@ -120,39 +120,21 @@ private:
 	void OnSetPropStringRequest(const FTestbed1StructInterfaceSetPropStringRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 
 	// signals
-	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
-	void OnSigBool(const FTestbed1StructBool& ParamBool);
+	void OnSigBoolSignal(const FTestbed1StructBool& ParamBool) override;
 
-	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
-	void OnSigInt(const FTestbed1StructInt& ParamInt);
+	void OnSigIntSignal(const FTestbed1StructInt& ParamInt) override;
 
-	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
-	void OnSigFloat(const FTestbed1StructFloat& ParamFloat);
+	void OnSigFloatSignal(const FTestbed1StructFloat& ParamFloat) override;
 
-	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
-	void OnSigString(const FTestbed1StructString& ParamString);
+	void OnSigStringSignal(const FTestbed1StructString& ParamString) override;
 
-	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
-	void OnPropBoolChanged(const FTestbed1StructBool& PropBool);
+	void OnPropBoolChanged(const FTestbed1StructBool& PropBool) override;
 
-	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
-	void OnPropIntChanged(const FTestbed1StructInt& PropInt);
+	void OnPropIntChanged(const FTestbed1StructInt& PropInt) override;
 
-	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
-	void OnPropFloatChanged(const FTestbed1StructFloat& PropFloat);
+	void OnPropFloatChanged(const FTestbed1StructFloat& PropFloat) override;
 
-	UFUNCTION(Category = "ApiGear|Testbed1|StructInterface", BlueprintInternalUseOnly)
-	void OnPropStringChanged(const FTestbed1StructString& PropString);
-
-	// delegate handles
-	FDelegateHandle OnPropBoolChangedHandle;
-	FDelegateHandle OnPropIntChangedHandle;
-	FDelegateHandle OnPropFloatChangedHandle;
-	FDelegateHandle OnPropStringChangedHandle;
-	FDelegateHandle OnSigBoolSignalHandle;
-	FDelegateHandle OnSigIntSignalHandle;
-	FDelegateHandle OnSigFloatSignalHandle;
-	FDelegateHandle OnSigStringSignalHandle;
+	void OnPropStringChanged(const FTestbed1StructString& PropString) override;
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|Testbed1|StructInterface")

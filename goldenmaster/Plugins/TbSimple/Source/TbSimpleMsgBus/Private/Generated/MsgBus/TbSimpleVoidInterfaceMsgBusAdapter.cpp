@@ -139,11 +139,7 @@ void UTbSimpleVoidInterfaceMsgBusAdapter::_setBackendService(TScriptInterface<IT
 	{
 		UTbSimpleVoidInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleVoidInterface"));
-		if (OnSigVoidSignalHandle.IsValid())
-		{
-			BackendPublisher->OnSigVoidSignal.Remove(OnSigVoidSignalHandle);
-			OnSigVoidSignalHandle.Reset();
-		}
+		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbSimpleVoidInterfaceSubscriberInterface>(this));
 	}
 
 	// only set if interface is implemented
@@ -153,8 +149,7 @@ void UTbSimpleVoidInterfaceMsgBusAdapter::_setBackendService(TScriptInterface<IT
 	BackendService = InService;
 	UTbSimpleVoidInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbSimpleVoidInterface"));
-	// connect property changed signals or simple events
-	OnSigVoidSignalHandle = BackendPublisher->OnSigVoidSignal.AddUObject(this, &UTbSimpleVoidInterfaceMsgBusAdapter::OnSigVoid);
+	BackendPublisher->Subscribe(TWeakInterfacePtr<ITbSimpleVoidInterfaceSubscriberInterface>(this));
 }
 
 void UTbSimpleVoidInterfaceMsgBusAdapter::OnDiscoveryMessage(const FTbSimpleVoidInterfaceDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -293,7 +288,7 @@ void UTbSimpleVoidInterfaceMsgBusAdapter::OnFuncVoidRequest(const FTbSimpleVoidI
 	BackendService->FuncVoid();
 }
 
-void UTbSimpleVoidInterfaceMsgBusAdapter::OnSigVoid()
+void UTbSimpleVoidInterfaceMsgBusAdapter::OnSigVoidSignal()
 {
 	TArray<FMessageAddress> ConnectedClients;
 	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);

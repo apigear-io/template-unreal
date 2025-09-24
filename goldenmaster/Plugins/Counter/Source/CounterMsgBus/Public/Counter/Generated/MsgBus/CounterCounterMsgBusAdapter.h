@@ -55,7 +55,7 @@ DECLARE_LOG_CATEGORY_EXTERN(LogCounterCounterMsgBusAdapter, Log, All);
 /// takes an object of the type ICounterCounterInterface
 /// and holds the corresponding CounterCounterOLinkSource OLink source object
 UCLASS(BlueprintType)
-class COUNTERMSGBUS_API UCounterCounterMsgBusAdapter : public UGameInstanceSubsystem
+class COUNTERMSGBUS_API UCounterCounterMsgBusAdapter : public UGameInstanceSubsystem, public ICounterCounterSubscriberInterface
 {
 	GENERATED_BODY()
 public:
@@ -117,27 +117,15 @@ private:
 	void OnSetExternVectorArrayRequest(const FCounterCounterSetExternVectorArrayRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 
 	// signals
-	UFUNCTION(Category = "ApiGear|Counter|Counter", BlueprintInternalUseOnly)
-	void OnValueChanged(const FCustomTypesVector3D& Vector, const FVector& ExternVector, const TArray<FCustomTypesVector3D>& VectorArray, const TArray<FVector>& ExternVectorArray);
+	void OnValueChangedSignal(const FCustomTypesVector3D& Vector, const FVector& ExternVector, const TArray<FCustomTypesVector3D>& VectorArray, const TArray<FVector>& ExternVectorArray) override;
 
-	UFUNCTION(Category = "ApiGear|Counter|Counter", BlueprintInternalUseOnly)
-	void OnVectorChanged(const FCustomTypesVector3D& Vector);
+	void OnVectorChanged(const FCustomTypesVector3D& Vector) override;
 
-	UFUNCTION(Category = "ApiGear|Counter|Counter", BlueprintInternalUseOnly)
-	void OnExternVectorChanged(const FVector& ExternVector);
+	void OnExternVectorChanged(const FVector& ExternVector) override;
 
-	UFUNCTION(Category = "ApiGear|Counter|Counter", BlueprintInternalUseOnly)
-	void OnVectorArrayChanged(const TArray<FCustomTypesVector3D>& VectorArray);
+	void OnVectorArrayChanged(const TArray<FCustomTypesVector3D>& VectorArray) override;
 
-	UFUNCTION(Category = "ApiGear|Counter|Counter", BlueprintInternalUseOnly)
-	void OnExternVectorArrayChanged(const TArray<FVector>& ExternVectorArray);
-
-	// delegate handles
-	FDelegateHandle OnVectorChangedHandle;
-	FDelegateHandle OnExternVectorChangedHandle;
-	FDelegateHandle OnVectorArrayChangedHandle;
-	FDelegateHandle OnExternVectorArrayChangedHandle;
-	FDelegateHandle OnValueChangedSignalHandle;
+	void OnExternVectorArrayChanged(const TArray<FVector>& ExternVectorArray) override;
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|Counter|Counter")

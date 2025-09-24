@@ -46,7 +46,7 @@ DECLARE_LOG_CATEGORY_EXTERN(LogTbRefIfacesSimpleLocalIfMsgBusAdapter, Log, All);
 /// takes an object of the type ITbRefIfacesSimpleLocalIfInterface
 /// and holds the corresponding TbRefIfacesSimpleLocalIfOLinkSource OLink source object
 UCLASS(BlueprintType)
-class TBREFIFACESMSGBUS_API UTbRefIfacesSimpleLocalIfMsgBusAdapter : public UGameInstanceSubsystem
+class TBREFIFACESMSGBUS_API UTbRefIfacesSimpleLocalIfMsgBusAdapter : public UGameInstanceSubsystem, public ITbRefIfacesSimpleLocalIfSubscriberInterface
 {
 	GENERATED_BODY()
 public:
@@ -102,15 +102,9 @@ private:
 	void OnSetIntPropertyRequest(const FTbRefIfacesSimpleLocalIfSetIntPropertyRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 
 	// signals
-	UFUNCTION(Category = "ApiGear|TbRefIfaces|SimpleLocalIf", BlueprintInternalUseOnly)
-	void OnIntSignal(int32 Param);
+	void OnIntSignalSignal(int32 Param) override;
 
-	UFUNCTION(Category = "ApiGear|TbRefIfaces|SimpleLocalIf", BlueprintInternalUseOnly)
-	void OnIntPropertyChanged(int32 IntProperty);
-
-	// delegate handles
-	FDelegateHandle OnIntPropertyChangedHandle;
-	FDelegateHandle OnIntSignalSignalHandle;
+	void OnIntPropertyChanged(int32 IntProperty) override;
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbRefIfaces|SimpleLocalIf")

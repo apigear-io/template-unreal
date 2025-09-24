@@ -146,46 +146,7 @@ void UTbRefIfacesParentIfMsgBusAdapter::_setBackendService(TScriptInterface<ITbR
 	{
 		UTbRefIfacesParentIfPublisher* BackendPublisher = BackendService->_GetPublisher();
 		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbRefIfacesParentIf"));
-		if (OnLocalIfChangedHandle.IsValid())
-		{
-			BackendPublisher->OnLocalIfChanged.Remove(OnLocalIfChangedHandle);
-			OnLocalIfChangedHandle.Reset();
-		}
-		if (OnLocalIfListChangedHandle.IsValid())
-		{
-			BackendPublisher->OnLocalIfListChanged.Remove(OnLocalIfListChangedHandle);
-			OnLocalIfListChangedHandle.Reset();
-		}
-		if (OnImportedIfChangedHandle.IsValid())
-		{
-			BackendPublisher->OnImportedIfChanged.Remove(OnImportedIfChangedHandle);
-			OnImportedIfChangedHandle.Reset();
-		}
-		if (OnImportedIfListChangedHandle.IsValid())
-		{
-			BackendPublisher->OnImportedIfListChanged.Remove(OnImportedIfListChangedHandle);
-			OnImportedIfListChangedHandle.Reset();
-		}
-		if (OnLocalIfSignalSignalHandle.IsValid())
-		{
-			BackendPublisher->OnLocalIfSignalSignal.Remove(OnLocalIfSignalSignalHandle);
-			OnLocalIfSignalSignalHandle.Reset();
-		}
-		if (OnLocalIfSignalListSignalHandle.IsValid())
-		{
-			BackendPublisher->OnLocalIfSignalListSignal.Remove(OnLocalIfSignalListSignalHandle);
-			OnLocalIfSignalListSignalHandle.Reset();
-		}
-		if (OnImportedIfSignalSignalHandle.IsValid())
-		{
-			BackendPublisher->OnImportedIfSignalSignal.Remove(OnImportedIfSignalSignalHandle);
-			OnImportedIfSignalSignalHandle.Reset();
-		}
-		if (OnImportedIfSignalListSignalHandle.IsValid())
-		{
-			BackendPublisher->OnImportedIfSignalListSignal.Remove(OnImportedIfSignalListSignalHandle);
-			OnImportedIfSignalListSignalHandle.Reset();
-		}
+		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbRefIfacesParentIfSubscriberInterface>(this));
 	}
 
 	// only set if interface is implemented
@@ -195,15 +156,7 @@ void UTbRefIfacesParentIfMsgBusAdapter::_setBackendService(TScriptInterface<ITbR
 	BackendService = InService;
 	UTbRefIfacesParentIfPublisher* BackendPublisher = BackendService->_GetPublisher();
 	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbRefIfacesParentIf"));
-	// connect property changed signals or simple events
-	OnLocalIfChangedHandle = BackendPublisher->OnLocalIfChanged.AddUObject(this, &UTbRefIfacesParentIfMsgBusAdapter::OnLocalIfChanged);
-	OnLocalIfListChangedHandle = BackendPublisher->OnLocalIfListChanged.AddUObject(this, &UTbRefIfacesParentIfMsgBusAdapter::OnLocalIfListChanged);
-	OnImportedIfChangedHandle = BackendPublisher->OnImportedIfChanged.AddUObject(this, &UTbRefIfacesParentIfMsgBusAdapter::OnImportedIfChanged);
-	OnImportedIfListChangedHandle = BackendPublisher->OnImportedIfListChanged.AddUObject(this, &UTbRefIfacesParentIfMsgBusAdapter::OnImportedIfListChanged);
-	OnLocalIfSignalSignalHandle = BackendPublisher->OnLocalIfSignalSignal.AddUObject(this, &UTbRefIfacesParentIfMsgBusAdapter::OnLocalIfSignal);
-	OnLocalIfSignalListSignalHandle = BackendPublisher->OnLocalIfSignalListSignal.AddUObject(this, &UTbRefIfacesParentIfMsgBusAdapter::OnLocalIfSignalList);
-	OnImportedIfSignalSignalHandle = BackendPublisher->OnImportedIfSignalSignal.AddUObject(this, &UTbRefIfacesParentIfMsgBusAdapter::OnImportedIfSignal);
-	OnImportedIfSignalListSignalHandle = BackendPublisher->OnImportedIfSignalListSignal.AddUObject(this, &UTbRefIfacesParentIfMsgBusAdapter::OnImportedIfSignalList);
+	BackendPublisher->Subscribe(TWeakInterfacePtr<ITbRefIfacesParentIfSubscriberInterface>(this));
 }
 
 void UTbRefIfacesParentIfMsgBusAdapter::OnDiscoveryMessage(const FTbRefIfacesParentIfDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -405,7 +358,7 @@ void UTbRefIfacesParentIfMsgBusAdapter::OnImportedIfMethodListRequest(const FTbR
 	}
 }
 
-void UTbRefIfacesParentIfMsgBusAdapter::OnLocalIfSignal(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& InParam)
+void UTbRefIfacesParentIfMsgBusAdapter::OnLocalIfSignalSignal(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& InParam)
 {
 	TArray<FMessageAddress> ConnectedClients;
 	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
@@ -422,7 +375,7 @@ void UTbRefIfacesParentIfMsgBusAdapter::OnLocalIfSignal(const TScriptInterface<I
 	}
 }
 
-void UTbRefIfacesParentIfMsgBusAdapter::OnLocalIfSignalList(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InParam)
+void UTbRefIfacesParentIfMsgBusAdapter::OnLocalIfSignalListSignal(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InParam)
 {
 	TArray<FMessageAddress> ConnectedClients;
 	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
@@ -439,7 +392,7 @@ void UTbRefIfacesParentIfMsgBusAdapter::OnLocalIfSignalList(const TArray<TScript
 	}
 }
 
-void UTbRefIfacesParentIfMsgBusAdapter::OnImportedIfSignal(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& InParam)
+void UTbRefIfacesParentIfMsgBusAdapter::OnImportedIfSignalSignal(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& InParam)
 {
 	TArray<FMessageAddress> ConnectedClients;
 	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
@@ -456,7 +409,7 @@ void UTbRefIfacesParentIfMsgBusAdapter::OnImportedIfSignal(const TScriptInterfac
 	}
 }
 
-void UTbRefIfacesParentIfMsgBusAdapter::OnImportedIfSignalList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InParam)
+void UTbRefIfacesParentIfMsgBusAdapter::OnImportedIfSignalListSignal(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InParam)
 {
 	TArray<FMessageAddress> ConnectedClients;
 	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);

@@ -76,7 +76,7 @@ DECLARE_LOG_CATEGORY_EXTERN(LogTbSimpleSimpleArrayInterfaceMsgBusAdapter, Log, A
 /// takes an object of the type ITbSimpleSimpleArrayInterfaceInterface
 /// and holds the corresponding TbSimpleSimpleArrayInterfaceOLinkSource OLink source object
 UCLASS(BlueprintType)
-class TBSIMPLEMSGBUS_API UTbSimpleSimpleArrayInterfaceMsgBusAdapter : public UGameInstanceSubsystem
+class TBSIMPLEMSGBUS_API UTbSimpleSimpleArrayInterfaceMsgBusAdapter : public UGameInstanceSubsystem, public ITbSimpleSimpleArrayInterfaceSubscriberInterface
 {
 	GENERATED_BODY()
 public:
@@ -146,75 +146,39 @@ private:
 	void OnSetPropStringRequest(const FTbSimpleSimpleArrayInterfaceSetPropStringRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 
 	// signals
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface", BlueprintInternalUseOnly)
-	void OnSigBool(const TArray<bool>& ParamBool);
+	void OnSigBoolSignal(const TArray<bool>& ParamBool) override;
 
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface", BlueprintInternalUseOnly)
-	void OnSigInt(const TArray<int32>& ParamInt);
+	void OnSigIntSignal(const TArray<int32>& ParamInt) override;
 
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface", BlueprintInternalUseOnly)
-	void OnSigInt32(const TArray<int32>& ParamInt32);
+	void OnSigInt32Signal(const TArray<int32>& ParamInt32) override;
 
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface", BlueprintInternalUseOnly)
-	void OnSigInt64(const TArray<int64>& ParamInt64);
+	void OnSigInt64Signal(const TArray<int64>& ParamInt64) override;
 
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface", BlueprintInternalUseOnly)
-	void OnSigFloat(const TArray<float>& ParamFloat);
+	void OnSigFloatSignal(const TArray<float>& ParamFloat) override;
 
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface", BlueprintInternalUseOnly)
-	void OnSigFloat32(const TArray<float>& ParamFloa32);
+	void OnSigFloat32Signal(const TArray<float>& ParamFloa32) override;
 
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface", BlueprintInternalUseOnly)
-	void OnSigFloat64(const TArray<double>& ParamFloat64);
+	void OnSigFloat64Signal(const TArray<double>& ParamFloat64) override;
 
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface", BlueprintInternalUseOnly)
-	void OnSigString(const TArray<FString>& ParamString);
+	void OnSigStringSignal(const TArray<FString>& ParamString) override;
 
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface", BlueprintInternalUseOnly)
-	void OnPropBoolChanged(const TArray<bool>& PropBool);
+	void OnPropBoolChanged(const TArray<bool>& PropBool) override;
 
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface", BlueprintInternalUseOnly)
-	void OnPropIntChanged(const TArray<int32>& PropInt);
+	void OnPropIntChanged(const TArray<int32>& PropInt) override;
 
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface", BlueprintInternalUseOnly)
-	void OnPropInt32Changed(const TArray<int32>& PropInt32);
+	void OnPropInt32Changed(const TArray<int32>& PropInt32) override;
 
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface", BlueprintInternalUseOnly)
-	void OnPropInt64Changed(const TArray<int64>& PropInt64);
+	void OnPropInt64Changed(const TArray<int64>& PropInt64) override;
 
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface", BlueprintInternalUseOnly)
-	void OnPropFloatChanged(const TArray<float>& PropFloat);
+	void OnPropFloatChanged(const TArray<float>& PropFloat) override;
 
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface", BlueprintInternalUseOnly)
-	void OnPropFloat32Changed(const TArray<float>& PropFloat32);
+	void OnPropFloat32Changed(const TArray<float>& PropFloat32) override;
 
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface", BlueprintInternalUseOnly)
-	void OnPropFloat64Changed(const TArray<double>& PropFloat64);
+	void OnPropFloat64Changed(const TArray<double>& PropFloat64) override;
 
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface", BlueprintInternalUseOnly)
-	void OnPropStringChanged(const TArray<FString>& PropString);
+	void OnPropStringChanged(const TArray<FString>& PropString) override;
 
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleArrayInterface", BlueprintInternalUseOnly)
-	void OnPropReadOnlyStringChanged(const FString& PropReadOnlyString);
-
-	// delegate handles
-	FDelegateHandle OnPropBoolChangedHandle;
-	FDelegateHandle OnPropIntChangedHandle;
-	FDelegateHandle OnPropInt32ChangedHandle;
-	FDelegateHandle OnPropInt64ChangedHandle;
-	FDelegateHandle OnPropFloatChangedHandle;
-	FDelegateHandle OnPropFloat32ChangedHandle;
-	FDelegateHandle OnPropFloat64ChangedHandle;
-	FDelegateHandle OnPropStringChangedHandle;
-	FDelegateHandle OnPropReadOnlyStringChangedHandle;
-	FDelegateHandle OnSigBoolSignalHandle;
-	FDelegateHandle OnSigIntSignalHandle;
-	FDelegateHandle OnSigInt32SignalHandle;
-	FDelegateHandle OnSigInt64SignalHandle;
-	FDelegateHandle OnSigFloatSignalHandle;
-	FDelegateHandle OnSigFloat32SignalHandle;
-	FDelegateHandle OnSigFloat64SignalHandle;
-	FDelegateHandle OnSigStringSignalHandle;
+	void OnPropReadOnlyStringChanged(const FString& PropReadOnlyString) override;
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSimple|SimpleArrayInterface")

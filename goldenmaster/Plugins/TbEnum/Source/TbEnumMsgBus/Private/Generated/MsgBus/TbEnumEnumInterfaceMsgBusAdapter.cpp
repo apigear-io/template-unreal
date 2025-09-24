@@ -146,46 +146,7 @@ void UTbEnumEnumInterfaceMsgBusAdapter::_setBackendService(TScriptInterface<ITbE
 	{
 		UTbEnumEnumInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbEnumEnumInterface"));
-		if (OnProp0ChangedHandle.IsValid())
-		{
-			BackendPublisher->OnProp0Changed.Remove(OnProp0ChangedHandle);
-			OnProp0ChangedHandle.Reset();
-		}
-		if (OnProp1ChangedHandle.IsValid())
-		{
-			BackendPublisher->OnProp1Changed.Remove(OnProp1ChangedHandle);
-			OnProp1ChangedHandle.Reset();
-		}
-		if (OnProp2ChangedHandle.IsValid())
-		{
-			BackendPublisher->OnProp2Changed.Remove(OnProp2ChangedHandle);
-			OnProp2ChangedHandle.Reset();
-		}
-		if (OnProp3ChangedHandle.IsValid())
-		{
-			BackendPublisher->OnProp3Changed.Remove(OnProp3ChangedHandle);
-			OnProp3ChangedHandle.Reset();
-		}
-		if (OnSig0SignalHandle.IsValid())
-		{
-			BackendPublisher->OnSig0Signal.Remove(OnSig0SignalHandle);
-			OnSig0SignalHandle.Reset();
-		}
-		if (OnSig1SignalHandle.IsValid())
-		{
-			BackendPublisher->OnSig1Signal.Remove(OnSig1SignalHandle);
-			OnSig1SignalHandle.Reset();
-		}
-		if (OnSig2SignalHandle.IsValid())
-		{
-			BackendPublisher->OnSig2Signal.Remove(OnSig2SignalHandle);
-			OnSig2SignalHandle.Reset();
-		}
-		if (OnSig3SignalHandle.IsValid())
-		{
-			BackendPublisher->OnSig3Signal.Remove(OnSig3SignalHandle);
-			OnSig3SignalHandle.Reset();
-		}
+		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbEnumEnumInterfaceSubscriberInterface>(this));
 	}
 
 	// only set if interface is implemented
@@ -195,15 +156,7 @@ void UTbEnumEnumInterfaceMsgBusAdapter::_setBackendService(TScriptInterface<ITbE
 	BackendService = InService;
 	UTbEnumEnumInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbEnumEnumInterface"));
-	// connect property changed signals or simple events
-	OnProp0ChangedHandle = BackendPublisher->OnProp0Changed.AddUObject(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnProp0Changed);
-	OnProp1ChangedHandle = BackendPublisher->OnProp1Changed.AddUObject(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnProp1Changed);
-	OnProp2ChangedHandle = BackendPublisher->OnProp2Changed.AddUObject(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnProp2Changed);
-	OnProp3ChangedHandle = BackendPublisher->OnProp3Changed.AddUObject(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnProp3Changed);
-	OnSig0SignalHandle = BackendPublisher->OnSig0Signal.AddUObject(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnSig0);
-	OnSig1SignalHandle = BackendPublisher->OnSig1Signal.AddUObject(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnSig1);
-	OnSig2SignalHandle = BackendPublisher->OnSig2Signal.AddUObject(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnSig2);
-	OnSig3SignalHandle = BackendPublisher->OnSig3Signal.AddUObject(this, &UTbEnumEnumInterfaceMsgBusAdapter::OnSig3);
+	BackendPublisher->Subscribe(TWeakInterfacePtr<ITbEnumEnumInterfaceSubscriberInterface>(this));
 }
 
 void UTbEnumEnumInterfaceMsgBusAdapter::OnDiscoveryMessage(const FTbEnumEnumInterfaceDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -405,7 +358,7 @@ void UTbEnumEnumInterfaceMsgBusAdapter::OnFunc3Request(const FTbEnumEnumInterfac
 	}
 }
 
-void UTbEnumEnumInterfaceMsgBusAdapter::OnSig0(ETbEnumEnum0 InParam0)
+void UTbEnumEnumInterfaceMsgBusAdapter::OnSig0Signal(ETbEnumEnum0 InParam0)
 {
 	TArray<FMessageAddress> ConnectedClients;
 	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
@@ -422,7 +375,7 @@ void UTbEnumEnumInterfaceMsgBusAdapter::OnSig0(ETbEnumEnum0 InParam0)
 	}
 }
 
-void UTbEnumEnumInterfaceMsgBusAdapter::OnSig1(ETbEnumEnum1 InParam1)
+void UTbEnumEnumInterfaceMsgBusAdapter::OnSig1Signal(ETbEnumEnum1 InParam1)
 {
 	TArray<FMessageAddress> ConnectedClients;
 	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
@@ -439,7 +392,7 @@ void UTbEnumEnumInterfaceMsgBusAdapter::OnSig1(ETbEnumEnum1 InParam1)
 	}
 }
 
-void UTbEnumEnumInterfaceMsgBusAdapter::OnSig2(ETbEnumEnum2 InParam2)
+void UTbEnumEnumInterfaceMsgBusAdapter::OnSig2Signal(ETbEnumEnum2 InParam2)
 {
 	TArray<FMessageAddress> ConnectedClients;
 	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
@@ -456,7 +409,7 @@ void UTbEnumEnumInterfaceMsgBusAdapter::OnSig2(ETbEnumEnum2 InParam2)
 	}
 }
 
-void UTbEnumEnumInterfaceMsgBusAdapter::OnSig3(ETbEnumEnum3 InParam3)
+void UTbEnumEnumInterfaceMsgBusAdapter::OnSig3Signal(ETbEnumEnum3 InParam3)
 {
 	TArray<FMessageAddress> ConnectedClients;
 	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);

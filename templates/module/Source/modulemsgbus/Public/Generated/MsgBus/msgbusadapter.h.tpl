@@ -46,7 +46,7 @@ DECLARE_LOG_CATEGORY_EXTERN(Log{{$Iface}}MsgBusAdapter, Log, All);
 /// takes an object of the type I{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface
 /// and holds the corresponding {{$Iface}}OLinkSource OLink source object
 UCLASS(BlueprintType)
-class {{ $API_MACRO }} {{$Class}} : public UGameInstanceSubsystem
+class {{ $API_MACRO }} {{$Class}} : public UGameInstanceSubsystem, public I{{$Iface}}SubscriberInterface
 {
 	GENERATED_BODY()
 public:
@@ -110,22 +110,12 @@ private:
 	// signals
 {{- range $i, $e := .Interface.Signals }}
 {{- if $i }}{{nl}}{{ end }}
-	UFUNCTION(Category = "{{$Category}}", BlueprintInternalUseOnly)
-	void On{{Camel .Name}}({{ueParams "" .Params}});
+	void On{{Camel .Name}}Signal({{ueParams "" .Params}}) override;
 {{- end }}
 {{- if len .Interface.Properties }}{{ nl }}{{ end }}
 {{- range $i, $e := .Interface.Properties }}
 {{- if $i }}{{nl}}{{ end }}
-	UFUNCTION(Category = "{{$Category}}", BlueprintInternalUseOnly)
-	void On{{Camel .Name}}Changed({{ueParam "" .}});
-{{- end }}
-
-	// delegate handles
-{{- range .Interface.Properties }}
-	FDelegateHandle On{{Camel .Name}}ChangedHandle;
-{{- end }}
-{{- range .Interface.Signals }}
-	FDelegateHandle On{{Camel .Name}}SignalHandle;
+	void On{{Camel .Name}}Changed({{ueParam "" .}}) override;
 {{- end }}
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */

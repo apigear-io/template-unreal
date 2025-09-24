@@ -50,7 +50,7 @@ DECLARE_LOG_CATEGORY_EXTERN(LogTbSame1SameStruct2InterfaceMsgBusAdapter, Log, Al
 /// takes an object of the type ITbSame1SameStruct2InterfaceInterface
 /// and holds the corresponding TbSame1SameStruct2InterfaceOLinkSource OLink source object
 UCLASS(BlueprintType)
-class TBSAME1MSGBUS_API UTbSame1SameStruct2InterfaceMsgBusAdapter : public UGameInstanceSubsystem
+class TBSAME1MSGBUS_API UTbSame1SameStruct2InterfaceMsgBusAdapter : public UGameInstanceSubsystem, public ITbSame1SameStruct2InterfaceSubscriberInterface
 {
 	GENERATED_BODY()
 public:
@@ -108,23 +108,13 @@ private:
 	void OnSetProp2Request(const FTbSame1SameStruct2InterfaceSetProp2RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 
 	// signals
-	UFUNCTION(Category = "ApiGear|TbSame1|SameStruct2Interface", BlueprintInternalUseOnly)
-	void OnSig1(const FTbSame1Struct1& Param1);
+	void OnSig1Signal(const FTbSame1Struct1& Param1) override;
 
-	UFUNCTION(Category = "ApiGear|TbSame1|SameStruct2Interface", BlueprintInternalUseOnly)
-	void OnSig2(const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2);
+	void OnSig2Signal(const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2) override;
 
-	UFUNCTION(Category = "ApiGear|TbSame1|SameStruct2Interface", BlueprintInternalUseOnly)
-	void OnProp1Changed(const FTbSame1Struct2& Prop1);
+	void OnProp1Changed(const FTbSame1Struct2& Prop1) override;
 
-	UFUNCTION(Category = "ApiGear|TbSame1|SameStruct2Interface", BlueprintInternalUseOnly)
-	void OnProp2Changed(const FTbSame1Struct2& Prop2);
-
-	// delegate handles
-	FDelegateHandle OnProp1ChangedHandle;
-	FDelegateHandle OnProp2ChangedHandle;
-	FDelegateHandle OnSig1SignalHandle;
-	FDelegateHandle OnSig2SignalHandle;
+	void OnProp2Changed(const FTbSame1Struct2& Prop2) override;
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSame1|SameStruct2Interface")

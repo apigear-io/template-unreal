@@ -136,6 +136,9 @@ void UTbIfaceimportEmptyIfMsgBusAdapter::_setBackendService(TScriptInterface<ITb
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
+		UTbIfaceimportEmptyIfPublisher* BackendPublisher = BackendService->_GetPublisher();
+		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbIfaceimportEmptyIf"));
+		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbIfaceimportEmptyIfSubscriberInterface>(this));
 	}
 
 	// only set if interface is implemented
@@ -143,7 +146,9 @@ void UTbIfaceimportEmptyIfMsgBusAdapter::_setBackendService(TScriptInterface<ITb
 
 	// subscribe to new backend
 	BackendService = InService;
-	// connect property changed signals or simple events
+	UTbIfaceimportEmptyIfPublisher* BackendPublisher = BackendService->_GetPublisher();
+	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbIfaceimportEmptyIf"));
+	BackendPublisher->Subscribe(TWeakInterfacePtr<ITbIfaceimportEmptyIfSubscriberInterface>(this));
 }
 
 void UTbIfaceimportEmptyIfMsgBusAdapter::OnDiscoveryMessage(const FTbIfaceimportEmptyIfDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)

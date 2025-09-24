@@ -142,26 +142,7 @@ void UTbSame1SameStruct2InterfaceMsgBusAdapter::_setBackendService(TScriptInterf
 	{
 		UTbSame1SameStruct2InterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbSame1SameStruct2Interface"));
-		if (OnProp1ChangedHandle.IsValid())
-		{
-			BackendPublisher->OnProp1Changed.Remove(OnProp1ChangedHandle);
-			OnProp1ChangedHandle.Reset();
-		}
-		if (OnProp2ChangedHandle.IsValid())
-		{
-			BackendPublisher->OnProp2Changed.Remove(OnProp2ChangedHandle);
-			OnProp2ChangedHandle.Reset();
-		}
-		if (OnSig1SignalHandle.IsValid())
-		{
-			BackendPublisher->OnSig1Signal.Remove(OnSig1SignalHandle);
-			OnSig1SignalHandle.Reset();
-		}
-		if (OnSig2SignalHandle.IsValid())
-		{
-			BackendPublisher->OnSig2Signal.Remove(OnSig2SignalHandle);
-			OnSig2SignalHandle.Reset();
-		}
+		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbSame1SameStruct2InterfaceSubscriberInterface>(this));
 	}
 
 	// only set if interface is implemented
@@ -171,11 +152,7 @@ void UTbSame1SameStruct2InterfaceMsgBusAdapter::_setBackendService(TScriptInterf
 	BackendService = InService;
 	UTbSame1SameStruct2InterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbSame1SameStruct2Interface"));
-	// connect property changed signals or simple events
-	OnProp1ChangedHandle = BackendPublisher->OnProp1Changed.AddUObject(this, &UTbSame1SameStruct2InterfaceMsgBusAdapter::OnProp1Changed);
-	OnProp2ChangedHandle = BackendPublisher->OnProp2Changed.AddUObject(this, &UTbSame1SameStruct2InterfaceMsgBusAdapter::OnProp2Changed);
-	OnSig1SignalHandle = BackendPublisher->OnSig1Signal.AddUObject(this, &UTbSame1SameStruct2InterfaceMsgBusAdapter::OnSig1);
-	OnSig2SignalHandle = BackendPublisher->OnSig2Signal.AddUObject(this, &UTbSame1SameStruct2InterfaceMsgBusAdapter::OnSig2);
+	BackendPublisher->Subscribe(TWeakInterfacePtr<ITbSame1SameStruct2InterfaceSubscriberInterface>(this));
 }
 
 void UTbSame1SameStruct2InterfaceMsgBusAdapter::OnDiscoveryMessage(const FTbSame1SameStruct2InterfaceDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -343,7 +320,7 @@ void UTbSame1SameStruct2InterfaceMsgBusAdapter::OnFunc2Request(const FTbSame1Sam
 	}
 }
 
-void UTbSame1SameStruct2InterfaceMsgBusAdapter::OnSig1(const FTbSame1Struct1& InParam1)
+void UTbSame1SameStruct2InterfaceMsgBusAdapter::OnSig1Signal(const FTbSame1Struct1& InParam1)
 {
 	TArray<FMessageAddress> ConnectedClients;
 	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
@@ -360,7 +337,7 @@ void UTbSame1SameStruct2InterfaceMsgBusAdapter::OnSig1(const FTbSame1Struct1& In
 	}
 }
 
-void UTbSame1SameStruct2InterfaceMsgBusAdapter::OnSig2(const FTbSame1Struct1& InParam1, const FTbSame1Struct2& InParam2)
+void UTbSame1SameStruct2InterfaceMsgBusAdapter::OnSig2Signal(const FTbSame1Struct1& InParam1, const FTbSame1Struct2& InParam2)
 {
 	TArray<FMessageAddress> ConnectedClients;
 	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
