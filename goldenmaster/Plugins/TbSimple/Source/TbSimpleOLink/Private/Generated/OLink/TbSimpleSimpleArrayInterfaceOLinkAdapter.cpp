@@ -59,91 +59,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkAdapter::setBackendService(TScriptInterfa
 	{
 		UTbSimpleSimpleArrayInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleSimpleArrayInterface"));
-		if (OnPropBoolChangedHandle.IsValid())
-		{
-			BackendPublisher->OnPropBoolChanged.Remove(OnPropBoolChangedHandle);
-			OnPropBoolChangedHandle.Reset();
-		}
-		if (OnPropIntChangedHandle.IsValid())
-		{
-			BackendPublisher->OnPropIntChanged.Remove(OnPropIntChangedHandle);
-			OnPropIntChangedHandle.Reset();
-		}
-		if (OnPropInt32ChangedHandle.IsValid())
-		{
-			BackendPublisher->OnPropInt32Changed.Remove(OnPropInt32ChangedHandle);
-			OnPropInt32ChangedHandle.Reset();
-		}
-		if (OnPropInt64ChangedHandle.IsValid())
-		{
-			BackendPublisher->OnPropInt64Changed.Remove(OnPropInt64ChangedHandle);
-			OnPropInt64ChangedHandle.Reset();
-		}
-		if (OnPropFloatChangedHandle.IsValid())
-		{
-			BackendPublisher->OnPropFloatChanged.Remove(OnPropFloatChangedHandle);
-			OnPropFloatChangedHandle.Reset();
-		}
-		if (OnPropFloat32ChangedHandle.IsValid())
-		{
-			BackendPublisher->OnPropFloat32Changed.Remove(OnPropFloat32ChangedHandle);
-			OnPropFloat32ChangedHandle.Reset();
-		}
-		if (OnPropFloat64ChangedHandle.IsValid())
-		{
-			BackendPublisher->OnPropFloat64Changed.Remove(OnPropFloat64ChangedHandle);
-			OnPropFloat64ChangedHandle.Reset();
-		}
-		if (OnPropStringChangedHandle.IsValid())
-		{
-			BackendPublisher->OnPropStringChanged.Remove(OnPropStringChangedHandle);
-			OnPropStringChangedHandle.Reset();
-		}
-		if (OnPropReadOnlyStringChangedHandle.IsValid())
-		{
-			BackendPublisher->OnPropReadOnlyStringChanged.Remove(OnPropReadOnlyStringChangedHandle);
-			OnPropReadOnlyStringChangedHandle.Reset();
-		}
-		if (OnSigBoolSignalHandle.IsValid())
-		{
-			BackendPublisher->OnSigBoolSignal.Remove(OnSigBoolSignalHandle);
-			OnSigBoolSignalHandle.Reset();
-		}
-		if (OnSigIntSignalHandle.IsValid())
-		{
-			BackendPublisher->OnSigIntSignal.Remove(OnSigIntSignalHandle);
-			OnSigIntSignalHandle.Reset();
-		}
-		if (OnSigInt32SignalHandle.IsValid())
-		{
-			BackendPublisher->OnSigInt32Signal.Remove(OnSigInt32SignalHandle);
-			OnSigInt32SignalHandle.Reset();
-		}
-		if (OnSigInt64SignalHandle.IsValid())
-		{
-			BackendPublisher->OnSigInt64Signal.Remove(OnSigInt64SignalHandle);
-			OnSigInt64SignalHandle.Reset();
-		}
-		if (OnSigFloatSignalHandle.IsValid())
-		{
-			BackendPublisher->OnSigFloatSignal.Remove(OnSigFloatSignalHandle);
-			OnSigFloatSignalHandle.Reset();
-		}
-		if (OnSigFloat32SignalHandle.IsValid())
-		{
-			BackendPublisher->OnSigFloat32Signal.Remove(OnSigFloat32SignalHandle);
-			OnSigFloat32SignalHandle.Reset();
-		}
-		if (OnSigFloat64SignalHandle.IsValid())
-		{
-			BackendPublisher->OnSigFloat64Signal.Remove(OnSigFloat64SignalHandle);
-			OnSigFloat64SignalHandle.Reset();
-		}
-		if (OnSigStringSignalHandle.IsValid())
-		{
-			BackendPublisher->OnSigStringSignal.Remove(OnSigStringSignalHandle);
-			OnSigStringSignalHandle.Reset();
-		}
+		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbSimpleSimpleArrayInterfaceSubscriberInterface>(this));
 	}
 
 	// only set if interface is implemented
@@ -154,64 +70,48 @@ void UTbSimpleSimpleArrayInterfaceOLinkAdapter::setBackendService(TScriptInterfa
 	UTbSimpleSimpleArrayInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbSimpleSimpleArrayInterface"));
 	// connect property changed signals or simple events
-	OnPropBoolChangedHandle = BackendPublisher->OnPropBoolChanged.AddUObject(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropBoolChanged);
-	OnPropIntChangedHandle = BackendPublisher->OnPropIntChanged.AddUObject(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropIntChanged);
-	OnPropInt32ChangedHandle = BackendPublisher->OnPropInt32Changed.AddUObject(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropInt32Changed);
-	OnPropInt64ChangedHandle = BackendPublisher->OnPropInt64Changed.AddUObject(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropInt64Changed);
-	OnPropFloatChangedHandle = BackendPublisher->OnPropFloatChanged.AddUObject(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropFloatChanged);
-	OnPropFloat32ChangedHandle = BackendPublisher->OnPropFloat32Changed.AddUObject(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropFloat32Changed);
-	OnPropFloat64ChangedHandle = BackendPublisher->OnPropFloat64Changed.AddUObject(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropFloat64Changed);
-	OnPropStringChangedHandle = BackendPublisher->OnPropStringChanged.AddUObject(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropStringChanged);
-	OnPropReadOnlyStringChangedHandle = BackendPublisher->OnPropReadOnlyStringChanged.AddUObject(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnPropReadOnlyStringChanged);
-	OnSigBoolSignalHandle = BackendPublisher->OnSigBoolSignal.AddUObject(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigBool);
-	OnSigIntSignalHandle = BackendPublisher->OnSigIntSignal.AddUObject(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigInt);
-	OnSigInt32SignalHandle = BackendPublisher->OnSigInt32Signal.AddUObject(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigInt32);
-	OnSigInt64SignalHandle = BackendPublisher->OnSigInt64Signal.AddUObject(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigInt64);
-	OnSigFloatSignalHandle = BackendPublisher->OnSigFloatSignal.AddUObject(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigFloat);
-	OnSigFloat32SignalHandle = BackendPublisher->OnSigFloat32Signal.AddUObject(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigFloat32);
-	OnSigFloat64SignalHandle = BackendPublisher->OnSigFloat64Signal.AddUObject(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigFloat64);
-	OnSigStringSignalHandle = BackendPublisher->OnSigStringSignal.AddUObject(this, &UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigString);
+	BackendPublisher->Subscribe(TWeakInterfacePtr<ITbSimpleSimpleArrayInterfaceSubscriberInterface>(this));
 
 	// update olink source with new backend
 	Source->setBackendService(InService);
 }
 
-void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigBool(const TArray<bool>& ParamBool)
+void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigBoolSignal(const TArray<bool>& ParamBool)
 {
 	Source->OnSigBool(ParamBool);
 }
 
-void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigInt(const TArray<int32>& ParamInt)
+void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigIntSignal(const TArray<int32>& ParamInt)
 {
 	Source->OnSigInt(ParamInt);
 }
 
-void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigInt32(const TArray<int32>& ParamInt32)
+void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigInt32Signal(const TArray<int32>& ParamInt32)
 {
 	Source->OnSigInt32(ParamInt32);
 }
 
-void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigInt64(const TArray<int64>& ParamInt64)
+void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigInt64Signal(const TArray<int64>& ParamInt64)
 {
 	Source->OnSigInt64(ParamInt64);
 }
 
-void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigFloat(const TArray<float>& ParamFloat)
+void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigFloatSignal(const TArray<float>& ParamFloat)
 {
 	Source->OnSigFloat(ParamFloat);
 }
 
-void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigFloat32(const TArray<float>& ParamFloa32)
+void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigFloat32Signal(const TArray<float>& ParamFloa32)
 {
 	Source->OnSigFloat32(ParamFloa32);
 }
 
-void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigFloat64(const TArray<double>& ParamFloat64)
+void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigFloat64Signal(const TArray<double>& ParamFloat64)
 {
 	Source->OnSigFloat64(ParamFloat64);
 }
 
-void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigString(const TArray<FString>& ParamString)
+void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigStringSignal(const TArray<FString>& ParamString)
 {
 	Source->OnSigString(ParamString);
 }

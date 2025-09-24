@@ -57,6 +57,9 @@ void UTbSimpleEmptyInterfaceOLinkAdapter::setBackendService(TScriptInterface<ITb
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
+		UTbSimpleEmptyInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleEmptyInterface"));
+		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbSimpleEmptyInterfaceSubscriberInterface>(this));
 	}
 
 	// only set if interface is implemented
@@ -64,7 +67,10 @@ void UTbSimpleEmptyInterfaceOLinkAdapter::setBackendService(TScriptInterface<ITb
 
 	// subscribe to new backend
 	BackendService = InService;
+	UTbSimpleEmptyInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbSimpleEmptyInterface"));
 	// connect property changed signals or simple events
+	BackendPublisher->Subscribe(TWeakInterfacePtr<ITbSimpleEmptyInterfaceSubscriberInterface>(this));
 
 	// update olink source with new backend
 	Source->setBackendService(InService);

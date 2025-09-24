@@ -35,7 +35,7 @@ class RemoteRegistry;
  * and holds the corresponding TbSimpleSimpleInterfaceOLinkSource OLink source object
  */
 UCLASS(BlueprintType)
-class TBSIMPLEOLINK_API UTbSimpleSimpleInterfaceOLinkAdapter : public UGameInstanceSubsystem
+class TBSIMPLEOLINK_API UTbSimpleSimpleInterfaceOLinkAdapter : public UGameInstanceSubsystem, public ITbSimpleSimpleInterfaceSubscriberInterface
 {
 	GENERATED_BODY()
 public:
@@ -54,71 +54,37 @@ public:
 
 private:
 	// signals
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	void OnSigBool(bool bParamBool);
+	void OnSigBoolSignal(bool bParamBool);
 
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	void OnSigInt(int32 ParamInt);
+	void OnSigIntSignal(int32 ParamInt);
 
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	void OnSigInt32(int32 ParamInt32);
+	void OnSigInt32Signal(int32 ParamInt32);
 
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	void OnSigInt64(int64 ParamInt64);
+	void OnSigInt64Signal(int64 ParamInt64);
 
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	void OnSigFloat(float ParamFloat);
+	void OnSigFloatSignal(float ParamFloat);
 
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	void OnSigFloat32(float ParamFloat32);
+	void OnSigFloat32Signal(float ParamFloat32);
 
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	void OnSigFloat64(double ParamFloat64);
+	void OnSigFloat64Signal(double ParamFloat64);
 
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
-	void OnSigString(const FString& ParamString);
+	void OnSigStringSignal(const FString& ParamString);
 
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
 	void OnPropBoolChanged(bool bPropBool);
 
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
 	void OnPropIntChanged(int32 PropInt);
 
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
 	void OnPropInt32Changed(int32 PropInt32);
 
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
 	void OnPropInt64Changed(int64 PropInt64);
 
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
 	void OnPropFloatChanged(float PropFloat);
 
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
 	void OnPropFloat32Changed(float PropFloat32);
 
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
 	void OnPropFloat64Changed(double PropFloat64);
 
-	UFUNCTION(Category = "ApiGear|TbSimple|SimpleInterface", BlueprintInternalUseOnly)
 	void OnPropStringChanged(const FString& PropString);
-
-	// delegate handles
-	FDelegateHandle OnPropBoolChangedHandle;
-	FDelegateHandle OnPropIntChangedHandle;
-	FDelegateHandle OnPropInt32ChangedHandle;
-	FDelegateHandle OnPropInt64ChangedHandle;
-	FDelegateHandle OnPropFloatChangedHandle;
-	FDelegateHandle OnPropFloat32ChangedHandle;
-	FDelegateHandle OnPropFloat64ChangedHandle;
-	FDelegateHandle OnPropStringChangedHandle;
-	FDelegateHandle OnSigBoolSignalHandle;
-	FDelegateHandle OnSigIntSignalHandle;
-	FDelegateHandle OnSigInt32SignalHandle;
-	FDelegateHandle OnSigInt64SignalHandle;
-	FDelegateHandle OnSigFloatSignalHandle;
-	FDelegateHandle OnSigFloat32SignalHandle;
-	FDelegateHandle OnSigFloat64SignalHandle;
-	FDelegateHandle OnSigStringSignalHandle;
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSimple|SimpleInterface")

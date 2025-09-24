@@ -59,46 +59,7 @@ void UTbRefIfacesParentIfOLinkAdapter::setBackendService(TScriptInterface<ITbRef
 	{
 		UTbRefIfacesParentIfPublisher* BackendPublisher = BackendService->_GetPublisher();
 		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbRefIfacesParentIf"));
-		if (OnLocalIfChangedHandle.IsValid())
-		{
-			BackendPublisher->OnLocalIfChanged.Remove(OnLocalIfChangedHandle);
-			OnLocalIfChangedHandle.Reset();
-		}
-		if (OnLocalIfListChangedHandle.IsValid())
-		{
-			BackendPublisher->OnLocalIfListChanged.Remove(OnLocalIfListChangedHandle);
-			OnLocalIfListChangedHandle.Reset();
-		}
-		if (OnImportedIfChangedHandle.IsValid())
-		{
-			BackendPublisher->OnImportedIfChanged.Remove(OnImportedIfChangedHandle);
-			OnImportedIfChangedHandle.Reset();
-		}
-		if (OnImportedIfListChangedHandle.IsValid())
-		{
-			BackendPublisher->OnImportedIfListChanged.Remove(OnImportedIfListChangedHandle);
-			OnImportedIfListChangedHandle.Reset();
-		}
-		if (OnLocalIfSignalSignalHandle.IsValid())
-		{
-			BackendPublisher->OnLocalIfSignalSignal.Remove(OnLocalIfSignalSignalHandle);
-			OnLocalIfSignalSignalHandle.Reset();
-		}
-		if (OnLocalIfSignalListSignalHandle.IsValid())
-		{
-			BackendPublisher->OnLocalIfSignalListSignal.Remove(OnLocalIfSignalListSignalHandle);
-			OnLocalIfSignalListSignalHandle.Reset();
-		}
-		if (OnImportedIfSignalSignalHandle.IsValid())
-		{
-			BackendPublisher->OnImportedIfSignalSignal.Remove(OnImportedIfSignalSignalHandle);
-			OnImportedIfSignalSignalHandle.Reset();
-		}
-		if (OnImportedIfSignalListSignalHandle.IsValid())
-		{
-			BackendPublisher->OnImportedIfSignalListSignal.Remove(OnImportedIfSignalListSignalHandle);
-			OnImportedIfSignalListSignalHandle.Reset();
-		}
+		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbRefIfacesParentIfSubscriberInterface>(this));
 	}
 
 	// only set if interface is implemented
@@ -109,35 +70,28 @@ void UTbRefIfacesParentIfOLinkAdapter::setBackendService(TScriptInterface<ITbRef
 	UTbRefIfacesParentIfPublisher* BackendPublisher = BackendService->_GetPublisher();
 	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbRefIfacesParentIf"));
 	// connect property changed signals or simple events
-	OnLocalIfChangedHandle = BackendPublisher->OnLocalIfChanged.AddUObject(this, &UTbRefIfacesParentIfOLinkAdapter::OnLocalIfChanged);
-	OnLocalIfListChangedHandle = BackendPublisher->OnLocalIfListChanged.AddUObject(this, &UTbRefIfacesParentIfOLinkAdapter::OnLocalIfListChanged);
-	OnImportedIfChangedHandle = BackendPublisher->OnImportedIfChanged.AddUObject(this, &UTbRefIfacesParentIfOLinkAdapter::OnImportedIfChanged);
-	OnImportedIfListChangedHandle = BackendPublisher->OnImportedIfListChanged.AddUObject(this, &UTbRefIfacesParentIfOLinkAdapter::OnImportedIfListChanged);
-	OnLocalIfSignalSignalHandle = BackendPublisher->OnLocalIfSignalSignal.AddUObject(this, &UTbRefIfacesParentIfOLinkAdapter::OnLocalIfSignal);
-	OnLocalIfSignalListSignalHandle = BackendPublisher->OnLocalIfSignalListSignal.AddUObject(this, &UTbRefIfacesParentIfOLinkAdapter::OnLocalIfSignalList);
-	OnImportedIfSignalSignalHandle = BackendPublisher->OnImportedIfSignalSignal.AddUObject(this, &UTbRefIfacesParentIfOLinkAdapter::OnImportedIfSignal);
-	OnImportedIfSignalListSignalHandle = BackendPublisher->OnImportedIfSignalListSignal.AddUObject(this, &UTbRefIfacesParentIfOLinkAdapter::OnImportedIfSignalList);
+	BackendPublisher->Subscribe(TWeakInterfacePtr<ITbRefIfacesParentIfSubscriberInterface>(this));
 
 	// update olink source with new backend
 	Source->setBackendService(InService);
 }
 
-void UTbRefIfacesParentIfOLinkAdapter::OnLocalIfSignal(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Param)
+void UTbRefIfacesParentIfOLinkAdapter::OnLocalIfSignalSignal(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Param)
 {
 	Source->OnLocalIfSignal(Param);
 }
 
-void UTbRefIfacesParentIfOLinkAdapter::OnLocalIfSignalList(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param)
+void UTbRefIfacesParentIfOLinkAdapter::OnLocalIfSignalListSignal(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param)
 {
 	Source->OnLocalIfSignalList(Param);
 }
 
-void UTbRefIfacesParentIfOLinkAdapter::OnImportedIfSignal(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param)
+void UTbRefIfacesParentIfOLinkAdapter::OnImportedIfSignalSignal(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param)
 {
 	Source->OnImportedIfSignal(Param);
 }
 
-void UTbRefIfacesParentIfOLinkAdapter::OnImportedIfSignalList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param)
+void UTbRefIfacesParentIfOLinkAdapter::OnImportedIfSignalListSignal(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param)
 {
 	Source->OnImportedIfSignalList(Param);
 }

@@ -35,7 +35,7 @@ class RemoteRegistry;
  * and holds the corresponding TbSame2SameStruct2InterfaceOLinkSource OLink source object
  */
 UCLASS(BlueprintType)
-class TBSAME2OLINK_API UTbSame2SameStruct2InterfaceOLinkAdapter : public UGameInstanceSubsystem
+class TBSAME2OLINK_API UTbSame2SameStruct2InterfaceOLinkAdapter : public UGameInstanceSubsystem, public ITbSame2SameStruct2InterfaceSubscriberInterface
 {
 	GENERATED_BODY()
 public:
@@ -54,23 +54,13 @@ public:
 
 private:
 	// signals
-	UFUNCTION(Category = "ApiGear|TbSame2|SameStruct2Interface", BlueprintInternalUseOnly)
-	void OnSig1(const FTbSame2Struct1& Param1);
+	void OnSig1Signal(const FTbSame2Struct1& Param1);
 
-	UFUNCTION(Category = "ApiGear|TbSame2|SameStruct2Interface", BlueprintInternalUseOnly)
-	void OnSig2(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2);
+	void OnSig2Signal(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2);
 
-	UFUNCTION(Category = "ApiGear|TbSame2|SameStruct2Interface", BlueprintInternalUseOnly)
 	void OnProp1Changed(const FTbSame2Struct2& Prop1);
 
-	UFUNCTION(Category = "ApiGear|TbSame2|SameStruct2Interface", BlueprintInternalUseOnly)
 	void OnProp2Changed(const FTbSame2Struct2& Prop2);
-
-	// delegate handles
-	FDelegateHandle OnProp1ChangedHandle;
-	FDelegateHandle OnProp2ChangedHandle;
-	FDelegateHandle OnSig1SignalHandle;
-	FDelegateHandle OnSig2SignalHandle;
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSame2|SameStruct2Interface")

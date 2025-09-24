@@ -35,7 +35,7 @@ class RemoteRegistry;
  * and holds the corresponding TbSame1SameEnum1InterfaceOLinkSource OLink source object
  */
 UCLASS(BlueprintType)
-class TBSAME1OLINK_API UTbSame1SameEnum1InterfaceOLinkAdapter : public UGameInstanceSubsystem
+class TBSAME1OLINK_API UTbSame1SameEnum1InterfaceOLinkAdapter : public UGameInstanceSubsystem, public ITbSame1SameEnum1InterfaceSubscriberInterface
 {
 	GENERATED_BODY()
 public:
@@ -54,15 +54,9 @@ public:
 
 private:
 	// signals
-	UFUNCTION(Category = "ApiGear|TbSame1|SameEnum1Interface", BlueprintInternalUseOnly)
-	void OnSig1(ETbSame1Enum1 Param1);
+	void OnSig1Signal(ETbSame1Enum1 Param1);
 
-	UFUNCTION(Category = "ApiGear|TbSame1|SameEnum1Interface", BlueprintInternalUseOnly)
 	void OnProp1Changed(ETbSame1Enum1 Prop1);
-
-	// delegate handles
-	FDelegateHandle OnProp1ChangedHandle;
-	FDelegateHandle OnSig1SignalHandle;
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSame1|SameEnum1Interface")

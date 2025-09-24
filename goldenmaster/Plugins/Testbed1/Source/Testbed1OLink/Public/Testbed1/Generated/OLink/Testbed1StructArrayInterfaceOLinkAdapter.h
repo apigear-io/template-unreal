@@ -35,7 +35,7 @@ class RemoteRegistry;
  * and holds the corresponding Testbed1StructArrayInterfaceOLinkSource OLink source object
  */
 UCLASS(BlueprintType)
-class TESTBED1OLINK_API UTestbed1StructArrayInterfaceOLinkAdapter : public UGameInstanceSubsystem
+class TESTBED1OLINK_API UTestbed1StructArrayInterfaceOLinkAdapter : public UGameInstanceSubsystem, public ITestbed1StructArrayInterfaceSubscriberInterface
 {
 	GENERATED_BODY()
 public:
@@ -54,47 +54,25 @@ public:
 
 private:
 	// signals
-	UFUNCTION(Category = "ApiGear|Testbed1|StructArrayInterface", BlueprintInternalUseOnly)
-	void OnSigBool(const TArray<FTestbed1StructBool>& ParamBool);
+	void OnSigBoolSignal(const TArray<FTestbed1StructBool>& ParamBool);
 
-	UFUNCTION(Category = "ApiGear|Testbed1|StructArrayInterface", BlueprintInternalUseOnly)
-	void OnSigInt(const TArray<FTestbed1StructInt>& ParamInt);
+	void OnSigIntSignal(const TArray<FTestbed1StructInt>& ParamInt);
 
-	UFUNCTION(Category = "ApiGear|Testbed1|StructArrayInterface", BlueprintInternalUseOnly)
-	void OnSigFloat(const TArray<FTestbed1StructFloat>& ParamFloat);
+	void OnSigFloatSignal(const TArray<FTestbed1StructFloat>& ParamFloat);
 
-	UFUNCTION(Category = "ApiGear|Testbed1|StructArrayInterface", BlueprintInternalUseOnly)
-	void OnSigString(const TArray<FTestbed1StructString>& ParamString);
+	void OnSigStringSignal(const TArray<FTestbed1StructString>& ParamString);
 
-	UFUNCTION(Category = "ApiGear|Testbed1|StructArrayInterface", BlueprintInternalUseOnly)
-	void OnSigEnum(const TArray<ETestbed1Enum0>& ParamEnum);
+	void OnSigEnumSignal(const TArray<ETestbed1Enum0>& ParamEnum);
 
-	UFUNCTION(Category = "ApiGear|Testbed1|StructArrayInterface", BlueprintInternalUseOnly)
 	void OnPropBoolChanged(const TArray<FTestbed1StructBool>& PropBool);
 
-	UFUNCTION(Category = "ApiGear|Testbed1|StructArrayInterface", BlueprintInternalUseOnly)
 	void OnPropIntChanged(const TArray<FTestbed1StructInt>& PropInt);
 
-	UFUNCTION(Category = "ApiGear|Testbed1|StructArrayInterface", BlueprintInternalUseOnly)
 	void OnPropFloatChanged(const TArray<FTestbed1StructFloat>& PropFloat);
 
-	UFUNCTION(Category = "ApiGear|Testbed1|StructArrayInterface", BlueprintInternalUseOnly)
 	void OnPropStringChanged(const TArray<FTestbed1StructString>& PropString);
 
-	UFUNCTION(Category = "ApiGear|Testbed1|StructArrayInterface", BlueprintInternalUseOnly)
 	void OnPropEnumChanged(const TArray<ETestbed1Enum0>& PropEnum);
-
-	// delegate handles
-	FDelegateHandle OnPropBoolChangedHandle;
-	FDelegateHandle OnPropIntChangedHandle;
-	FDelegateHandle OnPropFloatChangedHandle;
-	FDelegateHandle OnPropStringChangedHandle;
-	FDelegateHandle OnPropEnumChangedHandle;
-	FDelegateHandle OnSigBoolSignalHandle;
-	FDelegateHandle OnSigIntSignalHandle;
-	FDelegateHandle OnSigFloatSignalHandle;
-	FDelegateHandle OnSigStringSignalHandle;
-	FDelegateHandle OnSigEnumSignalHandle;
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|Testbed1|StructArrayInterface")

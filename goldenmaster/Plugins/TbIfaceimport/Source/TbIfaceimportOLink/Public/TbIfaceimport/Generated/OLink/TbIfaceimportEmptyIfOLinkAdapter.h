@@ -35,7 +35,7 @@ class RemoteRegistry;
  * and holds the corresponding TbIfaceimportEmptyIfOLinkSource OLink source object
  */
 UCLASS(BlueprintType)
-class TBIFACEIMPORTOLINK_API UTbIfaceimportEmptyIfOLinkAdapter : public UGameInstanceSubsystem
+class TBIFACEIMPORTOLINK_API UTbIfaceimportEmptyIfOLinkAdapter : public UGameInstanceSubsystem, public ITbIfaceimportEmptyIfSubscriberInterface
 {
 	GENERATED_BODY()
 public:
@@ -54,8 +54,6 @@ public:
 
 private:
 	// signals
-
-	// delegate handles
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbIfaceimport|EmptyIf")

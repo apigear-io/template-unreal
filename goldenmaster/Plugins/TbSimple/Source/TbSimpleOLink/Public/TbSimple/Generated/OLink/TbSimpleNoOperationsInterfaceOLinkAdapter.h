@@ -35,7 +35,7 @@ class RemoteRegistry;
  * and holds the corresponding TbSimpleNoOperationsInterfaceOLinkSource OLink source object
  */
 UCLASS(BlueprintType)
-class TBSIMPLEOLINK_API UTbSimpleNoOperationsInterfaceOLinkAdapter : public UGameInstanceSubsystem
+class TBSIMPLEOLINK_API UTbSimpleNoOperationsInterfaceOLinkAdapter : public UGameInstanceSubsystem, public ITbSimpleNoOperationsInterfaceSubscriberInterface
 {
 	GENERATED_BODY()
 public:
@@ -54,23 +54,13 @@ public:
 
 private:
 	// signals
-	UFUNCTION(Category = "ApiGear|TbSimple|NoOperationsInterface", BlueprintInternalUseOnly)
-	void OnSigVoid();
+	void OnSigVoidSignal();
 
-	UFUNCTION(Category = "ApiGear|TbSimple|NoOperationsInterface", BlueprintInternalUseOnly)
-	void OnSigBool(bool bParamBool);
+	void OnSigBoolSignal(bool bParamBool);
 
-	UFUNCTION(Category = "ApiGear|TbSimple|NoOperationsInterface", BlueprintInternalUseOnly)
 	void OnPropBoolChanged(bool bPropBool);
 
-	UFUNCTION(Category = "ApiGear|TbSimple|NoOperationsInterface", BlueprintInternalUseOnly)
 	void OnPropIntChanged(int32 PropInt);
-
-	// delegate handles
-	FDelegateHandle OnPropBoolChangedHandle;
-	FDelegateHandle OnPropIntChangedHandle;
-	FDelegateHandle OnSigVoidSignalHandle;
-	FDelegateHandle OnSigBoolSignalHandle;
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSimple|NoOperationsInterface")

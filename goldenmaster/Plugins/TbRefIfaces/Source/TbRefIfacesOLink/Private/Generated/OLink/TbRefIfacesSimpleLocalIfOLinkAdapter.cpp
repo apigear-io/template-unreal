@@ -59,16 +59,7 @@ void UTbRefIfacesSimpleLocalIfOLinkAdapter::setBackendService(TScriptInterface<I
 	{
 		UTbRefIfacesSimpleLocalIfPublisher* BackendPublisher = BackendService->_GetPublisher();
 		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbRefIfacesSimpleLocalIf"));
-		if (OnIntPropertyChangedHandle.IsValid())
-		{
-			BackendPublisher->OnIntPropertyChanged.Remove(OnIntPropertyChangedHandle);
-			OnIntPropertyChangedHandle.Reset();
-		}
-		if (OnIntSignalSignalHandle.IsValid())
-		{
-			BackendPublisher->OnIntSignalSignal.Remove(OnIntSignalSignalHandle);
-			OnIntSignalSignalHandle.Reset();
-		}
+		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbRefIfacesSimpleLocalIfSubscriberInterface>(this));
 	}
 
 	// only set if interface is implemented
@@ -79,14 +70,13 @@ void UTbRefIfacesSimpleLocalIfOLinkAdapter::setBackendService(TScriptInterface<I
 	UTbRefIfacesSimpleLocalIfPublisher* BackendPublisher = BackendService->_GetPublisher();
 	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbRefIfacesSimpleLocalIf"));
 	// connect property changed signals or simple events
-	OnIntPropertyChangedHandle = BackendPublisher->OnIntPropertyChanged.AddUObject(this, &UTbRefIfacesSimpleLocalIfOLinkAdapter::OnIntPropertyChanged);
-	OnIntSignalSignalHandle = BackendPublisher->OnIntSignalSignal.AddUObject(this, &UTbRefIfacesSimpleLocalIfOLinkAdapter::OnIntSignal);
+	BackendPublisher->Subscribe(TWeakInterfacePtr<ITbRefIfacesSimpleLocalIfSubscriberInterface>(this));
 
 	// update olink source with new backend
 	Source->setBackendService(InService);
 }
 
-void UTbRefIfacesSimpleLocalIfOLinkAdapter::OnIntSignal(int32 Param)
+void UTbRefIfacesSimpleLocalIfOLinkAdapter::OnIntSignalSignal(int32 Param)
 {
 	Source->OnIntSignal(Param);
 }

@@ -35,7 +35,7 @@ class RemoteRegistry;
  * and holds the corresponding Testbed2NestedStruct2InterfaceOLinkSource OLink source object
  */
 UCLASS(BlueprintType)
-class TESTBED2OLINK_API UTestbed2NestedStruct2InterfaceOLinkAdapter : public UGameInstanceSubsystem
+class TESTBED2OLINK_API UTestbed2NestedStruct2InterfaceOLinkAdapter : public UGameInstanceSubsystem, public ITestbed2NestedStruct2InterfaceSubscriberInterface
 {
 	GENERATED_BODY()
 public:
@@ -54,23 +54,13 @@ public:
 
 private:
 	// signals
-	UFUNCTION(Category = "ApiGear|Testbed2|NestedStruct2Interface", BlueprintInternalUseOnly)
-	void OnSig1(const FTestbed2NestedStruct1& Param1);
+	void OnSig1Signal(const FTestbed2NestedStruct1& Param1);
 
-	UFUNCTION(Category = "ApiGear|Testbed2|NestedStruct2Interface", BlueprintInternalUseOnly)
-	void OnSig2(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2);
+	void OnSig2Signal(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2);
 
-	UFUNCTION(Category = "ApiGear|Testbed2|NestedStruct2Interface", BlueprintInternalUseOnly)
 	void OnProp1Changed(const FTestbed2NestedStruct1& Prop1);
 
-	UFUNCTION(Category = "ApiGear|Testbed2|NestedStruct2Interface", BlueprintInternalUseOnly)
 	void OnProp2Changed(const FTestbed2NestedStruct2& Prop2);
-
-	// delegate handles
-	FDelegateHandle OnProp1ChangedHandle;
-	FDelegateHandle OnProp2ChangedHandle;
-	FDelegateHandle OnSig1SignalHandle;
-	FDelegateHandle OnSig2SignalHandle;
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|Testbed2|NestedStruct2Interface")
