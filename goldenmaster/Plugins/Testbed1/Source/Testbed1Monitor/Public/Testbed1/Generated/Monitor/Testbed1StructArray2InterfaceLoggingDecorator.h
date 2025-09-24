@@ -26,7 +26,7 @@ limitations under the License.
 DECLARE_LOG_CATEGORY_EXTERN(LogTestbed1StructArray2InterfaceLoggingDecorator, Log, All);
 
 UCLASS(NotBlueprintable, BlueprintType)
-class TESTBED1MONITOR_API UTestbed1StructArray2InterfaceLoggingDecorator : public UAbstractTestbed1StructArray2Interface
+class TESTBED1MONITOR_API UTestbed1StructArray2InterfaceLoggingDecorator : public UAbstractTestbed1StructArray2Interface, public ITestbed1StructArray2InterfaceSubscriberInterface
 {
 	GENERATED_BODY()
 
@@ -79,30 +79,21 @@ private:
 	TScriptInterface<ITestbed1StructArray2InterfaceInterface> BackendService;
 
 	// signals
-	UFUNCTION(Category = "ApiGear|Testbed1|StructArray2Interface", BlueprintInternalUseOnly)
-	void OnSigBool(const FTestbed1StructBoolWithArray& InParamBool);
+	void OnSigBoolSignal(const FTestbed1StructBoolWithArray& InParamBool);
 
-	UFUNCTION(Category = "ApiGear|Testbed1|StructArray2Interface", BlueprintInternalUseOnly)
-	void OnSigInt(const FTestbed1StructIntWithArray& InParamInt);
+	void OnSigIntSignal(const FTestbed1StructIntWithArray& InParamInt);
 
-	UFUNCTION(Category = "ApiGear|Testbed1|StructArray2Interface", BlueprintInternalUseOnly)
-	void OnSigFloat(const FTestbed1StructFloatWithArray& InParamFloat);
+	void OnSigFloatSignal(const FTestbed1StructFloatWithArray& InParamFloat);
 
-	UFUNCTION(Category = "ApiGear|Testbed1|StructArray2Interface", BlueprintInternalUseOnly)
-	void OnSigString(const FTestbed1StructStringWithArray& InParamString);
+	void OnSigStringSignal(const FTestbed1StructStringWithArray& InParamString);
 
-	UFUNCTION(Category = "ApiGear|Testbed1|StructArray2Interface", BlueprintInternalUseOnly)
 	void OnPropBoolChanged(const FTestbed1StructBoolWithArray& InPropBool);
 
-	UFUNCTION(Category = "ApiGear|Testbed1|StructArray2Interface", BlueprintInternalUseOnly)
 	void OnPropIntChanged(const FTestbed1StructIntWithArray& InPropInt);
 
-	UFUNCTION(Category = "ApiGear|Testbed1|StructArray2Interface", BlueprintInternalUseOnly)
 	void OnPropFloatChanged(const FTestbed1StructFloatWithArray& InPropFloat);
 
-	UFUNCTION(Category = "ApiGear|Testbed1|StructArray2Interface", BlueprintInternalUseOnly)
 	void OnPropStringChanged(const FTestbed1StructStringWithArray& InPropString);
 
-	UFUNCTION(Category = "ApiGear|Testbed1|StructArray2Interface", BlueprintInternalUseOnly)
 	void OnPropEnumChanged(const FTestbed1StructEnumWithArray& InPropEnum);
 };

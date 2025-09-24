@@ -26,7 +26,7 @@ limitations under the License.
 DECLARE_LOG_CATEGORY_EXTERN(LogTestbed2ManyParamInterfaceLoggingDecorator, Log, All);
 
 UCLASS(NotBlueprintable, BlueprintType)
-class TESTBED2MONITOR_API UTestbed2ManyParamInterfaceLoggingDecorator : public UAbstractTestbed2ManyParamInterface
+class TESTBED2MONITOR_API UTestbed2ManyParamInterfaceLoggingDecorator : public UAbstractTestbed2ManyParamInterface, public ITestbed2ManyParamInterfaceSubscriberInterface
 {
 	GENERATED_BODY()
 
@@ -73,27 +73,19 @@ private:
 	TScriptInterface<ITestbed2ManyParamInterfaceInterface> BackendService;
 
 	// signals
-	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
-	void OnSig1(int32 InParam1);
+	void OnSig1Signal(int32 InParam1);
 
-	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
-	void OnSig2(int32 InParam1, int32 InParam2);
+	void OnSig2Signal(int32 InParam1, int32 InParam2);
 
-	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
-	void OnSig3(int32 InParam1, int32 InParam2, int32 InParam3);
+	void OnSig3Signal(int32 InParam1, int32 InParam2, int32 InParam3);
 
-	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
-	void OnSig4(int32 InParam1, int32 InParam2, int32 InParam3, int32 InParam4);
+	void OnSig4Signal(int32 InParam1, int32 InParam2, int32 InParam3, int32 InParam4);
 
-	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
 	void OnProp1Changed(int32 InProp1);
 
-	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
 	void OnProp2Changed(int32 InProp2);
 
-	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
 	void OnProp3Changed(int32 InProp3);
 
-	UFUNCTION(Category = "ApiGear|Testbed2|ManyParamInterface", BlueprintInternalUseOnly)
 	void OnProp4Changed(int32 InProp4);
 };

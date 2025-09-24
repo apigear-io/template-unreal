@@ -26,7 +26,7 @@ limitations under the License.
 DECLARE_LOG_CATEGORY_EXTERN(LogTbNamesNamEsLoggingDecorator, Log, All);
 
 UCLASS(NotBlueprintable, BlueprintType)
-class TBNAMESMONITOR_API UTbNamesNamEsLoggingDecorator : public UAbstractTbNamesNamEs
+class TBNAMESMONITOR_API UTbNamesNamEsLoggingDecorator : public UAbstractTbNamesNamEs, public ITbNamesNamEsSubscriberInterface
 {
 	GENERATED_BODY()
 
@@ -69,21 +69,15 @@ private:
 	TScriptInterface<ITbNamesNamEsInterface> BackendService;
 
 	// signals
-	UFUNCTION(Category = "ApiGear|TbNames|NamEs", BlueprintInternalUseOnly)
-	void OnSomeSignal(bool bInSomeParam);
+	void OnSomeSignalSignal(bool bInSomeParam);
 
-	UFUNCTION(Category = "ApiGear|TbNames|NamEs", BlueprintInternalUseOnly)
-	void OnSomeSignal2(bool bInSomeParam);
+	void OnSomeSignal2Signal(bool bInSomeParam);
 
-	UFUNCTION(Category = "ApiGear|TbNames|NamEs", BlueprintInternalUseOnly)
 	void OnSwitchChanged(bool bInSwitch);
 
-	UFUNCTION(Category = "ApiGear|TbNames|NamEs", BlueprintInternalUseOnly)
 	void OnSomePropertyChanged(int32 InSomeProperty);
 
-	UFUNCTION(Category = "ApiGear|TbNames|NamEs", BlueprintInternalUseOnly)
 	void OnSomePoperty2Changed(int32 InSomePoperty2);
 
-	UFUNCTION(Category = "ApiGear|TbNames|NamEs", BlueprintInternalUseOnly)
 	void OnEnumPropertyChanged(ETbNamesEnum_With_Under_scores InEnumProperty);
 };

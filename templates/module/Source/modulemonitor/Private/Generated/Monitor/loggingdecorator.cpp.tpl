@@ -62,16 +62,9 @@ void {{$Class}}::setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{Cam
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-{{- if or (len .Interface.Properties) (.Interface.Signals) }}
 		U{{$Iface}}Publisher* BackendPublisher = BackendService->_GetPublisher();
 		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service {{$Iface}}"));
-{{- end }}
-{{- range .Interface.Properties }}
-		BackendPublisher->On{{Camel .Name}}ChangedBP.RemoveDynamic(this, &{{$Class}}::On{{Camel .Name}}Changed);
-{{- end }}
-{{- range .Interface.Signals }}
-		BackendPublisher->On{{Camel .Name}}SignalBP.RemoveDynamic(this, &{{$Class}}::On{{Camel .Name}});
-{{- end }}
+		BackendPublisher->Unsubscribe(TWeakInterfacePtr<I{{$Iface}}SubscriberInterface>(this));
 	}
 
 	// only set if interface is implemented
@@ -80,17 +73,10 @@ void {{$Class}}::setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{Cam
 	// subscribe to new backend
 {{- $Service := printf "I%sInterface" $Iface }}
 	BackendService = InService;
-{{- if or (len .Interface.Properties) (.Interface.Signals) }}
 	U{{$Iface}}Publisher* BackendPublisher = BackendService->_GetPublisher();
 	checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service {{$Iface}}"));
-{{- end }}
 	// connect property changed signals or simple events
-{{- range .Interface.Properties }}
-	BackendPublisher->On{{Camel .Name}}ChangedBP.AddDynamic(this, &{{$Class}}::On{{Camel .Name}}Changed);
-{{- end }}
-{{- range .Interface.Signals }}
-	BackendPublisher->On{{Camel .Name}}SignalBP.AddDynamic(this, &{{$Class}}::On{{Camel .Name}});
-{{- end }}
+	BackendPublisher->Subscribe(TWeakInterfacePtr<I{{$Iface}}SubscriberInterface>(this));
 	// populate service state to proxy
 {{- range .Interface.Properties }}
 	{{ueVar "" .}} = BackendService->Get{{Camel .Name}}();
@@ -99,7 +85,7 @@ void {{$Class}}::setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{Cam
 {{- if .Interface.Signals }}{{nl}}{{ end }}
 {{- range $i, $e := .Interface.Signals }}
 {{- if $i }}{{nl}}{{ end }}
-void {{$Class}}::On{{Camel .Name}}({{ueParams "In" .Params}})
+void {{$Class}}::On{{Camel .Name}}Signal({{ueParams "In" .Params}})
 {
 	{{$Iface}}Tracer::trace_signal{{Camel .Name}}({{ueVars "In" .Params}});
 	_GetPublisher()->Broadcast{{Camel .Name}}Signal({{ueVars "In" .Params }});

@@ -49,14 +49,7 @@ void UTestbed1StructInterfaceLoggingDecorator::setBackendService(TScriptInterfac
 	{
 		UTestbed1StructInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service Testbed1StructInterface"));
-		BackendPublisher->OnPropBoolChangedBP.RemoveDynamic(this, &UTestbed1StructInterfaceLoggingDecorator::OnPropBoolChanged);
-		BackendPublisher->OnPropIntChangedBP.RemoveDynamic(this, &UTestbed1StructInterfaceLoggingDecorator::OnPropIntChanged);
-		BackendPublisher->OnPropFloatChangedBP.RemoveDynamic(this, &UTestbed1StructInterfaceLoggingDecorator::OnPropFloatChanged);
-		BackendPublisher->OnPropStringChangedBP.RemoveDynamic(this, &UTestbed1StructInterfaceLoggingDecorator::OnPropStringChanged);
-		BackendPublisher->OnSigBoolSignalBP.RemoveDynamic(this, &UTestbed1StructInterfaceLoggingDecorator::OnSigBool);
-		BackendPublisher->OnSigIntSignalBP.RemoveDynamic(this, &UTestbed1StructInterfaceLoggingDecorator::OnSigInt);
-		BackendPublisher->OnSigFloatSignalBP.RemoveDynamic(this, &UTestbed1StructInterfaceLoggingDecorator::OnSigFloat);
-		BackendPublisher->OnSigStringSignalBP.RemoveDynamic(this, &UTestbed1StructInterfaceLoggingDecorator::OnSigString);
+		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITestbed1StructInterfaceSubscriberInterface>(this));
 	}
 
 	// only set if interface is implemented
@@ -67,14 +60,7 @@ void UTestbed1StructInterfaceLoggingDecorator::setBackendService(TScriptInterfac
 	UTestbed1StructInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 	checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service Testbed1StructInterface"));
 	// connect property changed signals or simple events
-	BackendPublisher->OnPropBoolChangedBP.AddDynamic(this, &UTestbed1StructInterfaceLoggingDecorator::OnPropBoolChanged);
-	BackendPublisher->OnPropIntChangedBP.AddDynamic(this, &UTestbed1StructInterfaceLoggingDecorator::OnPropIntChanged);
-	BackendPublisher->OnPropFloatChangedBP.AddDynamic(this, &UTestbed1StructInterfaceLoggingDecorator::OnPropFloatChanged);
-	BackendPublisher->OnPropStringChangedBP.AddDynamic(this, &UTestbed1StructInterfaceLoggingDecorator::OnPropStringChanged);
-	BackendPublisher->OnSigBoolSignalBP.AddDynamic(this, &UTestbed1StructInterfaceLoggingDecorator::OnSigBool);
-	BackendPublisher->OnSigIntSignalBP.AddDynamic(this, &UTestbed1StructInterfaceLoggingDecorator::OnSigInt);
-	BackendPublisher->OnSigFloatSignalBP.AddDynamic(this, &UTestbed1StructInterfaceLoggingDecorator::OnSigFloat);
-	BackendPublisher->OnSigStringSignalBP.AddDynamic(this, &UTestbed1StructInterfaceLoggingDecorator::OnSigString);
+	BackendPublisher->Subscribe(TWeakInterfacePtr<ITestbed1StructInterfaceSubscriberInterface>(this));
 	// populate service state to proxy
 	PropBool = BackendService->GetPropBool();
 	PropInt = BackendService->GetPropInt();
@@ -82,25 +68,25 @@ void UTestbed1StructInterfaceLoggingDecorator::setBackendService(TScriptInterfac
 	PropString = BackendService->GetPropString();
 }
 
-void UTestbed1StructInterfaceLoggingDecorator::OnSigBool(const FTestbed1StructBool& InParamBool)
+void UTestbed1StructInterfaceLoggingDecorator::OnSigBoolSignal(const FTestbed1StructBool& InParamBool)
 {
 	Testbed1StructInterfaceTracer::trace_signalSigBool(InParamBool);
 	_GetPublisher()->BroadcastSigBoolSignal(InParamBool);
 }
 
-void UTestbed1StructInterfaceLoggingDecorator::OnSigInt(const FTestbed1StructInt& InParamInt)
+void UTestbed1StructInterfaceLoggingDecorator::OnSigIntSignal(const FTestbed1StructInt& InParamInt)
 {
 	Testbed1StructInterfaceTracer::trace_signalSigInt(InParamInt);
 	_GetPublisher()->BroadcastSigIntSignal(InParamInt);
 }
 
-void UTestbed1StructInterfaceLoggingDecorator::OnSigFloat(const FTestbed1StructFloat& InParamFloat)
+void UTestbed1StructInterfaceLoggingDecorator::OnSigFloatSignal(const FTestbed1StructFloat& InParamFloat)
 {
 	Testbed1StructInterfaceTracer::trace_signalSigFloat(InParamFloat);
 	_GetPublisher()->BroadcastSigFloatSignal(InParamFloat);
 }
 
-void UTestbed1StructInterfaceLoggingDecorator::OnSigString(const FTestbed1StructString& InParamString)
+void UTestbed1StructInterfaceLoggingDecorator::OnSigStringSignal(const FTestbed1StructString& InParamString)
 {
 	Testbed1StructInterfaceTracer::trace_signalSigString(InParamString);
 	_GetPublisher()->BroadcastSigStringSignal(InParamString);

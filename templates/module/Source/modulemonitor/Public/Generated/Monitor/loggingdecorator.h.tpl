@@ -34,7 +34,7 @@ limitations under the License.
 DECLARE_LOG_CATEGORY_EXTERN(Log{{$DisplayName}}, Log, All);
 
 UCLASS(NotBlueprintable, BlueprintType)
-class {{ $API_MACRO }} {{$Class}} : public {{$abstractclass}}
+class {{ $API_MACRO }} {{$Class}} : public {{$abstractclass}}, public I{{$Iface}}SubscriberInterface
 {
 	GENERATED_BODY()
 
@@ -71,13 +71,11 @@ private:
 	// signals
 {{- range $i, $e := .Interface.Signals }}
 {{- if $i }}{{nl}}{{ end }}
-	UFUNCTION(Category = "{{$Category}}", BlueprintInternalUseOnly)
-	void On{{Camel .Name}}({{ueParams "In" .Params}});
+	void On{{Camel .Name}}Signal({{ueParams "In" .Params}});
 {{- end }}
 {{- if len .Interface.Properties }}{{ nl }}{{ end }}
 {{- range $i, $e := .Interface.Properties }}
 {{- if $i }}{{nl}}{{ end }}
-	UFUNCTION(Category = "{{$Category}}", BlueprintInternalUseOnly)
 	void On{{Camel .Name}}Changed({{ueParam "In" .}});
 {{- end }}
 };

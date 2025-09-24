@@ -49,10 +49,7 @@ void UTbSame1SameStruct2InterfaceLoggingDecorator::setBackendService(TScriptInte
 	{
 		UTbSame1SameStruct2InterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbSame1SameStruct2Interface"));
-		BackendPublisher->OnProp1ChangedBP.RemoveDynamic(this, &UTbSame1SameStruct2InterfaceLoggingDecorator::OnProp1Changed);
-		BackendPublisher->OnProp2ChangedBP.RemoveDynamic(this, &UTbSame1SameStruct2InterfaceLoggingDecorator::OnProp2Changed);
-		BackendPublisher->OnSig1SignalBP.RemoveDynamic(this, &UTbSame1SameStruct2InterfaceLoggingDecorator::OnSig1);
-		BackendPublisher->OnSig2SignalBP.RemoveDynamic(this, &UTbSame1SameStruct2InterfaceLoggingDecorator::OnSig2);
+		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbSame1SameStruct2InterfaceSubscriberInterface>(this));
 	}
 
 	// only set if interface is implemented
@@ -63,22 +60,19 @@ void UTbSame1SameStruct2InterfaceLoggingDecorator::setBackendService(TScriptInte
 	UTbSame1SameStruct2InterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 	checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbSame1SameStruct2Interface"));
 	// connect property changed signals or simple events
-	BackendPublisher->OnProp1ChangedBP.AddDynamic(this, &UTbSame1SameStruct2InterfaceLoggingDecorator::OnProp1Changed);
-	BackendPublisher->OnProp2ChangedBP.AddDynamic(this, &UTbSame1SameStruct2InterfaceLoggingDecorator::OnProp2Changed);
-	BackendPublisher->OnSig1SignalBP.AddDynamic(this, &UTbSame1SameStruct2InterfaceLoggingDecorator::OnSig1);
-	BackendPublisher->OnSig2SignalBP.AddDynamic(this, &UTbSame1SameStruct2InterfaceLoggingDecorator::OnSig2);
+	BackendPublisher->Subscribe(TWeakInterfacePtr<ITbSame1SameStruct2InterfaceSubscriberInterface>(this));
 	// populate service state to proxy
 	Prop1 = BackendService->GetProp1();
 	Prop2 = BackendService->GetProp2();
 }
 
-void UTbSame1SameStruct2InterfaceLoggingDecorator::OnSig1(const FTbSame1Struct1& InParam1)
+void UTbSame1SameStruct2InterfaceLoggingDecorator::OnSig1Signal(const FTbSame1Struct1& InParam1)
 {
 	TbSame1SameStruct2InterfaceTracer::trace_signalSig1(InParam1);
 	_GetPublisher()->BroadcastSig1Signal(InParam1);
 }
 
-void UTbSame1SameStruct2InterfaceLoggingDecorator::OnSig2(const FTbSame1Struct1& InParam1, const FTbSame1Struct2& InParam2)
+void UTbSame1SameStruct2InterfaceLoggingDecorator::OnSig2Signal(const FTbSame1Struct1& InParam1, const FTbSame1Struct2& InParam2)
 {
 	TbSame1SameStruct2InterfaceTracer::trace_signalSig2(InParam1, InParam2);
 	_GetPublisher()->BroadcastSig2Signal(InParam1, InParam2);

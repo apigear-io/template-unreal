@@ -49,14 +49,7 @@ void UTbRefIfacesParentIfLoggingDecorator::setBackendService(TScriptInterface<IT
 	{
 		UTbRefIfacesParentIfPublisher* BackendPublisher = BackendService->_GetPublisher();
 		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbRefIfacesParentIf"));
-		BackendPublisher->OnLocalIfChangedBP.RemoveDynamic(this, &UTbRefIfacesParentIfLoggingDecorator::OnLocalIfChanged);
-		BackendPublisher->OnLocalIfListChangedBP.RemoveDynamic(this, &UTbRefIfacesParentIfLoggingDecorator::OnLocalIfListChanged);
-		BackendPublisher->OnImportedIfChangedBP.RemoveDynamic(this, &UTbRefIfacesParentIfLoggingDecorator::OnImportedIfChanged);
-		BackendPublisher->OnImportedIfListChangedBP.RemoveDynamic(this, &UTbRefIfacesParentIfLoggingDecorator::OnImportedIfListChanged);
-		BackendPublisher->OnLocalIfSignalSignalBP.RemoveDynamic(this, &UTbRefIfacesParentIfLoggingDecorator::OnLocalIfSignal);
-		BackendPublisher->OnLocalIfSignalListSignalBP.RemoveDynamic(this, &UTbRefIfacesParentIfLoggingDecorator::OnLocalIfSignalList);
-		BackendPublisher->OnImportedIfSignalSignalBP.RemoveDynamic(this, &UTbRefIfacesParentIfLoggingDecorator::OnImportedIfSignal);
-		BackendPublisher->OnImportedIfSignalListSignalBP.RemoveDynamic(this, &UTbRefIfacesParentIfLoggingDecorator::OnImportedIfSignalList);
+		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbRefIfacesParentIfSubscriberInterface>(this));
 	}
 
 	// only set if interface is implemented
@@ -67,14 +60,7 @@ void UTbRefIfacesParentIfLoggingDecorator::setBackendService(TScriptInterface<IT
 	UTbRefIfacesParentIfPublisher* BackendPublisher = BackendService->_GetPublisher();
 	checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbRefIfacesParentIf"));
 	// connect property changed signals or simple events
-	BackendPublisher->OnLocalIfChangedBP.AddDynamic(this, &UTbRefIfacesParentIfLoggingDecorator::OnLocalIfChanged);
-	BackendPublisher->OnLocalIfListChangedBP.AddDynamic(this, &UTbRefIfacesParentIfLoggingDecorator::OnLocalIfListChanged);
-	BackendPublisher->OnImportedIfChangedBP.AddDynamic(this, &UTbRefIfacesParentIfLoggingDecorator::OnImportedIfChanged);
-	BackendPublisher->OnImportedIfListChangedBP.AddDynamic(this, &UTbRefIfacesParentIfLoggingDecorator::OnImportedIfListChanged);
-	BackendPublisher->OnLocalIfSignalSignalBP.AddDynamic(this, &UTbRefIfacesParentIfLoggingDecorator::OnLocalIfSignal);
-	BackendPublisher->OnLocalIfSignalListSignalBP.AddDynamic(this, &UTbRefIfacesParentIfLoggingDecorator::OnLocalIfSignalList);
-	BackendPublisher->OnImportedIfSignalSignalBP.AddDynamic(this, &UTbRefIfacesParentIfLoggingDecorator::OnImportedIfSignal);
-	BackendPublisher->OnImportedIfSignalListSignalBP.AddDynamic(this, &UTbRefIfacesParentIfLoggingDecorator::OnImportedIfSignalList);
+	BackendPublisher->Subscribe(TWeakInterfacePtr<ITbRefIfacesParentIfSubscriberInterface>(this));
 	// populate service state to proxy
 	LocalIf = BackendService->GetLocalIf();
 	LocalIfList = BackendService->GetLocalIfList();
@@ -82,25 +68,25 @@ void UTbRefIfacesParentIfLoggingDecorator::setBackendService(TScriptInterface<IT
 	ImportedIfList = BackendService->GetImportedIfList();
 }
 
-void UTbRefIfacesParentIfLoggingDecorator::OnLocalIfSignal(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& InParam)
+void UTbRefIfacesParentIfLoggingDecorator::OnLocalIfSignalSignal(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& InParam)
 {
 	TbRefIfacesParentIfTracer::trace_signalLocalIfSignal(InParam);
 	_GetPublisher()->BroadcastLocalIfSignalSignal(InParam);
 }
 
-void UTbRefIfacesParentIfLoggingDecorator::OnLocalIfSignalList(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InParam)
+void UTbRefIfacesParentIfLoggingDecorator::OnLocalIfSignalListSignal(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InParam)
 {
 	TbRefIfacesParentIfTracer::trace_signalLocalIfSignalList(InParam);
 	_GetPublisher()->BroadcastLocalIfSignalListSignal(InParam);
 }
 
-void UTbRefIfacesParentIfLoggingDecorator::OnImportedIfSignal(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& InParam)
+void UTbRefIfacesParentIfLoggingDecorator::OnImportedIfSignalSignal(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& InParam)
 {
 	TbRefIfacesParentIfTracer::trace_signalImportedIfSignal(InParam);
 	_GetPublisher()->BroadcastImportedIfSignalSignal(InParam);
 }
 
-void UTbRefIfacesParentIfLoggingDecorator::OnImportedIfSignalList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InParam)
+void UTbRefIfacesParentIfLoggingDecorator::OnImportedIfSignalListSignal(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InParam)
 {
 	TbRefIfacesParentIfTracer::trace_signalImportedIfSignalList(InParam);
 	_GetPublisher()->BroadcastImportedIfSignalListSignal(InParam);

@@ -26,7 +26,7 @@ limitations under the License.
 DECLARE_LOG_CATEGORY_EXTERN(LogTbSame2SameStruct2InterfaceLoggingDecorator, Log, All);
 
 UCLASS(NotBlueprintable, BlueprintType)
-class TBSAME2MONITOR_API UTbSame2SameStruct2InterfaceLoggingDecorator : public UAbstractTbSame2SameStruct2Interface
+class TBSAME2MONITOR_API UTbSame2SameStruct2InterfaceLoggingDecorator : public UAbstractTbSame2SameStruct2Interface, public ITbSame2SameStruct2InterfaceSubscriberInterface
 {
 	GENERATED_BODY()
 
@@ -61,15 +61,11 @@ private:
 	TScriptInterface<ITbSame2SameStruct2InterfaceInterface> BackendService;
 
 	// signals
-	UFUNCTION(Category = "ApiGear|TbSame2|SameStruct2Interface", BlueprintInternalUseOnly)
-	void OnSig1(const FTbSame2Struct1& InParam1);
+	void OnSig1Signal(const FTbSame2Struct1& InParam1);
 
-	UFUNCTION(Category = "ApiGear|TbSame2|SameStruct2Interface", BlueprintInternalUseOnly)
-	void OnSig2(const FTbSame2Struct1& InParam1, const FTbSame2Struct2& InParam2);
+	void OnSig2Signal(const FTbSame2Struct1& InParam1, const FTbSame2Struct2& InParam2);
 
-	UFUNCTION(Category = "ApiGear|TbSame2|SameStruct2Interface", BlueprintInternalUseOnly)
 	void OnProp1Changed(const FTbSame2Struct2& InProp1);
 
-	UFUNCTION(Category = "ApiGear|TbSame2|SameStruct2Interface", BlueprintInternalUseOnly)
 	void OnProp2Changed(const FTbSame2Struct2& InProp2);
 };

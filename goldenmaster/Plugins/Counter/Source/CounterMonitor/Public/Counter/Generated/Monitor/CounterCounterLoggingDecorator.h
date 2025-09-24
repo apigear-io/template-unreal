@@ -26,7 +26,7 @@ limitations under the License.
 DECLARE_LOG_CATEGORY_EXTERN(LogCounterCounterLoggingDecorator, Log, All);
 
 UCLASS(NotBlueprintable, BlueprintType)
-class COUNTERMONITOR_API UCounterCounterLoggingDecorator : public UAbstractCounterCounter
+class COUNTERMONITOR_API UCounterCounterLoggingDecorator : public UAbstractCounterCounter, public ICounterCounterSubscriberInterface
 {
 	GENERATED_BODY()
 
@@ -73,18 +73,13 @@ private:
 	TScriptInterface<ICounterCounterInterface> BackendService;
 
 	// signals
-	UFUNCTION(Category = "ApiGear|Counter|Counter", BlueprintInternalUseOnly)
-	void OnValueChanged(const FCustomTypesVector3D& InVector, const FVector& InExternVector, const TArray<FCustomTypesVector3D>& InVectorArray, const TArray<FVector>& InExternVectorArray);
+	void OnValueChangedSignal(const FCustomTypesVector3D& InVector, const FVector& InExternVector, const TArray<FCustomTypesVector3D>& InVectorArray, const TArray<FVector>& InExternVectorArray);
 
-	UFUNCTION(Category = "ApiGear|Counter|Counter", BlueprintInternalUseOnly)
 	void OnVectorChanged(const FCustomTypesVector3D& InVector);
 
-	UFUNCTION(Category = "ApiGear|Counter|Counter", BlueprintInternalUseOnly)
 	void OnExternVectorChanged(const FVector& InExternVector);
 
-	UFUNCTION(Category = "ApiGear|Counter|Counter", BlueprintInternalUseOnly)
 	void OnVectorArrayChanged(const TArray<FCustomTypesVector3D>& InVectorArray);
 
-	UFUNCTION(Category = "ApiGear|Counter|Counter", BlueprintInternalUseOnly)
 	void OnExternVectorArrayChanged(const TArray<FVector>& InExternVectorArray);
 };

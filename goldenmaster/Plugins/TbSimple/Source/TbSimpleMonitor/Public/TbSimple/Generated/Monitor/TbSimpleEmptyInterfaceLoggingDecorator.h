@@ -26,7 +26,7 @@ limitations under the License.
 DECLARE_LOG_CATEGORY_EXTERN(LogTbSimpleEmptyInterfaceLoggingDecorator, Log, All);
 
 UCLASS(NotBlueprintable, BlueprintType)
-class TBSIMPLEMONITOR_API UTbSimpleEmptyInterfaceLoggingDecorator : public UAbstractTbSimpleEmptyInterface
+class TBSIMPLEMONITOR_API UTbSimpleEmptyInterfaceLoggingDecorator : public UAbstractTbSimpleEmptyInterface, public ITbSimpleEmptyInterfaceSubscriberInterface
 {
 	GENERATED_BODY()
 

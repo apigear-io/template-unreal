@@ -49,8 +49,7 @@ void UTbSame2SameStruct1InterfaceLoggingDecorator::setBackendService(TScriptInte
 	{
 		UTbSame2SameStruct1InterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbSame2SameStruct1Interface"));
-		BackendPublisher->OnProp1ChangedBP.RemoveDynamic(this, &UTbSame2SameStruct1InterfaceLoggingDecorator::OnProp1Changed);
-		BackendPublisher->OnSig1SignalBP.RemoveDynamic(this, &UTbSame2SameStruct1InterfaceLoggingDecorator::OnSig1);
+		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbSame2SameStruct1InterfaceSubscriberInterface>(this));
 	}
 
 	// only set if interface is implemented
@@ -61,13 +60,12 @@ void UTbSame2SameStruct1InterfaceLoggingDecorator::setBackendService(TScriptInte
 	UTbSame2SameStruct1InterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 	checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbSame2SameStruct1Interface"));
 	// connect property changed signals or simple events
-	BackendPublisher->OnProp1ChangedBP.AddDynamic(this, &UTbSame2SameStruct1InterfaceLoggingDecorator::OnProp1Changed);
-	BackendPublisher->OnSig1SignalBP.AddDynamic(this, &UTbSame2SameStruct1InterfaceLoggingDecorator::OnSig1);
+	BackendPublisher->Subscribe(TWeakInterfacePtr<ITbSame2SameStruct1InterfaceSubscriberInterface>(this));
 	// populate service state to proxy
 	Prop1 = BackendService->GetProp1();
 }
 
-void UTbSame2SameStruct1InterfaceLoggingDecorator::OnSig1(const FTbSame2Struct1& InParam1)
+void UTbSame2SameStruct1InterfaceLoggingDecorator::OnSig1Signal(const FTbSame2Struct1& InParam1)
 {
 	TbSame2SameStruct1InterfaceTracer::trace_signalSig1(InParam1);
 	_GetPublisher()->BroadcastSig1Signal(InParam1);

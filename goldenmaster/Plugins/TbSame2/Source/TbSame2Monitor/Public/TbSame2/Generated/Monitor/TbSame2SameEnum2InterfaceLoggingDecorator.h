@@ -26,7 +26,7 @@ limitations under the License.
 DECLARE_LOG_CATEGORY_EXTERN(LogTbSame2SameEnum2InterfaceLoggingDecorator, Log, All);
 
 UCLASS(NotBlueprintable, BlueprintType)
-class TBSAME2MONITOR_API UTbSame2SameEnum2InterfaceLoggingDecorator : public UAbstractTbSame2SameEnum2Interface
+class TBSAME2MONITOR_API UTbSame2SameEnum2InterfaceLoggingDecorator : public UAbstractTbSame2SameEnum2Interface, public ITbSame2SameEnum2InterfaceSubscriberInterface
 {
 	GENERATED_BODY()
 
@@ -61,15 +61,11 @@ private:
 	TScriptInterface<ITbSame2SameEnum2InterfaceInterface> BackendService;
 
 	// signals
-	UFUNCTION(Category = "ApiGear|TbSame2|SameEnum2Interface", BlueprintInternalUseOnly)
-	void OnSig1(ETbSame2Enum1 InParam1);
+	void OnSig1Signal(ETbSame2Enum1 InParam1);
 
-	UFUNCTION(Category = "ApiGear|TbSame2|SameEnum2Interface", BlueprintInternalUseOnly)
-	void OnSig2(ETbSame2Enum1 InParam1, ETbSame2Enum2 InParam2);
+	void OnSig2Signal(ETbSame2Enum1 InParam1, ETbSame2Enum2 InParam2);
 
-	UFUNCTION(Category = "ApiGear|TbSame2|SameEnum2Interface", BlueprintInternalUseOnly)
 	void OnProp1Changed(ETbSame2Enum1 InProp1);
 
-	UFUNCTION(Category = "ApiGear|TbSame2|SameEnum2Interface", BlueprintInternalUseOnly)
 	void OnProp2Changed(ETbSame2Enum2 InProp2);
 };

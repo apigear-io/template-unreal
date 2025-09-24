@@ -49,14 +49,7 @@ void UTestbed2ManyParamInterfaceLoggingDecorator::setBackendService(TScriptInter
 	{
 		UTestbed2ManyParamInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service Testbed2ManyParamInterface"));
-		BackendPublisher->OnProp1ChangedBP.RemoveDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnProp1Changed);
-		BackendPublisher->OnProp2ChangedBP.RemoveDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnProp2Changed);
-		BackendPublisher->OnProp3ChangedBP.RemoveDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnProp3Changed);
-		BackendPublisher->OnProp4ChangedBP.RemoveDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnProp4Changed);
-		BackendPublisher->OnSig1SignalBP.RemoveDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnSig1);
-		BackendPublisher->OnSig2SignalBP.RemoveDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnSig2);
-		BackendPublisher->OnSig3SignalBP.RemoveDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnSig3);
-		BackendPublisher->OnSig4SignalBP.RemoveDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnSig4);
+		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITestbed2ManyParamInterfaceSubscriberInterface>(this));
 	}
 
 	// only set if interface is implemented
@@ -67,14 +60,7 @@ void UTestbed2ManyParamInterfaceLoggingDecorator::setBackendService(TScriptInter
 	UTestbed2ManyParamInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 	checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service Testbed2ManyParamInterface"));
 	// connect property changed signals or simple events
-	BackendPublisher->OnProp1ChangedBP.AddDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnProp1Changed);
-	BackendPublisher->OnProp2ChangedBP.AddDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnProp2Changed);
-	BackendPublisher->OnProp3ChangedBP.AddDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnProp3Changed);
-	BackendPublisher->OnProp4ChangedBP.AddDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnProp4Changed);
-	BackendPublisher->OnSig1SignalBP.AddDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnSig1);
-	BackendPublisher->OnSig2SignalBP.AddDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnSig2);
-	BackendPublisher->OnSig3SignalBP.AddDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnSig3);
-	BackendPublisher->OnSig4SignalBP.AddDynamic(this, &UTestbed2ManyParamInterfaceLoggingDecorator::OnSig4);
+	BackendPublisher->Subscribe(TWeakInterfacePtr<ITestbed2ManyParamInterfaceSubscriberInterface>(this));
 	// populate service state to proxy
 	Prop1 = BackendService->GetProp1();
 	Prop2 = BackendService->GetProp2();
@@ -82,25 +68,25 @@ void UTestbed2ManyParamInterfaceLoggingDecorator::setBackendService(TScriptInter
 	Prop4 = BackendService->GetProp4();
 }
 
-void UTestbed2ManyParamInterfaceLoggingDecorator::OnSig1(int32 InParam1)
+void UTestbed2ManyParamInterfaceLoggingDecorator::OnSig1Signal(int32 InParam1)
 {
 	Testbed2ManyParamInterfaceTracer::trace_signalSig1(InParam1);
 	_GetPublisher()->BroadcastSig1Signal(InParam1);
 }
 
-void UTestbed2ManyParamInterfaceLoggingDecorator::OnSig2(int32 InParam1, int32 InParam2)
+void UTestbed2ManyParamInterfaceLoggingDecorator::OnSig2Signal(int32 InParam1, int32 InParam2)
 {
 	Testbed2ManyParamInterfaceTracer::trace_signalSig2(InParam1, InParam2);
 	_GetPublisher()->BroadcastSig2Signal(InParam1, InParam2);
 }
 
-void UTestbed2ManyParamInterfaceLoggingDecorator::OnSig3(int32 InParam1, int32 InParam2, int32 InParam3)
+void UTestbed2ManyParamInterfaceLoggingDecorator::OnSig3Signal(int32 InParam1, int32 InParam2, int32 InParam3)
 {
 	Testbed2ManyParamInterfaceTracer::trace_signalSig3(InParam1, InParam2, InParam3);
 	_GetPublisher()->BroadcastSig3Signal(InParam1, InParam2, InParam3);
 }
 
-void UTestbed2ManyParamInterfaceLoggingDecorator::OnSig4(int32 InParam1, int32 InParam2, int32 InParam3, int32 InParam4)
+void UTestbed2ManyParamInterfaceLoggingDecorator::OnSig4Signal(int32 InParam1, int32 InParam2, int32 InParam3, int32 InParam4)
 {
 	Testbed2ManyParamInterfaceTracer::trace_signalSig4(InParam1, InParam2, InParam3, InParam4);
 	_GetPublisher()->BroadcastSig4Signal(InParam1, InParam2, InParam3, InParam4);

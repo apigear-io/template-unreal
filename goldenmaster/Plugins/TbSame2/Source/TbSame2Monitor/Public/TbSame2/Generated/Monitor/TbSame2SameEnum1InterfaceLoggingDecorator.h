@@ -26,7 +26,7 @@ limitations under the License.
 DECLARE_LOG_CATEGORY_EXTERN(LogTbSame2SameEnum1InterfaceLoggingDecorator, Log, All);
 
 UCLASS(NotBlueprintable, BlueprintType)
-class TBSAME2MONITOR_API UTbSame2SameEnum1InterfaceLoggingDecorator : public UAbstractTbSame2SameEnum1Interface
+class TBSAME2MONITOR_API UTbSame2SameEnum1InterfaceLoggingDecorator : public UAbstractTbSame2SameEnum1Interface, public ITbSame2SameEnum1InterfaceSubscriberInterface
 {
 	GENERATED_BODY()
 
@@ -55,9 +55,7 @@ private:
 	TScriptInterface<ITbSame2SameEnum1InterfaceInterface> BackendService;
 
 	// signals
-	UFUNCTION(Category = "ApiGear|TbSame2|SameEnum1Interface", BlueprintInternalUseOnly)
-	void OnSig1(ETbSame2Enum1 InParam1);
+	void OnSig1Signal(ETbSame2Enum1 InParam1);
 
-	UFUNCTION(Category = "ApiGear|TbSame2|SameEnum1Interface", BlueprintInternalUseOnly)
 	void OnProp1Changed(ETbSame2Enum1 InProp1);
 };

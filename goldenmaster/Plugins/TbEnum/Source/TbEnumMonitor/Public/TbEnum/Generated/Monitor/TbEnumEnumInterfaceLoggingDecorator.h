@@ -26,7 +26,7 @@ limitations under the License.
 DECLARE_LOG_CATEGORY_EXTERN(LogTbEnumEnumInterfaceLoggingDecorator, Log, All);
 
 UCLASS(NotBlueprintable, BlueprintType)
-class TBENUMMONITOR_API UTbEnumEnumInterfaceLoggingDecorator : public UAbstractTbEnumEnumInterface
+class TBENUMMONITOR_API UTbEnumEnumInterfaceLoggingDecorator : public UAbstractTbEnumEnumInterface, public ITbEnumEnumInterfaceSubscriberInterface
 {
 	GENERATED_BODY()
 
@@ -73,27 +73,19 @@ private:
 	TScriptInterface<ITbEnumEnumInterfaceInterface> BackendService;
 
 	// signals
-	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
-	void OnSig0(ETbEnumEnum0 InParam0);
+	void OnSig0Signal(ETbEnumEnum0 InParam0);
 
-	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
-	void OnSig1(ETbEnumEnum1 InParam1);
+	void OnSig1Signal(ETbEnumEnum1 InParam1);
 
-	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
-	void OnSig2(ETbEnumEnum2 InParam2);
+	void OnSig2Signal(ETbEnumEnum2 InParam2);
 
-	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
-	void OnSig3(ETbEnumEnum3 InParam3);
+	void OnSig3Signal(ETbEnumEnum3 InParam3);
 
-	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
 	void OnProp0Changed(ETbEnumEnum0 InProp0);
 
-	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
 	void OnProp1Changed(ETbEnumEnum1 InProp1);
 
-	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
 	void OnProp2Changed(ETbEnumEnum2 InProp2);
 
-	UFUNCTION(Category = "ApiGear|TbEnum|EnumInterface", BlueprintInternalUseOnly)
 	void OnProp3Changed(ETbEnumEnum3 InProp3);
 };

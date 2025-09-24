@@ -26,7 +26,7 @@ limitations under the License.
 DECLARE_LOG_CATEGORY_EXTERN(LogTbIfaceimportEmptyIfLoggingDecorator, Log, All);
 
 UCLASS(NotBlueprintable, BlueprintType)
-class TBIFACEIMPORTMONITOR_API UTbIfaceimportEmptyIfLoggingDecorator : public UAbstractTbIfaceimportEmptyIf
+class TBIFACEIMPORTMONITOR_API UTbIfaceimportEmptyIfLoggingDecorator : public UAbstractTbIfaceimportEmptyIf, public ITbIfaceimportEmptyIfSubscriberInterface
 {
 	GENERATED_BODY()
 
