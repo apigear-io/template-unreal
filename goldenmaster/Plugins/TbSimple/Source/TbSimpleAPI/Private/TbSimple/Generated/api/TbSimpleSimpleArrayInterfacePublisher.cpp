@@ -6,17 +6,36 @@
 void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigBoolSignal(const TArray<bool>& ParamBool)
 {
 	OnSigBoolSignal.Broadcast(ParamBool);
-
-	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> SubscribersCopy;
+	TArray<TWeakInterfacePtr<ITbSimpleSimpleArrayInterfaceSubscriberInterface>> SubscribersCopy;
 	{
 		FReadScopeLock ReadLock(SubscribersLock);
 		SubscribersCopy = Subscribers;
+	}
+	for (const TWeakInterfacePtr<ITbSimpleSimpleArrayInterfaceSubscriberInterface>& Subscriber : SubscribersCopy)
+	{
+		if (Subscriber.IsValid())
+		{
+			if (ITbSimpleSimpleArrayInterfaceSubscriberInterface* Iface = Subscriber.Get())
+			{
+				Iface->OnSigBoolSignal(ParamBool);
+			}
+		}
+		else
+		{
+			Unsubscribe(Subscriber);
+		}
+	}
+
+	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> BPSubscribersCopy;
+	{
+		FReadScopeLock ReadLock(BPSubscribersLock);
+		BPSubscribersCopy = BPSubscribers;
 	}
 	if (IsInGameThread())
 	{
 		OnSigBoolSignalBP.Broadcast(ParamBool);
 
-		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
 			if (UObject* Obj = Subscriber.GetObject())
 			{
@@ -30,14 +49,14 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigBoolSignal(const TArray
 	}
 	else
 	{
-		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbSimpleSimpleArrayInterfacePublisher>(this), SubscribersCopy, ParamBool]()
+		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbSimpleSimpleArrayInterfacePublisher>(this), BPSubscribersCopy, ParamBool]()
 			{
 			if (WeakPtr.IsValid())
 			{
 				WeakPtr.Get()->OnSigBoolSignalBP.Broadcast(ParamBool);
 			}
 
-			for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+			for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 			{
 				if (UObject* Obj = Subscriber.GetObject())
 				{
@@ -58,17 +77,36 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigBoolSignal(const TArray
 void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigIntSignal(const TArray<int32>& ParamInt)
 {
 	OnSigIntSignal.Broadcast(ParamInt);
-
-	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> SubscribersCopy;
+	TArray<TWeakInterfacePtr<ITbSimpleSimpleArrayInterfaceSubscriberInterface>> SubscribersCopy;
 	{
 		FReadScopeLock ReadLock(SubscribersLock);
 		SubscribersCopy = Subscribers;
+	}
+	for (const TWeakInterfacePtr<ITbSimpleSimpleArrayInterfaceSubscriberInterface>& Subscriber : SubscribersCopy)
+	{
+		if (Subscriber.IsValid())
+		{
+			if (ITbSimpleSimpleArrayInterfaceSubscriberInterface* Iface = Subscriber.Get())
+			{
+				Iface->OnSigIntSignal(ParamInt);
+			}
+		}
+		else
+		{
+			Unsubscribe(Subscriber);
+		}
+	}
+
+	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> BPSubscribersCopy;
+	{
+		FReadScopeLock ReadLock(BPSubscribersLock);
+		BPSubscribersCopy = BPSubscribers;
 	}
 	if (IsInGameThread())
 	{
 		OnSigIntSignalBP.Broadcast(ParamInt);
 
-		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
 			if (UObject* Obj = Subscriber.GetObject())
 			{
@@ -82,14 +120,14 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigIntSignal(const TArray<
 	}
 	else
 	{
-		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbSimpleSimpleArrayInterfacePublisher>(this), SubscribersCopy, ParamInt]()
+		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbSimpleSimpleArrayInterfacePublisher>(this), BPSubscribersCopy, ParamInt]()
 			{
 			if (WeakPtr.IsValid())
 			{
 				WeakPtr.Get()->OnSigIntSignalBP.Broadcast(ParamInt);
 			}
 
-			for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+			for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 			{
 				if (UObject* Obj = Subscriber.GetObject())
 				{
@@ -110,17 +148,36 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigIntSignal(const TArray<
 void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigInt32Signal(const TArray<int32>& ParamInt32)
 {
 	OnSigInt32Signal.Broadcast(ParamInt32);
-
-	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> SubscribersCopy;
+	TArray<TWeakInterfacePtr<ITbSimpleSimpleArrayInterfaceSubscriberInterface>> SubscribersCopy;
 	{
 		FReadScopeLock ReadLock(SubscribersLock);
 		SubscribersCopy = Subscribers;
+	}
+	for (const TWeakInterfacePtr<ITbSimpleSimpleArrayInterfaceSubscriberInterface>& Subscriber : SubscribersCopy)
+	{
+		if (Subscriber.IsValid())
+		{
+			if (ITbSimpleSimpleArrayInterfaceSubscriberInterface* Iface = Subscriber.Get())
+			{
+				Iface->OnSigInt32Signal(ParamInt32);
+			}
+		}
+		else
+		{
+			Unsubscribe(Subscriber);
+		}
+	}
+
+	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> BPSubscribersCopy;
+	{
+		FReadScopeLock ReadLock(BPSubscribersLock);
+		BPSubscribersCopy = BPSubscribers;
 	}
 	if (IsInGameThread())
 	{
 		OnSigInt32SignalBP.Broadcast(ParamInt32);
 
-		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
 			if (UObject* Obj = Subscriber.GetObject())
 			{
@@ -134,14 +191,14 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigInt32Signal(const TArra
 	}
 	else
 	{
-		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbSimpleSimpleArrayInterfacePublisher>(this), SubscribersCopy, ParamInt32]()
+		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbSimpleSimpleArrayInterfacePublisher>(this), BPSubscribersCopy, ParamInt32]()
 			{
 			if (WeakPtr.IsValid())
 			{
 				WeakPtr.Get()->OnSigInt32SignalBP.Broadcast(ParamInt32);
 			}
 
-			for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+			for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 			{
 				if (UObject* Obj = Subscriber.GetObject())
 				{
@@ -162,17 +219,36 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigInt32Signal(const TArra
 void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigInt64Signal(const TArray<int64>& ParamInt64)
 {
 	OnSigInt64Signal.Broadcast(ParamInt64);
-
-	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> SubscribersCopy;
+	TArray<TWeakInterfacePtr<ITbSimpleSimpleArrayInterfaceSubscriberInterface>> SubscribersCopy;
 	{
 		FReadScopeLock ReadLock(SubscribersLock);
 		SubscribersCopy = Subscribers;
+	}
+	for (const TWeakInterfacePtr<ITbSimpleSimpleArrayInterfaceSubscriberInterface>& Subscriber : SubscribersCopy)
+	{
+		if (Subscriber.IsValid())
+		{
+			if (ITbSimpleSimpleArrayInterfaceSubscriberInterface* Iface = Subscriber.Get())
+			{
+				Iface->OnSigInt64Signal(ParamInt64);
+			}
+		}
+		else
+		{
+			Unsubscribe(Subscriber);
+		}
+	}
+
+	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> BPSubscribersCopy;
+	{
+		FReadScopeLock ReadLock(BPSubscribersLock);
+		BPSubscribersCopy = BPSubscribers;
 	}
 	if (IsInGameThread())
 	{
 		OnSigInt64SignalBP.Broadcast(ParamInt64);
 
-		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
 			if (UObject* Obj = Subscriber.GetObject())
 			{
@@ -186,14 +262,14 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigInt64Signal(const TArra
 	}
 	else
 	{
-		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbSimpleSimpleArrayInterfacePublisher>(this), SubscribersCopy, ParamInt64]()
+		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbSimpleSimpleArrayInterfacePublisher>(this), BPSubscribersCopy, ParamInt64]()
 			{
 			if (WeakPtr.IsValid())
 			{
 				WeakPtr.Get()->OnSigInt64SignalBP.Broadcast(ParamInt64);
 			}
 
-			for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+			for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 			{
 				if (UObject* Obj = Subscriber.GetObject())
 				{
@@ -214,17 +290,36 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigInt64Signal(const TArra
 void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigFloatSignal(const TArray<float>& ParamFloat)
 {
 	OnSigFloatSignal.Broadcast(ParamFloat);
-
-	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> SubscribersCopy;
+	TArray<TWeakInterfacePtr<ITbSimpleSimpleArrayInterfaceSubscriberInterface>> SubscribersCopy;
 	{
 		FReadScopeLock ReadLock(SubscribersLock);
 		SubscribersCopy = Subscribers;
+	}
+	for (const TWeakInterfacePtr<ITbSimpleSimpleArrayInterfaceSubscriberInterface>& Subscriber : SubscribersCopy)
+	{
+		if (Subscriber.IsValid())
+		{
+			if (ITbSimpleSimpleArrayInterfaceSubscriberInterface* Iface = Subscriber.Get())
+			{
+				Iface->OnSigFloatSignal(ParamFloat);
+			}
+		}
+		else
+		{
+			Unsubscribe(Subscriber);
+		}
+	}
+
+	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> BPSubscribersCopy;
+	{
+		FReadScopeLock ReadLock(BPSubscribersLock);
+		BPSubscribersCopy = BPSubscribers;
 	}
 	if (IsInGameThread())
 	{
 		OnSigFloatSignalBP.Broadcast(ParamFloat);
 
-		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
 			if (UObject* Obj = Subscriber.GetObject())
 			{
@@ -238,14 +333,14 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigFloatSignal(const TArra
 	}
 	else
 	{
-		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbSimpleSimpleArrayInterfacePublisher>(this), SubscribersCopy, ParamFloat]()
+		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbSimpleSimpleArrayInterfacePublisher>(this), BPSubscribersCopy, ParamFloat]()
 			{
 			if (WeakPtr.IsValid())
 			{
 				WeakPtr.Get()->OnSigFloatSignalBP.Broadcast(ParamFloat);
 			}
 
-			for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+			for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 			{
 				if (UObject* Obj = Subscriber.GetObject())
 				{
@@ -266,17 +361,36 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigFloatSignal(const TArra
 void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigFloat32Signal(const TArray<float>& ParamFloa32)
 {
 	OnSigFloat32Signal.Broadcast(ParamFloa32);
-
-	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> SubscribersCopy;
+	TArray<TWeakInterfacePtr<ITbSimpleSimpleArrayInterfaceSubscriberInterface>> SubscribersCopy;
 	{
 		FReadScopeLock ReadLock(SubscribersLock);
 		SubscribersCopy = Subscribers;
+	}
+	for (const TWeakInterfacePtr<ITbSimpleSimpleArrayInterfaceSubscriberInterface>& Subscriber : SubscribersCopy)
+	{
+		if (Subscriber.IsValid())
+		{
+			if (ITbSimpleSimpleArrayInterfaceSubscriberInterface* Iface = Subscriber.Get())
+			{
+				Iface->OnSigFloat32Signal(ParamFloa32);
+			}
+		}
+		else
+		{
+			Unsubscribe(Subscriber);
+		}
+	}
+
+	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> BPSubscribersCopy;
+	{
+		FReadScopeLock ReadLock(BPSubscribersLock);
+		BPSubscribersCopy = BPSubscribers;
 	}
 	if (IsInGameThread())
 	{
 		OnSigFloat32SignalBP.Broadcast(ParamFloa32);
 
-		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
 			if (UObject* Obj = Subscriber.GetObject())
 			{
@@ -290,14 +404,14 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigFloat32Signal(const TAr
 	}
 	else
 	{
-		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbSimpleSimpleArrayInterfacePublisher>(this), SubscribersCopy, ParamFloa32]()
+		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbSimpleSimpleArrayInterfacePublisher>(this), BPSubscribersCopy, ParamFloa32]()
 			{
 			if (WeakPtr.IsValid())
 			{
 				WeakPtr.Get()->OnSigFloat32SignalBP.Broadcast(ParamFloa32);
 			}
 
-			for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+			for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 			{
 				if (UObject* Obj = Subscriber.GetObject())
 				{
@@ -318,17 +432,36 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigFloat32Signal(const TAr
 void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigFloat64Signal(const TArray<double>& ParamFloat64)
 {
 	OnSigFloat64Signal.Broadcast(ParamFloat64);
-
-	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> SubscribersCopy;
+	TArray<TWeakInterfacePtr<ITbSimpleSimpleArrayInterfaceSubscriberInterface>> SubscribersCopy;
 	{
 		FReadScopeLock ReadLock(SubscribersLock);
 		SubscribersCopy = Subscribers;
+	}
+	for (const TWeakInterfacePtr<ITbSimpleSimpleArrayInterfaceSubscriberInterface>& Subscriber : SubscribersCopy)
+	{
+		if (Subscriber.IsValid())
+		{
+			if (ITbSimpleSimpleArrayInterfaceSubscriberInterface* Iface = Subscriber.Get())
+			{
+				Iface->OnSigFloat64Signal(ParamFloat64);
+			}
+		}
+		else
+		{
+			Unsubscribe(Subscriber);
+		}
+	}
+
+	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> BPSubscribersCopy;
+	{
+		FReadScopeLock ReadLock(BPSubscribersLock);
+		BPSubscribersCopy = BPSubscribers;
 	}
 	if (IsInGameThread())
 	{
 		OnSigFloat64SignalBP.Broadcast(ParamFloat64);
 
-		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
 			if (UObject* Obj = Subscriber.GetObject())
 			{
@@ -342,14 +475,14 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigFloat64Signal(const TAr
 	}
 	else
 	{
-		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbSimpleSimpleArrayInterfacePublisher>(this), SubscribersCopy, ParamFloat64]()
+		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbSimpleSimpleArrayInterfacePublisher>(this), BPSubscribersCopy, ParamFloat64]()
 			{
 			if (WeakPtr.IsValid())
 			{
 				WeakPtr.Get()->OnSigFloat64SignalBP.Broadcast(ParamFloat64);
 			}
 
-			for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+			for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 			{
 				if (UObject* Obj = Subscriber.GetObject())
 				{
@@ -370,17 +503,36 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigFloat64Signal(const TAr
 void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigStringSignal(const TArray<FString>& ParamString)
 {
 	OnSigStringSignal.Broadcast(ParamString);
-
-	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> SubscribersCopy;
+	TArray<TWeakInterfacePtr<ITbSimpleSimpleArrayInterfaceSubscriberInterface>> SubscribersCopy;
 	{
 		FReadScopeLock ReadLock(SubscribersLock);
 		SubscribersCopy = Subscribers;
+	}
+	for (const TWeakInterfacePtr<ITbSimpleSimpleArrayInterfaceSubscriberInterface>& Subscriber : SubscribersCopy)
+	{
+		if (Subscriber.IsValid())
+		{
+			if (ITbSimpleSimpleArrayInterfaceSubscriberInterface* Iface = Subscriber.Get())
+			{
+				Iface->OnSigStringSignal(ParamString);
+			}
+		}
+		else
+		{
+			Unsubscribe(Subscriber);
+		}
+	}
+
+	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> BPSubscribersCopy;
+	{
+		FReadScopeLock ReadLock(BPSubscribersLock);
+		BPSubscribersCopy = BPSubscribers;
 	}
 	if (IsInGameThread())
 	{
 		OnSigStringSignalBP.Broadcast(ParamString);
 
-		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
 			if (UObject* Obj = Subscriber.GetObject())
 			{
@@ -394,14 +546,14 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigStringSignal(const TArr
 	}
 	else
 	{
-		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbSimpleSimpleArrayInterfacePublisher>(this), SubscribersCopy, ParamString]()
+		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbSimpleSimpleArrayInterfacePublisher>(this), BPSubscribersCopy, ParamString]()
 			{
 			if (WeakPtr.IsValid())
 			{
 				WeakPtr.Get()->OnSigStringSignalBP.Broadcast(ParamString);
 			}
 
-			for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+			for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 			{
 				if (UObject* Obj = Subscriber.GetObject())
 				{
@@ -422,17 +574,36 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigStringSignal(const TArr
 void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropBoolChanged(UPARAM(DisplayName = "PropBool") const TArray<bool>& InPropBool)
 {
 	OnPropBoolChanged.Broadcast(InPropBool);
-
-	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> SubscribersCopy;
+	TArray<TWeakInterfacePtr<ITbSimpleSimpleArrayInterfaceSubscriberInterface>> SubscribersCopy;
 	{
 		FReadScopeLock ReadLock(SubscribersLock);
 		SubscribersCopy = Subscribers;
+	}
+	for (const TWeakInterfacePtr<ITbSimpleSimpleArrayInterfaceSubscriberInterface>& Subscriber : SubscribersCopy)
+	{
+		if (Subscriber.IsValid())
+		{
+			if (ITbSimpleSimpleArrayInterfaceSubscriberInterface* Iface = Subscriber.Get())
+			{
+				Iface->OnPropBoolChanged(InPropBool);
+			}
+		}
+		else
+		{
+			Unsubscribe(Subscriber);
+		}
+	}
+
+	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> BPSubscribersCopy;
+	{
+		FReadScopeLock ReadLock(BPSubscribersLock);
+		BPSubscribersCopy = BPSubscribers;
 	}
 	if (IsInGameThread())
 	{
 		OnPropBoolChangedBP.Broadcast(InPropBool);
 
-		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
 			if (UObject* Obj = Subscriber.GetObject())
 			{
@@ -446,14 +617,14 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropBoolChanged(UPARAM(Dis
 	}
 	else
 	{
-		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbSimpleSimpleArrayInterfacePublisher>(this), SubscribersCopy, InPropBool]()
+		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbSimpleSimpleArrayInterfacePublisher>(this), BPSubscribersCopy, InPropBool]()
 			{
 			if (WeakPtr.IsValid())
 			{
 				WeakPtr.Get()->OnPropBoolChangedBP.Broadcast(InPropBool);
 			}
 
-			for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+			for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 			{
 				if (UObject* Obj = Subscriber.GetObject())
 				{
@@ -474,17 +645,36 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropBoolChanged(UPARAM(Dis
 void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropIntChanged(UPARAM(DisplayName = "PropInt") const TArray<int32>& InPropInt)
 {
 	OnPropIntChanged.Broadcast(InPropInt);
-
-	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> SubscribersCopy;
+	TArray<TWeakInterfacePtr<ITbSimpleSimpleArrayInterfaceSubscriberInterface>> SubscribersCopy;
 	{
 		FReadScopeLock ReadLock(SubscribersLock);
 		SubscribersCopy = Subscribers;
+	}
+	for (const TWeakInterfacePtr<ITbSimpleSimpleArrayInterfaceSubscriberInterface>& Subscriber : SubscribersCopy)
+	{
+		if (Subscriber.IsValid())
+		{
+			if (ITbSimpleSimpleArrayInterfaceSubscriberInterface* Iface = Subscriber.Get())
+			{
+				Iface->OnPropIntChanged(InPropInt);
+			}
+		}
+		else
+		{
+			Unsubscribe(Subscriber);
+		}
+	}
+
+	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> BPSubscribersCopy;
+	{
+		FReadScopeLock ReadLock(BPSubscribersLock);
+		BPSubscribersCopy = BPSubscribers;
 	}
 	if (IsInGameThread())
 	{
 		OnPropIntChangedBP.Broadcast(InPropInt);
 
-		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
 			if (UObject* Obj = Subscriber.GetObject())
 			{
@@ -498,14 +688,14 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropIntChanged(UPARAM(Disp
 	}
 	else
 	{
-		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbSimpleSimpleArrayInterfacePublisher>(this), SubscribersCopy, InPropInt]()
+		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbSimpleSimpleArrayInterfacePublisher>(this), BPSubscribersCopy, InPropInt]()
 			{
 			if (WeakPtr.IsValid())
 			{
 				WeakPtr.Get()->OnPropIntChangedBP.Broadcast(InPropInt);
 			}
 
-			for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+			for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 			{
 				if (UObject* Obj = Subscriber.GetObject())
 				{
@@ -526,17 +716,36 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropIntChanged(UPARAM(Disp
 void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropInt32Changed(UPARAM(DisplayName = "PropInt32") const TArray<int32>& InPropInt32)
 {
 	OnPropInt32Changed.Broadcast(InPropInt32);
-
-	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> SubscribersCopy;
+	TArray<TWeakInterfacePtr<ITbSimpleSimpleArrayInterfaceSubscriberInterface>> SubscribersCopy;
 	{
 		FReadScopeLock ReadLock(SubscribersLock);
 		SubscribersCopy = Subscribers;
+	}
+	for (const TWeakInterfacePtr<ITbSimpleSimpleArrayInterfaceSubscriberInterface>& Subscriber : SubscribersCopy)
+	{
+		if (Subscriber.IsValid())
+		{
+			if (ITbSimpleSimpleArrayInterfaceSubscriberInterface* Iface = Subscriber.Get())
+			{
+				Iface->OnPropInt32Changed(InPropInt32);
+			}
+		}
+		else
+		{
+			Unsubscribe(Subscriber);
+		}
+	}
+
+	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> BPSubscribersCopy;
+	{
+		FReadScopeLock ReadLock(BPSubscribersLock);
+		BPSubscribersCopy = BPSubscribers;
 	}
 	if (IsInGameThread())
 	{
 		OnPropInt32ChangedBP.Broadcast(InPropInt32);
 
-		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
 			if (UObject* Obj = Subscriber.GetObject())
 			{
@@ -550,14 +759,14 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropInt32Changed(UPARAM(Di
 	}
 	else
 	{
-		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbSimpleSimpleArrayInterfacePublisher>(this), SubscribersCopy, InPropInt32]()
+		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbSimpleSimpleArrayInterfacePublisher>(this), BPSubscribersCopy, InPropInt32]()
 			{
 			if (WeakPtr.IsValid())
 			{
 				WeakPtr.Get()->OnPropInt32ChangedBP.Broadcast(InPropInt32);
 			}
 
-			for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+			for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 			{
 				if (UObject* Obj = Subscriber.GetObject())
 				{
@@ -578,17 +787,36 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropInt32Changed(UPARAM(Di
 void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropInt64Changed(UPARAM(DisplayName = "PropInt64") const TArray<int64>& InPropInt64)
 {
 	OnPropInt64Changed.Broadcast(InPropInt64);
-
-	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> SubscribersCopy;
+	TArray<TWeakInterfacePtr<ITbSimpleSimpleArrayInterfaceSubscriberInterface>> SubscribersCopy;
 	{
 		FReadScopeLock ReadLock(SubscribersLock);
 		SubscribersCopy = Subscribers;
+	}
+	for (const TWeakInterfacePtr<ITbSimpleSimpleArrayInterfaceSubscriberInterface>& Subscriber : SubscribersCopy)
+	{
+		if (Subscriber.IsValid())
+		{
+			if (ITbSimpleSimpleArrayInterfaceSubscriberInterface* Iface = Subscriber.Get())
+			{
+				Iface->OnPropInt64Changed(InPropInt64);
+			}
+		}
+		else
+		{
+			Unsubscribe(Subscriber);
+		}
+	}
+
+	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> BPSubscribersCopy;
+	{
+		FReadScopeLock ReadLock(BPSubscribersLock);
+		BPSubscribersCopy = BPSubscribers;
 	}
 	if (IsInGameThread())
 	{
 		OnPropInt64ChangedBP.Broadcast(InPropInt64);
 
-		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
 			if (UObject* Obj = Subscriber.GetObject())
 			{
@@ -602,14 +830,14 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropInt64Changed(UPARAM(Di
 	}
 	else
 	{
-		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbSimpleSimpleArrayInterfacePublisher>(this), SubscribersCopy, InPropInt64]()
+		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbSimpleSimpleArrayInterfacePublisher>(this), BPSubscribersCopy, InPropInt64]()
 			{
 			if (WeakPtr.IsValid())
 			{
 				WeakPtr.Get()->OnPropInt64ChangedBP.Broadcast(InPropInt64);
 			}
 
-			for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+			for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 			{
 				if (UObject* Obj = Subscriber.GetObject())
 				{
@@ -630,17 +858,36 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropInt64Changed(UPARAM(Di
 void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropFloatChanged(UPARAM(DisplayName = "PropFloat") const TArray<float>& InPropFloat)
 {
 	OnPropFloatChanged.Broadcast(InPropFloat);
-
-	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> SubscribersCopy;
+	TArray<TWeakInterfacePtr<ITbSimpleSimpleArrayInterfaceSubscriberInterface>> SubscribersCopy;
 	{
 		FReadScopeLock ReadLock(SubscribersLock);
 		SubscribersCopy = Subscribers;
+	}
+	for (const TWeakInterfacePtr<ITbSimpleSimpleArrayInterfaceSubscriberInterface>& Subscriber : SubscribersCopy)
+	{
+		if (Subscriber.IsValid())
+		{
+			if (ITbSimpleSimpleArrayInterfaceSubscriberInterface* Iface = Subscriber.Get())
+			{
+				Iface->OnPropFloatChanged(InPropFloat);
+			}
+		}
+		else
+		{
+			Unsubscribe(Subscriber);
+		}
+	}
+
+	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> BPSubscribersCopy;
+	{
+		FReadScopeLock ReadLock(BPSubscribersLock);
+		BPSubscribersCopy = BPSubscribers;
 	}
 	if (IsInGameThread())
 	{
 		OnPropFloatChangedBP.Broadcast(InPropFloat);
 
-		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
 			if (UObject* Obj = Subscriber.GetObject())
 			{
@@ -654,14 +901,14 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropFloatChanged(UPARAM(Di
 	}
 	else
 	{
-		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbSimpleSimpleArrayInterfacePublisher>(this), SubscribersCopy, InPropFloat]()
+		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbSimpleSimpleArrayInterfacePublisher>(this), BPSubscribersCopy, InPropFloat]()
 			{
 			if (WeakPtr.IsValid())
 			{
 				WeakPtr.Get()->OnPropFloatChangedBP.Broadcast(InPropFloat);
 			}
 
-			for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+			for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 			{
 				if (UObject* Obj = Subscriber.GetObject())
 				{
@@ -682,17 +929,36 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropFloatChanged(UPARAM(Di
 void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropFloat32Changed(UPARAM(DisplayName = "PropFloat32") const TArray<float>& InPropFloat32)
 {
 	OnPropFloat32Changed.Broadcast(InPropFloat32);
-
-	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> SubscribersCopy;
+	TArray<TWeakInterfacePtr<ITbSimpleSimpleArrayInterfaceSubscriberInterface>> SubscribersCopy;
 	{
 		FReadScopeLock ReadLock(SubscribersLock);
 		SubscribersCopy = Subscribers;
+	}
+	for (const TWeakInterfacePtr<ITbSimpleSimpleArrayInterfaceSubscriberInterface>& Subscriber : SubscribersCopy)
+	{
+		if (Subscriber.IsValid())
+		{
+			if (ITbSimpleSimpleArrayInterfaceSubscriberInterface* Iface = Subscriber.Get())
+			{
+				Iface->OnPropFloat32Changed(InPropFloat32);
+			}
+		}
+		else
+		{
+			Unsubscribe(Subscriber);
+		}
+	}
+
+	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> BPSubscribersCopy;
+	{
+		FReadScopeLock ReadLock(BPSubscribersLock);
+		BPSubscribersCopy = BPSubscribers;
 	}
 	if (IsInGameThread())
 	{
 		OnPropFloat32ChangedBP.Broadcast(InPropFloat32);
 
-		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
 			if (UObject* Obj = Subscriber.GetObject())
 			{
@@ -706,14 +972,14 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropFloat32Changed(UPARAM(
 	}
 	else
 	{
-		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbSimpleSimpleArrayInterfacePublisher>(this), SubscribersCopy, InPropFloat32]()
+		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbSimpleSimpleArrayInterfacePublisher>(this), BPSubscribersCopy, InPropFloat32]()
 			{
 			if (WeakPtr.IsValid())
 			{
 				WeakPtr.Get()->OnPropFloat32ChangedBP.Broadcast(InPropFloat32);
 			}
 
-			for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+			for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 			{
 				if (UObject* Obj = Subscriber.GetObject())
 				{
@@ -734,17 +1000,36 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropFloat32Changed(UPARAM(
 void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropFloat64Changed(UPARAM(DisplayName = "PropFloat64") const TArray<double>& InPropFloat64)
 {
 	OnPropFloat64Changed.Broadcast(InPropFloat64);
-
-	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> SubscribersCopy;
+	TArray<TWeakInterfacePtr<ITbSimpleSimpleArrayInterfaceSubscriberInterface>> SubscribersCopy;
 	{
 		FReadScopeLock ReadLock(SubscribersLock);
 		SubscribersCopy = Subscribers;
+	}
+	for (const TWeakInterfacePtr<ITbSimpleSimpleArrayInterfaceSubscriberInterface>& Subscriber : SubscribersCopy)
+	{
+		if (Subscriber.IsValid())
+		{
+			if (ITbSimpleSimpleArrayInterfaceSubscriberInterface* Iface = Subscriber.Get())
+			{
+				Iface->OnPropFloat64Changed(InPropFloat64);
+			}
+		}
+		else
+		{
+			Unsubscribe(Subscriber);
+		}
+	}
+
+	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> BPSubscribersCopy;
+	{
+		FReadScopeLock ReadLock(BPSubscribersLock);
+		BPSubscribersCopy = BPSubscribers;
 	}
 	if (IsInGameThread())
 	{
 		OnPropFloat64ChangedBP.Broadcast(InPropFloat64);
 
-		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
 			if (UObject* Obj = Subscriber.GetObject())
 			{
@@ -758,14 +1043,14 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropFloat64Changed(UPARAM(
 	}
 	else
 	{
-		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbSimpleSimpleArrayInterfacePublisher>(this), SubscribersCopy, InPropFloat64]()
+		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbSimpleSimpleArrayInterfacePublisher>(this), BPSubscribersCopy, InPropFloat64]()
 			{
 			if (WeakPtr.IsValid())
 			{
 				WeakPtr.Get()->OnPropFloat64ChangedBP.Broadcast(InPropFloat64);
 			}
 
-			for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+			for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 			{
 				if (UObject* Obj = Subscriber.GetObject())
 				{
@@ -786,17 +1071,36 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropFloat64Changed(UPARAM(
 void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropStringChanged(UPARAM(DisplayName = "PropString") const TArray<FString>& InPropString)
 {
 	OnPropStringChanged.Broadcast(InPropString);
-
-	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> SubscribersCopy;
+	TArray<TWeakInterfacePtr<ITbSimpleSimpleArrayInterfaceSubscriberInterface>> SubscribersCopy;
 	{
 		FReadScopeLock ReadLock(SubscribersLock);
 		SubscribersCopy = Subscribers;
+	}
+	for (const TWeakInterfacePtr<ITbSimpleSimpleArrayInterfaceSubscriberInterface>& Subscriber : SubscribersCopy)
+	{
+		if (Subscriber.IsValid())
+		{
+			if (ITbSimpleSimpleArrayInterfaceSubscriberInterface* Iface = Subscriber.Get())
+			{
+				Iface->OnPropStringChanged(InPropString);
+			}
+		}
+		else
+		{
+			Unsubscribe(Subscriber);
+		}
+	}
+
+	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> BPSubscribersCopy;
+	{
+		FReadScopeLock ReadLock(BPSubscribersLock);
+		BPSubscribersCopy = BPSubscribers;
 	}
 	if (IsInGameThread())
 	{
 		OnPropStringChangedBP.Broadcast(InPropString);
 
-		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
 			if (UObject* Obj = Subscriber.GetObject())
 			{
@@ -810,14 +1114,14 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropStringChanged(UPARAM(D
 	}
 	else
 	{
-		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbSimpleSimpleArrayInterfacePublisher>(this), SubscribersCopy, InPropString]()
+		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbSimpleSimpleArrayInterfacePublisher>(this), BPSubscribersCopy, InPropString]()
 			{
 			if (WeakPtr.IsValid())
 			{
 				WeakPtr.Get()->OnPropStringChangedBP.Broadcast(InPropString);
 			}
 
-			for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+			for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 			{
 				if (UObject* Obj = Subscriber.GetObject())
 				{
@@ -838,17 +1142,36 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropStringChanged(UPARAM(D
 void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropReadOnlyStringChanged(UPARAM(DisplayName = "PropReadOnlyString") const FString& InPropReadOnlyString)
 {
 	OnPropReadOnlyStringChanged.Broadcast(InPropReadOnlyString);
-
-	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> SubscribersCopy;
+	TArray<TWeakInterfacePtr<ITbSimpleSimpleArrayInterfaceSubscriberInterface>> SubscribersCopy;
 	{
 		FReadScopeLock ReadLock(SubscribersLock);
 		SubscribersCopy = Subscribers;
+	}
+	for (const TWeakInterfacePtr<ITbSimpleSimpleArrayInterfaceSubscriberInterface>& Subscriber : SubscribersCopy)
+	{
+		if (Subscriber.IsValid())
+		{
+			if (ITbSimpleSimpleArrayInterfaceSubscriberInterface* Iface = Subscriber.Get())
+			{
+				Iface->OnPropReadOnlyStringChanged(InPropReadOnlyString);
+			}
+		}
+		else
+		{
+			Unsubscribe(Subscriber);
+		}
+	}
+
+	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> BPSubscribersCopy;
+	{
+		FReadScopeLock ReadLock(BPSubscribersLock);
+		BPSubscribersCopy = BPSubscribers;
 	}
 	if (IsInGameThread())
 	{
 		OnPropReadOnlyStringChangedBP.Broadcast(InPropReadOnlyString);
 
-		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
 			if (UObject* Obj = Subscriber.GetObject())
 			{
@@ -862,14 +1185,14 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropReadOnlyStringChanged(
 	}
 	else
 	{
-		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbSimpleSimpleArrayInterfacePublisher>(this), SubscribersCopy, InPropReadOnlyString]()
+		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbSimpleSimpleArrayInterfacePublisher>(this), BPSubscribersCopy, InPropReadOnlyString]()
 			{
 			if (WeakPtr.IsValid())
 			{
 				WeakPtr.Get()->OnPropReadOnlyStringChangedBP.Broadcast(InPropReadOnlyString);
 			}
 
-			for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+			for (const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 			{
 				if (UObject* Obj = Subscriber.GetObject())
 				{
@@ -894,12 +1217,30 @@ void UTbSimpleSimpleArrayInterfacePublisher::Subscribe(const TScriptInterface<IT
 		return;
 	}
 
+	FWriteScopeLock WriteLock(BPSubscribersLock);
+	BPSubscribers.Remove(Subscriber);
+	BPSubscribers.Add(Subscriber);
+}
+
+void UTbSimpleSimpleArrayInterfacePublisher::Subscribe(const TWeakInterfacePtr<ITbSimpleSimpleArrayInterfaceSubscriberInterface>& Subscriber)
+{
+	if (!Subscriber.GetObject())
+	{
+		return;
+	}
+
 	FWriteScopeLock WriteLock(SubscribersLock);
 	Subscribers.Remove(Subscriber);
 	Subscribers.Add(Subscriber);
 }
 
 void UTbSimpleSimpleArrayInterfacePublisher::Unsubscribe(const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber)
+{
+	FWriteScopeLock WriteLock(BPSubscribersLock);
+	BPSubscribers.Remove(Subscriber);
+}
+
+void UTbSimpleSimpleArrayInterfacePublisher::Unsubscribe(const TWeakInterfacePtr<ITbSimpleSimpleArrayInterfaceSubscriberInterface>& Subscriber)
 {
 	FWriteScopeLock WriteLock(SubscribersLock);
 	Subscribers.Remove(Subscriber);

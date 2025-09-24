@@ -6,17 +6,36 @@
 void UTbSame2SameStruct1InterfacePublisher::BroadcastSig1Signal(const FTbSame2Struct1& Param1)
 {
 	OnSig1Signal.Broadcast(Param1);
-
-	TArray<TScriptInterface<ITbSame2SameStruct1InterfaceBPSubscriberInterface>> SubscribersCopy;
+	TArray<TWeakInterfacePtr<ITbSame2SameStruct1InterfaceSubscriberInterface>> SubscribersCopy;
 	{
 		FReadScopeLock ReadLock(SubscribersLock);
 		SubscribersCopy = Subscribers;
+	}
+	for (const TWeakInterfacePtr<ITbSame2SameStruct1InterfaceSubscriberInterface>& Subscriber : SubscribersCopy)
+	{
+		if (Subscriber.IsValid())
+		{
+			if (ITbSame2SameStruct1InterfaceSubscriberInterface* Iface = Subscriber.Get())
+			{
+				Iface->OnSig1Signal(Param1);
+			}
+		}
+		else
+		{
+			Unsubscribe(Subscriber);
+		}
+	}
+
+	TArray<TScriptInterface<ITbSame2SameStruct1InterfaceBPSubscriberInterface>> BPSubscribersCopy;
+	{
+		FReadScopeLock ReadLock(BPSubscribersLock);
+		BPSubscribersCopy = BPSubscribers;
 	}
 	if (IsInGameThread())
 	{
 		OnSig1SignalBP.Broadcast(Param1);
 
-		for (const TScriptInterface<ITbSame2SameStruct1InterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		for (const TScriptInterface<ITbSame2SameStruct1InterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
 			if (UObject* Obj = Subscriber.GetObject())
 			{
@@ -30,14 +49,14 @@ void UTbSame2SameStruct1InterfacePublisher::BroadcastSig1Signal(const FTbSame2St
 	}
 	else
 	{
-		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbSame2SameStruct1InterfacePublisher>(this), SubscribersCopy, Param1]()
+		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbSame2SameStruct1InterfacePublisher>(this), BPSubscribersCopy, Param1]()
 			{
 			if (WeakPtr.IsValid())
 			{
 				WeakPtr.Get()->OnSig1SignalBP.Broadcast(Param1);
 			}
 
-			for (const TScriptInterface<ITbSame2SameStruct1InterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+			for (const TScriptInterface<ITbSame2SameStruct1InterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 			{
 				if (UObject* Obj = Subscriber.GetObject())
 				{
@@ -58,17 +77,36 @@ void UTbSame2SameStruct1InterfacePublisher::BroadcastSig1Signal(const FTbSame2St
 void UTbSame2SameStruct1InterfacePublisher::BroadcastProp1Changed(UPARAM(DisplayName = "Prop1") const FTbSame2Struct1& InProp1)
 {
 	OnProp1Changed.Broadcast(InProp1);
-
-	TArray<TScriptInterface<ITbSame2SameStruct1InterfaceBPSubscriberInterface>> SubscribersCopy;
+	TArray<TWeakInterfacePtr<ITbSame2SameStruct1InterfaceSubscriberInterface>> SubscribersCopy;
 	{
 		FReadScopeLock ReadLock(SubscribersLock);
 		SubscribersCopy = Subscribers;
+	}
+	for (const TWeakInterfacePtr<ITbSame2SameStruct1InterfaceSubscriberInterface>& Subscriber : SubscribersCopy)
+	{
+		if (Subscriber.IsValid())
+		{
+			if (ITbSame2SameStruct1InterfaceSubscriberInterface* Iface = Subscriber.Get())
+			{
+				Iface->OnProp1Changed(InProp1);
+			}
+		}
+		else
+		{
+			Unsubscribe(Subscriber);
+		}
+	}
+
+	TArray<TScriptInterface<ITbSame2SameStruct1InterfaceBPSubscriberInterface>> BPSubscribersCopy;
+	{
+		FReadScopeLock ReadLock(BPSubscribersLock);
+		BPSubscribersCopy = BPSubscribers;
 	}
 	if (IsInGameThread())
 	{
 		OnProp1ChangedBP.Broadcast(InProp1);
 
-		for (const TScriptInterface<ITbSame2SameStruct1InterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		for (const TScriptInterface<ITbSame2SameStruct1InterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
 			if (UObject* Obj = Subscriber.GetObject())
 			{
@@ -82,14 +120,14 @@ void UTbSame2SameStruct1InterfacePublisher::BroadcastProp1Changed(UPARAM(Display
 	}
 	else
 	{
-		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbSame2SameStruct1InterfacePublisher>(this), SubscribersCopy, InProp1]()
+		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbSame2SameStruct1InterfacePublisher>(this), BPSubscribersCopy, InProp1]()
 			{
 			if (WeakPtr.IsValid())
 			{
 				WeakPtr.Get()->OnProp1ChangedBP.Broadcast(InProp1);
 			}
 
-			for (const TScriptInterface<ITbSame2SameStruct1InterfaceBPSubscriberInterface>& Subscriber : SubscribersCopy)
+			for (const TScriptInterface<ITbSame2SameStruct1InterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 			{
 				if (UObject* Obj = Subscriber.GetObject())
 				{
@@ -114,12 +152,30 @@ void UTbSame2SameStruct1InterfacePublisher::Subscribe(const TScriptInterface<ITb
 		return;
 	}
 
+	FWriteScopeLock WriteLock(BPSubscribersLock);
+	BPSubscribers.Remove(Subscriber);
+	BPSubscribers.Add(Subscriber);
+}
+
+void UTbSame2SameStruct1InterfacePublisher::Subscribe(const TWeakInterfacePtr<ITbSame2SameStruct1InterfaceSubscriberInterface>& Subscriber)
+{
+	if (!Subscriber.GetObject())
+	{
+		return;
+	}
+
 	FWriteScopeLock WriteLock(SubscribersLock);
 	Subscribers.Remove(Subscriber);
 	Subscribers.Add(Subscriber);
 }
 
 void UTbSame2SameStruct1InterfacePublisher::Unsubscribe(const TScriptInterface<ITbSame2SameStruct1InterfaceBPSubscriberInterface>& Subscriber)
+{
+	FWriteScopeLock WriteLock(BPSubscribersLock);
+	BPSubscribers.Remove(Subscriber);
+}
+
+void UTbSame2SameStruct1InterfacePublisher::Unsubscribe(const TWeakInterfacePtr<ITbSame2SameStruct1InterfaceSubscriberInterface>& Subscriber)
 {
 	FWriteScopeLock WriteLock(SubscribersLock);
 	Subscribers.Remove(Subscriber);

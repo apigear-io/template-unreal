@@ -18,6 +18,7 @@ limitations under the License.
 #include "Engine/LatentActionManager.h"
 #include "UObject/Interface.h"
 #include "Misc/ScopeRWLock.h"
+#include "UObject/WeakInterfacePtr.h"
 #include "Testbed1_data.h"
 #include "Testbed1StructArray2InterfaceInterface.generated.h"
 
@@ -91,6 +92,35 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|Testbed1|StructArray2Interface|Signals", DisplayName = "On Property PropEnum Changed")
 	void OnPropEnumChanged(UPARAM(DisplayName = "PropEnum") const FTestbed1StructEnumWithArray& InPropEnum);
+};
+
+UINTERFACE(BlueprintType, MinimalAPI, meta = (CannotImplementInterfaceInBlueprint))
+class UTestbed1StructArray2InterfaceSubscriberInterface : public UInterface
+{
+	GENERATED_BODY()
+};
+
+class TESTBED1API_API ITestbed1StructArray2InterfaceSubscriberInterface
+{
+	GENERATED_BODY()
+public:
+	virtual void OnSigBoolSignal(const FTestbed1StructBoolWithArray& ParamBool) = 0;
+
+	virtual void OnSigIntSignal(const FTestbed1StructIntWithArray& ParamInt) = 0;
+
+	virtual void OnSigFloatSignal(const FTestbed1StructFloatWithArray& ParamFloat) = 0;
+
+	virtual void OnSigStringSignal(const FTestbed1StructStringWithArray& ParamString) = 0;
+
+	virtual void OnPropBoolChanged(UPARAM(DisplayName = "PropBool") const FTestbed1StructBoolWithArray& InPropBool) = 0;
+
+	virtual void OnPropIntChanged(UPARAM(DisplayName = "PropInt") const FTestbed1StructIntWithArray& InPropInt) = 0;
+
+	virtual void OnPropFloatChanged(UPARAM(DisplayName = "PropFloat") const FTestbed1StructFloatWithArray& InPropFloat) = 0;
+
+	virtual void OnPropStringChanged(UPARAM(DisplayName = "PropString") const FTestbed1StructStringWithArray& InPropString) = 0;
+
+	virtual void OnPropEnumChanged(UPARAM(DisplayName = "PropEnum") const FTestbed1StructEnumWithArray& InPropEnum) = 0;
 };
 
 /**
@@ -169,12 +199,16 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArray2Interface|Signals")
 	void Subscribe(const TScriptInterface<ITestbed1StructArray2InterfaceBPSubscriberInterface>& Subscriber);
+	void Subscribe(const TWeakInterfacePtr<ITestbed1StructArray2InterfaceSubscriberInterface>& Subscriber);
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArray2Interface|Signals")
 	void Unsubscribe(const TScriptInterface<ITestbed1StructArray2InterfaceBPSubscriberInterface>& Subscriber);
+	void Unsubscribe(const TWeakInterfacePtr<ITestbed1StructArray2InterfaceSubscriberInterface>& Subscriber);
 
 private:
 	UPROPERTY()
-	TArray<TScriptInterface<ITestbed1StructArray2InterfaceBPSubscriberInterface>> Subscribers;
+	TArray<TScriptInterface<ITestbed1StructArray2InterfaceBPSubscriberInterface>> BPSubscribers;
+	FRWLock BPSubscribersLock;
+	TArray<TWeakInterfacePtr<ITestbed1StructArray2InterfaceSubscriberInterface>> Subscribers;
 	FRWLock SubscribersLock;
 };
 

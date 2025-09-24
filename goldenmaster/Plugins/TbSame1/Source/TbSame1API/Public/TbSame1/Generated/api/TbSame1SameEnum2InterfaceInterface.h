@@ -18,6 +18,7 @@ limitations under the License.
 #include "Engine/LatentActionManager.h"
 #include "UObject/Interface.h"
 #include "Misc/ScopeRWLock.h"
+#include "UObject/WeakInterfacePtr.h"
 #include "TbSame1_data.h"
 #include "TbSame1SameEnum2InterfaceInterface.generated.h"
 
@@ -66,6 +67,25 @@ public:
 	void OnProp2Changed(UPARAM(DisplayName = "Prop2") ETbSame1Enum2 InProp2);
 };
 
+UINTERFACE(BlueprintType, MinimalAPI, meta = (CannotImplementInterfaceInBlueprint))
+class UTbSame1SameEnum2InterfaceSubscriberInterface : public UInterface
+{
+	GENERATED_BODY()
+};
+
+class TBSAME1API_API ITbSame1SameEnum2InterfaceSubscriberInterface
+{
+	GENERATED_BODY()
+public:
+	virtual void OnSig1Signal(ETbSame1Enum1 Param1) = 0;
+
+	virtual void OnSig2Signal(ETbSame1Enum1 Param1, ETbSame1Enum2 Param2) = 0;
+
+	virtual void OnProp1Changed(UPARAM(DisplayName = "Prop1") ETbSame1Enum1 InProp1) = 0;
+
+	virtual void OnProp2Changed(UPARAM(DisplayName = "Prop2") ETbSame1Enum2 InProp2) = 0;
+};
+
 /**
  * Class UTbSame1SameEnum2InterfaceInterfacePublisher
  * Contains delegates for properties and signals
@@ -107,12 +127,16 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1|SameEnum2Interface|Signals")
 	void Subscribe(const TScriptInterface<ITbSame1SameEnum2InterfaceBPSubscriberInterface>& Subscriber);
+	void Subscribe(const TWeakInterfacePtr<ITbSame1SameEnum2InterfaceSubscriberInterface>& Subscriber);
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1|SameEnum2Interface|Signals")
 	void Unsubscribe(const TScriptInterface<ITbSame1SameEnum2InterfaceBPSubscriberInterface>& Subscriber);
+	void Unsubscribe(const TWeakInterfacePtr<ITbSame1SameEnum2InterfaceSubscriberInterface>& Subscriber);
 
 private:
 	UPROPERTY()
-	TArray<TScriptInterface<ITbSame1SameEnum2InterfaceBPSubscriberInterface>> Subscribers;
+	TArray<TScriptInterface<ITbSame1SameEnum2InterfaceBPSubscriberInterface>> BPSubscribers;
+	FRWLock BPSubscribersLock;
+	TArray<TWeakInterfacePtr<ITbSame1SameEnum2InterfaceSubscriberInterface>> Subscribers;
 	FRWLock SubscribersLock;
 };
 

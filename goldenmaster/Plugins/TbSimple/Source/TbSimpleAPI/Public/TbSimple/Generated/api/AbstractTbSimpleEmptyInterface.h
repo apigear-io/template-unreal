@@ -37,6 +37,9 @@ public:
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
 
+	// signals
+	virtual UTbSimpleEmptyInterfacePublisher* _GetPublisher() override;
+
 	// methods
 
 	// properties
@@ -49,4 +52,7 @@ protected:
 	// properties - local copy
 
 private:
+	// signals
+	UPROPERTY()
+	UTbSimpleEmptyInterfacePublisher* TbSimpleEmptyInterfacePublisher;
 };

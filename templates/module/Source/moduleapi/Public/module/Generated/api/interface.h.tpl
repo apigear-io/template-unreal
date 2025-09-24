@@ -26,12 +26,12 @@ limitations under the License.
 #include "Engine/LatentActionManager.h"
 #include "UObject/Interface.h"
 #include "Misc/ScopeRWLock.h"
+#include "UObject/WeakInterfacePtr.h"
 {{- template "get_referenced_interfaces_includes" . }}
 #include "{{$ModuleName}}_data.h"
 #include "{{$Class}}Interface.generated.h"
 
 {{- with .Interface }}
-{{- if or (len .Properties) (len .Signals) }}
 {{- nl }}
 /**
  * Declaration for {{.Name}}
@@ -77,6 +77,27 @@ public:
 {{- end }}
 };
 
+UINTERFACE(BlueprintType, MinimalAPI, meta = (CannotImplementInterfaceInBlueprint))
+class U{{$Class}}SubscriberInterface : public UInterface
+{
+	GENERATED_BODY()
+};
+
+class {{$API_MACRO}} I{{$Class}}SubscriberInterface
+{
+	GENERATED_BODY()
+public:
+{{- range $i, $e := .Signals }}
+	{{- if $i }}{{nl}}{{ end }}
+	virtual void On{{Camel .Name}}Signal({{ueParams "" .Params}}) = 0;
+{{- end }}
+{{- if and (len .Properties) (len .Signals) }}{{ nl }}{{ end }}
+{{- range $i, $e := .Properties }}
+	{{- if $i }}{{nl}}{{ end }}
+	virtual void On{{Camel .Name}}Changed(UPARAM(DisplayName = "{{ueVar "" .}}") {{ueParam "In" .}}) = 0;
+{{- end }}
+};
+
 /**
  * Class {{$class}}Publisher
  * Contains delegates for properties and signals
@@ -108,17 +129,21 @@ public:
 	void Broadcast{{Camel .Name}}Changed(UPARAM(DisplayName = "{{ueVar "" .}}") {{ueParam "In" .}});
 {{- end }}
 
+{{- if or (len .Properties) (len .Signals) }}{{ nl }}{{ end }}
 	UFUNCTION(BlueprintCallable, Category = "{{$Category}}|Signals")
 	void Subscribe(const TScriptInterface<I{{$Class}}BPSubscriberInterface>& Subscriber);
+	void Subscribe(const TWeakInterfacePtr<I{{$Class}}SubscriberInterface>& Subscriber);
 	UFUNCTION(BlueprintCallable, Category = "{{$Category}}|Signals")
 	void Unsubscribe(const TScriptInterface<I{{$Class}}BPSubscriberInterface>& Subscriber);
+	void Unsubscribe(const TWeakInterfacePtr<I{{$Class}}SubscriberInterface>& Subscriber);
 
 private:
 	UPROPERTY()
-	TArray<TScriptInterface<I{{$Class}}BPSubscriberInterface>> Subscribers;
+	TArray<TScriptInterface<I{{$Class}}BPSubscriberInterface>> BPSubscribers;
+	FRWLock BPSubscribersLock;
+	TArray<TWeakInterfacePtr<I{{$Class}}SubscriberInterface>> Subscribers;
 	FRWLock SubscribersLock;
 };
-{{- end}}
 
 /**
  * Interface {{$class}} only for Unreal Engine's reflection system
@@ -137,14 +162,12 @@ class {{ $API_MACRO }} {{ $class}}
 	GENERATED_BODY()
 
 public:
-{{- if or (len .Properties) (len .Signals) }}
 	/// Provides access to the object which holds all the delegates
 	/// this is needed since we cannot declare delegates on an UInterface
 	/// @return object with signals for property state changes or standalone signals
 	UFUNCTION(BlueprintCallable, Category = "{{$Category}}")
 	virtual U{{$Class}}Publisher* _GetPublisher() = 0;
 	{{- nl }}
-{{- end}}
 	// methods
 {{- range $i, $e := .Operations }}
 {{- if .Return.IsVoid }}

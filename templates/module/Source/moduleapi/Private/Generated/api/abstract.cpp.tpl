@@ -78,7 +78,6 @@ public:
 {{- end }}
 }
 
-{{- if or (len .Properties) (len .Signals) }}
 {{- nl }}
 U{{$Class}}Publisher* {{$abstractclass}}::_GetPublisher()
 {
@@ -89,7 +88,6 @@ U{{$Class}}Publisher* {{$abstractclass}}::_GetPublisher()
 	return {{$Class}}Publisher;
 }
 {{- nl }}
-{{- end }}
 
 {{- range $i, $e := .Properties }}
 {{ueReturn "" .}} {{$abstractclass}}::Get{{Camel .Name}}_Private() const

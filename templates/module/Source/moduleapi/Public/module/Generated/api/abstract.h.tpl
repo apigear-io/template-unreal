@@ -45,11 +45,9 @@ public:
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
 
-{{- if or (len .Properties) (len .Signals) }}
 {{- nl }}
 	// signals
 	virtual U{{$Class}}Publisher* _GetPublisher() override;
-{{- end }}
 
 	// methods
 {{- range $i, $e := .Operations }}
@@ -93,10 +91,8 @@ protected:
 {{- end }}
 
 private:
-{{- if or (len .Properties) (len .Signals) }}
 	// signals
 	UPROPERTY()
 	U{{$Class}}Publisher* {{$Iface}}Publisher;
-{{- end }}
 };
 {{- end }}

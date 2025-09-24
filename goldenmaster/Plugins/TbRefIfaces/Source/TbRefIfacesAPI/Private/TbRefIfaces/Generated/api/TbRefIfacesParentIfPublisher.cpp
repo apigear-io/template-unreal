@@ -8,17 +8,36 @@
 void UTbRefIfacesParentIfPublisher::BroadcastLocalIfSignalSignal(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Param)
 {
 	OnLocalIfSignalSignal.Broadcast(Param);
-
-	TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> SubscribersCopy;
+	TArray<TWeakInterfacePtr<ITbRefIfacesParentIfSubscriberInterface>> SubscribersCopy;
 	{
 		FReadScopeLock ReadLock(SubscribersLock);
 		SubscribersCopy = Subscribers;
+	}
+	for (const TWeakInterfacePtr<ITbRefIfacesParentIfSubscriberInterface>& Subscriber : SubscribersCopy)
+	{
+		if (Subscriber.IsValid())
+		{
+			if (ITbRefIfacesParentIfSubscriberInterface* Iface = Subscriber.Get())
+			{
+				Iface->OnLocalIfSignalSignal(Param);
+			}
+		}
+		else
+		{
+			Unsubscribe(Subscriber);
+		}
+	}
+
+	TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> BPSubscribersCopy;
+	{
+		FReadScopeLock ReadLock(BPSubscribersLock);
+		BPSubscribersCopy = BPSubscribers;
 	}
 	if (IsInGameThread())
 	{
 		OnLocalIfSignalSignalBP.Broadcast(Param);
 
-		for (const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		for (const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
 			if (UObject* Obj = Subscriber.GetObject())
 			{
@@ -32,14 +51,14 @@ void UTbRefIfacesParentIfPublisher::BroadcastLocalIfSignalSignal(const TScriptIn
 	}
 	else
 	{
-		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbRefIfacesParentIfPublisher>(this), SubscribersCopy, Param]()
+		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbRefIfacesParentIfPublisher>(this), BPSubscribersCopy, Param]()
 			{
 			if (WeakPtr.IsValid())
 			{
 				WeakPtr.Get()->OnLocalIfSignalSignalBP.Broadcast(Param);
 			}
 
-			for (const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber : SubscribersCopy)
+			for (const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 			{
 				if (UObject* Obj = Subscriber.GetObject())
 				{
@@ -60,17 +79,36 @@ void UTbRefIfacesParentIfPublisher::BroadcastLocalIfSignalSignal(const TScriptIn
 void UTbRefIfacesParentIfPublisher::BroadcastLocalIfSignalListSignal(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param)
 {
 	OnLocalIfSignalListSignal.Broadcast(Param);
-
-	TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> SubscribersCopy;
+	TArray<TWeakInterfacePtr<ITbRefIfacesParentIfSubscriberInterface>> SubscribersCopy;
 	{
 		FReadScopeLock ReadLock(SubscribersLock);
 		SubscribersCopy = Subscribers;
+	}
+	for (const TWeakInterfacePtr<ITbRefIfacesParentIfSubscriberInterface>& Subscriber : SubscribersCopy)
+	{
+		if (Subscriber.IsValid())
+		{
+			if (ITbRefIfacesParentIfSubscriberInterface* Iface = Subscriber.Get())
+			{
+				Iface->OnLocalIfSignalListSignal(Param);
+			}
+		}
+		else
+		{
+			Unsubscribe(Subscriber);
+		}
+	}
+
+	TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> BPSubscribersCopy;
+	{
+		FReadScopeLock ReadLock(BPSubscribersLock);
+		BPSubscribersCopy = BPSubscribers;
 	}
 	if (IsInGameThread())
 	{
 		OnLocalIfSignalListSignalBP.Broadcast(Param);
 
-		for (const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		for (const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
 			if (UObject* Obj = Subscriber.GetObject())
 			{
@@ -84,14 +122,14 @@ void UTbRefIfacesParentIfPublisher::BroadcastLocalIfSignalListSignal(const TArra
 	}
 	else
 	{
-		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbRefIfacesParentIfPublisher>(this), SubscribersCopy, Param]()
+		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbRefIfacesParentIfPublisher>(this), BPSubscribersCopy, Param]()
 			{
 			if (WeakPtr.IsValid())
 			{
 				WeakPtr.Get()->OnLocalIfSignalListSignalBP.Broadcast(Param);
 			}
 
-			for (const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber : SubscribersCopy)
+			for (const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 			{
 				if (UObject* Obj = Subscriber.GetObject())
 				{
@@ -112,17 +150,36 @@ void UTbRefIfacesParentIfPublisher::BroadcastLocalIfSignalListSignal(const TArra
 void UTbRefIfacesParentIfPublisher::BroadcastImportedIfSignalSignal(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param)
 {
 	OnImportedIfSignalSignal.Broadcast(Param);
-
-	TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> SubscribersCopy;
+	TArray<TWeakInterfacePtr<ITbRefIfacesParentIfSubscriberInterface>> SubscribersCopy;
 	{
 		FReadScopeLock ReadLock(SubscribersLock);
 		SubscribersCopy = Subscribers;
+	}
+	for (const TWeakInterfacePtr<ITbRefIfacesParentIfSubscriberInterface>& Subscriber : SubscribersCopy)
+	{
+		if (Subscriber.IsValid())
+		{
+			if (ITbRefIfacesParentIfSubscriberInterface* Iface = Subscriber.Get())
+			{
+				Iface->OnImportedIfSignalSignal(Param);
+			}
+		}
+		else
+		{
+			Unsubscribe(Subscriber);
+		}
+	}
+
+	TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> BPSubscribersCopy;
+	{
+		FReadScopeLock ReadLock(BPSubscribersLock);
+		BPSubscribersCopy = BPSubscribers;
 	}
 	if (IsInGameThread())
 	{
 		OnImportedIfSignalSignalBP.Broadcast(Param);
 
-		for (const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		for (const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
 			if (UObject* Obj = Subscriber.GetObject())
 			{
@@ -136,14 +193,14 @@ void UTbRefIfacesParentIfPublisher::BroadcastImportedIfSignalSignal(const TScrip
 	}
 	else
 	{
-		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbRefIfacesParentIfPublisher>(this), SubscribersCopy, Param]()
+		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbRefIfacesParentIfPublisher>(this), BPSubscribersCopy, Param]()
 			{
 			if (WeakPtr.IsValid())
 			{
 				WeakPtr.Get()->OnImportedIfSignalSignalBP.Broadcast(Param);
 			}
 
-			for (const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber : SubscribersCopy)
+			for (const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 			{
 				if (UObject* Obj = Subscriber.GetObject())
 				{
@@ -164,17 +221,36 @@ void UTbRefIfacesParentIfPublisher::BroadcastImportedIfSignalSignal(const TScrip
 void UTbRefIfacesParentIfPublisher::BroadcastImportedIfSignalListSignal(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param)
 {
 	OnImportedIfSignalListSignal.Broadcast(Param);
-
-	TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> SubscribersCopy;
+	TArray<TWeakInterfacePtr<ITbRefIfacesParentIfSubscriberInterface>> SubscribersCopy;
 	{
 		FReadScopeLock ReadLock(SubscribersLock);
 		SubscribersCopy = Subscribers;
+	}
+	for (const TWeakInterfacePtr<ITbRefIfacesParentIfSubscriberInterface>& Subscriber : SubscribersCopy)
+	{
+		if (Subscriber.IsValid())
+		{
+			if (ITbRefIfacesParentIfSubscriberInterface* Iface = Subscriber.Get())
+			{
+				Iface->OnImportedIfSignalListSignal(Param);
+			}
+		}
+		else
+		{
+			Unsubscribe(Subscriber);
+		}
+	}
+
+	TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> BPSubscribersCopy;
+	{
+		FReadScopeLock ReadLock(BPSubscribersLock);
+		BPSubscribersCopy = BPSubscribers;
 	}
 	if (IsInGameThread())
 	{
 		OnImportedIfSignalListSignalBP.Broadcast(Param);
 
-		for (const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		for (const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
 			if (UObject* Obj = Subscriber.GetObject())
 			{
@@ -188,14 +264,14 @@ void UTbRefIfacesParentIfPublisher::BroadcastImportedIfSignalListSignal(const TA
 	}
 	else
 	{
-		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbRefIfacesParentIfPublisher>(this), SubscribersCopy, Param]()
+		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbRefIfacesParentIfPublisher>(this), BPSubscribersCopy, Param]()
 			{
 			if (WeakPtr.IsValid())
 			{
 				WeakPtr.Get()->OnImportedIfSignalListSignalBP.Broadcast(Param);
 			}
 
-			for (const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber : SubscribersCopy)
+			for (const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 			{
 				if (UObject* Obj = Subscriber.GetObject())
 				{
@@ -216,17 +292,36 @@ void UTbRefIfacesParentIfPublisher::BroadcastImportedIfSignalListSignal(const TA
 void UTbRefIfacesParentIfPublisher::BroadcastLocalIfChanged(UPARAM(DisplayName = "LocalIf") const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& InLocalIf)
 {
 	OnLocalIfChanged.Broadcast(InLocalIf);
-
-	TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> SubscribersCopy;
+	TArray<TWeakInterfacePtr<ITbRefIfacesParentIfSubscriberInterface>> SubscribersCopy;
 	{
 		FReadScopeLock ReadLock(SubscribersLock);
 		SubscribersCopy = Subscribers;
+	}
+	for (const TWeakInterfacePtr<ITbRefIfacesParentIfSubscriberInterface>& Subscriber : SubscribersCopy)
+	{
+		if (Subscriber.IsValid())
+		{
+			if (ITbRefIfacesParentIfSubscriberInterface* Iface = Subscriber.Get())
+			{
+				Iface->OnLocalIfChanged(InLocalIf);
+			}
+		}
+		else
+		{
+			Unsubscribe(Subscriber);
+		}
+	}
+
+	TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> BPSubscribersCopy;
+	{
+		FReadScopeLock ReadLock(BPSubscribersLock);
+		BPSubscribersCopy = BPSubscribers;
 	}
 	if (IsInGameThread())
 	{
 		OnLocalIfChangedBP.Broadcast(InLocalIf);
 
-		for (const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		for (const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
 			if (UObject* Obj = Subscriber.GetObject())
 			{
@@ -240,14 +335,14 @@ void UTbRefIfacesParentIfPublisher::BroadcastLocalIfChanged(UPARAM(DisplayName =
 	}
 	else
 	{
-		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbRefIfacesParentIfPublisher>(this), SubscribersCopy, InLocalIf]()
+		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbRefIfacesParentIfPublisher>(this), BPSubscribersCopy, InLocalIf]()
 			{
 			if (WeakPtr.IsValid())
 			{
 				WeakPtr.Get()->OnLocalIfChangedBP.Broadcast(InLocalIf);
 			}
 
-			for (const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber : SubscribersCopy)
+			for (const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 			{
 				if (UObject* Obj = Subscriber.GetObject())
 				{
@@ -268,17 +363,36 @@ void UTbRefIfacesParentIfPublisher::BroadcastLocalIfChanged(UPARAM(DisplayName =
 void UTbRefIfacesParentIfPublisher::BroadcastLocalIfListChanged(UPARAM(DisplayName = "LocalIfList") const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InLocalIfList)
 {
 	OnLocalIfListChanged.Broadcast(InLocalIfList);
-
-	TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> SubscribersCopy;
+	TArray<TWeakInterfacePtr<ITbRefIfacesParentIfSubscriberInterface>> SubscribersCopy;
 	{
 		FReadScopeLock ReadLock(SubscribersLock);
 		SubscribersCopy = Subscribers;
+	}
+	for (const TWeakInterfacePtr<ITbRefIfacesParentIfSubscriberInterface>& Subscriber : SubscribersCopy)
+	{
+		if (Subscriber.IsValid())
+		{
+			if (ITbRefIfacesParentIfSubscriberInterface* Iface = Subscriber.Get())
+			{
+				Iface->OnLocalIfListChanged(InLocalIfList);
+			}
+		}
+		else
+		{
+			Unsubscribe(Subscriber);
+		}
+	}
+
+	TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> BPSubscribersCopy;
+	{
+		FReadScopeLock ReadLock(BPSubscribersLock);
+		BPSubscribersCopy = BPSubscribers;
 	}
 	if (IsInGameThread())
 	{
 		OnLocalIfListChangedBP.Broadcast(InLocalIfList);
 
-		for (const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		for (const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
 			if (UObject* Obj = Subscriber.GetObject())
 			{
@@ -292,14 +406,14 @@ void UTbRefIfacesParentIfPublisher::BroadcastLocalIfListChanged(UPARAM(DisplayNa
 	}
 	else
 	{
-		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbRefIfacesParentIfPublisher>(this), SubscribersCopy, InLocalIfList]()
+		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbRefIfacesParentIfPublisher>(this), BPSubscribersCopy, InLocalIfList]()
 			{
 			if (WeakPtr.IsValid())
 			{
 				WeakPtr.Get()->OnLocalIfListChangedBP.Broadcast(InLocalIfList);
 			}
 
-			for (const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber : SubscribersCopy)
+			for (const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 			{
 				if (UObject* Obj = Subscriber.GetObject())
 				{
@@ -320,17 +434,36 @@ void UTbRefIfacesParentIfPublisher::BroadcastLocalIfListChanged(UPARAM(DisplayNa
 void UTbRefIfacesParentIfPublisher::BroadcastImportedIfChanged(UPARAM(DisplayName = "ImportedIf") const TScriptInterface<ITbIfaceimportEmptyIfInterface>& InImportedIf)
 {
 	OnImportedIfChanged.Broadcast(InImportedIf);
-
-	TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> SubscribersCopy;
+	TArray<TWeakInterfacePtr<ITbRefIfacesParentIfSubscriberInterface>> SubscribersCopy;
 	{
 		FReadScopeLock ReadLock(SubscribersLock);
 		SubscribersCopy = Subscribers;
+	}
+	for (const TWeakInterfacePtr<ITbRefIfacesParentIfSubscriberInterface>& Subscriber : SubscribersCopy)
+	{
+		if (Subscriber.IsValid())
+		{
+			if (ITbRefIfacesParentIfSubscriberInterface* Iface = Subscriber.Get())
+			{
+				Iface->OnImportedIfChanged(InImportedIf);
+			}
+		}
+		else
+		{
+			Unsubscribe(Subscriber);
+		}
+	}
+
+	TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> BPSubscribersCopy;
+	{
+		FReadScopeLock ReadLock(BPSubscribersLock);
+		BPSubscribersCopy = BPSubscribers;
 	}
 	if (IsInGameThread())
 	{
 		OnImportedIfChangedBP.Broadcast(InImportedIf);
 
-		for (const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		for (const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
 			if (UObject* Obj = Subscriber.GetObject())
 			{
@@ -344,14 +477,14 @@ void UTbRefIfacesParentIfPublisher::BroadcastImportedIfChanged(UPARAM(DisplayNam
 	}
 	else
 	{
-		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbRefIfacesParentIfPublisher>(this), SubscribersCopy, InImportedIf]()
+		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbRefIfacesParentIfPublisher>(this), BPSubscribersCopy, InImportedIf]()
 			{
 			if (WeakPtr.IsValid())
 			{
 				WeakPtr.Get()->OnImportedIfChangedBP.Broadcast(InImportedIf);
 			}
 
-			for (const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber : SubscribersCopy)
+			for (const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 			{
 				if (UObject* Obj = Subscriber.GetObject())
 				{
@@ -372,17 +505,36 @@ void UTbRefIfacesParentIfPublisher::BroadcastImportedIfChanged(UPARAM(DisplayNam
 void UTbRefIfacesParentIfPublisher::BroadcastImportedIfListChanged(UPARAM(DisplayName = "ImportedIfList") const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InImportedIfList)
 {
 	OnImportedIfListChanged.Broadcast(InImportedIfList);
-
-	TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> SubscribersCopy;
+	TArray<TWeakInterfacePtr<ITbRefIfacesParentIfSubscriberInterface>> SubscribersCopy;
 	{
 		FReadScopeLock ReadLock(SubscribersLock);
 		SubscribersCopy = Subscribers;
+	}
+	for (const TWeakInterfacePtr<ITbRefIfacesParentIfSubscriberInterface>& Subscriber : SubscribersCopy)
+	{
+		if (Subscriber.IsValid())
+		{
+			if (ITbRefIfacesParentIfSubscriberInterface* Iface = Subscriber.Get())
+			{
+				Iface->OnImportedIfListChanged(InImportedIfList);
+			}
+		}
+		else
+		{
+			Unsubscribe(Subscriber);
+		}
+	}
+
+	TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> BPSubscribersCopy;
+	{
+		FReadScopeLock ReadLock(BPSubscribersLock);
+		BPSubscribersCopy = BPSubscribers;
 	}
 	if (IsInGameThread())
 	{
 		OnImportedIfListChangedBP.Broadcast(InImportedIfList);
 
-		for (const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber : SubscribersCopy)
+		for (const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
 			if (UObject* Obj = Subscriber.GetObject())
 			{
@@ -396,14 +548,14 @@ void UTbRefIfacesParentIfPublisher::BroadcastImportedIfListChanged(UPARAM(Displa
 	}
 	else
 	{
-		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbRefIfacesParentIfPublisher>(this), SubscribersCopy, InImportedIfList]()
+		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbRefIfacesParentIfPublisher>(this), BPSubscribersCopy, InImportedIfList]()
 			{
 			if (WeakPtr.IsValid())
 			{
 				WeakPtr.Get()->OnImportedIfListChangedBP.Broadcast(InImportedIfList);
 			}
 
-			for (const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber : SubscribersCopy)
+			for (const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 			{
 				if (UObject* Obj = Subscriber.GetObject())
 				{
@@ -428,12 +580,30 @@ void UTbRefIfacesParentIfPublisher::Subscribe(const TScriptInterface<ITbRefIface
 		return;
 	}
 
+	FWriteScopeLock WriteLock(BPSubscribersLock);
+	BPSubscribers.Remove(Subscriber);
+	BPSubscribers.Add(Subscriber);
+}
+
+void UTbRefIfacesParentIfPublisher::Subscribe(const TWeakInterfacePtr<ITbRefIfacesParentIfSubscriberInterface>& Subscriber)
+{
+	if (!Subscriber.GetObject())
+	{
+		return;
+	}
+
 	FWriteScopeLock WriteLock(SubscribersLock);
 	Subscribers.Remove(Subscriber);
 	Subscribers.Add(Subscriber);
 }
 
 void UTbRefIfacesParentIfPublisher::Unsubscribe(const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber)
+{
+	FWriteScopeLock WriteLock(BPSubscribersLock);
+	BPSubscribers.Remove(Subscriber);
+}
+
+void UTbRefIfacesParentIfPublisher::Unsubscribe(const TWeakInterfacePtr<ITbRefIfacesParentIfSubscriberInterface>& Subscriber)
 {
 	FWriteScopeLock WriteLock(SubscribersLock);
 	Subscribers.Remove(Subscriber);

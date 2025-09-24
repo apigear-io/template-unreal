@@ -18,6 +18,7 @@ limitations under the License.
 #include "Engine/LatentActionManager.h"
 #include "UObject/Interface.h"
 #include "Misc/ScopeRWLock.h"
+#include "UObject/WeakInterfacePtr.h"
 #include "TbSimple_data.h"
 #include "TbSimpleNoOperationsInterfaceInterface.generated.h"
 
@@ -66,6 +67,25 @@ public:
 	void OnPropIntChanged(UPARAM(DisplayName = "PropInt") int32 InPropInt);
 };
 
+UINTERFACE(BlueprintType, MinimalAPI, meta = (CannotImplementInterfaceInBlueprint))
+class UTbSimpleNoOperationsInterfaceSubscriberInterface : public UInterface
+{
+	GENERATED_BODY()
+};
+
+class TBSIMPLEAPI_API ITbSimpleNoOperationsInterfaceSubscriberInterface
+{
+	GENERATED_BODY()
+public:
+	virtual void OnSigVoidSignal() = 0;
+
+	virtual void OnSigBoolSignal(bool bParamBool) = 0;
+
+	virtual void OnPropBoolChanged(UPARAM(DisplayName = "bPropBool") bool bInPropBool) = 0;
+
+	virtual void OnPropIntChanged(UPARAM(DisplayName = "PropInt") int32 InPropInt) = 0;
+};
+
 /**
  * Class UTbSimpleNoOperationsInterfaceInterfacePublisher
  * Contains delegates for properties and signals
@@ -107,12 +127,16 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoOperationsInterface|Signals")
 	void Subscribe(const TScriptInterface<ITbSimpleNoOperationsInterfaceBPSubscriberInterface>& Subscriber);
+	void Subscribe(const TWeakInterfacePtr<ITbSimpleNoOperationsInterfaceSubscriberInterface>& Subscriber);
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoOperationsInterface|Signals")
 	void Unsubscribe(const TScriptInterface<ITbSimpleNoOperationsInterfaceBPSubscriberInterface>& Subscriber);
+	void Unsubscribe(const TWeakInterfacePtr<ITbSimpleNoOperationsInterfaceSubscriberInterface>& Subscriber);
 
 private:
 	UPROPERTY()
-	TArray<TScriptInterface<ITbSimpleNoOperationsInterfaceBPSubscriberInterface>> Subscribers;
+	TArray<TScriptInterface<ITbSimpleNoOperationsInterfaceBPSubscriberInterface>> BPSubscribers;
+	FRWLock BPSubscribersLock;
+	TArray<TWeakInterfacePtr<ITbSimpleNoOperationsInterfaceSubscriberInterface>> Subscribers;
 	FRWLock SubscribersLock;
 };
 

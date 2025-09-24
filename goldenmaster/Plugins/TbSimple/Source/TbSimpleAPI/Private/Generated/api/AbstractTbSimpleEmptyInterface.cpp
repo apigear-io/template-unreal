@@ -23,6 +23,16 @@ limitations under the License.
 UAbstractTbSimpleEmptyInterface::UAbstractTbSimpleEmptyInterface()
 {
 }
+
+UTbSimpleEmptyInterfacePublisher* UAbstractTbSimpleEmptyInterface::_GetPublisher()
+{
+	if (!TbSimpleEmptyInterfacePublisher)
+	{
+		TbSimpleEmptyInterfacePublisher = NewObject<UTbSimpleEmptyInterfacePublisher>();
+	}
+	return TbSimpleEmptyInterfacePublisher;
+}
+
 void UAbstractTbSimpleEmptyInterface::Initialize(FSubsystemCollectionBase& Collection)
 {
 	check(!bInitialized);

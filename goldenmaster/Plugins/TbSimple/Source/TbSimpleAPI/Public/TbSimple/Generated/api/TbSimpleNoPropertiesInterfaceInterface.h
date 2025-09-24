@@ -18,6 +18,7 @@ limitations under the License.
 #include "Engine/LatentActionManager.h"
 #include "UObject/Interface.h"
 #include "Misc/ScopeRWLock.h"
+#include "UObject/WeakInterfacePtr.h"
 #include "TbSimple_data.h"
 #include "TbSimpleNoPropertiesInterfaceInterface.generated.h"
 
@@ -56,6 +57,21 @@ public:
 	void OnSigBoolSignal(bool bParamBool);
 };
 
+UINTERFACE(BlueprintType, MinimalAPI, meta = (CannotImplementInterfaceInBlueprint))
+class UTbSimpleNoPropertiesInterfaceSubscriberInterface : public UInterface
+{
+	GENERATED_BODY()
+};
+
+class TBSIMPLEAPI_API ITbSimpleNoPropertiesInterfaceSubscriberInterface
+{
+	GENERATED_BODY()
+public:
+	virtual void OnSigVoidSignal() = 0;
+
+	virtual void OnSigBoolSignal(bool bParamBool) = 0;
+};
+
 /**
  * Class UTbSimpleNoPropertiesInterfaceInterfacePublisher
  * Contains delegates for properties and signals
@@ -83,12 +99,16 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoPropertiesInterface|Signals")
 	void Subscribe(const TScriptInterface<ITbSimpleNoPropertiesInterfaceBPSubscriberInterface>& Subscriber);
+	void Subscribe(const TWeakInterfacePtr<ITbSimpleNoPropertiesInterfaceSubscriberInterface>& Subscriber);
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoPropertiesInterface|Signals")
 	void Unsubscribe(const TScriptInterface<ITbSimpleNoPropertiesInterfaceBPSubscriberInterface>& Subscriber);
+	void Unsubscribe(const TWeakInterfacePtr<ITbSimpleNoPropertiesInterfaceSubscriberInterface>& Subscriber);
 
 private:
 	UPROPERTY()
-	TArray<TScriptInterface<ITbSimpleNoPropertiesInterfaceBPSubscriberInterface>> Subscribers;
+	TArray<TScriptInterface<ITbSimpleNoPropertiesInterfaceBPSubscriberInterface>> BPSubscribers;
+	FRWLock BPSubscribersLock;
+	TArray<TWeakInterfacePtr<ITbSimpleNoPropertiesInterfaceSubscriberInterface>> Subscribers;
 	FRWLock SubscribersLock;
 };
 

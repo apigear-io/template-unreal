@@ -18,6 +18,7 @@ limitations under the License.
 #include "Engine/LatentActionManager.h"
 #include "UObject/Interface.h"
 #include "Misc/ScopeRWLock.h"
+#include "UObject/WeakInterfacePtr.h"
 #include "TbSimple_data.h"
 #include "TbSimpleSimpleArrayInterfaceInterface.generated.h"
 
@@ -135,6 +136,51 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals", DisplayName = "On Property PropReadOnlyString Changed")
 	void OnPropReadOnlyStringChanged(UPARAM(DisplayName = "PropReadOnlyString") const FString& InPropReadOnlyString);
+};
+
+UINTERFACE(BlueprintType, MinimalAPI, meta = (CannotImplementInterfaceInBlueprint))
+class UTbSimpleSimpleArrayInterfaceSubscriberInterface : public UInterface
+{
+	GENERATED_BODY()
+};
+
+class TBSIMPLEAPI_API ITbSimpleSimpleArrayInterfaceSubscriberInterface
+{
+	GENERATED_BODY()
+public:
+	virtual void OnSigBoolSignal(const TArray<bool>& ParamBool) = 0;
+
+	virtual void OnSigIntSignal(const TArray<int32>& ParamInt) = 0;
+
+	virtual void OnSigInt32Signal(const TArray<int32>& ParamInt32) = 0;
+
+	virtual void OnSigInt64Signal(const TArray<int64>& ParamInt64) = 0;
+
+	virtual void OnSigFloatSignal(const TArray<float>& ParamFloat) = 0;
+
+	virtual void OnSigFloat32Signal(const TArray<float>& ParamFloa32) = 0;
+
+	virtual void OnSigFloat64Signal(const TArray<double>& ParamFloat64) = 0;
+
+	virtual void OnSigStringSignal(const TArray<FString>& ParamString) = 0;
+
+	virtual void OnPropBoolChanged(UPARAM(DisplayName = "PropBool") const TArray<bool>& InPropBool) = 0;
+
+	virtual void OnPropIntChanged(UPARAM(DisplayName = "PropInt") const TArray<int32>& InPropInt) = 0;
+
+	virtual void OnPropInt32Changed(UPARAM(DisplayName = "PropInt32") const TArray<int32>& InPropInt32) = 0;
+
+	virtual void OnPropInt64Changed(UPARAM(DisplayName = "PropInt64") const TArray<int64>& InPropInt64) = 0;
+
+	virtual void OnPropFloatChanged(UPARAM(DisplayName = "PropFloat") const TArray<float>& InPropFloat) = 0;
+
+	virtual void OnPropFloat32Changed(UPARAM(DisplayName = "PropFloat32") const TArray<float>& InPropFloat32) = 0;
+
+	virtual void OnPropFloat64Changed(UPARAM(DisplayName = "PropFloat64") const TArray<double>& InPropFloat64) = 0;
+
+	virtual void OnPropStringChanged(UPARAM(DisplayName = "PropString") const TArray<FString>& InPropString) = 0;
+
+	virtual void OnPropReadOnlyStringChanged(UPARAM(DisplayName = "PropReadOnlyString") const FString& InPropReadOnlyString) = 0;
 };
 
 /**
@@ -269,12 +315,16 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals")
 	void Subscribe(const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber);
+	void Subscribe(const TWeakInterfacePtr<ITbSimpleSimpleArrayInterfaceSubscriberInterface>& Subscriber);
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Signals")
 	void Unsubscribe(const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber);
+	void Unsubscribe(const TWeakInterfacePtr<ITbSimpleSimpleArrayInterfaceSubscriberInterface>& Subscriber);
 
 private:
 	UPROPERTY()
-	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> Subscribers;
+	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> BPSubscribers;
+	FRWLock BPSubscribersLock;
+	TArray<TWeakInterfacePtr<ITbSimpleSimpleArrayInterfaceSubscriberInterface>> Subscribers;
 	FRWLock SubscribersLock;
 };
 
