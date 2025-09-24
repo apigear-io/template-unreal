@@ -18,6 +18,7 @@ limitations under the License.
 #include "Engine/LatentActionManager.h"
 #include "UObject/Interface.h"
 #include "Misc/ScopeRWLock.h"
+#include "UObject/WeakInterfacePtr.h"
 #include "Testbed1_data.h"
 #include "Testbed1StructInterfaceInterface.generated.h"
 
@@ -86,6 +87,33 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|Testbed1|StructInterface|Signals", DisplayName = "On Property PropString Changed")
 	void OnPropStringChanged(UPARAM(DisplayName = "PropString") const FTestbed1StructString& InPropString);
+};
+
+UINTERFACE(BlueprintType, MinimalAPI, meta = (CannotImplementInterfaceInBlueprint))
+class UTestbed1StructInterfaceSubscriberInterface : public UInterface
+{
+	GENERATED_BODY()
+};
+
+class TESTBED1API_API ITestbed1StructInterfaceSubscriberInterface
+{
+	GENERATED_BODY()
+public:
+	virtual void OnSigBoolSignal(const FTestbed1StructBool& ParamBool) = 0;
+
+	virtual void OnSigIntSignal(const FTestbed1StructInt& ParamInt) = 0;
+
+	virtual void OnSigFloatSignal(const FTestbed1StructFloat& ParamFloat) = 0;
+
+	virtual void OnSigStringSignal(const FTestbed1StructString& ParamString) = 0;
+
+	virtual void OnPropBoolChanged(UPARAM(DisplayName = "PropBool") const FTestbed1StructBool& InPropBool) = 0;
+
+	virtual void OnPropIntChanged(UPARAM(DisplayName = "PropInt") const FTestbed1StructInt& InPropInt) = 0;
+
+	virtual void OnPropFloatChanged(UPARAM(DisplayName = "PropFloat") const FTestbed1StructFloat& InPropFloat) = 0;
+
+	virtual void OnPropStringChanged(UPARAM(DisplayName = "PropString") const FTestbed1StructString& InPropString) = 0;
 };
 
 /**
@@ -157,12 +185,16 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface|Signals")
 	void Subscribe(const TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>& Subscriber);
+	void Subscribe(const TWeakInterfacePtr<ITestbed1StructInterfaceSubscriberInterface>& Subscriber);
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface|Signals")
 	void Unsubscribe(const TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>& Subscriber);
+	void Unsubscribe(const TWeakInterfacePtr<ITestbed1StructInterfaceSubscriberInterface>& Subscriber);
 
 private:
 	UPROPERTY()
-	TArray<TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>> Subscribers;
+	TArray<TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>> BPSubscribers;
+	FRWLock BPSubscribersLock;
+	TArray<TWeakInterfacePtr<ITestbed1StructInterfaceSubscriberInterface>> Subscribers;
 	FRWLock SubscribersLock;
 };
 

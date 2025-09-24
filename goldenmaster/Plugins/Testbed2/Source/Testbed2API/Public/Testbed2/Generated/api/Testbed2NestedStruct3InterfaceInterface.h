@@ -18,6 +18,7 @@ limitations under the License.
 #include "Engine/LatentActionManager.h"
 #include "UObject/Interface.h"
 #include "Misc/ScopeRWLock.h"
+#include "UObject/WeakInterfacePtr.h"
 #include "Testbed2_data.h"
 #include "Testbed2NestedStruct3InterfaceInterface.generated.h"
 
@@ -77,6 +78,29 @@ public:
 	void OnProp3Changed(UPARAM(DisplayName = "Prop3") const FTestbed2NestedStruct3& InProp3);
 };
 
+UINTERFACE(BlueprintType, MinimalAPI, meta = (CannotImplementInterfaceInBlueprint))
+class UTestbed2NestedStruct3InterfaceSubscriberInterface : public UInterface
+{
+	GENERATED_BODY()
+};
+
+class TESTBED2API_API ITestbed2NestedStruct3InterfaceSubscriberInterface
+{
+	GENERATED_BODY()
+public:
+	virtual void OnSig1Signal(const FTestbed2NestedStruct1& Param1) = 0;
+
+	virtual void OnSig2Signal(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2) = 0;
+
+	virtual void OnSig3Signal(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3) = 0;
+
+	virtual void OnProp1Changed(UPARAM(DisplayName = "Prop1") const FTestbed2NestedStruct1& InProp1) = 0;
+
+	virtual void OnProp2Changed(UPARAM(DisplayName = "Prop2") const FTestbed2NestedStruct2& InProp2) = 0;
+
+	virtual void OnProp3Changed(UPARAM(DisplayName = "Prop3") const FTestbed2NestedStruct3& InProp3) = 0;
+};
+
 /**
  * Class UTestbed2NestedStruct3InterfaceInterfacePublisher
  * Contains delegates for properties and signals
@@ -132,12 +156,16 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface|Signals")
 	void Subscribe(const TScriptInterface<ITestbed2NestedStruct3InterfaceBPSubscriberInterface>& Subscriber);
+	void Subscribe(const TWeakInterfacePtr<ITestbed2NestedStruct3InterfaceSubscriberInterface>& Subscriber);
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface|Signals")
 	void Unsubscribe(const TScriptInterface<ITestbed2NestedStruct3InterfaceBPSubscriberInterface>& Subscriber);
+	void Unsubscribe(const TWeakInterfacePtr<ITestbed2NestedStruct3InterfaceSubscriberInterface>& Subscriber);
 
 private:
 	UPROPERTY()
-	TArray<TScriptInterface<ITestbed2NestedStruct3InterfaceBPSubscriberInterface>> Subscribers;
+	TArray<TScriptInterface<ITestbed2NestedStruct3InterfaceBPSubscriberInterface>> BPSubscribers;
+	FRWLock BPSubscribersLock;
+	TArray<TWeakInterfacePtr<ITestbed2NestedStruct3InterfaceSubscriberInterface>> Subscribers;
 	FRWLock SubscribersLock;
 };
 

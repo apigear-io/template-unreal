@@ -23,6 +23,16 @@ limitations under the License.
 UAbstractTbIfaceimportEmptyIf::UAbstractTbIfaceimportEmptyIf()
 {
 }
+
+UTbIfaceimportEmptyIfPublisher* UAbstractTbIfaceimportEmptyIf::_GetPublisher()
+{
+	if (!TbIfaceimportEmptyIfPublisher)
+	{
+		TbIfaceimportEmptyIfPublisher = NewObject<UTbIfaceimportEmptyIfPublisher>();
+	}
+	return TbIfaceimportEmptyIfPublisher;
+}
+
 void UAbstractTbIfaceimportEmptyIf::Initialize(FSubsystemCollectionBase& Collection)
 {
 	check(!bInitialized);

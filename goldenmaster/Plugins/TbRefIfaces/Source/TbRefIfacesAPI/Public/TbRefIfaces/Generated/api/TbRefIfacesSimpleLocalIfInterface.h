@@ -18,6 +18,7 @@ limitations under the License.
 #include "Engine/LatentActionManager.h"
 #include "UObject/Interface.h"
 #include "Misc/ScopeRWLock.h"
+#include "UObject/WeakInterfacePtr.h"
 #include "TbRefIfaces_data.h"
 #include "TbRefIfacesSimpleLocalIfInterface.generated.h"
 
@@ -55,6 +56,21 @@ public:
 	void OnIntPropertyChanged(UPARAM(DisplayName = "IntProperty") int32 InIntProperty);
 };
 
+UINTERFACE(BlueprintType, MinimalAPI, meta = (CannotImplementInterfaceInBlueprint))
+class UTbRefIfacesSimpleLocalIfSubscriberInterface : public UInterface
+{
+	GENERATED_BODY()
+};
+
+class TBREFIFACESAPI_API ITbRefIfacesSimpleLocalIfSubscriberInterface
+{
+	GENERATED_BODY()
+public:
+	virtual void OnIntSignalSignal(int32 Param) = 0;
+
+	virtual void OnIntPropertyChanged(UPARAM(DisplayName = "IntProperty") int32 InIntProperty) = 0;
+};
+
 /**
  * Class UTbRefIfacesSimpleLocalIfInterfacePublisher
  * Contains delegates for properties and signals
@@ -82,12 +98,16 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|SimpleLocalIf|Signals")
 	void Subscribe(const TScriptInterface<ITbRefIfacesSimpleLocalIfBPSubscriberInterface>& Subscriber);
+	void Subscribe(const TWeakInterfacePtr<ITbRefIfacesSimpleLocalIfSubscriberInterface>& Subscriber);
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|SimpleLocalIf|Signals")
 	void Unsubscribe(const TScriptInterface<ITbRefIfacesSimpleLocalIfBPSubscriberInterface>& Subscriber);
+	void Unsubscribe(const TWeakInterfacePtr<ITbRefIfacesSimpleLocalIfSubscriberInterface>& Subscriber);
 
 private:
 	UPROPERTY()
-	TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfBPSubscriberInterface>> Subscribers;
+	TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfBPSubscriberInterface>> BPSubscribers;
+	FRWLock BPSubscribersLock;
+	TArray<TWeakInterfacePtr<ITbRefIfacesSimpleLocalIfSubscriberInterface>> Subscribers;
 	FRWLock SubscribersLock;
 };
 

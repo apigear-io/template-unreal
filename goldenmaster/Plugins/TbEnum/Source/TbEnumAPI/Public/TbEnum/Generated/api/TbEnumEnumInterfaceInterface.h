@@ -18,6 +18,7 @@ limitations under the License.
 #include "Engine/LatentActionManager.h"
 #include "UObject/Interface.h"
 #include "Misc/ScopeRWLock.h"
+#include "UObject/WeakInterfacePtr.h"
 #include "TbEnum_data.h"
 #include "TbEnumEnumInterfaceInterface.generated.h"
 
@@ -86,6 +87,33 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbEnum|EnumInterface|Signals", DisplayName = "On Property Prop3 Changed")
 	void OnProp3Changed(UPARAM(DisplayName = "Prop3") ETbEnumEnum3 InProp3);
+};
+
+UINTERFACE(BlueprintType, MinimalAPI, meta = (CannotImplementInterfaceInBlueprint))
+class UTbEnumEnumInterfaceSubscriberInterface : public UInterface
+{
+	GENERATED_BODY()
+};
+
+class TBENUMAPI_API ITbEnumEnumInterfaceSubscriberInterface
+{
+	GENERATED_BODY()
+public:
+	virtual void OnSig0Signal(ETbEnumEnum0 Param0) = 0;
+
+	virtual void OnSig1Signal(ETbEnumEnum1 Param1) = 0;
+
+	virtual void OnSig2Signal(ETbEnumEnum2 Param2) = 0;
+
+	virtual void OnSig3Signal(ETbEnumEnum3 Param3) = 0;
+
+	virtual void OnProp0Changed(UPARAM(DisplayName = "Prop0") ETbEnumEnum0 InProp0) = 0;
+
+	virtual void OnProp1Changed(UPARAM(DisplayName = "Prop1") ETbEnumEnum1 InProp1) = 0;
+
+	virtual void OnProp2Changed(UPARAM(DisplayName = "Prop2") ETbEnumEnum2 InProp2) = 0;
+
+	virtual void OnProp3Changed(UPARAM(DisplayName = "Prop3") ETbEnumEnum3 InProp3) = 0;
 };
 
 /**
@@ -157,12 +185,16 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface|Signals")
 	void Subscribe(const TScriptInterface<ITbEnumEnumInterfaceBPSubscriberInterface>& Subscriber);
+	void Subscribe(const TWeakInterfacePtr<ITbEnumEnumInterfaceSubscriberInterface>& Subscriber);
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface|Signals")
 	void Unsubscribe(const TScriptInterface<ITbEnumEnumInterfaceBPSubscriberInterface>& Subscriber);
+	void Unsubscribe(const TWeakInterfacePtr<ITbEnumEnumInterfaceSubscriberInterface>& Subscriber);
 
 private:
 	UPROPERTY()
-	TArray<TScriptInterface<ITbEnumEnumInterfaceBPSubscriberInterface>> Subscribers;
+	TArray<TScriptInterface<ITbEnumEnumInterfaceBPSubscriberInterface>> BPSubscribers;
+	FRWLock BPSubscribersLock;
+	TArray<TWeakInterfacePtr<ITbEnumEnumInterfaceSubscriberInterface>> Subscribers;
 	FRWLock SubscribersLock;
 };
 

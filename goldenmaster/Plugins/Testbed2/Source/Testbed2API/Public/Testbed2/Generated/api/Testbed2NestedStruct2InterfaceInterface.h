@@ -18,6 +18,7 @@ limitations under the License.
 #include "Engine/LatentActionManager.h"
 #include "UObject/Interface.h"
 #include "Misc/ScopeRWLock.h"
+#include "UObject/WeakInterfacePtr.h"
 #include "Testbed2_data.h"
 #include "Testbed2NestedStruct2InterfaceInterface.generated.h"
 
@@ -66,6 +67,25 @@ public:
 	void OnProp2Changed(UPARAM(DisplayName = "Prop2") const FTestbed2NestedStruct2& InProp2);
 };
 
+UINTERFACE(BlueprintType, MinimalAPI, meta = (CannotImplementInterfaceInBlueprint))
+class UTestbed2NestedStruct2InterfaceSubscriberInterface : public UInterface
+{
+	GENERATED_BODY()
+};
+
+class TESTBED2API_API ITestbed2NestedStruct2InterfaceSubscriberInterface
+{
+	GENERATED_BODY()
+public:
+	virtual void OnSig1Signal(const FTestbed2NestedStruct1& Param1) = 0;
+
+	virtual void OnSig2Signal(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2) = 0;
+
+	virtual void OnProp1Changed(UPARAM(DisplayName = "Prop1") const FTestbed2NestedStruct1& InProp1) = 0;
+
+	virtual void OnProp2Changed(UPARAM(DisplayName = "Prop2") const FTestbed2NestedStruct2& InProp2) = 0;
+};
+
 /**
  * Class UTestbed2NestedStruct2InterfaceInterfacePublisher
  * Contains delegates for properties and signals
@@ -107,12 +127,16 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface|Signals")
 	void Subscribe(const TScriptInterface<ITestbed2NestedStruct2InterfaceBPSubscriberInterface>& Subscriber);
+	void Subscribe(const TWeakInterfacePtr<ITestbed2NestedStruct2InterfaceSubscriberInterface>& Subscriber);
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface|Signals")
 	void Unsubscribe(const TScriptInterface<ITestbed2NestedStruct2InterfaceBPSubscriberInterface>& Subscriber);
+	void Unsubscribe(const TWeakInterfacePtr<ITestbed2NestedStruct2InterfaceSubscriberInterface>& Subscriber);
 
 private:
 	UPROPERTY()
-	TArray<TScriptInterface<ITestbed2NestedStruct2InterfaceBPSubscriberInterface>> Subscribers;
+	TArray<TScriptInterface<ITestbed2NestedStruct2InterfaceBPSubscriberInterface>> BPSubscribers;
+	FRWLock BPSubscribersLock;
+	TArray<TWeakInterfacePtr<ITestbed2NestedStruct2InterfaceSubscriberInterface>> Subscribers;
 	FRWLock SubscribersLock;
 };
 

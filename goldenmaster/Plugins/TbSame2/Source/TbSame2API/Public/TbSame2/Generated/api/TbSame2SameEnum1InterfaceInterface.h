@@ -18,6 +18,7 @@ limitations under the License.
 #include "Engine/LatentActionManager.h"
 #include "UObject/Interface.h"
 #include "Misc/ScopeRWLock.h"
+#include "UObject/WeakInterfacePtr.h"
 #include "TbSame2_data.h"
 #include "TbSame2SameEnum1InterfaceInterface.generated.h"
 
@@ -55,6 +56,21 @@ public:
 	void OnProp1Changed(UPARAM(DisplayName = "Prop1") ETbSame2Enum1 InProp1);
 };
 
+UINTERFACE(BlueprintType, MinimalAPI, meta = (CannotImplementInterfaceInBlueprint))
+class UTbSame2SameEnum1InterfaceSubscriberInterface : public UInterface
+{
+	GENERATED_BODY()
+};
+
+class TBSAME2API_API ITbSame2SameEnum1InterfaceSubscriberInterface
+{
+	GENERATED_BODY()
+public:
+	virtual void OnSig1Signal(ETbSame2Enum1 Param1) = 0;
+
+	virtual void OnProp1Changed(UPARAM(DisplayName = "Prop1") ETbSame2Enum1 InProp1) = 0;
+};
+
 /**
  * Class UTbSame2SameEnum1InterfaceInterfacePublisher
  * Contains delegates for properties and signals
@@ -82,12 +98,16 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum1Interface|Signals")
 	void Subscribe(const TScriptInterface<ITbSame2SameEnum1InterfaceBPSubscriberInterface>& Subscriber);
+	void Subscribe(const TWeakInterfacePtr<ITbSame2SameEnum1InterfaceSubscriberInterface>& Subscriber);
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameEnum1Interface|Signals")
 	void Unsubscribe(const TScriptInterface<ITbSame2SameEnum1InterfaceBPSubscriberInterface>& Subscriber);
+	void Unsubscribe(const TWeakInterfacePtr<ITbSame2SameEnum1InterfaceSubscriberInterface>& Subscriber);
 
 private:
 	UPROPERTY()
-	TArray<TScriptInterface<ITbSame2SameEnum1InterfaceBPSubscriberInterface>> Subscribers;
+	TArray<TScriptInterface<ITbSame2SameEnum1InterfaceBPSubscriberInterface>> BPSubscribers;
+	FRWLock BPSubscribersLock;
+	TArray<TWeakInterfacePtr<ITbSame2SameEnum1InterfaceSubscriberInterface>> Subscribers;
 	FRWLock SubscribersLock;
 };
 

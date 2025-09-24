@@ -11,25 +11,43 @@
 #include "Async/Async.h"
 #include "Async/TaskGraphInterfaces.h"
 {{- with .Interface }}
-{{- if or (len .Properties) (len .Signals) }}
-{{- nl }}
+{{- if or (len .Properties) (len .Signals) }}{{- nl }}{{ end }}
 
 {{- range $i, $e := .Signals }}
 	{{- if $i }}{{nl}}{{ end }}
 void U{{$Class}}Publisher::Broadcast{{Camel .Name}}Signal({{ueParams "" .Params}})
 {
 	On{{Camel .Name}}Signal.Broadcast({{ueVars "" .Params}});
-
-	TArray<TScriptInterface<I{{$Class}}BPSubscriberInterface>> SubscribersCopy;
+	TArray<TWeakInterfacePtr<I{{$Class}}SubscriberInterface>> SubscribersCopy;
 	{
 		FReadScopeLock ReadLock(SubscribersLock);
 		SubscribersCopy = Subscribers;
+	}
+	for (const TWeakInterfacePtr<I{{$Class}}SubscriberInterface>& Subscriber : SubscribersCopy)
+	{
+		if (Subscriber.IsValid())
+		{
+			if (I{{$Class}}SubscriberInterface* Iface = Subscriber.Get())
+			{
+				Iface->On{{Camel .Name}}Signal({{ueVars "" .Params}});
+			}
+		}
+		else
+		{
+			Unsubscribe(Subscriber);
+		}
+	}
+
+	TArray<TScriptInterface<I{{$Class}}BPSubscriberInterface>> BPSubscribersCopy;
+	{
+		FReadScopeLock ReadLock(BPSubscribersLock);
+		BPSubscribersCopy = BPSubscribers;
 	}
 	if (IsInGameThread())
 	{
 		On{{Camel .Name}}SignalBP.Broadcast({{ueVars "" .Params}});
 
-		for (const TScriptInterface<I{{$Class}}BPSubscriberInterface>& Subscriber : SubscribersCopy)
+		for (const TScriptInterface<I{{$Class}}BPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
 			if (UObject* Obj = Subscriber.GetObject())
 			{
@@ -43,14 +61,14 @@ void U{{$Class}}Publisher::Broadcast{{Camel .Name}}Signal({{ueParams "" .Params}
 	}
 	else
 	{
-		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<U{{$Class}}Publisher>(this), SubscribersCopy{{- if (len .Params) }}, {{ end }}{{ueVars "" .Params}}]()
+		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<U{{$Class}}Publisher>(this), BPSubscribersCopy{{- if (len .Params) }}, {{ end }}{{ueVars "" .Params}}]()
 			{
 			if (WeakPtr.IsValid())
 			{
 				WeakPtr.Get()->On{{Camel .Name}}SignalBP.Broadcast({{ueVars "" .Params}});
 			}
 
-			for (const TScriptInterface<I{{$Class}}BPSubscriberInterface>& Subscriber : SubscribersCopy)
+			for (const TScriptInterface<I{{$Class}}BPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 			{
 				if (UObject* Obj = Subscriber.GetObject())
 				{
@@ -74,17 +92,36 @@ void U{{$Class}}Publisher::Broadcast{{Camel .Name}}Signal({{ueParams "" .Params}
 void U{{$Class}}Publisher::Broadcast{{Camel .Name}}Changed(UPARAM(DisplayName = "{{ueVar "" .}}") {{ueParam "In" .}})
 {
 	On{{Camel .Name}}Changed.Broadcast({{ueVar "In" .}});
-
-	TArray<TScriptInterface<I{{$Class}}BPSubscriberInterface>> SubscribersCopy;
+	TArray<TWeakInterfacePtr<I{{$Class}}SubscriberInterface>> SubscribersCopy;
 	{
 		FReadScopeLock ReadLock(SubscribersLock);
 		SubscribersCopy = Subscribers;
+	}
+	for (const TWeakInterfacePtr<I{{$Class}}SubscriberInterface>& Subscriber : SubscribersCopy)
+	{
+		if (Subscriber.IsValid())
+		{
+			if (I{{$Class}}SubscriberInterface* Iface = Subscriber.Get())
+			{
+				Iface->On{{Camel .Name}}Changed({{ueVar "In" .}});
+			}
+		}
+		else
+		{
+			Unsubscribe(Subscriber);
+		}
+	}
+
+	TArray<TScriptInterface<I{{$Class}}BPSubscriberInterface>> BPSubscribersCopy;
+	{
+		FReadScopeLock ReadLock(BPSubscribersLock);
+		BPSubscribersCopy = BPSubscribers;
 	}
 	if (IsInGameThread())
 	{
 		On{{Camel .Name}}ChangedBP.Broadcast({{ueVar "In" .}});
 
-		for (const TScriptInterface<I{{$Class}}BPSubscriberInterface>& Subscriber : SubscribersCopy)
+		for (const TScriptInterface<I{{$Class}}BPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
 			if (UObject* Obj = Subscriber.GetObject())
 			{
@@ -98,14 +135,14 @@ void U{{$Class}}Publisher::Broadcast{{Camel .Name}}Changed(UPARAM(DisplayName = 
 	}
 	else
 	{
-		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<U{{$Class}}Publisher>(this), SubscribersCopy, {{ueVar "In" .}}]()
+		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<U{{$Class}}Publisher>(this), BPSubscribersCopy, {{ueVar "In" .}}]()
 			{
 			if (WeakPtr.IsValid())
 			{
 				WeakPtr.Get()->On{{Camel .Name}}ChangedBP.Broadcast({{ueVar "In" .}});
 			}
 
-			for (const TScriptInterface<I{{$Class}}BPSubscriberInterface>& Subscriber : SubscribersCopy)
+			for (const TScriptInterface<I{{$Class}}BPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 			{
 				if (UObject* Obj = Subscriber.GetObject())
 				{
@@ -131,6 +168,18 @@ void U{{$Class}}Publisher::Subscribe(const TScriptInterface<I{{$Class}}BPSubscri
 		return;
 	}
 
+	FWriteScopeLock WriteLock(BPSubscribersLock);
+	BPSubscribers.Remove(Subscriber);
+	BPSubscribers.Add(Subscriber);
+}
+
+void U{{$Class}}Publisher::Subscribe(const TWeakInterfacePtr<I{{$Class}}SubscriberInterface>& Subscriber)
+{
+	if (!Subscriber.GetObject())
+	{
+		return;
+	}
+
 	FWriteScopeLock WriteLock(SubscribersLock);
 	Subscribers.Remove(Subscriber);
 	Subscribers.Add(Subscriber);
@@ -138,8 +187,13 @@ void U{{$Class}}Publisher::Subscribe(const TScriptInterface<I{{$Class}}BPSubscri
 
 void U{{$Class}}Publisher::Unsubscribe(const TScriptInterface<I{{$Class}}BPSubscriberInterface>& Subscriber)
 {
+	FWriteScopeLock WriteLock(BPSubscribersLock);
+	BPSubscribers.Remove(Subscriber);
+}
+
+void U{{$Class}}Publisher::Unsubscribe(const TWeakInterfacePtr<I{{$Class}}SubscriberInterface>& Subscriber)
+{
 	FWriteScopeLock WriteLock(SubscribersLock);
 	Subscribers.Remove(Subscriber);
 }
-{{- end }}
 {{- end }}

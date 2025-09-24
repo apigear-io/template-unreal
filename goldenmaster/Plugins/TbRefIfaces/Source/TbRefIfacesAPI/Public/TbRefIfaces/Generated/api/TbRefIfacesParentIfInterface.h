@@ -18,6 +18,7 @@ limitations under the License.
 #include "Engine/LatentActionManager.h"
 #include "UObject/Interface.h"
 #include "Misc/ScopeRWLock.h"
+#include "UObject/WeakInterfacePtr.h"
 #include "TbIfaceimport/Generated/api/TbIfaceimportEmptyIfInterface.h"
 #include "TbRefIfaces/Generated/api/TbRefIfacesSimpleLocalIfInterface.h"
 #include "TbRefIfaces_data.h"
@@ -90,6 +91,33 @@ public:
 	void OnImportedIfListChanged(UPARAM(DisplayName = "ImportedIfList") const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InImportedIfList);
 };
 
+UINTERFACE(BlueprintType, MinimalAPI, meta = (CannotImplementInterfaceInBlueprint))
+class UTbRefIfacesParentIfSubscriberInterface : public UInterface
+{
+	GENERATED_BODY()
+};
+
+class TBREFIFACESAPI_API ITbRefIfacesParentIfSubscriberInterface
+{
+	GENERATED_BODY()
+public:
+	virtual void OnLocalIfSignalSignal(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Param) = 0;
+
+	virtual void OnLocalIfSignalListSignal(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param) = 0;
+
+	virtual void OnImportedIfSignalSignal(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param) = 0;
+
+	virtual void OnImportedIfSignalListSignal(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param) = 0;
+
+	virtual void OnLocalIfChanged(UPARAM(DisplayName = "LocalIf") const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& InLocalIf) = 0;
+
+	virtual void OnLocalIfListChanged(UPARAM(DisplayName = "LocalIfList") const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InLocalIfList) = 0;
+
+	virtual void OnImportedIfChanged(UPARAM(DisplayName = "ImportedIf") const TScriptInterface<ITbIfaceimportEmptyIfInterface>& InImportedIf) = 0;
+
+	virtual void OnImportedIfListChanged(UPARAM(DisplayName = "ImportedIfList") const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InImportedIfList) = 0;
+};
+
 /**
  * Class UTbRefIfacesParentIfInterfacePublisher
  * Contains delegates for properties and signals
@@ -159,12 +187,16 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|ParentIf|Signals")
 	void Subscribe(const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber);
+	void Subscribe(const TWeakInterfacePtr<ITbRefIfacesParentIfSubscriberInterface>& Subscriber);
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|ParentIf|Signals")
 	void Unsubscribe(const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber);
+	void Unsubscribe(const TWeakInterfacePtr<ITbRefIfacesParentIfSubscriberInterface>& Subscriber);
 
 private:
 	UPROPERTY()
-	TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> Subscribers;
+	TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> BPSubscribers;
+	FRWLock BPSubscribersLock;
+	TArray<TWeakInterfacePtr<ITbRefIfacesParentIfSubscriberInterface>> Subscribers;
 	FRWLock SubscribersLock;
 };
 

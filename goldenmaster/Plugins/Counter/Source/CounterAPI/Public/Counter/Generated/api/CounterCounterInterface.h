@@ -18,6 +18,7 @@ limitations under the License.
 #include "Engine/LatentActionManager.h"
 #include "UObject/Interface.h"
 #include "Misc/ScopeRWLock.h"
+#include "UObject/WeakInterfacePtr.h"
 #include "Counter_data.h"
 #include "CounterCounterInterface.generated.h"
 
@@ -70,6 +71,27 @@ public:
 	void OnExternVectorArrayChanged(UPARAM(DisplayName = "ExternVectorArray") const TArray<FVector>& InExternVectorArray);
 };
 
+UINTERFACE(BlueprintType, MinimalAPI, meta = (CannotImplementInterfaceInBlueprint))
+class UCounterCounterSubscriberInterface : public UInterface
+{
+	GENERATED_BODY()
+};
+
+class COUNTERAPI_API ICounterCounterSubscriberInterface
+{
+	GENERATED_BODY()
+public:
+	virtual void OnValueChangedSignal(const FCustomTypesVector3D& Vector, const FVector& ExternVector, const TArray<FCustomTypesVector3D>& VectorArray, const TArray<FVector>& ExternVectorArray) = 0;
+
+	virtual void OnVectorChanged(UPARAM(DisplayName = "Vector") const FCustomTypesVector3D& InVector) = 0;
+
+	virtual void OnExternVectorChanged(UPARAM(DisplayName = "ExternVector") const FVector& InExternVector) = 0;
+
+	virtual void OnVectorArrayChanged(UPARAM(DisplayName = "VectorArray") const TArray<FCustomTypesVector3D>& InVectorArray) = 0;
+
+	virtual void OnExternVectorArrayChanged(UPARAM(DisplayName = "ExternVectorArray") const TArray<FVector>& InExternVectorArray) = 0;
+};
+
 /**
  * Class UCounterCounterInterfacePublisher
  * Contains delegates for properties and signals
@@ -118,12 +140,16 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Signals")
 	void Subscribe(const TScriptInterface<ICounterCounterBPSubscriberInterface>& Subscriber);
+	void Subscribe(const TWeakInterfacePtr<ICounterCounterSubscriberInterface>& Subscriber);
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Signals")
 	void Unsubscribe(const TScriptInterface<ICounterCounterBPSubscriberInterface>& Subscriber);
+	void Unsubscribe(const TWeakInterfacePtr<ICounterCounterSubscriberInterface>& Subscriber);
 
 private:
 	UPROPERTY()
-	TArray<TScriptInterface<ICounterCounterBPSubscriberInterface>> Subscribers;
+	TArray<TScriptInterface<ICounterCounterBPSubscriberInterface>> BPSubscribers;
+	FRWLock BPSubscribersLock;
+	TArray<TWeakInterfacePtr<ICounterCounterSubscriberInterface>> Subscribers;
 	FRWLock SubscribersLock;
 };
 

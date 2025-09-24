@@ -18,6 +18,7 @@ limitations under the License.
 #include "Engine/LatentActionManager.h"
 #include "UObject/Interface.h"
 #include "Misc/ScopeRWLock.h"
+#include "UObject/WeakInterfacePtr.h"
 #include "TbNames_data.h"
 #include "TbNamesNamEsInterface.generated.h"
 
@@ -76,6 +77,29 @@ public:
 	void OnEnumPropertyChanged(UPARAM(DisplayName = "EnumProperty") ETbNamesEnum_With_Under_scores InEnumProperty);
 };
 
+UINTERFACE(BlueprintType, MinimalAPI, meta = (CannotImplementInterfaceInBlueprint))
+class UTbNamesNamEsSubscriberInterface : public UInterface
+{
+	GENERATED_BODY()
+};
+
+class TBNAMESAPI_API ITbNamesNamEsSubscriberInterface
+{
+	GENERATED_BODY()
+public:
+	virtual void OnSomeSignalSignal(bool bSomeParam) = 0;
+
+	virtual void OnSomeSignal2Signal(bool bSomeParam) = 0;
+
+	virtual void OnSwitchChanged(UPARAM(DisplayName = "bSwitch") bool bInSwitch) = 0;
+
+	virtual void OnSomePropertyChanged(UPARAM(DisplayName = "SomeProperty") int32 InSomeProperty) = 0;
+
+	virtual void OnSomePoperty2Changed(UPARAM(DisplayName = "SomePoperty2") int32 InSomePoperty2) = 0;
+
+	virtual void OnEnumPropertyChanged(UPARAM(DisplayName = "EnumProperty") ETbNamesEnum_With_Under_scores InEnumProperty) = 0;
+};
+
 /**
  * Class UTbNamesNamEsInterfacePublisher
  * Contains delegates for properties and signals
@@ -131,12 +155,16 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Signals")
 	void Subscribe(const TScriptInterface<ITbNamesNamEsBPSubscriberInterface>& Subscriber);
+	void Subscribe(const TWeakInterfacePtr<ITbNamesNamEsSubscriberInterface>& Subscriber);
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbNames|NamEs|Signals")
 	void Unsubscribe(const TScriptInterface<ITbNamesNamEsBPSubscriberInterface>& Subscriber);
+	void Unsubscribe(const TWeakInterfacePtr<ITbNamesNamEsSubscriberInterface>& Subscriber);
 
 private:
 	UPROPERTY()
-	TArray<TScriptInterface<ITbNamesNamEsBPSubscriberInterface>> Subscribers;
+	TArray<TScriptInterface<ITbNamesNamEsBPSubscriberInterface>> BPSubscribers;
+	FRWLock BPSubscribersLock;
+	TArray<TWeakInterfacePtr<ITbNamesNamEsSubscriberInterface>> Subscribers;
 	FRWLock SubscribersLock;
 };
 

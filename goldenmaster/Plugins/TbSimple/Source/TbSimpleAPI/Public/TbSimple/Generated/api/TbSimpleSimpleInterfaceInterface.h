@@ -18,6 +18,7 @@ limitations under the License.
 #include "Engine/LatentActionManager.h"
 #include "UObject/Interface.h"
 #include "Misc/ScopeRWLock.h"
+#include "UObject/WeakInterfacePtr.h"
 #include "TbSimple_data.h"
 #include "TbSimpleSimpleInterfaceInterface.generated.h"
 
@@ -130,6 +131,49 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbSimple|SimpleInterface|Signals", DisplayName = "On Property PropString Changed")
 	void OnPropStringChanged(UPARAM(DisplayName = "PropString") const FString& InPropString);
+};
+
+UINTERFACE(BlueprintType, MinimalAPI, meta = (CannotImplementInterfaceInBlueprint))
+class UTbSimpleSimpleInterfaceSubscriberInterface : public UInterface
+{
+	GENERATED_BODY()
+};
+
+class TBSIMPLEAPI_API ITbSimpleSimpleInterfaceSubscriberInterface
+{
+	GENERATED_BODY()
+public:
+	virtual void OnSigBoolSignal(bool bParamBool) = 0;
+
+	virtual void OnSigIntSignal(int32 ParamInt) = 0;
+
+	virtual void OnSigInt32Signal(int32 ParamInt32) = 0;
+
+	virtual void OnSigInt64Signal(int64 ParamInt64) = 0;
+
+	virtual void OnSigFloatSignal(float ParamFloat) = 0;
+
+	virtual void OnSigFloat32Signal(float ParamFloat32) = 0;
+
+	virtual void OnSigFloat64Signal(double ParamFloat64) = 0;
+
+	virtual void OnSigStringSignal(const FString& ParamString) = 0;
+
+	virtual void OnPropBoolChanged(UPARAM(DisplayName = "bPropBool") bool bInPropBool) = 0;
+
+	virtual void OnPropIntChanged(UPARAM(DisplayName = "PropInt") int32 InPropInt) = 0;
+
+	virtual void OnPropInt32Changed(UPARAM(DisplayName = "PropInt32") int32 InPropInt32) = 0;
+
+	virtual void OnPropInt64Changed(UPARAM(DisplayName = "PropInt64") int64 InPropInt64) = 0;
+
+	virtual void OnPropFloatChanged(UPARAM(DisplayName = "PropFloat") float InPropFloat) = 0;
+
+	virtual void OnPropFloat32Changed(UPARAM(DisplayName = "PropFloat32") float InPropFloat32) = 0;
+
+	virtual void OnPropFloat64Changed(UPARAM(DisplayName = "PropFloat64") double InPropFloat64) = 0;
+
+	virtual void OnPropStringChanged(UPARAM(DisplayName = "PropString") const FString& InPropString) = 0;
 };
 
 /**
@@ -257,12 +301,16 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals")
 	void Subscribe(const TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>& Subscriber);
+	void Subscribe(const TWeakInterfacePtr<ITbSimpleSimpleInterfaceSubscriberInterface>& Subscriber);
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Signals")
 	void Unsubscribe(const TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>& Subscriber);
+	void Unsubscribe(const TWeakInterfacePtr<ITbSimpleSimpleInterfaceSubscriberInterface>& Subscriber);
 
 private:
 	UPROPERTY()
-	TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> Subscribers;
+	TArray<TScriptInterface<ITbSimpleSimpleInterfaceBPSubscriberInterface>> BPSubscribers;
+	FRWLock BPSubscribersLock;
+	TArray<TWeakInterfacePtr<ITbSimpleSimpleInterfaceSubscriberInterface>> Subscribers;
 	FRWLock SubscribersLock;
 };
 

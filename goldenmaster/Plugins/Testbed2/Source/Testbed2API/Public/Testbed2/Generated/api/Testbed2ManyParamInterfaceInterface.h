@@ -18,6 +18,7 @@ limitations under the License.
 #include "Engine/LatentActionManager.h"
 #include "UObject/Interface.h"
 #include "Misc/ScopeRWLock.h"
+#include "UObject/WeakInterfacePtr.h"
 #include "Testbed2_data.h"
 #include "Testbed2ManyParamInterfaceInterface.generated.h"
 
@@ -86,6 +87,33 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|Testbed2|ManyParamInterface|Signals", DisplayName = "On Property Prop4 Changed")
 	void OnProp4Changed(UPARAM(DisplayName = "Prop4") int32 InProp4);
+};
+
+UINTERFACE(BlueprintType, MinimalAPI, meta = (CannotImplementInterfaceInBlueprint))
+class UTestbed2ManyParamInterfaceSubscriberInterface : public UInterface
+{
+	GENERATED_BODY()
+};
+
+class TESTBED2API_API ITestbed2ManyParamInterfaceSubscriberInterface
+{
+	GENERATED_BODY()
+public:
+	virtual void OnSig1Signal(int32 Param1) = 0;
+
+	virtual void OnSig2Signal(int32 Param1, int32 Param2) = 0;
+
+	virtual void OnSig3Signal(int32 Param1, int32 Param2, int32 Param3) = 0;
+
+	virtual void OnSig4Signal(int32 Param1, int32 Param2, int32 Param3, int32 Param4) = 0;
+
+	virtual void OnProp1Changed(UPARAM(DisplayName = "Prop1") int32 InProp1) = 0;
+
+	virtual void OnProp2Changed(UPARAM(DisplayName = "Prop2") int32 InProp2) = 0;
+
+	virtual void OnProp3Changed(UPARAM(DisplayName = "Prop3") int32 InProp3) = 0;
+
+	virtual void OnProp4Changed(UPARAM(DisplayName = "Prop4") int32 InProp4) = 0;
 };
 
 /**
@@ -157,12 +185,16 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals")
 	void Subscribe(const TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>& Subscriber);
+	void Subscribe(const TWeakInterfacePtr<ITestbed2ManyParamInterfaceSubscriberInterface>& Subscriber);
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface|Signals")
 	void Unsubscribe(const TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>& Subscriber);
+	void Unsubscribe(const TWeakInterfacePtr<ITestbed2ManyParamInterfaceSubscriberInterface>& Subscriber);
 
 private:
 	UPROPERTY()
-	TArray<TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>> Subscribers;
+	TArray<TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>> BPSubscribers;
+	FRWLock BPSubscribersLock;
+	TArray<TWeakInterfacePtr<ITestbed2ManyParamInterfaceSubscriberInterface>> Subscribers;
 	FRWLock SubscribersLock;
 };
 
