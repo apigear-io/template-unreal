@@ -146,46 +146,7 @@ void UTestbed2ManyParamInterfaceMsgBusAdapter::_setBackendService(TScriptInterfa
 	{
 		UTestbed2ManyParamInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service Testbed2ManyParamInterface"));
-		if (OnProp1ChangedHandle.IsValid())
-		{
-			BackendPublisher->OnProp1Changed.Remove(OnProp1ChangedHandle);
-			OnProp1ChangedHandle.Reset();
-		}
-		if (OnProp2ChangedHandle.IsValid())
-		{
-			BackendPublisher->OnProp2Changed.Remove(OnProp2ChangedHandle);
-			OnProp2ChangedHandle.Reset();
-		}
-		if (OnProp3ChangedHandle.IsValid())
-		{
-			BackendPublisher->OnProp3Changed.Remove(OnProp3ChangedHandle);
-			OnProp3ChangedHandle.Reset();
-		}
-		if (OnProp4ChangedHandle.IsValid())
-		{
-			BackendPublisher->OnProp4Changed.Remove(OnProp4ChangedHandle);
-			OnProp4ChangedHandle.Reset();
-		}
-		if (OnSig1SignalHandle.IsValid())
-		{
-			BackendPublisher->OnSig1Signal.Remove(OnSig1SignalHandle);
-			OnSig1SignalHandle.Reset();
-		}
-		if (OnSig2SignalHandle.IsValid())
-		{
-			BackendPublisher->OnSig2Signal.Remove(OnSig2SignalHandle);
-			OnSig2SignalHandle.Reset();
-		}
-		if (OnSig3SignalHandle.IsValid())
-		{
-			BackendPublisher->OnSig3Signal.Remove(OnSig3SignalHandle);
-			OnSig3SignalHandle.Reset();
-		}
-		if (OnSig4SignalHandle.IsValid())
-		{
-			BackendPublisher->OnSig4Signal.Remove(OnSig4SignalHandle);
-			OnSig4SignalHandle.Reset();
-		}
+		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITestbed2ManyParamInterfaceSubscriberInterface>(this));
 	}
 
 	// only set if interface is implemented
@@ -195,15 +156,7 @@ void UTestbed2ManyParamInterfaceMsgBusAdapter::_setBackendService(TScriptInterfa
 	BackendService = InService;
 	UTestbed2ManyParamInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service Testbed2ManyParamInterface"));
-	// connect property changed signals or simple events
-	OnProp1ChangedHandle = BackendPublisher->OnProp1Changed.AddUObject(this, &UTestbed2ManyParamInterfaceMsgBusAdapter::OnProp1Changed);
-	OnProp2ChangedHandle = BackendPublisher->OnProp2Changed.AddUObject(this, &UTestbed2ManyParamInterfaceMsgBusAdapter::OnProp2Changed);
-	OnProp3ChangedHandle = BackendPublisher->OnProp3Changed.AddUObject(this, &UTestbed2ManyParamInterfaceMsgBusAdapter::OnProp3Changed);
-	OnProp4ChangedHandle = BackendPublisher->OnProp4Changed.AddUObject(this, &UTestbed2ManyParamInterfaceMsgBusAdapter::OnProp4Changed);
-	OnSig1SignalHandle = BackendPublisher->OnSig1Signal.AddUObject(this, &UTestbed2ManyParamInterfaceMsgBusAdapter::OnSig1);
-	OnSig2SignalHandle = BackendPublisher->OnSig2Signal.AddUObject(this, &UTestbed2ManyParamInterfaceMsgBusAdapter::OnSig2);
-	OnSig3SignalHandle = BackendPublisher->OnSig3Signal.AddUObject(this, &UTestbed2ManyParamInterfaceMsgBusAdapter::OnSig3);
-	OnSig4SignalHandle = BackendPublisher->OnSig4Signal.AddUObject(this, &UTestbed2ManyParamInterfaceMsgBusAdapter::OnSig4);
+	BackendPublisher->Subscribe(TWeakInterfacePtr<ITestbed2ManyParamInterfaceSubscriberInterface>(this));
 }
 
 void UTestbed2ManyParamInterfaceMsgBusAdapter::OnDiscoveryMessage(const FTestbed2ManyParamInterfaceDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -405,7 +358,7 @@ void UTestbed2ManyParamInterfaceMsgBusAdapter::OnFunc4Request(const FTestbed2Man
 	}
 }
 
-void UTestbed2ManyParamInterfaceMsgBusAdapter::OnSig1(int32 InParam1)
+void UTestbed2ManyParamInterfaceMsgBusAdapter::OnSig1Signal(int32 InParam1)
 {
 	TArray<FMessageAddress> ConnectedClients;
 	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
@@ -422,7 +375,7 @@ void UTestbed2ManyParamInterfaceMsgBusAdapter::OnSig1(int32 InParam1)
 	}
 }
 
-void UTestbed2ManyParamInterfaceMsgBusAdapter::OnSig2(int32 InParam1, int32 InParam2)
+void UTestbed2ManyParamInterfaceMsgBusAdapter::OnSig2Signal(int32 InParam1, int32 InParam2)
 {
 	TArray<FMessageAddress> ConnectedClients;
 	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
@@ -440,7 +393,7 @@ void UTestbed2ManyParamInterfaceMsgBusAdapter::OnSig2(int32 InParam1, int32 InPa
 	}
 }
 
-void UTestbed2ManyParamInterfaceMsgBusAdapter::OnSig3(int32 InParam1, int32 InParam2, int32 InParam3)
+void UTestbed2ManyParamInterfaceMsgBusAdapter::OnSig3Signal(int32 InParam1, int32 InParam2, int32 InParam3)
 {
 	TArray<FMessageAddress> ConnectedClients;
 	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
@@ -459,7 +412,7 @@ void UTestbed2ManyParamInterfaceMsgBusAdapter::OnSig3(int32 InParam1, int32 InPa
 	}
 }
 
-void UTestbed2ManyParamInterfaceMsgBusAdapter::OnSig4(int32 InParam1, int32 InParam2, int32 InParam3, int32 InParam4)
+void UTestbed2ManyParamInterfaceMsgBusAdapter::OnSig4Signal(int32 InParam1, int32 InParam2, int32 InParam3, int32 InParam4)
 {
 	TArray<FMessageAddress> ConnectedClients;
 	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);

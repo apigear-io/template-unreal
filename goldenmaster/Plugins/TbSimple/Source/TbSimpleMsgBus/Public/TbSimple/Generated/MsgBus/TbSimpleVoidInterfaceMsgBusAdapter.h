@@ -44,7 +44,7 @@ DECLARE_LOG_CATEGORY_EXTERN(LogTbSimpleVoidInterfaceMsgBusAdapter, Log, All);
 /// takes an object of the type ITbSimpleVoidInterfaceInterface
 /// and holds the corresponding TbSimpleVoidInterfaceOLinkSource OLink source object
 UCLASS(BlueprintType)
-class TBSIMPLEMSGBUS_API UTbSimpleVoidInterfaceMsgBusAdapter : public UGameInstanceSubsystem
+class TBSIMPLEMSGBUS_API UTbSimpleVoidInterfaceMsgBusAdapter : public UGameInstanceSubsystem, public ITbSimpleVoidInterfaceSubscriberInterface
 {
 	GENERATED_BODY()
 public:
@@ -99,11 +99,7 @@ private:
 	void OnFuncVoidRequest(const FTbSimpleVoidInterfaceFuncVoidRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 
 	// signals
-	UFUNCTION(Category = "ApiGear|TbSimple|VoidInterface", BlueprintInternalUseOnly)
-	void OnSigVoid();
-
-	// delegate handles
-	FDelegateHandle OnSigVoidSignalHandle;
+	void OnSigVoidSignal() override;
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSimple|VoidInterface")

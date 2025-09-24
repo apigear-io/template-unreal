@@ -46,7 +46,7 @@ DECLARE_LOG_CATEGORY_EXTERN(LogTestbed2NestedStruct1InterfaceMsgBusAdapter, Log,
 /// takes an object of the type ITestbed2NestedStruct1InterfaceInterface
 /// and holds the corresponding Testbed2NestedStruct1InterfaceOLinkSource OLink source object
 UCLASS(BlueprintType)
-class TESTBED2MSGBUS_API UTestbed2NestedStruct1InterfaceMsgBusAdapter : public UGameInstanceSubsystem
+class TESTBED2MSGBUS_API UTestbed2NestedStruct1InterfaceMsgBusAdapter : public UGameInstanceSubsystem, public ITestbed2NestedStruct1InterfaceSubscriberInterface
 {
 	GENERATED_BODY()
 public:
@@ -102,15 +102,9 @@ private:
 	void OnSetProp1Request(const FTestbed2NestedStruct1InterfaceSetProp1RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 
 	// signals
-	UFUNCTION(Category = "ApiGear|Testbed2|NestedStruct1Interface", BlueprintInternalUseOnly)
-	void OnSig1(const FTestbed2NestedStruct1& Param1);
+	void OnSig1Signal(const FTestbed2NestedStruct1& Param1) override;
 
-	UFUNCTION(Category = "ApiGear|Testbed2|NestedStruct1Interface", BlueprintInternalUseOnly)
-	void OnProp1Changed(const FTestbed2NestedStruct1& Prop1);
-
-	// delegate handles
-	FDelegateHandle OnProp1ChangedHandle;
-	FDelegateHandle OnSig1SignalHandle;
+	void OnProp1Changed(const FTestbed2NestedStruct1& Prop1) override;
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|Testbed2|NestedStruct1Interface")

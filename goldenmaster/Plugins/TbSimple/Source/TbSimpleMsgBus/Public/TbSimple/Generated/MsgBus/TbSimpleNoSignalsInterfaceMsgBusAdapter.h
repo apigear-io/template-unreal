@@ -48,7 +48,7 @@ DECLARE_LOG_CATEGORY_EXTERN(LogTbSimpleNoSignalsInterfaceMsgBusAdapter, Log, All
 /// takes an object of the type ITbSimpleNoSignalsInterfaceInterface
 /// and holds the corresponding TbSimpleNoSignalsInterfaceOLinkSource OLink source object
 UCLASS(BlueprintType)
-class TBSIMPLEMSGBUS_API UTbSimpleNoSignalsInterfaceMsgBusAdapter : public UGameInstanceSubsystem
+class TBSIMPLEMSGBUS_API UTbSimpleNoSignalsInterfaceMsgBusAdapter : public UGameInstanceSubsystem, public ITbSimpleNoSignalsInterfaceSubscriberInterface
 {
 	GENERATED_BODY()
 public:
@@ -107,15 +107,9 @@ private:
 
 	// signals
 
-	UFUNCTION(Category = "ApiGear|TbSimple|NoSignalsInterface", BlueprintInternalUseOnly)
-	void OnPropBoolChanged(bool bPropBool);
+	void OnPropBoolChanged(bool bPropBool) override;
 
-	UFUNCTION(Category = "ApiGear|TbSimple|NoSignalsInterface", BlueprintInternalUseOnly)
-	void OnPropIntChanged(int32 PropInt);
-
-	// delegate handles
-	FDelegateHandle OnPropBoolChangedHandle;
-	FDelegateHandle OnPropIntChangedHandle;
+	void OnPropIntChanged(int32 PropInt) override;
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSimple|NoSignalsInterface")

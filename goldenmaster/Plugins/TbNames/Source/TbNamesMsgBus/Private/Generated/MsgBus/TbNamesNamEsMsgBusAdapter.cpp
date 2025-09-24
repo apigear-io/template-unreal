@@ -144,36 +144,7 @@ void UTbNamesNamEsMsgBusAdapter::_setBackendService(TScriptInterface<ITbNamesNam
 	{
 		UTbNamesNamEsPublisher* BackendPublisher = BackendService->_GetPublisher();
 		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbNamesNamEs"));
-		if (OnSwitchChangedHandle.IsValid())
-		{
-			BackendPublisher->OnSwitchChanged.Remove(OnSwitchChangedHandle);
-			OnSwitchChangedHandle.Reset();
-		}
-		if (OnSomePropertyChangedHandle.IsValid())
-		{
-			BackendPublisher->OnSomePropertyChanged.Remove(OnSomePropertyChangedHandle);
-			OnSomePropertyChangedHandle.Reset();
-		}
-		if (OnSomePoperty2ChangedHandle.IsValid())
-		{
-			BackendPublisher->OnSomePoperty2Changed.Remove(OnSomePoperty2ChangedHandle);
-			OnSomePoperty2ChangedHandle.Reset();
-		}
-		if (OnEnumPropertyChangedHandle.IsValid())
-		{
-			BackendPublisher->OnEnumPropertyChanged.Remove(OnEnumPropertyChangedHandle);
-			OnEnumPropertyChangedHandle.Reset();
-		}
-		if (OnSomeSignalSignalHandle.IsValid())
-		{
-			BackendPublisher->OnSomeSignalSignal.Remove(OnSomeSignalSignalHandle);
-			OnSomeSignalSignalHandle.Reset();
-		}
-		if (OnSomeSignal2SignalHandle.IsValid())
-		{
-			BackendPublisher->OnSomeSignal2Signal.Remove(OnSomeSignal2SignalHandle);
-			OnSomeSignal2SignalHandle.Reset();
-		}
+		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbNamesNamEsSubscriberInterface>(this));
 	}
 
 	// only set if interface is implemented
@@ -183,13 +154,7 @@ void UTbNamesNamEsMsgBusAdapter::_setBackendService(TScriptInterface<ITbNamesNam
 	BackendService = InService;
 	UTbNamesNamEsPublisher* BackendPublisher = BackendService->_GetPublisher();
 	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbNamesNamEs"));
-	// connect property changed signals or simple events
-	OnSwitchChangedHandle = BackendPublisher->OnSwitchChanged.AddUObject(this, &UTbNamesNamEsMsgBusAdapter::OnSwitchChanged);
-	OnSomePropertyChangedHandle = BackendPublisher->OnSomePropertyChanged.AddUObject(this, &UTbNamesNamEsMsgBusAdapter::OnSomePropertyChanged);
-	OnSomePoperty2ChangedHandle = BackendPublisher->OnSomePoperty2Changed.AddUObject(this, &UTbNamesNamEsMsgBusAdapter::OnSomePoperty2Changed);
-	OnEnumPropertyChangedHandle = BackendPublisher->OnEnumPropertyChanged.AddUObject(this, &UTbNamesNamEsMsgBusAdapter::OnEnumPropertyChanged);
-	OnSomeSignalSignalHandle = BackendPublisher->OnSomeSignalSignal.AddUObject(this, &UTbNamesNamEsMsgBusAdapter::OnSomeSignal);
-	OnSomeSignal2SignalHandle = BackendPublisher->OnSomeSignal2Signal.AddUObject(this, &UTbNamesNamEsMsgBusAdapter::OnSomeSignal2);
+	BackendPublisher->Subscribe(TWeakInterfacePtr<ITbNamesNamEsSubscriberInterface>(this));
 }
 
 void UTbNamesNamEsMsgBusAdapter::OnDiscoveryMessage(const FTbNamesNamEsDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -337,7 +302,7 @@ void UTbNamesNamEsMsgBusAdapter::OnSomeFunction2Request(const FTbNamesNamEsSomeF
 	BackendService->SomeFunction2(InMessage.bSomeParam);
 }
 
-void UTbNamesNamEsMsgBusAdapter::OnSomeSignal(bool bInSomeParam)
+void UTbNamesNamEsMsgBusAdapter::OnSomeSignalSignal(bool bInSomeParam)
 {
 	TArray<FMessageAddress> ConnectedClients;
 	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
@@ -354,7 +319,7 @@ void UTbNamesNamEsMsgBusAdapter::OnSomeSignal(bool bInSomeParam)
 	}
 }
 
-void UTbNamesNamEsMsgBusAdapter::OnSomeSignal2(bool bInSomeParam)
+void UTbNamesNamEsMsgBusAdapter::OnSomeSignal2Signal(bool bInSomeParam)
 {
 	TArray<FMessageAddress> ConnectedClients;
 	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);

@@ -155,86 +155,7 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::_setBackendService(TScriptInterface<
 	{
 		UTbSimpleSimpleInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleSimpleInterface"));
-		if (OnPropBoolChangedHandle.IsValid())
-		{
-			BackendPublisher->OnPropBoolChanged.Remove(OnPropBoolChangedHandle);
-			OnPropBoolChangedHandle.Reset();
-		}
-		if (OnPropIntChangedHandle.IsValid())
-		{
-			BackendPublisher->OnPropIntChanged.Remove(OnPropIntChangedHandle);
-			OnPropIntChangedHandle.Reset();
-		}
-		if (OnPropInt32ChangedHandle.IsValid())
-		{
-			BackendPublisher->OnPropInt32Changed.Remove(OnPropInt32ChangedHandle);
-			OnPropInt32ChangedHandle.Reset();
-		}
-		if (OnPropInt64ChangedHandle.IsValid())
-		{
-			BackendPublisher->OnPropInt64Changed.Remove(OnPropInt64ChangedHandle);
-			OnPropInt64ChangedHandle.Reset();
-		}
-		if (OnPropFloatChangedHandle.IsValid())
-		{
-			BackendPublisher->OnPropFloatChanged.Remove(OnPropFloatChangedHandle);
-			OnPropFloatChangedHandle.Reset();
-		}
-		if (OnPropFloat32ChangedHandle.IsValid())
-		{
-			BackendPublisher->OnPropFloat32Changed.Remove(OnPropFloat32ChangedHandle);
-			OnPropFloat32ChangedHandle.Reset();
-		}
-		if (OnPropFloat64ChangedHandle.IsValid())
-		{
-			BackendPublisher->OnPropFloat64Changed.Remove(OnPropFloat64ChangedHandle);
-			OnPropFloat64ChangedHandle.Reset();
-		}
-		if (OnPropStringChangedHandle.IsValid())
-		{
-			BackendPublisher->OnPropStringChanged.Remove(OnPropStringChangedHandle);
-			OnPropStringChangedHandle.Reset();
-		}
-		if (OnSigBoolSignalHandle.IsValid())
-		{
-			BackendPublisher->OnSigBoolSignal.Remove(OnSigBoolSignalHandle);
-			OnSigBoolSignalHandle.Reset();
-		}
-		if (OnSigIntSignalHandle.IsValid())
-		{
-			BackendPublisher->OnSigIntSignal.Remove(OnSigIntSignalHandle);
-			OnSigIntSignalHandle.Reset();
-		}
-		if (OnSigInt32SignalHandle.IsValid())
-		{
-			BackendPublisher->OnSigInt32Signal.Remove(OnSigInt32SignalHandle);
-			OnSigInt32SignalHandle.Reset();
-		}
-		if (OnSigInt64SignalHandle.IsValid())
-		{
-			BackendPublisher->OnSigInt64Signal.Remove(OnSigInt64SignalHandle);
-			OnSigInt64SignalHandle.Reset();
-		}
-		if (OnSigFloatSignalHandle.IsValid())
-		{
-			BackendPublisher->OnSigFloatSignal.Remove(OnSigFloatSignalHandle);
-			OnSigFloatSignalHandle.Reset();
-		}
-		if (OnSigFloat32SignalHandle.IsValid())
-		{
-			BackendPublisher->OnSigFloat32Signal.Remove(OnSigFloat32SignalHandle);
-			OnSigFloat32SignalHandle.Reset();
-		}
-		if (OnSigFloat64SignalHandle.IsValid())
-		{
-			BackendPublisher->OnSigFloat64Signal.Remove(OnSigFloat64SignalHandle);
-			OnSigFloat64SignalHandle.Reset();
-		}
-		if (OnSigStringSignalHandle.IsValid())
-		{
-			BackendPublisher->OnSigStringSignal.Remove(OnSigStringSignalHandle);
-			OnSigStringSignalHandle.Reset();
-		}
+		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbSimpleSimpleInterfaceSubscriberInterface>(this));
 	}
 
 	// only set if interface is implemented
@@ -244,23 +165,7 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::_setBackendService(TScriptInterface<
 	BackendService = InService;
 	UTbSimpleSimpleInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbSimpleSimpleInterface"));
-	// connect property changed signals or simple events
-	OnPropBoolChangedHandle = BackendPublisher->OnPropBoolChanged.AddUObject(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropBoolChanged);
-	OnPropIntChangedHandle = BackendPublisher->OnPropIntChanged.AddUObject(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropIntChanged);
-	OnPropInt32ChangedHandle = BackendPublisher->OnPropInt32Changed.AddUObject(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropInt32Changed);
-	OnPropInt64ChangedHandle = BackendPublisher->OnPropInt64Changed.AddUObject(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropInt64Changed);
-	OnPropFloatChangedHandle = BackendPublisher->OnPropFloatChanged.AddUObject(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropFloatChanged);
-	OnPropFloat32ChangedHandle = BackendPublisher->OnPropFloat32Changed.AddUObject(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropFloat32Changed);
-	OnPropFloat64ChangedHandle = BackendPublisher->OnPropFloat64Changed.AddUObject(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropFloat64Changed);
-	OnPropStringChangedHandle = BackendPublisher->OnPropStringChanged.AddUObject(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropStringChanged);
-	OnSigBoolSignalHandle = BackendPublisher->OnSigBoolSignal.AddUObject(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigBool);
-	OnSigIntSignalHandle = BackendPublisher->OnSigIntSignal.AddUObject(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigInt);
-	OnSigInt32SignalHandle = BackendPublisher->OnSigInt32Signal.AddUObject(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigInt32);
-	OnSigInt64SignalHandle = BackendPublisher->OnSigInt64Signal.AddUObject(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigInt64);
-	OnSigFloatSignalHandle = BackendPublisher->OnSigFloatSignal.AddUObject(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigFloat);
-	OnSigFloat32SignalHandle = BackendPublisher->OnSigFloat32Signal.AddUObject(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigFloat32);
-	OnSigFloat64SignalHandle = BackendPublisher->OnSigFloat64Signal.AddUObject(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigFloat64);
-	OnSigStringSignalHandle = BackendPublisher->OnSigStringSignal.AddUObject(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigString);
+	BackendPublisher->Subscribe(TWeakInterfacePtr<ITbSimpleSimpleInterfaceSubscriberInterface>(this));
 }
 
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnDiscoveryMessage(const FTbSimpleSimpleInterfaceDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -535,7 +440,7 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncStringRequest(const FTbSimpleS
 	}
 }
 
-void UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigBool(bool bInParamBool)
+void UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigBoolSignal(bool bInParamBool)
 {
 	TArray<FMessageAddress> ConnectedClients;
 	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
@@ -552,7 +457,7 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigBool(bool bInParamBool)
 	}
 }
 
-void UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigInt(int32 InParamInt)
+void UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigIntSignal(int32 InParamInt)
 {
 	TArray<FMessageAddress> ConnectedClients;
 	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
@@ -569,7 +474,7 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigInt(int32 InParamInt)
 	}
 }
 
-void UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigInt32(int32 InParamInt32)
+void UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigInt32Signal(int32 InParamInt32)
 {
 	TArray<FMessageAddress> ConnectedClients;
 	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
@@ -586,7 +491,7 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigInt32(int32 InParamInt32)
 	}
 }
 
-void UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigInt64(int64 InParamInt64)
+void UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigInt64Signal(int64 InParamInt64)
 {
 	TArray<FMessageAddress> ConnectedClients;
 	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
@@ -603,7 +508,7 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigInt64(int64 InParamInt64)
 	}
 }
 
-void UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigFloat(float InParamFloat)
+void UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigFloatSignal(float InParamFloat)
 {
 	TArray<FMessageAddress> ConnectedClients;
 	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
@@ -620,7 +525,7 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigFloat(float InParamFloat)
 	}
 }
 
-void UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigFloat32(float InParamFloat32)
+void UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigFloat32Signal(float InParamFloat32)
 {
 	TArray<FMessageAddress> ConnectedClients;
 	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
@@ -637,7 +542,7 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigFloat32(float InParamFloat32)
 	}
 }
 
-void UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigFloat64(double InParamFloat64)
+void UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigFloat64Signal(double InParamFloat64)
 {
 	TArray<FMessageAddress> ConnectedClients;
 	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
@@ -654,7 +559,7 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigFloat64(double InParamFloat64)
 	}
 }
 
-void UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigString(const FString& InParamString)
+void UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigStringSignal(const FString& InParamString)
 {
 	TArray<FMessageAddress> ConnectedClients;
 	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);

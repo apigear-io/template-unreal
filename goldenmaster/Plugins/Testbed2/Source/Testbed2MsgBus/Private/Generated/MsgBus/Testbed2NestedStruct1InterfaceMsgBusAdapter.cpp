@@ -140,16 +140,7 @@ void UTestbed2NestedStruct1InterfaceMsgBusAdapter::_setBackendService(TScriptInt
 	{
 		UTestbed2NestedStruct1InterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service Testbed2NestedStruct1Interface"));
-		if (OnProp1ChangedHandle.IsValid())
-		{
-			BackendPublisher->OnProp1Changed.Remove(OnProp1ChangedHandle);
-			OnProp1ChangedHandle.Reset();
-		}
-		if (OnSig1SignalHandle.IsValid())
-		{
-			BackendPublisher->OnSig1Signal.Remove(OnSig1SignalHandle);
-			OnSig1SignalHandle.Reset();
-		}
+		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITestbed2NestedStruct1InterfaceSubscriberInterface>(this));
 	}
 
 	// only set if interface is implemented
@@ -159,9 +150,7 @@ void UTestbed2NestedStruct1InterfaceMsgBusAdapter::_setBackendService(TScriptInt
 	BackendService = InService;
 	UTestbed2NestedStruct1InterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service Testbed2NestedStruct1Interface"));
-	// connect property changed signals or simple events
-	OnProp1ChangedHandle = BackendPublisher->OnProp1Changed.AddUObject(this, &UTestbed2NestedStruct1InterfaceMsgBusAdapter::OnProp1Changed);
-	OnSig1SignalHandle = BackendPublisher->OnSig1Signal.AddUObject(this, &UTestbed2NestedStruct1InterfaceMsgBusAdapter::OnSig1);
+	BackendPublisher->Subscribe(TWeakInterfacePtr<ITestbed2NestedStruct1InterfaceSubscriberInterface>(this));
 }
 
 void UTestbed2NestedStruct1InterfaceMsgBusAdapter::OnDiscoveryMessage(const FTestbed2NestedStruct1InterfaceDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -312,7 +301,7 @@ void UTestbed2NestedStruct1InterfaceMsgBusAdapter::OnFunc1Request(const FTestbed
 	}
 }
 
-void UTestbed2NestedStruct1InterfaceMsgBusAdapter::OnSig1(const FTestbed2NestedStruct1& InParam1)
+void UTestbed2NestedStruct1InterfaceMsgBusAdapter::OnSig1Signal(const FTestbed2NestedStruct1& InParam1)
 {
 	TArray<FMessageAddress> ConnectedClients;
 	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);

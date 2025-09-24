@@ -146,31 +146,7 @@ void UCounterCounterMsgBusAdapter::_setBackendService(TScriptInterface<ICounterC
 	{
 		UCounterCounterPublisher* BackendPublisher = BackendService->_GetPublisher();
 		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service CounterCounter"));
-		if (OnVectorChangedHandle.IsValid())
-		{
-			BackendPublisher->OnVectorChanged.Remove(OnVectorChangedHandle);
-			OnVectorChangedHandle.Reset();
-		}
-		if (OnExternVectorChangedHandle.IsValid())
-		{
-			BackendPublisher->OnExternVectorChanged.Remove(OnExternVectorChangedHandle);
-			OnExternVectorChangedHandle.Reset();
-		}
-		if (OnVectorArrayChangedHandle.IsValid())
-		{
-			BackendPublisher->OnVectorArrayChanged.Remove(OnVectorArrayChangedHandle);
-			OnVectorArrayChangedHandle.Reset();
-		}
-		if (OnExternVectorArrayChangedHandle.IsValid())
-		{
-			BackendPublisher->OnExternVectorArrayChanged.Remove(OnExternVectorArrayChangedHandle);
-			OnExternVectorArrayChangedHandle.Reset();
-		}
-		if (OnValueChangedSignalHandle.IsValid())
-		{
-			BackendPublisher->OnValueChangedSignal.Remove(OnValueChangedSignalHandle);
-			OnValueChangedSignalHandle.Reset();
-		}
+		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ICounterCounterSubscriberInterface>(this));
 	}
 
 	// only set if interface is implemented
@@ -180,12 +156,7 @@ void UCounterCounterMsgBusAdapter::_setBackendService(TScriptInterface<ICounterC
 	BackendService = InService;
 	UCounterCounterPublisher* BackendPublisher = BackendService->_GetPublisher();
 	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service CounterCounter"));
-	// connect property changed signals or simple events
-	OnVectorChangedHandle = BackendPublisher->OnVectorChanged.AddUObject(this, &UCounterCounterMsgBusAdapter::OnVectorChanged);
-	OnExternVectorChangedHandle = BackendPublisher->OnExternVectorChanged.AddUObject(this, &UCounterCounterMsgBusAdapter::OnExternVectorChanged);
-	OnVectorArrayChangedHandle = BackendPublisher->OnVectorArrayChanged.AddUObject(this, &UCounterCounterMsgBusAdapter::OnVectorArrayChanged);
-	OnExternVectorArrayChangedHandle = BackendPublisher->OnExternVectorArrayChanged.AddUObject(this, &UCounterCounterMsgBusAdapter::OnExternVectorArrayChanged);
-	OnValueChangedSignalHandle = BackendPublisher->OnValueChangedSignal.AddUObject(this, &UCounterCounterMsgBusAdapter::OnValueChanged);
+	BackendPublisher->Subscribe(TWeakInterfacePtr<ICounterCounterSubscriberInterface>(this));
 }
 
 void UCounterCounterMsgBusAdapter::OnDiscoveryMessage(const FCounterCounterDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -387,7 +358,7 @@ void UCounterCounterMsgBusAdapter::OnDecrementArrayRequest(const FCounterCounter
 	}
 }
 
-void UCounterCounterMsgBusAdapter::OnValueChanged(const FCustomTypesVector3D& InVector, const FVector& InExternVector, const TArray<FCustomTypesVector3D>& InVectorArray, const TArray<FVector>& InExternVectorArray)
+void UCounterCounterMsgBusAdapter::OnValueChangedSignal(const FCustomTypesVector3D& InVector, const FVector& InExternVector, const TArray<FCustomTypesVector3D>& InVectorArray, const TArray<FVector>& InExternVectorArray)
 {
 	TArray<FMessageAddress> ConnectedClients;
 	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);

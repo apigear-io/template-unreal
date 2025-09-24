@@ -140,16 +140,7 @@ void UTbRefIfacesSimpleLocalIfMsgBusAdapter::_setBackendService(TScriptInterface
 	{
 		UTbRefIfacesSimpleLocalIfPublisher* BackendPublisher = BackendService->_GetPublisher();
 		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbRefIfacesSimpleLocalIf"));
-		if (OnIntPropertyChangedHandle.IsValid())
-		{
-			BackendPublisher->OnIntPropertyChanged.Remove(OnIntPropertyChangedHandle);
-			OnIntPropertyChangedHandle.Reset();
-		}
-		if (OnIntSignalSignalHandle.IsValid())
-		{
-			BackendPublisher->OnIntSignalSignal.Remove(OnIntSignalSignalHandle);
-			OnIntSignalSignalHandle.Reset();
-		}
+		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbRefIfacesSimpleLocalIfSubscriberInterface>(this));
 	}
 
 	// only set if interface is implemented
@@ -159,9 +150,7 @@ void UTbRefIfacesSimpleLocalIfMsgBusAdapter::_setBackendService(TScriptInterface
 	BackendService = InService;
 	UTbRefIfacesSimpleLocalIfPublisher* BackendPublisher = BackendService->_GetPublisher();
 	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbRefIfacesSimpleLocalIf"));
-	// connect property changed signals or simple events
-	OnIntPropertyChangedHandle = BackendPublisher->OnIntPropertyChanged.AddUObject(this, &UTbRefIfacesSimpleLocalIfMsgBusAdapter::OnIntPropertyChanged);
-	OnIntSignalSignalHandle = BackendPublisher->OnIntSignalSignal.AddUObject(this, &UTbRefIfacesSimpleLocalIfMsgBusAdapter::OnIntSignal);
+	BackendPublisher->Subscribe(TWeakInterfacePtr<ITbRefIfacesSimpleLocalIfSubscriberInterface>(this));
 }
 
 void UTbRefIfacesSimpleLocalIfMsgBusAdapter::OnDiscoveryMessage(const FTbRefIfacesSimpleLocalIfDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -312,7 +301,7 @@ void UTbRefIfacesSimpleLocalIfMsgBusAdapter::OnIntMethodRequest(const FTbRefIfac
 	}
 }
 
-void UTbRefIfacesSimpleLocalIfMsgBusAdapter::OnIntSignal(int32 InParam)
+void UTbRefIfacesSimpleLocalIfMsgBusAdapter::OnIntSignalSignal(int32 InParam)
 {
 	TArray<FMessageAddress> ConnectedClients;
 	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);

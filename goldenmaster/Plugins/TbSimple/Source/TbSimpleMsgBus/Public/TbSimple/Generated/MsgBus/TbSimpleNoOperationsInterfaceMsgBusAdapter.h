@@ -48,7 +48,7 @@ DECLARE_LOG_CATEGORY_EXTERN(LogTbSimpleNoOperationsInterfaceMsgBusAdapter, Log, 
 /// takes an object of the type ITbSimpleNoOperationsInterfaceInterface
 /// and holds the corresponding TbSimpleNoOperationsInterfaceOLinkSource OLink source object
 UCLASS(BlueprintType)
-class TBSIMPLEMSGBUS_API UTbSimpleNoOperationsInterfaceMsgBusAdapter : public UGameInstanceSubsystem
+class TBSIMPLEMSGBUS_API UTbSimpleNoOperationsInterfaceMsgBusAdapter : public UGameInstanceSubsystem, public ITbSimpleNoOperationsInterfaceSubscriberInterface
 {
 	GENERATED_BODY()
 public:
@@ -104,23 +104,13 @@ private:
 	void OnSetPropIntRequest(const FTbSimpleNoOperationsInterfaceSetPropIntRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 
 	// signals
-	UFUNCTION(Category = "ApiGear|TbSimple|NoOperationsInterface", BlueprintInternalUseOnly)
-	void OnSigVoid();
+	void OnSigVoidSignal() override;
 
-	UFUNCTION(Category = "ApiGear|TbSimple|NoOperationsInterface", BlueprintInternalUseOnly)
-	void OnSigBool(bool bParamBool);
+	void OnSigBoolSignal(bool bParamBool) override;
 
-	UFUNCTION(Category = "ApiGear|TbSimple|NoOperationsInterface", BlueprintInternalUseOnly)
-	void OnPropBoolChanged(bool bPropBool);
+	void OnPropBoolChanged(bool bPropBool) override;
 
-	UFUNCTION(Category = "ApiGear|TbSimple|NoOperationsInterface", BlueprintInternalUseOnly)
-	void OnPropIntChanged(int32 PropInt);
-
-	// delegate handles
-	FDelegateHandle OnPropBoolChangedHandle;
-	FDelegateHandle OnPropIntChangedHandle;
-	FDelegateHandle OnSigVoidSignalHandle;
-	FDelegateHandle OnSigBoolSignalHandle;
+	void OnPropIntChanged(int32 PropInt) override;
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSimple|NoOperationsInterface")

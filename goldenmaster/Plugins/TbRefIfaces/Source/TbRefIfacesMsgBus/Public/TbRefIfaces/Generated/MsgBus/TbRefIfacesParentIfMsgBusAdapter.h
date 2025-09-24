@@ -58,7 +58,7 @@ DECLARE_LOG_CATEGORY_EXTERN(LogTbRefIfacesParentIfMsgBusAdapter, Log, All);
 /// takes an object of the type ITbRefIfacesParentIfInterface
 /// and holds the corresponding TbRefIfacesParentIfOLinkSource OLink source object
 UCLASS(BlueprintType)
-class TBREFIFACESMSGBUS_API UTbRefIfacesParentIfMsgBusAdapter : public UGameInstanceSubsystem
+class TBREFIFACESMSGBUS_API UTbRefIfacesParentIfMsgBusAdapter : public UGameInstanceSubsystem, public ITbRefIfacesParentIfSubscriberInterface
 {
 	GENERATED_BODY()
 public:
@@ -120,39 +120,21 @@ private:
 	void OnSetImportedIfListRequest(const FTbRefIfacesParentIfSetImportedIfListRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 
 	// signals
-	UFUNCTION(Category = "ApiGear|TbRefIfaces|ParentIf", BlueprintInternalUseOnly)
-	void OnLocalIfSignal(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Param);
+	void OnLocalIfSignalSignal(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Param) override;
 
-	UFUNCTION(Category = "ApiGear|TbRefIfaces|ParentIf", BlueprintInternalUseOnly)
-	void OnLocalIfSignalList(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param);
+	void OnLocalIfSignalListSignal(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param) override;
 
-	UFUNCTION(Category = "ApiGear|TbRefIfaces|ParentIf", BlueprintInternalUseOnly)
-	void OnImportedIfSignal(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param);
+	void OnImportedIfSignalSignal(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param) override;
 
-	UFUNCTION(Category = "ApiGear|TbRefIfaces|ParentIf", BlueprintInternalUseOnly)
-	void OnImportedIfSignalList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param);
+	void OnImportedIfSignalListSignal(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param) override;
 
-	UFUNCTION(Category = "ApiGear|TbRefIfaces|ParentIf", BlueprintInternalUseOnly)
-	void OnLocalIfChanged(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& LocalIf);
+	void OnLocalIfChanged(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& LocalIf) override;
 
-	UFUNCTION(Category = "ApiGear|TbRefIfaces|ParentIf", BlueprintInternalUseOnly)
-	void OnLocalIfListChanged(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& LocalIfList);
+	void OnLocalIfListChanged(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& LocalIfList) override;
 
-	UFUNCTION(Category = "ApiGear|TbRefIfaces|ParentIf", BlueprintInternalUseOnly)
-	void OnImportedIfChanged(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& ImportedIf);
+	void OnImportedIfChanged(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& ImportedIf) override;
 
-	UFUNCTION(Category = "ApiGear|TbRefIfaces|ParentIf", BlueprintInternalUseOnly)
-	void OnImportedIfListChanged(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& ImportedIfList);
-
-	// delegate handles
-	FDelegateHandle OnLocalIfChangedHandle;
-	FDelegateHandle OnLocalIfListChangedHandle;
-	FDelegateHandle OnImportedIfChangedHandle;
-	FDelegateHandle OnImportedIfListChangedHandle;
-	FDelegateHandle OnLocalIfSignalSignalHandle;
-	FDelegateHandle OnLocalIfSignalListSignalHandle;
-	FDelegateHandle OnImportedIfSignalSignalHandle;
-	FDelegateHandle OnImportedIfSignalListSignalHandle;
+	void OnImportedIfListChanged(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& ImportedIfList) override;
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbRefIfaces|ParentIf")

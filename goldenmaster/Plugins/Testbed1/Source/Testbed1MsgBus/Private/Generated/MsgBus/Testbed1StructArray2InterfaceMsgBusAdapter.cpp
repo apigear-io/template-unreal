@@ -148,51 +148,7 @@ void UTestbed1StructArray2InterfaceMsgBusAdapter::_setBackendService(TScriptInte
 	{
 		UTestbed1StructArray2InterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service Testbed1StructArray2Interface"));
-		if (OnPropBoolChangedHandle.IsValid())
-		{
-			BackendPublisher->OnPropBoolChanged.Remove(OnPropBoolChangedHandle);
-			OnPropBoolChangedHandle.Reset();
-		}
-		if (OnPropIntChangedHandle.IsValid())
-		{
-			BackendPublisher->OnPropIntChanged.Remove(OnPropIntChangedHandle);
-			OnPropIntChangedHandle.Reset();
-		}
-		if (OnPropFloatChangedHandle.IsValid())
-		{
-			BackendPublisher->OnPropFloatChanged.Remove(OnPropFloatChangedHandle);
-			OnPropFloatChangedHandle.Reset();
-		}
-		if (OnPropStringChangedHandle.IsValid())
-		{
-			BackendPublisher->OnPropStringChanged.Remove(OnPropStringChangedHandle);
-			OnPropStringChangedHandle.Reset();
-		}
-		if (OnPropEnumChangedHandle.IsValid())
-		{
-			BackendPublisher->OnPropEnumChanged.Remove(OnPropEnumChangedHandle);
-			OnPropEnumChangedHandle.Reset();
-		}
-		if (OnSigBoolSignalHandle.IsValid())
-		{
-			BackendPublisher->OnSigBoolSignal.Remove(OnSigBoolSignalHandle);
-			OnSigBoolSignalHandle.Reset();
-		}
-		if (OnSigIntSignalHandle.IsValid())
-		{
-			BackendPublisher->OnSigIntSignal.Remove(OnSigIntSignalHandle);
-			OnSigIntSignalHandle.Reset();
-		}
-		if (OnSigFloatSignalHandle.IsValid())
-		{
-			BackendPublisher->OnSigFloatSignal.Remove(OnSigFloatSignalHandle);
-			OnSigFloatSignalHandle.Reset();
-		}
-		if (OnSigStringSignalHandle.IsValid())
-		{
-			BackendPublisher->OnSigStringSignal.Remove(OnSigStringSignalHandle);
-			OnSigStringSignalHandle.Reset();
-		}
+		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITestbed1StructArray2InterfaceSubscriberInterface>(this));
 	}
 
 	// only set if interface is implemented
@@ -202,16 +158,7 @@ void UTestbed1StructArray2InterfaceMsgBusAdapter::_setBackendService(TScriptInte
 	BackendService = InService;
 	UTestbed1StructArray2InterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service Testbed1StructArray2Interface"));
-	// connect property changed signals or simple events
-	OnPropBoolChangedHandle = BackendPublisher->OnPropBoolChanged.AddUObject(this, &UTestbed1StructArray2InterfaceMsgBusAdapter::OnPropBoolChanged);
-	OnPropIntChangedHandle = BackendPublisher->OnPropIntChanged.AddUObject(this, &UTestbed1StructArray2InterfaceMsgBusAdapter::OnPropIntChanged);
-	OnPropFloatChangedHandle = BackendPublisher->OnPropFloatChanged.AddUObject(this, &UTestbed1StructArray2InterfaceMsgBusAdapter::OnPropFloatChanged);
-	OnPropStringChangedHandle = BackendPublisher->OnPropStringChanged.AddUObject(this, &UTestbed1StructArray2InterfaceMsgBusAdapter::OnPropStringChanged);
-	OnPropEnumChangedHandle = BackendPublisher->OnPropEnumChanged.AddUObject(this, &UTestbed1StructArray2InterfaceMsgBusAdapter::OnPropEnumChanged);
-	OnSigBoolSignalHandle = BackendPublisher->OnSigBoolSignal.AddUObject(this, &UTestbed1StructArray2InterfaceMsgBusAdapter::OnSigBool);
-	OnSigIntSignalHandle = BackendPublisher->OnSigIntSignal.AddUObject(this, &UTestbed1StructArray2InterfaceMsgBusAdapter::OnSigInt);
-	OnSigFloatSignalHandle = BackendPublisher->OnSigFloatSignal.AddUObject(this, &UTestbed1StructArray2InterfaceMsgBusAdapter::OnSigFloat);
-	OnSigStringSignalHandle = BackendPublisher->OnSigStringSignal.AddUObject(this, &UTestbed1StructArray2InterfaceMsgBusAdapter::OnSigString);
+	BackendPublisher->Subscribe(TWeakInterfacePtr<ITestbed1StructArray2InterfaceSubscriberInterface>(this));
 }
 
 void UTestbed1StructArray2InterfaceMsgBusAdapter::OnDiscoveryMessage(const FTestbed1StructArray2InterfaceDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -430,7 +377,7 @@ void UTestbed1StructArray2InterfaceMsgBusAdapter::OnFuncEnumRequest(const FTestb
 	}
 }
 
-void UTestbed1StructArray2InterfaceMsgBusAdapter::OnSigBool(const FTestbed1StructBoolWithArray& InParamBool)
+void UTestbed1StructArray2InterfaceMsgBusAdapter::OnSigBoolSignal(const FTestbed1StructBoolWithArray& InParamBool)
 {
 	TArray<FMessageAddress> ConnectedClients;
 	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
@@ -447,7 +394,7 @@ void UTestbed1StructArray2InterfaceMsgBusAdapter::OnSigBool(const FTestbed1Struc
 	}
 }
 
-void UTestbed1StructArray2InterfaceMsgBusAdapter::OnSigInt(const FTestbed1StructIntWithArray& InParamInt)
+void UTestbed1StructArray2InterfaceMsgBusAdapter::OnSigIntSignal(const FTestbed1StructIntWithArray& InParamInt)
 {
 	TArray<FMessageAddress> ConnectedClients;
 	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
@@ -464,7 +411,7 @@ void UTestbed1StructArray2InterfaceMsgBusAdapter::OnSigInt(const FTestbed1Struct
 	}
 }
 
-void UTestbed1StructArray2InterfaceMsgBusAdapter::OnSigFloat(const FTestbed1StructFloatWithArray& InParamFloat)
+void UTestbed1StructArray2InterfaceMsgBusAdapter::OnSigFloatSignal(const FTestbed1StructFloatWithArray& InParamFloat)
 {
 	TArray<FMessageAddress> ConnectedClients;
 	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
@@ -481,7 +428,7 @@ void UTestbed1StructArray2InterfaceMsgBusAdapter::OnSigFloat(const FTestbed1Stru
 	}
 }
 
-void UTestbed1StructArray2InterfaceMsgBusAdapter::OnSigString(const FTestbed1StructStringWithArray& InParamString)
+void UTestbed1StructArray2InterfaceMsgBusAdapter::OnSigStringSignal(const FTestbed1StructStringWithArray& InParamString)
 {
 	TArray<FMessageAddress> ConnectedClients;
 	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);

@@ -140,16 +140,7 @@ void UTbSame1SameStruct1InterfaceMsgBusAdapter::_setBackendService(TScriptInterf
 	{
 		UTbSame1SameStruct1InterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbSame1SameStruct1Interface"));
-		if (OnProp1ChangedHandle.IsValid())
-		{
-			BackendPublisher->OnProp1Changed.Remove(OnProp1ChangedHandle);
-			OnProp1ChangedHandle.Reset();
-		}
-		if (OnSig1SignalHandle.IsValid())
-		{
-			BackendPublisher->OnSig1Signal.Remove(OnSig1SignalHandle);
-			OnSig1SignalHandle.Reset();
-		}
+		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbSame1SameStruct1InterfaceSubscriberInterface>(this));
 	}
 
 	// only set if interface is implemented
@@ -159,9 +150,7 @@ void UTbSame1SameStruct1InterfaceMsgBusAdapter::_setBackendService(TScriptInterf
 	BackendService = InService;
 	UTbSame1SameStruct1InterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbSame1SameStruct1Interface"));
-	// connect property changed signals or simple events
-	OnProp1ChangedHandle = BackendPublisher->OnProp1Changed.AddUObject(this, &UTbSame1SameStruct1InterfaceMsgBusAdapter::OnProp1Changed);
-	OnSig1SignalHandle = BackendPublisher->OnSig1Signal.AddUObject(this, &UTbSame1SameStruct1InterfaceMsgBusAdapter::OnSig1);
+	BackendPublisher->Subscribe(TWeakInterfacePtr<ITbSame1SameStruct1InterfaceSubscriberInterface>(this));
 }
 
 void UTbSame1SameStruct1InterfaceMsgBusAdapter::OnDiscoveryMessage(const FTbSame1SameStruct1InterfaceDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -312,7 +301,7 @@ void UTbSame1SameStruct1InterfaceMsgBusAdapter::OnFunc1Request(const FTbSame1Sam
 	}
 }
 
-void UTbSame1SameStruct1InterfaceMsgBusAdapter::OnSig1(const FTbSame1Struct1& InParam1)
+void UTbSame1SameStruct1InterfaceMsgBusAdapter::OnSig1Signal(const FTbSame1Struct1& InParam1)
 {
 	TArray<FMessageAddress> ConnectedClients;
 	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);

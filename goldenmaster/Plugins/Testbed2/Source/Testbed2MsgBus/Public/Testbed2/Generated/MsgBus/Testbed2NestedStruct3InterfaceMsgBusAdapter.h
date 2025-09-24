@@ -54,7 +54,7 @@ DECLARE_LOG_CATEGORY_EXTERN(LogTestbed2NestedStruct3InterfaceMsgBusAdapter, Log,
 /// takes an object of the type ITestbed2NestedStruct3InterfaceInterface
 /// and holds the corresponding Testbed2NestedStruct3InterfaceOLinkSource OLink source object
 UCLASS(BlueprintType)
-class TESTBED2MSGBUS_API UTestbed2NestedStruct3InterfaceMsgBusAdapter : public UGameInstanceSubsystem
+class TESTBED2MSGBUS_API UTestbed2NestedStruct3InterfaceMsgBusAdapter : public UGameInstanceSubsystem, public ITestbed2NestedStruct3InterfaceSubscriberInterface
 {
 	GENERATED_BODY()
 public:
@@ -114,31 +114,17 @@ private:
 	void OnSetProp3Request(const FTestbed2NestedStruct3InterfaceSetProp3RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 
 	// signals
-	UFUNCTION(Category = "ApiGear|Testbed2|NestedStruct3Interface", BlueprintInternalUseOnly)
-	void OnSig1(const FTestbed2NestedStruct1& Param1);
+	void OnSig1Signal(const FTestbed2NestedStruct1& Param1) override;
 
-	UFUNCTION(Category = "ApiGear|Testbed2|NestedStruct3Interface", BlueprintInternalUseOnly)
-	void OnSig2(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2);
+	void OnSig2Signal(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2) override;
 
-	UFUNCTION(Category = "ApiGear|Testbed2|NestedStruct3Interface", BlueprintInternalUseOnly)
-	void OnSig3(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3);
+	void OnSig3Signal(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3) override;
 
-	UFUNCTION(Category = "ApiGear|Testbed2|NestedStruct3Interface", BlueprintInternalUseOnly)
-	void OnProp1Changed(const FTestbed2NestedStruct1& Prop1);
+	void OnProp1Changed(const FTestbed2NestedStruct1& Prop1) override;
 
-	UFUNCTION(Category = "ApiGear|Testbed2|NestedStruct3Interface", BlueprintInternalUseOnly)
-	void OnProp2Changed(const FTestbed2NestedStruct2& Prop2);
+	void OnProp2Changed(const FTestbed2NestedStruct2& Prop2) override;
 
-	UFUNCTION(Category = "ApiGear|Testbed2|NestedStruct3Interface", BlueprintInternalUseOnly)
-	void OnProp3Changed(const FTestbed2NestedStruct3& Prop3);
-
-	// delegate handles
-	FDelegateHandle OnProp1ChangedHandle;
-	FDelegateHandle OnProp2ChangedHandle;
-	FDelegateHandle OnProp3ChangedHandle;
-	FDelegateHandle OnSig1SignalHandle;
-	FDelegateHandle OnSig2SignalHandle;
-	FDelegateHandle OnSig3SignalHandle;
+	void OnProp3Changed(const FTestbed2NestedStruct3& Prop3) override;
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|Testbed2|NestedStruct3Interface")

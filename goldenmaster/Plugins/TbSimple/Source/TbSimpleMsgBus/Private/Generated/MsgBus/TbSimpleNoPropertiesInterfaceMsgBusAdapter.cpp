@@ -140,16 +140,7 @@ void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::_setBackendService(TScriptInte
 	{
 		UTbSimpleNoPropertiesInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleNoPropertiesInterface"));
-		if (OnSigVoidSignalHandle.IsValid())
-		{
-			BackendPublisher->OnSigVoidSignal.Remove(OnSigVoidSignalHandle);
-			OnSigVoidSignalHandle.Reset();
-		}
-		if (OnSigBoolSignalHandle.IsValid())
-		{
-			BackendPublisher->OnSigBoolSignal.Remove(OnSigBoolSignalHandle);
-			OnSigBoolSignalHandle.Reset();
-		}
+		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbSimpleNoPropertiesInterfaceSubscriberInterface>(this));
 	}
 
 	// only set if interface is implemented
@@ -159,9 +150,7 @@ void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::_setBackendService(TScriptInte
 	BackendService = InService;
 	UTbSimpleNoPropertiesInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbSimpleNoPropertiesInterface"));
-	// connect property changed signals or simple events
-	OnSigVoidSignalHandle = BackendPublisher->OnSigVoidSignal.AddUObject(this, &UTbSimpleNoPropertiesInterfaceMsgBusAdapter::OnSigVoid);
-	OnSigBoolSignalHandle = BackendPublisher->OnSigBoolSignal.AddUObject(this, &UTbSimpleNoPropertiesInterfaceMsgBusAdapter::OnSigBool);
+	BackendPublisher->Subscribe(TWeakInterfacePtr<ITbSimpleNoPropertiesInterfaceSubscriberInterface>(this));
 }
 
 void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::OnDiscoveryMessage(const FTbSimpleNoPropertiesInterfaceDiscoveryMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -316,7 +305,7 @@ void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::OnFuncBoolRequest(const FTbSim
 	}
 }
 
-void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::OnSigVoid()
+void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::OnSigVoidSignal()
 {
 	TArray<FMessageAddress> ConnectedClients;
 	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
@@ -332,7 +321,7 @@ void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::OnSigVoid()
 	}
 }
 
-void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::OnSigBool(bool bInParamBool)
+void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::OnSigBoolSignal(bool bInParamBool)
 {
 	TArray<FMessageAddress> ConnectedClients;
 	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);

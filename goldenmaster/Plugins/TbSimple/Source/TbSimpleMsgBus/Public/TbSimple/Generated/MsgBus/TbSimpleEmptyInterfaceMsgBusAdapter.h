@@ -42,7 +42,7 @@ DECLARE_LOG_CATEGORY_EXTERN(LogTbSimpleEmptyInterfaceMsgBusAdapter, Log, All);
 /// takes an object of the type ITbSimpleEmptyInterfaceInterface
 /// and holds the corresponding TbSimpleEmptyInterfaceOLinkSource OLink source object
 UCLASS(BlueprintType)
-class TBSIMPLEMSGBUS_API UTbSimpleEmptyInterfaceMsgBusAdapter : public UGameInstanceSubsystem
+class TBSIMPLEMSGBUS_API UTbSimpleEmptyInterfaceMsgBusAdapter : public UGameInstanceSubsystem, public ITbSimpleEmptyInterfaceSubscriberInterface
 {
 	GENERATED_BODY()
 public:
@@ -96,8 +96,6 @@ private:
 	void OnClientDisconnected(const FTbSimpleEmptyInterfaceClientDisconnectMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 
 	// signals
-
-	// delegate handles
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSimple|EmptyInterface")

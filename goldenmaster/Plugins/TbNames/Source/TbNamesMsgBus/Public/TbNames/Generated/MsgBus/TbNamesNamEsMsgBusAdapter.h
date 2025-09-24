@@ -54,7 +54,7 @@ DECLARE_LOG_CATEGORY_EXTERN(LogTbNamesNamEsMsgBusAdapter, Log, All);
 /// takes an object of the type ITbNamesNamEsInterface
 /// and holds the corresponding TbNamesNamEsOLinkSource OLink source object
 UCLASS(BlueprintType)
-class TBNAMESMSGBUS_API UTbNamesNamEsMsgBusAdapter : public UGameInstanceSubsystem
+class TBNAMESMSGBUS_API UTbNamesNamEsMsgBusAdapter : public UGameInstanceSubsystem, public ITbNamesNamEsSubscriberInterface
 {
 	GENERATED_BODY()
 public:
@@ -114,31 +114,17 @@ private:
 	void OnSetEnumPropertyRequest(const FTbNamesNamEsSetEnumPropertyRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 
 	// signals
-	UFUNCTION(Category = "ApiGear|TbNames|NamEs", BlueprintInternalUseOnly)
-	void OnSomeSignal(bool bSomeParam);
+	void OnSomeSignalSignal(bool bSomeParam) override;
 
-	UFUNCTION(Category = "ApiGear|TbNames|NamEs", BlueprintInternalUseOnly)
-	void OnSomeSignal2(bool bSomeParam);
+	void OnSomeSignal2Signal(bool bSomeParam) override;
 
-	UFUNCTION(Category = "ApiGear|TbNames|NamEs", BlueprintInternalUseOnly)
-	void OnSwitchChanged(bool bSwitch);
+	void OnSwitchChanged(bool bSwitch) override;
 
-	UFUNCTION(Category = "ApiGear|TbNames|NamEs", BlueprintInternalUseOnly)
-	void OnSomePropertyChanged(int32 SomeProperty);
+	void OnSomePropertyChanged(int32 SomeProperty) override;
 
-	UFUNCTION(Category = "ApiGear|TbNames|NamEs", BlueprintInternalUseOnly)
-	void OnSomePoperty2Changed(int32 SomePoperty2);
+	void OnSomePoperty2Changed(int32 SomePoperty2) override;
 
-	UFUNCTION(Category = "ApiGear|TbNames|NamEs", BlueprintInternalUseOnly)
-	void OnEnumPropertyChanged(ETbNamesEnum_With_Under_scores EnumProperty);
-
-	// delegate handles
-	FDelegateHandle OnSwitchChangedHandle;
-	FDelegateHandle OnSomePropertyChangedHandle;
-	FDelegateHandle OnSomePoperty2ChangedHandle;
-	FDelegateHandle OnEnumPropertyChangedHandle;
-	FDelegateHandle OnSomeSignalSignalHandle;
-	FDelegateHandle OnSomeSignal2SignalHandle;
+	void OnEnumPropertyChanged(ETbNamesEnum_With_Under_scores EnumProperty) override;
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbNames|NamEs")
