@@ -67,7 +67,11 @@ limitations under the License.
         auto len{{snake .Name}} = {{$cppropName}}.Num();
         {{jniToReturnType .}} {{$localName}} = Env->New{{jniToEnvNameType .}}Array(len{{snake .Name}});
         if ({{$localName}}  == NULL){/*Log error, skip?*/};
-        Env->Set{{jniToEnvNameType .}}ArrayRegion({{$localName}}, 0, len{{snake .Name}}, {{$cppropName}}.GetData());
+        Env->Set{{jniToEnvNameType .}}ArrayRegion({{$localName}}, 0, len{{snake .Name}}, {{- if (eq .KindType "int64") -}}
+        reinterpret_cast<const jlong*>({{$cppropName}}.GetData()));
+        {{- else -}}
+        {{$cppropName}}.GetData());
+        {{- end }}
         {{- else if not (eq .KindType "extern")}}
         {{jniToReturnType .}} {{$localName}} = {{$javaClassConverter}}::makeJava{{Camel .Type }}Array(Env, {{$cppropName}});
         {{- end }}
@@ -500,7 +504,11 @@ JNI_METHOD void {{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}Result(JNIEnv* Env
     {{ jniToReturnType .Return }} localArray = ({{ jniToReturnType .Return }})result;
     jsize len = Env->GetArrayLength(localArray);
     cpp_result.Reserve(len);
-    Env->Get{{jniToEnvNameType .Return}}ArrayRegion(result, 0,  len, cpp_result.GetData());
+    Env->Get{{jniToEnvNameType .Return}}ArrayRegion(result, 0,  len, {{- if (eq .Return.KindType "int64") -}}
+        reinterpret_cast<jlong*>(cpp_result.GetData()));
+        {{- else -}}
+        cpp_result.GetData());
+        {{- end }}
     Env->DeleteLocalRef(localArray);
     {{- else if not (eq .Return.KindType "extern")}}
     {{$javaClassConverter}}::fill{{Camel .Return.Type }}Array(Env, result, cpp_result);

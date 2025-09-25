@@ -89,17 +89,21 @@ void {{$className }}::fill{{Camel .Name }}(JNIEnv* env, jobject input, {{$struct
     {{$structName}}.{{$cppFieldName}}.Reserve(len{{snake .Name}});
     TArray<jboolean> Temp;
     Temp.SetNumUninitialized(len{{snake .Name}});
-    Env->GetBooleanArrayRegion({{snake .Name}}_value, 0, len{{snake .Name}}, Temp.GetData());
+    env->GetBooleanArrayRegion({{snake .Name}}_value, 0, len{{snake .Name}}, Temp.GetData());
     for (int i = 0; i < len{{snake .Name}}; i++)
     {
         {{$structName}}.{{$cppFieldName}}.Add(Temp[i] == JNI_TRUE);
     }
-    Env->DeleteLocalRef({{snake .Name}}_value);
+    env->DeleteLocalRef({{snake .Name}}_value);
 
 {{- else if .IsPrimitive }}
     jsize len{{snake .Name}} = env->GetArrayLength({{snake .Name}}_value);
     {{$structName}}.{{$cppFieldName}}.Reserve(len{{snake .Name}});
-    env->Get{{jniToEnvNameType .}}ArrayRegion({{snake .Name}}_value, 0,  len{{snake .Name}}, {{$structName}}.{{$cppFieldName}}.GetData());
+    env->Get{{jniToEnvNameType .}}ArrayRegion({{snake .Name}}_value, 0,  len{{snake .Name}}, {{- if (eq .KindType "int64") -}}
+        reinterpret_cast<jlong*>({{$structName}}.{{$cppFieldName}}.GetData()));
+        {{- else -}}
+        {{$structName}}.{{$cppFieldName}}.GetData());
+        {{- end }}
 {{- else if not (eq .KindType "extern")}}
     {{- $otherModuleClassName := printf "%sDataJavaConverter" ( Camel .Schema.Import ) }}
     {{if not (eq $otherModuleClassName  "DataJavaConverter" )}}{{$otherModuleClassName}}::{{end -}}
@@ -173,7 +177,7 @@ jobject {{$className }}::makeJava{{Camel .Name }}(JNIEnv* env, const {{$structTy
         {{$cppFieldName}}StringViews.Add(FStringView(Str));
     }
     auto {{$tmpObjName}}Wrapper = FJavaHelper::ToJavaStringArray(env,{{$cppFieldName}}StringViews);
-    jobjectArray {{$tmpObjName}} = static_cast<jobjectArray>(Env->NewLocalRef(*{{$tmpObjName}}Wrapper));
+    jobjectArray {{$tmpObjName}} = static_cast<jobjectArray>(env->NewLocalRef(*{{$tmpObjName}}Wrapper));
 {{- else if (eq .KindType "bool")}}
     auto len{{snake .Name}} = {{$structName}}.{{$cppFieldName}}.Num();
     TArray<jboolean> Temp;
@@ -182,12 +186,16 @@ jobject {{$className }}::makeJava{{Camel .Name }}(JNIEnv* env, const {{$structTy
     {
         Temp[i] = {{$structName}}.{{$cppFieldName}}[i] ? JNI_TRUE : JNI_FALSE;
     }
-    Env->SetBooleanArrayRegion({{snake .Name}}_value, 0, len{{snake .Name}}, Temp.GetData());
+    env->SetBooleanArrayRegion({{snake .Name}}_value, 0, len{{snake .Name}}, Temp.GetData());
 {{- else if .IsPrimitive }}
     auto len{{snake .Name}} = {{$structName}}.{{$cppFieldName}}.Num();
     jFieldId_{{snake .Name}} = (*env)->New{{jniToEnvNameType .}}Array(len{{snake .Name}});
     if (jFieldId_{{snake .Name}}  == NULL){/*Log error, skip?*/};
-    env->Set{{jniToEnvNameType .}}ArrayRegion(jFieldId_{{snake .Name}}, 0, len{{snake .Name}}, {{$structName}}.{{$cppFieldName}}.GetData());
+    env->Set{{jniToEnvNameType .}}ArrayRegion(jFieldId_{{snake .Name}}, 0, len{{snake .Name}}, {{- if (eq .KindType "int64") -}}
+        reinterpret_cast<const jlong*>({{$structName}}.{{$cppFieldName}}.GetData()));
+        {{- else -}}
+        {{$structName}}.{{$cppFieldName}}.GetData());
+        {{- end }}
 {{- else if not (eq .KindType "extern")}}
     {{- $otherModuleClassName := printf "%sDataJavaConverter" ( Camel .Schema.Import ) }}
     jobjectArray {{$tmpObjName}} = {{if not (eq $otherModuleClassName  "DataJavaConverter" )}}{{$otherModuleClassName}}::{{end -}}
@@ -205,7 +213,7 @@ jobject {{$className }}::makeJava{{Camel .Name }}(JNIEnv* env, const {{$structTy
     env->DeleteLocalRef({{$tmpObjName}});
 {{- else if eq .KindType "string"}}
     auto {{$tmpObjName}}Wrapper =  FJavaHelper::ToJavaString(env,{{$in_cppStructName}}.{{$cppFieldName}});
-    jstring {{$tmpObjName}} = static_cast<jstring>(Env->NewLocalRef(*{{$tmpObjName}}Wrapper));
+    jstring {{$tmpObjName}} = static_cast<jstring>(env->NewLocalRef(*{{$tmpObjName}}Wrapper));
     env->SetObjectField(javaObjInstance, jFieldId_{{snake .Name}}, {{$tmpObjName}});
     // in UE 5.6 no need for new local ref
 {{- else if .IsPrimitive }}

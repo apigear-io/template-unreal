@@ -34,18 +34,22 @@
         {{- else if (eq .KindType "bool")}}
         auto len{{snake .Name}} = {{$cppropName}}.Num();
         {{jniToReturnType .}} {{$localName}} = Env->New{{jniToEnvNameType .}}Array(len{{snake .Name}});
-        TArray<jboolean> Temp;
-        Temp.SetNumUninitialized(len{{snake .Name}});
+        TArray<jboolean> Temp{{$localName}};
+        Temp{{$localName}}.SetNumUninitialized(len{{snake .Name}});
         for (int i = 0; i < len{{snake .Name}}; i++)
         {
-            Temp[i] = {{$cppropName}}[i] ? JNI_TRUE : JNI_FALSE;
+            Temp{{$localName}}[i] = {{$cppropName}}[i] ? JNI_TRUE : JNI_FALSE;
         }
-        Env->SetBooleanArrayRegion({{$localName}}, 0, len{{snake .Name}}, Temp.GetData());
+        Env->SetBooleanArrayRegion({{$localName}}, 0, len{{snake .Name}}, Temp{{$localName}}.GetData());
         {{- else if and (.IsPrimitive ) (not (eq .KindType "enum")) }}
         auto len{{snake .Name}} = {{$cppropName}}.Num();
         {{jniToReturnType .}} {{$localName}} = Env->New{{jniToEnvNameType .}}Array(len{{snake .Name}});
         if ({{$localName}}  == NULL){/*Log error, skip?*/};
-        Env->Set{{jniToEnvNameType .}}ArrayRegion({{$localName}}, 0, len{{snake .Name}}, {{$cppropName}}.GetData());
+        Env->Set{{jniToEnvNameType .}}ArrayRegion({{$localName}}, 0, len{{snake .Name}}, {{- if (eq .KindType "int64") -}}
+        reinterpret_cast<const jlong*>({{$cppropName}}.GetData()));
+        {{- else -}}
+        {{$cppropName}}.GetData());
+        {{- end }}
         {{- else if not (eq .KindType "extern")}}
         {{jniToReturnType .}} {{$localName}} = {{$javaClassConverter}}::makeJava{{Camel .Type }}Array(Env, {{$cppropName}});
         {{- end }}
@@ -70,19 +74,23 @@
     jbooleanArray l_java{{Camel .Name}}Array = (jbooleanArray){{$javaPropName}};
     jsize len{{snake .Name}} = Env->GetArrayLength(l_java{{Camel .Name}}Array);
     {{$local_value}}.Reserve(len{{snake .Name}});
-    TArray<jboolean> Temp;
-    Temp.SetNumUninitialized(len{{snake .Name}});
-    Env->GetBooleanArrayRegion(l_java{{Camel .Name}}Array, 0, len{{snake .Name}}, Temp.GetData());
+    TArray<jboolean> Temp{{Camel .Name}};
+    Temp{{Camel .Name}}.SetNumUninitialized(len{{snake .Name}});
+    Env->GetBooleanArrayRegion(l_java{{Camel .Name}}Array, 0, len{{snake .Name}}, Temp{{Camel .Name}}.GetData());
     for (int i = 0; i < len{{snake .Name}}; i++)
     {
-        {{$local_value}}.Add(Temp[i] == JNI_TRUE);
+        {{$local_value}}.Add(Temp{{Camel .Name}}[i] == JNI_TRUE);
     }
     Env->DeleteLocalRef(l_java{{Camel .Name}}Array);
     {{- else if .IsPrimitive }}
     {{ jniToReturnType . }} l_java{{Camel .Name}}Array = ({{ jniToReturnType . }}){{$javaPropName}};
     jsize len{{snake .Name}} = Env->GetArrayLength(l_java{{Camel .Name}}Array);
     {{$local_value}}.Reserve(len{{snake .Name}});
-    Env->Get{{jniToEnvNameType .}}ArrayRegion({{$javaPropName}}, 0,  len{{snake .Name}}, {{$local_value}}.GetData());
+    Env->Get{{jniToEnvNameType .}}ArrayRegion({{$javaPropName}}, 0,  len{{snake .Name}}, {{- if (eq .KindType "int64") -}}
+        reinterpret_cast<jlong*>({{$local_value}}.GetData()));
+        {{- else -}}
+        {{$local_value}}.GetData());
+        {{- end }}
     Env->DeleteLocalRef(l_java{{Camel .Name}}Array);
     {{- else if not (eq .KindType "extern")}}
     {{$javaClassConverter}}::fill{{Camel .Type }}Array(Env, {{$javaPropName}}, {{$local_value}});
@@ -418,7 +426,7 @@ JNI_METHOD {{ jniToReturnType .Return}} {{$jniFullFuncPrefix}}_native{{ Camel   
         {{jniToReturnType .Return}} {{$localName}} = Env->New{{jniToEnvNameType .Return}}Array(len);
         TArray<jboolean> Temp;
         Temp.SetNumUninitialized(len);
-        for (int i = 0; i < len{; i++)
+        for (int i = 0; i < len; i++)
         {
             Temp[i] = {{$cppropName}}[i] ? JNI_TRUE : JNI_FALSE;
         }
@@ -427,7 +435,11 @@ JNI_METHOD {{ jniToReturnType .Return}} {{$jniFullFuncPrefix}}_native{{ Camel   
         auto len = {{$cppropName}}.Num();
         {{jniToReturnType .Return}} {{$localName}} = Env->New{{jniToEnvNameType .Return}}Array(len);
         if ({{$localName}}  == NULL){/*Log error, skip?*/};
-        Env->Set{{jniToEnvNameType .Return}}ArrayRegion({{$localName}}, 0, len, {{$cppropName}}.GetData());
+        Env->Set{{jniToEnvNameType .Return}}ArrayRegion({{$localName}}, 0, len, {{- if (eq .Return.KindType "int64") -}}
+        reinterpret_cast<const jlong*>({{$cppropName}}.GetData()));
+        {{- else -}}
+        {{$cppropName}}.GetData());
+        {{- end }}
 	{{- else if not (eq .Return.KindType "extern")}}
         {{jniToReturnType .Return}} {{$localName}} = {{$javaClassConverter}}::makeJava{{Camel .Return.Type }}Array(Env, {{$cppropName}});
 	{{- end }}
