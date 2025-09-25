@@ -59,8 +59,8 @@ public:
 {{- end }}
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|{{Camel .Module.Name}}|{{$IfaceName}}|Jni|Remote", DisplayName = "Connection Status Changed")
-	FApiGearJniConnectionStatusChangedDelegateBP _ConnectionStatusChangedBP;
-	FApiGearJniConnectionStatusChangedDelegate _ConnectionStatusChanged;
+	F{{$ModuleName}}JniConnectionStatusChangedDelegateBP _ConnectionStatusChangedBP;
+	F{{$ModuleName}}JniConnectionStatusChangedDelegate _ConnectionStatusChanged;
 
 	/**
 	 * Informs about the subscription state of the interface client.
