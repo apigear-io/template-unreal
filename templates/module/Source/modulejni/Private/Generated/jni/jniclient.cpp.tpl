@@ -277,7 +277,9 @@ void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
 #endif
         return{{ if not .Return.IsVoid }} {{ueDefault "" .Return }}{{ end}};
     }
+    {{- if not .Return.IsVoid }}
     TPromise<{{ueReturn "" .Return}}> Promise;
+    {{- end}}
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
     if (m_javaJniClientClass == nullptr)
