@@ -1,4 +1,4 @@
-#include "JavaServiceStarter.h"
+#include "{{Camel .Module.Name}}JavaServiceStarter.h"
 #if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
@@ -12,7 +12,7 @@
 
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-jobject ApiGear::JavaServiceStarter::startAndroidServer(std::string fullJavaClassName, std::string fullJavaUnrealServiceTypeString)
+jobject ApiGear::{{Camel .Module.Name}}JavaServiceStarter::startAndroidServer(std::string fullJavaClassName, std::string fullJavaUnrealServiceTypeString)
 {
     JNIEnv* Env = FAndroidApplication::GetJavaEnv();
         
@@ -20,14 +20,14 @@ jobject ApiGear::JavaServiceStarter::startAndroidServer(std::string fullJavaClas
     jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef(fullJavaClassName.c_str());
     if (BridgeClass == nullptr)
     {
-		UE_LOG(LogTemp, Warning, TEXT("JavaServiceStarter:start; CLASS not found"));
+		UE_LOG(LogTemp, Warning, TEXT("{{Camel .Module.Name}}JavaServiceStarter:start; CLASS not found"));
         return nullptr;
     }
 	auto functionSignature = "(Landroid/content/Context;)L" + fullJavaUnrealServiceTypeString + ";";
 	jmethodID StartMethod = Env->GetStaticMethodID(BridgeClass, "start", functionSignature.c_str());
     if (StartMethod == nullptr)
     {
-		UE_LOG(LogTemp, Warning, TEXT( "JavaServiceStarter:start; method not found"));
+		UE_LOG(LogTemp, Warning, TEXT( "{{Camel .Module.Name}}JavaServiceStarter:start; method not found"));
 		return nullptr;
     }
     jobject Activity = FJavaWrapper::GameActivityThis;
@@ -35,7 +35,7 @@ jobject ApiGear::JavaServiceStarter::startAndroidServer(std::string fullJavaClas
 }
 #endif
 
-void ApiGear::JavaServiceStarter::stopAdnroidServer(std::string fullJavaClassName)
+void ApiGear::{{Camel .Module.Name}}JavaServiceStarter::stopAdnroidServer(std::string fullJavaClassName)
 {
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
     JNIEnv* Env = FAndroidApplication::GetJavaEnv();
@@ -43,13 +43,13 @@ void ApiGear::JavaServiceStarter::stopAdnroidServer(std::string fullJavaClassNam
     jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef(fullJavaClassName.c_str());
     if (BridgeClass == nullptr)
     {
-		UE_LOG(LogTemp, Warning, TEXT( "JavaServiceStarter:stop; CLASS not found"));
+		UE_LOG(LogTemp, Warning, TEXT( "{{Camel .Module.Name}}JavaServiceStarter:stop; CLASS not found"));
         return;
     }
     jmethodID StartMethod = Env->GetStaticMethodID(BridgeClass, "stop", "(Landroid/content/Context;)V");
     if (StartMethod == nullptr)
     {
-		UE_LOG(LogTemp, Warning, TEXT("JavaServiceStarter:stop; method not found"));
+		UE_LOG(LogTemp, Warning, TEXT("{{Camel .Module.Name}}JavaServiceStarter:stop; method not found"));
         return;
     }
     jobject Activity = FJavaWrapper::GameActivityThis; // Unreal’s activity
