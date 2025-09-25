@@ -104,7 +104,7 @@
 
 #include "{{$ModuleName}}/Generated/Jni/{{$Iface}}JniAdapter.h"
 #include "{{$ModuleName}}/Generated/Jni/{{$ModuleName}}DataJavaConverter.h"
-#include "JavaServiceStarter.h"
+#include "{{Camel .Module.Name}}JavaServiceStarter.h"
 #include "Async/Future.h"
 #include "Async/Async.h"
 #include "Engine/Engine.h"
@@ -169,7 +169,7 @@ void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
     m_javaJniServiceClass =  FAndroidApplication::FindJavaClassGlobalRef("{{$javaClassPath}}/{{$javaClassName}}");
-	jobject localRef = ApiGear::JavaServiceStarter::startAndroidServer("{{$javaClassPath}}/{{$javaClassName}}Starter", "{{$javaIfClassFull}}");
+	jobject localRef = ApiGear::{{Camel .Module.Name}}JavaServiceStarter::startAndroidServer("{{$javaClassPath}}/{{$javaClassName}}Starter", "{{$javaIfClassFull}}");
     m_javaJniServiceInstance = FAndroidApplication::GetJavaEnv()->NewGlobalRef(localRef);
     FAndroidApplication::GetJavaEnv()->DeleteLocalRef(localRef);
 #endif
@@ -179,7 +179,7 @@ void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
 void {{$Class}}::Deinitialize()
 {
 	callJniServiceReady(false);
-	ApiGear::JavaServiceStarter::stopAdnroidServer("{{$javaClassPath}}/{{$javaClassName}}Starter");
+	ApiGear::{{Camel .Module.Name}}JavaServiceStarter::stopAdnroidServer("{{$javaClassPath}}/{{$javaClassName}}Starter");
 	g{{$Class}}Handle = nullptr;
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
