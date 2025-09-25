@@ -4,7 +4,7 @@
 
 namespace ApiGear
 {
-class JavaServiceStarter
+class {{Camel .Module.Name}}JavaServiceStarter
 {
 public:
 #if PLATFORM_ANDROID
