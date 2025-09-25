@@ -12,9 +12,9 @@
 
 		{{- $moduleName := .Module.Name }}
 		{{- $service_package_name := printf "%s_android_service" (camel $moduleName) }} 
-		<addPermission android:name="{{$moduleName}}.{{$service_package_name}}.PERMISSION_BIND"/>
+		<addPermission android:name="{{camel $moduleName}}.{{$service_package_name}}.PERMISSION_BIND"/>
 		<addElements tag="queries">
-				<package android:name="{{$moduleName}}.{{$service_package_name}}" />
+				<package android:name="{{camel $moduleName}}.{{$service_package_name}}" />
 		</addElements>
 
 		<addElements tag="application">
@@ -22,7 +22,7 @@
 		{{- range .Module.Interfaces -}}
 		<service
 			{{- $service_package_name := printf "%s_android_service" (camel $moduleName) }} 
-			android:name="{{$moduleName}}.{{$service_package_name}}.{{Camel .Name}}ServiceAdapter"
+			android:name="{{camel $moduleName}}.{{$service_package_name}}.{{Camel .Name}}ServiceAdapter"
 			android:enabled="true"
 			android:exported="true">
 		</service>
@@ -43,9 +43,9 @@
 		<copyDir src="$S(PluginDir)/android/{{camel $moduleName}}/{{$api_package_name}}" dst="$S(BuildDir)/JavaLibs/{{$api_package_name}}" />
 		<copyDir src="$S(PluginDir)/android/{{camel $moduleName}}/{{$messenger_package_name}}" dst="$S(BuildDir)/JavaLibs/{{$messenger_package_name}}" />
 		<copyDir src="$S(PluginDir)/android/{{camel $moduleName}}/{{$impl_package_name}}" dst="$S(BuildDir)/JavaLibs/{{$impl_package_name}}" />
-		{{- $jniservice_name:= printf "%sjniservice" $moduleName }}
+		{{- $jniservice_name:= printf "%sjniservice" (camel $moduleName ) }}
 		<copyDir src="$S(PluginDir)/android/{{camel $moduleName}}/{{$jniservice_name}}" dst="$S(BuildDir)/src/{{$jniservice_name}}" />
-		{{- $jniclient_name:= printf "%sjniclient" $moduleName }}
+		{{- $jniclient_name:= printf "%sjniclient" (camel $moduleName ) }}
 		<copyDir src="$S(PluginDir)/android/{{camel $moduleName}}/{{$jniclient_name}}" dst="$S(BuildDir)/src/{{$jniclient_name}}" />
 	</resourceCopies>
 
@@ -109,15 +109,15 @@ tasks.configureEach { task ->
 	<proguardAdditions>
 		<insert>
 		{{- range .Module.Interfaces -}}
-			{{- $jniservice_name:= printf "%sjniservice" $moduleName }}
-			-keep class {{$moduleName}}.{{$jniservice_name}}.{{Camel .Name}}JniService {
+			{{- $jniservice_name:= printf "%sjniservice" (camel $moduleName) }}
+			-keep class {{camel $moduleName}}.{{$jniservice_name}}.{{Camel .Name}}JniService {
 			public *;
 			}
-			-keep class {{$moduleName}}.{{$jniservice_name}}.{{Camel .Name}}JniServiceStarter {
+			-keep class {{camel $moduleName}}.{{$jniservice_name}}.{{Camel .Name}}JniServiceStarter {
 			public *;
 			}
-			{{- $jniclient_name:= printf "%sjniclient" $moduleName }}
-			-keep class {{$moduleName}}.{{$jniclient_name}}.{{Camel .Name}}JniClient {
+			{{- $jniclient_name:= printf "%sjniclient"  (camel $moduleName) }}
+			-keep class {{camel $moduleName}}.{{$jniclient_name}}.{{Camel .Name}}JniClient {
 			public *;
 			}
 		{{- end }}
