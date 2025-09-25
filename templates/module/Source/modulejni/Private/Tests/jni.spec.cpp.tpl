@@ -70,7 +70,9 @@ void {{$Class}}JniSpec::Define()
 				TestDone.Execute();
 			}
 		});
-		{{- $service_package_name := printf "%s.%s_android_service" (camel $ModuleName) (camel $ModuleName) }} 
+		//Test packge name should start with name of the  pacakge declared by the test application in e.g. defaultEngine.ini in [/Script/AndroidRuntimeSettings.AndroidRuntimeSettings] section.
+		{{- $projectName := .System.Name }}
+		{{- $service_package_name := printf "com.%s" (camel $projectName) }} 
 		FString servicePackage = "{{$service_package_name}}";
 		JniClient->_bindToService(servicePackage, "TestConnectionId");
 		#else
@@ -82,7 +84,6 @@ void {{$Class}}JniSpec::Define()
 		{
 			#if PLATFORM_ANDROID && USE_ANDROID_JNI
 			U{{$DisplayName}}JniClient* JniClient =ImplFixture->GetClient();
-			JniClient->_unbind();
 			#endif
 			ImplFixture.Reset();
 	});
