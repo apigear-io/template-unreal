@@ -2,6 +2,7 @@
 #include "Testbed2/Generated/api/Testbed2NestedStruct1InterfaceInterface.h"
 #include "Async/Async.h"
 #include "Async/TaskGraphInterfaces.h"
+#include "Runtime/Launch/Resources/Version.h"
 
 void UTestbed2NestedStruct1InterfacePublisher::BroadcastSig1Signal(const FTestbed2NestedStruct1& Param1)
 {
@@ -20,10 +21,6 @@ void UTestbed2NestedStruct1InterfacePublisher::BroadcastSig1Signal(const FTestbe
 				Iface->OnSig1Signal(Param1);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ITestbed2NestedStruct1InterfaceBPSubscriberInterface>> BPSubscribersCopy;
@@ -40,10 +37,6 @@ void UTestbed2NestedStruct1InterfacePublisher::BroadcastSig1Signal(const FTestbe
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ITestbed2NestedStruct1InterfaceBPSubscriberInterface::Execute_OnSig1Signal(Obj, Param1);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -62,16 +55,11 @@ void UTestbed2NestedStruct1InterfacePublisher::BroadcastSig1Signal(const FTestbe
 				{
 					ITestbed2NestedStruct1InterfaceBPSubscriberInterface::Execute_OnSig1Signal(Obj, Param1);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UTestbed2NestedStruct1InterfacePublisher::BroadcastProp1Changed(UPARAM(DisplayName = "Prop1") const FTestbed2NestedStruct1& InProp1)
@@ -91,10 +79,6 @@ void UTestbed2NestedStruct1InterfacePublisher::BroadcastProp1Changed(UPARAM(Disp
 				Iface->OnProp1Changed(InProp1);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ITestbed2NestedStruct1InterfaceBPSubscriberInterface>> BPSubscribersCopy;
@@ -111,10 +95,6 @@ void UTestbed2NestedStruct1InterfacePublisher::BroadcastProp1Changed(UPARAM(Disp
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ITestbed2NestedStruct1InterfaceBPSubscriberInterface::Execute_OnProp1Changed(Obj, InProp1);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -133,16 +113,11 @@ void UTestbed2NestedStruct1InterfacePublisher::BroadcastProp1Changed(UPARAM(Disp
 				{
 					ITestbed2NestedStruct1InterfaceBPSubscriberInterface::Execute_OnProp1Changed(Obj, InProp1);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UTestbed2NestedStruct1InterfacePublisher::Subscribe(const TScriptInterface<ITestbed2NestedStruct1InterfaceBPSubscriberInterface>& Subscriber)
@@ -179,4 +154,30 @@ void UTestbed2NestedStruct1InterfacePublisher::Unsubscribe(const TWeakInterfaceP
 {
 	FWriteScopeLock WriteLock(SubscribersLock);
 	Subscribers.Remove(Subscriber);
+}
+
+void UTestbed2NestedStruct1InterfacePublisher::CleanUpSubscribers()
+{
+#if (ENGINE_MAJOR_VERSION >= 5)
+	EAllowShrinking AllowShrinking = EAllowShrinking::No;
+#else
+	bool AllowShrinking = false;
+#endif
+
+	{
+		FWriteScopeLock WriteLock(SubscribersLock);
+		Subscribers.RemoveAllSwap([](const TWeakInterfacePtr<ITestbed2NestedStruct1InterfaceSubscriberInterface>& Subscriber)
+			{
+			return !Subscriber.IsValid();
+		},
+			AllowShrinking);
+	}
+	{
+		FWriteScopeLock WriteLock(BPSubscribersLock);
+		BPSubscribers.RemoveAllSwap([](const TScriptInterface<ITestbed2NestedStruct1InterfaceBPSubscriberInterface>& Subscriber)
+			{
+			return Subscriber.GetObject() == nullptr;
+		},
+			AllowShrinking);
+	}
 }

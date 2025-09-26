@@ -10,6 +10,7 @@
 #include "{{$ModuleName}}/Generated/api/{{$Class}}Interface.h"
 #include "Async/Async.h"
 #include "Async/TaskGraphInterfaces.h"
+#include "Runtime/Launch/Resources/Version.h"
 {{- with .Interface }}
 {{- if or (len .Properties) (len .Signals) }}{{- nl }}{{ end }}
 
@@ -32,10 +33,6 @@ void U{{$Class}}Publisher::Broadcast{{Camel .Name}}Signal({{ueParams "" .Params}
 				Iface->On{{Camel .Name}}Signal({{ueVars "" .Params}});
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<I{{$Class}}BPSubscriberInterface>> BPSubscribersCopy;
@@ -52,10 +49,6 @@ void U{{$Class}}Publisher::Broadcast{{Camel .Name}}Signal({{ueParams "" .Params}
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				I{{$Class}}BPSubscriberInterface::Execute_On{{Camel .Name}}Signal(Obj{{- if (len .Params) }}, {{ end }}{{ueVars "" .Params}});
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -74,16 +67,11 @@ void U{{$Class}}Publisher::Broadcast{{Camel .Name}}Signal({{ueParams "" .Params}
 				{
 					I{{$Class}}BPSubscriberInterface::Execute_On{{Camel .Name}}Signal(Obj{{- if (len .Params) }}, {{ end }}{{ueVars "" .Params}});
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 {{- end }}
 {{- if and (len .Properties) (len .Signals) }}{{ nl }}{{ end }}
@@ -106,10 +94,6 @@ void U{{$Class}}Publisher::Broadcast{{Camel .Name}}Changed(UPARAM(DisplayName = 
 				Iface->On{{Camel .Name}}Changed({{ueVar "In" .}});
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<I{{$Class}}BPSubscriberInterface>> BPSubscribersCopy;
@@ -126,10 +110,6 @@ void U{{$Class}}Publisher::Broadcast{{Camel .Name}}Changed(UPARAM(DisplayName = 
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				I{{$Class}}BPSubscriberInterface::Execute_On{{Camel .Name}}Changed(Obj, {{ueVar "In" .}});
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -148,16 +128,11 @@ void U{{$Class}}Publisher::Broadcast{{Camel .Name}}Changed(UPARAM(DisplayName = 
 				{
 					I{{$Class}}BPSubscriberInterface::Execute_On{{Camel .Name}}Changed(Obj, {{ueVar "In" .}});
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 {{- end }}
 
@@ -195,5 +170,31 @@ void U{{$Class}}Publisher::Unsubscribe(const TWeakInterfacePtr<I{{$Class}}Subscr
 {
 	FWriteScopeLock WriteLock(SubscribersLock);
 	Subscribers.Remove(Subscriber);
+}
+
+void U{{$Class}}Publisher::CleanUpSubscribers()
+{
+#if (ENGINE_MAJOR_VERSION >= 5)
+	EAllowShrinking AllowShrinking = EAllowShrinking::No;
+#else
+	bool AllowShrinking = false;
+#endif
+
+	{
+		FWriteScopeLock WriteLock(SubscribersLock);
+		Subscribers.RemoveAllSwap([](const TWeakInterfacePtr<I{{$Class}}SubscriberInterface>& Subscriber)
+			{
+			return !Subscriber.IsValid();
+		},
+			AllowShrinking);
+	}
+	{
+		FWriteScopeLock WriteLock(BPSubscribersLock);
+		BPSubscribers.RemoveAllSwap([](const TScriptInterface<I{{$Class}}BPSubscriberInterface>& Subscriber)
+			{
+			return Subscriber.GetObject() == nullptr;
+		},
+			AllowShrinking);
+	}
 }
 {{- end }}

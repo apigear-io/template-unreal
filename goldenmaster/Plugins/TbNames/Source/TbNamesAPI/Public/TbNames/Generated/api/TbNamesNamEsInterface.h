@@ -161,7 +161,8 @@ public:
 	void Unsubscribe(const TWeakInterfacePtr<ITbNamesNamEsSubscriberInterface>& Subscriber);
 
 private:
-	UPROPERTY()
+	void CleanUpSubscribers();
+
 	TArray<TScriptInterface<ITbNamesNamEsBPSubscriberInterface>> BPSubscribers;
 	FRWLock BPSubscribersLock;
 	TArray<TWeakInterfacePtr<ITbNamesNamEsSubscriberInterface>> Subscribers;

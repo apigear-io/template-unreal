@@ -2,6 +2,7 @@
 #include "TbSimple/Generated/api/TbSimpleNoPropertiesInterfaceInterface.h"
 #include "Async/Async.h"
 #include "Async/TaskGraphInterfaces.h"
+#include "Runtime/Launch/Resources/Version.h"
 
 void UTbSimpleNoPropertiesInterfacePublisher::BroadcastSigVoidSignal()
 {
@@ -20,10 +21,6 @@ void UTbSimpleNoPropertiesInterfacePublisher::BroadcastSigVoidSignal()
 				Iface->OnSigVoidSignal();
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ITbSimpleNoPropertiesInterfaceBPSubscriberInterface>> BPSubscribersCopy;
@@ -40,10 +37,6 @@ void UTbSimpleNoPropertiesInterfacePublisher::BroadcastSigVoidSignal()
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ITbSimpleNoPropertiesInterfaceBPSubscriberInterface::Execute_OnSigVoidSignal(Obj);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -62,16 +55,11 @@ void UTbSimpleNoPropertiesInterfacePublisher::BroadcastSigVoidSignal()
 				{
 					ITbSimpleNoPropertiesInterfaceBPSubscriberInterface::Execute_OnSigVoidSignal(Obj);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UTbSimpleNoPropertiesInterfacePublisher::BroadcastSigBoolSignal(bool bParamBool)
@@ -91,10 +79,6 @@ void UTbSimpleNoPropertiesInterfacePublisher::BroadcastSigBoolSignal(bool bParam
 				Iface->OnSigBoolSignal(bParamBool);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ITbSimpleNoPropertiesInterfaceBPSubscriberInterface>> BPSubscribersCopy;
@@ -111,10 +95,6 @@ void UTbSimpleNoPropertiesInterfacePublisher::BroadcastSigBoolSignal(bool bParam
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ITbSimpleNoPropertiesInterfaceBPSubscriberInterface::Execute_OnSigBoolSignal(Obj, bParamBool);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -133,16 +113,11 @@ void UTbSimpleNoPropertiesInterfacePublisher::BroadcastSigBoolSignal(bool bParam
 				{
 					ITbSimpleNoPropertiesInterfaceBPSubscriberInterface::Execute_OnSigBoolSignal(Obj, bParamBool);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UTbSimpleNoPropertiesInterfacePublisher::Subscribe(const TScriptInterface<ITbSimpleNoPropertiesInterfaceBPSubscriberInterface>& Subscriber)
@@ -179,4 +154,30 @@ void UTbSimpleNoPropertiesInterfacePublisher::Unsubscribe(const TWeakInterfacePt
 {
 	FWriteScopeLock WriteLock(SubscribersLock);
 	Subscribers.Remove(Subscriber);
+}
+
+void UTbSimpleNoPropertiesInterfacePublisher::CleanUpSubscribers()
+{
+#if (ENGINE_MAJOR_VERSION >= 5)
+	EAllowShrinking AllowShrinking = EAllowShrinking::No;
+#else
+	bool AllowShrinking = false;
+#endif
+
+	{
+		FWriteScopeLock WriteLock(SubscribersLock);
+		Subscribers.RemoveAllSwap([](const TWeakInterfacePtr<ITbSimpleNoPropertiesInterfaceSubscriberInterface>& Subscriber)
+			{
+			return !Subscriber.IsValid();
+		},
+			AllowShrinking);
+	}
+	{
+		FWriteScopeLock WriteLock(BPSubscribersLock);
+		BPSubscribers.RemoveAllSwap([](const TScriptInterface<ITbSimpleNoPropertiesInterfaceBPSubscriberInterface>& Subscriber)
+			{
+			return Subscriber.GetObject() == nullptr;
+		},
+			AllowShrinking);
+	}
 }

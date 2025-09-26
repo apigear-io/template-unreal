@@ -138,7 +138,8 @@ public:
 	void Unsubscribe(const TWeakInterfacePtr<I{{$Class}}SubscriberInterface>& Subscriber);
 
 private:
-	UPROPERTY()
+	void CleanUpSubscribers();
+
 	TArray<TScriptInterface<I{{$Class}}BPSubscriberInterface>> BPSubscribers;
 	FRWLock BPSubscribersLock;
 	TArray<TWeakInterfacePtr<I{{$Class}}SubscriberInterface>> Subscribers;

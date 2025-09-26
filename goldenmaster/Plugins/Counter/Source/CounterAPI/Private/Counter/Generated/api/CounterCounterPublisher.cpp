@@ -2,6 +2,7 @@
 #include "Counter/Generated/api/CounterCounterInterface.h"
 #include "Async/Async.h"
 #include "Async/TaskGraphInterfaces.h"
+#include "Runtime/Launch/Resources/Version.h"
 
 void UCounterCounterPublisher::BroadcastValueChangedSignal(const FCustomTypesVector3D& Vector, const FVector& ExternVector, const TArray<FCustomTypesVector3D>& VectorArray, const TArray<FVector>& ExternVectorArray)
 {
@@ -20,10 +21,6 @@ void UCounterCounterPublisher::BroadcastValueChangedSignal(const FCustomTypesVec
 				Iface->OnValueChangedSignal(Vector, ExternVector, VectorArray, ExternVectorArray);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ICounterCounterBPSubscriberInterface>> BPSubscribersCopy;
@@ -40,10 +37,6 @@ void UCounterCounterPublisher::BroadcastValueChangedSignal(const FCustomTypesVec
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ICounterCounterBPSubscriberInterface::Execute_OnValueChangedSignal(Obj, Vector, ExternVector, VectorArray, ExternVectorArray);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -62,16 +55,11 @@ void UCounterCounterPublisher::BroadcastValueChangedSignal(const FCustomTypesVec
 				{
 					ICounterCounterBPSubscriberInterface::Execute_OnValueChangedSignal(Obj, Vector, ExternVector, VectorArray, ExternVectorArray);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UCounterCounterPublisher::BroadcastVectorChanged(UPARAM(DisplayName = "Vector") const FCustomTypesVector3D& InVector)
@@ -91,10 +79,6 @@ void UCounterCounterPublisher::BroadcastVectorChanged(UPARAM(DisplayName = "Vect
 				Iface->OnVectorChanged(InVector);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ICounterCounterBPSubscriberInterface>> BPSubscribersCopy;
@@ -111,10 +95,6 @@ void UCounterCounterPublisher::BroadcastVectorChanged(UPARAM(DisplayName = "Vect
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ICounterCounterBPSubscriberInterface::Execute_OnVectorChanged(Obj, InVector);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -133,16 +113,11 @@ void UCounterCounterPublisher::BroadcastVectorChanged(UPARAM(DisplayName = "Vect
 				{
 					ICounterCounterBPSubscriberInterface::Execute_OnVectorChanged(Obj, InVector);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UCounterCounterPublisher::BroadcastExternVectorChanged(UPARAM(DisplayName = "ExternVector") const FVector& InExternVector)
@@ -162,10 +137,6 @@ void UCounterCounterPublisher::BroadcastExternVectorChanged(UPARAM(DisplayName =
 				Iface->OnExternVectorChanged(InExternVector);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ICounterCounterBPSubscriberInterface>> BPSubscribersCopy;
@@ -182,10 +153,6 @@ void UCounterCounterPublisher::BroadcastExternVectorChanged(UPARAM(DisplayName =
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ICounterCounterBPSubscriberInterface::Execute_OnExternVectorChanged(Obj, InExternVector);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -204,16 +171,11 @@ void UCounterCounterPublisher::BroadcastExternVectorChanged(UPARAM(DisplayName =
 				{
 					ICounterCounterBPSubscriberInterface::Execute_OnExternVectorChanged(Obj, InExternVector);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UCounterCounterPublisher::BroadcastVectorArrayChanged(UPARAM(DisplayName = "VectorArray") const TArray<FCustomTypesVector3D>& InVectorArray)
@@ -233,10 +195,6 @@ void UCounterCounterPublisher::BroadcastVectorArrayChanged(UPARAM(DisplayName = 
 				Iface->OnVectorArrayChanged(InVectorArray);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ICounterCounterBPSubscriberInterface>> BPSubscribersCopy;
@@ -253,10 +211,6 @@ void UCounterCounterPublisher::BroadcastVectorArrayChanged(UPARAM(DisplayName = 
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ICounterCounterBPSubscriberInterface::Execute_OnVectorArrayChanged(Obj, InVectorArray);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -275,16 +229,11 @@ void UCounterCounterPublisher::BroadcastVectorArrayChanged(UPARAM(DisplayName = 
 				{
 					ICounterCounterBPSubscriberInterface::Execute_OnVectorArrayChanged(Obj, InVectorArray);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UCounterCounterPublisher::BroadcastExternVectorArrayChanged(UPARAM(DisplayName = "ExternVectorArray") const TArray<FVector>& InExternVectorArray)
@@ -304,10 +253,6 @@ void UCounterCounterPublisher::BroadcastExternVectorArrayChanged(UPARAM(DisplayN
 				Iface->OnExternVectorArrayChanged(InExternVectorArray);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ICounterCounterBPSubscriberInterface>> BPSubscribersCopy;
@@ -324,10 +269,6 @@ void UCounterCounterPublisher::BroadcastExternVectorArrayChanged(UPARAM(DisplayN
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ICounterCounterBPSubscriberInterface::Execute_OnExternVectorArrayChanged(Obj, InExternVectorArray);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -346,16 +287,11 @@ void UCounterCounterPublisher::BroadcastExternVectorArrayChanged(UPARAM(DisplayN
 				{
 					ICounterCounterBPSubscriberInterface::Execute_OnExternVectorArrayChanged(Obj, InExternVectorArray);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UCounterCounterPublisher::Subscribe(const TScriptInterface<ICounterCounterBPSubscriberInterface>& Subscriber)
@@ -392,4 +328,30 @@ void UCounterCounterPublisher::Unsubscribe(const TWeakInterfacePtr<ICounterCount
 {
 	FWriteScopeLock WriteLock(SubscribersLock);
 	Subscribers.Remove(Subscriber);
+}
+
+void UCounterCounterPublisher::CleanUpSubscribers()
+{
+#if (ENGINE_MAJOR_VERSION >= 5)
+	EAllowShrinking AllowShrinking = EAllowShrinking::No;
+#else
+	bool AllowShrinking = false;
+#endif
+
+	{
+		FWriteScopeLock WriteLock(SubscribersLock);
+		Subscribers.RemoveAllSwap([](const TWeakInterfacePtr<ICounterCounterSubscriberInterface>& Subscriber)
+			{
+			return !Subscriber.IsValid();
+		},
+			AllowShrinking);
+	}
+	{
+		FWriteScopeLock WriteLock(BPSubscribersLock);
+		BPSubscribers.RemoveAllSwap([](const TScriptInterface<ICounterCounterBPSubscriberInterface>& Subscriber)
+			{
+			return Subscriber.GetObject() == nullptr;
+		},
+			AllowShrinking);
+	}
 }

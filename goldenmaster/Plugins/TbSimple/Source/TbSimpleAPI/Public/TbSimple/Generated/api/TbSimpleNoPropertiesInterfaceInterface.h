@@ -105,7 +105,8 @@ public:
 	void Unsubscribe(const TWeakInterfacePtr<ITbSimpleNoPropertiesInterfaceSubscriberInterface>& Subscriber);
 
 private:
-	UPROPERTY()
+	void CleanUpSubscribers();
+
 	TArray<TScriptInterface<ITbSimpleNoPropertiesInterfaceBPSubscriberInterface>> BPSubscribers;
 	FRWLock BPSubscribersLock;
 	TArray<TWeakInterfacePtr<ITbSimpleNoPropertiesInterfaceSubscriberInterface>> Subscribers;

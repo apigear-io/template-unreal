@@ -2,6 +2,7 @@
 #include "TbIfaceimport/Generated/api/TbIfaceimportEmptyIfInterface.h"
 #include "Async/Async.h"
 #include "Async/TaskGraphInterfaces.h"
+#include "Runtime/Launch/Resources/Version.h"
 
 void UTbIfaceimportEmptyIfPublisher::Subscribe(const TScriptInterface<ITbIfaceimportEmptyIfBPSubscriberInterface>& Subscriber)
 {
@@ -37,4 +38,30 @@ void UTbIfaceimportEmptyIfPublisher::Unsubscribe(const TWeakInterfacePtr<ITbIfac
 {
 	FWriteScopeLock WriteLock(SubscribersLock);
 	Subscribers.Remove(Subscriber);
+}
+
+void UTbIfaceimportEmptyIfPublisher::CleanUpSubscribers()
+{
+#if (ENGINE_MAJOR_VERSION >= 5)
+	EAllowShrinking AllowShrinking = EAllowShrinking::No;
+#else
+	bool AllowShrinking = false;
+#endif
+
+	{
+		FWriteScopeLock WriteLock(SubscribersLock);
+		Subscribers.RemoveAllSwap([](const TWeakInterfacePtr<ITbIfaceimportEmptyIfSubscriberInterface>& Subscriber)
+			{
+			return !Subscriber.IsValid();
+		},
+			AllowShrinking);
+	}
+	{
+		FWriteScopeLock WriteLock(BPSubscribersLock);
+		BPSubscribers.RemoveAllSwap([](const TScriptInterface<ITbIfaceimportEmptyIfBPSubscriberInterface>& Subscriber)
+			{
+			return Subscriber.GetObject() == nullptr;
+		},
+			AllowShrinking);
+	}
 }

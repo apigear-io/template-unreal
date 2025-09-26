@@ -2,6 +2,7 @@
 #include "TbSimple/Generated/api/TbSimpleVoidInterfaceInterface.h"
 #include "Async/Async.h"
 #include "Async/TaskGraphInterfaces.h"
+#include "Runtime/Launch/Resources/Version.h"
 
 void UTbSimpleVoidInterfacePublisher::BroadcastSigVoidSignal()
 {
@@ -20,10 +21,6 @@ void UTbSimpleVoidInterfacePublisher::BroadcastSigVoidSignal()
 				Iface->OnSigVoidSignal();
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ITbSimpleVoidInterfaceBPSubscriberInterface>> BPSubscribersCopy;
@@ -40,10 +37,6 @@ void UTbSimpleVoidInterfacePublisher::BroadcastSigVoidSignal()
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ITbSimpleVoidInterfaceBPSubscriberInterface::Execute_OnSigVoidSignal(Obj);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -62,16 +55,11 @@ void UTbSimpleVoidInterfacePublisher::BroadcastSigVoidSignal()
 				{
 					ITbSimpleVoidInterfaceBPSubscriberInterface::Execute_OnSigVoidSignal(Obj);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UTbSimpleVoidInterfacePublisher::Subscribe(const TScriptInterface<ITbSimpleVoidInterfaceBPSubscriberInterface>& Subscriber)
@@ -108,4 +96,30 @@ void UTbSimpleVoidInterfacePublisher::Unsubscribe(const TWeakInterfacePtr<ITbSim
 {
 	FWriteScopeLock WriteLock(SubscribersLock);
 	Subscribers.Remove(Subscriber);
+}
+
+void UTbSimpleVoidInterfacePublisher::CleanUpSubscribers()
+{
+#if (ENGINE_MAJOR_VERSION >= 5)
+	EAllowShrinking AllowShrinking = EAllowShrinking::No;
+#else
+	bool AllowShrinking = false;
+#endif
+
+	{
+		FWriteScopeLock WriteLock(SubscribersLock);
+		Subscribers.RemoveAllSwap([](const TWeakInterfacePtr<ITbSimpleVoidInterfaceSubscriberInterface>& Subscriber)
+			{
+			return !Subscriber.IsValid();
+		},
+			AllowShrinking);
+	}
+	{
+		FWriteScopeLock WriteLock(BPSubscribersLock);
+		BPSubscribers.RemoveAllSwap([](const TScriptInterface<ITbSimpleVoidInterfaceBPSubscriberInterface>& Subscriber)
+			{
+			return Subscriber.GetObject() == nullptr;
+		},
+			AllowShrinking);
+	}
 }

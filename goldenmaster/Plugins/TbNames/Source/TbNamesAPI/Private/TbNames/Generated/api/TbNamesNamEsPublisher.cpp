@@ -2,6 +2,7 @@
 #include "TbNames/Generated/api/TbNamesNamEsInterface.h"
 #include "Async/Async.h"
 #include "Async/TaskGraphInterfaces.h"
+#include "Runtime/Launch/Resources/Version.h"
 
 void UTbNamesNamEsPublisher::BroadcastSomeSignalSignal(bool bSomeParam)
 {
@@ -20,10 +21,6 @@ void UTbNamesNamEsPublisher::BroadcastSomeSignalSignal(bool bSomeParam)
 				Iface->OnSomeSignalSignal(bSomeParam);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ITbNamesNamEsBPSubscriberInterface>> BPSubscribersCopy;
@@ -40,10 +37,6 @@ void UTbNamesNamEsPublisher::BroadcastSomeSignalSignal(bool bSomeParam)
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ITbNamesNamEsBPSubscriberInterface::Execute_OnSomeSignalSignal(Obj, bSomeParam);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -62,16 +55,11 @@ void UTbNamesNamEsPublisher::BroadcastSomeSignalSignal(bool bSomeParam)
 				{
 					ITbNamesNamEsBPSubscriberInterface::Execute_OnSomeSignalSignal(Obj, bSomeParam);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UTbNamesNamEsPublisher::BroadcastSomeSignal2Signal(bool bSomeParam)
@@ -91,10 +79,6 @@ void UTbNamesNamEsPublisher::BroadcastSomeSignal2Signal(bool bSomeParam)
 				Iface->OnSomeSignal2Signal(bSomeParam);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ITbNamesNamEsBPSubscriberInterface>> BPSubscribersCopy;
@@ -111,10 +95,6 @@ void UTbNamesNamEsPublisher::BroadcastSomeSignal2Signal(bool bSomeParam)
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ITbNamesNamEsBPSubscriberInterface::Execute_OnSomeSignal2Signal(Obj, bSomeParam);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -133,16 +113,11 @@ void UTbNamesNamEsPublisher::BroadcastSomeSignal2Signal(bool bSomeParam)
 				{
 					ITbNamesNamEsBPSubscriberInterface::Execute_OnSomeSignal2Signal(Obj, bSomeParam);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UTbNamesNamEsPublisher::BroadcastSwitchChanged(UPARAM(DisplayName = "bSwitch") bool bInSwitch)
@@ -162,10 +137,6 @@ void UTbNamesNamEsPublisher::BroadcastSwitchChanged(UPARAM(DisplayName = "bSwitc
 				Iface->OnSwitchChanged(bInSwitch);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ITbNamesNamEsBPSubscriberInterface>> BPSubscribersCopy;
@@ -182,10 +153,6 @@ void UTbNamesNamEsPublisher::BroadcastSwitchChanged(UPARAM(DisplayName = "bSwitc
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ITbNamesNamEsBPSubscriberInterface::Execute_OnSwitchChanged(Obj, bInSwitch);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -204,16 +171,11 @@ void UTbNamesNamEsPublisher::BroadcastSwitchChanged(UPARAM(DisplayName = "bSwitc
 				{
 					ITbNamesNamEsBPSubscriberInterface::Execute_OnSwitchChanged(Obj, bInSwitch);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UTbNamesNamEsPublisher::BroadcastSomePropertyChanged(UPARAM(DisplayName = "SomeProperty") int32 InSomeProperty)
@@ -233,10 +195,6 @@ void UTbNamesNamEsPublisher::BroadcastSomePropertyChanged(UPARAM(DisplayName = "
 				Iface->OnSomePropertyChanged(InSomeProperty);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ITbNamesNamEsBPSubscriberInterface>> BPSubscribersCopy;
@@ -253,10 +211,6 @@ void UTbNamesNamEsPublisher::BroadcastSomePropertyChanged(UPARAM(DisplayName = "
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ITbNamesNamEsBPSubscriberInterface::Execute_OnSomePropertyChanged(Obj, InSomeProperty);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -275,16 +229,11 @@ void UTbNamesNamEsPublisher::BroadcastSomePropertyChanged(UPARAM(DisplayName = "
 				{
 					ITbNamesNamEsBPSubscriberInterface::Execute_OnSomePropertyChanged(Obj, InSomeProperty);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UTbNamesNamEsPublisher::BroadcastSomePoperty2Changed(UPARAM(DisplayName = "SomePoperty2") int32 InSomePoperty2)
@@ -304,10 +253,6 @@ void UTbNamesNamEsPublisher::BroadcastSomePoperty2Changed(UPARAM(DisplayName = "
 				Iface->OnSomePoperty2Changed(InSomePoperty2);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ITbNamesNamEsBPSubscriberInterface>> BPSubscribersCopy;
@@ -324,10 +269,6 @@ void UTbNamesNamEsPublisher::BroadcastSomePoperty2Changed(UPARAM(DisplayName = "
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ITbNamesNamEsBPSubscriberInterface::Execute_OnSomePoperty2Changed(Obj, InSomePoperty2);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -346,16 +287,11 @@ void UTbNamesNamEsPublisher::BroadcastSomePoperty2Changed(UPARAM(DisplayName = "
 				{
 					ITbNamesNamEsBPSubscriberInterface::Execute_OnSomePoperty2Changed(Obj, InSomePoperty2);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UTbNamesNamEsPublisher::BroadcastEnumPropertyChanged(UPARAM(DisplayName = "EnumProperty") ETbNamesEnum_With_Under_scores InEnumProperty)
@@ -375,10 +311,6 @@ void UTbNamesNamEsPublisher::BroadcastEnumPropertyChanged(UPARAM(DisplayName = "
 				Iface->OnEnumPropertyChanged(InEnumProperty);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ITbNamesNamEsBPSubscriberInterface>> BPSubscribersCopy;
@@ -395,10 +327,6 @@ void UTbNamesNamEsPublisher::BroadcastEnumPropertyChanged(UPARAM(DisplayName = "
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ITbNamesNamEsBPSubscriberInterface::Execute_OnEnumPropertyChanged(Obj, InEnumProperty);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -417,16 +345,11 @@ void UTbNamesNamEsPublisher::BroadcastEnumPropertyChanged(UPARAM(DisplayName = "
 				{
 					ITbNamesNamEsBPSubscriberInterface::Execute_OnEnumPropertyChanged(Obj, InEnumProperty);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UTbNamesNamEsPublisher::Subscribe(const TScriptInterface<ITbNamesNamEsBPSubscriberInterface>& Subscriber)
@@ -463,4 +386,30 @@ void UTbNamesNamEsPublisher::Unsubscribe(const TWeakInterfacePtr<ITbNamesNamEsSu
 {
 	FWriteScopeLock WriteLock(SubscribersLock);
 	Subscribers.Remove(Subscriber);
+}
+
+void UTbNamesNamEsPublisher::CleanUpSubscribers()
+{
+#if (ENGINE_MAJOR_VERSION >= 5)
+	EAllowShrinking AllowShrinking = EAllowShrinking::No;
+#else
+	bool AllowShrinking = false;
+#endif
+
+	{
+		FWriteScopeLock WriteLock(SubscribersLock);
+		Subscribers.RemoveAllSwap([](const TWeakInterfacePtr<ITbNamesNamEsSubscriberInterface>& Subscriber)
+			{
+			return !Subscriber.IsValid();
+		},
+			AllowShrinking);
+	}
+	{
+		FWriteScopeLock WriteLock(BPSubscribersLock);
+		BPSubscribers.RemoveAllSwap([](const TScriptInterface<ITbNamesNamEsBPSubscriberInterface>& Subscriber)
+			{
+			return Subscriber.GetObject() == nullptr;
+		},
+			AllowShrinking);
+	}
 }
