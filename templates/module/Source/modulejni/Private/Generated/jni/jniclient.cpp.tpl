@@ -460,6 +460,11 @@ JNI_METHOD void {{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}(JNIEnv* Env, jcla
             {{- end -}}
         {{- end -}}]()
         {
+            if (g{{$Class}}Handle == nullptr)
+            {
+                UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("{{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}: JNI SERVICE ADAPTER NOT FOUND "));
+                return;
+            }
             g{{$Class}}Handle->_GetSignals()->Broadcast{{Camel .Name}}Signal({{- range $idx, $p := .Params -}}
             {{- if $idx}}, {{ end -}}
             {{- $local_value :=  printf "local_%s" (snake .Name) -}}
