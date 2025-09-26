@@ -39,9 +39,9 @@ DECLARE_MULTICAST_DELEGATE_OneParam(FTbSimpleNoOperationsInterfacePropIntChanged
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleNoOperationsInterfacePropIntChangedDelegateBP, int32, PropInt);
 
 /**
- * Helper interface for TbSimpleNoOperationsInterface events.
- * Intended for Blueprint-only use. Functions are dispatched via message calls.
+ * Subscriber interface for TbSimpleNoOperationsInterface events. Intended for Blueprint-only use.
  * Does contain signal events and property-changed events.
+ * @note Guaranteed to be run from within the GameThread.
  */
 UINTERFACE(BlueprintType)
 class UTbSimpleNoOperationsInterfaceBPSubscriberInterface : public UInterface
@@ -67,6 +67,11 @@ public:
 	void OnPropIntChanged(UPARAM(DisplayName = "PropInt") int32 InPropInt);
 };
 
+/**
+ * Subscriber interface for TbSimpleNoOperationsInterface events. Intended for C++ use.
+ * Does contain signal events and property-changed events.
+ * @note Not guaranteed to be run from within the GameThread - can be on any thread.
+ */
 UINTERFACE(BlueprintType, MinimalAPI, meta = (CannotImplementInterfaceInBlueprint))
 class UTbSimpleNoOperationsInterfaceSubscriberInterface : public UInterface
 {

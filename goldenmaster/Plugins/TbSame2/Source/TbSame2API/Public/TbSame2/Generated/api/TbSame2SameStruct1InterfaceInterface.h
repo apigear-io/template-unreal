@@ -34,9 +34,9 @@ DECLARE_MULTICAST_DELEGATE_OneParam(FTbSame2SameStruct1InterfaceProp1ChangedDele
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSame2SameStruct1InterfaceProp1ChangedDelegateBP, const FTbSame2Struct1&, Prop1);
 
 /**
- * Helper interface for TbSame2SameStruct1Interface events.
- * Intended for Blueprint-only use. Functions are dispatched via message calls.
+ * Subscriber interface for TbSame2SameStruct1Interface events. Intended for Blueprint-only use.
  * Does contain signal events and property-changed events.
+ * @note Guaranteed to be run from within the GameThread.
  */
 UINTERFACE(BlueprintType)
 class UTbSame2SameStruct1InterfaceBPSubscriberInterface : public UInterface
@@ -56,6 +56,11 @@ public:
 	void OnProp1Changed(UPARAM(DisplayName = "Prop1") const FTbSame2Struct1& InProp1);
 };
 
+/**
+ * Subscriber interface for TbSame2SameStruct1Interface events. Intended for C++ use.
+ * Does contain signal events and property-changed events.
+ * @note Not guaranteed to be run from within the GameThread - can be on any thread.
+ */
 UINTERFACE(BlueprintType, MinimalAPI, meta = (CannotImplementInterfaceInBlueprint))
 class UTbSame2SameStruct1InterfaceSubscriberInterface : public UInterface
 {

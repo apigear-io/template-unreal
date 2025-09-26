@@ -35,9 +35,9 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleNoPropertiesInterfaceSigBoo
 // property delegates
 
 /**
- * Helper interface for TbSimpleNoPropertiesInterface events.
- * Intended for Blueprint-only use. Functions are dispatched via message calls.
+ * Subscriber interface for TbSimpleNoPropertiesInterface events. Intended for Blueprint-only use.
  * Does contain signal events and property-changed events.
+ * @note Guaranteed to be run from within the GameThread.
  */
 UINTERFACE(BlueprintType)
 class UTbSimpleNoPropertiesInterfaceBPSubscriberInterface : public UInterface
@@ -57,6 +57,11 @@ public:
 	void OnSigBoolSignal(bool bParamBool);
 };
 
+/**
+ * Subscriber interface for TbSimpleNoPropertiesInterface events. Intended for C++ use.
+ * Does contain signal events and property-changed events.
+ * @note Not guaranteed to be run from within the GameThread - can be on any thread.
+ */
 UINTERFACE(BlueprintType, MinimalAPI, meta = (CannotImplementInterfaceInBlueprint))
 class UTbSimpleNoPropertiesInterfaceSubscriberInterface : public UInterface
 {

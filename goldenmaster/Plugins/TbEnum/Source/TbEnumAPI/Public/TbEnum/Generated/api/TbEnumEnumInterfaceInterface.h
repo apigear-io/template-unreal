@@ -49,9 +49,9 @@ DECLARE_MULTICAST_DELEGATE_OneParam(FTbEnumEnumInterfaceProp3ChangedDelegate, ET
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbEnumEnumInterfaceProp3ChangedDelegateBP, ETbEnumEnum3, Prop3);
 
 /**
- * Helper interface for TbEnumEnumInterface events.
- * Intended for Blueprint-only use. Functions are dispatched via message calls.
+ * Subscriber interface for TbEnumEnumInterface events. Intended for Blueprint-only use.
  * Does contain signal events and property-changed events.
+ * @note Guaranteed to be run from within the GameThread.
  */
 UINTERFACE(BlueprintType)
 class UTbEnumEnumInterfaceBPSubscriberInterface : public UInterface
@@ -89,6 +89,11 @@ public:
 	void OnProp3Changed(UPARAM(DisplayName = "Prop3") ETbEnumEnum3 InProp3);
 };
 
+/**
+ * Subscriber interface for TbEnumEnumInterface events. Intended for C++ use.
+ * Does contain signal events and property-changed events.
+ * @note Not guaranteed to be run from within the GameThread - can be on any thread.
+ */
 UINTERFACE(BlueprintType, MinimalAPI, meta = (CannotImplementInterfaceInBlueprint))
 class UTbEnumEnumInterfaceSubscriberInterface : public UInterface
 {

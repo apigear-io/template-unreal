@@ -49,9 +49,9 @@ DECLARE_MULTICAST_DELEGATE_OneParam(FTestbed2ManyParamInterfaceProp4ChangedDeleg
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed2ManyParamInterfaceProp4ChangedDelegateBP, int32, Prop4);
 
 /**
- * Helper interface for Testbed2ManyParamInterface events.
- * Intended for Blueprint-only use. Functions are dispatched via message calls.
+ * Subscriber interface for Testbed2ManyParamInterface events. Intended for Blueprint-only use.
  * Does contain signal events and property-changed events.
+ * @note Guaranteed to be run from within the GameThread.
  */
 UINTERFACE(BlueprintType)
 class UTestbed2ManyParamInterfaceBPSubscriberInterface : public UInterface
@@ -89,6 +89,11 @@ public:
 	void OnProp4Changed(UPARAM(DisplayName = "Prop4") int32 InProp4);
 };
 
+/**
+ * Subscriber interface for Testbed2ManyParamInterface events. Intended for C++ use.
+ * Does contain signal events and property-changed events.
+ * @note Not guaranteed to be run from within the GameThread - can be on any thread.
+ */
 UINTERFACE(BlueprintType, MinimalAPI, meta = (CannotImplementInterfaceInBlueprint))
 class UTestbed2ManyParamInterfaceSubscriberInterface : public UInterface
 {

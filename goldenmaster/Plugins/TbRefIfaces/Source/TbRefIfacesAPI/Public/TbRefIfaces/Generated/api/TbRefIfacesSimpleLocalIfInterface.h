@@ -34,9 +34,9 @@ DECLARE_MULTICAST_DELEGATE_OneParam(FTbRefIfacesSimpleLocalIfIntPropertyChangedD
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbRefIfacesSimpleLocalIfIntPropertyChangedDelegateBP, int32, IntProperty);
 
 /**
- * Helper interface for TbRefIfacesSimpleLocalIf events.
- * Intended for Blueprint-only use. Functions are dispatched via message calls.
+ * Subscriber interface for TbRefIfacesSimpleLocalIf events. Intended for Blueprint-only use.
  * Does contain signal events and property-changed events.
+ * @note Guaranteed to be run from within the GameThread.
  */
 UINTERFACE(BlueprintType)
 class UTbRefIfacesSimpleLocalIfBPSubscriberInterface : public UInterface
@@ -56,6 +56,11 @@ public:
 	void OnIntPropertyChanged(UPARAM(DisplayName = "IntProperty") int32 InIntProperty);
 };
 
+/**
+ * Subscriber interface for TbRefIfacesSimpleLocalIf events. Intended for C++ use.
+ * Does contain signal events and property-changed events.
+ * @note Not guaranteed to be run from within the GameThread - can be on any thread.
+ */
 UINTERFACE(BlueprintType, MinimalAPI, meta = (CannotImplementInterfaceInBlueprint))
 class UTbRefIfacesSimpleLocalIfSubscriberInterface : public UInterface
 {

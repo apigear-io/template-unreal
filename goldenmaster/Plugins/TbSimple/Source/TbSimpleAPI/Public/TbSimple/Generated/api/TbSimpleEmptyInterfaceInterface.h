@@ -29,9 +29,9 @@ limitations under the License.
 // property delegates
 
 /**
- * Helper interface for TbSimpleEmptyInterface events.
- * Intended for Blueprint-only use. Functions are dispatched via message calls.
+ * Subscriber interface for TbSimpleEmptyInterface events. Intended for Blueprint-only use.
  * Does contain signal events and property-changed events.
+ * @note Guaranteed to be run from within the GameThread.
  */
 UINTERFACE(BlueprintType)
 class UTbSimpleEmptyInterfaceBPSubscriberInterface : public UInterface
@@ -46,6 +46,11 @@ class TBSIMPLEAPI_API ITbSimpleEmptyInterfaceBPSubscriberInterface
 public:
 };
 
+/**
+ * Subscriber interface for TbSimpleEmptyInterface events. Intended for C++ use.
+ * Does contain signal events and property-changed events.
+ * @note Not guaranteed to be run from within the GameThread - can be on any thread.
+ */
 UINTERFACE(BlueprintType, MinimalAPI, meta = (CannotImplementInterfaceInBlueprint))
 class UTbSimpleEmptyInterfaceSubscriberInterface : public UInterface
 {

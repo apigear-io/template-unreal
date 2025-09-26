@@ -40,9 +40,9 @@ DECLARE_MULTICAST_DELEGATE_OneParam(FCounterCounterExternVectorArrayChangedDeleg
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCounterCounterExternVectorArrayChangedDelegateBP, const TArray<FVector>&, ExternVectorArray);
 
 /**
- * Helper interface for CounterCounter events.
- * Intended for Blueprint-only use. Functions are dispatched via message calls.
+ * Subscriber interface for CounterCounter events. Intended for Blueprint-only use.
  * Does contain signal events and property-changed events.
+ * @note Guaranteed to be run from within the GameThread.
  */
 UINTERFACE(BlueprintType)
 class UCounterCounterBPSubscriberInterface : public UInterface
@@ -71,6 +71,11 @@ public:
 	void OnExternVectorArrayChanged(UPARAM(DisplayName = "ExternVectorArray") const TArray<FVector>& InExternVectorArray);
 };
 
+/**
+ * Subscriber interface for CounterCounter events. Intended for C++ use.
+ * Does contain signal events and property-changed events.
+ * @note Not guaranteed to be run from within the GameThread - can be on any thread.
+ */
 UINTERFACE(BlueprintType, MinimalAPI, meta = (CannotImplementInterfaceInBlueprint))
 class UCounterCounterSubscriberInterface : public UInterface
 {

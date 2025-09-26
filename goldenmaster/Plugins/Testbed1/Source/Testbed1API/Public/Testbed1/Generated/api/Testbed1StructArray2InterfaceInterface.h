@@ -51,9 +51,9 @@ DECLARE_MULTICAST_DELEGATE_OneParam(FTestbed1StructArray2InterfacePropEnumChange
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed1StructArray2InterfacePropEnumChangedDelegateBP, const FTestbed1StructEnumWithArray&, PropEnum);
 
 /**
- * Helper interface for Testbed1StructArray2Interface events.
- * Intended for Blueprint-only use. Functions are dispatched via message calls.
+ * Subscriber interface for Testbed1StructArray2Interface events. Intended for Blueprint-only use.
  * Does contain signal events and property-changed events.
+ * @note Guaranteed to be run from within the GameThread.
  */
 UINTERFACE(BlueprintType)
 class UTestbed1StructArray2InterfaceBPSubscriberInterface : public UInterface
@@ -94,6 +94,11 @@ public:
 	void OnPropEnumChanged(UPARAM(DisplayName = "PropEnum") const FTestbed1StructEnumWithArray& InPropEnum);
 };
 
+/**
+ * Subscriber interface for Testbed1StructArray2Interface events. Intended for C++ use.
+ * Does contain signal events and property-changed events.
+ * @note Not guaranteed to be run from within the GameThread - can be on any thread.
+ */
 UINTERFACE(BlueprintType, MinimalAPI, meta = (CannotImplementInterfaceInBlueprint))
 class UTestbed1StructArray2InterfaceSubscriberInterface : public UInterface
 {

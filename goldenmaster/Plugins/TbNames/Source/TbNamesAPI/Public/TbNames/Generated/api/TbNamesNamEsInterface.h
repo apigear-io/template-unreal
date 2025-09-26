@@ -43,9 +43,9 @@ DECLARE_MULTICAST_DELEGATE_OneParam(FTbNamesNamEsEnumPropertyChangedDelegate, ET
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbNamesNamEsEnumPropertyChangedDelegateBP, ETbNamesEnum_With_Under_scores, EnumProperty);
 
 /**
- * Helper interface for TbNamesNamEs events.
- * Intended for Blueprint-only use. Functions are dispatched via message calls.
+ * Subscriber interface for TbNamesNamEs events. Intended for Blueprint-only use.
  * Does contain signal events and property-changed events.
+ * @note Guaranteed to be run from within the GameThread.
  */
 UINTERFACE(BlueprintType)
 class UTbNamesNamEsBPSubscriberInterface : public UInterface
@@ -77,6 +77,11 @@ public:
 	void OnEnumPropertyChanged(UPARAM(DisplayName = "EnumProperty") ETbNamesEnum_With_Under_scores InEnumProperty);
 };
 
+/**
+ * Subscriber interface for TbNamesNamEs events. Intended for C++ use.
+ * Does contain signal events and property-changed events.
+ * @note Not guaranteed to be run from within the GameThread - can be on any thread.
+ */
 UINTERFACE(BlueprintType, MinimalAPI, meta = (CannotImplementInterfaceInBlueprint))
 class UTbNamesNamEsSubscriberInterface : public UInterface
 {
