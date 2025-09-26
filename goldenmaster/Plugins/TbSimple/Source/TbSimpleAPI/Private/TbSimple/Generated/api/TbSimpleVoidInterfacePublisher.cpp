@@ -6,12 +6,19 @@
 
 void UTbSimpleVoidInterfacePublisher::BroadcastSigVoidSignal()
 {
-	OnSigVoidSignal.Broadcast();
 	TArray<TWeakInterfacePtr<ITbSimpleVoidInterfaceSubscriberInterface>> SubscribersCopy;
 	{
 		FReadScopeLock ReadLock(SubscribersLock);
 		SubscribersCopy = Subscribers;
 	}
+
+	TArray<TScriptInterface<ITbSimpleVoidInterfaceBPSubscriberInterface>> BPSubscribersCopy;
+	{
+		FReadScopeLock ReadLock(BPSubscribersLock);
+		BPSubscribersCopy = BPSubscribers;
+	}
+
+	OnSigVoidSignal.Broadcast();
 	for (const TWeakInterfacePtr<ITbSimpleVoidInterfaceSubscriberInterface>& Subscriber : SubscribersCopy)
 	{
 		if (Subscriber.IsValid())
@@ -23,14 +30,12 @@ void UTbSimpleVoidInterfacePublisher::BroadcastSigVoidSignal()
 		}
 	}
 
-	TArray<TScriptInterface<ITbSimpleVoidInterfaceBPSubscriberInterface>> BPSubscribersCopy;
+	auto BroadCastOnGameThread = [WeakPtr = TWeakObjectPtr<UTbSimpleVoidInterfacePublisher>(this), BPSubscribersCopy]()
 	{
-		FReadScopeLock ReadLock(BPSubscribersLock);
-		BPSubscribersCopy = BPSubscribers;
-	}
-	if (IsInGameThread())
-	{
-		OnSigVoidSignalBP.Broadcast();
+		if (WeakPtr.IsValid())
+		{
+			WeakPtr.Get()->OnSigVoidSignalBP.Broadcast();
+		}
 
 		for (const TScriptInterface<ITbSimpleVoidInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
@@ -39,27 +44,21 @@ void UTbSimpleVoidInterfacePublisher::BroadcastSigVoidSignal()
 				ITbSimpleVoidInterfaceBPSubscriberInterface::Execute_OnSigVoidSignal(Obj);
 			}
 		}
+
+		if (WeakPtr.IsValid())
+		{
+			WeakPtr.Get()->CleanUpSubscribers();
+		}
+	};
+
+	if (IsInGameThread())
+	{
+		BroadCastOnGameThread();
 	}
 	else
 	{
-		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<UTbSimpleVoidInterfacePublisher>(this), BPSubscribersCopy]()
-			{
-			if (WeakPtr.IsValid())
-			{
-				WeakPtr.Get()->OnSigVoidSignalBP.Broadcast();
-			}
-
-			for (const TScriptInterface<ITbSimpleVoidInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
-			{
-				if (UObject* Obj = Subscriber.GetObject())
-				{
-					ITbSimpleVoidInterfaceBPSubscriberInterface::Execute_OnSigVoidSignal(Obj);
-				}
-			}
-		});
+		AsyncTask(ENamedThreads::GameThread, MoveTemp(BroadCastOnGameThread));
 	}
-
-	CleanUpSubscribers();
 }
 
 void UTbSimpleVoidInterfacePublisher::Subscribe(const TScriptInterface<ITbSimpleVoidInterfaceBPSubscriberInterface>& Subscriber)
