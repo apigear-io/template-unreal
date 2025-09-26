@@ -44,9 +44,9 @@ DECLARE_MULTICAST_DELEGATE_OneParam(FTestbed2NestedStruct3InterfaceProp3ChangedD
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed2NestedStruct3InterfaceProp3ChangedDelegateBP, const FTestbed2NestedStruct3&, Prop3);
 
 /**
- * Helper interface for Testbed2NestedStruct3Interface events.
- * Intended for Blueprint-only use. Functions are dispatched via message calls.
+ * Subscriber interface for Testbed2NestedStruct3Interface events. Intended for Blueprint-only use.
  * Does contain signal events and property-changed events.
+ * @note Guaranteed to be run from within the GameThread.
  */
 UINTERFACE(BlueprintType)
 class UTestbed2NestedStruct3InterfaceBPSubscriberInterface : public UInterface
@@ -78,6 +78,11 @@ public:
 	void OnProp3Changed(UPARAM(DisplayName = "Prop3") const FTestbed2NestedStruct3& InProp3);
 };
 
+/**
+ * Subscriber interface for Testbed2NestedStruct3Interface events. Intended for C++ use.
+ * Does contain signal events and property-changed events.
+ * @note Not guaranteed to be run from within the GameThread - can be on any thread.
+ */
 UINTERFACE(BlueprintType, MinimalAPI, meta = (CannotImplementInterfaceInBlueprint))
 class UTestbed2NestedStruct3InterfaceSubscriberInterface : public UInterface
 {

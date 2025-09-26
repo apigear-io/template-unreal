@@ -49,9 +49,9 @@ DECLARE_MULTICAST_DELEGATE_OneParam(FTestbed1StructInterfacePropStringChangedDel
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed1StructInterfacePropStringChangedDelegateBP, const FTestbed1StructString&, PropString);
 
 /**
- * Helper interface for Testbed1StructInterface events.
- * Intended for Blueprint-only use. Functions are dispatched via message calls.
+ * Subscriber interface for Testbed1StructInterface events. Intended for Blueprint-only use.
  * Does contain signal events and property-changed events.
+ * @note Guaranteed to be run from within the GameThread.
  */
 UINTERFACE(BlueprintType)
 class UTestbed1StructInterfaceBPSubscriberInterface : public UInterface
@@ -89,6 +89,11 @@ public:
 	void OnPropStringChanged(UPARAM(DisplayName = "PropString") const FTestbed1StructString& InPropString);
 };
 
+/**
+ * Subscriber interface for Testbed1StructInterface events. Intended for C++ use.
+ * Does contain signal events and property-changed events.
+ * @note Not guaranteed to be run from within the GameThread - can be on any thread.
+ */
 UINTERFACE(BlueprintType, MinimalAPI, meta = (CannotImplementInterfaceInBlueprint))
 class UTestbed1StructInterfaceSubscriberInterface : public UInterface
 {
