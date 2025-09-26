@@ -18,12 +18,19 @@
 	{{- if $i }}{{nl}}{{ end }}
 void U{{$Class}}Publisher::Broadcast{{Camel .Name}}Signal({{ueParams "" .Params}})
 {
-	On{{Camel .Name}}Signal.Broadcast({{ueVars "" .Params}});
 	TArray<TWeakInterfacePtr<I{{$Class}}SubscriberInterface>> SubscribersCopy;
 	{
 		FReadScopeLock ReadLock(SubscribersLock);
 		SubscribersCopy = Subscribers;
 	}
+
+	TArray<TScriptInterface<I{{$Class}}BPSubscriberInterface>> BPSubscribersCopy;
+	{
+		FReadScopeLock ReadLock(BPSubscribersLock);
+		BPSubscribersCopy = BPSubscribers;
+	}
+
+	On{{Camel .Name}}Signal.Broadcast({{ueVars "" .Params}});
 	for (const TWeakInterfacePtr<I{{$Class}}SubscriberInterface>& Subscriber : SubscribersCopy)
 	{
 		if (Subscriber.IsValid())
@@ -35,14 +42,12 @@ void U{{$Class}}Publisher::Broadcast{{Camel .Name}}Signal({{ueParams "" .Params}
 		}
 	}
 
-	TArray<TScriptInterface<I{{$Class}}BPSubscriberInterface>> BPSubscribersCopy;
+	auto BroadCastOnGameThread = [WeakPtr = TWeakObjectPtr<U{{$Class}}Publisher>(this), BPSubscribersCopy{{- if (len .Params) }}, {{ end }}{{ueVars "" .Params}}]()
 	{
-		FReadScopeLock ReadLock(BPSubscribersLock);
-		BPSubscribersCopy = BPSubscribers;
-	}
-	if (IsInGameThread())
-	{
-		On{{Camel .Name}}SignalBP.Broadcast({{ueVars "" .Params}});
+		if (WeakPtr.IsValid())
+		{
+			WeakPtr.Get()->On{{Camel .Name}}SignalBP.Broadcast({{ueVars "" .Params}});
+		}
 
 		for (const TScriptInterface<I{{$Class}}BPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
@@ -51,27 +56,21 @@ void U{{$Class}}Publisher::Broadcast{{Camel .Name}}Signal({{ueParams "" .Params}
 				I{{$Class}}BPSubscriberInterface::Execute_On{{Camel .Name}}Signal(Obj{{- if (len .Params) }}, {{ end }}{{ueVars "" .Params}});
 			}
 		}
+
+		if (WeakPtr.IsValid())
+		{
+			WeakPtr.Get()->CleanUpSubscribers();
+		}
+	};
+
+	if (IsInGameThread())
+	{
+		BroadCastOnGameThread();
 	}
 	else
 	{
-		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<U{{$Class}}Publisher>(this), BPSubscribersCopy{{- if (len .Params) }}, {{ end }}{{ueVars "" .Params}}]()
-			{
-			if (WeakPtr.IsValid())
-			{
-				WeakPtr.Get()->On{{Camel .Name}}SignalBP.Broadcast({{ueVars "" .Params}});
-			}
-
-			for (const TScriptInterface<I{{$Class}}BPSubscriberInterface>& Subscriber : BPSubscribersCopy)
-			{
-				if (UObject* Obj = Subscriber.GetObject())
-				{
-					I{{$Class}}BPSubscriberInterface::Execute_On{{Camel .Name}}Signal(Obj{{- if (len .Params) }}, {{ end }}{{ueVars "" .Params}});
-				}
-			}
-		});
+		AsyncTask(ENamedThreads::GameThread, MoveTemp(BroadCastOnGameThread));
 	}
-
-	CleanUpSubscribers();
 }
 {{- end }}
 {{- if and (len .Properties) (len .Signals) }}{{ nl }}{{ end }}
@@ -79,12 +78,18 @@ void U{{$Class}}Publisher::Broadcast{{Camel .Name}}Signal({{ueParams "" .Params}
 {{- if $i }}{{nl}}{{ end }}
 void U{{$Class}}Publisher::Broadcast{{Camel .Name}}Changed(UPARAM(DisplayName = "{{ueVar "" .}}") {{ueParam "In" .}})
 {
-	On{{Camel .Name}}Changed.Broadcast({{ueVar "In" .}});
 	TArray<TWeakInterfacePtr<I{{$Class}}SubscriberInterface>> SubscribersCopy;
 	{
 		FReadScopeLock ReadLock(SubscribersLock);
 		SubscribersCopy = Subscribers;
 	}
+	TArray<TScriptInterface<I{{$Class}}BPSubscriberInterface>> BPSubscribersCopy;
+	{
+		FReadScopeLock ReadLock(BPSubscribersLock);
+		BPSubscribersCopy = BPSubscribers;
+	}
+
+	On{{Camel .Name}}Changed.Broadcast({{ueVar "In" .}});
 	for (const TWeakInterfacePtr<I{{$Class}}SubscriberInterface>& Subscriber : SubscribersCopy)
 	{
 		if (Subscriber.IsValid())
@@ -96,14 +101,12 @@ void U{{$Class}}Publisher::Broadcast{{Camel .Name}}Changed(UPARAM(DisplayName = 
 		}
 	}
 
-	TArray<TScriptInterface<I{{$Class}}BPSubscriberInterface>> BPSubscribersCopy;
+	auto BroadCastOnGameThread = [WeakPtr = TWeakObjectPtr<U{{$Class}}Publisher>(this), BPSubscribersCopy, {{ueVar "In" .}}]()
 	{
-		FReadScopeLock ReadLock(BPSubscribersLock);
-		BPSubscribersCopy = BPSubscribers;
-	}
-	if (IsInGameThread())
-	{
-		On{{Camel .Name}}ChangedBP.Broadcast({{ueVar "In" .}});
+		if (WeakPtr.IsValid())
+		{
+			WeakPtr.Get()->On{{Camel .Name}}ChangedBP.Broadcast({{ueVar "In" .}});
+		}
 
 		for (const TScriptInterface<I{{$Class}}BPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
@@ -112,27 +115,20 @@ void U{{$Class}}Publisher::Broadcast{{Camel .Name}}Changed(UPARAM(DisplayName = 
 				I{{$Class}}BPSubscriberInterface::Execute_On{{Camel .Name}}Changed(Obj, {{ueVar "In" .}});
 			}
 		}
+
+		if (WeakPtr.IsValid())
+		{
+			WeakPtr.Get()->CleanUpSubscribers();
+		}
+	};
+	if (IsInGameThread())
+	{
+		BroadCastOnGameThread();
 	}
 	else
 	{
-		AsyncTask(ENamedThreads::GameThread, [WeakPtr = TWeakObjectPtr<U{{$Class}}Publisher>(this), BPSubscribersCopy, {{ueVar "In" .}}]()
-			{
-			if (WeakPtr.IsValid())
-			{
-				WeakPtr.Get()->On{{Camel .Name}}ChangedBP.Broadcast({{ueVar "In" .}});
-			}
-
-			for (const TScriptInterface<I{{$Class}}BPSubscriberInterface>& Subscriber : BPSubscribersCopy)
-			{
-				if (UObject* Obj = Subscriber.GetObject())
-				{
-					I{{$Class}}BPSubscriberInterface::Execute_On{{Camel .Name}}Changed(Obj, {{ueVar "In" .}});
-				}
-			}
-		});
+		AsyncTask(ENamedThreads::GameThread, MoveTemp(BroadCastOnGameThread));
 	}
-
-	CleanUpSubscribers();
 }
 {{- end }}
 
